@@ -1,125 +1,116 @@
-Received: from mxe.seznam.cz (mxe.seznam.cz [77.75.78.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBAF1D6DDF
-	for <imx@lists.linux.dev>; Fri, 13 Sep 2024 10:59:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.75.78.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF1A1D86C8
+	for <imx@lists.linux.dev>; Fri, 13 Sep 2024 12:02:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726225146; cv=none; b=SsiRh540ubPqrZTdHZ3FFwil270GfwpZZEohk0hobPdO7UP2VOjRLeb3YsMIlkzmdeJduGoQA6RKLESRTpuuIGmdz1ettCwF3+FnxZilIFDIE/pMSmOb/Etw6zzuc2kL0c9su7LeOqCn6LznEeJNvWUKiWUnLDX327BXhhB3vvc=
+	t=1726228941; cv=none; b=AWEv4o8T9YyoFOm7xeVUcG628lKN2fPK8CXIpuxWl7r9oGOkQCms7F1Se2X2YRYOkg1ee03ErykipXZHLEdmcwGMinOFAmnx6qJX5u8q0jPtLVAcl7YSC59T+2hAG5rlTqGeNhflTwbcYrcD7ovhfU8gmfU1/eIQnxFuuuoW2Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726225146; c=relaxed/simple;
-	bh=LsVl0Voqd1ckeCDn0W+7B7IVZDgwFBAd008MHYFeKtQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:Mime-Version:Content-Type; b=kj5W56B3RChhEKfJOkfOx/34xILalL2UOCYFcosGvZ5vjGPB9Q36JzzPQjxAz1Ozn4hA4NX3G21+hOkUVqIJOcsCcTN97fJ9N6R8alOWyW45GDsF5k/QFTtNMNJqJRhB/KXqU2ZsGXmNSFYty2jRsULRCvyDq75Rys9nSdF86/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=email.cz; spf=pass smtp.mailfrom=email.cz; dkim=pass (2048-bit key) header.d=email.cz header.i=@email.cz header.b=S6g1BsX4; arc=none smtp.client-ip=77.75.78.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=email.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=email.cz
+	s=arc-20240116; t=1726228941; c=relaxed/simple;
+	bh=WuwqpRmxlM+RziSDik+Xx/cAiRX1REx1Yj/wgaxdIFc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HfZdp1HUlad1k0LJgKbArz1j6kA23KAc9Fh5axaLpjNRr+WwoolT/K/e9E0ubyY+nr4q+ucg+npUYph0CaMFSW0rKHwcGevYG8w7ugUy7iqMO0WuTMcfk/NrrtN/1zjC/ghaIm/hPcMSnvEXRXSdBevOplYOC1DgQqJ1oQhh5gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YopH+AKl; arc=none smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=email.cz header.i=@email.cz header.b="S6g1BsX4"
-Received: from email.seznam.cz
-	by smtpc-mxe-7bdd9d48f6-vf57s
-	(smtpc-mxe-7bdd9d48f6-vf57s [2a02:598:64:8a00::1000:aed])
-	id 7fb00c968144be3c7f3e828e;
-	Fri, 13 Sep 2024 12:58:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=email.cz;
-	s=szn20221014; t=1726225103;
-	bh=Go1Drl7Hc5TRGms6agMq/QAyf40vC00ZWCu62l3/7AM=;
-	h=Received:From:To:Cc:Subject:Date:Message-Id:Mime-Version:X-Mailer:
-	 Content-Type:Content-Transfer-Encoding;
-	b=S6g1BsX4WqcsWQ7TEqI4Q5hinoIJvlK971uJpasNtpyi20KODBcbEHsvzihB/DjqV
-	 9nTPqJhQnYYJdOQw8CpofRI/5Syg03jQhm1bU8pmFaQAAB65gkkFQxZLtSPd+8LqmD
-	 AvSDLoUXhbM1cvTN7KYpVwew2i3Lkp+4UNmtjeYapY4208NNGswyZwBKDp4pWMs4ui
-	 UCyXgwN3f76oAecxC0kh5q48tL8m4qiZSbOClyl/plisSmwjrURuYEnAlq7MWL4Z7O
-	 2vj6VopjGvtxY/dR7FI9hz9ISoXP9JFJVFsHUiLc9EpLb7rybM0QjFygLVTLY5oaFv
-	 Yg3tPrro7BdxA==
-Received: from 184-143.ktuo.cz (184-143.ktuo.cz [82.144.143.184])
-	by email.seznam.cz (szn-ebox-5.0.189) with HTTP;
-	Fri, 13 Sep 2024 12:58:21 +0200 (CEST)
-From: "Tomas Paukrt" <tomaspaukrt@email.cz>
-To: <linux-crypto@vger.kernel.org>
-Cc: "Herbert Xu" <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Shawn Guo" <shawnguo@kernel.org>,
-	"Sascha Hauer" <s.hauer@pengutronix.de>,
-	"Pengutronix Kernel Team" <kernel@pengutronix.de>,
-	"Fabio Estevam" <festevam@gmail.com>,
-	<imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>
-Subject: =?utf-8?q?=5BPATCH=5D_crypto=3A_mxs-dcp=3A_Enable_user-space_acce?=
-	=?utf-8?q?ss_to_AES_with_hardware-bound_keys?=
-Date: Fri, 13 Sep 2024 12:58:21 +0200 (CEST)
-Message-Id: <1di.ZclR.6M4clePpGuH.1cv1hD@seznam.cz>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YopH+AKl"
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6d44b6e1aebso16581687b3.2
+        for <imx@lists.linux.dev>; Fri, 13 Sep 2024 05:02:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1726228938; x=1726833738; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=VZUveVe5ug6pUVY95Hk2rZagT2tEgT+khEe5hqljA6o=;
+        b=YopH+AKlSxzntmF/hUAa1svHCWjHb+IOULkwHhV74Xy/8mZSCdn5Weqwtb2bKeshNO
+         NnmL7odeP2Gq1XZDJU8BelXWwOuu5mAQEeEM66JxFS9JSPIXdL1FTqLnDI/2hHPiyUD9
+         K85lmDAoKcKi0koV3yGanLtJSFHLZ74ptBQ6EWLiNprYjurG/KmE/HGMdEDPBcSOK6Xn
+         0/qS6N1CqoGVd+h6Djps/mSCH9tbAkYmznGfPAeOccPcqY8tRJ1g5UOEICiIQSPnkPhw
+         LrZp3T7KzTd3WyIabUQ6FtMCWeFffiptc4+iTnejyhxEyqpR6IerX/G4/0BZy3OwhgpT
+         ukjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726228938; x=1726833738;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VZUveVe5ug6pUVY95Hk2rZagT2tEgT+khEe5hqljA6o=;
+        b=wfWqX70RWRrmDtl1Z1Llg0pgBJczL/CT2emAOLFwras76rP8bAh9oaimv7EocXc48G
+         yPEyEgKg0QgeCkMKrAroK66G+LHWmsROUqCWxDtF6Uiwi46rINQ39b/cdN+H2GniWJOJ
+         atYye4WK8EkCx15hQSIFJnazWPwsIECWh1uKVCwJMUgb/AnbQUb5k2JwFlM3fIYfIKVM
+         Rk09heMUl6n/SICOmc8OLq7x6dCbj+SS3VXgYyF3LkKyK9ywN7qbEa3zZqcyDzX5jwDQ
+         IB3sKGEo1GRALbM1RE1u6d8OlImM8Fx55FRIVY1OQVBSSspQyYWtBpKdO76A4fKYmcWA
+         H2vg==
+X-Forwarded-Encrypted: i=1; AJvYcCVbXR/ccZmJ4liX5hgafyxM9sKCciTz3CDHOVSrU63nVzHJem/8H7pZOOWz9fSw0ZwYDZ0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxzNbbPL/NCFZD1ZDgC6vYKN99BB7PT+FECBiY3UnSOm2csY/5M
+	M0xYjguuiNYO1/7up0IDeFYnEqrYRAY8fqSnAHxF3wdkCYWRyIjyGDKg1HBRF5lO9nYzkauKUMX
+	REv5xpfA3dVpy6x5+eTkdJk3FI/6WPjIb6/Wibw==
+X-Google-Smtp-Source: AGHT+IHvWAtjRL3HNkWkaP3coSzhpDLefItiLLMliColzEkeBMjyYypjXfXV6VN6sYk4ULxR/arxmws/Y1dWw592ffI=
+X-Received: by 2002:a05:690c:1d:b0:6b0:d687:3bd3 with SMTP id
+ 00721157ae682-6dbb6b20d8amr53618377b3.21.1726228936095; Fri, 13 Sep 2024
+ 05:02:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0 (szn-mime-2.1.61)
-X-Mailer: szn-ebox-5.0.189
-Content-Type: text/plain;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+References: <20240823-cleanup-h-guard-pm-domain-v1-0-8320722eaf39@linaro.org>
+In-Reply-To: <20240823-cleanup-h-guard-pm-domain-v1-0-8320722eaf39@linaro.org>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Fri, 13 Sep 2024 14:01:40 +0200
+Message-ID: <CAPDyKFr51pccY4Wx3x_NcuVrJcsG0U_xMptdC-2hf_5BnjaR0Q@mail.gmail.com>
+Subject: Re: [PATCH 00/10] pmdomain: Simplify with cleanup.h
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Heiko Stuebner <heiko@sntech.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Magnus Damm <magnus.damm@gmail.com>, linux-pm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Add an option to enable user-space access to cbc(paes) and ecb(paes)
-cipher algorithms via AF_ALG.
+On Fri, 23 Aug 2024 at 14:51, Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
+>
+> Simplify the code with scoped loops, guards and __free().
+>
+> Best regards,
+> Krzysztof
+>
+> ---
+> Krzysztof Kozlowski (10):
+>       pmdomain: rockchip: Simplify with scoped for each OF child loop
+>       pmdomain: rockchip: Simplify locking with guard()
+>       pmdomain: imx: gpc: Simplify with scoped for each OF child loop
+>       pmdomain: imx: gpcv2: Simplify with scoped for each OF child loop
+>       pmdomain: qcom: cpr: Simplify with dev_err_probe()
+>       pmdomain: qcom: cpr: Simplify locking with guard()
+>       pmdomain: qcom: rpmhpd: Simplify locking with guard()
+>       pmdomain: qcom: rpmpd: Simplify locking with guard()
+>       pmdomain: renesas: rcar-gen4-sysc: Use scoped device node handling to simplify error paths
+>       pmdomain: renesas: rcar-sysc: Use scoped device node handling to simplify error paths
+>
+>  drivers/pmdomain/imx/gpc.c                | 14 +++-----
+>  drivers/pmdomain/imx/gpcv2.c              |  8 ++---
+>  drivers/pmdomain/qcom/cpr.c               | 58 ++++++++++++-------------------
+>  drivers/pmdomain/qcom/rpmhpd.c            | 11 +++---
+>  drivers/pmdomain/qcom/rpmpd.c             | 20 ++++-------
+>  drivers/pmdomain/renesas/rcar-gen4-sysc.c | 26 ++++++--------
+>  drivers/pmdomain/renesas/rcar-sysc.c      | 28 ++++++---------
+>  drivers/pmdomain/rockchip/pm-domains.c    | 25 ++++---------
+>  8 files changed, 68 insertions(+), 122 deletions(-)
+> ---
+> base-commit: e188fd67a69319f3d105d9b90e424b8d1ff9580c
+> change-id: 20240823-cleanup-h-guard-pm-domain-35eb491f35f9
+>
+> Best regards,
+> --
+> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Signed-off-by: Tomas Paukrt <tomaspaukrt@email.cz>
----
- drivers/crypto/Kconfig   | 13 +++++++++++++
- drivers/crypto/mxs-dcp.c |  8 ++++++++
- 2 files changed, 21 insertions(+)
+Patch 1 -> 8 applied for next, thanks!
 
-diff --git a/drivers/crypto/Kconfig b/drivers/crypto/Kconfig
-index 94f23c6..4637c6f 100644
---- a/drivers/crypto/Kconfig
-+++ b/drivers/crypto/Kconfig
-@@ -460,6 +460,19 @@ config CRYPTO_DEV_MXS_DCP
- 	  To compile this driver as a module, choose M here: the module
- 	  will be called mxs-dcp.
- 
-+config CRYPTO_DEV_MXS_DCP_USER_PAES
-+	bool "Enable user-space access to AES with hardware-bound keys"
-+	depends on CRYPTO_DEV_MXS_DCP && CRYPTO_USER_API_SKCIPHER
-+	default n
-+	help
-+	  Say Y to enable user-space access to cbc(paes) and ecb(paes)
-+	  cipher algorithms via AF_ALG.
-+
-+	  In scenarios with untrustworthy users-pace, this may enable
-+	  decryption of sensitive information.
-+
-+	  If unsure, say N.
-+
- source "drivers/crypto/cavium/cpt/Kconfig"
- source "drivers/crypto/cavium/nitrox/Kconfig"
- source "drivers/crypto/marvell/Kconfig"
-diff --git a/drivers/crypto/mxs-dcp.c b/drivers/crypto/mxs-dcp.c
-index c82775d..84df1cb 100644
---- a/drivers/crypto/mxs-dcp.c
-+++ b/drivers/crypto/mxs-dcp.c
-@@ -944,7 +944,11 @@ static struct skcipher_alg dcp_aes_algs[] =3D {
- 		.base.cra_driver_name	=3D "ecb-paes-dcp",
- 		.base.cra_priority	=3D 401,
- 		.base.cra_alignmask	=3D 15,
-+#ifdef CONFIG_CRYPTO_DEV_MXS_DCP_USER_PAES
-+		.base.cra_flags		=3D CRYPTO_ALG_ASYNC,
-+#else
- 		.base.cra_flags		=3D CRYPTO_ALG_ASYNC | CRYPTO_ALG_INTERNAL,
-+#endif
- 		.base.cra_blocksize	=3D AES_BLOCK_SIZE,
- 		.base.cra_ctxsize	=3D sizeof(struct dcp_async_ctx),
- 		.base.cra_module	=3D THIS_MODULE,
-@@ -960,7 +964,11 @@ static struct skcipher_alg dcp_aes_algs[] =3D {
- 		.base.cra_driver_name	=3D "cbc-paes-dcp",
- 		.base.cra_priority	=3D 401,
- 		.base.cra_alignmask	=3D 15,
-+#ifdef CONFIG_CRYPTO_DEV_MXS_DCP_USER_PAES
-+		.base.cra_flags		=3D CRYPTO_ALG_ASYNC,
-+#else
- 		.base.cra_flags		=3D CRYPTO_ALG_ASYNC | CRYPTO_ALG_INTERNAL,
-+#endif
- 		.base.cra_blocksize	=3D AES_BLOCK_SIZE,
- 		.base.cra_ctxsize	=3D sizeof(struct dcp_async_ctx),
- 		.base.cra_module	=3D THIS_MODULE,
--- 
-2.7.4
- 
+Kind regards
+Uffe
