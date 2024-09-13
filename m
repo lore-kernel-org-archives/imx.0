@@ -1,77 +1,189 @@
-Received: from www.linux-watchdog.org (www.linux-watchdog.org [185.87.125.42])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917521AD256
-	for <imx@lists.linux.dev>; Fri, 13 Sep 2024 08:57:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.87.125.42
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8911D5CC1
+	for <imx@lists.linux.dev>; Fri, 13 Sep 2024 09:17:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726217830; cv=none; b=f0BUYRjjbl3nHnxeBPxPBG4PmDHdOzk5YnO4mzUippdHWYMICqqxJHYwuaBHPJo6L3+BQZTQuFvLaYHHcK2pU+nUIjLXI9cCyWq3VyLFSKyU/sWxzix5BEK2JjrC+nTbct85QoyXmVdE69crsWN5z62D5BxLQSrzOyoDGV5t2gA=
+	t=1726219036; cv=none; b=eurquDtou3gQ8bZLJb70NiEMrLMpUItybuqAghMbZh711H+Wk/qTQhSWNFifrdsgAHZ5s2untHOWU3wV4rK0/9cucqDYPDtqHeIkD0A6gVfcWyC3Y8tUBbZ80+/p/x3FprRN6uM6Vn4NNXb/pAFcytKo0xZqJCsYHSjK2hXepGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726217830; c=relaxed/simple;
-	bh=L2M5SuCNmipfKphPitsBa/R/HP6VsGtSLkdrj9Qb54g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HcfUwT4T9stiM6LVKIY8i478+uQQqwhGUHt8+K+MZTxgT9lFZeDjTAFW5JAOvekzENvzvPm/u5x8AV0vnad/+ciiaLfPtsc0hRSNCFkyvw1Q2ZupWYuwyicGcN40CpKIEt93M9KHxl3FkVMLGSPTPu4Pl9UKyXmFGfhFlRFKqjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=linux-watchdog.org; spf=pass smtp.mailfrom=linux-watchdog.org; dkim=pass (1024-bit key) header.d=linux-watchdog.org header.i=@linux-watchdog.org header.b=CZkLeRj5; arc=none smtp.client-ip=185.87.125.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=linux-watchdog.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux-watchdog.org
+	s=arc-20240116; t=1726219036; c=relaxed/simple;
+	bh=hMrF5SdlF17xoZq+/VZGpcQOWFrPq9ZfR0YLyh5OhxY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=k9TVYmQHGcm9g64xFzPy2UYmi4831oX0m0oAwNZxKNzxWoMnEoYnan0FQQdhzOsBMhNq1NxiCL6fshOHGxg6S9BuwMuCGhRDY6Xj9tMdenGGK+6WXAF5TQz+jJuxubW6+4HzN7yibnefMu6Z6W//e2jg7ZHceeZiU/bK46xFmP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=CboBURKR; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=EAnQmZSI reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-watchdog.org header.i=@linux-watchdog.org header.b="CZkLeRj5"
-Received: by www.linux-watchdog.org (Postfix, from userid 500)
-	id AC2DA40A91; Fri, 13 Sep 2024 10:32:48 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 www.linux-watchdog.org AC2DA40A91
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-watchdog.org;
-	s=odk20180602; t=1726216368;
-	bh=L2M5SuCNmipfKphPitsBa/R/HP6VsGtSLkdrj9Qb54g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CZkLeRj5I+JHFdgwKfx2xPu0TUcICC6Av4mvTd0hJS56DR4LQWZMDzck27P7/+7TE
-	 oL/n53T+wnOTPEfQ0Gt9rSxVBT9bHZzKLkFdQIRLBycCNkEnStRz39DHIQcOm47x/W
-	 GhFrM0id0Rz/bzNH1cstMK0zvOjjZJnjsGa+kqTk=
-Date: Fri, 13 Sep 2024 10:32:48 +0200
-From: Wim Van Sebroeck <wim@linux-watchdog.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Wim Van Sebroeck <wim@linux-watchdog.org>, alice.guo@nxp.com,
-	festevam@gmail.com, imx@lists.linux.dev, kernel@pengutronix.de,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-watchdog@vger.kernel.org, linux@roeck-us.net,
-	s.hauer@pengutronix.de, shawnguo@kernel.org, ye.li@nxp.com
-Subject: Re: [PATCH v5 1/1] watchdog: imx7ulp_wdt: move post_rcs_wait into
- struct imx_wdt_hw_feature
-Message-ID: <20240913083248.GB31440@www.linux-watchdog.org>
-References: <20240730145610.2177627-1-Frank.Li@nxp.com>
- <ZtDvk02cvKCemYbN@lizhi-Precision-Tower-5810>
- <ZuCd0xTZ29meorYy@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="CboBURKR";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="EAnQmZSI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1726219033; x=1757755033;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=5nyRXAZtZaPgsiU9hSdOI+jFy3OJbheXoiy71LlZp5k=;
+  b=CboBURKRNtU6MoCBNLnQTv/KvBYRdv5B/oy8k8Wt1R3AMB5j1evlrio7
+   yY7r4a/NXZJghxsib1/x2uBhet4MqLRHBqmdcTv6xFBuJVtG90BuckOIV
+   WvfiPQtXRU1izer8mgXwI9bLTwmpfge66iyPxXQOTGeCH6VgOFq9SD+Ey
+   Sly5xO7qka4qIKFi7rBX26odxgS8bkqKiIYOhDe4BgREmqViRlfdwfApA
+   gooCEqODREkDdDeKaviszzjkuEgQKfimUzcMK/5pybP0snPWgQCsWQ/6H
+   8NeTsONxBdNEGEVOp9Hc0CSYPldgKaR8yIk5jWbvy9jtqpET7fqFEy6rQ
+   A==;
+X-CSE-ConnectionGUID: p+R67PyMQLOUJgOdcEoSbQ==
+X-CSE-MsgGUID: XvVlXnRDRI6dXMCAF3adjg==
+X-IronPort-AV: E=Sophos;i="6.10,225,1719871200"; 
+   d="scan'208";a="38929837"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 13 Sep 2024 11:17:10 +0200
+X-CheckPoint: {66E40316-20-5FF8EC80-F6CEE9F8}
+X-MAIL-CPID: 74791384B45C96BF1AA1857C48273692_0
+X-Control-Analysis: str=0001.0A782F1D.66E40317.0096,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 76CBA167CB0;
+	Fri, 13 Sep 2024 11:17:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1726219026;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=5nyRXAZtZaPgsiU9hSdOI+jFy3OJbheXoiy71LlZp5k=;
+	b=EAnQmZSII4QJyrFQEhdzwtL9szLD0RYPMLcU4Q/LY4fcWXEfOzariAmcCYgUfGM9JQeKDZ
+	2j2Ap9VUdwJYLTfL6DuZu2932doAJUwzCuF0B0lZPZJ2zd/RzfjD7a/1Y9XY+YVdW8ShtW
+	vltqnbGcxVnuvBYvydqEir6CO5HinkmwGXUccMbpUJSG+e70HkTxwgVI/WpNw6+8Y6cZaH
+	Hlkv6Ync38Phss+7eDwPe3w3CbLVTCq9rusbSxGWI1k8PdR0Uw5E2LZM6ZNhy+pnW0q7rW
+	0Hy1KbF56hSS/EkGSX9g0JVL+i4c8ia0sGTZE87mxI9A16F952cTBPBTb/+5zA==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, John Ogness <john.ogness@linuxtronix.de>, linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Esben Haabendal <esben@geanix.com>, Esben Haabendal <esben@geanix.com>
+Subject: Re: [PATCH 2/2] serial: imx: Add more comments on port lock status
+Date: Fri, 13 Sep 2024 11:17:04 +0200
+Message-ID: <2200890.irdbgypaU6@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20240913-serial-imx-lockfix-v1-2-4d102746c89d@geanix.com>
+References: <20240913-serial-imx-lockfix-v1-0-4d102746c89d@geanix.com> <20240913-serial-imx-lockfix-v1-2-4d102746c89d@geanix.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZuCd0xTZ29meorYy@lizhi-Precision-Tower-5810>
-User-Agent: Mutt/1.5.20 (2009-12-10)
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Frank,
+Hi,
 
-> On Thu, Aug 29, 2024 at 06:00:51PM -0400, Frank Li wrote:
-> > On Tue, Jul 30, 2024 at 10:56:10AM -0400, Frank Li wrote:
-> > > Move post_rcs_wait into struct imx_wdt_hw_feature to simple code logic for
-> > > difference compatible string.
-> > >
-> > > i.MX93 watchdog needn't wait 2.5 clocks after RCS is done. So needn't set
-> > > post_rcs_wait.
-> > >
-> > > Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-> > > Signed-off-by: Alice Guo <alice.guo@nxp.com>
-> > > Reviewed-by: Ye Li <ye.li@nxp.com>
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> 
-> Wim Van Sebroeck:
-> 
-> 	Could you please take care this patch?
-> 
+Am Freitag, 13. September 2024, 10:39:50 CEST schrieb Esben Haabendal:
+> Comments regarding status of port.lock on internal functions is useful wh=
+en
+> reviewing correct handling of registers that must be protected by this
+> lock.
+>=20
+> Signed-off-by: Esben Haabendal <esben@geanix.com>
+> ---
+>  drivers/tty/serial/imx.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+>=20
+> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+> index efa3eb3a2c57..bea4510743ef 100644
+> --- a/drivers/tty/serial/imx.c
+> +++ b/drivers/tty/serial/imx.c
+> @@ -370,6 +370,7 @@ static void imx_uart_soft_reset(struct imx_port *spor=
+t)
+>  	sport->idle_counter =3D 0;
+>  }
+> =20
+> +/* called with port.lock taken and irqs off */
+>  static void imx_uart_disable_loopback_rs485(struct imx_port *sport)
+>  {
+>  	unsigned int uts;
 
-It's in Linux-watchdog-next since tuesday.
+I think you are referring to sport.lock. On the other hand, instead of
+just adding comments, wouldn't it be better to make it explicit?
+Adding=20
+> lockdep_assert_held(&sport->port->lock);
+and/or sparse annoations
+> __must_hold(&sport->port->lock)
 
-Kind regards,
-Wim.
+seems more reasonable to me than adding non-enforcing comments.
+
+Best regards,
+Alexander
+
+> @@ -470,6 +471,7 @@ static void imx_uart_stop_tx(struct uart_port *port)
+>  	}
+>  }
+> =20
+> +/* called with port.lock taken and irqs off */
+>  static void imx_uart_stop_rx_with_loopback_ctrl(struct uart_port *port, =
+bool loopback)
+>  {
+>  	struct imx_port *sport =3D to_imx_port(port);
+> @@ -803,6 +805,8 @@ static irqreturn_t imx_uart_txint(int irq, void *dev_=
+id)
+>   * issuing soft reset to the UART (just stop/start of RX does not help).=
+ Note
+>   * that what we do here is sending isolated start bit about 2.4 times sh=
+orter
+>   * than it is to be on UART configured baud rate.
+> + *
+> + * Called with port.lock taken and irqs off.
+>   */
+>  static void imx_uart_check_flood(struct imx_port *sport, u32 usr2)
+>  {
+> @@ -838,6 +842,7 @@ static void imx_uart_check_flood(struct imx_port *spo=
+rt, u32 usr2)
+>  	}
+>  }
+> =20
+> +/* called with port.lock taken and irqs off */
+>  static irqreturn_t __imx_uart_rxint(int irq, void *dev_id)
+>  {
+>  	struct imx_port *sport =3D dev_id;
+> @@ -916,6 +921,7 @@ static void imx_uart_clear_rx_errors(struct imx_port =
+*sport);
+>  /*
+>   * We have a modem side uart, so the meanings of RTS and CTS are inverte=
+d.
+>   */
+> +/* called with port.lock taken and irqs off */
+>  static unsigned int imx_uart_get_hwmctrl(struct imx_port *sport)
+>  {
+>  	unsigned int tmp =3D TIOCM_DSR;
+> @@ -938,6 +944,8 @@ static unsigned int imx_uart_get_hwmctrl(struct imx_p=
+ort *sport)
+> =20
+>  /*
+>   * Handle any change of modem status signal since we were last called.
+> + *
+> + * Called with port.lock taken and irqs off.
+>   */
+>  static void imx_uart_mctrl_check(struct imx_port *sport)
+>  {
+> @@ -1277,6 +1285,7 @@ static int imx_uart_start_rx_dma(struct imx_port *s=
+port)
+>  	return 0;
+>  }
+> =20
+> +/* called with port.lock taken and irqs off */
+>  static void imx_uart_clear_rx_errors(struct imx_port *sport)
+>  {
+>  	struct tty_port *port =3D &sport->port.state->port;
+> @@ -1407,6 +1416,7 @@ static int imx_uart_dma_init(struct imx_port *sport)
+>  	return ret;
+>  }
+> =20
+> +/* called with port.lock taken and irqs off */
+>  static void imx_uart_enable_dma(struct imx_port *sport)
+>  {
+>  	u32 ucr1;
+>=20
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
