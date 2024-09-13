@@ -1,140 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD6A1C1743;
-	Fri, 13 Sep 2024 09:53:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C239D1D6C6E;
+	Fri, 13 Sep 2024 10:03:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726221233; cv=none; b=CFMia5FAltPGMdSELWfuXnSB5ww+TlRPmahYC6IWMZ+8ZplEgP194x0HBVUTg+6ThG4SN4wC1Hq/tCgWK4V8nXNouSg2WWgs1mScTfLgtbgUh0nlewcU7G09+02qtEkyGl4tFE8x2yHU+HhnadErl1RdfJOKygqYZ99dyPeMgx0=
+	t=1726221791; cv=none; b=L03OVaVwomuoVee6kU7cRT4Yj+srQG7XcWbMDCDHwqGr1Mgzg1QGpguzjwnF12cZn1C7reB9xLqiq0626W0KxeQYtbeU1ErFKrJLA9asI9cgcH9MfMQEQzX5QMZQmlAKY82ikJ54QT12TxD5pHEyVDGg7QxVBlzcA/m3orUrStw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726221233; c=relaxed/simple;
-	bh=mCI+QATUiukZGtLa4D51SCOTzP//jCzdbzpitsxGZlM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i5iof+LsCnS04TCjNspXKgbisdqkznZPt112Xz88HO2+Fbm7lb7ZKWzvf3ODUcN9cYIfu9rKpNWdFKX4vVuZyry4sDmkVdyAvPMNS/jd9uwqFoHOSyv2RNzxmgKqpCXeZBL9OQARjZ+gknryzt6ZI7XZ5rX0AJ1B9wnFGxlrEk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UHw+eD5y; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1726221791; c=relaxed/simple;
+	bh=v77vG3R2aQwdctrT7b5cLJzwQds5ti5P3NnSbJlI2b8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=FbQR/TlbtoUyKrHyeUkvtd9K+y2ukQ6mzkp6OQqDFjo5dLhSfu5IZvZ98Xw3ukToeN1XyJUIVAorX4QJA/Gogh/mWMGNxqgV95nkRqczhvPjKFnIaeY6ibaNGGeGDm+xOmgg/GL4Nu6KopSBbs2ZPnGflezTFUznSFa3h/4c5PY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=0IryVpN4; arc=none smtp.client-ip=188.40.30.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UHw+eD5y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B84C4CEC0;
-	Fri, 13 Sep 2024 09:53:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726221233;
-	bh=mCI+QATUiukZGtLa4D51SCOTzP//jCzdbzpitsxGZlM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UHw+eD5yjsMFBcAGhpiJUZJkhQoPwRxn8EJ+PN7sYj/Y6vBut04qcplxG8fkbs9og
-	 y5xwF+smKmvyeUsCVr/teU8LA9xkkDANvkNrw4fhJk/EX/Uu5CO6rDwCGiQVw4KwYV
-	 T8czPUU1rhauNhA/h7NIf6jLNdsNjdTG5/89oMLSICt4ZBYIiDwxSYgH5MfOhmkL2R
-	 gh4A4nLgbZp8MaxK118KWdbEx6zFucEJNLZXHHVpSC8qBTHi0s6TTFaCkAr675HBZD
-	 wpZvhOPY7kKOOqly09GyaJR7FYwqKkEEjb8mjrEbrkoL4IyjrXC6+BjrIN7rFYnmGw
-	 2kQroOR3Rkm5Q==
-Date: Fri, 13 Sep 2024 17:53:44 +0800
-From: Peter Chen <peter.chen@kernel.org>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
-	imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH 1/2] usb: chipidea: udc: limit usb request length to max
- 16KB
-Message-ID: <20240913095344.GA321485@nchen-desktop>
-References: <20240912045150.915573-1-xu.yang_2@nxp.com>
- <20240913012045.GA320526@nchen-desktop>
- <20240913071133.pstilja3z25yey2p@hippo>
+	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="0IryVpN4"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
+	s=default2211; h=Content-Type:MIME-Version:Message-ID:Date:References:
+	In-Reply-To:Subject:Cc:To:From:Sender:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=rlPvbEnZ5WQngyesq81myBzkHs5Lcelfd34b25m5ANQ=; b=0IryVpN4MTLdCo88llTCADA7Vx
+	RY2gmXVOOIupVG6SYex0ZlRMeQjiZkJxTu0WzU2/zcf0zWvVB88FY8MUJiAHN9nTFWHwgJl65EWvg
+	JZDD/tFkt8f6SgQ10z1FnwMP+c/v5tMLt6ZGakcSxQjllNzfFKLVv/spzS3rywxp5C/ZT+KVYgLIU
+	6jCTPsx/nUM0bAj+6HXmOkyJ9652ShqGf1FAuNHlTd8jQZaTkQ9VmEOqB7v+K0mfGxlepXw/I4GJ+
+	UBUpfiZmgkT7l16YnDq55gK0764gmm95gmLqZFgfbv1tcidEd2+NL7JIDo3dc6U9zo1x0E+OE5FV2
+	ZlGz7F8Q==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <esben@geanix.com>)
+	id 1sp38l-0001ta-BP; Fri, 13 Sep 2024 12:02:59 +0200
+Received: from [80.62.117.18] (helo=localhost)
+	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <esben@geanix.com>)
+	id 1sp38k-0009i8-05;
+	Fri, 13 Sep 2024 12:02:58 +0200
+From: Esben Haabendal <esben@geanix.com>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,  Jiri Slaby
+ <jirislaby@kernel.org>,  Shawn Guo <shawnguo@kernel.org>,  Sascha Hauer
+ <s.hauer@pengutronix.de>,  Pengutronix Kernel Team
+ <kernel@pengutronix.de>,  Fabio Estevam <festevam@gmail.com>,  John Ogness
+ <john.ogness@linuxtronix.de>,  linux-arm-kernel@lists.infradead.org,
+  linux-kernel@vger.kernel.org,  linux-serial@vger.kernel.org,
+  imx@lists.linux.dev
+Subject: Re: [PATCH 2/2] serial: imx: Add more comments on port lock status
+In-Reply-To: <2200890.irdbgypaU6@steina-w> (Alexander Stein's message of "Fri,
+	13 Sep 2024 11:17:04 +0200")
+References: <20240913-serial-imx-lockfix-v1-0-4d102746c89d@geanix.com>
+	<20240913-serial-imx-lockfix-v1-2-4d102746c89d@geanix.com>
+	<2200890.irdbgypaU6@steina-w>
+Date: Fri, 13 Sep 2024 12:02:57 +0200
+Message-ID: <87v7yz50ry.fsf@geanix.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240913071133.pstilja3z25yey2p@hippo>
+Content-Type: text/plain
+X-Authenticated-Sender: esben@geanix.com
+X-Virus-Scanned: Clear (ClamAV 0.103.10/27397/Fri Sep 13 10:48:01 2024)
 
-On 24-09-13 15:11:33, Xu Yang wrote:
-> On Fri, Sep 13, 2024 at 09:20:45AM +0800, Peter Chen wrote:
-> > On 24-09-12 12:51:49, Xu Yang wrote:
-> > > Currently, the deivice controller has below limitations:
-> > > 1. can't generate short packet interrupt if IOC not set in dTD. So if one
-> > >    request span more than one dTDs and only the last dTD set IOC, the usb
-> > >    request will pending there if no more data comes.
-> > > 2. the controller can't accurately deliver data to differtent usb requests
-> > >    in some cases due to short packet. For example: one usb request span 3
-> > >    dTDs, then if the controller received a short packet the next packet
-> > >    will go to 2nd dTD of current request rather than the first dTD of next
-> > >    request.
-> > > 
-> > 
-> > Are there any IP errata for it?
-> 
-> No. It's decided by hw IP design. This old design may not suit current
-> requirements.
-> 
-> > 
-> > > To let the device controller work properly, one usb request should only
-> > > correspond to one dTD. Then every dTD will set IOC. In theory, each dTD
-> > > support up to 20KB data transfer if the offset is 0. Due to we cannot
-> > > predetermine the offset, this will limit the usb request length to max
-> > > 16KB. This should be fine since most of the user transfer data based on
-> > > this size policy.
-> > > 
-> > > Although these limitations found on OUT eps, we can put the request to IN
-> > > eps too, this will benefit the following patches.
-> > 
-> > Since IN endpoints have not found the problem, please limit the changes
-> > only for OUT endpoints.
-> 
-> This 1st patch is mainly used to serve the 2nd patch which may impact
-> both IN and OUT eps.
-...
-> Because it's hard to judge whether a request is
-> suit for transfer if it spans more dTDs. So it's needed for both eps.
+Alexander Stein <alexander.stein@ew.tq-group.com> writes:
 
-Sorry, I do not understand you above words. First, you may know this
-request is for IN or OUT, second, according to TD size and data buffer
-address, you may know you use one or more dTDs.
+> Hi,
+>
+> Am Freitag, 13. September 2024, 10:39:50 CEST schrieb Esben Haabendal:
+>> Comments regarding status of port.lock on internal functions is useful when
+>> reviewing correct handling of registers that must be protected by this
+>> lock.
+>> 
+>> Signed-off-by: Esben Haabendal <esben@geanix.com>
+>> ---
+>>  drivers/tty/serial/imx.c | 10 ++++++++++
+>>  1 file changed, 10 insertions(+)
+>> 
+>> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+>> index efa3eb3a2c57..bea4510743ef 100644
+>> --- a/drivers/tty/serial/imx.c
+>> +++ b/drivers/tty/serial/imx.c
+>> @@ -370,6 +370,7 @@ static void imx_uart_soft_reset(struct imx_port *sport)
+>>  	sport->idle_counter = 0;
+>>  }
+>>  
+>> +/* called with port.lock taken and irqs off */
+>>  static void imx_uart_disable_loopback_rs485(struct imx_port *sport)
+>>  {
+>>  	unsigned int uts;
+>
+> I think you are referring to sport.lock.
 
-Peter
+Yes.
 
-> I've looked through all function drivers, all of them use 16KB as max
-> request size. If one future function driver does use a larger request
-> size, they can adjust it according to this error log too.
-> 
-> > 
-> > > 
-> > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> > > ---
-> > >  drivers/usb/chipidea/ci.h  | 1 +
-> > >  drivers/usb/chipidea/udc.c | 5 +++++
-> > >  2 files changed, 6 insertions(+)
-> > > 
-> > > diff --git a/drivers/usb/chipidea/ci.h b/drivers/usb/chipidea/ci.h
-> > > index 2a38e1eb6546..f8deccfc8713 100644
-> > > --- a/drivers/usb/chipidea/ci.h
-> > > +++ b/drivers/usb/chipidea/ci.h
-> > > @@ -25,6 +25,7 @@
-> > >  #define TD_PAGE_COUNT      5
-> > >  #define CI_HDRC_PAGE_SIZE  4096ul /* page size for TD's */
-> > >  #define ENDPT_MAX          32
-> > > +#define CI_MAX_REQ_SIZE	(4 * CI_HDRC_PAGE_SIZE)
-> > >  #define CI_MAX_BUF_SIZE	(TD_PAGE_COUNT * CI_HDRC_PAGE_SIZE)
-> > >  
-> > >  /******************************************************************************
-> > > diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
-> > > index b1a1be6439b6..5d9369d01065 100644
-> > > --- a/drivers/usb/chipidea/udc.c
-> > > +++ b/drivers/usb/chipidea/udc.c
-> > > @@ -969,6 +969,11 @@ static int _ep_queue(struct usb_ep *ep, struct usb_request *req,
-> > >  		return -EMSGSIZE;
-> > >  	}
-> > >  
-> > > +	if (hwreq->req.length > CI_MAX_REQ_SIZE) {
-> > > +		dev_err(hwep->ci->dev, "request length too big (max 16KB)\n");
-> > > +		return -EMSGSIZE;
-> > > +	}
-> > > +
-> > 
-> > Since this IP is used by many vendors, it may fix by others.
-> > I prefer add flag like CI_HDRC_SHORT_PACKET_NOT_SUPPORT, 
-> > and set in imx platform file.
-> 
-> Okay, I can limit the impact to only imx platform.
-> 
-> Thanks,
-> Xu Yang 
+> On the other hand, instead of just adding comments, wouldn't it be
+> better to make it explicit?
+> Adding
+>> lockdep_assert_held(&sport->port->lock);
+> and/or sparse annoations
+>> __must_hold(&sport->port->lock)
+>
+> seems more reasonable to me than adding non-enforcing comments.
+
+I fear that due to the way that legacy console works, assertations might
+trigger in special situations, such as printk during panic.
+
+Converting comments to assertations could definitely be a good idea, but
+I think it might be better to wait with that until the driver has been
+converted to NBCON (in progress, see
+https://lore.kernel.org/all/20240913-serial-imx-nbcon-v3-1-4c627302335b@geanix.com/),
+as that will change the code paths this code will be used in.
+
+/Esben
