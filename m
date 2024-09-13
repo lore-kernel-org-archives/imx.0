@@ -1,80 +1,46 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14FE1D58A4
-	for <imx@lists.linux.dev>; Fri, 13 Sep 2024 08:12:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6711D6C56;
+	Fri, 13 Sep 2024 08:40:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726215143; cv=none; b=MOqIaTteY8JWVCo6ziq7/UPCjBIfXdYBffUOcWBkIrKGwYoDdy2ABlIQiA3XvjpBm+/Km2flfsKKjdc7m4nRIKAn18UMdWyNaEnh0dkPDn1zrP2uggeM6DmhPiUynD55SB08SaMsmPB4MCVIDa1mBM7BTSgVuURj4s0lG2fn52s=
+	t=1726216802; cv=none; b=UZLERGALnhsyMNGlOTbJt5org7iR2tYrx4qglZs6VTVIpmPFNFoo9yuTXNaKMybLtkRPymf+ztarGU6Fqk8sx4M35Af0QddQJsw1A1dMGZAFP7ouZhTDc7IdYdY8HpopZmb2ZIwYHlB9EyHrZdtEr55bprulX36o7ueBLvDy4j4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726215143; c=relaxed/simple;
-	bh=hXeaxmc3DyeXngWYscY86rme60s50CRR2a6cKcCFxSw=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=D1yr65ud6l6atHlb1Wj5jL4re2xrpxOVcixYlrw0zT8cBfYEh+PcpQTIfOnFypiRAvxBQFv0PwBZjrLQYeKFHZZY8zhxBO4l8WtDOYrzyomi+1nCsubmC12UhjlIyOHV74rphWDbqStWaj7/wmXDoya8xkmp8jTcvhWmFErIS+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=im7KVR+F; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1726216802; c=relaxed/simple;
+	bh=qAS2J7I9OmXjlgtNTpFsso9+HDg3yEapIFQ3CQadTa0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=aq2K2cZO816JKTiL6IiVE+QbzSG/6FtreuoVq7eaDr784tR5xCyRP7m8haxWHDg527KrnC83N4DviE4PZ2yDy9K0fojkh0QlC2VwMt03O3Y+Sgw+9RnsI2p/TWTjSldny+6xzuXh8TgPjzlIjIERCzxhoFUzi3illYmvGuPUEOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=KnFSccP+; arc=none smtp.client-ip=188.40.30.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="im7KVR+F"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-374c962e5adso1159262f8f.1
-        for <imx@lists.linux.dev>; Fri, 13 Sep 2024 01:12:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1726215140; x=1726819940; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A9k9rYJMM4C+oTJ2nVf0030SJZ/ekryk/JdGG7NGdvs=;
-        b=im7KVR+FoTUf+UUrI9WlqxAJgOsO4LmK+LmPd/hXke4SaKuIh2WCaquf4TvqWf2ySZ
-         xVcN6Ks2bgDHDJt0nDWGfI/ejHEJUcqwwkU7rxShawCF8Mp2W4j+5SzLhnALNDKGzRqB
-         qQpqtyTGFS4HxOZf/enrvEipE7IF6VBnva3T10kbI+wMPsffWTsWeK9Sc/htmfe5WgzN
-         5yTYiIaRz/7i3B1EmQEFfGRxfkWBw1MZ6q6aG1ei4DdFAkfjyuISgTK8RSjeN4fGd1g4
-         UO8Dqyf++ZIWwEHiNqE3eAwDpD7y1r2J52G6SVT9g4NHlXLhnGrdi4KJRG041z0FGymT
-         8SYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726215140; x=1726819940;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=A9k9rYJMM4C+oTJ2nVf0030SJZ/ekryk/JdGG7NGdvs=;
-        b=GPi2kF5QFtq5BlKBEDt+u3x/kPyP1kNYp//37LNsxGLXY5KS0tB69KxUbIa4P8D1RW
-         sEbkILAgorcLkroM+KPZ5IFHkqR7GOUgnGyCKRBMqYx1zB9MaOi7pb0kQwfrkw+jo6vf
-         /4yD9gYf7toZKgCeFdRv9U5NCpdlOJXqn30MvrH+RPca9Or7pWjhtVGq/tu4EUSk+7hf
-         rX3xsGcD17YTwfZNzNtSlfHJqogxkQ6+ylucf0DJ1Gfsxxl2Vc+jrcUuZWyN/ybqRV6W
-         0Mkz6i5Lud0vTMwkCEUrNKTfjM3iPZs5XBD9QxYUMAEeBqEmU1loW8wgzN36NVRApW/b
-         Q9NQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWmtvNlfcwXGdLT0WBQb4DDcdDEH0swZg3YG70cu9YGpa5yhPwqbYZ0AfhlDC+KzYiTlV0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyRhhJOjgqxX1f7cajy7Ywta6ZJzmKids9VVPgDMX5z4SSvwFVW
-	B9M7MFiD4IpAm8uIYpSa1ziUZpAFE1jUom4gwRouuzmq5ymWnEJqFsaHuSShWTI=
-X-Google-Smtp-Source: AGHT+IGUnlSGK+OFJ+A4+PSD8enQEtq3Bf6LxAtm0vLDr//sYtSjZ+IjAZVM1wrdWRVB6siwKSkUvw==
-X-Received: by 2002:adf:ef06:0:b0:374:c692:42e2 with SMTP id ffacd0b85a97d-378a8a0b8d9mr7708566f8f.9.1726215139924;
-        Fri, 13 Sep 2024 01:12:19 -0700 (PDT)
-Received: from arrakeen.starnux.net ([2a01:e0a:982:cbb0:52eb:f6ff:feb3:451a])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42cc137556esm106939955e9.1.2024.09.13.01.12.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2024 01:12:19 -0700 (PDT)
-From: Neil Armstrong <neil.armstrong@linaro.org>
-To: Liu Ying <victor.liu@nxp.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
- Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
- Dominique Martinet <asmadeus@codewreck.org>
-Cc: Adam Ford <aford173@gmail.com>, Lucas Stach <l.stach@pengutronix.de>, 
- Frieder Schrempf <frieder.schrempf@kontron.de>, 
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Dominique Martinet <dominique.martinet@atmark-techno.com>
-In-Reply-To: <20240907-hdmi-tolerance-v2-1-b9d7abd89f5c@codewreck.org>
-References: <20240907-hdmi-tolerance-v2-1-b9d7abd89f5c@codewreck.org>
-Subject: Re: [PATCH v2] drm/bridge: imx8mp-hdmi-tx: allow 0.5% margin with
- selected clock
-Message-Id: <172621513881.966490.122670380841730948.b4-ty@linaro.org>
-Date: Fri, 13 Sep 2024 10:12:18 +0200
+	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="KnFSccP+"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
+	s=default2211; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-Id:Date:Subject:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References; bh=oDfxX7m0Qa88E7MDrUP9Dvg8l9A6upYI0ekFaHyfiEw=; b=Kn
+	FSccP+jm7JXhBqT3uF0umXJTJXL3DVxb4HCI5aPzKfWpW/yurZr3XLcPEIBN/DUL2UAuc0Q1taHsu
+	HPk0LYrdNxREwdbXzAkHxh4OvDN9ZCr6rqGcAl4A+Cyemohp4rfvYuaZ5ZOVY/Q5EB7r1dQUrqXf0
+	MSkfz42yjYEI8jRy+74ymSmBfvUlSU5cHnGEl0cvfHl4ISMzSHVbd0OMKJtc3x5lhHY87qBvlKlmn
+	Zl1hi8eT3RWqRsF7T+GPSwAxHaqfky+cJzxcOYUXhBAAi56pd/yduH2DNieK5TpwpJZciURMrDKSO
+	eGDlF9ijpKE9xsOiK6cyPuqP+fC+Siqw==;
+Received: from sslproxy07.your-server.de ([78.47.199.104])
+	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <esben@geanix.com>)
+	id 1sp1qL-000DwN-8C; Fri, 13 Sep 2024 10:39:53 +0200
+Received: from [80.62.117.18] (helo=localhost)
+	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <esben@geanix.com>)
+	id 1sp1qK-00039j-0P;
+	Fri, 13 Sep 2024 10:39:52 +0200
+From: Esben Haabendal <esben@geanix.com>
+Subject: [PATCH 0/2] serial: imx: Grab port lock in
+ imx_uart_enable_wakeup()
+Date: Fri, 13 Sep 2024 10:39:48 +0200
+Message-Id: <20240913-serial-imx-lockfix-v1-0-4d102746c89d@geanix.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -83,22 +49,42 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFT642YC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDS0NjXZD6xBzdzNwK3Zz85Oy0zApdS0NDE8OU5DRjQwsjJaDGgqJUoDD
+ Y0OjY2loA6jvgGGQAAAA=
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jiri Slaby <jirislaby@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ John Ogness <john.ogness@linuxtronix.de>
+Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Esben Haabendal <esben@geanix.com>
 X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1726216791; l=455;
+ i=esben@geanix.com; s=20240523; h=from:subject:message-id;
+ bh=qAS2J7I9OmXjlgtNTpFsso9+HDg3yEapIFQ3CQadTa0=;
+ b=8AuxQ+kdZGdKTjyhUXwPpc1vv+L7Ghnlln/WCfo5HKb3XPOQeszOE1wxDwzL5vVmbI0E1FHUr
+ HJls5MtUhCHDSXe4B7UqiK6L/8M/OMl1+7yMCD2JzQrGRtLNmu64+fY
+X-Developer-Key: i=esben@geanix.com; a=ed25519;
+ pk=PbXoezm+CERhtgVeF/QAgXtEzSkDIahcWfC7RIXNdEk=
+X-Authenticated-Sender: esben@geanix.com
+X-Virus-Scanned: Clear (ClamAV 0.103.10/27396/Thu Sep 12 10:46:40 2024)
 
-Hi,
+Signed-off-by: Esben Haabendal <esben@geanix.com>
+---
+Esben Haabendal (2):
+      serial: imx: Grab port lock in imx_uart_enable_wakeup()
+      serial: imx: Add more comments on port lock status
 
-On Sat, 07 Sep 2024 14:54:33 +0900, Dominique Martinet wrote:
-> This allows the hdmi driver to pick e.g. 64.8MHz instead of 65Mhz when we
-> cannot output the exact frequency, enabling the imx8mp HDMI output to
-> support more modes
-> 
-> 
+ drivers/tty/serial/imx.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+---
+base-commit: da3ea35007d0af457a0afc87e84fddaebc4e0b63
+change-id: 20240913-serial-imx-lockfix-91141dcf3182
 
-Thanks, Applied to https://gitlab.freedesktop.org/drm/misc/kernel.git (drm-misc-next)
-
-[1/1] drm/bridge: imx8mp-hdmi-tx: allow 0.5% margin with selected clock
-      https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/0d4b950e03fb1c1873c51916fd01ebafbbc48222
-
+Best regards,
 -- 
-Neil
+Esben Haabendal <esben@geanix.com>
 
