@@ -1,177 +1,140 @@
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843B91D7983;
-	Fri, 13 Sep 2024 09:35:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD6A1C1743;
+	Fri, 13 Sep 2024 09:53:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726220158; cv=none; b=dldfZOL0JfVnftI7pxKoQ1FMUytZcGhk4nEz6zClCMotcmNT1JUrjRglkgGNi+02It+5Ns9/XcacYov5KDBINrTiofJ5meNWQym0YKJ1W6/AHfU67xro/CcapDeL5bNJlsdtpyDsRvD2UU3RZXJMLXCcRmuXMn46ua9XVmWULH8=
+	t=1726221233; cv=none; b=CFMia5FAltPGMdSELWfuXnSB5ww+TlRPmahYC6IWMZ+8ZplEgP194x0HBVUTg+6ThG4SN4wC1Hq/tCgWK4V8nXNouSg2WWgs1mScTfLgtbgUh0nlewcU7G09+02qtEkyGl4tFE8x2yHU+HhnadErl1RdfJOKygqYZ99dyPeMgx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726220158; c=relaxed/simple;
-	bh=Kq+ZW0trtXLDeahV2skxFysYfWalXik5sgiriea1S1s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=M8YVH860kZe50CsdOTVMmLjODou3p9ajA0XIEK5aOtRgdLlEMtqMsC8mFsUElq+47Hwd6k50UDMZwqeO14Yp9ScO1XYcNY/B+GiA9XqCjjShGnYU1kBh8BBZupEAzyMTgbHdI1RxqZgydpfNz9C5D6uYfkertvgRbrg7GBqlY8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4X4q0m4b9zz2CpYn;
-	Fri, 13 Sep 2024 17:35:20 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 79E181402CE;
-	Fri, 13 Sep 2024 17:35:52 +0800 (CST)
-Received: from [10.67.120.129] (10.67.120.129) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 13 Sep 2024 17:35:51 +0800
-Message-ID: <00c41a5b-6a5b-4ee1-b0e2-eae819e3cf3b@huawei.com>
-Date: Fri, 13 Sep 2024 17:35:51 +0800
+	s=arc-20240116; t=1726221233; c=relaxed/simple;
+	bh=mCI+QATUiukZGtLa4D51SCOTzP//jCzdbzpitsxGZlM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i5iof+LsCnS04TCjNspXKgbisdqkznZPt112Xz88HO2+Fbm7lb7ZKWzvf3ODUcN9cYIfu9rKpNWdFKX4vVuZyry4sDmkVdyAvPMNS/jd9uwqFoHOSyv2RNzxmgKqpCXeZBL9OQARjZ+gknryzt6ZI7XZ5rX0AJ1B9wnFGxlrEk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UHw+eD5y; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UHw+eD5y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B84C4CEC0;
+	Fri, 13 Sep 2024 09:53:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726221233;
+	bh=mCI+QATUiukZGtLa4D51SCOTzP//jCzdbzpitsxGZlM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UHw+eD5yjsMFBcAGhpiJUZJkhQoPwRxn8EJ+PN7sYj/Y6vBut04qcplxG8fkbs9og
+	 y5xwF+smKmvyeUsCVr/teU8LA9xkkDANvkNrw4fhJk/EX/Uu5CO6rDwCGiQVw4KwYV
+	 T8czPUU1rhauNhA/h7NIf6jLNdsNjdTG5/89oMLSICt4ZBYIiDwxSYgH5MfOhmkL2R
+	 gh4A4nLgbZp8MaxK118KWdbEx6zFucEJNLZXHHVpSC8qBTHi0s6TTFaCkAr675HBZD
+	 wpZvhOPY7kKOOqly09GyaJR7FYwqKkEEjb8mjrEbrkoL4IyjrXC6+BjrIN7rFYnmGw
+	 2kQroOR3Rkm5Q==
+Date: Fri, 13 Sep 2024 17:53:44 +0800
+From: Peter Chen <peter.chen@kernel.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
+	imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH 1/2] usb: chipidea: udc: limit usb request length to max
+ 16KB
+Message-ID: <20240913095344.GA321485@nchen-desktop>
+References: <20240912045150.915573-1-xu.yang_2@nxp.com>
+ <20240913012045.GA320526@nchen-desktop>
+ <20240913071133.pstilja3z25yey2p@hippo>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 2/2] page_pool: fix IOMMU crash when driver has already
- unbound
-To: Mina Almasry <almasrymina@google.com>
-CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<liuyonglong@huawei.com>, <fanghaiqing@huawei.com>, Robin Murphy
-	<robin.murphy@arm.com>, Alexander Duyck <alexander.duyck@gmail.com>, IOMMU
-	<iommu@lists.linux.dev>, Wei Fang <wei.fang@nxp.com>, Shenwei Wang
-	<shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Eric Dumazet
-	<edumazet@google.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek
- Kitszel <przemyslaw.kitszel@intel.com>, Alexander Lobakin
-	<aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed
-	<saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan
-	<tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi
-	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen
-	<shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, Kalle Valo
-	<kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Andrew
- Morton <akpm@linux-foundation.org>, Ilias Apalodimas
-	<ilias.apalodimas@linaro.org>, <imx@lists.linux.dev>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<intel-wired-lan@lists.osuosl.org>, <bpf@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>,
-	<linux-mm@kvack.org>
-References: <20240912124514.2329991-1-linyunsheng@huawei.com>
- <20240912124514.2329991-3-linyunsheng@huawei.com>
- <CAHS8izPc8fy08mL1RJtnxiOvTx=Uk037Q5SKobC80jQocEKMJQ@mail.gmail.com>
-Content-Language: en-US
-From: Yunsheng Lin <linyunsheng@huawei.com>
-In-Reply-To: <CAHS8izPc8fy08mL1RJtnxiOvTx=Uk037Q5SKobC80jQocEKMJQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemf200006.china.huawei.com (7.185.36.61)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240913071133.pstilja3z25yey2p@hippo>
 
-On 2024/9/12 22:25, Mina Almasry wrote:
-> On Thu, Sep 12, 2024 at 5:51 AM Yunsheng Lin <linyunsheng@huawei.com> wrote:
->>
->> Networking driver with page_pool support may hand over page
->> still with dma mapping to network stack and try to reuse that
->> page after network stack is done with it and passes it back
->> to page_pool to avoid the penalty of dma mapping/unmapping.
->> With all the caching in the network stack, some pages may be
->> held in the network stack without returning to the page_pool
->> soon enough, and with VF disable causing the driver unbound,
->> the page_pool does not stop the driver from doing it's
->> unbounding work, instead page_pool uses workqueue to check
->> if there is some pages coming back from the network stack
->> periodically, if there is any, it will do the dma unmmapping
->> related cleanup work.
->>
->> As mentioned in [1], attempting DMA unmaps after the driver
->> has already unbound may leak resources or at worst corrupt
->> memory. Fundamentally, the page pool code cannot allow DMA
->> mappings to outlive the driver they belong to.
->>
->> Currently it seems there are at least two cases that the page
->> is not released fast enough causing dma unmmapping done after
->> driver has already unbound:
->> 1. ipv4 packet defragmentation timeout: this seems to cause
->>    delay up to 30 secs:
->>
->> 2. skb_defer_free_flush(): this may cause infinite delay if
->>    there is no triggering for net_rx_action().
->>
->> In order not to do the dma unmmapping after driver has already
->> unbound and stall the unloading of the networking driver, add
->> the pool->items array to record all the pages including the ones
->> which are handed over to network stack, so the page_pool can
->> do the dma unmmapping for those pages when page_pool_destroy()
->> is called.
->>
+On 24-09-13 15:11:33, Xu Yang wrote:
+> On Fri, Sep 13, 2024 at 09:20:45AM +0800, Peter Chen wrote:
+> > On 24-09-12 12:51:49, Xu Yang wrote:
+> > > Currently, the deivice controller has below limitations:
+> > > 1. can't generate short packet interrupt if IOC not set in dTD. So if one
+> > >    request span more than one dTDs and only the last dTD set IOC, the usb
+> > >    request will pending there if no more data comes.
+> > > 2. the controller can't accurately deliver data to differtent usb requests
+> > >    in some cases due to short packet. For example: one usb request span 3
+> > >    dTDs, then if the controller received a short packet the next packet
+> > >    will go to 2nd dTD of current request rather than the first dTD of next
+> > >    request.
+> > > 
+> > 
+> > Are there any IP errata for it?
 > 
-> The approach in this patch is a bit complicated. I wonder if there is
-> something simpler that we can do. From reading the thread, it seems
-> the issue is that in __page_pool_release_page_dma we're calling
-> dma_unmap_page_attrs() on a pool->p.dev that has been deleted via
-> device_del, right?
+> No. It's decided by hw IP design. This old design may not suit current
+> requirements.
 > 
-> Why not consider pool->p.dev unusable if pool->destroy_cnt > 0? I.e.
-> in __page_pool_release_page_dma, we can skip dma_unmap_page_attrs() if
-> destry_cnt > 0?
-
-The skipping is already done for __dma_sync_single_for_device() in this
-patch, but not for dma_unmap_page_attrs(), see the clearing of dma_sync
-in page_pool_destroy().
-
+> > 
+> > > To let the device controller work properly, one usb request should only
+> > > correspond to one dTD. Then every dTD will set IOC. In theory, each dTD
+> > > support up to 20KB data transfer if the offset is 0. Due to we cannot
+> > > predetermine the offset, this will limit the usb request length to max
+> > > 16KB. This should be fine since most of the user transfer data based on
+> > > this size policy.
+> > > 
+> > > Although these limitations found on OUT eps, we can put the request to IN
+> > > eps too, this will benefit the following patches.
+> > 
+> > Since IN endpoints have not found the problem, please limit the changes
+> > only for OUT endpoints.
 > 
-> More generally, probably any use of pool->p.dev may be invalid if
-> page_pool_destroy has been called. The call sites can be scrubbed for
-> latent bugs.
+> This 1st patch is mainly used to serve the 2nd patch which may impact
+> both IN and OUT eps.
+...
+> Because it's hard to judge whether a request is
+> suit for transfer if it spans more dTDs. So it's needed for both eps.
 
-As mentioned in commit log, attempting DMA unmaps after the driver has
-already unbound may leak resources or at worst corrupt memory.
-The skipping only avoid corrupting memory, but not leaking resources, as
-there may be bounce buffer or iova resources before the dma mapping as my
-understanding.
+Sorry, I do not understand you above words. First, you may know this
+request is for IN or OUT, second, according to TD size and data buffer
+address, you may know you use one or more dTDs.
 
-And when page_pool_destroy() is called, there is currently no way to
-tell if the device is going to be invalid or not.
+Peter
 
+> I've looked through all function drivers, all of them use 16KB as max
+> request size. If one future function driver does use a larger request
+> size, they can adjust it according to this error log too.
 > 
-> The hard part is handling the concurrency. I'm not so sure we can fix
-> this without introducing some synchronization between the
-> page_pool_destroy seeing the device go away and the code paths using
-> the device. Are these being called from the fast paths? Jespers
-> benchmark can tell for sure if there is any impact on the fast path.
-
-It depends on what your definition of fast path here, there are three
-kinds of fast path for page pool as my understanding.
-
-For the first and second fast path, the synchronization cost is the
-rcu read lock overhead introduced in patch 1.
-
-For the third fast path when we need to refill from or flush to the
-page allocator, the added overhead is the page_pool_item_add() and
-page_pool_item_del() calling as my understanding.
-
-Will provide the performance data in the next version.
-
+> > 
+> > > 
+> > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > > ---
+> > >  drivers/usb/chipidea/ci.h  | 1 +
+> > >  drivers/usb/chipidea/udc.c | 5 +++++
+> > >  2 files changed, 6 insertions(+)
+> > > 
+> > > diff --git a/drivers/usb/chipidea/ci.h b/drivers/usb/chipidea/ci.h
+> > > index 2a38e1eb6546..f8deccfc8713 100644
+> > > --- a/drivers/usb/chipidea/ci.h
+> > > +++ b/drivers/usb/chipidea/ci.h
+> > > @@ -25,6 +25,7 @@
+> > >  #define TD_PAGE_COUNT      5
+> > >  #define CI_HDRC_PAGE_SIZE  4096ul /* page size for TD's */
+> > >  #define ENDPT_MAX          32
+> > > +#define CI_MAX_REQ_SIZE	(4 * CI_HDRC_PAGE_SIZE)
+> > >  #define CI_MAX_BUF_SIZE	(TD_PAGE_COUNT * CI_HDRC_PAGE_SIZE)
+> > >  
+> > >  /******************************************************************************
+> > > diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+> > > index b1a1be6439b6..5d9369d01065 100644
+> > > --- a/drivers/usb/chipidea/udc.c
+> > > +++ b/drivers/usb/chipidea/udc.c
+> > > @@ -969,6 +969,11 @@ static int _ep_queue(struct usb_ep *ep, struct usb_request *req,
+> > >  		return -EMSGSIZE;
+> > >  	}
+> > >  
+> > > +	if (hwreq->req.length > CI_MAX_REQ_SIZE) {
+> > > +		dev_err(hwep->ci->dev, "request length too big (max 16KB)\n");
+> > > +		return -EMSGSIZE;
+> > > +	}
+> > > +
+> > 
+> > Since this IP is used by many vendors, it may fix by others.
+> > I prefer add flag like CI_HDRC_SHORT_PACKET_NOT_SUPPORT, 
+> > and set in imx platform file.
 > 
->> Note, the devmem patchset seems to make the bug harder to fix
->> and to backport too, this patch does not consider fixing the
->> case for devmem yet.
->>
+> Okay, I can limit the impact to only imx platform.
 > 
-> FWIW from a quick look I did not see anything in this patch that is
-> extremely hard to port to netmem. AFAICT the issue is that you skipped
-> changing page_pool to page_pool_items in net_iov. Once that is done, I
-> think the rest should be straightforward.
-
-Does page_pool_item_uninit() need to handle 'netmem' case?
-
-How does the devmem handle the case net_iov being cached in network stack
-when the driver has already unbound? I am supposing there is a device for
-dma_buf_unmap_attachment_unlocked(), and is it possible that the device
-become invalid too when the driver has unbound? If yes, doesn't it have a
-similar problem as the case of normal page?
-
-> 
+> Thanks,
+> Xu Yang 
