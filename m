@@ -1,101 +1,113 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC6B450FA;
-	Thu, 12 Sep 2024 17:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5944A06;
+	Fri, 13 Sep 2024 01:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726163868; cv=none; b=GYWMj8EiCrn/9mre1T3bCDuRPNjcpm7Vq5DQKPwC1sWELuuiuUBdXod99Cjxqc9bFBymP+7gFPlVQdPrn3pZnI5PgyTPhPEAk79EW8sTgCZNmJ2SiQQ4efyRDax31xNLxYgoaLrO7Yj6Px+y3N2atpNMpvm6FtHJyxT6uOSuYlA=
+	t=1726190454; cv=none; b=Yc5PLSf/Hl9YBtW6HhGSbiUau+Y4yGcER4hEINTyUeROSuEgj83/w2Qn1AeY04k+ViIAko3c6qsx97rbkIAIYEwl+2EKyPLDf+TpJkjrgAEQ/0yRt6tEezdrc2aQken6eiZ3YejP2iWeanwvFoKZbWp1M8qFaaHHS0YAnBPVkk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726163868; c=relaxed/simple;
-	bh=BwrRcSsqz0YiXi3pcxgbCGIoms2B7OsuEhfuqSvJd3o=;
+	s=arc-20240116; t=1726190454; c=relaxed/simple;
+	bh=VcDIvEwAHrvmEiuXUDM/KAOQWTRLgSLltWnbqqhQbNI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P1RBxKstN4yYs8p9t8pIAdZquJVI+WpnbZXnQYpybWJKAGdO6SjEkyHlD5hYdCy8xXj0q03UKkvu2c3jB0PoRme55Nz4GD9GL5+vA4Yv7KzHKF43eo4TK64SRXnOUNS8HBPqVBQ724TngCeqgtm/zo5qAAXjTUuoWQvCuphvEi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Un8Pm1yk; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=kLb1GogWlHAXwklD7PNhmrBw5ZFHt3XiC2IKtuZNVAqXyK8uLVnpA2oZsUsMt5XN0AOki1lzUlGvaUURukExDjcPqXXie3qpx3igKBgQoECj4EIsbQtsq3BcT9nVxKucJpaYDRfPFO28Lq+Cn15mSl0LRWTGIyU5DUkwOo1mmqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ix+68JlT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Un8Pm1yk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A690C4CEC3;
-	Thu, 12 Sep 2024 17:57:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ix+68JlT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A01EDC4CEC3;
+	Fri, 13 Sep 2024 01:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726163867;
-	bh=BwrRcSsqz0YiXi3pcxgbCGIoms2B7OsuEhfuqSvJd3o=;
+	s=k20201202; t=1726190453;
+	bh=VcDIvEwAHrvmEiuXUDM/KAOQWTRLgSLltWnbqqhQbNI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Un8Pm1ykLG/zlWnKpzf3WUnA9/F4MoN9k8B6+gD8Y/niCzTJ51w7h068GLRd96Ytj
-	 v4Y07HPIxghbaVwmlld8orX/855C67S6ok0cLBY3zS68tJBmT0xz5wYxe6Ea8j7FEy
-	 9RiMwzkLpGIqu+Lt9Qf4MPIPlCfvLJKZTAJYN/dXhSEVKzjWnKAgYCPFZN6UbL0LM5
-	 YCojuH3H8V8DQ9XhxnF52PKUOI13130KDFFoj60TYcSnIGp/w/gdLdRfalbQz3s984
-	 9tRdxJC58uNtI/tDnQwsm0sZJUqapWkFgN8w5Wywvgy59HcoU/Jd/P61uuIHUpXcVZ
-	 BdfgRbaTFcTgg==
-Date: Thu, 12 Sep 2024 18:57:43 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Lukasz Majewski <lukma@denx.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 1/2] dt-bindings: arm: Document the btt3 i.MX28 based
- board
-Message-ID: <20240912-hardcore-swagger-0d18494c5d56@spud>
-References: <20240912124825.2528984-1-lukma@denx.de>
+	b=ix+68JlTdvXksJsw3/SvpqcptI8dqDHrC6MTKqflU2y+IPobhb6rRzQ1mYWubLDXY
+	 uK9eGkWicE+6IUn6feButcx/Id9og2BFq5P73kuQCsXn1SLmTbDBBbv9o4q1fd619h
+	 ebZ7Pijf8Jm3fKQx57e/kYwgCLZrVPrsQOr4TfsmwH2gmvxvSNN8NP5ynYFpT5Fg8E
+	 2VTBdMc9n3AYTq98ec85fS80lkCZ+fawiPDN4nghjNpDFA4+DGD/zBNRjRLp9uDqgh
+	 DUlxbIlXlvKSNJSun2pz0ttBU8CjMlEFdioX3pMGPRXu0McAzNBI/BUD35UA5Wg/Dn
+	 Z11bppe+/nYCQ==
+Date: Fri, 13 Sep 2024 09:20:45 +0800
+From: Peter Chen <peter.chen@kernel.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
+	imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH 1/2] usb: chipidea: udc: limit usb request length to max
+ 16KB
+Message-ID: <20240913012045.GA320526@nchen-desktop>
+References: <20240912045150.915573-1-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="I2AMAVctH7rGhPJI"
-Content-Disposition: inline
-In-Reply-To: <20240912124825.2528984-1-lukma@denx.de>
-
-
---I2AMAVctH7rGhPJI
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240912045150.915573-1-xu.yang_2@nxp.com>
 
-On Thu, Sep 12, 2024 at 02:48:24PM +0200, Lukasz Majewski wrote:
-> The imx287 based btt3 board is very similar to xea in terms of used SOM
-> module.
->=20
-> Signed-off-by: Lukasz Majewski <lukma@denx.de>
+On 24-09-12 12:51:49, Xu Yang wrote:
+> Currently, the deivice controller has below limitations:
+> 1. can't generate short packet interrupt if IOC not set in dTD. So if one
+>    request span more than one dTDs and only the last dTD set IOC, the usb
+>    request will pending there if no more data comes.
+> 2. the controller can't accurately deliver data to differtent usb requests
+>    in some cases due to short packet. For example: one usb request span 3
+>    dTDs, then if the controller received a short packet the next packet
+>    will go to 2nd dTD of current request rather than the first dTD of next
+>    request.
+> 
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Are there any IP errata for it?
 
+> To let the device controller work properly, one usb request should only
+> correspond to one dTD. Then every dTD will set IOC. In theory, each dTD
+> support up to 20KB data transfer if the offset is 0. Due to we cannot
+> predetermine the offset, this will limit the usb request length to max
+> 16KB. This should be fine since most of the user transfer data based on
+> this size policy.
+> 
+> Although these limitations found on OUT eps, we can put the request to IN
+> eps too, this will benefit the following patches.
+
+Since IN endpoints have not found the problem, please limit the changes
+only for OUT endpoints.
+
+> 
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 > ---
->  Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentati=
-on/devicetree/bindings/arm/fsl.yaml
-> index 80747d79418a..f290c824a91b 100644
-> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
-> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-> @@ -97,6 +97,7 @@ properties:
->                - i2se,duckbill
->                - i2se,duckbill-2
->                - karo,tx28                 # Ka-Ro electronics TX28 module
-> +              - lwn,imx28-btt3
->                - lwn,imx28-xea
->                - msr,m28cu3                # M28 SoM with custom base boa=
-rd
->                - schulercontrol,imx28-sps1
-> --=20
-> 2.39.2
->=20
+>  drivers/usb/chipidea/ci.h  | 1 +
+>  drivers/usb/chipidea/udc.c | 5 +++++
+>  2 files changed, 6 insertions(+)
+> 
+> diff --git a/drivers/usb/chipidea/ci.h b/drivers/usb/chipidea/ci.h
+> index 2a38e1eb6546..f8deccfc8713 100644
+> --- a/drivers/usb/chipidea/ci.h
+> +++ b/drivers/usb/chipidea/ci.h
+> @@ -25,6 +25,7 @@
+>  #define TD_PAGE_COUNT      5
+>  #define CI_HDRC_PAGE_SIZE  4096ul /* page size for TD's */
+>  #define ENDPT_MAX          32
+> +#define CI_MAX_REQ_SIZE	(4 * CI_HDRC_PAGE_SIZE)
+>  #define CI_MAX_BUF_SIZE	(TD_PAGE_COUNT * CI_HDRC_PAGE_SIZE)
+>  
+>  /******************************************************************************
+> diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+> index b1a1be6439b6..5d9369d01065 100644
+> --- a/drivers/usb/chipidea/udc.c
+> +++ b/drivers/usb/chipidea/udc.c
+> @@ -969,6 +969,11 @@ static int _ep_queue(struct usb_ep *ep, struct usb_request *req,
+>  		return -EMSGSIZE;
+>  	}
+>  
+> +	if (hwreq->req.length > CI_MAX_REQ_SIZE) {
+> +		dev_err(hwep->ci->dev, "request length too big (max 16KB)\n");
+> +		return -EMSGSIZE;
+> +	}
+> +
 
---I2AMAVctH7rGhPJI
-Content-Type: application/pgp-signature; name="signature.asc"
+Since this IP is used by many vendors, it may fix by others.
+I prefer add flag like CI_HDRC_SHORT_PACKET_NOT_SUPPORT, 
+and set in imx platform file.
 
------BEGIN PGP SIGNATURE-----
+Peter
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZuMrlwAKCRB4tDGHoIJi
-0v1FAQCv6hRSIVryj1EuRuiQPd/4a27nLSPCBuGNv+RnagZJCQD/U+xL9Rq/Cxi5
-eHyLmRNdtrKXwOr8mmGevUMwb5VTMgo=
-=IutQ
------END PGP SIGNATURE-----
-
---I2AMAVctH7rGhPJI--
