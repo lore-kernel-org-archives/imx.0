@@ -1,353 +1,206 @@
-Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A7F188A21;
-	Fri, 13 Sep 2024 08:52:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23FC1D6DA6;
+	Fri, 13 Sep 2024 08:52:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726217547; cv=none; b=hZ1o3kZC1ROp+W/Dz2fwzocMJzmnU+vz1qYOAcTe4tk9j+hjhU/pAHbNCnS14SPvfRX/UFZXnKzPjLHOclDSEfKcdxo2PHy3qWd0NYY5/n5bvmv/+L3pqtSJ9TpyebDkq/PpRs6ptROt0VVQKlRLYCJnGXOpGiCDBVHow75vyKU=
+	t=1726217569; cv=none; b=NdTt2wAQY8780reFA1z/UwdUDhFaxSLWaRjSkaoLwLltEq1eSGM9KnM74+7AEgGLg6KO5g3pdLyZYQwPOTEjYMc9+U3Kklqn5fSny849UaLtUzVJQ+BI5pIxY8CtPseIMbvxPZbJZ3SXDiZTIr/9zPmg8ExKdhb1u3ufPkghNd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726217547; c=relaxed/simple;
-	bh=BV246ObWi9nh2lKEuPpmuyNRlDkYmnW6Hfc4HO8X8mA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ocWQjsSK0RbjgONpMhkoyKrUACskaKIBUh3OakJVuLLJ0a+ibZMVXB7bn2AyIxnmyUnRF1wFj4RQD7NBcGtq5LqpCJ5d3yTIrrtIKV21bxrA6GAn0ejEJx2hYJvPLMDR5CzVdewEtKsZpIMAQZqpKFZmIgMtVbxdPaeHGJe2riU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=uBTZe1sz; arc=none smtp.client-ip=188.40.30.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+	s=arc-20240116; t=1726217569; c=relaxed/simple;
+	bh=epwSFAKDSaStUHIjblgAOMkjDpYmFrV7d1+0vVVYD5I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rQWAN2N0PC0duX+9wpBTpfxQ43aYftULkV80yqmMpm1Aae1NMmkXr4qyODLB/5TnztFmTC6w/vtk97t8g+RgtimlbS4FtTAW/6tzor6udK9v8rBrAcnouT3NLltNbUE6IFO9JE4oLqIm2Clz01D69CquOxpuwgCEUJaxY58GumA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Rt5K2n91; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="uBTZe1sz"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
-	s=default2211; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:Content-Description
-	:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References; bh=8fPtszLx5YXcXZRLXTlBT9KYalg3KhBwObue5cmzP+s=; b=uB
-	TZe1szVFaBNHgqAs9Nzsq/zg1yQbCFAoWwgXQxb5vhGF+aIDSR8Z236o1BMoSKayFg69/q6B6Jhnc
-	Gj38hCbGxedRUHjn0Yg1GtLHFCPj564QTZ76AE6r36CchsrKx+NQunrpnmL0SgJq0J8ku1/C9TiP6
-	qM+Tp3DKk2lCgNmVGScxK23vMTJHADDgQMiJiiXwmnrtpuCR0rDO5VvgAS77H8DM+NNj5835OjpmS
-	eRdt0QtkJLtd9ItO1UGN1kWUU9ibCh6/6JQIeyHmbTLfImKno0EsdnsZ1OlQl4IDUST0aEpz0NRBb
-	a0nTL9y2lGhwPo8Z4YJs86i9W+8rifNg==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <esben@geanix.com>)
-	id 1sp22Q-000GDC-OY; Fri, 13 Sep 2024 10:52:22 +0200
-Received: from [80.62.117.18] (helo=localhost)
-	by sslproxy02.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <esben@geanix.com>)
-	id 1sp22P-000PqN-2w;
-	Fri, 13 Sep 2024 10:52:22 +0200
-From: Esben Haabendal <esben@geanix.com>
-Date: Fri, 13 Sep 2024 10:52:19 +0200
-Subject: [PATCH v3] serial: imx: Switch to nbcon console
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Rt5K2n91"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1726217568; x=1757753568;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=epwSFAKDSaStUHIjblgAOMkjDpYmFrV7d1+0vVVYD5I=;
+  b=Rt5K2n91261zZv0x7farQBxgqlsuCj1/2s2g9hHb6mJ1awIapdMKVBgS
+   pr12Y+DDsFzbdPlgcAB8uWLM7VwlnRYvKW5xeWUE4BBN5VpNyXS1+5mAH
+   p9NK2sjn7/79MR3n0rVoR3RiCzNcjkPhKd6bhFw9zOcNS3veyOKsjVWJY
+   L8I/wzKx0f+p9ARtkc7kQ4KSXpKsIalvE/n5XgbDGkEaOVj1RGZHAKy3E
+   jLLdl5slz0lTkxbQePKHw8vdnyVBD7fefj3BnCRsnDmmxUeYl800igN+3
+   L2/QESs5V8KQBHzocqk9xhSMzZq595JdqRSbnJ2ocw4m0cXqoV1TcCKf3
+   Q==;
+X-CSE-ConnectionGUID: Lqc0QzmfTNudsZ20Rmg8uw==
+X-CSE-MsgGUID: rl8xaSngS4uSHvS5DQYBKQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11193"; a="25263077"
+X-IronPort-AV: E=Sophos;i="6.10,225,1719903600"; 
+   d="scan'208";a="25263077"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2024 01:52:46 -0700
+X-CSE-ConnectionGUID: sOgoTaJnTZSYEMjsyelMqg==
+X-CSE-MsgGUID: bHgAgPzrTPOYihILYLoZrQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,225,1719903600"; 
+   d="scan'208";a="68073184"
+Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 13 Sep 2024 01:52:44 -0700
+Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sp22j-0006G4-29;
+	Fri, 13 Sep 2024 08:52:41 +0000
+Date: Fri, 13 Sep 2024 16:51:42 +0800
+From: kernel test robot <lkp@intel.com>
+To: Xu Yang <xu.yang_2@nxp.com>, peter.chen@kernel.org,
+	gregkh@linuxfoundation.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-usb@vger.kernel.org,
+	imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH 2/3] usb: chipidea: udc: improve dTD link logic
+Message-ID: <202409131638.TJCPmqQZ-lkp@intel.com>
+References: <20240912033551.910337-2-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240913-serial-imx-nbcon-v3-1-4c627302335b@geanix.com>
-X-B4-Tracking: v=1; b=H4sIAEL942YC/x3MSwrDIBSF4a2EO67iq9h01H2UDoy9mguNFg1BC
- Nl7bYYfnPPvULEQVrgPOxTcqFJOHfoygJ9disjo3Q1KKCNGqdh/7z6MlsbS5HNiRhhnR+ulCR7
- 67VswUDuTz1d3KHlh61zQnSGfNyxcWqm00Pp645FWjnXC9IjoEjXu8wLH8QPyne09mgAAAA==
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Jiri Slaby <jirislaby@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Esben Haabendal <esben@geanix.com>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1726217541; l=10439;
- i=esben@geanix.com; s=20240523; h=from:subject:message-id;
- bh=BV246ObWi9nh2lKEuPpmuyNRlDkYmnW6Hfc4HO8X8mA=;
- b=cSbkgCWUV/BNxNGHXwqa92oFV3hPUh8Qi09uGq/ROTn30WTDVPVUt/WnO7/4YqbG2g0yuN18g
- SJ/TOgc1w9tBOisd+8iFaTt4i7AdI509RbEoF7G1MjOWMAQt+3aLIzQ
-X-Developer-Key: i=esben@geanix.com; a=ed25519;
- pk=PbXoezm+CERhtgVeF/QAgXtEzSkDIahcWfC7RIXNdEk=
-X-Authenticated-Sender: esben@geanix.com
-X-Virus-Scanned: Clear (ClamAV 0.103.10/27396/Thu Sep 12 10:46:40 2024)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240912033551.910337-2-xu.yang_2@nxp.com>
 
-Implements the necessary callbacks to switch the imx console driver to
-perform as an nbcon console.
+Hi Xu,
 
-Add implementations for the nbcon consoles (write_atomic, write_thread,
-driver_enter, driver_exit) and add CON_NBCON to the initial flags.
+kernel test robot noticed the following build warnings:
 
-The legacy code is kept in order to easily switch back to legacy mode
-by defining CONFIG_SERIAL_IMX_LEGACY_CONSOLE.
+[auto build test WARNING on usb/usb-testing]
+[also build test WARNING on usb/usb-next usb/usb-linus linus/master v6.11-rc7 next-20240912]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Signed-off-by: Esben Haabendal <esben@geanix.com>
----
-Implement the necessary callbacks to allow the imx console driver to be
-used as an nbcon console.
+url:    https://github.com/intel-lab-lkp/linux/commits/Xu-Yang/usb-chipidea-udc-improve-dTD-link-logic/20240912-113632
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
+patch link:    https://lore.kernel.org/r/20240912033551.910337-2-xu.yang_2%40nxp.com
+patch subject: [PATCH 2/3] usb: chipidea: udc: improve dTD link logic
+config: i386-randconfig-061-20240913 (https://download.01.org/0day-ci/archive/20240913/202409131638.TJCPmqQZ-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240913/202409131638.TJCPmqQZ-lkp@intel.com/reproduce)
 
-This is based on the work done on converting the 8250 driver to NBCON
-console [0], adapted to the imx driver.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202409131638.TJCPmqQZ-lkp@intel.com/
 
-The _write_atomic() and _write_thread() functions access the following
-registers: ucr1, ucr2, ucr3 and uts, which all needs to be protected by
-the port lock. The driver has been reviewed for correct handling of
-these registers, and except for a single missing lock in in
-_enable_wakeup(), the driver was found sound. The registers are accessed
-initially in _probe() without lock held, but I assume that is all good
-and normal, as it before the uart port have been added.
+sparse warnings: (new ones prefixed by >>)
+>> drivers/usb/chipidea/udc.c:624:33: sparse: sparse: restricted __le32 degrades to integer
 
-A fix for the missing lock have been submitted for mainline [1].
+vim +624 drivers/usb/chipidea/udc.c
 
-The read_poll_timeout() call in _write_thread() have been changed to run
-as a tight loop. If allowed to sleep (4th argument >0), a kernel warning
-such as this one is triggered:
+   542	
+   543	/**
+   544	 * _hardware_enqueue: configures a request at hardware level
+   545	 * @hwep:   endpoint
+   546	 * @hwreq:  request
+   547	 *
+   548	 * This function returns an error code
+   549	 */
+   550	static int _hardware_enqueue(struct ci_hw_ep *hwep, struct ci_hw_req *hwreq)
+   551	{
+   552		struct ci_hdrc *ci = hwep->ci;
+   553		int ret = 0;
+   554		struct td_node *firstnode, *lastnode;
+   555	
+   556		/* don't queue twice */
+   557		if (hwreq->req.status == -EALREADY)
+   558			return -EALREADY;
+   559	
+   560		hwreq->req.status = -EALREADY;
+   561	
+   562		ret = usb_gadget_map_request_by_dev(ci->dev->parent,
+   563						    &hwreq->req, hwep->dir);
+   564		if (ret)
+   565			return ret;
+   566	
+   567		if (hwreq->req.num_mapped_sgs)
+   568			ret = prepare_td_for_sg(hwep, hwreq);
+   569		else
+   570			ret = prepare_td_for_non_sg(hwep, hwreq);
+   571	
+   572		if (ret)
+   573			return ret;
+   574	
+   575		lastnode = list_entry(hwreq->tds.prev,
+   576			struct td_node, td);
+   577	
+   578		lastnode->ptr->next = cpu_to_le32(TD_TERMINATE);
+   579		if (!hwreq->req.no_interrupt)
+   580			lastnode->ptr->token |= cpu_to_le32(TD_IOC);
+   581	
+   582		list_for_each_entry_safe(firstnode, lastnode, &hwreq->tds, td)
+   583			trace_ci_prepare_td(hwep, hwreq, firstnode);
+   584	
+   585		firstnode = list_first_entry(&hwreq->tds, struct td_node, td);
+   586	
+   587		wmb();
+   588	
+   589		hwreq->req.actual = 0;
+   590		if (!list_empty(&hwep->qh.queue)) {
+   591			struct ci_hw_req *hwreqprev;
+   592			int n = hw_ep_bit(hwep->num, hwep->dir);
+   593			int tmp_stat;
+   594			struct td_node *prevlastnode;
+   595			u32 next = firstnode->dma & TD_ADDR_MASK;
+   596	
+   597			hwreqprev = list_entry(hwep->qh.queue.prev,
+   598					struct ci_hw_req, queue);
+   599			prevlastnode = list_entry(hwreqprev->tds.prev,
+   600					struct td_node, td);
+   601	
+   602			prevlastnode->ptr->next = cpu_to_le32(next);
+   603			wmb();
+   604	
+   605			if (ci->rev == CI_REVISION_22) {
+   606				if (!hw_read(ci, OP_ENDPTSTAT, BIT(n)))
+   607					reprime_dtd(ci, hwep, prevlastnode);
+   608			}
+   609	
+   610			if (hw_read(ci, OP_ENDPTPRIME, BIT(n)))
+   611				goto done;
+   612			do {
+   613				hw_write(ci, OP_USBCMD, USBCMD_ATDTW, USBCMD_ATDTW);
+   614				tmp_stat = hw_read(ci, OP_ENDPTSTAT, BIT(n));
+   615			} while (!hw_read(ci, OP_USBCMD, USBCMD_ATDTW) && tmp_stat);
+   616			hw_write(ci, OP_USBCMD, USBCMD_ATDTW, 0);
+   617			if (tmp_stat)
+   618				goto done;
+   619	
+   620			/* In case of error, ENDPTSTAT will also turn into 0, then
+   621			 * don't push this dTD to dQH head if current dTD pointer
+   622			 * is not the last dTD in previous request.
+   623			 */
+ > 624			if (hwep->qh.ptr->curr != prevlastnode->dma)
+   625				goto done;
+   626		}
+   627	
+   628		/*  QH configuration */
+   629		hwep->qh.ptr->td.next = cpu_to_le32(firstnode->dma);
+   630		hwep->qh.ptr->td.token &=
+   631			cpu_to_le32(~(TD_STATUS_HALTED|TD_STATUS_ACTIVE));
+   632	
+   633		if (hwep->type == USB_ENDPOINT_XFER_ISOC && hwep->dir == RX) {
+   634			u32 mul = hwreq->req.length / hwep->ep.maxpacket;
+   635	
+   636			if (hwreq->req.length == 0
+   637					|| hwreq->req.length % hwep->ep.maxpacket)
+   638				mul++;
+   639			hwep->qh.ptr->cap |= cpu_to_le32(mul << __ffs(QH_MULT));
+   640		}
+   641	
+   642		ret = hw_ep_prime(ci, hwep->num, hwep->dir,
+   643				   hwep->type == USB_ENDPOINT_XFER_CONTROL);
+   644	done:
+   645		return ret;
+   646	}
+   647	
 
-[    0.322860] ------------[ cut here ]------------
-[    0.322870] Voluntary context switch within RCU read-side critical section!
-[    0.322885] WARNING: CPU: 2 PID: 75 at kernel/rcu/tree_plugin.h:331 rcu_note_context_switch+0x454/0x52c
-[    0.322907] Modules linked in:
-[    0.322916] CPU: 2 UID: 0 PID: 75 Comm: pr/ttymxc1 Not tainted 6.11.0-rc7-next-20240912-g3d12610ae2ac #1
-[    0.322925] Hardware name: DEIF PCM3.3 board (DT)
-[    0.322929] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[    0.322937] pc : rcu_note_context_switch+0x454/0x52c
-[    0.322944] lr : rcu_note_context_switch+0x454/0x52c
-[    0.322950] sp : ffff800082a3bb60
-[    0.322953] x29: ffff800082a3bb60 x28: ffff0000029f5280 x27: 0000000000000000
-[    0.322964] x26: ffff0000029f5280 x25: 0000000000000001 x24: ffff800081885270
-[    0.322975] x23: 0000000000000000 x22: ffff0000029f5280 x21: ffff800081a6afe0
-[    0.322985] x20: ffff00007fb6d880 x19: ffff00007fb6e6c0 x18: fffffffffffe3140
-[    0.322996] x17: 1fffe000007a7421 x16: ffff000003d3a180 x15: 0000000000000048
-[    0.323007] x14: fffffffffffe3188 x13: 216e6f6974636573 x12: 206c616369746972
-[    0.323018] x11: 6320656469732d64 x10: 6165722055435220 x9 : 206e696874697720
-[    0.323029] x8 : 6863746977732074 x7 : ffff8000818a0d80 x6 : ffff800082a3b920
-[    0.323039] x5 : 0000000000000004 x4 : 0000000000000000 x3 : 0000000000000001
-[    0.323049] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000029f5280
-[    0.323060] Call trace:
-[    0.323064]  rcu_note_context_switch+0x454/0x52c
-[    0.323071]  __schedule+0x9c/0x854
-[    0.323080]  schedule+0x34/0x104
-[    0.323086]  usleep_range_state+0xf8/0x128
-[    0.323096]  imx_uart_console_write_thread+0x1d4/0x248
-[    0.323105]  nbcon_emit_next_record+0x25c/0x2a4
-[    0.323118]  nbcon_emit_one+0xc0/0x108
-[    0.323127]  nbcon_kthread_func+0x154/0x200
-[    0.323138]  kthread+0x114/0x118
-[    0.323147]  ret_from_fork+0x10/0x20
-[    0.323156] ---[ end trace 0000000000000000 ]---
-
-Is this as intended?
-
-I have tried a different logic instead of the console_newline_needed. I
-hope it might be found more intuitive.
-
-[0] https://lore.kernel.org/linux-serial/20240905134719.142554-1-john.ogness@linutronix.de/
-[1] https://lore.kernel.org/all/20240913-serial-imx-lockfix-v1-0-4d102746c89d@geanix.com/
-
-v3:
-- Patch 1/2 dropped as it has been merged to mainline.
-- Use USEC_PER_SEC macro instead of 1000000 number.
-- Fix kernel warning "Voluntary context switch within RCU read-side
-  critical section!" caused by usleep_range() in read_poll_timeout().
-- Remove legacy console implementation.
-- Adapt to rename of driver_enter/driver_exit renamed to
-  device_lock/device_unlock.
-- Change _write_atomic() and write_thread() to return void.
-- Change console_newline_needed logic to a simpler and (hopefully) more
-  readable last_putchar_was_newline logic.
-- Link to v2: https://lore.kernel.org/all/cover.1712303358.git.esben@geanix.com/
-
-v2:
-- Switch to tight loop (no udelay()) in atomic context.
-- Increase timeout to 1 second.
-- Add note in commit message about (no) error handling on timeout.
-- Link to v1: https://lore.kernel.org/all/cover.1712156846.git.esben@geanix.com/
----
- drivers/tty/serial/imx.c | 120 +++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 101 insertions(+), 19 deletions(-)
-
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index 67d4a72eda77..b043ac3cd2cd 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -230,6 +230,8 @@ struct imx_port {
- 	unsigned int            saved_reg[10];
- 	bool			context_saved;
- 
-+	bool			last_putchar_was_newline;
-+
- 	enum imx_tx_state	tx_state;
- 	struct hrtimer		trigger_start_tx;
- 	struct hrtimer		trigger_stop_tx;
-@@ -2054,26 +2056,34 @@ static void imx_uart_console_putchar(struct uart_port *port, unsigned char ch)
- 		barrier();
- 
- 	imx_uart_writel(sport, ch, URTX0);
-+
-+	sport->last_putchar_was_newline = (ch == '\n');
- }
- 
--/*
-- * Interrupts are disabled on entering
-- */
--static void
--imx_uart_console_write(struct console *co, const char *s, unsigned int count)
-+static void imx_uart_console_device_lock(struct console *co, unsigned long *flags)
-+{
-+	struct uart_port *up = &imx_uart_ports[co->index]->port;
-+
-+	return __uart_port_lock_irqsave(up, flags);
-+}
-+
-+static void imx_uart_console_device_unlock(struct console *co, unsigned long flags)
-+{
-+	struct uart_port *up = &imx_uart_ports[co->index]->port;
-+
-+	return __uart_port_unlock_irqrestore(up, flags);
-+}
-+
-+static void imx_uart_console_write_atomic(struct console *co,
-+					  struct nbcon_write_context *wctxt)
- {
- 	struct imx_port *sport = imx_uart_ports[co->index];
-+	struct uart_port *port = &sport->port;
- 	struct imx_port_ucrs old_ucr;
--	unsigned long flags;
- 	unsigned int ucr1, usr2;
--	int locked = 1;
- 
--	if (sport->port.sysrq)
--		locked = 0;
--	else if (oops_in_progress)
--		locked = uart_port_trylock_irqsave(&sport->port, &flags);
--	else
--		uart_port_lock_irqsave(&sport->port, &flags);
-+	if (!nbcon_enter_unsafe(wctxt))
-+		return;
- 
- 	/*
- 	 *	First, save UCR1/2/3 and then disable interrupts
-@@ -2087,10 +2097,12 @@ imx_uart_console_write(struct console *co, const char *s, unsigned int count)
- 	ucr1 &= ~(UCR1_TRDYEN | UCR1_RRDYEN | UCR1_RTSDEN);
- 
- 	imx_uart_writel(sport, ucr1, UCR1);
--
- 	imx_uart_writel(sport, old_ucr.ucr2 | UCR2_TXEN, UCR2);
- 
--	uart_console_write(&sport->port, s, count, imx_uart_console_putchar);
-+	if (!sport->last_putchar_was_newline)
-+		uart_console_write(port, "\n", 1, imx_uart_console_putchar);
-+	uart_console_write(port, wctxt->outbuf, wctxt->len,
-+			   imx_uart_console_putchar);
- 
- 	/*
- 	 *	Finally, wait for transmitter to become empty
-@@ -2100,8 +2112,73 @@ imx_uart_console_write(struct console *co, const char *s, unsigned int count)
- 				 0, USEC_PER_SEC, false, sport, USR2);
- 	imx_uart_ucrs_restore(sport, &old_ucr);
- 
--	if (locked)
--		uart_port_unlock_irqrestore(&sport->port, flags);
-+	nbcon_exit_unsafe(wctxt);
-+}
-+
-+static void imx_uart_console_write_thread(struct console *co,
-+					  struct nbcon_write_context *wctxt)
-+{
-+	struct imx_port *sport = imx_uart_ports[co->index];
-+	struct uart_port *port = &sport->port;
-+	struct imx_port_ucrs old_ucr;
-+	unsigned int ucr1, usr2;
-+
-+	if (!nbcon_enter_unsafe(wctxt))
-+		return;
-+
-+	/*
-+	 *	First, save UCR1/2/3 and then disable interrupts
-+	 */
-+	imx_uart_ucrs_save(sport, &old_ucr);
-+	ucr1 = old_ucr.ucr1;
-+
-+	if (imx_uart_is_imx1(sport))
-+		ucr1 |= IMX1_UCR1_UARTCLKEN;
-+	ucr1 |= UCR1_UARTEN;
-+	ucr1 &= ~(UCR1_TRDYEN | UCR1_RRDYEN | UCR1_RTSDEN);
-+
-+	imx_uart_writel(sport, ucr1, UCR1);
-+	imx_uart_writel(sport, old_ucr.ucr2 | UCR2_TXEN, UCR2);
-+
-+	if (nbcon_exit_unsafe(wctxt)) {
-+		int len = READ_ONCE(wctxt->len);
-+		int i;
-+
-+		/*
-+		 * Write out the message. Toggle unsafe for each byte in order
-+		 * to give another (higher priority) context the opportunity
-+		 * for a friendly takeover. If such a takeover occurs, this
-+		 * context must reacquire ownership in order to perform final
-+		 * actions (such as re-enabling the interrupts).
-+		 *
-+		 * IMPORTANT: wctxt->outbuf and wctxt->len are no longer valid
-+		 *	      after a reacquire so writing the message must be
-+		 *	      aborted.
-+		 */
-+		for (i = 0; i < len; i++) {
-+			if (!nbcon_enter_unsafe(wctxt))
-+				break;
-+
-+			uart_console_write(port, wctxt->outbuf + i, 1,
-+					   imx_uart_console_putchar);
-+
-+			if (!nbcon_exit_unsafe(wctxt))
-+				break;
-+		}
-+	}
-+
-+	while (!nbcon_enter_unsafe(wctxt))
-+		nbcon_reacquire_nobuf(wctxt);
-+
-+	/*
-+	 *	Finally, wait for transmitter to become empty
-+	 *	and restore UCR1/2/3
-+	 */
-+	read_poll_timeout(imx_uart_readl, usr2, usr2 & USR2_TXDC,
-+			  0, USEC_PER_SEC, false, sport, USR2);
-+	imx_uart_ucrs_restore(sport, &old_ucr);
-+
-+	nbcon_exit_unsafe(wctxt);
- }
- 
- /*
-@@ -2193,6 +2270,8 @@ imx_uart_console_setup(struct console *co, char *options)
- 	if (retval)
- 		goto error_console;
- 
-+	sport->last_putchar_was_newline = true;
-+
- 	if (options)
- 		uart_parse_options(options, &baud, &parity, &bits, &flow);
- 	else
-@@ -2229,11 +2308,14 @@ imx_uart_console_exit(struct console *co)
- static struct uart_driver imx_uart_uart_driver;
- static struct console imx_uart_console = {
- 	.name		= DEV_NAME,
--	.write		= imx_uart_console_write,
-+	.write_atomic	= imx_uart_console_write_atomic,
-+	.write_thread	= imx_uart_console_write_thread,
-+	.device_lock	= imx_uart_console_device_lock,
-+	.device_unlock	= imx_uart_console_device_unlock,
-+	.flags		= CON_PRINTBUFFER | CON_NBCON,
- 	.device		= uart_console_device,
- 	.setup		= imx_uart_console_setup,
- 	.exit		= imx_uart_console_exit,
--	.flags		= CON_PRINTBUFFER,
- 	.index		= -1,
- 	.data		= &imx_uart_uart_driver,
- };
-
----
-base-commit: da3ea35007d0af457a0afc87e84fddaebc4e0b63
-change-id: 20240912-serial-imx-nbcon-404a797c14fc
-
-Best regards,
 -- 
-Esben Haabendal <esben@geanix.com>
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
