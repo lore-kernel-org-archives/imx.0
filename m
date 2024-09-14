@@ -1,97 +1,78 @@
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from mxc.seznam.cz (mxc.seznam.cz [77.75.79.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2B779CC;
-	Sat, 14 Sep 2024 08:35:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA611CEEB6
+	for <imx@lists.linux.dev>; Sat, 14 Sep 2024 11:33:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.75.79.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726302919; cv=none; b=mK3nokg502OdM0HZf7erehpO/QyZ9nzZhO6khl6avf+SwcsKnd+G+Wdc6d8ZxoSeDEf7rdaRM5ZPFzaT1x1p4ylwzawk4yHu251LkldDi586XFI+cW/gULhtBkjoT/FGa9ZIvwLZ5FaHCUjK85+NtBnaakBQg76cbhe/GgmgCXQ=
+	t=1726313605; cv=none; b=IGoboV+42UpHe6P20DjQHqREqAUbyVG8ToEpjOFpJlFLTeex0Kwro1L4UI0r6OLEV5dl0XBUrkuEL7zSHaKcgJZb+yFr5LAL7Ry4rwY2qdX8RjbAA34x/i64jIyXjDMuYfHtEj7AxMMW3qeW5l5u0ocV9CHU9Wp7lvZzIBwQiOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726302919; c=relaxed/simple;
-	bh=jt3Zet2HTHu+J26EzPl8OaYkruhDJ5fNoAT4xi2O8RQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=liuygh8pOHqQk/Ldw4z/we9aMRfjUzMwdDIOIeD6OuZfnpr2FQrKbR7eOcM+utWTZ+TRNMoaXssxO4Fm2UgWxsOq8J0dJSOJsDb7CKLeqwPWkv2r2Ag9YRk0JXIgWdgU4LziYWrk+NuZ31g1FSjkMXNICGjrVgl7xEfFop5k0UU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=aXjJUo7g; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+	s=arc-20240116; t=1726313605; c=relaxed/simple;
+	bh=tfC0wjxNe5XKrSkQAza0Tqj6HlthCa21GJt+GYVR5fs=;
+	h=From:To:Cc:Subject:Date:Message-Id:References:In-Reply-To:
+	 Mime-Version:Content-Type; b=n1AwZHYElFDlEwG1HKT/w3l7b7LUo90zxoSgzXd5zN+Ao2rJdyTbHnCVQEFb0ak5eQChWaXTU4kCKPZw6Zp88KQ0kgWCZqS5ODLquvy7yuVD3GUIjHfthSrJAiPBcMAuk8kAR0Ijv1vR/FH5HY2vudT7ybYO8PbaOh5i170Lpxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=email.cz; spf=pass smtp.mailfrom=email.cz; dkim=pass (2048-bit key) header.d=email.cz header.i=@email.cz header.b=VAcN3xwi; arc=none smtp.client-ip=77.75.79.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=email.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=email.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="aXjJUo7g"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=Zh2QQjKAES8s1zvEmN/QjGKAcR4fcEDJhy9PIMv/14s=; b=aXjJUo7gSmo3AAaVSQAN3/FPng
-	PkfELSQfu21TbWmDSccTI0/8QBi2z0DOcM/79uYce/pSzuTf5NVwgIL3UqsAN1jvaBxZY2Ra2ohur
-	Q7g4lWh71vKPdpRboir6KTdnTqC7xvSItv7RigEFDwJBvnPATqQ0+hNdxE8JbdFGMy0eiR2Yp50JF
-	oNn1O/ln0PPW3nEvG8WU5uuPqpI0IvPo+2xOxSd0em5a7czImBkla+w/iZ+scbCtYQ7vR9cTlssD7
-	UwP7GQDXT5wcWonoiGhMmlyXB3vZsqRmzeDJQYaoB4hxXbVsqGZs9ho9LNiiXeDwuAGHDq3d2qOqk
-	R3o7KLEg==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1spO5J-002R6i-0h;
-	Sat, 14 Sep 2024 16:35:03 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 14 Sep 2024 16:35:02 +0800
-Date: Sat, 14 Sep 2024 16:35:02 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Tomas Paukrt <tomaspaukrt@email.cz>
-Cc: linux-crypto@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] crypto: mxs-dcp: Enable user-space access to AES with
- hardware-bound keys
-Message-ID: <ZuVKtuMqiCu67hn2@gondor.apana.org.au>
+	dkim=pass (2048-bit key) header.d=email.cz header.i=@email.cz header.b="VAcN3xwi"
+Received: from email.seznam.cz
+	by smtpc-mxc-58959dfbcf-mrxrj
+	(smtpc-mxc-58959dfbcf-mrxrj [2a02:598:64:8a00::1000:460])
+	id 47b8da75b94c68df4736546d;
+	Sat, 14 Sep 2024 13:32:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=email.cz;
+	s=szn20221014; t=1726313559;
+	bh=tfC0wjxNe5XKrSkQAza0Tqj6HlthCa21GJt+GYVR5fs=;
+	h=Received:From:To:Cc:Subject:Date:Message-Id:References:
+	 In-Reply-To:Mime-Version:X-Mailer:Content-Type:
+	 Content-Transfer-Encoding;
+	b=VAcN3xwiOAFmCHVPhhq4NUNwOrJtOAYMZuQ8Dm9Cn0Db0p48iVTQgB3dDcJMOfDD9
+	 DVGVlyJxHy/8r+cyVjc2zrXvXBzNpOJApUkE88l1KQBHypL6uxF0ntlULnJNFVtmN0
+	 ZleVrTEkpXntdUbKmZc/dAYZEgfKHUcoao5nZ1IimVH92WIICX1Kr0H6CvwEsYXXQi
+	 IJ4kLTJRdapfZclvC63hUeGdpAnlFd4dPt5cq0QK97+4Tc+aM7jyuL8AzHUoHwsx5g
+	 jOpy8E6YFvdsYr7bPZRaylx7Rdg1kJUHGeDaRui7sldRoyyZfmKdsbviP9vvu5kQuB
+	 o1m/ACG0YPrYQ==
+Received: from 184-143.ktuo.cz (184-143.ktuo.cz [82.144.143.184])
+	by email.seznam.cz (szn-ebox-5.0.189) with HTTP;
+	Sat, 14 Sep 2024 13:32:37 +0200 (CEST)
+From: "Tomas Paukrt" <tomaspaukrt@email.cz>
+To: "Herbert Xu" <herbert@gondor.apana.org.au>
+Cc: <linux-crypto@vger.kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Shawn Guo" <shawnguo@kernel.org>,
+	"Sascha Hauer" <s.hauer@pengutronix.de>,
+	"Pengutronix Kernel Team" <kernel@pengutronix.de>,
+	"Fabio Estevam" <festevam@gmail.com>,
+	<imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>
+Subject: =?utf-8?q?Re=3A_=5BPATCH=5D_crypto=3A_mxs-dcp=3A_Enable_user-spac?=
+	=?utf-8?q?e_access_to_AES_with_hardware-bound_keys?=
+Date: Sat, 14 Sep 2024 13:32:37 +0200 (CEST)
+Message-Id: <24h.ZcXr.7FvRaSxxibG.1cvNHL@seznam.cz>
 References: <1di.ZclR.6M4clePpGuH.1cv1hD@seznam.cz>
+	<ZuVKtuMqiCu67hn2@gondor.apana.org.au>
+In-Reply-To: <ZuVKtuMqiCu67hn2@gondor.apana.org.au>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1di.ZclR.6M4clePpGuH.1cv1hD@seznam.cz>
+Mime-Version: 1.0 (szn-mime-2.1.61)
+X-Mailer: szn-ebox-5.0.189
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 13, 2024 at 12:58:21PM +0200, Tomas Paukrt wrote:
-> Add an option to enable user-space access to cbc(paes) and ecb(paes)
-> cipher algorithms via AF_ALG.
-> 
-> Signed-off-by: Tomas Paukrt <tomaspaukrt@email.cz>
-> ---
->  drivers/crypto/Kconfig   | 13 +++++++++++++
->  drivers/crypto/mxs-dcp.c |  8 ++++++++
->  2 files changed, 21 insertions(+)
-> 
-> diff --git a/drivers/crypto/Kconfig b/drivers/crypto/Kconfig
-> index 94f23c6..4637c6f 100644
-> --- a/drivers/crypto/Kconfig
-> +++ b/drivers/crypto/Kconfig
-> @@ -460,6 +460,19 @@ config CRYPTO_DEV_MXS_DCP
->  	  To compile this driver as a module, choose M here: the module
->  	  will be called mxs-dcp.
-> 
-> +config CRYPTO_DEV_MXS_DCP_USER_PAES
-> +	bool "Enable user-space access to AES with hardware-bound keys"
-> +	depends on CRYPTO_DEV_MXS_DCP && CRYPTO_USER_API_SKCIPHER
-> +	default n
-> +	help
-> +	  Say Y to enable user-space access to cbc(paes) and ecb(paes)
-> +	  cipher algorithms via AF_ALG.
-> +
-> +	  In scenarios with untrustworthy users-pace, this may enable
-> +	  decryption of sensitive information.
-> +
-> +	  If unsure, say N.
-> +
+> Why not just expose it uncondtionally?
 
-Why not just expose it uncondtionally?
+Please see the comment in the following patch: https://git.kernel.org/pub/=
+scm/linux/kernel/git/torvalds/linux.git/commit/?id=3D3d16af0b4cfac4b2c3b23=
+8e2ec37b38c2f316978
 
-Cheers,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+The goal of this change is to allow some users to use AES with hardware-bo=
+und keys from user-space without compromising others.
+
+Best regards
+
+Tomas
