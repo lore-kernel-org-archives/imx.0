@@ -1,78 +1,74 @@
-Received: from mxc.seznam.cz (mxc.seznam.cz [77.75.79.23])
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA611CEEB6
-	for <imx@lists.linux.dev>; Sat, 14 Sep 2024 11:33:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.75.79.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9F61CEE91;
+	Sat, 14 Sep 2024 11:39:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726313605; cv=none; b=IGoboV+42UpHe6P20DjQHqREqAUbyVG8ToEpjOFpJlFLTeex0Kwro1L4UI0r6OLEV5dl0XBUrkuEL7zSHaKcgJZb+yFr5LAL7Ry4rwY2qdX8RjbAA34x/i64jIyXjDMuYfHtEj7AxMMW3qeW5l5u0ocV9CHU9Wp7lvZzIBwQiOs=
+	t=1726313945; cv=none; b=LPO2C/aYAwMBQSMLf3R9X9zc9GLX6AumL0Yh6lq3DanSmEwcm3ZAUhkdaLkvXYWGwcBXGS/dWSq0RCJJU6rpq3ooCedWf7MCV05Hft8AuKMJmxIEfIFu/qsoPVK1bb1abpfFgWSixig1xibI1J2r/XOVFP327+zycSsdAHYJO2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726313605; c=relaxed/simple;
-	bh=tfC0wjxNe5XKrSkQAza0Tqj6HlthCa21GJt+GYVR5fs=;
-	h=From:To:Cc:Subject:Date:Message-Id:References:In-Reply-To:
-	 Mime-Version:Content-Type; b=n1AwZHYElFDlEwG1HKT/w3l7b7LUo90zxoSgzXd5zN+Ao2rJdyTbHnCVQEFb0ak5eQChWaXTU4kCKPZw6Zp88KQ0kgWCZqS5ODLquvy7yuVD3GUIjHfthSrJAiPBcMAuk8kAR0Ijv1vR/FH5HY2vudT7ybYO8PbaOh5i170Lpxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=email.cz; spf=pass smtp.mailfrom=email.cz; dkim=pass (2048-bit key) header.d=email.cz header.i=@email.cz header.b=VAcN3xwi; arc=none smtp.client-ip=77.75.79.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=email.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=email.cz
+	s=arc-20240116; t=1726313945; c=relaxed/simple;
+	bh=ZetxoFkJPQb/caRq2nXVle/q6AKRnAsQAsgPvbySKdk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Dzy1VX3qEQRSRi0xOZ/MjIdTrg3xeDi0hTI6VHMAUo9Z40+TBuKmrGJ6Umi56/MZ94EE4Wp6ymXvrs4sgaIZasspUmoBk3tC2lqD//KXDzr6lhk+AAHg326Yrh2TB6w0s543lhI9qU0XO48g+JKHdtgpW0RYvGSXqaZQH1B5Ez4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=HN7cIBNT; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=email.cz header.i=@email.cz header.b="VAcN3xwi"
-Received: from email.seznam.cz
-	by smtpc-mxc-58959dfbcf-mrxrj
-	(smtpc-mxc-58959dfbcf-mrxrj [2a02:598:64:8a00::1000:460])
-	id 47b8da75b94c68df4736546d;
-	Sat, 14 Sep 2024 13:32:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=email.cz;
-	s=szn20221014; t=1726313559;
-	bh=tfC0wjxNe5XKrSkQAza0Tqj6HlthCa21GJt+GYVR5fs=;
-	h=Received:From:To:Cc:Subject:Date:Message-Id:References:
-	 In-Reply-To:Mime-Version:X-Mailer:Content-Type:
-	 Content-Transfer-Encoding;
-	b=VAcN3xwiOAFmCHVPhhq4NUNwOrJtOAYMZuQ8Dm9Cn0Db0p48iVTQgB3dDcJMOfDD9
-	 DVGVlyJxHy/8r+cyVjc2zrXvXBzNpOJApUkE88l1KQBHypL6uxF0ntlULnJNFVtmN0
-	 ZleVrTEkpXntdUbKmZc/dAYZEgfKHUcoao5nZ1IimVH92WIICX1Kr0H6CvwEsYXXQi
-	 IJ4kLTJRdapfZclvC63hUeGdpAnlFd4dPt5cq0QK97+4Tc+aM7jyuL8AzHUoHwsx5g
-	 jOpy8E6YFvdsYr7bPZRaylx7Rdg1kJUHGeDaRui7sldRoyyZfmKdsbviP9vvu5kQuB
-	 o1m/ACG0YPrYQ==
-Received: from 184-143.ktuo.cz (184-143.ktuo.cz [82.144.143.184])
-	by email.seznam.cz (szn-ebox-5.0.189) with HTTP;
-	Sat, 14 Sep 2024 13:32:37 +0200 (CEST)
-From: "Tomas Paukrt" <tomaspaukrt@email.cz>
-To: "Herbert Xu" <herbert@gondor.apana.org.au>
-Cc: <linux-crypto@vger.kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Shawn Guo" <shawnguo@kernel.org>,
-	"Sascha Hauer" <s.hauer@pengutronix.de>,
-	"Pengutronix Kernel Team" <kernel@pengutronix.de>,
-	"Fabio Estevam" <festevam@gmail.com>,
-	<imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>
-Subject: =?utf-8?q?Re=3A_=5BPATCH=5D_crypto=3A_mxs-dcp=3A_Enable_user-spac?=
-	=?utf-8?q?e_access_to_AES_with_hardware-bound_keys?=
-Date: Sat, 14 Sep 2024 13:32:37 +0200 (CEST)
-Message-Id: <24h.ZcXr.7FvRaSxxibG.1cvNHL@seznam.cz>
+	dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="HN7cIBNT"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=gLxnozObWeiGuYd0f0ninBdAY8bV9ObeswetAFDkWzQ=; b=HN7cIBNTWgHHX5Smzgag+JL5FV
+	Xx2EKCftFIN621TlZZanyUmSlOcJP7Ab/2TzA3ERe0EerCBvDe9yJ6tz3hg9mklMbM5ZlK7LMkFOW
+	FsYyKOV/i+s2GGGdESp1ywtRWazaHuEzPE6ZUT1O9w0MBG3FFfz6M38utx2degT9Wpm1RozhwM/t/
+	lLpCa7HBidzbzY1NeeeR3z10daiJ5bSmmsaFqWZnMKLZOmUAep6AGbZx0X/+sljIsVxYu/nKYfRnj
+	XlvkoWYQSXE+2DHN2sIc+8ZHnYCxRQ3nviOm8bWG2YDMfNQTSwUXfpJqHKnB1ZDTFk+MfQJIpdgqf
+	mitymivQ==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1spQxE-002Sd2-2O;
+	Sat, 14 Sep 2024 19:38:55 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 14 Sep 2024 19:38:54 +0800
+Date: Sat, 14 Sep 2024 19:38:54 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Tomas Paukrt <tomaspaukrt@email.cz>
+Cc: linux-crypto@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] crypto: mxs-dcp: Enable user-space access to AES with
+ hardware-bound keys
+Message-ID: <ZuV1zguLBsBZnGB5@gondor.apana.org.au>
 References: <1di.ZclR.6M4clePpGuH.1cv1hD@seznam.cz>
-	<ZuVKtuMqiCu67hn2@gondor.apana.org.au>
-In-Reply-To: <ZuVKtuMqiCu67hn2@gondor.apana.org.au>
+ <ZuVKtuMqiCu67hn2@gondor.apana.org.au>
+ <24h.ZcXr.7FvRaSxxibG.1cvNHL@seznam.cz>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0 (szn-mime-2.1.61)
-X-Mailer: szn-ebox-5.0.189
-Content-Type: text/plain;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <24h.ZcXr.7FvRaSxxibG.1cvNHL@seznam.cz>
 
-> Why not just expose it uncondtionally?
+On Sat, Sep 14, 2024 at 01:32:37PM +0200, Tomas Paukrt wrote:
+> 
+> Please see the comment in the following patch: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=3d16af0b4cfac4b2c3b238e2ec37b38c2f316978
+> 
+> The goal of this change is to allow some users to use AES with hardware-bound keys from user-space without compromising others.
 
-Please see the comment in the following patch: https://git.kernel.org/pub/=
-scm/linux/kernel/git/torvalds/linux.git/commit/?id=3D3d16af0b4cfac4b2c3b23=
-8e2ec37b38c2f316978
+In that case I would suggest introducing a flag so that the key
+can only be accessed through the keyring subsystem.
 
-The goal of this change is to allow some users to use AES with hardware-bo=
-und keys from user-space without compromising others.
-
-Best regards
-
-Tomas
+Cheers,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
