@@ -1,73 +1,118 @@
-Received: from mxc.seznam.cz (mxc.seznam.cz [77.75.79.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC7F46425
-	for <imx@lists.linux.dev>; Sat, 14 Sep 2024 12:42:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.75.79.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBDA1C57A1
+	for <imx@lists.linux.dev>; Sun, 15 Sep 2024 11:44:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726317725; cv=none; b=toyvC5HwftBktAtI6ghoDGDBFxHfNKsBVw99a2CYdtPg/4Zx+yx1108Bk66Y4U6i5bvbI6lcOfVNiksRERYU6YMNOjqkbj5sJkGoZ1G0sGY8wGFov6FCdsa1gk7f6d1ZynAMbCYF95iq0lGkXrCGAgkuIAi2p9o5ny1xCmBo1qc=
+	t=1726400642; cv=none; b=d8nzbRkYWRQVslaspkwqvsDrDSFx94iCXdWpxnN/TZCQiSvYaJq6+emyLbJIohH4toR1emCV3Gcur+pPsHLmrckB5Uh4EppI5bhuhpBIOeGp5R1FCbYv9Cl8W5wW/SfTLz8m1GBcoB9s3/Ka1HOVB6LykBj7qp4haJbINR051GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726317725; c=relaxed/simple;
-	bh=8gDdLYHG/bPQhFBekHGZlHMBrkBrj2F7insIxZX006A=;
-	h=From:To:Cc:Subject:Date:Message-Id:References:In-Reply-To:
-	 Mime-Version:Content-Type; b=Yhl0tdlsMGE4k+O95JeUZaCmeTuez1dPBVHM1K64eYxbXACtTPwhBe/HLc9eBFrXOe8Nk/9u7LYPPFHYsgYX62dZpZhXu5ZJXPwjGOgQR1NU4LRzLcEAieba0R3fKaXcD90VBJcV04T5qJBc5U5b6j9f9fKNITEtR0Rrigc92HQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=email.cz; spf=pass smtp.mailfrom=email.cz; dkim=pass (2048-bit key) header.d=email.cz header.i=@email.cz header.b=oXe3+xjL; arc=none smtp.client-ip=77.75.79.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=email.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=email.cz
+	s=arc-20240116; t=1726400642; c=relaxed/simple;
+	bh=H9q9CQoYEll1vyUTQ0sNcL7d6nkLtx+8/uKIZDi4t8k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pa1if6D+KTJ5K3m+BYyZTJHDyJVVQueABQGbUGPcYd2jx88hUQQG+ycFXgSJ02jqiEDe7wt8HQgoroOJbMS6/K5Mj97oMZwf3nFyeQGtBOePUiC9j+qlgRcNpk3Xcbikva0Wh6mVJSC9+mq7DiJBZZmBOn7QBJ/tkGl9u7foJKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E6lkLSDi; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=email.cz header.i=@email.cz header.b="oXe3+xjL"
-Received: from email.seznam.cz
-	by smtpc-mxc-846b4f87f5-jv7x6
-	(smtpc-mxc-846b4f87f5-jv7x6 [2a02:598:128:8a00::1000:42e])
-	id 4e36e6fbb0c254514eb868e3;
-	Sat, 14 Sep 2024 14:41:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=email.cz;
-	s=szn20221014; t=1726317685;
-	bh=8gDdLYHG/bPQhFBekHGZlHMBrkBrj2F7insIxZX006A=;
-	h=Received:From:To:Cc:Subject:Date:Message-Id:References:
-	 In-Reply-To:Mime-Version:X-Mailer:Content-Type:
-	 Content-Transfer-Encoding;
-	b=oXe3+xjLwVIGNDd2MyNtWl+MG4Ppe5ew33iQKKcJNVOenzlevGI5EQLTnVyHWzzR1
-	 YjuV9nFr352vxlrsFuNbq0dCl6XiiGXXdSQycxN+5cMkMrObQbnuFFpkfxOvkk8jx/
-	 gJR0Xecz3fmtbN8XHbcs5F+361KVaF0aJzENnQbq2AaYRFtqbhKUthlgHSgzP0C3Sn
-	 WkfHXtcsm+KAqb0mhVkPfPq6xDZAPhFBlcWm4eeBQFynDXvmVQyCkx08BHMixoy2IB
-	 aM/ulR/mv5t53zzAydTOKQZc+H9oKcmQV5PmYs6PJLd1CWtJlcns2T5op2GRwm3APA
-	 GlwIbmLMy4cCA==
-Received: from 184-143.ktuo.cz (184-143.ktuo.cz [82.144.143.184])
-	by email.seznam.cz (szn-ebox-5.0.189) with HTTP;
-	Sat, 14 Sep 2024 14:41:23 +0200 (CEST)
-From: "Tomas Paukrt" <tomaspaukrt@email.cz>
-To: "Herbert Xu" <herbert@gondor.apana.org.au>
-Cc: <linux-crypto@vger.kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Shawn Guo" <shawnguo@kernel.org>,
-	"Sascha Hauer" <s.hauer@pengutronix.de>,
-	"Pengutronix Kernel Team" <kernel@pengutronix.de>,
-	"Fabio Estevam" <festevam@gmail.com>,
-	<imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>
-Subject: =?utf-8?q?Re=3A_=5BPATCH=5D_crypto=3A_mxs-dcp=3A_Enable_user-spac?=
-	=?utf-8?q?e_access_to_AES_with_hardware-bound_keys?=
-Date: Sat, 14 Sep 2024 14:41:23 +0200 (CEST)
-Message-Id: <26J.ZcYd.2XLMv9N98Uy.1cvOHp@seznam.cz>
-References: <1di.ZclR.6M4clePpGuH.1cv1hD@seznam.cz>
-	<ZuVKtuMqiCu67hn2@gondor.apana.org.au>
-	<24h.ZcXr.7FvRaSxxibG.1cvNHL@seznam.cz>
-	<ZuV1zguLBsBZnGB5@gondor.apana.org.au>
-In-Reply-To: <ZuV1zguLBsBZnGB5@gondor.apana.org.au>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E6lkLSDi"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a8a7cdfdd80so354732666b.0
+        for <imx@lists.linux.dev>; Sun, 15 Sep 2024 04:44:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726400639; x=1727005439; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4mH+l6efe7nU0WFZ7S2EM77Dno5UaL2UqZkqt5PiIGk=;
+        b=E6lkLSDiMJfsdSagPwQX1L+vQo2kIc7KRG86pbLjy6Lis8acuD3Kfsh/f4B2MusDtq
+         4I0B5CI9/NepqldWfiC+5t08hyShFBvLqmskcPDxPbZ9iE4FUaJHQaKR+Gh5lfWpxGz9
+         gomJlKWoQ4jZ9mdL+lkx2Qr0n7LkVycUNN4Gv9KKaUfSYepIscKYJS4I5cNiUMMYjHP4
+         5pc9Syr9c2y66knd3yQponXacAtQJQ6m/w8DItdrxE++PP11SaD+y4/6GIQc+kVVzdDJ
+         XR/2n378+0ABl5NaPIsI9BPOWax3KVGCJGFibKivrdo1OZ9CxVYjFKEEJy3w4Z6CQV+m
+         cuuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726400639; x=1727005439;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4mH+l6efe7nU0WFZ7S2EM77Dno5UaL2UqZkqt5PiIGk=;
+        b=kFst49n7VGPcEXNyqy8UJl9FGnWcaq7CJu/0gDWzP5Z+yW95nQPi4A4JZS34NhUP4R
+         MHxQQG3GokrOAGR2IaQUOIejAg1BreOJSxfnr3RMpe42SoqJyn+9gVOopCOuOhBeex89
+         QKhCrKE9H5VPt/XmKQ++23kApvLrH0KBe74/XGtnT3M1FnOy8xZgRkGSIQuPxpc6eC8B
+         kyPup4lvpsBmzerg/DRKORTm0Qerck+hGNSiGzr0OjE1AuegQMIw6VNLz43+xvcHJM6p
+         wqyxIDsk99G1bC4wBteNFglvCIkcJfnOeK5k81e+K0XT4kyN6k+Lj46+GP8aKjUK/YKY
+         iNnw==
+X-Forwarded-Encrypted: i=1; AJvYcCXx4nzHW+xAEXZSpAEE9h6Jx4mY59bTNEO3RcYMX5U320Fr9fCg+4ncccZgerqDQK3kKBo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxmRiqpY8W4qyyp0QTeWf4z8j8y/zrLpWNKDSN4qSiNJ0wuOITf
+	SlRU3WVSZQElteJQK4Ogqf2rlZ1Fe/6NTokLWQDU0oMgm+V5e4VX
+X-Google-Smtp-Source: AGHT+IGpuSYUApsVlxE96RegA0p6FojKMuwIiy0j7XRDE+Uns7f4FOzDKSl5hSO6PEgMpBfIYTWuqA==
+X-Received: by 2002:a17:907:3daa:b0:a86:94e2:2a47 with SMTP id a640c23a62f3a-a9047ca074bmr759433466b.15.1726400638297;
+        Sun, 15 Sep 2024 04:43:58 -0700 (PDT)
+Received: from playground.localdomain ([86.127.146.72])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a906109676esm188778266b.33.2024.09.15.04.43.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Sep 2024 04:43:57 -0700 (PDT)
+From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+X-Google-Original-From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Liu Ying <victor.liu@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/3] Add support for imx8ulp's SIM
+Date: Sun, 15 Sep 2024 07:43:08 -0400
+Message-Id: <20240915114311.75496-1-laurentiu.mihalcea@nxp.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0 (szn-mime-2.1.61)
-X-Mailer: szn-ebox-5.0.189
-Content-Type: text/plain;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-> In that case I would suggest introducing a flag so that the key
-> can only be accessed through the keyring subsystem.
+i.MX8ULP's SIM (System Integration Module) allows
+control and configuration of certain components
+form the domain it's assigned to. Add DT node
+and schema for it. Its child shall also be
+included.
 
-Do you mean CRYPTO_ALG_KERN_DRIVER_ONLY instead of CRYPTO_ALG_INTERNAL or =
-something else?
+---
+Changes in v4:
+- Addressed Rob and Krzysztof's comments
+- Link to v3: https://lore.kernel.org/all/20240715164514.8718-1-laurentiumihalcea111@gmail.com/
+
+Changes in v3:
+- Addressed Krzysztof's comments
+- The "reset: add driver for imx8ulp SIM reset controller" patch might generate conflict when
+applied to Rob and Shawn Guo's trees (for-next branch). Tested all patches with linux-next,
+next-20240715 tag and no conflicts.
+- Link to v2: https://lore.kernel.org/all/20240609125901.76274-1-laurentiumihalcea111@gmail.com/
+
+Changes in v2:
+- Reset controller is now also a syscon provider.
+- Changed vendor prefix to nxp.
+- Link to v1: https://lore.kernel.org/all/20240516204031.171920-1-laurentiumihalcea111@gmail.com/
+
+---
+Laurentiu Mihalcea (3):
+  dt-bindings: reset: add schema for imx8ulp SIM reset
+  reset: add driver for imx8ulp SIM reset controller
+  arm64: dts: imx8ulp: add AVD-SIM node
+
+ .../reset/nxp,imx8ulp-avd-sim-reset.yaml      |  58 ++++++++++
+ arch/arm64/boot/dts/freescale/imx8ulp.dtsi    |  13 +++
+ drivers/reset/Kconfig                         |   7 ++
+ drivers/reset/Makefile                        |   1 +
+ drivers/reset/reset-imx8ulp-sim.c             | 106 ++++++++++++++++++
+ 5 files changed, 185 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/reset/nxp,imx8ulp-avd-sim-reset.yaml
+ create mode 100644 drivers/reset/reset-imx8ulp-sim.c
+
+-- 
+2.34.1
+
