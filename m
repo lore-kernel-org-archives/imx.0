@@ -1,199 +1,193 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 751714174A;
-	Mon, 16 Sep 2024 20:23:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1D015C146
+	for <imx@lists.linux.dev>; Mon, 16 Sep 2024 20:50:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726518203; cv=none; b=WVpntj6l2RIU/fabvwVpXHA07Ohx/9AMDyPOXK1tewOnR9gu2csyKmx15mkGstKNTvld12HXDWVCGAr8pUovgDN/VnRZ2mOFIpsg4IwyHt33YgWqM7a51ILNl8RLYR/C7suG664QuOgZ9tdrpfyvOnYVTcbSnqLE0ZMTfNB/SZQ=
+	t=1726519841; cv=none; b=k724xUyfkBx6LpQGFtwBjnvCuuyGqr2+Z3UT9oHWjoQTrEy7qbvgJF9tAbeftPVOxzzJ/Z+L9XAZZQdtxqqqmOBbRr8l+pJgFwFgFEyfumLi3b260b1h6jw0R45OBtdnOYnLBKbmXztU8OGLwLjftF4NOkzxsFN72HHT7fvavGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726518203; c=relaxed/simple;
-	bh=I+eYB9/iGpjy2fwoJ4YmiqEzyB8jdfZHLMIS00A1aRQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s8miRLaHykjUfoPUcT/bVyZ4/Knt+Aid5/EwoYot5bujAgfo4r+kj3vxbymVywhPKi6a5Jft1g63f3klk9PC0GcdesagwSCU0xqDMd8AEE6Jixr3iOAh+mJwnMc1Avo1MmhNFSS8nKLT62vz0g/qgLTGPgcEgsd9l3YlT7cHs94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pdFWBWb2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1726519841; c=relaxed/simple;
+	bh=EPuS2/x+Apeqo+h5PlDJ57xWx6EiaLVNmNHDNkprA+Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oIYR/FoxJBoz9OErWh3YWNriy85iZKL2K4C4O9+zTHmy1N8fcssN8kGUh2lHhE20D16IkSauUDbhIDCUjR32N8CqSDhuJjKh4TJ5iBVYgw1wUdX/VsfnJ4bsZ8rYAoNjnwxQ9olOjDIfNZAHU8U5APmW/eh4dSkpdMLPXD4sk1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jDtKgk7X; arc=none smtp.client-ip=209.85.219.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pdFWBWb2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFDC5C4CEC4;
-	Mon, 16 Sep 2024 20:23:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726518202;
-	bh=I+eYB9/iGpjy2fwoJ4YmiqEzyB8jdfZHLMIS00A1aRQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pdFWBWb20FdS4V997/xrw9O1dpeTWn7iVg3EaG0bBJlp641TvOOE9FodW2tSb2kNn
-	 5WWRTQJqDGEWmzDb7/v5CWX79JqENsMOi5bgzGebQHgAr6OlSnjWpYIgjKKn2rs5OK
-	 /emFMkVJBR8sZjQLDOvnRks5qvU7TSsh0SQLY1fZHkRDmLBB9pnLgxMy2FAwuvbW/F
-	 +YBPZA1Lk5tcRx+W/q2nRtpx7aqvX+1hRfeqWlYDt3AaFXc+AegdozvcOnolpc4iE/
-	 iTCeU/fAYiC5OUYeOzUetev+mLlykWKN/MGBYDs/cnPzRqFRHcTLZ5ecWi2Bz2BeTT
-	 Q+C9zLXgUfTgQ==
-Message-ID: <eb3ec7f1-388c-4613-b995-69b8ad6ef2c0@kernel.org>
-Date: Mon, 16 Sep 2024 22:23:13 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jDtKgk7X"
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e1a9dc3f0a3so4572282276.0
+        for <imx@lists.linux.dev>; Mon, 16 Sep 2024 13:50:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726519839; x=1727124639; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=6x/uji5axtWcw2sGeJ1wr4Dagb+N5kE/4J37Qx8pyTE=;
+        b=jDtKgk7XQ5VzwneteT1PONAwmikrYHoxrTzTPUjK1bI4i0Z7EUwL+QrJxcweVHKGlF
+         qDrO3g7sjhBOAMosWoc3T/6y6qT+HQ7IkNOhH1MdzP8uy6Y8port3JsV0Yw4Yy2COuvj
+         /7Cy/2u9qN8aqvq3UesNndFxGJEJED+iFadJTtiIk02czW8NBqFqgANAQmc4Q4li/Sz4
+         5Ii3ScKtH6swSu8866ldEsj2tRj/L1qpBgm+GdYlBFhIQwdtPkGvGK++WDjWqqpa7fmI
+         2IWCfWgUeE2O8s4rzmSPy2xUyzQXbD3a2soyuCdEsAl4aM29U1TiampAim+MK8ORiK5U
+         p7bA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726519839; x=1727124639;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6x/uji5axtWcw2sGeJ1wr4Dagb+N5kE/4J37Qx8pyTE=;
+        b=DRtWZIoUzKiOYvTTY7g3cybRICmOJHP6uz0nVDumjHOWet2Qdt0NclN6mVUsUpzACP
+         wJJW7YaG2WQEeso9SlOmvxoydG2vW7Ci3JvPKNRtRq2o3FSOl3ZOTxGIFM0uBkI+d7y0
+         qwVLDDXSDXlXDTyKfjf+Pziap7LlFWfDoUtqzEx3A7dqVAD/OeQav0Bck8i+l94CJDSy
+         /SzHUpKJCpI7YfDShd+8qPrWFaxeTsfuDd2id4YC8qeOdFEYcJYUTaqS8+XGfUuocYdb
+         8HEe/L+hYMoTQfew1b98J6Jhm9gEz3liOSov2SNnhvxrVgm0WHJq/o71WZf8xmZM5fn8
+         eRvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXzqpraRiH9E7+4HQIIV7mDEZdRq7XNkR6BWbkqc7uHV3DYGWlZ4O03FOWBpMAB2Mmc0LM=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywk2WX3Kv2hCv2Mo0H0NBaDOWGiKQeDSp+AZwropNBTN2rRa3dv
+	oDEjK4i7tdCVmgOoRFUNse24YbbsGnD4c7Ueh6i5HCkO3n+m6T89AQjJgtPJf0RtrqjO23fMnjv
+	bOnsnRY4dged8zuFHkxt337xpcYItGOR5O76nxw==
+X-Google-Smtp-Source: AGHT+IHNWoBnckh4JzG0DDNvv5RpTkKQzvqOqO9Ri3IKF30PiwhxsioNGUI2YVdoXHTZXLgQWO0U4qG9goXSQaXULW0=
+X-Received: by 2002:a05:6902:1246:b0:e1d:33f1:cb91 with SMTP id
+ 3f1490d57ef6-e1d9dc2c28emr14379688276.39.1726519838644; Mon, 16 Sep 2024
+ 13:50:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <20240916200255.2566209-1-diogo.pais@ttcontrol.com> <eb3ec7f1-388c-4613-b995-69b8ad6ef2c0@kernel.org>
+In-Reply-To: <eb3ec7f1-388c-4613-b995-69b8ad6ef2c0@kernel.org>
+From: Diogo Silva <diogompaissilva@gmail.com>
+Date: Mon, 16 Sep 2024 22:50:27 +0200
+Message-ID: <CAJpoHp4MbeNCz4Sys1_khQiG7BG6F-aVkrgivHGY_JYP831teg@mail.gmail.com>
 Subject: Re: [PATCH] arm64: dts: imx8: Fix lvds0 device tree
-To: Diogo Silva <diogompaissilva@gmail.com>, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- aisheng.dong@nxp.com, Frank.Li@nxp.com
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20240916200255.2566209-1-diogo.pais@ttcontrol.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
- QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
- gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
- /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
- iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
- VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
- 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
- xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
- eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
- AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
- MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
- Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
- ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
- vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
- oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
- lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
- t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
- uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
- 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
- 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240916200255.2566209-1-diogo.pais@ttcontrol.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, aisheng.dong@nxp.com, Frank.Li@nxp.com, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 16/09/2024 22:02, Diogo Silva wrote:
-> From: Diogo Silva <diogompaissilva@gmail.com>
-> 
-> Some clock output names on lvds0 device tree were duplicated from mipi1,
-> which caused an -EEXIST when registering these clocks during probe.
-> Also fixed the device naming to be consistent with lvds1.
-> 
-> Fixes: 0fba24b3b956 ("arm64: dts: imx8: add basic lvds0 and lvds1 subsystem")
-> subsystem")
+Hey,
 
-Broken tags. They do not line-brake, BTW.
+Sorry for the broken tag, will fix on a resend.
 
-> Signed-off-by: Diogo Silva <diogompaissilva@gmail.com>
-> ---
->  .../boot/dts/freescale/imx8-ss-lvds0.dtsi     | 22 +++++++++----------
->  arch/arm64/boot/dts/freescale/imx8qm-mek.dts  |  4 ++--
->  .../boot/dts/freescale/imx8qm-ss-lvds.dtsi    | 20 ++++++++---------
->  3 files changed, 23 insertions(+), 23 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi
-> index d00036204a8c..a4d94467039f 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi
-> @@ -10,34 +10,34 @@ lvds0_subsys: bus@56240000 {
->  	#size-cells = <1>;
->  	ranges = <0x56240000 0x0 0x56240000 0x10000>;
->  
-> -	qm_lvds0_lis_lpcg: qxp_mipi1_lis_lpcg: clock-controller@56243000 {
-> +	lvds0_lis_lpcg: clock-controller@56243000 {
->  		compatible = "fsl,imx8qxp-lpcg";
->  		reg = <0x56243000 0x4>;
->  		#clock-cells = <1>;
-> -		clock-output-names = "mipi1_lis_lpcg_ipg_clk";
-> +		clock-output-names = "lvds0_lis_lpcg_ipg_clk";
->  		power-domains = <&pd IMX_SC_R_MIPI_1>;
->  	};
->  
-> -	qm_lvds0_pwm_lpcg: qxp_mipi1_pwm_lpcg: clock-controller@5624300c {
-> +	lvds0_pwm_lpcg: clock-controller@5624300c {
->  		compatible = "fsl,imx8qxp-lpcg";
->  		reg = <0x5624300c 0x4>;
->  		#clock-cells = <1>;
-> -		clock-output-names = "mipi1_pwm_lpcg_clk",
-> -				     "mipi1_pwm_lpcg_ipg_clk",
-> -				     "mipi1_pwm_lpcg_32k_clk";
-> +		clock-output-names = "lvds0_pwm_lpcg_clk",
-> +				     "lvds0_pwm_lpcg_ipg_clk",
-> +				     "lvds0_pwm_lpcg_32k_clk";
->  		power-domains = <&pd IMX_SC_R_MIPI_1_PWM_0>;
->  	};
->  
-> -	qm_lvds0_i2c0_lpcg: qxp_mipi1_i2c0_lpcg: clock-controller@56243010 {
-> +	lvds0_i2c0_lpcg: clock-controller@56243010 {
->  		compatible = "fsl,imx8qxp-lpcg";
->  		reg = <0x56243010 0x4>;
->  		#clock-cells = <1>;
-> -		clock-output-names = "mipi1_i2c0_lpcg_clk",
-> -				     "mipi1_i2c0_lpcg_ipg_clk";
-> +		clock-output-names = "lvds0_i2c0_lpcg_clk",
-> +				     "lvds0_i2c0_lpcg_ipg_clk";
->  		power-domains = <&pd IMX_SC_R_MIPI_1_I2C_0>;
->  	};
->  
-> -	qm_pwm_lvds0: qxp_pwm_mipi_lvds1: pwm@56244000 {
-> +	pwm_lvds0: pwm@56244000 {
->  		compatible = "fsl,imx8qxp-pwm", "fsl,imx27-pwm";
->  		reg = <0x56244000 0x1000>;
->  		clock-names = "ipg", "per";
-> @@ -48,7 +48,7 @@ qm_pwm_lvds0: qxp_pwm_mipi_lvds1: pwm@56244000 {
->  		status = "disabled";
->  	};
->  
-> -	qm_i2c0_lvds0: qxp_i2c0_mipi_lvds1: i2c@56246000 {
-> +	i2c0_lvds0: i2c@56246000 {
->  		compatible = "fsl,imx8qxp-lpi2c", "fsl,imx7ulp-lpi2c";
->  		reg = <0x56246000 0x1000>;
->  		#address-cells = <1>;
-> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
-> index 62203eed6a6c..f7b9b319a58a 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
-> @@ -96,7 +96,7 @@ vdevbuffer: memory@90400000 {
->  
->  	lvds_backlight0: backlight-lvds0 {
->  		compatible = "pwm-backlight";
-> -		pwms = <&qm_pwm_lvds0 0 100000 0>;
-> +		pwms = <&pwm_lvds0 0 100000 0>;
->  		brightness-levels = <0 100>;
->  		num-interpolated-steps = <100>;
->  		default-brightness-level = <80>;
-> @@ -541,7 +541,7 @@ &fec2 {
->  	status = "okay";
->  };
->  
-> -&qm_pwm_lvds0 {
-> +&pwm_lvds0 {
-
-Why this cannot stay qm_pwm_lvds0? Are you sure nodes now have correct
-order?
-
-
+As for the naming, if there is any reason for them to be named qm_*
+it's totally fine, I'll revert it and only touch the clock names. I
+changed them because comparing with lvds1, those ones do not contain
+the qm_ prefix and I don't see how this dtsi relates specifically to
+the imx8qm, since it is a imx8-ss... and not imx8qm-ss...
+I didn't quite get the question about the nodes. Could you elaborate? Thanks
 
 Best regards,
-Krzysztof
+Diogo
 
+
+On Mon, 16 Sept 2024 at 22:23, Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>
+> On 16/09/2024 22:02, Diogo Silva wrote:
+> > From: Diogo Silva <diogompaissilva@gmail.com>
+> >
+> > Some clock output names on lvds0 device tree were duplicated from mipi1,
+> > which caused an -EEXIST when registering these clocks during probe.
+> > Also fixed the device naming to be consistent with lvds1.
+> >
+> > Fixes: 0fba24b3b956 ("arm64: dts: imx8: add basic lvds0 and lvds1 subsystem")
+> > subsystem")
+>
+> Broken tags. They do not line-brake, BTW.
+>
+> > Signed-off-by: Diogo Silva <diogompaissilva@gmail.com>
+> > ---
+> >  .../boot/dts/freescale/imx8-ss-lvds0.dtsi     | 22 +++++++++----------
+> >  arch/arm64/boot/dts/freescale/imx8qm-mek.dts  |  4 ++--
+> >  .../boot/dts/freescale/imx8qm-ss-lvds.dtsi    | 20 ++++++++---------
+> >  3 files changed, 23 insertions(+), 23 deletions(-)
+> >
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi
+> > index d00036204a8c..a4d94467039f 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi
+> > @@ -10,34 +10,34 @@ lvds0_subsys: bus@56240000 {
+> >       #size-cells = <1>;
+> >       ranges = <0x56240000 0x0 0x56240000 0x10000>;
+> >
+> > -     qm_lvds0_lis_lpcg: qxp_mipi1_lis_lpcg: clock-controller@56243000 {
+> > +     lvds0_lis_lpcg: clock-controller@56243000 {
+> >               compatible = "fsl,imx8qxp-lpcg";
+> >               reg = <0x56243000 0x4>;
+> >               #clock-cells = <1>;
+> > -             clock-output-names = "mipi1_lis_lpcg_ipg_clk";
+> > +             clock-output-names = "lvds0_lis_lpcg_ipg_clk";
+> >               power-domains = <&pd IMX_SC_R_MIPI_1>;
+> >       };
+> >
+> > -     qm_lvds0_pwm_lpcg: qxp_mipi1_pwm_lpcg: clock-controller@5624300c {
+> > +     lvds0_pwm_lpcg: clock-controller@5624300c {
+> >               compatible = "fsl,imx8qxp-lpcg";
+> >               reg = <0x5624300c 0x4>;
+> >               #clock-cells = <1>;
+> > -             clock-output-names = "mipi1_pwm_lpcg_clk",
+> > -                                  "mipi1_pwm_lpcg_ipg_clk",
+> > -                                  "mipi1_pwm_lpcg_32k_clk";
+> > +             clock-output-names = "lvds0_pwm_lpcg_clk",
+> > +                                  "lvds0_pwm_lpcg_ipg_clk",
+> > +                                  "lvds0_pwm_lpcg_32k_clk";
+> >               power-domains = <&pd IMX_SC_R_MIPI_1_PWM_0>;
+> >       };
+> >
+> > -     qm_lvds0_i2c0_lpcg: qxp_mipi1_i2c0_lpcg: clock-controller@56243010 {
+> > +     lvds0_i2c0_lpcg: clock-controller@56243010 {
+> >               compatible = "fsl,imx8qxp-lpcg";
+> >               reg = <0x56243010 0x4>;
+> >               #clock-cells = <1>;
+> > -             clock-output-names = "mipi1_i2c0_lpcg_clk",
+> > -                                  "mipi1_i2c0_lpcg_ipg_clk";
+> > +             clock-output-names = "lvds0_i2c0_lpcg_clk",
+> > +                                  "lvds0_i2c0_lpcg_ipg_clk";
+> >               power-domains = <&pd IMX_SC_R_MIPI_1_I2C_0>;
+> >       };
+> >
+> > -     qm_pwm_lvds0: qxp_pwm_mipi_lvds1: pwm@56244000 {
+> > +     pwm_lvds0: pwm@56244000 {
+> >               compatible = "fsl,imx8qxp-pwm", "fsl,imx27-pwm";
+> >               reg = <0x56244000 0x1000>;
+> >               clock-names = "ipg", "per";
+> > @@ -48,7 +48,7 @@ qm_pwm_lvds0: qxp_pwm_mipi_lvds1: pwm@56244000 {
+> >               status = "disabled";
+> >       };
+> >
+> > -     qm_i2c0_lvds0: qxp_i2c0_mipi_lvds1: i2c@56246000 {
+> > +     i2c0_lvds0: i2c@56246000 {
+> >               compatible = "fsl,imx8qxp-lpi2c", "fsl,imx7ulp-lpi2c";
+> >               reg = <0x56246000 0x1000>;
+> >               #address-cells = <1>;
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+> > index 62203eed6a6c..f7b9b319a58a 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+> > +++ b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+> > @@ -96,7 +96,7 @@ vdevbuffer: memory@90400000 {
+> >
+> >       lvds_backlight0: backlight-lvds0 {
+> >               compatible = "pwm-backlight";
+> > -             pwms = <&qm_pwm_lvds0 0 100000 0>;
+> > +             pwms = <&pwm_lvds0 0 100000 0>;
+> >               brightness-levels = <0 100>;
+> >               num-interpolated-steps = <100>;
+> >               default-brightness-level = <80>;
+> > @@ -541,7 +541,7 @@ &fec2 {
+> >       status = "okay";
+> >  };
+> >
+> > -&qm_pwm_lvds0 {
+> > +&pwm_lvds0 {
+>
+> Why this cannot stay qm_pwm_lvds0? Are you sure nodes now have correct
+> order?
+>
+>
+>
+> Best regards,
+> Krzysztof
+>
