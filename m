@@ -1,65 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207F650284;
-	Mon, 16 Sep 2024 09:41:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 973E815821A
+	for <imx@lists.linux.dev>; Mon, 16 Sep 2024 14:47:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726479699; cv=none; b=XPUGIVPXtgb2wAseySh9KxtN9dTWJIIVAHkaZSmyl6F8x37UVH8+++HwsKAUqIVkBs1ahOhwQ0/YVupf3fRHMprMxXwr0PN68d/oVT1yJdrtyVRtlNwgooZsyJa6PF8IF3dJUE5UGf2/XxQNHaOhil0TSmwMiV4Xx82pDvMa++s=
+	t=1726498063; cv=none; b=EN8WiJX5KrMoKuqoHyPQJ2Pozas8tW239hdAFbsFY1Y3KcIkIrieLHa4hm2aQCQGmyd9tGYN5IS57VwcRsl88XeNBwUNk7rNy47Ow1QkTTI09NHOxVJK8sQ/i9iuOrLrdYfRX/oNqAH2dAN6FoR3MxRyZw/AlOppu3CLt+30oEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726479699; c=relaxed/simple;
-	bh=ZreA9/HkQ19nX8Nid+x7G27Z9GlPOZY3UgUMemLERXc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NcthGzn+ZaG2tnbey+zv6YCEBQlomb+3r685nJEHXN6HRxmq9JGIzK5zkjGjHjk/r7pceH0nWNcZLe7GDlO6JtHxlNaKaBbe0fjG+MPvaWCmJOtQrDnwcyqaDa/QuWxGswcGbIW3oz6J4QkVfpRr32Pi7GIjqa0uSTWFKZisjYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mt3OgTZE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1726498063; c=relaxed/simple;
+	bh=6I9a7nP2zYprgQf2O4EoUzf4gNKSlVPnrSybFPBcGVQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ij6vu/K8r0NMAcfcD4yvaTohQwL3eLuHkXwlv/fbochxKGKi7XK4Xz24rYfDCvULJYQ16OALmwekanfPCRV9PUO1DCyzEgNbMIOWQendbzRd94vt8AQlyHrSMd70QqQ5OgLvb/QILK8NFOhoBnqF2Jsn4FFCiC2VexRqVGmMzmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=o76mrSwP; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mt3OgTZE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B75C4CEC4;
-	Mon, 16 Sep 2024 09:41:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726479698;
-	bh=ZreA9/HkQ19nX8Nid+x7G27Z9GlPOZY3UgUMemLERXc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Mt3OgTZEmz4P+RQTuoAnnr1Fe0y1u8PkRvx1TlYb/aNRg1m/exKbENsy3Ckq8WvDM
-	 tDYcEpTyWNS7gEqR383vYhwUH7ngGaSq76oRbwg5MgBfQ6RO+zuBTEu9oECAMi0KcJ
-	 fM9fzuFE8qEWTAzSw7V9KV5LdTrUf9B3GnstwCRnZmRCh+fHcGfTdfiBEJDP+GM4S3
-	 1jmVjUHlAEKUlr3pQcJtP0ilm9PFZLCmJj4Xg7/rdVW7XVUoV/lcw1/pjz8gGxx69q
-	 8+B5FEBegtIaENA+GfouUFAjo7GQPXBUUO/urX4fNqoo/VMIHBP0aHIrPmALWMkDHK
-	 VgyUDsM3HiPJQ==
-Date: Mon, 16 Sep 2024 11:41:35 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Liu Ying <victor.liu@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/3] dt-bindings: reset: add schema for imx8ulp SIM
- reset
-Message-ID: <dmfqq6osoaun34dasbdzhzf4sj6t3npx6ujzhuu73227qhc4hq@rd2skytkm2dh>
-References: <20240915114311.75496-1-laurentiu.mihalcea@nxp.com>
- <20240915114311.75496-2-laurentiu.mihalcea@nxp.com>
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="o76mrSwP"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id DADA5A0E23;
+	Mon, 16 Sep 2024 16:37:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=mail; bh=OHtLpc0jptucADL1fWAYQWFof1vNDR+20l0BSvKWjJA=; b=
+	o76mrSwP3C9m5KB75ud8ogoYM012vNi+OzlI5+lFXVqqW4ZvrFL/itmOGA4YJaJK
+	9vXUvv47uhm2o8N0ZAhntD0u8+Lg7IUOdbuhj5pCisSXT5w2/Ybigmvf2P1R3SJA
+	euZlLdyuuuPuiCr9uQwp0qaz/WS6lGJKV34sxMzPXCWTRPQeYyuN6bLfkNA+A9vJ
+	EUE/4gF1mISq6fNIWc2caYD9VZXWOOhiZ1GUV8ScOBWbRxH9BaFsXjeR6a3osjqn
+	DRjNydha7R0TH6w1m73E+jCdEOGbNnSu1+GGPvB2iKe8JEPU4BxzWPS3QAkmn8Rw
+	6duacmsE0ytOsYNriTWZwKVasrN6hn5jDrP5SvMO/SKWO/d7hjEQK326A9M9Hi7P
+	yktffo9MxNcKQeBZuJ0d1xMdGrv34L/i7t6hP79fN8CD7396BWyIQYwDfR63PLxB
+	yv3NbqsAJ68n8FbskrOsO/1gjSosbyv9GrSs7uu5eCr1OczDsKk61zp/AJhTcCDP
+	474hdCpM6tHskc1Q3uMBN1pyitNs4uhGj+//TFqKWjJ1GFABQ6xe76zN30H0MBdS
+	5yonWbvT2a7Te3Rya7oK7Lt9gz7ogarlfZ49qjF1faeUL+4hTy4EufNVJ26JDQLU
+	0wtUf5LRrcwlxJ22zUCQl7igoxUCn9o5aKGjetU0Nu0=
+From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
+To: <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, Wei Fang
+	<wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>
+Subject: [PATCH 1/2] net: fec: Restart PPS after link state change
+Date: Mon, 16 Sep 2024 16:19:30 +0200
+Message-ID: <20240916141931.742734-1-csokas.bence@prolan.hu>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240915114311.75496-2-laurentiu.mihalcea@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1726497464;VERSION=7976;MC=1215988020;ID=72335;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-Antispam: OK
+X-EsetResult: clean, is OK
+X-EsetId: 37303A29ACD948546D7162
 
-On Sun, Sep 15, 2024 at 07:43:09AM -0400, Laurentiu Mihalcea wrote:
-> Add schema for imx8ulp's SIM reset controller.
-> 
-> Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+On link state change, the controller gets reset,
+causing PPS to drop out. Re-enable PPS if it was
+enabled before the controller reset.
 
-Fix checkpatch errors. You have SoB mismatch.
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+---
+ drivers/net/ethernet/freescale/fec.h      |  1 +
+ drivers/net/ethernet/freescale/fec_main.c |  7 ++++++-
+ drivers/net/ethernet/freescale/fec_ptp.c  | 12 ++++++++++++
+ 3 files changed, 19 insertions(+), 1 deletion(-)
 
-This applies to all your patches.
+diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
+index a19cb2a786fd..afa0bfb974e6 100644
+--- a/drivers/net/ethernet/freescale/fec.h
++++ b/drivers/net/ethernet/freescale/fec.h
+@@ -695,6 +695,7 @@ struct fec_enet_private {
+ };
+ 
+ void fec_ptp_init(struct platform_device *pdev, int irq_idx);
++void fec_ptp_restore_state(struct fec_enet_private *fep);
+ void fec_ptp_stop(struct platform_device *pdev);
+ void fec_ptp_start_cyclecounter(struct net_device *ndev);
+ int fec_ptp_set(struct net_device *ndev, struct kernel_hwtstamp_config *config,
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index a923cb95cdc6..531b51091e7d 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -1244,8 +1244,10 @@ fec_restart(struct net_device *ndev)
+ 	writel(ecntl, fep->hwp + FEC_ECNTRL);
+ 	fec_enet_active_rxring(ndev);
+ 
+-	if (fep->bufdesc_ex)
++	if (fep->bufdesc_ex) {
+ 		fec_ptp_start_cyclecounter(ndev);
++		fec_ptp_restore_state(fep);
++	}
+ 
+ 	/* Enable interrupts we wish to service */
+ 	if (fep->link)
+@@ -1366,6 +1368,9 @@ fec_stop(struct net_device *ndev)
+ 		val = readl(fep->hwp + FEC_ECNTRL);
+ 		val |= FEC_ECR_EN1588;
+ 		writel(val, fep->hwp + FEC_ECNTRL);
++
++		fec_ptp_start_cyclecounter(ndev);
++		fec_ptp_restore_state(fep);
+ 	}
+ }
+ 
+diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+index e32f6724f568..c5b89352373a 100644
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -770,6 +770,18 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
+ 	schedule_delayed_work(&fep->time_keep, HZ);
+ }
+ 
++/* Restore PTP functionality after a reset */
++void fec_ptp_restore_state(struct fec_enet_private *fep)
++{
++	/* Restart PPS if needed */
++	if (fep->pps_enable) {
++		/* Reset turned it off, so adjust our status flag */
++		fep->pps_enable = 0;
++		/* Re-enable PPS */
++		fec_ptp_enable_pps(fep, 1);
++	}
++}
++
+ void fec_ptp_stop(struct platform_device *pdev)
+ {
+ 	struct net_device *ndev = platform_get_drvdata(pdev);
+-- 
+2.34.1
 
-Best regards,
-Krzysztof
 
