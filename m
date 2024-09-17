@@ -1,118 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C6F482EF;
-	Tue, 17 Sep 2024 06:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB573FB9F
+	for <imx@lists.linux.dev>; Tue, 17 Sep 2024 06:58:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726553141; cv=none; b=eD69GMvdcerDoDkkcg7fC9UmvVMHrtTU0JP4WUonQdLmg184nQHn+0P9qUvkGNhgybbmmuZSBJ1A2ai7ujImrKxVLW6D0Zo4dZDT6hYnNRw2IEqCmxrKoqsHQaToiVQN+Juw2YJ2o/HwkJrYPaLoVi+mrndA+g24yXzKHh6o4tw=
+	t=1726556315; cv=none; b=QdRnUlmMfJM2WQziZ49mh1AXkN+3tl3ujNHwgMK9WBKwJx+YRsfBIa042D5WJgLcCNNtZ2CwXItAvxeGuQ2pbxrhmgaRkx2IbOpV2X0SzK+F83rhlphyMSQVmPV/k4gnOHNoBUGnSv8tzoBLBSUtlxvEuLzZo4hD7rZaXlYyY8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726553141; c=relaxed/simple;
-	bh=1qmXAr3iyDYVj6kyFQABNj1o9wNT7ZhstxLGmwB5twA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ngOyd9NWnPET8qDhhLayPxxtre7/oH9JJ8c6quvym5PvYMAzXGUOBIVt4VDrT3orA9LYgwIeo5dNRltvcsF3sCGEbPQhP+5dXIVS7v+kHw5/mGCzYRmxg/y8eXAApcIUDEON9+a8Oh/QR0Y5lrMYCdhM6AaDPDhhSC07BM8nEHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k0rPUmZw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1726556315; c=relaxed/simple;
+	bh=HvKjEaTed6/+RfsVR4nP0piQihMfmcB16bZRUl8o+qs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ejOPa9lAMRhPu57igV1o3ChavQNY6sS2vRy5dsz87cemTRFfLF0cmZVP9s8+9YJB5DauCKzJZL3OgysrGmqDsyCQWV1ue51fJvJgVsxrHP9nvLn0KOae4CIF9dQSdvQAX1ZvonZZlHpeCCcJrhKaTXjTg+U88t68o58LfDCVA7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AKrJBZmL; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k0rPUmZw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E120C4CEC6;
-	Tue, 17 Sep 2024 06:05:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726553140;
-	bh=1qmXAr3iyDYVj6kyFQABNj1o9wNT7ZhstxLGmwB5twA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=k0rPUmZwW+JGVxPSWWkHzLQylZeu+nO7yVG7GRTdVpgqpL5r1S0CJGHh6keFc/uAg
-	 q0bEDOF0AsRshUDm41wK6hsdBhQC8CIhQU3QNj5rz2XgELBQmwmYdf9W//QFQpArLd
-	 cbMR2r9xbZ8OumfM+KO4k9RA+8aifJeRnpKrOa+CgT/soXaSPrCptyGoICYEDmPgiZ
-	 vVWbGEkKEGC3rFNDCyw6Lav3AEmg2UDbkcZQukakXRrYUD4ZiPRx17dmY47N03Yslk
-	 Hip3jzq3xrv+3deeHgaSEfGRDLom+Po4S7YHQXJN56o+FQnka5+IDlLX6VwGIWAzCa
-	 cTtAD5JX5yhmQ==
-Message-ID: <9b86de44-c80c-42d9-a0eb-d39b077ce8f8@kernel.org>
-Date: Tue, 17 Sep 2024 08:05:33 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AKrJBZmL"
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5365cf5de24so6702725e87.1
+        for <imx@lists.linux.dev>; Mon, 16 Sep 2024 23:58:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726556311; x=1727161111; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z7wsxkt8kD2tv/Cwg977j2CL2XAhPdhs/VJmk8MeTU4=;
+        b=AKrJBZmLNB70U3AoeO5aKk7aWDGA8N2Oil3Q6mi4i7HuOgju9txTNvL+WsT4L94fx7
+         NAKyG1WQkTCUYX2RhJwi+PlCLbCxmAA6aZrsP3WtvUfiBkzATMwDusrS+CdnOWUMMWyf
+         eHwKj2fu+78k90QT7bFu3ctWC1vJsM2gODEYAJEYt+Nsze6j7yev0NXezTETxbctqQDd
+         9PU1KCpr42F9NH2hdyE2JUx9VwK5HFKnuvVDs46j+Pn8MMxIJRjo0tVuIrXWKLzKysWa
+         xGLMGhelNX4v7fPF5fywcd77Fwbte4f2mbWigU23gM8iSGV2JH9Jj0QZjq7hSdEKqhfe
+         K3gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726556311; x=1727161111;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Z7wsxkt8kD2tv/Cwg977j2CL2XAhPdhs/VJmk8MeTU4=;
+        b=VtgNxRdJWHJnzR8sjsjPeBoViBTY5qmgl6fsOeKn59d8Ytb912SbwB0023FwUEqbId
+         c7hCOlTkDWX6E0ciq7FtQjMziWQw3cCF1vWNxAcYpabxnek/rWM7jhJK4EiKvZTdkUVM
+         G4td9rUN26zAj6FgXX/xqGhgSHq3fMU5s4OpvjR9IpHN7P8gFkQBIXcw78sSc0NxDtxD
+         dJkLkeJ6WtEe8qaQw4j5Ff55oupbJ6wegIMrPMi80SLAi9tmHohNCjkzBrVImX3YMWyy
+         gh6+zjsoPnTcn2VKOGRh4VnrsgoRa5Ul4Tir6RYx0ouWz+zs6HCg4xl/Z2ZHe5W4rbj5
+         Ux0w==
+X-Forwarded-Encrypted: i=1; AJvYcCWh7mYk28Vn2LJ1vbbqf+eifH9DDygzFPCOegHtSIsZcmO8blIezHf+yQlLDK38ONScLt4=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz8KsEgFiiZ1Ledpm8rfi64Mc6R+npFIZtGU91eTWCLX9CbAOwS
+	/aPdeJRAgZeBvhzF4SJ/vZzj1QiSbQHbBhiUzJNEF4u7oOUSFRo8
+X-Google-Smtp-Source: AGHT+IGkjhSF7e+whaWFPHV7ed3DYwsF94+etu0W20gL9z5Qoa7dvhLLxv9lP4XynRZRJ9Hm9pDrxQ==
+X-Received: by 2002:a05:6512:ba8:b0:52f:413:7e8c with SMTP id 2adb3069b0e04-53678fb6a90mr9664342e87.14.1726556311324;
+        Mon, 16 Sep 2024 23:58:31 -0700 (PDT)
+Received: from ld-100007.ds1.internal (77.119.220.220.wireless.dyn.drei.com. [77.119.220.220])
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a90610f4510sm405100666b.67.2024.09.16.23.58.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Sep 2024 23:58:31 -0700 (PDT)
+From: Diogo Silva <diogompaissilva@gmail.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	aisheng.dong@nxp.com,
+	Frank.Li@nxp.com
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	diogompaissilva@gmail.com
+Subject: [PATCH v2] arm64: dts: imx8: Fix lvds0 device tree
+Date: Tue, 17 Sep 2024 08:58:01 +0200
+Message-Id: <20240917065801.2579750-1-diogompaissilva@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: imx8: Fix lvds0 device tree
-To: Diogo Silva <diogompaissilva@gmail.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, aisheng.dong@nxp.com, Frank.Li@nxp.com,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20240916200255.2566209-1-diogo.pais@ttcontrol.com>
- <eb3ec7f1-388c-4613-b995-69b8ad6ef2c0@kernel.org>
- <CAJpoHp4Dija5jDDMZnqX_g5QpQWfYPjoHK-3orJsyxCQYv4N0Q@mail.gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
- QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
- gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
- /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
- iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
- VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
- 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
- xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
- eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
- AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
- MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
- Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
- ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
- vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
- oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
- lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
- t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
- uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
- 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
- 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <CAJpoHp4Dija5jDDMZnqX_g5QpQWfYPjoHK-3orJsyxCQYv4N0Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 16/09/2024 22:47, Diogo Silva wrote:
-> Hey,
-> 
-> Sorry for the broken tag, will fix on a resend.
-> 
-> As for the naming, if there is any reason for them to be named qm_* it's
-> totally fine, I'll revert it and only touch the clock names. I changed them
+Some clock output names on lvds0 device tree were duplicated from mipi1,
+which caused an -EEXIST when registering these clocks during probe.
 
-It's just unnecessary.
+Fixes: 0fba24b3b956 ("arm64: dts: imx8: add basic lvds0 and lvds1 subsystem")
+Signed-off-by: Diogo Silva <diogompaissilva@gmail.com>
+---
+ arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-> because comparing with lvds1, those ones do not contain the qm_ prefix and
-> I don't see how this dtsi relates specifically to the imx8qm, since it is a
-> imx8-ss... and not imx8qm-ss...
-> I didn't quite get the question about the nodes. Could you elaborate? Thanks
-> 
-
-Usually they have alphabetical order and your change does not look like
-keeping it.
-
-Best regards,
-Krzysztof
+diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi
+index d00036204a8c..dad0dc8fb431 100644
+--- a/arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi
+@@ -14,7 +14,7 @@ qm_lvds0_lis_lpcg: qxp_mipi1_lis_lpcg: clock-controller@56243000 {
+ 		compatible = "fsl,imx8qxp-lpcg";
+ 		reg = <0x56243000 0x4>;
+ 		#clock-cells = <1>;
+-		clock-output-names = "mipi1_lis_lpcg_ipg_clk";
++		clock-output-names = "lvds0_lis_lpcg_ipg_clk";
+ 		power-domains = <&pd IMX_SC_R_MIPI_1>;
+ 	};
+ 
+@@ -22,9 +22,9 @@ qm_lvds0_pwm_lpcg: qxp_mipi1_pwm_lpcg: clock-controller@5624300c {
+ 		compatible = "fsl,imx8qxp-lpcg";
+ 		reg = <0x5624300c 0x4>;
+ 		#clock-cells = <1>;
+-		clock-output-names = "mipi1_pwm_lpcg_clk",
+-				     "mipi1_pwm_lpcg_ipg_clk",
+-				     "mipi1_pwm_lpcg_32k_clk";
++		clock-output-names = "lvds0_pwm_lpcg_clk",
++				     "lvds0_pwm_lpcg_ipg_clk",
++				     "lvds0_pwm_lpcg_32k_clk";
+ 		power-domains = <&pd IMX_SC_R_MIPI_1_PWM_0>;
+ 	};
+ 
+@@ -32,8 +32,8 @@ qm_lvds0_i2c0_lpcg: qxp_mipi1_i2c0_lpcg: clock-controller@56243010 {
+ 		compatible = "fsl,imx8qxp-lpcg";
+ 		reg = <0x56243010 0x4>;
+ 		#clock-cells = <1>;
+-		clock-output-names = "mipi1_i2c0_lpcg_clk",
+-				     "mipi1_i2c0_lpcg_ipg_clk";
++		clock-output-names = "lvds0_i2c0_lpcg_clk",
++				     "lvds0_i2c0_lpcg_ipg_clk";
+ 		power-domains = <&pd IMX_SC_R_MIPI_1_I2C_0>;
+ 	};
+ 
+-- 
+2.34.1
 
