@@ -1,100 +1,72 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B570D3715E
-	for <imx@lists.linux.dev>; Tue, 17 Sep 2024 07:53:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C9A535DC
+	for <imx@lists.linux.dev>; Tue, 17 Sep 2024 14:58:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726559593; cv=none; b=O0RshdjYF2s8Mxz5IwSi7srIGNCvTn3ui77opzZGR6w++I8wUCgnezKiliwhmqdqqunn0fQGSDxoFrVJX/SbVwaJ9QNnIUvZVTvkWX4XcooUVam6IgUa0mJQEGUl/216hb9vPExq82C38xi+76qtAdiGTWpf2aHrU4ilUi8vAxc=
+	t=1726585115; cv=none; b=fUHsW4dJFk6wITkQT+HQMSq6gRQwWCA7XrCl6r3HUwqc5mjhMJcn1o07Jb9cv1a/LHDeG3AG2XyhVX5HgTKWYgKxYNG3r6JSs91yi4+o22E5diIsSl15FuOTLINgfqleTOVk5FnSOW0oM8J+kgycn2qiTMI/aL+TF6/NnDE/dD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726559593; c=relaxed/simple;
-	bh=Se4Ox4FdYkwXYp/fPyNavBt76V4zzgnJl2LUMhEtcx4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ZP2C/+zErKZnol0jrePZ4OKAnw2apKPxTg0SAh4Kl4KFm0Zhmrc4crx6t5efo3/W8/W2CGHHFkJ4u8e0HahD3StUg0VdtAHrB/fiJ1fobXTVjYuJU8ziWQmUmZAtorRmWees+eYhLqc87/wwevxjpvR480hpwd1iF9aVmhW57PA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=F5UuLDUk; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1726585115; c=relaxed/simple;
+	bh=jNL6gnAeQmK5Ead24WrWOIcFJ8XntH6wyk9LBOJXGPY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OLP2zj2ay2x1RwL6ZjtOQIRkHQKCJ2Sej8OhqDH+4jOwf5xC1L83n6SfyblSBmdXYz9yEZp/+2n4aZjL7g4+jbkoE5yUNBE2jPOXlgXKmrifVSRAGR1FkrGo3EjmUz8GAYnyzZITUgWLwz4cucBlanStOWExjBqJoROGB+4IPvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Jxq1uaSJ; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="F5UuLDUk"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 70E90A05EC;
-	Tue, 17 Sep 2024 09:53:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=hWDsT5EXBtwnRc38qFl6
-	l7996Q0pdajQg2k4m4ObVyM=; b=F5UuLDUksSYX6OEMczNeP058BfWKqveL83e6
-	NRONq2tfTpdJaYCw0DOu81MywWbq2Ws/ze5Po5HVjeWzNl21OcVdWsHueinofmrn
-	BM1lUCAgBXLfcY0Mmh/4kKyHOQD0C06om9htPxEEGHdM1ad4upj5AVr9eEpGMrWT
-	xlZT/3jY5NgG+uDjU8HuM4/2yvz7pkl3KrICi10sS7CQK+Q/GXstAi3Z52yxfmda
-	gVY2xQm6Bfz3zRx7ZZy5zV8bKQNq6UY72n5KKgYhZkJAQRCfZYrrN96GyhdjVSH6
-	yOH2lq4UDO8FcigHVYlaAFcYSpQaEX4SSk9JedwDvUa5X0I/pLKQ8j4ToLreFkmd
-	Ms8WE+20Faxt3gZkptgNxu7VKUe9ti+W6bZU5R3LBPWQkgOVkIinSGrSUx6c8goJ
-	3VDKsOkzGFmprbT4y9i4+5D33pUBph9OKQFk/Sm8SJv80jedKRMo4cJMzL8g/xSq
-	xs0gvZQny2bN38VLU4MxFS283KCynzmvBKMKTZCHRTr2CNuNdIJSJZI5UFLBnjGP
-	PQy1WDK/sqBSMn9j+pUyRd2yxTJqsVhC8dQQAFHREZL4+tnlB54KhCuIK2v0CQxD
-	n2x1GQCyUHKQ3DNYZCfoqqCpZ9j4PTaHGA9COWeApvr3LdyEQzaWXwmHNpxQz4v7
-	ubmuW88=
-Message-ID: <c70a049b-cef8-4b9d-8fd6-e9d8ec0270cc@prolan.hu>
-Date: Tue, 17 Sep 2024 09:53:07 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Jxq1uaSJ"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id CBA4040004;
+	Tue, 17 Sep 2024 14:58:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1726585105;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iaBc2O4CmIP1XgLGYsmKKlrDN9ivIYK+vE5FkkijoTI=;
+	b=Jxq1uaSJ/XeRnVClcJjBhtug5mzDyI7powIgC1eTaG3O2NV1xyIebagdN71fZM9PiCxGXn
+	rsPYeOblz+8deTXpDKQDI1hx/CoYoaVaxEz3gBqrvz7vMok6VJEx3B4NA68UyCipQ44vxf
+	P9vGWWll2SjauoD4ZTd+IHc5S6AIsHfK5uIOManyKxKRJpbqzKibE34pYJ9EML07RAJDIZ
+	31DBIPqta9lmreLRlX3x+qhi43NTIWHnGDCBxTbXLMAMct+9HMxILTR3bUWngUGwxnxyQ8
+	qUYdQqgCqN1y0Vu3iES8v4Z/6mTKG99PTeoyZecqmQMqxRMZuvoR23EZxjQ9ZQ==
+Date: Tue, 17 Sep 2024 16:58:23 +0200
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: miquel.raynal@bootlin.com, conor.culhane@silvaco.com, frank.li@nxp.com,
+	carlos.song@nxp.com
+Cc: linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-imx@nxp.com
+Subject: Re: [PATCH v3] i3c: master: svc: adjust SDR according to i3c spec
+Message-ID: <172658508685.68424.14744518376546755348.b4-ty@bootlin.com>
+References: <20240719080233.842771-1-carlos.song@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] net: fec: Reload PTP registers after link-state
- change
-To: Frank Li <Frank.li@nxp.com>
-CC: <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Wei Fang <wei.fang@nxp.com>, Shenwei Wang
-	<shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Richard Cochran
-	<richardcochran@gmail.com>
-References: <20240916141931.742734-1-csokas.bence@prolan.hu>
- <20240916141931.742734-2-csokas.bence@prolan.hu>
- <ZuhJJ5BEgu9q6vaj@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
-In-Reply-To: <ZuhJJ5BEgu9q6vaj@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
- ATLAS.intranet.prolan.hu (10.254.0.229)
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2980D948546D716A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240719080233.842771-1-carlos.song@nxp.com>
+X-GND-Sasl: alexandre.belloni@bootlin.com
 
-Hi!
-
-On 9/16/24 17:05, Frank Li wrote:
-> On Mon, Sep 16, 2024 at 04:19:31PM +0200, Csókás, Bence wrote:
->> On link-state change, the controller gets reset,
->> which clears all PTP registers, including PHC time,
->> calibrated clock correction values etc. For correct
->> IEEE 1588 operation we need to restore these after
->> the reset.
+On Fri, 19 Jul 2024 16:02:33 +0800, carlos.song@nxp.com wrote:
+> According to I3C Specification(Version 1.1) 5.1.2.4 "Use of Clock
+> Speed to Prevent Legacy I2C Devices From Seeing I3C traffic", when
+> slow i2c devices(FM/FM+ rate i2c frequency without 50ns filter)
+> works on i3c bus, i3c SDR should work at FM/FM+ rate.
 > 
-> I am not sure if it necessary. timer will be big offset after reset. ptpd
-> should set_time then do clock frequency adjust, supposed just few ms, ptp
-> time will get resync.
+> Adjust timing for difference mode.
 > 
-> of course, restore these value may reduce the resync time.
-> 
-> Frank
+> [...]
 
-There's 3 problems with that:
-1. ATCORR, ATINC and ATPER will not be restored, therefore precision 
-will be immediately lost.
-2. ptpd does NOT set the time, only once, on startup. Currently, on 
-link-down, ptpd tries to correct for the missing 54 years by making the 
-PHC tick 3% faster (therefore the PPS signal will have a frequency error 
-as well), which will never get it there. One work-around is to 
-periodically re-start ptpd, but this is obviously sub-optimal.
-3. If the PTP server goes away, there's no way to restore the time. 
-Whereas if you save and reload it, you can continue, although with 
-degraded precision.
+Applied, thanks!
 
-Bence
+[1/1] i3c: master: svc: adjust SDR according to i3c spec
+      https://git.kernel.org/abelloni/c/96267f358c14
 
+Best regards,
+
+-- 
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
