@@ -1,153 +1,119 @@
-Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5770417C98C;
-	Wed, 18 Sep 2024 12:08:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB3B1E52D;
+	Wed, 18 Sep 2024 13:12:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726661286; cv=none; b=EkXXvkjpUSma3QZE81WM08xvEmAIwy0u7Fuk+9JNwBAfJBriFMGnIbehgRqWSkyeDnsrXp1lANPsAkeIsuFdmFkPj1hjg1gNmN977WRFUlZUM/OMEzN5E22HsNt8hc8sE8H9Xg2b/ABBJW6T3xN33ItJPV/wMhFeslx80deJ2qs=
+	t=1726665162; cv=none; b=D+KpXaUmfQlbV5tLjOnIqC5cJje2lj05hcgRur6UAHV4NJcSS1WUBTmsP9DtOlrakwJ1NhhyEsMGCnzIYssAn8wYEwZIIFkZAfosCKA5q3k49lUltV+4kjIf+hLNvFJ6fpegxpVaeS4q8t4UzDvWjjJJtiMZM8EoN0VNMdCNMtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726661286; c=relaxed/simple;
-	bh=BMWcxuuYadRj1cmSNDSsvmmpyRSWUl3YEex9rlXeUPE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=J0ped2I3Ec9KGRAn5u2DNlKxmNhoJ7bOBekQKH+jwOspd5gp+YfOP1KKk2hy8rSjyE2vcoQPZTp/9yRS+mwkMwoNV909mN3IrY7KjbnNocWojaBp9HK0AcJv9XQ0sMgNbWVh+1Vcp9ml4neqqFd7aPHymbEKMLBPD+zDhAFLvg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=Y5BZR5yX; arc=none smtp.client-ip=188.40.30.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+	s=arc-20240116; t=1726665162; c=relaxed/simple;
+	bh=yxYXYlwmteaEMYa8T0wu+hdQ6QPJDt+/p1TX+biQid4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=noWxakwctzA40fO8d9/cjrpCICQuSMOzJgDt+9c3xMVcaICIPnkyKIq1MTrwUhXlFDa7QMJffEG3w5b+u+OyY+m856jB8mARMSS1zKgkxvqnrmrkKaUV/eCTlFQwdNrNTkRRawEWcI6UKI42LDWkjLpGXA+QCE3MFt3I7kk9fqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pg7vMisb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="Y5BZR5yX"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
-	s=default2211; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:Sender:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=HdxkpAhtUoAhJMQeArjLrrrlHbN0R0p+W+58ksBNDKQ=; b=Y5BZR5yXrICc6yVE5EnSVFBTpJ
-	UCwOaPGRR+va9fObbX3+Vl/iLsy1pbvdGMhUC3wHlWTQW97O+MTsWCEVSTwoTwNcEZU51J0psMmEJ
-	Y2xkbVUFOF3BUAAHo5SyhjtjHR1E1yPxTLJWNM9wwynR4Trp5dFfrjmdGpvBExdDxV2bU/IzHX5OZ
-	EHfDYS98NkUk65vbFn3hNUN4vmymJIF0+XBnuwA/sZrvdavNi8Fvc2ZKUPSZuKvlYudnVI/9SZZhk
-	MEoJKBhP2tAR5Z90cj4LUhUgLxsAjZyMh95CfRW4nI4C+nr7VkezL10rofhLJGCKT3IAQuFfOl/Ut
-	0zzSqrAA==;
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sean@geanix.com>)
-	id 1sqtTE-000Nl5-Vx; Wed, 18 Sep 2024 14:07:45 +0200
-Received: from [185.17.218.86] (helo=zen.localdomain)
-	by sslproxy05.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sean@geanix.com>)
-	id 1sqtTF-000Fv4-0D;
-	Wed, 18 Sep 2024 14:07:44 +0200
-From: Sean Nyekjaer <sean@geanix.com>
-Date: Wed, 18 Sep 2024 14:07:42 +0200
-Subject: [PATCH 1/2] ARM: dts: nxp: imx6ul: add dma support for all uarts
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pg7vMisb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACFF3C4CED9;
+	Wed, 18 Sep 2024 13:12:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726665161;
+	bh=yxYXYlwmteaEMYa8T0wu+hdQ6QPJDt+/p1TX+biQid4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=pg7vMisbhkectbMH6ox1OFz08DXxCrNtpyeh8qTisPyO0yAIVygzyR3lwe38iXfxu
+	 WX0+zA0+X1BGKV0CGLa08t9meaVsYA+URodVDfMZDocbeL/rC5XW19kR/FvtQm7VeF
+	 VOZbrrPPs5YS0acQ3ff2MP4zFvTsRht5r49zf0tdcJRtq7GyyRp+7kYmSkIf8CEQZY
+	 BHzTUGuXlHtxnFgZJSE1lD/D3JNUj1t19xMxJmzFDufnZzKChdIMXxOUcjoDWYH075
+	 XjcJyYnoEi2PnT5V4C0gwO3sNbcLJnvga84Ob9v8VwE4BOnY5nvSYV0hwp5qa/Ciw8
+	 WhfwQxWBrBB/Q==
+Message-ID: <c96af8f2-4b06-4e7b-b3ca-d4db67df3137@kernel.org>
+Date: Wed, 18 Sep 2024 15:12:33 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240918-imx6ul-sdma-v1-1-d25abd56e65c@geanix.com>
-References: <20240918-imx6ul-sdma-v1-0-d25abd56e65c@geanix.com>
-In-Reply-To: <20240918-imx6ul-sdma-v1-0-d25abd56e65c@geanix.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Sean Nyekjaer <sean@geanix.com>
-X-Mailer: b4 0.13.0
-X-Authenticated-Sender: sean@geanix.com
-X-Virus-Scanned: Clear (ClamAV 0.103.10/27402/Wed Sep 18 12:32:17 2024)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] dt-bindings: arm: Add i.MX8MP IOTA2 Lumpy board
+To: =?UTF-8?B?TWljaGFsIFZva8OhxI0=?= <michal.vokac@ysoft.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Shawn Guo <shawnguo@kernel.org>, Petr Benes <petr.benes@ysoft.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Herburger <gregor.herburger@ew.tq-group.com>,
+ Hiago De Franco <hiago.franco@toradex.com>,
+ Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+ Joao Paulo Goncalves <joao.goncalves@toradex.com>,
+ Michael Walle <mwalle@kernel.org>,
+ Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Mathieu Othacehe <m.othacehe@gmail.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20240917151001.1289399-1-michal.vokac@ysoft.com>
+ <20240917151001.1289399-2-michal.vokac@ysoft.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240917151001.1289399-2-michal.vokac@ysoft.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Add dma support on uart1, uart2, uart3, uart4, uart5, uart6 and uart7.
+On 17/09/2024 17:09, Michal Vokáč wrote:
+> Add new board from the Y Soft IOTA family. This one is based on the i.MX8MP
+> SoC. It is basically a stripped-down clone of the EVK board with some minor
+> additions.
+> 
+> Signed-off-by: Michal Vokáč <michal.vokac@ysoft.com>
 
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
----
- arch/arm/boot/dts/nxp/imx/imx6ul.dtsi | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul.dtsi
-index 235aa676618b..6de224dd2bb9 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ul.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ul.dtsi
-@@ -274,6 +274,8 @@ uart7: serial@2018000 {
- 					clocks = <&clks IMX6UL_CLK_UART7_IPG>,
- 						 <&clks IMX6UL_CLK_UART7_SERIAL>;
- 					clock-names = "ipg", "per";
-+					dmas = <&sdma 43 4 0>, <&sdma 44 4 0>;
-+					dma-names = "rx", "tx";
- 					status = "disabled";
- 				};
- 
-@@ -285,6 +287,8 @@ uart1: serial@2020000 {
- 					clocks = <&clks IMX6UL_CLK_UART1_IPG>,
- 						 <&clks IMX6UL_CLK_UART1_SERIAL>;
- 					clock-names = "ipg", "per";
-+					dmas = <&sdma 25 4 0>, <&sdma 26 4 0>;
-+					dma-names = "rx", "tx";
- 					status = "disabled";
- 				};
- 
-@@ -296,6 +300,8 @@ uart8: serial@2024000 {
- 					clocks = <&clks IMX6UL_CLK_UART8_IPG>,
- 						 <&clks IMX6UL_CLK_UART8_SERIAL>;
- 					clock-names = "ipg", "per";
-+					dmas = <&sdma 45 4 0>, <&sdma 46 4 0>;
-+					dma-names = "rx", "tx";
- 					status = "disabled";
- 				};
- 
-@@ -1075,6 +1081,8 @@ uart2: serial@21e8000 {
- 				clocks = <&clks IMX6UL_CLK_UART2_IPG>,
- 					 <&clks IMX6UL_CLK_UART2_SERIAL>;
- 				clock-names = "ipg", "per";
-+				dmas = <&sdma 27 4 0>, <&sdma 28 4 0>;
-+				dma-names = "rx", "tx";
- 				status = "disabled";
- 			};
- 
-@@ -1086,6 +1094,8 @@ uart3: serial@21ec000 {
- 				clocks = <&clks IMX6UL_CLK_UART3_IPG>,
- 					 <&clks IMX6UL_CLK_UART3_SERIAL>;
- 				clock-names = "ipg", "per";
-+				dmas = <&sdma 29 4 0>, <&sdma 30 4 0>;
-+				dma-names = "rx", "tx";
- 				status = "disabled";
- 			};
- 
-@@ -1097,6 +1107,8 @@ uart4: serial@21f0000 {
- 				clocks = <&clks IMX6UL_CLK_UART4_IPG>,
- 					 <&clks IMX6UL_CLK_UART4_SERIAL>;
- 				clock-names = "ipg", "per";
-+				dmas = <&sdma 31 4 0>, <&sdma 32 4 0>;
-+				dma-names = "rx", "tx";
- 				status = "disabled";
- 			};
- 
-@@ -1108,6 +1120,8 @@ uart5: serial@21f4000 {
- 				clocks = <&clks IMX6UL_CLK_UART5_IPG>,
- 					 <&clks IMX6UL_CLK_UART5_SERIAL>;
- 				clock-names = "ipg", "per";
-+				dmas = <&sdma 33 4 0>, <&sdma 34 4 0>;
-+				dma-names = "rx", "tx";
- 				status = "disabled";
- 			};
- 
-@@ -1129,6 +1143,8 @@ uart6: serial@21fc000 {
- 				clocks = <&clks IMX6UL_CLK_UART6_IPG>,
- 					 <&clks IMX6UL_CLK_UART6_SERIAL>;
- 				clock-names = "ipg", "per";
-+				dmas = <&sdma 0 4 0>, <&sdma 47 4 0>;
-+				dma-names = "rx", "tx";
- 				status = "disabled";
- 			};
- 		};
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
--- 
-2.45.2
+Best regards,
+Krzysztof
 
