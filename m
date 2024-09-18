@@ -1,219 +1,866 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010043.outbound.protection.outlook.com [52.101.69.43])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99380176FA0
-	for <imx@lists.linux.dev>; Wed, 18 Sep 2024 09:58:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726653494; cv=fail; b=i4c0sltyR6C//h4782LSZNfiQt3+/9mqHcVVeBdQHwat3tJH1nvTNh+hc1CRwZ0RhYGz9OIFukP8yn9NPRlNuTW5O4hIDxCwV4AG51MiCf9i97OI1BAM0fLjckQdZ9t/9r8W09R8EieXrv6tCCaonFFS9DnA2IddsaUvzFCrXKU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726653494; c=relaxed/simple;
-	bh=JcW3glokefz4QzVtMZzgUZZcA1+zsRLChoP3Rr9Hk68=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=nLjQgrREd5jGlJfFCquJDuKN+2/QsLEJQGsXG5dBB40Cx/OaEj/8KMT78sXELdZtkzht6XGpll0NeV3BZm5wsFt5qVG4FkhSoXBqV5cTEQL6osXNRuKmIOCT3Z5S6a2YKOj7TLMNRsAjNcU6yQHBQEKBDI0NGNUC2hzFMU4qgLA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=frkb6jfi; arc=fail smtp.client-ip=52.101.69.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="frkb6jfi"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=C4I1lGM++PEhH+q844aU5ILTiqn/EGUKVJOZwHt3qhYHNuO3Cu2N2hKdIlzvabJue+X65H59pZa4pFF9ye9lqNjt1nhJmVVaYQMTOdfVb/kmdsLwLzzf2DVRasBB3SWY+TtQWBU3valRlWv8S9acPvFe608yEaV0OVxXewlH6rrORfy7cJuw8BGsn0br1//oNCeeyu4vmXkZa8ibDLoIHFqdUy9+PrALRCkbrVkIZgawL3XYHDGvYqegDht7a30Tn+CLP6yBiC1t5g+XO/0N8me6KSMeY6yJGYiqdk03CCC+J27WPbAJapWHdspPKvy7CxAp8sfGcZK7hQECuQcF0Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2t8aT/C2ZVzqhz6vqWslPL1GdRNvOAnYgk3jh4BH5uQ=;
- b=j/08qCX+SeFDSKpXOGpNNR7WdGuuKArBuRNem0ICoFeB9fQ6+oQJ0IzYDO3r2tTh1nkNMKH4+etUccOaYm0mh9bdDB+W7R6iiUjbmKewk9uFvGgbaH8Hciq9kyIXFXM6lHtPF+MZTNNFfzWQuee+EPgEBzFSIoPgSkBsMK6PCt8DZVjQQRKPEEra12108ufQeDYDiaeibX4tjNJd6+BAYYKKr921LgN1LIKgOIuL+2mcA/o2BuFRi1eVwpnjaujyIv7FnuLgA2vBON/WX8ky8ObY9yAdEOKDIqEtiytYte2N8oPS48SzpCywERj5BxBOZCQaaINVL2I5hvKe62mGJg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2t8aT/C2ZVzqhz6vqWslPL1GdRNvOAnYgk3jh4BH5uQ=;
- b=frkb6jfi8lCxtWbG0piSCyPa1SoC2AyghpIt2D0CvM34NNgqwS1WotYu2SI1GZfLJUqOwSnRvAh/6PG55PBbV0jwi4YjEofnU+rA2quk4B2CTl4XLJfvEuEIkJ1MjGb/hsbfG0T/YILbRmAZ3tIi+6UEh34yAmrqAEiM/g1F09mun6ykKRM7Jt9aRWYEwmN0iJSYiztipEc309vCzssXE77QuD1vOpXkc5fZnBxpkcLb+R7rgt+hRRkXVLeez3TF5KPteK+tSrNlCEvVhWU2eGw9ElNinbdmuc7djrK/NVMZnUeD3J0VsvuBpwdsNOuuTanCZziUctV96rteN5WkAQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com (2603:10a6:10:352::15)
- by AM7PR04MB6806.eurprd04.prod.outlook.com (2603:10a6:20b:103::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.24; Wed, 18 Sep
- 2024 09:58:07 +0000
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::708f:69ee:15df:6ebd]) by DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::708f:69ee:15df:6ebd%7]) with mapi id 15.20.7962.022; Wed, 18 Sep 2024
- 09:58:07 +0000
-Message-ID: <6284ad03-bf31-4096-b62f-12fb888683af@oss.nxp.com>
-Date: Wed, 18 Sep 2024 12:58:03 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] arm64: dts: s32g: Add S32G2/S32G3 uSDHC pinmux
-To: Krzysztof Kozlowski <krzk@kernel.org>,
- Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>,
- Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- NXP S32 Linux Team <s32@nxp.com>, Radu Pirea <radu-nicolae.pirea@nxp.com>
-References: <20240830113347.4048370-1-ciprianmarian.costea@oss.nxp.com>
- <20240830113347.4048370-2-ciprianmarian.costea@oss.nxp.com>
- <f2660611-6f60-4913-8705-e99956ab23b0@kernel.org>
-Content-Language: en-US
-From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-In-Reply-To: <f2660611-6f60-4913-8705-e99956ab23b0@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AS4PR10CA0019.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:20b:5d8::19) To DU0PR04MB9251.eurprd04.prod.outlook.com
- (2603:10a6:10:352::15)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960BB17AE0C;
+	Wed, 18 Sep 2024 11:24:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726658679; cv=none; b=ph1Ry5UInbBdYMNLseGoNuZXpOh5YXBS8W4rx8hvaMBiUy7/bj5B6AfBTb7Q7NW6IMl/pb+dP9PwUA7Hhlv1iREXf4Fv9XWZmZYal9xqGh/6XdZYMoFrcW1Qe8yz6108EUvCoV/ud8qQfEGGJbKWWvR3kNZYT3TXBeHu0wEoVmM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726658679; c=relaxed/simple;
+	bh=rDwuqECfZUxBcJmf4np/5KSMFnrFSsuYzzJPrwsrK8E=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=t+nW9OY1zBedr2WI3T6VYhNkzLSj3aVGp1KL6ZzMSWawSyUIIiOp3v7+aDSO4e55c1OkIGh/irH5jh4AJTLC7U1qG2oeLAhEIu/rL1mt4AePKa2yuxzPv/UZg6jFeOkYUnieR0khVnwAaNQqU09t5v9K92XxynoiwiEfj1W1ZU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4X7x90742RzyRhW;
+	Wed, 18 Sep 2024 19:23:16 +0800 (CST)
+Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1981B1800FF;
+	Wed, 18 Sep 2024 19:24:33 +0800 (CST)
+Received: from localhost.localdomain (10.90.30.45) by
+ dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 18 Sep 2024 19:24:32 +0800
+From: Yunsheng Lin <linyunsheng@huawei.com>
+To: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
+CC: <liuyonglong@huawei.com>, <fanghaiqing@huawei.com>,
+	<zhangkun09@huawei.com>, Yunsheng Lin <linyunsheng@huawei.com>, Robin Murphy
+	<robin.murphy@arm.com>, Alexander Duyck <alexander.duyck@gmail.com>, IOMMU
+	<iommu@lists.linux.dev>, Wei Fang <wei.fang@nxp.com>, Shenwei Wang
+	<shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Eric Dumazet
+	<edumazet@google.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek
+ Kitszel <przemyslaw.kitszel@intel.com>, Alexander Lobakin
+	<aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, Daniel
+ Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed
+	<saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan
+	<tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi
+	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen
+	<shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, Kalle Valo
+	<kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Andrew
+ Morton <akpm@linux-foundation.org>, Ilias Apalodimas
+	<ilias.apalodimas@linaro.org>, <imx@lists.linux.dev>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<intel-wired-lan@lists.osuosl.org>, <bpf@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>,
+	<linux-mm@kvack.org>
+Subject: [PATCH net 2/2] page_pool: fix IOMMU crash when driver has already unbound
+Date: Wed, 18 Sep 2024 19:18:25 +0800
+Message-ID: <20240918111826.863596-3-linyunsheng@huawei.com>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20240918111826.863596-1-linyunsheng@huawei.com>
+References: <20240918111826.863596-1-linyunsheng@huawei.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9251:EE_|AM7PR04MB6806:EE_
-X-MS-Office365-Filtering-Correlation-Id: 929dbf09-6b00-4a87-95a5-08dcd7c86558
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?YXZFOEpPNVkvZ3pPQTB6anZNWFhkOWhhNFdoclpjTWxYaERmcjExRXp5Yzd1?=
- =?utf-8?B?WlBJT0JUK1lZTTVzaSsyS0pKY1EzUHA5bVpRVVlFRWtZdmliemgyVTQ0aU5z?=
- =?utf-8?B?S245MVJXL0lIQVRZRElXemhFZVpHOUdpbGZDVUNsVVpzZjJBSXkwWDk1MWhJ?=
- =?utf-8?B?U3BpSWpIZGFXK2taWlVYNERXN2svWGp4NzJweTVJRTRQMUZLV1hNbkV2Uits?=
- =?utf-8?B?Wm9YelYxYXFqdmg2Z3UxQ0ZWa0t6N3JQMmtoM3NHSVdPZmk4Q2oxT1FweVVE?=
- =?utf-8?B?NzlaMitndUhNRXo2dTZtcXQzUk9MZHBmQnFZUWNtZ1VWMGR2c3RwUVVVTzha?=
- =?utf-8?B?dzRyVm5YVXhDQXJSbUROcitGWEx3dTBjOFFNZzBncWhTWTNSZUxiRXhRV2Zs?=
- =?utf-8?B?Tmo0WXpValE5YjZrUXh3ZDcvM0M3cmxOdG94NVNGMll2eGJwU3I2OExCYzdj?=
- =?utf-8?B?WWVDa3hwQmo0TXZlUTVaOFh0NkhmbmtIMFJRQnRiSnU4NDdmaXB4WlZ1YlpU?=
- =?utf-8?B?NEs5YjJGN1NiMzcvOUthZ1VlalhEalpndFlVY21iblVCTzFMbUNSQnoxYzFJ?=
- =?utf-8?B?QlI2ZlBIOWlEU0NjbVl6Z2VyMmlyYmhnRGY3U2pxdStaQndzWUkrYWNlTE1G?=
- =?utf-8?B?US9nYlFuUjlzMVg3REhTVmI0ZFVrNzl2ZTIyTnRReHcwUlNVTHFIa2x3NkUy?=
- =?utf-8?B?ZTVSd1VQM1JJYzVGRVNzL2x6NHViOElUQk9JaGtySmVURkZxQkVMeEE5enha?=
- =?utf-8?B?NlMxYUpXR1BDUTlBdnNlYWFqS2V3dDgrWUR6NlJjUVRweVlETml6czhaTmts?=
- =?utf-8?B?VTBScG8vQlJHVzg1V1dORERSeFJQNUh2UVp6WlhMMmMrc003TEZyL0Y1ckFS?=
- =?utf-8?B?UDRCVEtiUVBWTm9kRkZkbmlhZDlTYmttbzRMVENmSCtrYnlMN01BVTIyVHFT?=
- =?utf-8?B?dnVvWTVWL3ZqOVVSM2ZQQTVheGpYREFjTEhrb01oMVdYNmZHeFVuWDZUd3Np?=
- =?utf-8?B?VGtCRnpBTlBDRldmaVRld1JnUFBURTBZbUZGSDdtNGVtOTd3UGxkeWg2TmMy?=
- =?utf-8?B?RWtMZ0UxVEFpMUJUanV5WWNFeTZCVGl4eTJCbVQzMU56d0tDZDdZbU82Rkho?=
- =?utf-8?B?RzV6WjkvUGFFSVN6N1NFYjJ2U1dXb3Y5Nmp0b1VadUt2cGJKSC9pYzZGVWpz?=
- =?utf-8?B?UEp4UENxVHk3WnBrTFNCVHQ4TEpnWmx4ME85dlAxMTlGL05KNlY1RVh5aHhQ?=
- =?utf-8?B?aFl5dkNOV3JZR2xJKzRYWnY3SUtxYTRNU1kxcjhNODFCOWMwWjdMb3FSd25x?=
- =?utf-8?B?andSbXJKd1ZqY2hZR0tUaEpPT3lJa1pRdTVLUlBZektqblltak1RSDZ3Q3Rr?=
- =?utf-8?B?MVVBa0NvQXlxWmJWc3lzY0M0d3pVSGF6TVppN1ArbVNDdTF1VTJ3QjIzRGVW?=
- =?utf-8?B?K2ErQ00wYUM0K2lVRnl6NjBaUXRZVUF1ZnJnQUdxc2VyakMzODhKajUxOHM1?=
- =?utf-8?B?RDJFd2tNWW1abTRLVjdLTjdOdDJaelY0dWN0ZVVkem16cVE0UTJtUFhaK0xG?=
- =?utf-8?B?dXEyekIyajdBTk5yb2pEOFFlY1ZqODM2dnpWb0pqQTZsNGNZTU5kNk5WRmVM?=
- =?utf-8?B?ZUpTRXlEaXJGRjB2QlRqU3FrNjQrN3cyTzRlY29Tdytlc1Fzd2h1R2poQTR1?=
- =?utf-8?B?NUFoVE1qd0RKVEVZeTVPSWlmUG4zUlRZa0krR1FEU0NaamE1ZXRvQ1V3SHZG?=
- =?utf-8?B?MW1TRmR6NjZ0UGVMekROVUd6TDhlVEhBMlh3c1Q2OXQxYWkxcWtIekNSWDE4?=
- =?utf-8?B?WnorLzk0eVFJMGE3Z08yV1J2aG5nemNZSitZRzRweEZiRGFiUnluUDBqdEFU?=
- =?utf-8?Q?O01seMtlsZJvP?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9251.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NlB0ZDd3R1ZKZ3ZPaDMvenc1OUdXaXhFbURtMUdqdmxJZ0FiUW1FbTdQSlFB?=
- =?utf-8?B?N1dUUTVqa3FuaXo1SmhORHZsUDdITHhmM2JhV3BLcGRZQW9mNVBRblJmdDRa?=
- =?utf-8?B?NTNITzMwOERWb295K2RRMXFCZTZRaDZtM1N2MXpiWTFZMUZXU1dpdkQrRGJI?=
- =?utf-8?B?bVJ3bnVwdGkvbWdTUE9MTVk2Uk0vZGI4Nks2TFMrWkNiSXpuSmVwbXJ3U2p2?=
- =?utf-8?B?aEhlM1NSY3RBNUhjVEtGS2kvQ0ozTmd5aTAvVnU1SUlOT0x4azRpMWdyL0tI?=
- =?utf-8?B?NDZ3NElObUthelVzUnFMcUNZcmh6bDJFTWVmLzB3a0RIemx1d2JrMnFkSEE3?=
- =?utf-8?B?RVRoVGlSKzBSRmI0MUEyQkFDREhGc1ZvRkY5OENYRWxGa08zUkkyUDlxNGdK?=
- =?utf-8?B?d0xJVkIyK0Z2dXFjYWo5R0NVUkhpTktGQzExd3BlYlpFWks4Q1dQRFBrOHdl?=
- =?utf-8?B?aVVGdVdwUFRpZ3puazgzMXhpZkpxYTBIN2ZkVldtdXBvdk1SMzkyKzRCRlFa?=
- =?utf-8?B?R01qNlRXelVCWVdSTXR0b3NGb3NUNFRQa2dpc0lqQVFOZEZsQmxVMTYyV1R5?=
- =?utf-8?B?REpadis5cSszeWVmb3MveS9MejFRczhoYk9TNFhaSnNVN0I5YWFZcUZ0Ykdw?=
- =?utf-8?B?SmprMDhWY3RlejBkMkYxU04wVTBoR0syT0JubWQxclduZXVIUUlJbnk1dm9h?=
- =?utf-8?B?THNXbExzRlU2a1VxWmVKYjRxQUQya2YwRUNKR0lFb3pLSXhTNXMxQytFMWpm?=
- =?utf-8?B?d2lsSGIwUVdCNnA3U2Q5a2pjaXdwRm52bU1SdXpINTZYanpaS1BCSlRHMVdY?=
- =?utf-8?B?YWRoUnNnRzNQWEZDNWJQZ0hBeWJjM0RXKyt3MmZWc2VCWllibmcvWGw0MkJl?=
- =?utf-8?B?ZUN6M1ZadmxiTkxWMFlGZGtSY2tBMGl4MlI1V3dMQWZRUEpnM2loSHg0eFlY?=
- =?utf-8?B?NWYxY2ZVNVBVdVN4N2U1TndNTGw4T1FrVE51QU1DcXBsTjE0SVozbzlOa1pC?=
- =?utf-8?B?MnZHQllMeHQvTFA1clU5eTRST04vSGZEbXc3ampyQU5zNVFZZmRJU0xva0pC?=
- =?utf-8?B?SHUrN2lCNThmQSt1cFJJME5KeHQ5VEpjZW9yTENIWVZIRmNuZnRVQzNCbVg2?=
- =?utf-8?B?czhFeC9KWDh5K0czbmUzREExcGRBdEtsVmJJL0FnK0lBcUdxVVphc0dZc1Q2?=
- =?utf-8?B?eE5XcVY3ODEzdlpxQThxeGNKeG9ybGIrTkJHNy9SVGEvODRaRlFDODRNSmpW?=
- =?utf-8?B?MTVkQTVaSWlIYldwYnVyNklDRmdRZ0xYOStOK0c2R0NOd3VCdWlqNFNmaCtz?=
- =?utf-8?B?Tm9HMzFkVDVCOTdkRWF1Q2Jtbml4OXF0cXJhYUZCQTNlRnI3MHh5bUY0eXFR?=
- =?utf-8?B?enN0N1NqOXI3cUhCSUlVUlo3OTJOVjRYMTVOQnhCYkdKQTB5ZnEvS0R4cDBh?=
- =?utf-8?B?RGpxUk5zbzJyN3hYVkIyVGFsU0JZc3BOeVRtLzljWUhrWDRBNTZoUVJEYldz?=
- =?utf-8?B?eVBHSG5QeWdHbHVVTk55bk9nU3VRcURxajJtYjN3L3lkQlhEOFJXcWJ3R2Uv?=
- =?utf-8?B?ZUVZZHNaWlI3ck10OEpIMlBkQ2RhRkEzc01qelVFTEFjUHNLRVVOWXQvMndS?=
- =?utf-8?B?cGpjY2NxZldzcGpNbDBFSDA4L2JsK3E1T2FwVExDQ2xoVlh0U0FhRzR4ZDU2?=
- =?utf-8?B?OXN5SU52cGR3K2hMREN4bEk1VWZUekdzNU1XTG05SU5lWDd3Q1FuVk14Ynlv?=
- =?utf-8?B?VjFTNllXdWwzRFF2c2o5SG4rdm9ZSzFCVWx6RWFCT2dEaU1kbVhOMm45cFpk?=
- =?utf-8?B?ZDRZaGJ2MEVPYllIV1Qyd2ZoUHZsb3dzMkFVRG9WN0pjeHg3Z1ArZ1pIb3dp?=
- =?utf-8?B?Vk5pOU5kMjNvaUF6OTJYM3ZTQjJlQTVOYU5UdzV1RnN1dmVyV1JFS1N3STVs?=
- =?utf-8?B?NlRwc243N0REcHhyY1IrcE5IY0lHWTNMU0tTTnlIQjV6eUYvQ2lsajdsZXZE?=
- =?utf-8?B?ZzNVUUpnZUtYcXQ2Z0hrTjRuTUp3REZ5ZTUwaE1MV0s1eTg5ODhyT08vaCtM?=
- =?utf-8?B?UXdGajVjMXdLTS8wMU5CcmJXMkc2T1BkZXVIdm9aTDJ4djdZZ3ZtNkdUY2VT?=
- =?utf-8?B?UlhoMm9VZFdNeWZmd1daWTNtRGJmVjZqaDlhS1ZIaTN5T3FsZGI4NWh2UkMv?=
- =?utf-8?Q?EregD8ub5YRceZqEPttgbmA=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 929dbf09-6b00-4a87-95a5-08dcd7c86558
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9251.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2024 09:58:07.8107
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PXcw2MRGiZgbFiD4CCURwomz9Nq0uu86s+WvWv7yNcm7KcGCSyZmtUPWs3m1xkr9MfX9LRSeP71VBniZCcGV7PRVhu/SYyV3+XA30SQSyhI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6806
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemf200006.china.huawei.com (7.185.36.61)
 
-On 9/17/2024 8:44 PM, Krzysztof Kozlowski wrote:
-> On 30/08/2024 13:33, Ciprian Costea wrote:
->> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
->>
->> Adding 100mhz & 200mhz pinmux support for uSDHC helps to enable
->> higher speed modes for SD (SDR50, DDR50, SDR104) and
->> eMMC (such as HS200, HS400/HS400ES).
->>
->> Signed-off-by: Radu Pirea <radu-nicolae.pirea@nxp.com>
->> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
->> ---
->>   arch/arm64/boot/dts/freescale/s32g2.dtsi      | 153 ++++++++++++++++++
->>   .../arm64/boot/dts/freescale/s32g274a-evb.dts |   4 +
->>   .../boot/dts/freescale/s32g274a-rdb2.dts      |   4 +
->>   arch/arm64/boot/dts/freescale/s32g3.dtsi      | 153 ++++++++++++++++++
->>   .../boot/dts/freescale/s32g399a-rdb3.dts      |   4 +
->>   5 files changed, 318 insertions(+)
->>
->> diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
->> index fa054bfe7d5c..7be430b78c83 100644
->> --- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
->> +++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
->> @@ -162,6 +162,159 @@ jtag-grp4 {
->>   					slew-rate = <166>;
->>   				};
->>   			};
->> +
->> +			pinctrl_usdhc0: usdhc0grp-pins {
->> +				usdhc0-grp0 {
-> 
-> Are you sure that this passes dtbs_check W=1?
-> 
-> Best regards,
-> Krzysztof
-> 
+Networking driver with page_pool support may hand over page
+still with dma mapping to network stack and try to reuse that
+page after network stack is done with it and passes it back
+to page_pool to avoid the penalty of dma mapping/unmapping.
+With all the caching in the network stack, some pages may be
+held in the network stack without returning to the page_pool
+soon enough, and with VF disable causing the driver unbound,
+the page_pool does not stop the driver from doing it's
+unbounding work, instead page_pool uses workqueue to check
+if there is some pages coming back from the network stack
+periodically, if there is any, it will do the dma unmmapping
+related cleanup work.
 
-Hello Krzysztof,
+As mentioned in [1], attempting DMA unmaps after the driver
+has already unbound may leak resources or at worst corrupt
+memory. Fundamentally, the page pool code cannot allow DMA
+mappings to outlive the driver they belong to.
 
-I've checked as follows:
+Currently it seems there are at least two cases that the page
+is not released fast enough causing dma unmmapping done after
+driver has already unbound:
+1. ipv4 packet defragmentation timeout: this seems to cause
+   delay up to 30 secs:
 
-$ make ARCH=arm64 CHECK_DTBS=y W=1 freescale/s32g274a-evb.dtb 
-freescale/s32g274a-rdb2.dtb freescale/s32g399a-rdb3.dtb
-   DTC [C] arch/arm64/boot/dts/freescale/s32g274a-evb.dtb
-   DTC [C] arch/arm64/boot/dts/freescale/s32g274a-rdb2.dtb
-   DTC [C] arch/arm64/boot/dts/freescale/s32g399a-rdb3.dtb
+2. skb_defer_free_flush(): this may cause infinite delay if
+   there is no triggering for net_rx_action().
 
+In order not to do the dma unmmapping after driver has already
+unbound and stall the unloading of the networking driver, add
+the pool->items array to record all the pages including the ones
+which are handed over to network stack, so the page_pool can
+do the dma unmmapping for those pages when page_pool_destroy()
+is called.
 
-Best Regards,
-Ciprian
+Note, the devmem patchset seems to make the bug harder to fix,
+and may make backporting harder too. As there is no actual user
+for the devmem and the fixing for devmem is unclear for now,
+this patch does not consider fixing the case for devmem yet.
+
+1. https://lore.kernel.org/lkml/8067f204-1380-4d37-8ffd-007fc6f26738@kernel.org/T/
+
+Fixes: f71fec47c2df ("page_pool: make sure struct device is stable")
+Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+CC: Robin Murphy <robin.murphy@arm.com>
+CC: Alexander Duyck <alexander.duyck@gmail.com>
+CC: IOMMU <iommu@lists.linux.dev>
+---
+ drivers/net/ethernet/freescale/fec_main.c     |   8 +-
+ drivers/net/ethernet/intel/iavf/iavf_txrx.c   |   6 +-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c   |  14 +-
+ drivers/net/ethernet/intel/libeth/rx.c        |   2 +-
+ .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |   3 +-
+ drivers/net/netdevsim/netdev.c                |   6 +-
+ drivers/net/wireless/mediatek/mt76/mt76.h     |   2 +-
+ include/linux/mm_types.h                      |   2 +-
+ include/linux/skbuff.h                        |   1 +
+ include/net/libeth/rx.h                       |   3 +-
+ include/net/netmem.h                          |  10 +-
+ include/net/page_pool/helpers.h               |  11 ++
+ include/net/page_pool/types.h                 |  15 +-
+ net/core/devmem.c                             |   4 +-
+ net/core/netmem_priv.h                        |   5 +-
+ net/core/page_pool.c                          | 161 +++++++++++++++---
+ net/core/page_pool_priv.h                     |  10 +-
+ net/core/skbuff.c                             |   3 +-
+ net/core/xdp.c                                |   3 +-
+ 19 files changed, 212 insertions(+), 57 deletions(-)
+
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index acbb627d51bf..c00f8c460759 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -1009,7 +1009,8 @@ static void fec_enet_bd_init(struct net_device *dev)
+ 				struct page *page = txq->tx_buf[i].buf_p;
+ 
+ 				if (page)
+-					page_pool_put_page(page->pp, page, 0, false);
++					page_pool_put_page(page_pool_to_pp(page),
++							   page, 0, false);
+ 			}
+ 
+ 			txq->tx_buf[i].buf_p = NULL;
+@@ -1538,7 +1539,7 @@ fec_enet_tx_queue(struct net_device *ndev, u16 queue_id, int budget)
+ 			xdp_return_frame_rx_napi(xdpf);
+ 		} else { /* recycle pages of XDP_TX frames */
+ 			/* The dma_sync_size = 0 as XDP_TX has already synced DMA for_device */
+-			page_pool_put_page(page->pp, page, 0, true);
++			page_pool_put_page(page_pool_to_pp(page), page, 0, true);
+ 		}
+ 
+ 		txq->tx_buf[index].buf_p = NULL;
+@@ -3300,7 +3301,8 @@ static void fec_enet_free_buffers(struct net_device *ndev)
+ 			} else {
+ 				struct page *page = txq->tx_buf[i].buf_p;
+ 
+-				page_pool_put_page(page->pp, page, 0, false);
++				page_pool_put_page(page_pool_to_pp(page),
++						   page, 0, false);
+ 			}
+ 
+ 			txq->tx_buf[i].buf_p = NULL;
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_txrx.c b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
+index 26b424fd6718..658d8f9a6abb 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_txrx.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
+@@ -1050,7 +1050,8 @@ static void iavf_add_rx_frag(struct sk_buff *skb,
+ 			     const struct libeth_fqe *rx_buffer,
+ 			     unsigned int size)
+ {
+-	u32 hr = rx_buffer->page->pp->p.offset;
++	struct page_pool *pool = page_pool_to_pp(rx_buffer->page);
++	u32 hr = pool->p.offset;
+ 
+ 	skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, rx_buffer->page,
+ 			rx_buffer->offset + hr, size, rx_buffer->truesize);
+@@ -1067,7 +1068,8 @@ static void iavf_add_rx_frag(struct sk_buff *skb,
+ static struct sk_buff *iavf_build_skb(const struct libeth_fqe *rx_buffer,
+ 				      unsigned int size)
+ {
+-	u32 hr = rx_buffer->page->pp->p.offset;
++	struct page_pool *pool = page_pool_to_pp(rx_buffer->page);
++	u32 hr = pool->p.offset;
+ 	struct sk_buff *skb;
+ 	void *va;
+ 
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index d4e6f0e10487..e3389f1a215f 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -385,7 +385,8 @@ static void idpf_rx_page_rel(struct libeth_fqe *rx_buf)
+ 	if (unlikely(!rx_buf->page))
+ 		return;
+ 
+-	page_pool_put_full_page(rx_buf->page->pp, rx_buf->page, false);
++	page_pool_put_full_page(page_pool_to_pp(rx_buf->page), rx_buf->page,
++				false);
+ 
+ 	rx_buf->page = NULL;
+ 	rx_buf->offset = 0;
+@@ -3097,7 +3098,8 @@ idpf_rx_process_skb_fields(struct idpf_rx_queue *rxq, struct sk_buff *skb,
+ void idpf_rx_add_frag(struct idpf_rx_buf *rx_buf, struct sk_buff *skb,
+ 		      unsigned int size)
+ {
+-	u32 hr = rx_buf->page->pp->p.offset;
++	struct page_pool *pool = page_pool_to_pp(rx_buf->page);
++	u32 hr = pool->p.offset;
+ 
+ 	skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, rx_buf->page,
+ 			rx_buf->offset + hr, size, rx_buf->truesize);
+@@ -3129,8 +3131,10 @@ static u32 idpf_rx_hsplit_wa(const struct libeth_fqe *hdr,
+ 	if (!libeth_rx_sync_for_cpu(buf, copy))
+ 		return 0;
+ 
+-	dst = page_address(hdr->page) + hdr->offset + hdr->page->pp->p.offset;
+-	src = page_address(buf->page) + buf->offset + buf->page->pp->p.offset;
++	dst = page_address(hdr->page) + hdr->offset +
++		page_pool_to_pp(hdr->page)->p.offset;
++	src = page_address(buf->page) + buf->offset +
++		page_pool_to_pp(buf->page)->p.offset;
+ 	memcpy(dst, src, LARGEST_ALIGN(copy));
+ 
+ 	buf->offset += copy;
+@@ -3148,7 +3152,7 @@ static u32 idpf_rx_hsplit_wa(const struct libeth_fqe *hdr,
+  */
+ struct sk_buff *idpf_rx_build_skb(const struct libeth_fqe *buf, u32 size)
+ {
+-	u32 hr = buf->page->pp->p.offset;
++	u32 hr = page_pool_to_pp(buf->page)->p.offset;
+ 	struct sk_buff *skb;
+ 	void *va;
+ 
+diff --git a/drivers/net/ethernet/intel/libeth/rx.c b/drivers/net/ethernet/intel/libeth/rx.c
+index f20926669318..385afca0e61d 100644
+--- a/drivers/net/ethernet/intel/libeth/rx.c
++++ b/drivers/net/ethernet/intel/libeth/rx.c
+@@ -207,7 +207,7 @@ EXPORT_SYMBOL_NS_GPL(libeth_rx_fq_destroy, LIBETH);
+  */
+ void libeth_rx_recycle_slow(struct page *page)
+ {
+-	page_pool_recycle_direct(page->pp, page);
++	page_pool_recycle_direct(page_pool_to_pp(page), page);
+ }
+ EXPORT_SYMBOL_NS_GPL(libeth_rx_recycle_slow, LIBETH);
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+index 4610621a340e..83511a45a6dc 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+@@ -716,7 +716,8 @@ static void mlx5e_free_xdpsq_desc(struct mlx5e_xdpsq *sq,
+ 				/* No need to check ((page->pp_magic & ~0x3UL) == PP_SIGNATURE)
+ 				 * as we know this is a page_pool page.
+ 				 */
+-				page_pool_recycle_direct(page->pp, page);
++				page_pool_recycle_direct(page_pool_to_pp(page),
++							 page);
+ 			} while (++n < num);
+ 
+ 			break;
+diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+index 017a6102be0a..9bfa593cd5dd 100644
+--- a/drivers/net/netdevsim/netdev.c
++++ b/drivers/net/netdevsim/netdev.c
+@@ -593,7 +593,8 @@ nsim_pp_hold_write(struct file *file, const char __user *data,
+ 		if (!ns->page)
+ 			ret = -ENOMEM;
+ 	} else {
+-		page_pool_put_full_page(ns->page->pp, ns->page, false);
++		page_pool_put_full_page(page_pool_to_pp(ns->page), ns->page,
++					false);
+ 		ns->page = NULL;
+ 	}
+ 	rtnl_unlock();
+@@ -788,7 +789,8 @@ void nsim_destroy(struct netdevsim *ns)
+ 
+ 	/* Put this intentionally late to exercise the orphaning path */
+ 	if (ns->page) {
+-		page_pool_put_full_page(ns->page->pp, ns->page, false);
++		page_pool_put_full_page(page_pool_to_pp(ns->page), ns->page,
++					false);
+ 		ns->page = NULL;
+ 	}
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 0b75a45ad2e8..94a277290909 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -1688,7 +1688,7 @@ static inline void mt76_put_page_pool_buf(void *buf, bool allow_direct)
+ {
+ 	struct page *page = virt_to_head_page(buf);
+ 
+-	page_pool_put_full_page(page->pp, page, allow_direct);
++	page_pool_put_full_page(page_pool_to_pp(page), page, allow_direct);
+ }
+ 
+ static inline void *
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 485424979254..410187133d27 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -120,7 +120,7 @@ struct page {
+ 			 * page_pool allocated pages.
+ 			 */
+ 			unsigned long pp_magic;
+-			struct page_pool *pp;
++			struct page_pool_item *pp_item;
+ 			unsigned long _pp_mapping_pad;
+ 			unsigned long dma_addr;
+ 			atomic_long_t pp_ref_count;
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 39f1d16f3628..64d1ecb7a7fc 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -38,6 +38,7 @@
+ #include <net/net_debug.h>
+ #include <net/dropreason-core.h>
+ #include <net/netmem.h>
++#include <net/page_pool/types.h>
+ 
+ /**
+  * DOC: skb checksums
+diff --git a/include/net/libeth/rx.h b/include/net/libeth/rx.h
+index 43574bd6612f..beee7ddd77a5 100644
+--- a/include/net/libeth/rx.h
++++ b/include/net/libeth/rx.h
+@@ -137,7 +137,8 @@ static inline bool libeth_rx_sync_for_cpu(const struct libeth_fqe *fqe,
+ 		return false;
+ 	}
+ 
+-	page_pool_dma_sync_for_cpu(page->pp, page, fqe->offset, len);
++	page_pool_dma_sync_for_cpu(page_pool_to_pp(page), page, fqe->offset,
++				   len);
+ 
+ 	return true;
+ }
+diff --git a/include/net/netmem.h b/include/net/netmem.h
+index 8a6e20be4b9d..27f5d284285e 100644
+--- a/include/net/netmem.h
++++ b/include/net/netmem.h
+@@ -23,7 +23,7 @@ DECLARE_STATIC_KEY_FALSE(page_pool_mem_providers);
+ struct net_iov {
+ 	unsigned long __unused_padding;
+ 	unsigned long pp_magic;
+-	struct page_pool *pp;
++	struct page_pool_item *pp_item;
+ 	struct dmabuf_genpool_chunk_owner *owner;
+ 	unsigned long dma_addr;
+ 	atomic_long_t pp_ref_count;
+@@ -33,7 +33,7 @@ struct net_iov {
+  *
+  *        struct {
+  *                unsigned long pp_magic;
+- *                struct page_pool *pp;
++ *                struct page_pool *pp_item;
+  *                unsigned long _pp_mapping_pad;
+  *                unsigned long dma_addr;
+  *                atomic_long_t pp_ref_count;
+@@ -49,7 +49,7 @@ struct net_iov {
+ 	static_assert(offsetof(struct page, pg) == \
+ 		      offsetof(struct net_iov, iov))
+ NET_IOV_ASSERT_OFFSET(pp_magic, pp_magic);
+-NET_IOV_ASSERT_OFFSET(pp, pp);
++NET_IOV_ASSERT_OFFSET(pp_item, pp_item);
+ NET_IOV_ASSERT_OFFSET(dma_addr, dma_addr);
+ NET_IOV_ASSERT_OFFSET(pp_ref_count, pp_ref_count);
+ #undef NET_IOV_ASSERT_OFFSET
+@@ -127,9 +127,9 @@ static inline struct net_iov *__netmem_clear_lsb(netmem_ref netmem)
+ 	return (struct net_iov *)((__force unsigned long)netmem & ~NET_IOV);
+ }
+ 
+-static inline struct page_pool *netmem_get_pp(netmem_ref netmem)
++static inline struct page_pool_item *netmem_get_pp_item(netmem_ref netmem)
+ {
+-	return __netmem_clear_lsb(netmem)->pp;
++	return __netmem_clear_lsb(netmem)->pp_item;
+ }
+ 
+ static inline atomic_long_t *netmem_get_pp_ref_count_ref(netmem_ref netmem)
+diff --git a/include/net/page_pool/helpers.h b/include/net/page_pool/helpers.h
+index 793e6fd78bc5..ed068b3cee3b 100644
+--- a/include/net/page_pool/helpers.h
++++ b/include/net/page_pool/helpers.h
+@@ -83,6 +83,17 @@ static inline u64 *page_pool_ethtool_stats_get(u64 *data, const void *stats)
+ }
+ #endif
+ 
++static inline struct page_pool *page_pool_to_pp(struct page *page)
++{
++	struct page_pool_item *item = page->pp_item;
++	struct page_pool *pool;
++
++	item -= item->pp_idx;
++	pool = (struct page_pool *)item;
++
++	return --pool;
++}
++
+ /**
+  * page_pool_dev_alloc_pages() - allocate a page.
+  * @pool:	pool from which to allocate
+diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
+index c022c410abe3..526250ed812a 100644
+--- a/include/net/page_pool/types.h
++++ b/include/net/page_pool/types.h
+@@ -142,6 +142,11 @@ struct page_pool_stats {
+ };
+ #endif
+ 
++struct page_pool_item {
++	netmem_ref pp_netmem;
++	unsigned int pp_idx;
++};
++
+ /* The whole frag API block must stay within one cacheline. On 32-bit systems,
+  * sizeof(long) == sizeof(int), so that the block size is ``3 * sizeof(long)``.
+  * On 64-bit systems, the actual size is ``2 * sizeof(long) + sizeof(int)``.
+@@ -161,6 +166,8 @@ struct page_pool {
+ 
+ 	int cpuid;
+ 	u32 pages_state_hold_cnt;
++	unsigned int item_mask;
++	unsigned int item_idx;
+ 
+ 	bool has_init_callback:1;	/* slow::init_callback is set */
+ 	bool dma_map:1;			/* Perform DMA mapping */
+@@ -228,7 +235,11 @@ struct page_pool {
+ 	 */
+ 	refcount_t user_cnt;
+ 
+-	u64 destroy_cnt;
++	/* Lock to avoid doing dma unmapping concurrently when
++	 * destroy_cnt > 0.
++	 */
++	spinlock_t destroy_lock;
++	unsigned int destroy_cnt;
+ 
+ 	/* Slow/Control-path information follows */
+ 	struct page_pool_params_slow slow;
+@@ -239,6 +250,8 @@ struct page_pool {
+ 		u32 napi_id;
+ 		u32 id;
+ 	} user;
++
++	struct page_pool_item items[] ____cacheline_aligned_in_smp;
+ };
+ 
+ struct page *page_pool_alloc_pages(struct page_pool *pool, gfp_t gfp);
+diff --git a/net/core/devmem.c b/net/core/devmem.c
+index 11b91c12ee11..09c5aa83f12a 100644
+--- a/net/core/devmem.c
++++ b/net/core/devmem.c
+@@ -85,7 +85,7 @@ net_devmem_alloc_dmabuf(struct net_devmem_dmabuf_binding *binding)
+ 	niov = &owner->niovs[index];
+ 
+ 	niov->pp_magic = 0;
+-	niov->pp = NULL;
++	niov->pp_item = NULL;
+ 	atomic_long_set(&niov->pp_ref_count, 0);
+ 
+ 	return niov;
+@@ -380,7 +380,7 @@ bool mp_dmabuf_devmem_release_page(struct page_pool *pool, netmem_ref netmem)
+ 	if (WARN_ON_ONCE(refcount != 1))
+ 		return false;
+ 
+-	page_pool_clear_pp_info(netmem);
++	page_pool_clear_pp_info(pool, netmem);
+ 
+ 	net_devmem_free_dmabuf(netmem_to_net_iov(netmem));
+ 
+diff --git a/net/core/netmem_priv.h b/net/core/netmem_priv.h
+index 7eadb8393e00..3173f6070cf7 100644
+--- a/net/core/netmem_priv.h
++++ b/net/core/netmem_priv.h
+@@ -18,9 +18,10 @@ static inline void netmem_clear_pp_magic(netmem_ref netmem)
+ 	__netmem_clear_lsb(netmem)->pp_magic = 0;
+ }
+ 
+-static inline void netmem_set_pp(netmem_ref netmem, struct page_pool *pool)
++static inline void netmem_set_pp_item(netmem_ref netmem,
++				      struct page_pool_item *item)
+ {
+-	__netmem_clear_lsb(netmem)->pp = pool;
++	__netmem_clear_lsb(netmem)->pp_item = item;
+ }
+ 
+ static inline void netmem_set_dma_addr(netmem_ref netmem,
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index bec6e717cd22..1f3017a2e0a0 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -267,14 +267,12 @@ static int page_pool_init(struct page_pool *pool,
+ 		return -ENOMEM;
+ 	}
+ 
++	spin_lock_init(&pool->destroy_lock);
+ 	atomic_set(&pool->pages_state_release_cnt, 0);
+ 
+ 	/* Driver calling page_pool_create() also call page_pool_destroy() */
+ 	refcount_set(&pool->user_cnt, 1);
+ 
+-	if (pool->dma_map)
+-		get_device(pool->p.dev);
+-
+ 	if (pool->slow.flags & PP_FLAG_ALLOW_UNREADABLE_NETMEM) {
+ 		/* We rely on rtnl_lock()ing to make sure netdev_rx_queue
+ 		 * configuration doesn't change while we're initializing
+@@ -312,15 +310,93 @@ static void page_pool_uninit(struct page_pool *pool)
+ {
+ 	ptr_ring_cleanup(&pool->ring, NULL);
+ 
+-	if (pool->dma_map)
+-		put_device(pool->p.dev);
+-
+ #ifdef CONFIG_PAGE_POOL_STATS
+ 	if (!pool->system)
+ 		free_percpu(pool->recycle_stats);
+ #endif
+ }
+ 
++static void page_pool_item_init(struct page_pool *pool, unsigned int item_cnt)
++{
++	struct page_pool_item *items = pool->items;
++	unsigned int i;
++
++	WARN_ON_ONCE(!is_power_of_2(item_cnt));
++
++	for (i = 0; i < item_cnt; i++)
++		items[i].pp_idx = i;
++
++	pool->item_mask = item_cnt - 1;
++}
++
++static void page_pool_item_uninit(struct page_pool *pool)
++{
++	struct page_pool_item *items = pool->items;
++	unsigned int mask = pool->item_mask;
++	unsigned int i;
++
++	if (!pool->dma_map || pool->mp_priv)
++		return;
++
++	spin_lock_bh(&pool->destroy_lock);
++
++	for (i = 0; i <= mask; i++) {
++		struct page *page;
++
++		page = netmem_to_page(READ_ONCE(items[i].pp_netmem));
++		if (!page)
++			continue;
++
++		WARN_ONCE(1, "dma unmapping in %s: %p for %p\n", __func__, page,
++			  pool);
++
++		dma_unmap_page_attrs(pool->p.dev, page_pool_get_dma_addr(page),
++				     PAGE_SIZE << pool->p.order,
++				     pool->p.dma_dir, DMA_ATTR_SKIP_CPU_SYNC |
++				     DMA_ATTR_WEAK_ORDERING);
++		page_pool_set_dma_addr(page, 0);
++	}
++
++	pool->dma_map = false;
++	spin_unlock_bh(&pool->destroy_lock);
++}
++
++static bool page_pool_item_add(struct page_pool *pool, netmem_ref netmem)
++{
++	struct page_pool_item *items = pool->items;
++	unsigned int mask = pool->item_mask;
++	unsigned int idx = pool->item_idx;
++	unsigned int i;
++
++	for (i = 0; i <= mask; i++) {
++		unsigned int mask_idx = idx++ & mask;
++
++		if (!READ_ONCE(items[mask_idx].pp_netmem)) {
++			WRITE_ONCE(items[mask_idx].pp_netmem, netmem);
++			netmem_set_pp_item(netmem, &items[mask_idx]);
++			pool->item_idx = idx;
++			return true;
++		}
++	}
++
++	pool->item_idx = idx;
++	DEBUG_NET_WARN_ON_ONCE(true);
++	return false;
++}
++
++static void page_pool_item_del(struct page_pool *pool, netmem_ref netmem)
++{
++	struct page_pool_item *item = netmem_to_page(netmem)->pp_item;
++	struct page_pool_item *items = pool->items;
++	unsigned int idx = item->pp_idx;
++
++	DEBUG_NET_WARN_ON_ONCE(items[idx].pp_netmem != netmem);
++	WRITE_ONCE(items[idx].pp_netmem, (unsigned long __bitwise)NULL);
++	netmem_set_pp_item(netmem, NULL);
++}
++
++#define PAGE_POOL_MIN_ITEM_CNT	512
++
+ /**
+  * page_pool_create_percpu() - create a page pool for a given cpu.
+  * @params: parameters, see struct page_pool_params
+@@ -329,10 +405,14 @@ static void page_pool_uninit(struct page_pool *pool)
+ struct page_pool *
+ page_pool_create_percpu(const struct page_pool_params *params, int cpuid)
+ {
++	unsigned int item_cnt = (params->pool_size ? : 1024) +
++				PP_ALLOC_CACHE_SIZE + PAGE_POOL_MIN_ITEM_CNT;
+ 	struct page_pool *pool;
+ 	int err;
+ 
+-	pool = kzalloc_node(sizeof(*pool), GFP_KERNEL, params->nid);
++	item_cnt = roundup_pow_of_two(item_cnt);
++	pool = kvzalloc_node(struct_size(pool, items, item_cnt), GFP_KERNEL,
++			     params->nid);
+ 	if (!pool)
+ 		return ERR_PTR(-ENOMEM);
+ 
+@@ -340,6 +420,8 @@ page_pool_create_percpu(const struct page_pool_params *params, int cpuid)
+ 	if (err < 0)
+ 		goto err_free;
+ 
++	page_pool_item_init(pool, item_cnt);
++
+ 	err = page_pool_list(pool);
+ 	if (err)
+ 		goto err_uninit;
+@@ -350,7 +432,7 @@ page_pool_create_percpu(const struct page_pool_params *params, int cpuid)
+ 	page_pool_uninit(pool);
+ err_free:
+ 	pr_warn("%s() gave up with errno %d\n", __func__, err);
+-	kfree(pool);
++	kvfree(pool);
+ 	return ERR_PTR(err);
+ }
+ EXPORT_SYMBOL(page_pool_create_percpu);
+@@ -499,19 +581,24 @@ static struct page *__page_pool_alloc_page_order(struct page_pool *pool,
+ 	if (unlikely(!page))
+ 		return NULL;
+ 
+-	if (pool->dma_map && unlikely(!page_pool_dma_map(pool, page_to_netmem(page)))) {
+-		put_page(page);
+-		return NULL;
+-	}
++	if (unlikely(!page_pool_set_pp_info(pool, page_to_netmem(page))))
++		goto err_alloc;
++
++	if (pool->dma_map && unlikely(!page_pool_dma_map(pool, page_to_netmem(page))))
++		goto err_set_info;
+ 
+ 	alloc_stat_inc(pool, slow_high_order);
+-	page_pool_set_pp_info(pool, page_to_netmem(page));
+ 
+ 	/* Track how many pages are held 'in-flight' */
+ 	pool->pages_state_hold_cnt++;
+ 	trace_page_pool_state_hold(pool, page_to_netmem(page),
+ 				   pool->pages_state_hold_cnt);
+ 	return page;
++err_set_info:
++	page_pool_clear_pp_info(pool, page_to_netmem(page));
++err_alloc:
++	put_page(page);
++	return NULL;
+ }
+ 
+ /* slow path */
+@@ -546,12 +633,18 @@ static noinline netmem_ref __page_pool_alloc_pages_slow(struct page_pool *pool,
+ 	 */
+ 	for (i = 0; i < nr_pages; i++) {
+ 		netmem = pool->alloc.cache[i];
++
++		if (unlikely(!page_pool_set_pp_info(pool, netmem))) {
++			put_page(netmem_to_page(netmem));
++			continue;
++		}
++
+ 		if (dma_map && unlikely(!page_pool_dma_map(pool, netmem))) {
++			page_pool_clear_pp_info(pool, netmem);
+ 			put_page(netmem_to_page(netmem));
+ 			continue;
+ 		}
+ 
+-		page_pool_set_pp_info(pool, netmem);
+ 		pool->alloc.cache[pool->alloc.count++] = netmem;
+ 		/* Track how many pages are held 'in-flight' */
+ 		pool->pages_state_hold_cnt++;
+@@ -623,9 +716,13 @@ s32 page_pool_inflight(const struct page_pool *pool, bool strict)
+ 	return inflight;
+ }
+ 
+-void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
++bool page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
+ {
+-	netmem_set_pp(netmem, pool);
++	if (unlikely(!page_pool_item_add(pool, netmem)))
++		return false;
++
++	DEBUG_NET_WARN_ON_ONCE(page_pool_to_pp(netmem_to_page(netmem)) != pool);
++
+ 	netmem_or_pp_magic(netmem, PP_SIGNATURE);
+ 
+ 	/* Ensuring all pages have been split into one fragment initially:
+@@ -637,12 +734,14 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
+ 	page_pool_fragment_netmem(netmem, 1);
+ 	if (pool->has_init_callback)
+ 		pool->slow.init_callback(netmem, pool->slow.init_arg);
++
++	return true;
+ }
+ 
+-void page_pool_clear_pp_info(netmem_ref netmem)
++void page_pool_clear_pp_info(struct page_pool *pool, netmem_ref netmem)
+ {
+ 	netmem_clear_pp_magic(netmem);
+-	netmem_set_pp(netmem, NULL);
++	page_pool_item_del(pool, netmem);
+ }
+ 
+ static __always_inline void __page_pool_release_page_dma(struct page_pool *pool,
+@@ -672,9 +771,13 @@ static __always_inline void __page_pool_release_page_dma(struct page_pool *pool,
+  */
+ void page_pool_return_page(struct page_pool *pool, netmem_ref netmem)
+ {
++	unsigned int destroy_cnt = READ_ONCE(pool->destroy_cnt);
+ 	int count;
+ 	bool put;
+ 
++	if (unlikely(destroy_cnt))
++		spin_lock_bh(&pool->destroy_lock);
++
+ 	put = true;
+ 	if (static_branch_unlikely(&page_pool_mem_providers) && pool->mp_priv)
+ 		put = mp_dmabuf_devmem_release_page(pool, netmem);
+@@ -688,9 +791,13 @@ void page_pool_return_page(struct page_pool *pool, netmem_ref netmem)
+ 	trace_page_pool_state_release(pool, netmem, count);
+ 
+ 	if (put) {
+-		page_pool_clear_pp_info(netmem);
++		page_pool_clear_pp_info(pool, netmem);
+ 		put_page(netmem_to_page(netmem));
+ 	}
++
++	if (unlikely(destroy_cnt))
++		spin_unlock_bh(&pool->destroy_lock);
++
+ 	/* An optimization would be to call __free_pages(page, pool->p.order)
+ 	 * knowing page is not part of page-cache (thus avoiding a
+ 	 * __page_cache_release() call).
+@@ -1034,14 +1141,14 @@ static void __page_pool_destroy(struct page_pool *pool)
+ 		static_branch_dec(&page_pool_mem_providers);
+ 	}
+ 
+-	kfree(pool);
++	kvfree(pool);
+ }
+ 
+ static void page_pool_empty_alloc_cache_once(struct page_pool *pool)
+ {
+ 	netmem_ref netmem;
+ 
+-	if (pool->destroy_cnt)
++	if (pool->destroy_cnt > 1)
+ 		return;
+ 
+ 	/* Empty alloc cache, assume caller made sure this is
+@@ -1057,7 +1164,7 @@ static void page_pool_empty_alloc_cache_once(struct page_pool *pool)
+ static void page_pool_scrub(struct page_pool *pool)
+ {
+ 	page_pool_empty_alloc_cache_once(pool);
+-	pool->destroy_cnt++;
++	WRITE_ONCE(pool->destroy_cnt, pool->destroy_cnt + 1);
+ 
+ 	/* No more consumers should exist, but producers could still
+ 	 * be in-flight.
+@@ -1139,10 +1246,14 @@ void page_pool_destroy(struct page_pool *pool)
+ 	if (!page_pool_put(pool))
+ 		return;
+ 
++	/* disable dma_sync_for_device */
++	pool->dma_sync = false;
++
+ 	page_pool_disable_direct_recycling(pool);
++	WRITE_ONCE(pool->destroy_cnt, 1);
+ 
+-	/* Wait for the freeing side see the disabling direct recycling setting
+-	 * to avoid the concurrent access to the pool->alloc cache.
++	/* Wait for the freeing side to see the new pool->dma_sync,
++	 * disable_direct and pool->destroy_cnt in page_pool_put_page.
+ 	 */
+ 	synchronize_rcu();
+ 
+@@ -1151,6 +1262,8 @@ void page_pool_destroy(struct page_pool *pool)
+ 	if (!page_pool_release(pool))
+ 		return;
+ 
++	page_pool_item_uninit(pool);
++
+ 	page_pool_detached(pool);
+ 	pool->defer_start = jiffies;
+ 	pool->defer_warn  = jiffies + DEFER_WARN_INTERVAL;
+diff --git a/net/core/page_pool_priv.h b/net/core/page_pool_priv.h
+index 57439787b9c2..5d85f862a30a 100644
+--- a/net/core/page_pool_priv.h
++++ b/net/core/page_pool_priv.h
+@@ -36,16 +36,18 @@ static inline bool page_pool_set_dma_addr(struct page *page, dma_addr_t addr)
+ }
+ 
+ #if defined(CONFIG_PAGE_POOL)
+-void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem);
+-void page_pool_clear_pp_info(netmem_ref netmem);
++bool page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem);
++void page_pool_clear_pp_info(struct page_pool *pool, netmem_ref netmem);
+ int page_pool_check_memory_provider(struct net_device *dev,
+ 				    struct netdev_rx_queue *rxq);
+ #else
+-static inline void page_pool_set_pp_info(struct page_pool *pool,
++static inline bool page_pool_set_pp_info(struct page_pool *pool,
+ 					 netmem_ref netmem)
+ {
++	return true;
+ }
+-static inline void page_pool_clear_pp_info(netmem_ref netmem)
++static inline void page_pool_clear_pp_info(struct page_pool *pool,
++					   netmem_ref netmem)
+ {
+ }
+ static inline int page_pool_check_memory_provider(struct net_device *dev,
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 74149dc4ee31..d4295353ca6e 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -1033,7 +1033,8 @@ bool napi_pp_put_page(netmem_ref netmem)
+ 	if (unlikely(!is_pp_netmem(netmem)))
+ 		return false;
+ 
+-	page_pool_put_full_netmem(netmem_get_pp(netmem), netmem, false);
++	page_pool_put_full_netmem(page_pool_to_pp(netmem_to_page(netmem)),
++				  netmem, false);
+ 
+ 	return true;
+ }
+diff --git a/net/core/xdp.c b/net/core/xdp.c
+index bcc5551c6424..e8582036b411 100644
+--- a/net/core/xdp.c
++++ b/net/core/xdp.c
+@@ -384,7 +384,8 @@ void __xdp_return(void *data, struct xdp_mem_info *mem, bool napi_direct,
+ 		/* No need to check ((page->pp_magic & ~0x3UL) == PP_SIGNATURE)
+ 		 * as mem->type knows this a page_pool page
+ 		 */
+-		page_pool_put_full_page(page->pp, page, napi_direct);
++		page_pool_put_full_page(page_pool_to_pp(page), page,
++					napi_direct);
+ 		break;
+ 	case MEM_TYPE_PAGE_SHARED:
+ 		page_frag_free(data);
+-- 
+2.33.0
+
