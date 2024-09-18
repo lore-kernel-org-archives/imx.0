@@ -1,139 +1,276 @@
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011049.outbound.protection.outlook.com [52.101.65.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C90931CB333
-	for <imx@lists.linux.dev>; Wed, 18 Sep 2024 18:22:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726683750; cv=none; b=Vm+xRPGiuwmlMZEQ4P31Nd8Cze7a+EkvFE/YRFVRD57YV9Jpb6Kfo7p74CQvgmZ4ONRF1irbZvjEUjAJSPXqnLkzbCeUGrXwNTfsGNjJIQ2OwQ1+tnYrrmAPKZ3ZFtw+rC08p0XkgYXPHJ639mXHlCnbsTPDTGGiGzq8xHKMp8Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726683750; c=relaxed/simple;
-	bh=ecm5qBuobUxfLm11/z7zon/qPnxquqho/PMLTb6i/18=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ay+V6bK9LXf7hN7QsbioEEJ/ySPIRTYgxn2Ltv/bzuEnegIU1KgBZGp2hIZUMVM+4fHmp/eWrKVTLjk2DP8IeuKp71u9j26jaTfO3yJBTK9nSwaRIdGLw2JmslaFEz7X4SfVlnBNQVP0Roesqst61wsglsQPajFe3hk0h5XcSsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GCHokrs9; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5671B1C9878
+	for <imx@lists.linux.dev>; Wed, 18 Sep 2024 18:49:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726685385; cv=fail; b=mRqQ6dp62AizZnsCgXnNZsznzv8Y8Ap32TlOymyBZXNd2kaNFFdfCThPcQQlk5systPUrnlTDrDFFjqkIPnrTNpjhZWY9MFy5bthJSsAF5m+Eqe3BADAvX1IiH0Hdr4WAKOP7YDl0BbnKt0JoYZ6XVT+ODKRAM3JsBzKatFZw3k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726685385; c=relaxed/simple;
+	bh=mQm/qOSZL+E04K0dwvitSqyVEcGKriu8Gn7kJ3nvXKw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=glsdT86ROhqzlGekRRTvdQudxB9i/Dhs1HGJxX1wDmnegcb0nT+GSOlwEgCZPVhERu7pyPlJnUFl+Aub0HtMV3yPaSl7mUdSW3KwoSQu/DGsNIxK3+4jjvYXNToTvvFdi+8vtGeQhbGukweE3On2lWWaSbbgLEgdinWBYnVRzCI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=B/R0R6F9; arc=fail smtp.client-ip=52.101.65.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GCHokrs9"
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-53568ffc525so8593027e87.0
-        for <imx@lists.linux.dev>; Wed, 18 Sep 2024 11:22:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726683747; x=1727288547; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b74DjBwDaiguwxZN4WPzTGxSSIqR5dICOz1TwKaf1Qk=;
-        b=GCHokrs9Qz52P4huNA38LGsAKu3RDbnhhE6H8HhvIebpilBKFoyNTNhjjbJz28qmQy
-         NhPjqsHFbRnxYa+YWdkuG86MvzGeF0zDjaL0yoUeBbXCKiZfc0g+qjWYzHwQt2M1gujZ
-         BdVxeO2z5P9fO3049JN7V5M7TDZxzZhGax/FapZYOLmTEVBWg5zCUW1duqvHc8Y/a71J
-         HOp4IKLcJ9CXOqqfmpr9YPVnVa7rP+52F/Yw5m02iFScJXP2j9wQyVDLiatcq6CIvoB1
-         nkAfvHLkA0ngSN9iIjaE1ZI1VDbTTfIoGiTBjBJkVqLWdCEzkWQedRKZnfEpmyixW7ec
-         o6Vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726683747; x=1727288547;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=b74DjBwDaiguwxZN4WPzTGxSSIqR5dICOz1TwKaf1Qk=;
-        b=ONSj0P4HNRCOZwnC+Fxc8hZ2GQ6++r/V0Xn/r9dKnXXLF2aoQFhWqzzh0UUPK1Yylz
-         bJYrAdQYEyrDV1V8KpPhKdvnDMY8opJSui6YM/BssIKWJ77+N+ywiEJwjAVbN5xJmQ67
-         BqVC4kjrD00Y/NLBYRrSjpA7q/XiK3XBWgUvPikNtW/gGt84GTllyEd0o170hiliLnad
-         drcrZ3B+uxsV5yqPDb80XhNha4tcNr18+dboM3reo9SRL3CrydLglhClv/BGArFStVTo
-         auIj3Fus+/iENSH7oBurajmJtjXfwrzelCdNGScs8i/VW3GHQPTMW4QeHKXAfdO44mDX
-         hjLg==
-X-Forwarded-Encrypted: i=1; AJvYcCX9CL6SyGDIsworz112OyOdRF3Mr5UjNJ4bCHjPBnsQgURCdUa+qQToijfNXc9NFTe/Wqc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwCKjTPIUv7Wp9gSkEApID79M56/KmLPPXiTf+SgksARtouhc34
-	o/XHYA1pPsDv6R1Riz0rQp7E13stMmc/hOaPaAxRGawLpZRtpwjd
-X-Google-Smtp-Source: AGHT+IEgDcqWPZk6PODNPj/XhOHH/yFVmMsQL7IfvquOxjcmWF5SBcsMwOEuGAebdORj5/r29Zkppg==
-X-Received: by 2002:a05:6512:2345:b0:533:4689:973c with SMTP id 2adb3069b0e04-53678fbaf3cmr10878410e87.23.1726683746810;
-        Wed, 18 Sep 2024 11:22:26 -0700 (PDT)
-Received: from playground.localdomain ([86.127.146.72])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c42bb5312dsm5200146a12.23.2024.09.18.11.22.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Sep 2024 11:22:26 -0700 (PDT)
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="B/R0R6F9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NMej9DG0xAMHo4JzH69vfH3A1ys/I3X1ltE1kNfcUu0uMAHNcb1J7cc1Puxpczm224yw/dImqK1TPbOWLBL4eGna4ceth/6cQpIietHcKeemLMN4GankYgiMgjCcqBZaqRGKFvsXvt9eSi8xYbI+40I30s61sFhFS8oM5cxy2j0uavUO3/onDWrxDLZtwY8z1SQuU4CuyTFeCTx/AAhsG84KI6cX77qPGVSwPi1YELj1qlj8iBUJJ1xg+5BQ+UeCu5aaD9MigooCZJwIVCRJcCgjUoO913zFuhQpwyHQy6M3KPzoPIm3iziElqFpAOHbZPUUuwhjwwi4/xiWTBQAvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=O6SgqfLBvlzKRpcCAshK3mc4iOE9yKTQGroAgWF1Dlg=;
+ b=M9FTgJ7Z96b0qNkWJUqLAxwBs8COqqqs+F+aWlRCeh2Q5Z5bNDInMHE0Pn9iO600Ns6fy+XffV5Rh/N1FSeIqkJVJhzNEVPV8BPNhwrFWOZoUJxIGwhOhzfZYXZ3dc5sWATgPSR6siFYN6hYyhwtXDlSjyIMTg7gPkkcR1GW8T4Hf7NTlOH4TycsjiogMr05Y4BdXxiWV86bVUxF/wVG/0dELgdX9tZCmmMyVJung0PGNzVcperoYAbMYTqypz7FdCbPnWbe6ateSWz2fVfwnxqEwZtAPNijs/CogmvcpVRnHet1LfLuK8a5/nZF4KhRRc2E7yL9tX/s9STg649uRg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=O6SgqfLBvlzKRpcCAshK3mc4iOE9yKTQGroAgWF1Dlg=;
+ b=B/R0R6F99LFm0rvoUvv5lEgBCCBjAu+KvnDvApqovGfAcXcAYKCuG3yGWmhNpi4WTxRHjRkSqlZ860vBMEqa+lNfj8umMMh9844cb5IyQK8urLM9VkPRlw0N8QovLBpEzymfQ5VhcaKax/1/ZriZKxucYJNXBQ0PPnMySg0z9Yxg9T8wM0OsBmJGO8OcdIGccZ6nmUKgiPoS2nO3kaBiEBFpA0vlkgjdVPmq8M8GKY2+YSHADQ+L/pRyka5MykuF0VrqQsSg4QK0+yMQbUHwwcTbqjWpA7THshX1IRkL9k8VMbH+MiWN8O3L+XdrwINLRsTu9CS8NFMYY2mrycAGqA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PA4PR04MB7808.eurprd04.prod.outlook.com (2603:10a6:102:c8::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.25; Wed, 18 Sep
+ 2024 18:49:40 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.7962.022; Wed, 18 Sep 2024
+ 18:49:40 +0000
+Date: Wed, 18 Sep 2024 14:49:30 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Daniel Baluta <daniel.baluta@nxp.com>,
 	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>
-Cc: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
+	Iuliana Prodan <iuliana.prodan@nxp.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 5/5] arm64: dts: imx8qm: enable dsp node for rproc usage
-Date: Wed, 18 Sep 2024 14:21:17 -0400
-Message-Id: <20240918182117.86221-6-laurentiumihalcea111@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240918182117.86221-1-laurentiumihalcea111@gmail.com>
+Subject: Re: [PATCH 1/5] dt-bindings: dsp: fix power domain count
+Message-ID: <Zusguvhu+pld8UOi@lizhi-Precision-Tower-5810>
 References: <20240918182117.86221-1-laurentiumihalcea111@gmail.com>
+ <20240918182117.86221-2-laurentiumihalcea111@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240918182117.86221-2-laurentiumihalcea111@gmail.com>
+X-ClientProxiedBy: SJ0PR05CA0050.namprd05.prod.outlook.com
+ (2603:10b6:a03:33f::25) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA4PR04MB7808:EE_
+X-MS-Office365-Filtering-Correlation-Id: db209284-2279-478a-f5d8-08dcd812a6e8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|52116014|7416014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?DH2j5Qks56t3iPbf9h4VvMWBnI3JJMk9O6goOxIdm4CDIklsbIqDB8fpMrwX?=
+ =?us-ascii?Q?PRlhH0t8yFyJA9SbDZ8d4cjDpKYrhVvXHGwK5AmadMKhhL4X3Fx0JC2fpWBa?=
+ =?us-ascii?Q?Uk6QYnlgKanGmCTNi82l8fwpUD0ZiTbt23fV9oFIB5haCYPWWtJFkz6CwN9Q?=
+ =?us-ascii?Q?89Rq/W42nnVNIpdVqqqau4zWdw8wVSIPWkwfrvpDFu78H5eis80Rzek9jr37?=
+ =?us-ascii?Q?1dB1/7at+dUJh9oaCt5Jt28G1U5YldukxpKOAoLeFi8GrgZ9ypYZeiQNQi75?=
+ =?us-ascii?Q?KERuU/RmvBtnASK9cygnY2E2Q16bZNSho721P+3XIuf5eo/AjWdr0ewdVZqU?=
+ =?us-ascii?Q?xKL3ybhSm4gm6S6jo7zrWrobZBHm7ocNJ7lEsei860db/ony2fd06plWIo+1?=
+ =?us-ascii?Q?jv5/KYJCRd7LiXxuMHzQd/8Cgg4acoG6/Agqyh3dxAjtoSleR+pK6MS1X5Ap?=
+ =?us-ascii?Q?2EbyP/ziPD19e0R72sHaVTA1cVCaQQPvRSnY/nsEJcrq+wc4YAKj9pQeNFHS?=
+ =?us-ascii?Q?2cxlee0vhgcqxxO65/N3C/wGB0aLDyzdYq8lKSYI06KmtE9I+N5oZ6gv30gz?=
+ =?us-ascii?Q?uMIHh3bV9BJwwGR9Q/UvCXdoSH3fX62Tu6qXnOTL2CqvpmSs7d3aV3CJrFkz?=
+ =?us-ascii?Q?hsogTOZg2bky0l+ZkbHA2CYpyo8NbzvZlVY+YhSiLA2cDDG94dQuvJdMQA7T?=
+ =?us-ascii?Q?B7o4jDYri1c0Ntalrsy/qqoCxQocPutL/HldfNej6q8NzHbouEptgpcooRmV?=
+ =?us-ascii?Q?kzQaAN6W/UeGI+0dc3ZenxNnBx51b08+LTK7KtarocgPxCcEZL7yURo7a+ip?=
+ =?us-ascii?Q?q/7hC66hfOg7urlAES+AG4ObZd2lLCe2CjL+AsYds/mFVkaU75ag0aHvU02Q?=
+ =?us-ascii?Q?hav4xmCiqQiDWVk3U3ZpKerTAO4QOw0Cxe4g96q+Dy0r/+ehagBHWle/M/Rj?=
+ =?us-ascii?Q?OG33+CYZj6+Xl3C8cAJ3nm/c7IYZeQ1j3g6Qh9tY/I0to5klS83cp9GLnUu/?=
+ =?us-ascii?Q?+XhZmngIu08pTqUvyxKHoefN9JMLXAzEK7Qe9BGrZTCmbiI0fUe4z0M058LY?=
+ =?us-ascii?Q?oo1cdAwDX54+dgW8H+NVCwYrkS7RvDgFp5vW+GYm8Yp268Yk9TkNjolD9ibW?=
+ =?us-ascii?Q?aqwlmOxgUYbAyuTrFC5KuZOKEyUYV2NLp7o4zmYBuAoHaQe/h8zMU1zssSj9?=
+ =?us-ascii?Q?1fXUn+jJyqHub/UES3A3BxaBxf4T+otPqwoWMdzNZU5iHO9gkiyWizlBscRU?=
+ =?us-ascii?Q?d9JLyS+Y1SkGl6KMKYEFsTRcn8l5jOuReoBXEx0Z2prXHgf/ABnmiNSanMIJ?=
+ =?us-ascii?Q?nrG4DelqwidiYMwS2J8NvAHPGayeIqFJfLsal20MuR6BmVtEgUCgkzXGpRym?=
+ =?us-ascii?Q?t0Io5hQIm2jhK1Td95aEvojW06mpiA3qAo3dDlYZ4OSMQypwkA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(52116014)(7416014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?OPPHqmzV0zoUbd49fZTk5FFYciAFB0s7mrcjt6IPptJsZSI/0GzKitIfpJc5?=
+ =?us-ascii?Q?FqvoHP32IRdNgJeMVxymeiHxf+IpQeo0GwVrkipIg7n5zQNcDtqVhmkAtisN?=
+ =?us-ascii?Q?pSavi/Tj8bootGT9xko2pmuzhZokq601vrVUh24IIKTmL2NRzLswo47hHutv?=
+ =?us-ascii?Q?6sCcSNuOVcsIh39Gr8Ci9W4UUNY6japFFX3bJYBXuwl/Z6Nz/TFyt5KyVykJ?=
+ =?us-ascii?Q?vDawGMqioT6oBNKCylVDoq0m4yzt/1J5cHdIYAoa1o0ormpWKTi0AkjfnlFe?=
+ =?us-ascii?Q?mVzrYSdiMBRhtA/uUE5rtdhkjYmOJlk2Hx9h8Ve/tgX3euheXoXEwR+rjh4y?=
+ =?us-ascii?Q?W+g4CwbGBbrN7eZsvq+O7XdRfluwpidebLP3RSBXyVzspvtqYZOgPCs77/AH?=
+ =?us-ascii?Q?z3ScRAznt/pvkyx+udfBmQyvPNVDLeaMkMRthxz/YYF6m39kLC5zCuB8+Tw5?=
+ =?us-ascii?Q?MyO6FqIms3jesUMjfHBUcqmJfSAM46zJ+GJ0vADTZU6iN0v2h2TJQKOVxpLU?=
+ =?us-ascii?Q?iM30ZgB83bdME+QAe4v1WF0sz+HPWhJ2bWO4/wBDT4UXIVdzZWMrqsQXIAqJ?=
+ =?us-ascii?Q?Auor1NuZrHcGbcNc3So8oAHpc9QqtGDazX8iuh0+QDmF6AkErOTDB1uwDJDx?=
+ =?us-ascii?Q?yxtSk1QO3gCE/GJCetUpnA+dcKCrf/fzTg/wLBMvnbK8hfH2Qum8OaA1TNeT?=
+ =?us-ascii?Q?IUmMJM7g3bpXVxrCfGfZlCa5kdY/QN9YnZT8GUJ0/MvMeSKgWSWZnmRSVk0a?=
+ =?us-ascii?Q?gWLeb7xy7XbwZ1J02/ok7ku5dZ9NUt5opmgiS5lCgpOY4ZYtzZpKHcFi2D7w?=
+ =?us-ascii?Q?rcqXd+O6vuApphdo/tYdtiQtzP6NgRd0pwvB5DzbxBpNprfbwGI9gd53G0mP?=
+ =?us-ascii?Q?7jRwYV5DuT5ynUVxnbPBsiweOq8I52imlXG0C/trzguE05IQ8FMWGjEoj6ir?=
+ =?us-ascii?Q?7+L3f/HA/T5wM7+V1CdVr0AgmL+yNyBngqf/614vZM92PTW7+BicOPhjhYn7?=
+ =?us-ascii?Q?IsluZN0C2eVerRsATh8qrdzPH+HWdClo+fHoJjC0vDA2miDvh8qlsDF4bLTo?=
+ =?us-ascii?Q?1iLaAyrSNOuuozr+U/DLhwy7IECtfMwAng47zPiFvocw++Ox/kBslsITe/Kc?=
+ =?us-ascii?Q?+j6Kaypu9qXOB1xKgQRP4MZc4IQ8hWKgDM+qeelTsoMFygyxz0ZPo1jMuQH8?=
+ =?us-ascii?Q?o4qNJMGgT4yz1gvMZmsSXa9dlIjmkHK84PSLN7DNDEli4e1NNOhZTK9JWENJ?=
+ =?us-ascii?Q?81OuDn9k62RyjAvUvY0DgKBuAsSso7F1gCLLbV/CQZYiYAhxowGJNZlNq/m1?=
+ =?us-ascii?Q?V5tCqh1i7hGKE9wfZWsj48xXIaQw/KJYDyzvfHcwTYDyTac2b/Xs4kB6iNe/?=
+ =?us-ascii?Q?XWcnVz8ZgIdmSnbvTjuqp4IvwIJ4UraGw8Y+uyUyA1tPh2pKzm1MGY6aY4rM?=
+ =?us-ascii?Q?GbjkWtS6oNxTCSN2uO/KFoEwYPPExth8FuzJwqit9IEc2lSAZGjLLmu/8asa?=
+ =?us-ascii?Q?w3aq7v5QHCoep9uWrhqjN+IHhH28SluMyMS7M4D1h2bW6nskkU3MIWFP/J4a?=
+ =?us-ascii?Q?3aioB+gwKqz1yxYo/Ig=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: db209284-2279-478a-f5d8-08dcd812a6e8
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2024 18:49:40.2844
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iS7NAKhn/N4Nw8ph+222Kfy5/bH7TY0PhN+pY3ngT1/W5Dq2DkwHAEdbiVtWW0xR33+7bbPaczg72PabvBwXBQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7808
 
-From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+On Wed, Sep 18, 2024 at 02:21:13PM -0400, Laurentiu Mihalcea wrote:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>
+> Per the current binding, QM/QXP DSPs are supposed
+> to have 4 power domains, while the rest just 1.
+> For QM/QXP, the 4 power domains are: DSP, DSP_RAM,
+> MU13A, MU13B.
+>
+> First off, drop MU13A from the count. This is attached
+> to the platform device of lsio_mu13. This decreases the
+> count to 3.
+>
+> Secondly, drop DSP and DSP_RAM from the count for QXP.
+> These are attached to the platform devices of the lpcgs
+> (used as clock providers for the DSP).
+>
+> With this in mind, the number of required power domains for
+> QXP is 1 (MU13B), while for QM it's 3 (MU13B, DSP, DSP_RAM).
+>
+> Additionally, two extra power domains may be required in the
+> case of QM/QXP DSPs. These are IRQSTR_DSP and MU2A. For the nodes
+> using the "-hifi4" compatibles these PDs are optional, while for
+> nodes using the "-dsp" compatibles these are mandatory.
+>
+> These changes reflect all of this information.
 
-Set the status of the dsp node to "okay" and assign
-its reserved memory regions.
+Can you wrap message to 75 char?
 
-Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx8qm-mek.dts | 27 ++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+>
+> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> ---
+>  .../devicetree/bindings/dsp/fsl,dsp.yaml      | 62 +++++++++++++++----
+>  1 file changed, 49 insertions(+), 13 deletions(-)
+>
+> diff --git a/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml b/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
+> index 9af40da5688e..e2f016af1048 100644
+> --- a/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
+> +++ b/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
+> @@ -51,8 +51,6 @@ properties:
+>      description:
+>        List of phandle and PM domain specifier as documented in
+>        Documentation/devicetree/bindings/power/power_domain.txt
+> -    minItems: 1
+> -    maxItems: 4
+>
+>    mboxes:
+>      description:
+> @@ -97,16 +95,55 @@ allOf:
+>        properties:
+>          compatible:
+>            contains:
+> -            enum:
+> -              - fsl,imx8qxp-dsp
+> -              - fsl,imx8qm-dsp
+> -              - fsl,imx8qxp-hifi4
+> -              - fsl,imx8qm-hifi4
+> +            const: fsl,imx8qxp-hifi4
+>      then:
+>        properties:
+>          power-domains:
+> -          minItems: 4
+> -    else:
+> +          maxItems: 3
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: fsl,imx8qxp-dsp
+> +    then:
+> +      properties:
+> +        power-domains:
+> +          minItems: 3
+> +          maxItems: 3
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
-index 62203eed6a6c..7ee69ce7b193 100644
---- a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
-@@ -92,6 +92,27 @@ vdevbuffer: memory@90400000 {
- 			reg = <0 0x90400000 0 0x100000>;
- 			no-map;
- 		};
-+
-+		dsp_reserved: dsp@92400000 {
-+			reg = <0 0x92400000 0 0x1000000>;
-+			no-map;
-+		};
-+
-+		dsp_vdev0vring0: vdev0vring0@942f0000 {
-+			reg = <0 0x942f0000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		dsp_vdev0vring1: vdev0vring1@942f8000 {
-+			reg = <0 0x942f8000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		dsp_vdev0buffer: vdev0buffer@94300000 {
-+			compatible = "shared-dma-pool";
-+			reg = <0 0x94300000 0 0x100000>;
-+			no-map;
-+		};
- 	};
- 
- 	lvds_backlight0: backlight-lvds0 {
-@@ -640,6 +661,12 @@ &sai7 {
- 	status = "okay";
- };
- 
-+&vpu_dsp {
-+	memory-region = <&dsp_vdev0buffer>, <&dsp_vdev0vring0>,
-+			<&dsp_vdev0vring1>, <&dsp_reserved>;
-+	status = "okay";
-+};
-+
- &iomuxc {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_hog>;
--- 
-2.34.1
+I remember only need maxItems, if minItems == maxItems.
 
+Frank
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: fsl,imx8qm-dsp
+> +    then:
+> +      properties:
+> +        power-domains:
+> +          minItems: 5
+> +          maxItems: 5
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: fsl,imx8qm-hifi4
+> +    then:
+> +      properties:
+> +        power-domains:
+> +          minItems: 3
+> +          maxItems: 5
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - fsl,imx8mp-dsp
+> +              - fsl,imx8mp-hifi4
+> +              - fsl,imx8ulp-dsp
+> +              - fsl,imx8ulp-hifi4
+> +    then:
+>        properties:
+>          power-domains:
+>            maxItems: 1
+> @@ -157,10 +194,9 @@ examples:
+>                   <&adma_lpcg IMX_ADMA_LPCG_OCRAM_IPG_CLK>,
+>                   <&adma_lpcg IMX_ADMA_LPCG_DSP_CORE_CLK>;
+>          clock-names = "ipg", "ocram", "core";
+> -        power-domains = <&pd IMX_SC_R_MU_13A>,
+> -                        <&pd IMX_SC_R_MU_13B>,
+> -                        <&pd IMX_SC_R_DSP>,
+> -                        <&pd IMX_SC_R_DSP_RAM>;
+> +        power-domains = <&pd IMX_SC_R_MU_13B>,
+> +                        <&pd IMX_SC_R_IRQSTR_DSP>,
+> +                        <&pd IMX_SC_R_MU_2A>;
+>          mbox-names = "txdb0", "txdb1", "rxdb0", "rxdb1";
+>          mboxes = <&lsio_mu13 2 0>, <&lsio_mu13 2 1>, <&lsio_mu13 3 0>, <&lsio_mu13 3 1>;
+>          memory-region = <&dsp_reserved>;
+> --
+> 2.34.1
+>
