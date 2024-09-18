@@ -1,39 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE1634CDD;
-	Wed, 18 Sep 2024 08:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C279185939;
+	Wed, 18 Sep 2024 08:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726646616; cv=none; b=L1E6IoYnE5aXovELpN7IfQ07GgcRSFjEtQ4G53RSyp6iExsa625G2U4IGrIkgnvCZXwjTWlqQJ8PZ95AJPOxy8rjvzldHus0udAFFARDrhbW8/Ap2rBR1NfHoHpASB6d20Nz1k9pDM0UaAl/T6j8F2qhnD3G01k1ygsAHf4xTN4=
+	t=1726647398; cv=none; b=L246vHPT4Do8sO2lL+iVo1s4QReySwvKC8c8Et1d7EVgbeY+4t6Im7y/8z2OK2a5liFhIOxylCc5ujcFZFDPuhlOucW5Gt1LiH+ejnAHC8alW5vKJ/J63tb7aiwWt1Yg5uow89YGfQoe+paZ8T1XxpMnspm6f8UaxPgoUEUrztY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726646616; c=relaxed/simple;
-	bh=+COCs9MMQTEc5+Mtf047EbHbkcilVJgqVOki/L78Wck=;
+	s=arc-20240116; t=1726647398; c=relaxed/simple;
+	bh=HdC/s+4IDjIyq0DJlaC1jI1NNqleZp92TjfIk8thLgk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rOfKOyAiXb5WvaDaqoWHZmq5k1Wy4+c12gvnHYfuKxpHRQk31ZVEyT1dBhHK3602V4PSVLGt4Gow/EHdjtJLzK49GKzlYM5trVfMM9AxZPalFBYsOHFgqMTBl32FteNRPG0tQLVeEzlQZFZftzlEYPlLDyNLc58HbeONtjyMbTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XlJU+qFO; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=G7qryiFjU2NuKPoq2wMQ1pG6cd+iLplVT7FYp53scnXrW2uLAaV2yksgRj/Hr0oB9LhcXYZv8Kov02/MAy6t0l/Hu5doJI/P5SQGtucXLTlakc7OClT6Oir4hmASdPvtE3a89bIUXjEczmFnQ0uwenxcCEThsdHRt7QvBaXm0HQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CJ7wgWuC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XlJU+qFO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B498C4CEC3;
-	Wed, 18 Sep 2024 08:03:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CJ7wgWuC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A98DC4CECD;
+	Wed, 18 Sep 2024 08:16:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726646616;
-	bh=+COCs9MMQTEc5+Mtf047EbHbkcilVJgqVOki/L78Wck=;
+	s=k20201202; t=1726647397;
+	bh=HdC/s+4IDjIyq0DJlaC1jI1NNqleZp92TjfIk8thLgk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XlJU+qFO98URjZniLBmYVTEeNrohEUUxC62eJvQPdD7zlFgsdJaNLmYyxaIOq+Osh
-	 4uzxRWr5alkd/RW5lzxMGxcr9eMWpP00tuM9sdz1b0lOVeJrcO9Il0YGrX1mXS8oFd
-	 fs81NPbB2lxXe8/ZOC1EJksDkav0knecDW5Gsgdo5s2XksPSkRWYtCvS0A6Bzo+UMj
-	 Pk9jYHzN8LkB+sprZUhW1cwm0ecKbvLBOQG659VyoS+inQGHmRv6WHn0flDBM9meC5
-	 Akaf01hQm36J/HSBoZ/aJzWbZnGBxaNaBs+689Ur2Dcbq8WTDJXl70ZlxQvrV0GypN
-	 SvFibrJjaY1SQ==
-Date: Wed, 18 Sep 2024 10:03:32 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	krzk+dt@kernel.org, robh@kernel.org, shawnguo@kernel.org, festevam@gmail.com
-Subject: Re: Device tree node order sort tool
-Message-ID: <2fdfmn7wjt5tr6lsxee2qubjgiphys5n2fivlracaksilvvgmi@od6t76mpd3co>
-References: <ZumjueKy+tvkODnB@lizhi-Precision-Tower-5810>
+	b=CJ7wgWuCdli6NO899TLGIii0tOyLCbzPyhf88B/gff0HapjU4Crv3882V7Bhg73ps
+	 ZEVB0kwsZxfp8MihZoZQqI9FcPPgAJy09zkQb0z4SjXltwtwtqflzL9S5ugKCCAlyH
+	 w0CTMUE+X6R+eRKbBG40h1aFkkWU07CoR3XW6v/xnuz9HwxJMtQ3G7gY1ihJIt8gf3
+	 RTTkUH3gQOS3tV/1/M2cfb/6lT+F2Dqqbt2nLCMjkiCArVTc5m1tJBgoiKn07WarBK
+	 D4Bvkak/vMtytGbRw1MctObRW02jUoGOeHtOUs2udG1C/CU4TL+Fl2zr1fAVxSQpxY
+	 gFvNILaJCcVYg==
+Date: Wed, 18 Sep 2024 09:16:32 +0100
+From: Simon Horman <horms@kernel.org>
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	Wong Vee Khee <vee.khee.wong@intel.com>,
+	Ong Boon Leong <boon.leong.ong@intel.com>,
+	Chuah Kim Tatt <kim.tatt.chuah@intel.com>, netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-imx@nxp.com
+Subject: Re: [PATCH net] net: stmmac: dwmac4: extend timeout for VLAN Tag
+ register busy bit check
+Message-ID: <20240918081632.GU167971@kernel.org>
+References: <20240917164206.414714-1-shenwei.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -42,66 +53,30 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ZumjueKy+tvkODnB@lizhi-Precision-Tower-5810>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240917164206.414714-1-shenwei.wang@nxp.com>
 
-On Tue, Sep 17, 2024 at 11:43:53AM -0400, Frank Li wrote:
-> All:
-> 	I write a simple tools to sort device tree to make sure nodes and
-> properties sort as correct order.
-> 	https://github.com/lznuaa/dt-format
+On Tue, Sep 17, 2024 at 11:42:06AM -0500, Shenwei Wang wrote:
+> Increase the timeout for checking the busy bit of the VLAN Tag register
+> from 10µs to 500ms. This change is necessary to accommodate scenarios
+> where Energy Efficient Ethernet (EEE) is enabled.
 > 
-> 	There are many dt files, which have node order trivial issue, when
-> try to upstream. To reduce reviewer's time, dt-format can help correct the
-> order.
+> Overnight testing revealed that when EEE is active, the busy bit can
+> remain set for up to approximately 300ms. The new 500ms timeout provides
+> a safety margin.
 > 
-
-Hey Frank,
-
-Cool idea!
-
-> 	I just want to make sure my understand about node order is correct.
+> This modification does not impact normal success path, as the function
+> typically returns within 1µs in non-EEE scenarios. The extended timeout
+> only affects the failure path.
 > 
-> 	Rule 1: node@hexvalue,  	order by hexvalue
-> 	Rule 2: label: node,  		order by node name
-> 	Rule 3: node, 			order by node name
-> 	Rule 3: &label			order by label
+> Fixes: ed64639bc1e0 ("net: stmmac: Add support for VLAN Rx filtering")
+> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
 
-Some subsystems have different ordering, like expressed in DTS coding
-style:
-1. DTS: keep order of DTSI file
-2. DTSI: group similar nodes together (e.g. serial engines).
+Hi Shenwei Wang,
 
-> 	Rule 4: children node already after property
-> 	Rule 5: "status" always is last one.
-> 	Rule 6: property order as below list[unfinished], otherwise, order
-> 	        by name.
-> 
-> compatible
-> reg
-> reg-names
-> ranges
+It looks like this function now uses udelay() to busy-wait for up to 500ms.
+But 500ms, or indeed 300ms, seems like a long time to tie down a core.  I
+wonder if some other sort of mechanism, f.e. involving msleep or delayed
+work, should be considered.
 
-Up to here everything above seems about right, except above caveats.
-
-> #interrupt-cells
-> interrupt-controller
-> interrupts
-> interrupt-names
-> #gpio-cells
-> gpio-controller
-> gpio-ranges
-> #address-cells
-> #size-cells
-> clocks
-> clock-names
-> assigned-clocks
-> assigned-clock-parents
-> assigned-clock-rates
-> dmas
-> dma-names
-
-I don't think we have defined order for these.
-
-Best regards,
-Krzysztof
-
+...
