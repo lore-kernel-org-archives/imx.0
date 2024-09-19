@@ -1,33 +1,33 @@
 Received: from uho.ysoft.cz (uho.ysoft.cz [81.19.3.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CC418B47D
-	for <imx@lists.linux.dev>; Thu, 19 Sep 2024 12:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B11719D8B4
+	for <imx@lists.linux.dev>; Thu, 19 Sep 2024 12:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.3.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726750206; cv=none; b=BPX1k1GeDn72mwfaI8GB7g5M5zYRqKeVQouM6+mpkRtl8bdw2cPr/0q/HXHA44Fm8dXtR0R5bXh1LxWV1m6hj6zMWOFCgb+5RDSLGW/Bq+CmajerIrc4vFF4fVNIMqeSaHHC2U6Kss/MtUouFCMAUZiduLKkfJdNVISHPIRSbGE=
+	t=1726750383; cv=none; b=qrmWfLI5YTbaGc7Bb4H3VAgON0TemHUSOmZTBct6EA1cKwLRllZdC2iUEC9GEPz6ZkXFGgpDzvn2G+a2mLp6/TjhBirbfK38XD3FCtlsu6hq0XRiUemSL0PC1uBnHXEj9az7YPj0eHojXIEiNp6lA0bwhqB26qXfPv1eAqtQFTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726750206; c=relaxed/simple;
-	bh=J8H9Vkd951kdcWfVG4cmrmvYIGHGWbAFqpI6AG98CZ4=;
+	s=arc-20240116; t=1726750383; c=relaxed/simple;
+	bh=Ph/oHin//pHNn53pb/cPXEAjtRG/v1xWFK7MeSfvfkg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iw6PJEOVhFfiQIw1YfzGRji2ERQSBTMvDGTSzfpCa1SitTViwJUAwx8bp+BY+hC7t/wLe/q2ldyk4dWNmaEuLfHmdT9op7tVMPTma3LwGH2dJizDoyl+GUrNs3gZXVVssVy4X59l8C8Jq3GoTGSTEdhtK+oW0jbhv7oqW+SvDzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ysoft.com; spf=pass smtp.mailfrom=ysoft.com; dkim=pass (1024-bit key) header.d=ysoft.com header.i=@ysoft.com header.b=AkXE7NWd; arc=none smtp.client-ip=81.19.3.130
+	 In-Reply-To:Content-Type; b=FDcr8Zww9E0FayTW+enhAvqCBb22ukbr9qqJLBhWdpsHJO+66MDEsPwhax47RvHaxXsqjK94ST4nTaOLxHp7nQUE6XAoF7rOejmMHAP3UjJ4YSq5wEr3yxl0UKqw8+jcs3WKKWhz5KLYkCIIfQqhftntilDVTwMDNh5hKS5VqcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ysoft.com; spf=pass smtp.mailfrom=ysoft.com; dkim=pass (1024-bit key) header.d=ysoft.com header.i=@ysoft.com header.b=LOdJrGcu; arc=none smtp.client-ip=81.19.3.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ysoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ysoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ysoft.com header.i=@ysoft.com header.b="AkXE7NWd"
+	dkim=pass (1024-bit key) header.d=ysoft.com header.i=@ysoft.com header.b="LOdJrGcu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ysoft.com;
-	s=20160406-ysoft-com; t=1726750197;
-	bh=DFUihjgu1Yv1D+fjiFL1PHa9IcrwAPwXN1SA1IoAdgI=;
+	s=20160406-ysoft-com; t=1726750380;
+	bh=60bDgnFrrO+PEAycaO+HE7Dpyx2k7R6Ulk+P7uK3JEI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AkXE7NWdsm1XrH3tNe2r10dthpgaP/q75BPoVxXPJS9uztSFB6Q+juW/8hmr4ldbP
-	 RDl2kw38lhKY+C79d5TYrkSFj/fuZhJ2/uA51BLk+5T2tgEbkhTCwmLni7/kD5k8Of
-	 1Hkq8f7lIjM9zYyljotET+SwUso7x9aseLPJpvA0=
+	b=LOdJrGcu50/Li4tNNrzaVJwDoT5QmnBQ7VSLhBlMtrnxrZ19qCf8X9Q+JbgfDej4u
+	 SzMLOujxnN4NeASyk0rZOraeamXO+K5wOhpHi4WluiBztB7r6uBdA7UBNc81WqGFM8
+	 s3pOhqwB8MsloPefY6GGOVIg5gvptIS7PXbHwa0c=
 Received: from [10.1.8.111] (unknown [10.1.8.111])
-	by uho.ysoft.cz (Postfix) with ESMTP id DF276A05BD;
-	Thu, 19 Sep 2024 14:49:56 +0200 (CEST)
-Message-ID: <70d365f0-a386-408b-8d5f-5524496526a0@ysoft.com>
-Date: Thu, 19 Sep 2024 14:49:56 +0200
+	by uho.ysoft.cz (Postfix) with ESMTP id DA291A05BD;
+	Thu, 19 Sep 2024 14:52:59 +0200 (CEST)
+Message-ID: <c4421504-2ccd-4adb-8df6-053c8085080a@ysoft.com>
+Date: Thu, 19 Sep 2024 14:52:59 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,8 +35,7 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] dt-bindings: usb: Add Diodes Incorporated
- PI5USB30213A Type-C Controller
+Subject: Re: [PATCH 4/4] arm64: dts: imx8mp-iota2: Enable the USB Type-C port
 To: Krzysztof Kozlowski <krzk@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -54,130 +53,68 @@ Cc: Sascha Hauer <s.hauer@pengutronix.de>,
  linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
 References: <20240917151001.1289399-1-michal.vokac@ysoft.com>
- <20240917151001.1289399-4-michal.vokac@ysoft.com>
- <3ac31595-f596-4960-bba2-0b0b55041193@kernel.org>
+ <20240917151001.1289399-5-michal.vokac@ysoft.com>
+ <91d26ba6-01cd-4b45-8cca-689475285463@kernel.org>
 Content-Language: en-US
 From: =?UTF-8?B?TWljaGFsIFZva8OhxI0=?= <michal.vokac@ysoft.com>
-In-Reply-To: <3ac31595-f596-4960-bba2-0b0b55041193@kernel.org>
+In-Reply-To: <91d26ba6-01cd-4b45-8cca-689475285463@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 18. 09. 24 15:16, Krzysztof Kozlowski wrote:
+On 18. 09. 24 15:17, Krzysztof Kozlowski wrote:
 > On 17/09/2024 17:10, Michal Vokáč wrote:
 >> From: Petr Benes <petr.benes@ysoft.com>
 >>
->> Diodes Incorporated PI5USB30213A Type-C Controller supports host,
->> device, and dual-role mode based on voltage levels detected on CC
->> pin. Supports dual differential channel, 2:1 USB 3.0 Mux/Demux,
->> USB Type-C specification 1.1.
+>> Enable the USB Type-C port with the Diodes PI5USB30213A port controller.
+>> The port supports dual role data but can operate only in source power role
+>> and PD is not supported.
 >>
 >> Signed-off-by: Petr Benes <petr.benes@ysoft.com>
 >> Signed-off-by: Michal Vokáč <michal.vokac@ysoft.com>
 >> ---
->>   .../bindings/usb/diodes,pi5usb30213a.yaml     | 95 +++++++++++++++++++
->>   1 file changed, 95 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/usb/diodes,pi5usb30213a.yaml
+>>   .../boot/dts/freescale/imx8mp-iota2-lumpy.dts | 96 +++++++++++++++++++
+>>   1 file changed, 96 insertions(+)
 >>
->> diff --git a/Documentation/devicetree/bindings/usb/diodes,pi5usb30213a.yaml b/Documentation/devicetree/bindings/usb/diodes,pi5usb30213a.yaml
->> new file mode 100644
->> index 000000000000..1cae10724152
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/usb/diodes,pi5usb30213a.yaml
->> @@ -0,0 +1,95 @@
->> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: https://eur02.safelinks.protection.outlook.com/?url=http%3A%2F%2Fdevicetree.org%2Fschemas%2Fusb%2Fdiodes%2Cpi5usb30213a.yaml%23&data=05%7C02%7Cmichal.vokac%40ysoft.com%7C925faa72b27547fa80c308dcd7e425f4%7Cb5839965430f4be2b282d7a3149f2b37%7C0%7C0%7C638622622118849100%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=T2NXqovVWUhM4ID1XdytvSaD9yQMKLH9QfQ%2FwFJ9xOs%3D&reserved=0
->> +$schema: https://eur02.safelinks.protection.outlook.com/?url=http%3A%2F%2Fdevicetree.org%2Fmeta-schemas%2Fcore.yaml%23&data=05%7C02%7Cmichal.vokac%40ysoft.com%7C925faa72b27547fa80c308dcd7e425f4%7Cb5839965430f4be2b282d7a3149f2b37%7C0%7C0%7C638622622118861671%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=tAR73Ny5eXo1GmO4%2BAqiUhpqLdwEgOrfuzwtY4b7K%2Bs%3D&reserved=0
+>> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-iota2-lumpy.dts b/arch/arm64/boot/dts/freescale/imx8mp-iota2-lumpy.dts
+>> index 21d0899cabd5..b15d211e8667 100644
+>> --- a/arch/arm64/boot/dts/freescale/imx8mp-iota2-lumpy.dts
+>> +++ b/arch/arm64/boot/dts/freescale/imx8mp-iota2-lumpy.dts
+>> @@ -38,6 +38,17 @@ memory@40000000 {
+>>   		      <0x1 0x00000000 0 0x80000000>;
+>>   	};
+>>   
+>> +	reg_typec: regulator-typec {
+>> +		compatible = "regulator-fixed";
+>> +		enable-active-high;
+>> +		gpio = <&gpio1 12 GPIO_ACTIVE_HIGH>;
+>> +		pinctrl-names = "default";
+>> +		pinctrl-0 = <&pinctrl_usbc_vbus>;
+>> +		regulator-max-microvolt = <5000000>;
+>> +		regulator-min-microvolt = <5000000>;
+>> +		regulator-name = "typec";
+>> +	};
 >> +
->> +title: PI5USB30213A Type-C port controller
->> +
->> +description:
->> +  Diodes Incorporated PI5USB30213A Type-C Controller supports host,
->> +  device, and dual-role mode based on voltage levels detected on CC
->> +  pin. Dual differential channel, 2:1 USB 3.0 Mux/Demux, USB Type-C
->> +  specification 1.1 compliant.
->> +
->> +maintainers:
->> +  - Petr Benes <petr.benes@ysoft.com>
-> 
-> Please put maintainers before description: block.
-
-OK
-
->> +
->> +properties:
->> +  compatible:
->> +    enum:
->> +      - diodes,pi5usb30213a
->> +
->> +  reg:
->> +    maxItems: 1
->> +
->> +  interrupts:
->> +    maxItems: 1
->> +
->> +  connector:
->> +    type: object
->> +    $ref: ../connector/usb-connector.yaml#
-> 
-> Full path, so /schemas/connector/usb-....
-
-OK.
-  
->> +    unevaluatedProperties: false
->> +    description:
->> +      The managed USB Type-C connector.
-> 
-> Description should not be needed.
-
-OK, I will remove it.
-
->> +
->> +    properties:
->> +      compatible:
->> +        const: usb-c-connector
-> 
-> Drop, not needed.
-
-OK.
-
->> +
->> +required:
->> +  - compatible
->> +  - reg
->> +  - interrupts
->> +  - connector
->> +
->> +additionalProperties: false
->> +
->> +examples:
->> +  - |
->> +    #include <dt-bindings/interrupt-controller/irq.h>
->> +
->> +    i2c {
->> +      #address-cells = <1>;
->> +      #size-cells = <0>;
->> +
->> +      pi5usb30213a: tcpc@d {
+>>   	reg_usb_host: regulator-usb-host {
+>>   		compatible = "regulator-fixed";
+>>   		enable-active-high;
+>> @@ -218,6 +229,47 @@ &i2c2 {
+>>   	pinctrl-0 = <&pinctrl_i2c2>;
+>>   	status = "okay";
+>>   
+>> +	tcpc@d {
 > 
 > typec@d
 > 
-> and drop label
-
-OK.
-  
->> +        compatible = "diodes,pi5usb30213a";
->> +        reg = <0xd>;
->> +        pinctrl-names = "default";
->> +        pinctrl-0 = <&pinctrl_typec>;
->> +        interrupts-extended = <&gpio1 5 IRQ_TYPE_LEVEL_LOW>;
->> +        status = "okay";
+>> +		compatible = "diodes,pi5usb30213a";
+>> +		reg = <0xd>;
+>> +		pinctrl-names = "default";
+>> +		pinctrl-0 = <&pinctrl_typec>;
+>> +		interrupts-extended = <&gpio1 5 IRQ_TYPE_LEVEL_LOW>;
+>> +		status = "okay";
 > 
-> Drop status
+> Drop
 
-OK.
+OK. I will address both comments.
 
 Thank you for the review,
 Michal
-
