@@ -1,103 +1,167 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012010.outbound.protection.outlook.com [52.101.66.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C325E198A29
-	for <imx@lists.linux.dev>; Thu, 19 Sep 2024 08:18:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726733940; cv=none; b=BeGbucXQohU63SIW6vv50cFzJNxAsYSKMKMLhIXVOi4T3EFaCjcqFPgEz1vA2/CjvhMTzkdQctV8g6ZzAte9ZIAjg8UYBJWhWtwG9vw0X7UPz2Z7PnDzP0thI+eu428zi14QrMgZ3K2dti9QqtuAvdf9RYNh5ngP1+EU7ni0N+I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726733940; c=relaxed/simple;
-	bh=2mNjGAlnjEztP3JS7M9VSET/InivqnEVm9LPkwuS37M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=go0gLN9Bcnw+sj9Usj2VJ+oxEnKexTV0Rt5Gjaf9UbZtvnUaW+KKQdgtAO+NM5W396dA6o7JodooDE6VpF1ddELn+79d1G4mlaGV2MbLt9jZCwiVuJiaWhpkvTjENP9vNaQK7ir0a/O7s3t1gDCNFNm2CnRxwp2XqGiXdi0HqmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EPtebOXg; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B44A1991D6
+	for <imx@lists.linux.dev>; Thu, 19 Sep 2024 08:56:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726736187; cv=fail; b=WegzJRe4Jm5GqXUD4vl6ixwpsaxMa/NGhyR4PgRlPFMB8U9B9X5bNSzVl5tRZQRolAHpyPQSM0cJgH0vvcUsdWkhKwIUqi828CbXhNyp1KyOboloENuWnmwuQJ0fFB2+PhnhBRBedECnf/K78z06MLfTC0jE1/FaecaHOKV0t/A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726736187; c=relaxed/simple;
+	bh=aBK5W1y0Eh0vIXTcTK9dHQX6NfM/iSqh53uLVQK5Wmk=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Cy9M0+E43yC3wKrCyOwvi631whkWr1sos3mPX5/QGeFCPlVqCnvxkmAXlK4HSkJCNAgEL89G5uqIJycpvjwg0ns8W75eqfyb2otpb4eVf0bAqHAAuDhANPz+5wYRX3WPxFUWP5nPLRd+1KszXzaq34IDs76JnupUzqnuAqfZXIE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Hy0d2W9R; arc=fail smtp.client-ip=52.101.66.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EPtebOXg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1726733936;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DBR7qTS56Xfn6z8tjqtE1OlYjkoY5xhmr1l/L289+go=;
-	b=EPtebOXgvRBrLBgJuArdd0KjlIoUGtddpvbfb88QzdpzosDZB3lnMlmS4hkCbGtsylM2Ta
-	2Ok/qCFJWMHAr/rB3jELNZ70E79Alk9CgHkxfunQdaXm/Ir2ZcWAUpXOr8tM89BQfSmnXP
-	cJXu7F6MNL0+6PXPDsIv4kZ5XPX1wvo=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-515-Alp4r5lpMgeynpSfXZid4Q-1; Thu, 19 Sep 2024 04:18:55 -0400
-X-MC-Unique: Alp4r5lpMgeynpSfXZid4Q-1
-Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2f74d4423d2so4135531fa.3
-        for <imx@lists.linux.dev>; Thu, 19 Sep 2024 01:18:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726733934; x=1727338734;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DBR7qTS56Xfn6z8tjqtE1OlYjkoY5xhmr1l/L289+go=;
-        b=VVxSzoBb1Vjy2JSg8NWluWohQfgDufRuqUuIW6sGKHnL/mofrNjMieDxzYSSSX5DiU
-         gNEj7gZW395hF1aumpAl4I4kNHjI2ixLp+lpbbK5vGNRCXHZVuw392vu9vG0cazyGDov
-         L/wfMX2FdC9LxhYry387YPvjr8znqba3AGls3jE/PosxI22rMPW4QNxN5BcfCej7OKgu
-         FUV7dR0Oz5g0HRVbrRPPB3SlwmnUyQM2btWkVMl07xKsPdslNLCbkrtvytV/XgjBituJ
-         fcuFYdS2ncVOwGNu0OJ8VUZ913HPJvNHqB3if1kL03DHHashQQyFGGuKhSFkNvVLuwnB
-         nuzA==
-X-Forwarded-Encrypted: i=1; AJvYcCV86JemxGkAShDGrMavPiYBo0PLlwYwdLCidm6KKK2yat103hPy+dSe+TdinskyvpI7l4Y=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyCDVe2CG+DYpo9VAJGraOKTr9BEZlnRSi0UEUGSy1iCrnugHf0
-	/4krXSBBrd4WkAZ8PDwLgr6zBBc2WcBsvwkcZDwzvyLKlrLLIMyf1p6ACrldN36Mw6nfgZlvMRO
-	IwOo1fjhIKAsCs6x7lFIIYpg3LmTKU/FXdqf4FD4sXA9tbUSxPg==
-X-Received: by 2002:a2e:742:0:b0:2f7:4c9d:7a87 with SMTP id 38308e7fff4ca-2f7a4b01295mr61967341fa.21.1726733933782;
-        Thu, 19 Sep 2024 01:18:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE2MnzbbCEccaeuHDOdq1z+nha8ZSu64dyW4cRwQEWQve8JMuNOlcPjkPasse7ThPGS6D7L0Q==
-X-Received: by 2002:a2e:742:0:b0:2f7:4c9d:7a87 with SMTP id 38308e7fff4ca-2f7a4b01295mr61967161fa.21.1726733933280;
-        Thu, 19 Sep 2024 01:18:53 -0700 (PDT)
-Received: from [192.168.88.100] (146-241-67-136.dyn.eolo.it. [146.241.67.136])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e754c5404sm15336915e9.39.2024.09.19.01.18.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Sep 2024 01:18:52 -0700 (PDT)
-Message-ID: <bc5988ca-4d43-41ce-a5c7-8d4cf67bed71@redhat.com>
-Date: Thu, 19 Sep 2024 10:18:50 +0200
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Hy0d2W9R"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cXQJvpgvtBsUAQvehHTw5VM1i2SCfbIsTPytxP6DmAe6mttKZvRcCCtj+4VI6J+3ztG5Twd8f/bGU4DXigxGEge6VKh0z0l2Yvdg0wxhkO3mU4cuWklSIq7NvIWyAYcitO1rgAMzrRs0yGSe/1jLbEvwD5N+gw4ayYAkMGvgMF/w567E6tIREnKKRY64ZfMa8nw+V1JaKftM86/T3BdA1cala4f8rohcWvv94/gtAuYB3AOiSEILMkJ4j/F6NobRHK3N5iCLurJEYKtlREwCMu87TPfo5Y0K319nRTRHIzdSq0mK/m2JCq+ucLv7m8TARs8rECcSOuuw8CswbAF46Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=M4l/oeTuTU9yGCxRBJaQwH6I+1YI4dIFPi3rZBGvhYM=;
+ b=WuQySajEJG8vXYkVXQZmID9RRIPNL7fO9wrpZNT6O/8ObdqHIwFRerXiB7AHfHISuT0NHMJj/PbRamV4LYfv2EMzJK4NXxk8RZaXK0kgwwBeyLr5N3GT5IQdv7pXY/5qfN2usc9DrREaGy1skiGxRr0QBUGi3P5P7GE5z7PDIFsqvDnzgzERCnd/ekHZna3yglcXTLXHWZHUK0hG2JEaedSBpeaLcM4RoFaZ1dQdrAj7uMecefePzqg4FWTFNGAqUw3Y0vZ2K67J9TQLtMEFjYNLrIf67t44fb2oghHN4/9d1JvTUBSNBAkTNyFI/wfbby1VSvkgCrHtlmKP6cuErg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=M4l/oeTuTU9yGCxRBJaQwH6I+1YI4dIFPi3rZBGvhYM=;
+ b=Hy0d2W9RCCZ32sbaPUpVMFgHl+17vx0nezxh63Ckikqucnj96TXaSACC6VyCnXaL3g4YHF+Q5MjcP2/Md6McjwrlWYMqlGeFR5llE3GkcfyQSpyGVZiy9VuvepF4wP8xbevQNSKApOqD/K0pL9d0WyGFTVVtG3oMU/Py1K5vdLBq+SvsFn7WjEJ2+7wYX+uBeonfiOiaJHSivXCTxrJ0AvIW8DfhvDqAY59gfWfP07Q+tRO3qGIzEnl93ZtF5JLTL66nz670Z2HvhTmaVnMfkScu9ivggBkDkc+wHTPDjS906einAGA5ZC8FE/cVuYa4lUTjwnjPpLaPLbyvSj2GLQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by GV1PR04MB10242.eurprd04.prod.outlook.com (2603:10a6:150:1a8::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.16; Thu, 19 Sep
+ 2024 08:56:16 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%6]) with mapi id 15.20.7918.024; Thu, 19 Sep 2024
+ 08:56:16 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com
+Cc: linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	stable@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH net 0/3] net: enetc: fix some issues of XDP
+Date: Thu, 19 Sep 2024 16:41:01 +0800
+Message-Id: <20240919084104.661180-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI1PR02CA0005.apcprd02.prod.outlook.com
+ (2603:1096:4:1f7::13) To PAXPR04MB8510.eurprd04.prod.outlook.com
+ (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] net: fec: Restart PPS after link state change
-To: =?UTF-8?B?Q3PDs2vDoXMsIEJlbmNl?= <csokas.bence@prolan.hu>,
- imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
- Clark Wang <xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Richard Cochran <richardcochran@gmail.com>
-References: <20240916141931.742734-1-csokas.bence@prolan.hu>
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20240916141931.742734-1-csokas.bence@prolan.hu>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|GV1PR04MB10242:EE_
+X-MS-Office365-Filtering-Correlation-Id: ba383c92-edc2-4f51-c517-08dcd888eb76
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|366016|1800799024|7416014|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?G5sXKS9XtGKIbDUqCVfwlUbrpO9JzWUUwMtlcmXI7nXq6/13ROmafmTmnR6p?=
+ =?us-ascii?Q?HRk0E+kiWzEUCA4f97XcCKnEA+CaqOWKr8I7ewOU2wDn64zt+jWVphy2/vtF?=
+ =?us-ascii?Q?vOEGEmFCCR99CLys/7Z8CJCuFoKa8CeJimreluKJAKu+oe01viuK5WfbaWpS?=
+ =?us-ascii?Q?8pVFEnpKYVtDqtUQsSzbbQ6GEVDNSIu31O6luFL6EaX5YBfphsJDlfpOJaRv?=
+ =?us-ascii?Q?Q9nqd8j3osS+D49j39t0Z+XpkmKuO3wvbjx4TQIkgaBtqG//u6zHVQD4vnQT?=
+ =?us-ascii?Q?Qw4kfJaBlYT0uZCJSvMR4vUQlUmNlC/JNiOsa/1mUBpbChvBhJZ/ci2cWlLm?=
+ =?us-ascii?Q?pBcIpUbDwoS1/0rtpIvlMmq1EDFW5O5jyxHja9C+GxnLiAIDUdiku6KRGepr?=
+ =?us-ascii?Q?fJ6iaAznYo9szD8f/l1LsvIXDMb0E/qIP9Uy/Grz+Xb1KTEWVdPmvALCwxfO?=
+ =?us-ascii?Q?9FFz/Q9tnWU6zHDlJW5QSjD8H/31HyGwe6Zu5TJsRXp9fTihoX/QnFKVFa5p?=
+ =?us-ascii?Q?nEqsZv0VbyP9xBsDvnTiEG458ER+u5SkPcXQJKOVKjXU80c6KCX5KaH4XZ24?=
+ =?us-ascii?Q?u2lDDFjy1T88SVUc9yTDh34RoKNdoeH4lomeJ00tU2TAvxp8U43l/Glb2+fV?=
+ =?us-ascii?Q?2btub34q6Ghja6eJHNvgg0rUkqx/5HypSJwqTI7ujUrB4H2+9wEMBIKtAPTD?=
+ =?us-ascii?Q?UJ3Ptk5V1ht7W6+ATrrEg8WDSiJdE0ohzvZwgY9avvZVpDS4Dv63Wkpl4XBK?=
+ =?us-ascii?Q?elWQPBed6opE/Vo9wb4RRvuKVOQWWGL8fmbKAR365QFZNZGbYKjV7CJmZQGG?=
+ =?us-ascii?Q?+Td1mej73aajuOeLpT5lachJEMowt+UICgQ5V+HTfqKryaE73xEfnzfKI4dJ?=
+ =?us-ascii?Q?DFTDM40xWhHOhDZdFO3cHVesEoLqHlYYlC6Y4Z/EYU7JkQ04Uem4WTCcTChD?=
+ =?us-ascii?Q?4kP2X0xBpuvp3WHo/BK46eIFsmAjlGEhLvIbv1WiREaH9hAepgzRGHEsDPqV?=
+ =?us-ascii?Q?CVRP6rJLXkdu9mZBaheAWXPBA1RkZ3X7pEQ8Hm+2sXPAiZRtjIj4vf+CmAhC?=
+ =?us-ascii?Q?1DuaC5CxKazcX+YG3dwdoXea3x//AD1E6kEENwJEXFq5k5j8LoRxZjuxnwQS?=
+ =?us-ascii?Q?pR3+NVb+OVQ7xo2J10Be/9yqlcpcFkiy7VUQVyGpbdCXL433uIBTKfZidSmS?=
+ =?us-ascii?Q?3Tx7BA2w7enEEfCDmIdEgpzz83BvTM1yk441cTTJZruXSp4QuatXzlyydBbC?=
+ =?us-ascii?Q?FbT6+moQybr7KP1wX/i0J3ginEaFsE28+bIyyLEmo1mCnqC66PjlHyUlTjqg?=
+ =?us-ascii?Q?B8WxTEIwh/3yy9YJXURowkYOdljkKdCQxUOMDMbONOTmnMYDLJZmmzMYO0bm?=
+ =?us-ascii?Q?Oh37ylofzWNsA1qSNPMuONq4sHRHzhOSC9MAcowlgYjeF9GTqw1obDIEj8IA?=
+ =?us-ascii?Q?bcRwcEUofT4=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(366016)(1800799024)(7416014)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?xf7kwOEy0rlpgWkLNYrHYyjZN4OJaeHHHqw9dYr8iFi5r5MaJN81wOkHIcJ8?=
+ =?us-ascii?Q?HLl5AiteOW8059tOjuBbELGX6/sjgIRmUhToJRCcLG92ZF2iV6rsOBH/XZ+3?=
+ =?us-ascii?Q?sxTYU4fAvSEJr1sDeYLc5GMiyvXxrvHRZDcmorWLSlQ+at+NjoLeCfhA12r6?=
+ =?us-ascii?Q?1byxYDXtg3k0MSOSeqjtXe0NPQO4dVJYmCN6eZgvPc82RHl+nYTfbs3m18u3?=
+ =?us-ascii?Q?RDuhLeZxmaaalas47Ng0CS159WRgyxS9bxYyw5FoAikIP2rz9Pj0nzBbzjfg?=
+ =?us-ascii?Q?E+OXagNKyfMFJEn3YAfMJekK35JNRxKLalxCjT+YZkb4hSXCQ/34gtFbGfw0?=
+ =?us-ascii?Q?E+GkSWSJxhdK4dCk2HWCWgVNwrZZM87w3OZoh2pWPqqdvQwl1T9jgpL5quT4?=
+ =?us-ascii?Q?A1x0yZ3c+KPdlB/MLX0w6QG5OJ7ZyIPLRfl1uvfp1Vmb9k4664xCh9xlFbqa?=
+ =?us-ascii?Q?d0hgeg/Exp0v8BnRvkcpjqaS79Cmd/48WVhZUNp/JiLN6HYGqMweye9ZkVhc?=
+ =?us-ascii?Q?ARCjHsMBmz7Ux3Op6RcbxeJQMcy1TbJy5xxtK3BolTDu5kbfQtFyazfCX+x2?=
+ =?us-ascii?Q?YxHPm0aS2hKC1/+kvvlnOofAv0MSKGT6PP/+wHdtKD2SQvgAtPyWjdBDirsK?=
+ =?us-ascii?Q?+w4OVeN11xHwwt3AY2UcWfi7QHgD2gXdxNEBY3qF2z/JjJVrAm2YOT2uam44?=
+ =?us-ascii?Q?/Y3P0PKF6I0Ob8JfrmGvHAcz6DGHInjg2z6xpXBBy7YtI9j4hG9qUHgIk03y?=
+ =?us-ascii?Q?9QFY1W3KM+1hVjsC830ySQ8UVLFQDkSTJIlqkeCM1xx+j4F+kzo4ta4EXfxj?=
+ =?us-ascii?Q?TKmU1NuOoTbxx8cpaU5rfS7L41PRote5Rw6BEfyYvntxdYeXX9/E3ZLHaR0q?=
+ =?us-ascii?Q?2RMd9riwlCGDw1VG5W3fjj0zHfU4UMB1yJX5+hDaeWHp7weJEZKfWyDMhEfC?=
+ =?us-ascii?Q?EAgxZtA8TFN7LBysd0D1N0eYVQW7M+cYLdHXmPG+AIjuBQiomd2vVHlUBo26?=
+ =?us-ascii?Q?W1BukGoUImsxCVfhbanKLc0ZSgTkpiBJUIa8x33ALdGMGk0AirJ0lToV7r6n?=
+ =?us-ascii?Q?wuTByJ8gMU3FPyGeRE1HpmAj6fdxFuffwF0iLUXxTOrBlOIp6zgRqQ9WFeqw?=
+ =?us-ascii?Q?Et3LUKOsN9hBYQoGLZLwREoVY7XdKspB5PbppBs/GraT/54U2k39nFp0NJ56?=
+ =?us-ascii?Q?nBw2ZAXaMXugiIFUabr/DMMGtNY0EnvJVjR8XzJ3MBoqiGNkHlChJddewR3K?=
+ =?us-ascii?Q?YgukeGW1A7J0hc/VkSKFaWHvfaT14dWj03bdeUHKNFhYYVtftwlfFoBhKGan?=
+ =?us-ascii?Q?7Iom29glLqfdfKFkobXBz3uwmSEAaqpk3aCEBdgLkLCZP56+wRwqToGvR7yP?=
+ =?us-ascii?Q?diG7wLkF6XG5hASTsNNgvm3v50UM//6EDH4DR9rPDSU78PzqOW74KVcK4/WN?=
+ =?us-ascii?Q?ZiDRd19y/v5aRLyzQthviaYvxJoDvqirsgKvNbBo45RVHkC0gAOd5yWJSGic?=
+ =?us-ascii?Q?YNYkiocHcM6W1FZdih0CdaAYhaw9yaYQllebET2pUNqakNv581zXFHDXRIDK?=
+ =?us-ascii?Q?ayTm9+XxkechvUkUHGF1xgPpINFOSPPAN/e0FWS5?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ba383c92-edc2-4f51-c517-08dcd888eb76
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2024 08:56:16.0853
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TDFrfL8jpDLhg8d6Gdak1fvxD9RCZZnHMbcY5LTeAjLkPBVHQwF91CNu2uu5h78Yx6Dco0Uq1IkJX0tIYAI2zA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10242
 
-On 9/16/24 16:19, Csókás, Bence wrote:
-> On link state change, the controller gets reset,
-> causing PPS to drop out. Re-enable PPS if it was
-> enabled before the controller reset.
-> 
-> Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+We found some bugs when testing the XDP function of enetc driver,
+and these bugs are easy to reproduce. This is not only causes XDP
+to not work, but also the network cannot be restored after exiting
+the XDP program. So the patch set is mainly to fix these bugs. For
+details, please see the commit message of each patch.
 
-This and the next patch look like a bugfix, as such they should target 
-the 'net' tree:
+Wei Fang (3):
+  net: enetc: remove xdp_drops statistic from enetc_xdp_drop()
+  net: enetc: fix the issues of XDP_REDIRECT feature
+  net: enetc: reset xdp_tx_in_flight when updating bpf program
 
-https://elixir.bootlin.com/linux/v6.11/source/Documentation/process/maintainer-netdev.rst#L64
+ drivers/net/ethernet/freescale/enetc/enetc.c | 46 +++++++++++++++-----
+ drivers/net/ethernet/freescale/enetc/enetc.h |  1 +
+ 2 files changed, 37 insertions(+), 10 deletions(-)
 
-and you should include suitable fixes tag in each of them.
-
-Thanks,
-
-Paolo
+-- 
+2.34.1
 
