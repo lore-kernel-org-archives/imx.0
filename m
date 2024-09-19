@@ -1,31 +1,33 @@
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from uho.ysoft.cz (uho.ysoft.cz [81.19.3.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A72F19D09E;
-	Thu, 19 Sep 2024 11:15:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CC418B47D
+	for <imx@lists.linux.dev>; Thu, 19 Sep 2024 12:50:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.3.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726744519; cv=none; b=fv8ApJ+36r9H5oyWVI7U5dlDoRGe6N9w8/wdB6Kwaf9Aj0AZuGpdSB9Nk2XyWwut3Gl971Ap2Gs6jNtqGCAJavY1VNMFxZjD3snH/azwZd4YvUkUYH2/ogrMjpPX/UwkNQYS8l+nUj96BPZ4IdQc0HqS4KSExsPYLz1a2iPhPSk=
+	t=1726750206; cv=none; b=BPX1k1GeDn72mwfaI8GB7g5M5zYRqKeVQouM6+mpkRtl8bdw2cPr/0q/HXHA44Fm8dXtR0R5bXh1LxWV1m6hj6zMWOFCgb+5RDSLGW/Bq+CmajerIrc4vFF4fVNIMqeSaHHC2U6Kss/MtUouFCMAUZiduLKkfJdNVISHPIRSbGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726744519; c=relaxed/simple;
-	bh=RbDtzFY4xR7hRu6Pf3a1C6ue6w6zG+4Zddlf2w/ZKJ8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=RF8EFl6HhyI6J43zTf7oCZLC/15LLxZ20AQtsd9gUJPyZlRqAEYE+sGvJipyCdF014anUyVx1RfdiUVH04wIA9vld5jJ46zVoOm3I4+Bl1dQcRosPKEvCTbd76JfaR8P0JKM15fbe721tFqjDp5zeczckzyjIzDUJoWVvfT3E9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4X8XwS0qCqz2DcFV;
-	Thu, 19 Sep 2024 19:14:32 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id BC8361A016C;
-	Thu, 19 Sep 2024 19:15:11 +0800 (CST)
-Received: from [10.67.120.129] (10.67.120.129) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 19 Sep 2024 19:15:11 +0800
-Message-ID: <cdfecd37-31d7-42d2-a8d8-92008285b42e@huawei.com>
-Date: Thu, 19 Sep 2024 19:15:11 +0800
+	s=arc-20240116; t=1726750206; c=relaxed/simple;
+	bh=J8H9Vkd951kdcWfVG4cmrmvYIGHGWbAFqpI6AG98CZ4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iw6PJEOVhFfiQIw1YfzGRji2ERQSBTMvDGTSzfpCa1SitTViwJUAwx8bp+BY+hC7t/wLe/q2ldyk4dWNmaEuLfHmdT9op7tVMPTma3LwGH2dJizDoyl+GUrNs3gZXVVssVy4X59l8C8Jq3GoTGSTEdhtK+oW0jbhv7oqW+SvDzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ysoft.com; spf=pass smtp.mailfrom=ysoft.com; dkim=pass (1024-bit key) header.d=ysoft.com header.i=@ysoft.com header.b=AkXE7NWd; arc=none smtp.client-ip=81.19.3.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ysoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ysoft.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ysoft.com header.i=@ysoft.com header.b="AkXE7NWd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ysoft.com;
+	s=20160406-ysoft-com; t=1726750197;
+	bh=DFUihjgu1Yv1D+fjiFL1PHa9IcrwAPwXN1SA1IoAdgI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=AkXE7NWdsm1XrH3tNe2r10dthpgaP/q75BPoVxXPJS9uztSFB6Q+juW/8hmr4ldbP
+	 RDl2kw38lhKY+C79d5TYrkSFj/fuZhJ2/uA51BLk+5T2tgEbkhTCwmLni7/kD5k8Of
+	 1Hkq8f7lIjM9zYyljotET+SwUso7x9aseLPJpvA0=
+Received: from [10.1.8.111] (unknown [10.1.8.111])
+	by uho.ysoft.cz (Postfix) with ESMTP id DF276A05BD;
+	Thu, 19 Sep 2024 14:49:56 +0200 (CEST)
+Message-ID: <70d365f0-a386-408b-8d5f-5524496526a0@ysoft.com>
+Date: Thu, 19 Sep 2024 14:49:56 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -33,79 +35,149 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 2/2] page_pool: fix IOMMU crash when driver has
- already unbound
-To: Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas
-	<ilias.apalodimas@linaro.org>
-CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<liuyonglong@huawei.com>, <fanghaiqing@huawei.com>, <zhangkun09@huawei.com>,
-	Robin Murphy <robin.murphy@arm.com>, Alexander Duyck
-	<alexander.duyck@gmail.com>, IOMMU <iommu@lists.linux.dev>, Wei Fang
-	<wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
-	<xiaoning.wang@nxp.com>, Eric Dumazet <edumazet@google.com>, Tony Nguyen
-	<anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov
-	<ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, John Fastabend
-	<john.fastabend@gmail.com>, Saeed Mahameed <saeedm@nvidia.com>, Leon
- Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Felix Fietkau
-	<nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee
-	<ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>, Sean Wang
-	<sean.wang@mediatek.com>, Kalle Valo <kvalo@kernel.org>, Matthias Brugger
-	<matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>, Andrew Morton
-	<akpm@linux-foundation.org>, <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <intel-wired-lan@lists.osuosl.org>,
-	<bpf@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<linux-wireless@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mediatek@lists.infradead.org>, <linux-mm@kvack.org>
-References: <20240918111826.863596-1-linyunsheng@huawei.com>
- <20240918111826.863596-3-linyunsheng@huawei.com>
- <CAC_iWjK=G7Oo5=pN2QunhasgDC6NyC1L+96jigX7u9ad+PbYng@mail.gmail.com>
- <894a3c2c-22f9-45b9-a82b-de7320066b42@kernel.org>
+Subject: Re: [PATCH 3/4] dt-bindings: usb: Add Diodes Incorporated
+ PI5USB30213A Type-C Controller
+To: Krzysztof Kozlowski <krzk@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Shawn Guo <shawnguo@kernel.org>, Petr Benes <petr.benes@ysoft.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Herburger <gregor.herburger@ew.tq-group.com>,
+ Hiago De Franco <hiago.franco@toradex.com>,
+ Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+ Joao Paulo Goncalves <joao.goncalves@toradex.com>,
+ Michael Walle <mwalle@kernel.org>,
+ Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Mathieu Othacehe <m.othacehe@gmail.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20240917151001.1289399-1-michal.vokac@ysoft.com>
+ <20240917151001.1289399-4-michal.vokac@ysoft.com>
+ <3ac31595-f596-4960-bba2-0b0b55041193@kernel.org>
 Content-Language: en-US
-From: Yunsheng Lin <linyunsheng@huawei.com>
-In-Reply-To: <894a3c2c-22f9-45b9-a82b-de7320066b42@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+From: =?UTF-8?B?TWljaGFsIFZva8OhxI0=?= <michal.vokac@ysoft.com>
+In-Reply-To: <3ac31595-f596-4960-bba2-0b0b55041193@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemf200006.china.huawei.com (7.185.36.61)
 
-On 2024/9/19 17:42, Jesper Dangaard Brouer wrote:
-> 
-> On 18/09/2024 19.06, Ilias Apalodimas wrote:
->>> In order not to do the dma unmmapping after driver has already
->>> unbound and stall the unloading of the networking driver, add
->>> the pool->items array to record all the pages including the ones
->>> which are handed over to network stack, so the page_pool can
->>> do the dma unmmapping for those pages when page_pool_destroy()
->>> is called.
+On 18. 09. 24 15:16, Krzysztof Kozlowski wrote:
+> On 17/09/2024 17:10, Michal Vokáč wrote:
+>> From: Petr Benes <petr.benes@ysoft.com>
 >>
->> So, I was thinking of a very similar idea. But what do you mean by
->> "all"? The pages that are still in caches (slow or fast) of the pool
->> will be unmapped during page_pool_destroy().
+>> Diodes Incorporated PI5USB30213A Type-C Controller supports host,
+>> device, and dual-role mode based on voltage levels detected on CC
+>> pin. Supports dual differential channel, 2:1 USB 3.0 Mux/Demux,
+>> USB Type-C specification 1.1.
+>>
+>> Signed-off-by: Petr Benes <petr.benes@ysoft.com>
+>> Signed-off-by: Michal Vokáč <michal.vokac@ysoft.com>
+>> ---
+>>   .../bindings/usb/diodes,pi5usb30213a.yaml     | 95 +++++++++++++++++++
+>>   1 file changed, 95 insertions(+)
+>>   create mode 100644 Documentation/devicetree/bindings/usb/diodes,pi5usb30213a.yaml
+>>
+>> diff --git a/Documentation/devicetree/bindings/usb/diodes,pi5usb30213a.yaml b/Documentation/devicetree/bindings/usb/diodes,pi5usb30213a.yaml
+>> new file mode 100644
+>> index 000000000000..1cae10724152
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/usb/diodes,pi5usb30213a.yaml
+>> @@ -0,0 +1,95 @@
+>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: https://eur02.safelinks.protection.outlook.com/?url=http%3A%2F%2Fdevicetree.org%2Fschemas%2Fusb%2Fdiodes%2Cpi5usb30213a.yaml%23&data=05%7C02%7Cmichal.vokac%40ysoft.com%7C925faa72b27547fa80c308dcd7e425f4%7Cb5839965430f4be2b282d7a3149f2b37%7C0%7C0%7C638622622118849100%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=T2NXqovVWUhM4ID1XdytvSaD9yQMKLH9QfQ%2FwFJ9xOs%3D&reserved=0
+>> +$schema: https://eur02.safelinks.protection.outlook.com/?url=http%3A%2F%2Fdevicetree.org%2Fmeta-schemas%2Fcore.yaml%23&data=05%7C02%7Cmichal.vokac%40ysoft.com%7C925faa72b27547fa80c308dcd7e425f4%7Cb5839965430f4be2b282d7a3149f2b37%7C0%7C0%7C638622622118861671%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=tAR73Ny5eXo1GmO4%2BAqiUhpqLdwEgOrfuzwtY4b7K%2Bs%3D&reserved=0
+>> +
+>> +title: PI5USB30213A Type-C port controller
+>> +
+>> +description:
+>> +  Diodes Incorporated PI5USB30213A Type-C Controller supports host,
+>> +  device, and dual-role mode based on voltage levels detected on CC
+>> +  pin. Dual differential channel, 2:1 USB 3.0 Mux/Demux, USB Type-C
+>> +  specification 1.1 compliant.
+>> +
+>> +maintainers:
+>> +  - Petr Benes <petr.benes@ysoft.com>
 > 
-> I really dislike this idea of having to keep track of all outstanding pages.
-> 
-> I liked Jakub's idea of keeping the netdev around for longer.
-> 
-> This is all related to destroying the struct device that have points to
-> the DMA engine, right?
+> Please put maintainers before description: block.
 
-Yes, the problem seems to be that when device_del() is called, there is
-no guarantee hw behind the 'struct device ' will be usable even if we
-call get_device() on it.
+OK
 
+>> +
+>> +properties:
+>> +  compatible:
+>> +    enum:
+>> +      - diodes,pi5usb30213a
+>> +
+>> +  reg:
+>> +    maxItems: 1
+>> +
+>> +  interrupts:
+>> +    maxItems: 1
+>> +
+>> +  connector:
+>> +    type: object
+>> +    $ref: ../connector/usb-connector.yaml#
 > 
-> Why don't we add an API that allow netdev to "give" struct device to
-> page_pool.  And then the page_poll will take over when we can safely
-> free the stuct device?
+> Full path, so /schemas/connector/usb-....
 
-By 'allow netdev to "give" struct device to page_pool', does it mean
-page_pool become the driver for the device?
-If yes, it seems that is similar to jakub's idea, as both seems to stall
-the calling of device_del() by not returning when the driver unloading.
-If no, it seems that the problem is still existed when the driver for
-the device has unbound after device_del() is called.
-
+OK.
+  
+>> +    unevaluatedProperties: false
+>> +    description:
+>> +      The managed USB Type-C connector.
 > 
-> --Jesper
+> Description should not be needed.
+
+OK, I will remove it.
+
+>> +
+>> +    properties:
+>> +      compatible:
+>> +        const: usb-c-connector
+> 
+> Drop, not needed.
+
+OK.
+
+>> +
+>> +required:
+>> +  - compatible
+>> +  - reg
+>> +  - interrupts
+>> +  - connector
+>> +
+>> +additionalProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +    #include <dt-bindings/interrupt-controller/irq.h>
+>> +
+>> +    i2c {
+>> +      #address-cells = <1>;
+>> +      #size-cells = <0>;
+>> +
+>> +      pi5usb30213a: tcpc@d {
+> 
+> typec@d
+> 
+> and drop label
+
+OK.
+  
+>> +        compatible = "diodes,pi5usb30213a";
+>> +        reg = <0xd>;
+>> +        pinctrl-names = "default";
+>> +        pinctrl-0 = <&pinctrl_typec>;
+>> +        interrupts-extended = <&gpio1 5 IRQ_TYPE_LEVEL_LOW>;
+>> +        status = "okay";
+> 
+> Drop status
+
+OK.
+
+Thank you for the review,
+Michal
+
