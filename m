@@ -1,118 +1,178 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2051.outbound.protection.outlook.com [40.107.22.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121504D8D0
-	for <imx@lists.linux.dev>; Fri, 20 Sep 2024 09:10:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726823433; cv=none; b=GR3mVhYpCpTIDyzDOnAoYFICIWFUz8inwzg6VeVOlMJLfysyH/bzD9ofqmpfBWEBZQsBon3tH9I8qRvmhtrnYO0bm2tfPIAhtqdTKXVuBdsjG9KChKfN5jAi2P494qPoP92aDJ/me15QE6xdgWczMLcozK/4g2UT57dgVDSyme8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726823433; c=relaxed/simple;
-	bh=DgJEbKRUNdBaOZ1pwvlSKrNJaayM+9t0IHIxvuNr7Xo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qIg8dal/6r0lwjuzuyJ+9s5BxakKJXvkGtXoDH7GV1ZKBfILqtK0qdfUkZhYTVs9+qucru8dGop9lcZuaL5bAB3ws4TTL4zwkOcMlYFznc/OKX9tDBqbKQha6BeEa9wXgS0rAoSVlTCo4uLUfUGlkbtxbmEOMaXbKv+pqdO+kj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1srZeN-0007IG-6w; Fri, 20 Sep 2024 11:10:03 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1srZeJ-000Dah-Pf; Fri, 20 Sep 2024 11:09:59 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1srZeJ-001rh8-2C;
-	Fri, 20 Sep 2024 11:09:59 +0200
-Date: Fri, 20 Sep 2024 11:09:59 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Michael Walle <mwalle@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/3] mtd: spi-nor: support vcc-supply regulator
-Message-ID: <20240920090959.67y7h57yirtahfuh@pengutronix.de>
-References: <20240920-spi-v1-0-97f220c2e10c@nxp.com>
- <20240920-spi-v1-2-97f220c2e10c@nxp.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DDC22066
+	for <imx@lists.linux.dev>; Fri, 20 Sep 2024 09:40:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726825208; cv=fail; b=u+uqQ8YxKpQV77+ryqcLgD0EQX3era6dbIrFeyKszUO8vOmJFz0SZ0u3ImBStbWR6kDgI4B866AF6wkiXFPX+2wfkk7Xmtx5cj2gUUStXwd2s79m0UXJpeIMo5RIZ8fZdHgt12L4k3COnV+SvfVhqyGZfhAbt4MrhvU1AUG6r+4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726825208; c=relaxed/simple;
+	bh=PsBpL2Z9SNYKc6A6j3pwtjZbyiOr9JcoEyybyqCXJ/Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=t+Y4/eZJnB4JvedH41eQDObbQ9yuQfyH+JaJVzEeyBt/JlqHBfXptARPdlMLrAubhOlWKptt379msp3MFJoLPPVstkC7cXTd6dVt26YbAldlXw2rNy2oegkL8hWkLi3HBx3b88kdGToydDjUHrMQ4PPEL9WOFM0xgW9/y4xI2JE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=fGgbxZBC; arc=fail smtp.client-ip=40.107.22.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="fGgbxZBC"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nkXYQ0rxY58jSdmBW/Ks4fzQE8100pNPwqqlxAyrUmYUZP+xoVtSatTHXyHq0oL77IO6BYMue1vyPwA53hXVCcioKMlKsY5k8PFP0vvw/xUWgxpC/yfeIn4FBl2CIQNjAc6Mt6b6IlgY47/58pN08RP2Cr5sMzpQPbYeEzkfOtGdXua9aGeWoLpu22Jrf1T2AuPYE4LUi/xEYin8qAd3yDkXjT3mm8/QyyCF5c8KnN2XPT5PTSokEaE+K2oFV+oRGqsRn3Lgj6mZVDnKCgv5tXEgfrgHa8llXL6YnUrh1RC2i+bsUdgDqfQ1ZYLdckojGllhIIrzaITjw80TuRhTxA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=n+VYpPTFjrsseXDgLUaFxm908ISxu2crss8cOzXTEdg=;
+ b=yv6boroh6VNU5FJYX/NDZdVY9xj1C0yOVb3EIW8R6F/KPaUUdN6oW17aV2xYfrJFsF5io7qehbLlYFtJ9687gBuS5Hh4SBGGnfkA13f1WW7ljymqAEFViMyG171YE6hMj7jUf3mrf5JHUDAJugDHXpNF/vB1YsIsoX+ecr7RaguJq0NFgNIn136C41Hh+l//feRV95QMP59/p1OajrftmC9aoOAlFGcSHYPI3f72AJ2KaKQHXH0nhV5geGkhjreedl/js/MvrJDwSfs0B51eJl+GmXFN4yVtGAoQMSOPpbQyWITI1N9iDRn1RHCncUOSd6l+1kPugGdsHlx45uhavA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=n+VYpPTFjrsseXDgLUaFxm908ISxu2crss8cOzXTEdg=;
+ b=fGgbxZBC01TDel7g6+MNCiT4fiIqporoweVkdfS1Lkt1DBz13SGj2EtyJvxueWUrqgyMwriwbQJ6beIMI6slwEfPkAZe/OaHSR4khupNm+Lo/zY/zOVWcjnYWexW+lAMR+FC7fGzTc0YBEXGcKtzt8Cks/uTWwykLRIyDyazV3cNPR8IrSbWTvw9z7Eu5aQvlYFiZmYdvQzsecI5AsrpfWF/3atFLMMAp3hUy06OnJR0gkUVaGpNucKMjAlZKsmMbEQa0FTkvcj94TKN0HpONs3qsZ2MymVM2J6LumTPqVBH8k0iFyTP1SGKmnbb4Sz7/dWvq/drT9JxfTlS+t0D2g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by VI1PR04MB7072.eurprd04.prod.outlook.com (2603:10a6:800:12c::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.22; Fri, 20 Sep
+ 2024 09:40:03 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7%4]) with mapi id 15.20.7918.024; Fri, 20 Sep 2024
+ 09:40:03 +0000
+From: Xu Yang <xu.yang_2@nxp.com>
+To: peter.chen@kernel.org,
+	gregkh@linuxfoundation.org
+Cc: linux-usb@vger.kernel.org,
+	imx@lists.linux.dev,
+	jun.li@nxp.com
+Subject: [PATCH v2 1/3] usb: chipidea: udc: handle USB Error Interrupt if IOC not set
+Date: Fri, 20 Sep 2024 17:40:54 +0800
+Message-Id: <20240920094056.2680590-1-xu.yang_2@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR01CA0011.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:191::6) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240920-spi-v1-2-97f220c2e10c@nxp.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|VI1PR04MB7072:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8034cc37-15d7-40be-dd97-08dcd95833a5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?XCUVDl3Y0KPy6gTZK1e4BbHsMkNXvXLmCAl335qEafkLyNt4t2PX98FslG+S?=
+ =?us-ascii?Q?ixwIZ9WpIOaPnGfR5+4v8n+9z4Kx6QX4lXqGS9BZ3s4uTcr78XjnBaorDCso?=
+ =?us-ascii?Q?ufMBB8QfnbRHo7RafTDsxpsS5ZxC+CGiCGj7KV5Rwn7tdWNaTnASBWSsN2pd?=
+ =?us-ascii?Q?FA8JCtP3n0wStdBAtGcGJXgYk2ZsIGZ6bpsee6YlxOihKc18qmnLEmfh2Wtb?=
+ =?us-ascii?Q?RlsPv+kOuuAqCYLDHJvd6PMpQr+ObXIq5erp4awOVLkxssykyDT4bD2OPy4S?=
+ =?us-ascii?Q?rmd+E1otgX4VvVp/gtJkgOAIJJjQ7M6o/0m8uV4uWdcxuKy9T+MixTcxLBQr?=
+ =?us-ascii?Q?CLk8arYnYfNpWscoVVc8Qf4i3WhlOhSF4kkqVyGYWXCco7DQu+j5mk+vCPJP?=
+ =?us-ascii?Q?IY2g23MI074D4Qr9v55n7blaUN5yGHpnUqsvsxeuaI18ikJyIc2gdRJEHstN?=
+ =?us-ascii?Q?yFf9r+t6Xnb2DgzaZzSK38jxs0/3rQk6d68l9p66Cvft2bhduX7fpQZWd0vo?=
+ =?us-ascii?Q?0xV78169oOuG7dB3D5XK2G8FmduDr/9m9ytnhGMp/nxI8OYmFEKOgzq6kDL8?=
+ =?us-ascii?Q?dYtM/w/K9vf4P2tBYj92hgy7PtYin+byfRhm9c2XUyFGnX4nGekOobRLNhMG?=
+ =?us-ascii?Q?L79xNP19kRYVO6UUrPhvYb1rRdjJmM6dUlU33R0WXLQfsL8G65tvlzpbNdXT?=
+ =?us-ascii?Q?oE4+tcXswKFtqgGmlp+CcJ756hD2aBAOWYqly0CFZlYXmhucw7/cJMvBxqJi?=
+ =?us-ascii?Q?QpGQiB6LqDJ6XNTnhv3jsslUSjRII1PUIREJ0bcS5lpXD5hbEzL86wA5EHDt?=
+ =?us-ascii?Q?6fL66uwM0zxmJ+vPl6LsobJ/0SGBu/oeqPR4o5S4K5du0YUSF+JZt27DBlD3?=
+ =?us-ascii?Q?VpRpiNwCmj0uA9AzIuA7TGJgFdH46rbvpCLtR4WuVIMxJBkYMSOZBRWV39B2?=
+ =?us-ascii?Q?div/0r8fAVQE693HqbsY434DHSH1zuikwW8tZ+tRZtWUnP7vPqdF/aZuXRKI?=
+ =?us-ascii?Q?c3XNTfnCc8OoHC2W9lEqONk9USc176eqb+zaoIvfyI/kBtqaTqF5Om+hvYub?=
+ =?us-ascii?Q?hAx1VK+GpRXRwNE4OZNVeUrhAU+SdaXQSvdDcaQt1f+gdSE2W/fCTDsUxcFA?=
+ =?us-ascii?Q?Ecri91w0XErDXFK6PukzANlHBd298P95axDS09zRRes27Coc31NVaLHRNFj4?=
+ =?us-ascii?Q?qbV3qhh3wJ2l9+qK4QBbiffei79XxTNOpI1trU0qqeBbYM7IeoGSbgDoyQkj?=
+ =?us-ascii?Q?riy497wFJYvFVuSsakg2F8Xih2nG2hoDjmBWt7nWaMSqNM5B3cKT0PPfPO/g?=
+ =?us-ascii?Q?3OovuFhNW93406rr6NJ46Xi5zDBOHSeE22O+D+akgKFEN0e/lk8Q9LJ688BU?=
+ =?us-ascii?Q?HC1qTK5cEPDf+Vkn2+FtMekgowFxPY4lNnq7lZpVm7Sonl1drQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?MJJJgghTCt53B0O8RM0wMlzgsjJG5kwicOFCuDKfXtxXh1yUTuLO0Qj3n9Ir?=
+ =?us-ascii?Q?1zLr3G62FPbpjPc1kCdc6AZgchsTGZlW12OK2OBjKI4wrTZuJKx8qBp4K10z?=
+ =?us-ascii?Q?zB/lWV20Do2U5k1Ml/sCfsZu6G1VISkkTnOQGScEMAslGGE3cEpTfICNursz?=
+ =?us-ascii?Q?mA89RMH57HS5zG1A7lrqwQO+0IcvO+sO3+Ateef8SWb7Xs7nI9C7Xqv/sUDn?=
+ =?us-ascii?Q?mI40c37WF+ZSmtdc8Il1XCEGi1YnavN+4XKmJf1flVYOu9b11loz/crr6ClH?=
+ =?us-ascii?Q?WL8Rku0fxOtIro8OIJj1r+692tGMXU9tf9o1KgL5esdeO7kvBqbIdnyoas+B?=
+ =?us-ascii?Q?NOfB6tSZtl18dHDC2MFeEPXxwBCXFLIDr5FpWM8YKdvzHILZAMtCabVYmJB+?=
+ =?us-ascii?Q?FvcjIke6P2mQFzOHdCbmYxOcGOLy0TizfJ91iAd5mbq91bw7tGTpn+g9LB0H?=
+ =?us-ascii?Q?4Mk1gm9Brpn/P4ncA0aZQewx9I/BYbrP56F4HWk9fbcjJS9wgRMX2lDOhE8c?=
+ =?us-ascii?Q?1v8fErvw+4ZJGfCbF6zS2PVlyLLUws2iwAOBf7y+/nacinrgbXvQChJSUUSd?=
+ =?us-ascii?Q?VU6VvT4P1Q8rMw0wF2hpZGqCC9sE6Hi0X4dxcqvL6H5mnGI1pxeRK+h6hz/p?=
+ =?us-ascii?Q?8/gQ9kXJoyIMdMM4hAgu49ZpPkUyG6c2/+tsj/yKYPrmqju7cdtgny0aam2B?=
+ =?us-ascii?Q?Jc9RqQli0/TtpOCMDjnwbkFGeXZkvyPWFGoneTpdDFMls0vahjIhU8X1ag3n?=
+ =?us-ascii?Q?rP0URIL3LmgyGx2xklx+LdUQRtK7ra0DdLvmN9/GKezZMi4jZ41Vt1/B3/Mi?=
+ =?us-ascii?Q?/3JWYsXcZQzBD2UrigPUAZl+ELW7l798FYmkiZVN/6b6a8/HlOtL0PKTNoWU?=
+ =?us-ascii?Q?U5RQUDu+yPprX8N5TGP+48SkWMI03srp/L34xKLVH4BXarAoOgjjo1yBkvLs?=
+ =?us-ascii?Q?34VXfkP/52vlycxc91sCZduOWye1R6yILVKn+fZr8Il1vAVNl1uyHvUQHjAd?=
+ =?us-ascii?Q?QdLPumuGxLf80prhushrsjHSsoyZ8iuyyoI0R+U7W2srxvcDueIEit8IW+ij?=
+ =?us-ascii?Q?rIeoopspK5TNEUkQp5L0Du11swSWs8KxinvpTKbRdubFOEVkMier/aNpkVcv?=
+ =?us-ascii?Q?WMKOfGZBTvXDX0iNBe7K4A69AhisJUmPzbgHS/k1V4tB6j/0iVGUwvoo2uSg?=
+ =?us-ascii?Q?rdKzmGSZ/4U4rWZC8ctLH1QUc+y2Y5vvBButt1eAM8Yb7zbKsWIp5p6BbV3+?=
+ =?us-ascii?Q?NavUCuTNXgWiOq/ijjBi1xUJWgyhlAmS3ZWOu0RqtkauqAHMG9yUe30+y3xl?=
+ =?us-ascii?Q?Mp46ma0brc3mOVSe16ywrFp5Z4GArGl2fHoX8inZ6FgEMmQ/ezOTGuTiM07S?=
+ =?us-ascii?Q?MmtwxfCzZla/fa+qpmp9Nk7qW/zrIO6k9a42jTmNoE9ctg7Xdik7BmF7rbbd?=
+ =?us-ascii?Q?2/b0VII7b2IYuOFNOax1W63s3OlylxLuO27NxxAE+5u3SsAplFIY1yqM0D+I?=
+ =?us-ascii?Q?gSFWygHTWK4B4rqxhRuI3rDVhav4zI4QrZ7xe6zoYqOB520aTR2KErJ8no+Z?=
+ =?us-ascii?Q?1W1WB388iB6wPzzTYv0KivzPH948SbX+nsXnPUxj?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8034cc37-15d7-40be-dd97-08dcd95833a5
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2024 09:40:03.2218
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: big8yi1XP/Njvnq541znMQJHMHMvuO+mJ2MbC6Afoj5Myys9RZVLdyvUHkIL0ihYVjFZbW3OeM1IDsNBydBR8A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7072
 
-On 24-09-20, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
-> 
-> spi nor flash needs power supply to work properly. The power supply
-> maybe software controllable per board design. So add the support
-> for an optional vcc-supply regulator.
-> 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  drivers/mtd/spi-nor/core.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
-> index 9d6e85bf227b..0449afe6bb20 100644
-> --- a/drivers/mtd/spi-nor/core.c
-> +++ b/drivers/mtd/spi-nor/core.c
-> @@ -17,6 +17,7 @@
->  #include <linux/mtd/spi-nor.h>
->  #include <linux/mutex.h>
->  #include <linux/of_platform.h>
-> +#include <linux/regulator/consumer.h>
->  #include <linux/sched/task_stack.h>
->  #include <linux/sizes.h>
->  #include <linux/slab.h>
-> @@ -3462,6 +3463,10 @@ int spi_nor_scan(struct spi_nor *nor, const char *name,
->  	if (!nor->bouncebuf)
->  		return -ENOMEM;
->  
-> +	ret = devm_regulator_get_enable_optional(dev, "vcc");
-> +	if (ret)
+As per USBSTS register description about UEI:
 
-This returns -ENODEV if no regulator was specified. In general all
-SPI-NOR devices need a VCC supply, so don't use the regulator optional
-API here, please check the regulator API doc.
+  When completion of a USB transaction results in an error condition, this
+  bit is set by the Host/Device Controller. This bit is set along with the
+  USBINT bit, if the TD on which the error interrupt occurred also had its
+  interrupt on complete (IOC) bit set.
 
-In contrast to that the dt-bindings should have the vcc-supply as
-optional to not cause a regression for exisiting systems.
+UI is set only when IOC set. Add checking UEI to fix miss call
+isr_tr_complete_handler() when IOC have not set and transfer error happen.
 
-Regards,
-  Marco
+Fixes: 26c696c678c4 ("USB: Chipidea: rename struct ci13xxx variables from udc to ci")
+Cc: stable@vger.kernel.org
+Acked-by: Peter Chen <peter.chen@kernel.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
-> +		return ret;
-> +
->  	ret = spi_nor_hw_reset(nor);
->  	if (ret)
->  		return ret;
-> 
-> -- 
-> 2.37.1
-> 
-> 
-> 
+---
+Changes in v2:
+ - modify part commit message
+ - add Ack-by tag
+ - add fix tag and cc stable
+---
+ drivers/usb/chipidea/udc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+index 95b697f08a76..e0092c735a75 100644
+--- a/drivers/usb/chipidea/udc.c
++++ b/drivers/usb/chipidea/udc.c
+@@ -2215,7 +2215,7 @@ static irqreturn_t udc_irq(struct ci_hdrc *ci)
+ 			}
+ 		}
+ 
+-		if (USBi_UI  & intr)
++		if ((USBi_UI | USBi_UEI) & intr)
+ 			isr_tr_complete_handler(ci);
+ 
+ 		if ((USBi_SLI & intr) && !(ci->suspended)) {
+-- 
+2.34.1
+
