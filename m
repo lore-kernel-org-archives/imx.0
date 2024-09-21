@@ -1,198 +1,128 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011059.outbound.protection.outlook.com [52.101.70.59])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E8D1862B3
-	for <imx@lists.linux.dev>; Fri, 20 Sep 2024 21:40:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726868435; cv=fail; b=R7LgK9XK3TtE7WPi3ffnQ2L5SFPBl83FJNto5ivNYE/hKCx9RPRZLv4bMLbAeEGgiQlmsUo9XVawiPQ7x0oDiGKJei1zQlshUYSFXaMoudKTuYUMCtbJmj134eLG3d8pjBnNMMfikw2jJHORcJjzY40IEk1B71a7Gl5g+1z9wyw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726868435; c=relaxed/simple;
-	bh=kGBBeG/n9F4IjubW+JlT3/t0ZGUjaqSdVj3R4ED9VWM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=jecly25/8DUPX20a9qJ/xlNv+JbfYvTXg9ZkSKV21ne7aGeEELPs8T9jN6tIaiAWwBCMJ6JV7Wipel5uiDYlkDTpRmrDnPuspy0IPgxc8m7yToOwmMcec1rMoMbCMTDIWPlEzGyHdW/erTnNe1bWbXO1jjL8yMURZf1JfxAz5qc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=PCrgdGG9; arc=fail smtp.client-ip=52.101.70.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B7A257D;
+	Sat, 21 Sep 2024 00:25:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726878304; cv=none; b=j+ElpIha8Ylw7oQ7n7fekOiB8/bBC3STT3cK3FcjHEw7XC5DTiDdA8ucrae3ShZUe0k3+Mu1cPwc48BJ8PtTTeXWYjncqph6OtIlI8dOoEuW00wGDmgx5KP8T/LQbxA+Mty4ulgOlJYPN0XKscyc0f9lTk7Yw7foCGLtgKDaTgY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726878304; c=relaxed/simple;
+	bh=LDiupKMatztnfbrKBKYiIRKaIbOOzvDj36STPReByR0=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=A0a3+JC49JfmUgU0hpqqYTZQgp/Zs6g4wX2Mr2mIpBpbnrpY48CQ4eafrEmYGpMCNWNnqpwB5Ry4czcTUpSenNtjlaAm9rXrlCrIu2dY6Gk407yNoZYiCpw+55+PSvG8OV/lvpy5U0AlTjlzhXkrAJexUEYbBCX+chlg02r7zGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j5kOC7T8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="PCrgdGG9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wk8Oh/yNceRwdQsZYZ7ImKJqCsWEAT07gK1j30R2hWazDmgcEFxNnDuQZVb9HPiNDanuUM5+hHeSkTqaB+U51S/rxN/FHcoy3u6yuGkctyXC/1uxJjc4xZkq1+O2hK2zyXgKEJQGYc3Yl0g25jdbJ6DBjjNkLHZrFbnCzsgkdQRhpvM1A+VzRAK+IJXNJyC6mIT9Xu/c49gfGfjcq94rSO0Q1C030zBgwPAro6Qcs4pEwsafl7ZeSfg0P+Kwh0wqieJivvlvYFeqHhoNCUpmwEM78lkqSouToa4KFrsbIcwfsHJ6uNe5bIegtTqP8Y3BftpeGyrLmljLIhN5D2ke1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vKIkrTyzfHNQ//U4uk35K5Cp51nMNsuuWNejGC6Fd+w=;
- b=tdd6eMV6Iv5OLPnQZ0dy74lFXKDoxSj8XV0Af0XN62fU4CS3fi9Y6xV3yhsgamfWA7IE65VkMQDrjmy0WTVPySUBdi2u8xWBtm1g7bmmVBqdUdH9D89IM1udV4LPuCptv+fV/cKHkck3xFjYGbpkPC6SEm+yEjuJccZ9I5yvzXh1aN09Jio/j5cvVu2u2/UNCMa3Np665DZrGwjh8U/t75PicUV9LsFUg5leu18v5IbVpQaFRDOw64WNf7MNAC2kyNbQgMqS+oJeiLvAcYpGXSsT7fikxm/cKulz3i9+oRQadWqojtYHzrU9grS3xUOlloL0H62PHKPDtJlNtrb2Pg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vKIkrTyzfHNQ//U4uk35K5Cp51nMNsuuWNejGC6Fd+w=;
- b=PCrgdGG9nlZMGMrSPlJ3Bn42k6+Pqtx5lh1esitKcbblRS6neRviTbem7Y/BJzaE/0D9qs04vEja9/1oNlSEK1dT8hs619eZVnHoG4NRyfyUDwhALX5CzJ+ALlOg2YXhUQUmn079REts+ozbSeIsGg4LSgS2JjlGqob7HyXIjE0Nm7d/3jZrnwMkjECkz2JfNeZIK7xhOe3+KKwWOk1aP6He1r+z44SZhx4olNicykOtYAiMpF8FEhXjcRIcoOk/SvJ69nA3UDQ8l4t92lkfA79TCZwnkakI1IGUTQi0HTic55qvm1YmnrwopS29r9ImPFc4KfS2UiX6VPoQGFkzdg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by GVXPR04MB9735.eurprd04.prod.outlook.com (2603:10a6:150:118::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.22; Fri, 20 Sep
- 2024 21:40:26 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.7982.018; Fri, 20 Sep 2024
- 21:40:25 +0000
-Date: Fri, 20 Sep 2024 17:40:15 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Michael Walle <mwalle@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-mtd@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 2/3] mtd: spi-nor: support vcc-supply regulator
-Message-ID: <Zu3rv99P6zFnUhYe@lizhi-Precision-Tower-5810>
-References: <20240920-spi-v1-0-97f220c2e10c@nxp.com>
- <20240920-spi-v1-2-97f220c2e10c@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240920-spi-v1-2-97f220c2e10c@nxp.com>
-X-ClientProxiedBy: SJ0PR03CA0140.namprd03.prod.outlook.com
- (2603:10b6:a03:33c::25) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j5kOC7T8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA32C4CEC3;
+	Sat, 21 Sep 2024 00:25:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726878304;
+	bh=LDiupKMatztnfbrKBKYiIRKaIbOOzvDj36STPReByR0=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=j5kOC7T8u+SEHynvGF7zJ32gTJYxhEkHhC9JDxDMbbD+6t7qIDxGxTAdv4fJSNygB
+	 Z5ME2l/nH1gX8++NXKyRdxmDhffVSCBBjofuGnH7VpEii1hdfFiAqL0eBmtA5umuB+
+	 AZ2yHGUdAzeGlNf0PU8WpkJF3OEkkTxU3j8c8wT+SgAXMu392pffNaZBWw7B0u1TvC
+	 A8OvmMVSh+8Z6roaTA4a5xfs21V3K3UYKmVQLq17pSl9+RIfe6YLGyVt2P7OdXpNDm
+	 MLwudJb90m6B+DEchGIe+amPMFN08jVRat/fgZoS2lCLTbY0ZSEGGW3fNT2soJqf3y
+	 S+hOGzoC5rF2A==
+Date: Fri, 20 Sep 2024 19:25:03 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GVXPR04MB9735:EE_
-X-MS-Office365-Filtering-Correlation-Id: 64243d62-50ec-492d-9582-08dcd9bcd68c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|52116014|7416014|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?XzrWdaMpIjrVvqhyvNXs/XbV4uAaA+e44oH/qnAFFbjLQL/X7+ihNBdHFvEf?=
- =?us-ascii?Q?50W2J9E8rB+jYTXPYkleYwWmDK+ihKD99T7OKIRDbVT8zxWgIgVhDeT5nTOr?=
- =?us-ascii?Q?/lw8dGYs32VFkwi7rg5gLkCV0cyAR1RIVkDDAwNWfs8IM3vimc68HbrMpzVQ?=
- =?us-ascii?Q?U7BGQaVCUTH1SSj6fEeL6rUf0al/V3b5PfpK+wS0SG7h4UObEoSv55A0okBr?=
- =?us-ascii?Q?dtFqtZEQQGxigL1Bi3G4PjcCHgpsLti5pJhS90DjIdCMp0UiiweYlbo9rX41?=
- =?us-ascii?Q?phzt3vTNT4oNMempT+digDM1H0Jf2O+k6Tn8aCzz/mx67qcjJBT234Ckiq8y?=
- =?us-ascii?Q?ZyH4/A31qMxrb2yRT1kMkKZzIF4YkuTlboMTGo3KX84wMGiU3qHSB1ooXwUQ?=
- =?us-ascii?Q?s1dfo7X/+55A9iSX3/zfFWw/rHxWFun+/6jYRVN3CRzAYAXe0EmTX7LXP2mk?=
- =?us-ascii?Q?w4rJq0uHmrpmXdahfm6AJeiEHSKLnLwmnuZ7Kc8EWo9ItkVmNwLGdNb6ti+U?=
- =?us-ascii?Q?U40W4ltha6Ni/IevcbN0R8G0hq0UpmaTVw3F4yGXAvFD9NyrkMxj1NGQAG3z?=
- =?us-ascii?Q?/C/xjXpqW5pSq8mlFP4jM6an+4Jhei2sOHDEkmEUml8YSaTbAAfrFBqHzGaO?=
- =?us-ascii?Q?85T6baL4P6xoQYV9u1uSudipdK3xW/XDWNlqt8zMds4m9GiCSDmqMG/6J+yA?=
- =?us-ascii?Q?Tjj7LxOviNGW8KVKSkqNitK2w+65B4SXyIJZM41l8aeKPWqg0858wxy3Xes7?=
- =?us-ascii?Q?ww7KT/xjj267PQtDdciBjuvhVVo0/o04eosHbTPDd/KNU56Sn292Yb6n1cY5?=
- =?us-ascii?Q?EaLoQ2Ccpw7aihPjvAUHL5Id35IpNbnjXsyTZkEKJtdpfvs+z5XfslTrBJpr?=
- =?us-ascii?Q?pdtEve1oK/ENbbeQ8t7cHMaflFFO0BdDlSNAZ9oGRvWtdOMsFmlroQ3T0bhm?=
- =?us-ascii?Q?CneIZTtCTqeml//ik622AHFjEbM0wNGrOlazG5KtrLtNCYJqlCxXDyaLwv6r?=
- =?us-ascii?Q?Cz18PJKr2W08HCHVNahiJ2n2cQ2DqT9GFGLKiTCnJQ+Ulg8MlhS6Nw6t7C3i?=
- =?us-ascii?Q?TSjvLOAzAiWnw6RsrCw7Q45uCNJW9BpT4t03p9PfSwqbfvT7xEYvrHUKoZBe?=
- =?us-ascii?Q?1agVG8byewTwHVuLoULxDGK//XmA2fqvS4wBg5GVBLf6G3tK28iKu17Fs4+s?=
- =?us-ascii?Q?TAzwZ58mP3Lh22fFbDhuUlObHN/YqYMlL5aps+82uhZFy+c9bV3CnLCxnng2?=
- =?us-ascii?Q?ahuajbuXuqFeRw9d8W0CKIB5X1iPiWvdBd5DAGVR8pGi3FVvnd4CCGqQz0UK?=
- =?us-ascii?Q?ikRdjbmJAjDhuwwcXz9OMQdvFV76KOncUaTsxGapmAtTnDoORyrZnEYOReQu?=
- =?us-ascii?Q?2mfjkKZRAhP775w22IZDaaeA2HnCWXWmyPEYAX+e5++xBEXeCg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(7416014)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?uVtckTF2GOOr+9DbNWKnzB8r/Rd0Ya4lHlO3uBtUY3QnoQN2OrgffdT44BXZ?=
- =?us-ascii?Q?b9JdA7WpeLNFdHO4zmnHPAPJ/0INDavJj1FnzROxNonC00ba6hWjlNTJeu7s?=
- =?us-ascii?Q?n8v4Zoc4XXer2U3caHHrDBrls57kUDEhfl6sbxfUDfWF3JI+O3qD6cOuozd5?=
- =?us-ascii?Q?hYR2xDJdVDIGzNk9o4gY+31jREbqMyVGYnPODgQotksQpQJe/gadwhijAClZ?=
- =?us-ascii?Q?Fhudf7aQZ7wVpA74qJTxg2s1T4wOZwxfOMZ15sBBWIiIMa+Uw0yMOluJK8qq?=
- =?us-ascii?Q?CmejY9jPbdnyQc+spJN3JUc/4T9EbwFbejqT7flMqWNX/LHZODYAuz6w/JyT?=
- =?us-ascii?Q?KzxxlAphHb+ZLnr5qVqt6702UlwsEKvQTGQ8j2sV/87CmwM5JqMeH2cHJb6+?=
- =?us-ascii?Q?2uJvAKM40dRR0hGSJKeyxHilpZCOUYciM/stCVH8l3BiWm4c4Ov3s7slIgQG?=
- =?us-ascii?Q?uDQLSE80WkFvblq52NL96v4EkvRv0JmTBoBFXqaUHWZaLl50aiD/4s/GG14W?=
- =?us-ascii?Q?lNv+Kpa4ulMnYpaeoZEg3Eaum2yRR6JT0joNiNCJBznyGbmDYK2SCQtGjdry?=
- =?us-ascii?Q?tKowRwFsWMZiCKPcFoMLanfyaxPKKnJbriDoOLo07AtGJGZfvR3NXuMCiygK?=
- =?us-ascii?Q?B6tRrvo8qPWMY6CcfYALCJ/TVO5455ZzULPS/xYQtbdSM7EJuz1C4KCqcDZc?=
- =?us-ascii?Q?3/7hefGEFQIIPkJ2IgFasepku9Xu0Aii+EZNUNkSySsLdNRaD5q1jaCtzs35?=
- =?us-ascii?Q?moMQZEh4N9fzR9XwcbTsRURCkaraB54X4oFlWnouiTtMYb6MBjKLkokBzEG3?=
- =?us-ascii?Q?l7tkSO70KI0y7rC9035c67bH3hukZiCk14LXC4zRaRCRo0r/H2ppJ5qweRCE?=
- =?us-ascii?Q?3lFBxSe+08/7B8hXOYui5Cxe1PH8ve/R4oKbbDdX4gryb/Nli+yyB/3SuH2g?=
- =?us-ascii?Q?uXvAkz3Aqbfqir1PT8WWj1kXunuA4qUgp5gcp+Kqd7ftXwFrQ87m4ktzdJJf?=
- =?us-ascii?Q?fVsWLL+2w2qjx0G8x9Il7kiagoQTd7JVu695EogOqLNSlXIs+w/DkGWqJIuB?=
- =?us-ascii?Q?2zmveBtkPB5eO4GLk1Z6fCzHoeuUJm4owJ2OkKRbPqkAhnic7szMO/6T5XsO?=
- =?us-ascii?Q?bkxfv8ksg3zGIHKGWdWz4wGmc94NyvoSNYaLerQPCAtn6AxQdADTxsa1vnqD?=
- =?us-ascii?Q?V2RiJ2D47o5yvAFRinof3rYgTTsou2qIBz4fIyaK21S7wyr6v/CBdYWvTOQp?=
- =?us-ascii?Q?Kzl36svyC43guJBvTXycV8RvIWQuJU3EtMWd9gh3uf/uHZOoLRh8bulxmxW3?=
- =?us-ascii?Q?RATnvxSv7S92/AOCxeF+2213BxeKfDE4rQ714KGlIoLiFCXE05XsXAsc4HwR?=
- =?us-ascii?Q?NYO77LO4CaOBhdqS+IG8LRIsQyvP0pruGWAXyywkftNvHTOnoleBYX7EP/qe?=
- =?us-ascii?Q?IklgmlOXExt3W1FV8pu8MKlPl/nFpg4WVDVyIdPPeePffXbuXvyrJfUYalyx?=
- =?us-ascii?Q?zdc7d7nznfKG/8WeCapUgjFxdU6TiRWfB0TH6viOO4OJt/SZznVODaJmUXZ3?=
- =?us-ascii?Q?sPyyOuswUwDvqMFTQGY=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 64243d62-50ec-492d-9582-08dcd9bcd68c
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2024 21:40:25.7887
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: z3WHDsRizpdGRNcFstlOzj6BMVOSJjN3LSuxZwVE/w9TiVf/6VtomCA27AwsQ1ydWz6rS5EfDF8R1JJwMytkZw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9735
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: =?utf-8?q?Michal_Vok=C3=A1=C4=8D?= <michal.vokac@ysoft.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Mathieu Othacehe <m.othacehe@gmail.com>, 
+ Alexander Stein <alexander.stein@ew.tq-group.com>, 
+ linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, 
+ Hiago De Franco <hiago.franco@toradex.com>, 
+ Herburger <gregor.herburger@ew.tq-group.com>, imx@lists.linux.dev, 
+ Petr Benes <petr.benes@ysoft.com>, linux-usb@vger.kernel.org, 
+ Michael Walle <mwalle@kernel.org>, linux-arm-kernel@lists.infradead.org, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Joao Paulo Goncalves <joao.goncalves@toradex.com>, 
+ Hugo Villeneuve <hvilleneuve@dimonoff.com>, Shawn Guo <shawnguo@kernel.org>, 
+ devicetree@vger.kernel.org, Fabio Estevam <festevam@gmail.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>
+In-Reply-To: <20240920080154.1595808-1-michal.vokac@ysoft.com>
+References: <20240920080154.1595808-1-michal.vokac@ysoft.com>
+Message-Id: <172687817135.147604.5208248981438560257.robh@kernel.org>
+Subject: Re: [PATCH v2 0/4] Add support for new IMX8MP based board
 
-On Fri, Sep 20, 2024 at 04:54:07PM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
->
-> spi nor flash needs power supply to work properly. The power supply
-> maybe software controllable per board design. So add the support
-> for an optional vcc-supply regulator.
->
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  drivers/mtd/spi-nor/core.c | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
-> index 9d6e85bf227b..0449afe6bb20 100644
-> --- a/drivers/mtd/spi-nor/core.c
-> +++ b/drivers/mtd/spi-nor/core.c
-> @@ -17,6 +17,7 @@
->  #include <linux/mtd/spi-nor.h>
->  #include <linux/mutex.h>
->  #include <linux/of_platform.h>
-> +#include <linux/regulator/consumer.h>
->  #include <linux/sched/task_stack.h>
->  #include <linux/sizes.h>
->  #include <linux/slab.h>
-> @@ -3462,6 +3463,10 @@ int spi_nor_scan(struct spi_nor *nor, const char *name,
->  	if (!nor->bouncebuf)
->  		return -ENOMEM;
->
-> +	ret = devm_regulator_get_enable_optional(dev, "vcc");
-> +	if (ret)
-> +		return ret;
-> +
 
-I think devm_regulator_get_enable_optional() should be called in
-spi_nor_probe(). spi_nor_scan() is public API, which may call many time.
-That will cause regulartor reference counter wrong.
-
-Frank
-
->  	ret = spi_nor_hw_reset(nor);
->  	if (ret)
->  		return ret;
->
+On Fri, 20 Sep 2024 10:01:50 +0200, Michal Vokáč wrote:
+> Hi,
+> 
+> this series adds support for a new member in our IOTA platform.
+> The board is based on the i.MX8MP SoC. The first two patches
+> add support for most of the board functionality except USB Type-C
+> port and some other minor things.
+> 
+> [PATCH 3] adds new device tree binding for a Diodes Incorporated
+> PI5USB30213A Type-C Controller and [PATCH 4] enables that port on
+> the IOTA2 Lumpy board.
+> 
+> We also wrote a driver for that Type-C port controller. I would like
+> to get that driver upstream as well but I expect it will take much
+> more iterations and effort to get it into mainline-ready shape so
+> I intentionally excluded it from this series. AFAIK it should not
+> be a problem to accept a device tree binding for a HW that does not
+> have a driver in the kernel yet.
+> 
+> Michal Vokáč (2):
+>   dt-bindings: arm: Add i.MX8MP IOTA2 Lumpy board
+>   arm64: dts: imx: Add imx8mp-iota2-lumpy board
+> 
+> Petr Benes (2):
+>   dt-bindings: usb: Add Diodes Incorporated PI5USB30213A Type-C
+>     Controller
+>   arm64: dts: imx8mp-iota2: Enable the USB Type-C port
+> 
+>  .../devicetree/bindings/arm/fsl.yaml          |   1 +
+>  .../bindings/usb/diodes,pi5usb30213a.yaml     |  88 +++
+>  arch/arm64/boot/dts/freescale/Makefile        |   1 +
+>  .../boot/dts/freescale/imx8mp-iota2-lumpy.dts | 518 ++++++++++++++++++
+>  4 files changed, 608 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/usb/diodes,pi5usb30213a.yaml
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-iota2-lumpy.dts
+> 
 > --
-> 2.37.1
->
+> 2.43.0
+> 
+> 
+
+
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y freescale/imx8mp-iota2-lumpy.dtb' for 20240920080154.1595808-1-michal.vokac@ysoft.com:
+
+arch/arm64/boot/dts/freescale/imx8mp-iota2-lumpy.dtb: pcie-ep@33800000: reg: [[864026624, 4194304], [402653184, 134217728]] is too short
+	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie-ep.yaml#
+arch/arm64/boot/dts/freescale/imx8mp-iota2-lumpy.dtb: pcie-ep@33800000: reg-names: ['dbi', 'addr_space'] is too short
+	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie-ep.yaml#
+arch/arm64/boot/dts/freescale/imx8mp-iota2-lumpy.dtb: usb@38200000: 'pinctrl-0' is a dependency of 'pinctrl-names'
+	from schema $id: http://devicetree.org/schemas/pinctrl/pinctrl-consumer.yaml#
+
+
+
+
+
