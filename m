@@ -1,89 +1,113 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF68E13DB88
-	for <imx@lists.linux.dev>; Sat, 21 Sep 2024 12:24:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F2D1DA4E
+	for <imx@lists.linux.dev>; Sat, 21 Sep 2024 14:43:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726921486; cv=none; b=FbN8N1z8eCPYLIYO4MmM3c8ub+KOwyslbRZKnid1jHimjITYIWM33BIDcLp0rw4OxMUz5M2CSktF2GM1JT1baVh68OvjgBumkOmtw5tz5IUWt/MCh2bMN2YFs1g8X/slEnmKidkhfCgONArIjyCHPg6Ro8pe/9y+glZYIplTzEg=
+	t=1726929812; cv=none; b=ewtckpHPad5B38ZHFEfiuKlvwR3eqRBbAEOGiZdq0fmEkEIBgjR7jKPbpnFNWVfEyMCs1Cd33LCyIvhiIz4mFWFO1Sf+Ua826Ayuy5agAZxbe8QjYGPos4nawBNGBubD9UCtQ9pyXct6gWmZUNpGYyYSL87gRoVRogLPstSiNgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726921486; c=relaxed/simple;
-	bh=Lm5wT3nctgKw603dwlAmokov0gKbgWJJS54F9VbU9Wc=;
+	s=arc-20240116; t=1726929812; c=relaxed/simple;
+	bh=AYjfX6QtoC+tkfQrAv+7NvJ+mMxH4NZ1wh5FCk9yJ+c=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=o05dQ8RHLcN+doF+etaPIqx02wf6RU5XTNozjJBaAEQr/3yyr7Pz0Q5sskMlGKvBSmjAa8ZhttbfYRWS3vDPO0ss8zLjxXEapQ2BjpMCGYeHksoOneBmT9DT5pfRAm1+o/QvP+KqvD0dnZi/zLvu4QNIX5T4PNXMRgNFq+Ex9i0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y6KG1OzY; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=QPJHSAE8rDP/oo7RMS3AtwImdwkD+5VNSJEot8HtCee0SqNATrp0z6MXCldvp9+nHly/uYCfQ0qKaYjixojkonULN0WxF/WEnQ5RLUwKsj6BTk0/79Ed9u8F6xpT87PQ1gKkU11d6gU/9D+3GtpBhoX/rQRmdIbRfqDfUr1y2js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YP4dKu1N; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y6KG1OzY"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-535694d67eeso3076968e87.0
-        for <imx@lists.linux.dev>; Sat, 21 Sep 2024 05:24:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726921483; x=1727526283; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BnV4AAkppYdl3VxpkVdBWhDkeq1tyHDu6V34X7mplIs=;
-        b=Y6KG1OzYGXbL7YgSbIEdx6fU/rS1/MFzQjVq9kiPmqtI2dRQd2ffLCzWRaQ3lQM7oF
-         3Of/FQRuMh1VD8ESvFbX8iGG6yB2ewTCSp/YNUG/qQY831Z4LhlERZ/9qyZt/asgWW7/
-         56H7LLfz9LPIiVHJ/8l1++Si0OfilT+GccAARn+gELxSEpFl9CwEge9qghjHikZOR17S
-         CGZpBFDNuq3GltwCihadacsK1Z74CgWq9YDtjMvEOv/83vnyqL+RB0hs0iTstrL8vgs6
-         7DRj7iMgfDzyHEyzDE+KnVzAALJpQk0zkVKSHWVFGMyg+HuqLXs7C5+s2efgcnVKaruI
-         tgpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726921483; x=1727526283;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BnV4AAkppYdl3VxpkVdBWhDkeq1tyHDu6V34X7mplIs=;
-        b=JgbaWF5SC5rVkUb2gQdypCFoEvQDE3ar27zDx3HtmIgZx1KcLMHzDJa5GvLOYIT1Y3
-         +2+f3j/7OomJjrZxli/GX7WGxp+5VN3a4LsmUPM777qe58uNpYTedlmoqun0hbL0ZRRo
-         Df+i2xCcGmKPb8ESiBnZdGefFGkkl7yyzdFr831/a26eWXOn0CXk1sRpp5E6HL/6s8ZO
-         yh3jijkoM4eAcNs3UV/jPQSbJ7+1q3KKVL9vsxGto2rCBglw1OQP7lolpVZ4veY8+44U
-         sHGWojPfww5PLNO76d5O7HGsqGXulysBoV3ShcOeLja4hGJi8u/eNG0vi72/95/ULP3K
-         CNDg==
-X-Forwarded-Encrypted: i=1; AJvYcCUSmaCYX6rdTOu3aCqsx9sSwmxDrsYD6jpwK1YsX+f/IlJljldrRZV706Y+3LBGKYcMUdE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxmvOaGNgssohGRvzE495enKa4T7ERwoZNW6BqnU4/inafYcga2
-	FfpldwNoBiSZ/0cMJrRkWCffF5l/PJ2DvgIK3H+jOcsyaZ5LjWQOOtViQjY++51dKmNAyxptCR7
-	XOdZM+dguDear69dlRRPZJROH3uI=
-X-Google-Smtp-Source: AGHT+IHoWHrGLBUT8JY+piHvjihWgo99vAImbbX2yX9mk8Be7SSOMzH323JpYw94nPlLuAepPzXyxgM4onEBHNSwyKg=
-X-Received: by 2002:a05:6512:a8d:b0:533:3fc8:43fb with SMTP id
- 2adb3069b0e04-536ab7c7c4emr2435107e87.0.1726921482619; Sat, 21 Sep 2024
- 05:24:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YP4dKu1N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EEC1C4CED0
+	for <imx@lists.linux.dev>; Sat, 21 Sep 2024 14:43:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726929812;
+	bh=AYjfX6QtoC+tkfQrAv+7NvJ+mMxH4NZ1wh5FCk9yJ+c=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=YP4dKu1NqIGv2RhiWlOJnIyfm6WBolm5cpHOY+SlypIt6jbxddiWXKpaoHISKSFCs
+	 pFX7EbEpcoZ3EBcDwHxHvJpvb0zgvJVIvt2kUmbNA0WoDSrxmWDoj2FNO7oTaYXxcI
+	 9dqQDSbZTocs+EQ69LG7b/rnU7maMEFMs7EI1YVYfeeRoIlalAmFaPVUr/CzvXl5Op
+	 hmo/vYJX6i7dlCe173DreciGhKnwvX340crqw6GIlYx2YomcqmNShwt2okO0h97WsO
+	 u/kUpKe/kcH0eBqaJamcppZfvRSO8+zK8uWrvcTZb2SlDpByKl15T+t5TVtOz9/38u
+	 zjU335G/iJp+Q==
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2f7657f9f62so33434111fa.3
+        for <imx@lists.linux.dev>; Sat, 21 Sep 2024 07:43:32 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUV4tECXnRKumqiB3u1beLAzYny+ewwboUhihCZH1MGddbwO6HTvdxtSVpp7zIza70Ux7w=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxIcsz6bOU3ppCYHryUHdIlMMxDghQ0MPJCVouPiVcVj/dhpEo0
+	9D+HZw5CrM27LdN48RWTBEbzi6KLxPTHeFmY76UFkyW67TZS2gETLamZbHzcLNEmvTlUdOeuEHo
+	n93XTf3juPZJECGGDencDdMvE1A==
+X-Google-Smtp-Source: AGHT+IGEb52VaJ0u4g5ADO/n2NfdfmYbTGCQllZh18kPm0xS082MqorrNkMgCmujvaXD4j4prw1u7QnUeiPv9ISuvBA=
+X-Received: by 2002:a05:6512:3d23:b0:535:69a2:5f9e with SMTP id
+ 2adb3069b0e04-536ad3d48d8mr3403286e87.51.1726929810775; Sat, 21 Sep 2024
+ 07:43:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240920080154.1595808-1-michal.vokac@ysoft.com> <20240920080154.1595808-3-michal.vokac@ysoft.com>
-In-Reply-To: <20240920080154.1595808-3-michal.vokac@ysoft.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Sat, 21 Sep 2024 09:24:31 -0300
-Message-ID: <CAOMZO5BrmuWdiEo6xi8ChT01jfLMaLAb88iUhS1kt6qqr_h7pQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] arm64: dts: imx: Add imx8mp-iota2-lumpy board
-To: =?UTF-8?B?TWljaGFsIFZva8OhxI0=?= <michal.vokac@ysoft.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Petr Benes <petr.benes@ysoft.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Herburger <gregor.herburger@ew.tq-group.com>, 
-	Hiago De Franco <hiago.franco@toradex.com>, Hugo Villeneuve <hvilleneuve@dimonoff.com>, 
-	Joao Paulo Goncalves <joao.goncalves@toradex.com>, Michael Walle <mwalle@kernel.org>, 
-	Alexander Stein <alexander.stein@ew.tq-group.com>, Mathieu Othacehe <m.othacehe@gmail.com>, 
+References: <20240919-pcie_ep_range-v1-0-b3e9d62780b7@nxp.com>
+In-Reply-To: <20240919-pcie_ep_range-v1-0-b3e9d62780b7@nxp.com>
+From: Rob Herring <robh@kernel.org>
+Date: Sat, 21 Sep 2024 09:43:17 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJ7Of-0H+qW-ts7cVkeK0+4BR5mxocx00eVFKHaLfj45Q@mail.gmail.com>
+Message-ID: <CAL_JsqJ7Of-0H+qW-ts7cVkeK0+4BR5mxocx00eVFKHaLfj45Q@mail.gmail.com>
+Subject: Re: [PATCH 0/9] PCI-EP: Add 'ranges' support for PCI endpoint devices
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Abraham I <kishon@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, Jingoo Han <jingoohan1@gmail.com>, 
+	Gustavo Pimentel <gustavo.pimentel@synopsys.com>, Jesper Nilsson <jesper.nilsson@axis.com>, 
+	Richard Zhu <hongxing.zhu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-pci@vger.kernel.org, 
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-usb@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
+	linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org, 
+	imx@lists.linux.dev, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Michal,
+On Thu, Sep 19, 2024 at 5:03=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
+>
+> The PCI bus device tree supports 'ranges' properties that indicate
+> how to convert PCI addresses to CPU addresses. Many PCI controllers
+> are dual-role controllers, supporting both Root Complex (RC) and
+> Endpoint (EP) modes. The EP side also needs similar information for
+> proper address translation.
+>
+> This commit introduces several changes to add 'ranges' support for
+> PCI endpoint devices:
+>
+> 1. **Modify of_address.c**: Add support for the new `device_type`
+>    "pci-ep", enabling it to parse 'ranges' using the same functions
+>    as for PCI devices.
+>
+> 2. **Update DesignWare PCIe EP driver**: Enhance the driver to
+>    support 'ranges' when 'addr_space' is missing, maintaining
+>    compatibility with existing drivers.
+>
+> 3. **Update binding documentation**: Modify the device tree bindings
+>    to include 'ranges' support and make 'addr_space' an optional
+>    entry in 'reg-names'.
+>
+> 4. **Add i.MX8QXP EP support**: Incorporate support for the
+>    i.MX8QXP PCIe EP in the driver.
+>
+> i.MX8QXP PCIe dts is upstreaming.  Below is pcie-ep part.
+>
+> pcieb_ep: pcie-ep@5f010000 {
+>                 compatible =3D "fsl,imx8q-pcie-ep";
+>                 reg =3D <0x5f010000 0x00010000>;
+>                 reg-names =3D "dbi";
+>                 #address-cells =3D <3>;
+>                 #size-cells =3D <2>;
+>                 device_type =3D "pci-ep";
+>                 ranges =3D <0x82000000 0 0x80000000 0x70000000 0 0x100000=
+00>;
 
-On Fri, Sep 20, 2024 at 5:02=E2=80=AFAM Michal Vok=C3=A1=C4=8D <michal.voka=
-c@ysoft.com> wrote:
+How does a PCI endpoint set PCI addresses? Those get assigned by the
+PCI host system. They can't be static in DT.
 
-> +&usb_dwc3_1 {
-> +       dr_mode =3D "host";
-> +       pinctrl-names =3D "default";
+If you need the PCI address, just read your BAR registers.
 
-Per Rob's robot message, this pinctrl-names entry should be removed.
+In general, why do you need this when none of the other PCI endpoint
+drivers have needed this?
+
+Rob
