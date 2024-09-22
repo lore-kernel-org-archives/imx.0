@@ -1,69 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22EB32AEFC;
-	Sun, 22 Sep 2024 20:41:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE3963C
+	for <imx@lists.linux.dev>; Sun, 22 Sep 2024 21:42:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727037691; cv=none; b=F54Cj6wPw2eSlgVgEBFJfcLVNCgRsTTMaOJgZ/XsLweET6oAmIP6wuLCvYNPRMvgE4zfS/d58JKM9sxG5SRH2OOHUVaVBxXu2m5/iyAZo6fZGJSn8Vas00zJCMBe82+//4tTrprk/wE8X75oaEMu8jZQY9n8qGxbPCMgiPzThDQ=
+	t=1727041322; cv=none; b=lQmj52KX7RlKiSH6Z5OdBASK4iaEcERQSruLQdv84deXIGWr2pGyN7ehaGXMW/lhFVZfwpDhtPZHIiH0WNrtWx87r8IGWR/UGwXc+zuDcqoQCVXFE/KsAms5/C92SUU8gfN82xhVxI4pLXIA3Ouicn+7qAuGYZZBC6wLbfH/Wf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727037691; c=relaxed/simple;
-	bh=TkUxFG1M5+wekJl8pvU0XXiK2GmJAhCAiAC/2sJes8E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fb+nKqR0JkinXXY0cZD/RDC1Bm9pnpsBbt7zCqg2zDC6QJGPmugxR2KpWjx0W2ae7rE1L/xU9yusPKPo1N2apG8zUBnn7N6zUnnm2VWPbCYwZVekisoMquGe1GQYPS4/TzX+PaTT1yQV4bKar+owVoeAy4Idhn9iiaXaux8Prx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RTwVt5JH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727041322; c=relaxed/simple;
+	bh=RbsB7lsvyOsZ0dTvImk2Oj3Ixw6IoZl8Fz3E0VPnKfo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nYOOEUJHMK1sWIYMzifTPl9zhki17/lHfjXZLECt9yuYRQh79baFhHsuQxtGHROw0ih5fRGZ+JBcKfZDBPHbHIkoEJx9LA+NXgsFDxdR/gAdlnrnQQDYXJanFLUmQQy3LpIlnKDiA98flPjzBzMHTHXR8APkGdKZS3l2F0CtuwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=UwHc0Xap; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RTwVt5JH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F386BC4CEC3;
-	Sun, 22 Sep 2024 20:41:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727037690;
-	bh=TkUxFG1M5+wekJl8pvU0XXiK2GmJAhCAiAC/2sJes8E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RTwVt5JHcfQMMSdTaK+TixFFSGAjfPL9P4RFz8+A22jlWfEQEViYyGVIiSiC0wYzI
-	 r8nXv2x5f0QE8EjULVjwEnhzcQA9TzlxmoU8k/yueofUs+8Gpb/sJpWbwiD+XcKxzM
-	 1dERKmfs+MMT7ZQQ0D5FPU+3ULnQIyAH107Oaz4uw029s6JM2nTwXNoT06/iJ8264Q
-	 0PbNWZgHygVmx7xdeixS8JAla8eY8nHq5va9s65gn4qH9hDXsRWIQrAifj6nXQduPJ
-	 iZGWAUBMycMZgStv+R4ePcjTgIJex9np1H8zSTTBS8VUxVipIdeoNJjDl5K4795qud
-	 7HIvnXhCsNTyg==
-Date: Sun, 22 Sep 2024 22:41:27 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Liu Ying <victor.liu@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 1/3] dt-bindings: reset: add schema for imx8ulp SIM
- reset
-Message-ID: <axvgokxy2cq2hgi4nkiosbrhvxmmy7wvebm37ryl42r6lkkk42@vtuhb2nt5en7>
-References: <20240922174225.75948-1-laurentiumihalcea111@gmail.com>
- <20240922174225.75948-2-laurentiumihalcea111@gmail.com>
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="UwHc0Xap"
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id CBA23888B7;
+	Sun, 22 Sep 2024 23:41:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1727041313;
+	bh=OeoZq3/qGvqIVWMMmedNVeIHba/YDnXg02p2YwetYOg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=UwHc0Xap3IpcE094oz0WCJgf3L1yZOLS648xCIUrQrGeYvLJIJ0hqS80r8aIqmahr
+	 hS1U4Dim52wR8jqV42VmF3GUiArIaZCS/M0spfB+zeOS7NyafFCltURLaawlpDSMoY
+	 Fwb9kz4lIMsooliYL07055+YbF8CWCWb9A5BsXLG6pdAtLLtmT373F6Pejja8QMh5u
+	 +JzbtupSmVsIWa7Yw0WDC4ifVRHGVmIXC2nEatX4RVFDI9VIQUG2zSt9xse28+ti0i
+	 +EJVvZNbAmE1RNxfiScf4vg9Px17c8DUNzs9Jkw/Cn685tFCB2l3UShkgtT3t5tQWS
+	 JQJllBRIk73Uw==
+Message-ID: <4bbee009-3985-4679-a85e-76f4259ff8d6@denx.de>
+Date: Sun, 22 Sep 2024 22:28:02 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240922174225.75948-2-laurentiumihalcea111@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/1] pwm: imx27: workaround of the pwm output bug when
+ decrease the duty cycle
+To: Frank Li <Frank.Li@nxp.com>
+Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, festevam@gmail.com,
+ francesco@dolcini.it, imx@lists.linux.dev, jun.li@nxp.com,
+ kernel@pengutronix.de, krzk+dt@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-pwm@vger.kernel.org, p.zabel@pengutronix.de, pratikmanvar09@gmail.com,
+ robh@kernel.org, s.hauer@pengutronix.de, shawnguo@kernel.org,
+ ukleinek@kernel.org, xiaoning.wang@nxp.com
+References: <20240917192510.3031493-1-Frank.Li@nxp.com>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <20240917192510.3031493-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On Sun, Sep 22, 2024 at 01:42:23PM -0400, Laurentiu Mihalcea wrote:
-> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> 
-> Add schema for imx8ulp's SIM reset controller.
-> 
-> Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> ---
->  .../reset/nxp,imx8ulp-avd-sim-reset.yaml      | 58 +++++++++++++++++++
->  1 file changed, 58 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/reset/nxp,imx8ulp-avd-sim-reset.yaml
+Hi,
 
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+On 9/17/24 9:25 PM, Frank Li wrote:
 
-Best regards,
-Krzysztof
+[...]
 
+> @@ -223,6 +224,8 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+>   	struct pwm_imx27_chip *imx = to_pwm_imx27_chip(chip);
+>   	unsigned long long c;
+>   	unsigned long long clkrate;
+> +	unsigned long flags;
+> +	int val;
+>   	int ret;
+>   	u32 cr;
+>   
+> @@ -263,7 +266,69 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+
+[...]
+
+> +	c = clkrate * 1500;
+> +	do_div(c, NSEC_PER_SEC);
+> +
+> +	local_irq_save(flags);
+> +	val = FIELD_GET(MX3_PWMSR_FIFOAV, readl_relaxed(imx->mmio_base + MX3_PWMSR));
+
+I think the multi-write I mentioned in v5 for > 500 kHz case could 
+further improve the patch, let's see what others think:
+
+if (state->period < 2000) { /* 2000ns = 500 kHz */
+    /* Best effort attempt to fix up >500 kHz case */
+    udelay(6); /* 2us per FIFO entry, 3 FIFO entries written => 6 us */
+    writel_relaxed(duty_cycles, imx->mmio_base + MX3_PWMSAR);
+    writel_relaxed(duty_cycles, imx->mmio_base + MX3_PWMSAR);
+    /* Last write is outside, after this conditional */
+} else if (duty_cycles ...
+
+> +	if (duty_cycles < imx->duty_cycle && val < MX3_PWMSR_FIFOAV_2WORDS) {
+> +		val = readl_relaxed(imx->mmio_base + MX3_PWMCNR);
+> +		/*
+> +		 * If counter is close to period, controller may roll over when
+> +		 * next IO write.
+> +		 */
+
+c is only used in this if (duty_cycles ...) { } conditional, the 
+do_div() above can be moved here:
+
+	c = clkrate * 1500;
+	do_div(c, NSEC_PER_SEC);
+
+> +		if ((val + c >= duty_cycles && val < imx->duty_cycle) ||
+> +		    val + c >= period_cycles)
+> +			writel_relaxed(imx->duty_cycle, imx->mmio_base + MX3_PWMSAR);
+> +	}
+> +	writel_relaxed(duty_cycles, imx->mmio_base + MX3_PWMSAR);
+> +	local_irq_restore(flags);
