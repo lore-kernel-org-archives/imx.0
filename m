@@ -1,60 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90AC313C9B8;
-	Sat, 21 Sep 2024 21:12:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8B2173
+	for <imx@lists.linux.dev>; Sun, 22 Sep 2024 16:27:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726953156; cv=none; b=cLKSpv+zfIWXE0y/Flm8gHeCQjxRYLLsbPdCvTrv+e2kDBT1KvRTOzRKc8QMatmX98Q+jBG+EYLNqfNnBJrNtsBXPWOuLjvHAIGKcJE559wSKRD8FuhMCfi+JARDXz8HW3jb9IjDjXkDqJd29ieNAJmGdourunHqz0nHQneCS8E=
+	t=1727022428; cv=none; b=bIpnEHClev4jNnoboVbH/Z9BJMeSWFYac0bqRvdSanYeq5itPNfWorLV7L7hgqZJIvvl0ESrNyhTc57BZcOB6v0W7QvfCUMqcv4mlookerPJLXlKw+4qgKVNmNyJ3bnCdoQfgzFO3jCSHNzFEeLccKC6s8fdzMENreI8u+tXpNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726953156; c=relaxed/simple;
-	bh=phXqp9sx1SQ3XnHPFtM1vPkRhWKw5lBZejOf6LQt9ao=;
-	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
-	 Subject:From:Cc:To:Date; b=AQ5dtS98DViy92sGQRwuP23wRw/AOLS+i7rrouSIwn+IfCWoFV+Pd+5NJzP2kEZnaN+E/btg+YG2mStJEhOusPXl0Hvu7joWwilbNBdQ4OHT3eXYJyOp+05WeVkgYeGbBpbcctPv4i4PVQ9tAbZO4ZG2x6KtGNRanrLDSeTa3W4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HPfuKriU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727022428; c=relaxed/simple;
+	bh=xpqEnlxsDOwETVe3NJrlbuyVCvIju2wa1IVxLowOk5s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XO4qzRthdXS8+ZNvbqY73rq0I3Gx5lm8i0LiZjsLhdbxMUZjiK4D3PIY4g20grNa+K4Zj+TuuuocJ1ATVMDmKvTMwhJPa4Ei1gUgajJW7TqU1YXavjwSK5kGysXaTVNzo+QJKTTOXiW3mXWOPbNeu526OBGqnn+MRZ/keDntIjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Guudhm2n; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HPfuKriU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF62C4CEC2;
-	Sat, 21 Sep 2024 21:12:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726953156;
-	bh=phXqp9sx1SQ3XnHPFtM1vPkRhWKw5lBZejOf6LQt9ao=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=HPfuKriUJ7XdvindCQ93kJOi52p/hb4yEY19k6ESAe5MkEtBmJzu1PVvFJG1LoVLP
-	 wt2gbB1hm8mXSgJ9yO9wDdJIgVrhnjL6MVQVoDQx5VYg2H+cNvLKGaTlLdcm/0F9iq
-	 jOQTk9vsaQgUwOuDDUMLYeA6DfZceX5/WoleSw5xz1AURC+vIslXn6+LqnhKmaQUYA
-	 cSMriGt6YbVN6H0msczVVKOSyNe6LmyAHERtIuW1Gld5uDFeDTwM7xayTORfk4IYUn
-	 UvMSFvyEdL1tKjtYhCNEpMMYtSlvDkTCLNllo+OW+Vc1BQTTK1KvaMNDNiBlZRB4nK
-	 R/h+nnCFE873g==
-Message-ID: <1a96db1609b5b3b26584d8f823d85b7f.sboyd@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Guudhm2n"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2f752d9ab62so35543201fa.3
+        for <imx@lists.linux.dev>; Sun, 22 Sep 2024 09:27:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1727022425; x=1727627225; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lDY1Rx685xpsDxEMUUtRILc2NYgU/miULZ3NwVaniyE=;
+        b=Guudhm2nez3uFczIIP+TsHvmk+yyoREslahJLvgf8qVrdPPzaH4GBrjkql4ip4lK0/
+         QOqwe5PtVvfoco7zvwvM/ezAR+j4eUU9HuNXsyvVv0aU1vFhk/KXhdE1mJNtfv/Wm5GF
+         gjgoTo4Ws1ALDSM/oyc3Oco3HDATIIAPCDUprhsw+PGDWAD5Q070VZ82euavOjh0xJCb
+         +A2EmiRczieHmxfq//IyLoHdYtDzVpU0qNQ4aBpQ+YefX3XxG35ybQW0hkzZXqrZLfUF
+         8RdKG20w4t+j/6Ad9nzHH8EhSHu143ZAaucrCYusoANcHkep/K0ZP103QEhFZcLvI2Vm
+         q0aA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727022425; x=1727627225;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lDY1Rx685xpsDxEMUUtRILc2NYgU/miULZ3NwVaniyE=;
+        b=q+sSp16xms9pJgNtWUKW49LgtGZaSV8wrqPgA1DF9KsgKRGXvcmY1T1FuILo7B71XG
+         IEDkDgOdFeex3Nd4oIgOWm6pIdti9Zda2UybqmqPB5ZwDslCkuYLGCuOAsy/5uIVNh/H
+         buSZm5UcTWy9MFZTzvzauR1p2EWz31nnSjiZbEgPqY7sBohXxx67zYUIyD3F2aTu+txC
+         f1RFeueN32byNqD9yiNqNiJ87WTz40nu7sFppxmxhdzNtYEfBp6wdqWr+0n2+D+yyh1s
+         5YQaJgug1MjbPecttaC8jGM1CKE1VXgFu1VvzywcbDJhKyfZoeLT9sjhCcSeJRfV3P3x
+         +v4A==
+X-Forwarded-Encrypted: i=1; AJvYcCVPfWls4g/MKMaYWFY+kOQnF3NChxs5kiqyShYMXWO6In73zcdzaoC1OJ1MaLVXarhpuHg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzjtLCYXHuLQ9AMi6aoGnWMMw0SGkF1guqOg8b6utLIB4qCAiUJ
+	QcwucsYwhir0D4wVR94HEbXk8zViAihPiKbjhSV+YKudWMpE57MXgAFqXb0S1l8=
+X-Google-Smtp-Source: AGHT+IFzgViXl1baLryxjIB8pfU38892fW+VxPd/yZA9ZEMdkgBX/TKTyO/x2CPBHUOhIGucSPYPYg==
+X-Received: by 2002:a05:651c:1548:b0:2f7:52de:9a35 with SMTP id 38308e7fff4ca-2f7cb342edcmr32442021fa.42.1727022425010;
+        Sun, 22 Sep 2024 09:27:05 -0700 (PDT)
+Received: from eriador.lan (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2f79d485f11sm26541611fa.111.2024.09.22.09.27.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Sep 2024 09:27:03 -0700 (PDT)
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Philipp Zabel <p.zabel@pengutronix.de>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] drm/imx: Add missing DRM_BRIDGE_CONNECTOR dependency
+Date: Sun, 22 Sep 2024 19:27:00 +0300
+Message-ID: <172702205091.1380824.2685575625082150622.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240906063857.2223442-1-alexander.stein@ew.tq-group.com>
+References: <20240906063857.2223442-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20240909144026.870565-2-u.kleine-koenig@baylibre.com>
-References: <20240909144026.870565-2-u.kleine-koenig@baylibre.com>
-Subject: Re: [PATCH] clk: Switch back to struct platform_driver::remove()
-From: Stephen Boyd <sboyd@kernel.org>
-Cc: linux-clk@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, arm-scmi@vger.kernel.org, imx@lists.linux.dev, linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org
-To: Michael Turquette <mturquette@baylibre.com>, Uwe =?utf-8?q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Date: Sat, 21 Sep 2024 14:12:34 -0700
-User-Agent: alot/0.10
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-Quoting Uwe Kleine-K=C3=B6nig (2024-09-09 07:40:25)
-> After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
-> return void") .remove() is (again) the right callback to implement for
-> platform drivers.
->=20
-> Convert all clk drivers to use .remove(), with the eventual goal to drop
-> struct platform_driver::remove_new(). As .remove() and .remove_new() have
-> the same prototypes, conversion is done by just changing the structure
-> member name in the driver initializer.
->=20
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
-> ---
+On Fri, 06 Sep 2024 08:38:56 +0200, Alexander Stein wrote:
+> When drm/bridge-connector was moved to DRM_DISPLAY_HELPER not all
+> users were updated. Add missing Kconfig selections.
 
-Applied to clk-next
+Now that drm-misc-next contains both commits...
+
+Applied to drm-misc-next, thanks!
+
+[1/1] drm/imx: Add missing DRM_BRIDGE_CONNECTOR dependency
+      commit: f673055a46784ccea04465b9213e999f7bc5187e
+
+Best regards,
+-- 
+With best wishes
+Dmitry
+
