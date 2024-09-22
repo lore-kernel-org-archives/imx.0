@@ -1,59 +1,59 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA05B2772A
-	for <imx@lists.linux.dev>; Sun, 22 Sep 2024 23:03:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B9A2AF17
+	for <imx@lists.linux.dev>; Sun, 22 Sep 2024 23:16:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727046227; cv=none; b=Eh0ECNUlqhxbvZFnr1sGhcGEgiMdCFqFQKjcPuZBYB8F8yvTjWlApB61kKWB0HCAgoeDUssico1DulEp+meB3EWS70pnL44jMYk9czAAoUO2H5O+IMTW92ejb2qxulXEesJ1h6zl+XGdfeBfPBPOukv0Lr+8eVCtAJtKgLc7aME=
+	t=1727046967; cv=none; b=kBbM4XAsVtHPmPDlbz34TmMq3wUN68m9trJ7WFtjY3e7LWAwq3zMZVZ9ts6BHtdRPbEc24TPltWp5gNKrbrqhsEHayLJSNtaw7dI/4LiB41dcUrFAVkhyea5yWvZOGTsHaEbB1AwDbBs+wln8JPUFyNFN3NVtUtbFvrwn3tdtkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727046227; c=relaxed/simple;
-	bh=wwfVNmUoXYIZO2OGaY8HrUPJD64dGCIlWxNjBolaHW4=;
+	s=arc-20240116; t=1727046967; c=relaxed/simple;
+	bh=fx3QNRbAVm1b74xZ/F/27pxOipNT34BcVyOmdEBu3bU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VV8z8+w8kMQlvzA+ky1/S6w5TPsXh9YHTBR5um+dPH7enRyghYgaxhimJUv+aG+HdSJ24D85dfVUz2nLsARLILh1Lx/DuZV/xlKpKUc5Mkp4Jp8aominciYARU40qWPbaG5Vw9+pmwkvnRtVU9fvbHXsAkPAvY2ynT6ECI/mKWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TxK3T80w; arc=none smtp.client-ip=209.85.128.48
+	 In-Reply-To:Content-Type; b=JyDkmvNhjOstNrRG6G9CQ7Nsw2o4YEB83gkYvI4vyBpq2aSy7RPYC3eiAcWQ0ptqSZ/vovoMzKtIezQKjZ2u/MAyR0Q6RexC6HNDaQZBPGat6k4HobWqlEhxvinNQmvvqE+TZ7k/s7yi6xGXgScSxZ421ADXDnnx1IUTExHhfrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=INr8Rffc; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TxK3T80w"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-42cb57f8b41so48301785e9.0
-        for <imx@lists.linux.dev>; Sun, 22 Sep 2024 16:03:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="INr8Rffc"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-42cb8dac900so35936215e9.3
+        for <imx@lists.linux.dev>; Sun, 22 Sep 2024 16:16:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727046224; x=1727651024; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20230601; t=1727046964; x=1727651764; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=xMtXe+qwhue24/Vh2nNTzw9kAkSswIX5YjJHpwdrdMg=;
-        b=TxK3T80wqPa//DvUq30+Zed7nPDXAREdIQKXBW9pwgb7oLWT8if+QejwDwAQMO64hG
-         eBkikJK9JeoP9L5CFuleSFlXSXlDvUL+eJw8UsuTY+RrEyG8RB9RhCWHkRNU8p0EGPBd
-         2kxNn/xY9T9IcilMrR/4YUIyb87ybZNBAwk853q24rcuzcc4VG8IRYhyaJ3vIBhKk6m+
-         g23FG8AFdNeFADR7v1ohPhS0ifes7/uOT07ENcs+HmrF5qxtgGeH63Jc54ghYKup4ZRo
-         cdwwVOAqP+8Jwkd5WPaCnPNfA4xylcMSRLZCu5VugaVbG4HoJFBuUpvy2JJ1aaPsYk4J
-         oAMA==
+        bh=XQKrIsMaR5H73uXstbYvKgdNX2p28gN7WwxvuQwKaBw=;
+        b=INr8RffcF5hmzv4vqnmOVY67CBpJyN6Fmelu7oG2i9lXmnjpJqoo0rvYWol911PlkD
+         BATNWyt9wlduWEEzb+za1PB+twr80qamBUwmHelLXiS1grq1vp+ki5+7ZTqWcBGANaar
+         zZGbfuKJhFiTwfSAIdPBjxPyjKQy/Z50bHe73dgsXowFTbrvAx88vk8YC7o7D+E5aYi8
+         7XD0SE0gMzFQoLiE7a7MuT72cn1Fd5JZWGA8veuSSNbkiqf5hpC1XLxroKPDHSzazN66
+         rYU+U7c8fWM7Gk1Dapv/AgL48gwTta5kIlmT090NqKlmcNRbWnpe+UIDoeWhrtdn/ZlU
+         ARtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727046224; x=1727651024;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1727046964; x=1727651764;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xMtXe+qwhue24/Vh2nNTzw9kAkSswIX5YjJHpwdrdMg=;
-        b=BcU/KKtPLY0tJ3SlZPVdPVenncOcoG9dyMDP0qATSYj3BPHDqWGDNLdFxCG+x1P7w0
-         BgGHu1X/JHDOmTzW5K1zoEn8AWHonkPUufHuGYav5iKN7ltG0Kq+VhBtPIzcooEic/6J
-         6WmFQGvtuPbrpKyplVGt1AjlkwFoXbDJABXY4eTfZf3kYZVUaXC1fT7jS0Diq4WsA3+s
-         geMfBuiLtE/lbjK07O+5bakjJ+/yMJY+Omb2tyGUmuLxhsE1EJIvaLRHgXTlHLBbQ/Er
-         S8gGAF+/Am6TY4Lq/ztNR1SPPb1ffel0gqjGQiRgEJffAHQipLAbOpO3LpjmbMaGYvZE
-         J0eg==
-X-Forwarded-Encrypted: i=1; AJvYcCURs20PHug5MJC5ODGEpSwgGGGpEL/0q0uWEyiYyqPVnOrEZ2/asnYxS27AriinUSCr6NE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy6jHNdxCNkh9k/cDAmnbpKZaFoTQE4l9gvA50G6KOkUV4x0Edx
-	LbKfMjrnlWcB4xZ4yKHFyIFVK0JML4saY3F6m0jxGmgRU+lXcnRH
-X-Google-Smtp-Source: AGHT+IHERED460bQf26PbmaFiMNdgb9tgvoFaNMY39SyzQWOQGcp5md0bmH5ap7eDnGkjMkPcyv6Zg==
-X-Received: by 2002:a05:600c:190e:b0:42c:b555:43dd with SMTP id 5b1f17b1804b1-42e7abe4184mr108137915e9.3.1727046223890;
-        Sun, 22 Sep 2024 16:03:43 -0700 (PDT)
+        bh=XQKrIsMaR5H73uXstbYvKgdNX2p28gN7WwxvuQwKaBw=;
+        b=bpuZ0TRE54zyFQdn47h+zdWp+BkMQx+EL8GM99C6Qp5+BRgHv5T4bpGGpO3SxtdOr8
+         mADH4M7n/ZqODF1E66FJDuzItTrurEALGTWVpRXZ7UH788IYBAGqCvyw5DwmIv6JFsr+
+         8p+tLKoqlxQwij8MEL2Lvz+07VBXdqzYXtL9NL8qrxLyqQJaa9FXrlSvE+rdrukT4ICX
+         lzo0KIaDRU4Gz9KuqKC6qfknn6zV2TeRJLbryV3bIdDitRWk58BeNlgHr7eL8biHi3Xv
+         Xs66VYYFIevPo0ca/6v9n3zqgA+WXb4bsgwAWPluQxD8gpfa5glfRq7MFMWl8x7yTXIc
+         AJCw==
+X-Forwarded-Encrypted: i=1; AJvYcCVbzcJHMCJVcpz3vtTjSatlX7LCT8BOiKRkKF4NPGU+MOtXIrunKCwGZkYEuyGaGF4UCc4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxOoYRF4utQuYlz3GpBK+2jbQ/K/v9qSiNeghCu0pOOIeZPgL/x
+	yCg6Ic+KhuieifcfneUEgLbmg95rWBzRzwp7oJHK8Dn7iGtL9L4yXxgs0yk4
+X-Google-Smtp-Source: AGHT+IEDinjp0rRpmKvDlaxodTCIjSMZRPmtYU8gpGpSTP+j0fpbwp/LZwEehvOmUrmngjmPQEGmIw==
+X-Received: by 2002:a05:600c:1c29:b0:42c:b4a2:a1aa with SMTP id 5b1f17b1804b1-42e7c16e861mr77676245e9.17.1727046963880;
+        Sun, 22 Sep 2024 16:16:03 -0700 (PDT)
 Received: from [192.168.1.130] ([86.127.146.72])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e801d66f6sm61765435e9.29.2024.09.22.16.03.41
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e7afeb1c2sm84618145e9.36.2024.09.22.16.16.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 22 Sep 2024 16:03:42 -0700 (PDT)
-Message-ID: <48b93ab0-7285-4cdc-9bea-ac41a5dcdb2f@gmail.com>
-Date: Mon, 23 Sep 2024 02:03:38 +0300
+        Sun, 22 Sep 2024 16:16:02 -0700 (PDT)
+Message-ID: <1652f001-742c-4ef0-abee-c9645a3ae63f@gmail.com>
+Date: Mon, 23 Sep 2024 02:15:59 +0300
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -61,7 +61,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] dt-bindings: dsp: fix power domain count
+Subject: Re: [PATCH 5/5] arm64: dts: imx8qm: enable dsp node for rproc usage
+Content-Language: en-US
 To: Frank Li <Frank.li@nxp.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -71,144 +72,83 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org
 References: <20240918182117.86221-1-laurentiumihalcea111@gmail.com>
- <20240918182117.86221-2-laurentiumihalcea111@gmail.com>
- <Zusguvhu+pld8UOi@lizhi-Precision-Tower-5810>
-Content-Language: en-US
+ <20240918182117.86221-6-laurentiumihalcea111@gmail.com>
+ <ZusjSPQ0vpqIUtlL@lizhi-Precision-Tower-5810>
 From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-In-Reply-To: <Zusguvhu+pld8UOi@lizhi-Precision-Tower-5810>
+In-Reply-To: <ZusjSPQ0vpqIUtlL@lizhi-Precision-Tower-5810>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
-On 9/18/2024 9:49 PM, Frank Li wrote:
-> On Wed, Sep 18, 2024 at 02:21:13PM -0400, Laurentiu Mihalcea wrote:
+On 9/18/2024 10:00 PM, Frank Li wrote:
+> On Wed, Sep 18, 2024 at 02:21:17PM -0400, Laurentiu Mihalcea wrote:
 >> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 >>
->> Per the current binding, QM/QXP DSPs are supposed
->> to have 4 power domains, while the rest just 1.
->> For QM/QXP, the 4 power domains are: DSP, DSP_RAM,
->> MU13A, MU13B.
->>
->> First off, drop MU13A from the count. This is attached
->> to the platform device of lsio_mu13. This decreases the
->> count to 3.
->>
->> Secondly, drop DSP and DSP_RAM from the count for QXP.
->> These are attached to the platform devices of the lpcgs
->> (used as clock providers for the DSP).
->>
->> With this in mind, the number of required power domains for
->> QXP is 1 (MU13B), while for QM it's 3 (MU13B, DSP, DSP_RAM).
->>
->> Additionally, two extra power domains may be required in the
->> case of QM/QXP DSPs. These are IRQSTR_DSP and MU2A. For the nodes
->> using the "-hifi4" compatibles these PDs are optional, while for
->> nodes using the "-dsp" compatibles these are mandatory.
->>
->> These changes reflect all of this information.
-> Can you wrap message to 75 char?
-Shall fix in V2.
+>> Set the status of the dsp node to "okay" and assign
+>> its reserved memory regions.
+> wrap at 75 chars.
+>
+> Add dsp node and related reserved memory regions.
+>
+> Frank
 >
 >> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 >> ---
->>  .../devicetree/bindings/dsp/fsl,dsp.yaml      | 62 +++++++++++++++----
->>  1 file changed, 49 insertions(+), 13 deletions(-)
+>>  arch/arm64/boot/dts/freescale/imx8qm-mek.dts | 27 ++++++++++++++++++++
+>>  1 file changed, 27 insertions(+)
 >>
->> diff --git a/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml b/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
->> index 9af40da5688e..e2f016af1048 100644
->> --- a/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
->> +++ b/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
->> @@ -51,8 +51,6 @@ properties:
->>      description:
->>        List of phandle and PM domain specifier as documented in
->>        Documentation/devicetree/bindings/power/power_domain.txt
->> -    minItems: 1
->> -    maxItems: 4
->>
->>    mboxes:
->>      description:
->> @@ -97,16 +95,55 @@ allOf:
->>        properties:
->>          compatible:
->>            contains:
->> -            enum:
->> -              - fsl,imx8qxp-dsp
->> -              - fsl,imx8qm-dsp
->> -              - fsl,imx8qxp-hifi4
->> -              - fsl,imx8qm-hifi4
->> +            const: fsl,imx8qxp-hifi4
->>      then:
->>        properties:
->>          power-domains:
->> -          minItems: 4
->> -    else:
->> +          maxItems: 3
+>> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+>> index 62203eed6a6c..7ee69ce7b193 100644
+>> --- a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+>> +++ b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+>> @@ -92,6 +92,27 @@ vdevbuffer: memory@90400000 {
+>>  			reg = <0 0x90400000 0 0x100000>;
+>>  			no-map;
+>>  		};
 >> +
->> +  - if:
->> +      properties:
->> +        compatible:
->> +          contains:
->> +            const: fsl,imx8qxp-dsp
->> +    then:
->> +      properties:
->> +        power-domains:
->> +          minItems: 3
->> +          maxItems: 3
-> I remember only need maxItems, if minItems == maxItems.
-Might be off here but from my own testing and from looking at dtschema/fixups.py it would seem that's not really applicable to subschemas under "then"/"else" blocks.
+>> +		dsp_reserved: dsp@92400000 {
+>> +			reg = <0 0x92400000 0 0x1000000>;
+>> +			no-map;
+>> +		};
+>> +
+>> +		dsp_vdev0vring0: vdev0vring0@942f0000 {
+> 'vdev0vring0' should be genernal name, such as 'memory'
+
+Driver expects reserved memory node names to have a certain format.
+If possible and if too problematic I'd rather have this fixed in a separate patch series.
+
 >
-> Frank
+>> +			reg = <0 0x942f0000 0 0x8000>;
+>> +			no-map;
+>> +		};
 >> +
->> +  - if:
->> +      properties:
->> +        compatible:
->> +          contains:
->> +            const: fsl,imx8qm-dsp
->> +    then:
->> +      properties:
->> +        power-domains:
->> +          minItems: 5
->> +          maxItems: 5
+>> +		dsp_vdev0vring1: vdev0vring1@942f8000 {
+>> +			reg = <0 0x942f8000 0 0x8000>;
+>> +			no-map;
+>> +		};
 >> +
->> +  - if:
->> +      properties:
->> +        compatible:
->> +          contains:
->> +            const: fsl,imx8qm-hifi4
->> +    then:
->> +      properties:
->> +        power-domains:
->> +          minItems: 3
->> +          maxItems: 5
+>> +		dsp_vdev0buffer: vdev0buffer@94300000 {
+>> +			compatible = "shared-dma-pool";
+>> +			reg = <0 0x94300000 0 0x100000>;
+>> +			no-map;
+>> +		};
+>>  	};
+>>
+>>  	lvds_backlight0: backlight-lvds0 {
+>> @@ -640,6 +661,12 @@ &sai7 {
+>>  	status = "okay";
+>>  };
+>>
+>> +&vpu_dsp {
+>> +	memory-region = <&dsp_vdev0buffer>, <&dsp_vdev0vring0>,
+>> +			<&dsp_vdev0vring1>, <&dsp_reserved>;
+>> +	status = "okay";
+>> +};
 >> +
->> +  - if:
->> +      properties:
->> +        compatible:
->> +          contains:
->> +            enum:
->> +              - fsl,imx8mp-dsp
->> +              - fsl,imx8mp-hifi4
->> +              - fsl,imx8ulp-dsp
->> +              - fsl,imx8ulp-hifi4
->> +    then:
->>        properties:
->>          power-domains:
->>            maxItems: 1
->> @@ -157,10 +194,9 @@ examples:
->>                   <&adma_lpcg IMX_ADMA_LPCG_OCRAM_IPG_CLK>,
->>                   <&adma_lpcg IMX_ADMA_LPCG_DSP_CORE_CLK>;
->>          clock-names = "ipg", "ocram", "core";
->> -        power-domains = <&pd IMX_SC_R_MU_13A>,
->> -                        <&pd IMX_SC_R_MU_13B>,
->> -                        <&pd IMX_SC_R_DSP>,
->> -                        <&pd IMX_SC_R_DSP_RAM>;
->> +        power-domains = <&pd IMX_SC_R_MU_13B>,
->> +                        <&pd IMX_SC_R_IRQSTR_DSP>,
->> +                        <&pd IMX_SC_R_MU_2A>;
->>          mbox-names = "txdb0", "txdb1", "rxdb0", "rxdb1";
->>          mboxes = <&lsio_mu13 2 0>, <&lsio_mu13 2 1>, <&lsio_mu13 3 0>, <&lsio_mu13 3 1>;
->>          memory-region = <&dsp_reserved>;
+>>  &iomuxc {
+>>  	pinctrl-names = "default";
+>>  	pinctrl-0 = <&pinctrl_hog>;
 >> --
 >> 2.34.1
 >>
