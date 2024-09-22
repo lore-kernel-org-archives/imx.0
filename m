@@ -1,163 +1,215 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914EA2C1AC
-	for <imx@lists.linux.dev>; Sun, 22 Sep 2024 22:17:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA05B2772A
+	for <imx@lists.linux.dev>; Sun, 22 Sep 2024 23:03:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727043477; cv=none; b=pWAFqZltccTwm3jU8S2m+Kre0UOoOOjp69jzYNU1e8Emylz4lqRcURSAt+4Boh5M9TzIqmQnXdg4vWmclITcAy8fdFccWciJzTkACyKUot/NTQVAvLbSCcHW7EtzX72/vSgG7mLjqrIYPAXlUyZLoSEQBXU3Zihk5Ca1++X6Mv8=
+	t=1727046227; cv=none; b=Eh0ECNUlqhxbvZFnr1sGhcGEgiMdCFqFQKjcPuZBYB8F8yvTjWlApB61kKWB0HCAgoeDUssico1DulEp+meB3EWS70pnL44jMYk9czAAoUO2H5O+IMTW92ejb2qxulXEesJ1h6zl+XGdfeBfPBPOukv0Lr+8eVCtAJtKgLc7aME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727043477; c=relaxed/simple;
-	bh=+VWjUNRxUp+RfG26z07hsVE/vm58zscjICTwSUp5dFw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FsZVyux8d/u24p44sBUdRdh/DgJpM9+l6LwpuqUfNLERmY+XZ87NmI0Od6T8WHnYqXgLrifxmcM+qlJgaQbDL7uAa/2rh17UuY4n0K+VKVu/f7A++uYPdO4kSIbyR/ghs9hhLBq9jFC6Pu5KhxLcscBGUreXE2n1SybNChIC0hc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cszr3rds; arc=none smtp.client-ip=209.85.167.53
+	s=arc-20240116; t=1727046227; c=relaxed/simple;
+	bh=wwfVNmUoXYIZO2OGaY8HrUPJD64dGCIlWxNjBolaHW4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VV8z8+w8kMQlvzA+ky1/S6w5TPsXh9YHTBR5um+dPH7enRyghYgaxhimJUv+aG+HdSJ24D85dfVUz2nLsARLILh1Lx/DuZV/xlKpKUc5Mkp4Jp8aominciYARU40qWPbaG5Vw9+pmwkvnRtVU9fvbHXsAkPAvY2ynT6ECI/mKWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TxK3T80w; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cszr3rds"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-536562739baso3467129e87.1
-        for <imx@lists.linux.dev>; Sun, 22 Sep 2024 15:17:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TxK3T80w"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-42cb57f8b41so48301785e9.0
+        for <imx@lists.linux.dev>; Sun, 22 Sep 2024 16:03:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727043473; x=1727648273; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=T+z+sTMVisDVFfvjkFFbu8DDWbPGrFSf17/aPoR5w2s=;
-        b=Cszr3rdsFiEirCSGCAxwFS0CuFqUC6ArOtldRjE5dDSlx+JHhbgxnkbQzgUIrV2ZGR
-         xjoLXGgxEzv/9xPSMhon80gSGF7+l16QXM1NI7jWQQGZHt0huFmVpaBW13r2k3M2HuQZ
-         W72dSkddtjQZz5KSo2M5F4RCLRYREsfpfessqVuDCvLOCTpLPAwM0/etPBmxJfq8zzwp
-         qfAuH9Sbhs+dEV1iz4B0AstFhDJ1UcXR1JNIudoGAUWtTMrYxYWjYbs9iRQZ891/uxf3
-         xPzclV2WKttdpToMA3cv+Vw63v2gQdo3bZhVH+cVoJ72wqm1mnXVsKnZV164Yni6Mdrb
-         rkCQ==
+        d=gmail.com; s=20230601; t=1727046224; x=1727651024; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xMtXe+qwhue24/Vh2nNTzw9kAkSswIX5YjJHpwdrdMg=;
+        b=TxK3T80wqPa//DvUq30+Zed7nPDXAREdIQKXBW9pwgb7oLWT8if+QejwDwAQMO64hG
+         eBkikJK9JeoP9L5CFuleSFlXSXlDvUL+eJw8UsuTY+RrEyG8RB9RhCWHkRNU8p0EGPBd
+         2kxNn/xY9T9IcilMrR/4YUIyb87ybZNBAwk853q24rcuzcc4VG8IRYhyaJ3vIBhKk6m+
+         g23FG8AFdNeFADR7v1ohPhS0ifes7/uOT07ENcs+HmrF5qxtgGeH63Jc54ghYKup4ZRo
+         cdwwVOAqP+8Jwkd5WPaCnPNfA4xylcMSRLZCu5VugaVbG4HoJFBuUpvy2JJ1aaPsYk4J
+         oAMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727043473; x=1727648273;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1727046224; x=1727651024;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=T+z+sTMVisDVFfvjkFFbu8DDWbPGrFSf17/aPoR5w2s=;
-        b=DiVFneow3xabniH5sZTqjuYLxeNfV9f1Jb2gjkR8EZcqFY1gQsUbcEmAFNfhh5061C
-         Eh5aub4zHFuw1nt0wOjb66YxZujm1864QfYsWid3lvYLd3SUc/3D0g4beynPd/AB35UD
-         r/jcX6/nYjxW1uIm/znIhZTaT9X0PBoILP5ixUul8456x2hNPcujzgvwRK8CCLkIIjTU
-         48XdOb3+fohFA9shAFqhhid/qFDLXpAd96zO1pSx5OsiKl4dyClMasDLaHrLdxXb2WqX
-         AY9+keXtmTqqQuBwKN/O6E3g3DU1V7gqkW+AuNM0tDbw/uGyKmAJgqILPDl39BAz+Xp7
-         UoUA==
-X-Forwarded-Encrypted: i=1; AJvYcCVp0M+iry5Snznq6zdpS7qv1s6j63Xb2Yb8J9uDl1VUpDEoys9kzOHaoc5BDg/L1n3P62s=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzOjB0opS+nslnsm+YZYbnzsOgqTH+mbDeDVaYpevYx/WlFOI/7
-	vJBOIvFL53k9JVjWKxvLqPpuilMmQqhJ38DrpEgixjtbV0WIOcDM
-X-Google-Smtp-Source: AGHT+IHxU+MGElA+QsRzR7T/maHHhNlCIFzzXDBhrpK7Lmg8bAMOit3g7+vHOKt093dToxEIMGOyfQ==
-X-Received: by 2002:a05:6512:158c:b0:534:36bf:b622 with SMTP id 2adb3069b0e04-536ac34649dmr4068777e87.61.1727043472449;
-        Sun, 22 Sep 2024 15:17:52 -0700 (PDT)
-Received: from mobilestation ([95.79.225.241])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-536870966f6sm3081871e87.151.2024.09.22.15.17.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Sep 2024 15:17:51 -0700 (PDT)
-Date: Mon, 23 Sep 2024 01:17:49 +0300
-From: Serge Semin <fancer.lancer@gmail.com>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, horms@kernel.org, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Jose Abreu <joabreu@synopsys.com>, 
-	Ong Boon Leong <boon.leong.ong@intel.com>, Wong Vee Khee <vee.khee.wong@intel.com>, 
-	Chuah Kim Tatt <kim.tatt.chuah@intel.com>, netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, linux-imx@nxp.com
-Subject: Re: [PATCH v2 net] net: stmmac: dwmac4: extend timeout for VLAN Tag
- register busy bit check
-Message-ID: <yzyezokrtcj5pnby4ak5lzrrnqu3y3k45kaibtklwrjn4ivzel@hwf6bgssykna>
-References: <20240918193452.417115-1-shenwei.wang@nxp.com>
+        bh=xMtXe+qwhue24/Vh2nNTzw9kAkSswIX5YjJHpwdrdMg=;
+        b=BcU/KKtPLY0tJ3SlZPVdPVenncOcoG9dyMDP0qATSYj3BPHDqWGDNLdFxCG+x1P7w0
+         BgGHu1X/JHDOmTzW5K1zoEn8AWHonkPUufHuGYav5iKN7ltG0Kq+VhBtPIzcooEic/6J
+         6WmFQGvtuPbrpKyplVGt1AjlkwFoXbDJABXY4eTfZf3kYZVUaXC1fT7jS0Diq4WsA3+s
+         geMfBuiLtE/lbjK07O+5bakjJ+/yMJY+Omb2tyGUmuLxhsE1EJIvaLRHgXTlHLBbQ/Er
+         S8gGAF+/Am6TY4Lq/ztNR1SPPb1ffel0gqjGQiRgEJffAHQipLAbOpO3LpjmbMaGYvZE
+         J0eg==
+X-Forwarded-Encrypted: i=1; AJvYcCURs20PHug5MJC5ODGEpSwgGGGpEL/0q0uWEyiYyqPVnOrEZ2/asnYxS27AriinUSCr6NE=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy6jHNdxCNkh9k/cDAmnbpKZaFoTQE4l9gvA50G6KOkUV4x0Edx
+	LbKfMjrnlWcB4xZ4yKHFyIFVK0JML4saY3F6m0jxGmgRU+lXcnRH
+X-Google-Smtp-Source: AGHT+IHERED460bQf26PbmaFiMNdgb9tgvoFaNMY39SyzQWOQGcp5md0bmH5ap7eDnGkjMkPcyv6Zg==
+X-Received: by 2002:a05:600c:190e:b0:42c:b555:43dd with SMTP id 5b1f17b1804b1-42e7abe4184mr108137915e9.3.1727046223890;
+        Sun, 22 Sep 2024 16:03:43 -0700 (PDT)
+Received: from [192.168.1.130] ([86.127.146.72])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e801d66f6sm61765435e9.29.2024.09.22.16.03.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 22 Sep 2024 16:03:42 -0700 (PDT)
+Message-ID: <48b93ab0-7285-4cdc-9bea-ac41a5dcdb2f@gmail.com>
+Date: Mon, 23 Sep 2024 02:03:38 +0300
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240918193452.417115-1-shenwei.wang@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] dt-bindings: dsp: fix power domain count
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Daniel Baluta
+ <daniel.baluta@nxp.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
+ Iuliana Prodan <iuliana.prodan@nxp.com>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20240918182117.86221-1-laurentiumihalcea111@gmail.com>
+ <20240918182117.86221-2-laurentiumihalcea111@gmail.com>
+ <Zusguvhu+pld8UOi@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+In-Reply-To: <Zusguvhu+pld8UOi@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 18, 2024 at 02:34:52PM -0500, Shenwei Wang wrote:
-> Increase the timeout for checking the busy bit of the VLAN Tag register
-> from 10µs to 500ms. This change is necessary to accommodate scenarios
-> where Energy Efficient Ethernet (EEE) is enabled.
-> 
-> Overnight testing revealed that when EEE is active, the busy bit can
-> remain set for up to approximately 300ms. The new 500ms timeout provides
-> a safety margin.
-> 
-> Fixes: ed64639bc1e0 ("net: stmmac: Add support for VLAN Rx filtering")
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-> ---
-> Changes in v2:
->  - replace the udelay with readl_poll_timeout per Simon's review.
-> 
-> ---
->  drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-> index a1858f083eef..a0cfa2eaebb4 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-> @@ -14,6 +14,7 @@
->  #include <linux/slab.h>
->  #include <linux/ethtool.h>
->  #include <linux/io.h>
-> +#include <linux/iopoll.h>
->  #include "stmmac.h"
->  #include "stmmac_pcs.h"
->  #include "dwmac4.h"
-> @@ -471,7 +472,7 @@ static int dwmac4_write_vlan_filter(struct net_device *dev,
->  				    u8 index, u32 data)
->  {
->  	void __iomem *ioaddr = (void __iomem *)dev->base_addr;
-> -	int i, timeout = 10;
-> +	int ret, timeout = 500000; //500ms
->  	u32 val;
-> 
->  	if (index >= hw->num_vlan)
-> @@ -487,12 +488,11 @@ static int dwmac4_write_vlan_filter(struct net_device *dev,
-> 
->  	writel(val, ioaddr + GMAC_VLAN_TAG);
-> 
-> -	for (i = 0; i < timeout; i++) {
-> -		val = readl(ioaddr + GMAC_VLAN_TAG);
-> -		if (!(val & GMAC_VLAN_TAG_CTRL_OB))
-> -			return 0;
-> -		udelay(1);
-> -	}
 
-> +	ret = readl_poll_timeout(ioaddr + GMAC_VLAN_TAG, val,
-> +				 !(val & GMAC_VLAN_TAG_CTRL_OB),
-> +				 1000, timeout);
-> +	if (!ret)
-> +		return 0;
-> 
->  	netdev_err(dev, "Timeout accessing MAC_VLAN_Tag_Filter\n");
 
-1. Just drop the timeout local variable and use the 500000 literal
-directly. There is no point in such parametrization especially you
-have already added the delay as is.
+On 9/18/2024 9:49 PM, Frank Li wrote:
+> On Wed, Sep 18, 2024 at 02:21:13PM -0400, Laurentiu Mihalcea wrote:
+>> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>>
+>> Per the current binding, QM/QXP DSPs are supposed
+>> to have 4 power domains, while the rest just 1.
+>> For QM/QXP, the 4 power domains are: DSP, DSP_RAM,
+>> MU13A, MU13B.
+>>
+>> First off, drop MU13A from the count. This is attached
+>> to the platform device of lsio_mu13. This decreases the
+>> count to 3.
+>>
+>> Secondly, drop DSP and DSP_RAM from the count for QXP.
+>> These are attached to the platform devices of the lpcgs
+>> (used as clock providers for the DSP).
+>>
+>> With this in mind, the number of required power domains for
+>> QXP is 1 (MU13B), while for QM it's 3 (MU13B, DSP, DSP_RAM).
+>>
+>> Additionally, two extra power domains may be required in the
+>> case of QM/QXP DSPs. These are IRQSTR_DSP and MU2A. For the nodes
+>> using the "-hifi4" compatibles these PDs are optional, while for
+>> nodes using the "-dsp" compatibles these are mandatory.
+>>
+>> These changes reflect all of this information.
+> Can you wrap message to 75 char?
+Shall fix in V2.
+>
+>> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>> ---
+>>  .../devicetree/bindings/dsp/fsl,dsp.yaml      | 62 +++++++++++++++----
+>>  1 file changed, 49 insertions(+), 13 deletions(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml b/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
+>> index 9af40da5688e..e2f016af1048 100644
+>> --- a/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
+>> +++ b/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
+>> @@ -51,8 +51,6 @@ properties:
+>>      description:
+>>        List of phandle and PM domain specifier as documented in
+>>        Documentation/devicetree/bindings/power/power_domain.txt
+>> -    minItems: 1
+>> -    maxItems: 4
+>>
+>>    mboxes:
+>>      description:
+>> @@ -97,16 +95,55 @@ allOf:
+>>        properties:
+>>          compatible:
+>>            contains:
+>> -            enum:
+>> -              - fsl,imx8qxp-dsp
+>> -              - fsl,imx8qm-dsp
+>> -              - fsl,imx8qxp-hifi4
+>> -              - fsl,imx8qm-hifi4
+>> +            const: fsl,imx8qxp-hifi4
+>>      then:
+>>        properties:
+>>          power-domains:
+>> -          minItems: 4
+>> -    else:
+>> +          maxItems: 3
+>> +
+>> +  - if:
+>> +      properties:
+>> +        compatible:
+>> +          contains:
+>> +            const: fsl,imx8qxp-dsp
+>> +    then:
+>> +      properties:
+>> +        power-domains:
+>> +          minItems: 3
+>> +          maxItems: 3
+> I remember only need maxItems, if minItems == maxItems.
+Might be off here but from my own testing and from looking at dtschema/fixups.py it would seem that's not really applicable to subschemas under "then"/"else" blocks.
+>
+> Frank
+>> +
+>> +  - if:
+>> +      properties:
+>> +        compatible:
+>> +          contains:
+>> +            const: fsl,imx8qm-dsp
+>> +    then:
+>> +      properties:
+>> +        power-domains:
+>> +          minItems: 5
+>> +          maxItems: 5
+>> +
+>> +  - if:
+>> +      properties:
+>> +        compatible:
+>> +          contains:
+>> +            const: fsl,imx8qm-hifi4
+>> +    then:
+>> +      properties:
+>> +        power-domains:
+>> +          minItems: 3
+>> +          maxItems: 5
+>> +
+>> +  - if:
+>> +      properties:
+>> +        compatible:
+>> +          contains:
+>> +            enum:
+>> +              - fsl,imx8mp-dsp
+>> +              - fsl,imx8mp-hifi4
+>> +              - fsl,imx8ulp-dsp
+>> +              - fsl,imx8ulp-hifi4
+>> +    then:
+>>        properties:
+>>          power-domains:
+>>            maxItems: 1
+>> @@ -157,10 +194,9 @@ examples:
+>>                   <&adma_lpcg IMX_ADMA_LPCG_OCRAM_IPG_CLK>,
+>>                   <&adma_lpcg IMX_ADMA_LPCG_DSP_CORE_CLK>;
+>>          clock-names = "ipg", "ocram", "core";
+>> -        power-domains = <&pd IMX_SC_R_MU_13A>,
+>> -                        <&pd IMX_SC_R_MU_13B>,
+>> -                        <&pd IMX_SC_R_DSP>,
+>> -                        <&pd IMX_SC_R_DSP_RAM>;
+>> +        power-domains = <&pd IMX_SC_R_MU_13B>,
+>> +                        <&pd IMX_SC_R_IRQSTR_DSP>,
+>> +                        <&pd IMX_SC_R_MU_2A>;
+>>          mbox-names = "txdb0", "txdb1", "rxdb0", "rxdb1";
+>>          mboxes = <&lsio_mu13 2 0>, <&lsio_mu13 2 1>, <&lsio_mu13 3 0>, <&lsio_mu13 3 1>;
+>>          memory-region = <&dsp_reserved>;
+>> --
+>> 2.34.1
+>>
 
-2. A more traditional, readable and maintainable pattern is the
-error-check statement after the call. So seeing you are changing this
-part of the method anyway, let's convert it to:
-
-+	ret = readl_poll_timeout(ioaddr + GMAC_VLAN_TAG, val,
-+				 !(val & GMAC_VLAN_TAG_CTRL_OB),
-+				 1000, timeout);
-+	if (ret) {
-+		netdev_err(dev, "Timeout accessing MAC_VLAN_Tag_Filter\n");
-+		return ret;
-+	}
-+
-+	return 0;
-
--Serge(y)
-
-> 
-> --
-> 2.34.1
-> 
-> 
