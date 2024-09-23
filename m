@@ -1,181 +1,218 @@
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011036.outbound.protection.outlook.com [52.101.70.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC0322071;
-	Mon, 23 Sep 2024 07:01:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727074878; cv=none; b=d7onMI5OYsOllY+FZl6bfknn47o8Wo8oPucGRd87TJYScgCf6N/JxNPy/u6Hq41KXNuFytgJctmGqPSqLPC4l+UOKoyoR+o9jGG1YFq8Z+GMPRsYPMw/unLWldxo7FagK+2hnrs4ZEbvgBfmZFwF+W40VWjtZ1qhT7F6j7jDXlg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727074878; c=relaxed/simple;
-	bh=CDHFNYRC/h6HRJUUrT6OvaZc1HSgkph1ZvzPrpmYm8I=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
-	 In-Reply-To:Content-Type; b=PNAut2Pj3eWY2mH0VQ8UB1ig6zb2dWC5DMbpJKvtLIpqBO9ckpdZsbnf+RcHs/H+ot28wlHQDHFALorz2QZFOLYbjjTpw9ePkVWyZWu6+yxCsJWfd+xS6UqIah0LnSQMNJUNb9xq+fnqBb7lG/4u5oVI5U8z32JmieeQYje1APA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4XBv6L5xx7z1ymGS;
-	Mon, 23 Sep 2024 15:01:14 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9CD3A1400F4;
-	Mon, 23 Sep 2024 15:01:13 +0800 (CST)
-Received: from [10.67.120.129] (10.67.120.129) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 23 Sep 2024 15:01:13 +0800
-Message-ID: <2fb8d278-62e0-4a81-a537-8f601f61e81d@huawei.com>
-Date: Mon, 23 Sep 2024 15:01:12 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B229F4F215
+	for <imx@lists.linux.dev>; Mon, 23 Sep 2024 08:11:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.36
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727079071; cv=fail; b=Lhp0YcTDL8V1Aghz03sk1Fpk9xMN5d0gMcaq1QewmqN7uK+yo2+JhLyWTDD5yiZIF+mYKUp0KphyPSPdcF+7HJlu2HSdJFQjTjzm2QuOA6zB9WWpdbf9iXarbt0g+vcGZ4oVHF4r9nDMO8+QtlAZeWZMvrSNnbzeluqqOnHzXj4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727079071; c=relaxed/simple;
+	bh=eGXYF/Mvb3FCExUJeiCYcoTGUnGyX8YzOEh42vD0R80=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=ZGJBviMuRUBhKBp0DZVBOEZLRF32qQccKi3+/CW/Mm8ueu497WyrfUGto9u+6z3yVrda62lD9T8zX+Rtcbj5zH2HUZy2Sy4u29XfoPxIeM/xZdpn07Xt9AHWjJXJpz6wG1aZab1xm3k5MuyI3RA9tGyNP87vcVRC25iPrUw+AXQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=gI/rG8T2; arc=fail smtp.client-ip=52.101.70.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="gI/rG8T2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CsoNmb3+yK1beInPYy2mPnPuvbqESgNjbEpmGpdXJ1l67o56wUwdN5phHUSTfYzjEQLaBVO7BxlebftrqntR7K621m8in8iAYeyMdvKTT76yF72S7QgZf0TIDw45zj7QMDyqnKZvuTlPiweeXgp0BKK4JuTjYfL40z2tITSX6e+ukkps2uKsIZJAzD507s7uIGjVHRXaPP68UPdHnVso1PL0iZyj/9/SGfv/WPPg/nhXgiMMHP2WTAZsA7RH7aOIUpKgwLVzQzzuQcw3vTyOJNaifZzMBagaLJ4gLgRavUtL/MmTF1Yxk96lZsHYaSHLyOvqTZ7X9v9wsECyP/C4ZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9Ye8NjMJz6I7mT07gigiSOXZpMY+iI5gH2ci3E0dBxs=;
+ b=NkSIhQscBE9Pro54U8jdABhNJJVXm6MQLPvJpG0tgsBuESUr5yfLzdcUfHUXGvsMN5Kn3HkVYnMQPVhVc4rmOvsPUOe3fgpM54CzRPVkGY4kRExqySgqeaA5rg7qwpZhT8yuDAULKz58ZQBQtJLE8Ghu8boMbARx32UVQ3W/0SwWg5f7VbQJBi/2HMXtIGorp24tymOE1V9lwONOHm4pYm8lP+RyJy5fMI0yPhj1CRS71KzaWA9I70Nx9meQwgOeaZDkPNbQb82a21lyhym9+i7oY5NNPkBYTMCgIKDMWRH5ssSuioltDxSOoS0rqzkvHDpBgjgeoJXXIPNSR0dH5g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9Ye8NjMJz6I7mT07gigiSOXZpMY+iI5gH2ci3E0dBxs=;
+ b=gI/rG8T25SOh1Bj4Kr+cx/xh3XQHYJzfS2GYFY+KNzyuQXrVDNPE/IeB4pK5zDQxh4ePnn8uCtYvmBVr+wLyu4zKTjoPpN3sMmQprlHNiy/YRIJlinEEg5Oquscg+dDeSI8pZtfzteWG9xs1JQYsGn+sJ+uUtUwTcc3JG4r/idttReZxHE7wYw4JoyidYINlPkuoW3AxPlpgQgTi6EbahhpvnJxQmNX/cXcKSY+/n+cK2zQ36IIIK/YLb906kixxrAq7j8VNpqkIEyJn9Y8EjoyJusM6ziNIjyvGYy0TsHOyp5D8XEAQ0Vu3DHuLAdT+QkZilIJloavJWtoz4YDB5w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by PR3PR04MB7244.eurprd04.prod.outlook.com (2603:10a6:102:8e::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.27; Mon, 23 Sep
+ 2024 08:11:03 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7%4]) with mapi id 15.20.7918.024; Mon, 23 Sep 2024
+ 08:11:02 +0000
+From: Xu Yang <xu.yang_2@nxp.com>
+To: peter.chen@kernel.org,
+	gregkh@linuxfoundation.org
+Cc: linux-usb@vger.kernel.org,
+	imx@lists.linux.dev,
+	jun.li@nxp.com
+Subject: [PATCH v2 1/3] usb: chipidea: add CI_HDRC_HAS_SHORT_PKT_LIMIT flag
+Date: Mon, 23 Sep 2024 16:12:01 +0800
+Message-Id: <20240923081203.2851768-1-xu.yang_2@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR06CA0237.apcprd06.prod.outlook.com
+ (2603:1096:4:ac::21) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 2/2] page_pool: fix IOMMU crash when driver has
- already unbound
-From: Yunsheng Lin <linyunsheng@huawei.com>
-To: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<liuyonglong@huawei.com>, <fanghaiqing@huawei.com>, <zhangkun09@huawei.com>,
-	Robin Murphy <robin.murphy@arm.com>, Alexander Duyck
-	<alexander.duyck@gmail.com>, IOMMU <iommu@lists.linux.dev>, Wei Fang
-	<wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
-	<xiaoning.wang@nxp.com>, Eric Dumazet <edumazet@google.com>, Tony Nguyen
-	<anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov
-	<ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard
- Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Saeed
- Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan
-	<tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi
-	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen
-	<shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, Kalle Valo
-	<kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Andrew
- Morton <akpm@linux-foundation.org>, <imx@lists.linux.dev>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<intel-wired-lan@lists.osuosl.org>, <bpf@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>,
-	<linux-mm@kvack.org>
-References: <20240918111826.863596-1-linyunsheng@huawei.com>
- <20240918111826.863596-3-linyunsheng@huawei.com>
- <CAC_iWjK=G7Oo5=pN2QunhasgDC6NyC1L+96jigX7u9ad+PbYng@mail.gmail.com>
- <50a463d5-a5a1-422f-a4f7-d3587b12c265@huawei.com>
-Content-Language: en-US
-In-Reply-To: <50a463d5-a5a1-422f-a4f7-d3587b12c265@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemf200006.china.huawei.com (7.185.36.61)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|PR3PR04MB7244:EE_
+X-MS-Office365-Filtering-Correlation-Id: de474912-7b66-450e-29c2-08dcdba743bb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|1800799024|366016|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?7yOw0SDxKgkXxXAIk13SEwiNPnGHdVz/XrQt5rBFBSOekSkM+K9Nk8xNxaz1?=
+ =?us-ascii?Q?4AO0Slw+Z5antHQPP5dR4ICi1aPI6D0BHcG/CdjM6CmXJJPzxZFv88+0Vqo0?=
+ =?us-ascii?Q?e639Lrg8m3bKiaro3H7fUHEmRi8rR888hJDe9Sp3acIqwZvsoXY6uLE55H9p?=
+ =?us-ascii?Q?EuPTN/8OA9osk7cW1t7vAeCLexm3ibnIZgiF11XBdoM+MdMpKT/dW9M9UvRt?=
+ =?us-ascii?Q?B6r3lHI9Fh59Luj6PcYMhhFrMugopI/TtTSNal4QN4NXnxrTpFkpZB2lyQfg?=
+ =?us-ascii?Q?IFPWiufpf59Onei1nn20mUAIKCIM6v8oM9u7PZaSkg7dfUj1Zxn3a0q8a+fw?=
+ =?us-ascii?Q?y2pPElkbRGwNMMgpY8T990Bg5vqIjTO2gp1Yek1n67Q0iC+fM3Mq9TnfTQeB?=
+ =?us-ascii?Q?szI0JbI+vgNrG+7PdRWHUTMRuCtkMoSqeCsGUOUElX/tswwl6rxpVR2g+RAP?=
+ =?us-ascii?Q?1HyqkX45oSk3OSzMHapS1XVHRqhvBbgVNjDzqMVVXPDct0Im8n0/3s9eKj+e?=
+ =?us-ascii?Q?5uO1Gn3oCQ+O2ITQDWimCv3Pe7xzJYMePJ+CRjlFx6s9eu2IW71bN04k2TUT?=
+ =?us-ascii?Q?VldCg6CJd/EHnn11DqsyWaxuV0Ylbd358/C+rgAF/2cWqCDQHVhHEFI03Lg4?=
+ =?us-ascii?Q?hZVWUVZ16orQLYq93QUEKNXMiwUIOgmOEMT9XC3QTlTiG/8NCSbOuugr/Byb?=
+ =?us-ascii?Q?O6VtVC5MkyFn0TgIDcLy9d+15n2GVvOMpbVR6DRZi6wbK+2pva2YOould8KV?=
+ =?us-ascii?Q?03PLUK4KxCqm38SXbkVA908tsXVJWNpQze49wXCE5xzRUepKuE+UeJ91FRxl?=
+ =?us-ascii?Q?9Mkx4G2R+H3eCd0/FIHMDE4V7qyqsjLOU/TXhqVlTtHMYNEabmdxMJMNe7sV?=
+ =?us-ascii?Q?DmbAg3J0n5No8qqczBb66ug3Tp3DVId2PqDrdZPDsxzxH6aidx0L9G/SLgc7?=
+ =?us-ascii?Q?fCfJHQWu+qNEVDtrG9XHbR+lJ6mJMpbcoCFTmBl1jS71FeM2Zo9qZpZ0aXLt?=
+ =?us-ascii?Q?/6NUguObQWN4tDSNdWxebzyR7txDEtJHMvOjbC1eBUJ6fh1a0MNNSLV7pWVw?=
+ =?us-ascii?Q?TPjpY9JzfcQ88mltfRPyVKSYS6MiVkqXU5StJnsXTI5wCBI048YjP/NXjqB2?=
+ =?us-ascii?Q?Rr+r2CQXys+Npf/mx0TjrX+ZNNYtQSkHCqo2HqDe/Xn88PxQDcfyeqc0a4cM?=
+ =?us-ascii?Q?8x6GhAhDNsSyvbj5E+Yqlk63Qu00DpCwisW6qNd1H0MRZzE8L5GAK+zxG8Ks?=
+ =?us-ascii?Q?1FHAsPOk1ZIUCXXCyBXEUp41YE8RRcnvpECO1WHsoeZc3z89jarkcVlv8bRU?=
+ =?us-ascii?Q?45RLJiQPMeW1+NoKmEfGR3rDMbNtKsTGf6nz9Ps+f4lq6g=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(366016)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?1MTs21Y5mZ+H+1JRMmnBGefTFEPX/eD/RbS1fo8VJpNv1uFllkWWYIH26YFw?=
+ =?us-ascii?Q?1FU+RE/oPYqZC6i+cvKxtHeuKqfQ0ObUr1DhHhKaeuxp+2G3w+GjNKU2gSpw?=
+ =?us-ascii?Q?fTvsiw6x8RzEwrF3qxgdLhMVrAtqUJj2hb8TUMxyxzI3n9V+n1J5QdVpIQNY?=
+ =?us-ascii?Q?9rYROvpoMM7cdq5eLjm7yp6ygzC6K31fYf2+KmP5ekmP/FX4XT8Yw9eTO9Bx?=
+ =?us-ascii?Q?1AtCuwl05dew0q/pHsnXhcxjKP8sgTAP17qPbAWKjgYCMfAfLQWCv0XT5Nb3?=
+ =?us-ascii?Q?s3O0M+nO9zCP5S2mkXJehl+Yr7eBA5UvdYosz3tZk3I2nRoao8jgl9pmLId1?=
+ =?us-ascii?Q?aFT2JO6/UbI0boAbTkYKMsd4jiVejwyVPMnk0brgQVrZgcfVDr0rkwl+UmCy?=
+ =?us-ascii?Q?YIDvgpNY9m3tXok/GX3SCmHfJTiooBd541B9T7RbCcH73EO/XyPDSVdoPb8Z?=
+ =?us-ascii?Q?oaRxO2OOyF/O6csl4JyQVFNLJBCNv6PFZZ0ZKCkqBlUZtH5aFtin4nQzPeh3?=
+ =?us-ascii?Q?+jnWm/PvhkZfGjLz2yli0/m01XqYv+1a6ktuSN8khTRv2UuR13TgBPbbSxOO?=
+ =?us-ascii?Q?p/YXPd0WAZtqHP2viUGbE+lOjzBbba/jytfSiCjcj/g5t6kGgjRZF11swOok?=
+ =?us-ascii?Q?CrhgjaUepdPTownBanWNPdOlre2LeFLDZ9u0B9oNnIAxU9PYqm5UAtcgo2er?=
+ =?us-ascii?Q?OiksKuuaxPPOLtk1bu99pubdfv7nI5PYyEnOwZk9Vz6RflDA5EsJXL5+16Cy?=
+ =?us-ascii?Q?1ar2JNZCp2x/liGTb0WJahYoTvMof8nz01UvJX4gRmgbDv/DYsdV8Go0PeXe?=
+ =?us-ascii?Q?vMRBvsRluO8cqfMgTv00TgCbdBzJ5vF55ZX/BORvNWd7ihbm7Dn1/saP6XuR?=
+ =?us-ascii?Q?QIYF795iRk5Vzy3Faiw1sbL3YNtTaOdVbRj70t+j9IDxH+IGsHFB56W4Q3X3?=
+ =?us-ascii?Q?qQBCnCS3S4vQtE1MP83yVUt7AlzQa0ozkb6nq/ziqjEftyHiXmB7ELCRcxXe?=
+ =?us-ascii?Q?2vFoSXmln/JQrUA10dqDcExw58r9eRsfVtci7I6sveMtzP9HTDD4U7SBC1H5?=
+ =?us-ascii?Q?mVxbdMOrnPvvW3JgWaxRQ//ddElk4FV0GsqS7cuJvERRBpV0jDEdNDqFjOa9?=
+ =?us-ascii?Q?W79V1BdUbdFuIOq0nUjXeV1y7F4a7fKgfyt3JNhdfki+E+Z0LQAAsirG45Cu?=
+ =?us-ascii?Q?GXdLu7zVFVmqkWYAJksZ3D4lyscfkQLuj9siIWjd6GlGpwW3j4rrASXfz2Bb?=
+ =?us-ascii?Q?B9gYyiqp++UpbxDvwUEdBVh10tQNIPWMU9Q1J/UDJg2G9xVq8kCCJ7/7kPF6?=
+ =?us-ascii?Q?zVO/A5oGiJTYRYKkNSwp0/J3CXNsg535PY4sftFWJDFHcSFhF8gbYZ7EIKKy?=
+ =?us-ascii?Q?7CQXcCql9aPoTE/1MZul46RtKUWk/54ty7GMe6kE1pTjN5Nxx8ozdFTxYfkQ?=
+ =?us-ascii?Q?HLYAPUkGk8Sy+EHCorMD0gvTz/g3QXhlXjxDpKbJoECSUxbZZi+Kl0erx1Lt?=
+ =?us-ascii?Q?/0w/ooSrkMVGAfMHOkJfE9dDVgbLlw/olvj+TmsuuUOQC2eWE3RW2PqwN5yH?=
+ =?us-ascii?Q?Iun77mGPVIMLMfQee9VT7PWXbqowSNZAoNAm4Sfz?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: de474912-7b66-450e-29c2-08dcdba743bb
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2024 08:11:02.4150
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uQ0pZLe8l9c8WgIYEN3K/yyQvZzgstUVNKQsq5u+5Fhr5BK0xMeQtka6CZU8hqr1+j3LZly3rRKZYbydxeeIXw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7244
 
-On 2024/9/19 18:54, Yunsheng Lin wrote:
-> On 2024/9/19 1:06, Ilias Apalodimas wrote:
->> Hi Yunsheng,
->>
->> Thanks for looking into this!
->>
->> On Wed, 18 Sept 2024 at 14:24, Yunsheng Lin <linyunsheng@huawei.com> wrote:
->>>
->>> Networking driver with page_pool support may hand over page
->>> still with dma mapping to network stack and try to reuse that
->>> page after network stack is done with it and passes it back
->>> to page_pool to avoid the penalty of dma mapping/unmapping.
->>
->> I think you can shorten this to "If recycling and DMA mapping are
->> enabled during the pool creation"
-> 
-> I am not sure if I understand the 'recycling' part here. Is the
-> 'recycling' part referring to whether skb_mark_for_recycle() is
-> called to enable recycling for the skb? Is there still any driver
-> with page_pool support but doesn't call skb_mark_for_recycle()
-> when handing over page to network stack?
-> 
-> For the 'DMA mapping' part, as there is no space in 'struct
-> page' to track the inflight pages, so 'pp' in 'struct page'
-> is renamed to 'pp_item' to enable the tracking of inflight
-> page. I tried shortening this for 'pool->dma_map being false'
-> when coding, but it seems differentiating the same field in
-> 'struct page' doesn't make much sense according to 'pool->dma_map'
-> as it means we might need to add an union in 'struct page' for
-> that to work and add additional checking to decide if it is 'pp'
-> or 'pp_item'.
-> 
->>
->>> With all the caching in the network stack, some pages may be
->>> held in the network stack without returning to the page_pool
->>> soon enough, and with VF disable causing the driver unbound,
->>> the page_pool does not stop the driver from doing it's
->>> unbounding work, instead page_pool uses workqueue to check
->>> if there is some pages coming back from the network stack
->>> periodically, if there is any, it will do the dma unmmapping
->>> related cleanup work.
->>>
->>> As mentioned in [1], attempting DMA unmaps after the driver
->>> has already unbound may leak resources or at worst corrupt
->>> memory. Fundamentally, the page pool code cannot allow DMA
->>> mappings to outlive the driver they belong to.
->>>
->>> Currently it seems there are at least two cases that the page
->>> is not released fast enough causing dma unmmapping done after
->>> driver has already unbound:
->>> 1. ipv4 packet defragmentation timeout: this seems to cause
->>>    delay up to 30 secs:
->>>
->>> 2. skb_defer_free_flush(): this may cause infinite delay if
->>>    there is no triggering for net_rx_action().
->>>
->>> In order not to do the dma unmmapping after driver has already
->>> unbound and stall the unloading of the networking driver, add
->>> the pool->items array to record all the pages including the ones
->>> which are handed over to network stack, so the page_pool can
->>> do the dma unmmapping for those pages when page_pool_destroy()
->>> is called.
->>
->> So, I was thinking of a very similar idea. But what do you mean by
->> "all"? The pages that are still in caches (slow or fast) of the pool
->> will be unmapped during page_pool_destroy().
-> 
-> Yes, it includes the one in pool->alloc and pool->ring.
+Currently, the imx deivice controller has below limitations:
 
-It worths mentioning that there is a semantics changing here:
-Before this patch, there can be almost unlimited inflight pages used by
-driver and network stack, as page_pool doesn't really track those pages.
-After this patch, as we use a fixed-size pool->items array to track the
-inflight pages, the inflight pages is limited by the pool->items, currently
-the size of pool->items array is calculated as below in this patch:
+1. can't generate short packet interrupt if IOC not set in dTD. So if one
+   request span more than one dTDs and only the last dTD set IOC, the usb
+   request will pending there if no more data comes.
+2. the controller can't accurately deliver data to differtent usb requests
+   in some cases due to short packet. For example: one usb request span 3
+   dTDs, then if the controller received a short packet the next packet
+   will go to 2nd dTD of current request rather than the first dTD of next
+   request.
+3. can't build a bus packet use multiple dTDs. For example: controller
+   needs to send one packet of 512 bytes use dTD1 (200 bytes) + dTD2
+   (312 bytes), actually the host side will see 200 bytes short packet.
 
-+#define PAGE_POOL_MIN_ITEM_CNT	512
-+	unsigned int item_cnt = (params->pool_size ? : 1024) +
-+				PP_ALLOC_CACHE_SIZE + PAGE_POOL_MIN_ITEM_CNT;
+Based on these limits, add CI_HDRC_HAS_SHORT_PKT_LIMIT flag and use it on
+imx platforms.
 
-Personally I would consider it is an advantage to limit how many pages which
-are used by the driver and network stack, the problem seems to how to decide
-the limited number of page used by network stack so that performance is not
-impacted.
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
-> 
->> Don't we 'just' need a list of the inflight packets and their pages or
->> fragments? What we could do is go through that list and unmap these
->> pages during page_pool_destroy().
-> 
-> The main reason for that is to avoid the overhead of page_pool_item_del()
-> and page_pool_item_add() when allocing/freeing page from/to pool->alloc
-> and pool->ring.
-> 
-> Yes, including the pages in pool->ring seems to make the pool->ring
-> somewhat duplicated, maybe we can remove pool->ring if we can make
-> and prove 'pool->items' is performing better than pool->ring in the
-> future?
-> 
->>
->> I'll have a closer look at the patch tomorrow
-> 
-> Thanks for the reviewing.
-> 
->>
->> Thanks!
->> /Ilias
->>
-> 
+---
+Changes in v2:
+ - new patch
+---
+ drivers/usb/chipidea/ci.h          | 1 +
+ drivers/usb/chipidea/ci_hdrc_imx.c | 1 +
+ drivers/usb/chipidea/core.c        | 2 ++
+ include/linux/usb/chipidea.h       | 1 +
+ 4 files changed, 5 insertions(+)
+
+diff --git a/drivers/usb/chipidea/ci.h b/drivers/usb/chipidea/ci.h
+index 2a38e1eb6546..e4b003d060c2 100644
+--- a/drivers/usb/chipidea/ci.h
++++ b/drivers/usb/chipidea/ci.h
+@@ -260,6 +260,7 @@ struct ci_hdrc {
+ 	bool				b_sess_valid_event;
+ 	bool				imx28_write_fix;
+ 	bool				has_portsc_pec_bug;
++	bool				has_short_pkt_limit;
+ 	bool				supports_runtime_pm;
+ 	bool				in_lpm;
+ 	bool				wakeup_int;
+diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
+index c64ab0e07ea0..17b3ac2ac8a1 100644
+--- a/drivers/usb/chipidea/ci_hdrc_imx.c
++++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+@@ -342,6 +342,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+ 	struct ci_hdrc_platform_data pdata = {
+ 		.name		= dev_name(&pdev->dev),
+ 		.capoffset	= DEF_CAPOFFSET,
++		.flags		= CI_HDRC_HAS_SHORT_PKT_LIMIT,
+ 		.notify_event	= ci_hdrc_imx_notify_event,
+ 	};
+ 	int ret;
+diff --git a/drivers/usb/chipidea/core.c b/drivers/usb/chipidea/core.c
+index 835bf2428dc6..5aa16dbfc289 100644
+--- a/drivers/usb/chipidea/core.c
++++ b/drivers/usb/chipidea/core.c
+@@ -1076,6 +1076,8 @@ static int ci_hdrc_probe(struct platform_device *pdev)
+ 		CI_HDRC_SUPPORTS_RUNTIME_PM);
+ 	ci->has_portsc_pec_bug = !!(ci->platdata->flags &
+ 		CI_HDRC_HAS_PORTSC_PEC_MISSED);
++	ci->has_short_pkt_limit = !!(ci->platdata->flags &
++		CI_HDRC_HAS_SHORT_PKT_LIMIT);
+ 	platform_set_drvdata(pdev, ci);
+ 
+ 	ret = hw_device_init(ci, base);
+diff --git a/include/linux/usb/chipidea.h b/include/linux/usb/chipidea.h
+index 5a7f96684ea2..ebdfef124b2b 100644
+--- a/include/linux/usb/chipidea.h
++++ b/include/linux/usb/chipidea.h
+@@ -65,6 +65,7 @@ struct ci_hdrc_platform_data {
+ #define CI_HDRC_PHY_VBUS_CONTROL	BIT(16)
+ #define CI_HDRC_HAS_PORTSC_PEC_MISSED	BIT(17)
+ #define CI_HDRC_FORCE_VBUS_ACTIVE_ALWAYS	BIT(18)
++#define	CI_HDRC_HAS_SHORT_PKT_LIMIT	BIT(19)
+ 	enum usb_dr_mode	dr_mode;
+ #define CI_HDRC_CONTROLLER_RESET_EVENT		0
+ #define CI_HDRC_CONTROLLER_STOPPED_EVENT	1
+-- 
+2.34.1
+
