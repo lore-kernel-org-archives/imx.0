@@ -1,25 +1,25 @@
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B40C8FE
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B74C2F2
 	for <imx@lists.linux.dev>; Mon, 23 Sep 2024 03:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727063423; cv=none; b=Gcz3HTI+dCGr9Pw6/vsk/UdWgif36VLfmZHist8ykAX+ICATXA9FNFOitd5Rs7B5fo+jr8cZfJE6QO5huWoO3Xo2H02ZSxyL2Qsv97l/ih8iT1Xr4HUQBgig42/vKRuCam00IfpZZOWjwIV6c937xyaADAc7RlH6cJdjyq1Cuek=
+	t=1727063424; cv=none; b=QvM7jnJSFbR08mfZFOnhrazWl3TdYkDizp/qHuM/fC3wUkwUZciqGS1ht4Uv888przHqC5BXn9y7roI5KjHAu2m+H4aTCape03ZlaLuCjz268lAySDsV92byE37/aGsJugwZvve8vyEbvac1aP9j6oX4G/eno2NSJ+qn0CxRCAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727063423; c=relaxed/simple;
-	bh=L6C7gT8GdEHG5UHoE1Lfezt5gx49O+1JFm+nvbU/48o=;
+	s=arc-20240116; t=1727063424; c=relaxed/simple;
+	bh=2FiUPBy8ZBjGzygKY1qls1DjBQ4IOYwbIG9jNAYhxWs=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aFE5PJ41Dalbkt0kk3H5fj3YKvG61NjdGI9O4IdKcmNAdb74QXKgobozy1ogm7Kw4GctX1IBSvjBna/ovOV4rNdrWFwleyxcO0ffYft0eF0NbDUyoAO4I6Wp46d69YOjVssdSJj9wEVlODFp7l6djo+10MHVZyjpvK1De1wms/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+	 MIME-Version:Content-Type; b=HsCncVJpn4kWXwwA0kUm+N+AMEFsA4XD8hRj+qQ831hPm/7wFD3ynMXjwKl/NoAqY01MN9L9P/Wl81yT8TqBf3fyII5b/iM1HENRjKP6HLfVr6tZy+DrjtlwDehCOJQK3m0Ql8HWTo1kH1MhiImiNoSKDM8o/hY2H+yTsT31AZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4XBpsh2jKkz20pHZ;
-	Mon, 23 Sep 2024 11:50:00 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4XBpqg49lLzpVp4;
+	Mon, 23 Sep 2024 11:48:15 +0800 (CST)
 Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2B01B1A016C;
-	Mon, 23 Sep 2024 11:50:19 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id A5B4E180087;
+	Mon, 23 Sep 2024 11:50:18 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by kwepemh500013.china.huawei.com
  (7.202.181.146) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 23 Sep
@@ -31,9 +31,9 @@ To: <broonie@kernel.org>, <shawnguo@kernel.org>, <s.hauer@pengutronix.de>,
 	<linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [PATCH 2/3] spi: spi-cadence: Fix pm_runtime_set_suspended() with runtime pm enabled
-Date: Mon, 23 Sep 2024 12:00:14 +0800
-Message-ID: <20240923040015.3009329-3-ruanjinjie@huawei.com>
+Subject: [PATCH 1/3] spi: spi-imx: Fix pm_runtime_set_suspended() with runtime pm enabled
+Date: Mon, 23 Sep 2024 12:00:13 +0800
+Message-ID: <20240923040015.3009329-2-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240923040015.3009329-1-ruanjinjie@huawei.com>
 References: <20240923040015.3009329-1-ruanjinjie@huawei.com>
@@ -52,36 +52,26 @@ It is not valid to call pm_runtime_set_suspended() for devices
 with runtime PM enabled because it returns -EAGAIN if it is enabled
 already and working. So, call pm_runtime_disable() before to fix it.
 
-Fixes: d36ccd9f7ea4 ("spi: cadence: Runtime pm adaptation")
+Fixes: 43b6bf406cd0 ("spi: imx: fix runtime pm support for !CONFIG_PM")
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 ---
- drivers/spi/spi-cadence.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index e07e081de5ea..087e748d9cc9 100644
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -678,8 +678,8 @@ static int cdns_spi_probe(struct platform_device *pdev)
- 
- clk_dis_all:
- 	if (!spi_controller_is_target(ctlr)) {
--		pm_runtime_set_suspended(&pdev->dev);
- 		pm_runtime_disable(&pdev->dev);
-+		pm_runtime_set_suspended(&pdev->dev);
- 	}
- remove_ctlr:
- 	spi_controller_put(ctlr);
-@@ -701,8 +701,8 @@ static void cdns_spi_remove(struct platform_device *pdev)
- 
- 	cdns_spi_write(xspi, CDNS_SPI_ER, CDNS_SPI_ER_DISABLE);
- 
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 85bd1a82a34e..4c31d36f3130 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1865,8 +1865,8 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 		spi_imx_sdma_exit(spi_imx);
+ out_runtime_pm_put:
+ 	pm_runtime_dont_use_autosuspend(spi_imx->dev);
 -	pm_runtime_set_suspended(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_disable(spi_imx->dev);
 +	pm_runtime_set_suspended(&pdev->dev);
  
- 	spi_unregister_controller(ctlr);
- }
+ 	clk_disable_unprepare(spi_imx->clk_ipg);
+ out_put_per:
 -- 
 2.34.1
 
