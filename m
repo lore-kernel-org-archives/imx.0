@@ -1,77 +1,91 @@
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B74C2F2
-	for <imx@lists.linux.dev>; Mon, 23 Sep 2024 03:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E3F1C3D
+	for <imx@lists.linux.dev>; Mon, 23 Sep 2024 04:56:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727063424; cv=none; b=QvM7jnJSFbR08mfZFOnhrazWl3TdYkDizp/qHuM/fC3wUkwUZciqGS1ht4Uv888przHqC5BXn9y7roI5KjHAu2m+H4aTCape03ZlaLuCjz268lAySDsV92byE37/aGsJugwZvve8vyEbvac1aP9j6oX4G/eno2NSJ+qn0CxRCAg=
+	t=1727067409; cv=none; b=P8nRGGRUVstexkTkiyWS20bglvhM48KMv5u+ZOmr6UZGoQqNRReP/nB7KO37M+/AAY0E/6c48r2HUDR/QpmO5lxIqZj6IkuXg1rNhRG7KkeKrCgsyArjXjdVqRHYKvgrC05eElSOvruJpxRxak6oM1oepDHio6Q4txSj4gbWeC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727063424; c=relaxed/simple;
-	bh=2FiUPBy8ZBjGzygKY1qls1DjBQ4IOYwbIG9jNAYhxWs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HsCncVJpn4kWXwwA0kUm+N+AMEFsA4XD8hRj+qQ831hPm/7wFD3ynMXjwKl/NoAqY01MN9L9P/Wl81yT8TqBf3fyII5b/iM1HENRjKP6HLfVr6tZy+DrjtlwDehCOJQK3m0Ql8HWTo1kH1MhiImiNoSKDM8o/hY2H+yTsT31AZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4XBpqg49lLzpVp4;
-	Mon, 23 Sep 2024 11:48:15 +0800 (CST)
-Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
-	by mail.maildlp.com (Postfix) with ESMTPS id A5B4E180087;
-	Mon, 23 Sep 2024 11:50:18 +0800 (CST)
-Received: from huawei.com (10.90.53.73) by kwepemh500013.china.huawei.com
- (7.202.181.146) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 23 Sep
- 2024 11:50:18 +0800
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-To: <broonie@kernel.org>, <shawnguo@kernel.org>, <s.hauer@pengutronix.de>,
-	<kernel@pengutronix.de>, <festevam@gmail.com>,
-	<shubhrajyoti.datta@xilinx.com>, <srinivas.goud@amd.com>,
-	<linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>
-CC: <ruanjinjie@huawei.com>
-Subject: [PATCH 1/3] spi: spi-imx: Fix pm_runtime_set_suspended() with runtime pm enabled
-Date: Mon, 23 Sep 2024 12:00:13 +0800
-Message-ID: <20240923040015.3009329-2-ruanjinjie@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240923040015.3009329-1-ruanjinjie@huawei.com>
-References: <20240923040015.3009329-1-ruanjinjie@huawei.com>
+	s=arc-20240116; t=1727067409; c=relaxed/simple;
+	bh=YAiad1qYqEGFsiRIlikGn17OKrMiJQfqenYiwTY676c=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PszaM9jcXOdu1XZeX7uOUl4g1D3+idpOURpE62oIoATjAprV2C589OBgg4aqx9VvQF/JbdLUAXoOhUY+s3SsMDHiqdJN6PTgkN1CfVG82B0RxzE4VzLGCtnJodX+00h/0CNrlPy7YhDZe85yLzHPH5flm7QnHCMWdgLLlQEJI7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=dtO4zpYV; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="dtO4zpYV"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48MLSRqx005697;
+	Sun, 22 Sep 2024 21:56:27 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=YAiad1qYqEGFsiRIlikGn17OK
+	rMiJQfqenYiwTY676c=; b=dtO4zpYV6YIioK0/nikgJiahoZmLUo918osBnMmNM
+	x187ssBQqwSoggDt2xiU5p/s+dVanElakMdSntKulW+g9DT3D1Fn/RRXmjPmVnrK
+	3o/kIbVvPcEGk++lMbm/KDyffHIzwEHgEpmP/Ja7CQ3gU4cQRlAwIyNSqm9bQMVL
+	TEH4A5eOHova1qofpho1LLMzYj1ZINmdJHaO5t8K8bfmx0AWtJxksddRFGDgTpWT
+	H5vMDvRSkUJeYHcHnwdelpXzrwKkBdZHyLuudXd7xYMqhXeP09yxEqkeOwnnh64t
+	7VNconNoEackhTrS36uwpDRlKdTjTARFjCazi1sbvhy1A==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 41swnjnx7n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 22 Sep 2024 21:56:26 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Sun, 22 Sep 2024 21:56:26 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
+ Transport; Sun, 22 Sep 2024 21:56:25 -0700
+Received: from maili.marvell.com (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id 3CF003F706C;
+	Sun, 22 Sep 2024 21:56:20 -0700 (PDT)
+Date: Mon, 23 Sep 2024 10:26:20 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: Wei Fang <wei.fang@nxp.com>
+CC: Vladimir Oltean <vladimir.oltean@nxp.com>,
+        "davem@davemloft.net"
+	<davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        "ast@kernel.org" <ast@kernel.org>,
+        "daniel@iogearbox.net" <daniel@iogearbox.net>,
+        "hawk@kernel.org"
+	<hawk@kernel.org>,
+        "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "bpf@vger.kernel.org"
+	<bpf@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH net 3/3] net: enetc: reset xdp_tx_in_flight when updating
+ bpf program
+Message-ID: <20240923045620.GA3287263@maili.marvell.com>
+References: <20240919084104.661180-1-wei.fang@nxp.com>
+ <20240919084104.661180-4-wei.fang@nxp.com>
+ <20240919132154.czugz52nirmijohe@skbuf>
+ <PAXPR04MB8510727BD7B77261491B4D31886C2@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- kwepemh500013.china.huawei.com (7.202.181.146)
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <PAXPR04MB8510727BD7B77261491B4D31886C2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+X-Proofpoint-GUID: O5Q2zY0SoljxqKQI_b0351QPVuYjwCSZ
+X-Proofpoint-ORIG-GUID: O5Q2zY0SoljxqKQI_b0351QPVuYjwCSZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
 
-It is not valid to call pm_runtime_set_suspended() for devices
-with runtime PM enabled because it returns -EAGAIN if it is enabled
-already and working. So, call pm_runtime_disable() before to fix it.
-
-Fixes: 43b6bf406cd0 ("spi: imx: fix runtime pm support for !CONFIG_PM")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
----
- drivers/spi/spi-imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 85bd1a82a34e..4c31d36f3130 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1865,8 +1865,8 @@ static int spi_imx_probe(struct platform_device *pdev)
- 		spi_imx_sdma_exit(spi_imx);
- out_runtime_pm_put:
- 	pm_runtime_dont_use_autosuspend(spi_imx->dev);
--	pm_runtime_set_suspended(&pdev->dev);
- 	pm_runtime_disable(spi_imx->dev);
-+	pm_runtime_set_suspended(&pdev->dev);
- 
- 	clk_disable_unprepare(spi_imx->clk_ipg);
- out_put_per:
--- 
-2.34.1
-
+On 2024-09-20 at 08:42:06, Wei Fang (wei.fang@nxp.com) wrote:
+> enetc_recycle_xdp_tx_buff() will not be called. Actually all XDP_TX frames are
+> sent out and XDP_TX buffers will be freed by enetc_free_rxtx_rings().
+why didn't you choose enetc_free_rxtx_rings() to reset inflight count to 0 ?
