@@ -1,135 +1,101 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from uho.ysoft.cz (uho.ysoft.cz [81.19.3.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA26245003
-	for <imx@lists.linux.dev>; Mon, 23 Sep 2024 12:25:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818A31CA84
+	for <imx@lists.linux.dev>; Mon, 23 Sep 2024 15:14:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.3.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727094307; cv=none; b=oJUAp/yuQH8GJgey4GrxYv+OMCuEGa87LWbOBvA84ytQhxtoC8BEowB8wq0oCtBxQqnicaQNw0wbKjTY2VK1U42FkTSv3ITLyZ4HJh0rc41A+55shaJOX6xFDn6D1gdS640WU+3ukNusjzaOl8bg43jRx6AC5Xwl0Rcbng9E8tU=
+	t=1727104464; cv=none; b=ufkJQLv6akHv4llOqslLqzqspvmRMmwoV0V5ivSYoni8LPipRGBgQX1pbH/7saC8F8oO08nnb7syfgznMr3qFkqyjGzsgTXjS9VmaZYe0wWYAshOapG3OpdR01+HjN1JNBLZq2sswOFPkvYESstJaBaaah4PGskrvmeUxyJ/EyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727094307; c=relaxed/simple;
-	bh=h4cH91m5em/5rDUKA0Cs9JpjBe/axcjRaRvO0Nm9gnw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Yg/MfFtVjqOVV9UdKY7C6Ravrqj33gY/w9/1vXlD1aeTsQXfO/9ZWQSgkMxcH9pOCfibGS3fl5IThcYAu1jNKuzHCwqj4+axvYMduVadGIZxxnT6OdsaEweloZDgrjliw7t7MhA42f/RVDhPQmA30HpPMuxT+AGSqFkZr2gE/Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jrkpbTZN; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1727104464; c=relaxed/simple;
+	bh=WDXytlOPylaw8vHOvWAB3UnxkSH7kzqKouEgQkROwF0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PIZRLV17DGr1nuK5hyDeMjHAguk/NBUGFSzyOmMfHnEPRlg/Rkmb0y9mmdTagywSkQizbKsglAMQBNzn32x5SmkPniSAlRpG+CbUBa9xLkYcTpIgBa+emt8XK3zdwn9J5GrMQxgz3z2wRAGC4Vt8qPZ6MQCMa0ppgwN3ag5cD7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ysoft.com; spf=pass smtp.mailfrom=ysoft.com; dkim=pass (1024-bit key) header.d=ysoft.com header.i=@ysoft.com header.b=HtQzKfwZ; arc=none smtp.client-ip=81.19.3.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ysoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ysoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jrkpbTZN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727094306; x=1758630306;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=h4cH91m5em/5rDUKA0Cs9JpjBe/axcjRaRvO0Nm9gnw=;
-  b=jrkpbTZNR2qbRtKSFVhjxktnS3bpfaqRNmiR9zacEgBp9+1tW/NeCksQ
-   Oo8Iv4U0tg10xyUpWofSjjQvTlAbwjHq5V0bnwtxUVw9On+jkOFzt70Or
-   avOZVDmMuWQR9jHzFU20gD7fuM8YVCcmdFZJ6lT27R0bsErC9gCd5BmVY
-   FdBOTyusCTzgFLOKamIHsL5POkUT3L5nurFZam+mYqB5dGu6Zl843fUeg
-   c9JE6ZbybFezXjRAP0OYZggSgW/2lX/JxmfOlMdeObYHR1b8wt0jL0Gwy
-   4k13vjJKBIHhw64gH4CNIi+f4MqFucSwFtGXe+DEUVAW789e2PIHfCayv
-   Q==;
-X-CSE-ConnectionGUID: JGkdYBmhTCmZjeWGOIdsMQ==
-X-CSE-MsgGUID: d/U30lquTBSCkbVqfxOd6Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11204"; a="36609197"
-X-IronPort-AV: E=Sophos;i="6.10,251,1719903600"; 
-   d="scan'208";a="36609197"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2024 05:25:02 -0700
-X-CSE-ConnectionGUID: zy+WpUlEQISDyo/3dS7Y2A==
-X-CSE-MsgGUID: fhWCAP9yRgyxfhiTceYCrQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,251,1719903600"; 
-   d="scan'208";a="75600431"
-Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.245.115.59])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2024 05:24:57 -0700
-Message-ID: <63402e46-2b4f-43c3-aa9f-cbdc0b7a30d5@intel.com>
-Date: Mon, 23 Sep 2024 15:24:52 +0300
+	dkim=pass (1024-bit key) header.d=ysoft.com header.i=@ysoft.com header.b="HtQzKfwZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ysoft.com;
+	s=20160406-ysoft-com; t=1727104460;
+	bh=fh4wDkjBwieGfhDRU61EZTzebRURhMzm9ZL/62vlTqk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=HtQzKfwZXc09ashZIl9PXG9ggz7wC78fzF3VDzc/iAgFScPIH1rIMMB5j3YgKhqB+
+	 mdCmMRuhvyuoermkQTkIbKIxolsg3O6kSrALoAez6WZhKJHH9ytyqRkIZN5fitveYL
+	 XReUFh29j3rEFjWYY/0EEK2zGBWbHSr+qssS6pV4=
+Received: from vokac-nb.ysoft.local (unknown [10.1.8.111])
+	by uho.ysoft.cz (Postfix) with ESMTP id ED723A025E;
+	Mon, 23 Sep 2024 17:14:19 +0200 (CEST)
+From: =?UTF-8?q?Michal=20Vok=C3=A1=C4=8D?= <michal.vokac@ysoft.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Petr Benes <petr.benes@ysoft.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Herburger <gregor.herburger@ew.tq-group.com>,
+	Hiago De Franco <hiago.franco@toradex.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Mathieu Othacehe <m.othacehe@gmail.com>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	=?UTF-8?q?Michal=20Vok=C3=A1=C4=8D?= <michal.vokac@ysoft.com>
+Subject: [PATCH v3 0/4] Add support for new IMX8MP based board
+Date: Mon, 23 Sep 2024 17:14:13 +0200
+Message-ID: <20240923151417.1665431-1-michal.vokac@ysoft.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mmc: sdhci-esdhc-imx: enable quirks SDHCI_QUIRK_NO_LED
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, haibo.chen@nxp.com,
- ulf.hansson@linaro.org
-Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, imx@lists.linux.dev, linux-mmc@vger.kernel.org,
- s32@nxp.com, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-References: <20240923062016.1165868-1-peng.fan@oss.nxp.com>
-Content-Language: en-US
-From: Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-In-Reply-To: <20240923062016.1165868-1-peng.fan@oss.nxp.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 23/09/24 09:20, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
-> 
-> Enable SDHCI_QUIRK_NO_LED for i.MX7ULP, i.MX8MM, i.MX8QXP and
-> i.MXRT1050. Even there is LCTL register bit, there is no IOMUX PAD
-> for it. So there is no sense to enable LED for SDHCI for these SoCs.
-> 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Hi,
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+this series adds support for a new member in our IOTA platform.
+The board is based on the i.MX8MP SoC. The first two patches
+add support for most of the board functionality except USB Type-C
+port and some other minor things.
 
-> ---
->  drivers/mmc/host/sdhci-esdhc-imx.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-> index 8f0bc6dca2b0..ef3a44f2dff1 100644
-> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
-> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-> @@ -238,6 +238,7 @@ struct esdhc_platform_data {
->  
->  struct esdhc_soc_data {
->  	u32 flags;
-> +	u32 quirks;
->  };
->  
->  static const struct esdhc_soc_data esdhc_imx25_data = {
-> @@ -309,10 +310,12 @@ static struct esdhc_soc_data usdhc_imx7ulp_data = {
->  			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
->  			| ESDHC_FLAG_PMQOS | ESDHC_FLAG_HS400
->  			| ESDHC_FLAG_STATE_LOST_IN_LPMODE,
-> +	.quirks = SDHCI_QUIRK_NO_LED,
->  };
->  static struct esdhc_soc_data usdhc_imxrt1050_data = {
->  	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
->  			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200,
-> +	.quirks = SDHCI_QUIRK_NO_LED,
->  };
->  
->  static struct esdhc_soc_data usdhc_imx8qxp_data = {
-> @@ -321,6 +324,7 @@ static struct esdhc_soc_data usdhc_imx8qxp_data = {
->  			| ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES
->  			| ESDHC_FLAG_STATE_LOST_IN_LPMODE
->  			| ESDHC_FLAG_CLK_RATE_LOST_IN_PM_RUNTIME,
-> +	.quirks = SDHCI_QUIRK_NO_LED,
->  };
->  
->  static struct esdhc_soc_data usdhc_imx8mm_data = {
-> @@ -328,6 +332,7 @@ static struct esdhc_soc_data usdhc_imx8mm_data = {
->  			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
->  			| ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES
->  			| ESDHC_FLAG_STATE_LOST_IN_LPMODE,
-> +	.quirks = SDHCI_QUIRK_NO_LED,
->  };
->  
->  struct pltfm_imx_data {
-> @@ -1687,6 +1692,7 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
->  
->  	imx_data->socdata = device_get_match_data(&pdev->dev);
->  
-> +	host->quirks |= imx_data->socdata->quirks;
->  	if (imx_data->socdata->flags & ESDHC_FLAG_PMQOS)
->  		cpu_latency_qos_add_request(&imx_data->pm_qos_req, 0);
->  
+[PATCH 3] adds new device tree binding for a Diodes Incorporated
+PI5USB30213A Type-C Controller and [PATCH 4] enables that port on
+the IOTA2 Lumpy board.
+
+We also wrote a driver for that Type-C port controller. I would like
+to get that driver upstream as well but I expect it will take much
+more iterations and effort to get it into mainline-ready shape so
+I intentionally excluded it from this series. AFAIK it should not
+be a problem to accept a device tree binding for a HW that does not
+have a driver in the kernel yet.
+
+Michal Vokáč (2):
+  dt-bindings: arm: Add i.MX8MP IOTA2 Lumpy board
+  arm64: dts: imx: Add imx8mp-iota2-lumpy board
+
+Petr Benes (2):
+  dt-bindings: usb: Add Diodes Incorporated PI5USB30213A Type-C
+    Controller
+  arm64: dts: imx8mp-iota2: Enable the USB Type-C port
+
+ .../devicetree/bindings/arm/fsl.yaml          |   1 +
+ .../bindings/usb/diodes,pi5usb30213a.yaml     |  88 +++
+ arch/arm64/boot/dts/freescale/Makefile        |   1 +
+ .../boot/dts/freescale/imx8mp-iota2-lumpy.dts | 517 ++++++++++++++++++
+ 4 files changed, 607 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/usb/diodes,pi5usb30213a.yaml
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-iota2-lumpy.dts
+
+-- 
+2.43.0
 
