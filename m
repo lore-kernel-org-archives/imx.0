@@ -1,160 +1,91 @@
-Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCBF514883F
-	for <imx@lists.linux.dev>; Tue, 24 Sep 2024 08:08:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.26.50.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FE722315;
+	Tue, 24 Sep 2024 08:21:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727165306; cv=none; b=QKa1pm2YYhXPkbPbGTBYiiJYvxqezDnZunw6nghOTMfPYlOtLlU6bhiElKhMWJy96tJXwxHsyrWmAVmy0h2AGymtSp6vHyPysRAAYiH7MecbVzspxqV1o6OfDdhjKSa3KMSxHzntApHPq/rqtlTtVVPWL0D1iKyVxZxR6Hg826g=
+	t=1727166074; cv=none; b=qd/xR4kk36RBue+xhbgxuG3PPIlOimR1JmMpUoCwqwUC6IlEu4MqrDZPHeC5KvdWolNm9wQU7m1yI1jdlOzzoPkg0haFC1FzTb4fcE/Jb3XVQtx89eILzyPkTbU/WwFx9xUh4J6DN4LuFkN4OrhpJkuAuJUYi70CMo4Se5iVHD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727165306; c=relaxed/simple;
-	bh=Y/6F/P6GI6Ued+q693i0Z0AROnyWZBqqJ5etygwM6B8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=gfCEb+bAyuLKIji93VIQmkJE9oGtIJv2y3u8zz/ZEG4AadCwOspjqWfJH5aTLyFojD6fdg010uoxlvDXglTv2r/nC3r9F3mvHykFFPrnUb3X+d60kl9ccgk0Gm7ptWt1shPAfiqoTOlDoAHkcACwcZdvauCVy5AtlMJe7XEo6FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=UQeuz0hI; arc=none smtp.client-ip=91.26.50.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
+	s=arc-20240116; t=1727166074; c=relaxed/simple;
+	bh=JQjvqoJf883IdrKR/BHOby0lgQEkNGqZuxt3j5rHrMw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fhykrCnpC11Vb/xyiP6Fh3HzfXgFaUgmx263EdvPvsCfiooYNmlRR68aoiS5PCEeB2+BB7Iz2Qi4b2cIdwMaRjYV4GcmOCUQds8fe1a80hp1OZis6RM7p1EGCQ/MX525pABYbUVDWNrq69Nsw6OSb8tvdJwh5jM6t89L94BsZNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OEu0yoNQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="UQeuz0hI"
-DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
-	q=dns/txt; i=@phytec.de; t=1727164392; x=1729756392;
-	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Y/6F/P6GI6Ued+q693i0Z0AROnyWZBqqJ5etygwM6B8=;
-	b=UQeuz0hIRX//UXsL577pdlFCEpXr57yk/76Xpz16xqPCMwuBi995S13EhfjD5NqZ
-	b2ZyVQ0Pxrrk3Pv9RkPmPZd0KYx1qsm/ACTHsPK52N7oZ3zo+DdZuetmvhi/+XPR
-	hWIVBrAZhS+M+y02VBo85wcLM8jUTXEXRR56j9QUD9Y=;
-X-AuditID: ac14000a-4637f70000004e2a-24-66f26fe89aa5
-Received: from berlix.phytec.de (Unknown_Domain [172.25.0.12])
-	(using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(Client did not present a certificate)
-	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 65.25.20010.8EF62F66; Tue, 24 Sep 2024 09:53:12 +0200 (CEST)
-Received: from lws-moog.phytec.de (172.25.0.11) by Berlix.phytec.de
- (172.25.0.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Tue, 24 Sep
- 2024 09:53:12 +0200
-From: Yannic Moog <y.moog@phytec.de>
-Date: Tue, 24 Sep 2024 09:53:04 +0200
-Subject: [PATCH] arm64: dts: imx8mp-phyboard-pollux-rdk: add gpio-fan
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OEu0yoNQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80FD3C4CEC4;
+	Tue, 24 Sep 2024 08:21:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727166073;
+	bh=JQjvqoJf883IdrKR/BHOby0lgQEkNGqZuxt3j5rHrMw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OEu0yoNQEtnu12CV5Jxf2HXFewCRoTBXeKrxlTyr68xmwuQq4ziZVx/gxve4imrFn
+	 7aWlCUdxfk2H6L45dxE4/9saGfhvmKwngY2BPwJNc3xuOuDct3IEHzv8HffL/ePFSs
+	 3C4oCtOlOm/CMNP6sfVA6uVyv10bSbe/bHMjnU9jO1jkNZrJSi9R0EWZinBwykg1bA
+	 O2P4tnUt9eCnTKK2ov6Lzm8PEWdZpPJR3l16Ikz8AfiM7a88BRjNROBh6ELu0lwcGb
+	 L/fvcZYgzEv3wnIfI2f+OXiJF2QyYKtyeDSvIXF4XpHOcgLbA0605TTPaPNq+ZOCyY
+	 jF994HRBmQ77g==
+Date: Tue, 24 Sep 2024 10:21:09 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Michal =?utf-8?B?Vm9rw6HEjQ==?= <michal.vokac@ysoft.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Petr Benes <petr.benes@ysoft.com>, devicetree@vger.kernel.org, 
+	linux-usb@vger.kernel.org, Michael Walle <mwalle@kernel.org>, imx@lists.linux.dev, 
+	Alexander Stein <alexander.stein@ew.tq-group.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Mathieu Othacehe <m.othacehe@gmail.com>, Hugo Villeneuve <hvilleneuve@dimonoff.com>, 
+	linux-kernel@vger.kernel.org, Hiago De Franco <hiago.franco@toradex.com>, 
+	Herburger <gregor.herburger@ew.tq-group.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Joao Paulo Goncalves <joao.goncalves@toradex.com>, Fabio Estevam <festevam@gmail.com>, 
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 3/4] dt-bindings: usb: Add Diodes Incorporated
+ PI5USB30213A Type-C Controller
+Message-ID: <6hy6sl53ducvdjuppzg3xebh6oyxvs75vz4ua2qe2jhuuoowhp@h5jbfu2wqysc>
+References: <20240923151417.1665431-1-michal.vokac@ysoft.com>
+ <20240923151417.1665431-4-michal.vokac@ysoft.com>
+ <20240924072436.gya7hvmlpb7fk5ou@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-ID: <20240924-wip-y-moog-phytec-de-phyboard-pollux-fan-v1-1-9ea6ec43f27b@phytec.de>
-X-B4-Tracking: v=1; b=H4sIAN9v8mYC/x2NywrCMBAAf6Xs2YW4iBJ/RTyk2W27ULMh8dFS+
- u9GbzOXmQ2qFJUK126DIm+taqnJ8dBBnEIaBZWbAzk6OU8OP5pxxYfZiHlanxKR5Ue9hcKYbZ5
- fCw4hoYtMns9Mvb9Ay+Uigy7/1e2+71/8lcKWegAAAA==
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
-CC: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<upstream@lists.phytec.de>, Yannic Moog <y.moog@phytec.de>
-X-Mailer: b4 0.14.1
-X-ClientProxiedBy: Berlix.phytec.de (172.25.0.12) To Berlix.phytec.de
- (172.25.0.12)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrMLMWRmVeSWpSXmKPExsWyRpKBR/dF/qc0g6Nb5SzW7D3HZDH/yDlW
-	i4dX/S1m3mtls1g1dSeLxctZ99gsNj2+xmpxedccNov/e3awW/zdvonF4sUWcYvud+oOPB47
-	Z91l99i0qpPNY/OSeo8Xm2cyevR3t7B69P818Pi8SS6APYrLJiU1J7MstUjfLoEro3vRAtaC
-	V4IV8+/FNjBO5+ti5OSQEDCReNnRzd7FyMUhJLCESWLe2W+MIAkhgYeMEtsmGYHYbAIqEo9f
-	3GMFsVkEVCXOTmthB7GFBVwlXiyeCmbzCghKnJz5hKWLkYODWUBTYv0ufZAws4C8RPPW2cwQ
-	JdESN8+eYwLZJSFwglFi/+Q9jCCOiMAkJomj104wQnTsZ5SYeysJ4jphic+717BBHCQr8eJ8
-	LztEXF5i2rnXzBB2qMTWL9uZJjAKzkJyxyyEO2YhuWMBI/MqRqHczOTs1KLMbL2CjMqS1GS9
-	lNRNjKCIEWHg2sHYN8fjECMTB+MhRgkOZiUR3kk3P6YJ8aYkVlalFuXHF5XmpBYfYpTmYFES
-	513dEZwqJJCeWJKanZpakFoEk2Xi4JRqYLTdrZilXm65/cUEpZK5lvOqmr6snlYxkf/HOxHW
-	F/Mz9XcX7FNuaM68lnXg79Ow3Vsbbn/7vD/88w6lm881CwJ7s02l769WPRnqnxbxJeh70+Z7
-	zD2eyc/l/V9/jFzgvjT5x9dEJqZXOsnGt4SdN2yKFP6SUjwhxnaxYc6eAMsLRxe+ztvPp6PE
-	UpyRaKjFXFScCAABnFQRhgIAAA==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240924072436.gya7hvmlpb7fk5ou@pengutronix.de>
 
-A GPIO fan may be connected to Pollux fan header. The fan should
-activate at 60°C and stay active until critical SoC temperature is
-reached and the board shuts down.
+On Tue, Sep 24, 2024 at 09:24:36AM +0200, Marco Felsch wrote:
+> On 24-09-23, Michal Vok=C3=A1=C4=8D wrote:
+> > From: Petr Benes <petr.benes@ysoft.com>
+> >=20
+> > Diodes Incorporated PI5USB30213A Type-C Controller supports host,
+> > device, and dual-role mode based on voltage levels detected on CC
+> > pin. Supports dual differential channel, 2:1 USB 3.0 Mux/Demux,
+> > USB Type-C specification 1.1.
+> >=20
+> > Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+> > Signed-off-by: Petr Benes <petr.benes@ysoft.com>
+> > Signed-off-by: Michal Vok=C3=A1=C4=8D <michal.vokac@ysoft.com>
+> > ---
+> > v3:
+> > - Collected R-b tag from Krzysztof.
+> > v2:
+> > - Moved maintainers before description: block.
+> > - Used full paths for references.
+> > - Removed unneeded items form connector property.
+> > - Fixed example.
+> >=20
+> >  .../bindings/usb/diodes,pi5usb30213a.yaml     | 88 +++++++++++++++++++
+>=20
+> I suppose the driver is part of an other patchset?
 
-Signed-off-by: Yannic Moog <y.moog@phytec.de>
----
- .../dts/freescale/imx8mp-phyboard-pollux-rdk.dts   | 36 ++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+Hm, indeed, where is the driver?
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-index 50debe821c42..9b551a50533f 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-@@ -9,6 +9,7 @@
- #include <dt-bindings/phy/phy-imx8-pcie.h>
- #include <dt-bindings/leds/leds-pca9532.h>
- #include <dt-bindings/pwm/pwm.h>
-+#include <dt-bindings/thermal/thermal.h>
- #include "imx8mp-phycore-som.dtsi"
- 
- / {
-@@ -32,6 +33,16 @@ backlight_lvds: backlight {
- 		pwms = <&pwm3 0 50000 0>;
- 	};
- 
-+	fan0: fan {
-+		compatible = "gpio-fan";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_fan>;
-+		gpio-fan,speed-map = <0     0
-+				      13000 1>;
-+		gpios = <&gpio5 4 GPIO_ACTIVE_HIGH>;
-+		#cooling-cells = <2>;
-+	};
-+
- 	panel1_lvds: panel-lvds {
- 		compatible = "edt,etml1010g3dra";
- 		backlight = <&backlight_lvds>;
-@@ -111,6 +122,25 @@ reg_vcc_3v3_sw: regulator-vcc-3v3-sw {
- 		regulator-min-microvolt = <3300000>;
- 		regulator-max-microvolt = <3300000>;
- 	};
-+
-+	thermal-zones {
-+		soc-thermal {
-+			trips {
-+				active1: trip2 {
-+					temperature = <60000>;
-+					hysteresis = <2000>;
-+					type = "active";
-+				};
-+			};
-+
-+			cooling-maps {
-+				map1 {
-+					trip = <&active1>;
-+					cooling-device = <&fan0 1 THERMAL_NO_LIMIT>;
-+				};
-+			};
-+		};
-+	};
- };
- 
- /* TPM */
-@@ -377,6 +407,12 @@ MX8MP_IOMUXC_SAI1_MCLK__GPIO4_IO20			0x10
- 		>;
- 	};
- 
-+	pinctrl_fan: fan0grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SPDIF_RX__GPIO5_IO04       0x16
-+		>;
-+	};
-+
- 	pinctrl_flexcan1: flexcan1grp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_SAI5_RXD2__CAN1_RX		0x154
-
----
-base-commit: 79e1b8171ca476abb9b8eceef81cd1b6f58b75e9
-change-id: 20240920-wip-y-moog-phytec-de-phyboard-pollux-fan-0cd29d6d2b97
+This patch should not be here.
 
 Best regards,
--- 
-Yannic Moog <y.moog@phytec.de>
+Krzysztof
 
