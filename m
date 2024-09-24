@@ -1,145 +1,83 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB5515539D
-	for <imx@lists.linux.dev>; Tue, 24 Sep 2024 09:37:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6059B170A3D;
+	Tue, 24 Sep 2024 10:08:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727170664; cv=none; b=qY/mv3chxDzfYLBA17oHotqxVRLlEHqw+Nv0OQlttu0XKxFsT1PTQla15JmNxkPlyOhZGmFGWCOVWanwOSw1DsCC2jzwLxfHJuEAEGSnGc/o9W0TrDU4jy8vmBp2HzZ6E8MUoIrZuK3dGrSNSeIMFsTQDlK+2HC0ikcjgVr6+48=
+	t=1727172506; cv=none; b=ELrymS5/B6bIsXyqAZPv5jwwdNtWCKUV+0eajffPwyJfxfsBboEJxl3nGFE9de4lW13/VoCYZjdpHaJGMLd8s9ttA+SM+dDj02BU1+xMUTuaMauoLZ62VW4+qVyu94Mbz6MeUu7tngTo+voHZiFQPTsiNpNtIj1+be9Q/3/eaKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727170664; c=relaxed/simple;
-	bh=yTTNa2QMtuCCueY2sh3DWgOl3ij0zht4q8WPO6UaB6k=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KbW4VCsGgVRut7NFAnIf2rrhBXIwRcwgAxln00m4lxWxCbApWwU0U9Oob+r49Gkp4SHh0cxIhQ91VOENifXgmClTSsCx73neuCEllBVE7fUCQjyexcxaGppw0qAW6Nbk716IUlqxruBUdz242o2jHIRI/4AAvi8hSTeZocB4eAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=RH1UbJYp; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1727172506; c=relaxed/simple;
+	bh=qjRcD8XaCQtfC+CXj8B3RS3iMr5qqtfxn/9w1+Vpwoo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QVMhjtNoPK6CjHQkBb4NhrZAZqCrjeHg7KLArTO23b9QlmjBCIHt3K77P2OZaMy0q4iK6Xj6spwN0r3wFLJivU1lpfDtsXWR7uU5X2dtLX6VqwSY2tFIGkpoV3dijo6J5OaKxqQRjcOTdqs4cD+FuMAwB8CuY4RzCFU6c1TqEzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SqzYzQp9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="RH1UbJYp"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id F12DCA0C05;
-	Tue, 24 Sep 2024 11:37:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=RM2Bx6e9nFaFc6AnqSX0
-	YhK80LFLycZfvGoIpk5yHlk=; b=RH1UbJYpqUZFXNWJGntasiGmHvgl6chT6ZNn
-	+HrXPcCWo8fxTHq6TGSM34BuyqA/sDbThVnQuCX9modOEmpGUk3c8AyZKatd0Jtr
-	C3a9E+MuIn3hocSqIkLrqnR6gJMGG5Wt7iLHwR2YuG6zGuw1+MUmbTHuAQvnRVpn
-	o5zIOXoUY1pxM5//fM5f/SMZgM8Kih1yfnmlK860tX/b1KGSOnEvCqqHf74ac0F1
-	Rp8uuZIu3SIreFf5y4CITw246Mt0NlN8O7T9t+tjN2XP9jlZj81iuPBR3MvxJZoz
-	k658DQdPpC2rS4ubCPWwDYqfuTsdrf/+Gat1R+9ReMEzKhrS62THYK0h6lCPd6so
-	+vrftuRLfc42jRxuG0RNUd5UPbDGM8HI6qfIjHn6hvggqTyQbTBh+/rqWRfK8xuN
-	6ylHF1tEjtipqe0b+US00J6oiNnSTKmzZ5q1Q3KgQdsyUoMRR078UUZZ538Atntt
-	A82HL7fwLbMSRsIc7Gm7Vvlhh1DiarzdcgfDtQG/NqyLfvlEZ6AkPtBNMGGQCzD/
-	UBXkkUQwU3l8m03tv4vup0749Bls88/wm+z/pmMx83t+lQCXlCUOO+lwOwdSRe1T
-	0uy/NI+yAPVaF6/pv7KWvRk9CsihNjliKmP1HccsSFTxW4Ae6IyGNsi6xgz683iL
-	z+VxYwQ=
-From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
-To: Frank Li <Frank.Li@freescale.com>, "David S. Miller"
-	<davem@davemloft.net>, <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, Wei Fang
-	<wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
-	<xiaoning.wang@nxp.com>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Richard Cochran
-	<richardcochran@gmail.com>
-Subject: [PATCH net 2/2] net: fec: Reload PTP registers after link-state change
-Date: Tue, 24 Sep 2024 11:37:06 +0200
-Message-ID: <20240924093705.2897329-2-csokas.bence@prolan.hu>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240924093705.2897329-1-csokas.bence@prolan.hu>
-References: <20240924093705.2897329-1-csokas.bence@prolan.hu>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SqzYzQp9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6654DC4CEC4;
+	Tue, 24 Sep 2024 10:08:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727172505;
+	bh=qjRcD8XaCQtfC+CXj8B3RS3iMr5qqtfxn/9w1+Vpwoo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SqzYzQp93dGUwuK3crgxPjosYaZsJEloYZeMqEihgotzZQM/CDv8CASzjYnufILO5
+	 taIViMjN5jBlchcv6+6gBgO/UxbQbixJvRaO4uwSENJ6IYUPZjYs4nw6NxJRa1MmRa
+	 AjrKROcGgot0hbWzNsynhn72O8xNROSGRUMMAzlm2ilYTLu4FIefRlrh2MCwAZY1l1
+	 JEunDpHWEfS0EUeDmr9/MPgYV/zsQ5yB4UhciO6ZVy0K5bmj6Y7juXBbtiVcx7++ex
+	 EIPfX47cskTKbsSMV/qGaPYbgpu3LMhRX7iZhi2W6aCfVBLKzh6IvnmlSQKsGTjJ3X
+	 VK7f45vLMyBSg==
+Date: Tue, 24 Sep 2024 11:08:20 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: l.stach@pengutronix.de, kwilczynski@kernel.org, bhelgaas@google.com,
+	lpieralisi@kernel.org, frank.li@nxp.com, robh+dt@kernel.org,
+	conor+dt@kernel.org, shawnguo@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, festevam@gmail.com,
+	s.hauer@pengutronix.de, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, kernel@pengutronix.de,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v1 1/9] dt-bindings: imx6q-pcie: Add ref clock for i.MX95
+ PCIe
+Message-ID: <20240924-ended-unlaced-cc7ddf87af90@spud>
+References: <1727148464-14341-1-git-send-email-hongxing.zhu@nxp.com>
+ <1727148464-14341-2-git-send-email-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1727170658;VERSION=7976;MC=678376640;ID=205351;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2980D948546C7764
-
-On link-state change, the controller gets reset,
-which clears all PTP registers, including PHC time,
-calibrated clock correction values etc. For correct
-IEEE 1588 operation we need to restore these after
-the reset.
-
-Fixes: 6605b730c061 ("FEC: Add time stamping code and a PTP hardware clock")
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
----
- drivers/net/ethernet/freescale/fec.h     |  3 +++
- drivers/net/ethernet/freescale/fec_ptp.c | 20 ++++++++++++++++++++
- 2 files changed, 23 insertions(+)
-
-diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
-index 0552317a2554..1cca0425d493 100644
---- a/drivers/net/ethernet/freescale/fec.h
-+++ b/drivers/net/ethernet/freescale/fec.h
-@@ -693,6 +693,9 @@ struct fec_enet_private {
- 
- 	struct {
- 		int pps_enable;
-+		u64 ns_sys, ns_phc;
-+		u32 at_corr;
-+		u8 at_inc_corr;
- 	} ptp_saved_state;
- 
- 	u64 ethtool_stats[];
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index df1ef023493b..a4eb6edb850a 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -767,24 +767,44 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
- void fec_ptp_save_state(struct fec_enet_private *fep)
- {
- 	unsigned long flags;
-+	u32 atime_inc_corr;
- 
- 	spin_lock_irqsave(&fep->tmreg_lock, flags);
- 
- 	fep->ptp_saved_state.pps_enable = fep->pps_enable;
- 
-+	fep->ptp_saved_state.ns_phc = timecounter_read(&fep->tc);
-+	fep->ptp_saved_state.ns_sys = ktime_get_ns();
-+
-+	fep->ptp_saved_state.at_corr = readl(fep->hwp + FEC_ATIME_CORR);
-+	atime_inc_corr = readl(fep->hwp + FEC_ATIME_INC) & FEC_T_INC_CORR_MASK;
-+	fep->ptp_saved_state.at_inc_corr = (u8)(atime_inc_corr >> FEC_T_INC_CORR_OFFSET);
-+
- 	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
- }
- 
- /* Restore PTP functionality after a reset */
- void fec_ptp_restore_state(struct fec_enet_private *fep)
- {
-+	u32 atime_inc = readl(fep->hwp + FEC_ATIME_INC) & FEC_T_INC_MASK;
- 	unsigned long flags;
-+	u32 counter;
-+	u64 ns;
- 
- 	spin_lock_irqsave(&fep->tmreg_lock, flags);
- 
- 	/* Reset turned it off, so adjust our status flag */
- 	fep->pps_enable = 0;
- 
-+	writel(fep->ptp_saved_state.at_corr, fep->hwp + FEC_ATIME_CORR);
-+	atime_inc |= ((u32)fep->ptp_saved_state.at_inc_corr) << FEC_T_INC_CORR_OFFSET;
-+	writel(atime_inc, fep->hwp + FEC_ATIME_INC);
-+
-+	ns = ktime_get_ns() - fep->ptp_saved_state.ns_sys + fep->ptp_saved_state.ns_phc;
-+	counter = ns & fep->cc.mask;
-+	writel(counter, fep->hwp + FEC_ATIME);
-+	timecounter_init(&fep->tc, &fep->cc, ns);
-+
- 	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
- 
- 	/* Restart PPS if needed */
--- 
-2.34.1
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="QPsNdq4s/PN2L3Fw"
+Content-Disposition: inline
+In-Reply-To: <1727148464-14341-2-git-send-email-hongxing.zhu@nxp.com>
 
 
+--QPsNdq4s/PN2L3Fw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Sep 24, 2024 at 11:27:36AM +0800, Richard Zhu wrote:
+> Add one ref clock for i.MX95 PCIe. Increase clocks' maxItems to 5 and
+> keep the same restriction with other compatible string.
+>=20
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+
+It'd be really good to mention why this clock is appearing now, when it
+did not before. You're just explaining what you've done, which can be
+seen in the diff, but not why you did it.
+
+--QPsNdq4s/PN2L3Fw
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZvKPlAAKCRB4tDGHoIJi
+0gdqAP9OZE7f2j2BJ6kK0OX4ojssKFgoNCVvarSmVjUoswwluAD9GJRlsy4e4cVO
+V+bFllNycrn9H5nOyRGfT0fu8JdWTw8=
+=I93h
+-----END PGP SIGNATURE-----
+
+--QPsNdq4s/PN2L3Fw--
