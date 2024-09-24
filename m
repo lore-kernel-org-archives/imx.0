@@ -1,31 +1,33 @@
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155AD53363;
-	Tue, 24 Sep 2024 07:48:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0055B216;
+	Tue, 24 Sep 2024 07:56:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727164111; cv=none; b=BANCYoCdgcOl10Ad6BBse1rA56Jy+UvFSlYQqXhr9AtLit++McL+W05pEgv1JMLiAzAoOYycQuDk0U5XTpieUkNK3j61QxjuRoE2RrV+6XewHwhmTIHw3W5r+7w7fZ9OGVu+6s/tlRHmLdWQzv2J+bOcbKjJMNbpcUcBbk6eTBE=
+	t=1727164577; cv=none; b=JYr2Oe8jvblQZFFWkNaWldoXpT8jI1NX7kDxf5ljO6UMjKfaSD1WxZ7o2vjeIxsYt2tjVk6oPgTbBnWkI37aLFPsWPIcCHZGx+wgjQSC7MUImD3jAUMugFOA9L+Je52jXBzDqTEICVIlHj6E8DJ7MEdYTMo5ft693y9ENc0hgZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727164111; c=relaxed/simple;
-	bh=CSwaPVNkAQ30B+hlvci2uTj9rmPm9lc0sX+C9imgF5s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ryGFZ0qo9VDmiud3Uh9PNaj3EV9kkkeWhlRnO8KKUCPrIlagf8PpBFE2kUR48eOOJlHuYg5zfo6q3q4DAH7s2a7VsmVwDss6nDVpownawTHROt3FWMAe+pmv+qOX9fHYmJn+ntomucg10jS3D7jTqPhlK51SvV/n3EN7ZB/UCMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4XCX5H6pvcz2QTxJ;
-	Tue, 24 Sep 2024 15:47:31 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id A6BD31A016C;
-	Tue, 24 Sep 2024 15:48:17 +0800 (CST)
-Received: from [10.67.120.129] (10.67.120.129) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 24 Sep 2024 15:48:17 +0800
-Message-ID: <64730d70-e5b7-4117-9ee8-43f23543eafd@huawei.com>
-Date: Tue, 24 Sep 2024 15:48:16 +0800
+	s=arc-20240116; t=1727164577; c=relaxed/simple;
+	bh=UVDjWabD7KHjpyDvLulyHQe9GrLQpieeVkCcpsauu/Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=s1w0yEd0c+ijituvmgRa0idcs4VgsR8oqxgA7bVlNBUDCE0JHcpwX45uSTMNad1Ztg0iaVSPSWkIKtSolHmixz9SFBoX89Xkgp7bREKO+idp8eson4g5syFBO2NAJecaJGFteDmDVlv5K7SGlGfCBdHx9ccNnkIBczA8D0GgzcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jnPGGvBp; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jnPGGvBp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 699FBC4CEC5;
+	Tue, 24 Sep 2024 07:56:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727164576;
+	bh=UVDjWabD7KHjpyDvLulyHQe9GrLQpieeVkCcpsauu/Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=jnPGGvBpp5lhq9PECgu8jWjaQguO6fksuRxGcZhKcBiRqCZR6zK2S7UTJLlEtAVPu
+	 +M3O1B5TkNKA2C6aWkB+zkoTqI86H9dwcwo6UXz63xR7JerLIvaAjzEAKC+qtGVQbF
+	 unHCFju8i36XsNeWdokTBq0MHuKNHTBOCqCKjZNbRR1e0AWTWwSj14/2LzWADAeR0d
+	 PtWJXDzdf85E3C2VIKBnWGMEdfRc+FS8rvXmqZI6wWJ6cwjXWrULcpCLtUxxkl8uxj
+	 cTBZo6iaPxSHhNZ9vUcVQiG1kEe8llC1Rh2XFAAynva8eK+j2MhEJaodKt9MQVmng7
+	 y0GO5pEyBp0PQ==
+Message-ID: <54e7e30b-4aa6-4edd-bbb5-6d9cbf5aa80d@kernel.org>
+Date: Tue, 24 Sep 2024 09:56:07 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -33,100 +35,94 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 2/2] page_pool: fix IOMMU crash when driver has
- already unbound
-To: Gur Stavi <gur.stavi@huawei.com>
-CC: <akpm@linux-foundation.org>, <aleksander.lobakin@intel.com>,
-	<alexander.duyck@gmail.com>, <angelogioacchino.delregno@collabora.com>,
-	<anthony.l.nguyen@intel.com>, <ast@kernel.org>, <bpf@vger.kernel.org>,
-	<daniel@iogearbox.net>, <davem@davemloft.net>, <edumazet@google.com>,
-	<fanghaiqing@huawei.com>, <hawk@kernel.org>, <ilias.apalodimas@linaro.org>,
-	<imx@lists.linux.dev>, <intel-wired-lan@lists.osuosl.org>,
-	<iommu@lists.linux.dev>, <john.fastabend@gmail.com>, <kuba@kernel.org>,
-	<kvalo@kernel.org>, <leon@kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, <linux-mm@kvack.org>,
-	<linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-	<liuyonglong@huawei.com>, <lorenzo@kernel.org>, <matthias.bgg@gmail.com>,
-	<nbd@nbd.name>, <netdev@vger.kernel.org>, <pabeni@redhat.com>,
-	<przemyslaw.kitszel@intel.com>, <robin.murphy@arm.com>,
-	<ryder.lee@mediatek.com>, <saeedm@nvidia.com>, <sean.wang@mediatek.com>,
-	<shayne.chen@mediatek.com>, <shenwei.wang@nxp.com>, <tariqt@nvidia.com>,
-	<wei.fang@nxp.com>, <xiaoning.wang@nxp.com>, <zhangkun09@huawei.com>
-References: <2fb8d278-62e0-4a81-a537-8f601f61e81d@huawei.com>
- <20240924064559.1681488-1-gur.stavi@huawei.com>
+Subject: Re: [PATCH v2 1/2] clk: imx93: Move IMX93_CLK_END macro to clk driver
+To: Pengfei Li <pengfei.li_1@nxp.com>
+Cc: krzk+dt@kernel.org, robh@kernel.org, abelvesa@kernel.org,
+ mturquette@baylibre.com, sboyd@kernel.org, conor+dt@kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, ping.bai@nxp.com,
+ ye.li@nxp.com, peng.fan@nxp.com, aisheng.dong@nxp.com, frank.li@nxp.com,
+ kernel@pengutronix.de, festevam@gmail.com, linux-clk@vger.kernel.org,
+ imx@lists.linux.dev, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20240627082426.394937-1-pengfei.li_1@nxp.com>
+ <20240627082426.394937-2-pengfei.li_1@nxp.com>
+ <60f9e733-f5bd-4bfc-9bd5-94ae18bb3901@kernel.org>
+ <Zn92TX9ZsHde7g2f@pengfei-OptiPlex-Tower-Plus-7010>
+ <ZpoCxmvgKNgvx4Kw@pengfei-OptiPlex-Tower-Plus-7010>
+ <0cddd005-6997-4159-8841-beb837957f0c@kernel.org>
+ <ZrHgpuvoXqsoqTJj@pengfei-OptiPlex-Tower-Plus-7010>
+ <3e0ea78a-f4d4-47d5-b3f4-622e6da475fb@kernel.org>
+ <ZvNDQhzuBrs/CO+k@pengfei-OptiPlex-Tower-Plus-7010>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: Yunsheng Lin <linyunsheng@huawei.com>
-In-Reply-To: <20240924064559.1681488-1-gur.stavi@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
+ QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
+ gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
+ /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
+ iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
+ VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
+ 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
+ xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
+ eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
+ AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
+ MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
+ Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
+ MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
+ OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
+ GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
+ 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
+ YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
+ 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
+ BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
+ JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
+ 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
+ YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
+ Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
+ ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
+ vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
+ oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
+ lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
+ t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
+ uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
+ 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
+ 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
+In-Reply-To: <ZvNDQhzuBrs/CO+k@pengfei-OptiPlex-Tower-Plus-7010>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpemf200006.china.huawei.com (7.185.36.61)
 
-On 2024/9/24 14:45, Gur Stavi wrote:
->>>>> With all the caching in the network stack, some pages may be
->>>>> held in the network stack without returning to the page_pool
->>>>> soon enough, and with VF disable causing the driver unbound,
->>>>> the page_pool does not stop the driver from doing it's
->>>>> unbounding work, instead page_pool uses workqueue to check
->>>>> if there is some pages coming back from the network stack
->>>>> periodically, if there is any, it will do the dma unmmapping
->>>>> related cleanup work.
->>>>>
->>>>> As mentioned in [1], attempting DMA unmaps after the driver
->>>>> has already unbound may leak resources or at worst corrupt
->>>>> memory. Fundamentally, the page pool code cannot allow DMA
->>>>> mappings to outlive the driver they belong to.
->>>>>
->>>>> Currently it seems there are at least two cases that the page
->>>>> is not released fast enough causing dma unmmapping done after
->>>>> driver has already unbound:
->>>>> 1. ipv4 packet defragmentation timeout: this seems to cause
->>>>>    delay up to 30 secs:
->>>>>
->>>>> 2. skb_defer_free_flush(): this may cause infinite delay if
->>>>>    there is no triggering for net_rx_action().
->>>>>
->>>>> In order not to do the dma unmmapping after driver has already
->>>>> unbound and stall the unloading of the networking driver, add
->>>>> the pool->items array to record all the pages including the ones
->>>>> which are handed over to network stack, so the page_pool can
->>>>> do the dma unmmapping for those pages when page_pool_destroy()
->>>>> is called.
->>>>
->>>> So, I was thinking of a very similar idea. But what do you mean by
->>>> "all"? The pages that are still in caches (slow or fast) of the pool
->>>> will be unmapped during page_pool_destroy().
+On 25/09/2024 00:54, Pengfei Li wrote:
+> On Tue, Aug 06, 2024 at 11:39:18AM +0200, Krzysztof Kozlowski wrote:
+>> On 06/08/2024 10:36, Pengfei Li wrote:
+>>> Hi Krzysztof,
 >>>
->>> Yes, it includes the one in pool->alloc and pool->ring.
+>>> If this patchset is ok, could you help merge it? Otherwise I won't be able to send subsequent patches.
 >>
->> It worths mentioning that there is a semantics changing here:
->> Before this patch, there can be almost unlimited inflight pages used by
->> driver and network stack, as page_pool doesn't really track those pages.
->> After this patch, as we use a fixed-size pool->items array to track the
->> inflight pages, the inflight pages is limited by the pool->items, currently
->> the size of pool->items array is calculated as below in this patch:
+>> Sure, let me apply it to my clk tree. Oh wait...
 >>
->> +#define PAGE_POOL_MIN_ITEM_CNT	512
->> +	unsigned int item_cnt = (params->pool_size ? : 1024) +
->> +				PP_ALLOC_CACHE_SIZE + PAGE_POOL_MIN_ITEM_CNT;
+>> Best regards,
+>> Krzysztof
 >>
->> Personally I would consider it is an advantage to limit how many pages which
->> are used by the driver and network stack, the problem seems to how to decide
->> the limited number of page used by network stack so that performance is not
->> impacted.
+>>
+> Hi Krzysztof,
 > 
-> In theory, with respect to the specific problem at hand, you only have
-> a limit on the number of mapped pages inflight. Once you reach this
-> limit you can unmap these old pages, forget about them and remember
-> new ones.
+> These patches are still not merged into linux-next, can you help with that? Then I'll be able to send the subsequent patches!
 
-Yes, it can be done theoretically.
-The tricky part seems to be how to handle the concurrency problem when
-we evict the old pages and the old pages are also returned back to the
-page_pool concurrently without any locking or lockless operation.
+What do you need from me?
 
-For now each item has only one producer and one consumer, so we don't
-really have to worry about the concurrency problem before calling
-page_pool_item_uninit() in page_pool_destroy() to do the unmapping
-for the inflight pages by using a newly added 'destroy_lock' lock.
+Anyway, why are you pinging during merge window?
+
+Best regards,
+Krzysztof
+
