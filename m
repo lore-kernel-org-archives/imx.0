@@ -1,112 +1,96 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from uho.ysoft.cz (uho.ysoft.cz [81.19.3.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94EDB1B85E7
-	for <imx@lists.linux.dev>; Tue, 24 Sep 2024 09:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AF5126C0B
+	for <imx@lists.linux.dev>; Tue, 24 Sep 2024 09:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.3.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727169365; cv=none; b=co0Nxa6Y5uQpPwMMxIAJfbF2AOkIYGN4pRxtlo1GP/bK6d7yHYS7+f7NaApCtbIA5Aey4GNaBbPYzsw3Aotr17wcV6yIUhDvihJClZQOoEpAYmMpc7Fdf/O++jCO/w+A1VmTFFebRyj4Ox9s0kW3QdzWinNIXe1udVJDcTUOchs=
+	t=1727170627; cv=none; b=lznvx5pz63/Vl661agcoUvMnA8gEMYFJbK/hs0KDVpGZYLijXTu87z3xgCvMGCGmYFHmgPetcUjHvfIiSM6tLejrIdYfx5x8fFu21B1tgug/Uwu2LElt451wY1BmLBMoV+1Lpb/71lplLTYhUaBaREh9Akno83kjuECEIh5eYHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727169365; c=relaxed/simple;
-	bh=9MiJvEl6JwaKymL0CdKN1ckrEVQ+QTEnKrcWM3BO1s4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hMR2Ic5crWH0+Au5r/1qwhWtk38keMv5IvpFH82p93UYZ30lWtIXocVoD+/7HqhZpdyP9IBT0jznGO4kfZHk4iABj/eNILlPdmalMJRJ0SMY8K7m9squvXhZCyLnq8DKS1ddb+qAMyhmfiJXq5dmLuriirjDC/yTiLtIqkKfMtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1st1eA-00018k-37; Tue, 24 Sep 2024 11:15:50 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1st1e8-001Axq-DO; Tue, 24 Sep 2024 11:15:48 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1st1e8-009OzZ-0z;
-	Tue, 24 Sep 2024 11:15:48 +0200
-Date: Tue, 24 Sep 2024 11:15:48 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Michal =?utf-8?B?Vm9rw6HEjQ==?= <michal.vokac@ysoft.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Shawn Guo <shawnguo@kernel.org>, Petr Benes <petr.benes@ysoft.com>,
-	devicetree@vger.kernel.org, linux-usb@vger.kernel.org,
-	Michael Walle <mwalle@kernel.org>, imx@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Mathieu Othacehe <m.othacehe@gmail.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	linux-kernel@vger.kernel.org,
-	Hiago De Franco <hiago.franco@toradex.com>,
-	Herburger <gregor.herburger@ew.tq-group.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 3/4] dt-bindings: usb: Add Diodes Incorporated
- PI5USB30213A Type-C Controller
-Message-ID: <20240924091548.zekl4tmxbnnusjpx@pengutronix.de>
-References: <20240923151417.1665431-1-michal.vokac@ysoft.com>
- <20240923151417.1665431-4-michal.vokac@ysoft.com>
- <20240924072436.gya7hvmlpb7fk5ou@pengutronix.de>
- <6hy6sl53ducvdjuppzg3xebh6oyxvs75vz4ua2qe2jhuuoowhp@h5jbfu2wqysc>
- <2ee4d89e-ad8e-49ff-9121-feab57e2acf1@kernel.org>
+	s=arc-20240116; t=1727170627; c=relaxed/simple;
+	bh=vuDTpg6UMascH2rWGdBGzBTcGLiXrBPlpImeA3KxPss=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kxV5XMvan/QWg22d18uKPeqiOM7JeG6XDiziwdwxpYqf6TtEpkf8YlZVkVKCn+NjXsJ1toBn81jOGAUThm/wv0aTAEYeO9aJ20NZXVETKu6a1GqMH4j7F/PZjHmcrNyHkKCmfO4w486uXcvQjundoy2ZqKNW+B+wxFTWztmsRUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ysoft.com; spf=pass smtp.mailfrom=ysoft.com; dkim=pass (1024-bit key) header.d=ysoft.com header.i=@ysoft.com header.b=WMpbZWqI; arc=none smtp.client-ip=81.19.3.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ysoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ysoft.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ysoft.com header.i=@ysoft.com header.b="WMpbZWqI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ysoft.com;
+	s=20160406-ysoft-com; t=1727170624;
+	bh=TxQenD4CQSIAgF7/qgiB9E/eSJ/Cwpk9mCw/tDCSPvs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=WMpbZWqI6G3prV5QbOOqjgdUAiCqZYloJK0vou7uaYJ11NLuUrT5bOysjtEIXLNkq
+	 ACI9/06lyVXKKkfuU4dGhTU3jB0m/9ARtfc1MGdLsABJKTAgGVjpBZ3MvyI27LIVzW
+	 bPAYrK4bdrL0GZ5dfTTznKMiKMmBEz0lCH3L1hBU=
+Received: from [10.1.8.111] (unknown [10.1.8.111])
+	by uho.ysoft.cz (Postfix) with ESMTP id B2830A0419;
+	Tue, 24 Sep 2024 11:37:03 +0200 (CEST)
+Message-ID: <40d982aa-79b9-49f7-b5d8-d7cc2510fe35@ysoft.com>
+Date: Tue, 24 Sep 2024 11:37:03 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/4] Add support for new IMX8MP based board
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Shawn Guo <shawnguo@kernel.org>, Petr Benes <petr.benes@ysoft.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Herburger <gregor.herburger@ew.tq-group.com>,
+ Hiago De Franco <hiago.franco@toradex.com>,
+ Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+ Joao Paulo Goncalves <joao.goncalves@toradex.com>,
+ Michael Walle <mwalle@kernel.org>,
+ Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Mathieu Othacehe <m.othacehe@gmail.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20240923151417.1665431-1-michal.vokac@ysoft.com>
+ <vghktkih6pdjrui7sjs2gn2elfcdlplh37ahzcm2xnqin3rh4g@cck4xniyourm>
+Content-Language: en-US
+From: =?UTF-8?B?TWljaGFsIFZva8OhxI0=?= <michal.vokac@ysoft.com>
+In-Reply-To: <vghktkih6pdjrui7sjs2gn2elfcdlplh37ahzcm2xnqin3rh4g@cck4xniyourm>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2ee4d89e-ad8e-49ff-9121-feab57e2acf1@kernel.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On 24-09-24, Krzysztof Kozlowski wrote:
-> On 24/09/2024 10:21, Krzysztof Kozlowski wrote:
-> > On Tue, Sep 24, 2024 at 09:24:36AM +0200, Marco Felsch wrote:
-> >> On 24-09-23, Michal Vokáč wrote:
-> >>> From: Petr Benes <petr.benes@ysoft.com>
-> >>>
-> >>> Diodes Incorporated PI5USB30213A Type-C Controller supports host,
-> >>> device, and dual-role mode based on voltage levels detected on CC
-> >>> pin. Supports dual differential channel, 2:1 USB 3.0 Mux/Demux,
-> >>> USB Type-C specification 1.1.
-> >>>
-> >>> Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-> >>> Signed-off-by: Petr Benes <petr.benes@ysoft.com>
-> >>> Signed-off-by: Michal Vokáč <michal.vokac@ysoft.com>
-> >>> ---
-> >>> v3:
-> >>> - Collected R-b tag from Krzysztof.
-> >>> v2:
-> >>> - Moved maintainers before description: block.
-> >>> - Used full paths for references.
-> >>> - Removed unneeded items form connector property.
-> >>> - Fixed example.
-> >>>
-> >>>  .../bindings/usb/diodes,pi5usb30213a.yaml     | 88 +++++++++++++++++++
-> >>
-> >> I suppose the driver is part of an other patchset?
-> > 
-> > Hm, indeed, where is the driver?
-> > 
-> > This patch should not be here.
+On 24. 09. 24 10:22, Krzysztof Kozlowski wrote:
+> On Mon, Sep 23, 2024 at 05:14:13PM +0200, Michal Vokáč wrote:
+>> Hi,
+>>
+>> this series adds support for a new member in our IOTA platform.
+>> The board is based on the i.MX8MP SoC. The first two patches
+>> add support for most of the board functionality except USB Type-C
+>> port and some other minor things.
+>>
+>> [PATCH 3] adds new device tree binding for a Diodes Incorporated
+>> PI5USB30213A Type-C Controller and [PATCH 4] enables that port on
+>> the IOTA2 Lumpy board.
+>>
+>> We also wrote a driver for that Type-C port controller. I would like
+>> to get that driver upstream as well but I expect it will take much
+>> more iterations and effort to get it into mainline-ready shape so
+>> I intentionally excluded it from this series. AFAIK it should not
+>> be a problem to accept a device tree binding for a HW that does not
+>> have a driver in the kernel yet.
 > 
-> I found remark in the cover letter. It's fine.
+> It's unusual but okay. It will be however more difficult for you - any
+> changes in the binding in the future (when writing driver) will be
+> rejected on basis of breaking ABI, even if Linux does not use that ABI.
+OK, your argument is valid and I would be better on the safer side.
+I will remove the binding for the Type-C controller from this series
+and post it a bit later including the driver.
 
-Thanks for the hint, should have read the cover letter more carefully :/
+I will reduce this series to just add basic support for the board.
+Can I keep your R-b tag for the Type-C dt-binding for the future
+submission or should I better remove it?
 
-Regards,
-  Marco
+Best regards,
+Michal
