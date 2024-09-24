@@ -1,66 +1,67 @@
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F65145FE8
-	for <imx@lists.linux.dev>; Tue, 24 Sep 2024 11:16:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CE41C3D
+	for <imx@lists.linux.dev>; Tue, 24 Sep 2024 11:18:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727176589; cv=none; b=Xr+TX73yOFNar4R76ouFYz5vn/Pj0z1j39Hfsblg4R8DUtBXadf1vS6UrMTswGF3UYQBF0IXIeWJ36BZAj15uVPPpi8LIpzZTfFgWXr4SQ/WpyXUMGVL/mevbqE9/8w+MxEC7YesXqBmYrbzBfwOFLyt8qQMKiemuWrHtVWMZkU=
+	t=1727176733; cv=none; b=ZLZNP5pE84zac70l7iQfoYpfEEC02tsVZxImpUJN2s9VAlmCF7T2slMLGGdLg1qxxjl08P2lNNHweDubKMTLdsB6Qj10yBg6lGYz3wzpOH3gdDZTFBcR/0H1RlLrnN3QAMx4bEAn3hPbmHgVtRq5ivPD7u7+4E1SxdbJS0Du4V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727176589; c=relaxed/simple;
-	bh=ZJnHAssklkneKFT4wY50362h9HDBf9imld/GaH8qaPk=;
+	s=arc-20240116; t=1727176733; c=relaxed/simple;
+	bh=YBAqfCr1rPGxWzSzMR4p/L3+lR7/ASXO7LooTM0/hqA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rawnhOhQp90YkAQK4iB+25i2eNTL9CzWSSd/euUTCMjcS0WuRLGqUUTy/3BHl3b2n0H1XMctxNR+onO1RT80ArJYa7OommnkGylKKyQ4iByAzjJ5s3gEaIXrDv80Ly9yED3CFzxiNIhGoST+8f5SiqT4kdrKEjkoEFTmF5Wrlko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xdkw2pCt; arc=none smtp.client-ip=209.85.167.42
+	 To:Cc:Content-Type; b=m50LHyyS0BAAXoh9wAQB4kCrL9wPOKlkzn4HqBQEUSGQ8h8bmiQASwRWui2esl++IArgEgGuq0p1KSA1NQ/Q9eLJcWFdS1vH6YL6v7Gi2LwsmNP+5/8BtQws4SutA2yAFs9C0hoe2qMxY3QPd0HpnZFVyW9O8eAHNk1VvQGaVQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L6tnmTdh; arc=none smtp.client-ip=209.85.219.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xdkw2pCt"
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5365b6bd901so6272866e87.2
-        for <imx@lists.linux.dev>; Tue, 24 Sep 2024 04:16:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L6tnmTdh"
+Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e201f146cc8so4915916276.3
+        for <imx@lists.linux.dev>; Tue, 24 Sep 2024 04:18:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727176585; x=1727781385; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1727176731; x=1727781531; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZJnHAssklkneKFT4wY50362h9HDBf9imld/GaH8qaPk=;
-        b=Xdkw2pCt5Ijj3WrzFNGsLpM7x+nhgV1zp8d3dGiESrHzK0lUsKuqHXuInsjcUO3yig
-         9s6i0Dvm6TJhhKgpXh2vdvU6mTeka7c7CtRgrzRmlsn0QjxMjXYVbMLK99m9t3uZMhGQ
-         pHDTtuRyB0CK+oSZccDbofdFDDDqIGckAff8cITxY23Em079/ydmhNdtsgp/w4ecgp4H
-         86VSYMcvxLC3PA3FG3ARWXSZEqJcQ6T/xCRfGJJdN5njkvLGDJwxwLdc7zHHpaYSYV0t
-         X4rVzXChJ4Q+khxQqWKKfv5bJ6CyIlQUTpac+3ahbUW8WCjJQHPM6yJr5rhBcqhZq67O
-         6aZA==
+        bh=YBAqfCr1rPGxWzSzMR4p/L3+lR7/ASXO7LooTM0/hqA=;
+        b=L6tnmTdh1KQ2z9wqm8w+LQPbZID7hyFH1lzeL1G0XqZBEEZXKybGCpmxrb7Y3gz9HL
+         HZU9I+lCXhit7ubP3UAFZUxgsvgsTpfKgivebmax0ytyH1A0iftn5HCXKkLY6IRUHm66
+         csONZczVSND3ENagqizZEWJRL7YGv7joKEa1LkGeTRFz7LrK6dKRwR4vOD+qL1tzLU69
+         QMoDbcCZ2CR3579cWoSgKnoO8jAHb2K1nEV9MdTyBOnyDpezJaADxc4UKYpd90ykmfKG
+         5jJxq1Ys4/reNgZGf/rqRmEd3s0okh048iYZNWg+LPY9RHjevBMgCGGE5rBRMj8tZz/G
+         4zVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727176585; x=1727781385;
+        d=1e100.net; s=20230601; t=1727176731; x=1727781531;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ZJnHAssklkneKFT4wY50362h9HDBf9imld/GaH8qaPk=;
-        b=n/TLhj7JOqDB8qptDc4Zz6pgyjqTaMlqeDhxgGa/QlUTEG0CNi/Hx7dVqXLl2vqNie
-         QnAdl8FEa5o12R+cVqYu2uVk0I4xVOjDAF3ZSGgV7MWmGiUZ+UcU4O2ZFAP0fBYAtllv
-         vOMdCJrW7HmhBdmoxKbNN1D5203DarcKdmQViSxdxtnpVBEu/RS25TAGsgEvMcdGqjF4
-         BsYxQcbsC7EgWUonMUHjmLSkcY4vbYvVTj0cBqveUIY4r5sra8r2lXOrPQZpsQJ05oWD
-         0GegXy+RdkdkFJNaRJQJoGp/2NuC3HW8LxI6acWoPJul9e2FwSSKXgUQZ612l9GGukQP
-         gj9A==
-X-Forwarded-Encrypted: i=1; AJvYcCV7H5/4u0fAD7sNMyFZ1+fTyvhNwNCrbb51BOUuvTFLO0UOsKxZUpgjcSZXcUHPhyyVR10=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyY2OaGvpV6/pKoP+8V31o8KFrcohz9tdtEYDJmWsjlUVl21Ak5
-	Hrtmb7J6Q2XcC8JalGqhyJTBqdoPDVCN1HyEfAfT+kNDzyL9VgTagG9N4f2xB9tvrenGpezY51N
-	khuvJNOS/6sOfvYzowfro8kBiLTs=
-X-Google-Smtp-Source: AGHT+IH4+cT4zwWzrFXVe0+tKnEFzRr7bKyh0GsnjCOocdPkd+rrwFhT4V3C6MLZrLtYNlVPd5V6oGwHQ5ZqeScaddM=
-X-Received: by 2002:a05:6512:ba2:b0:536:554a:b9c8 with SMTP id
- 2adb3069b0e04-536ad3d4ed8mr8466982e87.54.1727176585070; Tue, 24 Sep 2024
- 04:16:25 -0700 (PDT)
+        bh=YBAqfCr1rPGxWzSzMR4p/L3+lR7/ASXO7LooTM0/hqA=;
+        b=BTRWejQTyZwIwGYe35yFU63QT6LzGSb01fqec7K5XaOzSLM+YlR+/hOYnHyDyyCdwT
+         T8qTpZJfxz/GLz68jtwqvHl775Rmm+YrItdg4WvBse2271jk1yIxedfGzKeIeGXwm+ZG
+         DSaWEOpwDGzLpMq6lbF7eMG8VLmuKUEgIlyfd2I/AOIYLeCiOB6H24VQqoTFxHPxUSUH
+         JYEMChR/Xt9TwIgB1VCW8Dc97ffFcmutVsJM1TpHNrmzhlwVxmq+5sQpqvj3mTGyt9Cx
+         9JB3p16J7GgIyLss2boxE2hMAEsDjOq1ZuG1xan9bRcNCYAXRBRvYF6z3/Q/0YWVZu9w
+         D61A==
+X-Forwarded-Encrypted: i=1; AJvYcCWd6gbOeqGkSVKurCcODfTifSsKqiAv/5+T/93bDGs0k2EisZwrqhsVoXeAGw8OEnmhtxA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwQJZglgjHs0HHc5zlVD9Rs7K9vqMlYvcYZ5ng7zTthwHEnoIfH
+	fxK+81AQ3e/3y5zGJeFNnTOWIwgKlP06beqb1CSBug9FRzVFTR/pv3H1v6JEW9/4AeR0TPUq8q6
+	adpjoGLby4V9FkEb6oAhVH8Kebf4=
+X-Google-Smtp-Source: AGHT+IHANp7+/BMwt988SLqyFK4IXfD9/zYPo0ZjUxhHBAeaZYv3Ys8UDFEPSo4JAjl/rljyKlox04YLEYQzEDwc4rk=
+X-Received: by 2002:a05:6902:2b91:b0:e1a:72e9:b243 with SMTP id
+ 3f1490d57ef6-e2250c24a2cmr8718542276.9.1727176731047; Tue, 24 Sep 2024
+ 04:18:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240915114311.75496-1-laurentiu.mihalcea@nxp.com> <20240915114311.75496-3-laurentiu.mihalcea@nxp.com>
-In-Reply-To: <20240915114311.75496-3-laurentiu.mihalcea@nxp.com>
+References: <20240915114311.75496-1-laurentiu.mihalcea@nxp.com>
+ <20240915114311.75496-3-laurentiu.mihalcea@nxp.com> <CAOMZO5DR7xaEGj9=mzzFPy6wB0z7-SmvXkMnFH-wSjs01hp=WQ@mail.gmail.com>
+In-Reply-To: <CAOMZO5DR7xaEGj9=mzzFPy6wB0z7-SmvXkMnFH-wSjs01hp=WQ@mail.gmail.com>
 From: Fabio Estevam <festevam@gmail.com>
-Date: Tue, 24 Sep 2024 08:16:13 -0300
-Message-ID: <CAOMZO5DR7xaEGj9=mzzFPy6wB0z7-SmvXkMnFH-wSjs01hp=WQ@mail.gmail.com>
+Date: Tue, 24 Sep 2024 08:18:38 -0300
+Message-ID: <CAOMZO5Cacne=7ZYQ3eSdO2RRd+QuPurziFN+mS_KU7kucXHBQA@mail.gmail.com>
 Subject: Re: [PATCH v4 2/3] reset: add driver for imx8ulp SIM reset controller
 To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
@@ -71,21 +72,20 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Sha
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Sep 15, 2024 at 8:45=E2=80=AFAM Laurentiu Mihalcea
-<laurentiumihalcea111@gmail.com> wrote:
+On Tue, Sep 24, 2024 at 8:16=E2=80=AFAM Fabio Estevam <festevam@gmail.com> =
+wrote:
+
+> Who is the original author?
 >
-> Certain components can be reset via the SIM module.
-> Add reset controller driver for the SIM module to
-> allow drivers for said components to control the
-> reset signal(s).
+> In the NXP kernel, the author is Liu Ying.
 >
-> Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> If that's still the case the Author field should contain Liu Ying's name.
+>
+> Please double-check.
 
-Who is the original author?
+Also, even if you are the author, there is still something wrong
+as reported by checkpatch:
 
-In the NXP kernel, the author is Liu Ying.
-
-If that's still the case the Author field should contain Liu Ying's name.
-
-Please double-check.
+WARNING: From:/Signed-off-by: email address mismatch: 'From: Laurentiu
+Mihalcea <laurentiumihalcea111@gmail.com>' !=3D 'Signed-off-by:
+Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>'
