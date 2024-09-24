@@ -1,307 +1,145 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE091AC43E;
-	Tue, 24 Sep 2024 16:45:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0078C1AC444
+	for <imx@lists.linux.dev>; Tue, 24 Sep 2024 16:50:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727196327; cv=none; b=sNIs1Tm6CiZoRhjAeS4vJNkXnva329xNIZn+lwgnPyeLYDBIGu1/eWbVooi5dyPvSYUKJZWNFdXSBfIvNBpgYUCs6eqjvCIv354j8yfizm3LSvVbbDNboiQ5zDzQRv5WVEFbctmtxKWe3ytkuFf3xnna5twn0o+ld42b1ZENgmI=
+	t=1727196631; cv=none; b=GQxa0wNJkt7LKOJYqXyd0c4qF6SSICV31jpfWRboUA//b4vRt5u+rcin+uUES/dmUEKwdlpcPPnmnAmMlMX5BBXcTCqvdFmC9GsgcipaMuzsHNRoAWvSGQCPu808FBVJbZy7+N2PpDntzblwVU7YqrfsWykYLokPpsY2SJ2Tcp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727196327; c=relaxed/simple;
-	bh=rCfIVPGFT37TLiSakYjQVCPJampvNGxibhpB8QAbAMw=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=LEEUFOMRISAKyVciVKbOr/2+swPyvUz0Dn0hDmWblcy2Nm2r3v4Nc0l9FWtz8lXqiraYNVD4/XztZpKCC98rZIwrK0s/sTYAAD6xaC+dQE8IfpnajVGjsV1owMI9KTLO09MHaUEDnZ+MJrs86OEUJ82bePznoBgqpCa/YAzYKNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=OmEObOsu; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1727196631; c=relaxed/simple;
+	bh=k4z37PBBqp5fmyzET3BqDMVMHN1TqYd2jjf2Z4433yI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GFnv2+SCPj++NGjN/FtL8EZDJhTiUldGNIv2/y7Gzwpt8ZgEcJvRslm9C/4O5TNY1ev6sZzw5pfvVLNkjwFNfAB6ZcjKqKP1M92mjhE71TKkzuw7hRiVwJGnSh18SDGL9mP5XbpNCsElRFx9d8hRU3CnZHhKFE/jsrG16w3pL3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B52v+BHZ; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="OmEObOsu"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 5520388580;
-	Tue, 24 Sep 2024 18:45:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1727196319;
-	bh=/Jgh2J56THl4Ke+D7QEi5nBhb50MSZCH9cCXRjOyfYI=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=OmEObOsuIyMuuEy8T1cDPkzmwhe3PnLL+TB5IGYFqRdVpIQmqnaquhSYrLvmn9957
-	 2ZZJwClGW3YIJnYty1BS3bip4v1/5PsQ/kB9MQyT0jmAsJWiXJcJteNT/Cvb55Rzir
-	 LBkHEngLq8f+RJPX07nOtZbgV3JnEuR+t2L/4rzkgIQ4CFAdtZHVj0vFxx5RQjcBkH
-	 MOEiWssJSHcg8rpjSUvjdm589BHHe/9pXtY2c0IUrMlhdnCPSPj6d3/KJjM0SBIl2E
-	 2qGcMPcm4CeCdQy8fr9sILsjcAJMWeNP7eslmUH0Lgf2OVI8h6SrXkqXhUbLAronA/
-	 rqdythIZtZqrg==
-Message-ID: <3e850259-9349-4215-947a-ce192fa95f14@denx.de>
-Date: Tue, 24 Sep 2024 17:28:32 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B52v+BHZ"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-206b9455460so520765ad.0
+        for <imx@lists.linux.dev>; Tue, 24 Sep 2024 09:50:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727196629; x=1727801429; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=XrLxPgkgKOiPm2BGxnQytFvFW36owhoRBcwb0NgVun8=;
+        b=B52v+BHZzgQnnFy+pnMAHoHE1y4a090eeqdsJFtkyT8/lqoAarOEzWJ0QDD1WTj+G9
+         Sm07ImbWv46lHMaOgdhNVQ4qd6LCmCBW7ruopvGq0X356q2g/sZRdDNazvLn9xUtH9VD
+         Mq7xjC2gsO/ye3hWZ0yvL9fiXxP6wB9ZsQ4urE6mUhE9qz7iPDEiey15EbkavqVs652A
+         rgImx3SuHpdItItlv1Cu7+FGCc1ZfLIW25V3OJhBYASm+Vmlpkyc3idKywgzPmd48jZn
+         uLTiyQkAN9nV1hC3p5qXW4oObO2V42siZrtz3n72R0kHcj5jijveCWdghMtuSGm7lXZX
+         5yoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727196629; x=1727801429;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XrLxPgkgKOiPm2BGxnQytFvFW36owhoRBcwb0NgVun8=;
+        b=VIC1oRSen9Ro2hy5NyfmIKa5nBXVxTVSy56cuBWGc+19UkoL9XaP/n9JFA5/xbWv3H
+         1QLlpGF0O2N+RWCIBobV2nMtFkrJDV0Uswlh/MVclaUf2g4Pg1nllOJekhokY7aaggu9
+         NQk5cduy6NJVb1oonpQzwMwk+Irr0RAEL/WLS19h4wJPKPS6V/zfzr45kEzQfXtOTnly
+         s2Nr5akHfwFSWI+3vIsPLOS2npU0eaPlWlTSbjjIH3+eFqcfjpMnesGuNbp5M+pk0Nb3
+         T0H+GWl6MyDgXdVHlQQwwNl5S06w8TzhMrctXskNdQRq/h5hpy526bdcNCG79ZwMoqan
+         mLMg==
+X-Forwarded-Encrypted: i=1; AJvYcCXO0kqSqCAMaQqv996pr9OJYFStqVZVA7/VS8TdO0WpIpnViQo8vO4DHrJaUFWkwcJxm3k=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx6x4xg8AEY02DsXqli40bdW/grdyT+P8uOdXOhoYyBdp/zPI8F
+	du1RqnDijbv2W30ChPCKV0btzoedKX/PpzWC/q8smSz//Ij/Baap
+X-Google-Smtp-Source: AGHT+IFqfUUaDOPnE1y9rGSkTZU20gXomlidJ6gg6vYqzx/bbHaIxhoy3MT4T10BvyOIE84H7hgXng==
+X-Received: by 2002:a17:902:f60a:b0:205:5d71:561e with SMTP id d9443c01a7336-20aed13c417mr58688885ad.26.1727196629208;
+        Tue, 24 Sep 2024 09:50:29 -0700 (PDT)
+Received: from joaog-nb ([67.159.246.222])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20af17dfeedsm12290045ad.147.2024.09.24.09.50.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Sep 2024 09:50:28 -0700 (PDT)
+Date: Tue, 24 Sep 2024 13:50:21 -0300
+From: =?utf-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	=?utf-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: Re: [PATCH v1 3/3] arm64: dts: freescale: imx8mp-verdin: Add Ivy
+ carrier board
+Message-ID: <20240924165021.n6lln424llsfzhtu@joaog-nb>
+References: <20240924114053.127737-1-francesco@dolcini.it>
+ <20240924114053.127737-4-francesco@dolcini.it>
+ <ZvLWP62Gw0nygxaF@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Marek Vasut <marex@denx.de>
-Subject: Re: [PATCH v2 2/2] media: imx: vdic: Introduce mem2mem VDI
- deinterlacer driver
-To: Philipp Zabel <p.zabel@pengutronix.de>, linux-media@vger.kernel.org
-Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
- Fabio Estevam <festevam@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Helge Deller
- <deller@gmx.de>, Mauro Carvalho Chehab <mchehab@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Steve Longerbeam <slongerbeam@gmail.com>, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev
-References: <20240724002044.112544-1-marex@denx.de>
- <20240724002044.112544-2-marex@denx.de>
- <a66a2eaf30e21ff7c87f140e97ed4639640121ba.camel@pengutronix.de>
-Content-Language: en-US
-In-Reply-To: <a66a2eaf30e21ff7c87f140e97ed4639640121ba.camel@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZvLWP62Gw0nygxaF@lizhi-Precision-Tower-5810>
 
-On 9/6/24 11:01 AM, Philipp Zabel wrote:
+Hi Frank,
 
-Hi,
-
->> diff --git a/drivers/staging/media/imx/imx-media-dev.c b/drivers/staging/media/imx/imx-media-dev.c
->> index be54dca11465d..a841fdb4c2394 100644
->> --- a/drivers/staging/media/imx/imx-media-dev.c
->> +++ b/drivers/staging/media/imx/imx-media-dev.c
->> @@ -57,7 +57,52 @@ static int imx6_media_probe_complete(struct v4l2_async_notifier *notifier)
->>   		goto unlock;
->>   	}
->>   
->> +	imxmd->m2m_vdic[0] = imx_media_mem2mem_vdic_init(imxmd, 0);
->> +	if (IS_ERR(imxmd->m2m_vdic[0])) {
->> +		ret = PTR_ERR(imxmd->m2m_vdic[0]);
->> +		imxmd->m2m_vdic[0] = NULL;
->> +		goto unlock;
->> +	}
->> +
->> +	/* MX6S/DL has one IPUv3, init second VDI only on MX6Q/QP */
->> +	if (imxmd->ipu[1]) {
->> +		imxmd->m2m_vdic[1] = imx_media_mem2mem_vdic_init(imxmd, 1);
->> +		if (IS_ERR(imxmd->m2m_vdic[1])) {
->> +			ret = PTR_ERR(imxmd->m2m_vdic[1]);
->> +			imxmd->m2m_vdic[1] = NULL;
->> +			goto uninit_vdi0;
->> +		}
->> +	}
+On Tue, Sep 24, 2024 at 11:09:51AM -0400, Frank Li wrote:
+> On Tue, Sep 24, 2024 at 01:40:53PM +0200, Francesco Dolcini wrote:
+> > From: João Paulo Gonçalves <joao.goncalves@toradex.com>
+> >
+> > Add Toradex Verdin Ivy carrier board support. One notable feature of Ivy
+> > is the analog inputs. These inputs are multiplexed, allowing the same
+> > input to measure either voltage or current. For current measurements,
+> > a GPIO switch enables or disables the shunt resistor. This process is
+> > automatically managed by the Linux kernel using the IIO and MUX
+> > subsystems. Voltage measurement is always enabled, but the voltage
+> > measured by the ADC is scaled by a cascade voltage divider. In the
+> > device tree, the equivalent gain of the voltage divider is used, which
+> > can be calculated as follows:
+> >
+> >                ------------
+> >                +          |
+> >                          .-.
+> >                   R1=30K | |
+> >                          | |
+> >                          '-'
+> >                           |-------------------
+> >     Analog Input (AIN)    |                  |
+> >                          .-.                .-.
+> >                   R2=10K | |         R3=30K | |
+> >                          | |                | |
+> >                          '-'                '-'
+> >                           |                  |
+> >                           |                  |--------
+> >                           |                 .-.      +
+> >                           |          R4=10K | |
+> >                           |                 | |      ADC Input (Channels 0 and 1)
+> >                           |                 '-'
+> >                -          |                  |       -
+> >                -----------|                  |--------
+> >                          ===                ===
+> >                          GND                GND
+> >
+> > Vin  = Analog Input (AIN)
+> > Vout = ADC Input
+> > Rth  = Thevenin Equiv. Resistance
+> > Vth  = Thevenin Equiv. Voltage
+> > RL   = Load Resistor
+> >
+> > R1 = 30K, R2 = 10K, R3 = 30K, R4 = 10K
+> > RL = R4 = 10K
+> >
+> > Rth  = (R1 // R2) + R3 = 37500 Ohms
+> > Vth  = (Vin * R2) / (R1 + R2) = Vin/4;
+> > Vout = (Vth * RL)/ (Rth + RL) = Vth/4.75 = Vin/19
+> > Gain = Vout/Vin = 1/19
 > 
-> Instead of presenting two devices to userspace, it would be better to
-> have a single video device that can distribute work to both IPUs.
+> which properties related these value?
 
-Why do you think so ?
+The gain value is used on the "ain1_voltage_unmanaged" node for the full-ohms
+and output-ohms properties.
 
-I think it is better to keep the kernel code as simple as possible, i.e. 
-provide the device node for each m2m device to userspace and handle the 
-m2m device hardware interaction in the kernel driver, but let userspace 
-take care of policy like job scheduling, access permissions assignment 
-to each device (e.g. if different user accounts should have access to 
-different VDICs), or other such topics.
-
-> To be fair, we never implemented that for the CSC/scaler mem2mem device
-> either.
-
-I don't think that is actually a good idea. Instead, it would be better 
-to have two scaler nodes in userspace.
-
-[...]
-
->> +++ b/drivers/staging/media/imx/imx-media-mem2mem-vdic.c
->> @@ -0,0 +1,997 @@
->> +// SPDX-License-Identifier: GPL-2.0-or-later
->> +/*
->> + * i.MX VDIC mem2mem de-interlace driver
->> + *
->> + * Copyright (c) 2024 Marek Vasut <marex@denx.de>
->> + *
->> + * Based on previous VDIC mem2mem work by Steve Longerbeam that is:
->> + * Copyright (c) 2018 Mentor Graphics Inc.
->> + */
->> +
->> +#include <linux/delay.h>
->> +#include <linux/fs.h>
->> +#include <linux/module.h>
->> +#include <linux/sched.h>
->> +#include <linux/slab.h>
->> +#include <linux/version.h>
->> +
->> +#include <media/media-device.h>
->> +#include <media/v4l2-ctrls.h>
->> +#include <media/v4l2-device.h>
->> +#include <media/v4l2-event.h>
->> +#include <media/v4l2-ioctl.h>
->> +#include <media/v4l2-mem2mem.h>
->> +#include <media/videobuf2-dma-contig.h>
->> +
->> +#include "imx-media.h"
->> +
->> +#define fh_to_ctx(__fh)	container_of(__fh, struct ipu_mem2mem_vdic_ctx, fh)
->> +
->> +#define to_mem2mem_priv(v) container_of(v, struct ipu_mem2mem_vdic_priv, vdev)
-> 
-> These could be inline functions for added type safety.
-
-Fixed in v3
-
-[...]
-
->> +static void ipu_mem2mem_vdic_device_run(void *_ctx)
->> +{
->> +	struct ipu_mem2mem_vdic_ctx *ctx = _ctx;
->> +	struct ipu_mem2mem_vdic_priv *priv = ctx->priv;
->> +	struct vb2_v4l2_buffer *curr_buf, *dst_buf;
->> +	dma_addr_t prev_phys, curr_phys, out_phys;
->> +	struct v4l2_pix_format *infmt;
->> +	u32 phys_offset = 0;
->> +	unsigned long flags;
->> +
->> +	infmt = ipu_mem2mem_vdic_get_format(priv, V4L2_BUF_TYPE_VIDEO_OUTPUT);
->> +	if (V4L2_FIELD_IS_SEQUENTIAL(infmt->field))
->> +		phys_offset = infmt->sizeimage / 2;
->> +	else if (V4L2_FIELD_IS_INTERLACED(infmt->field))
->> +		phys_offset = infmt->bytesperline;
->> +	else
->> +		dev_err(priv->dev, "Invalid field %d\n", infmt->field);
->> +
->> +	dst_buf = v4l2_m2m_next_dst_buf(ctx->fh.m2m_ctx);
->> +	out_phys = vb2_dma_contig_plane_dma_addr(&dst_buf->vb2_buf, 0);
->> +
->> +	curr_buf = v4l2_m2m_next_src_buf(ctx->fh.m2m_ctx);
->> +	if (!curr_buf) {
->> +		dev_err(priv->dev, "Not enough buffers\n");
->> +		return;
->> +	}
->> +
->> +	spin_lock_irqsave(&priv->irqlock, flags);
->> +
->> +	if (ctx->curr_buf) {
->> +		ctx->prev_buf = ctx->curr_buf;
->> +		ctx->curr_buf = curr_buf;
->> +	} else {
->> +		ctx->prev_buf = curr_buf;
->> +		ctx->curr_buf = curr_buf;
->> +		dev_warn(priv->dev, "Single-buffer mode, fix your userspace\n");
->> +	}
->> +
->> +	prev_phys = vb2_dma_contig_plane_dma_addr(&ctx->prev_buf->vb2_buf, 0);
->> +	curr_phys = vb2_dma_contig_plane_dma_addr(&ctx->curr_buf->vb2_buf, 0);
->> +
->> +	priv->curr_ctx = ctx;
->> +	spin_unlock_irqrestore(&priv->irqlock, flags);
->> +
->> +	ipu_cpmem_set_buffer(priv->vdi_out_ch,  0, out_phys);
->> +	ipu_cpmem_set_buffer(priv->vdi_in_ch_p, 0, prev_phys + phys_offset);
->> +	ipu_cpmem_set_buffer(priv->vdi_in_ch,   0, curr_phys);
->> +	ipu_cpmem_set_buffer(priv->vdi_in_ch_n, 0, curr_phys + phys_offset);
-> 
-> This always outputs at a frame rate of half the field rate, and only
-> top fields are ever used as current field, and bottom fields as
-> previous/next fields, right?
-
-Yes, currently the driver extracts 1 frame from two consecutive incoming 
-fields (previous Bottom, and current Top and Bottom):
-
-(frame 1 and 3 below is omitted)
-
-     1  2  3  4
-...|T |T |T |T |...
-...| B| B| B| B|...
-      | ||  | ||
-      '-''  '-''
-       ||    ||
-       ||    \/
-       \/  Frame#4
-     Frame#2
-
-As far as I understand it, this is how the current VDI implementation 
-behaves too, right ?
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/staging/media/imx/imx-media-vdic.c#n207
-
-> I think it would be good to add a mode that doesn't drop the
-> 
-> 	ipu_cpmem_set_buffer(priv->vdi_in_ch_p, 0, prev_phys);
-> 	ipu_cpmem_set_buffer(priv->vdi_in_ch,   0, prev_phys + phys_offset);
-> 	ipu_cpmem_set_buffer(priv->vdi_in_ch_n, 0, curr_phys);
-> 
-> output frames, right from the start.
-
-This would make the VDI act as a frame-rate doubler, which would spend a 
-lot more memory bandwidth, which is limited on MX6, so I would also like 
-to have a frame-drop mode (i.e. current behavior).
-
-Can we make that behavior configurable ? Since this is a mem2mem device, 
-we do not really have any notion of input and output frame-rate, so I 
-suspect this would need some VIDIOC_* ioctl ?
-
-> If we don't start with that supported, I fear userspace will make
-> assumptions and be surprised when a full rate mode is added later.
-
-I'm afraid that since the current VDI already does retain input frame 
-rate instead of doubling it, the userspace already makes an assumption, 
-so that ship has sailed.
-
-But I think we can make the frame doubling configurable ?
-
->> +	/* No double buffering, always pick buffer 0 */
->> +	ipu_idmac_select_buffer(priv->vdi_out_ch, 0);
->> +	ipu_idmac_select_buffer(priv->vdi_in_ch_p, 0);
->> +	ipu_idmac_select_buffer(priv->vdi_in_ch, 0);
->> +	ipu_idmac_select_buffer(priv->vdi_in_ch_n, 0);
->> +
->> +	/* Enable the channels */
->> +	ipu_idmac_enable_channel(priv->vdi_out_ch);
->> +	ipu_idmac_enable_channel(priv->vdi_in_ch_p);
->> +	ipu_idmac_enable_channel(priv->vdi_in_ch);
->> +	ipu_idmac_enable_channel(priv->vdi_in_ch_n);
->> +}
-
-[...]
-
->> +static int ipu_mem2mem_vdic_setup_hardware(struct ipu_mem2mem_vdic_priv *priv)
->> +{
->> +	struct v4l2_pix_format *infmt, *outfmt;
->> +	struct ipu_ic_csc csc;
->> +	bool in422, outyuv;
->> +	int ret;
->> +
->> +	infmt = ipu_mem2mem_vdic_get_format(priv, V4L2_BUF_TYPE_VIDEO_OUTPUT);
->> +	outfmt = ipu_mem2mem_vdic_get_format(priv, V4L2_BUF_TYPE_VIDEO_CAPTURE);
->> +	in422 = ipu_mem2mem_vdic_format_is_yuv422(infmt->pixelformat);
->> +	outyuv = ipu_mem2mem_vdic_format_is_yuv(outfmt->pixelformat);
->> +
->> +	ipu_vdi_setup(priv->vdi, in422, infmt->width, infmt->height);
->> +	ipu_vdi_set_field_order(priv->vdi, V4L2_STD_UNKNOWN, infmt->field);
->> +	ipu_vdi_set_motion(priv->vdi, HIGH_MOTION);
-> 
-> This maps to VDI_C_MOT_SEL_FULL aka VDI_MOT_SEL=2, which is documented
-> as "full motion, only vertical filter is used". Doesn't this completely
-> ignore the previous/next fields and only use the output of the di_vfilt
-> four tap vertical filter block to fill in missing lines from the
-> surrounding pixels (above and below) of the current field?
-
-Is there a suitable knob for this or shall I introduce a device specific 
-one, like the vdic_ctrl_motion_menu for the current VDIC direct driver ?
-
-If we introduce such a knob, then it is all the more reason to provide 
-one device node per one VDIC hardware instance, since each can be 
-configured for different motion settings.
-
-> I think this should at least be configurable, and probably default to
-> MED_MOTION.
-
-I think to be compatible with the current VDI behavior and to reduce 
-memory bandwidth usage, let's default to the HIGH/full mode. That one 
-produces reasonably good results without spending too much memory 
-bandwidth which is constrained already on the MX6, and if the user needs 
-better image quality, they can configure another mode using the V4L2 
-control.
-
-[...]
+Best Regards,
+João Paulo Gonçalves
