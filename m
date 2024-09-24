@@ -1,96 +1,132 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E4A11CBD
-	for <imx@lists.linux.dev>; Tue, 24 Sep 2024 07:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155AD53363;
+	Tue, 24 Sep 2024 07:48:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727163946; cv=none; b=oh4yckYd0VuEbXQgTf/mte4auGIASiliW5HwZC2aoeN2Pfg5KgNztHs5M0Oi/Y/7vyQO4KEF9z8v7q05RlBYUXYCmFl1xScoJve4Ka29LrVPS9EupoBNDi2paJQWGwQYOkh9Lu+DfmdfqpzourQckKfROF8Mz2lsMqW3R/PCV+s=
+	t=1727164111; cv=none; b=BANCYoCdgcOl10Ad6BBse1rA56Jy+UvFSlYQqXhr9AtLit++McL+W05pEgv1JMLiAzAoOYycQuDk0U5XTpieUkNK3j61QxjuRoE2RrV+6XewHwhmTIHw3W5r+7w7fZ9OGVu+6s/tlRHmLdWQzv2J+bOcbKjJMNbpcUcBbk6eTBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727163946; c=relaxed/simple;
-	bh=MqhA2gxS9MTxmqX69mbrOYHAL9N8LKtrtunB9LWCxLw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OrCDB9tSHhb3JG89mn7hFd9IBZCBuarCaADr3WCGx+/EiWBSuNkPfIiJftPRmHcGp1yu5FbCNMW4D6DlW1eGIMj1F27kKEuO8ZvmO6iZHH7nVfyg9mFGQQHeXJONCn829SoppwGWTVxgvRc/KbbI0cIiavIhjGZ5SDAagC3xZIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TDvW5C/Z; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TDvW5C/Z"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-535694d67eeso5359368e87.0
-        for <imx@lists.linux.dev>; Tue, 24 Sep 2024 00:45:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1727163943; x=1727768743; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MqhA2gxS9MTxmqX69mbrOYHAL9N8LKtrtunB9LWCxLw=;
-        b=TDvW5C/Zqgtt4DSxPBRkSJAvD7GRZhLG7XWei1EH1XKCzeicaCcLRd1OI1ryVq7Emm
-         UAfpPTfX79oHoYJg9h8Ho1eyMdEKGWGr0Z+0ZX79cDWV3Qte+0NTh4yTRdsXptOu5ALu
-         AdYqP3nqNKnuIbxpcWIC1FEcnGN1UnyTPogxh3z/7xL+D3wFrv2wPGw3ryCFUUUBgAOD
-         d/kxNqxO5jCkMr+Z5e5hclN1KwzNSwaeyY5iAPOCu+yTUKP9+sW6GaU0tsOVR4XAYwql
-         t4cy054LuOuIxNZIgXGWaQl+CHxr8WEtO0vx9F+pnq4zdYnLStEL8BWXOBdpfDeLDnkC
-         8bIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727163943; x=1727768743;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MqhA2gxS9MTxmqX69mbrOYHAL9N8LKtrtunB9LWCxLw=;
-        b=m0RjRlZ7KTN12taR+3b0DrwVP1cImEh/9IT9jGrgUcS9gefs44/02h6sgxlLM+4IQY
-         XWNtxmtCDExfvuObQQ/K9lzGyr8DqY+4G1jDpSZ0vt94hzGUDHLkhwNHSNH9MrXdKATu
-         PgB3kl1TV9LynJXLh8DN50ipaDU5JunR9TVmiVHwTjhWwdSF4JU18hGVw8VKKT34V+Ry
-         ZwAyB+TRiHIxkfkC4xH/Ul8CokcPI/EnprkuOJYl8AMSmza/MjC5rO5+mvK3BQtspavX
-         DNDBB9lN1jahsUjKLAUhJPvJmMivl4dzeU0oH1G1HDobHpKw72850Ysmb8JGQxJJCO6w
-         kOTA==
-X-Forwarded-Encrypted: i=1; AJvYcCUYyTX1zhNof5zYDkGJf99oC4ZsD9pVe+1+uSb9MlsGLF88DRr8j1v2kEyIVoNC8AOiI64=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzvBCUOmeCnjrVaVxF8ZohbtaxVgUAKOFNZRjcC2af2iPPxPsjb
-	XM/BxWoMTuINu1m3Q8sDlTY02ClJ1iS2j3WnAMArPQj6JFU0k7N7JK2z4xZQoKzPj9q0ldJjapM
-	Fvys1F7p7VB7BiTmxMf5BJqu+CkE0F90XQMLIaA==
-X-Google-Smtp-Source: AGHT+IFSnhi2g8RCS4Pf7Wrz3+5o1CeBJkl9cOue8TFxLcfAoHEaLB+jSarR5GR30yYmfSCZziuzfKQojHEPSL+b7Q8=
-X-Received: by 2002:a05:6512:1150:b0:533:1d4:546d with SMTP id
- 2adb3069b0e04-537a651ac4amr734820e87.7.1727163943165; Tue, 24 Sep 2024
- 00:45:43 -0700 (PDT)
+	s=arc-20240116; t=1727164111; c=relaxed/simple;
+	bh=CSwaPVNkAQ30B+hlvci2uTj9rmPm9lc0sX+C9imgF5s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ryGFZ0qo9VDmiud3Uh9PNaj3EV9kkkeWhlRnO8KKUCPrIlagf8PpBFE2kUR48eOOJlHuYg5zfo6q3q4DAH7s2a7VsmVwDss6nDVpownawTHROt3FWMAe+pmv+qOX9fHYmJn+ntomucg10jS3D7jTqPhlK51SvV/n3EN7ZB/UCMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4XCX5H6pvcz2QTxJ;
+	Tue, 24 Sep 2024 15:47:31 +0800 (CST)
+Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id A6BD31A016C;
+	Tue, 24 Sep 2024 15:48:17 +0800 (CST)
+Received: from [10.67.120.129] (10.67.120.129) by
+ dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 24 Sep 2024 15:48:17 +0800
+Message-ID: <64730d70-e5b7-4117-9ee8-43f23543eafd@huawei.com>
+Date: Tue, 24 Sep 2024 15:48:16 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240506-imx-pinctrl-optional-v2-0-bdff75085156@geanix.com> <20240506-imx-pinctrl-optional-v2-1-bdff75085156@geanix.com>
-In-Reply-To: <20240506-imx-pinctrl-optional-v2-1-bdff75085156@geanix.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 24 Sep 2024 09:45:32 +0200
-Message-ID: <CACRpkdaW14PgLXTRPHUjaLNKfCMRs+hpHrYyMiNaqSs+m0rhqw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] ARM: imx: Allow user to disable pinctrl
-To: Esben Haabendal <esben@geanix.com>
-Cc: Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Rasmus Villemoes <rasmus.villemoes@prevas.dk>, 
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 2/2] page_pool: fix IOMMU crash when driver has
+ already unbound
+To: Gur Stavi <gur.stavi@huawei.com>
+CC: <akpm@linux-foundation.org>, <aleksander.lobakin@intel.com>,
+	<alexander.duyck@gmail.com>, <angelogioacchino.delregno@collabora.com>,
+	<anthony.l.nguyen@intel.com>, <ast@kernel.org>, <bpf@vger.kernel.org>,
+	<daniel@iogearbox.net>, <davem@davemloft.net>, <edumazet@google.com>,
+	<fanghaiqing@huawei.com>, <hawk@kernel.org>, <ilias.apalodimas@linaro.org>,
+	<imx@lists.linux.dev>, <intel-wired-lan@lists.osuosl.org>,
+	<iommu@lists.linux.dev>, <john.fastabend@gmail.com>, <kuba@kernel.org>,
+	<kvalo@kernel.org>, <leon@kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, <linux-mm@kvack.org>,
+	<linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+	<liuyonglong@huawei.com>, <lorenzo@kernel.org>, <matthias.bgg@gmail.com>,
+	<nbd@nbd.name>, <netdev@vger.kernel.org>, <pabeni@redhat.com>,
+	<przemyslaw.kitszel@intel.com>, <robin.murphy@arm.com>,
+	<ryder.lee@mediatek.com>, <saeedm@nvidia.com>, <sean.wang@mediatek.com>,
+	<shayne.chen@mediatek.com>, <shenwei.wang@nxp.com>, <tariqt@nvidia.com>,
+	<wei.fang@nxp.com>, <xiaoning.wang@nxp.com>, <zhangkun09@huawei.com>
+References: <2fb8d278-62e0-4a81-a537-8f601f61e81d@huawei.com>
+ <20240924064559.1681488-1-gur.stavi@huawei.com>
+Content-Language: en-US
+From: Yunsheng Lin <linyunsheng@huawei.com>
+In-Reply-To: <20240924064559.1681488-1-gur.stavi@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemf200006.china.huawei.com (7.185.36.61)
 
-On Mon, May 6, 2024 at 12:24=E2=80=AFPM Esben Haabendal <esben@geanix.com> =
-wrote:
+On 2024/9/24 14:45, Gur Stavi wrote:
+>>>>> With all the caching in the network stack, some pages may be
+>>>>> held in the network stack without returning to the page_pool
+>>>>> soon enough, and with VF disable causing the driver unbound,
+>>>>> the page_pool does not stop the driver from doing it's
+>>>>> unbounding work, instead page_pool uses workqueue to check
+>>>>> if there is some pages coming back from the network stack
+>>>>> periodically, if there is any, it will do the dma unmmapping
+>>>>> related cleanup work.
+>>>>>
+>>>>> As mentioned in [1], attempting DMA unmaps after the driver
+>>>>> has already unbound may leak resources or at worst corrupt
+>>>>> memory. Fundamentally, the page pool code cannot allow DMA
+>>>>> mappings to outlive the driver they belong to.
+>>>>>
+>>>>> Currently it seems there are at least two cases that the page
+>>>>> is not released fast enough causing dma unmmapping done after
+>>>>> driver has already unbound:
+>>>>> 1. ipv4 packet defragmentation timeout: this seems to cause
+>>>>>    delay up to 30 secs:
+>>>>>
+>>>>> 2. skb_defer_free_flush(): this may cause infinite delay if
+>>>>>    there is no triggering for net_rx_action().
+>>>>>
+>>>>> In order not to do the dma unmmapping after driver has already
+>>>>> unbound and stall the unloading of the networking driver, add
+>>>>> the pool->items array to record all the pages including the ones
+>>>>> which are handed over to network stack, so the page_pool can
+>>>>> do the dma unmmapping for those pages when page_pool_destroy()
+>>>>> is called.
+>>>>
+>>>> So, I was thinking of a very similar idea. But what do you mean by
+>>>> "all"? The pages that are still in caches (slow or fast) of the pool
+>>>> will be unmapped during page_pool_destroy().
+>>>
+>>> Yes, it includes the one in pool->alloc and pool->ring.
+>>
+>> It worths mentioning that there is a semantics changing here:
+>> Before this patch, there can be almost unlimited inflight pages used by
+>> driver and network stack, as page_pool doesn't really track those pages.
+>> After this patch, as we use a fixed-size pool->items array to track the
+>> inflight pages, the inflight pages is limited by the pool->items, currently
+>> the size of pool->items array is calculated as below in this patch:
+>>
+>> +#define PAGE_POOL_MIN_ITEM_CNT	512
+>> +	unsigned int item_cnt = (params->pool_size ? : 1024) +
+>> +				PP_ALLOC_CACHE_SIZE + PAGE_POOL_MIN_ITEM_CNT;
+>>
+>> Personally I would consider it is an advantage to limit how many pages which
+>> are used by the driver and network stack, the problem seems to how to decide
+>> the limited number of page used by network stack so that performance is not
+>> impacted.
+> 
+> In theory, with respect to the specific problem at hand, you only have
+> a limit on the number of mapped pages inflight. Once you reach this
+> limit you can unmap these old pages, forget about them and remember
+> new ones.
 
-> Making pinctrl drivers and subsequently the pinctrl framework
-> user-controllable, allows building a kernel without this.
-> While in many (most) cases, this could make the system unbootable, it
-> does allow building smaller kernels for those situations where picntrl
-> is not needed.
->
-> One such situation is when building a kernel for NXP LS1021A systems,
-> which does not have run-time controllable pinctrl, so pinctrl framework
-> and drivers are 100% dead-weight.
->
->
-> Signed-off-by: Esben Haabendal <esben@geanix.com>
+Yes, it can be done theoretically.
+The tricky part seems to be how to handle the concurrency problem when
+we evict the old pages and the old pages are also returned back to the
+page_pool concurrently without any locking or lockless operation.
 
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-
-I guess this needs to be merged through the SoC tree.
-
-Yours,
-Linus Walleij
+For now each item has only one producer and one consumer, so we don't
+really have to worry about the concurrency problem before calling
+page_pool_item_uninit() in page_pool_destroy() to do the unmapping
+for the inflight pages by using a newly added 'destroy_lock' lock.
