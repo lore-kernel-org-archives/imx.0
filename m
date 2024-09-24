@@ -1,128 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0055B216;
-	Tue, 24 Sep 2024 07:56:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCBF514883F
+	for <imx@lists.linux.dev>; Tue, 24 Sep 2024 08:08:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.26.50.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727164577; cv=none; b=JYr2Oe8jvblQZFFWkNaWldoXpT8jI1NX7kDxf5ljO6UMjKfaSD1WxZ7o2vjeIxsYt2tjVk6oPgTbBnWkI37aLFPsWPIcCHZGx+wgjQSC7MUImD3jAUMugFOA9L+Je52jXBzDqTEICVIlHj6E8DJ7MEdYTMo5ft693y9ENc0hgZY=
+	t=1727165306; cv=none; b=QKa1pm2YYhXPkbPbGTBYiiJYvxqezDnZunw6nghOTMfPYlOtLlU6bhiElKhMWJy96tJXwxHsyrWmAVmy0h2AGymtSp6vHyPysRAAYiH7MecbVzspxqV1o6OfDdhjKSa3KMSxHzntApHPq/rqtlTtVVPWL0D1iKyVxZxR6Hg826g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727164577; c=relaxed/simple;
-	bh=UVDjWabD7KHjpyDvLulyHQe9GrLQpieeVkCcpsauu/Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s1w0yEd0c+ijituvmgRa0idcs4VgsR8oqxgA7bVlNBUDCE0JHcpwX45uSTMNad1Ztg0iaVSPSWkIKtSolHmixz9SFBoX89Xkgp7bREKO+idp8eson4g5syFBO2NAJecaJGFteDmDVlv5K7SGlGfCBdHx9ccNnkIBczA8D0GgzcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jnPGGvBp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727165306; c=relaxed/simple;
+	bh=Y/6F/P6GI6Ued+q693i0Z0AROnyWZBqqJ5etygwM6B8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=gfCEb+bAyuLKIji93VIQmkJE9oGtIJv2y3u8zz/ZEG4AadCwOspjqWfJH5aTLyFojD6fdg010uoxlvDXglTv2r/nC3r9F3mvHykFFPrnUb3X+d60kl9ccgk0Gm7ptWt1shPAfiqoTOlDoAHkcACwcZdvauCVy5AtlMJe7XEo6FI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=UQeuz0hI; arc=none smtp.client-ip=91.26.50.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jnPGGvBp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 699FBC4CEC5;
-	Tue, 24 Sep 2024 07:56:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727164576;
-	bh=UVDjWabD7KHjpyDvLulyHQe9GrLQpieeVkCcpsauu/Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jnPGGvBpp5lhq9PECgu8jWjaQguO6fksuRxGcZhKcBiRqCZR6zK2S7UTJLlEtAVPu
-	 +M3O1B5TkNKA2C6aWkB+zkoTqI86H9dwcwo6UXz63xR7JerLIvaAjzEAKC+qtGVQbF
-	 unHCFju8i36XsNeWdokTBq0MHuKNHTBOCqCKjZNbRR1e0AWTWwSj14/2LzWADAeR0d
-	 PtWJXDzdf85E3C2VIKBnWGMEdfRc+FS8rvXmqZI6wWJ6cwjXWrULcpCLtUxxkl8uxj
-	 cTBZo6iaPxSHhNZ9vUcVQiG1kEe8llC1Rh2XFAAynva8eK+j2MhEJaodKt9MQVmng7
-	 y0GO5pEyBp0PQ==
-Message-ID: <54e7e30b-4aa6-4edd-bbb5-6d9cbf5aa80d@kernel.org>
-Date: Tue, 24 Sep 2024 09:56:07 +0200
+	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="UQeuz0hI"
+DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
+	q=dns/txt; i=@phytec.de; t=1727164392; x=1729756392;
+	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Y/6F/P6GI6Ued+q693i0Z0AROnyWZBqqJ5etygwM6B8=;
+	b=UQeuz0hIRX//UXsL577pdlFCEpXr57yk/76Xpz16xqPCMwuBi995S13EhfjD5NqZ
+	b2ZyVQ0Pxrrk3Pv9RkPmPZd0KYx1qsm/ACTHsPK52N7oZ3zo+DdZuetmvhi/+XPR
+	hWIVBrAZhS+M+y02VBo85wcLM8jUTXEXRR56j9QUD9Y=;
+X-AuditID: ac14000a-4637f70000004e2a-24-66f26fe89aa5
+Received: from berlix.phytec.de (Unknown_Domain [172.25.0.12])
+	(using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(Client did not present a certificate)
+	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 65.25.20010.8EF62F66; Tue, 24 Sep 2024 09:53:12 +0200 (CEST)
+Received: from lws-moog.phytec.de (172.25.0.11) by Berlix.phytec.de
+ (172.25.0.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Tue, 24 Sep
+ 2024 09:53:12 +0200
+From: Yannic Moog <y.moog@phytec.de>
+Date: Tue, 24 Sep 2024 09:53:04 +0200
+Subject: [PATCH] arm64: dts: imx8mp-phyboard-pollux-rdk: add gpio-fan
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] clk: imx93: Move IMX93_CLK_END macro to clk driver
-To: Pengfei Li <pengfei.li_1@nxp.com>
-Cc: krzk+dt@kernel.org, robh@kernel.org, abelvesa@kernel.org,
- mturquette@baylibre.com, sboyd@kernel.org, conor+dt@kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, ping.bai@nxp.com,
- ye.li@nxp.com, peng.fan@nxp.com, aisheng.dong@nxp.com, frank.li@nxp.com,
- kernel@pengutronix.de, festevam@gmail.com, linux-clk@vger.kernel.org,
- imx@lists.linux.dev, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20240627082426.394937-1-pengfei.li_1@nxp.com>
- <20240627082426.394937-2-pengfei.li_1@nxp.com>
- <60f9e733-f5bd-4bfc-9bd5-94ae18bb3901@kernel.org>
- <Zn92TX9ZsHde7g2f@pengfei-OptiPlex-Tower-Plus-7010>
- <ZpoCxmvgKNgvx4Kw@pengfei-OptiPlex-Tower-Plus-7010>
- <0cddd005-6997-4159-8841-beb837957f0c@kernel.org>
- <ZrHgpuvoXqsoqTJj@pengfei-OptiPlex-Tower-Plus-7010>
- <3e0ea78a-f4d4-47d5-b3f4-622e6da475fb@kernel.org>
- <ZvNDQhzuBrs/CO+k@pengfei-OptiPlex-Tower-Plus-7010>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
- QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
- gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
- /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
- iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
- VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
- 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
- xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
- eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
- AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
- MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
- Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
- ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
- vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
- oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
- lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
- t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
- uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
- 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
- 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <ZvNDQhzuBrs/CO+k@pengfei-OptiPlex-Tower-Plus-7010>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-ID: <20240924-wip-y-moog-phytec-de-phyboard-pollux-fan-v1-1-9ea6ec43f27b@phytec.de>
+X-B4-Tracking: v=1; b=H4sIAN9v8mYC/x2NywrCMBAAf6Xs2YW4iBJ/RTyk2W27ULMh8dFS+
+ u9GbzOXmQ2qFJUK126DIm+taqnJ8dBBnEIaBZWbAzk6OU8OP5pxxYfZiHlanxKR5Ue9hcKYbZ5
+ fCw4hoYtMns9Mvb9Ay+Uigy7/1e2+71/8lcKWegAAAA==
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+CC: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<upstream@lists.phytec.de>, Yannic Moog <y.moog@phytec.de>
+X-Mailer: b4 0.14.1
+X-ClientProxiedBy: Berlix.phytec.de (172.25.0.12) To Berlix.phytec.de
+ (172.25.0.12)
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrMLMWRmVeSWpSXmKPExsWyRpKBR/dF/qc0g6Nb5SzW7D3HZDH/yDlW
+	i4dX/S1m3mtls1g1dSeLxctZ99gsNj2+xmpxedccNov/e3awW/zdvonF4sUWcYvud+oOPB47
+	Z91l99i0qpPNY/OSeo8Xm2cyevR3t7B69P818Pi8SS6APYrLJiU1J7MstUjfLoEro3vRAtaC
+	V4IV8+/FNjBO5+ti5OSQEDCReNnRzd7FyMUhJLCESWLe2W+MIAkhgYeMEtsmGYHYbAIqEo9f
+	3GMFsVkEVCXOTmthB7GFBVwlXiyeCmbzCghKnJz5hKWLkYODWUBTYv0ufZAws4C8RPPW2cwQ
+	JdESN8+eYwLZJSFwglFi/+Q9jCCOiMAkJomj104wQnTsZ5SYeysJ4jphic+717BBHCQr8eJ8
+	LztEXF5i2rnXzBB2qMTWL9uZJjAKzkJyxyyEO2YhuWMBI/MqRqHczOTs1KLMbL2CjMqS1GS9
+	lNRNjKCIEWHg2sHYN8fjECMTB+MhRgkOZiUR3kk3P6YJ8aYkVlalFuXHF5XmpBYfYpTmYFES
+	513dEZwqJJCeWJKanZpakFoEk2Xi4JRqYLTdrZilXm65/cUEpZK5lvOqmr6snlYxkf/HOxHW
+	F/Mz9XcX7FNuaM68lnXg79Ow3Vsbbn/7vD/88w6lm881CwJ7s02l769WPRnqnxbxJeh70+Z7
+	zD2eyc/l/V9/jFzgvjT5x9dEJqZXOsnGt4SdN2yKFP6SUjwhxnaxYc6eAMsLRxe+ztvPp6PE
+	UpyRaKjFXFScCAABnFQRhgIAAA==
 
-On 25/09/2024 00:54, Pengfei Li wrote:
-> On Tue, Aug 06, 2024 at 11:39:18AM +0200, Krzysztof Kozlowski wrote:
->> On 06/08/2024 10:36, Pengfei Li wrote:
->>> Hi Krzysztof,
->>>
->>> If this patchset is ok, could you help merge it? Otherwise I won't be able to send subsequent patches.
->>
->> Sure, let me apply it to my clk tree. Oh wait...
->>
->> Best regards,
->> Krzysztof
->>
->>
-> Hi Krzysztof,
-> 
-> These patches are still not merged into linux-next, can you help with that? Then I'll be able to send the subsequent patches!
+A GPIO fan may be connected to Pollux fan header. The fan should
+activate at 60°C and stay active until critical SoC temperature is
+reached and the board shuts down.
 
-What do you need from me?
+Signed-off-by: Yannic Moog <y.moog@phytec.de>
+---
+ .../dts/freescale/imx8mp-phyboard-pollux-rdk.dts   | 36 ++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-Anyway, why are you pinging during merge window?
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
+index 50debe821c42..9b551a50533f 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
+@@ -9,6 +9,7 @@
+ #include <dt-bindings/phy/phy-imx8-pcie.h>
+ #include <dt-bindings/leds/leds-pca9532.h>
+ #include <dt-bindings/pwm/pwm.h>
++#include <dt-bindings/thermal/thermal.h>
+ #include "imx8mp-phycore-som.dtsi"
+ 
+ / {
+@@ -32,6 +33,16 @@ backlight_lvds: backlight {
+ 		pwms = <&pwm3 0 50000 0>;
+ 	};
+ 
++	fan0: fan {
++		compatible = "gpio-fan";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_fan>;
++		gpio-fan,speed-map = <0     0
++				      13000 1>;
++		gpios = <&gpio5 4 GPIO_ACTIVE_HIGH>;
++		#cooling-cells = <2>;
++	};
++
+ 	panel1_lvds: panel-lvds {
+ 		compatible = "edt,etml1010g3dra";
+ 		backlight = <&backlight_lvds>;
+@@ -111,6 +122,25 @@ reg_vcc_3v3_sw: regulator-vcc-3v3-sw {
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-max-microvolt = <3300000>;
+ 	};
++
++	thermal-zones {
++		soc-thermal {
++			trips {
++				active1: trip2 {
++					temperature = <60000>;
++					hysteresis = <2000>;
++					type = "active";
++				};
++			};
++
++			cooling-maps {
++				map1 {
++					trip = <&active1>;
++					cooling-device = <&fan0 1 THERMAL_NO_LIMIT>;
++				};
++			};
++		};
++	};
+ };
+ 
+ /* TPM */
+@@ -377,6 +407,12 @@ MX8MP_IOMUXC_SAI1_MCLK__GPIO4_IO20			0x10
+ 		>;
+ 	};
+ 
++	pinctrl_fan: fan0grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SPDIF_RX__GPIO5_IO04       0x16
++		>;
++	};
++
+ 	pinctrl_flexcan1: flexcan1grp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_SAI5_RXD2__CAN1_RX		0x154
+
+---
+base-commit: 79e1b8171ca476abb9b8eceef81cd1b6f58b75e9
+change-id: 20240920-wip-y-moog-phytec-de-phyboard-pollux-fan-0cd29d6d2b97
 
 Best regards,
-Krzysztof
+-- 
+Yannic Moog <y.moog@phytec.de>
 
