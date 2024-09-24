@@ -1,79 +1,78 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC2219F417;
-	Tue, 24 Sep 2024 11:50:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E9C1A7040;
+	Tue, 24 Sep 2024 13:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727178620; cv=none; b=jKSkQfb5AVzR8ke0LaxYW/pDlo+RUeu8wGYt3XPRiB/HJJRMf7sm3oOS5B4Ti1NewrNYoUVixDMddoaY6XLOrwYfeGWDrsC3pjtWffXSCsTNJjK1zoxNcvpyttrrOWURRWt/ynr6Rs1uQa2PSnSVxU+HZ2t4myiRZVGQimJcNjY=
+	t=1727183543; cv=none; b=bcMvrn34BnWLewOyUI8jyrhfkBNKeW/xN0Fu2rgljo3JnMp8G3ndJeYaB167fqVt8C4+M0PQtJkTnVrzHyM+fXsd0ZRHL43lviyzSud6rCbA12WrnEUvbQf1JcLZvUaJgwZnqCdLjY8TRuLdheKE358MviIJgAmxvBJ5Nz/bxEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727178620; c=relaxed/simple;
-	bh=sKGgcjMXqAOrfy3dc3fW6EZuhcrF2BE7ibEcA+Zd9r4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M2y17/ck2U0/rod1huPvfH+W/yI598rqxfJylfQbAc8G4MytqHvK1cTJZktYjuCcL2U9VkE5ZddPgQrCd9BItUjuiykwbweVW/EIcDJt+9bnjNFYNbcTaVFtbIMcOXzz0yGxM9/PMIeeigDTWoyn+WEo00Hsasr8qlH0MOsqxqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=tg/SgI+I; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1727183543; c=relaxed/simple;
+	bh=z1m4TZL5Mm0VylMjkh1Vw2oNwHroAVN/PG8TLGzmKww=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qryLOUuy759yvFwy2iIdjU5uEbJ+T2u93vhWgs5QZjaFhsnhszw2Z+KLlD8RwxtK/NVSe/IKbOjSw/TMRU3/Hw0kFZi3yGGuAea+2HpM9gnbLorwr3PHQcEnqoiXg3rls8gtmfRtasyFdXlj/NQ7n+v/ftfJakEjFeuvwsyW3VE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=vmjSPgmG; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="tg/SgI+I"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=TGgqC7BlQKpaoFE9lFpMvcM1xzGjol6wiHaVuiyG0pc=; b=tg
-	/SgI+IZN7nmrWgnYCK8liOxV5r/V5iXdDvXUh5knPc3F6BDUoQS5KnmfhWuNFSCTPlMDBWAqHwaSf
-	0OUQICgu/JLwbAgbXiPB8tigFL5RVZIaeiNdZsU4NuOwcLZzMsR18aOuqEEnR2n9fSGnFORikEduj
-	M7seFL4D3ELUfWU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1st43C-008CLh-C7; Tue, 24 Sep 2024 13:49:50 +0200
-Date: Tue, 24 Sep 2024 13:49:50 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, horms@kernel.org,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Ong Boon Leong <boon.leong.ong@intel.com>,
-	Wong Vee Khee <vee.khee.wong@intel.com>,
-	Chuah Kim Tatt <kim.tatt.chuah@intel.com>, netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-imx@nxp.com, Serge Semin <fancer.lancer@gmail.com>
-Subject: Re: [PATCH v3 net] net: stmmac: dwmac4: extend timeout for VLAN Tag
- register busy bit check
-Message-ID: <d1c3503f-2d0f-4479-b75c-43c6c9782a2d@lunn.ch>
-References: <20240923202602.506066-1-shenwei.wang@nxp.com>
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="vmjSPgmG"
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 2A5D488363;
+	Tue, 24 Sep 2024 15:12:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1727183534;
+	bh=DRU/cZ7ys2vNvnn5GxJewD+OdUTeyoFQ0VsBt7f/Egk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=vmjSPgmGRaFAnOrry+S9EpbnEpf7b+ZOCIPwTv/RFwc8cIt1rTFbuPlgtu7KAdx05
+	 eQXRI+Ln85yYO2bJULn2PIxKSpNDJr1QFK1yqFVVtpVCuBNrJHCu+7TOUtaSQuTokm
+	 zu1XdW9oy+iI5bYVKZZu4rpuChn9MIU/gQvaympYvjoz2JCcOESEEx34O1B8kzGhHk
+	 IH4Otwz12Jk6dhGtMLAWLSNHTWrkB0VbXEcYlLCewTur9TlRkfyZET2N+SP7ikIMy1
+	 ROoliO29kbKLl4naoBX7YHf+NtA2fdqB28lVNQ2t6isLe4cQRH5Wdpklg8FJytwf1y
+	 yhizP3oGT17zQ==
+Message-ID: <546c9dac-39ab-4abe-a495-ab54d6ee925d@denx.de>
+Date: Tue, 24 Sep 2024 12:47:12 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240923202602.506066-1-shenwei.wang@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] gpu: ipu-v3: vdic: Simplify ipu_vdi_setup()
+To: Philipp Zabel <p.zabel@pengutronix.de>, linux-media@vger.kernel.org
+Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
+ Fabio Estevam <festevam@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Helge Deller
+ <deller@gmx.de>, Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Steve Longerbeam <slongerbeam@gmail.com>, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev
+References: <20240724002044.112544-1-marex@denx.de>
+ <95efd6b6491069d04b4bfae6616d9a43ba8467a6.camel@pengutronix.de>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <95efd6b6491069d04b4bfae6616d9a43ba8467a6.camel@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On Mon, Sep 23, 2024 at 03:26:02PM -0500, Shenwei Wang wrote:
-> Increase the timeout for checking the busy bit of the VLAN Tag register
-> from 10µs to 500ms. This change is necessary to accommodate scenarios
-> where Energy Efficient Ethernet (EEE) is enabled.
+On 9/4/24 11:05 AM, Philipp Zabel wrote:
+> On Mi, 2024-07-24 at 02:19 +0200, Marek Vasut wrote:
+>> The 'code' parameter only ever selects between YUV 4:2:0 and 4:2:2
+>> subsampling, turn it into boolean to select exactly that and update
+>> related code accordingly.
+>>
+>> Signed-off-by: Marek Vasut <marex@denx.de>
 > 
-> Overnight testing revealed that when EEE is active, the busy bit can
-> remain set for up to approximately 300ms. The new 500ms timeout provides
-> a safety margin.
-> 
-> Fixes: ed64639bc1e0 ("net: stmmac: Add support for VLAN Rx filtering")
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+> I'd prefer this to be an enum ipu_chroma_subsampling or similar,
+> instead of a boolean. Otherwise,
 
-Since you are respinning
-
-Your Signed-off-by: should come last.
-
-	Andrew
+I'm afraid this introduces unnecessary back and forth conversions 
+between the boolean and either of the two enum ipu_chroma_subsampling 
+values in the code.
