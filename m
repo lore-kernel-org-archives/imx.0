@@ -1,95 +1,85 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F055149E13
-	for <imx@lists.linux.dev>; Tue, 24 Sep 2024 11:00:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFE3149E13
+	for <imx@lists.linux.dev>; Tue, 24 Sep 2024 11:07:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727175630; cv=none; b=Nk2FuvjUhugp3Do8vPSUyxsmNPbWV27BhvMhqpshu15NpEljjlO6pQixCFU6SJDq2KBd6tHrBN6hf0gMN527qo/WK18IFod05xFZBQXs0CPIpJzJfsc5fJ//qGx0p2UwlYdGUJJSXliJI+XkFNfrAkGTpmSkSRbf6nIUrZA8cSQ=
+	t=1727176055; cv=none; b=oejnt82pxhXdgE1tjPvdfybzDkmrAN5PJpogS0Lrg0w02O9RGgHd57ajeBUNCV+jrdfngoUyhEff8SHPDoPnCpzmkg7oo5ikR38ZQ2+JCB0njAmeGjokhXK1Yd6t0VMfhLOFSZ4k5JwXJATRszgu+APV3IoTE1ZGVzwO/1A7yYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727175630; c=relaxed/simple;
-	bh=GbmWYbVrXDqfcKXu40KvK679jdBRGxlxANqdEUUoGXw=;
+	s=arc-20240116; t=1727176055; c=relaxed/simple;
+	bh=vDlY6jpRSj+T7ZW8ZDZhyMjjU6W0gpKFuQ3eH2CfT9A=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QT4gFgkbNBIEyTQu5owIW8QgWqIsktP99G1KbkOYZXRefzJx6bBRCj3TJT39nCrod8J1nJGCI1WPJVe3sE+W0JD+7rdiCCBDn0/F1lkgyA7BmTyCjR1orhHkGTSaWrFcDR610FzZLqQ9NU7B756dQq/xYlzlbwkVTdoPRXK01bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XHiUR6jG; arc=none smtp.client-ip=209.85.218.48
+	 To:Cc:Content-Type; b=C12DAW73p8AcAd7K9nPQ2mBmKfAlS/+ZrnoJQqX6H0swKZ11m1Z9pXdqSWqxl/Vuil1Et8FihQMCByvb/U+LSaGuZIAvmO8NdhrNqUDATa5rZhQlfWYiReWNCfNLBNaswtURCRV46gizyebxjhPGkvDObGgh4SOE6tKs8qSUw5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TotJqFvq; arc=none smtp.client-ip=209.85.218.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XHiUR6jG"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a8a789c4fc5so196459066b.0
-        for <imx@lists.linux.dev>; Tue, 24 Sep 2024 04:00:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TotJqFvq"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a8a897bd4f1so808842866b.3
+        for <imx@lists.linux.dev>; Tue, 24 Sep 2024 04:07:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727175627; x=1727780427; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1727176052; x=1727780852; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GbmWYbVrXDqfcKXu40KvK679jdBRGxlxANqdEUUoGXw=;
-        b=XHiUR6jGdTHnnhT4hpnYRhdymu6w9w8+BbnT+YUz5AmIxT5le8ECKf4rFRSwiGw+Ly
-         66sn9o0rcSbcaShXF8lqTUmpN7DbrjFSLSXmCjnkqDbf0S/25wle4IgaTQHznXIbqjlO
-         +Hd5dXj9GZ+kcIm2oeZoYKGVCn6qPdm8uTh0T6mJkTeFuw92VNkZzu8z0r+Qx8CgXx2d
-         g/VfldagWDB1Fq2tUbm27vsG4Yu0k6aW0BeeEvH4ZdpQlhBYTujqQjMJhTLvA2heKEH8
-         6fXakdOwieUs5xX/blNeZDQa6ANwUGAthzBJtgfH8XUwV9vbo3w6dxO0s6PObqAU5++T
-         yYQQ==
+        bh=vDlY6jpRSj+T7ZW8ZDZhyMjjU6W0gpKFuQ3eH2CfT9A=;
+        b=TotJqFvqzFP6cFOaUgeP2tMHWAFDDenmLp7KiBeHRG5c+MBhggUkOdHYQHCjBqwly6
+         wkxBTrbXXCta/KyHqo3OK+qUUl4483zXZhUlbiVocf06nLuW8h1BAQEurO4ONasOwoLS
+         3ZMvBdf36zj5OS1C6oiA+0kaygOqEXM/fM0FAtrTskLJOTrHEwGD8uGpwTfOEb6+/qow
+         B3FLrDxcQZtTkGxfzP3UaTQZuaokKZDgBVX0UEUmuFwvgBpYLbk+kn0bC6JMPzel7R3T
+         8aw5almLlAE9N+N5/+UL9I/DPD1W2gNonOAdHgU1mANDwhcNQLK2bIiuhmjke/mkSGLz
+         qA1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727175627; x=1727780427;
+        d=1e100.net; s=20230601; t=1727176052; x=1727780852;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GbmWYbVrXDqfcKXu40KvK679jdBRGxlxANqdEUUoGXw=;
-        b=bpdLBSsWk03+WccvEKDWZqd7WyM1B+w0iaCL55MnYUHh5vqZn6086q12pVXmV3mBYy
-         cLv5/MfB8TeV8lePfC/kV02gsqWr49xP+JZX41Whf//0qhCL/sN25DSKebERT26JNnGz
-         rf0UEmfYHczcQDAAhSZT7x9sTINabogcnLrUnEu0fHbXLh5xfHQyrFJ7zcVvEpOQdjMb
-         QiuCoJqww2218+nyH8Z2q1t6ND9YjjRRfxhBWZoi5Dexn3oJ+nnsrJZOtnhxUZXiE+DJ
-         G4FrxbcGrg3SiwJzQIhp8Y/Ke78AYT46PDqtVKpN8w1nw7KogvmerI/D7t3ksL2iMG0p
-         R/qw==
-X-Forwarded-Encrypted: i=1; AJvYcCVSy4TtZZiztdPl5N7OLR+G7DvN5nx9hkw+bPDv15UIozJA8DgqWtbdzf8OFkna2ih4UAE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzeoYEa45PIlTZZyGw87mqpAKlC+2Qc64Rxmh+WAT+MrL7h46KV
-	KUpvZ40HpgoagoPmOD8Y8tszo5ibO6R2YtimTrCueBWdpDwOLDCz3Ano69XNEVyhdb2ya+UlTet
-	wmNhxlTcyuJGB8GiXGKpYCUT+XTc=
-X-Google-Smtp-Source: AGHT+IHuqCHZSGsKafDZKaGLwyJCG2HLKGG4gjq97V9usBaBNmiBz/4O+Luf8Md/RJg13H0HZ247pfcLB0mwwuTcf/I=
-X-Received: by 2002:a17:907:9447:b0:a90:c4a0:9b17 with SMTP id
- a640c23a62f3a-a92c4810ee5mr311312066b.9.1727175627157; Tue, 24 Sep 2024
- 04:00:27 -0700 (PDT)
+        bh=vDlY6jpRSj+T7ZW8ZDZhyMjjU6W0gpKFuQ3eH2CfT9A=;
+        b=DGeN30UwYzYu3SJJno7gyyurpE0afwdB6FPsFxGpYNOUf8EYcF88oc1dSzg/AtH0sg
+         4VmCoZRqsMBQB+VK1tS3tm6MKZjIAZ4DEqW6sKMEqYFWOKqg57RdbJIEhYwppIEK/fQv
+         J8UQQ7WY+kF7fa/HUf7ESY41zE3bM8G4/ANtiZT9/irqsEzid/3m/m89cvBdzBnrFJq8
+         /ivXnUWt6hutoHjA0v2Q9pEbiJBiDwkhXcLsee2124YbPSe/qKABZxJ/zdyupU1WRrdU
+         f8SXsVJc5jEkigVd7DtGlyqct4+z03PaMFrmkJZ4Sfdy9dghTwBFaY/IXHc7ld69Bq6D
+         I0EA==
+X-Forwarded-Encrypted: i=1; AJvYcCU1typJIESUSjSHEssWg7H9pdG33F8pY3PN9oiOvvJk01YAMnltGmu7jJAaejSDQqktDY4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzbVRkfcmuVDmBizm5WumvS95rgY/8Y3+o2BcLcjGXkuvF8K2s8
+	S5WhCsA0mKMW7sTmgwe1LKhrjzajDzfprg3nPPx1iYRNnhTEHN51IqC6j5dikRw/3mux46qzo5Y
+	mwvzzuCK9lHVhJsmhZeTrROCBdNg=
+X-Google-Smtp-Source: AGHT+IG3HdsRc7QM+IEwBYc/UDvbaTCxK9b+KAf5uClMdu8Xw/sPwq5oksTAoaulH/zR28+iDEGNfb6BD1GYhNSiPoQ=
+X-Received: by 2002:a17:906:99c5:b0:a88:b90a:ff30 with SMTP id
+ a640c23a62f3a-a90d50d6ee5mr1627389266b.50.1727176051720; Tue, 24 Sep 2024
+ 04:07:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240918182117.86221-1-laurentiumihalcea111@gmail.com>
- <20240918182117.86221-3-laurentiumihalcea111@gmail.com> <ZusjwTdf90J3BMH/@lizhi-Precision-Tower-5810>
-In-Reply-To: <ZusjwTdf90J3BMH/@lizhi-Precision-Tower-5810>
+References: <20240922174225.75948-1-laurentiumihalcea111@gmail.com> <20240922174225.75948-4-laurentiumihalcea111@gmail.com>
+In-Reply-To: <20240922174225.75948-4-laurentiumihalcea111@gmail.com>
 From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Tue, 24 Sep 2024 14:01:26 +0300
-Message-ID: <CAEnQRZAdKdZbOgqBJbpLbfjtpwPt8qvR-hJkduuuw9hrwd5Phg@mail.gmail.com>
-Subject: Re: [PATCH 2/5] arm64: dts: imx8qxp: configure dsp node for rproc usage
-To: Frank Li <Frank.li@nxp.com>
-Cc: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Daniel Baluta <daniel.baluta@nxp.com>, Shengjiu Wang <shengjiu.wang@nxp.com>, 
-	Iuliana Prodan <iuliana.prodan@nxp.com>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Tue, 24 Sep 2024 14:08:31 +0300
+Message-ID: <CAEnQRZAF3oDS8xas6+p2f--XduKvX+jc09=x52LFLf55EjC=Mg@mail.gmail.com>
+Subject: Re: [PATCH v5 3/3] arm64: dts: imx8ulp: add AVD-SIM node
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, Liu Ying <victor.liu@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 18, 2024 at 10:02=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
+On Sun, Sep 22, 2024 at 8:43=E2=80=AFPM Laurentiu Mihalcea
+<laurentiumihalcea111@gmail.com> wrote:
 >
-> On Wed, Sep 18, 2024 at 02:21:14PM -0400, Laurentiu Mihalcea wrote:
-> > From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> >
-> > Currently, the dsp node is configured for SOF usage, which
-> > is not the "default" case and should be done in a separate
-> > SOF DTS. As such, configure the dsp node for rproc usage,
-> > which is the "default" case.
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 >
-> why do you think SOF is not "default" case? where sof dts?
+> Add node for imx8ulp's AVD-SIM module. This also
+> includes its children.
+>
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-SOF DTS are yet to be upstreamed. We use the DSP for several usescases.
-
-1) General applications using the DSP using remoteproc/rpmsg interface.
-2) Sound Open Firmware.
-
-We would like to have 1) as a default this implies that Audio is done
-via default
-ALSA path.
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
