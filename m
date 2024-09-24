@@ -1,91 +1,91 @@
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CE41C3D
-	for <imx@lists.linux.dev>; Tue, 24 Sep 2024 11:18:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD011AC8AF
+	for <imx@lists.linux.dev>; Tue, 24 Sep 2024 11:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727176733; cv=none; b=ZLZNP5pE84zac70l7iQfoYpfEEC02tsVZxImpUJN2s9VAlmCF7T2slMLGGdLg1qxxjl08P2lNNHweDubKMTLdsB6Qj10yBg6lGYz3wzpOH3gdDZTFBcR/0H1RlLrnN3QAMx4bEAn3hPbmHgVtRq5ivPD7u7+4E1SxdbJS0Du4V0=
+	t=1727177469; cv=none; b=pAF3AjGt43PD13rFnbJlHHVjndgGMHkqKRWsMGlW8X9rdKCaUMumpCA3A/N/RMdx+tzx3HsdX43FrkTIeK1fRc2twtsquQGy7SU0HyprlIIJJU96Sx+WKairtsJ07OK8wx4ZB3jonDKei+NpuwAx5NEMBE6AGiqU7eGUz0DF84k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727176733; c=relaxed/simple;
-	bh=YBAqfCr1rPGxWzSzMR4p/L3+lR7/ASXO7LooTM0/hqA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m50LHyyS0BAAXoh9wAQB4kCrL9wPOKlkzn4HqBQEUSGQ8h8bmiQASwRWui2esl++IArgEgGuq0p1KSA1NQ/Q9eLJcWFdS1vH6YL6v7Gi2LwsmNP+5/8BtQws4SutA2yAFs9C0hoe2qMxY3QPd0HpnZFVyW9O8eAHNk1VvQGaVQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L6tnmTdh; arc=none smtp.client-ip=209.85.219.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727177469; c=relaxed/simple;
+	bh=kqCqFpN9v1FXTe8H78fB6N26x+fwYBvAdWQ5hsLRXio=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ASSnTSop3g1kH1Y9Qm6DlOLr8aa4ZWOnto/Bi4k9Wk6hvny8QSfZA7Blx7sWUzp/6mTHki3a8nE/4m+UkawyyM5etxap4dr9AQjYYCqAKev4KiNTVj/m1lAwqT1Oc6cg8D1waJsUqjVPj3FVi33yFhqmzPRzR0HKQYjBgUJaRxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=zCS3VJGy; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L6tnmTdh"
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e201f146cc8so4915916276.3
-        for <imx@lists.linux.dev>; Tue, 24 Sep 2024 04:18:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727176731; x=1727781531; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YBAqfCr1rPGxWzSzMR4p/L3+lR7/ASXO7LooTM0/hqA=;
-        b=L6tnmTdh1KQ2z9wqm8w+LQPbZID7hyFH1lzeL1G0XqZBEEZXKybGCpmxrb7Y3gz9HL
-         HZU9I+lCXhit7ubP3UAFZUxgsvgsTpfKgivebmax0ytyH1A0iftn5HCXKkLY6IRUHm66
-         csONZczVSND3ENagqizZEWJRL7YGv7joKEa1LkGeTRFz7LrK6dKRwR4vOD+qL1tzLU69
-         QMoDbcCZ2CR3579cWoSgKnoO8jAHb2K1nEV9MdTyBOnyDpezJaADxc4UKYpd90ykmfKG
-         5jJxq1Ys4/reNgZGf/rqRmEd3s0okh048iYZNWg+LPY9RHjevBMgCGGE5rBRMj8tZz/G
-         4zVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727176731; x=1727781531;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YBAqfCr1rPGxWzSzMR4p/L3+lR7/ASXO7LooTM0/hqA=;
-        b=BTRWejQTyZwIwGYe35yFU63QT6LzGSb01fqec7K5XaOzSLM+YlR+/hOYnHyDyyCdwT
-         T8qTpZJfxz/GLz68jtwqvHl775Rmm+YrItdg4WvBse2271jk1yIxedfGzKeIeGXwm+ZG
-         DSaWEOpwDGzLpMq6lbF7eMG8VLmuKUEgIlyfd2I/AOIYLeCiOB6H24VQqoTFxHPxUSUH
-         JYEMChR/Xt9TwIgB1VCW8Dc97ffFcmutVsJM1TpHNrmzhlwVxmq+5sQpqvj3mTGyt9Cx
-         9JB3p16J7GgIyLss2boxE2hMAEsDjOq1ZuG1xan9bRcNCYAXRBRvYF6z3/Q/0YWVZu9w
-         D61A==
-X-Forwarded-Encrypted: i=1; AJvYcCWd6gbOeqGkSVKurCcODfTifSsKqiAv/5+T/93bDGs0k2EisZwrqhsVoXeAGw8OEnmhtxA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwQJZglgjHs0HHc5zlVD9Rs7K9vqMlYvcYZ5ng7zTthwHEnoIfH
-	fxK+81AQ3e/3y5zGJeFNnTOWIwgKlP06beqb1CSBug9FRzVFTR/pv3H1v6JEW9/4AeR0TPUq8q6
-	adpjoGLby4V9FkEb6oAhVH8Kebf4=
-X-Google-Smtp-Source: AGHT+IHANp7+/BMwt988SLqyFK4IXfD9/zYPo0ZjUxhHBAeaZYv3Ys8UDFEPSo4JAjl/rljyKlox04YLEYQzEDwc4rk=
-X-Received: by 2002:a05:6902:2b91:b0:e1a:72e9:b243 with SMTP id
- 3f1490d57ef6-e2250c24a2cmr8718542276.9.1727176731047; Tue, 24 Sep 2024
- 04:18:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="zCS3VJGy"
+Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 4C7861FA9A;
+	Tue, 24 Sep 2024 13:30:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1727177458;
+	bh=X3I5T6N+k8mSALDhWBHQ9Qrvz6O/s/wkn4hZqV7Itoo=; h=From:To:Subject;
+	b=zCS3VJGyFfy7X4BGsCNd4Xr9M+LrXKbduGCMSfjH+Oxr51KR6VVx9CGmx3oUot74X
+	 RnnboGxF6a0ZfbyonF9ZQYN0jOgTfu+cvcyONG3tC4aImR94/dGcBbBzC4ni3b5zdV
+	 3rwA5lkXskrJE2US+Nj8ee3TqYYej8GwZXz8fS57qCIRch97tVIbDbhaGax/JNI4Gh
+	 0iUQBCMKKicy9ixmE08z1qiZxw8x8XV1tyfvFtRIEoN6vua/EROExU4xWcQDEHCtDF
+	 P7JZfV+o8ZPkWjhFuDiLgG4yUaVfG4vfzp0fz5kj3HvaJDqaPcNEConIDUvjimV8Fa
+	 +WqakWiD0IjFg==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: =?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: [PATCH v1 2/3] arm64: dts: freescale: imx8mm-verdin: add label to som adc node
+Date: Tue, 24 Sep 2024 13:30:47 +0200
+Message-Id: <20240924113048.125761-3-francesco@dolcini.it>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20240924113048.125761-1-francesco@dolcini.it>
+References: <20240924113048.125761-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240915114311.75496-1-laurentiu.mihalcea@nxp.com>
- <20240915114311.75496-3-laurentiu.mihalcea@nxp.com> <CAOMZO5DR7xaEGj9=mzzFPy6wB0z7-SmvXkMnFH-wSjs01hp=WQ@mail.gmail.com>
-In-Reply-To: <CAOMZO5DR7xaEGj9=mzzFPy6wB0z7-SmvXkMnFH-wSjs01hp=WQ@mail.gmail.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Tue, 24 Sep 2024 08:18:38 -0300
-Message-ID: <CAOMZO5Cacne=7ZYQ3eSdO2RRd+QuPurziFN+mS_KU7kucXHBQA@mail.gmail.com>
-Subject: Re: [PATCH v4 2/3] reset: add driver for imx8ulp SIM reset controller
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Liu Ying <victor.liu@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 24, 2024 at 8:16=E2=80=AFAM Fabio Estevam <festevam@gmail.com> =
-wrote:
+From: João Paulo Gonçalves <joao.goncalves@toradex.com>
 
-> Who is the original author?
->
-> In the NXP kernel, the author is Liu Ying.
->
-> If that's still the case the Author field should contain Liu Ying's name.
->
-> Please double-check.
+Add a label to ti-ads1015 node to make it easier to reference it
+from other nodes.
 
-Also, even if you are the author, there is still something wrong
-as reported by checkpatch:
+Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+---
+ arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-WARNING: From:/Signed-off-by: email address mismatch: 'From: Laurentiu
-Mihalcea <laurentiumihalcea111@gmail.com>' !=3D 'Signed-off-by:
-Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>'
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+index 5fa395914191..c20c2da17524 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+@@ -483,11 +483,12 @@ rtc_i2c: rtc@32 {
+ 		reg = <0x32>;
+ 	};
+ 
+-	adc@49 {
++	verdin_som_adc: adc@49 {
+ 		compatible = "ti,ads1015";
+ 		reg = <0x49>;
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
++		#io-channel-cells = <1>;
+ 
+ 		/* Verdin I2C_1 (ADC_4 - ADC_3) */
+ 		channel@0 {
+-- 
+2.39.5
+
