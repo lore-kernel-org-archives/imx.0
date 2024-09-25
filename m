@@ -1,57 +1,57 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A084B1A4B80
-	for <imx@lists.linux.dev>; Wed, 25 Sep 2024 23:21:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597D11A4E83
+	for <imx@lists.linux.dev>; Wed, 25 Sep 2024 23:21:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727306477; cv=none; b=AO2wOZjUgsHgvImYg9ePmmlDZKJ4FRpp1zYFHf1CLAjZsM/tHThg7RCdANQm+lnDdM2GITHlqRfJP/BGXmIFuNqNog3yoGSAYbKmSJzicgiIkF2/etu9kwZ8gXcT0xXnMUQ3+JUiFrxeDwsyyzIXk0C3sbCI0SGFgMAeLZ4aQPg=
+	t=1727306481; cv=none; b=GQU2P2OzR2Lxb/r2xHFkejdzttbWBmDgNlZi+Slch5ROmqdMABMMF+qsBVZVOsxQgXhevyZq7+TgT3faEwlziblUAePSuc5LBAcxvAowkansI2KH9Oqwu0evId1KHR4rECvxl1gWVej2I0tWVoWBm0HtUIw0qw+2iRSqy6CBaw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727306477; c=relaxed/simple;
-	bh=hNzNTRUO1xfArrtGz9hIBWhoLSA7T3wdnmriECFga0A=;
+	s=arc-20240116; t=1727306481; c=relaxed/simple;
+	bh=9MdjDmzaJSXdmEpYVFV1tpaG4DOpRWuJZAVX4CUD5lY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dCzQ+tkzRaRwxgcYuPlaUWpVeKX7mUFDh9AEKxDVUp9ET+XUP4axjZJoW1hPWFw3eVZ3EIsBe/uP2+6/Rg4wuQZjg4rDP2mrwFDwxSYezfW3w+5O+fHcPfrNLcSo+LyGhhlK2uC+Je/Vr9ScRuLLmXvEZfn7yRjc5pHhlSrCtvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MHJX4iXq; arc=none smtp.client-ip=209.85.208.53
+	 MIME-Version; b=pjXQhVxWmvY47j7g6TF2JGKxV18QziwHUhFVI+J+9cg/qdVZSMzqEYV6SaGQhCja90yg23KoulguLvHRAxMO5YGx/jyxmpcQcBYdwseAVXKbYZe4znjOLItAQr5HeJttlQ+YUwDJmCtaSoSkqRAoqY28fkf0JRfcdyLZl4SWZUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=In3goJUt; arc=none smtp.client-ip=209.85.208.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MHJX4iXq"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5c42e7adbddso360955a12.2
-        for <imx@lists.linux.dev>; Wed, 25 Sep 2024 16:21:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="In3goJUt"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5c718af3354so336157a12.0
+        for <imx@lists.linux.dev>; Wed, 25 Sep 2024 16:21:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727306474; x=1727911274; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1727306477; x=1727911277; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/BZ5x1JardeLzM/m5KAAa5mcr11Ogt+U3TCpeepywJI=;
-        b=MHJX4iXqGxwZ5MpEqDCI3ckgznpb4kCPcCmeaoc3W1yJ0mXah8fcPBS0E6QtBjkDQ9
-         LjB2Ig3mB+UnziVrzNEnUZPZUcU8X5aWy0/jgDDSoeXIoUh/9BWRDglNm4+MO6r7OzOJ
-         hiruGrs/2E48Ho5GP0hT8F8GHP3o2q6wwzKXxQYe0vARXH2TV8HEIJiy3X5zk7ZgVEAm
-         bRJH69R9bPqW9Hxdh8HPohdJ0MMehH0PWVrZ4SpuiwxwyQC/thUxlMGKeIEdKiznjeoj
-         waVRpjeXgBrdIDicki2Pi76gUm3apfNVZ7V8D/zp5lwz1ohFCIiwB74GqdAqJc3jUeqL
-         /TIQ==
+        bh=6Y0/b/12goaJOUtphQuMfAjI4BvBF9ykQVTYDGjgY+w=;
+        b=In3goJUtbHq+m5y4Wwd6LHvJ7gA6yZKpIKg5dMPbDqJdZUvA+pzcyJ3DDu4CgJCHkY
+         sZZPVyB7YsjZbXpR+z0OzYuX/9KRe7kJu9KeHvA0wCuVCJ0EzJPGzpx+s7zDvLg6gnhu
+         SwK1uw7k7BvCWwnTj5HN6SwgJiUp1lkzfNWWb3koYQOQVFcqs4vz2cWP+CfKMNwgKuOg
+         XqpdvCnIxCNat9Ajw/taoWB3f9GcSERnwaB9eIi8r0oFM3Auo4iF+LsSxMbPku6e6/pZ
+         zgKgwu4gd46+PZGhX89X5mYllcnKZXiw7r02C5CgL9u9EzaZMBS1WlTKCKb0uP9lYZfR
+         Msiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727306474; x=1727911274;
+        d=1e100.net; s=20230601; t=1727306477; x=1727911277;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/BZ5x1JardeLzM/m5KAAa5mcr11Ogt+U3TCpeepywJI=;
-        b=L/rrMjHgyoP5utHEMKJpTGO0T5Pvehi63hnU1pONP2WGelHZom/zscm3kgmKC1gavH
-         ak/DUymW693A4PqnsNzz/3WACqTJokOPwh2hHzK8dL+XgM1z3uS03M6wg1QTx5A5Iw1r
-         5+O5sx0buAI05OU4YI0Nvw2eHR6MtUIByvd4qd2BHJJcYE8qN0deg6y9hNRK+YdNKjvm
-         +tc7RXx5J5kiMc4NFCjgcZR/5nir7HIn+2NPRkWpnfUr+Uw60v90hk1iS8g0nqVjm1od
-         4X1ZorgqqNnG84NCXBJzZuTUP9V3wWZlP/x8MSyXlI7tQSQc+LL+DyF7cL0e1saB87bW
-         5GBw==
-X-Forwarded-Encrypted: i=1; AJvYcCU/yXLqVMu4cq0vJyzRKajdO9rtHwOb3PYNmBe5SxZMf7KJFyKBuwo1cWwyMT/TcDjHH4I=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxnlIDQKwXGwx0+F/78kioV1A7MW1PMivmW9zfWadchb0DGcdfz
-	JC2XJpxP1b9aPrtQQiyHztyHMRROzMlNAJU8DknwfxqLFocPbosK
-X-Google-Smtp-Source: AGHT+IFSfrNX5+ZdgLCD+cmSwZmmpfoMEsHjHpd/2Frq+M22Gl1QZHtrdQuR+01rVBpVHguU2B3qQw==
-X-Received: by 2002:a05:6402:51cd:b0:5c5:c2f4:c4e2 with SMTP id 4fb4d7f45d1cf-5c720764447mr2105166a12.36.1727306473734;
-        Wed, 25 Sep 2024 16:21:13 -0700 (PDT)
+        bh=6Y0/b/12goaJOUtphQuMfAjI4BvBF9ykQVTYDGjgY+w=;
+        b=lGvvID1p82wZVLazoq4+Ik9Y5K2/Zdjzxeb1yOk45M+9A+NE+G37SLXky9cOmVIxZf
+         cNq8i7Z0TQg8YuRdAk8VfGPPYn2SfI53lqbvbsDBEdiQAq5rPFOGLD2Z4b3feXq9gstK
+         TmHp+5ubIP7NpnQWaKezIbwlpFcrSGSP5/TvIbOJfKFZZcA+DEKsggeVfwzS4isd5IvV
+         GMSmLhH5ekLJcHos0xfBo7qKydOqqBg5x2FXBhPilcfY4GuwqPx5f5f2/Hilf9XETX0I
+         8+fZLg4mSWXhuIuMQ4agoedkywY85lPVLlKT1nJQKdfIIj1GI4lQ5+YIAAfVQmNUpBtM
+         +m8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVONt+hlH0fYkWUtN08+ETetnbEGM6UjyDk34E41gf9Lb5/DMiaCu1uujHHALy7CL/eli8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyOoW1BJuZNkutm3ZpPiXgD5qKqInaaeW9Bxtzmy7BCh92iogBB
+	9PkpuQhB7JPFUcQMRcO8N1TLwYDgaksfMTUoxToh/lvktBVujgwM
+X-Google-Smtp-Source: AGHT+IEMfbfQnQA9qcYuWORwKKxs2GMl24az24OZdgZIQPCbXrTDPL14Gi7TSLFD2svMh9oBJTgYAg==
+X-Received: by 2002:a05:6402:354a:b0:5c2:6311:8445 with SMTP id 4fb4d7f45d1cf-5c72060a8edmr3765685a12.2.1727306477046;
+        Wed, 25 Sep 2024 16:21:17 -0700 (PDT)
 Received: from playground.localdomain ([86.127.146.72])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c5cf48c315sm2481026a12.15.2024.09.25.16.21.11
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c5cf48c315sm2481026a12.15.2024.09.25.16.21.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Sep 2024 16:21:12 -0700 (PDT)
+        Wed, 25 Sep 2024 16:21:15 -0700 (PDT)
 From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -65,9 +65,9 @@ Cc: devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2 5/6] arm64: dts: imx8qm: add node for VPU dsp
-Date: Wed, 25 Sep 2024 19:20:07 -0400
-Message-Id: <20240925232008.205802-6-laurentiumihalcea111@gmail.com>
+Subject: [PATCH v2 6/6] arm64: dts: imx8qm: enable dsp node for rproc usage
+Date: Wed, 25 Sep 2024 19:20:08 -0400
+Message-Id: <20240925232008.205802-7-laurentiumihalcea111@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240925232008.205802-1-laurentiumihalcea111@gmail.com>
 References: <20240925232008.205802-1-laurentiumihalcea111@gmail.com>
@@ -81,51 +81,59 @@ Content-Transfer-Encoding: 8bit
 
 From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-Add DT node for i.MX8QM's DSP, which is found in the VPU subsystem.
+Set the status of the dsp node to "okay" and assign and add
+its reserved memory regions.
 
 Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 ---
- arch/arm64/boot/dts/freescale/imx8qm.dtsi | 27 +++++++++++++++++++++++
+ arch/arm64/boot/dts/freescale/imx8qm-mek.dts | 27 ++++++++++++++++++++
  1 file changed, 27 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8qm.dtsi b/arch/arm64/boot/dts/freescale/imx8qm.dtsi
-index f8b577ebdbef..ae0165a44dcd 100644
---- a/arch/arm64/boot/dts/freescale/imx8qm.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8qm.dtsi
-@@ -581,6 +581,33 @@ mipi_pll_div2_clk: clock-controller-mipi-div2-pll {
- 		clock-output-names = "mipi_pll_div2_clk";
+diff --git a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+index 62203eed6a6c..7ee69ce7b193 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
++++ b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+@@ -92,6 +92,27 @@ vdevbuffer: memory@90400000 {
+ 			reg = <0 0x90400000 0 0x100000>;
+ 			no-map;
+ 		};
++
++		dsp_reserved: dsp@92400000 {
++			reg = <0 0x92400000 0 0x1000000>;
++			no-map;
++		};
++
++		dsp_vdev0vring0: vdev0vring0@942f0000 {
++			reg = <0 0x942f0000 0 0x8000>;
++			no-map;
++		};
++
++		dsp_vdev0vring1: vdev0vring1@942f8000 {
++			reg = <0 0x942f8000 0 0x8000>;
++			no-map;
++		};
++
++		dsp_vdev0buffer: vdev0buffer@94300000 {
++			compatible = "shared-dma-pool";
++			reg = <0 0x94300000 0 0x100000>;
++			no-map;
++		};
  	};
  
-+	vpu_subsys_dsp: bus@55000000 {
-+		compatible = "simple-bus";
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges = <0x55000000 0x0 0x55000000 0x1000000>;
+ 	lvds_backlight0: backlight-lvds0 {
+@@ -640,6 +661,12 @@ &sai7 {
+ 	status = "okay";
+ };
+ 
++&vpu_dsp {
++	memory-region = <&dsp_vdev0buffer>, <&dsp_vdev0vring0>,
++			<&dsp_vdev0vring1>, <&dsp_reserved>;
++	status = "okay";
++};
 +
-+		vpu_dsp: dsp@556e8000 {
-+			compatible = "fsl,imx8qm-hifi4";
-+			reg = <0x556e8000 0x88000>;
-+			clocks = <&clk_dummy>,
-+				 <&clk_dummy>,
-+				 <&clk_dummy>;
-+			clock-names = "ipg", "ocram", "core";
-+			power-domains = <&pd IMX_SC_R_MU_13B>,
-+					<&pd IMX_SC_R_DSP>,
-+					<&pd IMX_SC_R_DSP_RAM>,
-+					<&pd IMX_SC_R_IRQSTR_DSP>,
-+					<&pd IMX_SC_R_MU_2A>;
-+			mbox-names = "tx", "rx", "rxdb";
-+			mboxes = <&lsio_mu13 0 0>,
-+				 <&lsio_mu13 1 0>,
-+				 <&lsio_mu13 3 0>;
-+			firmware-name = "imx/dsp/hifi4.bin";
-+			status = "disabled";
-+		};
-+	};
-+
- 	/* sorted in register address */
- 	#include "imx8-ss-cm41.dtsi"
- 	#include "imx8-ss-audio.dtsi"
+ &iomuxc {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_hog>;
 -- 
 2.34.1
 
