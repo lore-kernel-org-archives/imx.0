@@ -1,255 +1,134 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D427186E23
-	for <imx@lists.linux.dev>; Wed, 25 Sep 2024 15:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F7B134BD
+	for <imx@lists.linux.dev>; Wed, 25 Sep 2024 16:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727276865; cv=none; b=Jb4b2AlvXI2JGjLtqr2e22miPza9yD7bPBszsLO1+nfSlKJUqPchyKaToVT6HwJhj38CME40Z2aefwJypF1ax7C+m8LLCFb6YNHFN0EAAOEkMGrbBi2fIKRx4L550v03WLPUwzuSHm4QZiZTxPwlM9CHcdsMRtvEYOXpBTxT6JM=
+	t=1727280049; cv=none; b=SX6KmbtMKP17AbtFRb4CS1PGpfxx1Z372H+fvafEfZnal5FpKAPch9QqXe2JqADyOkneazuCaie/rFPmZ0+rnImXWLt4BlA4XS63bvBbxoTHa8jNU8k9IFU/lUW0kIlkIQmyd1RZAgOA/JgkgNdV0lkU/zzFuoHbuvYDJt7KvCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727276865; c=relaxed/simple;
-	bh=8GfBUdOg/QSvr9uhZROpCY6GPCwtP46GQFOUZHOoOrc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oAPoxQEXqZqed2jzGBNtd4/lBxfj5HOSgWzg+eT57GIkixyjt8pp9aauOFLF4uW9rmhKYif3uOEOUD9lrgjb2oMaB8wwkpH0A9YW8XQq9DJzNcugxFAFJooTmKZuO4HrpWyB5vZXXIQMrNfCrR5O/pVqzu9scf4YSWGKSMoeysI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1stTbx-0005WS-Gp; Wed, 25 Sep 2024 17:07:25 +0200
-Received: from [2a0a:edc0:0:900:1d::4e] (helo=lupine)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1stTbw-001Tgc-Qq; Wed, 25 Sep 2024 17:07:24 +0200
-Received: from pza by lupine with local (Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1stTbw-000MKv-2P;
-	Wed, 25 Sep 2024 17:07:24 +0200
-Message-ID: <f894eb3fd132a214ddbf2fa3ed405d065e629398.camel@pengutronix.de>
-Subject: Re: [PATCH v2 2/2] media: imx: vdic: Introduce mem2mem VDI
- deinterlacer driver
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Marek Vasut <marex@denx.de>, linux-media@vger.kernel.org
-Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>, Fabio
- Estevam <festevam@gmail.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Helge Deller <deller@gmx.de>, Mauro Carvalho
- Chehab <mchehab@kernel.org>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo
- <shawnguo@kernel.org>,  Steve Longerbeam <slongerbeam@gmail.com>,
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org, 
- linux-staging@lists.linux.dev
-Date: Wed, 25 Sep 2024 17:07:24 +0200
-In-Reply-To: <3e850259-9349-4215-947a-ce192fa95f14@denx.de>
-References: <20240724002044.112544-1-marex@denx.de>
-	 <20240724002044.112544-2-marex@denx.de>
-	 <a66a2eaf30e21ff7c87f140e97ed4639640121ba.camel@pengutronix.de>
-	 <3e850259-9349-4215-947a-ce192fa95f14@denx.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	s=arc-20240116; t=1727280049; c=relaxed/simple;
+	bh=S7be5KN6UGGOf23Jltm5kL5ASOA+5n5j6TpUb0Rh4r8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B/aK7VFSssCuaempgGIvZF30Q9x4PrrUQXH0nJ9BlNW3w/2FqoPkrP6EKmuSF8KueCfLfq9lEENZeKOmm73vzAN+o0s/LAF7fxm0ety6cwZvJX1P+VP72foSxrhuNZwcR3bv5JHNA5Hs3vWJ3GzpIji6muaI8Zc70hgiBRtIS60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=Hfvng506; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="Hfvng506"
+Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 09F0087E30;
+	Wed, 25 Sep 2024 18:00:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1727280045;
+	bh=WqvSyAtJdJLkJyg1eGohRVV8HBMvuaIpHViAOX2Hufw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Hfvng506APnt/IorzQSrKlFLcsd64/VsJJM3/jfX0X4g80/84RglqnGwzbIbymsCJ
+	 u2EVkWyKPGSqxobu64fK8kJkDU8DCKij9yYJevrCmmKZw3HnRqEhjygXMynQrLiIdt
+	 uOlwcDW8R7aFdLa5pMzyIJaKI48eL7YlqXdmNBu/rkxhClvh7+f2hfJHCiYnRocN1+
+	 GuusVY/PuqJsXJew40jhTa9oZMqqW6xXMhG0EzWfHvczTWSRbxfUPCiBxIb+R+DzRL
+	 CUjfQ12Yfn3gdK4WC/uATT8p1EDxNld9vDltruyK/b44xNXLvHEfGzhQuYRdasWa3p
+	 0DzHyyCZhOHRQ==
+From: Marek Vasut <marex@denx.de>
+To: linux-arm-kernel@lists.infradead.org
+Cc: kernel@dh-electronics.com,
+	Marek Vasut <marex@denx.de>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Saravana Kannan <saravanak@google.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] soc: imx8m: Probe the SoC driver late
+Date: Wed, 25 Sep 2024 18:00:11 +0200
+Message-ID: <20240925160026.84091-1-marex@denx.de>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-Hi,
+With driver_async_probe=* on kernel command line, the following trace is
+produced because on i.MX8M Plus hardware because the soc-imx8m.c driver
+calls of_clk_get_by_name() which returns -EPROBE_DEFER because the clock
+driver is not yet probed. This was not detected during regular testing
+without driver_async_probe.
 
-On Di, 2024-09-24 at 17:28 +0200, Marek Vasut wrote:
-> On 9/6/24 11:01 AM, Philipp Zabel wrote:
-[...]
-> > Instead of presenting two devices to userspace, it would be better to
-> > have a single video device that can distribute work to both IPUs.
->=20
-> Why do you think so ?
+Attempt to fix it by probing the SoC driver late, but I don't think that
+is the correct approach here.
 
-The scaler/colorspace converter supports frames larger than the
-1024x1024 hardware by splitting each frame into multiple tiles. It
-currently does so sequentially on a single IC. Speed could be improved
-by distributing the tiles to both ICs. This is not an option anymore if
-there are two video devices that are fixed to one IC each.
+"
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 1 at drivers/soc/imx/soc-imx8m.c:115 imx8mm_soc_revision+0xdc/0x180
+CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.11.0-next-20240924-00002-g2062bb554dea #603
+Hardware name: DH electronics i.MX8M Plus DHCOM Premium Developer Kit (3) (DT)
+pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : imx8mm_soc_revision+0xdc/0x180
+lr : imx8mm_soc_revision+0xd0/0x180
+sp : ffff8000821fbcc0
+x29: ffff8000821fbce0 x28: 0000000000000000 x27: ffff800081810120
+x26: ffff8000818a9970 x25: 0000000000000006 x24: 0000000000824311
+x23: ffff8000817f42c8 x22: ffff0000df8be210 x21: fffffffffffffdfb
+x20: ffff800082780000 x19: 0000000000000001 x18: ffffffffffffffff
+x17: ffff800081fff418 x16: ffff8000823e1000 x15: ffff0000c03b65e8
+x14: ffff0000c00051b0 x13: ffff800082790000 x12: 0000000000000801
+x11: ffff80008278ffff x10: ffff80008209d3a6 x9 : ffff80008062e95c
+x8 : ffff8000821fb9a0 x7 : 0000000000000000 x6 : 00000000000080e3
+x5 : ffff0000df8c03d8 x4 : 0000000000000000 x3 : 0000000000000000
+x2 : 0000000000000000 x1 : fffffffffffffdfb x0 : fffffffffffffdfb
+Call trace:
+ imx8mm_soc_revision+0xdc/0x180
+ imx8_soc_init+0xb0/0x1e0
+ do_one_initcall+0x94/0x1a8
+ kernel_init_freeable+0x240/0x2a8
+ kernel_init+0x28/0x140
+ ret_from_fork+0x10/0x20
+---[ end trace 0000000000000000 ]---
+SoC: i.MX8MP revision 1.1
+"
 
-The same would be possible for the deinterlacer, e.g. to support 720i
-frames split into two tiles each sent to one of the two VDICs.
+Signed-off-by: Marek Vasut <marex@denx.de>
+---
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Saravana Kannan <saravanak@google.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+---
+ drivers/soc/imx/soc-imx8m.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> I think it is better to keep the kernel code as simple as possible, i.e.=
-=20
-> provide the device node for each m2m device to userspace and handle the=
-=20
-> m2m device hardware interaction in the kernel driver, but let userspace=
-=20
-> take care of policy like job scheduling, access permissions assignment=
-=20
-> to each device (e.g. if different user accounts should have access to=20
-> different VDICs), or other such topics.
+diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
+index fe111bae38c8e..04d6ab1073b25 100644
+--- a/drivers/soc/imx/soc-imx8m.c
++++ b/drivers/soc/imx/soc-imx8m.c
+@@ -251,6 +251,6 @@ static int __init imx8_soc_init(void)
+ 	kfree(soc_dev_attr);
+ 	return ret;
+ }
+-device_initcall(imx8_soc_init);
++late_initcall(imx8_soc_init);
+ MODULE_DESCRIPTION("NXP i.MX8M SoC driver");
+ MODULE_LICENSE("GPL");
+-- 
+2.45.2
 
-I both agree and disagree with you at the same time.
-
-If the programming model were more similar to DRM, I'd agree in a
-heartbeat. If the kernel driver just had to do memory/fence handling
-and command submission (and parameter sanitization, because there is no
-MMU), and there was some userspace API on top, it would make sense to
-me to handle parameter calculation and job scheduling in a hardware
-specific userspace driver that can just open one device for each IPU.
-
-With the rigid V4L2 model though, where memory handling, parameter
-calculation, and job scheduling of tiles in a single frame all have to
-be hidden behind the V4L2 API, I don't think requiring userspace to
-combine multiple mem2mem video devices to work together on a single
-frame is feasible.
-
-Is limiting different users to the different deinterlacer hardware
-units a real usecase? I saw the two ICs, when used as mem2mem devices,
-as interchangeable resources.
-
-> > To be fair, we never implemented that for the CSC/scaler mem2mem device
-> > either.
->=20
-> I don't think that is actually a good idea. Instead, it would be better=
-=20
-> to have two scaler nodes in userspace.
-
-See above, that would make it impossible (or rather unreasonably
-complicated) to distribute work on a single frame to both IPUs.
-
-[...]
-> > > +	ipu_cpmem_set_buffer(priv->vdi_out_ch,  0, out_phys);
-> > > +	ipu_cpmem_set_buffer(priv->vdi_in_ch_p, 0, prev_phys + phys_offset)=
-;
-> > > +	ipu_cpmem_set_buffer(priv->vdi_in_ch,   0, curr_phys);
-> > > +	ipu_cpmem_set_buffer(priv->vdi_in_ch_n, 0, curr_phys + phys_offset)=
-;
-> >=20
-> > This always outputs at a frame rate of half the field rate, and only
-> > top fields are ever used as current field, and bottom fields as
-> > previous/next fields, right?
->=20
-> Yes, currently the driver extracts 1 frame from two consecutive incoming=
-=20
-> fields (previous Bottom, and current Top and Bottom):
->=20
-> (frame 1 and 3 below is omitted)
->=20
->      1  2  3  4
-> ...|T |T |T |T |...
-> ...| B| B| B| B|...
->       | ||  | ||
->       '-''  '-''
->        ||    ||
->        ||    \/
->        \/  Frame#4
->      Frame#2
->=20
-> As far as I understand it, this is how the current VDI implementation=20
-> behaves too, right ?
-
-Yes, that is a hardware limitation when using the direct CSI->VDIC
-direct path. As far as I understand, for each frame (two fields) the
-CSI only sends the first ("PREV") field directly to the VDIC, which
-therefor can only be run in full motion mode (use the filter to add in
-the missing lines).
-The second ("CUR") field is just ignored. It could be written to RAM
-via IDMAC output channel 13 (IPUV3_CHANNEL_VDI_MEM_RECENT), which can
-not be used by the VDIC in direct mode. So this is not implemented.
-
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/d=
-rivers/staging/media/imx/imx-media-vdic.c#n207
-
-That code is unused. The direct hardware path doesn't use
-IPUV3_CHANNEL_MEM_VDI_PREV/CUR/NEXT, but is has a similar effect, half
-of the incoming fields are dropped. The setup is vdic_setup_direct().
-
-> > I think it would be good to add a mode that doesn't drop the
-> >=20
-> > 	ipu_cpmem_set_buffer(priv->vdi_in_ch_p, 0, prev_phys);
-> > 	ipu_cpmem_set_buffer(priv->vdi_in_ch,   0, prev_phys + phys_offset);
-> > 	ipu_cpmem_set_buffer(priv->vdi_in_ch_n, 0, curr_phys);
-> >=20
-> > output frames, right from the start.
->=20
-> This would make the VDI act as a frame-rate doubler, which would spend a=
-=20
-> lot more memory bandwidth, which is limited on MX6, so I would also like=
-=20
-> to have a frame-drop mode (i.e. current behavior).
->
-> Can we make that behavior configurable ? Since this is a mem2mem device,=
-=20
-> we do not really have any notion of input and output frame-rate, so I=20
-> suspect this would need some VIDIOC_* ioctl ?
-
-That would be good. The situation I'd like to avoid is that this device
-becomes available without the full frame-rate mode, userspace then
-assumes this is a 1:1 frame converter device, and then we can't add the
-full frame-rate later without breaking userspace.
-
-> > If we don't start with that supported, I fear userspace will make
-> > assumptions and be surprised when a full rate mode is added later.
->=20
-> I'm afraid that since the current VDI already does retain input frame=20
-> rate instead of doubling it, the userspace already makes an assumption,=
-=20
-> so that ship has sailed.
-
-No, this is about the deinterlacer mem2mem device, which doesn't exist
-before this series.
-
-The CSI capture path already has configurable framedrops (in the CSI).
-
-> But I think we can make the frame doubling configurable ?
-
-That would be good. Specifically, there must be no guarantee that one
-input frame with two fields only produces one deinterlaced output
-frame, and userspace should somehow be able to understand this.
-
-This would be an argument against Nicolas' suggestion of including this
-in the csc/scaler device, which always must produce one output frame
-per input frame.
-
-[...]
-> > This maps to VDI_C_MOT_SEL_FULL aka VDI_MOT_SEL=3D2, which is documente=
-d
-> > as "full motion, only vertical filter is used". Doesn't this completely
-> > ignore the previous/next fields and only use the output of the di_vfilt
-> > four tap vertical filter block to fill in missing lines from the
-> > surrounding pixels (above and below) of the current field?
->=20
-> Is there a suitable knob for this or shall I introduce a device specific=
-=20
-> one, like the vdic_ctrl_motion_menu for the current VDIC direct driver ?
->=20
-> If we introduce such a knob, then it is all the more reason to provide=
-=20
-> one device node per one VDIC hardware instance, since each can be=20
-> configured for different motion settings.
-
-As far as I know, there is no such control yet. I don't think this
-should be per-device, but per-stream (or even per-frame).
-
-> > I think this should at least be configurable, and probably default to
-> > MED_MOTION.
->=20
-> I think to be compatible with the current VDI behavior and to reduce=20
-> memory bandwidth usage, let's default to the HIGH/full mode. That one=20
-> produces reasonably good results without spending too much memory=20
-> bandwidth which is constrained already on the MX6, and if the user needs=
-=20
-> better image quality, they can configure another mode using the V4L2=20
-> control.
-
-I'd rather not default to the setting that throws away half of the
-input data. Not using frame doubling by default is sensible, but now
-that using all three input fields to calculate the output frame is
-possible, why not make that the default.
-
-regards
-Philipp
