@@ -1,80 +1,76 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012005.outbound.protection.outlook.com [52.101.66.5])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011033.outbound.protection.outlook.com [52.101.65.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05702381AD
-	for <imx@lists.linux.dev>; Wed, 25 Sep 2024 16:24:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71971AACB
+	for <imx@lists.linux.dev>; Wed, 25 Sep 2024 16:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.33
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727281487; cv=fail; b=iPHoiVtESUmXEE45jaA/eRWln1ZvGHxVrYEzsmWEQkZtIYrZZy2zA1yOng+8k1t+SMs5qoubMntpobR0UcVHm3CNQCOrmYLUolP7nwptLCtYoEgngCK5PerVRP20HBEFT1gKSIrQoHKaaFFadehjds3YGfUUUBJdvTVT6cSprUw=
+	t=1727281852; cv=fail; b=Mc5bnIEkHaXbSdAhYhWFmvKezv6JiuTvcEWpOXvYYSW+PPurLSp8qn+FwTozVMfkz4dt/rg/7fB2/2vXCn5HToQ8fp98mxrx9lZfCexuLi7gjR862ARUPXALoQSgrxKxtrUsprt9Lf8qFN0NwZtVmKSZaTpNl5V6QcdjyPnTLiM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727281487; c=relaxed/simple;
-	bh=dVq4tlwcZxz3jlJuhTHCLp+4DkiDy2KflnIkt2boXPc=;
+	s=arc-20240116; t=1727281852; c=relaxed/simple;
+	bh=onea6KPlM1mMGDy5hN33JepbS749PVTbVUhFyPK6AQM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=gaPenO9HLw3TRBtHKMHuN+4nGOLc1F0+4pB2DD9PM6M1k5iPmHgRByGePHm/WtWCGWxxHbKVLwAuN+Vm9Me1yXyBAytGCDb7arUOFC2aji/JGELR7vCEtZDIbseuknIuS2sVk6ZjI9WwMCNSnwV2n+ikQXEd1sRR+rme9xnbdgk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=HCNGIVo8; arc=fail smtp.client-ip=52.101.66.5
+	 Content-Disposition:In-Reply-To:MIME-Version; b=QtsbBQ241QTGiqa55mKoXGQ//oDYFI+n2bifuEJB26bDyhGEvAPko6RkKg5FKgcpQHZIjzrg8qcw5/uWQ+ZSDkhZhO8BCbzYoAjUwnStFVzgpm9+2qgc3oGnxxxGjW9QfGAkgpbx2aR9HkaJJllMfdAWE2lxmuyA7djIzEUDNso=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=djncxuZH; arc=fail smtp.client-ip=52.101.65.33
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="HCNGIVo8"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="djncxuZH"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SCz0Ht88VgC9MUAGHNyHARGX24xggAJKQwasD/vhiuD9G5QqNJTEjEVgMuXgSwo/HOz6hdr6CwVQMXrrtIgNGhqFZUMKwqcTBZ//EU5VFvkRJbnLkrvtBJPvkPV7RwR/JsAdXYsHV27GrRFTBadtCkv5K2WvBuf+MkGAert+rBHEbWuE+lpHVh0p6lMEQMfOMTwoeLZlrIJe1CF4i7j6FEFMkzLVrTn4VrPynntf3pDofom5LoSt5Ze+zXc923Xrr766dtc7PdL0+Y0O7lRuYTkJZjXrLe9FW/iEOgS9r54DXik6OBnh41Q9OqVMT4xsKIHaW+SQq6/rQHi/7nk2og==
+ b=D3hRC9no3h6zB9iOPxiLZq8QI8Q7eyIYTTZ+149KhpJn4K0VCmg5wZY9ZcsHCVf2O0qV/ybaewnWbJBnY2v/4bwQB1UTQNkGrSXhLsHAmqOaDyKCZV1HWrY9eSNAtSjsjPBA3Oh874F677c3ifZHAx+z5Mho7OGlMfJOvTVt9INQQH2JPMYf/0oM/eh2kNgwwt+Totu2La+yscUNORJ9KcoYbpnXkGb4s+AL+u1hH2lhwg8KaKsSc9CaXiVv2kinn7tfBApQPWUtRnyyesvBvvtNqi/t2bJrm1hW/63oASOu+iXbifds0d5yUoTcC8cMQKYQwUOLbnvZTaasQVZdNA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HgmDOI4PgVKHfR3t3IUFS9VOU8uZrgj93rzND9VlwfE=;
- b=WrXdvdSys7d2QFcJiMCktK8aKchB/JSiS711qlisRI0nFshb0r5KSCw+ANBY1ryRBr3ldNVrzHkIfnbaAY1KaasR4v2a9zI0l2co2Da3BRqh/umN8ENG8PnkzRHwMQ3zvxRFAZ9lgLYe4rAGEeeHWJ6mIl6Hw3Gye2VikoUZNjrMBHqde+Xp8zyLTN0v146T0Hug6Gq59Mzq7F1lrMNGZdQpV5VohlaI3Y7zQzwYXm16Pt7R28KkzBXDojULAH5s/GQ5glEqcL8YaJCMKWrlCzwYayYMrE2YTPCTzGCZCQR03kUJK0UlvlR3m4U+A/6gpcLXeUvnOH7crvFiVccYkA==
+ bh=aNCWJoA4uie2U4wWOsA+ia01onjNHQh06sTSl1uAAG0=;
+ b=dAy+Wig5A6LW2ALmZdep3yqK+zOXEMr9uTg62HGogvfcXTWt5795BXN7HVVgUV9Py3lAhSfbe+YLvUQ4IxOMYLMtsA3KfRZzCPdzc35l8F3r5fQyCSWH9hZ0k5cBYCW9kfsw+7+v1lbDRkSNwpz4M2qHE5nBoVgv8s5PRKs2VriPZckKP9r7L+QXE/SFyk2jBmNYMWdDE/c86CVnxRh96a/DICdqYexMA3UIMFZvNSMHbxDuK9yQDWVFtW64Ypy42jAxruQHAaOCGf8GFbGOcHdrrozQpy/dT0rftF6SKveWU9Oj4o/SrRa9EZIzgT3lMR97H5rpt/TSiGpzjiiGrA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HgmDOI4PgVKHfR3t3IUFS9VOU8uZrgj93rzND9VlwfE=;
- b=HCNGIVo8grZyX3UXSV05+/6vJjYDbIGzWQIgSJtRPBPs7HF3lE7yEiDCsrouunzBYcDJQvoF/2SEg905iIaFpXwL7VC4F7KgLAiXLNScqvb9FC+AROMh5wlbpoe8mp9nxW+otJqIo1+ZGkYE2m0Yxg5qkrwT9kVSmaCV0Fb5TxUM/QcMyezrOIdbzeAjL2QrvtuKKoQ+RBlPLwH5mEtYI+bIjZcWRYdXbiW3k4W2u7PvpOy9H52Q13hx7/mBs1W9KaiEbszGWLL97e13UyXG8OAQlY9oWPJiQOZTbifuYS88QApVdmARDnneIc8uykkPF+IL1+VnG/aoOwbAKdFK/A==
+ bh=aNCWJoA4uie2U4wWOsA+ia01onjNHQh06sTSl1uAAG0=;
+ b=djncxuZH3pvaz/bgfYAT6U6z0LZwPWixM9Lbqml9mgssMky9IlbpuHGCU9uZmdKNnxgRnhKxMos6870uB+f7TgduBoKgYzTq/Sl6QyFUVVcC+W2mPI4Aq6SDgG8QtxRaiBor37FY0aDfIQzx8esOaHjeVj1q1UEwmvmt0XBBtjp11FaEKyEvpoct0A3NVFcUnjXjtkvcPxf56dRz7+laIOKI4PVdSW2ZqM0LrRsztUQWBiDVBJlpYHRQBsZrt5Ex1s2+fTNkDBvIAePgZ20W9hYoMNa3ap6KHHenXtPsqZ7AFN0JLr67X5belDt58fmitzsyRqi1o1tT53JvuibG+A==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PA1PR04MB10866.eurprd04.prod.outlook.com (2603:10a6:102:488::12) with
+ by AS1PR04MB9432.eurprd04.prod.outlook.com (2603:10a6:20b:4d8::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.25; Wed, 25 Sep
- 2024 16:24:38 +0000
+ 2024 16:30:42 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.7982.022; Wed, 25 Sep 2024
- 16:24:37 +0000
-Date: Wed, 25 Sep 2024 12:24:27 -0400
+ 16:30:42 +0000
+Date: Wed, 25 Sep 2024 12:30:33 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Michal =?utf-8?B?Vm9rw6HEjQ==?= <michal.vokac@ysoft.com>
-Cc: Marco Felsch <m.felsch@pengutronix.de>, Rob Herring <robh@kernel.org>,
+To: Marek Vasut <marex@denx.de>
+Cc: linux-arm-kernel@lists.infradead.org, kernel@dh-electronics.com,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Fabio Estevam <festevam@gmail.com>,
-	Michael Walle <mwalle@kernel.org>, devicetree@vger.kernel.org,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Mathieu Othacehe <m.othacehe@gmail.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	linux-kernel@vger.kernel.org,
+	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
 	Hiago De Franco <hiago.franco@toradex.com>,
-	Herburger <gregor.herburger@ew.tq-group.com>,
-	Petr Benes <petr.benes@ysoft.com>, linux-usb@vger.kernel.org,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
 	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, imx@lists.linux.dev,
-	Shawn Guo <shawnguo@kernel.org>,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v4 2/2] arm64: dts: imx: Add imx8mp-iota2-lumpy board
-Message-ID: <ZvQ5O553E0QFvced@lizhi-Precision-Tower-5810>
-References: <20240924103941.1729061-1-michal.vokac@ysoft.com>
- <20240924103941.1729061-3-michal.vokac@ysoft.com>
- <ZvLXenqG/++AR4We@lizhi-Precision-Tower-5810>
- <20240924173714.qxxkhn6wscze7q5n@pengutronix.de>
- <87980643-44b4-4df9-9eb7-1583b5074bdd@ysoft.com>
-Content-Type: text/plain; charset=utf-8
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Mathieu Othacehe <m.othacehe@gmail.com>,
+	Max Merchel <Max.Merchel@ew.tq-group.com>,
+	Michael Walle <mwalle@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH 2/2] arm64: dts: imx8mp: Add DH i.MX8MP DHCOM SoM on
+ DRC02 carrier board
+Message-ID: <ZvQ6qWMAEZaR/5pl@lizhi-Precision-Tower-5810>
+References: <20240925001628.669604-1-marex@denx.de>
+ <20240925001628.669604-2-marex@denx.de>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87980643-44b4-4df9-9eb7-1583b5074bdd@ysoft.com>
-X-ClientProxiedBy: BYAPR03CA0018.namprd03.prod.outlook.com
- (2603:10b6:a02:a8::31) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <20240925001628.669604-2-marex@denx.de>
+X-ClientProxiedBy: BY3PR05CA0006.namprd05.prod.outlook.com
+ (2603:10b6:a03:254::11) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -83,311 +79,396 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA1PR04MB10866:EE_
-X-MS-Office365-Filtering-Correlation-Id: 504cb938-fb26-42a4-d139-08dcdd7e8cc2
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS1PR04MB9432:EE_
+X-MS-Office365-Filtering-Correlation-Id: ac822f57-a4ca-47da-1957-08dcdd7f65f2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|52116014|376014|1800799024|38350700014;
+	BCL:0;ARA:13230040|7416014|52116014|1800799024|376014|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Ty9GMERwRmduaDYxNXVISzNneHc3OGpmWW12NUF0bDl5c21HWkhQZXNTQU1h?=
- =?utf-8?B?Ly9vSW8yTXVocURUMFpPRk1Icm5jUng3aFRHRjBJQTVUMFlPdWdDNHY1dDhp?=
- =?utf-8?B?THhkTzAreXkySTNxUWJCbCs1QXY0eHJ2enBuUVE3aWlhY2N3eHdJMyt1UHV5?=
- =?utf-8?B?REdGeUMzRUdmREw4ZHlJQ2VUQW5HZGVPencrSDNsR1djTk10VExHOGNHNitP?=
- =?utf-8?B?elp0d0haOThkSVJXVU5EU1Y4cnZpdEcyK1FwQUVFdDVBeUxWcVZmMVhUN0di?=
- =?utf-8?B?YW8wYlFJemFCMXU1Mm9YT21kOUZSRHBPR2hBb3ZqbmNUbmUvcHlJWlJqWnNF?=
- =?utf-8?B?U1VrRFlKdFdaQkNEMUpzTHdKc2phT0R2alFIR3Rja0p6N01YbFBGTDdiUEEy?=
- =?utf-8?B?UC9zcmJPQ2VDdm9UWWl6ZjJ1b0Z2VGZjNHBxU3hwV3laK21uSURmV1JLM1JU?=
- =?utf-8?B?a2hFZXQ2RjhxMGVYTE92YjZONkhYT21LUjNIMUw1Qkhvb2d5RUFmOEhaWTdx?=
- =?utf-8?B?Nkd2Wlo2ek84ODdjcGF6VVBMSVpCTVhVSlUyVjA5a3FwQWVld2hXVzVKOGZX?=
- =?utf-8?B?SGhEdlJVZ3h6d0FJL1RBSHJsMzVleEU1ZU8weG1XakJScHJHWElKZUdMY0Qz?=
- =?utf-8?B?YWlsRzl0eGk5dVllWHlqLzU5WkVnMExKTTVSUDhENlJuWExIYzRkVDV5TmYz?=
- =?utf-8?B?OUpjRWIyOThxdk5Ha1lWdzg4NVhBM0FJQW15bFFJUHFiRVh4S0FXRFcvQUty?=
- =?utf-8?B?ZUhvWmdkcWlPSnNKTE9ibTF3eld2T2hGMVJkc09nUTVTN0hsUUJtMFQ3VTJJ?=
- =?utf-8?B?bjRHaUZhMkcxOXNEa1Y1MGltQzc1bGw2Z3YzK1k2RmN3eVc4d0g2R096WmF1?=
- =?utf-8?B?QkJrMmpoMnJNV0NDYUdUQUMwc2RmaEFqd2FNRDdiMGJsSnJMVDgrUTB4b3Fp?=
- =?utf-8?B?Q2pDTzV0eUJxc01mOGJPVFk4SFF1angranJTUE9wTTk4akRMYW1xdy9Nck44?=
- =?utf-8?B?K2RnV0VSa0ZGcWEwTWQ4c3U2MHZTenRLZFBGVTRMWENZMnhlUzZpc2NBMjZq?=
- =?utf-8?B?cTloVHZ5UmZ2NkRqWEIwSk1ydi9oUWdRbmJReWFBVytkSG1qZkN6MEN6dFVX?=
- =?utf-8?B?QW9WZkRkVVZPL044dk14TGowNWt1Y2laOHk3UlAxZHdURDZ6Z0pURnpDREVT?=
- =?utf-8?B?N3JlK0VGUXhwSy9KZFdoUWtJbm03T2NBZDdyaW80eFd4cW5sWWNobU5Ia3Jq?=
- =?utf-8?B?V2tRbXR5T2F1bmpiYXpWVWZabzdqQ3g3UmQ3ZjhucEU4aE9NM0NEeUhmcVpa?=
- =?utf-8?B?cHJzZTlkd01kNDNpeG43aUw5dVJKZkNRVzBuNUVaczE1dEhBNm45NDY3QUlJ?=
- =?utf-8?B?SzFMZkVPdnhaeFZmQStXZWtkSjJQSGJ6MHdjNXA1Slc3d1hnSHlGMGJzY0dy?=
- =?utf-8?B?REJCb28vRkFwVFNXdEo2U2wzZ2NHTG4zYUYwUUkvWUF0eG5jZEpzbTB2YTFO?=
- =?utf-8?B?Z09QNjhXaDdoZXdkSUszdUdUT3F3WUgyN0pldFJGWEtHSXhDdUdkTjNvTzdw?=
- =?utf-8?B?TjAyck0wMzFyUkFid0xCOW9sMmlHam5XcmQyTmlVYTFZOTBPRDdlUlMwUkhh?=
- =?utf-8?B?WEE1MEt4UGJLc0xleTdQeWhVZHVDZ1AzVUYzREUyOHpEbkplaCtNMHRQdWJZ?=
- =?utf-8?B?VXhKVnlveFQ2NkNYTEJ2cjcyWkE3cWRXNU42bWl0WEhTVDRMNVBjc01abTg3?=
- =?utf-8?B?NWxIZ3JvSUI2U1NzTVJDa1RIbVEyR1AySW4xUFovQnlub0wrZWJOeW5SelVN?=
- =?utf-8?B?M2sxckVVY05xWDVwbFBtUT09?=
+	=?us-ascii?Q?zr52AwZFUl5E/ldI6JvXOuPH5guYabOZJVF8murdk7m3i62M58d4RVja9ibb?=
+ =?us-ascii?Q?RqUcQ1htzQwY8hHxF+JO7F/NYvmHwX4Zxz5pS33bbAY4H8Mn/DQNhlJq6yTu?=
+ =?us-ascii?Q?5p1VVxKsQoTbGn3maoKZDbLgHaclwzhwHKjSMfv/vQu0s3GqjT15jzTte2kw?=
+ =?us-ascii?Q?4LsLBVVklwX0XHZH/R6iEGEE/xMNTPPAGz2C+Hui1UyjiWSpGVQkOYbt2PCX?=
+ =?us-ascii?Q?V7xqKD9ytUVQ+DA6t/sMq99SEvKy5asNF1xMe9IbgzEDSMsWHBYCDxFon3z7?=
+ =?us-ascii?Q?MBSIJgYPpehDlYRIbqGtRFA9b+dC3LRGSC24J1LGNjZphqZ0hP0mIz6/BMsv?=
+ =?us-ascii?Q?jeOVJx7Bit91dQL0D86LzAVaD1TJBlqHtZ6unjgFjzpszfkPGqcLVjvCDaQ7?=
+ =?us-ascii?Q?vZfhh2p+tAKPuLS+A/uFvNxFl+x+ELhm70hs9nWH9gdoKrEHYUaFu45lgcjI?=
+ =?us-ascii?Q?bGvuxwX/CkkukeIiEbwmf/gwntv150iSdp8uV+tQ2ZG0TYn6QVGyi+77oK9N?=
+ =?us-ascii?Q?oaXe1s2mG3hTrPDTpIPB8lI56ja/82aIRLCmLPsNDAc9yy9V7q/lkqb47kmw?=
+ =?us-ascii?Q?7WiYDG/UNatslslU24ab8QLrmu79aNlbR/hP6EZVLbHUQdc1Rn0M7vcIu+F/?=
+ =?us-ascii?Q?3FrT+O5e7pbn9PUaN+S2MdKxBcOA+aCg0eQsyfXA6b+EVCm590XFLqqruwjs?=
+ =?us-ascii?Q?xuti6wpsWkk130XzJksg/E3hNk7OxFtaSdCJ6WGRjgKDuW58HR+Tk9SbiOz3?=
+ =?us-ascii?Q?5EObRkp6QAUoDz18/dv95xniF710BJGZCtgyGpfeLmhIkRA/P/9gUR7My1IS?=
+ =?us-ascii?Q?AOOiSllJLwGPg8jKnDYB3wP+DQbfQNgO/iPnsFN+AbT7NsjFZySAU7xPAz46?=
+ =?us-ascii?Q?9SHJIFUILld1PBTl99NVnjmylWn4VC/kFmfOPZt6MDXcHThzl0xb1dKgO5we?=
+ =?us-ascii?Q?EdoFFdUdym0X0c1kkDU+5PGQez+/zo3IpJymDWL8TXu1K2caHNF1TnrPapPx?=
+ =?us-ascii?Q?lmzsTWai/nmFiFjLUjLcBho6r7Dwpot23KYGtMVipooOro5PpNlo3ii0oQTE?=
+ =?us-ascii?Q?YbwTsGeYMooQeMEaR9xLMUVZ7AZVO3N0O2O2JKKg4u1RB/tegmL9hzgk5yZl?=
+ =?us-ascii?Q?nTi7WxTq9BZAKo+qsRLJi6o2WwyKj4GYaWEBMTsk7FrJfNNI0dxtp2dh/Kgo?=
+ =?us-ascii?Q?ahLS+lUNH3TPHIf2PLUUJehYj0FG09OiYpc/TfjhOEL6OYYIRxhAGXZbV7tG?=
+ =?us-ascii?Q?heL3QHsAZflXeOD/LLUWGE7Hj3neJKzEQ6kGzaD7RaRxvLcF96QisV6v4bKj?=
+ =?us-ascii?Q?pSJiHvM0MAayjF2swt3cB7wucVgNDeUBaBt2TukP4gww3Q=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(52116014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(1800799024)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?R1lmN1pwMVJiM2l4VXR0czJzSGRkOE1NSVJpekFBWThnclkyRGpPbFh2cjRZ?=
- =?utf-8?B?WmVxclEvU2VuTDFTTkF0YytYT3hjT3ZDdXAvUHZaZ3dHQ3lBYUFra1AyZlQw?=
- =?utf-8?B?ei9HSlA0T3ozL2F5NW9MT2wyZUN2QUVjeXhwU0tUaG5iOFlTYkhjcFJhYnRC?=
- =?utf-8?B?QmJUaHQxRlB6TkdGM0pzTVkwckVNWTI2dElsTWRWWWxGdnRLUVV2WCs5dU5E?=
- =?utf-8?B?M3A3Z28wUGJCOGpSaUM2T0lxMHhPMkljMGM0NnVYV1lCM0VBZ0EvdFlxRjR5?=
- =?utf-8?B?R0tiQkE5TXlEMmFiRXNzd0k0TGd0U2lOYi94VVA3Smcwb2J6SzYzc2NNZW82?=
- =?utf-8?B?c2dvakFIQVdCN09VZnFjaUJ5Ukc3R28ySG1Hck5aRlM0eVJMYnJreHkvaGdo?=
- =?utf-8?B?dUVzWkF0ZldxMmlDd1UwaU9yQyswTlloWkJGUkE3VFY2eFRVMnljRlFVT2NZ?=
- =?utf-8?B?YTJ2RWVldS84WllTRG9JWTd1R29xdENNYUtJSXhKUi9XV1J5Vit5Rm5ESW1r?=
- =?utf-8?B?RDFlRHY1TEdJSVJnOGd2ZHhRS1NzOHVtKy9hYldrcEsySElTdmZVVXIxOEpT?=
- =?utf-8?B?bnNvYSszRFlrRXEwKzVEeXR0anJCRWRFRXQ3Z05EVU9nWlhkN3RoVm9JaGda?=
- =?utf-8?B?QW1KMTQ3OC9WQXpVRUowM05EcDNmd09OUlB0Y3d6Rzh0UGtkVURGOCtoWkIy?=
- =?utf-8?B?aURERUVkd3FVbDJiaDd1dTkveXVENmEvdkptZzJTQ3lYMkhQU1A3ZkJiWWw3?=
- =?utf-8?B?TXJTdlhOZVFsVUVGekg2YzcyT2FvVWtqME5mSDFxODY1NERnUDA5dVpBWExR?=
- =?utf-8?B?azMwRzEzL3hIdHYyRFlldHh6Y0J4UjBJTjEvWU9KRml1aGlTUXRYdU9vZ01j?=
- =?utf-8?B?cFIxaEg1L055TzdINTNScVlmT0dYaGRWWXcyZjJMZUp2NzdEcmREa0lZL3NF?=
- =?utf-8?B?K285REVocTJ0Ty9wU1hHWEE2Z0lndmVFcVFaRDFtZVNqYU5SbFVPTUNUWC8w?=
- =?utf-8?B?QkxKck1jU2grUHp3d3JpbW0zZlVTMzFhWWV4YWE5b2tXMHFFL2RvRVA2MFE0?=
- =?utf-8?B?REJURWgwOEdiZXJHd1FFNG5mN2VpcDdaZE9BUWgvTW1LMTc5Si9KazhXUWxp?=
- =?utf-8?B?elE4TCtpWElLa1N1VDFpN25xOXdEbkhCNjhPTzliaWNsRGk0amM0b3VyYytD?=
- =?utf-8?B?UGtxbytacXNkMkRVVHd1UW1sVzV1Z0tyc0ZXdk9DSmJ0NjBMdlIwZkg2eWNN?=
- =?utf-8?B?STEvQjZaWmluMzJoYW5kUTlBazJUL3hkZVZnZUpTdndTbXY4MjFIRlRiR3VS?=
- =?utf-8?B?MXNibTF4Uy9ZdVFsdWw1Sjl5c2Yveno1cUlGMlQ5Z3d2SjRkUEcySFhvN0J6?=
- =?utf-8?B?WWliMks3alFHYncrTlZiamt4VThhMXdMQkZ2am84K3VCejQrNW0vQjFNN0tr?=
- =?utf-8?B?ZDJ4b0V4SE9qUGMvQ3FIS1ZPM1hJYTF2M3VrSVJ4WUVHV2NtaW5pUU1DL2h2?=
- =?utf-8?B?NE5DQnEyRHNvcXdZTWVvaFpwNDZiN29sZ05hU3h4aXBmYTBoVlhTQVJBZ1Nj?=
- =?utf-8?B?STg4RzA2bUVrZUVYWjRxMXpMWWR1V3lmSDlGR1dqbTdnQjhZNFFQQ29VQmV1?=
- =?utf-8?B?cGZVdEU3MkFpSlEvdlRORGRyYjdsL3h6dmVpOUFTeWNaUmdVcVRmMjNUSTVx?=
- =?utf-8?B?OXI2dFRFQ04vWUhvRmR2b2QzZzc2L3RaUGJjd3FHL2NqamxwR0NRZkpZZ2hZ?=
- =?utf-8?B?c0FNdnhKLytJV3VvdE0rcFB6dm5TcHF2ckZtMEhDTDZKOTNMTmVsaCtndEpH?=
- =?utf-8?B?bXJDK2txNXVkMy9PODRGU3BaejhwNlhadC9OakJtQnB4a1F3VEQvdTg5Wi8v?=
- =?utf-8?B?aTFzaElTc3ZhT2hBeUFBSExHT0hpeEtydXRjYU9qdlFIVndjVkppSkMzcnhG?=
- =?utf-8?B?TnkvZEtVbnJkem5Ob3hJZnd1QmJoSytyRzhaUW12dFAyWllZb2NyNk9YZFVK?=
- =?utf-8?B?YzlRTmtUMG1VT25CUEk3bWJpeXZ2eGJpR2txVkw5QUJmUmtiTTBPd3FTMXk0?=
- =?utf-8?B?WStRS2hKWS94bCtPUC9YOGhDN0MxNmN6TFB1M0QxSnlzMmQ5STlyTW9ZWjE4?=
- =?utf-8?Q?Caq4=3D?=
+	=?us-ascii?Q?plzdN7NE/ngyJymGQkLyWeOuTSx1OfU7QtXVa1F9a24dDwRXt/nPf+F6af33?=
+ =?us-ascii?Q?k/EF9YNiWn/8cUhwUV9cmJm5F3hat7B1Ahq6RWKgWdT+6WhaytBW9IxeBVzL?=
+ =?us-ascii?Q?d/W5jqEIDUCT70G6Y8UxrUDJuymToopbmssbuFNSqN+gCJI/Q2cdt9z5uKBh?=
+ =?us-ascii?Q?XZbqXVzaqh532sEXruswLTkgti3BX0HPKzf59AOo3cUeQjyxPFqJGndWZNmF?=
+ =?us-ascii?Q?ufyaoRoJCS5ccbTE1EJaEws1fYcw/ZHZN1qLH40tv1+MpOVirwmLA1lpUdCD?=
+ =?us-ascii?Q?FFh7AABD2+iWCgUoMAGLeDwEJdEoVzWriUmWDwJvsyb9F4MEjoSo7WBIpEN8?=
+ =?us-ascii?Q?K/6NfCBtWPEdFogkKYNBeXNsrscBE+7XWdnRu87A2qRfcjspxPatDTeucmQh?=
+ =?us-ascii?Q?F0kI5QpDDkxM+telOVOzqciQG9FoWar3HbnRqGjUYWYt+hbeM31Kiyvw8Znb?=
+ =?us-ascii?Q?Z/Vz2AE814FtNUHQ8L6nSlrQOh/YKwQii8TAIv1ZzMssKmV4aJZBtvhr3HSY?=
+ =?us-ascii?Q?N8dUFmQn1FqWa0EXLZSbFY9QLYMWrBCPXE2pL1OxlAPKsKySmcDSnS8aBTQH?=
+ =?us-ascii?Q?RZkRg6Q1zTcDUsIWO2CaBQcEnzk4FfKup98hj6N/7DrYo8Y4P1IXFukLhIvk?=
+ =?us-ascii?Q?N3CGX9keVc4wcKB4Q4KMuXGb4ZvHBWc6rw5wcz8ogD4aSQFd5O6j27Hc/gZu?=
+ =?us-ascii?Q?C8LfA9K6hUPakihWwH8e+OkQkBshitVBKwBMhNwtKks4qn8A6guzrTmkg5JU?=
+ =?us-ascii?Q?eEb8bmPZdqFVrrS5sQO2rZv9DkmKEfgDqzMkdsJAS6u8GD+6bJZA1NxfT22b?=
+ =?us-ascii?Q?p/FSxlI9GzZD2fAlKnmDcP8wbx5Sv87uQKkHlLIWmZAm9RyUzpj9DnmojGGB?=
+ =?us-ascii?Q?Cc6e/KHPDh/uC+56Yxgk3eXJho61BWv9FCjvA2i0we6JAWeWdgM5Kt2ZT8Ng?=
+ =?us-ascii?Q?dKj0ej0hr3q8cygYuFtDgTTTvVCmvy9fJtXkpKD/DSXX0kqDposMbEWr9pZK?=
+ =?us-ascii?Q?s9sY+GxsQMpB6fyWsdv1Sgt+i50gF8TymNwe1GhgUxk67WkFAT6evXGSfeDc?=
+ =?us-ascii?Q?mJvSNQl9X8R2J/pRZvW/0fKU4tPl6trt8wuDoQRVhZxlxiDYLXa6qNzA6Sn7?=
+ =?us-ascii?Q?naIhLoqt2/Yr95uBn1Fj2PGKQI9zFXMSZ0MMxAguNCfuzKW5RX8kXiDOtbAA?=
+ =?us-ascii?Q?APNyA72ZCFPEU1ViS16OoKXlzCN/s+LvB/urnV8zcIlBwV0KcZYHsihEPMdV?=
+ =?us-ascii?Q?W99hMSzEKjcQBu3Go92PXMkx/VnxsSNJkR9li435VYzqLGxen9jAO6xIAm5W?=
+ =?us-ascii?Q?WH0oBZkJfVkwt0i8VBpDVaEDce108ADC9gvMAjIQyFIEjmM42XMdxtOxTxWx?=
+ =?us-ascii?Q?snUcbgsjyf51d9PKo0M3XF+lV6sdkSq9cn9V2YA536dS5BQtj78FRhrTPddF?=
+ =?us-ascii?Q?+rRHkLjUQMdG6QsMXKfAoYzMLWcqiUPtQjmISHKY7RaoYH3t6oUrcVQsd8OF?=
+ =?us-ascii?Q?UoksjoEFk0pALvhvA9pvTBhzHUoAKfT3Yr3wVKqb53IWEnnPN3XeQi//VtdM?=
+ =?us-ascii?Q?0cOOO/aY5S3VrxVIORk=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 504cb938-fb26-42a4-d139-08dcdd7e8cc2
+X-MS-Exchange-CrossTenant-Network-Message-Id: ac822f57-a4ca-47da-1957-08dcdd7f65f2
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2024 16:24:37.8376
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2024 16:30:42.3223
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: G51GK6btqokQ+oZViKrVxDd3jY1IK+/P7F74kNAwJIJ1NO6tySXyFjQk/ltZoFGVpt3z7xFmgHU4W6BKmm5AhA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10866
+X-MS-Exchange-CrossTenant-UserPrincipalName: FFobrrQHrs8fY30cdTXXWM+x8d3mA78Yv0m5US0TYWuqvGdYIDVaHymIlDY2d60A6lbO0ZVEl55YwBhL6MwDNQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9432
 
-On Wed, Sep 25, 2024 at 01:30:31PM +0200, Michal Vokáč wrote:
-> On 24. 09. 24 19:37, Marco Felsch wrote:
-> > Hi Frank,
-> >
-> > On 24-09-24, Frank Li wrote:
-> > > On Tue, Sep 24, 2024 at 12:39:41PM +0200, Michal Vokáč wrote:
-> > > > The IOTA2 Lumpy board is based on the i.MX8MPlus EVK.
-> > > >
-> > > > Basic features are:
-> > > > - 4GB LPDDR4
-> > > > - 64GB eMMC
-> > > > - 2x 1GB Ethernet
-> > > > - USB 3.0 Type-C dual role port, without power delivery
-> > > > - USB 3.0 Type-A host port
-> > > > - RGB LED - PWM driven
-> > > > - speaker - PWM driven
-> > > > - RTC with super capacitor backup
-> > > >
-> > > > Signed-off-by: Michal Vokáč <michal.vokac@ysoft.com>
-> > > > ---
-> > > > v4:
-> > > > - Moved the iomuxc node to the end of the file.
-> > > > - Moved the bus-width and non-removeable properties below
-> > > >    the pinctrl-* properties in &usdhc3 node.
-> > > > - Moved the fsl,ext-reset-output below the pinctrl-* properties
-> > > >    in &wdog1 node.
-> > > > v3:
-> > > > - Dropped pinctrl-names property from &usb_dwc3_1 node.
-> > > > v2:
-> > > > - Dropped unused property from pwm4 node.
-> > > > - Sorted all nodes and properties using dt-format tool from Frank.
-> > > >
-> > > >   arch/arm64/boot/dts/freescale/Makefile        |   1 +
-> > > >   .../boot/dts/freescale/imx8mp-iota2-lumpy.dts | 423 ++++++++++++++++++
-> > >
-> > > Suggest use https://github.com/lznuaa/dt-format
-> > > sort node. any issue, let me know.
-> >
-> > Thanks for the link :) would be nice to have this script to be part of
-> > the kernel.
+On Wed, Sep 25, 2024 at 02:15:17AM +0200, Marek Vasut wrote:
+> Add support for DH electronics i.MX8MP DHCOM SoM on DRC02 carrier board.
+> This system is populated with two ethernet ports, two CANs, RS485 and RS232,
+> USB, capacitive buttons and an OLED display.
+>
+> Signed-off-by: Marek Vasut <marex@denx.de>
+> ---
+> Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
+> Cc: Conor Dooley <conor+dt@kernel.org>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: Gregor Herburger <gregor.herburger@ew.tq-group.com>
+> Cc: Hiago De Franco <hiago.franco@toradex.com>
+> Cc: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> Cc: Joao Paulo Goncalves <joao.goncalves@toradex.com>
+> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+> Cc: Mathieu Othacehe <m.othacehe@gmail.com>
+> Cc: Max Merchel <Max.Merchel@ew.tq-group.com>
+> Cc: Michael Walle <mwalle@kernel.org>
+> Cc: Peng Fan <peng.fan@nxp.com>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Rob Herring <robh@kernel.org>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: devicetree@vger.kernel.org
+> Cc: imx@lists.linux.dev
+> Cc: linux-arm-kernel@lists.infradead.org
+> ---
+>  arch/arm64/boot/dts/freescale/Makefile        |   1 +
+>  .../boot/dts/freescale/imx8mp-dhcom-drc02.dts | 255 ++++++++++++++++++
+>  2 files changed, 256 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-dhcom-drc02.dts
+>
+> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+> index 9d3df8b218a2e..f6b8041c1e8f7 100644
+> --- a/arch/arm64/boot/dts/freescale/Makefile
+> +++ b/arch/arm64/boot/dts/freescale/Makefile
+> @@ -167,6 +167,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-beacon-kit.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-data-modul-edm-sbc.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-debix-model-a.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-debix-som-a-bmb-08.dtb
+> +dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-drc02.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-pdk2.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-pdk3.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk.dtb
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-drc02.dts b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-drc02.dts
+> new file mode 100644
+> index 0000000000000..c6bf7fd919814
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-drc02.dts
+> @@ -0,0 +1,255 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright (C) 2024 Marek Vasut <marex@denx.de>
+> + *
+> + * DHCOM iMX8MP variant:
+> + * DHCM-iMX8ML8-C160-R204-F1638-SPI16-E2-CAN2-RTC-I-01D2
+> + * DHCOM PCB number: 660-100 or newer
+> + * DRC02 PCB number: 568-100 or newer
+> + */
+> +
+> +/dts-v1/;
+> +
+> +#include <dt-bindings/leds/common.h>
+> +#include <dt-bindings/phy/phy-imx8-pcie.h>
+> +#include "imx8mp-dhcom-som.dtsi"
+> +
+> +/ {
+> +	model = "DH electronics i.MX8M Plus DHCOM on DRC02";
+> +	compatible = "dh,imx8mp-dhcom-drc02", "dh,imx8mp-dhcom-som",
+> +		     "fsl,imx8mp";
+> +
+> +	chosen {
+> +		stdout-path = &uart1;
+> +	};
+> +};
+> +
+> +&eqos {	/* First ethernet */
+> +	pinctrl-0 = <&pinctrl_eqos_rmii>;
+> +	phy-handle = <&ethphy0f>;
+> +	phy-mode = "rmii";
+> +
+> +	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_266M>,
+> +				 <&clk IMX8MP_SYS_PLL2_100M>,
+> +				 <&clk IMX8MP_SYS_PLL2_50M>;
+> +	assigned-clock-rates = <0>, <100000000>, <50000000>;
+> +};
+> +
+> +&ethphy0g {	/* Micrel KSZ9131RNXI */
+> +	status = "disabled";
+> +};
+> +
+> +&ethphy0f {	/* SMSC LAN8740Ai */
+> +	status = "okay";
+> +};
+> +
+> +&fec {	/* Second ethernet */
+> +	pinctrl-0 = <&pinctrl_fec_rmii>;
+> +	phy-handle = <&ethphy1f>;
+> +	phy-mode = "rmii";
+> +	status = "okay";
+> +
+> +	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_266M>,
+> +				 <&clk IMX8MP_SYS_PLL2_100M>,
+> +				 <&clk IMX8MP_SYS_PLL2_50M>,
+> +				 <&clk IMX8MP_SYS_PLL2_50M>;
+> +	assigned-clock-rates = <0>, <100000000>, <50000000>, <0>;
+> +};
+> +
+> +&ethphy1f {	/* SMSC LAN8740Ai */
+> +	status = "okay";
+> +};
+> +
+> +&flexcan1 {
+> +	status = "okay";
+> +};
+> +
+> +&flexcan2 {
+> +	status = "okay";
+> +};
+> +
+> +&gpio1 {
+> +	gpio-line-names =
+> +		"DRC02-In1", "", "", "", "", "DHCOM-I", "DRC02-HW2", "DRC02-HW0",
+> +		"DHCOM-B", "DHCOM-A", "", "DHCOM-H", "", "", "", "",
+> +		"", "", "", "", "", "", "", "",
+> +		"", "", "", "", "", "", "", "";
+> +
+> +	/*
+> +	 * NOTE: On DRC02, the RS485_RX_En is controlled by a separate
+> +	 * GPIO line, however the i.MX8 UART driver assumes RX happens
+> +	 * during TX anyway and that it only controls drive enable DE
+> +	 * line. Hence, the RX is always enabled here.
+> +	 */
+> +	rs485-rx-en-hog {
+> +		gpio-hog;
+> +		gpios = <13 0>; /* GPIO Q */
+> +		line-name = "rs485-rx-en";
+> +		output-low;
+> +	};
+> +};
+> +
+> +&gpio2 {
+> +	gpio-line-names =
+> +		"", "", "", "", "", "", "", "",
+> +		"DHCOM-O", "DHCOM-N", "", "SOM-HW1", "", "", "", "",
+> +		"", "", "", "", "DRC02-In2", "", "", "",
+> +		"", "", "", "", "", "", "", "";
+> +};
+> +
+> +&gpio3 {
+> +	gpio-line-names =
+> +		"", "", "", "", "", "", "", "",
+> +		"", "", "", "", "", "", "SOM-HW0", "",
+> +		"", "", "", "", "", "", "SOM-MEM0", "SOM-MEM1",
+> +		"SOM-MEM2", "SOM-HW2", "", "", "", "", "", "";
+> +};
+> +
+> +&gpio4 {
+> +	gpio-line-names =
+> +		"", "", "", "", "", "", "", "",
+> +		"", "", "", "", "", "", "", "",
+> +		"", "", "", "SOM-HW1", "", "", "", "",
+> +		"", "", "", "DRC02-Out2", "", "", "", "";
+> +};
+> +
+> +&gpio5 {
+> +	gpio-line-names =
+> +		"", "", "DHCOM-C", "", "", "", "", "",
+> +		"", "", "", "", "", "", "", "",
+> +		"", "", "", "", "", "", "DHCOM-E", "DRC02-Out1",
+> +		"", "", "", "", "", "", "", "";
+> +};
+> +
+> +/* No HS connector on this SoM variant, so no HDMI, PCIe and only USB HS. */
+> +&hdmi_blk_ctrl {
+> +	status = "disabled";
+> +};
+> +
+> +&hdmi_pvi {
+> +	status = "disabled";
+> +};
+> +
+> +&hdmi_tx {
+> +	status = "disabled";
+> +};
+> +
+> +&hdmi_tx_phy {
+> +	status = "disabled";
+> +};
+> +
+> +&i2c3 {
+> +	/* Resistive touch controller not populated on this one SoM variant. */
+> +	touchscreen@49 {
+> +		status = "disabled";
+> +	};
+> +};
+> +
+> +&irqsteer_hdmi {
+> +	status = "disabled";
+> +};
+> +
+> +&lcdif3 {
+> +	status = "disabled";
+> +};
+> +
+> +&pcie_phy {
+> +	status = "disabled";
+> +};
+> +
+> +&pcie {
+> +	status = "disabled";
+> +};
+> +
+> +/* Console UART */
+> +&pinctrl_uart1 {
+> +	fsl,pins = <
+> +		/* No pull-ups on DRC02, enable in-SoC pull-ups */
+> +		MX8MP_IOMUXC_SAI2_RXC__UART1_DCE_RX		0x149
+> +		MX8MP_IOMUXC_SAI2_RXFS__UART1_DCE_TX		0x149
+> +	>;
+> +};
+> +
+> +&pinctrl_uart3 {
+> +	fsl,pins = <
+> +		/* No pull-ups on DRC02, enable in-SoC pull-ups */
+> +		MX8MP_IOMUXC_ECSPI1_SCLK__UART3_DCE_RX		0x149
+> +		MX8MP_IOMUXC_ECSPI1_MOSI__UART3_DCE_TX		0x149
+> +	>;
+> +};
+> +
+> +&uart1 {
+> +	/*
+> +	 * Due to the use of CAN2 the signals for CAN2 Tx and Rx are routed to
+> +	 * DHCOM UART1 RTS/CTS pins. Therefore this UART have to use DHCOM GPIOs
+> +	 * for RTS/CTS. So configure DHCOM GPIO I as RTS and GPIO M as CTS.
+> +	 */
+> +	/delete-property/ uart-has-rtscts;
+> +	cts-gpios = <&gpio5 5 GPIO_ACTIVE_HIGH>; /* GPIO M */
+> +	pinctrl-0 = <&pinctrl_uart1 &pinctrl_dhcom_i &pinctrl_dhcom_m>;
+> +	pinctrl-names = "default";
+> +	rts-gpios = <&gpio1 5 GPIO_ACTIVE_HIGH>; /* GPIO I */
+> +};
+> +
+> +&uart3 {
+> +	/*
+> +	 * On DRC02 this UART is used as RS485 interface and RS485_TX_En is
+> +	 * controlled by DHCOM GPIO P. So remove RTS/CTS pins and the property
+> +	 * uart-has-rtscts from this UART and add the DHCOM GPIO P pin via
+> +	 * rts-gpios. The RS485_RX_En is controlled by DHCOM GPIO Q, see gpio1
+> +	 * node above.
+> +	 */
+> +	/delete-property/ uart-has-rtscts;
+> +	linux,rs485-enabled-at-boot-time;
+> +	pinctrl-0 = <&pinctrl_uart3 &pinctrl_dhcom_p &pinctrl_dhcom_q>;
+> +	pinctrl-names = "default";
+> +	rts-gpios = <&gpio2 10 GPIO_ACTIVE_HIGH>; /* GPIO P */
+> +};
+> +
+> +/* No WiFi/BT chipset on this SoM variant. */
+> +&uart2 {
+> +	bluetooth {
+> +		status = "disabled";
+> +	};
+> +};
+> +
+> +/* USB_OTG port is not routed out on DRC02. */
+> +&usb3_0 {
+> +	status = "disabled";
+> +};
+> +
+> +&usb_dwc3_0 {
+> +	status = "disabled";
+> +};
+> +
+> +/* USB_HOST port has USB Hub connected to it, PWR/OC pins are unused */
+> +&usb3_1 {
+> +	fsl,disable-port-power-control;
+> +	fsl,permanently-attached;
+> +};
 
-It depend on how much people like and use it.
+Suggest run https://github.com/lznuaa/dt-format to sort node
 
->> The script follows the rules in [1] I'm just used to have
-> > common properties like pinctrl-* in front of the device specific
-> > properties e.g. "enable-active-high". But this rule is not part of [1]
-> > so I can't blame the script.
+&usb_dwc3_0
+&usb_dwc3_1
+&usb3_0
+&usb3_1
 
-I just write it. Not 100% align order-of-properties-in-device-node yet.
-Some propertiy need special treated. Thank you provide the feedback.
-
-I push change, enable-active-high and gpio will after regulator*.
+Any issue about tools, let me know.
 
 Frank
 
-> >
-> > Regards,
-> >    Marco
-> >
-> > [1] https://docs.kernel.org/devicetree/bindings/dts-coding-style.html#order-of-properties-in-device-node
+> +
+> +&usb_dwc3_1 {
+> +	dr_mode = "host";
+> +	maximum-speed = "high-speed";
+> +};
+> +
+> +/* No WiFi/BT chipset on this SoM variant. */
+> +&usdhc1 {
+> +	status = "disabled";
+> +};
+> +
+> +&iomuxc {
+> +	/*
+> +	 * GPIO I is connected to UART1_RTS
+> +	 * GPIO M is connected to UART1_CTS
+> +	 * GPIO P is connected to RS485_TX_En
+> +	 * GPIO Q is connected to RS485_RX_En
+> +	 */
+> +	pinctrl-0 = <&pinctrl_hog_base
+> +		     &pinctrl_dhcom_a &pinctrl_dhcom_b &pinctrl_dhcom_c
+> +		     &pinctrl_dhcom_d &pinctrl_dhcom_e &pinctrl_dhcom_f
+> +		     &pinctrl_dhcom_g &pinctrl_dhcom_h &pinctrl_dhcom_j
+> +		     &pinctrl_dhcom_k &pinctrl_dhcom_l &pinctrl_dhcom_n
+> +		     &pinctrl_dhcom_o &pinctrl_dhcom_r &pinctrl_dhcom_s
+> +		     &pinctrl_dhcom_int>;
+> +};
+> --
+> 2.45.2
 >
-> Thank you for the review Frank & Marco.
-> I quickly went through the file again and found another few properties
-> that could be better ordered according to the kernel documentation [1].
->
-> > > >   2 files changed, 424 insertions(+)
-> > > >   create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-iota2-lumpy.dts
-> > > >
-> > > > diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-> > > > index 9d3df8b218a2..aa26a50b7bb4 100644
-> > > > --- a/arch/arm64/boot/dts/freescale/Makefile
-> > > > +++ b/arch/arm64/boot/dts/freescale/Makefile
-> > > > @@ -171,6 +171,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-pdk2.dtb
-> > > >   dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-pdk3.dtb
-> > > >   dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk.dtb
-> > > >   dtb-$(CONFIG_ARCH_MXC) += imx8mp-icore-mx8mp-edimm2.2.dtb
-> > > > +dtb-$(CONFIG_ARCH_MXC) += imx8mp-iota2-lumpy.dtb
-> > > >   dtb-$(CONFIG_ARCH_MXC) += imx8mp-msc-sm2s-ep1.dtb
-> > > >   dtb-$(CONFIG_ARCH_MXC) += imx8mp-navqp.dtb
-> > > >   dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk.dtb
-> > > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-iota2-lumpy.dts b/arch/arm64/boot/dts/freescale/imx8mp-iota2-lumpy.dts
-> > > > new file mode 100644
-> > > > index 000000000000..9eb58e818dc7
-> > > > --- /dev/null
-> > > > +++ b/arch/arm64/boot/dts/freescale/imx8mp-iota2-lumpy.dts
-> > > > @@ -0,0 +1,423 @@
-> > > > +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> > > > +/*
-> > > > + * Copyright 2023 Y Soft
-> > > > + */
-> > > > +
-> > > > +/dts-v1/;
-> > > > +
-> > > > +#include "imx8mp.dtsi"
-> > > > +
-> > > > +/ {
-> > > > +	compatible = "ysoft,imx8mp-iota2-lumpy", "fsl,imx8mp";
-> > > > +	model = "Y Soft i.MX8MPlus IOTA2 Lumpy board";
-> > > > +
-> > > > +	beeper {
-> > > > +		compatible = "pwm-beeper";
-> > > > +		pwms = <&pwm4 0 500000 0>;
-> > > > +	};
-> > > > +
-> > > > +	chosen {
-> > > > +		stdout-path = &uart2;
-> > > > +	};
-> > > > +
-> > > > +	gpio_keys: gpio-keys {
-> > > > +		compatible = "gpio-keys";
-> > > > +		pinctrl-0 = <&pinctrl_gpio_keys>;
-> > > > +		pinctrl-names = "default";
-> > > > +
-> > > > +		button-reset {
-> > > > +			gpios = <&gpio1 7 GPIO_ACTIVE_LOW>;
-> > > > +			label = "Factory RESET";
-> > > > +			linux,code = <BTN_0>;
-> > > > +		};
-> > > > +	};
-> > > > +
-> > > > +	reg_usb_host: regulator-usb-host {
-> > > > +		compatible = "regulator-fixed";
-> > > > +		enable-active-high;
-> > > > +		gpio = <&gpio1 14 GPIO_ACTIVE_HIGH>;
->
-> The enable-active-high and gpio should go bellow regulator-*.
->
-> > > > +		pinctrl-0 = <&pinctrl_usb_host_vbus>;
-> > > > +		pinctrl-names = "default";
-> > > > +		regulator-max-microvolt = <5000000>;
-> > > > +		regulator-min-microvolt = <5000000>;
-> > > > +		regulator-name = "usb-host";
-> > > > +	};
-> > > > +
-> > > > +	memory@40000000 {
-> > > > +		reg = <0x0 0x40000000 0 0x80000000>,
-> > > > +		      <0x1 0x00000000 0 0x80000000>;
-> > > > +		device_type = "memory";
-> > > > +	};
-> > > > +};
-> > > > +
-> > > > +&A53_0 {
-> > > > +	cpu-supply = <&reg_arm>;
-> > > > +};
-> > > > +
-> > > > +&A53_1 {
-> > > > +	cpu-supply = <&reg_arm>;
-> > > > +};
-> > > > +
-> > > > +&A53_2 {
-> > > > +	cpu-supply = <&reg_arm>;
-> > > > +};
-> > > > +
-> > > > +&A53_3 {
-> > > > +	cpu-supply = <&reg_arm>;
-> > > > +};
-> > > > +
-> > > > +&eqos {
-> > > > +	phy-handle = <&ethphy0>;
-> > > > +	phy-mode = "rgmii-id";
-> > > > +	pinctrl-0 = <&pinctrl_eqos>;
-> > > > +	pinctrl-names = "default";
-> > > > +	status = "okay";
-> > > > +
-> > > > +	mdio {
-> > > > +		compatible = "snps,dwmac-mdio";
-> > > > +		#address-cells = <1>;
-> > > > +		#size-cells = <0>;
-> > > > +
-> > > > +		ethphy0: ethernet-phy@0 {
-> > > > +			reg = <0>;
-> > > > +			interrupts = <21 IRQ_TYPE_LEVEL_LOW>;
-> > > > +			interrupt-parent = <&gpio3>;
-> > > > +			micrel,led-mode = <0>;
->
-> The micrel,* is a vendor specific property. It should go bellow the reset-*.
->
-> > > > +			pinctrl-0 = <&pinctrl_ethphy0>;
-> > > > +			pinctrl-names = "default";
-> > > > +			reset-assert-us = <1000>;
-> > > > +			reset-deassert-us = <1000>;
-> > > > +			reset-gpios = <&gpio3 22 GPIO_ACTIVE_LOW>;
-> > > > +		};
-> > > > +	};
-> > > > +};
-> > > > +
-> > > > +&fec {
-> > > > +	fsl,magic-packet;
-> > > > +	phy-handle = <&ethphy1>;
-> > > > +	phy-mode = "rgmii-id";
-> > > > +	pinctrl-0 = <&pinctrl_fec>;
-> > > > +	pinctrl-names = "default";
-> > > > +	status = "okay";
-> > > > +
-> > > > +	mdio {
-> > > > +		#address-cells = <1>;
-> > > > +		#size-cells = <0>;
-> > > > +
-> > > > +		ethphy1: ethernet-phy@0 {
-> > > > +			reg = <0>;
-> > > > +			interrupts = <19 IRQ_TYPE_LEVEL_LOW>;
-> > > > +			interrupt-parent = <&gpio3>;
-> > > > +			micrel,led-mode = <0>;
->
-> Same as above, micrel,* should go bellow common properties.
-> I will send a v5 with these fixed.
->
-> Michal
->
-> > > > +			pinctrl-0 = <&pinctrl_ethphy1>;
-> > > > +			pinctrl-names = "default";
-> > > > +			reset-assert-us = <1000>;
-> > > > +			reset-deassert-us = <1000>;
-> > > > +			reset-gpios = <&gpio3 20 GPIO_ACTIVE_LOW>;
-> > > > +		};
-> > > > +	};
-> > > > +};
-> > > > +
