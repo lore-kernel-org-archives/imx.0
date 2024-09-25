@@ -1,217 +1,324 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2075.outbound.protection.outlook.com [40.107.20.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A0B1CF93
-	for <imx@lists.linux.dev>; Wed, 25 Sep 2024 21:28:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.75
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727299697; cv=fail; b=DifpHu/2BkXwXvoBGDSYxtYjykU6KjJ59QCTkJ/ljCp93BWCuEWhIqRyzOElZHqBDLGA60+2TyPx2IQ/t/4oe1vtofkqrDybRbIPQqQ/eC6bhYccWmA62LszQ+8IyPYhSoP+oMDcMOwNK1ZVxe59YTc4w/LvOnLsGpo3qm+S4jg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727299697; c=relaxed/simple;
-	bh=PCXDmWzZ0SNDLFBxG+g9u2NFv2w/aq0DWc4l5Qx1+HM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=M3abXKw8sQLkcLAdpRxyOY6ti8X/pm5Z2aq/ahY4GIRnePUXj7L7amExLnITI/wec0wmpzotR8i8GjzpsHwCOUCJC8xRsmVsEhGpWewGdRdvKsN2S6Unm16ojVbiVPa3GK+t1isjwjf4nB/irjRDvmcomZV1mKBvizlHBu5tsiQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=RbTvM5mv; arc=fail smtp.client-ip=40.107.20.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BDA141987
+	for <imx@lists.linux.dev>; Wed, 25 Sep 2024 22:06:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727301968; cv=none; b=mX6qvftz569Zi3zvGcB85guHJ+C0HN9qukz9BTwLPRit9ETlTzTej8KH69KBUedr/TVyHvvI5RUgl40uAeCLI/Qylzv1CvFoe/aTEK+SiTkRvobODSN11xgcVFKsRaEhnlnRE9mu/EOAEGU+U4ejd9EOqjaLyNYketqMfEzKqgc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727301968; c=relaxed/simple;
+	bh=+MO9HGvZEmSbAOH+oLFRm8+PdtCoK5Y1UI3uPht4OL4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SnljQDmJdOaJeEue6HuDV/quhGMFzMS3vczKX1q7gfcCZAks//81Zh4wDA77EkG6jrf7IHynFfoKi0UjxOlvI2uZ1Uoli13rwRL2AV/KCEKBbuhJk/cKQP9kIEOHh+nSrg2msrlt4BwEuqqAb9x8xYzbrA0tBchlQW4wRdJiU0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=MUo1T09z; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="RbTvM5mv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z+rwgkTWJQL0QGsI6le/q246dwFEwz8FtpyO15ULhfl+WodO5EeagOekpCNrS/YC4TKwMhyjwJoAHxCtPxIKdlbdjyJo2U5OZErHQZxWBLjAY/g4Rr6LTw6DvwX8w0hXVbgvuxZszOw6GAmCpoFrrrsNkFbMNRwmY0W8jgNSK1QI92QD3Mxs6T1MRfnBnk+ak63bdV9CVqnWTzBv5HgEztk1G8WO6S93UZCR9B5IcyR2MdaxJYGTrCztroWNtpgtBdQXQSWtUBqfYIGITUPHhG01Vd/Q9kKdVS55Bg4omSy1Zoh1fdY1n7OTR9MMshOuVe6KVkLEdHJuKju0gNU0VA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hPMeGZXTNu31Yqcii/MokH23LTsOrehpmIcL8Y4DdKw=;
- b=RFZeSAOUPvoLkxcsaZZ/0/BFp+SDK1ve2p7FmVbje67T84yW/ex0z7lNhI7j8U64xei7ljE2qtMU5qgp3AYnFIMYqNBD04ppNrxpbznmIpF56Kvr9OZ3Gibe+IGw8NPw8V3TgpqeAfIMTQG9IGoiEyCcf2dnEHSChOobR3+QpnLHe13Sq2MJGL6OjfQcieXDwESuVCHBATINLjzNUyiCkkzx0I03j13megcW4Cq97SKtORTZc60xcE5sXvrX5rkwWWQCtfQcBDwOxOxcjeWy2lHRbzslibKxH9E5gXyeXy1eZYXMAXTlYzehB20FDEvq6G9/i0dVb99Dw4bcC9jYrA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hPMeGZXTNu31Yqcii/MokH23LTsOrehpmIcL8Y4DdKw=;
- b=RbTvM5mvY2XCZFC9poQKXzt4RuRcqyT/YoH549034xf+tdNN9k4WYfestKuADCvholDnERrYvMRTm0iPDQu+v1Xi0iuNrBZJHUuHbSf9a9lKu4QAv2yzZjhcUFE/W8kjFEX1TeYuKNDZ5nVI894ylycTGz+zB+yNBUOsWniDjCdPPiOI/NmgIrHT9hesQS68QWwbnri3fPRIe0240Xvwk/0t7aWfwdkz/QwYj7qak1Rb2VZ/DYPWJ6flKbM2hL+iNvQ7VJVuB/HdrPuIQAjkOcmw/MdU5YAqPgJOcT8WccH4BXxzvQ0nuYUAMESSpYBnYP5L6WvXxrRSzioGeINJvw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PA1PR04MB10226.eurprd04.prod.outlook.com (2603:10a6:102:464::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.18; Wed, 25 Sep
- 2024 21:28:07 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.7982.022; Wed, 25 Sep 2024
- 21:28:07 +0000
-Date: Wed, 25 Sep 2024 17:27:56 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Marek Vasut <marex@denx.de>
-Cc: linux-arm-kernel@lists.infradead.org, kernel@dh-electronics.com,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Conor Dooley <conor+dt@kernel.org>,
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="MUo1T09z"
+Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 805F088BC2;
+	Thu, 26 Sep 2024 00:06:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1727301964;
+	bh=iT0+1DdEgc8DqY5p9VNB9w5GWKBf/wL+H5zqp/TASYY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=MUo1T09zAVz8Qzr0LrJ4wsWTYwhmo5pshaAYCDxJGawlx+yTSapof/kyZrRiqsTjl
+	 ylsrol9vCnhFpF0MtH8WUsRvyk00B33xtoeIB/ilmwiZ5DeejZEq2j/kfJOf/eMbf8
+	 83DnqzVQ4Zh/9kW3K+qwsl2MaMMcVD6T9L/ZZQvfaSZRSxazATLUXJzUPwgXG/3XJC
+	 4B5EvW45pm2XrPj0dpglxolpt/HXbkZ3L/fM+LMhFXokfUpQFPGx25QUjj6zt98sR5
+	 ox1wD4orEX8uEIM9In6CCVgCUVNg8tuJxQ5dzbcsiNrEbzKRPKZPPTMLFv+R8pVxe4
+	 upIRNaM1fgSJg==
+From: Marek Vasut <marex@denx.de>
+To: linux-arm-kernel@lists.infradead.org
+Cc: kernel@dh-electronics.com,
+	Marek Vasut <marex@denx.de>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
-	Hiago De Franco <hiago.franco@toradex.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Mathieu Othacehe <m.othacehe@gmail.com>,
-	Max Merchel <Max.Merchel@ew.tq-group.com>,
-	Michael Walle <mwalle@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH 2/2] arm64: dts: imx8mp: Add DH i.MX8MP DHCOM SoM on
- DRC02 carrier board
-Message-ID: <ZvSAXAXeSUdPu2h8@lizhi-Precision-Tower-5810>
-References: <20240925001628.669604-1-marex@denx.de>
- <20240925001628.669604-2-marex@denx.de>
- <ZvQ6qWMAEZaR/5pl@lizhi-Precision-Tower-5810>
- <08b805f8-a4c5-4aa1-95b2-66292a681aa9@denx.de>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <08b805f8-a4c5-4aa1-95b2-66292a681aa9@denx.de>
-X-ClientProxiedBy: SJ0PR03CA0336.namprd03.prod.outlook.com
- (2603:10b6:a03:39c::11) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	Shawn Guo <shawnguo@kernel.org>,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] soc: imx8m: Probe the SoC driver as platform driver
+Date: Thu, 26 Sep 2024 00:04:54 +0200
+Message-ID: <20240925220552.149551-1-marex@denx.de>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA1PR04MB10226:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5007d70d-0bbf-4ad6-353b-08dcdda8f27f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|52116014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?WldMjlK3HeB3h9ERnSAjCGkWmbDUDZrjmGYH8YBlhp++6kZ67kD7TzCMCfnP?=
- =?us-ascii?Q?7E+rx4ZBcUo3j4H3AFGu3oFY2j2DxhC9TLSZKxZ0Z9s8f/id0WAFKIW7XYoh?=
- =?us-ascii?Q?X6+jSmm7sku4hdSzkiishqVqobaTFeZ9sRQLwNI5bTsD1lpV1Fbj4z6r/aes?=
- =?us-ascii?Q?Yfhd9yU6yTn7sgldDRRtxwq3umVknLFjBQoO9t3T4h2BTLDAyl0nKLd4uPcI?=
- =?us-ascii?Q?ygMCawvR2x0tfL0DDtpjS2G4UmRU9p+N6FHVFkJMBhI+RjtbtgxuSTz8Fv3t?=
- =?us-ascii?Q?k4vTKOj89iqYquKURT/KfBUbM9XeiGudlw7r+xunuxpm9GUiPlNhFUG4rdKg?=
- =?us-ascii?Q?r2H87ALr4PjdGgsiR0yOu3DYbVbyRLe/PNc+qIm5hX6CefD+L62cvXYWR7HO?=
- =?us-ascii?Q?Grh3TfpRGGhL/zbZ4xFfliJ+SxIjA0M0UufYPbnRBDRawIKnnkKAoKfnlu8H?=
- =?us-ascii?Q?Eza5+2+eerS/G7egsYFCBFmJvbmyOphckgtS93LbQq8R7uZxLHNdc9+JoYcE?=
- =?us-ascii?Q?Cffmkl7jiZFNsVcu+/VfQQXaQK7BnIWLBhA0mfVtOOKi4phISRrdqUeGQnpU?=
- =?us-ascii?Q?wQMy1jIVy5V+IdHu2kZ7iwGNhoL3BX/39w/5lGVUTqSvvez6Iwuj3YsCw9qE?=
- =?us-ascii?Q?qnboRSKCFpOjruNrB2xV14jr/GecGefvO/WGW6mKXFO7oDFUjDPwC19yroBx?=
- =?us-ascii?Q?qaYC/q5V5ZNlFcZLhPJ0+3D8A6FWxzIghmaeCD5pWlZGna93UVwF0sOCckkX?=
- =?us-ascii?Q?2EQCetwc4CjGA2bu46Ut4F4d81rCx+v/s5LtQKptA7tK3KOjYJ8UZsvlhq3O?=
- =?us-ascii?Q?otgybF62XuD3aA9ez2w6XnjSl7Wj5VqCiIJM0Zf3m7ip6jb6YL3myZU/hZQS?=
- =?us-ascii?Q?KITbGTnJMrNR+wiIrLevWnPZ58z3BV1myBMcRTyCy6ftot5w8PKtlwHH2Mu/?=
- =?us-ascii?Q?lT+o+wVHDn6p7vGYZZX9DTpwWJmw3WKc5FaEmr49kLD073S8xTh1rCecg4f7?=
- =?us-ascii?Q?YY8HBf3vOjIJ5KC0dD47qbqKqLMn+VcKm3JjebuyhmXorhDN5Nq9d/BFYsq2?=
- =?us-ascii?Q?NR9tkrz/CiZzE0LWASqYwsepluEAkXaAHTMOJ7wBMP2vWJIB9EkPbisxpJK0?=
- =?us-ascii?Q?Fy0SD/ke42BVg7KXG6fBIX7Rrn7H+q9ymTMcGBe+B8pefgzshfOad1xwNRNR?=
- =?us-ascii?Q?ETQQoPd9ZiHfR5CsaaqQ3xLP3+2LzAmxai1DyZ4LZXhtg+6aM5C1cr0jF5fS?=
- =?us-ascii?Q?eiaJx2aJJ+mK8mKVHw8vNr9/0vexM/15mgL+PS+kurGqN4mcjUgB6A2XWs2w?=
- =?us-ascii?Q?IsJEZZN7JL8Jd+9a5d8TEPiIVw4sXjnOgNqiYBeFubJOxBrXj+2k3h/EOKcm?=
- =?us-ascii?Q?s3vVfzp74JeP4+/9B1k3GWNZ5+rIT4pLenQbBBIW/WJ+qbSD0A=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Ru0NjeQxJJw41ChR2I3jGphDMJXA2pjtJBY5o3NzHJ9YWbdToYxsKdvUbGxq?=
- =?us-ascii?Q?DBykFJGzUrNKAXH3qnlexsjZaozJ3svlWQKxBHqwstwefYc/a+K+P+zncOte?=
- =?us-ascii?Q?9HpgH+xeQBZ6/LyFjFviL/SUeEZqi7/JVq6JEloeTVT4dy21Z3Qm5WjLXwCO?=
- =?us-ascii?Q?PEYGXaXGsF85TYJfT36oa7g/yyiUdbdcQEryiiEOsn11FYJAfcf7ErS/cQRR?=
- =?us-ascii?Q?asX20hJrZ6vNplaj0eIGeeWgs9fOTPzSlZOWdtYqgdfijvh+fWzul8OYaOOH?=
- =?us-ascii?Q?Xt8eKYghmea1VRdEftguPWNTh4+N5+W/XYVBN7ejrPlMLqViL9s3sNEC/LhL?=
- =?us-ascii?Q?eatxfV4/AoMq4Q8sa2GmwfLKWfupf6n7W4bTVZeuJy65MDChn23DVo8IZ4tK?=
- =?us-ascii?Q?rhKjUKQNocLS054oy9raHEKP/RkVS7CgCyWr4ecVmp/NzvItdIVkyquqPXWI?=
- =?us-ascii?Q?KeDZr1uzdMvqfUWVa08W3qHgIQHYtUWtahIQxRBKX/+1lgcBUN9V2/bwgX7r?=
- =?us-ascii?Q?NU+GhNlRPB/HPAAkEbk2hdK3hAzBxI4QJB/clZ/LaEwjQElcd4i8XCa9k2OG?=
- =?us-ascii?Q?vVwB8hg7wkm8m2/7JjZt/uJd7/UXaxcrPPBU/Z7rczSnZ7tHyjV/CO9MTlIq?=
- =?us-ascii?Q?b7Ru031KPYmg2MRWmnM4jrVn3ywKvZbvE+jKtZaYKnXZvGKh6j9dKIkNP1HU?=
- =?us-ascii?Q?1P5KH58LjsfG1PUODTcUxHAkwrqF4rfMeVj69g7n1bkMjpNbHT4EiXLD8Vua?=
- =?us-ascii?Q?Q197lGQflD3vJ+QDVHCpKfa4+94sRNuE1RzZBk96ZOfcpejX61wDWghYHdws?=
- =?us-ascii?Q?1TeZfAEzJZkYCTnYPGiuQJZfL82kCawBh68h5IQIx/XGr7Ee9ZnELaKODSV1?=
- =?us-ascii?Q?C4ce2SDmbTfR2Py2cvXOeO3ofZoWDncuTdEMW1I4MCRIGXla9Ys3eZ55PbhA?=
- =?us-ascii?Q?fLXrOBh67algWQSRMptewHZNnmj/iTMIMGZEptgRKI8Ck+4QWAMjzGhmoV08?=
- =?us-ascii?Q?j0HjQWhXMIeHM3cPBoVUlXQVaZZquqjJqxbAiTSTApvJHDuQagJSLJXtwFpd?=
- =?us-ascii?Q?JEZA5Ab5RNYLV8jzYcv5wJyrtloxoYyPe2y0H7BzfVAEZfwu7hsg1Nk97Yky?=
- =?us-ascii?Q?TgF/Gng2beYzeDhTCrATrNbTfDxwj3jy1XF+Ksh/tf6cas8j1CEJD/SEf2uq?=
- =?us-ascii?Q?wYL6bR91v2Hx1yorDTO0Vf+HUB0PhWm7oqUEEIAEFRqqN6XfxGaH5wjgUxbk?=
- =?us-ascii?Q?ODvTxdf4fZGfpZWrowcnkHYQmdunXNA2F8zW3H8wmFpzUqp5M2X8Ofx1wRM5?=
- =?us-ascii?Q?GPowEqzLqw9AjsPIVwLuiuaZ+GKuith+H2EByVpOB0rp7hvAufZ2AJYi4RE+?=
- =?us-ascii?Q?fAJvnA0h+hT0NrRmzn8CLsSOdrPsfc1n23QE3w+S9JpdQZAGZ/RyVkNdWEkK?=
- =?us-ascii?Q?i9n/1AuA7I2RMzWWshVCIi+20wprPlNCWIkEBdV8YZZHm+ksSmysphGmkTHA?=
- =?us-ascii?Q?gLehcfqa9Rn6/N9qXG5Q93YIA/q6XQySxhAQYfnAkpAeW5U4DvMXiHr7HlKD?=
- =?us-ascii?Q?Ek2b+tYnNR0UiOhOevw=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5007d70d-0bbf-4ad6-353b-08dcdda8f27f
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2024 21:28:07.3518
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wocpgg5/WLFJtlAn2J5bribBEQPi+QBJ/Uki24rgsontiNT36HkIRvBf1MlgzjKymnQFWwhrO4KshvUztXNEIA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10226
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On Wed, Sep 25, 2024 at 11:09:13PM +0200, Marek Vasut wrote:
-> On 9/25/24 6:30 PM, Frank Li wrote:
->
-> [...]
->
-> > > +/* USB_OTG port is not routed out on DRC02. */
-> > > +&usb3_0 {
-> > > +	status = "disabled";
-> > > +};
-> > > +
-> > > +&usb_dwc3_0 {
-> > > +	status = "disabled";
-> > > +};
-> > > +
-> > > +/* USB_HOST port has USB Hub connected to it, PWR/OC pins are unused */
-> > > +&usb3_1 {
-> > > +	fsl,disable-port-power-control;
-> > > +	fsl,permanently-attached;
-> > > +};
-> >
-> > Suggest run https://github.com/lznuaa/dt-format to sort node
-> >
-> > &usb_dwc3_0
-> > &usb_dwc3_1
-> > &usb3_0
-> > &usb3_1
->
-> I'm afraid the tool (I did not try it, I used plain GNU sort) is not sorting
-> this correctly, look at ASCII table, 0x33 is '3' and 0x5f is '_':
->
-> $ printf 3_ | hexdump -vC
-> 00000000  33 5f
+With driver_async_probe=* on kernel command line, the following trace is
+produced because on i.MX8M Plus hardware because the soc-imx8m.c driver
+calls of_clk_get_by_name() which returns -EPROBE_DEFER because the clock
+driver is not yet probed. This was not detected during regular testing
+without driver_async_probe.
 
-Sorry, I have not run it for this dts. I make misstake - and _ at ascii
-table.
+Convert the SoC code to platform driver and instantiate a platform device
+in its current device_initcall() to probe the platform driver. Rework
+.soc_revision callback to always return valid error code and return SoC
+revision via parameter. This way, if anything in the .soc_revision callback
+return -EPROBE_DEFER, it gets propagated to .probe and the .probe will get
+retried later.
 
->
-> So if the sorting was correct, it would be:
->
-> usb3_0
-> usb3_1
-> usb_dwc3_0
-> usb_dwc3_1
->
-> But I would prefer to keep the controllers close to each other, i.e. the
-> current order which seems more logical in this case:
->
-> usb3_0
-> usb_dwc3_0
-> usb3_1
-> usb_dwc3_1
+"
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 1 at drivers/soc/imx/soc-imx8m.c:115 imx8mm_soc_revision+0xdc/0x180
+CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.11.0-next-20240924-00002-g2062bb554dea #603
+Hardware name: DH electronics i.MX8M Plus DHCOM Premium Developer Kit (3) (DT)
+pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : imx8mm_soc_revision+0xdc/0x180
+lr : imx8mm_soc_revision+0xd0/0x180
+sp : ffff8000821fbcc0
+x29: ffff8000821fbce0 x28: 0000000000000000 x27: ffff800081810120
+x26: ffff8000818a9970 x25: 0000000000000006 x24: 0000000000824311
+x23: ffff8000817f42c8 x22: ffff0000df8be210 x21: fffffffffffffdfb
+x20: ffff800082780000 x19: 0000000000000001 x18: ffffffffffffffff
+x17: ffff800081fff418 x16: ffff8000823e1000 x15: ffff0000c03b65e8
+x14: ffff0000c00051b0 x13: ffff800082790000 x12: 0000000000000801
+x11: ffff80008278ffff x10: ffff80008209d3a6 x9 : ffff80008062e95c
+x8 : ffff8000821fb9a0 x7 : 0000000000000000 x6 : 00000000000080e3
+x5 : ffff0000df8c03d8 x4 : 0000000000000000 x3 : 0000000000000000
+x2 : 0000000000000000 x1 : fffffffffffffdfb x0 : fffffffffffffdfb
+Call trace:
+ imx8mm_soc_revision+0xdc/0x180
+ imx8_soc_init+0xb0/0x1e0
+ do_one_initcall+0x94/0x1a8
+ kernel_init_freeable+0x240/0x2a8
+ kernel_init+0x28/0x140
+ ret_from_fork+0x10/0x20
+---[ end trace 0000000000000000 ]---
+SoC: i.MX8MP revision 1.1
+"
 
-next time, we should use better label name in chip.dtsi file. I try to
-reduce trivial node name order issue in patch review. And make contributor
-to be easy to follow.
+Signed-off-by: Marek Vasut <marex@denx.de>
+---
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Saravana Kannan <saravanak@google.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+---
+V2: Use the platform device approach instead of late_initcall
+---
+ drivers/soc/imx/soc-imx8m.c | 92 ++++++++++++++++++++++++++++---------
+ 1 file changed, 70 insertions(+), 22 deletions(-)
 
-Frank
+diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
+index fe111bae38c8e..170970d4955c6 100644
+--- a/drivers/soc/imx/soc-imx8m.c
++++ b/drivers/soc/imx/soc-imx8m.c
+@@ -30,7 +30,7 @@
+ 
+ struct imx8_soc_data {
+ 	char *name;
+-	u32 (*soc_revision)(void);
++	int (*soc_revision)(u32 *socrev);
+ };
+ 
+ static u64 soc_uid;
+@@ -51,24 +51,29 @@ static u32 imx8mq_soc_revision_from_atf(void)
+ static inline u32 imx8mq_soc_revision_from_atf(void) { return 0; };
+ #endif
+ 
+-static u32 __init imx8mq_soc_revision(void)
++static int imx8mq_soc_revision(u32 *socrev)
+ {
+ 	struct device_node *np;
+ 	void __iomem *ocotp_base;
+ 	u32 magic;
+ 	u32 rev;
+ 	struct clk *clk;
++	int ret;
+ 
+ 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mq-ocotp");
+ 	if (!np)
+-		return 0;
++		return -EINVAL;
+ 
+ 	ocotp_base = of_iomap(np, 0);
+-	WARN_ON(!ocotp_base);
++	if (!ocotp_base) {
++		ret = -EINVAL;
++		goto err_iomap;
++	}
++
+ 	clk = of_clk_get_by_name(np, NULL);
+ 	if (IS_ERR(clk)) {
+-		WARN_ON(IS_ERR(clk));
+-		return 0;
++		ret = PTR_ERR(clk);
++		goto err_clk;
+ 	}
+ 
+ 	clk_prepare_enable(clk);
+@@ -88,32 +93,45 @@ static u32 __init imx8mq_soc_revision(void)
+ 	soc_uid <<= 32;
+ 	soc_uid |= readl_relaxed(ocotp_base + OCOTP_UID_LOW);
+ 
++	*socrev = rev;
++
+ 	clk_disable_unprepare(clk);
+ 	clk_put(clk);
+ 	iounmap(ocotp_base);
+ 	of_node_put(np);
+ 
+-	return rev;
++	return 0;
++
++err_clk:
++	iounmap(ocotp_base);
++err_iomap:
++	of_node_put(np);
++	return ret;
+ }
+ 
+-static void __init imx8mm_soc_uid(void)
++static int imx8mm_soc_uid(void)
+ {
+ 	void __iomem *ocotp_base;
+ 	struct device_node *np;
+ 	struct clk *clk;
++	int ret = 0;
+ 	u32 offset = of_machine_is_compatible("fsl,imx8mp") ?
+ 		     IMX8MP_OCOTP_UID_OFFSET : 0;
+ 
+ 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mm-ocotp");
+ 	if (!np)
+-		return;
++		return -EINVAL;
+ 
+ 	ocotp_base = of_iomap(np, 0);
+-	WARN_ON(!ocotp_base);
++	if (!ocotp_base) {
++		ret = -EINVAL;
++		goto err_iomap;
++	}
++
+ 	clk = of_clk_get_by_name(np, NULL);
+ 	if (IS_ERR(clk)) {
+-		WARN_ON(IS_ERR(clk));
+-		return;
++		ret = PTR_ERR(clk);
++		goto err_clk;
+ 	}
+ 
+ 	clk_prepare_enable(clk);
+@@ -124,31 +142,41 @@ static void __init imx8mm_soc_uid(void)
+ 
+ 	clk_disable_unprepare(clk);
+ 	clk_put(clk);
++
++err_clk:
+ 	iounmap(ocotp_base);
++err_iomap:
+ 	of_node_put(np);
++
++	return ret;
+ }
+ 
+-static u32 __init imx8mm_soc_revision(void)
++static int imx8mm_soc_revision(u32 *socrev)
+ {
+ 	struct device_node *np;
+ 	void __iomem *anatop_base;
+-	u32 rev;
++	int ret;
+ 
+ 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mm-anatop");
+ 	if (!np)
+-		return 0;
++		return -EINVAL;
+ 
+ 	anatop_base = of_iomap(np, 0);
+-	WARN_ON(!anatop_base);
++	if (!anatop_base) {
++		ret = -EINVAL;
++		goto err_iomap;
++	}
+ 
+-	rev = readl_relaxed(anatop_base + ANADIG_DIGPROG_IMX8MM);
++	*socrev = readl_relaxed(anatop_base + ANADIG_DIGPROG_IMX8MM);
+ 
+ 	iounmap(anatop_base);
+ 	of_node_put(np);
+ 
+-	imx8mm_soc_uid();
++	return imx8mm_soc_uid();
+ 
+-	return rev;
++err_iomap:
++	of_node_put(np);
++	return ret;
+ }
+ 
+ static const struct imx8_soc_data imx8mq_soc_data = {
+@@ -184,7 +212,7 @@ static __maybe_unused const struct of_device_id imx8_soc_match[] = {
+ 	kasprintf(GFP_KERNEL, "%d.%d", (soc_rev >> 4) & 0xf,  soc_rev & 0xf) : \
+ 	"unknown"
+ 
+-static int __init imx8_soc_init(void)
++static int imx8m_soc_probe(struct platform_device *pdev)
+ {
+ 	struct soc_device_attribute *soc_dev_attr;
+ 	struct soc_device *soc_dev;
+@@ -212,8 +240,11 @@ static int __init imx8_soc_init(void)
+ 	data = id->data;
+ 	if (data) {
+ 		soc_dev_attr->soc_id = data->name;
+-		if (data->soc_revision)
+-			soc_rev = data->soc_revision();
++		if (data->soc_revision) {
++			ret = data->soc_revision(&soc_rev);
++			if (ret)
++				goto free_soc;
++		}
+ 	}
+ 
+ 	soc_dev_attr->revision = imx8_revision(soc_rev);
+@@ -251,6 +282,23 @@ static int __init imx8_soc_init(void)
+ 	kfree(soc_dev_attr);
+ 	return ret;
+ }
++
++static struct platform_driver imx8m_soc_driver = {
++	.probe = imx8m_soc_probe,
++	.driver = {
++		.name = "imx8m-soc",
++	},
++};
++module_platform_driver(imx8m_soc_driver);
++
++static int __init imx8_soc_init(void)
++{
++	struct platform_device *pdev;
++
++	pdev = platform_device_register_simple("imx8m-soc", -1, NULL, 0);
++
++	return IS_ERR(pdev) ? PTR_ERR(pdev) : 0;
++}
+ device_initcall(imx8_soc_init);
+ MODULE_DESCRIPTION("NXP i.MX8M SoC driver");
+ MODULE_LICENSE("GPL");
+-- 
+2.45.2
 
->
-> [...]
