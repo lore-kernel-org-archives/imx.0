@@ -1,100 +1,91 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1A8157492;
-	Wed, 25 Sep 2024 07:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D4A1514FB;
+	Wed, 25 Sep 2024 07:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727250611; cv=none; b=KvxmfgqKblMrXVo6Wfjnf/nR2E+NsKNn8wMVif9aCvhAOoZW7FNoooY+AL4rNUpb4kQArYEekXauqAjIiJmsL66Sl1lOHm8MLCRssWwHE6TKPMgq+7t/KKq4F4156ez434SxwG3tlk2XtpaJp0MleCAG9D7EUwbnrRmoY8ETJm4=
+	t=1727250654; cv=none; b=cH9PNkJlBQ6MHaMrqZy5XMcWPzSmYJwixVltzGGWwfg8qJbdVrlQvY9B5HF8mVCNE4eqCwGbyPCsrLwHQfs68I/sru1Vj/sfIDyGke+UtNfrNy2Csdo/UYXT9MReUKk0K0Yjg3c9XK5WKxQna9JLzs60g4FxumxxuFstTEYnnd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727250611; c=relaxed/simple;
-	bh=jpwCPw9gO66yBXZYDqQ9z6hyrzpWpbRkEarKWVXKXSI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ISPENZmNRAHxt35zCIgbnJw4S7hz2Z5Mecmm/ZSBB1rer/uKQpJLa+uMxjbwH6e7iuLa4yrkXUausPOwnlOg5+V7PMagL1SlA9Y+c/0t3lf2iZm1tJ/L9NVMUUJPW4ASjqYL10Ry33iz+OFH7dZwuEi8o4S3G/qnSdn+LXvaojE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FCd0kQSH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727250654; c=relaxed/simple;
+	bh=nxxHaanGdEKogTdB9FIAntly8bVc3L9IFt63TQjpzQo=;
+	h=Content-Type:Date:Message-Id:Cc:From:To:Subject:References:
+	 In-Reply-To; b=TuP51jBH5Ipgf71C5HFXHUr6fSDW2ZudCW05KJpPL3lH8BncFksnryCDo9YcUuyRO9ooZZ7oJYdRsorq0gCYkxKpKCiv/us4sjZaVJyGiMbspc6Z+8EQJE9YXZPR8D7scHV8R8xTcBnfIdy2mlQMGOvgM4NStGgMgbfa0IFGqHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uqjWPFOE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FCd0kQSH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A9FDC4CEC6;
-	Wed, 25 Sep 2024 07:50:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uqjWPFOE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7345AC4CEC3;
+	Wed, 25 Sep 2024 07:50:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727250610;
-	bh=jpwCPw9gO66yBXZYDqQ9z6hyrzpWpbRkEarKWVXKXSI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FCd0kQSHfT/NK8Yc6CwRmfutmQESaE7UFlSTa3Se47Uz6Bh+yc0DBQ+LYx9fym8Tg
-	 xXjjq4xWJGgArkHMGywBkOav7eW/pzkVriKUDtR4JASw/VvabZmIbViT+Zzws3kp6e
-	 pRFtn6tJdsSEPMZXfU+2KRdibFffIRa9zMFUDySFySjqwrIeh625j86j30zn6PGzmU
-	 dHiK/sLnIleh4/lH4+c/7O65/u0BtNt5LoD1qNZzEkPyqPYOUblJGeorkwYokdtwXf
-	 1rB/SyA5JqUAj+iZR3FGFrhza3qCoUyxNM8/mo8YWGtbJVkbf4DQLwFQg8Qce0XMqT
-	 Aab1KNASbH6KQ==
-Date: Wed, 25 Sep 2024 09:50:06 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: l.stach@pengutronix.de, kwilczynski@kernel.org, bhelgaas@google.com, 
-	lpieralisi@kernel.org, frank.li@nxp.com, robh+dt@kernel.org, conor+dt@kernel.org, 
-	shawnguo@kernel.org, krzysztof.kozlowski+dt@linaro.org, festevam@gmail.com, 
-	s.hauer@pengutronix.de, linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, kernel@pengutronix.de, 
-	imx@lists.linux.dev
-Subject: Re: [PATCH v2 1/9] dt-bindings: imx6q-pcie: Add ref clock for i.MX95
- PCIe
-Message-ID: <vtrxj3r4wy6htxyl44rzjyao4zso6z2idexkvxrh3cg4wazcdc@gffmfu22jiyh>
-References: <1727245477-15961-1-git-send-email-hongxing.zhu@nxp.com>
- <1727245477-15961-2-git-send-email-hongxing.zhu@nxp.com>
+	s=k20201202; t=1727250654;
+	bh=nxxHaanGdEKogTdB9FIAntly8bVc3L9IFt63TQjpzQo=;
+	h=Date:Cc:From:To:Subject:References:In-Reply-To:From;
+	b=uqjWPFOEDimRXD2VswrjL3FReC/PLCDYqsdOf0tEbMzGoSb49T3BxZ+aNfyVuIPNr
+	 zwj7VzlVOxkZMshIyFkAJW0ZAbTSKbOog8d65DRt1qMVB+lnB1BSigKvB+Do2oyOK+
+	 6Bv0dIg53Rf9A6zBWcvT16pSF/BFeWG8SBKlBRpvwlkLyPVVf9xisgpFuZntalK67I
+	 J7zxXk38/tEW7UVpu1ltIpuwGTralqeAxijfF74HEHIGLhOUNr22bTPc3spWFsSbt2
+	 TjOwMb9Hq92yJ5SPtI6E5kqEy3uEpr6QGqqlI7fFrIjVYbRf5jjMDKIj32dzfnBLzk
+	 jl5junbyVtJBQ==
+Content-Type: multipart/signed;
+ boundary=5f64a94d3cc6264df8dcbd44d202fcc8e6751e4c0113c74b5379b5495cbb;
+ micalg=pgp-sha384; protocol="application/pgp-signature"
+Date: Wed, 25 Sep 2024 09:50:49 +0200
+Message-Id: <D4F79677N5I8.2AWKV1VNY66I9@kernel.org>
+Cc: <linux-mtd@lists.infradead.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <imx@lists.linux.dev>,
+ <linux-arm-kernel@lists.infradead.org>, "Peng Fan" <peng.fan@nxp.com>
+From: "Michael Walle" <mwalle@kernel.org>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, "Tudor Ambarus"
+ <tudor.ambarus@linaro.org>, "Pratyush Yadav" <pratyush@kernel.org>, "Miquel
+ Raynal" <miquel.raynal@bootlin.com>, "Richard Weinberger" <richard@nod.at>,
+ "Vignesh Raghavendra" <vigneshr@ti.com>, "Rob Herring" <robh@kernel.org>,
+ "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley"
+ <conor+dt@kernel.org>, "Shawn Guo" <shawnguo@kernel.org>, "Sascha Hauer"
+ <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>
+Subject: Re: [PATCH 1/3] dt-bindings: mtd: jedec,spi-nor: add optional
+ vcc-supply
+X-Mailer: aerc 0.16.0
+References: <20240920-spi-v1-0-97f220c2e10c@nxp.com>
+ <20240920-spi-v1-1-97f220c2e10c@nxp.com>
+In-Reply-To: <20240920-spi-v1-1-97f220c2e10c@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1727245477-15961-2-git-send-email-hongxing.zhu@nxp.com>
 
-On Wed, Sep 25, 2024 at 02:24:29PM +0800, Richard Zhu wrote:
-> Previous reference clock of i.MX95 is on when system boot to kernel. But
-> boot firmware change the behavor, it is off when boot. So it needs be turn
-> on when it is used. Also it needs be turn off/on when suspend and resume.
+--5f64a94d3cc6264df8dcbd44d202fcc8e6751e4c0113c74b5379b5495cbb
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-That's an old platform... How come that you changed bootloader just now?
-Like 7 or 8 years after?
+Hi,
 
-For the future: you should document all clock inputs, not only ones
-needed for given bootloader...
+since you respin anyway.
 
-> 
-> Add one ref clock for i.MX95 PCIe. Increase clocks' maxItems to 5 and keep
-> the same restriction with other compatible string.
+On Fri Sep 20, 2024 at 10:54 AM CEST, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+>
+> Introduce optional vcc-supply property, spi nor flash needs power supply
 
-<form letter>
-Please use scripts/get_maintainers.pl to get a list of necessary people
-and lists to CC (and consider --no-git-fallback argument). It might
-happen, that command when run on an older kernel, gives you outdated
-entries. Therefore please be sure you base your patches on recent Linux
-kernel.
+SPI NOR flashes
 
-Tools like b4 or scripts/get_maintainer.pl provide you proper list of
-people, so fix your workflow. Tools might also fail if you work on some
-ancient tree (don't, instead use mainline) or work on fork of kernel
-(don't, instead use mainline). Just use b4 and everything should be
-fine, although remember about  if you added new
-patches to the patchset.
-</form letter>
+> to work properly. The power supply maybe software controlable per board
+> design.
 
-and I was wondering why I cannot find this and previous thread in my
-inbox... So please stop developing on two year old kernels (and before
-you say "I do not", well, then fix way how you use tools).
+-michael
 
+--5f64a94d3cc6264df8dcbd44d202fcc8e6751e4c0113c74b5379b5495cbb
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> ---
->  .../bindings/pci/fsl,imx6q-pcie-common.yaml   |  4 +--
->  .../bindings/pci/fsl,imx6q-pcie.yaml          | 25 ++++++++++++++++---
->  2 files changed, 23 insertions(+), 6 deletions(-)
-> 
+-----BEGIN PGP SIGNATURE-----
 
-You missed to update ep binding.
+iKgEABMJADAWIQTIVZIcOo5wfU/AngkSJzzuPgIf+AUCZvPA2hIcbXdhbGxlQGtl
+cm5lbC5vcmcACgkQEic87j4CH/gBdgF/Ze5wcLf/bJ9ZbddGfrY4S4tcaieVwkWq
+eCjlDbkGpkZS6NGXbNfClc/9ulCS7yRmAX9v2Q9vYw6VgR+Voh8/neZZl6UDfe7w
+KLbD3jiQOWpYIo1LcAZ91jDRTIxkSVNNVGw=
+=8Uvm
+-----END PGP SIGNATURE-----
 
-Best regards,
-Krzysztof
-
+--5f64a94d3cc6264df8dcbd44d202fcc8e6751e4c0113c74b5379b5495cbb--
