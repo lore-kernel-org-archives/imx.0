@@ -1,94 +1,83 @@
-Received: from mail.avm.de (mail.avm.de [212.42.244.120])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CC7186E5D
-	for <imx@lists.linux.dev>; Wed, 25 Sep 2024 13:51:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54639487B0
+	for <imx@lists.linux.dev>; Wed, 25 Sep 2024 14:31:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727272306; cv=none; b=US5SgpCTk/paPfpImlDrg0T9Lzv864BEXBZAKaMcxdRpcop7isTddtzULHRtNeuqZ3dUqponL+U944PJVIXlqUpa9ghv9WVJPtxUcxFzr1xLwEGf8vm2sZLxvdzTbvEDkMyusFgeoFX/sooJ3VSiowFXYBNubzA1QPVtJmUtq6g=
+	t=1727274720; cv=none; b=QUQ/pwca7s+uK2WFBo8sMn4X9J9a61H4ETYZrHepnoSgw+ZRjBPe6XUFRHN+52eg5zaZOJYOOvzwjX1JTJbzHXNQ6HuIuq/3kW8BgENnrKKm5NphdSZoKcSj7lGr8ZvWHFJOFfbAA3kl0S1rzDsUWdcZBqn0c3VvPGdNnpxJpLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727272306; c=relaxed/simple;
-	bh=PZOseGL0iHKfe7J6qxH1nvMXMdEDwAT/Xy9zLCH3rGY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cit9P8vKzDrE6q4qj9zsVFWDmncyhK7Av8nqb1lNrpEKGbB53HbWhiVj2qkuHJ2kD0B9efBX/z5CsbbxC1450URdVIJdY6hiposrnX3X1soIs5LcL9iLzH36y0v999PZceb7CIL1DYqgrotVSthOKnsrZ5YQRP0TFmr85Ul5mYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=YCFrBm6k; arc=none smtp.client-ip=212.42.244.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=avm.de
+	s=arc-20240116; t=1727274720; c=relaxed/simple;
+	bh=P6Q8H/nVfZxoli/QLkCamvYcqkoFGaMes991H56nXKM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NbVBqRBGTfpyc/q9GuOlBupktFkmuB+Y9so+VWwA+bCGaClao1iMXrpMy5Jfjhm7ZClbgNXRV+2R8yDXIZVuWZOiw6oGOwE5SEJlh3zPJ6R/qi2yLQUNTs55OaI02vGyz+fkamFxeIvt6cJdDf1hNIFZRaFOV9/U+XsDSRFDNrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=wnV5yGb8; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="YCFrBm6k"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1727272292; bh=PZOseGL0iHKfe7J6qxH1nvMXMdEDwAT/Xy9zLCH3rGY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YCFrBm6k6wflnlpVTTulEJyP+GswIxW6YHKbZacOyy1T8Bq/UqYE6csRcyr/s6GIc
-	 RvZVSxEge8lrfQ3rwMMfx4dTKGRZaTu2q6KBo8+iX+mxUaTaK0JUs9lxa4wQOLpccM
-	 fNSfklfb2LAbfmPUTMQZUKRubDy4fxaZ41e/5ew0=
-Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [IPv6:2001:bf0:244:244::71])
-	by mail.avm.de (Postfix) with ESMTPS;
-	Wed, 25 Sep 2024 15:51:32 +0200 (CEST)
-Received: from l-nschier-nb (unknown [61.8.139.63])
-	by mail-auth.avm.de (Postfix) with ESMTPSA id 05BDB8077D;
-	Wed, 25 Sep 2024 15:51:32 +0200 (CEST)
-Date: Wed, 25 Sep 2024 15:51:31 +0200
-From: Nicolas Schier <n.schier@avm.de>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: robh@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	masahiroy@kernel.org, nathan@kernel.org, devicetree@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH] kbuild: fix a typo dt_binding_schema ->
- dt_binding_schemas
-Message-ID: <ZvQVY6ChCYdJpBEW@l-nschier-nb>
-References: <20240925053230.45606-1-xu.yang_2@nxp.com>
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="wnV5yGb8"
+Received: from localhost.localdomain (85-222-111-42.dynamic.chello.pl [85.222.111.42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: lukma@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id BA5EF85B66;
+	Wed, 25 Sep 2024 16:31:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1727274712;
+	bh=Lu4rvVtjeWbLqPkpe2uf4LN2PWTpI6uvoia3eK+/qII=;
+	h=From:To:Cc:Subject:Date:From;
+	b=wnV5yGb8IhjheI7hU3yaeiRng4byjGK6k5+smvKVFI+B1+42LfkkSoQz7gNU9fWeO
+	 O0YrgaPxwBCnvb2PD4VxcIkZ0qF9JqZyMwJvMhy78PDzB5U5O7ranO4Fb1LSXcERiv
+	 YLD3O3FoLZmzx4LgeQ8+GeeJ1MBsbbNwQakFSif3TCAQPvsPdPXNMel7JWlvdZZ04k
+	 P8nN6mdJm/SvrtZfTw6CXnlTGLCeiFswKHstf/exJks4MHmea4u+Wle5dhL7Ozt08d
+	 3deArbxt3GcBM2F8yW4uKpOysx+HHuunNuAHjiHPXvXHUz35GU67O1Rk7Sav+LMx+M
+	 EnKciuilwzmAA==
+From: Lukasz Majewski <lukma@denx.de>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Lukasz Majewski <lukma@denx.de>
+Subject: [PATCH v7 1/2] dt-bindings: arm: Document the btt3 i.MX28 based board
+Date: Wed, 25 Sep 2024 16:31:28 +0200
+Message-Id: <20240925143129.4081815-1-lukma@denx.de>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240925053230.45606-1-xu.yang_2@nxp.com>
-X-purgate-ID: 149429::1727272292-9230AE44-25FB1F99/0/0
-X-purgate-type: clean
-X-purgate-size: 1339
-X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate: clean
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On Wed, Sep 25, 2024 at 01:32:30PM +0800, Xu Yang wrote:
-> If we follow "make help" to "make dt_binding_schema", we will see
-> below error:
-> 
-> $ make dt_binding_schema
-> make[1]: *** No rule to make target 'dt_binding_schema'.  Stop.
-> make: *** [Makefile:224: __sub-make] Error 2
-> 
-> It should be a typo. So this will fix it.
-> 
-> Fixes: 604a57ba9781 ("dt-bindings: kbuild: Add separate target/dependency for processed-schema.json")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> ---
->  Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Makefile b/Makefile
-> index 265dd990a9b6..7aa71c70305e 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -1645,7 +1645,7 @@ help:
->  		echo '* dtbs               - Build device tree blobs for enabled boards'; \
->  		echo '  dtbs_install       - Install dtbs to $(INSTALL_DTBS_PATH)'; \
->  		echo '  dt_binding_check   - Validate device tree binding documents and examples'; \
-> -		echo '  dt_binding_schema  - Build processed device tree binding schemas'; \
-> +		echo '  dt_binding_schemas - Build processed device tree binding schemas'; \
->  		echo '  dtbs_check         - Validate device tree source files';\
->  		echo '')
->  
-> -- 
-> 2.34.1
-> 
+The imx287 based btt3 board is very similar to xea in terms of used SOM
+module.
 
-Thanks!
+Signed-off-by: Lukasz Majewski <lukma@denx.de>
+---
+ Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-Reviewed-by: Nicolas Schier <n.schier@avm.de>
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index b39a7e031177..2b5c405d15ef 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -97,6 +97,7 @@ properties:
+               - i2se,duckbill
+               - i2se,duckbill-2
+               - karo,tx28                 # Ka-Ro electronics TX28 module
++              - lwn,imx28-btt3
+               - lwn,imx28-xea
+               - msr,m28cu3                # M28 SoM with custom base board
+               - schulercontrol,imx28-sps1
+-- 
+2.39.2
+
