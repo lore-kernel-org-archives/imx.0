@@ -1,115 +1,103 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8499418D65D;
-	Wed, 25 Sep 2024 14:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A24176FA5;
+	Wed, 25 Sep 2024 14:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727275001; cv=none; b=ABZRqJhO/1uWw6A4w+LdkOKJupNcgkF5FtFH65x7DdnEc3u8nKOlCS8Zpyyps3YtSMkHOKZJUdB+doB1zHzV5hb8Jjx7KQ8gWdDFliTBqam4Rlc1YYRShmUbA8KFCDg69nyon80DLwWOsFERRSnLP0KUT1179otZe94GmXmfciI=
+	t=1727276239; cv=none; b=u7ofL/G016ov4beuCEQ1X/w1u3TK0zhTE/P1D6ZPXs/Gk+svnO5/Bw76HxxRZLmId1/qlrgcf6nkFv7H85BH/ywbsdSSMySLeWZE8WA8c//ZmPzLGB5XyksvjLDspgaTDTp18hE74gcmWbscsSEN91eRkWaGxFJNFJd/N7FfkwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727275001; c=relaxed/simple;
-	bh=IRWh34M9eLXn2sq7ps5dZpSuJotvBM24SKsU7Cln6A4=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=Oa6hyqqR/gUwtgGp7ksT3KNvXWgM4Cm+GJ8vQeEluokJbWHPs90oB5b1uxySAlAFAPdpDIYcdfna4Y2pPEa7WOyXYlUb1hmaPQeWwsJDmt5nZvLvBj7TEHZxugnsDPZIdKrBImZCnIRSQdpYE3yw5f4Bz+ISFjgQsF2digdCAxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FuMy2Gdi; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727276239; c=relaxed/simple;
+	bh=9SYCC7mLQOM3OuiI7cpij+d1MGpKZ8J9VMN2/6n6G0k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hX1dGfW/H9mQVAa4x3mVtGm4noVy6SLIW3cSNAcQKLODz2UY1RfBYFZOSIGcfYHyRLyc994f8Ffy5gL8QnwprBNQii5NJvoAaXInMePW4Dy/d55IGY3unPTSEBzqQdALZrzqj5qMAUksJLNU2qpe9plakoNh1mG4xQdIj7jK1OY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PxaooV7M; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FuMy2Gdi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16B4C4CEC7;
-	Wed, 25 Sep 2024 14:36:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PxaooV7M"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E6D8C4CEC3;
+	Wed, 25 Sep 2024 14:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727275001;
-	bh=IRWh34M9eLXn2sq7ps5dZpSuJotvBM24SKsU7Cln6A4=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=FuMy2Gdi2xZhtaAjCok4TyOR1e3AHrcBxcbEfwcuNW83WBV6jQuFJjiXMGjoN7ctk
-	 gaTBEnfoeUp6d7mgie3TcBqBDoPctPCoDYGX35Ozskt0ml67i7ZIBUl3icOAlLqxOS
-	 AedfPM/Ji5si+wMnUBD42Uhsw3BRSiRucgb3ms8JXCydPLxkbpqLNJZremaBFgQmYS
-	 CzN+YmRV12NpR+e1O/KOitU8+zRw14Rwaw7fSaE7h70yF1X7dNtdDExdzCwTdrnhau
-	 xLOHk6boUuRky+qbYiIeQfPf7+FUpO4GQCuOirREWyo1cJQeWNHVu74P5X4HxQpwjG
-	 B+RgNJYV23+0Q==
-Date: Wed, 25 Sep 2024 09:36:40 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1727276239;
+	bh=9SYCC7mLQOM3OuiI7cpij+d1MGpKZ8J9VMN2/6n6G0k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PxaooV7Mtx9r2NdPDWFS18359xSFnLg962Qnpl1y++JiS8j6cHBsCkZGWKjj88jJZ
+	 NudCyI0z1d7Tpk+ZX3PBiWH8hfM0A/vWJw7eOfL/NJIcQeaZmbqyS7ICjf1kRHHAjG
+	 WjNTKP3pR5Xx5f8DtOm8GUjCRxOYTcmtT6Ojkyj+WCFlME8IEuzeWlYqV74rXT7Huc
+	 1x1JWP6kwFyYJ0oYBJ+OUCFciiox1HwNuZJBrZI8HY/HGSyhIWLjAqT6KbvCkITz3v
+	 iPjfdLluRfPzIx/GSV0OR0p5zaZdwUimM5T0PyA5AAKPQNFVvHkjkKFiE96SduQLGL
+	 SUVFWFaWz4+wA==
+Date: Wed, 25 Sep 2024 15:57:15 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Lukasz Majewski <lukma@denx.de>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 1/2] dt-bindings: arm: Document the btt3 i.MX28 based
+ board
+Message-ID: <20240925-sulk-unsafe-2a175b3ae578@spud>
+References: <20240925143129.4081815-1-lukma@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: =?utf-8?q?Michal_Vok=C3=A1=C4=8D?= <michal.vokac@ysoft.com>
-Cc: Michael Walle <mwalle@kernel.org>, 
- Herburger <gregor.herburger@ew.tq-group.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, 
- Hugo Villeneuve <hvilleneuve@dimonoff.com>, linux-kernel@vger.kernel.org, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-usb@vger.kernel.org, 
- Mathieu Othacehe <m.othacehe@gmail.com>, 
- Joao Paulo Goncalves <joao.goncalves@toradex.com>, 
- Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
- Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Petr Benes <petr.benes@ysoft.com>, Shawn Guo <shawnguo@kernel.org>, 
- Marco Felsch <m.felsch@pengutronix.de>, 
- Alexander Stein <alexander.stein@ew.tq-group.com>, 
- Hiago De Franco <hiago.franco@toradex.com>
-In-Reply-To: <20240925124903.1837869-1-michal.vokac@ysoft.com>
-References: <20240925124903.1837869-1-michal.vokac@ysoft.com>
-Message-Id: <172727480975.1214083.15009186129806772241.robh@kernel.org>
-Subject: Re: [PATCH v5 0/2] Add support for new IMX8MP based board
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="Ipq2zLzyU4Jp5GR6"
+Content-Disposition: inline
+In-Reply-To: <20240925143129.4081815-1-lukma@denx.de>
 
 
-On Wed, 25 Sep 2024 14:49:01 +0200, Michal Vokáč wrote:
-> Hi,
-> this series adds support for a new member in our IOTA platform.
-> The board is based on the i.MX8MP SoC. It adds support for most
-> of the board functionality except USB Type-C port and some other
-> minor things.
-> 
-> This series originally included the dt-binding for that Type-C
-> port controller but I finally removed it based on a good comment
-> from Krzysztof. I will post the Type-C binding including the driver
-> in a followup series.
-> 
-> Michal
-> 
-> Michal Vokáč (2):
->   dt-bindings: arm: Add i.MX8MP IOTA2 Lumpy board
->   arm64: dts: imx: Add imx8mp-iota2-lumpy board
-> 
->  .../devicetree/bindings/arm/fsl.yaml          |   1 +
->  arch/arm64/boot/dts/freescale/Makefile        |   1 +
->  .../boot/dts/freescale/imx8mp-iota2-lumpy.dts | 423 ++++++++++++++++++
->  3 files changed, 425 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-iota2-lumpy.dts
-> 
-> --
-> 2.43.0
-> 
-> 
+--Ipq2zLzyU4Jp5GR6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Sep 25, 2024 at 04:31:28PM +0200, Lukasz Majewski wrote:
+> The imx287 based btt3 board is very similar to xea in terms of used SOM
+> module.
+>=20
+> Signed-off-by: Lukasz Majewski <lukma@denx.de>
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+I already acked this:
+https://lore.kernel.org/all/20240912-hardcore-swagger-0d18494c5d56@spud/
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
+> ---
+>  Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentati=
+on/devicetree/bindings/arm/fsl.yaml
+> index b39a7e031177..2b5c405d15ef 100644
+> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
+> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+> @@ -97,6 +97,7 @@ properties:
+>                - i2se,duckbill
+>                - i2se,duckbill-2
+>                - karo,tx28                 # Ka-Ro electronics TX28 module
+> +              - lwn,imx28-btt3
+>                - lwn,imx28-xea
+>                - msr,m28cu3                # M28 SoM with custom base boa=
+rd
+>                - schulercontrol,imx28-sps1
+> --=20
+> 2.39.2
+>=20
 
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
+--Ipq2zLzyU4Jp5GR6
+Content-Type: application/pgp-signature; name="signature.asc"
 
-  pip3 install dtschema --upgrade
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZvQkygAKCRB4tDGHoIJi
+0uIsAQDoGp8ddfbMEMpRBAzjVk94DKxaTnXLF0f09XIc+EkDQAD9HKfgv0LRKcCn
+dx8tu2FLa8k1fTP4j4rFIl755oMsQAw=
+=TUpg
+-----END PGP SIGNATURE-----
 
-New warnings running 'make CHECK_DTBS=y freescale/imx8mp-iota2-lumpy.dtb' for 20240925124903.1837869-1-michal.vokac@ysoft.com:
-
-arch/arm64/boot/dts/freescale/imx8mp-iota2-lumpy.dtb: pcie-ep@33800000: reg: [[864026624, 4194304], [402653184, 134217728]] is too short
-	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie-ep.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-iota2-lumpy.dtb: pcie-ep@33800000: reg-names: ['dbi', 'addr_space'] is too short
-	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie-ep.yaml#
-
-
-
-
-
+--Ipq2zLzyU4Jp5GR6--
