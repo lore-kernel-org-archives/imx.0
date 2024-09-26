@@ -1,58 +1,57 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D61C125;
-	Thu, 26 Sep 2024 01:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54F4156C71;
+	Thu, 26 Sep 2024 02:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727315426; cv=none; b=gr1PvCEvZZ0LpZ6HxzY77ndI3Q9j0zidXJLgL21OqqoqjprMKc6luFkuPdLlfkxgYo84n38AFR07uhgOt2cfEihRLPyXWu5hU04FwOEVt0nPeJAT2ACarYGiq2K64BSXEJeOzeJ44iMKiC+vSIbnXvkA3dK/rY9DEiJCfyaj4qo=
+	t=1727316547; cv=none; b=BqhMfCrLTm6NF6oHWA8yzHP3MBs+ortgDT3D3HGrJph63DLRjmJU3ULL/SrvFk2s29YSLaUVKxE6bpt7+N/LzdqMEkE0FDnwyoxmrFSVZLz0Kf0+M2sIbbjY9hCVSbCzQMUfNSUqqWW0djjNWunnYvcy1UYcqTBC6fOs8X1E9kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727315426; c=relaxed/simple;
-	bh=SVN/xnAwYRntnu4COhrWlYvc1k7DTNxN8qZdWnWoQGk=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=QDf/bEJVVpKyQRzK90kUtjnOWoDfa3fd+SX2zaCFhsFZWStq6JHqDWZZBZcYXC5vMeXLmSjfUefYJZgY2vVMYVXVLXhGFoL8EP7n2VY1+YNaNk/KrZyBLBAF9FxmB3TsUtWsaxbp6B0Khk7EEosMXz1s56y1Aw9d2lsClbx5pCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MriBpR3J; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727316547; c=relaxed/simple;
+	bh=M6ISVRGWt2YWY2xkGb/Zh1/Y2FhcZIYx1Ll7zaW+C08=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PtHwVL149MOgg1jOW9Fdv3oPVTmoVs/OBxgrSbm1kKtWUYViuOgjSdYOWCc9BGyWCdnElMR8uys/iYwuXm5s1JhmHgPWumjSJXAjKTp82/U/qaKTOdLTS/1yzD0ob/Xq+4meswqDKHaU8Zvi2/avSgysPf5J3zIbhTWCp0UNWXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lYN3jqPo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MriBpR3J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E2B8C4CEC3;
-	Thu, 26 Sep 2024 01:50:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lYN3jqPo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04BC2C4CEC3;
+	Thu, 26 Sep 2024 02:09:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727315425;
-	bh=SVN/xnAwYRntnu4COhrWlYvc1k7DTNxN8qZdWnWoQGk=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=MriBpR3J6key0RjEL0crJV0BKK8K+hBK3ZjhYkKZafuLkqAnjgL4FBh4KJqR3HoMS
-	 kONaxwAtt4tkuGMrjnJqH5vrp1tDing102YranbIyLq+WD3SeDbAtrQtwToP+9f9fX
-	 W+ZBIfobXbwSDa20iKXhyLOfFMdwl5cNDxGLScnkxcYVIodzfF6dMbqzLJqV+S427R
-	 +6QmAJT4G6LjMWLmnWMQJ2GVGXkEwlfBJ/AXA0yXAZQrnOeutoEqUxtfSLZgI5VzZ0
-	 jBvceL5odd06wZcWG8/w0RESQifxKOJ6N9cCzsPl2Be3SsI+pDlabGyZTYiJ9At0+1
-	 SRs+gOVRAd1Cw==
-Date: Wed, 25 Sep 2024 20:50:24 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1727316547;
+	bh=M6ISVRGWt2YWY2xkGb/Zh1/Y2FhcZIYx1Ll7zaW+C08=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lYN3jqPoNP5YDqf60G7WyiKAO2OBv9hpFUejKtuQCgTrhIdYCmuW0sxrN7wCGp5fL
+	 2YAm9Jye8BOUTlUjMPlVM/zx8zuEWV4OKbEzPGdw3nLqAPPsmwM0HGCbWf78gjRFe7
+	 Cy89DDGvSF2EG3set4sjEAVMuUXf83MW+Yy7hYJxQSRUHV6hAwDv+G7LIzHG6kFp3R
+	 TWiL7jLgKkxi737wRPytv/lsAWBKHiHB6I0v6EVmWpSv0MVao5WJ8SzN16rV4KiQ+5
+	 AygH/X0HluzBMr4VcLlPsrSBcNmI5cfx1nUYLKmWlsuad6izgrsKMZ7gI0KB30R0GZ
+	 u3rceLwUs4x1w==
+Date: Wed, 25 Sep 2024 21:09:06 -0500
+From: Rob Herring <robh@kernel.org>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Iuliana Prodan <iuliana.prodan@nxp.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 1/6] dt-bindings: dsp: fsl,dsp: fix power domain count
+Message-ID: <20240926020906.GA2246040-robh@kernel.org>
+References: <20240925232008.205802-1-laurentiumihalcea111@gmail.com>
+ <20240925232008.205802-2-laurentiumihalcea111@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, Shawn Guo <shawnguo@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shengjiu Wang <shengjiu.wang@nxp.com>, 
- linux-kernel@vger.kernel.org, Iuliana Prodan <iuliana.prodan@nxp.com>, 
- devicetree@vger.kernel.org, imx@lists.linux.dev, 
- Daniel Baluta <daniel.baluta@nxp.com>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20240925232008.205802-2-laurentiumihalcea111@gmail.com>
-References: <20240925232008.205802-1-laurentiumihalcea111@gmail.com>
- <20240925232008.205802-2-laurentiumihalcea111@gmail.com>
-Message-Id: <172731542455.2226102.16295733328701144555.robh@kernel.org>
-Subject: Re: [PATCH v2 1/6] dt-bindings: dsp: fsl,dsp: fix power domain
- count
 
-
-On Wed, 25 Sep 2024 19:20:03 -0400, Laurentiu Mihalcea wrote:
+On Wed, Sep 25, 2024 at 07:20:03PM -0400, Laurentiu Mihalcea wrote:
 > From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 > 
 > Per the current binding, QM/QXP DSPs are supposed to have 4
@@ -65,6 +64,11 @@ On Wed, 25 Sep 2024 19:20:03 -0400, Laurentiu Mihalcea wrote:
 > Secondly, drop DSP and DSP_RAM from the count for QXP. These
 > are attached to the platform devices of the lpcgs (used as clock
 > providers for the DSP).
+
+What's a platform device? Sounds like some Linux implementation detail.
+
+The number of power islands for a h/w block shouldn't be changing.
+
 > 
 > With this in mind, the number of required power domains for QXP
 > is 1 (MU13B), while for QM it's 3 (MU13B, DSP, DSP_RAM).
@@ -81,29 +85,99 @@ On Wed, 25 Sep 2024 19:20:03 -0400, Laurentiu Mihalcea wrote:
 >  .../devicetree/bindings/dsp/fsl,dsp.yaml      | 62 +++++++++++++++----
 >  1 file changed, 49 insertions(+), 13 deletions(-)
 > 
+> diff --git a/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml b/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
+> index 9af40da5688e..e2f016af1048 100644
+> --- a/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
+> +++ b/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
+> @@ -51,8 +51,6 @@ properties:
+>      description:
+>        List of phandle and PM domain specifier as documented in
+>        Documentation/devicetree/bindings/power/power_domain.txt
+> -    minItems: 1
+> -    maxItems: 4
 
-My bot found errors running 'make dt_binding_check' on your patch:
+Top level should be the range of domains that covers all variants.
 
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/mailbox/arm,mhuv2.example.dtb: dsp@596e8000: power-domains: [[4294967295, 0], [4294967295, 1], [4294967295, 2], [4294967295, 3]] is too long
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240925232008.205802-2-laurentiumihalcea111@gmail.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+>  
+>    mboxes:
+>      description:
+> @@ -97,16 +95,55 @@ allOf:
+>        properties:
+>          compatible:
+>            contains:
+> -            enum:
+> -              - fsl,imx8qxp-dsp
+> -              - fsl,imx8qm-dsp
+> -              - fsl,imx8qxp-hifi4
+> -              - fsl,imx8qm-hifi4
+> +            const: fsl,imx8qxp-hifi4
+>      then:
+>        properties:
+>          power-domains:
+> -          minItems: 4
+> -    else:
+> +          maxItems: 3
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: fsl,imx8qxp-dsp
+> +    then:
+> +      properties:
+> +        power-domains:
+> +          minItems: 3
+> +          maxItems: 3
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: fsl,imx8qm-dsp
+> +    then:
+> +      properties:
+> +        power-domains:
+> +          minItems: 5
+> +          maxItems: 5
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: fsl,imx8qm-hifi4
+> +    then:
+> +      properties:
+> +        power-domains:
+> +          minItems: 3
+> +          maxItems: 5
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - fsl,imx8mp-dsp
+> +              - fsl,imx8mp-hifi4
+> +              - fsl,imx8ulp-dsp
+> +              - fsl,imx8ulp-hifi4
+> +    then:
+>        properties:
+>          power-domains:
+>            maxItems: 1
+> @@ -157,10 +194,9 @@ examples:
+>                   <&adma_lpcg IMX_ADMA_LPCG_OCRAM_IPG_CLK>,
+>                   <&adma_lpcg IMX_ADMA_LPCG_DSP_CORE_CLK>;
+>          clock-names = "ipg", "ocram", "core";
+> -        power-domains = <&pd IMX_SC_R_MU_13A>,
+> -                        <&pd IMX_SC_R_MU_13B>,
+> -                        <&pd IMX_SC_R_DSP>,
+> -                        <&pd IMX_SC_R_DSP_RAM>;
+> +        power-domains = <&pd IMX_SC_R_MU_13B>,
+> +                        <&pd IMX_SC_R_IRQSTR_DSP>,
+> +                        <&pd IMX_SC_R_MU_2A>;
+>          mbox-names = "txdb0", "txdb1", "rxdb0", "rxdb1";
+>          mboxes = <&lsio_mu13 2 0>, <&lsio_mu13 2 1>, <&lsio_mu13 3 0>, <&lsio_mu13 3 1>;
+>          memory-region = <&dsp_reserved>;
+> -- 
+> 2.34.1
+> 
