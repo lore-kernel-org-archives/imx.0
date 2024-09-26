@@ -1,150 +1,167 @@
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869111D5AB1
-	for <imx@lists.linux.dev>; Thu, 26 Sep 2024 06:28:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B9B13CAA5
+	for <imx@lists.linux.dev>; Thu, 26 Sep 2024 06:30:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727332121; cv=none; b=TrU7er0LKm3lXoRM2tT941q+GRkv38nZCNlfKm9ROAiKq+yig+oRXRM2C1RQktucCjhpPHrOG7riMg4Rw90rQguYZHaS/2ad+2TSwxGUeD4ujqhY9GtPbX/ngQUZ3rIyuD/7SrSwuSbmxbIVSduFczXqb3Jixgfv0BZB5eiCvXE=
+	t=1727332228; cv=none; b=MpvqU4a1NNUxt56mNWw9ZDMHw4tUBhf+tR538vMY3Z6alyqOlv+38y3JphQw6QR0dS/2q5QSDEc2RYypXzJXnDOEA0XE3+tOlHEls+WGRZlgbM7xi+jPV6vJyXdnWm3gn/7eTNTxyApGNI1czr9YHPpqbADk7eqz8tHnEWkYU6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727332121; c=relaxed/simple;
-	bh=WlIFDJInKZtVYW0PXevAogwdC0j2srxDEHaooRYGe2Q=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=SYJ8WI3exwZSWHL6ukUcPp+WuAp2AG3gvIGt8FOu4BmThrYBQPysumXEsQ++KNOWmT2RdlsCf1Hk++QLgcCVdnIJ5m7ysqfRrVVK9MfupBa1lJHgkfn7zc4X7Tlgs1nvCWyN4lETI/F2cX3BqK2rWrQZ+IXB9R6aoD9GOFPQW/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=jXN2Au9O; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=MDw1giAo; arc=none smtp.client-ip=103.168.172.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="jXN2Au9O";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="MDw1giAo"
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfout.phl.internal (Postfix) with ESMTP id 90C32138031A;
-	Thu, 26 Sep 2024 02:28:38 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Thu, 26 Sep 2024 02:28:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1727332118;
-	 x=1727418518; bh=Wzu0f2mKdw7/gLDCyB3jOvx4YvyPoGu6VkYjr384628=; b=
-	jXN2Au9OVv20ZKrPPLIirBd0pgHwKGvcPQBdo4FrdT0TmBfNGG34u9uH0waVJWmd
-	jOBnUNHH5reAdZHXGKIm/EufOM4a7rDN2YMQFn//O+nZCuVE+OpgvnR9MS7dejWH
-	ImRHziWEDNVaSu4xmqa3nOF6pfnyJzsmeoZNcixS9YQ1USDkzcq2KeaU50f5sy8I
-	D0kB3z2NzCFTCuW/5TmLKdr+4ygEtM5NT3wvd2KDOFWWMMFd6ulGeE/SuBbes3mD
-	5EYmsVnItzewJo8BLOCFn6Hg/PhV6d581cp27pz195uknRmyhOG4qzfJvbnP8DN6
-	ekTd7Rs0BiEL+DLR2gElzg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1727332118; x=
-	1727418518; bh=Wzu0f2mKdw7/gLDCyB3jOvx4YvyPoGu6VkYjr384628=; b=M
-	Dw1giAojHOOcoc0/97rxAUKXxtD1OJYPpli3IbNmIJAadHgXzzknGjN7b7SNLKNx
-	OevP3amQoANPXGrIBEnJOMLHkKQ5o6QPGwUBaOpXTDslf2bSw2jIYIVV8ZfFLvNf
-	CmG+Mnejyy4mJcAqIrPu6on1UOnHixKghsi6thxWxltp0baWeO1YcwQWqjioWZ9y
-	2iB9NuZHup1JcEPwCNVh/lCZhpxMwqcO2Qd9rCpRvZWfTXCOTHKG+of9YbOGQmIq
-	RBCKovm5ohmQ4FQPDK3HIpntlXl0gMo3S/Z4a8IEOpxU2BQ5a3RmXwd54xDtihNO
-	n6wn/uQBd0WdGFDH6wf7w==
-X-ME-Sender: <xms:Ff_0ZmXzArUg8wHwTCxI5q-eCM74op_jz4dfcAnbbva7rAIIknHItA>
-    <xme:Ff_0Zil8APh_9m7PWKdFKcF5aUM1QdLJnzUZ2-fLZ3CQag5wBAICAGWLK3itSrIYv
-    yw0KovnqIELWQ73dPk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvddtiedguddtlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
-    tdenucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusg
-    druggvqeenucggtffrrghtthgvrhhnpefhtdfhvddtfeehudekteeggffghfejgeegteef
-    gffgvedugeduveelvdekhfdvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopedu
-    fedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghnghgvlhhoghhiohgrtggthh
-    hinhhordguvghlrhgvghhnohestgholhhlrggsohhrrgdrtghomhdprhgtphhtthhopehm
-    rghrvgigseguvghngidruggvpdhrtghpthhtohepkhgvrhhnvghlseguhhdqvghlvggtth
-    hrohhnihgtshdrtghomhdprhgtphhtthhopehfvghsthgvvhgrmhesghhmrghilhdrtgho
-    mhdprhgtphhtthhopehsrghrrghvrghnrghksehgohhoghhlvgdrtghomhdprhgtphhtth
-    hopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvihhlrdgr
-    rhhmshhtrhhonhhgsehlihhnrghrohdrohhrghdprhgtphhtthhopehlihhnuhigqdgrrh
-    hmqdhkvghrnhgvlheslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthho
-    pehimhigsehlihhsthhsrdhlihhnuhigrdguvghv
-X-ME-Proxy: <xmx:Ff_0ZqYL7gJFQgYTbq4XKTWPzA33Ez5cc_pV0VM0EtmdOySSlv14Jg>
-    <xmx:Fv_0ZtWFvROHTrT8XSIFc1HJomVaKRwqa5O19DgQBmgbNy2TCAbdxA>
-    <xmx:Fv_0ZgkejwAgXtA-VFGR78U16hmQkbCQeqjthtgasNXgMuBbGp1Tkg>
-    <xmx:Fv_0Zid8HtFeyjrw2ulnAEv_WJQn57dFJjiIG80kZ4qXzdtpuUhUbg>
-    <xmx:Fv_0Zr_ChVDjaaK5_SJPGIwMYYqhOBY0SmI74mQ-8hEuuEs8n1CY5MKz>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id DBE0F2220071; Thu, 26 Sep 2024 02:28:37 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1727332228; c=relaxed/simple;
+	bh=2Gr7Gyl6KSXdpmT6YixG30N6o6dzO/zBKJeg3OlbKWw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=uAKzi+QRZ6ps3PC4x/KT3JbE1SnDgBhx+HxxTwwZTynlH/rqBekPqPMeUl598wz9/WaCvi1RJsreDv0acYMwR9cduc57eQ2oKBqrUA9lqx9Oy0s/Nqn05gYolbHFPkVdUc8OkF3f2icOXCuqWrqu2QCK2vdF2j4TJJunUhF4SE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 38C171A0A59;
+	Thu, 26 Sep 2024 08:30:25 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id F083D1A0F98;
+	Thu, 26 Sep 2024 08:30:24 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id B1247183F0C1;
+	Thu, 26 Sep 2024 14:30:21 +0800 (+08)
+From: Richard Zhu <hongxing.zhu@nxp.com>
+To: l.stach@pengutronix.de,
+	kwilczynski@kernel.org,
+	bhelgaas@google.com,
+	lpieralisi@kernel.org,
+	frank.li@nxp.com,
+	robh+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	festevam@gmail.com,
+	s.hauer@pengutronix.de
+Cc: linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	kernel@pengutronix.de,
+	imx@lists.linux.dev,
+	Richard Zhu <hongxing.zhu@nxp.com>
+Subject: [PATCH v3 1/9] dt-bindings: imx6q-pcie: Add ref clock for i.MX95 PCIe RC
+Date: Thu, 26 Sep 2024 14:07:45 +0800
+Message-Id: <1727330873-17486-2-git-send-email-hongxing.zhu@nxp.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1727330873-17486-1-git-send-email-hongxing.zhu@nxp.com>
+References: <1727330873-17486-1-git-send-email-hongxing.zhu@nxp.com>
+X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Date: Thu, 26 Sep 2024 06:28:17 +0000
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Marek Vasut" <marex@denx.de>, linux-arm-kernel@lists.infradead.org
-Cc: kernel@dh-electronics.com,
- "AngeloGioacchino Del Regno" <angelogioacchino.delregno@collabora.com>,
- "Fabio Estevam" <festevam@gmail.com>,
- "Jeff Johnson" <quic_jjohnson@quicinc.com>,
- "Neil Armstrong" <neil.armstrong@linaro.org>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>,
- "Saravana Kannan" <saravanak@google.com>,
- "Sascha Hauer" <s.hauer@pengutronix.de>, "Shawn Guo" <shawnguo@kernel.org>,
- imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Message-Id: <a9967a8c-8e03-44c2-8f79-14c6dd5d74af@app.fastmail.com>
-In-Reply-To: <20240925220552.149551-1-marex@denx.de>
-References: <20240925220552.149551-1-marex@denx.de>
-Subject: Re: [PATCH v2] soc: imx8m: Probe the SoC driver as platform driver
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 25, 2024, at 22:04, Marek Vasut wrote:
-> With driver_async_probe=* on kernel command line, the following trace is
-> produced because on i.MX8M Plus hardware because the soc-imx8m.c driver
-> calls of_clk_get_by_name() which returns -EPROBE_DEFER because the clock
-> driver is not yet probed. This was not detected during regular testing
-> without driver_async_probe.
->
-> Convert the SoC code to platform driver and instantiate a platform device
-> in its current device_initcall() to probe the platform driver. Rework
-> .soc_revision callback to always return valid error code and return SoC
-> revision via parameter. This way, if anything in the .soc_revision callback
-> return -EPROBE_DEFER, it gets propagated to .probe and the .probe will get
-> retried later.
+Previous reference clock of i.MX95 PCIe RC is on when system boot to
+kernel. But boot firmware change the behavor, it is off when boot. So it
+needs be turn on when it is used. Also it needs be turn off/on when suspend
+and resume.
 
-Thanks for the new version, that was quick!
+Add one ref clock for i.MX95 PCIe RC. Increase clocks' maxItems to 5 and keep
+the same restriction with other compatible string.
 
-> +static struct platform_driver imx8m_soc_driver = {
-> +	.probe = imx8m_soc_probe,
-> +	.driver = {
-> +		.name = "imx8m-soc",
-> +	},
-> +};
-> +module_platform_driver(imx8m_soc_driver);
-> +
-> +static int __init imx8_soc_init(void)
-> +{
-> +	struct platform_device *pdev;
-> +
-> +	pdev = platform_device_register_simple("imx8m-soc", -1, NULL, 0);
-> +
-> +	return IS_ERR(pdev) ? PTR_ERR(pdev) : 0;
-> +}
->  device_initcall(imx8_soc_init);
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+---
+ .../bindings/pci/fsl,imx6q-pcie-common.yaml   |  4 +--
+ .../bindings/pci/fsl,imx6q-pcie-ep.yaml       |  1 +
+ .../bindings/pci/fsl,imx6q-pcie.yaml          | 25 ++++++++++++++++---
+ 3 files changed, 24 insertions(+), 6 deletions(-)
 
-Did you run into problems with the method I suggested first?
+diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml
+index a8b34f58f8f4..cddbe21f99f2 100644
+--- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml
++++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml
+@@ -17,11 +17,11 @@ description:
+ properties:
+   clocks:
+     minItems: 3
+-    maxItems: 4
++    maxItems: 5
+ 
+   clock-names:
+     minItems: 3
+-    maxItems: 4
++    maxItems: 5
+ 
+   num-lanes:
+     const: 1
+diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
+index a06f75df8458..7df43e710ef3 100644
+--- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
++++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
+@@ -101,6 +101,7 @@ allOf:
+       properties:
+         clocks:
+           minItems: 4
++          maxItems: 4
+         clock-names:
+           items:
+             - const: pcie
+diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+index 1e05c560d797..4c76cd3f98a9 100644
+--- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
++++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+@@ -40,10 +40,11 @@ properties:
+       - description: PCIe PHY clock.
+       - description: Additional required clock entry for imx6sx-pcie,
+            imx6sx-pcie-ep, imx8mq-pcie, imx8mq-pcie-ep.
++      - description: PCIe reference clock.
+ 
+   clock-names:
+     minItems: 3
+-    maxItems: 4
++    maxItems: 5
+ 
+   interrupts:
+     items:
+@@ -127,7 +128,7 @@ allOf:
+     then:
+       properties:
+         clocks:
+-          minItems: 4
++          maxItems: 4
+         clock-names:
+           items:
+             - const: pcie
+@@ -140,11 +141,10 @@ allOf:
+         compatible:
+           enum:
+             - fsl,imx8mq-pcie
+-            - fsl,imx95-pcie
+     then:
+       properties:
+         clocks:
+-          minItems: 4
++          maxItems: 4
+         clock-names:
+           items:
+             - const: pcie
+@@ -200,6 +200,23 @@ allOf:
+             - const: mstr
+             - const: slv
+ 
++  - if:
++      properties:
++        compatible:
++          enum:
++            - fsl,imx95-pcie
++    then:
++      properties:
++        clocks:
++          maxItems: 5
++        clock-names:
++          items:
++            - const: pcie
++            - const: pcie_bus
++            - const: pcie_phy
++            - const: pcie_aux
++            - const: ref
++
+ unevaluatedProperties: false
+ 
+ examples:
+-- 
+2.37.1
 
-I don't like the way that this version still registers both the
-device and driver regardless of the hardware it runs on, I'd
-prefer to leave the platform check in the initcall and
-only register them if we are actually on an imx8 machine.
-
-Having two initcalls also makes it impossible to build this
-as a loadable module, which is why I suggested
-platform_create_bundle(). I think you can keep the
-of_device_id lookup and pass the imx8_soc_data pointer
-as the platform_data to platform_create_bundle.
-
-    Arnd
