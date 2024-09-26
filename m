@@ -1,90 +1,64 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A17208CA
-	for <imx@lists.linux.dev>; Thu, 26 Sep 2024 09:12:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD531AB6E3
+	for <imx@lists.linux.dev>; Thu, 26 Sep 2024 09:15:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727341983; cv=none; b=oApGSnS2hO7FXZmePw9gkvWXAr6bRKTESrFTbtkS1xULRHh/za8rUHJYoGefuXywtNW6lQkjrZMmdMgX955ZSnpaugvjjWDkFptqk2t0mxQ5Vl3ki/WQW7pGtu0xayaNPLPRWRkTlUH3AD5RNqfOLfhSd+IOQKvX2N8d8AejAig=
+	t=1727342137; cv=none; b=DNhGfcTthWEQ5mQ9bG0Z+5hpZtWtBNOSb87TOEsu37CyoiBFPAnEpZ1kxKB3j3n3ERHWG6sifxMn7RNleGA57u3ij2WnSKXBOEw+/8/+AdLHnt7uQgjke+JAWGCksZS6BHVKDY/OSGw6WUoSR8j6CbihyHAzigCvI9AZ75Ue5as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727341983; c=relaxed/simple;
-	bh=1DXKU4XVx7IHEGgM38c09bSSv1/QCOHdnFhdWz0h454=;
+	s=arc-20240116; t=1727342137; c=relaxed/simple;
+	bh=0WIOXwh6NxwZTYWeO/StqiCB1FMCUjG4qYyje+4DacI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O2c1PbZXEqBPAZLt0CVA4tw3cBONOGyermyZ/tNPXU47ApkFv/RtO1riTjZYVwsSYhfpl7H8TxF9nxfr+FPc5CloJrp0xRLjZp7rETRkFiF/9U+ogi9NGV/zEuHFg2uxMwWKT4L9z5Dxlp7b/Ss06IvFyT2WbBBxyQlPaFEnI1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=qQrcpIGx; arc=none smtp.client-ip=1.95.21.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=IiwRSHdxT0bhfI36Bq/TB+19qVY8TNUFEDJqlDfF0Ui88nwTu3MKFpZ0bR6tGZSsNffQuccUez6oUOKt7fLkxc8PDYeD85GS1LX3zrFXLVWIS0RtKzMNWcizFjXe3eTANNPPGQyCd9T+gVqh/svqQFY6QrusFO+TVwGV+fK+OrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=EwByxsTc; arc=none smtp.client-ip=220.197.32.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="qQrcpIGx"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="EwByxsTc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=3yjqlUTIEAtxbRrw6H5T/QaTD7R7yHaK6W6FA1/EZ6M=;
-	b=qQrcpIGxCVy7R5JFeMwIiA4/WGUJY6PuCGaPFk/nKhdictzIn9es9mhm267iFk
-	5JyA2YAvJcXEN5UNBDDDd9w8rgrD4DcgbP2zecxcABbX1T9NJGaATUmmur/ipUa6
-	LAIRhJUlbjBrj/VzLLHjAj4+n0z3SV2EpO9DZIYJ3dk0E=
+	Content-Type; bh=0WIOXwh6NxwZTYWeO/StqiCB1FMCUjG4qYyje+4DacI=;
+	b=EwByxsTcd0e58tLdLMbTjebpnjs8SD/d5u7CvdHTZbf2j2j47yiWXkvSesvn2N
+	7ECl4RD+nMDRuvoBnovC0rrWgsjMwtd0QlLLPV/FKhtIjacV3YEp0Pc4XuQlGcyZ
+	P1UwOfCHJCRcYp+8lur2U7EKOP7wtr0yEBinjzEjJ/1EI=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgBHx53tHfVm9kctAQ--.42439S3;
-	Thu, 26 Sep 2024 16:40:15 +0800 (CST)
-Date: Thu, 26 Sep 2024 16:40:12 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgDnvMSnI_VmBtwoAQ--.24117S3;
+	Thu, 26 Sep 2024 17:04:41 +0800 (CST)
+Date: Thu, 26 Sep 2024 17:04:39 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Esben Haabendal <esben@geanix.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] ARM: imx: Allow user to disable pinctrl
-Message-ID: <ZvUd7PekQ4pVXQGU@dragon>
-References: <20240506-imx-pinctrl-optional-v2-0-bdff75085156@geanix.com>
- <20240506-imx-pinctrl-optional-v2-1-bdff75085156@geanix.com>
- <CACRpkdaW14PgLXTRPHUjaLNKfCMRs+hpHrYyMiNaqSs+m0rhqw@mail.gmail.com>
+To: Conor Dooley <conor@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Frank Li <Frank.li@nxp.com>,
+	conor+dt@kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, krzk+dt@kernel.org, robh@kernel.org,
+	shawnguo@kernel.org, festevam@gmail.com
+Subject: Re: Device tree node order sort tool
+Message-ID: <ZvUjp5uSo0SSyPAZ@dragon>
+References: <ZumjueKy+tvkODnB@lizhi-Precision-Tower-5810>
+ <2fdfmn7wjt5tr6lsxee2qubjgiphys5n2fivlracaksilvvgmi@od6t76mpd3co>
+ <20240918-igloo-unspoken-45443a52e338@squawk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACRpkdaW14PgLXTRPHUjaLNKfCMRs+hpHrYyMiNaqSs+m0rhqw@mail.gmail.com>
-X-CM-TRANSID:Ms8vCgBHx53tHfVm9kctAQ--.42439S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZF4DCFW7AFyrXr4DXF4fKrg_yoWDurXE9F
-	4kta97C348CrW7X3Wqyr4avr9YvFW8Kr95Kr90qryrAa4DZFs3JFn5Jr45uw15Ja1kWr9r
-	Ar9Yqr93tFyjqjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUn9iSPUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCRlmZWb00uLnAgAAsU
+In-Reply-To: <20240918-igloo-unspoken-45443a52e338@squawk>
+X-CM-TRANSID:Mc8vCgDnvMSnI_VmBtwoAQ--.24117S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVG-eUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAgFmZWb01VLumgAAsh
 
-On Tue, Sep 24, 2024 at 09:45:32AM +0200, Linus Walleij wrote:
-> On Mon, May 6, 2024 at 12:24 PM Esben Haabendal <esben@geanix.com> wrote:
-> 
-> > Making pinctrl drivers and subsequently the pinctrl framework
-> > user-controllable, allows building a kernel without this.
-> > While in many (most) cases, this could make the system unbootable, it
-> > does allow building smaller kernels for those situations where picntrl
-> > is not needed.
-> >
-> > One such situation is when building a kernel for NXP LS1021A systems,
-> > which does not have run-time controllable pinctrl, so pinctrl framework
-> > and drivers are 100% dead-weight.
-> >
-> >
-> > Signed-off-by: Esben Haabendal <esben@geanix.com>
-> 
-> Acked-by: Linus Walleij <linus.walleij@linaro.org>
-> 
-> I guess this needs to be merged through the SoC tree.
+On Wed, Sep 18, 2024 at 09:17:37AM +0100, Conor Dooley wrote:
+> That said, I'd not enjoy getting a bunch of patches for the platforms
+> that I maintain redoing things in this order, so it is worth asking the
+> platform maintainer for their take on whether it should be used for
+> anything other than new code, before sending a rake of patches.
 
-Hi Linus,
++1
 
-Reading your comment[1], I was thinking that you will merge the series
-through pinctrl tree, no?
+I do not like to receive tons of patches churning the existing files
+with such order changes.
 
 Shawn
-
-[1] https://lore.kernel.org/linux-arm-kernel/CACRpkdYbOTXmap-vJy4JNZSaZnE=yzC35EPD2F=bD8gWdD8-GQ@mail.gmail.com/
 
