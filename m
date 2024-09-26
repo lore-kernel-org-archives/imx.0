@@ -1,381 +1,410 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011023.outbound.protection.outlook.com [52.101.65.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8BA189F3C
-	for <imx@lists.linux.dev>; Thu, 26 Sep 2024 22:08:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.23
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727388503; cv=fail; b=ON1vBJSZjLmrFco21z7dfDc9WmB7+MFt5wfKpxnVgvA2/Dlskcht0j8SwDugNyrAfUGyhPFtA3jaX1sIqnBQDjXL1gXtae3L33pTJj+/h+FL5SIeWwfqw6joeIEFQC1jex1tFnLHhMGiCHWrpN2G078rrEFClMFg8qayg4bnsM0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727388503; c=relaxed/simple;
-	bh=ajAZyLgV+oZQd0uLwTR8EeTZ2PcQRwQ2YwA49Ppzjeg=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=thoSgFHd36nYfGt7ngotXhGPpllG4KvPnTKC4mWfC9SEZJQxkWZ120/KYwIumgiIQVXB/+82ecjHisSy4buDAiF2iYn1Nwlg89RzOsDx5A0AqaAEztYPIwNQEkEDP1GqJOXKAKsaHw5ky+U2C8dOQxepFZr1dIBdoemsRIGuDH8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=k2vqNVtU; arc=fail smtp.client-ip=52.101.65.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578131B07B4
+	for <imx@lists.linux.dev>; Thu, 26 Sep 2024 23:39:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727393997; cv=none; b=ShYrHMXYtGyHQS8fUFimeh7wfTncck248YNdNwGE1c4/uhW9ebu79BZv4mSAjZazNFJG4q9hLuT0wzXmm5VV/uOBpR2uYAo4QAXYZF926+Hl3CAHwf5ci1ZUfkUuM4qhyROoYE/GaKOYw5EqD6h2GbpkC39MpWunONNx87qAyy8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727393997; c=relaxed/simple;
+	bh=rvG9Y+VE2uJz21bebRqq+26qa85yn7OvmU1Z1RNAoC0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NqdfSbi0W1u/g/AUsozcRVKC4YyHOfOlHDdQFA361JoVOYq9H0Bodb0aIGnB+Ty3pgydAkrPnzPiuhvSht5+a0I2zBQXrukgdF3xOffUAEeLvs/yt4Ik9tdD5pdE2K9kjve33ZjH+RdOz8zJLyZ8LpAyENbYjDq9n568qNYMmoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sjSA5+Gz; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="k2vqNVtU"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cW4q0L+PIfqkBeCuIk1m6vcTQZMq/YzdjliVAAU6yGP3Y4c5xwS8bb7YrFokPXSebHX2O7KcOvEC4FbqMZXvln5TausM3xXXeh2ZgcSzs0pik2rTbGciJO4mHC1KYarSobbRXaAw42xOj2iMU6mTViKyaXRfcsOPzpu6gMpC5iEvdCxrKL8uEfz0hKepMiZv3qtfh5Aiv6IdZnjzE+OmG35CMdiXrrqlAVZG2EiFyWCyq7XLR6a29kWq7ILH0DCo1CIjMsu25toiMDO0YIpzbS1wfmc9beNkjZ7WXVLu8ThgUd4nMOgKtBEpX79akuw0PL3xmqEUUWsYh5ajiDLvJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nARaTiApnM29p7FFkZmqPwG9iKsUGfbVyzLNVeSGHmE=;
- b=Wk0oNvmh2GOMrgW042lG6pOHTXs+tWbu7GaeUcfLeCldRDzMzM2N4qVCyVIU0vLZUboYCxDc0lN7bE8Enb67lyhAu3CqD4tJEoXcpE5gupYmEh/CjhVnImW4z7jV/DXZGH4SeWLf48mF2zZO8lAoTrtHc/BiBQZtachIPZxtKecDyikGUDaSTyqPZEaNyaZj3p/4VfREhFhYpKGGF618DmGwiVQ+uPfnkindPfBKYQJMsLtCoYhqOC5FQki2lj8y0Rj2VMIStMJEOX74BTgBYpZHjSQaqc/68/Ry0TgKl7JYuUEEZ9HoOS61cWM/CJiQNxr8XJFxYwRc1LNbAdURyg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nARaTiApnM29p7FFkZmqPwG9iKsUGfbVyzLNVeSGHmE=;
- b=k2vqNVtU0vlGHMvnxIj/fTiHICGgKnNMbFzILy0M64soqrDrdkozb4tGO3cTCwtjKLdMb+UJxmgsb8V6OMC5UXP3FxlmkLHKo9mBOTtI7Www/ucZeiH3rT0fZmjhwBAJSPEun+mwYjYPPJcZVGWzT0/wE7aaW5ZoPspaALSc2JI7C6nYaaiuuh8YWQXZxGNYzCl8HhlGNd1ScHQorEeRHbJjHZd4MCYAj2ksMYvhq9SXbVE+3hqvOtUerop1gUxRs8f66RScTPXn/z41lUDBpnCH/y0Ed5VNbRwOejmDShCVVoEbXX4KYwCssEVlgGA0JoCQhmU07xa/KwgFROtGKQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VE1PR04MB7408.eurprd04.prod.outlook.com (2603:10a6:800:1b3::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.23; Thu, 26 Sep
- 2024 22:08:18 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.7982.022; Thu, 26 Sep 2024
- 22:08:18 +0000
-From: Frank Li <Frank.Li@nxp.com>
-Date: Thu, 26 Sep 2024 18:07:48 -0400
-Subject: [PATCH 2/2] PCI: imx6: Add IOMMU and ITS MSI support for i.MX95
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240926-imx95_lut-v1-2-d0c62087dbab@nxp.com>
-References: <20240926-imx95_lut-v1-0-d0c62087dbab@nxp.com>
-In-Reply-To: <20240926-imx95_lut-v1-0-d0c62087dbab@nxp.com>
-To: Bjorn Helgaas <bhelgaas@google.com>, Richard Zhu <hongxing.zhu@nxp.com>, 
- Lucas Stach <l.stach@pengutronix.de>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, Frank.li@nxp.com, 
- alyssa@rosenzweig.io, bpf@vger.kernel.org, broonie@kernel.org, jgg@ziepe.ca, 
- joro@8bytes.org, l.stach@pengutronix.de, lgirdwood@gmail.com, 
- maz@kernel.org, p.zabel@pengutronix.de, robin.murphy@arm.com, 
- will@kernel.org, Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.13-dev-e586c
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727388480; l=6401;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=ajAZyLgV+oZQd0uLwTR8EeTZ2PcQRwQ2YwA49Ppzjeg=;
- b=/WiAr7yqAaBdN7zKkrqITQ1LzVkObYwiuQBCZE4CvVtqqUnA/j6Xfbv5369dpRB1Ys5CqbSZh
- 2qtomGwigmECtUUTwI2FpJjgskLlCASYLee4vC7U0Acss7fPXxzNE3O
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: BYAPR08CA0024.namprd08.prod.outlook.com
- (2603:10b6:a03:100::37) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sjSA5+Gz"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2e06acff261so1186046a91.2
+        for <imx@lists.linux.dev>; Thu, 26 Sep 2024 16:39:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1727393993; x=1727998793; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9n0AACIwskMhO84x1V3Wxwj8ckxEzrQQ271STnP2J2o=;
+        b=sjSA5+Gz9cLzpZ21mVC4LqoK5cuV0HvpIYjsRIeXyjLM6WWRT8YFrTpeR4B8N+roDy
+         S+7fGMzcTQl9BBynOAUvF/9xqT3coblzb8VM/kkuYZNMv8EYXGVHzpkNmyj9v597d34+
+         2mHWulHjIJ9BTxxqgWnRqxuL3iofDlStntuWG8RF/9Eet9YVv8hdJ5RTVEcvlAUotHRL
+         ppteNY0JCmtHwAWfRIo9mvqdFz9EZiaRH6DdzYbjjYjj1jk6Q4WQ+xQTiJPMuRGIn0Em
+         TzICSQSF3zNBC7XNwrBEzYpRcaK2UQMpGgdrntbEc0DT0ZfZ4td70fkQq4ZUlQwgTA2S
+         OLBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727393993; x=1727998793;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9n0AACIwskMhO84x1V3Wxwj8ckxEzrQQ271STnP2J2o=;
+        b=xQ1v/YG/Qgn3v84meHs7zrG1Gqcyf9tnhuAjgMDFH/v9MmqkX28yR4Z0NVY6DUXxIG
+         NgxscjjUvpkdA8tApgmyDsFERxywLTCqpWfqOdwp32X3Wxgx69NMHhXRjtWR/anr87or
+         sllJ3LgtA52i0LZ612GUTIsizEv0K+kaBPlnI1+ZMGW6rjs+qvB2OfCHVKa/cRjInz4W
+         rA9rBbfwNl0e8UZNUEg+G9NDSZgdBzMA10erkMg5S0bW+Z9YDpF3GZeHLLdUOX5Ad3ia
+         nlTC4W08PFppoyY/cod3zkOVs4VcU3dCkxf1hfmgGI6+PDoTSvpvWBi8kvQNm0arB5AV
+         Lj/A==
+X-Forwarded-Encrypted: i=1; AJvYcCXdYzMDSI+lmXwqgl4+gA7HxGaWEPSKxoGGn43F4yJkgud8fMTpTZcgVUPR2wJQa4HfMXU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwSFKOD9iJN6eToNThVevs4vI2ddnN6eLcDbuMobbFU6D769pDp
+	trsQ+OSfUoE9Kp206oFPRTcf2rI0QQwS5pgesvFuAKcFvjL9Cb8tGPKeCZRmUG/p1qj/uKvLlAX
+	5sfhWSBQk6h/+c+4tAJkuMf0G9dnFFFY3S11N
+X-Google-Smtp-Source: AGHT+IFAONtajDwPUKUuelFyzTqTy1Ae+k0tfENJbdYCetByfJeZMPyLvb4F4LzlAxFX/nkBc6B+uW6jzk/0TCkqiuI=
+X-Received: by 2002:a17:90a:c08a:b0:2d6:1981:bbf7 with SMTP id
+ 98e67ed59e1d1-2e0b8ebc48cmr1767297a91.32.1727393992964; Thu, 26 Sep 2024
+ 16:39:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VE1PR04MB7408:EE_
-X-MS-Office365-Filtering-Correlation-Id: c8768ffa-8a08-476c-65f8-08dcde77b9cd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|7416014|376014|366016|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Wm1SMTZPbEJvdUhaUFZFdzRXaU82S2VFajZmK0tUSDlkS3dQTHN3Q0FNaSs4?=
- =?utf-8?B?empJemgrYkRnamY0ZVAxUXdiZHdVOWgxei9TTksxVHRRQ2FwVHNIMENOMU5C?=
- =?utf-8?B?bWVTZ2EvVXVkQkwySG1qZGV0cG45ZDcvL1NHK1RDWWExenhIY2J1VmczbXBm?=
- =?utf-8?B?bHRVbko3M3lRRzZQV2JnTCtPSlVjOENTR3EwUFAyOW5ZbnJia3FnNFhwRW9i?=
- =?utf-8?B?S1VlVWlsVVh6Q2RYbGk4RCt0c0hnT1cxNUFBN0lBYW90ZFhRc3JEa3dZMGl2?=
- =?utf-8?B?UmdwUVJMMTd4ZGRHai80SjB3cVRLR1UyVTJkVUMyMmVBcW5rQTNPb2l0L28r?=
- =?utf-8?B?cDVMZGpQQjdLMVk1aytrak90VTFTWXJ6bVV0WUVIanhNQ0FQdHY2RU5xaWlu?=
- =?utf-8?B?LzdjMjNvSTNUc1dwaEZzblo2V3F6Ym5QT1lvWnB1bXhmZThuZFpxb3g5c29m?=
- =?utf-8?B?R2oyNS9FS3BuTzNsR0lLK1Z3MWQycFo2SkxRNHhaTmtiS3JaNFpDaDJsalc4?=
- =?utf-8?B?NHduSUlTUHd1OUJzVmRmYnZqWkY3cDFqM2VBQU1XRXB3L3ZyL3htUC85N1Nk?=
- =?utf-8?B?dEJpb3E3Vm1wVTh3THBDRXliNmZaTXpTZkpyekVZM3o3T1ViUmpQd1Z1ZXl5?=
- =?utf-8?B?YU5WcVBSNUo2b0p0K05pSUEvcnNsaHYvUmF4UDJpVW5pdXFpR1prb1hZMURw?=
- =?utf-8?B?Y3E4N216dVh3UkN6M3l6Zkpjc1lGdmdpS0pwUzRJcW5UWmVjR3M3R2MzQlRC?=
- =?utf-8?B?T3NWSm4zOXRLZHRFWXhWK0l6RU1FR0RITWwwOUhDUk0rY1l6blhiZjdqMllW?=
- =?utf-8?B?QkNTZGVTT3k2RGtlTVhWcmxLWjhsaVF1M0E5NSsyQkp2bnY2ZjZ4OVNvR0Zl?=
- =?utf-8?B?ODF2REhuK2k0ZzdTdnM5dTBnaUFqM25uMUk0QjhuUHcrT2hURlFzaDVyZGxz?=
- =?utf-8?B?UE9reWxsYXJvOHViQUs2Tkw4RUdIN0tvdWoxdytTZENicU5IYWkrOWFHcWRk?=
- =?utf-8?B?ZmwwRnk5Z2NsMm4vRzNrY0RKSEIvNFZ6emRtWEVkUU05ZFRKS1JQZGZRQmg1?=
- =?utf-8?B?cDFGL2JpaDBKQU9rSmhuUHpnMkhqNGhrRngycVB5ZVRRUnV6N0FuNnJTTkZX?=
- =?utf-8?B?WUkyRVAxU1hLZytzWjAyeWhETDJZdmJrMVJEenQ1ZTdxTXphV2VVVnk1TVJ2?=
- =?utf-8?B?d0FtRnVzdGYrWXNYd2lqZlZxWFQ0dTlITmF3dnVQMElWdHg3a1ViRlFJTGly?=
- =?utf-8?B?S2t6WVRNcSs5NmlKWjZTOC9ERzRqcTBMYVovc0o5TTB3cTN0ZG1zakRaMHZM?=
- =?utf-8?B?MVJXZ3RhQllTQUNENGhJWXhCSkhQbGhKT2k0cDNZeEJST0FBTnRlUEVBUzF3?=
- =?utf-8?B?UEJZTHRoSWxJNGlvNmFjL2tJS2UzVEhtSlBOVXRxY3RWallBZElGbm0vOHAv?=
- =?utf-8?B?MlQxQ2xsaWVZczJJTUhselNZeXdYRFIrVlNlaDdDRkIzaWNBQ0QvblN6YWZD?=
- =?utf-8?B?L0NEWnJkUEFSaDJvUTJ3eXpzVjhRTURHNDkwcVE0ZlBvckFTY0lPeitaYiti?=
- =?utf-8?B?Q1g5eGxOWUtnYjlra0dLeW0vMFdZVlpZRVQyTmFObU9DWjc1ZkxHNHZRSDF3?=
- =?utf-8?B?QWFicC9zb3dRVzNPUjVBbzdGVGttY0NJeTZMMG81YWU2dS9XbjZqOWNZTlFp?=
- =?utf-8?B?Ylk2VEFYN3g1MWk0YlJkNlMxajZkYjFZclRyR3NBVzN5SzErTnBqdm5QU2Nt?=
- =?utf-8?B?MnBraVNRVlpXbHZIVkF4bk1aUmV2dkJRYUFTTDRnUEJIUThlL0ZNNDg1R2Z5?=
- =?utf-8?B?MEZFNEExR3JoRzFyc0ZQUlp2ODFSV1FaY2JyMUxEQkIxa04xQlh6a2ZJRFJN?=
- =?utf-8?B?ZXRlaUorcTFRK3F6TG9NNDl2RFlhOG9DSHB0U1dBbTRtelh6QjZiWnlkRHRT?=
- =?utf-8?Q?/yIE7U+bEUg=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(7416014)(376014)(366016)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?K0grMDd5UnVQbDdJWERlbWFFZWY4TmJjaE93bklIN2lhZUppQmlmZ3ZzL01j?=
- =?utf-8?B?cFlFYlR2aUxtL1Mwb0c1cXdwQTFRc3lra1Uyd0YzN1F2eHdJcnNleVU3eDFW?=
- =?utf-8?B?YytDNkRkdFNMMklXSGdBakRTSWpwMXduT3BoVjI4SnZnOGRwc1NxWmlPRHdz?=
- =?utf-8?B?eTFLU2dNZllzais5SmFlYTdJaTJ0TjBPVlBjZVl6ZjZYRThJVEdibzRoT2tm?=
- =?utf-8?B?L2NudFFER3lNa1JXUFE1QkhXR3dkaG9GRFBDbFFFTVNkeDdHbURiRTFGLzdx?=
- =?utf-8?B?b0h0YXlTQTFVTUhrVnlpSUc4UmRLSXZuWE0yY2NVMEduMXBhb082RkFuOEZl?=
- =?utf-8?B?NWFmMmd3Vm8rUmJLOGRLRTBqM3pobGVoMWZxY3BXVW9Mdncza3l6MEFpK3V2?=
- =?utf-8?B?cWl6bHM2MHRvbFVJbGtJT1g3T29QNm1YdGl3Z0FzOFpGYldFbUliS3JHSEdS?=
- =?utf-8?B?R05vbjNYOWl4bW13Q2NKaVBWbmJVTzN0N0R0bUQvVVYydmhhRFNVTUtGb3RD?=
- =?utf-8?B?LzZZL2plRkFmblF4MWFxakJQeGtjODN4TVdlam5DV2F6ZUlaRU9vTTFmOWMv?=
- =?utf-8?B?R3lhcG9jVEFtaHV2S2RmWm1xM2xxU2RqcGtPZWw2OEN6dzFwaTAwRlQvWW1E?=
- =?utf-8?B?ZmF1eGxyNWx0NW0rRFhjdHpJcWs2TjNrNVFsL3dIZHp4Nm1wMktGUmFreUky?=
- =?utf-8?B?bmZXL2p6Q1FpUU5lMitiL2piWHlsbi9MMU9FZ3piRVVUYXhtRkcwWm1hSVpv?=
- =?utf-8?B?VjNZK1VZek9QUllXcjFvUXBkeEwyMlRySk8wT05CdXlxT0NqcmMxUU9mL0Nv?=
- =?utf-8?B?eHpzSVVyVGNQZGdjQytmcVdkNEJYOTYzeE9saVExWWlFSEQrNHdvb0MrWTFx?=
- =?utf-8?B?Z2k0N09qdnY2dGIxK09KQ2dpa1dQZTcrTjhKMzBaWUxVL3Y5dDlOSW5wOTVh?=
- =?utf-8?B?Wis4NnhiR3diYkE5bTV2NXdWZUc4MFd4SXlNbXR5NlRwT29CdFF2S0pmTFV2?=
- =?utf-8?B?bmRYQ0FhT0xWMEpKWnNhSytITTczYmc3akRrUDNOd0FVdzFsNFV4Z3hXcGRz?=
- =?utf-8?B?bmlOR0JoUyt6L05GdXRaZ1V3SVF3UFo0aStqa2Z6MXBqTXByZkVXN1BIQTNU?=
- =?utf-8?B?aTZHdjhoVy95SWErREllM25QMW1DUnpaMHVucmxybVR3QzcrUHJlcE9zcCtx?=
- =?utf-8?B?Y1NBdG52WEFKRlo5KzgyS3FIZGRkcldrRlZsNVZkeUhhbS9SVU42YmVGMEYz?=
- =?utf-8?B?YkJXSmV4Zk9RRXhVZVpNZ3c4YjUySHBpNHd5bFNKc1huVEJnSS9rNFZpRDlF?=
- =?utf-8?B?RitYc21IM2h1bml4dTJjOFI0bkYwTDJ2Mk4zQThFbUVTd1Q0SStVdmpvalFJ?=
- =?utf-8?B?aDh1VGNGTWliN3NkWHQwaGFvNVdmSmpHSTRMcUFxK203NUZrNlZiSFhVclUw?=
- =?utf-8?B?VDgzdnRub0JQdUVscGxrRENxNVVabC9TY1dkOExoNnJSMHhTUWJoQTA1aTlQ?=
- =?utf-8?B?UXBib2xQSW85RHZ3VERydzdNQkhackpEaERiWW9sVHdiREN0TVhKQlB5OGcw?=
- =?utf-8?B?S2wxdUZieVFJQVJFZExJM3JpMFdhTjNTQ1IxVXNLUjQ4R0hUZGsxTXd4aDVu?=
- =?utf-8?B?V3FZL2JsMUx0empucFFIQUZpTjJTSFd2MTh6Tk82OCswWEt2QmpvRlpQc25X?=
- =?utf-8?B?YlFhbkljMXFYbVZocDhIMWp6ZzBWTXNJOFZXSkZSSU83Kyt1dGk0YW00QnVm?=
- =?utf-8?B?cjY5V2UrdUhaT04wcWJ2cVpRc0FwLzVTUG5qcXh6MTNJQUlYb0ZzNVU5UmxO?=
- =?utf-8?B?bWxXK3I2VGFoTDBXVmx3ZzNBN1lvb2xjNVJUUEFGb3ZXRUtVaER0VURjbk5H?=
- =?utf-8?B?eGRVVXIyUG9KZTliWjVGaXV5dVNiSkhTcTk0UWpZczFucld3bjlQWnBaU0R0?=
- =?utf-8?B?dGcxd21tYyswZWwxbUNQTVM2Q0FwMVJEOEdwTDMyMWMzRitlSkwzQWV6WWNl?=
- =?utf-8?B?SHg0R3E1VFpMRk5kdVBHZU1CeWxKWk04a2ZGcUF1MzhLK29MMDVTRWVMRTBk?=
- =?utf-8?B?b0s0cFZDdEcxNlQ2cGdKb0Q0b3hYL1JNOHJOQVYyalNHMFBuSXp4cGFFR204?=
- =?utf-8?Q?55xs=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c8768ffa-8a08-476c-65f8-08dcde77b9cd
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Sep 2024 22:08:18.0650
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6SkgU/WIRf/9Ta4ZmNLH/RKr6Q7Kkfw9DD5aKH5GxwSzN7To/JaUT1xOYGi1KnOi3DkAesoCic37nLaxgL0jsA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7408
+References: <20240926213729.2882045-1-marex@denx.de>
+In-Reply-To: <20240926213729.2882045-1-marex@denx.de>
+From: Saravana Kannan <saravanak@google.com>
+Date: Thu, 26 Sep 2024 16:39:13 -0700
+Message-ID: <CAGETcx-q7+DGhPYd3QrsPh7O_0HU7T=NhaJYp0Fu7YW2zwbo7Q@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] soc: imx8m: Probe the SoC driver as platform driver
+To: Marek Vasut <marex@denx.de>
+Cc: linux-arm-kernel@lists.infradead.org, kernel@dh-electronics.com, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Fabio Estevam <festevam@gmail.com>, Jeff Johnson <quic_jjohnson@quicinc.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, imx@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-For the i.MX95, configuration of a LUT is necessary to convert Bus Device
-Function (BDF) to stream IDs, which are utilized by both IOMMU and ITS.
-This involves examining the msi-map and smmu-map to ensure consistent
-mapping of PCI BDF to the same stream IDs. Subsequently, LUT-related
-registers are configured. In the absence of an msi-map, the built-in MSI
-controller is utilized as a fallback.
+On Thu, Sep 26, 2024 at 2:37=E2=80=AFPM Marek Vasut <marex@denx.de> wrote:
+>
+> With driver_async_probe=3D* on kernel command line, the following trace i=
+s
+> produced because on i.MX8M Plus hardware because the soc-imx8m.c driver
+> calls of_clk_get_by_name() which returns -EPROBE_DEFER because the clock
+> driver is not yet probed. This was not detected during regular testing
+> without driver_async_probe.
+>
+> Convert the SoC code to platform driver and instantiate a platform device
+> in its current device_initcall() to probe the platform driver. Rework
+> .soc_revision callback to always return valid error code and return SoC
+> revision via parameter. This way, if anything in the .soc_revision callba=
+ck
+> return -EPROBE_DEFER, it gets propagated to .probe and the .probe will ge=
+t
+> retried later.
+>
+> "
+> ------------[ cut here ]------------
+> WARNING: CPU: 1 PID: 1 at drivers/soc/imx/soc-imx8m.c:115 imx8mm_soc_revi=
+sion+0xdc/0x180
+> CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.11.0-next-20240924-000=
+02-g2062bb554dea #603
+> Hardware name: DH electronics i.MX8M Plus DHCOM Premium Developer Kit (3)=
+ (DT)
+> pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=3D--)
+> pc : imx8mm_soc_revision+0xdc/0x180
+> lr : imx8mm_soc_revision+0xd0/0x180
+> sp : ffff8000821fbcc0
+> x29: ffff8000821fbce0 x28: 0000000000000000 x27: ffff800081810120
+> x26: ffff8000818a9970 x25: 0000000000000006 x24: 0000000000824311
+> x23: ffff8000817f42c8 x22: ffff0000df8be210 x21: fffffffffffffdfb
+> x20: ffff800082780000 x19: 0000000000000001 x18: ffffffffffffffff
+> x17: ffff800081fff418 x16: ffff8000823e1000 x15: ffff0000c03b65e8
+> x14: ffff0000c00051b0 x13: ffff800082790000 x12: 0000000000000801
+> x11: ffff80008278ffff x10: ffff80008209d3a6 x9 : ffff80008062e95c
+> x8 : ffff8000821fb9a0 x7 : 0000000000000000 x6 : 00000000000080e3
+> x5 : ffff0000df8c03d8 x4 : 0000000000000000 x3 : 0000000000000000
+> x2 : 0000000000000000 x1 : fffffffffffffdfb x0 : fffffffffffffdfb
+> Call trace:
+>  imx8mm_soc_revision+0xdc/0x180
+>  imx8_soc_init+0xb0/0x1e0
+>  do_one_initcall+0x94/0x1a8
+>  kernel_init_freeable+0x240/0x2a8
+>  kernel_init+0x28/0x140
+>  ret_from_fork+0x10/0x20
+> ---[ end trace 0000000000000000 ]---
+> SoC: i.MX8MP revision 1.1
+> "
+>
+> Signed-off-by: Marek Vasut <marex@denx.de>
+> ---
+> Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Cc: Neil Armstrong <neil.armstrong@linaro.org>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Saravana Kannan <saravanak@google.com>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: imx@lists.linux.dev
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> ---
+> V2: Use the platform device approach instead of late_initcall
+> V3: Do not register imx8m_soc_driver on non-iMX8M hardware
+> ---
+>  drivers/soc/imx/soc-imx8m.c | 107 ++++++++++++++++++++++++++++--------
+>  1 file changed, 85 insertions(+), 22 deletions(-)
+>
+> diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
+> index fe111bae38c8e..5ea8887828c06 100644
+> --- a/drivers/soc/imx/soc-imx8m.c
+> +++ b/drivers/soc/imx/soc-imx8m.c
+> @@ -30,7 +30,7 @@
+>
+>  struct imx8_soc_data {
+>         char *name;
+> -       u32 (*soc_revision)(void);
+> +       int (*soc_revision)(u32 *socrev);
+>  };
+>
+>  static u64 soc_uid;
+> @@ -51,24 +51,29 @@ static u32 imx8mq_soc_revision_from_atf(void)
+>  static inline u32 imx8mq_soc_revision_from_atf(void) { return 0; };
+>  #endif
+>
+> -static u32 __init imx8mq_soc_revision(void)
+> +static int imx8mq_soc_revision(u32 *socrev)
+>  {
+>         struct device_node *np;
+>         void __iomem *ocotp_base;
+>         u32 magic;
+>         u32 rev;
+>         struct clk *clk;
+> +       int ret;
+>
+>         np =3D of_find_compatible_node(NULL, NULL, "fsl,imx8mq-ocotp");
+>         if (!np)
+> -               return 0;
+> +               return -EINVAL;
+>
+>         ocotp_base =3D of_iomap(np, 0);
 
-Additionally, register a PCI bus callback function enable_device() and
-disable_device() to config LUT when enable a new PCI device.
+Using devm_of_iomap() and scoped "whatever it's called" might help
+simplify the error handling.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- drivers/pci/controller/dwc/pci-imx6.c | 133 +++++++++++++++++++++++++++++++++-
- 1 file changed, 132 insertions(+), 1 deletion(-)
+So something like this for np:
+struct device_node *np __free(device_node) =3D np =3D
+of_find_compatible_node(NULL, NULL, "fsl,imx8mq-ocotp");
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 94f3411352bf0..1fe07f64d0d88 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -55,6 +55,22 @@
- #define IMX95_PE0_GEN_CTRL_3			0x1058
- #define IMX95_PCIE_LTSSM_EN			BIT(0)
- 
-+#define IMX95_PE0_LUT_ACSCTRL			0x1008
-+#define IMX95_PEO_LUT_RWA			BIT(16)
-+#define IMX95_PE0_LUT_ENLOC			GENMASK(4, 0)
-+
-+#define IMX95_PE0_LUT_DATA1			0x100c
-+#define IMX95_PE0_LUT_VLD			BIT(31)
-+#define IMX95_PE0_LUT_DAC_ID			GENMASK(10, 8)
-+#define IMX95_PE0_LUT_STREAM_ID			GENMASK(5, 0)
-+
-+#define IMX95_PE0_LUT_DATA2			0x1010
-+#define IMX95_PE0_LUT_REQID			GENMASK(31, 16)
-+#define IMX95_PE0_LUT_MASK			GENMASK(15, 0)
-+
-+#define IMX95_SID_MASK				GENMASK(5, 0)
-+#define IMX95_MAX_LUT				32
-+
- #define to_imx_pcie(x)	dev_get_drvdata((x)->dev)
- 
- enum imx_pcie_variants {
-@@ -82,6 +98,7 @@ enum imx_pcie_variants {
- #define IMX_PCIE_FLAG_HAS_PHY_RESET		BIT(5)
- #define IMX_PCIE_FLAG_HAS_SERDES		BIT(6)
- #define IMX_PCIE_FLAG_SUPPORT_64BIT		BIT(7)
-+#define IMX_PCIE_FLAG_HAS_LUT			BIT(8)
- 
- #define imx_check_flag(pci, val)	(pci->drvdata->flags & val)
- 
-@@ -134,6 +151,7 @@ struct imx_pcie {
- 	struct device		*pd_pcie_phy;
- 	struct phy		*phy;
- 	const struct imx_pcie_drvdata *drvdata;
-+	struct mutex		lock;
- };
- 
- /* Parameters for the waiting for PCIe PHY PLL to lock on i.MX7 */
-@@ -925,6 +943,111 @@ static void imx_pcie_stop_link(struct dw_pcie *pci)
- 	imx_pcie_ltssm_disable(dev);
- }
- 
-+static int imx_pcie_add_lut(struct imx_pcie *imx_pcie, u16 reqid, u8 sid)
-+{
-+	struct dw_pcie *pci = imx_pcie->pci;
-+	struct device *dev = pci->dev;
-+	u32 data1, data2;
-+	int i;
-+
-+	if (sid >= 64) {
-+		dev_err(dev, "Invalid SID for index %d\n", sid);
-+		return -EINVAL;
-+	}
-+
-+	guard(mutex)(&imx_pcie->lock);
-+
-+	for (i = 0; i < IMX95_MAX_LUT; i++) {
-+		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, IMX95_PEO_LUT_RWA | i);
-+
-+		regmap_read(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA1, &data1);
-+		if (data1 & IMX95_PE0_LUT_VLD)
-+			continue;
-+
-+		data1 = FIELD_PREP(IMX95_PE0_LUT_DAC_ID, 0);
-+		data1 |= FIELD_PREP(IMX95_PE0_LUT_STREAM_ID, sid);
-+		data1 |= IMX95_PE0_LUT_VLD;
-+
-+		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA1, data1);
-+
-+		data2 = 0xffff;
-+		data2 |= FIELD_PREP(IMX95_PE0_LUT_REQID, reqid);
-+
-+		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA2, data2);
-+
-+		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, i);
-+
-+		return 0;
-+	}
-+
-+	dev_err(dev, "All lut already used\n");
-+	return -EINVAL;
-+}
-+
-+static void imx_pcie_remove_lut(struct imx_pcie *imx_pcie, u16 reqid)
-+{
-+	u32 data2 = 0;
-+	int i;
-+
-+	guard(mutex)(&imx_pcie->lock);
-+
-+	for (i = 0; i < IMX95_MAX_LUT; i++) {
-+		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, IMX95_PEO_LUT_RWA | i);
-+
-+		regmap_read(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA2, &data2);
-+		if (FIELD_GET(IMX95_PE0_LUT_REQID, data2) == reqid) {
-+			regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA1, 0);
-+			regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA2, 0);
-+			regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, i);
-+		}
-+	}
-+}
-+
-+static int imx_pcie_enable_device(struct pci_bus *bus, struct pci_dev *pdev)
-+{
-+	u32 sid_i = 0, sid_m = 0, rid = pci_dev_id(pdev);
-+	struct imx_pcie *imx_pcie;
-+	struct device *dev;
-+	int err;
-+
-+	imx_pcie = to_imx_pcie(to_dw_pcie_from_pp(bus->sysdata));
-+	dev = imx_pcie->pci->dev;
-+
-+	err = of_map_id(dev->of_node, rid, "iommu-map", "iommu-map-mask", NULL, &sid_i);
-+	if (err)
-+		return err;
-+
-+	err = of_map_id(dev->of_node, rid, "msi-map", "msi-map-mask", NULL, &sid_m);
-+	if (err)
-+		return err;
-+
-+	if (sid_i != rid && sid_m != rid)
-+		if ((sid_i & IMX95_SID_MASK) != (sid_m & IMX95_SID_MASK)) {
-+			dev_err(dev, "its and iommu stream id miss match, please check dts file\n");
-+			return -EINVAL;
-+		}
-+
-+	/* if iommu-map is not existed then use msi-map's stream id*/
-+	if (sid_i == rid)
-+		sid_i = sid_m;
-+
-+	sid_i &= IMX95_SID_MASK;
-+
-+	if (sid_i != rid)
-+		return imx_pcie_add_lut(imx_pcie, rid, sid_i);
-+
-+	/* Use dwc built-in MSI controller */
-+	return 0;
-+}
-+
-+static void imx_pcie_disable_device(struct pci_bus *bus, struct pci_dev *pdev)
-+{
-+	struct imx_pcie *imx_pcie;
-+
-+	imx_pcie = to_imx_pcie(to_dw_pcie_from_pp(bus->sysdata));
-+	imx_pcie_remove_lut(imx_pcie, pci_dev_id(pdev));
-+}
-+
- static int imx_pcie_host_init(struct dw_pcie_rp *pp)
- {
- 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-@@ -941,6 +1064,11 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
- 		}
- 	}
- 
-+	if (pp->bridge && imx_check_flag(imx_pcie, IMX_PCIE_FLAG_HAS_LUT)) {
-+		pp->bridge->ops->enable_device = imx_pcie_enable_device;
-+		pp->bridge->ops->disable_device = imx_pcie_disable_device;
-+	}
-+
- 	imx_pcie_assert_core_reset(imx_pcie);
- 
- 	if (imx_pcie->drvdata->init_phy)
-@@ -1292,6 +1420,8 @@ static int imx_pcie_probe(struct platform_device *pdev)
- 	imx_pcie->pci = pci;
- 	imx_pcie->drvdata = of_device_get_match_data(dev);
- 
-+	mutex_init(&imx_pcie->lock);
-+
- 	/* Find the PHY if one is defined, only imx7d uses it */
- 	np = of_parse_phandle(node, "fsl,imx7d-pcie-phy", 0);
- 	if (np) {
-@@ -1587,7 +1717,8 @@ static const struct imx_pcie_drvdata drvdata[] = {
- 	},
- 	[IMX95] = {
- 		.variant = IMX95,
--		.flags = IMX_PCIE_FLAG_HAS_SERDES,
-+		.flags = IMX_PCIE_FLAG_HAS_SERDES |
-+			 IMX_PCIE_FLAG_HAS_LUT,
- 		.clk_names = imx8mq_clks,
- 		.clks_cnt = ARRAY_SIZE(imx8mq_clks),
- 		.ltssm_off = IMX95_PE0_GEN_CTRL_3,
+And this for ocotp_base:
+ocotp_base =3D devm_of_iomap(dev, np, 0);
 
--- 
-2.34.1
+Would mean you can delete all the error handling parts
 
+> -       WARN_ON(!ocotp_base);
+> +       if (!ocotp_base) {
+> +               ret =3D -EINVAL;
+> +               goto err_iomap;
+> +       }
+> +
+>         clk =3D of_clk_get_by_name(np, NULL);
+>         if (IS_ERR(clk)) {
+> -               WARN_ON(IS_ERR(clk));
+> -               return 0;
+> +               ret =3D PTR_ERR(clk);
+> +               goto err_clk;
+>         }
+>
+>         clk_prepare_enable(clk);
+> @@ -88,32 +93,45 @@ static u32 __init imx8mq_soc_revision(void)
+>         soc_uid <<=3D 32;
+>         soc_uid |=3D readl_relaxed(ocotp_base + OCOTP_UID_LOW);
+>
+> +       *socrev =3D rev;
+> +
+>         clk_disable_unprepare(clk);
+>         clk_put(clk);
+>         iounmap(ocotp_base);
+
+If you use devm_of_iomap() then you should use devm_iounmap() here and
+not just delete this part. devm_* is mainly to skip freeing when probe
+fails.
+
+>         of_node_put(np);
+>
+> -       return rev;
+> +       return 0;
+> +
+> +err_clk:
+> +       iounmap(ocotp_base);
+> +err_iomap:
+> +       of_node_put(np);
+> +       return ret;
+>  }
+>
+> -static void __init imx8mm_soc_uid(void)
+> +static int imx8mm_soc_uid(void)
+>  {
+>         void __iomem *ocotp_base;
+>         struct device_node *np;
+>         struct clk *clk;
+> +       int ret =3D 0;
+>         u32 offset =3D of_machine_is_compatible("fsl,imx8mp") ?
+>                      IMX8MP_OCOTP_UID_OFFSET : 0;
+>
+>         np =3D of_find_compatible_node(NULL, NULL, "fsl,imx8mm-ocotp");
+>         if (!np)
+> -               return;
+> +               return -EINVAL;
+>
+>         ocotp_base =3D of_iomap(np, 0);
+> -       WARN_ON(!ocotp_base);
+> +       if (!ocotp_base) {
+> +               ret =3D -EINVAL;
+> +               goto err_iomap;
+> +       }
+> +
+>         clk =3D of_clk_get_by_name(np, NULL);
+>         if (IS_ERR(clk)) {
+> -               WARN_ON(IS_ERR(clk));
+> -               return;
+> +               ret =3D PTR_ERR(clk);
+> +               goto err_clk;
+>         }
+>
+>         clk_prepare_enable(clk);
+> @@ -124,31 +142,41 @@ static void __init imx8mm_soc_uid(void)
+>
+>         clk_disable_unprepare(clk);
+>         clk_put(clk);
+> +
+> +err_clk:
+>         iounmap(ocotp_base);
+> +err_iomap:
+>         of_node_put(np);
+> +
+> +       return ret;
+>  }
+>
+> -static u32 __init imx8mm_soc_revision(void)
+> +static int imx8mm_soc_revision(u32 *socrev)
+>  {
+>         struct device_node *np;
+>         void __iomem *anatop_base;
+> -       u32 rev;
+> +       int ret;
+>
+>         np =3D of_find_compatible_node(NULL, NULL, "fsl,imx8mm-anatop");
+>         if (!np)
+> -               return 0;
+> +               return -EINVAL;
+>
+>         anatop_base =3D of_iomap(np, 0);
+> -       WARN_ON(!anatop_base);
+> +       if (!anatop_base) {
+> +               ret =3D -EINVAL;
+> +               goto err_iomap;
+> +       }
+>
+> -       rev =3D readl_relaxed(anatop_base + ANADIG_DIGPROG_IMX8MM);
+> +       *socrev =3D readl_relaxed(anatop_base + ANADIG_DIGPROG_IMX8MM);
+>
+>         iounmap(anatop_base);
+>         of_node_put(np);
+>
+> -       imx8mm_soc_uid();
+> +       return imx8mm_soc_uid();
+>
+> -       return rev;
+> +err_iomap:
+> +       of_node_put(np);
+> +       return ret;
+>  }
+>
+>  static const struct imx8_soc_data imx8mq_soc_data =3D {
+> @@ -184,7 +212,7 @@ static __maybe_unused const struct of_device_id imx8_=
+soc_match[] =3D {
+>         kasprintf(GFP_KERNEL, "%d.%d", (soc_rev >> 4) & 0xf,  soc_rev & 0=
+xf) : \
+>         "unknown"
+>
+> -static int __init imx8_soc_init(void)
+> +static int imx8m_soc_probe(struct platform_device *pdev)
+>  {
+>         struct soc_device_attribute *soc_dev_attr;
+>         struct soc_device *soc_dev;
+> @@ -212,8 +240,11 @@ static int __init imx8_soc_init(void)
+>         data =3D id->data;
+>         if (data) {
+>                 soc_dev_attr->soc_id =3D data->name;
+> -               if (data->soc_revision)
+> -                       soc_rev =3D data->soc_revision();
+> +               if (data->soc_revision) {
+> +                       ret =3D data->soc_revision(&soc_rev);
+> +                       if (ret)
+> +                               goto free_soc;
+> +               }
+>         }
+
+I'm glad it's working for you, but I think there might still be a race
+that you are just lucky enough to not hit. I think you still need to
+fix up drivers/base/soc.c to return -EPROBE_DEFER when
+soc_device_match() is called but soc_bus_type has no devices
+registered. That way any drivers that try to use that API will defer
+probe until this device gets to probe.
+
+And then you'll have to look at all the callers of that API for the
+boards this driver is meant for and make sure they don't ignore the
+error return value. Just add a WARN() on the API to figure out all the
+callers in your board.
+
+Also, you might want to check that your list of probed devices doesn't
+change without any async probing or this patch vs with async probing
+and this patch. Quick way to get list of successfully probed devices
+is:
+# find /sys/devices -name driver
+
+Arnd,
+
+Why is soc_device_match() doing a bus_for_each_dev(&soc_bus_type,...)?
+Are the real use cases where more than one soc device can be
+registered with soc_device_register()?
+
+-Saravana
+
+>
+>         soc_dev_attr->revision =3D imx8_revision(soc_rev);
+> @@ -251,6 +282,38 @@ static int __init imx8_soc_init(void)
+>         kfree(soc_dev_attr);
+>         return ret;
+>  }
+> +
+> +static struct platform_driver imx8m_soc_driver =3D {
+> +       .probe =3D imx8m_soc_probe,
+> +       .driver =3D {
+> +               .name =3D "imx8m-soc",
+> +       },
+> +};
+> +
+> +static int __init imx8_soc_init(void)
+> +{
+> +       struct platform_device *pdev;
+> +       int ret;
+> +
+> +       /* No match means this is non-i.MX8M hardware, do nothing. */
+> +       if (!of_match_node(imx8_soc_match, of_root))
+> +               return 0;
+> +
+> +       ret =3D platform_driver_register(&imx8m_soc_driver);
+> +       if (ret) {
+> +               pr_err("Failed to register imx8m-soc platform driver: %d\=
+n", ret);
+> +               return ret;
+> +       }
+> +
+> +       pdev =3D platform_device_register_simple("imx8m-soc", -1, NULL, 0=
+);
+> +       if (IS_ERR(pdev)) {
+> +               pr_err("Failed to register imx8m-soc platform device: %ld=
+\n", PTR_ERR(pdev));
+> +               platform_driver_unregister(&imx8m_soc_driver);
+> +               return PTR_ERR(pdev);
+> +       }
+> +
+> +       return 0;
+> +}
+>  device_initcall(imx8_soc_init);
+>  MODULE_DESCRIPTION("NXP i.MX8M SoC driver");
+>  MODULE_LICENSE("GPL");
+> --
+> 2.45.2
+>
