@@ -1,143 +1,167 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFA515B552
-	for <imx@lists.linux.dev>; Thu, 26 Sep 2024 17:36:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07ECB1F5F6
+	for <imx@lists.linux.dev>; Thu, 26 Sep 2024 18:15:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727372217; cv=none; b=tcN2wkatPWRCeCeII5t/V2KNWownEojQrUWs55gmr0liKY2Fx0gZIgz6qmrzRe9Ud7ujjwbsFCcpurLNqRlPLTLdp9ageEWMTqckmH3o/nI0KNYMayqYYZYj68ql2v6bXAGNTjCPtb5j/Gnor9oDD1WuLfirnkQCqJBFyR7v5Io=
+	t=1727374534; cv=none; b=oh269Lgid8bAyGqPoOIZZDalimZ5zY9hmI9QobEw2xh8eEncQHOuTJPz2pqeDrmtwThAfiVTiOZteA7JGBbNE8pYnbiPrxRNV/ZyyE1gznwI6yHnZ9gXg07Bkm3pmF2bfE89yx8piZaZFn5qFOAnXSRhdUSeQZD8QRNBmdQ4k/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727372217; c=relaxed/simple;
-	bh=gZ/DZtOFtotCg2ZJqvPPQrBo5e4ZN34v/Lvt1y7BlBE=;
+	s=arc-20240116; t=1727374534; c=relaxed/simple;
+	bh=0iaW9ayASK4sYOEg7AV+wgw2JHuSB/rDBFbxxHYK+kg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QnyRTAlBoQJr5ORgZJNqa19aVZzVNyw0X2obExUkg0/WBo0N4QDArjotUTdQMiCHQNfqHhID5hB8WdT8ZNexPl9T7eHYIWdD2bKZON3SyMvWtdjU15fMflVPyte9ZZ+w+fl/KFAxoV3ePFvA/ayumZUmsSRcfjopE/ASzcbji9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4jK+n0A5; arc=none smtp.client-ip=209.85.215.179
+	 To:Cc:Content-Type; b=IOS76qr544W86YC97+DIiy3QxxicKJcZQiTpxHzMmQRwXiUMk5w1f/agz8Yqwsx1LF3r0arnL7OPffoShjjNgK8F93QGxFPnaBW0m6S/9qL5HQ3TbV6Ok+isL+6I7Hq+f+0AYaH47H/XoOBjxNogYdQaKsciyPJ6Jl48JJULkoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IXGuIc3r; arc=none smtp.client-ip=209.85.160.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4jK+n0A5"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-7db4c1a54easo771039a12.1
-        for <imx@lists.linux.dev>; Thu, 26 Sep 2024 10:36:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IXGuIc3r"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4582a5b495cso35791cf.1
+        for <imx@lists.linux.dev>; Thu, 26 Sep 2024 11:15:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727372215; x=1727977015; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1727374532; x=1727979332; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HIlWLLARj2D0f2/wbtG4ZzKXxUsNafh4f+v/Gl8dtfg=;
-        b=4jK+n0A5pkIg5rgrniWZmChW4HzIlayvyjWpN0W9Ej12rdAc0nzN4RK/heFy+hnHdS
-         wig81ZHs3uumptadtwuB9upZ1y9348NOVBYYCw+NOZdzRfuZ2/vRXeKWndbEQjYbc1Jv
-         WvDuZcbT2TlXoTpxsDA3zQ9MOsNJIVkJMYpgUvqgoBGzotEBhUCUFiLcDunpXIAoQssF
-         ow2wfgJG3uw4XnlZzsphp0cDcIlnJ3ECW7wJoxDzrrUVET/+zdVvE+OHp/WW0Py5c3KK
-         YOrCNu7URzFSGTALoXYUfkN9PEqwa6L9QyuRouZ1xBcunbBiG4ztptontoTzOG+Te739
-         4dxA==
+        bh=ghI5wl9Rodk/qOTN/GXzEVkvMG0ZFbywRGFDuKaTQGk=;
+        b=IXGuIc3rzHbhetXNr5mPlBQ0HKU/mS4tg6aNc2p+lU01lbPFPqPPRwYv1o4zGtcZRr
+         LnljjhBCKXf8vC/YI0Nraj4MGVbHJACvxOObWpBUOIEqUDJzdkAiTCJH8K3gvP5Lad2E
+         5oAFcTNlUhGU9F3OyvllmkZzlPvlmtyP7hkFCnCuCjTarr5DXPNWx0UB05gvnh8xw6kL
+         n0vIXpMgtm0TMU4OdkPElvF3frVub9mP0KrgsOkfqaAOvxdOc2nPri1G2SojHqdU02Kq
+         r/Xb0b13VzG2vv/YgXl0VSkNxd5j/LTf2pT99XiRCD9kYmW2Wu8jI7NFXAwCnrOKbaMB
+         YIDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727372215; x=1727977015;
+        d=1e100.net; s=20230601; t=1727374532; x=1727979332;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HIlWLLARj2D0f2/wbtG4ZzKXxUsNafh4f+v/Gl8dtfg=;
-        b=iIErAGg/b1Z9MIyzYi7udHT2vOD7FVq+TqobnESl/wVNghrMIuQBhuONZseicLNMyh
-         7HiMDJGSX/WVLNt7LuuZBozmUm9V7GHjL8JQBtY0W9HWMXhDT7K1eZyAksD1GRang0U1
-         N3005vX/CBUXOqYOdWgeSB+2Ggn9BmptuDYP73S6VS44WIuC5rFl06ZM8/sop8omVFwg
-         JR17jSwacs5YAZdt3pdQ4iKSSaDU5i/3Gy6co2qov2SRtojd1POkOy2d/DNcYuFlzq0q
-         Y1DHlIWwbyrfVsy9PiMgs73ac67xK3h8/adyuMbx4VxW48TQ4eB7a6oVbpuEA68fN3Rx
-         qUYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWWrqE6/lwDPqj15TiSAwWIzkSuLd4iRXKlRB+5CL5Bc7x52l1b+vzewLTl2a9ej7dJTEo=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz3uFc72yMad4knXnQT9O3c81YMHl2GkjTr4Hbr9A8YCoinj0+f
-	g5nJ6ltIWc+zuTtM8dK3zwkN5CDxxfeLFpJkskRxGB4Jm7ZFPBwuToymBrs+TDzgdNnh1Y9bDcy
-	SgCLgqcQ92CWcCxH93yi3Aoz50cFqvTvRdGrR
-X-Google-Smtp-Source: AGHT+IFyoM14p1xkZjGDkib3ISbqBw/ob1Vg+aQY6MCOB0meJl2EfUTPQX5rZCw3U6NYwXQhw75iHjrBgwnKb1Dc4o4=
-X-Received: by 2002:a05:6a20:c6c2:b0:1cf:1251:9a47 with SMTP id
- adf61e73a8af0-1d4fa78fd0amr609270637.31.1727372214561; Thu, 26 Sep 2024
- 10:36:54 -0700 (PDT)
+        bh=ghI5wl9Rodk/qOTN/GXzEVkvMG0ZFbywRGFDuKaTQGk=;
+        b=ane6JyCEHrmK3PIqFXncmmo8E36WW7HtsBqmvk8adjh/ipVmusU6wH0GLMQI0JOiXJ
+         w52OB15xH6WKPMP8DpldB2Cb/PGRhD30qyPFPFVsObsHAixXNiuUXb9nc3RWCmWxHuH+
+         YQizyqUVkZJ4gn/K6HOYtkpVEljvG+THIg8PIMrvlWPMWZsePlOuP7+Liw2XVJs6ze1T
+         AYbXA0Yauumw9FoRj8JH/pnDx2ZE+yxyF6rd/CYRHgpFJl5wdM3jfmNxurh1hS372d9d
+         t/dOMzUzRi50fhNQTxjyMoqKWfewCEY3tNqrNTI+MViwwiThlmsnDcFNUIAPLZWwhGqT
+         YSQg==
+X-Forwarded-Encrypted: i=1; AJvYcCUKyyGovXAm/L3CNct399617xkDvduk8p/Awla4NhY0R0W4BgTiAe3b84CWJwwozes2Ut0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxpMrixIPdMGwcPu45KfZhZtqo9oM37QB6WR9wz8EAjtpJs0oVm
+	C5Mem+tY948BXhsVTB9wose2Kwu0Rao0JLKZqMDRwVUpiqSTl4zsTq+xEicjjq0hnD01qgiDUA1
+	rJQs2/a7+z5cgzZNhDGlEVEIeSJysFVRUpJNY
+X-Google-Smtp-Source: AGHT+IEKskNfWv42/OYoUzFnd0ZbE37pwmmbLc0UUgMIXvnGdU5BvAly31C36TplRHtvwCbfAj6CwKAwWZwa5Zx659M=
+X-Received: by 2002:a05:622a:24a:b0:453:62ee:3fe with SMTP id
+ d75a77b69052e-45ca03e60f6mr134981cf.17.1727374531410; Thu, 26 Sep 2024
+ 11:15:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240925220552.149551-1-marex@denx.de> <a9967a8c-8e03-44c2-8f79-14c6dd5d74af@app.fastmail.com>
-In-Reply-To: <a9967a8c-8e03-44c2-8f79-14c6dd5d74af@app.fastmail.com>
-From: Saravana Kannan <saravanak@google.com>
-Date: Thu, 26 Sep 2024 10:36:16 -0700
-Message-ID: <CAGETcx8opbQ=+dBkSWwfCoqGsvUBftJm7VaGULZhC5DNyuktJQ@mail.gmail.com>
-Subject: Re: [PATCH v2] soc: imx8m: Probe the SoC driver as platform driver
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Marek Vasut <marex@denx.de>, linux-arm-kernel@lists.infradead.org, 
-	kernel@dh-electronics.com, 
+References: <20240925075707.3970187-1-linyunsheng@huawei.com> <20240925075707.3970187-3-linyunsheng@huawei.com>
+In-Reply-To: <20240925075707.3970187-3-linyunsheng@huawei.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Thu, 26 Sep 2024 11:15:15 -0700
+Message-ID: <CAHS8izOxugzWJDTc-4CWqaKABTj=J4OHs=Lcb=SE9r8gX0J+yg@mail.gmail.com>
+Subject: Re: [PATCH net v2 2/2] page_pool: fix IOMMU crash when driver has
+ already unbound
+To: Yunsheng Lin <linyunsheng@huawei.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
+	liuyonglong@huawei.com, fanghaiqing@huawei.com, zhangkun09@huawei.com, 
+	Robin Murphy <robin.murphy@arm.com>, Alexander Duyck <alexander.duyck@gmail.com>, 
+	IOMMU <iommu@lists.linux.dev>, Wei Fang <wei.fang@nxp.com>, 
+	Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
+	Eric Dumazet <edumazet@google.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed <saeedm@nvidia.com>, 
+	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
+	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+	Kalle Valo <kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Fabio Estevam <festevam@gmail.com>, Jeff Johnson <quic_jjohnson@quicinc.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
+	Andrew Morton <akpm@linux-foundation.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+	imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	intel-wired-lan@lists.osuosl.org, bpf@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+	linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 25, 2024 at 11:28=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrot=
-e:
+On Wed, Sep 25, 2024 at 1:03=E2=80=AFAM Yunsheng Lin <linyunsheng@huawei.co=
+m> wrote:
 >
-> On Wed, Sep 25, 2024, at 22:04, Marek Vasut wrote:
-> > With driver_async_probe=3D* on kernel command line, the following trace=
- is
-> > produced because on i.MX8M Plus hardware because the soc-imx8m.c driver
-> > calls of_clk_get_by_name() which returns -EPROBE_DEFER because the cloc=
-k
-> > driver is not yet probed. This was not detected during regular testing
-> > without driver_async_probe.
-> >
-> > Convert the SoC code to platform driver and instantiate a platform devi=
-ce
-> > in its current device_initcall() to probe the platform driver. Rework
-> > .soc_revision callback to always return valid error code and return SoC
-> > revision via parameter. This way, if anything in the .soc_revision call=
-back
-> > return -EPROBE_DEFER, it gets propagated to .probe and the .probe will =
-get
-> > retried later.
+> Networking driver with page_pool support may hand over page
+> still with dma mapping to network stack and try to reuse that
+> page after network stack is done with it and passes it back
+> to page_pool to avoid the penalty of dma mapping/unmapping.
+> With all the caching in the network stack, some pages may be
+> held in the network stack without returning to the page_pool
+> soon enough, and with VF disable causing the driver unbound,
+> the page_pool does not stop the driver from doing it's
+> unbounding work, instead page_pool uses workqueue to check
+> if there is some pages coming back from the network stack
+> periodically, if there is any, it will do the dma unmmapping
+> related cleanup work.
 >
-> Thanks for the new version, that was quick!
+> As mentioned in [1], attempting DMA unmaps after the driver
+> has already unbound may leak resources or at worst corrupt
+> memory. Fundamentally, the page pool code cannot allow DMA
+> mappings to outlive the driver they belong to.
 >
-> > +static struct platform_driver imx8m_soc_driver =3D {
-> > +     .probe =3D imx8m_soc_probe,
-> > +     .driver =3D {
-> > +             .name =3D "imx8m-soc",
-> > +     },
-> > +};
-> > +module_platform_driver(imx8m_soc_driver);
-> > +
-> > +static int __init imx8_soc_init(void)
-> > +{
-> > +     struct platform_device *pdev;
-> > +
-> > +     pdev =3D platform_device_register_simple("imx8m-soc", -1, NULL, 0=
-);
-> > +
-> > +     return IS_ERR(pdev) ? PTR_ERR(pdev) : 0;
-> > +}
-> >  device_initcall(imx8_soc_init);
+> Currently it seems there are at least two cases that the page
+> is not released fast enough causing dma unmmapping done after
+> driver has already unbound:
+> 1. ipv4 packet defragmentation timeout: this seems to cause
+>    delay up to 30 secs.
+> 2. skb_defer_free_flush(): this may cause infinite delay if
+>    there is no triggering for net_rx_action().
 >
-> Did you run into problems with the method I suggested first?
->
-> I don't like the way that this version still registers both the
-> device and driver regardless of the hardware it runs on, I'd
-> prefer to leave the platform check in the initcall and
-> only register them if we are actually on an imx8 machine.
->
-> Having two initcalls also makes it impossible to build this
-> as a loadable module, which is why I suggested
-> platform_create_bundle().
 
-That particular helper doesn't seem to like probe deferral because it
-allows for some of the code to be in init sections. So, it gets
-dropped after module load is complete. So, Marek will still have to
-register the device and driver separately. But I agree that it might
-be better to NOT register the device and driver if the basic
-conditions aren't met.
+I think additionally this is dependent on user behavior, right? AFAIU,
+frags allocated by the page_pool will remain in the socket receive
+queue until the user calls recvmsg(), and AFAIU they are stuck there
+arbitrarily long.
 
--Saravana
+> In order not to do the dma unmmapping after driver has already
+> unbound and stall the unloading of the networking driver, add
+> the pool->items array to record all the pages including the ones
+> which are handed over to network stack, so the page_pool can
+> do the dma unmmapping for those pages when page_pool_destroy()
+> is called.
 
-> I think you can keep the
-> of_device_id lookup and pass the imx8_soc_data pointer
-> as the platform_data to platform_create_bundle.
+One thing I could not understand from looking at the code: if the
+items array is in the struct page_pool, why do you need to modify the
+page_pool entry in the struct page and in the struct net_iov? I think
+the code could be made much simpler if you can remove these changes,
+and you wouldn't need to modify the public api of the page_pool.
+
+> As the pool->items need to be large enough to avoid
+> performance degradation, add a 'item_full' stat to indicate the
+> allocation failure due to unavailability of pool->items.
 >
->     Arnd
+
+I'm not sure there is any way to size the pool->items array correctly.
+Can you use a data structure here that can grow? Linked list or
+xarray?
+
+AFAIU what we want is when the page pool allocates a netmem it will
+add the netmem to the items array, and when the pp releases a netmem
+it will remove it from the array. Both of these operations are slow
+paths, right? So the performance of a data structure more complicated
+than an array may be ok. bench_page_pool_simple will tell for sure.
+
+> Note, the devmem patchset seems to make the bug harder to fix,
+> and may make backporting harder too. As there is no actual user
+> for the devmem and the fixing for devmem is unclear for now,
+> this patch does not consider fixing the case for devmem yet.
+>
+
+net_iovs don't hit this bug, dma_unmap_page_attrs() is never called on
+them, so no special handling is needed really. However for code
+quality reasons lets try to minimize the number of devmem or memory
+provider checks in the code, if possible.
+
+--=20
+Thanks,
+Mina
