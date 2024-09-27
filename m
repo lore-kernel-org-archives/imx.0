@@ -1,208 +1,293 @@
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from APC01-PSA-obe.outbound.protection.outlook.com (mail-psaapc01on2067.outbound.protection.outlook.com [40.107.255.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57F417107F
-	for <imx@lists.linux.dev>; Fri, 27 Sep 2024 05:54:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727416458; cv=none; b=WC82BfJTcutfBhuwOzmgikDu7uoO8lW+cdOgbH1dgIxdzh0ZyUlprtaAxBE9A4Qh/jdWqN2ywqTH5C7hfjZOzn2BqOzMM2VUSBsCk8IPOpLJ8tcsfbwJDcvbHuK8iSpyblpCUnP+qhaTQ+K9H4eMZwlvFYiScAGDh7kqNDCgRlo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727416458; c=relaxed/simple;
-	bh=G4hpnvLo0m/PQe/eCqe2pef7O4TSc1+b2w1IPvUZUSM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UXFY+RNXJnisTe+hJN2s90aw/MTxl5NFL9w/NWwaskyRMHamLvcemi79NHJzOckplx0x53Hjs/omASW25xaMS44aL+nX85leckg9CBhLf3j1KqrA8NjZiECumw9Z4q7wWR+kWnxOqkQ9c8m96zGtBDMNQllIt1uwHZvygNWmrCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=a5ft72qN; arc=none smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC2D158210
+	for <imx@lists.linux.dev>; Fri, 27 Sep 2024 06:02:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.255.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727416942; cv=fail; b=pjZtT2iWzotfWOYU9TpITAZdV+R7Q0o/1Ku6ScXusVv7sjjuXZRedlIs8gBcTix+9d2TnyrEzNIJdZ9pt0nqGQAwIOFc/VhSvkeG8dc/xGillQm3wAJmZtXsNn0uksdoJZfy1WFhirnJBIh0KSzPGtl1SxLFTaVzAzrlq3BFD0Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727416942; c=relaxed/simple;
+	bh=D9mZpkWkjFpeXuMpPaxvcYWO5Eq5ev4K3/hczGmeNhc=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=gBIOnB/ma/y0WAt25IU9nmWN0O3N/39dTT1M0zHE6NmZyrkhWTp/JHT/HiTJXXNBZ2hiGKUbXmNQ4Y28zOpFM0JSxPnpSMCRqkU8OrbuCHRPFVRdy8SFra2o/BLx0zVOzSmYTf/iduZSLb72LPnUEAbYecGR0wN22c7OHKIM9xg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=EwI1z0W0; arc=fail smtp.client-ip=40.107.255.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="a5ft72qN"
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4582fa01090so166241cf.0
-        for <imx@lists.linux.dev>; Thu, 26 Sep 2024 22:54:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727416455; x=1728021255; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Fbg8QJSSUgH7Q4nHSRemybsPSlB855qz0uznqiadyvc=;
-        b=a5ft72qNTcrstHqr3QFjA42smQNtFcR5mclzP1lQ8Ah3jCBmA0j0PMkh0I5TMmjK9N
-         zloAI/xj0caf8U45Nl9BYViVDGMv7F/wQFQJaCqafasWzm5703/+XdTypRpfbAC2Ep25
-         FQOnf4UbvBnwiUMSTgiax4fc7xbuK5sXOgCaWB/fHxotPHmw2z07NgVM7s5W5rhbKvo/
-         QHpZxtiaigOrmWhCBW11If81JrexW4NHZX+MmYF3BeiSkiA88mHtpO4AQA0ibqh4gChK
-         w85iRMpWmvQNCXI1pSqPDEhqAX51ioKYct58rrFcF7iYPiL9ma7M8zeGJSkVw+qvY4v/
-         c56A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727416455; x=1728021255;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Fbg8QJSSUgH7Q4nHSRemybsPSlB855qz0uznqiadyvc=;
-        b=GxGxLYLexaq/2Yz4FwBvYiSgbowRn5lMOpIlakytlUWS8LHcZdVjtISfnE7iwn2djo
-         9p4rr8IL9qtjfUC6QpZHj0gXdM0MfQ0kuLkC6Fw616Jb+yDABbdLkCzfU45FshUk180C
-         /jfUmamtftfIL5FnDWXz4NcvZzFLi4RxZArUNBEev2ibzx/J8/D1hSSvP3Q1EWekMMqV
-         cVk5j2S2kpbL/NI4n61pWy1tMvvHtYGw6tL3p4eOpSrfToPIC2rSNmEiHInkR9Rhos4r
-         iS6FJCrNfTS5QmYsjfoFnMvgjZK7TtzeBf4eKTzFYmhQoOt0LfiwXX3ty3BYm6WwdJDK
-         bLsA==
-X-Forwarded-Encrypted: i=1; AJvYcCV9cGDCC/V2wSipME0EO6y7GgEmPCWVkbaUQ0/I2214D0TBjuv5+e9Pl1RigHufLWWmv0U=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzyajJlPhuUz1bE8jFpy509ahWZ4IyMFrsH/dif2YKZrE4YYgbT
-	VGqCjwoQ/fQxGIWheHCDEwJM5hS88V7dlBLqBPd9qWr4+zU1vjYXp7nPStQ+d8v347zp3M6jP5+
-	ebsIh06uojjM5vZo5iIbTa7g6tCB9bqovtyuD
-X-Google-Smtp-Source: AGHT+IFlWAzqms00GpX5qYW9TQZFSIQORw0rsVCeZaOGfdUcQ3vPP90oLkUJ8sEZ5IgWc6qBEG83z217FGnc5KOy/AE=
-X-Received: by 2002:a05:622a:7d0e:b0:453:58b6:e022 with SMTP id
- d75a77b69052e-45ca02b0365mr2089571cf.28.1727416455179; Thu, 26 Sep 2024
- 22:54:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="EwI1z0W0"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Wof1sEpvaHfdHfOyYhKXXF1rRb+eIWqaloiBO6rw3gFigw75JBgXtyu0nE9OU4dn2CvG/aD0Qy7lPIZko539ADR9aYxjifzzzweMdXCLQ947zdRZftq6tJxlFRbR0JTbm+frr+Es4+70f0SRp+QmmyFfL4SOIi4HHlAwjqlO0W84AYV5FWOKSrmNw9mp8YsCJiBmjB/FlmuTC4YXI8cyUKNSsLehToWK1plwaT3bu2LiAyw5AWq6g4y7Bg6Vr7v1cgnx4faFSss1+w/dSYxhhWgeZZDG7s4iidY74c8Z556e2YK0vuZua3UU4LDKLyLPcVYXj5xbCruiMKnVGmoihA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=osbT+shT4oasGBhMInLYW94i3rDaY3TdNC/eOxpQpr0=;
+ b=scsM8oHoaeVIvpHGkiGwWzYcSL3S9jZw8sUVMeatiTliiMChFkD2vQt4RLN73R0O28oqe0HPxHUOEqvlu+CFXZAfg6b1maXj995+C6WYwqSACA5jQGQ/nCRAToVew9dH2pfw+aElRFGVkSp5p827Qhws6Uzqa0qTUqEBdqS20CS6XE1mWw71oqnNsMEQ6G1egfg4e2zmEZmDk6cOSRC1ceH1EXbAfZoqznzfDFgh+7+N0c7ejRiJ5htb04gHfGs+lyyfo1P1iAcQCYl5dE2up8DwwW4NUYyxF+NJmxYVHaUTCMlaLVGcYAZWw3mafStyYd5k0Z7y2rDoNqpjJBGwiQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=osbT+shT4oasGBhMInLYW94i3rDaY3TdNC/eOxpQpr0=;
+ b=EwI1z0W0kJ60sKMnVPIlooZQYJ6p02Sg/UzX5vQ8EZ48X4NBFKzgrB4TTSJbubwvPPmaFmsRF3cVdqN8L+gXYnQRP/jCfPURkF8GAqEzjic2xHZOdxj1w8gMSTWhbPtMbynPCK12kjkcXaVX2JY9iozC4+AAZi7LAvOYfBoHY5G5bi6u0grODJybXE7M1nQ48sHHAaXblylKgVKSO+UH4CfLzGn95EH3PlVAAA/3Q9w1VzUQuow8WxrknVCQQX8IM3CwdmtoOwemllH4lRPfxwIZlJrxvzjsOBQ9yeaCymXjMgcRhFHqxUeVS1p4HEPUMnpmrE4jrbA2jLWDKtSlyA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vivo.com;
+Received: from TYZPR06MB4128.apcprd06.prod.outlook.com (2603:1096:400:22::9)
+ by SEYPR06MB6277.apcprd06.prod.outlook.com (2603:1096:101:13f::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.27; Fri, 27 Sep
+ 2024 06:02:16 +0000
+Received: from TYZPR06MB4128.apcprd06.prod.outlook.com
+ ([fe80::2bb1:c586:b61b:b920]) by TYZPR06MB4128.apcprd06.prod.outlook.com
+ ([fe80::2bb1:c586:b61b:b920%7]) with mapi id 15.20.8005.020; Fri, 27 Sep 2024
+ 06:02:16 +0000
+From: Yan Zhen <yanzhen@vivo.com>
+To: dlemoal@kernel.org,
+	cassel@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de
+Cc: kernel@pengutronix.de,
+	festevam@gmail.com,
+	s.shtylyov@omp.ru,
+	linux-ide@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	opensource.kernel@vivo.com,
+	Yan Zhen <yanzhen@vivo.com>
+Subject: [PATCH v3] ata: Fix typos in the comment
+Date: Fri, 27 Sep 2024 14:00:56 +0800
+Message-Id: <20240927060056.221977-1-yanzhen@vivo.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TYCP286CA0297.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:3c8::20) To TYZPR06MB4128.apcprd06.prod.outlook.com
+ (2603:1096:400:22::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240925075707.3970187-1-linyunsheng@huawei.com>
- <20240925075707.3970187-3-linyunsheng@huawei.com> <CAHS8izOxugzWJDTc-4CWqaKABTj=J4OHs=Lcb=SE9r8gX0J+yg@mail.gmail.com>
- <842c8cc6-f716-437a-bc98-70bc26d6fd38@huawei.com>
-In-Reply-To: <842c8cc6-f716-437a-bc98-70bc26d6fd38@huawei.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Thu, 26 Sep 2024 22:54:01 -0700
-Message-ID: <CAHS8izN-3Ooiexsr+Xp2234=GqMUy0sTTMqExKVkXAgmjeWQ6w@mail.gmail.com>
-Subject: Re: [PATCH net v2 2/2] page_pool: fix IOMMU crash when driver has
- already unbound
-To: Yunsheng Lin <linyunsheng@huawei.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
-	liuyonglong@huawei.com, fanghaiqing@huawei.com, zhangkun09@huawei.com, 
-	Robin Murphy <robin.murphy@arm.com>, Alexander Duyck <alexander.duyck@gmail.com>, 
-	IOMMU <iommu@lists.linux.dev>, Wei Fang <wei.fang@nxp.com>, 
-	Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
-	Eric Dumazet <edumazet@google.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
-	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
-	Kalle Valo <kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	intel-wired-lan@lists.osuosl.org, bpf@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYZPR06MB4128:EE_|SEYPR06MB6277:EE_
+X-MS-Office365-Filtering-Correlation-Id: 04f70250-408c-4256-2fcc-08dcdeb9f03e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|366016|7416014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Ut00ei+U38ygPAK2Ce1dhoL1lFKLR+4WQ3I5lObtITJX+5HQmWyUDAFTnq0j?=
+ =?us-ascii?Q?CWbLNSnMy42YfUU1m6CSoGYNM4IhHmKpj+PoA3TNt/CmZf6V8aCc+uTnQNqs?=
+ =?us-ascii?Q?ZyuQvYAvjyTHJ1EBhw4MTqjY00DPuHzcvoi8UgNeIOs/Rv4BeU7ir2YgkAi4?=
+ =?us-ascii?Q?ymrB98ZCqC9MIVW1vfL7i8jf8qn+iSs0z4+2RkfrLDKaWAj3+C0TgU+svyI5?=
+ =?us-ascii?Q?FhuMUHEqYzjLTm4pmNay15xsTV1At+1ZWUUdtvOR8CfBox9dKp3/C1qmMSeK?=
+ =?us-ascii?Q?X5m9vxKk7V3DHAQV0f2Eam8gu/A8mrWH2b8RyaG3Y1tVStcO94H5AsYtq1Xy?=
+ =?us-ascii?Q?b5jae15CKNyHNinA8y016+3oVgahKjqTpvkrO1JHwIHQBI27hW3yd/YkxRii?=
+ =?us-ascii?Q?ze4qHHQJt02fAZsC/pEAgkoYEnMwRbEv7g1yqd+DUIraF16ULh1tDw0bp/80?=
+ =?us-ascii?Q?tOo5Ggli1HR7dh3OuSHHiTB9AGHuKfJK4FisruajkQEV2MfTbV2EPauD8yyC?=
+ =?us-ascii?Q?a9ffxAzPauia2TB++oCaXUxTpWStWd+tO84/naJc7mPW1yyJblMAKgpF0G2t?=
+ =?us-ascii?Q?s97U1f1GflMY0jsGemI6pSnFVNavdP6hdxlFMmrRwS2CTumz5Cb86XokSJaL?=
+ =?us-ascii?Q?4eMZ7M74au5Uxjh3kwE44sYH/V7+wn/rgv1C05Z4KIUknaJ40uVgwgHwF4wn?=
+ =?us-ascii?Q?5kyuef0c26K0O+mNU+35HhdivvDa2WfTBlZyZrtczPFAlWiCbyCK/NJwarha?=
+ =?us-ascii?Q?ItaWGF21EoSpCPcRwfhf3wQPxtMdVD+f+baPsHzC21/kkd1Oo5UhySMLMmL2?=
+ =?us-ascii?Q?UoIF+eLg2tWjuaK9CxwinSw0Pc9dEzc89Z0nZc3z1gVpIzifGYZynb2PvEfi?=
+ =?us-ascii?Q?6Z0bC0BFG5jQL31suEc7/e5gZtjGVoxYcx5nPhshHytfMJXmhDYQVrJUkdFK?=
+ =?us-ascii?Q?nMgybii4bNsioxATgzFzSY8bRw59ca6P6nXH5Cs1/p0cIM/oalHsmgXcvIpJ?=
+ =?us-ascii?Q?yXivOOfRfamHY7BAMtMEp6+Ylcjqwp9h7ssKu6Ekog/CgqvL3bosT+eBBr1O?=
+ =?us-ascii?Q?eSXIBLTEf+P2o4JRBSmnQ+oHygoHMTaRetUQMCnvM5qqVvVEu+nbBzLSKdyc?=
+ =?us-ascii?Q?bUWgvD6NQIUlRkMb75FOUn6nuoyAUaXv1tM8gZv9tHLnvsHq9R/kzCPf4JLH?=
+ =?us-ascii?Q?oZL5UyrLvTty2t8hfrG+9Hy2z6FrpL5vIra7nrR7vVezvTFBMU4mc6CUKAy2?=
+ =?us-ascii?Q?f2HtBPCG79ewYZIfDs7wEjbNfwOMmtKiHzEJlrmHFZquJda3rfwJMmvo9ZgR?=
+ =?us-ascii?Q?bf4yLc/ikvjEsTSnLD5oUuP3aaVcDAqxb58v+KX9WXUvy5QMhHEhJlxUWaIo?=
+ =?us-ascii?Q?lmkq75IteMiGcs61lB/gmtzDg381d/9j3v4bfNpyFtRyht1JBw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYZPR06MB4128.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?KgKTSfLkjvc1SKCQH6KJhzeMqCZYax+zYgksOo6qEAPzOaY79iiHmZ5Q48R6?=
+ =?us-ascii?Q?UuCbjCjuqN5ExgvXIrjg2xpb0pmBWBe4+sQafBdr1qJWqijtEs4zcX8x03HX?=
+ =?us-ascii?Q?nnWcYPUoiJqxQZysbrGTcwKqV7NZ5zn0rMAdbCdbUABchfUNTh79oWIqzXu4?=
+ =?us-ascii?Q?GUBaLH3exCbPX+JAt0h+cYKQGN97xsWQzoT1QtJEb4B9P7E2981xOcLP/ZSi?=
+ =?us-ascii?Q?pYfMBXAPwjbKd962WUuiCMqbeVcJAsmsipDda6n5exhm5w6Tjk7NDe+5O9Mq?=
+ =?us-ascii?Q?Nz6foGM47TNPtR+XZTeBmT62TgOlLNb3XUSY8GjWgjm+rUM8wm1i+xky5Aoh?=
+ =?us-ascii?Q?OzpINcrQFLlXaOh6dMpAz66zL1xl4wLmuL/ffgTlx3nM8reJP1hN/2mR6piL?=
+ =?us-ascii?Q?KQhh7Kb+3Iur/88dDcBUlnQHbUeiGLnfHyvMFZgY9+L4+sKBMNTrMr7hUXtr?=
+ =?us-ascii?Q?kNPsjlo498JKwQZduRDlU2Rku/KM8QHsj2x1UGkBTWKdRqMvYY7hTPdazRw2?=
+ =?us-ascii?Q?gWm8BamcBRMI6Ff3NqQ0UXQPtXIjkJboU/L41tr84iMPpT/+koXHHMwD8fWx?=
+ =?us-ascii?Q?mns/yr3p0qfecpOdVGOMT8ixc/T/ObWm7nkO9R8yUMVh3r7sRS/EMBInfXvB?=
+ =?us-ascii?Q?2p9KWVUtHCmZiS3rfoQXVa4GkfCsbNvw0VIHRMUSojvCSo6VHC0qImkhh/VY?=
+ =?us-ascii?Q?OJ0o4LfmgfHRWVJznq1T7lGiFs+NpwTO3qYJCSFf1ZznYPC7TJEJu3G6G9TV?=
+ =?us-ascii?Q?ZHlW3GyNNOYNGbSHKqA6WHXKR9ebN9cz2ur1Jk4UWOvOlsuWG/lXspPsDfL9?=
+ =?us-ascii?Q?5ImgFAtg5zGL5AYs7Yd+PVYK1kjZuHGBooNjZCEWJbCgqXT1kKK95lmD+XpW?=
+ =?us-ascii?Q?fUJzZhf4NTBwqShpvVQMvuWG0MEdrPLAo4YUSnTlUCTzNw3iDpGljbuP2Y6c?=
+ =?us-ascii?Q?Z1GIUzOEjduTYrfysltO3O5YNQxT4wgd0E0aBVLM44w0FAGLeDmHt2ymUUFC?=
+ =?us-ascii?Q?aBvsYIOsGCK5Kj61ID4oJH2Il/Wsch9rQOS1W4+sMN033bNloHH9eyF8t7c9?=
+ =?us-ascii?Q?M4O6JGcWCP3CkHF3ofY2Q+/UJR/srKXVerKtTaDXVTjJytxVUm5yZsLh4RVk?=
+ =?us-ascii?Q?imnxfuaiXDqF55evHnLd44Q++jNw8CRLIb3YD55QSvW6vvnkGNPvnSEh5i9A?=
+ =?us-ascii?Q?XImitNwhCukP60dAzFPVBnfFYydkSRWW9y41U341j5QBa8m58b9UM8y9+/52?=
+ =?us-ascii?Q?Bw2qfun4chCntmeBS1CincJc6DhbOIHJRD/8IkCmGB/Wgl4psjxccBJqVt0B?=
+ =?us-ascii?Q?xyBDmVAjAazndyEI/27VbIe+1kx8VMy8eo7I8lmgLertzfSnMMlvoT9d+EVp?=
+ =?us-ascii?Q?w12SMxtptJ8netl1wF93KmpfA6Gi9H9NXZwEGsvXvNU1E7odJX3RAlwf59t/?=
+ =?us-ascii?Q?rmZipYTxSw8RoKGR1+DTU9mZ9CGrgyd1McBUogFnubea7KRPs6Za/9nh3+Eb?=
+ =?us-ascii?Q?/5+GKpzgDGm3MAQ8AcP3o84mof0BTDLHN3SQVQCLNlfiljTwKFQ27BtD8fdr?=
+ =?us-ascii?Q?TCmPIoLHDDtr+2co0zP/IbyRE/WK/gRQ/T1GeFmK?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 04f70250-408c-4256-2fcc-08dcdeb9f03e
+X-MS-Exchange-CrossTenant-AuthSource: TYZPR06MB4128.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Sep 2024 06:02:16.3801
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ///Kcs4W2u/cvzF9fgrDRWM23h+sCLoyKTaEIxRBVrk8S7zCgyvAmHphPsE4JISBiqHotYRAtjCKon4HBKLX1g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEYPR06MB6277
 
-On Thu, Sep 26, 2024 at 8:58=E2=80=AFPM Yunsheng Lin <linyunsheng@huawei.co=
-m> wrote:
->
-> On 2024/9/27 2:15, Mina Almasry wrote:
-> >
-> >> In order not to do the dma unmmapping after driver has already
-> >> unbound and stall the unloading of the networking driver, add
-> >> the pool->items array to record all the pages including the ones
-> >> which are handed over to network stack, so the page_pool can
-> >> do the dma unmmapping for those pages when page_pool_destroy()
-> >> is called.
-> >
-> > One thing I could not understand from looking at the code: if the
-> > items array is in the struct page_pool, why do you need to modify the
-> > page_pool entry in the struct page and in the struct net_iov? I think
-> > the code could be made much simpler if you can remove these changes,
-> > and you wouldn't need to modify the public api of the page_pool.
->
-> As mentioned in [1]:
-> "There is no space in 'struct page' to track the inflight pages, so
-> 'pp' in 'struct page' is renamed to 'pp_item' to enable the tracking
-> of inflight page"
->
-> As we still need pp for "struct page_pool" for page_pool_put_page()
-> related API, the container_of() trick is used to get the pp from the
-> pp_item.
->
-> As you had changed 'struct net_iov' to be mirroring the 'struct page',
-> so change 'struct net_iov' part accordingly.
->
-> 1. https://lore.kernel.org/all/50a463d5-a5a1-422f-a4f7-d3587b12c265@huawe=
-i.com/
->
+Correctly spelled comments make it easier for the reader to understand
+the code.
 
-I'm not sure we need the pages themselves to have the list of pages
-that need to be dma unmapped on page_pool_destroy. The pool can have
-the list of pages that need to be unmapped on page_pool_destroy, and
-the individual pages need not track them, unless I'm missing
-something.
+Fix typos:
+'multipe' ==> 'multiple',
+'Paremeters' ==> 'Parameters',
+'recieved' ==> 'received',
+'realted' ==> 'related',
+'evaulated' ==> 'evaluated',
+'programing' ==> 'programming',
+'coninue' ==> 'continue'.
 
-> >
-> >> As the pool->items need to be large enough to avoid
-> >> performance degradation, add a 'item_full' stat to indicate the
-> >> allocation failure due to unavailability of pool->items.
-> >>
-> >
-> > I'm not sure there is any way to size the pool->items array correctly.
->
-> Currently the size of pool->items is calculated in page_pool_create_percp=
-u()
-> as below, to make sure the size of pool->items is somewhat twice of the
-> size of pool->ring so that the number of page sitting in the driver's rx
-> ring waiting for the new packet is the similar to the number of page that=
- is
-> still being handled in the network stack as most drivers seems to set the
-> pool->pool_size according to their rx ring size:
->
-> +#define PAGE_POOL_MIN_INFLIGHT_ITEMS           512
-> +       unsigned int item_cnt =3D (params->pool_size ? : 1024) +
-> +                               PP_ALLOC_CACHE_SIZE + PAGE_POOL_MIN_INFLI=
-GHT_ITEMS;
-> +       item_cnt =3D roundup_pow_of_two(item_cnt);
->
+Signed-off-by: Yan Zhen <yanzhen@vivo.com>
+---
 
-I'm not sure it's OK to add a limitation to the page_pool that it can
-only allocate N pages. At the moment, AFAIU, N is unlimited and it may
-become a regression if we add a limitation.
+v3:
+* Although v1 has been reviewed, some of the fixes in the description were not
+reflected in the source file, so part of the description was deleted.
+v2: https://lore.kernel.org/all/b4a9e472-e2db-4115-99f2-4d1b702cfc46@vivo.com/
+v1: https://lore.kernel.org/all/a5e93c28-bb7b-fdca-fd6b-a44eb3454980@omp.ru/
 
-> > Can you use a data structure here that can grow? Linked list or
-> > xarray?
-> >
-> > AFAIU what we want is when the page pool allocates a netmem it will
-> > add the netmem to the items array, and when the pp releases a netmem
-> > it will remove it from the array. Both of these operations are slow
-> > paths, right? So the performance of a data structure more complicated
-> > than an array may be ok. bench_page_pool_simple will tell for sure.
->
-> The question would be why do we need the pool->items to grow with the
-> additional overhead and complication by dynamic allocation of item, using
-> complicated data structure and concurrent handling?
->
-> As mentioned in [2], it was the existing semantics, but it does not means
-> we need to keep it. The changing of semantics seems like an advantage
-> to me, as we are able to limit how many pages is allowed to be used by
-> a page_pool instance.
->
-> 2. https://lore.kernel.org/all/2fb8d278-62e0-4a81-a537-8f601f61e81d@huawe=
-i.com/
->
-> >
-> >> Note, the devmem patchset seems to make the bug harder to fix,
-> >> and may make backporting harder too. As there is no actual user
-> >> for the devmem and the fixing for devmem is unclear for now,
-> >> this patch does not consider fixing the case for devmem yet.
-> >>
-> >
-> > net_iovs don't hit this bug, dma_unmap_page_attrs() is never called on
-> > them, so no special handling is needed really. However for code
->
-> I am really doubtful about your above claim. As at least the below
-> implementaion of dma_buf_unmap_attachment_unlocked() called in
-> __net_devmem_dmabuf_binding_free() seems be using the DMA API directly:
->
-> https://elixir.bootlin.com/linux/v6.7-rc8/source/drivers/gpu/drm/amd/amdg=
-pu/amdgpu_dma_buf.c#L215
->
-> Or am I missing something obvious here?
->
+ drivers/ata/ahci.c           | 2 +-
+ drivers/ata/ahci_imx.c       | 2 +-
+ drivers/ata/ahci_xgene.c     | 2 +-
+ drivers/ata/libata-acpi.c    | 4 ++--
+ drivers/ata/pata_it8213.c    | 2 +-
+ drivers/ata/pata_octeon_cf.c | 2 +-
+ drivers/ata/pata_oldpiix.c   | 2 +-
+ drivers/ata/pata_radisys.c   | 2 +-
+ 8 files changed, 9 insertions(+), 9 deletions(-)
 
-I mean currently net_iovs don't hit the __page_pool_release_page_dma
-function that causes the crash in the stack trace. The dmabuf layer
-handles the unmapping when the dmabuf dies (I assume correctly).
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 45f63b09828a..2d3d3d67b4d9 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -1676,7 +1676,7 @@ static int ahci_init_msi(struct pci_dev *pdev, unsigned int n_ports,
+ 	/*
+ 	 * If number of MSIs is less than number of ports then Sharing Last
+ 	 * Message mode could be enforced. In this case assume that advantage
+-	 * of multipe MSIs is negated and use single MSI mode instead.
++	 * of multiple MSIs is negated and use single MSI mode instead.
+ 	 */
+ 	if (n_ports > 1) {
+ 		nvec = pci_alloc_irq_vectors(pdev, n_ports, INT_MAX,
+diff --git a/drivers/ata/ahci_imx.c b/drivers/ata/ahci_imx.c
+index 6f955e9105e8..357aba1d5929 100644
+--- a/drivers/ata/ahci_imx.c
++++ b/drivers/ata/ahci_imx.c
+@@ -511,7 +511,7 @@ static int imx_sata_enable(struct ahci_host_priv *hpriv)
+ 
+ 	if (imxpriv->type == AHCI_IMX6Q || imxpriv->type == AHCI_IMX6QP) {
+ 		/*
+-		 * set PHY Paremeters, two steps to configure the GPR13,
++		 * set PHY Parameters, two steps to configure the GPR13,
+ 		 * one write for rest of parameters, mask of first write
+ 		 * is 0x07ffffff, and the other one write for setting
+ 		 * the mpll_clk_en.
+diff --git a/drivers/ata/ahci_xgene.c b/drivers/ata/ahci_xgene.c
+index 81a1d838c0fc..7e6b4db8a1c2 100644
+--- a/drivers/ata/ahci_xgene.c
++++ b/drivers/ata/ahci_xgene.c
+@@ -534,7 +534,7 @@ static int xgene_ahci_softreset(struct ata_link *link, unsigned int *class,
+ 
+ /**
+  * xgene_ahci_handle_broken_edge_irq - Handle the broken irq.
+- * @host: Host that recieved the irq
++ * @host: Host that received the irq
+  * @irq_masked: HOST_IRQ_STAT value
+  *
+  * For hardware with broken edge trigger latch
+diff --git a/drivers/ata/libata-acpi.c b/drivers/ata/libata-acpi.c
+index d36e71f475ab..b7f0bf795521 100644
+--- a/drivers/ata/libata-acpi.c
++++ b/drivers/ata/libata-acpi.c
+@@ -86,7 +86,7 @@ static void ata_acpi_detach_device(struct ata_port *ap, struct ata_device *dev)
+  * @dev: ATA device ACPI event occurred (can be NULL)
+  * @event: ACPI event which occurred
+  *
+- * All ACPI bay / device realted events end up in this function.  If
++ * All ACPI bay / device related events end up in this function.  If
+  * the event is port-wide @dev is NULL.  If the event is specific to a
+  * device, @dev points to it.
+  *
+@@ -832,7 +832,7 @@ void ata_acpi_on_resume(struct ata_port *ap)
+ 				dev->flags |= ATA_DFLAG_ACPI_PENDING;
+ 		}
+ 	} else {
+-		/* SATA _GTF needs to be evaulated after _SDD and
++		/* SATA _GTF needs to be evaluated after _SDD and
+ 		 * there's no reason to evaluate IDE _GTF early
+ 		 * without _STM.  Clear cache and schedule _GTF.
+ 		 */
+diff --git a/drivers/ata/pata_it8213.c b/drivers/ata/pata_it8213.c
+index b7ac56103c8a..9cbe2132ce59 100644
+--- a/drivers/ata/pata_it8213.c
++++ b/drivers/ata/pata_it8213.c
+@@ -81,7 +81,7 @@ static void it8213_set_piomode (struct ata_port *ap, struct ata_device *adev)
+ 	int control = 0;
+ 
+ 	/*
+-	 *	See Intel Document 298600-004 for the timing programing rules
++	 *	See Intel Document 298600-004 for the timing programming rules
+ 	 *	for PIIX/ICH. The 8213 is a clone so very similar
+ 	 */
+ 
+diff --git a/drivers/ata/pata_octeon_cf.c b/drivers/ata/pata_octeon_cf.c
+index 0bb9607e7348..dce24806a052 100644
+--- a/drivers/ata/pata_octeon_cf.c
++++ b/drivers/ata/pata_octeon_cf.c
+@@ -183,7 +183,7 @@ static void octeon_cf_set_piomode(struct ata_port *ap, struct ata_device *dev)
+ 	reg_tim.s.ale = 0;
+ 	/* Not used */
+ 	reg_tim.s.page = 0;
+-	/* Time after IORDY to coninue to assert the data */
++	/* Time after IORDY to continue to assert the data */
+ 	reg_tim.s.wait = 0;
+ 	/* Time to wait to complete the cycle. */
+ 	reg_tim.s.pause = pause;
+diff --git a/drivers/ata/pata_oldpiix.c b/drivers/ata/pata_oldpiix.c
+index dca82d92b004..3d01b7000e41 100644
+--- a/drivers/ata/pata_oldpiix.c
++++ b/drivers/ata/pata_oldpiix.c
+@@ -70,7 +70,7 @@ static void oldpiix_set_piomode (struct ata_port *ap, struct ata_device *adev)
+ 	int control = 0;
+ 
+ 	/*
+-	 *	See Intel Document 298600-004 for the timing programing rules
++	 *	See Intel Document 298600-004 for the timing programming rules
+ 	 *	for PIIX/ICH. Note that the early PIIX does not have the slave
+ 	 *	timing port at 0x44.
+ 	 */
+diff --git a/drivers/ata/pata_radisys.c b/drivers/ata/pata_radisys.c
+index 84b001097093..40ef8072c159 100644
+--- a/drivers/ata/pata_radisys.c
++++ b/drivers/ata/pata_radisys.c
+@@ -45,7 +45,7 @@ static void radisys_set_piomode (struct ata_port *ap, struct ata_device *adev)
+ 	int control = 0;
+ 
+ 	/*
+-	 *	See Intel Document 298600-004 for the timing programing rules
++	 *	See Intel Document 298600-004 for the timing programming rules
+ 	 *	for PIIX/ICH. Note that the early PIIX does not have the slave
+ 	 *	timing port at 0x44. The Radisys is a relative of the PIIX
+ 	 *	but not the same so be careful.
+-- 
+2.34.1
 
---=20
-Thanks,
-Mina
