@@ -1,39 +1,39 @@
 Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E725A14BF8B
-	for <imx@lists.linux.dev>; Fri, 27 Sep 2024 21:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DAEA194C7D
+	for <imx@lists.linux.dev>; Fri, 27 Sep 2024 21:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727474160; cv=none; b=dhj/NHc/6EUQ/2InaqI1tYNEP1jIBB3RBGNQlpiVOurSEAX0RFmMMakqymvwGqUJX5NkxGKeX5/zMxvGVP0YcGTe+AAy0TdPv9f+36M65KEweheAqOvQ2QNc7QNczF4SulbPf3aBSscQr4LFmmuqrwaFaMyXLd+Zy1uEguhjhno=
+	t=1727474165; cv=none; b=dy6DzJU0VblNyirBMBzqCqKzxyboy/XC4aBzSXPXNnWwLZeytfYfg63ml4tvtG7nugFzHwSBurz2PXXLmrb8j99uh1GsBNh0qkwsvq/7DTxI9HTsmcHeYKv0NM4APsekLv4nRH4gZ+36vICIHHW+CfheEjVb505sc83pv/hNrfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727474160; c=relaxed/simple;
-	bh=ScBPzu7AlRpuZcnQVp6CaaDdval5J8mnLC6j+332lYE=;
+	s=arc-20240116; t=1727474165; c=relaxed/simple;
+	bh=vFobzuLapNJqa1JFkKMs2L8PJFRop/kO4uJVZ+Q8/LY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Dk3FlplAKk1dbT8ekC2aW86leO95mWQV+k2CrrorsLgLhP81zN371LNyZYtNYgvb9fLHwbP02hoLMU1aWqUAlFgPlR/6Urcvlo9hOGWP3M0/Zar1U8+/Aq7qu7nBjVt4BTjbTi6lXjwKdnQz7CTWl+fxHoRrTx9YLuoBYiu/XuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=ytzH7vyr; arc=none smtp.client-ip=85.214.62.61
+	 In-Reply-To:Content-Type; b=f3gD3I7KB3X7pDbfzszDGg0x1yEgO+qViIJzRTjU9XdazoXw38Vxf9tzq2v6VrlTuHkOQgGnTX/ILWRQeSM/42cXrBfMwoTTINofbxg2gKB+R2jeyS/5Rowt5wSPagdrGGOh6AyU46un7jjzLsNZn4qrH8Kkcgx7LN653rJ0FRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=euJNz2wm; arc=none smtp.client-ip=85.214.62.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="ytzH7vyr"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="euJNz2wm"
 Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
 	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id DEEA8890C6;
-	Fri, 27 Sep 2024 23:55:49 +0200 (CEST)
+	by phobos.denx.de (Postfix) with ESMTPSA id A89708913A;
+	Fri, 27 Sep 2024 23:55:53 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1727474151;
-	bh=E+3UYSlD414mGFPU6R05dL9aTBYOIxrQPp6O6qPC17g=;
+	s=phobos-20191101; t=1727474154;
+	bh=1wCrVSekfrRZtVecO31dRGlCjgzqIKbOjbSNaN+r9UE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ytzH7vyr84w1+nSUYd4Rh7dy1qFpX/fwqpBtChkLMkaYzbnbYm8vJHeg4uUlVCVjp
-	 djKGKrSVNdwn9ISrtkC48qo77fkL4DDcpQfrDVzs9PWrYWlXsEf8nJ3JXMHoSQbXbq
-	 e9VJMniPl9nNOZLxzN81y4sk/9KJTsYPUHFCaJ1iVp1yIpS3rE4SNa+WpKgTLv+Ieb
-	 IAo8d+t+OzioKRFEguvXTtViTNKK0L1dtmVvJ5k0qEFCss0U3E+3sKvhPLbHzwGnge
-	 eVQPuRe+1fMb9K5ESj/cZw3KzPa7dMRgFBPzsl5L58dZwHwbOuzh36H+OxuS8UJ0Xz
-	 rluqpr5jzpL4Q==
-Message-ID: <a9211119-f590-45cd-a7d0-8ae2d86a82cc@denx.de>
-Date: Fri, 27 Sep 2024 22:05:13 +0200
+	b=euJNz2wmpidlnQLnFqwxsbsJRvPUh2AsHlq4G+NOEduRoQp1LGOluygbnuq/F9JRm
+	 YkwVDV9drVXvvQLUTQYfcjMdKFw6FDd1juk3lBru9X9fi8fTR/JamtcCilsB9g3wft
+	 DRf3akd7jeeGxwvnYfGI9cj+RADfYSC966vAfrhH6SlqpCxTPZXuN5m4Ygm370wnof
+	 /cVAlYQhfbQuGp5sDK56u444+haxnBd3RI8kzziff7wzn280yFHq7mao6pk+Xbp+oF
+	 JLjJumgsSNPFl/ZbgG0mVfQpngFpvsmMcNXbSbIBTMJJ7FPbQE+cB0V4qQ0ovoXD4d
+	 vjjGkZ8p/Zjhg==
+Message-ID: <e32ed329-b012-44f2-854b-80a8b0efc4e6@denx.de>
+Date: Fri, 27 Sep 2024 23:42:41 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,53 +41,105 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] soc: imx8m: Remove global soc_uid
-To: Frank Li <Frank.li@nxp.com>
+Subject: Re: [PATCH v3 1/2] soc: imx8m: Probe the SoC driver as platform
+ driver
+To: Saravana Kannan <saravanak@google.com>
 Cc: linux-arm-kernel@lists.infradead.org, kernel@dh-electronics.com,
  AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
  Arnd Bergmann <arnd@arndb.de>, Fabio Estevam <festevam@gmail.com>,
  Jeff Johnson <quic_jjohnson@quicinc.com>,
  Neil Armstrong <neil.armstrong@linaro.org>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Saravana Kannan <saravanak@google.com>, Sascha Hauer
- <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
  imx@lists.linux.dev, linux-kernel@vger.kernel.org
 References: <20240926213729.2882045-1-marex@denx.de>
- <20240926213729.2882045-2-marex@denx.de>
- <ZvbkL97Ba3CNPjEk@lizhi-Precision-Tower-5810>
+ <CAGETcx-q7+DGhPYd3QrsPh7O_0HU7T=NhaJYp0Fu7YW2zwbo7Q@mail.gmail.com>
 Content-Language: en-US
 From: Marek Vasut <marex@denx.de>
-In-Reply-To: <ZvbkL97Ba3CNPjEk@lizhi-Precision-Tower-5810>
+In-Reply-To: <CAGETcx-q7+DGhPYd3QrsPh7O_0HU7T=NhaJYp0Fu7YW2zwbo7Q@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
 X-Virus-Status: Clean
 
-On 9/27/24 6:58 PM, Frank Li wrote:
-> On Thu, Sep 26, 2024 at 11:36:52PM +0200, Marek Vasut wrote:
->> The static global soc_uid is only ever used as kasprintf() parameter in
->> imx8m_soc_probe(). Pass pointer to local u64 variable to .soc_revision()
->> callback instead and let the .soc_revision() callback fill in the content.
->> Remove the unnecessary static global variable.
-> 
-> Can you simple said:
-> 
-> Remove the unnecessary static global variable 'soc_uid', which only used
-> in imx8m_soc_probe().
+On 9/27/24 1:39 AM, Saravana Kannan wrote:
 
-I believe it is better to be a bit more verbose in the commit description.
+[...]
 
->> @@ -215,10 +213,11 @@ static __maybe_unused const struct of_device_id imx8_soc_match[] = {
->>   static int imx8m_soc_probe(struct platform_device *pdev)
+>> +static int imx8mq_soc_revision(u32 *socrev)
 >>   {
->>   	struct soc_device_attribute *soc_dev_attr;
->> -	struct soc_device *soc_dev;
->> +	const struct imx8_soc_data *data;
->>   	const struct of_device_id *id;
->> +	struct soc_device *soc_dev;
->>   	u32 soc_rev = 0;
->> -	const struct imx8_soc_data *data;
->> +	u64 soc_uid = 0;
+>>          struct device_node *np;
+>>          void __iomem *ocotp_base;
+>>          u32 magic;
+>>          u32 rev;
+>>          struct clk *clk;
+>> +       int ret;
+>>
+>>          np = of_find_compatible_node(NULL, NULL, "fsl,imx8mq-ocotp");
+>>          if (!np)
+>> -               return 0;
+>> +               return -EINVAL;
+>>
+>>          ocotp_base = of_iomap(np, 0);
 > 
-> unnecessary this these orders in this patch.
-I can spin the sorting into separate patch if that's really required.
+> Using devm_of_iomap() and scoped "whatever it's called" might help
+> simplify the error handling.
+> 
+> So something like this for np:
+> struct device_node *np __free(device_node) = np =
+> of_find_compatible_node(NULL, NULL, "fsl,imx8mq-ocotp");
+> 
+> And this for ocotp_base:
+> ocotp_base = devm_of_iomap(dev, np, 0);
+
+This would fail if OCOTP driver probes first and claims the memory area 
+with request_mem_region() (or devm_request_mem_region(), used in 
+__devm_ioremap_resource() which is called from devm_of_iomap()). I ran 
+into this with ANATOP, which is the other iomap()d device here. The 
+of_iomap() does not use request_mem_region(), so it can map the area.
+
+> Would mean you can delete all the error handling parts
+
+All right, let's do this in separate 3/3 patch , because the amount of 
+changes in this one patch are growing to be too much and difficult to 
+review.
+
+[...]
+
+>> @@ -212,8 +240,11 @@ static int __init imx8_soc_init(void)
+>>          data = id->data;
+>>          if (data) {
+>>                  soc_dev_attr->soc_id = data->name;
+>> -               if (data->soc_revision)
+>> -                       soc_rev = data->soc_revision();
+>> +               if (data->soc_revision) {
+>> +                       ret = data->soc_revision(&soc_rev);
+>> +                       if (ret)
+>> +                               goto free_soc;
+>> +               }
+>>          }
+> 
+> I'm glad it's working for you, but I think there might still be a race
+> that you are just lucky enough to not hit. I think you still need to
+> fix up drivers/base/soc.c to return -EPROBE_DEFER when
+> soc_device_match() is called but soc_bus_type has no devices
+> registered. That way any drivers that try to use that API will defer
+> probe until this device gets to probe.
+
+soc_device_match() returns a pointer to soc_device_attribute or NULL, do 
+you have some other function in mind ?
+
+> And then you'll have to look at all the callers of that API for the
+> boards this driver is meant for and make sure they don't ignore the
+> error return value. Just add a WARN() on the API to figure out all the
+> callers in your board.
+> 
+> Also, you might want to check that your list of probed devices doesn't
+> change without any async probing or this patch vs with async probing
+> and this patch. Quick way to get list of successfully probed devices
+> is:
+> # find /sys/devices -name driver
+
+It seems OK.
+
+[...]
