@@ -1,126 +1,179 @@
-Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [195.130.132.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4CE185B72
-	for <imx@lists.linux.dev>; Fri, 27 Sep 2024 11:56:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD4B18CBF9
+	for <imx@lists.linux.dev>; Fri, 27 Sep 2024 12:43:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727438204; cv=none; b=Tpscx+lYKC8D5rPWAb/MnE6U43n2B2cWbIZKYCzLJspf08njY+rCgo3ADmDQV+gXg3hlORgtRZ5ZzJTQcmxAAn6+FlGpfcCowK9kZokpY0gepe6A0HjXoyv5tH8v0cIs9mPZKlx4lT30+lxT9i8OiqngBLZA4PZ/FR7d5lTk2H8=
+	t=1727440988; cv=none; b=JWLhbXHMk14uO/0NUqF2V70MqiBaKz8SVmVuaCTUKam1tbkhIrLJdW/QokmGKNLgHtaWpbbjUDd3fWs4Zw78u+nvA2W2DES0X8hxi00QEZ5Yez8C9xszo8vHDMWevA4V+PkTxC2+74RpDG0IhjHOEegqysK3EOwt6nV6m7d3t0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727438204; c=relaxed/simple;
-	bh=6DmNFqmmvb83gXmF9WjsiVyXZP10O269GmkfDdyUmMo=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=LcDC2/2Uy9zDZwjrHv5ejbD06ofol92UqXe+9UEczh6AbFXIgWvUhPJugmLAS0bCCj6Njfj5WxptHsilNhK04754WGsO4DRx176Zsp22XmxqutTZ1mnunWfjg6At9IYJdGlx6lsQBfAs0IicViZpi42eBOuwM6PT26lqCqVuKbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=b8fHkR1R; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jdiGp5DQ; arc=none smtp.client-ip=103.168.172.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="b8fHkR1R";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jdiGp5DQ"
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfout.phl.internal (Postfix) with ESMTP id BBCE113805C9;
-	Fri, 27 Sep 2024 07:56:41 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Fri, 27 Sep 2024 07:56:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1727438201;
-	 x=1727524601; bh=Ay7YF/Xuo5nNlHfCru66Td9SMu/HSo2oVALKq6Fnm2w=; b=
-	b8fHkR1Rn+U1DJr0+tJSBZGI3631TwN7E1T1eXk2gB0RDtSsy5+kgtCSZLVcAWQV
-	MhliV3zGoOUgueadUA0nCdVyFVAA22K7rxTB7CFcQsQLs000ArMgX+xrVEoMQ7eF
-	Kfp64KnAckL0a+4wh5zNN9CD6CZ/2JBJ9dJmb/AbP/O2hvTA7sQctCX57yISD7od
-	T5CxHaTW2T26nnplrIzvBSfiOT0W2F9C526sI6hGvHNuYLux8e3ip4uA47NbtH/r
-	uEOUZwIwBX7JY3R0mUihBhD8EfFBxCUPMQHn0XcpslJHxinEhfEN5lpFjYB12Y+Q
-	+EZycAayGLaT2Q/GjyGX7Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1727438201; x=
-	1727524601; bh=Ay7YF/Xuo5nNlHfCru66Td9SMu/HSo2oVALKq6Fnm2w=; b=j
-	diGp5DQLgrsMw7zxu42iklMeZLvUHinEA7GgbnaaRILfgf1RxAtIqEu6eiqW2OrE
-	k3VGmxZJwLEe/P/T2c8NTX1s21PT8msK7k589/q/m4C6RkwPBav649qnl2J4ARIK
-	2hSmi6OhtOon3eaZFGeKPFDnwPn+2ueAiVvqVnT/ay2NAPy3fKma3f+lMRMBfD9Z
-	Mp21FuoWnMJYSaGpeckTluNGJOTYaAbeTJ4oorrC7tS9ybHArfoJYmKm3vLNQOUI
-	u08rZXi3NRANmc07DjszujhlmV7dZtDHwVFP481N/MD5N7tE2MeZLZK0mz6SCZGV
-	zdJVunAT2jOvaSvs+JmYg==
-X-ME-Sender: <xms:eZ32ZgYX4kGVbPPs_XTlr75uogeZ5Qygikd5CBXpIackj7tKd-mr6A>
-    <xme:eZ32ZrZNceMX0N6dD4us9wQQWHOavHC428HNlbn2LHOJSGa0sE9YN-VBEt6JH4M0n
-    fxM-B0JgSY4CamFpas>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvddtledggeeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
-    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
-    guvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefg
-    gfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudef
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrnhhgvghlohhgihhorggttghhih
-    hnohdruggvlhhrvghgnhhosegtohhllhgrsghorhgrrdgtohhmpdhrtghpthhtohepmhgr
-    rhgvgiesuggvnhigrdguvgdprhgtphhtthhopehkvghrnhgvlhesughhqdgvlhgvtghtrh
-    honhhitghsrdgtohhmpdhrtghpthhtohepfhgvshhtvghvrghmsehgmhgrihhlrdgtohhm
-    pdhrtghpthhtohepshgrrhgrvhgrnhgrkhesghhoohhglhgvrdgtohhmpdhrtghpthhtoh
-    epshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehnvghilhdrrghr
-    mhhsthhrohhngheslhhinhgrrhhordhorhhgpdhrtghpthhtoheplhhinhhugidqrghrmh
-    dqkhgvrhhnvghlsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohep
-    ihhmgieslhhishhtshdrlhhinhhugidruggvvh
-X-ME-Proxy: <xmx:eZ32Zq_yNxIIomxFYxqWVZQbH1Iw3DCWl35sCtIo7HHY2YS-8mQBEg>
-    <xmx:eZ32Zqr6EsZLS_fcYlitFUwSH_jRawbIOp8FmvDGVzS6GhfDPRK_zw>
-    <xmx:eZ32Zro6RSDPlwg93-pUcBGfFaic2u91pCHDv-nUuiRQbWmbfXqWEA>
-    <xmx:eZ32ZoS5m-DfODkHL1RWKcjktB_4XE0WtSn666PTf1acte3crahqfQ>
-    <xmx:eZ32ZphJk9ACd2OgZI6jpVJsQsL8IqvtQMdH0o5Xku4S7OKpmv-rR8t2>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 1C8A52220071; Fri, 27 Sep 2024 07:56:41 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1727440988; c=relaxed/simple;
+	bh=2QXljp1dC/8iHwUW7hKb7vZR7RspRKinKvyyOkLSgtI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ODxNYMir31C6Usj1BhOSnjbfAIZqRwrpx2q6AroPVTNi/Zspb8JRBxnNv+9QxtP28rK/iLRtLoogtRQpMhZ+R6Yc8hw98SpodyOcbcjJlrRpEhluLnlINrYYNLEk5WRdFWByUSuvjFOzmYTr6JUY1J2+dCaipbcFB92aMHRRMzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:b47d:fd74:3975:15b7])
+	by baptiste.telenet-ops.be with cmsmtp
+	id HQic2D00C3BfLyr01Qicjs; Fri, 27 Sep 2024 14:43:02 +0200
+Received: from rox.of.borg ([192.168.97.57])
+	by ramsan.of.borg with esmtp (Exim 4.95)
+	(envelope-from <geert@linux-m68k.org>)
+	id 1suAIj-000fPq-HD;
+	Fri, 27 Sep 2024 14:42:31 +0200
+Received: from geert by rox.of.borg with local (Exim 4.95)
+	(envelope-from <geert@linux-m68k.org>)
+	id 1suAIo-008IDa-TV;
+	Fri, 27 Sep 2024 14:42:30 +0200
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+To: Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Lubomir Rintel <lkundrak@v3.sk>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Adrien Grassein <adrien.grassein@gmail.com>,
+	Adam Ford <aford173@gmail.com>
+Cc: linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-renesas-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	linux-mips@vger.kernel.org,
+	alsa-devel@alsa-project.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH treewide 00/11] ASoC: Clean up {hp,mic}-det-gpio handling
+Date: Fri, 27 Sep 2024 14:42:15 +0200
+Message-Id: <cover.1727438777.git.geert+renesas@glider.be>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Fri, 27 Sep 2024 11:56:20 +0000
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Saravana Kannan" <saravanak@google.com>, "Marek Vasut" <marex@denx.de>
-Cc: linux-arm-kernel@lists.infradead.org, kernel@dh-electronics.com,
- "AngeloGioacchino Del Regno" <angelogioacchino.delregno@collabora.com>,
- "Fabio Estevam" <festevam@gmail.com>,
- "Jeff Johnson" <quic_jjohnson@quicinc.com>,
- "Neil Armstrong" <neil.armstrong@linaro.org>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>,
- "Sascha Hauer" <s.hauer@pengutronix.de>, "Shawn Guo" <shawnguo@kernel.org>,
- imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Message-Id: <dbdb9141-a345-4a17-becb-29e69a494e59@app.fastmail.com>
-In-Reply-To: 
- <CAGETcx-q7+DGhPYd3QrsPh7O_0HU7T=NhaJYp0Fu7YW2zwbo7Q@mail.gmail.com>
-References: <20240926213729.2882045-1-marex@denx.de>
- <CAGETcx-q7+DGhPYd3QrsPh7O_0HU7T=NhaJYp0Fu7YW2zwbo7Q@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] soc: imx8m: Probe the SoC driver as platform driver
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 26, 2024, at 23:39, Saravana Kannan wrote:
->
-> Also, you might want to check that your list of probed devices doesn't
-> change without any async probing or this patch vs with async probing
-> and this patch. Quick way to get list of successfully probed devices
-> is:
-> # find /sys/devices -name driver
->
-> Arnd,
->
-> Why is soc_device_match() doing a bus_for_each_dev(&soc_bus_type,...)?
-> Are the real use cases where more than one soc device can be
-> registered with soc_device_register()?
+	Hi all,
 
-Anything can register a soc_device, and I think there is a case
-where both the actual SoC and a firmware driver each register
-one, see drivers/firmware/smccc/soc_id.c and 
-drivers/firmware/imx/imx-scu-soc.c.
+The "gpio" suffix for GPIO consumers was deprecated a while ago, in
+favor of the "gpios" suffix.  However, there are still several users of
+the "hp-det-gpio" and "mic-det-gpio" properties, in DT bindings,
+drivers, and DT source files.
 
-Not sure how common this is, but this was something that people
-asked for when we created the interface.
+Drivers that use gpiolib handle both the deprecated and new properties
+transparently, but that is not the case when using of_property_*() calls
+directly.
 
-      Arnd
+  - The first patch fixes a bug, as the Freescale Generic ASoC Sound
+    driver handles only the deprecated properties, while there is
+    already a user of the new variants,
+  - The second patch updates the Audio Graph and Simple Audio Card DT
+    bindings,
+  - Patches 3-9 converts various DTS files to use the new properties,
+  - The last 2 patches convert Freescale sound device nodes to use the
+    new properties.
+
+All patches can be applied independently, except for the last two, which
+depend on the first patch to avoid regressions.
+This series was compile-tested only.
+
+Thanks for your comments!
+
+Geert Uytterhoeven (11):
+  ASoC: fsl-asoc-card: Add missing handling of {hp,mic}-dt-gpios
+  ASoC: dt-bindings: Deprecate {hp,mic}-det-gpio
+  ARM: dts: marvell: mmp2-olpc-xo-1-75: Switch to {hp,mic}-det-gpios
+  arm64: dts: freescale: imx: Switch to simple-audio-card,hp-det-gpios
+  arm64: dts: renesas: beacon-renesom: Switch to mic-det-gpios
+  arm64: dts: rockchip: Switch to simple-audio-card,hp-det-gpios
+  arm64: dts: rockchip: Switch to hp-det-gpios
+  arm64: dts: uniphier: Switch to hp-det-gpios
+  mips: dts: ingenic: Switch to simple-audio-card,hp-det-gpios
+  ARM: dts: nxp: imx: Switch to {hp,mic}-det-gpios
+  arm64: dts: freescale: imx: Switch to hp-det-gpios
+
+ .../devicetree/bindings/sound/audio-graph.yaml       |  6 ++++++
+ .../devicetree/bindings/sound/simple-card.yaml       | 12 ++++++++++++
+ arch/arm/boot/dts/marvell/mmp2-olpc-xo-1-75.dts      |  4 ++--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi       |  4 ++--
+ arch/arm/boot/dts/nxp/imx/imx6sl-evk.dts             |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx6sll-evk.dts            |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi            |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx6ul-14x14-evk.dtsi      |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx7d-sdb.dts              |  2 +-
+ .../boot/dts/freescale/imx8mq-librem5-devkit.dts     |  2 +-
+ arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi    |  2 +-
+ arch/arm64/boot/dts/freescale/imx8qm-mek.dts         |  2 +-
+ arch/arm64/boot/dts/freescale/imx8qxp-mek.dts        |  2 +-
+ arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts    |  2 +-
+ .../boot/dts/renesas/beacon-renesom-baseboard.dtsi   |  2 +-
+ .../boot/dts/rockchip/rk3326-anbernic-rg351m.dtsi    |  2 +-
+ .../arm64/boot/dts/rockchip/rk3326-gameforce-chi.dts |  2 +-
+ arch/arm64/boot/dts/rockchip/rk3326-odroid-go.dtsi   |  2 +-
+ arch/arm64/boot/dts/rockchip/rk3368-lba3368.dts      |  2 +-
+ arch/arm64/boot/dts/rockchip/rk3399-eaidk-610.dts    |  2 +-
+ arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts |  2 +-
+ arch/arm64/boot/dts/rockchip/rk3399-roc-pc-plus.dts  |  2 +-
+ .../boot/dts/rockchip/rk3399-rock-pi-4a-plus.dts     |  2 +-
+ .../boot/dts/rockchip/rk3399-rock-pi-4b-plus.dts     |  2 +-
+ arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4c.dts   |  2 +-
+ .../boot/dts/rockchip/rk3399-sapphire-excavator.dts  |  2 +-
+ .../boot/dts/rockchip/rk3566-anbernic-rg-arc.dtsi    |  2 +-
+ .../boot/dts/rockchip/rk3566-anbernic-rg353p.dts     |  2 +-
+ .../boot/dts/rockchip/rk3566-anbernic-rg353ps.dts    |  2 +-
+ .../boot/dts/rockchip/rk3566-anbernic-rg353v.dts     |  2 +-
+ .../boot/dts/rockchip/rk3566-anbernic-rg353vs.dts    |  2 +-
+ .../boot/dts/rockchip/rk3566-anbernic-rg503.dts      |  2 +-
+ arch/arm64/boot/dts/rockchip/rk3566-pinetab2.dtsi    |  2 +-
+ arch/arm64/boot/dts/rockchip/rk3566-powkiddy-x55.dts |  2 +-
+ arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts    |  2 +-
+ arch/arm64/boot/dts/rockchip/rk3588-armsom-sige7.dts |  2 +-
+ arch/arm64/boot/dts/rockchip/rk3588-evb1-v10.dts     |  2 +-
+ .../dts/rockchip/rk3588-friendlyelec-cm3588-nas.dts  |  2 +-
+ arch/arm64/boot/dts/rockchip/rk3588-nanopc-t6.dtsi   |  2 +-
+ arch/arm64/boot/dts/rockchip/rk3588-ok3588-c.dts     |  2 +-
+ .../boot/dts/rockchip/rk3588-orangepi-5-plus.dts     |  2 +-
+ arch/arm64/boot/dts/rockchip/rk3588-quartzpro64.dts  |  2 +-
+ arch/arm64/boot/dts/rockchip/rk3588-rock-5-itx.dts   |  2 +-
+ arch/arm64/boot/dts/rockchip/rk3588-rock-5b.dts      |  2 +-
+ .../boot/dts/rockchip/rk3588s-gameforce-ace.dts      |  2 +-
+ .../boot/dts/socionext/uniphier-ld11-global.dts      |  2 +-
+ .../boot/dts/socionext/uniphier-ld20-global.dts      |  2 +-
+ arch/mips/boot/dts/ingenic/gcw0.dts                  |  2 +-
+ arch/mips/boot/dts/ingenic/rs90.dts                  |  2 +-
+ sound/soc/fsl/fsl-asoc-card.c                        |  8 +++++---
+ 50 files changed, 72 insertions(+), 52 deletions(-)
+
+-- 
+2.34.1
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
