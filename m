@@ -1,153 +1,126 @@
-Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D1A18733C
-	for <imx@lists.linux.dev>; Fri, 27 Sep 2024 11:34:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.26.50.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4CE185B72
+	for <imx@lists.linux.dev>; Fri, 27 Sep 2024 11:56:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727436875; cv=none; b=CLFhYl5kz3haSgGim8pTaT1XCDhVwSZov/JMl4mf2Ikrh2+lsIfPq6+N8aUwAu2L1sqSzv7PEKaBo1q4lXB92hXbeG7gahdQsVEvu5BijE+jovxqbN/EM2xNjlEfoRnUyBtbZeCh2earBJHw46GnQCeq8/0e+im4i1Rh2GHDXkg=
+	t=1727438204; cv=none; b=Tpscx+lYKC8D5rPWAb/MnE6U43n2B2cWbIZKYCzLJspf08njY+rCgo3ADmDQV+gXg3hlORgtRZ5ZzJTQcmxAAn6+FlGpfcCowK9kZokpY0gepe6A0HjXoyv5tH8v0cIs9mPZKlx4lT30+lxT9i8OiqngBLZA4PZ/FR7d5lTk2H8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727436875; c=relaxed/simple;
-	bh=mLnVJ+RCBSll6397HDYIxG0p1+y9qDqy/rM7C01/DGk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=JV+3kytAsUbv/Z8tivp9uD4Ifr2X7fqiWS5Ao9+GKN/EAX/CMEJv3qTcrIRWiIiT2OqajyHYt26KepeWHTRX0Hsk4m8dvE9J1p4n2CN8hPJUDiLMG0dv1S1A3KSkJkwiDGitoROxKJRfRkCrJc4b8AnxR9JnVuxkl72WOzsMBpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=AML2FVtg; arc=none smtp.client-ip=91.26.50.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
+	s=arc-20240116; t=1727438204; c=relaxed/simple;
+	bh=6DmNFqmmvb83gXmF9WjsiVyXZP10O269GmkfDdyUmMo=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=LcDC2/2Uy9zDZwjrHv5ejbD06ofol92UqXe+9UEczh6AbFXIgWvUhPJugmLAS0bCCj6Njfj5WxptHsilNhK04754WGsO4DRx176Zsp22XmxqutTZ1mnunWfjg6At9IYJdGlx6lsQBfAs0IicViZpi42eBOuwM6PT26lqCqVuKbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=b8fHkR1R; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jdiGp5DQ; arc=none smtp.client-ip=103.168.172.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="AML2FVtg"
-DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
-	q=dns/txt; i=@phytec.de; t=1727436863; x=1730028863;
-	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=mLnVJ+RCBSll6397HDYIxG0p1+y9qDqy/rM7C01/DGk=;
-	b=AML2FVtgwwsUgjOAkwAR9yRqA3DYNfb1tiKPe50GkSo9yKARlEd+0SbtaLkqnPVs
-	3PMMDKvQYgvnoJByMA3kTBYNHsnI470UEll1klIdRlRf7YnpHEOhkPMJNEi1uX8H
-	tMnBtMWtuWVKyUJPKMAH+EB/yEY3vNmEYxq149OmBuc=;
-X-AuditID: ac14000a-4577e70000004e2a-f4-66f6983f8091
-Received: from berlix.phytec.de (Unknown_Domain [172.25.0.12])
-	(using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(Client did not present a certificate)
-	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 04.AA.20010.F3896F66; Fri, 27 Sep 2024 13:34:23 +0200 (CEST)
-Received: from llp-hahn.hahn.test (172.25.0.11) by Berlix.phytec.de
- (172.25.0.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Fri, 27 Sep
- 2024 13:34:23 +0200
-From: Benjamin Hahn <B.Hahn@phytec.de>
-Date: Fri, 27 Sep 2024 13:34:16 +0200
-Subject: [PATCH] arm64: dts: imx8mp-phyboard-pollux-rdk: update
- gpio-line-names
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="b8fHkR1R";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jdiGp5DQ"
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfout.phl.internal (Postfix) with ESMTP id BBCE113805C9;
+	Fri, 27 Sep 2024 07:56:41 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-10.internal (MEProxy); Fri, 27 Sep 2024 07:56:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1727438201;
+	 x=1727524601; bh=Ay7YF/Xuo5nNlHfCru66Td9SMu/HSo2oVALKq6Fnm2w=; b=
+	b8fHkR1Rn+U1DJr0+tJSBZGI3631TwN7E1T1eXk2gB0RDtSsy5+kgtCSZLVcAWQV
+	MhliV3zGoOUgueadUA0nCdVyFVAA22K7rxTB7CFcQsQLs000ArMgX+xrVEoMQ7eF
+	Kfp64KnAckL0a+4wh5zNN9CD6CZ/2JBJ9dJmb/AbP/O2hvTA7sQctCX57yISD7od
+	T5CxHaTW2T26nnplrIzvBSfiOT0W2F9C526sI6hGvHNuYLux8e3ip4uA47NbtH/r
+	uEOUZwIwBX7JY3R0mUihBhD8EfFBxCUPMQHn0XcpslJHxinEhfEN5lpFjYB12Y+Q
+	+EZycAayGLaT2Q/GjyGX7Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1727438201; x=
+	1727524601; bh=Ay7YF/Xuo5nNlHfCru66Td9SMu/HSo2oVALKq6Fnm2w=; b=j
+	diGp5DQLgrsMw7zxu42iklMeZLvUHinEA7GgbnaaRILfgf1RxAtIqEu6eiqW2OrE
+	k3VGmxZJwLEe/P/T2c8NTX1s21PT8msK7k589/q/m4C6RkwPBav649qnl2J4ARIK
+	2hSmi6OhtOon3eaZFGeKPFDnwPn+2ueAiVvqVnT/ay2NAPy3fKma3f+lMRMBfD9Z
+	Mp21FuoWnMJYSaGpeckTluNGJOTYaAbeTJ4oorrC7tS9ybHArfoJYmKm3vLNQOUI
+	u08rZXi3NRANmc07DjszujhlmV7dZtDHwVFP481N/MD5N7tE2MeZLZK0mz6SCZGV
+	zdJVunAT2jOvaSvs+JmYg==
+X-ME-Sender: <xms:eZ32ZgYX4kGVbPPs_XTlr75uogeZ5Qygikd5CBXpIackj7tKd-mr6A>
+    <xme:eZ32ZrZNceMX0N6dD4us9wQQWHOavHC428HNlbn2LHOJSGa0sE9YN-VBEt6JH4M0n
+    fxM-B0JgSY4CamFpas>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvddtledggeeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
+    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
+    guvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefg
+    gfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudef
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrnhhgvghlohhgihhorggttghhih
+    hnohdruggvlhhrvghgnhhosegtohhllhgrsghorhgrrdgtohhmpdhrtghpthhtohepmhgr
+    rhgvgiesuggvnhigrdguvgdprhgtphhtthhopehkvghrnhgvlhesughhqdgvlhgvtghtrh
+    honhhitghsrdgtohhmpdhrtghpthhtohepfhgvshhtvghvrghmsehgmhgrihhlrdgtohhm
+    pdhrtghpthhtohepshgrrhgrvhgrnhgrkhesghhoohhglhgvrdgtohhmpdhrtghpthhtoh
+    epshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehnvghilhdrrghr
+    mhhsthhrohhngheslhhinhgrrhhordhorhhgpdhrtghpthhtoheplhhinhhugidqrghrmh
+    dqkhgvrhhnvghlsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohep
+    ihhmgieslhhishhtshdrlhhinhhugidruggvvh
+X-ME-Proxy: <xmx:eZ32Zq_yNxIIomxFYxqWVZQbH1Iw3DCWl35sCtIo7HHY2YS-8mQBEg>
+    <xmx:eZ32Zqr6EsZLS_fcYlitFUwSH_jRawbIOp8FmvDGVzS6GhfDPRK_zw>
+    <xmx:eZ32Zro6RSDPlwg93-pUcBGfFaic2u91pCHDv-nUuiRQbWmbfXqWEA>
+    <xmx:eZ32ZoS5m-DfODkHL1RWKcjktB_4XE0WtSn666PTf1acte3crahqfQ>
+    <xmx:eZ32ZphJk9ACd2OgZI6jpVJsQsL8IqvtQMdH0o5Xku4S7OKpmv-rR8t2>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 1C8A52220071; Fri, 27 Sep 2024 07:56:41 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Date: Fri, 27 Sep 2024 11:56:20 +0000
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Saravana Kannan" <saravanak@google.com>, "Marek Vasut" <marex@denx.de>
+Cc: linux-arm-kernel@lists.infradead.org, kernel@dh-electronics.com,
+ "AngeloGioacchino Del Regno" <angelogioacchino.delregno@collabora.com>,
+ "Fabio Estevam" <festevam@gmail.com>,
+ "Jeff Johnson" <quic_jjohnson@quicinc.com>,
+ "Neil Armstrong" <neil.armstrong@linaro.org>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+ "Sascha Hauer" <s.hauer@pengutronix.de>, "Shawn Guo" <shawnguo@kernel.org>,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Message-Id: <dbdb9141-a345-4a17-becb-29e69a494e59@app.fastmail.com>
+In-Reply-To: 
+ <CAGETcx-q7+DGhPYd3QrsPh7O_0HU7T=NhaJYp0Fu7YW2zwbo7Q@mail.gmail.com>
+References: <20240926213729.2882045-1-marex@denx.de>
+ <CAGETcx-q7+DGhPYd3QrsPh7O_0HU7T=NhaJYp0Fu7YW2zwbo7Q@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] soc: imx8m: Probe the SoC driver as platform driver
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-Message-ID: <20240927-wip-bhahn-update_gpio_lines-v1-1-49aca212e25a@phytec.de>
-X-B4-Tracking: v=1; b=H4sIADeY9mYC/x3MSwqAIBAA0KvErBswK/pcJSIspxwIE+0H0d2Tl
- m/zHgjkmQK0yQOeTg682YgsTWAyyi6ErKNBClmIRpZ4scPRKGPxcFrtNCyOt2FlSwHzuprVJGr
- KdQVxcJ5mvv+969/3A1wcBuxtAAAA
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Teresa Remmet
-	<t.remmet@phytec.de>
-CC: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<upstream@lists.phytec.de>, Benjamin Hahn <B.Hahn@phytec.de>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727436863; l=2230;
- i=B.Hahn@phytec.de; s=20240126; h=from:subject:message-id;
- bh=mLnVJ+RCBSll6397HDYIxG0p1+y9qDqy/rM7C01/DGk=;
- b=1JTTL5w+Ysf2NDXnsTQKYgK8LBQoP7X4qcSWb2sYtvFIodHDs80v/KwDPMWdsS813e+dnUKsJ
- NiY9GUqJHFhCwy10VlZAoanmHqcC3rVog65kwplVFBB31aaE4LfxrMW
-X-Developer-Key: i=B.Hahn@phytec.de; a=ed25519;
- pk=r04clMulHz6S6js6elPBA+U+zVdDAqJyEyoNd8I3pSw=
-X-ClientProxiedBy: Berlix.phytec.de (172.25.0.12) To Berlix.phytec.de
- (172.25.0.12)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFuphkeLIzCtJLcpLzFFi42JZI8nAo2s/41uaweVnYhZr9p5jsph/5Byr
-	xcOr/hYz77WyWayaupPF4uWse2wWmx5fY7W4vGsOm8X/PTvYLf5u38Ri8WKLuEX3O3UHHo+d
-	s+6ye2xa1cnmsXlJvceLzTMZPfq7W1g9+v8aeHzeJBfAHsVlk5Kak1mWWqRvl8CVcWzXC8aC
-	HYIVF1bPZ21gPMDXxcjJISFgIrF30mr2LkYuDiGBJUwST/7dZYVwHjJKrN06mQWkik1ATWLX
-	m9esIDaLgKrExWtTmLoYOTiEBQIl9mzMAAnzCghKnJz5hAUkzCygKbF+lz5ImFlAXmL72znM
-	ECV+Eg3rp7KAjJcQ2MEoceXLVUaQhIjADiaJx/2GIAlmgYOMEuvP72SGuE5Y4vPuNWwQHbuZ
-	JKZNe8AKskFCIFFi52s5kBohAVmJm+e3sEHUy0tMO/caqjdUYuuX7UwTGIVnIblvFsJ9s5Dc
-	t4CReRWjUG5mcnZqUWa2XkFGZUlqsl5K6iZGUIyJMHDtYOyb43GIkYmD8RCjBAezkgiv1bmv
-	aUK8KYmVValF+fFFpTmpxYcYpTlYlMR5V3cEpwoJpCeWpGanphakFsFkmTg4pRoYmb4fuiw4
-	6WVHace6Pa/z2tTFlIyahIXm/3rb38/2pK650Jrtcg/jqX/y9YopR5zO/IvZWndWavHPy9PK
-	TBTdK9fnMPyuebm2Pesdy/flnh/VHTPcnh+bcb82bd2jhb8WRVUuzKo4K+NyTebg52s3Luxq
-	vGFwv/tZ5rmPQmfFYya6cwcyMV2xUWIpzkg01GIuKk4EAPY0g2yfAgAA
 
-Update gpio-line-names. Add missing and remove unused.
+On Thu, Sep 26, 2024, at 23:39, Saravana Kannan wrote:
+>
+> Also, you might want to check that your list of probed devices doesn't
+> change without any async probing or this patch vs with async probing
+> and this patch. Quick way to get list of successfully probed devices
+> is:
+> # find /sys/devices -name driver
+>
+> Arnd,
+>
+> Why is soc_device_match() doing a bus_for_each_dev(&soc_bus_type,...)?
+> Are the real use cases where more than one soc device can be
+> registered with soc_device_register()?
 
-Signed-off-by: Benjamin Hahn <B.Hahn@phytec.de>
----
- .../boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts      | 14 ++++++++++----
- arch/arm64/boot/dts/freescale/imx8mp-phycore-som.dtsi      |  4 +---
- 2 files changed, 11 insertions(+), 7 deletions(-)
+Anything can register a soc_device, and I think there is a case
+where both the actual SoC and a firmware driver each register
+one, see drivers/firmware/smccc/soc_id.c and 
+drivers/firmware/imx/imx-scu-soc.c.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-index 50debe821c42..cd8645be7ffd 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-@@ -322,15 +322,16 @@ &usdhc2 {
- 
- &gpio1 {
- 	gpio-line-names = "", "", "X_PMIC_WDOG_B", "",
--		"PMIC_SD_VSEL", "", "", "", "", "",
--		"", "", "USB1_OTG_PWR", "", "", "X_nETHPHY_INT";
-+		"PMIC_SD_VSEL", "", "", "", "PCIe_nPERST", "LVDS1REG_EN",
-+		"PCIe_nWAKE", "PCIe_nCLKREQ", "USB1_OTG_PWR", "",
-+		"PCIe_nW_DISABLE";
- };
- 
- &gpio2 {
- 	gpio-line-names = "", "", "", "",
- 		"", "", "", "", "", "",
- 		"", "", "X_SD2_CD_B", "", "", "",
--		"", "", "", "SD2_RESET_B";
-+		"", "", "", "SD2_RESET_B", "LVDS1_BL_EN";
- };
- 
- &gpio3 {
-@@ -344,7 +345,12 @@ &gpio4 {
- 	gpio-line-names = "", "", "", "",
- 		"", "", "", "", "", "",
- 		"", "", "", "", "", "",
--		"", "", "X_PMIC_IRQ_B", "", "nENET0_INT_PWDN";
-+		"", "", "X_PMIC_IRQ_B", "nRTC_INT", "nENET0_INT_PWDN";
-+};
-+
-+&gpio5 {
-+	gpio-line-names = "", "", "", "",
-+		"", "", "", "", "", "X_ECSPI1_SSO";
- };
- 
- &iomuxc {
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-phycore-som.dtsi
-index a5ecdca8bc0e..04f724c6ec21 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-phycore-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-phycore-som.dtsi
-@@ -209,9 +209,7 @@ &wdog1 {
- };
- 
- &gpio1 {
--	gpio-line-names = "", "", "X_PMIC_WDOG_B", "",
--		"", "", "", "", "", "",
--		"", "", "", "", "", "X_nETHPHY_INT";
-+	gpio-line-names = "", "", "X_PMIC_WDOG_B";
- };
- 
- &gpio4 {
+Not sure how common this is, but this was something that people
+asked for when we created the interface.
 
----
-base-commit: de5cb0dcb74c294ec527eddfe5094acfdb21ff21
-change-id: 20240925-wip-bhahn-update_gpio_lines-387fac08e3d7
-
-Best regards,
--- 
-Benjamin Hahn <B.Hahn@phytec.de>
-
+      Arnd
