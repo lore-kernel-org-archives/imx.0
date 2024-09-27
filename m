@@ -1,113 +1,272 @@
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B461C175D
-	for <imx@lists.linux.dev>; Fri, 27 Sep 2024 17:10:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79599165F0E
+	for <imx@lists.linux.dev>; Fri, 27 Sep 2024 19:33:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727457006; cv=none; b=gRiruSppSrG6UQ6qRttbfAycIUlTf2WadrelOWlJRKLg+Wve6hyGgUdfE8b5s2Anef/Uk0+YzokI3kI8OwwdRxUi437BS3awpsWyQBR/Ivn1zmLTILZyA1oOhqDeVTBsSIVLolW4qSscPaLsOuV+SQaEmMdvTLnFuYTlZZIuZCE=
+	t=1727465602; cv=none; b=jXCmiQczgGjWVnGO7m3ze+Lmu0I0kmNbN6K9NltC9kNFbM6PLc2EOuUN3lTD79XEUxxSDBn9l+2OdMj9v8EcSPw7cZ9tAdFKiObauACTa3lcZHT4WCfUJQJ7O1g8yZyFNhOVQ4qRhC6PvUUDfoo3Jzbhmfs2lBgKcMV0yO32wp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727457006; c=relaxed/simple;
-	bh=msPFs0oHddcTpnqpQnU8/vyIsstY5Hmuyz7ku4/n+Vs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dhSNjwMg+lL66ASSlKeiv+gwq5hyswx10qwC5CsC39NPni/Sd0Z0T86ZRWftpm91ZiKGTyDp72EZjBk++zxLuFyoCZLnaL08F4fhvVu+7cMfZiW89k7nZnlBmIzRALoCSuiTSxLeI7NS4YektqWkp8FDl2S7pBvayCvqpWHC25k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e25d11cc9f0so1763033276.3
-        for <imx@lists.linux.dev>; Fri, 27 Sep 2024 10:10:04 -0700 (PDT)
+	s=arc-20240116; t=1727465602; c=relaxed/simple;
+	bh=9nBIWT0lzbhUH/iN+bL0j/cZv61u7ADR+T2WUGbt+hs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=pN5+DU4C/c4EuZG5YoWDHuCYJkJUp5VyYAxcjHq3sjeFF+2ICCdlgwKJHFvPXbSMJIb0UG8GHT7Qfsf3wyNFm2oCOHT5dVZOq6QXCJdpEsbTN4SApKFA9KnjTdPifFDcnWvqDiSd/EO0CrrlwXI7COx2gTXj9LM0oabJGLzzs7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=Vx6h0dSI; arc=none smtp.client-ip=209.85.219.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="Vx6h0dSI"
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6c5ab2de184so16422176d6.0
+        for <imx@lists.linux.dev>; Fri, 27 Sep 2024 12:33:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1727465599; x=1728070399; darn=lists.linux.dev;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=VKladj2sFJjdiWtfrOuq4uA29WlsH18GzOxyRfbvkm8=;
+        b=Vx6h0dSIn6m1rNmhfiaWHkPzDV/QLWfZ/eDItT+rBSlnn36AXYa+54isTMDFCyE1mR
+         QvNtJi19NS8DYDHOVpaQNNThN0JNpHgFuSWoQZUkKXSUXkqkKzmFBsFb5vWUJlEJpAyW
+         8yS3tkXYpZOw9DLBzRkZD0zOqR20FPUg5fpGdfQL/SGYjWeCOehuLhgnIJvNRJ7NcuDp
+         uKOrkNISaNNaIOuVr2KpJM7KHS/a3jHFpce7z7sV45ZQtutg9CxMZLcTQOjz1XCHkerQ
+         26gbwnhqZDP8JC+xGIY/kJndrrogUQHjAoLPWsaNgY87Ldu37pVHMXjI1duRJzJhbuu/
+         iliA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727457002; x=1728061802;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xoY6H2xihm8sOHd6/SknfHzEtRV3+jpw8m+Q4KMLP+g=;
-        b=q+sU+AVdIwiODlPPHNKBrjLWkDkKMLw8tQmHGDgKabouBMNy0VW5yGpmJ6q0nqVPew
-         lRNbot+wXqmFFMtWS+0F9cgL4eu5vM6ArjSiaiTnutcrD+AwinaFsOvOXBv437QwRsPu
-         C3tJ6L/S6K41ROieP8W1rRA6tVaHVS+u4M827X1zDJzlJi8L1JoIX4vVEbkRuHhpam3r
-         /BUzUzL475CzP7MHRpceAQk53acTs0hb7ucBtzrV98JPOtbWHCZaGEo6Ad7BkkDqBnlb
-         c6pJmTzczwscSiriR/mBR/nAMN4BcrphwEDNcUGHq1VMi8dkZB7oHGaYgPQS6l7O8pDG
-         OoAA==
-X-Forwarded-Encrypted: i=1; AJvYcCVUBE9DvXru23Y95Nhg2t062BMjCmFv9Z+a+08dXt8e/b/htpSWsJilG4MG2M7W24l5dZs=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzldJ1s45524YXsPAQ4aYVN1NkIV6heb0ufSxgRwBlns1E6XA6D
-	mSwCv+ZLJMAEcsyourh9KpsSYquiQs1/csfM9Ht/d1lCduGLDJHWuKeddkjA
-X-Google-Smtp-Source: AGHT+IE56lR8HLDFVQnDMUvS8xfqP5I4MVmxPgxctyAvP+B/F/k64Ji4T6yLHBDO7jgobB73AcozbA==
-X-Received: by 2002:a05:6902:118f:b0:e25:d6df:4e81 with SMTP id 3f1490d57ef6-e2604b30177mr3146984276.9.1727457002224;
-        Fri, 27 Sep 2024 10:10:02 -0700 (PDT)
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com. [209.85.128.175])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e25e6c32b25sm502824276.60.2024.09.27.10.09.59
-        for <imx@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Sep 2024 10:09:59 -0700 (PDT)
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-6dde476d3dfso20291507b3.3
-        for <imx@lists.linux.dev>; Fri, 27 Sep 2024 10:09:59 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUsIXULVpQe5r8skHxDmU148vqcMvdNX8itawXTumufB3d5YGbzi42erloDirg54l1uVYQ=@lists.linux.dev
-X-Received: by 2002:a05:690c:112:b0:6e2:985:f4df with SMTP id
- 00721157ae682-6e24dc9c710mr22157267b3.44.1727456998718; Fri, 27 Sep 2024
- 10:09:58 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727465599; x=1728070399;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VKladj2sFJjdiWtfrOuq4uA29WlsH18GzOxyRfbvkm8=;
+        b=N+BahEXdXaZsKexNbN5uhOYZZiaLg/A0mmKvhHtC5OFda4k0bPCBkbkbfGMTlkWFc8
+         GyC3vjNJkQ30csT5bV4UBLWgN34a6bbmH6mxYgQ7F2HzhZkLpTfzpb9hGfw71BC2LzcP
+         pUWHdLvqIpGGItwW2ZBHpgFhEdcNVObvgdXS06XoLQgW1QosFXXLtgah/9i6cN7zbzt0
+         r7pwt//wjd7zydLf7R8TKV9gOfjGh2wocM4WKu3EDgBwaAMdtjg/TaXVS5DNvotM27oS
+         tAvf50hnDEV35suJNN09WcwjeoORCwnlwBtYgRFbV4kzqzhrXB+GiQ5EzSabvMmhC3bS
+         s72Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVu1p58rNdRbH+ot28iXIUAs38nlHHaETrgF5CVjLdwf/+aEUAxiS8sHGXZ5rHe6B1ny9c=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyXM0QlqFNSUfvQBbOduYF8ISrthnGhnCtHydMJ3Qxtkql3G5Vi
+	yYnhMaB1OrATdkP8vaDMcs/ricdh15mCfilzQoHwW0m9v6Xpp+TQavSONKGLfTE=
+X-Google-Smtp-Source: AGHT+IEhDe5EE9y0RFQCZTtCNmMq10z4RbPVeb2m5iqTjmA1e9FxI+tgYD6oSZc2Z9WqFDJgdWHibA==
+X-Received: by 2002:a05:6214:3bc7:b0:6cb:4e39:1a93 with SMTP id 6a1803df08f44-6cb4e395f0cmr619406d6.38.1727465599241;
+        Fri, 27 Sep 2024 12:33:19 -0700 (PDT)
+Received: from nicolas-tpx395.lan ([2606:6d00:15:862e::580])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b680045sm11835946d6.104.2024.09.27.12.33.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Sep 2024 12:33:18 -0700 (PDT)
+Message-ID: <386f4e12fd835b18c3f618f2c94cbd426bd6cf28.camel@ndufresne.ca>
+Subject: Re: [PATCH v2 2/2] media: imx: vdic: Introduce mem2mem VDI
+ deinterlacer driver
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: Marek Vasut <marex@denx.de>, linux-media@vger.kernel.org
+Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>, Fabio
+ Estevam <festevam@gmail.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Helge Deller <deller@gmx.de>, Mauro Carvalho
+ Chehab <mchehab@kernel.org>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Philipp Zabel <p.zabel@pengutronix.de>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Steve
+ Longerbeam <slongerbeam@gmail.com>, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev,  linux-arm-kernel@lists.infradead.org,
+ linux-fbdev@vger.kernel.org,  linux-staging@lists.linux.dev
+Date: Fri, 27 Sep 2024 15:33:17 -0400
+In-Reply-To: <6b45e30c-b215-4f7a-91a4-fde05d78f737@denx.de>
+References: <20240724002044.112544-1-marex@denx.de>
+	 <20240724002044.112544-2-marex@denx.de>
+	 <85a5a42667e5867bc45da31baf045d4c9557f5f1.camel@ndufresne.ca>
+	 <6b45e30c-b215-4f7a-91a4-fde05d78f737@denx.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <cover.1727438777.git.geert+renesas@glider.be> <4455919.MSiuQNM8U4@phil>
-In-Reply-To: <4455919.MSiuQNM8U4@phil>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 27 Sep 2024 19:09:45 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXVBfp0ZJ5Me93p1fB9-ac00WcAYOb9jkG=D+wm01j+qw@mail.gmail.com>
-Message-ID: <CAMuHMdXVBfp0ZJ5Me93p1fB9-ac00WcAYOb9jkG=D+wm01j+qw@mail.gmail.com>
-Subject: Re: [PATCH treewide 00/11] ASoC: Clean up {hp,mic}-det-gpio handling
-To: Heiko Stuebner <heiko@sntech.de>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Lubomir Rintel <lkundrak@v3.sk>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Magnus Damm <magnus.damm@gmail.com>, 
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Paul Cercueil <paul@crapouillou.net>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
-	Nicolin Chen <nicoleotsuka@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
-	Adrien Grassein <adrien.grassein@gmail.com>, Adam Ford <aford173@gmail.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, linux-sound@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, linux-mips@vger.kernel.org, 
-	alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Heiko,
+Le mercredi 25 septembre 2024 =C3=A0 22:45 +0200, Marek Vasut a =C3=A9crit=
+=C2=A0:
+> On 9/25/24 7:58 PM, Nicolas Dufresne wrote:
+>=20
+>=20
 
-On Fri, Sep 27, 2024 at 4:45=E2=80=AFPM Heiko Stuebner <heiko@sntech.de> wr=
-ote:
-> Am Freitag, 27. September 2024, 14:42:15 CEST schrieb Geert Uytterhoeven:
-> >   - The second patch updates the Audio Graph and Simple Audio Card DT
-> >     bindings,
-> >   - Patches 3-9 converts various DTS files to use the new properties,
-> >   - The last 2 patches convert Freescale sound device nodes to use the
-> >     new properties.
-> >
-> > All patches can be applied independently,
->
-> though I guess dts patches should wait till patch 2 gets applied
-> somewhere, so that changed dts and changed binding can again find
-> together in linux-next?
+[...]
 
-Yes, if we want to avoid introducing new dtbs_check warnings in linux-next.
+>=20
+> > > +static irqreturn_t ipu_mem2mem_vdic_nfb4eof_interrupt(int irq, void =
+*dev_id)
+> > > +{
+> > > +	struct ipu_mem2mem_vdic_priv *priv =3D dev_id;
+> > > +
+> > > +	/* That is about all we can do about it, report it. */
+> > > +	dev_warn_ratelimited(priv->dev, "NFB4EOF error interrupt occurred\n=
+");
+> >=20
+> > Not sure this is right. If that means ipu_mem2mem_vdic_eof_interrupt wo=
+n't fire,
+> > then it means streamoff/close after that will hang forever, leaving a z=
+ombie
+> > process behind.
+> >=20
+> > Perhaps mark the buffers as ERROR, and finish the job.
+>=20
+> The NFB4EOF interrupt is generated when the VDIC didn't write (all of)=
+=20
+> output frame . I think it stands for "New Frame Before EOF" or some=20
+> such. Basically the currently written frame will be corrupted and the=20
+> next frame(s) are likely going to be OK again.
 
-Gr{oetje,eeting}s,
+So the other IRQ will be triggered ? After this one ? Is so, perhaps take a
+moment to mark the frames as ERROR (which means corrupted).
 
-                        Geert
+[...]
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+> >=20
+> > The driver is not taking ownership of prev_buf, only curr_buf is guaran=
+teed to
+> > exist until v4l2_m2m_job_finish() is called. Usespace could streamoff, =
+allocate
+> > new buffers, and then an old freed buffer may endup being used.
+>=20
+> So, what should I do about this ? Is there some way to ref the buffer to=
+=20
+> keep it around ?
+>=20
+> > Its also unclear to me how userspace can avoid this ugly warning, how c=
+an you
+> > have curr_buf set the first time ? (I might be missing something you th=
+is one
+> > though).
+>=20
+> The warning happens when streaming starts and there is only one input=20
+> frame available for the VDIC, which needs three fields to work=20
+> correctly. So, if there in only one input frame, VDI uses the input=20
+> frame bottom field as PREV field for the prediction, and input frame top=
+=20
+> and bottom fields as CURR and NEXT fields for the prediction, the result=
+=20
+> may be one sub-optimal deinterlaced output frame (the first one). Once=
+=20
+> another input frame gets enqueued, the VDIC uses the previous frame=20
+> bottom field as PREV and the newly enqueued frame top and bottom fields=
+=20
+> as CURR and NEXT and the prediction works correctly from that point on.
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+Warnings by default are not acceptable.
+
+>=20
+> > Perhaps what you want is a custom job_ready() callback, that ensure you=
+ have 2
+> > buffers in the OUTPUT queue ? You also need to ajust the CID
+> > MIN_BUFFERS_FOR_OUTPUT accordingly.
+>=20
+> I had that before, but gstreamer didn't enqueue the two frames for me,=
+=20
+> so I got back to this variant for maximum compatibility.
+
+Its well known that GStreamer v4l2convert element have no support for
+detinterlacing and need to be improved to support any deinterlace drivers o=
+ut
+there.
+
+Other drivers will simply holds on output buffers until it has enough to pr=
+oduce
+the first valid picture. Holding meaning not marking them done, which keeps=
+ then
+in the ACTIVE state, which is being tracked by the core for your.
+
+[...]
+
+> > > +
+> > > +	if (ipu_mem2mem_vdic_format_is_yuv420(f->fmt.pix.pixelformat))
+> > > +		f->fmt.pix.bytesperline =3D f->fmt.pix.width * 3 / 2;
+> > > +	else if (ipu_mem2mem_vdic_format_is_yuv422(f->fmt.pix.pixelformat))
+> > > +		f->fmt.pix.bytesperline =3D f->fmt.pix.width * 2;
+> > > +	else if (ipu_mem2mem_vdic_format_is_rgb16(f->fmt.pix.pixelformat))
+> > > +		f->fmt.pix.bytesperline =3D f->fmt.pix.width * 2;
+> > > +	else if (ipu_mem2mem_vdic_format_is_rgb24(f->fmt.pix.pixelformat))
+> > > +		f->fmt.pix.bytesperline =3D f->fmt.pix.width * 3;
+> > > +	else if (ipu_mem2mem_vdic_format_is_rgb32(f->fmt.pix.pixelformat))
+> > > +		f->fmt.pix.bytesperline =3D f->fmt.pix.width * 4;
+> > > +	else
+> > > +		f->fmt.pix.bytesperline =3D f->fmt.pix.width;
+> > > +
+> > > +	f->fmt.pix.sizeimage =3D f->fmt.pix.height * f->fmt.pix.bytesperlin=
+e;
+> >=20
+> > And use v4l2-common ?
+>=20
+> I don't really understand, there is nothing in v4l2-common.c that would=
+=20
+> be really useful replacement for this ?
+
+Not sure I get your response, v4l2-common is used in many drivers already, =
+and
+we intent to keep improving it so that all driver uses it in the long term.=
+ It
+been created because folks believed they can calculate bytesperline and
+sizeimage, but as the number of format grows, it always endup wrong, causin=
+g the
+HW to overflow and break the system at a larger scale.
+
+>=20
+> > > +	return 0;
+> > > +}
+> > > +
+> > > +static int ipu_mem2mem_vdic_s_fmt(struct file *file, void *fh, struc=
+t v4l2_format *f)
+> > > +{
+> > > +	struct ipu_mem2mem_vdic_ctx *ctx =3D fh_to_ctx(fh);
+> > > +	struct ipu_mem2mem_vdic_priv *priv =3D ctx->priv;
+> > > +	struct v4l2_pix_format *fmt, *infmt, *outfmt;
+> > > +	struct vb2_queue *vq;
+> > > +	int ret;
+> > > +
+> > > +	vq =3D v4l2_m2m_get_vq(ctx->fh.m2m_ctx, f->type);
+> > > +	if (vb2_is_busy(vq)) {
+> > > +		dev_err(priv->dev, "%s queue busy\n",  __func__);
+> > > +		return -EBUSY;
+> > > +	}
+> > > +
+> > > +	ret =3D ipu_mem2mem_vdic_try_fmt(file, fh, f);
+> > > +	if (ret < 0)
+> > > +		return ret;
+> > > +
+> > > +	fmt =3D ipu_mem2mem_vdic_get_format(priv, f->type);
+> > > +	*fmt =3D f->fmt.pix;
+> > > +
+> > > +	/* Propagate colorimetry to the capture queue */
+> > > +	infmt =3D ipu_mem2mem_vdic_get_format(priv, V4L2_BUF_TYPE_VIDEO_OUT=
+PUT);
+> > > +	outfmt =3D ipu_mem2mem_vdic_get_format(priv, V4L2_BUF_TYPE_VIDEO_CA=
+PTURE);
+> > > +	outfmt->colorspace =3D infmt->colorspace;
+> > > +	outfmt->ycbcr_enc =3D infmt->ycbcr_enc;
+> > > +	outfmt->xfer_func =3D infmt->xfer_func;
+> > > +	outfmt->quantization =3D infmt->quantization;
+> >=20
+> > So you can do CSC conversion but not colorimetry ? We have
+> > V4L2_PIX_FMT_FLAG_SET_CSC if you can do colorimetry transforms too. I h=
+ave
+> > patches that I'll send for the csc-scaler driver.
+>=20
+> See ipu_ic_calc_csc() , that's what does the colorspace conversion in=20
+> this driver (on output from VDI).
+
+int ipu_ic_calc_csc(struct ipu_ic_csc *csc,
+                    enum v4l2_ycbcr_encoding in_enc,
+                    enum v4l2_quantization in_quant,
+                    enum ipu_color_space in_cs,
+                    enum v4l2_ycbcr_encoding out_enc,
+                    enum v4l2_quantization out_quant,
+                    enum ipu_color_space out_cs)
+
+So instead of simply overriding CSC like you do, let userspace set differen=
+t CSC
+in and out, so that IPU can handle the conversion properly with correct col=
+ors.
+That requires to flag these in the fmt_desc structure during enum format, a=
+nd to
+only read acknowledge the CSC if userspace have set V4L2_PIX_FMT_FLAG_SET_C=
+SC,
+in other condition, the information must be ignored (which you don't).
+
+Nicolas
