@@ -1,30 +1,31 @@
-Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [195.130.132.51])
+Received: from andre.telenet-ops.be (andre.telenet-ops.be [195.130.132.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD4B18CBF9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4253718C92D
 	for <imx@lists.linux.dev>; Fri, 27 Sep 2024 12:43:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440988; cv=none; b=JWLhbXHMk14uO/0NUqF2V70MqiBaKz8SVmVuaCTUKam1tbkhIrLJdW/QokmGKNLgHtaWpbbjUDd3fWs4Zw78u+nvA2W2DES0X8hxi00QEZ5Yez8C9xszo8vHDMWevA4V+PkTxC2+74RpDG0IhjHOEegqysK3EOwt6nV6m7d3t0E=
+	t=1727440988; cv=none; b=kbiZhLKMboyZTyoLAdPik6fmAlxYslG16dKS0ogWN6MgkGdwMwvQ0pJUbxwYtIkWf0n0zVc7D5YBMvYKvxjvvC5EMn7QopB6Vsq+FTGsOMpLcxIZqKPi8PWlCB/593tpI3LvEJylRxYgNWpNlRxt6oN/cTA7Dw60fivqB45hPtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1727440988; c=relaxed/simple;
-	bh=2QXljp1dC/8iHwUW7hKb7vZR7RspRKinKvyyOkLSgtI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ODxNYMir31C6Usj1BhOSnjbfAIZqRwrpx2q6AroPVTNi/Zspb8JRBxnNv+9QxtP28rK/iLRtLoogtRQpMhZ+R6Yc8hw98SpodyOcbcjJlrRpEhluLnlINrYYNLEk5WRdFWByUSuvjFOzmYTr6JUY1J2+dCaipbcFB92aMHRRMzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.51
+	bh=H04kX0shIMHo/Br80lC188m3VFriBQiy/Kjtvzl6jHs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=aJya4qC1dJBYu29FCcISdnO1cTdyR43VG39LFrmiNp5qSj05FuIWan7gOAkKRqV35vjnWmycnozfMkODqxnwe4N2F2hfIEhypzC+W73Ie3RHZGZy8tharakPO8falr77bQJuA24zh/+oVTKrlpGfdSQBaivM6UHi0yzTStKfR/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:b47d:fd74:3975:15b7])
-	by baptiste.telenet-ops.be with cmsmtp
-	id HQic2D00C3BfLyr01Qicjs; Fri, 27 Sep 2024 14:43:02 +0200
+	by andre.telenet-ops.be with cmsmtp
+	id HQic2D0043BfLyr01Qicie; Fri, 27 Sep 2024 14:43:02 +0200
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1suAIj-000fPq-HD;
+	id 1suAIj-000fPx-HO;
 	Fri, 27 Sep 2024 14:42:31 +0200
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1suAIo-008IDa-TV;
-	Fri, 27 Sep 2024 14:42:30 +0200
+	id 1suAIp-008IDy-3S;
+	Fri, 27 Sep 2024 14:42:31 +0200
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Liam Girdwood <lgirdwood@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
@@ -61,10 +62,12 @@ Cc: linux-sound@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH treewide 00/11] ASoC: Clean up {hp,mic}-det-gpio handling
-Date: Fri, 27 Sep 2024 14:42:15 +0200
-Message-Id: <cover.1727438777.git.geert+renesas@glider.be>
+Subject: [PATCH treewide 08/11] arm64: dts: uniphier: Switch to hp-det-gpios
+Date: Fri, 27 Sep 2024 14:42:23 +0200
+Message-Id: <b14b8512181c2a3b0744698e8a21b4e16451d7b3.1727438777.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1727438777.git.geert+renesas@glider.be>
+References: <cover.1727438777.git.geert+renesas@glider.be>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -73,107 +76,41 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-	Hi all,
+Replace the deprecated "hp-det-gpio" property by "hp-det-gpios" in Audio
+Graph Card device nodes.
 
-The "gpio" suffix for GPIO consumers was deprecated a while ago, in
-favor of the "gpios" suffix.  However, there are still several users of
-the "hp-det-gpio" and "mic-det-gpio" properties, in DT bindings,
-drivers, and DT source files.
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+ arch/arm64/boot/dts/socionext/uniphier-ld11-global.dts | 2 +-
+ arch/arm64/boot/dts/socionext/uniphier-ld20-global.dts | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Drivers that use gpiolib handle both the deprecated and new properties
-transparently, but that is not the case when using of_property_*() calls
-directly.
-
-  - The first patch fixes a bug, as the Freescale Generic ASoC Sound
-    driver handles only the deprecated properties, while there is
-    already a user of the new variants,
-  - The second patch updates the Audio Graph and Simple Audio Card DT
-    bindings,
-  - Patches 3-9 converts various DTS files to use the new properties,
-  - The last 2 patches convert Freescale sound device nodes to use the
-    new properties.
-
-All patches can be applied independently, except for the last two, which
-depend on the first patch to avoid regressions.
-This series was compile-tested only.
-
-Thanks for your comments!
-
-Geert Uytterhoeven (11):
-  ASoC: fsl-asoc-card: Add missing handling of {hp,mic}-dt-gpios
-  ASoC: dt-bindings: Deprecate {hp,mic}-det-gpio
-  ARM: dts: marvell: mmp2-olpc-xo-1-75: Switch to {hp,mic}-det-gpios
-  arm64: dts: freescale: imx: Switch to simple-audio-card,hp-det-gpios
-  arm64: dts: renesas: beacon-renesom: Switch to mic-det-gpios
-  arm64: dts: rockchip: Switch to simple-audio-card,hp-det-gpios
-  arm64: dts: rockchip: Switch to hp-det-gpios
-  arm64: dts: uniphier: Switch to hp-det-gpios
-  mips: dts: ingenic: Switch to simple-audio-card,hp-det-gpios
-  ARM: dts: nxp: imx: Switch to {hp,mic}-det-gpios
-  arm64: dts: freescale: imx: Switch to hp-det-gpios
-
- .../devicetree/bindings/sound/audio-graph.yaml       |  6 ++++++
- .../devicetree/bindings/sound/simple-card.yaml       | 12 ++++++++++++
- arch/arm/boot/dts/marvell/mmp2-olpc-xo-1-75.dts      |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi       |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6sl-evk.dts             |  2 +-
- arch/arm/boot/dts/nxp/imx/imx6sll-evk.dts            |  2 +-
- arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi            |  2 +-
- arch/arm/boot/dts/nxp/imx/imx6ul-14x14-evk.dtsi      |  2 +-
- arch/arm/boot/dts/nxp/imx/imx7d-sdb.dts              |  2 +-
- .../boot/dts/freescale/imx8mq-librem5-devkit.dts     |  2 +-
- arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi    |  2 +-
- arch/arm64/boot/dts/freescale/imx8qm-mek.dts         |  2 +-
- arch/arm64/boot/dts/freescale/imx8qxp-mek.dts        |  2 +-
- arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts    |  2 +-
- .../boot/dts/renesas/beacon-renesom-baseboard.dtsi   |  2 +-
- .../boot/dts/rockchip/rk3326-anbernic-rg351m.dtsi    |  2 +-
- .../arm64/boot/dts/rockchip/rk3326-gameforce-chi.dts |  2 +-
- arch/arm64/boot/dts/rockchip/rk3326-odroid-go.dtsi   |  2 +-
- arch/arm64/boot/dts/rockchip/rk3368-lba3368.dts      |  2 +-
- arch/arm64/boot/dts/rockchip/rk3399-eaidk-610.dts    |  2 +-
- arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts |  2 +-
- arch/arm64/boot/dts/rockchip/rk3399-roc-pc-plus.dts  |  2 +-
- .../boot/dts/rockchip/rk3399-rock-pi-4a-plus.dts     |  2 +-
- .../boot/dts/rockchip/rk3399-rock-pi-4b-plus.dts     |  2 +-
- arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4c.dts   |  2 +-
- .../boot/dts/rockchip/rk3399-sapphire-excavator.dts  |  2 +-
- .../boot/dts/rockchip/rk3566-anbernic-rg-arc.dtsi    |  2 +-
- .../boot/dts/rockchip/rk3566-anbernic-rg353p.dts     |  2 +-
- .../boot/dts/rockchip/rk3566-anbernic-rg353ps.dts    |  2 +-
- .../boot/dts/rockchip/rk3566-anbernic-rg353v.dts     |  2 +-
- .../boot/dts/rockchip/rk3566-anbernic-rg353vs.dts    |  2 +-
- .../boot/dts/rockchip/rk3566-anbernic-rg503.dts      |  2 +-
- arch/arm64/boot/dts/rockchip/rk3566-pinetab2.dtsi    |  2 +-
- arch/arm64/boot/dts/rockchip/rk3566-powkiddy-x55.dts |  2 +-
- arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts    |  2 +-
- arch/arm64/boot/dts/rockchip/rk3588-armsom-sige7.dts |  2 +-
- arch/arm64/boot/dts/rockchip/rk3588-evb1-v10.dts     |  2 +-
- .../dts/rockchip/rk3588-friendlyelec-cm3588-nas.dts  |  2 +-
- arch/arm64/boot/dts/rockchip/rk3588-nanopc-t6.dtsi   |  2 +-
- arch/arm64/boot/dts/rockchip/rk3588-ok3588-c.dts     |  2 +-
- .../boot/dts/rockchip/rk3588-orangepi-5-plus.dts     |  2 +-
- arch/arm64/boot/dts/rockchip/rk3588-quartzpro64.dts  |  2 +-
- arch/arm64/boot/dts/rockchip/rk3588-rock-5-itx.dts   |  2 +-
- arch/arm64/boot/dts/rockchip/rk3588-rock-5b.dts      |  2 +-
- .../boot/dts/rockchip/rk3588s-gameforce-ace.dts      |  2 +-
- .../boot/dts/socionext/uniphier-ld11-global.dts      |  2 +-
- .../boot/dts/socionext/uniphier-ld20-global.dts      |  2 +-
- arch/mips/boot/dts/ingenic/gcw0.dts                  |  2 +-
- arch/mips/boot/dts/ingenic/rs90.dts                  |  2 +-
- sound/soc/fsl/fsl-asoc-card.c                        |  8 +++++---
- 50 files changed, 72 insertions(+), 52 deletions(-)
-
+diff --git a/arch/arm64/boot/dts/socionext/uniphier-ld11-global.dts b/arch/arm64/boot/dts/socionext/uniphier-ld11-global.dts
+index a251c4343548f477..de219570bbc933e3 100644
+--- a/arch/arm64/boot/dts/socionext/uniphier-ld11-global.dts
++++ b/arch/arm64/boot/dts/socionext/uniphier-ld11-global.dts
+@@ -61,7 +61,7 @@ &i2s_port3
+ 			&i2s_port4
+ 			&spdif_port0
+ 			&comp_spdif_port0>;
+-		hp-det-gpio = <&gpio UNIPHIER_GPIO_IRQ(0) GPIO_ACTIVE_LOW>;
++		hp-det-gpios = <&gpio UNIPHIER_GPIO_IRQ(0) GPIO_ACTIVE_LOW>;
+ 	};
+ 
+ 	spdif-out {
+diff --git a/arch/arm64/boot/dts/socionext/uniphier-ld20-global.dts b/arch/arm64/boot/dts/socionext/uniphier-ld20-global.dts
+index 79f6db2455c1726f..20e5fb724fae39f1 100644
+--- a/arch/arm64/boot/dts/socionext/uniphier-ld20-global.dts
++++ b/arch/arm64/boot/dts/socionext/uniphier-ld20-global.dts
+@@ -61,7 +61,7 @@ &i2s_port3
+ 			&i2s_port4
+ 			&spdif_port0
+ 			&comp_spdif_port0>;
+-		hp-det-gpio = <&gpio UNIPHIER_GPIO_IRQ(0) GPIO_ACTIVE_LOW>;
++		hp-det-gpios = <&gpio UNIPHIER_GPIO_IRQ(0) GPIO_ACTIVE_LOW>;
+ 	};
+ 
+ 	spdif-out {
 -- 
 2.34.1
 
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
