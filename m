@@ -1,31 +1,34 @@
-Received: from albert.telenet-ops.be (albert.telenet-ops.be [195.130.137.90])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gauss.telenet-ops.be (gauss.telenet-ops.be [195.130.132.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04FB18D64F
-	for <imx@lists.linux.dev>; Fri, 27 Sep 2024 12:43:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8706118C355
+	for <imx@lists.linux.dev>; Fri, 27 Sep 2024 12:43:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440993; cv=none; b=Gk1iG6GooydTIfb+upS5h3DdvLo6i4bCXzpx5U322O0GUUlouMrS5sNwn201Iy84Scj+meMjT3PV/ReHoHgs7hG/KHAfbJspI01cbsZRul5lrt3c4WqR7BLS47WLL6rvdM0aa1WO+22n7ojpUOI4VdHmuby9z7TlJa6htLJT1s8=
+	t=1727440994; cv=none; b=iW/fGepPuY1SqxhHBU4/xCbj95SCDjuLksAn2xhN236TLC65OmyCpMR+bmHO7dg3o5hpFs5i6XZTKmgEYWurTx7JaUTVfzQXisG88jat10Yyksmv/bhZaIMvl6BdiidNgRLxDU/2kmej7lWKvPnxfa6Wt9DVytxvzllkvc/YuX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440993; c=relaxed/simple;
-	bh=iT5rXWgkVPcbkFWW81Uc2zGRtQvQkpapAwr3dLRdXHs=;
+	s=arc-20240116; t=1727440994; c=relaxed/simple;
+	bh=hMSQBIK69XhiQuKN80DdfClsFEKyUwfCRw2R5VKzLTU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BoxZNWWRZqpWFz6YPFgmPsVr+kXutnXKrTrYG8gyOou+9buqiA7K2EPHmkaoUGvB71DtrVztpK4PVqvqd5X6mrinljBrbaYT6EhkN0s0EAC0+5ORN7g/mOgAmtObtuhgDPIJkPz2dRlvocgHxj6IZJQnquXWd2RgZD1Jg+oiu1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.90
+	 MIME-Version; b=jT9cebe4TxD+uC48bqIbl098Ylj4aEQEYF+L6HOlVEHa905JVt2Lw881Vevk/VzOn6l6QLJUHHVX8rwdizU+tHftmQNQB6C32x1+C1BK1WIjlqpc0/Vdh3OG+CS9rrXTbIR8oHDp5a/W7sfO0SWsfz1Ht//QBT34XlcYrDPpMQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
+Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
+	by gauss.telenet-ops.be (Postfix) with ESMTPS id 4XFVW13KCFz4xRWg
+	for <imx@lists.linux.dev>; Fri, 27 Sep 2024 14:43:09 +0200 (CEST)
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:b47d:fd74:3975:15b7])
-	by albert.telenet-ops.be with cmsmtp
-	id HQic2D00E3BfLyr06Qiclu; Fri, 27 Sep 2024 14:43:02 +0200
+	by michel.telenet-ops.be with cmsmtp
+	id HQic2D00L3BfLyr06Qicqj; Fri, 27 Sep 2024 14:43:02 +0200
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1suAIj-000fPu-HI;
+	id 1suAIj-000fPv-HG;
 	Fri, 27 Sep 2024 14:42:31 +0200
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1suAIp-008IDm-0M;
-	Fri, 27 Sep 2024 14:42:31 +0200
+	id 1suAIo-008IDd-UI;
+	Fri, 27 Sep 2024 14:42:30 +0200
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Liam Girdwood <lgirdwood@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
@@ -62,9 +65,9 @@ Cc: linux-sound@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH treewide 04/11] arm64: dts: freescale: imx: Switch to simple-audio-card,hp-det-gpios
-Date: Fri, 27 Sep 2024 14:42:19 +0200
-Message-Id: <b38545c29d6cbf0b394ddb4747ce810c679f95d1.1727438777.git.geert+renesas@glider.be>
+Subject: [PATCH treewide 01/11] ASoC: fsl-asoc-card: Add missing handling of {hp,mic}-dt-gpios
+Date: Fri, 27 Sep 2024 14:42:16 +0200
+Message-Id: <dbcb5bfea005a468ec6dc38374fe6d02bc693c22.1727438777.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1727438777.git.geert+renesas@glider.be>
 References: <cover.1727438777.git.geert+renesas@glider.be>
@@ -76,41 +79,56 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Replace the deprecated "simple-audio-card,hp-det-gpio" property by
-"simple-audio-card,hp-det-gpios" in Simple Audio Card device nodes.
+The DT bindings deprecated the "hp-det-gpio" and "mic-det-gpio"
+properties in favor of "hp-det-gpios" and "mic-det-gpios", but the
+driver was never updated to support the latter.
 
+Even before, there existed users of "hp-det-gpios" and "mic-det-gpios".
+While this may have been handled fine by the ASoC core, this was missed
+by the Freescale-specific part.
+
+Fixes: 4189b54220e5af15 ("ASoC: dt-bindings: fsl-asoc-card: convert to YAML")
+Fixes: 40ba2eda0a7b727f ("arm64: dts: imx8mm-nitrogen-r2: add audio")
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts | 2 +-
- arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi       | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Noticed accidentally.
+Compile-tested only.
+---
+ sound/soc/fsl/fsl-asoc-card.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts b/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts
-index b268ba7a0e12a3f8..9d8e7231b7c63742 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts
-@@ -172,7 +172,7 @@ sound {
- 			"Headphones", "HP_OUT",
- 			"Builtin Speaker", "Speaker Amp OUTR",
- 			"Speaker Amp INR", "LINE_OUT";
--		simple-audio-card,hp-det-gpio = <&gpio3 20 GPIO_ACTIVE_HIGH>;
-+		simple-audio-card,hp-det-gpios = <&gpio3 20 GPIO_ACTIVE_HIGH>;
+diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
+index f6c3aeff0d8eafd7..a0c2ce84c32b1d06 100644
+--- a/sound/soc/fsl/fsl-asoc-card.c
++++ b/sound/soc/fsl/fsl-asoc-card.c
+@@ -1033,14 +1033,15 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
+ 	}
  
- 		simple-audio-card,cpu {
- 			sound-dai = <&sai2>;
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-index 1b39514d5c12aafc..bb37a32ce4616d9f 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-@@ -241,7 +241,7 @@ sound {
- 			"Headset Mic", "MICBIAS",
- 			"IN3R", "Headset Mic",
- 			"DMICDAT", "Digital Mic";
--		simple-audio-card,hp-det-gpio = <&gpio3 9 GPIO_ACTIVE_HIGH>;
-+		simple-audio-card,hp-det-gpios = <&gpio3 9 GPIO_ACTIVE_HIGH>;
+ 	/*
+-	 * Properties "hp-det-gpio" and "mic-det-gpio" are optional, and
++	 * Properties "hp-det-gpios" and "mic-det-gpios" are optional, and
+ 	 * simple_util_init_jack() uses these properties for creating
+ 	 * Headphone Jack and Microphone Jack.
+ 	 *
+ 	 * The notifier is initialized in snd_soc_card_jack_new(), then
+ 	 * snd_soc_jack_notifier_register can be called.
+ 	 */
+-	if (of_property_read_bool(np, "hp-det-gpio")) {
++	if (of_property_read_bool(np, "hp-det-gpios") ||
++	    of_property_read_bool(np, "hp-det-gpio") /* deprecated */) {
+ 		ret = simple_util_init_jack(&priv->card, &priv->hp_jack,
+ 					    1, NULL, "Headphone Jack");
+ 		if (ret)
+@@ -1049,7 +1050,8 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
+ 		snd_soc_jack_notifier_register(&priv->hp_jack.jack, &hp_jack_nb);
+ 	}
  
- 		simple-audio-card,cpu {
- 			sound-dai = <&sai2>;
+-	if (of_property_read_bool(np, "mic-det-gpio")) {
++	if (of_property_read_bool(np, "mic-det-gpios") ||
++	    of_property_read_bool(np, "mic-det-gpio") /* deprecated */) {
+ 		ret = simple_util_init_jack(&priv->card, &priv->mic_jack,
+ 					    0, NULL, "Mic Jack");
+ 		if (ret)
 -- 
 2.34.1
 
