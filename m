@@ -1,284 +1,284 @@
-Received: from IND01-BMX-obe.outbound.protection.outlook.com (mail-bmxind01on2125.outbound.protection.outlook.com [40.107.239.125])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013037.outbound.protection.outlook.com [52.101.67.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001D57405A
-	for <imx@lists.linux.dev>; Sat, 28 Sep 2024 06:16:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.239.125
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6761D1537D7
+	for <imx@lists.linux.dev>; Sat, 28 Sep 2024 06:44:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.37
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727504214; cv=fail; b=dDky0Susm1o92MPg6AoKdvYzq6ZOb//PYjTt/nbi2uGSITsS9IlfKpkKQwY6cZAImHodo/W8vYFIwn/yvSAvdLFaamPoo5WHVzI0WzvICiFKNrdYJv40wu7ryuCWFXvvyKy8f0WQI7h+uA0J+kcfSwZmCiW1VpsNY5iqPvbDUgI=
+	t=1727505864; cv=fail; b=qOSmHxZuF3vmyiPapMWiUKVdNAgUMIviTS0noOp2w5JyFO2QD3qzuCx0+KpgyWwCzy4wBC+3Ntg8yvtU12z+QyPg1RxAYsWarW9cGqiGbG321kUeNPaNdJLUpPUW4zgaUaDHG1KuIrpwMpdqO3vCamJr1RViZZSUnqQSeYv0pKo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727504214; c=relaxed/simple;
-	bh=e0KHZTXOMscB4JBf0hHdX3NuUEcsX5/13DznSCRMdrM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Mrian7I0Rvur21gUutVnlIgBZEugm6UYEb+0D2YHxgW6unX1MUfvQAGi4n3nnUFOMtb91aUbk36XYQGCd7LPZY/+4Idz3GWee7a/Kh7JPbvJByZZndU5hPq/g/Sc8QakivSavOyS0x2Asqjyu1yc+Mr83nxfc8FDTIgAY2ppvII=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io; spf=pass smtp.mailfrom=siliconsignals.io; arc=fail smtp.client-ip=40.107.239.125
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siliconsignals.io
+	s=arc-20240116; t=1727505864; c=relaxed/simple;
+	bh=tdcDEML5qw3L+r+YQ4tPYrsvxfmKeELyHmEN7bBdnRk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=B00FSAzx3XUzo0F1yKwS88a77arQAayuTEOhkg44LKPmzDJ9y2lgNKIXGTjE+fUK+w5eFtYgN4UuO1mIWG43HoRk9bLNn4bUh4YSooqlk5dLcYqUMAoXimF1hJop1ql7za/xnbx69U3Qfn0YNkFHbyV7PxT70gXev4ANsBDSvKM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=N7l5NuQv; arc=fail smtp.client-ip=52.101.67.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="N7l5NuQv"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g8+JtsBEzkUQL0Rna31Dd0SsigJj8yB9U576XUdOQ9jbTDh4vBySUyqV2/KJPsp346R2/xdV8UhNqRhYuGu1q8Fnd/fPIIU31h3OCujenwvvXgN3unYdnKAKNUNdOJff0CLyB2eMU6tSqH2O8AsdBUqKbQnwGpZoVdBxPtCQ1nparqg3Nq2eTqdav93NkveEl4rTij5RYmybuNbfNXeO6JBnYDK8DGHJLZ1F/Ks+E33lX9Csuc9Ua+/tNO5AGESZp8rB9238X1lwSOHhU11oqDk8fCfr+rlfa2vTQbiUwm8/1fKE9bo09qVk9gGCyzENtE+zljS4Qhkg3kCtbX7aKg==
+ b=nYZYe6JB6EhQpvPA0lq0lvf6snCs2QN1WQmi9Onp4KtagDTZcwe0eF/zjaf5/VbIO61PVcsT8tIr7DANQc1j0v3dor6bFypuN7SZsGBdVZhm7/38kMEic3MfG2Ts+4j0H/VFYHL16Wbc+9oZoaIL4BWrE/k0hldSwYcnJpv60sLQ7kYlxUOJBqP93KREeBYvND8a/1XcwkCDMHCpHWHX1wCHx5XPT1DybfdQOkDn5/JAR93802xfSv2Y9QiyuIwCAIF1Z/dliFWKRy/TSmAdwPC1OGRZisvHOkZzRToQcFFeFPChWVorYiBPfC2Pim7u7peRS4r/d7e1OcfMx1wRUA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=e0KHZTXOMscB4JBf0hHdX3NuUEcsX5/13DznSCRMdrM=;
- b=rHAX1ZL62ks6THzOcCHa2KW3dXD2kozM+TGUKDDmsTgLaWMgKL3g9yI/WnkEljw5EjC21H5yyAhExTyKhv1td0BYkK2bVR9AgKauH+7miyvCLkYkxqtZPLECHH8ODdHzyV9KODmn8kl16gvpAsKZ0Kj6pIfOfl4+ZEmmYoktnOMVgw81rEnuHNcvkEym4cTuxn5pTXdECQ9jP1XzXkuZ/OIY4DZYGbTx6617q34/x442efj4WeLUwtpCxi+P48hfTUN5dvpBfce29+TIPJRbOVjSCfmyrdXK0nkHxWLVeRE90cEYsrnAz9KcSIJtIEOMoq62OstV888geWrYSVRsig==
+ bh=FyLvOTjs6AJj8/y+6i/9ICIOxADZ1js71i0dhVhTOX8=;
+ b=aoG8ul0T5kAgnICIbj6hYCrba6RzW7vA1EHDZ4OHs78WlJvQwXnz+CIAJQc3SJ9ozx8BmiZGdjdBnNfhO+skBvU/PF5C/P37mjs0pEHGFS+eP7CJLQakoEuzc1+N2zHJsxr9g+/+0UQyHj3ZylCBZwOd2Vgl5i5yUZv0Ru+FqQRsmLhiZMzHvU4S1Zo2BsjH2vXRtqvIHDzhKEPAidalcX4yVou0dAMEIcIgQF1Mt6XRlRVlDt2NYDvLNh0fWLA1K5al3NX8E8o40NHCkPYEEyLm3QPFrzOF1YCvYBpQvm3f38qk1bJVuYaTHeXN7unT3ZEcXW0kQClAOhLJxZoibQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=siliconsignals.io; dmarc=pass action=none
- header.from=siliconsignals.io; dkim=pass header.d=siliconsignals.io; arc=none
-Received: from PN0P287MB2843.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:204::8)
- by PN2P287MB0906.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:155::10) with
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FyLvOTjs6AJj8/y+6i/9ICIOxADZ1js71i0dhVhTOX8=;
+ b=N7l5NuQvYPmkEXIJTjSADz25OcMAcbfgPRzXMLleLte7Z1bOeaYR+/8akHasmirIlyomgNUWepmqt3LwGaaW9XtloPYbO655Y+C8F5MVdhfE9c0x/Yma6rcmGAZO3urL0F+Rkl7nKk/dF5nQRhzqZThFN0joXJ1hqO2MeJHemJJt9ZaPBvjWw+D2dcAN06POP+hsNOoV1W4zejv+2/NFibIM+yokHAOk+tFuOOBFY3+RFtMQEkjy6nMTCFLSaVU42YYXiZFrZZPYRU9736nPx441JoygEu4CwfB2no7W9r7QYxdl20HM2ERycg9VJVQRDN87Z+tPLlg4Aox8XHsclg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
+ by VI0PR04MB10568.eurprd04.prod.outlook.com (2603:10a6:800:26c::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.24; Sat, 28 Sep
- 2024 06:16:49 +0000
-Received: from PN0P287MB2843.INDP287.PROD.OUTLOOK.COM
- ([fe80::1134:92d7:1f68:2fac]) by PN0P287MB2843.INDP287.PROD.OUTLOOK.COM
- ([fe80::1134:92d7:1f68:2fac%5]) with mapi id 15.20.8005.024; Sat, 28 Sep 2024
- 06:16:49 +0000
-From: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>
-To: Frank Li <Frank.li@nxp.com>
-CC: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"olteanv@gmail.com" <olteanv@gmail.com>, "broonie@kernel.org"
-	<broonie@kernel.org>, Han Xu <han.xu@nxp.com>, Shawn Guo
-	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
-	Haibo Chen <haibo.chen@nxp.com>, Yogesh Gaur <yogeshgaur.83@gmail.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH 3/4] spi: spi-imx: Fix casting warnings
-Thread-Topic: [PATCH 3/4] spi: spi-imx: Fix casting warnings
-Thread-Index: AQHbEOFqOkKSFeOShUeusB18TQXiGbJr2asAgADfT14=
-Date: Sat, 28 Sep 2024 06:16:49 +0000
-Message-ID:
- <PN0P287MB28435966E53B6BA943340A2AFF742@PN0P287MB2843.INDP287.PROD.OUTLOOK.COM>
-References: <20240927132944.19285-1-hardevsinh.palaniya@siliconsignals.io>
- <20240927132944.19285-3-hardevsinh.palaniya@siliconsignals.io>
- <Zvbi7g+xpI8fGth6@lizhi-Precision-Tower-5810>
-In-Reply-To: <Zvbi7g+xpI8fGth6@lizhi-Precision-Tower-5810>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=siliconsignals.io;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PN0P287MB2843:EE_|PN2P287MB0906:EE_
-x-ms-office365-filtering-correlation-id: f540b582-f116-4ec2-7ddf-08dcdf85232c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?4ztV9EtR3uaSCiurQcpmJ8jLt0aO2j24YEPoFNvNeUqHy52ev5mD7r3fPd?=
- =?iso-8859-1?Q?P8dHeiL14LqV5uprsXYPYgyULKyde6yFo9PRa3C/kg1RioaPvVNuyrm3M+?=
- =?iso-8859-1?Q?l/TfR5+W2hCTfVXzCU4zHiyXUtijGlMqW5iACks3cf3YKFfwyqK9vMIYCf?=
- =?iso-8859-1?Q?3is3Kag6xzEYeKR8csapnuHEN2WcI0likDBJ6yx0lKC3so+xZmcQ3LmOGs?=
- =?iso-8859-1?Q?E655V0J+PwqTEO/oTImg47f4xjGtuAgFLvlFVnSRzPJHsVG1aJ6O6/RphA?=
- =?iso-8859-1?Q?JB7HCmo9n1uZA1v3cE6+2LXE0+lrs8Kz9164vBN6GQBRU4PXtC09OPyjNv?=
- =?iso-8859-1?Q?pJxXyUEsvxaaU97kmR2dxLQVeegCQvBlI+9BlFiosIZvWISd0AMndq7RX/?=
- =?iso-8859-1?Q?rHhpOfkI6FfZ8aB4AhtNwnJg7pbTu2abL+JjWTv+lM495iqQMIxA2O+U6G?=
- =?iso-8859-1?Q?Vi98ASA0JMPcLOAmcGZVdkUHNJ9lt2Hf6d9eFihYEVPuqONahsNYZXW/z6?=
- =?iso-8859-1?Q?CaRcYVpz0nRWrjcPKdrdTD8GfyV1c0zr5JR4dPIH8BRRStZOvKrXNG0aL8?=
- =?iso-8859-1?Q?EelTS2oCcJVtcNHV7S0VNrUUYU/AlU5ItISK7M7pgqr2NfBxGXiMZ69IE2?=
- =?iso-8859-1?Q?vLOdmyeWkOHdrBbJ7rmholyhsjhY9fKXhJK4dufix5c5lADgH3nKUPSvGA?=
- =?iso-8859-1?Q?peVm7EwLDlETHc5FAnxCgkZnwVgppSRtl6iQsq30VW5Fo9u2pp9tPQMdVH?=
- =?iso-8859-1?Q?W3BFivfvgTnNcTtQzGWvwbz8mqvt1qDBb7XbYw5wYdR3Jnqt6hCWmerh/d?=
- =?iso-8859-1?Q?mbMq93dLk2h8zw8JvuK9a4m9fX0JQkZ7isxsTir00kPJFfzr1FTrfkk70G?=
- =?iso-8859-1?Q?XVfjm+3sxqAxZzgeqTsZ5rtXEmke6Rwtu8bo5r6qwSbvB6E7cQfnwqwzeN?=
- =?iso-8859-1?Q?E3GyqzD6BlddYAozAQKVxGYyKD59+l19EUHwPYfjXUlpmPgNAQLlMqd6WL?=
- =?iso-8859-1?Q?uBiTJBynJpy+5zZkf0xqklAQAZk9+1RDE1rApYBpc153R+AOgB6O091Jeb?=
- =?iso-8859-1?Q?4tTFE8AvWYAyw4IpVnkcmOQiYLiZGoecyhNSgcGrRrjVkcIXMSlpzZqQwX?=
- =?iso-8859-1?Q?ABku2Vk+yk3zwZGBrG+s+ITfWxyiHkLWUPtwdbl1XlcjAEIrxCnWJOGavj?=
- =?iso-8859-1?Q?YrC8TB13ZCwb28+QY8FmFTVTKamfefX0GgpZ7CFFAkdvPTlEgrWYRhE5nI?=
- =?iso-8859-1?Q?dl9sVITHvD37eTBlafdYQpt0wHBzFynzMvHvLjwKg0kJA5QglqoGlgLQk/?=
- =?iso-8859-1?Q?cmZKtyOu31vxb8eMi7cQizvAZj2m5WPqF7gqtN1TOq8zs5LLJ+g/tMS5SX?=
- =?iso-8859-1?Q?a9N8bef18UucgkRWJTaecG9VV+jZWEdA=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PN0P287MB2843.INDP287.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?DKFPu+oTAV5v/86AnlKxCRbkQzlHUKscTv2cePwEXMqRBPGITzN2PlFelr?=
- =?iso-8859-1?Q?CO9L5aUHWudkJZmFsfkM2RXHfB+8PzEfKV5y4xwEU4gaRuGw+kU/qgJo8T?=
- =?iso-8859-1?Q?n2JY8WBaLGuY5mjZNYg40uVv9YMH+Egd2oSHtm0g0w7NRVZifIvJj1SwzI?=
- =?iso-8859-1?Q?oAeioavQ9wgl7Z/aSTakaz8UzS/bELuPMGDcyT8rA7tAYixx3zOwfDNZCv?=
- =?iso-8859-1?Q?zynRR8euXCqI6fZI9uUMxW7fiPNvlKDyzHFM4np6Eb2WbzJ/2inHB8x6Y3?=
- =?iso-8859-1?Q?9KmeUq13O9t+A4jeQ0pG7C4J/3sFqnQtLZycsU4OHwznADn2N8RGBCYgXw?=
- =?iso-8859-1?Q?kbcFmP52OaV/D640HCkYj+H0vSqeUpWABTgWOdrnjCGWrV3pUgkEhm7o5U?=
- =?iso-8859-1?Q?wBLI9Qi/U69w2q3iaeASJGTUZfeL3xW6A+MxCl86G+fyCIICRa2y6gPGcj?=
- =?iso-8859-1?Q?lDEKMmio1TWQ3aEEjOOM9URkCepj4YMqzsSaqIsBtJPxU6VCxNMxSvQuSO?=
- =?iso-8859-1?Q?7GW0Dj0Q1zQMJ6qjmWHOBtm477XnirV8BhDNOzJLqz+dFLmlPp6oTbLsyp?=
- =?iso-8859-1?Q?K9SS8+OCHF2jS82uxCar631Uywivc+dx+Qv1G0TpOqMq8R8fiJXZkxOJiu?=
- =?iso-8859-1?Q?z+Lu4K5BgG0nFVpp6x0vxRQCI/IfiRwQqBVBoVkRK3Etio0d4JIWisQGhc?=
- =?iso-8859-1?Q?TnDAnvgcO9YwTt+eqd+rSVrZLhp27iyr6hJelX30TrRmBegaKuNsDmzNLC?=
- =?iso-8859-1?Q?RmulxezbTMNHXt7to0d6ko9jmu5E9g3Mzo1Ndging0PohPxT45wLRmjt4c?=
- =?iso-8859-1?Q?aDLiZdAXCYIUZl/PzdZ//gw8sQ4Cr2mQ+297ppmMMHnhxnG+iycFZAB4ZP?=
- =?iso-8859-1?Q?o3jtVVmJt3Oi7tRdnN6Dn9ZnckzNEroNhbdvwUUI2Mw+MezRcbWmm2Hm1X?=
- =?iso-8859-1?Q?Nw3KLWboxo/U6le+S/sdiPuvNhIMhMNzyqzZheF7ZCQmWp6LTN+UVlmvU0?=
- =?iso-8859-1?Q?rBu7xW0NgQDROMSYCC0+7BNuoajTVDOSD3E5VHcXyVGBKiKr8Udbhd3ySL?=
- =?iso-8859-1?Q?3vg0asBOZbTeFCUVkxMROI5ybIbq9Uf1oJa80Wj7Xov4/LpjQCiFrH0+0N?=
- =?iso-8859-1?Q?MAAQLc2mAPkzUfwUGYHIWA7vpOQL2CD2f+2EVU/YtuaIYK0Qifq0OZJHgl?=
- =?iso-8859-1?Q?hfs1kmIOs8NcjFRPGWV8d12MPA9DBxA2XcetXbjkXRJIdLyDgzCvWJttD6?=
- =?iso-8859-1?Q?RFCwmunbvjxSXnsSmToeBqaMPFfVZpp60BzgOfeJPoxOgMfSqec+aeLzbb?=
- =?iso-8859-1?Q?C0xHwXzMLgp/3XeM1hERVQn7D4Pl4Hti5lct9v3Z3N+peiXPewa564wtPD?=
- =?iso-8859-1?Q?X8f+nRbYvVXI+fe3WqG1DBMA4XN3/kTKyOFHaaI8tHsaVvVbcN2skKFtC+?=
- =?iso-8859-1?Q?ROcvdB8K/NUY6f4o1iZZ2hw3//ldi7XEaRQZUjwsMu9g1qwcwFMfgfJS9m?=
- =?iso-8859-1?Q?oD8iOBxUnD2duZ7uZl+x06LxJLZF1gTF89eWruh8zVx0CjbfaE88Q+YaBe?=
- =?iso-8859-1?Q?hWj8Ltu+7hIKddML6F//Cb2dNRQJLO1AAfrOg7AUf5BIg2VelYRjqgMKNV?=
- =?iso-8859-1?Q?yKQgBRX97tZvKiMtj+OGiAdQz/btr3RW0DvlnUuT7fgkO1MjKAwC7PSfCX?=
- =?iso-8859-1?Q?5u9IK8MTJHvCtVRfy3I=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.20; Sat, 28 Sep
+ 2024 06:44:15 +0000
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d]) by DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d%3]) with mapi id 15.20.8005.021; Sat, 28 Sep 2024
+ 06:44:15 +0000
+Date: Sat, 28 Sep 2024 02:43:50 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2 3/3] PCI: imx6: Remove cpu_addr_fixup()
+Message-ID: <Zvelpl76mYccxwFY@lizhi-Precision-Tower-5810>
+References: <20240926-pci_fixup_addr-v2-3-e4524541edf4@nxp.com>
+ <20240927235444.GA98792@bhelgaas>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240927235444.GA98792@bhelgaas>
+X-ClientProxiedBy: SJ0PR13CA0111.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c5::26) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: siliconsignals.io
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|VI0PR04MB10568:EE_
+X-MS-Office365-Filtering-Correlation-Id: 629b2253-cb01-4a5e-6beb-08dcdf88f041
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|1800799024|376014|7416014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?BTD1aJFuLXVz+uTKGcRlQQFpLpDB9F3SDjRDI4dEN644YV5PlS7oeIB5Kmyv?=
+ =?us-ascii?Q?o8YJKAjIv/q3k96tvUc3YXYUEY8V6fYsvytewmxOQfslZGFgHzJLxQTOHSOj?=
+ =?us-ascii?Q?am2AFb7I2dzvr4J8lybyFN0e5AO6afkeirZqXfI60XdmWIHxw2alVb7bSnhO?=
+ =?us-ascii?Q?S78Qeb/pfH7AK11ClI10cyHRIQxslYvfPQ9UnY5WIW5NA6g7ckimKAnJL2J0?=
+ =?us-ascii?Q?9maAcpIW7P0+AR3Wp0EQwuxhcPGh7TwrZTU7ErjhKSJn/GyPgMOtty5NpH9r?=
+ =?us-ascii?Q?1tEUMSUuLqoKbV3VRl7XiKm/8yIulDBXxhZHaou6KkNEwnUejst4hdFLz6S4?=
+ =?us-ascii?Q?DJ9qcU+MAeXPMX6Ys2AFiIaRDW95+F1nwcru6mG2LBuUyZvYAKSxUBjoAlnH?=
+ =?us-ascii?Q?2x3/mGHYZ2fZkd//V3E+BHgWzMYFrRdizwxT2RrVOks+viPCMun4nZvmbEaz?=
+ =?us-ascii?Q?Mg37L1gEaSpe6j76Ge45Rbil0BDpNm3bI9TjRAa0N8H8WCCI7gq6FdBSbLpN?=
+ =?us-ascii?Q?SwOK92P+XPEPVHmiFih+Nb4uo/yL4+8NLWdBvlOO+qmSxOmdf4RYQRgUJk29?=
+ =?us-ascii?Q?LSaIv6ryhEBgsEATEmmx+YC5bOy4ogFF1OxGMenfoZlJFzEA4UrZgcH0JBGZ?=
+ =?us-ascii?Q?v2jP3mNK0bsbrWH5P0n3vNJTvAaoVZUzMormhS1a8W24cx6851rDSWiuaKtd?=
+ =?us-ascii?Q?YPfyL7pRJmk0s7EODt8u3k0CxkH2LCU/+VlQF6ZOqKxVzB+EQBY0H0eSo0vy?=
+ =?us-ascii?Q?m6/BE83CoGeNwUeFdEmrNdKfGgAdflktkF1T5TIM7GBTPASP13o8XcEtWZgG?=
+ =?us-ascii?Q?pbrpSq6M4T6xIkd6dtFiccQk2y2/IRAUXDGOpR2/qES7FPAfJaV/rc/7eUbi?=
+ =?us-ascii?Q?PsWP0Povv4CcmAOiW/4O0Q/I31VagSogc4mnx0EvAE/DJZCef1H5H8IbY75v?=
+ =?us-ascii?Q?Ps+GR0BVYE1o+nRff4goq1LWipuVeIxwJsUblPEyoLBcsmAVEcHNw/cuBslb?=
+ =?us-ascii?Q?rmpFdEzvm8gN0kt08WjRGdT1zub/9cM29Ok3U9qJGCFiWUeQZbGzV6Nng9e6?=
+ =?us-ascii?Q?KXXOBkW0mXxK+7pZClm7hRlKEJGwrQyo3glPe703rNA6bcIadWEwPox8Bq/y?=
+ =?us-ascii?Q?DkGB8twtyF02Jt8DbHPtlrLr4aSL+472JLAvNZ3UqRITtVT7W5WE38+gsYwz?=
+ =?us-ascii?Q?Ui4eiqCTArndFVZU8FdEeeQ2VAE6s9CPAqf+xaSk0W6ghnYIn/M+hIavE8ag?=
+ =?us-ascii?Q?yFzQuaQX/duUk3X0akwPKbKM+EK7ckr12neRScf9Mile7Gk4NUjJLNn44OOb?=
+ =?us-ascii?Q?yNBz2v98Qa89YJchCSokdoP7dVs8J6HArOXvyWa8mhBfgg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(376014)(7416014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?kaxv7EccsRoDPY65ZyEagA+SGErFrTGMhMyJKpqkGVIqujhyT54h6ZXNrWm0?=
+ =?us-ascii?Q?LbcEPmXmZhs78vaO9X0j+IG0S0uEGGcAV/NA+Dsrhi9yiAnV1nZP15xy/BXy?=
+ =?us-ascii?Q?PMDix3QPIVP1wW19dL7MsNcJwGBwUcNAJ/NUqfvTWNM2UkmhD2CBYJodeuYM?=
+ =?us-ascii?Q?cGQ302ZfukaOJDSXcmjxJxSnjxZkHWVzuD72WwCNZfei5MpeCgiclyC04q/6?=
+ =?us-ascii?Q?juJz+M4Dd/iCf5fih2+6kX6L+m0x5YXHkGwT3lUr8ivevO+ZzX3e9xwEttlF?=
+ =?us-ascii?Q?qp9tw8VPXwX3RDgyzvlE4LFj955eBDwc5aCj8LHHCKDUh0R5LvU39DrycI/z?=
+ =?us-ascii?Q?cLW5ZPXv96d0gseCvUvmX++ilSr7M3yu6mPjwAZkrK/Shc9pKNJ0bcWbqnR3?=
+ =?us-ascii?Q?WGQnZiYRbgC1BR0vA2Dt49kSjBGDFlKKJ1CHJdcLwBqhBhSLjfNtDzLbnNv2?=
+ =?us-ascii?Q?DMZH2tY19LEcUdUktb5xs8WvCBEbJHe6Zfvl8lctNeAyfnlbAhz8U2juGejp?=
+ =?us-ascii?Q?rjYxp9NrDbdThaTyyr0OAs4cVaLqRLj6uUTqiW5pblTislR7yGZlpt6OsJN1?=
+ =?us-ascii?Q?4ugymQtZWWe4ZuGCpBT/1tDMEVF4QWNgfhp8+1eHJfqGu1ELyhXUfxM+PZE7?=
+ =?us-ascii?Q?DdPpFYrZ4dAmCCJH6vNEBEPMZWHpk0DX+BsspacO6P1GYFYAEjI1yII8mmfp?=
+ =?us-ascii?Q?ENUIg+EArJ/DSJt/mCBwjNKLHqdCibAnhFYQIEV1zYEaPQmbTfrglbcTkc5u?=
+ =?us-ascii?Q?hypKnyZHOmR8JitTDC3zgIXfcTSWs7yWorg7fMjU6Vrl+ggy6fBJFsI6y/k0?=
+ =?us-ascii?Q?9QSPGJtmjhzPCe3Y3xTOifrAeOUQKjiehAAQF91lbcp4XIqUpUnARDoFofR8?=
+ =?us-ascii?Q?kzf8SgkL43eKaIMi4Rmlkr5V4NpXg9DyAWRpTq8QZMYK8rJtVU/bDrwlWAIX?=
+ =?us-ascii?Q?+StFHU5dU4XW8r6G+9753LjobdBzj5H6xTmxAKCXHCb6BmJrqbztvA8H23uN?=
+ =?us-ascii?Q?mav76SLubQHgy7pjf5HvdOarvK1x7Mdxknt4bVg6Sz4PXVQxJw5Nzmps0I3y?=
+ =?us-ascii?Q?BxQOlc11fls7qczcTK3YelvTEK7Hl23CJJfeyargLXo//RMS3Aa3A7hGn6l8?=
+ =?us-ascii?Q?ESKu2NNAuEIDSgiRTn+4vt9hOnTOQ5yqNN2KGnDh5diCa016N9Sm+BB+8uKg?=
+ =?us-ascii?Q?fBUvbU2FJMfvxsWgAP/KchEcjyVuXMgcxjoLIzcV2Eta9x1f13v923+FVk0r?=
+ =?us-ascii?Q?39dzW7oFFQGdd8YGxkyuVD+oVVl2wJwBqhVyp1yOVQqupFyxN4+SI8XTAtFj?=
+ =?us-ascii?Q?WIoKnwA6ecm9/J0qHgkmgd58vDCqeqdVz/mLaOiy5UOHZEGnwbm73aa6bpYe?=
+ =?us-ascii?Q?jttnYaN92/kXroGqWkT602paH0xq1pOJrfmHHZPYAzPyO762/+qHb0JhzwAR?=
+ =?us-ascii?Q?VA+ztD2WspmowtnNC9nN+/CI/WZT+uAJCEnEtPI8aTk3z8zpcD8CMfUWtLOA?=
+ =?us-ascii?Q?L0BwsVHwEBdl8djfjPAlOfjhmXs4sf6DKDCcc36gnvzjSpgT929PJnk4G7zz?=
+ =?us-ascii?Q?2olG8Ke3LDNneMf+zmM=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 629b2253-cb01-4a5e-6beb-08dcdf88f041
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PN0P287MB2843.INDP287.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: f540b582-f116-4ec2-7ddf-08dcdf85232c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Sep 2024 06:16:49.3276
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2024 06:44:15.1567
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 7ec5089e-a433-4bd1-a638-82ee62e21d37
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: tYijzN7YWy1OYMTh0CHXDAgkf7p4p6XqVdv/bmDN6P6KeV0WNQGV0nWEs0kdrkU/803O0TNovNQqIA6zymjOXiCb/XI/6QKEhB/FJZLCzV8oldPuQXQDbX3BtjUut49A
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN2P287MB0906
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /ZOb6CZ0Iyhaj89ab3MNCVj0L9REUmMJs7XeSOyw6qR4320TffLPEwoJYrcKUBzFdq3m3BH/OPk4l3NebE/oEg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10568
 
-Hi Frank,=0A=
-=0A=
-Thanks for suggestions=0A=
-=0A=
->>=A0 static void mx53_ecspi_rx_target(struct spi_imx_data *spi_imx)=0A=
->>=A0 {=0A=
->> -=A0=A0=A0=A0 u32 val =3D be32_to_cpu(readl(spi_imx->base + MXC_CSPIRXDA=
-TA));=0A=
->> +=A0=A0=A0=A0 u32 val =3D readl(spi_imx->base + MXC_CSPIRXDATA);=0A=
->=0A=
->be32_to_cpu() is necessary in little endian system. You can't simple remov=
-e=0A=
->it. you can use ioread32be=A0here.=0A=
-=0A=
-I agree , i will update with ioread32be=0A=
-=0A=
->>=0A=
->>=A0=A0=A0=A0=A0=A0 if (spi_imx->rx_buf) {=0A=
->>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 int n_bytes =3D spi_imx->targe=
-t_burst % sizeof(val);=0A=
->> @@ -436,7 +436,7 @@ static void mx53_ecspi_tx_target(struct spi_imx_data=
- *spi_imx)=0A=
->>=A0=A0=A0=A0=A0=A0 if (spi_imx->tx_buf) {=0A=
->>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 memcpy(((u8 *)&val) + sizeof(v=
-al) - n_bytes,=0A=
->>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 spi_imx->=
-tx_buf, n_bytes);=0A=
->> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 val =3D cpu_to_be32(val);=0A=
->> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 val =3D (__force u32)cpu_to_be32(v=
-al);=0A=
->>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 spi_imx->tx_buf +=3D n_bytes;=
-=0A=
->>=A0=A0=A0=A0=A0=A0 }=0A=
->=0A=
->Original code logic is strange, you'd better to remove cpu_to_be32 here.=
-=0A=
-=0A=
-I will remove=A0=0A=
-=0A=
->=0A=
->below writel change to iowrite32be().=0A=
-=0A=
-Sure=A0=0A=
-=0A=
->=0A=
->Frank=0A=
-=0A=
-Best Regards,=0A=
-Hardev=0A=
-=0A=
-=0A=
-________________________________________=0A=
-From:=A0Frank Li <Frank.li@nxp.com>=0A=
-Sent:=A0Friday, September 27, 2024 10:23 PM=0A=
-To:=A0Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>=0A=
-Cc:=A0linux-spi@vger.kernel.org <linux-spi@vger.kernel.org>; olteanv@gmail.=
-com <olteanv@gmail.com>; broonie@kernel.org <broonie@kernel.org>; Han Xu <h=
-an.xu@nxp.com>; Shawn Guo <shawnguo@kernel.org>; Sascha Hauer <s.hauer@peng=
-utronix.de>; Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam=
- <festevam@gmail.com>; Haibo Chen <haibo.chen@nxp.com>; Yogesh Gaur <yogesh=
-gaur.83@gmail.com>; imx@lists.linux.dev <imx@lists.linux.dev>; linux-kernel=
-@vger.kernel.org <linux-kernel@vger.kernel.org>; linux-arm-kernel@lists.inf=
-radead.org <linux-arm-kernel@lists.infradead.org>=0A=
-Subject:=A0Re: [PATCH 3/4] spi: spi-imx: Fix casting warnings=0A=
-=A0=0A=
-CAUTION: This email originated from outside the organization. Do not click =
-links or open attachments unless you recognize the sender and know the cont=
-ent is safe.=0A=
-=0A=
-On Fri, Sep 27, 2024 at 06:58:34PM +0530, Hardevsinh Palaniya wrote:=0A=
-> Sparse warnings:=0A=
->=0A=
-> drivers/spi/spi-imx.c:410:19: warning: cast to restricted __be32=0A=
-> drivers/spi/spi-imx.c:410:19: warning: cast to restricted __be32=0A=
-> drivers/spi/spi-imx.c:410:19: warning: cast to restricted __be32=0A=
-> drivers/spi/spi-imx.c:410:19: warning: cast to restricted __be32=0A=
-> drivers/spi/spi-imx.c:410:19: warning: cast to restricted __be32=0A=
-> drivers/spi/spi-imx.c:410:19: warning: cast to restricted __be32=0A=
-> drivers/spi/spi-imx.c:439:21: warning: incorrect type in assignment (diff=
-erent base types)=0A=
-> drivers/spi/spi-imx.c:439:21:=A0=A0=A0 expected unsigned int [addressable=
-] [usertype] val=0A=
-> drivers/spi/spi-imx.c:439:21:=A0=A0=A0 got restricted __be32 [usertype]=
-=0A=
->=0A=
-> Signed-off-by: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io=
->=0A=
-> ---=0A=
->=A0 drivers/spi/spi-imx.c | 4 ++--=0A=
->=A0 1 file changed, 2 insertions(+), 2 deletions(-)=0A=
->=0A=
-> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c=0A=
-> index 85bd1a82a34e..8d09d9c1c556 100644=0A=
-> --- a/drivers/spi/spi-imx.c=0A=
-> +++ b/drivers/spi/spi-imx.c=0A=
-> @@ -407,7 +407,7 @@ static void spi_imx_buf_tx_swap(struct spi_imx_data *=
-spi_imx)=0A=
->=0A=
->=A0 static void mx53_ecspi_rx_target(struct spi_imx_data *spi_imx)=0A=
->=A0 {=0A=
-> -=A0=A0=A0=A0 u32 val =3D be32_to_cpu(readl(spi_imx->base + MXC_CSPIRXDAT=
-A));=0A=
-> +=A0=A0=A0=A0 u32 val =3D readl(spi_imx->base + MXC_CSPIRXDATA);=0A=
-=0A=
-be32_to_cpu() is necessary in little endian system. You can't simple remove=
-=0A=
-it. you can use ioread32be here.=0A=
-=0A=
->=0A=
->=A0=A0=A0=A0=A0=A0 if (spi_imx->rx_buf) {=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 int n_bytes =3D spi_imx->target=
-_burst % sizeof(val);=0A=
-> @@ -436,7 +436,7 @@ static void mx53_ecspi_tx_target(struct spi_imx_data =
-*spi_imx)=0A=
->=A0=A0=A0=A0=A0=A0 if (spi_imx->tx_buf) {=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 memcpy(((u8 *)&val) + sizeof(va=
-l) - n_bytes,=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 spi_imx->t=
-x_buf, n_bytes);=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 val =3D cpu_to_be32(val);=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 val =3D (__force u32)cpu_to_be32(va=
-l);=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 spi_imx->tx_buf +=3D n_bytes;=
-=0A=
->=A0=A0=A0=A0=A0=A0 }=0A=
-=0A=
-Original code logic is strange, you'd better to remove cpu_to_be32 here.=0A=
-=0A=
-below writel change to iowrite32be().=0A=
-=0A=
-Frank=0A=
-=0A=
->=0A=
-> --=0A=
-> 2.43.0=0A=
->=
+On Fri, Sep 27, 2024 at 06:54:44PM -0500, Bjorn Helgaas wrote:
+> On Thu, Sep 26, 2024 at 12:47:15PM -0400, Frank Li wrote:
+> > Remove cpu_addr_fixup() because dwc common driver already handle address
+> > translate.
+> >
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> > Change from v1 to v2
+> > - set using_dtbus_info true
+> > ---
+> >  drivers/pci/controller/dwc/pci-imx6.c | 22 ++--------------------
+> >  1 file changed, 2 insertions(+), 20 deletions(-)
+> >
+> > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> > index 1e58c24137e7f..94f3411352bf0 100644
+> > --- a/drivers/pci/controller/dwc/pci-imx6.c
+> > +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> > @@ -82,7 +82,6 @@ enum imx_pcie_variants {
+> >  #define IMX_PCIE_FLAG_HAS_PHY_RESET		BIT(5)
+> >  #define IMX_PCIE_FLAG_HAS_SERDES		BIT(6)
+> >  #define IMX_PCIE_FLAG_SUPPORT_64BIT		BIT(7)
+> > -#define IMX_PCIE_FLAG_CPU_ADDR_FIXUP		BIT(8)
+> >
+> >  #define imx_check_flag(pci, val)	(pci->drvdata->flags & val)
+> >
+> > @@ -1015,22 +1014,6 @@ static void imx_pcie_host_exit(struct dw_pcie_rp *pp)
+> >  		regulator_disable(imx_pcie->vpcie);
+> >  }
+> >
+> > -static u64 imx_pcie_cpu_addr_fixup(struct dw_pcie *pcie, u64 cpu_addr)
+> > -{
+> > -	struct imx_pcie *imx_pcie = to_imx_pcie(pcie);
+> > -	struct dw_pcie_rp *pp = &pcie->pp;
+> > -	struct resource_entry *entry;
+> > -
+> > -	if (!(imx_pcie->drvdata->flags & IMX_PCIE_FLAG_CPU_ADDR_FIXUP))
+> > -		return cpu_addr;
+> > -
+> > -	entry = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
+> > -	if (!entry)
+> > -		return cpu_addr;
+> > -
+> > -	return cpu_addr - entry->offset;
+> > -}
+> > -
+> >  static const struct dw_pcie_host_ops imx_pcie_host_ops = {
+> >  	.init = imx_pcie_host_init,
+> >  	.deinit = imx_pcie_host_exit,
+> > @@ -1039,7 +1022,6 @@ static const struct dw_pcie_host_ops imx_pcie_host_ops = {
+> >  static const struct dw_pcie_ops dw_pcie_ops = {
+> >  	.start_link = imx_pcie_start_link,
+> >  	.stop_link = imx_pcie_stop_link,
+> > -	.cpu_addr_fixup = imx_pcie_cpu_addr_fixup,
+>
+> This is tremendous, thank you very much for doing this!
+>
+> Have you looked at the other users of .cpu_addr_fixup()?  It looks
+> like cadence, dra7xx, artpec6, intel-gw, and visconti all use it.
+>
+> Do we know whether any of them have to deal with DTs that don't
+> describe the correct translations?  It would be even better if we
+> could fix them all and we didn't need using_dtbus_info.
+
+There are two case,
+
+Case 1: .
+
+bus {
+	pci {
+		ranges = <MEM: C, B, size>;
+	};
+}
+
+Need update to
+
+bus {
+	ranges <A, B, Size>
+	pci {
+		ranges= <MEM, C, A, size>;
+	}
+}
+
+The good thinks this change don't break back compatiblty, need change dts
+first then remove fixed up. but it will be problem if use new kernel with
+old dts.
+
+Case 2: use fake transalation
+
+bus {
+	ranges = <0x8000_0000, 0xa_80000_0000, size>
+	pci {
+		ranges = <MEM, 0x8000_0000, 0x8000_0000, size>;
+	}
+}
+
+This one need fix ranges first, then remove fixed up. The same as case1
+it will be problem if use new kenrel with old dts.
+
+
+Anyways, it's long way to remove all fixes up. I have not these hardware
+to test change.
+
+I feel like use using_dtbus_info first, then remove fixedup one by one.
+after all fixedup removed, we can remove using_dtbus_info.
+
+
+Frank
+
+>
+> >  };
+> >
+> >  static void imx_pcie_ep_init(struct dw_pcie_ep *ep)
+> > @@ -1459,6 +1441,7 @@ static int imx_pcie_probe(struct platform_device *pdev)
+> >  	if (ret)
+> >  		return ret;
+> >
+> > +	pci->using_dtbus_info = true;
+> >  	if (imx_pcie->drvdata->mode == DW_PCIE_EP_TYPE) {
+> >  		ret = imx_add_pcie_ep(imx_pcie, pdev);
+> >  		if (ret < 0)
+> > @@ -1598,8 +1581,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
+> >  	},
+> >  	[IMX8Q] = {
+> >  		.variant = IMX8Q,
+> > -		.flags = IMX_PCIE_FLAG_HAS_PHYDRV |
+> > -			 IMX_PCIE_FLAG_CPU_ADDR_FIXUP,
+> > +		.flags = IMX_PCIE_FLAG_HAS_PHYDRV,
+> >  		.clk_names = imx8q_clks,
+> >  		.clks_cnt = ARRAY_SIZE(imx8q_clks),
+> >  	},
+> >
+> > --
+> > 2.34.1
+> >
