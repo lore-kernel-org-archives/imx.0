@@ -1,290 +1,182 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010008.outbound.protection.outlook.com [52.101.69.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31DD11537D7
-	for <imx@lists.linux.dev>; Sat, 28 Sep 2024 06:49:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727506163; cv=fail; b=qArC2jdavbVIefBiukM+uJtE6eLpL8t3rYT5LHovnPWJQSo5KNGFmTmx9IhyerjTXc1T8Nkty5vyetKZukbrq0weLkjwfrtjKleQsjkHWMYs/VVZ0WApYsUfQ34iVdqUgtDgk94QbNIN5yFVV3T/xoc6KHWYl5LgW5wGx3boE1k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727506163; c=relaxed/simple;
-	bh=WRr+7hASPSP0NnBZndy0dnEIWJ+8Lg60/VzkpYBD3FM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=pMMOWyTnlyVnnoZOw6TidwC6Dk68VQsrlBvc1tVZ+noZnFKTIq8R1AWv37h5THvx4rETI4YvergICw/QmlBD/TKrhy3xq0XfgYksti9V7f9EiOYlC07mvI0gbuegeyqD5ut1uKoxOFI/6Gl2FuH0x64nRW4vabYFJzQhkDvIb1s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=LWKb33OI; arc=fail smtp.client-ip=52.101.69.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F2D19A29A
+	for <imx@lists.linux.dev>; Sat, 28 Sep 2024 07:35:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727508904; cv=none; b=Jsro9AQTSwLhZA5QK9ajZa8Nt8qBiFLViVu5wmfTuY8slfm9DBEzfEXF+zXNrhheXq695u4yw5WJZZHiekC4RAHiDmFFwrgddJyK/9aqr85o6k1CDlx4O2G/PZBK5LPhqLgDORmL4ePtmlZNLTQ3EJ+7QCFjgtrKBv3QfG7E9jA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727508904; c=relaxed/simple;
+	bh=CZ3GJJVCrrzGvR7fAA0nSrjc16wiFeyBC54h9NaWyFQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NLddICI+n2N+1DFGcK3DVvT2JpRrSjDXXG3+JPMTcBj08RFUUSbfW5/IVgkYq3Gc0mYjqxCvo+9J8kBk7IB9stmxHXE1Kz1NebtW4v63d6YL/7dQA2WBwEyh8J/igA0FUtwUIXt592jcocu7JAxz4yP4x5cgHKX1B8MhIcW9ZFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RVdetfDr; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="LWKb33OI"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UsDhMnmt9odnYaz12HfFuN7Wk9WMuGqtLLp/bXsioenn/dUCqe0mbbTTus5evFgRlgAKaom0+Kd1hCfoNxqU74I0BrlftsM2SDGuhP4KsYIKqlbM8ImIKwd+gUR5BMeRNNTlwSPO+BRcOgdxOtOzKPdBZgVWzgLLcStN8UeHgT8j80lv3tqHKyGlckyVhad7MKJbvSVtSvrDnzXz29RTSoA2+y2BDR57yVKKqvvIeWh+ume2it1Wruz59ewPr77PFEHlR0wYNArJ/xhrMwWqH/kUS1lCGevMp/r6/glQsgW2ozt9nIxCbqtNDE5fgRvDqxRdq9MnjmO5x2mx4X4AVQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gimOuSKRxnS6jNgQ8TnsVsaC2tPQRsAueOhMPgSfJ/4=;
- b=cUOGeAUgNckSVj8b939DisgRqp7viC6/N9xvudmUv4VI/LvMMEs97rLTT8w8o01cCxlG0AneNctt0Z4yghgVMnUceXpqqBApYcih8Ifw/fnWD8S4SlldzYikzliOvx5U0CrOvUiCbLaXbfAtj3vbNQKucm8L22Ec8ubBctQUzVWTSsAWfV77PdTj9qqW+OQCMqysosmWx86CtKBu51gwxSTbkn4HU3AujtYzBjxDb9egN9c3ftq7ivZkAWvI+yrZ1XB2TGTJzJHPZegEm+YfGdGep3ROeUGXTX3i+MF1i129Nf136Q0CQWD0TNEqBXWRu+zhiYMt8jm+ysF5Dad+Sw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gimOuSKRxnS6jNgQ8TnsVsaC2tPQRsAueOhMPgSfJ/4=;
- b=LWKb33OIRXPNvJz+O4TyPBfYDrYIi+TyDpdF2ErnFKMFbHxWtRf2evER3ytd/lpIGFDiigYPDQLJdNLHUd7p0PaY6uO82f8pwfdMLll+KYAnFAR8M6+A8NeMlpSglBKd6P+mf7XrdG446XxGvYqdC08Ac/RXYUY0zT0m4IC0+TvU2DFjUjBoH7Bs77vGVoCBAKR4nST/HffEsXsVJC0ldJY3Fc9GBNlrPmB3WBe+nXdMbHlK+kAbwnARi0TcF+Nf8y5Xmf6zPWfP5wL4FX/YbfGukovbO7PUGK3vrTMbq+hPtc2daBECD+QTZHy2H79DtM36ATqL9GNVnyDfBFsGUw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
- by PA1PR04MB11060.eurprd04.prod.outlook.com (2603:10a6:102:491::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.24; Sat, 28 Sep
- 2024 06:49:16 +0000
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::e81:b393:ebc5:bc3d]) by DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::e81:b393:ebc5:bc3d%3]) with mapi id 15.20.8005.021; Sat, 28 Sep 2024
- 06:49:16 +0000
-Date: Sat, 28 Sep 2024 02:49:05 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH v2 1/3] of: address: Add cpu_untranslate_addr to struct
- of_pci_range
-Message-ID: <Zvem4SUAC+FW+WkL@lizhi-Precision-Tower-5810>
-References: <20240926-pci_fixup_addr-v2-1-e4524541edf4@nxp.com>
- <20240927235117.GA98484@bhelgaas>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240927235117.GA98484@bhelgaas>
-X-ClientProxiedBy: SJ0PR03CA0233.namprd03.prod.outlook.com
- (2603:10b6:a03:39f::28) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RVdetfDr"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-7db637d1e4eso2292685a12.2
+        for <imx@lists.linux.dev>; Sat, 28 Sep 2024 00:35:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1727508902; x=1728113702; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=CZ3GJJVCrrzGvR7fAA0nSrjc16wiFeyBC54h9NaWyFQ=;
+        b=RVdetfDrUi/Sjy0e6PoSQm5PUTmxLn4b6wfG63CnTxKD2PZMA45oEUOXP5G5ijjosP
+         hVbltH+yFgd/N4u616/yWUlpf+suXpR9yIee+pDL7WlwyWpfcaDK/IqO6kiOY4m/vDj4
+         vOv0QgT0EV27WAuJ228gGdnkuS80MnxQyPT5VEFejegtgftMcQVK/UFbQdsBob02MZlX
+         d9RXHEwMiSx+Z502mcE/2KnXkYqL47G0ukBnnnh5CZRycdSgSfXkkleEQeHIr8iSLV6g
+         WYkO70PbPdD08ipjG8AXDepGHbAD/sJukCBcnyPnL8IdNgbrZ9TeKA1E0CqmbITNnGK3
+         bhVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727508902; x=1728113702;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CZ3GJJVCrrzGvR7fAA0nSrjc16wiFeyBC54h9NaWyFQ=;
+        b=m2bCd9YgEQK+7isIjsdrlV/FNAnG6dFau3O2acmITaqOBRNalfC6ZxSVYWbDx5INQr
+         ScmlHL/uDC70+jswAHyj6kDvNvXOObwTiIwsbxW+N96/1GkhfV4QmiSqR8E7j9D24v1I
+         VTKS1muDmkyHlhjQG+GArUomdLu7Crj6sWe1/Lk2i15mtGpmtKMaXC7LK0s0Eoysu0WO
+         c596Y0Atsbf+Fj6zh8slg/v69twKyUIg+fXuL2jwVjeZbYb1/k+4iGJPNdU/BWOlLHhJ
+         QcN4l3B1udULv5srJtztQaLlMil5M2sNUiNBVHHkQKHx8WiMUvijgknXHd2ZPgcJvg7c
+         iJMw==
+X-Forwarded-Encrypted: i=1; AJvYcCUqPRdqXKs00uDoD5k+CzP4gzE3Or+ZKCKt6oBgS9x2pruDQzqZEKwbFCexiOOi6beTmYE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxYef3DLlVqhFyTa09XfF32zk7t4690lTf5dPRgrMhtNri9kepo
+	8j6yC61QeOn9CXMippZr6wCA0zEAfLiPdggE7NGmR0T23TQwtR2iG5MKKB5nSJ82PyvEyPmDuRi
+	6Mans4z+uc8NzqGjS2yvMWTK6t/BIgRVnmWM2WQ==
+X-Google-Smtp-Source: AGHT+IE8STUqnUdbp16wn+jWytnLJo7GbATydnL1PXc5q5xA5jCeVCG+33+GkdczeH+HdjoM/t8GaXFW5O+RCkxcmVg=
+X-Received: by 2002:a05:6a00:8c2:b0:714:2482:ab3c with SMTP id
+ d2e1a72fcca58-71b25f40b4cmr9950991b3a.7.1727508902091; Sat, 28 Sep 2024
+ 00:35:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|PA1PR04MB11060:EE_
-X-MS-Office365-Filtering-Correlation-Id: a1aa2353-8e50-43a6-732a-08dcdf89ab2f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|7416014|376014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?T0h6TXgyMmFIRzR2Nkt3VnczUVlWMnpESXovWStmNnU5eElBcVNON2RITHFm?=
- =?utf-8?B?Zm5iM2pIOG50Mzl1SWNoYUxua0h1eFFCTzVVMlBUZGVuVzdlOUhiYVhsY2hB?=
- =?utf-8?B?Y0svT2prL3dLSUI0ckw5VTBwR0Q2TFU4ZkdZUkFCY0VOMzVjVWRWa0NRZWJ2?=
- =?utf-8?B?N1doR3dnU1FnWVNOZ0QvUFRYeUVBMk9FY21QeVNLTk5yNXlVd0h2Q1JHL0gw?=
- =?utf-8?B?Mi9BeFBac3ZIZG5OSE8xZEVYLzNLRDdqTUUvaGhoZjEvTnoxTmZ5K2lWeVRo?=
- =?utf-8?B?elpXZTcrakJ2WFN6ZndkaStrbVN0Y2d1T1EvSzByRXBmdnowaXBpclhaODJr?=
- =?utf-8?B?UERZT2ZwbjV4NmlDR3FzSTJ5cVNRSnRBQWFFV21zc2pBV01BdHFyVFU1Mkxj?=
- =?utf-8?B?a1BLQmsxMkxxNHBxbEVZVXFWVjBRd2ZMZ0VaWWwwYmpybVI1djZOVWplQTl2?=
- =?utf-8?B?ckFwVVJNb1ZFRlZOUkd6Q0JudXNWdFlaN2JNOVo5Z0lVQVNiK091U0c5SG1F?=
- =?utf-8?B?cEtCNG1EMTNKMzFVVXdQZk9FZ0pZcSs1SzBidE0zMVRzRVdWTXFBbHp1SStp?=
- =?utf-8?B?aGZXdFZwTkI0K1BZSjlIQnVSUmlMQUR2dm5QNVFrYlRKQzNYcXl4WUtUeGpE?=
- =?utf-8?B?dDJ2cVYwNWZwK2RLNWZqUjlSdzJKU0xQdm9SUTNuYkVZKzU4WnZGMkhjb3Bj?=
- =?utf-8?B?UG1ZVTRxeUNvcmlsRmNtTnE5V1N0dWU5b2NhZlkxNTdyVjBuY1REMDMrWHph?=
- =?utf-8?B?c01taWhPT1NVdE9VeFM5VTlMeUw4TFBpTnVXdVJOV1o2NExrOU5xOTFvSDN4?=
- =?utf-8?B?YnVvd2F2SkhETEI4QmJlVnRNaEl3TTcxTlVJQ200NjRUMFpaaCt1b0hoYTZy?=
- =?utf-8?B?bzZKNG13NjJFVVljSGFPRXBUM0ZzcmtwZnh2em8rbXhhcVBBUTJ1VTdVbG9R?=
- =?utf-8?B?eUlQOTdZS0pOaHMvZndmZ01uaVphamlFUTQ3a2hMSmdPVUhGaFpBaG9LTXZs?=
- =?utf-8?B?VlRRYjNrUmFjbWhXeStqQkFydzZ3L2hDcFpHdldwakt0SU9Bc00vN0tFRnV0?=
- =?utf-8?B?Q3ZTN1VtdllwNnA0ek5iRVZFeEpaS2kwMG9vRW9xYmRWeGlJYXBaVUNmYXN5?=
- =?utf-8?B?NU5WTTdYRUFzUStRcjlMbHZzN1NKTXJTT1dmbE8zNjJYK2NVMVRHOEFlN1oz?=
- =?utf-8?B?ZHhOYjNYUGV4cFFSVVRtREoyeVhRYlk1NjZ1NVVydUZwVjZON2VlamxRMUVQ?=
- =?utf-8?B?V2NmY3BMSmI0Z0VUNVQ5L1E4THB4eFNaVCs0RHpPZ1ZpM3dINWk1UHQzaHB5?=
- =?utf-8?B?M0dSdXQyWG9XYnU3NjIvbkRmdGl1L3NWVTNJWkw4czkrckx0M2NjenVNN3A1?=
- =?utf-8?B?VlFYZmZZalFXekV4dkhXKzVBRGlyYm42UGl5SEgxN1hUamhIN3dEYUpQUXVa?=
- =?utf-8?B?UGpzNEs5K3BXOVpUK29uSnZ1aHJ3bXdtK3JEdFgvUVRETnFUNy9JVTNkNUZY?=
- =?utf-8?B?dTZTMVp0T1gyS0J0cDc0VFdDZlZ3RzlCVzlxR0VmRXlsdzZPbmd3ZmFsZm15?=
- =?utf-8?B?cEZHSXBDQjRKK0kvTDZzaW5GbCtkQk5lYWpJUEhtNkpIeGRJRnA5TFlocXlw?=
- =?utf-8?B?TVRQTzJpMmFLb2ZRZnBzOExxcnVTSGdkd2crVFRpa1RYMUxoa2hScFZzYXE2?=
- =?utf-8?B?UE1jNXNDVitQZ1lwV25EOFN2R1RNbGIvcVU5dURodjJsUHdsNVBuWWRkZE1u?=
- =?utf-8?B?OFBrUUY1L2pOeUpoUlViaGM3cWgxUmc5MDdGTnBhbWhGNFRJS09jTEhMZDdr?=
- =?utf-8?B?NHVRYVE5eFRDYzZzdU5UZjFDS0V4aTZmUm1EekJZTW1tT2E0cUplYWhiL21G?=
- =?utf-8?B?bFFiWnFXa2xobGRuUzJudUxXektVZ2w0WEh1RnpreDhEcFE9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(7416014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?V1lrRVBnOXBrbHpEU3lSbGRtRkxMd3AvdDgxVEJxUkhzRGltZ2RGNzRYTHdE?=
- =?utf-8?B?dlBJdjlxZko3TmwwbHdqcVpQVERhMVdUZ3VWTUdDTk1Wd280NnA0T21ZSXdl?=
- =?utf-8?B?NTlSMU5pNVNEbUVwcjBpVkhINlpEK1RQVjJUSGRIb2oxR25QcFY5TWliTmwr?=
- =?utf-8?B?L3pMOFBQci9iQmNVR2V3bERJaDZQSXlMbE5RbUxrQmdUakxOOHQ0MEp4YUhT?=
- =?utf-8?B?NEFQMDc3M0Vrb2xUT0UrOVlzSGJZZHZ0c1F2aENOdUt4YzhtSm1LbEtTZlNw?=
- =?utf-8?B?OXI3VHVxQk9oaVdPeFRsRDVzaWQrN3VSQVVmUUdOMmlUc2JjUlZHSUxzd0F6?=
- =?utf-8?B?WU1pRlFLdnNzTUl1MGFnYkJaRVMyaHFPK0g4UTV1bmtVN2pTR0c4THQzODU3?=
- =?utf-8?B?MWZiQ3pJT05oem41alhCZDVHL09BcWRGT2VqSGJJWnh5VEUxbFVnUlYrd1M0?=
- =?utf-8?B?QkZDdHRRR2lJN1lSWlI0YnVucEZtZWNmMWVOYTJHYXR5U2NIWXRmT0s1d3Za?=
- =?utf-8?B?RUxHN3hPbmVQUTJXejRGNlRNOThYRGExbGJGVmFKcXIxbnpzYVBzaytiRjNS?=
- =?utf-8?B?LzFZTFE5R1FjWExUa3UzMExaMmJqSzg4UDBqVUxKMTJSVG0vcEdpRFpXRDAr?=
- =?utf-8?B?YlZ3YU9iZ1RlK25QUG82ZnhvMktwRFZCdVFFeGMxM3JueVEvY0lJMXcyK05M?=
- =?utf-8?B?amNJMnluYWxudmdUbUhYVTdLZStJYWtmUWw0MkE2cW5pelY3SGRIVnNCWWxW?=
- =?utf-8?B?K2o4clgzMUo3YnhrSiswLzRiL3g1YmVGSFg5M0szMVRhbTZCajhqc2VTWXRm?=
- =?utf-8?B?ZExBblUxOXRaMTFML25jKy9EaUZBbDg0WlMxQm9PN2dybXJ0b3BzVGNSMkxl?=
- =?utf-8?B?RUxVbmswTzFsOGdGa2N0VkhuT0FkcHpJalNWSGFPbm5JYStPNkZaZ0ZqSm1l?=
- =?utf-8?B?bUhiOWFwRFQ1QkFFWERIWHk3aTY2d0JaTUpyNnQyUTFQWk5vVGxOVnQ1dGx0?=
- =?utf-8?B?b1RNMjExVnZGQ210bEhKREVobmp4Skt1V1lpcTRCOXRhZzIrVythWlNTem9Y?=
- =?utf-8?B?TUNKU3crMStlOEE0MW05NDdtZmRvNTBpZHRPRVlMLzd1dThUaFZ2U3dHZVF6?=
- =?utf-8?B?dUNieVBhVHJTZWNsYUV3VW05QmIwK2ZRb1krcEtUUWVpVVkvN3dGZ1hxNXBY?=
- =?utf-8?B?dWlLb3ZQeExXcDZnYzFuYWNtZGhFeU5jUXd5YUk4Y3RKc0hobmxrcXlXT2Yz?=
- =?utf-8?B?S052RW0vRGtsMkVqckxjUTF4N1VRSjdaYUNIcU14V1N1TjhpQnZocy80SW80?=
- =?utf-8?B?Q0JJVVphTkpwNXFZV3FHaFhwYkVjd1doQnVmdlhtbGZxRWUrZDZsTU9FdTdZ?=
- =?utf-8?B?OWZLVmI3aWE4cnIySEpOZFN2cFVlRXE5dmZxRFJiWmdRNHBpVzdhcUJtdFht?=
- =?utf-8?B?WkxMc0tNb2ljYXdINm1zNFJqRE5lQTQ0dHBzcmkyRnh5TWhUeFRKelhJVzA3?=
- =?utf-8?B?TGRyQjNhYWJRR3prQ1h0dnhoQ3paeDViMG9sL3pCY05sU2RFNTVUdlIveWRa?=
- =?utf-8?B?RmFyTEhhdWRKVWpMeWplMTB1NUJxOUdNV1pRTTQzM001QzIyMys0eWZpMmFo?=
- =?utf-8?B?bTUvMVVPbmVZYUV0OFNvc0xValJwVWFlSTJxRW1JSHRScUhOU0RFcFJjaGJs?=
- =?utf-8?B?ZFpCQVVHRHBYVWUxd0FEbGtHQVIwRlEwVHdDTCtKSENHY0N0YlBnL0JqaEg0?=
- =?utf-8?B?eVNIdGZ6b1dacHN4M2tqTml2OERKTEE2L3cwR0hQU1J4MEtuRFVuNmM0bmJH?=
- =?utf-8?B?ZDVPQU9ROW9NaDErcVZ4U0gwd2hhN1phUEttUFMzMCtVTDU0Y0s2MDhXRnBv?=
- =?utf-8?B?bEFRcEp0a3NKRkloVTFyUVVTRWRDYjRQdFVNZ085cFJSMHdBOGRJNzNzdFZ6?=
- =?utf-8?B?Wm5iRU5UbEdrQnUrVm4xbDFYMHE4T251WTkwdDQrZ3A0ditULzBjT2FiNDJJ?=
- =?utf-8?B?NVIyM3crbERTUGhMQVJaR0lNVzlQNFVzbjdYcXMrMUI2L3J0dGV2NFRzNFJy?=
- =?utf-8?B?TEc0TWtKUG5sY284TmJpZzRwN0JRRHRkOVNoeHFxekhNVElNZ1gyOWhsSGc4?=
- =?utf-8?Q?Zhgd3LwEPv5R5lZ59yzp3tjIy?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a1aa2353-8e50-43a6-732a-08dcdf89ab2f
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2024 06:49:16.3430
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bi3yddKalbmbR6f3QxM6AyYm8rl03thxbxojpqgP8Oo8mFRN4xLeXzogaBIqDzlnHHfSjW1QSxrRXGbBm8FO8Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB11060
+References: <20240925075707.3970187-1-linyunsheng@huawei.com>
+ <20240925075707.3970187-3-linyunsheng@huawei.com> <CAHS8izOxugzWJDTc-4CWqaKABTj=J4OHs=Lcb=SE9r8gX0J+yg@mail.gmail.com>
+ <842c8cc6-f716-437a-bc98-70bc26d6fd38@huawei.com> <CAC_iWjLgNOtsbhqrhvvEz2C3S668qB8KatL_W+tPHMSkDrNS=w@mail.gmail.com>
+ <0ef315df-e8e9-41e8-9ba8-dcb69492c616@huawei.com> <CAC_iWjKeajwn3otjdEekE6VDLHGEvqmnQRwpN5R3yHj8UpEiDw@mail.gmail.com>
+ <934d601f-be43-4e04-b126-dc86890a4bfa@huawei.com>
+In-Reply-To: <934d601f-be43-4e04-b126-dc86890a4bfa@huawei.com>
+From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Date: Sat, 28 Sep 2024 10:34:25 +0300
+Message-ID: <CAC_iWjL7m4ZL2W2OZM5F22dLvZhxU6fyCXV_xjyGf+W7UP43EQ@mail.gmail.com>
+Subject: Re: [PATCH net v2 2/2] page_pool: fix IOMMU crash when driver has
+ already unbound
+To: Yunsheng Lin <linyunsheng@huawei.com>
+Cc: Mina Almasry <almasrymina@google.com>, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, liuyonglong@huawei.com, fanghaiqing@huawei.com, 
+	zhangkun09@huawei.com, Robin Murphy <robin.murphy@arm.com>, 
+	Alexander Duyck <alexander.duyck@gmail.com>, IOMMU <iommu@lists.linux.dev>, 
+	Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
+	Clark Wang <xiaoning.wang@nxp.com>, Eric Dumazet <edumazet@google.com>, 
+	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed <saeedm@nvidia.com>, 
+	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
+	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+	Kalle Valo <kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, imx@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, intel-wired-lan@lists.osuosl.org, 
+	bpf@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Sep 27, 2024 at 06:51:17PM -0500, Bjorn Helgaas wrote:
-> On Thu, Sep 26, 2024 at 12:47:13PM -0400, Frank Li wrote:
-> > Introduce field 'cpu_untranslate_addr' in of_pci_range to retrieve
-> > untranslated CPU address information. This is required for hardware like
-> > i.MX8QXP to configure the PCIe controller ATU and eliminate the need for
-> > workaround address fixups in drivers. Currently, many drivers use
-> > hardcoded CPU addresses for fixups, but this information is already
-> > described in the Device Tree. With correct hardware descriptions, such
-> > fixups can be removed.
->
-> Instead of saying "required for hardware like i.MX8QXP", can we say
-> something specific about what this kind of hardware *does* that
-> requires this?
->
-> I *think* the point is that there's some address translation being
-> done between the primary and secondary sides of some bridge.
->
-> I think "many drivers use hardcoded CPU addresses for fixups"
-> basically means the .cpu_addr_fixup() callback hardcodes that
-> translation in the code, e.g., "cpu_addr & CDNS_PLAT_CPU_TO_BUS_ADDR",
-> "cpu_addr + BUS_IATU_OFFSET", etc, even though those translations
-> *should* be described via DT.
->
-> >             ┌─────────┐                    ┌────────────┐
-> >  ┌─────┐    │         │ IA: 0x8ff0_0000    │            │
-> >  │ CPU ├───►│ BUS     ├─────────────────┐  │ PCI        │
-> >  └─────┘    │         │ IA: 0x8ff8_0000 │  │            │
-> >   CPU Addr  │ Fabric  ├─────────────┐   │  │ Controller │
-> > 0x7000_0000 │         │             │   │  │            │
-> >             │         │             │   │  │            │   PCI Addr
-> >             │         │             │   └──► CfgSpace  ─┼────────────►
-> >             │         ├─────────┐   │      │            │    0
-> >             │         │         │   │      │            │
-> >             └─────────┘         │   └──────► IOSpace   ─┼────────────►
-> >                                 │          │            │    0
-> >                                 │          │            │
-> >                                 └──────────► MemSpace  ─┼────────────►
-> >                         IA: 0x8000_0000    │            │  0x8000_0000
-> >                                            └────────────┘
->
-> What does "IA" stand for?
+Hi Yunsheng,
 
-internal address
+Overall this is a patch in the right direction. I want to get feedback
+from others since Jakub and Jesper seemed to prefer the stalling idea.
+
+On Fri, 27 Sept 2024 at 14:29, Yunsheng Lin <linyunsheng@huawei.com> wrote:
+>
+> On 2024/9/27 17:58, Ilias Apalodimas wrote:
+>
+> ...
+>
+> >>
+> >>> importantly, though, why does struct page need to know about this?
+> >>> Can't we have the same information in page pool?
+> >>> When the driver allocates pages it does via page_pool_dev_alloc_XXXXX
+> >>> or something similar. Cant we do what you suggest here ? IOW when we
+> >>> allocate a page we put it in a list, and when that page returns to
+> >>> page_pool (and it's mapped) we remove it.
+> >>
+> >> Yes, that is the basic idea, but the important part is how to do that
+> >> with less performance impact.
+> >
+> > Yes, but do you think that keeping that list of allocated pages in
+> > struct page_pool will end up being more costly somehow compared to
+> > struct page?
+>
+> I am not sure if I understand your above question here.
+> I am supposing the question is about what's the cost between using
+> single/doubly linked list for the inflight pages or using a array
+> for the inflight pages like this patch does using pool->items?
+
+Yes, that wasn't very clear indeed, apologies for any confusion. I was
+trying to ask on a linked list that only lives in struct page_pool.
+But I now realize this was a bad idea since the lookup would be way
+slower.
+
+> If I understand question correctly, the single/doubly linked list
+> is more costly than array as the page_pool case as my understanding.
+>
+> For single linked list, it doesn't allow deleting a specific entry but
+> only support deleting the first entry and all the entries. It does support
+> lockless operation using llist, but have limitation as below:
+> https://elixir.bootlin.com/linux/v6.7-rc8/source/include/linux/llist.h#L13
+>
+> For doubly linked list, it needs two pointer to support deleting a specific
+> entry and it does not support lockless operation.
+
+I didn't look at the patch too carefully at first. Looking a bit
+closer now, the array is indeed better, since the lookup is faster.
+You just need the stored index in struct page to find the page we need
+to unmap. Do you remember if we can reduce the atomic pp_ref_count to
+32bits? If so we can reuse that space for the index. Looking at it
+requires a bit more work in netmem, but that's mostly swapping all the
+atomic64 calls to atomic ones.
 
 >
-> I don't quite understand the mapping done by the "BUS Fabric" block.
-> It looks like you're saying the CPU Addr 0x7000_0000 is translated to
-> all three of IA 0x8ff0_0000, IA 0x8ff8_0000, and IA 0x8000_0000, but
-> that doesn't seem right.
-
-0x7000_0000 --> 0x8000_0000
-0x7ff0_0000 --> 0x8ff0_0000
-0x7ff8_0000 --> 0x8ff8_0000
-
-
-I can update diagram at next version
-
+> For pool->items, as the alloc side is protected by NAPI context, and the
+> free side use item->pp_idx to ensure there is only one producer for each
+> item, which means for each item in pool->items, there is only one consumer
+> and one producer, which seems much like the case when the page is not
+> recyclable in __page_pool_put_page, we don't need a lock protection when
+> calling page_pool_return_page(), the 'struct page' is also one consumer
+> and one producer as the pool->items[item->pp_idx] does:
+> https://elixir.bootlin.com/linux/v6.7-rc8/source/net/core/page_pool.c#L645
 >
-> > bus@5f000000 {
-> >         compatible = "simple-bus";
-> >         #address-cells = <1>;
-> >         #size-cells = <1>;
-> >         ranges = <0x5f000000 0x0 0x5f000000 0x21000000>,
-> >                  <0x80000000 0x0 0x70000000 0x10000000>;
+> We only need a lock protection when page_pool_destroy() is called to
+> check if there is inflight page to be unmapped as a consumer, and the
+> __page_pool_put_page() may also called to unmapped the inflight page as
+> another consumer,
+
+Thanks for the explanation. On the locking side, page_pool_destroy is
+called once from the driver and then it's either the workqueue for
+inflight packets or an SKB that got freed and tried to recycle right?
+But do we still need to do all the unmapping etc from the delayed
+work? Since the new function will unmap all packets in
+page_pool_destroy, we can just skip unmapping when the delayed work
+runs
+
+Thanks
+/Ilias
+
+
+
+
+
+> there is why the 'destroy_lock' is added for protection
+> when pool->destroy_cnt > 0.
+>
 > >
-> >         pcieb: pcie@5f010000 {
-> >                 compatible = "fsl,imx8q-pcie";
-> >                 reg = <0x5f010000 0x10000>, <0x8ff00000 0x80000>;
-> >                 reg-names = "dbi", "config";
-> >                 #address-cells = <3>;
-> >                 #size-cells = <2>;
-> >                 device_type = "pci";
-> >                 bus-range = <0x00 0xff>;
-> >                 ranges = <0x81000000 0 0x00000000 0x8ff80000 0 0x00010000>,
-> >                          <0x82000000 0 0x80000000 0x80000000 0 0x0ff00000>;
-> > 	...
-> > 	};
-> > };
-> >
-> > 'cpu_untranslate_addr' in of_pci_range can indicate above diagram IA
-> > address information.
-> >
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> > Change from v1 to v2
-> > - add cpu_untranslate_addr in of_pci_range, instead adding new API.
-> > ---
-> >  drivers/of/address.c       | 2 ++
-> >  include/linux/of_address.h | 1 +
-> >  2 files changed, 3 insertions(+)
-> >
-> > diff --git a/drivers/of/address.c b/drivers/of/address.c
-> > index 286f0c161e332..f4cb82f5313cf 100644
-> > --- a/drivers/of/address.c
-> > +++ b/drivers/of/address.c
-> > @@ -811,6 +811,8 @@ struct of_pci_range *of_pci_range_parser_one(struct of_pci_range_parser *parser,
-> >  	else
-> >  		range->cpu_addr = of_translate_address(parser->node,
-> >  				parser->range + na);
-> > +
-> > +	range->cpu_untranslate_addr = of_read_number(parser->range + na, parser->pna);
-> >  	range->size = of_read_number(parser->range + parser->pna + na, ns);
-> >
-> >  	parser->range += np;
-> > diff --git a/include/linux/of_address.h b/include/linux/of_address.h
-> > index 26a19daf0d092..0683ce0c07f68 100644
-> > --- a/include/linux/of_address.h
-> > +++ b/include/linux/of_address.h
-> > @@ -26,6 +26,7 @@ struct of_pci_range {
-> >  		u64 bus_addr;
-> >  	};
-> >  	u64 cpu_addr;
-> > +	u64 cpu_untranslate_addr;
-> >  	u64 size;
-> >  	u32 flags;
-> >  };
-> >
-> > --
-> > 2.34.1
-> >
+> > Thanks
+> > /Ilias
