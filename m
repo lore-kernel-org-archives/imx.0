@@ -1,142 +1,113 @@
-Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634C114D2B1
-	for <imx@lists.linux.dev>; Sat, 28 Sep 2024 14:09:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614A814387B
+	for <imx@lists.linux.dev>; Sat, 28 Sep 2024 23:50:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727532572; cv=none; b=OJL+8fncMLJjnt4ojoAJWEMfK3Z2aK82+VpEW0Qd+OwKVRwssEh2bf/Vt0sgfnzO1fv3+gw6OY3tBCTAyllwBb4h5La8SFDZlen9raEZ3m0JxpzkDYxTUlUTd4crX4kBHp/kNv9N3I+zp2bHWKabh/nbTwJHUcvyLqDEOwjipnc=
+	t=1727567422; cv=none; b=QTlYL9WFvf+J100ui3cwN3Ky9gUthYd22MT6dze24tLLzZh90Eh3RWcF2fy8Twhq+Q3ah2BKut12fRNcCbx1y8n/ZeBCVPQ6AO5aaDf5jK/c8AzhGbkxtT8fqnTSKMlM4IMbiEdw16M9/nBQ6T9Yt4ByxdBRr9y7mGUprXKK/z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727532572; c=relaxed/simple;
-	bh=KecOuKoLewITTSrqbiR1Y/I9RReXT860zcx8WJ9weHM=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=Nyz74kmILhWxlxOp3MC0K4Ap5EOmaM9pokMtOZowOh2sOCvetItttNt+NRQWLhb3y5dEpgHiws1tUcvVRF+n/dZCLjk1YCWjEKGWwKKyQel2TEnuNxi2VjSuQCl63Ot70je5MWPIJKW4N9tQYTq6+nzKdAbVFHePK920JgTdias=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=IdV53BGA; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=eF6YXgo9; arc=none smtp.client-ip=103.168.172.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1727567422; c=relaxed/simple;
+	bh=MAXLRiW5fvxR3Tcyvd8+iENJysL/5MXZd91EbCDONxQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=btiAOLasFy0jeMIRIsyUFXvJqYYbrWOB30tDs0JAvGnE/JYiMvLGlDZdoe7iw/jyJ2y+cKGt1BEuq/D6xZ6jT3NhHASiT/z4QkBB13kkKyYJ7b3FiFXemP1n9wljG4noVcmxesoR/fMo1nJFsAzHQFkewdu6X2wecYTF8lZYJ70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=GlEgHzwi; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="IdV53BGA";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="eF6YXgo9"
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfout.phl.internal (Postfix) with ESMTP id 8D9F21380151;
-	Sat, 28 Sep 2024 10:09:29 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Sat, 28 Sep 2024 10:09:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1727532569;
-	 x=1727618969; bh=jJtTej3N29UQuA0Eq4igiZrn07B+NAdGgZDiqNs8oc4=; b=
-	IdV53BGAw/UsaGOCm64Fdi4+5Qd7lqVPO2QgBLmvUOPWLbB9ZD3AuvAFqzDabUfw
-	eTMZLsIU5kHPnTkADgZbkJzSMamLfsqK1AUpvTLLiNZRsQ7I1fx4TnfooCugA0Xw
-	D556xgXOonkPXbD5+fFlrEC/i/rz684C/Wr5ymQI/lgZf9CsmWuRfCjACNnfTwNi
-	auVxuExS/gt7hVTzduNuYZJr8l91ZqA/HIaXECKV0kWacEVP1+n3PXPNBfFJsdFW
-	pbYmbFDSGY9eRDRYdFpYJaBHuH+w24zB0iGDQBmAv3Od5omktjEhGR7/3GqSpfh0
-	I+oJ/r3MwOlqoi+xqMzxAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1727532569; x=
-	1727618969; bh=jJtTej3N29UQuA0Eq4igiZrn07B+NAdGgZDiqNs8oc4=; b=e
-	F6YXgo9SIgn8X8W6iLEzMu8wLIo3tHXUCOgo7fCsVoFeJb0JW9hCYD5aK4BiFxxr
-	gLH3uaPEUfoGDnuKXgDAHJj2nSewsp2ATQiviuHq099hnkyAmLBFbOGv5u8zGali
-	rvENMUEtKmKjKmJXpU8zWjuMVO9AJ39PLdVfMZqwVJw6klHxvONi6icrMFRrdB/Q
-	gmUNF1xsfIlQRyQ88V/tQpeaVzYsLd77Z68GsBIe5W76V0Nc4HVlBFLvE63XZtmH
-	csBgcIufSss8Tebfs+OEOD2usyBqlUxU+8fFH/55gWAUa7wC/wqZF62ihX7DGrop
-	5fxhZ4jkcIHKeF0CjuDYQ==
-X-ME-Sender: <xms:GA74ZjN4oj0zmgf5KboYeH4oKt1XwmHzk43bfZE1dbcnMO7y_N7pKQ>
-    <xme:GA74Zt8bJYcQo5v-kJecnQAWsnK2xLdeGu6b8DgjvEwOSWqfA5Ssiv-X_off_gKLI
-    xb_Si_tpwgHjp44Xkg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdduuddggeekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdej
-    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
-    guvgeqnecuggftrfgrthhtvghrnhepvdfhvdekueduveffffetgfdvveefvdelhedvvdeg
-    jedvfeehtdeggeevheefleejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudef
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrnhhgvghlohhgihhorggttghhih
-    hnohdruggvlhhrvghgnhhosegtohhllhgrsghorhgrrdgtohhmpdhrtghpthhtohepmhgr
-    rhgvgiesuggvnhigrdguvgdprhgtphhtthhopehkvghrnhgvlhesughhqdgvlhgvtghtrh
-    honhhitghsrdgtohhmpdhrtghpthhtohepfhgvshhtvghvrghmsehgmhgrihhlrdgtohhm
-    pdhrtghpthhtohepshgrrhgrvhgrnhgrkhesghhoohhglhgvrdgtohhmpdhrtghpthhtoh
-    epshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehnvghilhdrrghr
-    mhhsthhrohhngheslhhinhgrrhhordhorhhgpdhrtghpthhtoheplhhinhhugidqrghrmh
-    dqkhgvrhhnvghlsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohep
-    ihhmgieslhhishhtshdrlhhinhhugidruggvvh
-X-ME-Proxy: <xmx:GA74ZiSQy-xx6yCXB9YRCxk_GDYjvYEKApBb-YJhWFIYZkTv7tXQkg>
-    <xmx:GA74ZnsjQBQlpqGsseAhleAV8p7sHYIYreDR4wSRn5TN6wEqpudGxw>
-    <xmx:GA74Zrdh19ofhEMdAUwaddvU4IUf_bl5tkIKtCpK3Il3XHMF2APhfg>
-    <xmx:GA74Zj2hGffJJp88HgvbnSimvxY5G3kHIWLM5Hhy6N3Q8s0YK_xgHA>
-    <xmx:GQ74Zp2k5hmr_yLdEfMWoCgaG2UjaJDsqKdUXh8ZsoGagH9JV9i26yM4>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 3507E2220071; Sat, 28 Sep 2024 10:09:28 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="GlEgHzwi"
+Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 34C3488972;
+	Sun, 29 Sep 2024 01:50:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1727567413;
+	bh=mvVcwj4kP03YMZk4e1ujC0JF26SHAyC8zjA22Sj6ab4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=GlEgHzwiiufaqOGH2HuAgEUlWw2SH0NExOrwrR+ZsFLWcEhdi3sN+UFdSXqdIAawJ
+	 U1sPI1lET1ApHya9oXtrjTK96CkDT575cInNCCQ49vSUMVTnFav/LlAxQ+s6qy+ZoD
+	 J0XlKtjB++TaD3ZF0WzjKx4hH3z42zlv561lF6dlxKHRXCszKZd6xDVUUCGwExhmYh
+	 ydoJgPEoIld5qM3nUyfIZCkaAUhCW46BtoXoq46T6iEmrUtTwjUBXW/nlOExu4oeIN
+	 zAJ9wxk21hPuLZ9g5FBHhxLjZU9HjfPYWGq44rUGd5GbMSiBoK+pXQ54kyqBGjMwef
+	 6f+P2GnaoFj/Q==
+From: Marek Vasut <marex@denx.de>
+To: linux-arm-kernel@lists.infradead.org
+Cc: kernel@dh-electronics.com,
+	Marek Vasut <marex@denx.de>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
+	Hiago De Franco <hiago.franco@toradex.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Mathieu Othacehe <m.othacehe@gmail.com>,
+	Max Merchel <Max.Merchel@ew.tq-group.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH 1/2] dt-bindings: arm: fsl: Document DH electronics i.MX8M Plus DHCOM PicoITX
+Date: Sun, 29 Sep 2024 01:48:08 +0200
+Message-ID: <20240928234949.357893-1-marex@denx.de>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Sat, 28 Sep 2024 14:09:06 +0000
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Saravana Kannan" <saravanak@google.com>, "Marek Vasut" <marex@denx.de>
-Cc: linux-arm-kernel@lists.infradead.org, kernel@dh-electronics.com,
- "AngeloGioacchino Del Regno" <angelogioacchino.delregno@collabora.com>,
- "Fabio Estevam" <festevam@gmail.com>,
- "Jeff Johnson" <quic_jjohnson@quicinc.com>,
- "Neil Armstrong" <neil.armstrong@linaro.org>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>,
- "Sascha Hauer" <s.hauer@pengutronix.de>, "Shawn Guo" <shawnguo@kernel.org>,
- imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Message-Id: <cf49f401-725d-4460-8c04-5acd993333f3@app.fastmail.com>
-In-Reply-To: 
- <CAGETcx95ZMBJR0F-3Cr8++1_MwiMCPHiwfdx7m5q0XDAiGG75A@mail.gmail.com>
-References: <20240926213729.2882045-1-marex@denx.de>
- <CAGETcx-q7+DGhPYd3QrsPh7O_0HU7T=NhaJYp0Fu7YW2zwbo7Q@mail.gmail.com>
- <e32ed329-b012-44f2-854b-80a8b0efc4e6@denx.de>
- <CAGETcx95ZMBJR0F-3Cr8++1_MwiMCPHiwfdx7m5q0XDAiGG75A@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] soc: imx8m: Probe the SoC driver as platform driver
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On Fri, Sep 27, 2024, at 22:27, Saravana Kannan wrote:
-> On Fri, Sep 27, 2024 at 2:55=E2=80=AFPM Marek Vasut <marex@denx.de> wr=
-ote:
->> >
->> > I'm glad it's working for you, but I think there might still be a r=
-ace
->> > that you are just lucky enough to not hit. I think you still need to
->> > fix up drivers/base/soc.c to return -EPROBE_DEFER when
->> > soc_device_match() is called but soc_bus_type has no devices
->> > registered. That way any drivers that try to use that API will defer
->> > probe until this device gets to probe.
->>
->> soc_device_match() returns a pointer to soc_device_attribute or NULL,=
- do
->> you have some other function in mind ?
->
-> No, I'm talking about the same function. I'm asking to change it to
-> return ERR_PTR(-EPROBE_DEFER) instead
-> of NULL if no soc device has been registered yet.
->
-> And you'll also go change all the drivers that use that API and are on
-> the IMX boards supported by this soc driver, to handle the
-> -EPROBE_DEFER correctly.
->
-> And this error will only get returned for boards that do async probing
-> and using a platform device to register the soc device. So it's
-> not going to break everyone if you do this change.
+Document support for DH electronics i.MX8M Plus DHCOM SoM on PicoITX carrier
+board. This system is populated with serial console, EQoS ethernet, eMMC, SD,
+SPI NOR, LEDs and USB 3.0 host used in USB 2.0 mode on PicoITX.
 
-I don't like it when an interface can return both NULL an
-ERR_PTR(), that just makes it too easy to be used incorrectly.
+Signed-off-by: Marek Vasut <marex@denx.de>
+---
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Gregor Herburger <gregor.herburger@ew.tq-group.com>
+Cc: Hiago De Franco <hiago.franco@toradex.com>
+Cc: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Cc: Joao Paulo Goncalves <joao.goncalves@toradex.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Mathieu Othacehe <m.othacehe@gmail.com>
+Cc: Max Merchel <Max.Merchel@ew.tq-group.com>
+Cc: Michael Walle <mwalle@kernel.org>
+Cc: Peng Fan <peng.fan@nxp.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: devicetree@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+---
+ Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-Changing it to always return ERR_PTR() on an error is still
-risky, e.g. when a new driver gets merged that did get the
-same treewide API change, so if we do that, this should
-probably also change either the function name or the prototype.
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 09027a4ef515c..319dc8f0f5a63 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1103,6 +1103,7 @@ properties:
+               - dh,imx8mp-dhcom-drc02        # i.MX8MP DHCOM SoM on DRC02 board
+               - dh,imx8mp-dhcom-pdk2         # i.MX8MP DHCOM SoM on PDK2 board
+               - dh,imx8mp-dhcom-pdk3         # i.MX8MP DHCOM SoM on PDK3 board
++              - dh,imx8mp-dhcom-picoitx      # i.MX8MP DHCOM SoM on PicoITX board
+           - const: dh,imx8mp-dhcom-som       # i.MX8MP DHCOM SoM
+           - const: fsl,imx8mp
+ 
+-- 
+2.45.2
 
-    Arnd
