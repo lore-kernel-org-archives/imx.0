@@ -1,182 +1,164 @@
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F2D19A29A
-	for <imx@lists.linux.dev>; Sat, 28 Sep 2024 07:35:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520BF19E80A;
+	Sat, 28 Sep 2024 08:25:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727508904; cv=none; b=Jsro9AQTSwLhZA5QK9ajZa8Nt8qBiFLViVu5wmfTuY8slfm9DBEzfEXF+zXNrhheXq695u4yw5WJZZHiekC4RAHiDmFFwrgddJyK/9aqr85o6k1CDlx4O2G/PZBK5LPhqLgDORmL4ePtmlZNLTQ3EJ+7QCFjgtrKBv3QfG7E9jA=
+	t=1727511910; cv=none; b=SgC/yibMAX08e1U1DLs6oaJyKgkVc6knUcoymaqx7oTn7Jyjn9BoaIINulcJemFOi3DOMkb3IdmzNyflku5JcX8iZdi/Il8oJ8syUsdu5ujQk/ns9XM+cOCLXZj/Z3FKVqgs5SVjzeeXkhL9pG6VuRcWoitBgTO+Ok6Myn0uUoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727508904; c=relaxed/simple;
-	bh=CZ3GJJVCrrzGvR7fAA0nSrjc16wiFeyBC54h9NaWyFQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NLddICI+n2N+1DFGcK3DVvT2JpRrSjDXXG3+JPMTcBj08RFUUSbfW5/IVgkYq3Gc0mYjqxCvo+9J8kBk7IB9stmxHXE1Kz1NebtW4v63d6YL/7dQA2WBwEyh8J/igA0FUtwUIXt592jcocu7JAxz4yP4x5cgHKX1B8MhIcW9ZFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RVdetfDr; arc=none smtp.client-ip=209.85.215.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1727511910; c=relaxed/simple;
+	bh=a2LTP0OHS7OT8GJo0mZyCUBskWKgcMbMCiEWDlm4VVU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Uj439nDNuiHXDLEUCpP7ifi7eYHH4RkiX+S7DEVJ/zpt84yOwo2/tZcCSSvYJpMCE8FhTyJi+OODuGwfSm+IvBrNL5L2GD6Lch9r8PitLfIPveu8C4qv4MsGgfre5nqIqXuTI9K7dBBPZ2+iWAK6mlAHvG8PDNBNmiYe0UgKsFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mL2jg2jy; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RVdetfDr"
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-7db637d1e4eso2292685a12.2
-        for <imx@lists.linux.dev>; Sat, 28 Sep 2024 00:35:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1727508902; x=1728113702; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=CZ3GJJVCrrzGvR7fAA0nSrjc16wiFeyBC54h9NaWyFQ=;
-        b=RVdetfDrUi/Sjy0e6PoSQm5PUTmxLn4b6wfG63CnTxKD2PZMA45oEUOXP5G5ijjosP
-         hVbltH+yFgd/N4u616/yWUlpf+suXpR9yIee+pDL7WlwyWpfcaDK/IqO6kiOY4m/vDj4
-         vOv0QgT0EV27WAuJ228gGdnkuS80MnxQyPT5VEFejegtgftMcQVK/UFbQdsBob02MZlX
-         d9RXHEwMiSx+Z502mcE/2KnXkYqL47G0ukBnnnh5CZRycdSgSfXkkleEQeHIr8iSLV6g
-         WYkO70PbPdD08ipjG8AXDepGHbAD/sJukCBcnyPnL8IdNgbrZ9TeKA1E0CqmbITNnGK3
-         bhVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727508902; x=1728113702;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CZ3GJJVCrrzGvR7fAA0nSrjc16wiFeyBC54h9NaWyFQ=;
-        b=m2bCd9YgEQK+7isIjsdrlV/FNAnG6dFau3O2acmITaqOBRNalfC6ZxSVYWbDx5INQr
-         ScmlHL/uDC70+jswAHyj6kDvNvXOObwTiIwsbxW+N96/1GkhfV4QmiSqR8E7j9D24v1I
-         VTKS1muDmkyHlhjQG+GArUomdLu7Crj6sWe1/Lk2i15mtGpmtKMaXC7LK0s0Eoysu0WO
-         c596Y0Atsbf+Fj6zh8slg/v69twKyUIg+fXuL2jwVjeZbYb1/k+4iGJPNdU/BWOlLHhJ
-         QcN4l3B1udULv5srJtztQaLlMil5M2sNUiNBVHHkQKHx8WiMUvijgknXHd2ZPgcJvg7c
-         iJMw==
-X-Forwarded-Encrypted: i=1; AJvYcCUqPRdqXKs00uDoD5k+CzP4gzE3Or+ZKCKt6oBgS9x2pruDQzqZEKwbFCexiOOi6beTmYE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxYef3DLlVqhFyTa09XfF32zk7t4690lTf5dPRgrMhtNri9kepo
-	8j6yC61QeOn9CXMippZr6wCA0zEAfLiPdggE7NGmR0T23TQwtR2iG5MKKB5nSJ82PyvEyPmDuRi
-	6Mans4z+uc8NzqGjS2yvMWTK6t/BIgRVnmWM2WQ==
-X-Google-Smtp-Source: AGHT+IE8STUqnUdbp16wn+jWytnLJo7GbATydnL1PXc5q5xA5jCeVCG+33+GkdczeH+HdjoM/t8GaXFW5O+RCkxcmVg=
-X-Received: by 2002:a05:6a00:8c2:b0:714:2482:ab3c with SMTP id
- d2e1a72fcca58-71b25f40b4cmr9950991b3a.7.1727508902091; Sat, 28 Sep 2024
- 00:35:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mL2jg2jy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727511908; x=1759047908;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=a2LTP0OHS7OT8GJo0mZyCUBskWKgcMbMCiEWDlm4VVU=;
+  b=mL2jg2jyELw6JcMjL8LqMGk/5cyIc44BjRSFTa6g7cwiW4SKFhWzmC/N
+   r8ApoyCBSrXSRKsTaef/av4CRx69YufDn4pbNJ5MxdMHiFynxyWP3Bc8D
+   vBQVODGIKY/nwObx6cQ/okigxpR//HVKRhPEcgORoVbQh9qno9w4RJI4i
+   A50x0cmvsXIL+FrmqaQpqZSnSHGdkyDcFt6Mbh+2WDZdlXKrx1TRNRelp
+   HRrQcGZxsGAun8pysc8c36gUhMe6ESLVicezEE1p2VtR/tZC5E61QywPo
+   qnS+C6yUkbQk4bFoSg+3dKchvaSEutGaQypHHsW//pdV9jnshBIQCayc1
+   w==;
+X-CSE-ConnectionGUID: 3R0YPGMsR8qIryttPJrNQA==
+X-CSE-MsgGUID: AWm1qZTAS2OG1qsT0ttb9Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11208"; a="49180607"
+X-IronPort-AV: E=Sophos;i="6.11,160,1725346800"; 
+   d="scan'208";a="49180607"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2024 01:25:07 -0700
+X-CSE-ConnectionGUID: RWduUtRiQpSK3JsTflVZ7Q==
+X-CSE-MsgGUID: cLQuFNE9RyGahMC47D/2Uw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,160,1725346800"; 
+   d="scan'208";a="77152201"
+Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 28 Sep 2024 01:25:04 -0700
+Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1suSlC-000N1z-04;
+	Sat, 28 Sep 2024 08:25:02 +0000
+Date: Sat, 28 Sep 2024 16:24:46 +0800
+From: kernel test robot <lkp@intel.com>
+To: Marek Vasut <marex@denx.de>, linux-arm-kernel@lists.infradead.org
+Cc: oe-kbuild-all@lists.linux.dev, kernel@dh-electronics.com,
+	Marek Vasut <marex@denx.de>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Arnd Bergmann <arnd@arndb.de>, Fabio Estevam <festevam@gmail.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Saravana Kannan <saravanak@google.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] soc: imx8m: Probe the SoC driver as platform driver
+Message-ID: <202409281619.4SHXVZe7-lkp@intel.com>
+References: <20240925220552.149551-1-marex@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240925075707.3970187-1-linyunsheng@huawei.com>
- <20240925075707.3970187-3-linyunsheng@huawei.com> <CAHS8izOxugzWJDTc-4CWqaKABTj=J4OHs=Lcb=SE9r8gX0J+yg@mail.gmail.com>
- <842c8cc6-f716-437a-bc98-70bc26d6fd38@huawei.com> <CAC_iWjLgNOtsbhqrhvvEz2C3S668qB8KatL_W+tPHMSkDrNS=w@mail.gmail.com>
- <0ef315df-e8e9-41e8-9ba8-dcb69492c616@huawei.com> <CAC_iWjKeajwn3otjdEekE6VDLHGEvqmnQRwpN5R3yHj8UpEiDw@mail.gmail.com>
- <934d601f-be43-4e04-b126-dc86890a4bfa@huawei.com>
-In-Reply-To: <934d601f-be43-4e04-b126-dc86890a4bfa@huawei.com>
-From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date: Sat, 28 Sep 2024 10:34:25 +0300
-Message-ID: <CAC_iWjL7m4ZL2W2OZM5F22dLvZhxU6fyCXV_xjyGf+W7UP43EQ@mail.gmail.com>
-Subject: Re: [PATCH net v2 2/2] page_pool: fix IOMMU crash when driver has
- already unbound
-To: Yunsheng Lin <linyunsheng@huawei.com>
-Cc: Mina Almasry <almasrymina@google.com>, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com, liuyonglong@huawei.com, fanghaiqing@huawei.com, 
-	zhangkun09@huawei.com, Robin Murphy <robin.murphy@arm.com>, 
-	Alexander Duyck <alexander.duyck@gmail.com>, IOMMU <iommu@lists.linux.dev>, 
-	Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
-	Clark Wang <xiaoning.wang@nxp.com>, Eric Dumazet <edumazet@google.com>, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
-	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
-	Kalle Valo <kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, imx@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, intel-wired-lan@lists.osuosl.org, 
-	bpf@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240925220552.149551-1-marex@denx.de>
 
-Hi Yunsheng,
+Hi Marek,
 
-Overall this is a patch in the right direction. I want to get feedback
-from others since Jakub and Jesper seemed to prefer the stalling idea.
+kernel test robot noticed the following build errors:
 
-On Fri, 27 Sept 2024 at 14:29, Yunsheng Lin <linyunsheng@huawei.com> wrote:
->
-> On 2024/9/27 17:58, Ilias Apalodimas wrote:
->
-> ...
->
-> >>
-> >>> importantly, though, why does struct page need to know about this?
-> >>> Can't we have the same information in page pool?
-> >>> When the driver allocates pages it does via page_pool_dev_alloc_XXXXX
-> >>> or something similar. Cant we do what you suggest here ? IOW when we
-> >>> allocate a page we put it in a list, and when that page returns to
-> >>> page_pool (and it's mapped) we remove it.
-> >>
-> >> Yes, that is the basic idea, but the important part is how to do that
-> >> with less performance impact.
-> >
-> > Yes, but do you think that keeping that list of allocated pages in
-> > struct page_pool will end up being more costly somehow compared to
-> > struct page?
->
-> I am not sure if I understand your above question here.
-> I am supposing the question is about what's the cost between using
-> single/doubly linked list for the inflight pages or using a array
-> for the inflight pages like this patch does using pool->items?
+[auto build test ERROR on shawnguo/for-next]
+[also build test ERROR on soc/for-next linus/master v6.11 next-20240927]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Yes, that wasn't very clear indeed, apologies for any confusion. I was
-trying to ask on a linked list that only lives in struct page_pool.
-But I now realize this was a bad idea since the lookup would be way
-slower.
+url:    https://github.com/intel-lab-lkp/linux/commits/Marek-Vasut/soc-imx8m-Probe-the-SoC-driver-as-platform-driver/20240926-060831
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git for-next
+patch link:    https://lore.kernel.org/r/20240925220552.149551-1-marex%40denx.de
+patch subject: [PATCH v2] soc: imx8m: Probe the SoC driver as platform driver
+config: x86_64-allmodconfig (https://download.01.org/0day-ci/archive/20240928/202409281619.4SHXVZe7-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240928/202409281619.4SHXVZe7-lkp@intel.com/reproduce)
 
-> If I understand question correctly, the single/doubly linked list
-> is more costly than array as the page_pool case as my understanding.
->
-> For single linked list, it doesn't allow deleting a specific entry but
-> only support deleting the first entry and all the entries. It does support
-> lockless operation using llist, but have limitation as below:
-> https://elixir.bootlin.com/linux/v6.7-rc8/source/include/linux/llist.h#L13
->
-> For doubly linked list, it needs two pointer to support deleting a specific
-> entry and it does not support lockless operation.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202409281619.4SHXVZe7-lkp@intel.com/
 
-I didn't look at the patch too carefully at first. Looking a bit
-closer now, the array is indeed better, since the lookup is faster.
-You just need the stored index in struct page to find the page we need
-to unmap. Do you remember if we can reduce the atomic pp_ref_count to
-32bits? If so we can reuse that space for the index. Looking at it
-requires a bit more work in netmem, but that's mostly swapping all the
-atomic64 calls to atomic ones.
+All errors (new ones prefixed by >>):
 
->
-> For pool->items, as the alloc side is protected by NAPI context, and the
-> free side use item->pp_idx to ensure there is only one producer for each
-> item, which means for each item in pool->items, there is only one consumer
-> and one producer, which seems much like the case when the page is not
-> recyclable in __page_pool_put_page, we don't need a lock protection when
-> calling page_pool_return_page(), the 'struct page' is also one consumer
-> and one producer as the pool->items[item->pp_idx] does:
-> https://elixir.bootlin.com/linux/v6.7-rc8/source/net/core/page_pool.c#L645
->
-> We only need a lock protection when page_pool_destroy() is called to
-> check if there is inflight page to be unmapped as a consumer, and the
-> __page_pool_put_page() may also called to unmapped the inflight page as
-> another consumer,
-
-Thanks for the explanation. On the locking side, page_pool_destroy is
-called once from the driver and then it's either the workqueue for
-inflight packets or an SKB that got freed and tried to recycle right?
-But do we still need to do all the unmapping etc from the delayed
-work? Since the new function will unmap all packets in
-page_pool_destroy, we can just skip unmapping when the delayed work
-runs
-
-Thanks
-/Ilias
+>> drivers/soc/imx/soc-imx8m.c:302:1: error: redefinition of '__inittest'
+     302 | device_initcall(imx8_soc_init);
+         | ^
+   include/linux/module.h:122:30: note: expanded from macro 'device_initcall'
+     122 | #define device_initcall(fn)             module_init(fn)
+         |                                         ^
+   include/linux/module.h:131:42: note: expanded from macro 'module_init'
+     131 |         static inline initcall_t __maybe_unused __inittest(void)                \
+         |                                                 ^
+   drivers/soc/imx/soc-imx8m.c:292:1: note: previous definition is here
+     292 | module_platform_driver(imx8m_soc_driver);
+         | ^
+   include/linux/platform_device.h:302:2: note: expanded from macro 'module_platform_driver'
+     302 |         module_driver(__platform_driver, platform_driver_register, \
+         |         ^
+   include/linux/device/driver.h:261:3: note: expanded from macro 'module_driver'
+     261 | } \
+         |   ^
+   include/linux/module.h:131:42: note: expanded from macro '\
+   module_init'
+     131 |         static inline initcall_t __maybe_unused __inittest(void)                \
+         |                                                 ^
+>> drivers/soc/imx/soc-imx8m.c:302:1: error: redefinition of 'init_module'
+     302 | device_initcall(imx8_soc_init);
+         | ^
+   include/linux/module.h:122:30: note: expanded from macro 'device_initcall'
+     122 | #define device_initcall(fn)             module_init(fn)
+         |                                         ^
+   include/linux/module.h:133:6: note: expanded from macro 'module_init'
+     133 |         int init_module(void) __copy(initfn)                    \
+         |             ^
+   drivers/soc/imx/soc-imx8m.c:292:1: note: previous definition is here
+     292 | module_platform_driver(imx8m_soc_driver);
+         | ^
+   include/linux/platform_device.h:302:2: note: expanded from macro 'module_platform_driver'
+     302 |         module_driver(__platform_driver, platform_driver_register, \
+         |         ^
+   include/linux/device/driver.h:261:3: note: expanded from macro 'module_driver'
+     261 | } \
+         |   ^
+   include/linux/module.h:133:6: note: expanded from macro '\
+   module_init'
+     133 |         int init_module(void) __copy(initfn)                    \
+         |             ^
+   2 errors generated.
 
 
+vim +/__inittest +302 drivers/soc/imx/soc-imx8m.c
 
+d817f7a9bde892 drivers/soc/imx/soc-imx8m.c Marek Vasut 2024-09-26  293  
+d817f7a9bde892 drivers/soc/imx/soc-imx8m.c Marek Vasut 2024-09-26  294  static int __init imx8_soc_init(void)
+d817f7a9bde892 drivers/soc/imx/soc-imx8m.c Marek Vasut 2024-09-26  295  {
+d817f7a9bde892 drivers/soc/imx/soc-imx8m.c Marek Vasut 2024-09-26  296  	struct platform_device *pdev;
+d817f7a9bde892 drivers/soc/imx/soc-imx8m.c Marek Vasut 2024-09-26  297  
+d817f7a9bde892 drivers/soc/imx/soc-imx8m.c Marek Vasut 2024-09-26  298  	pdev = platform_device_register_simple("imx8m-soc", -1, NULL, 0);
+d817f7a9bde892 drivers/soc/imx/soc-imx8m.c Marek Vasut 2024-09-26  299  
+d817f7a9bde892 drivers/soc/imx/soc-imx8m.c Marek Vasut 2024-09-26  300  	return IS_ERR(pdev) ? PTR_ERR(pdev) : 0;
+d817f7a9bde892 drivers/soc/imx/soc-imx8m.c Marek Vasut 2024-09-26  301  }
+a7e26f356ca129 drivers/soc/imx/soc-imx8.c  Abel Vesa   2019-03-22 @302  device_initcall(imx8_soc_init);
 
-
-> there is why the 'destroy_lock' is added for protection
-> when pool->destroy_cnt > 0.
->
-> >
-> > Thanks
-> > /Ilias
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
