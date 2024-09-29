@@ -1,300 +1,267 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011032.outbound.protection.outlook.com [52.101.65.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21B4187FE7
-	for <imx@lists.linux.dev>; Sat, 28 Sep 2024 23:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727567423; cv=none; b=JebNV/+25GeSOHaD2FPMG3uPoDX0m7QQKJ0FBT3EUMfp9ERQw8rxC1stU3RGHTCtSjBxVrD8m5aou97XSYNqvVNlrUHfgRPnPgePOCdhoGzA4DoVcfyVtwctiw4ARaWT5JvcE6GgxYoiqctt9DcHaFUX39ETQvPZMG34XUp3P4U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727567423; c=relaxed/simple;
-	bh=3kpaIbPw0iqYFC9tE2R7JRVqs/j+sOtF38jHtaDs+xA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oCajPMN9bwFZXrtNs1LFntepe4N4wHitEbPkzm0Zy5V5E32UK8tjgBri6Kkr0ghmBYq+OxETR30aqsjtVA9nm7NGPiqWOpQuvaQFrE69ByfotWIR2f7gMinBvjA74Wr4+ZznFLJMctLRkYlHVKZtUlqUBO83rICC8pHE4MYINx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=bhJOXp4w; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F1AAD51
+	for <imx@lists.linux.dev>; Sun, 29 Sep 2024 01:31:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727573512; cv=fail; b=rAjJWjsB9uBTDqeMQB2k5vNOHsxlvoB/hxl66t5WMdL0nlbgk3TsBMWD9AXzvz5+OD6WkZbPLYyoW6pKA3P1ls61vMzupml99gl1d2ftNNzyPufcYsaFgn32VJW3ugwFvB99pFj0vCi5MFL97e9pkY0acEF8ZECZvzvfgpojuBQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727573512; c=relaxed/simple;
+	bh=AnNOw3I8Ia+hFtvVQR+/0GEcROEws2GQhlJNKClbgqE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=HZgrkH7x259/h2OKPpy06OBeD5stWg2Uu1SMegEFrPzLsA3JcePa3najSKnC3mD+MAYCFw9EazzDLF5hTCAZsV8dluFkPVeJljjytKDmjm4KCpbmjTEMUgJ8biFGbbBZJbCjqXRn4t+wY48+BBM3T6Q9kXIj4fK9rfAwhuXI6WM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=T1b0009k; arc=fail smtp.client-ip=52.101.65.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="bhJOXp4w"
-Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 280DC8897C;
-	Sun, 29 Sep 2024 01:50:13 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1727567413;
-	bh=iDWMIbxq79xeR7CgPXMuwRUwG+Gp8qp+4O94CVtnqGQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bhJOXp4weQ9q4yS4q0981ZGJOQ77ktD9OgarkX973Dowk9Xe1lO3ZmzPepNepgWN1
-	 cK4KNTDQFmNUMFXcwfwrKFoV9q7NtY5OoH4cPZArFKMlQ/XG/EEVXdy6u2TumFOgO9
-	 vYZjledv8AFdxUbl5DMTkFqhk6T1hVxHuvf4b/Rbiu4quJQU+U40tgQvpHv6G9UHHh
-	 zKgSNfjPdnSe6fN+4M3Tp7bHGqwVRBOYsmoqHBVmVvVME+v5UJEmKjWEwprsP+94nt
-	 Q3360AGRVU1+u3TKHNkpm4HDegWJhB2SBCA9tkhZxe6P/s4tEPppTDrcl7ek2J5eUM
-	 exAYmm5oOU1AA==
-From: Marek Vasut <marex@denx.de>
-To: linux-arm-kernel@lists.infradead.org
-Cc: kernel@dh-electronics.com,
-	Marek Vasut <marex@denx.de>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
-	Hiago De Franco <hiago.franco@toradex.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Mathieu Othacehe <m.othacehe@gmail.com>,
-	Max Merchel <Max.Merchel@ew.tq-group.com>,
-	Michael Walle <mwalle@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH 2/2] arm64: dts: imx8mp: Add support for DH electronics i.MX8M Plus DHCOM PicoITX
-Date: Sun, 29 Sep 2024 01:48:09 +0200
-Message-ID: <20240928234949.357893-2-marex@denx.de>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240928234949.357893-1-marex@denx.de>
-References: <20240928234949.357893-1-marex@denx.de>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="T1b0009k"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NcjDYslTXJSmGZtYhBimNlxJTTRIMvBqJ4i1hQSSM5s0F2cxXz58M5YDbZv8P8KSVH9d3fxxc2GMVVpr2Lw3okriPHCD3oflBczgZ/N5lQ9L0M9Q2H2PTmfHHnp7TizUKvw7vMv+h0qJ2LAzKqZq5pnpjCPzwQi6culg3XUUXtASgHtjLIgu/BF79pTKEgcUm8Nd3YoODaZYtxH1GNa57lO1PVUNbd5rxqZoju2/kjpLD4WAVKBOnVQc5ZSpr9S0n1gMYPJh728VPaV+YSgLScViOiv+/VJF1FfuWglkxhj/iH9hHunx85Ln6lQplmasD5J4Jgk2HnEMA7u5v79Zfg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=F6ahNzUi1HOxyrY/Fa9agt+3YeeoNBsM3it6HdYgctc=;
+ b=yQe6NOIzbEGMnXAhgSS1Wd5eJFQB1mup+DizI9QQcm4OSpyS3IUQYs6up3jDwl9vtPyHgWRxxjCXZKuP3zr8QOY+sJ8qLMNgemuT4/PiMQgTpeaSEnhhL3lc31dXjn4C8yVQ2YGfkETsmU7O3hRTVANq6qwSh7zpvuwZmiXL/C3aUf0skWuW7s2qzZBL7vmZSjnjoe7+SJOONjh6Do6U5DRACVVxmYIHmxUA2gKnTsA707cP4UkOYnuK8hNxjb9U8IqCFyHqO1zqvQmfAYo+gvUo0PokiMpkpnwFhN3NJ8FPtp6a7c7LuYlB57RAMIA4KkkjdPBENu9DZhZUzm2CXg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=F6ahNzUi1HOxyrY/Fa9agt+3YeeoNBsM3it6HdYgctc=;
+ b=T1b0009kBBNzbUNfJb4wGtQDj7Y005/S75jqoqayb3Y/zCXt8ymqG5k5Hqd0rcIvki1YOPlooYlKNqkEoYRF21R2TvCLs+KFHcp6CyuB4DuWAJw9ccyTsdC+i7dXG3lkvEl/A/vgNKA9HvJwX0zA7CtL58zIS4eqreEKGt6nUZluH62UdyJFlwm6EyMZ0ttsNyKM6FWwq8JMx7OqIpADxJhQ116Ol3rbp7uiABCjjWJWypnSM3YKB4LmMzNFm9Jt3cgJyHvZ/gy7t1p01sG86ojzazSGvu1dDmWAxJf0P5leVY7/7929Z/483E0CFt77Vv0VzRB1Kmlv+WzJ3/nF7g==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by DB8PR04MB6777.eurprd04.prod.outlook.com (2603:10a6:10:11f::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.24; Sun, 29 Sep
+ 2024 01:31:46 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%6]) with mapi id 15.20.7918.024; Sun, 29 Sep 2024
+ 01:31:46 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+CC: Maciej Fijalkowski <maciej.fijalkowski@intel.com>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>, "ast@kernel.org" <ast@kernel.org>,
+	"daniel@iogearbox.net" <daniel@iogearbox.net>, "hawk@kernel.org"
+	<hawk@kernel.org>, "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "bpf@vger.kernel.org"
+	<bpf@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: RE: [PATCH net 3/3] net: enetc: reset xdp_tx_in_flight when updating
+ bpf program
+Thread-Topic: [PATCH net 3/3] net: enetc: reset xdp_tx_in_flight when updating
+ bpf program
+Thread-Index:
+ AQHbCnHT295KDDvRD0aXaVmRMCCprrJgpnMAgAANdRCAAAkBgIAD4MDAgAchygCAAknPMA==
+Date: Sun, 29 Sep 2024 01:31:46 +0000
+Message-ID:
+ <PAXPR04MB8510D6740CA5B37622A7298E88752@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20240919084104.661180-1-wei.fang@nxp.com>
+ <20240919084104.661180-4-wei.fang@nxp.com> <Zu1y8DNQWdYI38VA@boxer>
+ <PAXPR04MB85101DE84124D424264BB4FD886C2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20240920142511.aph5wpmiczcsxfgr@skbuf>
+ <PAXPR04MB85105CC61372D1F2FC48C89A886F2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20240927143308.emkgu7x5ybjnqaty@skbuf>
+In-Reply-To: <20240927143308.emkgu7x5ybjnqaty@skbuf>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|DB8PR04MB6777:EE_
+x-ms-office365-filtering-correlation-id: b67ab49c-140c-4b91-2fea-08dce0267b6e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|1800799024|376014|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?Zgu087IqRKDiH6u6C2C2Cvwjhstqv9Mx8/QjXsYD3e03Zix4v3aCJCKO4p4B?=
+ =?us-ascii?Q?IkVXxAImOTzvAE5/i4lCn4VMk/E5hCTQmIOioTaXcT1BfVygY5vrxfy20zv5?=
+ =?us-ascii?Q?JxZdP4RBTppTNQS1PQ0DBjijDEddMdbvgklPTzjeArJqnGGRtdKWr42HrVVd?=
+ =?us-ascii?Q?YebWGOyB0ki6VcoQBnob67UEKFBjtZN4rMXgzRFPbDtMbDy2wGKQ8wk19D6X?=
+ =?us-ascii?Q?bAUbECe/Cy6g/Vd213zbo78R4PXKhoRY+T/smisdbqr2bTDMLNp8baJO9J2x?=
+ =?us-ascii?Q?wX9IEfYwj6zTk3nkt+NJ92ey8im1AWlcxJjoWBudzAB18FEg5kS3oiQ4z/5a?=
+ =?us-ascii?Q?g7WavGkWXZG877XFO54MAjEi4vBHaOucWTtyA6Upr0Im3ugpu45oqMbygYsy?=
+ =?us-ascii?Q?2OaLB+sSpef0VNND9i22iK4bcMQtlgmh6iJlMx9KJgBJqWaSQyKry5FWKeoE?=
+ =?us-ascii?Q?uHe1pdMRhM0+BgCXky3QFgCh5tltqFlnKGgnRZAF1JKVWTz2TRDhmg3nnVgV?=
+ =?us-ascii?Q?9bUJ+wWEsKGE/WjdihT58ReXZZVRG9Y2ekmj6PNR0uI7qnJ0m2nDBfE2ACdA?=
+ =?us-ascii?Q?06cP7+Lb1kIptrlIyf8KGC9Gmt/G0/wqS66r5TpDSye2h7S/CR4ZzzOjrAsQ?=
+ =?us-ascii?Q?u/iqv8yvonXhvnT1orCfwPZ6G+h4L5nni7paDLl61o1E8GpwmNaIrDzDfnKA?=
+ =?us-ascii?Q?p7PhfBNA45s249DvaqPZUyAmRb6fo2cKQjdZ5BBGo1ZsH2URosrk8nEFyJxp?=
+ =?us-ascii?Q?oq2rCQJAhmcYKvGIutvxzLbzpKD9vF2O0+BcR6H/XsTduLvCIPXf530SZGJ8?=
+ =?us-ascii?Q?P0TItbuN7ga21HlomcYM5erE1RFpgqpfermtAE7aZTZl2sq0Muf3iINGHpN1?=
+ =?us-ascii?Q?9JpYw0zl+tkDGIMiZakrwmFzk8aQHfwrVhd05mEMco/7zARJoyjHdSWDfK9K?=
+ =?us-ascii?Q?R1qwyMnJyKHUVLHVKq5EU8RzQEMIAnPGcwweZtSwgHLNgE7vktIJTX57KTH6?=
+ =?us-ascii?Q?qr6dyVsBZduLt0n6wA41lH5dNyAHAbPO1yW/TASlEH2IMgQU58kKeUHaNOnO?=
+ =?us-ascii?Q?ROCKDnfojCzXlrl4nQ1fLv3DWkyVyTIf/AUkffuE3zx/PXobG60msYrqrL9i?=
+ =?us-ascii?Q?1aiplEbU7Forjwuyq/eZ5ZWaibqs8yifROEzHMw1SYSupk9dkxZXuaU54r+t?=
+ =?us-ascii?Q?11KYpc12NQjU3HTAVKT+nXrJaV/9lIMZ9DMVDOjM/QPdMOinkswmNNQDbtKo?=
+ =?us-ascii?Q?+C6NkH0yQwlrn7nlhxvJgUzl0Zv+KZYoBGbFhAs3AdiTshi76hy0ysd0F+Mi?=
+ =?us-ascii?Q?rnIAkTRmyaCydfdQyUedHh/R47HBaIaqINVDCM3T+9Wf8Q3VosxcihG9Uyuh?=
+ =?us-ascii?Q?j3KKqUZMkk6w9RKWhCD9XNOoLm8YStILDMiFS8K9p6Zj+Lgn4g=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?vx3iB4KoieKegIszgayqSqXmEiFLqq/Pa9CwigA8wg/amUT9zf6bA9R9DAPZ?=
+ =?us-ascii?Q?VuM9DWFzIrVpZRycYxr2DkbRSZpzLDG6jLMtUMVK2kJnKsSrVhtoik3INH5T?=
+ =?us-ascii?Q?WeXifqqQs2tLFGI38l40uiM+bdEk0+RWIAAGvfbqe1MfFJBB9elWEMHReXn2?=
+ =?us-ascii?Q?cI3FbLAyaqm62xq/a+ktLDWnvXQLmhjItltc9l67fEB6FiExtB7qpd3cCGlc?=
+ =?us-ascii?Q?Vmj3fHaA4tE3px2Riod/WHsd0NFnR7164hPG7nNifsULj9DyVqyCFQ+dpRF7?=
+ =?us-ascii?Q?FakFOzX3ADbRKBRYuNDmA5aCZ5PxUHe2v/463Pbv+DcltzLMXtOrSLhflOBY?=
+ =?us-ascii?Q?KQiOqCRXlQIff4v43gsFyWC6GNGhRzEZM+6ie7U1rDVOCTYg6XU2+TKcCzCR?=
+ =?us-ascii?Q?lEQ8CI5g46X42qrZsSjVGP3+UeKEDZXpNV6b5rVcT4y9t42Kk02VeuIBDl1X?=
+ =?us-ascii?Q?TbgeHHr0HK7Mlk8iKBDnKNtAKUarEQUb1iIdMLsZfA6I3VJNJiDc5ko912RX?=
+ =?us-ascii?Q?9Pf80sYi2tweBaCzkBs2L6ODkKCi4kfQLxbQM+vA0miC1o/4TMCNgG9t7wSc?=
+ =?us-ascii?Q?v8pRhoRfFGonpcwp8Onh8KIPHcSg0ZYGHVxDJ+JJoTlb38gkhaTYnwuF9xfj?=
+ =?us-ascii?Q?8yGQSPG+kreFbqc3YiJ1K6NvSRzj7c/OCRfh8t/Bdh8SLEyU0JvA7GJCJNhZ?=
+ =?us-ascii?Q?qCncGtdQO43wKtFizcVXF6MxWt88flOSKDny7juGCvdz6lY7alC4FmsR9MH+?=
+ =?us-ascii?Q?SSzkmie9+xebI+aI7YXaIrc1dbEj2i1Zg1ynf9LlSnCmhTigOhEl3s+oCNVu?=
+ =?us-ascii?Q?+cs2UbZSKkiJ0UZAgqm3jx4KoPLUXK1HFfUV9EYPXNT5KjX3gSlIy7ketVnB?=
+ =?us-ascii?Q?OvUygPIDZVFFavG1emcxqLhv4aS2PQO7J4a2BU+jw1/9Xjfj2w51wJXEFeGt?=
+ =?us-ascii?Q?S0UrpuZs1A4oW3NTe7ucXQuaZMX8fph5RQpKW05WllYXVoUFHqyKSGncL/yR?=
+ =?us-ascii?Q?IRmjnL/R+ejBux3XnoOUWWnJTJDdM2MkRIY4e7kHyMR+lSOLy3meOZtjQBdp?=
+ =?us-ascii?Q?tas0HZijDybMmEksPcqUcz5B7ubEl8Z6zoa8vHjabBOP17my2mTTCuxCC145?=
+ =?us-ascii?Q?U5f77ocCFjkVcSa4BGM5sntfd4iZ9jCKBkmi32ZZ9fTOaE4Wt1VMHpZEoH0Y?=
+ =?us-ascii?Q?c2hlWqIsJpBjKLeMJqdD4FEMFBmDMLB6/Ny6YsjaCM9410f7q2NjxrOCg9cM?=
+ =?us-ascii?Q?6JWP6oo58ndZWXEDn1JMj7lyuUcmJP+pxhfcnS6IeilNKLnwyqxTAEW7ItE8?=
+ =?us-ascii?Q?iithIWkV/jYaXBXhA6UrFZ6EHK+B/VhAT9uvgSH70LeivOuKpWHv0J5HaufY?=
+ =?us-ascii?Q?XYoWxqGbIub0w2C5T4IgLk2WNFh5ZEODV44VIK1gNjsSbDBigY688XQg9wHu?=
+ =?us-ascii?Q?3DgP7lFvGlKkf2N9pz+8kYtcRXlqX7I2RQNRZnLkqSLHbih6wSdxyl3JCBJE?=
+ =?us-ascii?Q?pVdYx/nHLK5CsMZpVPYK5LXx79U2pIFe3rBB59T6r4cA+BJomus6TfIcHJ/2?=
+ =?us-ascii?Q?QSFvcgndUaAg/P9v0aw=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b67ab49c-140c-4b91-2fea-08dce0267b6e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Sep 2024 01:31:46.3604
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: m1iZ8yqu3MAeUrGRQL4CCcTQXAv39vAmVY//R2F0ABPQ/QlqV2dlYG/76iJNw/aAd4gb+Fjm4/aQqN+zs1zdbw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6777
 
-Add support for DH electronics i.MX8M Plus DHCOM SoM on PicoITX carrier board.
-This system is populated with serial console, EQoS ethernet, eMMC, SD, SPI NOR,
-LEDs and USB 3.0 host used in USB 2.0 mode on PicoITX.
+> Hi Wei,
+>=20
+> On Mon, Sep 23, 2024 at 04:59:56AM +0300, Wei Fang wrote:
+> > Okay, I have tested this solution (see changes below), and from what I
+> observed,
+> > the xdp_tx_in_flight can naturally drop to 0 in every test. So if there=
+ are no
+> other
+> > risks, the next version will use this solution.
+> >
+>=20
+> Sorry for the delay. I have tested this variant and it works. Just one
+> thing below.
+>=20
+> > @@ -2467,10 +2469,6 @@ void enetc_start(struct net_device *ndev)
+> >         struct enetc_ndev_priv *priv =3D netdev_priv(ndev);
+> >         int i;
+> >
+> > -       enetc_setup_interrupts(priv);
+> > -
+> > -       enetc_enable_tx_bdrs(priv);
+> > -
+> >         for (i =3D 0; i < priv->bdr_int_num; i++) {
+> >                 int irq =3D pci_irq_vector(priv->si->pdev,
+> >
+> ENETC_BDR_INT_BASE_IDX + i);
+> > @@ -2479,6 +2477,10 @@ void enetc_start(struct net_device *ndev)
+> >                 enable_irq(irq);
+> >         }
+> >
+> > +       enetc_setup_interrupts(priv);
+> > +
+> > +       enetc_enable_tx_bdrs(priv);
+> > +
+> >         enetc_enable_rx_bdrs(priv);
+> >
+> >         netif_tx_start_all_queues(ndev);
+> > @@ -2547,6 +2549,12 @@ void enetc_stop(struct net_device *ndev)
+> >
+> >         enetc_disable_rx_bdrs(priv);
+> >
+> > +       enetc_wait_bdrs(priv);
+> > +
+> > +       enetc_disable_tx_bdrs(priv);
+> > +
+> > +       enetc_clear_interrupts(priv);
+>=20
+> Here, NAPI may still be scheduled. So if you clear interrupts, enetc_poll=
+()
+> on another CPU might still have time to re-enable them. This makes the
+> call pointless.
+>=20
+> Please move the enetc_clear_interrupts() call after the for() loop below
+> (AKA leave it where it is).
 
-Signed-off-by: Marek Vasut <marex@denx.de>
----
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Gregor Herburger <gregor.herburger@ew.tq-group.com>
-Cc: Hiago De Franco <hiago.franco@toradex.com>
-Cc: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Cc: Joao Paulo Goncalves <joao.goncalves@toradex.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Mathieu Othacehe <m.othacehe@gmail.com>
-Cc: Max Merchel <Max.Merchel@ew.tq-group.com>
-Cc: Michael Walle <mwalle@kernel.org>
-Cc: Peng Fan <peng.fan@nxp.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: devicetree@vger.kernel.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
----
- arch/arm64/boot/dts/freescale/Makefile        |   1 +
- .../dts/freescale/imx8mp-dhcom-picoitx.dts    | 176 ++++++++++++++++++
- 2 files changed, 177 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-dhcom-picoitx.dts
-
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index f6b8041c1e8f7..4e33cb33ba297 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -170,6 +170,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-debix-som-a-bmb-08.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-drc02.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-pdk2.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-pdk3.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-picoitx.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-icore-mx8mp-edimm2.2.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-msc-sm2s-ep1.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-picoitx.dts b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-picoitx.dts
-new file mode 100644
-index 0000000000000..703cf0fb3d2be
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-picoitx.dts
-@@ -0,0 +1,176 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (C) 2023-2024 Marek Vasut <marex@denx.de>
-+ *
-+ * DHCOM iMX8MP variant:
-+ * DHCM-iMX8ML8-C160-R204-F1638-SPI16-E-SD-RTC-T-RGB-I-01D2
-+ * DHCOM PCB number: 660-200 or newer
-+ * PicoITX PCB number: 487-600 or newer
-+ */
-+
-+/dts-v1/;
-+
-+#include <dt-bindings/leds/common.h>
-+#include "imx8mp-dhcom-som.dtsi"
-+
-+/ {
-+	model = "DH electronics i.MX8M Plus DHCOM PicoITX";
-+	compatible = "dh,imx8mp-dhcom-picoitx", "dh,imx8mp-dhcom-som",
-+		     "fsl,imx8mp";
-+
-+	chosen {
-+		stdout-path = &uart1;
-+	};
-+
-+	led {
-+		compatible = "gpio-leds";
-+
-+		led-0 {
-+			color = <LED_COLOR_ID_YELLOW>;
-+			default-state = "off";
-+			function = LED_FUNCTION_INDICATOR;
-+			gpios = <&gpio1 5 GPIO_ACTIVE_HIGH>; /* GPIO I */
-+			pinctrl-0 = <&pinctrl_dhcom_i>;
-+			pinctrl-names = "default";
-+		};
-+	};
-+};
-+
-+&eqos {	/* First ethernet */
-+	pinctrl-0 = <&pinctrl_eqos_rmii>;
-+	phy-handle = <&ethphy0f>;
-+	phy-mode = "rmii";
-+
-+	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_266M>,
-+				 <&clk IMX8MP_SYS_PLL2_100M>,
-+				 <&clk IMX8MP_SYS_PLL2_50M>;
-+	assigned-clock-rates = <0>, <100000000>, <50000000>;
-+};
-+
-+&ethphy0g {	/* Micrel KSZ9131RNXI */
-+	status = "disabled";
-+};
-+
-+&ethphy0f {	/* SMSC LAN8740Ai */
-+	status = "okay";
-+};
-+
-+&fec {
-+	status = "disabled";
-+};
-+
-+&flexcan1 {
-+	status = "okay";
-+};
-+
-+&gpio1 {
-+	gpio-line-names =
-+		"DHCOM-G", "", "", "",
-+		"", "DHCOM-I", "PicoITX-HW0", "PicoITX-HW2",
-+		"DHCOM-B", "DHCOM-A", "", "DHCOM-H", "", "", "", "",
-+		"", "", "", "", "", "", "", "",
-+		"", "", "", "", "", "", "", "";
-+};
-+
-+&gpio2 {
-+	gpio-line-names =
-+		"", "", "", "", "", "", "", "",
-+		"", "", "", "PicoITX-HW1", "", "", "", "",
-+		"", "", "", "", "DHCOM-INT", "", "", "",
-+		"", "", "", "", "", "", "", "";
-+};
-+
-+&gpio4 {
-+	gpio-line-names =
-+		"", "", "", "", "", "", "", "",
-+		"", "", "", "", "", "", "", "",
-+		"", "", "", "SOM-HW1", "", "", "", "",
-+		"", "", "", "PicoITX-Out2", "", "", "", "";
-+};
-+
-+&gpio5 {
-+	gpio-line-names =
-+		"", "", "PicoITX-In2", "", "", "", "", "",
-+		"", "", "", "", "", "", "", "",
-+		"", "", "", "",
-+		"", "", "PicoITX-In1", "PicoITX-Out1",
-+		"", "", "", "", "", "", "", "";
-+};
-+
-+/* No HS connector on this SoM variant, so no HDMI, PCIe and only USB HS. */
-+&hdmi_blk_ctrl {
-+	status = "disabled";
-+};
-+
-+&hdmi_pvi {
-+	status = "disabled";
-+};
-+
-+&hdmi_tx {
-+	status = "disabled";
-+};
-+
-+&hdmi_tx_phy {
-+	status = "disabled";
-+};
-+
-+&irqsteer_hdmi {
-+	status = "disabled";
-+};
-+
-+&lcdif3 {
-+	status = "disabled";
-+};
-+
-+&pcie_phy {
-+	status = "disabled";
-+};
-+
-+&pcie {
-+	status = "disabled";
-+};
-+
-+/* No WiFi/BT chipset on this SoM variant. */
-+&uart2 {
-+	bluetooth {
-+		status = "disabled";
-+	};
-+};
-+
-+/* USB_OTG port is not routed out on PicoITX. */
-+&usb3_0 {
-+	status = "disabled";
-+};
-+
-+&usb_dwc3_0 {
-+	status = "disabled";
-+};
-+
-+&usb3_1 {
-+	fsl,over-current-active-low;
-+};
-+
-+&usb_dwc3_1 {
-+	dr_mode = "host";
-+	maximum-speed = "high-speed";
-+};
-+
-+/* No WiFi/BT chipset on this SoM variant. */
-+&usdhc1 {
-+	status = "disabled";
-+};
-+
-+&iomuxc {
-+	/*
-+	 * The following DHCOM GPIOs are used on this board.
-+	 * Therefore, they have been removed from the list below.
-+	 * I: yellow led
-+	 */
-+	pinctrl-0 = <&pinctrl_dhcom_a &pinctrl_dhcom_b &pinctrl_dhcom_c
-+		     &pinctrl_dhcom_d &pinctrl_dhcom_e &pinctrl_dhcom_f
-+		     &pinctrl_dhcom_g &pinctrl_dhcom_h &pinctrl_dhcom_j
-+		     &pinctrl_dhcom_k &pinctrl_dhcom_l &pinctrl_dhcom_m
-+		     &pinctrl_dhcom_n &pinctrl_dhcom_o &pinctrl_dhcom_p
-+		     &pinctrl_dhcom_q &pinctrl_dhcom_r &pinctrl_dhcom_s
-+		     &pinctrl_dhcom_int>;
-+};
--- 
-2.45.2
-
+Okay, I will, thanks.
+>=20
+> > +
+> >         for (i =3D 0; i < priv->bdr_int_num; i++) {
+> >                 int irq =3D pci_irq_vector(priv->si->pdev,
+> >
+> ENETC_BDR_INT_BASE_IDX + i);
+> > @@ -2555,12 +2563,6 @@ void enetc_stop(struct net_device *ndev)
+> >                 napi_synchronize(&priv->int_vector[i]->napi);
+> >                 napi_disable(&priv->int_vector[i]->napi);
+> >         }
+> > -
+> > -       enetc_wait_bdrs(priv);
+> > -
+> > -       enetc_disable_tx_bdrs(priv);
+> > -
+> > -       enetc_clear_interrupts(priv);
+> >  }
+> >  EXPORT_SYMBOL_GPL(enetc_stop);
+>=20
+> FWIW, there are at least 2 other valid ways of solving this problem. One
+> has already been mentioned (reset the counter in enetc_free_rx_ring()):
+>=20
+> @@ -2014,6 +2015,8 @@ static void enetc_free_rx_ring(struct enetc_bdr
+> *rx_ring)
+>  		__free_page(rx_swbd->page);
+>  		rx_swbd->page =3D NULL;
+>  	}
+> +
+> +	rx_ring->xdp.xdp_tx_in_flight =3D 0;
+>  }
+>=20
+>  static void enetc_free_rxtx_rings(struct enetc_ndev_priv *priv)
+>=20
+> And the other would be to keep rescheduling NAPI until there are no more
+> pending XDP_TX frames.
+>=20
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c
+> b/drivers/net/ethernet/freescale/enetc/enetc.c
+> index 3cff76923ab9..36520f8c49a6 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+> @@ -1689,6 +1689,7 @@ static int enetc_poll(struct napi_struct *napi, int
+> budget)
+>  		work_done =3D enetc_clean_rx_ring_xdp(rx_ring, napi, budget, prog);
+>  	else
+>  		work_done =3D enetc_clean_rx_ring(rx_ring, napi, budget);
+> -	if (work_done =3D=3D budget)
+> +	if (work_done =3D=3D budget || rx_ring->xdp.xdp_tx_in_flight)
+>  		complete =3D false;
+>  	if (work_done)
+>=20
+> But I like your second proposal the best. It doesn't involve adding an
+> unnecessary extra test in the fast path.
