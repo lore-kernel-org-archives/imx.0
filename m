@@ -1,114 +1,90 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A2B149E00
-	for <imx@lists.linux.dev>; Sun, 29 Sep 2024 12:01:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95ABD1531D8
+	for <imx@lists.linux.dev>; Sun, 29 Sep 2024 12:07:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727611265; cv=none; b=PPxj/o0sAl2QER75H34siY4sEQ3dAJQAiLeZyou3tTeXxg6eJionBqLx4VKTRaR1XO/wAUc5+2I7UE6sOLGkRtCEA522tim8KAxgzB9lXJp4wEznJ+zSEM7CxQnd1/sntnnsPL/fW4m3iQwXo/cZ6V3eLICLIeNreVydm0N/x1s=
+	t=1727611638; cv=none; b=WvSA/Ta4IE/QdeTxB4B0dy1Jpl9enCYnLfYhrWCe8XG0sQEJqw3Nyj1AJlttN4i3lINzpp0tIR80aiSpf3dKrpnnzuRqpeZk5bSZAzsq2xWoTq/p5fDJulwvxf0UOI62miQPdoAMJfZVozimgaUNOSj0qAz0pKof5Wo8s0X70ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727611265; c=relaxed/simple;
-	bh=MsTHzjFDvxiqe1Ec7mi+ML/OntdXgzvky9K468iFJQY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fyxGu7mFGCszEhKO62LaLg1TWU+LsLpYs1CGOL23x3KYtrZHL1CSdeB5B3zppuS7v8RDRfna6l/2uARA2oCXyZ+QxbSFv0LDUKwkJRH+5cWRB63ByllSLX88jYXzaSSCpthTw0dsU4VeINazJ4Bl318QqrDIt1Jp8CdltJACwPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=anMzCCct; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1727611638; c=relaxed/simple;
+	bh=Xh5ExjcgQh/E77y3Jk6URT9DRI8CIzqO6ymaMql+pt4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QqjUhbO8r6+7PAHswu9I7jGVKUm27oLaZU/co88y7DcO3qE8rSYMDrnz0d83YxuFKIzOToaMTNNKOpZQg81rEH3stFveeqwQbo4S/tmxbTqwpyAGe9nM75DK9ArJjhAvOtBeDMt40P31c1KYsVTv8NGJxPOQvwBhu4MFG/Hy3j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=a6LPmnAO; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="anMzCCct"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 048A6B3;
-	Sun, 29 Sep 2024 13:59:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1727611164;
-	bh=MsTHzjFDvxiqe1Ec7mi+ML/OntdXgzvky9K468iFJQY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=anMzCCcts+ntXdOz4yXV/F0S66T6WcaLDAYILV5Bn57HZ7/9O+7mjT0lxmKL/rgbC
-	 82Q0/KfckAmfrBh5FbKDFnnh+5XiEi9AkpU6rd5nCBY+ffwAWC4IBKmt0YNdMYrkL4
-	 QG88ovXoa7+e7Icc+d5q8Zam1ZLjIFqhuGZz4eAU=
-Date: Sun, 29 Sep 2024 15:00:51 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: guoniu.zhou@oss.nxp.com
-Cc: rmfrfs@gmail.com, martink@posteo.de, kernel@puri.sm, mchehab@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, imx@lists.linux.dev,
-	linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] media: nxp: imx8mq-mipi-csi2: Fix CSI clocks always
- enabled issue
-Message-ID: <20240929120051.GA31662@pendragon.ideasonboard.com>
-References: <20240929101635.1648234-1-guoniu.zhou@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="a6LPmnAO"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-20b86298710so192375ad.1
+        for <imx@lists.linux.dev>; Sun, 29 Sep 2024 05:07:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1727611637; x=1728216437; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zjxInaNhLVD836E7kvEQ4tYnrdCtxNbjV5ha2p76v8M=;
+        b=a6LPmnAO/2WdJJOhXJ+tnjCq4Ip6j943BK4ssDc5YiG4fdkWtkgCS9AKZ2BM6wY/pc
+         USiYPmcv8G31Y/rFvWT1k0ntEsbUTBaQRhZKl5rFtaTJ9cpFKUlnKx11q1E40FOMzGvU
+         Zj/FRre6RzJfHLj1GdTJuTCxevyWhHSwY0LXFOya9l23dsh6iAr+oG7ZaEjSzE0jIKg8
+         uMbRhmPbMCTgihN4LDKF3CgHN971tRbokmz7+BlHxDbQA8t+CN6GbhcQ9VrwstSL0Lrb
+         s+a8LcqEt0UiWk6R2qWH6fP2g9Fxdg9i9aQ1eKZlDu1xubo20kkUmKcmXT1sAfJH2avp
+         XM/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727611637; x=1728216437;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zjxInaNhLVD836E7kvEQ4tYnrdCtxNbjV5ha2p76v8M=;
+        b=MJQwi+I3hIknFKGnzDkgZxLecIdiXRripehDcTB6H9Fnm5EmeIdBCGaAdqDcKJIfky
+         XaX4uQJqXyXUoylRihTczfE7ieYrKozX8NmCgpQVI+f29ilxVJA2F/WY9j4QmctqmD5U
+         WRBJT+xqW5Un0qXSwvnqU7ovmd+as7UCbq9PX8Chl3awbMPmdPlcj4bIklDkvyTe4nRk
+         bSZs9Aq3rCSuWfn4u5dEr9N9TXgqPrRmlqjoyROhnFFBEY/72fwbFRzhNkRgxoqKOZ5Z
+         W4Zy3CBgwJHEQeoHmKrmLhgdnOaPyR7AhSexlzRNR/EMAE1mjegT2p8VWVBCy2svpl1c
+         C85w==
+X-Forwarded-Encrypted: i=1; AJvYcCVXS02eMcHxrs/Zl/dTS8dq1zRxSbEwz9pKlAkIb38Kx01UcdPuvDWyNQNCF3R9j5OA1DU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwHQikZz8Ib8X2WLpujfs7PiU8tlJsM1fQwKHfv98gq04RVd41Z
+	T7ofsbwAS96V4JpwtWAk2i7/E9x0O1IQ6YxkWEpXzgpqyjrA8IRXBO0huavz8zbNS5cgqVo6zDs
+	Cgdjt+dgGwMEWBJvdu1mU5D7AJJM=
+X-Google-Smtp-Source: AGHT+IGkItVurXd3ky7Ze3/m8wpVZ4KRuguynlrG29y9ctBKfpIWygc9BxUDQ0/p6z4xHmFc2bL685GfGWj5pSZ1VkI=
+X-Received: by 2002:a17:902:d4c2:b0:207:13a3:a896 with SMTP id
+ d9443c01a7336-20b369d605fmr122281315ad.23.1727611636800; Sun, 29 Sep 2024
+ 05:07:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240929101635.1648234-1-guoniu.zhou@oss.nxp.com>
+References: <20240929093418.526901-1-yujiaoliang@vivo.com>
+In-Reply-To: <20240929093418.526901-1-yujiaoliang@vivo.com>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date: Sun, 29 Sep 2024 14:07:05 +0200
+Message-ID: <CAFBinCBYd2W8+-oKVayFmW9sEVU0Sp+vtW7QNABdsm1Rxh=Y=A@mail.gmail.com>
+Subject: Re: [PATCH v1] mmc: Fix typos in comments across various files
+To: Yu Jiaoliang <yujiaoliang@vivo.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-amlogic@lists.infradead.org, imx@lists.linux.dev, s32@nxp.com, 
+	linux-arm-msm@vger.kernel.org, opensource.kernel@vivo.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Guoniu,
-
-Thank you for the patch.
-
-On Sun, Sep 29, 2024 at 06:16:35PM +0800, guoniu.zhou@oss.nxp.com wrote:
-> From: "Guoniu.zhou" <guoniu.zhou@nxp.com>
-> 
-> Fix CSI clocks always enabled issue after run system suspend/resume.
-> 
-> The clocks for CSI will be enabled in imx8mq_mipi_csi_pm_resume()
-> when system resume and the state of CSI will be set to ST_POWERED.
-> It not only cause clock always enabled issue but also system hang
-> issue on iMX8ULP platform since imx8mq_mipi_csi_pm_suspend() will
-> access CSI registers if run system suspend/resume again, but the
-> CSI power domain is not active.
-> 
-> In order to fix this issue, using pm_runtime_force_suspend/resume
-> instead of calling imx8mq_mipi_csi_pm_suspend/resume directly.
-
-I think you can simplify suspend/resume handling in the driver by
-dropping the system suspend/resume handlers. At system suspend time the
-device should already be stopped, because the top-level driver (the CSI
-bridge in the i.MX8MQ) should have stopped the pipeline. Similarly, at
-system resume time, there should be no need to restart streaming, as the
-top-level driver will control that.
-
-I'll send a patch and CC you, could you give it a try ?
-
-> Signed-off-by: Guoniu.zhou <guoniu.zhou@nxp.com>
+On Sun, Sep 29, 2024 at 11:52=E2=80=AFAM Yu Jiaoliang <yujiaoliang@vivo.com=
+> wrote:
+>
+> This patch corrects several typos in comments within the mmc/host
+> directory. No functional changes are introduced, only comment
+> improvements for better readability.
+>
+> Detected using codespell.
+>
+> Signed-off-by: Yu Jiaoliang <yujiaoliang@vivo.com>
 > ---
->  drivers/media/platform/nxp/imx8mq-mipi-csi2.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> index d4a6c5532969..15029bb81b35 100644
-> --- a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> +++ b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> @@ -697,8 +697,11 @@ static int imx8mq_mipi_csi_suspend(struct device *dev)
->  {
->  	struct v4l2_subdev *sd = dev_get_drvdata(dev);
->  	struct csi_state *state = mipi_sd_to_csi2_state(sd);
-> +	int ret;
->  
-> -	imx8mq_mipi_csi_pm_suspend(dev);
-> +	ret = pm_runtime_force_suspend(dev);
-> +	if (ret < 0)
-> +		return ret;
->  
->  	state->state |= ST_SUSPENDED;
->  
-> @@ -713,7 +716,7 @@ static int imx8mq_mipi_csi_resume(struct device *dev)
->  	if (!(state->state & ST_SUSPENDED))
->  		return 0;
->  
-> -	return imx8mq_mipi_csi_pm_resume(dev);
-> +	return pm_runtime_force_resume(dev);
->  }
->  
->  static int imx8mq_mipi_csi_runtime_suspend(struct device *dev)
-
--- 
-Regards,
-
-Laurent Pinchart
+>  drivers/mmc/host/atmel-mci.c       | 2 +-
+>  drivers/mmc/host/au1xmmc.c         | 2 +-
+>  drivers/mmc/host/cavium-octeon.c   | 2 +-
+>  drivers/mmc/host/dw_mmc.c          | 2 +-
+>  drivers/mmc/host/meson-gx-mmc.c    | 2 +-
+for meson-gx-mmc:
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
