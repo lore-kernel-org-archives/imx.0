@@ -1,75 +1,55 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23FFF537FF
-	for <imx@lists.linux.dev>; Sun, 29 Sep 2024 17:27:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6B154658
+	for <imx@lists.linux.dev>; Sun, 29 Sep 2024 18:49:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727630879; cv=none; b=eqCON705zJth6csoYsI7BRztTMAos6IRBVGtOFY3g5/ohElm+JYOps97c/XcRK/7/mvAbF4DVndvzTpnV5vFwQEmpfUkw+j9+JNuATH1XtE25yE/MpweDCHVcNy2iEoAtyHT/8e01jQPqN2z478mEFnzNXUQ3jYjfvE0ZftryYg=
+	t=1727635792; cv=none; b=pJs+huD7ts0z1nX+8yaHNvAzFNWUcP+tXG6baemQZovqyqO3mHUKAB+zqY8ole/4JBEGVaHOGf8a518C5uArlFIYvzQ2ITYyauvQxiHqkXBpZMD1ndsCBo/Vroiu+Rb6TLgkp7aJrLAxiIqViKhQeYy1CfiYKUdUY61PoTtu1/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727630879; c=relaxed/simple;
-	bh=Ug7wY8jPGPHXKlaEJWDLzwP2YJRZZ0pjcvr+/Y2WFTE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P9Mxtz3NQC96WB1zsqcYEP2OsNVpawKyJHKbWa7BS8FBz5PPSYfgdVNm6trp6r+9B75XMfW4x5iW1EStFTcpbeWzPuR3dxSfwiM+SR/8LQraSOIDFF7v0bpu24dVWR5XsSU5YTJQ9DBCUll2EEr+3af/WlWIQ4scsUBi+B8P1FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=bJJAD00t; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	s=arc-20240116; t=1727635792; c=relaxed/simple;
+	bh=5PfMqxUkTZmfOZ+r2LC8oqD+0qwBEz1p0meP8AloAr4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fCRVwcISgiy/BtCJPaYKx0EHEGPSbLPTw8YSdGfcb1t6xvOTLxR8j41ZPtXV79H+vCvI9OA2wAAVNlu9I36RH4MG7hjtgVLu5NfWnizp3BeXlRHF99vgzR+BrS7n5xkKkRNh9Nt57LQe7a8h6O64FMtais8psuiFvcdZzIhjNAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=QtwhHODX; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="bJJAD00t"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5c5cf26b95aso4145773a12.3
-        for <imx@lists.linux.dev>; Sun, 29 Sep 2024 10:27:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1727630876; x=1728235676; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y0iBp/WuiGBbwsQFlblUsJsTztRh00umfcE38KK4N/I=;
-        b=bJJAD00tGo6sjnkvU6+9ET26/lFACZm6JuvsvMDmsIZ/XOwRJHulAQ7ftsFbD+vPE4
-         +58bIZBib+IMFHYLkXfAAZNZm5C/17gpvQgdn11ESIsDXYDAbvgFyDNNlkLK7f7bVOTE
-         fpX6PBNeo1g8Dl3mZfXJ4cYYxraLXVJaCWUvk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727630876; x=1728235676;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=y0iBp/WuiGBbwsQFlblUsJsTztRh00umfcE38KK4N/I=;
-        b=kQCtRQqgfnmMmiZ2j4e2d2iWxxuKMEhEYfPaUOpoCQuIsjx7Jpd5wF/Ecobk4FtPz7
-         6iLtiQyFEIoUYLRw2hvp41BlqRU63XXiIIis7RU+h+ASg7wfCn4ENxs51xvri1CqFJV3
-         ybGSMsjt2UxH2VIRY7OcxMqp8vaNErLybdpOjp1Ww011amgGDuMdHI2vN7EFHCXD4mll
-         Wu3/EGfVdGOvfCe1kYVRDB8UZqmPyJFOaLY1HPDFgsNJxfPN4TjLPwMS1/wTjdPag4na
-         5HBohsSaebpzM326+3AisnZ+SY4IflzQASra16fhfWRfy68COcOV4wi64N1BMlE0jFEZ
-         FYmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXguWjC4MJ6rxOp1Wdhj4vxO+w7555yrncwoLU3elMtGI3s9OEk9eEF9X3R9atA4fEC9lw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyITnmWyGmdEMmE/qpRoq3xoW55++TG4Em86TnfzLIQcfQK6VTr
-	01iEldMlZvr8cI/VKc6lxoDWcZVvsj7N5MZhZry9VCBk1kobYLat68jkfG7Cnng=
-X-Google-Smtp-Source: AGHT+IGLXVyYvBPaOSAKwxQv4nClWIr3rmZocj2kb4LCU/k1nVaoIjd/hf0Piycmvcx3tLSB+8EClg==
-X-Received: by 2002:a17:907:6d20:b0:a8a:8c92:1c9c with SMTP id a640c23a62f3a-a93c4967869mr949147066b.29.1727630876427;
-        Sun, 29 Sep 2024 10:27:56 -0700 (PDT)
-Received: from dario-ThinkPad-T14s-Gen-2i.homenet.telecomitalia.it (host-79-54-102-102.retail.telecomitalia.it. [79.54.102.102])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93c27776a1sm403176866b.8.2024.09.29.10.27.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Sep 2024 10:27:55 -0700 (PDT)
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-amarula@amarulasolutions.com,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Abel Vesa <abelvesa@kernel.org>,
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="QtwhHODX"
+Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 23ADD88001;
+	Sun, 29 Sep 2024 20:49:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1727635788;
+	bh=+sN1Mmn7/JU/oFox6B1V9Kpr97/m7jKsd9UosJJJMJw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=QtwhHODXUTlSrUYEp7v3j0d8Xb50TkCT14UbgiWNQom67AD+9yyLSQpw0JNRCpfuI
+	 O/jrQnjX9XJf3Xy52qaGla6APzli/pKUBNG61/Fv5f6UDB/mcHGS+3jc8Er6k6Ptco
+	 XeVqlCJZWpj5BOO924TcOG2ndBvavlf+g+ifZuG9R406sR2G9mitRUnnuKyAilZ9jy
+	 0xOWxP1CgQBZb9RPIkVuCQMdv/xuV1Wd7tRF5VtFUFv5bVa7W6Zw/iWKLdqECl/fE2
+	 jdrG91GJpjLDn64jMd9zhuvtaHiirE4Xzu7kd10+dHdOK75xkKxaPoB8FOVNcLK9s+
+	 EYGajoZbOo22w==
+From: Marek Vasut <marex@denx.de>
+To: linux-arm-kernel@lists.infradead.org
+Cc: kernel@dh-electronics.com,
+	Marek Vasut <marex@denx.de>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Peng Fan <peng.fan@nxp.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Saravana Kannan <saravanak@google.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Shawn Guo <shawnguo@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-clk@vger.kernel.org
-Subject: [PATCH v2 6/6] clk: imx8mp: support spread spectrum clock generation
-Date: Sun, 29 Sep 2024 19:27:16 +0200
-Message-ID: <20240929172743.1758292-7-dario.binacchi@amarulasolutions.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240929172743.1758292-1-dario.binacchi@amarulasolutions.com>
-References: <20240929172743.1758292-1-dario.binacchi@amarulasolutions.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 1/3] soc: imx8m: Probe the SoC driver as platform driver
+Date: Sun, 29 Sep 2024 20:49:16 +0200
+Message-ID: <20240929184930.73049-1-marex@denx.de>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -77,50 +57,285 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-The patch adds support for spread spectrum clock generation for the
-audio, video, and DRAM PLLs.
+With driver_async_probe=* on kernel command line, the following trace is
+produced because on i.MX8M Plus hardware because the soc-imx8m.c driver
+calls of_clk_get_by_name() which returns -EPROBE_DEFER because the clock
+driver is not yet probed. This was not detected during regular testing
+without driver_async_probe.
 
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Convert the SoC code to platform driver and instantiate a platform device
+in its current device_initcall() to probe the platform driver. Rework
+.soc_revision callback to always return valid error code and return SoC
+revision via parameter. This way, if anything in the .soc_revision callback
+return -EPROBE_DEFER, it gets propagated to .probe and the .probe will get
+retried later.
 
+"
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 1 at drivers/soc/imx/soc-imx8m.c:115 imx8mm_soc_revision+0xdc/0x180
+CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.11.0-next-20240924-00002-g2062bb554dea #603
+Hardware name: DH electronics i.MX8M Plus DHCOM Premium Developer Kit (3) (DT)
+pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : imx8mm_soc_revision+0xdc/0x180
+lr : imx8mm_soc_revision+0xd0/0x180
+sp : ffff8000821fbcc0
+x29: ffff8000821fbce0 x28: 0000000000000000 x27: ffff800081810120
+x26: ffff8000818a9970 x25: 0000000000000006 x24: 0000000000824311
+x23: ffff8000817f42c8 x22: ffff0000df8be210 x21: fffffffffffffdfb
+x20: ffff800082780000 x19: 0000000000000001 x18: ffffffffffffffff
+x17: ffff800081fff418 x16: ffff8000823e1000 x15: ffff0000c03b65e8
+x14: ffff0000c00051b0 x13: ffff800082790000 x12: 0000000000000801
+x11: ffff80008278ffff x10: ffff80008209d3a6 x9 : ffff80008062e95c
+x8 : ffff8000821fb9a0 x7 : 0000000000000000 x6 : 00000000000080e3
+x5 : ffff0000df8c03d8 x4 : 0000000000000000 x3 : 0000000000000000
+x2 : 0000000000000000 x1 : fffffffffffffdfb x0 : fffffffffffffdfb
+Call trace:
+ imx8mm_soc_revision+0xdc/0x180
+ imx8_soc_init+0xb0/0x1e0
+ do_one_initcall+0x94/0x1a8
+ kernel_init_freeable+0x240/0x2a8
+ kernel_init+0x28/0x140
+ ret_from_fork+0x10/0x20
+---[ end trace 0000000000000000 ]---
+SoC: i.MX8MP revision 1.1
+"
+
+Signed-off-by: Marek Vasut <marex@denx.de>
 ---
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Saravana Kannan <saravanak@google.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+---
+V2: Use the platform device approach instead of late_initcall
+V3: Do not register imx8m_soc_driver on non-iMX8M hardware
+V4: No change
+---
+ drivers/soc/imx/soc-imx8m.c | 107 ++++++++++++++++++++++++++++--------
+ 1 file changed, 85 insertions(+), 22 deletions(-)
 
-(no changes since v1)
-
- drivers/clk/imx/clk-imx8mp.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
-index b2778958a572..460e8271def5 100644
---- a/drivers/clk/imx/clk-imx8mp.c
-+++ b/drivers/clk/imx/clk-imx8mp.c
-@@ -410,6 +410,7 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct device_node *np, *anatop_np;
- 	void __iomem *anatop_base, *ccm_base;
-+	struct imx_pll14xx_ssc pll1443x_ssc;
- 	int err;
+diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
+index fe111bae38c8e..5ea8887828c06 100644
+--- a/drivers/soc/imx/soc-imx8m.c
++++ b/drivers/soc/imx/soc-imx8m.c
+@@ -30,7 +30,7 @@
  
- 	anatop_np = of_find_compatible_node(NULL, NULL, "fsl,imx8mp-anatop");
-@@ -449,10 +450,14 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
- 	hws[IMX8MP_SYS_PLL2_REF_SEL] = imx_clk_hw_mux("sys_pll2_ref_sel", anatop_base + 0x104, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
- 	hws[IMX8MP_SYS_PLL3_REF_SEL] = imx_clk_hw_mux("sys_pll3_ref_sel", anatop_base + 0x114, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
+ struct imx8_soc_data {
+ 	char *name;
+-	u32 (*soc_revision)(void);
++	int (*soc_revision)(u32 *socrev);
+ };
  
--	hws[IMX8MP_AUDIO_PLL1] = imx_clk_hw_pll14xx("audio_pll1", "audio_pll1_ref_sel", anatop_base, &imx_1443x_pll);
--	hws[IMX8MP_AUDIO_PLL2] = imx_clk_hw_pll14xx("audio_pll2", "audio_pll2_ref_sel", anatop_base + 0x14, &imx_1443x_pll);
--	hws[IMX8MP_VIDEO_PLL1] = imx_clk_hw_pll14xx("video_pll1", "video_pll1_ref_sel", anatop_base + 0x28, &imx_1443x_pll);
--	hws[IMX8MP_DRAM_PLL] = imx_clk_hw_pll14xx("dram_pll", "dram_pll_ref_sel", anatop_base + 0x50, &imx_1443x_dram_pll);
-+	imx_clk_pll14xx_get_ssc_conf(anatop_np, IMX8MP_AUDIO_PLL1, &pll1443x_ssc);
-+	hws[IMX8MP_AUDIO_PLL1] = imx_clk_hw_pll14xx_ssc("audio_pll1", "audio_pll1_ref_sel", anatop_base, &imx_1443x_pll, &pll1443x_ssc);
-+	imx_clk_pll14xx_get_ssc_conf(anatop_np, IMX8MP_AUDIO_PLL2, &pll1443x_ssc);
-+	hws[IMX8MP_AUDIO_PLL2] = imx_clk_hw_pll14xx_ssc("audio_pll2", "audio_pll2_ref_sel", anatop_base + 0x14, &imx_1443x_pll, &pll1443x_ssc);
-+	imx_clk_pll14xx_get_ssc_conf(anatop_np, IMX8MP_VIDEO_PLL1, &pll1443x_ssc);
-+	hws[IMX8MP_VIDEO_PLL1] = imx_clk_hw_pll14xx_ssc("video_pll1", "video_pll1_ref_sel", anatop_base + 0x28, &imx_1443x_pll, &pll1443x_ssc);
-+	imx_clk_pll14xx_get_ssc_conf(anatop_np, IMX8MP_DRAM_PLL, &pll1443x_ssc);
-+	hws[IMX8MP_DRAM_PLL] = imx_clk_hw_pll14xx_ssc("dram_pll", "dram_pll_ref_sel", anatop_base + 0x50, &imx_1443x_dram_pll, &pll1443x_ssc);
- 	hws[IMX8MP_GPU_PLL] = imx_clk_hw_pll14xx("gpu_pll", "gpu_pll_ref_sel", anatop_base + 0x64, &imx_1416x_pll);
- 	hws[IMX8MP_VPU_PLL] = imx_clk_hw_pll14xx("vpu_pll", "vpu_pll_ref_sel", anatop_base + 0x74, &imx_1416x_pll);
- 	hws[IMX8MP_ARM_PLL] = imx_clk_hw_pll14xx("arm_pll", "arm_pll_ref_sel", anatop_base + 0x84, &imx_1416x_pll);
+ static u64 soc_uid;
+@@ -51,24 +51,29 @@ static u32 imx8mq_soc_revision_from_atf(void)
+ static inline u32 imx8mq_soc_revision_from_atf(void) { return 0; };
+ #endif
+ 
+-static u32 __init imx8mq_soc_revision(void)
++static int imx8mq_soc_revision(u32 *socrev)
+ {
+ 	struct device_node *np;
+ 	void __iomem *ocotp_base;
+ 	u32 magic;
+ 	u32 rev;
+ 	struct clk *clk;
++	int ret;
+ 
+ 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mq-ocotp");
+ 	if (!np)
+-		return 0;
++		return -EINVAL;
+ 
+ 	ocotp_base = of_iomap(np, 0);
+-	WARN_ON(!ocotp_base);
++	if (!ocotp_base) {
++		ret = -EINVAL;
++		goto err_iomap;
++	}
++
+ 	clk = of_clk_get_by_name(np, NULL);
+ 	if (IS_ERR(clk)) {
+-		WARN_ON(IS_ERR(clk));
+-		return 0;
++		ret = PTR_ERR(clk);
++		goto err_clk;
+ 	}
+ 
+ 	clk_prepare_enable(clk);
+@@ -88,32 +93,45 @@ static u32 __init imx8mq_soc_revision(void)
+ 	soc_uid <<= 32;
+ 	soc_uid |= readl_relaxed(ocotp_base + OCOTP_UID_LOW);
+ 
++	*socrev = rev;
++
+ 	clk_disable_unprepare(clk);
+ 	clk_put(clk);
+ 	iounmap(ocotp_base);
+ 	of_node_put(np);
+ 
+-	return rev;
++	return 0;
++
++err_clk:
++	iounmap(ocotp_base);
++err_iomap:
++	of_node_put(np);
++	return ret;
+ }
+ 
+-static void __init imx8mm_soc_uid(void)
++static int imx8mm_soc_uid(void)
+ {
+ 	void __iomem *ocotp_base;
+ 	struct device_node *np;
+ 	struct clk *clk;
++	int ret = 0;
+ 	u32 offset = of_machine_is_compatible("fsl,imx8mp") ?
+ 		     IMX8MP_OCOTP_UID_OFFSET : 0;
+ 
+ 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mm-ocotp");
+ 	if (!np)
+-		return;
++		return -EINVAL;
+ 
+ 	ocotp_base = of_iomap(np, 0);
+-	WARN_ON(!ocotp_base);
++	if (!ocotp_base) {
++		ret = -EINVAL;
++		goto err_iomap;
++	}
++
+ 	clk = of_clk_get_by_name(np, NULL);
+ 	if (IS_ERR(clk)) {
+-		WARN_ON(IS_ERR(clk));
+-		return;
++		ret = PTR_ERR(clk);
++		goto err_clk;
+ 	}
+ 
+ 	clk_prepare_enable(clk);
+@@ -124,31 +142,41 @@ static void __init imx8mm_soc_uid(void)
+ 
+ 	clk_disable_unprepare(clk);
+ 	clk_put(clk);
++
++err_clk:
+ 	iounmap(ocotp_base);
++err_iomap:
+ 	of_node_put(np);
++
++	return ret;
+ }
+ 
+-static u32 __init imx8mm_soc_revision(void)
++static int imx8mm_soc_revision(u32 *socrev)
+ {
+ 	struct device_node *np;
+ 	void __iomem *anatop_base;
+-	u32 rev;
++	int ret;
+ 
+ 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mm-anatop");
+ 	if (!np)
+-		return 0;
++		return -EINVAL;
+ 
+ 	anatop_base = of_iomap(np, 0);
+-	WARN_ON(!anatop_base);
++	if (!anatop_base) {
++		ret = -EINVAL;
++		goto err_iomap;
++	}
+ 
+-	rev = readl_relaxed(anatop_base + ANADIG_DIGPROG_IMX8MM);
++	*socrev = readl_relaxed(anatop_base + ANADIG_DIGPROG_IMX8MM);
+ 
+ 	iounmap(anatop_base);
+ 	of_node_put(np);
+ 
+-	imx8mm_soc_uid();
++	return imx8mm_soc_uid();
+ 
+-	return rev;
++err_iomap:
++	of_node_put(np);
++	return ret;
+ }
+ 
+ static const struct imx8_soc_data imx8mq_soc_data = {
+@@ -184,7 +212,7 @@ static __maybe_unused const struct of_device_id imx8_soc_match[] = {
+ 	kasprintf(GFP_KERNEL, "%d.%d", (soc_rev >> 4) & 0xf,  soc_rev & 0xf) : \
+ 	"unknown"
+ 
+-static int __init imx8_soc_init(void)
++static int imx8m_soc_probe(struct platform_device *pdev)
+ {
+ 	struct soc_device_attribute *soc_dev_attr;
+ 	struct soc_device *soc_dev;
+@@ -212,8 +240,11 @@ static int __init imx8_soc_init(void)
+ 	data = id->data;
+ 	if (data) {
+ 		soc_dev_attr->soc_id = data->name;
+-		if (data->soc_revision)
+-			soc_rev = data->soc_revision();
++		if (data->soc_revision) {
++			ret = data->soc_revision(&soc_rev);
++			if (ret)
++				goto free_soc;
++		}
+ 	}
+ 
+ 	soc_dev_attr->revision = imx8_revision(soc_rev);
+@@ -251,6 +282,38 @@ static int __init imx8_soc_init(void)
+ 	kfree(soc_dev_attr);
+ 	return ret;
+ }
++
++static struct platform_driver imx8m_soc_driver = {
++	.probe = imx8m_soc_probe,
++	.driver = {
++		.name = "imx8m-soc",
++	},
++};
++
++static int __init imx8_soc_init(void)
++{
++	struct platform_device *pdev;
++	int ret;
++
++	/* No match means this is non-i.MX8M hardware, do nothing. */
++	if (!of_match_node(imx8_soc_match, of_root))
++		return 0;
++
++	ret = platform_driver_register(&imx8m_soc_driver);
++	if (ret) {
++		pr_err("Failed to register imx8m-soc platform driver: %d\n", ret);
++		return ret;
++	}
++
++	pdev = platform_device_register_simple("imx8m-soc", -1, NULL, 0);
++	if (IS_ERR(pdev)) {
++		pr_err("Failed to register imx8m-soc platform device: %ld\n", PTR_ERR(pdev));
++		platform_driver_unregister(&imx8m_soc_driver);
++		return PTR_ERR(pdev);
++	}
++
++	return 0;
++}
+ device_initcall(imx8_soc_init);
+ MODULE_DESCRIPTION("NXP i.MX8M SoC driver");
+ MODULE_LICENSE("GPL");
 -- 
-2.43.0
+2.45.2
 
