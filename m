@@ -1,93 +1,98 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A8F364BA
-	for <imx@lists.linux.dev>; Sun, 29 Sep 2024 18:52:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9807438382;
+	Sun, 29 Sep 2024 19:45:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727635951; cv=none; b=P6C1kSVWoFQR8+JSfJNph5IfnlVpVx8ATjMqaKRCEXw4BrhjcB7UOSgbF3UDpqWW+Gezc10EHti2Uut0LvT126yXJD1DS7rVxBq3qonH5XerZCOnCkUd+chnclQDNJTziW9ehaqFbmbTbZ+GVtfbqs47B7lML52FkdSN5YVGK/U=
+	t=1727639114; cv=none; b=UNqz3bg+YWC06YcdM+Kz1BnHaQ/Ao6LGulBv1MClLG7mApXo3Q76SXQz+xqBr2jP/j2A+SwimGdT58v34cZrJWYzkKfl+AubTcg/KXAvJwko0azRMWXz9OlrsKPZamlv2JPphYtjTGn6U7r3NFDHuBp8U7nw776VE4NYkCfbZ8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727635951; c=relaxed/simple;
-	bh=kVfeflwXH6Kh5KE7YwpqIIpnxAMaIFEAhhFsU51ELQI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Nqxmdck5qz4Hkiy2G7MFK42LTst0RbO3NKPOVsjpc2F2xOdZPrHFPNUPwfOEl7ab/vEdDBmNisp2LSZ5fDUquCBlTRUghQB8JRlOUmQO7K8rXGzDNBtmtsrGB79WtCJIhrkdGfZ3ZP1L6ykOtxMJBx4jVJjZPUpepSOlldFmY0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=okskZXYK; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1727639114; c=relaxed/simple;
+	bh=WLzoHAmvgk+kdS0lUkhv1MhbfAgTre8V7/wWH+dkjeU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l0UkBb1oeylSTIkRpxHVYn1YrUnkkKrJpdUeSbJbDL1sAgc9QVRET4SbICP6zsN8e4unD8uS8U2mcbgsTRkFY4EcXyU6Xwqml0K9I4UeEUlnl6wUJ1rMYV59u4MBZccEqnvlQXJ5eg9KVPRgvW40V8zgf4NuoSuMlgp0jMu7AYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LImsKV1n; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="okskZXYK"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 79E19880D8;
-	Sun, 29 Sep 2024 20:52:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1727635948;
-	bh=YU8L+6JDbb4tJqh0JpDU77dzxF7kj5LAZ1t5CtSsbCs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=okskZXYK/UgpCItQ3w8pMcTaxVUDVsOlVb7MUkOQW1rLUHfi7MK0YwEWi8pYLQXv6
-	 nnd4IY0jAulgdILSef2NwhIXoXsoxqbM5ZMDBHdZMu1uJ3iqadTflfAXVwbKmCYohZ
-	 1I0Y0gOzuRFGRAunXYp8SyG7ukavCtCEk3Jnfsm2+lFCA1w4H3MaVQBLf5L+UsQY7Q
-	 Ruz93F/z7YUScRtZanHqfgaAUaDfDFo8QCa6EVQiqytBSjlGc7SzAacAeNuhrqHgGX
-	 CxgO8Exlxc24qRrIjyXkdcT0oQRdZDL1zPB9IAqu53rb3Uy6GKZkpYrTYBSlIi98VV
-	 D19ZTQRPG0QCA==
-Message-ID: <51a87d3e-7a9c-4709-ab64-d869dca28b0a@denx.de>
-Date: Sun, 29 Sep 2024 20:47:36 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LImsKV1n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7425AC4CEC5;
+	Sun, 29 Sep 2024 19:45:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727639114;
+	bh=WLzoHAmvgk+kdS0lUkhv1MhbfAgTre8V7/wWH+dkjeU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LImsKV1n5ncMCQk/d3KlTGOUhdZXvwGa/N4ENmo0Tp6AD0GTY0ZFmA0J5hpac7csF
+	 /RsNnx9usT7caVvKDwpXVQfa/8Qa7kpbsrE5oG0MWHdh7yvHI7dGDI/RMq+7rUaFQU
+	 EVI1w2ARgdKj/1NyvGcNRjxf2Cxg5SUH7FpkFFxo6TemRNd3h2GXGKXxCo4cd6E1Nb
+	 4ZWrD5/DYmSFI7pXRlMXwQVItZ4pM86M0QkEE63XOk3d8m8t7Ao0dTXl3juElQGSKO
+	 gziDCwRsllTkqxWnjNyfx9IKdoGMTQnvctJxG0ghCgk59ymXCB7d8Iz5KMu/P4cfym
+	 8bRJem+pEyJrg==
+Date: Sun, 29 Sep 2024 21:45:11 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com, 
+	Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Peng Fan <peng.fan@nxp.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Shawn Guo <shawnguo@kernel.org>, Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
+Subject: Re: [PATCH v2 1/6] dt-bindings: clock: imx8m-anatop: support spread
+ spectrum clocking
+Message-ID: <3rbqwhjt567tj3jlddb5dyxotx2dha2op4xhdlq2x5qmu62ady@qscyq2p44jls>
+References: <20240929172743.1758292-1-dario.binacchi@amarulasolutions.com>
+ <20240929172743.1758292-2-dario.binacchi@amarulasolutions.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] soc: imx8m: Probe the SoC driver as platform
- driver
-To: Saravana Kannan <saravanak@google.com>
-Cc: linux-arm-kernel@lists.infradead.org, kernel@dh-electronics.com,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Arnd Bergmann <arnd@arndb.de>, Fabio Estevam <festevam@gmail.com>,
- Jeff Johnson <quic_jjohnson@quicinc.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- imx@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20240926213729.2882045-1-marex@denx.de>
- <CAGETcx-q7+DGhPYd3QrsPh7O_0HU7T=NhaJYp0Fu7YW2zwbo7Q@mail.gmail.com>
- <e32ed329-b012-44f2-854b-80a8b0efc4e6@denx.de>
- <CAGETcx95ZMBJR0F-3Cr8++1_MwiMCPHiwfdx7m5q0XDAiGG75A@mail.gmail.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <CAGETcx95ZMBJR0F-3Cr8++1_MwiMCPHiwfdx7m5q0XDAiGG75A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240929172743.1758292-2-dario.binacchi@amarulasolutions.com>
 
-On 9/28/24 12:27 AM, Saravana Kannan wrote:
+On Sun, Sep 29, 2024 at 07:27:11PM +0200, Dario Binacchi wrote:
+> The patch adds the DT bindings for enabling and tuning spread spectrum
+> clocking generation.
+> 
+> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+> 
+> ---
+> 
+> Changes in v2:
+> - Add "allOf:" and place it after "required:" block, like in the
+>   example schema.
+> - Move the properties definition to the top-level.
+> - Drop unit types as requested by the "make dt_binding_check" command.
+> 
+>  .../bindings/clock/fsl,imx8m-anatop.yaml      | 45 +++++++++++++++++++
+>  1 file changed, 45 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/clock/fsl,imx8m-anatop.yaml b/Documentation/devicetree/bindings/clock/fsl,imx8m-anatop.yaml
+> index bbd22e95b319..a142c04fef00 100644
+> --- a/Documentation/devicetree/bindings/clock/fsl,imx8m-anatop.yaml
+> +++ b/Documentation/devicetree/bindings/clock/fsl,imx8m-anatop.yaml
+> @@ -33,11 +33,56 @@ properties:
+>    '#clock-cells':
+>      const: 1
+>  
+> +  fsl,ssc-clocks:
 
-[...]
+<form letter>
+This is a friendly reminder during the review process.
 
->>> I'm glad it's working for you, but I think there might still be a race
->>> that you are just lucky enough to not hit. I think you still need to
->>> fix up drivers/base/soc.c to return -EPROBE_DEFER when
->>> soc_device_match() is called but soc_bus_type has no devices
->>> registered. That way any drivers that try to use that API will defer
->>> probe until this device gets to probe.
->>
->> soc_device_match() returns a pointer to soc_device_attribute or NULL, do
->> you have some other function in mind ?
-> 
-> No, I'm talking about the same function. I'm asking to change it to
-> return ERR_PTR(-EPROBE_DEFER) instead
-> of NULL if no soc device has been registered yet.
-> 
-> And you'll also go change all the drivers that use that API and are on
-> the IMX boards supported by this soc driver, to handle the
-> -EPROBE_DEFER correctly.
-> 
-> And this error will only get returned for boards that do async probing
-> and using a platform device to register the soc device. So it's
-> not going to break everyone if you do this change.
-It seems the imx8m has no users of this, so I created a local patch, but 
-I'll send a V4 of this series first.
+It seems my or other reviewer's previous comments were not fully
+addressed. Maybe the feedback got lost between the quotes, maybe you
+just forgot to apply it. Please go back to the previous discussion and
+either implement all requested changes or keep discussing them.
+
+Thank you.
+</form letter>
+
+You just ignored my email and never cared to respond.
+
+Implement the feedback.
+
+Best regards,
+Krzysztof
+
