@@ -1,161 +1,205 @@
-Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010015.outbound.protection.outlook.com [52.101.69.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1C417B4FC;
-	Mon, 30 Sep 2024 08:38:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727685534; cv=none; b=kjBYO881+W7w9eNuLwB65y+Ax11HmRPVdZZspiA5npN+1HEjmtbbD4dJSZng5tbrU9iXP/hZ15u609zXLSAlQCJO9J1yAElFGCZ9QCTZUVOyAiX+wE5sFWUKbJJhV9djz7l/kAjt1NkaEPMRnw6g5tEi5aYbzZo8ldk+HiJh9cc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727685534; c=relaxed/simple;
-	bh=TCAu0YxfZ7XwQ7EJrXWX7h4UBhonVS5YLNk5f81Jut0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=SkVGwNHbuTvR9HfE605siK6KROIfMAu82adSJXYK9HUnwqU/Ty87y/0wU447tuanAQDxELrrtrOndptauj5k1SPS8FqA6aFj3nc1lfmWx/aWYvA6uCp+jmBEFTCdI4+XXxtVx61whifJfuvCFLUHftDR2eP4A+AwRHiMexHJWg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4XHDwY3YV3z1SC0g;
-	Mon, 30 Sep 2024 16:37:49 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id B68231400CB;
-	Mon, 30 Sep 2024 16:38:43 +0800 (CST)
-Received: from [10.67.120.129] (10.67.120.129) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 30 Sep 2024 16:38:43 +0800
-Message-ID: <ed399e31-cfe5-4504-9537-88879afac53d@huawei.com>
-Date: Mon, 30 Sep 2024 16:38:42 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6F617C219
+	for <imx@lists.linux.dev>; Mon, 30 Sep 2024 08:44:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727685842; cv=fail; b=s/XVy5i+nZppMeB8qKNQzLkJDSkESVPp/fVqHUZGWqG9xfg/MYipi05i2DsSeloxhRqNhZ7dutqjRJzTfPoNfrGuXMopVLVnOPpK9PS5LJhzPIzRvRP392s4WZeHXPk88x+XSM5u4fPlDXswHbRVn6g54qtQspcJvAGPurEZgKc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727685842; c=relaxed/simple;
+	bh=T65YoPAPvB35HuaeBXO97VTbd8R/sSxqTQUH7pyx2x4=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=MC4y2VJTY441yCV+Rx6X0rp+fyePKb3boj0OorjetLlrQ78yQ4I4RUKBeyM/04c/oHEkoBDYQGN5/k7ytxdhKS+HoKOwc6rgH2ebo13CKR1hh6U8Zm60xH9JSXAhbmUIPWrg22/ZgFDagTlqBzOv+IBWIPEhg4djz9p5Gayqm3U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=fkXBNU2r; arc=fail smtp.client-ip=52.101.69.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="fkXBNU2r"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ABcNP4oibiFCeypWMksDqhhJp91DgDOLGImcP+uUrEMOWDRFwOqvRgkvPX3RBxpwvD9rxh5ZbyL0p0vab9od4u2dPBwaZl85nxpGujRUHeSNvkFwp9O4dg0sQCjJd0UoHK1HDeS+jYXlCpp85gqTJasIplUqyNoYuIcM186p00LVP3irShOhi/ThvzJLWpYn2mJaJihPHI85xtbNXkH9uGkSJxr7tE2m2ADOopRgA/ZIh3d0MdRU+ZGYVxJ428sxXxPtd5nAcwo94JkWmYnxiC3VqVB5+NzbvGW05llZP6KRR2SxLLY5unAhvW7czpoSAPJvYrvWpffpXmFjdBORxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uMs50eefJPObkuty3lpU8Q+bVLjUv7VLzOdtnob3VEY=;
+ b=TNGMrQQEtiqyLLXkpCjHwkMoigvs2GAoNTl6x9WBm+792QNxNwDpwmWmuiM6vy5ep21sACvyrl8HpS10Lp6BMW0emE8ijPBxmUySgq84ZgxN21qKUUKUj9bvEC6tsP3LbsZ8Zt7W7u7lmJGzrpjKOMZDJZGUZgd8cg1Y8lB2daLhZbmclK6jbACtzr5vwMcqmm5ENlIn07Bn0G41tNI1zZAdY4Yl8/ycif3o8xoPt/r485k9RvbjHgIriilGpxQbY7n3MsS3WImOgsAQRcx/UzlzEubwrnapTp8b6wtQ3RmFwEZ2kjO/PqtZfTDZm5wjQ3KidRvl0jvq/EN1PDQG9Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uMs50eefJPObkuty3lpU8Q+bVLjUv7VLzOdtnob3VEY=;
+ b=fkXBNU2r+Cx7+CBDSVIdRVsSvYaEVdEEM+wqjhv5YYont8G6FZH0s21fvmrr/4GOkZKdGSkzk28sopBrS1FENlGOWQuGNFJm4B20g6eISBxtJipI46GFUaAkx9WHJoTCrZGsA0E28X0eBiCxmnm9hwHk95hp5wywo5fgk6AwLrfwSaAHcQoWrBEGqPI6rP7fopkCEDuUAi6aJZWaeccwQv2Lmimz54PnkzRK35/wUbcUq7WmQfJDpMncJJx5VRbXLcG8Jb2AA5H/4ldLWXoWfB+zkRA4WQPzu5PGKdHrJZAgHHYBmwh4K37ipQp8JWu8ENFV87eW9QpKLYJyzXIeZg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by AM9PR04MB8970.eurprd04.prod.outlook.com (2603:10a6:20b:409::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.27; Mon, 30 Sep
+ 2024 08:43:57 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90%4]) with mapi id 15.20.8005.024; Mon, 30 Sep 2024
+ 08:43:56 +0000
+Message-ID: <2017eb23-a2a9-4fa5-8d9f-675cc6d114ec@nxp.com>
+Date: Mon, 30 Sep 2024 16:44:17 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6/8] drm/bridge: Add ITE IT6263 LVDS to HDMI converter
+To: Maxime Ripard <mripard@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, andrzej.hajda@intel.com,
+ neil.armstrong@linaro.org, rfoss@kernel.org,
+ Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+ jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
+ tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ catalin.marinas@arm.com, will@kernel.org, quic_bjorande@quicinc.com,
+ geert+renesas@glider.be, dmitry.baryshkov@linaro.org, arnd@arndb.de,
+ nfraprado@collabora.com, o.rempel@pengutronix.de, y.moog@phytec.de
+References: <20240930052903.168881-1-victor.liu@nxp.com>
+ <20240930052903.168881-7-victor.liu@nxp.com>
+ <y4ala34bejzmw5wt3vw5ncoxdzpzda2cwi7bdzve5bn4udmr3b@eiguckpaui6d>
+From: Liu Ying <victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <y4ala34bejzmw5wt3vw5ncoxdzpzda2cwi7bdzve5bn4udmr3b@eiguckpaui6d>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SI2P153CA0036.APCP153.PROD.OUTLOOK.COM
+ (2603:1096:4:190::11) To AM7PR04MB7046.eurprd04.prod.outlook.com
+ (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 2/2] page_pool: fix IOMMU crash when driver has
- already unbound
-To: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-CC: Mina Almasry <almasrymina@google.com>, <davem@davemloft.net>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <liuyonglong@huawei.com>,
-	<fanghaiqing@huawei.com>, <zhangkun09@huawei.com>, Robin Murphy
-	<robin.murphy@arm.com>, Alexander Duyck <alexander.duyck@gmail.com>, IOMMU
-	<iommu@lists.linux.dev>, Wei Fang <wei.fang@nxp.com>, Shenwei Wang
-	<shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Eric Dumazet
-	<edumazet@google.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek
- Kitszel <przemyslaw.kitszel@intel.com>, Alexander Lobakin
-	<aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed
-	<saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan
-	<tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi
-	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen
-	<shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, Kalle Valo
-	<kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Andrew
- Morton <akpm@linux-foundation.org>, <imx@lists.linux.dev>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<intel-wired-lan@lists.osuosl.org>, <bpf@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>,
-	<linux-mm@kvack.org>
-References: <20240925075707.3970187-1-linyunsheng@huawei.com>
- <20240925075707.3970187-3-linyunsheng@huawei.com>
- <CAHS8izOxugzWJDTc-4CWqaKABTj=J4OHs=Lcb=SE9r8gX0J+yg@mail.gmail.com>
- <842c8cc6-f716-437a-bc98-70bc26d6fd38@huawei.com>
- <CAC_iWjLgNOtsbhqrhvvEz2C3S668qB8KatL_W+tPHMSkDrNS=w@mail.gmail.com>
- <0ef315df-e8e9-41e8-9ba8-dcb69492c616@huawei.com>
- <CAC_iWjKeajwn3otjdEekE6VDLHGEvqmnQRwpN5R3yHj8UpEiDw@mail.gmail.com>
- <934d601f-be43-4e04-b126-dc86890a4bfa@huawei.com>
- <CAC_iWjL7m4ZL2W2OZM5F22dLvZhxU6fyCXV_xjyGf+W7UP43EQ@mail.gmail.com>
- <ac2eec69-8f44-4adb-8182-02c78625851d@huawei.com>
- <CAC_iWj+Shb6buVf+wZaWe-NZ+UVxmW9DYqsTiL27U+V_Ko_65w@mail.gmail.com>
-Content-Language: en-US
-From: Yunsheng Lin <linyunsheng@huawei.com>
-In-Reply-To: <CAC_iWj+Shb6buVf+wZaWe-NZ+UVxmW9DYqsTiL27U+V_Ko_65w@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpemf200006.china.huawei.com (7.185.36.61)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|AM9PR04MB8970:EE_
+X-MS-Office365-Filtering-Correlation-Id: 83affbb3-5c32-44de-b2b5-08dce12c055e
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+ =?utf-8?B?eGVHNE96MWRlaFVnOWpSS1JWWC9leEZUQ1FvRmUrZUs4c0Y4dzM1Si8rODZs?=
+ =?utf-8?B?NGNkZWpITjlJV0J2TUVXaWwwK0RxK01YZDQ2dVdtUktQaXo4Nk5VMHc1d21O?=
+ =?utf-8?B?T1l4Qk0zS0JqSlc4djBxbWZRbnNodGhBNnRQbnhDRVI2cEpob3B3R1M1UFRE?=
+ =?utf-8?B?VHVrcSswUHZxMGF5RnUzQ2lEMXcxTElya2JTbnNINi9tdmk4ZkR1WlF6SWhC?=
+ =?utf-8?B?SWt1YUtOZ2JGeWtXYms2Z1YrMkRUcHMxblJMSlRTL3d0S0xyU1RWQVByUW1x?=
+ =?utf-8?B?RHJQN3ozK0Q1a2IvcjlEUmpsaWlQOG1hTWN0eVhCYk91YUp5MjcvMVlnY2xs?=
+ =?utf-8?B?azRpVytmdFRBMmk1cG9sMEYxSDFOU29GZFpOYVFzb01jbHEwNzRjVkhrYTZF?=
+ =?utf-8?B?UkpYY1JVL21BR2pnRVNLMDRkR3pBQm5nNUdScFRMODM2TW55NHlkblA0VGpT?=
+ =?utf-8?B?bWs2NEo5QkZ0ZGI1R1ZVREp4V3lQa0xPalBNeFNKc3pJSWttY2xQdm92bEly?=
+ =?utf-8?B?aWZzUVZENTFXdEFQdmNJL2cvVUxYMXh1ZjQrRWdxUTZJelJkRnF6K3pzYm5H?=
+ =?utf-8?B?RUh2TnQ1YU1xWGttQVhmOG9ta2ZZQ21jSThKTFR4SVN4TExDVkxaNnV1cEZ5?=
+ =?utf-8?B?YVhwOUZscFFFSXZNZ1h5MmNoNHRzV1ZpQytQelYzSmpBUlBDMi80eWltdXdT?=
+ =?utf-8?B?ZkJ0cTNBWHFSRUU4dlJORzZhaTF1NTJ4ZGlnWG5lY2Q5Ty9pNDIrZEZvN2dx?=
+ =?utf-8?B?RjFYVHFLRi9WekQ3QlNvVEZuMXNkM1QwY1Fyb1E2aDl6SFVoVHdTSFRXUk1Y?=
+ =?utf-8?B?dXNWMkFzam9PTVdVK00yMTV4Vlc4WVJkY2svKzluRlV6d1NPMms0OFhNWTlT?=
+ =?utf-8?B?SmxRSXE5WXZoS282dGhPMHNDNVRLYUU4NytlbE9uWkxmVUZIb1BYZnpoazlK?=
+ =?utf-8?B?SG1pazlOYTQ2QUNLc1UwUDl6TldWYnpQeXhIbW9PVTBuSjMyc0wrQkp3N2FI?=
+ =?utf-8?B?MUZaU1J6anl4OC9JeUJQRVE4dnIvbk9aLzMrVUxIeFlKcExmRmtnNXN3RkZs?=
+ =?utf-8?B?VmZIUDJkdnBnMW5vaGFSbktiWWF0ZGdTMlNwNmhPY2NuSFRUcEplc2trU0tY?=
+ =?utf-8?B?Zzhmc2p1T2ZYSmtmM05ER3FaajRjYmRVSWZXNUFDV2NHbHNJQ2ovK0l0K3po?=
+ =?utf-8?B?SnE4S0gzcGRrbmREdWhkUXpoRkp0ZDlMYWg2RUF1UnA5VVQ3Umw0UkZZOVdV?=
+ =?utf-8?B?VTVoVHNqZUl1V0JNeFJGMjVPNHJ5Q0psUXkrZkpEV3Q1emlaUXUzVzFwTU9D?=
+ =?utf-8?B?VjUvZHFMc01xNjlOZ3lSSXZUU1BSMG4wbmwwcU5xZmdTQkg4NGtFVnBxT1gr?=
+ =?utf-8?B?Y0thS2xpNVRTa2J1M0tlUkFjSHk5QVdLcEU0V1A1SWpxYnZVNTRSUitabjRk?=
+ =?utf-8?B?UVdSSE9MSFZUOXZsb282a3JzN24waEFCVTRkdy9TaTVWN3NvaU1vZHJmcE5X?=
+ =?utf-8?B?dU9oNHd0TzV4eUtzYUQ3eWJxK2J2aGJRdklRK1NhMnN2VVlzb2lQNzhQeUxp?=
+ =?utf-8?B?ckZQTkxGY0NldUtiS01IQStDQWpIanZ2cEZuRmFoVFRWc1VremhuVXQzQUc2?=
+ =?utf-8?B?eGlDRHRIOWZ2MTRiVjNGcG9uN3RTOXpraHJCcEdmU2xEdHpyUlIxZWF2Yzhp?=
+ =?utf-8?B?a1JmalVFQkgwSWw5R2Z4YUFheHJGSmVmTnAwMlY0MVd3eGx0ZFpqTEFNUE94?=
+ =?utf-8?B?SWlMeUdiVkROaFNpNjM1UFhKVGNVOXVtSUkrb01veDF2REQ4ck5EWlBCOGMv?=
+ =?utf-8?B?RmJWd3Buek5HdzVzeGRodz09?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?d25SQTNTcERJL0NZaUJKU2tSRGVjTTRMSXhyWXRVaHhBOFVPYWdUVXpET1dr?=
+ =?utf-8?B?cG5FS2szRDFzQ2pyelM4MU00OE40c2kvZVdVQnZ1Z1lsQW10UnY1WG1oMUNn?=
+ =?utf-8?B?anNZQ3pRWVAvZzdPb1VhcitVOWJBdUd6TlU2ZDdYZHM3eXF1a2REOTN5MjIr?=
+ =?utf-8?B?Wlg3Vy9QWEJBZjJlZlBHV2lKRUUvcFRRbWJxdkRNMEFtaVVxTUVXb3VNY3BL?=
+ =?utf-8?B?SEV1TVNxSEg3dmR4VnZpUG9UVS9jUnhCNnhGT2xiME9QeVFSc0cveE5GM0pj?=
+ =?utf-8?B?cTJkTnlITUhhaHIwVnpsNEZsVXVoUDZDYk1OMmVocUE5VjIzNmpUTkJFL01m?=
+ =?utf-8?B?NlNZR2VrenQrVEtmTEd1L2U5ZVRhQlNmS04yWGw0K1pUSndaMlMxTUVZVXdK?=
+ =?utf-8?B?eHpXNEZMc1NsQ1hoUS9mSE90cVY5TW1FMzYvWUJRUkhORHNqMU90V3pPaHl0?=
+ =?utf-8?B?d1d5WUt3M3JGeG1LbFkwbHhEM2h6VUJocWtCbzlOa0VCVnphQVc3eDZLZTUr?=
+ =?utf-8?B?R0UvN1RjcFJ6SDhSQ3ord2J0eEVoS2ZrVCt6RGl1SWRFRGdsSDZUS2dOdWV5?=
+ =?utf-8?B?b0RZLzRMVVhIQnFjNUEwNEE1YVc0QlEyT3hOZ1kwSDdTOWswVnBBUlVrazlR?=
+ =?utf-8?B?WkgxWjFBWi9DSnpiNnIrdDFraiswSUk5NVFOYWEyVzAyWEpmTU1hS2xuWlJ3?=
+ =?utf-8?B?WGdVc251S1YzZzBjZC8yN01oTmdHSEo2cWc5SHRmSG1nZ24yMm1oM0txYy9n?=
+ =?utf-8?B?Uy9hU0lJZ1RGTEVBZkJ4Y3VNZ0hGbkVhRThzVTlLU3lBd0hPSm4wNkFiSWsz?=
+ =?utf-8?B?Sk9xR2twYjdYaWtTcEZqMThRLy9Lc2M1MFY3aFBrQmVjM0pGUlBLb0pzSDY2?=
+ =?utf-8?B?SDhyalN0U0kzamxBbEhqUUwzV1dvZW1Da1FMQVhESm5rSXNYdFJTLytHSW9o?=
+ =?utf-8?B?ZmR1N0lNek9KbThEUG1hRDJtN3g0SzhrQlAxSVNGY296L1VnYUUvSTc2eEIv?=
+ =?utf-8?B?cGg1TnpsbU1KTUtNdTlTZDBKUWlWcVdjUVozbHN3aGxEWEY2TXpCaXQySjFH?=
+ =?utf-8?B?SlZHUmJuT2dNQWdOUjB4bE9sVGhoaFJYRmhsTE5mZlllbnFQU2hCb1J0bVow?=
+ =?utf-8?B?M2tXc3Rab2lPYlBidWlHSEhLVjNWQmMwRkVPaWZla1BRcDhVVmpnV1BFd1pw?=
+ =?utf-8?B?ejV3K2JFMzNjcUpLdWdQN3I4TTR6MWR6NEw4a2p5Y05tNXZLZStvR2tYek8v?=
+ =?utf-8?B?SXVkUVVQSURmQ3NJcHVIa0RUbkw5dTRiTlJtRlFoWkQxOFBDUXphanFjZlhK?=
+ =?utf-8?B?RE5TdzZDa3J1MXhpRWlMUDlROW1rNWw0bFFtOEh5K3RVQjc2My9LYUVUTUpo?=
+ =?utf-8?B?VGd4YkZSeThUNHZtSGpHU0xQTDg1YkNpYVd1MVY0dWdrQjdKOWJRdE5TQXVP?=
+ =?utf-8?B?YTFML056bG95TXYwdGdVL0ZzNzR2Q1FxZ1AvaUNNNnJEWlIwZUQraSs3K3lQ?=
+ =?utf-8?B?UWxER0h2L2laS1MwVXdzeXVtZEJBd2lXOTV1RmVqUk81SDVZQkdnc1pUb29Z?=
+ =?utf-8?B?Q1V0dU1xbFlyaUpqaEZ3UXJzRjBSdVo0bDI1ZmVjbHZSM0UxOEhKRmh3dmxv?=
+ =?utf-8?B?cHBPalI5Nzh5bEc2SjZtWlBRcGJpTndBeVozZ3grRFR1b2VRL3Vxam8ydnh2?=
+ =?utf-8?B?YlpYUXRYUXptVG0rSFVrNTJWSHJiVXEyS29oWWVsMWhrc1JvOWdlYlZrbjFR?=
+ =?utf-8?B?KytkNjZXdCs0bzZLb2RDLzU5VTVKY3kzdG9tQlU3bE9mS09EWGcxYkhzeHVk?=
+ =?utf-8?B?Ulk4UkxQL3BhR0JPK2F4UFRCbDJDN0wwZnZxVTRqVjJidnVvOHpkS0Z4ZjVN?=
+ =?utf-8?B?VVZ2Vmt6cE9CMXVSMGt0OVkvWjlOZkMrL2djaU16QU9vVHlCRTNVTWJaOXg5?=
+ =?utf-8?B?a05OWk1KR0RsdEsvOHdkMEY2dnN6TE1VOWRzb1RwbDRxK1Jqamd5S0hnUGVT?=
+ =?utf-8?B?Q2lYV1BXVE1FLzM2TU5qLzg2bmhvcjRxT2xoTXNzbFFGSGRwWWxZS3R6NmFj?=
+ =?utf-8?B?YWVSOXVFMHdiK0R1OGVsN2ZDUFptUzJ4ZExvY0YxVFlsRDIzQnpad2tyUmVh?=
+ =?utf-8?Q?2vtaOYgq1m4+pmid7TNbnAydl?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 83affbb3-5c32-44de-b2b5-08dce12c055e
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2024 08:43:56.7413
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ra4gdZ5ER9EKsGzBH+JGpyyIxawORAUyxlRquEAkZstK4zBK66NHBu1oBdkDJQ9NgUX8qvg6hFK92oiB0Ne35Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8970
 
-On 2024/9/30 16:09, Ilias Apalodimas wrote:
-> On Sun, 29 Sept 2024 at 05:44, Yunsheng Lin <linyunsheng@huawei.com> wrote:
->>
->> On 2024/9/28 15:34, Ilias Apalodimas wrote:
->>
->> ...
->>
->>>
->>> Yes, that wasn't very clear indeed, apologies for any confusion. I was
->>> trying to ask on a linked list that only lives in struct page_pool.
->>> But I now realize this was a bad idea since the lookup would be way
->>> slower.
->>>
->>>> If I understand question correctly, the single/doubly linked list
->>>> is more costly than array as the page_pool case as my understanding.
->>>>
->>>> For single linked list, it doesn't allow deleting a specific entry but
->>>> only support deleting the first entry and all the entries. It does support
->>>> lockless operation using llist, but have limitation as below:
->>>> https://elixir.bootlin.com/linux/v6.7-rc8/source/include/linux/llist.h#L13
->>>>
->>>> For doubly linked list, it needs two pointer to support deleting a specific
->>>> entry and it does not support lockless operation.
->>>
->>> I didn't look at the patch too carefully at first. Looking a bit
->>> closer now, the array is indeed better, since the lookup is faster.
->>> You just need the stored index in struct page to find the page we need
->>> to unmap. Do you remember if we can reduce the atomic pp_ref_count to
->>> 32bits? If so we can reuse that space for the index. Looking at it
->>
->> For 64 bits system, yes, we can reuse that.
->> But for 32 bits system, we may have only 16 bits for each of them, and it
->> seems that there is no atomic operation for variable that is less than 32
->> bits.
->>
->>> requires a bit more work in netmem, but that's mostly swapping all the
->>> atomic64 calls to atomic ones.
->>>
->>>>
->>>> For pool->items, as the alloc side is protected by NAPI context, and the
->>>> free side use item->pp_idx to ensure there is only one producer for each
->>>> item, which means for each item in pool->items, there is only one consumer
->>>> and one producer, which seems much like the case when the page is not
->>>> recyclable in __page_pool_put_page, we don't need a lock protection when
->>>> calling page_pool_return_page(), the 'struct page' is also one consumer
->>>> and one producer as the pool->items[item->pp_idx] does:
->>>> https://elixir.bootlin.com/linux/v6.7-rc8/source/net/core/page_pool.c#L645
->>>>
->>>> We only need a lock protection when page_pool_destroy() is called to
->>>> check if there is inflight page to be unmapped as a consumer, and the
->>>> __page_pool_put_page() may also called to unmapped the inflight page as
->>>> another consumer,
->>>
->>> Thanks for the explanation. On the locking side, page_pool_destroy is
->>> called once from the driver and then it's either the workqueue for
->>> inflight packets or an SKB that got freed and tried to recycle right?
->>> But do we still need to do all the unmapping etc from the delayed
->>> work? Since the new function will unmap all packets in
->>> page_pool_destroy, we can just skip unmapping when the delayed work
->>> runs
->>
->> Yes, the pool->dma_map is clear in page_pool_item_uninit() after it does
->> the unmapping for all inflight pages with the protection of pool->destroy_lock,
->> so that the unmapping is skipped in page_pool_return_page() when those inflight
->> pages are returned back to page_pool.
-> 
-> Ah yes, the entire destruction path is protected which seems correct.
-> Instead of that WARN_ONCE in page_pool_item_uninit() can we instead
-> check the number of inflight packets vs what we just unmapped? IOW
-> check 'mask' against what page_pool_inflight() gives you and warn if
-> those aren't equal.
-Yes, it seems it is quite normal to trigger the warning from testing,
-it makes sense to check it against page_pool_inflight() to catch some
-bug of tracking/calculating inflight pages.
+On 09/30/2024, Maxime Ripard wrote:
+> Hi,
+
+Hi,
 
 > 
-> 
-> Thanks
-> /Ilias
+> On Mon, Sep 30, 2024 at 01:29:01PM GMT, Liu Ying wrote:
+>> Add basic HDMI video output support. Currently, only RGB888 output
+>> pixel format is supported.  At the LVDS input side, the driver
+>> supports single LVDS link and dual LVDS links with "jeida-24" LVDS
+>> mapping.
 >>
->>>
+>> Product link:
+>> https://www.ite.com.tw/en/product/cate1/IT6263
+>>
+>> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> 
+> Generally speaking, you need to use the new HDMI bridge infrastructure.
+> There's a lot of required things you're not dealing with here (such as
+> infoframes)
+
+I'll add AVI infoframe support in the next version.
+My system doesn't wire up any audio line to IT6263, so I cannot
+add audio infoframe.  I hope this is enough.
+
+> 
+> Also, you should add a MAINTAINERS entry
+
+Ok, will add this.
+
+> 
+> Maxime
+
+-- 
+Regards,
+Liu Ying
+
