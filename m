@@ -1,94 +1,130 @@
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4743D1885B4
-	for <imx@lists.linux.dev>; Mon, 30 Sep 2024 09:34:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D976E18A6B1
+	for <imx@lists.linux.dev>; Mon, 30 Sep 2024 09:36:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727688885; cv=none; b=jVs5njp3cMDbDOV5YfmsUKrw6o2Q3jhVAluxNPl3H2K/AhGogjok9hXabWgkL0OPEQetcpWhpkjz5UtF8jidngex9/MY4SFAYULUKTfDtWaO3AEBnX4gHwqnmRQzQTO/KLKvhn3VGVn+pRLRiRDNaX4k2rsA2CSg6ddKUHBk6U4=
+	t=1727689014; cv=none; b=PLSlwaI3ya3e9PfOvab/QEEpOHwPgWkoyrrUmxbpwGmIZFfMQPZM9nAlQedL7qs6qbwH3qCgI8YPcF7TpuzENossbtrcMMcGKCI7zvPBMOFlXJt6GHTtP1fvvW9iH1FZJWBRon9NrQB/ucdmDbmEqd1H3mvwDKFz5LDoNP4XjQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727688885; c=relaxed/simple;
-	bh=T376I2MDrJytTDm4/y8a91oboBCmnAZ5VqjHr2jS9eI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VsAkwYgUFQLCCyCGu1eiwdCDBDAksmQgmV54Z+yLgqJ4ED3gjppCZBcCuhHawGFV87kR4D+XbUqBLdsImxXpOgUAzdS8ytLF0MCWM077f8LIkp53dUyiM0KPQD37kfweiD1Clsejynn6sx1h35gSLfQQgWPofYQc5GBo/0j7toE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Ydffyoc8; arc=none smtp.client-ip=217.70.183.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Ydffyoc8"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C4E7DE0007;
-	Mon, 30 Sep 2024 09:34:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1727688880;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T376I2MDrJytTDm4/y8a91oboBCmnAZ5VqjHr2jS9eI=;
-	b=Ydffyoc8eP4yYmGUFFPfMukBflSB14CFQqzVpdFCQVXOhkgFmcNq5KDYhOMWjosOOFYNYY
-	kbb9gKnvQVf01UV4UFGS5mDyVS+0lzu8eoSb8zdchrGyinkVkjVWi9YGjg7MPossiNNybH
-	yPM1XObl+VqC+rlPqMCExq1eTvcylkH+w3ZRiBHmCo3jwxrUxI2f8FbIrfTTbJ62e0c9nh
-	jpK9K+POPRlo2t9/TZg/YrZEwCJGtrmo6UMAiNXqQ8of5MMkvMUaiZvJq/MUnJPoIIckp0
-	VcNid5AG0Pmz7qVfe0Sz63yqFGapO6lxBikxNy2Lu2cvTMGTPa+2jwnl6YIVFw==
-Date: Mon, 30 Sep 2024 11:34:36 +0200
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Boris Brezillon
- <boris.brezillon@collabora.com>, Parshuram Thombare <pthombar@cadence.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Boris Brezillon
- <bbrezillon@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Conor Culhane
- <conor.culhane@silvaco.com>, linux-i3c@lists.infradead.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, Ravindra Yashvant Shinde
- <ravindra.yashvant.shinde@nxp.com>, stable@kernel.org
-Subject: Re: [PATCH v4 00/11] i3c: master: some fix and improvemnt for
- hotjoin
-Message-ID: <20240930113436.318a7c0f@xps-13>
-In-Reply-To: <ZvWTjjuRU26dTyKT@lizhi-Precision-Tower-5810>
-References: <20240829-i3c_fix-v4-0-ebcbd5efceba@nxp.com>
-	<ZvWTjjuRU26dTyKT@lizhi-Precision-Tower-5810>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1727689014; c=relaxed/simple;
+	bh=75HLQ9+IqltsCPrGAxL2EswaZtDD+k+SkO5Veskm9/0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rpqRU5F+1g00j5hbsa8/E4r9HEanTdME0jp5NPQM4OTagjWvgLqjbW8X0ZCPIzlHbvzeUgKTDMS4ARXvpWp+k6G5ovzXxDkAPFDVYYWBFgZ62F94CHO9XMKCqXAlx9vGmFFBWmuxp2jfkkK4iMC+tWagKT1Xqj63mkjZZgLBlU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1svCpY-0005oj-Vr; Mon, 30 Sep 2024 11:36:37 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1svCpX-002bLD-Ok; Mon, 30 Sep 2024 11:36:35 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1svCpX-00328M-25;
+	Mon, 30 Sep 2024 11:36:35 +0200
+Date: Mon, 30 Sep 2024 11:36:35 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Michael Walle <mwalle@kernel.org>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-mtd@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 2/3] mtd: spi-nor: support vcc-supply regulator
+Message-ID: <20240930093635.6pyp4qole3qynllq@pengutronix.de>
+References: <20240930-spi-v2-0-ed7f6bcbe0df@nxp.com>
+ <20240930-spi-v2-2-ed7f6bcbe0df@nxp.com>
+ <20240930111914.4b412581@xps-13>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240930111914.4b412581@xps-13>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hi Frank,
+Hi Miquel,
 
-Frank.li@nxp.com wrote on Thu, 26 Sep 2024 13:02:06 -0400:
+On 24-09-30, Miquel Raynal wrote:
+> Hi,
+> 
+> peng.fan@oss.nxp.com wrote on Mon, 30 Sep 2024 17:22:25 +0800:
+> 
+> > From: Peng Fan <peng.fan@nxp.com>
+> > 
+> > SPI NOR flashes needs power supply to work properly. The power supply
+> > maybe software controllable per board design. So add the support
+> > for an vcc-supply regulator.
+> > 
+> > Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> > ---
+> >  drivers/mtd/spi-nor/core.c | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> > 
+> > diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+> > index 9d6e85bf227b..5249c8b13916 100644
+> > --- a/drivers/mtd/spi-nor/core.c
+> > +++ b/drivers/mtd/spi-nor/core.c
+> > @@ -17,6 +17,7 @@
+> >  #include <linux/mtd/spi-nor.h>
+> >  #include <linux/mutex.h>
+> >  #include <linux/of_platform.h>
+> > +#include <linux/regulator/consumer.h>
+> >  #include <linux/sched/task_stack.h>
+> >  #include <linux/sizes.h>
+> >  #include <linux/slab.h>
+> > @@ -3462,6 +3463,10 @@ int spi_nor_scan(struct spi_nor *nor, const char *name,
+> >  	if (!nor->bouncebuf)
+> >  		return -ENOMEM;
+> >  
+> > +	ret = devm_regulator_get_enable(dev, "vcc");
+> 
+> 					_optional ?
 
-> On Thu, Aug 29, 2024 at 05:13:57PM -0400, Frank Li wrote:
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > --- =20
->=20
-> Alex:
->=20
-> https://lore.kernel.org/linux-i3c/20240819-i3c_fix-v3-0-7d69f7b0a05e@nxp.=
-com/T/#m16fa9bb875b0ae9d37c5f6e91f90e375551c6366
->=20
-> There is some discuss about assiged address, I already explain the reason
-> and ping 3 times,
+The regulator optional API is different compared to other optional APIs.
+If we would use optional here, we would need to check the returned error
+code. On the other hand if the non optional API is used and the
+regualtor is missing, a dummy regualtor is returned (as pointed out by
+Marc).
 
-Pinging will not help as long as the code is not clear and simplified.
-I honestly think the PID should be retrieved earlier in the HCI part
-and that would solve most of your issues.
+Please see the _optional API doc to see more information about the
+_optional usage.
 
-Otherwise if that is not possible I still find hard to understand the
-big picture, the comments and the code. I've already spent quite a bit
-of time trying to improve it with you, but the logic is still a little
-bit too specific and complex from my point of view.
+Regards,
+  Marco
 
-> These patch are actual fixed hot join issues.
-
-It should not be the case. Hot-join should work without the devices
-having all the time the preferred address. If hot-join really does
-not work, then please split the series with the "preferred address"
-handling being done apart in a second series.
-
-Thanks,
-Miqu=C3=A8l
+> > +	if (ret)
+> > +		return ret;
+> > +
+> >  	ret = spi_nor_hw_reset(nor);
+> >  	if (ret)
+> >  		return ret;
+> > 
+> 
+> 
+> Thanks,
+> Miquèl
+> 
