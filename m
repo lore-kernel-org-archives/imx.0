@@ -1,58 +1,57 @@
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B40619F41C
-	for <imx@lists.linux.dev>; Mon, 30 Sep 2024 12:05:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A841A01DF
+	for <imx@lists.linux.dev>; Mon, 30 Sep 2024 12:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727697920; cv=none; b=TeMmTZb76nMzh3VIICZjt4xJNukbJGo95v0Nl26W/fAbFOI6gxc107mfvRycrpq4CRjSd7VOlTj7oGAXHSpe0UbSqViCCtRShjsXfGDAVjRih2Bxbvfe5Mk5JroTa2B9sqmsF0HDCdt7TTBXIGdC37N4gzaqE5MSwRjDjvJ5/wM=
+	t=1727697924; cv=none; b=FkNXRkGRxZd3OAxPijXlXwtHl1vcR0SIQ6OA/LDMz9+0mj5nPTZAH+xJiuygUGxo4xYfLA/oRw1kbO3yWAwbcyoOL/Gaj2GBP+nKEemSkDsfAAbWc8l0g8E9zRy0pvf8rKhBCGMjf3N1w9oug4l4OD0upYXKuWhqcRtq8RYloAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727697920; c=relaxed/simple;
-	bh=aBtuDT9YPo78PM4HWkajYyL24yWOJ9YEO0Dm4FdZ3Rg=;
+	s=arc-20240116; t=1727697924; c=relaxed/simple;
+	bh=r/6qUwtilPc6aiGRZZVb8lZs3Le7IbP8kJgI2X5FyiM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XsOUiWwoJMHHN7UBgNR90uFBw1cGqA1XPtjeTmVHn1ye3LQxEhWOdvYdGrVQkrRPdKJ2fgxX/Zx6Hs00fa4t/Z09XexznLt5dhn2/865Q+IvmObugemvU586ZSjdYcG4N0/7wAxZIko7MqcXe0WeAvzxbkCYRdPBTPco2DQw708=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=HVM3cgGE; arc=none smtp.client-ip=209.85.219.49
+	 In-Reply-To:To:Cc; b=l5f2wIKDf4ZuN84Uc3cQV02PK80SllKBNnp5fMNXLtviuX8rn/mhof0QZsvhxBwtddl+QSKR2H9ffl0TXe0RP0lUwvrsSwkp2UU9ozCCC4mC4BRfa3wxUn9FXSMkpxuVxLQoo/nf4v9NlqfAjREhX5jFZ+zr2J8DTyzuEPujhY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=PiaUP7B/; arc=none smtp.client-ip=209.85.219.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="HVM3cgGE"
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6cb2c5128d5so31327106d6.0
-        for <imx@lists.linux.dev>; Mon, 30 Sep 2024 05:05:19 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="PiaUP7B/"
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6cb2dffcdbbso37875566d6.1
+        for <imx@lists.linux.dev>; Mon, 30 Sep 2024 05:05:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1727697918; x=1728302718; darn=lists.linux.dev;
+        d=chromium.org; s=google; t=1727697921; x=1728302721; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=HJx29BD9yZboyGEAUyw+4rBBbXZtXq331Q8okj0vBtk=;
-        b=HVM3cgGEbftgIiZZTQni7Y5RfgA+E1VYUI7Y0N0i7O5+/ZLK1CauPuP5GJLFCw/EGp
-         64iCCtIP7CaMeyGnZWF0Oowrp6exTIGhk3Br40RQNIo4Ft/r8iKVplOLSp9jDClx4kEB
-         bsK/gp5BiOohPw+6UiYzzBdAMNlU8aAkMLNwQ=
+        bh=JU7U+YsXwNUN3GXi+lZlabPGhAkg1lZuiKZFCmpVa4Q=;
+        b=PiaUP7B/WD80DPEFcMFLdPYamaOQfsZKZ4nVxDh1CPY3ME5iq4NAZZOfjJ5x4M3onE
+         cTv5ymS2w6DZpQFKGgnJcp+hxCJ7fRQmkrb5iw4hVC6ZGBV3xly7ks8PsGdY+E1Lu4XC
+         R2wesu/rcmOUnC/HyFDaOb+/BIcArIDij4ssM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727697918; x=1728302718;
+        d=1e100.net; s=20230601; t=1727697921; x=1728302721;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HJx29BD9yZboyGEAUyw+4rBBbXZtXq331Q8okj0vBtk=;
-        b=Zux6guIfHLQjnPXbeuXqKZsBVx6r2XBpbWUu6iY/7dG6IAHGXuXhei+rT24MwcJyOQ
-         daSX7fYGqdg35wNM+uDdr3qroMabVUQ/wQ2zy+0VIQAhqY91DZxVXiMUfhC9FfQO7wlh
-         Agmg6tkxk2Rtq3Jz40I3XYp3dzG/FIHFdnxtr19f6Q4hyjXKEhuRbNXBbHMgq/JWv0Zw
-         Nly5MLhEj6PZKksvXEcDvKg2TWh4DDlogwrmITwEkOiCeMGqXJ72J4gGrbPisOwFryEQ
-         YUxrEmYxnk0FlooNZaGsC9j3NzkA01X/wrSgZSWXYxUTRY2wlCoB8Yl2TIVYqm7sInUf
-         Qz/g==
-X-Forwarded-Encrypted: i=1; AJvYcCVSMIfmJEIEujLvzfaC1Yd/UD7cIglq8auqsr4pLmmeMUCClVt6s2M0YDws93kns3n8rlY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwzA4LqCVqEMcYCPmR/liHOehcjpKoyZCfwQ5IEae7tGRcAYfm1
-	/j1c8WZ+ySJL4E24Fe7R9IS4HR+SODfsQMy59v00vdSa8vRwa/OSJFG0AqlAswNirIyYcdg5L3I
-	=
-X-Google-Smtp-Source: AGHT+IHvBkaWPQbVKiD/u2iOrMRkK3daurGtkkhjknrAX1KIWB3cA5A9a8FHevVPAdBTGyigNIjY6g==
-X-Received: by 2002:a05:6214:3a88:b0:6cb:2e94:3e24 with SMTP id 6a1803df08f44-6cb3b5b7edcmr189314226d6.11.1727697918247;
-        Mon, 30 Sep 2024 05:05:18 -0700 (PDT)
+        bh=JU7U+YsXwNUN3GXi+lZlabPGhAkg1lZuiKZFCmpVa4Q=;
+        b=BDeJS7Aoe4LpoHLIsxDXz1V0dTTSMmLc0m9D66hgAjQmgIs7XUxVEDH2vFOv4A1vIH
+         NQO/UtKAIEcx6TkK1tPA9UE6TChHhLbD44Lr0LeBOi5Bg4pmHraEshAjpd5UqYhyLO+t
+         PwlWKQy0XX/85fStCNCD/gXUlDL4H8UBF/ckI5TWIEtmgHX18Zpat4kU30dG/JJQ5w73
+         2ARXOddO9R3Ej6lPjgGF9VpIww2rjGI5qjx/uyHlmyvjbjtBxOTNENUSHktAOBwKO8wW
+         dHdzPZ/+0BlfWkK6e2vmbd03DGyF7ex2enJkBdZ8EopVvSfr0m3ejkM8v+DOJ2WKfHKZ
+         Zu1A==
+X-Forwarded-Encrypted: i=1; AJvYcCVklPpCTgMAu7ldKvy0wCNnXlzcTTscnZ9nZtDQwELHWu62mtJ9yjfV1FP1XxsZdTWnreM=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy/BG5kQ342OztTrHQPW/i70FEfX2v+oHMcYMSkv2Qx8ImYe29e
+	QzItpuaxiplQJ2tqSlh1c3a3WjoPvnRKGzoNtmzzO0FkX/GF6oT4r1xpPriRXA==
+X-Google-Smtp-Source: AGHT+IFo7OOUc+eOD+KctwzfWQcOtVnWKBIl/eyXC/k7ALK2/LWIOZekEy/aM6hhFvO+98exx2mm7Q==
+X-Received: by 2002:a05:6214:310a:b0:6cb:52c9:b91e with SMTP id 6a1803df08f44-6cb52c9bbcbmr87563466d6.35.1727697921599;
+        Mon, 30 Sep 2024 05:05:21 -0700 (PDT)
 Received: from denia.c.googlers.com (76.224.245.35.bc.googleusercontent.com. [35.245.224.76])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b694369sm38822536d6.144.2024.09.30.05.05.17
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b694369sm38822536d6.144.2024.09.30.05.05.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Sep 2024 05:05:17 -0700 (PDT)
+        Mon, 30 Sep 2024 05:05:21 -0700 (PDT)
 From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 30 Sep 2024 12:04:33 +0000
-Subject: [PATCH 38/45] media: i2c: max9286: Use string_choices helpers
+Date: Mon, 30 Sep 2024 12:04:35 +0000
+Subject: [PATCH 40/45] media: i2c: saa7127: Use string_choices helpers
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -61,7 +60,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240930-cocci-opportunity-v1-38-81e137456ce0@chromium.org>
+Message-Id: <20240930-cocci-opportunity-v1-40-81e137456ce0@chromium.org>
 References: <20240930-cocci-opportunity-v1-0-81e137456ce0@chromium.org>
 In-Reply-To: <20240930-cocci-opportunity-v1-0-81e137456ce0@chromium.org>
 To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
@@ -101,27 +100,72 @@ Cc: linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
 X-Mailer: b4 0.13.0
 
 The following cocci warnings are fixed:
-drivers/media/i2c/max9286.c:1333:3-9: opportunity for str_on_off(enable)
-drivers/media/i2c/saa7115.c:1366:3-9: opportunity for str_enable_disable(enable)
+drivers/media/i2c/saa7127.c:678:33-49: opportunity for str_enabled_disabled(state -> cc_enable)
+drivers/media/i2c/saa7127.c:677:33-50: opportunity for str_enabled_disabled(state -> vps_enable)
+drivers/media/i2c/saa7127.c:379:19-25: opportunity for str_on_off(enable)
+drivers/media/i2c/saa7127.c:346:49-55: opportunity for str_on_off(enable)
+drivers/media/i2c/saa7127.c:430:42-48: opportunity for str_on_off(enable)
+drivers/media/i2c/saa7127.c:405:42-48: opportunity for str_on_off(enable)
 
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
- drivers/media/i2c/max9286.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/saa7127.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/media/i2c/max9286.c b/drivers/media/i2c/max9286.c
-index 9fc4e130a273..d0f542343344 100644
---- a/drivers/media/i2c/max9286.c
-+++ b/drivers/media/i2c/max9286.c
-@@ -1330,7 +1330,7 @@ static int max9286_poc_enable(struct max9286_priv *priv, bool enable)
- 
- 	if (ret < 0)
- 		dev_err(&priv->client->dev, "Unable to turn power %s\n",
--			enable ? "on" : "off");
-+			str_on_off(enable));
- 
- 	return ret;
+diff --git a/drivers/media/i2c/saa7127.c b/drivers/media/i2c/saa7127.c
+index 818ed19cf37b..1ea5e4b9019d 100644
+--- a/drivers/media/i2c/saa7127.c
++++ b/drivers/media/i2c/saa7127.c
+@@ -343,7 +343,8 @@ static int saa7127_set_vps(struct v4l2_subdev *sd, const struct v4l2_sliced_vbi_
+ 	if (enable && (data->field != 0 || data->line != 16))
+ 		return -EINVAL;
+ 	if (state->vps_enable != enable) {
+-		v4l2_dbg(1, debug, sd, "Turn VPS Signal %s\n", enable ? "on" : "off");
++		v4l2_dbg(1, debug, sd, "Turn VPS Signal %s\n",
++			 str_on_off(enable));
+ 		saa7127_write(sd, 0x54, enable << 7);
+ 		state->vps_enable = enable;
+ 	}
+@@ -376,7 +377,7 @@ static int saa7127_set_cc(struct v4l2_subdev *sd, const struct v4l2_sliced_vbi_d
+ 		return -EINVAL;
+ 	if (state->cc_enable != enable) {
+ 		v4l2_dbg(1, debug, sd,
+-			"Turn CC %s\n", enable ? "on" : "off");
++			"Turn CC %s\n", str_on_off(enable));
+ 		saa7127_write(sd, SAA7127_REG_CLOSED_CAPTION,
+ 			(state->xds_enable << 7) | (enable << 6) | 0x11);
+ 		state->cc_enable = enable;
+@@ -402,7 +403,7 @@ static int saa7127_set_xds(struct v4l2_subdev *sd, const struct v4l2_sliced_vbi_
+ 	if (enable && (data->field != 1 || data->line != 21))
+ 		return -EINVAL;
+ 	if (state->xds_enable != enable) {
+-		v4l2_dbg(1, debug, sd, "Turn XDS %s\n", enable ? "on" : "off");
++		v4l2_dbg(1, debug, sd, "Turn XDS %s\n", str_on_off(enable));
+ 		saa7127_write(sd, SAA7127_REG_CLOSED_CAPTION,
+ 				(enable << 7) | (state->cc_enable << 6) | 0x11);
+ 		state->xds_enable = enable;
+@@ -427,7 +428,7 @@ static int saa7127_set_wss(struct v4l2_subdev *sd, const struct v4l2_sliced_vbi_
+ 	if (enable && (data->field != 0 || data->line != 23))
+ 		return -EINVAL;
+ 	if (state->wss_enable != enable) {
+-		v4l2_dbg(1, debug, sd, "Turn WSS %s\n", enable ? "on" : "off");
++		v4l2_dbg(1, debug, sd, "Turn WSS %s\n", str_on_off(enable));
+ 		saa7127_write(sd, 0x27, enable << 7);
+ 		state->wss_enable = enable;
+ 	}
+@@ -674,8 +675,10 @@ static int saa7127_log_status(struct v4l2_subdev *sd)
+ 			output_strs[state->output_type] : "disabled");
+ 	v4l2_info(sd, "WSS:      %s\n", state->wss_enable ?
+ 			wss_strs[state->wss_mode] : "disabled");
+-	v4l2_info(sd, "VPS:      %s\n", state->vps_enable ? "enabled" : "disabled");
+-	v4l2_info(sd, "CC:       %s\n", state->cc_enable ? "enabled" : "disabled");
++	v4l2_info(sd, "VPS:      %s\n",
++		  str_enabled_disabled(state->vps_enable));
++	v4l2_info(sd, "CC:       %s\n",
++		  str_enabled_disabled(state->cc_enable));
+ 	return 0;
  }
+ 
 
 -- 
 2.46.1.824.gd892dcdcdd-goog
