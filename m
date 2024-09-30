@@ -1,57 +1,57 @@
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6EFE1990BE
-	for <imx@lists.linux.dev>; Mon, 30 Sep 2024 12:04:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8AF21991D0
+	for <imx@lists.linux.dev>; Mon, 30 Sep 2024 12:04:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727697886; cv=none; b=O4qs7ZYk/aqX9anNV0slFiSGGCoB+5ftmO3yUs0l3/Qc1rFDP4ftH4YNZ83825tz3hLKJEJtx8/P3KskF/lbNNCEu3Fn+/RGLmKsX8bwb0G2Lm/XM6gc+dnuG+GmvNQOA4vixPEF522s6yJHEWKUJdNiTx89/TyVHQrEbxH6/0M=
+	t=1727697888; cv=none; b=uUreCw2eZEfRN8ZxqFwr3us+yx1lGusor6AVU81lhHe6qvSw/Sa7zuff6CCoXVoObXuw4ZNK3ylZPvcgD+MHQShRAMBTQ1nvdBEpQgStGV0CAxe8QRGlIYaUyLP+uk/5KWlj4wbFGYY814sf5l8bnDneZp+rzt+7CZL7QVhOzAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727697886; c=relaxed/simple;
-	bh=wO32bcNT3LvCUpFUE8spFFSYHTYoba2s3UV9j7voxsE=;
+	s=arc-20240116; t=1727697888; c=relaxed/simple;
+	bh=a+FiLOH14SS6a3AubkD6ERw5Y7LANHZ0RAc6/umufBY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=uhEQGgfzpwnw+uFbtbk/A5HSuBRkHdFleGMAOSJVa3HSAk/erPa3YeAV1vsla8lpOgY/qb5tQXWhHBIBuKyW3A2cmuooB9Wt8utHqmn/e8S40tFHuiofiouq17Z6WiDvtykuSRd3JFoxvcAsyDa5W++X0sw+sgnLUJADxEtNW3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Tx/Kqtq1; arc=none smtp.client-ip=209.85.219.48
+	 In-Reply-To:To:Cc; b=Wv3dZesU46ESy01nzEVwD84y6SGTxsRLTifYn5/zUYOUufmRFli5R4b0oTOwDb6fVkDe0lRtZiYoX/LzsYk3EY49kKxWLFCQJ1Xhvp+JJz5i7p+fWSMEV5KN/QFVOcXFW72wUkgik4iVtQaVYT8cmwZeHmXCy422guSQroIgWyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=hcgGrC+5; arc=none smtp.client-ip=209.85.219.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Tx/Kqtq1"
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-6cb2dffcdbbso37871096d6.1
-        for <imx@lists.linux.dev>; Mon, 30 Sep 2024 05:04:44 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="hcgGrC+5"
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6cb3062d9a6so36154296d6.0
+        for <imx@lists.linux.dev>; Mon, 30 Sep 2024 05:04:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1727697884; x=1728302684; darn=lists.linux.dev;
+        d=chromium.org; s=google; t=1727697886; x=1728302686; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=d+1PZUGpVB6A0qj8dhi+z1VPBRWAZJyLXCCfSc2+bXs=;
-        b=Tx/Kqtq1lF6lUgYMiXbkPiASyTCTj4iHo+zkiekW5zPkmDHDiAKaH2k6mS0J6bjyab
-         QCbYgj6RUyOJ5//7zOl5TNrd92odhNqIU4A0MTXxUwFcf0LV6DeRfMS1MBtDMAbfUdQX
-         q0J0odIKnMxhCRC5ooiL7F5zl+yxflxCJV6Io=
+        bh=h0yeJPaEcAnmgbtIHCIKdElv7f1NVvyLMutp/xQYAjQ=;
+        b=hcgGrC+5QTTC4Mwj9aoIb9VDwgaPDASKEtbjj7zJCIta+IQIlEgureWRez6N8DY4FD
+         UpWBnQ5sl83zVa6Tbm04JSE8Zc9i97+udcYZp235rEontXah27p+2xQf3vLkSduw9C46
+         beDhx3R0nsf/6PV9DzRM4YorR8CX6CqzCCyBQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727697884; x=1728302684;
+        d=1e100.net; s=20230601; t=1727697886; x=1728302686;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=d+1PZUGpVB6A0qj8dhi+z1VPBRWAZJyLXCCfSc2+bXs=;
-        b=liXkY43uQpk6BIrz/9okezl1PwKA69Nom9pgerIMc819fN0eqbV+cbKLZ5IOyyh2Lz
-         OJEpGX1PUtzsnQsW09td1xBq0RI6oFc56pYqI/8848VKuNDMm6RSzRN4AsTJ2QdIZivz
-         lrbSw7rgp3yUs7CpDV/lnZZvZMc4yW9ylBbpxmC7hypmDJHOX19XmH2ryCmzEvrEqaOV
-         EtSiibV/d3bCBDwvEkEON0VMNCtfuiA7jdSDFR3mn4xAPAhKt8A+cqMWas9AAqczRwjW
-         x+T5EGPk5mYq5ECOARf7xiOlpLYabKoJs3N5Iw7mWoaOL1hHsoKvXUBRfiB2Titot1Uy
-         e4yA==
-X-Forwarded-Encrypted: i=1; AJvYcCWVXDo+IU1oA/HHGS/nLJm7t2GMcS3a7gdvLOq3/lj3NrWBVNAr48qracKODvLEqhpOMLk=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz8G8gfHVrw2jWBcQxzBRIPeu3mB8vTrgZppbNvTO+l+ZTL3XG2
-	B3CnMI2VkhSf82d6cEsjVSRfTkI/KD3ixJQzNy+qQw4dxtJxbccP6Xn49leu+g==
-X-Google-Smtp-Source: AGHT+IGmAxnIT189WVUBwg+x/R9UvWvqRDVNzUhwwxur3BAKszcZq3coNxLRGmF9WP2isGNKo1o/8A==
-X-Received: by 2002:a05:6214:5706:b0:6bf:7bcd:78e3 with SMTP id 6a1803df08f44-6cb3b643feamr164774016d6.29.1727697883855;
-        Mon, 30 Sep 2024 05:04:43 -0700 (PDT)
+        bh=h0yeJPaEcAnmgbtIHCIKdElv7f1NVvyLMutp/xQYAjQ=;
+        b=YCUmZsrhQIZchSLnRz7W9mSPowqNMwX8ywXNhDsfZuRyCwv6rK0yxMxFEeuH9y+x7V
+         dPfYCLo78GJ0IpJhMXFAm2F/5lZHodlbIHwUnKmZKccsj7vwT0YL2E+LaxMt6GDrX5mZ
+         yzD+DAnmkHulwmj0zsg5FNQNjY4zZJu9+O20UWVUI/tK8oies6z5gWTsCoagWXx4UsMs
+         4mErxjKjJKT2HXzPb2XZqkP2wONTJTPT8d0euRT8He0+rHGq26XXRcRNz3NvsOEc29dk
+         MePIfSHG4zG7HQSi7YZsu917FRTM36MM87qJsjjBpquuIybcIsaA+L3Lg+c2TKigzVSS
+         tqRA==
+X-Forwarded-Encrypted: i=1; AJvYcCXXLSc2g6CxX7i6cjrDyN8Q8Z+pYJUwRBcBv+McdyzEzrxjGW0E4+DGAmy+dFZyGPb3Zts=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywd3Gn30jmCX/wmGTWBRiKxndQIT2tTbtNcV3VJd0Z7TIYM5G+V
+	CB9AHSy8N1T47PIZyr+tlcbYeliB7o7Fj9HoFmGkIpwaQWdA7Frpdeh3tM7KmQ==
+X-Google-Smtp-Source: AGHT+IG21mP+tUHPXSvJJJTKpKcZKw04O9Ig9Voo1lmCCA0A43eFT06NNMj2BNffGbxEca0hhvGjiw==
+X-Received: by 2002:a05:6214:3a88:b0:6c5:b636:d737 with SMTP id 6a1803df08f44-6cb3b5b648amr195767466d6.2.1727697885829;
+        Mon, 30 Sep 2024 05:04:45 -0700 (PDT)
 Received: from denia.c.googlers.com (76.224.245.35.bc.googleusercontent.com. [35.245.224.76])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b694369sm38822536d6.144.2024.09.30.05.04.42
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b694369sm38822536d6.144.2024.09.30.05.04.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Sep 2024 05:04:42 -0700 (PDT)
+        Mon, 30 Sep 2024 05:04:44 -0700 (PDT)
 From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 30 Sep 2024 12:04:14 +0000
-Subject: [PATCH 19/45] media: platform: ti: Use string_choices helpers
+Date: Mon, 30 Sep 2024 12:04:15 +0000
+Subject: [PATCH 20/45] media: st: Use string_choices helpers
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240930-cocci-opportunity-v1-19-81e137456ce0@chromium.org>
+Message-Id: <20240930-cocci-opportunity-v1-20-81e137456ce0@chromium.org>
 References: <20240930-cocci-opportunity-v1-0-81e137456ce0@chromium.org>
 In-Reply-To: <20240930-cocci-opportunity-v1-0-81e137456ce0@chromium.org>
 To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
@@ -99,27 +99,36 @@ Cc: linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
  linux-aspeed@lists.ozlabs.org, Ricardo Ribalda <ribalda@chromium.org>
 X-Mailer: b4 0.13.0
 
-The following cocci warning is fixed:
-drivers/media/platform/ti/omap3isp/ispstat.c:771:21-27: opportunity for str_enable_disable(enable)
+The following cocci warnings are fixed:
+drivers/media/platform/st/sti/hva/hva-debugfs.c:74:9-22: opportunity for str_true_false(ctrls -> dct8x8)
+drivers/media/platform/st/sti/hva/hva-debugfs.c:79:9-22: opportunity for str_true_false(ctrls -> sei_fp)
+drivers/media/platform/st/sti/hva/hva-debugfs.c:77:9-23: opportunity for str_true_false(ctrls -> vui_sar)
 
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
- drivers/media/platform/ti/omap3isp/ispstat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/st/sti/hva/hva-debugfs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/platform/ti/omap3isp/ispstat.c b/drivers/media/platform/ti/omap3isp/ispstat.c
-index 359a846205b0..603439afe582 100644
---- a/drivers/media/platform/ti/omap3isp/ispstat.c
-+++ b/drivers/media/platform/ti/omap3isp/ispstat.c
-@@ -768,7 +768,7 @@ int omap3isp_stat_enable(struct ispstat *stat, u8 enable)
- 	unsigned long irqflags;
+diff --git a/drivers/media/platform/st/sti/hva/hva-debugfs.c b/drivers/media/platform/st/sti/hva/hva-debugfs.c
+index a86a07b6fbc7..5e8c7dddbabf 100644
+--- a/drivers/media/platform/st/sti/hva/hva-debugfs.c
++++ b/drivers/media/platform/st/sti/hva/hva-debugfs.c
+@@ -71,12 +71,12 @@ static void format_ctx(struct seq_file *s, struct hva_ctx *ctx)
+ 			      "  | |- SEI frame packing type=%s\n",
+ 			      v4l2_ctrl_get_menu(entropy)[ctrls->entropy_mode],
+ 			      ctrls->cpb_size,
+-			      ctrls->dct8x8 ? "true" : "false",
++			      str_true_false(ctrls->dct8x8),
+ 			      ctrls->qpmin,
+ 			      ctrls->qpmax,
+-			      ctrls->vui_sar ? "true" : "false",
++			      str_true_false(ctrls->vui_sar),
+ 			      v4l2_ctrl_get_menu(vui_sar)[ctrls->vui_sar_idc],
+-			      ctrls->sei_fp ? "true" : "false",
++			      str_true_false(ctrls->sei_fp),
+ 			      v4l2_ctrl_get_menu(sei_fp)[ctrls->sei_fp_type]);
+ 	}
  
- 	dev_dbg(stat->isp->dev, "%s: user wants to %s module.\n",
--		stat->subdev.name, enable ? "enable" : "disable");
-+		stat->subdev.name, str_enable_disable(enable));
- 
- 	/* Prevent enabling while configuring */
- 	mutex_lock(&stat->ioctl_lock);
 
 -- 
 2.46.1.824.gd892dcdcdd-goog
