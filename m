@@ -1,57 +1,57 @@
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5079E18EFF5
-	for <imx@lists.linux.dev>; Mon, 30 Sep 2024 12:04:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD5C18F2FD
+	for <imx@lists.linux.dev>; Mon, 30 Sep 2024 12:04:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727697851; cv=none; b=jD9wtTcKkq+FgzaeaM2LmOrc8rj27iXpmyhUQ1XCGYPgnlwNYgiIQIWurRgfSaH0ifB8yGDkNqX4FWA2fv8fF150UiUgM05F0rof6xXqqmqXv0hWXRYP69KvaxhYkWyEBfIFY3+nVmrViQYgoUNcCBRR0RNlGaecpMi8M4+2CWs=
+	t=1727697853; cv=none; b=LWL9E0UzDlx9K5aFJ7lxYjHcVTjtC6+7HbBsrY7EcfX7EOxWPfUFQmi9X9xiJQL/V+tbG1zexY/l4XcekMKURnK413UU4lfBKrWKyVvoqv49CF0KDiLOytEZEKWJGWJqrMbIwztj9BC931Ds6YpA8BNnfcdhktM0KCuPDThGd3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727697851; c=relaxed/simple;
-	bh=JRVPAXt8pgkLV9kf8+kVySmbvl1AqLOgaMkZBH8WTjc=;
+	s=arc-20240116; t=1727697853; c=relaxed/simple;
+	bh=TBylZ8SaoziYjUVhpT7D5LPjCQTvsm3WiWvgxJj6GRA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RMICrFuraMd99tXa3tLl9SpxE0roBgYRirypviDIK9/feTBNoILATnksPcxK0fA/oBqMda/s4MvQxYloFymAKP7PiC9eEZlSYV6WuZkrKIJsV4epbIymIAxUDU1I9RPpK0Y4L7PyDNFgbcDZluGnKLynxt1cu4KFeoFthPnNR3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=DWs8xvLm; arc=none smtp.client-ip=209.85.219.51
+	 In-Reply-To:To:Cc; b=DHjdUBFHFtXxncjt9//p+vl/nl/1PWgy1vc7PZQjW6FsI/SDmmk4K99db+iXvIOTXN9qqUUThS6+aM2L97WF1cytaCtXj1mPwCWPKZANhkBO+aOwtIKaTTBOAuJzlX09CtPnXbBW0ycqjUm6YA9k/+RgOg/jRGNEPZOYofAG2Zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=OAxdEwfd; arc=none smtp.client-ip=209.85.219.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="DWs8xvLm"
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6cb4c013b78so18076336d6.1
-        for <imx@lists.linux.dev>; Mon, 30 Sep 2024 05:04:10 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="OAxdEwfd"
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6cb2ad51162so36881076d6.3
+        for <imx@lists.linux.dev>; Mon, 30 Sep 2024 05:04:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1727697849; x=1728302649; darn=lists.linux.dev;
+        d=chromium.org; s=google; t=1727697851; x=1728302651; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=4cqERgoR9OlhV9bZcAYTWgDv58ZKeW9/q+4TIB0lCLc=;
-        b=DWs8xvLmWh/dIxNX98UGLJ5+tvpzRYntdC8I1sjznbJgTwD3GbY7NV7Z7v5Wd4L6Dx
-         DZEjkukABMyxtM1EzfGvM1PEcujGH7+GKEg2FkO7RiyZ6J/qXPYODSSaUtmG0M5GYABC
-         uNur+YGwyttN7nKMvxsUKrMqHHCfwLw/QN/K4=
+        bh=uHKPhMgVbBroKUSOZVkcpmjIQRoUB/Pllvr3HK97AsI=;
+        b=OAxdEwfdVNPWJLJWLBxywAhAudd89kUuhhYuYkNQwvaM7vk+WGqdK6Yg6fALapCrH4
+         v2qlfxS57SSrDhDXKDsXzMEHgscLK6XcFAKE16pxRZH+7mCfeYfvZmydaEyySP6z5Ovb
+         3Nyz0V3dDUjU+mnR4ofqZ6x4YxaB/x3PB/GRc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727697849; x=1728302649;
+        d=1e100.net; s=20230601; t=1727697851; x=1728302651;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=4cqERgoR9OlhV9bZcAYTWgDv58ZKeW9/q+4TIB0lCLc=;
-        b=Opge+muT8JEk+jmem/I4nm6pvKC9IoLiMUZXalgIYIgM7+SSsFx7hY5PP4beqUtYw5
-         4270KWhUcBLCKXUamS9LULqxsHyLujdNmHwoldDKTCvMuAzbW5FHv6OyERfvOvRVmikt
-         +Y9IPMAAFj4HtV2AKxU4tJGtPjxTVreruOf2mlP8+5qMwgoQEk08DlEsgFkkKeP347dc
-         ZLRCgjZO5tFsc+yRz2ppM+fo6mkDqjW7wA/BPSQGrCBmi1s6jxsJX6uTu49wiPhxwam3
-         toniJ07/G2pMZnNW2v3XHRQunknA7ZrJNDQFbHlrRL52obeCTmjKk9OHlC956pKkuk9p
-         ohfw==
-X-Forwarded-Encrypted: i=1; AJvYcCWcYXGnkW5VkTTOxCoYWej1U3cZLP/nBKgcv+/IDT2WVQrxrGh7FFbDORWWqS719Cp36V0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwSmAZJJRFyuyZu1U3ne90v+TofvfW2umljJEOquKcunNWichel
-	eR4knKaXISFx6YEYJGmK4bfuABTHjInmXFa8bnYK/gxd9bcJsY6Huh/LfLM3Uw==
-X-Google-Smtp-Source: AGHT+IGdCSwCLQh27OqCiMv81An8yCyEXTlCQao91e2evQ6yJY9lhvUOeYdfvxJFC6O2qm9bRDYGaQ==
-X-Received: by 2002:a05:6214:5247:b0:6c5:166e:566c with SMTP id 6a1803df08f44-6cb3b5f06c1mr193464746d6.28.1727697848951;
-        Mon, 30 Sep 2024 05:04:08 -0700 (PDT)
+        bh=uHKPhMgVbBroKUSOZVkcpmjIQRoUB/Pllvr3HK97AsI=;
+        b=uKFw7FOMj1jLEbRVvN8L/EGaDFS6v74C5trWL2uTZFhlt5Hwl2/IzijqM7UFf6agtx
+         0g8c/mhdo5PDWt/AB72qL1/duiM5h7c+fAZfYwu0gn9sPKttWIe7B2y37D8rBIJlKHys
+         zl+Dz4rdeKm7mTcFEujD+o67K/ugNUYXHsZhPjxNK8XY2NpLhr0BXqmIvaea7wxg+Td0
+         R6umorkANBHTVxDi3/Jfxi7RbsTt7hlt1vx93WFEIOeqBZmhSN0scTUkaQx35+U8RV91
+         5bGZKyjYpQIvn4jytOz22M8sXXQlwBogI496C58I8s9oIRAGK7omTmyuG3FM3O/psEz0
+         D2ag==
+X-Forwarded-Encrypted: i=1; AJvYcCXbqy9vc1YwMgmXgTYw0r6/EKj6aY7AYLtKdTCQJ0IGz6XhmGXz3Uds3go94+B4FrnXx3g=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxsXY5Zqo6MI1k7GKKJNtJRg7c+4m/zDmpYxMefJ9OSB+cZA0zS
+	Fo7x9j0mN/O7NgDQ84/TZt3GNDMinVb2nKExO24v1hBYHUZtITzImLxC7Uvpow==
+X-Google-Smtp-Source: AGHT+IEk2U+7gH+P0zkQD3jLvaacsDuUtudGo2qx4V1eWgV4awKOL7SjyupKFoxi8Ld99dzK+gKdEQ==
+X-Received: by 2002:a05:6214:4a89:b0:6cb:2adf:751e with SMTP id 6a1803df08f44-6cb3b646986mr155979836d6.31.1727697850717;
+        Mon, 30 Sep 2024 05:04:10 -0700 (PDT)
 Received: from denia.c.googlers.com (76.224.245.35.bc.googleusercontent.com. [35.245.224.76])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b694369sm38822536d6.144.2024.09.30.05.04.06
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b694369sm38822536d6.144.2024.09.30.05.04.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Sep 2024 05:04:07 -0700 (PDT)
+        Mon, 30 Sep 2024 05:04:10 -0700 (PDT)
 From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 30 Sep 2024 12:03:58 +0000
-Subject: [PATCH 03/45] media: core: Use string_choices helpers
+Date: Mon, 30 Sep 2024 12:03:59 +0000
+Subject: [PATCH 04/45] media: pwc-ctl: Use string_choices helpers
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240930-cocci-opportunity-v1-3-81e137456ce0@chromium.org>
+Message-Id: <20240930-cocci-opportunity-v1-4-81e137456ce0@chromium.org>
 References: <20240930-cocci-opportunity-v1-0-81e137456ce0@chromium.org>
 In-Reply-To: <20240930-cocci-opportunity-v1-0-81e137456ce0@chromium.org>
 To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
@@ -99,100 +99,27 @@ Cc: linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
  linux-aspeed@lists.ozlabs.org, Ricardo Ribalda <ribalda@chromium.org>
 X-Mailer: b4 0.13.0
 
-The following cocci warnings are fixed:
-drivers/media/v4l2-core/v4l2-fwnode.c:282:32-33: opportunity for str_high_low(v)
-drivers/media/v4l2-core/v4l2-fwnode.c:290:32-33: opportunity for str_high_low(v)
-drivers/media/v4l2-core/v4l2-fwnode.c:298:37-38: opportunity for str_high_low(v)
-drivers/media/v4l2-core/v4l2-fwnode.c:329:31-32: opportunity for str_high_low(v)
-drivers/media/v4l2-core/v4l2-fwnode.c:356:40-41: opportunity for str_high_low(v)
-drivers/media/v4l2-core/v4l2-fwnode.c:364:38-39: opportunity for str_high_low(v)
-drivers/media/v4l2-core/v4l2-ctrls-core.c:272:16-26: opportunity for str_true_false(* ptr . p_s32)
+The following cocci warning is fixed:
+drivers/media/usb/pwc/pwc-ctrl.c:492:5-10: opportunity for str_on_off(power)
 
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
- drivers/media/v4l2-core/v4l2-ctrls-core.c |  3 ++-
- drivers/media/v4l2-core/v4l2-fwnode.c     | 12 ++++++------
- 2 files changed, 8 insertions(+), 7 deletions(-)
+ drivers/media/usb/pwc/pwc-ctrl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-ctrls-core.c b/drivers/media/v4l2-core/v4l2-ctrls-core.c
-index eeab6a5eb7ba..f303c70dffae 100644
---- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
-+++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
-@@ -8,6 +8,7 @@
- #include <linux/export.h>
- #include <linux/mm.h>
- #include <linux/slab.h>
-+#include <linux/string_choices.h>
- #include <media/v4l2-ctrls.h>
- #include <media/v4l2-event.h>
- #include <media/v4l2-fwnode.h>
-@@ -269,7 +270,7 @@ void v4l2_ctrl_type_op_log(const struct v4l2_ctrl *ctrl)
- 		pr_cont("%d", *ptr.p_s32);
- 		break;
- 	case V4L2_CTRL_TYPE_BOOLEAN:
--		pr_cont("%s", *ptr.p_s32 ? "true" : "false");
-+		pr_cont("%s", str_true_false(*ptr.p_s32));
- 		break;
- 	case V4L2_CTRL_TYPE_MENU:
- 		pr_cont("%s", ctrl->qmenu[*ptr.p_s32]);
-diff --git a/drivers/media/v4l2-core/v4l2-fwnode.c b/drivers/media/v4l2-core/v4l2-fwnode.c
-index f19c8adf2c61..92dc17179018 100644
---- a/drivers/media/v4l2-core/v4l2-fwnode.c
-+++ b/drivers/media/v4l2-core/v4l2-fwnode.c
-@@ -279,7 +279,7 @@ v4l2_fwnode_endpoint_parse_parallel_bus(struct fwnode_handle *fwnode,
- 			   V4L2_MBUS_HSYNC_ACTIVE_LOW);
- 		flags |= v ? V4L2_MBUS_HSYNC_ACTIVE_HIGH :
- 			V4L2_MBUS_HSYNC_ACTIVE_LOW;
--		pr_debug("hsync-active %s\n", v ? "high" : "low");
-+		pr_debug("hsync-active %s\n", str_high_low(v));
- 	}
+diff --git a/drivers/media/usb/pwc/pwc-ctrl.c b/drivers/media/usb/pwc/pwc-ctrl.c
+index cff64d872058..a1b4eeb41cfe 100644
+--- a/drivers/media/usb/pwc/pwc-ctrl.c
++++ b/drivers/media/usb/pwc/pwc-ctrl.c
+@@ -489,7 +489,7 @@ void pwc_camera_power(struct pwc_device *pdev, int power)
+ 		SET_POWER_SAVE_MODE_FORMATTER, pdev->ctrl_buf, 1);
+ 	if (r < 0)
+ 		PWC_ERROR("Failed to power %s camera (%d)\n",
+-			  power ? "on" : "off", r);
++			  str_on_off(power), r);
+ }
  
- 	if (!fwnode_property_read_u32(fwnode, "vsync-active", &v)) {
-@@ -287,7 +287,7 @@ v4l2_fwnode_endpoint_parse_parallel_bus(struct fwnode_handle *fwnode,
- 			   V4L2_MBUS_VSYNC_ACTIVE_LOW);
- 		flags |= v ? V4L2_MBUS_VSYNC_ACTIVE_HIGH :
- 			V4L2_MBUS_VSYNC_ACTIVE_LOW;
--		pr_debug("vsync-active %s\n", v ? "high" : "low");
-+		pr_debug("vsync-active %s\n", str_high_low(v));
- 	}
- 
- 	if (!fwnode_property_read_u32(fwnode, "field-even-active", &v)) {
-@@ -295,7 +295,7 @@ v4l2_fwnode_endpoint_parse_parallel_bus(struct fwnode_handle *fwnode,
- 			   V4L2_MBUS_FIELD_EVEN_LOW);
- 		flags |= v ? V4L2_MBUS_FIELD_EVEN_HIGH :
- 			V4L2_MBUS_FIELD_EVEN_LOW;
--		pr_debug("field-even-active %s\n", v ? "high" : "low");
-+		pr_debug("field-even-active %s\n", str_high_low(v));
- 	}
- 
- 	if (!fwnode_property_read_u32(fwnode, "pclk-sample", &v)) {
-@@ -326,7 +326,7 @@ v4l2_fwnode_endpoint_parse_parallel_bus(struct fwnode_handle *fwnode,
- 			   V4L2_MBUS_DATA_ACTIVE_LOW);
- 		flags |= v ? V4L2_MBUS_DATA_ACTIVE_HIGH :
- 			V4L2_MBUS_DATA_ACTIVE_LOW;
--		pr_debug("data-active %s\n", v ? "high" : "low");
-+		pr_debug("data-active %s\n", str_high_low(v));
- 	}
- 
- 	if (fwnode_property_present(fwnode, "slave-mode")) {
-@@ -353,7 +353,7 @@ v4l2_fwnode_endpoint_parse_parallel_bus(struct fwnode_handle *fwnode,
- 			   V4L2_MBUS_VIDEO_SOG_ACTIVE_LOW);
- 		flags |= v ? V4L2_MBUS_VIDEO_SOG_ACTIVE_HIGH :
- 			V4L2_MBUS_VIDEO_SOG_ACTIVE_LOW;
--		pr_debug("sync-on-green-active %s\n", v ? "high" : "low");
-+		pr_debug("sync-on-green-active %s\n", str_high_low(v));
- 	}
- 
- 	if (!fwnode_property_read_u32(fwnode, "data-enable-active", &v)) {
-@@ -361,7 +361,7 @@ v4l2_fwnode_endpoint_parse_parallel_bus(struct fwnode_handle *fwnode,
- 			   V4L2_MBUS_DATA_ENABLE_LOW);
- 		flags |= v ? V4L2_MBUS_DATA_ENABLE_HIGH :
- 			V4L2_MBUS_DATA_ENABLE_LOW;
--		pr_debug("data-enable-active %s\n", v ? "high" : "low");
-+		pr_debug("data-enable-active %s\n", str_high_low(v));
- 	}
- 
- 	switch (bus_type) {
+ int pwc_set_leds(struct pwc_device *pdev, int on_value, int off_value)
 
 -- 
 2.46.1.824.gd892dcdcdd-goog
