@@ -1,57 +1,57 @@
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691C21A01A9
-	for <imx@lists.linux.dev>; Mon, 30 Sep 2024 12:05:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE221A01DF
+	for <imx@lists.linux.dev>; Mon, 30 Sep 2024 12:05:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727697924; cv=none; b=Vt/53PcVBIbXIFYMAYE0wybjAh+zCU9iVQQnVZfryg8ZInRi/abzwt5+azHgxi1uoXr9Ncf2lVmmxGqQFuNwlHomEcY19iJA8VGL21IJDrmV+vVeIhzyuSN0Gap/Ofhfb0n5fFZT5ZUC/IR+56eW5bm5nN6gO4dbjIMVO3HrSQk=
+	t=1727697927; cv=none; b=Ojdv/izLav2qS9H75nyYkHTGOK4klObA5hI2J/jcezJ+vVP0Cu7mrF7Gl/ZrpE4ylQEdfl2fBoGgJD1HewMmx0qmRi/FWD9NGh3ZtDT37QNTbHhyxtWxh5ww2soKWv0q5eS3IChGFXTfapdMpCopKuUSWixMJD2jjdjtsGoBRVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727697924; c=relaxed/simple;
-	bh=TM9r2XK6KcBa1f8v3+Lblr8O3iR5BhJ1JBXQeHslSjE=;
+	s=arc-20240116; t=1727697927; c=relaxed/simple;
+	bh=5Rdjy71hTF6/9CoiFrdLRSPgDrn5yL3rP0qGkbkrLQk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aDolI01Vvp/7JV5AYXZWdpgnFbF2oDflB9TCdkGH5QHAhM+CQIzaVOpTYXuLzkJVXmwKAE+ZQ/VUiMTqmNP4/MYRLv0SQain6bmfCB3y+yuKZCC0cwKjyKt32WbBvW4gZ59UcWEe6Dd42WQgdf3TCovVpRngTQgsWvBFeuOsuys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=hyuXTRb+; arc=none smtp.client-ip=209.85.219.53
+	 In-Reply-To:To:Cc; b=DzQKdeaG6c5/HaCmaID0Jjj/yjB4n5PrqcwYYqrcwBWYXAUTi+PI+3xArZts6AO4xw3bbZiH7O3S4VFaWdKkczVRBXWiE0iyDHJkbfP/ZqAoS9r9a6+sblynTYHYgJYjaHnmJkaEF8ETljcwNg8cVO7Dc5oPx/mBUkbpOrQNPR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=bJoxXy7A; arc=none smtp.client-ip=209.85.161.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="hyuXTRb+"
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6cb3cbc28deso36414916d6.3
-        for <imx@lists.linux.dev>; Mon, 30 Sep 2024 05:05:21 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="bJoxXy7A"
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5e5568f1baaso2414683eaf.2
+        for <imx@lists.linux.dev>; Mon, 30 Sep 2024 05:05:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1727697920; x=1728302720; darn=lists.linux.dev;
+        d=chromium.org; s=google; t=1727697923; x=1728302723; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ckz+f9oQpPUu6rIcK1E7/sklc7IJmpymEtGmVuUIyqc=;
-        b=hyuXTRb+xQ3NcHjL1qE1tZPk1pNWQHk8s06SVEGmGhq9wg29KwoX38gKChj/hFFuK8
-         Tjr6toyY2MYZnUAallYTOVcDEibKNjl25XuGLkqL52nOix2lfaORD1NdGKD1MVujdhI2
-         DlXaYjDSjs1gJYwQADiMAxIY81wcY5kpd25/4=
+        bh=dipHc0aYdmEBdS77HCaW8bxKOJhKMvnfR/ECPy5ogKA=;
+        b=bJoxXy7AGJVIPlXCfUQJ3uFuQaksPy6w3Ywp7hu2jM2KdOzUlTC+iW1qj1vOT4Ie7m
+         OS+PEqSL/mZnKiqINCrclBgbRReCpmpnB1yToZ/ckXhEauP6qFM3QWsKPdEfNmROOb4W
+         FcQoL/4rn+31O0Si6iKRAJyrj9NyyVjRQhss0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727697920; x=1728302720;
+        d=1e100.net; s=20230601; t=1727697923; x=1728302723;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ckz+f9oQpPUu6rIcK1E7/sklc7IJmpymEtGmVuUIyqc=;
-        b=ae8EMVsvMcIFZJdmSA+Mds5f0ZTn7nGqKho+qZyR0VALznMCQts80RLFxscB8I4C6b
-         UuXj6dhKlL96+UNZ8UIJ11l79HgH0XSBTsG2zc2hy/b+d6Ojj6pScBdMIQl6ePLcBte4
-         UojP43pfIUKMMbHjCSG4mP1n61hpQomCJwPPbLQxznfZUDHyxQeU9tmNLwUR3xYrLzG7
-         iTMCxePtrWV50nADseDdqdgR1BjssiZ92tqxbBh3SGnhcSBEXGDyYmpabuEVcTScJAfR
-         8QpxAbtVfAOmrYo9jZE6UNBuC3JcIY6bqaxD+5o6RNsiWa6MrcOqnRJPcvxGMTlI7/Um
-         bBpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUe/9coqgKzrY1ufk7XwMPJzn0OKuGsvhsAe7d1XfnGkha84vGHfbHdlHy5/LKPSy1mIko=@lists.linux.dev
-X-Gm-Message-State: AOJu0YySuXHSNhou1utkXdYno7F2jP04KPwr+M/jVijnZkIR8f1Loxcc
-	yFK0bwjc6oaZhra6PQwTLfwwPxFYiziEUtdHAB1nd/Qw054ZlD15ENEStsfM3w==
-X-Google-Smtp-Source: AGHT+IEi2P8ci2OPbo+jpkaZ22WOo6DK57pM4gbAU29+4tgFAAJdQKDCxefcZ9fdV8Kube5E0H3gmQ==
-X-Received: by 2002:a05:6214:3a8c:b0:6c3:5c75:d2bc with SMTP id 6a1803df08f44-6cb3b66fab3mr198718286d6.47.1727697920467;
-        Mon, 30 Sep 2024 05:05:20 -0700 (PDT)
+        bh=dipHc0aYdmEBdS77HCaW8bxKOJhKMvnfR/ECPy5ogKA=;
+        b=c0xGpgEWTG7VOvLzWKqX1q1mxgBCYhyBu19+EVhxNYn1Fl+q6/J92FHckDCsFnkCTg
+         fDEe/PfGwwPD0uJNww6A+Io1Y1pj9Bej1uCG+KSQsxI/QqsDmNL5OisbjNGqroE3ZlxP
+         Pqb+queazuKTcbAwRUcivYYrxS2vvHWlAwd9c5b3J5ksqSvK1LrX3Qt5lXjuVesI4L//
+         8qEeF919KJ5Fx8x6ZkOTKmEhJ1OlWxXw+3hIr3ajEl7605Dm2eXQzX0r/Z3f0hwUW6Zq
+         HxBV6YMYjg1YM/dqMXxxizRpLKNCYhLo4DVm0tVu09BGLRH7pzrYUEn6dC4sRJLvJCUf
+         tQXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUj7WITcY5fwYBwcSEE1EcviJ72EstFkwIzYlmZ/22WIpDArQmhFqlNrdfg9VNy5r/8Kw8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwXskfcRzSU9ZctFit4Dyk7j9RDV856pqIHUin2ELHzBIevaf9n
+	J0jIPZvAKCmrWAzRMB6wA1ieG/LXFTVH20PTdzFY8syyy82O/Z4ZwxKvGZfkBQ==
+X-Google-Smtp-Source: AGHT+IFoOt4rzgvhDCZteDnFFmUKzF/AVrjX9ESZ9nyOoTWl+oHTKxHAU5l+hHb9VoTek5XVl6j96w==
+X-Received: by 2002:a05:6358:784:b0:1b1:ac7f:51d5 with SMTP id e5c5f4694b2df-1becbd0145emr538282555d.22.1727697923522;
+        Mon, 30 Sep 2024 05:05:23 -0700 (PDT)
 Received: from denia.c.googlers.com (76.224.245.35.bc.googleusercontent.com. [35.245.224.76])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b694369sm38822536d6.144.2024.09.30.05.05.18
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b694369sm38822536d6.144.2024.09.30.05.05.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Sep 2024 05:05:19 -0700 (PDT)
+        Mon, 30 Sep 2024 05:05:23 -0700 (PDT)
 From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 30 Sep 2024 12:04:34 +0000
-Subject: [PATCH 39/45] media: i2c: saa717x: Use string_choices helpers
+Date: Mon, 30 Sep 2024 12:04:36 +0000
+Subject: [PATCH 41/45] media: i2c: saa7115: Use string_choices helpers
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240930-cocci-opportunity-v1-39-81e137456ce0@chromium.org>
+Message-Id: <20240930-cocci-opportunity-v1-41-81e137456ce0@chromium.org>
 References: <20240930-cocci-opportunity-v1-0-81e137456ce0@chromium.org>
 In-Reply-To: <20240930-cocci-opportunity-v1-0-81e137456ce0@chromium.org>
 To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
@@ -100,26 +100,26 @@ Cc: linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
 X-Mailer: b4 0.13.0
 
 The following cocci warning is fixed:
-drivers/media/i2c/saa717x.c:1091:3-9: opportunity for str_enable_disable(enable)
+drivers/media/i2c/saa7115.c:1366:3-9: opportunity for str_enable_disable(enable)
 
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
- drivers/media/i2c/saa717x.c | 2 +-
+ drivers/media/i2c/saa7115.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/saa717x.c b/drivers/media/i2c/saa717x.c
-index b0793bb0c02a..2337cef45e3a 100644
---- a/drivers/media/i2c/saa717x.c
-+++ b/drivers/media/i2c/saa717x.c
-@@ -1088,7 +1088,7 @@ static int saa717x_s_stream(struct v4l2_subdev *sd, int enable)
- 	struct saa717x_state *decoder = to_state(sd);
+diff --git a/drivers/media/i2c/saa7115.c b/drivers/media/i2c/saa7115.c
+index a1c71187e773..ff0931cf5ecf 100644
+--- a/drivers/media/i2c/saa7115.c
++++ b/drivers/media/i2c/saa7115.c
+@@ -1363,7 +1363,7 @@ static int saa711x_s_stream(struct v4l2_subdev *sd, int enable)
+ 	struct saa711x_state *state = to_state(sd);
  
- 	v4l2_dbg(1, debug, sd, "decoder %s output\n",
+ 	v4l2_dbg(1, debug, sd, "%s output\n",
 -			enable ? "enable" : "disable");
 +			str_enable_disable(enable));
- 	decoder->enable = enable;
- 	saa717x_write(sd, 0x193, enable ? 0xa6 : 0x26);
- 	return 0;
+ 
+ 	if (state->enable == enable)
+ 		return 0;
 
 -- 
 2.46.1.824.gd892dcdcdd-goog
