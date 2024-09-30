@@ -1,57 +1,57 @@
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A755518FDB4
-	for <imx@lists.linux.dev>; Mon, 30 Sep 2024 12:04:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F29C190051
+	for <imx@lists.linux.dev>; Mon, 30 Sep 2024 12:04:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727697856; cv=none; b=II6hvubOz+4yCbApekh29V8/rbRfL8VnWe5zRkokMAYeAjUsBpyQghO3VKmAYfE2jykgfBezBpvQV5L6eLQEEIFVmA7yg62o7zx0nKuyEXm7vQSCVHr219rftrk4Y+i14SW8NTX+nwn9dPAznFHDq2+BX/wO87TjKUKYI41yAZE=
+	t=1727697858; cv=none; b=EY2u9/gDSWo0og0jRbsDWgosVf0MsFvAaEJ9tkaY9gPMBko+Y3VcHqOjf+wDgrH2Ssb0DurwaqE77Nr642xt5YAPA/KETAf2Muvo3fHJXyjHbDghJQesNefbYlczopnXOwB+KwKjrHdZTyp1fyXHQ/zPkDZJdC3lVwDPsDHoHJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727697856; c=relaxed/simple;
-	bh=4EPc3t0RKZkMLoHchmo/OHohT6ryeJ4Oca6zFWLr0gY=;
+	s=arc-20240116; t=1727697858; c=relaxed/simple;
+	bh=8MgT7dP1g3olMOrBUhOPMpyuDlnQim8dCackH8O66yY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CQuWHlVHwGOaynai+cQtTlJVGP71M9gu8AIh5CUlaFtrNJ55YPF4K/zFfV665Y3WcoOnSi0ruf5S1XdkUphUiDrhKEHV40kFPy46ZfROsD3CfaCLas54wbjVtoFWEdAUkK37S6BpmkJwWIGNk6UiwEcg3GKr7xwq5bSkDzzJU6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=glUVGZjF; arc=none smtp.client-ip=209.85.222.180
+	 In-Reply-To:To:Cc; b=Cu5CG5uUPW/Fap+N5j+GpfbPvajankZTPtVBvnaoqfGDYV0zfoLJMZ3cp3Vu661G2OOU0Uc3Az8h/zJjJM1NUlYiI/3pO4c5OoSfiRUq88MotohzD2dTK4XBZIgi7mvN39uOOYa+4HjCrT8XDxQg8jQi+wFvV/IIbSw9XqXSyHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=eX539iI7; arc=none smtp.client-ip=209.85.219.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="glUVGZjF"
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7acb0499ffeso407381685a.1
-        for <imx@lists.linux.dev>; Mon, 30 Sep 2024 05:04:14 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="eX539iI7"
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6cb3ba0a9a2so23997916d6.2
+        for <imx@lists.linux.dev>; Mon, 30 Sep 2024 05:04:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1727697853; x=1728302653; darn=lists.linux.dev;
+        d=chromium.org; s=google; t=1727697855; x=1728302655; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Vb+rHfycpw6eqzxAcjL5Q/NM2Cf8FBszS0leZkajSd4=;
-        b=glUVGZjFwttEkUGVD/rkxj/t8kHutkg1dbYi+/S7ejmFyx3TrwdSLdCAG+3bp2piTQ
-         4GsOByM6JIkJvSrjxXdOizPgk/cJ6qOMPclxXAJ2lQtDSkAezrr5C9HCriJ7KmW2j7VZ
-         SPmzxk1euccZTY5oqW3dCmIl39Indc8kZFUXQ=
+        bh=qsuMyrkoVqVku50v1nfIbGtDSp7S7nG6aU9K9Rp04Bk=;
+        b=eX539iI7gOXOtdSGVCztQ4c8ClmR8IwQIAXtuWoERMAKFz+gCNLQcWYv0sDgcx/yTF
+         e5N1AvbYY/LCWwXCNJVyEr6Thoxqj0sBsT7Y29jWUI0BMCOzLYqSOjgYXErrVAn1pIxi
+         6onnyFnh/jX7w1gJWTnVH8XHM1GSU3eqegdhs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727697853; x=1728302653;
+        d=1e100.net; s=20230601; t=1727697855; x=1728302655;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Vb+rHfycpw6eqzxAcjL5Q/NM2Cf8FBszS0leZkajSd4=;
-        b=uL723PXg1AekUfK6o9jOZYfmTvjaccQZdVgSAFq8+phlr/atEvBuOsT1MxuzsG/3eG
-         Rsm0Jn/kIRwuwEW0fVz4ya4HneICQiAvUzVhFpEkGNMixNdV1lMK2bRHV/KZB/OGjUQd
-         cA6G6RvSI17HhP8rLzp7GvNby9WvLRcoiZNUQz/zTmZdieJghCRkzwsf3X9LYJXTsb6G
-         kndNML7yV90JMLNBNiLFbYBKuaNacsr69fs60l8Fh6kh7w3/0FMbHqVxyT7G5UHBJHdE
-         /jbpKG1eCM/1X0b7iWMqUB7RjY3BdTGoB10yd6S16qbUGmk8muPnYYN45R5eKvk9v9lA
-         5sUA==
-X-Forwarded-Encrypted: i=1; AJvYcCWN+tziczAbS+0Cz6dhtrlznha4ThsaUsq+S+9FS5sHwr518MI+iiVEDFC+WtDKekO2AQc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwqsXe9E+nSuF9F/vPoTuwKYeVF+QXNdWcCVGNDElC+YElNRqgY
-	i5Swjp3slqpnCPmN/IXr/p/AzjCPQtO1YMK52cqr6C3Uo/WUS5HsdUSo7LL/wQ==
-X-Google-Smtp-Source: AGHT+IERK7kGfru4Q7d82RuyPjgoS6CBbu4N/h9Q+YkCupy/y3EuDtqtjn9iCQgLe1Tq04yD8BYOEQ==
-X-Received: by 2002:a05:6214:4a8e:b0:6c5:5418:a055 with SMTP id 6a1803df08f44-6cb3b5f2781mr194666026d6.30.1727697853291;
-        Mon, 30 Sep 2024 05:04:13 -0700 (PDT)
+        bh=qsuMyrkoVqVku50v1nfIbGtDSp7S7nG6aU9K9Rp04Bk=;
+        b=Fre5pKbOA9i1QkfqoUYsEc2PQ3lz2rB8lSNTt61V9DnmF4q5TGwM44DzH0TnV9Pk2O
+         adjCu8fWtgsx4N9zsCY+GlAQVDP9x+aafiQylfJLaJVVIe+Q3ZLoVJsYAnxeYtQP77/C
+         h4V42yQCOM6zhV7lKy9rumYbawcFwdQgiHW05h9r2eVCFI9D+HfTQG4gugwUycA/Y9Em
+         +H+gaOGKQG4YPTm3lrPrPRpnMKQdtp4YiwZMtKG152kTlEybQel1PTKEg8SdaBS5TCOJ
+         kRnBGt3XDoQJcNWtPas9WGWTleupN/uLTHVqw9AlR317HnKs0tIHhUpJq9b4Po28SxmK
+         wMZw==
+X-Forwarded-Encrypted: i=1; AJvYcCXenihIoS2wiVK/E3Qh8Ec9vNAWT+hrMr9kCKe2K3h+3c3/cqcBIejU7zDRVtakTytbwvU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyS7xbkmR8koQWhWHWfpznjUC+kg+54l5dxzOaMhH3cNnZ/r/Sz
+	gF6/tD847tw1lrypX2Y4IagMo8M7pCdQrAjUwdIHVk0E7UZ3nn64eYxmlQLmpA==
+X-Google-Smtp-Source: AGHT+IGbIk2oHMQ7FRb0GeJel1Jh9P6FVq0oOGmExjq89yc9rCz3p632i5Dvmp6LRIkRrX30gKUAOQ==
+X-Received: by 2002:a05:6214:5990:b0:6cb:3925:ec95 with SMTP id 6a1803df08f44-6cb3b66d1a1mr155459916d6.53.1727697855060;
+        Mon, 30 Sep 2024 05:04:15 -0700 (PDT)
 Received: from denia.c.googlers.com (76.224.245.35.bc.googleusercontent.com. [35.245.224.76])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b694369sm38822536d6.144.2024.09.30.05.04.10
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b694369sm38822536d6.144.2024.09.30.05.04.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Sep 2024 05:04:12 -0700 (PDT)
+        Mon, 30 Sep 2024 05:04:13 -0700 (PDT)
 From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 30 Sep 2024 12:04:00 +0000
-Subject: [PATCH 05/45] media: pvrusb2:Use string_choices helpers
+Date: Mon, 30 Sep 2024 12:04:01 +0000
+Subject: [PATCH 06/45] media: em28xx: Use string_choices helpers
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240930-cocci-opportunity-v1-5-81e137456ce0@chromium.org>
+Message-Id: <20240930-cocci-opportunity-v1-6-81e137456ce0@chromium.org>
 References: <20240930-cocci-opportunity-v1-0-81e137456ce0@chromium.org>
 In-Reply-To: <20240930-cocci-opportunity-v1-0-81e137456ce0@chromium.org>
 To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
@@ -100,124 +100,51 @@ Cc: linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
 X-Mailer: b4 0.13.0
 
 The following cocci warnings are fixed:
-drivers/media/usb/pvrusb2/pvrusb2-hdw.c:341:11-14: opportunity for str_true_false(val)
-drivers/media/usb/pvrusb2/pvrusb2-hdw.c:1727:6-17: opportunity for str_enable_disable(enable_flag)
-drivers/media/usb/pvrusb2/pvrusb2-hdw.c:1663:6-14: opportunity for str_on_off(enablefl)
-drivers/media/usb/pvrusb2/pvrusb2-encoder.c:265:8-29: opportunity for str_true_false(hdw -> state_encoder_ok)
-drivers/media/usb/pvrusb2/pvrusb2-encoder.c:271:9-33: opportunity for str_true_false(hdw -> state_encoder_runok)
-drivers/media/usb/pvrusb2/pvrusb2-ctrl.c:524:35-38: opportunity for str_true_false(val)
-drivers/media/usb/pvrusb2/pvrusb2-i2c-core.c:475:11-37: opportunity for str_read_write(msgs [ idx ] . flags & I2C_M_RD)
-drivers/media/usb/pvrusb2/pvrusb2-debugifc.c:151:4-31: opportunity for str_on_off(pvr2_hdw_get_streaming ( hdw ))
+drivers/media/usb/em28xx/em28xx-i2c.c:579:3-29: opportunity for str_read_write(( msgs [ i ] . flags & I2C_M_RD ))
+drivers/media/usb/em28xx/em28xx-i2c.c:590:2-28: opportunity for str_read_write(( msgs [ i ] . flags & I2C_M_RD ))
+drivers/media/usb/em28xx/em28xx-video.c:941:4-9: opportunity for str_enabled_disabled(flags)
 
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
- drivers/media/usb/pvrusb2/pvrusb2-ctrl.c     | 2 +-
- drivers/media/usb/pvrusb2/pvrusb2-debugifc.c | 3 ++-
- drivers/media/usb/pvrusb2/pvrusb2-encoder.c  | 5 ++---
- drivers/media/usb/pvrusb2/pvrusb2-hdw.c      | 6 +++---
- drivers/media/usb/pvrusb2/pvrusb2-i2c-core.c | 3 +--
- 5 files changed, 9 insertions(+), 10 deletions(-)
+ drivers/media/usb/em28xx/em28xx-i2c.c   | 4 ++--
+ drivers/media/usb/em28xx/em28xx-video.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/usb/pvrusb2/pvrusb2-ctrl.c b/drivers/media/usb/pvrusb2/pvrusb2-ctrl.c
-index 8ae3ad80cccb..b6c9bda214c8 100644
---- a/drivers/media/usb/pvrusb2/pvrusb2-ctrl.c
-+++ b/drivers/media/usb/pvrusb2/pvrusb2-ctrl.c
-@@ -521,7 +521,7 @@ int pvr2_ctrl_value_to_sym_internal(struct pvr2_ctrl *cptr,
- 		*len = scnprintf(buf,maxlen,"%d",val);
- 		ret = 0;
- 	} else if (cptr->info->type == pvr2_ctl_bool) {
--		*len = scnprintf(buf,maxlen,"%s",val ? "true" : "false");
-+		*len = scnprintf(buf, maxlen, "%s", str_true_false(val));
- 		ret = 0;
- 	} else if (cptr->info->type == pvr2_ctl_enum) {
- 		const char * const *names;
-diff --git a/drivers/media/usb/pvrusb2/pvrusb2-debugifc.c b/drivers/media/usb/pvrusb2/pvrusb2-debugifc.c
-index 81d711269ab5..9e4eb03133c9 100644
---- a/drivers/media/usb/pvrusb2/pvrusb2-debugifc.c
-+++ b/drivers/media/usb/pvrusb2/pvrusb2-debugifc.c
-@@ -5,6 +5,7 @@
-  */
+diff --git a/drivers/media/usb/em28xx/em28xx-i2c.c b/drivers/media/usb/em28xx/em28xx-i2c.c
+index a7eb11f7fb34..62fe49876a32 100644
+--- a/drivers/media/usb/em28xx/em28xx-i2c.c
++++ b/drivers/media/usb/em28xx/em28xx-i2c.c
+@@ -576,7 +576,7 @@ static int em28xx_i2c_xfer(struct i2c_adapter *i2c_adap,
+ 			goto error;
  
- #include <linux/string.h>
-+#include <linux/string_choices.h>
- #include "pvrusb2-debugifc.h"
- #include "pvrusb2-hdw.h"
- #include "pvrusb2-debug.h"
-@@ -148,7 +149,7 @@ int pvr2_debugifc_print_status(struct pvr2_hdw *hdw,
- 	bcnt += ccnt; acnt -= ccnt; buf += ccnt;
+ 		dprintk(2, "%s %s addr=%02x len=%d: %*ph\n",
+-			(msgs[i].flags & I2C_M_RD) ? "read" : "write",
++			str_read_write(msgs[i].flags & I2C_M_RD),
+ 			i == num - 1 ? "stop" : "nonstop",
+ 			addr, msgs[i].len,
+ 			msgs[i].len, msgs[i].buf);
+@@ -587,7 +587,7 @@ static int em28xx_i2c_xfer(struct i2c_adapter *i2c_adap,
  
- 	ccnt = scnprintf(buf,acnt,"Streaming is %s\n",
--			 pvr2_hdw_get_streaming(hdw) ? "on" : "off");
-+			 str_on_off(pvr2_hdw_get_streaming(hdw)));
- 	bcnt += ccnt; acnt -= ccnt; buf += ccnt;
- 
- 
-diff --git a/drivers/media/usb/pvrusb2/pvrusb2-encoder.c b/drivers/media/usb/pvrusb2/pvrusb2-encoder.c
-index c8102772344b..8a2464744e5b 100644
---- a/drivers/media/usb/pvrusb2/pvrusb2-encoder.c
-+++ b/drivers/media/usb/pvrusb2/pvrusb2-encoder.c
-@@ -262,14 +262,13 @@ rdData[0]);
- 			pvr2_trace(PVR2_TRACE_STBITS,
- 				   "State bit %s <-- %s",
- 				   "state_encoder_ok",
--				   (hdw->state_encoder_ok ? "true" : "false"));
-+				   str_true_false(hdw->state_encoder_ok));
- 			if (hdw->state_encoder_runok) {
- 				hdw->state_encoder_runok = 0;
- 				pvr2_trace(PVR2_TRACE_STBITS,
- 				   "State bit %s <-- %s",
- 					   "state_encoder_runok",
--					   (hdw->state_encoder_runok ?
--					    "true" : "false"));
-+					   str_true_false(hdw->state_encoder_runok));
- 			}
- 			pvr2_trace(
- 				PVR2_TRACE_ERROR_LEGS,
-diff --git a/drivers/media/usb/pvrusb2/pvrusb2-hdw.c b/drivers/media/usb/pvrusb2/pvrusb2-hdw.c
-index 29cc207194b9..761d718478ca 100644
---- a/drivers/media/usb/pvrusb2/pvrusb2-hdw.c
-+++ b/drivers/media/usb/pvrusb2/pvrusb2-hdw.c
-@@ -338,7 +338,7 @@ static void trace_stbit(const char *name,int val)
- {
- 	pvr2_trace(PVR2_TRACE_STBITS,
- 		   "State bit %s <-- %s",
--		   name,(val ? "true" : "false"));
-+		   name, str_true_false(val));
- }
- 
- static int ctrl_channelfreq_get(struct pvr2_ctrl *cptr,int *vp)
-@@ -1660,7 +1660,7 @@ static int pvr2_decoder_enable(struct pvr2_hdw *hdw,int enablefl)
- 	   anyway, just in case somebody else wants to hear the
- 	   command... */
- 	pvr2_trace(PVR2_TRACE_CHIPS, "subdev v4l2 stream=%s",
--		   (enablefl ? "on" : "off"));
-+		   str_on_off(enablefl));
- 	v4l2_device_call_all(&hdw->v4l2_dev, 0, video, s_stream, enablefl);
- 	v4l2_device_call_all(&hdw->v4l2_dev, 0, audio, s_stream, enablefl);
- 	if (hdw->decoder_client_id) {
-@@ -1724,7 +1724,7 @@ int pvr2_hdw_set_streaming(struct pvr2_hdw *hdw,int enable_flag)
- 		hdw->state_pipeline_req = enable_flag != 0;
- 		pvr2_trace(PVR2_TRACE_START_STOP,
- 			   "/*--TRACE_STREAM--*/ %s",
--			   enable_flag ? "enable" : "disable");
-+			   str_enable_disable(enable_flag));
- 	}
- 	pvr2_hdw_state_sched(hdw);
- 	LOCK_GIVE(hdw->big_lock);
-diff --git a/drivers/media/usb/pvrusb2/pvrusb2-i2c-core.c b/drivers/media/usb/pvrusb2/pvrusb2-i2c-core.c
-index 63db04fe12d3..60a0df018334 100644
---- a/drivers/media/usb/pvrusb2/pvrusb2-i2c-core.c
-+++ b/drivers/media/usb/pvrusb2/pvrusb2-i2c-core.c
-@@ -472,8 +472,7 @@ static int pvr2_i2c_xfer(struct i2c_adapter *i2c_adap,
- 			       idx+1,num,
- 			       msgs[idx].addr,
- 			       cnt,
--			       (msgs[idx].flags & I2C_M_RD ?
--				"read" : "write"));
-+			       str_read_write(msgs[idx].flags & I2C_M_RD));
- 			if ((ret > 0) || !(msgs[idx].flags & I2C_M_RD)) {
- 				if (cnt > 8) cnt = 8;
- 				pr_cont(" [");
+ error:
+ 	dprintk(2, "%s %s addr=%02x len=%d: %sERROR: %i\n",
+-		(msgs[i].flags & I2C_M_RD) ? "read" : "write",
++		str_read_write(msgs[i].flags & I2C_M_RD),
+ 		i == num - 1 ? "stop" : "nonstop",
+ 		addr, msgs[i].len,
+ 		(rc == -ENODEV) ? "no device " : "",
+diff --git a/drivers/media/usb/em28xx/em28xx-video.c b/drivers/media/usb/em28xx/em28xx-video.c
+index 4aef584e21da..ff017c187aff 100644
+--- a/drivers/media/usb/em28xx/em28xx-video.c
++++ b/drivers/media/usb/em28xx/em28xx-video.c
+@@ -938,7 +938,7 @@ static int em28xx_enable_analog_tuner(struct em28xx *dev)
+ 			dev_err(&dev->intf->dev,
+ 				"Couldn't change link %s->%s to %s. Error %d\n",
+ 				source->name, sink->name,
+-				flags ? "enabled" : "disabled",
++				str_enabled_disabled(flags),
+ 				ret);
+ 			return ret;
+ 		}
 
 -- 
 2.46.1.824.gd892dcdcdd-goog
