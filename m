@@ -1,57 +1,57 @@
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107CD198E76
-	for <imx@lists.linux.dev>; Mon, 30 Sep 2024 12:04:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6EFE1990BE
+	for <imx@lists.linux.dev>; Mon, 30 Sep 2024 12:04:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727697884; cv=none; b=faa4b1dTkxt/Hb26gSVe54zwrWqdieGiS6jnlYvieARxwqrFUisuX7eqIjnojvU0iYVG0vws7xPxesaoN4/7v1R46kXMFJSxfYGsona0b/vbg2loHgwRVNvfMf4quRR3tCiIb1tpUtshSk0oZ9eJGmqAPesfH3Z8CsT25fuHiss=
+	t=1727697886; cv=none; b=O4qs7ZYk/aqX9anNV0slFiSGGCoB+5ftmO3yUs0l3/Qc1rFDP4ftH4YNZ83825tz3hLKJEJtx8/P3KskF/lbNNCEu3Fn+/RGLmKsX8bwb0G2Lm/XM6gc+dnuG+GmvNQOA4vixPEF522s6yJHEWKUJdNiTx89/TyVHQrEbxH6/0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727697884; c=relaxed/simple;
-	bh=i9fHK42BYZRW42DIn7gTi+isZVRv8GhNgDIaA4tO6Tw=;
+	s=arc-20240116; t=1727697886; c=relaxed/simple;
+	bh=wO32bcNT3LvCUpFUE8spFFSYHTYoba2s3UV9j7voxsE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=J1GChowBYH0sOzeDRExcIOdEI4bxtXr/7pmm6lxCqBfKjrMGQrZNWF4Y5a4jECP19Bc4Z+Ihx2JD87nxqFAaTup2vqeAtXBb5eG9Ixjz+auuE/ENSJflxMW21Aqsn85W083vFai8emSn9Kgexe4rbtE/E8nlvYJd0E1KFRA120c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=UqGmC+oq; arc=none smtp.client-ip=209.85.161.49
+	 In-Reply-To:To:Cc; b=uhEQGgfzpwnw+uFbtbk/A5HSuBRkHdFleGMAOSJVa3HSAk/erPa3YeAV1vsla8lpOgY/qb5tQXWhHBIBuKyW3A2cmuooB9Wt8utHqmn/e8S40tFHuiofiouq17Z6WiDvtykuSRd3JFoxvcAsyDa5W++X0sw+sgnLUJADxEtNW3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Tx/Kqtq1; arc=none smtp.client-ip=209.85.219.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="UqGmC+oq"
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-5e1baf0f764so1288408eaf.1
-        for <imx@lists.linux.dev>; Mon, 30 Sep 2024 05:04:42 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Tx/Kqtq1"
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-6cb2dffcdbbso37871096d6.1
+        for <imx@lists.linux.dev>; Mon, 30 Sep 2024 05:04:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1727697882; x=1728302682; darn=lists.linux.dev;
+        d=chromium.org; s=google; t=1727697884; x=1728302684; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+JjigCj7wmiDgTIVi8lxvvE6Xnwp6vOIIL7mEoeKjLo=;
-        b=UqGmC+oqTsEbLhWpf87zedKUo3bU7kAGxY/Zsc6ntaGPuqFqgfTeywPtbYlZzDZwO0
-         FOuuTRmHU1LBbxxvS8G05iv9jPaCypXZszuMQ4VpmDrzfIW2yMJefK8a7Ky8QrhiASsq
-         LayKdZh9bDC6PdOTGhEvFkVmYlHkjS7apyoVY=
+        bh=d+1PZUGpVB6A0qj8dhi+z1VPBRWAZJyLXCCfSc2+bXs=;
+        b=Tx/Kqtq1lF6lUgYMiXbkPiASyTCTj4iHo+zkiekW5zPkmDHDiAKaH2k6mS0J6bjyab
+         QCbYgj6RUyOJ5//7zOl5TNrd92odhNqIU4A0MTXxUwFcf0LV6DeRfMS1MBtDMAbfUdQX
+         q0J0odIKnMxhCRC5ooiL7F5zl+yxflxCJV6Io=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727697882; x=1728302682;
+        d=1e100.net; s=20230601; t=1727697884; x=1728302684;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+JjigCj7wmiDgTIVi8lxvvE6Xnwp6vOIIL7mEoeKjLo=;
-        b=IblLGmYJPu44HbVAQ18P51F5Zy7GB5LXf7l1TW1nnpu5UqaPf/hYcuYlJ/JLR/7yt+
-         q7uOJn/2US2/qzCAhKAZ151lQW5DPvqBZIHSf1TuRop97WDd6woZyuR9y3QhG2qcqiSC
-         NN1mMSgJu1J5Oem36VsHLzHwLbacs3+6Y/shQAZ31VDB2IRJ0ymsaDzjXlcZ0FaecLRF
-         1KtGFt1h1Y+/Cb6dmrgy//x3I/H5nkgF8yPXNanP+3TY3Q/KfS6paOOZC2bbSxOErUXy
-         N0queQJWMjtEkX/2wk916NQeIk3g4MwFDK5edEQxsDDWLs2JgHeZclWQOHTsrQDSFz0H
-         mTAw==
-X-Forwarded-Encrypted: i=1; AJvYcCXgQ2lRPBVG/C8ymMTE978TRDASraw0tT+kX2gSvav52eni46TTphtaOFkEZTsQv2gFpsY=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz9zyUsyOwZQCb7T4jJRhdU/3cfZda92IQxcgcg29HozQnKVc8N
-	HOAt+Fy0QFZBt3w/y0Ash0AvgSM0GaQW/kO7/76JlUAjt+eeibUoRTivjvRr6w==
-X-Google-Smtp-Source: AGHT+IHorNkcL7CG7P94wqWnm5CxVPJz+Rc1wLbNEDwAbC1i2AVoPfjS6B+31QnhNxiGPZOH/d/JVQ==
-X-Received: by 2002:a05:6359:4c9a:b0:1ad:10ff:341e with SMTP id e5c5f4694b2df-1becbb397e3mr239386155d.4.1727697882114;
-        Mon, 30 Sep 2024 05:04:42 -0700 (PDT)
+        bh=d+1PZUGpVB6A0qj8dhi+z1VPBRWAZJyLXCCfSc2+bXs=;
+        b=liXkY43uQpk6BIrz/9okezl1PwKA69Nom9pgerIMc819fN0eqbV+cbKLZ5IOyyh2Lz
+         OJEpGX1PUtzsnQsW09td1xBq0RI6oFc56pYqI/8848VKuNDMm6RSzRN4AsTJ2QdIZivz
+         lrbSw7rgp3yUs7CpDV/lnZZvZMc4yW9ylBbpxmC7hypmDJHOX19XmH2ryCmzEvrEqaOV
+         EtSiibV/d3bCBDwvEkEON0VMNCtfuiA7jdSDFR3mn4xAPAhKt8A+cqMWas9AAqczRwjW
+         x+T5EGPk5mYq5ECOARf7xiOlpLYabKoJs3N5Iw7mWoaOL1hHsoKvXUBRfiB2Titot1Uy
+         e4yA==
+X-Forwarded-Encrypted: i=1; AJvYcCWVXDo+IU1oA/HHGS/nLJm7t2GMcS3a7gdvLOq3/lj3NrWBVNAr48qracKODvLEqhpOMLk=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz8G8gfHVrw2jWBcQxzBRIPeu3mB8vTrgZppbNvTO+l+ZTL3XG2
+	B3CnMI2VkhSf82d6cEsjVSRfTkI/KD3ixJQzNy+qQw4dxtJxbccP6Xn49leu+g==
+X-Google-Smtp-Source: AGHT+IGmAxnIT189WVUBwg+x/R9UvWvqRDVNzUhwwxur3BAKszcZq3coNxLRGmF9WP2isGNKo1o/8A==
+X-Received: by 2002:a05:6214:5706:b0:6bf:7bcd:78e3 with SMTP id 6a1803df08f44-6cb3b643feamr164774016d6.29.1727697883855;
+        Mon, 30 Sep 2024 05:04:43 -0700 (PDT)
 Received: from denia.c.googlers.com (76.224.245.35.bc.googleusercontent.com. [35.245.224.76])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b694369sm38822536d6.144.2024.09.30.05.04.40
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b694369sm38822536d6.144.2024.09.30.05.04.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Sep 2024 05:04:40 -0700 (PDT)
+        Mon, 30 Sep 2024 05:04:42 -0700 (PDT)
 From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 30 Sep 2024 12:04:13 +0000
-Subject: [PATCH 18/45] media: xilinx: Use string_choices helpers
+Date: Mon, 30 Sep 2024 12:04:14 +0000
+Subject: [PATCH 19/45] media: platform: ti: Use string_choices helpers
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240930-cocci-opportunity-v1-18-81e137456ce0@chromium.org>
+Message-Id: <20240930-cocci-opportunity-v1-19-81e137456ce0@chromium.org>
 References: <20240930-cocci-opportunity-v1-0-81e137456ce0@chromium.org>
 In-Reply-To: <20240930-cocci-opportunity-v1-0-81e137456ce0@chromium.org>
 To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
@@ -99,73 +99,27 @@ Cc: linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
  linux-aspeed@lists.ozlabs.org, Ricardo Ribalda <ribalda@chromium.org>
 X-Mailer: b4 0.13.0
 
-The following cocci warnings are fixed:
-drivers/media/platform/xilinx/xilinx-csi2rxss.c:415:3-27: opportunity for str_true_false(data & XCSI_CLKINFR_STOP)
-drivers/media/platform/xilinx/xilinx-csi2rxss.c:409:3-24: opportunity for str_true_false(data & XCSI_CSR_RIPCD)
-drivers/media/platform/xilinx/xilinx-csi2rxss.c:407:3-23: opportunity for str_true_false(data & XCSI_CSR_SLBF)
-drivers/media/platform/xilinx/xilinx-csi2rxss.c:403:3-29: opportunity for str_true_false(data & XCSI_CSR_SPFIFOFULL)
-drivers/media/platform/xilinx/xilinx-csi2rxss.c:405:3-27: opportunity for str_true_false(data & XCSI_CSR_SPFIFONE)
-drivers/media/platform/xilinx/xilinx-csi2rxss.c:424:4-30: opportunity for str_true_false(data & XCSI_DLXINFR_SOTERR)
-drivers/media/platform/xilinx/xilinx-csi2rxss.c:425:4-34: opportunity for str_true_false(data & XCSI_DLXINFR_SOTSYNCERR)
-drivers/media/platform/xilinx/xilinx-csi2rxss.c:426:4-28: opportunity for str_true_false(data & XCSI_DLXINFR_STOP)
-drivers/media/platform/xilinx/xilinx-csi2rxss.c:892:2-19: opportunity for str_enabled_disabled(xcsi2rxss -> en_vcx)
+The following cocci warning is fixed:
+drivers/media/platform/ti/omap3isp/ispstat.c:771:21-27: opportunity for str_enable_disable(enable)
 
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
- drivers/media/platform/xilinx/xilinx-csi2rxss.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/media/platform/ti/omap3isp/ispstat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/xilinx/xilinx-csi2rxss.c b/drivers/media/platform/xilinx/xilinx-csi2rxss.c
-index f953d5474ae0..7ddd9b265162 100644
---- a/drivers/media/platform/xilinx/xilinx-csi2rxss.c
-+++ b/drivers/media/platform/xilinx/xilinx-csi2rxss.c
-@@ -400,19 +400,19 @@ static int xcsi2rxss_log_status(struct v4l2_subdev *sd)
- 	dev_info(dev, "***** Core Status *****\n");
- 	data = xcsi2rxss_read(xcsi2rxss, XCSI_CSR_OFFSET);
- 	dev_info(dev, "Short Packet FIFO Full = %s\n",
--		 data & XCSI_CSR_SPFIFOFULL ? "true" : "false");
-+		 str_true_false(data & XCSI_CSR_SPFIFOFULL));
- 	dev_info(dev, "Short Packet FIFO Not Empty = %s\n",
--		 data & XCSI_CSR_SPFIFONE ? "true" : "false");
-+		 str_true_false(data & XCSI_CSR_SPFIFONE));
- 	dev_info(dev, "Stream line buffer full = %s\n",
--		 data & XCSI_CSR_SLBF ? "true" : "false");
-+		 str_true_false(data & XCSI_CSR_SLBF));
- 	dev_info(dev, "Soft reset/Core disable in progress = %s\n",
--		 data & XCSI_CSR_RIPCD ? "true" : "false");
-+		 str_true_false(data & XCSI_CSR_RIPCD));
+diff --git a/drivers/media/platform/ti/omap3isp/ispstat.c b/drivers/media/platform/ti/omap3isp/ispstat.c
+index 359a846205b0..603439afe582 100644
+--- a/drivers/media/platform/ti/omap3isp/ispstat.c
++++ b/drivers/media/platform/ti/omap3isp/ispstat.c
+@@ -768,7 +768,7 @@ int omap3isp_stat_enable(struct ispstat *stat, u8 enable)
+ 	unsigned long irqflags;
  
- 	/* Clk & Lane Info  */
- 	dev_info(dev, "******** Clock Lane Info *********\n");
- 	data = xcsi2rxss_read(xcsi2rxss, XCSI_CLKINFR_OFFSET);
- 	dev_info(dev, "Clock Lane in Stop State = %s\n",
--		 data & XCSI_CLKINFR_STOP ? "true" : "false");
-+		 str_true_false(data & XCSI_CLKINFR_STOP));
+ 	dev_dbg(stat->isp->dev, "%s: user wants to %s module.\n",
+-		stat->subdev.name, enable ? "enable" : "disable");
++		stat->subdev.name, str_enable_disable(enable));
  
- 	dev_info(dev, "******** Data Lane Info *********\n");
- 	dev_info(dev, "Lane\tSoT Error\tSoT Sync Error\tStop State\n");
-@@ -421,9 +421,9 @@ static int xcsi2rxss_log_status(struct v4l2_subdev *sd)
- 		data = xcsi2rxss_read(xcsi2rxss, reg);
- 
- 		dev_info(dev, "%d\t%s\t\t%s\t\t%s\n", i,
--			 data & XCSI_DLXINFR_SOTERR ? "true" : "false",
--			 data & XCSI_DLXINFR_SOTSYNCERR ? "true" : "false",
--			 data & XCSI_DLXINFR_STOP ? "true" : "false");
-+			 str_true_false(data & XCSI_DLXINFR_SOTERR),
-+			 str_true_false(data & XCSI_DLXINFR_SOTSYNCERR),
-+			 str_true_false(data & XCSI_DLXINFR_STOP));
- 
- 		reg += XCSI_NEXTREG_OFFSET;
- 	}
-@@ -889,7 +889,7 @@ static int xcsi2rxss_parse_of(struct xcsi2rxss_state *xcsi2rxss)
- 	fwnode_handle_put(ep);
- 
- 	dev_dbg(dev, "vcx %s, %u data lanes (%s), data type 0x%02x\n",
--		xcsi2rxss->en_vcx ? "enabled" : "disabled",
-+		str_enabled_disabled(xcsi2rxss->en_vcx),
- 		xcsi2rxss->max_num_lanes,
- 		xcsi2rxss->enable_active_lanes ? "dynamic" : "static",
- 		xcsi2rxss->datatype);
+ 	/* Prevent enabling while configuring */
+ 	mutex_lock(&stat->ioctl_lock);
 
 -- 
 2.46.1.824.gd892dcdcdd-goog
