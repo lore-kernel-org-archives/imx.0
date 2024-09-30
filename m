@@ -1,413 +1,233 @@
-Received: from mail2-relais-roc.national.inria.fr (mail2-relais-roc.national.inria.fr [192.134.164.83])
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2066.outbound.protection.outlook.com [40.107.241.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A65A23D2;
-	Mon, 30 Sep 2024 14:36:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.134.164.83
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727706967; cv=none; b=Smhib/SB33yJIVChAJ+0M8dY2jLAQb+USNYstOVc1VO/Tv6/bAynvyMRAL2EAJbwmMwkYXzBZqjnsC74yZlYibCEFqJS/sF4l3Q42x78Dug3Lt1vyjP2mgF6cD8kieD0er7Z2ju7QoIg6mpMjvcGMesBw6Qur+zUznDvqx0p8vc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727706967; c=relaxed/simple;
-	bh=RkgoRXNBMyIo5N5xAS1ceqL8RUeY5umivc2ZP55JXH4=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=pS4Qn84qRhNAYC3X1Ff77jsWjCM+GnX2YHWY437ZP573vr9Kchg6uUksMLCO7j+lGCkLn+Rac2wNMzLhGQvVa5VBe6oMcoIgEdMMemB2lCbTgbAKohz7SjEhWlW6SpZq/YeNiKqSvel9MEDgsBUgwet6SqeaNw3KtHkBmjs09w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr; spf=pass smtp.mailfrom=inria.fr; dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b=n7rWM1vX; arc=none smtp.client-ip=192.134.164.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inria.fr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7535519048F
+	for <imx@lists.linux.dev>; Mon, 30 Sep 2024 14:46:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727707579; cv=fail; b=VHwUDs8uG7LcVJ8QRTKanSp7nNgKmGTQHb0i0TdCQ4uKMFKJB4gQscJV+GEmpJfCqmoNQzMRKDql5rVGxggFmXeAEC6NaFvXYnO+rzk6cyKYhANkhPC5JEhyMRA0YxnEHQJlH/zRXfb0usViWHDR2ljUa5nAhTGVrUUslSCgVlc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727707579; c=relaxed/simple;
+	bh=U7sbIfTq9tlu463BZeqW3dJYQqaxHrsiCvE9K+dzPOg=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=kKlIBSITB1XyBvTuZ4bmX4+tC2sdoS1o62IiTDxZ592ti2C4jjv5DE7tt490bB0cd8OBttHrKBtcRZcNXoei8fnLjVnUBTkf9+Mpx8YFf4SnHiGIiHl8HfoN2QqKls2lg85EP8WpG4+f0Jtsx5NfiSgf7ZfUgojSLjL5+mH8RWs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=dMHXayG2; arc=fail smtp.client-ip=40.107.241.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b="n7rWM1vX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=inria.fr; s=dc;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=HpZdaGOfs1LEEzgsF2drkUskl9EKIvGRf4VA3e3pYEc=;
-  b=n7rWM1vXbRp9VsSqtFsJaAHPgBQDu+O8/yils+XNQQxULYBn62psHbyU
-   77u0OrZyds4fjHAbaRS1jUZpk4YXlSylEfsUSkSqMrbAs6UgFjV2bIRnU
-   7wmMg+SBvP1I5Bq/2fS85n9dAruquVA8PBhgFCb6ZcF5uB/hlfwq0h8Tz
-   M=;
-Authentication-Results: mail2-relais-roc.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=julia.lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
-X-IronPort-AV: E=Sophos;i="6.11,165,1725314400"; 
-   d="scan'208";a="186014043"
-Received: from dt-lawall.paris.inria.fr ([128.93.67.65])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2024 16:36:01 +0200
-Date: Mon, 30 Sep 2024 16:36:01 +0200 (CEST)
-From: Julia Lawall <julia.lawall@inria.fr>
-To: Ricardo Ribalda <ribalda@chromium.org>
-cc: Hans Verkuil <hverkuil@xs4all.nl>, Julia Lawall <Julia.Lawall@inria.fr>, 
-    Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-    Sakari Ailus <sakari.ailus@linux.intel.com>, 
-    Bingbu Cao <bingbu.cao@intel.com>, Tianshu Qiu <tian.shu.qiu@intel.com>, 
-    Mauro Carvalho Chehab <mchehab@kernel.org>, 
-    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-    Hans de Goede <hdegoede@redhat.com>, Andy Shevchenko <andy@kernel.org>, 
-    Mike Isely <isely@pobox.com>, Olli Salonen <olli.salonen@iki.fi>, 
-    Maxim Levitsky <maximlevitsky@gmail.com>, Sean Young <sean@mess.org>, 
-    Sergey Kozlov <serjk@netup.ru>, Abylay Ospan <aospan@netup.ru>, 
-    Jemma Denson <jdenson@gmail.com>, 
-    Patrick Boettcher <patrick.boettcher@posteo.de>, 
-    Ming Qian <ming.qian@nxp.com>, Zhou Peng <eagle.zhou@nxp.com>, 
-    Andy Walls <awalls@md.metrocast.net>, Michal Simek <michal.simek@amd.com>, 
-    Jean-Christophe Trotin <jean-christophe.trotin@foss.st.com>, 
-    Philipp Zabel <p.zabel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-    Sascha Hauer <s.hauer@pengutronix.de>, 
-    Pengutronix Kernel Team <kernel@pengutronix.de>, 
-    Fabio Estevam <festevam@gmail.com>, Eddie James <eajames@linux.ibm.com>, 
-    Joel Stanley <joel@jms.id.au>, 
-    Andrew Jeffery <andrew@codeconstruct.com.au>, 
-    Hans Verkuil <hverkuil-cisco@xs4all.nl>, Tomasz Figa <tfiga@chromium.org>, 
-    Marek Szyprowski <m.szyprowski@samsung.com>, 
-    Tim Harvey <tharvey@gateworks.com>, 
-    Benjamin Mugnier <benjamin.mugnier@foss.st.com>, 
-    Sylvain Petinot <sylvain.petinot@foss.st.com>, 
-    Jacopo Mondi <jacopo+renesas@jmondi.org>, 
-    Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
-    =?ISO-8859-15?Q?Niklas_S=F6derlund?= <niklas.soderlund+renesas@ragnatech.se>, 
-    linux-media@vger.kernel.org, linux-staging@lists.linux.dev, 
-    linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-    imx@lists.linux.dev, openbmc@lists.ozlabs.org, 
-    linux-aspeed@lists.ozlabs.org
-Subject: Re: [PATCH 00/45] media: Use string_choice helpers
-In-Reply-To: <CANiDSCt4Xh27WSosNPB8Y_OjHr787f31PpKZWf2ZLPjFw51uBA@mail.gmail.com>
-Message-ID: <249a777-8ff6-59e5-3e80-ad4348e3bd62@inria.fr>
-References: <20240930-cocci-opportunity-v1-0-81e137456ce0@chromium.org> <20240930122157.GF31662@pendragon.ideasonboard.com> <4873f3a0-bd82-4ace-a783-10ea137284d6@xs4all.nl> <CANiDSCt4Xh27WSosNPB8Y_OjHr787f31PpKZWf2ZLPjFw51uBA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="dMHXayG2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pLTmckMQlLfIS4QIeyxgzeQ4nrMVk2Y/vHALG4Xw7Y1Ey2Ae1vsr9N1JP+zM7syhouUTCw2iIpe0Kt8jKcJtnLguhIYsIE5i1qLv6IGhlltNOKfhri7GHKREnyodh8s6Di+blUb3NeqK4xNBGL38EGs3n5PKceSfWXa+6zexsT4/Z1yv4feZ9ZjjVJyo9E0v9LE0C1Li9kaM+Ydj5ZbqAm/gt6ZkVD3+dK+Logp1xa0F5MNGSIMhnHb95iROBRWT8P5eX6BAaB1hBpmCh+IYd3+fCTRYfKP/ulu7K+OxQlBatZ2fMFO96HFlHZZAkf6gi6wdfUN+pCgQJ54Hs6B9zg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JSasoMBksPgaoFoi4RosKNDGj0TsWhtJob6em/Go4tE=;
+ b=lz/XdeFlLJt9rFey6IbK79uMHPqayrECbj/wiE0SIaiUD6/VaboIJ3FoqHuSmB5tki0AGDSedOkvJHR4NrtuJwj+t8XXmczfEEgEL0bbgF6PKAwetLlgYuzwzPlWs+FTCPXmhKjpjv5d1xQWO7Wz9S9H0wR4C4uASyYAfjuB2IIAh/Rt1ghEwymV7Rl5oUvOyNz9acB82JF/AWTt+0KRF4q7wd3m0Ul3s1L6lIvIBPAgcQh6G293aPg4DdeWp00FDzibk60fGZjRTSD+Ymm0vglFoVEnnSbQV2Y7PE1q84y1ddfcJuJ0U2P2UWZ1Hlspqu7eMHPDPeOlvYJf5eTRAA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JSasoMBksPgaoFoi4RosKNDGj0TsWhtJob6em/Go4tE=;
+ b=dMHXayG264Ce4rFTlcJWSrcDwPO7qTtwZzuQel6pHYsz9gJGsOzeRSz/vjbQp48aY0FZSS+X7T2vhUASxr1AnOwRUzo8wnPZuCVtXtlPo82h1NbDSKStxVo+9QDvM37Dr2qFHHe8y4IPsek4P6eYmPlcsQYZkT0X8GKJBIez/ioJ0Y0weOjAj6Kk0tc9Yut9rPVraEETTPjNgtf9axTBdhUsMODvTK5FT5y6rUfvsxHdFiafgn86lAVObyzG7UIDusS+L9bOiWOlKQRIhOxCDuVD2YYypu7IgWVs6ryUyqfBfGqi02nr7RWkQTsZ8Pd7vne3Cjwm2XdzKANytY9WAw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM9PR04MB8487.eurprd04.prod.outlook.com (2603:10a6:20b:41a::6)
+ by PAWPR04MB9838.eurprd04.prod.outlook.com (2603:10a6:102:380::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.26; Mon, 30 Sep
+ 2024 14:46:13 +0000
+Received: from AM9PR04MB8487.eurprd04.prod.outlook.com
+ ([fe80::6d7a:8d2:f020:455]) by AM9PR04MB8487.eurprd04.prod.outlook.com
+ ([fe80::6d7a:8d2:f020:455%5]) with mapi id 15.20.7962.022; Mon, 30 Sep 2024
+ 14:46:13 +0000
+Message-ID: <431dd907-026b-4215-96ef-28fdeb2b43a2@oss.nxp.com>
+Date: Mon, 30 Sep 2024 17:46:09 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] dt-bindings: pinctrl: add S32G3 compatible for the
+ SIUL2 driver
+To: Krzysztof Kozlowski <krzk@kernel.org>, Dong Aisheng
+ <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
+ Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Ghennadi Procopciuc
+ <Ghennadi.Procopciuc@oss.nxp.com>, Chester Lin <chester62515@gmail.com>,
+ Matthias Brugger <mbrugger@suse.com>, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+ linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, NXP S32 Linux Team <s32@nxp.com>,
+ Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
+ Enric Balletbo <eballetb@redhat.com>
+References: <20240930132344.3001876-1-andrei.stefanescu@oss.nxp.com>
+ <20240930132344.3001876-3-andrei.stefanescu@oss.nxp.com>
+ <7080c117-199a-425a-9053-891a7f331f6a@kernel.org>
+Content-Language: en-US
+From: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+In-Reply-To: <7080c117-199a-425a-9053-891a7f331f6a@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR2P281CA0048.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:92::19) To AM9PR04MB8487.eurprd04.prod.outlook.com
+ (2603:10a6:20b:41a::6)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8487:EE_|PAWPR04MB9838:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6d22d757-8b4d-4995-7666-08dce15ea185
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?NUlJMkhOTTcyNXlybEZJNVNyY1ZDU3gzaGkrY1Q5ZFhweEVDNC9TbGtJdmhj?=
+ =?utf-8?B?VlRMSVNRR05MYW9RTVpjM2xzT3F3aDE5N3ExZHd6RjhvQUZxTWZCYi94aTdY?=
+ =?utf-8?B?YU1vckZZa2IxdUpvWkV6TXg1YzAwR0NtdXUwbGQ4cVhWeEpzT1JWZVExUng2?=
+ =?utf-8?B?VFozZVRxVG1nT2U1aXlkd3Jab2pBUjBBd3lhODdLSzJ2S1V0emJCV3NyazJ6?=
+ =?utf-8?B?dU1jNmRBVVhLU1lJMkFoZlZ0VXFHTXNuMDRXdm4xR3lhcEVaWkMvMTVvOHV2?=
+ =?utf-8?B?RFB3UFI0ODZOT0VIN2lMMDFkRElDYTBVc1g4aUdLNG9PRUZScFpvVmVjV3d0?=
+ =?utf-8?B?K1dOUVkvZ1pPNjU4RlFnK2xRNldTb1ErVmxZekUvQWJMeVFodEswNkF3eml2?=
+ =?utf-8?B?Z0VGdm54SnFaSVBQMUd1WlcvZlF2VmpLenN3U0xEMmpScVc0ckRrU1M2YjYv?=
+ =?utf-8?B?VGpKd3FmOEZUWFpxTFZzdXBaMjQ5ZWVneityd3B2SFd0bkhidEVxWjh4OEdS?=
+ =?utf-8?B?Z1pkVGMvWEk4cGdCbnZ6TXlzeEhpbnRvRFM1SWlFTkVXSGVZOXB4Tm40Z2tI?=
+ =?utf-8?B?L0s2cUxMSWMrUy9pSGtaOXFKR0ZnenFVMmN6blByRldseVE0cEVodUlZVWZC?=
+ =?utf-8?B?WC9WaHhWbGpWa0diSm1SMURxVlBnSS9ETVVQblBueFVINmVxeDlTMEFmRlY5?=
+ =?utf-8?B?M2l4WGV1bTFsajJjOVcwL2ZjRm5HOFZEM3FJNUhXR05XMkNwYnlhMDRyZXJZ?=
+ =?utf-8?B?Wnd0aGY2cVVmdStRa0R6dFZVZm9mV2o0Q3RwZncyMmU4WjB4OXUvNmMrOXpD?=
+ =?utf-8?B?TGpScERVTnl0UFBoZU92Qk1EOXM0MzcvMUh3eDFqYk5ZZjlBa2lFVmxuZW1m?=
+ =?utf-8?B?MHh2RVIxcC9HUjFkaDg2TXV4ZzM0TW5YaDdtK0RDS1pDUG05Nm9xVzNMUm5T?=
+ =?utf-8?B?MUlLc0VFbnJ2VDA4N3Z0Y3RVSnVNMWZhdUVlODcyWHhXU0p3R3FKTDFoMzE4?=
+ =?utf-8?B?TFcrbEhqdFk4cUR5RzNKaGpxMnN5WDhWMlpkeE9EOG1wV0xpM3Z5SVg4b0x6?=
+ =?utf-8?B?U0xZK3lSR0daTGJ0Qk04Q1cvM1VtbzZ5bThwQ29sWk1HdzFRT1YvQlJzemdw?=
+ =?utf-8?B?U25sTlY0bFJDSmRGYjgzZU8yWkFxUngyR1ZYemlKSllRQjI5RFNDQ2FrOXha?=
+ =?utf-8?B?cEVBekJMbmdtTHRJOEltV09YWmc0bG94eWRsajhZUDQ1cjM2OWpwclBkRlV0?=
+ =?utf-8?B?VWxxWG4rTzh3L3lGbitud0JabTlwZmdIVEg1ckd4UjFmK2UvbElHZ3NOUWNP?=
+ =?utf-8?B?aWRyTGVxMlF3aElkWFZnVHJHZktUcitRYm9xcHdENGJjclFEaWRvNjhaOFh1?=
+ =?utf-8?B?cEluSkRtcVBmQ1NPSzFmTnQvWk5sZlhaNTExZjc0Rk1VV1g0WW9CMG5yUTgy?=
+ =?utf-8?B?QjBqM0l1QkVEZk5xbk9US2dDRjk2UmtIL0ZwZ1psVmhnejh2U3RwUTRxWmpU?=
+ =?utf-8?B?WWZYZ1NGRTJ3TlRtNHJnWUxBY0NueUR0Z2ZyTE1LdEc5NmV5bEVkL2ZPYWx1?=
+ =?utf-8?B?b0UzOEpBNDQ2cE95R1I3T1pHUG5wRlNzQjZvSFB4MkExT2xPb1o2QzZpOWN0?=
+ =?utf-8?B?WXVWTXVsaHpJNE5aSlkraGYvYzNzZlI5K0VTWkorQUFkZGVnbS9FaTJBS3Ru?=
+ =?utf-8?B?U2Q4RW9Xcjh3enJmVE9ibnR6Y1E2QzRvZ0ZORmwvaDJsbFpBdEorRFFqUTZ1?=
+ =?utf-8?B?MmgrTFNHZ3g2djhLWXdPeXRDaHZKUEJ2WHBURFp6eVBZZVZrYSt0Y0dLM1Fn?=
+ =?utf-8?B?S3BQZUZKLy9Qc0h0NHZVZjRPdTZFRDRaTFlkbG0wYkZETW9PV2RacDdlT0tF?=
+ =?utf-8?Q?gCwzQH6YmABUQ?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8487.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OURWOElLRnh5Ylc4bSswdDhXeHpHcmF4cGhob3R6SzRON1M1eEh3ZXM3Tkdt?=
+ =?utf-8?B?RllJYnJoR2M4U1NwR3EvOGlPdWVJQnQyUHA3a3cvTWFYNi8vZG5ibXR6Ym01?=
+ =?utf-8?B?bmw4UTBCSFRCRDljMWRUWnNHL3ZPUHBBN2srRHNVcEN1VzFRNnMwSkplK1dz?=
+ =?utf-8?B?VXRCVHc3SWdqTENKWlMrVVdwWE1VbTR0V0tLYW5taFRnOE1LOStOajJvUEx6?=
+ =?utf-8?B?OGR6VmNoVnhmd0F3S1VOMm5yRGh2U2tIYTVyZmYvNHAySUtNM0w1RFljdEpE?=
+ =?utf-8?B?NzlzMWdoYkNFcEhwbEx0RTUya2E2R0hRbmlXZnE3cURlTFZEVUtoL3F3VlBB?=
+ =?utf-8?B?MlBzM0Q5NVJ1dFcwL2hqN1UxdW9tNU9xUkoxdjBqNm5ZY1pHQVFZTWZta24y?=
+ =?utf-8?B?THgxWkpUcTMvMWpWZEJ6TDVIZlZwaHJqVDB1eWVnV0FMcFpua29sSWMwT0tw?=
+ =?utf-8?B?NzVsN3BFQUhtc2t2WXBlenZiUU1GdXlQcGxlOTJrK0ljNGhydG5uNU0yVTZ6?=
+ =?utf-8?B?djhOYXVpaVgrUHBXQU95V3pXU0ltRnRzTnNVejlVMkRzc3VhbkZKZkNpbk9G?=
+ =?utf-8?B?MzZYeXRSci8wcjNJM1hGcGlFQ3dzbmxqbm5mdG8rMjJxOFBUQUR1MDZ2bHNm?=
+ =?utf-8?B?Ymo2b3B3TGdaZmJMN3BBY3loQ2lHQy9mTmRNTWtjMHlEOG9aUS94KzJMa1ZU?=
+ =?utf-8?B?eEdMRlhjbEVDd0R4ZEs5ck5LZ2JtNXk2cVlMSlRkWW53NktwVldlc1ZzN1Rr?=
+ =?utf-8?B?Ly9FQUoycTRabFdUbjh5ZGZneXFzVkpWdzB6aHEvRWxMbTI0QUtQMm1OUGlw?=
+ =?utf-8?B?TVNvZHhRQVBsNFc3bHR5eUZjM29tYzdJVkhVRnpKcnJ1b2o2bUNqLzJWWjFI?=
+ =?utf-8?B?S1pZQlZiSHMrZjNwcjMvZW5yNENsMFJNRDF6Ym9wb0dCZGVTaHdHV3NkZWtO?=
+ =?utf-8?B?SkR0aktIaDZqSCtRcjdvbHdpdnFmL3U1RDZscmhZUEZCdkdUZ1ZJMzhzVWFT?=
+ =?utf-8?B?aTdnUGtTRENCKzk4eWU1NnE1UDc0OGFPVTdDR0c3NGxTUzdnZitRbGJ4Zk9t?=
+ =?utf-8?B?amJiODhrVU9tZHdSOUxJSW0ydHEyQWpvenV3djBxRURzK01yWmsxZmQ1ZFo3?=
+ =?utf-8?B?MnFhNS80SzlxaCtkb0JCOTM1MXRmbnpCM1dXaVBhSFl4d09BN212SUlZWTJm?=
+ =?utf-8?B?K1VRNWFUUWFMZWhZL044aWJwQktsT2NqWmpaQXZvMVpCeWN6ZEVjcmFKQllM?=
+ =?utf-8?B?S0hJdi90MEpOa1BKZ0J6Z28yQi9vYldueEp6SW1waHloQjBYaUgzKzUzZGpT?=
+ =?utf-8?B?eHdQQkpwSTNYc3V6SG0wZ0RpbHRwVXlsRFdWTWZmMUw0NzA0cGkrNXdhQ0M2?=
+ =?utf-8?B?S2N3R1FFV0JicUgyZjYvWEFMcGhkSndiUGEya1dLUmw4RGRGeHQzOCsyNGVY?=
+ =?utf-8?B?cjZrNllTQm00WkRiT3RZZWVyNHE5TWFkVTU2Mm44a2I3R1RXemNZZ2RRL2NY?=
+ =?utf-8?B?RlNBZWpERERyZy93dW9PRkxTckg2YzE0ZnN6L3YyWFVZeGh6UVFuUWNKOWlt?=
+ =?utf-8?B?QVBEZUw4enh4M2FlaXpxQjgySUNUMk9uYWFTZm1vVk9DVExPZW4zR2NoWU85?=
+ =?utf-8?B?QWxDZ0t3S3RpK244U2oyMmMxWjVOTG5VUDZqdVI4azF0dmROUjd5UWtDU292?=
+ =?utf-8?B?TFNIeWp1b3JwVUdPNllINEFEWHVXQXZNQmd0YW5tUnVSeHo4UUVodzBWbFhS?=
+ =?utf-8?B?azllSFZFWFF1ZHhiaVFIcmpoeVRzUmlHdW5JZkdVeDB6enphOTFuV0lBVU13?=
+ =?utf-8?B?S2VpMlNneDFtcndSeGZXRmFOU3FVejBTTlNHYWUwcHpGdWx6MEFSMDJOMWlR?=
+ =?utf-8?B?WUhrMjc2OCt5V3k2MWNkRVI2OWt6U2F2bHRtMDJXOWZWanBaUG1lYjNHRTIr?=
+ =?utf-8?B?c3NCditzYUhqS2xxNWgwR002WkJWTGFjMWNlWmdlaVpqcTBPVUFrcVJhQzFk?=
+ =?utf-8?B?Y3p4bDdFZ0FLMVI2SnJxbnNzamxHUkhMR1VuS3dJZVlSL2t3T1duU1M4V1pM?=
+ =?utf-8?B?cmNKUkdRa25RZjNRSFVkM1R1Nlg4NXVJUU50T09XM3NjaitVOW1Xc0lLUUg2?=
+ =?utf-8?B?b2R1NERrTjcwYlMvQktlaTJHOENJclFMWkJSWFpVUnd3bGsveFREOVN6enV0?=
+ =?utf-8?B?YVE9PQ==?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6d22d757-8b4d-4995-7666-08dce15ea185
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8487.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2024 14:46:13.6007
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bKix4nnDgVds5Me4nPPH3T7pUhxg4kksTp3Fz6oCvDua3+DCsXpXK9KytNS8g4q5xxvodNPy1djGR+NuSHx6Af2CkZSbDqGZka9g97x4d8M=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB9838
+
+Hi Krzysztof,
+
+Thank you for the quick review!
+
+On 30/09/2024 16:40, Krzysztof Kozlowski wrote:
+> On 30/09/2024 15:23, Andrei Stefanescu wrote:
+>> The SIUL2 hardware module is also integrated into the S32G3 SoC. Add
+>> another compatible for it.
+>>
+>> Signed-off-by: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+>> ---
+>>  .../bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml      | 10 ++++++++--
+>>  1 file changed, 8 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml
+>> index a24286e4def6..454773e7aa07 100644
+>> --- a/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml
+>> +++ b/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml
+>> @@ -25,8 +25,14 @@ description: |
+>>  
+>>  properties:
+>>    compatible:
+>> -    enum:
+>> -      - nxp,s32g2-siul2-pinctrl
+>> +    oneOf:
+>> +      - description: for S32G2 SoCs
+> 
+> Drop
+> 
+>> +        items:
+> 
+> That's jus tenum
+> 
+>> +          - const: nxp,s32g2-siul2-pinctrl
+> 
+> Drop
+> 
+>> +      - description: for S32G3 SoCs
+>> +        items:
+
+Just to make sure I understood correctly, it should
+look something like this, right?
+
+    oneOf:
+      - enum:
+          - const: nxp,s32g2-siul2-pinctrl
+      - items:
+          - const: nxp,s32g3-siul2-pinctrl
+          - const: nxp,s32g2-siul2-pinctrl
 
 
+> Best regards,
+> Krzysztof
+> 
 
-On Mon, 30 Sep 2024, Ricardo Ribalda wrote:
+Best regards,
+Andrei
 
-> On Mon, 30 Sept 2024 at 14:38, Hans Verkuil <hverkuil@xs4all.nl> wrote:
-> >
-> > On 30/09/2024 14:21, Laurent Pinchart wrote:
-> > > Hi Ricardo,
-> > >
-> > > On Mon, Sep 30, 2024 at 12:03:55PM +0000, Ricardo Ribalda wrote:
-> > >> include/linux/string_choices.h contains a set of helpers that can be
-> > >> used instead of hard coding some strings.
-> > >>
-> > >> Cocci has located some places where the helpers can be used. This
-> > >> patchset uses the diff generated by cocci, plus these changes:
-> > >
-> > > Personally I think most of those helpers just hinder readability for not
-> > > much added gain. String de-duplication is done by the linker already.
-> > > The only value I see in the helpers is ensuring that the strings are
-> > > consistently written, and I think we can do so through other means.
-> >
-> > Just my opinion: I'm OK with these new helpers, but I am not too keen to apply
-> > all this to existing source code. I.e., for new code it is fine, but if we have
-> > to update all drivers every time a new cocci test is added, then that will not
-> > scale.
-> >
-> > Note that I never ran cocci in my build scripts, so this is a new check that
-> > we haven't set rules for or have much experience with.
-> >
-> > checkpatch just checks the patches, it doesn't force you to fix existing code.
-> >
-> > Some of the cocci tests are clearly checking for incorrect code, but others are
-> > for code improvements (i.e. the code was correct, it can just be done slightly
-> > better). It's the second category were I think that should only apply to new code,
-> > and not existing code.
-> >
-> > Regards,
->
-> Julia, correct me if I am wrong, but I believe that cocci does not
-> have the ability to check only new code. It runs against files not
-> diffs.
-
-Coccinelle runs on files normally.  There is an option --use-patch-diff
-where you can give a commit id, and it should only work on the files
-mentioned in that commit, but it doesn't seem to focus on only the new
-code in that commit.
-
-julia
-
->
-> I agree with you, a "improvement cocci" shall not force us to drop the
-> pen and work full time to fix it :)
-> When a new "improvement" cocci check is landed, we should update our
-> "allowlist" immediately to ignore those warnings until we slowly
-> improve our codebase to meet the standard.
-> That way the CI is not affected.
->
-> Regarding this patchset.... It is pretty big, but also pretty simple.
-> I added my "extra changes" on the cover letter to ease the review.
->
-> If you or someone else have time to review it... then it will be great
-> if we land it. But if none has time for it, then it can be ignored.
->
->
-> Regards!
->
-> >
-> >         Hans
-> >
-> > >
-> > >> diff --git a/drivers/media/dvb-frontends/ascot2e.c b/drivers/media/dvb-frontends/ascot2e.c
-> > >> index 8c3eb5d69dda..ec7a718428fc 100644
-> > >> --- a/drivers/media/dvb-frontends/ascot2e.c
-> > >> +++ b/drivers/media/dvb-frontends/ascot2e.c
-> > >> @@ -104,7 +104,7 @@ static void ascot2e_i2c_debug(struct ascot2e_priv *priv,
-> > >>                               u8 reg, u8 write, const u8 *data, u32 len)
-> > >>  {
-> > >>         dev_dbg(&priv->i2c->dev, "ascot2e: I2C %s reg 0x%02x size %d\n",
-> > >> -               str_read_write(write == 0), reg, len);
-> > >> +               str_write_read(write), reg, len);
-> > >>         print_hex_dump_bytes("ascot2e: I2C data: ",
-> > >>                 DUMP_PREFIX_OFFSET, data, len);
-> > >>  }
-> > >> diff --git a/drivers/media/dvb-frontends/cxd2841er.c b/drivers/media/dvb-frontends/cxd2841er.c
-> > >> index db684f314b47..d1b84cd9c510 100644
-> > >> --- a/drivers/media/dvb-frontends/cxd2841er.c
-> > >> +++ b/drivers/media/dvb-frontends/cxd2841er.c
-> > >> @@ -206,7 +206,7 @@ static void cxd2841er_i2c_debug(struct cxd2841er_priv *priv,
-> > >>  {
-> > >>         dev_dbg(&priv->i2c->dev,
-> > >>                 "cxd2841er: I2C %s addr %02x reg 0x%02x size %d data %*ph\n",
-> > >> -               str_read_write(write == 0), addr, reg, len, len, data);
-> > >> +               str_write_read(write), addr, reg, len, len, data);
-> > >>  }
-> > >>
-> > >>  static int cxd2841er_write_regs(struct cxd2841er_priv *priv,
-> > >> diff --git a/drivers/media/dvb-frontends/helene.c b/drivers/media/dvb-frontends/helene.c
-> > >> index 52198cb49dba..b4527c141d9c 100644
-> > >> --- a/drivers/media/dvb-frontends/helene.c
-> > >> +++ b/drivers/media/dvb-frontends/helene.c
-> > >> @@ -279,7 +279,7 @@ static void helene_i2c_debug(struct helene_priv *priv,
-> > >>                 u8 reg, u8 write, const u8 *data, u32 len)
-> > >>  {
-> > >>         dev_dbg(&priv->i2c->dev, "helene: I2C %s reg 0x%02x size %d\n",
-> > >> -                       str_read_write(write == 0), reg, len);
-> > >> +                       str_write_read(write), reg, len);
-> > >>         print_hex_dump_bytes("helene: I2C data: ",
-> > >>                         DUMP_PREFIX_OFFSET, data, len);
-> > >>  }
-> > >> diff --git a/drivers/media/dvb-frontends/horus3a.c b/drivers/media/dvb-frontends/horus3a.c
-> > >> index 84385079918c..10300ebf3ca0 100644
-> > >> --- a/drivers/media/dvb-frontends/horus3a.c
-> > >> +++ b/drivers/media/dvb-frontends/horus3a.c
-> > >> @@ -38,7 +38,7 @@ static void horus3a_i2c_debug(struct horus3a_priv *priv,
-> > >>                               u8 reg, u8 write, const u8 *data, u32 len)
-> > >>  {
-> > >>         dev_dbg(&priv->i2c->dev, "horus3a: I2C %s reg 0x%02x size %d\n",
-> > >> -               str_read_write(write == 0), reg, len);
-> > >> +               str_write_read(write), reg, len);
-> > >>         print_hex_dump_bytes("horus3a: I2C data: ",
-> > >>                 DUMP_PREFIX_OFFSET, data, len);
-> > >>  }
-> > >> diff --git a/drivers/media/i2c/adv7842.c b/drivers/media/i2c/adv7842.c
-> > >> index ba174aa45afa..a43479c3ff03 100644
-> > >> --- a/drivers/media/i2c/adv7842.c
-> > >> +++ b/drivers/media/i2c/adv7842.c
-> > >> @@ -2763,7 +2763,7 @@ static int adv7842_cp_log_status(struct v4l2_subdev *sd)
-> > >>                           str_true_false(io_read(sd, 0x6a) & 0x10));
-> > >>         }
-> > >>         v4l2_info(sd, "CP free run: %s\n",
-> > >> -                 str_on_off(!!(cp_read(sd, 0xff) & 0x10)));
-> > >> +                 str_on_off(cp_read(sd, 0xff) & 0x10));
-> > >>         v4l2_info(sd, "Prim-mode = 0x%x, video std = 0x%x, v_freq = 0x%x\n",
-> > >>                   io_read(sd, 0x01) & 0x0f, io_read(sd, 0x00) & 0x3f,
-> > >>                   (io_read(sd, 0x01) & 0x70) >> 4);
-> > >> diff --git a/drivers/media/pci/saa7134/saa7134-cards.c b/drivers/media/pci/saa7134/saa7134-cards.c
-> > >> index 301b89e799d8..79cd61fb0205 100644
-> > >> --- a/drivers/media/pci/saa7134/saa7134-cards.c
-> > >> +++ b/drivers/media/pci/saa7134/saa7134-cards.c
-> > >> @@ -7981,7 +7981,7 @@ int saa7134_board_init2(struct saa7134_dev *dev)
-> > >>                         rc = i2c_transfer(&dev->i2c_adap, &msg, 1);
-> > >>                         pr_info("%s: probe IR chip @ i2c 0x%02x: %s\n",
-> > >>                                    dev->name, msg.addr,
-> > >> -                                  str_yes_no(1 == rc));
-> > >> +                                  str_yes_no(rc == 1));
-> > >>                         if (rc == 1)
-> > >>                                 dev->has_remote = SAA7134_REMOTE_I2C;
-> > >>                 }
-> > >> diff --git a/drivers/media/pci/saa7134/saa7134-input.c b/drivers/media/pci/saa7134/saa7134-input.c
-> > >> index 90837ec6e70f..239f0b9d080a 100644
-> > >> --- a/drivers/media/pci/saa7134/saa7134-input.c
-> > >> +++ b/drivers/media/pci/saa7134/saa7134-input.c
-> > >> @@ -895,7 +895,7 @@ void saa7134_probe_i2c_ir(struct saa7134_dev *dev)
-> > >>                 rc = i2c_transfer(&dev->i2c_adap, &msg_msi, 1);
-> > >>                 input_dbg("probe 0x%02x @ %s: %s\n",
-> > >>                         msg_msi.addr, dev->i2c_adap.name,
-> > >> -                       str_yes_no(1 == rc));
-> > >> +                       str_yes_no(rc == 1));
-> > >>                 break;
-> > >>         case SAA7134_BOARD_SNAZIO_TVPVR_PRO:
-> > >>                 dev->init_data.name = "SnaZio* TVPVR PRO";
-> > >> @@ -931,7 +931,7 @@ void saa7134_probe_i2c_ir(struct saa7134_dev *dev)
-> > >>                 rc = i2c_transfer(&dev->i2c_adap, &msg_msi, 1);
-> > >>                 input_dbg("probe 0x%02x @ %s: %s\n",
-> > >>                         msg_msi.addr, dev->i2c_adap.name,
-> > >> -                       str_yes_no(1 == rc));
-> > >> +                       str_yes_no(rc == 1));
-> > >>                 break;
-> > >>         case SAA7134_BOARD_HAUPPAUGE_HVR1110:
-> > >>                 dev->init_data.name = saa7134_boards[dev->board].name;
-> > >> diff --git a/drivers/media/usb/pvrusb2/pvrusb2-ctrl.c b/drivers/media/usb/pvrusb2/pvrusb2-ctrl.c
-> > >> index 448c40caf363..b6c9bda214c8 100644
-> > >> --- a/drivers/media/usb/pvrusb2/pvrusb2-ctrl.c
-> > >> +++ b/drivers/media/usb/pvrusb2/pvrusb2-ctrl.c
-> > >> @@ -521,7 +521,7 @@ int pvr2_ctrl_value_to_sym_internal(struct pvr2_ctrl *cptr,
-> > >>                 *len = scnprintf(buf,maxlen,"%d",val);
-> > >>                 ret = 0;
-> > >>         } else if (cptr->info->type == pvr2_ctl_bool) {
-> > >> -               *len = scnprintf(buf,maxlen,"%s",str_true_false(val));
-> > >> +               *len = scnprintf(buf, maxlen, "%s", str_true_false(val));
-> > >>                 ret = 0;
-> > >>         } else if (cptr->info->type == pvr2_ctl_enum) {
-> > >>                 const char * const *names;
-> > >> diff --git a/drivers/media/usb/pvrusb2/pvrusb2-hdw.c b/drivers/media/usb/pvrusb2/pvrusb2-hdw.c
-> > >> index 96d3a0045fac..761d718478ca 100644
-> > >> --- a/drivers/media/usb/pvrusb2/pvrusb2-hdw.c
-> > >> +++ b/drivers/media/usb/pvrusb2/pvrusb2-hdw.c
-> > >> @@ -338,7 +338,7 @@ static void trace_stbit(const char *name,int val)
-> > >>  {
-> > >>         pvr2_trace(PVR2_TRACE_STBITS,
-> > >>                    "State bit %s <-- %s",
-> > >> -                  name,str_true_false(val));
-> > >> +                  name, str_true_false(val));
-> > >>  }
-> > >>
-> > >> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> > >> ---
-> > >> Ricardo Ribalda (45):
-> > >>       media: staging: ipu3: Use string_choices helpers
-> > >>       media: staging: atomisp: Use string_choices helpers
-> > >>       media: core: Use string_choices helpers
-> > >>       media: pwc-ctl: Use string_choices helpers
-> > >>       media: pvrusb2:Use string_choices helpers
-> > >>       media: em28xx: Use string_choices helpers
-> > >>       media: dvb-usb: Use string_choices helpers
-> > >>       media: dvb-usb-v2: Use string_choices helpers
-> > >>       media: cx231xx: Use string_choices helpers
-> > >>       media: tuners: Use string_choices helpers
-> > >>       media: rc: Use string_choices helpers
-> > >>       media: dvb-frontends: Use string_choices helpers
-> > >>       media: pci: cx23885: Use string_choices helpers
-> > >>       media: saa7134: Use string_choices helpers
-> > >>       media: amphion: Use string_choices helpers
-> > >>       media: pci: ivtv: Use string_choices helpers
-> > >>       media: bttv: Use string_choices helpers
-> > >>       media: xilinx: Use string_choices helpers
-> > >>       media: platform: ti: Use string_choices helpers
-> > >>       media: st: Use string_choices helpers
-> > >>       media: coda: Use string_choices helpers
-> > >>       media: aspeed: Use string_choices helpers
-> > >>       media: ipu6: Use string_choices helpers
-> > >>       media: cx18: Use string_choices helpers
-> > >>       media: cobalt: Use string_choices helpers
-> > >>       media: videobuf2: Use string_choices helpers
-> > >>       media: cec: Use string_choices helpers
-> > >>       media: b2c2: Use string_choices helpers
-> > >>       media: siano: Use string_choices helpers
-> > >>       media: i2c: cx25840: Use string_choices helpers
-> > >>       media: i2c: vpx3220: Use string_choices helpers
-> > >>       media: i2c: tvp7002: Use string_choices helpers
-> > >>       media: i2c: ths8200: Use string_choices helpers
-> > >>       media: i2c: tda1997x: Use string_choices helpers
-> > >>       media: i2c: tc358743: Use string_choices helpers
-> > >>       media: i2c: st-mipid02: Use string_choices helpers
-> > >>       media: i2c: msp3400: Use string_choices helpers
-> > >>       media: i2c: max9286: Use string_choices helpers
-> > >>       media: i2c: saa717x: Use string_choices helpers
-> > >>       media: i2c: saa7127: Use string_choices helpers
-> > >>       media: i2c: saa7115: Use string_choices helpers
-> > >>       media: i2c: saa7110: Use string_choices helpers
-> > >>       media: i2c: adv7842: Use string_choices helpers
-> > >>       media: i2c: adv76xx: Use string_choices helpers
-> > >>       media: i2c: adv7511: Use string_choices helpers
-> > >>
-> > >>  drivers/media/cec/platform/cec-gpio/cec-gpio.c     |  4 +-
-> > >>  drivers/media/cec/usb/pulse8/pulse8-cec.c          |  4 +-
-> > >>  drivers/media/common/b2c2/flexcop-hw-filter.c      |  4 +-
-> > >>  drivers/media/common/siano/sms-cards.c             |  3 +-
-> > >>  drivers/media/common/videobuf2/videobuf2-core.c    |  5 ++-
-> > >>  drivers/media/dvb-frontends/ascot2e.c              |  2 +-
-> > >>  drivers/media/dvb-frontends/cx24120.c              |  4 +-
-> > >>  drivers/media/dvb-frontends/cxd2841er.c            |  2 +-
-> > >>  drivers/media/dvb-frontends/drxk_hard.c            |  4 +-
-> > >>  drivers/media/dvb-frontends/helene.c               |  2 +-
-> > >>  drivers/media/dvb-frontends/horus3a.c              |  2 +-
-> > >>  drivers/media/dvb-frontends/sp2.c                  |  2 +-
-> > >>  drivers/media/i2c/adv7511-v4l2.c                   | 11 +++---
-> > >>  drivers/media/i2c/adv7604.c                        | 25 ++++++------
-> > >>  drivers/media/i2c/adv7842.c                        | 40 ++++++++++----------
-> > >>  drivers/media/i2c/cx25840/cx25840-core.c           |  4 +-
-> > >>  drivers/media/i2c/cx25840/cx25840-ir.c             | 34 ++++++++---------
-> > >>  drivers/media/i2c/max9286.c                        |  2 +-
-> > >>  drivers/media/i2c/msp3400-driver.c                 |  4 +-
-> > >>  drivers/media/i2c/saa7110.c                        |  2 +-
-> > >>  drivers/media/i2c/saa7115.c                        |  2 +-
-> > >>  drivers/media/i2c/saa7127.c                        | 15 +++++---
-> > >>  drivers/media/i2c/saa717x.c                        |  2 +-
-> > >>  drivers/media/i2c/st-mipid02.c                     |  2 +-
-> > >>  drivers/media/i2c/tc358743.c                       | 44 ++++++++++------------
-> > >>  drivers/media/i2c/tda1997x.c                       |  6 +--
-> > >>  drivers/media/i2c/ths8200.c                        |  4 +-
-> > >>  drivers/media/i2c/tvp7002.c                        |  2 +-
-> > >>  drivers/media/i2c/vpx3220.c                        |  2 +-
-> > >>  drivers/media/pci/bt8xx/bttv-cards.c               | 16 ++++----
-> > >>  drivers/media/pci/bt8xx/bttv-driver.c              |  6 +--
-> > >>  drivers/media/pci/cobalt/cobalt-driver.c           |  2 +-
-> > >>  drivers/media/pci/cx18/cx18-av-core.c              |  4 +-
-> > >>  drivers/media/pci/cx23885/altera-ci.c              |  2 +-
-> > >>  drivers/media/pci/cx23885/cimax2.c                 |  2 +-
-> > >>  drivers/media/pci/cx23885/cx23888-ir.c             | 36 +++++++++---------
-> > >>  drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c      |  2 +-
-> > >>  drivers/media/pci/ivtv/ivtvfb.c                    |  4 +-
-> > >>  drivers/media/pci/saa7134/saa7134-cards.c          |  2 +-
-> > >>  drivers/media/pci/saa7134/saa7134-dvb.c            |  2 +-
-> > >>  drivers/media/pci/saa7134/saa7134-input.c          |  6 +--
-> > >>  drivers/media/pci/saa7134/saa7134-video.c          |  2 +-
-> > >>  drivers/media/platform/amphion/venc.c              |  2 +-
-> > >>  drivers/media/platform/amphion/vpu_dbg.c           |  2 +-
-> > >>  drivers/media/platform/aspeed/aspeed-video.c       |  4 +-
-> > >>  drivers/media/platform/chips-media/coda/imx-vdoa.c |  3 +-
-> > >>  drivers/media/platform/st/sti/hva/hva-debugfs.c    |  6 +--
-> > >>  drivers/media/platform/ti/omap3isp/ispstat.c       |  2 +-
-> > >>  drivers/media/platform/xilinx/xilinx-csi2rxss.c    | 18 ++++-----
-> > >>  drivers/media/rc/ene_ir.c                          |  3 +-
-> > >>  drivers/media/rc/mceusb.c                          |  3 +-
-> > >>  drivers/media/rc/serial_ir.c                       |  5 ++-
-> > >>  drivers/media/tuners/tda18250.c                    |  2 +-
-> > >>  drivers/media/tuners/tda9887.c                     | 10 ++---
-> > >>  drivers/media/usb/cx231xx/cx231xx-i2c.c            |  4 +-
-> > >>  drivers/media/usb/cx231xx/cx231xx-video.c          |  2 +-
-> > >>  drivers/media/usb/dvb-usb-v2/az6007.c              |  4 +-
-> > >>  drivers/media/usb/dvb-usb-v2/dvb_usb_core.c        |  4 +-
-> > >>  drivers/media/usb/dvb-usb/af9005-fe.c              |  4 +-
-> > >>  drivers/media/usb/dvb-usb/dvb-usb-dvb.c            |  6 +--
-> > >>  drivers/media/usb/dvb-usb/opera1.c                 |  8 ++--
-> > >>  drivers/media/usb/em28xx/em28xx-i2c.c              |  4 +-
-> > >>  drivers/media/usb/em28xx/em28xx-video.c            |  2 +-
-> > >>  drivers/media/usb/pvrusb2/pvrusb2-ctrl.c           |  2 +-
-> > >>  drivers/media/usb/pvrusb2/pvrusb2-debugifc.c       |  3 +-
-> > >>  drivers/media/usb/pvrusb2/pvrusb2-encoder.c        |  5 +--
-> > >>  drivers/media/usb/pvrusb2/pvrusb2-hdw.c            |  6 +--
-> > >>  drivers/media/usb/pvrusb2/pvrusb2-i2c-core.c       |  3 +-
-> > >>  drivers/media/usb/pwc/pwc-ctrl.c                   |  2 +-
-> > >>  drivers/media/v4l2-core/v4l2-ctrls-core.c          |  3 +-
-> > >>  drivers/media/v4l2-core/v4l2-fwnode.c              | 12 +++---
-> > >>  .../media/atomisp/pci/atomisp_compat_css20.c       |  2 +-
-> > >>  .../media/atomisp/pci/atomisp_csi2_bridge.c        |  2 +-
-> > >>  .../media/atomisp/pci/atomisp_gmin_platform.c      |  4 +-
-> > >>  drivers/staging/media/atomisp/pci/atomisp_v4l2.c   |  4 +-
-> > >>  .../media/atomisp/pci/runtime/binary/src/binary.c  |  2 +-
-> > >>  drivers/staging/media/atomisp/pci/sh_css.c         |  2 +-
-> > >>  drivers/staging/media/ipu3/ipu3-v4l2.c             |  4 +-
-> > >>  78 files changed, 240 insertions(+), 239 deletions(-)
-> > >> ---
-> > >> base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
-> > >> change-id: 20240930-cocci-opportunity-40bca6a17c42
-> > >
-> >
->
->
-> --
-> Ricardo Ribalda
->
