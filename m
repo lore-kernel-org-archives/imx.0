@@ -1,57 +1,57 @@
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36702199234
-	for <imx@lists.linux.dev>; Mon, 30 Sep 2024 12:04:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802C419994F
+	for <imx@lists.linux.dev>; Mon, 30 Sep 2024 12:04:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727697890; cv=none; b=pJP/Bw+nQ0NNiiMJqnuQapovdoGvMgO6RSfVkHUp+5pFaCdNztVlDORZZBUwVb8nEPIRwlRcEFmIBHKvLTxCpkcqM9mgcVyXzb9IFLotFJk+b2onpy7RVbyivPhor19gCP6m+4MWiVQy1Zg18TCDwIJCGIHSQvdQ6ovB4ChJzBQ=
+	t=1727697892; cv=none; b=cx/iKG1osdLPqvaYgnLIAYzqzLnsOFvBpvZlBLU9GhE2YnsMv5Qa1t1x9VzDVYX1JFmfBPvI1PKp8xEszcuNjy1qUE0XTZuIhRbd5FfjNwDW2Z6ORqZWFKk2gKJH3gPxN+MhsFR56MTH60z8GNQ8W9C09SYi/CGgWvR78P2hsv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727697890; c=relaxed/simple;
-	bh=0dMrYdJQZDwFbZRFwFBopbceAxAW6UVmiIWzGdnbBBo=;
+	s=arc-20240116; t=1727697892; c=relaxed/simple;
+	bh=iATwc6ufGXARE+6lG0pR6BzacdyrfLO5QVcrh6ufzXM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=S/CSZjZKufJ4DDdh/zT53qKbuvhHZaz5vm4SiwZQqDEpQdAQ2+4M/1oFv7h27UK53mMx8DP5AGoGPf/A4vz/QhVwS0C5FdJNAJ5qzTk8hZcujPU72inhO/sMsH/JyO0gNxg65tMH4zPjHQQrDVhVcYMzVkJN+VeDxywm29OCOMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ZdTb8zPn; arc=none smtp.client-ip=209.85.219.54
+	 In-Reply-To:To:Cc; b=UtOUsx7HNsJapoumCDPz2x3dOmvkAVZNmC/Al0heN4wkvZkneDjTGEwXMU5N/5s5OsJmDh7pbTwe3DiX4i4Vx04SCxw+KvA3+HsrKjAd8jlErVyTwraqO3puvTZ+jrydfwz2HDV2C5/TfgMvqVrWW7ZzJs5/xviP//r6TB5Ehhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=CcGDxu6w; arc=none smtp.client-ip=209.85.219.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ZdTb8zPn"
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6c3603292abso43945346d6.1
-        for <imx@lists.linux.dev>; Mon, 30 Sep 2024 05:04:48 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="CcGDxu6w"
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6cb3ba0a9a2so24001836d6.2
+        for <imx@lists.linux.dev>; Mon, 30 Sep 2024 05:04:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1727697887; x=1728302687; darn=lists.linux.dev;
+        d=chromium.org; s=google; t=1727697889; x=1728302689; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=nZdkoyJRGbtYAtgWDyhzmqUrZ4ojuNTD42Wgr3aJHzg=;
-        b=ZdTb8zPnOrdqbAVOyMTleEYs7MpNKq3/CjGkfuHDFCyPJnVBg9UUYjzVVE5mMEIXFn
-         7nEeuI1zB+M7WAJE/Jvr7k9zkDStC7GhaTAOwGSgX/32U3/NB5JuBA333C3DnIQtAQ6A
-         ddKgNEE4GMl20QOQuhGck3ycQdjo0YvYl9//U=
+        bh=aurzIxhre/dA6wUpFHCHveAY7utZWkXC/gGbqMcXk0s=;
+        b=CcGDxu6wY8a2pM8gTe8LWx10hV4+hiz+QTOUXZn3JvLp4WFQ+JvKJcapoYAR1WvG/E
+         Ab0raf34m5WkqghhinX9u+TuW3lXeTLWwjnuIkzwSD2t2Zx2yNycWc6vAFKRSFhXcccp
+         WRS0wn5pZUZZSfmSnCJ5bq7tfQFN8GYmW1dRs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727697887; x=1728302687;
+        d=1e100.net; s=20230601; t=1727697889; x=1728302689;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=nZdkoyJRGbtYAtgWDyhzmqUrZ4ojuNTD42Wgr3aJHzg=;
-        b=dY548nxG0+41eHIBpI3qH78w1OpdqStAdZ9I9sVpq5DjI/awDTf9cnH/g2v6eaQnDn
-         4t8Z/OhfVd9ZSusSqLAJa3fLmDcNDyS06IEscp+1+jkY6lMHzCd+lsddoFyt/O2fri41
-         t0lAAq5jYkOlErlAbqTxu3m75Qn/OEwoGgTLkCePKFYMJG95068yI1lG8KCPa6tq0vbF
-         OXqe9nKcgA0KJWqoJYOVcR+RhIxiizZ8jzsLyRtTBIy+bTO0o/Xeze8WuL3FTilDuque
-         5Xo7u0VTuG8GbSLBLYIz/7kQvu/9hKPnrrgmi2Lhu2dKxXmO8H5LAp/vFMjWeMXNNzwF
-         LoBA==
-X-Forwarded-Encrypted: i=1; AJvYcCVcvX+7QrmPDGCGucgHqjBpuna348AJQWudrBdNwtNOpG0OCx5C9uXhG83F7f+MC84yxzo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwxEjW8FWn2e6QIC+ATdIzOqM9RzN5edsIl23BcO8hsSNzY9sz3
-	4SUrSK8OULCv/3mOJKrQVNM0hamh7TO8DFIse64j2boVMQl+Iy9bV41uexuHgQ==
-X-Google-Smtp-Source: AGHT+IGDig2qhJHVIgkos7cydvwLVCYXpIPoGe1fBfPazyzsBzvK7ByCA43K6ayYB6dav+TXdoGUKw==
-X-Received: by 2002:a05:6214:4c03:b0:6cb:410a:ef5d with SMTP id 6a1803df08f44-6cb410af56bmr118016106d6.5.1727697887257;
-        Mon, 30 Sep 2024 05:04:47 -0700 (PDT)
+        bh=aurzIxhre/dA6wUpFHCHveAY7utZWkXC/gGbqMcXk0s=;
+        b=T2WnuCSis4Y/BleYpgk3SzJDPkFqP8XORRZ2KAl6tnRWu8tJaerYFo0HDx21f0ZAWi
+         Rrz6uO7Y89BhnOYFqH1FOFJ7T51JqcPn7UGLXw0iNjKMGzxWqtRoWMlQ2METFePa+VJx
+         Y2okVvpZAXhz2BhO6JvHtA4H9ZGfXZ2n35rz3Ndfn7K2OfQEBuUXbvNSCS0jk1D6yLsY
+         ixMOcTJK0y5R8+XKfAFrIU6oBis8v1j2KJ6klQGEOnCfCxXBQiCIiQR8yXCBFzHBGGhL
+         dBt5VLM+XK99vX24Fi6rocYhSMyBiBYRKSvekfKWz1Bv9Xy87yXobqIwW+4ErtwSXjQ+
+         2ijA==
+X-Forwarded-Encrypted: i=1; AJvYcCXokh347G6GrssPCMqWGXL8+K8zkiuuWuAx0/PHL+iftcEbVRmJ6Zgbl58gsQdmk7WuPhc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxVAQcXPuDDObuUOghq/1IemIsoGgkb+0FrZuE5zGLAvQTzzIb/
+	QQN4F+HeSVSMd7axGXCt+uDkPYuk3gkPcExXnZtafYmWlO9lolZpKwTOYkeHyg==
+X-Google-Smtp-Source: AGHT+IGIOHdh67nNwgDel6paDE35Eb29KwEMX4XzmiYgJj7qtD9+Z/d/ZNDrc9s0mVLpMYI/GTz7DA==
+X-Received: by 2002:a05:6214:53c4:b0:6cb:27e6:393f with SMTP id 6a1803df08f44-6cb3b63d1cfmr165544066d6.36.1727697889388;
+        Mon, 30 Sep 2024 05:04:49 -0700 (PDT)
 Received: from denia.c.googlers.com (76.224.245.35.bc.googleusercontent.com. [35.245.224.76])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b694369sm38822536d6.144.2024.09.30.05.04.45
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b694369sm38822536d6.144.2024.09.30.05.04.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Sep 2024 05:04:46 -0700 (PDT)
+        Mon, 30 Sep 2024 05:04:48 -0700 (PDT)
 From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 30 Sep 2024 12:04:16 +0000
-Subject: [PATCH 21/45] media: coda: Use string_choices helpers
+Date: Mon, 30 Sep 2024 12:04:17 +0000
+Subject: [PATCH 22/45] media: aspeed: Use string_choices helpers
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240930-cocci-opportunity-v1-21-81e137456ce0@chromium.org>
+Message-Id: <20240930-cocci-opportunity-v1-22-81e137456ce0@chromium.org>
 References: <20240930-cocci-opportunity-v1-0-81e137456ce0@chromium.org>
 In-Reply-To: <20240930-cocci-opportunity-v1-0-81e137456ce0@chromium.org>
 To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
@@ -99,34 +99,36 @@ Cc: linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
  linux-aspeed@lists.ozlabs.org, Ricardo Ribalda <ribalda@chromium.org>
 X-Mailer: b4 0.13.0
 
-The following cocci warning is fixed:
-drivers/media/platform/chips-media/coda/imx-vdoa.c:120:39-42: opportunity for str_write_read(val)
+The following cocci warnings are fixed:
+drivers/media/platform/aspeed/aspeed-video.c:1944:6-16: opportunity for str_on_off(v -> hq_mode)
+drivers/media/platform/aspeed/aspeed-video.c:1230:3-17: opportunity for str_on_off(video -> hq_mode)
 
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
- drivers/media/platform/chips-media/coda/imx-vdoa.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/platform/aspeed/aspeed-video.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/platform/chips-media/coda/imx-vdoa.c b/drivers/media/platform/chips-media/coda/imx-vdoa.c
-index c3561fcecb98..abdff181d417 100644
---- a/drivers/media/platform/chips-media/coda/imx-vdoa.c
-+++ b/drivers/media/platform/chips-media/coda/imx-vdoa.c
-@@ -15,6 +15,7 @@
- #include <linux/platform_device.h>
- #include <linux/videodev2.h>
- #include <linux/slab.h>
-+#include <linux/string_choices.h>
+diff --git a/drivers/media/platform/aspeed/aspeed-video.c b/drivers/media/platform/aspeed/aspeed-video.c
+index fc6050e3be0d..9c4a47d7a442 100644
+--- a/drivers/media/platform/aspeed/aspeed-video.c
++++ b/drivers/media/platform/aspeed/aspeed-video.c
+@@ -1227,7 +1227,7 @@ static void aspeed_video_update_regs(struct aspeed_video *video)
+ 	v4l2_dbg(1, debug, &video->v4l2_dev, "compression quality(%d)\n",
+ 		 video->jpeg_quality);
+ 	v4l2_dbg(1, debug, &video->v4l2_dev, "hq_mode(%s) hq_quality(%d)\n",
+-		 video->hq_mode ? "on" : "off", video->jpeg_hq_quality);
++		 str_on_off(video->hq_mode), video->jpeg_hq_quality);
  
- #include "imx-vdoa.h"
- 
-@@ -117,7 +118,7 @@ static irqreturn_t vdoa_irq_handler(int irq, void *data)
- 	writel(val, vdoa->regs + VDOAIST);
- 	if (val & VDOAIST_TERR) {
- 		val = readl(vdoa->regs + VDOASR) & VDOASR_ERRW;
--		dev_err(vdoa->dev, "AXI %s error\n", val ? "write" : "read");
-+		dev_err(vdoa->dev, "AXI %s error\n", str_write_read(val));
- 	} else if (!(val & VDOAIST_EOT)) {
- 		dev_warn(vdoa->dev, "Spurious interrupt\n");
+ 	if (video->format == VIDEO_FMT_ASPEED)
+ 		aspeed_video_update(video, VE_BCD_CTRL, 0, VE_BCD_CTRL_EN_BCD);
+@@ -1941,7 +1941,7 @@ static int aspeed_video_debugfs_show(struct seq_file *s, void *data)
+ 	seq_printf(s, "  %-20s:\t%d\n", "Quality", v->jpeg_quality);
+ 	if (v->format == VIDEO_FMT_ASPEED) {
+ 		seq_printf(s, "  %-20s:\t%s\n", "HQ Mode",
+-			   v->hq_mode ? "on" : "off");
++			   str_on_off(v->hq_mode));
+ 		seq_printf(s, "  %-20s:\t%d\n", "HQ Quality",
+ 			   v->hq_mode ? v->jpeg_hq_quality : 0);
  	}
 
 -- 
