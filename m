@@ -1,57 +1,57 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABE619AA53
-	for <imx@lists.linux.dev>; Mon, 30 Sep 2024 12:04:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A6219ABDE
+	for <imx@lists.linux.dev>; Mon, 30 Sep 2024 12:04:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727697897; cv=none; b=E/pEFcgMFNVsfBmaLfXWRiuxDDa/LId/WuMndUbd/6S6dVWcBB2xJlWUAvmllY513Z+H0Q6WCZYemsgf4GMKpI+neXfmwYNu1oBpKFSG86lLKsCofzNkEfJPXlaMXXxxdTTUVAf/ncYTaArdqK2vv9KOj+EUGf/0ypq3k9G3cyk=
+	t=1727697900; cv=none; b=lP4YZHbbT6OmwGTSV5vGxe88N+zzKWINrRG9aQJVmOt4b4/VIfMlrNzSy9DlbkKn9bDPU3tHwak62ug5bSxjh18Wwsuv3g3e1oqEr/NOlCCqr8/1VfNin6FC+m3q72pFJPOKm574ly8bdBSNPUZfB4F6tl/1wdJdF3blCaOnSzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727697897; c=relaxed/simple;
-	bh=1g0+rmMwCDuGWvS2q/K/LC+NTqBE6pcQhTrh1e6y+HA=;
+	s=arc-20240116; t=1727697900; c=relaxed/simple;
+	bh=zAHXtBXd38DxPFfjTz25yyTkm38285rSqJvPg7EppSk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rjylaoZitDBST7426kogHvvSHeruhL4+j9ggDMVu/RioUy4YUjfu5P8EZed6560hIoU2R+jNobJkGme0V2YSyKeuWgPQkNat3zV2DqmBgiTATXi70DpmScprKgNEzB6yDk7Z5m+x9syNYohPpkhCMFB1OYwyGXU6sI++DTVdLmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=USBXmoI2; arc=none smtp.client-ip=209.85.222.179
+	 In-Reply-To:To:Cc; b=iS30zlrQ9Ky/tE0RAf6ypNkz/+tdJuHUR3yVsXFHPRdSdwsEsCyWCQ7u6X+8bsAFhJAlemkJpvYXI/KSmMTJIft4/fT2VPGCFER1xMw37NMzZS9wO8X6r2lZ1gCoYnGRNeRtxEQzzpQiTC2p0wQ/5wz2zAiHGR70A4EYhC6WLaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=GJd+q6zJ; arc=none smtp.client-ip=209.85.161.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="USBXmoI2"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7a9ab8e5f96so363397385a.1
-        for <imx@lists.linux.dev>; Mon, 30 Sep 2024 05:04:56 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="GJd+q6zJ"
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-5e56759e6d7so2481552eaf.3
+        for <imx@lists.linux.dev>; Mon, 30 Sep 2024 05:04:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1727697895; x=1728302695; darn=lists.linux.dev;
+        d=chromium.org; s=google; t=1727697897; x=1728302697; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=4IxOY0fJQbV1pYrixFE+l++vJW3v3+bYS5tnnmoYTEc=;
-        b=USBXmoI2kq6ZJd1amXyIBp9NEfW9OSsOmqGk57Om//CAzeFnU5XpY3w37GEAd/JcNt
-         oYMnOoaZ/UZMQYSwXC9iG8giO8IHlZTSmHghfuGNDco2xpofrbjkK+jgY1K1MQrNfs9u
-         46/9De/xEgf0/LM/nonCMgbjADhAyp2VYH5LE=
+        bh=tIonQ/DAaQ73YEKHhPQbmT6IJ8ZJpmHYGgDzVtOZCdY=;
+        b=GJd+q6zJoW85TZyYtzUISflXhNjL/ws7oBUqn6QeW9WPb++UoO4+/PjjqRqw9MaJHg
+         2GORMdc7KdWOsR4GDSBJy8AGqp0MutVtto9AVgl4kIuYDa0KRrRiAEilss6BaZJcNln3
+         vcpDL/Btw0Fg5vXAblUeRvMkFC2LrHDSejUI4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727697895; x=1728302695;
+        d=1e100.net; s=20230601; t=1727697897; x=1728302697;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=4IxOY0fJQbV1pYrixFE+l++vJW3v3+bYS5tnnmoYTEc=;
-        b=m/r7p5fkc0tp/eaqKwJYrC9h2NxQbNP76R1sq2IYGOIvDVERsc0eO/TB4mUwMPepCm
-         A3uKw3+QtYMutBf5eQla+mjT/KhBGXEZt7bgVAaiT3L+gBaviKPxD7EstKgiCsoZJlE5
-         GIvezLGhBvwj30b8BWUU8EQFHLXkdVH5ndiIYdya8HLMKhb78sSFbxu4aLmkNSyBxOKw
-         xR/Ljq2naG4JQ+q5X/W/YE3XqhT4baGvD3MdLVrW/6M/LZKTSoDLm8wETH6bbjOExeRV
-         jIhdR1tpNXyFMQ2TDcAMMlpd1nIAMIzq9KyCexpPJec6F1AIZgYuKQZh35Db5PI0/0uE
-         EVZA==
-X-Forwarded-Encrypted: i=1; AJvYcCVYPlBC2hE3wAFz9b5YzliKEPv57/jMyOTW/b7XQF4MwO7D664HBtU52Fvci44+R/Bb0SU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwAUsS+t946zT4jY0YZLA76CM0PszjNgRQ0Att9Kdy6r23Xqoml
-	VtVymSliP2GPMTlKJFkKeJXzrTI5lW9EWLY6lh0dnfYRO2jcVkMKXZjM8ewmAw==
-X-Google-Smtp-Source: AGHT+IH66496SEOv3j8ygYtL4JJVB2nn5gkUmde7+6fS5LT2xRJFvFwOVG+MRgiMM8u5XXNXcxJVyg==
-X-Received: by 2002:a05:6214:5b07:b0:6cb:5dd3:a3ce with SMTP id 6a1803df08f44-6cb5dd3a78emr68541006d6.14.1727697895340;
-        Mon, 30 Sep 2024 05:04:55 -0700 (PDT)
+        bh=tIonQ/DAaQ73YEKHhPQbmT6IJ8ZJpmHYGgDzVtOZCdY=;
+        b=BhKTNOgmYHi6HjEJSz9dUK9GdYZR+hDMUdE+L0cDkKOA4Kb0W3e0ygFMdnICkG9UVd
+         sSxZJ/1wfTx2KBcH86Z6wZmfAcVOFbYSgUJC1qnx7kJ1JwnZKLgV1I1FMPXXnoVpd6/x
+         x0sU+X/C6IQ+VRUAGARc5XYchaHZsfjz0GxudCgXwCTBHYQXsf+9LmpfFIC9MNMcxP2m
+         eT4JgJjtNSPgTSjVzc/p1PAbC8/X8gpHnzhREvyWHB9dwj/SW/kVMJJ/VFi/u52gpuMe
+         Wy5YyiOJ8Ozn0fpnfqaXOInfbfcqpp+4RveVixyF7AuW5MDiYAYJgDoUfVCTo/H7jUaB
+         bQYw==
+X-Forwarded-Encrypted: i=1; AJvYcCUqfLQszNkbx88MCaCzor46mvLKibiEXn/6V2PrwQQS1irrU0l8ZZ5+Ue2671CrBe3tdmE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwsORGUBSi5kNHfrePzZ9hw5N77W0IbjbZlZSYU7kIwr5xj0itH
+	8lRkpO47T4A4U2tGTwU/vnB/FEx5Fr0TwpdPwSpbZpvHTDtDc9lr1m3EBMX3cQ==
+X-Google-Smtp-Source: AGHT+IGBBDkCLdkyPSXSamdMv+lg/+wwDPA6EahlQnUNGQaV2riLXTLngR4tQbOORFsEO3I87GPG9Q==
+X-Received: by 2002:a05:6358:54a6:b0:1b8:33fc:ae71 with SMTP id e5c5f4694b2df-1becbc9be95mr344688455d.16.1727697897424;
+        Mon, 30 Sep 2024 05:04:57 -0700 (PDT)
 Received: from denia.c.googlers.com (76.224.245.35.bc.googleusercontent.com. [35.245.224.76])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b694369sm38822536d6.144.2024.09.30.05.04.54
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b694369sm38822536d6.144.2024.09.30.05.04.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Sep 2024 05:04:54 -0700 (PDT)
+        Mon, 30 Sep 2024 05:04:56 -0700 (PDT)
 From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 30 Sep 2024 12:04:20 +0000
-Subject: [PATCH 25/45] media: cobalt: Use string_choices helpers
+Date: Mon, 30 Sep 2024 12:04:21 +0000
+Subject: [PATCH 26/45] media: videobuf2: Use string_choices helpers
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240930-cocci-opportunity-v1-25-81e137456ce0@chromium.org>
+Message-Id: <20240930-cocci-opportunity-v1-26-81e137456ce0@chromium.org>
 References: <20240930-cocci-opportunity-v1-0-81e137456ce0@chromium.org>
 In-Reply-To: <20240930-cocci-opportunity-v1-0-81e137456ce0@chromium.org>
 To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
@@ -99,27 +99,38 @@ Cc: linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
  linux-aspeed@lists.ozlabs.org, Ricardo Ribalda <ribalda@chromium.org>
 X-Mailer: b4 0.13.0
 
-The following cocci warning is fixed:
-drivers/media/pci/cobalt/cobalt-driver.c:263:25-33: opportunity for str_enable_disable(ctrl & 1)
+The following cocci warnings are fixed:
+drivers/media/common/videobuf2/videobuf2-core.c:3008:2-6: opportunity for str_read_write(read)
+drivers/media/common/videobuf2/videobuf2-core.c:2860:2-8: opportunity for str_read_write(( read ))
 
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
- drivers/media/pci/cobalt/cobalt-driver.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/common/videobuf2/videobuf2-core.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/pci/cobalt/cobalt-driver.c b/drivers/media/pci/cobalt/cobalt-driver.c
-index 6e1a0614e6d0..cff2d29410d4 100644
---- a/drivers/media/pci/cobalt/cobalt-driver.c
-+++ b/drivers/media/pci/cobalt/cobalt-driver.c
-@@ -260,7 +260,7 @@ static void msi_config_show(struct cobalt *cobalt, struct pci_dev *pci_dev)
- 	u32 adrs_l, adrs_h;
+diff --git a/drivers/media/common/videobuf2/videobuf2-core.c b/drivers/media/common/videobuf2/videobuf2-core.c
+index 29a8d876e6c2..05678fa14fe9 100644
+--- a/drivers/media/common/videobuf2/videobuf2-core.c
++++ b/drivers/media/common/videobuf2/videobuf2-core.c
+@@ -2857,7 +2857,8 @@ static int __vb2_init_fileio(struct vb2_queue *q, int read)
+ 		return -EBUSY;
  
- 	pci_read_config_word(pci_dev, 0x52, &ctrl);
--	cobalt_info("MSI %s\n", ctrl & 1 ? "enable" : "disable");
-+	cobalt_info("MSI %s\n", str_enable_disable(ctrl & 1));
- 	cobalt_info("MSI multiple message: Capable %u. Enable %u\n",
- 		    (1 << ((ctrl >> 1) & 7)), (1 << ((ctrl >> 4) & 7)));
- 	if (ctrl & 0x80)
+ 	dprintk(q, 3, "setting up file io: mode %s, count %d, read_once %d, write_immediately %d\n",
+-		(read) ? "read" : "write", q->min_reqbufs_allocation, q->fileio_read_once,
++		str_read_write(read), q->min_reqbufs_allocation,
++		q->fileio_read_once,
+ 		q->fileio_write_immediately);
+ 
+ 	fileio = kzalloc(sizeof(*fileio), GFP_KERNEL);
+@@ -3005,7 +3006,7 @@ static size_t __vb2_perform_fileio(struct vb2_queue *q, char __user *data, size_
+ 	int ret;
+ 
+ 	dprintk(q, 3, "mode %s, offset %ld, count %zd, %sblocking\n",
+-		read ? "read" : "write", (long)*ppos, count,
++		str_read_write(read), (long)*ppos, count,
+ 		nonblock ? "non" : "");
+ 
+ 	if (!data)
 
 -- 
 2.46.1.824.gd892dcdcdd-goog
