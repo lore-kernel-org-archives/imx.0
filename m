@@ -1,57 +1,57 @@
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C546192B61
-	for <imx@lists.linux.dev>; Mon, 30 Sep 2024 12:04:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D36192D6F
+	for <imx@lists.linux.dev>; Mon, 30 Sep 2024 12:04:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727697869; cv=none; b=WUwL2bueLL3+zrNEwGFHulh/uzcHiA17yiiDMIFJgIzgybwcQzHcdZvp/umIiUt1vgBeRUBTJxuIZyJZLKX+FIQ5e1F3OXfw2hNmhaDCUl8gtHBkTlJL2IEs+DbktoKZQFr2CBC72QZoz0WNiRZldUNHW2isbyDfSSnpbN0VHBI=
+	t=1727697871; cv=none; b=IfWyCI48yK430PKoHiZe7vPDt1fHJvWu95Egp6lbnsN3dMB4LUv55ExP8Eq0uBkyZRe/gM5ioE6Y64osbK8q2o3hEnsTmddm34V4/w1gmhGZOF+zEZn2smiszk06B4yKqvCER2vv7xZ5p9BwvYY7/hY0OBPHrxRIefmGZ+UxHXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727697869; c=relaxed/simple;
-	bh=cnDoJb8yt4N23hqgVqtt6DugifeR9k05ai5VXwEP3n8=;
+	s=arc-20240116; t=1727697871; c=relaxed/simple;
+	bh=Fj4hGSAt0kunFV3KWV3o9auUA/DMd0UV/ICWjq4I7Sk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jAXpjYAPFfZ+gD2poW/9C5rTZ27NxTOedPN4Se0JbSK5SAsqgn0/UlCcoSAwf3JMxBT5VFSMvi3DOAOyPSg6247FaM9qPDT2py8AbXYIOtLsEdLAvNlRFsbED12q3J76n10wh2JoVsNyYLrRk6Fo2ebndzHXZII5QE+AZbUoMEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=cA7/OcfF; arc=none smtp.client-ip=209.85.219.50
+	 In-Reply-To:To:Cc; b=ZMW9VYXpp9pcUMzxaj5fql2tM677LJszxmEZA1Oai9yIXYWvJl5/mW8pRAz5UCqr8AvjYtmDeOHzzQS4O4nD/FBSCnpBqMwge1VKgBzUJkaR+6J6qxglCxL/DvgPssZMA21tWT8obMpjY8K1vTo+MbdDCPIGML8VgbCu17FhVjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=lJOJ/svT; arc=none smtp.client-ip=209.85.219.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="cA7/OcfF"
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-6cb54eef205so14798346d6.2
-        for <imx@lists.linux.dev>; Mon, 30 Sep 2024 05:04:26 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="lJOJ/svT"
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6c5acb785f2so22941426d6.0
+        for <imx@lists.linux.dev>; Mon, 30 Sep 2024 05:04:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1727697865; x=1728302665; darn=lists.linux.dev;
+        d=chromium.org; s=google; t=1727697868; x=1728302668; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=t2tB8sFg/5a2I4zeaxxZR6pf56+tHkpHPezEUEsu9lc=;
-        b=cA7/OcfF6+CEN93lilnuAEgHT3VOwYTELSVMWG1cvz4nPDkCVxBHDkeNyy0J6ZcMtt
-         ic6UBg//Ok+d554WhJ4V3W8Uwoa5exD4LiliqTmVvUtC62pE8HXcGRoqEuxBUznp19/C
-         3nJLT/Y7bbzWKoOTd6qmvR2VLRR5bOfCIWGEM=
+        bh=twxbXJ5TDeltaVeKhttrEsGiOfaRdH40FC0hJR39r6Y=;
+        b=lJOJ/svT5osvrJDMp5pFcw+ts4h514JOqDjNomSdz4Uy9UMy8/OC/gxuUBaocDrME1
+         AD1DdGa9ptqgh+FfUfvE+mw3lVri4V4fnm5Qbd9+FfEe7FwtBmR1LdVLgS6utALoD1NY
+         stPcP2BVIAGI5rQMiunG4JQZ8/TGIGMYfa/io=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727697865; x=1728302665;
+        d=1e100.net; s=20230601; t=1727697868; x=1728302668;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=t2tB8sFg/5a2I4zeaxxZR6pf56+tHkpHPezEUEsu9lc=;
-        b=kjpiOcLwxkYn1leHvQzJg4Lr0TzkUxgbbv23xoBaf/OibbvYK4vC+cuXYwOG6CP75U
-         GmVmTL8k2qDG1kc5t8tIMxU3My8OD2FTNuuZvNyxL1fnaqqddSFfXv+W7C0FmVq0by7E
-         GkC9frnXq6Xhta7/vZvKpsTcH4jwAo+k+PZ1jr/erw2aXMAX4crKnj+Wq7gpqe+lvjiM
-         nENEmftGIUYsF3Wx3jrefQ4pHBqhcOPyQkUs5OgIQz1oc4P1qYWPm3H/Lz/TF9A502Bn
-         wk2lrr8z1IGpV+tUW1Es+iv2VXoaqIQyvmlryOuIJiQCoRWTNyU9R42YZXyYq3zvi3o9
-         +zrw==
-X-Forwarded-Encrypted: i=1; AJvYcCVHZ2jFSJ14O0CG2yLpYcitIz4VG/mnkzTDoJ4vtm/iCTEzg2M3/YHhB31RAJfTHi5R8FI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwzRrNdtQ81bI7ll0UUYOCki8298T4M3xYL7FPxrWvm7aINvnu5
-	M1g6T46aip4nwzcVKpc35R1N7E4btP+TVffYwEBO9nvcnGDh1Plq7ujiQJ4+tA==
-X-Google-Smtp-Source: AGHT+IHhNN24sJCIubgfbFA4VGeLvNv4RKY7X5IqP1ufDg/rjxIUh41wM/wPVdTOII53M0RqAZGVpA==
-X-Received: by 2002:a05:6214:3982:b0:6cb:3e26:bcaf with SMTP id 6a1803df08f44-6cb3e26bd60mr117592306d6.32.1727697865303;
-        Mon, 30 Sep 2024 05:04:25 -0700 (PDT)
+        bh=twxbXJ5TDeltaVeKhttrEsGiOfaRdH40FC0hJR39r6Y=;
+        b=GP38VybSPUdlwkr0KvJtcev5m5xY3AdDVAH6Qa3bmuZOfoEx//14fs7TmCDQ0Wjx8q
+         IQAkoWtXBn7kgaft9cey36N80ZF7+xEA6NF5uEkNM2iyg+bVuNpI58nOu39UkL6khCb3
+         Pn0KukU1bUlTD8SYFSMXO/uf6dBGxNgQXOso6q2F/fkmr/h8V5TjUXBVw9FwYrzy61fJ
+         yw56YEa/trbTuXkq61EOLEVeMayl5EQcVT0pJ48+thrUvS49bRIsMDK1Q7szZaHtR53w
+         FC9LEU65bS9fa5Ei6mc/oRIDxM7OmdCK8Sm8RCdME4lDspqJ1MVN1dxV2ik9KXvOtVp2
+         KWmw==
+X-Forwarded-Encrypted: i=1; AJvYcCW6lFNHq64SXFWeAbCGlLabAONZW85x2rULzc5yd/161sXotaMjCT+92wg/oMG/ZbOJRkI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxmoOvr2zgC/wR/bqG8PKk1WQ0o99dygzMZV6McPjad8IZK2Wn4
+	Nw6RhEDxfvqaNLZtxjidV5aT+NtKzqbfFMXi7+1engf8ABThP2/BjhZbvY2pXw==
+X-Google-Smtp-Source: AGHT+IHtaxsqjQiVBMHhpTB74imzDxkcStWQYXWBLNrF2q84xYJXsQbMLDqKSk4hEvyHVvp0GEvPAw==
+X-Received: by 2002:a05:6214:5701:b0:6cb:2cfa:3b9d with SMTP id 6a1803df08f44-6cb3b5cafb1mr203537826d6.14.1727697867933;
+        Mon, 30 Sep 2024 05:04:27 -0700 (PDT)
 Received: from denia.c.googlers.com (76.224.245.35.bc.googleusercontent.com. [35.245.224.76])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b694369sm38822536d6.144.2024.09.30.05.04.23
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b694369sm38822536d6.144.2024.09.30.05.04.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Sep 2024 05:04:24 -0700 (PDT)
+        Mon, 30 Sep 2024 05:04:26 -0700 (PDT)
 From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 30 Sep 2024 12:04:06 +0000
-Subject: [PATCH 11/45] media: rc: Use string_choices helpers
+Date: Mon, 30 Sep 2024 12:04:07 +0000
+Subject: [PATCH 12/45] media: dvb-frontends: Use string_choices helpers
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240930-cocci-opportunity-v1-11-81e137456ce0@chromium.org>
+Message-Id: <20240930-cocci-opportunity-v1-12-81e137456ce0@chromium.org>
 References: <20240930-cocci-opportunity-v1-0-81e137456ce0@chromium.org>
 In-Reply-To: <20240930-cocci-opportunity-v1-0-81e137456ce0@chromium.org>
 To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
@@ -100,84 +100,135 @@ Cc: linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
 X-Mailer: b4 0.13.0
 
 The following cocci warnings are fixed:
-drivers/media/rc/mceusb.c:1130:2-8: opportunity for str_enable_disable(enable)
-drivers/media/rc/ene_ir.c:1121:22-28: opportunity for str_enabled_disabled(enable)
-drivers/media/rc/serial_ir.c:591:4-9: opportunity for str_low_high(sense)
-drivers/media/rc/serial_ir.c:594:4-9: opportunity for str_low_high(sense)
+drivers/media/dvb-frontends/cx24120.c:456:3-9: opportunity for str_enable_disable(enable)
+drivers/media/dvb-frontends/cx24120.c:462:2-8: opportunity for str_enabled_disabled(enable)
+drivers/media/dvb-frontends/helene.c:282:4-14: opportunity for str_read_write(write == 0)
+drivers/media/dvb-frontends/cxd2841er.c:209:3-13: opportunity for str_read_write(write == 0)
+drivers/media/dvb-frontends/drxk_hard.c:6282:22-28: opportunity for str_enable_disable(enable)
+drivers/media/dvb-frontends/drxk_hard.c:1071:2-13: opportunity for str_enable_disable(mpeg_enable)
+drivers/media/dvb-frontends/sp2.c:135:3-9: opportunity for str_read_write(( read ))
+drivers/media/dvb-frontends/horus3a.c:41:3-13: opportunity for str_read_write(write == 0)
+drivers/media/dvb-frontends/ascot2e.c:107:3-13: opportunity for str_read_write(write == 0)
+drivers/media/usb/dvb-usb/af9005-fe.c:1282:27-31: opportunity for str_high_low(temp)
+drivers/media/usb/dvb-usb/af9005-fe.c:790:30-32: opportunity for str_on_off(on)
 
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
- drivers/media/rc/ene_ir.c    | 3 ++-
- drivers/media/rc/mceusb.c    | 3 ++-
- drivers/media/rc/serial_ir.c | 5 +++--
- 3 files changed, 7 insertions(+), 4 deletions(-)
+ drivers/media/dvb-frontends/ascot2e.c   | 2 +-
+ drivers/media/dvb-frontends/cx24120.c   | 4 ++--
+ drivers/media/dvb-frontends/cxd2841er.c | 2 +-
+ drivers/media/dvb-frontends/drxk_hard.c | 4 ++--
+ drivers/media/dvb-frontends/helene.c    | 2 +-
+ drivers/media/dvb-frontends/horus3a.c   | 2 +-
+ drivers/media/dvb-frontends/sp2.c       | 2 +-
+ 7 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/media/rc/ene_ir.c b/drivers/media/rc/ene_ir.c
-index 67722e2e47ff..90bee860a8a1 100644
---- a/drivers/media/rc/ene_ir.c
-+++ b/drivers/media/rc/ene_ir.c
-@@ -24,6 +24,7 @@
- #include <linux/interrupt.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
-+#include <linux/string_choices.h>
- #include <media/rc-core.h>
- #include "ene_ir.h"
- 
-@@ -1118,7 +1119,7 @@ static void ene_remove(struct pnp_dev *pnp_dev)
- /* enable wake on IR (wakes on specific button on original remote) */
- static void ene_enable_wake(struct ene_device *dev, bool enable)
+diff --git a/drivers/media/dvb-frontends/ascot2e.c b/drivers/media/dvb-frontends/ascot2e.c
+index cf8e5f1bd101..ec7a718428fc 100644
+--- a/drivers/media/dvb-frontends/ascot2e.c
++++ b/drivers/media/dvb-frontends/ascot2e.c
+@@ -104,7 +104,7 @@ static void ascot2e_i2c_debug(struct ascot2e_priv *priv,
+ 			      u8 reg, u8 write, const u8 *data, u32 len)
  {
--	dbg("wake on IR %s", enable ? "enabled" : "disabled");
-+	dbg("wake on IR %s", str_enabled_disabled(enable));
- 	ene_set_clear_reg_mask(dev, ENE_FW1, ENE_FW1_WAKE, enable);
+ 	dev_dbg(&priv->i2c->dev, "ascot2e: I2C %s reg 0x%02x size %d\n",
+-		(write == 0 ? "read" : "write"), reg, len);
++		str_write_read(write), reg, len);
+ 	print_hex_dump_bytes("ascot2e: I2C data: ",
+ 		DUMP_PREFIX_OFFSET, data, len);
+ }
+diff --git a/drivers/media/dvb-frontends/cx24120.c b/drivers/media/dvb-frontends/cx24120.c
+index 44515fdbe91d..a02aaebb091a 100644
+--- a/drivers/media/dvb-frontends/cx24120.c
++++ b/drivers/media/dvb-frontends/cx24120.c
+@@ -453,13 +453,13 @@ static int cx24120_msg_mpeg_output_global_config(struct cx24120_state *state,
+ 	ret = cx24120_message_send(state, &cmd);
+ 	if (ret != 0) {
+ 		dev_dbg(&state->i2c->dev, "failed to %s MPEG output\n",
+-			enable ? "enable" : "disable");
++			str_enable_disable(enable));
+ 		return ret;
+ 	}
+ 
+ 	state->mpeg_enabled = enable;
+ 	dev_dbg(&state->i2c->dev, "MPEG output %s\n",
+-		enable ? "enabled" : "disabled");
++		str_enabled_disabled(enable));
+ 
+ 	return 0;
+ }
+diff --git a/drivers/media/dvb-frontends/cxd2841er.c b/drivers/media/dvb-frontends/cxd2841er.c
+index d925ca24183b..d1b84cd9c510 100644
+--- a/drivers/media/dvb-frontends/cxd2841er.c
++++ b/drivers/media/dvb-frontends/cxd2841er.c
+@@ -206,7 +206,7 @@ static void cxd2841er_i2c_debug(struct cxd2841er_priv *priv,
+ {
+ 	dev_dbg(&priv->i2c->dev,
+ 		"cxd2841er: I2C %s addr %02x reg 0x%02x size %d data %*ph\n",
+-		(write == 0 ? "read" : "write"), addr, reg, len, len, data);
++		str_write_read(write), addr, reg, len, len, data);
  }
  
-diff --git a/drivers/media/rc/mceusb.c b/drivers/media/rc/mceusb.c
-index cd7af4d88b7f..7f932f0f5750 100644
---- a/drivers/media/rc/mceusb.c
-+++ b/drivers/media/rc/mceusb.c
-@@ -25,6 +25,7 @@
- #include <linux/device.h>
- #include <linux/module.h>
- #include <linux/slab.h>
-+#include <linux/string_choices.h>
- #include <linux/workqueue.h>
- #include <linux/usb.h>
- #include <linux/usb/input.h>
-@@ -1127,7 +1128,7 @@ static int mceusb_set_rx_carrier_report(struct rc_dev *dev, int enable)
- 				    MCE_CMD_SETIRRXPORTEN, 0x00 };
+ static int cxd2841er_write_regs(struct cxd2841er_priv *priv,
+diff --git a/drivers/media/dvb-frontends/drxk_hard.c b/drivers/media/dvb-frontends/drxk_hard.c
+index 87f3d4f0eb8c..cbb1ba0f1323 100644
+--- a/drivers/media/dvb-frontends/drxk_hard.c
++++ b/drivers/media/dvb-frontends/drxk_hard.c
+@@ -1068,7 +1068,7 @@ static int mpegts_configure_pins(struct drxk_state *state, bool mpeg_enable)
+ 	u16 err_cfg = 0;
  
- 	dev_dbg(ir->dev, "%s short-range receiver carrier reporting",
--		enable ? "enable" : "disable");
-+		str_enable_disable(enable));
- 	if (enable) {
- 		ir->carrier_report_enabled = true;
- 		if (!ir->learning_active) {
-diff --git a/drivers/media/rc/serial_ir.c b/drivers/media/rc/serial_ir.c
-index fc5fd3927177..f9ec2f043529 100644
---- a/drivers/media/rc/serial_ir.c
-+++ b/drivers/media/rc/serial_ir.c
-@@ -25,6 +25,7 @@
- #include <linux/delay.h>
- #include <linux/platform_device.h>
- #include <linux/spinlock.h>
-+#include <linux/string_choices.h>
- #include <media/rc-core.h>
+ 	dprintk(1, ": mpeg %s, %s mode\n",
+-		mpeg_enable ? "enable" : "disable",
++		str_enable_disable(mpeg_enable),
+ 		state->m_enable_parallel ? "parallel" : "serial");
  
- struct serial_ir_hw {
-@@ -588,10 +589,10 @@ static int serial_ir_probe(struct platform_device *dev)
- 		}
- 		sense = nlow >= nhigh ? 1 : 0;
- 		dev_info(&dev->dev, "auto-detected active %s receiver\n",
--			 sense ? "low" : "high");
-+			 str_low_high(sense));
- 	} else
- 		dev_info(&dev->dev, "Manually using active %s receiver\n",
--			 sense ? "low" : "high");
-+			 str_low_high(sense));
+ 	/* stop lock indicator process */
+@@ -6279,7 +6279,7 @@ static int drxk_gate_ctrl(struct dvb_frontend *fe, int enable)
+ {
+ 	struct drxk_state *state = fe->demodulator_priv;
  
- 	dev_dbg(&dev->dev, "Interrupt %d, port %04x obtained\n", irq, io);
+-	dprintk(1, ": %s\n", enable ? "enable" : "disable");
++	dprintk(1, ": %s\n", str_enable_disable(enable));
+ 
+ 	if (state->m_drxk_state == DRXK_NO_DEV)
+ 		return -ENODEV;
+diff --git a/drivers/media/dvb-frontends/helene.c b/drivers/media/dvb-frontends/helene.c
+index f127adee3ebb..b4527c141d9c 100644
+--- a/drivers/media/dvb-frontends/helene.c
++++ b/drivers/media/dvb-frontends/helene.c
+@@ -279,7 +279,7 @@ static void helene_i2c_debug(struct helene_priv *priv,
+ 		u8 reg, u8 write, const u8 *data, u32 len)
+ {
+ 	dev_dbg(&priv->i2c->dev, "helene: I2C %s reg 0x%02x size %d\n",
+-			(write == 0 ? "read" : "write"), reg, len);
++			str_write_read(write), reg, len);
+ 	print_hex_dump_bytes("helene: I2C data: ",
+ 			DUMP_PREFIX_OFFSET, data, len);
+ }
+diff --git a/drivers/media/dvb-frontends/horus3a.c b/drivers/media/dvb-frontends/horus3a.c
+index 0330b78a5b3f..10300ebf3ca0 100644
+--- a/drivers/media/dvb-frontends/horus3a.c
++++ b/drivers/media/dvb-frontends/horus3a.c
+@@ -38,7 +38,7 @@ static void horus3a_i2c_debug(struct horus3a_priv *priv,
+ 			      u8 reg, u8 write, const u8 *data, u32 len)
+ {
+ 	dev_dbg(&priv->i2c->dev, "horus3a: I2C %s reg 0x%02x size %d\n",
+-		(write == 0 ? "read" : "write"), reg, len);
++		str_write_read(write), reg, len);
+ 	print_hex_dump_bytes("horus3a: I2C data: ",
+ 		DUMP_PREFIX_OFFSET, data, len);
+ }
+diff --git a/drivers/media/dvb-frontends/sp2.c b/drivers/media/dvb-frontends/sp2.c
+index 75adf2a4589f..0332e3c312c6 100644
+--- a/drivers/media/dvb-frontends/sp2.c
++++ b/drivers/media/dvb-frontends/sp2.c
+@@ -132,7 +132,7 @@ static int sp2_ci_op_cam(struct dvb_ca_en50221 *en50221, int slot, u8 acs,
+ 		return ret;
+ 
+ 	dev_dbg(&s->client->dev, "%s: slot=%d, addr=0x%04x, %s, data=%x",
+-			(read) ? "read" : "write", slot, addr,
++			str_read_write(read), slot, addr,
+ 			(acs == SP2_CI_ATTR_ACS) ? "attr" : "io",
+ 			(read) ? mem : data);
  
 
 -- 
