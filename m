@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9243C1A073B;
-	Tue,  1 Oct 2024 12:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623771A073B;
+	Tue,  1 Oct 2024 12:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727786908; cv=none; b=osvI1sHJ9wuhu0nZNejkhO/zpXq+9wwzEc9hnhqX/xisPCGo/KqPMWnWweMKgTfHxB+scnltiUpkbc6JYaMrxu8wistgdjONdsqaCh+xhoOtdg1wNzHf8LMPnSC884KyE6L2wzG7CHzlpZDUwy9UKmDnyb3HM9yeG+PQs1lLzVw=
+	t=1727786915; cv=none; b=WZE8hPQ9CpY+OY6PjaV42lxkKfOMxJQLCxhBYlsiEZPQ9CIEDChocKKdXhu54bGVa033dUr4i4u787Evb3GMgFX4h9E+8nGu7MY2OIAPf2uUt2brGx2VzUOxFGHsNAecM3dGCeClOVGdSYw1StUmiqt/h3yNXlNdpEMofjSIDt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727786908; c=relaxed/simple;
-	bh=SDGvMZdZA/8Hfcdkmic8jEaOvZTvputcv1dK4N2ezxc=;
+	s=arc-20240116; t=1727786915; c=relaxed/simple;
+	bh=Kzth8fzr8i+b7KIafyb2o77dibcrJbkdE7yZFTq23CU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a+3mdVwqK9iGzMUMhY9NJCwVfG9ENj14zPX9Zx+Lqdubfpu1If7O193/6tSNH5wb3kmhgSTDjNldSasggUC5K6ZyF70UmreGc0vXPMYkBgCjBYcE9FWFuURRe1DIaPjL2Dca+yku54iwtklfLSep55eGra6OyIgMKL4J2WSENyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KQqbTNkR; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=llNcDuDwxoIz65DWu8g3jHNwpVCBvZv0GY43cOM2iHo39sCOKIQMc0cJ2OKBI1dS2Tbgs3Ta0PpwTHXeijZpEIOukR5oRY67RSQPxaxQ2gGh0ic/zDEZ03Xuok/nhf1ukH0dTrbBKpHZM+Ou9Cr8gfit2gi/KbKog3sXZueMkcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tjJ+3mws; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KQqbTNkR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B361FC4CEC6;
-	Tue,  1 Oct 2024 12:48:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tjJ+3mws"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758F3C4CECE;
+	Tue,  1 Oct 2024 12:48:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727786908;
-	bh=SDGvMZdZA/8Hfcdkmic8jEaOvZTvputcv1dK4N2ezxc=;
+	s=k20201202; t=1727786914;
+	bh=Kzth8fzr8i+b7KIafyb2o77dibcrJbkdE7yZFTq23CU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KQqbTNkRjLlIAx6lzAi9IsdFzZx48Xd3za70rk8p1S15C2BA61X4tzZpGvre7xTnr
-	 zsdVDrwLQ2ednQHIvfXhM6ScQNH60G9HaYaQ7WgeX9wEXeskf0sbhcxG7eL58lZcQ5
-	 NACthjugAJUq9lko8XbkptkKivuOuldrKhPjSBV0YfvWB+Dmq9+Om5vP5KrzaxYf53
-	 V2RH9hAYR046720MZfJzQTH9yuoLirBlxt2QCzxVXQVOjlxtG90RUEF4iE3dHwn1Yy
-	 7UvB7trS16Z8m0MpWUsXX8DDYIaoekqn4rPX08Uk96ATCCdWGaXTcO4wroyxqabCLQ
-	 RHOJbuIQxpKgg==
-Message-ID: <2012629e-c1c4-47b5-aaf2-3dfe94d2dc53@kernel.org>
-Date: Tue, 1 Oct 2024 14:48:20 +0200
+	b=tjJ+3mwsqf9LqMKWUT5bXszhpgAB5uTYsxM8G2Wo6d+ggMjIDoTWl8W5wKFFpbzAt
+	 kBbn3KO5KEJ8TPWw2fDNwvpcjpRR4u45aiaxZJ9R8HT3zeELIs9MFll+OBuu73WczR
+	 5SE4GJHeTGANwKT0RvO58j4O7dpeVs0KZiV8MiP0avT230ccmEeOdDB/RZIlviThfj
+	 MfLenW+2eBu1DEO6ijlCuRztdfVnH19EZ0t5S+cQcPN2rZr6C1iuRnvIGirv84g7PD
+	 +MYvJyA36uMD/DpzEdXomz7KaIM++q35vd1kjt4BShHjk6clbHgknDa7IX+xXMMVbp
+	 gIIpyQz77N/xA==
+Message-ID: <4230823f-60cb-4cf9-a32d-5e85445141da@kernel.org>
+Date: Tue, 1 Oct 2024 14:48:30 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,7 +35,7 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/2] arm64: dts: imx8mp-verdin: Update tla2024 adc
+Subject: Re: [PATCH v1 2/2] arm64: dts: imx8mm-verdin: Update tla2024 adc
  compatible
 To: =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?=
  <jpaulo.silvagoncalves@gmail.com>, Rob Herring <robh@kernel.org>,
@@ -48,7 +48,7 @@ Cc: =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
  devicetree@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 References: <20241001124505.73857-1-jpaulo.silvagoncalves@gmail.com>
- <20241001124505.73857-2-jpaulo.silvagoncalves@gmail.com>
+ <20241001124505.73857-3-jpaulo.silvagoncalves@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -94,7 +94,7 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20241001124505.73857-2-jpaulo.silvagoncalves@gmail.com>
+In-Reply-To: <20241001124505.73857-3-jpaulo.silvagoncalves@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
@@ -103,12 +103,12 @@ On 01/10/2024 14:45, João Paulo Gonçalves wrote:
 > 
 > With commit f1c9ce0ced2d ("iio: adc: ti-ads1015: Add TLA2024 support") a
 > new compatible was introduced for TLA2024 ADC. Update the device tree to
-> use the correct compatible for the Verdin-iMX8MP hardware.
+> use the correct compatible for the Verdin-iMX8MM hardware.
+> 
+> Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
+> ---
 
-Can you slow down please? You got comment on your other patch, which you
-did not resolve but you keep sending similar patches.
-
-Same comment here.
+Same issue here.
 
 Best regards,
 Krzysztof
