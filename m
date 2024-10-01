@@ -1,125 +1,204 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D5519046D;
-	Tue,  1 Oct 2024 06:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7742C1BBBE4
+	for <imx@lists.linux.dev>; Tue,  1 Oct 2024 06:29:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727763622; cv=none; b=SmlzT0yTygpzVbkgWGAdiAwz5SBFVUnwNBMAzBrBF6aKHDWkpX6/EdXnRIyA53FRCxh2fqbxzpqBy9x+H4RZIVM3WpgsJqW+2Xt6MUfPBWpT/J3ndrhn0glcgeCIgRlDzQv+9DdlyTatHPA6ZTkL5c46Icw0WUIiJxC07TKWOAE=
+	t=1727764175; cv=none; b=clmwPOw5llOOwFkryFdBgCk4Dxag8dZ1avD4XuCA+hb/wUloudCfVRjp9Ue80JVdkiKvD+VLe/ocpsJaeQ52+j/uh90znhc6sTOVmlTYfeXjmeaTQNTxZhrLbQiAqUDVz6yyTcg3m8Zc7g5YpwnEYmK//vE+L2rkIeLGpCHUTQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727763622; c=relaxed/simple;
-	bh=E9hmNj3xg4o4/UvpzQ8O7DQGvcf3cbI1DP+PEOu4KTs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EwJ90BsZoN5PzeR+29+GpboXbIkPYNqrJYvuyk4pMffZ1rpGXtFmivCc4Y3Jw0pYeqZi5IxnTNnAQ7DGt1vCsd5cLbMvbyLo4xou1uoiTMxfjxt2B9cr6lwUwKHCBn7MIpxEw2mUR05WgILrU58CeNjA4znPWNO1CmtWaPZp/bU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c9kfq8J6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727764175; c=relaxed/simple;
+	bh=0oXgs2FUFI9fseHKwZY5hlanmumWroHDydWI1JMx7ZU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mcGkpuY5q/2T9mmb8njvZHqyv0UnGFV8s7hIHobFw3LWilZbChaJrprTpoPSt/Un63SM6u03cCV2g2pVdd8XMvyZmEkoF47QYJZ+Q633GMXfy+X+xMJqoOOE7g107BeIHuOZJKHToiSFQmgLAZx2o4hOuF7QT9b5KVokliZfmQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=oOtxPrXc; arc=none smtp.client-ip=209.85.219.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c9kfq8J6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FB4C4CECF;
-	Tue,  1 Oct 2024 06:20:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727763621;
-	bh=E9hmNj3xg4o4/UvpzQ8O7DQGvcf3cbI1DP+PEOu4KTs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=c9kfq8J6oJhiuWogwgsNcpH8JF3bzVqAh+prE99AIu6muAjsAfAA2OLHTlfy2tSRP
-	 76cdwbr9LLirgsf1+RHzdu5YTLFtqYdfhY5WJtu0lm2KI873CURILfGG9/OD9dNZ6K
-	 p99+BK+jIg7tBLa2UE9tnN5NFSVNnQM8sISz6plTBq/7iBE4iq4zQ9IJMYeMBh8s7C
-	 8rSoHa7zE1rwCKgkw0L9PJbI/1ZmFAUmyLPFhZqpGHHx4XtHRZb47xKwqodqs6xcXo
-	 tEhJ8SdPvNmd7NXjCscdPjqc4HzE7k5aztf3VcGlRtM0Bk5UJ8VjPcGiOb0/fjU7SY
-	 pSHURdnnq+TJA==
-Message-ID: <145202d9-1e27-43a9-b19b-2d5386ac7828@kernel.org>
-Date: Tue, 1 Oct 2024 08:20:12 +0200
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="oOtxPrXc"
+Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e24a2bc0827so4699971276.2
+        for <imx@lists.linux.dev>; Mon, 30 Sep 2024 23:29:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google; t=1727764172; x=1728368972; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PTEgHFsXebuB87QyA3c3rHB+YSLXi5vaJNlefJqZ5RA=;
+        b=oOtxPrXcCc7OzWjAu21FRE41l+Ol1nwufZENWpfQAdfjf9eo/dbPl5foOEPsXO0TtL
+         PJuW01MDJfDcNDFn6Ao1gHGIPWKl58IsJ1M6E+beFnK5GM7RdsmI8+AFnPN45ucnyGJu
+         oFonoCbaH/HZmJ832wUaCGG9mLgsI8I55Gy2s=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727764172; x=1728368972;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PTEgHFsXebuB87QyA3c3rHB+YSLXi5vaJNlefJqZ5RA=;
+        b=ghmZCZTShaVTTKuirLdgahj+e2Bji0tfGJNmZjAr36Gdw0ozN1kj0/8BX4jJhHPspj
+         Pzi7n1Gb6gechqKmG+IcGFHVAavle5YLaOcR3Bg4W6aUUF6nkEmV4DOsKRRLtnn6Zn/E
+         x3sch0U3Awl8OZWRadWAlX1OyZ9Jhop4sScitdm6Tn+k4bcgOp4GvDWzdIJY4lKgdqcX
+         Em3NuZPghbVanl1a9BQAC1p2i9dPYVCOBqmBtPg3SUptjFMOp1EqIdDB8YH64VaTD6Qq
+         0yQjwvrWGR6C7XoV8kC2qp2OHElTfRj7CPbXXOto7FXLj+xNL9b889r+9IoPcdmZg6nn
+         o2+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXVKr9bcdAi6jbc6o62Tb3tMa6tUlFLbBmuGqx6/ELUOPQYaR9pqOOvm+DYz5rzLnUQIu4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxSZi7ZtEdV51lTyccgFFNkWlVEdvJnqX1/zKE2yEZVrSahd9zL
+	RN3ZrS0S56I77TWfPIshl/uNeK5VStatVMMMx8QZ7Vyz3LEkOwwaz6ei0cSKdNmn3l9VTOQixfL
+	ECeYUsQP4QsYD8YGIUhdqLxujgxfniyPHqqR36A==
+X-Google-Smtp-Source: AGHT+IHIQeqzdKeaRHimI4voaiumfcMwSGMQB57E+GcRU6g/uktv6tWOs9TtJod9TVUxHSLxwZxM0Uw83dIaeeyz8V4=
+X-Received: by 2002:a05:6902:100b:b0:e20:296e:48bd with SMTP id
+ 3f1490d57ef6-e2604b284dcmr13188403276.2.1727764172468; Mon, 30 Sep 2024
+ 23:29:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] dt-bindings: pinctrl: add S32G3 compatible for the
- SIUL2 driver
-To: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>,
- Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
- Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>,
- Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Ghennadi Procopciuc
- <Ghennadi.Procopciuc@oss.nxp.com>, Chester Lin <chester62515@gmail.com>,
- Matthias Brugger <mbrugger@suse.com>, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
- linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, NXP S32 Linux Team <s32@nxp.com>,
- Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
- Enric Balletbo <eballetb@redhat.com>
-References: <20240930132344.3001876-1-andrei.stefanescu@oss.nxp.com>
- <20240930132344.3001876-3-andrei.stefanescu@oss.nxp.com>
- <7080c117-199a-425a-9053-891a7f331f6a@kernel.org>
- <431dd907-026b-4215-96ef-28fdeb2b43a2@oss.nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <431dd907-026b-4215-96ef-28fdeb2b43a2@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240928083804.1073942-1-dario.binacchi@amarulasolutions.com>
+ <20240928083804.1073942-2-dario.binacchi@amarulasolutions.com>
+ <566859c1-a397-4465-987e-0682b07a703e@kernel.org> <CABGWkvqqg-PGAZTCz=MMLRx5F93jaN_=z8zJt1sDd3PHXd80PQ@mail.gmail.com>
+ <6c3e6071-822f-4230-b76b-276330de07ef@kernel.org>
+In-Reply-To: <6c3e6071-822f-4230-b76b-276330de07ef@kernel.org>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Date: Tue, 1 Oct 2024 08:29:21 +0200
+Message-ID: <CABGWkvrU507BHoP94Y7fEyFr=chuuy3o=oBHtuWRvwTw3GnxXw@mail.gmail.com>
+Subject: Re: [PATCH 1/6] dt-bindings: clock: imx8m-anatop: support spread
+ spectrum clocking
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com, 
+	Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Peng Fan <peng.fan@nxp.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 30/09/2024 16:46, Andrei Stefanescu wrote:
-> 
-> Just to make sure I understood correctly, it should
-> look something like this, right?
-> 
->     oneOf:
->       - enum:
->           - const: nxp,s32g2-siul2-pinctrl
->       - items:
->           - const: nxp,s32g3-siul2-pinctrl
->           - const: nxp,s32g2-siul2-pinctrl
+On Mon, Sep 30, 2024 at 8:45=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.or=
+g> wrote:
+>
+> On 29/09/2024 22:00, Dario Binacchi wrote:
+> >>
+> >>
+> >>> +  properties:
+> >>> +    compatible:
+> >>> +      contains:
+> >>> +        enum:
+> >>> +          - fsl,imx8mm-anatop
+> >>> +
+> >>> +then:
+> >>> +  properties:
+> >>> +    fsl,ssc-clocks:
+> >>
+> >> Nope. Properties must be defined in top-level.
+> >>
+> >>> +      $ref: /schemas/types.yaml#/definitions/phandle-array
+> >>> +      description:
+> >>> +        The phandles to the PLLs with spread spectrum clock generati=
+on
+> >>> +        hardware capability.
+> >>
+> >> These should be clocks.
+> >
+> > Sorry, but I can't understand what you're asking me.
+> > Could you kindly explain it to me in more detail?
+>
+> You added new property instead of using existing one for this purpose:
+> 'clocks'.
 
-Yes.
+>
+>
+>
+> Best regards,
+> Krzysztof
+>
 
-Just like we do in other files...
+I added this new property specifically for managing spread-spectrum.
+Indeed, not all clocks/PLLs
+managed by the node/peripheral support spread-spectrum, and the added
+properties specify
+parameters for enabling and tuning SSC for each individual PLL based
+on the index of each list.
+If I were to use the 'clocks' property and add a clock to this list
+that does not support SSC, IMHO
+the pairings would be less clear.
 
-Best regards,
-Krzysztof
+AFAIK the confusion arises from the fact that this node, which is a
+clock controller, was used only
+to export its base address, but perhaps it should have also exported
+its clocks, which the other
+clock controller does, as shown in:
+Documentation/devicetree/bindings/clock/imx8m-clock.yaml.
+If I consider its 'compatible' entries:
+- 'fsl,imx8mm-ccm' -> drivers/clk/imx/clk-imx8mm.c
+- 'fsl,imx8mn-ccm' -> drivers/clk/imx/clk-imx8mn.c
+- 'fsl,imx8mp-ccm' -> drivers/clk/imx/clk-imx8mp.c
+the probe function, triggered by fsl,imx8m{m,n,p}-ccm (and not
+fsl,imx8m{m,n,p}-anatop),
+retrieves the anatop node solely to get its base address, also
+registering its clocks, which
+I would have expected to be registered by another driver, specifically
+the one for anatop:
 
+static int imx8mn_clocks_probe(struct platform_device *pdev)
+{
+struct device *dev =3D &pdev->dev;
+struct device_node *np =3D dev->of_node;
+void __iomem *base;
+struct imx_pll14xx_ssc pll1443x_ssc;
+int ret;
+
+clk_hw_data =3D devm_kzalloc(dev, struct_size(clk_hw_data, hws,
+                           IMX8MN_CLK_END), GFP_KERNEL);
+if (WARN_ON(!clk_hw_data))
+    return -ENOMEM;
+
+clk_hw_data->num =3D IMX8MN_CLK_END;
+hws =3D clk_hw_data->hws;
+
+hws[IMX8MN_CLK_DUMMY] =3D imx_clk_hw_fixed("dummy", 0);
+hws[IMX8MN_CLK_24M] =3D imx_get_clk_hw_by_name(np, "osc_24m");
+hws[IMX8MN_CLK_32K] =3D imx_get_clk_hw_by_name(np, "osc_32k");
+hws[IMX8MN_CLK_EXT1] =3D imx_get_clk_hw_by_name(np, "clk_ext1");
+hws[IMX8MN_CLK_EXT2] =3D imx_get_clk_hw_by_name(np, "clk_ext2");
+hws[IMX8MN_CLK_EXT3] =3D imx_get_clk_hw_by_name(np, "clk_ext3");
+hws[IMX8MN_CLK_EXT4] =3D imx_get_clk_hw_by_name(np, "clk_ext4");
+
+np =3D of_find_compatible_node(NULL, NULL, "fsl,imx8mn-anatop");
+base =3D devm_of_iomap(dev, np, 0, NULL);
+of_node_put(np);
+if (WARN_ON(IS_ERR(base))) {
+    ret =3D PTR_ERR(base);
+    goto unregister_hws;
+}
+
+hws[IMX8MN_AUDIO_PLL1_REF_SEL] =3D imx_clk_hw_mux("audio_pll1_ref_sel",
+base + 0x0, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
+hws[IMX8MN_AUDIO_PLL2_REF_SEL] =3D imx_clk_hw_mux("audio_pll2_ref_sel",
+base + 0x14, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
+hws[IMX8MN_VIDEO_PLL_REF_SEL] =3D imx_clk_hw_mux("video_pll_ref_sel",
+base + 0x28, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
+
+
+Thanks and regards,
+Dario
+
+--=20
+
+Dario Binacchi
+
+Senior Embedded Linux Developer
+
+dario.binacchi@amarulasolutions.com
+
+__________________________________
+
+
+Amarula Solutions SRL
+
+Via Le Canevare 30, 31100 Treviso, Veneto, IT
+
+T. +39 042 243 5310
+info@amarulasolutions.com
+
+www.amarulasolutions.com
