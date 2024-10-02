@@ -1,162 +1,157 @@
-Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE97168B8;
-	Wed,  2 Oct 2024 04:43:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D53542A80
+	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 06:46:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727844189; cv=none; b=d4s/jUnkP3OnEnnQwoo9m1ePjhSSBFoZdxdLIr1+MihbNjJONg4WQ+5ihq0uN84mFwedwCOmBmQfq4KRYdsCk4sJ5t8IUq6bs22P6pRqY2MMm0hU9+QiOXx6EBYDo7jwcSen7Va+qSdeeCVpme5EyhyJa/jjOmKEM6vbnfrxEB8=
+	t=1727851607; cv=none; b=aYJUmzJIXb/atzKkjdHlcTp3x1bfzrmL8evEchwiGQUa/Vtjs7W8Rb2JsdqLrIMsODYs/E19Fpi+BW0eUMykCXDCMZNHS0wjSkQBbHPJOd12Jf/xBTFnqdEYPQmFXyVn6F85iK2aul/tb11LfvRs7FephpWEmaIsSrbNTJ6D/v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727844189; c=relaxed/simple;
-	bh=5DtRqM9QLkqt5hhs4CLcP1lfXbjzUAKy39nCpNuMxts=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Xh4DFzB2UE4HfgirF5rUvQkMioTjjzflE8Z4pcLfSer/BJ64jVQ/H5SomhwfAHvITXOhS4f480/JDyLEOIALQ6CmL3g2IaNGSip6BYe9QOTJz8Bb3zmR31T4oHbgmZbxPa+01mLn2BIqVhm5IAEOVO8wuFl7tuDjrzwHrA3r99Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=Q2iOuQwZ; arc=none smtp.client-ip=188.40.30.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+	s=arc-20240116; t=1727851607; c=relaxed/simple;
+	bh=QohghBaWHgvEKjhP//39OdbypduFrYPoEqH6pqB/N9M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YBWXYYDAjAxa8nqSEoHLkCDiuD7/HDL56G+IFiBMumncYb8zLLqwGoRX+tOV4nHcAWa4k03x0PuPkN6aCFzcSxOLHhq12Ep2GKaPxQuFLeV9EkN6Va14HqY+VKCLNGV7hFJ6D0smJOxqqwDwYlsHtE3idTrwzCLwFvU1c28moJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PUbf4ee2; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="Q2iOuQwZ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
-	s=default2211; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Message-ID:Date:References:In-Reply-To:Subject:Cc:To:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=tvSPOhJ3UnuWKnl/SQdjFqbtKiC7eCIb0ktBQEagEBk=; b=Q2iOuQwZJ8/2Y1BIpDP9FSeK64
-	FkxA0pCgilbFOSdsrC/Z7dfaV9macf67Jj1nUvjkT0TWtuGcn1meDOcZOCwPT6vmSfyvBz+EgWB13
-	VUEIJOLaLFesaWw3FvfZ7UxGsj8o6HV3sZ3yJtVpVGqxDeaARKUhRJv1qQodcfrEUrA9Qy2zxOj0l
-	j6MklcIm3//qeQLazCoRU5D2oKV0Sc0MxwCUDOrJ4/LfiqAc0kUs621hNWWzAolih60VATGLGFnOa
-	SebbFjhLUTuMp7gpJxVwuta9abAsOPj9ZmXyVbN3EjflaWBlrvwifoc71DQGXDo8AHBSSnKk/TmAj
-	stjamXww==;
-Received: from sslproxy06.your-server.de ([78.46.172.3])
-	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <esben@geanix.com>)
-	id 1svrCS-000EPK-Ix; Wed, 02 Oct 2024 06:42:56 +0200
-Received: from [80.62.117.232] (helo=localhost)
-	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <esben@geanix.com>)
-	id 1svrCR-0005g8-1s;
-	Wed, 02 Oct 2024 06:42:55 +0200
-From: Esben Haabendal <esben@geanix.com>
-To: Marek Vasut <marex@denx.de>
-Cc: linux-serial@vger.kernel.org,  Uwe =?utf-8?Q?Kleine-K=C3=B6nig?=
- <u.kleine-koenig@pengutronix.de>,  Christoph Niedermaier
- <cniedermaier@dh-electronics.com>,  Christophe JAILLET
- <christophe.jaillet@wanadoo.fr>,  Fabio Estevam <festevam@gmail.com>,
-  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,  Jiri Slaby
- <jirislaby@kernel.org>,  Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-  Pengutronix Kernel Team <kernel@pengutronix.de>,  Rasmus Villemoes
- <linux@rasmusvillemoes.dk>,  Rickard x Andersson <rickaran@axis.com>,
-  Sascha Hauer <s.hauer@pengutronix.de>,  Shawn Guo <shawnguo@kernel.org>,
-  Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-  imx@lists.linux.dev,  linux-arm-kernel@lists.infradead.org,
-  stable@vger.kernel.org
-Subject: Re: [PATCH] serial: imx: Update mctrl old_status on RTSD interrupt
-In-Reply-To: <20241002041125.155643-1-marex@denx.de> (Marek Vasut's message of
-	"Wed, 2 Oct 2024 06:11:16 +0200")
-References: <20241002041125.155643-1-marex@denx.de>
-Date: Wed, 02 Oct 2024 06:42:55 +0200
-Message-ID: <87frpfcdyo.fsf@geanix.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PUbf4ee2"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-20bb610be6aso15955595ad.1
+        for <imx@lists.linux.dev>; Tue, 01 Oct 2024 23:46:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1727851605; x=1728456405; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=julty6rnHcSXHSDPw3px62HgLzdn2IBXQjTC66JT5PQ=;
+        b=PUbf4ee2ZBTS7SKto+7Q/i+VqzY0DLKUX71Fq2u/erb7YesR94Rdn/zDd9/sCXwbUL
+         nqawu6i0VAN/oT+wnbmPtca0gbTdIqM0kvxpeNyP3wJtRgOcpfLUhOLnph2u4VOFeHRk
+         c795LVMF1zEbBCS7S35fsoe1QtKZXcvGvIfTMBmb2Ptc3XTnIdM9ta5mwIY3mUY9bJir
+         7IEX2HLXEX67kR3s31s+1baUSUzu07u5tk6QR2o71whMKJx+5A3Esuvf5JExwxGjZhcJ
+         dcqOtpaZqif2oKm+hNr7UNY8APVaV8oF0tZvK+WD7U1PeqD5QkNrlFXtV3013hr+FG6m
+         Y2IQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727851605; x=1728456405;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=julty6rnHcSXHSDPw3px62HgLzdn2IBXQjTC66JT5PQ=;
+        b=e2/x7uVJsJ8NXkKPpGslAkT8Qua1iyvO+BihlLNTzNpM41Y407P7UbgQka3QuRXAK/
+         6JA2N9f4vAtxyGFkwb6tLijRwOFzlEcZVS+0NlHjf3uOKWP9vtr9lBZtyxLd9FnU4lse
+         L+mN3zPgxn6BJIwRod4ccGF1fo1f+oQ9hpxsMssEn6t0Knr/1mw9PO6qFg/GMvp6HlLQ
+         dUlsnYVtDXGL51vUlUF+y1dEtketKKp0beT3DHBHgYIXJdUzMe5/hQIs+XzNGUpJ+FVX
+         q0k9NK61R7FBlVBI6/zOepTqdL0r4osl6ViTEusgjBhQuxA977rvnr8KIBjcyVZoqai+
+         Sjeg==
+X-Forwarded-Encrypted: i=1; AJvYcCVEsU9O0nhHvzuixdzWboBcSkKK/UuBUairw0qWXHl5TUQcKQW83RBUjqZJy7wm2cutCF4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyGiGUhvkZr2P/Pviw7iVColk0h39cQvsq0IJq1hDqvcBVmtBF0
+	TstQBnKQLRoEKVwh/jujsWjl0uJ36vzjQvX0JnXyd8sYbon2OdcZXnhHDjA/IfKN6FTU9mOX3g/
+	1rTGWroBpH4bPsYd/V32CuSFp8x2hSP5eXgCKJA==
+X-Google-Smtp-Source: AGHT+IFQFeN+13hsSVg8HfZx3v0JFKL/2OojczRKBuzwXMASAbyeLF4dgYHBH+F1NmuIXohzp3j20fi5PB1R6+vYJtE=
+X-Received: by 2002:a17:902:d505:b0:205:4e4a:72d9 with SMTP id
+ d9443c01a7336-20bc59efb2emr41817915ad.7.1727851604719; Tue, 01 Oct 2024
+ 23:46:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Authenticated-Sender: esben@geanix.com
-X-Virus-Scanned: Clear (ClamAV 0.103.10/27414/Tue Oct  1 10:44:50 2024)
+References: <20240925075707.3970187-1-linyunsheng@huawei.com>
+ <20240925075707.3970187-3-linyunsheng@huawei.com> <4968c2ec-5584-4a98-9782-143605117315@redhat.com>
+In-Reply-To: <4968c2ec-5584-4a98-9782-143605117315@redhat.com>
+From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Date: Wed, 2 Oct 2024 09:46:08 +0300
+Message-ID: <CAC_iWjKHofqDrp+jOO_QTp_8Op=KeE_jjhjsDUxjRa4vnHYJmQ@mail.gmail.com>
+Subject: Re: [PATCH net v2 2/2] page_pool: fix IOMMU crash when driver has
+ already unbound
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net, kuba@kernel.org, 
+	liuyonglong@huawei.com, fanghaiqing@huawei.com, zhangkun09@huawei.com, 
+	Robin Murphy <robin.murphy@arm.com>, Alexander Duyck <alexander.duyck@gmail.com>, 
+	IOMMU <iommu@lists.linux.dev>, Wei Fang <wei.fang@nxp.com>, 
+	Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
+	Eric Dumazet <edumazet@google.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed <saeedm@nvidia.com>, 
+	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
+	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+	Kalle Valo <kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, imx@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, intel-wired-lan@lists.osuosl.org, 
+	bpf@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 
-Marek Vasut <marex@denx.de> writes:
+Hi Paolo,
 
-> When sending data using DMA at high baudrate (4 Mbdps in local test case)=
- to
-> a device with small RX buffer which keeps asserting RTS after every recei=
-ved
-> byte, it is possible that the iMX UART driver would not recognize the fal=
-ling
-> edge of RTS input signal and get stuck, unable to transmit any more data.
->
-> This condition happens when the following sequence of events occur:
-> - imx_uart_mctrl_check() is called at some point and takes a snapshot of =
-UART
->   control signal status into sport->old_status using imx_uart_get_hwmctrl=
-().
->   The RTSS/TIOCM_CTS bit is of interest here (*).
-> - DMA transfer occurs, the remote device asserts RTS signal after each by=
-te.
->   The i.MX UART driver recognizes each such RTS signal change, raises an
->   interrupt with USR1 register RTSD bit set, which leads to invocation of
->   __imx_uart_rtsint(), which calls uart_handle_cts_change().
->   - If the RTS signal is deasserted, uart_handle_cts_change() clears
->     port->hw_stopped and unblocks the port for further data transfers.
->   - If the RTS is asserted, uart_handle_cts_change() sets port->hw_stopped
->     and blocks the port for further data transfers. This may occur as the
->     last interrupt of a transfer, which means port->hw_stopped remains set
->     and the port remains blocked (**).
-> - Any further data transfer attempts will trigger imx_uart_mctrl_check(),
->   which will read current status of UART control signals by calling
->   imx_uart_get_hwmctrl() (***) and compare it with sport->old_status .
->   - If current status differs from sport->old_status for RTS signal,
->     uart_handle_cts_change() is called and possibly unblocks the port
->     by clearing port->hw_stopped .
->   - If current status does not differ from sport->old_status for RTS
->     signal, no action occurs. This may occur in case prior snapshot (*)
->     was taken before any transfer so the RTS is deasserted, current
->     snapshot (***) was taken after a transfer and therefore RTS is
->     deasserted again, which means current status and sport->old_status
->     are identical. In case (**) triggered when RTS got asserted, and
->     made port->hw_stopped set, the port->hw_stopped will remain set
->     because no change on RTS line is recognized by this driver and
->     uart_handle_cts_change() is not called from here to unblock the
->     port->hw_stopped.
->
-> Update sport->old_status in __imx_uart_rtsint() accordingly to make
-> imx_uart_mctrl_check() detect such RTS change. Note that TIOCM_CAR
-> and TIOCM_RI bits in sport->old_status do not suffer from this problem.
->
-> Fixes: ceca629e0b48 ("[ARM] 2971/1: i.MX uart handle rts irq")
-> Signed-off-by: Marek Vasut <marex@denx.de>
-> ---
-> Cc: "Uwe Kleine-K=C3=B6nig" <u.kleine-koenig@pengutronix.de>
-> Cc: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-> Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> Cc: Esben Haabendal <esben@geanix.com>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Jiri Slaby <jirislaby@kernel.org>
-> Cc: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> Cc: Rickard x Andersson <rickaran@axis.com>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> Cc: imx@lists.linux.dev
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-serial@vger.kernel.org
-> Cc: stable@vger.kernel.org
-> ---
->  drivers/tty/serial/imx.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-> index 67d4a72eda770..3ad7f42790ef9 100644
-> --- a/drivers/tty/serial/imx.c
-> +++ b/drivers/tty/serial/imx.c
-> @@ -762,6 +762,10 @@ static irqreturn_t __imx_uart_rtsint(int irq, void *=
-dev_id)
->=20=20
->  	imx_uart_writel(sport, USR1_RTSD, USR1);
->  	usr1 =3D imx_uart_readl(sport, USR1) & USR1_RTSS;
-> +	if (usr1 & USR1_RTSS)
-> +		sport->old_status |=3D TIOCM_CTS;
-> +	else
-> +		sport->old_status &=3D ~TIOCM_CTS;
->  	uart_handle_cts_change(&sport->port, usr1);
->  	wake_up_interruptible(&sport->port.state->port.delta_msr_wait);
+Thanks for taking the time.
 
-Reviewed-by: Esben Haabendal <esben@geanix.com>
+On Tue, 1 Oct 2024 at 16:32, Paolo Abeni <pabeni@redhat.com> wrote:
+>
+> On 9/25/24 09:57, Yunsheng Lin wrote:
+> > Networking driver with page_pool support may hand over page
+> > still with dma mapping to network stack and try to reuse that
+> > page after network stack is done with it and passes it back
+> > to page_pool to avoid the penalty of dma mapping/unmapping.
+> > With all the caching in the network stack, some pages may be
+> > held in the network stack without returning to the page_pool
+> > soon enough, and with VF disable causing the driver unbound,
+> > the page_pool does not stop the driver from doing it's
+> > unbounding work, instead page_pool uses workqueue to check
+> > if there is some pages coming back from the network stack
+> > periodically, if there is any, it will do the dma unmmapping
+> > related cleanup work.
+> >
+> > As mentioned in [1], attempting DMA unmaps after the driver
+> > has already unbound may leak resources or at worst corrupt
+> > memory. Fundamentally, the page pool code cannot allow DMA
+> > mappings to outlive the driver they belong to.
+> >
+> > Currently it seems there are at least two cases that the page
+> > is not released fast enough causing dma unmmapping done after
+> > driver has already unbound:
+> > 1. ipv4 packet defragmentation timeout: this seems to cause
+> >     delay up to 30 secs.
+> > 2. skb_defer_free_flush(): this may cause infinite delay if
+> >     there is no triggering for net_rx_action().
+> >
+> > In order not to do the dma unmmapping after driver has already
+> > unbound and stall the unloading of the networking driver, add
+> > the pool->items array to record all the pages including the ones
+> > which are handed over to network stack, so the page_pool can
+> > do the dma unmmapping for those pages when page_pool_destroy()
+> > is called. As the pool->items need to be large enough to avoid
+> > performance degradation, add a 'item_full' stat to indicate the
+> > allocation failure due to unavailability of pool->items.
+>
+> This looks really invasive, with room for potentially large performance
+> regressions or worse. At very least it does not look suitable for net.
+
+Perhaps, and you are right we need to measure performance before
+pulling it but...
+
+>
+> Is the problem only tied to VFs drivers? It's a pity all the page_pool
+> users will have to pay a bill for it...
+
+It's not. The problem happens when an SKB has been scheduled for
+recycling and has already been mapped via page_pool. If the driver
+disappears in the meantime, page_pool will free all the packets it
+holds in its private rings (both slow and fast), but is not in control
+of the SKB anymore. So any packets coming back for recycling *after*
+that point cannot unmap memory properly.
+
+As discussed this can either lead to memory corruption and resource
+leaking, or worse as seen in the bug report panics. I am fine with
+this going into -next, but it really is a bugfix, although I am not
+100% sure that the Fixes: tag in the current patch is correct.
+
+Thanks
+/Ilias
+>
+> /P
+>
