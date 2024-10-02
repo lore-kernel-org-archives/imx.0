@@ -1,148 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6941E766B;
-	Wed,  2 Oct 2024 10:52:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1601E7656
+	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 11:20:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727866364; cv=none; b=cw8tCdKJ+g8mkYd2HDZaVz6SQNb/76vHSRKjzA2YMcJlRTqbaBk9hKyNl7VPBRHA1xpaZ+Go9iAWriDbUoePvyvVHStDce413zUSDMaq46DGVLQjdCSl+I2l0XHykHS3spv5VArzJ5n0eFJ5exuw19NPBxCqWmrqdCn+b1JIYzM=
+	t=1727868025; cv=none; b=PMGrPyOw3PicXHUQIVNp2LeLULtzBn3NX7/9Nof0g8iLdSvCpRI8bXQK4Hs25iVwAk1NuhKeR8ABZipSXIfM4Tp/eZFGJTkdYuWwdSCU/kmxTS/t9GGSt/E5/DRiP5C0ZiGB+YT+QGtS+BaIcdYqWQLENHaH58YjiXWOMnSLJu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727866364; c=relaxed/simple;
-	bh=p6wM7yoi7GfKuoD5YhbWY+B9mXoXSBTQn4zINgkEvdU=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=KRQyXmhTnjJRsth+c7W6YynLaT023eipJPh+g2qB/x1/cdc9Tuy612fVMrNRY6oJajBUNplxc5QO43DaAwmva+qSKsIJd7Q/vlIaxxjwsbGMMwfpg5aKoc6i68TJtS/2ZWyfE1jZddRh84mgTHcRSZyQvmyp4uxpDkXQ0pLdHf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DDwH/7vC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727868025; c=relaxed/simple;
+	bh=PaCoDRTAmUihExuD6FtY8QmrsRVYjIS7AWfLLY7wlYA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MuhPq/WSaMWA1DfqkeqChWAdOqUmIaeNQtB95v+88M5ZDPTDT2oDH0vvtu5EZBZfuwImnVYxFPMmcJjf5kvLiF0G8dt8pX1ZIXMXodxo8lkNB8b4kPRbZybEfQ8m0lBxEdLu4RZJ37nlBZXuOzQVnCP6w7VxaCrteQKE174o/10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=izwwknCa; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DDwH/7vC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23ADAC4CEC5;
-	Wed,  2 Oct 2024 10:52:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727866364;
-	bh=p6wM7yoi7GfKuoD5YhbWY+B9mXoXSBTQn4zINgkEvdU=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=DDwH/7vCkNAcQ87Yd4sFzTzAEfNG1R6O3wGlHGV97iOMu18JfmDsu2Z/1zg29zcZR
-	 QmWKZlXp1zJc18aEw5xT5RFVA1jqseh+70E+GwjXppTJ46/EyyK3dlWh63SpoSAlFe
-	 hbiwJFBCrFlD4sG+GNrUGCNVzCRZhsOcpnCCpk1nspJakft8jtXyk9/V7C33Dq67ik
-	 fD00lCtEZ7U4j2PD2rr/8tbIuV+yEW2VEC6zwhiAL0DzliLq9ty00P3ndst4agd9TB
-	 qK1IMULmJFqTO8EjaeYSXDSkH/+WcPfUTnPTCG7twPxmqVYvV2er6SokHPt60qWqIq
-	 kLWnbCXnSTdzg==
-Message-ID: <a624690e-12c1-44f2-a867-5a9959091c91@kernel.org>
-Date: Wed, 2 Oct 2024 12:52:35 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="izwwknCa"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-42e748f78d6so54169725e9.0
+        for <imx@lists.linux.dev>; Wed, 02 Oct 2024 04:20:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727868022; x=1728472822; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yQ6x4zObDyJ43omHbKWsYVs2kFPS4sw0rkU3gO4im2g=;
+        b=izwwknCaAF2xEMueifbqQrNa9dZXVegwTE0dpqysDoCOcGk/tbOOG13oG1KnvIY8C0
+         tTMIuztp6acJSEtoO9+2BZYpgbppOjVW88B78qhQJTlrXVDwN15PoSJ19rlXWhEfctlG
+         T2VQghQ4Jdmtg7fF7G8rcMXps3V5P8S/UysXE8qTri6UFUQunH9Rnos7K/7MtVm46MV7
+         mnIkUjduxXauI0r6yDNfcOdWuW6mVk0jszn4ZwbeYiLEpaucxIg2d4GXiwx33igT1nUA
+         jFsnC+B0JpqNgf70Sdw173wK1kHQVZwedFwA21fg2RVYWb0C9wqTsA12A8cVIAQ+1/3p
+         zp0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727868022; x=1728472822;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yQ6x4zObDyJ43omHbKWsYVs2kFPS4sw0rkU3gO4im2g=;
+        b=ELye4MjE+YvOnXQ2GeVJTpqaDov4qbhcj6L5CJZdcsSQ6iiNCcqTXyadD1jgL1EoUh
+         KZCkRbhE7ldtPk8fSZPAZzF16X6qjZLLEUMlXjE39YSebJ7FrFuQiKLxfrceeKQQTKZo
+         fNsC7IGolQWySTr1bASpmsa8PVhJFAHKgLJfWHkK5eduBBw3r5nVsK3N616mHnWoBj/j
+         hi1w7kW0cPsMcARU+SGAXY4oVYQgoWuJymCeNsCVxvnc3j0g+thNAAmxQsFRNK4ubt8+
+         HBC5dDICGq+v4HWv+b0Xu4VzpnO1SXHxF+BOHdD8ZL2COdT5ZccP/F0Q81uhc2cRfHD9
+         RMHw==
+X-Forwarded-Encrypted: i=1; AJvYcCXI7YopMA2Bg0HDtASo+qaE8Hzr0ziHYQyi6BWIrXNsprmW2ZE93Vj3l5axNh/N8hc1Ig0=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyh8Qsu5kEzhDhoROLxMhfR2aENZ80eujxybBv6Lkpu6vsNClQN
+	jX/tSWCCQgOj5KMAh4g2XfwKr4uhFiDAVzygc+jD04dLBVWpEPuF
+X-Google-Smtp-Source: AGHT+IFr/46f/cbDZz1FoAo51AuLN5PJHXEunpu05Lqv3Z5yVZrxyifxONPvmsJa38GK+xLCRjfi4w==
+X-Received: by 2002:a05:600c:511d:b0:42c:a72a:e8f4 with SMTP id 5b1f17b1804b1-42f777b798bmr21423495e9.14.1727868021592;
+        Wed, 02 Oct 2024 04:20:21 -0700 (PDT)
+Received: from eichest-laptop.corp.toradex.com (31-10-206-125.static.upc.ch. [31.10.206.125])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f771a1209sm23530685e9.0.2024.10.02.04.20.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Oct 2024 04:20:21 -0700 (PDT)
+From: Stefan Eichenberger <eichest@gmail.com>
+To: o.rempel@pengutronix.de,
+	kernel@pengutronix.de,
+	andi.shyti@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	festevam@gmail.com,
+	Frank.Li@nxp.com
+Cc: linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	francesco.dolcini@toradex.com
+Subject: [PATCH v4 0/4] i2c: imx: prevent rescheduling in non-dma mode
+Date: Wed,  2 Oct 2024 13:19:38 +0200
+Message-ID: <20241002112020.23913-1-eichest@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] EDAC: fsl-ddr, add imx9 support
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Borislav Petkov <bp@alien8.de>, Frank Li <Frank.li@nxp.com>
-Cc: York Sun <york.sun@nxp.com>, Tony Luck <tony.luck@intel.com>,
- James Morse <james.morse@arm.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Robert Richter <rric@kernel.org>,
- Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, linux-edac@vger.kernel.org,
- linux-kernel@vger.kernel.org, Borislav Petkov <bp@suse.de>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, Priyanka Singh
- <priyanka.singh@nxp.com>, Sherry Sun <sherry.sun@nxp.com>,
- Li Yang <leoyang.li@nxp.com>, Ye Li <ye.li@nxp.com>,
- Peng Fan <peng.fan@nxp.com>
-References: <20240709-imx95_edac-v1-0-3e9c146c1b01@nxp.com>
- <ZvsNJrxF6TpUC6ws@lizhi-Precision-Tower-5810>
- <20241002090834.GAZv0Nkp5YKcy86UmZ@fat_crate.local>
- <c90354e6-2e95-4f96-bbc9-508edb293183@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <c90354e6-2e95-4f96-bbc9-508edb293183@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 02/10/2024 12:48, Krzysztof Kozlowski wrote:
-> On 02/10/2024 11:08, Borislav Petkov wrote:
->> On Mon, Sep 30, 2024 at 04:42:14PM -0400, Frank Li wrote:
->>> On Tue, Jul 09, 2024 at 04:23:01PM -0400, Frank Li wrote:
->>>> Add imx9 support for fsl-ddr.
->>>>
->>>> Patch 1-2 is prepare patch, no function chagne
->>>> Patch 3 is small fix for bit shift
->>>> Patch 4 is dt binding patch.
->>>> Patch 5 is driver change to support imx9
->>>> Patch 6 is imx93 dts change
->>>>
->>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->>>> ---
->>>
->>> Borislav Petkov:
->>>
->>> 	More than 2 monthes. I ping at Thu, 29 Aug
->>> https://lore.kernel.org/imx/ZtDwG2xFGaUssJVN@lizhi-Precision-Tower-5810/
->>>
->>> 	Any reason why not pick these EDAC patches?
->>
->> $ ./scripts/get_maintainer.pl -f  drivers/edac/fsl_ddr_edac.c
->> York Sun <york.sun@nxp.com> (maintainer:EDAC-FSL_DDR)
->> Borislav Petkov <bp@alien8.de> (supporter:EDAC-CORE)
->> Tony Luck <tony.luck@intel.com> (supporter:EDAC-CORE)
->> James Morse <james.morse@arm.com> (reviewer:EDAC-CORE)
->> Mauro Carvalho Chehab <mchehab@kernel.org> (reviewer:EDAC-CORE)
->> Robert Richter <rric@kernel.org> (reviewer:EDAC-CORE)
->> linux-edac@vger.kernel.org (open list:EDAC-FSL_DDR)
->> linux-kernel@vger.kernel.org (open list)
->>
->> This driver has a maintainer. Is he going to review it or can I remove
->> him from MAINTAINERS?
-> 
-> Let's drop York, it's a stale maintainer entry.
+While running tests on an i.MX8M Mini connected to a TI ADS1015 ADC, we
+found that the ADC would stop responding to i2c requests because it
+would timeout after the bus was idle for 25ms. This timeout could be
+traced back to the rescheduling events in the i2c-imx driver. The
+problem is that if the system is under heavy load, the schedule call and
+the wait_event_timeout may be rescheduled too late to reach the 25ms
+timeout. The same problem may occur with other SMBus devices. Therefore,
+this patchset removes the scheduling calls for non-DMA mode by handling
+the interrupt events directly in the ISR instead of scheduling a task to
+handle the events.
 
-I sent a patch now for this.
+This patch will introduce some bigger changes because the logic for
+handling events in the ISR had to be rewritten. Therefore we have tested
+the following combinations:
+- i.MX8M Mini with dma
+- i.MX8M Mini without dma
+- i.MX8M Plus with dma
+- i.MX8M Plus without dma
+- i.MX7D with dma
+- i.MX7D without dma
+- i.MX7D atomic mode
 
-Best regards,
-Krzysztof
+Because we do not have any devices that use the SMBus block transfer
+mode, we were not able to test it. 
+
+The ideas are based on the RFC:
+https://lore.kernel.org/all/20240531142437.74831-1-eichest@gmail.com/
+However, the handling of events in the ISR is new, because further
+testing showed that it was not enough to simply remove the schedule
+call.
+
+Changes since v3:
+- Fixed style issues with checkpatch.pl --strict (Andi)
+- Add comments to explain the code (Andi)
+
+Changes since v2:
+- Add Acked-by tags from Oleksij
+- Renamed i2c_imx_start_read to i2c_imx_prepare_read
+- I did not add a Fixes tag because the issues from Flavio have a
+  different root cause and are not fixed by this patchset
+
+Changes since v1:
+- Add Reviewed-by tags from Frank
+- Add new patch to use readb_relaxed and writeb_relaxed (Frank)
+- Update commit message for patch 1 with some clarifications (Frank)
+
+Stefan Eichenberger (4):
+  i2c: imx: only poll for bus busy in multi master mode
+  i2c: imx: separate atomic, dma and non-dma use case
+  i2c: imx: use readb_relaxed and writeb_relaxed
+  i2c: imx: prevent rescheduling in non dma mode
+
+ drivers/i2c/busses/i2c-imx.c | 369 ++++++++++++++++++++++++++++++-----
+ 1 file changed, 317 insertions(+), 52 deletions(-)
+
+-- 
+2.43.0
 
