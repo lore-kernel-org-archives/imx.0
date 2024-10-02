@@ -1,181 +1,390 @@
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04CBBD517
-	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 07:49:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B66518E373
+	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 07:49:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727855373; cv=none; b=pBq8NN10toS/zMgZW5BGELgiMVjc3NjjgWQmLJ8hBL2LImLCCsz9lql0j8LO9Pf0u8UYcqPuaBasde96Zkp6ucOahiiD0D2rOMNO9Lz6ic0naqmZ2NfergyvUcEL6os+HHI2ikjnn8dTRxAJRQ/xa2sYEEqp4DIJpJbNuzaP2FE=
+	t=1727855390; cv=none; b=nDNZ6tZoKIcOQOvs9j1k/FkqkZX+7Bqb9OOIzjnemrS+30P+o1t8Oqlsf7+DCgfPnKF4r9nr5RpmAzFhNgpqn2At9RHNcbbxn2UJrEmiGbZLOezEA1THBunu92CzcBpO8AG4R8a1Fj591CtPlbxrqCtox7N1QpH77jd/DbPx4ZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727855373; c=relaxed/simple;
-	bh=ny35Rkgj6x1cRIF0L+bujOfp6EHQksl8+kuHx9ju7Xw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=siZ8tg3WhQfIGnT/DAwq2bNJhcC/fcpV82SZRqzDuHVEnyYjD3U7HjfAueqelVYciZCREpIepcJ9aDQjc/d+q9cV1Ea478knnd1fY7lFb0GXdQUiOaHD0De/rE09XQJSNxOHtMIk7nVxyAAxSsmc/7HCRsomqG/K3CoWwcW80e4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=j9YNpc8U; arc=none smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1727855390; c=relaxed/simple;
+	bh=zDypmlhgKNXGUVhJM1au38sVT9RyMMUwtY83nfkbj6I=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JhOamX3UBlQRAjuEl46uWOdFLt6v5Hx9CIPqIBEJ/mIhptokcUOxcCt56rgMYbuGdLrgYhDYYQ2vozy1naeNJNSVL/DILet9IrWyaNd0BAjrmdE3EASFtF1jrXCXPQIrPH5JS0cmPGpNnrYp0MTvq8M39txlaBDpp9sz63r4Tuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=X2XevZN2; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="j9YNpc8U"
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2faccada15bso32301241fa.3
-        for <imx@lists.linux.dev>; Wed, 02 Oct 2024 00:49:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1727855368; x=1728460168; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LUkoms9GunkXf+CDYoMsUkdrCLSJw6d9DPAwVs0wJ0g=;
-        b=j9YNpc8U/kjyZI29o6CpTqKqhBj6cyxuz/k56nfJXLu+qAhI9PCYAbdw2lU2Qf1Ugk
-         X3Wdf0Vfi2cFGJm9ARSmMAjNq7rX9J+96pUKuX9M4lR4l+KpLx7m6waEw8BbmX7eyiiP
-         aISf4T1bFlKrfIHtQbi6ChIFpcJ2Em/rUn1NpSMZSr4M/9QG1Jk2At1CXam/L2iPPFrW
-         Q+RfnupGMAnwQPYTTr4oo5devQtIMvLilbXycw05Vi0xKMv+pSz+y685yU0Bpgsrwv1e
-         PAXfPGTC23Cra8GV9Mfa+hI2geOR2Z6d1Uui+tVk5sV6IewX6zNFNioTJtWd8g1sdd7P
-         LSRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727855368; x=1728460168;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LUkoms9GunkXf+CDYoMsUkdrCLSJw6d9DPAwVs0wJ0g=;
-        b=qAfO/yJvslutHrvmDKoh0Hkh6IlC8sGuzpnVMQaN8JF7FHYyh7tSxm3NgDTPHZkJPT
-         DtoEyCe37uImNM44zKXr39v/asvkeOB1fhOSm/UtjQF8lJWZUgWVcEK7/m2L9HbGrjdR
-         zzTk2jMgYu1l9h2aZzz825DTYJ63c7PQ3+PXy2C8FzT067AgBnPU8ZpfPa43NR5vldBP
-         vfXIV9QtGA1by1MTsBX73clQfJn5qmfY3iPUihyfnodLlOzLFua5d3LXAJFp5EbVK8h/
-         xyiSazeTwx0B7q1Nlf2BgkFMZ2AM46gBnRBegSR2iNvpnmXU2GPn7AT4rc4ufK9SBX3e
-         fVJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWgvzWAr/Bdfg5Lv7D+bauqs9pT/R8XPP4HeKrgdhAoTmZxEtZyStBNDZVimcGSjJGLq5s=@lists.linux.dev
-X-Gm-Message-State: AOJu0YztKALjGVKIU55JEkvdEXrviEITlNXCErZGy8HfU6IQoZ8vHXJD
-	rqdpBIbEnLT+p+JjZIFG1uT5ag8j1celfPiVIi6XtSDIfB1BPRWQwxxe0TgpSHE=
-X-Google-Smtp-Source: AGHT+IHhrtLPCcZ1JZ7WF1hqCK+TTK1o8oRyrEf8KMZN3BCzqjZNFUb5aL/Qmd5e3+AEbRDd424k2w==
-X-Received: by 2002:a05:651c:1506:b0:2f3:f441:af24 with SMTP id 38308e7fff4ca-2fae106f3f4mr13775801fa.26.1727855367944;
-        Wed, 02 Oct 2024 00:49:27 -0700 (PDT)
-Received: from localhost (p5dc68d3d.dip0.t-ipconnect.de. [93.198.141.61])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c8824051b7sm7519272a12.7.2024.10.02.00.49.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Oct 2024 00:49:27 -0700 (PDT)
-Date: Wed, 2 Oct 2024 09:49:26 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Marek Vasut <marex@denx.de>
-Cc: linux-serial@vger.kernel.org, 
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, 
-	Esben Haabendal <esben@geanix.com>, Fabio Estevam <festevam@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Rickard x Andersson <rickaran@axis.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] serial: imx: Update mctrl old_status on RTSD interrupt
-Message-ID: <hgxxa2qsyr6c5jbzofzaarqkty4uccdtrteun5qlwyc66yqnbq@vb7xyeskjhhy>
-References: <20241002041125.155643-1-marex@denx.de>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="X2XevZN2"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 92AB060003;
+	Wed,  2 Oct 2024 07:49:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1727855386;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VQuzEv53DXwXTjUws25SPYwCyjtC4EtFl20S+EvFVXY=;
+	b=X2XevZN2I6w4A58T4JP3rdr7t9cc97h6c0Uig+ECNQKmzlya7dAguyl6IurOp/P+36kY4i
+	bR7MwJAmi9IL1PIFYYpQutXol7ap4vG+C3f6G8jrVtLy2vs36o+qAlGDif22GXYityYkk4
+	p2sQGe3izMCox+BPCHbpZs9hTQtviNsc8YXp8HAh1e3HdjembQ4bifZRw+b8bVd17RuqQN
+	3bm3qMVL0Z07ReXspr/1ExJb6KSFuXH1wOzMJXXYWPbYoKvxJ2WWmWpWis9cp1DTPNY2U2
+	DpH0cFQwqo5p0r6Bq387PWyv5RkFiydIyM66/rBf4tIxXMthREbPQNl8FXKeQA==
+Date: Wed, 2 Oct 2024 09:49:44 +0200
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org, arnd@arndb.de,
+ bbrezillon@kernel.org, boris.brezillon@collabora.com,
+ conor.culhane@silvaco.com, gregkh@linuxfoundation.org, imx@lists.linux.dev,
+ pthombar@cadence.com, ravindra.yashvant.shinde@nxp.com
+Subject: Re: [PATCH 2/3] i3c: master: Extend address status bit to 4 and add
+ I3C_ADDR_SLOT_EXT_INIT
+Message-ID: <20241002094944.5c0c83c8@xps-13>
+In-Reply-To: <20241001-i3c_dts_assign-v1-2-6ba83dc15eb8@nxp.com>
+References: <20241001-i3c_dts_assign-v1-0-6ba83dc15eb8@nxp.com>
+	<20241001-i3c_dts_assign-v1-2-6ba83dc15eb8@nxp.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="zzjnlicoynaleg7i"
-Content-Disposition: inline
-In-Reply-To: <20241002041125.155643-1-marex@denx.de>
-
-
---zzjnlicoynaleg7i
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On Wed, Oct 02, 2024 at 06:11:16AM +0200, Marek Vasut wrote:
-> When sending data using DMA at high baudrate (4 Mbdps in local test case)=
- to
-> a device with small RX buffer which keeps asserting RTS after every recei=
-ved
-> byte, it is possible that the iMX UART driver would not recognize the fal=
-ling
-> edge of RTS input signal and get stuck, unable to transmit any more data.
+Hi Frank,
+
+Frank.Li@nxp.com wrote on Tue, 01 Oct 2024 13:08:21 -0400:
+
+> Extend the address status bit to 4 and introduce the I3C_ADDR_SLOT_EXT_IN=
+IT
+> macro to indicate that a device prefers a specific address. This is
+> generally set by the 'assigned-address' in the device tree source (dts)
+> file.
 >=20
-> This condition happens when the following sequence of events occur:
-> - imx_uart_mctrl_check() is called at some point and takes a snapshot of =
-UART
->   control signal status into sport->old_status using imx_uart_get_hwmctrl=
-().
->   The RTSS/TIOCM_CTS bit is of interest here (*).
-> - DMA transfer occurs, the remote device asserts RTS signal after each by=
-te.
->   The i.MX UART driver recognizes each such RTS signal change, raises an
->   interrupt with USR1 register RTSD bit set, which leads to invocation of
->   __imx_uart_rtsint(), which calls uart_handle_cts_change().
->   - If the RTS signal is deasserted, uart_handle_cts_change() clears
->     port->hw_stopped and unblocks the port for further data transfers.
->   - If the RTS is asserted, uart_handle_cts_change() sets port->hw_stopped
->     and blocks the port for further data transfers. This may occur as the
->     last interrupt of a transfer, which means port->hw_stopped remains set
->     and the port remains blocked (**).
-> - Any further data transfer attempts will trigger imx_uart_mctrl_check(),
->   which will read current status of UART control signals by calling
->   imx_uart_get_hwmctrl() (***) and compare it with sport->old_status .
->   - If current status differs from sport->old_status for RTS signal,
->     uart_handle_cts_change() is called and possibly unblocks the port
->     by clearing port->hw_stopped .
->   - If current status does not differ from sport->old_status for RTS
->     signal, no action occurs. This may occur in case prior snapshot (*)
->     was taken before any transfer so the RTS is deasserted, current
->     snapshot (***) was taken after a transfer and therefore RTS is
->     deasserted again, which means current status and sport->old_status
->     are identical. In case (**) triggered when RTS got asserted, and
->     made port->hw_stopped set, the port->hw_stopped will remain set
->     because no change on RTS line is recognized by this driver and
->     uart_handle_cts_change() is not called from here to unblock the
->     port->hw_stopped.
+>  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=AC=E2=94=80=E2=94=80=E2=94=80=E2=94=90
+>  =E2=94=82S/Sr=E2=94=82 7'h7E RnW=3D0 =E2=94=82ACK=E2=94=82 ENTDAA  =E2=
+=94=82 T =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90
+>  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=B4=E2=94=80=E2=94=80=E2=94=80=E2=94=98    =E2=94=82
+>  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=98
+>  =E2=94=82  =E2=94=8C=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=AC=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90
+>  =E2=94=94=E2=94=80=E2=96=BA=E2=94=82Sr=E2=94=827'h7E RnW=3D1  =E2=94=82A=
+CK=E2=94=8248bit UID BCR DCR=E2=94=82Assign 7bit Addr=E2=94=82PAR=E2=94=82 =
+ACK/NACK=E2=94=82
+>     =E2=94=94=E2=94=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98
 >=20
-> Update sport->old_status in __imx_uart_rtsint() accordingly to make
-> imx_uart_mctrl_check() detect such RTS change. Note that TIOCM_CAR
-> and TIOCM_RI bits in sport->old_status do not suffer from this problem.
-
-Why is that? Just because these don't stop transmission?
-
-> Fixes: ceca629e0b48 ("[ARM] 2971/1: i.MX uart handle rts irq")
-> Signed-off-by: Marek Vasut <marex@denx.de>
+> Some master controllers (such as HCI) need to prepare the entire above
+> transaction before sending it out to the I3C bus. This means that a 7-bit
+> dynamic address needs to be allocated before knowing the target device's
+> UID information.
+>=20
+> However, some I3C targets want a specific address (called as
+> "init_dyn_addr"), which is typically specified by the DT's assigned-addre=
+ss
+> property. (Lower addresses have higher IBI priority, and the target can
+> adjust this by using the assigned-address property if using DT). The
+> function i3c_master_add_i3c_dev_locked() will switch to this
+> "init_dyn_addr" if it is not in use.
+>=20
+> Therefore, i3c_bus_get_free_addr() should return a free address that has
+> not been claimed by any target devices as "init_dyn_addr" (indicated by
+> I3C_ADDR_SLOT_EXT_INIT). This allows the device with the "init_dyn_addr"
+> to switch to its "init_dyn_addr" when it hot-joins the I3C bus. Otherwise,
+> if the "init_dyn_addr" is already in use by another I3C device, the target
+> device will not be able to switch to its desired address.
+>=20
+> If all of above address are already used, i3c_bus_get_free_addr() return
+> one from the claimed as init_dyn_addr and free address slot. This ensures
+> support devices as much as possible.
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  drivers/tty/serial/imx.c | 4 ++++
->  1 file changed, 4 insertions(+)
+> change from v3 to v4
+> - rewrite commit message and comment for i3c_bus_get_free_addr()
+> ---
+>  drivers/i3c/master.c       | 68 ++++++++++++++++++++++++++++++++++++++++=
+------
+>  include/linux/i3c/master.h |  7 +++--
+>  2 files changed, 64 insertions(+), 11 deletions(-)
 >=20
-> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-> index 67d4a72eda770..3ad7f42790ef9 100644
-> --- a/drivers/tty/serial/imx.c
-> +++ b/drivers/tty/serial/imx.c
-> @@ -762,6 +762,10 @@ static irqreturn_t __imx_uart_rtsint(int irq, void *=
-dev_id)
+> diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+> index dcf8d23c5941a..a56cb281e6b6d 100644
+> --- a/drivers/i3c/master.c
+> +++ b/drivers/i3c/master.c
+> @@ -345,7 +345,7 @@ const struct bus_type i3c_bus_type =3D {
+>  EXPORT_SYMBOL_GPL(i3c_bus_type);
 > =20
->  	imx_uart_writel(sport, USR1_RTSD, USR1);
->  	usr1 =3D imx_uart_readl(sport, USR1) & USR1_RTSS;
-> +	if (usr1 & USR1_RTSS)
-> +		sport->old_status |=3D TIOCM_CTS;
-> +	else
-> +		sport->old_status &=3D ~TIOCM_CTS;
->  	uart_handle_cts_change(&sport->port, usr1);
->  	wake_up_interruptible(&sport->port.state->port.delta_msr_wait);
+>  static enum i3c_addr_slot_status
+> -i3c_bus_get_addr_slot_status(struct i3c_bus *bus, u16 addr)
+> +i3c_bus_get_addr_slot_status_ext(struct i3c_bus *bus, u16 addr)
+>  {
+>  	unsigned long status;
+>  	int bitpos =3D addr * I3C_ADDR_SLOT_STATUS_BITS;
+> @@ -356,11 +356,17 @@ i3c_bus_get_addr_slot_status(struct i3c_bus *bus, u=
+16 addr)
+>  	status =3D bus->addrslots[bitpos / BITS_PER_LONG];
+>  	status >>=3D bitpos % BITS_PER_LONG;
+> =20
+> -	return status & I3C_ADDR_SLOT_STATUS_MASK;
+> +	return status & I3C_ADDR_SLOT_EXT_STATUS_MASK;
+>  }
+> =20
+> -static void i3c_bus_set_addr_slot_status(struct i3c_bus *bus, u16 addr,
+> -					 enum i3c_addr_slot_status status)
+> +static enum i3c_addr_slot_status
+> +i3c_bus_get_addr_slot_status(struct i3c_bus *bus, u16 addr)
+> +{
+> +	return i3c_bus_get_addr_slot_status_ext(bus, addr) & I3C_ADDR_SLOT_STAT=
+US_MASK;
+> +}
+> +
+> +static void i3c_bus_set_addr_slot_status_mask(struct i3c_bus *bus, u16 a=
+ddr,
+> +					      enum i3c_addr_slot_status status, int mask)
+>  {
+>  	int bitpos =3D addr * I3C_ADDR_SLOT_STATUS_BITS;
+>  	unsigned long *ptr;
+> @@ -369,11 +375,22 @@ static void i3c_bus_set_addr_slot_status(struct i3c=
+_bus *bus, u16 addr,
+>  		return;
+> =20
+>  	ptr =3D bus->addrslots + (bitpos / BITS_PER_LONG);
+> -	*ptr &=3D ~((unsigned long)I3C_ADDR_SLOT_STATUS_MASK <<
+> -						(bitpos % BITS_PER_LONG));
+> +	*ptr &=3D ~((unsigned long)mask << (bitpos % BITS_PER_LONG));
+>  	*ptr |=3D (unsigned long)status << (bitpos % BITS_PER_LONG);
+>  }
+> =20
+> +static void i3c_bus_set_addr_slot_status(struct i3c_bus *bus, u16 addr,
+> +					 enum i3c_addr_slot_status status)
+> +{
+> +	i3c_bus_set_addr_slot_status_mask(bus, addr, status, I3C_ADDR_SLOT_STAT=
+US_MASK);
+> +}
+> +
+> +static void i3c_bus_set_addr_slot_status_ext(struct i3c_bus *bus, u16 ad=
+dr,
+> +					     enum i3c_addr_slot_status status)
+> +{
+> +	i3c_bus_set_addr_slot_status_mask(bus, addr, status, I3C_ADDR_SLOT_EXT_=
+STATUS_MASK);
+> +}
 
-I didn't grab the whole picture, but I think this deserves a code
-comment.=20
+Can we drop this helper and instead modify the
+i3c_bus_set_addr_slot_status() prototype to get the mask from its
+parameters?=20
 
-Would it make sense to replace the current code in __imx_uart_rtsint by
-a call to imx_uart_mctrl_check()?
+> +
+>  static bool i3c_bus_dev_addr_is_avail(struct i3c_bus *bus, u8 addr)
+>  {
+>  	enum i3c_addr_slot_status status;
+> @@ -383,11 +400,44 @@ static bool i3c_bus_dev_addr_is_avail(struct i3c_bu=
+s *bus, u8 addr)
+>  	return status =3D=3D I3C_ADDR_SLOT_FREE;
+>  }
+> =20
+> +/*
+> + * =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=AC=E2=94=80=E2=94=80=E2=94=80=E2=94=90
+> + * =E2=94=82S/Sr=E2=94=82 7'h7E RnW=3D0 =E2=94=82ACK=E2=94=82 ENTDAA  =
+=E2=94=82 T =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90
+> + * =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=B4=E2=94=80=E2=94=80=E2=94=80=E2=94=98    =E2=94=82
+> + * =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=98
+> + * =E2=94=82  =E2=94=8C=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=AC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=AC=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90
+> + * =E2=94=94=E2=94=80=E2=96=BA=E2=94=82Sr=E2=94=827'h7E RnW=3D1  =E2=94=
+=82ACK=E2=94=8248bit UID BCR DCR=E2=94=82Assign 7bit Addr=E2=94=82PAR=E2=94=
+=82 ACK/NACK=E2=94=82
+> + *    =E2=94=94=E2=94=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98
+> + * Some master controllers (such as HCI) need to prepare the entire abov=
+e transaction before
+> + * sending it out to the I3C bus. This means that a 7-bit dynamic addres=
+s needs to be allocated
+> + * before knowing the target device's UID information.
+> + *
+> + * However, some I3C targets want a specific address (called as "init_dy=
+n_addr"), which is
 
-Best regards
-Uwe
+				may request specific addresses (called "init...
 
---zzjnlicoynaleg7i
-Content-Type: application/pgp-signature; name="signature.asc"
+> + * typically specified by the DT's assigned-address property. (Lower add=
+resses have higher IBI
 
------BEGIN PGP SIGNATURE-----
+				   -'s
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmb8+wMACgkQj4D7WH0S
-/k6JPgf/X0lFgjo1W2cM0ZYo6CYuetQUBi7TTOyedIgx8wtQoU0SEwO18PPsCyR0
-RKxmW8UkGVCHGM/pyRShmqt8EonQ/5YuReN+JAbWT+4dRTGMO6/t87xEDuAcBEa1
-IbbRhrLUHc8ShnIMm/r4WHmwtOHR3fwUgwRlIKWgtXntCgLFKObd6Hqh3ZMRxcom
-2OFcn7XO7r1dGZN7qWK1Pdb8zBk4mUTVsA4jo4F8o5dPYkXyn+cUNyQ1tyTZK31L
-RaBQAyyzOONZ1UttBAY7h0czpfypCh9+fKrmWy6CFtykqWCLrgGY+d847OsgCgxg
-Y5t+fgsVLJEohfJeyGReyEPLhPYtBQ==
-=Afex
------END PGP SIGNATURE-----
+> + * priority, and the target can adjust this by using the assigned-addres=
+s property if using DT).
 
---zzjnlicoynaleg7i--
+Can we remove the whole "( ... )" sentence, and replace it with:
+
+	"... property, lower addresses having higher IBI priority."
+
+> + * The function i3c_master_add_i3c_dev_locked() will switch to this "ini=
+t_dyn_addr" if it is not
+> + * in use.
+
+	if it is available.
+
+> + *
+> + * Therefore, i3c_bus_get_free_addr() should return a free address that =
+has not been claimed by any
+
+					preferably return
+
+	that is not in the list of desired addresses.
+
+> + * target devices as "init_dyn_addr". This allows the device with the "i=
+nit_dyn_addr" to switch to
+> + * its "init_dyn_addr" when it hot-joins the I3C bus. Otherwise, if the =
+"init_dyn_addr" is already
+> + * in use by another I3C device, the target device will not be able to s=
+witch to its desired
+> + * address.
+> + *
+> + * If all of above address are already used, i3c_bus_get_free_addr() ret=
+urn one from the claimed as
+> + * init_dyn_addr and free address slot. This ensures support devices as =
+much as possible.
+
+If the previous step fails, fallback returning one of the remaining
+unassigned address, regardless of its state in the desired list.
+
+> + */
+
+Please update your commit message as well with these changes.
+
+>  static int i3c_bus_get_free_addr(struct i3c_bus *bus, u8 start_addr)
+>  {
+>  	enum i3c_addr_slot_status status;
+>  	u8 addr;
+> =20
+> +	for (addr =3D start_addr; addr < I3C_MAX_ADDR; addr++) {
+> +		status =3D i3c_bus_get_addr_slot_status_ext(bus, addr);
+
+So here it could look like:
+
+		status =3D ...get_addr_slot_status(bus, addr, <extended>)
+
+> +		if (status =3D=3D I3C_ADDR_SLOT_FREE)
+> +			return addr;
+> +	}
+> +
+>  	for (addr =3D start_addr; addr < I3C_MAX_ADDR; addr++) {
+>  		status =3D i3c_bus_get_addr_slot_status(bus, addr);
+>  		if (status =3D=3D I3C_ADDR_SLOT_FREE)
+> @@ -1918,9 +1968,9 @@ static int i3c_master_bus_init(struct i3c_master_co=
+ntroller *master)
+>  			goto err_rstdaa;
+>  		}
+> =20
+> -		i3c_bus_set_addr_slot_status(&master->bus,
+> -					     i3cboardinfo->init_dyn_addr,
+> -					     I3C_ADDR_SLOT_I3C_DEV);
+> +		i3c_bus_set_addr_slot_status_ext(&master->bus,
+> +						 i3cboardinfo->init_dyn_addr,
+> +						 I3C_ADDR_SLOT_I3C_DEV | I3C_ADDR_SLOT_EXT_INIT);
+> =20
+>  		/*
+>  		 * Only try to create/attach devices that have a static
+> diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
+> index 2100547b2d8d2..57ad6044ac856 100644
+> --- a/include/linux/i3c/master.h
+> +++ b/include/linux/i3c/master.h
+> @@ -298,7 +298,8 @@ enum i3c_open_drain_speed {
+>   * @I3C_ADDR_SLOT_I2C_DEV: address is assigned to an I2C device
+>   * @I3C_ADDR_SLOT_I3C_DEV: address is assigned to an I3C device
+>   * @I3C_ADDR_SLOT_STATUS_MASK: address slot mask
+> - *
+> + * @I3C_ADDR_SLOT_EXT_INIT: the bitmask represents addresses that are pr=
+eferred by some devices,
+> + *			    such as the "assigned-address" property in a device tree source=
+ (DTS).
+
+The naming could be improved, because "extended" does not mean much. I
+believe we should express the fact that this is a desired addressed, so
+what about:
+
+	I3C_ADDR_SLOT_I3C_ASSIGNED/DESIRED
+
+>   * On an I3C bus, addresses are assigned dynamically, and we need to kno=
+w which
+>   * addresses are free to use and which ones are already assigned.
+>   *
+> @@ -311,9 +312,11 @@ enum i3c_addr_slot_status {
+>  	I3C_ADDR_SLOT_I2C_DEV,
+>  	I3C_ADDR_SLOT_I3C_DEV,
+>  	I3C_ADDR_SLOT_STATUS_MASK =3D 3,
+> +	I3C_ADDR_SLOT_EXT_STATUS_MASK =3D 7,
+> +	I3C_ADDR_SLOT_EXT_INIT =3D BIT(2),
+>  };
+> =20
+> -#define I3C_ADDR_SLOT_STATUS_BITS 2
+> +#define I3C_ADDR_SLOT_STATUS_BITS 4
+> =20
+>  /**
+>   * struct i3c_bus - I3C bus object
+>=20
+
+
+Thanks,
+Miqu=C3=A8l
