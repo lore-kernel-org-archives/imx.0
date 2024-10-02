@@ -1,184 +1,280 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2086.outbound.protection.outlook.com [40.107.20.86])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4081D1316
-	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 21:26:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.86
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727904395; cv=fail; b=fG8z4DKPK2oQ+RfoCSZ8cy9NjbrDCmnYTKq+o1GhscVcrQUog3v4V0X0VUw0YDpeyUIqSJ2UVKWOIXssOUj3xTkR1n+7nXLtFlYsVV2/wGSOT/ykiaXD/sDE0ZDWPXEsmXrHwjb6Ukte3IoUuKS1eFYIgkA1/hJ3UNRpbsl2E30=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727904395; c=relaxed/simple;
-	bh=RrFhughtGHGhcu0r7vmzm8k5q/S7ogYk4JWHVrzciQA=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=rz6cvFQVgUavXsoLTqXSllDUeoK6vk2APhYM4rXnc69d4Cg1Z4qssZkPjSXf5IubAJA8a29woEUKu24CP6dZ+KyO/qpsuph4WEdE5Wd4V80SwhTI6w/ZGlEz6+8/ZLQ6ug6PtYmSSpxGwFHi8uNNJoesGWzkNXbBZTweoeTjF2o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hL3cH/ex; arc=fail smtp.client-ip=40.107.20.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52714199385;
+	Wed,  2 Oct 2024 22:05:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727906755; cv=none; b=Gkqw1ZPspYcczk3fuEUN+7uT2agi7+y+qmA+sJX83tNoiNKByI4877YbfJghyYTYQctaGmJkEejP79ixICJ4a3ecQfhowX45Km2fv332g3jUqa7gU+ZTLVzWSkAzRLMXwVeYMRWzhkAf4sTY5zlyq2KkamPi07+sAveqAKBN5V8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727906755; c=relaxed/simple;
+	bh=9mQ3KLSxeEwOtUWpaQP4OvO0OQdJ0gYyYoE8h8h+j6o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Of3F7X/V/uzwW4ICXcbqiqnGuPoc7O6vl7xW3xc8l57MzBtnr0lfxGVqxA5yiGZFLM/EV9Wf7kCwyA96+jvN81RBhDQIhlfNU7UMDx8TThkbFpqbABiaJTDJ99Yv1wv0u/LlAYQVTlL7EkAz2UgC4fZuCGPUIGKS73Etgonl9fM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KJnxKXWu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hL3cH/ex"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LoU+bGHBYsqiqNLldgXXybnrjLoOap0J14YLNRFTOLYHaclCVXG5WDVAyM8FP7FFbWxftWCxoArM/lH0tDWk92yhGCqimKrMvfmN04kv+L/1GgdDlxBXhZalfgx5AQ5cwSOkLb4rFU7xyxKd27efLF6FFeTn11J7IjtsTzrxqwaiy9DODMLkhcCRlbIj4jete3V514hmlmgqW8/Me2MdulZwllKk1K25LM0bjz1VVRiSt0CjoDz+N+bRMaXNq9FBexHV/POphKwuQQdXMBW4wnrjdW1LT+d8xrk7XQCvyTLGINhI1UjHAualSzjaXqF9JMzlTN+lMvjudx3WY9pj2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MhV7H1pH/H1+RPhV3jA5HqGwqr94OUQqieIx8k8ZDMg=;
- b=R8Frb9/Aq6sB8/0fqpP/6sptNot5C3O9JRLhqrs+gCAahzYtBiSUkj2orG45cYcHALblYd0ZaaacAqpdFvhK9wK9lFBF2V0dlJjgYhsUx+O8xMjS9cpdLCk9UwFduR6aNcP970HFyXnK0xqgfdnseiMWEChnUIYFgkaqMbVbFR87+zlpLYrUITjT/y8j0PLb5JDtc7D70h80yh2JcFclHkCsUSYGny37394wG6quUHcy3uW62xf1ZzKurmhtt9+Ix+Th52zZD+3eKqHmfcg3IdxzQIhdos2VSiijYo9E19xJ9iDyLo0AxD9J/BiVS0HVgsn/QbxV9eOmxT1WchtR2A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MhV7H1pH/H1+RPhV3jA5HqGwqr94OUQqieIx8k8ZDMg=;
- b=hL3cH/exwdVEyFuRdPfdJZKtBm/WpN3HccVwkaTkdzChipgOM74QLYK6xRXVkppSwqheBjI/WrXI5GA3YrDO5aYTcevSy1KTalCUg/0SX2qB7MTbHwb+IcqudWyJigs0oAgqNIrddtpUhkNJHXV8l8z5wY5jEalUk3+X7g/i02nH/W0Ml3weDQZztVK3AW/EhhOlb7rJPdiMgFecL+RQT72YSBKfrggQwuB1NsG+HxCH4l/OCAmsIfD4hGpCPu1D+oXHWVGwW+wvPKTVbRyAfH1Jjc5rocJOT4EGaCRGMwYzXNaz4c0dZGBIhO1PsrAEKMZ6scsbhFYfNkfOkGxaXA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM9PR04MB8260.eurprd04.prod.outlook.com (2603:10a6:20b:3e6::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.16; Wed, 2 Oct
- 2024 21:26:28 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8026.016; Wed, 2 Oct 2024
- 21:26:28 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Thomas Gleixner <tglx@linutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	linux-kernel@vger.kernel.org (open list:IRQCHIP DRIVERS),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS)
-Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] dt-bindings: interrupt-controller: fsl,ls-extirq: workaround wrong interrupt-map number
-Date: Wed,  2 Oct 2024 17:26:13 -0400
-Message-Id: <20241002212613.599687-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR13CA0080.namprd13.prod.outlook.com
- (2603:10b6:a03:2c4::25) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KJnxKXWu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8465C4CEC2;
+	Wed,  2 Oct 2024 22:05:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727906755;
+	bh=9mQ3KLSxeEwOtUWpaQP4OvO0OQdJ0gYyYoE8h8h+j6o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KJnxKXWuiNREEg5rKLLUauQDmdMK+ZyVQmMe7Mc4Gz3U/76voyYWrEWf9An9c1Ryj
+	 qTiXvQsvswZvXOJDCXZ/ayTsIodqKEKDMCtbhPhHqanRyijwFCjjPqIKaOvD9vTUZ+
+	 QWdrt+OE6s9ToJ6cPcALIbZRmhdpU3bOnONoBSMZspvgjgI/W5TcDfRL2aej5t8fb6
+	 o1H+1gcQMpGg+sqmSDGky1pmNDIkT7jXyeh3yk8T/SxKzY7Sb4Mz2a8OEiINozY8hw
+	 Kq1YsuMAVXIQjactLSuRVlpSQzmJmucpz3hhu3ihzDcHi7RDpYjVu7lvgFaHzFLLEy
+	 wVS7i9l/W6Yhw==
+Date: Thu, 3 Oct 2024 00:05:52 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: carlos.song@nxp.com
+Cc: aisheng.dong@nxp.com, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, frank.li@nxp.com, linux-i2c@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V4] i2c: imx-lpi2c: add target mode support
+Message-ID: <evfhjmeblrucqta2jb74jwul7evqt25tbsxp46xrghytbr645d@t6rvyuriruax>
+References: <20240912082413.435267-1-carlos.song@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB8260:EE_
-X-MS-Office365-Filtering-Correlation-Id: 251a7e3f-fa16-4685-9d85-08dce328e046
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|1800799024|376014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?EWoNlgRM0SBh4QKp7ZotyFLbT0LO4pumnkw5/cV88SKwoTXfaQ5WtQGfeqta?=
- =?us-ascii?Q?EUhGvJhe5AscExL3XsMzTSnHj9VWTVUSyjpbAuZuioZwfTDIdnSpcIgtCgPK?=
- =?us-ascii?Q?gUxna+VHQ/aoJjg9OTz9TJKN9WE28U1SRaaOFu213FH5RIAsf8U8RKYXa1+t?=
- =?us-ascii?Q?VaJVzPCzIkla+E5HU6UQ5dq8wVQglrSXb5X1OKYmsqwct4bi3eHdHG9qQZYw?=
- =?us-ascii?Q?YCBR3SO873p21jBMgLOjciAgndHomCSoJSl8CYxM5rpmkEsgg8j2O62enOfN?=
- =?us-ascii?Q?CuG8tWXrmHsEcp4HbC6quHF14lhlhqu6hfRaAcZ4T/OkkaA/KVKD7ensbA3+?=
- =?us-ascii?Q?n0OZhyNGHeMdtuNyuhIvhr9G2dcG9Urct1TvgXujkyyXAYjXxwu1dEOkPdCx?=
- =?us-ascii?Q?ybnAKgBpaJyayn4IkH6h1/VnWQQ/Ok33eDokAGaMZ4WK8QiD/5uLz3FBH9w2?=
- =?us-ascii?Q?dE6G+13c68HSKibHnr8hkvszdc3wP3VGqSPPXhjh9Al/Ahx8PaeJ6QWboTAv?=
- =?us-ascii?Q?BSurQpj1C5UahZBvDVSu5O+EpABKIp393ig8gD0sGQ+NvB+YrIxbO5p5S796?=
- =?us-ascii?Q?BFis+/XOMu9ud36AkVJM5vahbWZgZofYeS8n0Z+pKTbpxpbKi1eRQXjGtVRJ?=
- =?us-ascii?Q?fIj67IVAMaLdPeX4uVTOQXx3OdfQnu6gKOae/mBLwfiQuYS2ak7oYJ2InZYw?=
- =?us-ascii?Q?1OrPSlhYu8+zhgaleOlOtkBO/dkB9CekMVq99YKH94WzsKSEbmxkYqzQAgeE?=
- =?us-ascii?Q?A+aHuHhDyvfwSz3/a83qJKQrN07JWH98Dqc8nw60I+k9V7RwZx2XDmaJFq80?=
- =?us-ascii?Q?Cx/DJiw+fh83N/cg+vtaWbYU+OUCgBE+rFImDOll98fYrZdFv0pNrhwTJ9on?=
- =?us-ascii?Q?wW59k/weLbgm+gxXc7x73XooqjwhRNRhTQwH93tYxH/cSXG4G6FAyosDxd+J?=
- =?us-ascii?Q?B4W3cqipim6/9ResdcPq//w+T9EpWemVzWNDvkVcpN0Nj8/8MsjNr6FO+Qr8?=
- =?us-ascii?Q?XpKicCh63z0YlcK+TgaNoFfAzt3Cwvl4i0BP0Qugx92GSnnnvVq6OuTli+xk?=
- =?us-ascii?Q?b8CGYUZn3TJvSD+7pAXMcmWB/SAYNp4bHc0MnyS3tZErd0vRTScRAWvVytJw?=
- =?us-ascii?Q?FIvNJWQPuFFg3AlBVeI5A8CF0CtABfUyqPai26yRuB1MJVjUgkwD5+tzNMzk?=
- =?us-ascii?Q?Ge1GCT5wGexM1fXat0+XpVY/BgphxOZigQq/kBYS2cbDNkL7DS4JV4S8v7jn?=
- =?us-ascii?Q?CDcqBhKA9qIfHQyNip/CuJhePghwYiXTZOxZqbbtjGRp1GkTRXrFJwm5LTvg?=
- =?us-ascii?Q?y/loiYFeGK43xxQot0/lbcFweVgbdgpW4LaAQ189UESvJQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+mrmrHeSLOwpCyhMe9qQWyhpxxW6A03fb21ATJhSKl+Tzbp+yM2juTWBcC5r?=
- =?us-ascii?Q?PWv5ipMamg6vC5PMNv4ZmnYoL9K4Xh6cO3XT1kOrZrjj2VpkvxAKPzlRv9bm?=
- =?us-ascii?Q?v0HykpcGl34VKVwTmPyq6X9Hv7S9CDDrV5jmc1RpqnBPjW11CrpmIWIVEKze?=
- =?us-ascii?Q?ab5qlDgLgHZMVNg5791OTeRsVjJiRKPPwA9CrvstLeKlE1w3JNY22k+Ft/ud?=
- =?us-ascii?Q?pvzKLxTx1Z4fRghqbptSD3PIu5AxEqyQWjosO4lWi1Xxsn0CyW/XJDj+RqUI?=
- =?us-ascii?Q?42hnMr1PXrzP3/0EkV7MHuXC5IAFDUnjuMqkESWsJehGMBDBZ8cdWkRVoIQa?=
- =?us-ascii?Q?Td7nn3GxT7QiZ7pFaOvh2kjkPFmWhXet36QPAwJ8Rv5OnI0qXuGIPnyDTXqj?=
- =?us-ascii?Q?tmEdxVP6A5e3uYduNzRgfIddCmQGyLZU5ZcZqF6/SYn4ppjBYykHhuO4I6rS?=
- =?us-ascii?Q?5YC2i63Zqep5mqmRZt+Fc34i0O1Tf8Kbh9G4W2SFBEtUQedVYOwCuxCBL273?=
- =?us-ascii?Q?u+nJ/+iVK3qZJ86rkBM/Dlc08wkLkGKhQfGbYSPe8KGEyvFNhGx+JVNkej77?=
- =?us-ascii?Q?hJClTuHJ7VHjUWbLE9S+7cE0F0mYBQ4lITfL54O9Pu5Ns1r6zV3wJpo2RR+S?=
- =?us-ascii?Q?Nz6MHaVy97y8iS+pb2Lq81C1clXjPqNLL7Ul6HLIPU/S9M3jZ4E5SIr2txy0?=
- =?us-ascii?Q?7k99TXs83p9/c6sjcP6evKuwoORkBc5T15nwnMfoQBAr78MxAsySob+lRtjd?=
- =?us-ascii?Q?BM9Cgtgl3/U4PjvDFOzUmJmPtKp7rlsXdsgFLRdbaRvNHAaeVj4RCdtxi2nV?=
- =?us-ascii?Q?EF66Cu/ikhUo+BEQYH3Mum0AAc3WE8sHcvTzT2IQ40b6Rd6gYLq1xKa5N4TB?=
- =?us-ascii?Q?t9nAUdAhW/rQa2zGnSej1uAVKo5HaSn/KaUoZibcjtmwQYTWGYpd5Y7Ooc5J?=
- =?us-ascii?Q?G6X5P5y60RKxK4+zfuHD2E4tCcL5QePE2Rf3CocO2b0+G4+b1BWUCa1kG0zG?=
- =?us-ascii?Q?Aj1ztVtBvmu3Fg34ScLl5m5uyMEGVK5KRBEEMd/GxyJREIROp5E6l3B2T+OW?=
- =?us-ascii?Q?kno52oewlnjcE1W1n/6nKgcMs/mYBr/sV9d62NE4cvGP8ua+qRfichDC2KT3?=
- =?us-ascii?Q?tR+Uw1Qx71XODY4VJbc7YJCAAgDlTK3lV9r42seNzl4F67m2kezgwdYvm/sy?=
- =?us-ascii?Q?587lOTNMZKARsxlNnpJeGUQUGPT8IVnH+gDOjLK9wO0eH9SkdN2FSb7sDM/Y?=
- =?us-ascii?Q?/8/4K7RFUGMb2FmvK6f1IM8ElTmivrmrD0MyB4FhFCZlR/1qjw9UlooVL0Nr?=
- =?us-ascii?Q?JvGmPu7FGFvT8q/Wt6RPIIdwsJtYtuvOcy8Oc0W+aHOceaQqFA7x2EdGLWeN?=
- =?us-ascii?Q?uQLmCtb2c46oLAXin+WJknU7KAU147yJQxTuPSaiewZiQVa0uWim2OlD4KGI?=
- =?us-ascii?Q?HA7sFh8MddrpzzjnvHXyqaJaW6R1wgGV9caYjoKNDtEH81RlDN62tRy7ufmT?=
- =?us-ascii?Q?h3ZcbMse94CCCnpBPtpTaHbt6CS5uN5s8nPvDtiQgqg8XhEkQWD8n1Urwigm?=
- =?us-ascii?Q?USfWY4fOWcGflPBwEEU=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 251a7e3f-fa16-4685-9d85-08dce328e046
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2024 21:26:28.2137
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pBCACIlwTZghXTx6ktaSUX2amCBqN6MayoQFZ781o/dmzmmazSLo/QRosT9AK/CN/dysbZvxOxCeudjhCc7ADQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8260
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240912082413.435267-1-carlos.song@nxp.com>
 
-The driver(drivers/irqchip/irq-ls-extirq.c) have not use standard DT
-function function to parser interrupt-map. So it doesn't consider
-'#address-size' in parent interrupt controller, such as GIC.
+Hi Carlos,
 
-When dt-binding verify interrupt-map, item data matrix is spitted at
-incorrect position. So cause below warning:
+On Thu, Sep 12, 2024 at 04:24:13PM GMT, carlos.song@nxp.com wrote:
+> From: Carlos Song <carlos.song@nxp.com>
+> 
+> LPI2C support master controller and target controller enabled
+> simultaneously. Both controllers share same SDA/SCL lines and
 
-arch/arm64/boot/dts/freescale/fsl-ls1088a-qds.dtb: interrupt-controller@14:
-interrupt-map: [[0, 0, 1, 0, 0, 4, 1, 0], [1, 0, 1, 4, 2, 0, 1, 0], ...
-is too short
+/same/the same/
 
-Reduce minItems to workaround this warning.
+> interrupt source but has separate control and status registers.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- .../bindings/interrupt-controller/fsl,ls-extirq.yaml     | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+/separate/a separate/
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-extirq.yaml b/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-extirq.yaml
-index 199b34fdbefc4..b52abfd3e19d4 100644
---- a/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-extirq.yaml
-+++ b/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-extirq.yaml
-@@ -85,10 +85,17 @@ allOf:
-               - fsl,ls1088a-extirq
-               - fsl,ls2080a-extirq
-               - fsl,lx2160a-extirq
-+# The driver(drivers/irqchip/irq-ls-extirq.c) have not use standard DT
-+# function function to parser interrupt-map. So it doesn't consider
-+# '#address-size' in parent interrupt controller, such as GIC.
-+#
-+# When  dt-binding verify interrupt-map, item data matrix is spitted at
-+# incorrect position. Reduce minItems to workaround this problem.
-+
-     then:
-       properties:
-         interrupt-map:
--          minItems: 12
-+          minItems: 8
-           maxItems: 12
-         interrupt-map-mask:
-           items:
--- 
-2.34.1
+> Even if target mode is enabled, LPI2C can still work normally
+> as master controller at the same time.
 
+It's not what happens in the irq handler, though (I left a
+comment in irq handler).
+
+> This patch supports basic target data read/write operations in
+> 7-bit target address. LPI2C target mode can be enabled by using
+> I2C slave backend. I2C slave backend behave like a standard I2C
+
+/behave/behaves/
+
+> client. For simple use and test, Linux I2C slave EEPROM backend
+> can be used.
+> 
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+
+...
+
+> +static irqreturn_t lpi2c_imx_isr(int irq, void *dev_id)
+> +{
+> +	struct lpi2c_imx_struct *lpi2c_imx = dev_id;
+> +
+> +	if (lpi2c_imx->target) {
+> +		u32 scr = readl(lpi2c_imx->base + LPI2C_SCR);
+> +		u32 ssr = readl(lpi2c_imx->base + LPI2C_SSR);
+> +		u32 sier_filter = ssr & readl(lpi2c_imx->base + LPI2C_SIER);
+> +
+> +		/* Target is enabled and trigger irq then enter target irq handler */
+
+This sentence is a bit hard to understand, how about:
+
+		/*
+		 * The target is enabled and an interrupt has
+		 * been triggered. Enter the target's irq handler.
+		 */
+
+> +		if ((scr & SCR_SEN) && sier_filter)
+> +			return lpi2c_imx_target_isr(lpi2c_imx, ssr, sier_filter);
+
+Can't the interrupt be generated by the master if
+lpi2c_imx->target is assigned?
+
+In the git log you are describing a different behavior.
+
+> +	}
+> +
+> +	/* Otherwise triggered by master then handle irq in master handler */
+
+Otherwise the interrupt has been triggered by the master. Enter
+the master's irq handler.
+
+> +	return lpi2c_imx_master_isr(lpi2c_imx);
+> +}
+> +
+> +static void lpi2c_imx_target_init(struct lpi2c_imx_struct *lpi2c_imx)
+> +{
+> +	u32 temp;
+> +
+> +	/* reset target module */
+> +	writel(SCR_RST, lpi2c_imx->base + LPI2C_SCR);
+> +	writel(0, lpi2c_imx->base + LPI2C_SCR);
+> +
+> +	/* Set target addr */
+
+/addr/address/
+
+> +	writel((lpi2c_imx->target->addr << 1), lpi2c_imx->base + LPI2C_SAMR);
+> +
+> +	writel(SCFGR1_RXSTALL | SCFGR1_TXDSTALL, lpi2c_imx->base + LPI2C_SCFGR1);
+> +
+> +	/*
+> +	 * set SCFGR2: FILTSDA, FILTSCL and CLKHOLD
+> +	 *
+> +	 * FILTSCL/FILTSDA can eliminate signal skew. It should generally be
+> +	 * set to the same value and should be set >= 50ns.
+> +	 *
+> +	 * CLKHOLD is only used when clock stretching is enabled, but it will
+> +	 * extend the clock stretching to ensure there is an additional delay
+> +	 * between the target driving SDA and the target releasing the SCL pin.
+> +	 *
+> +	 * CLKHOLD setting is crucial for lpi2c target. When master read data
+> +	 * from target, if there is a delay caused by cpu idle, excessive load,
+> +	 * or other delays between two bytes in one message transmission. so it
+> +	 * will cause a short interval time between the driving SDA signal and
+
+/transmission. so it will/transmittion, it will/
+
+> +	 * releasing SCL signal. Lpi2c master will mistakenly think it is a stop
+
+/Lpi2c/The lpi2c/
+
+> +	 * signal resulting in an arbitration failure. This issue can be avoided
+> +	 * by setting CLKHOLD.
+> +	 *
+> +	 * In order to ensure lpi2c function normally when the lpi2c speed is as
+> +	 * low as 100kHz, CLKHOLD should be set 3 and it is also compatible with
+
+/3/to 3/
+
+> +	 * higher clock frequency like 400kHz and 1MHz.
+> +	 */
+> +	temp = SCFGR2_FILTSDA(2) | SCFGR2_FILTSCL(2) | SCFGR2_CLKHOLD(3);
+> +	writel(temp, lpi2c_imx->base + LPI2C_SCFGR2);
+> +
+> +	/*
+> +	 * Enable module:
+> +	 * SCR_FILTEN can enable digital filter and output delay counter for LPI2C
+> +	 * target mode. So SCR_FILTEN need be asserted when enable SDA/SCL FILTER
+> +	 * and CLKHOLD.
+> +	 */
+> +	writel(SCR_SEN | SCR_FILTEN, lpi2c_imx->base + LPI2C_SCR);
+> +
+> +	/* Enable interrupt from i2c module */
+> +	writel(SLAVE_INT_FLAG, lpi2c_imx->base + LPI2C_SIER);
+> +}
+> +
+> +static int lpi2c_imx_reg_target(struct i2c_client *client)
+
+lpi2c_imx_register_target as a name is a bit better, in my opinion
+
+> +{
+> +	struct lpi2c_imx_struct *lpi2c_imx = i2c_get_adapdata(client->adapter);
+> +	int ret;
+> +
+> +	if (lpi2c_imx->target)
+> +		return -EBUSY;
+> +
+> +	lpi2c_imx->target = client;
+> +
+> +	ret = pm_runtime_resume_and_get(lpi2c_imx->adapter.dev.parent);
+> +	if (ret < 0) {
+> +		dev_err(&lpi2c_imx->adapter.dev, "failed to resume i2c controller");
+> +		return ret;
+> +	}
+> +
+> +	lpi2c_imx_target_init(lpi2c_imx);
+> +
+> +	return 0;
+> +}
+> +
+> +static int lpi2c_imx_unreg_target(struct i2c_client *client)
+
+lpi2c_imx_unregister_target sounds better to me.
+
+> +{
+> +	struct lpi2c_imx_struct *lpi2c_imx = i2c_get_adapdata(client->adapter);
+> +	int ret;
+> +
+> +	if (!lpi2c_imx->target)
+> +		return -EINVAL;
+> +
+
+...
+
+> +static int lpi2c_suspend_noirq(struct device *dev)
+> +{
+> +	int ret;
+> +
+> +	ret = pm_runtime_force_suspend(dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return 0;
+
+This function can simply be:
+
+   static int lpi2c_suspend_noirq(struct device *dev)
+   {
+   	return pm_runtime_force_suspend(dev);
+   }
+
+but I'm not strong for it, your choice.
+
+> +}
+> +
+> +static int lpi2c_resume_noirq(struct device *dev)
+> +{
+> +	struct lpi2c_imx_struct *lpi2c_imx = dev_get_drvdata(dev);
+> +	int ret;
+> +
+> +	ret = pm_runtime_force_resume(dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/*
+> +	 * If i2c module powered down in system suspend, register
+> +	 * value will lose. So reinit target when system resume.
+> +	 */
+
+Can we re-write this to something like:
+
+	/*
+	 * If the I2C module powers down during system suspend,
+	 * the register values will be lost. Therefore, reinitialize
+	 * the target when the system resumes.
+	 */
+
+Thanks,
+Andi
+
+> +	if (lpi2c_imx->target)
+> +		lpi2c_imx_target_init(lpi2c_imx);
+> +
+> +	return 0;
+> +}
+> +
+>  static const struct dev_pm_ops lpi2c_pm_ops = {
+> -	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+> -				      pm_runtime_force_resume)
+> +	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(lpi2c_suspend_noirq,
+> +				      lpi2c_resume_noirq)
+>  	SET_RUNTIME_PM_OPS(lpi2c_runtime_suspend,
+>  			   lpi2c_runtime_resume, NULL)
+>  };
+> -- 
+> 2.34.1
+> 
