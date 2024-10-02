@@ -1,150 +1,110 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC5F1CF5ED
-	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 12:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32331CFEDA
+	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 13:08:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727870902; cv=none; b=g3N6kMTobExTvpZOH6ANE5E5qcufqa6FlTZmlQP007E+nLtdWq4KloIHMopjlTXTCCzhh7ts+sa4EiQa98ga8X55NXMr7zLECIcxqSH3gRJQyDFIpPEURro/5EsNa1C1e1PbDGVbfH6L1mAi+C9BOaDYYy47f4QqqROpokQVHvY=
+	t=1727874494; cv=none; b=th6iwzqN63DlmFFfyUeVkoix3oAKTswjTP6pbFTKCRycEqdKCcZxxXmr+dxqyuCwoDi3rXWyGbj2CS7gPzk/wR14E7QhgQ6okbAW2Ggy2tDrPHau9x5yt7NuS04wYtJUL/w3MoiuxDF48Q5y/MrO48JFIJ3lZjl2RY5HULRzzYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727870902; c=relaxed/simple;
-	bh=HF9gz9cxrtZHNXVfCdvFAGxweX1II3r/tm/pbiXkiv8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F1FPH63pEBPiCtuIq5uRxk+mWfvaiNgAMEwC/Owb2uaOj9jM5qgMjbFH4FCQ1FdiHlm933mgqcgsnxuZzsB8mSRMtNjUXiIcIXU6JFFdEwvDEjxR6zEatkN4g0fBHqg/dRGY4a5xPqOk4ayrW83MYHEG3XJaBO5CEWdi13mPRro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=kUU5GykY; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1727874494; c=relaxed/simple;
+	bh=ShT5aGq5RD3zJbBHa6K4AHTJryxZDp+SxPpWVZtyqGI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L/cbeELPgp5PN2VpVUtKLhKXXG38+3NtyTSKhmwkmRPk6oEmV7A0SaV9GG3GG224XwUzG7U6QrXd0sHsvPZs9UkesXAtd494QnGRjo0rInhWXiMmBxs7evNiTaddciq+PtrqT/TLXk2V8irRXYrmJe/XHQPyE596tqEykFy9ohU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KsqS1Kgs; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="kUU5GykY"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 809AC89080;
-	Wed,  2 Oct 2024 14:08:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1727870898;
-	bh=0JG7OQOTRkzyuh9OdleZmDit4I1RGWrnOFEmIqhEZTM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kUU5GykYmQcwr2E3a5J0zltE7sIjHkrhD87rXvbbPQa2L7xq/N41iCba7u9JEbQsk
-	 s2OUM61cGLH50QMqNDhMd19fSOW025fJ+1Jp6kMyi1XuZcmMiiilfscgXESAD/5c3p
-	 2A78tQoLmSUWeETfvwSRsgh8UIDtyqMowfHhOM0qfmBX05fGPQwX51Kpj4k8MY1LpT
-	 UjOYXP6enPx11V7vzHCPu4krxIVjSt7rTxaKg8i2ZG1BTdTMruNjRqVQf7w5DqOt+M
-	 V1Ai1s2mPrw8ixO+i0yss2pwHQmQGNt9XvxH1TKaL1gFkcU4G5kMBiUDc6EN2xQUkB
-	 h/wOCHagUQyUg==
-Message-ID: <6b5c27ad-7f9b-4989-ada3-fbebb9537737@denx.de>
-Date: Wed, 2 Oct 2024 13:56:48 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KsqS1Kgs"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-37ccd50faafso4359108f8f.3
+        for <imx@lists.linux.dev>; Wed, 02 Oct 2024 06:08:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727874491; x=1728479291; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=d+vo+CngfnFXF6+FSmqK0SlB5GNZMtMWx22seKJwNuI=;
+        b=KsqS1KgsphYMdWtAlz1YZ0xDKKrMyprLOnx9TyCGztNgBBCYAMbfMdPf/iY1CXjqXD
+         sRvDGWFntrjOixzRg+bnlhdX8PrmbBVKbgD5NZcMeKjMYi1xNycTmdCn1VZcOe5tsmd4
+         OOY96jWxUj6EfdkwWNTnU9yvBiNzQ47ZU1xZbkAQa1lYVVlCeApOyW07ZPUyTfEwYL3Q
+         cRbU0Y+heZSIJzbddvajKWV9Ki6qn7KQrXc0vWvg7nRJzOSeF5MMbm4ZwUyrFlERSlh9
+         qPh+Ce22sb4CXq+xhy9y/KcBWROLue+w2LT+AXKIAje+XdbYftuV/Uw9vzRb11N2qDC7
+         H+Ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727874491; x=1728479291;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d+vo+CngfnFXF6+FSmqK0SlB5GNZMtMWx22seKJwNuI=;
+        b=ZxSAo8LNRsCVHIs0SycMjAaff4lS4omtspSxwqnww6qV0kzCR2VsFPYcMzMTY6mjKs
+         WbJXpvT1ZjgWUz7UAQUyUG6UtMtdTAq3DOxtRuRDyxFhe4/dZLtCDFxvLdHV1lvcSLLf
+         XXMPAAXghFoq1AdOoRsmwZCnvpevw8RUqG08r4Y2zH5w9GfHX8nyLPyF/XtY0oGzjNhv
+         bNhS+ve7M7uQUKDPyr0KxFfbIUl+hWmbRQRvc49l43qUqJTsbunApVl/qrG8nPEMS3UR
+         FmhQLiBRnf2U+S/cvF0EGwmwdkOXaobeyrCK4MoArNweXgmlP2K7Gc5+z4eY95wrGkWq
+         u02g==
+X-Forwarded-Encrypted: i=1; AJvYcCUFse1kih9gaM9mJqJT1yQJq98IcfQ3aHzVoMRg/YUA7V/ABFCN59V86MFw04m9v18gWsw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyS3VJSiJCxCP7bgFwOPiMX+yCw0yrJsnJrAEo3qZWwG48IhGrw
+	q5qOvDFb0/Pp4xi1lg9LnM4jurMTMiTwNVk1rIg+a+NX2MUvGY9u
+X-Google-Smtp-Source: AGHT+IF9FentvtlBTj0QFbrVHmGbx05S13YBVweR1DdtG3DoyI9laTrIrlgQf/nES/TeKn6ouzVbXg==
+X-Received: by 2002:adf:8b5d:0:b0:37c:c832:cf9c with SMTP id ffacd0b85a97d-37cfba1239dmr2358739f8f.50.1727874490800;
+        Wed, 02 Oct 2024 06:08:10 -0700 (PDT)
+Received: from eichest-laptop (31-10-206-125.static.upc.ch. [31.10.206.125])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37cd56e6488sm13956736f8f.46.2024.10.02.06.08.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Oct 2024 06:08:10 -0700 (PDT)
+Date: Wed, 2 Oct 2024 15:08:08 +0200
+From: Stefan Eichenberger <eichest@gmail.com>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: o.rempel@pengutronix.de,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Andi Shyti <andi.shyti@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: Re: [PATCH v4 3/4] i2c: imx: use readb_relaxed and writeb_relaxed
+Message-ID: <Zv1FuHlpeayZq-Zv@eichest-laptop>
+References: <20241002112020.23913-1-eichest@gmail.com>
+ <20241002112020.23913-4-eichest@gmail.com>
+ <6b070948-cf02-4f13-a220-0f6cfa21c41a@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] serial: imx: Update mctrl old_status on RTSD interrupt
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Cc: linux-serial@vger.kernel.org,
- Christoph Niedermaier <cniedermaier@dh-electronics.com>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- Esben Haabendal <esben@geanix.com>, Fabio Estevam <festevam@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, Lino Sanfilippo
- <l.sanfilippo@kunbus.com>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Rickard x Andersson <rickaran@axis.com>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Stefan Eichenberger <stefan.eichenberger@toradex.com>, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-References: <20241002041125.155643-1-marex@denx.de>
- <hgxxa2qsyr6c5jbzofzaarqkty4uccdtrteun5qlwyc66yqnbq@vb7xyeskjhhy>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <hgxxa2qsyr6c5jbzofzaarqkty4uccdtrteun5qlwyc66yqnbq@vb7xyeskjhhy>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6b070948-cf02-4f13-a220-0f6cfa21c41a@app.fastmail.com>
 
-On 10/2/24 9:49 AM, Uwe Kleine-König wrote:
-> On Wed, Oct 02, 2024 at 06:11:16AM +0200, Marek Vasut wrote:
->> When sending data using DMA at high baudrate (4 Mbdps in local test case) to
->> a device with small RX buffer which keeps asserting RTS after every received
->> byte, it is possible that the iMX UART driver would not recognize the falling
->> edge of RTS input signal and get stuck, unable to transmit any more data.
->>
->> This condition happens when the following sequence of events occur:
->> - imx_uart_mctrl_check() is called at some point and takes a snapshot of UART
->>    control signal status into sport->old_status using imx_uart_get_hwmctrl().
->>    The RTSS/TIOCM_CTS bit is of interest here (*).
->> - DMA transfer occurs, the remote device asserts RTS signal after each byte.
->>    The i.MX UART driver recognizes each such RTS signal change, raises an
->>    interrupt with USR1 register RTSD bit set, which leads to invocation of
->>    __imx_uart_rtsint(), which calls uart_handle_cts_change().
->>    - If the RTS signal is deasserted, uart_handle_cts_change() clears
->>      port->hw_stopped and unblocks the port for further data transfers.
->>    - If the RTS is asserted, uart_handle_cts_change() sets port->hw_stopped
->>      and blocks the port for further data transfers. This may occur as the
->>      last interrupt of a transfer, which means port->hw_stopped remains set
->>      and the port remains blocked (**).
->> - Any further data transfer attempts will trigger imx_uart_mctrl_check(),
->>    which will read current status of UART control signals by calling
->>    imx_uart_get_hwmctrl() (***) and compare it with sport->old_status .
->>    - If current status differs from sport->old_status for RTS signal,
->>      uart_handle_cts_change() is called and possibly unblocks the port
->>      by clearing port->hw_stopped .
->>    - If current status does not differ from sport->old_status for RTS
->>      signal, no action occurs. This may occur in case prior snapshot (*)
->>      was taken before any transfer so the RTS is deasserted, current
->>      snapshot (***) was taken after a transfer and therefore RTS is
->>      deasserted again, which means current status and sport->old_status
->>      are identical. In case (**) triggered when RTS got asserted, and
->>      made port->hw_stopped set, the port->hw_stopped will remain set
->>      because no change on RTS line is recognized by this driver and
->>      uart_handle_cts_change() is not called from here to unblock the
->>      port->hw_stopped.
->>
->> Update sport->old_status in __imx_uart_rtsint() accordingly to make
->> imx_uart_mctrl_check() detect such RTS change. Note that TIOCM_CAR
->> and TIOCM_RI bits in sport->old_status do not suffer from this problem.
+On Wed, Oct 02, 2024 at 11:51:22AM +0000, Arnd Bergmann wrote:
+> On Wed, Oct 2, 2024, at 11:19, Stefan Eichenberger wrote:
+> > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> >
+> > Use the relaxed version of readb and writeb to reduce overhead. It is
+> > safe to use the relaxed version because we either do not rely on dma
+> > completion, or we use a dma callback to ensure that the dma transfer is
+> > complete before we continue.
 > 
-> Why is that? Just because these don't stop transmission?
-
-If imx_uart_mctrl_check() does not detect the RTS asserted->deasserted 
-transition, it will never call uart_handle_cts_change(), which will 
-never clear port->hw_stopped and the port will remain stopped 
-indefinitely, and never be able to transmit more data AFTER this event 
-happens (port close/open will reset the flag too, but that is undesired 
-workaround).
-
->> Fixes: ceca629e0b48 ("[ARM] 2971/1: i.MX uart handle rts irq")
->> Signed-off-by: Marek Vasut <marex@denx.de>
->> ---
->>   drivers/tty/serial/imx.c | 4 ++++
->>   1 file changed, 4 insertions(+)
->>
->> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
->> index 67d4a72eda770..3ad7f42790ef9 100644
->> --- a/drivers/tty/serial/imx.c
->> +++ b/drivers/tty/serial/imx.c
->> @@ -762,6 +762,10 @@ static irqreturn_t __imx_uart_rtsint(int irq, void *dev_id)
->>   
->>   	imx_uart_writel(sport, USR1_RTSD, USR1);
->>   	usr1 = imx_uart_readl(sport, USR1) & USR1_RTSS;
->> +	if (usr1 & USR1_RTSS)
->> +		sport->old_status |= TIOCM_CTS;
->> +	else
->> +		sport->old_status &= ~TIOCM_CTS;
->>   	uart_handle_cts_change(&sport->port, usr1);
->>   	wake_up_interruptible(&sport->port.state->port.delta_msr_wait);
+> I would still consider this a bug in general, you should
+> never default to the unsafe variants.
 > 
-> I didn't grab the whole picture, but I think this deserves a code
-> comment.
+> If there is a codepath that needs the barrierless version,
+> please add imx_i2c_write_reg_relaxed()/imx_i2c_read_reg_relaxed()
+> helpers that use those only in the places where it makes
+> a measurable difference, with a comment that explains
+> the usage.
 
-Added in V2.
+I added the patch because of the following dicussion:
+https://lore.kernel.org/linux-i2c/ZpVWXlR6j2i0ZtVQ@lizhi-Precision-Tower-5810/
 
-> Would it make sense to replace the current code in __imx_uart_rtsint by
-> a call to imx_uart_mctrl_check()?
-No, the __imx_uart_rtsint() only handles RTS state change interrupt and 
-no other interrupts, so calling imx_uart_mctrl_check() would handle 
-other unrelated signals for no reason and make the interrupt handler 
-slower. I don't think this is an improvement.
+I can't determine if the relaxed version improves performance. The
+'normal' version worked well for our use case too. Therefore, dropping
+the change would be acceptable for us. Another potential solution could
+be to use the relaxed version only inside the ISR. Would that be an
+acceptable solution? What is your impression, Frank Li
+<Frank.Li@nxp.com>?
+
+Regards,
+Stefan
