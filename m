@@ -1,246 +1,118 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2077.outbound.protection.outlook.com [40.107.21.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5130D1D1E89
-	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 14:51:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.77
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880675; cv=fail; b=QSY1GInFh/ByX+TPa23ftQYz2aVntmRkN9MmQkil4PMZjeXP9UPV8f+jZZRFs5aQSODy/V+oNuL8pdiSt0+pf6hgibSggDodP0YPwCTuEBFWJjit+BzKhOwMydFpMJncpblP006Uu8IvtNu9UUQtnWMOXXKXAAQX8Lh2e1R1RBU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880675; c=relaxed/simple;
-	bh=mTP2BQfrL2ajg1eLnU3vD3yNZnTqEe/2FbB25MGO4Kg=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=EGfAjx7NJMoy8+0luKGJiQdXzVKpeVtSgagHgMEjY7mKHWZGMAtPzijpLKqIXUVGCIWyMpAOYcImWGeCnKd2a4d0jIC+itDgJVs7yg7W62OgXyd7re+lNfPeuKg91Gl1lxxZfgQPx1ar6ex6h69r90/lTpbAntv7JIR1CF+cECA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=L0G+Cpc5; arc=fail smtp.client-ip=40.107.21.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4499610E9
+	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 14:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727880981; cv=none; b=HA1pDGW0utYx6xw5ZD3MYP8xxYTVuryEr/F7Ybz9XZNMwDpu+FzsZnabfKKPmsffrRcmlGWK5qfkAw824ex+yZGYcABnT8cPjdOOOVMYd5BM3eHkjQHkKfG5cFduXgAz74xRQ3569m7/6rGOft6JZvG+z4EjcjytdYJeyRFxtDI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727880981; c=relaxed/simple;
+	bh=0PMHnOfLINOpUpL5u52xj7l7dUhjRThgwDNabUf2iLc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cD1NlWh9qraYN3VNk1PKnewogU2XMbWRSEd9Yf+LwhzJkVYfpeezX73+7nGEUEvgrRlJluK/E+UpwVOiKUusTg4G9Ejoq9N74sjik5lDJfdFW/fVJ+6hHmALR78Z8KATGt0aW+SCgZ7ctoVddpB15tM2k4hBSC3aVg54fmbCc6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Smbnnwdw; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="L0G+Cpc5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KDpFlRKOfqscIwMUlv7EmR0JPzXfERhf5kzhGgvzgfuglacLItBOphybdR2wGm9qnLTqQBF+WaWDEN76TAUhVmpKyWj7KRRnwWGtFUZ/ZsQLaD4FF2i2/REGYQVziBEb5VSAavARVHM96xq4E7Zb6KoEPugMYQsNVMjYNiFjFUOUHeBLurd+A6Jr+LdpYYffnMaQDO33Kmnc8K8L0VSNMyE6gDvVDQTAo0iK8HAsitvwFqt4EtlkQxWX5Cm37+hJeS346FTXlbejNeSeRPs0BeJQOONJvZ8QfXIB4dBiQfzNasknDfLGGrfhhopALeKtmwAZadeNtUH/cZri1x/Evw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pG/i8HsPY7XlHxdpjxt1xiQs79KpN78+7TFWBBmUyn4=;
- b=jxEEVW8MphB3BXTuBR8FpkTTR+mWupxlrp3fQri/sBjRbd1Ks/IWJay7FkFRKf/dN/++Rtnoxf3usMfkGKhFbhFN0GgcBtrpQAmJuJMTk4+RoH/Y+QeLNzI1A9DybRwgDbfIwV67ccA3tNbPf0OUdDhuNiWjhtTjrLygrbXcGdr9znxYlEhLlrD1T0VavfUR7b70A5c5B8V4pP9qv/je2zi4AUVOPw1mGVp3FN8528Oi/96roDzmO4TyHjhJ/1+7gjE0Tkx5UeLfGxGH9jfmb3AanHoMYYPvzc+HgiPI+hJhJYwKsKsUuHvvisqFew7v16VmMaKOgzECH7zmCUpo5Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pG/i8HsPY7XlHxdpjxt1xiQs79KpN78+7TFWBBmUyn4=;
- b=L0G+Cpc5QKvJ7BH2Kn8+2DTYUrWO731v3SHmSCgxqZw9gliH8iSJhwJNad0x208PGFvIOWJvH8rMLEPuwZWdm40/0aqIK6+UgAle03nAx+BTN/GM0abssWPlHvcqvEqmW6Xw8hkQeiY/T+VvLEvZ5Xu712au3YIclXRgtxEKObLUDd6OOx+60PNgjZpttXlT3C0eS8H4m+Y8+mrPB0OzL4GhSQMhVqXWhBIy76te5XmvOC/o+04Cx9h9/2FV7M6wh2nn/bA4JH5twsFAFvehVsHzItIlsj0GNIwNGEjAXpagvdXhaf1a7w22+sy6yxLyVJrcJhMtoddS6ZAuMT2jkg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS1PR04MB9699.eurprd04.prod.outlook.com (2603:10a6:20b:482::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.27; Wed, 2 Oct
- 2024 14:51:06 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8005.024; Wed, 2 Oct 2024
- 14:51:06 +0000
-From: Frank Li <Frank.Li@nxp.com>
-Date: Wed, 02 Oct 2024 10:50:38 -0400
-Subject: [PATCH v6 6/6] i3c: master: svc: fix possible assignment of the
- same address to two devices
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241002-svc-i3c-hj-v6-6-7e6e1d3569ae@nxp.com>
-References: <20241002-svc-i3c-hj-v6-0-7e6e1d3569ae@nxp.com>
-In-Reply-To: <20241002-svc-i3c-hj-v6-0-7e6e1d3569ae@nxp.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>, 
- Conor Culhane <conor.culhane@silvaco.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>, stable@kernel.org
-X-Mailer: b4 0.13-dev-e586c
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727880649; l=3214;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=mTP2BQfrL2ajg1eLnU3vD3yNZnTqEe/2FbB25MGO4Kg=;
- b=/j4Z1kpOPNXOtRhpr8OSpnJ12IrkyS73HdhZikRFyEIZYibXeJA60RWSmusqukin5vvXGJLfy
- O4s91/3DMDaDl4843Cf4eMchhEJFNT4Zbg9ubDnITeTjYzQ9qwBkgQC
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: SJ0PR13CA0177.namprd13.prod.outlook.com
- (2603:10b6:a03:2c7::32) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Smbnnwdw"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-37cd3419937so3589159f8f.0
+        for <imx@lists.linux.dev>; Wed, 02 Oct 2024 07:56:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727880978; x=1728485778; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ArJKboNdEUouLVjZmQiavzaztbu9wUmpBbz3Qd2ETsk=;
+        b=SmbnnwdwNkZf+4pIlqylN3AIc8rfwMvi/hsRkNNIv/oXsHTvDd/Fpe4/pC+FT88zD7
+         vqXYKjO3a6fxDS02W7sV4G7OXRUxLu2mu7QBH1S8MQOdAvoA3LThvbKjoK9wsJr5ggJQ
+         /Fe2++pzZyfnsJQ1Mm/55K8AosPq6xii348q7CR1/NVIVydhMD7dxw7LmdMGRAntubzN
+         HS94wHi+SBpNr/ID/R87nW9ZZ5lz0/lCBOb0iakgWcqRXRCM0LblDINIypwpjRNM9mNJ
+         J00nrL3nnr1/rUy2oH8Ypb4qurlVlBx1/yS+eBzOG00Q+gU8LWYITLXaTNLYZMCw/pLT
+         XznA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727880978; x=1728485778;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ArJKboNdEUouLVjZmQiavzaztbu9wUmpBbz3Qd2ETsk=;
+        b=PLrGftMXG5k1q8xEDT+Udijf6I6QN6KVX+/faUlshzwjOd5Fz6ag/6MgyFQ9vAJnwk
+         oiqkJj5dNIMkN+6alZx1cxxpW9EghVuFSzyzZqMD0VdZL1CCsAaWD80Syo8oh85CgxR5
+         tOMsnmJv+qyhiZTrotstNJO3qTCied0qrgqXcOu4gVadR9ATTVqGN5rtFRzg8H15HXUL
+         nApCjLxGhQ6HKsnWM92/yQ7oTn5EIhUuertmqZzTVQZ/rkxr4zJ15iYKDDIOKMMKYWzC
+         t2jgMXIceMKbmkHcVPDWOMD7c6FL0e8Xx9judmYRjKI7QFM5MIzdSdxBSmxlVV/JNhlW
+         0W7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW3Dj3ht4AOpnPtRzDyiKKPWrIBN91thQJnTpSpGMxs4z8k0Goiy0s0xlznooY15GYl4i4=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw4+L7aRmpV/WnZf+c5qIAEoN7bQ+KsDszPtmVwiqO6mCg9IpOO
+	IBBBrPlNlJnG6Pab03rllliK/kx+FNnGS3EPCjv3DOWayLJuoYsq
+X-Google-Smtp-Source: AGHT+IFSuWZxPxnR/PCz++pS/3Tgv8+0dPn8oiXivA0TR+4KO3wJwURaFqD7P8uc0QGMdxkXk/UdBw==
+X-Received: by 2002:adf:eece:0:b0:374:c8d1:70be with SMTP id ffacd0b85a97d-37cfba0a47fmr2127521f8f.38.1727880978326;
+        Wed, 02 Oct 2024 07:56:18 -0700 (PDT)
+Received: from eichest-laptop (31-10-206-125.static.upc.ch. [31.10.206.125])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37cd564d5b7sm14222365f8f.5.2024.10.02.07.56.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Oct 2024 07:56:18 -0700 (PDT)
+Date: Wed, 2 Oct 2024 16:56:16 +0200
+From: Stefan Eichenberger <eichest@gmail.com>
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, andi.shyti@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+	Frank.Li@nxp.com, imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	linux-i2c@vger.kernel.org, francesco.dolcini@toradex.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v4 1/4] i2c: imx: only poll for bus busy in multi master
+ mode
+Message-ID: <Zv1fEAFKlzNpmHnD@eichest-laptop>
+References: <20241002112020.23913-1-eichest@gmail.com>
+ <20241002112020.23913-2-eichest@gmail.com>
+ <6378933c8d30bec2c3084e41c83b9d129d0d40d1.camel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS1PR04MB9699:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4417582f-8a88-49e5-3935-08dce2f1a4a1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|52116014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Rmp1YkdVR2kzdUpPZXBXVDNyQzQ2UEhVbUlDSXFNU0pRNS9rYVF0SnBGUmpS?=
- =?utf-8?B?SjM2eHZDYnhLTU1FK2g0VHVqRThaWlU2bjAramJYaVM3UmpQNkM5Y3Q3enRE?=
- =?utf-8?B?b1NONTZKU1YwRWZ0ZnpsNjVmNStUZnRkN2VWUCtobm45RmN1THl5SUpwcEV1?=
- =?utf-8?B?WmtTRmlhU2lFQ1NxQWxnOW5oNDNQVjh0Q2tRMmZxT2sxN1BMNHdJd0RWMHAy?=
- =?utf-8?B?R2VuOGNJRjBNYnhVa2JIUDBPVzA2Y2cxV2JPSUpqaU1GR3dUR0NwVmM1MEMy?=
- =?utf-8?B?c2tTa0V2V0xlRFU3S2hlR0JxSXF6OG4xd0Z4RlFFOW0yZWpTMDBMMVg0RStL?=
- =?utf-8?B?VG9aRHZUbmpSK0xPT2NLZVl0SURzUDUzaUo4TDl3RGRSdS9NV1JRb0xYMEF2?=
- =?utf-8?B?emEzbms2QXpkUE93KzlmRFJuQ0RFOHJrME1OblVoRmdaNzFadXNKSzYzY01E?=
- =?utf-8?B?SjdBcWY1cUVBckJlUEhIczRHNkNqVEE3MmtZTWFzdS9lQWlYUVVONnB3ajl6?=
- =?utf-8?B?UGNGck1FSEVHY1M4Vll0M2tzVmdvZS9lajRHS0dZd3R0RUUvK3dvUWxwUUhj?=
- =?utf-8?B?cFJDUHhjT1JVK0JxaU5CZFdacURGSjEwYmN3TDRkR3N6cFVWKy9WT1N5SzhC?=
- =?utf-8?B?anMwcDdvZnVlUFUvTXFZTVRFRkNzajJ4SzhsOGMydkJNSGN6d3FNUE5UZStt?=
- =?utf-8?B?VzVsUkZkT2xBOXRXV3UxeTlHTThSZXdOdWJ6ZEpSbHZjMmMzVEs2ZTNYeXM3?=
- =?utf-8?B?akJRRW9MclRiV0hkaThHakdyUFlkaHJ1cFFwWUV6T3ljYVJZWFVnKzF3aUZj?=
- =?utf-8?B?bFcrRUZ6Nis4cFBobE9SeStzelk0MW9Ub2FyNU0xNWtmWldMSnBjVFBMa3VR?=
- =?utf-8?B?NE1ManpQOGZKcDZVQzh2Sm1IeHppbGhVdm5tM0tDUTV6cDNwWitEaElDeDJN?=
- =?utf-8?B?STdJTlErREtTaGZvS3Y1N29vUVEzSnFXNFBHSHVkSW1nRnp2cHlGd2R6TVZS?=
- =?utf-8?B?NG9aWDNDa1d5M1BpclhwUFFSMEtpWG9BNWVXNHM4TjI3MlhVS1VqcnB1QmhU?=
- =?utf-8?B?UEJKb1g4bGFkb2tYeXp3dldXZkFzbFM1OFg3cnlSUUtHNVJRKzVmL1lacXAz?=
- =?utf-8?B?WVNsNm5nMVhoRmtXckM2RnRhQTlsTm9DYlhQZ1kvRlFUTVJ0RXJZZVBaSUJZ?=
- =?utf-8?B?VEhFaHErS2pKTlFxaUM5S0xZK1ZmWWNjMHJtQnBQMlhCd3NQUG8rejFzWFpW?=
- =?utf-8?B?WmRFckhiUzEwOVVnWS9yYmxxQTEvUm1kQkM3a09iZ0MxaXpacDFQbTJ3Qnd4?=
- =?utf-8?B?RktTMW9qZHNzc1ZOMEFPQ1lTelFCS1RMSCtsN3hIQnhWKzAzTTcxcUhMU3JB?=
- =?utf-8?B?SE5oL3ZMNHc3cW0wUWllTUozTU5ZR2ZKM2JFcGx0dm1pUHFTeFBXeWtIU3pE?=
- =?utf-8?B?bU83NUZpSjdCV255ZFEyYS9MSExmZENKNUtlcGxKZ1RMVFdqMlBlTTRXRXA4?=
- =?utf-8?B?dFRENTRpMUEvZWFIRTVXQkNPUlpweGQ5Y3BVNTEzWnJhQWdJTnhRQkVKVUlx?=
- =?utf-8?B?aGhrQ1E1VFBTQVdlOEM2eVhZMnhyYWdBRFYyeDFlcGlCYXVVaGx3bG02THgx?=
- =?utf-8?B?RDJlU3hXVE5NNEdVYi9Ycmp6UlJQS3JWd0V1Y0RTNkNBWmdXeHM1bHVDUWJQ?=
- =?utf-8?B?NXA2NnhKdUZ1cHdyMnd6VWYwSUdKMFJ0Y2s0dW5VcWZHVURVL05PcjFxdTBz?=
- =?utf-8?B?aDhYWHRKZTFmRjkvNTA4N2tiYTdiNjVkRUZIQ2R1M1cvZVRpVWc0cEM4eDRm?=
- =?utf-8?B?bWh6SkFrVmdLYjVYVnFadz09?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RVpRVTZjUDI0Q1VWVUJoZ2lkTDFQdzBhQTBqOWdDZTlFMDArZVJNMjkxZDBv?=
- =?utf-8?B?SFhZcG8vaDl0NmFkTVMzRFpESTQwa21sbWNScU9nWjh5TktXdlh1a1YvdkFY?=
- =?utf-8?B?NXBOK2lSTVNXTmZEUUNnamxzdjBZOS9aL2gwZFpPb2huSlVXNm4yT0NTdE4z?=
- =?utf-8?B?VmxiNWVqeHV5b2o5Z3lkK0JQSTJYN1dRR2tVQng3WnJoMFR2MFdOMFJxTEVa?=
- =?utf-8?B?aXZqUkd4VUkzd29teU4zNkhzUkNkcWp4OW1hbG9SaUVCVUY3TlZlM3Q1b1c1?=
- =?utf-8?B?bWk5cnZwWURnTm5LOEVaM1cwRUFibE9DYnZ3bkdRZ29xUmtWMWVQNzZwTFdN?=
- =?utf-8?B?TXNLYWFncERQYTFtZnpJZUFETHlzbitiWUszWW1EYjhvN24zWm9uZ3E1TUxl?=
- =?utf-8?B?ZGIwV0FQeUptRmZTa0lIaklHSGFRekJYZ3VNTWxaUm5GbDhwSmg0YWJKdVRo?=
- =?utf-8?B?K1ZjQ3dEUDk5YjA5N1pQSGxubGVGMmxSVFVsZ1RnRkYwRUlUczdka3IrSzVT?=
- =?utf-8?B?RCtuZzFjTW5NcldZbXQ2cHRVVHVDVmVSN3V1VnlObmwxQVJwdXA4Q21rK0J6?=
- =?utf-8?B?RzNYcW5SdnlaeVoxQ3RvU2pEL0ZBTUQwVlBDYWZsTHA5VWFkRk5mNUZZeFVL?=
- =?utf-8?B?RXNjb1NRck5xcnl3WEhyZUYyUEcyZ2pVK3JONDdYTGR2MktoUnZKVXFiZVFZ?=
- =?utf-8?B?SkprSzA4WGlFVTFhWHEzQlcreW1jR1o3empVTW5rOHBNWVR6djUxRnZrZ3RR?=
- =?utf-8?B?L09kcnJxTEVMUmxXZzhwcGdRVkVrajlmS01lTVZNdWtuWGFISU5SVkwrcnly?=
- =?utf-8?B?Rkd5V1ROaWR5YjNmQ2E4TWhjaXdxVlp5SEt4Y3BFSmpYRUhObzRaZS9MK2tZ?=
- =?utf-8?B?RUpGcVYvK21aSTFZMW5BdnlnNmErL0RwV2NyQW4rS0Q5V2dXMTZxWGhWaXpl?=
- =?utf-8?B?cS9sUHo5a2ErVFdXVkFNVXJGVFI3djNVMkU5eXdTMjc4dlFmR2hObzN3L2Yx?=
- =?utf-8?B?YzRoQ1FDQXZKVXh5MExlRHE5ZVlrYkZ1VFgzd0tQQ2Y3L1RRUCsvdkEyTEtl?=
- =?utf-8?B?bXJaY2NFUlluS0FwWnFUa0phcUs3cS9yWU03ZnlReWtVdnppaWUrNkZjZ25n?=
- =?utf-8?B?aDk0QlFNTG9NWVNkUEhwQmRlZlM0VHg2ZjNpdkJNcmRvMXhaU3RJNTdjTU5X?=
- =?utf-8?B?T2FySXRoVS9ic1ROMXErMkxja082RHVGSkFCWWQvWnc5MGxlOGwyYTYvVjRN?=
- =?utf-8?B?bUdHMGRKbzUvbW0wZ2o2NzI0MjF1S0Mwa1UxMGhhZmxtNWZvOUtXbWpORHQz?=
- =?utf-8?B?MkRidnRKTzZHMVhEbFFLMnlNcUcrWm1QNmtMK01QdEV4SWFxVUN0bldHcHlL?=
- =?utf-8?B?S2wzVkQwc1hja3lST09iRkdldkgvakN5VXE1KzJla1NXTGsyeGZoTHpEMEVj?=
- =?utf-8?B?SDFrWU05eHhKclBtcDM5aUV0Y1VyeXJScjI3dEZzbXlsWUFsYlZjNHdac3Ry?=
- =?utf-8?B?cmJ0U1lMbjVOOVBtSlVrRi9jU3RFa3pwN1crUmNTa0RVY1c3QzZDLzlOSzhx?=
- =?utf-8?B?VTVldU5HT1d1MXNSSEFjTm44R3dXTUZRSzQ1c3lhMkhVWm03UmFaMkExcC9u?=
- =?utf-8?B?OGlYV0ZNME9LdmEreXJEbWhuOEcxZTIvVGF6TmVnYzhRdGNZdkl2UFViMk5I?=
- =?utf-8?B?T0EyODV3bTJSTWFvQ2o2VXk2MHJoTUkyelpqUDdpMG50eVRHN25SNmNkdDcw?=
- =?utf-8?B?YWFSMjVQbk1RcTE4dHNIKzlob1lUOVk3T1VQdklBY3ptTzdHd3p5dHhMZENN?=
- =?utf-8?B?dXV1d0IrS2phT1JCYmltb3pSUlM5dVJLK2d0TWxCUytsMUlqSFJvYVp2OFdl?=
- =?utf-8?B?RlEwS0EyR2dvOWRadEhjV204S0IzVHpKbFVSbzE3dXpMVTFmang4U2dYZWhU?=
- =?utf-8?B?SGRMZityRTh2b2hueE1jNm9hRGtQdy9QdEcwdlRwOUZjTFpKR25CV0oyRFkv?=
- =?utf-8?B?SWpmWGVsTHo4dlVMOXJOOUFtcUI5TDYvclJLbTIxQXNTV2pZVEo2amR4MHdM?=
- =?utf-8?B?YWdUY1dXVTVleGNXZUFOTXMyZ1RsQWJmVjNMaHJ5VWpmUDl3SlVDa1g3Z3VS?=
- =?utf-8?Q?5jmbObwqv9MWjy52iTudqCP9n?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4417582f-8a88-49e5-3935-08dce2f1a4a1
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2024 14:51:05.7505
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BUUt7pytChGHV8EOUenVS2yxr5bhQsjm5AXpNcVWdH0WiuzfH80YMGHg4NyqFa7R4lqd9wJPSD/XjOytB84qgQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9699
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6378933c8d30bec2c3084e41c83b9d129d0d40d1.camel@pengutronix.de>
 
-svc_i3c_master_do_daa() {
-    ...
-    for (i = 0; i < dev_nb; i++) {
-        ret = i3c_master_add_i3c_dev_locked(m, addrs[i]);
-        if (ret)
-            goto rpm_out;
-    }
-}
+On Wed, Oct 02, 2024 at 04:40:32PM +0200, Lucas Stach wrote:
+> Am Mittwoch, dem 02.10.2024 um 13:19 +0200 schrieb Stefan Eichenberger:
+> > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> > 
+> > According to the i.MX8M Mini reference manual chapter "16.1.4.2
+> > Generation of Start" it is only necessary to poll for bus busy and
+> > arbitration lost in multi master mode. This helps to avoid rescheduling
+> > while the i2c bus is busy and avoids SMBus devices to timeout.
+> > 
+> This is a backward incompatible change, as far as I can see. Until now
+> the driver would properly handle a multi-mastered bus, without any
+> specific configuration. Now it requires the new multi-master DT
+> property to be set, which isn't even documented in the binding to be
+> understood by this driver.
+> 
+> Are you sure that every single instance of a i.MX i2c bus is only
+> single mastered?
+> 
+> If this is a worthwhile performance improvement I guess you need to
+> flip the logic around by adding a new single-master DT property (or
+> something along those lines), which should go through proper DT binding
+> review. You can then use this property for boards/busses to opt into
+> skipping the arbitration lost check.
 
-If two devices (A and B) are detected in DAA and address 0xa is assigned to
-device A and 0xb to device B, a failure in i3c_master_add_i3c_dev_locked()
-for device A (addr: 0xa) could prevent device B (addr: 0xb) from being
-registered on the bus. The I3C stack might still consider 0xb a free
-address. If a subsequent Hotjoin occurs, 0xb might be assigned to Device A,
-causing both devices A and B to use the same address 0xb, violating the I3C
-specification.
+According to the discussion here the property documentation should not
+be added:
+https://lore.kernel.org/linux-i2c/2bbddaxyjkxfmlgmq3yqcbzo7dsb2pq5bvdatk2y4ig4iintkt@35btqkdv7sy3/
 
-The return value for i3c_master_add_i3c_dev_locked() should not be checked
-because subsequent steps will scan the entire I3C bus, independent of
-whether i3c_master_add_i3c_dev_locked() returns success.
+However, the point regarding single-master and multi-master is correct.
+We also discussed this internally and assumed the single-master use case
+is more likely to be the default and that this patch series would fix
+issues for other devices out there. However, your point is valid and if
+preferred I can change it to single-master with the next version.
 
-If device A registration fails, there is still a chance to register device
-B. i3c_master_add_i3c_dev_locked() can reset DAA if a failure occurs while
-retrieving device information.
+Francesco Dolcini <francesco.dolcini@toradex.com> I think you once had a
+discussion regarding multi master mode for i2c on i.MX devices? Maybe
+you can remember the details?
 
-Cc: stable@kernel.org
-Fixes: 317bacf960a4 ("i3c: master: add enable(disable) hot join in sys entry")
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-change from v4 to v6
-- none
-change from v3 to v4
-- add comments about not check return value
-- add miquel's review tag
----
- drivers/i3c/master/svc-i3c-master.c | 27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index 7ef7e50b4b916..e9c8e340d861b 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -1103,12 +1103,27 @@ static int svc_i3c_master_do_daa(struct i3c_master_controller *m)
- 	if (ret)
- 		goto rpm_out;
- 
--	/* Register all devices who participated to the core */
--	for (i = 0; i < dev_nb; i++) {
--		ret = i3c_master_add_i3c_dev_locked(m, addrs[i]);
--		if (ret)
--			goto rpm_out;
--	}
-+	/*
-+	 * Register all devices who participated to the core
-+	 *
-+	 * If two devices (A and B) are detected in DAA and address 0xa is assigned to
-+	 * device A and 0xb to device B, a failure in i3c_master_add_i3c_dev_locked()
-+	 * for device A (addr: 0xa) could prevent device B (addr: 0xb) from being
-+	 * registered on the bus. The I3C stack might still consider 0xb a free
-+	 * address. If a subsequent Hotjoin occurs, 0xb might be assigned to Device A,
-+	 * causing both devices A and B to use the same address 0xb, violating the I3C
-+	 * specification.
-+	 *
-+	 * The return value for i3c_master_add_i3c_dev_locked() should not be checked
-+	 * because subsequent steps will scan the entire I3C bus, independent of
-+	 * whether i3c_master_add_i3c_dev_locked() returns success.
-+	 *
-+	 * If device A registration fails, there is still a chance to register device
-+	 * B. i3c_master_add_i3c_dev_locked() can reset DAA if a failure occurs while
-+	 * retrieving device information.
-+	 */
-+	for (i = 0; i < dev_nb; i++)
-+		i3c_master_add_i3c_dev_locked(m, addrs[i]);
- 
- 	/* Configure IBI auto-rules */
- 	ret = svc_i3c_update_ibirules(master);
-
--- 
-2.34.1
-
+Regards,
+Stefan
