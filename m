@@ -1,64 +1,68 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011047.outbound.protection.outlook.com [52.101.70.47])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2072.outbound.protection.outlook.com [40.107.20.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBE7747F
-	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 16:23:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA43D1CF7C0
+	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 16:48:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.72
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727886218; cv=fail; b=egtnzbXSjuSgkKiDq4CtABtwfGmDsq5FFyF8PGVa5n1K0EUMYz7SasLkxjInceqiXvZhLbx+VZuka6ug3lT3U+LOUSXxvDdctf0Mxd5U/vfDstntjhlxAhjTaUT6NSUvHjUyn99lvzyaPqHuXIiLmA+iNumxKgdgR/rA9vyTWms=
+	t=1727887730; cv=fail; b=vEhGO2ZT33x9XqJp1bp9PgIPFKoSMqAeBkmjX802J11ELJ59ruTNi4RY0JsjT3MkQ3xZdGCMlpe/T/opoQOEZfwH0FGX7J2tb/1Tb6tLTb2wYfSsgZXkkTs613KP+lToDR0GYi0wyLft0kzHYUgmGS5rdso+zyZlVVysrABecCg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727886218; c=relaxed/simple;
-	bh=ECdAQRLToEZPsIQKA4dxRs8Io3zoQQft13mCFmBBF98=;
+	s=arc-20240116; t=1727887730; c=relaxed/simple;
+	bh=veN/I1WnqXYqR6mqDVk587fQjPVuQwwSKKmlOc71HVg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=rut2iX/f3O8AVAlZOTnAAwZZY7ndr9ND3FfX9y3kIzYbOBe9J23/svLYy3Q0LHo5Slh+smSJZ1PUv833zpcpSbX6zrCb0msL9vqjK7TSzDb/TUOzwWDJrhcyX37ExbvRKIvQQKfGoaeZKdOn5kHWvrKyQWAuHjrDyry1cM30vVg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=NlbSaCH7; arc=fail smtp.client-ip=52.101.70.47
+	 Content-Disposition:In-Reply-To:MIME-Version; b=iXALW3aYzjyKDIvahJvz8EQ+Y6EbkeNpl/zfEOHQzAy9Ids1HkdvQ7QLhwPLrGIsYpwsRFEPvnf8HPe3s+uNne1zPxAVj/hGNx3SUb4j6ys1A5dRGdb8g0RfDtc/LmyGKThvodzUm9Q7Y/+gzofWXB79/Zwq/g3CGZDei/oKt8Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ZAHGIQFT; arc=fail smtp.client-ip=40.107.20.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="NlbSaCH7"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ZAHGIQFT"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DfgUyZh3afNDJuCcBwi0NYfDHXRDLs3hPnoEE1pqZzDq9cwjOn3fSNGIV3xNENJwa6XQuoyVAT/PXAvGpQF7STUhup/1ZL27am3uv/96/iUIJgLlDKW9YC4xMblFVuC3ZJzfVmgESaNqBDRwwpqigTaqeQENV5wyaWzgWvOZwaeDCpYAVYAaEY2SygPhLRB0sP3GRzZfZvo/I5onJMOeDS4dGuzKyK1fVfrJV0pS74jyoj6kzIm6O1SITId1ybLxMCBbgQPg0LPxisheiwVloDI5zLgp1FRLuRe5/K1xgIaFr+c7wqUw3HYgWL93AvlDpR4Le8le96PChwSsXR4NhA==
+ b=u9cusT0qFfXq1N4x7iHfX5WfUuNe+L33RD6l9+xuCdTg4Im7JtvRz3hGVMBOxzOCnzV7OOKubLOthiWDJMSEt83D1SZlXduRBqTiVNLiCCPiURf0AM5VCkw3rrLmZZqRdJI6MbUdYEA4IVQsBU8GFdOZEnm0qWNw2Qc38RTnepe//6vKuGs2c5M35+bNXM2HVxzgvLg2jh7NzYBXZaHflcgY4VBo2tyP3E98t0xYvuZkhVU645MqzdZDvhmTnlkhCo2EU4qmLI1YJDGp8qulH1Ik8vs0bvZUYV2ei8SmhtsCJnZapvguqZHw7sKXjwStUfYCsbYUZYd6uKQJFzkNWQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=N+ObNRdJMUscD2H+aBd+nzbAm7kbO+d2AFxjbiY2zas=;
- b=NyeCjQO5dma+gb/lB5w5Nkrv4cvbuMe1zNHz67A3Pz4Azk5gRKdHCZvoAHRiLq/zzjgU0Y1SCIDLSZVd/7E6BhVXXsGoJWB3AlRJc5rwavOr8wTGszjzLnrHofPMRBPpx/y6kb9LTPXSjeFPshO2B7/s+Y5Ki4hsdGUSxDZXULrdNhjNE6m5uT+Hds/sa1zoxQLTJf+BKueJJp9eeiAGjauOuwFKZBvDyeWeDPhYnun7Gt9Wdc1oEE5rQeYKjWyAEUIUq9OJIgEvkoTgH3UOy9t/7VEyJBCEYL71EwRiSPy5yi2MD19dySGXs0Lp3AAC7nsmBYcBREIdzKoFY5iYDw==
+ bh=E9CkMO2mxKphlGdVdCM/P0QHnYR4lasxjZth8lJX2cc=;
+ b=HVW2FDfFj3KKQRD55eFy3S+NJn9U4Ydm9Sl01kzz9PkRr/oV7Jk3lGhN+m1xBYr6+Zs9kDbRfqTY0xdfKxVvqoFDkf2cz7mxX9/t3WmfZcsL2Y1dxHxTZ2WlsVvXFuLC3ElzMBd4pXQ2SaAZSv3xGMIV8cI/1uMOE6x0f8mMBUYRaKdNZGPgr2g6MJ6RyprWEgOD4330E4OVuNzOHeEyw7tA6iyAJlh98+j+KAgyqYq3oNusN0O445pnBvjgl+RU30CLpG8/sKy72L/fMc0vg0YEwFCrxR2yBPqDtQzB/hrnkIUJx3w14hfNT0/UUYMPp+herJvaQpwTsKoHgy3vsA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=N+ObNRdJMUscD2H+aBd+nzbAm7kbO+d2AFxjbiY2zas=;
- b=NlbSaCH7DH+J4wEzNFCfdDUrQXEFkdhli1NXLItTgHlnZ6vxRnSZg4NRyEwRBXgOR3phtGnQEImPb0jd3HYiddZ5omcRE0/YQuEzdhzwWr7IQkmh4PPpSjhVy8gVK+w9CJMbtmo5P5aZCvzDM/8oeWXrIWVADSFfTmovBRygO1ekPYVMjVRnZsJRfp6RqZbOTutzuzZ1wjsAbfhXp+RT1uo0UO6sc1x0Q6yMy6fjf/wAhcYP3VHN+fgcuDlCo09jAxV56bbsg/QWr6qr2UArcVuGWM0hLWIatnU1leim9pILqI2kIvlo9FQe4TKF2s/zYXkXd8nDcXG3NBhenD+cFA==
+ bh=E9CkMO2mxKphlGdVdCM/P0QHnYR4lasxjZth8lJX2cc=;
+ b=ZAHGIQFTLtZyUNh/+lrX20rWio/mz6S30qq7OrS4MQgWFU1p+ZCUbRFpvKyFAqbOXOkqvaVW8x6PZb8XP2USAHSIuu03gHR2cgSEMon3EoIICjYFEZsZDwInFPXC3aB4okQ/wNFemXo7YzHQjf3uU3iNXP0a0WV+F21QJfyTDKQ7FUJG8UhGNqdEVq5bIuqEy1htft4Z9ThoOiQz9gcAJJZA5T3n7aDv7BIg1phqs0Ru+Y9H65lxY4mr66slIRc0iOGAugyR5liiH7Do7koFB6yCTzemvccRRk3JZ49JxS9mAJ0HXNR2x7BNIIAb4QceR9knDfBLVUjDwAlkCr+rTQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
- by PAXPR04MB8720.eurprd04.prod.outlook.com (2603:10a6:102:21f::14) with
+ by PA1PR04MB10526.eurprd04.prod.outlook.com (2603:10a6:102:441::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.25; Wed, 2 Oct
- 2024 16:23:32 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.27; Wed, 2 Oct
+ 2024 16:48:43 +0000
 Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
  ([fe80::e81:b393:ebc5:bc3d]) by DB9PR04MB9626.eurprd04.prod.outlook.com
  ([fe80::e81:b393:ebc5:bc3d%3]) with mapi id 15.20.8026.016; Wed, 2 Oct 2024
- 16:23:31 +0000
-Date: Wed, 2 Oct 2024 12:23:24 -0400
+ 16:48:43 +0000
+Date: Wed, 2 Oct 2024 12:48:18 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Han Xu <han.xu@nxp.com>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>, imx@lists.linux.dev,
-	linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] mtd: nand: raw: gpmi: improve power management
- handling
-Message-ID: <Zv1zfJVzg1GYnzeA@lizhi-Precision-Tower-5810>
-References: <20241002153944.69733-1-han.xu@nxp.com>
- <20241002153944.69733-2-han.xu@nxp.com>
-Content-Type: text/plain; charset=us-ascii
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
+	arnd@arndb.de, bbrezillon@kernel.org, boris.brezillon@collabora.com,
+	conor.culhane@silvaco.com, gregkh@linuxfoundation.org,
+	imx@lists.linux.dev, pthombar@cadence.com,
+	ravindra.yashvant.shinde@nxp.com
+Subject: Re: [PATCH 2/3] i3c: master: Extend address status bit to 4 and add
+ I3C_ADDR_SLOT_EXT_INIT
+Message-ID: <Zv15UjD9yvJb43MF@lizhi-Precision-Tower-5810>
+References: <20241001-i3c_dts_assign-v1-0-6ba83dc15eb8@nxp.com>
+ <20241001-i3c_dts_assign-v1-2-6ba83dc15eb8@nxp.com>
+ <20241002094944.5c0c83c8@xps-13>
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241002153944.69733-2-han.xu@nxp.com>
-X-ClientProxiedBy: SA1P222CA0029.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:22c::24) To DB9PR04MB9626.eurprd04.prod.outlook.com
- (2603:10a6:10:309::18)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241002094944.5c0c83c8@xps-13>
+X-ClientProxiedBy: BYAPR07CA0056.namprd07.prod.outlook.com
+ (2603:10b6:a03:60::33) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -66,267 +70,347 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|PAXPR04MB8720:EE_
-X-MS-Office365-Filtering-Correlation-Id: 06f16612-2a43-45be-a6ca-08dce2fe8dcd
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|PA1PR04MB10526:EE_
+X-MS-Office365-Filtering-Correlation-Id: cb36db8b-0d24-46a3-bb13-08dce3020bcb
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|366016|376014|38350700014;
+ BCL:0;ARA:13230040|366016|376014|7416014|52116014|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?bPJa/TFp8F6IxdJHbhlzPnzhRzehymXxIr8v1/z0BxAXQiw4P+KLm5wRb0rD?=
- =?us-ascii?Q?3rUmN2TA/tVHGDH2Qn/2RkgdSP0X1SmpSttugB3W0mpBz6oSldVMgGYxzajT?=
- =?us-ascii?Q?Qi0QqhPaP5JT0A0rlZQC/OVHd5vAfjHzQs+27xm9VOQSTAXpRplP/s2gyfxK?=
- =?us-ascii?Q?T2M1LBru56R9Q1ESVvk/Bb9SYfKuUc3hzxFgud1j6Y85Rhz000/M14MhN49S?=
- =?us-ascii?Q?zMaEgCtZ/xW4hGVimxVrU6AuYOO3tD9mkRz+M8T2Mj078MM7j3oH7u/vE4nc?=
- =?us-ascii?Q?i2OvgAiyniDDrZ7klK99RSCia9p7WdqoFCU78mDlZwv+gHYD919tew5EW6XB?=
- =?us-ascii?Q?ClCGe/2ZQTZJVxbi+Y1kQVZsl3YYFLmCgf9f9VqULooKx4w/QH1Bfv0+IQJC?=
- =?us-ascii?Q?3YUTT4BiUQ9PqYQKPawsjq/sORAe7rl3E1xGvr3VuTKIJcb73TjayYFqixt2?=
- =?us-ascii?Q?bWsWYIFpmmN4KHU0KUSjiLK6A3Ssti9Qm4B7otSP7S65LPsg8mHE5d19Ez08?=
- =?us-ascii?Q?9CDoSDKJDZFkFjbMXJIA/4+ILQnHiVHbC7dZS6YI0baBXwvF+XGd2VOVxx50?=
- =?us-ascii?Q?5Ks8nCIiBIwE0ytu9gz+exbmyO83oKtXYRE8/pdIopW9X/Bdph1W3/eTnpyN?=
- =?us-ascii?Q?b6VpQt+EbPoPzrRr+d2RW5Rmk9oXwOgX9BoMYiq/FJwSMeuPNNQ5voPI9nIL?=
- =?us-ascii?Q?7gwEImp+RvCoKJvn5mvV0Gs2UvoFi2XbqH6zm6sQ+aYkQVNr9iSILHXuil8t?=
- =?us-ascii?Q?w/M9WKqTaE1Pa2kClx2+K3qvuCXZPQVIKFGt4JcsH0HHITM8CDBM/Z6F3XqS?=
- =?us-ascii?Q?Be5rAdQY/sb7wn9s/lk1DcfTKKi8WYz5toN+0t+dN4cNnoqYTMR6ZVLkHyn2?=
- =?us-ascii?Q?kgEase85qR8yNx/UeepomtkHlYAIeClrPGRulHftoZekN2GCi/FmP+6NDOP4?=
- =?us-ascii?Q?32qhjjQJbB/HmHvGaa5NOiXZ7Jc3IlGLNg2+K/cLMoJR1UBj36uZVDEo9VED?=
- =?us-ascii?Q?Jowx7HcPkcskfxwNmzAhIhooDm3vjURMeAgsu5KPidrzPwHCbf+AK6Y943GA?=
- =?us-ascii?Q?HYy5Hi4Ymg6qdZ7AayCZnad90gPwxsuMHxeNfpLyqCNXw6Mqjg+jSoURoq64?=
- =?us-ascii?Q?Kl5NV5BE4uj02meVKFeZ/s/u9GjxAO53fXskVlm0blIrSw0rgiix9CASzDKQ?=
- =?us-ascii?Q?BxtfejE6G7jQcrEtV1Jd59LsTYWUcmYP/VJlF7VA5RfVnDfCQRC5SJuo1ryF?=
- =?us-ascii?Q?+aqNhxLM/YLns005VcSnMvTegRU1zAnEq9n9k5HPUxjZQMdwEC8zHCiWLDKV?=
- =?us-ascii?Q?CXx0TW68StYlHJJbYns8IzA9MygNv06Lc3tPlL3kziyLiQ=3D=3D?=
+ =?utf-8?B?dy93clNubktTMDJKWDlpZTdJMThPMStVRCtxbWc0YjFBVGt4SnNKVEdBK0NS?=
+ =?utf-8?B?RDhkQUtnOTZrZndrM1RaT3BBVjZqMWVjZWZEUmwwajdxTmpIdlZETVpLcUtz?=
+ =?utf-8?B?V0IzaUZHNDBzZWI5bHlvRnIwWVZqWFVGYmFPckxOWkliK20wNmh6Nm4wR1Ew?=
+ =?utf-8?B?QUVLWjNqdmxpYm9udU1ENEJLMGIyN1Y3elJ4Z1ltUldTMjRPV2QwQktNTXNs?=
+ =?utf-8?B?UE04cElIVU05UnBwZmQ1WE1FYTJDcE0wYk9FdWRwenRkQzRnUEptWk90NTdL?=
+ =?utf-8?B?V3BhNUlPRmg0MWJXaWRlZ0QrY2JZOEZTZUdjMWYrVU9ja1czZFZ6UmhIMEhN?=
+ =?utf-8?B?UjVNWTQ4TXUxQmxHaHJDb3M0UmtqclVRS3U2TXB5b05XMkJ4Q2VuMHNMVXpZ?=
+ =?utf-8?B?UVhvS1AwSS9MaW9WQk5kbnMwWkxqdU9iQmVxbmVTV0RKZDJJbXBOanlLa0NZ?=
+ =?utf-8?B?b2U3R0l1WCtBOG8zdERYWG8yR09tdGNiNlY4d1hSR1NIRk1JTCtMMi9qWDA0?=
+ =?utf-8?B?MVBycWdNVDdGSmVoMitvRDlocHAvOXdFdFBmS2pQb08yNVNXeHhZVGtnRUl6?=
+ =?utf-8?B?d2I2ZUltU3d6WTF4ZlZMZGw4WnVjbEtEaVhqNUlVdXZ1RXFXZXZnY1crRTA0?=
+ =?utf-8?B?NWFFYmtsTm9USExLMksxQzh5Tm5oMTZYcUhpVnVPVUNrSGp2NzcyTkgyR1R4?=
+ =?utf-8?B?b3N3d1ZxektvbVQ1TVZOUzhxWC9tRWI0UzRGd2hxbGt1Mjl3blpOdmpXWThx?=
+ =?utf-8?B?aTJUVE5SMVpQY01NRURNVG05NWJQY290SEJJd1N3b044b2hobFZDUUs0NGlV?=
+ =?utf-8?B?RHB3dExJQTBZZklwUTNDWUJlcm9zVkY0QWhOSFE4SVpoRGROTkI2TmZzbk9E?=
+ =?utf-8?B?azZTT0psVUE1bGdUUC9kTXRzbFUrSTVYSm5Xb1E2WUdUNm4rZHRZVXl3TGVY?=
+ =?utf-8?B?T1VsNlZOdUR1L29idDh2bzN6NVN4ZHNhakFCT3hlemZpcC9KQ21XU284L21E?=
+ =?utf-8?B?NSswNDBKbzgzMUpQTzRJc0VoekMwNmhRUTdKcnNVSDdCMktZZXNFZGpCMzdE?=
+ =?utf-8?B?TDB3VnMvdUFSTllFUkVmM3dFZnFNN1RsNTN2Nkp2T25sRFdRMUFFU2ZVcWFL?=
+ =?utf-8?B?bUQvaThJNzc3cGkxQWR3c0lXV3dScGZoRVVtYjBKSEZ4bDZHQkkwN3dEYU04?=
+ =?utf-8?B?a1JWZGFOdUlOZkZBMG1oSFhzVTVmbmU4Ky80a0FtMVV1VnR5Rk9CS2oyeTUw?=
+ =?utf-8?B?QW02a3RmcTdLOGdVSFMrckQrTWFTRGltSFB4L0FPMTF0NmI2aUcwVE4vaE8v?=
+ =?utf-8?B?V2NjVlV2TTB4Ym9IbE1NeDRHN1piRkRxcDlzbklNSTRLN3F1VnZlSUQ5cUtP?=
+ =?utf-8?B?a2t4dndxRnRYU0dIbWlrYWowZGlqTEZ1ZUNjNFhMTXpXQUQ5NDdJNk1VUUUw?=
+ =?utf-8?B?UG9Pam9SaUZDM3FEZVJ5RzhLcVlVbm5UL0phTmg2S3R1UmtzaUYvTjhNOWt0?=
+ =?utf-8?B?b3VmbCt5MVRieE1WbDhqS0NVbDVBc09LUU9yVVIyRFhGOUpJODZQOFc5elJk?=
+ =?utf-8?B?dUExR2JjeTZ5aWUyVllKVFVXcVRuaHBoUjBZWHdJOXhzeGVoYU1jekdGZHBu?=
+ =?utf-8?B?T3h5RTV0OGtKOWZ3V3kzY2JFNHJ0Q24zeVF4V3kzS01qbTNlWFBTeXFJMEFO?=
+ =?utf-8?B?eFhKV0tSRnpWL2N5VG1Zay9RWGxxUXRzdnpjNVJubXd6dTZQaHpuN25waTND?=
+ =?utf-8?B?MzZMOWgvZnFlRm9qVG5TNmhOY0laeWR0S2gyZ3VuSk9OdFZyK1JCYld1QlFp?=
+ =?utf-8?B?dW1nUFBnYkw1VnJmNFo3Zz09?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(366016)(376014)(38350700014);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?vvcgaEamzuijqdIRPO5GvNNy+tGdFt6sZ+p+bTW84Z1bIbbIcjiw3BmN4u9g?=
- =?us-ascii?Q?JpWHf56ci8MjfNG4pozNntKLCHHaNtbL3W5EcZjHcQ7UMQ4eJnLYJ1Gc6DeC?=
- =?us-ascii?Q?H2BJrCekYuO3NjtttJIMDla7HlhjO3tLJqS9pUp7pM8hUecUgzZDBQSPjbgD?=
- =?us-ascii?Q?BGgERplAlu5MJ3/FWINoffCjxoi7HBmouLNvyP8wJN5i/tmrKvKSl0aZicmC?=
- =?us-ascii?Q?M8Sj29VIjz3+UTCIejCUJrgQcOxshvEBeEHpHrcODL22+fZfeLOxrgHAiFpo?=
- =?us-ascii?Q?nbSrtSLqgalt4m9H83cJKJndbYhJeq9S9602agDWhDM76SnBUOJzW6QjPgk0?=
- =?us-ascii?Q?EGIbbU4Wsic+85u1fwjjB+Ppk/0eUFITG4jMqVUUz0KlSGt83fAQ9Lc9RDVb?=
- =?us-ascii?Q?rWBYY/cDhMMOJe0E20nh1NZFjJqgUK3Rfkh9v4Qg6Zsvpd44DTDJqTTw9iPH?=
- =?us-ascii?Q?OdXHmYX7+GpssA1gX4/2NpVyM3pzGH9TRrGUbo1Ux0sTorZwXVNd8JcxMvta?=
- =?us-ascii?Q?VSUkSDnv73x0tpNY8fvb2kxZOD4KeTVEESsRcv+w8ujZhp2g1gTWQMTvgPgK?=
- =?us-ascii?Q?NPiqRyWzmctEdufC9SyP4g8d5p78MpM0qno7diXYo2wGBiUjdqgEzpvsG1cY?=
- =?us-ascii?Q?94CcBBhCZiC6M4WQBpG71Vcc5F5YirQjECgUn/PfsNFrT62hZMBdrxDbBxHB?=
- =?us-ascii?Q?HXIGQ6fOmLL4d2IhVDxEXyU/6PuAc9URoUpT1SA8m0md1E33f2WlSDQB5e1k?=
- =?us-ascii?Q?YHWYkKGh0krcOVQAf8ERHk07bhWRf/9ak0Si6mf5DB4GlPMn+Xko+rzqZIPw?=
- =?us-ascii?Q?ZFYWg/ihAFAEypPbFW+YJDNbid9PdcRdM8YDY9bunw1f/rAx5OPGE1RzNJ5W?=
- =?us-ascii?Q?cnPEIxiKcZ0CIyNF1WTyuy5kvqnE4OHYiSLLH4L3qpJI88Ezdckp7n1x6b1y?=
- =?us-ascii?Q?U0FBKmCgISc0DH4ro+ABDxD9IBpG3edZReBjYk6hFyuSFyrVTTf51gcZ7CSR?=
- =?us-ascii?Q?s0vV82m8MxymBTd/uuNHOURLMNHuDTr0Fo1guCnmydinePodOHf0I4/a/Fcu?=
- =?us-ascii?Q?X64mFLMDGJldHffUgg0gOP9BjxwMaMbiiYIXJrftjSfXdOdWsjnLfqBx9kYY?=
- =?us-ascii?Q?Kmax+mXSX6BBeg4esnqN526w4qUenQhx5shrJtppQPinCwgxAg0Dhl4aaep/?=
- =?us-ascii?Q?l1V/NFRD/maCOgJaBgIxdZ0jiHJD/iou7UZKsXOlyI4w9B5s1T3vKEqkdY8N?=
- =?us-ascii?Q?qXnKuXK+QhozVLpcF+mR10VRnAGUKk3YSoUG1MfKtruL5O2FDF4DL6EOHEnF?=
- =?us-ascii?Q?iP7tMmUq7imf/mh6BzwXCCfvURqsW9dlPmxaeNIMBpQ/VnM1R9L7HaAW0Pnu?=
- =?us-ascii?Q?MuaBNvatP3s0kk4A4XLynXc8gBKR8b26KbYz5+MppTBu0UBlEcnTz9l1tIFq?=
- =?us-ascii?Q?S58nfFX7WSSVB4zXAJJ9cn1wcyxqSH8n4sOgm3P/BN8QL/ju4qHvIHKZwVi2?=
- =?us-ascii?Q?UOUCPJPiFe5acmvhPXdRojb67D5BLYJlnur3giujn1IfID9x34345DYyqTwn?=
- =?us-ascii?Q?GGSBafKVFmU7tFIdzswWtWfp3k2beuev5GZ7sddF?=
+ =?utf-8?B?ZzBrZDFLcmY5MDZsYjRzVGhmK3UrVFZZWXlvNFVjUWNYWUpNUW56eFlYZnpR?=
+ =?utf-8?B?WFJrd2tKOUhqS0kwQy9kL3NqMlZUb1VFR2xUcW82RGJKNnF1b3czMUtrejIv?=
+ =?utf-8?B?Z1RWUXp4VE5ieitkMm5NRFU2c1NvRXVlTzBYbllhREtIUXU4blp6TlpEbmZJ?=
+ =?utf-8?B?VnlUS2lFeU9TS2d1cE5kRGladlJQYkdCTXFHaEMwSUsvMndVVGF4dGg4RnlB?=
+ =?utf-8?B?NFpidUozNGNlRjVTM3pZeWRSWitsc2NjN0xONjFXcmh3ZUNoR2o3QUZndjNm?=
+ =?utf-8?B?a1p4dlZKTHpRb3pMTmFlUmlzT1NFRHl0bWdkQ2NGc1BVMUFWNWRBellNcnlZ?=
+ =?utf-8?B?VnFzMlp1TmlZRXJOWk9QaVdIM0dVWEd3TWVUQWJCay9vNGQ1MlNyaUVnSi9n?=
+ =?utf-8?B?RGdSYlV2Tys2alBzTFJjM0czNkQ3ODU4UVVKeWpJM1MxT0tVeHNwVDc2ZkFq?=
+ =?utf-8?B?Y0ZMUXF6Rm9BR014enN2WmpqRlJ0c1lrOENMS3dqN3NRdlF6S3lCKzl1MGV1?=
+ =?utf-8?B?L1Z5bURrNUUxY2FYR3lpQ2NpbnBOSytUdy90a3pLYzVtWXdtMVcvSVNxYStm?=
+ =?utf-8?B?REQyRDNESlJVUDEyVG43WDNScWp6V3BFNWhmUmlicHVWSTVSaEFvVCtzZlFt?=
+ =?utf-8?B?OVEzLzdvTVNZSTA2b2VtUWZ1R2tlYXlYQjhJejJrNFZpN2c3d0F3UldoV2lZ?=
+ =?utf-8?B?RnZRZGNNTVRoaDluS0ZBUzJ4bENDVDA1RXJMdXoyR016SHU4WVZIYnlCVDVy?=
+ =?utf-8?B?RzFjMDlRYnFkTHpZSmlqb3N1TUQyckNNR3kxUjJ4ZHRZTlg5d1RZVVZyYUM1?=
+ =?utf-8?B?U3pRaUw2cnY1T08xSk41V1dxeExjenBmTmM5VVJDWVBpZXhtRUtRdDJEK0pI?=
+ =?utf-8?B?SEFNazhVRkltYXQvUHpmMlFJRFdLZEhWdndPaTdBSHFpejZiT0lpZ2JNM0FJ?=
+ =?utf-8?B?UkYxU3JsNTMvcE52aUVuc21oeWg2Vkp4QkUzMVNHV1A3YzZvRWl5WWVYWkI4?=
+ =?utf-8?B?T1VxRjJUZWk4bnhjeUYvZzVHL0RXUXV1QnVzbnQ5UGVoL1VvS010RUdNcjVn?=
+ =?utf-8?B?dEZjVVVZWTdORG1ZdGZzaWtKM3c0WFVEeXR6bk9Hcm5MVWt2YjNtdzZLR3hl?=
+ =?utf-8?B?M09KRzQ3eDVwNW1nMXJMOTRWbVhDUkN2eFJqMFM0OTZFdEhjb1ZEUmJoc24w?=
+ =?utf-8?B?N25LaTFDbGp1RHo2UjRXdWh4OEs4Njl6VVBwQXZ4NUNTWjhVWjYzS0NWN3dL?=
+ =?utf-8?B?WEdDeVhSQUZHT3BPT3I4UzFnbG9CZFZjWnJVTTRBMDBKNUpNWTFqTktSMGk0?=
+ =?utf-8?B?bUxFeEZPN3pHcVBKRzAyTXRpd2dDU2NrZWFUUnBaRFBzUm5Gc05VRkxMSTRw?=
+ =?utf-8?B?ZlN3YktVNWFOSEFqa1J3c2JUTUlFZi83UGhpM2l1c0RKRlJuSFdxYytRanh2?=
+ =?utf-8?B?SmsvOTlkYmdUZnI3SXNEVnBEb3o4dE9PNWVoMUJoUUwrQWR4b0xidDZJay82?=
+ =?utf-8?B?VkE1djRHYjE2Vmk2VUdGaGtZdnYwY2RSbjErdk0wWUpVc09oUC81dk12dXV3?=
+ =?utf-8?B?T085WitWblJxNEpkSFFFcCtacmsybXc2UnZ1ZW5WRVFvS0RVUEI3OEN0WlRz?=
+ =?utf-8?B?TnhrWGNFTU1CWFNPWEF6WWE1WUVFcTlFU3NrZVRTRXdMaTFlNFJTQVVUSzNo?=
+ =?utf-8?B?V1BSS1QrdUVxck4vaStQQlhvQkM1QTQxYnBSakhNQmx0WmJ4djdpWGcrQ1k1?=
+ =?utf-8?B?MVRrMmp1WHk2OThKajBKWmtWZHZJdGtqT3d4bTVnTE9zSnlBak5GcWl1Uk5L?=
+ =?utf-8?B?Z1JxeG9NWnlpVlZKS0RXalMyVVNOVkFvTkxZams4L04wV3pvUFl5MTdLN0xO?=
+ =?utf-8?B?Y0V2UFdCUzJENUNJRjgvLzBtZk9sRGoyQTRpWTVRVWV0SVV1MmNSaU5MYk5M?=
+ =?utf-8?B?UExRcktycVNLdlZRazRlVFpXYWQ3YXVBOC93R0xDc1ZvWDVHazVXVGhUYTU1?=
+ =?utf-8?B?Z24zM1Y3WGVzMlkzTmFKdWs3V3dGUHBkclZuRHhEQTVMeWxMMXAvRHppaktz?=
+ =?utf-8?B?RzVJQTlESGp2VVNxRXJrVjhwelptYmtPanhidjhzdkxOV2pTaFh4RGIvR0lB?=
+ =?utf-8?Q?kcyMV+UKfuV2R9/1t8uyFSdso?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 06f16612-2a43-45be-a6ca-08dce2fe8dcd
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cb36db8b-0d24-46a3-bb13-08dce3020bcb
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2024 16:23:31.8291
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2024 16:48:43.6607
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 36SEECIX7a1Oon3IKoplI7yAI6rgpUB1Gg2oFqTojTZl8zAyj6v/KumSYm888y692gK15gHelA0sLxF0wtleVQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8720
+X-MS-Exchange-CrossTenant-UserPrincipalName: I7O/ibYbnyKtHnTWn91VO6kr/YRLadEZZ6DPqTYqWi7pZdU6X2QPdk11YxrmWzCZeXcF2gdsZ/3un31i69iz7w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10526
 
-On Wed, Oct 02, 2024 at 10:39:44AM -0500, Han Xu wrote:
-> The commit refactors the power management handling in the gpmi nand
-> driver. It removes redundant pm_runtime calls in the probe function,
-> handles the pad control in suspend and resume, and moves the calls to
-> acquire and release DMA channels to the runtime suspend and resume
-> functions.
+On Wed, Oct 02, 2024 at 09:49:44AM +0200, Miquel Raynal wrote:
+> Hi Frank,
+>
+> Frank.Li@nxp.com wrote on Tue, 01 Oct 2024 13:08:21 -0400:
+>
+> > Extend the address status bit to 4 and introduce the I3C_ADDR_SLOT_EXT_INIT
+> > macro to indicate that a device prefers a specific address. This is
+> > generally set by the 'assigned-address' in the device tree source (dts)
+> > file.
+> >
+> >  ┌────┬─────────────┬───┬─────────┬───┐
+> >  │S/Sr│ 7'h7E RnW=0 │ACK│ ENTDAA  │ T ├────┐
+> >  └────┴─────────────┴───┴─────────┴───┘    │
+> >  ┌─────────────────────────────────────────┘
+> >  │  ┌──┬─────────────┬───┬─────────────────┬────────────────┬───┬─────────┐
+> >  └─►│Sr│7'h7E RnW=1  │ACK│48bit UID BCR DCR│Assign 7bit Addr│PAR│ ACK/NACK│
+> >     └──┴─────────────┴───┴─────────────────┴────────────────┴───┴─────────┘
+> >
+> > Some master controllers (such as HCI) need to prepare the entire above
+> > transaction before sending it out to the I3C bus. This means that a 7-bit
+> > dynamic address needs to be allocated before knowing the target device's
+> > UID information.
+> >
+> > However, some I3C targets want a specific address (called as
+> > "init_dyn_addr"), which is typically specified by the DT's assigned-address
+> > property. (Lower addresses have higher IBI priority, and the target can
+> > adjust this by using the assigned-address property if using DT). The
+> > function i3c_master_add_i3c_dev_locked() will switch to this
+> > "init_dyn_addr" if it is not in use.
+> >
+> > Therefore, i3c_bus_get_free_addr() should return a free address that has
+> > not been claimed by any target devices as "init_dyn_addr" (indicated by
+> > I3C_ADDR_SLOT_EXT_INIT). This allows the device with the "init_dyn_addr"
+> > to switch to its "init_dyn_addr" when it hot-joins the I3C bus. Otherwise,
+> > if the "init_dyn_addr" is already in use by another I3C device, the target
+> > device will not be able to switch to its desired address.
+> >
+> > If all of above address are already used, i3c_bus_get_free_addr() return
+> > one from the claimed as init_dyn_addr and free address slot. This ensures
+> > support devices as much as possible.
+> >
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> > change from v3 to v4
+> > - rewrite commit message and comment for i3c_bus_get_free_addr()
+> > ---
+> >  drivers/i3c/master.c       | 68 ++++++++++++++++++++++++++++++++++++++++------
+> >  include/linux/i3c/master.h |  7 +++--
+> >  2 files changed, 64 insertions(+), 11 deletions(-)
+> >
+> > diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+> > index dcf8d23c5941a..a56cb281e6b6d 100644
+> > --- a/drivers/i3c/master.c
+> > +++ b/drivers/i3c/master.c
+> > @@ -345,7 +345,7 @@ const struct bus_type i3c_bus_type = {
+> >  EXPORT_SYMBOL_GPL(i3c_bus_type);
+> >
+> >  static enum i3c_addr_slot_status
+> > -i3c_bus_get_addr_slot_status(struct i3c_bus *bus, u16 addr)
+> > +i3c_bus_get_addr_slot_status_ext(struct i3c_bus *bus, u16 addr)
+> >  {
+> >  	unsigned long status;
+> >  	int bitpos = addr * I3C_ADDR_SLOT_STATUS_BITS;
+> > @@ -356,11 +356,17 @@ i3c_bus_get_addr_slot_status(struct i3c_bus *bus, u16 addr)
+> >  	status = bus->addrslots[bitpos / BITS_PER_LONG];
+> >  	status >>= bitpos % BITS_PER_LONG;
+> >
+> > -	return status & I3C_ADDR_SLOT_STATUS_MASK;
+> > +	return status & I3C_ADDR_SLOT_EXT_STATUS_MASK;
+> >  }
+> >
+> > -static void i3c_bus_set_addr_slot_status(struct i3c_bus *bus, u16 addr,
+> > -					 enum i3c_addr_slot_status status)
+> > +static enum i3c_addr_slot_status
+> > +i3c_bus_get_addr_slot_status(struct i3c_bus *bus, u16 addr)
+> > +{
+> > +	return i3c_bus_get_addr_slot_status_ext(bus, addr) & I3C_ADDR_SLOT_STATUS_MASK;
+> > +}
+> > +
+> > +static void i3c_bus_set_addr_slot_status_mask(struct i3c_bus *bus, u16 addr,
+> > +					      enum i3c_addr_slot_status status, int mask)
+> >  {
+> >  	int bitpos = addr * I3C_ADDR_SLOT_STATUS_BITS;
+> >  	unsigned long *ptr;
+> > @@ -369,11 +375,22 @@ static void i3c_bus_set_addr_slot_status(struct i3c_bus *bus, u16 addr,
+> >  		return;
+> >
+> >  	ptr = bus->addrslots + (bitpos / BITS_PER_LONG);
+> > -	*ptr &= ~((unsigned long)I3C_ADDR_SLOT_STATUS_MASK <<
+> > -						(bitpos % BITS_PER_LONG));
+> > +	*ptr &= ~((unsigned long)mask << (bitpos % BITS_PER_LONG));
+> >  	*ptr |= (unsigned long)status << (bitpos % BITS_PER_LONG);
+> >  }
+> >
+> > +static void i3c_bus_set_addr_slot_status(struct i3c_bus *bus, u16 addr,
+> > +					 enum i3c_addr_slot_status status)
+> > +{
+> > +	i3c_bus_set_addr_slot_status_mask(bus, addr, status, I3C_ADDR_SLOT_STATUS_MASK);
+> > +}
+> > +
+> > +static void i3c_bus_set_addr_slot_status_ext(struct i3c_bus *bus, u16 addr,
+> > +					     enum i3c_addr_slot_status status)
+> > +{
+> > +	i3c_bus_set_addr_slot_status_mask(bus, addr, status, I3C_ADDR_SLOT_EXT_STATUS_MASK);
+> > +}
+>
+> Can we drop this helper and instead modify the
+> i3c_bus_set_addr_slot_status() prototype to get the mask from its
+> parameters?
 
-Use  imperative mode
+git grep "i3c_bus_set_addr_slot_status(" drivers/i3c/ | wc
 
-Refactor the power management. Remove redundate pm_runtime calls and pad
-control in the probe function. Move acquire and release DMA channels to
-the runtime suspend and resume because dma engine use DMA channel used/free
-to do power saving.
+There are 18 places need be modified without this helper function.
+are you sue what you want?
+
+Maybe drop i3c_bus_set_addr_slot_status_ext() is good idea by direct use
+i3c_bus_set_addr_slot_status_mask().
+
+Frank
 
 >
-> Signed-off-by: Han Xu <han.xu@nxp.com>
-> ---
->  drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c | 66 ++++++++++++----------
->  1 file changed, 37 insertions(+), 29 deletions(-)
+> > +
+> >  static bool i3c_bus_dev_addr_is_avail(struct i3c_bus *bus, u8 addr)
+> >  {
+> >  	enum i3c_addr_slot_status status;
+> > @@ -383,11 +400,44 @@ static bool i3c_bus_dev_addr_is_avail(struct i3c_bus *bus, u8 addr)
+> >  	return status == I3C_ADDR_SLOT_FREE;
+> >  }
+> >
+> > +/*
+> > + * ┌────┬─────────────┬───┬─────────┬───┐
+> > + * │S/Sr│ 7'h7E RnW=0 │ACK│ ENTDAA  │ T ├────┐
+> > + * └────┴─────────────┴───┴─────────┴───┘    │
+> > + * ┌─────────────────────────────────────────┘
+> > + * │  ┌──┬─────────────┬───┬─────────────────┬────────────────┬───┬─────────┐
+> > + * └─►│Sr│7'h7E RnW=1  │ACK│48bit UID BCR DCR│Assign 7bit Addr│PAR│ ACK/NACK│
+> > + *    └──┴─────────────┴───┴─────────────────┴────────────────┴───┴─────────┘
+> > + * Some master controllers (such as HCI) need to prepare the entire above transaction before
+> > + * sending it out to the I3C bus. This means that a 7-bit dynamic address needs to be allocated
+> > + * before knowing the target device's UID information.
+> > + *
+> > + * However, some I3C targets want a specific address (called as "init_dyn_addr"), which is
 >
-> diff --git a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-> index a7d79679248d..76e4b89e2451 100644
-> --- a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-> +++ b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-> @@ -15,6 +15,7 @@
->  #include <linux/of.h>
->  #include <linux/platform_device.h>
->  #include <linux/pm_runtime.h>
-> +#include <linux/pinctrl/consumer.h>
-
-order by alphabet
-
->  #include <linux/dma/mxs-dma.h>
->  #include "gpmi-nand.h"
->  #include "gpmi-regs.h"
-> @@ -737,9 +738,8 @@ static int bch_set_geometry(struct gpmi_nand_data *this)
->  	if (ret)
->  		return ret;
+> 				may request specific addresses (called "init...
 >
-> -	ret = pm_runtime_get_sync(this->dev);
-> +	ret = pm_runtime_resume_and_get(this->dev);
->  	if (ret < 0) {
-> -		pm_runtime_put_autosuspend(this->dev);
->  		return ret;
->  	}
+> > + * typically specified by the DT's assigned-address property. (Lower addresses have higher IBI
 >
-> @@ -1301,10 +1301,6 @@ static int acquire_resources(struct gpmi_nand_data *this)
->  	if (ret)
->  		goto exit_regs;
+> 				   -'s
 >
-> -	ret = acquire_dma_channels(this);
-> -	if (ret)
-> -		goto exit_regs;
-> -
->  	ret = gpmi_get_clks(this);
->  	if (ret)
->  		goto exit_clock;
-> @@ -2761,15 +2757,9 @@ static int gpmi_nand_probe(struct platform_device *pdev)
->  	if (ret)
->  		goto exit_acquire_resources;
+> > + * priority, and the target can adjust this by using the assigned-address property if using DT).
 >
-> -	ret = __gpmi_enable_clk(this, true);
-> -	if (ret)
-> -		goto exit_acquire_resources;
-> -
-> +	pm_runtime_enable(&pdev->dev);
->  	pm_runtime_set_autosuspend_delay(&pdev->dev, 500);
->  	pm_runtime_use_autosuspend(&pdev->dev);
-> -	pm_runtime_set_active(&pdev->dev);
-> -	pm_runtime_enable(&pdev->dev);
-> -	pm_runtime_get_sync(&pdev->dev);
+> Can we remove the whole "( ... )" sentence, and replace it with:
 >
->  	ret = gpmi_init(this);
->  	if (ret)
-> @@ -2779,15 +2769,12 @@ static int gpmi_nand_probe(struct platform_device *pdev)
->  	if (ret)
->  		goto exit_nfc_init;
+> 	"... property, lower addresses having higher IBI priority."
 >
-> -	pm_runtime_mark_last_busy(&pdev->dev);
-> -	pm_runtime_put_autosuspend(&pdev->dev);
-> -
->  	dev_info(this->dev, "driver registered.\n");
+> > + * The function i3c_master_add_i3c_dev_locked() will switch to this "init_dyn_addr" if it is not
+> > + * in use.
 >
->  	return 0;
+> 	if it is available.
 >
->  exit_nfc_init:
-> -	pm_runtime_put(&pdev->dev);
-> +	pm_runtime_dont_use_autosuspend(&pdev->dev);
->  	pm_runtime_disable(&pdev->dev);
->  	release_resources(this);
->  exit_acquire_resources:
-> @@ -2801,22 +2788,23 @@ static void gpmi_nand_remove(struct platform_device *pdev)
->  	struct nand_chip *chip = &this->nand;
->  	int ret;
+> > + *
+> > + * Therefore, i3c_bus_get_free_addr() should return a free address that has not been claimed by any
 >
-> -	pm_runtime_put_sync(&pdev->dev);
-> -	pm_runtime_disable(&pdev->dev);
-> -
->  	ret = mtd_device_unregister(nand_to_mtd(chip));
->  	WARN_ON(ret);
->  	nand_cleanup(chip);
->  	gpmi_free_dma_buffer(this);
->  	release_resources(this);
-> +	pm_runtime_dont_use_autosuspend(&pdev->dev);
-> +	pm_runtime_disable(&pdev->dev);
->  }
+> 					preferably return
 >
->  static int gpmi_pm_suspend(struct device *dev)
->  {
-> -	struct gpmi_nand_data *this = dev_get_drvdata(dev);
-> +	int ret;
+> 	that is not in the list of desired addresses.
 >
-> -	release_dma_channels(this);
-> -	return 0;
-> +	pinctrl_pm_select_sleep_state(dev);
-> +	ret = pm_runtime_force_suspend(dev);
-> +
-> +	return ret;
-
-needn't define varible ret
-
-return pm_runtime_force_suspend(dev);
-
->  }
+> > + * target devices as "init_dyn_addr". This allows the device with the "init_dyn_addr" to switch to
+> > + * its "init_dyn_addr" when it hot-joins the I3C bus. Otherwise, if the "init_dyn_addr" is already
+> > + * in use by another I3C device, the target device will not be able to switch to its desired
+> > + * address.
+> > + *
+> > + * If all of above address are already used, i3c_bus_get_free_addr() return one from the claimed as
+> > + * init_dyn_addr and free address slot. This ensures support devices as much as possible.
 >
->  static int gpmi_pm_resume(struct device *dev)
-> @@ -2824,9 +2812,13 @@ static int gpmi_pm_resume(struct device *dev)
->  	struct gpmi_nand_data *this = dev_get_drvdata(dev);
->  	int ret;
+> If the previous step fails, fallback returning one of the remaining
+> unassigned address, regardless of its state in the desired list.
 >
-> -	ret = acquire_dma_channels(this);
-> -	if (ret < 0)
-> +	ret = pm_runtime_force_resume(dev);
-> +	if (ret) {
-> +		dev_err(this->dev, "Error in resume %d\n", ret);
->  		return ret;
-> +	}
-> +
-> +	pinctrl_pm_select_default_state(dev);
+> > + */
 >
->  	/* re-init the GPMI registers */
->  	ret = gpmi_init(this);
-> @@ -2849,18 +2841,34 @@ static int gpmi_pm_resume(struct device *dev)
->  	return 0;
->  }
+> Please update your commit message as well with these changes.
 >
-> -static int __maybe_unused gpmi_runtime_suspend(struct device *dev)
-> +#define gpmi_enable_clk(x)	__gpmi_enable_clk(x, true)
-> +#define gpmi_disable_clk(x)	__gpmi_enable_clk(x, false)
-> +
-> +static int gpmi_runtime_suspend(struct device *dev)
-
-remove __maybe should below previous patch.
-
->  {
->  	struct gpmi_nand_data *this = dev_get_drvdata(dev);
+> >  static int i3c_bus_get_free_addr(struct i3c_bus *bus, u8 start_addr)
+> >  {
+> >  	enum i3c_addr_slot_status status;
+> >  	u8 addr;
+> >
+> > +	for (addr = start_addr; addr < I3C_MAX_ADDR; addr++) {
+> > +		status = i3c_bus_get_addr_slot_status_ext(bus, addr);
 >
-> -	return __gpmi_enable_clk(this, false);
-> +	gpmi_disable_clk(this);
-> +	release_dma_channels(this);
-> +
-> +	return 0;
->  }
+> So here it could look like:
 >
-> -static int __maybe_unused gpmi_runtime_resume(struct device *dev)
-> +static int gpmi_runtime_resume(struct device *dev)
->  {
->  	struct gpmi_nand_data *this = dev_get_drvdata(dev);
-> +	int ret;
-> +
-> +	ret = gpmi_enable_clk(this);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = acquire_dma_channels(this);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return 0;
+> 		status = ...get_addr_slot_status(bus, addr, <extended>)
 >
-> -	return __gpmi_enable_clk(this, true);
-
-It will be simple if
-
-	return acquire_dma_channels(this);
->  }
+> > +		if (status == I3C_ADDR_SLOT_FREE)
+> > +			return addr;
+> > +	}
+> > +
+> >  	for (addr = start_addr; addr < I3C_MAX_ADDR; addr++) {
+> >  		status = i3c_bus_get_addr_slot_status(bus, addr);
+> >  		if (status == I3C_ADDR_SLOT_FREE)
+> > @@ -1918,9 +1968,9 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
+> >  			goto err_rstdaa;
+> >  		}
+> >
+> > -		i3c_bus_set_addr_slot_status(&master->bus,
+> > -					     i3cboardinfo->init_dyn_addr,
+> > -					     I3C_ADDR_SLOT_I3C_DEV);
+> > +		i3c_bus_set_addr_slot_status_ext(&master->bus,
+> > +						 i3cboardinfo->init_dyn_addr,
+> > +						 I3C_ADDR_SLOT_I3C_DEV | I3C_ADDR_SLOT_EXT_INIT);
+> >
+> >  		/*
+> >  		 * Only try to create/attach devices that have a static
+> > diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
+> > index 2100547b2d8d2..57ad6044ac856 100644
+> > --- a/include/linux/i3c/master.h
+> > +++ b/include/linux/i3c/master.h
+> > @@ -298,7 +298,8 @@ enum i3c_open_drain_speed {
+> >   * @I3C_ADDR_SLOT_I2C_DEV: address is assigned to an I2C device
+> >   * @I3C_ADDR_SLOT_I3C_DEV: address is assigned to an I3C device
+> >   * @I3C_ADDR_SLOT_STATUS_MASK: address slot mask
+> > - *
+> > + * @I3C_ADDR_SLOT_EXT_INIT: the bitmask represents addresses that are preferred by some devices,
+> > + *			    such as the "assigned-address" property in a device tree source (DTS).
 >
->  static const struct dev_pm_ops gpmi_pm_ops = {
-> --
-> 2.34.1
+> The naming could be improved, because "extended" does not mean much. I
+> believe we should express the fact that this is a desired addressed, so
+> what about:
 >
+> 	I3C_ADDR_SLOT_I3C_ASSIGNED/DESIRED
+>
+> >   * On an I3C bus, addresses are assigned dynamically, and we need to know which
+> >   * addresses are free to use and which ones are already assigned.
+> >   *
+> > @@ -311,9 +312,11 @@ enum i3c_addr_slot_status {
+> >  	I3C_ADDR_SLOT_I2C_DEV,
+> >  	I3C_ADDR_SLOT_I3C_DEV,
+> >  	I3C_ADDR_SLOT_STATUS_MASK = 3,
+> > +	I3C_ADDR_SLOT_EXT_STATUS_MASK = 7,
+> > +	I3C_ADDR_SLOT_EXT_INIT = BIT(2),
+> >  };
+> >
+> > -#define I3C_ADDR_SLOT_STATUS_BITS 2
+> > +#define I3C_ADDR_SLOT_STATUS_BITS 4
+> >
+> >  /**
+> >   * struct i3c_bus - I3C bus object
+> >
+>
+>
+> Thanks,
+> Miquèl
