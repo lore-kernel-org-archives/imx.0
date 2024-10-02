@@ -1,60 +1,60 @@
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D648C200112
-	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 11:58:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF381C9DDC
+	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 12:00:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727870301; cv=none; b=EvGYUugmlhATzMAYuX+Uag6FaphC+xOFb8d9ccHXknP3Hc5CAGL7x1ocOHeV/eztV909c8YCJH6+BNzgN+oFqTD4KlTsF7OptkOT9nrkt527jJNo0BlRn6HwC6Rg3+62xCCw7oc8UPdFAhC2T9tT6HTtpDtfuilnipwVuR/Qy54=
+	t=1727870423; cv=none; b=EEXfU8sUmNF+5gVqpVZaDtPkr8c+vnoKrN1YWt2G9oAoIJ62d6FIZSub1vzIuxEo03ODo0ftMrMrAY1wgTLpCYLZDRJuiTkxT5s9bFuSuaAWFBscgPVVIYt11DcVTuhFnYtQYdPgQemSe9Wheze0Im3xWO0GpCBWD7N7snmC32M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727870301; c=relaxed/simple;
-	bh=N4nanubrZloQt6H+/yg1NMcUdEKwHYaF2wzFYn8NjJA=;
+	s=arc-20240116; t=1727870423; c=relaxed/simple;
+	bh=tXLUOFuMcabAaH7RRoWMbEWnGHyK3YTaBTAbq54kgao=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z9kwErmIJC/mA9Qlz1ZNpEDm/j2fKUoHlA1dEpWEQLHa319rXwO6jzPqAqrqGwu8vF/f7Aehtp++2scZVq4K72z/0bTGhYBW9laZ8zUpqLp/0Wq7FwSXLUcfZW6vULzMbzHynFreUHm4MoPJCu/gmbv8qEP3Eljy5ydexYDqD94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=LBtmlwaD; arc=none smtp.client-ip=209.85.208.171
+	 In-Reply-To:Content-Type; b=hUhCjZ7RWUBLj+F6exKt2oTG935hDyekzYwvBfXAxxkKXsPzPlYxFtSM9vIjl0LhhRReLlsXumUxpRsEEG3A2j8GWbzR6ZmR2TxM8jgW+2TKX0T9m2QrjEmEea20iVs+zK1DGiFetNvH3zIW8bxpGpqjlOqRKleA10cCx0YL7Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=QW3/7TfG; arc=none smtp.client-ip=209.85.208.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="LBtmlwaD"
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2fac6b3c220so43400191fa.2
-        for <imx@lists.linux.dev>; Wed, 02 Oct 2024 04:58:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="QW3/7TfG"
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2fad6de2590so36286181fa.0
+        for <imx@lists.linux.dev>; Wed, 02 Oct 2024 05:00:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1727870296; x=1728475096; darn=lists.linux.dev;
+        d=suse.com; s=google; t=1727870420; x=1728475220; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=4xuDo4Lr9uVZcQtomduS6VfvfKIUum1uatoQDPxhvGs=;
-        b=LBtmlwaDfnGWaWdB7TKA2ZGLv6Kme6kAUlDtfuwKxmlxk5Fw7uYuGRlqFBBX6wp6vz
-         b/NiJHB5xA9yfDuUh9xvBuClzd8b5bl1bh5+IlLqHoqYnsllloNGqFYgpWvazbS+L1nV
-         NMc+/TT/ZRyI0mzAhice9T2zNnrlxJSZnw2erJOY7r78QJP8gOfQWooWQRTb2lA/sZ4K
-         ObbUq2WvafP/z/fnJvWZNx4v2UphjuB4xg+xtWtmepMn+g0aeGlfWzP3GQs3Y+v81mQN
-         zxYIemE+AMLgS2tKXQt80tKzOUKX8R1elEH5cSBFJyerbF2h150dIefcY174eHBXNNjw
-         ZWsw==
+        bh=0U1iMmO6Yb8v2aj8WGyHSmNMK+sbGpBJ9awFW1LpN04=;
+        b=QW3/7TfGT3rfkDxu1hHxGcA1oPMF4McqLDEuMbuRnnOEhC2Wk3wzi31vRkyCVLHNz7
+         DkyBQeRyzKpolwuEewVosfJDpoFtm2iWY9VQQp0uSEdYhYCzopbj7Hx/InyQNmINIeDg
+         0ZHa1wp4uMGpkSn45nP78DN3sA+VFj9PEjMZBoXDMWn4To9BXUXvHstLY1z9UX+KsTF7
+         lI//aANetcxZ9siBsmH9hc07kylINhql4GfRu6n1dCcNoYXu/1Ni2zYaHXV2Yp+6hijV
+         hDkU3eW8L1IxJVQ4gVyawy/g/Po7vnMcZrPtr26NBMIEA3XqX8jjwwxjhwJ5qxWG2xN+
+         Ajtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727870296; x=1728475096;
+        d=1e100.net; s=20230601; t=1727870420; x=1728475220;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4xuDo4Lr9uVZcQtomduS6VfvfKIUum1uatoQDPxhvGs=;
-        b=EdOQphwnNDqYfYJ8AQvAbh3iLIhnLwYsd4u3WHwW99zQlDCHpAI4QH70sfbI83w7br
-         nP78S4gegocZVdiwe2R7bGO/y8hLL6/dojcKgYvvST8dbpPs1fTwnDvMLD4y59iOCNjd
-         7Z7EnBNJW8GkvSs21cRWOj4FDjVhUcTEsh3iH6ZXGgIb8LCccbGBukA1NSnYpx2nvS9L
-         GfEdnS6bYZ6AS+0KwKs0smoaVD/P9f50OKv2dGLK12txEuX+plT/YItg5hR1BuQZFfh1
-         elgzGSANU7NIRyHENqf2cYVbC3KbqndmfiTumBSvO2u00c0iSoZnf0kS2jwY6UxzriDA
-         Iiww==
-X-Forwarded-Encrypted: i=1; AJvYcCWrvlKXQEFC1c4MzZ2edM7a5bDQSi9iZMfJGxbqIipQZTmspxH5oFsk8y+9HIWSv4mZFfg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzkY7Fj5YFzkMVx7ingsuQKUf9goFbsEB55h7JeBpA/Beq/CxaM
-	mucSyftlD0DeHFvjYyDs+951nCF0MUBdKVRAS8cn5YG5+xx8kXtrR2wqfKW5lPM=
-X-Google-Smtp-Source: AGHT+IFg1miftEMHVgGxmQjPa2VMmir89jlS2yV5cnvRgU9XOmUyLOMctk99dCS12vn2H43xW7EP7w==
-X-Received: by 2002:a05:651c:1990:b0:2fa:d4ef:f234 with SMTP id 38308e7fff4ca-2fae10228c8mr27006121fa.1.1727870295912;
-        Wed, 02 Oct 2024 04:58:15 -0700 (PDT)
+        bh=0U1iMmO6Yb8v2aj8WGyHSmNMK+sbGpBJ9awFW1LpN04=;
+        b=UfoN/MsAkM/2z7kzSOmJAkcn3ZMFSKWiZa8ywG8pn5CHseN0kugzLjDMKfIGjUYVYb
+         eSjOYSNnKV0Kwi293tGnbTPASgr9mlvqv0ODiEV01jsZDZZpgP09xULgdmvbP7KvVflJ
+         8i0dlDUceP9HvQ20JQVs/5IfVHn18kGSfLgNFl9+0tuKUV1lW30NGPyOgEUD77Hz6wGW
+         /cbMJWfbUCqPhBFboINQ22lURUdwC6wF3hAznZY9YsdUdk7YPW7dnXI2CYl50W0LLwW9
+         RctLg30cUSUxkOOTvx4L1+3KUuul/rlusvsHmtVo45DVnjdVD7TvVgD8G8keIFuWbnsw
+         yLvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXOLlDVnsek/M+ptphtVxQpcS77q2gajzDMojh4PvYIWWGLjQDhygyYfWc6FkhKI/wBZ68=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw4gcIkgHhOYIqHxsXg42Xq+Cp9F4CMBKmJILJ51n0fGc3He8k2
+	r5tOoYJKlqc9Z7fPF5craMWezcJe0mdOZ2eAJTrFvSvZzI5N5+Da5Ee6rAJb+YQ=
+X-Google-Smtp-Source: AGHT+IEFZS8hg2h4HKpUhEwch1eKO0aMzSYSCOcCmIeaVg6qzH4Hh2/nABCk2ldMboGUVrRAwvrY1A==
+X-Received: by 2002:a2e:be84:0:b0:2fa:cfba:fb7f with SMTP id 38308e7fff4ca-2fae10b46eemr29688701fa.40.1727870419992;
+        Wed, 02 Oct 2024 05:00:19 -0700 (PDT)
 Received: from [192.168.2.177] ([207.188.162.240])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93c2997f50sm844074466b.198.2024.10.02.04.58.14
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c8824051b7sm7818872a12.7.2024.10.02.05.00.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Oct 2024 04:58:15 -0700 (PDT)
-Message-ID: <054fd366-89fe-4ab8-b9db-88c5245cb719@suse.com>
-Date: Wed, 2 Oct 2024 13:58:13 +0200
+        Wed, 02 Oct 2024 05:00:19 -0700 (PDT)
+Message-ID: <8d0dc480-737e-4ab5-9f52-58024a9bfb03@suse.com>
+Date: Wed, 2 Oct 2024 14:00:18 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,7 +62,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] pinctrl: s32: add missing pins definitions
+Subject: Re: [PATCH 3/3] arm64: dts: S32G3: add S32G3 compatible for the
+ pinctrl node
 To: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>,
  Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
  Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>,
@@ -78,7 +79,7 @@ Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
  Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
  Enric Balletbo <eballetb@redhat.com>
 References: <20240930132344.3001876-1-andrei.stefanescu@oss.nxp.com>
- <20240930132344.3001876-2-andrei.stefanescu@oss.nxp.com>
+ <20240930132344.3001876-4-andrei.stefanescu@oss.nxp.com>
 Content-Language: en-US, ca-ES, es-ES
 From: Matthias Brugger <mbrugger@suse.com>
 Autocrypt: addr=mbrugger@suse.com; keydata=
@@ -124,121 +125,35 @@ Autocrypt: addr=mbrugger@suse.com; keydata=
  LV6nybxdRG/jp8ZQdQQixPA9azZDzuTu+NjKtzIA5qtfZfmm8xC+kAwAMZ/ZnfCsKwN0bbnD
  YfO3B5Q131ASmu0kbwY03Mw4PhxDzZNrt4a89Y95dq5YkMtVH2Me1ZP063cFCCYCkvEAK/C8
  PVrr2NoUqi/bxI8fFQJD1jVj8K0=
-In-Reply-To: <20240930132344.3001876-2-andrei.stefanescu@oss.nxp.com>
+In-Reply-To: <20240930132344.3001876-4-andrei.stefanescu@oss.nxp.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
 
 On 30/09/2024 15:23, Andrei Stefanescu wrote:
-> Added definitions for some pins which were missing from the
-> S32G2 SIUL2 pinctrl driver. These pins are used by the JTAG,
-> PFE and LLCE hardware modules.
+> Add the newly introduced S32G3 compatible for the pinctrl node.
+> Currently, it will fall back to the S32G2 compatible.
 > 
 > Signed-off-by: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
 
 Reviewed-by: Matthias Brugger <mbrugger@suse.com>
 
 > ---
->   drivers/pinctrl/nxp/pinctrl-s32g2.c | 52 +++++++++++++++++++++++++++++
->   1 file changed, 52 insertions(+)
+>   arch/arm64/boot/dts/freescale/s32g3.dtsi | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/pinctrl/nxp/pinctrl-s32g2.c b/drivers/pinctrl/nxp/pinctrl-s32g2.c
-> index 440ff1879424..c49d28793b69 100644
-> --- a/drivers/pinctrl/nxp/pinctrl-s32g2.c
-> +++ b/drivers/pinctrl/nxp/pinctrl-s32g2.c
-> @@ -216,6 +216,12 @@ enum s32_pins {
->   	S32G_IMCR_CAN1_RXD = 631,
->   	S32G_IMCR_CAN2_RXD = 632,
->   	S32G_IMCR_CAN3_RXD = 633,
-> +
-> +	/* JTAG IMCRs */
-> +	S32G_IMCR_JTAG_TMS = 562,
-> +	S32G_IMCR_JTAG_TCK = 572,
-> +	S32G_IMCR_JTAG_TDI = 573,
-> +
->   	/* GMAC0 */
->   	S32G_IMCR_Ethernet_MDIO = 527,
->   	S32G_IMCR_Ethernet_CRS = 526,
-> @@ -229,7 +235,21 @@ enum s32_pins {
->   	S32G_IMCR_Ethernet_RX_DV = 530,
->   	S32G_IMCR_Ethernet_TX_CLK = 538,
->   	S32G_IMCR_Ethernet_REF_CLK = 535,
-> +
->   	/* PFE EMAC 0 MII */
-> +	S32G_IMCR_PFE_EMAC_0_MDIO = 837,
-> +	S32G_IMCR_PFE_EMAC_0_CRS = 836,
-> +	S32G_IMCR_PFE_EMAC_0_COL = 835,
-> +	S32G_IMCR_PFE_EMAC_0_RX_D0 = 841,
-> +	S32G_IMCR_PFE_EMAC_0_RX_D1 = 842,
-> +	S32G_IMCR_PFE_EMAC_0_RX_D2 = 843,
-> +	S32G_IMCR_PFE_EMAC_0_RX_D3 = 844,
-> +	S32G_IMCR_PFE_EMAC_0_RX_ER = 840,
-> +	S32G_IMCR_PFE_EMAC_0_RX_CLK = 839,
-> +	S32G_IMCR_PFE_EMAC_0_RX_DV = 845,
-> +	S32G_IMCR_PFE_EMAC_0_TX_CLK = 846,
-> +	S32G_IMCR_PFE_EMAC_0_REF_CLK = 838,
-> +
->   	/* PFE EMAC 1 MII */
->   	S32G_IMCR_PFE_EMAC_1_MDIO = 857,
->   	S32G_IMCR_PFE_EMAC_1_CRS = 856,
-> @@ -317,6 +337,13 @@ enum s32_pins {
->   	S32G_IMCR_LLCE_CAN13_RXD = 758,
->   	S32G_IMCR_LLCE_CAN14_RXD = 759,
->   	S32G_IMCR_LLCE_CAN15_RXD = 760,
-> +	S32G_IMCR_LLCE_UART0_RXD = 790,
-> +	S32G_IMCR_LLCE_UART1_RXD = 791,
-> +	S32G_IMCR_LLCE_UART2_RXD = 792,
-> +	S32G_IMCR_LLCE_UART3_RXD = 793,
-> +	S32G_IMCR_LLCE_LPSPI2_PCS0 = 811,
-> +	S32G_IMCR_LLCE_LPSPI2_SCK = 816,
-> +	S32G_IMCR_LLCE_LPSPI2_SIN = 817,
->   	S32G_IMCR_USB_CLK = 895,
->   	S32G_IMCR_USB_DATA0 = 896,
->   	S32G_IMCR_USB_DATA1 = 897,
-> @@ -503,6 +530,12 @@ static const struct pinctrl_pin_desc s32_pinctrl_pads_siul2[] = {
->   	S32_PINCTRL_PIN(S32G_IMCR_USDHC_DAT7),
->   	S32_PINCTRL_PIN(S32G_IMCR_USDHC_DQS),
->   	S32_PINCTRL_PIN(S32G_IMCR_CAN0_RXD),
-> +
-> +	/* JTAG IMCRs */
-> +	S32_PINCTRL_PIN(S32G_IMCR_JTAG_TMS),
-> +	S32_PINCTRL_PIN(S32G_IMCR_JTAG_TCK),
-> +	S32_PINCTRL_PIN(S32G_IMCR_JTAG_TDI),
-> +
->   	/* GMAC0 */
->   	S32_PINCTRL_PIN(S32G_IMCR_Ethernet_MDIO),
->   	S32_PINCTRL_PIN(S32G_IMCR_Ethernet_CRS),
-> @@ -638,6 +671,13 @@ static const struct pinctrl_pin_desc s32_pinctrl_pads_siul2[] = {
->   	S32_PINCTRL_PIN(S32G_IMCR_LLCE_CAN13_RXD),
->   	S32_PINCTRL_PIN(S32G_IMCR_LLCE_CAN14_RXD),
->   	S32_PINCTRL_PIN(S32G_IMCR_LLCE_CAN15_RXD),
-> +	S32_PINCTRL_PIN(S32G_IMCR_LLCE_UART0_RXD),
-> +	S32_PINCTRL_PIN(S32G_IMCR_LLCE_UART1_RXD),
-> +	S32_PINCTRL_PIN(S32G_IMCR_LLCE_UART2_RXD),
-> +	S32_PINCTRL_PIN(S32G_IMCR_LLCE_UART3_RXD),
-> +	S32_PINCTRL_PIN(S32G_IMCR_LLCE_LPSPI2_PCS0),
-> +	S32_PINCTRL_PIN(S32G_IMCR_LLCE_LPSPI2_SCK),
-> +	S32_PINCTRL_PIN(S32G_IMCR_LLCE_LPSPI2_SIN),
->   	S32_PINCTRL_PIN(S32G_IMCR_CAN1_RXD),
->   	S32_PINCTRL_PIN(S32G_IMCR_CAN2_RXD),
->   	S32_PINCTRL_PIN(S32G_IMCR_CAN3_RXD),
-> @@ -652,6 +692,18 @@ static const struct pinctrl_pin_desc s32_pinctrl_pads_siul2[] = {
->   	S32_PINCTRL_PIN(S32G_IMCR_USB_DATA7),
->   	S32_PINCTRL_PIN(S32G_IMCR_USB_DIR),
->   	S32_PINCTRL_PIN(S32G_IMCR_USB_NXT),
-> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_MDIO),
-> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_CRS),
-> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_COL),
-> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_RX_D0),
-> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_RX_D1),
-> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_RX_D2),
-> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_RX_D3),
-> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_RX_ER),
-> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_RX_CLK),
-> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_RX_DV),
-> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_TX_CLK),
-> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_REF_CLK),
->   	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_1_MDIO),
->   	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_1_CRS),
->   	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_1_COL),
+> diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+> index b4226a9143c8..f6aafe44c9d7 100644
+> --- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+> @@ -172,7 +172,8 @@ soc@0 {
+>   		ranges = <0 0 0 0x80000000>;
+>   
+>   		pinctrl: pinctrl@4009c240 {
+> -			compatible = "nxp,s32g2-siul2-pinctrl";
+> +			compatible = "nxp,s32g3-siul2-pinctrl",
+> +				     "nxp,s32g2-siul2-pinctrl";
+>   				/* MSCR0-MSCR101 registers on siul2_0 */
+>   			reg = <0x4009c240 0x198>,
+>   				/* MSCR112-MSCR122 registers on siul2_1 */
