@@ -1,60 +1,39 @@
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF381C9DDC
-	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 12:00:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC5F1CF5ED
+	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 12:08:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727870423; cv=none; b=EEXfU8sUmNF+5gVqpVZaDtPkr8c+vnoKrN1YWt2G9oAoIJ62d6FIZSub1vzIuxEo03ODo0ftMrMrAY1wgTLpCYLZDRJuiTkxT5s9bFuSuaAWFBscgPVVIYt11DcVTuhFnYtQYdPgQemSe9Wheze0Im3xWO0GpCBWD7N7snmC32M=
+	t=1727870902; cv=none; b=g3N6kMTobExTvpZOH6ANE5E5qcufqa6FlTZmlQP007E+nLtdWq4KloIHMopjlTXTCCzhh7ts+sa4EiQa98ga8X55NXMr7zLECIcxqSH3gRJQyDFIpPEURro/5EsNa1C1e1PbDGVbfH6L1mAi+C9BOaDYYy47f4QqqROpokQVHvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727870423; c=relaxed/simple;
-	bh=tXLUOFuMcabAaH7RRoWMbEWnGHyK3YTaBTAbq54kgao=;
+	s=arc-20240116; t=1727870902; c=relaxed/simple;
+	bh=HF9gz9cxrtZHNXVfCdvFAGxweX1II3r/tm/pbiXkiv8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hUhCjZ7RWUBLj+F6exKt2oTG935hDyekzYwvBfXAxxkKXsPzPlYxFtSM9vIjl0LhhRReLlsXumUxpRsEEG3A2j8GWbzR6ZmR2TxM8jgW+2TKX0T9m2QrjEmEea20iVs+zK1DGiFetNvH3zIW8bxpGpqjlOqRKleA10cCx0YL7Rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=QW3/7TfG; arc=none smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	 In-Reply-To:Content-Type; b=F1FPH63pEBPiCtuIq5uRxk+mWfvaiNgAMEwC/Owb2uaOj9jM5qgMjbFH4FCQ1FdiHlm933mgqcgsnxuZzsB8mSRMtNjUXiIcIXU6JFFdEwvDEjxR6zEatkN4g0fBHqg/dRGY4a5xPqOk4ayrW83MYHEG3XJaBO5CEWdi13mPRro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=kUU5GykY; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="QW3/7TfG"
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2fad6de2590so36286181fa.0
-        for <imx@lists.linux.dev>; Wed, 02 Oct 2024 05:00:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1727870420; x=1728475220; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=0U1iMmO6Yb8v2aj8WGyHSmNMK+sbGpBJ9awFW1LpN04=;
-        b=QW3/7TfGT3rfkDxu1hHxGcA1oPMF4McqLDEuMbuRnnOEhC2Wk3wzi31vRkyCVLHNz7
-         DkyBQeRyzKpolwuEewVosfJDpoFtm2iWY9VQQp0uSEdYhYCzopbj7Hx/InyQNmINIeDg
-         0ZHa1wp4uMGpkSn45nP78DN3sA+VFj9PEjMZBoXDMWn4To9BXUXvHstLY1z9UX+KsTF7
-         lI//aANetcxZ9siBsmH9hc07kylINhql4GfRu6n1dCcNoYXu/1Ni2zYaHXV2Yp+6hijV
-         hDkU3eW8L1IxJVQ4gVyawy/g/Po7vnMcZrPtr26NBMIEA3XqX8jjwwxjhwJ5qxWG2xN+
-         Ajtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727870420; x=1728475220;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0U1iMmO6Yb8v2aj8WGyHSmNMK+sbGpBJ9awFW1LpN04=;
-        b=UfoN/MsAkM/2z7kzSOmJAkcn3ZMFSKWiZa8ywG8pn5CHseN0kugzLjDMKfIGjUYVYb
-         eSjOYSNnKV0Kwi293tGnbTPASgr9mlvqv0ODiEV01jsZDZZpgP09xULgdmvbP7KvVflJ
-         8i0dlDUceP9HvQ20JQVs/5IfVHn18kGSfLgNFl9+0tuKUV1lW30NGPyOgEUD77Hz6wGW
-         /cbMJWfbUCqPhBFboINQ22lURUdwC6wF3hAznZY9YsdUdk7YPW7dnXI2CYl50W0LLwW9
-         RctLg30cUSUxkOOTvx4L1+3KUuul/rlusvsHmtVo45DVnjdVD7TvVgD8G8keIFuWbnsw
-         yLvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXOLlDVnsek/M+ptphtVxQpcS77q2gajzDMojh4PvYIWWGLjQDhygyYfWc6FkhKI/wBZ68=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw4gcIkgHhOYIqHxsXg42Xq+Cp9F4CMBKmJILJ51n0fGc3He8k2
-	r5tOoYJKlqc9Z7fPF5craMWezcJe0mdOZ2eAJTrFvSvZzI5N5+Da5Ee6rAJb+YQ=
-X-Google-Smtp-Source: AGHT+IEFZS8hg2h4HKpUhEwch1eKO0aMzSYSCOcCmIeaVg6qzH4Hh2/nABCk2ldMboGUVrRAwvrY1A==
-X-Received: by 2002:a2e:be84:0:b0:2fa:cfba:fb7f with SMTP id 38308e7fff4ca-2fae10b46eemr29688701fa.40.1727870419992;
-        Wed, 02 Oct 2024 05:00:19 -0700 (PDT)
-Received: from [192.168.2.177] ([207.188.162.240])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c8824051b7sm7818872a12.7.2024.10.02.05.00.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Oct 2024 05:00:19 -0700 (PDT)
-Message-ID: <8d0dc480-737e-4ab5-9f52-58024a9bfb03@suse.com>
-Date: Wed, 2 Oct 2024 14:00:18 +0200
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="kUU5GykY"
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 809AC89080;
+	Wed,  2 Oct 2024 14:08:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1727870898;
+	bh=0JG7OQOTRkzyuh9OdleZmDit4I1RGWrnOFEmIqhEZTM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kUU5GykYmQcwr2E3a5J0zltE7sIjHkrhD87rXvbbPQa2L7xq/N41iCba7u9JEbQsk
+	 s2OUM61cGLH50QMqNDhMd19fSOW025fJ+1Jp6kMyi1XuZcmMiiilfscgXESAD/5c3p
+	 2A78tQoLmSUWeETfvwSRsgh8UIDtyqMowfHhOM0qfmBX05fGPQwX51Kpj4k8MY1LpT
+	 UjOYXP6enPx11V7vzHCPu4krxIVjSt7rTxaKg8i2ZG1BTdTMruNjRqVQf7w5DqOt+M
+	 V1Ai1s2mPrw8ixO+i0yss2pwHQmQGNt9XvxH1TKaL1gFkcU4G5kMBiUDc6EN2xQUkB
+	 h/wOCHagUQyUg==
+Message-ID: <6b5c27ad-7f9b-4989-ada3-fbebb9537737@denx.de>
+Date: Wed, 2 Oct 2024 13:56:48 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,98 +41,110 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] arm64: dts: S32G3: add S32G3 compatible for the
- pinctrl node
-To: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>,
- Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
- Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>,
- Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Ghennadi Procopciuc
- <Ghennadi.Procopciuc@oss.nxp.com>, Chester Lin <chester62515@gmail.com>,
- Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
- linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, NXP S32 Linux Team <s32@nxp.com>,
- Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
- Enric Balletbo <eballetb@redhat.com>
-References: <20240930132344.3001876-1-andrei.stefanescu@oss.nxp.com>
- <20240930132344.3001876-4-andrei.stefanescu@oss.nxp.com>
-Content-Language: en-US, ca-ES, es-ES
-From: Matthias Brugger <mbrugger@suse.com>
-Autocrypt: addr=mbrugger@suse.com; keydata=
- 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
- PVrr2NoUqi/bxI8fFQJD1jVj8K0=
-In-Reply-To: <20240930132344.3001876-4-andrei.stefanescu@oss.nxp.com>
+Subject: Re: [PATCH] serial: imx: Update mctrl old_status on RTSD interrupt
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Cc: linux-serial@vger.kernel.org,
+ Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ Esben Haabendal <esben@geanix.com>, Fabio Estevam <festevam@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, Lino Sanfilippo
+ <l.sanfilippo@kunbus.com>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Rickard x Andersson <rickaran@axis.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Stefan Eichenberger <stefan.eichenberger@toradex.com>, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+References: <20241002041125.155643-1-marex@denx.de>
+ <hgxxa2qsyr6c5jbzofzaarqkty4uccdtrteun5qlwyc66yqnbq@vb7xyeskjhhy>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <hgxxa2qsyr6c5jbzofzaarqkty4uccdtrteun5qlwyc66yqnbq@vb7xyeskjhhy>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-
-
-On 30/09/2024 15:23, Andrei Stefanescu wrote:
-> Add the newly introduced S32G3 compatible for the pinctrl node.
-> Currently, it will fall back to the S32G2 compatible.
+On 10/2/24 9:49 AM, Uwe Kleine-König wrote:
+> On Wed, Oct 02, 2024 at 06:11:16AM +0200, Marek Vasut wrote:
+>> When sending data using DMA at high baudrate (4 Mbdps in local test case) to
+>> a device with small RX buffer which keeps asserting RTS after every received
+>> byte, it is possible that the iMX UART driver would not recognize the falling
+>> edge of RTS input signal and get stuck, unable to transmit any more data.
+>>
+>> This condition happens when the following sequence of events occur:
+>> - imx_uart_mctrl_check() is called at some point and takes a snapshot of UART
+>>    control signal status into sport->old_status using imx_uart_get_hwmctrl().
+>>    The RTSS/TIOCM_CTS bit is of interest here (*).
+>> - DMA transfer occurs, the remote device asserts RTS signal after each byte.
+>>    The i.MX UART driver recognizes each such RTS signal change, raises an
+>>    interrupt with USR1 register RTSD bit set, which leads to invocation of
+>>    __imx_uart_rtsint(), which calls uart_handle_cts_change().
+>>    - If the RTS signal is deasserted, uart_handle_cts_change() clears
+>>      port->hw_stopped and unblocks the port for further data transfers.
+>>    - If the RTS is asserted, uart_handle_cts_change() sets port->hw_stopped
+>>      and blocks the port for further data transfers. This may occur as the
+>>      last interrupt of a transfer, which means port->hw_stopped remains set
+>>      and the port remains blocked (**).
+>> - Any further data transfer attempts will trigger imx_uart_mctrl_check(),
+>>    which will read current status of UART control signals by calling
+>>    imx_uart_get_hwmctrl() (***) and compare it with sport->old_status .
+>>    - If current status differs from sport->old_status for RTS signal,
+>>      uart_handle_cts_change() is called and possibly unblocks the port
+>>      by clearing port->hw_stopped .
+>>    - If current status does not differ from sport->old_status for RTS
+>>      signal, no action occurs. This may occur in case prior snapshot (*)
+>>      was taken before any transfer so the RTS is deasserted, current
+>>      snapshot (***) was taken after a transfer and therefore RTS is
+>>      deasserted again, which means current status and sport->old_status
+>>      are identical. In case (**) triggered when RTS got asserted, and
+>>      made port->hw_stopped set, the port->hw_stopped will remain set
+>>      because no change on RTS line is recognized by this driver and
+>>      uart_handle_cts_change() is not called from here to unblock the
+>>      port->hw_stopped.
+>>
+>> Update sport->old_status in __imx_uart_rtsint() accordingly to make
+>> imx_uart_mctrl_check() detect such RTS change. Note that TIOCM_CAR
+>> and TIOCM_RI bits in sport->old_status do not suffer from this problem.
 > 
-> Signed-off-by: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+> Why is that? Just because these don't stop transmission?
 
-Reviewed-by: Matthias Brugger <mbrugger@suse.com>
+If imx_uart_mctrl_check() does not detect the RTS asserted->deasserted 
+transition, it will never call uart_handle_cts_change(), which will 
+never clear port->hw_stopped and the port will remain stopped 
+indefinitely, and never be able to transmit more data AFTER this event 
+happens (port close/open will reset the flag too, but that is undesired 
+workaround).
 
-> ---
->   arch/arm64/boot/dts/freescale/s32g3.dtsi | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+>> Fixes: ceca629e0b48 ("[ARM] 2971/1: i.MX uart handle rts irq")
+>> Signed-off-by: Marek Vasut <marex@denx.de>
+>> ---
+>>   drivers/tty/serial/imx.c | 4 ++++
+>>   1 file changed, 4 insertions(+)
+>>
+>> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+>> index 67d4a72eda770..3ad7f42790ef9 100644
+>> --- a/drivers/tty/serial/imx.c
+>> +++ b/drivers/tty/serial/imx.c
+>> @@ -762,6 +762,10 @@ static irqreturn_t __imx_uart_rtsint(int irq, void *dev_id)
+>>   
+>>   	imx_uart_writel(sport, USR1_RTSD, USR1);
+>>   	usr1 = imx_uart_readl(sport, USR1) & USR1_RTSS;
+>> +	if (usr1 & USR1_RTSS)
+>> +		sport->old_status |= TIOCM_CTS;
+>> +	else
+>> +		sport->old_status &= ~TIOCM_CTS;
+>>   	uart_handle_cts_change(&sport->port, usr1);
+>>   	wake_up_interruptible(&sport->port.state->port.delta_msr_wait);
 > 
-> diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> index b4226a9143c8..f6aafe44c9d7 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> @@ -172,7 +172,8 @@ soc@0 {
->   		ranges = <0 0 0 0x80000000>;
->   
->   		pinctrl: pinctrl@4009c240 {
-> -			compatible = "nxp,s32g2-siul2-pinctrl";
-> +			compatible = "nxp,s32g3-siul2-pinctrl",
-> +				     "nxp,s32g2-siul2-pinctrl";
->   				/* MSCR0-MSCR101 registers on siul2_0 */
->   			reg = <0x4009c240 0x198>,
->   				/* MSCR112-MSCR122 registers on siul2_1 */
+> I didn't grab the whole picture, but I think this deserves a code
+> comment.
+
+Added in V2.
+
+> Would it make sense to replace the current code in __imx_uart_rtsint by
+> a call to imx_uart_mctrl_check()?
+No, the __imx_uart_rtsint() only handles RTS state change interrupt and 
+no other interrupts, so calling imx_uart_mctrl_check() would handle 
+other unrelated signals for no reason and make the interrupt handler 
+slower. I don't think this is an improvement.
