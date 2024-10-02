@@ -1,64 +1,62 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011063.outbound.protection.outlook.com [52.101.70.63])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010069.outbound.protection.outlook.com [52.101.69.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC493748F
-	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 15:34:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.63
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06FE1D014D
+	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 15:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.69
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727883270; cv=fail; b=FqyHpt9ZtlQ2n3FoKqf7fj/cFu4NHHQ2DcyOnhlspKPZD70zWOCzWDj3d9tiX6v+IEXVXftab67omqLtvpqCOArvOc/yfK5VjWxJHsGsK7yBE2H9Ov1AdNhY7cPA/RPRuPZy/O5wYVpp6/2+yndBehC1KXS4u2C8b6ODQr029s4=
+	t=1727883619; cv=fail; b=WEh4BdbpAoP9D9V9GTM4EQI9R1XtidALsp+ZDmgr+AkG+62lKv+3ehCrL1tQdRzoChEkxY4eLZ5aFx6dT4Dma7656VwfUhVbvJz9HGTcx7ZN0WOGeAMCnhMa7Y66E+Xfc1tMq2Kuty1EAf4JtTZJjPmlWXoCQhdqKHCp0TQBjN8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727883270; c=relaxed/simple;
-	bh=xZaeChnawPmyhVCifTYAF6LSRNwDtIRqJBRYxQokvm0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=MIiadQMeOlYAzy4vpI/fWKyk3fk5XM1X8n1WFXK5regO8hSCGLv9aFtxoZdyFAgJ3D9HWlxnC8Vbafj4oQvjNVF7b3CqdYvEdEP8uJGTiCqpk1rU5wX1/t6mjkp7kU/27O+PDvlt5s4H1fdpJ1PACnlRcMprTl86Tb2sFMsIIa4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=gTw01HMn; arc=fail smtp.client-ip=52.101.70.63
+	s=arc-20240116; t=1727883619; c=relaxed/simple;
+	bh=h9OGF5FB7AoauS09/q+gS07+3jUaoJrjs3uxyJsWLic=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=L96R/i+IhPgQfEau0Y0TpBng/vTe+FpkhJjV5HjlIcHWBeA0hxHxFqEzxzOQCVLyD5xTNTkqg1kF4nHrsAt0U/kzBjQ+XYbXQ0QxhZ5tZ4tX6G2jnVGcWLuUDRmfQxI3ddDXtQYtc9UYArDdjxPf1Najc/lsDr266iXtZLSz1JA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=CscPW7Cw; arc=fail smtp.client-ip=52.101.69.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="gTw01HMn"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="CscPW7Cw"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qwq0pyFyFpYgb0ypkNPu9FlY2NYTaddrNVQ2Wr6kCi+IbuDs0tzWLd38eY25gJKTciXCA5MfrU/Lr0QOfwdGibllrL8xnzW3A5HniUZ1CiQhxW/94nhUxbl1q+RC6VvAaXZcWg4Sq1hGm6hb762oUzDVGfh3+5M/V7QSFrkpfWygKqVLUQ3u928gejvCfMV6E/nUow+YhwXPoqw3oHyFqp2xfeB4Q4ZaYUJDjVPDAw8zK3ol8nj8wKGpHAe9ZZaZEhfGq/exXg9Dn0Z7cpPUFS4mxhDKZbJw0cOxaAr/YOSKdzkSlBfBUviVZjgAkF8BCvTHoNtLN6VGNAAhd/0MSg==
+ b=aU9Rcni7w2jw1XGCtYjN0flg14o9pGeMUbA4VC9HGMC5ixm8Fd4PZyzZogHXzklfKsBVtMg7m+LSI2EcpqEhUpWyHuE5TPjKfHVA6Et8F02gUN0aMC4IdxaKBmQR372Z/ddWf8vjXCpRd6WAoJ+yjeIxN7odUUo06VkjI0JVc+8tst1wZEyZ4bYIRkD3ksyYOLrYnQGj7dd7V8c+/oR0Fce6Sczp6Cn1f5545V8MAfNaajReFzwFT/bSJ3vDxtXMbZ4fIhyuk8ADkt/McLu0BqHI3ZVZyhlQLlWByBO3+mRYoVTeVAVWwG+hi/p1snc9QfFB6yot02y/9SzWseRocg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=97JynLNleZvbXl13BgQ2E/oWBdMa+pSZN8tcTVVQOK4=;
- b=qYZx+lut5qV2gKYPwi0UqyLBuCUL3mfEeK2LeKrMMcclq4661/rl0a8efwq8Gisr8Xci8EJen3h5SkNfAPT2JVMwMkVpbz0v5FGb/tOGj1iiU0G8qbEiVER9AK/Rg+WumkV2u/pcc2t7Crjuk+DTipdUASoLZoUv2IR77v+JIIXU1S2iCV17MZMc1SQ5dlcjpdbgf/R2z++gVeBtW2FWz3W1v1JV+sxfjykxlzL18lkNoQZYnf+EcAdzZG+TjtErh1I5cBTteQl8aJozgZQUd1m0YsJbOsH0GeBfp4hR3niRaqunEgxW8wOlvwvVWGV7S0CMbTmzwb9TG07z43U1Wg==
+ bh=OkJcuYAfQ6vrm6XgvILz4eC/rN0FXB7BLp6QS+WkW+Q=;
+ b=Abrj+UaH3pi6N79GjMV6J2X9jAcyVL8l7r3vRNiYiIabPkjvLZlRNQdUpUMwANw6SCTTAjdQKw2zj21a56yo6kgfhkhXtVxX2HdTCkXHk0r9ABZY3YYt+ob7m2VoToUl74tDotD+ghj3tHLgnkzj90vAxsTDPxUAroqXFgv1U22Y8kHDVXGOrwoUEbPjPL7Fu3yNZmR+YjwYF+I0BD8MwgYj0vbNtLnZ4ZjVtzlBx3NS0m2y8SFdeXuilVD75ZTKgBGsWIHLT/ZpqHNeLq5S4EJvBQP+b0BzFIt3dvjMZFo9Qsp0CaypurmFwsvxanpcSP8WMafmlrqAl1DXdBt92g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=97JynLNleZvbXl13BgQ2E/oWBdMa+pSZN8tcTVVQOK4=;
- b=gTw01HMnxzhXSW345/FsOdyC3vUsfabPZD0+/JxqmHO9DQPwi3xjsyjU+n5zQEBx+4fqzAUoPYcht5sRx6nmM2ZRiK5X0e+zleoDx6KQwENPsD8vanuNTKGdIZ9SZF4b9qzJWzQYGiIEgvEfDMMhF6zmAnd7up7q28YZv/hwcyIW8meHsrXuTtksm3twnsuKr1MJP66Fzdt7KV3GmQHbw52Ivf4dI5xVZxw+Wt7PbbkWlZblNy08RNFbltA3BL7q3Pos/QDztC6X7eovuS/W5fE8/dn1bslzWaAy5UzYCTc8iJNppbvhMsGQTkTpzdJ5mh8ziH1W00kvGd+UWn9pag==
+ bh=OkJcuYAfQ6vrm6XgvILz4eC/rN0FXB7BLp6QS+WkW+Q=;
+ b=CscPW7Cw0S6cq6plzrjs3NcdfqDqK905Iz7hc4PwkOJ8GS+di9YQhiwW7IUob0CwwhRGenAb6en5Aa8LdIqimc4BI9nwxVAVImkiQIKAkuIWdlldvkJGiwbBAPWxnD9SOAFtz37g5EdSIO3EL66PO2//cKWI/ubW25FmoZFaXIBfYgmth/YtDljzaKfdgFuBSWWrhsN+niC/RW1N++yAisxDa2W+wd34O0LerT78Kqy9fiKwn36LiSR97dwP7D7FnzON347OR3GUa/Ood6qJFMx0LCZg1CAhmDFvLUK55hJ7VzLC9GwaVr2wPDmBtSVA0TSeEz+5TrqwLCOY3mGong==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PAWPR04MB9837.eurprd04.prod.outlook.com (2603:10a6:102:385::8) with
+Received: from GV1PR04MB9071.eurprd04.prod.outlook.com (2603:10a6:150:22::11)
+ by AM0PR04MB7106.eurprd04.prod.outlook.com (2603:10a6:208:191::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.16; Wed, 2 Oct
- 2024 15:34:23 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8005.024; Wed, 2 Oct 2024
- 15:34:23 +0000
-Date: Wed, 2 Oct 2024 11:34:14 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Esben Haabendal <esben@geanix.com>, Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org,
-	imx@lists.linux.dev, kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH] pinctrl: imx1: Fix too generic defines
-Message-ID: <Zv1n9vrC7tuWmTCt@lizhi-Precision-Tower-5810>
-References: <20241002-fix-imx-pc-v1-1-95f8b89400ee@linaro.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241002-fix-imx-pc-v1-1-95f8b89400ee@linaro.org>
-X-ClientProxiedBy: BY5PR03CA0029.namprd03.prod.outlook.com
- (2603:10b6:a03:1e0::39) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+ 2024 15:40:11 +0000
+Received: from GV1PR04MB9071.eurprd04.prod.outlook.com
+ ([fe80::b7f2:1d0:6b6a:ba58]) by GV1PR04MB9071.eurprd04.prod.outlook.com
+ ([fe80::b7f2:1d0:6b6a:ba58%7]) with mapi id 15.20.8005.026; Wed, 2 Oct 2024
+ 15:40:11 +0000
+From: Han Xu <han.xu@nxp.com>
+To: Han Xu <han.xu@nxp.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Cc: imx@lists.linux.dev,
+	linux-mtd@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/2] mtd: nand: raw: gpmi: switch to SYSTEM_SLEEP_PM_OPS
+Date: Wed,  2 Oct 2024 10:39:43 -0500
+Message-Id: <20241002153944.69733-1-han.xu@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR13CA0044.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c2::19) To GV1PR04MB9071.eurprd04.prod.outlook.com
+ (2603:10a6:150:22::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -66,343 +64,129 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAWPR04MB9837:EE_
-X-MS-Office365-Filtering-Correlation-Id: b5bcfa13-ef61-4b77-2fb4-08dce2f7b0f1
+X-MS-TrafficTypeDiagnostic: GV1PR04MB9071:EE_|AM0PR04MB7106:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9c22853c-df64-4e68-055e-08dce2f8804d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|376014|1800799024|38350700014;
+	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?GoXyYRG5uXE9zq55/BCQXIxwfwjyD6F3MsoKbpYWoElOZYN32TQZ2p1e0aZ3?=
- =?us-ascii?Q?Mj7Ivzm4NorfkmsMPzctwrP9kHeFHkTgjvL98jDn7GFHgpwV9+YbieE6gxnc?=
- =?us-ascii?Q?KFU0otyirq3g2u2RCM1S/xmYP0u83KHDeatY4czdscRBSTgC5wfLdriUTLqW?=
- =?us-ascii?Q?hTbLCKQgQjhyTo9lHDZ67iGrGoxu+fXDwgjec7Mc3qI+tq0WkzVtsf4+0V54?=
- =?us-ascii?Q?u8s6jG0cUK/lOopiu9iwhFY71AS3VXdJFIyDxkUjkYII13OM9x6InEhlqisi?=
- =?us-ascii?Q?c0Mn3TUTHRTZ9h9FBEGG+buvw6/wJ5QjF1rkrEL+a3wbbabJd4/jHc8ygat9?=
- =?us-ascii?Q?1DCJBHER37zxa+QhPgqki133dZX4OBcE/jN/NnD6AxsFE2NC6jvHV5VO3FhJ?=
- =?us-ascii?Q?88JyxIpBrARkoZvLgnl+MhFS4lq4MY5KmsZH6gDEYggpIpTl//OEQgzMx+wr?=
- =?us-ascii?Q?M2jLDH3wkkK/0db6K9pmajXRlkO+FxEOutqpT1Ob1r/7pWbu1ysuH6NnJCox?=
- =?us-ascii?Q?bfGs079NUHzG9RT0llRIOloHtWPJHAdN3zpyXNpCZuM2jvMkNLrLJRPbfQK8?=
- =?us-ascii?Q?mpkhrC1W8A27aBTw3pVBwImGSPiiWlp+4RsOuNFZ3Lzy4eZ19CZY9jdeCbUz?=
- =?us-ascii?Q?se9td+L3QXI3cwZNEjUAkZ+a86Y4S6MXHmXSp81vu23dhSlgdxEQix5Z4hbH?=
- =?us-ascii?Q?D1RKdUu4EY15gCQ7LhgXqRntlM7cg5oWVrbpLnfLpfAd9eCYeJ1D7km4CiEc?=
- =?us-ascii?Q?4LuvBlrGJ1ExnEFTUc9C4VujjMJ7gzrGMnA2dugcWvKTjixF7ooE6wA/Frpu?=
- =?us-ascii?Q?R6Qmgh0oGUMCVHvQSYHqn4/UFsM26cCmBa9OhUpFXs/7O/D+qoDpLSKm3jwa?=
- =?us-ascii?Q?5sPeGTLv17YNSU9R9lTDOAZyDyPkP6MsKeLUQeyFzZHVtwGwvMHJnHtB9/VX?=
- =?us-ascii?Q?otXrmHTS88Ud6Zb0leDOLmuQxad9tC0mopqOcCz+P3vpHyC+tWi/12FOC5z6?=
- =?us-ascii?Q?m0q15HuOOFrYgqeUVtyZnisk/kvY3SExk8MmRo/VJdtbsBtkTu5fHmXqN+Pd?=
- =?us-ascii?Q?p00ukjTEdmPK13+94S+/K3v4PMuNAuvVFxtytJD+8fxSN7RQuoqtTO6X58y/?=
- =?us-ascii?Q?g32Lp89VnOjUUP5HMEoQ0BfnkjKjnBP4lts1Ro0zT98wiurCxeljZEkjgfar?=
- =?us-ascii?Q?lEt+oXjQ/EeJONdqSk6BKlvcWCYDmU70n986Kvw1YcFvr7HpnHe62x0C7tw+?=
- =?us-ascii?Q?Q5oAO2S1AneJW1P2DJsnkHzqRXTrKsJEWJkDZAnDKjjupEPzyGmolMO9IItV?=
- =?us-ascii?Q?vBPuSXu+1D8bSB760yp2b7kmVO+EaVeXvPgTKOaYi8LC1w=3D=3D?=
+	=?us-ascii?Q?TFnOYB2WBxGvN8v58PKk1wUzIvfV+PB8FvTnecnlsKv1mUuPeDEjtDTHuR4K?=
+ =?us-ascii?Q?GJLXn9TbFrGxkNsn8XsUvmHbdMb9yl+zbd75TIAtLlt0MRUKkpnuZwtMhcGV?=
+ =?us-ascii?Q?c46iIHBm/GidofYuLGW3XZD8O80IVsUP6QLIw/QfR3PqMjQxLqRTol7ystcY?=
+ =?us-ascii?Q?9m+ZJq/eSNwn0aF0Jf0r4XA6k5LbtH92DOQ2B7QglwRw/a7MKJX6vjCQ7AGt?=
+ =?us-ascii?Q?uJ/pai9bIGUgrJLrAErYTngtiLt5MoV58HEoL40053O4UKsK5V9iurPbtgHx?=
+ =?us-ascii?Q?B1vd7lU2vdpBliR2hcPTtDJcPr0lTyG1VBk/e9Pt8wjC+AjPEM6V03/0Ek/e?=
+ =?us-ascii?Q?a657lTF/cSVmJuLMkVphFEYGD6eiCbt1bNI0celueVT5Av4vtBDrsbC5VlwW?=
+ =?us-ascii?Q?AE2LsTCmXmW37e4FGl3jXMcNE2Xb9zPN7mM1tX9x1Mz6XOhIJDUz6JuQDc0Y?=
+ =?us-ascii?Q?dzTCs1rRA64w3SWhRazu5jB+UiTJe6eehBnxrEqxV7r6/uA1qNZfKAK4yAUp?=
+ =?us-ascii?Q?7LzdZF27F/wHPC7ObZIyLAnXWGaHaYz5t3WGfXtFmpc+10mOllvE7PcbryCZ?=
+ =?us-ascii?Q?SJEC4BJrsGVJcRmM8kpuo7CnWfaqG8bo0MCdrSegDZGI/KENpl74VBvRm3zu?=
+ =?us-ascii?Q?tYZxGElpcifQtL3oES5r1+Zq7I+q+ZBZyiX5pvabDq5yCyuA4gNFfL5z5jsO?=
+ =?us-ascii?Q?ocnwzdoOmMM4FLQiVPv8WInLwap6Hyg0IgLJxjPM1iJTm7c+piGYS0/Q+v1y?=
+ =?us-ascii?Q?sfhaZ2WhFkLRMRFT8CmN5rHOTBYLvb2a3BJr4ov4yCtPc3IHDnz44M9vb07b?=
+ =?us-ascii?Q?2AN/qW4REPOamkopcOmnwXQ3CeSfZc3Ue9sU79scSr3NFhALvXZlyGUV+s/D?=
+ =?us-ascii?Q?3ebTUPkqBVDv26nRV82QVQjtlu5ibAf8rjlnuKYWwI8px1udtlo1+OEkeTcE?=
+ =?us-ascii?Q?Od9Hum+BU/jJ0BVEuEkVbD/qC4YMWFFYwunecImcFltQMXiJRmO3nqY1Je78?=
+ =?us-ascii?Q?56+eU0rjf7vIJEq3/aUd/1VFRwhLFjh9Z8I4lghcZI475Ju/MiG+Y4oNRb47?=
+ =?us-ascii?Q?z30+kYTuuEiBPknNwo9maZvklpO1GvViw97NdU1JY7yCuYBGmayy02dp4OiA?=
+ =?us-ascii?Q?oXXNWPOLYkc4fWlHPyiNlleqozJ3AOvgs2866nrjITXVZu+dy2OjhYHvyCBF?=
+ =?us-ascii?Q?9bqpk1k+ZtdnbkzWoe9BzAxlUHaetED0OM13DpeTV2y9tRHLGtz2khfJJ8sb?=
+ =?us-ascii?Q?ZWzTArBApn3non3M7RAcESd1zOROa1XTSKUfnBJn5+R6gtad/uCBrhy3rRZ3?=
+ =?us-ascii?Q?0OfQiwq5XSmnbfla6C5to8D+?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR04MB9071.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?LNNHGT+zVbjkOW3ot7tTrNzMlGDJSAr2COVRHdqqTKN9s+lDPe2mmArh1rK/?=
- =?us-ascii?Q?nLRNfnA/pbVe0t/cwHjeZIObGbzBuZ5TBPx7jvzxWr6Xh4B5j4h4MwA4PxcL?=
- =?us-ascii?Q?yLkuuX4X7aFfaYx3cBSIA28vWnFbIoJHvfF1RQs4rNJQtjmuSfh6x21xo4pi?=
- =?us-ascii?Q?NNdjeFjpvyPD60B/sUbaFAJmvtmhMKCOWaSXnLVwJ4CqH1oW9l7spuwtuUnX?=
- =?us-ascii?Q?txc/ienQ4MDFfva5YHZxizVJfHNNvYcIeYCkHsLsRwBHMthwIXUOpQ4iiNhW?=
- =?us-ascii?Q?tJwma6WTlNWXf6NoHDxWoVO36/7mD88575modCsjSXa4qphJWoDUvUkg+tBm?=
- =?us-ascii?Q?fvs8FXd/tiG+IYg/wPsOfsafm5HAW7r1ZpYGJOxsUZWEtSpe8LXBtP8oy5Ed?=
- =?us-ascii?Q?aK97azfU/V2c/xG+2XjvVZhyx29oM6kbK6iGEqsPpj/WxlmfoN1Kz6tYxJMI?=
- =?us-ascii?Q?Mr075vNDXdFK5oa5D1AuHPpLYJGWKkYWY6FEpolOQ8rFtxDH+1xNnP/6UtPQ?=
- =?us-ascii?Q?Uy4I/1SG6jgk9yq4WRdFFpE/OivZ7A98JBRjqKO8QGHLbZKrb7Ybma7/OpAK?=
- =?us-ascii?Q?f0Va+jCZQDRkFZi6th0IsvXuxOmXn0EP9amZjefi8L9DkO57k0of72pcc7NG?=
- =?us-ascii?Q?RJEn8cS6DhXkojIl8Z7vDPGLJtNycDGRjR5g9CTwnXiDU6iH9h6cgafX5J8L?=
- =?us-ascii?Q?WpjfBIVzObMS05brMC5o6fe7sj8WuYbjGjN7E3ml8DZaVJFlBmlX5WI+WCDa?=
- =?us-ascii?Q?swy0CJSMIXg54kYFh42wzLAJIQFH2zvTClRCLNtUGhP6cvQguJAJR+q/Q0Tm?=
- =?us-ascii?Q?H92raz6E/wpAM0BYESnE0Z1paKxck+sQFyWnmMtn94n4kz0EgcTnjhsA6zqu?=
- =?us-ascii?Q?Q7nhrEWg4O379oS82lD1rYty72H1FXg2UeZK3RURfkTyRmIcfyTd6FUmjJ5d?=
- =?us-ascii?Q?WbGndU3+h/lBzlJAV6bFUmcp6vsQWcNY+IDqHYTsff8RwLA0zyKlgCyUfk77?=
- =?us-ascii?Q?w/wUcM19q5PAV+6wEUd+H1plBh0RpqhYQz66qfd+mXUHdX24ZsUmy5C7iNYv?=
- =?us-ascii?Q?lzalIqret+JorZZGoEPEbiVvVHXHxalUh+E+p84NIokdW7ph7enrOfyoY+Wv?=
- =?us-ascii?Q?17+RjPjRxzYS7uz7pZbKcUm1pxNNghI4Qb/WTHWYD7S8h2/oCd4MXRoJRXRk?=
- =?us-ascii?Q?9tSIwCaNDLtgxstUbeA/e8eGGp+uidnqHPOuN+fTsR19DrtYgC2pBqqsFRq1?=
- =?us-ascii?Q?DoyzHJlz4XpxQKVs0PHXW+lLQzb2Oyz27TiESy4RgcW5+ixbd778mSsnf1Z2?=
- =?us-ascii?Q?AzXI1EEYPJDFovUih1iWL0CFfwY19UNyjFcs37tvTr21XFLj/8WF+KRuB1tG?=
- =?us-ascii?Q?UmmJ8cevEx6ZI5sgW86CYs9ffVwoVLUSj3rpSTpZxLK8TjIom7fAuhTH7BUO?=
- =?us-ascii?Q?PZevJVjZzJ01oEZ3tNv4kna3vNzYCT/qoytWODr4LE/8O6Kg2hVVUrmp/qA3?=
- =?us-ascii?Q?IzHZYpKy5TcXH3DTlCOip9ygS7KMtFSrdxRluJHz8j8ZBcHyKC/8gg5y9JqP?=
- =?us-ascii?Q?B7Q4N9PB0rlNpPNFCpN4yap/NaUxHWSqT+ovXHwb?=
+	=?us-ascii?Q?YvNcG1B6wvmzLSKz9H1YKW1YlctfWmv3zpfxhTmUwJFT72rHQOp+nms4f62m?=
+ =?us-ascii?Q?pQrybMG7U8JIaMbAMj7F2ZZZ6sMhKKnq5Q8M4yiJou2RCQg86jB6sUjAyNLG?=
+ =?us-ascii?Q?m/GUYzV53pjumDbXxkOhyYJ22hs/HOFpVIe2qrpqFq9O3vedrckea1hDWL8/?=
+ =?us-ascii?Q?8q0qYIB9+rLlYUgqeMRHAxzSfoUZZy3m2uO8kT8H0YjTAOJUqZJMVtP4kL6W?=
+ =?us-ascii?Q?LNVHDli4lMADYJO8SFeRV4djrLiz0lQc5NIFPnAGipJ3fsEPNoOoaoIa2hDo?=
+ =?us-ascii?Q?ma/bUqmYkdtSB941Vm52b2qgNQYpMb1ZznsF6KKhPIjX1DlBi5g6ROd6c0kw?=
+ =?us-ascii?Q?GMpJ96mhOdT+lgvZOyBiKBq1E3SjnWKGoVaYKFQ+sgzLUIatKHMwDUQ0zzrI?=
+ =?us-ascii?Q?0ZxkCI9JjMdCQRRnMdqZ356kHlIpBgsLkzhABAfWWvIzpP0oOlE0BSZuJS1A?=
+ =?us-ascii?Q?vkesjzlptoHexT/oFhZx39NPYOE/iBvrzDLfHpnjZEeJa9XWraUP3HWisi5x?=
+ =?us-ascii?Q?PwA+uS3xyNthV2rP6wWJPOvLRNlEpQt3WPFDplBdsUMcjWBNaLC8DD2rp5Et?=
+ =?us-ascii?Q?PLqpmgbgQbQ5G6n4zEj5GnLO+3ZXSEqmBeqZuhbtq3cXfvlPlZE70kPSV+ep?=
+ =?us-ascii?Q?JaGg2fCxWHTUyFkUe2cl7kS5bofUejeSih3cdn4ZN2t2rYRCzXMYAH7550vy?=
+ =?us-ascii?Q?B4pUW2YRunfQpIUo1yHisSvsiE8mKsz4AnUNgNiVrCZwlEEzZlqCbjDvBHKr?=
+ =?us-ascii?Q?AU6UFIVi1uNZ2ectyL8mq6TCUoZ6AbZfKz6dREkYEyPxb9pUqZdQSgCN9hPI?=
+ =?us-ascii?Q?qKBch6AT+fpJIM3e65rfz4Kjrr2K/HrR1/Z7vNx9PcYP8sUd/8kLkyT2Ebmx?=
+ =?us-ascii?Q?h7JHvl4SVBB+mkt9s0tlW35rcv2t9TiyiNys4Ac2nWzF/X1fZaaCK3zIR9Y5?=
+ =?us-ascii?Q?8iRbZwf1pTi7poUbANgpj7LgdH5pL+R1xxZjcW5ZlIXVZdLug20vqmFuoq9v?=
+ =?us-ascii?Q?3nAw2U4aQ2BPux9jd+O9uacJh8y7wLNquyttvgBV6QpSQ0w2wyAwIkLqF4JP?=
+ =?us-ascii?Q?TsWLZYALNf6ACQD/p9Giz5obJuaNeFDLMAg5l9K7JKnHRjE3awHLnGRFxMZy?=
+ =?us-ascii?Q?Fdaut5xnQKiMHc0sr32YLR/LiizBqTbnUGXZCH18lYFfZZ4aPaqfl+CBS0m8?=
+ =?us-ascii?Q?aXT7PZRG8kM0C3CDjYZgquQFmLMh38wJPS9LzulTlRma9dbm91EpbKLBdomD?=
+ =?us-ascii?Q?wefmxOQplAh1pFuaQpMyQuhiZ5q4cGOIdQk2ZnLMxvQqmrrcSvWVW3MdkZ7C?=
+ =?us-ascii?Q?SocPw4ySsXd/UEfmkC7WVsm5bL6D7kcK5vH30uTCbFrCEYP5USCjPAXKciYL?=
+ =?us-ascii?Q?rgM0WG0wLh27Dn4ZJNj324Rryxppt5LVH0/eA57q7FbGTJeoXYY5pb++ZYsY?=
+ =?us-ascii?Q?HI3P4fyuyxvQnjomPRPFlLSD25MXhNY72YDXNEN4weo743x0EdYTIfaV0QpN?=
+ =?us-ascii?Q?S0BvzQMiU9rIo+PEAmsOkLiXcFWJ3N+fZoxEVL80SLbPsHagpBCSw3NYXaUo?=
+ =?us-ascii?Q?ZI6hmpnzgYcomOhXPc/4gpA7V/PkXDq5oLO86O7w?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b5bcfa13-ef61-4b77-2fb4-08dce2f7b0f1
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c22853c-df64-4e68-055e-08dce2f8804d
+X-MS-Exchange-CrossTenant-AuthSource: GV1PR04MB9071.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2024 15:34:23.6064
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2024 15:40:11.3939
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kPoAVitmjx5LMMFCkhiVwxhcYpfXzSNSQhcv0R+VyeDhIz1MMtR7LHDnkqBUXmlLAeKq7REtHBjDDXFGHfOqvw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB9837
+X-MS-Exchange-CrossTenant-UserPrincipalName: AVwoCcnElTRyWQnBhfyDr9AyIpKnX41Fl0O8MrbIyjtNknqjJru4/PdGkcbyNXAA
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7106
 
-On Wed, Oct 02, 2024 at 04:22:49PM +0200, Linus Walleij wrote:
-> The "PC" define is colliding with the (apparently broadcased)
-> define for "program counter" on Loongarch, so let's rename all
-> these 2-letter defines so they don't collide with stuff.
+Replace the SET_SYSTEM_SLEEP_PM_OPS with modern SYSTEM_SLEEP_PM_OPS
+alternatives.
 
-nit: wrap to 75 chars
+Signed-off-by: Han Xu <han.xu@nxp.com>
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
->
-> Fixes: a55222b7a132 pinctrl: freescale: enable use with COMPILE_TEST
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202410020940.wGISlWfV-lkp@intel.com/
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
->  drivers/pinctrl/freescale/pinctrl-imx1.c | 228 +++++++++++++++----------------
->  1 file changed, 114 insertions(+), 114 deletions(-)
->
-> diff --git a/drivers/pinctrl/freescale/pinctrl-imx1.c b/drivers/pinctrl/freescale/pinctrl-imx1.c
-> index 1e2b0fe9ffd6..bd39cadf1f34 100644
-> --- a/drivers/pinctrl/freescale/pinctrl-imx1.c
-> +++ b/drivers/pinctrl/freescale/pinctrl-imx1.c
-> @@ -12,122 +12,122 @@
->  #include "pinctrl-imx1.h"
->
->  #define PAD_ID(port, pin)	((port) * 32 + (pin))
-> -#define PA	0
-> -#define PB	1
-> -#define PC	2
-> -#define PD	3
-> +#define IMX1_PA	0
-> +#define IMX1_PB	1
-> +#define IMX1_PC	2
-> +#define IMX1_PD	3
->
->  enum imx1_pads {
-> -	MX1_PAD_A24		= PAD_ID(PA, 0),
-> -	MX1_PAD_TIN		= PAD_ID(PA, 1),
-> -	MX1_PAD_PWMO		= PAD_ID(PA, 2),
-> -	MX1_PAD_CSI_MCLK	= PAD_ID(PA, 3),
-> -	MX1_PAD_CSI_D0		= PAD_ID(PA, 4),
-> -	MX1_PAD_CSI_D1		= PAD_ID(PA, 5),
-> -	MX1_PAD_CSI_D2		= PAD_ID(PA, 6),
-> -	MX1_PAD_CSI_D3		= PAD_ID(PA, 7),
-> -	MX1_PAD_CSI_D4		= PAD_ID(PA, 8),
-> -	MX1_PAD_CSI_D5		= PAD_ID(PA, 9),
-> -	MX1_PAD_CSI_D6		= PAD_ID(PA, 10),
-> -	MX1_PAD_CSI_D7		= PAD_ID(PA, 11),
-> -	MX1_PAD_CSI_VSYNC	= PAD_ID(PA, 12),
-> -	MX1_PAD_CSI_HSYNC	= PAD_ID(PA, 13),
-> -	MX1_PAD_CSI_PIXCLK	= PAD_ID(PA, 14),
-> -	MX1_PAD_I2C_SDA		= PAD_ID(PA, 15),
-> -	MX1_PAD_I2C_SCL		= PAD_ID(PA, 16),
-> -	MX1_PAD_DTACK		= PAD_ID(PA, 17),
-> -	MX1_PAD_BCLK		= PAD_ID(PA, 18),
-> -	MX1_PAD_LBA		= PAD_ID(PA, 19),
-> -	MX1_PAD_ECB		= PAD_ID(PA, 20),
-> -	MX1_PAD_A0		= PAD_ID(PA, 21),
-> -	MX1_PAD_CS4		= PAD_ID(PA, 22),
-> -	MX1_PAD_CS5		= PAD_ID(PA, 23),
-> -	MX1_PAD_A16		= PAD_ID(PA, 24),
-> -	MX1_PAD_A17		= PAD_ID(PA, 25),
-> -	MX1_PAD_A18		= PAD_ID(PA, 26),
-> -	MX1_PAD_A19		= PAD_ID(PA, 27),
-> -	MX1_PAD_A20		= PAD_ID(PA, 28),
-> -	MX1_PAD_A21		= PAD_ID(PA, 29),
-> -	MX1_PAD_A22		= PAD_ID(PA, 30),
-> -	MX1_PAD_A23		= PAD_ID(PA, 31),
-> -	MX1_PAD_SD_DAT0		= PAD_ID(PB, 8),
-> -	MX1_PAD_SD_DAT1		= PAD_ID(PB, 9),
-> -	MX1_PAD_SD_DAT2		= PAD_ID(PB, 10),
-> -	MX1_PAD_SD_DAT3		= PAD_ID(PB, 11),
-> -	MX1_PAD_SD_SCLK		= PAD_ID(PB, 12),
-> -	MX1_PAD_SD_CMD		= PAD_ID(PB, 13),
-> -	MX1_PAD_SIM_SVEN	= PAD_ID(PB, 14),
-> -	MX1_PAD_SIM_PD		= PAD_ID(PB, 15),
-> -	MX1_PAD_SIM_TX		= PAD_ID(PB, 16),
-> -	MX1_PAD_SIM_RX		= PAD_ID(PB, 17),
-> -	MX1_PAD_SIM_RST		= PAD_ID(PB, 18),
-> -	MX1_PAD_SIM_CLK		= PAD_ID(PB, 19),
-> -	MX1_PAD_USBD_AFE	= PAD_ID(PB, 20),
-> -	MX1_PAD_USBD_OE		= PAD_ID(PB, 21),
-> -	MX1_PAD_USBD_RCV	= PAD_ID(PB, 22),
-> -	MX1_PAD_USBD_SUSPND	= PAD_ID(PB, 23),
-> -	MX1_PAD_USBD_VP		= PAD_ID(PB, 24),
-> -	MX1_PAD_USBD_VM		= PAD_ID(PB, 25),
-> -	MX1_PAD_USBD_VPO	= PAD_ID(PB, 26),
-> -	MX1_PAD_USBD_VMO	= PAD_ID(PB, 27),
-> -	MX1_PAD_UART2_CTS	= PAD_ID(PB, 28),
-> -	MX1_PAD_UART2_RTS	= PAD_ID(PB, 29),
-> -	MX1_PAD_UART2_TXD	= PAD_ID(PB, 30),
-> -	MX1_PAD_UART2_RXD	= PAD_ID(PB, 31),
-> -	MX1_PAD_SSI_RXFS	= PAD_ID(PC, 3),
-> -	MX1_PAD_SSI_RXCLK	= PAD_ID(PC, 4),
-> -	MX1_PAD_SSI_RXDAT	= PAD_ID(PC, 5),
-> -	MX1_PAD_SSI_TXDAT	= PAD_ID(PC, 6),
-> -	MX1_PAD_SSI_TXFS	= PAD_ID(PC, 7),
-> -	MX1_PAD_SSI_TXCLK	= PAD_ID(PC, 8),
-> -	MX1_PAD_UART1_CTS	= PAD_ID(PC, 9),
-> -	MX1_PAD_UART1_RTS	= PAD_ID(PC, 10),
-> -	MX1_PAD_UART1_TXD	= PAD_ID(PC, 11),
-> -	MX1_PAD_UART1_RXD	= PAD_ID(PC, 12),
-> -	MX1_PAD_SPI1_RDY	= PAD_ID(PC, 13),
-> -	MX1_PAD_SPI1_SCLK	= PAD_ID(PC, 14),
-> -	MX1_PAD_SPI1_SS		= PAD_ID(PC, 15),
-> -	MX1_PAD_SPI1_MISO	= PAD_ID(PC, 16),
-> -	MX1_PAD_SPI1_MOSI	= PAD_ID(PC, 17),
-> -	MX1_PAD_BT13		= PAD_ID(PC, 19),
-> -	MX1_PAD_BT12		= PAD_ID(PC, 20),
-> -	MX1_PAD_BT11		= PAD_ID(PC, 21),
-> -	MX1_PAD_BT10		= PAD_ID(PC, 22),
-> -	MX1_PAD_BT9		= PAD_ID(PC, 23),
-> -	MX1_PAD_BT8		= PAD_ID(PC, 24),
-> -	MX1_PAD_BT7		= PAD_ID(PC, 25),
-> -	MX1_PAD_BT6		= PAD_ID(PC, 26),
-> -	MX1_PAD_BT5		= PAD_ID(PC, 27),
-> -	MX1_PAD_BT4		= PAD_ID(PC, 28),
-> -	MX1_PAD_BT3		= PAD_ID(PC, 29),
-> -	MX1_PAD_BT2		= PAD_ID(PC, 30),
-> -	MX1_PAD_BT1		= PAD_ID(PC, 31),
-> -	MX1_PAD_LSCLK		= PAD_ID(PD, 6),
-> -	MX1_PAD_REV		= PAD_ID(PD, 7),
-> -	MX1_PAD_CLS		= PAD_ID(PD, 8),
-> -	MX1_PAD_PS		= PAD_ID(PD, 9),
-> -	MX1_PAD_SPL_SPR		= PAD_ID(PD, 10),
-> -	MX1_PAD_CONTRAST	= PAD_ID(PD, 11),
-> -	MX1_PAD_ACD_OE		= PAD_ID(PD, 12),
-> -	MX1_PAD_LP_HSYNC	= PAD_ID(PD, 13),
-> -	MX1_PAD_FLM_VSYNC	= PAD_ID(PD, 14),
-> -	MX1_PAD_LD0		= PAD_ID(PD, 15),
-> -	MX1_PAD_LD1		= PAD_ID(PD, 16),
-> -	MX1_PAD_LD2		= PAD_ID(PD, 17),
-> -	MX1_PAD_LD3		= PAD_ID(PD, 18),
-> -	MX1_PAD_LD4		= PAD_ID(PD, 19),
-> -	MX1_PAD_LD5		= PAD_ID(PD, 20),
-> -	MX1_PAD_LD6		= PAD_ID(PD, 21),
-> -	MX1_PAD_LD7		= PAD_ID(PD, 22),
-> -	MX1_PAD_LD8		= PAD_ID(PD, 23),
-> -	MX1_PAD_LD9		= PAD_ID(PD, 24),
-> -	MX1_PAD_LD10		= PAD_ID(PD, 25),
-> -	MX1_PAD_LD11		= PAD_ID(PD, 26),
-> -	MX1_PAD_LD12		= PAD_ID(PD, 27),
-> -	MX1_PAD_LD13		= PAD_ID(PD, 28),
-> -	MX1_PAD_LD14		= PAD_ID(PD, 29),
-> -	MX1_PAD_LD15		= PAD_ID(PD, 30),
-> -	MX1_PAD_TMR2OUT		= PAD_ID(PD, 31),
-> +	MX1_PAD_A24		= PAD_ID(IMX1_PA, 0),
-> +	MX1_PAD_TIN		= PAD_ID(IMX1_PA, 1),
-> +	MX1_PAD_PWMO		= PAD_ID(IMX1_PA, 2),
-> +	MX1_PAD_CSI_MCLK	= PAD_ID(IMX1_PA, 3),
-> +	MX1_PAD_CSI_D0		= PAD_ID(IMX1_PA, 4),
-> +	MX1_PAD_CSI_D1		= PAD_ID(IMX1_PA, 5),
-> +	MX1_PAD_CSI_D2		= PAD_ID(IMX1_PA, 6),
-> +	MX1_PAD_CSI_D3		= PAD_ID(IMX1_PA, 7),
-> +	MX1_PAD_CSI_D4		= PAD_ID(IMX1_PA, 8),
-> +	MX1_PAD_CSI_D5		= PAD_ID(IMX1_PA, 9),
-> +	MX1_PAD_CSI_D6		= PAD_ID(IMX1_PA, 10),
-> +	MX1_PAD_CSI_D7		= PAD_ID(IMX1_PA, 11),
-> +	MX1_PAD_CSI_VSYNC	= PAD_ID(IMX1_PA, 12),
-> +	MX1_PAD_CSI_HSYNC	= PAD_ID(IMX1_PA, 13),
-> +	MX1_PAD_CSI_PIXCLK	= PAD_ID(IMX1_PA, 14),
-> +	MX1_PAD_I2C_SDA		= PAD_ID(IMX1_PA, 15),
-> +	MX1_PAD_I2C_SCL		= PAD_ID(IMX1_PA, 16),
-> +	MX1_PAD_DTACK		= PAD_ID(IMX1_PA, 17),
-> +	MX1_PAD_BCLK		= PAD_ID(IMX1_PA, 18),
-> +	MX1_PAD_LBA		= PAD_ID(IMX1_PA, 19),
-> +	MX1_PAD_ECB		= PAD_ID(IMX1_PA, 20),
-> +	MX1_PAD_A0		= PAD_ID(IMX1_PA, 21),
-> +	MX1_PAD_CS4		= PAD_ID(IMX1_PA, 22),
-> +	MX1_PAD_CS5		= PAD_ID(IMX1_PA, 23),
-> +	MX1_PAD_A16		= PAD_ID(IMX1_PA, 24),
-> +	MX1_PAD_A17		= PAD_ID(IMX1_PA, 25),
-> +	MX1_PAD_A18		= PAD_ID(IMX1_PA, 26),
-> +	MX1_PAD_A19		= PAD_ID(IMX1_PA, 27),
-> +	MX1_PAD_A20		= PAD_ID(IMX1_PA, 28),
-> +	MX1_PAD_A21		= PAD_ID(IMX1_PA, 29),
-> +	MX1_PAD_A22		= PAD_ID(IMX1_PA, 30),
-> +	MX1_PAD_A23		= PAD_ID(IMX1_PA, 31),
-> +	MX1_PAD_SD_DAT0		= PAD_ID(IMX1_PB, 8),
-> +	MX1_PAD_SD_DAT1		= PAD_ID(IMX1_PB, 9),
-> +	MX1_PAD_SD_DAT2		= PAD_ID(IMX1_PB, 10),
-> +	MX1_PAD_SD_DAT3		= PAD_ID(IMX1_PB, 11),
-> +	MX1_PAD_SD_SCLK		= PAD_ID(IMX1_PB, 12),
-> +	MX1_PAD_SD_CMD		= PAD_ID(IMX1_PB, 13),
-> +	MX1_PAD_SIM_SVEN	= PAD_ID(IMX1_PB, 14),
-> +	MX1_PAD_SIM_PD		= PAD_ID(IMX1_PB, 15),
-> +	MX1_PAD_SIM_TX		= PAD_ID(IMX1_PB, 16),
-> +	MX1_PAD_SIM_RX		= PAD_ID(IMX1_PB, 17),
-> +	MX1_PAD_SIM_RST		= PAD_ID(IMX1_PB, 18),
-> +	MX1_PAD_SIM_CLK		= PAD_ID(IMX1_PB, 19),
-> +	MX1_PAD_USBD_AFE	= PAD_ID(IMX1_PB, 20),
-> +	MX1_PAD_USBD_OE		= PAD_ID(IMX1_PB, 21),
-> +	MX1_PAD_USBD_RCV	= PAD_ID(IMX1_PB, 22),
-> +	MX1_PAD_USBD_SUSPND	= PAD_ID(IMX1_PB, 23),
-> +	MX1_PAD_USBD_VP		= PAD_ID(IMX1_PB, 24),
-> +	MX1_PAD_USBD_VM		= PAD_ID(IMX1_PB, 25),
-> +	MX1_PAD_USBD_VPO	= PAD_ID(IMX1_PB, 26),
-> +	MX1_PAD_USBD_VMO	= PAD_ID(IMX1_PB, 27),
-> +	MX1_PAD_UART2_CTS	= PAD_ID(IMX1_PB, 28),
-> +	MX1_PAD_UART2_RTS	= PAD_ID(IMX1_PB, 29),
-> +	MX1_PAD_UART2_TXD	= PAD_ID(IMX1_PB, 30),
-> +	MX1_PAD_UART2_RXD	= PAD_ID(IMX1_PB, 31),
-> +	MX1_PAD_SSI_RXFS	= PAD_ID(IMX1_PC, 3),
-> +	MX1_PAD_SSI_RXCLK	= PAD_ID(IMX1_PC, 4),
-> +	MX1_PAD_SSI_RXDAT	= PAD_ID(IMX1_PC, 5),
-> +	MX1_PAD_SSI_TXDAT	= PAD_ID(IMX1_PC, 6),
-> +	MX1_PAD_SSI_TXFS	= PAD_ID(IMX1_PC, 7),
-> +	MX1_PAD_SSI_TXCLK	= PAD_ID(IMX1_PC, 8),
-> +	MX1_PAD_UART1_CTS	= PAD_ID(IMX1_PC, 9),
-> +	MX1_PAD_UART1_RTS	= PAD_ID(IMX1_PC, 10),
-> +	MX1_PAD_UART1_TXD	= PAD_ID(IMX1_PC, 11),
-> +	MX1_PAD_UART1_RXD	= PAD_ID(IMX1_PC, 12),
-> +	MX1_PAD_SPI1_RDY	= PAD_ID(IMX1_PC, 13),
-> +	MX1_PAD_SPI1_SCLK	= PAD_ID(IMX1_PC, 14),
-> +	MX1_PAD_SPI1_SS		= PAD_ID(IMX1_PC, 15),
-> +	MX1_PAD_SPI1_MISO	= PAD_ID(IMX1_PC, 16),
-> +	MX1_PAD_SPI1_MOSI	= PAD_ID(IMX1_PC, 17),
-> +	MX1_PAD_BT13		= PAD_ID(IMX1_PC, 19),
-> +	MX1_PAD_BT12		= PAD_ID(IMX1_PC, 20),
-> +	MX1_PAD_BT11		= PAD_ID(IMX1_PC, 21),
-> +	MX1_PAD_BT10		= PAD_ID(IMX1_PC, 22),
-> +	MX1_PAD_BT9		= PAD_ID(IMX1_PC, 23),
-> +	MX1_PAD_BT8		= PAD_ID(IMX1_PC, 24),
-> +	MX1_PAD_BT7		= PAD_ID(IMX1_PC, 25),
-> +	MX1_PAD_BT6		= PAD_ID(IMX1_PC, 26),
-> +	MX1_PAD_BT5		= PAD_ID(IMX1_PC, 27),
-> +	MX1_PAD_BT4		= PAD_ID(IMX1_PC, 28),
-> +	MX1_PAD_BT3		= PAD_ID(IMX1_PC, 29),
-> +	MX1_PAD_BT2		= PAD_ID(IMX1_PC, 30),
-> +	MX1_PAD_BT1		= PAD_ID(IMX1_PC, 31),
-> +	MX1_PAD_LSCLK		= PAD_ID(IMX1_PD, 6),
-> +	MX1_PAD_REV		= PAD_ID(IMX1_PD, 7),
-> +	MX1_PAD_CLS		= PAD_ID(IMX1_PD, 8),
-> +	MX1_PAD_PS		= PAD_ID(IMX1_PD, 9),
-> +	MX1_PAD_SPL_SPR		= PAD_ID(IMX1_PD, 10),
-> +	MX1_PAD_CONTRAST	= PAD_ID(IMX1_PD, 11),
-> +	MX1_PAD_ACD_OE		= PAD_ID(IMX1_PD, 12),
-> +	MX1_PAD_LP_HSYNC	= PAD_ID(IMX1_PD, 13),
-> +	MX1_PAD_FLM_VSYNC	= PAD_ID(IMX1_PD, 14),
-> +	MX1_PAD_LD0		= PAD_ID(IMX1_PD, 15),
-> +	MX1_PAD_LD1		= PAD_ID(IMX1_PD, 16),
-> +	MX1_PAD_LD2		= PAD_ID(IMX1_PD, 17),
-> +	MX1_PAD_LD3		= PAD_ID(IMX1_PD, 18),
-> +	MX1_PAD_LD4		= PAD_ID(IMX1_PD, 19),
-> +	MX1_PAD_LD5		= PAD_ID(IMX1_PD, 20),
-> +	MX1_PAD_LD6		= PAD_ID(IMX1_PD, 21),
-> +	MX1_PAD_LD7		= PAD_ID(IMX1_PD, 22),
-> +	MX1_PAD_LD8		= PAD_ID(IMX1_PD, 23),
-> +	MX1_PAD_LD9		= PAD_ID(IMX1_PD, 24),
-> +	MX1_PAD_LD10		= PAD_ID(IMX1_PD, 25),
-> +	MX1_PAD_LD11		= PAD_ID(IMX1_PD, 26),
-> +	MX1_PAD_LD12		= PAD_ID(IMX1_PD, 27),
-> +	MX1_PAD_LD13		= PAD_ID(IMX1_PD, 28),
-> +	MX1_PAD_LD14		= PAD_ID(IMX1_PD, 29),
-> +	MX1_PAD_LD15		= PAD_ID(IMX1_PD, 30),
-> +	MX1_PAD_TMR2OUT		= PAD_ID(IMX1_PD, 31),
->  };
->
->  /* Pad names for the pinmux subsystem */
->
-> ---
-> base-commit: 30e830b8b952e550344224546f8cd83c5c49a5bf
-> change-id: 20241002-fix-imx-pc-9b33864c0331
->
-> Best regards,
-> --
-> Linus Walleij <linus.walleij@linaro.org>
->
+---
+Changes in v2:
+- Add the missing pm_ptr() macro
+---
+ drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
+index e1b515304e3c..a7d79679248d 100644
+--- a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
++++ b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
+@@ -2811,7 +2811,6 @@ static void gpmi_nand_remove(struct platform_device *pdev)
+ 	release_resources(this);
+ }
+ 
+-#ifdef CONFIG_PM_SLEEP
+ static int gpmi_pm_suspend(struct device *dev)
+ {
+ 	struct gpmi_nand_data *this = dev_get_drvdata(dev);
+@@ -2849,7 +2848,6 @@ static int gpmi_pm_resume(struct device *dev)
+ 
+ 	return 0;
+ }
+-#endif /* CONFIG_PM_SLEEP */
+ 
+ static int __maybe_unused gpmi_runtime_suspend(struct device *dev)
+ {
+@@ -2866,14 +2864,14 @@ static int __maybe_unused gpmi_runtime_resume(struct device *dev)
+ }
+ 
+ static const struct dev_pm_ops gpmi_pm_ops = {
+-	SET_SYSTEM_SLEEP_PM_OPS(gpmi_pm_suspend, gpmi_pm_resume)
+-	SET_RUNTIME_PM_OPS(gpmi_runtime_suspend, gpmi_runtime_resume, NULL)
++	SYSTEM_SLEEP_PM_OPS(gpmi_pm_suspend, gpmi_pm_resume)
++	RUNTIME_PM_OPS(gpmi_runtime_suspend, gpmi_runtime_resume, NULL)
+ };
+ 
+ static struct platform_driver gpmi_nand_driver = {
+ 	.driver = {
+ 		.name = "gpmi-nand",
+-		.pm = &gpmi_pm_ops,
++		.pm = pm_ptr(&gpmi_pm_ops),
+ 		.of_match_table = gpmi_nand_id_table,
+ 	},
+ 	.probe   = gpmi_nand_probe,
+-- 
+2.34.1
+
