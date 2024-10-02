@@ -1,93 +1,184 @@
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2086.outbound.protection.outlook.com [40.107.20.86])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B4D212F18
-	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 20:51:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727902321; cv=none; b=u5NsS/8E3jFoblMNCGHCMoNpjyyO6zGjkxwSK8Q7HVUEZ6/c7h+aOFGX/K8p9BVnuXZvHx9kz83W8kA1QsdmQwRbpJds9qd8tGL4FtBbOSVj/E6yUiGtAWFo4Ucxm9sl5pdWb/qkNgc0/ZOBBYI92uY/5LM2YEfI0BktfiYVtB8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727902321; c=relaxed/simple;
-	bh=VEHAyZoQjBPuXBaQnp3bkKS9a1uzzrtwU6torraHTtE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JowuC9l+HoMtUq8u0gH7e8jEUGrqEwPxUkV8GMciLV4XEIrdJlwlVPJ3vU7xYnPGM1S0JxSzEBaFNFToxc6J4CaNtQ/DOpoKTdnoJVJEWnduZFf+7pEKN0EdmIz8Fy/EatP1YtXAbtKzsrdrUWopsiy7BNnpGzilv7dfJBeaP4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HNiX4SIa; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4081D1316
+	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 21:26:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.86
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727904395; cv=fail; b=fG8z4DKPK2oQ+RfoCSZ8cy9NjbrDCmnYTKq+o1GhscVcrQUog3v4V0X0VUw0YDpeyUIqSJ2UVKWOIXssOUj3xTkR1n+7nXLtFlYsVV2/wGSOT/ykiaXD/sDE0ZDWPXEsmXrHwjb6Ukte3IoUuKS1eFYIgkA1/hJ3UNRpbsl2E30=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727904395; c=relaxed/simple;
+	bh=RrFhughtGHGhcu0r7vmzm8k5q/S7ogYk4JWHVrzciQA=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=rz6cvFQVgUavXsoLTqXSllDUeoK6vk2APhYM4rXnc69d4Cg1Z4qssZkPjSXf5IubAJA8a29woEUKu24CP6dZ+KyO/qpsuph4WEdE5Wd4V80SwhTI6w/ZGlEz6+8/ZLQ6ug6PtYmSSpxGwFHi8uNNJoesGWzkNXbBZTweoeTjF2o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hL3cH/ex; arc=fail smtp.client-ip=40.107.20.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HNiX4SIa"
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5389e24a4d1so188420e87.3
-        for <imx@lists.linux.dev>; Wed, 02 Oct 2024 13:51:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727902318; x=1728507118; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DKTTMLpVNU1rbwFfrmI7lnoXgbZiPVbY+NtY+gwrero=;
-        b=HNiX4SIasjigYiJVGQyIGw6OpzT3mkvArdPR9MKFMEpICDlFRyIyfmyL/6ArNpe/ZQ
-         4cb6wYa4f0tn1TdvRW/yvXdVzNVsEFhKFvl/j2TsVwErqd9t1Y7wWn1bYCMlxspSeT9X
-         g5Nx6USQTYOlv6uVvCYcyBlQmA47Jasuwnk6b+MMT6FuCHapPoiCz6+hjJeqm+Ng+jHA
-         bw4I6IbebrQaUt2KpfNrpSgh9I/J1imQnS6wEGO6PC/9HuTZlArtSY6fk2DUDmL5wJbO
-         Q8l/L4cAyep4ZKcV+rqhvyW23TEc+BKlOuT6ediTapEweWEIO1nJjQ1UYG2tmPF5GkW5
-         lJmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727902318; x=1728507118;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DKTTMLpVNU1rbwFfrmI7lnoXgbZiPVbY+NtY+gwrero=;
-        b=NmCX57ebnhEbdLoDb/lvcPr8AQud6fvgN5Ty0AQIHPF3k0hwh3xHJVso/qt9wiSZai
-         Hr8giRU4V4Jr33CfpvHbWdhMhgIV0y4FHoq4x1H4NeX87Lw/Y/AXzn7VC12KsES315/H
-         Actx/2doOpmxtUUt1L+UgT/MrdflgAgoG2eidh8ZRPBnDoYFZikPhggG93pcwidvnvnc
-         4YHe4A3X9OgCS9CQkrqltYrOObruJ8nsm71x62bt718CCDenJDVVk+dDc00ML5eox6Lf
-         HZ4DY29bQM68/2jJZlmYrv7OGC6599FN+2xcZJ+3vgMvl0MXSn7TU9UlPOkMdxZaf2wC
-         /TsA==
-X-Forwarded-Encrypted: i=1; AJvYcCUsKjvSVjSYc+iOcXjoldOnJXwm72i4i2QENYU6j5F2G5Qn+EwOenrF8kfT7ZGh19+mITM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyOm9T/FpAfy6n/c2pA5F9pxG1VGE5d5Rjh96h2sFpqKxMn3H9R
-	ZfWvEA0Ej2UYDN45js9WwG2NVTMm4syJx/27zp4G5ReHc926wiG/Z0pSpLPOvobnokZw7Btr/em
-	vsq72zilJ5TzMvL1FHIs8gs2Ribw=
-X-Google-Smtp-Source: AGHT+IGkBg1h2s8kkcXTyEZggePG6zCcw11Akl1BW7tIzxgdK/KH0WZ3KEBjraWlRZDcrGpcbllxYF4a0zGGCXXfq1c=
-X-Received: by 2002:a05:6512:3084:b0:537:a745:3e with SMTP id
- 2adb3069b0e04-539a0795be3mr2627745e87.45.1727902317426; Wed, 02 Oct 2024
- 13:51:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hL3cH/ex"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LoU+bGHBYsqiqNLldgXXybnrjLoOap0J14YLNRFTOLYHaclCVXG5WDVAyM8FP7FFbWxftWCxoArM/lH0tDWk92yhGCqimKrMvfmN04kv+L/1GgdDlxBXhZalfgx5AQ5cwSOkLb4rFU7xyxKd27efLF6FFeTn11J7IjtsTzrxqwaiy9DODMLkhcCRlbIj4jete3V514hmlmgqW8/Me2MdulZwllKk1K25LM0bjz1VVRiSt0CjoDz+N+bRMaXNq9FBexHV/POphKwuQQdXMBW4wnrjdW1LT+d8xrk7XQCvyTLGINhI1UjHAualSzjaXqF9JMzlTN+lMvjudx3WY9pj2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MhV7H1pH/H1+RPhV3jA5HqGwqr94OUQqieIx8k8ZDMg=;
+ b=R8Frb9/Aq6sB8/0fqpP/6sptNot5C3O9JRLhqrs+gCAahzYtBiSUkj2orG45cYcHALblYd0ZaaacAqpdFvhK9wK9lFBF2V0dlJjgYhsUx+O8xMjS9cpdLCk9UwFduR6aNcP970HFyXnK0xqgfdnseiMWEChnUIYFgkaqMbVbFR87+zlpLYrUITjT/y8j0PLb5JDtc7D70h80yh2JcFclHkCsUSYGny37394wG6quUHcy3uW62xf1ZzKurmhtt9+Ix+Th52zZD+3eKqHmfcg3IdxzQIhdos2VSiijYo9E19xJ9iDyLo0AxD9J/BiVS0HVgsn/QbxV9eOmxT1WchtR2A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MhV7H1pH/H1+RPhV3jA5HqGwqr94OUQqieIx8k8ZDMg=;
+ b=hL3cH/exwdVEyFuRdPfdJZKtBm/WpN3HccVwkaTkdzChipgOM74QLYK6xRXVkppSwqheBjI/WrXI5GA3YrDO5aYTcevSy1KTalCUg/0SX2qB7MTbHwb+IcqudWyJigs0oAgqNIrddtpUhkNJHXV8l8z5wY5jEalUk3+X7g/i02nH/W0Ml3weDQZztVK3AW/EhhOlb7rJPdiMgFecL+RQT72YSBKfrggQwuB1NsG+HxCH4l/OCAmsIfD4hGpCPu1D+oXHWVGwW+wvPKTVbRyAfH1Jjc5rocJOT4EGaCRGMwYzXNaz4c0dZGBIhO1PsrAEKMZ6scsbhFYfNkfOkGxaXA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM9PR04MB8260.eurprd04.prod.outlook.com (2603:10a6:20b:3e6::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.16; Wed, 2 Oct
+ 2024 21:26:28 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8026.016; Wed, 2 Oct 2024
+ 21:26:28 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Thomas Gleixner <tglx@linutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	linux-kernel@vger.kernel.org (open list:IRQCHIP DRIVERS),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] dt-bindings: interrupt-controller: fsl,ls-extirq: workaround wrong interrupt-map number
+Date: Wed,  2 Oct 2024 17:26:13 -0400
+Message-Id: <20241002212613.599687-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR13CA0080.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c4::25) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241002204750.597337-1-Frank.Li@nxp.com> <20241002204750.597337-4-Frank.Li@nxp.com>
-In-Reply-To: <20241002204750.597337-4-Frank.Li@nxp.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 2 Oct 2024 17:51:45 -0300
-Message-ID: <CAOMZO5B+nGngoonBm4gzFXtKy_DR7SPNs1GQYSeOu8emcsRgyQ@mail.gmail.com>
-Subject: Re: [PATCH 4/4] arm64: dts: imx8qm-mek: Add PCIe and sata
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, 
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB8260:EE_
+X-MS-Office365-Filtering-Correlation-Id: 251a7e3f-fa16-4685-9d85-08dce328e046
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|1800799024|376014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?EWoNlgRM0SBh4QKp7ZotyFLbT0LO4pumnkw5/cV88SKwoTXfaQ5WtQGfeqta?=
+ =?us-ascii?Q?EUhGvJhe5AscExL3XsMzTSnHj9VWTVUSyjpbAuZuioZwfTDIdnSpcIgtCgPK?=
+ =?us-ascii?Q?gUxna+VHQ/aoJjg9OTz9TJKN9WE28U1SRaaOFu213FH5RIAsf8U8RKYXa1+t?=
+ =?us-ascii?Q?VaJVzPCzIkla+E5HU6UQ5dq8wVQglrSXb5X1OKYmsqwct4bi3eHdHG9qQZYw?=
+ =?us-ascii?Q?YCBR3SO873p21jBMgLOjciAgndHomCSoJSl8CYxM5rpmkEsgg8j2O62enOfN?=
+ =?us-ascii?Q?CuG8tWXrmHsEcp4HbC6quHF14lhlhqu6hfRaAcZ4T/OkkaA/KVKD7ensbA3+?=
+ =?us-ascii?Q?n0OZhyNGHeMdtuNyuhIvhr9G2dcG9Urct1TvgXujkyyXAYjXxwu1dEOkPdCx?=
+ =?us-ascii?Q?ybnAKgBpaJyayn4IkH6h1/VnWQQ/Ok33eDokAGaMZ4WK8QiD/5uLz3FBH9w2?=
+ =?us-ascii?Q?dE6G+13c68HSKibHnr8hkvszdc3wP3VGqSPPXhjh9Al/Ahx8PaeJ6QWboTAv?=
+ =?us-ascii?Q?BSurQpj1C5UahZBvDVSu5O+EpABKIp393ig8gD0sGQ+NvB+YrIxbO5p5S796?=
+ =?us-ascii?Q?BFis+/XOMu9ud36AkVJM5vahbWZgZofYeS8n0Z+pKTbpxpbKi1eRQXjGtVRJ?=
+ =?us-ascii?Q?fIj67IVAMaLdPeX4uVTOQXx3OdfQnu6gKOae/mBLwfiQuYS2ak7oYJ2InZYw?=
+ =?us-ascii?Q?1OrPSlhYu8+zhgaleOlOtkBO/dkB9CekMVq99YKH94WzsKSEbmxkYqzQAgeE?=
+ =?us-ascii?Q?A+aHuHhDyvfwSz3/a83qJKQrN07JWH98Dqc8nw60I+k9V7RwZx2XDmaJFq80?=
+ =?us-ascii?Q?Cx/DJiw+fh83N/cg+vtaWbYU+OUCgBE+rFImDOll98fYrZdFv0pNrhwTJ9on?=
+ =?us-ascii?Q?wW59k/weLbgm+gxXc7x73XooqjwhRNRhTQwH93tYxH/cSXG4G6FAyosDxd+J?=
+ =?us-ascii?Q?B4W3cqipim6/9ResdcPq//w+T9EpWemVzWNDvkVcpN0Nj8/8MsjNr6FO+Qr8?=
+ =?us-ascii?Q?XpKicCh63z0YlcK+TgaNoFfAzt3Cwvl4i0BP0Qugx92GSnnnvVq6OuTli+xk?=
+ =?us-ascii?Q?b8CGYUZn3TJvSD+7pAXMcmWB/SAYNp4bHc0MnyS3tZErd0vRTScRAWvVytJw?=
+ =?us-ascii?Q?FIvNJWQPuFFg3AlBVeI5A8CF0CtABfUyqPai26yRuB1MJVjUgkwD5+tzNMzk?=
+ =?us-ascii?Q?Ge1GCT5wGexM1fXat0+XpVY/BgphxOZigQq/kBYS2cbDNkL7DS4JV4S8v7jn?=
+ =?us-ascii?Q?CDcqBhKA9qIfHQyNip/CuJhePghwYiXTZOxZqbbtjGRp1GkTRXrFJwm5LTvg?=
+ =?us-ascii?Q?y/loiYFeGK43xxQot0/lbcFweVgbdgpW4LaAQ189UESvJQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+mrmrHeSLOwpCyhMe9qQWyhpxxW6A03fb21ATJhSKl+Tzbp+yM2juTWBcC5r?=
+ =?us-ascii?Q?PWv5ipMamg6vC5PMNv4ZmnYoL9K4Xh6cO3XT1kOrZrjj2VpkvxAKPzlRv9bm?=
+ =?us-ascii?Q?v0HykpcGl34VKVwTmPyq6X9Hv7S9CDDrV5jmc1RpqnBPjW11CrpmIWIVEKze?=
+ =?us-ascii?Q?ab5qlDgLgHZMVNg5791OTeRsVjJiRKPPwA9CrvstLeKlE1w3JNY22k+Ft/ud?=
+ =?us-ascii?Q?pvzKLxTx1Z4fRghqbptSD3PIu5AxEqyQWjosO4lWi1Xxsn0CyW/XJDj+RqUI?=
+ =?us-ascii?Q?42hnMr1PXrzP3/0EkV7MHuXC5IAFDUnjuMqkESWsJehGMBDBZ8cdWkRVoIQa?=
+ =?us-ascii?Q?Td7nn3GxT7QiZ7pFaOvh2kjkPFmWhXet36QPAwJ8Rv5OnI0qXuGIPnyDTXqj?=
+ =?us-ascii?Q?tmEdxVP6A5e3uYduNzRgfIddCmQGyLZU5ZcZqF6/SYn4ppjBYykHhuO4I6rS?=
+ =?us-ascii?Q?5YC2i63Zqep5mqmRZt+Fc34i0O1Tf8Kbh9G4W2SFBEtUQedVYOwCuxCBL273?=
+ =?us-ascii?Q?u+nJ/+iVK3qZJ86rkBM/Dlc08wkLkGKhQfGbYSPe8KGEyvFNhGx+JVNkej77?=
+ =?us-ascii?Q?hJClTuHJ7VHjUWbLE9S+7cE0F0mYBQ4lITfL54O9Pu5Ns1r6zV3wJpo2RR+S?=
+ =?us-ascii?Q?Nz6MHaVy97y8iS+pb2Lq81C1clXjPqNLL7Ul6HLIPU/S9M3jZ4E5SIr2txy0?=
+ =?us-ascii?Q?7k99TXs83p9/c6sjcP6evKuwoORkBc5T15nwnMfoQBAr78MxAsySob+lRtjd?=
+ =?us-ascii?Q?BM9Cgtgl3/U4PjvDFOzUmJmPtKp7rlsXdsgFLRdbaRvNHAaeVj4RCdtxi2nV?=
+ =?us-ascii?Q?EF66Cu/ikhUo+BEQYH3Mum0AAc3WE8sHcvTzT2IQ40b6Rd6gYLq1xKa5N4TB?=
+ =?us-ascii?Q?t9nAUdAhW/rQa2zGnSej1uAVKo5HaSn/KaUoZibcjtmwQYTWGYpd5Y7Ooc5J?=
+ =?us-ascii?Q?G6X5P5y60RKxK4+zfuHD2E4tCcL5QePE2Rf3CocO2b0+G4+b1BWUCa1kG0zG?=
+ =?us-ascii?Q?Aj1ztVtBvmu3Fg34ScLl5m5uyMEGVK5KRBEEMd/GxyJREIROp5E6l3B2T+OW?=
+ =?us-ascii?Q?kno52oewlnjcE1W1n/6nKgcMs/mYBr/sV9d62NE4cvGP8ua+qRfichDC2KT3?=
+ =?us-ascii?Q?tR+Uw1Qx71XODY4VJbc7YJCAAgDlTK3lV9r42seNzl4F67m2kezgwdYvm/sy?=
+ =?us-ascii?Q?587lOTNMZKARsxlNnpJeGUQUGPT8IVnH+gDOjLK9wO0eH9SkdN2FSb7sDM/Y?=
+ =?us-ascii?Q?/8/4K7RFUGMb2FmvK6f1IM8ElTmivrmrD0MyB4FhFCZlR/1qjw9UlooVL0Nr?=
+ =?us-ascii?Q?JvGmPu7FGFvT8q/Wt6RPIIdwsJtYtuvOcy8Oc0W+aHOceaQqFA7x2EdGLWeN?=
+ =?us-ascii?Q?uQLmCtb2c46oLAXin+WJknU7KAU147yJQxTuPSaiewZiQVa0uWim2OlD4KGI?=
+ =?us-ascii?Q?HA7sFh8MddrpzzjnvHXyqaJaW6R1wgGV9caYjoKNDtEH81RlDN62tRy7ufmT?=
+ =?us-ascii?Q?h3ZcbMse94CCCnpBPtpTaHbt6CS5uN5s8nPvDtiQgqg8XhEkQWD8n1Urwigm?=
+ =?us-ascii?Q?USfWY4fOWcGflPBwEEU=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 251a7e3f-fa16-4685-9d85-08dce328e046
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2024 21:26:28.2137
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pBCACIlwTZghXTx6ktaSUX2amCBqN6MayoQFZ781o/dmzmmazSLo/QRosT9AK/CN/dysbZvxOxCeudjhCc7ADQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8260
 
-On Wed, Oct 2, 2024 at 5:48=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
+The driver(drivers/irqchip/irq-ls-extirq.c) have not use standard DT
+function function to parser interrupt-map. So it doesn't consider
+'#address-size' in parent interrupt controller, such as GIC.
 
-> +&pciea{
+When dt-binding verify interrupt-map, item data matrix is spitted at
+incorrect position. So cause below warning:
 
-Missing space: &pciea {
+arch/arm64/boot/dts/freescale/fsl-ls1088a-qds.dtb: interrupt-controller@14:
+interrupt-map: [[0, 0, 1, 0, 0, 4, 1, 0], [1, 0, 1, 4, 2, 0, 1, 0], ...
+is too short
 
-> +       phys =3D <&hsio_phy 0 PHY_TYPE_PCIE 0>;
-> +       phy-names =3D "pcie-phy";
-> +       pinctrl-0 =3D <&pinctrl_pciea>;
-> +       pinctrl-names =3D "default";
-> +       reset-gpio =3D <&lsio_gpio4 29 GPIO_ACTIVE_LOW>;
-> +       vpcie-supply =3D <&reg_pciea>;
-> +       status =3D "okay";
-> +};
-> +
-> +&pcieb{
+Reduce minItems to workaround this warning.
 
-Same here.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ .../bindings/interrupt-controller/fsl,ls-extirq.yaml     | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-extirq.yaml b/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-extirq.yaml
+index 199b34fdbefc4..b52abfd3e19d4 100644
+--- a/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-extirq.yaml
++++ b/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-extirq.yaml
+@@ -85,10 +85,17 @@ allOf:
+               - fsl,ls1088a-extirq
+               - fsl,ls2080a-extirq
+               - fsl,lx2160a-extirq
++# The driver(drivers/irqchip/irq-ls-extirq.c) have not use standard DT
++# function function to parser interrupt-map. So it doesn't consider
++# '#address-size' in parent interrupt controller, such as GIC.
++#
++# When  dt-binding verify interrupt-map, item data matrix is spitted at
++# incorrect position. Reduce minItems to workaround this problem.
++
+     then:
+       properties:
+         interrupt-map:
+-          minItems: 12
++          minItems: 8
+           maxItems: 12
+         interrupt-map-mask:
+           items:
+-- 
+2.34.1
+
