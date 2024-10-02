@@ -1,102 +1,117 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D357FC0A;
-	Wed,  2 Oct 2024 03:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E53A14A90;
+	Wed,  2 Oct 2024 03:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727840945; cv=none; b=WEUNxlV8+MgG3jnsRYK+WxgrvpH2/nH3o1kAsEzxJLWWeYSbwPRc6xSi3Cupnkwungp8pez3EoMGqt1qpMAwVO2MC1dpB3CqGOE/62O0op77LKKmELJ9mg/gaOoZA6unDQ8iFkQDk+tVlNeoO/EzZcW42zTmaFbNxhSiZCnoKew=
+	t=1727841061; cv=none; b=mwgCPhB3Q/dTMQb85d5xlwv1AZpHIEoWTI2HB8jI+l1+tvIsvHe9AoPihoSE659MwhOcqkfb5zRcneIPpfavYkiw2F5uRMRVV5IAwA7e+/Tm1uYMcDBgk+3lxfNp6zqKTuq2vwc/rVlF7lS9ayJjZNjkza4BwRIo7VBmtoqNmJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727840945; c=relaxed/simple;
-	bh=nAEKTIpBmymWLR+e+hBkypCfwSNJotZOEB0oMjBgW3A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qU4qu5t4/IvrbAjRIHOfoleV9IjSX2VsStbe7p6d9KuKAvjxUy3Sne1aR7UcUDdljiGu09nRo/X9lqJn/dqmhkADqy5qf/ep0YVtFFbmfAH3i6ywGTOT5cGQ79SQVrzqmbK80v8ivDLl/v11KksWtydxxLGEK9z/ApbSZ81MrCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Af2UjTVf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727841061; c=relaxed/simple;
+	bh=2nMQFJJLL5n2/FSYA9/7DFV+JhhTE/XS+Rf6chkuTCY=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=d5gaRIhk5r25q4SF/jij66HOEkdBPU2aOUTZhlRaqJebaSt2DBVqEvdf3K4im2BKArdhMt4XC7tq2qvpJQ3RSPou1gAElNl1SgnfO8fmBq9kxEBk34ZSgnrmP3SGUP7Fo9mTofI66H6CYS/i63wDPRCUgGq7iktjY4jkxt0IbdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nN0W2Y5A; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Af2UjTVf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F6F8C4CED2;
-	Wed,  2 Oct 2024 03:49:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nN0W2Y5A"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90126C4CEC5;
+	Wed,  2 Oct 2024 03:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727840945;
-	bh=nAEKTIpBmymWLR+e+hBkypCfwSNJotZOEB0oMjBgW3A=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Af2UjTVfNh6y+KURqioy4b8Bj7Yu5BpvrE0pOuTAaCdsWVGE8VQdAPbay4eP9DqPg
-	 vWMLCMNoxrjpq2dgf0Gkki5SuP7pwmk7jkH2meg7cuorJVxX/VF75raABEWvzkaMHi
-	 vhhxdgRpR3b7B5ke0UhpF0oO9c3sZ7F6qfo5LaAZzh2DiImZJl6yUno80Km9y1f2VX
-	 IIlH0yPKwIL8OBus0S8hdF72eqSA5xm2L3CztnHUgtzPMXEtvUhtadchDi41GC6Mt7
-	 Ca1gozPG5gv1ZiW5uDRIVS53lJA/EuDl2IF4CK5RlPgdKNeNXNE2aGU70QMIY0HzW0
-	 QHOaUeFAAHJ5A==
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5389917ef34so7228571e87.2;
-        Tue, 01 Oct 2024 20:49:04 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUeitkX88Q4QUVgwUn7e7p56E4BN4ngq6jiwKs7s19vWoXGCFN+DD0qERjtHm5u3OKXSOk=@lists.linux.dev, AJvYcCXrhd45mdp1/QuOm8vVFPr8hMYT2WiLms+K77/UMpBxIM8rr+XUN5yNRlpYu+Chm95LdkVgGN1H8GVNpTA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyciiuKsTzI8OCCTkJpNk8pVQNeCeqd9s+gsW8Omg5JN/L87rak
-	TnfW8D4EdsNKjCcgzFj8YHqF7155U3XO4wvgeIpPPizchEWEzsmPSZ3AoGbrI+rGX/80fi4lXO0
-	nZL0bosxjUbAde4fbYPcDrlwHOQ==
-X-Google-Smtp-Source: AGHT+IEqtnQCtoRUlnvKJ/juvutRb8LD+WF2Ji1IL7egoXyMFlaAGJMVK219VrK0qM0doCIPbjzZD5sR9nPD1sht5+g=
-X-Received: by 2002:a05:6512:1113:b0:533:4638:df40 with SMTP id
- 2adb3069b0e04-539a067f65cmr743356e87.27.1727840943291; Tue, 01 Oct 2024
- 20:49:03 -0700 (PDT)
+	s=k20201202; t=1727841060;
+	bh=2nMQFJJLL5n2/FSYA9/7DFV+JhhTE/XS+Rf6chkuTCY=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=nN0W2Y5AYbrug5dPrdIXEj2+CFv0gHItzaFlseYctIiieNWm5s17ghJkgkOwN5oYh
+	 fC/BT5qVZWfWmWM34X/ckq9qhzQ3gPqh8wed1NrPw7GSSMBhhCIgHoKa1JQ5BUZxyb
+	 UckoRcn4NetQjSUo76voFKd9znHpQ7DMql/kLkXo4vkxmavJlmN4YtSKXsWP3DgSH8
+	 jn7+ujqVq75kGx2bN2gCV+kcbQiwDq0a/45jDxwEbCHzulcrtv01Te4/F3RfZanjQ2
+	 TUr4tMGtEEioi4teoTrTjGQokGUV6exewUjnLzaYkYduhJdlZ4fz2V+yg8b8Ejrvf1
+	 td34iBkv4QCcA==
+Date: Tue, 01 Oct 2024 22:50:59 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240930223550.353882-1-rosenp@gmail.com> <20240930223550.353882-3-rosenp@gmail.com>
-In-Reply-To: <20240930223550.353882-3-rosenp@gmail.com>
-From: Rob Herring <robh@kernel.org>
-Date: Tue, 1 Oct 2024 22:48:50 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqKNMhUy3HUAanod27FnJAz35w7FLp7tp0Uo3SeVbG7EGw@mail.gmail.com>
-Message-ID: <CAL_JsqKNMhUy3HUAanod27FnJAz35w7FLp7tp0Uo3SeVbG7EGw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] ARM: dts: assign reg to memory nodes
-To: Rosen Penev <rosenp@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Antoine Tenart <atenart@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Joel Stanley <joel@jms.id.au>, 
-	Andrew Jeffery <andrew@codeconstruct.com.au>, Jesper Nilsson <jesper.nilsson@axis.com>, 
-	Lars Persson <lars.persson@axis.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Viresh Kumar <vireshk@kernel.org>, Shiraz Hashim <shiraz.linux.kernel@gmail.com>, 
-	"maintainer:SPEAR PLATFORM/CLOCK/PINCTRL SUPPORT" <soc@kernel.org>, Marek Vasut <marex@denx.de>, Jisheng Zhang <jszhang@kernel.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, David Lechner <david@lechnology.com>, Nishanth Menon <nm@ti.com>, 
-	Santosh Shilimkar <ssantosh@kernel.org>, Tony Lindgren <tony@atomide.com>, 
-	Enric Balletbo i Serra <eballetbo@gmail.com>, Javier Martinez Canillas <javier@dowhile0.org>, 
-	Alexey Charkov <alchark@gmail.com>, Denis Burkov <hitechshell@mail.ru>, Arnd Bergmann <arnd@arndb.de>, 
-	Stefan Wahren <wahrenst@gmx.net>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Dave Stevenson <dave.stevenson@raspberrypi.com>, 
-	=?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>, 
-	Nicolas Chauvet <kwizart@gmail.com>, Tomasz Maciej Nowak <tmn505@gmail.com>, 
-	Robert Eckelmann <longnoserob@gmail.com>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
-	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>, open list <linux-kernel@vger.kernel.org>, 
-	"open list:ARM/Amlogic Meson SoC support" <linux-amlogic@lists.infradead.org>, 
-	"moderated list:ARM/ASPEED MACHINE SUPPORT" <linux-aspeed@lists.ozlabs.org>, 
-	"moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" <linux-rpi-kernel@lists.infradead.org>, 
-	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>, 
-	"moderated list:ARM/NUVOTON NPCM ARCHITECTURE" <openbmc@lists.ozlabs.org>, 
-	"open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>, 
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, 
-	"open list:TQ SYSTEMS BOARD & DRIVER SUPPORT" <linux@ew.tq-group.com>, 
-	"open list:DH ELECTRONICS IMX6 DHCOM/DHCOR BOARD SUPPORT" <kernel@dh-electronics.com>, 
-	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>, 
-	"open list:ARM/QUALCOMM SUPPORT" <linux-arm-msm@vger.kernel.org>, 
-	"open list:ARM/RISC-V/RENESAS ARCHITECTURE" <linux-renesas-soc@vger.kernel.org>, 
-	"open list:ARM/Rockchip SoC support" <linux-rockchip@lists.infradead.org>, 
-	"open list:ARM/SAMSUNG S3C, S5P AND EXYNOS ARM ARCHITECTURES" <linux-samsung-soc@vger.kernel.org>, 
-	"open list:OMAP DEVICE TREE SUPPORT" <linux-omap@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Marek Vasut <marex@denx.de>
+Cc: imx@lists.linux.dev, Michael Walle <mwalle@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Hugo Villeneuve <hvilleneuve@dimonoff.com>, devicetree@vger.kernel.org, 
+ Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Alexander Stein <alexander.stein@ew.tq-group.com>, 
+ Max Merchel <Max.Merchel@ew.tq-group.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Mathieu Othacehe <m.othacehe@gmail.com>, 
+ Hiago De Franco <hiago.franco@toradex.com>, kernel@dh-electronics.com, 
+ linux-arm-kernel@lists.infradead.org, 
+ Joao Paulo Goncalves <joao.goncalves@toradex.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Gregor Herburger <gregor.herburger@ew.tq-group.com>
+In-Reply-To: <20240928234949.357893-1-marex@denx.de>
+References: <20240928234949.357893-1-marex@denx.de>
+Message-Id: <172784021443.525771.3308795793210058076.robh@kernel.org>
+Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: Document DH electronics
+ i.MX8M Plus DHCOM PicoITX
 
-On Mon, Sep 30, 2024 at 5:36=E2=80=AFPM Rosen Penev <rosenp@gmail.com> wrot=
-e:
->
-> Fixes dtc warnings:
 
-Unfortunately we cannot make this change treewide. Any platform that
-relies on the ATAGS to DT bootloader support in the kernel
-decompressor expects /memory.
+On Sun, 29 Sep 2024 01:48:08 +0200, Marek Vasut wrote:
+> Document support for DH electronics i.MX8M Plus DHCOM SoM on PicoITX carrier
+> board. This system is populated with serial console, EQoS ethernet, eMMC, SD,
+> SPI NOR, LEDs and USB 3.0 host used in USB 2.0 mode on PicoITX.
+> 
+> Signed-off-by: Marek Vasut <marex@denx.de>
+> ---
+> Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
+> Cc: Conor Dooley <conor+dt@kernel.org>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: Gregor Herburger <gregor.herburger@ew.tq-group.com>
+> Cc: Hiago De Franco <hiago.franco@toradex.com>
+> Cc: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> Cc: Joao Paulo Goncalves <joao.goncalves@toradex.com>
+> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+> Cc: Mathieu Othacehe <m.othacehe@gmail.com>
+> Cc: Max Merchel <Max.Merchel@ew.tq-group.com>
+> Cc: Michael Walle <mwalle@kernel.org>
+> Cc: Peng Fan <peng.fan@nxp.com>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Rob Herring <robh@kernel.org>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: devicetree@vger.kernel.org
+> Cc: imx@lists.linux.dev
+> Cc: linux-arm-kernel@lists.infradead.org
+> ---
+>  Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-Rob
+
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y freescale/imx8mp-dhcom-picoitx.dtb' for 20240928234949.357893-1-marex@denx.de:
+
+arch/arm64/boot/dts/freescale/imx8mp-dhcom-picoitx.dtb: pcie-ep@33800000: reg: [[864026624, 4194304], [402653184, 134217728]] is too short
+	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie-ep.yaml#
+arch/arm64/boot/dts/freescale/imx8mp-dhcom-picoitx.dtb: pcie-ep@33800000: reg-names: ['dbi', 'addr_space'] is too short
+	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie-ep.yaml#
+
+
+
+
+
