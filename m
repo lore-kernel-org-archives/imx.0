@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EB41EBFF2;
-	Wed,  2 Oct 2024 10:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6941E766B;
+	Wed,  2 Oct 2024 10:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727866096; cv=none; b=ofgfsrlJQK+GjaG1vFSGNkRzjfNmPfNr+JuCxL5KTRZWvvaa9AQ4+KeEKuBiQlI/TOj2qHzHbPeX5tt9Z+O925cSrqxtgsxBEWkD0EtxZo3Qo95fS0gxOseqg5FVucSIhFW6How5pDY1NWaL0C82TTtG/gGLCI2iiMRJj9YqYMs=
+	t=1727866364; cv=none; b=cw8tCdKJ+g8mkYd2HDZaVz6SQNb/76vHSRKjzA2YMcJlRTqbaBk9hKyNl7VPBRHA1xpaZ+Go9iAWriDbUoePvyvVHStDce413zUSDMaq46DGVLQjdCSl+I2l0XHykHS3spv5VArzJ5n0eFJ5exuw19NPBxCqWmrqdCn+b1JIYzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727866096; c=relaxed/simple;
-	bh=9yYe2VcIA+LpkQlHNR/s5e2KjkRwG0KC9OjEA439oxE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nzDNfAEASbz6fN6ZQSH27mNFroOlqjLsZtR3OLhItsaG/MqW6qW5tRNyuG4Tan9JnlgEnwiN5kfh1MgpdQXzbvajAEvZuq0Ypol85V78bBMTvFRehnlmkd2sF9P+JKK96o6lpjVpeSxLaacRjxdVcn8JplDCADu3RIe3V4iUFyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mRDEevx3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727866364; c=relaxed/simple;
+	bh=p6wM7yoi7GfKuoD5YhbWY+B9mXoXSBTQn4zINgkEvdU=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=KRQyXmhTnjJRsth+c7W6YynLaT023eipJPh+g2qB/x1/cdc9Tuy612fVMrNRY6oJajBUNplxc5QO43DaAwmva+qSKsIJd7Q/vlIaxxjwsbGMMwfpg5aKoc6i68TJtS/2ZWyfE1jZddRh84mgTHcRSZyQvmyp4uxpDkXQ0pLdHf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DDwH/7vC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mRDEevx3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0338AC4CECD;
-	Wed,  2 Oct 2024 10:48:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DDwH/7vC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23ADAC4CEC5;
+	Wed,  2 Oct 2024 10:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727866096;
-	bh=9yYe2VcIA+LpkQlHNR/s5e2KjkRwG0KC9OjEA439oxE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mRDEevx3BFrPQ/Co+Hn7M8Lw7qtlL+Gi90PSl8GsBuktPEaJLxD9vHLPkJfHNJM5G
-	 1iy2kp58gXVUvtovNzLoHNcTvVGzuWJ/SWb7YjCCls/yYnuK7kbSoYB20KkZjuo1Ui
-	 qL1vNFh3Rb06btaFt51m2Ik4syf3nw5D/zclq7ifAEP4pMS5lqlOiGoboVptlyX1eq
-	 F+UqTC97KaDH4dH6BxHtI8q5nmMo1WQ2hb93e+5VX/4Pq9oM4R1HCHcEXa/YYLMzYF
-	 ZHPY1AyldtfTe5bbJ7sMh6UsOeNei94oTHDRDqJok3nb/EputhRqoSqkAEw3qtVf93
-	 Vf8uC6emyUX2Q==
-Message-ID: <c90354e6-2e95-4f96-bbc9-508edb293183@kernel.org>
-Date: Wed, 2 Oct 2024 12:48:05 +0200
+	s=k20201202; t=1727866364;
+	bh=p6wM7yoi7GfKuoD5YhbWY+B9mXoXSBTQn4zINgkEvdU=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=DDwH/7vCkNAcQ87Yd4sFzTzAEfNG1R6O3wGlHGV97iOMu18JfmDsu2Z/1zg29zcZR
+	 QmWKZlXp1zJc18aEw5xT5RFVA1jqseh+70E+GwjXppTJ46/EyyK3dlWh63SpoSAlFe
+	 hbiwJFBCrFlD4sG+GNrUGCNVzCRZhsOcpnCCpk1nspJakft8jtXyk9/V7C33Dq67ik
+	 fD00lCtEZ7U4j2PD2rr/8tbIuV+yEW2VEC6zwhiAL0DzliLq9ty00P3ndst4agd9TB
+	 qK1IMULmJFqTO8EjaeYSXDSkH/+WcPfUTnPTCG7twPxmqVYvV2er6SokHPt60qWqIq
+	 kLWnbCXnSTdzg==
+Message-ID: <a624690e-12c1-44f2-a867-5a9959091c91@kernel.org>
+Date: Wed, 2 Oct 2024 12:52:35 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -36,6 +36,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 0/6] EDAC: fsl-ddr, add imx9 support
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Borislav Petkov <bp@alien8.de>, Frank Li <Frank.li@nxp.com>
 Cc: York Sun <york.sun@nxp.com>, Tony Luck <tony.luck@intel.com>,
  James Morse <james.morse@arm.com>, Mauro Carvalho Chehab
@@ -54,7 +55,7 @@ Cc: York Sun <york.sun@nxp.com>, Tony Luck <tony.luck@intel.com>,
 References: <20240709-imx95_edac-v1-0-3e9c146c1b01@nxp.com>
  <ZvsNJrxF6TpUC6ws@lizhi-Precision-Tower-5810>
  <20241002090834.GAZv0Nkp5YKcy86UmZ@fat_crate.local>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <c90354e6-2e95-4f96-bbc9-508edb293183@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -99,45 +100,48 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20241002090834.GAZv0Nkp5YKcy86UmZ@fat_crate.local>
+In-Reply-To: <c90354e6-2e95-4f96-bbc9-508edb293183@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 02/10/2024 11:08, Borislav Petkov wrote:
-> On Mon, Sep 30, 2024 at 04:42:14PM -0400, Frank Li wrote:
->> On Tue, Jul 09, 2024 at 04:23:01PM -0400, Frank Li wrote:
->>> Add imx9 support for fsl-ddr.
+On 02/10/2024 12:48, Krzysztof Kozlowski wrote:
+> On 02/10/2024 11:08, Borislav Petkov wrote:
+>> On Mon, Sep 30, 2024 at 04:42:14PM -0400, Frank Li wrote:
+>>> On Tue, Jul 09, 2024 at 04:23:01PM -0400, Frank Li wrote:
+>>>> Add imx9 support for fsl-ddr.
+>>>>
+>>>> Patch 1-2 is prepare patch, no function chagne
+>>>> Patch 3 is small fix for bit shift
+>>>> Patch 4 is dt binding patch.
+>>>> Patch 5 is driver change to support imx9
+>>>> Patch 6 is imx93 dts change
+>>>>
+>>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>>>> ---
 >>>
->>> Patch 1-2 is prepare patch, no function chagne
->>> Patch 3 is small fix for bit shift
->>> Patch 4 is dt binding patch.
->>> Patch 5 is driver change to support imx9
->>> Patch 6 is imx93 dts change
+>>> Borislav Petkov:
 >>>
->>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->>> ---
+>>> 	More than 2 monthes. I ping at Thu, 29 Aug
+>>> https://lore.kernel.org/imx/ZtDwG2xFGaUssJVN@lizhi-Precision-Tower-5810/
+>>>
+>>> 	Any reason why not pick these EDAC patches?
 >>
->> Borislav Petkov:
+>> $ ./scripts/get_maintainer.pl -f  drivers/edac/fsl_ddr_edac.c
+>> York Sun <york.sun@nxp.com> (maintainer:EDAC-FSL_DDR)
+>> Borislav Petkov <bp@alien8.de> (supporter:EDAC-CORE)
+>> Tony Luck <tony.luck@intel.com> (supporter:EDAC-CORE)
+>> James Morse <james.morse@arm.com> (reviewer:EDAC-CORE)
+>> Mauro Carvalho Chehab <mchehab@kernel.org> (reviewer:EDAC-CORE)
+>> Robert Richter <rric@kernel.org> (reviewer:EDAC-CORE)
+>> linux-edac@vger.kernel.org (open list:EDAC-FSL_DDR)
+>> linux-kernel@vger.kernel.org (open list)
 >>
->> 	More than 2 monthes. I ping at Thu, 29 Aug
->> https://lore.kernel.org/imx/ZtDwG2xFGaUssJVN@lizhi-Precision-Tower-5810/
->>
->> 	Any reason why not pick these EDAC patches?
+>> This driver has a maintainer. Is he going to review it or can I remove
+>> him from MAINTAINERS?
 > 
-> $ ./scripts/get_maintainer.pl -f  drivers/edac/fsl_ddr_edac.c
-> York Sun <york.sun@nxp.com> (maintainer:EDAC-FSL_DDR)
-> Borislav Petkov <bp@alien8.de> (supporter:EDAC-CORE)
-> Tony Luck <tony.luck@intel.com> (supporter:EDAC-CORE)
-> James Morse <james.morse@arm.com> (reviewer:EDAC-CORE)
-> Mauro Carvalho Chehab <mchehab@kernel.org> (reviewer:EDAC-CORE)
-> Robert Richter <rric@kernel.org> (reviewer:EDAC-CORE)
-> linux-edac@vger.kernel.org (open list:EDAC-FSL_DDR)
-> linux-kernel@vger.kernel.org (open list)
-> 
-> This driver has a maintainer. Is he going to review it or can I remove
-> him from MAINTAINERS?
+> Let's drop York, it's a stale maintainer entry.
 
-Let's drop York, it's a stale maintainer entry.
+I sent a patch now for this.
 
 Best regards,
 Krzysztof
