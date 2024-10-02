@@ -1,166 +1,205 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010068.outbound.protection.outlook.com [52.101.69.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559B71DB55C
-	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 18:41:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727894510; cv=none; b=Xzy7jvOLVr/zrpiOXydcgQ2dYh8ao/7iU1AI260wdeItHy9LPW3otdCeK3lpEkwv/c+RKjzEQbyCGrf5dP4cwIStjQZKrsVJrYG3l6SJiRGEFBqGDHKXoBuHE0MqFjagxOM3Ksl+gxZuUK2v95Hg1P/LyOY1XZzNV0ruEk81xIE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727894510; c=relaxed/simple;
-	bh=JKE1QjGzfsOmvyp0yAYM6Te10fCsyTqWk4OqCJlP3N4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=e0OSzGAknBQJWniH/f9b0w2QceeVyXnZ+p+LMum3RWdcwXvA8v2BxKLiEXxX8URX6XRIghq+ObNNBmrIfxg4dnU0d6BtFmI36m8N1QWfi5xKRQlS9L/3THYdB2TN9l+ByIXkPstL5i4lRbaTw7AlGnspnIcNJmvD9PYibyHxngg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=dN4eCUGP; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4D12141B4
+	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 19:46:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727898368; cv=fail; b=eVbeD+yVBQbOTfHkLf4j6rmGUcpcWTEg1UFYXDwjbDz0YZGTg6Sx/9B2S142Dz40z2/6O2p+r5AwAXZqDhWj+85QGT6+NRV/8gvblppre92n9z8iL5MbFGIn1avEWEBIORGLfC2WeG3bzPFr82lBI42j+BjR/rLKqitjQazb0wg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727898368; c=relaxed/simple;
+	bh=VfgmBlLuEXPIJ+VEE3u4Wo2K0sNmw+O9JlMiTdGHEi0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=oli5QemB+PyhaTpHQLfLH9TmzeUeEKe35ejXgYSQU6MVhz5QVtjYl73y/f1kVI0szDgO4iSrApCt/cqaOwkA1hAw7iZ6qBvkwGiYUL5it8aRiUMuUOj97IbsvCHfQ1wPxO6BMKiNJYlpsbFnqDVRD2Jl5dBEL/kdIKKl083ZJuI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ZQJz4awo; arc=fail smtp.client-ip=52.101.69.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="dN4eCUGP"
-Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 9ED0A88F44;
-	Wed,  2 Oct 2024 20:41:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1727894506;
-	bh=zuPq8tlRciTxlcbGOB0i7tsntZdMbWeR5LKsvLq22ZU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=dN4eCUGPYJu8qYlYJL8JmdrYPyNZGIpGkOW0kg4oygCoWO78WU+3Sd37CjRO7cj3C
-	 pN2LGe8ww3sRrIpR4WNjZ+SMsoHlO2pX4pXW/Svc4Mkxjxc/pMnqHiCdIpcE6S+B1H
-	 ZcJj17RerMoso/w/YxW/xhtYbeD+i1yl1K8isq3+L9w+4jJyIdfYbl1yt8dqSB/+Li
-	 VmyEX340nleck3tFdpDArZ50wLuCUZ4XV5Mz9wOu5bdheyRhmrQpm0utItzdxhhZxt
-	 6tOHvlQku2IQPD3FGPwSSs60dlSBbPbw0kDEwZ7359VhVgAbVxF4vVsjqbvZIPz/+7
-	 HzAJjwTx2xnQA==
-From: Marek Vasut <marex@denx.de>
-To: linux-serial@vger.kernel.org
-Cc: Marek Vasut <marex@denx.de>,
-	Esben Haabendal <esben@geanix.com>,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Fabio Estevam <festevam@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Rickard x Andersson <rickaran@axis.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] serial: imx: Update mctrl old_status on RTSD interrupt
-Date: Wed,  2 Oct 2024 20:40:38 +0200
-Message-ID: <20241002184133.19427-1-marex@denx.de>
-X-Mailer: git-send-email 2.45.2
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ZQJz4awo"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZrhZNbN3K3M6mHJNf9YRY3NYkSxyM16RzgRuGBGrvsa9VQ3JPcIzdDU/yeUnrkKmRrGKZcaGgCiFh5xhVkRCXfE5nb6V0DfzhsamR6lbRIFkQoG6xBVIuTKconO9/cZodjdVuNkQryZLbJnsJH+WE2U54L8arotLvn9Kxw3b8rVDHmHnVySX4K+zTZO6pnC2DGwayLcIRKJIZ2K8xkodjce4r8G/iEvOrSXqm0AWQLAMBVM5oneoz4y3L3GS/GHJPBTEvQflJxKZTsze5H4dYRb4Wqfg6p3U9ebk44dEFwuqZxdSLrWm55HqK6yBDGU4NT1YhpE6x94M+Qu8jVZ2kw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NP/mcaLP2NmXQfzFXegZfUyyohQFO5eMVt105iQ/Ch4=;
+ b=K7f5CN5faTkie6m4egt1/GoNThRTr8zaTcOFt6I8NLBybeScCVO3AncbPQjFjQxKeZyd9afDLxHK9z2JFr8ASYeZdBbgRKVYYfREURV4TG8Y+XLNKhncHVXX71hWo/B2o862wxHApJPqSPVxviJrCID83Yx2lIccc2Qyj37BvZ65F/XZfy1Pnx08/19ulOvPZ65UvWb8gVTy1YyqtuKgp9U93GQ9GjZmzJkVGveTAkXnoMtcix2s98oKGR/h8aiqgPWv2WcRmAUACodGoUe7MhQDPd2ehL1ijfwuFB9ulROtiPVC5+Y6lAoz7oH9E/ZMhXbSU1fYsyPt9GZFg6AYJA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NP/mcaLP2NmXQfzFXegZfUyyohQFO5eMVt105iQ/Ch4=;
+ b=ZQJz4awoc4qjUKNxf378saXqiPhllmLKb48DOFh5dZTJ5z7+gG693bEROOqHl1tc53BUk6QXoocqy3HVnqlir5CZafojt5Pxmz8934/cnxJAvusIoNAYMiU+nu4FEL9FmtpTnUao0Gjym5bXCrvx1sOfBkHFXs/VdCDhYB7HHITEx5cO6VK1pG/E/tSIV65h3B+CqKPljWwhcCc+b7Zonwf3yHBIttnAIDm0bKYxKPYQjKwVn/JRAkfYkpcDJbCTj9JOgOgoZYOmlU7hhtldvRryylqgFiudZuQnDOatoMFukv3I9+vo6kbH0SoTg11biuMe+140DDOCPIm6xbz5ag==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by GV1PR04MB11040.eurprd04.prod.outlook.com (2603:10a6:150:206::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.16; Wed, 2 Oct
+ 2024 19:46:02 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8026.016; Wed, 2 Oct 2024
+ 19:46:02 +0000
+Date: Wed, 2 Oct 2024 15:45:51 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Marek Vasut <marex@denx.de>
+Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, festevam@gmail.com,
+	francesco@dolcini.it, imx@lists.linux.dev, jun.li@nxp.com,
+	kernel@pengutronix.de, krzk+dt@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-pwm@vger.kernel.org, p.zabel@pengutronix.de,
+	pratikmanvar09@gmail.com, robh@kernel.org, s.hauer@pengutronix.de,
+	shawnguo@kernel.org, ukleinek@kernel.org, xiaoning.wang@nxp.com
+Subject: Re: [PATCH v6 1/1] pwm: imx27: workaround of the pwm output bug when
+ decrease the duty cycle
+Message-ID: <Zv2i73MvKASJA+2x@lizhi-Precision-Tower-5810>
+References: <20240917192510.3031493-1-Frank.Li@nxp.com>
+ <4bbee009-3985-4679-a85e-76f4259ff8d6@denx.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4bbee009-3985-4679-a85e-76f4259ff8d6@denx.de>
+X-ClientProxiedBy: BYAPR05CA0084.namprd05.prod.outlook.com
+ (2603:10b6:a03:e0::25) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GV1PR04MB11040:EE_
+X-MS-Office365-Filtering-Correlation-Id: 486c71aa-1596-4c07-a487-08dce31ad8c2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|366016|52116014|376014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Fw090IjUjwPRNV1KK5N1Pu42xki3J/3WSEbObz/kZWf6gAIbcYnS+/uHpoAw?=
+ =?us-ascii?Q?09C9RHrQ7pUZ3k4tHIwFsDHQ91tyWpYiG8ngVMugcwltDQOo/hOgMV0PNw5D?=
+ =?us-ascii?Q?X+83LbT0PVLRRy2yH4LHGWR5vrxoxCXNgk8egUVyGs88HJ4hNropnccsKFC2?=
+ =?us-ascii?Q?6q0ojNTxkETW5rXlizgG/f2b87wo/XutGCeHPDgFmX/VthSwbPq2FiK6FyAc?=
+ =?us-ascii?Q?qgY6BnAOE0CLRoF68cBtAc5qBr89LyC9fgwhONpF3K5mJsx9/GFM8ksEGXHr?=
+ =?us-ascii?Q?QKJBg8ixxyXihfYmNjGRzRnQShJw3tiXuHtABtfSMzB+49uWLoR8BR6+PV+y?=
+ =?us-ascii?Q?3kM754EcRyQF/d9xfQAnVrdExNZEv4Fvmgay4T8QzQRGi6riffRDcT7cGBk+?=
+ =?us-ascii?Q?ZQ48sibssLkEiUR95IIulASmwwNZ6nnLUKjSTh4GW8DPSDHfis1aXPZhKPro?=
+ =?us-ascii?Q?MjpLeT9hNpeR3L2m33S1abmldiG5Pj6HLiJ7QvxY6SaEX9/pKAgJkTNdOSn7?=
+ =?us-ascii?Q?XV5r6y1Vf6Zak8NUD/Zkkz/dU/KxNNILAR3HzOgNP+Jw+yglVLzOsSWf8nHP?=
+ =?us-ascii?Q?vB4H5sh3vSb7OigVkICzVaZyVy/59re4/hwCPkKvtHEewHiuyXOHiqWu07cR?=
+ =?us-ascii?Q?wjsl5zwkVd/y4ktg63dsVTbcR64dDqWjnXkGZWx/b8aGLYppxnmA3D8c9srZ?=
+ =?us-ascii?Q?oRWyM5tfOL7kNeb6bziwV8XFvhUQeC/nNRWN9rWympDov3yYZMhqNcZywSsZ?=
+ =?us-ascii?Q?pHsidnJ68pVcVfp5vRg7Xv1xFjr85Z48MvM2y0X9GQLQtIBoTtEbrMcho8T3?=
+ =?us-ascii?Q?t7LwEt0HwOmLEfsf7+OrJZcQbazlOXv0ZNpKW21b1wIN9iEhsFNg5DMKkBB7?=
+ =?us-ascii?Q?+yLuQs+2iFCLUBZF16EJVgc4Dxpeh6B7nUuL+EEuwflJZvvSLrw02kIAQYpr?=
+ =?us-ascii?Q?KQIPFBON2nnzIwZ/anAH3RE44Pl4dp6FdyW2UmWz52rFYBH4N2I28zvIRUIh?=
+ =?us-ascii?Q?2Q/ZCZHIFkG1jKjr8TCiVSWjnkFJJOFDfp5CXXXLdZZmD5b6h24miluugkls?=
+ =?us-ascii?Q?8fpaJHxX71Y4ekYo8+0BTZUpa5hEzxYMsYaYiV/OjYi07lRY6Ui5XABzyCdx?=
+ =?us-ascii?Q?JWxsYy2eeTnUyt1wMHjpXepoTguAm1QdgF4dQprEdlI6GC2QyxlvZ2QZppFE?=
+ =?us-ascii?Q?lbdd9Mor5clCmOCKBy8fZgz/eVeuaGhJ1aqSqMxkxoYkdiNdZckNx4oYfL7M?=
+ =?us-ascii?Q?2M2SG8iM3gxCa1qjdqQQVzpbSdLIXSaz4hsX4I9UzMaad7HYIviu0+jGu1Fg?=
+ =?us-ascii?Q?AIEMEAAQj3VjZn3txD6Fa30B0HDn6P9hPKNJ+1yLT2aRSw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(52116014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?iPPJPXQjG3L9bk158eHlaJiZF7bhMArBQ7x6eq0mY7ocZWtPca7IPFLmfG2W?=
+ =?us-ascii?Q?/+1CqolnL57i6Y0b/FkSffq+tknlE+BV3lDxcypHW8+UE16snIpV+xEaAiOB?=
+ =?us-ascii?Q?3owhyPBlxHWEO2Bf/WdOtDTrFd2ZzIvk+K7QG6W0O3Ck/fSak47PgDCNDmnE?=
+ =?us-ascii?Q?k27HSUDfdhxOkxYWT6SgLHffxZVonQa3xBOST2ypriC+iAM1PEY+M174UKFC?=
+ =?us-ascii?Q?AZTljlZjvD6l3B+M9H5sVDkcsHpZ2x+ct8MxqdCxwxHTSkdWJjw7yYM8QhXF?=
+ =?us-ascii?Q?3qN5DHdyR9Fn8VzGxgbGgqx5RY3sGVEq4yzF7nPArUm9+fMnRikcS48R7o7W?=
+ =?us-ascii?Q?Ym6Jm989nFzZPP3Ge3P9ei+ep2cyH0Thgoy/GFia7FJ+5VvQgZgzq4GugxXg?=
+ =?us-ascii?Q?t1nd8ryNZR75zNXxqja2A/U0PtPqr1CS8NYGDkLUdCqK29MmoYO4eg65QMdz?=
+ =?us-ascii?Q?zboGVQ+MgiFve69dYeMi/nYXOez12mITlaX3pFbzTYM8K+ZHOux+9lesUfGd?=
+ =?us-ascii?Q?wMdSv60m3zfEym12p5fMh4FW7Qhqq8HCLGXCCMBFH++XwAilIjWC1dBDya84?=
+ =?us-ascii?Q?kfdGZbN6Kuy+1wA4/sNhfwHaU5tcxVr/Qf8+n1cU7PXj5YaFlL8yjXHsP4NH?=
+ =?us-ascii?Q?g3B4pmtefEurehsOexLrSGnqbcVsvgkm0kqVjARejWqyYE06GYhUw7uCCkRw?=
+ =?us-ascii?Q?2NS5hqJlWngMOagqHzwS3gG6XellifR+/uvXnHyQtP4wqME+Ph5HOdXYTZUs?=
+ =?us-ascii?Q?Oz0eGXFelu5tOxrEa28uIVp21R5q0JJr8YGqnttcWrTe1Al7RTvHt2ZQpucL?=
+ =?us-ascii?Q?A5FxIk35KgNJn/FOLTu/UOt51940pCdQjS4VwuOn85KsxDreQUM6cP8yPpM/?=
+ =?us-ascii?Q?cwdWGP6qGxTExb3pRUR8xQf+Wnv8bypRR6Wm49hiQND6nRXGLOPBea+edXaJ?=
+ =?us-ascii?Q?Op1y4UjB1eiBqu6CJwj+iNk3AdzEoxF5T9j/P8vUnTD6UJ2Dge4A75stlDOm?=
+ =?us-ascii?Q?oF/OhIXB53AGKrqlKWz3yePFElWcw7ohfnIWrleIXr4rYe4P/pIc6/MR9Fmr?=
+ =?us-ascii?Q?i3RSlR4y0spCOTxMG4kXATHW8lhWamgo8KslDMKgO4KaRRpNo+OSVLeHFoSp?=
+ =?us-ascii?Q?6cOFFUtoKeTJEOhcdB2bctDt0Mfk4AbFZMyi66BdZw7++lFit1ivw+DY9idz?=
+ =?us-ascii?Q?39ee0jyrYPWRRPXGaqxUAgToujGISMwst1KR1xYR1Byjug9kHH2nALLXSfIr?=
+ =?us-ascii?Q?12T1bSe+LnlF8iGbmyDGrlraUk7ECGVZFwO32gXe8d41kiCUFR8mMtT8F+2J?=
+ =?us-ascii?Q?cia9Xz/PMTgCFgPuuiHuizF6XyN1ER1sBktYObSua4w/vZMkoBY95ykVCxtk?=
+ =?us-ascii?Q?iXJrMx0yd6qHaT2088Fclzr4I1uElEVrtiCmBeJF23iW6Kzo9L2KUbKG3Oph?=
+ =?us-ascii?Q?M+hhKD33X/PYC6q7Rk3OfaVgHzERnkXZdTXJo81m3Nz9pIXGj7f3AhZE9TEX?=
+ =?us-ascii?Q?K5cFd5spSOMSjFRzudIPIXqF9+N91siBg+UUAxNKOXMp+PObMUwTmQmBQbd8?=
+ =?us-ascii?Q?lESgCGf4azW7D9qn4TI=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 486c71aa-1596-4c07-a487-08dce31ad8c2
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2024 19:46:02.6467
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kiNj8lOIVIywu9CkC/+aGSZ7l7oFbZcngcpX2qoVpubmWsGpc6x22PbG4iWuD2IFWTkWUT1woojgUmDepkvfxg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB11040
 
-When sending data using DMA at high baudrate (4 Mbdps in local test case) to
-a device with small RX buffer which keeps asserting RTS after every received
-byte, it is possible that the iMX UART driver would not recognize the falling
-edge of RTS input signal and get stuck, unable to transmit any more data.
+On Sun, Sep 22, 2024 at 10:28:02PM +0200, Marek Vasut wrote:
+> Hi,
+>
+> On 9/17/24 9:25 PM, Frank Li wrote:
+>
+> [...]
+>
+> > @@ -223,6 +224,8 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+> >   	struct pwm_imx27_chip *imx = to_pwm_imx27_chip(chip);
+> >   	unsigned long long c;
+> >   	unsigned long long clkrate;
+> > +	unsigned long flags;
+> > +	int val;
+> >   	int ret;
+> >   	u32 cr;
+> > @@ -263,7 +266,69 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+>
+> [...]
+>
+> > +	c = clkrate * 1500;
+> > +	do_div(c, NSEC_PER_SEC);
+> > +
+> > +	local_irq_save(flags);
+> > +	val = FIELD_GET(MX3_PWMSR_FIFOAV, readl_relaxed(imx->mmio_base + MX3_PWMSR));
+>
+> I think the multi-write I mentioned in v5 for > 500 kHz case could further
+> improve the patch, let's see what others think:
+>
+> if (state->period < 2000) { /* 2000ns = 500 kHz */
+>    /* Best effort attempt to fix up >500 kHz case */
+>    udelay(6); /* 2us per FIFO entry, 3 FIFO entries written => 6 us */
+>    writel_relaxed(duty_cycles, imx->mmio_base + MX3_PWMSAR);
+>    writel_relaxed(duty_cycles, imx->mmio_base + MX3_PWMSAR);
+>    /* Last write is outside, after this conditional */
+> } else if (duty_cycles ...
+>
+> > +	if (duty_cycles < imx->duty_cycle && val < MX3_PWMSR_FIFOAV_2WORDS) {
+> > +		val = readl_relaxed(imx->mmio_base + MX3_PWMCNR);
+> > +		/*
+> > +		 * If counter is close to period, controller may roll over when
+> > +		 * next IO write.
+> > +		 */
+>
+> c is only used in this if (duty_cycles ...) { } conditional, the do_div()
+> above can be moved here:
 
-This condition happens when the following sequence of events occur:
-- imx_uart_mctrl_check() is called at some point and takes a snapshot of UART
-  control signal status into sport->old_status using imx_uart_get_hwmctrl().
-  The RTSS/TIOCM_CTS bit is of interest here (*).
-- DMA transfer occurs, the remote device asserts RTS signal after each byte.
-  The i.MX UART driver recognizes each such RTS signal change, raises an
-  interrupt with USR1 register RTSD bit set, which leads to invocation of
-  __imx_uart_rtsint(), which calls uart_handle_cts_change().
-  - If the RTS signal is deasserted, uart_handle_cts_change() clears
-    port->hw_stopped and unblocks the port for further data transfers.
-  - If the RTS is asserted, uart_handle_cts_change() sets port->hw_stopped
-    and blocks the port for further data transfers. This may occur as the
-    last interrupt of a transfer, which means port->hw_stopped remains set
-    and the port remains blocked (**).
-- Any further data transfer attempts will trigger imx_uart_mctrl_check(),
-  which will read current status of UART control signals by calling
-  imx_uart_get_hwmctrl() (***) and compare it with sport->old_status .
-  - If current status differs from sport->old_status for RTS signal,
-    uart_handle_cts_change() is called and possibly unblocks the port
-    by clearing port->hw_stopped .
-  - If current status does not differ from sport->old_status for RTS
-    signal, no action occurs. This may occur in case prior snapshot (*)
-    was taken before any transfer so the RTS is deasserted, current
-    snapshot (***) was taken after a transfer and therefore RTS is
-    deasserted again, which means current status and sport->old_status
-    are identical. In case (**) triggered when RTS got asserted, and
-    made port->hw_stopped set, the port->hw_stopped will remain set
-    because no change on RTS line is recognized by this driver and
-    uart_handle_cts_change() is not called from here to unblock the
-    port->hw_stopped.
+It is in local_irq_save(flags) scope, it'd better as less as possible. So
+I prefer do_div() is outside local_irq_save()
 
-Update sport->old_status in __imx_uart_rtsint() accordingly to make
-imx_uart_mctrl_check() detect such RTS change. Note that TIOCM_CAR
-and TIOCM_RI bits in sport->old_status do not suffer from this problem.
+Frank
 
-Fixes: ceca629e0b48 ("[ARM] 2971/1: i.MX uart handle rts irq")
-Reviewed-by: Esben Haabendal <esben@geanix.com>
-Signed-off-by: Marek Vasut <marex@denx.de>
----
-Cc: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Esben Haabendal <esben@geanix.com>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Rickard x Andersson <rickaran@axis.com>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Cc: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-serial@vger.kernel.org
-Cc: stable@vger.kernel.org
----
-V2: - Add code comment
-    - Add RB from Esben
----
- drivers/tty/serial/imx.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index 67d4a72eda770..90974d338f3c0 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -762,6 +762,21 @@ static irqreturn_t __imx_uart_rtsint(int irq, void *dev_id)
- 
- 	imx_uart_writel(sport, USR1_RTSD, USR1);
- 	usr1 = imx_uart_readl(sport, USR1) & USR1_RTSS;
-+	/*
-+	 * Update sport->old_status here, so any follow-up calls to
-+	 * imx_uart_mctrl_check() will be able to recognize that RTS
-+	 * state changed since last imx_uart_mctrl_check() call.
-+	 *
-+	 * In case RTS has been detected as asserted here and later on
-+	 * deasserted by the time imx_uart_mctrl_check() was called,
-+	 * imx_uart_mctrl_check() can detect the RTS state change and
-+	 * trigger uart_handle_cts_change() to unblock the port for
-+	 * further TX transfers.
-+	 */
-+	if (usr1 & USR1_RTSS)
-+		sport->old_status |= TIOCM_CTS;
-+	else
-+		sport->old_status &= ~TIOCM_CTS;
- 	uart_handle_cts_change(&sport->port, usr1);
- 	wake_up_interruptible(&sport->port.state->port.delta_msr_wait);
- 
--- 
-2.45.2
-
+>
+> 	c = clkrate * 1500;
+> 	do_div(c, NSEC_PER_SEC);
+>
+> > +		if ((val + c >= duty_cycles && val < imx->duty_cycle) ||
+> > +		    val + c >= period_cycles)
+> > +			writel_relaxed(imx->duty_cycle, imx->mmio_base + MX3_PWMSAR);
+> > +	}
+> > +	writel_relaxed(duty_cycles, imx->mmio_base + MX3_PWMSAR);
+> > +	local_irq_restore(flags);
