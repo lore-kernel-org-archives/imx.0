@@ -1,55 +1,57 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1601E7656
-	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 11:20:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13181E7669
+	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 11:20:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727868025; cv=none; b=PMGrPyOw3PicXHUQIVNp2LeLULtzBn3NX7/9Nof0g8iLdSvCpRI8bXQK4Hs25iVwAk1NuhKeR8ABZipSXIfM4Tp/eZFGJTkdYuWwdSCU/kmxTS/t9GGSt/E5/DRiP5C0ZiGB+YT+QGtS+BaIcdYqWQLENHaH58YjiXWOMnSLJu8=
+	t=1727868032; cv=none; b=evW/Lhl+jIp3yqszBihrVwIyqVkkr9iABIe1hVz9pQi4fcrOwFzaKoosL9yCRk606iXE0pSW2hKLkBbAlNSud2BBW9ZBxlNybiMMiLmmeNYCOVGw8KOTFH4i24e8r1Fxpg7zF+I4qjkRIn0oGliILgAUz0tEQGp4yz5uQjSCtAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727868025; c=relaxed/simple;
-	bh=PaCoDRTAmUihExuD6FtY8QmrsRVYjIS7AWfLLY7wlYA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MuhPq/WSaMWA1DfqkeqChWAdOqUmIaeNQtB95v+88M5ZDPTDT2oDH0vvtu5EZBZfuwImnVYxFPMmcJjf5kvLiF0G8dt8pX1ZIXMXodxo8lkNB8b4kPRbZybEfQ8m0lBxEdLu4RZJ37nlBZXuOzQVnCP6w7VxaCrteQKE174o/10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=izwwknCa; arc=none smtp.client-ip=209.85.128.54
+	s=arc-20240116; t=1727868032; c=relaxed/simple;
+	bh=xEztw/GwwhLD/gX/2JuP2k+o9OcVESh2PGvr7/izPNU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WghZVzvrRSu8ttHRbZiApEfsXCF9Wk2NV0etDJI2MBWZddy5CsHy7wtz7h56IKzZ01RUWbUltyYQvdUXqeCts2lQzA6+2EaiZ5ah0i+ksxkZt49o7C/i4LCND4JF86BpGq0pcBc2+rfuaB8rV+cp0DS7826eWteifq3Bpcv/PdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TKtNIb9q; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="izwwknCa"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-42e748f78d6so54169725e9.0
-        for <imx@lists.linux.dev>; Wed, 02 Oct 2024 04:20:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TKtNIb9q"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-37cdbcb139cso3752390f8f.1
+        for <imx@lists.linux.dev>; Wed, 02 Oct 2024 04:20:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727868022; x=1728472822; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yQ6x4zObDyJ43omHbKWsYVs2kFPS4sw0rkU3gO4im2g=;
-        b=izwwknCaAF2xEMueifbqQrNa9dZXVegwTE0dpqysDoCOcGk/tbOOG13oG1KnvIY8C0
-         tTMIuztp6acJSEtoO9+2BZYpgbppOjVW88B78qhQJTlrXVDwN15PoSJ19rlXWhEfctlG
-         T2VQghQ4Jdmtg7fF7G8rcMXps3V5P8S/UysXE8qTri6UFUQunH9Rnos7K/7MtVm46MV7
-         mnIkUjduxXauI0r6yDNfcOdWuW6mVk0jszn4ZwbeYiLEpaucxIg2d4GXiwx33igT1nUA
-         jFsnC+B0JpqNgf70Sdw173wK1kHQVZwedFwA21fg2RVYWb0C9wqTsA12A8cVIAQ+1/3p
-         zp0Q==
+        d=gmail.com; s=20230601; t=1727868029; x=1728472829; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pWe1LOAQAUHDMm2EMz2P+3VNJFGofn6qsW8nJYyiXVM=;
+        b=TKtNIb9qK3D2KNQ9wgmhoBiB35NaW1SCcuDgSQ8kHDQGWWXC6LgqKzXRXs/b4FY0R9
+         iJra0164mQsqJ6rkJAKnYvrLWwTAo8ePN9/FpD+qcjW60bQm4RmmInNVZ6gEzj2dkC7U
+         X33eAaG02dj+zFhbdLXikfITcmzUTHWgvHMohEv0VxqOHfSsd3yRSbR6rSB207PUWFOO
+         w+XhADH2tEsz/uH3nLBosnAw9HUQsR6c1xfZSG3iw5GORq3JJiAO4qNkEOaMzFhjtaG1
+         fjGJw1yeAzyT2ULBTdjPocLoqr2idGn4HvJ5KZVgFwX7gj+iTNmtsVia02iaEFdpV1wS
+         P7DQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727868022; x=1728472822;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yQ6x4zObDyJ43omHbKWsYVs2kFPS4sw0rkU3gO4im2g=;
-        b=ELye4MjE+YvOnXQ2GeVJTpqaDov4qbhcj6L5CJZdcsSQ6iiNCcqTXyadD1jgL1EoUh
-         KZCkRbhE7ldtPk8fSZPAZzF16X6qjZLLEUMlXjE39YSebJ7FrFuQiKLxfrceeKQQTKZo
-         fNsC7IGolQWySTr1bASpmsa8PVhJFAHKgLJfWHkK5eduBBw3r5nVsK3N616mHnWoBj/j
-         hi1w7kW0cPsMcARU+SGAXY4oVYQgoWuJymCeNsCVxvnc3j0g+thNAAmxQsFRNK4ubt8+
-         HBC5dDICGq+v4HWv+b0Xu4VzpnO1SXHxF+BOHdD8ZL2COdT5ZccP/F0Q81uhc2cRfHD9
-         RMHw==
-X-Forwarded-Encrypted: i=1; AJvYcCXI7YopMA2Bg0HDtASo+qaE8Hzr0ziHYQyi6BWIrXNsprmW2ZE93Vj3l5axNh/N8hc1Ig0=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyh8Qsu5kEzhDhoROLxMhfR2aENZ80eujxybBv6Lkpu6vsNClQN
-	jX/tSWCCQgOj5KMAh4g2XfwKr4uhFiDAVzygc+jD04dLBVWpEPuF
-X-Google-Smtp-Source: AGHT+IFr/46f/cbDZz1FoAo51AuLN5PJHXEunpu05Lqv3Z5yVZrxyifxONPvmsJa38GK+xLCRjfi4w==
-X-Received: by 2002:a05:600c:511d:b0:42c:a72a:e8f4 with SMTP id 5b1f17b1804b1-42f777b798bmr21423495e9.14.1727868021592;
-        Wed, 02 Oct 2024 04:20:21 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727868029; x=1728472829;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pWe1LOAQAUHDMm2EMz2P+3VNJFGofn6qsW8nJYyiXVM=;
+        b=OjrtBPm+GSWwAb8n3ehKKkIihW/eexIQMZ07+YqodbiUP3cudRXgTt+8WA4JNwdfTg
+         5/Uv3yLMQWUNWOlzSdYOGFhnldsyZB0cEZMGzjgA2cpSELYV7lgOZY/RBE4HqopGSDLX
+         uVC4opo8rVTnV3O/4fN5OsENQUZKY6QsFuy6CV0sCAuCbzNqea7U28FoihJ5VDpNVbhc
+         6WTJMfu3u8itYROHWDNl21D4WiHht+RqV2ev4gjeoSHeTPwJTantBTIs4XWxdZ05B7U9
+         L2TM7YRyACfPCpUJ/JCFnnFWvUh8/mwnj2ZW2fbN7trp3zLNg7wpzKn3H2QnoZU3Dn90
+         A+kw==
+X-Forwarded-Encrypted: i=1; AJvYcCVWoDMdX+Onu51R4P1eQcC78a2Mdo55pBC3NM5RGAh1LnqYiL6ZB1g1h3iLK3nTIrg0EeU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YytCgz3It6HaMEhYHihGdBmXoFEmb6C6xp1cDq0WunBvGZWC2c6
+	C49cwcqSg2HzgByjZ86oZJecPPUp7ULsvUlLy116uJJhQ3uuJ2bK
+X-Google-Smtp-Source: AGHT+IFGTSatLO1Ox4UQ8gJUxFQ+Sve6VZQyHmLuQ8fa68lXptO2HqFrHIWSzqjI6q344kc1YAHVhQ==
+X-Received: by 2002:a5d:6189:0:b0:374:cbc4:53b1 with SMTP id ffacd0b85a97d-37cfba0a641mr1674756f8f.40.1727868028950;
+        Wed, 02 Oct 2024 04:20:28 -0700 (PDT)
 Received: from eichest-laptop.corp.toradex.com (31-10-206-125.static.upc.ch. [31.10.206.125])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f771a1209sm23530685e9.0.2024.10.02.04.20.20
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f771a1209sm23530685e9.0.2024.10.02.04.20.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Oct 2024 04:20:21 -0700 (PDT)
+        Wed, 02 Oct 2024 04:20:28 -0700 (PDT)
 From: Stefan Eichenberger <eichest@gmail.com>
 To: o.rempel@pengutronix.de,
 	kernel@pengutronix.de,
@@ -62,11 +64,14 @@ Cc: linux-i2c@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	francesco.dolcini@toradex.com
-Subject: [PATCH v4 0/4] i2c: imx: prevent rescheduling in non-dma mode
-Date: Wed,  2 Oct 2024 13:19:38 +0200
-Message-ID: <20241002112020.23913-1-eichest@gmail.com>
+	francesco.dolcini@toradex.com,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: [PATCH v4 1/4] i2c: imx: only poll for bus busy in multi master mode
+Date: Wed,  2 Oct 2024 13:19:39 +0200
+Message-ID: <20241002112020.23913-2-eichest@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241002112020.23913-1-eichest@gmail.com>
+References: <20241002112020.23913-1-eichest@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -75,61 +80,63 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-While running tests on an i.MX8M Mini connected to a TI ADS1015 ADC, we
-found that the ADC would stop responding to i2c requests because it
-would timeout after the bus was idle for 25ms. This timeout could be
-traced back to the rescheduling events in the i2c-imx driver. The
-problem is that if the system is under heavy load, the schedule call and
-the wait_event_timeout may be rescheduled too late to reach the 25ms
-timeout. The same problem may occur with other SMBus devices. Therefore,
-this patchset removes the scheduling calls for non-DMA mode by handling
-the interrupt events directly in the ISR instead of scheduling a task to
-handle the events.
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-This patch will introduce some bigger changes because the logic for
-handling events in the ISR had to be rewritten. Therefore we have tested
-the following combinations:
-- i.MX8M Mini with dma
-- i.MX8M Mini without dma
-- i.MX8M Plus with dma
-- i.MX8M Plus without dma
-- i.MX7D with dma
-- i.MX7D without dma
-- i.MX7D atomic mode
+According to the i.MX8M Mini reference manual chapter "16.1.4.2
+Generation of Start" it is only necessary to poll for bus busy and
+arbitration lost in multi master mode. This helps to avoid rescheduling
+while the i2c bus is busy and avoids SMBus devices to timeout.
 
-Because we do not have any devices that use the SMBus block transfer
-mode, we were not able to test it. 
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/i2c/busses/i2c-imx.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-The ideas are based on the RFC:
-https://lore.kernel.org/all/20240531142437.74831-1-eichest@gmail.com/
-However, the handling of events in the ISR is new, because further
-testing showed that it was not enough to simply remove the schedule
-call.
-
-Changes since v3:
-- Fixed style issues with checkpatch.pl --strict (Andi)
-- Add comments to explain the code (Andi)
-
-Changes since v2:
-- Add Acked-by tags from Oleksij
-- Renamed i2c_imx_start_read to i2c_imx_prepare_read
-- I did not add a Fixes tag because the issues from Flavio have a
-  different root cause and are not fixed by this patchset
-
-Changes since v1:
-- Add Reviewed-by tags from Frank
-- Add new patch to use readb_relaxed and writeb_relaxed (Frank)
-- Update commit message for patch 1 with some clarifications (Frank)
-
-Stefan Eichenberger (4):
-  i2c: imx: only poll for bus busy in multi master mode
-  i2c: imx: separate atomic, dma and non-dma use case
-  i2c: imx: use readb_relaxed and writeb_relaxed
-  i2c: imx: prevent rescheduling in non dma mode
-
- drivers/i2c/busses/i2c-imx.c | 369 ++++++++++++++++++++++++++++++-----
- 1 file changed, 317 insertions(+), 52 deletions(-)
-
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index 98539313cbc97..fbacdfaf6b28e 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -216,6 +216,8 @@ struct imx_i2c_struct {
+ 	struct i2c_client	*slave;
+ 	enum i2c_slave_event last_slave_event;
+ 
++	bool			multi_master;
++
+ 	/* For checking slave events. */
+ 	spinlock_t     slave_lock;
+ 	struct hrtimer slave_timer;
+@@ -481,6 +483,9 @@ static int i2c_imx_bus_busy(struct imx_i2c_struct *i2c_imx, int for_busy, bool a
+ 	unsigned long orig_jiffies = jiffies;
+ 	unsigned int temp;
+ 
++	if (!i2c_imx->multi_master)
++		return 0;
++
+ 	while (1) {
+ 		temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2SR);
+ 
+@@ -540,8 +545,8 @@ static int i2c_imx_trx_complete(struct imx_i2c_struct *i2c_imx, bool atomic)
+ 		return -ETIMEDOUT;
+ 	}
+ 
+-	/* check for arbitration lost */
+-	if (i2c_imx->i2csr & I2SR_IAL) {
++	/* In multi-master mode check for arbitration lost */
++	if (i2c_imx->multi_master && (i2c_imx->i2csr & I2SR_IAL)) {
+ 		dev_dbg(&i2c_imx->adapter.dev, "<%s> Arbitration lost\n", __func__);
+ 		i2c_imx_clear_irq(i2c_imx, I2SR_IAL);
+ 
+@@ -1468,6 +1473,8 @@ static int i2c_imx_probe(struct platform_device *pdev)
+ 		goto rpm_disable;
+ 	}
+ 
++	i2c_imx->multi_master = of_property_read_bool(pdev->dev.of_node, "multi-master");
++
+ 	/* Set up clock divider */
+ 	i2c_imx->bitrate = I2C_MAX_STANDARD_MODE_FREQ;
+ 	ret = of_property_read_u32(pdev->dev.of_node,
 -- 
 2.43.0
 
