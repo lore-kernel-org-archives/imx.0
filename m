@@ -1,128 +1,162 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE5B28689
-	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 04:28:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE97168B8;
+	Wed,  2 Oct 2024 04:43:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727843301; cv=none; b=iXNFAuAYXqqXeQPGwkfdRFJEqzMZin+wARIqreiU/Vnnq3dnChiu9Ql1vj4k/pHhvZD3C1aW8mcuG29SyzKXFwS9o9pSpPQ453SjCDu+zFGI5YwQ1kkDzozQSmkY/DDq2KE3mZbz8IWBLGD3Tp/HPc5JHanT5ybdZt+y93m3+Mc=
+	t=1727844189; cv=none; b=d4s/jUnkP3OnEnnQwoo9m1ePjhSSBFoZdxdLIr1+MihbNjJONg4WQ+5ihq0uN84mFwedwCOmBmQfq4KRYdsCk4sJ5t8IUq6bs22P6pRqY2MMm0hU9+QiOXx6EBYDo7jwcSen7Va+qSdeeCVpme5EyhyJa/jjOmKEM6vbnfrxEB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727843301; c=relaxed/simple;
-	bh=WqsCe7eAsOBGFyCxWPwf7fbZ1vWFMuVkWyLYEvUHKGc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A4gkvkinac5LSwkwrxCmstMXxZRpSFSKwKBpqSUBwhspPSHGlsdl5C4O2qKTcwGsFHeh3awvTNWy2+EgxGn31IG+dE+suGC23Hq7gr4VAuMjW2lc/eNsC82LfFwqab1qZNst5YlNdV3NBMU0V5EBq5Sn+MNUOkv+FU54Ebbupk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=WIfA0abD; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1727844189; c=relaxed/simple;
+	bh=5DtRqM9QLkqt5hhs4CLcP1lfXbjzUAKy39nCpNuMxts=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Xh4DFzB2UE4HfgirF5rUvQkMioTjjzflE8Z4pcLfSer/BJ64jVQ/H5SomhwfAHvITXOhS4f480/JDyLEOIALQ6CmL3g2IaNGSip6BYe9QOTJz8Bb3zmR31T4oHbgmZbxPa+01mLn2BIqVhm5IAEOVO8wuFl7tuDjrzwHrA3r99Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=Q2iOuQwZ; arc=none smtp.client-ip=188.40.30.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="WIfA0abD"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 41DD888DA0;
-	Wed,  2 Oct 2024 06:28:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1727843297;
-	bh=4OompmCVH44YK/Nzg7ncbvVCgkI1on4v/xTZFgrTnc0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WIfA0abDqoLr3RmJkQz9L763eY4PLnzjARBZe9oBpiKy1cdAUPbs14KgXyr+oDDEW
-	 QMGwh1UrtGPOMbqSWYG6931b+6UrLSvbaerf2da6i87cspFQr1BHXDSvg7enMw7dQc
-	 /VHLVr3/eF3n95bR9ImtaofwgT5BQFDQk/1nWdLdPmvh+MNoATZkJfqH4jlgzN5NJC
-	 zoNX2bSAZPYQCVxtOiM2cA0ovcDC0Ggpo5OoXctdrAbXZ092xCELH1CnLc0rhjvpyd
-	 +vxG4LRmx19sn462A+y78rao1Mv3NBwsYFQ47V+3SfoVr/pATlzh/k5PGvslgtil7b
-	 0rV7LiRuhRIBw==
-Message-ID: <fad8882a-b61f-4715-a2d9-318e7c98b611@denx.de>
-Date: Wed, 2 Oct 2024 06:24:45 +0200
+	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="Q2iOuQwZ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
+	s=default2211; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-ID:Date:References:In-Reply-To:Subject:Cc:To:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=tvSPOhJ3UnuWKnl/SQdjFqbtKiC7eCIb0ktBQEagEBk=; b=Q2iOuQwZJ8/2Y1BIpDP9FSeK64
+	FkxA0pCgilbFOSdsrC/Z7dfaV9macf67Jj1nUvjkT0TWtuGcn1meDOcZOCwPT6vmSfyvBz+EgWB13
+	VUEIJOLaLFesaWw3FvfZ7UxGsj8o6HV3sZ3yJtVpVGqxDeaARKUhRJv1qQodcfrEUrA9Qy2zxOj0l
+	j6MklcIm3//qeQLazCoRU5D2oKV0Sc0MxwCUDOrJ4/LfiqAc0kUs621hNWWzAolih60VATGLGFnOa
+	SebbFjhLUTuMp7gpJxVwuta9abAsOPj9ZmXyVbN3EjflaWBlrvwifoc71DQGXDo8AHBSSnKk/TmAj
+	stjamXww==;
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <esben@geanix.com>)
+	id 1svrCS-000EPK-Ix; Wed, 02 Oct 2024 06:42:56 +0200
+Received: from [80.62.117.232] (helo=localhost)
+	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <esben@geanix.com>)
+	id 1svrCR-0005g8-1s;
+	Wed, 02 Oct 2024 06:42:55 +0200
+From: Esben Haabendal <esben@geanix.com>
+To: Marek Vasut <marex@denx.de>
+Cc: linux-serial@vger.kernel.org,  Uwe =?utf-8?Q?Kleine-K=C3=B6nig?=
+ <u.kleine-koenig@pengutronix.de>,  Christoph Niedermaier
+ <cniedermaier@dh-electronics.com>,  Christophe JAILLET
+ <christophe.jaillet@wanadoo.fr>,  Fabio Estevam <festevam@gmail.com>,
+  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,  Jiri Slaby
+ <jirislaby@kernel.org>,  Lino Sanfilippo <l.sanfilippo@kunbus.com>,
+  Pengutronix Kernel Team <kernel@pengutronix.de>,  Rasmus Villemoes
+ <linux@rasmusvillemoes.dk>,  Rickard x Andersson <rickaran@axis.com>,
+  Sascha Hauer <s.hauer@pengutronix.de>,  Shawn Guo <shawnguo@kernel.org>,
+  Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+  imx@lists.linux.dev,  linux-arm-kernel@lists.infradead.org,
+  stable@vger.kernel.org
+Subject: Re: [PATCH] serial: imx: Update mctrl old_status on RTSD interrupt
+In-Reply-To: <20241002041125.155643-1-marex@denx.de> (Marek Vasut's message of
+	"Wed, 2 Oct 2024 06:11:16 +0200")
+References: <20241002041125.155643-1-marex@denx.de>
+Date: Wed, 02 Oct 2024 06:42:55 +0200
+Message-ID: <87frpfcdyo.fsf@geanix.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: Document DH electronics i.MX8M
- Plus DHCOM PicoITX
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: imx@lists.linux.dev, Michael Walle <mwalle@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>, devicetree@vger.kernel.org,
- Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
- Alexander Stein <alexander.stein@ew.tq-group.com>,
- Max Merchel <Max.Merchel@ew.tq-group.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Peng Fan <peng.fan@nxp.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Mathieu Othacehe <m.othacehe@gmail.com>,
- Hiago De Franco <hiago.franco@toradex.com>, kernel@dh-electronics.com,
- linux-arm-kernel@lists.infradead.org,
- Joao Paulo Goncalves <joao.goncalves@toradex.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Gregor Herburger <gregor.herburger@ew.tq-group.com>
-References: <20240928234949.357893-1-marex@denx.de>
- <172784021443.525771.3308795793210058076.robh@kernel.org>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <172784021443.525771.3308795793210058076.robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Authenticated-Sender: esben@geanix.com
+X-Virus-Scanned: Clear (ClamAV 0.103.10/27414/Tue Oct  1 10:44:50 2024)
 
-On 10/2/24 5:50 AM, Rob Herring (Arm) wrote:
-> 
-> On Sun, 29 Sep 2024 01:48:08 +0200, Marek Vasut wrote:
->> Document support for DH electronics i.MX8M Plus DHCOM SoM on PicoITX carrier
->> board. This system is populated with serial console, EQoS ethernet, eMMC, SD,
->> SPI NOR, LEDs and USB 3.0 host used in USB 2.0 mode on PicoITX.
->>
->> Signed-off-by: Marek Vasut <marex@denx.de>
->> ---
->> Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
->> Cc: Conor Dooley <conor+dt@kernel.org>
->> Cc: Fabio Estevam <festevam@gmail.com>
->> Cc: Gregor Herburger <gregor.herburger@ew.tq-group.com>
->> Cc: Hiago De Franco <hiago.franco@toradex.com>
->> Cc: Hugo Villeneuve <hvilleneuve@dimonoff.com>
->> Cc: Joao Paulo Goncalves <joao.goncalves@toradex.com>
->> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
->> Cc: Mathieu Othacehe <m.othacehe@gmail.com>
->> Cc: Max Merchel <Max.Merchel@ew.tq-group.com>
->> Cc: Michael Walle <mwalle@kernel.org>
->> Cc: Peng Fan <peng.fan@nxp.com>
->> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
->> Cc: Rob Herring <robh@kernel.org>
->> Cc: Sascha Hauer <s.hauer@pengutronix.de>
->> Cc: Shawn Guo <shawnguo@kernel.org>
->> Cc: devicetree@vger.kernel.org
->> Cc: imx@lists.linux.dev
->> Cc: linux-arm-kernel@lists.infradead.org
->> ---
->>   Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
->>   1 file changed, 1 insertion(+)
->>
-> 
-> 
-> My bot found new DTB warnings on the .dts files added or changed in this
-> series.
-> 
-> Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-> are fixed by another series. Ultimately, it is up to the platform
-> maintainer whether these warnings are acceptable or not. No need to reply
-> unless the platform maintainer has comments.
-> 
-> If you already ran DT checks and didn't see these error(s), then
-> make sure dt-schema is up to date:
-> 
->    pip3 install dtschema --upgrade
-> 
-> 
-> New warnings running 'make CHECK_DTBS=y freescale/imx8mp-dhcom-picoitx.dtb' for 20240928234949.357893-1-marex@denx.de:
-> 
-> arch/arm64/boot/dts/freescale/imx8mp-dhcom-picoitx.dtb: pcie-ep@33800000: reg: [[864026624, 4194304], [402653184, 134217728]] is too short
-> 	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie-ep.yaml#
-> arch/arm64/boot/dts/freescale/imx8mp-dhcom-picoitx.dtb: pcie-ep@33800000: reg-names: ['dbi', 'addr_space'] is too short
-> 	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie-ep.yaml#
-This is unrelated. I believe the work-in-progress fix for this warning 
-is already posted:
+Marek Vasut <marex@denx.de> writes:
 
-https://lore.kernel.org/linux-arm-kernel/1721634979-1726-1-git-send-email-hongxing.zhu@nxp.com/
+> When sending data using DMA at high baudrate (4 Mbdps in local test case)=
+ to
+> a device with small RX buffer which keeps asserting RTS after every recei=
+ved
+> byte, it is possible that the iMX UART driver would not recognize the fal=
+ling
+> edge of RTS input signal and get stuck, unable to transmit any more data.
+>
+> This condition happens when the following sequence of events occur:
+> - imx_uart_mctrl_check() is called at some point and takes a snapshot of =
+UART
+>   control signal status into sport->old_status using imx_uart_get_hwmctrl=
+().
+>   The RTSS/TIOCM_CTS bit is of interest here (*).
+> - DMA transfer occurs, the remote device asserts RTS signal after each by=
+te.
+>   The i.MX UART driver recognizes each such RTS signal change, raises an
+>   interrupt with USR1 register RTSD bit set, which leads to invocation of
+>   __imx_uart_rtsint(), which calls uart_handle_cts_change().
+>   - If the RTS signal is deasserted, uart_handle_cts_change() clears
+>     port->hw_stopped and unblocks the port for further data transfers.
+>   - If the RTS is asserted, uart_handle_cts_change() sets port->hw_stopped
+>     and blocks the port for further data transfers. This may occur as the
+>     last interrupt of a transfer, which means port->hw_stopped remains set
+>     and the port remains blocked (**).
+> - Any further data transfer attempts will trigger imx_uart_mctrl_check(),
+>   which will read current status of UART control signals by calling
+>   imx_uart_get_hwmctrl() (***) and compare it with sport->old_status .
+>   - If current status differs from sport->old_status for RTS signal,
+>     uart_handle_cts_change() is called and possibly unblocks the port
+>     by clearing port->hw_stopped .
+>   - If current status does not differ from sport->old_status for RTS
+>     signal, no action occurs. This may occur in case prior snapshot (*)
+>     was taken before any transfer so the RTS is deasserted, current
+>     snapshot (***) was taken after a transfer and therefore RTS is
+>     deasserted again, which means current status and sport->old_status
+>     are identical. In case (**) triggered when RTS got asserted, and
+>     made port->hw_stopped set, the port->hw_stopped will remain set
+>     because no change on RTS line is recognized by this driver and
+>     uart_handle_cts_change() is not called from here to unblock the
+>     port->hw_stopped.
+>
+> Update sport->old_status in __imx_uart_rtsint() accordingly to make
+> imx_uart_mctrl_check() detect such RTS change. Note that TIOCM_CAR
+> and TIOCM_RI bits in sport->old_status do not suffer from this problem.
+>
+> Fixes: ceca629e0b48 ("[ARM] 2971/1: i.MX uart handle rts irq")
+> Signed-off-by: Marek Vasut <marex@denx.de>
+> ---
+> Cc: "Uwe Kleine-K=C3=B6nig" <u.kleine-koenig@pengutronix.de>
+> Cc: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+> Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Cc: Esben Haabendal <esben@geanix.com>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Jiri Slaby <jirislaby@kernel.org>
+> Cc: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> Cc: Rickard x Andersson <rickaran@axis.com>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> Cc: imx@lists.linux.dev
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-serial@vger.kernel.org
+> Cc: stable@vger.kernel.org
+> ---
+>  drivers/tty/serial/imx.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+> index 67d4a72eda770..3ad7f42790ef9 100644
+> --- a/drivers/tty/serial/imx.c
+> +++ b/drivers/tty/serial/imx.c
+> @@ -762,6 +762,10 @@ static irqreturn_t __imx_uart_rtsint(int irq, void *=
+dev_id)
+>=20=20
+>  	imx_uart_writel(sport, USR1_RTSD, USR1);
+>  	usr1 =3D imx_uart_readl(sport, USR1) & USR1_RTSS;
+> +	if (usr1 & USR1_RTSS)
+> +		sport->old_status |=3D TIOCM_CTS;
+> +	else
+> +		sport->old_status &=3D ~TIOCM_CTS;
+>  	uart_handle_cts_change(&sport->port, usr1);
+>  	wake_up_interruptible(&sport->port.state->port.delta_msr_wait);
+
+Reviewed-by: Esben Haabendal <esben@geanix.com>
