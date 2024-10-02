@@ -1,234 +1,297 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2065.outbound.protection.outlook.com [40.107.105.65])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5731CEAA3
-	for <imx@lists.linux.dev>; Tue,  1 Oct 2024 20:29:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727814551; cv=fail; b=YNC8ZNHrV18IaxB3QYFX44+9qwyGsCM/pCRcEVRsIraG2H4UqIVW9ig1Ny7v2mwdiLcYYpTUo8NC4dxYbqvPl7/WW7c+Eg6IoxXoe11TiElD7++pQIt8JLd66U63cplofz0P4wZDCfWRQmnbd6PD4LMg1w5Lj4nDJbhO2QHS5U4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727814551; c=relaxed/simple;
-	bh=Xboey0z0LIy4nDMFfCEpcQChEccWaqKcI6ep3yznVMA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=c11bS4vO0fEMtu6eRgjqTRDZt8xqGlpGn3jO0kY9IZjfqt5LZ9EnGOgY+1q6dOi8jfsEyLCE+yvwSfy/Fq560K77KUgoU9hrMQJ5PQ3QjeTx3YE0EKEZMt8ei7SjdQHoZNNYpbO/Vxk5qGhKlBdoj02dmtspwcUg/DaeN8ftYbE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=f+tuvN7J reason="signature verification failed"; arc=fail smtp.client-ip=40.107.105.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB618F58;
+	Wed,  2 Oct 2024 00:02:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727827336; cv=none; b=R1ez0Iyk9RFq75h2AxFuE/70H1gdJkAP9yhyseQXrL27LjdYJRIvnlANFlMtyi/gHRojXYBcBRHCkqwe7GWRnPP0v3dYMu0y83CpBfbvjpqrqesFB7OzNXaWzTueXfpnRIZN22dJwbzmfWtawc7zr0S5pnbmofEwVAbO4qLfeHE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727827336; c=relaxed/simple;
+	bh=aRIaCvZg7k4Uu4zwamCQXdJnCx+yZ1ZoA82VwpA4DfI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SYIsDu9lejlInBMwsX7Op5tkQUcHB5RFaWObAGH//iPrwmbEibVbhO/E9skxP89GhcH+8uyYYgayoW8jjEp1tsgNHWvwnkrWWC2wndZpxpdIxPqhOMrY9OvWFg+0ZtvsGRNzGjkHb6TKrz+3XOzEquTJB4PnGLaESmElq+cekxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SLB6VJzc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="f+tuvN7J"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yqTi8DiIhBy5cP1vr+iX9YaaQHlfeWVyVxC0imWFX1bAuxSYa9vcdquHTVpU/Eh0EUgvvcdbOXjhqrzPfCGSXgMBF9d6dGpBKCn33R6nkklJzJurOQqnHAIiYvaRZnveBgc9QMpp3hvDBvGb4w3YV1nQ+w5d//AbkRJGB4rxrceD00SsZu2MwfO9ciCKN0ikAU21mmzHeAo60Pw4UW3NWige921st368wMD8FJK44AVhHV6C9WzYHRuHVjH6sKUO653laV8PBPvbse15c45paoF/KvZ9dy1KZK20S/zL1e6JEAN6QsUikANOZer0DczML/OXdZ7gBxmWJpJBabcPIg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JHEFsbACc93WN7Tf9UsF9SHPgO0k3sa9ulDrtXShA/o=;
- b=a2wHKujL+L6DLZcGYQlmE24bjqdNiiP6BirMUDFaqxwYPmd6jRlRnH8EWAGo5VxZeS0rvttDuB6LEyDNtAK4txgMVhwTRoyU71NzsT568aY7VxrOLxppiX2YHQgmKdZ6TvQqgyuFv+q/jLU1ZChD38j3Noj3ZUgztWDGkovyiqIbgeX9WfLO6SrnePBfLgKDUnEIfJ9BsvrkVA6kqBcb5aA7KuzvAxUhjOycWPnbHs5vSJKVZU8eEkKJN5o8Vwyd3ssfcDdp4w3AHlJ45RKgSJBdmRKPLLh2HN/xHd61gAcsPVLD1TtkWa7tcwnSMHV/jchpovzXMDJorDTtLM6EDQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JHEFsbACc93WN7Tf9UsF9SHPgO0k3sa9ulDrtXShA/o=;
- b=f+tuvN7JQUQ36QEJoSDuemg2dRjK7OlCWphjkJXm2KKI5xdMUv5jJrtJ7g3j4LF4uks5SDwAS5qp7CL2r0rXGfyZvvQQE+Uy5GRn9TAxr7PhALVaEN/szSvgL8iRT3piL1LKmNTZF9n8w3dM7HGsUpcf69NV1Ov77KWJNFGsgK1/8w2s2HWteOdlR1sFDfvszfjaSl/HR8ZjX5jZWTCTNVeS+j9seyQRXfICP4LUnCCki7VbyRQAjmtq2ES36VpVrnWC3FpeefWBRSqBrpSMNrFoF1p6E+ldR+Y1zz8m4TAJcIrOD2/9WBRRtDCBSfJGyajkAuKp5NrXUOq+M27sBA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS4PR04MB9573.eurprd04.prod.outlook.com (2603:10a6:20b:4fb::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.26; Tue, 1 Oct
- 2024 20:29:06 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8005.024; Tue, 1 Oct 2024
- 20:29:06 +0000
-Date: Tue, 1 Oct 2024 16:28:59 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Conor Culhane <conor.culhane@silvaco.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v5 4/6] i3c: master: svc: use spin_lock_irqsave at
- svc_i3c_master_ibi_work()
-Message-ID: <ZvxbizZG0phiS56Y@lizhi-Precision-Tower-5810>
-References: <20241001-svc-i3c-hj-v5-0-480ab8aed849@nxp.com>
- <20241001-svc-i3c-hj-v5-4-480ab8aed849@nxp.com>
- <20241001221509.7d418d15@xps-13>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241001221509.7d418d15@xps-13>
-X-ClientProxiedBy: BYAPR02CA0053.namprd02.prod.outlook.com
- (2603:10b6:a03:54::30) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SLB6VJzc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8791DC4CEC6;
+	Wed,  2 Oct 2024 00:02:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727827335;
+	bh=aRIaCvZg7k4Uu4zwamCQXdJnCx+yZ1ZoA82VwpA4DfI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SLB6VJzcQ/yk6aTq7LT3xVeCCstO2cJNt15ECPPUZb+VNlEO3s2eSWnFExwlpqMWb
+	 +5TZWHri6YxUk5rfmJ0tJqT4nE/NqygCvY16SSlHx9oKXMBzi1wSK2Z5xaV/AdYTU2
+	 KJPcCThorV0XHCXdLCJV8a2ItYFZ3j1EorGuGg0Xy+phJydxFKGzPZNdXa+kWS8ycz
+	 bEYU70pAUJitnESJ9dsah1VfzEjsmT5JIqtHPof8jJeZuSADKEP0qeTBmypfdC1Bh4
+	 qbOeZeTrWC0DANOKSlHNQxpAXwICbc7oj8A0/spvQ1J6kR9B+20salw+E7ipBL9zzw
+	 vm4BPNrsCSgFQ==
+Date: Tue, 1 Oct 2024 19:02:14 -0500
+From: Rob Herring <robh@kernel.org>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org, rfoss@kernel.org,
+	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+	jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
+	simona@ffwll.ch, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, catalin.marinas@arm.com, will@kernel.org,
+	quic_bjorande@quicinc.com, geert+renesas@glider.be,
+	dmitry.baryshkov@linaro.org, arnd@arndb.de, nfraprado@collabora.com,
+	o.rempel@pengutronix.de, y.moog@phytec.de
+Subject: Re: [PATCH 5/8] dt-bindings: display: bridge: Add ITE IT6263 LVDS to
+ HDMI converter
+Message-ID: <20241002000214.GA49657-robh@kernel.org>
+References: <20240930052903.168881-1-victor.liu@nxp.com>
+ <20240930052903.168881-6-victor.liu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS4PR04MB9573:EE_
-X-MS-Office365-Filtering-Correlation-Id: f04a272c-6f0c-450a-57a9-08dce257b250
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?4VCP/FaP+tV4yo3Ip/SB00gey+76RnpYZNpFmCSYAZqQWV1ySmY1ZIWR+j?=
- =?iso-8859-1?Q?8FYd4aS45+VpyPBwR2dSWJcEgd+GYVu+oZQVfdNK6+Hy7MGNI8b5r6ULSc?=
- =?iso-8859-1?Q?kk/SeAzkI+AXw0XWw9TqY0u6jxYz1Fl1QbPSv8EXqCKQKlbL7qdWVC0wuU?=
- =?iso-8859-1?Q?t+xMQLvVJ6fgZumqhTmoyeaUeMu8CKtkhPOP4L3whi2b+XL0qVyxWSwt5T?=
- =?iso-8859-1?Q?OvKmpZd2gSzHN00rKozSUoWycxMVQI95WA4K9e+v8fP7FbhNM7yCNQ/Jv1?=
- =?iso-8859-1?Q?wIloloahUAUjfAIvTbJeRi19Dor5ChpSqCEzsVe4MBk4gVTobHeuwKEzs3?=
- =?iso-8859-1?Q?XvDGmJm3n4qfQv2yeLBRMG3Qiv8Javt1+pT3FSZOdRmxrqXl2FsMBjTogp?=
- =?iso-8859-1?Q?NZItOC8rZF9bHzd7zCHKyGl92uAabDvvXjSs7pnHnuFmKCHl2pv7PA6LDF?=
- =?iso-8859-1?Q?dx8mfMpgjLa4j64LdJK2oyJWE4YvmLo/DeccOeAUla4jM9ZJS3u9jVdiwS?=
- =?iso-8859-1?Q?uyjKVIYbveMmb8mbB+nSsiSDPjg9IHt5IvwyGG19HoZSktxj8Iu60Y4GOJ?=
- =?iso-8859-1?Q?2oo83j2pqUuqWS+v1KqiVJ5meGQl834c7Q8fj+EkAFVGDNzJVMfm02ZLfb?=
- =?iso-8859-1?Q?zVzUwpwbS0orMLGTk4TOUWR9/zVsbLCn5E0ud/h64wuaJuloFfNsJqlE+D?=
- =?iso-8859-1?Q?QxRRm4PaLwF4cQgcsLhwN2ImmBfrSUj7tFdCCMIT98cZzJ4DgCgMKrxEp4?=
- =?iso-8859-1?Q?BHdU4H+FjV3zfZnAyGNdg09m7ZLrOLN/arlTaYwVT2DeSWd++49qAPZXmv?=
- =?iso-8859-1?Q?xYqM6zpR4CfO/aWvCyRB/MJ1QlBTi3CIHE780d4aUXIYZIZNWNYZgHsZHn?=
- =?iso-8859-1?Q?0db8zN4U+g78vgfSBgGKup0jpPdiX0B67FDHZRdEtZsv4IRf+mZ8GyNL9y?=
- =?iso-8859-1?Q?ufMmaw/Q1ePOM8+czeQg0KrcBjCblpVDmblgItY4QMs/f1cPqrHnQ8SbbL?=
- =?iso-8859-1?Q?xz6YkkKeaqeSQbYLNTUm+CJembYBBT+MNVMIBj+eZc7MaTUBB3u9GcuxZs?=
- =?iso-8859-1?Q?dh0HNE9SxSph0Gft1cF34OGnOVrzcnAovIrPvJiEEHqoV4/wy1Pw0Anc9R?=
- =?iso-8859-1?Q?yuz3rxwLQEhA0edXL5YdIgNyuqdBqhd0sYRt6ogon85FlAiIHOzKsEEPVB?=
- =?iso-8859-1?Q?Sx7xLHKvAjJ1aihjCjnqpA16tHQ6lDA4wKNWGEFAEQRnWyHxWwRPnoziwu?=
- =?iso-8859-1?Q?N9Ff7MTJMjVNuaoFqHxZJf+PYl6ImdI4kVhBbN9v/MsIyNAw9GCEjvyKNW?=
- =?iso-8859-1?Q?DHwKAOnC7f23GtTTmXrvweJkhAGws9Z6/nDJZiTg4fa0Ac46dwSwCYA6rE?=
- =?iso-8859-1?Q?+U5qzbphOGd8FRLtTbho0cFFhN5clKN0Y1qrqi9IwzJwmOuqBJw0QD0k0b?=
- =?iso-8859-1?Q?sf1fOUIpc5Zl/EvXgqrw+AMHfhjCdJXG5shrhQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?UAwDSYVSYAktI02V/D9acKdX3lkoreKqFBnJFQdG6kEjxTk+FFbGj/WuTH?=
- =?iso-8859-1?Q?lr1BNnJZe/+nWxvpE7kMAK4O0LphA1lghfWIOfmQR1B9URSJ4a/xO90Zy9?=
- =?iso-8859-1?Q?tfP1kSWSpSiL+OgE4v8crDRoj20KGG+LK4LWkUqenJ2EX6MGimw17w2KRh?=
- =?iso-8859-1?Q?r6KvqxmF/eh5v4ORM8xzVRixSM2HdBwj2YqDLBNzQsBHYrtbvQCpHyrP9f?=
- =?iso-8859-1?Q?LGC0l2WacjYViFcKgMTx+jRak6X3jMS9PT3aS3BUNjRYNBLibt0s31RCAf?=
- =?iso-8859-1?Q?F46PpooKXhAoYSmQ0Hgg44CewACVC6OVTMyCd272TUm+F78CpYztrIdUtW?=
- =?iso-8859-1?Q?WQwkBF8XHGEeXFtDfGBR2L7VN2cmDNe9CkLX5Sn4uPC3pAcwnqSurnR/yM?=
- =?iso-8859-1?Q?IPm+9PJf95lQIhJaQP+MkLXVN0LEVaBJ4zJYxfnzHOG3mSxuGrLH49d3qT?=
- =?iso-8859-1?Q?RNIHzfwGR67ek0nY4idYrRWKRDEV88lqYqipk23m7xm3HokBLZ+EcnAmj1?=
- =?iso-8859-1?Q?yVErVkQ87kKRwp7ritPkHMG1lTJWtSakCg110hoXas2NRXRjmuucHgml+U?=
- =?iso-8859-1?Q?i0KKPKYc8Aj9UinORv0OD8N5xN1vNfkZc0KCOPaooIRytyiQs+Vkk5eBmU?=
- =?iso-8859-1?Q?B88Z5Dtn/4XfKIZ4IVoWyYCJ+s/P+0KSMj71bo43cjEuHj6/6TBQt9UaJ1?=
- =?iso-8859-1?Q?YF/yqFa3zJ77eql10RFj+IzF1OEFEwsxbEzP5bJ8P3B3w3zALOsowcw1cm?=
- =?iso-8859-1?Q?Jqx3kv8od31hEltxnszg27zIENGsAsToFh4tVfRchgXjsvN4jhzGiM3T8H?=
- =?iso-8859-1?Q?wIaTrqsV+W6JxFak5YA5pICGEBR7Jf5E0Fj6DqxKOv9utztr1fZcEKHqRl?=
- =?iso-8859-1?Q?RxdLTAwsGl9iHv+jsNKHYqPNg9wYD5VvuUTFq6mD9ksSxQpCOeRsGuQdig?=
- =?iso-8859-1?Q?Dl8MFU0MMnMu4R9t+HwUb33hnSckeHhGl/4L/YZMXaDViGuL0SZJK7SX82?=
- =?iso-8859-1?Q?ik+GyVydQWRB2gAOeQfdf8AtWiwUabzPKT2487ceyFiUmJDZO1erzDtKHT?=
- =?iso-8859-1?Q?KXSCl0Ml+qy1FBVI18w47/KDM16HvWDckjeiY6Kh2BkdjsSWyRzZnE26t+?=
- =?iso-8859-1?Q?Quynz5tegac4p9ydQZG2TV2/KmBe5JAF3Cem64RxM5OkuTKvE2dVuZbh5O?=
- =?iso-8859-1?Q?S5CTVhJL3JpkQKwc25k7IUtolrezTKf3Kav/knSmMjsJicp7NN9ezq/g9K?=
- =?iso-8859-1?Q?ycTLiJv5JpLRSOB7ATcR3S8EWU37xeO9cEMSkFYGYIQ5mHcxwMYXfn77pi?=
- =?iso-8859-1?Q?HcRilSwXiLlZaTocReiBK15GE9k67OjCMIwJZGUewEsmVi9rXXj/AWxJ13?=
- =?iso-8859-1?Q?85zrc2cOKUD7syvE+rr+uOlAEUMMymBWkvSUQ+V+4ftFjjTYAWO9f9uJI/?=
- =?iso-8859-1?Q?ag4AAVZR1KQR5D8hTpyYM4jYJMLZSZE4kl+H4It9uGZ1ydYnsutEgLI7t9?=
- =?iso-8859-1?Q?USWpr1SUpFjEPGwic181dHJweSWx0kNcNtfZbe78leCwxI6rU7GqPi/QaB?=
- =?iso-8859-1?Q?8KaKOTAUYZG5JdOr308xMKEv8gpNX00MwB3c+aOIwjS7gVgS7h6dfFnLrf?=
- =?iso-8859-1?Q?r6sqnTyjg178tuswjHfpY+8mDzj/HBTgSV?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f04a272c-6f0c-450a-57a9-08dce257b250
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2024 20:29:06.2509
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Pn5UjneVNU+ReLoML8qqSiGiwLBKJWbSeugFnKZj+XUikne2nvzaY1vPLQsJ7GYI9nBwTkz8ySQzA4eyaqQxkA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9573
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240930052903.168881-6-victor.liu@nxp.com>
 
-On Tue, Oct 01, 2024 at 10:15:09PM +0200, Miquel Raynal wrote:
-> Hi Frank,
->
-> Frank.Li@nxp.com wrote on Tue, 01 Oct 2024 12:02:53 -0400:
->
-> > According to I3C spec ver 1.1, 09-Jun-2021, section 5.1.2.5:
-> >
-> > The I3C Controller shall hold SCL low while the Bus is in ACK/NACK Phase of
-> > I3C/I2C transfer. But maximum stall time is 100us. The IRQs have to be
-> > disabled to prevent schedule during the whole I3C transaction, otherwise,
-> > the I3C bus timeout may happen if any irq or schedule happen during
-> > transaction.
-> >
-> > Replace mutex with spin_lock_irqsave() to avoid stalling SCL more than
-> > 100us.
-> >
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> > Change from v3-v4
-> > - improve commit message
-> > - needn't mutex here, other place already use spin_lock_saveirq to protent
-> > i3c transfer.
-> > ---
-> >  drivers/i3c/master/svc-i3c-master.c | 14 +++++++++++---
-> >  1 file changed, 11 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-> > index 5df0ec02d73ce..1ee6ce186195c 100644
-> > --- a/drivers/i3c/master/svc-i3c-master.c
-> > +++ b/drivers/i3c/master/svc-i3c-master.c
-> > @@ -436,7 +436,16 @@ static void svc_i3c_master_ibi_work(struct work_struct *work)
-> >  	u32 status, val;
-> >  	int ret;
-> >
-> > -	mutex_lock(&master->lock);
-> > +	/*
-> > +	 * According to I3C spec ver 1.1, 09-Jun-2021, section 5.1.2.5:
-> > +	 *
-> > +	 * The I3C Controller shall hold SCL low while the Bus is in ACK/NACK Phase of I3C/I2C
-> > +	 * transfer. But maximum stall time is 100us. The IRQs have to be disabled to prevent
-> > +	 * schedule during the whole I3C transaction, otherwise, the I3C bus timeout may happen if
-> > +	 * any irq or schedule happen during transaction.
-> > +	 */
-> > +	guard(spinlock_irqsave)(&master->xferqueue.lock);
-> > +
-> >  	/*
-> >  	 * IBIWON may be set before SVC_I3C_MCTRL_REQUEST_AUTO_IBI, causing
-> >  	 * readl_relaxed_poll_timeout() to return immediately. Consequently,
-> > @@ -456,7 +465,7 @@ static void svc_i3c_master_ibi_work(struct work_struct *work)
-> >  	       master->regs + SVC_I3C_MCTRL);
-> >
-> >  	/* Wait for IBIWON, should take approximately 100us */
-> > -	ret = readl_relaxed_poll_timeout(master->regs + SVC_I3C_MSTATUS, val,
-> > +	ret = readl_relaxed_poll_timeout_atomic(master->regs + SVC_I3C_MSTATUS, val,
-> >  					 SVC_I3C_MSTATUS_IBIWON(val), 0, 1000);
->
-> If we now are holding a spinlock and expect this to happen within
-> 100us, then I guess the timeout should be reduced?
+On Mon, Sep 30, 2024 at 01:29:00PM +0800, Liu Ying wrote:
+> Document ITE IT6263 LVDS to HDMI converter.
+> 
+> Product link:
+> https://www.ite.com.tw/en/product/cate1/IT6263
+> 
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> ---
+>  .../bindings/display/bridge/ite,it6263.yaml   | 310 ++++++++++++++++++
+>  1 file changed, 310 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/display/bridge/ite,it6263.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/display/bridge/ite,it6263.yaml b/Documentation/devicetree/bindings/display/bridge/ite,it6263.yaml
+> new file mode 100644
+> index 000000000000..97fb81e5bc4a
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/display/bridge/ite,it6263.yaml
+> @@ -0,0 +1,310 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/display/bridge/ite,it6263.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: ITE IT6263 LVDS to HDMI converter
+> +
+> +maintainers:
+> +  - Liu Ying <victor.liu@nxp.com>
+> +
+> +description: |
+> +  The IT6263 is a high-performance single-chip De-SSC(De-Spread Spectrum) LVDS
+> +  to HDMI converter.  Combined with LVDS receiver and HDMI 1.4a transmitter,
+> +  the IT6263 supports LVDS input and HDMI 1.4 output by conversion function.
+> +  The built-in LVDS receiver can support single-link and dual-link LVDS inputs,
+> +  and the built-in HDMI transmitter is fully compliant with HDMI 1.4a/3D, HDCP
+> +  1.2 and backward compatible with DVI 1.0 specification.
+> +
+> +  The IT6263 also encodes and transmits up to 8 channels of I2S digital audio,
+> +  with sampling rate up to 192KHz and sample size up to 24 bits. In addition,
+> +  an S/PDIF input port takes in compressed audio of up to 192KHz frame rate.
+> +
+> +  The newly supported High-Bit Rate(HBR) audio by HDMI specifications v1.3 is
+> +  provided by the IT6263 in two interfaces: the four I2S input ports or the
+> +  S/PDIF input port.  With both interfaces the highest possible HBR frame rate
+> +  is supported at up to 768KHz.
+> +
+> +properties:
+> +  compatible:
+> +    const: ite,it6263
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    maxItems: 1
+> +    description: audio master clock
+> +
+> +  clock-names:
+> +    const: mclk
+> +
+> +  reset-gpios:
+> +    maxItems: 1
+> +
+> +  ivdd-supply:
+> +    description: 1.8V digital logic power
+> +
+> +  ovdd-supply:
+> +    description: 3.3V I/O pin power
+> +
+> +  txavcc18-supply:
+> +    description: 1.8V HDMI analog frontend power
+> +
+> +  txavcc33-supply:
+> +    description: 3.3V HDMI analog frontend power
+> +
+> +  pvcc1-supply:
+> +    description: 1.8V HDMI frontend core PLL power
+> +
+> +  pvcc2-supply:
+> +    description: 1.8V HDMI frontend filter PLL power
+> +
+> +  avcc-supply:
+> +    description: 3.3V LVDS frontend power
+> +
+> +  anvdd-supply:
+> +    description: 1.8V LVDS frontend analog power
+> +
+> +  apvdd-supply:
+> +    description: 1.8V LVDS frontend PLL power
+> +
+> +  "#sound-dai-cells":
+> +    const: 0
+> +
+> +  ite,i2s-audio-fifo-sources:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    minItems: 1
+> +    maxItems: 4
+> +    items:
+> +      enum: [0, 1, 2, 3]
+> +    description:
+> +      Each array element indicates the pin number of an I2S serial data input
+> +      line which is connected to an audio FIFO, from audio FIFO0 to FIFO3.
+> +
+> +  ite,rl-channel-swap-audio-sources:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    minItems: 1
+> +    maxItems: 4
+> +    uniqueItems: true
+> +    items:
+> +      enum: [0, 1, 2, 3]
+> +    description:
+> +      Each array element indicates an audio source whose right channel and left
+> +      channel are swapped by this converter. For I2S, the element is the pin
+> +      number of an I2S serial data input line. For S/PDIF, the element is always
+> +      0.
+> +
+> +  ports:
+> +    $ref: /schemas/graph.yaml#/properties/ports
 
-yes, 100 should be enough for timeout. Normal it should be set at 9th SCL.
+Test your bindings. You need 'additionalProperties: false' here. Though 
+I can't remember if that can 'see' properties under the oneOf. So it may 
+have to be unevaluatedProperties instead.
 
-Frank
+> +
+> +    oneOf:
 
->
-> >  	if (ret) {
-> >  		dev_err(master->dev, "Timeout when polling for IBIWON\n");
-> > @@ -529,7 +538,6 @@ static void svc_i3c_master_ibi_work(struct work_struct *work)
-> >
-> >  reenable_ibis:
-> >  	svc_i3c_master_enable_interrupts(master, SVC_I3C_MINT_SLVSTART);
-> > -	mutex_unlock(&master->lock);
-> >  }
-> >
-> >  static irqreturn_t svc_i3c_master_irq_handler(int irq, void *dev_id)
-> >
->
-> Otherwise,
->
-> Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
->
->
-> Thanks,
-> Miquèl
->
-> --
-> linux-i3c mailing list
-> linux-i3c@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-i3c
+I think you can get rid of this. If port@1 requires the dual link 
+properties and then properties on port@0, then the only way you can have 
+a single link is removing port@1 from the DT. 
+
+> +      - properties:
+> +          port@0:
+> +            $ref: /schemas/graph.yaml#/properties/port
+> +            description: the first LVDS input link
+> +
+> +          port@1: false
+> +
+> +          port@2:
+> +            $ref: /schemas/graph.yaml#/properties/port
+> +            description: video port for the HDMI output
+> +
+> +          port@3:
+> +            $ref: /schemas/graph.yaml#/properties/port
+> +            description: sound input port
+> +
+> +        required:
+> +          - port@0
+> +          - port@2
+> +
+> +      - properties:
+> +          port@0:
+> +            $ref: /schemas/graph.yaml#/$defs/port-base
+> +            unevaluatedProperties: false
+> +            description: the first LVDS input link
+> +
+> +            properties:
+> +              dual-lvds-odd-pixels:
+> +                type: boolean
+> +                description: the first sink port for odd pixels
+> +
+> +              dual-lvds-even-pixels:
+> +                type: boolean
+> +                description: the first sink port for even pixels
+> +
+> +            oneOf:
+> +              - required: [dual-lvds-odd-pixels]
+> +              - required: [dual-lvds-even-pixels]
+> +
+> +          port@1:
+> +            $ref: /schemas/graph.yaml#/$defs/port-base
+> +            unevaluatedProperties: false
+> +            description: the second LVDS input link
+> +
+> +            properties:
+> +              dual-lvds-even-pixels:
+> +                type: boolean
+> +                description: the second sink port for even pixels
+> +
+> +              dual-lvds-odd-pixels:
+> +                type: boolean
+> +                description: the second sink port for odd pixels
+> +
+> +            oneOf:
+> +              - required: [dual-lvds-even-pixels]
+> +              - required: [dual-lvds-odd-pixels]
+> +
+> +          port@2:
+> +            $ref: /schemas/graph.yaml#/properties/port
+> +            description: video port for the HDMI output
+> +
+> +          port@3:
+> +            $ref: /schemas/graph.yaml#/properties/port
+> +            description: sound input port
+> +
+> +        required:
+> +          - port@0
+> +          - port@1
+> +          - port@2
+> +
+> +        allOf:
+> +          - if:
+> +              properties:
+> +                port@0:
+> +                  required:
+> +                    - dual-lvds-odd-pixels
+> +            then:
+> +              properties:
+> +                port@1:
+> +                  properties:
+> +                    dual-lvds-odd-pixels: false
+> +
+> +          - if:
+> +              properties:
+> +                port@0:
+> +                  required:
+> +                    - dual-lvds-even-pixels
+> +            then:
+> +              properties:
+> +                port@1:
+> +                  properties:
+> +                    dual-lvds-even-pixels: false
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - ivdd-supply
+> +  - ovdd-supply
+> +  - txavcc18-supply
+> +  - txavcc33-supply
+> +  - pvcc1-supply
+> +  - pvcc2-supply
+> +  - avcc-supply
+> +  - anvdd-supply
+> +  - apvdd-supply
+> +  - ports
+> +
+> +additionalProperties: false
+> +
