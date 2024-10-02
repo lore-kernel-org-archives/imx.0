@@ -1,166 +1,73 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421AE12FF70
-	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 06:52:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836031754B
+	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 07:19:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727851947; cv=none; b=Iq/ctPU8qW66aBrl2AT6n7wz4uWVcRUiwgsWAcurM65aAdAx44wIiyqfxlrLxqw5R/5izY16RUN/5sNTvAhZ0pur8sQ0meYghF7o12BoBYBb4RYrgfk+9UXszoyEv3RMVhWq5j0tivwYNG6b8HFLG3l6GMrsL7TB+TmW+2dLIPE=
+	t=1727853543; cv=none; b=TaK7VOPyj548QJv4BArn9S9FfvFyh6MpgKvTWn694C6FAoRHJ6hBVNeDGh4ip89xq9Wh9XgQrWWW9FfDGnJ/SP7HE6ep7eUXmW6K7/oXwRApKLT39rjRi0NhfEprRrO+jpH+w2bykytmnTVeCuBc7+UC4j+DfUECHk8qVIvX3JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727851947; c=relaxed/simple;
-	bh=NbxMuNV6T7+k9WLtS52Fq9ckPhCxmFmjklyi5qtHS8g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WXUY7vI6Mi0pvRwBMhFMS9yLOvYo4JZrezVooOVf8mMQcrowHM2KYvpQbRO8wDwC+wWg+HSPvAiwcyM+e/OBRzgkR44thBwq2L1qd2Cvu62DaF3CZvPaLthM+NhFAkRYK46TL943mO1p+IfVvw2ELzTcRJirohSqJh/Il8mhw80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hh+cMc53; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1727853543; c=relaxed/simple;
+	bh=h2L63Hjt//sawD6KF5ZXuFON46cUXT8sUuXLt2VSNP8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cdDuN/Ujcr+1f+M326DS5AAozuMeTjtrGiVDT8rIThqk5kIUw/XETmjGhPvV8q5Ko9Z0rYCygGZlk7EIG16sChJd+vt9eFdUUM00dE8K2Snsm5sIOkDBeEc+ZZHt5n08Y+CsJTlATtJ3Lyee2nVY9n5f6XUZ37sLXUQAoC5AxFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RNkBufXd; arc=none smtp.client-ip=217.70.183.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hh+cMc53"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-7db233cef22so5244447a12.0
-        for <imx@lists.linux.dev>; Tue, 01 Oct 2024 23:52:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1727851945; x=1728456745; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Wi2knaZL4xgHJFaFdtzBXqIWLSuRG81LD3CTPdMJ4G8=;
-        b=hh+cMc53i0xpEQJ2QMJK0Q7driY830w6jb1LQCp7obxs+eGI3GR9hNSqC4YJV3tAhO
-         NRnAGnj65espmaqwDvUwHyCzrm6BkAaBFrlA0iRufocZGQ5RN36Dxrm0xxNxzTTu8CYJ
-         /u819n6ea5UQ2dWqIly2Roq8mf4nzs7tiE/pc1TrV1gP1gsz1pK/eba/1eHgBzcgDscR
-         7uQq6TPzigdf5XHo50n0rFtWpbcNRw3keMfG7+GnCaSzjnOBgz8OW7y9lCwkjd7JgQL+
-         /ungWnfXB85Oi7ZJAdA67OWQ8E1LXTwR5dmErQEy9WHKk5RWOG+5QlriSj5St6+zx6UK
-         FtEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727851945; x=1728456745;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Wi2knaZL4xgHJFaFdtzBXqIWLSuRG81LD3CTPdMJ4G8=;
-        b=wivNlIdNT9P00pWMPuO8eBkb6Qd0IoKXL2E/MfPkaHE6MeFjwxmn+qMCmqJtZQ7mqC
-         z3CzSGByVCAJVns6GVuo4AtzSE/yDseNhlKk5VY9n4vGb72xCq5TnkC03UtSD/DurLJJ
-         VMyLZXCGsm121zmkbP7MVdZweAuMxwzixaArX117u+Q4bcPpDOVpZuu9A+Y3Dte4TG0c
-         fyob+l2dNyoNxPYFWoXyLMQvHmOr4brGvEry83fxQJ770CBeto7el2rr019YhQcIReap
-         Nn96LphJRXLwwO16hVKGqQjt98cC2O6H4sgvb45w/oidValFbZSzzRN0uMKhHkMtF2OF
-         Zt0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXXgsJAJw8CHKPAYx9D+CWCnQEGfrO3C5U2h4Oslg/HBHEP4kj9CB7hmQTueiefL3Rk7qw=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx0cJqlTp3UrP0i96QRVV8GC09rqY3qjqNn13AiJvIhQmXq6e0t
-	ScFsxDIJplgbQHFOpTokCMAPJD4bXw2hyf4ICDEAcRjelCXO/SXrfy0CWmlKobZtxjBV6PCQn+G
-	p6IrsJqSneDQCY8IQ6XOHXlMjinxmg3bsZ42+0Q==
-X-Google-Smtp-Source: AGHT+IHsypqnvHxqefjiDxYFDz2akYzDsFoGU6PLh+7312onUDhEMOGndUNDmbbTnJmbGIeOeR17h1E7o2px85taLvw=
-X-Received: by 2002:a05:6a21:2d8b:b0:1d5:10c3:af5a with SMTP id
- adf61e73a8af0-1d5e2d3df25mr3361839637.47.1727851945585; Tue, 01 Oct 2024
- 23:52:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RNkBufXd"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id F3AC1FF804;
+	Wed,  2 Oct 2024 07:18:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1727853538;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=h2L63Hjt//sawD6KF5ZXuFON46cUXT8sUuXLt2VSNP8=;
+	b=RNkBufXdSbZHsntgIhy3xUQxbrYWO++SlOZjyz6wNVF6VFe2Qt+oFWVu0pAIKol0PFX3SJ
+	fJOiwoFSUrvblvt05eKl79ZJ3qXqct5Hth16QJEmBTvEKu4leZJ/NM6kjR6e5UoxZ+PMZG
+	qaHHLPrUGUkaXOM1qO9Aa4fuktg+ZGkby8jVqvho48fERknVYy0fz7ZW01FdoqyDEEmwoK
+	Hn/YY8LNDP4DdEG43LyuabaQw/LcjB3jdmg47XsxbRTTpc9UFUPTDg09G2kGumqFbtdVjR
+	/E24cXXxbs3jL32PIbXaBDQIkdlOI8+iPVRaXNU5/OsmI510NmIgOn/6BFRLpw==
+Date: Wed, 2 Oct 2024 09:18:56 +0200
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org, arnd@arndb.de,
+ bbrezillon@kernel.org, boris.brezillon@collabora.com,
+ conor.culhane@silvaco.com, gregkh@linuxfoundation.org, imx@lists.linux.dev,
+ pthombar@cadence.com, ravindra.yashvant.shinde@nxp.com
+Subject: Re: [PATCH 1/3] i3c: master: Replace hard code 2 with macro
+ I3C_ADDR_SLOT_STATUS_BITS
+Message-ID: <20241002091856.17ab576b@xps-13>
+In-Reply-To: <20241001-i3c_dts_assign-v1-1-6ba83dc15eb8@nxp.com>
+References: <20241001-i3c_dts_assign-v1-0-6ba83dc15eb8@nxp.com>
+	<20241001-i3c_dts_assign-v1-1-6ba83dc15eb8@nxp.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240925075707.3970187-1-linyunsheng@huawei.com>
- <20240925075707.3970187-3-linyunsheng@huawei.com> <4968c2ec-5584-4a98-9782-143605117315@redhat.com>
- <CAC_iWjKHofqDrp+jOO_QTp_8Op=KeE_jjhjsDUxjRa4vnHYJmQ@mail.gmail.com>
-In-Reply-To: <CAC_iWjKHofqDrp+jOO_QTp_8Op=KeE_jjhjsDUxjRa4vnHYJmQ@mail.gmail.com>
-From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date: Wed, 2 Oct 2024 09:51:49 +0300
-Message-ID: <CAC_iWjJXWgt9TdBSYGkc=htyeS=VAago5wqXzBgX_Mun76Z42g@mail.gmail.com>
-Subject: Re: [PATCH net v2 2/2] page_pool: fix IOMMU crash when driver has
- already unbound
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net, kuba@kernel.org, 
-	liuyonglong@huawei.com, fanghaiqing@huawei.com, zhangkun09@huawei.com, 
-	Robin Murphy <robin.murphy@arm.com>, Alexander Duyck <alexander.duyck@gmail.com>, 
-	IOMMU <iommu@lists.linux.dev>, Wei Fang <wei.fang@nxp.com>, 
-	Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
-	Eric Dumazet <edumazet@google.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
-	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
-	Kalle Valo <kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, imx@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, intel-wired-lan@lists.osuosl.org, 
-	bpf@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On Wed, 2 Oct 2024 at 09:46, Ilias Apalodimas
-<ilias.apalodimas@linaro.org> wrote:
->
-> Hi Paolo,
->
-> Thanks for taking the time.
->
-> On Tue, 1 Oct 2024 at 16:32, Paolo Abeni <pabeni@redhat.com> wrote:
-> >
-> > On 9/25/24 09:57, Yunsheng Lin wrote:
-> > > Networking driver with page_pool support may hand over page
-> > > still with dma mapping to network stack and try to reuse that
-> > > page after network stack is done with it and passes it back
-> > > to page_pool to avoid the penalty of dma mapping/unmapping.
-> > > With all the caching in the network stack, some pages may be
-> > > held in the network stack without returning to the page_pool
-> > > soon enough, and with VF disable causing the driver unbound,
-> > > the page_pool does not stop the driver from doing it's
-> > > unbounding work, instead page_pool uses workqueue to check
-> > > if there is some pages coming back from the network stack
-> > > periodically, if there is any, it will do the dma unmmapping
-> > > related cleanup work.
-> > >
-> > > As mentioned in [1], attempting DMA unmaps after the driver
-> > > has already unbound may leak resources or at worst corrupt
-> > > memory. Fundamentally, the page pool code cannot allow DMA
-> > > mappings to outlive the driver they belong to.
-> > >
-> > > Currently it seems there are at least two cases that the page
-> > > is not released fast enough causing dma unmmapping done after
-> > > driver has already unbound:
-> > > 1. ipv4 packet defragmentation timeout: this seems to cause
-> > >     delay up to 30 secs.
-> > > 2. skb_defer_free_flush(): this may cause infinite delay if
-> > >     there is no triggering for net_rx_action().
-> > >
-> > > In order not to do the dma unmmapping after driver has already
-> > > unbound and stall the unloading of the networking driver, add
-> > > the pool->items array to record all the pages including the ones
-> > > which are handed over to network stack, so the page_pool can
-> > > do the dma unmmapping for those pages when page_pool_destroy()
-> > > is called. As the pool->items need to be large enough to avoid
-> > > performance degradation, add a 'item_full' stat to indicate the
-> > > allocation failure due to unavailability of pool->items.
-> >
-> > This looks really invasive, with room for potentially large performance
-> > regressions or worse. At very least it does not look suitable for net.
->
-> Perhaps, and you are right we need to measure performance before
-> pulling it but...
->
-> >
-> > Is the problem only tied to VFs drivers? It's a pity all the page_pool
-> > users will have to pay a bill for it...
->
-> It's not. The problem happens when an SKB has been scheduled for
-> recycling and has already been mapped via page_pool. If the driver
-> disappears in the meantime,
+Hi Frank,
 
-Apologies, this wasn't correct. It's the device that has to disappear
-not the driver
+Frank.Li@nxp.com wrote on Tue, 01 Oct 2024 13:08:20 -0400:
 
-> page_pool will free all the packets it
-> holds in its private rings (both slow and fast), but is not in control
-> of the SKB anymore. So any packets coming back for recycling *after*
-> that point cannot unmap memory properly.
->
-> As discussed this can either lead to memory corruption and resource
-> leaking, or worse as seen in the bug report panics. I am fine with
-> this going into -next, but it really is a bugfix, although I am not
-> 100% sure that the Fixes: tag in the current patch is correct.
->
-> Thanks
-> /Ilias
-> >
-> > /P
-> >
+> Replace the hardcoded value 2, which indicates 2 bits for I3C address
+> status, with the predefined macro I3C_ADDR_SLOT_STATUS_BITS.
+>=20
+> Improve maintainability and extensibility of the code.
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+
+Thanks,
+Miqu=C3=A8l
