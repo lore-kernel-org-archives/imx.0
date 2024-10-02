@@ -1,119 +1,244 @@
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE42B16F84F
-	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 11:51:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D648C200112
+	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 11:58:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727869905; cv=none; b=jDTg4MATuG9Q9ZXWS9UZrbqL6DIqTx88h7eOgbkmOLliBlFEtAw2avqe3oN+mv+U/6KC9ElWqYgcpRRzzknE5rXDRQNEqHAvt+ZrjXC9mLlFqIDIJWU20e1sgqtUCVgpj15ufPj8UkkONjCfvZvtOia1vP7b6nsWKwf6yzR/KDo=
+	t=1727870301; cv=none; b=EvGYUugmlhATzMAYuX+Uag6FaphC+xOFb8d9ccHXknP3Hc5CAGL7x1ocOHeV/eztV909c8YCJH6+BNzgN+oFqTD4KlTsF7OptkOT9nrkt527jJNo0BlRn6HwC6Rg3+62xCCw7oc8UPdFAhC2T9tT6HTtpDtfuilnipwVuR/Qy54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727869905; c=relaxed/simple;
-	bh=V7pDiJpgnJ26rr9UgpKNfaKVbuDGau2nGqO2BmWTrq0=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=pXUlepkYrRKDbIOLFg2NgO65jspoKTDvaSWc8o5ztzEE5LKSSWkjGB+L19axcZ2xX/uDmp7PpnokJbw9d+MhN8B2g3rxCqR6C9Fox3PNdaTkzDWGrXE6JWaUGqM5IxD0mr/BwBFkH3Uck5OexvD2MI1BSXmDW7v8zTJbyXwBhiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=K/dTrnka; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=g1iFVfSy; arc=none smtp.client-ip=103.168.172.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1727870301; c=relaxed/simple;
+	bh=N4nanubrZloQt6H+/yg1NMcUdEKwHYaF2wzFYn8NjJA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Z9kwErmIJC/mA9Qlz1ZNpEDm/j2fKUoHlA1dEpWEQLHa319rXwO6jzPqAqrqGwu8vF/f7Aehtp++2scZVq4K72z/0bTGhYBW9laZ8zUpqLp/0Wq7FwSXLUcfZW6vULzMbzHynFreUHm4MoPJCu/gmbv8qEP3Eljy5ydexYDqD94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=LBtmlwaD; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="K/dTrnka";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="g1iFVfSy"
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 1AA8F1140138;
-	Wed,  2 Oct 2024 07:51:43 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Wed, 02 Oct 2024 07:51:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1727869903;
-	 x=1727956303; bh=TvtI6Ymi0iDeCpT2LstG1I5T9nQfjnvieONHI8z8hs4=; b=
-	K/dTrnka/hetRBWZVfTAABVrvz4BkyWQ0zqvYdFRpUVO7Qsfvz4wK9o0xA1uwhhz
-	cW0/k+nFWpl+7qaAe7uVc2pnjuObZKrqdewym9S4ZhxvxKMe+0OyH3i97/ndugNb
-	0I75ii4zqq70jjepx4yplenYFfz2V8r/ww6s+QIE2bRNDbHVO2bqhGiC2y4S6tXw
-	Ha7OnjtafX4XooHWeZo4zK2hPCqDOwNR8YemgGKm5Js17eIlDFbLI9L2r4FzKYbU
-	7kFSFnola/zK6La+mJHDBUgCT/76fSg23vvKqIVAj7dNOKhOlky/MJSfEQ/4keLn
-	E/F3IVWcrBERyKZ7ocgoiw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1727869903; x=
-	1727956303; bh=TvtI6Ymi0iDeCpT2LstG1I5T9nQfjnvieONHI8z8hs4=; b=g
-	1iFVfSymhdUiDg2h4Hh7Jlt1KZWZCrlV8hbT52rcnP0NI56t7pH5vrRe4QkOdhnx
-	bfTG8x2vBeeQvJpWGCJV12bv2/74/tUVw08+MyZz5RuwyKSIk6LYtpGSn7SuTWFl
-	Gy/PHwh1rFzTqZKFTUdtH04dfnoE0zh04VC1MFBQ0g7tD0fKrR4Sp1ds9480UShe
-	L8nMUDOyV7HOOkUkwCWbEVT1t3IHhontRQajlO3emvHV9nOeJBo6nXZBOmy5LK/k
-	Famk6JYoGaU87Maqb1EeL5uknTPNYI0V02TbO+2ZtPUS2+k3Lb77utOgYdo2dM0w
-	cRrKugt75WsGKAxuo/fmw==
-X-ME-Sender: <xms:zjP9ZjKoq4EeBUH8PppjOoXJ3u-Q_IMOXPynBdhbytrAsq1lHS0VRw>
-    <xme:zjP9ZnKlQSEXaUrFlZ_7UucfXKfYXhaTji1EKJbBS1VNUUZ2GobXaJkTk4CCCEnxI
-    VNXGnATtMyOT1HWt3A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdduledggedvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
-    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
-    guvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefg
-    gfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudeg
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegvihgthhgvshhtsehgmhgrihhlrd
-    gtohhmpdhrtghpthhtohepfhgvshhtvghvrghmsehgmhgrihhlrdgtohhmpdhrtghpthht
-    oheprghnughirdhshhihthhisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfi
-    hnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrghrmhdqkhgv
-    rhhnvghlsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepihhmgi
-    eslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehfrhgrnhhkrdhlihesnhig
-    phdrtghomhdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggvpd
-    hrtghpthhtohepohdrrhgvmhhpvghlsehpvghnghhuthhrohhnihigrdguvg
-X-ME-Proxy: <xmx:zjP9Zrs1EHwqQy7poFjhg0eJ8XU1XVS6swGHrS0eYGEUgu7r-6_mCA>
-    <xmx:zjP9ZsZOdFpUvDX7cVxhpBNVMS06P-fv3fczYT5TtOudTKt_RW4XxA>
-    <xmx:zjP9ZqYyF5FfHu7iMHbTvUdf6Lkc1h7tmNpd-Flpag7JaLgyztz9Fw>
-    <xmx:zjP9ZgBRUMSjRlcv93BCMtvFOvk3Rw0ms70hsxcKu2p3tiHM2ZdVEw>
-    <xmx:zzP9ZiqKtben1pQSWYtPh3pRq4Vrrd1VAS51qsqdZ4Hzt7GEvbfMxsme>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 5BDD92220071; Wed,  2 Oct 2024 07:51:42 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="LBtmlwaD"
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2fac6b3c220so43400191fa.2
+        for <imx@lists.linux.dev>; Wed, 02 Oct 2024 04:58:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1727870296; x=1728475096; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=4xuDo4Lr9uVZcQtomduS6VfvfKIUum1uatoQDPxhvGs=;
+        b=LBtmlwaDfnGWaWdB7TKA2ZGLv6Kme6kAUlDtfuwKxmlxk5Fw7uYuGRlqFBBX6wp6vz
+         b/NiJHB5xA9yfDuUh9xvBuClzd8b5bl1bh5+IlLqHoqYnsllloNGqFYgpWvazbS+L1nV
+         NMc+/TT/ZRyI0mzAhice9T2zNnrlxJSZnw2erJOY7r78QJP8gOfQWooWQRTb2lA/sZ4K
+         ObbUq2WvafP/z/fnJvWZNx4v2UphjuB4xg+xtWtmepMn+g0aeGlfWzP3GQs3Y+v81mQN
+         zxYIemE+AMLgS2tKXQt80tKzOUKX8R1elEH5cSBFJyerbF2h150dIefcY174eHBXNNjw
+         ZWsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727870296; x=1728475096;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4xuDo4Lr9uVZcQtomduS6VfvfKIUum1uatoQDPxhvGs=;
+        b=EdOQphwnNDqYfYJ8AQvAbh3iLIhnLwYsd4u3WHwW99zQlDCHpAI4QH70sfbI83w7br
+         nP78S4gegocZVdiwe2R7bGO/y8hLL6/dojcKgYvvST8dbpPs1fTwnDvMLD4y59iOCNjd
+         7Z7EnBNJW8GkvSs21cRWOj4FDjVhUcTEsh3iH6ZXGgIb8LCccbGBukA1NSnYpx2nvS9L
+         GfEdnS6bYZ6AS+0KwKs0smoaVD/P9f50OKv2dGLK12txEuX+plT/YItg5hR1BuQZFfh1
+         elgzGSANU7NIRyHENqf2cYVbC3KbqndmfiTumBSvO2u00c0iSoZnf0kS2jwY6UxzriDA
+         Iiww==
+X-Forwarded-Encrypted: i=1; AJvYcCWrvlKXQEFC1c4MzZ2edM7a5bDQSi9iZMfJGxbqIipQZTmspxH5oFsk8y+9HIWSv4mZFfg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzkY7Fj5YFzkMVx7ingsuQKUf9goFbsEB55h7JeBpA/Beq/CxaM
+	mucSyftlD0DeHFvjYyDs+951nCF0MUBdKVRAS8cn5YG5+xx8kXtrR2wqfKW5lPM=
+X-Google-Smtp-Source: AGHT+IFg1miftEMHVgGxmQjPa2VMmir89jlS2yV5cnvRgU9XOmUyLOMctk99dCS12vn2H43xW7EP7w==
+X-Received: by 2002:a05:651c:1990:b0:2fa:d4ef:f234 with SMTP id 38308e7fff4ca-2fae10228c8mr27006121fa.1.1727870295912;
+        Wed, 02 Oct 2024 04:58:15 -0700 (PDT)
+Received: from [192.168.2.177] ([207.188.162.240])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93c2997f50sm844074466b.198.2024.10.02.04.58.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Oct 2024 04:58:15 -0700 (PDT)
+Message-ID: <054fd366-89fe-4ab8-b9db-88c5245cb719@suse.com>
+Date: Wed, 2 Oct 2024 13:58:13 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Wed, 02 Oct 2024 11:51:22 +0000
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Stefan Eichenberger" <eichest@gmail.com>, o.rempel@pengutronix.de,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>,
- "Andi Shyti" <andi.shyti@kernel.org>, "Shawn Guo" <shawnguo@kernel.org>,
- "Sascha Hauer" <s.hauer@pengutronix.de>,
- "Fabio Estevam" <festevam@gmail.com>, "Frank Li" <Frank.Li@nxp.com>
-Cc: linux-i2c@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- "Francesco Dolcini" <francesco.dolcini@toradex.com>,
- "Stefan Eichenberger" <stefan.eichenberger@toradex.com>
-Message-Id: <6b070948-cf02-4f13-a220-0f6cfa21c41a@app.fastmail.com>
-In-Reply-To: <20241002112020.23913-4-eichest@gmail.com>
-References: <20241002112020.23913-1-eichest@gmail.com>
- <20241002112020.23913-4-eichest@gmail.com>
-Subject: Re: [PATCH v4 3/4] i2c: imx: use readb_relaxed and writeb_relaxed
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] pinctrl: s32: add missing pins definitions
+To: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>,
+ Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
+ Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Ghennadi Procopciuc
+ <Ghennadi.Procopciuc@oss.nxp.com>, Chester Lin <chester62515@gmail.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+ linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, NXP S32 Linux Team <s32@nxp.com>,
+ Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
+ Enric Balletbo <eballetb@redhat.com>
+References: <20240930132344.3001876-1-andrei.stefanescu@oss.nxp.com>
+ <20240930132344.3001876-2-andrei.stefanescu@oss.nxp.com>
+Content-Language: en-US, ca-ES, es-ES
+From: Matthias Brugger <mbrugger@suse.com>
+Autocrypt: addr=mbrugger@suse.com; keydata=
+ xsFNBFP1zgUBEAC21D6hk7//0kOmsUrE3eZ55kjc9DmFPKIz6l4NggqwQjBNRHIMh04BbCMY
+ fL3eT7ZsYV5nur7zctmJ+vbszoOASXUpfq8M+S5hU2w7sBaVk5rpH9yW8CUWz2+ZpQXPJcFa
+ OhLZuSKB1F5JcvLbETRjNzNU7B3TdS2+zkgQQdEyt7Ij2HXGLJ2w+yG2GuR9/iyCJRf10Okq
+ gTh//XESJZ8S6KlOWbLXRE+yfkKDXQx2Jr1XuVvM3zPqH5FMg8reRVFsQ+vI0b+OlyekT/Xe
+ 0Hwvqkev95GG6x7yseJwI+2ydDH6M5O7fPKFW5mzAdDE2g/K9B4e2tYK6/rA7Fq4cqiAw1+u
+ EgO44+eFgv082xtBez5WNkGn18vtw0LW3ESmKh19u6kEGoi0WZwslCNaGFrS4M7OH+aOJeqK
+ fx5dIv2CEbxc6xnHY7dwkcHikTA4QdbdFeUSuj4YhIZ+0QlDVtS1QEXyvZbZky7ur9rHkZvP
+ ZqlUsLJ2nOqsmahMTIQ8Mgx9SLEShWqD4kOF4zNfPJsgEMB49KbS2o9jxbGB+JKupjNddfxZ
+ HlH1KF8QwCMZEYaTNogrVazuEJzx6JdRpR3sFda/0x5qjTadwIW6Cl9tkqe2h391dOGX1eOA
+ 1ntn9O/39KqSrWNGvm+1raHK+Ev1yPtn0Wxn+0oy1tl67TxUjQARAQABzSRNYXR0aGlhcyBC
+ cnVnZ2VyIDxtYnJ1Z2dlckBzdXNlLmNvbT7CwXgEEwECACIFAlV6iM0CGwMGCwkIBwMCBhUI
+ AgkKCwQWAgMBAh4BAheAAAoJENkUC7JWEwLx6isQAIMGBgJnFWovDS7ClZtjz1LgoY8skcMU
+ ghUZY4Z/rwwPqmMPbY8KYDdOFA+kMTEiAHOR+IyOVe2+HlMrXv/qYH4pRoxQKm8H9FbdZXgL
+ bG8IPlBu80ZSOwWjVH+tG62KHW4RzssVrgXEFR1ZPTdbfN+9Gtf7kKxcGxWnurRJFzBEZi4s
+ RfTSulQKqTxJ/sewOb/0kfGOJYPAt/QN5SUaWa6ILa5QFg8bLAj6bZ81CDStswDt/zJmAWp0
+ 08NOnhrZaTQdRU7mTMddUph5YVNXEXd3ThOl8PetTyoSCt04PPTDDmyeMgB5C3INLo1AXhEp
+ NTdu+okvD56MqCxgMfexXiqYOkEWs/wv4LWC8V8EI3Z+DQ0YuoymI5MFPsW39aPmmBhSiacx
+ diC+7cQVQRwBR6Oz/k9oLc+0/15mc+XlbvyYfscGWs6CEeidDQyNKE/yX75KjLUSvOXYV4d4
+ UdaNrSoEcK/5XlW5IJNM9yae6ZOL8vZrs5u1+/w7pAlCDAAokz/As0vZ7xWiePrI+kTzuOt5
+ psfJOdEoMKQWWFGd/9olX5ZAyh9iXk9TQprGUOaX6sFjDrsTRycmmD9i4PdQTawObEEiAfzx
+ 1m2MwiDs2nppsRr7qwAjyRhCq2TOAh0EDRNgYaSlbIXX/zp38FpK/9DMbtH14vVvG6FXog75
+ HBoOzsFNBF3VOUgBEACbvyZOfLjgfB0hg0rhlAfpTmnFwm1TjkssGZKvgMr/t6v1yGm8nmmD
+ MIa4jblx41MSDkUKFhyB80wqrAIB6SRX0h6DOLpQrjjxbV46nxB5ANLqwektI57yenr/O+ZS
+ +GIuiSTu1kGEbP5ezmpCYk9dxqDsAyJ+4Rx/zxlKkKGZQHdZ+UlXYOnEXexKifkTDaLne6Zc
+ up1EgkTDVmzam4MloyrA/fAjIx2t90gfVkEEkMhZX/nc/naYq1hDQqGN778CiWkqX3qimLqj
+ 1UsZ6qSl6qsozZxvVuOjlmafiVeXo28lEf9lPrzMG04pS3CFKU4HZsTwgOidBkI5ijbDSimI
+ CDJ+luKPy6IjuyIETptbHZ9CmyaLgmtkGaENPqf+5iV4ZbQNFxmYTZSN56Q9ZS6Y3XeNpVm6
+ FOFXrlKeFTTlyFlPy9TWcBMDCKsxV5eB5kYvDGGxx26Tec1vlVKxX3kQz8o62KWsfr1kvpeu
+ fDzx/rFpoY91XJSKAFNZz99xa7DX6eQYkM2qN9K8HuJ7XXhHTxDbxpi3wsIlFdgzVa5iWhNw
+ iFFJdSiEaAeaHu6yXjr39FrkIVoyFPfIJVyK4d1mHe77H47WxFw6FoVbcGTEoTL6e3HDwntn
+ OGAU6CLYcaQ4aAz1HTcDrLBzSw/BuCSAXscIuKuyE/ZT+rFbLcLwOQARAQABwsF2BBgBCAAg
+ FiEE5rmSGMDywyUcLDoX2RQLslYTAvEFAl3VOUgCGwwACgkQ2RQLslYTAvG11w/+Mcn28jxp
+ 0WLUdChZQoJBtl1nlkkdrIUojNT2RkT8UfPPMwNlgWBwJOzaSZRXIaWhK1elnRa10IwwHfWM
+ GhB7nH0u0gIcSKnSKs1ebzRazI8IQdTfDH3VCQ6YMl+2bpPz4XeWqGVzcLAkamg9jsBWV6/N
+ c0l8BNlHT5iH02E43lbDgCOxme2pArETyuuJ4tF36F7ntl1Eq1FE0Ypk5LjB602Gh2N+eOGv
+ hnbkECywPmr7Hi5o7yh8bFOM52tKdGG+HM8KCY/sEpFRkDTA28XGNugjDyttOI4UZvURuvO6
+ quuvdYW4rgLVgAXgLJdQEvpnUu2j/+LjjOJBQr12ICB8T/waFc/QmUzBFQGVc20SsmAi1H9c
+ C4XB87oE4jjc/X1jASy7JCr6u5tbZa+tZjYGPZ1cMApTFLhO4tR/a/9v1Fy3fqWPNs3F4Ra3
+ 5irgg5jpAecT7DjFUCR/CNP5W6nywKn7MUm/19VSmj9uN484vg8w/XL49iung+Y+ZHCiSUGn
+ LV6nybxdRG/jp8ZQdQQixPA9azZDzuTu+NjKtzIA5qtfZfmm8xC+kAwAMZ/ZnfCsKwN0bbnD
+ YfO3B5Q131ASmu0kbwY03Mw4PhxDzZNrt4a89Y95dq5YkMtVH2Me1ZP063cFCCYCkvEAK/C8
+ PVrr2NoUqi/bxI8fFQJD1jVj8K0=
+In-Reply-To: <20240930132344.3001876-2-andrei.stefanescu@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 2, 2024, at 11:19, Stefan Eichenberger wrote:
-> From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
->
-> Use the relaxed version of readb and writeb to reduce overhead. It is
-> safe to use the relaxed version because we either do not rely on dma
-> completion, or we use a dma callback to ensure that the dma transfer is
-> complete before we continue.
 
-I would still consider this a bug in general, you should
-never default to the unsafe variants.
 
-If there is a codepath that needs the barrierless version,
-please add imx_i2c_write_reg_relaxed()/imx_i2c_read_reg_relaxed()
-helpers that use those only in the places where it makes
-a measurable difference, with a comment that explains
-the usage.
+On 30/09/2024 15:23, Andrei Stefanescu wrote:
+> Added definitions for some pins which were missing from the
+> S32G2 SIUL2 pinctrl driver. These pins are used by the JTAG,
+> PFE and LLCE hardware modules.
+> 
+> Signed-off-by: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
 
-     Arnd
+Reviewed-by: Matthias Brugger <mbrugger@suse.com>
+
+> ---
+>   drivers/pinctrl/nxp/pinctrl-s32g2.c | 52 +++++++++++++++++++++++++++++
+>   1 file changed, 52 insertions(+)
+> 
+> diff --git a/drivers/pinctrl/nxp/pinctrl-s32g2.c b/drivers/pinctrl/nxp/pinctrl-s32g2.c
+> index 440ff1879424..c49d28793b69 100644
+> --- a/drivers/pinctrl/nxp/pinctrl-s32g2.c
+> +++ b/drivers/pinctrl/nxp/pinctrl-s32g2.c
+> @@ -216,6 +216,12 @@ enum s32_pins {
+>   	S32G_IMCR_CAN1_RXD = 631,
+>   	S32G_IMCR_CAN2_RXD = 632,
+>   	S32G_IMCR_CAN3_RXD = 633,
+> +
+> +	/* JTAG IMCRs */
+> +	S32G_IMCR_JTAG_TMS = 562,
+> +	S32G_IMCR_JTAG_TCK = 572,
+> +	S32G_IMCR_JTAG_TDI = 573,
+> +
+>   	/* GMAC0 */
+>   	S32G_IMCR_Ethernet_MDIO = 527,
+>   	S32G_IMCR_Ethernet_CRS = 526,
+> @@ -229,7 +235,21 @@ enum s32_pins {
+>   	S32G_IMCR_Ethernet_RX_DV = 530,
+>   	S32G_IMCR_Ethernet_TX_CLK = 538,
+>   	S32G_IMCR_Ethernet_REF_CLK = 535,
+> +
+>   	/* PFE EMAC 0 MII */
+> +	S32G_IMCR_PFE_EMAC_0_MDIO = 837,
+> +	S32G_IMCR_PFE_EMAC_0_CRS = 836,
+> +	S32G_IMCR_PFE_EMAC_0_COL = 835,
+> +	S32G_IMCR_PFE_EMAC_0_RX_D0 = 841,
+> +	S32G_IMCR_PFE_EMAC_0_RX_D1 = 842,
+> +	S32G_IMCR_PFE_EMAC_0_RX_D2 = 843,
+> +	S32G_IMCR_PFE_EMAC_0_RX_D3 = 844,
+> +	S32G_IMCR_PFE_EMAC_0_RX_ER = 840,
+> +	S32G_IMCR_PFE_EMAC_0_RX_CLK = 839,
+> +	S32G_IMCR_PFE_EMAC_0_RX_DV = 845,
+> +	S32G_IMCR_PFE_EMAC_0_TX_CLK = 846,
+> +	S32G_IMCR_PFE_EMAC_0_REF_CLK = 838,
+> +
+>   	/* PFE EMAC 1 MII */
+>   	S32G_IMCR_PFE_EMAC_1_MDIO = 857,
+>   	S32G_IMCR_PFE_EMAC_1_CRS = 856,
+> @@ -317,6 +337,13 @@ enum s32_pins {
+>   	S32G_IMCR_LLCE_CAN13_RXD = 758,
+>   	S32G_IMCR_LLCE_CAN14_RXD = 759,
+>   	S32G_IMCR_LLCE_CAN15_RXD = 760,
+> +	S32G_IMCR_LLCE_UART0_RXD = 790,
+> +	S32G_IMCR_LLCE_UART1_RXD = 791,
+> +	S32G_IMCR_LLCE_UART2_RXD = 792,
+> +	S32G_IMCR_LLCE_UART3_RXD = 793,
+> +	S32G_IMCR_LLCE_LPSPI2_PCS0 = 811,
+> +	S32G_IMCR_LLCE_LPSPI2_SCK = 816,
+> +	S32G_IMCR_LLCE_LPSPI2_SIN = 817,
+>   	S32G_IMCR_USB_CLK = 895,
+>   	S32G_IMCR_USB_DATA0 = 896,
+>   	S32G_IMCR_USB_DATA1 = 897,
+> @@ -503,6 +530,12 @@ static const struct pinctrl_pin_desc s32_pinctrl_pads_siul2[] = {
+>   	S32_PINCTRL_PIN(S32G_IMCR_USDHC_DAT7),
+>   	S32_PINCTRL_PIN(S32G_IMCR_USDHC_DQS),
+>   	S32_PINCTRL_PIN(S32G_IMCR_CAN0_RXD),
+> +
+> +	/* JTAG IMCRs */
+> +	S32_PINCTRL_PIN(S32G_IMCR_JTAG_TMS),
+> +	S32_PINCTRL_PIN(S32G_IMCR_JTAG_TCK),
+> +	S32_PINCTRL_PIN(S32G_IMCR_JTAG_TDI),
+> +
+>   	/* GMAC0 */
+>   	S32_PINCTRL_PIN(S32G_IMCR_Ethernet_MDIO),
+>   	S32_PINCTRL_PIN(S32G_IMCR_Ethernet_CRS),
+> @@ -638,6 +671,13 @@ static const struct pinctrl_pin_desc s32_pinctrl_pads_siul2[] = {
+>   	S32_PINCTRL_PIN(S32G_IMCR_LLCE_CAN13_RXD),
+>   	S32_PINCTRL_PIN(S32G_IMCR_LLCE_CAN14_RXD),
+>   	S32_PINCTRL_PIN(S32G_IMCR_LLCE_CAN15_RXD),
+> +	S32_PINCTRL_PIN(S32G_IMCR_LLCE_UART0_RXD),
+> +	S32_PINCTRL_PIN(S32G_IMCR_LLCE_UART1_RXD),
+> +	S32_PINCTRL_PIN(S32G_IMCR_LLCE_UART2_RXD),
+> +	S32_PINCTRL_PIN(S32G_IMCR_LLCE_UART3_RXD),
+> +	S32_PINCTRL_PIN(S32G_IMCR_LLCE_LPSPI2_PCS0),
+> +	S32_PINCTRL_PIN(S32G_IMCR_LLCE_LPSPI2_SCK),
+> +	S32_PINCTRL_PIN(S32G_IMCR_LLCE_LPSPI2_SIN),
+>   	S32_PINCTRL_PIN(S32G_IMCR_CAN1_RXD),
+>   	S32_PINCTRL_PIN(S32G_IMCR_CAN2_RXD),
+>   	S32_PINCTRL_PIN(S32G_IMCR_CAN3_RXD),
+> @@ -652,6 +692,18 @@ static const struct pinctrl_pin_desc s32_pinctrl_pads_siul2[] = {
+>   	S32_PINCTRL_PIN(S32G_IMCR_USB_DATA7),
+>   	S32_PINCTRL_PIN(S32G_IMCR_USB_DIR),
+>   	S32_PINCTRL_PIN(S32G_IMCR_USB_NXT),
+> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_MDIO),
+> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_CRS),
+> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_COL),
+> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_RX_D0),
+> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_RX_D1),
+> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_RX_D2),
+> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_RX_D3),
+> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_RX_ER),
+> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_RX_CLK),
+> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_RX_DV),
+> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_TX_CLK),
+> +	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_0_REF_CLK),
+>   	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_1_MDIO),
+>   	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_1_CRS),
+>   	S32_PINCTRL_PIN(S32G_IMCR_PFE_EMAC_1_COL),
