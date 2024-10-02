@@ -1,57 +1,57 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661BE1EC016
-	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 11:20:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F36EA1EC01F
+	for <imx@lists.linux.dev>; Wed,  2 Oct 2024 11:20:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727868034; cv=none; b=j7W+adL9yHMxFlADcwUhqxv/ga+ATSG8wuq5wk5PaVRnFsDal14XLUSyA2Almj/yoTelo4gTlloeg0sl4B/pgfOa0BS0TgfVqSc7pfhrOHN/RRXsFdH4pBw3lBhAvGKgMGC8KtyIJrcHNxrWlt807ymePrnTfAeEtdzD533LGIo=
+	t=1727868035; cv=none; b=ohqGOWzztXDbEKXWs6SWi72grq+LEWsY+ELBxv+XaAA5uupj197APeVP4CkyXgOghsZNBqstcpQZGNlqKc7EEh4pspFXpinYOyLVnpe9WVFBdF2e6M0OaQLHQ70wUj0feBr0NxdQAo14bSUL1Qjpo+DREuWyolL8BKKM0Aj8vvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727868034; c=relaxed/simple;
-	bh=MKnrud29RKMPTycM6l5Mca3jSG7iCjsMY4h1o9UJ3vE=;
+	s=arc-20240116; t=1727868035; c=relaxed/simple;
+	bh=E1YeGuIBk8BwF197H23q4KiKySl80PzVksLcuFV4vmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kVos6XTJ3DhmX/hJ8GVHGDwLNry740NNVY9ZwPI30k5D85at8unF9FbgVyv2Q6ZSqIqGqSjTfC4iR5M16AnRmIZhr6i/H3lAwIxUOSpGieqf79qOypU7j4b71FqsckuUpmw0Wk6prskWEEHBrsB7NFMS5W3QKeArrPKFQf2AY7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jW3palSn; arc=none smtp.client-ip=209.85.221.51
+	 MIME-Version; b=tbR6esdwHuh/T7SZLAd+8yoF+dQpV0/if4v0kcvUsrGb/VXevJUEUSC89DsYvPIN93pkFk+YTg6H5/xDXDDhC7O6Pf+PDNEo1Ue/CIRKZIVBphML7Ls0yPWhIkuD8abT5IibENmxhL6zYbd3UDvhBsQRal9oM3XBvmDTB5hrH1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kN8bc6Bq; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jW3palSn"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-37cea34cb57so1942507f8f.0
-        for <imx@lists.linux.dev>; Wed, 02 Oct 2024 04:20:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kN8bc6Bq"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-42cb57f8b41so80798975e9.0
+        for <imx@lists.linux.dev>; Wed, 02 Oct 2024 04:20:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727868031; x=1728472831; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1727868032; x=1728472832; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HfSuN/9R2eLcV7k6Kk+kiVJyE0XEHkvEyhQ/EQ6vegg=;
-        b=jW3palSn1Ko3gMe7lKEqdlk/aop3JVSFFb15K4GPUO2V0E1q9xbDaeA0QBxKqh10Bt
-         ohorHJH/7RJyKdw56zRwk9D0Hl/9mEJpPP4crhQzwyvMi/sGEEqFuyRubCRnkd0hQBOM
-         KzsoYF+1T0bFKmZge9r4B3yqU2qRU0O1AeuowkFCSXven8NB4o12Li8j7JxX7AgPC0Lm
-         aHo7m5AxW71gg/I81e5qrMyZuab99oM7pbEPX/ggMC68ChZFkOchWK1tpQtyCmdtzVm+
-         zTAFdxIBw28ATkaKTUBP/bZ+1NW4rTGYDGN5tIcJlOdEN+GWkTXFxOzQ7lxtbFFnnbzT
-         6wdA==
+        bh=4V7Qw24AIjD9e3DTOuaXw9uJfa/Y+gcgalY/kZOlqpg=;
+        b=kN8bc6BqhUa8EgHvrOJjIP6BZVnVY3ND1WN/fSX1QzRi2urMME0OcfzsTIeJrTzBsg
+         VH45xFb9j1RvUiAkLAD9o3UmBRTr22KH4KCLrt/Zt9QYZuvXG3mqCcGErxBb2615r+TJ
+         hhLLQoMgOrrRYlAwXqXwT0S5/3pHY242LCEKZjHJjthYCxjYKwrdUwCeNghtzCvMyWfc
+         KXNASgrzarT2YBfLKWwccovBzeCy2Ivqw71Zm4cBCBugX3NH4BbX5iPmR/suvBSRTnE/
+         v3KzmL4qq81HeOWdnaXUZbsU3rCOX1jK/HiL4mVnF3fjnFfRgUbZPOtenOF3K4WH3eLl
+         ursw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727868031; x=1728472831;
+        d=1e100.net; s=20230601; t=1727868032; x=1728472832;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HfSuN/9R2eLcV7k6Kk+kiVJyE0XEHkvEyhQ/EQ6vegg=;
-        b=HtnIXgFpt1VW/UaqUcUnRMBOJrttgEj0AjcLsOYt4Y85C2y4R0A0xSox4b/zRUsERo
-         lgkww2xazr8FgTGiFc+HZ5fiAXm72xJ7IIckoE/zESOGcIflW4IAvgaWIb30cs7wV3Th
-         18Wn0xtD37vkXtuKHoBjPPE7Thth2ZWt6iR1C2ahs1o+YLQnOb3XsDHUXRv9DCTOxjJn
-         7+ZqRs5dRSoMyj2ElkD0+7UzrDEV9/tk1HM8y6c/dzo0dm4chjIs0WVBIDkfzGP5ZHdH
-         g+e+MA+aBmvly0ojufRbnWQUAwaeWnfJviKUjblA30kqwn6WYD5IsuwbmidZ1smQvF0+
-         pqyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUpdEwau+F2oBzwTgYX8dqsqHUC0GrkJuh241m8cP1sJEdsXZC2e3d0jSDiltx61+PO0lA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyOkeAThxbLwGtOnSzWTkSMtZ4c1Kq7KRXuojD6SA7U8ELQJpqg
-	HiAafWft9UqYCpcyFUNhaXFrVFWHll0bpFAAJpqFNU0QpDLcNLPe
-X-Google-Smtp-Source: AGHT+IHA06m26rIP/ioTpXEk53Q2NwfqbhJDeAbiLo7zhCOBS8PDUS/+gwi/4+3YNDN5go+YVrwIiA==
-X-Received: by 2002:a05:6000:184b:b0:374:c432:4971 with SMTP id ffacd0b85a97d-37cfb8b559cmr2069721f8f.16.1727868030624;
-        Wed, 02 Oct 2024 04:20:30 -0700 (PDT)
+        bh=4V7Qw24AIjD9e3DTOuaXw9uJfa/Y+gcgalY/kZOlqpg=;
+        b=n8CHhQA31XPPx53kqcAY5mLc0yn6paRwgYceVt33ZQCcZoE1yV3EeMYRsc7HCCBGQz
+         Rm0La43y8Rn8NvEdvhA1WHAhgOWeEku7Gs2BwDqfoQTfCrZi/aYwC/082hlhf90jK9KV
+         aZ/Zrl/+/hkDB0D3JPNX72K3vNi+qeFRclJsKeAyrMzHgw8zVqc8NTL4fKnWRESznt89
+         7zPVTm6ZzEda7ur2EJSoTkhdEUnNkdulgOL6k5qQRwLFnzoW+X94Sra9nBo9ji6DnefG
+         ciNKrj4KBcHUYKMT/KqB/T9TQJCI3lsKCXskBgu8eRWWiAwgLDSQTeyYqiEkOIvVektF
+         vDKw==
+X-Forwarded-Encrypted: i=1; AJvYcCVJMqHC2/NFxvlMtja38Gm6Qa7lVINZmiT5kwb56pzgzf32UUVzR2DqZAfYXfsDX1EAevA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzYUzABqELSUKYOdsIzx9jHb1ofZs/PVrjYrqeDpohPHCo62bP0
+	2ddAwSK23hAbhWyI+QVnw7UwWC21kDaFWX4aACsTpP9Icj+BKxf8
+X-Google-Smtp-Source: AGHT+IGehBz2wvp4octtBZnLUT1OhdST1Vf9e5fzfCVsKngbJHX2vTvVmrVGdPh9ghtRzv5CYCn1eQ==
+X-Received: by 2002:a05:600c:1d88:b0:42c:a387:6a6f with SMTP id 5b1f17b1804b1-42f777c365fmr23211065e9.20.1727868032188;
+        Wed, 02 Oct 2024 04:20:32 -0700 (PDT)
 Received: from eichest-laptop.corp.toradex.com (31-10-206-125.static.upc.ch. [31.10.206.125])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f771a1209sm23530685e9.0.2024.10.02.04.20.29
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f771a1209sm23530685e9.0.2024.10.02.04.20.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Oct 2024 04:20:29 -0700 (PDT)
+        Wed, 02 Oct 2024 04:20:31 -0700 (PDT)
 From: Stefan Eichenberger <eichest@gmail.com>
 To: o.rempel@pengutronix.de,
 	kernel@pengutronix.de,
@@ -66,9 +66,9 @@ Cc: linux-i2c@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	francesco.dolcini@toradex.com,
 	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: [PATCH v4 2/4] i2c: imx: separate atomic, dma and non-dma use case
-Date: Wed,  2 Oct 2024 13:19:40 +0200
-Message-ID: <20241002112020.23913-3-eichest@gmail.com>
+Subject: [PATCH v4 3/4] i2c: imx: use readb_relaxed and writeb_relaxed
+Date: Wed,  2 Oct 2024 13:19:41 +0200
+Message-ID: <20241002112020.23913-4-eichest@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241002112020.23913-1-eichest@gmail.com>
 References: <20241002112020.23913-1-eichest@gmail.com>
@@ -82,186 +82,37 @@ Content-Transfer-Encoding: 8bit
 
 From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-Separate the atomic, dma and non-dma use case as a preparation step for
-moving the non-dma use case to the isr to avoid rescheduling while a
-transfer is in progress.
+Use the relaxed version of readb and writeb to reduce overhead. It is
+safe to use the relaxed version because we either do not rely on dma
+completion, or we use a dma callback to ensure that the dma transfer is
+complete before we continue.
 
 Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/i2c/busses/i2c-imx.c | 107 +++++++++++++++++++++++------------
- 1 file changed, 70 insertions(+), 37 deletions(-)
+ drivers/i2c/busses/i2c-imx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index fbacdfaf6b28e..8e9cdeff278a8 100644
+index 8e9cdeff278a8..f70522a83f823 100644
 --- a/drivers/i2c/busses/i2c-imx.c
 +++ b/drivers/i2c/busses/i2c-imx.c
-@@ -1011,6 +1011,43 @@ static int i2c_imx_dma_write(struct imx_i2c_struct *i2c_imx,
- 	return i2c_imx_acked(i2c_imx);
+@@ -313,13 +313,13 @@ static inline int is_vf610_i2c(struct imx_i2c_struct *i2c_imx)
+ static inline void imx_i2c_write_reg(unsigned int val,
+ 		struct imx_i2c_struct *i2c_imx, unsigned int reg)
+ {
+-	writeb(val, i2c_imx->base + (reg << i2c_imx->hwdata->regshift));
++	writeb_relaxed(val, i2c_imx->base + (reg << i2c_imx->hwdata->regshift));
  }
  
-+static int i2c_imx_prepare_read(struct imx_i2c_struct *i2c_imx,
-+				struct i2c_msg *msgs, bool atomic,
-+				bool use_dma)
-+{
-+	int result;
-+	unsigned int temp = 0;
-+
-+	/* write slave address */
-+	imx_i2c_write_reg(i2c_8bit_addr_from_msg(msgs), i2c_imx, IMX_I2C_I2DR);
-+	result = i2c_imx_trx_complete(i2c_imx, atomic);
-+	if (result)
-+		return result;
-+	result = i2c_imx_acked(i2c_imx);
-+	if (result)
-+		return result;
-+
-+	dev_dbg(&i2c_imx->adapter.dev, "<%s> setup bus\n", __func__);
-+
-+	/* setup bus to read data */
-+	temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
-+	temp &= ~I2CR_MTX;
-+
-+	/*
-+	 * Reset the I2CR_TXAK flag initially for SMBus block read since the
-+	 * length is unknown
-+	 */
-+	if (msgs->len - 1)
-+		temp &= ~I2CR_TXAK;
-+	if (use_dma)
-+		temp |= I2CR_DMAEN;
-+
-+	imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
-+	imx_i2c_read_reg(i2c_imx, IMX_I2C_I2DR); /* dummy read */
-+
-+	return 0;
-+}
-+
- static int i2c_imx_dma_read(struct imx_i2c_struct *i2c_imx,
- 			struct i2c_msg *msgs, bool is_lastmsg)
+ static inline unsigned char imx_i2c_read_reg(struct imx_i2c_struct *i2c_imx,
+ 		unsigned int reg)
  {
-@@ -1021,6 +1058,11 @@ static int i2c_imx_dma_read(struct imx_i2c_struct *i2c_imx,
- 	struct imx_i2c_dma *dma = i2c_imx->dma;
- 	struct device *dev = &i2c_imx->adapter.dev;
- 
-+	result = i2c_imx_prepare_read(i2c_imx, msgs, false, true);
-+	if (result)
-+		return result;
-+
-+	dev_dbg(&i2c_imx->adapter.dev, "<%s> read data\n", __func__);
- 
- 	dma->chan_using = dma->chan_rx;
- 	dma->dma_transfer_dir = DMA_DEV_TO_MEM;
-@@ -1131,50 +1173,24 @@ static int i2c_imx_write(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
- 	return 0;
+-	return readb(i2c_imx->base + (reg << i2c_imx->hwdata->regshift));
++	return readb_relaxed(i2c_imx->base + (reg << i2c_imx->hwdata->regshift));
  }
  
-+static int i2c_imx_atomic_write(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs)
-+{
-+	return i2c_imx_write(i2c_imx, msgs, true);
-+}
-+
- static int i2c_imx_read(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
- 			bool is_lastmsg, bool atomic)
- {
- 	int i, result;
- 	unsigned int temp;
- 	int block_data = msgs->flags & I2C_M_RECV_LEN;
--	int use_dma = i2c_imx->dma && msgs->flags & I2C_M_DMA_SAFE &&
--		msgs->len >= DMA_THRESHOLD && !block_data;
- 
--	dev_dbg(&i2c_imx->adapter.dev,
--		"<%s> write slave address: addr=0x%x\n",
--		__func__, i2c_8bit_addr_from_msg(msgs));
--
--	/* write slave address */
--	imx_i2c_write_reg(i2c_8bit_addr_from_msg(msgs), i2c_imx, IMX_I2C_I2DR);
--	result = i2c_imx_trx_complete(i2c_imx, atomic);
-+	result = i2c_imx_prepare_read(i2c_imx, msgs, atomic, false);
- 	if (result)
- 		return result;
--	result = i2c_imx_acked(i2c_imx);
--	if (result)
--		return result;
--
--	dev_dbg(&i2c_imx->adapter.dev, "<%s> setup bus\n", __func__);
--
--	/* setup bus to read data */
--	temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
--	temp &= ~I2CR_MTX;
--
--	/*
--	 * Reset the I2CR_TXAK flag initially for SMBus block read since the
--	 * length is unknown
--	 */
--	if ((msgs->len - 1) || block_data)
--		temp &= ~I2CR_TXAK;
--	if (use_dma)
--		temp |= I2CR_DMAEN;
--	imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
--	imx_i2c_read_reg(i2c_imx, IMX_I2C_I2DR); /* dummy read */
- 
- 	dev_dbg(&i2c_imx->adapter.dev, "<%s> read data\n", __func__);
- 
--	if (use_dma)
--		return i2c_imx_dma_read(i2c_imx, msgs, is_lastmsg);
--
- 	/* read data */
- 	for (i = 0; i < msgs->len; i++) {
- 		u8 len = 0;
-@@ -1241,6 +1257,12 @@ static int i2c_imx_read(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
- 	return 0;
- }
- 
-+static int i2c_imx_atomic_read(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
-+			       bool is_lastmsg)
-+{
-+	return i2c_imx_read(i2c_imx, msgs, is_lastmsg, true);
-+}
-+
- static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
- 			       struct i2c_msg *msgs, int num, bool atomic)
- {
-@@ -1248,6 +1270,7 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
- 	int result;
- 	bool is_lastmsg = false;
- 	struct imx_i2c_struct *i2c_imx = i2c_get_adapdata(adapter);
-+	int use_dma = 0;
- 
- 	/* Start I2C transfer */
- 	result = i2c_imx_start(i2c_imx, atomic);
-@@ -1300,15 +1323,25 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
- 			(temp & I2SR_SRW ? 1 : 0), (temp & I2SR_IIF ? 1 : 0),
- 			(temp & I2SR_RXAK ? 1 : 0));
- #endif
-+
-+		use_dma = i2c_imx->dma && msgs[i].len >= DMA_THRESHOLD &&
-+			msgs[i].flags & I2C_M_DMA_SAFE;
- 		if (msgs[i].flags & I2C_M_RD) {
--			result = i2c_imx_read(i2c_imx, &msgs[i], is_lastmsg, atomic);
-+			int block_data = msgs->flags & I2C_M_RECV_LEN;
-+
-+			if (atomic)
-+				result = i2c_imx_atomic_read(i2c_imx, &msgs[i], is_lastmsg);
-+			else if (use_dma && !block_data)
-+				result = i2c_imx_dma_read(i2c_imx, &msgs[i], is_lastmsg);
-+			else
-+				result = i2c_imx_read(i2c_imx, &msgs[i], is_lastmsg, false);
- 		} else {
--			if (!atomic &&
--			    i2c_imx->dma && msgs[i].len >= DMA_THRESHOLD &&
--				msgs[i].flags & I2C_M_DMA_SAFE)
-+			if (atomic)
-+				result = i2c_imx_atomic_write(i2c_imx, &msgs[i]);
-+			else if (use_dma)
- 				result = i2c_imx_dma_write(i2c_imx, &msgs[i]);
- 			else
--				result = i2c_imx_write(i2c_imx, &msgs[i], atomic);
-+				result = i2c_imx_write(i2c_imx, &msgs[i], false);
- 		}
- 		if (result)
- 			goto fail0;
+ static void i2c_imx_clear_irq(struct imx_i2c_struct *i2c_imx, unsigned int bits)
 -- 
 2.43.0
 
