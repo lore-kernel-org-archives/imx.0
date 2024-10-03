@@ -1,90 +1,466 @@
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891861E511
-	for <imx@lists.linux.dev>; Thu,  3 Oct 2024 12:45:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9DB1547EB
+	for <imx@lists.linux.dev>; Thu,  3 Oct 2024 14:16:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727959540; cv=none; b=pz1UGuImPVkVYqqWd5MZ1m66rN8h231lH3f0mlKraxGgw5iOwYPDmCWXl3++Nlk8IVbq6APEWLM9OaA9/+oLSDJwSTSvqbUuG4XdrpudefMFoDPjT09d1c53sfFxY9nUrozOPhrGSn/qrCk1PBmzf50Cd8AwoFpLJUB6Z0KEFC0=
+	t=1727965014; cv=none; b=taMsCBmiuX/sINabCPMcw9RqKzAGiV6k+tXAjsQCSAjoYtAi/w0mdd2ac6eb0kQGqWhQcGQnElrztvwkCV9RW39MI6cMzvrNrjreOEjO/Npq2n5skMxGw3vUheHIUeTGncpcvIr3BlD8mh0mH5wK5JAu1E0RlsUbZEs6fVt0Yp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727959540; c=relaxed/simple;
-	bh=h8glWa8FKBKj3nCk6I+JgRJLRZCrCXwBgF2+dYsvdM8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K9onHK//dRYcPrrrmyvEFoeJ7yZaLsm3QcEQf8DRqdO/EUYynRxI6ETBva+UxLMiyPUmJkZhCc97nFQuMCMwRFpHJQwAJ/C7VU/uP7zGcYlCBasZEeSacs7VUDqJCokEqfXYGOc8pKtaRD0mAbiLYFhstdUknUdLAPXnHCJU3A0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cYtNzpLH; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727965014; c=relaxed/simple;
+	bh=2V0FSsBUEK1YSjhhrV/4tw2MgZ8433fBunRjyQWOQNc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JeaBVPeD4NiDRcHeso7RRCZHIM5NQV/Cud9TlVyLCJcFYr+kcmD+v+yH0VpOeWv4kqlIx7g69v1snEcJo6vBcgVdRO8tlK8KrTnMQlhSwSCzUzBIEM9zU6q7WYXBNm0H7VTnsUtlVdYigIELjSb0qvW9ljZIA3DxicVzxb2bcXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=n5eMUe+K; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cYtNzpLH"
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5398cc2fcb7so1044764e87.1
-        for <imx@lists.linux.dev>; Thu, 03 Oct 2024 05:45:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="n5eMUe+K"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5c876ed9c93so1196072a12.2
+        for <imx@lists.linux.dev>; Thu, 03 Oct 2024 07:16:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727959537; x=1728564337; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h8glWa8FKBKj3nCk6I+JgRJLRZCrCXwBgF2+dYsvdM8=;
-        b=cYtNzpLHEEsCsKgozfrBrsOP3UoyIGOtXsvDx7PmcrN5eSAkfkmGiPIcL5HRa1xnnk
-         IdtK+U0AxpOB8+S0QmnClqFU67XFrQEwpZAoC4vsApTf5/8VPC1h4v+UFs8SN5P2srpm
-         IUJb+8f69cSNzaKDmvRzAODuq5EHtam4+BZgNVDxGWTlp1nZThPkKnTqKCoZ/vecwUpr
-         jHeS7cg1/t+MyOJbxokX/GA7HYBQCq3YMMTnm7ykhS8XwDtj5rOkVq9TGhplIx1s174Z
-         Sb/yAcomjTVO+IBLHVNuVIGuHbS7+biQeHlZ3nkfQz1VF1dn5UqlHRLCVO1rzrD5Golj
-         nnGg==
+        d=linaro.org; s=google; t=1727965010; x=1728569810; darn=lists.linux.dev;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sIRo0R9Ru8WoD9y3TRJXMRZ5Ajvd7H1cnftn09CMgiQ=;
+        b=n5eMUe+KbfML+fyv0t13jicVc8wG6B69V8y4pP3aRR+pOvT9qJFm5Ds2X1lMVOe5ny
+         ORr4G0VABNChfdPACrwoD3h0NnTLytgRY6KF/+ZKLOoQjScrzKAl4PE6iXRLOfgUJTHl
+         WQ/uNANvEbrqV7MS8mR1B9WNDFQCKy5TKjbgDVmRzqnymeU9rqFlpMWy8TLef4XI+Vls
+         NImTBBtqg8BdgFQvh3yb3HUACO4s6SNXpS0DHLZIXIla9yU+0+nuqHzsqe0iuqFRR8VL
+         /ro4bCEX5klJyYVcF19P2a785pDxEW6pZ/oQRYi+55ZNXkb9SlaJ5ETitvCEwxcZJVyl
+         +o7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727959537; x=1728564337;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=h8glWa8FKBKj3nCk6I+JgRJLRZCrCXwBgF2+dYsvdM8=;
-        b=J1Xm503Mt88LEyt8VXb/w60fYzJhfscKudC2BD/0gybOBz97H4FdA8QzNu7MrCJ8gU
-         zrs6bntSw+zWwGFBxyQ1O7du9yg0F1jxytgyBO5Os8z1fsyB9iPAlP0lC3b0fs+Dql0A
-         Xf7J8/8AQw4NPr9PLHHnv5PZfeqYxxoulur383AI4+cq9/u/aaTHRyPH+smxT/llM0j5
-         boYKE1qtX8cAY705JhR7Hkw2Iwg6L3KJsaPZvkWDeO+p/TQGRbr40h28iX5h1dDfbuB8
-         dnK0uqyOwGll3qTP91LeC9jTG1FZf5MdPKzLuJCMQp3s1MRvN9lA87/YfH6SXYVunzUW
-         /Dgg==
-X-Forwarded-Encrypted: i=1; AJvYcCW149M7kGTTD3D83GReI54mQzCnIGCyRYXoBRVSVUEkf9+EEsS9kKWcthGAuXB6jBQGDUQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwX2Qkq9Y947aIRWDx4+xqhl84VTQIPX6u43/seSgMQSCjeIwuR
-	LYIrfQuRYwnkq26RvGr3HXW6j95MOR3rBRC0G9S66mQCDxPe0QqBo9rosdHSez1jW3uBOfq0buT
-	yWm+QTYv8TYJ3yytQjU8yR085HhE=
-X-Google-Smtp-Source: AGHT+IFH/d91ETaLO9wS69JBdZtdkMi1nBG0J5JtGXgyo3Q1FiOyG+AaAEmd/z9+6SFqLvAFdUJ6gCbWcbyQrmqWuPc=
-X-Received: by 2002:a05:6512:12d3:b0:530:aea3:4659 with SMTP id
- 2adb3069b0e04-539a0658b50mr4221107e87.9.1727959536381; Thu, 03 Oct 2024
- 05:45:36 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727965010; x=1728569810;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sIRo0R9Ru8WoD9y3TRJXMRZ5Ajvd7H1cnftn09CMgiQ=;
+        b=ZvrdJZJg90Vn1W30gblGjLM+1bV71uB6A2hV9Ga0rXfY16vAijQ4YB3mgGjKMgcLCO
+         D6uruk6qdu7qbbDO7OkZdCJxXPqfCtXW4SK7vF2JacFvxL4FHAyXPtFKu1wHEv+M7Uvp
+         pgmL1qSxdX+G4En7HcPlmurElzbqDsrBsozMkmAsMTzLFhvutCmFM8etTZCaTuEqFqrU
+         CWQEvNONrhpKy3knL0pTjUF7qqlUUubqzEO+zQzYhSkXifHOPr0Jg4fqpEBaaaz1aoHB
+         ZbtL+RDzpmbr4spGPnFapxXMb6r69SPUHWoL1NO4EYCEX+97YiuSxxQ6kKQgDrcL9BW3
+         vmrw==
+X-Forwarded-Encrypted: i=1; AJvYcCXzYZx3N1tN22Weicl1oI+0eW0oS0eFGrLdytwm6D9eZ2kk7D4xuTcfRGyQnSrGwXHg0q8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzcssI1wyro3cmuVU29+nq91iPMmNBV8NsTQHbVQ+xY+/C1nj7p
+	dX9yEwe7X1ilSUSsK/t3BGPTufg8hF4zth2t/b1foY2TjjSZsOwMreQFkeBiJNFtXfHvLXkJ+aT
+	v
+X-Google-Smtp-Source: AGHT+IFjMJ15NnWrEJrn2rlvfam+PuZLDLn+eOt6seTZFHWXKWI0elg1GsLrbZ/cOdd8tmAesnmOxw==
+X-Received: by 2002:a05:6402:51c6:b0:5c8:a0ac:f3b5 with SMTP id 4fb4d7f45d1cf-5c8b1925b77mr4978742a12.10.1727965010276;
+        Thu, 03 Oct 2024 07:16:50 -0700 (PDT)
+Received: from lino.lan ([85.235.12.238])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c8ca3e0062sm769757a12.37.2024.10.03.07.16.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Oct 2024 07:16:49 -0700 (PDT)
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Thu, 03 Oct 2024 16:16:47 +0200
+Subject: [PATCH] pinctrl: imx27: Fix too generic defines
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241002204750.597337-1-Frank.Li@nxp.com> <20241002204750.597337-2-Frank.Li@nxp.com>
-In-Reply-To: <20241002204750.597337-2-Frank.Li@nxp.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Thu, 3 Oct 2024 09:45:24 -0300
-Message-ID: <CAOMZO5CDwN32kiPWQ+ObNiFD1Wewj+qyTUMCRhyXKq941phAkg@mail.gmail.com>
-Subject: Re: [PATCH 2/4] arm64: dts: imx8dxl-evk: Add PCIe support
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, 
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241003-fix-imx27-pc-v1-1-0e78d1fc6175@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAE6n/mYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxNDAwNj3bTMCt3M3Aojc92CZN00M0NTc0tLo1TDNEsloJaColSgPNi46Nj
+ aWgDsNkgiXgAAAA==
+To: Esben Haabendal <esben@geanix.com>, Dong Aisheng <aisheng.dong@nxp.com>, 
+ Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Jacky Bai <ping.bai@nxp.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Esben Haabendal <esben@geanix.com>
+Cc: linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
+ kernel test robot <lkp@intel.com>, Linus Walleij <linus.walleij@linaro.org>
+X-Mailer: b4 0.14.0
 
-On Wed, Oct 2, 2024 at 5:48=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
->
-> From: Richard Zhu <hongxing.zhu@nxp.com>
->
-> Add PCIe supports on i.MX8DXL EVK board.
+The "PC" define is colliding with the (apparently broadcased)
+define for "program counter" on Loongarch, so let's rename all
+these 2-letter defines so they don't collide with stuff.
 
-s/supports/support
+Fixes: a55222b7a132 ("pinctrl: freescale: enable use with COMPILE_TEST")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202410030214.dPrgmUqd-lkp@intel.com/
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ drivers/pinctrl/freescale/pinctrl-imx27.c | 350 +++++++++++++++---------------
+ 1 file changed, 175 insertions(+), 175 deletions(-)
 
-> +&hsio_phy{
+diff --git a/drivers/pinctrl/freescale/pinctrl-imx27.c b/drivers/pinctrl/freescale/pinctrl-imx27.c
+index 1738df461235..afeb39957203 100644
+--- a/drivers/pinctrl/freescale/pinctrl-imx27.c
++++ b/drivers/pinctrl/freescale/pinctrl-imx27.c
+@@ -16,188 +16,188 @@
+ #include "pinctrl-imx1.h"
+ 
+ #define PAD_ID(port, pin) (port*32 + pin)
+-#define PA 0
+-#define PB 1
+-#define PC 2
+-#define PD 3
+-#define PE 4
+-#define PF 5
++#define MX27_PA 0
++#define MX27_PB 1
++#define MX27_PC 2
++#define MX27_PD 3
++#define MX27_PE 4
++#define MX27_PF 5
+ 
+ enum imx27_pads {
+-	MX27_PAD_USBH2_CLK = PAD_ID(PA, 0),
+-	MX27_PAD_USBH2_DIR = PAD_ID(PA, 1),
+-	MX27_PAD_USBH2_DATA7 = PAD_ID(PA, 2),
+-	MX27_PAD_USBH2_NXT = PAD_ID(PA, 3),
+-	MX27_PAD_USBH2_STP = PAD_ID(PA, 4),
+-	MX27_PAD_LSCLK = PAD_ID(PA, 5),
+-	MX27_PAD_LD0 = PAD_ID(PA, 6),
+-	MX27_PAD_LD1 = PAD_ID(PA, 7),
+-	MX27_PAD_LD2 = PAD_ID(PA, 8),
+-	MX27_PAD_LD3 = PAD_ID(PA, 9),
+-	MX27_PAD_LD4 = PAD_ID(PA, 10),
+-	MX27_PAD_LD5 = PAD_ID(PA, 11),
+-	MX27_PAD_LD6 = PAD_ID(PA, 12),
+-	MX27_PAD_LD7 = PAD_ID(PA, 13),
+-	MX27_PAD_LD8 = PAD_ID(PA, 14),
+-	MX27_PAD_LD9 = PAD_ID(PA, 15),
+-	MX27_PAD_LD10 = PAD_ID(PA, 16),
+-	MX27_PAD_LD11 = PAD_ID(PA, 17),
+-	MX27_PAD_LD12 = PAD_ID(PA, 18),
+-	MX27_PAD_LD13 = PAD_ID(PA, 19),
+-	MX27_PAD_LD14 = PAD_ID(PA, 20),
+-	MX27_PAD_LD15 = PAD_ID(PA, 21),
+-	MX27_PAD_LD16 = PAD_ID(PA, 22),
+-	MX27_PAD_LD17 = PAD_ID(PA, 23),
+-	MX27_PAD_REV = PAD_ID(PA, 24),
+-	MX27_PAD_CLS = PAD_ID(PA, 25),
+-	MX27_PAD_PS = PAD_ID(PA, 26),
+-	MX27_PAD_SPL_SPR = PAD_ID(PA, 27),
+-	MX27_PAD_HSYNC = PAD_ID(PA, 28),
+-	MX27_PAD_VSYNC = PAD_ID(PA, 29),
+-	MX27_PAD_CONTRAST = PAD_ID(PA, 30),
+-	MX27_PAD_OE_ACD = PAD_ID(PA, 31),
++	MX27_PAD_USBH2_CLK = PAD_ID(MX27_PA, 0),
++	MX27_PAD_USBH2_DIR = PAD_ID(MX27_PA, 1),
++	MX27_PAD_USBH2_DATA7 = PAD_ID(MX27_PA, 2),
++	MX27_PAD_USBH2_NXT = PAD_ID(MX27_PA, 3),
++	MX27_PAD_USBH2_STP = PAD_ID(MX27_PA, 4),
++	MX27_PAD_LSCLK = PAD_ID(MX27_PA, 5),
++	MX27_PAD_LD0 = PAD_ID(MX27_PA, 6),
++	MX27_PAD_LD1 = PAD_ID(MX27_PA, 7),
++	MX27_PAD_LD2 = PAD_ID(MX27_PA, 8),
++	MX27_PAD_LD3 = PAD_ID(MX27_PA, 9),
++	MX27_PAD_LD4 = PAD_ID(MX27_PA, 10),
++	MX27_PAD_LD5 = PAD_ID(MX27_PA, 11),
++	MX27_PAD_LD6 = PAD_ID(MX27_PA, 12),
++	MX27_PAD_LD7 = PAD_ID(MX27_PA, 13),
++	MX27_PAD_LD8 = PAD_ID(MX27_PA, 14),
++	MX27_PAD_LD9 = PAD_ID(MX27_PA, 15),
++	MX27_PAD_LD10 = PAD_ID(MX27_PA, 16),
++	MX27_PAD_LD11 = PAD_ID(MX27_PA, 17),
++	MX27_PAD_LD12 = PAD_ID(MX27_PA, 18),
++	MX27_PAD_LD13 = PAD_ID(MX27_PA, 19),
++	MX27_PAD_LD14 = PAD_ID(MX27_PA, 20),
++	MX27_PAD_LD15 = PAD_ID(MX27_PA, 21),
++	MX27_PAD_LD16 = PAD_ID(MX27_PA, 22),
++	MX27_PAD_LD17 = PAD_ID(MX27_PA, 23),
++	MX27_PAD_REV = PAD_ID(MX27_PA, 24),
++	MX27_PAD_CLS = PAD_ID(MX27_PA, 25),
++	MX27_PAD_PS = PAD_ID(MX27_PA, 26),
++	MX27_PAD_SPL_SPR = PAD_ID(MX27_PA, 27),
++	MX27_PAD_HSYNC = PAD_ID(MX27_PA, 28),
++	MX27_PAD_VSYNC = PAD_ID(MX27_PA, 29),
++	MX27_PAD_CONTRAST = PAD_ID(MX27_PA, 30),
++	MX27_PAD_OE_ACD = PAD_ID(MX27_PA, 31),
+ 
+-	MX27_PAD_SD2_D0 = PAD_ID(PB, 4),
+-	MX27_PAD_SD2_D1 = PAD_ID(PB, 5),
+-	MX27_PAD_SD2_D2 = PAD_ID(PB, 6),
+-	MX27_PAD_SD2_D3 = PAD_ID(PB, 7),
+-	MX27_PAD_SD2_CMD = PAD_ID(PB, 8),
+-	MX27_PAD_SD2_CLK = PAD_ID(PB, 9),
+-	MX27_PAD_CSI_D0 = PAD_ID(PB, 10),
+-	MX27_PAD_CSI_D1 = PAD_ID(PB, 11),
+-	MX27_PAD_CSI_D2 = PAD_ID(PB, 12),
+-	MX27_PAD_CSI_D3 = PAD_ID(PB, 13),
+-	MX27_PAD_CSI_D4 = PAD_ID(PB, 14),
+-	MX27_PAD_CSI_MCLK = PAD_ID(PB, 15),
+-	MX27_PAD_CSI_PIXCLK = PAD_ID(PB, 16),
+-	MX27_PAD_CSI_D5 = PAD_ID(PB, 17),
+-	MX27_PAD_CSI_D6 = PAD_ID(PB, 18),
+-	MX27_PAD_CSI_D7 = PAD_ID(PB, 19),
+-	MX27_PAD_CSI_VSYNC = PAD_ID(PB, 20),
+-	MX27_PAD_CSI_HSYNC = PAD_ID(PB, 21),
+-	MX27_PAD_USBH1_SUSP = PAD_ID(PB, 22),
+-	MX27_PAD_USB_PWR = PAD_ID(PB, 23),
+-	MX27_PAD_USB_OC_B = PAD_ID(PB, 24),
+-	MX27_PAD_USBH1_RCV = PAD_ID(PB, 25),
+-	MX27_PAD_USBH1_FS = PAD_ID(PB, 26),
+-	MX27_PAD_USBH1_OE_B = PAD_ID(PB, 27),
+-	MX27_PAD_USBH1_TXDM = PAD_ID(PB, 28),
+-	MX27_PAD_USBH1_TXDP = PAD_ID(PB, 29),
+-	MX27_PAD_USBH1_RXDM = PAD_ID(PB, 30),
+-	MX27_PAD_USBH1_RXDP = PAD_ID(PB, 31),
++	MX27_PAD_SD2_D0 = PAD_ID(MX27_PB, 4),
++	MX27_PAD_SD2_D1 = PAD_ID(MX27_PB, 5),
++	MX27_PAD_SD2_D2 = PAD_ID(MX27_PB, 6),
++	MX27_PAD_SD2_D3 = PAD_ID(MX27_PB, 7),
++	MX27_PAD_SD2_CMD = PAD_ID(MX27_PB, 8),
++	MX27_PAD_SD2_CLK = PAD_ID(MX27_PB, 9),
++	MX27_PAD_CSI_D0 = PAD_ID(MX27_PB, 10),
++	MX27_PAD_CSI_D1 = PAD_ID(MX27_PB, 11),
++	MX27_PAD_CSI_D2 = PAD_ID(MX27_PB, 12),
++	MX27_PAD_CSI_D3 = PAD_ID(MX27_PB, 13),
++	MX27_PAD_CSI_D4 = PAD_ID(MX27_PB, 14),
++	MX27_PAD_CSI_MCLK = PAD_ID(MX27_PB, 15),
++	MX27_PAD_CSI_PIXCLK = PAD_ID(MX27_PB, 16),
++	MX27_PAD_CSI_D5 = PAD_ID(MX27_PB, 17),
++	MX27_PAD_CSI_D6 = PAD_ID(MX27_PB, 18),
++	MX27_PAD_CSI_D7 = PAD_ID(MX27_PB, 19),
++	MX27_PAD_CSI_VSYNC = PAD_ID(MX27_PB, 20),
++	MX27_PAD_CSI_HSYNC = PAD_ID(MX27_PB, 21),
++	MX27_PAD_USBH1_SUSP = PAD_ID(MX27_PB, 22),
++	MX27_PAD_USB_PWR = PAD_ID(MX27_PB, 23),
++	MX27_PAD_USB_OC_B = PAD_ID(MX27_PB, 24),
++	MX27_PAD_USBH1_RCV = PAD_ID(MX27_PB, 25),
++	MX27_PAD_USBH1_FS = PAD_ID(MX27_PB, 26),
++	MX27_PAD_USBH1_OE_B = PAD_ID(MX27_PB, 27),
++	MX27_PAD_USBH1_TXDM = PAD_ID(MX27_PB, 28),
++	MX27_PAD_USBH1_TXDP = PAD_ID(MX27_PB, 29),
++	MX27_PAD_USBH1_RXDM = PAD_ID(MX27_PB, 30),
++	MX27_PAD_USBH1_RXDP = PAD_ID(MX27_PB, 31),
+ 
+-	MX27_PAD_I2C2_SDA = PAD_ID(PC, 5),
+-	MX27_PAD_I2C2_SCL = PAD_ID(PC, 6),
+-	MX27_PAD_USBOTG_DATA5 = PAD_ID(PC, 7),
+-	MX27_PAD_USBOTG_DATA6 = PAD_ID(PC, 8),
+-	MX27_PAD_USBOTG_DATA0 = PAD_ID(PC, 9),
+-	MX27_PAD_USBOTG_DATA2 = PAD_ID(PC, 10),
+-	MX27_PAD_USBOTG_DATA1 = PAD_ID(PC, 11),
+-	MX27_PAD_USBOTG_DATA4 = PAD_ID(PC, 12),
+-	MX27_PAD_USBOTG_DATA3 = PAD_ID(PC, 13),
+-	MX27_PAD_TOUT = PAD_ID(PC, 14),
+-	MX27_PAD_TIN = PAD_ID(PC, 15),
+-	MX27_PAD_SSI4_FS = PAD_ID(PC, 16),
+-	MX27_PAD_SSI4_RXDAT = PAD_ID(PC, 17),
+-	MX27_PAD_SSI4_TXDAT = PAD_ID(PC, 18),
+-	MX27_PAD_SSI4_CLK = PAD_ID(PC, 19),
+-	MX27_PAD_SSI1_FS = PAD_ID(PC, 20),
+-	MX27_PAD_SSI1_RXDAT = PAD_ID(PC, 21),
+-	MX27_PAD_SSI1_TXDAT = PAD_ID(PC, 22),
+-	MX27_PAD_SSI1_CLK = PAD_ID(PC, 23),
+-	MX27_PAD_SSI2_FS = PAD_ID(PC, 24),
+-	MX27_PAD_SSI2_RXDAT = PAD_ID(PC, 25),
+-	MX27_PAD_SSI2_TXDAT = PAD_ID(PC, 26),
+-	MX27_PAD_SSI2_CLK = PAD_ID(PC, 27),
+-	MX27_PAD_SSI3_FS = PAD_ID(PC, 28),
+-	MX27_PAD_SSI3_RXDAT = PAD_ID(PC, 29),
+-	MX27_PAD_SSI3_TXDAT = PAD_ID(PC, 30),
+-	MX27_PAD_SSI3_CLK = PAD_ID(PC, 31),
++	MX27_PAD_I2C2_SDA = PAD_ID(MX27_PC, 5),
++	MX27_PAD_I2C2_SCL = PAD_ID(MX27_PC, 6),
++	MX27_PAD_USBOTG_DATA5 = PAD_ID(MX27_PC, 7),
++	MX27_PAD_USBOTG_DATA6 = PAD_ID(MX27_PC, 8),
++	MX27_PAD_USBOTG_DATA0 = PAD_ID(MX27_PC, 9),
++	MX27_PAD_USBOTG_DATA2 = PAD_ID(MX27_PC, 10),
++	MX27_PAD_USBOTG_DATA1 = PAD_ID(MX27_PC, 11),
++	MX27_PAD_USBOTG_DATA4 = PAD_ID(MX27_PC, 12),
++	MX27_PAD_USBOTG_DATA3 = PAD_ID(MX27_PC, 13),
++	MX27_PAD_TOUT = PAD_ID(MX27_PC, 14),
++	MX27_PAD_TIN = PAD_ID(MX27_PC, 15),
++	MX27_PAD_SSI4_FS = PAD_ID(MX27_PC, 16),
++	MX27_PAD_SSI4_RXDAT = PAD_ID(MX27_PC, 17),
++	MX27_PAD_SSI4_TXDAT = PAD_ID(MX27_PC, 18),
++	MX27_PAD_SSI4_CLK = PAD_ID(MX27_PC, 19),
++	MX27_PAD_SSI1_FS = PAD_ID(MX27_PC, 20),
++	MX27_PAD_SSI1_RXDAT = PAD_ID(MX27_PC, 21),
++	MX27_PAD_SSI1_TXDAT = PAD_ID(MX27_PC, 22),
++	MX27_PAD_SSI1_CLK = PAD_ID(MX27_PC, 23),
++	MX27_PAD_SSI2_FS = PAD_ID(MX27_PC, 24),
++	MX27_PAD_SSI2_RXDAT = PAD_ID(MX27_PC, 25),
++	MX27_PAD_SSI2_TXDAT = PAD_ID(MX27_PC, 26),
++	MX27_PAD_SSI2_CLK = PAD_ID(MX27_PC, 27),
++	MX27_PAD_SSI3_FS = PAD_ID(MX27_PC, 28),
++	MX27_PAD_SSI3_RXDAT = PAD_ID(MX27_PC, 29),
++	MX27_PAD_SSI3_TXDAT = PAD_ID(MX27_PC, 30),
++	MX27_PAD_SSI3_CLK = PAD_ID(MX27_PC, 31),
+ 
+-	MX27_PAD_SD3_CMD = PAD_ID(PD, 0),
+-	MX27_PAD_SD3_CLK = PAD_ID(PD, 1),
+-	MX27_PAD_ATA_DATA0 = PAD_ID(PD, 2),
+-	MX27_PAD_ATA_DATA1 = PAD_ID(PD, 3),
+-	MX27_PAD_ATA_DATA2 = PAD_ID(PD, 4),
+-	MX27_PAD_ATA_DATA3 = PAD_ID(PD, 5),
+-	MX27_PAD_ATA_DATA4 = PAD_ID(PD, 6),
+-	MX27_PAD_ATA_DATA5 = PAD_ID(PD, 7),
+-	MX27_PAD_ATA_DATA6 = PAD_ID(PD, 8),
+-	MX27_PAD_ATA_DATA7 = PAD_ID(PD, 9),
+-	MX27_PAD_ATA_DATA8 = PAD_ID(PD, 10),
+-	MX27_PAD_ATA_DATA9 = PAD_ID(PD, 11),
+-	MX27_PAD_ATA_DATA10 = PAD_ID(PD, 12),
+-	MX27_PAD_ATA_DATA11 = PAD_ID(PD, 13),
+-	MX27_PAD_ATA_DATA12 = PAD_ID(PD, 14),
+-	MX27_PAD_ATA_DATA13 = PAD_ID(PD, 15),
+-	MX27_PAD_ATA_DATA14 = PAD_ID(PD, 16),
+-	MX27_PAD_I2C_DATA = PAD_ID(PD, 17),
+-	MX27_PAD_I2C_CLK = PAD_ID(PD, 18),
+-	MX27_PAD_CSPI2_SS2 = PAD_ID(PD, 19),
+-	MX27_PAD_CSPI2_SS1 = PAD_ID(PD, 20),
+-	MX27_PAD_CSPI2_SS0 = PAD_ID(PD, 21),
+-	MX27_PAD_CSPI2_SCLK = PAD_ID(PD, 22),
+-	MX27_PAD_CSPI2_MISO = PAD_ID(PD, 23),
+-	MX27_PAD_CSPI2_MOSI = PAD_ID(PD, 24),
+-	MX27_PAD_CSPI1_RDY = PAD_ID(PD, 25),
+-	MX27_PAD_CSPI1_SS2 = PAD_ID(PD, 26),
+-	MX27_PAD_CSPI1_SS1 = PAD_ID(PD, 27),
+-	MX27_PAD_CSPI1_SS0 = PAD_ID(PD, 28),
+-	MX27_PAD_CSPI1_SCLK = PAD_ID(PD, 29),
+-	MX27_PAD_CSPI1_MISO = PAD_ID(PD, 30),
+-	MX27_PAD_CSPI1_MOSI = PAD_ID(PD, 31),
++	MX27_PAD_SD3_CMD = PAD_ID(MX27_PD, 0),
++	MX27_PAD_SD3_CLK = PAD_ID(MX27_PD, 1),
++	MX27_PAD_ATA_DATA0 = PAD_ID(MX27_PD, 2),
++	MX27_PAD_ATA_DATA1 = PAD_ID(MX27_PD, 3),
++	MX27_PAD_ATA_DATA2 = PAD_ID(MX27_PD, 4),
++	MX27_PAD_ATA_DATA3 = PAD_ID(MX27_PD, 5),
++	MX27_PAD_ATA_DATA4 = PAD_ID(MX27_PD, 6),
++	MX27_PAD_ATA_DATA5 = PAD_ID(MX27_PD, 7),
++	MX27_PAD_ATA_DATA6 = PAD_ID(MX27_PD, 8),
++	MX27_PAD_ATA_DATA7 = PAD_ID(MX27_PD, 9),
++	MX27_PAD_ATA_DATA8 = PAD_ID(MX27_PD, 10),
++	MX27_PAD_ATA_DATA9 = PAD_ID(MX27_PD, 11),
++	MX27_PAD_ATA_DATA10 = PAD_ID(MX27_PD, 12),
++	MX27_PAD_ATA_DATA11 = PAD_ID(MX27_PD, 13),
++	MX27_PAD_ATA_DATA12 = PAD_ID(MX27_PD, 14),
++	MX27_PAD_ATA_DATA13 = PAD_ID(MX27_PD, 15),
++	MX27_PAD_ATA_DATA14 = PAD_ID(MX27_PD, 16),
++	MX27_PAD_I2C_DATA = PAD_ID(MX27_PD, 17),
++	MX27_PAD_I2C_CLK = PAD_ID(MX27_PD, 18),
++	MX27_PAD_CSPI2_SS2 = PAD_ID(MX27_PD, 19),
++	MX27_PAD_CSPI2_SS1 = PAD_ID(MX27_PD, 20),
++	MX27_PAD_CSPI2_SS0 = PAD_ID(MX27_PD, 21),
++	MX27_PAD_CSPI2_SCLK = PAD_ID(MX27_PD, 22),
++	MX27_PAD_CSPI2_MISO = PAD_ID(MX27_PD, 23),
++	MX27_PAD_CSPI2_MOSI = PAD_ID(MX27_PD, 24),
++	MX27_PAD_CSPI1_RDY = PAD_ID(MX27_PD, 25),
++	MX27_PAD_CSPI1_SS2 = PAD_ID(MX27_PD, 26),
++	MX27_PAD_CSPI1_SS1 = PAD_ID(MX27_PD, 27),
++	MX27_PAD_CSPI1_SS0 = PAD_ID(MX27_PD, 28),
++	MX27_PAD_CSPI1_SCLK = PAD_ID(MX27_PD, 29),
++	MX27_PAD_CSPI1_MISO = PAD_ID(MX27_PD, 30),
++	MX27_PAD_CSPI1_MOSI = PAD_ID(MX27_PD, 31),
+ 
+-	MX27_PAD_USBOTG_NXT = PAD_ID(PE, 0),
+-	MX27_PAD_USBOTG_STP = PAD_ID(PE, 1),
+-	MX27_PAD_USBOTG_DIR = PAD_ID(PE, 2),
+-	MX27_PAD_UART2_CTS = PAD_ID(PE, 3),
+-	MX27_PAD_UART2_RTS = PAD_ID(PE, 4),
+-	MX27_PAD_PWMO = PAD_ID(PE, 5),
+-	MX27_PAD_UART2_TXD = PAD_ID(PE, 6),
+-	MX27_PAD_UART2_RXD = PAD_ID(PE, 7),
+-	MX27_PAD_UART3_TXD = PAD_ID(PE, 8),
+-	MX27_PAD_UART3_RXD = PAD_ID(PE, 9),
+-	MX27_PAD_UART3_CTS = PAD_ID(PE, 10),
+-	MX27_PAD_UART3_RTS = PAD_ID(PE, 11),
+-	MX27_PAD_UART1_TXD = PAD_ID(PE, 12),
+-	MX27_PAD_UART1_RXD = PAD_ID(PE, 13),
+-	MX27_PAD_UART1_CTS = PAD_ID(PE, 14),
+-	MX27_PAD_UART1_RTS = PAD_ID(PE, 15),
+-	MX27_PAD_RTCK = PAD_ID(PE, 16),
+-	MX27_PAD_RESET_OUT_B = PAD_ID(PE, 17),
+-	MX27_PAD_SD1_D0 = PAD_ID(PE, 18),
+-	MX27_PAD_SD1_D1 = PAD_ID(PE, 19),
+-	MX27_PAD_SD1_D2 = PAD_ID(PE, 20),
+-	MX27_PAD_SD1_D3 = PAD_ID(PE, 21),
+-	MX27_PAD_SD1_CMD = PAD_ID(PE, 22),
+-	MX27_PAD_SD1_CLK = PAD_ID(PE, 23),
+-	MX27_PAD_USBOTG_CLK = PAD_ID(PE, 24),
+-	MX27_PAD_USBOTG_DATA7 = PAD_ID(PE, 25),
++	MX27_PAD_USBOTG_NXT = PAD_ID(MX27_PE, 0),
++	MX27_PAD_USBOTG_STP = PAD_ID(MX27_PE, 1),
++	MX27_PAD_USBOTG_DIR = PAD_ID(MX27_PE, 2),
++	MX27_PAD_UART2_CTS = PAD_ID(MX27_PE, 3),
++	MX27_PAD_UART2_RTS = PAD_ID(MX27_PE, 4),
++	MX27_PAD_PWMO = PAD_ID(MX27_PE, 5),
++	MX27_PAD_UART2_TXD = PAD_ID(MX27_PE, 6),
++	MX27_PAD_UART2_RXD = PAD_ID(MX27_PE, 7),
++	MX27_PAD_UART3_TXD = PAD_ID(MX27_PE, 8),
++	MX27_PAD_UART3_RXD = PAD_ID(MX27_PE, 9),
++	MX27_PAD_UART3_CTS = PAD_ID(MX27_PE, 10),
++	MX27_PAD_UART3_RTS = PAD_ID(MX27_PE, 11),
++	MX27_PAD_UART1_TXD = PAD_ID(MX27_PE, 12),
++	MX27_PAD_UART1_RXD = PAD_ID(MX27_PE, 13),
++	MX27_PAD_UART1_CTS = PAD_ID(MX27_PE, 14),
++	MX27_PAD_UART1_RTS = PAD_ID(MX27_PE, 15),
++	MX27_PAD_RTCK = PAD_ID(MX27_PE, 16),
++	MX27_PAD_RESET_OUT_B = PAD_ID(MX27_PE, 17),
++	MX27_PAD_SD1_D0 = PAD_ID(MX27_PE, 18),
++	MX27_PAD_SD1_D1 = PAD_ID(MX27_PE, 19),
++	MX27_PAD_SD1_D2 = PAD_ID(MX27_PE, 20),
++	MX27_PAD_SD1_D3 = PAD_ID(MX27_PE, 21),
++	MX27_PAD_SD1_CMD = PAD_ID(MX27_PE, 22),
++	MX27_PAD_SD1_CLK = PAD_ID(MX27_PE, 23),
++	MX27_PAD_USBOTG_CLK = PAD_ID(MX27_PE, 24),
++	MX27_PAD_USBOTG_DATA7 = PAD_ID(MX27_PE, 25),
+ 
+-	MX27_PAD_NFRB = PAD_ID(PF, 0),
+-	MX27_PAD_NFCLE = PAD_ID(PF, 1),
+-	MX27_PAD_NFWP_B = PAD_ID(PF, 2),
+-	MX27_PAD_NFCE_B = PAD_ID(PF, 3),
+-	MX27_PAD_NFALE = PAD_ID(PF, 4),
+-	MX27_PAD_NFRE_B = PAD_ID(PF, 5),
+-	MX27_PAD_NFWE_B = PAD_ID(PF, 6),
+-	MX27_PAD_PC_POE = PAD_ID(PF, 7),
+-	MX27_PAD_PC_RW_B = PAD_ID(PF, 8),
+-	MX27_PAD_IOIS16 = PAD_ID(PF, 9),
+-	MX27_PAD_PC_RST = PAD_ID(PF, 10),
+-	MX27_PAD_PC_BVD2 = PAD_ID(PF, 11),
+-	MX27_PAD_PC_BVD1 = PAD_ID(PF, 12),
+-	MX27_PAD_PC_VS2 = PAD_ID(PF, 13),
+-	MX27_PAD_PC_VS1 = PAD_ID(PF, 14),
+-	MX27_PAD_CLKO = PAD_ID(PF, 15),
+-	MX27_PAD_PC_PWRON = PAD_ID(PF, 16),
+-	MX27_PAD_PC_READY = PAD_ID(PF, 17),
+-	MX27_PAD_PC_WAIT_B = PAD_ID(PF, 18),
+-	MX27_PAD_PC_CD2_B = PAD_ID(PF, 19),
+-	MX27_PAD_PC_CD1_B = PAD_ID(PF, 20),
+-	MX27_PAD_CS4_B = PAD_ID(PF, 21),
+-	MX27_PAD_CS5_B = PAD_ID(PF, 22),
+-	MX27_PAD_ATA_DATA15 = PAD_ID(PF, 23),
++	MX27_PAD_NFRB = PAD_ID(MX27_PF, 0),
++	MX27_PAD_NFCLE = PAD_ID(MX27_PF, 1),
++	MX27_PAD_NFWP_B = PAD_ID(MX27_PF, 2),
++	MX27_PAD_NFCE_B = PAD_ID(MX27_PF, 3),
++	MX27_PAD_NFALE = PAD_ID(MX27_PF, 4),
++	MX27_PAD_NFRE_B = PAD_ID(MX27_PF, 5),
++	MX27_PAD_NFWE_B = PAD_ID(MX27_PF, 6),
++	MX27_PAD_PC_POE = PAD_ID(MX27_PF, 7),
++	MX27_PAD_PC_RW_B = PAD_ID(MX27_PF, 8),
++	MX27_PAD_IOIS16 = PAD_ID(MX27_PF, 9),
++	MX27_PAD_PC_RST = PAD_ID(MX27_PF, 10),
++	MX27_PAD_PC_BVD2 = PAD_ID(MX27_PF, 11),
++	MX27_PAD_PC_BVD1 = PAD_ID(MX27_PF, 12),
++	MX27_PAD_PC_VS2 = PAD_ID(MX27_PF, 13),
++	MX27_PAD_PC_VS1 = PAD_ID(MX27_PF, 14),
++	MX27_PAD_CLKO = PAD_ID(MX27_PF, 15),
++	MX27_PAD_PC_PWRON = PAD_ID(MX27_PF, 16),
++	MX27_PAD_PC_READY = PAD_ID(MX27_PF, 17),
++	MX27_PAD_PC_WAIT_B = PAD_ID(MX27_PF, 18),
++	MX27_PAD_PC_CD2_B = PAD_ID(MX27_PF, 19),
++	MX27_PAD_PC_CD1_B = PAD_ID(MX27_PF, 20),
++	MX27_PAD_CS4_B = PAD_ID(MX27_PF, 21),
++	MX27_PAD_CS5_B = PAD_ID(MX27_PF, 22),
++	MX27_PAD_ATA_DATA15 = PAD_ID(MX27_PF, 23),
+ };
+ 
+ /* Pad names for the pinmux subsystem */
 
-missing space.
+---
+base-commit: d01240b22abf28ce32660c22458457f9b7f5dc1e
+change-id: 20241003-fix-imx27-pc-f6157992e1f9
 
-> +&pcieb{
+Best regards,
+-- 
+Linus Walleij <linus.walleij@linaro.org>
 
-Ditto.
