@@ -1,466 +1,185 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2068.outbound.protection.outlook.com [40.107.247.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9DB1547EB
-	for <imx@lists.linux.dev>; Thu,  3 Oct 2024 14:16:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727965014; cv=none; b=taMsCBmiuX/sINabCPMcw9RqKzAGiV6k+tXAjsQCSAjoYtAi/w0mdd2ac6eb0kQGqWhQcGQnElrztvwkCV9RW39MI6cMzvrNrjreOEjO/Npq2n5skMxGw3vUheHIUeTGncpcvIr3BlD8mh0mH5wK5JAu1E0RlsUbZEs6fVt0Yp8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727965014; c=relaxed/simple;
-	bh=2V0FSsBUEK1YSjhhrV/4tw2MgZ8433fBunRjyQWOQNc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JeaBVPeD4NiDRcHeso7RRCZHIM5NQV/Cud9TlVyLCJcFYr+kcmD+v+yH0VpOeWv4kqlIx7g69v1snEcJo6vBcgVdRO8tlK8KrTnMQlhSwSCzUzBIEM9zU6q7WYXBNm0H7VTnsUtlVdYigIELjSb0qvW9ljZIA3DxicVzxb2bcXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=n5eMUe+K; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DDBF1A00CB
+	for <imx@lists.linux.dev>; Thu,  3 Oct 2024 15:05:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727967931; cv=fail; b=sLUC1/Nlfoq93XoUMZJDIRxILOb07d72mZILEzYhad4JYi5hydBY3B2XUPZ9hOoxuCu3jV5REfeJHeZaI++++/iltmKHJV7WpcIG7uc0vHL72gTHMOa1WrUK4W0jQXbv2iwUUnMX3yfOuPDtqXKFiMTMctmDo85GPAnQ8UOs8h0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727967931; c=relaxed/simple;
+	bh=kte7HSeWrk6Elkd1Ew/6sjGm5nzGhuUja0VOoWvXjRk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=WC0Xb8mJFDUzO1ACYS4gilgny6/aZlz8Z2AH94/cMa5nHBIjCREL8XB5ccZUpamStrGocLFmBbSlcq2408/GK5f7os/9UutAZ1A7dgMfE6bMdWSSU+H3x8vXoyE0IQVOLWCs2eK3A31oyrgtZPa1ZFmL7gbkQrbOmac9v1/TNDo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=mMKWxK9V; arc=fail smtp.client-ip=40.107.247.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="n5eMUe+K"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5c876ed9c93so1196072a12.2
-        for <imx@lists.linux.dev>; Thu, 03 Oct 2024 07:16:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1727965010; x=1728569810; darn=lists.linux.dev;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=sIRo0R9Ru8WoD9y3TRJXMRZ5Ajvd7H1cnftn09CMgiQ=;
-        b=n5eMUe+KbfML+fyv0t13jicVc8wG6B69V8y4pP3aRR+pOvT9qJFm5Ds2X1lMVOe5ny
-         ORr4G0VABNChfdPACrwoD3h0NnTLytgRY6KF/+ZKLOoQjScrzKAl4PE6iXRLOfgUJTHl
-         WQ/uNANvEbrqV7MS8mR1B9WNDFQCKy5TKjbgDVmRzqnymeU9rqFlpMWy8TLef4XI+Vls
-         NImTBBtqg8BdgFQvh3yb3HUACO4s6SNXpS0DHLZIXIla9yU+0+nuqHzsqe0iuqFRR8VL
-         /ro4bCEX5klJyYVcF19P2a785pDxEW6pZ/oQRYi+55ZNXkb9SlaJ5ETitvCEwxcZJVyl
-         +o7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727965010; x=1728569810;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sIRo0R9Ru8WoD9y3TRJXMRZ5Ajvd7H1cnftn09CMgiQ=;
-        b=ZvrdJZJg90Vn1W30gblGjLM+1bV71uB6A2hV9Ga0rXfY16vAijQ4YB3mgGjKMgcLCO
-         D6uruk6qdu7qbbDO7OkZdCJxXPqfCtXW4SK7vF2JacFvxL4FHAyXPtFKu1wHEv+M7Uvp
-         pgmL1qSxdX+G4En7HcPlmurElzbqDsrBsozMkmAsMTzLFhvutCmFM8etTZCaTuEqFqrU
-         CWQEvNONrhpKy3knL0pTjUF7qqlUUubqzEO+zQzYhSkXifHOPr0Jg4fqpEBaaaz1aoHB
-         ZbtL+RDzpmbr4spGPnFapxXMb6r69SPUHWoL1NO4EYCEX+97YiuSxxQ6kKQgDrcL9BW3
-         vmrw==
-X-Forwarded-Encrypted: i=1; AJvYcCXzYZx3N1tN22Weicl1oI+0eW0oS0eFGrLdytwm6D9eZ2kk7D4xuTcfRGyQnSrGwXHg0q8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzcssI1wyro3cmuVU29+nq91iPMmNBV8NsTQHbVQ+xY+/C1nj7p
-	dX9yEwe7X1ilSUSsK/t3BGPTufg8hF4zth2t/b1foY2TjjSZsOwMreQFkeBiJNFtXfHvLXkJ+aT
-	v
-X-Google-Smtp-Source: AGHT+IFjMJ15NnWrEJrn2rlvfam+PuZLDLn+eOt6seTZFHWXKWI0elg1GsLrbZ/cOdd8tmAesnmOxw==
-X-Received: by 2002:a05:6402:51c6:b0:5c8:a0ac:f3b5 with SMTP id 4fb4d7f45d1cf-5c8b1925b77mr4978742a12.10.1727965010276;
-        Thu, 03 Oct 2024 07:16:50 -0700 (PDT)
-Received: from lino.lan ([85.235.12.238])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c8ca3e0062sm769757a12.37.2024.10.03.07.16.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Oct 2024 07:16:49 -0700 (PDT)
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 03 Oct 2024 16:16:47 +0200
-Subject: [PATCH] pinctrl: imx27: Fix too generic defines
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="mMKWxK9V"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JdkSREJjAxR4NRKJ8V6+o2CCHZpPFyp5WxoNve5YjzZG7tM+S/mgal+qOu/t+R39hSr73pksKfyTt5K4j2aCUC7lQF6+9ecFFKHFOLbcyRcraUB70svy0y6RMI9qIlXEjFe40etwTAL5D9spOmsAAGj95/vE5UYPbKOvCQRVKq884PiJKyeNHdhFJgDAp+wJMXuYUYIsReNb8qI0uL/pzcA6dxAZxYXLOmKkOEfJ7nWQoLYdFcGYvo43VfHEcmD+/EzHKvKRq+/f9B7R0pjF9UcKVxQJ0qVVYLRXsRhEg766oa5rURBml006Q+GXlrYfLbKFCVzzyTNa3FFsjcVwSA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mSckGkyaaGe27mx/9d0pnlLqOdpwSVfeE8SDEmUDanE=;
+ b=r6uGLUCCPApQScAuPIL8DAZEzbBuyzhZzoRXenC32gOBk02UPodytxDZCZ+K/HIIYaBc/oaggZUzCMmiuCMAOKZD2ut6GkAKRCl/232POMmn55Qt1CmThnOsRqbu6nFCFuahBk0/lcG8xq/4E/fK4qCsobKSr4ntOj5jYIFIOCpMWuj2ltWnCo8ASdMLXrUoJXmqz5lOndlLOpA4tU1uNGb8dkFBfdDYDxkJcKS37KaclOfFiQhbYbqCm8aZotqXzbeZqXus06mQ2+tkTXivsRo91JXUnpXWVOihgiYXNiJ2P8AjZygTXb7s0eoZgzV0HvJNfnIse7dL6t+TATV+hA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mSckGkyaaGe27mx/9d0pnlLqOdpwSVfeE8SDEmUDanE=;
+ b=mMKWxK9VU8Paxzj0MQsGgCOdP5daBx0OFJc8SMF+sIHrXQ+3dQd0IlbvzHiQW+7UOvfiKsGMxquGokQ3h3hfEaZWBYDtqqeF8IRe9N09e+rtSsZiQ/kesUV5GS1uRFrnv4XOyxoICBcQVQn1sIEjqawRki4aY6Yc2OVjvEXADAuP+zruLrstEzWmjNU2Z1q7mhNIyDFkXru7KZhXQFmdI7HRAb8sV6mh0wHt390ZtQxgD+cjhQ7SR8tkIFBvcW62K6usMruDSazmS0fKJmbV7MByxWj5uGnTLhuFsnvkknRajNTQtcltsN/AEhJ4WJFBpBWHVVjp4a7Wa2T+HxNx+w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from GV1PR04MB9071.eurprd04.prod.outlook.com (2603:10a6:150:22::11)
+ by AS8PR04MB8580.eurprd04.prod.outlook.com (2603:10a6:20b:427::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.15; Thu, 3 Oct
+ 2024 15:05:24 +0000
+Received: from GV1PR04MB9071.eurprd04.prod.outlook.com
+ ([fe80::b7f2:1d0:6b6a:ba58]) by GV1PR04MB9071.eurprd04.prod.outlook.com
+ ([fe80::b7f2:1d0:6b6a:ba58%7]) with mapi id 15.20.8026.016; Thu, 3 Oct 2024
+ 15:05:23 +0000
+Date: Thu, 3 Oct 2024 10:05:16 -0500
+From: Han Xu <han.xu@nxp.com>
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>, imx@lists.linux.dev,
+	linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] mtd: nand: raw: gpmi: improve power management
+ handling
+Message-ID: <20241003150500.uz2efay7kadu47if@cozumel>
+References: <20241002153944.69733-1-han.xu@nxp.com>
+ <20241002153944.69733-2-han.xu@nxp.com>
+ <20241003093840.2965be20@xps-13>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241003093840.2965be20@xps-13>
+X-ClientProxiedBy: BYAPR02CA0064.namprd02.prod.outlook.com
+ (2603:10b6:a03:54::41) To GV1PR04MB9071.eurprd04.prod.outlook.com
+ (2603:10a6:150:22::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241003-fix-imx27-pc-v1-1-0e78d1fc6175@linaro.org>
-X-B4-Tracking: v=1; b=H4sIAE6n/mYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxNDAwNj3bTMCt3M3Aojc92CZN00M0NTc0tLo1TDNEsloJaColSgPNi46Nj
- aWgDsNkgiXgAAAA==
-To: Esben Haabendal <esben@geanix.com>, Dong Aisheng <aisheng.dong@nxp.com>, 
- Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
- Jacky Bai <ping.bai@nxp.com>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Sascha Hauer <s.hauer@pengutronix.de>, Esben Haabendal <esben@geanix.com>
-Cc: linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
- kernel test robot <lkp@intel.com>, Linus Walleij <linus.walleij@linaro.org>
-X-Mailer: b4 0.14.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV1PR04MB9071:EE_|AS8PR04MB8580:EE_
+X-MS-Office365-Filtering-Correlation-Id: bbc866e4-0352-42a5-8ca0-08dce3bcce51
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|366016|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TEZQY0x2SXNYbXQ3YXg2NzNVWXlhdXpKMktyZFZzaVlWL3E3YTVwenFJaXF6?=
+ =?utf-8?B?SW4zZGNmQ2ZobUJwRWI1RkQ4M0hPWFErZkR5TzRDeWsxdG9oRVJId2ZYbXBl?=
+ =?utf-8?B?SVlRbURHelRsZDcxS1pYSHBxeDhpOWs5eGdiZkE3Sk10Mmpob2lVREtCWnJa?=
+ =?utf-8?B?aU5MUEk2L2U3YmN3TkVsbmJkUUxITjJxd3crY2ZhNWFyRzN1Nm5BYWpYcHBZ?=
+ =?utf-8?B?NXNLMmxyWXZQak1la2YvNmd3OFQydEVuT01xaWpJL2E2bVNhWFU2TnpkZnNH?=
+ =?utf-8?B?OTU2ZEE4dWdiYldhc2ZhVmRRK1ljVlJKendmVmFkWGhOMlpnWml4MVduTkps?=
+ =?utf-8?B?d1hoWXRlWStpU2pNVE1yNkVRUUxENWhoaE8wVGxMWlpCai9nL09uN2MyTy9i?=
+ =?utf-8?B?NG1MdHF4bnVHRTFibWJQejBKUlYwQjJzRkJVTXZYcFd0SnQvaG1FVFpueGpv?=
+ =?utf-8?B?Q0tpZzNUS2N3L2x6Y01vSldnSnlUODhvT0FGbjZlQkdyUFlwOHRWbWJWTnQ0?=
+ =?utf-8?B?N3JiTUxUaGVDRWRsNFMyUjFpL2lNV0VXby9ZOG00ZWY0VkZ3MExxSE1FZC80?=
+ =?utf-8?B?WGR2MTREV0hrWUFObXl1dWltSjN0Wk0yTU1OL0RLUm5IcGM3OTBuaWZ3d2E0?=
+ =?utf-8?B?YzRXcUFWN2dLWW5vQ2RpektnN1IrcXVva1lXTEpXTDZaV3E2eDZNQjk0REdX?=
+ =?utf-8?B?M0tpOTBhM2FiRC9rcndCb2syVFZVaUlEVm5BZUdNdlRrejNVQmN0a0xBWEVX?=
+ =?utf-8?B?S2Z0cFpqN1dvTndZRGpCcFRXQzIvWkYzWG02QmNpaVN5ellFcVo1T2xxQTM4?=
+ =?utf-8?B?cjdBNUZ6NStyY3RHUkJBUXA3bXVUbG4zUlJ1MWluT2R4UkwzNk41a3VDS2hM?=
+ =?utf-8?B?cHE0S3d5VVo3aDhENFRxWmlIbVE5VlZjM21ZSFlqTTFiY0F6dlcwSDlPRHlM?=
+ =?utf-8?B?SWNtZyt5b21jRUszbms1dy9QYXMxTlpIaUZJQitEdGdFb2trNlJ5L2xYSElN?=
+ =?utf-8?B?YWdUdTdzMm1zejc5WEk1cWdqanFlZ1hUTDZDRWFWYW9sdzBYNWEwT2FtdE9m?=
+ =?utf-8?B?Wm1QT1FIQ2h4M3pCMU43eUlpNTRzL28xWks2TmozTkdiNE9KMUhNQWtwWVdD?=
+ =?utf-8?B?aXJvSE5VZGk4VnM0RW5uMDhqM3BPT3JFSGdaTTloMGY1MnRBUExCcUhXbzdt?=
+ =?utf-8?B?VHFPQkZLNGFYVzhkaW5aNUhGTlJhUWFnOEdkZ0d5YmkxNC8vV1llUW5STFhq?=
+ =?utf-8?B?cUY0Tkw2ODFjVjhBK2l1YnRtYzBhYlF5cnFnL0ZqK0xqVis5ZXZyQ2s4SzBC?=
+ =?utf-8?B?L21GeEdPUldNa2lmMVVUZ21tVEQ4Zy8xSHl0TUpVbWhkZG1DZ05UOGhXUzJh?=
+ =?utf-8?B?RytsUkRLQk5VR1Q1bEIzNmEvcjFlVVcrald4aGNIaHF3TW1kOVZmZnRCUkxt?=
+ =?utf-8?B?UTBUdm4wbktlOHZnVW1QdHpHR3NOVDJ5enk1MUdYam1PRkkwQnc3VjlSWGYv?=
+ =?utf-8?B?bDdXYzVpbHVBS3ZaTktwTGFSVjVCb1NHdEgwWmxhQStyeXVRWUQyUjRQb1hn?=
+ =?utf-8?B?VDFYVlhQYW5lZ3VmU29LMEkwWVhFY0tSMW1iL2JmTksrNU0vbVJ5dWtNcU5O?=
+ =?utf-8?B?ZjJpcTRpdWhDRDQyb2ZoazNNN1YzRk5mcnFqV3c4UVpNN1FrTVhuU2tZcng0?=
+ =?utf-8?B?YXZvOTBvenlzaml4b2NpaHlNc3JwVGk3MERQRlZlNVdkK1VWVXNYTXFtM1Nx?=
+ =?utf-8?B?cXJkNmozSFJqVVBwMGJkQmZKS3BmMFJyZVVBNmRraTRWNVlIZnkxTTMyUEd2?=
+ =?utf-8?B?bHl4aWJRVWQ3ZUxBbVg3Zz09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR04MB9071.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?b1hXV3Y1ZE5Dc1BZOW9JcTNlNmcwN2V2ODZ2bm5DK3FxM0tVaGtBSUtFVGsv?=
+ =?utf-8?B?QlU3Ty8xVVlhNkRLUUJ5Y2U2M20rUmEvUXVZWStPNGVOMTZWVERiVEVhL0JE?=
+ =?utf-8?B?WXI0Q2luc1k1SzIzMmRUWmJwc2kvVTl1RkozNVJabkFTSXlEVWxIYXVWU1J1?=
+ =?utf-8?B?d3gyMXhpTFZNU3UxNStTaE1GSjFnVjAzaXFkRldMVGE3TXgwbHpZbEYrdys0?=
+ =?utf-8?B?dmhqZ0pibk5TakRKZm5kc3M3ei9rclY0TmxKN0s1K0ZaOVh4WGh0OGY0aGli?=
+ =?utf-8?B?bDYxbXcraXQwV1daVkVoRXArVVhCKzc2NC93SFRWQUdldFZ2c0l5ZFNMS0Nj?=
+ =?utf-8?B?Y3dYWktCZXZSN3d5bnIvaHcrcnBXT2wzcDZVTSt2VHp2Z0M3STIvcTZGMmN0?=
+ =?utf-8?B?Q1ZKdmRvRkM2Z3dNMEJqdXk1VUVEd1dLT0wwUmNIbmxjTlZyVFRuall6R0VX?=
+ =?utf-8?B?SUJYcHVvM1hvSnE3blVWUVFDWnJiOEpaUFpMclEyQzVwdUVtbEFUNVljWTJw?=
+ =?utf-8?B?MmNRRkY1ZXVuY1pMU1ZFUkNHbm1kcDErY3IzL28wL0V6Y1JJVXp0aFJJSmxT?=
+ =?utf-8?B?S1NpSHpRaWs2ajB1dURBdEREcngrcE9oNzB1YndEbmd1dEJEMUlHM1E3a2Jk?=
+ =?utf-8?B?dFZQV1RrOVFwVHp2MnN6a1dEMFlzSkU2UGlKcGFqc083ZnFMOGt2K0EvbGJB?=
+ =?utf-8?B?REQ5SGJwRml3RHd4dDI2Z1Jpc1o0RmhVZ0RkT1g1T0lrQjVvczZIOEc5WitQ?=
+ =?utf-8?B?LzdOazVrTEhjTFgvN3JxT3dkT3FQZituK3FrZ0U4ZWtwcm82andzOC9YR1Vk?=
+ =?utf-8?B?VWkyN1V6Y3EyTWhnTnhOMjltQXdnY0NwUGhKRmVXU3I1a1dNSlNEMmZ5OGN3?=
+ =?utf-8?B?ZWdDaVo4VVJzK2RjUWR0R1pCZk84RC96UldxbnR4L3BSSmcrNWp2czkwRnM0?=
+ =?utf-8?B?enFUVGpVdkRlbkx1VGxFWnQ2L2kwa0U2aytPdll0WTNnRGFYZTMwN2d1N3dV?=
+ =?utf-8?B?RFdDSFdZaUQxM3JXc2orVFpWTk9iT1A1M1FxNERsaTdoUSt5WnhNd2Z0VzZa?=
+ =?utf-8?B?aXBxdTN0dnNBZldHMWs1YlRndzVXTzVsOXdVWXB4aThZWFFwbnJsa3h1QUVm?=
+ =?utf-8?B?VUZVNmpXVWFkeVdxZGxiSFY4NnY5cy9yblhFdEJIV200aVlKT1lEOVFVT0NO?=
+ =?utf-8?B?bW84OEJkNmRNaGRuV3hjUC9jcW1hM0tEV1N0djJLb1I0akkvZnhRTWJvY1JQ?=
+ =?utf-8?B?UnhvTUZDNjRSM3N3THBYQVo0a0VUNHRyN2RHUXpERUJtMkNkWGc0L0dsekph?=
+ =?utf-8?B?SlZwcjVaS0wvR1RBMitad3hlTWlWU0ZXOHF1ZjV1NytZZjIvVDdsNXpuVkFV?=
+ =?utf-8?B?VEd2bnRJc0U4VUViYlB5WGJoVU9TLzU2bXI2MnN1a1J4MWlBYmxpNUhXR3Z2?=
+ =?utf-8?B?ZGIvdmV6T0Jrc3FpeXdvRndtek1WVWdnWVZ4djJqMWVpQ0VUaEtXZzVLY1JH?=
+ =?utf-8?B?M20zTHM2TVE0VEgvNituVlJnazYwYTBES05jejhUOE52QllPeFZ2WlFqbW12?=
+ =?utf-8?B?ME5ScmhDb1lzbVZ5WkI5SWdIK1pvSjNZR1A2aXNrU3dKbS83UWdUQ2lRV0hn?=
+ =?utf-8?B?MlZPSTVVS0cyK3hQMjdJTnhMdHRueDFiUzhjeS9qVGkxZitSZi9kYmNaZkRh?=
+ =?utf-8?B?SXdiSTNYbmxuNzNiRlVHQzBGMWNEYUtLK2QyYys1VE5iVXZxNFlwTXBZQVdN?=
+ =?utf-8?B?MFdYUU9heStaL3cxUFZmRmpvbmRkbnNLWGVxSnJiMVFkdHUxc0EwOWMyNnVX?=
+ =?utf-8?B?R0ZyUE1jM3VNKzNNcmk4QVVHeEMxNVdkL0FJUHZWdkRhbkZKVTRZSmhWT0lo?=
+ =?utf-8?B?L3l3VmdaOTkraWswZ2dTdVlIQ2owRHFDTFZZalNIQ1dRZTNEZUFRTHNraEY3?=
+ =?utf-8?B?Um8yRldEaVoyeXN5SzhtejBsS05iV2V6di90OTZVTGlIUXpjaXF1QWw5Rmta?=
+ =?utf-8?B?YVByQks5WmJLYjBPR0puV0daMDBERFhTSkE5Z0szb3B0LzZvR0JlUjd3R010?=
+ =?utf-8?B?ZENuYWNqYW84a2hPZnp1WkV0NU1ZTFhsQnFtd0FBTmdBaGlEZ080RnI1T1N1?=
+ =?utf-8?Q?1do8=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bbc866e4-0352-42a5-8ca0-08dce3bcce51
+X-MS-Exchange-CrossTenant-AuthSource: GV1PR04MB9071.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Oct 2024 15:05:23.5922
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ctm0WYIyG+jYTXp2EcYv7oVc93/7OLT/lQR5O7hqu07/Ke3nbpCCTEjJy0QliCvy
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8580
 
-The "PC" define is colliding with the (apparently broadcased)
-define for "program counter" on Loongarch, so let's rename all
-these 2-letter defines so they don't collide with stuff.
+On 24/10/03 09:38AM, Miquel Raynal wrote:
+> Hi Han,
+> 
+> han.xu@nxp.com wrote on Wed,  2 Oct 2024 10:39:44 -0500:
+> 
+> > The commit refactors the power management handling in the gpmi nand
+> > driver. It removes redundant pm_runtime calls in the probe function,
+> > handles the pad control in suspend and resume, and moves the calls to
+> > acquire and release DMA channels to the runtime suspend and resume
+> > functions.
+> 
+> May I know the motivation to acquire and release the DMA channels
+> during suspend? In general it seems like a different change which I'd
+> prefer to see in its own commit with a justification. The rest looks
+> ok otherwise.
 
-Fixes: a55222b7a132 ("pinctrl: freescale: enable use with COMPILE_TEST")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202410030214.dPrgmUqd-lkp@intel.com/
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
- drivers/pinctrl/freescale/pinctrl-imx27.c | 350 +++++++++++++++---------------
- 1 file changed, 175 insertions(+), 175 deletions(-)
+Hi Miquel,
 
-diff --git a/drivers/pinctrl/freescale/pinctrl-imx27.c b/drivers/pinctrl/freescale/pinctrl-imx27.c
-index 1738df461235..afeb39957203 100644
---- a/drivers/pinctrl/freescale/pinctrl-imx27.c
-+++ b/drivers/pinctrl/freescale/pinctrl-imx27.c
-@@ -16,188 +16,188 @@
- #include "pinctrl-imx1.h"
- 
- #define PAD_ID(port, pin) (port*32 + pin)
--#define PA 0
--#define PB 1
--#define PC 2
--#define PD 3
--#define PE 4
--#define PF 5
-+#define MX27_PA 0
-+#define MX27_PB 1
-+#define MX27_PC 2
-+#define MX27_PD 3
-+#define MX27_PE 4
-+#define MX27_PF 5
- 
- enum imx27_pads {
--	MX27_PAD_USBH2_CLK = PAD_ID(PA, 0),
--	MX27_PAD_USBH2_DIR = PAD_ID(PA, 1),
--	MX27_PAD_USBH2_DATA7 = PAD_ID(PA, 2),
--	MX27_PAD_USBH2_NXT = PAD_ID(PA, 3),
--	MX27_PAD_USBH2_STP = PAD_ID(PA, 4),
--	MX27_PAD_LSCLK = PAD_ID(PA, 5),
--	MX27_PAD_LD0 = PAD_ID(PA, 6),
--	MX27_PAD_LD1 = PAD_ID(PA, 7),
--	MX27_PAD_LD2 = PAD_ID(PA, 8),
--	MX27_PAD_LD3 = PAD_ID(PA, 9),
--	MX27_PAD_LD4 = PAD_ID(PA, 10),
--	MX27_PAD_LD5 = PAD_ID(PA, 11),
--	MX27_PAD_LD6 = PAD_ID(PA, 12),
--	MX27_PAD_LD7 = PAD_ID(PA, 13),
--	MX27_PAD_LD8 = PAD_ID(PA, 14),
--	MX27_PAD_LD9 = PAD_ID(PA, 15),
--	MX27_PAD_LD10 = PAD_ID(PA, 16),
--	MX27_PAD_LD11 = PAD_ID(PA, 17),
--	MX27_PAD_LD12 = PAD_ID(PA, 18),
--	MX27_PAD_LD13 = PAD_ID(PA, 19),
--	MX27_PAD_LD14 = PAD_ID(PA, 20),
--	MX27_PAD_LD15 = PAD_ID(PA, 21),
--	MX27_PAD_LD16 = PAD_ID(PA, 22),
--	MX27_PAD_LD17 = PAD_ID(PA, 23),
--	MX27_PAD_REV = PAD_ID(PA, 24),
--	MX27_PAD_CLS = PAD_ID(PA, 25),
--	MX27_PAD_PS = PAD_ID(PA, 26),
--	MX27_PAD_SPL_SPR = PAD_ID(PA, 27),
--	MX27_PAD_HSYNC = PAD_ID(PA, 28),
--	MX27_PAD_VSYNC = PAD_ID(PA, 29),
--	MX27_PAD_CONTRAST = PAD_ID(PA, 30),
--	MX27_PAD_OE_ACD = PAD_ID(PA, 31),
-+	MX27_PAD_USBH2_CLK = PAD_ID(MX27_PA, 0),
-+	MX27_PAD_USBH2_DIR = PAD_ID(MX27_PA, 1),
-+	MX27_PAD_USBH2_DATA7 = PAD_ID(MX27_PA, 2),
-+	MX27_PAD_USBH2_NXT = PAD_ID(MX27_PA, 3),
-+	MX27_PAD_USBH2_STP = PAD_ID(MX27_PA, 4),
-+	MX27_PAD_LSCLK = PAD_ID(MX27_PA, 5),
-+	MX27_PAD_LD0 = PAD_ID(MX27_PA, 6),
-+	MX27_PAD_LD1 = PAD_ID(MX27_PA, 7),
-+	MX27_PAD_LD2 = PAD_ID(MX27_PA, 8),
-+	MX27_PAD_LD3 = PAD_ID(MX27_PA, 9),
-+	MX27_PAD_LD4 = PAD_ID(MX27_PA, 10),
-+	MX27_PAD_LD5 = PAD_ID(MX27_PA, 11),
-+	MX27_PAD_LD6 = PAD_ID(MX27_PA, 12),
-+	MX27_PAD_LD7 = PAD_ID(MX27_PA, 13),
-+	MX27_PAD_LD8 = PAD_ID(MX27_PA, 14),
-+	MX27_PAD_LD9 = PAD_ID(MX27_PA, 15),
-+	MX27_PAD_LD10 = PAD_ID(MX27_PA, 16),
-+	MX27_PAD_LD11 = PAD_ID(MX27_PA, 17),
-+	MX27_PAD_LD12 = PAD_ID(MX27_PA, 18),
-+	MX27_PAD_LD13 = PAD_ID(MX27_PA, 19),
-+	MX27_PAD_LD14 = PAD_ID(MX27_PA, 20),
-+	MX27_PAD_LD15 = PAD_ID(MX27_PA, 21),
-+	MX27_PAD_LD16 = PAD_ID(MX27_PA, 22),
-+	MX27_PAD_LD17 = PAD_ID(MX27_PA, 23),
-+	MX27_PAD_REV = PAD_ID(MX27_PA, 24),
-+	MX27_PAD_CLS = PAD_ID(MX27_PA, 25),
-+	MX27_PAD_PS = PAD_ID(MX27_PA, 26),
-+	MX27_PAD_SPL_SPR = PAD_ID(MX27_PA, 27),
-+	MX27_PAD_HSYNC = PAD_ID(MX27_PA, 28),
-+	MX27_PAD_VSYNC = PAD_ID(MX27_PA, 29),
-+	MX27_PAD_CONTRAST = PAD_ID(MX27_PA, 30),
-+	MX27_PAD_OE_ACD = PAD_ID(MX27_PA, 31),
- 
--	MX27_PAD_SD2_D0 = PAD_ID(PB, 4),
--	MX27_PAD_SD2_D1 = PAD_ID(PB, 5),
--	MX27_PAD_SD2_D2 = PAD_ID(PB, 6),
--	MX27_PAD_SD2_D3 = PAD_ID(PB, 7),
--	MX27_PAD_SD2_CMD = PAD_ID(PB, 8),
--	MX27_PAD_SD2_CLK = PAD_ID(PB, 9),
--	MX27_PAD_CSI_D0 = PAD_ID(PB, 10),
--	MX27_PAD_CSI_D1 = PAD_ID(PB, 11),
--	MX27_PAD_CSI_D2 = PAD_ID(PB, 12),
--	MX27_PAD_CSI_D3 = PAD_ID(PB, 13),
--	MX27_PAD_CSI_D4 = PAD_ID(PB, 14),
--	MX27_PAD_CSI_MCLK = PAD_ID(PB, 15),
--	MX27_PAD_CSI_PIXCLK = PAD_ID(PB, 16),
--	MX27_PAD_CSI_D5 = PAD_ID(PB, 17),
--	MX27_PAD_CSI_D6 = PAD_ID(PB, 18),
--	MX27_PAD_CSI_D7 = PAD_ID(PB, 19),
--	MX27_PAD_CSI_VSYNC = PAD_ID(PB, 20),
--	MX27_PAD_CSI_HSYNC = PAD_ID(PB, 21),
--	MX27_PAD_USBH1_SUSP = PAD_ID(PB, 22),
--	MX27_PAD_USB_PWR = PAD_ID(PB, 23),
--	MX27_PAD_USB_OC_B = PAD_ID(PB, 24),
--	MX27_PAD_USBH1_RCV = PAD_ID(PB, 25),
--	MX27_PAD_USBH1_FS = PAD_ID(PB, 26),
--	MX27_PAD_USBH1_OE_B = PAD_ID(PB, 27),
--	MX27_PAD_USBH1_TXDM = PAD_ID(PB, 28),
--	MX27_PAD_USBH1_TXDP = PAD_ID(PB, 29),
--	MX27_PAD_USBH1_RXDM = PAD_ID(PB, 30),
--	MX27_PAD_USBH1_RXDP = PAD_ID(PB, 31),
-+	MX27_PAD_SD2_D0 = PAD_ID(MX27_PB, 4),
-+	MX27_PAD_SD2_D1 = PAD_ID(MX27_PB, 5),
-+	MX27_PAD_SD2_D2 = PAD_ID(MX27_PB, 6),
-+	MX27_PAD_SD2_D3 = PAD_ID(MX27_PB, 7),
-+	MX27_PAD_SD2_CMD = PAD_ID(MX27_PB, 8),
-+	MX27_PAD_SD2_CLK = PAD_ID(MX27_PB, 9),
-+	MX27_PAD_CSI_D0 = PAD_ID(MX27_PB, 10),
-+	MX27_PAD_CSI_D1 = PAD_ID(MX27_PB, 11),
-+	MX27_PAD_CSI_D2 = PAD_ID(MX27_PB, 12),
-+	MX27_PAD_CSI_D3 = PAD_ID(MX27_PB, 13),
-+	MX27_PAD_CSI_D4 = PAD_ID(MX27_PB, 14),
-+	MX27_PAD_CSI_MCLK = PAD_ID(MX27_PB, 15),
-+	MX27_PAD_CSI_PIXCLK = PAD_ID(MX27_PB, 16),
-+	MX27_PAD_CSI_D5 = PAD_ID(MX27_PB, 17),
-+	MX27_PAD_CSI_D6 = PAD_ID(MX27_PB, 18),
-+	MX27_PAD_CSI_D7 = PAD_ID(MX27_PB, 19),
-+	MX27_PAD_CSI_VSYNC = PAD_ID(MX27_PB, 20),
-+	MX27_PAD_CSI_HSYNC = PAD_ID(MX27_PB, 21),
-+	MX27_PAD_USBH1_SUSP = PAD_ID(MX27_PB, 22),
-+	MX27_PAD_USB_PWR = PAD_ID(MX27_PB, 23),
-+	MX27_PAD_USB_OC_B = PAD_ID(MX27_PB, 24),
-+	MX27_PAD_USBH1_RCV = PAD_ID(MX27_PB, 25),
-+	MX27_PAD_USBH1_FS = PAD_ID(MX27_PB, 26),
-+	MX27_PAD_USBH1_OE_B = PAD_ID(MX27_PB, 27),
-+	MX27_PAD_USBH1_TXDM = PAD_ID(MX27_PB, 28),
-+	MX27_PAD_USBH1_TXDP = PAD_ID(MX27_PB, 29),
-+	MX27_PAD_USBH1_RXDM = PAD_ID(MX27_PB, 30),
-+	MX27_PAD_USBH1_RXDP = PAD_ID(MX27_PB, 31),
- 
--	MX27_PAD_I2C2_SDA = PAD_ID(PC, 5),
--	MX27_PAD_I2C2_SCL = PAD_ID(PC, 6),
--	MX27_PAD_USBOTG_DATA5 = PAD_ID(PC, 7),
--	MX27_PAD_USBOTG_DATA6 = PAD_ID(PC, 8),
--	MX27_PAD_USBOTG_DATA0 = PAD_ID(PC, 9),
--	MX27_PAD_USBOTG_DATA2 = PAD_ID(PC, 10),
--	MX27_PAD_USBOTG_DATA1 = PAD_ID(PC, 11),
--	MX27_PAD_USBOTG_DATA4 = PAD_ID(PC, 12),
--	MX27_PAD_USBOTG_DATA3 = PAD_ID(PC, 13),
--	MX27_PAD_TOUT = PAD_ID(PC, 14),
--	MX27_PAD_TIN = PAD_ID(PC, 15),
--	MX27_PAD_SSI4_FS = PAD_ID(PC, 16),
--	MX27_PAD_SSI4_RXDAT = PAD_ID(PC, 17),
--	MX27_PAD_SSI4_TXDAT = PAD_ID(PC, 18),
--	MX27_PAD_SSI4_CLK = PAD_ID(PC, 19),
--	MX27_PAD_SSI1_FS = PAD_ID(PC, 20),
--	MX27_PAD_SSI1_RXDAT = PAD_ID(PC, 21),
--	MX27_PAD_SSI1_TXDAT = PAD_ID(PC, 22),
--	MX27_PAD_SSI1_CLK = PAD_ID(PC, 23),
--	MX27_PAD_SSI2_FS = PAD_ID(PC, 24),
--	MX27_PAD_SSI2_RXDAT = PAD_ID(PC, 25),
--	MX27_PAD_SSI2_TXDAT = PAD_ID(PC, 26),
--	MX27_PAD_SSI2_CLK = PAD_ID(PC, 27),
--	MX27_PAD_SSI3_FS = PAD_ID(PC, 28),
--	MX27_PAD_SSI3_RXDAT = PAD_ID(PC, 29),
--	MX27_PAD_SSI3_TXDAT = PAD_ID(PC, 30),
--	MX27_PAD_SSI3_CLK = PAD_ID(PC, 31),
-+	MX27_PAD_I2C2_SDA = PAD_ID(MX27_PC, 5),
-+	MX27_PAD_I2C2_SCL = PAD_ID(MX27_PC, 6),
-+	MX27_PAD_USBOTG_DATA5 = PAD_ID(MX27_PC, 7),
-+	MX27_PAD_USBOTG_DATA6 = PAD_ID(MX27_PC, 8),
-+	MX27_PAD_USBOTG_DATA0 = PAD_ID(MX27_PC, 9),
-+	MX27_PAD_USBOTG_DATA2 = PAD_ID(MX27_PC, 10),
-+	MX27_PAD_USBOTG_DATA1 = PAD_ID(MX27_PC, 11),
-+	MX27_PAD_USBOTG_DATA4 = PAD_ID(MX27_PC, 12),
-+	MX27_PAD_USBOTG_DATA3 = PAD_ID(MX27_PC, 13),
-+	MX27_PAD_TOUT = PAD_ID(MX27_PC, 14),
-+	MX27_PAD_TIN = PAD_ID(MX27_PC, 15),
-+	MX27_PAD_SSI4_FS = PAD_ID(MX27_PC, 16),
-+	MX27_PAD_SSI4_RXDAT = PAD_ID(MX27_PC, 17),
-+	MX27_PAD_SSI4_TXDAT = PAD_ID(MX27_PC, 18),
-+	MX27_PAD_SSI4_CLK = PAD_ID(MX27_PC, 19),
-+	MX27_PAD_SSI1_FS = PAD_ID(MX27_PC, 20),
-+	MX27_PAD_SSI1_RXDAT = PAD_ID(MX27_PC, 21),
-+	MX27_PAD_SSI1_TXDAT = PAD_ID(MX27_PC, 22),
-+	MX27_PAD_SSI1_CLK = PAD_ID(MX27_PC, 23),
-+	MX27_PAD_SSI2_FS = PAD_ID(MX27_PC, 24),
-+	MX27_PAD_SSI2_RXDAT = PAD_ID(MX27_PC, 25),
-+	MX27_PAD_SSI2_TXDAT = PAD_ID(MX27_PC, 26),
-+	MX27_PAD_SSI2_CLK = PAD_ID(MX27_PC, 27),
-+	MX27_PAD_SSI3_FS = PAD_ID(MX27_PC, 28),
-+	MX27_PAD_SSI3_RXDAT = PAD_ID(MX27_PC, 29),
-+	MX27_PAD_SSI3_TXDAT = PAD_ID(MX27_PC, 30),
-+	MX27_PAD_SSI3_CLK = PAD_ID(MX27_PC, 31),
- 
--	MX27_PAD_SD3_CMD = PAD_ID(PD, 0),
--	MX27_PAD_SD3_CLK = PAD_ID(PD, 1),
--	MX27_PAD_ATA_DATA0 = PAD_ID(PD, 2),
--	MX27_PAD_ATA_DATA1 = PAD_ID(PD, 3),
--	MX27_PAD_ATA_DATA2 = PAD_ID(PD, 4),
--	MX27_PAD_ATA_DATA3 = PAD_ID(PD, 5),
--	MX27_PAD_ATA_DATA4 = PAD_ID(PD, 6),
--	MX27_PAD_ATA_DATA5 = PAD_ID(PD, 7),
--	MX27_PAD_ATA_DATA6 = PAD_ID(PD, 8),
--	MX27_PAD_ATA_DATA7 = PAD_ID(PD, 9),
--	MX27_PAD_ATA_DATA8 = PAD_ID(PD, 10),
--	MX27_PAD_ATA_DATA9 = PAD_ID(PD, 11),
--	MX27_PAD_ATA_DATA10 = PAD_ID(PD, 12),
--	MX27_PAD_ATA_DATA11 = PAD_ID(PD, 13),
--	MX27_PAD_ATA_DATA12 = PAD_ID(PD, 14),
--	MX27_PAD_ATA_DATA13 = PAD_ID(PD, 15),
--	MX27_PAD_ATA_DATA14 = PAD_ID(PD, 16),
--	MX27_PAD_I2C_DATA = PAD_ID(PD, 17),
--	MX27_PAD_I2C_CLK = PAD_ID(PD, 18),
--	MX27_PAD_CSPI2_SS2 = PAD_ID(PD, 19),
--	MX27_PAD_CSPI2_SS1 = PAD_ID(PD, 20),
--	MX27_PAD_CSPI2_SS0 = PAD_ID(PD, 21),
--	MX27_PAD_CSPI2_SCLK = PAD_ID(PD, 22),
--	MX27_PAD_CSPI2_MISO = PAD_ID(PD, 23),
--	MX27_PAD_CSPI2_MOSI = PAD_ID(PD, 24),
--	MX27_PAD_CSPI1_RDY = PAD_ID(PD, 25),
--	MX27_PAD_CSPI1_SS2 = PAD_ID(PD, 26),
--	MX27_PAD_CSPI1_SS1 = PAD_ID(PD, 27),
--	MX27_PAD_CSPI1_SS0 = PAD_ID(PD, 28),
--	MX27_PAD_CSPI1_SCLK = PAD_ID(PD, 29),
--	MX27_PAD_CSPI1_MISO = PAD_ID(PD, 30),
--	MX27_PAD_CSPI1_MOSI = PAD_ID(PD, 31),
-+	MX27_PAD_SD3_CMD = PAD_ID(MX27_PD, 0),
-+	MX27_PAD_SD3_CLK = PAD_ID(MX27_PD, 1),
-+	MX27_PAD_ATA_DATA0 = PAD_ID(MX27_PD, 2),
-+	MX27_PAD_ATA_DATA1 = PAD_ID(MX27_PD, 3),
-+	MX27_PAD_ATA_DATA2 = PAD_ID(MX27_PD, 4),
-+	MX27_PAD_ATA_DATA3 = PAD_ID(MX27_PD, 5),
-+	MX27_PAD_ATA_DATA4 = PAD_ID(MX27_PD, 6),
-+	MX27_PAD_ATA_DATA5 = PAD_ID(MX27_PD, 7),
-+	MX27_PAD_ATA_DATA6 = PAD_ID(MX27_PD, 8),
-+	MX27_PAD_ATA_DATA7 = PAD_ID(MX27_PD, 9),
-+	MX27_PAD_ATA_DATA8 = PAD_ID(MX27_PD, 10),
-+	MX27_PAD_ATA_DATA9 = PAD_ID(MX27_PD, 11),
-+	MX27_PAD_ATA_DATA10 = PAD_ID(MX27_PD, 12),
-+	MX27_PAD_ATA_DATA11 = PAD_ID(MX27_PD, 13),
-+	MX27_PAD_ATA_DATA12 = PAD_ID(MX27_PD, 14),
-+	MX27_PAD_ATA_DATA13 = PAD_ID(MX27_PD, 15),
-+	MX27_PAD_ATA_DATA14 = PAD_ID(MX27_PD, 16),
-+	MX27_PAD_I2C_DATA = PAD_ID(MX27_PD, 17),
-+	MX27_PAD_I2C_CLK = PAD_ID(MX27_PD, 18),
-+	MX27_PAD_CSPI2_SS2 = PAD_ID(MX27_PD, 19),
-+	MX27_PAD_CSPI2_SS1 = PAD_ID(MX27_PD, 20),
-+	MX27_PAD_CSPI2_SS0 = PAD_ID(MX27_PD, 21),
-+	MX27_PAD_CSPI2_SCLK = PAD_ID(MX27_PD, 22),
-+	MX27_PAD_CSPI2_MISO = PAD_ID(MX27_PD, 23),
-+	MX27_PAD_CSPI2_MOSI = PAD_ID(MX27_PD, 24),
-+	MX27_PAD_CSPI1_RDY = PAD_ID(MX27_PD, 25),
-+	MX27_PAD_CSPI1_SS2 = PAD_ID(MX27_PD, 26),
-+	MX27_PAD_CSPI1_SS1 = PAD_ID(MX27_PD, 27),
-+	MX27_PAD_CSPI1_SS0 = PAD_ID(MX27_PD, 28),
-+	MX27_PAD_CSPI1_SCLK = PAD_ID(MX27_PD, 29),
-+	MX27_PAD_CSPI1_MISO = PAD_ID(MX27_PD, 30),
-+	MX27_PAD_CSPI1_MOSI = PAD_ID(MX27_PD, 31),
- 
--	MX27_PAD_USBOTG_NXT = PAD_ID(PE, 0),
--	MX27_PAD_USBOTG_STP = PAD_ID(PE, 1),
--	MX27_PAD_USBOTG_DIR = PAD_ID(PE, 2),
--	MX27_PAD_UART2_CTS = PAD_ID(PE, 3),
--	MX27_PAD_UART2_RTS = PAD_ID(PE, 4),
--	MX27_PAD_PWMO = PAD_ID(PE, 5),
--	MX27_PAD_UART2_TXD = PAD_ID(PE, 6),
--	MX27_PAD_UART2_RXD = PAD_ID(PE, 7),
--	MX27_PAD_UART3_TXD = PAD_ID(PE, 8),
--	MX27_PAD_UART3_RXD = PAD_ID(PE, 9),
--	MX27_PAD_UART3_CTS = PAD_ID(PE, 10),
--	MX27_PAD_UART3_RTS = PAD_ID(PE, 11),
--	MX27_PAD_UART1_TXD = PAD_ID(PE, 12),
--	MX27_PAD_UART1_RXD = PAD_ID(PE, 13),
--	MX27_PAD_UART1_CTS = PAD_ID(PE, 14),
--	MX27_PAD_UART1_RTS = PAD_ID(PE, 15),
--	MX27_PAD_RTCK = PAD_ID(PE, 16),
--	MX27_PAD_RESET_OUT_B = PAD_ID(PE, 17),
--	MX27_PAD_SD1_D0 = PAD_ID(PE, 18),
--	MX27_PAD_SD1_D1 = PAD_ID(PE, 19),
--	MX27_PAD_SD1_D2 = PAD_ID(PE, 20),
--	MX27_PAD_SD1_D3 = PAD_ID(PE, 21),
--	MX27_PAD_SD1_CMD = PAD_ID(PE, 22),
--	MX27_PAD_SD1_CLK = PAD_ID(PE, 23),
--	MX27_PAD_USBOTG_CLK = PAD_ID(PE, 24),
--	MX27_PAD_USBOTG_DATA7 = PAD_ID(PE, 25),
-+	MX27_PAD_USBOTG_NXT = PAD_ID(MX27_PE, 0),
-+	MX27_PAD_USBOTG_STP = PAD_ID(MX27_PE, 1),
-+	MX27_PAD_USBOTG_DIR = PAD_ID(MX27_PE, 2),
-+	MX27_PAD_UART2_CTS = PAD_ID(MX27_PE, 3),
-+	MX27_PAD_UART2_RTS = PAD_ID(MX27_PE, 4),
-+	MX27_PAD_PWMO = PAD_ID(MX27_PE, 5),
-+	MX27_PAD_UART2_TXD = PAD_ID(MX27_PE, 6),
-+	MX27_PAD_UART2_RXD = PAD_ID(MX27_PE, 7),
-+	MX27_PAD_UART3_TXD = PAD_ID(MX27_PE, 8),
-+	MX27_PAD_UART3_RXD = PAD_ID(MX27_PE, 9),
-+	MX27_PAD_UART3_CTS = PAD_ID(MX27_PE, 10),
-+	MX27_PAD_UART3_RTS = PAD_ID(MX27_PE, 11),
-+	MX27_PAD_UART1_TXD = PAD_ID(MX27_PE, 12),
-+	MX27_PAD_UART1_RXD = PAD_ID(MX27_PE, 13),
-+	MX27_PAD_UART1_CTS = PAD_ID(MX27_PE, 14),
-+	MX27_PAD_UART1_RTS = PAD_ID(MX27_PE, 15),
-+	MX27_PAD_RTCK = PAD_ID(MX27_PE, 16),
-+	MX27_PAD_RESET_OUT_B = PAD_ID(MX27_PE, 17),
-+	MX27_PAD_SD1_D0 = PAD_ID(MX27_PE, 18),
-+	MX27_PAD_SD1_D1 = PAD_ID(MX27_PE, 19),
-+	MX27_PAD_SD1_D2 = PAD_ID(MX27_PE, 20),
-+	MX27_PAD_SD1_D3 = PAD_ID(MX27_PE, 21),
-+	MX27_PAD_SD1_CMD = PAD_ID(MX27_PE, 22),
-+	MX27_PAD_SD1_CLK = PAD_ID(MX27_PE, 23),
-+	MX27_PAD_USBOTG_CLK = PAD_ID(MX27_PE, 24),
-+	MX27_PAD_USBOTG_DATA7 = PAD_ID(MX27_PE, 25),
- 
--	MX27_PAD_NFRB = PAD_ID(PF, 0),
--	MX27_PAD_NFCLE = PAD_ID(PF, 1),
--	MX27_PAD_NFWP_B = PAD_ID(PF, 2),
--	MX27_PAD_NFCE_B = PAD_ID(PF, 3),
--	MX27_PAD_NFALE = PAD_ID(PF, 4),
--	MX27_PAD_NFRE_B = PAD_ID(PF, 5),
--	MX27_PAD_NFWE_B = PAD_ID(PF, 6),
--	MX27_PAD_PC_POE = PAD_ID(PF, 7),
--	MX27_PAD_PC_RW_B = PAD_ID(PF, 8),
--	MX27_PAD_IOIS16 = PAD_ID(PF, 9),
--	MX27_PAD_PC_RST = PAD_ID(PF, 10),
--	MX27_PAD_PC_BVD2 = PAD_ID(PF, 11),
--	MX27_PAD_PC_BVD1 = PAD_ID(PF, 12),
--	MX27_PAD_PC_VS2 = PAD_ID(PF, 13),
--	MX27_PAD_PC_VS1 = PAD_ID(PF, 14),
--	MX27_PAD_CLKO = PAD_ID(PF, 15),
--	MX27_PAD_PC_PWRON = PAD_ID(PF, 16),
--	MX27_PAD_PC_READY = PAD_ID(PF, 17),
--	MX27_PAD_PC_WAIT_B = PAD_ID(PF, 18),
--	MX27_PAD_PC_CD2_B = PAD_ID(PF, 19),
--	MX27_PAD_PC_CD1_B = PAD_ID(PF, 20),
--	MX27_PAD_CS4_B = PAD_ID(PF, 21),
--	MX27_PAD_CS5_B = PAD_ID(PF, 22),
--	MX27_PAD_ATA_DATA15 = PAD_ID(PF, 23),
-+	MX27_PAD_NFRB = PAD_ID(MX27_PF, 0),
-+	MX27_PAD_NFCLE = PAD_ID(MX27_PF, 1),
-+	MX27_PAD_NFWP_B = PAD_ID(MX27_PF, 2),
-+	MX27_PAD_NFCE_B = PAD_ID(MX27_PF, 3),
-+	MX27_PAD_NFALE = PAD_ID(MX27_PF, 4),
-+	MX27_PAD_NFRE_B = PAD_ID(MX27_PF, 5),
-+	MX27_PAD_NFWE_B = PAD_ID(MX27_PF, 6),
-+	MX27_PAD_PC_POE = PAD_ID(MX27_PF, 7),
-+	MX27_PAD_PC_RW_B = PAD_ID(MX27_PF, 8),
-+	MX27_PAD_IOIS16 = PAD_ID(MX27_PF, 9),
-+	MX27_PAD_PC_RST = PAD_ID(MX27_PF, 10),
-+	MX27_PAD_PC_BVD2 = PAD_ID(MX27_PF, 11),
-+	MX27_PAD_PC_BVD1 = PAD_ID(MX27_PF, 12),
-+	MX27_PAD_PC_VS2 = PAD_ID(MX27_PF, 13),
-+	MX27_PAD_PC_VS1 = PAD_ID(MX27_PF, 14),
-+	MX27_PAD_CLKO = PAD_ID(MX27_PF, 15),
-+	MX27_PAD_PC_PWRON = PAD_ID(MX27_PF, 16),
-+	MX27_PAD_PC_READY = PAD_ID(MX27_PF, 17),
-+	MX27_PAD_PC_WAIT_B = PAD_ID(MX27_PF, 18),
-+	MX27_PAD_PC_CD2_B = PAD_ID(MX27_PF, 19),
-+	MX27_PAD_PC_CD1_B = PAD_ID(MX27_PF, 20),
-+	MX27_PAD_CS4_B = PAD_ID(MX27_PF, 21),
-+	MX27_PAD_CS5_B = PAD_ID(MX27_PF, 22),
-+	MX27_PAD_ATA_DATA15 = PAD_ID(MX27_PF, 23),
- };
- 
- /* Pad names for the pinmux subsystem */
+Thanks for your comments. IMHO there is no much logic changes indeed, just move
+the dma channel acquire and release from system pm to the runtime pm, releasing
+the unused resources as early as possible. If you think it's necessary I will
+split the patch into two parts.
 
----
-base-commit: d01240b22abf28ce32660c22458457f9b7f5dc1e
-change-id: 20241003-fix-imx27-pc-f6157992e1f9
-
-Best regards,
--- 
-Linus Walleij <linus.walleij@linaro.org>
-
+> 
+> Thanks,
+> Miquèl
