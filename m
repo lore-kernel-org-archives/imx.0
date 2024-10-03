@@ -1,247 +1,298 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011031.outbound.protection.outlook.com [52.101.65.31])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CDF91AB6D7;
-	Thu,  3 Oct 2024 18:28:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727980093; cv=none; b=jdm9zS8iQ49Sejx2HgwrzMWWsFQKWd2t2bD5q1V8J42PLUvU9TuMnAL9W9fSJnm52tX9cXrs+9SEk8k+bLJRoeLTpukFOzE24aIs6fyyU95Qwx74E+ppA9rnBEIHEQ2YOJqynbTeoLsAaaI+JiGIxWRsmow2Ii+RKp3kQIBTJWg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727980093; c=relaxed/simple;
-	bh=a9yx+rprI515KivzNF1/hNUyce0BLXDKl20T1s57+UM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M/3jPY6hqyFaRaWLFTXE932Fj0sI8uM2coBl3fotE2U3QIcyA77ZpfsMI1pfwsB5Bgt9ny1RSyjK7LNf98eXgphIcWDTnl39Ku8CYYCXlQ5SoUf7/v2YQO9n1L/0/sFvthcrHtYP903NYkHBVD8xng5XrzvHKfN8MARdqO/SZIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=xxRB4ytO; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0662F1AC450
+	for <imx@lists.linux.dev>; Thu,  3 Oct 2024 19:18:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.31
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727983115; cv=fail; b=F3D6IvBNVtndF8d+Gu77gXOZLMlmdsK+1QfVbqUgwveOqNPxHZ/ClMhkViz8EREJw0mlf6qrJj3wh6rUXSQxSYe4VgVTr7WOnxITr4JQUoqYUcpvXSAus55WmRq0b/c7WFwkcwolNYOZHgRFPfZRtCgbvX3xD5NZo6vjU+UXSJs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727983115; c=relaxed/simple;
+	bh=xYVuPYTfR+G3siglx/Y66Ow3geM3UB/GNvGd4ZUfGGQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=IVeQm60VlaQW2pXO1WW0YnIufCtJ+AyWR/95wzwksrn6rUYuiGnUw7JxtIwUWazzOytD3OSxgp9kv6BS2Er5anQIqbHJUTTgNVJSm1RVjjp+Y4hpheH4DI2w8rRnQo83Is2TKZhS0J70K/sm/wK/jNZEhWneyVqurJ6ixfzJGHs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=i6x4W+AY; arc=fail smtp.client-ip=52.101.65.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="xxRB4ytO"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id E5C7088A24;
-	Thu,  3 Oct 2024 20:28:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1727980090;
-	bh=faYbxPEN6YGmMvqnzy2uL/Tt+yyjSeCCd5lEptEMVRc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=xxRB4ytOkc6Vv1VH6rsKDSeN00aFVCafvnSNKlb/8KIvj3EXbvodAYGnQ+cu5M/AY
-	 KS7m9F2QT59CYaYSEdLLeHakPaBahOPgjAcMbNQLDqJsN1clRo3GTaZTMUB/nbCAdh
-	 TXScmeYcmcpn2Q8ZiwohhZAMW8jP+vrRo3rEDXcW0lcEMgnCwcmDIZNk+X+aIPjF/i
-	 pd+sTqrA88SI6nirocgCfT2qIVS/uIwBKePE73/I28K6fU+paoc903tnmAvrPfOePw
-	 WbFW0LjbY6vs5MftIbm86biFfOgFtFNddCWHT7iloI5Ax/045Ppo8igAg3q5BOLAnz
-	 5Jn6AYlUvJeNg==
-Message-ID: <0c49d362-da0c-432e-90d9-69b02cdf3e64@denx.de>
-Date: Thu, 3 Oct 2024 19:13:34 +0200
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="i6x4W+AY"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UZojg5x+Wr8ixgz01fYH+eHIpTRWv9IP48ZAbqyODHYBZ4c6RXeQEJMH9FjJBXin5GpCOFNmdjpWzbCKFI3C2IKDCXTgcYMVwvk5uVwLjcQF0BXoRSIV9a1JvQ3VhGiLdXKoUGEa5Zr8WEfOVS7hU3K9l7t2nxhI5B8U4PVh9Sw4BBMCRnB4WA7mT2tRDH8KSz2jMY3MrOL+2YxRfTDrfqBiiM+okQmHZMrzih+4hfsbvh1Lx9ZFRJw11BDzGcOiA/Z46suLusY/8eKCxct1f9huYB2xp+oGsnILIu/HTntUSOlz3yzW2Wv/jovfDMIVTtJYw+ZrBFjYCe3K4ULnOA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tai8R9Orj6TQwRoCcXL9ClyjJiaQg+HAC7pd4QaL5BY=;
+ b=NWZjezG3HiJB4hwORPgVwVaqsINHNcr35zliBWYcpMOlBCElvXEhI5bXV/lO2tMrx0eukYWUyBtjL/84ylx2X8i39gPukxrxAF0AyTh4K0fmtz9D8X05In+Y8HGTLTT63AAnpY3ATcuNFHhv/i4KKN9Mb/UTIiVuj6LwRFxgR15W/owesBJ03TbcDQV59ryrXynI08pNRiwinQiDEDhcdQ5jLxVYFmBtBaW6CFGqz9dXUkK1lbDfI5cDFU2cu9dVkf2ZC7hcNlGzuU8a0jGbAKxzhkBWIpxac+hBTFfSAl4GPhPp8sReUTokQlcp1cwhQ5RfrSWez52cags5SIv+7A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tai8R9Orj6TQwRoCcXL9ClyjJiaQg+HAC7pd4QaL5BY=;
+ b=i6x4W+AYsZ7yP+lxbKNIS4bx4dKt0lgGX76bfCh6xx0AhMyYH8b1D9c9043UtM2FnCslFwbXRtu2k3myRbCZrRlpNSGbANrrxgb5KQBnhy31kHlqFaTO1P93j8PKZ8LsOX/vCS1Lz2Ourxkqp+XIX5ZwqOKPwty+gzl9PRjMWQuXG7IoEjjbMfeaT/s6lrnsw2Fn5PGDMdYxgsGzjOxDxniZqBsYDwWWFle7yQc6An5YcG/TvGrBGfbrsl801jgdaXnPaaLP8/8GjQtEjftT6CnbTFBZVl4kF8IUORbtj2mhuRdfZB5F1oXyF3ZLwkFRKyaWJdqo/pe6Y1IG6EZ0aw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PA1PR04MB10554.eurprd04.prod.outlook.com (2603:10a6:102:484::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.15; Thu, 3 Oct
+ 2024 19:18:23 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8026.016; Thu, 3 Oct 2024
+ 19:18:22 +0000
+Date: Thu, 3 Oct 2024 15:18:12 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, alyssa@rosenzweig.io, bpf@vger.kernel.org,
+	broonie@kernel.org, jgg@ziepe.ca, joro@8bytes.org,
+	lgirdwood@gmail.com, maz@kernel.org, p.zabel@pengutronix.de,
+	robin.murphy@arm.com, will@kernel.org
+Subject: Re: [PATCH v2 0/2] PCI: add enabe(disable)_device() hook for bridge
+Message-ID: <Zv7t9HnRsfTxb2Xs@lizhi-Precision-Tower-5810>
+References: <20240930-imx95_lut-v2-0-3b6467ba539a@nxp.com>
+ <20241003051528.qrp2z7kvzgvymgjb@thinkpad>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241003051528.qrp2z7kvzgvymgjb@thinkpad>
+X-ClientProxiedBy: BYAPR06CA0005.namprd06.prod.outlook.com
+ (2603:10b6:a03:d4::18) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] media: imx: vdic: Introduce mem2mem VDI
- deinterlacer driver
-To: Nicolas Dufresne <nicolas@ndufresne.ca>, linux-media@vger.kernel.org
-Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
- Fabio Estevam <festevam@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Helge Deller
- <deller@gmx.de>, Mauro Carvalho Chehab <mchehab@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Philipp Zabel <p.zabel@pengutronix.de>, Sascha Hauer
- <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Steve Longerbeam <slongerbeam@gmail.com>, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev
-References: <20240724002044.112544-1-marex@denx.de>
- <20240724002044.112544-2-marex@denx.de>
- <85a5a42667e5867bc45da31baf045d4c9557f5f1.camel@ndufresne.ca>
- <6b45e30c-b215-4f7a-91a4-fde05d78f737@denx.de>
- <386f4e12fd835b18c3f618f2c94cbd426bd6cf28.camel@ndufresne.ca>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <386f4e12fd835b18c3f618f2c94cbd426bd6cf28.camel@ndufresne.ca>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA1PR04MB10554:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1702d244-ecb7-4a27-dfb6-08dce3e025d6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|52116014|366016|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bjdVQ0pFdnM1elgvZ0JGVElxaWZZMlZQZmtmcyt5MURyZDd2bzE5azhldDgw?=
+ =?utf-8?B?S3VmbUx6SGtBbS8wN0E1UUtNZkNwdnZtL3pDVDllcmxNWXUwTmJZemhobG1D?=
+ =?utf-8?B?dmtJQTdJa0xxN2xLd2FTdmVCanFyaHBUbVg4Zmw0L2Y2NXdGRWZXRnlHTHFC?=
+ =?utf-8?B?TFpVa3paaVdxNjZMSU1IUldWV3FUS013cFpEaGhpOS9pYzRmN0pWOXBKbzdI?=
+ =?utf-8?B?NlRrdm9IT0dCYy81UWJlcTJ2SUYxNmZhbU9KZzRHcVhEYkhpWTg1dmVTNVlD?=
+ =?utf-8?B?eGVsMHB5TGtFV2dzL0kyaEp0MjY2VWFFb3RwN3N2UnMxN0pNUU1oeC9Kc2Uv?=
+ =?utf-8?B?czRzcEVDQk0wbmN3WVFNbm9iN0xWWXJtaXB4eWxzczNDcmFWa1JaeEZVQWly?=
+ =?utf-8?B?RVRZNmY2aHhMbE92cVZoOWRZOWRUS0FrV21xMm9Nc2Q5alNveVcyaEp0Y3NW?=
+ =?utf-8?B?bFFTRWQzRnVaRmJySzBQY2hlMmIxY2UzZEpoUjIyWU1vbUdFMU5pQ1RVOERV?=
+ =?utf-8?B?dTVoWnpkaFJ4ajJDb1E2SzVneFFRNzNpRHQ3ZjB2bm1Bb1lYWHliRnVKL3hB?=
+ =?utf-8?B?UTE0TGppRlFNbGlsM05jK1VUL2ZFTnVOMGdYRW1ubmpsVTFUOEJoOFFyVWRR?=
+ =?utf-8?B?b3IwbGhGNmJoY2lPMzB0RlBnWCtjb1lBTVFNaHFOaEM3ejIxaHVEd09ORTVN?=
+ =?utf-8?B?K2Irb2RpRW5JRm1OTHF3K01XZml2U0lLbmoxZkpFd29ydk1jL1BqVjNkTmRo?=
+ =?utf-8?B?bEE0VTFSOVIrdWx2RnY5SEM4dWZ4bTVHaTBRVllKQU92Y0ZPM3UzUkl2dlBx?=
+ =?utf-8?B?Z0REQXdCKzV2QWFHK3M1QzFHQ2NKVk1SbTh6NGVjYmlwdk9RYXR1M2ZKaFRa?=
+ =?utf-8?B?NExJUWJrNU5pM3doSXhDTEpnVWtqUlAvQWlvQnU5Sk4vTGZtNFpXVkZSTzlJ?=
+ =?utf-8?B?WXZIajdndzJOZzhqMVlDZCtqV0xTWExZSjJqKzN4UFNzdjRGMm5yUjhvWlhM?=
+ =?utf-8?B?cG1ncllOU2pSTDlQNXl1TlRSb3NYQldjeTFjVFdJdWEzWUFEdkhCamlmSDJD?=
+ =?utf-8?B?OWxjWFMvVFZpbVFpT2NlOVMvV2NoeUVERFlEKzFYZ0xhc0xzb2gyS083b3lT?=
+ =?utf-8?B?WEllSXdMdE1zTXpDbnA0ejQrQzVaY3NRSDRDYzJ5d3IzTlkzcGUrVlJ4VXNp?=
+ =?utf-8?B?ejZ0U09wZHNSMHo4UU1RT1MrbFlOcGZUZWd5c01uOHFjTDNpUHRrWSs3Q1Ey?=
+ =?utf-8?B?aHJFbmxjOUNkT2gyMkpGaHRFODcrdXNlVFlOTW9tTy9HckhWU1Nrd2lBQmFV?=
+ =?utf-8?B?VU9Za0JSN1pMQmhKdVVOcmxCT0lsNkRsdlp0ZkpUak92azZCaXYrREE2OWVv?=
+ =?utf-8?B?Sm40bS8vcEh0NEpPRFVpS1ZzV1l6UTZCai9wNnlOTU1HM2xOWi9FZGlJbSt2?=
+ =?utf-8?B?aTE2b2V5SWpzdzNmWUpiU05rNUZGa3ZDSUZyK2VTWEdtMXdpcjBPYWdReFpt?=
+ =?utf-8?B?Zks0eWhFY2M2R3daaVZzMEErTzRPYXl4YzhFMXlGemsvYTFaNElxVUFDUkNG?=
+ =?utf-8?B?elRES2prQ0lXVnJSUVNZR2FmREhFZFVydmE5ci9hTEtLaENoVXJpZFlYTzNy?=
+ =?utf-8?B?dmE1TWl5OFRHWTZjRkZOTTlXaEFmU3dIQU1jQys0QzllRGlUQmR2eVBBNUhE?=
+ =?utf-8?B?Tk9Zc3RnM20waTdNeXdCVERwbC9CZml6TTZsTExQOFErTFc3eERuZHZQeFcr?=
+ =?utf-8?Q?XqqcmoI3xZKwFBi9xI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?czErYWJOakdJckFQaElydUU2eXhSK0lSR1hCUzI4NHl4YytPZWZGY1YrMzVL?=
+ =?utf-8?B?emFoc3pmWThsNmlja1hrbS9JYXRmKzJOTnowcmNxOVkzM0pqcXRWWGtwMzZY?=
+ =?utf-8?B?bmpBZWlNT0h1amRkdjhLM2pkVnZ5YnRIMC9naGtKWnJqaFNyOUJrZTU3Yml4?=
+ =?utf-8?B?eVAvNmI3Mkx3dFBzbTRwZWtDQmtKNnlEclByRzhXYUliQW0vVmVqN3pJMHgw?=
+ =?utf-8?B?M0svRWgwUVBENEJKZWtjMWZkREhPWlErY3JIVk95NERuNFJrUnRnZzFjL3Ux?=
+ =?utf-8?B?UGtLUEE4VUdZcSs5a2pOZ0kvdzNOYTlYdlhpemZLbDR6U2pNMWdsNUlEUG5C?=
+ =?utf-8?B?MU9jWSsweTlCazRXN3JkR1o3L3JHdEs2b3MwTXRiQ2FOSldoNWFHQVdPdVlp?=
+ =?utf-8?B?QWxaVVZWblh2L2JuUzRnYmM0cHM5aUtCTVpYRjVlNkJ6UEprcFBCWEpUaVdL?=
+ =?utf-8?B?UVh0UWhQZHd2RzZVMEw5elVacUszRnJYVHRKUytOeGdtdE02Q3ZFVmZrQ1Av?=
+ =?utf-8?B?ZnRPeUdEVGk3MFJTN2lpdW1GWklZOUp5WFBvcjVqSUNWU3V1WmlLZkFsME5n?=
+ =?utf-8?B?OGRrZ1JLeThtd2RtZ0RPVHJhbGhlamp6bVRjL2l3NnptYmJOV1g0SktIMW9r?=
+ =?utf-8?B?aW9rQlp4N1Bxa0cvcTdPTVpJc2d2ZFd4WXBpRmQxSklKM2NlVXZPeFVyL1Nm?=
+ =?utf-8?B?ODM4UEdxM0gvVzR3eFp5ZExXbUFCZ25zVDZVQ2IrOFVpVVVGenluRGRyam1k?=
+ =?utf-8?B?ZnhrcGZoL3N6a0lMR25qOGFWVjFUZFZNWVJaMmFQS01GdWxjZkppcmJyS0Rp?=
+ =?utf-8?B?dWRUZlM1NUsraUZ4VkxGbS8rOTRNWmFMLzFFcXNMMnRSOEs3ZTY0Q0ZneE04?=
+ =?utf-8?B?ZzF6VVZ0cWZjZ1Jna0dYWnB2RVBQVS9Nd1ZuM3NVampzY0lZWkdxR0xHRmFk?=
+ =?utf-8?B?dlB3V2E2S1FCeS84MkFjWm1zd2RYU2c0Qzh1VXFWdFBidDBia3lkbDU4dG52?=
+ =?utf-8?B?OWErTDNQNjhrYzY4VTFGcWpJSEVoRm12cElGRHhUWGx2am5Xc1N0bUNQc1F4?=
+ =?utf-8?B?ZlY3cmFweGRKZE9LUEZmOWpBMGExc0NjaEQxU0pFeWZrR3NZd3dBM3RzK3Y3?=
+ =?utf-8?B?UVdPdjhnOXZHMTBUK1YrcHhqZ3ROMmJxQzF1SmE2eE80UmhtdFcvS0xBdXI4?=
+ =?utf-8?B?eVVvZXVTSFY0MWVNSDRqYjlVTk1Pa1E0Y09ZOXB4am1salZad1p2c21oV3gv?=
+ =?utf-8?B?ak9HTjA4V0V1M3ZiQ1ZQaHY4SlNWcFlOc3VDV2tsUXRvcTB4STk2Y1ZBOG9N?=
+ =?utf-8?B?RFREWi91TzJFNXcyUlNjZU96NUJVdTFxSmVFQllkcXN1aERwQnJVN2hMTzdO?=
+ =?utf-8?B?NXdrdTdBSnZMakYxNFU3MDFGallablFtS2JMNGlCendsRUFWYjc1TmkxU090?=
+ =?utf-8?B?LzVLeDNRK2pJa0JXTUxVaHQ5OHdOYVpRNmdvaEVPc3MvdTR6bUU4bUFWUGZC?=
+ =?utf-8?B?UnQ3TCtnaktHQmUySVlBaVVlZlVpL2dUbllVMVVqL0ZRUjJrQWlTSWV1a0hU?=
+ =?utf-8?B?SWtneHJQekszb0ZrOSsxUW5mWjNycG4xWHJnV3ZwMGVBN0sycWlFeGx1Ni92?=
+ =?utf-8?B?VWJzc0RmVDNQR1VKbDhVcDJxWlgrMnFDaW9WR0w1MkV3Vjd0d2R6YTJBMkRS?=
+ =?utf-8?B?WWJvSWowTHU4ZDVTVFBRUHlObTRGRnZ4di9OeGJQM3Fkbnl2bzRVekk3Vk9X?=
+ =?utf-8?B?bDVOL0JmbStWTDh4dmF6N0U2TjdPUTdQRWRUU016djZvQzVVVkV3QjF3czBu?=
+ =?utf-8?B?Z2E1WjhNbFdOemJQcENNckYyODU5SVR3bmJSRThkdi9DOS9Uc1YyMEJQZExU?=
+ =?utf-8?B?NFRpRWxCUmtsZUJBVHcwQlJxZFNWc1JyR3VyeGhkUFo2cllSRjdEOHl5bDhi?=
+ =?utf-8?B?UWxqNzhmU3lmWXJ4dDlTcmI1RWIxQXpjcitRMS9USU5wVFk0TjhYT0NiTUIw?=
+ =?utf-8?B?djRWY2paRXpvN0xSOERkYjRWVkJXYnBmMStXY3VhcGpjcDhwOXZCMGl3dHVL?=
+ =?utf-8?B?YVgxOFY2aUxaQ3lJV1A0d2xMTnVmb05wYkxTbFJRdXFaYVZTcm1ZMlY1MTRu?=
+ =?utf-8?Q?a7qqwd5BY5CBge5YZ0NnZQ7jD?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1702d244-ecb7-4a27-dfb6-08dce3e025d6
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Oct 2024 19:18:22.8314
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: A95S4WAd+UR6AAZeHWp02bTttHrIwPHSv6FEQYW8YkGrK8n1OjLzbKleRVLz3bIrbKrJknAdD6YV0mJxPq0Iaw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10554
 
-On 9/27/24 9:33 PM, Nicolas Dufresne wrote:
-> Le mercredi 25 septembre 2024 à 22:45 +0200, Marek Vasut a écrit :
->> On 9/25/24 7:58 PM, Nicolas Dufresne wrote:
->>
->>
-> 
-> [...]
-> 
->>
->>>> +static irqreturn_t ipu_mem2mem_vdic_nfb4eof_interrupt(int irq, void *dev_id)
->>>> +{
->>>> +	struct ipu_mem2mem_vdic_priv *priv = dev_id;
->>>> +
->>>> +	/* That is about all we can do about it, report it. */
->>>> +	dev_warn_ratelimited(priv->dev, "NFB4EOF error interrupt occurred\n");
->>>
->>> Not sure this is right. If that means ipu_mem2mem_vdic_eof_interrupt won't fire,
->>> then it means streamoff/close after that will hang forever, leaving a zombie
->>> process behind.
->>>
->>> Perhaps mark the buffers as ERROR, and finish the job.
->>
->> The NFB4EOF interrupt is generated when the VDIC didn't write (all of)
->> output frame . I think it stands for "New Frame Before EOF" or some
->> such. Basically the currently written frame will be corrupted and the
->> next frame(s) are likely going to be OK again.
-> 
-> So the other IRQ will be triggered ? After this one ? Is so, perhaps take a
-> moment to mark the frames as ERROR (which means corrupted).
+On Thu, Oct 03, 2024 at 10:45:28AM +0530, Manivannan Sadhasivam wrote:
+> On Mon, Sep 30, 2024 at 03:42:20PM -0400, Frank Li wrote:
+> > Some system's IOMMU stream(master) ID bits(such as 6bits) less than
+> > pci_device_id (16bit). It needs add hardware configuration to enable
+> > pci_device_id to stream ID convert.
+> >
+> > https://lore.kernel.org/imx/20240622173849.GA1432357@bhelgaas/
+> > This ways use pcie bus notifier (like apple pci controller), when new PCIe
+> > device added, bus notifier will call register specific callback to handle
+> > look up table (LUT) configuration.
+> >
+> > https://lore.kernel.org/imx/20240429150842.GC1709920-robh@kernel.org/
+> > which parse dt's 'msi-map' and 'iommu-map' property to static config LUT
+> > table (qcom use this way). This way is rejected by DT maintainer Rob.
+> >
+>
+> What is the issue in doing this during the probe() stage? It looks like you are
+> working with the static info in the devicetree, which is already available
+> during the controller probe().
 
-OK, fixed in V3.
+There are problems.
+One: It is not good to manually parser this property in pci host bridge
+drivers.
 
-> [...]
-> 
->>>
->>> The driver is not taking ownership of prev_buf, only curr_buf is guaranteed to
->>> exist until v4l2_m2m_job_finish() is called. Usespace could streamoff, allocate
->>> new buffers, and then an old freed buffer may endup being used.
->>
->> So, what should I do about this ? Is there some way to ref the buffer to
->> keep it around ?
->>
->>> Its also unclear to me how userspace can avoid this ugly warning, how can you
->>> have curr_buf set the first time ? (I might be missing something you this one
->>> though).
->>
->> The warning happens when streaming starts and there is only one input
->> frame available for the VDIC, which needs three fields to work
->> correctly. So, if there in only one input frame, VDI uses the input
->> frame bottom field as PREV field for the prediction, and input frame top
->> and bottom fields as CURR and NEXT fields for the prediction, the result
->> may be one sub-optimal deinterlaced output frame (the first one). Once
->> another input frame gets enqueued, the VDIC uses the previous frame
->> bottom field as PREV and the newly enqueued frame top and bottom fields
->> as CURR and NEXT and the prediction works correctly from that point on.
-> 
-> Warnings by default are not acceptable.
+Two: of_map default is bypass map. For example: if in dts only 2 sid, 0xA
+and 0xB. If try to enable 3rd function RID(103), there are no error report.
+of_map will return RID 103 as stream ID.  DMA will write to wrong
+possition possibly.
 
-This is a workaround so that older gstreamer versions would work, what 
-else can I do here ?
+https://elixir.bootlin.com/linux/v6.12-rc1/source/drivers/of/base.c#L2070
 
->>> Perhaps what you want is a custom job_ready() callback, that ensure you have 2
->>> buffers in the OUTPUT queue ? You also need to ajust the CID
->>> MIN_BUFFERS_FOR_OUTPUT accordingly.
->>
->> I had that before, but gstreamer didn't enqueue the two frames for me,
->> so I got back to this variant for maximum compatibility.
-> 
-> Its well known that GStreamer v4l2convert element have no support for
-> detinterlacing and need to be improved to support any deinterlace drivers out
-> there.
+Three: LUT resource is limited, if DT provide 16 entry, but LUT have only 8
+items, if more device enable, not LUT avaible and can't return error. of
+course, it may fix dts, but It'd better that driver can handle error
+properly when meet wrong dtb file.
 
-It seems v4l2convert disable-passthrough=true works with deinterlacers 
-just fine , except for this one reused frame at stream start ?
+>
+> > Above ways can resolve LUT take or stream id out of usage the problem. If
+> > there are not enough stream id resource, not error return, EP hardware
+> > still issue DMA to do transfer, which may transfer to wrong possition.
+> >
+> > Add enable(disable)_device() hook for bridge can return error when not
+> > enough resource, and PCI device can't enabled.
+> >
+>
+> {enable/disable}_device() doesn't convey the fact you are mapping BDF to SID in
+> the hardware. Maybe something like, {map/unmap}_bdf2sid() or similar would make
+> sense.
 
-> Other drivers will simply holds on output buffers until it has enough to produce
-> the first valid picture. Holding meaning not marking them done, which keeps then
-> in the ACTIVE state, which is being tracked by the core for your.
+It is called in PCI common code do_pci_enable_device(), hook functin name
+should be similar with caller. {map/unmap}_bdf2sid() is just implementation
+in dwc.
 
-As far as I understand this, when the EOF interrupt happens, 
-v4l2_m2m_src_buf_remove() pulls the oldest input buffer from the queue 
-and that buffer is then marked as DONE (or ERROR in v3), that is the 
-->prev buffer, isn't it ?
+stream id is only ARM platform concept.
 
-Once the next frame deinterlacing starts, the (new) current frame and 
-the prev frame are both active, the deinterlacing happens and then in 
-the EOF interrupt, the ->prev frame gets marked as DONE again.
+May other host bridge do difference thing at enable/disable_device().
 
-What am I missing here ?
+So I am still perfer use {enable/disable}_device().
 
-> [...]
-> 
->>>> +
->>>> +	if (ipu_mem2mem_vdic_format_is_yuv420(f->fmt.pix.pixelformat))
->>>> +		f->fmt.pix.bytesperline = f->fmt.pix.width * 3 / 2;
->>>> +	else if (ipu_mem2mem_vdic_format_is_yuv422(f->fmt.pix.pixelformat))
->>>> +		f->fmt.pix.bytesperline = f->fmt.pix.width * 2;
->>>> +	else if (ipu_mem2mem_vdic_format_is_rgb16(f->fmt.pix.pixelformat))
->>>> +		f->fmt.pix.bytesperline = f->fmt.pix.width * 2;
->>>> +	else if (ipu_mem2mem_vdic_format_is_rgb24(f->fmt.pix.pixelformat))
->>>> +		f->fmt.pix.bytesperline = f->fmt.pix.width * 3;
->>>> +	else if (ipu_mem2mem_vdic_format_is_rgb32(f->fmt.pix.pixelformat))
->>>> +		f->fmt.pix.bytesperline = f->fmt.pix.width * 4;
->>>> +	else
->>>> +		f->fmt.pix.bytesperline = f->fmt.pix.width;
->>>> +
->>>> +	f->fmt.pix.sizeimage = f->fmt.pix.height * f->fmt.pix.bytesperline;
->>>
->>> And use v4l2-common ?
->>
->> I don't really understand, there is nothing in v4l2-common.c that would
->> be really useful replacement for this ?
-> 
-> Not sure I get your response, v4l2-common is used in many drivers already, and
-> we intent to keep improving it so that all driver uses it in the long term. It
-> been created because folks believed they can calculate bytesperline and
-> sizeimage, but as the number of format grows, it always endup wrong, causing the
-> HW to overflow and break the system at a larger scale.
 
-Do you want me to introduce some new generic helper ? Because I don't 
-see an existing generic one.
+Frank
 
->>>> +	return 0;
->>>> +}
->>>> +
->>>> +static int ipu_mem2mem_vdic_s_fmt(struct file *file, void *fh, struct v4l2_format *f)
->>>> +{
->>>> +	struct ipu_mem2mem_vdic_ctx *ctx = fh_to_ctx(fh);
->>>> +	struct ipu_mem2mem_vdic_priv *priv = ctx->priv;
->>>> +	struct v4l2_pix_format *fmt, *infmt, *outfmt;
->>>> +	struct vb2_queue *vq;
->>>> +	int ret;
->>>> +
->>>> +	vq = v4l2_m2m_get_vq(ctx->fh.m2m_ctx, f->type);
->>>> +	if (vb2_is_busy(vq)) {
->>>> +		dev_err(priv->dev, "%s queue busy\n",  __func__);
->>>> +		return -EBUSY;
->>>> +	}
->>>> +
->>>> +	ret = ipu_mem2mem_vdic_try_fmt(file, fh, f);
->>>> +	if (ret < 0)
->>>> +		return ret;
->>>> +
->>>> +	fmt = ipu_mem2mem_vdic_get_format(priv, f->type);
->>>> +	*fmt = f->fmt.pix;
->>>> +
->>>> +	/* Propagate colorimetry to the capture queue */
->>>> +	infmt = ipu_mem2mem_vdic_get_format(priv, V4L2_BUF_TYPE_VIDEO_OUTPUT);
->>>> +	outfmt = ipu_mem2mem_vdic_get_format(priv, V4L2_BUF_TYPE_VIDEO_CAPTURE);
->>>> +	outfmt->colorspace = infmt->colorspace;
->>>> +	outfmt->ycbcr_enc = infmt->ycbcr_enc;
->>>> +	outfmt->xfer_func = infmt->xfer_func;
->>>> +	outfmt->quantization = infmt->quantization;
->>>
->>> So you can do CSC conversion but not colorimetry ? We have
->>> V4L2_PIX_FMT_FLAG_SET_CSC if you can do colorimetry transforms too. I have
->>> patches that I'll send for the csc-scaler driver.
->>
->> See ipu_ic_calc_csc() , that's what does the colorspace conversion in
->> this driver (on output from VDI).
-> 
-> int ipu_ic_calc_csc(struct ipu_ic_csc *csc,
->                      enum v4l2_ycbcr_encoding in_enc,
->                      enum v4l2_quantization in_quant,
->                      enum ipu_color_space in_cs,
->                      enum v4l2_ycbcr_encoding out_enc,
->                      enum v4l2_quantization out_quant,
->                      enum ipu_color_space out_cs)
-> 
-> So instead of simply overriding CSC like you do, let userspace set different CSC
-> in and out, so that IPU can handle the conversion properly with correct colors.
-> That requires to flag these in the fmt_desc structure during enum format, and to
-> only read acknowledge the CSC if userspace have set V4L2_PIX_FMT_FLAG_SET_CSC,
-> in other condition, the information must be ignored (which you don't).
-The input is from the VDI and that always has to be YUV. Can you maybe 
-just CC me on the CSC-scaler patches ? Then I'll see what can be done here.
-
-Thanks
+>
+> - Mani
+>
+> > Basicallly this version can match Bjorn's requirement:
+> > 1: simple, because it is rare that there are no LUT resource.
+> > 2: EP driver probe failure when no LUT, but lspci can see such device.
+> >
+> > [    2.164415] nvme nvme0: pci function 0000:01:00.0
+> > [    2.169142] pci 0000:00:00.0: Error enabling bridge (-1), continuing
+> > [    2.175654] nvme 0000:01:00.0: probe with driver nvme failed with error -12
+> >
+> > > lspci
+> > 0000:00:00.0 PCI bridge: Philips Semiconductors Device 0000
+> > 0000:01:00.0 Non-Volatile memory controller: Micron Technology Inc 2100AI NVMe SSD [Nitro] (rev 03)
+> >
+> > To: Bjorn Helgaas <bhelgaas@google.com>
+> > To: Richard Zhu <hongxing.zhu@nxp.com>
+> > To: Lucas Stach <l.stach@pengutronix.de>
+> > To: Lorenzo Pieralisi <lpieralisi@kernel.org>
+> > To: Krzysztof Wilczyński <kw@linux.com>
+> > To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > To: Rob Herring <robh@kernel.org>
+> > To: Shawn Guo <shawnguo@kernel.org>
+> > To: Sascha Hauer <s.hauer@pengutronix.de>
+> > To: Pengutronix Kernel Team <kernel@pengutronix.de>
+> > To: Fabio Estevam <festevam@gmail.com>
+> > Cc: linux-pci@vger.kernel.org
+> > Cc: linux-kernel@vger.kernel.org
+> > Cc: linux-arm-kernel@lists.infradead.org
+> > Cc: imx@lists.linux.dev
+> > Cc: Frank.li@nxp.com \
+> > Cc: alyssa@rosenzweig.io \
+> > Cc: bpf@vger.kernel.org \
+> > Cc: broonie@kernel.org \
+> > Cc: jgg@ziepe.ca \
+> > Cc: joro@8bytes.org \
+> > Cc: l.stach@pengutronix.de \
+> > Cc: lgirdwood@gmail.com \
+> > Cc: maz@kernel.org \
+> > Cc: p.zabel@pengutronix.de \
+> > Cc: robin.murphy@arm.com \
+> > Cc: will@kernel.org \
+> >
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> > Changes in v2:
+> > - see each patch
+> > - Link to v1: https://lore.kernel.org/r/20240926-imx95_lut-v1-0-d0c62087dbab@nxp.com
+> >
+> > ---
+> > Frank Li (2):
+> >       PCI: Add enable_device() and disable_device() callbacks for bridges
+> >       PCI: imx6: Add IOMMU and ITS MSI support for i.MX95
+> >
+> >  drivers/pci/controller/dwc/pci-imx6.c | 133 +++++++++++++++++++++++++++++++++-
+> >  drivers/pci/pci.c                     |  14 ++++
+> >  include/linux/pci.h                   |   2 +
+> >  3 files changed, 148 insertions(+), 1 deletion(-)
+> > ---
+> > base-commit: 2849622e7b01d5aea1b060ba3955054798c1e0bb
+> > change-id: 20240926-imx95_lut-1c68222e0944
+> >
+> > Best regards,
+> > ---
+> > Frank Li <Frank.Li@nxp.com>
+> >
+> >
+>
+> --
+> மணிவண்ணன் சதாசிவம்
