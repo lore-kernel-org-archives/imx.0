@@ -1,97 +1,194 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011037.outbound.protection.outlook.com [52.101.70.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9311229113;
-	Fri,  4 Oct 2024 18:30:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066641; cv=none; b=OysAbGo4lO30a+R/aMA71vk9KeqTqETzo4ibkcYGj/J5hBg2s+PZBQUvTz+qJt93803p1V0LPxNBB64IUYK5OoGhEmqUhVoObs8XOnR8OGr9E0176u9gLnG/giBRJoCsplzkyuF1a4Mi2YE31DI8zwAyRsq/e7ydkvn2p/CtTxI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066641; c=relaxed/simple;
-	bh=+MInjvOIugVc1lwubZe5zMasPwrDh20XqXcJx8xuQ2g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H6wVz0ec5a9m3UlPiOZCQkOD7BetbvTA0CiP1wozqlXcSLd0g90+uTBODp54O72NbkiTj8Iv81H9eplBZkHBjsGK5oKHWPkyUf3zHa68zeQS4gS2DAmnJKLB5Pxi04TesILrXAiPuQfbb0ZMncB4FcMd89dJRbZuovDjFPozb6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j38i6iQ9; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CDA1DD886
+	for <imx@lists.linux.dev>; Fri,  4 Oct 2024 18:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728068335; cv=fail; b=mBb/6QRhNhtyX3fX5awlQ8c6L1JV/rChH8JrK3GQhY82A386UubGh8U0iAumJoauVcWrLShCmNwWcsKf3AbWaeI0n0eNK9AvdfSIlJUWz4AZjsTgFcEtfLO9ALYROyAZazmD6/pVHKOFHpmppNW7pUTK3NrwhaHNdUydClM69l8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728068335; c=relaxed/simple;
+	bh=J1QnstCn4o8Xz6t8QutswG1z0Fu4lGgF+RbYezvzQHQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=lnmX06Dk20IaUWPjlBwW+67u4yp079OW8T+ineEavFxQQ8jnps+1LB9CFaaySeIE3WSUUTlspG18bLhEHTMQQXxujeVmVUSvJgkGcT+lDh7oO2+HGq5zcsKL8swi2X65A0r2e1E9KN5LbcqdXsZWlGPuSFhgISrDXd68vYW9qOw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ds72Kc1c reason="signature verification failed"; arc=fail smtp.client-ip=52.101.70.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j38i6iQ9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4FFC4CECC;
-	Fri,  4 Oct 2024 18:30:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066641;
-	bh=+MInjvOIugVc1lwubZe5zMasPwrDh20XqXcJx8xuQ2g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j38i6iQ9KQAVno8v/TR70UmED3rwAN02RuGC+W1mhNM477ioQDulxruJWcQdKAAnC
-	 67Pfxw/aYqFcbEHKfD5u5B93WXsJ8WwJW/M7m33xVZncH6bbt3Rls9gZDW4LoB4Pmq
-	 jlRWdqluMo0VvE0Ijo7FWiN5JGlvvKvqY2KjliU4557XwZfHPeozDmEdy8J46HaMID
-	 lelQPvobrRTAAC9ddcSGo9Ct9KufcRSNl84d4ZMsseEHTH0/HGRYaXzguDwyVDFoVP
-	 2/H3fD8hlLBina0W+iEhBVwLki9DUqpSCsIecmYSCp5zqNpMgLmDVcecnrMnPKvvFH
-	 RHpQAkO3gsKvg==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Sasha Levin <sashal@kernel.org>,
-	abelvesa@kernel.org,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	shawnguo@kernel.org,
-	linux-clk@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.10 19/26] clk: imx: Remove CLK_SET_PARENT_GATE for DRAM mux for i.MX7D
-Date: Fri,  4 Oct 2024 14:29:45 -0400
-Message-ID: <20241004183005.3675332-19-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241004183005.3675332-1-sashal@kernel.org>
-References: <20241004183005.3675332-1-sashal@kernel.org>
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ds72Kc1c"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=twBfcxjGN0PQzwlOXFaowC/bKy6DfK9YO3OaoNYDnh2oheulE6dNy+ree7nf3+QC6aUsCKu8NGkuEvS8B5yrSfAQcRID4I8Xt6kp7VFI2GcbazQGLyC/KlE/cePPqS9+zCykUlIw7KA4EWxgXvtAsIzQZZ1rakwIP7JxmsyyiBho63iYZAW0qQEDf+NrTi5sxiMIzz4f1xL0XyVahp32+Su7NXbEkM1nVBhFvrpOx/26L9sPogeescM/naesH4wQJCK58Ax3rVbVQcRv2zIrxFDdQqwF0knmpBCsno43sFkJF6aw9ZtNxo/Jk1FDoBt7V9X+2R+OgTSHZmPRp0RIzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=etBOJ4DvmRBvUIggEZGeLQ2Dmr73osEeWcOiC4dKV9M=;
+ b=GnnKXWq9tkOcD7amdf39ze4S/SvX5TDb83VWOkEQ5QHWxj4nLyZD7hv4bMwbj3dg+JVWCmejqlNThfzb0rl4EMfqED7jWD5AorJxt1RR3/C0xpJ4FauGN870mBao2i9ZLIcEolwEgUSborX9jQ49M+DcPQl/xmtWEosh/H98V0jRA7qB5NLdlPnQnZczLfyK9Yja4iOMhmuWsj6PrCeXQAghL01cE2zdGSJYrfa/9TLKLXAyruyri4D+mNdrGhjtE+K5UONCE0PbpkznvejU8Kk0o9XzIne9jplNv5LpX0Rxsjh0fDUp0tp+9F+GKRUPNRZzsRfxaCRbXAfbmv67UA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=etBOJ4DvmRBvUIggEZGeLQ2Dmr73osEeWcOiC4dKV9M=;
+ b=Ds72Kc1cGrZ5U1hPkDrRSTdDN25G1IxGukjJw2nQqXR5cn0cBNsqQkmepr6tZYh4L1G61DxF/fSdKhxoyCERqMqfSxIftCMd3ov4UcvYnYWRoC5XYu50jdzKXoVYg+SJ4qxHoc9ibR638Pv/9dSW2ly27APe3R9euPZPeq01/k2PtFUhMAJzBRKMh0O53K8e7t5Dm8MJ/pnXbIUyJnDPC4TsdF8ZDGMi2Mt8uI95LNtAPwC76Fby3GtEh2W7eDtiqC4uXI5Tq5h5Z2oSB4/Ewg3pXjMJ8qtoxlXtqGGkoYA7sz2GhDRVdv9XaZ/3B4ANlJ+QxsjjkzdPhAGEyf1fVw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.16; Fri, 4 Oct
+ 2024 18:58:49 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8026.016; Fri, 4 Oct 2024
+ 18:58:49 +0000
+Date: Fri, 4 Oct 2024 14:58:38 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
+	arnd@arndb.de, bbrezillon@kernel.org, boris.brezillon@collabora.com,
+	conor.culhane@silvaco.com, gregkh@linuxfoundation.org,
+	imx@lists.linux.dev, pthombar@cadence.com,
+	ravindra.yashvant.shinde@nxp.com
+Subject: Re: [PATCH v6 2/3] i3c: master: Extend address status bit to 4 and
+ add I3C_ADDR_SLOT_EXT_DESIRED
+Message-ID: <ZwA63q40ZQYAz+Sf@lizhi-Precision-Tower-5810>
+References: <20241003-i3c_dts_assign-v6-0-eae2569c92ca@nxp.com>
+ <20241003-i3c_dts_assign-v6-2-eae2569c92ca@nxp.com>
+ <20241004092914.42701e56@xps-13>
+ <ZwAHziElHUR7ZdKS@lizhi-Precision-Tower-5810>
+ <20241004182229.6e08d02c@xps-13>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241004182229.6e08d02c@xps-13>
+X-ClientProxiedBy: SJ0PR13CA0086.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c4::31) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.226
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8897:EE_
+X-MS-Office365-Filtering-Correlation-Id: 19749690-0202-463a-6ee9-08dce4a694d8
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|52116014|7416014|376014|366016|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ =?iso-8859-1?Q?+X6D2dFJHST4eZFMsrlR6WYZ0aCtfZ6ZerzF/UhuuaEHvSSzesa3VwsJfo?=
+ =?iso-8859-1?Q?7rhWqY4C9iWn9bVIo44gwlI9OK0FHJMi152OVsjFHqK/Noqkq2sEroHVkE?=
+ =?iso-8859-1?Q?3iM5CSnM1tr2WnsgQiFai5OfA/ZBoxI4ZJBs2g72n/WqFoM8tikP6vgFMi?=
+ =?iso-8859-1?Q?+psYIuYAoEGvQD/Uuz9l9QihZUKPIv7BpUW27vPyMwUde+p4OiEVsIB1+G?=
+ =?iso-8859-1?Q?zkQhK8pC5Qe49ZEkCzSpCUWvwj6+T/IHCsL2yFzR+QabcsOZlLc2RwE/ud?=
+ =?iso-8859-1?Q?We4L7NmRH5+PiKcMaN3IbI1BppfkHKjCAlbgLDSE3/0YPP1L6TdIwyxgdc?=
+ =?iso-8859-1?Q?Bq/U5lSMNQi4L8KFE/7O/aODuwfDx/4Tkvz+swQGZ1iMBNoizPqXAw9KfP?=
+ =?iso-8859-1?Q?EMPtGuH9BufEB1tO+WUiXBDozK55UWSK1wDBKHp1BkxB830m5OlpVdgZP4?=
+ =?iso-8859-1?Q?Rm8FeofDchSdj8VYMKOP9DXKAdlGDNLdLPOcUOlF5L1OpdD1frBvKg4xfV?=
+ =?iso-8859-1?Q?iKFOh37fdU6uARuQ7ShL4lWA7NHaHCbsu5QThymLhAsJ0NjWhN6FLPcOpe?=
+ =?iso-8859-1?Q?auNdMjx9gOz/0ZBbAPFIIUuF7pq/KvEkcBTAvuSnpp1TFwSyyKKBOq4doN?=
+ =?iso-8859-1?Q?PUfRylEbePGnUJQfhVd+McwLb9xlr3AfMxFHoHfWBsQN9PX4EAgCYNSc5v?=
+ =?iso-8859-1?Q?2dl2blP/AD1nBcUspCN56zyqc2M8H6zlGSEXlPcaWlnLQzrVzCzcg0QuDB?=
+ =?iso-8859-1?Q?mhZDwyZLcFNBiLgCkURYwP7p3y6jNsqCpH82OCPhxxFDSSR6GOsvhD7DgL?=
+ =?iso-8859-1?Q?aFzRSc6X8m5l+sUsnzfNcptDHE6oiGgAukOzs73n/SConlqpYexofonQbZ?=
+ =?iso-8859-1?Q?nOzXGra9SyFYi/SV/ooySz+JGkCcw0WG5ZAYtZpRx3mzVhr/GmajGSVdqp?=
+ =?iso-8859-1?Q?AXgy6aO+q41uxxTsh8Ce+g8jCF77KwsRsVGRxUE0pmtnYdPJio4Thu0tog?=
+ =?iso-8859-1?Q?D4citRah0snMVpKl7GC4yzsDPZlW4DRZGg3WeI2UijBwS3epPzcrgsz8cs?=
+ =?iso-8859-1?Q?hy6StL4MXzy+oh0bj5ynDV6Z9GcZm+Bb6vvRPtJOxNMGAAZUbKzeqgnnpJ?=
+ =?iso-8859-1?Q?6aWoUzlswbteIHB19nhUfXr5lN48Scv9SJC7PDcyjioekfq/+PbV2ytHFF?=
+ =?iso-8859-1?Q?dbsBfZ/akTovlgpJUrEQkHMAb94wNX05B5A4X60YfJ4P6rMrd1JkrJ2PiX?=
+ =?iso-8859-1?Q?qGCzI/fgMQfxwYYSFufVeJM+kITqKjXRTfXcFs7Ce+YRrpsK6KMTSeUSLP?=
+ =?iso-8859-1?Q?IYjN1TLMtWNtJYlZj2XJFwu2cphtcXQw45y/JaBQfLKGbf0CnQLMvYPaRJ?=
+ =?iso-8859-1?Q?anZOjS4Z710Dj9t8d6yw+rM9FmpPSJGA=3D=3D?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?iso-8859-1?Q?fyNileJUM8vxdA0EgQk3LZc5Kuao2tZi+0hJ8ExE26TrhmzjWJg//fyOLW?=
+ =?iso-8859-1?Q?kJbD9/gMbp72mE150zltdvkLKDB41ZQiQRMBrtazXcq/Wmmw5Fps7vU3hs?=
+ =?iso-8859-1?Q?7DvlsKCXXbyKGOixf3M0yN/PLh+4u4SG3L/Z55kNQ8DfVRvbP8+8brfKda?=
+ =?iso-8859-1?Q?9e40ybYlkeGSvdmT66URcWwHK2xN4O8wQxnO/I808+L+DYzMwnj/QJ83+J?=
+ =?iso-8859-1?Q?6SicCeAEKMPZfgpYDxIfNAZyRS0Dl/fQ4O137RjOFJgg9ceXE7dr8kTBm7?=
+ =?iso-8859-1?Q?pJlH8CIqrMixMgcUpH//uscQ5HBs5fSluYOOSiPoCGlNQV+r1uVYOMuxcY?=
+ =?iso-8859-1?Q?IxI1G4uCWi84Jfiiwut5BQ3zCk733LCjfJmI3hOXp333qLmy8goWaLysNz?=
+ =?iso-8859-1?Q?lCeoCI5qjo6AnNGWpIS+Myl2GoDB1n1mpJAA+Epzed8k+BKJh1k1dzpnQs?=
+ =?iso-8859-1?Q?vZ3mzWfJv86tpuaEpss12qWDeJAinKfefnE7GjTO9Ppr9U2mcv/R9q6/ME?=
+ =?iso-8859-1?Q?lJo97j5FUY7wjnOzv1zRII7XRi/DJ4k9ekD9anv4kE79KRwJUDmg1eOzKv?=
+ =?iso-8859-1?Q?XA/fKzCLFvXx4XNAth9Q3jaACBYqrry3OGdw0F6UuxyHfQ5MDoecPT9HeY?=
+ =?iso-8859-1?Q?7AjasCg9hzg2j1/7BPG9KmrvC3L9PIfNYqQ3DMltE190M4WzRFXffv53z1?=
+ =?iso-8859-1?Q?M0VT0+u3DCWXeqQb20/d7R7Qc7mgb+zMCWb0hVeBVQ4n/hdZuzcCNLaZlI?=
+ =?iso-8859-1?Q?ZNVFX2sH+4x+l5gpABpKhaojhKiBUPapxknA5sITxrNbgeItiMJl8iLoFR?=
+ =?iso-8859-1?Q?BUzrbYLyFW0xTE64MrXhht/k4UH0Sl8eIqd5bnJp/7K1CcNJUvzjMFvmi7?=
+ =?iso-8859-1?Q?XhcGjw5Q+6JJEgPI2P8dlMsEYRFM+w0U3RvL+JVOqcIoZ1xn8OpcQnWPCj?=
+ =?iso-8859-1?Q?jc9gTwGQahGknbSSQBwr8JgEwu8zANUpyL8H1n2ZQ34Od3fUWFAvjQgiZ9?=
+ =?iso-8859-1?Q?Uc1qY/WiTQCk/GKyT3vPGeloI2MGm7IvipUkcGfDZn90g9D0vHFoKuttuf?=
+ =?iso-8859-1?Q?oxd8wYuY3bvayPBISNhu+V1ZK5yZGZVyx5LMUfFILR7QXPjX/6cRzjLxoC?=
+ =?iso-8859-1?Q?HOpnA1bHUQTCYoMYKpqfIV2U7Fz2BwlsD/lg4l8aFo4MlOtMO0CWQtMSmM?=
+ =?iso-8859-1?Q?i7NT8nKwqoiSs96v0qvmVV5ajAo6/j/+AVMZisODhuLnuweTy5GczlzFFV?=
+ =?iso-8859-1?Q?mGla5ScDiXAC6uMUsRkddpzehWuSAhlI0jmaoJvPkfyBxEI0acssefww/F?=
+ =?iso-8859-1?Q?+UqPwSnUX+2Y/iUjUFZcUtB7jKPPz+p63+c7XURypjWSYVUJXnfs4iFbcn?=
+ =?iso-8859-1?Q?M0YcNmOn7m6R3gQa2Ok0C3zbK1sK/2BxXsZ9DsTAbiFT74Ezn1ohTK+IVB?=
+ =?iso-8859-1?Q?iH1QHOiwEecf299zbrHktCOBvCEyMlKTuqLfdKrsoNAlMKi1OWrhiN1F1J?=
+ =?iso-8859-1?Q?ILGh+JvxkqiAqDZsdM/ZCG5jXoC7natCZ3vn+pPD4qiofCL65U4W1RuDEB?=
+ =?iso-8859-1?Q?e+6TGNC70faCk3lSw1RJhJTmuWI9YB4ABeUkOMYXGcEQHbx9c9GSVAxV43?=
+ =?iso-8859-1?Q?dmbAZpqW5xU8ljfhZfNpHxKp0eso4fdnX9?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 19749690-0202-463a-6ee9-08dce4a694d8
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Oct 2024 18:58:49.5243
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /H70LbgvTcXYHCO3qjea5aeW8KLjEL2g5zT4W/b3o+JWsqR+IK+ctC+9dLWeB1ySV+6CBhb9PL6d0nvLzv1/9Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8897
 
-From: Peng Fan <peng.fan@nxp.com>
+On Fri, Oct 04, 2024 at 06:22:29PM +0200, Miquel Raynal wrote:
+> Hi Frank,
+>
+> > > > @@ -1918,9 +1959,10 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
+> > > >  			goto err_rstdaa;
+> > > >  		}
+> > > >
+> > > > -		i3c_bus_set_addr_slot_status(&master->bus,
+> > > > -					     i3cboardinfo->init_dyn_addr,
+> > > > -					     I3C_ADDR_SLOT_I3C_DEV);
+> > > > +		i3c_bus_set_addr_slot_status_mask(&master->bus,
+> > > > +						 i3cboardinfo->init_dyn_addr,
+> > > > +						 I3C_ADDR_SLOT_I3C_DEV | I3C_ADDR_SLOT_EXT_DESIRED,
+> > > > +						 I3C_ADDR_SLOT_EXT_STATUS_MASK);
+> > >
+> > > However I'm not sure I understand the use of the
+> > > set_addr_slot_status_mask() function. Can't we just use the normal
+> > > function and just extend the mask in the fist place?
+> >
+> > The major purpose of set_addr_slot_status_mask() is that reduce code
+> > change. There are already address alloc/free by using I3C_ADDR_SLOT_FREE.
+> >
+> > we don't want i3c_bus_set_addr_slot_status() touch bit
+> > I3C_ADDR_SLOT_EXT_DESIRED since it was init at scan dts.
+>
+> I agree, but in general you will never remove any "desired" slot, so
+> the "set status", besides at init time, should never touch these extra
+> bits?
 
-[ Upstream commit a54c441b46a0745683c2eef5a359d22856d27323 ]
+I am not sure I understand what your means exactly.
 
-For i.MX7D DRAM related mux clock, the clock source change should ONLY
-be done done in low level asm code without accessing DRAM, and then
-calling clk API to sync the HW clock status with clk tree, it should never
-touch real clock source switch via clk API, so CLK_SET_PARENT_GATE flag
-should NOT be added, otherwise, DRAM's clock parent will be disabled when
-DRAM is active, and system will hang.
+Yes, it is first and only place to set I3C_ADDR_SLOT_EXT_DESIRED.
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20240607133347.3291040-8-peng.fan@oss.nxp.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/clk/imx/clk-imx7d.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Other place's i3c_bus_set_addr_slot_status() will not touch these bits.
 
-diff --git a/drivers/clk/imx/clk-imx7d.c b/drivers/clk/imx/clk-imx7d.c
-index 3f6fd7ef2a68f..0e68e5f2d7e7d 100644
---- a/drivers/clk/imx/clk-imx7d.c
-+++ b/drivers/clk/imx/clk-imx7d.c
-@@ -498,9 +498,9 @@ static void __init imx7d_clocks_init(struct device_node *ccm_node)
- 	hws[IMX7D_ENET_AXI_ROOT_SRC] = imx_clk_hw_mux2_flags("enet_axi_src", base + 0x8900, 24, 3, enet_axi_sel, ARRAY_SIZE(enet_axi_sel), CLK_SET_PARENT_GATE);
- 	hws[IMX7D_NAND_USDHC_BUS_ROOT_SRC] = imx_clk_hw_mux2_flags("nand_usdhc_src", base + 0x8980, 24, 3, nand_usdhc_bus_sel, ARRAY_SIZE(nand_usdhc_bus_sel), CLK_SET_PARENT_GATE);
- 	hws[IMX7D_DRAM_PHYM_ROOT_SRC] = imx_clk_hw_mux2_flags("dram_phym_src", base + 0x9800, 24, 1, dram_phym_sel, ARRAY_SIZE(dram_phym_sel), CLK_SET_PARENT_GATE);
--	hws[IMX7D_DRAM_ROOT_SRC] = imx_clk_hw_mux2_flags("dram_src", base + 0x9880, 24, 1, dram_sel, ARRAY_SIZE(dram_sel), CLK_SET_PARENT_GATE);
-+	hws[IMX7D_DRAM_ROOT_SRC] = imx_clk_hw_mux2("dram_src", base + 0x9880, 24, 1, dram_sel, ARRAY_SIZE(dram_sel));
- 	hws[IMX7D_DRAM_PHYM_ALT_ROOT_SRC] = imx_clk_hw_mux2_flags("dram_phym_alt_src", base + 0xa000, 24, 3, dram_phym_alt_sel, ARRAY_SIZE(dram_phym_alt_sel), CLK_SET_PARENT_GATE);
--	hws[IMX7D_DRAM_ALT_ROOT_SRC]  = imx_clk_hw_mux2_flags("dram_alt_src", base + 0xa080, 24, 3, dram_alt_sel, ARRAY_SIZE(dram_alt_sel), CLK_SET_PARENT_GATE);
-+	hws[IMX7D_DRAM_ALT_ROOT_SRC]  = imx_clk_hw_mux2("dram_alt_src", base + 0xa080, 24, 3, dram_alt_sel, ARRAY_SIZE(dram_alt_sel));
- 	hws[IMX7D_USB_HSIC_ROOT_SRC] = imx_clk_hw_mux2_flags("usb_hsic_src", base + 0xa100, 24, 3, usb_hsic_sel, ARRAY_SIZE(usb_hsic_sel), CLK_SET_PARENT_GATE);
- 	hws[IMX7D_PCIE_CTRL_ROOT_SRC] = imx_clk_hw_mux2_flags("pcie_ctrl_src", base + 0xa180, 24, 3, pcie_ctrl_sel, ARRAY_SIZE(pcie_ctrl_sel), CLK_SET_PARENT_GATE);
- 	hws[IMX7D_PCIE_PHY_ROOT_SRC] = imx_clk_hw_mux2_flags("pcie_phy_src", base + 0xa200, 24, 3, pcie_phy_sel, ARRAY_SIZE(pcie_phy_sel), CLK_SET_PARENT_GATE);
--- 
-2.43.0
+Frank
 
+>
+> > There are 18 place, using i3c_bus_set_addr_slot_status(), but we only need
+> > touch I3C_ADDR_SLOT_EXT_DESIRED bit when scan dts.
+> >
+>
+> Thanks,
+> Miquèl
