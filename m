@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38030222A5F;
-	Fri,  4 Oct 2024 18:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9311229113;
+	Fri,  4 Oct 2024 18:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066576; cv=none; b=pMYgC3Eez/hQyIZgBD9bPRdl6WpuaFK+hhG+WrTKyBjrm0sSaDILyk5aByAgdc2TC3m0IvMaESyI0+aww5xKWq4/YiEXC4IrdTMoFS9tAuj3sApeb+9Swc9e4GoIXJX03E1tAlP0nYLHW+rO8Nah/PBYt+EOnGLFmczGkf5p+3s=
+	t=1728066641; cv=none; b=OysAbGo4lO30a+R/aMA71vk9KeqTqETzo4ibkcYGj/J5hBg2s+PZBQUvTz+qJt93803p1V0LPxNBB64IUYK5OoGhEmqUhVoObs8XOnR8OGr9E0176u9gLnG/giBRJoCsplzkyuF1a4Mi2YE31DI8zwAyRsq/e7ydkvn2p/CtTxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066576; c=relaxed/simple;
+	s=arc-20240116; t=1728066641; c=relaxed/simple;
 	bh=+MInjvOIugVc1lwubZe5zMasPwrDh20XqXcJx8xuQ2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s/mE7/SyMj+yfw9qo/+6qJpxK+jfZCqi12YFf2w285N54giLOQL40+WE1+yU8ibWFQvXra582mvPmRvziopzFNuFqQQeBwjl1xs/nHGQ9X0sBQrB7drJ8ggyq7v2KidkarTdHE5zvUi05v0wpOzbKp3KZQEnBGsFCGdZPvc3Pk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mNyotIDm; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=H6wVz0ec5a9m3UlPiOZCQkOD7BetbvTA0CiP1wozqlXcSLd0g90+uTBODp54O72NbkiTj8Iv81H9eplBZkHBjsGK5oKHWPkyUf3zHa68zeQS4gS2DAmnJKLB5Pxi04TesILrXAiPuQfbb0ZMncB4FcMd89dJRbZuovDjFPozb6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j38i6iQ9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mNyotIDm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8476C4CEC6;
-	Fri,  4 Oct 2024 18:29:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j38i6iQ9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4FFC4CECC;
+	Fri,  4 Oct 2024 18:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066576;
+	s=k20201202; t=1728066641;
 	bh=+MInjvOIugVc1lwubZe5zMasPwrDh20XqXcJx8xuQ2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mNyotIDm1wJa71qXAkrencqIvFVg0gNIueghXilA8GjKC2RF9LlXazoBIO8yUBEcb
-	 l63Gx4CAryDGoJREpADhVAQF2u5Pqlrcklx9JvGHfCbSH0159OPZKAqYZoxc4y+Db1
-	 RZjDjrbparlZW1degs3eWZHULAnHkJwctPBBkE07lIN2cPBpcBTwX6SStIRmOoNPJU
-	 u64m7Po5EYN/TU2rkoCzFkZqfvJvSDysfG+T+JoaprBA/3TeD9fciddUkbqdykqc6I
-	 KyiTTcc/Aqf+Ik/QF9PIFr2FC1qqodIdfzmbBkfXYJooT7+aUlyJh/GgPJ7nYjYIa/
-	 chhYDib/qD1pg==
+	b=j38i6iQ9KQAVno8v/TR70UmED3rwAN02RuGC+W1mhNM477ioQDulxruJWcQdKAAnC
+	 67Pfxw/aYqFcbEHKfD5u5B93WXsJ8WwJW/M7m33xVZncH6bbt3Rls9gZDW4LoB4Pmq
+	 jlRWdqluMo0VvE0Ijo7FWiN5JGlvvKvqY2KjliU4557XwZfHPeozDmEdy8J46HaMID
+	 lelQPvobrRTAAC9ddcSGo9Ct9KufcRSNl84d4ZMsseEHTH0/HGRYaXzguDwyVDFoVP
+	 2/H3fD8hlLBina0W+iEhBVwLki9DUqpSCsIecmYSCp5zqNpMgLmDVcecnrMnPKvvFH
+	 RHpQAkO3gsKvg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -39,12 +39,12 @@ Cc: Peng Fan <peng.fan@nxp.com>,
 	linux-clk@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.15 23/31] clk: imx: Remove CLK_SET_PARENT_GATE for DRAM mux for i.MX7D
-Date: Fri,  4 Oct 2024 14:28:31 -0400
-Message-ID: <20241004182854.3674661-23-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 19/26] clk: imx: Remove CLK_SET_PARENT_GATE for DRAM mux for i.MX7D
+Date: Fri,  4 Oct 2024 14:29:45 -0400
+Message-ID: <20241004183005.3675332-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241004182854.3674661-1-sashal@kernel.org>
-References: <20241004182854.3674661-1-sashal@kernel.org>
+In-Reply-To: <20241004183005.3675332-1-sashal@kernel.org>
+References: <20241004183005.3675332-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.167
+X-stable-base: Linux 5.10.226
 Content-Transfer-Encoding: 8bit
 
 From: Peng Fan <peng.fan@nxp.com>
