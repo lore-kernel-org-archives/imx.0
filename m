@@ -1,95 +1,121 @@
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30E31C7266
-	for <imx@lists.linux.dev>; Fri,  4 Oct 2024 16:22:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DAA1E284F;
+	Fri,  4 Oct 2024 18:19:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728058963; cv=none; b=q++NJW5hRm5CL0d/tet32PKQCuloBKycbUB/iiMwanmHDWAIdKqd6uC94KXh4Zx34lzvcWjFWJFx+JQUjT0bdSc+t7zi2X2tjCqCRnZnPeqNvoXn3KznEKtYXBfHBF3abIfivQj6yZdgqQZGfYucAxA6rW3t4lSaUl5SlLtinlo=
+	t=1728065994; cv=none; b=YSTs+rwJf1EFPMNjPi0JoXU5DLsqNpCIwOs/A0xFHGrN9w9np9yyxv0iNQbeei65b5Gi0LaVK/ol/s6ntUwDt4WAyIwkS7qN4xh0Q/At7weL/FlucNHB/A3oZBnHCSO4yzyKTXrjPzCv8QFH0oRa1nx4Wwuelo7fQdzpaM/bH5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728058963; c=relaxed/simple;
-	bh=OW3oP33x3PxA4gdYXyjY0vacWaWZ+M921+FbsBzfR+w=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OMYiJxw/xpLzTQBqZY9yDdxdc5LzQB4SizaoOkBAxay/7o+cYhLl7jRI1pcj1qzDPQp/vYO2jS1QWsrBS960tvPLiMWMmOjbu9Fl95IrN35TVG1IAEW7DHGqAu6GACfZSuRZamYbfH5Au3IFarHOySXeqOQKtJLMnMxo4852ajM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=hJl5Z07e; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1728065994; c=relaxed/simple;
+	bh=gtzWo99z98MAVsqzZyZyVJlwrxTdbh/NNL5OBmjzUPM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bejZxkuGfdsoav7hfyUkdC1y/OReLHV3VLPOm0Bv/3CrxydHKhoWTo1jIJTSERm1avXArQqNIY13/t+MQlUHqfE4D7Wm4/kqqpFYMuMuRfT3PYoxqALYn1cLA/GegBmTtkGtbUs/CmpQvX3i9rOhIZ4l0j8CYbdAZBV6pUY6MCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CEEKLgM6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="hJl5Z07e"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 25ADF4000B;
-	Fri,  4 Oct 2024 16:22:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1728058953;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RFJZiZ70kuhVJM7CKPrrjtdjJ4PTniafhKm6S3phoZQ=;
-	b=hJl5Z07e9oxr1TwZw9Ch9RBk7tos3r+M+r5M51lvHnaDYMyG5qfg/OdFfiapl3YMYVAsRs
-	xxy/G9yTIvQCHQsdKY7PCEWeDq+Qx41KjYQO2oVbjPJd2DT+p85F2dHKTv2EdIiP6GdgM/
-	k5c2/DPV+7wlauVCGZJLGIzA38tslBs0LugAls/cD9wk2f+7wTOkrsqsgbC+3dyk4YOw3w
-	eWHsnIw5UXBzawSsxf0ijIPAbd0J4Vv7KLKNz71Q0YkjBLhcsBo4Ao7ngIZjCiVKw2mMZb
-	o11z7oLOAnv0KvQVgLIxmN+3mtdsgZFxDAeRKr379QSdlEMMTIf8zTg+ej07ZQ==
-Date: Fri, 4 Oct 2024 18:22:29 +0200
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
- linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org, arnd@arndb.de,
- bbrezillon@kernel.org, boris.brezillon@collabora.com,
- conor.culhane@silvaco.com, gregkh@linuxfoundation.org, imx@lists.linux.dev,
- pthombar@cadence.com, ravindra.yashvant.shinde@nxp.com
-Subject: Re: [PATCH v6 2/3] i3c: master: Extend address status bit to 4 and
- add I3C_ADDR_SLOT_EXT_DESIRED
-Message-ID: <20241004182229.6e08d02c@xps-13>
-In-Reply-To: <ZwAHziElHUR7ZdKS@lizhi-Precision-Tower-5810>
-References: <20241003-i3c_dts_assign-v6-0-eae2569c92ca@nxp.com>
-	<20241003-i3c_dts_assign-v6-2-eae2569c92ca@nxp.com>
-	<20241004092914.42701e56@xps-13>
-	<ZwAHziElHUR7ZdKS@lizhi-Precision-Tower-5810>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CEEKLgM6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7B07C4CECD;
+	Fri,  4 Oct 2024 18:19:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728065994;
+	bh=gtzWo99z98MAVsqzZyZyVJlwrxTdbh/NNL5OBmjzUPM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=CEEKLgM6wMW9/fJZpaqVGkdmSULb5AA6KrQsvyoLW09ZUxMNMCaNwz8dU/hiQOlel
+	 yKHyh8IkuGl1rE+D7zHlUMO9j3ZKQv5k3YhgVgJ01cYNlwQ+DE05LEf5xC8t/1wvhD
+	 RQSg95BMSjEB377aGkX/Q/8i83PJNKr5sxfwK2qWwIJNzSIniHHP5zCAQZYjr2Epim
+	 vCUcyquLyNX34hAogJ3eZx+Y9JJSl3WNBZqH5bh0c6BQGprLufb9hgwO3s7V10x+5c
+	 b3cdlQ+iJfhvwfZhfNksFDy1km/rWJEA4Sz5lVo+2tdpidYKq3RL2XZvh+ureBK7zD
+	 1aYcSf2IYSG8g==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Peng Fan <peng.fan@nxp.com>,
+	Iuliana Prodan <iuliana.prodan@nxp.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Sasha Levin <sashal@kernel.org>,
+	andersson@kernel.org,
+	shawnguo@kernel.org,
+	linux-remoteproc@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.11 45/76] remoteproc: imx_rproc: Use imx specific hook for find_loaded_rsc_table
+Date: Fri,  4 Oct 2024 14:17:02 -0400
+Message-ID: <20241004181828.3669209-45-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241004181828.3669209-1-sashal@kernel.org>
+References: <20241004181828.3669209-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.11.2
+Content-Transfer-Encoding: 8bit
 
-Hi Frank,
+From: Peng Fan <peng.fan@nxp.com>
 
-> > > @@ -1918,9 +1959,10 @@ static int i3c_master_bus_init(struct i3c_mast=
-er_controller *master)
-> > >  			goto err_rstdaa;
-> > >  		}
-> > >
-> > > -		i3c_bus_set_addr_slot_status(&master->bus,
-> > > -					     i3cboardinfo->init_dyn_addr,
-> > > -					     I3C_ADDR_SLOT_I3C_DEV);
-> > > +		i3c_bus_set_addr_slot_status_mask(&master->bus,
-> > > +						 i3cboardinfo->init_dyn_addr,
-> > > +						 I3C_ADDR_SLOT_I3C_DEV | I3C_ADDR_SLOT_EXT_DESIRED,
-> > > +						 I3C_ADDR_SLOT_EXT_STATUS_MASK); =20
-> >
-> > However I'm not sure I understand the use of the
-> > set_addr_slot_status_mask() function. Can't we just use the normal
-> > function and just extend the mask in the fist place? =20
->=20
-> The major purpose of set_addr_slot_status_mask() is that reduce code
-> change. There are already address alloc/free by using I3C_ADDR_SLOT_FREE.
->=20
-> we don't want i3c_bus_set_addr_slot_status() touch bit
-> I3C_ADDR_SLOT_EXT_DESIRED since it was init at scan dts.
+[ Upstream commit e954a1bd16102abc800629f9900715d8ec4c3130 ]
 
-I agree, but in general you will never remove any "desired" slot, so
-the "set status", besides at init time, should never touch these extra
-bits?
+If there is a resource table device tree node, use the address as
+the resource table address, otherwise use the address(where
+.resource_table section loaded) inside the Cortex-M elf file.
 
-> There are 18 place, using i3c_bus_set_addr_slot_status(), but we only need
-> touch I3C_ADDR_SLOT_EXT_DESIRED bit when scan dts.
->=20
+And there is an update in NXP SDK that Resource Domain Control(RDC)
+enabled to protect TCM, linux not able to write the TCM space when
+updating resource table status and cause kernel dump. So use the address
+from device tree could avoid kernel dump.
 
-Thanks,
-Miqu=C3=A8l
+Note: NXP M4 SDK not check resource table update, so it does not matter
+use whether resource table address specified in elf file or in device
+tree. But to reflect the fact that if people specific resource table
+address in device tree, it means people are aware and going to use it,
+not the address specified in elf file.
+
+Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Link: https://lore.kernel.org/r/20240719-imx_rproc-v2-2-10d0268c7eb1@nxp.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/remoteproc/imx_rproc.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+index 144c8e9a642e8..f1424da9cb5a7 100644
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -666,6 +666,17 @@ static struct resource_table *imx_rproc_get_loaded_rsc_table(struct rproc *rproc
+ 	return (struct resource_table *)priv->rsc_table;
+ }
+ 
++static struct resource_table *
++imx_rproc_elf_find_loaded_rsc_table(struct rproc *rproc, const struct firmware *fw)
++{
++	struct imx_rproc *priv = rproc->priv;
++
++	if (priv->rsc_table)
++		return (struct resource_table *)priv->rsc_table;
++
++	return rproc_elf_find_loaded_rsc_table(rproc, fw);
++}
++
+ static const struct rproc_ops imx_rproc_ops = {
+ 	.prepare	= imx_rproc_prepare,
+ 	.attach		= imx_rproc_attach,
+@@ -676,7 +687,7 @@ static const struct rproc_ops imx_rproc_ops = {
+ 	.da_to_va       = imx_rproc_da_to_va,
+ 	.load		= rproc_elf_load_segments,
+ 	.parse_fw	= imx_rproc_parse_fw,
+-	.find_loaded_rsc_table = rproc_elf_find_loaded_rsc_table,
++	.find_loaded_rsc_table = imx_rproc_elf_find_loaded_rsc_table,
+ 	.get_loaded_rsc_table = imx_rproc_get_loaded_rsc_table,
+ 	.sanity_check	= rproc_elf_sanity_check,
+ 	.get_boot_addr	= rproc_elf_get_boot_addr,
+-- 
+2.43.0
+
