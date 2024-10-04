@@ -1,122 +1,271 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010012.outbound.protection.outlook.com [52.101.69.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDEB61AA79E
-	for <imx@lists.linux.dev>; Fri,  4 Oct 2024 15:24:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728055475; cv=none; b=swRjYw8jjb9x0gCAT1xaWQlhGI2+vdNHYM3dEJbnpIK5JTljap4tX8hRK5gAUzeP4AA1mosKMfHx+BpNDU5rpUhF0v8xmbe7QbhTDt/iTRfTtJlzFOqyF7iMfTz0T939Veupx6Gf+EIR7/DDGmsdUGWenffL4Tq+M2Znwv5f2+0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728055475; c=relaxed/simple;
-	bh=SBkiaUlKESpkzxowsLPzQ06N4HMke3qJ1FgvApVwVUo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=leeljoPMUo8NjJ+e1Tg3BllVVsOipGqibkq/bc0QI+fqRYjZYmkMqwiI51rgln6XcVXpoIvJ+OTjUHgsNXnU47s2QakRts6/VNXXgYrXdGBru2Fw57vH35yTcHaMrGhJtHSG0HO4jf9fjoMb59wfz84lAdljsLSgF3apkjWUKJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=YGKx+jKe; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F531AA79F
+	for <imx@lists.linux.dev>; Fri,  4 Oct 2024 15:36:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728056203; cv=fail; b=MX+yy/KIJr2IB0pBHTiPTFdYmLJuRnJiyoWY3czgRJistoy/n5GB3h5MfApYzzS9Cevg5IV8EBpJc7QJCosCofEy9pmdXFjBcQ/TxGo/ZPu74g1i+rly4ik6Y4vPNxnARu33BVh+2BWrcyI0xoaH5+tMoB5H2nvoSu5iMmfH8/c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728056203; c=relaxed/simple;
+	bh=r6BvrRMImv5bwKprdqoqRN4sHKK6VKYk5kTQ9se6mXQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=NZ9X7XXewlLPCcwfoCx4/wodVjyGHsEgA8mhbdi06CfCLZzHpE6Hn1GKh9BI3fx6Br88+hqmR7TYFTspoAmvHZO7PE2eDbvfvU9+QzPo2WSSvFhPZaO6r7uoihP00khKlOymzBO0drOvVNy6jx3V6s4tKWRGzY+o1H45oq/xG5o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=izym0GRK; arc=fail smtp.client-ip=52.101.69.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="YGKx+jKe"
-Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 7E66320E6A;
-	Fri,  4 Oct 2024 17:24:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1728055472;
-	bh=KptdMQH+uxSKHP9pjmqfYtljNFGdshmXN06eLUlgi/0=; h=From:To:Subject;
-	b=YGKx+jKeyGwPTK6aIWenY7KyUgJC/HHQa++ChR1Or7cZQhgrC8EKpXUzOQDC4HWZz
-	 ES2ETkNGTfLHiLANHkUnT43CETfYs0cab1VDsX4ncnR9XdM1DwIuUD3MCcMNyCV2mw
-	 xYme84OqXN9W6XdQZmzVEbMsi+2a8Z7AzObRU1vcNZgrii+eL1idZnuqyKe5xNBMmT
-	 SdeCfO7U0ikw0LEaNAhNDfBxzhjr8wi2+5OM7c/WAXfFJIG6uy3u8hhaeyAgXtKdF7
-	 yMrihUVHdWbaWh18/u+pXYzXzqQj0Xpglyv+gB1OirYG4LI4SCkiu3lQKfcAv/5NR3
-	 rs7g2XPDZA0qA==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Wei Fang <wei.fang@nxp.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="izym0GRK"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wJ/Ccuy5etaeVOZfON30cZKOeNfmm1YmEaaFraT7+AoiqdSTedQn24zDI5Pu0x3K2uBjHseOgl4kRkM3/OjLeuJjzpladYgyM/gnJ98OzzEFd8fTNXXNXe5FvviPyaAadFOBYcXi4FfkxMBWCLhPXT44MEonY60dRKiQYyQCkaw0pfLVwVZCzdtPPtrdd38si9pBWKVoBiMieLj92JacD7uHTtXCRgl2u3oLomzq+Qh/KnnAzwcFOW+sDvex8YwiLSUpAAfJGOh0zZrdE5S0kdcSHC7M4v6N+XJLO3PIM0vJvEgoJG48y21eJXlFNzCSt/EnWTQAtbRF/yGAQSshlw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QEYC3YPqVqFVv2MTJfKw6vNuxP5rm717Bcg6US2iYZE=;
+ b=MyiHrdVEaUVWUNdNwVjQw7x61gm+7VSGT3Ps5jsGT8rP12NsAJxO1zHDbBNnbO1Qth7fw8c6YNri8XjaJDsClAgCNmtEQw+RAWoLMzoFZPBLUtuXOxxq2AnOAAgptbTuzYAYZAiw8NF971cgUODScpxIIqNKOO6H7EAXJl9yY8fXwCp2zIJ9ZFNCd3zrX+EY7rj+QKcUN/Mo1Nh0u1GIUPE5sBUNwTUEBddwMO4gXr3ifGJ+V9pT0bT8qn2DDQCRxXefQiNHXzgDm278t0a4FWh0YSrNXwridke6HN4QCO9/kPVcCDB+UKhR7a6Ybmd8N/CKf27QlCwKMIHMAMj9OQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QEYC3YPqVqFVv2MTJfKw6vNuxP5rm717Bcg6US2iYZE=;
+ b=izym0GRKe04ciESJJYQG2PrWgDa8VBpBKgOxEAO1CG38NAgd+rURHogg1arXr4qRJJkj/DTLvjuAZtTx8zxTLqW/fGrPkwRWLtzFcdwIAdiuAgilADuNGlw2c0qX/3s5KNAChOk+SWE3zYInoXQnStX4uTBCNpRveXE4+tyS14HSCi0FjCprB4sVz/2weJho5P2yhKxLd2blaJpAM3wm6ZL6fOCx963Y5lxmequd9UbHicVoSstErcJLZ/H6LTVo8nSTsaYCgQxmxfJWs6kGU78t9vR1off295Nt1meSzmfEw0yhubDpVb0hMVmULGex2jrf4cHxWZTxfJo/ClQX/g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
+ by PA1PR04MB10747.eurprd04.prod.outlook.com (2603:10a6:102:48a::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.18; Fri, 4 Oct
+ 2024 15:36:37 +0000
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d]) by DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d%3]) with mapi id 15.20.8026.016; Fri, 4 Oct 2024
+ 15:36:37 +0000
+Date: Fri, 4 Oct 2024 11:36:29 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Linux Team <linux-imx@nxp.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Frank Li <Frank.Li@nxp.com>,
-	Rafael Beims <rafael.beims@toradex.com>
-Subject: [PATCH net-next v4 3/3] net: fec: make PPS channel configurable
-Date: Fri,  4 Oct 2024 17:24:19 +0200
-Message-Id: <20241004152419.79465-4-francesco@dolcini.it>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241004152419.79465-1-francesco@dolcini.it>
-References: <20241004152419.79465-1-francesco@dolcini.it>
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	"open list:IRQCHIP DRIVERS" <linux-kernel@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/1] dt-bindings: interrupt-controller: fsl,ls-extirq:
+ workaround wrong interrupt-map number
+Message-ID: <ZwALfcJYTOuXqPuP@lizhi-Precision-Tower-5810>
+References: <20241003214315.638668-1-Frank.Li@nxp.com>
+ <gre52gkd325yfnjwoqyfot4yrb3rim4pi2ye3hjcp4bd7yimba@tq2drzuwlc6f>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <gre52gkd325yfnjwoqyfot4yrb3rim4pi2ye3hjcp4bd7yimba@tq2drzuwlc6f>
+X-ClientProxiedBy: BY5PR16CA0008.namprd16.prod.outlook.com
+ (2603:10b6:a03:1a0::21) To DB9PR04MB9626.eurprd04.prod.outlook.com
+ (2603:10a6:10:309::18)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|PA1PR04MB10747:EE_
+X-MS-Office365-Filtering-Correlation-Id: 53246040-9954-4034-b4a7-08dce48a55ac
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?14icp139CN+tn1zzbvnLnplh8fNYlbHMKOn4vkob5NwVj9ZcObF2Ilfxv681?=
+ =?us-ascii?Q?ur5j76ZVatBP/DdvHlbKBpGOrBJUv48QhdxdHu7BxX6utGXrJ0HLgpIJ6anX?=
+ =?us-ascii?Q?NCliSurugrgntsh40gn1qfwamf4sSyQWW7w6gB3OzJgn8KjHxF2UsKC8J0Nv?=
+ =?us-ascii?Q?Zf9reH/VXpPyF6Yvia1ZudB6ZwpV9hGbFM5xVBdgrhraVjKNVrgv6uIS7zOO?=
+ =?us-ascii?Q?RgoJJsfWidSGzSYLrNHyvCgqnSans+y5h+955ySYNGf2pwBxkhizbJ4+q9cC?=
+ =?us-ascii?Q?+Lo7EDr/NXLlxocxVZ5i+lQsEcYjm63HE24oj1CCzEo8aeRKJC4Cme6qzMQB?=
+ =?us-ascii?Q?AacpkIEYm9renadxNF6ZmmhUMHqO4G7eaPaO/fvxuTcksGOOUu31Hh4ZRhUX?=
+ =?us-ascii?Q?sCOGz4QunAnlJZ2QlfAyftnryeYk015SR5jnf5OLoDZpxMSfs08eReVczcWc?=
+ =?us-ascii?Q?OxJRLSimeQ8g0sX8m6rRjtcOWGjWBBGEpL1rkvC29Tzz6quqt1pkNZP+ejfz?=
+ =?us-ascii?Q?CtH4K6Ekgw9tsvfbGb9BNC3dhBwLF6AeSi8Ci9LdCX8qxRbdgWyN2epnEVFp?=
+ =?us-ascii?Q?XRsR3c49ib3piatiljf+zUCRR9NBRTBmAvV8WbpIoiPXmmZvyWwTAC2ZNVE+?=
+ =?us-ascii?Q?ePQ8tm3Opmh9oTrlyQLkE4R2lPrsRhC2K36eY7Sm22G/upzvWrwlzGQ2Awft?=
+ =?us-ascii?Q?/yOaGFf0Hq4MF8ex747j1ebZVSE7RHzi+MrFCVRlXVvhZa1sj2PqPGGLkOzM?=
+ =?us-ascii?Q?+8Lz7SSdlwr7+npLESea4MpGD0GgSelMXS6Ml/PhCnoN4nD5RAMpK95hZyrb?=
+ =?us-ascii?Q?A3G80kz5ohyGisxdLWY+BwrLA70sYYtXfqEJPGZ++XPAN3eQz/xmb4VYXlUk?=
+ =?us-ascii?Q?du+lJ0cZbAVQgRS6wTkKnHy7QHlVrQ5JNeXROwafkQN05ioWuSMSwfP7uOca?=
+ =?us-ascii?Q?GyVwsTyazBXrTfDPNLPcK7CTkoiFlGXdBYaC+VgS667fkucTWCwYK1OOX1QP?=
+ =?us-ascii?Q?XdtRCBb3f40o6h9p4MvDx4fBpkwgYdVTiuWQxY7UBp5QLA1+hp0X93H6ibxj?=
+ =?us-ascii?Q?QhdCn08qmsEAdJkvrlLWTO0/xdFSRXj8rO/6BZDn1vUVzA2NmekJkb9BSbOJ?=
+ =?us-ascii?Q?8s4IgAqfM17OHkSHSqPLS5ZSE4WEKOSnj6e+BSSKVTwh48qMb+0Hbn5Cbtge?=
+ =?us-ascii?Q?a1MjJ1fNVRUtzYd/lcJIcWYhdt2HL5WKYrI/4bKFltAORQCUvi2cDs9JFDGQ?=
+ =?us-ascii?Q?Bx3QQNhQAHa0178m+hHk85YMX8kujPfkMSa+7DFzsTzJxe5L4HrSzkcDgiHe?=
+ =?us-ascii?Q?s9Y=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?/aVm/5JwqOpqdPvnq+PZaKYokr7TQOuUqSP2Qfv+tW7ErJhE9uDQufbXp9Qf?=
+ =?us-ascii?Q?B3D6oS4yCwZUvZWcvUfPUYkQmYrfDTIO+Wj6tZeBrVelAnVp7HkI783BlRDx?=
+ =?us-ascii?Q?CUxAivLr18DgSSzeuPQaMUpLValm0QHFvZyRfm0aK1rF0ACnqCJqt8P3kHgy?=
+ =?us-ascii?Q?8BVFDUWGKBB1oSPMVRsZeBMor9D7WNegRlbbmdxHewvP/cVS8au6pWzdOmHC?=
+ =?us-ascii?Q?ofd5zOeFZ5mQQVrqDiBxiY55lBTEbfNrSRjy9zMqgxZq1nHFtjUcPyOGWyEg?=
+ =?us-ascii?Q?yKDLq/PO8u5UvlJQ3mYEyztZriTD2DmNE4n/6WgKYuQ9iydbeuiILcxzgbQ4?=
+ =?us-ascii?Q?cJQFtXEI4NgJ/MUavYMAXE1Nn2dU/i+tufxM6Akl9zwt0v+GDagrwGxSurIa?=
+ =?us-ascii?Q?o+YVujSnEn2k/w0+m1YDE1bBWU7yCll17p8Ep6RDslYgoOTAwbtGzI30g6KT?=
+ =?us-ascii?Q?S46VNzLll5KDasW9ErZersK+r/dV1ZrLdvYJtNvGMH7osPID/DAKePIMscFN?=
+ =?us-ascii?Q?aaPV/cS8lNt7KZQbDs0a+LjvyQQqVoJ2cQV7SMc0jvkOMa1RCDbMd85xXQgQ?=
+ =?us-ascii?Q?XtFmWC4sV0PZWPZpIy9uC6PGOsI0s3E27yH35cHZuvbOwSkQB4DkZSzmLloT?=
+ =?us-ascii?Q?mblBRK9JPcAwNnpwv8I51Oy8ys956CFZ37CmUWchuP7M5/08PyWpWeETnYkA?=
+ =?us-ascii?Q?oJMtwWUBa2AbUOutEwGVWw32n/us7wxkx2MYHqVpDgmkorE/JJOaU5lkSWHU?=
+ =?us-ascii?Q?v6TEELazngxl+wuNfjkl5sa1t8dDfPLWgp5cnpB+ZHAILjulHuSuVo/zIPvZ?=
+ =?us-ascii?Q?hDv7zkNyzGpIzvQ29DAOdZmKMDUmuBeHtc+3CP5qtyEq4lMGQrW8pjBcIGpk?=
+ =?us-ascii?Q?O6JK7IQRvUviENbqIeonL9P9Wsy3fTvvRAhdQZxx/KPnB2W+GBNjf4YdtCOI?=
+ =?us-ascii?Q?DzvR+dZV621ZqvVXrzjgB898DIy/AlO81p1pAivTV0DAowI9MHXDYJ3U0Avn?=
+ =?us-ascii?Q?DO+nsh0Ov4r0P6yjmjQw6TpNbikryETmD0KExrQQvoOAmxMpTgcG0KY2/KCS?=
+ =?us-ascii?Q?syis+LSZfd2/IMpU77suOhVRxdosyOI131aRUSUvMCCPSFO1gymJb/LMecGS?=
+ =?us-ascii?Q?JPYB4CPQ5ryKlhLlLka6pkNO+eD1BNTCEX1ge76ANSr3tMQVUR5ZkKBD1YKH?=
+ =?us-ascii?Q?xWoKN7HM6mXgK/D67NAEfwHBdtV9xXlZszJCbtDkqed99HCMvVpKqe7djpcJ?=
+ =?us-ascii?Q?8y/3k7KJU9YqvgdbUnlyhwRh9flTRu8Ce4NtlTwj3HbXeqesa93cgtaFj3ZM?=
+ =?us-ascii?Q?nFhNGRQxE1tFnhNG8vAWXLRvk3Jdo6z8f07MIacJyObt3klcd4Sxe+OARVdE?=
+ =?us-ascii?Q?0TZN3jNMrJSfSOFgVXzXRUU0GHGzY8EXG/SlZChUyQrmpSHI2IWKUXSNIo34?=
+ =?us-ascii?Q?eNbLaaJim55EnDzY8/fL15Lb0F/TGx4bCdMNor50jO9RkaxUyq3mPch5S05a?=
+ =?us-ascii?Q?opEMwfbRgePVpNF7sRJE4byQ4antkZp0kJhskZotAAOM/iD1FJhmX+sDhPi6?=
+ =?us-ascii?Q?0uEp/lX2vnPHWuj5l+k=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 53246040-9954-4034-b4a7-08dce48a55ac
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Oct 2024 15:36:37.4898
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: DIuvwttNwKxeC+HD3WnH23GzqpXPhJpUh/8kVAld0Q37nCRc2P51tBAkej8qMd3PUgMNDzGpwhxjHejZo75erQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10747
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+On Fri, Oct 04, 2024 at 08:43:23AM +0200, Krzysztof Kozlowski wrote:
+> On Thu, Oct 03, 2024 at 05:43:15PM -0400, Frank Li wrote:
+> > The driver(drivers/irqchip/irq-ls-extirq.c) have not use standard DT
+> > function to parser interrupt-map. So it doesn't consider '#address-size'
+> > in parent interrupt controller, such as GIC.
+> >
+> > When dt-binding verify interrupt-map, item data matrix is spitted at
+> > incorrect position. So cause below warning:
+> >
+> > arch/arm64/boot/dts/freescale/fsl-ls1088a-qds.dtb: interrupt-controller@14:
+> > interrupt-map: [[0, 0, 1, 0, 0, 4, 1, 0], [1, 0, 1, 4, 2, 0, 1, 0], ...
+> > is too short
+> >
+> > Reduce minItems and maxItems to workaround this warning for
+> > 'fsl,ls1088a-extirq', 'fsl,ls2080a-extirq' and fsl,lx2160a-extirq.
+> > Other keep the same restriction.
+> >
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> > Change from v1 to v2
+> > - remove duplicate function in commit message
+> > - only reduce miniItems for after 1088a chips
+> > - maxItems change to 9. Otherwise report too long.
+> > ---
+> >  .../interrupt-controller/fsl,ls-extirq.yaml   | 27 +++++++++++++++++--
+> >  1 file changed, 25 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-extirq.yaml b/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-extirq.yaml
+> > index 199b34fdbefc4..1bfced6ed620c 100644
+> > --- a/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-extirq.yaml
+> > +++ b/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-extirq.yaml
+> > @@ -82,14 +82,37 @@ allOf:
+> >              enum:
+> >                - fsl,ls1043a-extirq
+> >                - fsl,ls1046a-extirq
+> > +    then:
+> > +      properties:
+> > +        interrupt-map:
+> > +          minItems: 12
+> > +          maxItems: 12
+> > +        interrupt-map-mask:
+> > +          items:
+> > +            - const: 0xf
+> > +            - const: 0
+> > +
+> > +  - if:
+> > +      properties:
+> > +        compatible:
+> > +          contains:
+> > +            enum:
+> >                - fsl,ls1088a-extirq
+> >                - fsl,ls2080a-extirq
+> >                - fsl,lx2160a-extirq
+> > +# The driver(drivers/irqchip/irq-ls-extirq.c) have not use standard DT
+> > +# function function to parser interrupt-map. So it doesn't consider
+>
+> Same issue as last time, double function.
+>
+> Please run scripts/checkpatch.pl and fix reported warnings. Then please
+> run 'scripts/checkpatch.pl --strict' and (probably) fix more warnings.
+> Some warnings can be ignored, especially from --strict run, but the code
+> here looks like it needs a fix. Feel free to get in touch if the warning
+> is not clear.
 
-Depending on the SoC where the FEC is integrated into the PPS channel
-might be routed to different timer instances. Make this configurable
-from the devicetree.
+Thanks, I forget add --strict this time.
 
-When the related DT property is not present fallback to the previous
-default and use channel 0.
+>
+>
+> > +# '#address-size' in parent interrupt controller, such as GIC.
+> > +#
+> > +# When dt-binding verify interrupt-map, item data matrix is spitted at
+> > +# incorrect position. Reduce minItems and maxItems to workaround this
+> > +# problem.
+> > +
+> >      then:
+> >        properties:
+> >          interrupt-map:
+> > -          minItems: 12
+> > -          maxItems: 12
+> > +          minItems: 8
+> > +          maxItems: 9
+>
+> Are you sure it works? I see 12 items in fsl-ls1088a.dtsi.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Tested-by: Rafael Beims <rafael.beims@toradex.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
-v4: no changes
-v3: no changes
-v2: add Reviewed|Tested-by
----
- drivers/net/ethernet/freescale/fec_ptp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+interrupt-map =
+   <0 0 &gic GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>,
+   <1 0 &gic GIC_SPI 1 IRQ_TYPE_LEVEL_HIGH>,
+   ...
+   <11 0 &gic GIC_SPI 11 IRQ_TYPE_LEVEL_HIGH>;
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index ce7aa2c38c7f..aea24575e840 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -523,8 +523,6 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
- 	unsigned long flags;
- 	int ret = 0;
- 
--	fep->pps_channel = DEFAULT_PPS_CHANNEL;
--
- 	if (rq->type == PTP_CLK_REQ_PPS) {
- 		fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
- 
-@@ -706,12 +704,16 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
- {
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
-+	struct device_node *np = fep->pdev->dev.of_node;
- 	int irq;
- 	int ret;
- 
- 	fep->ptp_caps.owner = THIS_MODULE;
- 	strscpy(fep->ptp_caps.name, "fec ptp", sizeof(fep->ptp_caps.name));
- 
-+	fep->pps_channel = DEFAULT_PPS_CHANNEL;
-+	of_property_read_u32(np, "fsl,pps-channel", &fep->pps_channel);
-+
- 	fep->ptp_caps.max_adj = 250000000;
- 	fep->ptp_caps.n_alarm = 0;
- 	fep->ptp_caps.n_ext_ts = 0;
--- 
-2.39.5
+Total 12*6 = 72 data.
 
+Normal each row should be 6 data.
+
+but when GIC have #address-size, <2>,  dt-schemal split at at (6+2=8).
+
+"interrupt-map: [[0, 0, 1, 0, 0, 4, 1, 0], [1, 0, 1, 4, 2, 0, 1, 0]"
+
+So 72/8 = 9, I just realize it can divide to whole number.  so minItems
+can be set 9 also.
+
+>
+> What's more, I do not see your errors/warnings at all.
+
+I using below command
+
+pip3 install git+https://github.com/devicetree-org/dt-schema.git@main
+...
+Resolved https://github.com/devicetree-org/dt-schema.git to commit 0934678abc36614cd3c5165ca49ba78b881ee2fa
+
+make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8 CHECK_DTBS=y  fsl-ls1088a-qds.dtb
+
+make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8 CHECK_DTBS=y  fsl-ls1088a-qds.dtb
+  SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+  DTC [C] arch/arm64/boot/dts/freescale/fsl-ls1088a-qds.dtb
+arch/arm64/boot/dts/freescale/fsl-ls1088a-qds.dtb: syscon@1f70000: interrupt-controller@14:interrupt-map: [[0, 0, 1, 0, 0, 4, 1, 0], [1, 0, 1, 4, 2, 0, 1, 0], [2, 4, 3, 0, 1, 0, 3, 4], [4, 0, 1, 0, 4, 4, 5, 0], [1, 0, 5, 4, 6, 0, 1, 0], [6, 4, 7, 0, 1, 0, 7, 4], [8, 0, 1, 0, 8, 4, 9, 0], [1, 0, 9, 4, 10, 0, 1, 0], [10, 4, 11, 0, 1, 0, 11, 4]] is too short
+	from schema $id: http://devicetree.org/schemas/soc/fsl/fsl,layerscape-scfg.yaml#
+arch/arm64/boot/dts/freescale/fsl-ls1088a-qds.dtb: interrupt-controller@14: interrupt-map: [[0, 0, 1, 0, 0, 4, 1, 0], [1, 0, 1, 4, 2, 0, 1, 0], [2, 4, 3, 0, 1, 0, 3, 4], [4, 0, 1, 0, 4, 4, 5, 0], [1, 0, 5, 4, 6, 0, 1, 0], [6, 4, 7, 0, 1, 0, 7, 4], [8, 0, 1, 0, 8, 4, 9, 0], [1, 0, 9, 4, 10, 0, 1, 0], [10, 4, 11, 0, 1, 0, 11, 4]] is too short
+	from schema $id: http://devicetree.org/schemas/interrupt-controller/fsl,ls-extirq.yaml#
+arch/arm64/boot/dts/freescale/fsl-ls1088a-qds.dtb: fsl-mc@80c000000: msi-parent:0: [16, 0] is too long
+	from schema $id: http://devicetree.org/schemas/misc/fsl,qoriq-mc.yaml#
+
+Frank
+
+>
+> Best regards,
+> Krzysztof
+>
