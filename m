@@ -1,222 +1,72 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047D1231C95
-	for <imx@lists.linux.dev>; Sat,  5 Oct 2024 00:42:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37273F9CC;
+	Sat,  5 Oct 2024 05:30:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728088964; cv=none; b=kwiQsr4XfnDGXDFEpLtfTIyuxypq+xRvphNhNtR7+Hl+KtN7n4q6rBvKyxEHLH0cBIGaMY2k+Hni/HJIQ+rOPefhYI2hgXz+1abevXu0Lt6djcGzZN9UVSeJnKDxx66xf9s8iWqbPa/f3eh7gqGwjwJ6RaSEJRsWfuvlzQcBEHk=
+	t=1728106214; cv=none; b=c7KKBWjL05YKajhXgkI8g6aI/PYs82ksoCUb5wSQd4ZNX1gdSAbA+w/u17I46A/0MQOU0QJjhyhZ8S6LL39nUXZzRBceybodzQKQv0y2SAcZxbhifqnXOGgyPhdW6hGaSXQf63JJtMIGm/CiGr896LAoBG30qMa2oC82yaw+z9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728088964; c=relaxed/simple;
-	bh=Ie/XQKbbsSR4D1iycCkYUWZ0G1cgjLVrrylLn+TcNoA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tT5rPKDfJKBG7ysAlbUl054onvBOwf4aJT+tFTYQnf7MXyjbATlv6zU5fH30KfD1d8rF94LnZcsaoDZDig7UYB/+I51kT7kplOsKN0+9hsjSs1fSThIQhYRWLH1UAxC49P2KP0BoCWYilXVGIQ+8gxj1oNftzsH2mIDoMxT4r/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=Yl4sbFGH; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1728106214; c=relaxed/simple;
+	bh=iMLvLpJSZj8POdkM9kL78IoIXYLyMWTnpDjK0BArSTE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N0pjI0xQD0JFOic5YwDJutMS2QD86/9/+JOW/3HjxlHoaVeKsA+sUeHtmqT+ZR9bayRf1JZpUBePRJHtIIdq9sr1d5E+mXRRHe4drz0+tBcNhgj7ike86s55QqCkgxRHnW4sL8GS8xeOY/2qJR9KvzD7VVLuSDR6nEnrcYzsgcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=apjMNx4f; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="Yl4sbFGH"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id E99AB886DF;
-	Sat,  5 Oct 2024 02:42:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1728088960;
-	bh=WAlganDHVley7ZzJIIV/eYDB7QCfZKEuedzG4few7pU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Yl4sbFGHy7P6Uvuq8TsiS5SQZx4pBiuGMXIy/ORX5r1NG6KFbr6cMfUJPvV0DpViX
-	 k8SGyAZkhLRKIhg5DcalNvj2PvTQt+X0dwcTbMJdYpjK9U8Px3V8UuYtFzoJ2Lm8Kl
-	 YlQw7mWKdAKFaLqovVZD/yEG4BntIR92Bh3WzZhuKBze6Hvwcw0jKPDCXkNInHmX56
-	 Rdc0EpmMnTt30ZcHbKyzVMNZsIFmfZzbR/IjEUy748cUakqgAhwhc1PyaziWq8aQ3l
-	 BRQODyEfukPWa/fHotGUdMRO69N5jSbSZsOF5wtspYc4yxkI5aHyc3NU3EE90q31sg
-	 wY1Iqo6sVDJ4w==
-Message-ID: <4166d68c-5eca-406a-936f-412dd2ae72fc@denx.de>
-Date: Sat, 5 Oct 2024 02:41:29 +0200
+	dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="apjMNx4f"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=22G6hUsHewmhwV2ekiJ9Lvm0h+XG3V2n6wsZ7AJFomI=; b=apjMNx4fJVxc0ahgE/I8Ov6x1J
+	OdixjTPWdFkp+GF2sBDaOA35LW+LCwOiw80aWeUa1s4Ts9BrxoudZ5Kl/2HQrioo0WIARFuj2yIRS
+	ZpxlXLP0TwKMIDs8a3QBlt3gNnEBOZl2Z0Vj+WuhGTQ93n/RDK0y9cu5Jq/kNGXk2qFw6CaHkqWBD
+	ekhZALJG6ssGxevISNNGMLH37TFMyTGgiCkXznhlyWgYhi6GYrSMiYlLnJ1FjEUrbxaMRg7PMimEq
+	xZwl1JSUXSKd+cisMNDQaJE1s7GDP6Ybe5v0auL8fTHpce3/Nzy7ixTo5JLPyRTgE18I3K4t0m2fT
+	SfeVJguA==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1swxCr-0071Tj-28;
+	Sat, 05 Oct 2024 13:30:08 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 05 Oct 2024 13:30:07 +0800
+Date: Sat, 5 Oct 2024 13:30:07 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Tomas Paukrt <tomaspaukrt@email.cz>
+Cc: linux-crypto@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] crypto: mxs-dcp: Fix AES-CBC with hardware-bound keys
+Message-ID: <ZwDO3zqppqOZeSLg@gondor.apana.org.au>
+References: <1Wx.Zci3.5c7{vqn25ku.1cv07F@seznam.cz>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/1] pwm: imx27: workaround of the pwm output bug when
- decrease the duty cycle
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
- Frank Li <Frank.Li@nxp.com>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, festevam@gmail.com,
- francesco@dolcini.it, imx@lists.linux.dev, jun.li@nxp.com,
- kernel@pengutronix.de, krzk+dt@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-pwm@vger.kernel.org, p.zabel@pengutronix.de, pratikmanvar09@gmail.com,
- robh@kernel.org, s.hauer@pengutronix.de, shawnguo@kernel.org,
- xiaoning.wang@nxp.com
-References: <20241004193531.673488-1-Frank.Li@nxp.com>
- <5cvzarqkldstuziokdbxxne75i35odexkcykzikyq2gm6ytdyd@5wkm7mhotgej>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <5cvzarqkldstuziokdbxxne75i35odexkcykzikyq2gm6ytdyd@5wkm7mhotgej>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1Wx.Zci3.5c7{vqn25ku.1cv07F@seznam.cz>
 
-On 10/4/24 10:58 PM, Uwe Kleine-König wrote:
-
-[...]
-
->> @@ -263,7 +266,77 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
->>   		pwm_imx27_sw_reset(chip);
->>   	}
->>   
->> -	writel(duty_cycles, imx->mmio_base + MX3_PWMSAR);
->> +	/*
->> +	 * This is a limited workaround. When the SAR FIFO is empty, the new
->> +	 * write value will be directly applied to SAR even the current period
->> +	 * is not over.
->> +	 *
->> +	 *           ─────────────────────┐
->> +	 * PWM OUTPUT                     │
->> +	 *                                └─────────────────────────
->> +	 *
->> +	 *           ┌──────────────────────────────────────────────┐
->> +	 * Counter   │       XXXXXXXXXXXXXX                         │
->> +	 *           └──────────────────────────────────────────────┘
->> +	 *                   ▲            ▲
->> +	 *                   │            │
->> +	 *                 New SAR      Old SAR
->> +	 *
->> +	 *           XXXX  Errata happen window
+On Fri, Sep 13, 2024 at 11:11:43AM +0200, Tomas Paukrt wrote:
+> Fix passing an initialization vector in the payload field which
+> is necessary for AES in CBC mode even with hardware-bound keys.
 > 
-> Hmm, ok, so SAR is the register value that implements the duty cycle
-> setting. And if a new SAR is written, it is directly applied to the
-> hardware and this way it can happen (if SAR_new < counter < SAR_old)
-> that no falling edge happens in the current period. Right?
+> Fixes: 3d16af0b4cfa ("crypto: mxs-dcp: Add support for hardware-bound keys")
+> Signed-off-by: Tomas Paukrt <tomaspaukrt@email.cz>
+> ---
+>  drivers/crypto/mxs-dcp.c | 20 ++++++++++++--------
+>  1 file changed, 12 insertions(+), 8 deletions(-)
 
-Yes
-
-> If so, I think the depicted PWM output is misleading. I'd describe and
-> picture it as follows:
-
-Why not simply duplicate the ERRATA description for iMX8M Nano 
-MX8MN_0N14Y errata sheet ?
-
-"
-ERR051198:
-PWM: PWM output may not function correctly if the FIFO is empty when a 
-new SAR value is programmed
-
-Description:
-When the PWM FIFO is empty, a new value programmed to the PWM Sample 
-register (PWM_PWMSAR) will be directly applied even if the current timer 
-period has not expired.
-
-If the new SAMPLE value programmed in the PWM_PWMSAR register is less 
-than the previous value, and the PWM counter register (PWM_PWMCNR) that 
-contains the current COUNT value is greater than the new programmed 
-SAMPLE value, the current period will not flip the level. This may 
-result in an output pulse with a duty cycle of 100%.
-"
-
-That is very clear to me.
-
-> 	/*
-> 	 * At each clock tick the hardware compares the SAR value with
-> 	 * the current counter. If they are equal the output is changed
-> 	 * to the inactive level.
-
-I would skip this ^ part unless you can surely say the IP works exactly 
-that way because you checked the RTL.
-
-> As a new SAR value is applied
-> 	 * immediately to the currently running period, it can happen
-> 	 * that no falling edge happens in a period and so the output is
-> 	 * active for a whole period. Consider a change from
->           *     ________
-> 	 *    /        \______/
->           *    ^      *        ^
-> 	 * to
->           *     ____
-> 	 *    /    \__________/
->           *    ^               ^
-> 	 *
-> 	 * where SAR is written at the time marked by *. The counter
-> 	 * didn't reach the old (bigger) value because it was changed
-> 	 * before the counter reached that value and when the new value
-> 	 * becomes active it is already lower than the current counter
-> 	 * and so doesn't trigger either while the counter continues to
-> 	 * grow. So the resulting waveform looks as follows:
-> 	 *
->           *     ________        ____________________
-> 	 *    /        \______/                    \__________/
->           *    ^               ^      *        ^               ^
-> 	 *    |<-- old SAR -->|               |<-- new SAR -->|
-> 	 *
-> 	 * that is the output is active for a whole period.
-
-The ascii/infographics is nice and would be good to keep, but regarding 
-the description, frankly, the NXP errata description says the same thing 
-in fewer words :)
-
-> 	 */
-> 
->> +	 *
->> +	 * If the new SAR value is less than the old one, and the counter is
->> +	 * greater than the new SAR value (see above diagram XXXX), the current
->> +	 * period will not flip the level. This will result in a pulse with a
->> +	 * duty cycle of 100%.
->> +	 *
->> +	 * Check new SAR less than old SAR and current counter is in errata
->> +	 * windows, write extra old SAR into FIFO and new SAR will effect at
->> +	 * next period.
->> +	 *
->> +	 * Sometime period is quite long, such as over 1 second. If add old SAR
->> +	 * into FIFO unconditional, new SAR have to wait for next period. It
->> +	 * may be too long.
->> +	 *
->> +	 * Turn off the interrupt to ensure that not IRQ and schedule happen
->> +	 * during above operations. If any irq and schedule happen, counter
->> +	 * in PWM will be out of data and take wrong action.
->> +	 *
->> +	 * Add a safety margin 1.5us because it needs some time to complete
->> +	 * IO write.
->> +	 *
->> +	 * Use __raw_writel() to minimize the interval between two writes to
->> +	 * the SAR register to increase the fastest PWM frequency supported.
->> +	 *
->> +	 * When the PWM period is longer than 2us(or <500kHz), this workaround
->> +	 * can solve this problem. No software workaround is available if PWM
->> +	 * period is shorter than IO write.
->> +	 */
->> +	c = clkrate * 1500;
->> +	do_div(c, NSEC_PER_SEC);
->> +
->> +	local_irq_save(flags);
->> +	val = FIELD_GET(MX3_PWMSR_FIFOAV, readl_relaxed(imx->mmio_base + MX3_PWMSR));
->> +
->> +	if (duty_cycles < imx->duty_cycle) {
->> +		if (state->period < 2000) { /* 2000ns = 500 kHz */
->> +			/* Best effort attempt to fix up >500 kHz case */
->> +			udelay(6); /* 2us per FIFO entry, 3 FIFO entries written => 6 us */
-> 
-> I don't understand the motivation to wait here. Wouldn't it be better to
-> write the old value 3 - val times and not sleep?
-
-No, because you would overflow the FIFO, see:
-
-137fd45ffec1 ("pwm: imx: Avoid sample FIFO overflow for i.MX PWM version2")
-
-> Or busy loop until
-> MX3_PWMSR_FIFOAV becomes 0?
-
-Do we really want a busy wait here if we can avoid it ?
-
-We can do udelay(3 * state->period / 1000); so faster PWMs would wait 
-shorter.
-
-The delay is here to basically wait until the FIFO is surely empty and 
-has space for 3 consecutive writes (see the commit above wrt. FIFO 
-overflow).
-
-[...]
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
