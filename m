@@ -1,72 +1,122 @@
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37273F9CC;
-	Sat,  5 Oct 2024 05:30:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4A83F9D5;
+	Sat,  5 Oct 2024 08:55:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728106214; cv=none; b=c7KKBWjL05YKajhXgkI8g6aI/PYs82ksoCUb5wSQd4ZNX1gdSAbA+w/u17I46A/0MQOU0QJjhyhZ8S6LL39nUXZzRBceybodzQKQv0y2SAcZxbhifqnXOGgyPhdW6hGaSXQf63JJtMIGm/CiGr896LAoBG30qMa2oC82yaw+z9s=
+	t=1728118520; cv=none; b=R45LZSlany3GzuXqZ1Uq7X5H+c+kSUnVB1PFrLQfHQ+78/sDlQQWsRfsOuNQ9WEh/TtQ3b+w5BI7dE/LD5i3u1e8D6Sa65MkAsWAseFRHps08X4ALp2h0axIsB4nsyjMOC8lTwcRx1+aIio/9px2EB/oy0eoqiAcJyDRx3Tirhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728106214; c=relaxed/simple;
-	bh=iMLvLpJSZj8POdkM9kL78IoIXYLyMWTnpDjK0BArSTE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N0pjI0xQD0JFOic5YwDJutMS2QD86/9/+JOW/3HjxlHoaVeKsA+sUeHtmqT+ZR9bayRf1JZpUBePRJHtIIdq9sr1d5E+mXRRHe4drz0+tBcNhgj7ike86s55QqCkgxRHnW4sL8GS8xeOY/2qJR9KvzD7VVLuSDR6nEnrcYzsgcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=apjMNx4f; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+	s=arc-20240116; t=1728118520; c=relaxed/simple;
+	bh=b0NR+d5Noe8seh/sWqbJp1vYwfdywrPfRfDJHlpJDo4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EipOPMAwS4397Aiev3C2ZgII6WGpSlfrGz/7LmOjTurn48m3J3rjgZXQ3VBh1tH6HqoowNHl82UdaMDoTsjZlE4ejDck3TXzZTd/NtGs+JZcpCqBmC2Qxq81qL6Gl9fPdAXrqPkZ5m+cp7ILeNtfPQQsytjm6CSy7H2MkECeqfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sm1Ewox/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="apjMNx4f"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=22G6hUsHewmhwV2ekiJ9Lvm0h+XG3V2n6wsZ7AJFomI=; b=apjMNx4fJVxc0ahgE/I8Ov6x1J
-	OdixjTPWdFkp+GF2sBDaOA35LW+LCwOiw80aWeUa1s4Ts9BrxoudZ5Kl/2HQrioo0WIARFuj2yIRS
-	ZpxlXLP0TwKMIDs8a3QBlt3gNnEBOZl2Z0Vj+WuhGTQ93n/RDK0y9cu5Jq/kNGXk2qFw6CaHkqWBD
-	ekhZALJG6ssGxevISNNGMLH37TFMyTGgiCkXznhlyWgYhi6GYrSMiYlLnJ1FjEUrbxaMRg7PMimEq
-	xZwl1JSUXSKd+cisMNDQaJE1s7GDP6Ybe5v0auL8fTHpce3/Nzy7ixTo5JLPyRTgE18I3K4t0m2fT
-	SfeVJguA==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1swxCr-0071Tj-28;
-	Sat, 05 Oct 2024 13:30:08 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 05 Oct 2024 13:30:07 +0800
-Date: Sat, 5 Oct 2024 13:30:07 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Tomas Paukrt <tomaspaukrt@email.cz>
-Cc: linux-crypto@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] crypto: mxs-dcp: Fix AES-CBC with hardware-bound keys
-Message-ID: <ZwDO3zqppqOZeSLg@gondor.apana.org.au>
-References: <1Wx.Zci3.5c7{vqn25ku.1cv07F@seznam.cz>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sm1Ewox/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF9EDC4CEC2;
+	Sat,  5 Oct 2024 08:55:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728118519;
+	bh=b0NR+d5Noe8seh/sWqbJp1vYwfdywrPfRfDJHlpJDo4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=sm1Ewox/D1w3vTK0rA33QhpqNauh6lCfX021bgw9CJG6ZwY8IDZZxLGzZNBP/SW1b
+	 vUe9nob2ZgQQSC5lhn2rN9iZf/ikiAiQONvk1d+eVp4vHence4+iaITbvxq8BsrpPd
+	 LDi8DiC4e9sKWbgWOpwTVvXNpDbs7o9uV+ygZIXTdSfHpxm0Dayz59up2NaG4Thl9E
+	 D42JXAoKZiQWr0PMJMHTScEmlmA0L8lEh084TBxbMBb6fRzgJnv2UV9AlLKrgQK1JY
+	 syxO0wxsuTYdi1S0HQfgR7oxKgurQNPnhxAaDVGotVJI89KLcY1HqTHcUG3H/kJab4
+	 NhUtrE8uP+PRg==
+Message-ID: <7b3e9a35-34f3-4e23-8ef8-574380819eb3@kernel.org>
+Date: Sat, 5 Oct 2024 10:55:14 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1Wx.Zci3.5c7{vqn25ku.1cv07F@seznam.cz>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] dt-bindings: misc: fsl,qoriq-mc: remove ref for
+ msi-parent
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
+ imx@lists.linux.dev
+References: <20240828163417.1130252-1-Frank.Li@nxp.com>
+ <kasyt62uhb7cijyrmbs7zelwgjtted6p4ynsy2s47e2ycniicb@szosg55aejjh>
+ <ZwBNVb+9qIpEybyQ@lizhi-Precision-Tower-5810>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
+ QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
+ gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
+ /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
+ iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
+ VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
+ 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
+ xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
+ eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
+ AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
+ MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
+ Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
+ MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
+ OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
+ GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
+ 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
+ YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
+ 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
+ BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
+ JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
+ 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
+ YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
+ Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
+ ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
+ vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
+ oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
+ lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
+ t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
+ uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
+ 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
+ 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
+In-Reply-To: <ZwBNVb+9qIpEybyQ@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 13, 2024 at 11:11:43AM +0200, Tomas Paukrt wrote:
-> Fix passing an initialization vector in the payload field which
-> is necessary for AES in CBC mode even with hardware-bound keys.
+On 04/10/2024 22:17, Frank Li wrote:
+> On Thu, Aug 29, 2024 at 08:24:26AM +0200, Krzysztof Kozlowski wrote:
+>> On Wed, Aug 28, 2024 at 12:34:13PM -0400, Frank Li wrote:
+>>> msi-parent is standard property. Needn't ref to phandle. Add maxItems: 1
+>>> for it.
+>>>
+>>> Fix below warning:
+>>>   arch/arm64/boot/dts/freescale/fsl-ls1088a-ten64.dtb: fsl-mc@80c000000: msi-parent:0: [16, 0] is too long
+>>>
+>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>>> ---
+>>> Change from v1 to v2
+>>> - add maxItems: 1 for msi-parent
+>>
+>> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > 
-> Fixes: 3d16af0b4cfa ("crypto: mxs-dcp: Add support for hardware-bound keys")
-> Signed-off-by: Tomas Paukrt <tomaspaukrt@email.cz>
-> ---
->  drivers/crypto/mxs-dcp.c | 20 ++++++++++++--------
->  1 file changed, 12 insertions(+), 8 deletions(-)
+> Anyone pick this patch?
 
-Patch applied.  Thanks.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Your maintainer, if you cared to Cc him?
+
+If you do not send patch to people, how they are supposed to pick it up?
+
+Best regards,
+Krzysztof
+
