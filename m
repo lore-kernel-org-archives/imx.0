@@ -1,157 +1,238 @@
-Received: from mail-pf1-f194.google.com (mail-pf1-f194.google.com [209.85.210.194])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84AE7145FEB;
-	Sat,  5 Oct 2024 12:39:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5849D156243
+	for <imx@lists.linux.dev>; Sat,  5 Oct 2024 15:57:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728131952; cv=none; b=mvuVEmu2ZGFMaSr66Qk5aWCAkVZUYhdq2D0/CvO+xFw8XlU5WlxtGZ9YOKha4EGezAHx753Gn8Ou7D4FY8NBJbCfgp8ud3tf0zpR15ti3mr0Wsmwmri7fXSLs7dqcYQ8hQzH/7dTwnw8WHt3DwBN+f86CCe2C2JZUqNDp6+gXoE=
+	t=1728143845; cv=none; b=sOgdv6XJxrO/5/nxYMLXmCsyIFs7gRC6pVxiQtnzvlJBxnNVAkFaL1P6f8r8eXhX4KglwlV690OPjsfaAyPxVFlp3vaoPmsWr6Ovz3RUApJ/xyodSFmFp3MYbe+VnhyGW/PjWHoeCliijPjkMMRv/0WYb+ZMi6dVPygr8Yr3H2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728131952; c=relaxed/simple;
-	bh=YNm3x+D/+uR/yV1OSOY9lGo7cThaljvjLDn81E+MKfk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lPuvinjrVOwvi6lNfVsAKiUi4CZKoVFUQ2uiUwCsSgqHv7uxfEhCi4jd4iSA1TKuVdow4GJYC7YZQBJ1BaBmAreoScjrosYC+MF67QpEno1WGdvCluAYM+BI5HSWkA9UkAYcQgWLkIKHDLWbyUkubEnE3uUu4aA3knm6+7Y8nPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W3gGGI1+; arc=none smtp.client-ip=209.85.210.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1728143845; c=relaxed/simple;
+	bh=rvOfxqkLW8T3+y8E0eE6uYFdvtJ8ggCwhrQBDymZLck=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dBzjxLPfZCWhnlDag1FosojEK7D+r0Fg4WZ/xHGcvqGahbQCNxoKZT1hrhLF1/hfvOO7KWE65StO74iesrsn0FT2ZxGbtKHXXqWcYdfed4qO9JSma3obQxjLEPKOwp4iuBEVrz74mHRAiOM5LEuxJjtHTYc0fxqiNYYmi6vHcds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=1rc0DNeu; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W3gGGI1+"
-Received: by mail-pf1-f194.google.com with SMTP id d2e1a72fcca58-71de776bc69so1082793b3a.1;
-        Sat, 05 Oct 2024 05:39:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="1rc0DNeu"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-37d04b32ea6so1933194f8f.1
+        for <imx@lists.linux.dev>; Sat, 05 Oct 2024 08:57:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728131950; x=1728736750; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YbmQWqwf8KLWBh53BpLjJjepp8M5DqLAMepSsUrr8/A=;
-        b=W3gGGI1+uwdKWdUVHJdjUSoeCBJflwqjqu7hlt3+ruyOpTj1lDv9zV9yFsID4KXy5t
-         jKi3JtfKdWKZ9dedKlXXFIQe9T6f4cInD+tv11EAJIRvj0VdvGhSIWXCc+d/Wqc7zNvt
-         Wp7Ybf4mZ1SlJ+qVk0q/MFnNlgxADeXyECkC9c70DRw9/rORSrWjrKnRNJkGWiEtmywh
-         Xh1ktZU4E/g0e/PSEeHZQdK3b+X+r+abSRFiD+8Hzu7RV/pM/Ka3kCJ4CWFkB4jjg/Z6
-         MlIkoWJ3xNaejyVjpsGhQ1OfnyHrnNOQwZZF8ORDS5vmirKt0gHIdH+RPE6VofgkW/5C
-         ZSww==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1728143841; x=1728748641; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qXz9vBq3bu3888Z5jpvuBKQzYSQvLNzRZ8Js/IdLunM=;
+        b=1rc0DNeuWtkeHyxg83LmnK5ZCjRIVT70P7S3Y4+99v5pbdxjRBCAlxAaKlKF35m7b2
+         NB8H3+w2I0X2US06OC5g+e5Y8HeLrS9eYZY/ze85uKUyDPjqKezl2Mt6hditZFfmcX8U
+         aZvEgJk/02QkBYn1xInAZN/h/cIZk93T6tvFNs58jEF8ca2kujlrIngA/5rw/kWPdSmq
+         38qihqWZ2+18p4vY81EnWRIgRjNxz6RzIzgA6IP6InLCYd7UAhlA0GDV3ggrWag9/Tjt
+         Ea4HI9nQ93AZbMsdGukm3LAzDRZdeucEqA/pLJWlpIIzt4m8kir270znJbM3EcO5fGG5
+         7YuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728131950; x=1728736750;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YbmQWqwf8KLWBh53BpLjJjepp8M5DqLAMepSsUrr8/A=;
-        b=AYYN4PW/5isUIr+e3cwlXDOaVxQHy7D/HklbDzfZe9NcupYlYJ0EgESOHfhd8XHUWh
-         baAmGr1hdRni8xO9CrlhwjSWlvEDzSCsCWSmZDtm14GJoO8IBKcTSkvw5TbUdKMNWdwC
-         PFeN1n0kCuVpL1kLIJqfuwQgObHC6MImBZ3WQyD3S6rCBSViszhF6mshVZ6XGIw4Xn93
-         Dc43M++Gi1nakf97wOz0AMVywpvSoD3IzWwluocTKw5KMyAU+7WrIWhPEn7bKQYIP4Jb
-         EWDiZfKgyV+5jalCWW3peuCjY9SyBBm00Fx/KT/eySTqfDWpqSdHaHDWP+5f3qrAdVi0
-         cdvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXCDTet8HroKForiHWaod0HovNgGIGbm63I4aaWSjGg3X0ZXchuzSto+MPMdxsJYDVrvVo=@lists.linux.dev, AJvYcCXYyZAVWWgs0GMHJV0xhEjU3a7sbf3nWTzEpQBQD9EjBOK7k+TXB8Ijs6H/zcq4GRZWYsuDAGw=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxg/WQzwMGikMgt4F6tanCDRxyA77gpK17JXBfuAYo4AOmGDk6c
-	IOszyDQKKgJy0qvsZkhRjVJjOnNzap9kCdI3ZHS0RGGL+pUreBmD
-X-Google-Smtp-Source: AGHT+IH7TZfPKkqMhF7jhMgZXtf7Pauw1fuqlg17S6ZMnwvz+3KYrvO5e1eqHcfYjc/CJowJUAwQhQ==
-X-Received: by 2002:a05:6a00:9a1:b0:70d:3337:7820 with SMTP id d2e1a72fcca58-71de23c72ecmr10006756b3a.8.1728131949813;
-        Sat, 05 Oct 2024 05:39:09 -0700 (PDT)
-Received: from ?IPV6:2409:8a55:301b:e120:3c3f:d401:ec20:dbc7? ([2409:8a55:301b:e120:3c3f:d401:ec20:dbc7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71df0cd3983sm1408702b3a.87.2024.10.05.05.38.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 05 Oct 2024 05:39:09 -0700 (PDT)
-Message-ID: <6cb0a740-f597-4a13-8fe5-43f94d222c70@gmail.com>
-Date: Sat, 5 Oct 2024 20:38:51 +0800
+        d=1e100.net; s=20230601; t=1728143841; x=1728748641;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qXz9vBq3bu3888Z5jpvuBKQzYSQvLNzRZ8Js/IdLunM=;
+        b=oJC/hTEsswq+7KWyYp5jtlA+QQwbbYisozwoOebW8YxPKB6Lt5fhqil6LBHVFohDAW
+         fllYh7qFIOmUA273pBkVIMe2+Yar0VGHa4Pv4jfsUiiISi7Cih0a1HU+gwrM3VozERVz
+         eVjD+aaxcNOB+ZZoZ9DOT5GIpf35Uxwpy9qFxvJp1Rc3b/iGdt/konBXA4cGaaQMhJ9b
+         bC39AOYP2hcged8X3Nhqn3TWorE6nxPTmC2fYwe5Mj0vXFFuoK8v1Yb3lrdkMrV6HcI/
+         D2jM1OYn0x5nB6iRgQzVRsk+PHyk+6bMLhiKOyec3QnnIzvCizRncPJTGbIJe85/mi6n
+         Hj2A==
+X-Forwarded-Encrypted: i=1; AJvYcCX+Eau5LSUC9kbOPyOuMaGVy2kHNCHl/3LVZWt2Ux81LwYnpLArSFPGts51RCmKJcbosX0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxIGgMoG+tHzeiWnpumXmxB4ePpyM5azNB2Zl2vvn18zdzWgVdK
+	vykmVi/p6wX69pyW4oBwrvFiEno+VZ4G0aQAGoe6185d3ceE+y8xP7B7cJKOMm8=
+X-Google-Smtp-Source: AGHT+IF43/A7zCrs3+gI5xHgV4LbW1A2YYw/wvq0IVL4OE5XX61u/Z+s9jLqofsLCP7Kzw+4y8PJaQ==
+X-Received: by 2002:a5d:5108:0:b0:37c:d522:af6d with SMTP id ffacd0b85a97d-37d0eb1ae9fmr3448004f8f.58.1728143840880;
+        Sat, 05 Oct 2024 08:57:20 -0700 (PDT)
+Received: from localhost ([2a02:8071:b783:6940:69c5:ee3e:d780:d02b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d1695f113sm1988217f8f.80.2024.10.05.08.57.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 05 Oct 2024 08:57:20 -0700 (PDT)
+Date: Sat, 5 Oct 2024 17:57:18 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Marek Vasut <marex@denx.de>
+Cc: Frank Li <Frank.Li@nxp.com>, conor+dt@kernel.org, 
+	devicetree@vger.kernel.org, festevam@gmail.com, francesco@dolcini.it, imx@lists.linux.dev, 
+	jun.li@nxp.com, kernel@pengutronix.de, krzk+dt@kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org, 
+	p.zabel@pengutronix.de, pratikmanvar09@gmail.com, robh@kernel.org, 
+	s.hauer@pengutronix.de, shawnguo@kernel.org, xiaoning.wang@nxp.com
+Subject: Re: [PATCH v7 1/1] pwm: imx27: workaround of the pwm output bug when
+ decrease the duty cycle
+Message-ID: <gnlm4u7dc2aktycxzn4nqw3anzeit6tbtgcq7kv3pzbrorwg6o@h35yxit5y2a3>
+References: <20241004193531.673488-1-Frank.Li@nxp.com>
+ <5cvzarqkldstuziokdbxxne75i35odexkcykzikyq2gm6ytdyd@5wkm7mhotgej>
+ <4166d68c-5eca-406a-936f-412dd2ae72fc@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 2/2] page_pool: fix IOMMU crash when driver has
- already unbound
-To: Paolo Abeni <pabeni@redhat.com>, Yunsheng Lin <linyunsheng@huawei.com>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Cc: liuyonglong@huawei.com, fanghaiqing@huawei.com, zhangkun09@huawei.com,
- Robin Murphy <robin.murphy@arm.com>,
- Alexander Duyck <alexander.duyck@gmail.com>, IOMMU <iommu@lists.linux.dev>,
- Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
- Clark Wang <xiaoning.wang@nxp.com>, Eric Dumazet <edumazet@google.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Alexander Lobakin <aleksander.lobakin@intel.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed
- <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- Tariq Toukan <tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>,
- Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>,
- Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
- Kalle Valo <kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Andrew Morton <akpm@linux-foundation.org>, imx@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- intel-wired-lan@lists.osuosl.org, bpf@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- linux-mm@kvack.org, davem@davemloft.net, kuba@kernel.org
-References: <20240925075707.3970187-1-linyunsheng@huawei.com>
- <20240925075707.3970187-3-linyunsheng@huawei.com>
- <4968c2ec-5584-4a98-9782-143605117315@redhat.com>
- <33f23809-abec-4d39-ab80-839dc525a2e6@gmail.com>
- <4316fa2d-8dd8-44f2-b211-4b2ef3200d75@redhat.com>
-Content-Language: en-US
-From: Yunsheng Lin <yunshenglin0825@gmail.com>
-In-Reply-To: <4316fa2d-8dd8-44f2-b211-4b2ef3200d75@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ctgpfajami44sg5x"
+Content-Disposition: inline
+In-Reply-To: <4166d68c-5eca-406a-936f-412dd2ae72fc@denx.de>
 
-On 10/2/2024 3:37 PM, Paolo Abeni wrote:
-> Hi,
-> 
-> On 10/2/24 04:34, Yunsheng Lin wrote:
->> On 10/1/2024 9:32 PM, Paolo Abeni wrote:
->>> Is the problem only tied to VFs drivers? It's a pity all the page_pool
->>> users will have to pay a bill for it...
->>
->> I am afraid it is not only tied to VFs drivers, as:
->> attempting DMA unmaps after the driver has already unbound may leak
->> resources or at worst corrupt memory.
->>
->> Unloading PFs driver might cause the above problems too, I guess the
->> probability of crashing is low for the PF as PF can not be disable
->> unless it can be hot-unplug'ed, but the probability of leaking resources
->> behind the dma mapping might be similar.
-> 
-> Out of sheer ignorance, why/how the refcount acquired by the page pool 
-> on the device does not prevent unloading?
 
-I am not sure if I understand the reasoning behind that, but it seems
-the driver unloading does not check on the refcount of the device from
-the implementation of __device_release_driver().
+--ctgpfajami44sg5x
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> I fear the performance impact could be very high: AFICS, if the item 
-> array become fragmented, insertion will take linar time, with the quite 
-> large item_count/pool size. If so, it looks like a no-go.
+On Sat, Oct 05, 2024 at 02:41:29AM +0200, Marek Vasut wrote:
+> On 10/4/24 10:58 PM, Uwe Kleine-K=F6nig wrote:
+>=20
+> [...]
+>=20
+> Why not simply duplicate the ERRATA description for iMX8M Nano MX8MN_0N14Y
+> errata sheet ?
+>=20
+> "
+> [...]
+> "
+>=20
+> That is very clear to me.
 
-The last checked index is recorded in pool->item_idx, so the insertion
-mostly will not take linear, unless pool->items is almost full and the
-old item came back to page_pool is just checked. The thought is that if
-it comes to this point, the page_pool is likely not the bottleneck
-anymore, and adding infinite pool->items might not make any difference.
+Fine for me. Frank, do you want to try creating the right mix of the NXP
+text, your and my description?
 
-If the insertion does turn out to be a bottleneck, 'struct llist_head'
-can be used to records the old items lockless for the freeing side, and
-llist_del_all() can be used to refill the old items for the allocing
-side from freeing side, which is kind of like the pool->ring and
-pool->alloc used currently in page_pool. As this patchset is already
-complicated, doing this makes it more complicated, I am not sure it is
-worth the effort right now as benefit does not seem obvious yet.
+> > 	/*
+> > 	 * At each clock tick the hardware compares the SAR value with
+> > 	 * the current counter. If they are equal the output is changed
+> > 	 * to the inactive level.
+>=20
+> I would skip this ^ part unless you can surely say the IP works exactly t=
+hat
+> way because you checked the RTL.
 
-> 
-> I fear we should consider blocking the device removal until all the 
-> pages are returned/unmapped ?!? (I hope that could be easier/faster)
+That it works that way is clear from the errata text IMHO.
 
-As Ilias pointed out, blocking the device removal until all the pages
-are returned/unmapped might cause infinite delay in our testing:
+> > As a new SAR value is applied
+> > 	 * immediately to the currently running period, it can happen
+> > 	 * that no falling edge happens in a period and so the output is
+> > 	 * active for a whole period. Consider a change from
+> >           *     ________
+> > 	 *    /        \______/
+> >           *    ^      *        ^
+> > 	 * to
+> >           *     ____
+> > 	 *    /    \__________/
+> >           *    ^               ^
+> > 	 *
+> > 	 * where SAR is written at the time marked by *. The counter
+> > 	 * didn't reach the old (bigger) value because it was changed
+> > 	 * before the counter reached that value and when the new value
+> > 	 * becomes active it is already lower than the current counter
+> > 	 * and so doesn't trigger either while the counter continues to
+> > 	 * grow. So the resulting waveform looks as follows:
+> > 	 *
+> >           *     ________        ____________________
+> > 	 *    /        \______/                    \__________/
+> >           *    ^               ^      *        ^               ^
+> > 	 *    |<-- old SAR -->|               |<-- new SAR -->|
+> > 	 *
+> > 	 * that is the output is active for a whole period.
+>=20
+> The ascii/infographics is nice and would be good to keep, but regarding t=
+he
+> description, frankly, the NXP errata description says the same thing in
+> fewer words :)
+>=20
+> > 	 */
+> >=20
+> > > +	 *
+> > > +	 * If the new SAR value is less than the old one, and the counter is
+> > > +	 * greater than the new SAR value (see above diagram XXXX), the cur=
+rent
+> > > +	 * period will not flip the level. This will result in a pulse with=
+ a
+> > > +	 * duty cycle of 100%.
+> > > +	 *
+> > > +	 * Check new SAR less than old SAR and current counter is in errata
+> > > +	 * windows, write extra old SAR into FIFO and new SAR will effect at
+> > > +	 * next period.
+> > > +	 *
+> > > +	 * Sometime period is quite long, such as over 1 second. If add old=
+ SAR
+> > > +	 * into FIFO unconditional, new SAR have to wait for next period. It
+> > > +	 * may be too long.
+> > > +	 *
+> > > +	 * Turn off the interrupt to ensure that not IRQ and schedule happen
+> > > +	 * during above operations. If any irq and schedule happen, counter
+> > > +	 * in PWM will be out of data and take wrong action.
+> > > +	 *
+> > > +	 * Add a safety margin 1.5us because it needs some time to complete
+> > > +	 * IO write.
+> > > +	 *
+> > > +	 * Use __raw_writel() to minimize the interval between two writes to
+> > > +	 * the SAR register to increase the fastest PWM frequency supported.
+> > > +	 *
+> > > +	 * When the PWM period is longer than 2us(or <500kHz), this workaro=
+und
+> > > +	 * can solve this problem. No software workaround is available if P=
+WM
+> > > +	 * period is shorter than IO write.
+> > > +	 */
+> > > +	c =3D clkrate * 1500;
+> > > +	do_div(c, NSEC_PER_SEC);
+> > > +
+> > > +	local_irq_save(flags);
+> > > +	val =3D FIELD_GET(MX3_PWMSR_FIFOAV, readl_relaxed(imx->mmio_base + =
+MX3_PWMSR));
+> > > +
+> > > +	if (duty_cycles < imx->duty_cycle) {
+> > > +		if (state->period < 2000) { /* 2000ns =3D 500 kHz */
+> > > +			/* Best effort attempt to fix up >500 kHz case */
+> > > +			udelay(6); /* 2us per FIFO entry, 3 FIFO entries written =3D> 6 u=
+s */
+> >=20
+> > I don't understand the motivation to wait here. Wouldn't it be better to
+> > write the old value 3 - val times and not sleep?
+>=20
+> No, because you would overflow the FIFO, see:
+>=20
+> 137fd45ffec1 ("pwm: imx: Avoid sample FIFO overflow for i.MX PWM version2=
+")
 
-https://lore.kernel.org/netdev/d50ac1a9-f1e2-49ee-b89b-05dac9bc6ee1@huawei.com/
+val holds the number of uses FIFO entries, so writing (3 - val) new
+items should be fine?!
 
-> 
-> /P
-> 
+> > Or busy loop until
+> > MX3_PWMSR_FIFOAV becomes 0?
+>=20
+> Do we really want a busy wait here if we can avoid it ?
 
+udelay(6) is a busy loop, so we're already there.
+
+> We can do udelay(3 * state->period / 1000); so faster PWMs would wait
+> shorter.
+
+state->period is the new value (and you want the old, right?), but
+otherwise I agree
+
+> The delay is here to basically wait until the FIFO is surely empty and has
+> space for 3 consecutive writes (see the commit above wrt. FIFO overflow).
+
+Best regards
+Uwe
+
+--ctgpfajami44sg5x
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmcBYdsACgkQj4D7WH0S
+/k7uuwgAryHou4sFu87uurvIotcWUKE3UOcqqY5ITxmszZHlYLbHtjxWc6nKPXg8
+FfDoH/A2Jf3US9mmdD+a24P3re08XgJisyGHdMeQonTuUznsfsNH6yPwyTNJX6k+
+HZdk+7t4orcYA8aulNs4I85QB/+UPqwJ/P+szn2IvSfOjuy1hSNCuvMrL0VT6MGZ
+dMwSKWoYDhmtf9/YiYbNvCFec5hvePwkcQQvjwKaF1bhJEVDN9iKeVB0HWVgfsWx
+MsHGlTf7tjp4XhI4PJMLV2yqCYKMkCs/mHV/lQjJSqTE8vusPMUUAe/jNx5iIkVr
+mk2wXkaesccaUsLMjRzR8Dc+DwrAuA==
+=WUha
+-----END PGP SIGNATURE-----
+
+--ctgpfajami44sg5x--
