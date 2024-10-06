@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06E4177982;
-	Sun,  6 Oct 2024 13:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 612F36026A;
+	Sun,  6 Oct 2024 13:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728220432; cv=none; b=MzLvYQRWDHjBdY4gGLQrc8K5aAMOAzLv05Lr26MhIT8V5l9uu87eHMwWooaEV4VZ5t2kcArlZY6vq/WH+8pd+ng56H/gWWCizAt1/4ERgInXFRgEXZDOsF9Vl7fFmcS8m+0ZZ9zmELu8ooMbdLb4sn2ZeoVJ1AC9ERjyl27XDrI=
+	t=1728221456; cv=none; b=gxLXOJ9QZuqVEExZayT4AjMefzlprn5pGl1oAm/VyNMBoyZPMXxPugYfUo2hSuZYjUVtgwcln/LV3L+337ho0jArnpDnYE3ywqYX2Zsyjk4tniKo/yxEDpcZHWUbIYlkprLk2mwKPh+PoujzICnJqfx9+jAEp+lcGYW053f1SrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728220432; c=relaxed/simple;
-	bh=khsVM2k1ZTcKI00Tfb38pPI+E8XA6tqg9PgEMpsgDOw=;
+	s=arc-20240116; t=1728221456; c=relaxed/simple;
+	bh=Vj/GYRpv/5KupB5oNORmD7Q2QKaFc9xDLyKjAxdr1Ds=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qix6Uu+WnG7LBzzu8SeUidkx9NuuldX9IkA8x0hBJXocaHKBth72leO6Wws9DssEaQMaBhJS1JnZMMGVdIW1XpMRn7JF4f+LTmaLfh+N5AH+X9RyW998moy64BSsashCK2Bjz5/YJVzehVgtXYySt+7st/5SBGFWgf14Mb/y37Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U6J41iP4; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=ZEfT4X4li/GBMRnV9BJns1m2ILYBYjpc6p5IsASprjhjH6LhNRvafofFJrvxONLOjsy63uChHoXaj/dpTWArOtV5AI0OSkZD6ktVaRjO07Jo5dMNSRCD9h3M9GBqVqS/6E+6Hq5HFWldOBR+Aw8jCjOdI6wbUguynV0BqLkzdYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n3EmiM/C; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U6J41iP4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FAAC4CEC5;
-	Sun,  6 Oct 2024 13:13:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n3EmiM/C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED4AC4CEC5;
+	Sun,  6 Oct 2024 13:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728220432;
-	bh=khsVM2k1ZTcKI00Tfb38pPI+E8XA6tqg9PgEMpsgDOw=;
+	s=k20201202; t=1728221456;
+	bh=Vj/GYRpv/5KupB5oNORmD7Q2QKaFc9xDLyKjAxdr1Ds=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=U6J41iP4cBmcBH/lySmBjh7RYoj0h1+7+JyNjKXcNXuwwpOsBnaFUsYhStBWx5m2k
-	 6bLJOGK4fgJEMJet/1JWtSm1cgkNTluuH+idKN8VZxgtudSsODDFZ2Sbib97nGkZP5
-	 9MBRANZk53w8RrMXMnCKsInEkh5eYecC/tMhJtys9mboc4raJZyVFyEv9w73b+qMhX
-	 aT6tgmIC0kRpM7YSUblAoqn5xF7LArt2fJ7qYaA/lk6JzTSICwuGnurZBfnr2LDglc
-	 Ny5VRcrg2tBNTrey/H1pGi9jcTI/67zaleczFqspjBzIriklyIpgptNqzTbXwBGuIx
-	 v9+2UVsqsfT6A==
-Message-ID: <b847ccb1-1eb8-4119-8612-212804cb50d8@kernel.org>
-Date: Sun, 6 Oct 2024 15:13:43 +0200
+	b=n3EmiM/CIKL218ovod/PjRvKJcOG487xHlOVhl+IMgBBAA0oaFZif9pkc/AGst36s
+	 vraPvR6B2OdASSLDyHKM7UkP9z+pZVY9Ofo7OUj5UwwJBqAk2KR2OIavnpOjHJ09U8
+	 e+TPHqQ37Mk0AKxjfQDLBETAdfzrrMY0Qfg86/9UvND3FA2R+cB9dVDmakAXv5vWH5
+	 V7cvBfy4GaMl7CwxWu7HFtvft/R3xML2uEU+hksfRIPsh0IL7Bei7awqmKWHFdyOB6
+	 TU/luvyfUC/avDTLczt5EiqsSbLIZ2MHYp/0+bbfUgtNy3QTbZUEBGuoVDgQLqio9I
+	 W4gCj4tFLw8yQ==
+Message-ID: <97efe08f-ec17-4754-8ff7-afb4db4b04e8@kernel.org>
+Date: Sun, 6 Oct 2024 15:30:48 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,26 +35,18 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6] dt-bindings: clock: imx8m-anatop: support spread
- spectrum clocking
-To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com,
- Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>, Peng Fan <peng.fan@nxp.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
-References: <20240928083804.1073942-1-dario.binacchi@amarulasolutions.com>
- <20240928083804.1073942-2-dario.binacchi@amarulasolutions.com>
- <566859c1-a397-4465-987e-0682b07a703e@kernel.org>
- <CABGWkvqqg-PGAZTCz=MMLRx5F93jaN_=z8zJt1sDd3PHXd80PQ@mail.gmail.com>
- <6c3e6071-822f-4230-b76b-276330de07ef@kernel.org>
- <CABGWkvrU507BHoP94Y7fEyFr=chuuy3o=oBHtuWRvwTw3GnxXw@mail.gmail.com>
- <82db5037-bbd3-4005-bde9-02df1bf4c475@kernel.org>
- <CABGWkvqXZ+YAvo-AtUy+Ftdu0xxXKuhOwcSTwO5Fv6D3yzttNg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] dt-bindings: interrupt-controller: fsl,ls-extirq:
+ workaround wrong interrupt-map number
+To: Frank Li <Frank.li@nxp.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ "open list:IRQCHIP DRIVERS" <linux-kernel@vger.kernel.org>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, imx@lists.linux.dev
+References: <20241003214315.638668-1-Frank.Li@nxp.com>
+ <gre52gkd325yfnjwoqyfot4yrb3rim4pi2ye3hjcp4bd7yimba@tq2drzuwlc6f>
+ <ZwALfcJYTOuXqPuP@lizhi-Precision-Tower-5810>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -100,79 +92,122 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <CABGWkvqXZ+YAvo-AtUy+Ftdu0xxXKuhOwcSTwO5Fv6D3yzttNg@mail.gmail.com>
+In-Reply-To: <ZwALfcJYTOuXqPuP@lizhi-Precision-Tower-5810>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 05/10/2024 10:57, Dario Binacchi wrote:
-> On Thu, Oct 3, 2024 at 12:46 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
->>
->> On 01/10/2024 08:29, Dario Binacchi wrote:
->>> On Mon, Sep 30, 2024 at 8:45 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
->>>>
->>>> On 29/09/2024 22:00, Dario Binacchi wrote:
->>>>>>
->>>>>>
->>>>>>> +  properties:
->>>>>>> +    compatible:
->>>>>>> +      contains:
->>>>>>> +        enum:
->>>>>>> +          - fsl,imx8mm-anatop
->>>>>>> +
->>>>>>> +then:
->>>>>>> +  properties:
->>>>>>> +    fsl,ssc-clocks:
->>>>>>
->>>>>> Nope. Properties must be defined in top-level.
->>>>>>
->>>>>>> +      $ref: /schemas/types.yaml#/definitions/phandle-array
->>>>>>> +      description:
->>>>>>> +        The phandles to the PLLs with spread spectrum clock generation
->>>>>>> +        hardware capability.
->>>>>>
->>>>>> These should be clocks.
->>>>>
->>>>> Sorry, but I can't understand what you're asking me.
->>>>> Could you kindly explain it to me in more detail?
->>>>
->>>> You added new property instead of using existing one for this purpose:
->>>> 'clocks'.
+On 04/10/2024 17:36, Frank Li wrote:
+> On Fri, Oct 04, 2024 at 08:43:23AM +0200, Krzysztof Kozlowski wrote:
+>> On Thu, Oct 03, 2024 at 05:43:15PM -0400, Frank Li wrote:
+>>> The driver(drivers/irqchip/irq-ls-extirq.c) have not use standard DT
+>>> function to parser interrupt-map. So it doesn't consider '#address-size'
+>>> in parent interrupt controller, such as GIC.
 >>>
->>>>
->>>>
->>>>
->>>> Best regards,
->>>> Krzysztof
->>>>
+>>> When dt-binding verify interrupt-map, item data matrix is spitted at
+>>> incorrect position. So cause below warning:
 >>>
->>> I added this new property specifically for managing spread-spectrum.
->>> Indeed, not all clocks/PLLs
->>> managed by the node/peripheral support spread-spectrum, and the added
->>> properties specify
->>> parameters for enabling and tuning SSC for each individual PLL based
->>> on the index of each list.
->>> If I were to use the 'clocks' property and add a clock to this list
->>> that does not support SSC, IMHO
->>> the pairings would be less clear.
+>>> arch/arm64/boot/dts/freescale/fsl-ls1088a-qds.dtb: interrupt-controller@14:
+>>> interrupt-map: [[0, 0, 1, 0, 0, 4, 1, 0], [1, 0, 1, 4, 2, 0, 1, 0], ...
+>>> is too short
+>>>
+>>> Reduce minItems and maxItems to workaround this warning for
+>>> 'fsl,ls1088a-extirq', 'fsl,ls2080a-extirq' and fsl,lx2160a-extirq.
+>>> Other keep the same restriction.
+>>>
+>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>>> ---
+>>> Change from v1 to v2
+>>> - remove duplicate function in commit message
+>>> - only reduce miniItems for after 1088a chips
+>>> - maxItems change to 9. Otherwise report too long.
+>>> ---
+>>>  .../interrupt-controller/fsl,ls-extirq.yaml   | 27 +++++++++++++++++--
+>>>  1 file changed, 25 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-extirq.yaml b/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-extirq.yaml
+>>> index 199b34fdbefc4..1bfced6ed620c 100644
+>>> --- a/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-extirq.yaml
+>>> +++ b/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-extirq.yaml
+>>> @@ -82,14 +82,37 @@ allOf:
+>>>              enum:
+>>>                - fsl,ls1043a-extirq
+>>>                - fsl,ls1046a-extirq
+>>> +    then:
+>>> +      properties:
+>>> +        interrupt-map:
+>>> +          minItems: 12
+>>> +          maxItems: 12
+>>> +        interrupt-map-mask:
+>>> +          items:
+>>> +            - const: 0xf
+>>> +            - const: 0
+>>> +
+>>> +  - if:
+>>> +      properties:
+>>> +        compatible:
+>>> +          contains:
+>>> +            enum:
+>>>                - fsl,ls1088a-extirq
+>>>                - fsl,ls2080a-extirq
+>>>                - fsl,lx2160a-extirq
+>>> +# The driver(drivers/irqchip/irq-ls-extirq.c) have not use standard DT
+>>> +# function function to parser interrupt-map. So it doesn't consider
 >>
->> You duplicate property with argument "pairings shall match". Well, I am
->> not happy with the duplication. Clocks have specific order, thus it is
->> explicit which one needs tuning. Your other properties can match them as
->> well, just index from clocks is offset...
+>> Same issue as last time, double function.
+>>
+>> Please run scripts/checkpatch.pl and fix reported warnings. Then please
+>> run 'scripts/checkpatch.pl --strict' and (probably) fix more warnings.
+>> Some warnings can be ignored, especially from --strict run, but the code
+>> here looks like it needs a fix. Feel free to get in touch if the warning
+>> is not clear.
 > 
-> Just to check if I understood correctly what you are suggesting before
-> submitting version 3 of the patch.
-> Something, for example, like:
+> Thanks, I forget add --strict this time.
 > 
-> clocks = <&clk, IMX8MP_AUDIO_PLL1>,  <&clk, IMX8MP_AUDIO_PLL2>, <&clk
-> IMX8MP_VIDEO_PLL1>;
-> fsl,ssc-modfreq-hz = <0, 3517>, <2, 6818>;
+>>
+>>
+>>> +# '#address-size' in parent interrupt controller, such as GIC.
+>>> +#
+>>> +# When dt-binding verify interrupt-map, item data matrix is spitted at
+>>> +# incorrect position. Reduce minItems and maxItems to workaround this
+>>> +# problem.
+>>> +
+>>>      then:
+>>>        properties:
+>>>          interrupt-map:
+>>> -          minItems: 12
+>>> -          maxItems: 12
+>>> +          minItems: 8
+>>> +          maxItems: 9
+>>
+>> Are you sure it works? I see 12 items in fsl-ls1088a.dtsi.
+> 
+> interrupt-map =
+>    <0 0 &gic GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>,
+>    <1 0 &gic GIC_SPI 1 IRQ_TYPE_LEVEL_HIGH>,
+>    ...
+>    <11 0 &gic GIC_SPI 11 IRQ_TYPE_LEVEL_HIGH>;
+> 
+> Total 12*6 = 72 data.
+> 
+> Normal each row should be 6 data.
+> 
+> but when GIC have #address-size, <2>,  dt-schemal split at at (6+2=8).
+> 
+> "interrupt-map: [[0, 0, 1, 0, 0, 4, 1, 0], [1, 0, 1, 4, 2, 0, 1, 0]"
+> 
+> So 72/8 = 9, I just realize it can divide to whole number.  so minItems
+> can be set 9 also.
 
-Hm, what is 0? If clock index, then no, it's redundant. The first item
-in cannot point to other clock.
+I read it three times but I cannot parse it.
 
-Also, what exactly are you setting here and why assigned-clock-rates are
-not working?
+I cannot translate above interrupt-map to anything meaningful, so it
+looks to me that not only address-cells is ignored but entire format is
+different from what the spec asks.
+
+This is not some ancient 15 year old code, but was added in 2019.
+
+You should not add fake constraints to a valid property, because what if
+other system implements this correctly?
 
 Best regards,
 Krzysztof
