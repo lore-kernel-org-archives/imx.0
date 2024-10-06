@@ -1,240 +1,148 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1B818A6A1
-	for <imx@lists.linux.dev>; Sun,  6 Oct 2024 17:50:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3F4EAF9
+	for <imx@lists.linux.dev>; Sun,  6 Oct 2024 19:22:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728237059; cv=none; b=ZcLfGmv2jk9Nev7L00/+t6BuF35Caz9PnHnTXFjGNDSLmcVMk8rGavzxil5lLqSDM0LQoucoaHdzvAeqDIxUMwj403DoidjkzaJO8ftN053o7wFp6SMeZb7P5D8K1tHDHY0kjKEj9Wn+dgopc+Lg9DlJquVFxlaSo3mndWey7t4=
+	t=1728242531; cv=none; b=VHB+IUdEKhMRM/HoKJ3vvPhOWEdgcplezQRYjdd1a06orMaiLtD1UyVt0zO0YdVbv8WdcSsPpsBjvXlBZ1tRkPw9OdSdiKnmT3MmyQcQuy4nmyAxcWrTyXh8YsRGjpEi1N1CQHyzimEp4UzSRs5SkIh/YoaEojCXp1CUILjrrIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728237059; c=relaxed/simple;
-	bh=QX5bVPMoC5X/ATRCLwmjQ5j4TdyRP1gHWz1UGgRYGGs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CFzoEN9sPyXYYriQ65aGZ8KYEGCfW/Z2lGOAInnGRIjbHf7gz04T/50ARSNXaJCymkX4o4Ja0n9COTOCyS9YqiYUW+oXR87BdQ5sDlRRVNJrl84RoQbLcKOYSOBuOLbeOPDLGXnKiGOneqXzYZYcvFHBJvI+i6E4/8+ZLBBRdj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OCNCC6KN; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1728242531; c=relaxed/simple;
+	bh=5Ej/roX0hBsFAsuY5HOV6xxMHJnnvuBYZnHZd7USqw8=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=pRDnBKDYKcedOtcZciv09nMb5Pv1gPAw80wS5oz/IKyRVjToEFPmkevKW3sbdXPE3hrB5T0GwFgclUAT0qk3QxeSt7ETlcaXaN2Eg6ulO4xCZ8ln+okwZO2WeP5VOFjVRfAEjbdp/Ebd7fVybIKnuelBig6FcnnaDWne0Q78WjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=cvFDF1C/; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OCNCC6KN"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-20b9b35c7c7so25926595ad.1
-        for <imx@lists.linux.dev>; Sun, 06 Oct 2024 10:50:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728237056; x=1728841856; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=9/jpL3YcDbT5s9GUNC8ARxSJoU3MJ9r3elvS/k1XvaU=;
-        b=OCNCC6KNkPOUvBjeC+ibABaQJW4I/fGUDIrvJ6Kf1XM9oOvXAFeBy9icABAgByv2y6
-         3vD6nD+zNeuKqDQLJeY/+OugT875YlLDcjHN3m2Hsv+RiIzwuuB0lWwimnC9vTh2xFhW
-         q8a6gI4oh1p8racJDZcL0SK3S1AcA60mzXFX1gi6K99SfL4q3OlTnsUzPkn7r2Tn4QLC
-         80yqyDRV3Km6oJQt9W4DslaiEXkVc7KlOrH4ilPsJRaSCrWDIPSsZAm5TOltPtBzl4PO
-         6dAskK+VdBw1/Kdyr4t3k7ra8Orc7hnsURS3/YldCMAg6x6C+RcyWTpQBhPFCdcVZJsb
-         XChQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728237056; x=1728841856;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9/jpL3YcDbT5s9GUNC8ARxSJoU3MJ9r3elvS/k1XvaU=;
-        b=jHJGSTh6LdJOoydUydLov1Z5zUb+bFahh0+usri63LLzWtgpN5RaVAvJDchVuTGxDr
-         paECAU4Jayu9OSHWHFjKL0k+sOS91hXhTRrnLI/RHF9AZ/+lHl2kj3bJ/0/VexJmed1+
-         TIMN3cGICehRNicgQ4z9V2ycSVrRST1loQvW23etPAsMKst9a+rbh8jHtbi1PYaIF5oc
-         MysX4nUAlw5DerDWf+Uz4KS3uD0w0KD+2ZuWlkT8gstMygbb7CpbbzZapONFsgNnRDXF
-         djIfLXPOLYJEOQEKkE/42b1Hp7Ix8QU4FOXDyt5kyDdx3qr3NHmoO4oKdfIPlgmVaBSA
-         XMQg==
-X-Forwarded-Encrypted: i=1; AJvYcCVbJDO1aJ2uFRTKy8UuAY30v9ENsBGRjiheuwr8YEpw6QLP7CCUE7jzEM9ugb5LG/a3fvE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yym0MfyoN6y7rYcV5Xw+nX9y5H0VhLDVMrBV1IcrmuhgECWiziD
-	0EvsrYyTtJNKJG1mxmAfenR/BPi44IAAlfS+cavs1IRxvI+THmGTv4uTWQElBQ==
-X-Google-Smtp-Source: AGHT+IGZMh0K9p8XUknILzUzT5SqwVvVg47E7lfixteAimw7+8QYQTtqQ9t9Zn+e4BhqYnC9cpugcw==
-X-Received: by 2002:a17:902:f551:b0:20b:9680:d5c4 with SMTP id d9443c01a7336-20bfde57d03mr139672265ad.4.1728237055829;
-        Sun, 06 Oct 2024 10:50:55 -0700 (PDT)
-Received: from thinkpad ([220.158.156.57])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c138b104csm27352325ad.45.2024.10.06.10.50.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Oct 2024 10:50:55 -0700 (PDT)
-Date: Sun, 6 Oct 2024 23:20:47 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, alyssa@rosenzweig.io, bpf@vger.kernel.org,
-	broonie@kernel.org, jgg@ziepe.ca, joro@8bytes.org,
-	lgirdwood@gmail.com, maz@kernel.org, p.zabel@pengutronix.de,
-	robin.murphy@arm.com, will@kernel.org
-Subject: Re: [PATCH v2 0/2] PCI: add enabe(disable)_device() hook for bridge
-Message-ID: <20241006175047.xgy2zyaiebvyxfsi@thinkpad>
-References: <20240930-imx95_lut-v2-0-3b6467ba539a@nxp.com>
- <20241003051528.qrp2z7kvzgvymgjb@thinkpad>
- <Zv7t9HnRsfTxb2Xs@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="cvFDF1C/"
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 7D66188896;
+	Sun,  6 Oct 2024 21:13:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1728241983;
+	bh=k1vovXXkKC3Gh/6LzZZyo6822HUQ4nfaTQ3gBfRXD2Y=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=cvFDF1C/K/pRBgSKo3l20U3tN3baBrziLPXPbhNgvzGJQn91kg6xdJ8w3mUVg+EAd
+	 BohABlcLOjzu9ZByMIc++xw4of1YNo7gC9k9adAEldbb4MeVqSJsvqoBgdIIbpXwAk
+	 z3C07mq+LQPJ4SFhE+ack7nU/df25t9UXKoQkq3JyzKrPxJq14fHhuFboTpyYrXbvg
+	 r4vDgB9zl3C9dfWXtL9mSwGyNv28359ao1tCtEb2dEVtFTBIMT2PMl7aH0ayKlXofn
+	 mXGuECDKQosJgn9nu8MYwrefXg8T+cTxr+FGcOdnt3z3jB8H3GFzd5T82FawKXj7h3
+	 GFsJPZiSrDhSA==
+Message-ID: <1e6600a8-0b1a-472b-9f84-9b3c646a931a@denx.de>
+Date: Sun, 6 Oct 2024 21:12:25 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+From: Marek Vasut <marex@denx.de>
+Subject: Re: [PATCH v7 1/1] pwm: imx27: workaround of the pwm output bug when
+ decrease the duty cycle
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Frank Li <Frank.Li@nxp.com>, conor+dt@kernel.org,
+ devicetree@vger.kernel.org, festevam@gmail.com, francesco@dolcini.it,
+ imx@lists.linux.dev, jun.li@nxp.com, kernel@pengutronix.de,
+ krzk+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+ p.zabel@pengutronix.de, pratikmanvar09@gmail.com, robh@kernel.org,
+ s.hauer@pengutronix.de, shawnguo@kernel.org, xiaoning.wang@nxp.com
+References: <20241004193531.673488-1-Frank.Li@nxp.com>
+ <5cvzarqkldstuziokdbxxne75i35odexkcykzikyq2gm6ytdyd@5wkm7mhotgej>
+ <4166d68c-5eca-406a-936f-412dd2ae72fc@denx.de>
+ <gnlm4u7dc2aktycxzn4nqw3anzeit6tbtgcq7kv3pzbrorwg6o@h35yxit5y2a3>
+Content-Language: en-US
+In-Reply-To: <gnlm4u7dc2aktycxzn4nqw3anzeit6tbtgcq7kv3pzbrorwg6o@h35yxit5y2a3>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Zv7t9HnRsfTxb2Xs@lizhi-Precision-Tower-5810>
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On Thu, Oct 03, 2024 at 03:18:12PM -0400, Frank Li wrote:
-> On Thu, Oct 03, 2024 at 10:45:28AM +0530, Manivannan Sadhasivam wrote:
-> > On Mon, Sep 30, 2024 at 03:42:20PM -0400, Frank Li wrote:
-> > > Some system's IOMMU stream(master) ID bits(such as 6bits) less than
-> > > pci_device_id (16bit). It needs add hardware configuration to enable
-> > > pci_device_id to stream ID convert.
-> > >
-> > > https://lore.kernel.org/imx/20240622173849.GA1432357@bhelgaas/
-> > > This ways use pcie bus notifier (like apple pci controller), when new PCIe
-> > > device added, bus notifier will call register specific callback to handle
-> > > look up table (LUT) configuration.
-> > >
-> > > https://lore.kernel.org/imx/20240429150842.GC1709920-robh@kernel.org/
-> > > which parse dt's 'msi-map' and 'iommu-map' property to static config LUT
-> > > table (qcom use this way). This way is rejected by DT maintainer Rob.
-> > >
-> >
-> > What is the issue in doing this during the probe() stage? It looks like you are
-> > working with the static info in the devicetree, which is already available
-> > during the controller probe().
+On 10/5/24 5:57 PM, Uwe Kleine-König wrote:
+> On Sat, Oct 05, 2024 at 02:41:29AM +0200, Marek Vasut wrote:
+>> On 10/4/24 10:58 PM, Uwe Kleine-König wrote:
+>>
+>> [...]
+>>
+>> Why not simply duplicate the ERRATA description for iMX8M Nano MX8MN_0N14Y
+>> errata sheet ?
+>>
+>> "
+>> [...]
+>> "
+>>
+>> That is very clear to me.
 > 
-> There are problems.
-> One: It is not good to manually parser this property in pci host bridge
-> drivers.
+> Fine for me. Frank, do you want to try creating the right mix of the NXP
+> text, your and my description?
 > 
+>>> 	/*
+>>> 	 * At each clock tick the hardware compares the SAR value with
+>>> 	 * the current counter. If they are equal the output is changed
+>>> 	 * to the inactive level.
+>>
+>> I would skip this ^ part unless you can surely say the IP works exactly that
+>> way because you checked the RTL.
+> 
+> That it works that way is clear from the errata text IMHO.
 
-Why? I see the comment from Rob saying that the host bridge driver should not
-parse iommu* properties, but this series is essentially doing the same just in a
-different place.
+The errata description does not say anything about comparing SAR value 
+on each clock tick. Better stick to exactly what the errata does say.
 
-> Two: of_map default is bypass map. For example: if in dts only 2 sid, 0xA
-> and 0xB. If try to enable 3rd function RID(103), there are no error report.
-> of_map will return RID 103 as stream ID.  DMA will write to wrong
-> possition possibly.
-> 
+[...]
 
-Well, you can use iommu-map-mask to allow all devices under a bus to share the
-same SID. It will allow you to work with the LUT limitation. But the downside is
-that, there would be no isolation between devices under the same bus.
+>>>> +	c = clkrate * 1500;
+>>>> +	do_div(c, NSEC_PER_SEC);
+>>>> +
+>>>> +	local_irq_save(flags);
+>>>> +	val = FIELD_GET(MX3_PWMSR_FIFOAV, readl_relaxed(imx->mmio_base + MX3_PWMSR));
+>>>> +
+>>>> +	if (duty_cycles < imx->duty_cycle) {
+>>>> +		if (state->period < 2000) { /* 2000ns = 500 kHz */
+>>>> +			/* Best effort attempt to fix up >500 kHz case */
+>>>> +			udelay(6); /* 2us per FIFO entry, 3 FIFO entries written => 6 us */
+>>>
+>>> I don't understand the motivation to wait here. Wouldn't it be better to
+>>> write the old value 3 - val times and not sleep?
+>>
+>> No, because you would overflow the FIFO, see:
+>>
+>> 137fd45ffec1 ("pwm: imx: Avoid sample FIFO overflow for i.MX PWM version2")
+> 
+> val holds the number of uses FIFO entries, so writing (3 - val) new
+> items should be fine?!
 
-> https://elixir.bootlin.com/linux/v6.12-rc1/source/drivers/of/base.c#L2070
-> 
-> Three: LUT resource is limited, if DT provide 16 entry, but LUT have only 8
-> items, if more device enable, not LUT avaible and can't return error. of
-> course, it may fix dts, but It'd better that driver can handle error
-> properly when meet wrong dtb file.
-> 
+Not necessarily, consider the case where:
+- The PWM is very fast
+- There are currently 3 entries in the FIFO according to driver state
+- The driver determines 3-val is 1 and performs 1 single write to FIFO
+=> If the PWM consumed the FIFO (FIFO is empty) before the 1 single
+    write arrives, then the aforementioned errata still occurs
 
-Drivers can trust the DT, unless there are evidence of broken DT available in
-upstream or got fixed.
+I believe the better option is to wait until the FIFO is surely depleted 
+and then write three entries in short sequence -- OLD-OLD-NEW -- this 
+way the FIFO would get updated with old value first and then switched to 
+new value, hopefully mitigating the issue as best as possible even for 
+fast PWM settings.
 
-If you really want to validate DT, use dt-bindings.
+btw. the two writes here should be writing the old value twice, now 
+there are three new value writes in this patch version.
 
-- Mani
-
-> >
-> > > Above ways can resolve LUT take or stream id out of usage the problem. If
-> > > there are not enough stream id resource, not error return, EP hardware
-> > > still issue DMA to do transfer, which may transfer to wrong possition.
-> > >
-> > > Add enable(disable)_device() hook for bridge can return error when not
-> > > enough resource, and PCI device can't enabled.
-> > >
-> >
-> > {enable/disable}_device() doesn't convey the fact you are mapping BDF to SID in
-> > the hardware. Maybe something like, {map/unmap}_bdf2sid() or similar would make
-> > sense.
+>>> Or busy loop until
+>>> MX3_PWMSR_FIFOAV becomes 0?
+>>
+>> Do we really want a busy wait here if we can avoid it ?
 > 
-> It is called in PCI common code do_pci_enable_device(), hook functin name
-> should be similar with caller. {map/unmap}_bdf2sid() is just implementation
-> in dwc.
+> udelay(6) is a busy loop, so we're already there.
 > 
-> stream id is only ARM platform concept.
+>> We can do udelay(3 * state->period / 1000); so faster PWMs would wait
+>> shorter.
 > 
-> May other host bridge do difference thing at enable/disable_device().
-> 
-> So I am still perfer use {enable/disable}_device().
-> 
-> 
-> Frank
-> 
-> >
-> > - Mani
-> >
-> > > Basicallly this version can match Bjorn's requirement:
-> > > 1: simple, because it is rare that there are no LUT resource.
-> > > 2: EP driver probe failure when no LUT, but lspci can see such device.
-> > >
-> > > [    2.164415] nvme nvme0: pci function 0000:01:00.0
-> > > [    2.169142] pci 0000:00:00.0: Error enabling bridge (-1), continuing
-> > > [    2.175654] nvme 0000:01:00.0: probe with driver nvme failed with error -12
-> > >
-> > > > lspci
-> > > 0000:00:00.0 PCI bridge: Philips Semiconductors Device 0000
-> > > 0000:01:00.0 Non-Volatile memory controller: Micron Technology Inc 2100AI NVMe SSD [Nitro] (rev 03)
-> > >
-> > > To: Bjorn Helgaas <bhelgaas@google.com>
-> > > To: Richard Zhu <hongxing.zhu@nxp.com>
-> > > To: Lucas Stach <l.stach@pengutronix.de>
-> > > To: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> > > To: Krzysztof Wilczyński <kw@linux.com>
-> > > To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > > To: Rob Herring <robh@kernel.org>
-> > > To: Shawn Guo <shawnguo@kernel.org>
-> > > To: Sascha Hauer <s.hauer@pengutronix.de>
-> > > To: Pengutronix Kernel Team <kernel@pengutronix.de>
-> > > To: Fabio Estevam <festevam@gmail.com>
-> > > Cc: linux-pci@vger.kernel.org
-> > > Cc: linux-kernel@vger.kernel.org
-> > > Cc: linux-arm-kernel@lists.infradead.org
-> > > Cc: imx@lists.linux.dev
-> > > Cc: Frank.li@nxp.com \
-> > > Cc: alyssa@rosenzweig.io \
-> > > Cc: bpf@vger.kernel.org \
-> > > Cc: broonie@kernel.org \
-> > > Cc: jgg@ziepe.ca \
-> > > Cc: joro@8bytes.org \
-> > > Cc: l.stach@pengutronix.de \
-> > > Cc: lgirdwood@gmail.com \
-> > > Cc: maz@kernel.org \
-> > > Cc: p.zabel@pengutronix.de \
-> > > Cc: robin.murphy@arm.com \
-> > > Cc: will@kernel.org \
-> > >
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > > Changes in v2:
-> > > - see each patch
-> > > - Link to v1: https://lore.kernel.org/r/20240926-imx95_lut-v1-0-d0c62087dbab@nxp.com
-> > >
-> > > ---
-> > > Frank Li (2):
-> > >       PCI: Add enable_device() and disable_device() callbacks for bridges
-> > >       PCI: imx6: Add IOMMU and ITS MSI support for i.MX95
-> > >
-> > >  drivers/pci/controller/dwc/pci-imx6.c | 133 +++++++++++++++++++++++++++++++++-
-> > >  drivers/pci/pci.c                     |  14 ++++
-> > >  include/linux/pci.h                   |   2 +
-> > >  3 files changed, 148 insertions(+), 1 deletion(-)
-> > > ---
-> > > base-commit: 2849622e7b01d5aea1b060ba3955054798c1e0bb
-> > > change-id: 20240926-imx95_lut-1c68222e0944
-> > >
-> > > Best regards,
-> > > ---
-> > > Frank Li <Frank.Li@nxp.com>
-> > >
-> > >
-> >
-> > --
-> > மணிவண்ணன் சதாசிவம்
-
--- 
-மணிவண்ணன் சதாசிவம்
+> state->period is the new value (and you want the old, right?), but
+> otherwise I agree
+Right
