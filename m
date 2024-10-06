@@ -1,148 +1,71 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3F4EAF9
-	for <imx@lists.linux.dev>; Sun,  6 Oct 2024 19:22:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC9E18A956
+	for <imx@lists.linux.dev>; Sun,  6 Oct 2024 19:52:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728242531; cv=none; b=VHB+IUdEKhMRM/HoKJ3vvPhOWEdgcplezQRYjdd1a06orMaiLtD1UyVt0zO0YdVbv8WdcSsPpsBjvXlBZ1tRkPw9OdSdiKnmT3MmyQcQuy4nmyAxcWrTyXh8YsRGjpEi1N1CQHyzimEp4UzSRs5SkIh/YoaEojCXp1CUILjrrIw=
+	t=1728244336; cv=none; b=HHDI/TzSzE0Mzi8w7axhwjglPpNc1xG3y5FUKg1juBuGUL1eOANfrcp57oEjUT/lMCJJ7wYMcH42gPSOEPzRLGe4hLHRfUR0/0wPtn7lbBDYMqm0XQDmyfZ2x+FiHd+1p2uiml213JHCbSteWsL7va4Ixdy9EVLErXhEh2VVVIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728242531; c=relaxed/simple;
-	bh=5Ej/roX0hBsFAsuY5HOV6xxMHJnnvuBYZnHZd7USqw8=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=pRDnBKDYKcedOtcZciv09nMb5Pv1gPAw80wS5oz/IKyRVjToEFPmkevKW3sbdXPE3hrB5T0GwFgclUAT0qk3QxeSt7ETlcaXaN2Eg6ulO4xCZ8ln+okwZO2WeP5VOFjVRfAEjbdp/Ebd7fVybIKnuelBig6FcnnaDWne0Q78WjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=cvFDF1C/; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1728244336; c=relaxed/simple;
+	bh=hcAby3Io/zPr5XrSCasVph37xtIpwQn3zw9+yPB0qCo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=VZWVDa2oIRXvvOBTRGA1CffQEoEvAXeY+f/U4cSf5h+FO866ZK12BkvomzsgODWCfsL8O68gbsql4LK9B+Cv1Q78+tpKcEj+Q71SDs7smLsBEuhagqq9OROEkg+iCiEQ3nluu1SWvA7Kkz7xjHIXKnLnOuyXhbGzmBaQuUxxQ8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vZySwmch; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=l+7m6Tyj; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="cvFDF1C/"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 7D66188896;
-	Sun,  6 Oct 2024 21:13:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1728241983;
-	bh=k1vovXXkKC3Gh/6LzZZyo6822HUQ4nfaTQ3gBfRXD2Y=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=cvFDF1C/K/pRBgSKo3l20U3tN3baBrziLPXPbhNgvzGJQn91kg6xdJ8w3mUVg+EAd
-	 BohABlcLOjzu9ZByMIc++xw4of1YNo7gC9k9adAEldbb4MeVqSJsvqoBgdIIbpXwAk
-	 z3C07mq+LQPJ4SFhE+ack7nU/df25t9UXKoQkq3JyzKrPxJq14fHhuFboTpyYrXbvg
-	 r4vDgB9zl3C9dfWXtL9mSwGyNv28359ao1tCtEb2dEVtFTBIMT2PMl7aH0ayKlXofn
-	 mXGuECDKQosJgn9nu8MYwrefXg8T+cTxr+FGcOdnt3z3jB8H3GFzd5T82FawKXj7h3
-	 GFsJPZiSrDhSA==
-Message-ID: <1e6600a8-0b1a-472b-9f84-9b3c646a931a@denx.de>
-Date: Sun, 6 Oct 2024 21:12:25 +0200
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vZySwmch";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="l+7m6Tyj"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1728244333;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=i+CH/NL8Fvz99AuAgH4S4R3ekZKC0ly626NUwbjewAk=;
+	b=vZySwmchYdifwH+eRGy640PtvwPH5j9VI2He4SGHVCL6MGBLXhW/MXURyLTvdTm246XyuO
+	f9ud5fT9o9z6cE7MXEpGbrwuWGCcscApdGDuKg0SWr5ENHmjbqWT96wVGlLdEXtUY5cjlB
+	Gt/bHknM+Jmd8e/ynU+htW82wpmlvaEJ6abdTxuGODr5DkjFDxra1EbHPHMCgbC8/nVJW5
+	vrrLbw0qgEE37QYKtzRKJlpq1SzVGxDszZCCMHZd0pM32LpEa9Gzbhg5rziWiWALqmB1sC
+	LzYB1yBv/2dP4+htxx4KIO1HMGYaEjJzfBVq3vujx6MixXVkBzSTUUOY+O1msQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1728244333;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=i+CH/NL8Fvz99AuAgH4S4R3ekZKC0ly626NUwbjewAk=;
+	b=l+7m6TyjfVDcWGDs3HWiinPlHXUMCXjlmDtaZAfKQY/ynRxdR32zxGCioQgzUa1pVkOT2u
+	50HkzodzIPLRccAA==
+To: Sakari Ailus <sakari.ailus@linux.intel.com>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 23/51] irqchip/imx-irqsteer: Switch to
+ __pm_runtime_put_autosuspend()
+In-Reply-To: <20241004094123.113742-1-sakari.ailus@linux.intel.com>
+References: <20241004094101.113349-1-sakari.ailus@linux.intel.com>
+ <20241004094123.113742-1-sakari.ailus@linux.intel.com>
+Date: Sun, 06 Oct 2024 21:52:13 +0200
+Message-ID: <87h69puhzm.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Marek Vasut <marex@denx.de>
-Subject: Re: [PATCH v7 1/1] pwm: imx27: workaround of the pwm output bug when
- decrease the duty cycle
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Frank Li <Frank.Li@nxp.com>, conor+dt@kernel.org,
- devicetree@vger.kernel.org, festevam@gmail.com, francesco@dolcini.it,
- imx@lists.linux.dev, jun.li@nxp.com, kernel@pengutronix.de,
- krzk+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
- p.zabel@pengutronix.de, pratikmanvar09@gmail.com, robh@kernel.org,
- s.hauer@pengutronix.de, shawnguo@kernel.org, xiaoning.wang@nxp.com
-References: <20241004193531.673488-1-Frank.Li@nxp.com>
- <5cvzarqkldstuziokdbxxne75i35odexkcykzikyq2gm6ytdyd@5wkm7mhotgej>
- <4166d68c-5eca-406a-936f-412dd2ae72fc@denx.de>
- <gnlm4u7dc2aktycxzn4nqw3anzeit6tbtgcq7kv3pzbrorwg6o@h35yxit5y2a3>
-Content-Language: en-US
-In-Reply-To: <gnlm4u7dc2aktycxzn4nqw3anzeit6tbtgcq7kv3pzbrorwg6o@h35yxit5y2a3>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain
 
-On 10/5/24 5:57 PM, Uwe Kleine-König wrote:
-> On Sat, Oct 05, 2024 at 02:41:29AM +0200, Marek Vasut wrote:
->> On 10/4/24 10:58 PM, Uwe Kleine-König wrote:
->>
->> [...]
->>
->> Why not simply duplicate the ERRATA description for iMX8M Nano MX8MN_0N14Y
->> errata sheet ?
->>
->> "
->> [...]
->> "
->>
->> That is very clear to me.
-> 
-> Fine for me. Frank, do you want to try creating the right mix of the NXP
-> text, your and my description?
-> 
->>> 	/*
->>> 	 * At each clock tick the hardware compares the SAR value with
->>> 	 * the current counter. If they are equal the output is changed
->>> 	 * to the inactive level.
->>
->> I would skip this ^ part unless you can surely say the IP works exactly that
->> way because you checked the RTL.
-> 
-> That it works that way is clear from the errata text IMHO.
+On Fri, Oct 04 2024 at 12:41, Sakari Ailus wrote:
 
-The errata description does not say anything about comparing SAR value 
-on each clock tick. Better stick to exactly what the errata does say.
+> pm_runtime_put_autosuspend() will soon be changed to include a call to
+> pm_runtime_mark_last_busy(). This patch switches the current users to
 
-[...]
+git grep 'This patch' Documentation/process
 
->>>> +	c = clkrate * 1500;
->>>> +	do_div(c, NSEC_PER_SEC);
->>>> +
->>>> +	local_irq_save(flags);
->>>> +	val = FIELD_GET(MX3_PWMSR_FIFOAV, readl_relaxed(imx->mmio_base + MX3_PWMSR));
->>>> +
->>>> +	if (duty_cycles < imx->duty_cycle) {
->>>> +		if (state->period < 2000) { /* 2000ns = 500 kHz */
->>>> +			/* Best effort attempt to fix up >500 kHz case */
->>>> +			udelay(6); /* 2us per FIFO entry, 3 FIFO entries written => 6 us */
->>>
->>> I don't understand the motivation to wait here. Wouldn't it be better to
->>> write the old value 3 - val times and not sleep?
->>
->> No, because you would overflow the FIFO, see:
->>
->> 137fd45ffec1 ("pwm: imx: Avoid sample FIFO overflow for i.MX PWM version2")
-> 
-> val holds the number of uses FIFO entries, so writing (3 - val) new
-> items should be fine?!
+> __pm_runtime_put_autosuspend() which will continue to have the
+> functionality of old pm_runtime_put_autosuspend().
 
-Not necessarily, consider the case where:
-- The PWM is very fast
-- There are currently 3 entries in the FIFO according to driver state
-- The driver determines 3-val is 1 and performs 1 single write to FIFO
-=> If the PWM consumed the FIFO (FIFO is empty) before the 1 single
-    write arrives, then the aforementioned errata still occurs
+Thanks,
 
-I believe the better option is to wait until the FIFO is surely depleted 
-and then write three entries in short sequence -- OLD-OLD-NEW -- this 
-way the FIFO would get updated with old value first and then switched to 
-new value, hopefully mitigating the issue as best as possible even for 
-fast PWM settings.
-
-btw. the two writes here should be writing the old value twice, now 
-there are three new value writes in this patch version.
-
->>> Or busy loop until
->>> MX3_PWMSR_FIFOAV becomes 0?
->>
->> Do we really want a busy wait here if we can avoid it ?
-> 
-> udelay(6) is a busy loop, so we're already there.
-> 
->> We can do udelay(3 * state->period / 1000); so faster PWMs would wait
->> shorter.
-> 
-> state->period is the new value (and you want the old, right?), but
-> otherwise I agree
-Right
+        tglx
