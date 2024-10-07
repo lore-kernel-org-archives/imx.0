@@ -1,115 +1,160 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB812261D
-	for <imx@lists.linux.dev>; Mon,  7 Oct 2024 10:00:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823631C8FAC
+	for <imx@lists.linux.dev>; Mon,  7 Oct 2024 10:44:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728295252; cv=none; b=Moz8jMdKjughE3M0HeuOt1Fd3mJjLUQu2z1aWLxRMaljBvqqjbInAX+LdCTEHcfVfYJenmT4d8493yyn/4C76Zc3L7HyJHvNsiEZYwtj3hb2Lrqf0jUJRM9AjK6KjcehP64LU5ZWvrAiGbQAW5WtHxBc6gpzbP+N5VQvwtV33JI=
+	t=1728297869; cv=none; b=tqLIKHy0aNYn5CwmzWuuRIBdXp4522LYao06ZCf4q1Ea1JfH94gcg76uI7ASLF+sinGn5xN298y8oeM/XVwaLUT8rmz94uvGaKI0OQFF76S7RTsT5aN39Q/tB998QzCGGBjxW2UnRxSnq+I6cVdMF8MWjGnpE2L/iAWa9wv1kcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728295252; c=relaxed/simple;
-	bh=8jLkDLa1KjvLII9dGVbKrzkDwrGVZgRVLaCZdg+1BGI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jJxvBFpStooGZWWZtsgQULrctJQTGIU2FquKxIrxdliUobedA8B+YhEKR4adVmmrxZ0/ExSfauJ9RsFluA4DiqP/Kk7tHhaEGlD+Mt5edcUTUXAC6e+lAPcZiJrT1toVqKMkcNwQRjHs1QsvHhhT5rxwIXc/5HaIzv8SYk7g0oE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K3jJLpeU; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1728297869; c=relaxed/simple;
+	bh=GoULCJHgNMbB4CM738JmnUtJvcX4vG3ulM0Gd5w1b/8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=U0CBapYNbys/Uz2ncRvw1Sw1RTW9C/6URxwBdtn8JfqVP0H+JXfQAP7AGKGB15e5MWh3U1pAg16l9dlchtFlBZKVNFQZ+qhMIvjdb1X2YrZ9N0qVLho9JOnXL+vQYwBRF0RdZkK4O/q/6jf2YNBJs0Ma/LaPfyz5xov6GC9TLx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=VLAZG9TR; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K3jJLpeU"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5399651d21aso3789700e87.3
-        for <imx@lists.linux.dev>; Mon, 07 Oct 2024 03:00:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728295249; x=1728900049; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+6HLACYIYStp6InlFY/UrXlQ9BZcSDR4bw3DCXtnczc=;
-        b=K3jJLpeU37zeKV3o4CRCLA8QEkYAeMtI/W8wfas7bXvJreZ/ylWotHQrjyLPcVLogf
-         yyKtdkvYHQMSyKqiZWh83uUQzjdW0ulLqOVtrVWCiB7Hk4qNRcHI4xwfHQk24PJMFzWy
-         iDop+ANV0Lpa+2OSC1domau+Hxb/HfBh2vAyXllrfRXRJHHDmNqEiHMi12xaohAXmg2m
-         5uKYpE2E4v1qRxQNTtwREPtxFqu3+rcl1SWKbB4cwB2eRahMk8UMgk5fENnlqZtnQ/Gu
-         yAcBEksO5QnbKhf7zseb4q9ywfoZdtogrqrkKMu11QqfbTmuyxJJDDWnWumPP53A3VQW
-         3C7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728295249; x=1728900049;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+6HLACYIYStp6InlFY/UrXlQ9BZcSDR4bw3DCXtnczc=;
-        b=Za38aY3oj1/qjhiptzmCbdznJMnxc2nZcy9MakmyHjQcsjYOIWNvZNIEHxOT8H23SJ
-         RsJHnd8v3xzfYBfvujc8mpu+WvR7mA4aRaUershH3kSMlYN5nkuknP+iBb3uRpYrhnQI
-         LsTDzNDnIWoFDUvohgfsUmA0q32WGY4+kI2gqToVMcKVe83zvEc/lJ07Ks1kvRhkI6Bf
-         olL2EUcyFPFMxq3+hjjz4wJPHiGoidfPLTU4AsN8uGNiQm3Dc2Fg7jNNaundb+fe0SzS
-         N/xR+Hwo4BhvYhDKDaFeS+UKuupTq4luQVxb/sry2ccxNwbeTblUxgcSvvcvrLwOK2At
-         NXaw==
-X-Forwarded-Encrypted: i=1; AJvYcCUxXTBsvo4Aagn/KjVEosqji1dWAsEN4sXry6Z4e7aweiU88HtGj+kcR9Dv1tVIORtlPvA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz1y5gqS6sZ34zXyXZiuFRDC+FNwbfetufSUbGD5jwbSIBtcvtO
-	DkJqp2TeRhFQYqBcnFpqh9aJ0ol7pbn5yuc4zNYf9vpyacoddSIC
-X-Google-Smtp-Source: AGHT+IE7fzKBCyOHsn6sB/8KjqsNw34RTIfeHeJEYQWXt64wGo1SEdrFPzcHNdDA5aHtq/+F5n0h3g==
-X-Received: by 2002:a05:6512:12ca:b0:538:9b5d:9885 with SMTP id 2adb3069b0e04-539ab6d851emr5214374e87.0.1728295248943;
-        Mon, 07 Oct 2024 03:00:48 -0700 (PDT)
-Received: from [192.168.0.101] (craw-09-b2-v4wan-169726-cust2117.vm24.cable.virginm.net. [92.238.24.70])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a9957d955f8sm99206066b.74.2024.10.07.03.00.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Oct 2024 03:00:48 -0700 (PDT)
-Message-ID: <6181060a-ae36-4d0f-bfe0-c1e5c8a8ab3c@gmail.com>
-Date: Mon, 7 Oct 2024 11:00:46 +0100
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="VLAZG9TR"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 4B15B240029
+	for <imx@lists.linux.dev>; Mon,  7 Oct 2024 12:44:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.de; s=2017;
+	t=1728297859; bh=GoULCJHgNMbB4CM738JmnUtJvcX4vG3ulM0Gd5w1b/8=;
+	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:From;
+	b=VLAZG9TR+EDAMfbLMuRjoh+ax5fGvDouehLuG1nV1bbovmeqFlZ2hz5VcyPJ8eru4
+	 u/LUYKtAN0q/QJS2Q2GdXiIM2zyGaWwZSoaYwBCj+gfTj5d60D/mAkAqfeELI4jGmK
+	 tZuUXPiehRHsOTUVs9tfRO06oZFltUAT5DxaGpA6B2bAooKa//SwQpGmvABfGrTEMB
+	 cxcOhoQtVk+Gfqpre4olfhTQsjCf819ctBOKbhoW3eEE0IpU+S4wK8U6deP2ipUG3f
+	 lfRJvTgJLsGWaAGBYsghYR0wlNG73DBkP498xJQhTR8kskNbzFPLEaICdd9KoCYLbZ
+	 gl3ydyHp98miQ==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4XMbPC56J4z6tws;
+	Mon,  7 Oct 2024 12:44:15 +0200 (CEST)
+Message-ID: <f6109c4a7c2648157163bd8d92001dd4e88f6aab.camel@posteo.de>
+Subject: Re: [PATCH 0/3] media: imx8mq-mipi-csi2: Simplify power management
+ handling
+From: Martin Kepplinger <martink@posteo.de>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, "G.N. Zhou (OSS)"
+	 <guoniu.zhou@oss.nxp.com>
+Cc: "rmfrfs@gmail.com" <rmfrfs@gmail.com>, "kernel@puri.sm"
+ <kernel@puri.sm>,  "mchehab@kernel.org" <mchehab@kernel.org>,
+ "shawnguo@kernel.org" <shawnguo@kernel.org>,  "s.hauer@pengutronix.de"
+ <s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>, 
+ "festevam@gmail.com" <festevam@gmail.com>, "imx@lists.linux.dev"
+ <imx@lists.linux.dev>,  "linux-media@vger.kernel.org"
+ <linux-media@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>
+Date: Mon, 07 Oct 2024 10:44:15 +0000
+In-Reply-To: <20240930072151.GC31662@pendragon.ideasonboard.com>
+References: <20240929134354.20735-1-laurent.pinchart@ideasonboard.com>
+	 <AS8PR04MB9080211FC5A0FFCB255C3247FA762@AS8PR04MB9080.eurprd04.prod.outlook.com>
+	 <20240930072151.GC31662@pendragon.ideasonboard.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH][next] clk: imx: pll14xx: Fix potential integer overflow
- on multiplication
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20241007084840.1167527-1-colin.i.king@gmail.com>
- <3e0def9f-ebb6-4171-9395-1da118b0ea29@stanley.mountain>
-Content-Language: en-US
-From: "Colin King (gmail)" <colin.i.king@gmail.com>
-In-Reply-To: <3e0def9f-ebb6-4171-9395-1da118b0ea29@stanley.mountain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 07/10/2024 10:54, Dan Carpenter wrote:
-> On Mon, Oct 07, 2024 at 09:48:40AM +0100, Colin Ian King wrote:
->> The calculation of fout is using int multiplication and assigning
->> the result to a u64, this can potentially overflow if the int variable
->> mdiv is too large. Fix this by making the 65536 a u64 value to ensure a
->> u64 multiplication is being performed to avoid the overflow.
->>
->> Fixes: 53990cf9d5b4 ("clk: imx: pll14xx: consolidate rate calculation")
->> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> 
-> mdiv is always clamped in then 0-1023 range by one of these:
-> 
-> 	mdiv = FIELD_GET(MDIV_MASK, pll_div_ctl0);
-> 	mdiv = clamp(mdiv, 64, 1023);
-> 
-> so it can't overflow and the Fixes tag is unnecessary.
+Am Montag, dem 30.09.2024 um 10:21 +0300 schrieb Laurent Pinchart:
+> On Mon, Sep 30, 2024 at 07:08:09AM +0000, G.N. Zhou (OSS) wrote:
+> > On Sunday, September 29, 2024 9:44 PM, Laurent Pinchart wrote:
+> > >=20
+> > > Hello,
+> > >=20
+> > > This small patch series is a reaction to "[PATCH] media: nxp:
+> > > imx8mq-mipi-csi2: Fix CSI clocks always enabled issue" ([1]).
+> > > Instead of making
+> > > the PM handling more complex, I think it can be greatly
+> > > simplified.
+> > >=20
+> > > I have only compile-tested the patches. Guoniu, could you give
+> > > this a try ?
+> >=20
+> > After applying the patches and test both on iMX8ULP.
+> >=20
+> > For iMX8ULP, it will cause kernel dump when access CSI registers
+> > and
+> > system hang during do suspend/resume while streaming
+> > Need to add system suspend/resume handlers and call
+> > pm_runtime_force_suspend/resume in the handlers.
+> >=20
+> > I tried to debug this issue and found pm runtime callback won't be
+> > called when system resume. The state of power domain won't enabled.
+>=20
+> Thank you for testing.
+>=20
+> I wonder if this could be caused by the CSI bridge being resumed from
+> system sleep before the CSI-2 receiver. Could you check if that's the
+> case ? If so, does the following change fix the issue ?
+>=20
+> diff --git a/drivers/media/platform/nxp/imx7-media-csi.c
+> b/drivers/media/platform/nxp/imx7-media-csi.c
+> index 9566ff738818..c66b0621e395 100644
+> --- a/drivers/media/platform/nxp/imx7-media-csi.c
+> +++ b/drivers/media/platform/nxp/imx7-media-csi.c
+> @@ -2057,9 +2057,22 @@ static int imx7_csi_notify_bound(struct
+> v4l2_async_notifier *notifier,
+> =C2=A0{
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct imx7_csi *csi =3D =
+imx7_csi_notifier_to_dev(notifier);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct media_pad *sink =
+=3D &csi-
+> >sd.entity.pads[IMX7_CSI_PAD_SINK];
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct device_link *link;
+> =C2=A0
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0csi->src_sd =3D sd;
+> =C2=A0
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/*
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * Enforce suspend/resume orde=
+ring between the source
+> (supplier) and
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * the CSI (consumer). The sou=
+rce will be suspended before
+> and resume
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * after the CSI.
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0link =3D device_link_add(csi->=
+dev, sd->dev, DL_FLAG_STATELESS);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!link) {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0dev_err(csi->dev,
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0"Failed t=
+o create device link to source
+> %s\n", sd->name);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0return -EINVAL;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> +
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return v4l2_create_fwnode=
+_links_to_pad(sd, sink,
+> MEDIA_LNK_FL_ENABLED |
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> MEDIA_LNK_FL_IMMUTABLE);
+> =C2=A0}
 
-Good point.
 
-> 
-> I think the reason why "fout" is declared as a u64 is because we were worried
-> that on 32 bit systems the "fout *=" operation could overflow.  That looks
-> reasonable to me.
+hi Laurent,
 
-Yes, that makes perfect sense. NAK my patch. Apologies for the noise.
+I now tested your 3 patches, initially including this extra change, on
+the imx8mq Librem 5 and indeed streaming continues after system resume
+now. It works without this extra change too, even though it seems to
+make sense.
 
-Colin
+so for the 3-patch series at least:
 
-> 
-> regards,
-> dan carpenter
-> 
+Tested-by: Martin Kepplinger-Novakovi=C4=87 <martink@posteo.de>
 
+thanks. I seem to be able to drop a few patches now, but if anyone else
+can test it too, please wait for that as well,
+
+                              martin
