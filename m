@@ -1,160 +1,99 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823631C8FAC
-	for <imx@lists.linux.dev>; Mon,  7 Oct 2024 10:44:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6DF41D1E87;
+	Mon,  7 Oct 2024 10:58:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728297869; cv=none; b=tqLIKHy0aNYn5CwmzWuuRIBdXp4522LYao06ZCf4q1Ea1JfH94gcg76uI7ASLF+sinGn5xN298y8oeM/XVwaLUT8rmz94uvGaKI0OQFF76S7RTsT5aN39Q/tB998QzCGGBjxW2UnRxSnq+I6cVdMF8MWjGnpE2L/iAWa9wv1kcU=
+	t=1728298698; cv=none; b=kWfj8RkMcaY/SR393y6C9rWLuBDFwxsyxgzJEBiVbdf3f1CY3cg9BrirJ7yqMKVGYf+PvR2JjfGDqv5+sxEpBzksqTuToeSwHKkyGv7B3ueSMgTof8AYhxsZbDNtROUXXzWcKIgtXAg5WK5dKOunRGUAsijzKBJskgYzqK3L7Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728297869; c=relaxed/simple;
-	bh=GoULCJHgNMbB4CM738JmnUtJvcX4vG3ulM0Gd5w1b/8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=U0CBapYNbys/Uz2ncRvw1Sw1RTW9C/6URxwBdtn8JfqVP0H+JXfQAP7AGKGB15e5MWh3U1pAg16l9dlchtFlBZKVNFQZ+qhMIvjdb1X2YrZ9N0qVLho9JOnXL+vQYwBRF0RdZkK4O/q/6jf2YNBJs0Ma/LaPfyz5xov6GC9TLx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=VLAZG9TR; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	s=arc-20240116; t=1728298698; c=relaxed/simple;
+	bh=4r+N6qSVsA8WQm58Kp3o1ulMUJ2PX5j5gHrNe4rL/Fg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DWBGqoQ6PnWD/cMNU0VY67C9LkILhoSnTQhdwTHGKB7RY+nnlZFTdrVsRtDlVsSQI2+6vEZorQrXD7R7Z3jYehCN4brJ6dMX2bm61vuuXoqnTc5CKRqLrRsVoPpBpnVjUWjIMlx61L+NP1QlXARP1gA9CFFNaz8l5WH85097sOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=oqqaHRHa; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="VLAZG9TR"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 4B15B240029
-	for <imx@lists.linux.dev>; Mon,  7 Oct 2024 12:44:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.de; s=2017;
-	t=1728297859; bh=GoULCJHgNMbB4CM738JmnUtJvcX4vG3ulM0Gd5w1b/8=;
-	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:From;
-	b=VLAZG9TR+EDAMfbLMuRjoh+ax5fGvDouehLuG1nV1bbovmeqFlZ2hz5VcyPJ8eru4
-	 u/LUYKtAN0q/QJS2Q2GdXiIM2zyGaWwZSoaYwBCj+gfTj5d60D/mAkAqfeELI4jGmK
-	 tZuUXPiehRHsOTUVs9tfRO06oZFltUAT5DxaGpA6B2bAooKa//SwQpGmvABfGrTEMB
-	 cxcOhoQtVk+Gfqpre4olfhTQsjCf819ctBOKbhoW3eEE0IpU+S4wK8U6deP2ipUG3f
-	 lfRJvTgJLsGWaAGBYsghYR0wlNG73DBkP498xJQhTR8kskNbzFPLEaICdd9KoCYLbZ
-	 gl3ydyHp98miQ==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4XMbPC56J4z6tws;
-	Mon,  7 Oct 2024 12:44:15 +0200 (CEST)
-Message-ID: <f6109c4a7c2648157163bd8d92001dd4e88f6aab.camel@posteo.de>
-Subject: Re: [PATCH 0/3] media: imx8mq-mipi-csi2: Simplify power management
- handling
-From: Martin Kepplinger <martink@posteo.de>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, "G.N. Zhou (OSS)"
-	 <guoniu.zhou@oss.nxp.com>
-Cc: "rmfrfs@gmail.com" <rmfrfs@gmail.com>, "kernel@puri.sm"
- <kernel@puri.sm>,  "mchehab@kernel.org" <mchehab@kernel.org>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,  "s.hauer@pengutronix.de"
- <s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>, 
- "festevam@gmail.com" <festevam@gmail.com>, "imx@lists.linux.dev"
- <imx@lists.linux.dev>,  "linux-media@vger.kernel.org"
- <linux-media@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>
-Date: Mon, 07 Oct 2024 10:44:15 +0000
-In-Reply-To: <20240930072151.GC31662@pendragon.ideasonboard.com>
-References: <20240929134354.20735-1-laurent.pinchart@ideasonboard.com>
-	 <AS8PR04MB9080211FC5A0FFCB255C3247FA762@AS8PR04MB9080.eurprd04.prod.outlook.com>
-	 <20240930072151.GC31662@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="oqqaHRHa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1728298678; x=1728903478; i=wahrenst@gmx.net;
+	bh=4r+N6qSVsA8WQm58Kp3o1ulMUJ2PX5j5gHrNe4rL/Fg=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=oqqaHRHabYKh+o+F8S9a3oeQ1NnXIX0nkElZmUvNqd6y5mWGzS/GustFKRstBddn
+	 1NiUxfN36ZqMbmzdKpYgIZjnyN9udUZTEpOlKfCkay6BjR7OiCr6VXZnZBMTHbuj+
+	 DY9uJEsBKRO9PDJlmXyrgGVbyCbyuCH+zft2lojdw59Ny8TCd8N24OZPCqheyfdlj
+	 9V8nkMOX4CScvJG1m43l8XxT7fWwRN9dpWep53XkMe7u9w4dmLww80/gc5DpsGSCR
+	 A+/vlm/URkRizyqBkTi3cbhEKaZyg/IAqLivgAal9QFN++zxhT5PBDpr07A0WXH71
+	 zh06xUKCbmgZ456EAQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.104] ([37.4.248.43]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MfHAB-1tcZUz2VPX-00cj2q; Mon, 07
+ Oct 2024 12:57:58 +0200
+Message-ID: <752dfca1-327e-48b9-8065-3aca7a4b4420@gmx.net>
+Date: Mon, 7 Oct 2024 12:57:57 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 2/2] ARM: dts: mxs: Add descriptions for imx287 based
+ btt3-[012] devices
+To: Lukasz Majewski <lukma@denx.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20240925143129.4081815-1-lukma@denx.de>
+ <20240925143129.4081815-2-lukma@denx.de> <20241007115336.393f0696@wsk>
+Content-Language: en-US
+From: Stefan Wahren <wahrenst@gmx.net>
+In-Reply-To: <20241007115336.393f0696@wsk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:vGWgOgMnbHciDEb0p3VWS4Q9eswrMzSPr/7sdET3Oxvn0+3yYS7
+ xHyf91Xyog3pBNdBJMrt1XLsui6tWj1P/V4nfmsZp/hjH3yQBDEK8MtcHuvUTqpD6Pdfa/+
+ Cbm2CHyUapRHGsUF7P5xvM2uXUyicukWUCD8crOJCnjE1vlx3OpWogMmFrJMGOnxyjbW9Q8
+ 4K+goWx23brAbLQw8Xmkw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:gRl0CRQ6PkY=;0I+HnMO5xuCFCGwCWe1CrZj0HrJ
+ sh8mP1wgfzej5gdUNXToBEwQedc4u1nsFt2mJpV2Gm/+eH/8koDtVyXrE1ZneoKTAMjQudFfY
+ nrwdF4kBXyDfcl8m+TBGBVOWOYdc4+1wTIOKMzE24fRpjqa3MIYpS7zFTogZVjC1k3LI6yN6/
+ pkQpUqWzxfIF0a81+A/OwnpRqeF7JugLJ+x7jL2FIz5q4zAZQGvsGCTKi0Z6QiSQm+T/QS18b
+ SPnkvJwYFoEh61mAVPgp8MyZBwy9qTt2RigzNMvbwkA4AplvraHkBFQJWI6dj6lbLq7/Wsxm3
+ wXEzqrDusBlevGuCArXzFSCD5tSKEneTScVdMaoDX7AkhoRcfpnrPqY4m36pQoyiMsXIYsJmO
+ ktbJfPARWIJIA+5FgoTQp4xerQwZaauDvWDL5hSOSO5IVr/PaEVlllje2iRqwE9Rrk38HWm9d
+ XbZerPh42lM+kikI8RcBPfcZRsUHMWjuHjxf+T74/1Ao8WGDuge/f1SK1KQTDYbBuL5xZp5ih
+ Dhvz7VQPnfyxuOAHG9us4wl5Dht3fPFtrapFb9Shu1yW0Pw5DbPbcyClQylsBb6zZxOWucEA7
+ g29344T5OdCWfpTygrR4+UzGc6mmzaEYZdbkUuBQXttAJc9ZtK8mMikIuZzQN+M1SDlYxX9ZT
+ pJFKSartXdCfcI80J6Q0u49YsUeh+v8nSRNx+YPnlbZi5v+nXU9Z1V1hiHvdrGGbwmk1O6Gn2
+ UrMlUtNzvjR8DLHN1kYJgVazGX5m32jkVA/v9lAmxoJqKCI+5A0XoMLAl8utIZTsZUB9TGZx+
+ A+aqcyAtX7ybsPEP4mjXB5gw==
 
-Am Montag, dem 30.09.2024 um 10:21 +0300 schrieb Laurent Pinchart:
-> On Mon, Sep 30, 2024 at 07:08:09AM +0000, G.N. Zhou (OSS) wrote:
-> > On Sunday, September 29, 2024 9:44 PM, Laurent Pinchart wrote:
-> > >=20
-> > > Hello,
-> > >=20
-> > > This small patch series is a reaction to "[PATCH] media: nxp:
-> > > imx8mq-mipi-csi2: Fix CSI clocks always enabled issue" ([1]).
-> > > Instead of making
-> > > the PM handling more complex, I think it can be greatly
-> > > simplified.
-> > >=20
-> > > I have only compile-tested the patches. Guoniu, could you give
-> > > this a try ?
-> >=20
-> > After applying the patches and test both on iMX8ULP.
-> >=20
-> > For iMX8ULP, it will cause kernel dump when access CSI registers
-> > and
-> > system hang during do suspend/resume while streaming
-> > Need to add system suspend/resume handlers and call
-> > pm_runtime_force_suspend/resume in the handlers.
-> >=20
-> > I tried to debug this issue and found pm runtime callback won't be
-> > called when system resume. The state of power domain won't enabled.
->=20
-> Thank you for testing.
->=20
-> I wonder if this could be caused by the CSI bridge being resumed from
-> system sleep before the CSI-2 receiver. Could you check if that's the
-> case ? If so, does the following change fix the issue ?
->=20
-> diff --git a/drivers/media/platform/nxp/imx7-media-csi.c
-> b/drivers/media/platform/nxp/imx7-media-csi.c
-> index 9566ff738818..c66b0621e395 100644
-> --- a/drivers/media/platform/nxp/imx7-media-csi.c
-> +++ b/drivers/media/platform/nxp/imx7-media-csi.c
-> @@ -2057,9 +2057,22 @@ static int imx7_csi_notify_bound(struct
-> v4l2_async_notifier *notifier,
-> =C2=A0{
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct imx7_csi *csi =3D =
-imx7_csi_notifier_to_dev(notifier);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct media_pad *sink =
-=3D &csi-
-> >sd.entity.pads[IMX7_CSI_PAD_SINK];
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct device_link *link;
-> =C2=A0
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0csi->src_sd =3D sd;
-> =C2=A0
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/*
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * Enforce suspend/resume orde=
-ring between the source
-> (supplier) and
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * the CSI (consumer). The sou=
-rce will be suspended before
-> and resume
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * after the CSI.
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0link =3D device_link_add(csi->=
-dev, sd->dev, DL_FLAG_STATELESS);
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!link) {
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0dev_err(csi->dev,
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0"Failed t=
-o create device link to source
-> %s\n", sd->name);
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0return -EINVAL;
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
-> +
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return v4l2_create_fwnode=
-_links_to_pad(sd, sink,
-> MEDIA_LNK_FL_ENABLED |
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> MEDIA_LNK_FL_IMMUTABLE);
-> =C2=A0}
+Hi Lukasz,
 
+Am 07.10.24 um 11:53 schrieb Lukasz Majewski:
+> Dear Community,
+>
+>> The btt3 device' HW revisions from 0 to 2 use imx287 SoC and are to
+>> some extend similar to already upstreamed XEA devices, hence are
+>> using common imx28-lwe.dtsi file.
+>>
+>> New, imx28-btt3.dtsi has been added to embrace common DTS
+>> properties for different HW revisions for this device.
+>>
+>> As a result - changes introduced in imx28-btt3-[012].dts are
+>> minimal.
+> Gentle ping on this patch series...
+unfortunately most of my comments in V6 were silently ignored :(
 
-hi Laurent,
-
-I now tested your 3 patches, initially including this extra change, on
-the imx8mq Librem 5 and indeed streaming continues after system resume
-now. It works without this extra change too, even though it seems to
-make sense.
-
-so for the 3-patch series at least:
-
-Tested-by: Martin Kepplinger-Novakovi=C4=87 <martink@posteo.de>
-
-thanks. I seem to be able to drop a few patches now, but if anyone else
-can test it too, please wait for that as well,
-
-                              martin
+Regards
