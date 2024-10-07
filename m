@@ -1,100 +1,122 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF5C1DC077
-	for <imx@lists.linux.dev>; Mon,  7 Oct 2024 17:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A38187342
+	for <imx@lists.linux.dev>; Mon,  7 Oct 2024 18:08:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728320501; cv=none; b=uW+3S27EYGgX9J+u94umIjvy+KVwBl2ibtZWwe+ShSP3HgcbobWqr94jn3Wh3FL3/J8eePn9bVDqN36FbJ8lLXxapYlawpCjvSBgi9gaFSvUpXBYG5bWAukQKgpZjXlZ2a7C+iO9U3Qxw2+J8osW5QesNOGTreqTdbooUBuOE8I=
+	t=1728324495; cv=none; b=QwGZjECtpKSL7NiBb2GTHzRMbEg5JS3h0+YuDOlavkVXwgUBmiCdmt6P1iiJT2LXDOkQCMdNidqe/NcPp4vIOzU38oUnrowrWrnwuwM+xvWfY6gEUNOX8PKGiixW8jrnD4GcjPb6yX4g2O3ba5FBq5FBLrRCtcCqmwCnR3aViIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728320501; c=relaxed/simple;
-	bh=AbMEOw93QpMNA2VLo4O5BMIQ6k/dgsGjKI0UHF5F9yc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YvIQpRYGDUT47LBwzDLC/Yb2BcvLQ1rq1nmTCoLXlD7dYDL+Uvuc/8rts4p3ZcpPX5HPmAPVOL+JCZ/+Rlq1yRjn1rWa38hylb+xYqDOmsp7PaH4VOWC1CK+ECoy3Ulq9kM5IMa+ALsEzUDl0+GbxIGKR6I1oSTrT/Cp1pYm4no=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=KAx4tdC2; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1728324495; c=relaxed/simple;
+	bh=82VlNPWQH2Hu3IPAf4ybBZa+D2ui7UovM6++cuWSeZ4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PSCxa62+plrZJspZhZEJ7zxDUY9vBf3e5ib44uPFUQbgZt0QWHYLNJjnw5/Zy0+fcQagC0Iqbs9cxouf0w9ZDM0oArnMJKgM1Plpj0yCIjOuPLnGaOPRUoCxScL/+wBCD0tqUNPDNmvixNJrsg6TkeFJevU693bL+65/F0jrekc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=btMFe/qB; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="KAx4tdC2"
-Received: from isaac-ThinkPad-T16-Gen-2.local (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 90ED1792;
-	Mon,  7 Oct 2024 19:00:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1728320401;
-	bh=AbMEOw93QpMNA2VLo4O5BMIQ6k/dgsGjKI0UHF5F9yc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=KAx4tdC2+hP7gWXw0kQgcd/huRYwMJ6wLpgLfYLxlw+vwF770PoE01iuMG/sucTRe
-	 19EjJgZJ8bzfgpGWIwH1YdmLmoHS85vvKnGqimzOPM3tNO/yUunbeB2ry7xWTpVoCT
-	 JZqGxArpraB98jG/B/WktnJkizqD4aXDg6jieJJY=
-Message-ID: <7ae0cd7774f4b3e30cc033a7e543546732dbced0.camel@ideasonboard.com>
-Subject: Re: [PATCH] drm: lcdif: Use adjusted_mode .clock instead of
- .crtc_clock
-From: Isaac Scott <isaac.scott@ideasonboard.com>
-To: Marek Vasut <marex@denx.de>, Alexander Stein
-	 <alexander.stein@ew.tq-group.com>, dri-devel@lists.freedesktop.org
-Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>, Fabio
- Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>, "Lukas
- F . Hartmann"	 <lukas@mntmn.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>,  Maxime Ripard <mripard@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, Sascha Hauer	
- <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Stefan Agner	
- <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>,
- imx@lists.linux.dev, 	kernel@dh-electronics.com,
- linux-arm-kernel@lists.infradead.org, 	kieran.bingham@ideasonboard.com
-Date: Mon, 07 Oct 2024 18:01:33 +0100
-In-Reply-To: <ab2eb32e-a458-4c9b-8324-27ccb00336c5@denx.de>
-References: <20240531202813.277109-1-marex@denx.de>
-		 <1897634.CQOukoFCf9@steina-w>
-		 <ab2eb32e-a458-4c9b-8324-27ccb00336c5@denx.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.0 (by Flathub.org) 
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="btMFe/qB"
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 3825488B11;
+	Mon,  7 Oct 2024 20:08:10 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1728324491;
+	bh=t37Zt3mgkzmUw94HUM/iiv1j173o+JY1xkZxRp4bBEQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=btMFe/qBpoEcy2MqO5FBSgJm52csiJZxIWesalAIbNDOFeyrn+WcsOy2etqJ8CISD
+	 rRXEsHxvMeauqRUXeGLHzJFAPpVzSt5t26zhpq0BA5JjzXl0+nQ2eugj+YSpDEBFtY
+	 ljfZ+Er0cf7qqn3db0ZXPg8dWebaUIYHoruCObh9kIpaAyx/jlRB+rC6F817hcWe8A
+	 oP90LCbbW8p/tXY1rMizj4ZUuuJyHmCGmNAifpk2r6l2FegTrf50wnvH+6W81aaAVM
+	 R63cZZJdGwGyVl2G79eEzx74p4O2YIUfar2wWDkBj4aqYtuGYFAItxK4lcjW6TAiLU
+	 y88j+S8gkYQyw==
+Message-ID: <de285fc0-728f-4ba0-86e0-0069d2cc9a35@denx.de>
+Date: Mon, 7 Oct 2024 20:06:26 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm: lcdif: Use adjusted_mode .clock instead of
+ .crtc_clock
+To: Isaac Scott <isaac.scott@ideasonboard.com>,
+ Alexander Stein <alexander.stein@ew.tq-group.com>,
+ dri-devel@lists.freedesktop.org
+Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
+ Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>,
+ "Lukas F . Hartmann" <lukas@mntmn.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Stefan Agner <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>,
+ imx@lists.linux.dev, kernel@dh-electronics.com,
+ linux-arm-kernel@lists.infradead.org, kieran.bingham@ideasonboard.com
+References: <20240531202813.277109-1-marex@denx.de>
+ <1897634.CQOukoFCf9@steina-w> <ab2eb32e-a458-4c9b-8324-27ccb00336c5@denx.de>
+ <7ae0cd7774f4b3e30cc033a7e543546732dbced0.camel@ideasonboard.com>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <7ae0cd7774f4b3e30cc033a7e543546732dbced0.camel@ideasonboard.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-Hi Marek,
+On 10/7/24 7:01 PM, Isaac Scott wrote:
+> Hi Marek,
 
-On Sat, 2024-07-06 at 02:16 +0200, Marek Vasut wrote:
-> On 6/24/24 11:19 AM, Alexander Stein wrote:
-> > Am Freitag, 31. Mai 2024, 22:27:21 CEST schrieb Marek Vasut:
-> > > In case an upstream bridge modified the required clock frequency
-> > > in its .atomic_check callback by setting adjusted_mode.clock ,
-> > > make sure that clock frequency is generated by the LCDIFv3 block.
-> > >=20
-> > > This is useful e.g. when LCDIFv3 feeds DSIM which feeds TC358767
-> > > with (e)DP output, where the TC358767 expects precise timing on
-> > > its input side, the precise timing must be generated by the
-> > > LCDIF.
-> > >=20
-> > > Signed-off-by: Marek Vasut <marex@denx.de>
-> >=20
-> > With the other rc358767 patches in place, this does the trick.
-> > Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
->=20
-> I'll pick this up next week if there is no objection.
+Hi,
 
-Unfortunately, this has caused a regression that is present in v6.12-
-rc1 on the i.MX8MP PHYTEC Pollux using the
-arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts. The
-display is the edt,etml1010g3dra panel, as per the upstream dts. We
-bisected to this commit, and reverting this change fixed the screen.
+> On Sat, 2024-07-06 at 02:16 +0200, Marek Vasut wrote:
+>> On 6/24/24 11:19 AM, Alexander Stein wrote:
+>>> Am Freitag, 31. Mai 2024, 22:27:21 CEST schrieb Marek Vasut:
+>>>> In case an upstream bridge modified the required clock frequency
+>>>> in its .atomic_check callback by setting adjusted_mode.clock ,
+>>>> make sure that clock frequency is generated by the LCDIFv3 block.
+>>>>
+>>>> This is useful e.g. when LCDIFv3 feeds DSIM which feeds TC358767
+>>>> with (e)DP output, where the TC358767 expects precise timing on
+>>>> its input side, the precise timing must be generated by the
+>>>> LCDIF.
+>>>>
+>>>> Signed-off-by: Marek Vasut <marex@denx.de>
+>>>
+>>> With the other rc358767 patches in place, this does the trick.
+>>> Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+>>
+>> I'll pick this up next week if there is no objection.
+> 
+> Unfortunately, this has caused a regression that is present in v6.12-
+> rc1 on the i.MX8MP PHYTEC Pollux using the
+> arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts. The
+> display is the edt,etml1010g3dra panel, as per the upstream dts. We
+> bisected to this commit, and reverting this change fixed the screen.
+> 
+> We then tried to retest this on top of v6.12-rc2, and found we also had
+> to revert commit ff06ea04e4cf3ba2f025024776e83bfbdfa05155 ("clk: imx:
+> clk-imx8mp: Allow media_disp pixel clock reconfigure parent rate")
+> alongside this. Reverting these two commits makes the display work
+> again at -rc2.
+> 
+> Do you have any suggestions on anything we might be missing on our end?
+> Please let me know if there's anything you'd like me to test as I'm not
+> sure what the underlying fault was here.
+I believe what is going on is that the LCDIF cannot configure its 
+upstream clock because something else is already using those clock and 
+it set those clock to a specific frequency. LCDIF is now trying to 
+configure those clock to match the LVDS panel, and it fails, so it tries 
+to set some approximate clock and that is not good enough for the LVDS 
+panel.
 
-We then tried to retest this on top of v6.12-rc2, and found we also had
-to revert commit ff06ea04e4cf3ba2f025024776e83bfbdfa05155 ("clk: imx:
-clk-imx8mp: Allow media_disp pixel clock reconfigure parent rate")
-alongside this. Reverting these two commits makes the display work
-again at -rc2.
+Can you share dump of /sys/kernel/debug/clk/clk_summary on failing and 
+working system ? You might see the difference around the "video" clock.
 
-Do you have any suggestions on anything we might be missing on our end?
-Please let me know if there's anything you'd like me to test as I'm not
-sure what the underlying fault was here.
-
-Best wishes,
-Isaac
-
-=C2=A0
-
+(I have seen this behavior before, the fix was usually a matter of 
+moving one of the LCDIFs to another upstream clock like PLL3, so it can 
+pick well matching output clock instead of some horrid approximation 
+which then drives the panel likely out of specification)
