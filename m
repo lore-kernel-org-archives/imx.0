@@ -1,126 +1,235 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECC31C1741
-	for <imx@lists.linux.dev>; Mon,  7 Oct 2024 13:50:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A89B1D90D0
+	for <imx@lists.linux.dev>; Mon,  7 Oct 2024 15:02:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728309049; cv=none; b=SJo/UDS228T5D18Ie1SrfCuPpCK4+xKgBWovdlMWsWcVM7jaYK5mg7/vq80fsco6ZRY8mS/wKy6dqydhZuTFDqRmhd7oVC9xjePBxEH+1qf3i1pbuU4DrgV7hanxnWeVpuf4kWot2tkQlOCHGJ+NxtKW+RAQM2iZbdeNyyCeku4=
+	t=1728313371; cv=none; b=nxYLG/+SI8I0YP7teJUjqUQRGux2tfnYyMnISff832NeyIoaUYULIQaqbBGMoB7daWFGUA+LmlQMNzSwI0vjuMuuVvJXZtYQUIdzobnyVfgxicqk4M/ylKCgeydpr/zuBezh+TjPHZgptXLDw+Ir4XXptsIo11ihoaPhVRt4uPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728309049; c=relaxed/simple;
-	bh=vME7vVOM3SV7oKqQNPDmicSSIKn1nnrrTXbwGSL2/rU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sw6adGYF1BOKAVBjQIUcJeYGuEsPmRSIDEsqhXO+K+g37CFUk8VLcEA7RZK9Sj2Wnq0QhY12gU7YZOhzigtktmuZiQinKnjfij2Fp/omui78y3uCxl2wwx4RQPQeVOWQMlcyick/AzWljXE1toa4cM7N6NeEJyggt2C/65+xkQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=EH8VCsYN; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1728313371; c=relaxed/simple;
+	bh=YFgBzb5t13jGsblwPz4zuJTL9xNOUthC3CzWh+2YRRI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TvTDLljQjn9WVL6KCFdTTZ7a6SVeL/oj5Sd9Ug+YX55gS6OhVZlBKX9rRRriXM2Kn809VTrLXXKHdQBxWXXUsFpDy+7oz+aXDEaLSSoR7+SVGyFoAJ28f2Gjgrcbz4h1IMsL9QQ6pgWug/Lqd+v6MqmrpPl+v+09/VyvwCqHDsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=o6JqD3CB; arc=none smtp.client-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="EH8VCsYN"
-Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 3C3E6884D2;
-	Mon,  7 Oct 2024 15:50:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1728309042;
-	bh=oIN6oCoCXM3at+wiCs/ulIOeHqZPKmiQhze+gilwUDI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=EH8VCsYN5YFTyIa5CMGuEIuFwpxiReYlDBG/ZtHYOXaRD28MGCMVI2xPFO7FEEuSM
-	 5qDUyEFr+elXvK0tF9FlQ28+EYPcHiCkbMnCIDW6M0vnG91We3THKftyBw1JI0nZFL
-	 heMoCwJCZtFeR9z9GWOfRmITkRQrAjwckSDsK02nw1V4IfQZp4SghCumyhP918Qiem
-	 TlGZzEO8Ah6C5iwlz8H0d7pjcsRcij6hsCIp90PhaLcyFKRmBFNDeXk05WZZsMsWTt
-	 LfEozCa+5z3ULmip1Tih40d6vXAytnvtSqcm8oWZL9Z/oXy+JVEPgra080UDqyewXq
-	 +2ETOcLfduS8g==
-From: Marek Vasut <marex@denx.de>
-To: linux-arm-kernel@lists.infradead.org
-Cc: Marek Vasut <marex@denx.de>,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	kernel@dh-electronics.com
-Subject: [PATCH] ARM: dts: imx6qdl-dhcom: Fix model typo for i.MX6 DHSOM
-Date: Mon,  7 Oct 2024 15:49:58 +0200
-Message-ID: <20241007135030.30559-1-marex@denx.de>
-X-Mailer: git-send-email 2.45.2
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="o6JqD3CB"
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-6db20e22c85so35766787b3.0
+        for <imx@lists.linux.dev>; Mon, 07 Oct 2024 08:02:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google; t=1728313369; x=1728918169; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lRXc+qYMpiIpv9iclqrXM3fuvSnpa1ayC+j4HSUgcBA=;
+        b=o6JqD3CBZftareftlkRxEapsTLwo3xlSlpYzfHnRISQ457b98BimbJm9CsKIimX9Go
+         zzgqUZz/4AWF78UJU+5ax58AYWrlsFzTIYYUPt1tk85u9oIpX7Ay1rGUMjPfVuBe1aBP
+         k1H3cVOg9DB+uc4b48aa58jrTAdzoRvaPi34c=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728313369; x=1728918169;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lRXc+qYMpiIpv9iclqrXM3fuvSnpa1ayC+j4HSUgcBA=;
+        b=hvwa36vSYs3wudEOjnswc/fCL2/7tLSXcrqDx+duV5QOdlYb7NBzCLTc70e/1xpri/
+         J0CmdH+KtvjtYdsVI1mwqDZ7nzbfV8pFpynvmmYfO1Qi9cgfrMPMetXw6mq0GsMS9wwK
+         /TfuOMu6UjlU11aCQX5YNK6ewoity5SWhZIIZQ7SWqEzxbybzp9T4Mcelxxi1w0GyyvM
+         oXiqaJPlCZOIP75hx6EhbKs8ewTZZBixXRa4S/QwUf0/EiLMRhwTiNsuRrdLI6WfBk3N
+         v31uAdsKSzP0BBGXouSupghhMNFln1RcFje3/6/xq041bGa+oSIRkL/jOKPjymw2p3dr
+         QK0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCX26XHZkoAOQC9Fvh6KnrHqFehrNJihRJ7P43m4j1zaLNXLR/S8JbhmiYE+WsnZKwL/Ol4=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxnp1X3I9deWSBb2PmGlAykoUmRx3wS/cbOC8UKOxqLAJ+/9Kiy
+	PeHIaBeDGnZNgbSqxK75y9bTNn4tyZBdHUjB1Lm/PZafS/jjT8YRE1TS7bnUWL0NZ3ZmNZXmyK2
+	LrcU/58Plj5tA6hDgCFNNS9PjYbUFkW4tzm5dow==
+X-Google-Smtp-Source: AGHT+IFnJ2aAEnjxDoEAR+k68meuDnN2C3jBt7oao/8Qh8myzaggBhO3fqphRnV4wGyuGqlBgzoWmwVTMtQEKqFZHbA=
+X-Received: by 2002:a05:690c:660b:b0:6e2:b263:1052 with SMTP id
+ 00721157ae682-6e2c6fdd536mr92120257b3.6.1728313368916; Mon, 07 Oct 2024
+ 08:02:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+References: <20240928083804.1073942-1-dario.binacchi@amarulasolutions.com>
+ <20240928083804.1073942-2-dario.binacchi@amarulasolutions.com>
+ <566859c1-a397-4465-987e-0682b07a703e@kernel.org> <CABGWkvqqg-PGAZTCz=MMLRx5F93jaN_=z8zJt1sDd3PHXd80PQ@mail.gmail.com>
+ <6c3e6071-822f-4230-b76b-276330de07ef@kernel.org> <CABGWkvrU507BHoP94Y7fEyFr=chuuy3o=oBHtuWRvwTw3GnxXw@mail.gmail.com>
+ <82db5037-bbd3-4005-bde9-02df1bf4c475@kernel.org> <CABGWkvqXZ+YAvo-AtUy+Ftdu0xxXKuhOwcSTwO5Fv6D3yzttNg@mail.gmail.com>
+ <b847ccb1-1eb8-4119-8612-212804cb50d8@kernel.org>
+In-Reply-To: <b847ccb1-1eb8-4119-8612-212804cb50d8@kernel.org>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Date: Mon, 7 Oct 2024 17:02:37 +0200
+Message-ID: <CABGWkvqkmo9O-O1taR651W4xo=yqar=p71e0LKqRte2CGZ2Z8w@mail.gmail.com>
+Subject: Re: [PATCH 1/6] dt-bindings: clock: imx8m-anatop: support spread
+ spectrum clocking
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com, 
+	Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Peng Fan <peng.fan@nxp.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Each DHSOM uses three digits in the Cnnn part, drop the trailing zero.
-This is a change in comment, no functional change.
+On Sun, Oct 6, 2024 at 3:13=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.org=
+> wrote:
+>
+> On 05/10/2024 10:57, Dario Binacchi wrote:
+> > On Thu, Oct 3, 2024 at 12:46=E2=80=AFPM Krzysztof Kozlowski <krzk@kerne=
+l.org> wrote:
+> >>
+> >> On 01/10/2024 08:29, Dario Binacchi wrote:
+> >>> On Mon, Sep 30, 2024 at 8:45=E2=80=AFAM Krzysztof Kozlowski <krzk@ker=
+nel.org> wrote:
+> >>>>
+> >>>> On 29/09/2024 22:00, Dario Binacchi wrote:
+> >>>>>>
+> >>>>>>
+> >>>>>>> +  properties:
+> >>>>>>> +    compatible:
+> >>>>>>> +      contains:
+> >>>>>>> +        enum:
+> >>>>>>> +          - fsl,imx8mm-anatop
+> >>>>>>> +
+> >>>>>>> +then:
+> >>>>>>> +  properties:
+> >>>>>>> +    fsl,ssc-clocks:
+> >>>>>>
+> >>>>>> Nope. Properties must be defined in top-level.
+> >>>>>>
+> >>>>>>> +      $ref: /schemas/types.yaml#/definitions/phandle-array
+> >>>>>>> +      description:
+> >>>>>>> +        The phandles to the PLLs with spread spectrum clock gene=
+ration
+> >>>>>>> +        hardware capability.
+> >>>>>>
+> >>>>>> These should be clocks.
+> >>>>>
+> >>>>> Sorry, but I can't understand what you're asking me.
+> >>>>> Could you kindly explain it to me in more detail?
+> >>>>
+> >>>> You added new property instead of using existing one for this purpos=
+e:
+> >>>> 'clocks'.
+> >>>
+> >>>>
+> >>>>
+> >>>>
+> >>>> Best regards,
+> >>>> Krzysztof
+> >>>>
+> >>>
+> >>> I added this new property specifically for managing spread-spectrum.
+> >>> Indeed, not all clocks/PLLs
+> >>> managed by the node/peripheral support spread-spectrum, and the added
+> >>> properties specify
+> >>> parameters for enabling and tuning SSC for each individual PLL based
+> >>> on the index of each list.
+> >>> If I were to use the 'clocks' property and add a clock to this list
+> >>> that does not support SSC, IMHO
+> >>> the pairings would be less clear.
+> >>
+> >> You duplicate property with argument "pairings shall match". Well, I a=
+m
+> >> not happy with the duplication. Clocks have specific order, thus it is
+> >> explicit which one needs tuning. Your other properties can match them =
+as
+> >> well, just index from clocks is offset...
+> >
+> > Just to check if I understood correctly what you are suggesting before
+> > submitting version 3 of the patch.
+> > Something, for example, like:
+> >
+> > clocks =3D <&clk, IMX8MP_AUDIO_PLL1>,  <&clk, IMX8MP_AUDIO_PLL2>, <&clk
+> > IMX8MP_VIDEO_PLL1>;
+> > fsl,ssc-modfreq-hz =3D <0, 3517>, <2, 6818>;
+>
+> Hm, what is 0? If clock index, then no, it's redundant. The first item
+> in cannot point to other clock.
+>
+> Also, what exactly are you setting here
 
-Signed-off-by: Marek Vasut <marex@denx.de>
----
-Cc: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: devicetree@vger.kernel.org
-Cc: imx@lists.linux.dev
-Cc: kernel@dh-electronics.com
-Cc: linux-arm-kernel@lists.infradead.org
----
- arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-picoitx.dts | 2 +-
- arch/arm/boot/dts/nxp/imx/imx6q-dhcom-pdk2.dts     | 2 +-
- arch/arm/boot/dts/nxp/imx/imx6s-dhcom-drc02.dts    | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+I am enabling and configuring the spread spectrum.
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-picoitx.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-picoitx.dts
-index 038bb00255567..775caf8208c5b 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-picoitx.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-picoitx.dts
-@@ -3,7 +3,7 @@
-  * Copyright (C) 2021 DH electronics GmbH
-  *
-  * DHCOM iMX6 variant:
-- * DHCM-iMX6DL-C0800-R102-F0819-E-SD-RTC-T-HS-I-01D2
-+ * DHCM-iMX6DL-C080-R102-F0819-E-SD-RTC-T-HS-I-01D2
-  * DHCOM PCB number: 493-300 or newer
-  * PicoITX PCB number: 487-600 or newer
-  */
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-dhcom-pdk2.dts b/arch/arm/boot/dts/nxp/imx/imx6q-dhcom-pdk2.dts
-index d4d57370615d8..6efd7e9fc1b18 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6q-dhcom-pdk2.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-dhcom-pdk2.dts
-@@ -4,7 +4,7 @@
-  * Copyright (C) 2018 Marek Vasut <marex@denx.de>
-  *
-  * DHCOM iMX6 variant:
-- * DHCM-iMX6Q-C0800-R102-F0819-E-SD-RTC-T-HS-I-01D2
-+ * DHCM-iMX6Q-C080-R102-F0819-E-SD-RTC-T-HS-I-01D2
-  * DHCOM PCB number: 493-300 or newer
-  * PDK2 PCB number: 516-400 or newer
-  */
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6s-dhcom-drc02.dts b/arch/arm/boot/dts/nxp/imx/imx6s-dhcom-drc02.dts
-index 4077b607c29ea..e42c274a9014e 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6s-dhcom-drc02.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6s-dhcom-drc02.dts
-@@ -3,7 +3,7 @@
-  * Copyright (C) 2021 DH electronics GmbH
-  *
-  * DHCOM iMX6 variant:
-- * DHCM-iMX6S-C0800-R102-F0409-E-CAN2-RTC-I-01D2
-+ * DHCM-iMX6S-C080-R102-F0409-E-CAN2-RTC-I-01D2
-  * DHCOM PCB number: 493-400 or newer
-  * DRC02 PCB number: 568-100 or newer
-  */
--- 
-2.45.2
+Normal clock: Without spread spectrum, the clock signal has a fixed and
+repetitive frequency (e.g., 100 MHz). This frequency generates an
+electromagnetic
+signal concentrated on a single frequency, and if strong enough, it can dis=
+turb
+other devices.
 
+Spread spectrum:  With spread spectrum, the clock frequency is
+slightly "modulated,"
+meaning it oscillates around a central value. For example, if the base
+frequency is 100 MHz,
+the clock might vary between 99.5 MHz and 100.5 MHz in a cyclic manner. Thi=
+s
+small variation spreads the energy over a wider range of frequencies
+(from 99.5 to 100.5 MHz),
+reducing the intensity of the signal at any one frequency.
+
+> and why assigned-clock-rates are
+> not working?
+
+The traditional clock properties, such as clocks,
+assigned-clocks-rates, etc retain their usual
+meaning even when spread spectrum is applied. However, to implement
+the spread spectrum
+mechanism in a circuit with a PLL (Phase-Locked Loop), additional
+specific parameters are
+introduced to properly configure the frequency modulation:
+
+ - Modulation frequency: i. e. fsl,ssc-modfreq-hz
+ - Modulation rate: i.e.  fsl,ssc-modrate-percent
+ - Modulation type:  i. e. fsl,ssc-modmethod (center-spread, down-spread)
+
+Additionally, it should be noted that not all anatop PLLs are equipped
+with circuitry for spread
+spectrum, but only a small subset of them. This is the reason why I
+introduced the property
+"fsl, ssc-clocks".
+
+This is another commit [1] on enabling spread spectrum that I
+implemented some time ago for
+the am335x. The most evident difference is that in that case the node
+was a clock node and not
+a clock controller, as in the case of anatop. The parameters are also
+not exactly the same, but
+that depends on the platform.
+
+[1] 4a8bc2644ef0cbf8e ("dt-bindings: ti: dpll: add spread spectrum support"=
+)
+
+Thanks and regards,
+Dario
+
+>
+> Best regards,
+> Krzysztof
+>
+
+
+--=20
+
+Dario Binacchi
+
+Senior Embedded Linux Developer
+
+dario.binacchi@amarulasolutions.com
+
+__________________________________
+
+
+Amarula Solutions SRL
+
+Via Le Canevare 30, 31100 Treviso, Veneto, IT
+
+T. +39 042 243 5310
+info@amarulasolutions.com
+
+www.amarulasolutions.com
