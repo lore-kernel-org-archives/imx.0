@@ -1,235 +1,100 @@
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A89B1D90D0
-	for <imx@lists.linux.dev>; Mon,  7 Oct 2024 15:02:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741CC1D7E50
+	for <imx@lists.linux.dev>; Mon,  7 Oct 2024 15:08:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728313371; cv=none; b=nxYLG/+SI8I0YP7teJUjqUQRGux2tfnYyMnISff832NeyIoaUYULIQaqbBGMoB7daWFGUA+LmlQMNzSwI0vjuMuuVvJXZtYQUIdzobnyVfgxicqk4M/ylKCgeydpr/zuBezh+TjPHZgptXLDw+Ir4XXptsIo11ihoaPhVRt4uPQ=
+	t=1728313740; cv=none; b=MGcLiBY6IpPOxkPRVM2rzpaI+l8PNVbJaOzirFf9tAlk9BzlG+vpf0HqmdARtgRof3dwyYxV9srM0MCNbjA8AyacYCLY/lWlpk3xpofHDIU8qGdOLhw5LztKLmQ1NDI/hyWr19UM/hwiwo7536dIfUe8LENZMA7Xiy0Gs12ewts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728313371; c=relaxed/simple;
-	bh=YFgBzb5t13jGsblwPz4zuJTL9xNOUthC3CzWh+2YRRI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TvTDLljQjn9WVL6KCFdTTZ7a6SVeL/oj5Sd9Ug+YX55gS6OhVZlBKX9rRRriXM2Kn809VTrLXXKHdQBxWXXUsFpDy+7oz+aXDEaLSSoR7+SVGyFoAJ28f2Gjgrcbz4h1IMsL9QQ6pgWug/Lqd+v6MqmrpPl+v+09/VyvwCqHDsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=o6JqD3CB; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	s=arc-20240116; t=1728313740; c=relaxed/simple;
+	bh=qGhUu9mdJXXubW4rlkY8zXABwAVgp9j7AomaOvWbYPc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jf01VlRPGEJ5Va4tJYSDS+gsGn52hUiRh2/WIPG+egHpgsdPlhRg8iVfO6xbrtXkRbLstvH98qDwwrf7h/ilMDoouvlC+q6+118l54adG2grDkJPe7V3RkM2C55eFqiLBo3c7Ou687fw5Q7FzhFs/UoS780p3S1SLf/I/DWIkkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fUtC010a; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="o6JqD3CB"
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-6db20e22c85so35766787b3.0
-        for <imx@lists.linux.dev>; Mon, 07 Oct 2024 08:02:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1728313369; x=1728918169; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lRXc+qYMpiIpv9iclqrXM3fuvSnpa1ayC+j4HSUgcBA=;
-        b=o6JqD3CBZftareftlkRxEapsTLwo3xlSlpYzfHnRISQ457b98BimbJm9CsKIimX9Go
-         zzgqUZz/4AWF78UJU+5ax58AYWrlsFzTIYYUPt1tk85u9oIpX7Ay1rGUMjPfVuBe1aBP
-         k1H3cVOg9DB+uc4b48aa58jrTAdzoRvaPi34c=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728313369; x=1728918169;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lRXc+qYMpiIpv9iclqrXM3fuvSnpa1ayC+j4HSUgcBA=;
-        b=hvwa36vSYs3wudEOjnswc/fCL2/7tLSXcrqDx+duV5QOdlYb7NBzCLTc70e/1xpri/
-         J0CmdH+KtvjtYdsVI1mwqDZ7nzbfV8pFpynvmmYfO1Qi9cgfrMPMetXw6mq0GsMS9wwK
-         /TfuOMu6UjlU11aCQX5YNK6ewoity5SWhZIIZQ7SWqEzxbybzp9T4Mcelxxi1w0GyyvM
-         oXiqaJPlCZOIP75hx6EhbKs8ewTZZBixXRa4S/QwUf0/EiLMRhwTiNsuRrdLI6WfBk3N
-         v31uAdsKSzP0BBGXouSupghhMNFln1RcFje3/6/xq041bGa+oSIRkL/jOKPjymw2p3dr
-         QK0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX26XHZkoAOQC9Fvh6KnrHqFehrNJihRJ7P43m4j1zaLNXLR/S8JbhmiYE+WsnZKwL/Ol4=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxnp1X3I9deWSBb2PmGlAykoUmRx3wS/cbOC8UKOxqLAJ+/9Kiy
-	PeHIaBeDGnZNgbSqxK75y9bTNn4tyZBdHUjB1Lm/PZafS/jjT8YRE1TS7bnUWL0NZ3ZmNZXmyK2
-	LrcU/58Plj5tA6hDgCFNNS9PjYbUFkW4tzm5dow==
-X-Google-Smtp-Source: AGHT+IFnJ2aAEnjxDoEAR+k68meuDnN2C3jBt7oao/8Qh8myzaggBhO3fqphRnV4wGyuGqlBgzoWmwVTMtQEKqFZHbA=
-X-Received: by 2002:a05:690c:660b:b0:6e2:b263:1052 with SMTP id
- 00721157ae682-6e2c6fdd536mr92120257b3.6.1728313368916; Mon, 07 Oct 2024
- 08:02:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fUtC010a"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728313738; x=1759849738;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=qGhUu9mdJXXubW4rlkY8zXABwAVgp9j7AomaOvWbYPc=;
+  b=fUtC010aCptcqUgAFlhBFvuvONgDlqdjv55UztED7WD/kG7mq4So5oGF
+   a/ctamizbnq35zFcDl2bvpIYktgVZipzbJ1cL6HOkW0d9KNh+/tcAOd3N
+   DmaHnhmFVPb1AldzkQAhrEFswa0ahpPotVvWq24xbkt0JLTVt90iCsXgH
+   XWc98UIa6pqU6w5uo1NM0i0+8gc7BEvQ+4GP/C7+MnaGIZP/oBz4ua4MR
+   LByMMg/NxjK5N6PweN6NyGntL4RvBDPm4iWhpp54wq6PHcquMdg3iE40s
+   c2mNQDYVFIj2Y7dhuTNbULGvsLgEWjEOwpn2Ks4MSENeIsqY1tXsNOaX3
+   Q==;
+X-CSE-ConnectionGUID: x6EM8pU9QW+noSXU9U+Etg==
+X-CSE-MsgGUID: 6UtEFCzPSLGswNWKISo1TQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11218"; a="52870239"
+X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; 
+   d="scan'208";a="52870239"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 08:08:58 -0700
+X-CSE-ConnectionGUID: pm590HrVQSGvXKUrqLQhkA==
+X-CSE-MsgGUID: vHncrqsZQFCU65LpdBLbvQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; 
+   d="scan'208";a="80477332"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa004.jf.intel.com with ESMTP; 07 Oct 2024 08:08:55 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id DCC564FB; Mon, 07 Oct 2024 18:08:53 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Paul Cercueil <paul@crapouillou.net>,
+	dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Subject: [PATCH v1 3/4] dmaengine: Add a comment on why it's okay when kasprintf() fails
+Date: Mon,  7 Oct 2024 18:06:47 +0300
+Message-ID: <20241007150852.2183722-4-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
+In-Reply-To: <20241007150852.2183722-1-andriy.shevchenko@linux.intel.com>
+References: <20241007150852.2183722-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240928083804.1073942-1-dario.binacchi@amarulasolutions.com>
- <20240928083804.1073942-2-dario.binacchi@amarulasolutions.com>
- <566859c1-a397-4465-987e-0682b07a703e@kernel.org> <CABGWkvqqg-PGAZTCz=MMLRx5F93jaN_=z8zJt1sDd3PHXd80PQ@mail.gmail.com>
- <6c3e6071-822f-4230-b76b-276330de07ef@kernel.org> <CABGWkvrU507BHoP94Y7fEyFr=chuuy3o=oBHtuWRvwTw3GnxXw@mail.gmail.com>
- <82db5037-bbd3-4005-bde9-02df1bf4c475@kernel.org> <CABGWkvqXZ+YAvo-AtUy+Ftdu0xxXKuhOwcSTwO5Fv6D3yzttNg@mail.gmail.com>
- <b847ccb1-1eb8-4119-8612-212804cb50d8@kernel.org>
-In-Reply-To: <b847ccb1-1eb8-4119-8612-212804cb50d8@kernel.org>
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Date: Mon, 7 Oct 2024 17:02:37 +0200
-Message-ID: <CABGWkvqkmo9O-O1taR651W4xo=yqar=p71e0LKqRte2CGZ2Z8w@mail.gmail.com>
-Subject: Re: [PATCH 1/6] dt-bindings: clock: imx8m-anatop: support spread
- spectrum clocking
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com, 
-	Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
-	Peng Fan <peng.fan@nxp.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Oct 6, 2024 at 3:13=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.org=
-> wrote:
->
-> On 05/10/2024 10:57, Dario Binacchi wrote:
-> > On Thu, Oct 3, 2024 at 12:46=E2=80=AFPM Krzysztof Kozlowski <krzk@kerne=
-l.org> wrote:
-> >>
-> >> On 01/10/2024 08:29, Dario Binacchi wrote:
-> >>> On Mon, Sep 30, 2024 at 8:45=E2=80=AFAM Krzysztof Kozlowski <krzk@ker=
-nel.org> wrote:
-> >>>>
-> >>>> On 29/09/2024 22:00, Dario Binacchi wrote:
-> >>>>>>
-> >>>>>>
-> >>>>>>> +  properties:
-> >>>>>>> +    compatible:
-> >>>>>>> +      contains:
-> >>>>>>> +        enum:
-> >>>>>>> +          - fsl,imx8mm-anatop
-> >>>>>>> +
-> >>>>>>> +then:
-> >>>>>>> +  properties:
-> >>>>>>> +    fsl,ssc-clocks:
-> >>>>>>
-> >>>>>> Nope. Properties must be defined in top-level.
-> >>>>>>
-> >>>>>>> +      $ref: /schemas/types.yaml#/definitions/phandle-array
-> >>>>>>> +      description:
-> >>>>>>> +        The phandles to the PLLs with spread spectrum clock gene=
-ration
-> >>>>>>> +        hardware capability.
-> >>>>>>
-> >>>>>> These should be clocks.
-> >>>>>
-> >>>>> Sorry, but I can't understand what you're asking me.
-> >>>>> Could you kindly explain it to me in more detail?
-> >>>>
-> >>>> You added new property instead of using existing one for this purpos=
-e:
-> >>>> 'clocks'.
-> >>>
-> >>>>
-> >>>>
-> >>>>
-> >>>> Best regards,
-> >>>> Krzysztof
-> >>>>
-> >>>
-> >>> I added this new property specifically for managing spread-spectrum.
-> >>> Indeed, not all clocks/PLLs
-> >>> managed by the node/peripheral support spread-spectrum, and the added
-> >>> properties specify
-> >>> parameters for enabling and tuning SSC for each individual PLL based
-> >>> on the index of each list.
-> >>> If I were to use the 'clocks' property and add a clock to this list
-> >>> that does not support SSC, IMHO
-> >>> the pairings would be less clear.
-> >>
-> >> You duplicate property with argument "pairings shall match". Well, I a=
-m
-> >> not happy with the duplication. Clocks have specific order, thus it is
-> >> explicit which one needs tuning. Your other properties can match them =
-as
-> >> well, just index from clocks is offset...
-> >
-> > Just to check if I understood correctly what you are suggesting before
-> > submitting version 3 of the patch.
-> > Something, for example, like:
-> >
-> > clocks =3D <&clk, IMX8MP_AUDIO_PLL1>,  <&clk, IMX8MP_AUDIO_PLL2>, <&clk
-> > IMX8MP_VIDEO_PLL1>;
-> > fsl,ssc-modfreq-hz =3D <0, 3517>, <2, 6818>;
->
-> Hm, what is 0? If clock index, then no, it's redundant. The first item
-> in cannot point to other clock.
->
-> Also, what exactly are you setting here
+In dma_request_chan() one of the kasprintf() call is not checked
+against NULL. This is completely fine right now, but make others
+aware of this aspect by adding a comment.
 
-I am enabling and configuring the spread spectrum.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/dma/dmaengine.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Normal clock: Without spread spectrum, the clock signal has a fixed and
-repetitive frequency (e.g., 100 MHz). This frequency generates an
-electromagnetic
-signal concentrated on a single frequency, and if strong enough, it can dis=
-turb
-other devices.
+diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
+index c1357d7f3dc6..dd4224d90f07 100644
+--- a/drivers/dma/dmaengine.c
++++ b/drivers/dma/dmaengine.c
+@@ -854,8 +854,8 @@ struct dma_chan *dma_request_chan(struct device *dev, const char *name)
+ 
+ found:
+ #ifdef CONFIG_DEBUG_FS
+-	chan->dbg_client_name = kasprintf(GFP_KERNEL, "%s:%s", dev_name(dev),
+-					  name);
++	chan->dbg_client_name = kasprintf(GFP_KERNEL, "%s:%s", dev_name(dev), name);
++	/* No functional issue if it fails, users are supposed to test before use */
+ #endif
+ 
+ 	chan->name = kasprintf(GFP_KERNEL, "dma:%s", name);
+-- 
+2.43.0.rc1.1336.g36b5255a03ac
 
-Spread spectrum:  With spread spectrum, the clock frequency is
-slightly "modulated,"
-meaning it oscillates around a central value. For example, if the base
-frequency is 100 MHz,
-the clock might vary between 99.5 MHz and 100.5 MHz in a cyclic manner. Thi=
-s
-small variation spreads the energy over a wider range of frequencies
-(from 99.5 to 100.5 MHz),
-reducing the intensity of the signal at any one frequency.
-
-> and why assigned-clock-rates are
-> not working?
-
-The traditional clock properties, such as clocks,
-assigned-clocks-rates, etc retain their usual
-meaning even when spread spectrum is applied. However, to implement
-the spread spectrum
-mechanism in a circuit with a PLL (Phase-Locked Loop), additional
-specific parameters are
-introduced to properly configure the frequency modulation:
-
- - Modulation frequency: i. e. fsl,ssc-modfreq-hz
- - Modulation rate: i.e.  fsl,ssc-modrate-percent
- - Modulation type:  i. e. fsl,ssc-modmethod (center-spread, down-spread)
-
-Additionally, it should be noted that not all anatop PLLs are equipped
-with circuitry for spread
-spectrum, but only a small subset of them. This is the reason why I
-introduced the property
-"fsl, ssc-clocks".
-
-This is another commit [1] on enabling spread spectrum that I
-implemented some time ago for
-the am335x. The most evident difference is that in that case the node
-was a clock node and not
-a clock controller, as in the case of anatop. The parameters are also
-not exactly the same, but
-that depends on the platform.
-
-[1] 4a8bc2644ef0cbf8e ("dt-bindings: ti: dpll: add spread spectrum support"=
-)
-
-Thanks and regards,
-Dario
-
->
-> Best regards,
-> Krzysztof
->
-
-
---=20
-
-Dario Binacchi
-
-Senior Embedded Linux Developer
-
-dario.binacchi@amarulasolutions.com
-
-__________________________________
-
-
-Amarula Solutions SRL
-
-Via Le Canevare 30, 31100 Treviso, Veneto, IT
-
-T. +39 042 243 5310
-info@amarulasolutions.com
-
-www.amarulasolutions.com
