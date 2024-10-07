@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5F315B97D;
-	Mon,  7 Oct 2024 19:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C861865FC;
+	Mon,  7 Oct 2024 20:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728330818; cv=none; b=NuS84Olid0LPCIlJ+d0qQwJUhvLaj3lRzm2rlgWBLRQIi/VKZJ6G1MWmAZw4Ryr6ikPzNWZD0Shmyse2UlRiDURgJrVjOvUMzdVuvL3ZjgRA8Ne3rNON209MIHhCHCtGBTHoQnE+nRMESR6IYo3BPIDRezJBsMcvTkKbwiiptXE=
+	t=1728331755; cv=none; b=AkWLqs1sXp3WSVzqBd4Srf+Q050E8003aXuZRitJYmwyFT7c5FipQXlvOEE/Ef0mD3Y9ZxIVIl1CoJo702UGr2PnOovWKGwbi65ZlskDgwgj7qAH+p9WAslYwqbRfd8ghjWSmpNrKB1HTNPYvmxUVUTIVNiXLNPRpqA346oAT7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728330818; c=relaxed/simple;
-	bh=Wf8VAqHP1h1/kaFqesJQCVp/zkSfqqJZiKYeNJ66IfM=;
+	s=arc-20240116; t=1728331755; c=relaxed/simple;
+	bh=AZgOXjS5qYlwsu6tp81KFVorld8zA1+s4cgFUkR1EJw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VU5ztlJ3Cc4aXegMjggHHnz/9yA2YXQ+QfoC69baillzzK/Zb12e9ijJ32YrwBO/3t5gRsQT5U7FxTPnMdBrIj60idwxY/4nnmNdrFfG75jWuzSDDxs0dEL4EltSykJHVg5AgiaodKtKBSrR8blwF92Z3z20wITMr81T8i8YKk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HuRRTf05; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=PxbQKKD1lpkJtom7NbqRfBJAZBMd75kZvtC+0gcZiXA9OiJsiZ9H19PhyUAs/dageG9KW43zm/ZSqeqlKgRLsA5Nh7ZDnL6HN6pvYcHk+KwpdRnSgDidInXzZpmAn1OjQnvA/l29IcmSp2BjrZ20arIJIMAP7AuPKUUaDI4Ie4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hgAVRmHO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HuRRTf05"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D44BFC4CEC6;
-	Mon,  7 Oct 2024 19:53:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hgAVRmHO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D24BC4CEC6;
+	Mon,  7 Oct 2024 20:09:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728330818;
-	bh=Wf8VAqHP1h1/kaFqesJQCVp/zkSfqqJZiKYeNJ66IfM=;
+	s=k20201202; t=1728331754;
+	bh=AZgOXjS5qYlwsu6tp81KFVorld8zA1+s4cgFUkR1EJw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HuRRTf05DbP8ak7i68eQcPlcRfbpiA7gtvfbzVCUCJ8b4+wzPdRuLq7+AEbwvSlcH
-	 h/L8k4wdcd/80Xl1+2Sm9C4M4GSf2PNL/XhQmb9igDnMXe4uoAi889qSbrmgxOhjkJ
-	 Hau7MOGAvje6TR7SgmG00PkZLmy4HrDNsu7ReduHTGM7E/1NG6tnezEUIdaWhLI38H
-	 mMcMgxpoj8v2LlAnEqMJMUH5Gbarw5H0z8dc23YnZtW5kbbWACyZcFCJSiqT4Q9Myx
-	 zEglIuWVzCoyncyIC5Ol1JDsYxJpaaFmIvuyWHwuAi53ZPNlzhm/s0GtJ4QuJKuA3y
-	 q0I37OYUScy0A==
-Date: Mon, 7 Oct 2024 14:53:36 -0500
+	b=hgAVRmHOxcDWny0Hnv2w5a+yWOr7jlxL23RtpwRZd7uJHjrTidbkGxnZScfDCUnNQ
+	 g+4cONt4TSs4+o6Ulmn/BFjnB8W2Bjigf56P7iWrlHjuEnB74SH2tjCosZERvCq59a
+	 /noT1zSYOWbCU9VFjtm9gfUrPpZ0Z+BIR7drPi2Hd3nOJXjwM8PeJpM3oghF4k+eiz
+	 aWi8uDLo88VI/f6ICZ8nP4SSMeUCvTDm4PSwZfj0vmQQvsi+xZ4WUFqmzGy5HlQ3ei
+	 Xt3jjVKTdIqCxRLeZCTAW2LAShCO/o0k4NCx9sik/Bg7iwF1OyvsZ8XME0dtq5J8Nn
+	 mGViFB/brrMlQ==
+Date: Mon, 7 Oct 2024 15:09:13 -0500
 From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
-	Conor Dooley <conor+dt@kernel.org>, stuyoder@gmail.com,
-	linux-kernel@vger.kernel.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, laurentiu.tudor@nxp.com
-Subject: Re: [PATCH v3 1/1] dt-bindings: misc: fsl,qoriq-mc: remove ref for
- msi-parent
-Message-ID: <172833081510.2293257.11172832997537740739.robh@kernel.org>
-References: <20241007153047.807723-1-Frank.Li@nxp.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	imx@lists.linux.dev, Conor Dooley <conor+dt@kernel.org>
+Subject: Re: [PATCH v3 1/1] dt-bindings: interrupt-controller: fsl,ls-extirq:
+ workaround wrong interrupt-map number
+Message-ID: <172833174920.2317928.5857318488649665401.robh@kernel.org>
+References: <20241007161823.811021-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,29 +45,36 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241007153047.807723-1-Frank.Li@nxp.com>
+In-Reply-To: <20241007161823.811021-1-Frank.Li@nxp.com>
 
 
-On Mon, 07 Oct 2024 11:30:42 -0400, Frank Li wrote:
-> msi-parent is standard property. Needn't ref to phandle. Add maxItems: 1
-> for it.
+On Mon, 07 Oct 2024 12:18:23 -0400, Frank Li wrote:
+> The driver(drivers/irqchip/irq-ls-extirq.c) have not use standard DT
+> function to parser interrupt-map. So it doesn't consider '#address-size'
+> in parent interrupt controller, such as GIC.
 > 
-> Fix below warning:
->   arch/arm64/boot/dts/freescale/fsl-ls1088a-ten64.dtb: fsl-mc@80c000000: msi-parent:0: [16, 0] is too long
+> When dt-binding verify interrupt-map, item data matrix is spitted at
+> incorrect position. So cause below warning:
 > 
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> arch/arm64/boot/dts/freescale/fsl-ls1088a-qds.dtb: interrupt-controller@14:
+> interrupt-map: [[0, 0, 1, 0, 0, 4, 1, 0], [1, 0, 1, 4, 2, 0, 1, 0], ...
+> is too short
+> 
+> Remove interrupt-map restriction to workaround this warning for
+> 'fsl,ls1088a-extirq', 'fsl,ls2080a-extirq' and fsl,lx2160a-extirq.
+> Other keep the same restriction.
+> 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
 > Change from v2 to v3
-> - Add krzy's review tage
-> - send include maintainer, because file name change, get_maintainer.pl
-> have not return orignal fsl,qoriq-mc.txt's maintainer.
-> 
+> - remove interrupt-map restriction according rob's suggestion.
 > Change from v1 to v2
-> - add maxItems: 1 for msi-parent
+> - remove duplicate function in commit message
+> - only reduce miniItems for after 1088a chips
+> - maxItems change to 9. Otherwise report too long.
 > ---
->  Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  .../interrupt-controller/fsl,ls-extirq.yaml   | 26 ++++++++++++++++---
+>  1 file changed, 23 insertions(+), 3 deletions(-)
 > 
 
 Applied, thanks!
