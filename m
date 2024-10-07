@@ -1,99 +1,87 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6DF41D1E87;
-	Mon,  7 Oct 2024 10:58:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A61118C03C
+	for <imx@lists.linux.dev>; Mon,  7 Oct 2024 11:51:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728298698; cv=none; b=kWfj8RkMcaY/SR393y6C9rWLuBDFwxsyxgzJEBiVbdf3f1CY3cg9BrirJ7yqMKVGYf+PvR2JjfGDqv5+sxEpBzksqTuToeSwHKkyGv7B3ueSMgTof8AYhxsZbDNtROUXXzWcKIgtXAg5WK5dKOunRGUAsijzKBJskgYzqK3L7Bg=
+	t=1728301894; cv=none; b=YUNosaXb8G9hSxfL+/iqdH0Mt+uYXcQO41NIcN+vB92l1o5uZf+5Uf4z15HF1E2pUlaAD/+0QJrFJ0mnPNB59Lu7ghmQ/wWIsmWKPf4+6P2X5vRg4L//IiRFlbob28Rx2O/AgnEt59UhGnpj97JmR3Apsf0uzK1hmdJdsqLiHZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728298698; c=relaxed/simple;
-	bh=4r+N6qSVsA8WQm58Kp3o1ulMUJ2PX5j5gHrNe4rL/Fg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DWBGqoQ6PnWD/cMNU0VY67C9LkILhoSnTQhdwTHGKB7RY+nnlZFTdrVsRtDlVsSQI2+6vEZorQrXD7R7Z3jYehCN4brJ6dMX2bm61vuuXoqnTc5CKRqLrRsVoPpBpnVjUWjIMlx61L+NP1QlXARP1gA9CFFNaz8l5WH85097sOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=oqqaHRHa; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	s=arc-20240116; t=1728301894; c=relaxed/simple;
+	bh=Rar3gRgYHpcgBLUPr1prICpjuU8qRDOzk+bp/0TNuBc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d1vCu63HiJar78VWihqDhTyKtPmZY07x4CI/ZqbiZ6v1X8MCUhlPqIB8ILjFYlsNnqBRyvOLPtlUwtRBFM3Zkbh0VR4+kCOdUftXVoemU4eydJbb6KUTqHdBOy+gTNdWRKZGV/Oc7rWSpzJGbS1iJ+NxnTMS5lQCKCs+DpFvtSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZMGIW+Gp; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="oqqaHRHa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1728298678; x=1728903478; i=wahrenst@gmx.net;
-	bh=4r+N6qSVsA8WQm58Kp3o1ulMUJ2PX5j5gHrNe4rL/Fg=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=oqqaHRHabYKh+o+F8S9a3oeQ1NnXIX0nkElZmUvNqd6y5mWGzS/GustFKRstBddn
-	 1NiUxfN36ZqMbmzdKpYgIZjnyN9udUZTEpOlKfCkay6BjR7OiCr6VXZnZBMTHbuj+
-	 DY9uJEsBKRO9PDJlmXyrgGVbyCbyuCH+zft2lojdw59Ny8TCd8N24OZPCqheyfdlj
-	 9V8nkMOX4CScvJG1m43l8XxT7fWwRN9dpWep53XkMe7u9w4dmLww80/gc5DpsGSCR
-	 A+/vlm/URkRizyqBkTi3cbhEKaZyg/IAqLivgAal9QFN++zxhT5PBDpr07A0WXH71
-	 zh06xUKCbmgZ456EAQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.104] ([37.4.248.43]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MfHAB-1tcZUz2VPX-00cj2q; Mon, 07
- Oct 2024 12:57:58 +0200
-Message-ID: <752dfca1-327e-48b9-8065-3aca7a4b4420@gmx.net>
-Date: Mon, 7 Oct 2024 12:57:57 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZMGIW+Gp"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5398e58ceebso3807927e87.0
+        for <imx@lists.linux.dev>; Mon, 07 Oct 2024 04:51:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728301890; x=1728906690; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Rar3gRgYHpcgBLUPr1prICpjuU8qRDOzk+bp/0TNuBc=;
+        b=ZMGIW+GpPtIWkIrATwFvkNaOWyGrA5L/0zx8f5NjcS4V437OzeO9oBdBGP7Gv94Acv
+         0tYp21YyKKkfapK6rLi5Oqiqw8+9CnodDFJyLZco2yI0JeAcZP5if1P5m19zEABK9iot
+         1FeqTgkz0JcZxrr24z2GNwz0mUNhAMrbtY28RW6lImrNY8HvWECfsVQ3ZDpgBsw9vhAv
+         3PzYN6hSc3xEEzh21l2cYqK7kiDGyODVtSr+CJfast8fTPfvOXijovtJsx3cuAr0SFYK
+         +5hFoc+tGaZy1U4g7DXH7RTIkJRhV7qWzVdn38Axz8+Q3KpF/KjBeIDApa1C4j9z9KJO
+         FSSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728301890; x=1728906690;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Rar3gRgYHpcgBLUPr1prICpjuU8qRDOzk+bp/0TNuBc=;
+        b=pC7fnzKn/++yNOAvYTzkZKZZJpx2QxlQkATrYFqleIYRCQ47CDcjWNuzoVdzZOrWYr
+         vzXW66JH3pCc2fgAn7q+3K33pRQSUwhNJ8VrNhayvCZHKq9gOGjf7qsu7LzukQ39lKyV
+         uvpQnxTSfJrbSeXujGXQ1suFKHxU9QJxOCSsD5gtywwFPp5wm0fdQIuruFMe6AktMnBZ
+         Na+0/q++DfBEbg0KsxCEocBlP9mwCNqn8dQAlFoPjQe+0f/maYScSCtvMUal6VOdLEEe
+         gDAfHiFqZzCTK9P/ocNrAVF7qrDQCRshYjYFMY4sDRbB3o0aEp7L2zGf1HYAAluWviHj
+         GANA==
+X-Forwarded-Encrypted: i=1; AJvYcCXTTPe63seRxNkKtRb3ZHl9c0me5UhhGiKcmjOCh6Axm6yQjOecCCTOLgUalHRh6Bq5mds=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwutPupYXgWSmHhrl/nvWSHPjLTiYvXsw8V8/KCfURlw70Ojvdk
+	/OTETs/MrFeNyRMsksE+dZWHC8Z4fvqC/7YPAsgvJ03dfMNr/LzVDuFSSYEiAdA/9ePFjcGWuR9
+	tvIDDRFR7igFK9HN54azuXktW7Ow=
+X-Google-Smtp-Source: AGHT+IH1b7AtDRdmVaSfJv3J1FI2YdaXAbDlTylH1s44fuUTjzLJGm/Lz3zXQL3hhmC94ehxBHKmM7+qFNFRaW/3CWo=
+X-Received: by 2002:a05:6512:6c6:b0:539:9155:e8cb with SMTP id
+ 2adb3069b0e04-539ac0a9e01mr3723679e87.0.1728301889319; Mon, 07 Oct 2024
+ 04:51:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/2] ARM: dts: mxs: Add descriptions for imx287 based
- btt3-[012] devices
-To: Lukasz Majewski <lukma@denx.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20240925143129.4081815-1-lukma@denx.de>
- <20240925143129.4081815-2-lukma@denx.de> <20241007115336.393f0696@wsk>
-Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-In-Reply-To: <20241007115336.393f0696@wsk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:vGWgOgMnbHciDEb0p3VWS4Q9eswrMzSPr/7sdET3Oxvn0+3yYS7
- xHyf91Xyog3pBNdBJMrt1XLsui6tWj1P/V4nfmsZp/hjH3yQBDEK8MtcHuvUTqpD6Pdfa/+
- Cbm2CHyUapRHGsUF7P5xvM2uXUyicukWUCD8crOJCnjE1vlx3OpWogMmFrJMGOnxyjbW9Q8
- 4K+goWx23brAbLQw8Xmkw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:gRl0CRQ6PkY=;0I+HnMO5xuCFCGwCWe1CrZj0HrJ
- sh8mP1wgfzej5gdUNXToBEwQedc4u1nsFt2mJpV2Gm/+eH/8koDtVyXrE1ZneoKTAMjQudFfY
- nrwdF4kBXyDfcl8m+TBGBVOWOYdc4+1wTIOKMzE24fRpjqa3MIYpS7zFTogZVjC1k3LI6yN6/
- pkQpUqWzxfIF0a81+A/OwnpRqeF7JugLJ+x7jL2FIz5q4zAZQGvsGCTKi0Z6QiSQm+T/QS18b
- SPnkvJwYFoEh61mAVPgp8MyZBwy9qTt2RigzNMvbwkA4AplvraHkBFQJWI6dj6lbLq7/Wsxm3
- wXEzqrDusBlevGuCArXzFSCD5tSKEneTScVdMaoDX7AkhoRcfpnrPqY4m36pQoyiMsXIYsJmO
- ktbJfPARWIJIA+5FgoTQp4xerQwZaauDvWDL5hSOSO5IVr/PaEVlllje2iRqwE9Rrk38HWm9d
- XbZerPh42lM+kikI8RcBPfcZRsUHMWjuHjxf+T74/1Ao8WGDuge/f1SK1KQTDYbBuL5xZp5ih
- Dhvz7VQPnfyxuOAHG9us4wl5Dht3fPFtrapFb9Shu1yW0Pw5DbPbcyClQylsBb6zZxOWucEA7
- g29344T5OdCWfpTygrR4+UzGc6mmzaEYZdbkUuBQXttAJc9ZtK8mMikIuZzQN+M1SDlYxX9ZT
- pJFKSartXdCfcI80J6Q0u49YsUeh+v8nSRNx+YPnlbZi5v+nXU9Z1V1hiHvdrGGbwmk1O6Gn2
- UrMlUtNzvjR8DLHN1kYJgVazGX5m32jkVA/v9lAmxoJqKCI+5A0XoMLAl8utIZTsZUB9TGZx+
- A+aqcyAtX7ybsPEP4mjXB5gw==
+References: <20241003-fix-imx27-pc-v1-1-0e78d1fc6175@linaro.org>
+In-Reply-To: <20241003-fix-imx27-pc-v1-1-0e78d1fc6175@linaro.org>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Mon, 7 Oct 2024 08:51:18 -0300
+Message-ID: <CAOMZO5DqwcM1U8FtybUHbHYZjLi-5BO6nGfifHXguKtcEY4DrA@mail.gmail.com>
+Subject: Re: [PATCH] pinctrl: imx27: Fix too generic defines
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Esben Haabendal <esben@geanix.com>, Dong Aisheng <aisheng.dong@nxp.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
+	kernel test robot <lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Lukasz,
-
-Am 07.10.24 um 11:53 schrieb Lukasz Majewski:
-> Dear Community,
+On Thu, Oct 3, 2024 at 11:16=E2=80=AFAM Linus Walleij <linus.walleij@linaro=
+.org> wrote:
 >
->> The btt3 device' HW revisions from 0 to 2 use imx287 SoC and are to
->> some extend similar to already upstreamed XEA devices, hence are
->> using common imx28-lwe.dtsi file.
->>
->> New, imx28-btt3.dtsi has been added to embrace common DTS
->> properties for different HW revisions for this device.
->>
->> As a result - changes introduced in imx28-btt3-[012].dts are
->> minimal.
-> Gentle ping on this patch series...
-unfortunately most of my comments in V6 were silently ignored :(
+> The "PC" define is colliding with the (apparently broadcased)
+> define for "program counter" on Loongarch, so let's rename all
+> these 2-letter defines so they don't collide with stuff.
+>
+> Fixes: a55222b7a132 ("pinctrl: freescale: enable use with COMPILE_TEST")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202410030214.dPrgmUqd-lkp@i=
+ntel.com/
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 
-Regards
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
