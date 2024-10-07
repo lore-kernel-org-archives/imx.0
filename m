@@ -1,87 +1,94 @@
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A61118C03C
-	for <imx@lists.linux.dev>; Mon,  7 Oct 2024 11:51:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA431D1E60
+	for <imx@lists.linux.dev>; Mon,  7 Oct 2024 12:07:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728301894; cv=none; b=YUNosaXb8G9hSxfL+/iqdH0Mt+uYXcQO41NIcN+vB92l1o5uZf+5Uf4z15HF1E2pUlaAD/+0QJrFJ0mnPNB59Lu7ghmQ/wWIsmWKPf4+6P2X5vRg4L//IiRFlbob28Rx2O/AgnEt59UhGnpj97JmR3Apsf0uzK1hmdJdsqLiHZM=
+	t=1728302859; cv=none; b=f6TuKmTUbDTh3uaWVmpRApF1Eoo3V/XhZqDHy9YYbN+zQHiK/dd6J+NCkmhzgGBbjlNa1d8AkGsDVvgk8DK2JUm/2CZcIKpoaBp/Caid34QEJ7XSKr1fLhSczDYaoppbWfabRQ9ILnm2sYIZng+DLjHiPFwY/VYHF0bMQCwdSvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728301894; c=relaxed/simple;
-	bh=Rar3gRgYHpcgBLUPr1prICpjuU8qRDOzk+bp/0TNuBc=;
+	s=arc-20240116; t=1728302859; c=relaxed/simple;
+	bh=jJtK3/1jT6FQ4smG4wOvY5N7/OUFqcmBnVKtNz/UvoY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d1vCu63HiJar78VWihqDhTyKtPmZY07x4CI/ZqbiZ6v1X8MCUhlPqIB8ILjFYlsNnqBRyvOLPtlUwtRBFM3Zkbh0VR4+kCOdUftXVoemU4eydJbb6KUTqHdBOy+gTNdWRKZGV/Oc7rWSpzJGbS1iJ+NxnTMS5lQCKCs+DpFvtSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZMGIW+Gp; arc=none smtp.client-ip=209.85.167.42
+	 To:Cc:Content-Type; b=CKessvWltBZeO1todrs5YFhXUB2hwOY3KaF47pDU4+WMoX0tVxq17sPz52JizllAee3sVBv88CqBV/j3BQ0YmtW5HuftYFMIia9GvaVgJ/S3GSysQqD53sQotgr2JpD8klkXIc8tVXD8uOsrtm/8WRq/dUGanttfF8dRw9qgK1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nDpso1Yh; arc=none smtp.client-ip=209.85.167.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZMGIW+Gp"
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5398e58ceebso3807927e87.0
-        for <imx@lists.linux.dev>; Mon, 07 Oct 2024 04:51:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nDpso1Yh"
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5366fd6fdf1so5768376e87.0
+        for <imx@lists.linux.dev>; Mon, 07 Oct 2024 05:07:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728301890; x=1728906690; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1728302856; x=1728907656; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Rar3gRgYHpcgBLUPr1prICpjuU8qRDOzk+bp/0TNuBc=;
-        b=ZMGIW+GpPtIWkIrATwFvkNaOWyGrA5L/0zx8f5NjcS4V437OzeO9oBdBGP7Gv94Acv
-         0tYp21YyKKkfapK6rLi5Oqiqw8+9CnodDFJyLZco2yI0JeAcZP5if1P5m19zEABK9iot
-         1FeqTgkz0JcZxrr24z2GNwz0mUNhAMrbtY28RW6lImrNY8HvWECfsVQ3ZDpgBsw9vhAv
-         3PzYN6hSc3xEEzh21l2cYqK7kiDGyODVtSr+CJfast8fTPfvOXijovtJsx3cuAr0SFYK
-         +5hFoc+tGaZy1U4g7DXH7RTIkJRhV7qWzVdn38Axz8+Q3KpF/KjBeIDApa1C4j9z9KJO
-         FSSQ==
+        bh=jJtK3/1jT6FQ4smG4wOvY5N7/OUFqcmBnVKtNz/UvoY=;
+        b=nDpso1YhVH6rgb07UfB+aoy/Ni7Zxm5BWC/VhhE31tTzhTegirYvAJ72aDp8tCwcsq
+         ++SDBC/NTuwuUKN2262V58HVWvyhi30QkgJCyGsXjGYE18mUuQMbUKnGyKphTY0lIOYh
+         U5FKsOEMyviCR80aHtbG/qyIeNgfifqbxw23qdJAeHEUAHdDC19Y+wzTBrn5aZdUyO9i
+         9cr0FhGIISCLQL6t0kRgg4NAe9R4DPr3G85ZZqin1oDHVQAhw3uOo3MCxJxrM7FZCzpM
+         +zy/d+hdCWtEuy4iEGg6xTLEwsPDW1YhXb4+d5h99b/d9pJD9L/qF1T4bU3PNgiL3tGG
+         8/KQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728301890; x=1728906690;
+        d=1e100.net; s=20230601; t=1728302856; x=1728907656;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Rar3gRgYHpcgBLUPr1prICpjuU8qRDOzk+bp/0TNuBc=;
-        b=pC7fnzKn/++yNOAvYTzkZKZZJpx2QxlQkATrYFqleIYRCQ47CDcjWNuzoVdzZOrWYr
-         vzXW66JH3pCc2fgAn7q+3K33pRQSUwhNJ8VrNhayvCZHKq9gOGjf7qsu7LzukQ39lKyV
-         uvpQnxTSfJrbSeXujGXQ1suFKHxU9QJxOCSsD5gtywwFPp5wm0fdQIuruFMe6AktMnBZ
-         Na+0/q++DfBEbg0KsxCEocBlP9mwCNqn8dQAlFoPjQe+0f/maYScSCtvMUal6VOdLEEe
-         gDAfHiFqZzCTK9P/ocNrAVF7qrDQCRshYjYFMY4sDRbB3o0aEp7L2zGf1HYAAluWviHj
-         GANA==
-X-Forwarded-Encrypted: i=1; AJvYcCXTTPe63seRxNkKtRb3ZHl9c0me5UhhGiKcmjOCh6Axm6yQjOecCCTOLgUalHRh6Bq5mds=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwutPupYXgWSmHhrl/nvWSHPjLTiYvXsw8V8/KCfURlw70Ojvdk
-	/OTETs/MrFeNyRMsksE+dZWHC8Z4fvqC/7YPAsgvJ03dfMNr/LzVDuFSSYEiAdA/9ePFjcGWuR9
-	tvIDDRFR7igFK9HN54azuXktW7Ow=
-X-Google-Smtp-Source: AGHT+IH1b7AtDRdmVaSfJv3J1FI2YdaXAbDlTylH1s44fuUTjzLJGm/Lz3zXQL3hhmC94ehxBHKmM7+qFNFRaW/3CWo=
-X-Received: by 2002:a05:6512:6c6:b0:539:9155:e8cb with SMTP id
- 2adb3069b0e04-539ac0a9e01mr3723679e87.0.1728301889319; Mon, 07 Oct 2024
- 04:51:29 -0700 (PDT)
+        bh=jJtK3/1jT6FQ4smG4wOvY5N7/OUFqcmBnVKtNz/UvoY=;
+        b=IOsLyZXQJ3Lpp6jYNJXkzwc6RBPvWrJhCKBBqOmt/vnY9Y79mEmzv2Lu044xUWdDGJ
+         5TdoTrUFDx4ei7o/MuJJvE6OdaaeIDHVIWprmzK0KVyBptyL1cvRWakOWufnrnY7fP8R
+         cays1/BwOKNwIbMgnRigw9b1h04tgP/AFsZYT/a0svR0MrC5Q4+hno6Qf0rO2ZgPieA4
+         4zBfaUAuROkJCbRUsHgqNHbwirX/0tD1nDvr2blGHSCuSYkDk1zyPFuTDLl/VMmF+gUk
+         YT37IDBjZV7TMl3Rzr1jLdsEwwwwq8LxhD+8lg5ehlaBpFTTqsBY1KKdxVOOZhantuL7
+         msmw==
+X-Forwarded-Encrypted: i=1; AJvYcCV5OkqJmFhkb8jEJsCVL43kBsvaNzy710ByslSMwvIa9UB3V91HRV9Jjw0fLcvEX/BSltI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxtZmNC68h+q8ta14/y7/DzgHsLAXN73CpaDZT1i7AqsRtRsz4L
+	7bz7GKkupHl/0SS8/Yq6aRrfOlKCZ7DOyguD6HwCNwLqa4ALBU1+t6cUGfbBy2iIsrFwqYpjAEX
+	nYFG9DHvMN+aPDh9OXK/IZu85uQ0=
+X-Google-Smtp-Source: AGHT+IHv2V9vub5HIh9lhXIcbry1CPZSpVF/bne5Y3kiIxmSAE1tBTwFr3QA6iadU2EJq70+P647NMtgXwX8zocTlKY=
+X-Received: by 2002:a05:6512:159a:b0:52c:d626:77aa with SMTP id
+ 2adb3069b0e04-539ab8c4e45mr5287290e87.58.1728302856091; Mon, 07 Oct 2024
+ 05:07:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241003-fix-imx27-pc-v1-1-0e78d1fc6175@linaro.org>
-In-Reply-To: <20241003-fix-imx27-pc-v1-1-0e78d1fc6175@linaro.org>
+References: <ZwOc4o2i-Wzp5QIV@mail.google.com>
+In-Reply-To: <ZwOc4o2i-Wzp5QIV@mail.google.com>
 From: Fabio Estevam <festevam@gmail.com>
-Date: Mon, 7 Oct 2024 08:51:18 -0300
-Message-ID: <CAOMZO5DqwcM1U8FtybUHbHYZjLi-5BO6nGfifHXguKtcEY4DrA@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: imx27: Fix too generic defines
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Esben Haabendal <esben@geanix.com>, Dong Aisheng <aisheng.dong@nxp.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
-	kernel test robot <lkp@intel.com>
+Date: Mon, 7 Oct 2024 09:07:24 -0300
+Message-ID: <CAOMZO5CXm+d_2uXE+37SU8x0i-oU2ynj2PSfKF5WRAJxcGhqYw@mail.gmail.com>
+Subject: Re: [PATCH] pinctrl: imx27: Fix redefinition of 'PC' in imx27 driver
+To: Paulo Miguel Almeida <paulo.miguel.almeida.rodenas@gmail.com>
+Cc: aisheng.dong@nxp.com, shawnguo@kernel.org, ping.bai@nxp.com, 
+	kernel@pengutronix.de, linus.walleij@linaro.org, Sascha@mail.google.com, 
+	Hauer@mail.google.com, s.hauer@pengutronix.de, linux-gpio@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 3, 2024 at 11:16=E2=80=AFAM Linus Walleij <linus.walleij@linaro=
-.org> wrote:
->
-> The "PC" define is colliding with the (apparently broadcased)
-> define for "program counter" on Loongarch, so let's rename all
-> these 2-letter defines so they don't collide with stuff.
->
-> Fixes: a55222b7a132 ("pinctrl: freescale: enable use with COMPILE_TEST")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202410030214.dPrgmUqd-lkp@i=
-ntel.com/
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Hi Paulo,
 
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Thanks for your patch.
+
+On Mon, Oct 7, 2024 at 5:33=E2=80=AFAM Paulo Miguel Almeida
+<paulo.miguel.almeida.rodenas@gmail.com> wrote:
+>
+> The `PC` macro in `drivers/pinctrl/freescale/pinctrl-imx27.c` is
+> clashing with an existing `PC` macro defined in
+> `arch/mips/include/uapi/asm/ptrace.h`. This leads to a compilation
+> error when building for MIPS architecture.
+>
+> Rename those to use a more specific prefix (`MX27_`) to avoid
+> conflicts with other platform definitions.
+>
+> Signed-off-by: Paulo Miguel Almeida <paulo.miguel.almeida.rodenas@gmail.c=
+om>
+
+Linus Walleij has already submitted a fix for this problem:
+https://lore.kernel.org/linux-gpio/CAOMZO5DqwcM1U8FtybUHbHYZjLi-5BO6nGfifHX=
+guKtcEY4DrA@mail.gmail.com/T/#t
