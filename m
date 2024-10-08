@@ -1,39 +1,61 @@
 Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0805A1E00AF
-	for <imx@lists.linux.dev>; Tue,  8 Oct 2024 14:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32531E0484
+	for <imx@lists.linux.dev>; Tue,  8 Oct 2024 14:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728398808; cv=none; b=l8QloUKSgmOB4f3WIdro8QIh30SfxPtXikbgg0h+cBXGOqSH370uwTByYMctQfF+Z3c/u5YoRjAzjHpraoJ/z8UPplTGEDsNzcPXzJYVoZYNe2UT9LSb9gaJmPB5wnc/r3hdFV+XKaok5GBkaodOzaXg6WXtgu9ACiaCD5sz8Lg=
+	t=1728398809; cv=none; b=M/Fy4tt/AJGmFsbWuUw4Zf/U/QmOT3nnLh12IPxFpo5RGRpN/o/DSGOL12j2JxDoDTnHW0yRJ30sQqJDP0URt06glnq5G6eSu4RQBjMxKwpvUcH+Ty54F50JlgKPfhX2p0LbpochZYi0c39A8yMvx9HdIgjxd6TgJfa6mWwqn0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728398808; c=relaxed/simple;
-	bh=UUutSx+gDrSV47eLsMwHxM5rwhM3H7WeUMuQZmxxPsU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iVbTV2UMvHYnw5XgF9TsvY6PplQtrEXuRuerqxaBqN447D3QjVjpDIWWXvzOmUeU3l+UUPHZDLwtzVLHpXoPbtcCMTly831EMlqlPE3TJ+y3maNN9v7sPuZPEgYV43I9lQ2OW3Sb2uIBsr9zyaEmh9RqIfXkydpE2FD/g0q/wdY=
+	s=arc-20240116; t=1728398809; c=relaxed/simple;
+	bh=bpIUOcVa+SVwDFs5HB5td6RIujhDxy3RzHcNfO/9I9s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r0Nk+bixs41S6yA50Hl5S6Z12StY9NvbL/yCmwv9m7tXpdpZNVZudZYqMPGrmTQwg15Kpuutf61DKEricuJdF8Dudvd5o++LyrolNd+Tzm8PgZQaGrT6QROgdV7YUo4IILN3d0aZkYXuQMG/lhHv/QWqAFLxMwpiGK/qGhckwKo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=fris.de; spf=fail smtp.mailfrom=fris.de; arc=none smtp.client-ip=116.203.77.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=fris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=fris.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 19DE2BFB5A;
-	Tue,  8 Oct 2024 16:38:42 +0200 (CEST)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 37971BFB0D;
+	Tue,  8 Oct 2024 16:38:25 +0200 (CEST)
 From: Frieder Schrempf <frieder@fris.de>
 To: Conor Dooley <conor+dt@kernel.org>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
 	devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
 	imx@lists.linux.dev,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Rob Herring <robh@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>
-Cc: Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Frieder Schrempf <frieder@fris.de>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Fabio Estevam <festevam@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: [PATCH v3 3/4] arm64: dts: imx8mm-kontron: Add support for display bridges on BL i.MX8MM
-Date: Tue,  8 Oct 2024 16:37:45 +0200
-Message-ID: <20241008143804.126795-4-frieder@fris.de>
-In-Reply-To: <20241008143804.126795-1-frieder@fris.de>
-References: <20241008143804.126795-1-frieder@fris.de>
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
+	Heiko Stuebner <heiko.stuebner@cherry.de>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Parthiban Nallathambi <parthiban@linumiz.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Subject: [PATCH v3 0/4] arm64: dts: imx8mm-kontron: Add HDMI and LVDS display support
+Date: Tue,  8 Oct 2024 16:37:42 +0200
+Message-ID: <20241008143804.126795-1-frieder@fris.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -43,206 +65,50 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-From: Frieder Schrempf <frieder.schrempf@kontron.de>
+This add support for the display bridges (DSI->LVDS and DSI->HDMI)
+on the BL i.MX8MM and the 7" LVDS panel in a separate overlay.
 
-The Kontron Electronics BL i.MX8MM has oboard disply bridges for
-DSI->HDMI and DSI->LVDS conversion. The DSI interface is muxed by
-a GPIO-controlled switch to one of these two bridges.
+Only one of the interfaces (HDMI or LVDS) is supported at the same
+time. Enabling the LVDS overlay will disable the HDMI interface.
 
-By default the HDMI bridge is enabled. The LVDS bridge can be
-selected by loading an additional (panel-specific) overlay.
+* Patch 1 and 2: Add the necessary binding changes
+* Patch 3: Extend the BL devicetree
+* Patch 4: Add the LVDS panel overlay
 
-Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
----
 Changes for v3:
-* none
+* Add A-b tag from Krzysztof
+* Fix LVDS bridge input port reference
 
 Changes for v2:
-* Remove blank lines from hdmi node
-* Fix order of lvds and hdmi nodes within i2c
-* Remove the unneeded deletion of samsung,pll-clock-frequency
-* Use the existing MIPI DSI output port from imx8mm.dtsi
----
- .../boot/dts/freescale/imx8mm-kontron-bl.dts  | 131 ++++++++++++++++++
- 1 file changed, 131 insertions(+)
+* Patch 1: Add link to commit message
+* Patch 2: Add Conors A-b tag
+* Patch 3: Remove blank lines from hdmi node
+* Patch 3: Fix order of lvds and hdmi nodes within i2c
+* Patch 3: Remove the unneeded deletion of samsung,pll-clock-frequency
+* Patch 3: Use the existing MIPI DSI output port from imx8mm.dtsi
+* Patch 4: Update copyright year
+* Patch 4: Use exisitng MIPI DSI output port from imx8mm.dtsi
+* Patch 4: Fix pinctrl for GPIO hogs
+* Patch 4: Fix property order in i2c2 node
+* Patch 4: Use generic node name for touchscreen
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts b/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts
-index aab8e24216501..a8ef4fba16a9e 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts
-@@ -25,6 +25,17 @@ osc_can: clock-osc-can {
- 		clock-output-names = "osc-can";
- 	};
- 
-+	hdmi-out {
-+		compatible = "hdmi-connector";
-+		type = "a";
-+
-+		port {
-+			hdmi_in_conn: endpoint {
-+				remote-endpoint = <&bridge_out_conn>;
-+			};
-+		};
-+	};
-+
- 	leds {
- 		compatible = "gpio-leds";
- 		pinctrl-names = "default";
-@@ -132,6 +143,86 @@ ethphy: ethernet-phy@0 {
- 	};
- };
- 
-+&gpio4 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_gpio4>;
-+
-+	dsi_mux_sel_hdmi: dsi-mux-sel-hdmi-hog {
-+		gpio-hog;
-+		gpios = <14 GPIO_ACTIVE_HIGH>;
-+		output-high;
-+		line-name = "dsi-mux-sel";
-+	};
-+
-+	dsi_mux_sel_lvds: dsi-mux-sel-lvds-hog {
-+		gpio-hog;
-+		gpios = <14 GPIO_ACTIVE_HIGH>;
-+		output-low;
-+		line-name = "dsi-mux-sel";
-+		status = "disabled";
-+	};
-+
-+	dsi-mux-oe-hog {
-+		gpio-hog;
-+		gpios = <15 GPIO_ACTIVE_LOW>;
-+		output-high;
-+		line-name = "dsi-mux-oe";
-+	};
-+};
-+
-+&i2c3 {
-+	clock-frequency = <400000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c3>;
-+	status = "okay";
-+
-+	lvds: bridge@2c {
-+		compatible = "ti,sn65dsi84";
-+		reg = <0x2c>;
-+		enable-gpios = <&gpio4 26 GPIO_ACTIVE_HIGH>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_sn65dsi84>;
-+		status = "disabled";
-+	};
-+
-+	hdmi: hdmi@39 {
-+		compatible = "adi,adv7535";
-+		reg = <0x39>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_adv7535>;
-+		adi,dsi-lanes = <4>;
-+		interrupt-parent = <&gpio4>;
-+		interrupts = <16 IRQ_TYPE_LEVEL_LOW>;
-+		a2vdd-supply = <&reg_vdd_1v8>;
-+		avdd-supply = <&reg_vdd_1v8>;
-+		dvdd-supply = <&reg_vdd_1v8>;
-+		pvdd-supply = <&reg_vdd_1v8>;
-+		v1p2-supply = <&reg_vdd_1v8>;
-+		v3p3-supply = <&reg_vdd_3v3>;
-+
-+		ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			port@0 {
-+				reg = <0>;
-+
-+				bridge_in_dsi_hdmi: endpoint {
-+					remote-endpoint = <&mipi_dsi_out>;
-+				};
-+			};
-+
-+			port@1 {
-+				reg = <1>;
-+
-+				bridge_out_conn: endpoint {
-+					remote-endpoint = <&hdmi_in_conn>;
-+				};
-+			};
-+		};
-+	};
-+};
-+
- &i2c4 {
- 	clock-frequency = <100000>;
- 	pinctrl-names = "default";
-@@ -144,6 +235,19 @@ rx8900: rtc@32 {
- 	};
- };
- 
-+&lcdif {
-+	status = "okay";
-+};
-+
-+&mipi_dsi {
-+	samsung,esc-clock-frequency = <54000000>;
-+	status = "okay";
-+};
-+
-+&mipi_dsi_out {
-+	remote-endpoint = <&bridge_in_dsi_hdmi>;
-+};
-+
- &pwm2 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_pwm2>;
-@@ -207,6 +311,12 @@ &iomuxc {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_gpio>;
- 
-+	pinctrl_adv7535: adv7535grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SAI1_TXD4_GPIO4_IO16		0x19
-+		>;
-+	};
-+
- 	pinctrl_can: cangrp {
- 		fsl,pins = <
- 			MX8MM_IOMUXC_SAI3_RXFS_GPIO4_IO28		0x19
-@@ -277,6 +387,20 @@ MX8MM_IOMUXC_SAI3_MCLK_GPIO5_IO2		0x19
- 		>;
- 	};
- 
-+	pinctrl_gpio4: gpio4grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SAI1_TXD2_GPIO4_IO14		0x19
-+			MX8MM_IOMUXC_SAI1_TXD3_GPIO4_IO15		0x19
-+		>;
-+	};
-+
-+	pinctrl_i2c3: i2c3grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_I2C3_SCL_I2C3_SCL			0x40000083
-+			MX8MM_IOMUXC_I2C3_SDA_I2C3_SDA			0x40000083
-+		>;
-+	};
-+
- 	pinctrl_i2c4: i2c4grp {
- 		fsl,pins = <
- 			MX8MM_IOMUXC_I2C4_SCL_I2C4_SCL			0x40000083
-@@ -290,6 +414,13 @@ MX8MM_IOMUXC_SPDIF_RX_PWM2_OUT			0x19
- 		>;
- 	};
- 
-+	pinctrl_sn65dsi84: sn65dsi84grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SAI2_TXD0_GPIO4_IO26		0x19
-+			MX8MM_IOMUXC_SD2_WP_GPIO2_IO20			0x19
-+		>;
-+	};
-+
- 	pinctrl_uart1: uart1grp {
- 		fsl,pins = <
- 			MX8MM_IOMUXC_SAI2_RXC_UART1_DCE_RX		0x0
+Frieder Schrempf (4):
+  dt-bindings: vendor-prefixes: Add Jenson Display
+  dt-bindings: display: panel-lvds: Add compatible for Jenson
+    BL-JT60050-01A
+  arm64: dts: imx8mm-kontron: Add support for display bridges on BL
+    i.MX8MM
+  arm64: dts: imx8mm-kontron: Add DL (Display-Line) overlay with LVDS
+    support
+
+ .../bindings/display/panel/panel-lvds.yaml    |   2 +
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+ arch/arm64/boot/dts/freescale/Makefile        |   4 +
+ .../boot/dts/freescale/imx8mm-kontron-bl.dts  | 131 ++++++++++++
+ .../boot/dts/freescale/imx8mm-kontron-dl.dtso | 189 ++++++++++++++++++
+ 5 files changed, 328 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-kontron-dl.dtso
+
 -- 
 2.46.0
 
