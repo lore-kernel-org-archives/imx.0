@@ -1,433 +1,224 @@
-Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2061.outbound.protection.outlook.com [40.107.103.61])
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2116.outbound.protection.outlook.com [40.107.247.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB2D18FDB7
-	for <imx@lists.linux.dev>; Tue,  8 Oct 2024 06:58:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C509113B29B
+	for <imx@lists.linux.dev>; Tue,  8 Oct 2024 07:21:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.116
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728370693; cv=fail; b=pPOd2i6gDDQAu3ABvnuvVgNNFgCQBsoHDc+2GHmoOypcmKIlWQZ/lETeCbvOKKyXz/udSvu8RWCtqrTXuV5qMEwuKsplkUZ8fzQAIaJUH8ygcQvx2g+omwMUfsGc/dlXO9T66PYWwSH7Z5XPdi9gYzpxKnCBfYXzbc4arwxzA7Y=
+	t=1728372075; cv=fail; b=bfhNdnEhLhWQGyhEHWooEWGPJQyBcvBUaItK0jJ1ouixJ4rR/vly0F4Zbj0Z7L1R+GGJgVvhNT2WycJMF3kkzN0L/1pBbBv0EmJ95+OjR5JOjN+0weVmJj5n/m5uuw+cHQcMgImi4qQrNqPZgnbxXNt1lkghHi3dnsBlpVe/mho=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728370693; c=relaxed/simple;
-	bh=zufWxaTRBO/aN6eERcrUCR9RTAN9FV+9V9q0xcux6tw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=dk/Cu1NA3Zqd/pWplNFrq3zWOolkyD/mFh28Lv8pwT9Eg0qwii37/Ql0xbuY3FoLLd3+ZXedLEwSmDoubwFgS5veSCOPFOfK3bqyfxBaqh3w8Z00872aLGzRdINLPYedwdCgTMhUlg4Euive0An8BZEE3qM3ntLuYRtm8GlEraM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=EYNrNHTR; arc=fail smtp.client-ip=40.107.103.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1728372075; c=relaxed/simple;
+	bh=Dnp4f44RB0E83Fn1svPtyezgroNvNr3vHdCMOg+GC+o=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=LuQcF8Uu97IRW2WgrgSWof/Bv5/dFwm6d37CDk9A4owCY07h7RidE0Ym0xbYpAVhmoJFnYPlCSP+LbbA+vHKVz7EUwLv1tr4nCIDBzGHkrIHVb7wOPUPPmAU7D4ZKyPLtMsiSCL/ng6cgXcihdkoRYl7874tO8vaYqA+AEi7aRY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de; spf=pass smtp.mailfrom=kontron.de; dkim=pass (1024-bit key) header.d=mysnt.onmicrosoft.com header.i=@mysnt.onmicrosoft.com header.b=Fl+btY4w; arc=fail smtp.client-ip=40.107.247.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kontron.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="EYNrNHTR"
+	dkim=pass (1024-bit key) header.d=mysnt.onmicrosoft.com header.i=@mysnt.onmicrosoft.com header.b="Fl+btY4w"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Px5on4hbKlHPEr5umN9ZRnbrZOIfV2SwWVWqfZn2v83d5j5YIUQGU6wZzpDfPi1vT+UNANTg+0/PZuNKFuvQic90KsXSc/wkdVetYnXK8u1YsJqMcyf8YNLi39KtLWw8yHxrdH/62EXiMuBh3PF7IplWtuhGaiR3zosQHXwbfLmNW+v+oXo/PhCwJIbCSlO0Ud0NEmKBsHkeTEvGBJGJ2hYAmsf0nV60xyXi4B+n2I0wn279pVnA9HlBelCOxJBkQlgkzUVvm8aFkdYTRkg+XRGqMSFJxSIcaFJrbZ89VfRXlBKz0CFo80qpNDwCyf33UYJQljQ5Cwdts6djHKzcTA==
+ b=jQ2cYmSG7q/fc0QwpqBMUIS7SI56jBZukNdUc7Kqm8uyYG/ytZaGYvV/+X4/0VdR+TA5+02eSNaTWTUun4eUsfT78g217H8QSCgpkIdMlYxY6nrfldaXOHPKEmPmgX4vfF6EHGUwHIXlnvwJFCmoxYa/HbwActlulpEydVC4ypEmQttRgVitgbxzQ+FF4TrU8WcaHeCul33cG5WhnJUJAS/TXmKe8bloSEUgjImagB8VC4Joio/NjfszN4JRgY8Co2QIVTOwjSUvVihfdAba/etx/EucWKcW+rWnVH6TZY/jydBj8/4rQYVroeTU82VU/O47duucjNCZ0FrvEtJppQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uXCzY5zTCJ/jsisG9Yt84ToF6vZk5JLXlw1iq0MPpI4=;
- b=acWEiuZiBuPlEBmme3XSocPrQ1/xrNaAsbNGxDpEs1Ry3qRUMTJXPJk/0/QgjDZZmuemdRc+WpFq1HfcRggRBGrs7xgSWFzl70swG9ZZ3aIod9/jiq88Zj9OA8telubZi/+/7MadmBVPuogCOVLYZR0c72cnr10fl5B7w4zJByWsMyvCvdnKdGhjnJseeRRCythZOncXjDCQB5XjqwmMKjnKpLe4rREz8lApI2Or3hVYqgfH8I/61p9igD6t/4ZUVrzYbb/8D4/J/vwtzXmsmyE0isnInacc8pzyFVJdvl8HgkvOZbVZzhWF6DfFwkTQPNKGcRXIR+dTOxqQ4IqTTA==
+ bh=Jv6BfYCzGqjS5M6JwXTqXEk50D2P+p/cOSn9Sa4se+A=;
+ b=ip4fDMCFwtRzs/J+J1/UwkPKKHhDZVSv94ATXGebjIqJJ927Fk8ciPCRGowkZ2IUDbJ9hv10fXzKC+aqYoF7iORyMd41ksUaMg6RAxVPPw1mbmk0X2Bj6ajgHLFBGanUVjR3ua+2uxEofhFwScttyxgulVuGAA2yRc53PJJI93/TV9GEkton5ZE9j4OnA0tZHz8qE9+SM/LbrcLwVMCkYashSQoRd8FMTfjjGThWoH0VCoJv39zOvWlRcUlIIUV4v0hRJYQOhh6ACxnqU9AHgcNblrf5WU4mQioAUMuPP2jeUmQ6Bd7jGtWottSXOG6i/n9QK9pYNwuJKgDqVWSV6A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=kontron.de; dmarc=pass action=none header.from=kontron.de;
+ dkim=pass header.d=kontron.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mysnt.onmicrosoft.com;
+ s=selector2-mysnt-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uXCzY5zTCJ/jsisG9Yt84ToF6vZk5JLXlw1iq0MPpI4=;
- b=EYNrNHTRhZdFsY9EvJNRpvZZCF12hS2L85mAnrQD8lJWiVn0TpHxnGN6lzHEAOT51zmaSe2IIQYfGOQCtSEEND+K+05wa09Os44uNpZdQaNeWcj/Eihcl39o/qGo0p1EUcENHrBfm6VRTXJot0oEiv8sWoqjkut4vIntxkDjxwNeh1PiOWQeVUL+GURHLvGO6hFEA/oQvDt2el+z2BqcR0sIj1xZmp1Q/mqE7BE31ArKyXNZWTpHXXPhfpCm8vXSgzYjlqNrHJojioYbDl5OWVaYok1pvmzjylr7uU2vUP9wutOfB/SFuwHB9Z7tJeURcC5wO/v3pcg1zh6/Nuelpg==
-Received: from AM0PR0402MB3937.eurprd04.prod.outlook.com (2603:10a6:208:5::22)
- by PA4PR04MB9462.eurprd04.prod.outlook.com (2603:10a6:102:2aa::9) with
+ bh=Jv6BfYCzGqjS5M6JwXTqXEk50D2P+p/cOSn9Sa4se+A=;
+ b=Fl+btY4wvfcJXdgWKHWR4xuVq8bVMK6JpZef6Tklz+c52QigTXetPve7lhwtJnVaUqQ1KHVfel2yUZ0seuO834iYu3fDOIFl7d+4qLN2KcaxjnGpW2OyeQfcp4Qr3eyXrZjHHUv5N/G/f0suvN0162p71bEpOQha985sFgdHVgM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=kontron.de;
+Received: from PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:263::10)
+ by AM9PR10MB4037.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:1fe::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.22; Tue, 8 Oct
- 2024 06:58:07 +0000
-Received: from AM0PR0402MB3937.eurprd04.prod.outlook.com
- ([fe80::4e37:f56b:8a3e:bff0]) by AM0PR0402MB3937.eurprd04.prod.outlook.com
- ([fe80::4e37:f56b:8a3e:bff0%4]) with mapi id 15.20.8026.019; Tue, 8 Oct 2024
- 06:58:07 +0000
-From: Carlos Song <carlos.song@nxp.com>
-To: Andi Shyti <andi.shyti@kernel.org>
-CC: Aisheng Dong <aisheng.dong@nxp.com>, "shawnguo@kernel.org"
-	<shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
-	<festevam@gmail.com>, Frank Li <frank.li@nxp.com>,
-	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH V4] i2c: imx-lpi2c: add target mode support
-Thread-Topic: [PATCH V4] i2c: imx-lpi2c: add target mode support
-Thread-Index: AQHbGU9tvUeaCfFK5UyZ9XMS7JnpJA==
-Date: Tue, 8 Oct 2024 06:58:06 +0000
-Message-ID:
- <AM0PR0402MB3937BD3C11B8D9A39E35BBADE87E2@AM0PR0402MB3937.eurprd04.prod.outlook.com>
-References: <20240912082413.435267-1-carlos.song@nxp.com>
- <evfhjmeblrucqta2jb74jwul7evqt25tbsxp46xrghytbr645d@t6rvyuriruax>
-In-Reply-To: <evfhjmeblrucqta2jb74jwul7evqt25tbsxp46xrghytbr645d@t6rvyuriruax>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM0PR0402MB3937:EE_|PA4PR04MB9462:EE_
-x-ms-office365-filtering-correlation-id: c70717ec-4ab9-4635-e07d-08dce766902a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?obnw3/GdEQeitB/B2ZVR90sg5VcJ33USAq19g8T0uR3AhtwjmQKKukK/lh4j?=
- =?us-ascii?Q?+5vUmMal0z0S5CvDOmnCZpYrmvAVXeJFeMDkCgWE7hfxFHlj7YCWWQMjz3ge?=
- =?us-ascii?Q?JN6vigDtrRruxPwUoUmIk7bqNMB8KYD8b4maDKpg77Xub34IhUusMf6SKAV6?=
- =?us-ascii?Q?FiDwQLBF8UuadN/MjQtnh9LgG86qUG2U5a9bkRfnwRSDoKXrdM63luTNU7LI?=
- =?us-ascii?Q?DzDvftzaqrbYx71oTUjJx5FJu0JSx/SugCqxEO3mBw+dDMY1+fcAF80XYvED?=
- =?us-ascii?Q?Tvfpr5CD+xJk++/Ts94xIrIQciwUT0yY+8Pdmo08aw/RyDL7M+YPJHsU8PX1?=
- =?us-ascii?Q?Ztk+DxnqAmtdQoWS0MFGja/MVftH2ErCpNU4e1/6pcsribpIgyGyqZAKC71I?=
- =?us-ascii?Q?jp9sPa1o5/OrCFGRlBClrHN5ruhB59l95HU3dEHsJ5h9mhp/dVSjiNJOmG7v?=
- =?us-ascii?Q?cgTEhZBd6DCzTikPRxgOitjBs+p2d6d9oABm1PYGYTRL5aM1hzqLDDx4nnJ1?=
- =?us-ascii?Q?me5Asc+pBq6ahATUBdHR96ZV3vSyVMbgGE21veTZ4/3Rfv7B3rpbPExTf/wb?=
- =?us-ascii?Q?VbuU9q63chCcKdwqvpKIEsyPDVGjfiV2U9dSipGGGay0O9U7QIgz28sasZej?=
- =?us-ascii?Q?krwuJkvVvfHIrsqvSbULAne/PeZ/Dzz4tjApXica873Gm3anjsj9wzVeW8mA?=
- =?us-ascii?Q?2ysK3f+YHqt2YwYUmi1VVIVHyge0u0bId/PUnKmJQiYqQtPaOyIeHStOjshk?=
- =?us-ascii?Q?Eeh5mtIhHMP7N4iX0qEoLH02qNQTHmA1v2NXWVFTw9PrsyXXX4vJCuEOF1rW?=
- =?us-ascii?Q?YqlQfCbCDsF4fjM3lWR8izBBogSKnfbO+tWbiNNQOQn3K7r2280zF7fnmbCX?=
- =?us-ascii?Q?6KyM1P6vjM5T0wwFVhbuXKlSynSW7Xjw0fZ4PEX4C473YSesI/rJsHKUJIZy?=
- =?us-ascii?Q?2oOQhlih5WGiW93g6ZSTZf4gxKNBV67AvgdVgjH8jCHThaAw54RPiMpJUVtj?=
- =?us-ascii?Q?IRLV5PNBoVfnjRv8Hnn8uFgurTYVWvWkv+irDGv6MybJWmpxQz9/FoAavNGq?=
- =?us-ascii?Q?+wHc53TdiZfLvrZPKfID5XW1szNXxqGdOLAoT3VluQWaz/3vxB/T8w0zIuka?=
- =?us-ascii?Q?unUpTnMHGg78ylxKQnRzvGTWMGlNt2F3EfMV2+EpH2ZpaMqGADbozUpWCirA?=
- =?us-ascii?Q?ChF16Hm31mRq2NNY3nz5jSUbTzT9xyZo4EPDWbrXaNlO95R5WWxjKkJdC81v?=
- =?us-ascii?Q?YtUURUat+ywFlxZy8ssXPjNab0oTdi32u5diApppNM95RVOTyZjAinackzcG?=
- =?us-ascii?Q?cXDiluEohD1sNLEgT1aylMZFLkE+0XHILdQGcAhn7y132Q=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR0402MB3937.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?plGiAZaeYlRRrVVJEutNDfNcuJ3dM2Vz2ydRuCMi/H+Fq1ncKBaj4xoH+NLY?=
- =?us-ascii?Q?9QLxJ13HRqJol356i8R5bl1HtiCDW4qFZFzmramA+I+DShDd4oH5PcWKgnv2?=
- =?us-ascii?Q?XX9Sdk/q8HQdKoRXPGcdYuc423ZCGOivM9QwfZBn2iLOYc+TNK8oxSz6qFMU?=
- =?us-ascii?Q?wElf1iNjsSUVJYb8zuegzE9M2fg1fKhsPign+FUmAuGyp1ifvUMphms3OlKQ?=
- =?us-ascii?Q?Iu2XsUiZoi4IWP7r3XkuuGmhF9wF64neDJt4YphluznpW5wHebm4UZSM7yPX?=
- =?us-ascii?Q?lL8rUgpIM/Au/baUorkKYZmYVTQsVGxhdlAyX+hKv4wFBTCZ6HrKDJ89JBlj?=
- =?us-ascii?Q?xKWN/lV4kNVoV/P8rQawlY6DIEwOoi2evMbTkFaP6lLtZE2YAs9rzOTWKDZM?=
- =?us-ascii?Q?XseapnsqelqL5zr2/O4ctYOZmdhYLzjOZGRYcUI0AQok3ykPfwk+TJn2DNF8?=
- =?us-ascii?Q?GmPXRh3nBN3RJXGPf8kx4bOcOO02CwUNYIqcnrRVm+uY6Tye086pRP0upstX?=
- =?us-ascii?Q?0Eo2OX2TaHb0Tqd795GYg88s1vXEWJx0tDqpndJ29Jpf8r28fBXj+umAXh6y?=
- =?us-ascii?Q?vA/X26E9Cqz0CezdNzf6kP1gf3viH7+3SNFE4i8F/YY/E64dGe7ObQ1ORG2X?=
- =?us-ascii?Q?1Drth0R1jse74SqD/Ft9NsrNRYKztNr/HVaNFUO3JJlF2JEXHiQmqOceqYBI?=
- =?us-ascii?Q?5joTy+vUT+rQBpsVq/lhOrAkaCfU/rjs6sK7kxS/DzwaDXnlZOl2V3YyxCtd?=
- =?us-ascii?Q?VE4O5JVYThOAXVkivwankkuGQu0t+xjxsKSskVNZje/U24cDp3gsktQP8QYu?=
- =?us-ascii?Q?jD8vinJtZHq3+8HaFcx5IT08GSk+bx094iVIRryhzf827mPGBKMZ+oXyZv49?=
- =?us-ascii?Q?SymtfBJ8H8pvZ6RmwGNmC9Moo6VwM4eicoOmqT1xRmOcl6GOsfOL/weJ+htc?=
- =?us-ascii?Q?k+sHxLsL4YJDNHREl07INkpAcc331mZb7mWq10Nd+FeYVvflnBY2D+dA+CeF?=
- =?us-ascii?Q?MwhiM9j2KCKJpaExqq4QHdAdTta0vBRKYLiUNfH6pSDQVV8OAWVSdQp9IKZ6?=
- =?us-ascii?Q?4EWrgfsqZ1UBjUIkyhclHEh+aCiSjeqndL2C5TWTOBbJOcDIbQLurUCKnu+z?=
- =?us-ascii?Q?qRz69zO1KpVjFB0DYM+Vly3Rf14oh67Zv32VOV9J6j5pKWc6bLA5MqQwae51?=
- =?us-ascii?Q?uK0E3XeuafOi74GIwFt6jZ3PXlQCZ3zN31yIcN/i/H4rarI1D0ZZBXpswjBM?=
- =?us-ascii?Q?D7ihavsF6TiKw4juK4fp7iFOBWE4IMyllYQs9ZGjPD5qTbIRVwcNrOnUCWV9?=
- =?us-ascii?Q?BAhXQwdXPkN07dNLVQgV9kypOadgKvKmNk1DZG2hfCYAcTBf6ctAcM/crOJD?=
- =?us-ascii?Q?p1JgFrEbpPd/MiCW1dukXQSrlXGh4aSBHM4+JS5yIBFjADeARRDD76xctIv8?=
- =?us-ascii?Q?y4AQBeJ0kGhdCDkdND+SHdsrBotx6R3Xwlx80P0b4Alo7JuogNJbKpJ8xuyF?=
- =?us-ascii?Q?cxuWJeTSBMVhdO34LOT7jPqV8t+RW+CPeGk5Y3wtLnzpjPyXEMPQj12gXvMw?=
- =?us-ascii?Q?P1Gsbk2a348yifgdLq4PJa+kufWNgC5HFTMgVtYl?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.16; Tue, 8 Oct
+ 2024 07:21:07 +0000
+Received: from PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::b854:7611:1533:2a19]) by PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::b854:7611:1533:2a19%4]) with mapi id 15.20.8048.013; Tue, 8 Oct 2024
+ 07:21:07 +0000
+Message-ID: <3280f47c-f1e4-4e12-8b48-4e5f68b7a606@kontron.de>
+Date: Tue, 8 Oct 2024 09:21:05 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/4] arm64: dts: imx8mm-kontron: Add HDMI and LVDS
+ display support
+To: Frieder Schrempf <frieder@fris.de>, Conor Dooley <conor+dt@kernel.org>,
+ Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
+ devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Rob Herring <robh@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Chris Morgan <macromorgan@hotmail.com>,
+ Conor Dooley <conor.dooley@microchip.com>, Fabio Estevam
+ <festevam@gmail.com>, Francesco Dolcini <francesco.dolcini@toradex.com>,
+ Gregor Herburger <gregor.herburger@ew.tq-group.com>,
+ Heiko Stuebner <heiko.stuebner@cherry.de>,
+ Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+ Jessica Zhang <quic_jesszhan@quicinc.com>,
+ Joao Paulo Goncalves <joao.goncalves@toradex.com>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Parthiban Nallathambi <parthiban@linumiz.com>, Peng Fan <peng.fan@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+ Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+References: <20240828074753.25401-1-frieder@fris.de>
+Content-Language: en-US, de-DE
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
+In-Reply-To: <20240828074753.25401-1-frieder@fris.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR3P281CA0071.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:4b::7) To PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:102:263::10)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR10MB5681:EE_|AM9PR10MB4037:EE_
+X-MS-Office365-Filtering-Correlation-Id: 325ef7cc-759f-468d-fdb8-08dce769c6dd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|366016|376014|1800799024|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Z1JOcjE4WjZlSjMzbHZqS1JFTm10RHIxeXJlTHFCY0JpS2RlNXY4anlCTk1s?=
+ =?utf-8?B?NFNkRGhJR1BjVnNpZmZtT01tRFZWYktZSm1Uckk3UDRrc0poaUkwVEhTdnFx?=
+ =?utf-8?B?VzNZY1ArdGl5WC9TT1p0cDdtQzhnNnU2bjh5bWxVenVCK0J1VGNrR2dTcDY3?=
+ =?utf-8?B?ZytSY1FvUEFvR3RUb1ppK1RhakxveUJCMVZmK1VZdWR1K1VveHdLdktzblhJ?=
+ =?utf-8?B?YStrOHRYM290djVIVUxyeXNyT1FKd25TdVBpMTdtdSt3T3VMQUhlZHdNNjFV?=
+ =?utf-8?B?UHNzMGV2YlJpanJobjdHM0JVck5wRVJuNE1zdnVpQmphblkzZExSdmJFdWNO?=
+ =?utf-8?B?OWhpaStBMnhBbUMxUVpYaHk4aXRmMGFXdUhWY0x2cHdlT29NS0NmVktaTUt5?=
+ =?utf-8?B?MlpLcktZY2h4cnlCWVh6N2hjVis2VC9FYjhHanVJNnJUaExVUktZdVdRRWs3?=
+ =?utf-8?B?elRwa0wveFNpQlBXajVxTjhIWWJ3QVEzenY5eXNZWHMxdFFOWkVuZkMzcm1T?=
+ =?utf-8?B?ZThzaDR1ZEZsUUJCa2wxenlzcGN5NGJVeTkyT2d0VDdhRjJtWkVNMUxhdTdG?=
+ =?utf-8?B?RmVTb2J1YVZLNW9hTFcwMDMzU1ZVWlJaZ1IyVU5TeTdMNXN2ODQ3RmVVWWd1?=
+ =?utf-8?B?WTU5ZFZiTVRaV0xHdU9KdGlvYVZlSkpCRWtQM0xZVVhLWVZSVEFJYXdVTFdm?=
+ =?utf-8?B?ckRWWTJ4aWpVR2Z6dUx0OUZJQUNLWGhMV1pGbnZIbmNsQktKeUdibmY1am12?=
+ =?utf-8?B?ZXY4M0IvSEhYZmlydWZsVnhUYTFjbDVaWU9PWXJtYVdmdWN4VExUOTMxVFJw?=
+ =?utf-8?B?Rk5uMjMzeGtkZWgxc2szUHlXMGxzMUNJRysyd2l1bVk4ZU4vTTR6RS81ajV6?=
+ =?utf-8?B?Unhwbjg3S094Zi9rRzc4Sy9xN0dUcElUVkNHQU5Qb2FkRGhEc0dnY0lNNVNy?=
+ =?utf-8?B?R1hDaFRWcjd4ZkNHeXVpcXpXeko2aTVYVFNKT2lMUnpzTnFNdEVqV2U2Nldr?=
+ =?utf-8?B?VjVYZ3Noa0xKRHl2Y0ZRd054RlFqUmpiZjEyRktKaG1kc2IzejdjNUE2UzBv?=
+ =?utf-8?B?Nm5rZDRkdkRJU0dDT0RjdE9sRUg4cUtkMGRveU9SOFdaWW5jRGpPZTYzOW1H?=
+ =?utf-8?B?ZkRzMi9JNkZBaSt0Z1dud3czbDh1MVhpN1lXakxpbkFiRzBQV3pmRkxjdE5T?=
+ =?utf-8?B?OWtJajZNbU1PSWNvK3ZUcHFkSUdGQ0xtOXNGd28yRkE0ZFpVaTE0WHlJbGFQ?=
+ =?utf-8?B?a1JGSjA5NmNKOFFWQ1U1Tk5jR21yOXNOUnpDcC9EcFN5MVVVMUJqYjR3L1Ur?=
+ =?utf-8?B?RnhRVFhpbzZWWmt2eHFIMkFyaVhhTE1pcit5SUhQNllNc1NtWjRxcVR3YTB1?=
+ =?utf-8?B?aUpXSG5qZlRXRk12eUhMbnpJczM4bURLMUxZK0V1NmxxUjF4UFhZRjVnQ09l?=
+ =?utf-8?B?bVpoQ3JRTjIydHNZS2ZQMWlPN2tQdzNETFE3VFZCOGh2dVdQNTNwM2FTMk1O?=
+ =?utf-8?B?N00ydmNmaTRiT3R0SmdFS2FBS3M3Q2VTRW9pTzN4clZZbis1eFBwSUhVb2hT?=
+ =?utf-8?B?UTI5ZHk3K085Q3A4WXhTd3RrVHE5cVJFMXVSU1VDZk5lRWFLVVRnblBmVGxJ?=
+ =?utf-8?B?VHpZRjkrVU1HeEFXNExEdWMzcnRHTjJveFdlTU9OUnZOVzJ2U3hFdGdSRXpL?=
+ =?utf-8?B?bU5PSEIwbU04V2VYb2JwZWxzektVM1JpNDZDUzBNK2ZDbEJORFo1WlBVLzVY?=
+ =?utf-8?Q?F1Barjs+k5g66CiAMyinaS3ESIBrcmaoLUNDeai?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(921020);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?amFtNkxHa21kSks0SmlYTDJjVWN3VTlwdVpJTDFjdmZGMlJKeEQvN1FrYlRq?=
+ =?utf-8?B?dWhRb3hUd2pQOHRDaDZmckRVOTdLaWpmalprOEtQTmZJT0tDaUtlSmNnSFJ4?=
+ =?utf-8?B?OHl5L1N0Y0s4VStqcGU2ZnpDWHJsc1VrNEdwcUZRNzY5dDdnYm1kbUtkU0xW?=
+ =?utf-8?B?NmtJU0wwN2xVUDdsTFlVa0ltSFpEWjNvY09HMWN3R1FmRVV5YXZVK1UrTFZF?=
+ =?utf-8?B?L0pmMXZrMW5wMHZCWkI3MHNjOUVQUW5jR0tGaERoT3BXSFVMcGZBLytaZU1X?=
+ =?utf-8?B?MXduTGJKOXVkZnRpQ2xMQkNkNXY4TVQvbVRndGsxVElFdUdvcWxXSXdEM0VH?=
+ =?utf-8?B?cDR3SGdNbDJhTjhOU1lQN2RPcWJsN0RIVHN4TXRPSytORWJRWHhLMXNjWXVU?=
+ =?utf-8?B?WTlubitoOEZ5NUF3UjMzNU5XTUNXS05aRDNoUHVjcTYvRTlsbHVqR0dWaWZJ?=
+ =?utf-8?B?bkJZb3FkTjI2OERDVFh0Y1RQM3hpUkVzVk04U05ZZE5MekFtY3c3TEN1UmIz?=
+ =?utf-8?B?U0dXZVYrTjFJaGkxK3RTbzVkQXI1cnRVS1BscGpEY1NaQzZLdXFvVy9Nb1E5?=
+ =?utf-8?B?djVEdkFWSHBRcUpKclhOenRlZElZcldKOWRiZVpiVDhZQndLWWhJQTFidWpB?=
+ =?utf-8?B?ZFZucm1LLzFPdWpnYjFIY242aFdyYnlCallmK3J0dkxZRjJKZmVZYWNQQ1BO?=
+ =?utf-8?B?cytLQUdTK3k0TGRmYkxPWXRxRG5uOG4yZEFod0l2RXMxSy9NTHQ5TW5VTW94?=
+ =?utf-8?B?RTROTTFBcGVHL3FTU21BZEI2TDVaZnhqU0l0YVhXL2Q2THd2d0ZyRVJmMHJP?=
+ =?utf-8?B?NlZRY1AyY21za1pidzRUdzc5N3FWM3UvTXVIUEJ3bWVQaTJ3ZXN2MnNRdGQ2?=
+ =?utf-8?B?RzRMa1IzVW5NN3RERXdQTW5QNUF4VDcvckNycS9SaGFobmIwR2hNZ0gvNytL?=
+ =?utf-8?B?eEY0NW5MS0ROYVZ2a3dTWG9pN3FaTVZrc3JrODdTSDBGcTZPa1QyODA0dGFX?=
+ =?utf-8?B?Q0MvZ21Zc0grcHl1OFBMblVjTURCRzZqeUhidk1FUFNTRGNHN09IOFpMTmxN?=
+ =?utf-8?B?YjhoVXRCMkViS09tb3FFVVA2UVRzeUtwZU9wOGhhc2hPR0dGc1B5blJlcEdr?=
+ =?utf-8?B?NFNySXJ4RXVDSGVRR3VHdUNzT2VSV0JIZlZzaEREdVEzTHBRZ2UrUWlxT0xQ?=
+ =?utf-8?B?K0tZNXBpTngyQ2ZObmIzdzE4MDNzODlxOVBwZ3JkYVZRYlJOUkJqM0p2WmJq?=
+ =?utf-8?B?TGxGUDhFd09Cb2RZR2ZXU0VjMjlGR0RUVTlhMUJ6bVlsUXB3bWdUcXcxRUtZ?=
+ =?utf-8?B?ZXRyODJ4WHJXRzNQSjZubmFWcWdRWEl2WXZRZmh4STVuNkZMcGlnZC9zcWZy?=
+ =?utf-8?B?MkJ5UWk0S1ZoVmRrZGhjRWI5VkZFbVQzM2prZGZaN2RPMnZhQ0JHTmFKcjFq?=
+ =?utf-8?B?dE5RSXFXSmlrbGpKSW5PUkFDRUQ2b0ZuQklPRitKbGhTZ1RidEhGcTNhVFpx?=
+ =?utf-8?B?Yy9zR2hrcFlubXFBdUFpMTZCWUxxa3cxWlBlZi9Ed08rZHpqZXJPdTY0NlZ0?=
+ =?utf-8?B?T29tTHQ1WFg2ZDJVK2FzSkw1Mk9YNHFlSEJObWZObU9iL3RTMmt3VTFoa3pr?=
+ =?utf-8?B?bXBwcy9ocHpWQzJ2N3QzdmpQSXlSSDNiNzIzeWZHVDhsaUUyRk9xUUNZVDgr?=
+ =?utf-8?B?R1R2M0NFVHN4bFIrdVFUdEtiZnh2a0tQUm1Tek5xY3B0TGxOakI5VmdoeFox?=
+ =?utf-8?B?L0hsKzVKVndpd1FrUVA4UHpTVEIzN2NpMHlVWUxzNUhuNzZsSWZsVzQ2cVFQ?=
+ =?utf-8?B?KzBoNUV1aDZXNlZTK3h2NWhEVm1jM1BhOGIzTVRuSDVFSGU3UXIrU3Vlc1A2?=
+ =?utf-8?B?djBROGlLZFdiMHRodVBRdzZLdy9HdDlBbVRaQ0g4MHQ3TXptQkdLMCtPUDNU?=
+ =?utf-8?B?dWJENXUyTitxQ0Q3dWhqNWxkT3B6eFpvSFN6b3JibVNUQmo5Tk9nUEFqaDRs?=
+ =?utf-8?B?UHdjb2lXc1RTV3NWRUxYRUVsV3dhVDdXeVdkT0VNOXRuTW0wRnBNWTZFYS9F?=
+ =?utf-8?B?RmM4TjZ0YndCck5JR0pXallnQkk4TE9sUjlZWXd1L1VneFcxNDNpemVudUpH?=
+ =?utf-8?B?Vk00elpRQnA2Uno2THdvL2xvam5kRXR3RnVrdTJ5dDd0MExaNmw5OU1SV29t?=
+ =?utf-8?B?RlE9PQ==?=
+X-OriginatorOrg: kontron.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 325ef7cc-759f-468d-fdb8-08dce769c6dd
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR0402MB3937.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c70717ec-4ab9-4635-e07d-08dce766902a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Oct 2024 06:58:07.0657
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2024 07:21:07.4855
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 2lWIUWoOpO+C3GgMFBCscVoQ2KJxYFbppQwvTJKBcCtNDOzzNoY+dHWCK+X5fVmOSnZUb14RpStjCPeQZcWROQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9462
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8c9d3c97-3fd9-41c8-a2b1-646f3942daf1
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ygfDkl+odFfTVPKZ96BKvI31MhpM3DwyvRTz2V13nXhG7OlnkwJBELygntwU3WZ/FHu9/zYMFtbe18w4dxNBc44RfuYlopi7ZT3rp7kxRmI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR10MB4037
 
-> Hi Carlos,
->=20
-> On Thu, Sep 12, 2024 at 04:24:13PM GMT, carlos.song@nxp.com wrote:
-> > From: Carlos Song <carlos.song@nxp.com>
-> >
-> > LPI2C support master controller and target controller enabled
-> > simultaneously. Both controllers share same SDA/SCL lines and
->=20
-> /same/the same/
->=20
-> > interrupt source but has separate control and status registers.
->=20
-> /separate/a separate/
->=20
-> > Even if target mode is enabled, LPI2C can still work normally as
-> > master controller at the same time.
->=20
-> It's not what happens in the irq handler, though (I left a comment in irq
-> handler).
->
-> > This patch supports basic target data read/write operations in 7-bit
-> > target address. LPI2C target mode can be enabled by using I2C slave
-> > backend. I2C slave backend behave like a standard I2C
->=20
-> /behave/behaves/
->=20
-> > client. For simple use and test, Linux I2C slave EEPROM backend can be
-> > used.
-> >
-> > Signed-off-by: Carlos Song <carlos.song@nxp.com>
->=20
-> ...
->=20
-> > +static irqreturn_t lpi2c_imx_isr(int irq, void *dev_id) {
-> > +     struct lpi2c_imx_struct *lpi2c_imx =3D dev_id;
-> > +
-> > +     if (lpi2c_imx->target) {
-> > +             u32 scr =3D readl(lpi2c_imx->base + LPI2C_SCR);
-> > +             u32 ssr =3D readl(lpi2c_imx->base + LPI2C_SSR);
-> > +             u32 sier_filter =3D ssr & readl(lpi2c_imx->base +
-> > + LPI2C_SIER);
-> > +
-> > +             /* Target is enabled and trigger irq then enter target
-> > + irq handler */
->=20
-> This sentence is a bit hard to understand, how about:
->=20
->                 /*
->                  * The target is enabled and an interrupt has
->                  * been triggered. Enter the target's irq handler.
->                  */
->=20
-> > +             if ((scr & SCR_SEN) && sier_filter)
-> > +                     return lpi2c_imx_target_isr(lpi2c_imx, ssr,
-> > + sier_filter);
->=20
-> Can't the interrupt be generated by the master if lpi2c_imx->target is as=
-signed?
->=20
-> In the git log you are describing a different behavior.
->=20
-Hi, Andi,
+On 28.08.24 9:46 AM, Frieder Schrempf wrote:
+> From: Frieder Schrempf <frieder.schrempf@kontron.de>
+> 
+> This add support for the display bridges (DSI->LVDS and DSI->HDMI)
+> on the BL i.MX8MM and the 7" LVDS panel in a separate overlay.
+> 
+> Only one of the interfaces (HDMI or LVDS) is supported at the same
+> time. Enabling the LVDS overlay will disable the HDMI interface.
+> 
+> * Patch 1 and 2: Add the necessary binding changes
+> * Patch 3: Extend the BL devicetree
+> * Patch 4: Add the LVDS panel overlay
+> 
+> Changes for v2:
+> * Patch 1: Add link to commit message
+> * Patch 2: Add Conors A-b tag
+> * Patch 3: Remove blank lines from hdmi node
+> * Patch 3: Fix order of lvds and hdmi nodes within i2c
+> * Patch 3: Remove the unneeded deletion of samsung,pll-clock-frequency
+> * Patch 3: Use the existing MIPI DSI output port from imx8mm.dtsi
+> * Patch 4: Update copyright year
+> * Patch 4: Use exisitng MIPI DSI output port from imx8mm.dtsi
+> * Patch 4: Fix pinctrl for GPIO hogs
+> * Patch 4: Fix property order in i2c2 node
+> * Patch 4: Use generic node name for touchscreen
+> 
+> Frieder Schrempf (4):
+>   dt-bindings: vendor-prefixes: Add Jenson Display
+>   dt-bindings: display: panel-lvds: Add compatible for Jenson
+>     BL-JT60050-01A
+>   arm64: dts: imx8mm-kontron: Add support for display bridges on BL
+>     i.MX8MM
+>   arm64: dts: imx8mm-kontron: Add DL (Display-Line) overlay with LVDS
+>     support
 
-Thanks for your suggestion.
+Gentle ping for this series. Neil proposed to apply path 1 and 2 to
+drm-misc-next. Shawn, can you review/apply patch 3 and 4, please?
 
-In fact, if lpi2c_imx->target is assigned, master still can generate the in=
-terrupt and will also can enter
-master's irq handler.
+Thanks
+Frieder
 
-Because LPI2C has independent slave register group and master register grou=
-p.
-SCR register is slave control register, SSR register is slave status regist=
-er and SIER register is slave interrupt enable register.
-So Even if target is assigned, and if the interrupt is triggered by master,=
- this judgment will NOT hit:
-		if ((scr & SCR_SEN) && sier_filter)
-			return lpi2c_imx_target_isr(lpi2c_imx, ssr, sier_filter);
-
-so logic will keep going then enter the lpi2c_imx_master_isr().
-
-Over all, when lpi2c_imx->target is assigned, either enter the master handl=
-er or the target handler.
-When lpi2c_imx->target is not assigned, only enter the master handler.
-
-Maybe my commit log "master mode and target mode can work at the same time"=
- is misleading.
-I will change to "Both master mode and target mode can be enabled".
-
-Do I understand you correctly? If I do. Please tell me I will send V5 patch=
- for other fixes.
-
-Carlos
-> > +     }
-> > +
-> > +     /* Otherwise triggered by master then handle irq in master
-> > + handler */
->=20
-> Otherwise the interrupt has been triggered by the master. Enter the maste=
-r's
-> irq handler.
->=20
-> > +     return lpi2c_imx_master_isr(lpi2c_imx); }
-> > +
-> > +static void lpi2c_imx_target_init(struct lpi2c_imx_struct *lpi2c_imx)
-> > +{
-> > +     u32 temp;
-> > +
-> > +     /* reset target module */
-> > +     writel(SCR_RST, lpi2c_imx->base + LPI2C_SCR);
-> > +     writel(0, lpi2c_imx->base + LPI2C_SCR);
-> > +
-> > +     /* Set target addr */
->=20
-> /addr/address/
->=20
-> > +     writel((lpi2c_imx->target->addr << 1), lpi2c_imx->base +
-> > + LPI2C_SAMR);
-> > +
-> > +     writel(SCFGR1_RXSTALL | SCFGR1_TXDSTALL, lpi2c_imx->base +
-> > + LPI2C_SCFGR1);
-> > +
-> > +     /*
-> > +      * set SCFGR2: FILTSDA, FILTSCL and CLKHOLD
-> > +      *
-> > +      * FILTSCL/FILTSDA can eliminate signal skew. It should generally=
- be
-> > +      * set to the same value and should be set >=3D 50ns.
-> > +      *
-> > +      * CLKHOLD is only used when clock stretching is enabled, but it =
-will
-> > +      * extend the clock stretching to ensure there is an additional d=
-elay
-> > +      * between the target driving SDA and the target releasing the SC=
-L
-> pin.
-> > +      *
-> > +      * CLKHOLD setting is crucial for lpi2c target. When master read =
-data
-> > +      * from target, if there is a delay caused by cpu idle, excessive=
- load,
-> > +      * or other delays between two bytes in one message transmission.=
- so
-> it
-> > +      * will cause a short interval time between the driving SDA
-> > + signal and
->=20
-> /transmission. so it will/transmittion, it will/
->=20
-> > +      * releasing SCL signal. Lpi2c master will mistakenly think it
-> > + is a stop
->=20
-> /Lpi2c/The lpi2c/
->=20
-> > +      * signal resulting in an arbitration failure. This issue can be =
-avoided
-> > +      * by setting CLKHOLD.
-> > +      *
-> > +      * In order to ensure lpi2c function normally when the lpi2c spee=
-d is as
-> > +      * low as 100kHz, CLKHOLD should be set 3 and it is also
-> > + compatible with
->=20
-> /3/to 3/
->=20
-> > +      * higher clock frequency like 400kHz and 1MHz.
-> > +      */
-> > +     temp =3D SCFGR2_FILTSDA(2) | SCFGR2_FILTSCL(2) |
-> SCFGR2_CLKHOLD(3);
-> > +     writel(temp, lpi2c_imx->base + LPI2C_SCFGR2);
-> > +
-> > +     /*
-> > +      * Enable module:
-> > +      * SCR_FILTEN can enable digital filter and output delay counter =
-for
-> LPI2C
-> > +      * target mode. So SCR_FILTEN need be asserted when enable
-> SDA/SCL FILTER
-> > +      * and CLKHOLD.
-> > +      */
-> > +     writel(SCR_SEN | SCR_FILTEN, lpi2c_imx->base + LPI2C_SCR);
-> > +
-> > +     /* Enable interrupt from i2c module */
-> > +     writel(SLAVE_INT_FLAG, lpi2c_imx->base + LPI2C_SIER); }
-> > +
-> > +static int lpi2c_imx_reg_target(struct i2c_client *client)
->=20
-> lpi2c_imx_register_target as a name is a bit better, in my opinion
->=20
-> > +{
-> > +     struct lpi2c_imx_struct *lpi2c_imx =3D
-> i2c_get_adapdata(client->adapter);
-> > +     int ret;
-> > +
-> > +     if (lpi2c_imx->target)
-> > +             return -EBUSY;
-> > +
-> > +     lpi2c_imx->target =3D client;
-> > +
-> > +     ret =3D pm_runtime_resume_and_get(lpi2c_imx->adapter.dev.parent);
-> > +     if (ret < 0) {
-> > +             dev_err(&lpi2c_imx->adapter.dev, "failed to resume i2c
-> controller");
-> > +             return ret;
-> > +     }
-> > +
-> > +     lpi2c_imx_target_init(lpi2c_imx);
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +static int lpi2c_imx_unreg_target(struct i2c_client *client)
->=20
-> lpi2c_imx_unregister_target sounds better to me.
->=20
-> > +{
-> > +     struct lpi2c_imx_struct *lpi2c_imx =3D
-> i2c_get_adapdata(client->adapter);
-> > +     int ret;
-> > +
-> > +     if (!lpi2c_imx->target)
-> > +             return -EINVAL;
-> > +
->=20
-> ...
->=20
-> > +static int lpi2c_suspend_noirq(struct device *dev) {
-> > +     int ret;
-> > +
-> > +     ret =3D pm_runtime_force_suspend(dev);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     return 0;
->=20
-> This function can simply be:
->=20
->    static int lpi2c_suspend_noirq(struct device *dev)
->    {
->         return pm_runtime_force_suspend(dev);
->    }
->=20
-> but I'm not strong for it, your choice.
->=20
-> > +}
-> > +
-> > +static int lpi2c_resume_noirq(struct device *dev) {
-> > +     struct lpi2c_imx_struct *lpi2c_imx =3D dev_get_drvdata(dev);
-> > +     int ret;
-> > +
-> > +     ret =3D pm_runtime_force_resume(dev);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     /*
-> > +      * If i2c module powered down in system suspend, register
-> > +      * value will lose. So reinit target when system resume.
-> > +      */
->=20
-> Can we re-write this to something like:
->=20
->         /*
->          * If the I2C module powers down during system suspend,
->          * the register values will be lost. Therefore, reinitialize
->          * the target when the system resumes.
->          */
->=20
-> Thanks,
-> Andi
->=20
-> > +     if (lpi2c_imx->target)
-> > +             lpi2c_imx_target_init(lpi2c_imx);
-> > +
-> > +     return 0;
-> > +}
-> > +
-> >  static const struct dev_pm_ops lpi2c_pm_ops =3D {
-> > -     SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
-> > -                                   pm_runtime_force_resume)
-> > +     SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(lpi2c_suspend_noirq,
-> > +                                   lpi2c_resume_noirq)
-> >       SET_RUNTIME_PM_OPS(lpi2c_runtime_suspend,
-> >                          lpi2c_runtime_resume, NULL)  };
-> > --
-> > 2.34.1
-> >
