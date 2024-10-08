@@ -1,74 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B7D1D9A43;
-	Tue,  8 Oct 2024 13:34:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BBCE1DFDA0
+	for <imx@lists.linux.dev>; Tue,  8 Oct 2024 14:23:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728394496; cv=none; b=p8J91YmoBxPVAsXrGnFSqUT/ekJ1bDJqMuIT/WVwbqzWY/GpCqPlMwW8IETn1m5S48PB+3Gl2/btbwwwknmtyR/fwZDf2oHN90pils7OU71bI4aBYqSc8FwrOsY107477/LoE8EAfZM7kHSw0w4zPJ5aJObESKJZgNMEIwSW9oI=
+	t=1728397413; cv=none; b=kU0BVsoT//O40mCbrTDNXC2+0/mLT7Jgt54xScPFsh5STkHCYPInAAN9TJOCIGrvuYetx0xBIc6G6Z7P7uLKj4viXwHNZOMZT8BUebgqc1YoQI98ah97VTrLMILy4EZhx/v9Y3zdSZg5hfm6BpQJo7Tkvdpyyhe7gS/2lnwfA4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728394496; c=relaxed/simple;
-	bh=AsYoCsU044vrxM77ATJ+bBtvZ6wwx4g48fpwc54K/Eg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RmsGPJmUrK8wvum26SluhNnMvHQ6EU35rwoC1osj0FW1u13wgK0CKobvpbTuFqaqJs4rA95TuoCgqXcxGohOIcGvw/aZdgZEpFBYzOyPB422hg8ibH7/gwqE0ruJhDTYen5rYgVF51Qq1k3K3JOxM3zHjITAaLHZv/Vbg/9DHkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TgwsCPhD; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TgwsCPhD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD4AC4CEC7;
-	Tue,  8 Oct 2024 13:34:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728394496;
-	bh=AsYoCsU044vrxM77ATJ+bBtvZ6wwx4g48fpwc54K/Eg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TgwsCPhDlQ59rdZyDIYS5VIg3On0g4zCf9UEEx8G3scMnBBRssmSpCPt5lj/Auo8D
-	 N3jaGSR0Alps4nZlsy2uMCOwdu0LI9mzk0eYgpBYArncC5LW5wUHiKP2m0EFcjoR30
-	 WIzErCGlJpBSS9id34mH/WvPag05INkV0w9QEx6BLV12YoaIiSPM1L5hMbOPpfpVm7
-	 vXcs70W7lWOgKvDYPcAP3rCH5QPP3SbftG9sZXI0X3fqhS4NjGeINMSiCpej6TktaJ
-	 KS7Y9jiR/DAVnxoPj63xm4Q4mh2CICdPitxuKuhSP/cevugGKLTeT4ffUaGmjZGyXV
-	 3CThlwfvW4n3g==
-Date: Tue, 8 Oct 2024 15:34:54 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Wim Van Sebroeck <wim@linux-watchdog.org>, 
-	Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	"open list:WATCHDOG DEVICE DRIVERS" <linux-watchdog@vger.kernel.org>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, 
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/1] dt-bindings: watchdog: fsl-imx-wdt: Add missing
- 'big-endian' property
-Message-ID: <h2ynhrnuhiwixxkoeiyu5kpkpssvlscwbyxgsfdg2j22kwyfz4@urzf32egddcg>
-References: <20241007212434.895521-1-Frank.Li@nxp.com>
+	s=arc-20240116; t=1728397413; c=relaxed/simple;
+	bh=xKTWbogi7rDKZ0L4Lnq6s12hOjhCMJLQw5BZshd3wNU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=pKu2BgdlHCkt4ggeLJloTeHz8J88Ps9jpyA29b0VKaR5gWX3qO8hjYCUboSXo6VlHqalLCCEJqJTIZ/4OefdX04W/hqNoFJhLveUTFyNwLRKnDTBGyRaVtOstkJ/rkRCGUjbGGMp7oz5JUVtRFrqpiVWMfsjFJc4Os9W09tGu60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1syB7N-0007J1-6W; Tue, 08 Oct 2024 16:23:17 +0200
+Received: from [2a0a:edc0:0:900:1d::4e] (helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1syB7M-000Nu1-Fu; Tue, 08 Oct 2024 16:23:16 +0200
+Received: from pza by lupine with local (Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1syB7M-000Bnr-1K;
+	Tue, 08 Oct 2024 16:23:16 +0200
+Message-ID: <05c5b863f98bb61f67e79e83e05ca341285db205.camel@pengutronix.de>
+Subject: Re: [PATCH v2 2/2] media: imx: vdic: Introduce mem2mem VDI
+ deinterlacer driver
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Marek Vasut <marex@denx.de>, Nicolas Dufresne <nicolas@ndufresne.ca>, 
+	linux-media@vger.kernel.org
+Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>, Fabio
+ Estevam <festevam@gmail.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Helge Deller <deller@gmx.de>, Mauro Carvalho
+ Chehab <mchehab@kernel.org>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo
+ <shawnguo@kernel.org>,  Steve Longerbeam <slongerbeam@gmail.com>,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org, 
+ linux-staging@lists.linux.dev
+Date: Tue, 08 Oct 2024 16:23:16 +0200
+In-Reply-To: <0da39b8f-4cca-438f-9a39-40da7c34c895@denx.de>
+References: <20240724002044.112544-1-marex@denx.de>
+	 <20240724002044.112544-2-marex@denx.de>
+	 <85a5a42667e5867bc45da31baf045d4c9557f5f1.camel@ndufresne.ca>
+	 <6b45e30c-b215-4f7a-91a4-fde05d78f737@denx.de>
+	 <b1c5fb155c77355ef2889b6e054a5c0696481ebd.camel@pengutronix.de>
+	 <0da39b8f-4cca-438f-9a39-40da7c34c895@denx.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241007212434.895521-1-Frank.Li@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Mon, Oct 07, 2024 at 05:24:33PM -0400, Frank Li wrote:
-> From: Animesh Agarwal <animeshagarwal28@gmail.com>
-> 
-> Add missing big-endian property in watchdog/fsl-imx-wdt.yaml schema. Only
-> allow big-endian property for ls1012a and ls1043a.
-> 
-> Fix dtbs_check errors.
-> arch/arm64/boot/dts/freescale/fsl-ls1012a-frwy.dtb: watchdog@2ad0000:
->     Unevaluated properties are not allowed ('big-endian' was unexpected)
-> 
-> Cc: Daniel Baluta <daniel.baluta@nxp.com>
-> Signed-off-by: Animesh Agarwal <animeshagarwal28@gmail.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
+On Do, 2024-10-03 at 16:57 +0200, Marek Vasut wrote:
+> On 9/26/24 1:16 PM, Philipp Zabel wrote:
+> > On Mi, 2024-09-25 at 22:45 +0200, Marek Vasut wrote:
+> > [...]
+> > > > The driver is not taking ownership of prev_buf, only curr_buf is gu=
+aranteed to
+> > > > exist until v4l2_m2m_job_finish() is called. Usespace could streamo=
+ff, allocate
+> > > > new buffers, and then an old freed buffer may endup being used.
+> > >=20
+> > > So, what should I do about this ? Is there some way to ref the buffer=
+ to
+> > > keep it around ?
+> >=20
+> > Have a look how other deinterlacers with temporal filtering do it.
+> > sunxi/sun8i-di or ti/vpe look like candidates.
+> I don't see exactly what those drivers are doing differently to protect=
+=20
+> the prev buffer during deinterlacing . Can you be more specific ?
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In the EOF interrupt you are calling v4l2_m2m_buf_done() on src_buf,
+which should be the same as ctx->curr_buf in the previous device_run.
+Instead, you could release ctx->prev_buf and then store src_buf into
+ctx->prev_buf. Storing curr_buf on the ctx doesn't seem to be necessary
+at all. The mentioned deinterlacer drivers do something similar [1][2].
 
-Best regards,
-Krzysztof
+[1] https://elixir.bootlin.com/linux/master/source/drivers/media/platform/s=
+unxi/sun8i-di/sun8i-di.c#L236
+[2] https://elixir.bootlin.com/linux/master/source/drivers/media/platform/t=
+i/vpe/vpe.c#L1481
 
+regards
+Philipp
