@@ -1,163 +1,201 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE624215023
-	for <imx@lists.linux.dev>; Tue,  8 Oct 2024 20:38:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C047185923
+	for <imx@lists.linux.dev>; Tue,  8 Oct 2024 21:48:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728419890; cv=none; b=r7L4n2uTKsmiqU7TS4/K6LYLZawFEMQ0vD7yiqm7ayg59tISXWuKGmbKAjgAU2pRnIGjCjsKV2QEZ76uIoAA2SOZv8/sPrpHkTbO3vpTP+T7+4ev+rse+FTlPwQsNh7ak+DJR/l6S4nIOgOzwGe6+kRwCKX1CMT4FCu+/Ewm1r8=
+	t=1728424134; cv=none; b=bsquQscfcvQ0RWve95hTdFCPc3LR2mOGL+RjLK6nVYaJew5ETtYkHmnAaSdrjtTBTwVvDqtqJ55kyCxBi9RLuXFOL9MMB9Yw6lo4f20dFaBzFq92v83FyaIs2OuhoqbzhUpKeAHg3Tj+X7gPsh9e77BXPwFUtVZwNZ5yZw9Li/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728419890; c=relaxed/simple;
-	bh=jBKc56vBxPYaOUWcC+VFZKlnp8sdizUoPysD1KL2n2Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R9hxaFCZfFLwnFxoE8pcsaXAydYU0GwOgr6rmCIpMx5h37u2P1xfx0CYRFXuLNDr9PGcovNB3FjmTovUUbKSdbeWgDCwU6ohDhLNESS2h6hWDxuFyTM1f5joi0uLr58h9u/KFnYHmubIdTLd+NWQR8uJat4+UppM/s1D+YqgT2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=p9a6v0cu; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1728424134; c=relaxed/simple;
+	bh=nzs4WXJPGu2wDkp8hyY0kdj/eVoKeVgX+sbSr7Q0wuo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hhv3fUtYov1EhZpF9oob/ZoamGIEqbWhGz6+Tg3g4/qJZKWNN9IBvXU+K7LBh05/B7xb5lznPxs207ZzabuR7w59nRFS6o3HshKCnI507PtBRhwMeNq+6lOEbbwFKKaC9giQNqxEFiIlCtB7sjqYK1NCI3+o9EbKR2CqLK4lODg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=h/HQzim8; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="p9a6v0cu"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a99388e3009so471027366b.3
-        for <imx@lists.linux.dev>; Tue, 08 Oct 2024 13:38:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1728419885; x=1729024685; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jBKc56vBxPYaOUWcC+VFZKlnp8sdizUoPysD1KL2n2Y=;
-        b=p9a6v0cuERVomugY10c7+XNqpHSOv9HtvWSZYTxl1EkrIPKq2mJzoWwR3X8QHfUhmD
-         9IY3jRcBh2W9W6RxBmLlSVjuPrcJQGeEpa8q2zOOjU6C5xf9EpL9iwaxBK1RTzmaj19h
-         lb10Lh+Tx0e97ODDSV0oRLvy/++0xQ9reOoBL8ioEuQizM7UhmbkLXyP+q00mH6VpdsJ
-         QLHumpgyRITuUzt2EJZtbTY1AtFLqt1yUkLVGipip2joBieND86BP1/HyV0WJRHvE22B
-         jfk3+cyUwDdm3YDJhxkgyhtFXFzlVzZ8iu1O1rvJ6MKqn5esYd2jZrQ21xH39D0pG4gs
-         5anA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728419885; x=1729024685;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jBKc56vBxPYaOUWcC+VFZKlnp8sdizUoPysD1KL2n2Y=;
-        b=dBZONiuFSaYwfS/bBiIp9TTkCc87WffB1BqOWymnb4q+JSJZ85/q04KbIs0NRVOdvh
-         u5AutJ6FEl0U7+44WmRBkH1vn+KWKr1jrQON8JIxJ5VvwVu7izgjYTHBnaJALouTD+QF
-         AFES5CqDPy4Edrj0bxThACpeyfBHpuYvzB/3lI1PboDe4MdLJkvRdoVJ+pMHqZXtYGhl
-         bKdDNLlcjVsnpeFLRJUXtVpBbRRD6rTJHoi9G56CZylXfJER0lZc/m1zkZ76KNKW7Iyi
-         EhBWHiFdA8BQFVeZYW/4Z6Xy8N7RmqEgR2h+2yySTCYLV3nQvNPZV7EtAiX5wk3gInCV
-         5L4A==
-X-Forwarded-Encrypted: i=1; AJvYcCXUr/rtIEht6epE1W1sZxOA58Eq7ezhkXmLfbJVpN9CqXPcNpOgeHMQNZn2Lt5Lg1Tt6UU=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz662qEXO35sMmCqI+hDUAzRUE5iq6wf7YI8CEfoqGoiGgLzB4f
-	TZNqcSSxN1p99EBdQcJYrjGfYbilC2RQ4fOk9yYj5LpxP39bwaO6gPb84qNqHQY=
-X-Google-Smtp-Source: AGHT+IFQsuFQDnMORn6KRqls83kXMRALTmz1xji/Zv3nzyXsaV17OwyYMIY5gtZ7u9n9SjQRNHRlFg==
-X-Received: by 2002:a17:907:94d4:b0:a8d:250a:52b2 with SMTP id a640c23a62f3a-a998d114bbemr3268366b.6.1728419884897;
-        Tue, 08 Oct 2024 13:38:04 -0700 (PDT)
-Received: from localhost ([2a02:8071:b783:6940:c420:a9b6:c5e1:5b65])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a996274deeesm196971266b.103.2024.10.08.13.38.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Oct 2024 13:38:04 -0700 (PDT)
-Date: Tue, 8 Oct 2024 22:38:02 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	linux-bluetooth@vger.kernel.org, linux-clk@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	dmaengine@vger.kernel.org, linux-gpio@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
-	nouveau@lists.freedesktop.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org, linux-i3c@lists.infradead.org, 
-	linux-iio@vger.kernel.org, linux-input@vger.kernel.org, patches@opensource.cirrus.com, 
-	iommu@lists.linux.dev, imx@lists.linux.dev, linux-mediatek@lists.infradead.org, 
-	linux-media@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org, 
-	netdev@vger.kernel.org, linux-wireless@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-phy@lists.infradead.org, linux-pwm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
-	linux-sound@vger.kernel.org, linux-spi@vger.kernel.org, linux-staging@lists.linux.dev, 
-	linux-usb@vger.kernel.org, linux-serial@vger.kernel.org, greybus-dev@lists.linaro.org, 
-	asahi@lists.linux.dev, rafael@kernel.org, Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH 00/51] treewide: Switch to __pm_runtime_put_autosuspend()
-Message-ID: <ttmnzgsdyng5vab63pvj7csrotbsmwnultjelvdotrvyg2snac@iv7afgect5f3>
-References: <20241004094101.113349-1-sakari.ailus@linux.intel.com>
- <CAPDyKFp0N6UJhnHS164Tdf=xkWB0jzq65L9TdvYazeBQ-6WjeQ@mail.gmail.com>
- <20241007184924.GH14766@pendragon.ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="h/HQzim8"
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 7C5D7884D2;
+	Tue,  8 Oct 2024 23:48:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1728424130;
+	bh=2nv7eIEebSt7HQjnqDkYLsMWohhJ/4VsEtZpjPg09KI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=h/HQzim8Y21/Mdnq7IuZxVZAFAddt7YYsWClvoae5DxMWy+DWRs4Wm+RGV1oGXpwb
+	 KVQmqku7iYToQq0ezwxkkHNB32V8jw9shBjJsJcOCCgQBuG1MW8YRy9ZzGpWGw0D5p
+	 kY62o/4qKUkQU+rjnxP8iwEBo7lgN8zYSo7IrARUzpAbamPvdTAP6d2TSuOr+C4Txt
+	 W4/bR+yzx/p8JIZRDe+oQmsY6tiSjkbO+3RAXcqLHBOtC2HtltOCRQtCNSLD6LsGyG
+	 V/D+/r011G+wQNe7fE4+fi/tUebRUBzuB26GDEAFrvVEQYPJIpfLhP5oeZlxua0BHl
+	 INphpndCCpQag==
+Message-ID: <84f505af-1066-4fcf-84b7-28c152c09b89@denx.de>
+Date: Tue, 8 Oct 2024 23:48:48 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2ocqjla6tcmukjn3"
-Content-Disposition: inline
-In-Reply-To: <20241007184924.GH14766@pendragon.ideasonboard.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm: lcdif: Use adjusted_mode .clock instead of
+ .crtc_clock
+To: Isaac Scott <isaac.scott@ideasonboard.com>,
+ Alexander Stein <alexander.stein@ew.tq-group.com>,
+ dri-devel@lists.freedesktop.org
+Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
+ Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>,
+ "Lukas F . Hartmann" <lukas@mntmn.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Stefan Agner <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>,
+ imx@lists.linux.dev, kernel@dh-electronics.com,
+ linux-arm-kernel@lists.infradead.org, kieran.bingham@ideasonboard.com
+References: <20240531202813.277109-1-marex@denx.de>
+ <1897634.CQOukoFCf9@steina-w> <ab2eb32e-a458-4c9b-8324-27ccb00336c5@denx.de>
+ <7ae0cd7774f4b3e30cc033a7e543546732dbced0.camel@ideasonboard.com>
+ <de285fc0-728f-4ba0-86e0-0069d2cc9a35@denx.de>
+ <64e18ceed5279a9346a6a1141f02ead93383bd1e.camel@ideasonboard.com>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <64e18ceed5279a9346a6a1141f02ead93383bd1e.camel@ideasonboard.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
+On 10/8/24 12:07 PM, Isaac Scott wrote:
+> On Mon, 2024-10-07 at 20:06 +0200, Marek Vasut wrote:
+>> On 10/7/24 7:01 PM, Isaac Scott wrote:
+>>> Hi Marek,
+>>
+>> Hi,
+>>
+>>> On Sat, 2024-07-06 at 02:16 +0200, Marek Vasut wrote:
+>>>> On 6/24/24 11:19 AM, Alexander Stein wrote:
+>>>>> Am Freitag, 31. Mai 2024, 22:27:21 CEST schrieb Marek Vasut:
+>>>>>> In case an upstream bridge modified the required clock
+>>>>>> frequency
+>>>>>> in its .atomic_check callback by setting adjusted_mode.clock
+>>>>>> ,
+>>>>>> make sure that clock frequency is generated by the LCDIFv3
+>>>>>> block.
+>>>>>>
+>>>>>> This is useful e.g. when LCDIFv3 feeds DSIM which feeds
+>>>>>> TC358767
+>>>>>> with (e)DP output, where the TC358767 expects precise timing
+>>>>>> on
+>>>>>> its input side, the precise timing must be generated by the
+>>>>>> LCDIF.
+>>>>>>
+>>>>>> Signed-off-by: Marek Vasut <marex@denx.de>
+>>>>>
+>>>>> With the other rc358767 patches in place, this does the trick.
+>>>>> Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+>>>>
+>>>> I'll pick this up next week if there is no objection.
+>>>
+>>> Unfortunately, this has caused a regression that is present in
+>>> v6.12-
+>>> rc1 on the i.MX8MP PHYTEC Pollux using the
+>>> arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts. The
+>>> display is the edt,etml1010g3dra panel, as per the upstream dts. We
+>>> bisected to this commit, and reverting this change fixed the
+>>> screen.
+>>>
+>>> We then tried to retest this on top of v6.12-rc2, and found we also
+>>> had
+>>> to revert commit ff06ea04e4cf3ba2f025024776e83bfbdfa05155 ("clk:
+>>> imx:
+>>> clk-imx8mp: Allow media_disp pixel clock reconfigure parent rate")
+>>> alongside this. Reverting these two commits makes the display work
+>>> again at -rc2.
+>>>
+>>> Do you have any suggestions on anything we might be missing on our
+>>> end?
+>>> Please let me know if there's anything you'd like me to test as I'm
+>>> not
+>>> sure what the underlying fault was here.
+>> I believe what is going on is that the LCDIF cannot configure its
+>> upstream clock because something else is already using those clock
+>> and
+>> it set those clock to a specific frequency. LCDIF is now trying to
+>> configure those clock to match the LVDS panel, and it fails, so it
+>> tries
+>> to set some approximate clock and that is not good enough for the
+>> LVDS
+>> panel.
+>>
+>> Can you share dump of /sys/kernel/debug/clk/clk_summary on failing
+>> and
+>> working system ? You might see the difference around the "video"
+>> clock.
+>>
+>> (I have seen this behavior before, the fix was usually a matter of
+>> moving one of the LCDIFs to another upstream clock like PLL3, so it
+>> can
+>> pick well matching output clock instead of some horrid approximation
+>> which then drives the panel likely out of specification)
+> 
+> Hi Marek,
+> 
+> Please find attached the clk_summary for v6.12-rc2 before and after the
+> reversion (the one after the reversion is 6.12-rc2_summary_postfix).
+Thank you, this helped greatly.
 
---2ocqjla6tcmukjn3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I believe I know why it used to kind-of work for you, but I'm afraid 
+this used to work by sheer chance and it does not really work correctly 
+for the panel you use, even if the panel likely does show the correct 
+content. But, there is a way to make it work properly for the panel you use.
 
-Hello,
+First of all, the pixel clock never really matched the panel-simple.c 
+pixel clock for the edt_etml1010g3dra_timing:
 
-On Mon, Oct 07, 2024 at 09:49:24PM +0300, Laurent Pinchart wrote:
-> On Fri, Oct 04, 2024 at 04:38:36PM +0200, Ulf Hansson wrote:
-> > On Fri, 4 Oct 2024 at 11:41, Sakari Ailus <sakari.ailus@linux.intel.com=
-> wrote:
-> > >
-> > > Hello everyone,
-> > >
-> > > This set will switch the users of pm_runtime_put_autosuspend() to
-> > > __pm_runtime_put_autosuspend() while the former will soon be re-purpo=
-sed
-> > > to include a call to pm_runtime_mark_last_busy(). The two are almost
-> > > always used together, apart from bugs which are likely common. Going
-> > > forward, most new users should be using pm_runtime_put_autosuspend().
-> > >
-> > > Once this conversion is done and pm_runtime_put_autosuspend() re-purp=
-osed,
-> > > I'll post another set to merge the calls to __pm_runtime_put_autosusp=
-end()
-> > > and pm_runtime_mark_last_busy().
-> >=20
-> > That sounds like it could cause a lot of churns.
-> >=20
-> > Why not add a new helper function that does the
-> > pm_runtime_put_autosuspend() and the pm_runtime_mark_last_busy()
-> > things? Then we can start moving users over to this new interface,
-> > rather than having this intermediate step?
->=20
-> I think the API would be nicer if we used the shortest and simplest
-> function names for the most common use cases. Following
-> pm_runtime_put_autosuspend() with pm_runtime_mark_last_busy() is that
-> most common use case. That's why I like Sakari's approach of repurposing
-> pm_runtime_put_autosuspend(), and introducing
-> __pm_runtime_put_autosuspend() for the odd cases where
-> pm_runtime_mark_last_busy() shouldn't be called.
+$ grep '\<media_disp2_pix\>' 6.12-rc2_summary_postfix
+   media_disp2_pix  1  1  0  74250000 ...
+                             ^^^^^^^^
 
-That's ok for me. However this patch series isn't the optimal path to
-there because most drivers (i.e. those that already today do
-pm_runtime_mark_last_busy() in combination with
-pm_runtime_put_autosuspend()) have to be patched twice.
+$ grep -A 1 edt_etml1010g3dra_timing drivers/gpu/drm/panel/panel-simple.c
+static const struct display_timing edt_etml1010g3dra_timing = {
+         .pixelclock = { 66300000, 72400000, 78900000 },
+                                   ^^^^^^^^
 
-The saner route is: Only convert the drivers with a sole
-pm_runtime_put_autosuspend() (i.e. without pm_runtime_mark_last_busy())
-to __pm_runtime_put_autosuspend(). Then add the mark_last_busy() bits to
-pm_runtime_put_autosuspend() and then drop the explicit calls to
-pm_runtime_mark_last_busy() before pm_runtime_put_autosuspend().
+The pixel clock are within tolerance, but there is a discrepancy 
+74250000 != 72400000 .
 
-(Note this doesn't take into account Rafael's position that
-pm_runtime_put() might be the saner option. My argument applies for that
-conversion analogously.)
+Since commit 94e6197dadc9 ("arm64: dts: imx8mp: Add LCDIF2 & LDB nodes") 
+the IMX8MP_VIDEO_PLL1_OUT is set to a very specific frequency of 
+1039500000 Hz, which tidily divides by 2 to 519750000 Hz (which is your 
+LVDS serializer frequency) and divides by 7 to 74250000 Hz which is your 
+LCDIF pixel clock.
 
-Best regards
-Uwe
+This Video PLL1 configuration since moved to &media_blk_ctrl {} , but it 
+is still in the imx8mp.dtsi . Therefore, to make your panel work at the 
+correct desired pixel clock frequency instead of some random one 
+inherited from imx8mp.dtsi, add the following to the pollux DT, I 
+believe that will fix the problem and is the correct fix:
 
---2ocqjla6tcmukjn3
-Content-Type: application/pgp-signature; name="signature.asc"
+&media_blk_ctrl {
+    // 506800000 = 72400000 * 7 (for single-link LVDS, this is enough)
+    // there is no need to multiply the clock by * 2
+    assigned-clock-rates = <500000000>, <200000000>, <0>, <0>, 
+<500000000>, <506800000>;
+};
 
------BEGIN PGP SIGNATURE-----
+Can you please test whether this works and the pixel clock are accurate 
+in /sys/kernel/debug/clk/clk_summary ?
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmcFmCEACgkQj4D7WH0S
-/k6xnwf/QOZhbtT562rFFa3JIiBatDxTcqyEXoXClrP7jSyQFY/VFzq2S2jRHOFt
-wM6zQUX1bTUqDtC4HozJIbQDjLxd3qFgc5RoTRLV8VhRJbcq9cOo5Nf1h4KJ5Ip9
-nhpzoHwUHoEjEHj1f9UvEWfnFAVCSLFxgb14ZDHZyb2pQue3G5OYI2f2cJYT8YVB
-xQktDFp7rUu4xWDTzoIxNKvR1Ipy5fGxdf9R2/+IQhW64sWuDG2ZH6tAmfn6mEb8
-ecspbesJx+NMbZ06Zl7wqBvyj/DpQGgPaCnWUQ5cI0Of/kOzqxh4+65JK68CLLs0
-/Goin2zz55IZITGC5zHuAA07bW/c7Q==
-=7Wup
------END PGP SIGNATURE-----
+Now ... as for the LVDS serializer clock ... that is more complicated.
 
---2ocqjla6tcmukjn3--
+The LCDIF driver does its .atomic_enable first , configures the pixel 
+clock (and the Video PLL now) and enables the clock. The LVDS LDB 
+serializer driver does its .atomic_enable second and cannot reconfigure 
+the clock anymore, the Video PLL is stuck at /7 rate set by LCDIF driver 
+and won't budge because the clock are already enabled. I'm currently 
+trying to figure out if this can be improved somehow, but I believe that 
+would be material for next release.
