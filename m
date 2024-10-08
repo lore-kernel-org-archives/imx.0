@@ -1,86 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991B91779B1;
-	Tue,  8 Oct 2024 10:40:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D4E817B4EC
+	for <imx@lists.linux.dev>; Tue,  8 Oct 2024 11:35:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728384032; cv=none; b=oGJrajKvnA6Ho2JyD41yAAOn909bA37Li0cc0Za0Cs397C/lPJrbsPWjFb/hq3pJ7Ys/z/wkv7BtrY6o1gtSpCln9KPVoBU95Yt0ALdVEPzQq8C+52EH7fpmSvJVGmlqF+sGcGPLZK0wzelkwSUizTj5BT3RQQbTBgzHL9+U+G4=
+	t=1728387338; cv=none; b=HtgOUamgND1eHVK36Ouxp1LnBBEJXG4c9IUIsZU+P80OsBMEyyKQGQ5DTq2/ws2yTIW67Xv74RxUzfNlKHFgFrZ1JmJsKYpf22M8CenyxEPk+1ffgLoME/L5U7C9/C1LMwoR6LAjvLZHsDxQt+SzvNUP2fO0IqkwZYMk/gwshZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728384032; c=relaxed/simple;
-	bh=A0YhKsiXP2Xt18H5UHnW7+vMopAENwLVs835p9iWjjE=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NPSa9u9DeMNqaGNJnCNsUVUzP9eVPjDuIAih8sV5O/Dbyr3ZNJExRnOowMJqbPGDrI28ozC1cGuDJgVmZEuYOJorLtNf3/6nGwlb72Z69t3clWq4LojxdEevVlNks4YZ2U2/3wlGZq4CUIYLPDYfan5xr2ZOttDWmqMiUA4wGCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R4oSGpxX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1728387338; c=relaxed/simple;
+	bh=YPYePn9qXROHJ9vl/jwAclfR0CK1RcLn900rJr0Q6DM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cfNuHQo1ONemVw+g5oT4efRq23D3K6ZiRaHaHBmjpk4rZU3YWrfJqX3K9vngs/x6/Kdx/oz8YDARzzdh3AfDl/kzr5WVDF4ZgH//GfissoEFNLK6rnFDRzstUgd6nfvoejgUNUR4KCbtNMSKkF6+nOED1XeURfpX+34C0Ub3ul8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=AoH+kNsy; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R4oSGpxX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21D6AC4CEC7;
-	Tue,  8 Oct 2024 10:40:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728384032;
-	bh=A0YhKsiXP2Xt18H5UHnW7+vMopAENwLVs835p9iWjjE=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=R4oSGpxXrm4k8oHsZEaPcGJ6huOlT3dJbsCtUHoIXhqTjr51iovBmkHz18fcmFBjJ
-	 5OvMzRAmRDz8a4WCZTfeqYKnrSevIB1DpgV80YkTY4v5W6LyDyu272OqC7m3G/nZ5z
-	 TxLPAi1HKTR9a2GhAXk+mdIcrDIFx0uMKr4YGAWYtaw38gYkFIOHo8/7c2qvaSyFwY
-	 UglkBV1lYd5u83fTEItQ8K+U70pMJFl+8+x4NRZuNwnPEglOoHmrtB2maHtd9rC5UL
-	 b5WD/ihkrLqHiKL+gGWBhpEeYdJenVAnh/7NshRPvaC42Dqvwb1Hd+E4q0Q6WoaaCN
-	 KhNqDvE9dE8gA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 728F83810938;
-	Tue,  8 Oct 2024 10:40:37 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="AoH+kNsy"
+Received: from wsk (85-222-111-42.dynamic.chello.pl [85.222.111.42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: lukma@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id E52A2889E1;
+	Tue,  8 Oct 2024 13:35:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1728387335;
+	bh=3cD7NWV450ZD4Qg06pJDYhvM7J5Uufk5ZNY7YfVFLzk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=AoH+kNsyX27jirdfywpHOdKUUQNc4/H48ceEUinPX5Q5/GZ7OjmSySvpN0dpLtyx8
+	 fSkybVa6wH76nUquYdqxrlvck3XnmIFPkY1/bSl95bh2TmSHHAZOb/x4muzhDdIxzE
+	 1J3orwVm0Coh34fdgeuetb4buJyV6E0p06L5Pf1wlvcN+/3ziGpgTaWXlsR/UMD8ND
+	 0gfZ5QjbsorMA6l4Y339lVZtssRjJ6tVwmcOkshMWD2kvpfkX5uNEcuaos4fg8TwXE
+	 qzhsoSg/hahAg6+vJkjOtiCbA1TeNp7OKjoPQlJ1c8rBbs9tOppkLNW73enS/PXJYg
+	 IMBHK64rUDm+A==
+Date: Tue, 8 Oct 2024 13:35:33 +0200
+From: Lukasz Majewski <lukma@denx.de>
+To: Stefan Wahren <wahrenst@gmx.net>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 2/2] ARM: dts: mxs: Add descriptions for imx287 based
+ btt3-[012] devices
+Message-ID: <20241008133533.2311f306@wsk>
+In-Reply-To: <752dfca1-327e-48b9-8065-3aca7a4b4420@gmx.net>
+References: <20240925143129.4081815-1-lukma@denx.de>
+	<20240925143129.4081815-2-lukma@denx.de>
+	<20241007115336.393f0696@wsk>
+	<752dfca1-327e-48b9-8065-3aca7a4b4420@gmx.net>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v4 0/3] net: fec: add PPS channel configuration
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <172838403627.487135.12470699672942876836.git-patchwork-notify@kernel.org>
-Date: Tue, 08 Oct 2024 10:40:36 +0000
-References: <20241004152419.79465-1-francesco@dolcini.it>
-In-Reply-To: <20241004152419.79465-1-francesco@dolcini.it>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: wei.fang@nxp.com, shenwei.wang@nxp.com, xiaoning.wang@nxp.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, richardcochran@gmail.com, linux-imx@nxp.com,
- francesco.dolcini@toradex.com, imx@lists.linux.dev, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
+Content-Type: multipart/signed; boundary="Sig_/zRMKj/PlExkfDhs/YkG.TWg";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-Hello:
+--Sig_/zRMKj/PlExkfDhs/YkG.TWg
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Hi Stefan,
 
-On Fri,  4 Oct 2024 17:24:16 +0200 you wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> 
-> Make the FEC Ethernet PPS channel configurable from device tree.
-> 
-> v3: https://lore.kernel.org/all/20240809094804.391441-1-francesco@dolcini.it/
-> v2: https://lore.kernel.org/all/20240809091844.387824-1-francesco@dolcini.it/
-> v1: https://lore.kernel.org/all/20240807144349.297342-1-francesco@dolcini.it/
-> 
-> [...]
+> Hi Lukasz,
+>=20
+> Am 07.10.24 um 11:53 schrieb Lukasz Majewski:
+> > Dear Community,
+> > =20
+> >> The btt3 device' HW revisions from 0 to 2 use imx287 SoC and are to
+> >> some extend similar to already upstreamed XEA devices, hence are
+> >> using common imx28-lwe.dtsi file.
+> >>
+> >> New, imx28-btt3.dtsi has been added to embrace common DTS
+> >> properties for different HW revisions for this device.
+> >>
+> >> As a result - changes introduced in imx28-btt3-[012].dts are
+> >> minimal. =20
+> > Gentle ping on this patch series... =20
+> unfortunately most of my comments in V6 were silently ignored :(
+>=20
 
-Here is the summary with links:
-  - [net-next,v4,1/3] dt-bindings: net: fec: add pps channel property
-    https://git.kernel.org/netdev/net-next/c/1aa772be0444
-  - [net-next,v4,2/3] net: fec: refactor PPS channel configuration
-    https://git.kernel.org/netdev/net-next/c/bf8ca67e2167
-  - [net-next,v4,3/3] net: fec: make PPS channel configurable
-    https://git.kernel.org/netdev/net-next/c/566c2d83887f
+Sorry - I've just realized that your reply "disappeared" under other
+mails.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> Regards
 
 
+
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/zRMKj/PlExkfDhs/YkG.TWg
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmcFGQYACgkQAR8vZIA0
+zr35EwgAskWkXMfcoDlDJNoGLGCFD9PwnhLWiEJkPfgd0vbdsf11IeNu4gFcJNPT
+kLEQlXnt/BnRDV2is7Ua/EwQEm56B63dpvTgrr+B6THUEMwJhJnsMFcu1uymlKDI
+rbKsPghrfC8b93Vj8wkd+hl+AJ3aFyWzS1FJckvf3bw2XlHfxueb+gJRm+YeH1lM
+u8QUjtM+Rr9jXcq/5rn2KBKx3grxtzAg0qDX4Xmdp4PiqsTNXckv7AEjOfR2KTyE
+YLhxUtEP+DBffvrWNYeRFIi2rVQD1kiIVabHVzcRbGNwFhvZFnsLhNJWPGiGbQSi
+Y0sLE+mcx/hx1lo4tXFD4+4rDCl9mw==
+=gPaV
+-----END PGP SIGNATURE-----
+
+--Sig_/zRMKj/PlExkfDhs/YkG.TWg--
