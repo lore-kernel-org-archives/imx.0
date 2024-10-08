@@ -1,169 +1,109 @@
-Received: from IND01-BMX-obe.outbound.protection.outlook.com (mail-bmxind01on2130.outbound.protection.outlook.com [40.107.239.130])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A833617C21E
-	for <imx@lists.linux.dev>; Tue,  8 Oct 2024 08:43:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.239.130
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728377038; cv=fail; b=YZtvExUrcXCyGBp6zhhEbX2tcuJKfZnc9OeeKVkMnaAMkfUOGcNj1nu3EZTGq6Y6J/+sn14bQ5YYtqnzx0ypzrf5QUc5JpOimzD0+LR6jUlHD1YZLaPmpGGjETlKKMS3PkRQfmfE14tifGGfd3GjI2ll892ox8iVtRvyV5XPVg4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728377038; c=relaxed/simple;
-	bh=x5dK7lx1jvXGOVwr5e7gczTJEfbq0hDBCCfOLGQVMrk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=nIAlCv8jUYnWi2Q2ZfrEEQtTFRK2h1n1llYrRB5jmoyB16/j1JgxakyxxGNVJL06sflOpyEefBBlYRJLWVgZjwT4vICN9Aa3WRolAZYnBDI/Sd8gZboc2IciN4j0HYA/MXB+3AeKR4AccclMJq4tWsyRWtbVWYdxKWg9hcn7Bos=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io; spf=pass smtp.mailfrom=siliconsignals.io; arc=fail smtp.client-ip=40.107.239.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siliconsignals.io
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vG1yWu+c39yTf8RPbdfznarmZTKv/s1xDkzCFXcttcOp/o/Ld7M50NSBXslckNgQuSmSlByje442dwqOz3qrVPSI1b2jpZt5pcQS+FQ4qzN2+c9bIJSR82gSS4AWdxc8UMCMKjETTS50GvOhTU69xzsFYSMUMSSXL3jxerAdZd3DCmPnqdz7gjdNpLevpjlFCJxQTEPB6uQTLnHu2qT6Lm1PAxm1DagQQxVQtnRt4w+5DH9gvQTkJSwHLW0IC3NUmgwYTJnCGdFBNtug2OKNlUY7gAYBZz5ynUSFtoRKURe9hCDZ5y5fRlSCBC8lsiCiIaPkR1cwSWLkvqEGs7V2/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=x5dK7lx1jvXGOVwr5e7gczTJEfbq0hDBCCfOLGQVMrk=;
- b=e2txr7/5moGodVoMRki+NQ6Xw0UwoauHk4epb65mQd//XnPdstG8YaVbrclXXDmso4m3WJLuwJJJfPHLPC9WBK4iXj5SlHayPLgq+wSboOkJPhr1yRfmSr/IBttY+tzyeNmggfC62WAjGQuPnB/fTeW6KX6mEYISvzuAqjh2In0HLsUlLLdObEyEtQ/gCJSSPNKZ+3/1u3vRq+MNCoTSespd3q5+vwcr5b+gkfKDv4Q/YUhI7PK5nnB4kbt9KWkfDHD6BUvfKYCxS2mPoAnXQqEdIKCyqmkFovwtHT0TR1FPm1pw8xBQH93kaLDg0yoQTSsl61CGVC7uHR2otBtZUw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=siliconsignals.io; dmarc=pass action=none
- header.from=siliconsignals.io; dkim=pass header.d=siliconsignals.io; arc=none
-Received: from PN0P287MB2843.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:204::8)
- by MA0P287MB2133.INDP287.PROD.OUTLOOK.COM (2603:1096:a01:103::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.23; Tue, 8 Oct
- 2024 08:43:51 +0000
-Received: from PN0P287MB2843.INDP287.PROD.OUTLOOK.COM
- ([fe80::1134:92d7:1f68:2fac]) by PN0P287MB2843.INDP287.PROD.OUTLOOK.COM
- ([fe80::1134:92d7:1f68:2fac%3]) with mapi id 15.20.8026.020; Tue, 8 Oct 2024
- 08:43:51 +0000
-From: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-CC: "olteanv@gmail.com" <olteanv@gmail.com>, "broonie@kernel.org"
-	<broonie@kernel.org>, "frank.li@nxp.com" <frank.li@nxp.com>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, Sascha Hauer <s.hauer@pengutronix.de>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
-Subject: Re: Fix Sparse warnings
-Thread-Topic: Fix Sparse warnings
-Thread-Index: AQHbGUbs7xqnEpD5EUOFWr2jkK33zrJ8Y0oAgAAjQCE=
-Date: Tue, 8 Oct 2024 08:43:51 +0000
-Message-ID:
- <PN0P287MB2843E06597DD5D64BE93A8A7FF7E2@PN0P287MB2843.INDP287.PROD.OUTLOOK.COM>
-References: <20241008055644.4900-1-hardevsinh.palaniya@siliconsignals.io>
- <20241008-impossible-mysterious-salmon-e1b8bd-mkl@pengutronix.de>
-In-Reply-To: <20241008-impossible-mysterious-salmon-e1b8bd-mkl@pengutronix.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=siliconsignals.io;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PN0P287MB2843:EE_|MA0P287MB2133:EE_
-x-ms-office365-filtering-correlation-id: 787638f0-4dd9-4607-4968-08dce77555bd
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|376014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?Windows-1252?Q?58fLlxmj53pxGoLTnUYhfOvvsLaObH9MmWftGsCTId2mDe4UEjkaftQ1?=
- =?Windows-1252?Q?mJWUHAB0i/YVxmWPdd6kGbHMAFNsqCfOgP1k8iB1fqIU7tmRCBUw/iCf?=
- =?Windows-1252?Q?7nKZzLobAslB4xykPUYztwWIsvR5eV4yqIjyPUoqmIgH4rrqLFd3N4X2?=
- =?Windows-1252?Q?qkZSuYGop6GHfbE/rMw+/4ReRN8xsoVoXrSl/3Wkk0FpfYt4LejbRopN?=
- =?Windows-1252?Q?jqg+4QCi8VetWNusnChmYFxx+TRHmc2VRYjMcWIdu0lPd2cx1vdwFb1V?=
- =?Windows-1252?Q?10GVCyqXYAN96QhUm05homU8i3rxGsrCf/KZ46wvrcQ717w3xLasEWqm?=
- =?Windows-1252?Q?C7kPKf5J2pBYtjg7VMBqiNmwBbVosw9HnY6f58MJURVi4TZ+wF8Upc+f?=
- =?Windows-1252?Q?dLEzv+TpWp4dZtyckyy/FeaGXHJphDcCWkCxqTsqey/jaygOr7NX/sBK?=
- =?Windows-1252?Q?WIQkffnmZUy+NdQtbMuxKxPujuAdTcP19cGW/Ynhlxw9CV1mZ5q0Qj67?=
- =?Windows-1252?Q?Gu2OWE9BFZHuavw9X9qJGQLY8xOtlWtdSovwk6S7CHkQCTfNztmrTHvN?=
- =?Windows-1252?Q?+goyc104b93qXd/Q7Xzj00bd7L81Hqb7J/oQFgn5JG6NsOd1/B9K84xI?=
- =?Windows-1252?Q?Gin+GLs/xV9sStEX7jXLkzbno9GpnADbMN5qMr9B160APykI+tri2MHv?=
- =?Windows-1252?Q?kZwZSZiZccMXuvcK0lUNXubpGDx5I8D8R/SzDMcWVLuehI+0H01vkjQC?=
- =?Windows-1252?Q?JRkGHDqJZ4Y6sxpGtv9hZg+r2n4eCuOvgQd5CNn+kh8OlNG6SlNvyGnP?=
- =?Windows-1252?Q?nCLnwVZ8Dzss0L7NKd1NKgStSk9okr0bZgWZ/elWk8GtYwu+0gVsqgg8?=
- =?Windows-1252?Q?QP2RACJt85f5DFoxNfax+69JCZPIr6SFea549dylXOXBcR9VOM9e6+DY?=
- =?Windows-1252?Q?guYFPgkowda6jBx61fdRfVVbCip3wFe7dWKMMyVqAGPdkOxYa2BsZ6gr?=
- =?Windows-1252?Q?B0D9WitCmeD7LliLpKLF/f3oC+CCgn76Jl6W7YLAkUcacAL2/x6EiHvw?=
- =?Windows-1252?Q?KxpkOtN3Ukreekpdtq23atkbjYgGpyi/t4PVbwVgXqQYP8Qzi4Ls6pc1?=
- =?Windows-1252?Q?tW5kv0V+W55Hhxuyhm8r4THBhwzfI/IqaUypFIc2T5jMkSgtLg9wpBVT?=
- =?Windows-1252?Q?ytirnBLVz5owvAKC7ugcBgc/pgLzuWtBB9k5VcsMfoQhs9zvEApZQhXD?=
- =?Windows-1252?Q?8mnvEIIb64dSwA5H4qfp4j2VlNGQyKDipo91lU+1u1jWQXUaKoI47vK/?=
- =?Windows-1252?Q?9RcsXzeXcmmymB2I0uf9xkPDf8vZWVMs8ghtxM/kYMq9sQUOJTNdRpgU?=
- =?Windows-1252?Q?/4kaZaWgbgMMCw=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PN0P287MB2843.INDP287.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?Windows-1252?Q?hkWPdE+LrQNK0V+RR+dAVpoENlkaP4hOZQLrzN9sscR00AfhNh9YnjO7?=
- =?Windows-1252?Q?COYqajfGGOQsLlNnk7+omtQiHpXmb4E9xIKw2qfwyLzuz0/HKtt05zyk?=
- =?Windows-1252?Q?MlplipxQdLXO89wk83YpPYWsEKQVF6twdlWjY0SqEdgOL//cnkx55gcG?=
- =?Windows-1252?Q?OYTI2LmmU2D3cFhOI+FhGx6nmQUmEMLsNJI0TCG53UtZnt4fYcZ6JCuY?=
- =?Windows-1252?Q?Q2bjSEJEkhAvnMobzbizBGwQIHlSAMnwqer5cZPP61QB80T6XUHi1mOW?=
- =?Windows-1252?Q?lG5BZL4SeHc5kBJarV4x9IAFpvKCBkQXIrnY6epSBsky8eSFX8O4lQfV?=
- =?Windows-1252?Q?BWhWhMzTEerGpyLYQurmz25lWHtfsbdHawJSffvUmDTaJKO0dxS11b91?=
- =?Windows-1252?Q?/xv0qTWwxCEAJzmTJ9JdanAnRbQ9Nbefc+DAaif4YQ35wPwRgSKixDP3?=
- =?Windows-1252?Q?1hCHI1f/cRJBiN6/7SFMVwXPBI4qLk5KrVVSfkmpqlpq8WbxI5vYomCo?=
- =?Windows-1252?Q?j3xcjAw8PVZ+u2CCiP4U2hpBcFVitJyZohmV3qCzlTt/f874rv1ptzYD?=
- =?Windows-1252?Q?Jd2pnPCc6cCx98BUmJFKulPRTe6uFgUIdj0G+Aki2aOOJE4W6bHd4MvA?=
- =?Windows-1252?Q?0mb7hTFC2keVFoMef84PSNnP5tRCqLPGhqQjLQume5itJCt7wq8A1JOc?=
- =?Windows-1252?Q?WImqaEtNF/713QhnNty5mZoVlDYs0OspbPn4CbKPjciKldJ4/VAQZ5gv?=
- =?Windows-1252?Q?yqZfbSNvWatdfOIUPsu6gHphdNteg6s2M7LCl5MSkEAYZaisHsHXYXpD?=
- =?Windows-1252?Q?396JyBOGyrVMgU6/LLdZfcr31QXA3brp0b1kQiP8DlsHrW/CIfiMZvuP?=
- =?Windows-1252?Q?5CiYcLrngrTXKYhePg3BJDm5GswoFiyjjuo51DR4JAftDa1SzrD4HV3Z?=
- =?Windows-1252?Q?0BJfqfm9HJDCehEWp4ZZ9QehV21eN8ZNs1nrnLosGLVuaxI90N5QEqPB?=
- =?Windows-1252?Q?UIwbtM+HjGYjMpeXDuuugW29GyMu4u6rCS6UHHmjdQgvNzmu+d0rifr8?=
- =?Windows-1252?Q?nNs8ods+92tNoFbf5ICDrWSWEz7tbBkvSh05KCL/7DHPxcQ41moq9yci?=
- =?Windows-1252?Q?FjXQYbuN1s4jxnO+Hlqdynq9AH98Nog2yydJZpzyDoqDVnujytbEKSqR?=
- =?Windows-1252?Q?9o2DB5a9SNiMHPbNopCToHZ941IUOiLvoWK0N2/ze/GL0hfLXDvmkUo4?=
- =?Windows-1252?Q?KEvuQhZAGcIIxnxxeR3Xbzhu000ItBGRJBFtHHShI5iyXac+UpS8T0Io?=
- =?Windows-1252?Q?OxfDDkwOcJqyA0Q+tZ/ThVUcrogLEMsyCm6nifCSPj+U5HdwtReMcfWL?=
- =?Windows-1252?Q?LYBJ+6peEMucvkxDGJmdSN8DfY+LK+Rid1C7V+YYV/0taZyN8+mcgHFt?=
- =?Windows-1252?Q?fGZo1qGkrQ9oxxXlCndFF+n/D1rUB6tTEmE+LMWIlvxe+V8fCboa2ZkE?=
- =?Windows-1252?Q?CturHG0gKO7eYjX4AWuPQUZyLakSxrNeARRHIB3LeCB9POnX4Fk7/7dv?=
- =?Windows-1252?Q?igwe8oPZ+S67081BKjVbj4zarHR3PLIGRPIVZe/cjY9xpt4uHvHPW/lo?=
- =?Windows-1252?Q?3bmMK2DGbyGl5NPTVuqtKuyBbmNMX8A6GVwNSdV6/OTFnYEHsGiWLT2I?=
- =?Windows-1252?Q?cj73uFbz49KymB4AvKPn+d/0d/i6ILpYa81kOH6dmvaOLOn8QeLZ7fsO?=
- =?Windows-1252?Q?jzqAoIxkoBh2bM9kA7Y=3D?=
-Content-Type: text/plain; charset="Windows-1252"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8C91DE4F3
+	for <imx@lists.linux.dev>; Tue,  8 Oct 2024 09:02:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728378157; cv=none; b=VBK1nRKkNsohkEqtpcdmC/JeE8ytH9orl6jWku/FN/FELn+ip2KAdJLXt1EWOJBF81Fdno4d8G4RPa4nEQzea+nI9HRvN1RUMZuj/CoAe61fB1QmQr9F/TYvdSN3JF4JHCVIXrDjZRQXaCmM5qDrlsieqQ4JcZYv2ydNyH2cexQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728378157; c=relaxed/simple;
+	bh=Z+xX2hO+f6E9zNQiPiOWxzg4gaZDgAqj12yTVOPS7wk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ZJ8znooaKUTwjknPJh8xnstr2fFUZ0NM74T4gx4ELnpLRBE2sP4X/7oO+yoR3+jS18GU/OKrKvocBnpMwq7rwqDvt0CZqwXYhPd5I/CSqEN6xWJw5JZHqN/gKGb4IiWnO8Dox3r9/AwEeff0O3PPmyyjCgZ3EmuAM71BZByuqpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=Kum/5HWy; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="Kum/5HWy"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id EEA04A0365;
+	Tue,  8 Oct 2024 11:02:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=mail; bh=3OUMxFnYySkHZFxMjl63
+	3WdFfTbIPbjkXbDMeFM8SHw=; b=Kum/5HWyjLJ8XrhOgPSD6ADADRCE0EKaaDv7
+	XRpa4oinShiKCufUn0FiedkBb8pVW8PnX6qkppg8WoOhYOKw/JP4/ZzvQDnnyLF9
+	oP2hRxJjWuMDJu/tiD3fHmQN8jEY/ttf4z/v+4IoieyuSsKNznXKzZ6EBr2uooI+
+	k0tKFqNc4asesFyec6vGBnZrufkc4Q6n2lXrFBiyblLrEBly99LVPPMm73oKdGBP
+	eqytXrvtCRUmQkU2VgWfqIC74+mKU9mQmVxT31/WmVyVd/8acTgTo0Uep1mEJ1Or
+	HB5q2TCmakRitfxTa8mXrVHPL6S5K130pMMnIUpM4bEL9PWtQgHASXKR/Z95eWiC
+	CDT4xuEwJYM9Lggt2iyh5smfroDLCfYobYHUbSeT3JmF/GhrjdzWUcZ1umD0JrQS
+	sxAHwAwPWhWMtrw/v9spUs/yaduwO05z4vai/5n0Gtq98NZZwANK61iGKf0NQhz/
+	JNzPRzkY5dC3mESYsmD+3J+X+B40fsmkCBTR8nu+NLXzMgzpInjTrWWHMbZz/l2o
+	8pJkN2lYiu0K3HOYWGtStdT6ozRVTb0IwdN/Wwz7xjeS4PsvU30D0n/dugY7lNK7
+	3v28kj4wOPtuQZK0njYM80p/nZOJ77hSl0KNQIsnF1Cf/uWfwDcK1KF5WaFGWN56
+	o6rB8WE=
+Message-ID: <da9833c7-ad3d-48f5-b846-add3e57433a0@prolan.hu>
+Date: Tue, 8 Oct 2024 11:02:23 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: siliconsignals.io
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PN0P287MB2843.INDP287.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 787638f0-4dd9-4607-4968-08dce77555bd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Oct 2024 08:43:51.5303
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 7ec5089e-a433-4bd1-a638-82ee62e21d37
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 7FMFDg9JRp0I+cs9/vQA7dNjWKe3m4TUj06SjNu1Arq0DnZ2I7YiqXhvPwhOX3qeLHpTwH8J2jlRb7nBL7pJWnIlc51orQtPlsya59OM48Hp+UebnWNEDIPfwpPZ2Gpv
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MA0P287MB2133
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: fec: don't save PTP state if PTP is unsupported
+To: Wei Fang <wei.fang@nxp.com>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <richardcochran@gmail.com>,
+	<shenwei.wang@nxp.com>, <xiaoning.wang@nxp.com>
+CC: <linux@roeck-us.net>, <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20241008061153.1977930-1-wei.fang@nxp.com>
+Content-Language: en-US
+From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
+In-Reply-To: <20241008061153.1977930-1-wei.fang@nxp.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
+ ATLAS.intranet.prolan.hu (10.254.0.229)
+X-EsetResult: clean, is OK
+X-EsetId: 37303A2980D94855657D63
 
-Hi=A0Marc,=0A=
-=0A=
->> in patch 2/2:=0A=
->> =A0 =A0 =A0 =A0- Use ioread32be instead of readl=0A=
->> =A0 =A0 =A0 =A0- Use iowrite32be instead of writel=0A=
->>=0A=
->> Note: Drop 2 patches(patch 2/4 & 4/4) from the last version=0A=
->> link to v1: https://lore.kernel.org/linux-spi/20240927132944.19285-1-har=
-devsinh.palaniya@siliconsignals.io/T/#t=0A=
->=0A=
->Have you checked the code on real hardware or compared the generated=0A=
->code on the asm level?=0A=
-=0A=
-it's just resolve casting warnings so....=0A=
-=0A=
-No, I haven=92t tested the code on real hardware.=0A=
-=0A=
-Are there alternative methods to verify it without using hardware?=0A=
-=0A=
-Best Regards,=0A=
-Hardev=0A=
+On 2024. 10. 08. 8:11, Wei Fang wrote:
+> Some platforms (such as i.MX25 and i.MX27) do not support PTP, so on
+> these platforms fec_ptp_init() is not called and the related members
+> in fep are not initialized. However, fec_ptp_save_state() is called
+> unconditionally, which causes the kernel to panic. Therefore, add a
+> condition so that fec_ptp_save_state() is not called if PTP is not
+> supported.
+> 
+> Fixes: a1477dc87dc4 ("net: fec: Restart PPS after link state change")
+> Reported-by: Guenter Roeck <linux@roeck-us.net>
+> Closes: https://lore.kernel.org/lkml/353e41fe-6bb4-4ee9-9980-2da2a9c1c508@roeck-us.net/
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> ---
+>   drivers/net/ethernet/freescale/fec_main.c | 6 ++++--
+>   1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+> index 60fb54231ead..1b55047c0237 100644
+> --- a/drivers/net/ethernet/freescale/fec_main.c
+> +++ b/drivers/net/ethernet/freescale/fec_main.c
+> @@ -1077,7 +1077,8 @@ fec_restart(struct net_device *ndev)
+>   	u32 rcntl = OPT_FRAME_SIZE | 0x04;
+>   	u32 ecntl = FEC_ECR_ETHEREN;
+>   
+> -	fec_ptp_save_state(fep);
+> +	if (fep->bufdesc_ex)
+> +		fec_ptp_save_state(fep);
+>   
+>   	/* Whack a reset.  We should wait for this.
+>   	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
+> @@ -1340,7 +1341,8 @@ fec_stop(struct net_device *ndev)
+>   			netdev_err(ndev, "Graceful transmit stop did not complete!\n");
+>   	}
+>   
+> -	fec_ptp_save_state(fep);
+> +	if (fep->bufdesc_ex)
+> +		fec_ptp_save_state(fep);
+>   
+>   	/* Whack a reset.  We should wait for this.
+>   	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
+
+Thanks, it seems fec_ptp_restore_state() was properly guarded, but 
+save_state() was not. Sorry for that.
+
+Reviewed-by: Csókás, Bence <csokas.bence@prolan.hu>
+
