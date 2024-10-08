@@ -1,66 +1,86 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD03818DF65
-	for <imx@lists.linux.dev>; Tue,  8 Oct 2024 10:12:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991B91779B1;
+	Tue,  8 Oct 2024 10:40:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728382342; cv=none; b=P+nLOKqV8Y9eZka/uJgwi/aIjHhtmey51HWg0Wul3XBQDy//LNP+Os7CquxBQHI+ctegR2VN0mDJRdYIGxW6dSlA6Dku6wKl8WRd0686KVgYc8TUqzGEFSoAfzbW06U1wy7qe6YVObFgBonTEPBOmsQcmEpb3lK+UHZlB9YEt0Y=
+	t=1728384032; cv=none; b=oGJrajKvnA6Ho2JyD41yAAOn909bA37Li0cc0Za0Cs397C/lPJrbsPWjFb/hq3pJ7Ys/z/wkv7BtrY6o1gtSpCln9KPVoBU95Yt0ALdVEPzQq8C+52EH7fpmSvJVGmlqF+sGcGPLZK0wzelkwSUizTj5BT3RQQbTBgzHL9+U+G4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728382342; c=relaxed/simple;
-	bh=LT6tVZ5fR1YC44235qgb8Y+HXZK+9cZRuJKZf/Mf89E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tFpLrXU4Rxh7yZ9Elf4MO5dRro4WTPNwI6EGrn161t9/Cxw/ZYGPI4Q/qHScwkf/KjMDhILM9JuCSVwu+s81DIIhUkD9ev15TCAWGrkD+kPLkQ+XeS3GH9dCB45EQQq/eCriNuw37KDygV0nzFQ8ZuZHgnccf0ZR2Xm8gNrkl3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=FSGgDrOz; arc=none smtp.client-ip=1.95.21.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1728384032; c=relaxed/simple;
+	bh=A0YhKsiXP2Xt18H5UHnW7+vMopAENwLVs835p9iWjjE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=NPSa9u9DeMNqaGNJnCNsUVUzP9eVPjDuIAih8sV5O/Dbyr3ZNJExRnOowMJqbPGDrI28ozC1cGuDJgVmZEuYOJorLtNf3/6nGwlb72Z69t3clWq4LojxdEevVlNks4YZ2U2/3wlGZq4CUIYLPDYfan5xr2ZOttDWmqMiUA4wGCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R4oSGpxX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="FSGgDrOz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=LT6tVZ5fR1YC44235qgb8Y+HXZK+9cZRuJKZf/Mf89E=;
-	b=FSGgDrOzQjsOKQ3S/p2OxVRngsgTQzfOgR2sVWaRBAR6NT0Nkdq8hxRVPRLnGh
-	euKyVg5Yp5P0w91CRNs9QeH2zY4HheoxnvWDeO6v45MjBxR/Nh8cRW6aAut8rmXN
-	vFLFabYf5S6lIIg8Lc02WUbFMWuFWVBnYVTRdSB0Mx9c0=
-Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDnf9eW7QRnyJzcAQ--.40279S3;
-	Tue, 08 Oct 2024 16:30:16 +0800 (CST)
-Date: Tue, 8 Oct 2024 16:30:14 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: "robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>,
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: [PATCH v5 0/4] Add dbi2 and atu for i.MX8M PCIe EP
-Message-ID: <ZwTtlmUWD/b1Jzi6@dragon>
-References: <1723534943-28499-1-git-send-email-hongxing.zhu@nxp.com>
- <ZtMUbpBJscWlgkhW@dragon>
- <ZtgqmCbkD1ruZr4U@dragon>
- <DU2PR04MB86771BA534FF1A8C0AE5B8618C692@DU2PR04MB8677.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R4oSGpxX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21D6AC4CEC7;
+	Tue,  8 Oct 2024 10:40:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728384032;
+	bh=A0YhKsiXP2Xt18H5UHnW7+vMopAENwLVs835p9iWjjE=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=R4oSGpxXrm4k8oHsZEaPcGJ6huOlT3dJbsCtUHoIXhqTjr51iovBmkHz18fcmFBjJ
+	 5OvMzRAmRDz8a4WCZTfeqYKnrSevIB1DpgV80YkTY4v5W6LyDyu272OqC7m3G/nZ5z
+	 TxLPAi1HKTR9a2GhAXk+mdIcrDIFx0uMKr4YGAWYtaw38gYkFIOHo8/7c2qvaSyFwY
+	 UglkBV1lYd5u83fTEItQ8K+U70pMJFl+8+x4NRZuNwnPEglOoHmrtB2maHtd9rC5UL
+	 b5WD/ihkrLqHiKL+gGWBhpEeYdJenVAnh/7NshRPvaC42Dqvwb1Hd+E4q0Q6WoaaCN
+	 KhNqDvE9dE8gA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 728F83810938;
+	Tue,  8 Oct 2024 10:40:37 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DU2PR04MB86771BA534FF1A8C0AE5B8618C692@DU2PR04MB8677.eurprd04.prod.outlook.com>
-X-CM-TRANSID:Ms8vCgDnf9eW7QRnyJzcAQ--.40279S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVxR6UUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEgRyZWcErZHI0AAAsG
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v4 0/3] net: fec: add PPS channel configuration
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172838403627.487135.12470699672942876836.git-patchwork-notify@kernel.org>
+Date: Tue, 08 Oct 2024 10:40:36 +0000
+References: <20241004152419.79465-1-francesco@dolcini.it>
+In-Reply-To: <20241004152419.79465-1-francesco@dolcini.it>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: wei.fang@nxp.com, shenwei.wang@nxp.com, xiaoning.wang@nxp.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, richardcochran@gmail.com, linux-imx@nxp.com,
+ francesco.dolcini@toradex.com, imx@lists.linux.dev, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
 
-On Wed, Sep 25, 2024 at 04:03:03AM +0000, Hongxing Zhu wrote:
-> Hi Shawn:
-> The dts bindings change had been merged on Sep 06.
-> Can you help to merge the others?
+Hello:
 
-Applied, thanks!
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Fri,  4 Oct 2024 17:24:16 +0200 you wrote:
+> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+> 
+> Make the FEC Ethernet PPS channel configurable from device tree.
+> 
+> v3: https://lore.kernel.org/all/20240809094804.391441-1-francesco@dolcini.it/
+> v2: https://lore.kernel.org/all/20240809091844.387824-1-francesco@dolcini.it/
+> v1: https://lore.kernel.org/all/20240807144349.297342-1-francesco@dolcini.it/
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v4,1/3] dt-bindings: net: fec: add pps channel property
+    https://git.kernel.org/netdev/net-next/c/1aa772be0444
+  - [net-next,v4,2/3] net: fec: refactor PPS channel configuration
+    https://git.kernel.org/netdev/net-next/c/bf8ca67e2167
+  - [net-next,v4,3/3] net: fec: make PPS channel configurable
+    https://git.kernel.org/netdev/net-next/c/566c2d83887f
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
