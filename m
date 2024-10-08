@@ -1,74 +1,78 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011067.outbound.protection.outlook.com [52.101.70.67])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011061.outbound.protection.outlook.com [52.101.70.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AE31E0489
-	for <imx@lists.linux.dev>; Tue,  8 Oct 2024 19:41:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB521E0488
+	for <imx@lists.linux.dev>; Tue,  8 Oct 2024 19:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.61
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728416513; cv=fail; b=uYOxYxwKvbd5Lr6+JqGPr9XWbDOZFBzeMMlBkRbnn70zie1MBcWMmf/ot+QWTza9sqcGPRTY1z8xnDRcizGGBa6QJl+pMTImDgOrnBNin1YdqxIuaLfx+DewaZyQssY2MTDCg21kDZLm6ASX8pKuPCLKc6ON6KzfkgAEBp3pzYg=
+	t=1728417270; cv=fail; b=bvMcFcoPgnOR7IOfKoJqBdy3afw2OVleOV+EjvsBFzNFSXHsR2OJRQg08ffAaFpN5u3ZG7tD/oWas/6mHl1AZoSjK7f2C7gWPMT69TzDXmu7hL4H2BC7v5kaPkGWphHUhVphKqaUZxG7qCggSYkXYAav5bRKvXLRxf8DLyfzRwQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728416513; c=relaxed/simple;
-	bh=w4m+C3MA+uF99iaYqBpHoN8HtNlLgOwjLrQS1SWbCDg=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=sAcaT5L4MMdBWkmfiPwJPVcxVW7ZFNs5bK/VgUWs8XRbnEiJavjj7wTmYMvOTDK1q3+6ULbimTSBef6m6LiQnyY+cOZE1jOl7Y24R8IdVrqPMIlUoSwuHHtG24DDDa8zTxZnP/8k/NTSxIzYZBcVUgUSsXAa354BusjaZOTn4SQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=iV9gi4K3; arc=fail smtp.client-ip=52.101.70.67
+	s=arc-20240116; t=1728417270; c=relaxed/simple;
+	bh=HO3RF+f1eP8myCyS6q1TjWPk2I7D1R5GldyB/e+ttPg=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=twTS31nmE3vAW+hfeGilLwgUkdTxN3FCvFstCaHjL25MHOS0Vb0jxl4KK/GNEDyAkjnwC9m6bcuTNYs1mGyBGgPXv+UxImZ8tz63sHp/WcyE6+mfVwETdSCwDcpydGul3R68ut7CDM0oAHIxXC9snx2SicsGJNURCmd0VAhjcns=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=W8q8Np/b; arc=fail smtp.client-ip=52.101.70.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="iV9gi4K3"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="W8q8Np/b"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SyvkddGhVIUq+NJHWhIE39hGASP2ix8DbuiMETw2zCGv+Udj/v95EoSjcYr6KsGmgFrGHhmit96u0RMmw2iA6ioL+G0WfSyZsCiGMyM3F3Zcz5AyaZfnzRvPC5rYLIwrUP/hD++7fnzGZAGoS3tvMjjFnT91q4Lz2zpUED7Fo72nSgBFiryOCdx5AC/4u+gMr/0cFRKfCpUOWPjI/CcLnbz7VFz0QP2ciBpbgXo/ZgqwOZ0GZ+ny5xnYx5ekKxjfU8fMcpYSnALmGSHR1IPUp7bcepdAAbKkJ7uya5NoAFy3+ZZy7gPdg6AStyiQkIedc9bQkcWJvqcDG3zmkul6iQ==
+ b=tAiq2G9utsKPqOgzBdL3TMhtrCvjwC76oPfbGxAPVVigmuLT8QLLROHNlfvXWeq0FHyUb773VDgrEKvnt4nhA9oXDGfg4nD78xiKLU6IjxQcDR/5oh62CpwZ3bs6FjHYRTLnlilHW3UNLTNY1pNLYRkdEGJ/ylvwAuFZ9nsSb8+Eye8Myz6obMFJgGJmxv2UdNH3lqeMI4XAijmdljBZ/aSsFILfagZWZL6C1FeK4xnZxTlKvdCcFnpFIBCgw4GrB+4917KS4qab8ZnZ9VOojXVggD+R3nsfsmLcQYRXBPK+uXY94dKxXeGvltWiIem3JCrwPByn1L0xUzLfLHtSEw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mQqM2YdVVqMejLuSUwuShuQnVSs+FR7EYfdGkIIsH3Q=;
- b=VTWaADAdMml3oVBI2+cQPPzLrMwWlMgJAX8jMD17uItSQ7jM+7r9OuueN2n+vV6DkB0iTPJNprAVlfJbvm9Cn77AU7q291gjQGslGzLt/5rxEmUx3ZRUbnXfXrTJsw0tF2RR6IOCLljdu4mL8fvmNE9sRY3rHCK5FYXIdRJD1jp8JB6ivaGER3t94rn0+UWEr5kP1G9MPjQjAIbRelcqLoGO9TiGUsndXhVVNG3pKFGRmM+OhjrbXlPMf/Rtzd6I8SKwXmj2QsMcsBv0VLMOFyYi1vFjMESEsof9stLMxtILiSL4V8XJnYO5yDIA61GaQjU+7WgTeH/xB7FeRKaPAg==
+ bh=NQ/vBBc27kEks902DM6ab+mHUnmP7cGQAewthgz7UTY=;
+ b=c6EzRigi4sc6nLgDepWdvSxDZTVXT444tf1YMNbg53yelySMdALNMAud1GbPuO05emAPzXPdtuP2eZMb/5pLeG25y4+yBBrJC+0B6v+X5DddnTqooaoHI0FwVaJUTOiBdha2NdgMNC4og/DQfnK5FWqraSlcNI0m63YtpAhckLjJpn3Zhiyn1UfmTvfgLWq3oNf2IMii+pKk8DozfYhGkKV2q5k7Lx3khjR++YUoU9xENZ/ub/cC79lfBMW5T760BCcWj+Av/Zs9865pYO31h2JKiWJVcgGaFDlJJBLP4lRzt3/8vZpd7xEGOGYG9vaJBT9e1JtJn9LTPtJl8TPiNg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mQqM2YdVVqMejLuSUwuShuQnVSs+FR7EYfdGkIIsH3Q=;
- b=iV9gi4K35QvRz3tKp5i999ROLCNGYKknYVIbkRcaAdiq1gdD228E3PvhkOx9/WsdzD+7fnB0H8lXV4UvadWIHcUNbA9VK1+RnOIXFSuRDQzlRkVB49guM91Da57lKKhr5/O3IFRJzeFJoq/sIMfmoCUu9pnOZhK92Vpwh5VcVWnDRevtriGVyHy9HyfAia1ZoumiJ5m36Ng+3hHHtu5rbSk1t2Qa/WtG84sDIibS8t29fKuKG/5NstX+M4OR2KfBgSfbYGWXE1j78E1Q8USi6zsC0hseic6qJ8Tfm9HlmaBKYbyd7WmQ7Pcx+yWFp4uiv0luuJqtlEr632yaN1mpvA==
+ bh=NQ/vBBc27kEks902DM6ab+mHUnmP7cGQAewthgz7UTY=;
+ b=W8q8Np/bNhWXue9KNSCjsjOZysHaJMnDkN/svb5C3/X+dMpdek26OYQd+xjdIdT015ucA+u07rc2ezdUsxCzfC0Aklc/jFT5lbUFqVI457PdX4Tlz4ST4+N76c9X5kvCVMTaDTQfgGmXBgX17haLEriHCLyv+BKXUDLmmEntdbpo8eXQw3FDldplaHzK8KD7qxBoMtS/j72jCPpxBzT/SGpKRLxDOYX6Sq/KKZzvuQufqhpE7QmpHYRXULig3cACrZontoJw1iAeO+qYmd79Nr7n/whE/ccyuipe5ISJtBIfjFhbRlXPuoGOzQvhX9RkmFHTmMdRYuOYwavJLRHrAQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
- by AM0PR04MB7138.eurprd04.prod.outlook.com (2603:10a6:208:19e::19) with
+ by PA1PR04MB10577.eurprd04.prod.outlook.com (2603:10a6:102:493::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.16; Tue, 8 Oct
- 2024 19:41:47 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.22; Tue, 8 Oct
+ 2024 19:54:24 +0000
 Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
  ([fe80::e81:b393:ebc5:bc3d]) by DB9PR04MB9626.eurprd04.prod.outlook.com
  ([fe80::e81:b393:ebc5:bc3d%3]) with mapi id 15.20.8026.019; Tue, 8 Oct 2024
- 19:41:47 +0000
+ 19:54:24 +0000
 From: Frank Li <Frank.Li@nxp.com>
-To: u.kleine-koenig@baylibre.com
-Cc: Frank.Li@nxp.com,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	festevam@gmail.com,
-	francesco@dolcini.it,
-	imx@lists.linux.dev,
-	jun.li@nxp.com,
-	kernel@pengutronix.de,
-	krzk+dt@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-pwm@vger.kernel.org,
-	marex@denx.de,
-	p.zabel@pengutronix.de,
-	pratikmanvar09@gmail.com,
-	robh@kernel.org,
-	s.hauer@pengutronix.de,
-	shawnguo@kernel.org,
-	xiaoning.wang@nxp.com
-Subject: [PATCH v8 1/1] pwm: imx27: workaround of the pwm output bug when decrease the duty cycle
-Date: Tue,  8 Oct 2024 15:41:23 -0400
-Message-Id: <20241008194123.1943141-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
+Subject: [PATCH v4 0/3] PCI: dwc: opitimaze RC host pci_fixup_addr()
+Date: Tue, 08 Oct 2024 15:53:57 -0400
+Message-Id: <20241008-pci_fixup_addr-v4-0-25e5200657bc@nxp.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BY5PR03CA0010.namprd03.prod.outlook.com
- (2603:10b6:a03:1e0::20) To AS4PR04MB9621.eurprd04.prod.outlook.com
+X-B4-Tracking: v=1; b=H4sIANWNBWcC/3XMyw6CMBCF4VcxXVvTy5SLK9/DGFLaqXQhkKINh
+ vDuFjZiiMszk++fyIDB40DOh4kEjH7wXZsGHA/ENLq9I/U2bSKYAFYKoL3xlfPjq6+0tYHqQmW
+ FK+u6lkAS6gOm7xq83tJu/PDswnvtR75c/6Yip4yq3HLQJUcD7tKO/cl0D7KEotjibIdFwghKg
+ AKO1sEvlhss2Q7LhAuGmDOphDP5F8/z/AFRpHvBJAEAAA==
+To: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
+ Jingoo Han <jingoohan1@gmail.com>, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+ Bjorn Helgaas <bhelgaas@google.com>, Richard Zhu <hongxing.zhu@nxp.com>, 
+ Lucas Stach <l.stach@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+X-Mailer: b4 0.13-dev-e586c
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1728417259; l=4665;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=HO3RF+f1eP8myCyS6q1TjWPk2I7D1R5GldyB/e+ttPg=;
+ b=G4vFqdq8y7fJtg1OZDTXkcv6y0idRjaE5Pgkge0AJnx6IUBRXudORnBPNhw1jlmrfUMQm49x0
+ eJfofFCWywkA6lk8RUNOPfhcjTOVwuqF9QQ7vplkATQAlSxRRYdHCBW
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: SJ0PR05CA0195.namprd05.prod.outlook.com
+ (2603:10b6:a03:330::20) To AS4PR04MB9621.eurprd04.prod.outlook.com
  (2603:10a6:20b:4ff::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -77,290 +81,191 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|AM0PR04MB7138:EE_
-X-MS-Office365-Filtering-Correlation-Id: 49d15dd0-39f0-46d1-4986-08dce7d13e9d
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|PA1PR04MB10577:EE_
+X-MS-Office365-Filtering-Correlation-Id: 354cefd0-7d32-4635-46bf-08dce7d301df
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|7416014|366016|52116014|38350700014;
+	BCL:0;ARA:13230040|366016|52116014|376014|7416014|1800799024|38350700014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?l5Vn3kgd1gryaNCc50ug3RCpHmpX08VASDwSsCe5OUlNOJNRc/mmYMdkHaJH?=
- =?us-ascii?Q?473aHteaLNgz+nEn8N/GX4zHVRNCTNDo7qYhefLc2sbOWDDJ5h+Hp5nnZA3z?=
- =?us-ascii?Q?TFmh8GbU8yiOI5euDsN1VzDbYY4ETceBXSDFTx5V+eqCJGS6HnKdCyyqg30q?=
- =?us-ascii?Q?NxxOwNQea1r8xdJNah87p2LTOXsY7gySWOVI7GzApJNeEyqzLxT0FCrVmyF4?=
- =?us-ascii?Q?EXrGyJCuxTVpZRzyU7Tg514R6hWEei0dJcZZFmJi+DnqG6SflT1A8kxdFuYh?=
- =?us-ascii?Q?TFG2DHRMZjwvSqlmnd9y5gX9rPd4F18gD27JjrWSnPg0D7zkDikzmpVPKKR9?=
- =?us-ascii?Q?dxJyGsNLMNMFDnScFKdpUHHaYesv1YWsSZeIIwXZKu+CZHTDAo7jXZJYw2iD?=
- =?us-ascii?Q?2s5v16IgdVAkTmm5voJvRON/1SX85YUlo6JvtYeWoKXhgbK0uLeq9/U/BNjs?=
- =?us-ascii?Q?j8BDjhzHE3sYPhgKNOMcl3lhM6oWhyLw04MSEzHrMlY7daiiyDaiM7jFyQs4?=
- =?us-ascii?Q?9khEXC4lM/l9nk//mjIQEXSt27WJeTJwbu1lY0z+BQ6EyZyUZo8xs9d7GIXD?=
- =?us-ascii?Q?RWyn1dqIDzT366frW7+degYTWVheWoWd7PKJLysgN9Bn4GEl8dzvztwNBL6v?=
- =?us-ascii?Q?0MKO2Nca6JiSiaQ+nGf1GM3oyQiFfZK2pXy0xTsoM5GntXMY/yR31hvbUl3a?=
- =?us-ascii?Q?nTfxdzzYq9r0uXMBlG49n/SXFzs3/mD7qZATQnvDySxee2kNmYQyRkOwMYQ9?=
- =?us-ascii?Q?ht9DU7oJyrGh+DwCHvX22IsxDOpAoCgefuwH84gPEhNkWHG19UGdPmbG/tBO?=
- =?us-ascii?Q?uTSkNutR6+CGOEiiJsh7awy92KRTh8HESZlSB6ycF/w9u128DQxxi23p1AF/?=
- =?us-ascii?Q?heQp0dSij+baTejv2VBSccVbQXD9OnZ+LuU+cXHEiU6JBxNM1GORc0bNvCkn?=
- =?us-ascii?Q?h+dBEVvF/Umgz/47xUaVoslRIxWrmJBxnBYq5wpCSAt1SwbgozMPYhyCDjgB?=
- =?us-ascii?Q?pTA59Be1hXy+EQUqrr8A9FFkdacRY2cSMOsmSBNNia9t7MTFjl6hhobqAO+5?=
- =?us-ascii?Q?oWcSjDJsFBOpqk+HjIMNb7RxmAZ05Qv1ZhZ9FRBMt3FocYqlpWKOHSFGFpMO?=
- =?us-ascii?Q?VsGmw+BiNRVdGuh0mEVZDmRySQxXnF2JFYbrYgOQlGCKrQ8qHtikm7m86aEs?=
- =?us-ascii?Q?X3R8iHHeWAII4wX/rC6HADzV/3kKs52e03gY28El5fDjnOrlkRQOYQJTgMXx?=
- =?us-ascii?Q?fdi8A9oF4JX1I13OijhhtpTxCn8hW2vEwfchHzucuBrcd3wYsG0/RpgYLIPS?=
- =?us-ascii?Q?rnmIn0beypyJ3lIoACG09kksWvfzALpvjx9tzC4Urzt00A=3D=3D?=
+	=?utf-8?B?bTJra0h6WjZhdy9kNGw2Y21nSWZQazA0cXdySE10U1lZVmw0T1JsL3k4Nk54?=
+ =?utf-8?B?U2V2R2dTR2pYWmhGcGIxc2hZTnZ2bUo1cXVSL3l4cFQzbTBURVN6V3k0TUdX?=
+ =?utf-8?B?NUxuWE5vWU4ya3dzYy9ldWhhYjNqNmRaSE9maE82YTYvQnRjTlJ3YzBJRlc1?=
+ =?utf-8?B?allhMFpwU0RPbko4Qlc5djFqNGhDSEU3RitKTHJYUjd5bVBxREs1S2toQWVy?=
+ =?utf-8?B?MlRtcExMT2FrRXRBMmhRZGFtRHRERzNieDd0aCs0ZTFyclFzSnFmdHYzdklx?=
+ =?utf-8?B?M1QycnlpMU15R1dXRXhXMnVWdjlXUlNmL3kvZEZPaVd0QkROTjcvRTZUQlBD?=
+ =?utf-8?B?Mk94TFJCMnFqaHpHYzRwMUxVMms3MXozeFR4ZzU2S0ZlWkFjY0FZVmVKWlUy?=
+ =?utf-8?B?b3JDVE5BaXZGbW1JcHUyamc0NnJWcGRDM1N0cmZwMHdiSWtHQlFaWXU0WXR3?=
+ =?utf-8?B?MnlnUkEyTUJjVHk2a0U3ZDdxUjh3NGtBQlowV3ZRU0xzUitrR0M4cXNuclpq?=
+ =?utf-8?B?R2xOZTVsSzREWWhYQzVOU0RwZjFaaUF1N1AvaWhTamdnRzJRcEc2SEVLSGIw?=
+ =?utf-8?B?bTJaczMydGU4U0pRbzlySmNvTW8wZzE3TFd4TVhsYUZTbVcwTHdXNW1qYTZB?=
+ =?utf-8?B?UDdqbzJaWFBvT0VERkF6aGRnb1R2bTNzQzR1cWlJOVpsSXBFUWRBRklsSUt4?=
+ =?utf-8?B?RlhuTVowcnNld3g1L296a0lWZEtrNm1jbHc1K0FZWlNsMkJ5SEdEellqc0hY?=
+ =?utf-8?B?d0pYTHNFZUY2M1pXZkxPVFdnYzFCVWF5NXZRR0gvbU44ZXI1cEhqeGJZb2hC?=
+ =?utf-8?B?MGRDV2VtM3ZBYlJXaHRwUGlVNVBKeGozU2N3b2hNUytjZVNTaXBoNmphcGkr?=
+ =?utf-8?B?aEsyZjVNUUZKRWRmR0VINjhIVHZMOHE1YjAzc0RrbThPTi9xTmxxcWoyMmRM?=
+ =?utf-8?B?T2Y4aXEzS1RhQzcvakcrdm0yVC9Jd0lHVFk5STVTRWRzdzg4Mi9mVkhWYU1R?=
+ =?utf-8?B?MmMwRjZ2YTZBQmdTS1l5My83RFhJSVhnaE5yNWxtL051aDYxVnNRemtONUsw?=
+ =?utf-8?B?RDVCbktjZmZQUnA5TWs2VTk0alZtc1pHbnZGQUxWOTF1MHVGSUJiV1lQclJs?=
+ =?utf-8?B?V2JRNjY3ajh2dElwNlh2NFY0bGkvc21oYmZGNGtHd24rUHdPQmxtZmpiS1NH?=
+ =?utf-8?B?M3ltOFJqSlc5OWZRSFpnMkNzYU43Snp2eHowR2hWQmpKM21rVkRaY2I3ek10?=
+ =?utf-8?B?eU1WR3BMZ25kZ2tMVldOcDdsdnpDTnVYK2VucXBiZU1YRmtJMzl5ZVVLbmlP?=
+ =?utf-8?B?NHRVNHFnejdvK3NXa0hsbnoxM2Y0L1hQNlpEeHI3OUZoR0FtU2tlbmhiUTlT?=
+ =?utf-8?B?Nm9UdHNLUFN3Q3grMlRhZDVKcU05SWUrcjdtckdiR3duLytUeG5JN3BLU21O?=
+ =?utf-8?B?ZzJENGVCVTgrWmd1bnZhVG1QT2UzUldSZlFtRUU5UlNnQjQzdWdmSFdjOGtq?=
+ =?utf-8?B?NVhnR2Y2bGNHcmYzQ25FclBqaU96THk0b0RwL3pVejJ3YzJlT2hMeFlYS25X?=
+ =?utf-8?B?U3RBc25IMkVkenFpTklZdUFRbEhzYVBYdjAvdmdUd3dpVWhhVkp4NTBmL1FX?=
+ =?utf-8?B?cUk4b3ZVK1AwcXo2bUxBRE1OY240engxU1hxOVZlR2diOHppcEhHT3dvWk16?=
+ =?utf-8?B?ZTl0ZlpZUHFUU21tM3V2dEtJaUlsZmk3TDRKb0VFaU5tYVlScDQyNUhEUjBh?=
+ =?utf-8?B?eHp5ZjU1UTQwMTVOM1BldEc5S3V3N2NEV1ZkR25LaFhoUXRKT2M5UGhjVWtU?=
+ =?utf-8?Q?xshfECaApBVKv6GeJPCiGR8NsNbEF0sTdbd3A=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(52116014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(7416014)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+wGXK1VAsLLSDkyiHyHjV5J8mvICS3IrkdNLFtttEuizbEnYwIVFdWrTwskq?=
- =?us-ascii?Q?AkDKAeQwg61S2OFG32xKEztdXMrjEfqt59a+8b+6vfLbYTJGWGpnl5UtJir3?=
- =?us-ascii?Q?j76QYBfQISnPQcBQZyJiWA8o2xcHMDVcCxTfaADWwv/YR2elrt/GUSJ7jIfK?=
- =?us-ascii?Q?X4gnpqVq7gkUFryzf0Pk8IjduCpzQLxsb8g6V8zx4tRy0B2Uk6upqrcHJROq?=
- =?us-ascii?Q?U5ROr7PNb9SG+jEEI7YrSH1Jd9WDC3ZDiKejsfWbN3w8AaYw789M9s3Zsi7d?=
- =?us-ascii?Q?VODJ2bInLsYDrdNjUjFJybHwJeOswNCIB+mm6DxAMlUPMhNpexFmHDgQl5Dh?=
- =?us-ascii?Q?ZhIrkPOG4OZ6/xckHsOOkMgw5QlOIBYueJK+yyiHt5wzv3uZfO525XklRKjr?=
- =?us-ascii?Q?vcKgGZInSUVQx21ZCUVfk60zSo4PHX1gytrU1ueqQLNyjXS75apJz5IQIu9b?=
- =?us-ascii?Q?QKrt9cr+3bsVwHyUn9Fk3XETvygMiLXSXXk7EQRBO4x78IQSvnYxvaArY6CE?=
- =?us-ascii?Q?hT29m8FuSW9ueseloP3EaBcB+dX8AqKlRknaE+s0I/KKdCy82ZmsbMskdbY7?=
- =?us-ascii?Q?FELWWotTTJQWIJqtNh4rjRc2vm1Y4VXTq67aWtuMmKRpEipl4RO4mN0TVKQt?=
- =?us-ascii?Q?kMFI5dQwdIJcMclKRbeahzX1O36mvVDBiUAclBe/DWdq0B00/Prgq/org1tU?=
- =?us-ascii?Q?147bmBm+84p08jS8/z87b151IGm7lR00hPupseEb2WAmuCU65/2JHHNdDXXv?=
- =?us-ascii?Q?eorbN8S1UdOsU1yz/JZjqWulvHPdOhUKjuNwkLfWO7wfXMxct2rLmCqEqEwu?=
- =?us-ascii?Q?G2GjbUHFf+HiaNQVEctJQbpBtudK9momrpxR1CoFEICHG0iNQW4MW2HOoObP?=
- =?us-ascii?Q?sKgoZ1VGIOScwtLLLqknslVkqbGDYnp3gVbCZXv/fUEQrViB1lewZRxBwZlF?=
- =?us-ascii?Q?JOniGh12gQ6pjW0Y5KdFCJ/d9GJJV9VrAnxalc25l4ACDRrujXY+X1NY1OH2?=
- =?us-ascii?Q?BoyoDlFTSy34j1EU8L5maAW3ln4tb+dkisXUQfLc0RhHEvNxAFc+EEGnWy6v?=
- =?us-ascii?Q?2U1gs5QLlNUBneVrO4lzPXzLBKiZGYGjtGlRyqJDTEU/tplWckATS7CVksE3?=
- =?us-ascii?Q?x0RFDmO3p/9R6CfBmTvwyfcjFaDBAX9F0tHEM2jODROCFc+59PH8KbxhblJG?=
- =?us-ascii?Q?fQmhK04QmQJNGuLoShQPaoWc9SspQdjyLvua7sP3+wO1LC4qO/9uVoQ2PF/+?=
- =?us-ascii?Q?sEzRNxXo/AW+IFLeOia1amXoaA1tmvjwLMP6N26Od7TB19euVdZ+rfPTff9/?=
- =?us-ascii?Q?AI/+bfLxrY2P93xEh4rs2dZlL3ptF0Oe3TcnF5ltDDBlr1HEcAkRoRbD3FJG?=
- =?us-ascii?Q?AxAQJdCRYy7ka1UwvVVDf/lnfWLu6k5pu2cjgSXCz6zzyHr4FcUBl0G75ORI?=
- =?us-ascii?Q?7gcghmJiLC0KcghdcZh/aCFyrLC0FY/12f4tsrtnwRPrGyVN72UEjCp48wtd?=
- =?us-ascii?Q?afRZNLQ0CsMylcXhRJf5ZqVeY8SnGc5mcEwklLZOOMpva9fi9PKbmxdGWiFa?=
- =?us-ascii?Q?RWwnDT2X4xrZQhv2fZkc4s9OfT2QWOcKTJREnIWf?=
+	=?utf-8?B?c0xEWXVQSm4rZWdFVUhKdVFLUFBHRUFFOTJmdVpuN01CT2RzUkwxUmM5Nm5J?=
+ =?utf-8?B?SC8rVUdjR1QrMUZXeTBseDUvakF6S0crTURMWWJmbWhqOEQzSGhmNXNWbGUr?=
+ =?utf-8?B?RzJ2SjY1WkdmdXJQRXN2RnhRaFI2Y2pPYlZzQVVocW0zWWxIdTgvMlREVWpx?=
+ =?utf-8?B?a0Fjb2ZoTWppN3RGeWVjSVhmT0pvOGY3MFBMcmQzS0NPMnpGa3RHeVRadWZ3?=
+ =?utf-8?B?Nko1KzVmTXAxZDlWcnprYkFxS25VazhxWmhuUmlvcFExc05xaEdjdzg2eDZt?=
+ =?utf-8?B?T04zTTNmQ2J3cU5vVDNQSzh6dnpNTXZsd2xGNUhoaVNkN0RjU1VyN2s5RjZN?=
+ =?utf-8?B?MTJtbzJBVStDQ0d5cEJPaUtTQjA2M0w4VWJWakh6RlJDNEYraWFJQUdMNkU2?=
+ =?utf-8?B?OHo2MGJvUnlBcmRHZUFSMVMzd1ZsbmV6RHFCRFNjb3FxU3l3TmdhQ2FZM0lz?=
+ =?utf-8?B?SkZveGV0Wi9lUDVQeGgrQUJENkZ2QVFBOXNiV2NMREdraTJubFB0Z1NhYU1T?=
+ =?utf-8?B?dStTaHNjd1lxV0drbWV6ZTl5bGtXNnRlL3ZMVSt1cFZ6VzRGaFhya29XRnYv?=
+ =?utf-8?B?NHVIVjVnUVpsK0pCUzBRWlNXZFdCM21YWjM4TUFJRFhWeGRWa3Y4T2dNeWhJ?=
+ =?utf-8?B?b25UQ1dCSVE1UWpqZG56blNubkVlK0Z6MGFoK05uSU91cXFRYVdLYzZlemVH?=
+ =?utf-8?B?UUZhb0VxRmRmeU5RUlA2UDNtUUtOM25XTm9vWUNmQURSclhqL3ZwUW13ZXdW?=
+ =?utf-8?B?NXVPZGdBS2I3MXlwbUVDQldPVGQ0eXpZcFI3bnFlQkVoaVl1R0JPNG44MzJU?=
+ =?utf-8?B?ZkYxQW1EYjRhcHFJdStTOGQ4dU1NbnNNblN6NmkzRjR3YUk3NjNKYnhzQ2Y4?=
+ =?utf-8?B?MXE5bnBLcCthVE45bUpteWNxRUlzdlBVWlcrdU5OTXNJWjFqbkVHVFFtSHlL?=
+ =?utf-8?B?eElWYmpQSEI0dmwwN213cUIzSkozalc2VmtLMVVBSEwreG96a212TzBGOEVu?=
+ =?utf-8?B?VVU3V213NFBzMmd3eXRDYjlpQkU2d09uYTJZL0d6NmNyNFBybXl6MnFJVTlp?=
+ =?utf-8?B?Z1VFdW9lRmNuSFhJeHYvZlBWd0hURTFZRTJaSmFqVklCcTJkQzVCZXNYK3Fv?=
+ =?utf-8?B?MHNxSGdmN0pEZ0JGaHozZEtRRE00emxwdFN1Z3p5UnI0aFo0OHI3S0xLZHBx?=
+ =?utf-8?B?dld5OTZqekRSMUYwMi9lZkFZN0lPOTZqVHdlWWRvL0tZYXVidmphVFAwKzg1?=
+ =?utf-8?B?ZkNrTmxpSWl3a2VsanpMamRzN1BnbGVsa0NnNXZEaGt6TUxwZWR1dmZiVENZ?=
+ =?utf-8?B?YjVFb3AzLzZpaGIrMnlqdDA2UUI1cHJKQjI4aXJycXFhUzNuSlFjSk84eHY3?=
+ =?utf-8?B?NWphUTJublY1R0JzWGViZlFHWFhIQzlGc3gxcG9jR2p6RHRkOUtla3VrN2tW?=
+ =?utf-8?B?ZlZJdTQ2aitNM3pLelVHVEp2TmYwZXcwbzhWNG5NdjQ4UlQ0WUorNWpDVEI5?=
+ =?utf-8?B?bVFVRGxjUXBDMTNGVFhJZVhaYzZ3am4wVEZEV2VWNWd0QlhwVkRqbXdvZW1h?=
+ =?utf-8?B?TmFYNUlRdnZqNG9GbkkvZG1tQ0xpZW8yQ0xlQW9OSVhQOHJSWU43UTZiTVVq?=
+ =?utf-8?B?QWtpc2dsNndxOVVIeE9nOWYzdGFPNnd3ZHRCTEFqaUlxa3JWWVJmUTVua3A2?=
+ =?utf-8?B?L0FycW0rSnBWTEZUUjM4SkVac1prbUR5QXYrVFQ4aHM0NUlXKzBURFRvaGJl?=
+ =?utf-8?B?NHJ0emVGZDc3c3VlcXBlYzRWTEYyZmo0RUl2YkRlRHQwL251aXdTdnpLczZM?=
+ =?utf-8?B?eEhtWCtCaWZkUzB4YmYwUTRhYkN5K1VEUmxmVjFYaXlWbnVsR0tvNVpGSkZj?=
+ =?utf-8?B?M2Z6bUNpMGNJM3ZUY0ttWjAxV3FkUVhxWEozbGoxb21kcFdjTzM2KzZyT3JQ?=
+ =?utf-8?B?L2tpYUNoUXdkWDh1QkV4NXRxZlpSeHBEdVJlZ1FTbjBzbHJON21uaDFzU3Fn?=
+ =?utf-8?B?bWIvNGVPcWcrM3VReGRRZzM2ZnBCQjJydkhYZVN5TzR2Zlp5eStsY3BvL0NL?=
+ =?utf-8?B?TisvMlV5N2VnUkVlS2owTXNMdUJ5R0VyUzVkRitBOGVRZC8yaE9vQjk0ZVdR?=
+ =?utf-8?Q?o1OucvCQFdMFTMs7fGRwcDcKp?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 49d15dd0-39f0-46d1-4986-08dce7d13e9d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 354cefd0-7d32-4635-46bf-08dce7d301df
 X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9621.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2024 19:41:47.2000
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2024 19:54:23.9643
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EduocVXZREFp5/voTMZB4IgUuErB+/74+OqT5x8ac0o2IQ0mtjt5ZKB91aQRWnC/e+TgsHmMOo5gv8bcbWhKCw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7138
+X-MS-Exchange-CrossTenant-UserPrincipalName: OXlrbN4NYGEGTAtPzdBMllmSiMH/fNfWKH/bssceXF8VE1salyBvujeMEpH97fDttSDl+UZPAx9uu+5Qcg0FaA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10577
 
-From: Clark Wang <xiaoning.wang@nxp.com>
+┌─────────┐                    ┌────────────┐
+ ┌─────┐    │         │ IA: 0x8ff0_0000    │            │
+ │ CPU ├───►│   ┌────►├─────────────────┐  │ PCI        │
+ └─────┘    │   │     │ IA: 0x8ff8_0000 │  │            │
+  CPU Addr  │   │  ┌─►├─────────────┐   │  │ Controller │
+0x7ff0_0000─┼───┘  │  │             │   │  │            │
+            │      │  │             │   │  │            │   PCI Addr
+0x7ff8_0000─┼──────┘  │             │   └──► CfgSpace  ─┼────────────►
+            │         │             │      │            │    0
+0x7000_0000─┼────────►├─────────┐   │      │            │
+            └─────────┘         │   └──────► IOSpace   ─┼────────────►
+             BUS Fabric         │          │            │    0
+                                │          │            │
+                                └──────────► MemSpace  ─┼────────────►
+                        IA: 0x8000_0000    │            │  0x8000_0000
+                                           └────────────┘
 
-Implement workaround for ERR051198
-(https://www.nxp.com/docs/en/errata/IMX8MN_0N14Y.pdf)
+Current dwc implimemnt, pci_fixup_addr() call back is needed when bus
+fabric convert cpu address before send to PCIe controller.
 
-PWM output may not function correctly if the FIFO is empty when a new SAR
-value is programmed
+    bus@5f000000 {
+            compatible = "simple-bus";
+            #address-cells = <1>;
+            #size-cells = <1>;
+            ranges = <0x5f000000 0x0 0x5f000000 0x21000000>,
+                     <0x80000000 0x0 0x70000000 0x10000000>;
 
-Description:
-  When the PWM FIFO is empty, a new value programmed to the PWM Sample
-  register (PWM_PWMSAR) will be directly applied even if the current timer
-  period has not expired. If the new SAMPLE value programmed in the
-  PWM_PWMSAR register is less than the previous value, and the PWM counter
-  register (PWM_PWMCNR) that contains the current COUNT value is greater
-  than the new programmed SAMPLE value, the current period will not flip
-  the level. This may result in an output pulse with a duty cycle of 100%.
+            pcie@5f010000 {
+                    compatible = "fsl,imx8q-pcie";
+                    reg = <0x5f010000 0x10000>, <0x8ff00000 0x80000>;
+                    reg-names = "dbi", "config";
+                    #address-cells = <3>;
+                    #size-cells = <2>;
+                    device_type = "pci";
+                    bus-range = <0x00 0xff>;
+                    ranges = <0x81000000 0 0x00000000 0x8ff80000 0 0x00010000>,
+                             <0x82000000 0 0x80000000 0x80000000 0 0x0ff00000>;
+            ...
+            };
+    };
 
-Workaround:
-  Program the current SAMPLE value in the PWM_PWMSAR register before
-  updating the new duty cycle to the SAMPLE value in the PWM_PWMSAR
-  register. This will ensure that the new SAMPLE value is modified during
-  a non-empty FIFO, and can be successfully updated after the period
-  expires.
+Device tree already can descript all address translate. Some hardware
+driver implement fixup function by mask some bits of cpu address. Last
+pci-imx6.c are little bit better by fetch memory resource's offset to do
+fixup.
 
-Write the old SAR value before updating the new duty cycle to SAR. This
-avoids writing the new value into an empty FIFO.
+static u64 imx_pcie_cpu_addr_fixup(struct dw_pcie *pcie, u64 cpu_addr)
+{
+	...
+	entry = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
+	return cpu_addr - entry->offset;
+}
 
-This only resolves the issue when the PWM period is longer than 2us
-(or <500kHz) because write register is not quick enough when PWM period is
-very short.
+But it is not good by using IORESOURCE_MEM to fix up io/cfg address map
+although address translate is the same as IORESOURCE_MEM.
 
-Reproduce steps:
-  cd /sys/class/pwm/pwmchip1/pwm0
-  echo 2000000000 > period     # It is easy to observe by using long period
-  echo 1000000000 > duty_cycle
-  echo 1 > enable
-  echo       8000 > duty_cycle # One full high pulse will be seen by scope
+This patches to fetch untranslate range information for PCIe controller
+(pcie@5f010000: ranges). So current config ATU without cpu_fixup_addr().
 
-Fixes: 166091b1894d ("[ARM] MXC: add pwm driver for i.MX SoCs")
-Reviewed-by: Jun Li <jun.li@nxp.com>
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+EP side patch:
+https://lore.kernel.org/linux-pci/20240923-pcie_ep_range-v2-0-78d2ea434d9f@nxp.com/T/#mfc73ca113a69ad2c0294a2e629ecee3105b72973
+
+The both pave the road to eliminate ugle cpu_fixup_addr() callback function.
+
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
-Chagne from v7 to v8
-- combine Uwe's diagram and errata document.
-- use old period
-- use udelay(3 * period / 1000)
-- Only apply workaround when PWM enabled.
+Changes in v4:
+- Improve commit message by add driver source code path.
+- Link to v3: https://lore.kernel.org/r/20240930-pci_fixup_addr-v3-0-80ee70352fc7@nxp.com
 
-Change from v6 to v7
-- Add continue write for < 500hz case to try best to workaround this
-problem.
+Changes in v3:
+- see each patch
+- Link to v2: https://lore.kernel.org/r/20240926-pci_fixup_addr-v2-0-e4524541edf4@nxp.com
 
-Change from v5 to v6
-- KHz to KHz
-- sar to SAR
-- move comments above if
+Changes in v2:
+- see each patch
+- Link to v1: https://lore.kernel.org/r/20240924-pci_fixup_addr-v1-0-57d14a91ec4f@nxp.com
 
-Change from v4 to v5
-- fix typo PMW & If
-- using imx->mmio_base + MX3_PWMSAR
-
-Change from v3 to v4
-- none, wrong bump version number
-Change from v2 to v3
-- simple workaround implement.
-- add reproduce steps.
-
-Change from v1 to v2
-- address comments in https://lore.kernel.org/linux-pwm/20211221095053.uz4qbnhdqziftymw@pengutronix.de/
-  About disable/enable pwm instead of disable/enable irq:
-  Some pmw periphal may sensitive to period. Disable/enable pwm will
-increase period, althouhg it is okay for most case, such as LED backlight
-or FAN speed. But some device such servo may require strict period.
-
-- address comments in https://lore.kernel.org/linux-pwm/d72d1ae5-0378-4bac-8b77-0bb69f55accd@gmx.net/
-  Using official errata number
-  fix typo 'filp'
-  add {} for else
-
-I supposed fixed all previous issues, let me know if I missed one.
 ---
- drivers/pwm/pwm-imx27.c | 98 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 96 insertions(+), 2 deletions(-)
+Frank Li (3):
+      of: address: Add parent_bus_addr to struct of_pci_range
+      PCI: dwc: Using parent_bus_addr in of_range to eliminate cpu_addr_fixup()
+      PCI: imx6: Remove cpu_addr_fixup()
 
-diff --git a/drivers/pwm/pwm-imx27.c b/drivers/pwm/pwm-imx27.c
-index 9e2bbf5b4a8ce..0375987194318 100644
---- a/drivers/pwm/pwm-imx27.c
-+++ b/drivers/pwm/pwm-imx27.c
-@@ -26,6 +26,7 @@
- #define MX3_PWMSR			0x04    /* PWM Status Register */
- #define MX3_PWMSAR			0x0C    /* PWM Sample Register */
- #define MX3_PWMPR			0x10    /* PWM Period Register */
-+#define MX3_PWMCNR			0x14    /* PWM Counter Register */
- 
- #define MX3_PWMCR_FWM			GENMASK(27, 26)
- #define MX3_PWMCR_STOPEN		BIT(25)
-@@ -219,10 +220,12 @@ static void pwm_imx27_wait_fifo_slot(struct pwm_chip *chip,
- static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 			   const struct pwm_state *state)
- {
--	unsigned long period_cycles, duty_cycles, prescale;
-+	unsigned long period_cycles, duty_cycles, prescale, period_us, tmp;
- 	struct pwm_imx27_chip *imx = to_pwm_imx27_chip(chip);
- 	unsigned long long c;
- 	unsigned long long clkrate;
-+	unsigned long flags;
-+	int val;
- 	int ret;
- 	u32 cr;
- 
-@@ -263,7 +266,98 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 		pwm_imx27_sw_reset(chip);
- 	}
- 
--	writel(duty_cycles, imx->mmio_base + MX3_PWMSAR);
-+	val = readl(imx->mmio_base + MX3_PWMPR);
-+	val = val >= MX3_PWMPR_MAX ? MX3_PWMPR_MAX : val;
-+	cr = readl(imx->mmio_base + MX3_PWMCR);
-+	tmp = NSEC_PER_SEC * (u64)(val + 2) * MX3_PWMCR_PRESCALER_GET(cr);
-+	tmp = DIV_ROUND_UP_ULL(tmp, clkrate);
-+	period_us = DIV_ROUND_UP_ULL(tmp, 1000);
-+
-+	/*
-+	 * ERR051198:
-+	 * PWM: PWM output may not function correctly if the FIFO is empty when
-+	 * a new SAR value is programmed
-+	 *
-+	 * Description:
-+	 * When the PWM FIFO is empty, a new value programmed to the PWM Sample
-+	 * register (PWM_PWMSAR) will be directly applied even if the current
-+	 * timer period has not expired.
-+	 *
-+	 * If the new SAMPLE value programmed in the PWM_PWMSAR register is
-+	 * less than the previous value, and the PWM counter register
-+	 * (PWM_PWMCNR) that contains the current COUNT value is greater than
-+	 * the new programmed SAMPLE value, the current period will not flip
-+	 * the level. This may result in an output pulse with a duty cycle of
-+	 * 100%.
-+	 *
-+	 * Consider a change from
-+	 *     ________
-+	 *    /        \______/
-+	 *    ^      *        ^
-+	 * to
-+	 *     ____
-+	 *    /    \__________/
-+	 *    ^               ^
-+	 * At the time marked by *, the new write value will be directly applied
-+	 * to SAR even the current period is not over if FIFO is empty.
-+	 *
-+	 *     ________        ____________________
-+	 *    /        \______/                    \__________/
-+	 *    ^               ^      *        ^               ^
-+	 *    |<-- old SAR -->|               |<-- new SAR -->|
-+	 *
-+	 * That is the output is active for a whole period.
-+	 *
-+	 * Workaround:
-+	 * Check new SAR less than old SAR and current counter is in errata
-+	 * windows, write extra old SAR into FIFO and new SAR will effect at
-+	 * next period.
-+	 *
-+	 * Sometime period is quite long, such as over 1 second. If add old SAR
-+	 * into FIFO unconditional, new SAR have to wait for next period. It
-+	 * may be too long.
-+	 *
-+	 * Turn off the interrupt to ensure that not IRQ and schedule happen
-+	 * during above operations. If any irq and schedule happen, counter
-+	 * in PWM will be out of data and take wrong action.
-+	 *
-+	 * Add a safety margin 1.5us because it needs some time to complete
-+	 * IO write.
-+	 *
-+	 * Use writel_relaxed() to minimize the interval between two writes to
-+	 * the SAR register to increase the fastest PWM frequency supported.
-+	 *
-+	 * When the PWM period is longer than 2us(or <500kHz), this workaround
-+	 * can solve this problem. No software workaround is available if PWM
-+	 * period is shorter than IO write. Just try best to fill old data
-+	 * into FIFO.
-+	 */
-+	c = clkrate * 1500;
-+	do_div(c, NSEC_PER_SEC);
-+
-+	local_irq_save(flags);
-+	val = FIELD_GET(MX3_PWMSR_FIFOAV, readl_relaxed(imx->mmio_base + MX3_PWMSR));
-+
-+	if (duty_cycles < imx->duty_cycle && (cr & MX3_PWMCR_EN)) {
-+		if (period_us < 2) { /* 2us = 500 kHz */
-+			/* Best effort attempt to fix up >500 kHz case */
-+			udelay(3 * period_us);
-+			writel_relaxed(imx->duty_cycle, imx->mmio_base + MX3_PWMSAR);
-+			writel_relaxed(imx->duty_cycle, imx->mmio_base + MX3_PWMSAR);
-+		} else if (val < MX3_PWMSR_FIFOAV_2WORDS) {
-+			val = readl_relaxed(imx->mmio_base + MX3_PWMCNR);
-+			/*
-+			 * If counter is close to period, controller may roll over when
-+			 * next IO write.
-+			 */
-+			if ((val + c >= duty_cycles && val < imx->duty_cycle) ||
-+			    val + c >= period_cycles)
-+				writel_relaxed(imx->duty_cycle, imx->mmio_base + MX3_PWMSAR);
-+		}
-+	}
-+	writel_relaxed(duty_cycles, imx->mmio_base + MX3_PWMSAR);
-+	local_irq_restore(flags);
-+
- 	writel(period_cycles, imx->mmio_base + MX3_PWMPR);
- 
- 	/*
--- 
-2.34.1
+ drivers/of/address.c                              |  2 ++
+ drivers/pci/controller/dwc/pci-imx6.c             | 22 ++----------
+ drivers/pci/controller/dwc/pcie-designware-host.c | 42 +++++++++++++++++++++++
+ drivers/pci/controller/dwc/pcie-designware.h      |  8 +++++
+ include/linux/of_address.h                        |  1 +
+ 5 files changed, 55 insertions(+), 20 deletions(-)
+---
+base-commit: 69940764dc1c429010d37cded159fadf1347d318
+change-id: 20240924-pci_fixup_addr-a8568f9bbb34
+
+Best regards,
+---
+Frank Li <Frank.Li@nxp.com>
 
