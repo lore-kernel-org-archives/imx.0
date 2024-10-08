@@ -1,155 +1,287 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.fris.de (mail.fris.de [116.203.77.234])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99DB81E00AE
-	for <imx@lists.linux.dev>; Tue,  8 Oct 2024 14:37:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFC638DC0
+	for <imx@lists.linux.dev>; Tue,  8 Oct 2024 14:38:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728398228; cv=none; b=k8E1vFwEmqHvcj/m7Z7jqueJaNykvy0NMMkoNwLrKxWmdrx0klh82zsUemp2OT+U/5VsaKReJ5e55wSdhttw3dOdLukUho6TaQP4gR26Nh8JZUPZZFnQaKbD61Swc9FDGGMDpxtkne3jBm/yXV8fwtUxGcjNJUfmeW+L10TYfPQ=
+	t=1728398331; cv=none; b=ulQ8uBGrzx1FvXIpTHqCMMn3jT0qgdZ7RAEfKGD9ah2ZAV4b7QAhZhg9mXVm9dZw5sSYHx0EwM6hVTQbBdLMTzPo3rj//RU83rKCiWMiSmd77DeYGLJLrtn0K4GZ8usV3Va4wN7Q+iueMLkjDolOhTC6Z/zfUL3qRqHBjX8TwlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728398228; c=relaxed/simple;
-	bh=VigG5K5AqEyYYd11bPjoh33HE5kCM96AwvzM5P4IvFM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K6vgT88/XlQti+0WDtrf2L/VVZqKvIXxAHZJ5qWrQkleaQsFAFEypOoOnbjy/106gXrWzmSaeLXUurlg6fALBLd3K9UObRDt229YriAiV6axznZozGszq8usoFYOQDn07wQVO9rJtIMv0I55vQicNQjIhgE2M6eFOehMNVU8V+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=m0dvEuyO; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="m0dvEuyO"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 7679A88CFC;
-	Tue,  8 Oct 2024 16:37:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1728398224;
-	bh=kva98SfEwVDBfm2v2v9KgrJxDJ2/u0bR75XzoUvUmos=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=m0dvEuyOrE7ZRNap8FHVTDG9cWqhHX0D0odcSvjJxBpx3J+Di7Gru/72BZihrRDzP
-	 Sqh/i6E2M+2iOhZHkrFgUBpJlT0hmvd2A81kVmYisI1Z0GhN9bJLpX4nb6D5Y8Hbd8
-	 vuDLUDW43TfdUxxL09aXZz/IHf71KW4D+HiIByNbWy8e57CwAFdQWWb8bBzCSgkH/A
-	 gZ2iMEjpUEnKaO0P2MWAVAEQ/70esOb6/rSUS5ywj3qvmG5p4Q5Veh8Pgz0JScJAv5
-	 2ie9B+0Czr2s6erjRk0jjOAarxiB/FGrExDbLClmjc2yqhwwvBSrgGHw9rE7S1cg3T
-	 nxSvs3hCeZk9Q==
-Message-ID: <49ed56a9-f900-4b7c-83b2-3ac94c0664ca@denx.de>
-Date: Tue, 8 Oct 2024 16:37:02 +0200
+	s=arc-20240116; t=1728398331; c=relaxed/simple;
+	bh=VcM1xBe9c8/OlwJ1oGR8S8iqaUYMXkj2nAS5F8XmuFU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qIzXpUlxGZ+fBg9PebPTZcWTeRacsyShsI0ip7w2JcVnMyGo3vTRGnb5vWvTOI3hFlg7LilW+2NPjzoaBqtz+ue8F+TbWn6GKyQcAiETG1nqL7Zmu+2DZ2ZSj4rBYKAetdz3PUoMn1Tc4qSXq4iaN0p5qJOlFaTi+0sx907c0Kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=fris.de; spf=fail smtp.mailfrom=fris.de; arc=none smtp.client-ip=116.203.77.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=fris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=fris.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 36E31BFB9D;
+	Tue,  8 Oct 2024 16:38:46 +0200 (CEST)
+From: Frieder Schrempf <frieder@fris.de>
+To: Conor Dooley <conor+dt@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>
+Cc: Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
+	Mathieu Othacehe <m.othacehe@gmail.com>,
+	Parthiban Nallathambi <parthiban@linumiz.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: [PATCH v3 4/4] arm64: dts: imx8mm-kontron: Add DL (Display-Line) overlay with LVDS support
+Date: Tue,  8 Oct 2024 16:37:46 +0200
+Message-ID: <20241008143804.126795-5-frieder@fris.de>
+In-Reply-To: <20241008143804.126795-1-frieder@fris.de>
+References: <20241008143804.126795-1-frieder@fris.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm: lcdif: Use adjusted_mode .clock instead of
- .crtc_clock
-To: Isaac Scott <isaac.scott@ideasonboard.com>,
- Alexander Stein <alexander.stein@ew.tq-group.com>,
- dri-devel@lists.freedesktop.org
-Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
- Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>,
- "Lukas F . Hartmann" <lukas@mntmn.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Stefan Agner <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>,
- imx@lists.linux.dev, kernel@dh-electronics.com,
- linux-arm-kernel@lists.infradead.org, kieran.bingham@ideasonboard.com
-References: <20240531202813.277109-1-marex@denx.de>
- <1897634.CQOukoFCf9@steina-w> <ab2eb32e-a458-4c9b-8324-27ccb00336c5@denx.de>
- <7ae0cd7774f4b3e30cc033a7e543546732dbced0.camel@ideasonboard.com>
- <de285fc0-728f-4ba0-86e0-0069d2cc9a35@denx.de>
- <64e18ceed5279a9346a6a1141f02ead93383bd1e.camel@ideasonboard.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <64e18ceed5279a9346a6a1141f02ead93383bd1e.camel@ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 10/8/24 12:07 PM, Isaac Scott wrote:
-> On Mon, 2024-10-07 at 20:06 +0200, Marek Vasut wrote:
->> On 10/7/24 7:01 PM, Isaac Scott wrote:
->>> Hi Marek,
->>
->> Hi,
->>
->>> On Sat, 2024-07-06 at 02:16 +0200, Marek Vasut wrote:
->>>> On 6/24/24 11:19 AM, Alexander Stein wrote:
->>>>> Am Freitag, 31. Mai 2024, 22:27:21 CEST schrieb Marek Vasut:
->>>>>> In case an upstream bridge modified the required clock
->>>>>> frequency
->>>>>> in its .atomic_check callback by setting adjusted_mode.clock
->>>>>> ,
->>>>>> make sure that clock frequency is generated by the LCDIFv3
->>>>>> block.
->>>>>>
->>>>>> This is useful e.g. when LCDIFv3 feeds DSIM which feeds
->>>>>> TC358767
->>>>>> with (e)DP output, where the TC358767 expects precise timing
->>>>>> on
->>>>>> its input side, the precise timing must be generated by the
->>>>>> LCDIF.
->>>>>>
->>>>>> Signed-off-by: Marek Vasut <marex@denx.de>
->>>>>
->>>>> With the other rc358767 patches in place, this does the trick.
->>>>> Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
->>>>
->>>> I'll pick this up next week if there is no objection.
->>>
->>> Unfortunately, this has caused a regression that is present in
->>> v6.12-
->>> rc1 on the i.MX8MP PHYTEC Pollux using the
->>> arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts. The
->>> display is the edt,etml1010g3dra panel, as per the upstream dts. We
->>> bisected to this commit, and reverting this change fixed the
->>> screen.
->>>
->>> We then tried to retest this on top of v6.12-rc2, and found we also
->>> had
->>> to revert commit ff06ea04e4cf3ba2f025024776e83bfbdfa05155 ("clk:
->>> imx:
->>> clk-imx8mp: Allow media_disp pixel clock reconfigure parent rate")
->>> alongside this. Reverting these two commits makes the display work
->>> again at -rc2.
->>>
->>> Do you have any suggestions on anything we might be missing on our
->>> end?
->>> Please let me know if there's anything you'd like me to test as I'm
->>> not
->>> sure what the underlying fault was here.
->> I believe what is going on is that the LCDIF cannot configure its
->> upstream clock because something else is already using those clock
->> and
->> it set those clock to a specific frequency. LCDIF is now trying to
->> configure those clock to match the LVDS panel, and it fails, so it
->> tries
->> to set some approximate clock and that is not good enough for the
->> LVDS
->> panel.
->>
->> Can you share dump of /sys/kernel/debug/clk/clk_summary on failing
->> and
->> working system ? You might see the difference around the "video"
->> clock.
->>
->> (I have seen this behavior before, the fix was usually a matter of
->> moving one of the LCDIFs to another upstream clock like PLL3, so it
->> can
->> pick well matching output clock instead of some horrid approximation
->> which then drives the panel likely out of specification)
-> 
-> Hi Marek,
-> 
-> Please find attached the clk_summary for v6.12-rc2 before and after the
-> reversion (the one after the reversion is 6.12-rc2_summary_postfix).
-How come "media_mipi_phy1_ref" is on Video PLL1 before the revert ?
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-Does it start working if you move "media_mipi_phy1_ref" to osc_24m ? 
-(probably not)
+The Kontron Electronics DL i.MX8MM consists of the BL i.MX8MM board
+and a 7" LVDS panel. Provide an overlay that enables the panel.
 
-Also, why is the LDB configured to 74 MHz instead of 519 MHz now ? That 
-is really odd. I'll see if I can reproduce this later today.
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+---
+Changes for v3:
+* Fix LVDS bridge input port reference
+
+Changes for v2:
+* Update copyright year
+* Use exisitng MIPI DSI output port from imx8mm.dtsi
+* Fix pinctrl for GPIO hogs
+* Fix property order in i2c2 node
+* Use generic node name for touchscreen
+---
+ arch/arm64/boot/dts/freescale/Makefile        |   4 +
+ .../boot/dts/freescale/imx8mm-kontron-dl.dtso | 189 ++++++++++++++++++
+ 2 files changed, 193 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-kontron-dl.dtso
+
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index f04c22b7de72e..d8af069139920 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -244,6 +244,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx93-var-som-symphony.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-evk.dtb
+ 
++imx8mm-kontron-dl-dtbs			:= imx8mm-kontron-bl.dtb imx8mm-kontron-dl.dtbo
++
++dtb-$(CONFIG_ARCH_MXC) += imx8mm-kontron-dl.dtb
++
+ imx8mm-venice-gw72xx-0x-imx219-dtbs	:= imx8mm-venice-gw72xx-0x.dtb imx8mm-venice-gw72xx-0x-imx219.dtbo
+ imx8mm-venice-gw72xx-0x-rpidsi-dtbs	:= imx8mm-venice-gw72xx-0x.dtb imx8mm-venice-gw72xx-0x-rpidsi.dtbo
+ imx8mm-venice-gw72xx-0x-rs232-rts-dtbs	:= imx8mm-venice-gw72xx-0x.dtb imx8mm-venice-gw72xx-0x-rs232-rts.dtbo
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-kontron-dl.dtso b/arch/arm64/boot/dts/freescale/imx8mm-kontron-dl.dtso
+new file mode 100644
+index 0000000000000..1db27731b581c
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx8mm-kontron-dl.dtso
+@@ -0,0 +1,189 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2024 Kontron Electronics GmbH
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include "imx8mm-pinfunc.h"
++
++&{/} {
++	compatible = "kontron,imx8mm-bl", "kontron,imx8mm-sl", "fsl,imx8mm";
++
++	backlight: backlight {
++		compatible = "pwm-backlight";
++		pwms = <&pwm1 0 50000 0>;
++		brightness-levels = <0 100>;
++		num-interpolated-steps = <100>;
++		default-brightness-level = <100>;
++	};
++
++	panel {
++		compatible = "jenson,bl-jt60050-01a", "panel-lvds";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_panel>;
++		backlight = <&backlight>;
++		data-mapping = "vesa-24";
++		enable-gpios = <&gpio3 19 GPIO_ACTIVE_HIGH>;
++		height-mm = <86>;
++		width-mm = <154>;
++
++		panel-timing {
++			clock-frequency = <51200000>;
++			hactive = <1024>;
++			vactive = <600>;
++			hsync-len = <1>;
++			hfront-porch = <160>;
++			hback-porch = <160>;
++			vsync-len = <1>;
++			vfront-porch = <12>;
++			vback-porch = <23>;
++		};
++
++		port {
++			panel_out_bridge: endpoint {
++				remote-endpoint = <&bridge_out_panel>;
++			};
++		};
++	};
++};
++
++&dsi_mux_sel_hdmi {
++	status = "disabled";
++};
++
++&dsi_mux_sel_lvds {
++	status = "okay";
++};
++
++&mipi_dsi_out {
++	remote-endpoint = <&bridge_in_dsi_lvds>;
++};
++
++&gpio3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_gpio3>;
++
++	panel-rst-hog {
++		gpio-hog;
++		gpios = <20 GPIO_ACTIVE_HIGH>;
++		output-high;
++		line-name = "panel-reset";
++	};
++
++	panel-stby-hog {
++		gpio-hog;
++		gpios = <21 GPIO_ACTIVE_HIGH>;
++		output-high;
++		line-name = "panel-standby";
++	};
++
++	panel-hinv-hog {
++		gpio-hog;
++		gpios = <24 GPIO_ACTIVE_HIGH>;
++		output-high;
++		line-name = "panel-horizontal-invert";
++	};
++
++	panel-vinv-hog {
++		gpio-hog;
++		gpios = <25 GPIO_ACTIVE_HIGH>;
++		output-low;
++		line-name = "panel-vertical-invert";
++	};
++};
++
++&hdmi {
++	status = "disabled";
++};
++
++&i2c2 {
++	clock-frequency = <400000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c2>;
++	#address-cells = <1>;
++	#size-cells = <0>;
++	status = "okay";
++
++	touchscreen@5d {
++		compatible = "goodix,gt928";
++		reg = <0x5d>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_touch>;
++		interrupt-parent = <&gpio3>;
++		interrupts = <22 8>;
++		reset-gpios = <&gpio3 23 0>;
++		irq-gpios = <&gpio3 22 0>;
++	};
++};
++
++&lvds {
++	status = "okay";
++
++	ports {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		port@0 {
++			reg = <0>;
++
++			bridge_in_dsi_lvds: endpoint {
++				remote-endpoint = <&mipi_dsi_out>;
++				data-lanes = <1 2>;
++			};
++		};
++
++		port@2 {
++			reg = <2>;
++
++			bridge_out_panel: endpoint {
++				remote-endpoint = <&panel_out_bridge>;
++			};
++		};
++	};
++};
++
++&pwm1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_pwm1>;
++	status = "okay";
++};
++
++&iomuxc {
++	pinctrl_gpio3: gpio3grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SAI5_RXD3_GPIO3_IO24		0x19
++			MX8MM_IOMUXC_SAI5_RXC_GPIO3_IO20		0x19
++			MX8MM_IOMUXC_SAI5_RXD0_GPIO3_IO21		0x19
++			MX8MM_IOMUXC_SAI5_MCLK_GPIO3_IO25		0x19
++		>;
++	};
++
++	pinctrl_i2c2: i2c2grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_I2C2_SCL_I2C2_SCL			0x40000083
++			MX8MM_IOMUXC_I2C2_SDA_I2C2_SDA			0x40000083
++		>;
++	};
++
++	pinctrl_panel: panelgrp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SAI5_RXFS_GPIO3_IO19		0x19
++		>;
++	};
++
++	pinctrl_pwm1: pwm1grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SPDIF_EXT_CLK_PWM1_OUT		0x6
++		>;
++	};
++
++	pinctrl_touch: touchgrp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SAI5_RXD1_GPIO3_IO22		0x19
++			MX8MM_IOMUXC_SAI5_RXD2_GPIO3_IO23		0x19
++		>;
++	};
++};
+-- 
+2.46.0
+
