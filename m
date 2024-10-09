@@ -1,172 +1,229 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A51B15382F
-	for <imx@lists.linux.dev>; Wed,  9 Oct 2024 10:27:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1098818E743
+	for <imx@lists.linux.dev>; Wed,  9 Oct 2024 10:28:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728469677; cv=none; b=LTmTSI3SYgtXUUuSVncmP2ahVmWKQO/v16ko9l9dH7itBEHD/HIKBkzwiXolKVr7PndPpB0bd0xMMWIxrpBoXH1Br7T231sRdbkkqHr2xeoKEpukEQxhuk4wV4fzq5dyq3UGKq0wtxyDSmdNjBa68HXtn5XhoVMYqDe8EGGfsSk=
+	t=1728469705; cv=none; b=MGDSQxh7FFr9i0UmgXFjXhTjnhmOPUda8iIHdREaA6q5tUEuZ4W1ej0OQyOsGScms+amo7JMFtDsohoszTnmfl6WXQW05VVjdixZtenMQYCfzI4if85Rxg10S/vn+zJEEzemHeviJPrHADR/Y04IFEMmGkO3ixdG6SdTbfrtv2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728469677; c=relaxed/simple;
-	bh=EnCse8YQGWK+UOsMAVUKFCn0pNdVUtbErZAVwAb4M7o=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Q/oYMqY8OyRRjbf10DoSidntpF7deqP7EOZ5+7ofMXu2h8O2FMnZMWbicA5L1Vhx39fyP+U6Y4hXLGryNAxUp8qj4PCZODdJmLVTJqUKUY3L4iOh4PmRn9OPRn+OvmNRGAeOCFRGIzj72vba70Wq3X4gvWgTWFh9S2Zo1guDabs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=fyywunHH; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1728469705; c=relaxed/simple;
+	bh=/fIjIpUdHAzWUFceihGJMz4qHHzjyT7pvRboVHLIXt8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fZNmncSppgmuBMPavI9D/gPFjr68L2tjQf5ePe5rKVw2AQiAixUeAp70EKSiIBGs8tYO6xAzVrWQcUBc67FgzHvqOj/z+JsoqKxzIzqaW7KCQEKmzwKh830uW8XoNTNbFpWgTFj27G2EN3q3tK0N2WYraZD+ttKaZ8qD/wLJxwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HVAGdekM; arc=none smtp.client-ip=209.85.219.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="fyywunHH"
-Received: from isaac-ThinkPad-T16-Gen-2.local (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 1F5ED2EC;
-	Wed,  9 Oct 2024 12:26:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1728469577;
-	bh=EnCse8YQGWK+UOsMAVUKFCn0pNdVUtbErZAVwAb4M7o=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=fyywunHHJy5Dmgz+1GjjIGC426Fwy3djtZFyEH03Wvr7VVVvVD8vIMLUCz4lcDx7r
-	 NaDV+NWTmntZDf+y8ckK5E9/J6vl8pv6wk7WD+hLNRf4NQ+2lexNMKfVU8Vrwm6Mqp
-	 hox6oi5uPqDeTt3BZGnNSULQvsezEeQ83Y51TCqg=
-Message-ID: <8a78fcf2f1da1d4b8ca3446e8378517a71bf1e51.camel@ideasonboard.com>
-Subject: Re: [PATCH 2/2] drm: bridge: ldb: Configure LDB clock in .mode_set
-From: Isaac Scott <isaac.scott@ideasonboard.com>
-To: Marek Vasut <marex@denx.de>, dri-devel@lists.freedesktop.org
-Cc: Abel Vesa <abelvesa@kernel.org>, Andrzej Hajda
- <andrzej.hajda@intel.com>,  David Airlie <airlied@gmail.com>, Fabio Estevam
- <festevam@gmail.com>, Jernej Skrabec	 <jernej.skrabec@gmail.com>, Jonas
- Karlman <jonas@kwiboo.se>, Laurent Pinchart	
- <Laurent.pinchart@ideasonboard.com>, Maarten Lankhorst	
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, Neil Armstrong
- <neil.armstrong@linaro.org>, Peng Fan <peng.fan@nxp.com>,  Pengutronix
- Kernel Team	 <kernel@pengutronix.de>, Robert Foss <rfoss@kernel.org>,
- Sascha Hauer	 <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Simona Vetter	 <simona@ffwll.ch>, Stephen Boyd <sboyd@kernel.org>, Thomas
- Zimmermann	 <tzimmermann@suse.de>, imx@lists.linux.dev,
- kernel@dh-electronics.com, 	linux-arm-kernel@lists.infradead.org,
- linux-clk@vger.kernel.org
-Date: Wed, 09 Oct 2024 11:27:50 +0100
-In-Reply-To: <20241008223846.337162-2-marex@denx.de>
-References: <20241008223846.337162-1-marex@denx.de>
-	 <20241008223846.337162-2-marex@denx.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.0 (by Flathub.org) 
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HVAGdekM"
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e28fe3b02ffso699575276.3
+        for <imx@lists.linux.dev>; Wed, 09 Oct 2024 03:28:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1728469702; x=1729074502; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/fIjIpUdHAzWUFceihGJMz4qHHzjyT7pvRboVHLIXt8=;
+        b=HVAGdekMttHTfGxtSPqpoDZQioDjG6uWuhiHoSYSFtkzrB6Bx7ueB5tRua0gw5dAhH
+         FTAtvm1hfQhNviPYXT0hcpWLDsr637tS1N7n5Ly1jiu0pqHuvHHJOVGzBV6V/ukROps8
+         R0uIcITzco57LMnM3iXtHWcFtQJowuX2hNKihb4IJd2TVlPcJYQN0BVNXiwB7ASTG/EO
+         oPVfrbK5R/eE4mAY9zvHzU4P+BthArXufBgYxm9JMIIA40zovZSAnBGMt8fzHG3DvSbi
+         0XaEoSaj+I9b/L3CsCR/qYInxrEiWFanDSKrj6MLMasNNQv60Lj34aAP/VNWX7uz6vE4
+         k3rA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728469702; x=1729074502;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/fIjIpUdHAzWUFceihGJMz4qHHzjyT7pvRboVHLIXt8=;
+        b=umPCQb6mLU/QJHSdx1Y6pR0QhSqonG561rt5Rm1dJhJYYoFe8Eat+Y+V5G1y9DMAuN
+         6oME2qugWTX7ujS+0W6x1I9h7lhVkkTpzFMg+x5JPZ0HBSOrAfBTOAaINvoUmml9xolF
+         JnipEWTJJQ7+dOG0X0paYNPAP1e7AzdrrWlFslEu3ZW73jZm4gUYVKakE5dsVFPnEt2n
+         n1Wk6jsS3VmolvC8dfb91M5FHaR7b4X6DJE+FztD92gPUzjYeMEGE4fXLprLvlaNHaJN
+         9+EHiPts+XvQzz1pCvHEqDv1yL+De6oJFIrH03mPoJgwpu1Ejpxk2M2TfvP7/zv+ASef
+         GqQA==
+X-Forwarded-Encrypted: i=1; AJvYcCWU1rKV4Qcjlh8kkGSHEEb3lxi/9yKSsZ2mqIxcbIYdF3XVgry6uOIcGKpTAEaft0MGb0o=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxJw6bm1PUZvG9b1Hyy69fOw7HcqTL7RTs24ahgioNTE/CGhChr
+	ZlWZDHZKeTsBT4ObBcww9fQF3awX5HviDyU9Kchx+t/hfz1h2nym6p1e2YsYZbdtZJrVSttkCLA
+	WIv4GCZ+tPH6A08A0LM0JS76vQUlTdiKfjdl3sQ==
+X-Google-Smtp-Source: AGHT+IHNaU3Z3+DDKTWwqyhccdWy6KGvX0jRFFJtFda2WTvGLlJcpHA53hhWZp12VBznxD4kUpVSZMoh/Lgesk7avnk=
+X-Received: by 2002:a25:eb02:0:b0:e25:96a4:1706 with SMTP id
+ 3f1490d57ef6-e28fe43f3d1mr1744852276.19.1728469701975; Wed, 09 Oct 2024
+ 03:28:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+References: <20241004094101.113349-1-sakari.ailus@linux.intel.com>
+ <CAPDyKFp0N6UJhnHS164Tdf=xkWB0jzq65L9TdvYazeBQ-6WjeQ@mail.gmail.com>
+ <20241007184924.GH14766@pendragon.ideasonboard.com> <CAPDyKFpQVnF7eQv3dup8k-3EijnMjuveCG9sZ=Rpey1Y6MBJEg@mail.gmail.com>
+ <20241007222502.GG30699@pendragon.ideasonboard.com> <CAPDyKFrGNwna6Y2pqSRaBbRYHKRaD2ayqQHLtoqLPOu9Et7qTg@mail.gmail.com>
+ <CAJZ5v0jvJyS7D5-wURi2kyWN-rmNa+YqupeQJ000pQRVd9VBcQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0jvJyS7D5-wURi2kyWN-rmNa+YqupeQJ000pQRVd9VBcQ@mail.gmail.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Wed, 9 Oct 2024 12:27:45 +0200
+Message-ID: <CAPDyKFqh_BS=6eN4tQzZ20sWCHL3kdnrY=1Mgd7B9gfBamm8bw@mail.gmail.com>
+Subject: Re: [PATCH 00/51] treewide: Switch to __pm_runtime_put_autosuspend()
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
+	linux-clk@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	dmaengine@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	amd-gfx@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org, 
+	linux-i3c@lists.infradead.org, linux-iio@vger.kernel.org, 
+	linux-input@vger.kernel.org, patches@opensource.cirrus.com, 
+	iommu@lists.linux.dev, imx@lists.linux.dev, 
+	linux-mediatek@lists.infradead.org, linux-media@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org, 
+	netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-phy@lists.infradead.org, 
+	linux-pwm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
+	linux-sound@vger.kernel.org, linux-spi@vger.kernel.org, 
+	linux-staging@lists.linux.dev, linux-usb@vger.kernel.org, 
+	linux-serial@vger.kernel.org, greybus-dev@lists.linaro.org, 
+	asahi@lists.linux.dev, Andy Shevchenko <andy.shevchenko@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2024-10-09 at 00:38 +0200, Marek Vasut wrote:
-> The LDB serializer clock operate at either x7 or x14 rate of the
-> input
-> LCDIFv3 scanout engine clock. Make sure the serializer clock and
-> their
-> upstream Video PLL are configured early in .mode_set to the x7 or x14
-> rate of pixel clock, before LCDIFv3 .atomic_enable is called which
-> would
-> configure the Video PLL to low x1 rate, which is unusable.
->=20
-> With this patch in place, the clock tree is correctly configured. The
-> example below is for a 71.1 MHz pixel clock panel, the LDB serializer
-> clock is then 497.7 MHz:
+On Tue, 8 Oct 2024 at 20:25, Rafael J. Wysocki <rafael@kernel.org> wrote:
+>
+> On Tue, Oct 8, 2024 at 12:35=E2=80=AFAM Ulf Hansson <ulf.hansson@linaro.o=
+rg> wrote:
+> >
+> > On Tue, 8 Oct 2024 at 00:25, Laurent Pinchart
+> > <laurent.pinchart@ideasonboard.com> wrote:
+> > >
+> > > Hi Ulf,
+> > >
+> > > On Tue, Oct 08, 2024 at 12:08:24AM +0200, Ulf Hansson wrote:
+> > > > On Mon, 7 Oct 2024 at 20:49, Laurent Pinchart wrote:
+> > > > > On Fri, Oct 04, 2024 at 04:38:36PM +0200, Ulf Hansson wrote:
+> > > > > > On Fri, 4 Oct 2024 at 11:41, Sakari Ailus wrote:
+> > > > > > >
+> > > > > > > Hello everyone,
+> > > > > > >
+> > > > > > > This set will switch the users of pm_runtime_put_autosuspend(=
+) to
+> > > > > > > __pm_runtime_put_autosuspend() while the former will soon be =
+re-purposed
+> > > > > > > to include a call to pm_runtime_mark_last_busy(). The two are=
+ almost
+> > > > > > > always used together, apart from bugs which are likely common=
+. Going
+> > > > > > > forward, most new users should be using pm_runtime_put_autosu=
+spend().
+> > > > > > >
+> > > > > > > Once this conversion is done and pm_runtime_put_autosuspend()=
+ re-purposed,
+> > > > > > > I'll post another set to merge the calls to __pm_runtime_put_=
+autosuspend()
+> > > > > > > and pm_runtime_mark_last_busy().
+> > > > > >
+> > > > > > That sounds like it could cause a lot of churns.
+> > > > > >
+> > > > > > Why not add a new helper function that does the
+> > > > > > pm_runtime_put_autosuspend() and the pm_runtime_mark_last_busy(=
+)
+> > > > > > things? Then we can start moving users over to this new interfa=
+ce,
+> > > > > > rather than having this intermediate step?
+> > > > >
+> > > > > I think the API would be nicer if we used the shortest and simple=
+st
+> > > > > function names for the most common use cases. Following
+> > > > > pm_runtime_put_autosuspend() with pm_runtime_mark_last_busy() is =
+that
+> > > > > most common use case. That's why I like Sakari's approach of repu=
+rposing
+> > > > > pm_runtime_put_autosuspend(), and introducing
+> > > > > __pm_runtime_put_autosuspend() for the odd cases where
+> > > > > pm_runtime_mark_last_busy() shouldn't be called.
+> > > >
+> > > > Okay, so the reason for this approach is because we couldn't find a
+> > > > short and descriptive name that could be used in favor of
+> > > > pm_runtime_put_autosuspend(). Let me throw some ideas at it and may=
+be
+> > > > you like it - or not. :-)
+> > >
+> > > I like the idea at least :-)
+> > >
+> > > > I don't know what options you guys discussed, but to me the entire
+> > > > "autosuspend"-suffix isn't really that necessary in my opinion. The=
+re
+> > > > are more ways than calling pm_runtime_put_autosuspend() that trigge=
+rs
+> > > > us to use the RPM_AUTO flag for rpm_suspend(). For example, just
+> > > > calling pm_runtime_put() has the similar effect.
+> > >
+> > > To be honest, I'm lost there. pm_runtime_put() calls
+> > > __pm_runtime_idle(RPM_GET_PUT | RPM_ASYNC), while
+> > > pm_runtime_put_autosuspend() calls __pm_runtime_suspend(RPM_GET_PUT |
+> > > RPM_ASYNC | RPM_AUTO).
+> >
+> > __pm_runtime_idle() ends up calling rpm_idle(), which may call
+> > rpm_suspend() - if it succeeds to idle the device. In that case, it
+> > tags on the RPM_AUTO flag in the call to rpm_suspend(). Quite similar
+> > to what is happening when calling pm_runtime_put_autosuspend().
+>
+> Right.
+>
+> For almost everybody, except for a small bunch of drivers that
+> actually have a .runtime_idle() callback, pm_runtime_put() is
+> literally equivalent to pm_runtime_put_autosuspend().
+>
+> So really the question is why anyone who doesn't provide a
+> .runtime_idle() callback bothers with using this special
+> pm_runtime_put_autosuspend() thing, which really means "do a
+> runtime_put(), but skip my .runtime_idle() callback".
 
-Awesome! Thank you for this, this seems to fix the regression and the
-patches work as expected. I have tested both patches on v6.12-rc2 and
-the display works well.
+My guess is that it's in most cases a legacy pattern that is being
+followed. Also note that rpm_idle() didn't "always" tag on the
+RPM_AUTO flag, even if it's quite a while ago (2013) since we added
+it.
 
-For both patches,=20
+Unless there is some actual optimization involved, as it also allows
+us to skip calling rpm_idle() and go directly for rpm_suspend().
 
-Tested-by: Isaac Scott <isaac.scott@ideasonboard.com>
->=20
-> video_pll1_ref_sel=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1 =
-1 0=C2=A0 24000000 0 0 50000
-> =C2=A0=C2=A0 video_pll1=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1 1 0 497700000 0 0 50000
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 video_pll1_bypass=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1 =
-1 0 497700000 0 0 50000
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 video_pll1_out=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 2 2 0 497700000 0 0 50000
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media_=
-ldb=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1 1 0 497700000 0 0 50000
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 media_ldb_root_clk=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1 1 0 4=
-97700000 0 0 50000
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media_=
-disp2_pix=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 1 1 0=C2=A0 71100000 0 0 50000
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 media_disp2_pix_root_clk 1 1 0=C2=A0 71100000 0 0 50000
->=20
-> Signed-off-by: Marek Vasut <marex@denx.de>
-> ---
-> Cc: Abel Vesa <abelvesa@kernel.org>
-> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: Isaac Scott <isaac.scott@ideasonboard.com>
-> Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
-> Cc: Jonas Karlman <jonas@kwiboo.se>
-> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Michael Turquette <mturquette@baylibre.com>
-> Cc: Neil Armstrong <neil.armstrong@linaro.org>
-> Cc: Peng Fan <peng.fan@nxp.com>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Robert Foss <rfoss@kernel.org>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: Stephen Boyd <sboyd@kernel.org>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: imx@lists.linux.dev
-> Cc: kernel@dh-electronics.com
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-clk@vger.kernel.org
-> ---
-> =C2=A0drivers/gpu/drm/bridge/fsl-ldb.c | 11 +++++++++++
-> =C2=A01 file changed, 11 insertions(+)
->=20
-> diff --git a/drivers/gpu/drm/bridge/fsl-ldb.c
-> b/drivers/gpu/drm/bridge/fsl-ldb.c
-> index 0e4bac7dd04ff..a3a31467fcc85 100644
-> --- a/drivers/gpu/drm/bridge/fsl-ldb.c
-> +++ b/drivers/gpu/drm/bridge/fsl-ldb.c
-> @@ -278,6 +278,16 @@ fsl_ldb_mode_valid(struct drm_bridge *bridge,
-> =C2=A0	return MODE_OK;
-> =C2=A0}
-> =C2=A0
-> +static void fsl_ldb_mode_set(struct drm_bridge *bridge,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct drm_display_mode *m=
-ode,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct drm_display_mode *a=
-dj)
-> +{
-> +	struct fsl_ldb *fsl_ldb =3D to_fsl_ldb(bridge);
-> +	unsigned long requested_link_freq =3D
-> fsl_ldb_link_frequency(fsl_ldb, mode->clock);
-> +
-> +	clk_set_rate(fsl_ldb->clk, requested_link_freq);
-> +}
-> +
-> =C2=A0static const struct drm_bridge_funcs funcs =3D {
-> =C2=A0	.attach =3D fsl_ldb_attach,
-> =C2=A0	.atomic_enable =3D fsl_ldb_atomic_enable,
-> @@ -287,6 +297,7 @@ static const struct drm_bridge_funcs funcs =3D {
-> =C2=A0	.atomic_get_input_bus_fmts =3D
-> fsl_ldb_atomic_get_input_bus_fmts,
-> =C2=A0	.atomic_reset =3D drm_atomic_helper_bridge_reset,
-> =C2=A0	.mode_valid =3D fsl_ldb_mode_valid,
-> +	.mode_set =3D fsl_ldb_mode_set,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static int fsl_ldb_probe(struct platform_device *pdev)
+>
+> > >
+> > > >
+> > > > Moreover, it's similar for pm_runtime_mark_last_busy(), it's called
+> > > > during rpm_resume() too, for example. So why bother about having
+> > > > "mark_last_busy" in the new name too.
+> > > >
+> > > > That said, my suggestion is simply "pm_runtime_put_suspend".
+> > >
+> > > Can we do even better, and make pm_runtime_put() to handle autosuspen=
+d
+> > > automatically when autosuspend is enabled ?
+> >
+> > As stated above, this is already the case.
+>
+> What really is needed appears to be a combination of
+> pm_runtime_mark_last_busy() with pm_runtime_put().
 
+This makes sense to me too, but I don't think we should limit it to this.
+
+Making pm_runtime_put_autosuspend (or if the name
+"pm_runtime_put_suspend" is better?) to do the similar thing, is
+probably a good idea too. At least in my opinion.
+
+>
+> Granted, pm_runtime_put() could do the pm_runtime_mark_last_busy()
+> thing automatically if autosuspend is enabled and the only consequence
+> of it might be delaying a suspend of the device until its autosuspend
+> timer expires, which should not be a problem in the vast majority of
+> cases.
+
+Right.
+
+I guess we should expect the *sync* variants to be used, if the timer
+really needs to be overridden.
+
+Kind regards
+Uffe
