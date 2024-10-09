@@ -1,325 +1,202 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010035.outbound.protection.outlook.com [52.101.69.35])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846CC18E343
-	for <imx@lists.linux.dev>; Wed,  9 Oct 2024 10:08:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.35
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728468521; cv=fail; b=q90r/6+XGfjA7olZKr/nSgDYdeiOmlDnKNveUeaqpBCDRjSfDEZVQW6gUvDF6cVD2n9g/aNFvjrkpVjQcE3bv6d4BmKe7aJ2P60uKVHjIZhvjoo96eLnRJTrt1LKkWRbPNWtkPC053TSKr8tAwVohcBAD2oDbbXozZWmzf5KsmI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728468521; c=relaxed/simple;
-	bh=HgdiGxu0YyPBHtGQm/HNdj44RjqX8TRi3UJ8UwrI3LY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Abo5sWfRDXJCB5guP05GqwxLwH/nKbKev2wc0UHlE05/P9t9JIzsokRl4PX0V6U6eH7qGsK4QoSVPbDfeKuM5DWA74lfgniMxwtHU5MmW+Azhy3z3bmbSwDVBbQ5vMeCjXs8mmAuHAGcpvYRsBnlr+BhOl/CUWHS87qw6Lp5hiE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=IPFJrVEd; arc=fail smtp.client-ip=52.101.69.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E462215382F;
+	Wed,  9 Oct 2024 10:20:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728469230; cv=none; b=En8kxkFTI1iN4fMB2IWKZtR53jXGMJUjF6VDggxbfh9PZO7ZLESvtKzVHF/wbhRh0JXkqsqDvKG4NHLY6HuGi2TIqRRPbv/wqmF3/vYLz+kxoDzRKl5C44dsIJis3S34z40LaOQYK+HDEnHwNldEg1rxQ88uGdi4s07xsd3V130=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728469230; c=relaxed/simple;
+	bh=ImAK0CpUwm+JPbTzbW7azTUBVNfLGbvl7aS7sfbdp0E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EFU4Eg0EVpfIPO32qoWIZJJiYtqmAbbq5v8BUboN4WK4Eh0I5SR4RjkU3G4wKbmh6MRr+L2zQBvcPzN0OOKD7tkdLbfAOyyiQ+wPoNLcIgdtP7o64QXcGMdo/S4kErcaA8qgPLEeeNIiwO8rTCrzi1p2WcZKu30z5IKI9uOhYPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sypaa8E4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="IPFJrVEd"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=itWMPJ3f5isIJ6muBYsv+x2PMK/KKoaqpendTIRNdXVNlrW6IakUOVLOrh8ljhjXIXa6AZRPDxxFVbg3It9HPsgmdeheP64iJc8wyOZ2eAkU88u4pBdOf6l9/4KTUr+h4ErNqeSmi0tbTmHOnzTWyHUbvx+0vHqqI0wACnvb1HJE9TVX3ZFGNbNfDWSGVVt8I26N0Du/XDZ/iaZNGJu9bK4bbsrXAM+Je8NwHkQH0Nc9g0waiYFYTNHSMumKtLw8tAOdFOaF7lIB4Wvp6uG3NRQVJfeWZNP2lVqQnXG++SKqUftTjsoxgbUoVG+cMzd/qHnEUnrP8DrueB8SVojuvw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/lMC+55lOI7/5/l9WvM/rktTuysWxbj9m15WnWyNdUM=;
- b=Xj16GTv314hCnPUCulRsWtwxu7wi7Ew7S1E7LNOUwOvkT6PrcPKDjjWpFHuuHvAR2Lvw3YO7fC+gytLTqGN5RleXqL4UpTKYzHbrKS9kxupNoBsMZlBmu/Vj+7faSHxAgepHYpzXPBsPC+Mml3o7M9GbjHIBVw6X7ftjGddkwn8haqHw4WiY5TbB44HazHkDIQ/M+GhxCZvs+KdEpKai9FU2PClPc+nXPqmY9GiU/00sxK2vooxJHBCsqr5BhqRd+NuHWL6VWsUnCnkmo0ziU4kGmfVDBZen5Dmv+JCKKjW2ubPi+hjmGRcEDDxodO41c4vPHikuCqgC6b1q7gN7zA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/lMC+55lOI7/5/l9WvM/rktTuysWxbj9m15WnWyNdUM=;
- b=IPFJrVEdxJpI7KpJMvtCfbf5RDoshvmQuHK8Ik1NbN7lIVI0vq4s4fLHaJaFKniAOR0wFJp/deToLWSic2p4MB2NjOa0S18xx4SqtQlKKNXqfDR0yanF3QT/xP5EBTDxlnMAF5JWeEGmCWG4Mc7WA4jFa9ZFkNUwObyo6vMSi8PHB7UnClXwUTbFPwe4lCBTQr6cUkGB0AcuLPamSzb2u84QKXwzBJ1I/6iDtXAjaTVwX650TgMV6YD3z8nKKl9gNox6Qe9CZWBteVoKiTu/liIeJl/ZzU2w8rDkXArAiZFzA7XVBFxnnTH8MeRF5rRbpG8NQfGfUM1Qrpba0L+stQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by GV1PR04MB10154.eurprd04.prod.outlook.com (2603:10a6:150:1ac::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.16; Wed, 9 Oct
- 2024 10:07:07 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%7]) with mapi id 15.20.8026.019; Wed, 9 Oct 2024
- 10:07:07 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	vladimir.oltean@nxp.com,
-	claudiu.manoil@nxp.com,
-	xiaoning.wang@nxp.com,
-	Frank.Li@nxp.com,
-	christophe.leroy@csgroup.eu,
-	linux@armlinux.org.uk,
-	bhelgaas@google.com
-Cc: imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: [PATCH net-next 09/11] net: enetc: optimize the allocation of tx_bdr
-Date: Wed,  9 Oct 2024 17:51:14 +0800
-Message-Id: <20241009095116.147412-10-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241009095116.147412-1-wei.fang@nxp.com>
-References: <20241009095116.147412-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR01CA0175.apcprd01.prod.exchangelabs.com
- (2603:1096:4:28::31) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sypaa8E4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D84C4CECC;
+	Wed,  9 Oct 2024 10:20:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728469229;
+	bh=ImAK0CpUwm+JPbTzbW7azTUBVNfLGbvl7aS7sfbdp0E=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Sypaa8E4XTR2h+6vO973S9djHACjIXek0KLq783ADF8tNtOe1bMZrJFf0zlt8+zSs
+	 OLRAtppFEIb5Ic0mWDNDYNRaI6e9/Z7vBQGyOQ8guZklNp3J6lYVvOJPY0Nte+XhtF
+	 xT1b91GGI33rYAt7gxwLcB1d3y1SBKs6bb4MxTTF1y6tGBweQi8zO12oDVI1/KpONI
+	 bOJQtQv0XV690wHla57wDR2aHvoM6Up16kaIYdw6AVyfMWDvtpnERh2dLqJ6WBvkYw
+	 EhkKXnH7yqObLqkMathJ5jYncRSwZXMHxI2dTYJuZPN1g66Yyks/L1YgZFWJ7ipDTo
+	 JPDgtbBAM36Bg==
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-5e800d4e462so797600eaf.1;
+        Wed, 09 Oct 2024 03:20:29 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVinlevMCzEulCL0IYfyggObbgICMRWXHoAxpN1gKe4PV0cWQLMyMS2QhioL+8vY/srO1Au@lists.linux.dev, AJvYcCWPEM6yN4WtxsWMbyLTvKxULxAZ1LYzHvE6+Fg9NoZGciJkv5SfRQ1L2MTTZL6Fmr6wCLUvJnU=@lists.linux.dev, AJvYcCX7mM3n3tTxynnDXwyD5AjhOostTGv6eIOKwrMzsU2kmfFf9aHf8xfRJ2vUV+Ir6eKYboluHA==@lists.linux.dev, AJvYcCXZAWsMUP2mUQHyD8OG08ScapfM1WTRbX/E/oL+eK+A+mVpLWaL0drh0aAxfOCM5k0Mk+jUH7vxfZoRB4LUZg==@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywga73iomWKvwpUs2I9nK/1zcFsAVP3n3PpMp4HGJGO6M11Iee2
+	wWLoKO/BYXealQzKa7UmdIk9lOqRGWSjzElc029fVCXVl0dryI1WoEmdg2O113Vs62FxN59XNrU
+	ObrOpGvgoENpKCedXeIYXyEC46Xo=
+X-Google-Smtp-Source: AGHT+IF28e1A9mtOEy4wCWwLUrfMAFq/4+DT8Vi41Eljnp8AjlauSlJofg4NJprxAH2sFsPScvE36aWo6OHCPjXQ49c=
+X-Received: by 2002:a05:6820:270f:b0:5e7:c925:b05 with SMTP id
+ 006d021491bc7-5e987aadf58mr1212364eaf.2.1728469228716; Wed, 09 Oct 2024
+ 03:20:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|GV1PR04MB10154:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9fdf895e-832a-45ff-53be-08dce84a218b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|1800799024|7416014|376014|366016|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?+B8Y+QJxMW1I7kJ7WUpac0ir6hPm4YAtRnlbUOZKfD1bkjKMTtnYJtc/+/26?=
- =?us-ascii?Q?vHTDpFGlwmLbKKvfQhYqRq70JYDDcm7rWvQexcqFP3B5KN1F/Uu8fAefP5Gp?=
- =?us-ascii?Q?SXuZIGQN3vqmoKU04VL0yTWFFKZz8PqJ61TyNrQFnMcObA2fdoZWVYDu0FIG?=
- =?us-ascii?Q?b9DNeGMeCdAxJuMkGecBOmg28/W9Fxg37v6Sz6AVVr1Y7FpTB9BBHIaQzzUd?=
- =?us-ascii?Q?IjUqeWV09nY84Qv9bW+h4JPkNw8k2k3fDySTgXKu5KnkabZOYI/W8pTSONvV?=
- =?us-ascii?Q?z1/lSPKAyTQElluft+OSMVZM8OfgetZnK+zt33B29FIUh6Qe2HL8ZqFVeFI5?=
- =?us-ascii?Q?Ij1kHOj0zfb216WsCBj30ltAN/A6h/YPJML35CztOYfSDnQNR9ws/wqGwm06?=
- =?us-ascii?Q?T9rp2JN6Ftrci3St7xXsFJu9JiPJ6gndSxzHb8QyJmTMz42fZ6UORInIYHJP?=
- =?us-ascii?Q?FSYrc7ybkI2p6X5vWYeI1QKUou6ZTUU0w7EY6de6datUyWX/6KSt1hDoG9jI?=
- =?us-ascii?Q?o9Smrz6BWf3bVNqe4kPtL8zj3T9fZGAGaInnfZ8jYyuaICKUHbNz+N0PJoSN?=
- =?us-ascii?Q?NIhUF5uNPbGLnxNAmpy3mGaSOaDE6EGnhnOpP8vbyRGEKPuxIUqYM4ew9Kxz?=
- =?us-ascii?Q?mxvSX4B8D9sSNbciy74oLaXl8X5htaH3wXDUdOsBXDS+DhMqMS6/og6uDuW4?=
- =?us-ascii?Q?fzIk5b7RZjLvcqOJHSWnUOw0X17VGx6NBh1ISjf2HUhwonTTAXZe9rYbILKD?=
- =?us-ascii?Q?3FuGfYCt45vANDOLDgC2aJ7rlO4EAjbL2IIfLkanlhrBHAgwI2A4WQ/fdxUh?=
- =?us-ascii?Q?pUSH7L6XVQmmastwhNEFi3C2rB4Doz8/QBlbRIjC7edAQUYXoSbSyW01qYjt?=
- =?us-ascii?Q?NkozovUS4KsTPKQ02VL2aZGWOBkK+KoDXTnKXwQyfKZI9/80lihk+hN0r7BO?=
- =?us-ascii?Q?9z52sdLdU26JEyYmnpRfJ9LKnIY39QPE5WTPIkhZoC9nXSHxHQ8s48mhAnEV?=
- =?us-ascii?Q?nqW8ab6fSJxYTJp9V5Wbw3TZxg7HB462em7TVpVPgBkOj8ZOmZCk1mZPSZNF?=
- =?us-ascii?Q?9uTdemaEroQzsFBisE46aYhnDqsQ4dlTgcooXUSwq5F5ha/SgShYDMM2uRdZ?=
- =?us-ascii?Q?YKgBneJfT+Kt8sjQks//XvwTWUTzFCckFEe2pm7IpuspiUgooGbqbQVSRxsF?=
- =?us-ascii?Q?8Z5MiDXYIeyC/A/b0f0zYt5P7MAEaKNXBFfrtjl5/95KrTDz26guh1Zw0aI7?=
- =?us-ascii?Q?NjvYJdkC2mNivCFLWazLIKAMM4DZ5ojEp3zJ5IpkFrDDfOIeug3J1aQuWTx1?=
- =?us-ascii?Q?HhKkd4BL8vHz0g3/pdYgWe3uAk7SVsoDTfW67MJQFJQK5/zfyNS0SkEVi0pf?=
- =?us-ascii?Q?04F1yaE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(7416014)(376014)(366016)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?E55gQ+aEe7LdK/JGckQpoH8Kg7palifI0F6MVVYq3t6z+O5wSZn/JY3ik53x?=
- =?us-ascii?Q?JxdMl/neAFsiWqh26zcQw3ErkYN7jV3wAzPv3cbOrRKjYR7vYsJOM5luRDVj?=
- =?us-ascii?Q?rbhoYubu/Syh9tyZBsgKQ2AlkoxliHMUre2W9KjRjMRbJEcEFzDWZ90su5GU?=
- =?us-ascii?Q?AwClO3zOOlBqXZMovLXQWqptzh4EmgFyAclHSZjU31BY/1h9/GTkLyeRkSpf?=
- =?us-ascii?Q?5+fI3MJ5S7gXPKw5b4Q0tGqjTJ8LOElAw/v09BSOvQuCl0qBCSPWvq21YcW+?=
- =?us-ascii?Q?7vKK/PlvZBBm9sUEX3SzjSAAKnr5a+S5RrK+U5vQ2VfP8zOp5tRjPftAC5oi?=
- =?us-ascii?Q?g6LDWcfN21Xi2mgvMNJeYFTN5YWzUydFPB4vv08Yg7ZidJZPSH2dmktv+W9h?=
- =?us-ascii?Q?Rf/MfyTM/fzPrT/genpLjYx+RlZUKXK4j11hbTOfIjXL5661Mbm0G343vjBr?=
- =?us-ascii?Q?qCvk5pyq7dgGEbZ022KZhfomlnW332MKCrg02THUoICsBJMN5w4qeQTYtQ2N?=
- =?us-ascii?Q?6rKaEsl4oPpWTHqqUM1m/j9GV5zlPQXpJS3ZL1bPcVG74T1odKDI2PRwmhyL?=
- =?us-ascii?Q?y9nj2AYuOmB1yxQsUu0FKfGYTAYxtXwL2UHBCTFbG843ONika3Scg5Ajbc0m?=
- =?us-ascii?Q?lSPaSEbc1bxhlQ+C6HLMILO1Ciih5fwGeRy/YioMcgI5e2iRslt4dKdcdEdf?=
- =?us-ascii?Q?OMLbkCFBcqN0vSe3aE+j8xb1ywnGjSubZypdWR78+Yixe/bNPyjqOU+K0iiG?=
- =?us-ascii?Q?//Y3OxNg8Ap66Wfu+P3ba4p9+1qXxYIfNN/2jbrSsGTW0SqP8c7Oecz+soeV?=
- =?us-ascii?Q?mzTsagBBlqZAjN7IBXXWFAvzUl4DbbQH4klZqkqnZpt78tnSBryZP3ds/6jI?=
- =?us-ascii?Q?Mzk17vD+z7JUFRV2vPNMLF57nCjLhdg7yRcFtAyCXZRAzEsZhxDDfWz/bUz2?=
- =?us-ascii?Q?UcHkQeUH8jf2BJtDGP8HuTDPP8e8DLxmk/BS8XArN99fFT3Ppf9huAe1QJo4?=
- =?us-ascii?Q?7JlZASV2gK7VFVD9krEzUIRtgelDVSj7dIBgoLwtwCfyQMgNumsZVqm1fe/5?=
- =?us-ascii?Q?GO2jRed6SZ3TmvYevWhnF3InCS4mKvgDMfy9qNHBjNSsa+0rmlg8r+Ilt66C?=
- =?us-ascii?Q?VdU1PTmcxtiG/FqTrtAr1ZXkaP5T/CJsWA8PYXtuGsFYxxtDMqXd/E3ODcZk?=
- =?us-ascii?Q?crbLiUkyV0KP5gsuN9ekjD0HG16gUt9M0JU+roEkDsmds0SNsW0rvKZjh2Uz?=
- =?us-ascii?Q?0bqnjycXOedPILS+O5ivcwqEna9cZ89yShEST1PYcv+UkNA/73Pwc/7Cv5e/?=
- =?us-ascii?Q?Jgm6GTFNVV2wFpJBfAaIUdqmCu8JMTVQfg64p2jhHRc65rcwnjrPBFwC+/r9?=
- =?us-ascii?Q?DSlk3KUCGyzx6GoUU3e1ef5uSwm8TwzCSA1glvqB2TMuxIxO5nKRlNn78Bm3?=
- =?us-ascii?Q?9TJ3TRsoeIlmiRyVlESB656KxtTmFpq3eIkMtzr8NOPEXngszrrbqPShCM0t?=
- =?us-ascii?Q?LardYATNUA7XY+ZotkltY7GfK9Wdj9a8iY0lGbb/BiK0S1gxe+m9AqThKSUJ?=
- =?us-ascii?Q?ri4WhzS9V00jX5wAkIg7n+SA9mIrzY3P1uyefW03?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9fdf895e-832a-45ff-53be-08dce84a218b
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2024 10:07:06.9752
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SM9jar9RHu381CyZO0q5+uweXZejFSSkJHNnW+VYxrKXzAobpez/QkgMLV7FxOk3n9LDjJQV5ErCnocuiQqPmw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10154
+References: <20241004094101.113349-1-sakari.ailus@linux.intel.com>
+ <CAPDyKFp0N6UJhnHS164Tdf=xkWB0jzq65L9TdvYazeBQ-6WjeQ@mail.gmail.com>
+ <20241007184924.GH14766@pendragon.ideasonboard.com> <CAPDyKFpQVnF7eQv3dup8k-3EijnMjuveCG9sZ=Rpey1Y6MBJEg@mail.gmail.com>
+ <20241007222502.GG30699@pendragon.ideasonboard.com> <CAPDyKFrGNwna6Y2pqSRaBbRYHKRaD2ayqQHLtoqLPOu9Et7qTg@mail.gmail.com>
+ <CAJZ5v0jvJyS7D5-wURi2kyWN-rmNa+YqupeQJ000pQRVd9VBcQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0jvJyS7D5-wURi2kyWN-rmNa+YqupeQJ000pQRVd9VBcQ@mail.gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 9 Oct 2024 12:20:16 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0htLbrFeby43Ycqpaihqd4x56MokC9sTVRBmTTQSX7vmQ@mail.gmail.com>
+Message-ID: <CAJZ5v0htLbrFeby43Ycqpaihqd4x56MokC9sTVRBmTTQSX7vmQ@mail.gmail.com>
+Subject: Re: [PATCH 00/51] treewide: Switch to __pm_runtime_put_autosuspend()
+To: Ulf Hansson <ulf.hansson@linaro.org>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	linux-bluetooth@vger.kernel.org, linux-clk@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
+	nouveau@lists.freedesktop.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org, 
+	linux-i3c@lists.infradead.org, linux-iio@vger.kernel.org, 
+	linux-input@vger.kernel.org, patches@opensource.cirrus.com, 
+	iommu@lists.linux.dev, imx@lists.linux.dev, 
+	linux-mediatek@lists.infradead.org, linux-media@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org, 
+	netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-phy@lists.infradead.org, 
+	linux-pwm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
+	linux-sound@vger.kernel.org, linux-spi@vger.kernel.org, 
+	linux-staging@lists.linux.dev, linux-usb@vger.kernel.org, 
+	linux-serial@vger.kernel.org, greybus-dev@lists.linaro.org, 
+	asahi@lists.linux.dev, Andy Shevchenko <andy.shevchenko@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Clark Wang <xiaoning.wang@nxp.com>
+On Tue, Oct 8, 2024 at 8:24=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.org=
+> wrote:
+>
+> On Tue, Oct 8, 2024 at 12:35=E2=80=AFAM Ulf Hansson <ulf.hansson@linaro.o=
+rg> wrote:
+> >
+> > On Tue, 8 Oct 2024 at 00:25, Laurent Pinchart
+> > <laurent.pinchart@ideasonboard.com> wrote:
+> > >
+> > > Hi Ulf,
+> > >
+> > > On Tue, Oct 08, 2024 at 12:08:24AM +0200, Ulf Hansson wrote:
+> > > > On Mon, 7 Oct 2024 at 20:49, Laurent Pinchart wrote:
+> > > > > On Fri, Oct 04, 2024 at 04:38:36PM +0200, Ulf Hansson wrote:
+> > > > > > On Fri, 4 Oct 2024 at 11:41, Sakari Ailus wrote:
+> > > > > > >
+> > > > > > > Hello everyone,
+> > > > > > >
+> > > > > > > This set will switch the users of pm_runtime_put_autosuspend(=
+) to
+> > > > > > > __pm_runtime_put_autosuspend() while the former will soon be =
+re-purposed
+> > > > > > > to include a call to pm_runtime_mark_last_busy(). The two are=
+ almost
+> > > > > > > always used together, apart from bugs which are likely common=
+. Going
+> > > > > > > forward, most new users should be using pm_runtime_put_autosu=
+spend().
+> > > > > > >
+> > > > > > > Once this conversion is done and pm_runtime_put_autosuspend()=
+ re-purposed,
+> > > > > > > I'll post another set to merge the calls to __pm_runtime_put_=
+autosuspend()
+> > > > > > > and pm_runtime_mark_last_busy().
+> > > > > >
+> > > > > > That sounds like it could cause a lot of churns.
+> > > > > >
+> > > > > > Why not add a new helper function that does the
+> > > > > > pm_runtime_put_autosuspend() and the pm_runtime_mark_last_busy(=
+)
+> > > > > > things? Then we can start moving users over to this new interfa=
+ce,
+> > > > > > rather than having this intermediate step?
+> > > > >
+> > > > > I think the API would be nicer if we used the shortest and simple=
+st
+> > > > > function names for the most common use cases. Following
+> > > > > pm_runtime_put_autosuspend() with pm_runtime_mark_last_busy() is =
+that
+> > > > > most common use case. That's why I like Sakari's approach of repu=
+rposing
+> > > > > pm_runtime_put_autosuspend(), and introducing
+> > > > > __pm_runtime_put_autosuspend() for the odd cases where
+> > > > > pm_runtime_mark_last_busy() shouldn't be called.
+> > > >
+> > > > Okay, so the reason for this approach is because we couldn't find a
+> > > > short and descriptive name that could be used in favor of
+> > > > pm_runtime_put_autosuspend(). Let me throw some ideas at it and may=
+be
+> > > > you like it - or not. :-)
+> > >
+> > > I like the idea at least :-)
+> > >
+> > > > I don't know what options you guys discussed, but to me the entire
+> > > > "autosuspend"-suffix isn't really that necessary in my opinion. The=
+re
+> > > > are more ways than calling pm_runtime_put_autosuspend() that trigge=
+rs
+> > > > us to use the RPM_AUTO flag for rpm_suspend(). For example, just
+> > > > calling pm_runtime_put() has the similar effect.
+> > >
+> > > To be honest, I'm lost there. pm_runtime_put() calls
+> > > __pm_runtime_idle(RPM_GET_PUT | RPM_ASYNC), while
+> > > pm_runtime_put_autosuspend() calls __pm_runtime_suspend(RPM_GET_PUT |
+> > > RPM_ASYNC | RPM_AUTO).
+> >
+> > __pm_runtime_idle() ends up calling rpm_idle(), which may call
+> > rpm_suspend() - if it succeeds to idle the device. In that case, it
+> > tags on the RPM_AUTO flag in the call to rpm_suspend(). Quite similar
+> > to what is happening when calling pm_runtime_put_autosuspend().
+>
+> Right.
+>
+> For almost everybody, except for a small bunch of drivers that
+> actually have a .runtime_idle() callback, pm_runtime_put() is
+> literally equivalent to pm_runtime_put_autosuspend().
+>
+> So really the question is why anyone who doesn't provide a
+> .runtime_idle() callback bothers with using this special
+> pm_runtime_put_autosuspend() thing, which really means "do a
+> runtime_put(), but skip my .runtime_idle() callback".
+>
+> > >
+> > > >
+> > > > Moreover, it's similar for pm_runtime_mark_last_busy(), it's called
+> > > > during rpm_resume() too, for example. So why bother about having
+> > > > "mark_last_busy" in the new name too.
+> > > >
+> > > > That said, my suggestion is simply "pm_runtime_put_suspend".
+> > >
+> > > Can we do even better, and make pm_runtime_put() to handle autosuspen=
+d
+> > > automatically when autosuspend is enabled ?
+> >
+> > As stated above, this is already the case.
+>
+> What really is needed appears to be a combination of
+> pm_runtime_mark_last_busy() with pm_runtime_put().
+>
+> Granted, pm_runtime_put() could do the pm_runtime_mark_last_busy()
+> thing automatically if autosuspend is enabled and the only consequence
+> of it might be delaying a suspend of the device until its autosuspend
+> timer expires, which should not be a problem in the vast majority of
+> cases.
 
-There is a situation where num_tx_rings cannot be divided by
-bdr_int_num. For example, num_tx_rings is 8 and bdr_int_num
-is 3. According to the previous logic, this results in two
-tx_bdr corresponding memories not being allocated, so when
-sending packets to tx BD ring 6 or 7, wild pointers will be
-accessed. Of course, this issue does not exist for LS1028A,
-because its num_tx_rings is 8, and bdr_int_num is either 1
-or 2. So there is no situation where it cannot be divided.
-However, there is a risk for the upcoming i.MX95, so the
-allocation of tx_bdr is optimized to ensure that each tx_bdr
-can be allocated to the corresponding memory.
+That said, it is likely better to avoid surprising the current users
+of pm_runtime_put() and define something like
 
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
----
- drivers/net/ethernet/freescale/enetc/enetc.c | 121 ++++++++++---------
- 1 file changed, 62 insertions(+), 59 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-index 032d8eadd003..b84c88a76762 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -2965,13 +2965,70 @@ int enetc_ioctl(struct net_device *ndev, struct ifreq *rq, int cmd)
- }
- EXPORT_SYMBOL_GPL(enetc_ioctl);
- 
-+static int enetc_bdr_init(struct enetc_ndev_priv *priv, int i, int v_tx_rings)
-+{
-+	struct enetc_int_vector *v __free(kfree);
-+	struct enetc_bdr *bdr;
-+	int j, err;
-+
-+	v = kzalloc(struct_size(v, tx_ring, v_tx_rings), GFP_KERNEL);
-+	if (!v)
-+		return -ENOMEM;
-+
-+	bdr = &v->rx_ring;
-+	bdr->index = i;
-+	bdr->ndev = priv->ndev;
-+	bdr->dev = priv->dev;
-+	bdr->bd_count = priv->rx_bd_count;
-+	bdr->buffer_offset = ENETC_RXB_PAD;
-+	priv->rx_ring[i] = bdr;
-+
-+	err = xdp_rxq_info_reg(&bdr->xdp.rxq, priv->ndev, i, 0);
-+	if (err)
-+		return err;
-+
-+	err = xdp_rxq_info_reg_mem_model(&bdr->xdp.rxq,
-+					 MEM_TYPE_PAGE_SHARED, NULL);
-+	if (err) {
-+		xdp_rxq_info_unreg(&bdr->xdp.rxq);
-+		return err;
-+	}
-+
-+	/* init defaults for adaptive IC */
-+	if (priv->ic_mode & ENETC_IC_RX_ADAPTIVE) {
-+		v->rx_ictt = 0x1;
-+		v->rx_dim_en = true;
-+	}
-+	INIT_WORK(&v->rx_dim.work, enetc_rx_dim_work);
-+	netif_napi_add(priv->ndev, &v->napi, enetc_poll);
-+	v->count_tx_rings = v_tx_rings;
-+
-+	for (j = 0; j < v_tx_rings; j++) {
-+		int idx;
-+
-+		/* default tx ring mapping policy */
-+		idx = priv->bdr_int_num * j + i;
-+		__set_bit(idx, &v->tx_rings_map);
-+		bdr = &v->tx_ring[j];
-+		bdr->index = idx;
-+		bdr->ndev = priv->ndev;
-+		bdr->dev = priv->dev;
-+		bdr->bd_count = priv->tx_bd_count;
-+		priv->tx_ring[idx] = bdr;
-+	}
-+
-+	priv->int_vector[i] = no_free_ptr(v);
-+
-+	return 0;
-+}
-+
- int enetc_alloc_msix(struct enetc_ndev_priv *priv)
- {
- 	struct pci_dev *pdev = priv->si->pdev;
-+	int v_tx_rings, v_remainder;
- 	int num_stack_tx_queues;
- 	int first_xdp_tx_ring;
- 	int i, n, err, nvec;
--	int v_tx_rings;
- 
- 	nvec = ENETC_BDR_INT_BASE_IDX + priv->bdr_int_num;
- 	/* allocate MSIX for both messaging and Rx/Tx interrupts */
-@@ -2985,65 +3042,11 @@ int enetc_alloc_msix(struct enetc_ndev_priv *priv)
- 
- 	/* # of tx rings per int vector */
- 	v_tx_rings = priv->num_tx_rings / priv->bdr_int_num;
-+	v_remainder = priv->num_tx_rings % priv->bdr_int_num;
- 
--	for (i = 0; i < priv->bdr_int_num; i++) {
--		struct enetc_int_vector *v;
--		struct enetc_bdr *bdr;
--		int j;
--
--		v = kzalloc(struct_size(v, tx_ring, v_tx_rings), GFP_KERNEL);
--		if (!v) {
--			err = -ENOMEM;
--			goto fail;
--		}
--
--		priv->int_vector[i] = v;
--
--		bdr = &v->rx_ring;
--		bdr->index = i;
--		bdr->ndev = priv->ndev;
--		bdr->dev = priv->dev;
--		bdr->bd_count = priv->rx_bd_count;
--		bdr->buffer_offset = ENETC_RXB_PAD;
--		priv->rx_ring[i] = bdr;
--
--		err = xdp_rxq_info_reg(&bdr->xdp.rxq, priv->ndev, i, 0);
--		if (err) {
--			kfree(v);
--			goto fail;
--		}
--
--		err = xdp_rxq_info_reg_mem_model(&bdr->xdp.rxq,
--						 MEM_TYPE_PAGE_SHARED, NULL);
--		if (err) {
--			xdp_rxq_info_unreg(&bdr->xdp.rxq);
--			kfree(v);
--			goto fail;
--		}
--
--		/* init defaults for adaptive IC */
--		if (priv->ic_mode & ENETC_IC_RX_ADAPTIVE) {
--			v->rx_ictt = 0x1;
--			v->rx_dim_en = true;
--		}
--		INIT_WORK(&v->rx_dim.work, enetc_rx_dim_work);
--		netif_napi_add(priv->ndev, &v->napi, enetc_poll);
--		v->count_tx_rings = v_tx_rings;
--
--		for (j = 0; j < v_tx_rings; j++) {
--			int idx;
--
--			/* default tx ring mapping policy */
--			idx = priv->bdr_int_num * j + i;
--			__set_bit(idx, &v->tx_rings_map);
--			bdr = &v->tx_ring[j];
--			bdr->index = idx;
--			bdr->ndev = priv->ndev;
--			bdr->dev = priv->dev;
--			bdr->bd_count = priv->tx_bd_count;
--			priv->tx_ring[idx] = bdr;
--		}
--	}
-+	for (i = 0; i < priv->bdr_int_num; i++)
-+		enetc_bdr_init(priv, i,
-+			       i < v_remainder ? v_tx_rings + 1 : v_tx_rings);
- 
- 	num_stack_tx_queues = enetc_num_stack_tx_queues(priv);
- 
--- 
-2.34.1
-
+static inline void pm_runtime_touch_and_put(struct device *dev)
+{
+        pm_runtime_mark_last_busy(dev);
+        pm_runtime_put(dev);
+}
