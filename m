@@ -1,1126 +1,536 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011065.outbound.protection.outlook.com [52.101.70.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DDF18DF80
-	for <imx@lists.linux.dev>; Wed,  9 Oct 2024 08:32:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728462776; cv=fail; b=U8+FaPYCk6821P3bMBcI+pu13IZ2Ua2DBoZoe5jgFN9GWl5jBOQm61NS3rz2I9twvrwfZ5Pm2i+E6WfFNbrXRe/sk90Rdof9VzbX8DUu2Z2RVc6J5KzxQ6a+380lBS8Ol8wYPDBWkLXuXFS7toxRClpEzHIOOgtm2srCCjgO6Q4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728462776; c=relaxed/simple;
-	bh=l/YeovtfO0VIZ47bhJ3MS5GxbkARKrVLrOUah21UXE4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=AqxWP7cUTekyr3OSQ98C5X7q/qjlQdPXxYa8ktcxqBaxFXqVL7wNsi8BuW9x9g2YbNje72Dn1iKbj/IGzF28T69oVriM7BALq81AS/Sz5JMe2zBf5felNt2l+5j5+r7gkrKntiCW2FfD2oa017cNmO0afQTXARaUu2gbsKQ325o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=FD43SZ/w; arc=fail smtp.client-ip=52.101.70.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E459156242
+	for <imx@lists.linux.dev>; Wed,  9 Oct 2024 08:59:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728464380; cv=none; b=Ad1jYOZrRqQUn7WcOH1W4gkQFVO+ztKZqQNe42MMxZ50iMd5G1L/SKKnaNbj3/A+YY5UKDUHKFLHHRFEoMlajTUXlywaGn9XCqqfyA+1QQzeYBXQmuphw21XCzSqu/ACisOdLGU9wAXr96WRVA61p9ikW2bnfFx0vdodynvw5Cg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728464380; c=relaxed/simple;
+	bh=5TR84AiHxklzzwH9m7jYaaby4Wx8M4dL5fCN5qNr/ew=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ooxCT2sVFoEQy+WKnHhgN5ICqmf9iXH/Q6SuN32yOZLxI/xF+txrXfPNX1I6pukdCG6iZQjk+JtnZ1arCFQ5eX+rF1BKflA3jHxKQsZV6LJB9U2WP5irBQdjhN2pY6Opi4OM7ZOqIiXF4AfD+OXK1uOfyoh5h746054apYtbptA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=ybAmzJTX; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="FD43SZ/w"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qAanIeR0K+LrMGNK0iw0RxPL0BXmypJY0EKmJ8e1E/GmWpIREo29+FfFa4vVMI9Wi6HHXpFWAB3qQaDBkUdt6E/D0C49tNLWBgCgbZQJnjgum1U5KBvt15qrQ/P88kEJu4nF6n+p0AVDK+U8Fhyp/anRIzQz3Lu2cB73LLvFnMKgz+JeSqH7XlOuua4ZadhHKrQVRpZmDK/zU4xKEfJRfIOa5lxOoGv5nn5+AqaKSV+zupwzKvRiyLGrW0f5Ymq1EiayD/mfRhI1TUE4JVWeZ6PJSkdgWH2QPxLy7N4j5PTYyeKmXMH6FDNq8Ld43h6cwj9Y7CBshLyCUGUjeJJyrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GJc9qfGi20aQ2j8HTDumQd8GGLfsfLWgNrucyH8kAok=;
- b=lmgBN1ysC+8usMU4EtXecj7rNahuX0Pej72ZKpu7y8WABNLvR77KdqyuYPslNuFC5yGJPNaqb3HIqqGzmJvu9gY4NuE8m9dvtcYusD/NKTXHedrceMg7VPNyUw5cOCqTelkMJNsHw5A9neSE3d+xfiQQsaZHx7h7Fi1h/g7GWt1vo9K2BVc/Yoz6gvrj+NqsoAThjVKLp5ICbAQRud3rnqs504Zt4YHL5cAWCwpyyuCe3YufiLmIhN/PZMtQk7JF62T+XDREb2AbCQo6edGieL09ydqiFmOqHqhwtTiYBkUWubkFui7OGtjhsiQc1SmH0v3sIwpY+4NY5GXuchUbGQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GJc9qfGi20aQ2j8HTDumQd8GGLfsfLWgNrucyH8kAok=;
- b=FD43SZ/wUJMdwKk+rIAfRZBBLRJDL22/uQFC5cgQftmEtXO+dc70bz0btPGeDF6VkqkpjcuE1mWs8y2jY8uxkvUS4kmkxdW/I81LHH12OJuyx7ld9Qh7Y6aYiLet3mn+SDtahQBbXIRS0rCgtRA6dz6LqYjM6xo/Z/ENF9reeLufk8SPCTjjthF7lfI2rNA74qzCGQ+Ildeb8dLZjt1GpyeY7QSa1rlvLrwDRtfJ4So+DVGp6fqDe9ZXEsOTMADQzW1wvdRL8Ow22gmGuVQZOCRSdTmdjoa2jr7u+Yu+TgpppYZRE7/eMk0oDyB+rpEjBkgT2jWFn0M2kkIeNt9nIg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by DB8PR04MB6970.eurprd04.prod.outlook.com (2603:10a6:10:fa::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.16; Wed, 9 Oct
- 2024 08:32:48 +0000
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90%4]) with mapi id 15.20.8048.013; Wed, 9 Oct 2024
- 08:32:48 +0000
-Message-ID: <1f5a321e-6f95-4eeb-80e4-24d96d5034ef@nxp.com>
-Date: Wed, 9 Oct 2024 16:33:11 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/8] drm/bridge: Add ITE IT6263 LVDS to HDMI converter
-To: Biju Das <biju.das.jz@bp.renesas.com>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Cc: "andrzej.hajda@intel.com" <andrzej.hajda@intel.com>,
- "neil.armstrong@linaro.org" <neil.armstrong@linaro.org>,
- "rfoss@kernel.org" <rfoss@kernel.org>,
- "laurent.pinchart" <laurent.pinchart@ideasonboard.com>,
- "jonas@kwiboo.se" <jonas@kwiboo.se>,
- "jernej.skrabec@gmail.com" <jernej.skrabec@gmail.com>,
- "maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
- "mripard@kernel.org" <mripard@kernel.org>,
- "tzimmermann@suse.de" <tzimmermann@suse.de>,
- "airlied@gmail.com" <airlied@gmail.com>, "simona@ffwll.ch"
- <simona@ffwll.ch>, "robh@kernel.org" <robh@kernel.org>,
- "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
- "conor+dt@kernel.org" <conor+dt@kernel.org>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- "festevam@gmail.com" <festevam@gmail.com>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "will@kernel.org" <will@kernel.org>,
- "quic_bjorande@quicinc.com" <quic_bjorande@quicinc.com>,
- "geert+renesas@glider.be" <geert+renesas@glider.be>,
- "dmitry.baryshkov@linaro.org" <dmitry.baryshkov@linaro.org>,
- "arnd@arndb.de" <arnd@arndb.de>,
- "nfraprado@collabora.com" <nfraprado@collabora.com>,
- "o.rempel@pengutronix.de" <o.rempel@pengutronix.de>,
- "y.moog@phytec.de" <y.moog@phytec.de>
-References: <20240930052903.168881-1-victor.liu@nxp.com>
- <20240930052903.168881-7-victor.liu@nxp.com>
- <TYWPR01MB11343E3DE82874B557B537B6186762@TYWPR01MB11343.jpnprd01.prod.outlook.com>
- <TY3PR01MB113465DEDB647BA45908802AA86762@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-From: Liu Ying <victor.liu@nxp.com>
-Content-Language: en-US
-In-Reply-To: <TY3PR01MB113465DEDB647BA45908802AA86762@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-X-ClientProxiedBy: SG2P153CA0038.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c6::7)
- To AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="ybAmzJTX"
+Received: from wsk (85-222-111-42.dynamic.chello.pl [85.222.111.42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: lukma@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 20A7789185;
+	Wed,  9 Oct 2024 10:59:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1728464370;
+	bh=tzRu4Cu0KV4HcTX7CvpY0mhKqyjd/ViLcFwIKswpi/8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ybAmzJTXBPv1uFCQg9FN6yvdR2yjc8AkZ+o+/er4LSSBmZ3pyxnQlwJbJJ40gSrLS
+	 93FV572qvi2gucMOc9SWK+MeJ1VT8lBYqRVXn7pjalTAj0fx6iWdmvp3WLi1hU7SRt
+	 C7RGBbWLPPZWERnmnO/EbycyuQQdj0gPbtKi4GfNEw7x3wpeW75Se/XFZHEQXFpJs3
+	 sGNWe837Eu4tXXq5+tmAHmahPBcWqvGdxHAINXpRDr3SUIyNNSfvJo7FgYhpMyYlno
+	 VFb8PDb/WiXzIsWHHdPdrWRM5TFz5XgaqK9FigaHvlUYCG8QeI4u8odHz7/YcOTvmK
+	 77lTrtA7ettNQ==
+Date: Wed, 9 Oct 2024 10:59:28 +0200
+From: Lukasz Majewski <lukma@denx.de>
+To: Stefan Wahren <wahrenst@gmx.net>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 2/2] dts: nxp: mxs: Add descriptions for imx287 based
+ btt3-[012] devices
+Message-ID: <20241009105928.5ab44d65@wsk>
+In-Reply-To: <22af22b7-57e5-4d81-824e-4b72ee8bdba2@gmx.net>
+References: <20240912124825.2528984-1-lukma@denx.de>
+	<20240912124825.2528984-2-lukma@denx.de>
+	<e1a2c92a-1d60-4251-9133-5fc238866336@gmx.net>
+	<20241008134146.0df91ab1@wsk>
+	<22af22b7-57e5-4d81-824e-4b72ee8bdba2@gmx.net>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|DB8PR04MB6970:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9a575e7c-876a-4a3a-161a-08dce83cf4dd
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7416014;
-X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?b0l3VWI0YXNWc1cwVUx1UHlXRzhoSm9wRWRCYWZneGR1QjY2VnZoRE1kdnJ6?=
- =?utf-8?B?NmJEcjZBRmgvYm9KbG96aEdJRVFqaWs2OW1xV0RhTmFMNmUrVXVmTnBpL0VD?=
- =?utf-8?B?amVwemhBZUt4cVVNemt1UGJrbmZlMUU1QVZSMzE5N0NwNEhHR1pqNmFmQWla?=
- =?utf-8?B?UVFvelpBTlZYWWVUTVQ2TGtRY2xZTUtIc3JQZENCSllMWlRDbkxYLzJNQmdS?=
- =?utf-8?B?dXNXVmsrcTBtTjlaZWV5VTBza2s3MFQ0YXNpVWRsSWQ2eXh4Y055WmVSQXRr?=
- =?utf-8?B?ejc3V3FnNUNkSGM2SmJnTWwzWEtXVTdQd2FRcWhKOUlVUmpNcnZid2pYTHFu?=
- =?utf-8?B?ZzQ2cXhpR2FkVVBOWWkwSnZIZDhyZUl1bXRNaWVQNERzS2NhQmRTeFV3aEdR?=
- =?utf-8?B?ZmhJOW9MUHNlMlBUQW1WVnpxaklBZDFPZVlxLzhRa1hqZUJqbXAwOFMwcHBB?=
- =?utf-8?B?cHk5a20yUUY4NExXSjFMZ3dUQlRXdzZzbjVwZmR4VVB3OVhHSUlGaitYWlNa?=
- =?utf-8?B?M1gvazVQMUkreGN3aXNYcUtLNVpwY2xFV3I0YUl3Qk5BTTNqVytHUDlqK1U3?=
- =?utf-8?B?WW9ObWU4amw2TnNvYlA3S2xhRGE1Q1NoeWlvOHlEbG9Vd0l2bGtRME81TG56?=
- =?utf-8?B?NkRIYmtrSmVPdHRBWEp6VHRMY0NrSlZqeXhvcU55dmNDeUdmbnA4ZmNkQ1Az?=
- =?utf-8?B?cjkralArQmg4SHdSdzBGUUswOEZ6Z3p1anFVckhMbFNuT0ZaMXQ3L0VTVGpQ?=
- =?utf-8?B?VEgyQkw1UysxU1poWGZ4SGRwQnlaSXRHTTJPeGxhalNlamxCVFlZNGlOU3l3?=
- =?utf-8?B?OFhRWFVDeVJRbVlxMFltYzBnbTFGV0pTQnlvSXc5U3M0cyt4dU02c3ZUODNj?=
- =?utf-8?B?OUtMalZYOEV4dEJGWFpXWmJ5R3d2NnZUSUlZVXBkTGlwdnM0L0RVVmR3eHUy?=
- =?utf-8?B?L3ZPS0lmbkRGeDN4NjNYMGZ5U0x5T083M09hWm9jYXV6Q1NSeWo0dlR4MlFL?=
- =?utf-8?B?bFFOMEo4RnB1V0ZERXhoUmJTaFRIbEhXam1nY2Q3RS9VV1YzSGZCSVVnV1Y5?=
- =?utf-8?B?bzNWYVZudk1nOWx5ZCtJYnhlWVU5ZGd1YUFCWS9CMXVOZC9mV2dGc3h1Y0k0?=
- =?utf-8?B?N1BibnZORFdSY0JmNEJIeVBranlJaUpsQmpRWHl1bis0QW1RcytNckZXcGpu?=
- =?utf-8?B?Zk04RkpLOU1rZFI0ZWpVVkgvSW91WDJwdW5RZmc3Y1dUY2JZa1FuZGtlTzZr?=
- =?utf-8?B?Y24xRE1BVEZoVkhxWGthSS9zVXZiMHgxSTZSZ2djNVdzOW1UbTZzSGtCYlEv?=
- =?utf-8?B?SXpBMHBmbjhQWTlPV1VpN2hFL2RWRXlDUTVlR05URElDMnh4bjl2WnVTZUVJ?=
- =?utf-8?B?U3pCNE9sc0IzcUtibXpMVzFaWEVUSlhmaUNRdDBRS29XdWJTSVZGMGRaNlk5?=
- =?utf-8?B?QU84WE9jYmZaL0VtMEduOGwrYVlSRXFqNGRYOGV1MHlQbCtTYkwwM0xGUG9W?=
- =?utf-8?B?U2Y1ZmJNMnorV1FHRVA5dmF2Yit2SzY4c1BLOXg1RjNQak01TzRPTnMyb2ZS?=
- =?utf-8?B?d3QrQ05UcFQrK0tWdEZ0czhHczEyL2VzVTY5dGdocHl0cWUwdFN0bmhoU3BK?=
- =?utf-8?B?d0pWbkR0UW0rSVp1MWtneVFadGd6dlZwKzlWUnZRc0dJN2NHRS9RMCtFSE5z?=
- =?utf-8?B?Yy8yd0tkOExsdlk0bnh5YjhBQi9LSG1sbk5hSHEvN1gyTU1QS045QURnPT0=?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?cFk0ZHVkNVVCNGp5SFV1RWc2bDJCekdISFk0Ym81RXJtZDdZUmZyemxMY1JH?=
- =?utf-8?B?Y3MvZW1zby8xMmlJLzFyRGxPZjRHWE1WMWZPaitzMmVKQkJKZjN5M3AzZW9U?=
- =?utf-8?B?MVdqQXZ3Njk0RTZjc0w3YVJJOGtuSzBkOE5IbTlQQnNrRkJYZkxMTGFGOXEv?=
- =?utf-8?B?VW04WTZCcnpYdi9zZUFMdyt4SktGUU1lT2o1SXRzbGV4dzRyb2N5YThjL2lq?=
- =?utf-8?B?K1J5ZzZmT2ZKc2Z2a3BsVU84WnVSM1hpWkhaQjF5M2Jha3czNExCbWd5Ukpx?=
- =?utf-8?B?alUxcXQzMWpVL0ZnSUpBR204ZUc5cmp0Rk5vOGwrVUxCdVFOZXpYT2pNREY1?=
- =?utf-8?B?RklVNW80bWRCb3VuRGJoaGx6aitIMWk5YUJpeVZaU0hlL2RMOWJ0NEREcy8w?=
- =?utf-8?B?T080N3JiZ2ZnTjJ5Q3BXdVEzVFgzb1RDYVFmdkJwYS9DQmdBNTNoMmpBMGZL?=
- =?utf-8?B?ZG5vYU1lOWNYblIrbzVJRHRPYmxnUUQrYkUzK0tpbkNNL0tKWnVIYlRvNGRr?=
- =?utf-8?B?eXdvOVR0VVVYbXdIK2t6VndzYXhuMGpIVTlqaDBBOCtRanRiWXFmeG55L2pY?=
- =?utf-8?B?eC9xMEExYmx4V3JYT0VNbDROQnBFTWU1SEpzYmwybjc4c2dZRzkxdXMwY0Vu?=
- =?utf-8?B?ZG93MU40OWc2OEljVmUwWlZtekhnSDVNVkU5U3hMSFlEZUlsakRoWE9QK29H?=
- =?utf-8?B?ZW5xWlNWUmw4bnJaQmE2Q2RMZWUzWTZ3Y3ByU2xTUzR3bXBSL0VEcktlMUtE?=
- =?utf-8?B?ZEJZYmhlTzYyQ0hvNVM1RkRLSjZYeVBjSGk3K09PK1RqWEp0eEZuOGxqOW5q?=
- =?utf-8?B?MWNvRFZYM3l2YmY0cStGeGV0Z1hpTWl1aFRia2RhaHNuNjJ6ZUYvSTRvR3NN?=
- =?utf-8?B?NW5RbGhjV21iVUxabFI5MGN3bE8zdVUrWkE2b1FBaThoeHNsK2dxanF1bDE1?=
- =?utf-8?B?NTZEelgwekhrNFg3dHczVEVMdVFqSHNaOGYrVkRSR0xCTlR3T0xSYWd6aUJ2?=
- =?utf-8?B?b3VpdGtZa0JERVNQV2hZTGRQM2VvOWxRUmZacC90N3g4bjZUNlBCdnN2VjFT?=
- =?utf-8?B?QkI1SGEwM3FKR1dtQkpYazhGWS91bmJtOThnRjRQMG1DQ1NzMEJCeC9yQWlq?=
- =?utf-8?B?TEVaRnNxYk9pT0NGdEl6ZUl4dXdFOG5sZ2piOVg4SnNTb3ZRMmR1YzJrblM2?=
- =?utf-8?B?UjVTUVpYaXRnWEZpRFZuc04wTXZydlN2QmYxaDlFTGdacHdJVCtXOVRtcUt6?=
- =?utf-8?B?RHo5d1lVUGo1VytMTFJQVWZRK1lqUVVodlEyN1dDUUk2dDE5YmtIREdKcWtu?=
- =?utf-8?B?TG5IS1lXOFpvbVYzRUx2MXlPbFBXNDN1ZWpLd1ZDOHh6eGh2SFprTW1sc3Jt?=
- =?utf-8?B?L3JsVTM2dDMwbFR3cEJYSjZsUk5xeUE1TWdJTDU1WWIwdkdFWTR0aHZtRm1H?=
- =?utf-8?B?V3hoQWdvK0lPQWxKdzhIOFBkdit4Y3VmS0tHWU9ESE5YR1NqaStXZm84eE1o?=
- =?utf-8?B?dkwyMU9kNUloelFQN0wyS1MzS0ZQQWlrYVlnSkZCM3N4MWhXeTZnL1Z4WDhD?=
- =?utf-8?B?UGl6dGdKWU5GbE1ubWZvUUtidm9HMms3aTFOUEZwZWVZMTJSZURtT2NUSW9B?=
- =?utf-8?B?VTRwd0kxeGtJRlV5WHJXS2xvc3QxVXZyT3ZYb1REaVI2YUhPUlZ5MGVDVWFl?=
- =?utf-8?B?OE1qVVl0ZXQ1K1pHMUR4T2VaSmptZUtzMkpjVjlVNFBXeG1vQ3V4cUtpTUZq?=
- =?utf-8?B?K2lKRTRvTTBwcnhjbFBjb29CK3RpZW93eWVjS0RWUzZoNE1YZ0NMSVVBZXF4?=
- =?utf-8?B?ZFhDMUhIRnlxOTNMNDc0REJSVGhobFdZK3ZoamlPSjZyZFBnYkhXQjUzK01D?=
- =?utf-8?B?ZXY2b1plNlpRV0VBbnRBY29Tb1dMZmNScExmTUFwZE8vNk9aZFV3OWNaTDEv?=
- =?utf-8?B?Tzg4SzlnSmRNbFgxR0huVUxrditWU0h5TG9QWGsvSWx0VXRZSHZsSmo5di96?=
- =?utf-8?B?RHVtVVdyS0R4akM5b3FXOXY0NU16akMyaFhMOGNja0FWNWQ3TzdnRGdUNHJs?=
- =?utf-8?B?VE1lV055S0g1ckt3aVk2cVhQTWxoTzUvU2lhcTY4Mzl3YzFIME5KVURjNGpD?=
- =?utf-8?Q?REXvfnIznFmnEFp3LsJmKDw8L?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9a575e7c-876a-4a3a-161a-08dce83cf4dd
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2024 08:32:48.6674
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: R5kbN2nZUixePdnw9J9KzopK8PpjPw6ARjBkpA3uS4MT5W2Prgto173bD4T4bctpMFrI51cZLSg+YdUQMCtYdA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6970
+Content-Type: multipart/signed; boundary="Sig_/Bkcy2OLj6FbyBsWPhvKgzGo";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On 09/30/2024, Biju Das wrote:
-> Hi Liu,
+--Sig_/Bkcy2OLj6FbyBsWPhvKgzGo
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Hi Biju,
+Hi Stefan,
 
-> 
->> -----Original Message-----
->> From: Biju Das
->> Sent: Monday, September 30, 2024 10:16 AM
->> Subject: RE: [PATCH 6/8] drm/bridge: Add ITE IT6263 LVDS to HDMI converter
->>
->> Hi Liu,
->>
->> Thanks for the patch.
->>
->>> -----Original Message-----
->>> From: linux-arm-kernel <linux-arm-kernel-bounces@lists.infradead.org>
->>> On Behalf Of Liu Ying
->>> Sent: Monday, September 30, 2024 6:29 AM
->>> Subject: [PATCH 6/8] drm/bridge: Add ITE IT6263 LVDS to HDMI converter
->>>
->>> Add basic HDMI video output support. Currently, only RGB888 output
->>> pixel format is supported.  At the LVDS input side, the driver
->>> supports single LVDS link and dual LVDS links with "jeida-24" LVDS mapping.
->>>
->>> Product link:
->>> https://www.ite.com.tw/en/product/cate1/IT6263
->>>
->>> Signed-off-by: Liu Ying <victor.liu@nxp.com>
->>> ---
->>>  drivers/gpu/drm/bridge/Kconfig      |   8 +
->>>  drivers/gpu/drm/bridge/Makefile     |   1 +
->>>  drivers/gpu/drm/bridge/ite-it6263.c | 829
->>> ++++++++++++++++++++++++++++
->>>  3 files changed, 838 insertions(+)
->>>  create mode 100644 drivers/gpu/drm/bridge/ite-it6263.c
->>>
->>> diff --git a/drivers/gpu/drm/bridge/Kconfig
->>> b/drivers/gpu/drm/bridge/Kconfig index
->>> 3eb955333c80..93f99682a090 100644
->>> --- a/drivers/gpu/drm/bridge/Kconfig
->>> +++ b/drivers/gpu/drm/bridge/Kconfig
->>> @@ -90,6 +90,14 @@ config DRM_FSL_LDB
->>>  	help
->>>  	  Support for i.MX8MP DPI-to-LVDS on-SoC encoder.
->>>
->>> +config DRM_ITE_IT6263
->>> +	tristate "ITE IT6263 LVDS/HDMI bridge"
->>> +	depends on OF
->>> +	select DRM_KMS_HELPER
->>> +	select REGMAP_I2C
->>> +	help
->>> +	  ITE IT6263 LVDS to HDMI bridge chip driver.
->>> +
->>>  config DRM_ITE_IT6505
->>>  	tristate "ITE IT6505 DisplayPort bridge"
->>>  	depends on OF
->>> diff --git a/drivers/gpu/drm/bridge/Makefile
->>> b/drivers/gpu/drm/bridge/Makefile index 7df87b582dca..f3776dd473fd
->>> 100644
->>> --- a/drivers/gpu/drm/bridge/Makefile
->>> +++ b/drivers/gpu/drm/bridge/Makefile
->>> @@ -6,6 +6,7 @@ obj-$(CONFIG_DRM_CHRONTEL_CH7033) += chrontel-ch7033.o
->>>  obj-$(CONFIG_DRM_CROS_EC_ANX7688) += cros-ec-anx7688.o
->>>  obj-$(CONFIG_DRM_DISPLAY_CONNECTOR) += display-connector.o
->>>  obj-$(CONFIG_DRM_FSL_LDB) += fsl-ldb.o
->>> +obj-$(CONFIG_DRM_ITE_IT6263) += ite-it6263.o
->>>  obj-$(CONFIG_DRM_ITE_IT6505) += ite-it6505.o
->>>  obj-$(CONFIG_DRM_LONTIUM_LT8912B) += lontium-lt8912b.o
->>>  obj-$(CONFIG_DRM_LONTIUM_LT9211) += lontium-lt9211.o diff --git
->>> a/drivers/gpu/drm/bridge/ite-it6263.c
->>> b/drivers/gpu/drm/bridge/ite-it6263.c
->>> new file mode 100644
->>> index 000000000000..886588497bc1
->>> --- /dev/null
->>> +++ b/drivers/gpu/drm/bridge/ite-it6263.c
->>> @@ -0,0 +1,829 @@
->>> +// SPDX-License-Identifier: GPL-2.0
->>> +/*
->>> + * Copyright 2024 NXP
->>> + */
->>> +
->>> +#include <linux/bitfield.h>
->>> +#include <linux/bits.h>
->>> +#include <linux/delay.h>
->>> +#include <linux/gpio/consumer.h>
->>> +#include <linux/i2c.h>
->>> +#include <linux/media-bus-format.h>
->>> +#include <linux/module.h>
->>> +#include <linux/of.h>
->>> +#include <linux/regmap.h>
->>> +#include <linux/regulator/consumer.h>
->>> +
->>> +#include <drm/drm_atomic.h>
->>> +#include <drm/drm_atomic_helper.h>
->>> +#include <drm/drm_atomic_state_helper.h> #include <drm/drm_bridge.h>
->>> +#include <drm/drm_connector.h> #include <drm/drm_crtc.h> #include
->>> +<drm/drm_edid.h> #include <drm/drm_of.h> #include
->>> +<drm/drm_probe_helper.h>
->>> +
->>> +/*
->>> +---------------------------------------------------------------------
->>> +--
->>> +------
->>> + * LVDS registers
->>> + */
->>> +
->>> +/* LVDS software reset registers */
->>> +#define LVDS_REG_05			0x05
->>> +#define  REG_SOFT_P_RST			BIT(1)
->>> +
->>> +/* LVDS system configuration registers */
->>> +/* 0x0b */
->>> +#define LVDS_REG_0B			0x0b
->>> +#define  REG_SSC_PCLK_RF		BIT(0)
->>> +#define  REG_LVDS_IN_SWAP		BIT(1)
->>> +
->>> +/* LVDS test pattern gen control registers */
->>> +/* 0x2c */
->>> +#define LVDS_REG_2C			0x2c
->>> +#define  REG_COL_DEP			GENMASK(1, 0)
->>> +#define  BIT8				FIELD_PREP(REG_COL_DEP, 2)
->>> +#define  OUT_MAP			BIT(4)
->>> +#define  JEIDA				0
->>> +#define  REG_DESSC_ENB			BIT(6)
->>> +#define  DMODE				BIT(7)
->>> +#define  DISO				BIT(7)
->>> +#define  SISO				0
->>> +
->>> +#define LVDS_REG_3C			0x3c
->>> +#define LVDS_REG_3F			0x3f
->>> +#define LVDS_REG_47			0x47
->>> +#define LVDS_REG_48			0x48
->>> +#define LVDS_REG_4F			0x4f
->>> +#define LVDS_REG_52			0x52
->>> +
->>> +/*
->>> +---------------------------------------------------------------------
->>> +--
->>> +------
->>> + * HDMI registers are separated into three banks:
->>> + * 1) HDMI register common bank: 0x00 ~ 0x2f  */
->>> +
->>> +/* HDMI genernal registers */
->>> +#define HDMI_REG_SW_RST			0x04
->>> +#define  SOFTREF_RST			BIT(5)
->>> +#define  SOFTA_RST			BIT(4)
->>> +#define  SOFTV_RST			BIT(3)
->>> +#define  AUD_RST			BIT(2)
->>> +#define  HDCP_RST			BIT(0)
->>> +#define  HDMI_RST_ALL			(SOFTREF_RST | SOFTA_RST | SOFTV_RST | \
->>> +					 AUD_RST | HDCP_RST)
->>> +
->>> +#define HDMI_REG_SYS_STATUS		0x0e
->>> +#define  HPDETECT			BIT(6)
->>> +#define  TXVIDSTABLE			BIT(4)
->>> +
->>> +#define HDMI_REG_BANK_CTRL		0x0f
->>> +#define  REG_BANK_SEL			BIT(0)
->>> +
->>> +/* HDMI System DDC control registers */
->>> +#define HDMI_REG_DDC_MASTER_CTRL	0x10
->>> +#define  MASTER_SEL_HOST		BIT(0)
->>> +
->>> +#define HDMI_REG_DDC_HEADER		0x11
->>> +
->>> +#define HDMI_REG_DDC_REQOFF		0x12
->>> +#define HDMI_REG_DDC_REQCOUNT		0x13
->>> +#define HDMI_REG_DDC_EDIDSEG		0x14
->>> +
->>> +#define HDMI_REG_DDC_CMD		0x15
->>> +#define  DDC_CMD_EDID_READ		0x3
->>> +#define  DDC_CMD_FIFO_CLR		0x9
->>> +
->>> +#define HDMI_REG_DDC_STATUS		0x16
->>> +#define  DDC_DONE			BIT(7)
->>> +#define  DDC_NOACK			BIT(5)
->>> +#define  DDC_WAITBUS			BIT(4)
->>> +#define  DDC_ARBILOSE			BIT(3)
->>> +#define  DDC_ERROR			(DDC_NOACK | DDC_WAITBUS | DDC_ARBILOSE)
->>> +
->>> +#define HDMI_DDC_FIFO_BYTES		32
->>> +#define HDMI_REG_DDC_READFIFO		0x17
->>> +#define HDMI_REG_LVDS_PORT		0x1d /* LVDS input control I2C addr */
->>> +#define HDMI_REG_LVDS_PORT_EN		0x1e
->>> +#define LVDS_INPUT_CTRL_I2C_ADDR	0x33
->>> +
->>> +/*
->>> +---------------------------------------------------------------------
->>> +--
->>> +------
->>> + * 2) HDMI register bank0: 0x30 ~ 0xff  */
->>> +
->>> +/* HDMI AFE registers */
->>> +#define HDMI_REG_AFE_DRV_CTRL		0x61
->>> +#define  AFE_DRV_PWD			BIT(5)
->>> +#define  AFE_DRV_RST			BIT(4)
->>> +
->>> +#define HDMI_REG_AFE_XP_CTRL		0x62
->>> +#define  AFE_XP_GAINBIT			BIT(7)
->>> +#define  AFE_XP_ER0			BIT(4)
->>> +#define  AFE_XP_RESETB			BIT(3)
->>> +
->>> +#define HDMI_REG_AFE_ISW_CTRL		0x63
->>> +
->>> +#define HDMI_REG_AFE_IP_CTRL		0x64
->>> +#define  AFE_IP_GAINBIT			BIT(7)
->>> +#define  AFE_IP_ER0			BIT(3)
->>> +#define  AFE_IP_RESETB			BIT(2)
->>> +
->>> +/* HDMI input data format registers */
->>> +#define HDMI_REG_INPUT_MODE		0x70
->>> +#define  IN_RGB				0x00
->>> +
->>> +/* HDMI general control registers */
->>> +#define HDMI_REG_HDMI_MODE		0xc0
->>> +#define  TX_HDMI_MODE			BIT(0)
->>> +
->>> +#define HDMI_REG_GCP			0xc1
->>> +#define  AVMUTE				BIT(0)
->>> +#define  HDMI_COLOR_DEPTH		GENMASK(6, 4)
->>> +#define  HDMI_COLOR_DEPTH_24		FIELD_PREP(HDMI_COLOR_DEPTH, 4)
->>> +
->>> +#define HDMI_REG_PKT_GENERAL_CTRL	0xc6
->>> +#define  ENABLE_PKT			BIT(0)
->>> +#define  REPEAT_PKT			BIT(1)
->>> +
->>> +/*
->>> +---------------------------------------------------------------------
->>> +--
->>> +------
->>> + * 3) HDMI register bank1: 0x130 ~ 0x1ff (HDMI packet registers)  */
->>> +
->>> +/* AVI packet registers */
->>> +#define HDMI_REG_AVI_DB1		0x158
->>> +#define  AVI_DB1_COLOR_SPACE		GENMASK(6, 5)
->>> +#define  AVI_COLOR_SPACE_RGB		FIELD_PREP(AVI_DB1_COLOR_SPACE, 0)
->>> +
->>> +#define MAX_PIXEL_CLOCK_KHZ		150000
->>> +#define HIGH_PIXEL_CLOCK_KHZ		80000
->>> +
->>> +struct it6263 {
->>> +	struct device *dev;
->>> +	struct i2c_client *hdmi_i2c;
->>> +	struct i2c_client *lvds_i2c;
->>> +	struct regmap *hdmi_regmap;
->>> +	struct regmap *lvds_regmap;
->>> +	struct drm_bridge bridge;
->>> +	struct drm_bridge *next_bridge;
->>> +	struct drm_connector connector;
->>> +	struct gpio_desc *reset_gpio;
->>> +	bool lvds_dual_link;
->>> +	bool lvds_link12_swap;
->>> +};
->>> +
->>> +static inline struct it6263 *bridge_to_it6263(struct drm_bridge
->>> +*bridge) {
->>> +	return container_of(bridge, struct it6263, bridge); }
->>> +
->>> +static inline struct it6263 *connector_to_it6263(struct drm_connector
->>> +*conn) {
->>> +	return container_of(conn, struct it6263, connector); }
->>> +
->>> +static bool it6263_hdmi_writeable_reg(struct device *dev, unsigned
->>> +int
->>> +reg) {
->>> +	switch (reg) {
->>> +	case HDMI_REG_SW_RST:
->>> +	case HDMI_REG_BANK_CTRL:
->>> +	case HDMI_REG_DDC_MASTER_CTRL:
->>> +	case HDMI_REG_DDC_HEADER:
->>> +	case HDMI_REG_DDC_REQOFF:
->>> +	case HDMI_REG_DDC_REQCOUNT:
->>> +	case HDMI_REG_DDC_EDIDSEG:
->>> +	case HDMI_REG_DDC_CMD:
->>> +	case HDMI_REG_LVDS_PORT:
->>> +	case HDMI_REG_LVDS_PORT_EN:
->>> +	case HDMI_REG_AFE_DRV_CTRL:
->>> +	case HDMI_REG_AFE_XP_CTRL:
->>> +	case HDMI_REG_AFE_ISW_CTRL:
->>> +	case HDMI_REG_AFE_IP_CTRL:
->>> +	case HDMI_REG_INPUT_MODE:
->>> +	case HDMI_REG_HDMI_MODE:
->>> +	case HDMI_REG_GCP:
->>> +	case HDMI_REG_PKT_GENERAL_CTRL:
->>> +	case HDMI_REG_AVI_DB1:
->>> +		return true;
->>> +	default:
->>> +		return false;
->>> +	}
->>> +}
->>> +
->>> +static bool it6263_hdmi_readable_reg(struct device *dev, unsigned int
->>> +reg) {
->>> +	if (it6263_hdmi_writeable_reg(dev, reg))
->>> +		return true;
->>> +
->>> +	switch (reg) {
->>> +	case HDMI_REG_SYS_STATUS:
->>> +	case HDMI_REG_DDC_STATUS:
->>> +	case HDMI_REG_DDC_READFIFO:
->>> +		return true;
->>> +	default:
->>> +		return false;
->>> +	}
->>> +}
->>> +
->>> +static bool it6263_hdmi_volatile_reg(struct device *dev, unsigned int
->>> +reg) {
->>> +	switch (reg) {
->>> +	case HDMI_REG_SW_RST:
->>> +	case HDMI_REG_SYS_STATUS:
->>> +	case HDMI_REG_DDC_STATUS:
->>> +	case HDMI_REG_DDC_READFIFO:
->>> +		return true;
->>> +	default:
->>> +		return false;
->>> +	}
->>> +}
->>> +
->>> +static const struct regmap_range_cfg it6263_hdmi_range_cfg = {
->>> +	.range_min = 0x00,
->>> +	.range_max = HDMI_REG_AVI_DB1,
->>> +	.selector_reg = HDMI_REG_BANK_CTRL,
->>> +	.selector_mask = REG_BANK_SEL,
->>> +	.selector_shift = 0,
->>> +	.window_start = 0x00,
->>> +	.window_len = 0x100,
->>> +};
->>> +
->>> +static const struct regmap_config it6263_hdmi_regmap_config = {
->>> +	.name = "it6263-hdmi",
->>> +	.reg_bits = 8,
->>> +	.val_bits = 8,
->>> +	.writeable_reg = it6263_hdmi_writeable_reg,
->>> +	.readable_reg = it6263_hdmi_readable_reg,
->>> +	.volatile_reg = it6263_hdmi_volatile_reg,
->>> +	.max_register = HDMI_REG_AVI_DB1,
->>> +	.ranges = &it6263_hdmi_range_cfg,
->>> +	.num_ranges = 1,
->>> +	.cache_type = REGCACHE_MAPLE,
->>> +};
->>> +
->>> +static bool it6263_lvds_writeable_reg(struct device *dev, unsigned
->>> +int
->>> +reg) {
->>> +	switch (reg) {
->>> +	case LVDS_REG_05:
->>> +	case LVDS_REG_0B:
->>> +	case LVDS_REG_2C:
->>> +	case LVDS_REG_3C:
->>> +	case LVDS_REG_3F:
->>> +	case LVDS_REG_47:
->>> +	case LVDS_REG_48:
->>> +	case LVDS_REG_4F:
->>> +	case LVDS_REG_52:
->>> +		return true;
->>> +	default:
->>> +		return false;
->>> +	}
->>> +}
->>> +
->>> +static bool it6263_lvds_readable_reg(struct device *dev, unsigned int
->>> +reg) {
->>> +	return it6263_lvds_writeable_reg(dev, reg); }
->>> +
->>> +static bool it6263_lvds_volatile_reg(struct device *dev, unsigned int
->>> +reg) {
->>> +	return reg == LVDS_REG_05;
->>> +}
->>> +
->>> +static const struct regmap_config it6263_lvds_regmap_config = {
->>> +	.name = "it6263-lvds",
->>> +	.reg_bits = 8,
->>> +	.val_bits = 8,
->>> +	.writeable_reg = it6263_lvds_writeable_reg,
->>> +	.readable_reg = it6263_lvds_readable_reg,
->>> +	.volatile_reg = it6263_lvds_volatile_reg,
->>> +	.max_register = LVDS_REG_52,
->>> +	.cache_type = REGCACHE_MAPLE,
->>> +};
->>> +
->>> +static const char * const it6263_supplies[] = {
->>> +	"ivdd", "ovdd", "txavcc18", "txavcc33", "pvcc1", "pvcc2",
->>> +	"avcc", "anvdd", "apvdd"
->>> +};
->>> +
->>> +static int it6263_parse_dt(struct it6263 *it) {
->>> +	struct device *dev = it->dev;
->>> +	struct device_node *port0, *port1;
->>> +	int ret = 0;
->>> +
->>> +	it->next_bridge = devm_drm_of_get_bridge(dev, dev->of_node, 2, 0);
->>> +	if (IS_ERR(it->next_bridge))
->>> +		return dev_err_probe(dev, PTR_ERR(it->next_bridge),
->>> +				     "failed to get next bridge\n");
->>> +
->>> +	port0 = of_graph_get_port_by_id(dev->of_node, 0);
->>> +	port1 = of_graph_get_port_by_id(dev->of_node, 1);
->>> +	if (port0 && port1) {
->>> +		if (of_property_read_bool(port0, "dual-lvds-even-pixels") &&
->>> +		    of_property_read_bool(port1, "dual-lvds-odd-pixels")) {
->>> +			it->lvds_dual_link = true;
->>> +			it->lvds_link12_swap = true;
->>> +		} else if (of_property_read_bool(port0, "dual-lvds-odd-pixels") &&
->>> +			   of_property_read_bool(port1, "dual-lvds-even-pixels")) {
->>> +			it->lvds_dual_link = true;
->>> +		}
->>> +
->>> +		if (!it->lvds_dual_link) {
->>> +			dev_err(dev,
->>> +				"failed to get LVDS dual link pixel order\n");
->>> +			ret = -EINVAL;
->>> +		}
->>> +	} else if (port1) {
->>> +		ret = -EINVAL;
->>> +		dev_err(dev, "single input LVDS port1 is not supported\n");
->>
->> 		Are you supporting single input LVDS port0??
->>
->>> +	} else if (!port0) {
->>> +		ret = -EINVAL;
->>> +		dev_err(dev, "no input LVDS port\n");
->>> +	}
->>> +
->>> +	of_node_put(port0);
->>> +	of_node_put(port1);
->>> +
->>> +	return ret;
->>> +}
->>> +
->>> +static inline void it6263_reset(struct it6263 *it) {
->>> +	if (!it->reset_gpio)
->>> +		return;
->>> +
->>> +	gpiod_set_value_cansleep(it->reset_gpio, 0);
->>> +	fsleep(1000);
->>> +	gpiod_set_value_cansleep(it->reset_gpio, 1);
->>> +	/* The chip maker says the low pulse should be at least 40ms. */
->>> +	fsleep(40000);
->>> +	gpiod_set_value_cansleep(it->reset_gpio, 0);
->>> +	/* addtional time to wait the high voltage to be stable */
->>> +	fsleep(5000);
->>
->> What about other resets ??
->>
->> /* AFE PLL reset and  pclk reset */
->>
->>> +}
->>> +
->>> +static inline int it6263_lvds_set_i2c_addr(struct it6263 *it) {
->>> +	int ret;
->>> +
->>> +	ret = regmap_write(it->hdmi_regmap, HDMI_REG_LVDS_PORT,
->>> +			   LVDS_INPUT_CTRL_I2C_ADDR << 1);
->>> +	if (ret)
->>> +		return ret;
->>> +
->>> +	return regmap_write(it->hdmi_regmap, HDMI_REG_LVDS_PORT_EN, BIT(0));
->>> +}
->>> +
->>> +static inline void it6263_lvds_reset(struct it6263 *it) {
->>> +	/* AFE PLL reset */
->>> +	regmap_write_bits(it->lvds_regmap, LVDS_REG_3C, BIT(0), 0x0);
->>> +	fsleep(1000);
->>> +	regmap_write_bits(it->lvds_regmap, LVDS_REG_3C, BIT(0), BIT(0));
->>> +
->>> +	/* software pixel clock domain reset */
->>> +	regmap_write_bits(it->lvds_regmap, LVDS_REG_05, REG_SOFT_P_RST,
->>> +			  REG_SOFT_P_RST);
->>> +	fsleep(1000);
->>> +	regmap_write_bits(it->lvds_regmap, LVDS_REG_05, REG_SOFT_P_RST, 0x0);
->>> +	fsleep(10000);
->>> +}
->>> +
->>> +static inline void it6263_lvds_set_interface(struct it6263 *it) {
->>> +	/* color depth */
->>> +	regmap_write_bits(it->lvds_regmap, LVDS_REG_2C, REG_COL_DEP, BIT8);
->>> +	/* output mapping */
->>> +	regmap_write_bits(it->lvds_regmap, LVDS_REG_2C, OUT_MAP, JEIDA);
->>> +
->>> +	if (it->lvds_dual_link) {
->>> +		regmap_write_bits(it->lvds_regmap, LVDS_REG_2C, DMODE, DISO);
->>> +		regmap_write_bits(it->lvds_regmap, LVDS_REG_52, BIT(1), BIT(1));
->>> +	} else {
->>> +		regmap_write_bits(it->lvds_regmap, LVDS_REG_2C, DMODE, SISO);
->>> +		regmap_write_bits(it->lvds_regmap, LVDS_REG_52, BIT(1), 0);
->>> +	}
->>> +}
->>> +
->>> +static inline void it6263_lvds_set_afe(struct it6263 *it) {
->>> +	regmap_write(it->lvds_regmap, LVDS_REG_3C, 0xaa);
->>> +	regmap_write(it->lvds_regmap, LVDS_REG_3F, 0x02);
->>> +	regmap_write(it->lvds_regmap, LVDS_REG_47, 0xaa);
->>> +	regmap_write(it->lvds_regmap, LVDS_REG_48, 0x02);
->>> +	regmap_write(it->lvds_regmap, LVDS_REG_4F, 0x11);
->>> +
->>> +	regmap_write_bits(it->lvds_regmap, LVDS_REG_0B, REG_SSC_PCLK_RF,
->>> +			  REG_SSC_PCLK_RF);
->>> +	regmap_write_bits(it->lvds_regmap, LVDS_REG_3C, 0x07, 0);
->>> +	regmap_write_bits(it->lvds_regmap, LVDS_REG_2C, REG_DESSC_ENB,
->>> +			  REG_DESSC_ENB);
->>> +}
->>> +
->>> +static inline void it6263_lvds_sys_cfg(struct it6263 *it) {
->>> +	regmap_write_bits(it->lvds_regmap, LVDS_REG_0B, REG_LVDS_IN_SWAP,
->>> +			  it->lvds_link12_swap ? REG_LVDS_IN_SWAP : 0); }
->>> +
->>> +static inline void it6263_lvds_config(struct it6263 *it) {
->>> +	it6263_lvds_reset(it);
->>> +	it6263_lvds_set_interface(it);
->>> +	it6263_lvds_set_afe(it);
->>> +	it6263_lvds_sys_cfg(it);
->>> +}
->>> +
->>> +static inline void it6263_hdmi_config(struct it6263 *it) {
->>> +	regmap_write(it->hdmi_regmap, HDMI_REG_SW_RST, HDMI_RST_ALL);
->>> +	regmap_write(it->hdmi_regmap, HDMI_REG_INPUT_MODE, IN_RGB);
->>> +	regmap_write_bits(it->hdmi_regmap, HDMI_REG_GCP, HDMI_COLOR_DEPTH,
->>> +			  HDMI_COLOR_DEPTH_24);
->>> +	regmap_write_bits(it->hdmi_regmap, HDMI_REG_AVI_DB1,
->>> +			  AVI_DB1_COLOR_SPACE, AVI_COLOR_SPACE_RGB); }
->>> +
->>> +static enum drm_connector_status it6263_detect(struct it6263 *it) {
->>> +	unsigned int val;
->>> +
->>> +	regmap_read(it->hdmi_regmap, HDMI_REG_SYS_STATUS, &val);
->>> +	if (val & HPDETECT)
->>> +		return connector_status_connected;
->>> +	else
->>> +		return connector_status_disconnected; }
->>> +
->>> +static enum drm_connector_status
->>> +it6263_connector_detect(struct drm_connector *connector, bool force) {
->>> +	struct it6263 *it = connector_to_it6263(connector);
->>> +
->>> +	return it6263_detect(it);
->>> +}
->>> +
->>> +static const struct drm_connector_funcs it6263_connector_funcs = {
->>> +	.detect = it6263_connector_detect,
->>> +	.fill_modes = drm_helper_probe_single_connector_modes,
->>> +	.destroy = drm_connector_cleanup,
->>> +	.reset = drm_atomic_helper_connector_reset,
->>> +	.atomic_duplicate_state = drm_atomic_helper_connector_duplicate_state,
->>> +	.atomic_destroy_state = drm_atomic_helper_connector_destroy_state,
->>> +};
->>> +
->>> +static int it6263_read_edid(void *data, u8 *buf, unsigned int block,
->>> +size_t len) {
->>> +	struct it6263 *it = data;
->>> +	struct regmap *regmap = it->hdmi_regmap;
->>> +	unsigned int start = (block % 2) * EDID_LENGTH;
->>> +	unsigned int segment = block >> 1;
->>> +	unsigned int count, val;
->>> +	int ret;
->>> +
->>> +	regmap_write(regmap, HDMI_REG_DDC_MASTER_CTRL, MASTER_SEL_HOST);
->>> +	regmap_write(regmap, HDMI_REG_DDC_HEADER, DDC_ADDR << 1);
->>> +	regmap_write(regmap, HDMI_REG_DDC_EDIDSEG, segment);
->>> +
->>> +	while (len) {
->>> +		/* clear DDC FIFO */
->>> +		regmap_write(regmap, HDMI_REG_DDC_CMD, DDC_CMD_FIFO_CLR);
->>> +
->>> +		ret = regmap_read_poll_timeout(regmap, HDMI_REG_DDC_STATUS,
->>> +					       val, val & DDC_DONE,
->>> +					       2000, 10000);
->>> +		if (ret) {
->>> +			dev_err(it->dev, "failed to clear DDC FIFO:%d\n", ret);
->>> +			return ret;
->>> +		}
->>> +
->>> +		count = len > HDMI_DDC_FIFO_BYTES ? HDMI_DDC_FIFO_BYTES : len;
->>> +
->>> +		/* fire the read command */
->>> +		regmap_write(regmap, HDMI_REG_DDC_REQOFF, start);
->>> +		regmap_write(regmap, HDMI_REG_DDC_REQCOUNT, count);
->>> +		regmap_write(regmap, HDMI_REG_DDC_CMD, DDC_CMD_EDID_READ);
->>> +
->>> +		start += count;
->>> +		len -= count;
->>> +
->>> +		ret = regmap_read_poll_timeout(regmap, HDMI_REG_DDC_STATUS, val,
->>> +					       val & (DDC_DONE | DDC_ERROR),
->>> +					       20000, 250000);
->>> +		if (ret && !(val & DDC_ERROR)) {
->>> +			dev_err(it->dev, "failed to read EDID:%d\n", ret);
->>> +			return ret;
->>> +		}
->>> +
->>> +		if (val & DDC_ERROR) {
->>> +			dev_err(it->dev, "DDC error\n");
->>> +			return -EIO;
->>> +		}
->>> +
->>> +		/* cache to buffer */
->>> +		for (; count > 0; count--) {
->>> +			regmap_read(regmap, HDMI_REG_DDC_READFIFO, &val);
->>> +			*(buf++) = val;
->>> +		}
->>> +	}
->>> +
->>> +	return 0;
->>> +}
->>> +
->>> +static int it6263_connector_get_modes(struct drm_connector
->>> +*connector) {
->>> +	struct it6263 *it = connector_to_it6263(connector);
->>> +	const struct drm_edid *drm_edid;
->>> +	int count;
->>> +
->>> +	drm_edid = drm_edid_read_custom(connector, it6263_read_edid, it);
->>> +
->>> +	drm_edid_connector_update(connector, drm_edid);
->>> +	count = drm_edid_connector_add_modes(connector);
->>> +
->>> +	drm_edid_free(drm_edid);
->>> +
->>> +	return count;
->>> +}
->>> +
->>> +static const struct drm_connector_helper_funcs it6263_connector_helper_funcs = {
->>> +	.get_modes = it6263_connector_get_modes, };
->>> +
->>> +static int it6263_bridge_atomic_check(struct drm_bridge *bridge,
->>> +				      struct drm_bridge_state *bridge_state,
->>> +				      struct drm_crtc_state *crtc_state,
->>> +				      struct drm_connector_state *conn_state) {
->>> +	struct drm_display_mode *mode = &crtc_state->adjusted_mode;
->>> +
->>> +	return mode->clock > MAX_PIXEL_CLOCK_KHZ ? -EINVAL : 0; }
->>> +
->>> +static void
->>> +it6263_bridge_atomic_disable(struct drm_bridge *bridge,
->>> +			     struct drm_bridge_state *old_bridge_state) {
->>> +	struct it6263 *it = bridge_to_it6263(bridge);
->>> +
->>> +	regmap_write_bits(it->hdmi_regmap, HDMI_REG_GCP, AVMUTE, AVMUTE);
->>> +	regmap_write(it->hdmi_regmap, HDMI_REG_PKT_GENERAL_CTRL, 0);
->>> +	regmap_write(it->hdmi_regmap, HDMI_REG_AFE_DRV_CTRL,
->>> +		     AFE_DRV_RST | AFE_DRV_PWD);
->>> +}
->>> +
->>> +static void
->>> +it6263_bridge_atomic_enable(struct drm_bridge *bridge,
->>> +			    struct drm_bridge_state *old_bridge_state) {
->>> +	struct drm_atomic_state *state = old_bridge_state->base.state;
->>> +	struct it6263 *it = bridge_to_it6263(bridge);
->>> +	const struct drm_crtc_state *crtc_state;
->>> +	struct regmap *regmap = it->hdmi_regmap;
->>> +	const struct drm_display_mode *mode;
->>> +	struct drm_connector *connector;
->>> +	bool is_stable = false;
->>> +	struct drm_crtc *crtc;
->>> +	unsigned int val;
->>> +	bool pclk_high;
->>> +	int i, ret;
->>> +
->>> +	connector = drm_atomic_get_new_connector_for_encoder(state,
->>> +							     bridge->encoder);
->>> +	crtc = drm_atomic_get_new_connector_state(state, connector)->crtc;
->>> +	crtc_state = drm_atomic_get_new_crtc_state(state, crtc);
->>> +	mode = &crtc_state->adjusted_mode;
->>> +
->>> +	regmap_write(regmap, HDMI_REG_HDMI_MODE, TX_HDMI_MODE);
->>> +
->>> +	/* HDMI AFE setup */
->>> +	pclk_high = mode->clock > HIGH_PIXEL_CLOCK_KHZ ? true : false;
->>> +	regmap_write(regmap, HDMI_REG_AFE_DRV_CTRL, AFE_DRV_RST);
->>> +	if (pclk_high)
->>> +		regmap_write(regmap, HDMI_REG_AFE_XP_CTRL,
->>> +			     AFE_XP_GAINBIT | AFE_XP_RESETB);
->>> +	else
->>> +		regmap_write(regmap, HDMI_REG_AFE_XP_CTRL,
->>> +			     AFE_XP_ER0 | AFE_XP_RESETB);
->>> +	regmap_write(regmap, HDMI_REG_AFE_ISW_CTRL, 0x10);
->>> +	if (pclk_high)
->>> +		regmap_write(regmap, HDMI_REG_AFE_IP_CTRL,
->>> +			     AFE_IP_GAINBIT | AFE_IP_RESETB);
->>> +	else
->>> +		regmap_write(regmap, HDMI_REG_AFE_IP_CTRL,
->>> +			     AFE_IP_ER0 | AFE_IP_RESETB);
->>> +
->>> +	/* HDMI software video reset */
->>> +	regmap_write_bits(regmap, HDMI_REG_SW_RST, SOFTV_RST, SOFTV_RST);
->>> +	fsleep(1000);
->>> +	regmap_write_bits(regmap, HDMI_REG_SW_RST, SOFTV_RST, 0);
->>> +
->>> +	/* reconfigure LVDS and retry several times in case video is instable */
->>> +	for (i = 0; i < 3; i++) {
->>> +		ret = regmap_read_poll_timeout(regmap, HDMI_REG_SYS_STATUS, val,
->>> +					       val & TXVIDSTABLE,
->>> +					       20000, 500000);
->>> +		if (!ret) {
->>> +			is_stable = true;
->>> +			break;
->>> +		}
->>> +
->>> +		it6263_lvds_config(it);
->>> +	}
->>> +
->>> +	if (!is_stable)
->>> +		dev_warn(it->dev, "failed to wait for video stable\n");
->>> +
->>> +	/* HDMI AFE reset release and power up */
->>> +	regmap_write(regmap, HDMI_REG_AFE_DRV_CTRL, 0);
->>> +
->>> +	regmap_write_bits(regmap, HDMI_REG_GCP, AVMUTE, 0);
->>> +
->>> +	regmap_write(regmap, HDMI_REG_PKT_GENERAL_CTRL, ENABLE_PKT |
->>> +REPEAT_PKT); }
->>> +
->>> +static enum drm_mode_status
->>> +it6263_bridge_mode_valid(struct drm_bridge *bridge,
->>> +			 const struct drm_display_info *info,
->>> +			 const struct drm_display_mode *mode) {
->>> +	return mode->clock > MAX_PIXEL_CLOCK_KHZ ? MODE_CLOCK_HIGH :
->>> +MODE_OK; }
->>> +
->>> +static int it6263_bridge_attach(struct drm_bridge *bridge,
->>> +				enum drm_bridge_attach_flags flags) {
->>> +	struct it6263 *it = bridge_to_it6263(bridge);
->>> +	int ret;
->>> +
->>> +	ret = drm_bridge_attach(bridge->encoder, it->next_bridge, bridge,
->>> +				flags | DRM_BRIDGE_ATTACH_NO_CONNECTOR);
->>> +	if (ret < 0)
->>> +		return ret;
->>> +
->>> +	if (flags & DRM_BRIDGE_ATTACH_NO_CONNECTOR)
->>> +		return 0;
->>> +
->>> +	it->connector.polled = DRM_CONNECTOR_POLL_CONNECT |
->>> +			       DRM_CONNECTOR_POLL_DISCONNECT;
->>> +
->>> +	ret = drm_connector_init(bridge->dev, &it->connector,
->>> +				 &it6263_connector_funcs,
->>> +				 DRM_MODE_CONNECTOR_HDMIA);
->>> +	if (ret)
->>> +		return ret;
->>> +
->>> +	drm_connector_helper_add(&it->connector,
->>> +				 &it6263_connector_helper_funcs);
->>> +	drm_connector_attach_encoder(&it->connector, bridge->encoder);
->>> +
->>> +	return 0;
->>> +}
->>> +
->>> +static enum drm_connector_status it6263_bridge_detect(struct
->>> +drm_bridge
->>> +*bridge) {
->>> +	struct it6263 *it = bridge_to_it6263(bridge);
->>> +
->>> +	return it6263_detect(it);
->>> +}
->>> +
->>> +static const struct drm_edid *
->>> +it6263_bridge_edid_read(struct drm_bridge *bridge,
->>> +			struct drm_connector *connector)
->>> +{
->>> +	struct it6263 *it = bridge_to_it6263(bridge);
->>> +
->>> +	return drm_edid_read_custom(connector, it6263_read_edid, it); }
->>> +
->>> +static u32 *
->>> +it6263_bridge_atomic_get_input_bus_fmts(struct drm_bridge *bridge,
->>> +					struct drm_bridge_state *bridge_state,
->>> +					struct drm_crtc_state *crtc_state,
->>> +					struct drm_connector_state *conn_state,
->>> +					u32 output_fmt,
->>> +					unsigned int *num_input_fmts)
->>> +{
->>> +	u32 *input_fmts;
->>> +
->>> +	input_fmts = kmalloc(sizeof(*input_fmts), GFP_KERNEL);
->>> +	if (!input_fmts) {
->>> +		*num_input_fmts = 0;
->>> +		return NULL;
->>> +	}
->>> +
->>> +	input_fmts[0] = MEDIA_BUS_FMT_RGB888_1X7X4_JEIDA;
->>
->> Why is it hardcoded? What about supporting VESA??
->>
->>> +	*num_input_fmts = 1;
->>> +
->>> +	return input_fmts;
->>> +}
->>> +
->>> +static const struct drm_bridge_funcs it6263_bridge_funcs = {
->>> +	.atomic_duplicate_state = drm_atomic_helper_bridge_duplicate_state,
->>> +	.atomic_destroy_state = drm_atomic_helper_bridge_destroy_state,
->>> +	.atomic_reset = drm_atomic_helper_bridge_reset,
->>> +	.attach = it6263_bridge_attach,
->>> +	.mode_valid = it6263_bridge_mode_valid,
->>> +	.atomic_disable = it6263_bridge_atomic_disable,
->>> +	.atomic_enable = it6263_bridge_atomic_enable,
->>> +	.atomic_check = it6263_bridge_atomic_check,
->>> +	.detect = it6263_bridge_detect,
->>> +	.edid_read = it6263_bridge_edid_read,
->>> +	.atomic_get_input_bus_fmts =
->>> +it6263_bridge_atomic_get_input_bus_fmts,
->>> +};
-> 
-> Like [1]
-> static const struct drm_bridge_funcs it6263_bridge_funcs = {
-> 	.attach = it6263_bridge_attach,
-> 	.mode_set = it6263_bridge_mode_set,
-> 	.disable = it6263_bridge_disable,
-> 	.enable = it6263_bridge_enable,
-> 	.get_edid = it6263_bridge_get_edid,
-> 	.detect = it6263_bridge_detect,
-> };
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c?h=v6.12-rc1#n998
-> 
-> Is it not sufficient for your use case??
+> Hi Lukasz,
+>=20
+> Am 08.10.24 um 13:41 schrieb Lukasz Majewski:
+> > Hi Stefan,
+> > =20
+> >> Hi Lukasz,
+> >>
+> >> please adjust the subject of your patch accordingly to the
+> >> subsystem.
+> >>
+> >> Suggestion
+> >>
+> >> ARM: dts: mxs: Add descriptions for imx287 based btt3-[012] devices
+> >>
+> >> Am 12.09.24 um 14:48 schrieb Lukasz Majewski: =20
+> >>> The btt3 device' HW revisions from 0 to 2 use imx287 SoC and are
+> >>> to some extend similar to already upstreamed XEA devices, hence
+> >>> are using common imx28-lwe.dtsi file.
+> >>>
+> >>> New, imx28-btt3.dtsi has been added to embrace common DTS
+> >>> properties for different HW revisions for this device.
+> >>>
+> >>> As a result - changes introduced in imx28-btt3-[012].dts are
+> >>> minimal.
+> >>>
+> >>> Signed-off-by: Lukasz Majewski <lukma@denx.de>
+> >>>
+> >>> ---
+> >>> Changes for v2:
+> >>> - Rename dts file from btt3-[012] to imx28-btt3-[012] to match
+> >>> current linux kernel naming convention
+> >>> - Remove 'wlf,wm8974' from compatible for codec@1a
+> >>>
+> >>> Changes for v3:
+> >>> - Keep alphabethical order for Makefile entries
+> >>>
+> >>> Changes for v4:
+> >>> - Change compatible for btt3 board (to 'lwn,imx28-btt3')
+> >>>
+> >>> Changes for v5:
+> >>> - Combine patch, which adds btt3-[012] with one adding board entry
+> >>> to fsl.yaml
+> >>>
+> >>> Changes for v6:
+> >>> - Make the patch series for adding entry in fsl.yaml and btt3
+> >>> ---
+> >>>    arch/arm/boot/dts/nxp/mxs/Makefile         |   3 +
+> >>>    arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dts |  12 +
+> >>>    arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dts |   8 +
+> >>>    arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dts |  12 +
+> >>>    arch/arm/boot/dts/nxp/mxs/imx28-btt3.dtsi  | 320
+> >>> +++++++++++++++++++++ 5 files changed, 355 insertions(+)
+> >>>    create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dts
+> >>>    create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dts
+> >>>    create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dts
+> >>>    create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-btt3.dtsi
+> >>>
+> >>> diff --git a/arch/arm/boot/dts/nxp/mxs/Makefile
+> >>> b/arch/arm/boot/dts/nxp/mxs/Makefile index
+> >>> a430d04f9c69..96dd31ea19ba 100644 ---
+> >>> a/arch/arm/boot/dts/nxp/mxs/Makefile +++
+> >>> b/arch/arm/boot/dts/nxp/mxs/Makefile @@ -8,6 +8,9 @@
+> >>> dtb-$(CONFIG_ARCH_MXS) +=3D \ imx28-apf28.dtb \
+> >>>    	imx28-apf28dev.dtb \
+> >>>    	imx28-apx4devkit.dtb \
+> >>> +	imx28-btt3-0.dtb \
+> >>> +	imx28-btt3-1.dtb \
+> >>> +	imx28-btt3-2.dtb \
+> >>>    	imx28-cfa10036.dtb \
+> >>>    	imx28-cfa10037.dtb \
+> >>>    	imx28-cfa10049.dtb \
+> >>> diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dts
+> >>> b/arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dts new file mode 100644
+> >>> index 000000000000..6ac46e4b21bb
+> >>> --- /dev/null
+> >>> +++ b/arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dts
+> >>> @@ -0,0 +1,12 @@
+> >>> +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+> >>> +/*
+> >>> + * Copyright 2024
+> >>> + * Lukasz Majewski, DENX Software Engineering, lukma@denx.de
+> >>> + */
+> >>> +
+> >>> +/dts-v1/;
+> >>> +#include "imx28-btt3.dtsi"
+> >>> +
+> >>> +&hog_pins_rev {
+> >>> +	fsl,pull-up =3D <MXS_PULL_ENABLE>;
+> >>> +};
+> >>> diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dts
+> >>> b/arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dts new file mode 100644
+> >>> index 000000000000..213fe931c58b
+> >>> --- /dev/null
+> >>> +++ b/arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dts
+> >>> @@ -0,0 +1,8 @@
+> >>> +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+> >>> +/*
+> >>> + * Copyright 2024
+> >>> + * Lukasz Majewski, DENX Software Engineering, lukma@denx.de
+> >>> + */
+> >>> +
+> >>> +/dts-v1/;
+> >>> +#include "imx28-btt3.dtsi"
+> >>> diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dts
+> >>> b/arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dts new file mode 100644
+> >>> index 000000000000..c787c2d03463
+> >>> --- /dev/null
+> >>> +++ b/arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dts
+> >>> @@ -0,0 +1,12 @@
+> >>> +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+> >>> +/*
+> >>> + * Copyright 2024
+> >>> + * Lukasz Majewski, DENX Software Engineering, lukma@denx.de
+> >>> + */
+> >>> +
+> >>> +/dts-v1/;
+> >>> +#include "imx28-btt3.dtsi"
+> >>> +
+> >>> +&lcdif {
+> >>> +	display =3D <&display_te_b>; =20
+> >> The reason why you don't move the second display into this file is
+> >> because you expect a new hardware revision in the future? =20
+> > Yes, exactly. This is long-standing device.
+> > =20
+> >>> +};
+> >>> diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-btt3.dtsi
+> >>> b/arch/arm/boot/dts/nxp/mxs/imx28-btt3.dtsi new file mode 100644
+> >>> index 000000000000..94a21ea8d5d2
+> >>> --- /dev/null
+> >>> +++ b/arch/arm/boot/dts/nxp/mxs/imx28-btt3.dtsi
+> >>> @@ -0,0 +1,320 @@
+> >>> +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+> >>> +/*
+> >>> + * Copyright 2024
+> >>> + * Lukasz Majewski, DENX Software Engineering, lukma@denx.de
+> >>> + */
+> >>> +/dts-v1/;
+> >>> +#include "imx28-lwe.dtsi"
+> >>> +
+> >>> +/ {
+> >>> +	model =3D "BTT3";
+> >>> +
+> >>> +	compatible =3D "lwn,imx28-btt3", "fsl,imx28";
+> >>> +
+> >>> +	chosen {
+> >>> +	       bootargs =3D "root=3D/dev/mmcblk0p2 rootfstype=3Dext4 ro
+> >>> rootwait console=3DttyAMA0,115200 panic=3D1 quiet";
+> >>> +	}; =20
+> >> It's a little bit unusual to place so many Linux specific stuff
+> >> into the device tree bootargs. =20
+> > I do keep the bootargs from first version of the device/DTS to avoid
+> > any "unexpected" regressions. =20
+> Not strong opinion about this this, but it sounds like your customer
+> use a limited bootloader like imx-bootlets and the whole cmdline is
+> configured via DT.
 
-If we decide to document the LVDS data mapping in dt-binding,
-then it is practically ok to use the non-atomic callbacks like
-the adv7511 driver, otherwise, the atomic callbacks are required
-due to the bus format negotiation.
+We do use u-boot from the very beginning...
 
-> 
-> Cheers,
-> Biju
-> 
->>> +
->>> +static int it6263_probe(struct i2c_client *client) {
->>> +	struct device *dev = &client->dev;
->>> +	struct it6263 *it;
->>> +	int ret;
->>> +
->>> +	it = devm_kzalloc(dev, sizeof(*it), GFP_KERNEL);
->>> +	if (!it)
->>> +		return -ENOMEM;
->>> +
->>> +	it->dev = dev;
->>> +	it->hdmi_i2c = client;
->>> +
->>> +	it->hdmi_regmap = devm_regmap_init_i2c(client,
->>> +					       &it6263_hdmi_regmap_config);
->>> +	if (IS_ERR(it->hdmi_regmap))
->>> +		return dev_err_probe(dev, PTR_ERR(it->hdmi_regmap),
->>> +				     "failed to init I2C regmap for HDMI\n");
->>> +
->>> +	it->reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
->>> +	if (IS_ERR(it->reset_gpio))
->>> +		return dev_err_probe(dev, PTR_ERR(it->reset_gpio),
->>> +				     "failed to get reset gpio\n");
->>> +
->>> +	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(it6263_supplies),
->>> +					     it6263_supplies);
->>> +	if (ret)
->>> +		return dev_err_probe(dev, ret, "failed to get power supplies\n");
->>> +
->>> +	ret = it6263_parse_dt(it);
->>> +	if (ret)
->>> +		return ret;
->>> +
->>> +	it6263_reset(it);
->>> +
->>> +	ret = it6263_lvds_set_i2c_addr(it);
->>> +	if (ret)
->>> +		return dev_err_probe(dev, ret, "failed to set I2C addr\n");
->>> +
->>> +	it->lvds_i2c = devm_i2c_new_dummy_device(dev, client->adapter,
->>> +						 LVDS_INPUT_CTRL_I2C_ADDR);
->>> +	if (IS_ERR(it->lvds_i2c))
->>> +		dev_err_probe(it->dev, PTR_ERR(it->lvds_i2c),
->>> +			      "failed to allocate I2C device for LVDS\n");
->>
->> Maybe use action_or_reset and call i2c_unregister_device();
->>
->>> +
->>> +	it->lvds_regmap = devm_regmap_init_i2c(it->lvds_i2c,
->>> +					       &it6263_lvds_regmap_config);
->>> +	if (IS_ERR(it->lvds_regmap))
->>> +		return dev_err_probe(dev, PTR_ERR(it->lvds_regmap),
->>> +				     "failed to init I2C regmap for LVDS\n");
->>
->>> +
->>> +	it6263_lvds_config(it);
->>> +	it6263_hdmi_config(it);
->>
->>> +
->>> +	i2c_set_clientdata(client, it);
->>> +
->>> +	it->bridge.funcs = &it6263_bridge_funcs;
->>> +	it->bridge.of_node = dev->of_node;
->>> +	it->bridge.ops = DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT;
->>
->> 	it->bridge.type = DRM_MODE_CONNECTOR_HDMIA; ??
->>
->>> +	drm_bridge_add(&it->bridge);
->>> +
->>> +	return 0;
->>> +}
->>> +
->>> +static void it6263_remove(struct i2c_client *client) {
->>> +	struct it6263 *it = i2c_get_clientdata(client);
->>> +
->>> +	drm_bridge_remove(&it->bridge);
->>
->>> +}
->>> +
->>> +static const struct of_device_id it6263_of_match[] = {
->>> +	{ .compatible = "ite,it6263", },
->>> +	{ }
->>> +};
->>> +MODULE_DEVICE_TABLE(of, it6263_of_match);
->>> +
->>> +static const struct i2c_device_id it6263_i2c_ids[] = {
->>> +	{ "it6263", 0 },
->>> +	{ }
->>> +};
->>> +MODULE_DEVICE_TABLE(i2c, it6263_i2c_ids);
->>> +
->>> +static struct i2c_driver it6263_driver = {
->>> +	.probe = it6263_probe,
->>> +	.remove = it6263_remove,
->>> +	.driver = {
->>> +		.name = "it6263",
->>> +		.of_match_table = it6263_of_match,
->>> +	},
->>> +	.id_table = it6263_i2c_ids,
->>> +};
->>> +module_i2c_driver(it6263_driver);
->>> +
->>> +MODULE_DESCRIPTION("ITE Tech. Inc. IT6263 LVDS/HDMI bridge");
->>> +MODULE_AUTHOR("Liu Ying <victor.liu@nxp.com>");
->>> +MODULE_LICENSE("GPL");
->>> --
->>> 2.34.1
->>>
-> 
+> > =20
+> >>> +
+> >>> +	memory@40000000 {
+> >>> +		reg =3D <0x40000000 0x10000000>;
+> >>> +		device_type =3D "memory";
+> >>> +	};
+> >>> +
+> >>> +	poweroff {
+> >>> +		compatible =3D "gpio-poweroff";
+> >>> +		gpios =3D <&gpio0 24 0>; =20
+> >> Please use the GPIO polarity defines. =20
+> > Ok.
+> > =20
+> >>> +	};
+> >>> +
+> >>> +	sound {
+> >>> +		compatible =3D "simple-audio-card";
+> >>> +		simple-audio-card,name =3D "BTTC Audio";
+> >>> +		simple-audio-card,widgets =3D "Speaker", "BTTC
+> >>> Speaker";
+> >>> +		simple-audio-card,routing =3D "BTTC Speaker",
+> >>> "SPKOUTN", "BTTC Speaker", "SPKOUTP";
+> >>> +		simple-audio-card,dai-link@0 {
+> >>> +			format =3D "left_j";
+> >>> +			bitclock-master =3D <&dai0_master>;
+> >>> +			frame-master =3D <&dai0_master>;
+> >>> +			mclk-fs =3D <256>;
+> >>> +			dai0_master: cpu {
+> >>> +				sound-dai =3D <&saif0>;
+> >>> +			};
+> >>> +			codec {
+> >>> +				sound-dai =3D <&wm89xx>;
+> >>> +				clocks =3D <&saif0>;
+> >>> +			};
+> >>> +		};
+> >>> +	};
+> >>> +
+> >>> +	wifi_pwrseq: sdio-pwrseq {
+> >>> +		compatible =3D "mmc-pwrseq-simple";
+> >>> +		pinctrl-names =3D "default";
+> >>> +		pinctrl-0 =3D <&wifi_en_pin_bttc>;
+> >>> +		reset-gpios =3D <&gpio0 27 GPIO_ACTIVE_LOW>;
+> >>> +		/* W1-163 needs 60us for WL_EN to be low and */
+> >>> +		/* 150ms after high before downloading FW is
+> >>> possible */
+> >>> +		post-power-on-delay-ms =3D <200>;
+> >>> +		power-off-delay-us =3D <100>;
+> >>> +	};
+> >>> +};
+> >>> +
+> >>> +&auart0 {
+> >>> +	pinctrl-names =3D "default";
+> >>> +	pinctrl-0 =3D <&auart0_2pins_a>;
+> >>> +	status =3D "okay";
+> >>> +};
+> >>> +
+> >>> +&auart3 {
+> >>> +	pinctrl-names =3D "default";
+> >>> +	pinctrl-0 =3D <&auart3_pins_a>;
+> >>> +	uart-has-rtscts;
+> >>> +	status =3D "okay";
+> >>> +};
+> >>> +
+> >>> +&i2c0 {
+> >>> +	wm89xx: codec@1a {
+> >>> +		compatible =3D "wlf,wm8940";
+> >>> +		reg =3D <0x1a>;
+> >>> +		#sound-dai-cells =3D <0>;
+> >>> +	};
+> >>> +};
+> >>> +
+> >>> +&lcdif {
+> >>> +	pinctrl-names =3D "default";
+> >>> +	pinctrl-0 =3D <&lcdif_24bit_pins_a>,
+> >>> <&lcdif_sync_pins_bttc>,
+> >>> +		    <&lcdif_reset_pins_bttc>;
+> >>> +	lcd-supply =3D <&reg_3v3>;
+> >>> +	display =3D <&display0>;
+> >>> +	status =3D "okay";
+> >>> +	display0: display0 {
+> >>> +		bits-per-pixel =3D <32>;
+> >>> +		bus-width =3D <24>;
+> >>> +		display-timings {
+> >>> +			native-mode =3D <&timing0>;
+> >>> +			timing0: timing0 {
+> >>> +				clock-frequency =3D <6500000>;
+> >>> +				hactive =3D <320>;
+> >>> +				vactive =3D <240>;
+> >>> +				hfront-porch =3D <20>;
+> >>> +				hback-porch =3D <38>;
+> >>> +				hsync-len =3D <30>;
+> >>> +				vfront-porch =3D <4>;
+> >>> +				vback-porch =3D <14>;
+> >>> +				vsync-len =3D <4>;
+> >>> +				hsync-active =3D <0>;
+> >>> +				vsync-active =3D <0>;
+> >>> +				de-active =3D <0>;
+> >>> +				pixelclk-active =3D <1>;
+> >>> +			};
+> >>> +		};
+> >>> +	};
+> >>> +	display_te_b: display1 {
+> >>> +		bits-per-pixel =3D <32>;
+> >>> +		bus-width =3D <24>;
+> >>> +		display-timings {
+> >>> +			native-mode =3D <&timing0>;
+> >>> +			timing_te_b: timing0 {
+> >>> +				clock-frequency =3D <6500000>;
+> >>> +				hactive =3D <320>;
+> >>> +				vactive =3D <240>;
+> >>> +				hfront-porch =3D <20>;
+> >>> +				hback-porch =3D <68>;
+> >>> +				hsync-len =3D <30>;
+> >>> +				vfront-porch =3D <4>;
+> >>> +				vback-porch =3D <14>;
+> >>> +				vsync-len =3D <4>;
+> >>> +				hsync-active =3D <0>;
+> >>> +				vsync-active =3D <0>;
+> >>> +				de-active =3D <1>;
+> >>> +				pixelclk-active =3D <1>;
+> >>> +			};
+> >>> +		};
+> >>> +	};
+> >>> +
+> >>> +};
+> >>> +
+> >>> +&mac0 {
+> >>> +	clocks =3D <&clks 57>, <&clks 57>, <&clks 64>;
+> >>> +	clock-names =3D "ipg", "ahb", "enet_out";
+> >>> +	phy-handle =3D <&mac0_phy>;
+> >>> +	phy-mode =3D "rmii";
+> >>> +	phy-supply =3D <&reg_3v3>;
+> >>> +	local-mac-address =3D [ 00 11 B8 00 BF 8A ]; =20
+> >> Is this replaced dynamically by the bootloader? Otherwise this
+> >> suggests all boards use the same MAC address. =20
+> > Yes, this is replaced during production. In fact it could be 00 00
+> > 00 00 00 00 as well.
+> >
+> > The IP address assigned here allows the device to be recognizable on
+> > the network even when the full "flashing" is not successful. =20
+> Could you please add a short comment about this?
 
--- 
-Regards,
-Liu Ying
+Ok.
 
+> > =20
+> >>> +	status =3D "okay";
+> >>> +
+> >>> +	mdio {
+> >>> +		#address-cells =3D <1>;
+> >>> +		#size-cells =3D <0>;
+> >>> +
+> >>> +		mac0_phy: ethernet-phy@0 {
+> >>> +			/* LAN8720Ai - PHY ID */
+> >>> +			compatible =3D
+> >>> "ethernet-phy-id0007.c0f0","ethernet-phy-ieee802.3-c22";
+> >>> +			reg =3D <0>;
+> >>> +			smsc,disable-energy-detect;
+> >>> +			max-speed =3D <100>;
+> >>> +
+> >>> +			reset-gpios =3D <&gpio4 12
+> >>> GPIO_ACTIVE_LOW>; /* GPIO4_12 */ =20
+> >> I think the comment only repeat what is already defined here. =20
+> > Yes - I will remove it.
+> > =20
+> >>> +			reset-assert-us =3D <1000>;
+> >>> +			reset-deassert-us =3D <1000>;
+> >>> +		};
+> >>> +	};
+> >>> +};
+> >>> +
+> >>> +&pinctrl {
+> >>> +	pinctrl-names =3D "default";
+> >>> +	pinctrl-0 =3D <&hog_pins_a>, <&hog_pins_rev>;
+> >>> +
+> >>> +	hog_pins_a: hog@0 {
+> >>> +		reg =3D <0>;
+> >>> +		fsl,pinmux-ids =3D <
+> >>> +			MX28_PAD_GPMI_RDY2__GPIO_0_22
+> >>> +			MX28_PAD_GPMI_RDY3__GPIO_0_23
+> >>> +			MX28_PAD_GPMI_RDN__GPIO_0_24
+> >>> +			MX28_PAD_LCD_VSYNC__GPIO_1_28
+> >>> +			MX28_PAD_SSP2_SS1__GPIO_2_20
+> >>> +			MX28_PAD_SSP2_SS2__GPIO_2_21
+> >>> +			MX28_PAD_AUART2_CTS__GPIO_3_10
+> >>> +			MX28_PAD_AUART2_RTS__GPIO_3_11
+> >>> +			MX28_PAD_GPMI_WRN__GPIO_0_25
+> >>> +			MX28_PAD_ENET0_RXD2__GPIO_4_9
+> >>> +			MX28_PAD_ENET0_TXD2__GPIO_4_11
+> >>> +		>;
+> >>> +		fsl,drive-strength =3D <MXS_DRIVE_4mA>;
+> >>> +		fsl,voltage =3D <MXS_VOLTAGE_HIGH>;
+> >>> +		fsl,pull-up =3D <MXS_PULL_DISABLE>;
+> >>> +	};
+> >>> +
+> >>> +	hog_pins_rev: hog@1 {
+> >>> +		reg =3D <1>;
+> >>> +		fsl,pinmux-ids =3D <
+> >>> +			MX28_PAD_ENET0_RXD3__GPIO_4_10
+> >>> +			MX28_PAD_ENET0_TX_CLK__GPIO_4_5
+> >>> +			MX28_PAD_ENET0_COL__GPIO_4_14
+> >>> +			MX28_PAD_ENET0_CRS__GPIO_4_15
+> >>> +		>;
+> >>> +		fsl,drive-strength =3D <MXS_DRIVE_4mA>;
+> >>> +		fsl,voltage =3D <MXS_VOLTAGE_HIGH>;
+> >>> +		fsl,pull-up =3D <MXS_PULL_DISABLE>;
+> >>> +	};
+> >>> +
+> >>> +	keypad_pins_bttc: keypad-bttc@0 {
+> >>> +		reg =3D <0>;
+> >>> +		fsl,pinmux-ids =3D <
+> >>> +			MX28_PAD_GPMI_D00__GPIO_0_0
+> >>> +			MX28_PAD_AUART0_CTS__GPIO_3_2
+> >>> +			MX28_PAD_AUART0_RTS__GPIO_3_3
+> >>> +			MX28_PAD_GPMI_D03__GPIO_0_3
+> >>> +			MX28_PAD_GPMI_D04__GPIO_0_4
+> >>> +			MX28_PAD_GPMI_D05__GPIO_0_5
+> >>> +			MX28_PAD_GPMI_D06__GPIO_0_6
+> >>> +			MX28_PAD_GPMI_D07__GPIO_0_7
+> >>> +			MX28_PAD_GPMI_CE1N__GPIO_0_17
+> >>> +			MX28_PAD_GPMI_CE2N__GPIO_0_18
+> >>> +			MX28_PAD_GPMI_CE3N__GPIO_0_19
+> >>> +			MX28_PAD_GPMI_RDY0__GPIO_0_20
+> >>> +		>;
+> >>> +		fsl,drive-strength =3D <MXS_DRIVE_4mA>;
+> >>> +		fsl,voltage =3D <MXS_VOLTAGE_HIGH>;
+> >>> +		fsl,pull-up =3D <MXS_PULL_DISABLE>;
+> >>> +	};
+> >>> +
+> >>> +	lcdif_sync_pins_bttc: lcdif-bttc@0 {
+> >>> +		reg =3D <0>;
+> >>> +		fsl,pinmux-ids =3D <
+> >>> +			MX28_PAD_LCD_DOTCLK__LCD_DOTCLK
+> >>> +			MX28_PAD_LCD_ENABLE__LCD_ENABLE
+> >>> +			MX28_PAD_LCD_HSYNC__LCD_HSYNC
+> >>> +			MX28_PAD_LCD_RD_E__LCD_VSYNC
+> >>> +		>;
+> >>> +		fsl,drive-strength =3D <MXS_DRIVE_4mA>;
+> >>> +		fsl,voltage =3D <MXS_VOLTAGE_HIGH>;
+> >>> +		fsl,pull-up =3D <MXS_PULL_DISABLE>;
+> >>> +	};
+> >>> +
+> >>> +	lcdif_reset_pins_bttc: lcdif-bttc@1 {
+> >>> +		reg =3D <1>;
+> >>> +		fsl,pinmux-ids =3D <
+> >>> +			MX28_PAD_LCD_RESET__GPIO_3_30
+> >>> +		>;
+> >>> +		fsl,drive-strength =3D <MXS_DRIVE_4mA>;
+> >>> +		fsl,voltage =3D <MXS_VOLTAGE_HIGH>;
+> >>> +		fsl,pull-up =3D <MXS_PULL_ENABLE>;
+> >>> +	};
+> >>> +
+> >>> +	ssp1_sdio_pins_a: ssp1-sdio@0 {
+> >>> +		reg =3D <0>;
+> >>> +		fsl,pinmux-ids =3D <
+> >>> +			MX28_PAD_SSP1_DATA0__SSP1_D0
+> >>> +			MX28_PAD_GPMI_D01__SSP1_D1
+> >>> +			MX28_PAD_GPMI_D02__SSP1_D2
+> >>> +			MX28_PAD_SSP1_DATA3__SSP1_D3
+> >>> +			MX28_PAD_SSP1_CMD__SSP1_CMD
+> >>> +			MX28_PAD_SSP1_SCK__SSP1_SCK
+> >>> +		>;
+> >>> +		fsl,drive-strength =3D <MXS_DRIVE_8mA>;
+> >>> +		fsl,voltage =3D <MXS_VOLTAGE_HIGH>;
+> >>> +		fsl,pull-up =3D <MXS_PULL_ENABLE>;
+> >>> +	};
+> >>> +
+> >>> +	wifi_en_pin_bttc: wifi_en_pin@0 { =20
+> >> This should trigger a schema warning. The node name should use
+> >> dashes instead of underscore. =20
+> > IIRC - there was no schema warning for it. =20
+> Nevertheless please use dashes like on the other nodes
+
+Ok.
+
+>=20
+> Regards
+
+
+
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/Bkcy2OLj6FbyBsWPhvKgzGo
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmcGRfAACgkQAR8vZIA0
+zr0cRwgApma3EcB0zxI4avU7uqxhpUEkHb15IIwiiRuMSN1Gmox/V+Pw0u6Wg1+s
+4eR8tYMpCGZl2bgT+04HbkQyq+bwFF+R0eGikiNRGF9xJUybaIPXxOT3oINWxbMg
+Giqpkf4vacjbhBghLAEaaEdVbrhvtZzuNm9qQu+Vp/OtPBpkSehUVheHl1O1IrKU
+RkzQXcoA/te1MvzInOU5IkJ3gJWXN5suIbJsV6FXQS1/OGG/q6/wd01buvr9zufH
+fqr6QAWqAHZm2EQ+igOHuHkcmi0T12WnidWCZcFvVasaINB4q0L3ySdeQ5DwW1Nx
+9jYVl2SIyarT31RZ1s+/a8rJFyDpQw==
+=xsLl
+-----END PGP SIGNATURE-----
+
+--Sig_/Bkcy2OLj6FbyBsWPhvKgzGo--
