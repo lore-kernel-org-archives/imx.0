@@ -1,110 +1,108 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090E015CD49
-	for <imx@lists.linux.dev>; Wed,  9 Oct 2024 19:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49EC91DFDAB;
+	Wed,  9 Oct 2024 20:53:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728501779; cv=none; b=pH4YjeYpHcEOE+rREkhWuev5PgRQBobItbrJGfvy6oE+Qv30c8wBoGyvD+YYMjYoIidlMkolRcLsaCEr3qIGd+OkU3brIgp04D2hivlQV4MT8BVcEWMiTNPxpOWwAm7zMYjVWbzLrPpMQ40uiX3egPRrAYmdTRhwdSX66MjujmU=
+	t=1728507186; cv=none; b=REz/pfsJTAxjNoWJqoHMWoKEfPIrtisGZGLfKOwoT3VANMwbfYBe1a+iB3pBqUw2qVdwbW1sNsswLHFdwsWwKkQK+gDKKTOdBtn3JMK+rU/pOxizH4Xo1dWsi9mlC4XfygeYDzAvqw9NKqqv7gP9zEcLMEsDyEP8yFtl4E+Sj1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728501779; c=relaxed/simple;
-	bh=68MlPt2FmdqlZvjTx3dO1Nr6d8Bi+A3lDI3oCIC23ZE=;
+	s=arc-20240116; t=1728507186; c=relaxed/simple;
+	bh=z3NFl3JU4cXkyowzq5opNhTPBloo/S0tofmm6les7ds=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YeLyGLl36uykW9kYfu5BSyIlrz0lUrDfWbrbGkNo3mPlDgjKFIh0tKV/g+wsYQbjJ8TbXzbhm5vQUEv4ZGz11uB+Ije58U4UhvgNTXhWca+seMiHcABeSILwn41+q5kyq2KsFe3pTiywMxRa4XKV7mwMMhoHNJbWn4xdt6VRpZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=LoX1egWX; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=QEvKIkvIZOBvtmvdjX+T1nK9PLm5dofgZkTY1ygu0hmFVgD7+pVDptHGwIC4/jnLDe+jOE4XCM+OAQWoHAHKWMnAVOw0jcNAkeLEg+Um3ghXc9nPe89uBHiiYhsuxEUGbZtEDeFXaE2JKi+1/ZuWAABSeSz5l5EftHffoHSsAWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DQCxYEML; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="LoX1egWX"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id AF02140E021E;
-	Wed,  9 Oct 2024 19:22:54 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id Qfk0Fl5xrSLP; Wed,  9 Oct 2024 19:22:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1728501768; bh=8xGJ1I642Bej1YYAfHVN3HEC/SQoBeK/jSb2L/ehR94=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DQCxYEML"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E87C4CEC3;
+	Wed,  9 Oct 2024 20:53:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728507185;
+	bh=z3NFl3JU4cXkyowzq5opNhTPBloo/S0tofmm6les7ds=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LoX1egWX/cKLa3MvCUkvvP0PGzMMdQm4pO5As13C/5RwJtARIeqSZ3z+QQziUoPrO
-	 OXBbLAWFf9R+gvefw0N9mNtViF6QXneQD8/NSoT/gqPactVtCdk+S1lnL7hvU2tIcr
-	 H2GZQQODp0TkvAna7eNDdDy44+nu68sTIX5KZZa90KnPgqS1NcrD4oIN+BRecZEJPc
-	 OSyLtDlgtiWcX+75vhRdry73iZk6J62mkb/XhsEYHdcohQqRdFAcUhtu7tHP6CcKzB
-	 ZRiPHgW89HEroEP28MHy8ZzBmWxlRBO9xp+Mh6t6esAzEevo7hjyRpJlBoLszCxx2g
-	 gxjnrVD5MQ58MHhNk1BR9VLXiXot+4+lJEC7BLX9qj2A+aUZPw22OX6861ZOfzdimp
-	 F8rafzJH0XzSE3snfsGYLk6b4j+VhPYoKtm+sBjO4+zZ6b2UwmD/otceNtwbHKUr2Y
-	 nLLYYQZUqDuyAuG8+48CsaD3NgoVtYLUFEoVsUJZctvaUZBtObQsoLy1ig2+oANa4d
-	 9Bnyfb11n6mJ90LMFbMjOfBD69PMNHIT4bGtfO17zQY/wjaEWJ3F7hTlOqbPrdLP4V
-	 6vHwggHmlsTpsjYdh0Y/HZaIBbn0n/UXSjtYqv4O8YwD85Dpqo7msKsae6lX2pkDLw
-	 tO+xkqF4Ck9Yxu5Tb8wv0U+c=
-Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1EBDA40E0163;
-	Wed,  9 Oct 2024 19:22:24 +0000 (UTC)
-Date: Wed, 9 Oct 2024 21:22:17 +0200
-From: Borislav Petkov <bp@alien8.de>
+	b=DQCxYEMLzlgshGROEYfKV/8alUi36hXQwa0orX8JGwReVH5Ym1TNjOLdR8knjfiH3
+	 uHBKqP1xLZD6eN0aZGe5c2Yf6+1QsRBJ250iZdpG1IgO/a/21inaa41shI03t2U+wf
+	 8aCUK4DKa2aIdjK7IO8qVDttEaI7fE/7m/rAfuYEVCE5wjfMZTAoj3IvDrnyQgsUot
+	 Iycb4fgKZREQU6SO2UdnJ6iwgV9bcHEX02p+PU5PL27oMIZzXib/W1eHDexxpkEWrN
+	 2f6fFs/vnpEWsItbdy4xZvrrkpDZzZm0ydj9LGMKKh55+ZH3zs3T4f4cnlf9dhNnHV
+	 24KMvDoZS47Yw==
+Date: Wed, 9 Oct 2024 15:53:04 -0500
+From: Rob Herring <robh@kernel.org>
 To: Frank Li <Frank.li@nxp.com>
-Cc: York Sun <york.sun@nxp.com>, Tony Luck <tony.luck@intel.com>,
-	James Morse <james.morse@arm.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Robert Richter <rric@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-edac@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Priyanka Singh <priyanka.singh@nxp.com>,
-	Sherry Sun <sherry.sun@nxp.com>, Li Yang <leoyang.li@nxp.com>,
-	Ye Li <ye.li@nxp.com>, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 0/6] EDAC: fsl-ddr, add imx9 support
-Message-ID: <20241009192217.GPZwbX6V_PL26Hq6-6@fat_crate.local>
-References: <20240709-imx95_edac-v1-0-3e9c146c1b01@nxp.com>
- <ZvsNJrxF6TpUC6ws@lizhi-Precision-Tower-5810>
- <20241002090834.GAZv0Nkp5YKcy86UmZ@fat_crate.local>
- <ZwalsAJdaHjtD1/E@lizhi-Precision-Tower-5810>
- <20241009162038.GNZwatVpTr9rOEyfQs@fat_crate.local>
- <ZwbL7iM2SV5cMb3d@lizhi-Precision-Tower-5810>
+Cc: Wei Fang <wei.fang@nxp.com>, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, krzk+dt@kernel.org,
+	conor+dt@kernel.org, vladimir.oltean@nxp.com,
+	claudiu.manoil@nxp.com, xiaoning.wang@nxp.com,
+	christophe.leroy@csgroup.eu, linux@armlinux.org.uk,
+	bhelgaas@google.com, imx@lists.linux.dev, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH net-next 02/11] dt-bindings: net: add i.MX95 ENETC support
+Message-ID: <20241009205304.GA615678-robh@kernel.org>
+References: <20241009095116.147412-1-wei.fang@nxp.com>
+ <20241009095116.147412-3-wei.fang@nxp.com>
+ <ZwavhfKthzaOR2R9@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZwbL7iM2SV5cMb3d@lizhi-Precision-Tower-5810>
+In-Reply-To: <ZwavhfKthzaOR2R9@lizhi-Precision-Tower-5810>
 
-On Wed, Oct 09, 2024 at 02:31:10PM -0400, Frank Li wrote:
-> Generally, 7-10 days is reasonable frequent to ask. Contributor also takes
-> their time and efforts to make kernel better. Why they have to endure a
-> questioning
+On Wed, Oct 09, 2024 at 12:29:57PM -0400, Frank Li wrote:
+> On Wed, Oct 09, 2024 at 05:51:07PM +0800, Wei Fang wrote:
+> > The ENETC of i.MX95 has been upgraded to revision 4.1, and the vendor
+> > ID and device ID have also changed, so add the new compatible strings
+> > for i.MX95 ENETC. In addition, i.MX95 supports configuration of RGMII
+> > or RMII reference clock.
+> >
+> > Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> > ---
+> >  .../devicetree/bindings/net/fsl,enetc.yaml    | 23 +++++++++++++++----
+> >  1 file changed, 19 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/Documentation/devicetree/bindings/net/fsl,enetc.yaml b/Documentation/devicetree/bindings/net/fsl,enetc.yaml
+> > index e152c93998fe..1a6685bb7230 100644
+> > --- a/Documentation/devicetree/bindings/net/fsl,enetc.yaml
+> > +++ b/Documentation/devicetree/bindings/net/fsl,enetc.yaml
+> > @@ -20,14 +20,29 @@ maintainers:
+> >
+> >  properties:
+> >    compatible:
+> > -    items:
+> > -      - enum:
+> > -          - pci1957,e100
+> > -      - const: fsl,enetc
+> > +    oneOf:
+> > +      - items:
+> > +          - enum:
+> > +              - pci1957,e100
+> > +          - const: fsl,enetc
+> > +      - items:
+> > +          - const: pci1131,e101
+> > +      - items:
+> > +          - enum:
+> > +              - nxp,imx95-enetc
+> > +          - const: pci1131,e101
+> 
+>     oneOf:
+>       - items:
+>           - enum:
+>               - pci1957,e100
+>           - const: fsl,enetc
+>       - items:
+>           - const: pci1131,e101
+>           - enum:
+>               - nxp,imx95-enetc
 
-You're asking me about your patches! I'm enduring questioning!
+const.
 
-> or accusatory tone!
+Or maybe just drop it. Hopefully the PCI ID changes with each chip. If 
+not, we kind of have the compatibles backwards.
 
-Where is that accusatory tone exactly? Please point me to it.
+>           minItems: 1
 
-> These patches was already takes more than 3 months. I ask just because
-> avoid to hold for the another 3 months just because some none technical
-> reason.
-
-I'm sorry that you have to hold for three months. I, like all maintainers, am
-swamped with work for the next 10 years. You asking every 7-10 days does not
-really help.
-
-You're on the TODO list and I will get to your patches when I get to them.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Then why have the fallback?
