@@ -1,129 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29C72AD1C;
-	Wed,  9 Oct 2024 15:12:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3C87E765
+	for <imx@lists.linux.dev>; Wed,  9 Oct 2024 15:30:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728486746; cv=none; b=PrxaJ7q0TZZhhCvPa18CnFDojYBGj0MR+q+5h/MhXVtzF0cqQwq2B0/3BH+ybPVobIOm0E7XdpL0AXjpMlGp6zdao+MtSmvkbBAcq7aZn0JM5bmXbGlorSf00YJMbX/8Z21u3OmsIwk+rSI/sp5SPW4V/iMcvoGKG2RIXQj/SaQ=
+	t=1728487836; cv=none; b=DOkXSeZsE/gcF+k01Gta1HDMl22cfDUxuJ6owuIdQbDpyFDCndotTMDaHPqSyQIwaSuStezbgK114TDe5vdh6mzp0/nHE4HDBtFp/hGi07rpSyPmdgQZ9wvIoYkj4hQIdqzTrLFx+ZFArW6+gp3qjqtkkZfRI9yJvPIpz2a6Z7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728486746; c=relaxed/simple;
-	bh=Nm+qU5w3dxZgTOqL/lq95V9u3ynP5UfvFPdgv/Ekz+k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hI/YpWm5iEhg6dvHzwXNXoUlKap1QbP6XkiJtAsEKgl0Zg53CBVVwKpRHveVvjB0VWsqd+n8VZJVQOi/YaWlUmXes+aqDIvO/xq5tYixE7NMGd9YHa+mxn8lI7B5JJOieCkY4rNGbcXMFalsl5FGkcy3aqXK+z4/6iHoe7dJAWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QEjTCNDy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1728487836; c=relaxed/simple;
+	bh=Y+Jl8wTTjGy5pJpFL+qGyh85wq5U1JLARWcextm2vp8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=nau9wdsQFWsFZxqhk+/3A2rqvh17y5YXv73XRqggBpx5v5BHnqwn8/kVme7JD9vMp9LHCE41wWMV8leir9kyk1zSJVeqLaKX9CwoIz9bdoiK07QE4wA6n5GKezaKkHAFDXDGV8IW3NDvAismUJvs0gOHe6reovK8rroD3zCGPeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jZ+jmaZV; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QEjTCNDy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33AC2C4CEC3;
-	Wed,  9 Oct 2024 15:12:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728486745;
-	bh=Nm+qU5w3dxZgTOqL/lq95V9u3ynP5UfvFPdgv/Ekz+k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QEjTCNDylhVEyIt4djWXFTall6q8pE6U3D3idS7nQeL+nKUZhZLqlyXUXuMLxaeHc
-	 O+dBMvk9iIjzXVcR5p+FTMx0ydzvjXnRRxDL/KFALcLm2LsxsDn0hPVGzl4XqML15D
-	 T2pan7yiSkN9gUSQmbx9wtZ41/XG5w63RpambP84NCRR/SoAJIB0jhoddeYluB78Dg
-	 U8J0KjkgPQ1LW20ZUI9xBsBsesE2V5eYSjMvm1g9vC52o9uAvVPqECtwjFxk+EhJ1W
-	 9S38zVNF5v+vZQTyEAmHkkTMP1OGb9n5nLbGQ7Won5ZxgilwqCAGCJmD7GXLfLSIRC
-	 zlv6L+Bi8LYww==
-Date: Wed, 9 Oct 2024 10:12:23 -0500
-From: Rob Herring <robh@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, krzk+dt@kernel.org, conor+dt@kernel.org,
-	andrew@lunn.ch, f.fainelli@gmail.com, hkallweit1@gmail.com,
-	andrei.botila@oss.nxp.com, linux@armlinux.org.uk,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v2 net-next 1/2] dt-bindings: net: tja11xx: add
- "nxp,rmii-refclk-out" property
-Message-ID: <20241009151223.GA522364-robh@kernel.org>
-References: <20241008070708.1985805-1-wei.fang@nxp.com>
- <20241008070708.1985805-2-wei.fang@nxp.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jZ+jmaZV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728487835; x=1760023835;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=Y+Jl8wTTjGy5pJpFL+qGyh85wq5U1JLARWcextm2vp8=;
+  b=jZ+jmaZVoRJe5SxsKmPjReQw0xsL8tJ6ZXtKcaEs252+c7Kk3VCJKVok
+   Wwug1yntzl7ill3IQDMf3yJ6RUmlZOaKDo50oZdwDpJMCNDzuiOnGOZGK
+   e6ovXKlIpcIAdfEA+XcgaaO9wvHfN4p74PRXY+Ost+/aL22i/S44fsAUy
+   /SXay8T0G6U44apgC7Nz4Q5Fly2TK+4v7qH3DIvHtYjELDMBX4JMK/PgK
+   XTt2eOLfDh7gdbN/8wlymILjw7Xxy6nPdma1HbyW6UKbGCSA4f9PFtS53
+   NzbMpjHKw5E70Fc8IB3niRnSIPL0V4c//rLFBEpH+6I23//3Y1a8waAKO
+   g==;
+X-CSE-ConnectionGUID: rhdc2CJJSoSJPM1JVpx3hg==
+X-CSE-MsgGUID: SlwVhGTPTdml9EOMNDXveg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="27927346"
+X-IronPort-AV: E=Sophos;i="6.11,190,1725346800"; 
+   d="scan'208";a="27927346"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 08:30:34 -0700
+X-CSE-ConnectionGUID: TLdg4cLXQb2fYuj9rZwE0g==
+X-CSE-MsgGUID: KLhvRvpiQQyfrKBCrX9uiA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,190,1725346800"; 
+   d="scan'208";a="76383690"
+Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.246.80])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 08:30:32 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Philipp Zabel <p.zabel@pengutronix.de>, dri-devel@lists.freedesktop.org
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] drm/imx: add forward declarations for types
+In-Reply-To: <d371a079ac984103f0a720e25f2e47b4206348cd.camel@pengutronix.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20241009140452.1981175-1-jani.nikula@intel.com>
+ <d371a079ac984103f0a720e25f2e47b4206348cd.camel@pengutronix.de>
+Date: Wed, 09 Oct 2024 18:30:29 +0300
+Message-ID: <87iku18fai.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241008070708.1985805-2-wei.fang@nxp.com>
+Content-Type: text/plain
 
-On Tue, Oct 08, 2024 at 03:07:07PM +0800, Wei Fang wrote:
-> Per the RMII specification, the REF_CLK is sourced from MAC to PHY
-> or from an external source. But for TJA11xx PHYs, they support to
-> output a 50MHz RMII reference clock on REF_CLK pin. Previously the
-> "nxp,rmii-refclk-in" was added to indicate that in RMII mode, if
-> this property is present, REF_CLK is input to the PHY, otherwise
-> it is output. This seems inappropriate now. Because according to
-> the RMII specification, the REF_CLK is originally input, so there
-> is no need to add an additional "nxp,rmii-refclk-in" property to
-> declare that REF_CLK is input.
-> 
-> Unfortunately, because the "nxp,rmii-refclk-in" property has been
-> added for a while, and we cannot confirm which DTS use the TJA1100
-> and TJA1101 PHYs, changing it to switch polarity will cause an ABI
-> break. But fortunately, this property is only valid for TJA1100 and
-> TJA1101. For TJA1103/TJA1104/TJA1120/TJA1121 PHYs, this property is
-> invalid because they use the nxp-c45-tja11xx driver, which is a
-> different driver from TJA1100/TJA1101. Therefore, for PHYs using
-> nxp-c45-tja11xx driver, add "nxp,rmii-refclk-out" property to
-> support outputting RMII reference clock on REF_CLK pin.
-> 
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
-> V2 changes:
-> 1. Change the property name from "nxp,reverse-mode" to
-> "nxp,phy-output-refclk".
-> 2. Simplify the description of the property.
-> 3. Modify the subject and commit message.
-> V3 changes:
-> 1. Keep the "nxp,rmii-refclk-in" property for TJA1100 and TJA1101.
-> 2. Rephrase the commit message and subject.
-> V3 changes:
-> 1. Change the property name from "nxp,phy-output-refclk" to
-> "nxp,rmii-refclk-out", which means the opposite of "nxp,rmii-refclk-in".
-> 2. Refactor the patch after fixing the original issue with this YAML.
-> ---
->  .../devicetree/bindings/net/nxp,tja11xx.yaml   | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/nxp,tja11xx.yaml b/Documentation/devicetree/bindings/net/nxp,tja11xx.yaml
-> index a754a61adc2d..1e688c7a497d 100644
-> --- a/Documentation/devicetree/bindings/net/nxp,tja11xx.yaml
-> +++ b/Documentation/devicetree/bindings/net/nxp,tja11xx.yaml
-> @@ -62,6 +62,24 @@ allOf:
->              reference clock output when RMII mode enabled.
->              Only supported on TJA1100 and TJA1101.
->  
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - ethernet-phy-id001b.b010
-> +              - ethernet-phy-id001b.b013
-> +              - ethernet-phy-id001b.b030
-> +              - ethernet-phy-id001b.b031
-> +
-> +    then:
-> +      properties:
-> +        nxp,rmii-refclk-out:
-> +          type: boolean
-> +          description: |
+On Wed, 09 Oct 2024, Philipp Zabel <p.zabel@pengutronix.de> wrote:
+> On Mi, 2024-10-09 at 17:04 +0300, Jani Nikula wrote:
+>> The imx.h header does not forward declare the types it uses, and the
+>> header is not self-contained. Fix it.
+>> 
+>> Fixes: cc3e8a216d6b ("drm/imx: add internal bridge handling display-timings DT node")
+>> Cc: Philipp Zabel <p.zabel@pengutronix.de>
+>> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+>> Cc: imx@lists.linux.dev
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+>
+> Thank you,
+>
+> Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
 
-Don't need '|' if no formatting.
+Thanks, pushed to drm-misc-next.
 
-> +            Enable 50MHz RMII reference clock output on REF_CLK pin. This
-> +            property is only applicable to nxp-c45-tja11xx driver.
+>
+> regards
+> Philipp
 
-Reword this to not be about some driver.
-
-> +
->  patternProperties:
->    "^ethernet-phy@[0-9a-f]+$":
->      type: object
-> -- 
-> 2.34.1
-> 
+-- 
+Jani Nikula, Intel
