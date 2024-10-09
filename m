@@ -1,75 +1,128 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63EA1E49F
-	for <imx@lists.linux.dev>; Wed,  9 Oct 2024 01:56:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2348E10FF
+	for <imx@lists.linux.dev>; Wed,  9 Oct 2024 03:50:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728438972; cv=none; b=M3L77nC+PyotTxYUzm/A5xH6h9CUKbtcnBD5xSSx9AWcLCnVagOPsrmx90Yj0F8JZsiseWXDNVa//enG5H57RUX5SAwpsMSci5cWSY3kJGbdEJyq9l7zAKPP0xujMR8qG47WJ1bf56NqP9zidAxxWtXK7Ir2U8W/seVGZTbLHBQ=
+	t=1728445819; cv=none; b=AURWcRLGsI3JPVoHr1n0o3FUSSiGlOcbOg89s4R/nIpc0hA0lOkGBPjw0CRlCRNW2yWbjvLsO9wAqg8pl4lHm/2sD5xJsO8bLa5xsq0jXHnl4Rdtoj85BMmi5FwOIZAXJPTvNMgiEmDC9Fqu8ZydV1AHtdi+eBZ58eqvRuUdMmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728438972; c=relaxed/simple;
-	bh=+skyX18Cw/Mk9hJ3nJ7IAFqG3N0Qrlo3+F072XVLLOI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gOqkCglT/uKkFUlRAvt0ovh02I9fomweo7r+3T1YGAZleFBf1jUWAn0BpYKm2XhK2+1xv4krWWETZuD9Vm2u96dEbOj9U8BphPY1Qm+V6yxGDdyZ3OUtkXL7SzcHfHJTp1HxFaESoHC7OC+10lAlnnI7KqwW7zQbwKUFnuLK3+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=ZgQdKmFr; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="ZgQdKmFr"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id C7544890A9;
-	Wed,  9 Oct 2024 03:56:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1728438969;
-	bh=foI8pHzGkBAVELbTQPq3v4rUIZ60X3ygQWrpfbKRFmg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZgQdKmFrPp2tX1f0mxzJuZO9GmAdxGd24n4bGthoBke6g2sZdA0CPa/jrRowX5WCf
-	 +8rav+Q20u/DNPaPcHa80Ulyr+UAZ/MwZWP6z26n2KzlG+amnbpvvyQXgOBpIIUGj7
-	 uPPVNNCFNbhuWFwx0Uc/4Rc62Y6xuLlLAmHeVApPO0b+jiZ6RqXBMQskeY5BA8cDQT
-	 KDCVhEgLD8ML+vu8XzYh32W/zIRRfGFnEUj/Z3LIu8eMl2zRNMpoF6LBn4p8WZwgax
-	 VCV851hpn6Ji4DMVyBjsbCsRoNtI4Es5vsIV8AivzmysP9WcC/aItdWKIBG74V6S/q
-	 borbxpd3+lEjw==
-Message-ID: <41cc47bd-f18f-463b-a0dc-843088ecf91e@denx.de>
-Date: Wed, 9 Oct 2024 03:55:35 +0200
+	s=arc-20240116; t=1728445819; c=relaxed/simple;
+	bh=RsLBSffGM2Eu0Txsa+zkfPa3ino/gDkNdPh8ud2n3sg=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=RfdcBL6gK02O3mm5+47jhBSG/pCVBDbto2ZF4rTjRDrTJvDz/L3WlEVfu0NdBBdYwegbI303HFARvzctO4GxfvmqP0T69h3qGHZYjnXKNWRhtoHjxfYGpLuqnSBNg2VgNg0nLOZpogJxzjFnhhFNp+4eNGvpMgeBO7Yl2xiPyDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 5C8BF200BBB;
+	Wed,  9 Oct 2024 05:50:15 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 1D2D6200083;
+	Wed,  9 Oct 2024 05:50:15 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 4C448183DC03;
+	Wed,  9 Oct 2024 11:50:13 +0800 (+08)
+From: Richard Zhu <hongxing.zhu@nxp.com>
+To: vkoul@kernel.org,
+	kishon@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	festevam@gmail.com,
+	Frank.Li@nxp.com,
+	marcel.ziswiler@toradex.com
+Cc: linux-phy@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	kernel@pengutronix.de,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] phy: freescale: imx8m-pcie: Do CMN_RST just before PHY PLL lock check
+Date: Wed,  9 Oct 2024 11:25:03 +0800
+Message-Id: <1728444303-32416-1-git-send-email-hongxing.zhu@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 1/1] pwm: imx27: workaround of the pwm output bug when
- decrease the duty cycle
-To: Frank Li <Frank.Li@nxp.com>, u.kleine-koenig@baylibre.com
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, festevam@gmail.com,
- francesco@dolcini.it, imx@lists.linux.dev, jun.li@nxp.com,
- kernel@pengutronix.de, krzk+dt@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-pwm@vger.kernel.org, p.zabel@pengutronix.de, pratikmanvar09@gmail.com,
- robh@kernel.org, s.hauer@pengutronix.de, shawnguo@kernel.org,
- xiaoning.wang@nxp.com
-References: <20241008194123.1943141-1-Frank.Li@nxp.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <20241008194123.1943141-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
 
-On 10/8/24 9:41 PM, Frank Li wrote:
+When enable initcall_debug together with higher debug level below.
+CONFIG_CONSOLE_LOGLEVEL_DEFAULT=9
+CONFIG_CONSOLE_LOGLEVEL_QUIET=9
+CONFIG_MESSAGE_LOGLEVEL_DEFAULT=7
 
-[...]
+The initialization of i.MX8MP PCIe PHY might be timeout failed randomly.
+To fix this issue, adjust the sequence of the resets refer to the power
+up sequence listed below.
 
-> +	c = clkrate * 1500;
-> +	do_div(c, NSEC_PER_SEC);
-> +
-> +	local_irq_save(flags);
-> +	val = FIELD_GET(MX3_PWMSR_FIFOAV, readl_relaxed(imx->mmio_base + MX3_PWMSR));
-> +
-> +	if (duty_cycles < imx->duty_cycle && (cr & MX3_PWMCR_EN)) {
+i.MX8MP PCIe PHY power up sequence:
+                          /---------------------------------------------
+1.8v supply     ---------/
+                    /---------------------------------------------------
+0.8v supply     ---/
 
-I think you can use state->enabled instead of (cr & MX3_PWMCR_EN).
+                ---\ /--------------------------------------------------
+                    X        REFCLK Valid
+Reference Clock ---/ \--------------------------------------------------
+                             -------------------------------------------
+                             |
+i_init_restn    --------------
+                                    ------------------------------------
+                                    |
+i_cmn_rstn      ---------------------
+                                         -------------------------------
+                                         |
+o_pll_lock_done --------------------------
+
+Logs:
+imx6q-pcie 33800000.pcie: host bridge /soc@0/pcie@33800000 ranges:
+imx6q-pcie 33800000.pcie:       IO 0x001ff80000..0x001ff8ffff -> 0x0000000000
+imx6q-pcie 33800000.pcie:      MEM 0x0018000000..0x001fefffff -> 0x0018000000
+probe of clk_imx8mp_audiomix.reset.0 returned 0 after 1052 usecs
+probe of 30e20000.clock-controller returned 0 after 32971 usecs
+phy phy-32f00000.pcie-phy.4: phy poweron failed --> -110
+probe of 30e10000.dma-controller returned 0 after 10235 usecs
+imx6q-pcie 33800000.pcie: waiting for PHY ready timeout!
+dwhdmi-imx 32fd8000.hdmi: Detected HDMI TX controller v2.13a with HDCP (samsung_dw_hdmi_phy2)
+imx6q-pcie 33800000.pcie: probe with driver imx6q-pcie failed with error -110
+
+Fixes: dce9edff16ee ("phy: freescale: imx8m-pcie: Add i.MX8MP PCIe PHY support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+---
+ drivers/phy/freescale/phy-fsl-imx8m-pcie.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+index 8e7834e84af8c..694a6e6e5eafb 100644
+--- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
++++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+@@ -218,11 +218,6 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
+ 		       imx8_phy->base + IMX8MP_PCIE_PHY_TRSV_REG206);
+ 	}
+ 
+-	/* Do the PHY common block reset */
+-	regmap_update_bits(imx8_phy->iomuxc_gpr, IOMUXC_GPR14,
+-			   IMX8MM_GPR_PCIE_CMN_RST,
+-			   IMX8MM_GPR_PCIE_CMN_RST);
+-
+ 	switch (imx8_phy->drvdata->variant) {
+ 	case IMX8MP:
+ 		reset_control_deassert(imx8_phy->perst);
+@@ -233,6 +228,11 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
+ 		break;
+ 	}
+ 
++	/* Do the PHY common block reset */
++	regmap_update_bits(imx8_phy->iomuxc_gpr, IOMUXC_GPR14,
++			   IMX8MM_GPR_PCIE_CMN_RST,
++			   IMX8MM_GPR_PCIE_CMN_RST);
++
+ 	/* Polling to check the phy is ready or not. */
+ 	ret = readl_poll_timeout(imx8_phy->base + IMX8MM_PCIE_PHY_CMN_REG075,
+ 				 val, val == ANA_PLL_DONE, 10, 20000);
+-- 
+2.37.1
+
