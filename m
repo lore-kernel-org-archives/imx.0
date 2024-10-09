@@ -1,65 +1,44 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495D9199E8C
-	for <imx@lists.linux.dev>; Wed,  9 Oct 2024 14:47:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AAE3537FF;
+	Wed,  9 Oct 2024 15:00:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728485245; cv=none; b=DBUtpO4N7pjyUFGs1BpzS2/+ORM7ctyki6M+eIXJm2ceuMDYeu7YCVdPKCcQV0TwSB+E9vgsfntLsA5q5wnZnLKR4XjN4cT3rHVc5giRn0VIxeHSJ0F1BaVMXdGrTBCISPIhEl+1T/lRRGJr6LpcNBYWTgdsWNQdNDTfQ6DHToc=
+	t=1728486024; cv=none; b=SNmtSb47fhvRr3fWkFPBSKya/HfPLTtO0M0+1sacPR/pSbTXTaDR8Ux7eAGOy5QeSrqFy+YW5uqO5WJEHtakjPL84F2PUIBI/w0GBaBgGq/MQS2jXH4ABiHpHMwS4O82GrJfTif8/9hDm6BuDNzseSrtVb6RQqhOU50gziQDJCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728485245; c=relaxed/simple;
-	bh=VJTC2DOZnhmJ68sp/tmxqdeKde2Mhxf3GCsNUffgoW0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=rFB8F75Ihk7mF/H3d0QxmtPJIXTO6sXxTUyOhLhlmSz59nR6zi7vCGc9yYpBwlminX6AKuRdlpVfvx1xOw3d6C0CBwApoMjdrBgdcEMlboQAVIEiNarlXYT1CLlrJhJbu+9zbhY9fGnJ71oPjD8WspuTQ4to3e+OsjC9rBFHQGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aVFy5Nzd; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1728486024; c=relaxed/simple;
+	bh=D0XqC48xeaaF/Gw7gpqXxx4RqDkm+MnppecvEnCEpig=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h9GxapzJwEZN2kdDZc6JBhmWmnLAegS4Q/ta7Ds+oEmGyQ1J5H5Y0PDSgpIYo9x4uYbjM2p02ImxPeBpVVTHNsZ5twGYj5enZoMfAB7UKyMsqYXDYM1vHMnsVWaSQ3Y8X3njtLGvG+g5Jrg3pDQ6Pf3wNSzv8+YtjoDArQLbeGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qW6eSMY6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aVFy5Nzd"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-42cbb08a1a5so70552935e9.3
-        for <imx@lists.linux.dev>; Wed, 09 Oct 2024 07:47:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728485241; x=1729090041; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=d9rcGsQ0+uAasDNvLrvHwFyI9WspFhavO2dzQQO4dB0=;
-        b=aVFy5NzdeqtjRJXz8XB6I4aa0V9mXcGkARzfQ8F9ugGEt5hEDfKufhmn1ULPwVIkHq
-         hhITpQbg7fV6jxHntpkqSu+KE0rOKCUoceb+kv9+kaIWExK09XwMUabHKUb1dAetvKN8
-         2I+Qp7kEBK8na5buoQsmyalXp/R9EH0dLL++4yw2zv2Nyakj1XkHF0Jsb8OmNxEVa9wR
-         HiMq4P94yKu8sSSUqgdVwfjnKDtlPOFQkhg7lmycY75l3o21Mqp9tJnFV72a8Su186nI
-         JB6dw/RQWWBT5108vlrTGELRKBSNrMFXNudEb/Bg3S57SpkRf2bcY7AEpokiZfwE6+Lk
-         fdcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728485241; x=1729090041;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=d9rcGsQ0+uAasDNvLrvHwFyI9WspFhavO2dzQQO4dB0=;
-        b=d30wNp8W0UCa8FJ1CLQLrIQ8m5GBfGPURvct3jy3Wgfi5t/pjnRlXN9O2U3ri/8IOa
-         FJk0c1X9QjoD+buUQUN/TPS4qOwE5sXWcOTBEeNOyMpDfCZDNxxGUeWqysGgx07F37cu
-         68WNdaW01yRZX8kpIndk9294tfDuwDOE/AombQMWexshZs/CGVTLoPedEk/hioOuPFOP
-         Wbu9zyRHBQ5yR89UUnHKtGazq3SQQ8N3ypElcD7UXCy4U9YS11CSKDclvx72XnQDSlNs
-         mBQxULdHbeGMJJ79b9U8cxPujPBdwbfGFkKJ+LX3UisJwy6+GreidGDII981N98yu03Z
-         y+0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWEP7dEMcxKy3aIhJhuuMWvBITFeXEv/9Jje+i8nsFYHhhP4xlMc3VeZcsRCo2JOryTcjo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxznEKLEBBrVYTKIAuyy+DaCI7hcJuXEOk5SOo3yyZOCdimEvhn
-	QwvqYQHf4OxgyZIsmDWntuoNvp/dCfReHTZ2Bv6JiufqOWdd06woIu+2hv1FyO4=
-X-Google-Smtp-Source: AGHT+IGZ5bNiOSMx5Q1Ih7x+axzAHoaTvA3GlxDEdqAHZC/EUOPneC6RziV3TtFWCRrpAlfq8o5CGg==
-X-Received: by 2002:a05:600c:1c1f:b0:42c:b74c:d8c3 with SMTP id 5b1f17b1804b1-430d7488700mr23141805e9.32.1728485241387;
-        Wed, 09 Oct 2024 07:47:21 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-430ccf31a7esm23151485e9.9.2024.10.09.07.47.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Oct 2024 07:47:20 -0700 (PDT)
-Date: Wed, 9 Oct 2024 17:47:16 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: oe-kbuild@lists.linux.dev, Xu Yang <xu.yang_2@nxp.com>,
-	peter.chen@kernel.org, gregkh@linuxfoundation.org
-Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev, linux-usb@vger.kernel.org,
-	imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH 2/2] usb: chipidea: udc: create bounce buffer for problem
- sglist entries if possible
-Message-ID: <e8601166-8da4-4698-8855-4f58b36272b6@stanley.mountain>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qW6eSMY6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EBD4C4CEC3;
+	Wed,  9 Oct 2024 15:00:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728486024;
+	bh=D0XqC48xeaaF/Gw7gpqXxx4RqDkm+MnppecvEnCEpig=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qW6eSMY6s7/qAll04dwOz/7yMIlizS8cRC64xwYK/Sza+B2Y00qXklitkmq0kG2+X
+	 9PR6K2OzUIIY+RbX1D081p3egbuR4lGlmviKUQ8r8Mew2t5FZx1vH+SNdq5kAvy1Wl
+	 hcv1Ehk49H2IdeF4kp3bzm3J/pHClJeN7qgv8Vxue900lhJ1ZvXolRgyAm+d/f1XWn
+	 IY0mXmkaj/4nL+SwkcyEDFo+QxF+h6U7tHpf6nJtV6hdUa2sI76OkGZImanWKzw+8F
+	 spwEkdsZFy0AQz8lj2/UYJ3SGOEWjheJm/6qH6BlxImUtp89uMh07CKC6XoX+HHMxX
+	 kyGHUlblJn6Vg==
+Date: Wed, 9 Oct 2024 17:00:18 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, l.stach@pengutronix.de,
+	devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kernel@pengutronix.de, imx@lists.linux.dev
+Subject: Re: [PATCH v5 1/4] dt-bindings: imx6q-pcie: Add reg-name "dbi2" and
+ "atu" for i.MX8M PCIe Endpoint
+Message-ID: <ZwaagtTx1ar1CW4V@ryzen.lan>
+References: <1723534943-28499-1-git-send-email-hongxing.zhu@nxp.com>
+ <1723534943-28499-2-git-send-email-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -68,78 +47,86 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240912045150.915573-2-xu.yang_2@nxp.com>
+In-Reply-To: <1723534943-28499-2-git-send-email-hongxing.zhu@nxp.com>
 
-Hi Xu,
+On Tue, Aug 13, 2024 at 03:42:20PM +0800, Richard Zhu wrote:
+> Add reg-name: "dbi2", "atu" for i.MX8M PCIe Endpoint.
+> 
+> For i.MX8M PCIe EP, the dbi2 and atu addresses are pre-defined in the
+> driver. This method is not good.
+> 
+> In commit b7d67c6130ee ("PCI: imx6: Add iMX95 Endpoint (EP) support"),
+> Frank suggests to fetch the dbi2 and atu from DT directly. This commit is
+> preparation to do that for i.MX8M PCIe EP.
+> 
+> These changes wouldn't break driver function. When "dbi2" and "atu"
+> properties are present, i.MX PCIe driver would fetch the according base
+> addresses from DT directly. If only two reg properties are provided, i.MX
+> PCIe driver would fall back to the old method.
+> 
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml  | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
+> index a06f75df8458..84ca12e8b25b 100644
+> --- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
+> +++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
+> @@ -65,12 +65,14 @@ allOf:
+>      then:
+>        properties:
+>          reg:
+> -          minItems: 2
+> -          maxItems: 2
+> +          minItems: 4
+> +          maxItems: 4
 
-kernel test robot noticed the following build warnings:
+Now it seems like this patch has already been picked up,
+but how is this not breaking DT backwards compatibility?
 
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+You are here increasing minItems, which means that an older DT
+should now fail to validate using the new schema?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Xu-Yang/usb-chipidea-udc-create-bounce-buffer-for-problem-sglist-entries-if-possible/20240912-125251
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
-patch link:    https://lore.kernel.org/r/20240912045150.915573-2-xu.yang_2%40nxp.com
-patch subject: [PATCH 2/2] usb: chipidea: udc: create bounce buffer for problem sglist entries if possible
-config: i386-randconfig-141-20240914 (https://download.01.org/0day-ci/archive/20240914/202409141707.TOsGfePE-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+I thought that it was only acceptable to add new optional properties
+after the DT binding has been accepted.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202409141707.TOsGfePE-lkp@intel.com/
+What am I missing?
 
-New smatch warnings:
-drivers/usb/chipidea/udc.c:704 _hardware_enqueue() error: uninitialized symbol 'bounced_size'.
 
-vim +/bounced_size +704 drivers/usb/chipidea/udc.c
+If the specific compatible isn't used by any DTS in a released kernel,
+then I think that the commit log should have clearly stated so,
+and explained that that is the reason why it is okay to break DT backwards
+compatibility.
 
-8e22978c57087a drivers/usb/chipidea/udc.c       Alexander Shishkin 2013-06-24  671  static int _hardware_enqueue(struct ci_hw_ep *hwep, struct ci_hw_req *hwreq)
-aa69a8093ff985 drivers/usb/gadget/ci13xxx_udc.c David Lopo         2008-11-17  672  {
-8e22978c57087a drivers/usb/chipidea/udc.c       Alexander Shishkin 2013-06-24  673  	struct ci_hdrc *ci = hwep->ci;
-0e6ca1998e4c80 drivers/usb/gadget/ci13xxx_udc.c Pavankumar Kondeti 2011-02-18  674  	int ret = 0;
-cc9e6c495b0a37 drivers/usb/chipidea/udc.c       Michael Grzeschik  2013-06-13  675  	struct td_node *firstnode, *lastnode;
-91db40933ca942 drivers/usb/chipidea/udc.c       Xu Yang            2024-09-12  676  	unsigned int bounced_size;
-91db40933ca942 drivers/usb/chipidea/udc.c       Xu Yang            2024-09-12  677  	struct scatterlist *sg;
-aa69a8093ff985 drivers/usb/gadget/ci13xxx_udc.c David Lopo         2008-11-17  678  
-aa69a8093ff985 drivers/usb/gadget/ci13xxx_udc.c David Lopo         2008-11-17  679  	/* don't queue twice */
-2dbc5c4c831418 drivers/usb/chipidea/udc.c       Alexander Shishkin 2013-06-13  680  	if (hwreq->req.status == -EALREADY)
-aa69a8093ff985 drivers/usb/gadget/ci13xxx_udc.c David Lopo         2008-11-17  681  		return -EALREADY;
-aa69a8093ff985 drivers/usb/gadget/ci13xxx_udc.c David Lopo         2008-11-17  682  
-2dbc5c4c831418 drivers/usb/chipidea/udc.c       Alexander Shishkin 2013-06-13  683  	hwreq->req.status = -EALREADY;
-aa69a8093ff985 drivers/usb/gadget/ci13xxx_udc.c David Lopo         2008-11-17  684  
-91db40933ca942 drivers/usb/chipidea/udc.c       Xu Yang            2024-09-12  685  	if (hwreq->req.num_sgs && hwreq->req.length) {
-91db40933ca942 drivers/usb/chipidea/udc.c       Xu Yang            2024-09-12  686  		ret = sglist_get_invalid_entry(ci->dev->parent, hwep->dir,
-91db40933ca942 drivers/usb/chipidea/udc.c       Xu Yang            2024-09-12  687  					&hwreq->req);
-91db40933ca942 drivers/usb/chipidea/udc.c       Xu Yang            2024-09-12  688  		if (ret < hwreq->req.num_sgs) {
-91db40933ca942 drivers/usb/chipidea/udc.c       Xu Yang            2024-09-12  689  			ret = sglist_do_bounce(hwreq, ret, hwep->dir == TX,
-91db40933ca942 drivers/usb/chipidea/udc.c       Xu Yang            2024-09-12  690  					&bounced_size);
-91db40933ca942 drivers/usb/chipidea/udc.c       Xu Yang            2024-09-12  691  			if (ret)
-91db40933ca942 drivers/usb/chipidea/udc.c       Xu Yang            2024-09-12  692  				return ret;
-91db40933ca942 drivers/usb/chipidea/udc.c       Xu Yang            2024-09-12  693  		}
-91db40933ca942 drivers/usb/chipidea/udc.c       Xu Yang            2024-09-12  694  	}
 
-bounced_size not initialized on else path
+Kind regards,
+Niklas
 
-91db40933ca942 drivers/usb/chipidea/udc.c       Xu Yang            2024-09-12  695  
-aeb78cda51005f drivers/usb/chipidea/udc.c       Arnd Bergmann      2017-03-13  696  	ret = usb_gadget_map_request_by_dev(ci->dev->parent,
-aeb78cda51005f drivers/usb/chipidea/udc.c       Arnd Bergmann      2017-03-13  697  					    &hwreq->req, hwep->dir);
-5e0aa49ec61e88 drivers/usb/chipidea/udc.c       Alexander Shishkin 2012-05-11  698  	if (ret)
-5e0aa49ec61e88 drivers/usb/chipidea/udc.c       Alexander Shishkin 2012-05-11  699  		return ret;
-5e0aa49ec61e88 drivers/usb/chipidea/udc.c       Alexander Shishkin 2012-05-11  700  
-91db40933ca942 drivers/usb/chipidea/udc.c       Xu Yang            2024-09-12  701  	if (hwreq->sgt.sgl) {
-91db40933ca942 drivers/usb/chipidea/udc.c       Xu Yang            2024-09-12  702  		/* We've mapped a bigger buffer, now recover the actual size */
-91db40933ca942 drivers/usb/chipidea/udc.c       Xu Yang            2024-09-12  703  		sg = sg_last(hwreq->req.sg, hwreq->req.num_sgs);
-91db40933ca942 drivers/usb/chipidea/udc.c       Xu Yang            2024-09-12 @704  		sg_dma_len(sg) = min(sg_dma_len(sg), bounced_size);
-                                                                                                                                     ^^^^^^^^^^^^
-
-91db40933ca942 drivers/usb/chipidea/udc.c       Xu Yang            2024-09-12  705  	}
-91db40933ca942 drivers/usb/chipidea/udc.c       Xu Yang            2024-09-12  706  
-e48aa1eb443f80 drivers/usb/chipidea/udc.c       Peter Chen         2020-02-21  707  	if (hwreq->req.num_mapped_sgs)
-e48aa1eb443f80 drivers/usb/chipidea/udc.c       Peter Chen         2020-02-21  708  		ret = prepare_td_for_sg(hwep, hwreq);
-e48aa1eb443f80 drivers/usb/chipidea/udc.c       Peter Chen         2020-02-21  709  	else
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+>          reg-names:
+>            items:
+>              - const: dbi
+>              - const: addr_space
+> +            - const: dbi2
+> +            - const: atu
+>  
+>    - if:
+>        properties:
+> @@ -129,8 +131,11 @@ examples:
+>  
+>      pcie_ep: pcie-ep@33800000 {
+>        compatible = "fsl,imx8mp-pcie-ep";
+> -      reg = <0x33800000 0x000400000>, <0x18000000 0x08000000>;
+> -      reg-names = "dbi", "addr_space";
+> +      reg = <0x33800000 0x100000>,
+> +            <0x18000000 0x8000000>,
+> +            <0x33900000 0x100000>,
+> +            <0x33b00000 0x100000>;
+> +      reg-names = "dbi", "addr_space", "dbi2", "atu";
+>        clocks = <&clk IMX8MP_CLK_HSIO_ROOT>,
+>                 <&clk IMX8MP_CLK_HSIO_AXI>,
+>                 <&clk IMX8MP_CLK_PCIE_ROOT>;
+> -- 
+> 2.37.1
+> 
