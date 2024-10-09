@@ -1,71 +1,42 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5CE1922EB
-	for <imx@lists.linux.dev>; Wed,  9 Oct 2024 11:51:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4253192585;
+	Wed,  9 Oct 2024 11:54:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728474707; cv=none; b=UuNVFJ+hChXPuUExcaOdj3fxCuKu822QyJMfge92nLCcR3olmhU6ZUtT/dETWoujwLdD+7D3Fl6m3K6x+3Rggijg5c0a7zWvI8Vbv7WMKFBTjb6HaQGRXwyz69N7I9nXp0/AZmE+BdEfyukx7/3tKNA8pGBFjmMuQYRcHhnJnys=
+	t=1728474893; cv=none; b=U3ycTTcAwOLWMZwgj8DKFPEkQLLpNC+EvuXL5zZYtIgZsKR2SA2kpA9aWL70Uk7yzkCHnT49Fe0fmaGXwYGNMGwDVmv7Qs9qLgcfWJTuCn0IxqJbY+c5PF7MgWHhs0laMiJeGce072ohmhgefoNR95JVekD19vUTY6GOYQ9QhHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728474707; c=relaxed/simple;
-	bh=7+eISHNu4uiQ47pDt/DSf8ldSBnlnXKbXyoRYwTIlV4=;
+	s=arc-20240116; t=1728474893; c=relaxed/simple;
+	bh=6XboQiBiqtAshC35gbGlqSFQvI3cs+VP6vX2LqYcdAU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KeRytNuWMnpz072IEi1EdZcZXdM0w5aWJ15W5uFWsALDZXwsrEj/ZSYFXItigzVkj0baRL8cuQLx+UnZWvyEgWq7y3pRNxCKwmmUIZLqfUii0nEuwU0Z2Br7sh78rd1WZF/pvfvnpHtmBIHLGyVN3tiw6Qtl/YK950816POhMp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=r0Bn4Asn; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=n2m1qtHRjhkSxe59DZky1wKjqq6xhA5hSskpoDywtDwIlXm0y6wwn3FKlBpqa30ZvLVlypJ2oZCuUPAk77NIfWYn401Ttz8lwg21Xcz8nTOaYzwPYSd7RDPPdafaHdVj2mgrAU6fbAplrzZKHgpozv98rJXeUltA82PpJ9kMMgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QJyOhibx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="r0Bn4Asn"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a9963e47b69so364692866b.1
-        for <imx@lists.linux.dev>; Wed, 09 Oct 2024 04:51:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728474704; x=1729079504; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q6jKWjRvRRcJdMU7TrSrOqImZ9Mn58A79NvUZszvi6E=;
-        b=r0Bn4AsnN1woKpc9lcQb6XkZaCatNkg5Sjo+VhyJyvisVvSuLeseyxy0/w7fXGFrej
-         AoYmFjI47O9+n+3iAmQuT4N76HQLi5P9RDJqs9Ly4DEWe8ZzQjgBwJvx/CJBJ1PuT9VM
-         kbvf9VdkujHEHhB+QCrv5UjfcNmxMtghBHUu+o71tFAzsvnRMKOPDmlwCjK6cwHIZAeC
-         LMidPqNMVIXUmnNdRwUD+zgvqXWyCqbo7cS4k3csAupewkFv+szo4lZoUT9Mg7/EO32S
-         PEkgPhSI3va9IqRt+b61O1jNeRsAMCigvTFP6cD1MfKStgSbRetbQ8GCNHoysDKOf75x
-         vZSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728474704; x=1729079504;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q6jKWjRvRRcJdMU7TrSrOqImZ9Mn58A79NvUZszvi6E=;
-        b=omgHoytC1CvYf7t77n/2zNxlPDcPwss2HvH+W1CtvXU85UddZm6E7S42npcdbe0EGO
-         1FwI0+qkL6FwaDDhIfR+fOoIYQn0NpBZC2MzIPPAcYcKgNnR1BvOSE9jE/mhUaqzJTmy
-         yIz9QhRIOFVHIw6qKRgW6vc1MrHmqy+UKTe96uym1q5nCe2baliCyzqgMbJxSGadbpd3
-         8MTmiAJ1eYUBrMiVhDdmdYXrRToi9WwexmS9NTDWhYUZRZtTBSCkK2VkqfKx4k3/zcEE
-         aBhAjCqqkkOCB46fY3aa4PgfftGfbkSXBhbZlfiuqDmkOQs7tv6IR/EiWWATtPTERahH
-         Rxgw==
-X-Forwarded-Encrypted: i=1; AJvYcCVrfLHhOmxpJYQEFwX1SyY9bK0ll8jvVdRhlEUen6uVwh2l5xMTjL0pG98HfePMhLCtZZU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwMPTc//n/IPUuUWWphp6byi0jt+QhVyCWenqhpqCRXd7I5a14t
-	ScC6zbjRYH3VVciwGrSo9MNlezk85c5+8t8q2pYKFc+pNtACPffkoILHcEgLjOc=
-X-Google-Smtp-Source: AGHT+IGKpe5RJdRvKaNKGeWlJU8yuhUR86qwyFDbVPAhlwFfcx+fGtxwpK017I4wKqBnPOdRSWgB4w==
-X-Received: by 2002:a17:907:3da7:b0:a99:451b:38fe with SMTP id a640c23a62f3a-a998d174df2mr179992766b.26.1728474703666;
-        Wed, 09 Oct 2024 04:51:43 -0700 (PDT)
-Received: from linaro.org ([82.77.84.93])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a995668f4b6sm396323966b.48.2024.10.09.04.51.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Oct 2024 04:51:43 -0700 (PDT)
-Date: Wed, 9 Oct 2024 14:51:41 +0300
-From: Abel Vesa <abel.vesa@linaro.org>
-To: Pengfei Li <pengfei.li_1@nxp.com>
-Cc: krzk+dt@kernel.org, robh@kernel.org, abelvesa@kernel.org,
-	mturquette@baylibre.com, sboyd@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, ping.bai@nxp.com,
-	ye.li@nxp.com, peng.fan@nxp.com, aisheng.dong@nxp.com,
-	frank.li@nxp.com, kernel@pengutronix.de, festevam@gmail.com,
-	linux-clk@vger.kernel.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QJyOhibx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7496C4CEC5;
+	Wed,  9 Oct 2024 11:54:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728474893;
+	bh=6XboQiBiqtAshC35gbGlqSFQvI3cs+VP6vX2LqYcdAU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QJyOhibxLOBg5vY6YRhMNNS7Vtu28OgJ1B5TAucH0v5w/5hu3fZp1jx28xA7hca2S
+	 nGJrPlv6cjp4/XJyPBxP/Jsf13Mp8BHfjhRo4WddQ6JxOXdzWoyn8HoqOGda9GOwBR
+	 6u9y+oQ2RaqVDSlWcjh7fxhkRTK9fRCCmvIjykvMYRMBZm3gKhh7osMfu5Egb4Aeu7
+	 lwg4HxAE+3CLvOFhJ7isxMt7ys0qTL12BMTse52t21quhOtTaWOLIo4FaoqvtFkKJa
+	 jmGd97mlRapVEJ9T5CKQw46M4zhbErRpBEXYUHU5+4qHLasx9HT7w3O45gI0ZlP9wW
+	 m43x9BcUVXqCQ==
+Date: Wed, 9 Oct 2024 12:54:48 +0100
+From: Simon Horman <horms@kernel.org>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, richardcochran@gmail.com, csokas.bence@prolan.hu,
+	shenwei.wang@nxp.com, xiaoning.wang@nxp.com, linux@roeck-us.net,
+	imx@lists.linux.dev, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] clk: imx93: Move IMX93_CLK_END macro to clk driver
-Message-ID: <ZwZuTWspV54Pn0GN@linaro.org>
-References: <20240627082426.394937-1-pengfei.li_1@nxp.com>
- <20240627082426.394937-2-pengfei.li_1@nxp.com>
+Subject: Re: [PATCH net] net: fec: don't save PTP state if PTP is unsupported
+Message-ID: <20241009115448.GJ99782@kernel.org>
+References: <20241008061153.1977930-1-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -74,48 +45,56 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240627082426.394937-2-pengfei.li_1@nxp.com>
+In-Reply-To: <20241008061153.1977930-1-wei.fang@nxp.com>
 
-On 24-06-27 16:24:25, Pengfei Li wrote:
-> IMX93_CLK_END was previously defined in imx93-clock.h to indicate
-> the number of clocks, but it is not part of the ABI, so it should
-> be moved to clk driver.
+On Tue, Oct 08, 2024 at 02:11:53PM +0800, Wei Fang wrote:
+> Some platforms (such as i.MX25 and i.MX27) do not support PTP, so on
+> these platforms fec_ptp_init() is not called and the related members
+> in fep are not initialized. However, fec_ptp_save_state() is called
+> unconditionally, which causes the kernel to panic. Therefore, add a
+> condition so that fec_ptp_save_state() is not called if PTP is not
+> supported.
 > 
-> Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
+> Fixes: a1477dc87dc4 ("net: fec: Restart PPS after link state change")
+> Reported-by: Guenter Roeck <linux@roeck-us.net>
+> Closes: https://lore.kernel.org/lkml/353e41fe-6bb4-4ee9-9980-2da2a9c1c508@roeck-us.net/
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
 > ---
+>  drivers/net/ethernet/freescale/fec_main.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 > 
-> Notes:
->     Change for v2:
->     - Use pre-processor define to simplify code.
-> 
->  drivers/clk/imx/clk-imx93.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/clk/imx/clk-imx93.c b/drivers/clk/imx/clk-imx93.c
-> index c6a9bc8ecc1f..c8b65146e76e 100644
-> --- a/drivers/clk/imx/clk-imx93.c
-> +++ b/drivers/clk/imx/clk-imx93.c
-> @@ -15,6 +15,8 @@
+> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+> index 60fb54231ead..1b55047c0237 100644
+> --- a/drivers/net/ethernet/freescale/fec_main.c
+> +++ b/drivers/net/ethernet/freescale/fec_main.c
+> @@ -1077,7 +1077,8 @@ fec_restart(struct net_device *ndev)
+>  	u32 rcntl = OPT_FRAME_SIZE | 0x04;
+>  	u32 ecntl = FEC_ECR_ETHEREN;
 >  
->  #include "clk.h"
+> -	fec_ptp_save_state(fep);
+> +	if (fep->bufdesc_ex)
+> +		fec_ptp_save_state(fep);
+
+Hi,
+
+I am wondering if you considered adding this check to (the top of)
+fec_ptp_save_state. It seems like it would both lead to a smaller
+change and be less error-prone to use.
+
 >  
-> +#define IMX93_CLK_END 202
-> +
-
-TBH, I don't like this. And I still don't understand the reason.
-
-Where are the clocks you want to add ?
-
-And why wouldn't it be OK to just keep this in the bindings header even
-if you need to add more clocks ?
-
-For the moment, I don't see the value of this change.
-
-Sorry, but NACK.
-
->  enum clk_sel {
->  	LOW_SPEED_IO_SEL,
->  	NON_IO_SEL,
+>  	/* Whack a reset.  We should wait for this.
+>  	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
+> @@ -1340,7 +1341,8 @@ fec_stop(struct net_device *ndev)
+>  			netdev_err(ndev, "Graceful transmit stop did not complete!\n");
+>  	}
+>  
+> -	fec_ptp_save_state(fep);
+> +	if (fep->bufdesc_ex)
+> +		fec_ptp_save_state(fep);
+>  
+>  	/* Whack a reset.  We should wait for this.
+>  	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
 > -- 
 > 2.34.1
+> 
 > 
