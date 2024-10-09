@@ -1,140 +1,277 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA9A191461;
-	Wed,  9 Oct 2024 09:53:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5787218DF8B
+	for <imx@lists.linux.dev>; Wed,  9 Oct 2024 09:55:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728467632; cv=none; b=X9R9Wqw+6kTuYqIyXbcaNlStRbBrMYfMta1RbFRA4aUGx2H/i9FWU2jFRUyUmoyOCSHeIkmC+bjC0ziZT/5fMDTachjaFsUtHPX406LVjPFS9pZriAOjYh4AglINIC+6JyLP19vYGPO2mV8NS63XAgWilD/TnUDzxTywIVFYAeo=
+	t=1728467753; cv=none; b=YJ2Q8omDI1fB+t+SRCOh8kQipa+9jGDs0lRBHR87JufI2MQbe7ryFBv/JWYbGH+21C75YFs2x6R2BZ8R91Ax2el6C8BM1J75wOFBcyJ/RU0HcG0vqsb4KIT8kK1wyo60PR8yrH59Do/RnSUcTnF9k/oyrK9PBxizu1ESMmGYVWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728467632; c=relaxed/simple;
-	bh=NIyPMmhdZjGAs7fBYKVzyddUl0tMwlIKJxqntEDOS0U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qVrD/Tt4LMPTQqUbQuuWc7+CpN5MP9k8jje8/q5FlIw/jgK56UT+GFO0T0ZL7KW729/hldnXEtqpcNj2a6iGwQsRcFeFehC83186tkwiv8FTR8TBwPgecEaFx/0ynRiwMn+mCSgVCP65oeK4DlkjdKelCQmGJThtpbMNULp9QPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KUe/1xJ5; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1728467753; c=relaxed/simple;
+	bh=eq5e+ixufpNf6HI4bCWJ60TojZW503IRWi5DhqrGor0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=OPruyqGVnh6NM+aMZ3sZ3Q1J6DBjtbpV5bQ8HjkAH8KYAEnkKnr3WYMDPOhhsokg0Nwnt1GtHa/5S3/fvteqMescrYiwZnxr5uzdF88pAUDb6NZwPYePtKi1TsGY8k2pb/gSBsv7hfhPTf2NbuItaIEQjubVOMMUiL62tlL8IzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=b4ac6qn0; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KUe/1xJ5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728467630; x=1760003630;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=NIyPMmhdZjGAs7fBYKVzyddUl0tMwlIKJxqntEDOS0U=;
-  b=KUe/1xJ5HdFIHVEzFOqY2wND0iAcOsFmA4hScwa5gUjiJVAnwSohUwKE
-   fJkKz0WCkQXBS+Ea4qC95J+Jhi1Dl8jYIHtPXhzCxYrIOV8uIBlA9yGzo
-   2CegD5nvlvtC+jH+UfYgRop7EWX5gqOqgT2DqaPtfJW27dqJ4B25G/6xM
-   ySUbZfFduM0t6Q0XxjficufUEkIfmgxpkdr9uSwgR8DpIEI0r2LSCvmuZ
-   wOdB4fhdrrloIrU4AAeWBo5Mr2HuH9Zg4w/vTfJTQ5q9qgldPd6brYI23
-   ayAMyjCQqqQol8dlDDuyApA+l9V6pJtiCTgXqBUEC8nq6Uw6wvNxiVjCj
-   Q==;
-X-CSE-ConnectionGUID: AkrugihmTV+2hbpL+ChfSw==
-X-CSE-MsgGUID: dQusL8fnQHSvyTSZcWTfzw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11219"; a="27649799"
-X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; 
-   d="scan'208";a="27649799"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 02:53:49 -0700
-X-CSE-ConnectionGUID: tMctLKAAQnSQz9R1a7sZow==
-X-CSE-MsgGUID: /L/cKijTS2CyMnLn+ctVzQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; 
-   d="scan'208";a="75789835"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 09 Oct 2024 02:53:45 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1syTO2-00094m-2v;
-	Wed, 09 Oct 2024 09:53:42 +0000
-Date: Wed, 9 Oct 2024 17:52:54 +0800
-From: kernel test robot <lkp@intel.com>
-To: Xu Yang <xu.yang_2@nxp.com>, vkoul@kernel.org, kishon@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, gregkh@linuxfoundation.org,
-	peter.chen@kernel.org, herve.codina@bootlin.com
-Cc: oe-kbuild-all@lists.linux.dev, linux-phy@lists.infradead.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-usb@vger.kernel.org,
-	jun.li@nxp.com
-Subject: Re: [PATCH v6 1/3] phy: fsl-imx8mq-usb: add tca function driver for
- imx95
-Message-ID: <202410091742.HgStY96T-lkp@intel.com>
-References: <20241008062744.2211539-1-xu.yang_2@nxp.com>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="b4ac6qn0"
+Received: from isaac-ThinkPad-T16-Gen-2.local (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 57679594;
+	Wed,  9 Oct 2024 11:54:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1728467646;
+	bh=eq5e+ixufpNf6HI4bCWJ60TojZW503IRWi5DhqrGor0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=b4ac6qn0PVte+Iw3UZSmOGc1rnnctfO/AksV0E/gtofia22hWkK20iG97h6O1WFSR
+	 6GxQwQNPYurzYQdAMGACtVL05L10ai2rd9CtD40KRCCYWMRpl2+gddnmbcKCBPOTlx
+	 mBfMKhAOGQCzz0CwVLyKyZfcjfkZHEOvSWy7tPQ0=
+Message-ID: <50f10a422dd3a7099e2e2724f9401dbae41ea529.camel@ideasonboard.com>
+Subject: Re: [PATCH] drm: lcdif: Use adjusted_mode .clock instead of
+ .crtc_clock
+From: Isaac Scott <isaac.scott@ideasonboard.com>
+To: Marek Vasut <marex@denx.de>, Alexander Stein
+	 <alexander.stein@ew.tq-group.com>, dri-devel@lists.freedesktop.org
+Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>, Fabio
+ Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>, "Lukas
+ F . Hartmann"	 <lukas@mntmn.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>,  Maxime Ripard <mripard@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Sascha Hauer	
+ <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Stefan Agner	
+ <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>,
+ imx@lists.linux.dev, 	kernel@dh-electronics.com,
+ linux-arm-kernel@lists.infradead.org, 	kieran.bingham@ideasonboard.com
+Date: Wed, 09 Oct 2024 10:55:38 +0100
+In-Reply-To: <84f505af-1066-4fcf-84b7-28c152c09b89@denx.de>
+References: <20240531202813.277109-1-marex@denx.de>
+	 <1897634.CQOukoFCf9@steina-w>
+	 <ab2eb32e-a458-4c9b-8324-27ccb00336c5@denx.de>
+	 <7ae0cd7774f4b3e30cc033a7e543546732dbced0.camel@ideasonboard.com>
+	 <de285fc0-728f-4ba0-86e0-0069d2cc9a35@denx.de>
+	 <64e18ceed5279a9346a6a1141f02ead93383bd1e.camel@ideasonboard.com>
+	 <84f505af-1066-4fcf-84b7-28c152c09b89@denx.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.0 (by Flathub.org) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241008062744.2211539-1-xu.yang_2@nxp.com>
 
-Hi Xu,
+On Tue, 2024-10-08 at 23:48 +0200, Marek Vasut wrote:
+> On 10/8/24 12:07 PM, Isaac Scott wrote:
+> > On Mon, 2024-10-07 at 20:06 +0200, Marek Vasut wrote:
+> > > On 10/7/24 7:01 PM, Isaac Scott wrote:
+> > > > Hi Marek,
+> > >=20
+> > > Hi,
+> > >=20
+> > > > On Sat, 2024-07-06 at 02:16 +0200, Marek Vasut wrote:
+> > > > > On 6/24/24 11:19 AM, Alexander Stein wrote:
+> > > > > > Am Freitag, 31. Mai 2024, 22:27:21 CEST schrieb Marek
+> > > > > > Vasut:
+> > > > > > > In case an upstream bridge modified the required clock
+> > > > > > > frequency
+> > > > > > > in its .atomic_check callback by setting
+> > > > > > > adjusted_mode.clock
+> > > > > > > ,
+> > > > > > > make sure that clock frequency is generated by the
+> > > > > > > LCDIFv3
+> > > > > > > block.
+> > > > > > >=20
+> > > > > > > This is useful e.g. when LCDIFv3 feeds DSIM which feeds
+> > > > > > > TC358767
+> > > > > > > with (e)DP output, where the TC358767 expects precise
+> > > > > > > timing
+> > > > > > > on
+> > > > > > > its input side, the precise timing must be generated by
+> > > > > > > the
+> > > > > > > LCDIF.
+> > > > > > >=20
+> > > > > > > Signed-off-by: Marek Vasut <marex@denx.de>
+> > > > > >=20
+> > > > > > With the other rc358767 patches in place, this does the
+> > > > > > trick.
+> > > > > > Reviewed-by: Alexander Stein
+> > > > > > <alexander.stein@ew.tq-group.com>
+> > > > >=20
+> > > > > I'll pick this up next week if there is no objection.
+> > > >=20
+> > > > Unfortunately, this has caused a regression that is present in
+> > > > v6.12-
+> > > > rc1 on the i.MX8MP PHYTEC Pollux using the
+> > > > arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts.
+> > > > The
+> > > > display is the edt,etml1010g3dra panel, as per the upstream
+> > > > dts. We
+> > > > bisected to this commit, and reverting this change fixed the
+> > > > screen.
+> > > >=20
+> > > > We then tried to retest this on top of v6.12-rc2, and found we
+> > > > also
+> > > > had
+> > > > to revert commit ff06ea04e4cf3ba2f025024776e83bfbdfa05155
+> > > > ("clk:
+> > > > imx:
+> > > > clk-imx8mp: Allow media_disp pixel clock reconfigure parent
+> > > > rate")
+> > > > alongside this. Reverting these two commits makes the display
+> > > > work
+> > > > again at -rc2.
+> > > >=20
+> > > > Do you have any suggestions on anything we might be missing on
+> > > > our
+> > > > end?
+> > > > Please let me know if there's anything you'd like me to test as
+> > > > I'm
+> > > > not
+> > > > sure what the underlying fault was here.
+> > > I believe what is going on is that the LCDIF cannot configure its
+> > > upstream clock because something else is already using those
+> > > clock
+> > > and
+> > > it set those clock to a specific frequency. LCDIF is now trying
+> > > to
+> > > configure those clock to match the LVDS panel, and it fails, so
+> > > it
+> > > tries
+> > > to set some approximate clock and that is not good enough for the
+> > > LVDS
+> > > panel.
+> > >=20
+> > > Can you share dump of /sys/kernel/debug/clk/clk_summary on
+> > > failing
+> > > and
+> > > working system ? You might see the difference around the "video"
+> > > clock.
+> > >=20
+> > > (I have seen this behavior before, the fix was usually a matter
+> > > of
+> > > moving one of the LCDIFs to another upstream clock like PLL3, so
+> > > it
+> > > can
+> > > pick well matching output clock instead of some horrid
+> > > approximation
+> > > which then drives the panel likely out of specification)
+> >=20
+> > Hi Marek,
+> >=20
+> > Please find attached the clk_summary for v6.12-rc2 before and after
+> > the
+> > reversion (the one after the reversion is 6.12-
+> > rc2_summary_postfix).
+> Thank you, this helped greatly.
+>=20
+> I believe I know why it used to kind-of work for you, but I'm afraid=20
+> this used to work by sheer chance and it does not really work
+> correctly=20
+> for the panel you use, even if the panel likely does show the correct
+> content. But, there is a way to make it work properly for the panel
+> you use.
+>=20
+> First of all, the pixel clock never really matched the panel-simple.c
+> pixel clock for the edt_etml1010g3dra_timing:
+>=20
+> $ grep '\<media_disp2_pix\>' 6.12-rc2_summary_postfix
+> =C2=A0=C2=A0 media_disp2_pix=C2=A0 1=C2=A0 1=C2=A0 0=C2=A0 74250000 ...
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 ^^^^^^^^
+>=20
+> $ grep -A 1 edt_etml1010g3dra_timing drivers/gpu/drm/panel/panel-
+> simple.c
+> static const struct display_timing edt_etml1010g3dra_timing =3D {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .pixelclock =3D { 663000=
+00, 72400000, 78900000 },
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^^^^^^^^
+>=20
+> The pixel clock are within tolerance, but there is a discrepancy=20
+> 74250000 !=3D 72400000 .
+>=20
+> Since commit 94e6197dadc9 ("arm64: dts: imx8mp: Add LCDIF2 & LDB
+> nodes")=20
+> the IMX8MP_VIDEO_PLL1_OUT is set to a very specific frequency of=20
+> 1039500000 Hz, which tidily divides by 2 to 519750000 Hz (which is
+> your=20
+> LVDS serializer frequency) and divides by 7 to 74250000 Hz which is
+> your=20
+> LCDIF pixel clock.
+>=20
+> This Video PLL1 configuration since moved to &media_blk_ctrl {} , but
+> it=20
+> is still in the imx8mp.dtsi . Therefore, to make your panel work at
+> the=20
+> correct desired pixel clock frequency instead of some random one=20
+> inherited from imx8mp.dtsi, add the following to the pollux DT, I=20
+> believe that will fix the problem and is the correct fix:
+>=20
+> &media_blk_ctrl {
+> =C2=A0=C2=A0=C2=A0 // 506800000 =3D 72400000 * 7 (for single-link LVDS, t=
+his is
+> enough)
+> =C2=A0=C2=A0=C2=A0 // there is no need to multiply the clock by * 2
+> =C2=A0=C2=A0=C2=A0 assigned-clock-rates =3D <500000000>, <200000000>, <0>=
+, <0>,=20
+> <500000000>, <506800000>;
+> };
+>=20
+> Can you please test whether this works and the pixel clock are
+> accurate=20
+> in /sys/kernel/debug/clk/clk_summary ?
 
-kernel test robot noticed the following build warnings:
+Interestingly, after making the change you suggested to=C2=A0imx8mp-
+phyboard-pollux-rdk.dts before the two reversions, the display now
+seems to work. Please see below for the relevant section of the new
+clk_summary referring to media_disp2_pix:
 
-[auto build test WARNING on shawnguo/for-next]
-[also build test WARNING on linus/master v6.12-rc2 next-20241008]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+video_pll1_ref_sel               1       1        0        24000000  =20
+0          0     50000      Y      deviceless                    =20
+no_connection_id=20
+       video_pll1                    1       1        0      =20
+506800000   0          0     50000      Y         deviceless         =20
+no_connection_
+          video_pll1_bypass          1       1        0      =20
+506800000   0          0     50000      Y            deviceless      =20
+no_connecti
+             video_pll1_out          2       2        0      =20
+506800000   0          0     50000      Y               deviceless   =20
+no_conne
+                media_ldb            1       1        0      =20
+506800000   0          0     50000      Y                  deviceless=20
+no_co
+                   media_ldb_root_clk 1       1        0      =20
+506800000   0          0     50000      Y                   =20
+32ec0000.blk-ctrl:bridge@5c     l
+                                                                     =20
+deviceless                      no
+                media_disp2_pix      1       1        0        72400000
+0          0     50000      Y                  deviceless            =20
+no_co
+                   media_disp2_pix_root_clk 1       1        0      =20
+72400000    0          0     50000      Y                   =20
+32e90000.display-controller
+                                                                     =20
+32ec0000.blk-ctrl               di
+                                                                     =20
+deviceless                      no
+                media_disp1_pix      0       0        0      =20
+506800000   0          0     50000      N                  deviceless=20
+no_co
+                   media_disp1_pix_root_clk 0       0        0      =20
+506800000   0          0     50000      N                   =20
+32ec0000.blk-ctrl         =20
+                                                                     =20
+deviceless                      no
+                media_mipi_phy1_ref  0       0        0        23036364
+0          0     50000      N                  deviceless            =20
+no_co
+                   media_mipi_phy1_ref_root 0       0        0      =20
+23036364    0          0     50000      N                   =20
+32ec0000.blk-ctrl         =20
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Xu-Yang/arm64-dts-imx95-add-usb3-related-nodes/20241008-152345
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git for-next
-patch link:    https://lore.kernel.org/r/20241008062744.2211539-1-xu.yang_2%40nxp.com
-patch subject: [PATCH v6 1/3] phy: fsl-imx8mq-usb: add tca function driver for imx95
-config: arm-randconfig-r121-20241009 (https://download.01.org/0day-ci/archive/20241009/202410091742.HgStY96T-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 14.1.0
-reproduce: (https://download.01.org/0day-ci/archive/20241009/202410091742.HgStY96T-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410091742.HgStY96T-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> drivers/phy/freescale/phy-fsl-imx8mq-usb.c:264:24: sparse: sparse: Using plain integer as NULL pointer
->> drivers/phy/freescale/phy-fsl-imx8mq-usb.c:272:27: sparse: sparse: incorrect type in return expression (different address spaces) @@     expected struct tca_blk * @@     got void [noderef] __iomem *base @@
-   drivers/phy/freescale/phy-fsl-imx8mq-usb.c:272:27: sparse:     expected struct tca_blk *
-   drivers/phy/freescale/phy-fsl-imx8mq-usb.c:272:27: sparse:     got void [noderef] __iomem *base
-   drivers/phy/freescale/phy-fsl-imx8mq-usb.c: note: in included file (through include/linux/mmzone.h, include/linux/gfp.h, include/linux/umh.h, include/linux/kmod.h, ...):
-   include/linux/page-flags.h:235:46: sparse: sparse: self-comparison always evaluates to false
-   include/linux/page-flags.h:235:46: sparse: sparse: self-comparison always evaluates to false
-
-vim +264 drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-
-   254	
-   255	static struct tca_blk *imx95_usb_phy_get_tca(struct platform_device *pdev,
-   256					struct imx8mq_usb_phy *imx_phy)
-   257	{
-   258		struct device *dev = &pdev->dev;
-   259		struct resource *res;
-   260		struct tca_blk *tca;
-   261	
-   262		res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-   263		if (!res)
- > 264			return 0;
-   265	
-   266		tca = devm_kzalloc(dev, sizeof(*tca), GFP_KERNEL);
-   267		if (!tca)
-   268			return ERR_PTR(-ENOMEM);
-   269	
-   270		tca->base = devm_ioremap_resource(&pdev->dev, res);
-   271		if (IS_ERR(tca->base))
- > 272			return tca->base;
-   273	
-   274		mutex_init(&tca->mutex);
-   275	
-   276		tca->orientation = TYPEC_ORIENTATION_NORMAL;
-   277		tca->sw = tca_blk_get_typec_switch(pdev, imx_phy);
-   278	
-   279		return tca;
-   280	}
-   281	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+The media_disp2_pix clock now seems to be correct at 724000000 after
+your changes.
