@@ -1,44 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AAE3537FF;
-	Wed,  9 Oct 2024 15:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29C72AD1C;
+	Wed,  9 Oct 2024 15:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728486024; cv=none; b=SNmtSb47fhvRr3fWkFPBSKya/HfPLTtO0M0+1sacPR/pSbTXTaDR8Ux7eAGOy5QeSrqFy+YW5uqO5WJEHtakjPL84F2PUIBI/w0GBaBgGq/MQS2jXH4ABiHpHMwS4O82GrJfTif8/9hDm6BuDNzseSrtVb6RQqhOU50gziQDJCU=
+	t=1728486746; cv=none; b=PrxaJ7q0TZZhhCvPa18CnFDojYBGj0MR+q+5h/MhXVtzF0cqQwq2B0/3BH+ybPVobIOm0E7XdpL0AXjpMlGp6zdao+MtSmvkbBAcq7aZn0JM5bmXbGlorSf00YJMbX/8Z21u3OmsIwk+rSI/sp5SPW4V/iMcvoGKG2RIXQj/SaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728486024; c=relaxed/simple;
-	bh=D0XqC48xeaaF/Gw7gpqXxx4RqDkm+MnppecvEnCEpig=;
+	s=arc-20240116; t=1728486746; c=relaxed/simple;
+	bh=Nm+qU5w3dxZgTOqL/lq95V9u3ynP5UfvFPdgv/Ekz+k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h9GxapzJwEZN2kdDZc6JBhmWmnLAegS4Q/ta7Ds+oEmGyQ1J5H5Y0PDSgpIYo9x4uYbjM2p02ImxPeBpVVTHNsZ5twGYj5enZoMfAB7UKyMsqYXDYM1vHMnsVWaSQ3Y8X3njtLGvG+g5Jrg3pDQ6Pf3wNSzv8+YtjoDArQLbeGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qW6eSMY6; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=hI/YpWm5iEhg6dvHzwXNXoUlKap1QbP6XkiJtAsEKgl0Zg53CBVVwKpRHveVvjB0VWsqd+n8VZJVQOi/YaWlUmXes+aqDIvO/xq5tYixE7NMGd9YHa+mxn8lI7B5JJOieCkY4rNGbcXMFalsl5FGkcy3aqXK+z4/6iHoe7dJAWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QEjTCNDy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qW6eSMY6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EBD4C4CEC3;
-	Wed,  9 Oct 2024 15:00:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QEjTCNDy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33AC2C4CEC3;
+	Wed,  9 Oct 2024 15:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728486024;
-	bh=D0XqC48xeaaF/Gw7gpqXxx4RqDkm+MnppecvEnCEpig=;
+	s=k20201202; t=1728486745;
+	bh=Nm+qU5w3dxZgTOqL/lq95V9u3ynP5UfvFPdgv/Ekz+k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qW6eSMY6s7/qAll04dwOz/7yMIlizS8cRC64xwYK/Sza+B2Y00qXklitkmq0kG2+X
-	 9PR6K2OzUIIY+RbX1D081p3egbuR4lGlmviKUQ8r8Mew2t5FZx1vH+SNdq5kAvy1Wl
-	 hcv1Ehk49H2IdeF4kp3bzm3J/pHClJeN7qgv8Vxue900lhJ1ZvXolRgyAm+d/f1XWn
-	 IY0mXmkaj/4nL+SwkcyEDFo+QxF+h6U7tHpf6nJtV6hdUa2sI76OkGZImanWKzw+8F
-	 spwEkdsZFy0AQz8lj2/UYJ3SGOEWjheJm/6qH6BlxImUtp89uMh07CKC6XoX+HHMxX
-	 kyGHUlblJn6Vg==
-Date: Wed, 9 Oct 2024 17:00:18 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, l.stach@pengutronix.de,
-	devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de, imx@lists.linux.dev
-Subject: Re: [PATCH v5 1/4] dt-bindings: imx6q-pcie: Add reg-name "dbi2" and
- "atu" for i.MX8M PCIe Endpoint
-Message-ID: <ZwaagtTx1ar1CW4V@ryzen.lan>
-References: <1723534943-28499-1-git-send-email-hongxing.zhu@nxp.com>
- <1723534943-28499-2-git-send-email-hongxing.zhu@nxp.com>
+	b=QEjTCNDylhVEyIt4djWXFTall6q8pE6U3D3idS7nQeL+nKUZhZLqlyXUXuMLxaeHc
+	 O+dBMvk9iIjzXVcR5p+FTMx0ydzvjXnRRxDL/KFALcLm2LsxsDn0hPVGzl4XqML15D
+	 T2pan7yiSkN9gUSQmbx9wtZ41/XG5w63RpambP84NCRR/SoAJIB0jhoddeYluB78Dg
+	 U8J0KjkgPQ1LW20ZUI9xBsBsesE2V5eYSjMvm1g9vC52o9uAvVPqECtwjFxk+EhJ1W
+	 9S38zVNF5v+vZQTyEAmHkkTMP1OGb9n5nLbGQ7Won5ZxgilwqCAGCJmD7GXLfLSIRC
+	 zlv6L+Bi8LYww==
+Date: Wed, 9 Oct 2024 10:12:23 -0500
+From: Rob Herring <robh@kernel.org>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, krzk+dt@kernel.org, conor+dt@kernel.org,
+	andrew@lunn.ch, f.fainelli@gmail.com, hkallweit1@gmail.com,
+	andrei.botila@oss.nxp.com, linux@armlinux.org.uk,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2 net-next 1/2] dt-bindings: net: tja11xx: add
+ "nxp,rmii-refclk-out" property
+Message-ID: <20241009151223.GA522364-robh@kernel.org>
+References: <20241008070708.1985805-1-wei.fang@nxp.com>
+ <20241008070708.1985805-2-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,86 +48,82 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1723534943-28499-2-git-send-email-hongxing.zhu@nxp.com>
+In-Reply-To: <20241008070708.1985805-2-wei.fang@nxp.com>
 
-On Tue, Aug 13, 2024 at 03:42:20PM +0800, Richard Zhu wrote:
-> Add reg-name: "dbi2", "atu" for i.MX8M PCIe Endpoint.
+On Tue, Oct 08, 2024 at 03:07:07PM +0800, Wei Fang wrote:
+> Per the RMII specification, the REF_CLK is sourced from MAC to PHY
+> or from an external source. But for TJA11xx PHYs, they support to
+> output a 50MHz RMII reference clock on REF_CLK pin. Previously the
+> "nxp,rmii-refclk-in" was added to indicate that in RMII mode, if
+> this property is present, REF_CLK is input to the PHY, otherwise
+> it is output. This seems inappropriate now. Because according to
+> the RMII specification, the REF_CLK is originally input, so there
+> is no need to add an additional "nxp,rmii-refclk-in" property to
+> declare that REF_CLK is input.
 > 
-> For i.MX8M PCIe EP, the dbi2 and atu addresses are pre-defined in the
-> driver. This method is not good.
+> Unfortunately, because the "nxp,rmii-refclk-in" property has been
+> added for a while, and we cannot confirm which DTS use the TJA1100
+> and TJA1101 PHYs, changing it to switch polarity will cause an ABI
+> break. But fortunately, this property is only valid for TJA1100 and
+> TJA1101. For TJA1103/TJA1104/TJA1120/TJA1121 PHYs, this property is
+> invalid because they use the nxp-c45-tja11xx driver, which is a
+> different driver from TJA1100/TJA1101. Therefore, for PHYs using
+> nxp-c45-tja11xx driver, add "nxp,rmii-refclk-out" property to
+> support outputting RMII reference clock on REF_CLK pin.
 > 
-> In commit b7d67c6130ee ("PCI: imx6: Add iMX95 Endpoint (EP) support"),
-> Frank suggests to fetch the dbi2 and atu from DT directly. This commit is
-> preparation to do that for i.MX8M PCIe EP.
-> 
-> These changes wouldn't break driver function. When "dbi2" and "atu"
-> properties are present, i.MX PCIe driver would fetch the according base
-> addresses from DT directly. If only two reg properties are provided, i.MX
-> PCIe driver would fall back to the old method.
-> 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
 > ---
->  .../devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml  | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
+> V2 changes:
+> 1. Change the property name from "nxp,reverse-mode" to
+> "nxp,phy-output-refclk".
+> 2. Simplify the description of the property.
+> 3. Modify the subject and commit message.
+> V3 changes:
+> 1. Keep the "nxp,rmii-refclk-in" property for TJA1100 and TJA1101.
+> 2. Rephrase the commit message and subject.
+> V3 changes:
+> 1. Change the property name from "nxp,phy-output-refclk" to
+> "nxp,rmii-refclk-out", which means the opposite of "nxp,rmii-refclk-in".
+> 2. Refactor the patch after fixing the original issue with this YAML.
+> ---
+>  .../devicetree/bindings/net/nxp,tja11xx.yaml   | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
-> index a06f75df8458..84ca12e8b25b 100644
-> --- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
-> +++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
-> @@ -65,12 +65,14 @@ allOf:
->      then:
->        properties:
->          reg:
-> -          minItems: 2
-> -          maxItems: 2
-> +          minItems: 4
-> +          maxItems: 4
-
-Now it seems like this patch has already been picked up,
-but how is this not breaking DT backwards compatibility?
-
-You are here increasing minItems, which means that an older DT
-should now fail to validate using the new schema?
-
-I thought that it was only acceptable to add new optional properties
-after the DT binding has been accepted.
-
-What am I missing?
-
-
-If the specific compatible isn't used by any DTS in a released kernel,
-then I think that the commit log should have clearly stated so,
-and explained that that is the reason why it is okay to break DT backwards
-compatibility.
-
-
-Kind regards,
-Niklas
-
->          reg-names:
->            items:
->              - const: dbi
->              - const: addr_space
-> +            - const: dbi2
-> +            - const: atu
+> diff --git a/Documentation/devicetree/bindings/net/nxp,tja11xx.yaml b/Documentation/devicetree/bindings/net/nxp,tja11xx.yaml
+> index a754a61adc2d..1e688c7a497d 100644
+> --- a/Documentation/devicetree/bindings/net/nxp,tja11xx.yaml
+> +++ b/Documentation/devicetree/bindings/net/nxp,tja11xx.yaml
+> @@ -62,6 +62,24 @@ allOf:
+>              reference clock output when RMII mode enabled.
+>              Only supported on TJA1100 and TJA1101.
 >  
->    - if:
->        properties:
-> @@ -129,8 +131,11 @@ examples:
->  
->      pcie_ep: pcie-ep@33800000 {
->        compatible = "fsl,imx8mp-pcie-ep";
-> -      reg = <0x33800000 0x000400000>, <0x18000000 0x08000000>;
-> -      reg-names = "dbi", "addr_space";
-> +      reg = <0x33800000 0x100000>,
-> +            <0x18000000 0x8000000>,
-> +            <0x33900000 0x100000>,
-> +            <0x33b00000 0x100000>;
-> +      reg-names = "dbi", "addr_space", "dbi2", "atu";
->        clocks = <&clk IMX8MP_CLK_HSIO_ROOT>,
->                 <&clk IMX8MP_CLK_HSIO_AXI>,
->                 <&clk IMX8MP_CLK_PCIE_ROOT>;
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - ethernet-phy-id001b.b010
+> +              - ethernet-phy-id001b.b013
+> +              - ethernet-phy-id001b.b030
+> +              - ethernet-phy-id001b.b031
+> +
+> +    then:
+> +      properties:
+> +        nxp,rmii-refclk-out:
+> +          type: boolean
+> +          description: |
+
+Don't need '|' if no formatting.
+
+> +            Enable 50MHz RMII reference clock output on REF_CLK pin. This
+> +            property is only applicable to nxp-c45-tja11xx driver.
+
+Reword this to not be about some driver.
+
+> +
+>  patternProperties:
+>    "^ethernet-phy@[0-9a-f]+$":
+>      type: object
 > -- 
-> 2.37.1
+> 2.34.1
 > 
