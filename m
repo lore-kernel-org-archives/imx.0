@@ -1,284 +1,249 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647F01E1027
-	for <imx@lists.linux.dev>; Wed,  9 Oct 2024 15:57:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDD01E9060
+	for <imx@lists.linux.dev>; Wed,  9 Oct 2024 15:58:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728489450; cv=none; b=N3DSdBgfil93p6ar812+k/Da+kywan3HDB76IrzjK3wau8vOT4fS1vuKmJ2qd7N3Sqp12qjfyok940c1ipA2JPPzaMcoF6Gm/t+A7nGqcRS3UyGQ6oX5Px7fHp0Ie/nVojoSTgfUje/ExHkjkViR65hlnE9/aC9vSG2A1zHQhKc=
+	t=1728489539; cv=none; b=JM2GDJkyTy21KUTXSe0hZmGM3eIfkGBduK6NNrBJkehOe5p2ieVZmsuawqTyzYuAmOEOFhhqsHH2RNDuFqwiC2+PSdvy54GCEnPDFwQ1jWBDUYCJJIJKE6cw/OeP9Z79WOstNlEokN04XdTJ1s03Tm+BlNmR45IP0OZAeaA8bRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728489450; c=relaxed/simple;
-	bh=cTa6woOSWK6JamIPie5CBv58zJvCJ9erI3z36dUU8wY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BOl6EP4U7LcNH8LkNWFep4SysVCTQtI38hxnW0hsItk25JeCiLUuKpcLe+ivPHVjKex3SRWv1HA1d//Xad3bQUnBaqwL4lgSmdSTiRhpYTdIgbUuSqc/CQyWPR/0REEZG24ECHo7Kq+C+L/u5jEmPQw9+OYBY+4PrZT9AzeQ13A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=Tuuwok1A; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1728489539; c=relaxed/simple;
+	bh=ZUz2z2Ucs7DQNTvKLXVBhLl5qZhLu8Ou833KEgoPAVk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=WeplcwBlEo+rzoMSiUx+BSNg7jKJYgppvM9cqK+AnnFbCc8ZBf2qHg5iack0srNCU7/voNmcLHQHH21h1+byHeAenPP2KzAkBWiYYha7P9CG0k+yXPqDRK+tCsvOsosfqOoPJT8/HcZ+C/8+WvZbuCnrIM6oYA8FDzsSR/u+hRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=dz2JYDj5; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="Tuuwok1A"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 8BB7D88CBF;
-	Wed,  9 Oct 2024 17:57:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1728489446;
-	bh=lqn2MFzTXvgmtUhRy6nKV+J7xpgtD9hHcUcYH7bQYUM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Tuuwok1ARchnfTrf8VeZdK0111sKied25CVs8zScXQEwCHDU3Xd2pd/fFzehCrWVM
-	 goakrDTqT0MQCNDq4BSVAXZCHeOBDOuPJ6JcViOSaxHYi2qjnPVqFRDJ2XEJ86E++7
-	 1/WqTaITZarbbBPnPHry1BRP+cUqBgPfECEvU1TYONJhuLX5e3r+ubJ16vdZ6vpA07
-	 xsidiDMFF+drWUtz/lCXQTcPz1YnGkoRY/qXgP1SubqDCewGUE/vM00lPvo/6WjS9r
-	 WPBHLWvlAdrQ1wzny/9KqEnJ0Ez42iTf4jrLCkiL0ZwTqT1XDg3/eJIZVPINZCam7G
-	 RBOQWDBwW/E7g==
-Message-ID: <36a3425d-54f5-4c14-b2de-ef8b74f47ed0@denx.de>
-Date: Wed, 9 Oct 2024 17:47:06 +0200
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="dz2JYDj5"
+Received: from isaac-ThinkPad-T16-Gen-2.local (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id D3E2D594;
+	Wed,  9 Oct 2024 17:57:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1728489437;
+	bh=ZUz2z2Ucs7DQNTvKLXVBhLl5qZhLu8Ou833KEgoPAVk=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=dz2JYDj5F2jAVYmUb39a0xenKWf/+IZriSMxJMlCVy9tU1pXl8FRHITtDvmW5BzKd
+	 KhFhjDn2u75Dz4/VcJJVMPc0SKjysF6SOU3+XVukl3LXscOnYNl6DR0+By1UuZHezw
+	 edKrJdm/CB1SX8SJvUcv2+xve6SST8iA+uAp7w4Q=
+Message-ID: <c1ed4bec322bb27860b1a9f4776cc45e37ce093e.camel@ideasonboard.com>
+Subject: Re: [PATCH] drm: lcdif: Use adjusted_mode .clock instead of
+ .crtc_clock
+From: Isaac Scott <isaac.scott@ideasonboard.com>
+To: Marek Vasut <marex@denx.de>, Alexander Stein
+	 <alexander.stein@ew.tq-group.com>, dri-devel@lists.freedesktop.org
+Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>, Fabio
+ Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>, "Lukas
+ F . Hartmann"	 <lukas@mntmn.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>,  Maxime Ripard <mripard@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Sascha Hauer	
+ <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Stefan Agner	
+ <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>,
+ imx@lists.linux.dev, 	kernel@dh-electronics.com,
+ linux-arm-kernel@lists.infradead.org, 	kieran.bingham@ideasonboard.com
+Date: Wed, 09 Oct 2024 16:58:49 +0100
+In-Reply-To: <36a3425d-54f5-4c14-b2de-ef8b74f47ed0@denx.de>
+References: <20240531202813.277109-1-marex@denx.de>
+	 <1897634.CQOukoFCf9@steina-w>
+	 <ab2eb32e-a458-4c9b-8324-27ccb00336c5@denx.de>
+	 <7ae0cd7774f4b3e30cc033a7e543546732dbced0.camel@ideasonboard.com>
+	 <de285fc0-728f-4ba0-86e0-0069d2cc9a35@denx.de>
+	 <64e18ceed5279a9346a6a1141f02ead93383bd1e.camel@ideasonboard.com>
+	 <84f505af-1066-4fcf-84b7-28c152c09b89@denx.de>
+	 <50f10a422dd3a7099e2e2724f9401dbae41ea529.camel@ideasonboard.com>
+	 <36a3425d-54f5-4c14-b2de-ef8b74f47ed0@denx.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.54.0 (by Flathub.org) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm: lcdif: Use adjusted_mode .clock instead of
- .crtc_clock
-To: Isaac Scott <isaac.scott@ideasonboard.com>,
- Alexander Stein <alexander.stein@ew.tq-group.com>,
- dri-devel@lists.freedesktop.org
-Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
- Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>,
- "Lukas F . Hartmann" <lukas@mntmn.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Stefan Agner <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>,
- imx@lists.linux.dev, kernel@dh-electronics.com,
- linux-arm-kernel@lists.infradead.org, kieran.bingham@ideasonboard.com
-References: <20240531202813.277109-1-marex@denx.de>
- <1897634.CQOukoFCf9@steina-w> <ab2eb32e-a458-4c9b-8324-27ccb00336c5@denx.de>
- <7ae0cd7774f4b3e30cc033a7e543546732dbced0.camel@ideasonboard.com>
- <de285fc0-728f-4ba0-86e0-0069d2cc9a35@denx.de>
- <64e18ceed5279a9346a6a1141f02ead93383bd1e.camel@ideasonboard.com>
- <84f505af-1066-4fcf-84b7-28c152c09b89@denx.de>
- <50f10a422dd3a7099e2e2724f9401dbae41ea529.camel@ideasonboard.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <50f10a422dd3a7099e2e2724f9401dbae41ea529.camel@ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
 
-On 10/9/24 11:55 AM, Isaac Scott wrote:
-> On Tue, 2024-10-08 at 23:48 +0200, Marek Vasut wrote:
->> On 10/8/24 12:07 PM, Isaac Scott wrote:
->>> On Mon, 2024-10-07 at 20:06 +0200, Marek Vasut wrote:
->>>> On 10/7/24 7:01 PM, Isaac Scott wrote:
->>>>> Hi Marek,
->>>>
->>>> Hi,
->>>>
->>>>> On Sat, 2024-07-06 at 02:16 +0200, Marek Vasut wrote:
->>>>>> On 6/24/24 11:19 AM, Alexander Stein wrote:
->>>>>>> Am Freitag, 31. Mai 2024, 22:27:21 CEST schrieb Marek
->>>>>>> Vasut:
->>>>>>>> In case an upstream bridge modified the required clock
->>>>>>>> frequency
->>>>>>>> in its .atomic_check callback by setting
->>>>>>>> adjusted_mode.clock
->>>>>>>> ,
->>>>>>>> make sure that clock frequency is generated by the
->>>>>>>> LCDIFv3
->>>>>>>> block.
->>>>>>>>
->>>>>>>> This is useful e.g. when LCDIFv3 feeds DSIM which feeds
->>>>>>>> TC358767
->>>>>>>> with (e)DP output, where the TC358767 expects precise
->>>>>>>> timing
->>>>>>>> on
->>>>>>>> its input side, the precise timing must be generated by
->>>>>>>> the
->>>>>>>> LCDIF.
->>>>>>>>
->>>>>>>> Signed-off-by: Marek Vasut <marex@denx.de>
->>>>>>>
->>>>>>> With the other rc358767 patches in place, this does the
->>>>>>> trick.
->>>>>>> Reviewed-by: Alexander Stein
->>>>>>> <alexander.stein@ew.tq-group.com>
->>>>>>
->>>>>> I'll pick this up next week if there is no objection.
->>>>>
->>>>> Unfortunately, this has caused a regression that is present in
->>>>> v6.12-
->>>>> rc1 on the i.MX8MP PHYTEC Pollux using the
->>>>> arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts.
->>>>> The
->>>>> display is the edt,etml1010g3dra panel, as per the upstream
->>>>> dts. We
->>>>> bisected to this commit, and reverting this change fixed the
->>>>> screen.
->>>>>
->>>>> We then tried to retest this on top of v6.12-rc2, and found we
->>>>> also
->>>>> had
->>>>> to revert commit ff06ea04e4cf3ba2f025024776e83bfbdfa05155
->>>>> ("clk:
->>>>> imx:
->>>>> clk-imx8mp: Allow media_disp pixel clock reconfigure parent
->>>>> rate")
->>>>> alongside this. Reverting these two commits makes the display
->>>>> work
->>>>> again at -rc2.
->>>>>
->>>>> Do you have any suggestions on anything we might be missing on
->>>>> our
->>>>> end?
->>>>> Please let me know if there's anything you'd like me to test as
->>>>> I'm
->>>>> not
->>>>> sure what the underlying fault was here.
->>>> I believe what is going on is that the LCDIF cannot configure its
->>>> upstream clock because something else is already using those
->>>> clock
->>>> and
->>>> it set those clock to a specific frequency. LCDIF is now trying
->>>> to
->>>> configure those clock to match the LVDS panel, and it fails, so
->>>> it
->>>> tries
->>>> to set some approximate clock and that is not good enough for the
->>>> LVDS
->>>> panel.
->>>>
->>>> Can you share dump of /sys/kernel/debug/clk/clk_summary on
->>>> failing
->>>> and
->>>> working system ? You might see the difference around the "video"
->>>> clock.
->>>>
->>>> (I have seen this behavior before, the fix was usually a matter
->>>> of
->>>> moving one of the LCDIFs to another upstream clock like PLL3, so
->>>> it
->>>> can
->>>> pick well matching output clock instead of some horrid
->>>> approximation
->>>> which then drives the panel likely out of specification)
->>>
->>> Hi Marek,
->>>
->>> Please find attached the clk_summary for v6.12-rc2 before and after
->>> the
->>> reversion (the one after the reversion is 6.12-
->>> rc2_summary_postfix).
->> Thank you, this helped greatly.
->>
->> I believe I know why it used to kind-of work for you, but I'm afraid
->> this used to work by sheer chance and it does not really work
->> correctly
->> for the panel you use, even if the panel likely does show the correct
->> content. But, there is a way to make it work properly for the panel
->> you use.
->>
->> First of all, the pixel clock never really matched the panel-simple.c
->> pixel clock for the edt_etml1010g3dra_timing:
->>
->> $ grep '\<media_disp2_pix\>' 6.12-rc2_summary_postfix
->>     media_disp2_pix  1  1  0  74250000 ...
->>                               ^^^^^^^^
->>
->> $ grep -A 1 edt_etml1010g3dra_timing drivers/gpu/drm/panel/panel-
->> simple.c
->> static const struct display_timing edt_etml1010g3dra_timing = {
->>           .pixelclock = { 66300000, 72400000, 78900000 },
->>                                     ^^^^^^^^
->>
->> The pixel clock are within tolerance, but there is a discrepancy
->> 74250000 != 72400000 .
->>
->> Since commit 94e6197dadc9 ("arm64: dts: imx8mp: Add LCDIF2 & LDB
->> nodes")
->> the IMX8MP_VIDEO_PLL1_OUT is set to a very specific frequency of
->> 1039500000 Hz, which tidily divides by 2 to 519750000 Hz (which is
->> your
->> LVDS serializer frequency) and divides by 7 to 74250000 Hz which is
->> your
->> LCDIF pixel clock.
->>
->> This Video PLL1 configuration since moved to &media_blk_ctrl {} , but
->> it
->> is still in the imx8mp.dtsi . Therefore, to make your panel work at
->> the
->> correct desired pixel clock frequency instead of some random one
->> inherited from imx8mp.dtsi, add the following to the pollux DT, I
->> believe that will fix the problem and is the correct fix:
->>
->> &media_blk_ctrl {
->>      // 506800000 = 72400000 * 7 (for single-link LVDS, this is
->> enough)
->>      // there is no need to multiply the clock by * 2
->>      assigned-clock-rates = <500000000>, <200000000>, <0>, <0>,
->> <500000000>, <506800000>;
->> };
->>
->> Can you please test whether this works and the pixel clock are
->> accurate
->> in /sys/kernel/debug/clk/clk_summary ?
-> 
-> Interestingly, after making the change you suggested to imx8mp-
-> phyboard-pollux-rdk.dts before the two reversions, the display now
-> seems to work. Please see below for the relevant section of the new
-> clk_summary referring to media_disp2_pix:
-> 
-> video_pll1_ref_sel               1       1        0        24000000
-> 0          0     50000      Y      deviceless
-> no_connection_id
->         video_pll1                    1       1        0
-> 506800000   0          0     50000      Y         deviceless
-> no_connection_
->            video_pll1_bypass          1       1        0
-> 506800000   0          0     50000      Y            deviceless
-> no_connecti
->               video_pll1_out          2       2        0
-> 506800000   0          0     50000      Y               deviceless
-> no_conne
->                  media_ldb            1       1        0
-> 506800000   0          0     50000      Y                  deviceless
-> no_co
->                     media_ldb_root_clk 1       1        0
-> 506800000   0          0     50000      Y
-> 32ec0000.blk-ctrl:bridge@5c     l
->                                                                        
-> deviceless                      no
->                  media_disp2_pix      1       1        0        72400000
-> 0          0     50000      Y                  deviceless
-> no_co
->                     media_disp2_pix_root_clk 1       1        0
-> 72400000    0          0     50000      Y
-> 32e90000.display-controller
->                                                                        
-> 32ec0000.blk-ctrl               di
->                                                                        
-> deviceless                      no
->                  media_disp1_pix      0       0        0
-> 506800000   0          0     50000      N                  deviceless
-> no_co
->                     media_disp1_pix_root_clk 0       0        0
-> 506800000   0          0     50000      N
-> 32ec0000.blk-ctrl
->                                                                        
-> deviceless                      no
->                  media_mipi_phy1_ref  0       0        0        23036364
-> 0          0     50000      N                  deviceless
-> no_co
->                     media_mipi_phy1_ref_root 0       0        0
-> 23036364    0          0     50000      N
-> 32ec0000.blk-ctrl
-> 
-> The media_disp2_pix clock now seems to be correct at 724000000 after
-> your changes.
+T24gV2VkLCAyMDI0LTEwLTA5IGF0IDE3OjQ3ICswMjAwLCBNYXJlayBWYXN1dCB3cm90ZToKPiBP
+biAxMC85LzI0IDExOjU1IEFNLCBJc2FhYyBTY290dCB3cm90ZToKPiA+IE9uIFR1ZSwgMjAyNC0x
+MC0wOCBhdCAyMzo0OCArMDIwMCwgTWFyZWsgVmFzdXQgd3JvdGU6Cj4gPiA+IE9uIDEwLzgvMjQg
+MTI6MDcgUE0sIElzYWFjIFNjb3R0IHdyb3RlOgo+ID4gPiA+IE9uIE1vbiwgMjAyNC0xMC0wNyBh
+dCAyMDowNiArMDIwMCwgTWFyZWsgVmFzdXQgd3JvdGU6Cj4gPiA+ID4gPiBPbiAxMC83LzI0IDc6
+MDEgUE0sIElzYWFjIFNjb3R0IHdyb3RlOgo+ID4gPiA+ID4gPiBIaSBNYXJlaywKPiA+ID4gPiA+
+IAo+ID4gPiA+ID4gSGksCj4gPiA+ID4gPiAKPiA+ID4gPiA+ID4gT24gU2F0LCAyMDI0LTA3LTA2
+IGF0IDAyOjE2ICswMjAwLCBNYXJlayBWYXN1dCB3cm90ZToKPiA+ID4gPiA+ID4gPiBPbiA2LzI0
+LzI0IDExOjE5IEFNLCBBbGV4YW5kZXIgU3RlaW4gd3JvdGU6Cj4gPiA+ID4gPiA+ID4gPiBBbSBG
+cmVpdGFnLCAzMS4gTWFpIDIwMjQsIDIyOjI3OjIxIENFU1Qgc2NocmllYiBNYXJlawo+ID4gPiA+
+ID4gPiA+ID4gVmFzdXQ6Cj4gPiA+ID4gPiA+ID4gPiA+IEluIGNhc2UgYW4gdXBzdHJlYW0gYnJp
+ZGdlIG1vZGlmaWVkIHRoZSByZXF1aXJlZAo+ID4gPiA+ID4gPiA+ID4gPiBjbG9jawo+ID4gPiA+
+ID4gPiA+ID4gPiBmcmVxdWVuY3kKPiA+ID4gPiA+ID4gPiA+ID4gaW4gaXRzIC5hdG9taWNfY2hl
+Y2sgY2FsbGJhY2sgYnkgc2V0dGluZwo+ID4gPiA+ID4gPiA+ID4gPiBhZGp1c3RlZF9tb2RlLmNs
+b2NrCj4gPiA+ID4gPiA+ID4gPiA+ICwKPiA+ID4gPiA+ID4gPiA+ID4gbWFrZSBzdXJlIHRoYXQg
+Y2xvY2sgZnJlcXVlbmN5IGlzIGdlbmVyYXRlZCBieSB0aGUKPiA+ID4gPiA+ID4gPiA+ID4gTENE
+SUZ2Mwo+ID4gPiA+ID4gPiA+ID4gPiBibG9jay4KPiA+ID4gPiA+ID4gPiA+ID4gCj4gPiA+ID4g
+PiA+ID4gPiA+IFRoaXMgaXMgdXNlZnVsIGUuZy4gd2hlbiBMQ0RJRnYzIGZlZWRzIERTSU0gd2hp
+Y2gKPiA+ID4gPiA+ID4gPiA+ID4gZmVlZHMKPiA+ID4gPiA+ID4gPiA+ID4gVEMzNTg3NjcKPiA+
+ID4gPiA+ID4gPiA+ID4gd2l0aCAoZSlEUCBvdXRwdXQsIHdoZXJlIHRoZSBUQzM1ODc2NyBleHBl
+Y3RzIHByZWNpc2UKPiA+ID4gPiA+ID4gPiA+ID4gdGltaW5nCj4gPiA+ID4gPiA+ID4gPiA+IG9u
+Cj4gPiA+ID4gPiA+ID4gPiA+IGl0cyBpbnB1dCBzaWRlLCB0aGUgcHJlY2lzZSB0aW1pbmcgbXVz
+dCBiZSBnZW5lcmF0ZWQKPiA+ID4gPiA+ID4gPiA+ID4gYnkKPiA+ID4gPiA+ID4gPiA+ID4gdGhl
+Cj4gPiA+ID4gPiA+ID4gPiA+IExDRElGLgo+ID4gPiA+ID4gPiA+ID4gPiAKPiA+ID4gPiA+ID4g
+PiA+ID4gU2lnbmVkLW9mZi1ieTogTWFyZWsgVmFzdXQgPG1hcmV4QGRlbnguZGU+Cj4gPiA+ID4g
+PiA+ID4gPiAKPiA+ID4gPiA+ID4gPiA+IFdpdGggdGhlIG90aGVyIHJjMzU4NzY3IHBhdGNoZXMg
+aW4gcGxhY2UsIHRoaXMgZG9lcyB0aGUKPiA+ID4gPiA+ID4gPiA+IHRyaWNrLgo+ID4gPiA+ID4g
+PiA+ID4gUmV2aWV3ZWQtYnk6IEFsZXhhbmRlciBTdGVpbgo+ID4gPiA+ID4gPiA+ID4gPGFsZXhh
+bmRlci5zdGVpbkBldy50cS1ncm91cC5jb20+Cj4gPiA+ID4gPiA+ID4gCj4gPiA+ID4gPiA+ID4g
+SSdsbCBwaWNrIHRoaXMgdXAgbmV4dCB3ZWVrIGlmIHRoZXJlIGlzIG5vIG9iamVjdGlvbi4KPiA+
+ID4gPiA+ID4gCj4gPiA+ID4gPiA+IFVuZm9ydHVuYXRlbHksIHRoaXMgaGFzIGNhdXNlZCBhIHJl
+Z3Jlc3Npb24gdGhhdCBpcyBwcmVzZW50Cj4gPiA+ID4gPiA+IGluCj4gPiA+ID4gPiA+IHY2LjEy
+LQo+ID4gPiA+ID4gPiByYzEgb24gdGhlIGkuTVg4TVAgUEhZVEVDIFBvbGx1eCB1c2luZyB0aGUK
+PiA+ID4gPiA+ID4gYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1wLXBoeWJvYXJk
+LXBvbGx1eC0KPiA+ID4gPiA+ID4gcmRrLmR0cy4KPiA+ID4gPiA+ID4gVGhlCj4gPiA+ID4gPiA+
+IGRpc3BsYXkgaXMgdGhlIGVkdCxldG1sMTAxMGczZHJhIHBhbmVsLCBhcyBwZXIgdGhlIHVwc3Ry
+ZWFtCj4gPiA+ID4gPiA+IGR0cy4gV2UKPiA+ID4gPiA+ID4gYmlzZWN0ZWQgdG8gdGhpcyBjb21t
+aXQsIGFuZCByZXZlcnRpbmcgdGhpcyBjaGFuZ2UgZml4ZWQKPiA+ID4gPiA+ID4gdGhlCj4gPiA+
+ID4gPiA+IHNjcmVlbi4KPiA+ID4gPiA+ID4gCj4gPiA+ID4gPiA+IFdlIHRoZW4gdHJpZWQgdG8g
+cmV0ZXN0IHRoaXMgb24gdG9wIG9mIHY2LjEyLXJjMiwgYW5kIGZvdW5kCj4gPiA+ID4gPiA+IHdl
+Cj4gPiA+ID4gPiA+IGFsc28KPiA+ID4gPiA+ID4gaGFkCj4gPiA+ID4gPiA+IHRvIHJldmVydCBj
+b21taXQgZmYwNmVhMDRlNGNmM2JhMmYwMjUwMjQ3NzZlODNiZmJkZmEwNTE1NQo+ID4gPiA+ID4g
+PiAoImNsazoKPiA+ID4gPiA+ID4gaW14Ogo+ID4gPiA+ID4gPiBjbGstaW14OG1wOiBBbGxvdyBt
+ZWRpYV9kaXNwIHBpeGVsIGNsb2NrIHJlY29uZmlndXJlIHBhcmVudAo+ID4gPiA+ID4gPiByYXRl
+IikKPiA+ID4gPiA+ID4gYWxvbmdzaWRlIHRoaXMuIFJldmVydGluZyB0aGVzZSB0d28gY29tbWl0
+cyBtYWtlcyB0aGUKPiA+ID4gPiA+ID4gZGlzcGxheQo+ID4gPiA+ID4gPiB3b3JrCj4gPiA+ID4g
+PiA+IGFnYWluIGF0IC1yYzIuCj4gPiA+ID4gPiA+IAo+ID4gPiA+ID4gPiBEbyB5b3UgaGF2ZSBh
+bnkgc3VnZ2VzdGlvbnMgb24gYW55dGhpbmcgd2UgbWlnaHQgYmUgbWlzc2luZwo+ID4gPiA+ID4g
+PiBvbgo+ID4gPiA+ID4gPiBvdXIKPiA+ID4gPiA+ID4gZW5kPwo+ID4gPiA+ID4gPiBQbGVhc2Ug
+bGV0IG1lIGtub3cgaWYgdGhlcmUncyBhbnl0aGluZyB5b3UnZCBsaWtlIG1lIHRvCj4gPiA+ID4g
+PiA+IHRlc3QgYXMKPiA+ID4gPiA+ID4gSSdtCj4gPiA+ID4gPiA+IG5vdAo+ID4gPiA+ID4gPiBz
+dXJlIHdoYXQgdGhlIHVuZGVybHlpbmcgZmF1bHQgd2FzIGhlcmUuCj4gPiA+ID4gPiBJIGJlbGll
+dmUgd2hhdCBpcyBnb2luZyBvbiBpcyB0aGF0IHRoZSBMQ0RJRiBjYW5ub3QgY29uZmlndXJlCj4g
+PiA+ID4gPiBpdHMKPiA+ID4gPiA+IHVwc3RyZWFtIGNsb2NrIGJlY2F1c2Ugc29tZXRoaW5nIGVs
+c2UgaXMgYWxyZWFkeSB1c2luZyB0aG9zZQo+ID4gPiA+ID4gY2xvY2sKPiA+ID4gPiA+IGFuZAo+
+ID4gPiA+ID4gaXQgc2V0IHRob3NlIGNsb2NrIHRvIGEgc3BlY2lmaWMgZnJlcXVlbmN5LiBMQ0RJ
+RiBpcyBub3cKPiA+ID4gPiA+IHRyeWluZwo+ID4gPiA+ID4gdG8KPiA+ID4gPiA+IGNvbmZpZ3Vy
+ZSB0aG9zZSBjbG9jayB0byBtYXRjaCB0aGUgTFZEUyBwYW5lbCwgYW5kIGl0IGZhaWxzLAo+ID4g
+PiA+ID4gc28KPiA+ID4gPiA+IGl0Cj4gPiA+ID4gPiB0cmllcwo+ID4gPiA+ID4gdG8gc2V0IHNv
+bWUgYXBwcm94aW1hdGUgY2xvY2sgYW5kIHRoYXQgaXMgbm90IGdvb2QgZW5vdWdoIGZvcgo+ID4g
+PiA+ID4gdGhlCj4gPiA+ID4gPiBMVkRTCj4gPiA+ID4gPiBwYW5lbC4KPiA+ID4gPiA+IAo+ID4g
+PiA+ID4gQ2FuIHlvdSBzaGFyZSBkdW1wIG9mIC9zeXMva2VybmVsL2RlYnVnL2Nsay9jbGtfc3Vt
+bWFyeSBvbgo+ID4gPiA+ID4gZmFpbGluZwo+ID4gPiA+ID4gYW5kCj4gPiA+ID4gPiB3b3JraW5n
+IHN5c3RlbSA/IFlvdSBtaWdodCBzZWUgdGhlIGRpZmZlcmVuY2UgYXJvdW5kIHRoZQo+ID4gPiA+
+ID4gInZpZGVvIgo+ID4gPiA+ID4gY2xvY2suCj4gPiA+ID4gPiAKPiA+ID4gPiA+IChJIGhhdmUg
+c2VlbiB0aGlzIGJlaGF2aW9yIGJlZm9yZSwgdGhlIGZpeCB3YXMgdXN1YWxseSBhCj4gPiA+ID4g
+PiBtYXR0ZXIKPiA+ID4gPiA+IG9mCj4gPiA+ID4gPiBtb3Zpbmcgb25lIG9mIHRoZSBMQ0RJRnMg
+dG8gYW5vdGhlciB1cHN0cmVhbSBjbG9jayBsaWtlIFBMTDMsCj4gPiA+ID4gPiBzbwo+ID4gPiA+
+ID4gaXQKPiA+ID4gPiA+IGNhbgo+ID4gPiA+ID4gcGljayB3ZWxsIG1hdGNoaW5nIG91dHB1dCBj
+bG9jayBpbnN0ZWFkIG9mIHNvbWUgaG9ycmlkCj4gPiA+ID4gPiBhcHByb3hpbWF0aW9uCj4gPiA+
+ID4gPiB3aGljaCB0aGVuIGRyaXZlcyB0aGUgcGFuZWwgbGlrZWx5IG91dCBvZiBzcGVjaWZpY2F0
+aW9uKQo+ID4gPiA+IAo+ID4gPiA+IEhpIE1hcmVrLAo+ID4gPiA+IAo+ID4gPiA+IFBsZWFzZSBm
+aW5kIGF0dGFjaGVkIHRoZSBjbGtfc3VtbWFyeSBmb3IgdjYuMTItcmMyIGJlZm9yZSBhbmQKPiA+
+ID4gPiBhZnRlcgo+ID4gPiA+IHRoZQo+ID4gPiA+IHJldmVyc2lvbiAodGhlIG9uZSBhZnRlciB0
+aGUgcmV2ZXJzaW9uIGlzIDYuMTItCj4gPiA+ID4gcmMyX3N1bW1hcnlfcG9zdGZpeCkuCj4gPiA+
+IFRoYW5rIHlvdSwgdGhpcyBoZWxwZWQgZ3JlYXRseS4KPiA+ID4gCj4gPiA+IEkgYmVsaWV2ZSBJ
+IGtub3cgd2h5IGl0IHVzZWQgdG8ga2luZC1vZiB3b3JrIGZvciB5b3UsIGJ1dCBJJ20KPiA+ID4g
+YWZyYWlkCj4gPiA+IHRoaXMgdXNlZCB0byB3b3JrIGJ5IHNoZWVyIGNoYW5jZSBhbmQgaXQgZG9l
+cyBub3QgcmVhbGx5IHdvcmsKPiA+ID4gY29ycmVjdGx5Cj4gPiA+IGZvciB0aGUgcGFuZWwgeW91
+IHVzZSwgZXZlbiBpZiB0aGUgcGFuZWwgbGlrZWx5IGRvZXMgc2hvdyB0aGUKPiA+ID4gY29ycmVj
+dAo+ID4gPiBjb250ZW50LiBCdXQsIHRoZXJlIGlzIGEgd2F5IHRvIG1ha2UgaXQgd29yayBwcm9w
+ZXJseSBmb3IgdGhlCj4gPiA+IHBhbmVsCj4gPiA+IHlvdSB1c2UuCj4gPiA+IAo+ID4gPiBGaXJz
+dCBvZiBhbGwsIHRoZSBwaXhlbCBjbG9jayBuZXZlciByZWFsbHkgbWF0Y2hlZCB0aGUgcGFuZWwt
+Cj4gPiA+IHNpbXBsZS5jCj4gPiA+IHBpeGVsIGNsb2NrIGZvciB0aGUgZWR0X2V0bWwxMDEwZzNk
+cmFfdGltaW5nOgo+ID4gPiAKPiA+ID4gJCBncmVwICdcPG1lZGlhX2Rpc3AyX3BpeFw+JyA2LjEy
+LXJjMl9zdW1tYXJ5X3Bvc3RmaXgKPiA+ID4gwqDCoMKgIG1lZGlhX2Rpc3AyX3BpeMKgIDHCoCAx
+wqAgMMKgIDc0MjUwMDAwIC4uLgo+ID4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIF5eXl5eXl5eCj4gPiA+IAo+ID4gPiAkIGdyZXAg
+LUEgMSBlZHRfZXRtbDEwMTBnM2RyYV90aW1pbmcgZHJpdmVycy9ncHUvZHJtL3BhbmVsL3BhbmVs
+LQo+ID4gPiBzaW1wbGUuYwo+ID4gPiBzdGF0aWMgY29uc3Qgc3RydWN0IGRpc3BsYXlfdGltaW5n
+IGVkdF9ldG1sMTAxMGczZHJhX3RpbWluZyA9IHsKPiA+ID4gwqDCoMKgwqDCoMKgwqDCoMKgIC5w
+aXhlbGNsb2NrID0geyA2NjMwMDAwMCwgNzI0MDAwMDAsIDc4OTAwMDAwIH0sCj4gPiA+IMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgXl5eXl5eXl4KPiA+ID4gCj4gPiA+IFRoZSBwaXhlbCBjbG9jayBhcmUgd2l0aGlu
+IHRvbGVyYW5jZSwgYnV0IHRoZXJlIGlzIGEgZGlzY3JlcGFuY3kKPiA+ID4gNzQyNTAwMDAgIT0g
+NzI0MDAwMDAgLgo+ID4gPiAKPiA+ID4gU2luY2UgY29tbWl0IDk0ZTYxOTdkYWRjOSAoImFybTY0
+OiBkdHM6IGlteDhtcDogQWRkIExDRElGMiAmIExEQgo+ID4gPiBub2RlcyIpCj4gPiA+IHRoZSBJ
+TVg4TVBfVklERU9fUExMMV9PVVQgaXMgc2V0IHRvIGEgdmVyeSBzcGVjaWZpYyBmcmVxdWVuY3kg
+b2YKPiA+ID4gMTAzOTUwMDAwMCBIeiwgd2hpY2ggdGlkaWx5IGRpdmlkZXMgYnkgMiB0byA1MTk3
+NTAwMDAgSHogKHdoaWNoCj4gPiA+IGlzCj4gPiA+IHlvdXIKPiA+ID4gTFZEUyBzZXJpYWxpemVy
+IGZyZXF1ZW5jeSkgYW5kIGRpdmlkZXMgYnkgNyB0byA3NDI1MDAwMCBIeiB3aGljaAo+ID4gPiBp
+cwo+ID4gPiB5b3VyCj4gPiA+IExDRElGIHBpeGVsIGNsb2NrLgo+ID4gPiAKPiA+ID4gVGhpcyBW
+aWRlbyBQTEwxIGNvbmZpZ3VyYXRpb24gc2luY2UgbW92ZWQgdG8gJm1lZGlhX2Jsa19jdHJsIHt9
+ICwKPiA+ID4gYnV0Cj4gPiA+IGl0Cj4gPiA+IGlzIHN0aWxsIGluIHRoZSBpbXg4bXAuZHRzaSAu
+IFRoZXJlZm9yZSwgdG8gbWFrZSB5b3VyIHBhbmVsIHdvcmsKPiA+ID4gYXQKPiA+ID4gdGhlCj4g
+PiA+IGNvcnJlY3QgZGVzaXJlZCBwaXhlbCBjbG9jayBmcmVxdWVuY3kgaW5zdGVhZCBvZiBzb21l
+IHJhbmRvbSBvbmUKPiA+ID4gaW5oZXJpdGVkIGZyb20gaW14OG1wLmR0c2ksIGFkZCB0aGUgZm9s
+bG93aW5nIHRvIHRoZSBwb2xsdXggRFQsIEkKPiA+ID4gYmVsaWV2ZSB0aGF0IHdpbGwgZml4IHRo
+ZSBwcm9ibGVtIGFuZCBpcyB0aGUgY29ycmVjdCBmaXg6Cj4gPiA+IAo+ID4gPiAmbWVkaWFfYmxr
+X2N0cmwgewo+ID4gPiDCoMKgwqDCoCAvLyA1MDY4MDAwMDAgPSA3MjQwMDAwMCAqIDcgKGZvciBz
+aW5nbGUtbGluayBMVkRTLCB0aGlzIGlzCj4gPiA+IGVub3VnaCkKPiA+ID4gwqDCoMKgwqAgLy8g
+dGhlcmUgaXMgbm8gbmVlZCB0byBtdWx0aXBseSB0aGUgY2xvY2sgYnkgKiAyCj4gPiA+IMKgwqDC
+oMKgIGFzc2lnbmVkLWNsb2NrLXJhdGVzID0gPDUwMDAwMDAwMD4sIDwyMDAwMDAwMDA+LCA8MD4s
+IDwwPiwKPiA+ID4gPDUwMDAwMDAwMD4sIDw1MDY4MDAwMDA+Owo+ID4gPiB9Owo+ID4gPiAKPiA+
+ID4gQ2FuIHlvdSBwbGVhc2UgdGVzdCB3aGV0aGVyIHRoaXMgd29ya3MgYW5kIHRoZSBwaXhlbCBj
+bG9jayBhcmUKPiA+ID4gYWNjdXJhdGUKPiA+ID4gaW4gL3N5cy9rZXJuZWwvZGVidWcvY2xrL2Ns
+a19zdW1tYXJ5ID8KPiA+IAo+ID4gSW50ZXJlc3RpbmdseSwgYWZ0ZXIgbWFraW5nIHRoZSBjaGFu
+Z2UgeW91IHN1Z2dlc3RlZCB0b8KgaW14OG1wLQo+ID4gcGh5Ym9hcmQtcG9sbHV4LXJkay5kdHMg
+YmVmb3JlIHRoZSB0d28gcmV2ZXJzaW9ucywgdGhlIGRpc3BsYXkgbm93Cj4gPiBzZWVtcyB0byB3
+b3JrLiBQbGVhc2Ugc2VlIGJlbG93IGZvciB0aGUgcmVsZXZhbnQgc2VjdGlvbiBvZiB0aGUgbmV3
+Cj4gPiBjbGtfc3VtbWFyeSByZWZlcnJpbmcgdG8gbWVkaWFfZGlzcDJfcGl4Ogo+ID4gCj4gPiB2
+aWRlb19wbGwxX3JlZl9zZWzCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIDHCoMKgwqDCoMKg
+wqAgMcKgwqDCoMKgwqDCoMKgIDDCoMKgwqDCoMKgwqDCoCAyNDAwMDAwMAo+ID4gMMKgwqDCoMKg
+wqDCoMKgwqDCoCAwwqDCoMKgwqAgNTAwMDDCoMKgwqDCoMKgIFnCoMKgwqDCoMKgIGRldmljZWxl
+c3MKPiA+IG5vX2Nvbm5lY3Rpb25faWQKPiA+IMKgwqDCoMKgwqDCoMKgIHZpZGVvX3BsbDHCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAxwqDCoMKgwqDCoMKgIDHCoMKgwqDC
+oMKgwqDCoCAwCj4gPiA1MDY4MDAwMDDCoMKgIDDCoMKgwqDCoMKgwqDCoMKgwqAgMMKgwqDCoMKg
+IDUwMDAwwqDCoMKgwqDCoCBZwqDCoMKgwqDCoMKgwqDCoCBkZXZpY2VsZXNzCj4gPiBub19jb25u
+ZWN0aW9uXwo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqAgdmlkZW9fcGxsMV9ieXBhc3PCoMKgwqDC
+oMKgwqDCoMKgwqAgMcKgwqDCoMKgwqDCoCAxwqDCoMKgwqDCoMKgwqAgMAo+ID4gNTA2ODAwMDAw
+wqDCoCAwwqDCoMKgwqDCoMKgwqDCoMKgIDDCoMKgwqDCoCA1MDAwMMKgwqDCoMKgwqAgWcKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgZGV2aWNlbGVzcwo+ID4gbm9fY29ubmVjdGkKPiA+IMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgIHZpZGVvX3BsbDFfb3V0wqDCoMKgwqDCoMKgwqDCoMKgIDLCoMKg
+wqDCoMKgwqAgMsKgwqDCoMKgwqDCoMKgIDAKPiA+IDUwNjgwMDAwMMKgwqAgMMKgwqDCoMKgwqDC
+oMKgwqDCoCAwwqDCoMKgwqAgNTAwMDDCoMKgwqDCoMKgIFnCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgIGRldmljZWxlc3MKPiA+IG5vX2Nvbm5lCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCBtZWRpYV9sZGLCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIDHCoMKgwqDCoMKgwqAg
+McKgwqDCoMKgwqDCoMKgIDAKPiA+IDUwNjgwMDAwMMKgwqAgMMKgwqDCoMKgwqDCoMKgwqDCoCAw
+wqDCoMKgwqAgNTAwMDDCoMKgwqDCoMKgIFnCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgCj4gPiBkZXZpY2VsZXNzCj4gPiBub19jbwo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgbWVkaWFfbGRiX3Jvb3RfY2xrIDHCoMKgwqDCoMKgwqAgMcKgwqDCoMKg
+wqDCoMKgIDAKPiA+IDUwNjgwMDAwMMKgwqAgMMKgwqDCoMKgwqDCoMKgwqDCoCAwwqDCoMKgwqAg
+NTAwMDDCoMKgwqDCoMKgIFkKPiA+IDMyZWMwMDAwLmJsay1jdHJsOmJyaWRnZUA1Y8KgwqDCoMKg
+IGwKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gPiDCoMKgwqAgCj4gPiBkZXZpY2VsZXNzwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIG5vCj4gPiDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBtZWRpYV9kaXNwMl9waXjCoMKgwqDCoMKgIDHCoMKgwqDC
+oMKgwqAgMcKgwqDCoMKgwqDCoMKgIDDCoMKgwqDCoMKgwqDCoAo+ID4gNzI0MDAwMDAKPiA+IDDC
+oMKgwqDCoMKgwqDCoMKgwqAgMMKgwqDCoMKgIDUwMDAwwqDCoMKgwqDCoCBZwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBkZXZpY2VsZXNzCj4gPiBub19jbwo+ID4gwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgbWVkaWFfZGlzcDJfcGl4X3Jvb3RfY2xrIDHC
+oMKgwqDCoMKgwqAgMcKgwqDCoMKgwqDCoMKgIDAKPiA+IDcyNDAwMDAwwqDCoMKgIDDCoMKgwqDC
+oMKgwqDCoMKgwqAgMMKgwqDCoMKgIDUwMDAwwqDCoMKgwqDCoCBZCj4gPiAzMmU5MDAwMC5kaXNw
+bGF5LWNvbnRyb2xsZXIKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gPiDCoMKgwqAgCj4gPiAz
+MmVjMDAwMC5ibGstY3RybMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZGkKPiA+IMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgCj4gPiDCoMKgwqAgCj4gPiBkZXZpY2VsZXNzwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIG5vCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCBtZWRpYV9kaXNwMV9waXjCoMKgwqDCoMKgIDDCoMKgwqDCoMKgwqAgMMKgwqDC
+oMKgwqDCoMKgIDAKPiA+IDUwNjgwMDAwMMKgwqAgMMKgwqDCoMKgwqDCoMKgwqDCoCAwwqDCoMKg
+wqAgNTAwMDDCoMKgwqDCoMKgIE7CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4g
+PiBkZXZpY2VsZXNzCj4gPiBub19jbwo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgbWVkaWFfZGlzcDFfcGl4X3Jvb3RfY2xrIDDCoMKgwqDCoMKgwqAgMMKgwqDCoMKg
+wqDCoMKgIDAKPiA+IDUwNjgwMDAwMMKgwqAgMMKgwqDCoMKgwqDCoMKgwqDCoCAwwqDCoMKgwqAg
+NTAwMDDCoMKgwqDCoMKgIE4KPiA+IDMyZWMwMDAwLmJsay1jdHJsCj4gPiDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoAo+ID4gwqDCoMKgIAo+ID4gZGV2aWNlbGVzc8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCBubwo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgbWVkaWFfbWlwaV9waHkxX3JlZsKgIDDCoMKgwqDCoMKgwqAgMMKgwqDCoMKgwqDCoMKgIDDC
+oMKgwqDCoMKgwqDCoAo+ID4gMjMwMzYzNjQKPiA+IDDCoMKgwqDCoMKgwqDCoMKgwqAgMMKgwqDC
+oMKgIDUwMDAwwqDCoMKgwqDCoCBOwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBk
+ZXZpY2VsZXNzCj4gPiBub19jbwo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqAgbWVkaWFfbWlwaV9waHkxX3JlZl9yb290IDDCoMKgwqDCoMKgwqAgMMKgwqDCoMKgwqDC
+oMKgIDAKPiA+IDIzMDM2MzY0wqDCoMKgIDDCoMKgwqDCoMKgwqDCoMKgwqAgMMKgwqDCoMKgIDUw
+MDAwwqDCoMKgwqDCoCBOCj4gPiAzMmVjMDAwMC5ibGstY3RybAo+ID4gCj4gPiBUaGUgbWVkaWFf
+ZGlzcDJfcGl4IGNsb2NrIG5vdyBzZWVtcyB0byBiZSBjb3JyZWN0IGF0IDcyNDAwMDAwMAo+ID4g
+YWZ0ZXIKPiA+IHlvdXIgY2hhbmdlcy4KPiAKPiBEbyB5b3Ugd2FudCB0byBzdWJtaXQgdGhlIERU
+IHBhdGNoIHdpdGggY29ycmVjdCBGaXhlczogdGFnID8gOikKCkkgdGhvdWdodCB0aGlzIHdhc24n
+dCBuZWVkZWQgd2l0aCB0aGUgb3RoZXIgdHdvIHBhdGNoZXM/Cgo=
 
-Do you want to submit the DT patch with correct Fixes: tag ? :)
