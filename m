@@ -1,129 +1,177 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9877E1CF5D2;
-	Thu, 10 Oct 2024 14:17:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0D41CF29A;
+	Thu, 10 Oct 2024 14:30:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728569841; cv=none; b=U3diJC4I71zY03eACO85g75JSBg9rdRKDpxj0b/JR/MoXS/ylu5/H9Ui+q9CjifzYfQ6slfl8YM1GHoyjGyaLVGSbqZFdMc3FelRvcHzIsKOMAI44w+KiOm1328KIim0OmV4wARwO2+cXVf5LHA4BgMQnNXY+skMBqWZyMA93jU=
+	t=1728570605; cv=none; b=TI3F3urrxqrXhyVpxof+vI0dZ0H4O58IVHc94eip1QpWCn3ib88o7Icv+ebtzht8iC1l9/iIbYrLIvs+XA4WL4fQN0wyRX8DFkhHt3CA9IadQ0zT1iLGshRSQ2dtvRVeRC7ZVLG7vlDFpWQM58ScP+jcAsmZnSaL2HZubHFN5GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728569841; c=relaxed/simple;
-	bh=1PjyvsczcSZkLe66VAcgR3YAMDFQk4KexMDCjSwoyms=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AR6uff4ZcKc1erfz4SRqw184jcAtOmVvIn47/hgHVx++1F8PgYxHH2WsliVFyu9bteM3t5OXRlHXvx5MP3ouyp/853g6n2bf4MOaRkJp/XhSvweHRUR+dipkGMGDUveLG7PDRbeZVvMZQMmaEkUhNl0v1aBr0vjbFuJdyjOriK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AUTjORlr; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1728570605; c=relaxed/simple;
+	bh=0VvWiFUJjBgbPH/WUQ9vyiznobhDsJg21Hg47rHZGFs=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=NbzoDGuJ8IfMVFX6gcd/tgypWImTC3j8VdgaeOR3pB4kqRA8/GlZiaJVtYfnSmmdRnbbki3y56Nb0jdZ8d7D+Mawkj/Z3GYkC/FUOcYIpdGHCH2RSVFFUl1dnzm4NFw7ySgLSwKwCK4ZoosDll2BZha4cGD9E4vBRkdZKkKcveM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ayKPAIkV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AUTjORlr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728569840; x=1760105840;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1PjyvsczcSZkLe66VAcgR3YAMDFQk4KexMDCjSwoyms=;
-  b=AUTjORlrSUFekQIVL6S1+dH9Um86untBaO6qG64zMhmYNppPmFkpw3Zh
-   0ualb9Iyr67BddJoXR5agbktnmIt1ZyCKzRpvmjPpfiKMnYD4VZfkY9yS
-   YjxfkTmKRABn/ZwXKYagshrmQCAXWate7ZRbkKic+a8i3ACF1ixtHO6xR
-   pYy3TpadyFCddxylUYuXOXavxhjbNlevLeW0sZP5sfB1hT720d74E7BjW
-   iWNXrT5UChOvwDdhGBBueMv16cEUSdaADRG0cwfjXAfpbHQ9mad5pGj/2
-   JIDXQ5wqVrMKLh1+yvGQoxBKZsMladJEGTqDbkQOwg6azfeyBBJoiMSRU
-   w==;
-X-CSE-ConnectionGUID: EuGC6/DJRaCLqMNTCxE22w==
-X-CSE-MsgGUID: TnUhOz+nTW6Tjcwf9371Yg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="27401183"
-X-IronPort-AV: E=Sophos;i="6.11,193,1725346800"; 
-   d="scan'208";a="27401183"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 07:17:19 -0700
-X-CSE-ConnectionGUID: 4SQEOs7RRGOFSVe0M1xdRg==
-X-CSE-MsgGUID: f58R46SvTY27ZWTBzSxC5A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,193,1725346800"; 
-   d="scan'208";a="107331102"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 10 Oct 2024 07:17:14 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sytya-000Aq9-1E;
-	Thu, 10 Oct 2024 14:17:12 +0000
-Date: Thu, 10 Oct 2024 22:16:35 +0800
-From: kernel test robot <lkp@intel.com>
-To: Wei Fang <wei.fang@nxp.com>, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, vladimir.oltean@nxp.com,
-	claudiu.manoil@nxp.com, xiaoning.wang@nxp.com, Frank.Li@nxp.com,
-	christophe.leroy@csgroup.eu, linux@armlinux.org.uk,
-	bhelgaas@google.com
-Cc: oe-kbuild-all@lists.linux.dev, imx@lists.linux.dev,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH net-next 05/11] net: enetc: add enetc-pf-common driver
- support
-Message-ID: <202410102136.jQHZOcS4-lkp@intel.com>
-References: <20241009095116.147412-6-wei.fang@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ayKPAIkV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F153C4CEC5;
+	Thu, 10 Oct 2024 14:30:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728570605;
+	bh=0VvWiFUJjBgbPH/WUQ9vyiznobhDsJg21Hg47rHZGFs=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=ayKPAIkVxFtsrmDk1NRBZsgRCRj/koZJDRkPfezrQq1vaEyKoOZ0//Bqc2RkK8Fk4
+	 iGPM88dr9UZRjZrgal+uB0kc2/x+5vQLu0K0RYvYoOxrWzYTJd8vdE5ZYBeDd5XheX
+	 uVHV/nlPy0zaBvx2V9+0tdLWSHsDAl9uRcz2TPft2qIVwSWnqcOPpuq8uJFhtWl2GV
+	 hZR5uTaETCVr2HoHub3jWU0W8rPdYg8N92Upnt5ViUPdb/+grMdxuV4iWSIoFeVwdk
+	 xdBjiOhGtXqXFWCia69/uEpkUZJW5Xut0mOjSGv2dfspcJydds80ZQCUDQ6YHmY/an
+	 CJIjMhb+gdAYA==
+Date: Thu, 10 Oct 2024 09:30:04 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241009095116.147412-6-wei.fang@nxp.com>
-
-Hi Wei,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on net-next/main]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Wei-Fang/dt-bindings-net-add-compatible-string-for-i-MX95-EMDIO/20241009-181113
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20241009095116.147412-6-wei.fang%40nxp.com
-patch subject: [PATCH net-next 05/11] net: enetc: add enetc-pf-common driver support
-config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20241010/202410102136.jQHZOcS4-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 14.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241010/202410102136.jQHZOcS4-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410102136.jQHZOcS4-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   In file included from drivers/net/ethernet/freescale/enetc/enetc_pf_common.c:3:
->> include/linux/fsl/enetc_mdio.h:62:18: warning: no previous prototype for 'enetc_hw_alloc' [-Wmissing-prototypes]
-      62 | struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
-         |                  ^~~~~~~~~~~~~~
-
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for GET_FREE_REGION
-   Depends on [n]: SPARSEMEM [=n]
-   Selected by [m]:
-   - RESOURCE_KUNIT_TEST [=m] && RUNTIME_TESTING_MENU [=y] && KUNIT [=m]
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Lukasz Majewski <lukma@denx.de>
+Cc: linux-arm-kernel@lists.infradead.org, 
+ Conor Dooley <conor.dooley@microchip.com>, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, Fabio Estevam <festevam@gmail.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Stefan Wahren <wahrenst@gmx.net>, Conor Dooley <conor+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, devicetree@vger.kernel.org
+In-Reply-To: <20241010081719.2993296-1-lukma@denx.de>
+References: <20241010081719.2993296-1-lukma@denx.de>
+Message-Id: <172857035865.1533160.17822550814540826933.robh@kernel.org>
+Subject: Re: [PATCH v8 1/2] dt-bindings: arm: Document the btt3 i.MX28
+ based board
 
 
-vim +/enetc_hw_alloc +62 include/linux/fsl/enetc_mdio.h
+On Thu, 10 Oct 2024 10:17:18 +0200, Lukasz Majewski wrote:
+> The imx287 based btt3 board is very similar to xea in terms of used SOM
+> module.
+> 
+> Signed-off-by: Lukasz Majewski <lukma@denx.de>
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> 
+> ---
+> Changes for v8:
+> - None
+> ---
+>  Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-6517798dd3432a Claudiu Manoil 2020-01-06  49  
-80e87442e69ba8 Andrew Lunn    2023-01-12  50  static inline int enetc_mdio_read_c22(struct mii_bus *bus, int phy_id,
-80e87442e69ba8 Andrew Lunn    2023-01-12  51  				      int regnum)
-6517798dd3432a Claudiu Manoil 2020-01-06  52  { return -EINVAL; }
-80e87442e69ba8 Andrew Lunn    2023-01-12  53  static inline int enetc_mdio_write_c22(struct mii_bus *bus, int phy_id,
-80e87442e69ba8 Andrew Lunn    2023-01-12  54  				       int regnum, u16 value)
-80e87442e69ba8 Andrew Lunn    2023-01-12  55  { return -EINVAL; }
-80e87442e69ba8 Andrew Lunn    2023-01-12  56  static inline int enetc_mdio_read_c45(struct mii_bus *bus, int phy_id,
-80e87442e69ba8 Andrew Lunn    2023-01-12  57  				      int devad, int regnum)
-80e87442e69ba8 Andrew Lunn    2023-01-12  58  { return -EINVAL; }
-80e87442e69ba8 Andrew Lunn    2023-01-12  59  static inline int enetc_mdio_write_c45(struct mii_bus *bus, int phy_id,
-80e87442e69ba8 Andrew Lunn    2023-01-12  60  				       int devad, int regnum, u16 value)
-6517798dd3432a Claudiu Manoil 2020-01-06  61  { return -EINVAL; }
-6517798dd3432a Claudiu Manoil 2020-01-06 @62  struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
-6517798dd3432a Claudiu Manoil 2020-01-06  63  { return ERR_PTR(-EINVAL); }
-6517798dd3432a Claudiu Manoil 2020-01-06  64  
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y nxp/mxs/imx28-btt3-0.dtb nxp/mxs/imx28-btt3-1.dtb nxp/mxs/imx28-btt3-2.dtb' for 20241010081719.2993296-1-lukma@denx.de:
+
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: /apb@80000000/apbh-bus@80000000/interrupt-controller@80000000: failed to match any schema with compatible: ['fsl,imx28-icoll', 'fsl,icoll']
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: /apb@80000000/apbh-bus@80000000/interrupt-controller@80000000: failed to match any schema with compatible: ['fsl,imx28-icoll', 'fsl,icoll']
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: nand-controller@8000c000: #size-cells: 0 was expected
+	from schema $id: http://devicetree.org/schemas/mtd/gpmi-nand.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: /apb@80000000/apbh-bus@80000000/interrupt-controller@80000000: failed to match any schema with compatible: ['fsl,imx28-icoll', 'fsl,icoll']
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: /apb@80000000/apbh-bus@80000000/interrupt-controller@80000000: failed to match any schema with compatible: ['fsl,imx28-icoll', 'fsl,icoll']
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: /apb@80000000/apbh-bus@80000000/interrupt-controller@80000000: failed to match any schema with compatible: ['fsl,imx28-icoll', 'fsl,icoll']
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: /apb@80000000/apbh-bus@80000000/interrupt-controller@80000000: failed to match any schema with compatible: ['fsl,imx28-icoll', 'fsl,icoll']
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: nand-controller@8000c000: #size-cells: 0 was expected
+	from schema $id: http://devicetree.org/schemas/mtd/nand-controller.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: spi@80010000: $nodename:0: 'spi@80010000' does not match '^mmc(@.*)?$'
+	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: spi@80010000: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'bus-width', 'clocks', 'non-removable', 'vmmc-supply' were unexpected)
+	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: spi@80012000: $nodename:0: 'spi@80012000' does not match '^mmc(@.*)?$'
+	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: spi@80012000: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'bus-width', 'clocks', 'keep-power-in-suspend', 'mmc-pwrseq', 'no-1-8-v', 'non-removable', 'pm-ignore-notify', 'vmmc-supply', 'wlan@1' were unexpected)
+	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: nand-controller@8000c000: #size-cells: 0 was expected
+	from schema $id: http://devicetree.org/schemas/mtd/gpmi-nand.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: nand-controller@8000c000: #size-cells: 0 was expected
+	from schema $id: http://devicetree.org/schemas/mtd/gpmi-nand.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: nand-controller@8000c000: #size-cells: 0 was expected
+	from schema $id: http://devicetree.org/schemas/mtd/nand-controller.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: nand-controller@8000c000: #size-cells: 0 was expected
+	from schema $id: http://devicetree.org/schemas/mtd/nand-controller.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: spi@80010000: $nodename:0: 'spi@80010000' does not match '^mmc(@.*)?$'
+	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: spi@80010000: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'bus-width', 'clocks', 'non-removable', 'vmmc-supply' were unexpected)
+	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: spi@80010000: $nodename:0: 'spi@80010000' does not match '^mmc(@.*)?$'
+	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: spi@80010000: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'bus-width', 'clocks', 'non-removable', 'vmmc-supply' were unexpected)
+	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: spi@80014000: Unevaluated properties are not allowed ('clocks' was unexpected)
+	from schema $id: http://devicetree.org/schemas/spi/mxs-spi.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: spi@80012000: $nodename:0: 'spi@80012000' does not match '^mmc(@.*)?$'
+	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: spi@80012000: $nodename:0: 'spi@80012000' does not match '^mmc(@.*)?$'
+	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: spi@80012000: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'bus-width', 'clocks', 'keep-power-in-suspend', 'mmc-pwrseq', 'no-1-8-v', 'non-removable', 'pm-ignore-notify', 'vmmc-supply', 'wlan@1' were unexpected)
+	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: spi@80012000: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'bus-width', 'clocks', 'keep-power-in-suspend', 'mmc-pwrseq', 'no-1-8-v', 'non-removable', 'pm-ignore-notify', 'vmmc-supply', 'wlan@1' were unexpected)
+	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: spi@80016000: Unevaluated properties are not allowed ('clocks' was unexpected)
+	from schema $id: http://devicetree.org/schemas/spi/mxs-spi.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: spi@80014000: Unevaluated properties are not allowed ('clocks' was unexpected)
+	from schema $id: http://devicetree.org/schemas/spi/mxs-spi.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: spi@80014000: Unevaluated properties are not allowed ('clocks' was unexpected)
+	from schema $id: http://devicetree.org/schemas/spi/mxs-spi.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: spi@80016000: Unevaluated properties are not allowed ('clocks' was unexpected)
+	from schema $id: http://devicetree.org/schemas/spi/mxs-spi.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: spi@80016000: Unevaluated properties are not allowed ('clocks' was unexpected)
+	from schema $id: http://devicetree.org/schemas/spi/mxs-spi.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: pinctrl@80018000: compatible: ['fsl,imx28-pinctrl', 'simple-bus'] is too long
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: pinctrl@80018000: 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog@0', 'hog@1', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'keypad-bttc@0', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-bttc@0', 'lcdif-bttc@1', 'lcdif-sync@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'ssp1-sdio@0', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1', 'wifi-en-pin@0' do not match any of the regexes: 'gpio@[0-9]+$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: pinctrl@80018000: compatible: ['fsl,imx28-pinctrl', 'simple-bus'] is too long
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: pinctrl@80018000: compatible: ['fsl,imx28-pinctrl', 'simple-bus'] is too long
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: pinctrl@80018000: 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog@0', 'hog@1', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'keypad-bttc@0', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-bttc@0', 'lcdif-bttc@1', 'lcdif-sync@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'ssp1-sdio@0', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1', 'wifi-en-pin@0' do not match any of the regexes: 'gpio@[0-9]+$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: pinctrl@80018000: 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog@0', 'hog@1', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'keypad-bttc@0', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-bttc@0', 'lcdif-bttc@1', 'lcdif-sync@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'ssp1-sdio@0', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1', 'wifi-en-pin@0' do not match any of the regexes: 'gpio@[0-9]+$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: /apb@80000000/apbh-bus@80000000/digctl@8001c000: failed to match any schema with compatible: ['fsl,imx28-digctl', 'fsl,imx23-digctl']
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: /apb@80000000/apbh-bus@80000000/digctl@8001c000: failed to match any schema with compatible: ['fsl,imx28-digctl', 'fsl,imx23-digctl']
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: /apb@80000000/apbh-bus@80000000/digctl@8001c000: failed to match any schema with compatible: ['fsl,imx28-digctl', 'fsl,imx23-digctl']
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: /apb@80000000/apbh-bus@80000000/digctl@8001c000: failed to match any schema with compatible: ['fsl,imx28-digctl', 'fsl,imx23-digctl']
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: /apb@80000000/apbh-bus@80000000/digctl@8001c000: failed to match any schema with compatible: ['fsl,imx28-digctl', 'fsl,imx23-digctl']
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: /apb@80000000/apbh-bus@80000000/digctl@8001c000: failed to match any schema with compatible: ['fsl,imx28-digctl', 'fsl,imx23-digctl']
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: /apb@80000000/apbx-bus@80040000/lradc@80050000: failed to match any schema with compatible: ['fsl,imx28-lradc']
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: /apb@80000000/apbx-bus@80040000/lradc@80050000: failed to match any schema with compatible: ['fsl,imx28-lradc']
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: /apb@80000000/apbx-bus@80040000/lradc@80050000: failed to match any schema with compatible: ['fsl,imx28-lradc']
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: /apb@80000000/apbx-bus@80040000/timrot@80068000: failed to match any schema with compatible: ['fsl,imx28-timrot', 'fsl,timrot']
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: /apb@80000000/apbx-bus@80040000/timrot@80068000: failed to match any schema with compatible: ['fsl,imx28-timrot', 'fsl,timrot']
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: /apb@80000000/apbx-bus@80040000/timrot@80068000: failed to match any schema with compatible: ['fsl,imx28-timrot', 'fsl,timrot']
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: /apb@80000000/apbx-bus@80040000/timrot@80068000: failed to match any schema with compatible: ['fsl,imx28-timrot', 'fsl,timrot']
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: /apb@80000000/apbx-bus@80040000/timrot@80068000: failed to match any schema with compatible: ['fsl,imx28-timrot', 'fsl,timrot']
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: /apb@80000000/apbx-bus@80040000/timrot@80068000: failed to match any schema with compatible: ['fsl,imx28-timrot', 'fsl,timrot']
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: panel: compatible: ['panel-dpi'] is too short
+	from schema $id: http://devicetree.org/schemas/display/panel/panel-dpi.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: panel: compatible: ['panel-dpi'] is too short
+	from schema $id: http://devicetree.org/schemas/display/panel/panel-dpi.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: panel: compatible: ['panel-dpi'] is too short
+	from schema $id: http://devicetree.org/schemas/display/panel/panel-dpi.yaml#
+
+
+
+
+
