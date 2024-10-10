@@ -1,531 +1,505 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2054.outbound.protection.outlook.com [40.107.247.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF811C3F1A
-	for <imx@lists.linux.dev>; Thu, 10 Oct 2024 08:17:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728548259; cv=none; b=b9pILUW/Qsm647t2XXJimuRlPc0yPZnmUVKj8Ht0BMXBj/LRo8vqI+ZoqEpwqxxKm2SuUVTvqqU1/7F/MNmeNMdnzZfM+lHwmZdwnA3vfhi5hgLX5XSjAWW2+0ELEqrHcC4RjDvSDjrqC4LZuAprspgmx5FybDHg3w0501REFkg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728548259; c=relaxed/simple;
-	bh=bdcxw/5FDKGNpBetY2eyPMAls7Th2xF8q/dIGZVR/Tk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Y0Djo2UPt/9v+mStFdxpGtR2pv/Lj90z/laVjMvozmdP23w+0R0MJZfbwCuSIgcnNKa0uDlM5RamL7c0L3Z/eWNnAE3MhSu6U5ZadJXo8AOJm3NordV8rcrhrd9m0Zdgp2hSkZ7/Pq1DVqMDciuTu/C/ACvv6oB8KGyEEBNbLE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=o5/ABcqt; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182F01BC072
+	for <imx@lists.linux.dev>; Thu, 10 Oct 2024 09:07:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728551246; cv=fail; b=aFpxcYsiXhIpAuJmm7mroEIRWGrnVS0TDMMWWuSUlycoGE2/hydH2CQTvvgxuYXGBEoLrmgQu1KVwVces+iWnq6igeXYUp8zWoZK8BhhCMXPBVplW7m++S3zyrsoJ5H5cVfKiFiVrkAe6a7Vd2URJfzgDE4wKXA0rgAwL3/TWhc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728551246; c=relaxed/simple;
+	bh=xbjOur7PykQnGyWlib7x8HeMkDine7NdYpCVM9SSuOc=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Jn3swEZuXh1osa5iGwE+LhQmbazXGEEl5iUGQr69/OEHyOn1TlPnSgG4ceww6HuaIa2z5ZuaiXiROhBGUbF8SEwPrP10BL/KZnlowRkMEuiZ8+QYOhLq1K9JZl9gjUj7MO8qKTeZOy3h6xIFFii3/ubYZRuewyt00PQljHJHYlM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=PGW0KHzY; arc=fail smtp.client-ip=40.107.247.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="o5/ABcqt"
-Received: from localhost.localdomain (85-222-111-42.dynamic.chello.pl [85.222.111.42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	(Authenticated sender: lukma@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 7DA8489254;
-	Thu, 10 Oct 2024 10:17:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1728548253;
-	bh=ZoxPsKup2yxdrZ3Dat8a6ykmiu063JhneADyZQBA7KI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o5/ABcqteZ9+tramY3mcFKDk3VY7t6orE7eEVVU6uc9YLBjucQhTrVQt0nWwEwlRB
-	 kLafUfW1r2Dax8wXENjWPE0Zu30zjLIUIDOcxSdtZ5QSuaGPYVyhFKHUWuAUYGuXTV
-	 RTy4acDdHuXBU64XpkS4dnlNGenOEWsODKTrqNEf/FYktdZ0RJ94lzlJRcmXU9W0Co
-	 mFjxDCXlxMezYj2etwEClyTAIY//wFX5IumOvJ0a47PQ/95g8m1IHaH0DQluZpxKs0
-	 FagTTWDm9flk7cFpgaNTwBVR4/e5kSkFKp5gTvDdTKXfqUHyH3p1v7eqzKRYAgj/Gf
-	 cYp9gAgmmS+LA==
-From: Lukasz Majewski <lukma@denx.de>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="PGW0KHzY"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tfylHdEFxHGd6OgW3BJNez/C0heU7d13bChNIQZHhAMRBieFKNzQtyhOs4/Wu1mqjfibJUNJ4ii5Sr8oAr6SeJAIMXYRkNAOGVmJmvzWrfC7H3jOUZNqInUChcDHx6NEN92/uUvi7UVWFLBkAdK4D/p0vT1XEoqEPqMGCbwIYPFMimsRzvw+g3+kVOFOqdzetgJN8rIHpSg2c753fXSRpAj0dpQj0SvMsIxX3c6YHhCx8gKQJy8E68X/L+Bam0JNEBLFW5SWIim2Z0vMDvBSTyBv9yfA/0hRppssjPDz09o2f5swlDC1fMzw7Oe5eQ0bUfUxkSNPltQIQt2jJPoZ/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hSw1PHqUJralApoNZNue+nkDswjy14lMsTJvmmlEZnU=;
+ b=cbUUl7WineNcmi+Z4xc1WdVwgLf5EHsxKCrI/erllWdcU/ZflnSBISA9x29IEEHuGtaQCoa9fv0k5nui00p3MmLFsrliQDweoZty6a49j2if6OPiB1XPcEj3nVLYkdQQ5hFrmr+Ms6Z0dOQTgoQADefHx5xRs55IPJgmsDNXLoI8L0p0wRG7gPVp7uEHh9/F7jJOmx2OOZWr69mpUVUz8Jqn7gvIcQBxVa9fjILDMjbQAlOg7UcgfgpQlrr9nu3lvSFjZfTDu+k+ZPPwDe8sJ0dRcJ2g3M78Om+OfNK7BCNuI1D+M1IZOD21oE3dW2AikOVuhr73Mrxil/pAKb068w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hSw1PHqUJralApoNZNue+nkDswjy14lMsTJvmmlEZnU=;
+ b=PGW0KHzY5KtCf9OndBlQY2tgfRm6UfIg71jwqNM71w4rxsCHcSof/Yv8L124kw98ZrlOq85G1I2zOqIpUlgW3OdTt9xZfR+xwGfPC6BmUu7ixlByeHA9/rwx1MU9v+jwqdv6P/o7Uj4ZtIPOuCh+69x+mNRpCmt/iNtmQBloz923hXxn7ptxbq1ZmSjjEg1zoThHohVbN2XWoKmNg2urKZZBvqm6PQcFImS9HQxQCoJLxP11n1kosSZ65OVt5nrtaUqanFwnithnqJtuMVTv1PMm9P2REEvNrs3x6qVErSkRPZtvwgrjuKWG85H6QEwb8DGp8Qns18FJXIVaoQg2iA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by AM0PR04MB6851.eurprd04.prod.outlook.com (2603:10a6:208:182::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.18; Thu, 10 Oct
+ 2024 09:07:20 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7%4]) with mapi id 15.20.8048.013; Thu, 10 Oct 2024
+ 09:07:19 +0000
+From: Xu Yang <xu.yang_2@nxp.com>
+To: vkoul@kernel.org,
+	kishon@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	gregkh@linuxfoundation.org,
+	peter.chen@kernel.org,
+	herve.codina@bootlin.com
+Cc: linux-phy@lists.infradead.org,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Lukasz Majewski <lukma@denx.de>
-Subject: [PATCH v8 2/2] ARM: dts: mxs: Add descriptions for imx287 based btt3-[012] devices
-Date: Thu, 10 Oct 2024 10:17:19 +0200
-Message-Id: <20241010081719.2993296-2-lukma@denx.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20241010081719.2993296-1-lukma@denx.de>
-References: <20241010081719.2993296-1-lukma@denx.de>
+	linux-usb@vger.kernel.org,
+	jun.li@nxp.com
+Subject: [PATCH v7 1/3] phy: fsl-imx8mq-usb: add tca function driver for imx95
+Date: Thu, 10 Oct 2024 17:08:20 +0800
+Message-Id: <20241010090822.3915064-1-xu.yang_2@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR01CA0187.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:189::12) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|AM0PR04MB6851:EE_
+X-MS-Office365-Filtering-Correlation-Id: c333f29e-21f2-4a24-fb56-08dce90af1d4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|52116014|366016|376014|1800799024|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?+SPJC54xWuqM1/b8XGBQAYUqBM7wcElwoOa8qImVr0QchePHbXxhjsBC+/F3?=
+ =?us-ascii?Q?gbwr0881D6o6A0abZV2pHgceotiApDcsX6jpv3eBSFnLa7VQfXVVuQdI+5/I?=
+ =?us-ascii?Q?CKdHYTUIxtUeqBAL8EmEk4zE8EeLZI7l05WomYT+mVoKt2DpVB0mqVfj+WhC?=
+ =?us-ascii?Q?YrU1o2tpaysahFgAu+MVStvcy7fl7rE1gux4XDQvPEVkoAJnoYG5OcejDabL?=
+ =?us-ascii?Q?Kyf//DeLfFk/WUtnXe4T8uAU3uF1JQ2y7+1/6in+CIECmJBxxfl9TV+SU+UG?=
+ =?us-ascii?Q?c3LQun7BMzsH+YbyjEgyfIr/Pe4YNURsE3FwejcaYRc2scCRmSZWIRrD6+N5?=
+ =?us-ascii?Q?5K3M4kr16lQbgtUjyCwe/ZrsMfOM7NbgL2OO1g//cocviIVCXUHS0WplaJ4r?=
+ =?us-ascii?Q?ORM13j7/xOwMbfnk3WkWmjJ9Nyfrmh5Oey4gshIV/RWB/K7bpUOHM7QPmbb7?=
+ =?us-ascii?Q?Ipz9jq5rtYtyTjskC1QTzXDZC+MAHTQ1URoGr8DtaiU4hblLE8Er9Nb9VFIb?=
+ =?us-ascii?Q?Aw1zFptA/xfQVKvGh6fHfFKtd1uDEophmEUkeBYOfGS1Cp0htxgiQ+BUAlSU?=
+ =?us-ascii?Q?kCucz7d7x61tr+oDtileZwxwZQCPKVw/mr+BVdd2neyWBTPgwMOlV45IJ/yG?=
+ =?us-ascii?Q?vg1JMWi9ItYPu+9XZ+fHrXvodwhrgROQqBlCIwrb16bxbJMA6VvxomYayYlK?=
+ =?us-ascii?Q?hjOmrdV3WUFd46EYu8W8WtBSYINzYgFhgYx8oGlIxaeqGrEjsRBRjbbzxu0b?=
+ =?us-ascii?Q?Jb+ZXHIDvG6Ri0rgVKjSIQfiA1NQbYohrU14F6AUBwwAfM0crTCmYIdjIxLK?=
+ =?us-ascii?Q?jnIVCn+Udzx2AEyhsCWVWPSoRrnzcKLJp+M+4QNGo7+SdoDa9MxPvb+GYKHg?=
+ =?us-ascii?Q?edh00Px38Ws5oV22vyUjuAmCv7lfEddR6v5FeH95YXlzmggqpIfWHQpP5VUl?=
+ =?us-ascii?Q?WgHV24+7wix8vnrh5KWp02H9MghnulzdTbEP5EEv/2IM8sQHYeumSNFVR373?=
+ =?us-ascii?Q?6oYtAErOJQZBTo19caqMJFC2pjfsvL2C/ZlRhTDZlRRr1jcevSv3TpTmjIU1?=
+ =?us-ascii?Q?cCLVPVAoLIjFBCRwOAQaAbzVpusfPhhH4NyB3PjAzP5G+qo55bfypi90s6Ik?=
+ =?us-ascii?Q?2vEjQpGXN32v4X9lgPBOF8e8NOJ50gxhKWTLk9xK/zrEDldWvziVs/9wCTNE?=
+ =?us-ascii?Q?Aq49tlcDk+dZe00cMv5QnaU7/GaPd/DcA05uvym9/I2OpYMfRhFbqu6Ndipf?=
+ =?us-ascii?Q?31QiDJ7RMNTZYnftrY7BNIenAfXszga5nsCHsO5cn2LhZY5MqgJ7HXfDOqZt?=
+ =?us-ascii?Q?qF0DZ2+Xk0nZGZg9e4rVyDAKaRUb3XX6wTeEA7imtKrc4Q=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(366016)(376014)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?hvYRYfcgZ05r25kHTBOQYgHm9SP9Ohx6yScRWlVEbbzr1NoqB8yZvUrlVU3d?=
+ =?us-ascii?Q?8U72sg54f40PSNfrKlfSXDLBxgIsYC3f8v0pyEOdtCZLW4D4vzV/kcxDGPG1?=
+ =?us-ascii?Q?VuuK/KWigGbhtUgyYQyaCf3cLp/S+eYZhuVMLr2Zxb/SheY9dn5d9qLMWmQt?=
+ =?us-ascii?Q?cEIUInLYU2YJNPYf98xYiwzm0L3WefxqHSX7ACEO+qgwjar9JUw9xWIfnDhb?=
+ =?us-ascii?Q?Qpsq6WWtaLeKH9Wat0wLH2NEDgOcHkQ2d9jKHMcVtloVUmxNzOmFh5wJk1Dw?=
+ =?us-ascii?Q?bCVgG3KFQewrWqq73ZXmQyWpUkRtyGBOKdUb0MPYTqyJBLSUd1NyeY+P9Tkx?=
+ =?us-ascii?Q?Vg2SjZnIJ7wG3qFhSOSTYP/Uaz5fUEWzyDI1ReSnAc2SgMaPVyeoxuZNUvHJ?=
+ =?us-ascii?Q?6PEmX85PIuB/mn6aYCH0I4H8IQJ9OaDECZOTYT2CCQWljxOyimaNeVLw0St4?=
+ =?us-ascii?Q?CV/Mvodpcr6rk3x8dIpemT7IXS8l4JNu2miWmHjm4D27JNWzjtgM8jmSjGNY?=
+ =?us-ascii?Q?ph2N0ataWAIOcj01r9MIsBO8RGesTBgPrWiRFlmum85Rwb7HNXAxs82h1LG4?=
+ =?us-ascii?Q?ZtkjmI2oURoKRZTJMim6ReebtBcS05oA80OeosbqdjxSacLifxZNsdwJ9WN1?=
+ =?us-ascii?Q?bDHpMQYzY5kYHpSe8nmWqPRsz0ogH8OlUvFy0widWgEMDPg2HNjoGszkZqD+?=
+ =?us-ascii?Q?Zq41Xrq1hmgpdgKG4B2HMytoz+3lFUF1/+t3pnbBkT46irJvheH5JIms0U09?=
+ =?us-ascii?Q?wTAxXCKT4Z+R2zY+4qqAU3K3NuMvP8VPTAaZ3zI16rLUXxyenbd101z/8xN+?=
+ =?us-ascii?Q?y/2kt/0idhtARptZQIkDlvUPr6lLRL61qAIOFBfuLfpcSA6+P10XSMXpAaD6?=
+ =?us-ascii?Q?uza6NhqHry8rI0AcFalUQ80DwCsDXmPH6eE+l9hAFhb0H1oJ2IUZMWz5tVPj?=
+ =?us-ascii?Q?zxhMwkfsxnC3rGCI9q3DWBoHPsPJcJcVq2t+NyUZVBcPWVSPG4irKoFVd0hu?=
+ =?us-ascii?Q?YlAGZB/8jI9/pboLeK8AK42l1FOP08i1cGdOvz85/iMMGnAbDc/XV3OWUmd7?=
+ =?us-ascii?Q?NPT2cdDjKN4O080MtF470GclxxovNBTNWb3V2FtuqA4ypFUsbwSjvqB6LgiD?=
+ =?us-ascii?Q?VTQgp8Pgmj0LJRDIrWHWMipbBBMV9IfYUCdDvjmSBBePHjwOSLnyW23/Htgs?=
+ =?us-ascii?Q?bwiqune9TgqUrYEXzAxDhfKhI6XItXSSnLspOh4F1dzdCMJYPqxcI+XNlRcc?=
+ =?us-ascii?Q?DkGjpfQe76H7Aci8lFX2tXl7ahHUjPSJNfs2mgx5vwQC8SDOx4H5S4ZWWKOl?=
+ =?us-ascii?Q?R9UdAghf/x7W8HT/ipS6QNUQbCnaOHiHLguaoYyCnraBRyvue6HI3ZmazXjw?=
+ =?us-ascii?Q?XwMM5IKwzCvJCqv73my64BUmjf4I8/JNSC/g1HVj3clLZmNTBWwwC1NzqVxx?=
+ =?us-ascii?Q?a3g7yVRAccLuX5JlbDVQ+HwZPBKyClqnAqKdWgjiUcRLTNzPLro88Ho81tWs?=
+ =?us-ascii?Q?dBBE/dhsWKVRzj9lQ+CjNj9KNguYcN+L/4pDH+uzS1TR0JZS+ZOppTKi7DOX?=
+ =?us-ascii?Q?VP9Ed1GRw8Yz8WBxdbkssQKZytIe+UxzmpfsXR96?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c333f29e-21f2-4a24-fb56-08dce90af1d4
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2024 09:07:19.9436
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ORungtjuV7YyDDWcImTJMXjUS2XGpIEPHg61KIx4PbTn+P1Vy1nkPy2a3UvmU4SmzzACUCd7pLJyPf0Tfl41rw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6851
 
-The btt3 device' HW revisions from 0 to 2 use imx287 SoC and are to
-some extend similar to already upstreamed XEA devices, hence are
-using common imx28-lwe.dtsi file.
+The i.MX95 USB3 phy has a Type-C Assist block (TCA). This block consists
+two functional blocks (XBar assist and VBus assist) and one system
+access interface using APB.
 
-New, imx28-btt3.dtsi has been added to embrace common DTS
-properties for different HW revisions for this device.
+The primary functionality of XBar assist is:
+ - switching lane for flip
+ - moving unused lanes into lower power states.
 
-As a result - changes introduced in imx28-btt3-[012].dts are
-minimal.
+This info can be get from:
+i.MX95 RM Chapter 163.3.8 Type-C assist (TCA) block.
 
-Signed-off-by: Lukasz Majewski <lukma@denx.de>
+This will add support for TCA block to achieve lane switching and tca
+lower power functionality.
+
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Reviewed-by: Jun Li <jun.li@nxp.com>
 
 ---
-Changes for v2:
-- Rename dts file from btt3-[012] to imx28-btt3-[012] to match current
-  linux kernel naming convention
-- Remove 'wlf,wm8974' from compatible for codec@1a
-
-Changes for v3:
-- Keep alphabethical order for Makefile entries
-
-Changes for v4:
-- Change compatible for btt3 board (to 'lwn,imx28-btt3')
-
-Changes for v5:
-- Combine patch, which adds btt3-[012] with one adding board entry to
-  fsl.yaml
-
-Changes for v6:
-- Make the patch series for adding entry in fsl.yaml and btt3
-
-Changes for v7:
-- Use "panel" property as suggested by the community
-- Use panel-timing to specify the display parameters
-- Update subject line with correct tags
-
-Changes for v8:
-- Use GPIO_ACTIVE_HIGH instead of '0'
-- Add the comment regarding mac address specification
-- Remove superfluous comment
-- Change wifi-en-pin node name
+Changes in v2:
+ - return the value of imx95_usb_phy_get_tca()
+Changes in v3:
+ - no changes
+Changes in v4:
+ - remove compatible check for imx95
+ - check whether tca register region exist or not, yes means has tca,
+   otherwise skip tca setup
+Changes in v5:
+ - no changes
+Changes in v6:
+ - no changes
+Changes in v7:
+ - fix sparse warnings in imx95_usb_phy_get_tca()
 ---
- arch/arm/boot/dts/nxp/mxs/Makefile         |   3 +
- arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dts |  12 +
- arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dts |   8 +
- arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dts |  40 +++
- arch/arm/boot/dts/nxp/mxs/imx28-btt3.dtsi  | 313 +++++++++++++++++++++
- 5 files changed, 376 insertions(+)
- create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dts
- create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dts
- create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dts
- create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-btt3.dtsi
+ drivers/phy/freescale/Kconfig              |   1 +
+ drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 243 +++++++++++++++++++++
+ 2 files changed, 244 insertions(+)
 
-diff --git a/arch/arm/boot/dts/nxp/mxs/Makefile b/arch/arm/boot/dts/nxp/mxs/Makefile
-index a430d04f9c69..96dd31ea19ba 100644
---- a/arch/arm/boot/dts/nxp/mxs/Makefile
-+++ b/arch/arm/boot/dts/nxp/mxs/Makefile
-@@ -8,6 +8,9 @@ dtb-$(CONFIG_ARCH_MXS) += \
- 	imx28-apf28.dtb \
- 	imx28-apf28dev.dtb \
- 	imx28-apx4devkit.dtb \
-+	imx28-btt3-0.dtb \
-+	imx28-btt3-1.dtb \
-+	imx28-btt3-2.dtb \
- 	imx28-cfa10036.dtb \
- 	imx28-cfa10037.dtb \
- 	imx28-cfa10049.dtb \
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dts b/arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dts
-new file mode 100644
-index 000000000000..6ac46e4b21bb
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dts
-@@ -0,0 +1,12 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/*
-+ * Copyright 2024
-+ * Lukasz Majewski, DENX Software Engineering, lukma@denx.de
-+ */
+diff --git a/drivers/phy/freescale/Kconfig b/drivers/phy/freescale/Kconfig
+index dcd9acff6d01..81f53564ee15 100644
+--- a/drivers/phy/freescale/Kconfig
++++ b/drivers/phy/freescale/Kconfig
+@@ -5,6 +5,7 @@ if (ARCH_MXC && ARM64) || COMPILE_TEST
+ config PHY_FSL_IMX8MQ_USB
+ 	tristate "Freescale i.MX8M USB3 PHY"
+ 	depends on OF && HAS_IOMEM
++	depends on TYPEC || TYPEC=n
+ 	select GENERIC_PHY
+ 	default ARCH_MXC && ARM64
+ 
+diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+index adc6394626ce..661191276b27 100644
+--- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
++++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+@@ -10,6 +10,7 @@
+ #include <linux/phy/phy.h>
+ #include <linux/platform_device.h>
+ #include <linux/regulator/consumer.h>
++#include <linux/usb/typec_mux.h>
+ 
+ #define PHY_CTRL0			0x0
+ #define PHY_CTRL0_REF_SSP_EN		BIT(2)
+@@ -50,11 +51,66 @@
+ 
+ #define PHY_TUNE_DEFAULT		0xffffffff
+ 
++#define TCA_CLK_RST			0x00
++#define TCA_CLK_RST_SW			BIT(9)
++#define TCA_CLK_RST_REF_CLK_EN		BIT(1)
++#define TCA_CLK_RST_SUSPEND_CLK_EN	BIT(0)
 +
-+/dts-v1/;
-+#include "imx28-btt3.dtsi"
++#define TCA_INTR_EN			0x04
++#define TCA_INTR_STS			0x08
 +
-+&hog_pins_rev {
-+	fsl,pull-up = <MXS_PULL_ENABLE>;
-+};
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dts b/arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dts
-new file mode 100644
-index 000000000000..213fe931c58b
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dts
-@@ -0,0 +1,8 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/*
-+ * Copyright 2024
-+ * Lukasz Majewski, DENX Software Engineering, lukma@denx.de
-+ */
++#define TCA_GCFG			0x10
++#define TCA_GCFG_ROLE_HSTDEV		BIT(4)
++#define TCA_GCFG_OP_MODE		GENMASK(1, 0)
++#define TCA_GCFG_OP_MODE_SYSMODE	0
++#define TCA_GCFG_OP_MODE_SYNCMODE	1
 +
-+/dts-v1/;
-+#include "imx28-btt3.dtsi"
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dts b/arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dts
-new file mode 100644
-index 000000000000..0b0939ecb59b
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dts
-@@ -0,0 +1,40 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/*
-+ * Copyright 2024
-+ * Lukasz Majewski, DENX Software Engineering, lukma@denx.de
-+ */
++#define TCA_TCPC			0x14
++#define TCA_TCPC_VALID			BIT(4)
++#define TCA_TCPC_LOW_POWER_EN		BIT(3)
++#define TCA_TCPC_ORIENTATION_NORMAL	BIT(2)
++#define TCA_TCPC_MUX_CONTRL		GENMASK(1, 0)
++#define TCA_TCPC_MUX_CONTRL_NO_CONN	0
++#define TCA_TCPC_MUX_CONTRL_USB_CONN	1
 +
-+/dts-v1/;
-+#include "imx28-btt3.dtsi"
++#define TCA_SYSMODE_CFG			0x18
++#define TCA_SYSMODE_TCPC_DISABLE	BIT(3)
++#define TCA_SYSMODE_TCPC_FLIP		BIT(2)
 +
-+/ {
-+	panel {
-+		compatible = "panel-dpi";
-+		power-supply = <&reg_3v3>;
-+		width-mm = <70>;
-+		height-mm = <52>;
++#define TCA_CTRLSYNCMODE_CFG0		0x20
++#define TCA_CTRLSYNCMODE_CFG1           0x20
 +
-+		panel-timing {
-+			clock-frequency = <6500000>;
-+			hactive = <320>;
-+			vactive = <240>;
-+			hfront-porch = <20>;
-+			hback-porch = <68>;
-+			hsync-len = <30>;
-+			vfront-porch = <4>;
-+			vback-porch = <14>;
-+			vsync-len = <4>;
++#define TCA_PSTATE			0x30
++#define TCA_PSTATE_CM_STS		BIT(4)
++#define TCA_PSTATE_TX_STS		BIT(3)
++#define TCA_PSTATE_RX_PLL_STS		BIT(2)
++#define TCA_PSTATE_PIPE0_POWER_DOWN	GENMASK(1, 0)
 +
-+			hsync-active = <0>;
-+			vsync-active = <0>;
-+			de-active = <1>;
-+			pixelclk-active = <1>;
-+		};
++#define TCA_GEN_STATUS			0x34
++#define TCA_GEN_DEV_POR			BIT(12)
++#define TCA_GEN_REF_CLK_SEL		BIT(8)
++#define TCA_GEN_TYPEC_FLIP_INVERT	BIT(4)
++#define TCA_GEN_PHY_TYPEC_DISABLE	BIT(3)
++#define TCA_GEN_PHY_TYPEC_FLIP		BIT(2)
 +
-+		port {
-+			panel_in: endpoint {
-+				remote-endpoint = <&display_out>;
-+			};
-+		};
-+	};
-+};
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-btt3.dtsi b/arch/arm/boot/dts/nxp/mxs/imx28-btt3.dtsi
-new file mode 100644
-index 000000000000..85d7676453be
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28-btt3.dtsi
-@@ -0,0 +1,313 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/*
-+ * Copyright 2024
-+ * Lukasz Majewski, DENX Software Engineering, lukma@denx.de
-+ */
-+/dts-v1/;
-+#include "imx28-lwe.dtsi"
++#define TCA_VBUS_CTRL			0x40
++#define TCA_VBUS_STATUS			0x44
 +
-+/ {
-+	model = "BTT3";
++#define TCA_INFO			0xFC
 +
-+	compatible = "lwn,imx28-btt3", "fsl,imx28";
-+
-+	chosen {
-+	       bootargs = "root=/dev/mmcblk0p2 rootfstype=ext4 ro rootwait console=ttyAMA0,115200 panic=1 quiet";
-+	};
-+
-+	memory@40000000 {
-+		reg = <0x40000000 0x10000000>;
-+		device_type = "memory";
-+	};
-+
-+	panel {
-+		compatible = "panel-dpi";
-+		power-supply = <&reg_3v3>;
-+		width-mm = <70>;
-+		height-mm = <52>;
-+
-+		panel-timing {
-+			clock-frequency = <6500000>;
-+			hactive = <320>;
-+			vactive = <240>;
-+			hfront-porch = <20>;
-+			hback-porch = <38>;
-+			hsync-len = <30>;
-+			vfront-porch = <4>;
-+			vback-porch = <14>;
-+			vsync-len = <4>;
-+
-+			hsync-active = <0>;
-+			vsync-active = <0>;
-+			de-active = <0>;
-+			pixelclk-active = <1>;
-+		};
-+
-+		port {
-+			panel_in: endpoint {
-+				remote-endpoint = <&display_out>;
-+			};
-+		};
-+	};
-+
-+	poweroff {
-+		compatible = "gpio-poweroff";
-+		gpios = <&gpio0 24 GPIO_ACTIVE_HIGH>;
-+	};
-+
-+	sound {
-+		compatible = "simple-audio-card";
-+		simple-audio-card,name = "BTTC Audio";
-+		simple-audio-card,widgets = "Speaker", "BTTC Speaker";
-+		simple-audio-card,routing = "BTTC Speaker", "SPKOUTN", "BTTC Speaker", "SPKOUTP";
-+		simple-audio-card,dai-link@0 {
-+			format = "left_j";
-+			bitclock-master = <&dai0_master>;
-+			frame-master = <&dai0_master>;
-+			mclk-fs = <256>;
-+			dai0_master: cpu {
-+				sound-dai = <&saif0>;
-+			};
-+			codec {
-+				sound-dai = <&wm89xx>;
-+				clocks = <&saif0>;
-+			};
-+		};
-+	};
-+
-+	wifi_pwrseq: sdio-pwrseq {
-+		compatible = "mmc-pwrseq-simple";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&wifi_en_pin_bttc>;
-+		reset-gpios = <&gpio0 27 GPIO_ACTIVE_LOW>;
-+		/* W1-163 needs 60us for WL_EN to be low and */
-+		/* 150ms after high before downloading FW is possible */
-+		post-power-on-delay-ms = <200>;
-+		power-off-delay-us = <100>;
-+	};
++struct tca_blk {
++	struct typec_switch_dev *sw;
++	void __iomem *base;
++	struct mutex mutex;
++	enum typec_orientation orientation;
 +};
 +
-+&auart0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&auart0_2pins_a>;
-+	status = "okay";
-+};
+ struct imx8mq_usb_phy {
+ 	struct phy *phy;
+ 	struct clk *clk;
+ 	void __iomem *base;
+ 	struct regulator *vbus;
++	struct tca_blk *tca;
+ 	u32 pcs_tx_swing_full;
+ 	u32 pcs_tx_deemph_3p5db;
+ 	u32 tx_vref_tune;
+@@ -64,6 +120,175 @@ struct imx8mq_usb_phy {
+ 	u32 comp_dis_tune;
+ };
+ 
 +
-+&auart3 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&auart3_pins_a>;
-+	uart-has-rtscts;
-+	status = "okay";
-+};
++static void tca_blk_orientation_set(struct tca_blk *tca,
++				enum typec_orientation orientation);
 +
-+&i2c0 {
-+	wm89xx: codec@1a {
-+		compatible = "wlf,wm8940";
-+		reg = <0x1a>;
-+		#sound-dai-cells = <0>;
-+	};
-+};
++#ifdef CONFIG_TYPEC
 +
-+&lcdif {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&lcdif_24bit_pins_a>, <&lcdif_sync_pins_bttc>,
-+		    <&lcdif_reset_pins_bttc>;
-+	status = "okay";
++static int tca_blk_typec_switch_set(struct typec_switch_dev *sw,
++				enum typec_orientation orientation)
++{
++	struct imx8mq_usb_phy *imx_phy = typec_switch_get_drvdata(sw);
++	struct tca_blk *tca = imx_phy->tca;
++	int ret;
 +
-+	port {
-+		display_out: endpoint {
-+			remote-endpoint = <&panel_in>;
-+		};
-+	};
-+};
++	if (tca->orientation == orientation)
++		return 0;
 +
-+&mac0 {
-+	clocks = <&clks 57>, <&clks 57>, <&clks 64>;
-+	clock-names = "ipg", "ahb", "enet_out";
-+	phy-handle = <&mac0_phy>;
-+	phy-mode = "rmii";
-+	phy-supply = <&reg_3v3>;
-+	/*
-+	 * This MAC address is adjusted during production.
-+	 * Value specified below is used as a fallback during recovery.
-+	 */
-+	local-mac-address = [ 00 11 B8 00 BF 8A ];
-+	status = "okay";
++	ret = clk_prepare_enable(imx_phy->clk);
++	if (ret)
++		return ret;
 +
-+	mdio {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
++	tca_blk_orientation_set(tca, orientation);
++	clk_disable_unprepare(imx_phy->clk);
 +
-+		mac0_phy: ethernet-phy@0 {
-+			/* LAN8720Ai - PHY ID */
-+			compatible = "ethernet-phy-id0007.c0f0","ethernet-phy-ieee802.3-c22";
-+			reg = <0>;
-+			smsc,disable-energy-detect;
-+			max-speed = <100>;
++	return 0;
++}
 +
-+			reset-gpios = <&gpio4 12 GPIO_ACTIVE_LOW>;
-+			reset-assert-us = <1000>;
-+			reset-deassert-us = <1000>;
-+		};
-+	};
-+};
++static struct typec_switch_dev *tca_blk_get_typec_switch(struct platform_device *pdev,
++					struct imx8mq_usb_phy *imx_phy)
++{
++	struct device *dev = &pdev->dev;
++	struct typec_switch_dev *sw;
++	struct typec_switch_desc sw_desc = { };
 +
-+&pinctrl {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&hog_pins_a>, <&hog_pins_rev>;
++	sw_desc.drvdata = imx_phy;
++	sw_desc.fwnode = dev->fwnode;
++	sw_desc.set = tca_blk_typec_switch_set;
++	sw_desc.name = NULL;
 +
-+	hog_pins_a: hog@0 {
-+		reg = <0>;
-+		fsl,pinmux-ids = <
-+			MX28_PAD_GPMI_RDY2__GPIO_0_22
-+			MX28_PAD_GPMI_RDY3__GPIO_0_23
-+			MX28_PAD_GPMI_RDN__GPIO_0_24
-+			MX28_PAD_LCD_VSYNC__GPIO_1_28
-+			MX28_PAD_SSP2_SS1__GPIO_2_20
-+			MX28_PAD_SSP2_SS2__GPIO_2_21
-+			MX28_PAD_AUART2_CTS__GPIO_3_10
-+			MX28_PAD_AUART2_RTS__GPIO_3_11
-+			MX28_PAD_GPMI_WRN__GPIO_0_25
-+			MX28_PAD_ENET0_RXD2__GPIO_4_9
-+			MX28_PAD_ENET0_TXD2__GPIO_4_11
-+		>;
-+		fsl,drive-strength = <MXS_DRIVE_4mA>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+		fsl,pull-up = <MXS_PULL_DISABLE>;
-+	};
++	sw = typec_switch_register(dev, &sw_desc);
++	if (IS_ERR(sw)) {
++		dev_err(dev, "Error register tca orientation switch: %ld",
++				PTR_ERR(sw));
++		return NULL;
++	}
 +
-+	hog_pins_rev: hog@1 {
-+		reg = <1>;
-+		fsl,pinmux-ids = <
-+			MX28_PAD_ENET0_RXD3__GPIO_4_10
-+			MX28_PAD_ENET0_TX_CLK__GPIO_4_5
-+			MX28_PAD_ENET0_COL__GPIO_4_14
-+			MX28_PAD_ENET0_CRS__GPIO_4_15
-+		>;
-+		fsl,drive-strength = <MXS_DRIVE_4mA>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+		fsl,pull-up = <MXS_PULL_DISABLE>;
-+	};
++	return sw;
++}
 +
-+	keypad_pins_bttc: keypad-bttc@0 {
-+		reg = <0>;
-+		fsl,pinmux-ids = <
-+			MX28_PAD_GPMI_D00__GPIO_0_0
-+			MX28_PAD_AUART0_CTS__GPIO_3_2
-+			MX28_PAD_AUART0_RTS__GPIO_3_3
-+			MX28_PAD_GPMI_D03__GPIO_0_3
-+			MX28_PAD_GPMI_D04__GPIO_0_4
-+			MX28_PAD_GPMI_D05__GPIO_0_5
-+			MX28_PAD_GPMI_D06__GPIO_0_6
-+			MX28_PAD_GPMI_D07__GPIO_0_7
-+			MX28_PAD_GPMI_CE1N__GPIO_0_17
-+			MX28_PAD_GPMI_CE2N__GPIO_0_18
-+			MX28_PAD_GPMI_CE3N__GPIO_0_19
-+			MX28_PAD_GPMI_RDY0__GPIO_0_20
-+		>;
-+		fsl,drive-strength = <MXS_DRIVE_4mA>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+		fsl,pull-up = <MXS_PULL_DISABLE>;
-+	};
++static void tca_blk_put_typec_switch(struct typec_switch_dev *sw)
++{
++	typec_switch_unregister(sw);
++}
 +
-+	lcdif_sync_pins_bttc: lcdif-bttc@0 {
-+		reg = <0>;
-+		fsl,pinmux-ids = <
-+			MX28_PAD_LCD_DOTCLK__LCD_DOTCLK
-+			MX28_PAD_LCD_ENABLE__LCD_ENABLE
-+			MX28_PAD_LCD_HSYNC__LCD_HSYNC
-+			MX28_PAD_LCD_RD_E__LCD_VSYNC
-+		>;
-+		fsl,drive-strength = <MXS_DRIVE_4mA>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+		fsl,pull-up = <MXS_PULL_DISABLE>;
-+	};
++#else
 +
-+	lcdif_reset_pins_bttc: lcdif-bttc@1 {
-+		reg = <1>;
-+		fsl,pinmux-ids = <
-+			MX28_PAD_LCD_RESET__GPIO_3_30
-+		>;
-+		fsl,drive-strength = <MXS_DRIVE_4mA>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+		fsl,pull-up = <MXS_PULL_ENABLE>;
-+	};
++static struct typec_switch_dev *tca_blk_get_typec_switch(struct platform_device *pdev,
++			struct imx8mq_usb_phy *imx_phy)
++{
++	return NULL;
++}
 +
-+	ssp1_sdio_pins_a: ssp1-sdio@0 {
-+		reg = <0>;
-+		fsl,pinmux-ids = <
-+			MX28_PAD_SSP1_DATA0__SSP1_D0
-+			MX28_PAD_GPMI_D01__SSP1_D1
-+			MX28_PAD_GPMI_D02__SSP1_D2
-+			MX28_PAD_SSP1_DATA3__SSP1_D3
-+			MX28_PAD_SSP1_CMD__SSP1_CMD
-+			MX28_PAD_SSP1_SCK__SSP1_SCK
-+		>;
-+		fsl,drive-strength = <MXS_DRIVE_8mA>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+		fsl,pull-up = <MXS_PULL_ENABLE>;
-+	};
++static void tca_blk_put_typec_switch(struct typec_switch_dev *sw) {}
 +
-+	wifi_en_pin_bttc: wifi-en-pin@0 {
-+		reg = <0>;
-+		fsl,pinmux-ids = <
-+			MX28_PAD_GPMI_CLE__GPIO_0_27
-+		>;
-+		fsl,drive-strength = <MXS_DRIVE_8mA>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+		fsl,pull-up = <MXS_PULL_ENABLE>;
-+	};
-+};
++#endif /* CONFIG_TYPEC */
 +
-+&pwm {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pwm3_pins_a>;
-+	status = "okay";
-+};
++static void tca_blk_orientation_set(struct tca_blk *tca,
++				enum typec_orientation orientation)
++{
++	u32 val;
 +
-+&reg_usb_5v {
-+	gpio = <&gpio1 28 GPIO_ACTIVE_HIGH>;
-+};
++	mutex_lock(&tca->mutex);
 +
-+&saif0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&saif0_pins_a>;
-+	#sound-dai-cells = <0>;
-+	assigned-clocks = <&clks 53>;
-+	assigned-clock-rates = <12000000>;
-+	status = "okay";
-+};
++	if (orientation == TYPEC_ORIENTATION_NONE) {
++		/*
++		 * use Controller Synced Mode for TCA low power enable and
++		 * put PHY to USB safe state.
++		 */
++		val = readl(tca->base + TCA_GCFG);
++		val = FIELD_PREP(TCA_GCFG_OP_MODE, TCA_GCFG_OP_MODE_SYNCMODE);
++		writel(val, tca->base + TCA_GCFG);
 +
-+&saif1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&saif1_pins_a>;
-+	fsl,saif-master = <&saif0>;
-+	#sound-dai-cells = <0>;
-+	status = "okay";
-+};
++		val = readl(tca->base + TCA_TCPC);
++		val = TCA_TCPC_VALID | TCA_TCPC_LOW_POWER_EN;
++		writel(val, tca->base + TCA_TCPC);
 +
-+&ssp1 {
-+	compatible = "fsl,imx28-mmc";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&ssp1_sdio_pins_a>;
-+	bus-width = <4>;
-+	no-1-8-v;       /* force 3.3V VIO */
-+	pm-ignore-notify;
-+	non-removable;
-+	vmmc-supply = <&reg_3v3>;
-+	mmc-pwrseq = <&wifi_pwrseq>;
-+	keep-power-in-suspend;
-+	status = "okay";
++		goto out;
++	}
 +
-+	wlan@1 {
-+		reg = <1>;
-+		compatible = "brcm,bcm4329-fmac";
-+	};
-+};
++	/* use System Configuration Mode for TCA mux control. */
++	val = readl(tca->base + TCA_GCFG);
++	val = FIELD_PREP(TCA_GCFG_OP_MODE, TCA_GCFG_OP_MODE_SYSMODE);
++	writel(val, tca->base + TCA_GCFG);
 +
-+&ssp2 {
-+	compatible = "fsl,imx28-spi";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&spi2_pins_a>;
-+	status = "okay";
-+};
++	/* Disable TCA module */
++	val = readl(tca->base + TCA_SYSMODE_CFG);
++	val |= TCA_SYSMODE_TCPC_DISABLE;
++	writel(val, tca->base + TCA_SYSMODE_CFG);
++
++	if (orientation == TYPEC_ORIENTATION_REVERSE)
++		val |= TCA_SYSMODE_TCPC_FLIP;
++	else if (orientation == TYPEC_ORIENTATION_NORMAL)
++		val &= ~TCA_SYSMODE_TCPC_FLIP;
++
++	writel(val, tca->base + TCA_SYSMODE_CFG);
++
++	/* Enable TCA module */
++	val &= ~TCA_SYSMODE_TCPC_DISABLE;
++	writel(val, tca->base + TCA_SYSMODE_CFG);
++
++out:
++	tca->orientation = orientation;
++	mutex_unlock(&tca->mutex);
++}
++
++static void tca_blk_init(struct tca_blk *tca)
++{
++	u32 val;
++
++	/* reset XBar block */
++	val = readl(tca->base + TCA_CLK_RST);
++	val &= ~TCA_CLK_RST_SW;
++	writel(val, tca->base + TCA_CLK_RST);
++
++	udelay(100);
++
++	/* clear reset */
++	val |= TCA_CLK_RST_SW;
++	writel(val, tca->base + TCA_CLK_RST);
++
++	tca_blk_orientation_set(tca, tca->orientation);
++}
++
++static struct tca_blk *imx95_usb_phy_get_tca(struct platform_device *pdev,
++				struct imx8mq_usb_phy *imx_phy)
++{
++	struct device *dev = &pdev->dev;
++	struct resource *res;
++	struct tca_blk *tca;
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
++	if (!res)
++		return NULL;
++
++	tca = devm_kzalloc(dev, sizeof(*tca), GFP_KERNEL);
++	if (!tca)
++		return ERR_PTR(-ENOMEM);
++
++	tca->base = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(tca->base))
++		return ERR_CAST(tca->base);
++
++	mutex_init(&tca->mutex);
++
++	tca->orientation = TYPEC_ORIENTATION_NORMAL;
++	tca->sw = tca_blk_get_typec_switch(pdev, imx_phy);
++
++	return tca;
++}
++
++static void imx95_usb_phy_put_tca(struct imx8mq_usb_phy *imx_phy)
++{
++	struct tca_blk *tca = imx_phy->tca;
++
++	if (!tca)
++		return;
++
++	tca_blk_put_typec_switch(tca->sw);
++}
++
+ static u32 phy_tx_vref_tune_from_property(u32 percent)
+ {
+ 	percent = clamp(percent, 94U, 124U);
+@@ -315,6 +540,9 @@ static int imx8mp_usb_phy_init(struct phy *phy)
+ 
+ 	imx8m_phy_tune(imx_phy);
+ 
++	if (imx_phy->tca)
++		tca_blk_init(imx_phy->tca);
++
+ 	return 0;
+ }
+ 
+@@ -359,6 +587,8 @@ static const struct of_device_id imx8mq_usb_phy_of_match[] = {
+ 	 .data = &imx8mq_usb_phy_ops,},
+ 	{.compatible = "fsl,imx8mp-usb-phy",
+ 	 .data = &imx8mp_usb_phy_ops,},
++	{.compatible = "fsl,imx95-usb-phy",
++	 .data = &imx8mp_usb_phy_ops,},
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, imx8mq_usb_phy_of_match);
+@@ -398,6 +628,11 @@ static int imx8mq_usb_phy_probe(struct platform_device *pdev)
+ 
+ 	phy_set_drvdata(imx_phy->phy, imx_phy);
+ 
++	imx_phy->tca = imx95_usb_phy_get_tca(pdev, imx_phy);
++	if (IS_ERR(imx_phy->tca))
++		return dev_err_probe(dev, PTR_ERR(imx_phy->tca),
++					"failed to get tca\n");
++
+ 	imx8m_get_phy_tuning_data(imx_phy);
+ 
+ 	phy_provider = devm_of_phy_provider_register(dev, of_phy_simple_xlate);
+@@ -405,8 +640,16 @@ static int imx8mq_usb_phy_probe(struct platform_device *pdev)
+ 	return PTR_ERR_OR_ZERO(phy_provider);
+ }
+ 
++static void imx8mq_usb_phy_remove(struct platform_device *pdev)
++{
++	struct imx8mq_usb_phy *imx_phy = platform_get_drvdata(pdev);
++
++	imx95_usb_phy_put_tca(imx_phy);
++}
++
+ static struct platform_driver imx8mq_usb_phy_driver = {
+ 	.probe	= imx8mq_usb_phy_probe,
++	.remove = imx8mq_usb_phy_remove,
+ 	.driver = {
+ 		.name	= "imx8mq-usb-phy",
+ 		.of_match_table	= imx8mq_usb_phy_of_match,
 -- 
-2.39.5
+2.34.1
 
