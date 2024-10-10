@@ -1,217 +1,106 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7822F192B9E;
-	Thu, 10 Oct 2024 17:10:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0704192B9E
+	for <imx@lists.linux.dev>; Thu, 10 Oct 2024 17:11:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728580233; cv=none; b=QV9wBpdUa1vgIJlU3zMrH3btzvixKSWJDZx0g4qDTkzg3wd2i844hjK+xKcnkHgxafH9eY27ZLdHg0OEfU9HEBREaDAwWOwUz0TCXBhqM5NaHBj6ar3T18hQo/W8d/mc2xkJ3PpATaEyMpXTI5b2Yvbdj43fmt6TVWwyg3RS1e4=
+	t=1728580320; cv=none; b=qPGoIQeJZhuuNT9LOsz5fCcPEPUipU+61dHPYgX8mRac/6Yt2VnuUL0JJ+qWwR8mrx37GgWj6g0UVkW0WWKbeM6HcytBBWp+D2BNAQ/i52o1qUD7shWzvS6olvqZ8JsfNUX2ITPtJQqVvcBEmII2x3S9T1Li194Y8+nzU2S5bug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728580233; c=relaxed/simple;
-	bh=LKzg2xvYGT+aj/zGDlwFx/Y6GeQriTDfR72/HvFVDpk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rf0ml5k8T19+O5X72PrWlpOW8X99YXshOD+jvDaBN3XYoQaiqx5rQ7GdARtfKYiNnAmYdOPn0lgp2FinMdw6CC4Qln/+TQt0119p5o8WwRE4bE3YEyiQjwWd07xChvJy+8vMMtmEcdYqQlECIuvqtvN4Qjxp5g41BtWwHCypxbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G9+VaxTK; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1728580320; c=relaxed/simple;
+	bh=1RpRdsGO3jaA0TDmTTsokF9K2G0CK52NDNqsAWdq0yU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FV12cqap70kuG/0CQO5SBcZW3KyBK0kjee+hY97ddOxIHyk6UGXZ1/7KnadgKd0t/vCB7sCQ/nvHOwvF9+yL9sLGdplHAT2tEiNEXZvSuoTNh9dkh+RaKbxzpyOiTFdS8t3w8Mxfso1QZZ+6Ak1koShxuaj5WiBViE89FBFPX4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mFPfC15e; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G9+VaxTK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728580231; x=1760116231;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=LKzg2xvYGT+aj/zGDlwFx/Y6GeQriTDfR72/HvFVDpk=;
-  b=G9+VaxTKUvRz4SR0R5umSQrD+nTR1azqccFXJlKT7w3di8NEonMW747z
-   yaK/JclbFpxWMgIOlnYkY9Dr8XK7QEEOGn2RF4+jkC9VK/TLLGCQUp7d2
-   qYmXt89dLvFla/zZbqPWeghLdTNigflgZtByNXAD9vQnXB1wxA4w2PVME
-   0cmi0k8bOicnyzCflWxy64O0YEUZTECegcKqknq7eXnA5rGg320oObdBf
-   N0q9gkLzm3Es+d4dZCjUS0OWv9qdCHlYWh84+bfAqMsNrHxTQP5pIcbfA
-   0Mz/ig/qTnb1zBHq9hzhfOYvEn7/n4gtFDaYzQldt9ONfBJzv2jdkHIco
-   w==;
-X-CSE-ConnectionGUID: 2POghTUNRDq0tuLMfK9eDQ==
-X-CSE-MsgGUID: uIlF0GMsR4uu0gW6vQCNHw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="31750274"
-X-IronPort-AV: E=Sophos;i="6.11,193,1725346800"; 
-   d="scan'208";a="31750274"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 10:10:31 -0700
-X-CSE-ConnectionGUID: ithkfGpeTg+4UmbNz26Y9g==
-X-CSE-MsgGUID: W6eJiQsxQNCIh6d+i0WYow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,193,1725346800"; 
-   d="scan'208";a="76581573"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 10 Oct 2024 10:10:26 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sywgB-000B3z-1r;
-	Thu, 10 Oct 2024 17:10:23 +0000
-Date: Fri, 11 Oct 2024 01:10:20 +0800
-From: kernel test robot <lkp@intel.com>
-To: Wei Fang <wei.fang@nxp.com>, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, vladimir.oltean@nxp.com,
-	claudiu.manoil@nxp.com, xiaoning.wang@nxp.com, Frank.Li@nxp.com,
-	christophe.leroy@csgroup.eu, linux@armlinux.org.uk,
-	bhelgaas@google.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	imx@lists.linux.dev, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH net-next 05/11] net: enetc: add enetc-pf-common driver
- support
-Message-ID: <202410110019.xUSLtcAC-lkp@intel.com>
-References: <20241009095116.147412-6-wei.fang@nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mFPfC15e"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-7cd8803fe0aso828353a12.0
+        for <imx@lists.linux.dev>; Thu, 10 Oct 2024 10:11:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728580318; x=1729185118; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=AWNpFyttizV4KmPkZEHOHP1DUhGOOJ5aGc8EFxnmw6g=;
+        b=mFPfC15e82U7+y9GwmSQs/eo/TsuCSS7CSHWWpey0GsFs1ahkSPQOtObt1m9VeTwUa
+         YYVKr0eVQsrna9oOy6H0fasYtmqwP4TETfSbYyT0L9C+T7s96cEIV7xdUN19iktfTeoQ
+         QAOtUapuAiE6RXFBR5n9CZbNqMIrQxqejjbxUd/rrlYdjbvUa2KWjRnZr14q9vcwV7L/
+         58fBURVLtorc/HaR6RZrd/+7/ucfkkr9nnlJULaHY9pr/DflbOjzD3n8WSoA+CY9QUg8
+         RE9RNAtRIZEBG+V6kFLmtRDrDvyxvtofo28Y6/eCLOw5eZdCPuhaIUQNG0Y6esYnuXeg
+         thXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728580318; x=1729185118;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AWNpFyttizV4KmPkZEHOHP1DUhGOOJ5aGc8EFxnmw6g=;
+        b=clhMfxIrTCxeUGA7022aWidGL5y6BQIyQrPQRdmW3F8sk6FQMhtGgIxhKRBQSY2tY5
+         +WGr/rXEcR3gpCMcldhIOjoDBYf/Nqihe2oHK5KI3JlPvWF4Ix3S8SlhElbJNdIOEj6I
+         EGL89Zg1QHlutOpkKDgIhV0re3q+X4t9R9nRRGRIYxEfyjPgYWSikWULicVfyuYXdeZR
+         WiOBqB3d5jmzTEsZXZSeZgWu8wWECQk+2Lzcsx/ahQ0zvAOZg7CkRQCd0QWLs43ckY6r
+         TRRi7A2qSYOxc5Pp88qhCI/78Ju0HSEnLIDTcyF3CV5RSJ+F/blDT8RIoXvHM7/H7Fmm
+         YMmw==
+X-Forwarded-Encrypted: i=1; AJvYcCXzXwkOFbRxrdfWlXKluYMQTSO92H8w0AjN4juruHnbns3XFVyr+Rm2NOd3gJZxPL4ngPs=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz6+G1sc/0an6fVjP2UsW0kEhaMWCKMfA1iW9YEJm3pssB1Yc8A
+	VqPEmXl+6fYmaqhHlygLO/2+eBhYCcACLrQTGfL1HeTUHk2RBMQQ
+X-Google-Smtp-Source: AGHT+IF8/tO/ZwooAvWXV18apVDxs5Q5LHIxa5XRsn0nnhK6uLRlS1lqRXA1h7+5ixNhdE7BmxZ9Zw==
+X-Received: by 2002:a05:6a21:9688:b0:1d8:a6bb:2782 with SMTP id adf61e73a8af0-1d8ad86106fmr6810637637.45.1728580317886;
+        Thu, 10 Oct 2024 10:11:57 -0700 (PDT)
+Received: from hiago-nb.corp.toradex.com ([67.159.246.222])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71e2ab0b5d3sm1251245b3a.198.2024.10.10.10.11.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Oct 2024 10:11:57 -0700 (PDT)
+From: Hiago De Franco <hiagofranco@gmail.com>
+To: Shawn Guo <shawnguo@kernel.org>
+Cc: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Hiago De Franco <hiago.franco@toradex.com>
+Subject: [PATCH v2 0/3] ARM: dts: imx[6qdl|7]-[apalis|colibri]: Update audio card names
+Date: Thu, 10 Oct 2024 14:11:25 -0300
+Message-Id: <20241010171128.107819-1-hiagofranco@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241009095116.147412-6-wei.fang@nxp.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Wei,
+From: Hiago De Franco <hiago.franco@toradex.com>
 
-kernel test robot noticed the following build warnings:
+This patch series update the audio card names for Apalis and Colibri
+iMX6/7 to match their specific SoM names, making it shorter (less than
+15 characters, as shown in [1]) to fix warnings related to ALSA in
+Apalis iMX6 and Colibri iMX6. For Colibri iMX7, also do the change to
+make it compliant with the other card names.
 
-[auto build test WARNING on net-next/main]
+[1] Documentation/sound/alsa-configuration.rst
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Wei-Fang/dt-bindings-net-add-compatible-string-for-i-MX95-EMDIO/20241009-181113
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20241009095116.147412-6-wei.fang%40nxp.com
-patch subject: [PATCH net-next 05/11] net: enetc: add enetc-pf-common driver support
-config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20241011/202410110019.xUSLtcAC-lkp@intel.com/config)
-compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 70e0a7e7e6a8541bcc46908c592eed561850e416)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241011/202410110019.xUSLtcAC-lkp@intel.com/reproduce)
+v1:
+  - https://lore.kernel.org/lkml/20240909114902.82380-1-hiagofranco@gmail.com/
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410110019.xUSLtcAC-lkp@intel.com/
+v2:
+  - Update commit message to make clearer these are breaking changes.
 
-All warnings (new ones prefixed by >>):
+Hiago De Franco (3):
+  ARM: dts: imx6qdl-apalis: Update audio card name
+  ARM: dts: imx6qdl-colibri: Update audio card name
+  ARM: dts: imx7-colibri: Update audio card name
 
-   In file included from drivers/net/ethernet/freescale/enetc/enetc_pf_common.c:3:
-   In file included from include/linux/fsl/enetc_mdio.h:7:
-   In file included from include/linux/phy.h:16:
-   In file included from include/linux/ethtool.h:18:
-   In file included from include/linux/if_ether.h:19:
-   In file included from include/linux/skbuff.h:17:
-   In file included from include/linux/bvec.h:10:
-   In file included from include/linux/highmem.h:10:
-   In file included from include/linux/mm.h:2213:
-   include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-     518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-         |                               ~~~~~~~~~~~ ^ ~~~
-   In file included from drivers/net/ethernet/freescale/enetc/enetc_pf_common.c:3:
-   In file included from include/linux/fsl/enetc_mdio.h:7:
-   In file included from include/linux/phy.h:16:
-   In file included from include/linux/ethtool.h:18:
-   In file included from include/linux/if_ether.h:19:
-   In file included from include/linux/skbuff.h:17:
-   In file included from include/linux/bvec.h:10:
-   In file included from include/linux/highmem.h:12:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:14:
-   In file included from arch/hexagon/include/asm/io.h:328:
-   include/asm-generic/io.h:548:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     548 |         val = __raw_readb(PCI_IOBASE + addr);
-         |                           ~~~~~~~~~~ ^
-   include/asm-generic/io.h:561:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     561 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
-         |                                                         ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
-      37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
-         |                                                   ^
-   In file included from drivers/net/ethernet/freescale/enetc/enetc_pf_common.c:3:
-   In file included from include/linux/fsl/enetc_mdio.h:7:
-   In file included from include/linux/phy.h:16:
-   In file included from include/linux/ethtool.h:18:
-   In file included from include/linux/if_ether.h:19:
-   In file included from include/linux/skbuff.h:17:
-   In file included from include/linux/bvec.h:10:
-   In file included from include/linux/highmem.h:12:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:14:
-   In file included from arch/hexagon/include/asm/io.h:328:
-   include/asm-generic/io.h:574:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     574 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
-         |                                                         ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
-      35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
-         |                                                   ^
-   In file included from drivers/net/ethernet/freescale/enetc/enetc_pf_common.c:3:
-   In file included from include/linux/fsl/enetc_mdio.h:7:
-   In file included from include/linux/phy.h:16:
-   In file included from include/linux/ethtool.h:18:
-   In file included from include/linux/if_ether.h:19:
-   In file included from include/linux/skbuff.h:17:
-   In file included from include/linux/bvec.h:10:
-   In file included from include/linux/highmem.h:12:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:14:
-   In file included from arch/hexagon/include/asm/io.h:328:
-   include/asm-generic/io.h:585:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     585 |         __raw_writeb(value, PCI_IOBASE + addr);
-         |                             ~~~~~~~~~~ ^
-   include/asm-generic/io.h:595:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     595 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
-         |                                                       ~~~~~~~~~~ ^
-   include/asm-generic/io.h:605:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     605 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
-         |                                                       ~~~~~~~~~~ ^
-   In file included from drivers/net/ethernet/freescale/enetc/enetc_pf_common.c:3:
->> include/linux/fsl/enetc_mdio.h:62:18: warning: no previous prototype for function 'enetc_hw_alloc' [-Wmissing-prototypes]
-      62 | struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
-         |                  ^
-   include/linux/fsl/enetc_mdio.h:62:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-      62 | struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
-         | ^
-         | static 
-   8 warnings generated.
-
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for MODVERSIONS
-   Depends on [n]: MODULES [=y] && !COMPILE_TEST [=y]
-   Selected by [y]:
-   - RANDSTRUCT_FULL [=y] && (CC_HAS_RANDSTRUCT [=y] || GCC_PLUGINS [=n]) && MODULES [=y]
-   WARNING: unmet direct dependencies detected for GET_FREE_REGION
-   Depends on [n]: SPARSEMEM [=n]
-   Selected by [m]:
-   - RESOURCE_KUNIT_TEST [=m] && RUNTIME_TESTING_MENU [=y] && KUNIT [=m]
-
-
-vim +/enetc_hw_alloc +62 include/linux/fsl/enetc_mdio.h
-
-6517798dd3432a Claudiu Manoil 2020-01-06  49  
-80e87442e69ba8 Andrew Lunn    2023-01-12  50  static inline int enetc_mdio_read_c22(struct mii_bus *bus, int phy_id,
-80e87442e69ba8 Andrew Lunn    2023-01-12  51  				      int regnum)
-6517798dd3432a Claudiu Manoil 2020-01-06  52  { return -EINVAL; }
-80e87442e69ba8 Andrew Lunn    2023-01-12  53  static inline int enetc_mdio_write_c22(struct mii_bus *bus, int phy_id,
-80e87442e69ba8 Andrew Lunn    2023-01-12  54  				       int regnum, u16 value)
-80e87442e69ba8 Andrew Lunn    2023-01-12  55  { return -EINVAL; }
-80e87442e69ba8 Andrew Lunn    2023-01-12  56  static inline int enetc_mdio_read_c45(struct mii_bus *bus, int phy_id,
-80e87442e69ba8 Andrew Lunn    2023-01-12  57  				      int devad, int regnum)
-80e87442e69ba8 Andrew Lunn    2023-01-12  58  { return -EINVAL; }
-80e87442e69ba8 Andrew Lunn    2023-01-12  59  static inline int enetc_mdio_write_c45(struct mii_bus *bus, int phy_id,
-80e87442e69ba8 Andrew Lunn    2023-01-12  60  				       int devad, int regnum, u16 value)
-6517798dd3432a Claudiu Manoil 2020-01-06  61  { return -EINVAL; }
-6517798dd3432a Claudiu Manoil 2020-01-06 @62  struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
-6517798dd3432a Claudiu Manoil 2020-01-06  63  { return ERR_PTR(-EINVAL); }
-6517798dd3432a Claudiu Manoil 2020-01-06  64  
+ arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi  | 2 +-
+ arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi | 2 +-
+ arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi    | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.39.5
+
