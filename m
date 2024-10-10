@@ -1,101 +1,90 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F500199FCE
-	for <imx@lists.linux.dev>; Thu, 10 Oct 2024 17:32:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A8019D078
+	for <imx@lists.linux.dev>; Thu, 10 Oct 2024 17:42:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728581547; cv=none; b=EUuCuIehyXre5OVtBXjD5r5QP5x2JpWR1k3nt2eiGWmUctgbUoHaPWEUV3y0DqQru6+YFhV58kBkBB1D2862b5toktgSGkTfoHLWdU3yIJeXeNqbc7KMl+xc7BN7dpwGwRm11adFpeC0K7NkoPj3BkwBsOZd26oweCZq+yR8Bxs=
+	t=1728582171; cv=none; b=TAs5JbKdKSHJjgThyOVP8QENMiEGZ69tlJ+M7UIeyXhdxAqB5DOw6QtK3RbKbszM84jxOpQghxp8YsEYcY6WJErn21VbKzcl2t+ZIo5AoJ9VWCNf4VOe0vZqlEF8FNmjNMbXkZEfffuPJlOPguKZje9gQ+cbBllN22z9hcEKpBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728581547; c=relaxed/simple;
-	bh=DBGSFyeGpg3Lyq7bMgiHR11eMUKFCjLYtGzbTeJX2WM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W4p/q3lLiF4paPf5cfN7mZ/1u2/+LMWLr1jJitsBz7arJ5bFzNeQMipFziTRHMFRpUAkeRKEKIkSyNy1VwkBhVYTt3jxZXb67dFjP15Uq1nNcI/eEDG1jI/xnbOaOBZPQolsxaG44zxxlSV09dPYamCy81OJZa32KTEnAMeVX7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=T10ECyw9; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1728582171; c=relaxed/simple;
+	bh=r9Y9dp0ia21GJKEJhhjl4hsk6OfUJQDV0li1hpz2F4Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T8d0uDDMpGXfe9MVEyM/XZ7Ij6pvTT2JHGxOAV3TyfakQvSWEtPDRWKpl5yGNo5A9pIXQLqFKegydADhRDRMixR6DdfP7mrip8XmNObDrjV63ZsKDINRcHaDdlEzOglqN4jUP1ectHzWb6XjRVw7ZJkH1JIIBIJwWfti7WIR+Gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jVttopyC; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="T10ECyw9"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id A078888C4D;
-	Thu, 10 Oct 2024 19:32:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1728581538;
-	bh=whVPNiD48iq4xnM5NE3XZjeKQAj/SaELDNhmlyjaFuc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=T10ECyw9dzjf6mzqhX1FM6UD8931MbNFhBm+OsnIN4kcO0UWcDmcKIfJqrzH4SGcC
-	 rYL90t81XbzK5NxR0LrR1BoISqtL5N//4RhKEzXLqtalwrVmmKVFOCrVdTlF2eifdQ
-	 SPXJwnfnOzwHCsa0y/CUvYVnt0OBi+HAW1rVMyjcNSrObN0S1hL29lTy4ZXBYqV/Go
-	 gJwJ4TZVBI//jqjx3t1MYybjNhRM655GivIj9HfnG6WNB4+ZU9EFLe48HuXm494ME7
-	 GXQhXnzzjlZ9M7drcOclEGlrpcURpA7mbhljWbYAt7reIfEDt9q5mKy9VuskptjLA4
-	 QUCBAg3LMnSvg==
-Message-ID: <d70a9c51-6fd7-46fe-8009-b42d0ab4e142@denx.de>
-Date: Thu, 10 Oct 2024 19:29:48 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jVttopyC"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-71e03be0d92so1037268b3a.3
+        for <imx@lists.linux.dev>; Thu, 10 Oct 2024 10:42:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728582170; x=1729186970; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=r9Y9dp0ia21GJKEJhhjl4hsk6OfUJQDV0li1hpz2F4Q=;
+        b=jVttopyCIi282e6xi79z1a+5dxTTsZ92c/Ka4CYaKfGqgfFpaaY3gjk0yt84G55Z6f
+         D0ajaIeJvSTOIefCr+DtkSPI4FqmuqRIxNCHnzwxVincOskakDttL1RTXy4GuwUEVGn6
+         Dgy4aTFTUnLsgEEVTCSFCj9JHNbm8ht8iomy18PFH6zzr/MpOXVy1tThlZ9f63izAyFW
+         1Cq8uAalEn2YoS4hTNTyKPDsIShx2/8ns4lVwp/V/xJUmZMvbJOAseQkc8qO36Lmxl2F
+         6xXAQYlV+VHyQIpzRf24IfUSYEJHp2HSljIW5tyivyRnPpi4QrIkykcCYH6xMMo5C78V
+         8/WA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728582170; x=1729186970;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r9Y9dp0ia21GJKEJhhjl4hsk6OfUJQDV0li1hpz2F4Q=;
+        b=wfwMB6rSsM4jdOpSM5/nQjW2FZlRcREY2o+AVx0TJhlh5GI40hEA57pYCVcIs+Ixtr
+         T1MjOnUhGBtb3Q+0+Qt0LjX+SOhQX9N7ohbUK90dAaL0Jy7ucadfGQhCtIkAjffVo1Y2
+         1DRlMy7ko7ch31AJo4tynX1it99DKsUuYTYQXz4YdPY4dg3h2QHafVthUFVFd2m2btM8
+         nJ8tGHsguT9LD4mFD0SbZl5UKBtdNQ1HkyuO7Ly4krdOXBI3l6IYMaL2SwgIm6bouzTt
+         9+8uYX2dMwavXCmlBuubcLuzW1NyNP05usEDOQ6vDHulRDmwXpNOvG3Uf+f5z/1bdqz8
+         UbwA==
+X-Forwarded-Encrypted: i=1; AJvYcCV+/hqx7OJHZQ4jbZ/6aoZt3kfUCbLFsSWN0mvDQ6SWjxQlVU0UMHcNvY7/hW3PeMQklXg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyKmlmTAkvPlpM41cVQ0AWLS2O+FHrdUEMedAW638ePobi/LSOB
+	Tvpa4ygehi8Ke0kLGQ/yRO5JY2MGg0RGQckvAiPoFrI3UZJQTGrx
+X-Google-Smtp-Source: AGHT+IG/bt6GaqrKZX93wp3w6yysAt6/pJEYER+jwtjNsIXy4062y+ky3XgGBO7Es//CJOF0hXDglQ==
+X-Received: by 2002:a05:6a00:1312:b0:71e:1cc4:2754 with SMTP id d2e1a72fcca58-71e1db63eefmr10819173b3a.5.1728582169664;
+        Thu, 10 Oct 2024 10:42:49 -0700 (PDT)
+Received: from hiago-nb ([67.159.246.222])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71e2a9e9843sm1287240b3a.24.2024.10.10.10.42.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Oct 2024 10:42:49 -0700 (PDT)
+Date: Thu, 10 Oct 2024 14:42:44 -0300
+From: Hiago De Franco <hiagofranco@gmail.com>
+To: Shawn Guo <shawnguo@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Hiago De Franco <hiago.franco@toradex.com>
+Subject: Re: [PATCH v2 0/3] ARM: dts: imx[6qdl|7]-[apalis|colibri]: Update
+ audio card names
+Message-ID: <20241010174244.r4sjlapbw5dhuvag@hiago-nb>
+References: <20241010171128.107819-1-hiagofranco@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm: lcdif: Use adjusted_mode .clock instead of
- .crtc_clock
-To: Liu Ying <victor.liu@nxp.com>, Isaac Scott
- <isaac.scott@ideasonboard.com>,
- Alexander Stein <alexander.stein@ew.tq-group.com>,
- dri-devel@lists.freedesktop.org
-Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
- Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>,
- "Lukas F . Hartmann" <lukas@mntmn.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Stefan Agner <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>,
- imx@lists.linux.dev, kernel@dh-electronics.com,
- linux-arm-kernel@lists.infradead.org, kieran.bingham@ideasonboard.com
-References: <20240531202813.277109-1-marex@denx.de>
- <1897634.CQOukoFCf9@steina-w> <ab2eb32e-a458-4c9b-8324-27ccb00336c5@denx.de>
- <7ae0cd7774f4b3e30cc033a7e543546732dbced0.camel@ideasonboard.com>
- <de285fc0-728f-4ba0-86e0-0069d2cc9a35@denx.de>
- <64e18ceed5279a9346a6a1141f02ead93383bd1e.camel@ideasonboard.com>
- <84f505af-1066-4fcf-84b7-28c152c09b89@denx.de>
- <a7143bd9-a5e0-4afc-98ed-2d4d58171a32@nxp.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <a7143bd9-a5e0-4afc-98ed-2d4d58171a32@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241010171128.107819-1-hiagofranco@gmail.com>
 
-On 10/10/24 7:31 AM, Liu Ying wrote:
+> This patch series update the audio card names for Apalis and Colibri
+> iMX6/7 to match their specific SoM names, making it shorter (less than
+> 15 characters, as shown in [1]) to fix warnings related to ALSA in
+> Apalis iMX6 and Colibri iMX6. For Colibri iMX7, also do the change to
+> make it compliant with the other card names.
+>
+> [1] Documentation/sound/alsa-configuration.rst
 
-Hi,
+Related ALSA UCM PR https://github.com/alsa-project/alsa-ucm-conf/pull/448
 
->> This Video PLL1 configuration since moved to &media_blk_ctrl {} , but it is still in the imx8mp.dtsi . Therefore, to make your panel work at the correct desired pixel clock frequency instead of some random one inherited from imx8mp.dtsi, add the following to the pollux DT, I believe that will fix the problem and is the correct fix:
->>
->> &media_blk_ctrl {
->>     // 506800000 = 72400000 * 7 (for single-link LVDS, this is enough)
->>     // there is no need to multiply the clock by * 2
->>     assigned-clock-rates = <500000000>, <200000000>, <0>, <0>, <500000000>, <506800000>;
-> 
-> This assigns "video_pll1" clock rate to 506.8MHz which is currently not
-> listed in imx_pll1443x_tbl[].
-
-Since commit b09c68dc57c9 ("clk: imx: pll14xx: Support dynamic rates") 
-the 1443x PLLs can be configured to arbitrary rates which for video PLL 
-is desirable as those should produce accurate clock.
-
-> Does the below patch[1] fix the regression issue? It explicitly sets
-> the clock frequency of the panel timing to 74.25MHz.
-> 
-> [1] https://patchwork.freedesktop.org/patch/616905/?series=139266&rev=1
-That patch is wrong, there is an existing entry for this panel in 
-panel-simple.c which is correct and precise, please do not add that kind 
-of imprecise duplicate timings into DT.
-
-[...]
+Regards,
+Hiago.
