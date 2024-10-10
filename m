@@ -1,236 +1,217 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2064.outbound.protection.outlook.com [40.107.20.64])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D601CCB26
-	for <imx@lists.linux.dev>; Thu, 10 Oct 2024 16:07:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.64
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728576478; cv=fail; b=k87/6ddDzLAoqBUo2OoIIlM9ZpKadHkJKCw0mBLU9BNmYN3wHog4RgsmkhbyT1e8Ks2ERFtEXUVC8sBDP1tUmkBoWSlv4DSq3r091fPTYbXXSt2kVCyOt1jOuXF6qc6k1vLvznF9uBLqvkOZTr34D6Tuocaifgp5O+xIRC6D+RM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728576478; c=relaxed/simple;
-	bh=eAZK4ZZJ2ab2uHjjJKszA416HXiISRjn1QP8oxjrVc0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=EDT45jkXSMjYLQM6C5+H96tCSD8Sgm+TwvP1SGRFB01m2y1MDoyCJtXZS+A+9PCjS3f2stkRx8VlFznLzyagzj3UwtV52tXiH8yTUvWwyjy9UK5on2S9rOu7mXOejqM0JwWvl/OqciDLre7oi2dx8qZscleeNWoTCUqNIvbpV5I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=V3UgTxfx; arc=fail smtp.client-ip=40.107.20.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7822F192B9E;
+	Thu, 10 Oct 2024 17:10:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728580233; cv=none; b=QV9wBpdUa1vgIJlU3zMrH3btzvixKSWJDZx0g4qDTkzg3wd2i844hjK+xKcnkHgxafH9eY27ZLdHg0OEfU9HEBREaDAwWOwUz0TCXBhqM5NaHBj6ar3T18hQo/W8d/mc2xkJ3PpATaEyMpXTI5b2Yvbdj43fmt6TVWwyg3RS1e4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728580233; c=relaxed/simple;
+	bh=LKzg2xvYGT+aj/zGDlwFx/Y6GeQriTDfR72/HvFVDpk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rf0ml5k8T19+O5X72PrWlpOW8X99YXshOD+jvDaBN3XYoQaiqx5rQ7GdARtfKYiNnAmYdOPn0lgp2FinMdw6CC4Qln/+TQt0119p5o8WwRE4bE3YEyiQjwWd07xChvJy+8vMMtmEcdYqQlECIuvqtvN4Qjxp5g41BtWwHCypxbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G9+VaxTK; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="V3UgTxfx"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=W0/Uq2qe/4+YwzL57Dr+VgevFHVQ8EoLW+4wISNqtkoKh9ETNh5IGxYbRlTK35V9H3JCTeUHBOg+9igXB8JWacmRM1g43/kjHBlv7iKuO52gI/5Yq5puzxI/gb9NQfVos+Li30i4MUalepMsPY4XO5X+WK5I8EcPZU3tYS3KRGkyibYyH8/1jMgDLM9mkN7p9DhfvQzle2ERWsvU8INbpNgDyDO9s3ZKFQQ6Mc4x/fOQMlNmgA4HAbatAS9N8bqKfV+g9RdFCVgmo9/+CX36GLn/f1n2ujj76l0VyMZj2J5qldP0XmC0mZ3jXQFwCZJzVuglSx5vlqHuDcuBIIuwzA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wh8qiZ93QAr3rISfZ+MNoeDJTZNlEmC2c1xuQ7p8nWw=;
- b=COZVZQIh69y+iUoDWz1hBx7ZhM6zKRKlnl4+Tus9OflX/pjnznt0iSdoYr+EmMmFMOpSgrMiSX+vycPSMnRZ3PR0tkrBVqaNKbzhGn4StUVliVw+yTl4daKkixnFk08a6vI5F0iDXkUFwR/UovnvT/cg2ba/L/6IkqQYBOOHxwayX1/vI3wevUCWUieIHGvu2R8N6oPkelE3ACTsQ9zrIOUPspZENfkyNliZN2SHvJnBCd6NNDOa/ppM0QEhW6iE4BqNZ0+iQj3qDI/x9hjXQ7TkBqXYlOrMUo2RYvkJJbDrn6Qemm2bX9DOqoa8B6evkZM7qRk60Hytc34hfwf9Hg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wh8qiZ93QAr3rISfZ+MNoeDJTZNlEmC2c1xuQ7p8nWw=;
- b=V3UgTxfx+W5Bz51LEC25mq1HuQLBKdjK8rx3bheg2z+i3WF6vJPQgRSqQGJgt/tXuG33XyjY+gT7kCc6V4D/6u0+T6J5eLwa0DyvWeoeoZK2/i4+noljW7iwiJiEQu+GBchM1i5qIY/zvMxYwmxhdiuesurtxjMBClFrXOIEayUKh9SgvRIil2l7g0MgEpH1dSguRUiT+Ge4HGz7X1CdydwY3I28Pm/uGCn9r9l/NnSVqqbm9PuC10upojKfnsmWzZYJ/ENzFD1DkFuDIvjNwx+dR3C8sA2S5X7pB8fLCSUVCtKon1n8O7PbkxT8+FdHoFuG4oVR+8qDZFDo5x4HyQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS8PR04MB8658.eurprd04.prod.outlook.com (2603:10a6:20b:429::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.23; Thu, 10 Oct
- 2024 16:07:53 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8048.013; Thu, 10 Oct 2024
- 16:07:52 +0000
-Date: Thu, 10 Oct 2024 12:07:42 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: York Sun <york.sun@nxp.com>, Tony Luck <tony.luck@intel.com>,
-	James Morse <james.morse@arm.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Robert Richter <rric@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-edac@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/6] EDAC: fsl_ddr: Pass down fsl_mc_pdata in ddr_in32()
- and ddr_out32()
-Message-ID: <Zwf7zkAIIEr/QxHg@lizhi-Precision-Tower-5810>
-References: <20240709-imx95_edac-v1-0-3e9c146c1b01@nxp.com>
- <20240709-imx95_edac-v1-1-3e9c146c1b01@nxp.com>
- <20241010153320.GPZwfzwGeFF1cz4arw@fat_crate.local>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241010153320.GPZwfzwGeFF1cz4arw@fat_crate.local>
-X-ClientProxiedBy: BY3PR04CA0026.namprd04.prod.outlook.com
- (2603:10b6:a03:217::31) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G9+VaxTK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728580231; x=1760116231;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=LKzg2xvYGT+aj/zGDlwFx/Y6GeQriTDfR72/HvFVDpk=;
+  b=G9+VaxTKUvRz4SR0R5umSQrD+nTR1azqccFXJlKT7w3di8NEonMW747z
+   yaK/JclbFpxWMgIOlnYkY9Dr8XK7QEEOGn2RF4+jkC9VK/TLLGCQUp7d2
+   qYmXt89dLvFla/zZbqPWeghLdTNigflgZtByNXAD9vQnXB1wxA4w2PVME
+   0cmi0k8bOicnyzCflWxy64O0YEUZTECegcKqknq7eXnA5rGg320oObdBf
+   N0q9gkLzm3Es+d4dZCjUS0OWv9qdCHlYWh84+bfAqMsNrHxTQP5pIcbfA
+   0Mz/ig/qTnb1zBHq9hzhfOYvEn7/n4gtFDaYzQldt9ONfBJzv2jdkHIco
+   w==;
+X-CSE-ConnectionGUID: 2POghTUNRDq0tuLMfK9eDQ==
+X-CSE-MsgGUID: uIlF0GMsR4uu0gW6vQCNHw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="31750274"
+X-IronPort-AV: E=Sophos;i="6.11,193,1725346800"; 
+   d="scan'208";a="31750274"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 10:10:31 -0700
+X-CSE-ConnectionGUID: ithkfGpeTg+4UmbNz26Y9g==
+X-CSE-MsgGUID: W6eJiQsxQNCIh6d+i0WYow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,193,1725346800"; 
+   d="scan'208";a="76581573"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 10 Oct 2024 10:10:26 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sywgB-000B3z-1r;
+	Thu, 10 Oct 2024 17:10:23 +0000
+Date: Fri, 11 Oct 2024 01:10:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Wei Fang <wei.fang@nxp.com>, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, vladimir.oltean@nxp.com,
+	claudiu.manoil@nxp.com, xiaoning.wang@nxp.com, Frank.Li@nxp.com,
+	christophe.leroy@csgroup.eu, linux@armlinux.org.uk,
+	bhelgaas@google.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	imx@lists.linux.dev, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH net-next 05/11] net: enetc: add enetc-pf-common driver
+ support
+Message-ID: <202410110019.xUSLtcAC-lkp@intel.com>
+References: <20241009095116.147412-6-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8658:EE_
-X-MS-Office365-Filtering-Correlation-Id: e62d2ed5-eb68-44e9-7bb9-08dce945b18e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|7416014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?zPfLUTNNt4rUKFGya+vdQ7Gf0Eb4SC/jCbSYRjKb78h1cXTxrf8qDqLhcde5?=
- =?us-ascii?Q?jw/jVDNCLL0wqxQUGu9ZzYmXIYEcLuRpcDymL4Wl4VE6batDvwc0rayt6dzq?=
- =?us-ascii?Q?IQg29MRyvMUVQHOSwRcXs6q2sIp5u+06/P2rQ3ioskRUfa8udgHGpfVC+dI6?=
- =?us-ascii?Q?la/0yfYPhpcT6DT0Q7tDPlLoLWysnbH0aokvVrwHdmaV8PIygFdNeiyg+vAA?=
- =?us-ascii?Q?S0MGiVswXnV2ge1WRLz2e+f/Y8RUGLfl1MpX3CuEUrx0qwI/CAPwNNzXDxl9?=
- =?us-ascii?Q?UFXpLTxm0phVivWoojw42wc03L0goKrqGVdDgRUs0EDVGQqJGlC/wBMQsqmI?=
- =?us-ascii?Q?hVlp0qNuwmkIWQ6ESya2/IiDJwMJeboZSjDYpbQGvV7+MdCLQU/9quksNaVb?=
- =?us-ascii?Q?ENeK57dACNGFCLuJD5aQK5nf7QPF8tlG+iRjUb+lc5+hOpxgGyaSmjDwvWQu?=
- =?us-ascii?Q?xjyBWnRGYn3WxVFCWpRFIMvDGAHnuCgQmMutAoAXjR0CpsTPyb4mmWsaqenV?=
- =?us-ascii?Q?Jyhu6CeoSNTHcwWa4teh21wYd9MFx9+D8SdLRaC3wTT2IlLva1h1OqkGocvl?=
- =?us-ascii?Q?R7dnst7LXyLcScfZ4uAlk5s9aAeEenoYuFV77JUk4R1QklF7p22PonMXM4aF?=
- =?us-ascii?Q?i/JQPc7GY8zGcCiqlsqqQ8ctxQrSUh/nD9ZFdiKOiZPfEzl4AVsel6GsScFb?=
- =?us-ascii?Q?5HonYDi5tUskXq3/aGdEfzTUSl0rRYnsYTxdiZE/DnaAL0qBDqGKphQErKtw?=
- =?us-ascii?Q?BWo7XxCJspCG3mrUGiDqNvgYJZ9d0AkyDCKnRopJu7nD/fUA2Ace+1a04Q4+?=
- =?us-ascii?Q?gxy4tELHzFD94iLJZBA9P6oT92VPBcdMCqEkTz1iVwMEoWN8DoQWlXw5p+CQ?=
- =?us-ascii?Q?dpmwOE+NOmsD/m2OIh0soXy50MLWoWJNhlRfA8b2Z5fYnXL5jjxbaY9buInC?=
- =?us-ascii?Q?o2ukUH6ZyNqRpUyJv1c24xkkHZWr/nVTDPXiZEI0fBWWAcmCdJAH7o3oZ5iH?=
- =?us-ascii?Q?eSc5ALo9h2GDcjxhJG+a5sfscs0nwXlfNNfwo9ZD1f4yZ+r4sfSWfz6s3T7p?=
- =?us-ascii?Q?TYWt1j98SwDvDzZ5pqBHUGmeCePqhcUb6udYbc1konP7kj9CwF2P/zHeMvDo?=
- =?us-ascii?Q?R0z9d6PMlzUliJgwRre9OfUkKHYbtJpYFHqWCwf9rOKhDv90o9TXB+tGTI5b?=
- =?us-ascii?Q?Z+4p6q2U40VCQCnj/zk/N+KW2Xuxotdgz6UOQohCc7Sz3QrL+OTCDMDFF0o9?=
- =?us-ascii?Q?qrmHfn/2EARel+OxUF7CKLXBGQBaHRVy9kFENSbZIJEdGqqx194LwGkcR6HR?=
- =?us-ascii?Q?+5bbzPeGJh6mgCFSlb5VL+u4SVZIwwTNV5jq7+N1GFtd6g=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?s1pbGEZquTRrMg799EZoeRq5+0sMKUS4mc/BISdzEjBlBBRShbi5uE5gqavA?=
- =?us-ascii?Q?m9iqejXslAmGauBV1IG0T47VCSz+B36pFqcQS/7S4AzAdmlI9dhsJzvVGvTR?=
- =?us-ascii?Q?D/hqMfBUZDyjvX+pLZKvUouz4MFeYRs6crMi06x0XlMohthNGhhKrDWj/g82?=
- =?us-ascii?Q?o/yRIGKLHiOshN+uviuf2jhZ7RVZmoXTaxOxJd6OvUpNKJ0qi4AAbDYIflYL?=
- =?us-ascii?Q?bDCPU28zA3Ourm0Sdsc0QCpinCmB955ur2TcnCFqrhfsn2J5y+j4ngDfNyLZ?=
- =?us-ascii?Q?H5w0HVaop85c9hoiKhSTIDqnR4MdJag3+lI+k0t/ARJ2cdgVCavjoXWutoxv?=
- =?us-ascii?Q?NdgbaoZ/fYAAor1IIefczFZI0dUBXSvxS2c7xqZTVCGwu99rpvibG/4Y4NRi?=
- =?us-ascii?Q?cBVisNeR0uiIsHMKEBo8sL7c2ZMNy4XKomVzXpoRZ+nYBIpY98b6Kb2nQx1D?=
- =?us-ascii?Q?HGdFobw53f578cTFSc3D5QxRihYtWq+u3lB2FoxsHxh0l1ur8iEMfYsV0nsY?=
- =?us-ascii?Q?b7zLOV8BrXDguGh5oKuxr95AfQT2dHeOWARsWyVnSRJxXj1DSNMiVHa3kdWa?=
- =?us-ascii?Q?VIqkgwW4XECHuWGuhJgtj2dgtq4t4KZouxhRkbYi+rsoA2nILcwQAJglngak?=
- =?us-ascii?Q?LUg0996ruUIx6xcK0x3lwibN05gxVHcfQBfmVMbwVGDg2bQ69dr0KJAsfu+a?=
- =?us-ascii?Q?nLYfBTtq3uD2KR4RLQaX/gd0CoTBQ7wPJ3gqQAAFC3/eJNGFy07mVmFZ7iyA?=
- =?us-ascii?Q?iajsgP7U1WOsaOaon9H69ORa6DndkAk+y0DsYpBrkIt/KkBS1WO0ZGMQjKu6?=
- =?us-ascii?Q?q3RxXY7uKbVeFy1/YKDHJ01lnQNhEHDYXn6OtpHye+zEfjFtOl2dymJU1hsm?=
- =?us-ascii?Q?NlQiIa8gGyKA6l8omyJtVMsFZImYKMZJREQ3tkcDBB8lfrkGg0VYONgsdb0G?=
- =?us-ascii?Q?A4U1/uscN8Ia/GarGv2OzjWSLjSJZYQgT02l6hoi3ziChpkXUPFZ5LOEf3wJ?=
- =?us-ascii?Q?+NHwim4Hj0CfseAMFc0fJUoL5pcdv/2J/EU/B6O7BEMU8RQTrBpLMt1mTp2/?=
- =?us-ascii?Q?Mlnv0Jut2HrW6imyidHhaxxfYbh9NiGQGBvg5+Ga1KzFCTT7EFN1+M6OogWf?=
- =?us-ascii?Q?SlGV2Lgm+Nf1z+RRQcolAj5R1AedNNdSgAr2CZmrQedHlfBIQiW08QC99Y9e?=
- =?us-ascii?Q?QxBORmkpr5dJlW0NsK8eg6sCGW1+tF4Ut62mIWQiyEcLRJbPdHsIrdFX8fMn?=
- =?us-ascii?Q?Jau2gJAG09+IYRXuyi4peAaM1pzrT7xIx7+eQrke//O5i5f/OroCVDMgYZsj?=
- =?us-ascii?Q?/7RxtYGATI56ZlZoAw49nP1Uz+dmBlKbX9qBo4mdCOqIJckV6IDNl9kDjR2O?=
- =?us-ascii?Q?4Mc+Jlv3oDsnr9NlR3d6qs5Ys1EkNs5Rx4XeiS5eZ4yRYCM4UVB2NPtYI55E?=
- =?us-ascii?Q?H4/UwPjdctyaj10wLe5rJ5zgMmQHZ8FutTW/XtminWMzHAgOoNcp8saosUQ3?=
- =?us-ascii?Q?YuW3DCtH7VcZ313ZcM2mp2pxf/j3cbpRa1qC7OKQlZu6uDi2lGF+Tv02vmUc?=
- =?us-ascii?Q?v76sIifXvRepK2t6laE2U6IgdDh7CRmXxYIBd6It?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e62d2ed5-eb68-44e9-7bb9-08dce945b18e
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2024 16:07:52.2094
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VbYRGd/0J5M3TRLAsccoeElmaY7PUU/hxZgwVXZXB08R58N5GAAFwoCZ4QJaNdkMh/dUYNjRyrM4/71TcK9roA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8658
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241009095116.147412-6-wei.fang@nxp.com>
 
-On Thu, Oct 10, 2024 at 05:33:20PM +0200, Borislav Petkov wrote:
-> On Tue, Jul 09, 2024 at 04:23:02PM -0400, Frank Li wrote:
-> Subject: Re: [PATCH 1/6] EDAC: fsl_ddr: Pass down fsl_mc_pdata in ddr_in32() and ddr_out32()
->
-> The subject prefixes in the EDAC subsystem have the following format:
->
-> "EDAC/driver: <Sentence starting with a capital letter"
->
-> > Pass down fsl_mc_data in help function ddr_in32() and ddr_out32() to
-> > prepare add iMX9 support. iMX9 have a little difference register layout.
->
-> Since everyone is using AI nowadays, you could have it verify your commit
-> messages. I did this:
->
-> | ChatGPT, Please verify and correct the grammar in this english text: "Pass
-> | down fsl_mc_data in help function ddr_in32() and ddr_out32() to prepare add
-> | iMX9 support. iMX9 have a little difference register layout."
->
-> It replied with:
->
-> | "Pass down fsl_mc_data in the helper functions ddr_in32() and ddr_out32() to
-> | prepare for adding iMX9 support. The iMX9 has a slightly different register
-> | layout."
-> |
-> | Changes made:
-> | 1. "help function" changed to "helper functions" for clarity.
-> |
-> | 2. "prepare add iMX9 support" changed to "prepare for adding iMX9 support" for
-> |    grammatical correctness.
-> |
-> | 3. "iMX9 have a little difference register layout" changed to "The iMX9 has
-> |    a slightly different register layout" for subject-verb agreement and
-> |    smoother phrasing.
->
-> And this all looks good to me.
->
-> With all the cringe we all get from AI, I think it is very useful for
-> verifying commit messages.
->
-> Do that for all your commit messages pls.
->
-> Thx.
->
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  drivers/edac/fsl_ddr_edac.c | 62 ++++++++++++++++++++++++---------------------
-> >  1 file changed, 33 insertions(+), 29 deletions(-)
->
-> How did you test these patches of yours?
->
-> They don't even build!
->
-> drivers/edac/fsl_ddr_edac.c: In function 'fsl_mc_err_probe':
-> drivers/edac/fsl_ddr_edac.c:538:21: error: too few arguments to function 'ddr_in32'
->   538 |         sdram_ctl = ddr_in32(pdata->mc_vbase + FSL_MC_DDR_SDRAM_CFG);
->       |                     ^~~~~~~~
-> drivers/edac/fsl_ddr_edac.c:38:19: note: declared here
->    38 | static inline u32 ddr_in32(struct fsl_mc_pdata *pdata, unsigned int off)
->       |                   ^~~~~~~~
-> make[4]: *** [scripts/Makefile.build:229: drivers/edac/fsl_ddr_edac.o] Error 1
-> make[3]: *** [scripts/Makefile.build:478: drivers/edac] Error 2
-> make[3]: *** Waiting for unfinished jobs....
-> make[2]: *** [scripts/Makefile.build:478: drivers] Error 2
-> make[2]: *** Waiting for unfinished jobs....
-> make[1]: *** [/mnt/kernel/kernel/2nd/linux/Makefile:1936: .] Error 2
-> make: *** [Makefile:224: __sub-make] Error 2
->
-> Before you submit next time, build-test *every* *single* patch of yours and
-> test the driver with all of them.
->
-> This should not ever happen in submission.
+Hi Wei,
 
-Really sorry about this. I need debug why my check script have not found
-this problem.
+kernel test robot noticed the following build warnings:
 
-Frank
+[auto build test WARNING on net-next/main]
 
->
-> Stopping review here.
->
-> --
-> Regards/Gruss,
->     Boris.
->
-> https://people.kernel.org/tglx/notes-about-netiquette
+url:    https://github.com/intel-lab-lkp/linux/commits/Wei-Fang/dt-bindings-net-add-compatible-string-for-i-MX95-EMDIO/20241009-181113
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20241009095116.147412-6-wei.fang%40nxp.com
+patch subject: [PATCH net-next 05/11] net: enetc: add enetc-pf-common driver support
+config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20241011/202410110019.xUSLtcAC-lkp@intel.com/config)
+compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 70e0a7e7e6a8541bcc46908c592eed561850e416)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241011/202410110019.xUSLtcAC-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410110019.xUSLtcAC-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from drivers/net/ethernet/freescale/enetc/enetc_pf_common.c:3:
+   In file included from include/linux/fsl/enetc_mdio.h:7:
+   In file included from include/linux/phy.h:16:
+   In file included from include/linux/ethtool.h:18:
+   In file included from include/linux/if_ether.h:19:
+   In file included from include/linux/skbuff.h:17:
+   In file included from include/linux/bvec.h:10:
+   In file included from include/linux/highmem.h:10:
+   In file included from include/linux/mm.h:2213:
+   include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
+     518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
+         |                               ~~~~~~~~~~~ ^ ~~~
+   In file included from drivers/net/ethernet/freescale/enetc/enetc_pf_common.c:3:
+   In file included from include/linux/fsl/enetc_mdio.h:7:
+   In file included from include/linux/phy.h:16:
+   In file included from include/linux/ethtool.h:18:
+   In file included from include/linux/if_ether.h:19:
+   In file included from include/linux/skbuff.h:17:
+   In file included from include/linux/bvec.h:10:
+   In file included from include/linux/highmem.h:12:
+   In file included from include/linux/hardirq.h:11:
+   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
+   In file included from include/asm-generic/hardirq.h:17:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:14:
+   In file included from arch/hexagon/include/asm/io.h:328:
+   include/asm-generic/io.h:548:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     548 |         val = __raw_readb(PCI_IOBASE + addr);
+         |                           ~~~~~~~~~~ ^
+   include/asm-generic/io.h:561:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     561 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
+      37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
+         |                                                   ^
+   In file included from drivers/net/ethernet/freescale/enetc/enetc_pf_common.c:3:
+   In file included from include/linux/fsl/enetc_mdio.h:7:
+   In file included from include/linux/phy.h:16:
+   In file included from include/linux/ethtool.h:18:
+   In file included from include/linux/if_ether.h:19:
+   In file included from include/linux/skbuff.h:17:
+   In file included from include/linux/bvec.h:10:
+   In file included from include/linux/highmem.h:12:
+   In file included from include/linux/hardirq.h:11:
+   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
+   In file included from include/asm-generic/hardirq.h:17:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:14:
+   In file included from arch/hexagon/include/asm/io.h:328:
+   include/asm-generic/io.h:574:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     574 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
+      35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
+         |                                                   ^
+   In file included from drivers/net/ethernet/freescale/enetc/enetc_pf_common.c:3:
+   In file included from include/linux/fsl/enetc_mdio.h:7:
+   In file included from include/linux/phy.h:16:
+   In file included from include/linux/ethtool.h:18:
+   In file included from include/linux/if_ether.h:19:
+   In file included from include/linux/skbuff.h:17:
+   In file included from include/linux/bvec.h:10:
+   In file included from include/linux/highmem.h:12:
+   In file included from include/linux/hardirq.h:11:
+   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
+   In file included from include/asm-generic/hardirq.h:17:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:14:
+   In file included from arch/hexagon/include/asm/io.h:328:
+   include/asm-generic/io.h:585:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     585 |         __raw_writeb(value, PCI_IOBASE + addr);
+         |                             ~~~~~~~~~~ ^
+   include/asm-generic/io.h:595:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     595 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+   include/asm-generic/io.h:605:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     605 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+   In file included from drivers/net/ethernet/freescale/enetc/enetc_pf_common.c:3:
+>> include/linux/fsl/enetc_mdio.h:62:18: warning: no previous prototype for function 'enetc_hw_alloc' [-Wmissing-prototypes]
+      62 | struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
+         |                  ^
+   include/linux/fsl/enetc_mdio.h:62:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+      62 | struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
+         | ^
+         | static 
+   8 warnings generated.
+
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for MODVERSIONS
+   Depends on [n]: MODULES [=y] && !COMPILE_TEST [=y]
+   Selected by [y]:
+   - RANDSTRUCT_FULL [=y] && (CC_HAS_RANDSTRUCT [=y] || GCC_PLUGINS [=n]) && MODULES [=y]
+   WARNING: unmet direct dependencies detected for GET_FREE_REGION
+   Depends on [n]: SPARSEMEM [=n]
+   Selected by [m]:
+   - RESOURCE_KUNIT_TEST [=m] && RUNTIME_TESTING_MENU [=y] && KUNIT [=m]
+
+
+vim +/enetc_hw_alloc +62 include/linux/fsl/enetc_mdio.h
+
+6517798dd3432a Claudiu Manoil 2020-01-06  49  
+80e87442e69ba8 Andrew Lunn    2023-01-12  50  static inline int enetc_mdio_read_c22(struct mii_bus *bus, int phy_id,
+80e87442e69ba8 Andrew Lunn    2023-01-12  51  				      int regnum)
+6517798dd3432a Claudiu Manoil 2020-01-06  52  { return -EINVAL; }
+80e87442e69ba8 Andrew Lunn    2023-01-12  53  static inline int enetc_mdio_write_c22(struct mii_bus *bus, int phy_id,
+80e87442e69ba8 Andrew Lunn    2023-01-12  54  				       int regnum, u16 value)
+80e87442e69ba8 Andrew Lunn    2023-01-12  55  { return -EINVAL; }
+80e87442e69ba8 Andrew Lunn    2023-01-12  56  static inline int enetc_mdio_read_c45(struct mii_bus *bus, int phy_id,
+80e87442e69ba8 Andrew Lunn    2023-01-12  57  				      int devad, int regnum)
+80e87442e69ba8 Andrew Lunn    2023-01-12  58  { return -EINVAL; }
+80e87442e69ba8 Andrew Lunn    2023-01-12  59  static inline int enetc_mdio_write_c45(struct mii_bus *bus, int phy_id,
+80e87442e69ba8 Andrew Lunn    2023-01-12  60  				       int devad, int regnum, u16 value)
+6517798dd3432a Claudiu Manoil 2020-01-06  61  { return -EINVAL; }
+6517798dd3432a Claudiu Manoil 2020-01-06 @62  struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
+6517798dd3432a Claudiu Manoil 2020-01-06  63  { return ERR_PTR(-EINVAL); }
+6517798dd3432a Claudiu Manoil 2020-01-06  64  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
