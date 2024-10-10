@@ -1,71 +1,45 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A8019D078
-	for <imx@lists.linux.dev>; Thu, 10 Oct 2024 17:42:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F202C19D880;
+	Thu, 10 Oct 2024 18:00:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728582171; cv=none; b=TAs5JbKdKSHJjgThyOVP8QENMiEGZ69tlJ+M7UIeyXhdxAqB5DOw6QtK3RbKbszM84jxOpQghxp8YsEYcY6WJErn21VbKzcl2t+ZIo5AoJ9VWCNf4VOe0vZqlEF8FNmjNMbXkZEfffuPJlOPguKZje9gQ+cbBllN22z9hcEKpBk=
+	t=1728583237; cv=none; b=gAdw8bKGVz5wbT6/cZP4b7E71c8luwCcmrJGh6vnm+/R5svqpriF9Cvxt60xeA4kmRs9qec+ZUNbNo0xQ5nJj1rutI7/MwB+pq4DUKJM7sFd4VZs291l42wbfMC9gydYEWr7CvhZE05GWIw6vbop+1rZf5k3QU6SwWb8Zx+z5F4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728582171; c=relaxed/simple;
-	bh=r9Y9dp0ia21GJKEJhhjl4hsk6OfUJQDV0li1hpz2F4Q=;
+	s=arc-20240116; t=1728583237; c=relaxed/simple;
+	bh=vnXCeY/eIb6pDREyFMJGaK+pFEB8fxIiROrKc/YO4eo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T8d0uDDMpGXfe9MVEyM/XZ7Ij6pvTT2JHGxOAV3TyfakQvSWEtPDRWKpl5yGNo5A9pIXQLqFKegydADhRDRMixR6DdfP7mrip8XmNObDrjV63ZsKDINRcHaDdlEzOglqN4jUP1ectHzWb6XjRVw7ZJkH1JIIBIJwWfti7WIR+Gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jVttopyC; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=pf+mF3g9lSddpT3y+98wFwOI39x+Zbeb9OQlnwZnYqe3Fwxq8E2TGjTcmiYHZVL1HTsvZv4TBFHFs+qmB4axekhOY9tW7vzPORH/Mwdx6FauqNRuA7Y99gl6erAOPMo5a1FtduwxbOSCbZuG4RXRXy5D5txykY3OsG3rxjPeg4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=etvIoIqg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jVttopyC"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-71e03be0d92so1037268b3a.3
-        for <imx@lists.linux.dev>; Thu, 10 Oct 2024 10:42:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728582170; x=1729186970; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=r9Y9dp0ia21GJKEJhhjl4hsk6OfUJQDV0li1hpz2F4Q=;
-        b=jVttopyCIi282e6xi79z1a+5dxTTsZ92c/Ka4CYaKfGqgfFpaaY3gjk0yt84G55Z6f
-         D0ajaIeJvSTOIefCr+DtkSPI4FqmuqRIxNCHnzwxVincOskakDttL1RTXy4GuwUEVGn6
-         Dgy4aTFTUnLsgEEVTCSFCj9JHNbm8ht8iomy18PFH6zzr/MpOXVy1tThlZ9f63izAyFW
-         1Cq8uAalEn2YoS4hTNTyKPDsIShx2/8ns4lVwp/V/xJUmZMvbJOAseQkc8qO36Lmxl2F
-         6xXAQYlV+VHyQIpzRf24IfUSYEJHp2HSljIW5tyivyRnPpi4QrIkykcCYH6xMMo5C78V
-         8/WA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728582170; x=1729186970;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r9Y9dp0ia21GJKEJhhjl4hsk6OfUJQDV0li1hpz2F4Q=;
-        b=wfwMB6rSsM4jdOpSM5/nQjW2FZlRcREY2o+AVx0TJhlh5GI40hEA57pYCVcIs+Ixtr
-         T1MjOnUhGBtb3Q+0+Qt0LjX+SOhQX9N7ohbUK90dAaL0Jy7ucadfGQhCtIkAjffVo1Y2
-         1DRlMy7ko7ch31AJo4tynX1it99DKsUuYTYQXz4YdPY4dg3h2QHafVthUFVFd2m2btM8
-         nJ8tGHsguT9LD4mFD0SbZl5UKBtdNQ1HkyuO7Ly4krdOXBI3l6IYMaL2SwgIm6bouzTt
-         9+8uYX2dMwavXCmlBuubcLuzW1NyNP05usEDOQ6vDHulRDmwXpNOvG3Uf+f5z/1bdqz8
-         UbwA==
-X-Forwarded-Encrypted: i=1; AJvYcCV+/hqx7OJHZQ4jbZ/6aoZt3kfUCbLFsSWN0mvDQ6SWjxQlVU0UMHcNvY7/hW3PeMQklXg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyKmlmTAkvPlpM41cVQ0AWLS2O+FHrdUEMedAW638ePobi/LSOB
-	Tvpa4ygehi8Ke0kLGQ/yRO5JY2MGg0RGQckvAiPoFrI3UZJQTGrx
-X-Google-Smtp-Source: AGHT+IG/bt6GaqrKZX93wp3w6yysAt6/pJEYER+jwtjNsIXy4062y+ky3XgGBO7Es//CJOF0hXDglQ==
-X-Received: by 2002:a05:6a00:1312:b0:71e:1cc4:2754 with SMTP id d2e1a72fcca58-71e1db63eefmr10819173b3a.5.1728582169664;
-        Thu, 10 Oct 2024 10:42:49 -0700 (PDT)
-Received: from hiago-nb ([67.159.246.222])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71e2a9e9843sm1287240b3a.24.2024.10.10.10.42.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Oct 2024 10:42:49 -0700 (PDT)
-Date: Thu, 10 Oct 2024 14:42:44 -0300
-From: Hiago De Franco <hiagofranco@gmail.com>
-To: Shawn Guo <shawnguo@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Hiago De Franco <hiago.franco@toradex.com>
-Subject: Re: [PATCH v2 0/3] ARM: dts: imx[6qdl|7]-[apalis|colibri]: Update
- audio card names
-Message-ID: <20241010174244.r4sjlapbw5dhuvag@hiago-nb>
-References: <20241010171128.107819-1-hiagofranco@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="etvIoIqg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE7AAC4CEC6;
+	Thu, 10 Oct 2024 18:00:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728583236;
+	bh=vnXCeY/eIb6pDREyFMJGaK+pFEB8fxIiROrKc/YO4eo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=etvIoIqgciTpA/ZXHpxMX1IfEQEmJV86AHXQPf+6ONCaV6uR9nNqfWhTsGrbM9R/8
+	 qvrsieY4P+Bt8l7BFMdxjSNKLI93qigtaFV1/fdH4VcSwAEtugBWeGgIPJtTx5zKVy
+	 6GWYd32euVFTKwvdgJxCB6581EoEOUPnXNCQOH7CT/Zoy5jY7J4AQXdk5XDRkDrFm0
+	 xbwmhgb0l+ozeMtEKbsCzyIDj0LBCkSQgvBzjZ93upXBahY/xREpjhrI62Agt1WSZq
+	 EJbQ+TEEy5tkpFhhoIFCbSzvRPhGZOAbM/Fd2nwpSdoVDPsWn8SmIbXic5pJMBtC6R
+	 fKXVP7Ej4jLYg==
+Date: Thu, 10 Oct 2024 13:00:34 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: linux@armlinux.org.uk, linux-kernel@vger.kernel.org,
+	conor+dt@kernel.org, krzk+dt@kernel.org, andrew@lunn.ch,
+	andrei.botila@oss.nxp.com, horms@kernel.org,
+	devicetree@vger.kernel.org, kuba@kernel.org, imx@lists.linux.dev,
+	davem@davemloft.net, pabeni@redhat.com, hkallweit1@gmail.com,
+	edumazet@google.com, netdev@vger.kernel.org, f.fainelli@gmail.com
+Subject: Re: [PATCH v5 net-next 1/2] dt-bindings: net: tja11xx: add
+ "nxp,rmii-refclk-out" property
+Message-ID: <172858323378.2094687.9350859179293389445.robh@kernel.org>
+References: <20241010061944.266966-1-wei.fang@nxp.com>
+ <20241010061944.266966-2-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -74,17 +48,49 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241010171128.107819-1-hiagofranco@gmail.com>
+In-Reply-To: <20241010061944.266966-2-wei.fang@nxp.com>
 
-> This patch series update the audio card names for Apalis and Colibri
-> iMX6/7 to match their specific SoM names, making it shorter (less than
-> 15 characters, as shown in [1]) to fix warnings related to ALSA in
-> Apalis iMX6 and Colibri iMX6. For Colibri iMX7, also do the change to
-> make it compliant with the other card names.
->
-> [1] Documentation/sound/alsa-configuration.rst
 
-Related ALSA UCM PR https://github.com/alsa-project/alsa-ucm-conf/pull/448
+On Thu, 10 Oct 2024 14:19:43 +0800, Wei Fang wrote:
+> Per the RMII specification, the REF_CLK is sourced from MAC to PHY
+> or from an external source. But for TJA11xx PHYs, they support to
+> output a 50MHz RMII reference clock on REF_CLK pin. Previously the
+> "nxp,rmii-refclk-in" was added to indicate that in RMII mode, if
+> this property present, REF_CLK is input to the PHY, otherwise it
+> is output. This seems inappropriate now. Because according to the
+> RMII specification, the REF_CLK is originally input, so there is
+> no need to add an additional "nxp,rmii-refclk-in" property to
+> declare that REF_CLK is input.
+> Unfortunately, because the "nxp,rmii-refclk-in" property has been
+> added for a while, and we cannot confirm which DTS use the TJA1100
+> and TJA1101 PHYs, changing it to switch polarity will cause an ABI
+> break. But fortunately, this property is only valid for TJA1100 and
+> TJA1101. For TJA1103/TJA1104/TJA1120/TJA1121 PHYs, this property is
+> invalid because they use the nxp-c45-tja11xx driver, which is a
+> different driver from TJA1100/TJA1101. Therefore, for PHYs using
+> nxp-c45-tja11xx driver, add "nxp,rmii-refclk-out" property to
+> support outputting RMII reference clock on REF_CLK pin.
+> 
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> ---
+> V2 changes:
+> 1. Change the property name from "nxp,reverse-mode" to
+> "nxp,phy-output-refclk".
+> 2. Simplify the description of the property.
+> 3. Modify the subject and commit message.
+> V3 changes:
+> 1. Keep the "nxp,rmii-refclk-in" property for TJA1100 and TJA1101.
+> 2. Rephrase the commit message and subject.
+> V4 changes:
+> 1. Change the property name from "nxp,phy-output-refclk" to
+> "nxp,rmii-refclk-out", which means the opposite of "nxp,rmii-refclk-in".
+> 2. Refactor the patch after fixing the original issue with this YAML.
+> V5 changes:
+> 1. Reword the description of "nxp,rmii-refclk-out" property.
+> ---
+>  .../devicetree/bindings/net/nxp,tja11xx.yaml     | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+> 
 
-Regards,
-Hiago.
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+
