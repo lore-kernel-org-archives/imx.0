@@ -1,57 +1,57 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F03F19CC08
-	for <imx@lists.linux.dev>; Thu, 10 Oct 2024 17:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82AAC19D08A
+	for <imx@lists.linux.dev>; Thu, 10 Oct 2024 17:12:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728580323; cv=none; b=TIXwjLVw9K33xWRp2vvq6fR6uqroVIF74hrF+sTu4eYBPQMSw9aBvjpUjsmCLTDIhDdUyX0+z8D9WZIfibFT+RegbzjwmGeCXGs2giHacCzZfs7X9e+am+cGFR2AvIj+IQprkRKIRPeWpLLPy6530R+GZyooleh5t79Pl9HWGMs=
+	t=1728580326; cv=none; b=UolRudV0D87wlYUZ0XkaLSCHy843g7jfllmYyljIQXLr4KlFuIut0Sko7c7PDGpMfObK+VBH9QOdcn8AOilqk00LgxlG+rN5TSFRbaV4H2YJ2Z6tBrcnVZN2l8CwyDUYHDxz31EckOWCkTsEJNO2UQLT+xoHqLm8u2k0kHZAzqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728580323; c=relaxed/simple;
-	bh=+tZ0WZhlkSS0O5LQsA2Zhy12Oshwn7a9xwYnSW7Bi2s=;
+	s=arc-20240116; t=1728580326; c=relaxed/simple;
+	bh=JETx5J/sKCvPOdMNztGgJW5e9rFQF1hAwJoodVFMVb0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kbTISLZF0qpzp/WCBuTPmABApO6zGah1mG2LAmcdBwRzoRFceVe9PIiVjwK3aItKO1nmuksuYyUv3xxG3FRgEkJxw3oRlQT7fiQW22xgtDWrWLEUBohZtBApToohDVTKLP+VM8SGIylRnJ9swxpaHGVcjzjPVJnmt94oJH5cHEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IoRvPEQj; arc=none smtp.client-ip=209.85.215.181
+	 MIME-Version; b=aodFBbRTo68KGlJw9rBJbtITn3D2KZxA5j6hzd1EHC/vEP4PFxnhS9eOHonUhZUJ0IcEWwn51c81eXy53xdOMKeOSvfEd9x+ol5KGXEezDQd03IYsGTFvDjR9OmXb3sI6qGiJEUd7zaT8dPpDXyDzzyZGZw24QnEHR/Fse5djEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LCLHw3pe; arc=none smtp.client-ip=209.85.210.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IoRvPEQj"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-7e9ff6fb4c6so1447504a12.3
-        for <imx@lists.linux.dev>; Thu, 10 Oct 2024 10:12:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LCLHw3pe"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-71e10ae746aso925519b3a.2
+        for <imx@lists.linux.dev>; Thu, 10 Oct 2024 10:12:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728580321; x=1729185121; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1728580325; x=1729185125; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ew6P9VD3bUbnWlUZQh0TrisKJPF+NxIhwQ05c71NA70=;
-        b=IoRvPEQjF+kRGUCKKqkHHnObUdfPd0rJUzkS6ntFoRkjPq4s6vuijzNLNerSSWIpCm
-         N+D2pliYiwj7LAFGckOCatnIfVkdKA7ODxCCU54rYNZ+rIZxGtEPSx3Jiy1LxsSgf6tu
-         7iFIOQypAzE8gk5BcAGsmfv5HcO6Na5zRsK8sptXZIBzfatFNM0EflgPEk8XH8/03PPa
-         JtAz92Y1UYo2eV3MIHa//UFcW3jMuO8SUH4jXi+OBLQmZMtrQA4E3Qd2/QEuaNmJJqMX
-         DPpkWsid+96KV2i3mLyxsbuB03WmQ4dS+0LmbkQ7IIBJJvywMbUkGIZ1gJqdiH0MyAUw
-         1xNQ==
+        bh=HhYysHcCoTgAnQmQiLxk715z8ONeu/3OrInyTwPTwgI=;
+        b=LCLHw3peDIVkT6cpRuC7wFJ6H8G3lbNVELdsB9SSwfcsYltRMO/o4lmK9QaMcMyNyB
+         XmIgkUE4CyGgR9VLdR5b8C8nPy4zw+vmBsqwWuH021e+mpuLFGJl/ENdya5ks16KRfNZ
+         qAasSoO+Q1Kk6tTuFS/14r9AlDs3foE5XmcVXYIU/e03XGw0djPBVtNsf+CAqYqrBd2m
+         Fd1BaiqJeo8018dat4SEHGro0Kovn1h48vBEAKPvr/Rtdd/ggLOp70xdgvABten16nEu
+         6DVhuCRwIeu26fq+tWb2sAN+n8oc3GJSBi+QvcovXss0LRawygjsS1T+Y6LvNLDcKEL3
+         xhJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728580321; x=1729185121;
+        d=1e100.net; s=20230601; t=1728580325; x=1729185125;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Ew6P9VD3bUbnWlUZQh0TrisKJPF+NxIhwQ05c71NA70=;
-        b=mzil6K73ykucEJD3r3nqrPP7kEYZDjTPXzpD8hOpuyWm0vMTQNT4i6nLQ2Zz00u9Rd
-         rKiGyfKQoDbaFYQc17k21Kxfsrydknxo8W4bOMqJvMvs0XbJHPoxEAEWyY3Pz2yjjYwT
-         KwCSC1ZZmAAc7ybZHL8U8rQp54BlN1Jh+CUsqFeyvoh102AE6Fko7SD+848kDqMtf+KS
-         3B+N5w60qQB7a0ir0u+y8q5B5Q5dl8CEY+WyvgIGA2/28rgfd6MFYHpLiCc5LyO/qxjz
-         VkHuey4Er64S6+Ft+kEhFa/0Da9bcHEE1uL60B3l46lIhTIhqOxNi6V6CBmyppgucYRB
-         fvYg==
-X-Forwarded-Encrypted: i=1; AJvYcCWZNkTJzkcLKMF7Cq3/l0/KBfHLdbhwBISUE090ZRgJsrQC77yHDGNGb97Adosx0370wMY=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy2xb3xlcrnrgsHW9ZZ6FsyQyf8vv1/OzxXM2fDP1F2Ig5qcMRo
-	TWsmtkKtDo/6PmH3NaaZDGw25uVCan2nlkiQX3TwezlmnGPH/m0y
-X-Google-Smtp-Source: AGHT+IFoe4AiBwF4qqm0EwKF3j3qdjAMpwNSuyGy9YP4hjUcQPxBCEe2tbcL+cA0HqjjNPR64AfJ7A==
-X-Received: by 2002:a05:6a20:c890:b0:1d6:d2c7:ac59 with SMTP id adf61e73a8af0-1d8a3c001c2mr13205513637.12.1728580321344;
-        Thu, 10 Oct 2024 10:12:01 -0700 (PDT)
+        bh=HhYysHcCoTgAnQmQiLxk715z8ONeu/3OrInyTwPTwgI=;
+        b=X+58lXFeRX3vUINBNhhNEcGA7Y13Ze0x7RFXvPkaqEhJ3GTuGNhkWF09LaXbTzlBdH
+         9j51ZeHKwPlLIkYVRNmL25H5plfIqfSzohjat9+foWKeYAl31f36j03wBp0kNof2kw3R
+         zudXVzrlOXv8GLkTUfXgjLp7kjf5SWezlnYsSgPWFxp52ZLfJ2B/kFOKT9OcdkiMIHyt
+         Js3g1gUVPkzKgoHKDo94fqeJzIV2gD4ScHERTbi7wKBz0Is1bjxa39/0yEssOY+evod0
+         j2LrX9z8eTUKbuJ5oyUljESaURjWCS5JBv/7uzcNNXWC6lbU6IUFuHsjoNhSMXxWirhX
+         EnWw==
+X-Forwarded-Encrypted: i=1; AJvYcCVZQiIZCjkVi8govmmOSgetycemetKLRWxWt4/agwgc9Mfjc/HMXjU/AkcH2a+uhpDacAE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxRo7KXv6aL0Rkx//rSQ3/PftpveM1fHgmtRpcvBJ+Gksq9jIjN
+	Pq6zHoLyEfeZV5U6pcS7WAnykBZcGR+IVv8auSxY9cH5WaVOJxTF
+X-Google-Smtp-Source: AGHT+IGZGyCCyr54kMNwlY/KxnYBhNiDRLZg7Mrdzaj7i6T146Y18Up7pDtTXvONDGA8HVHSAf2/4Q==
+X-Received: by 2002:a05:6a20:c908:b0:1cf:476f:2d10 with SMTP id adf61e73a8af0-1d8a3ce525bmr11403945637.49.1728580324810;
+        Thu, 10 Oct 2024 10:12:04 -0700 (PDT)
 Received: from hiago-nb.corp.toradex.com ([67.159.246.222])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71e2ab0b5d3sm1251245b3a.198.2024.10.10.10.11.58
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71e2ab0b5d3sm1251245b3a.198.2024.10.10.10.12.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Oct 2024 10:12:00 -0700 (PDT)
+        Thu, 10 Oct 2024 10:12:04 -0700 (PDT)
 From: Hiago De Franco <hiagofranco@gmail.com>
 To: Shawn Guo <shawnguo@kernel.org>
 Cc: Rob Herring <robh@kernel.org>,
@@ -65,9 +65,9 @@ Cc: Rob Herring <robh@kernel.org>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Hiago De Franco <hiago.franco@toradex.com>
-Subject: [PATCH v2 1/3] ARM: dts: imx6qdl-apalis: Update audio card name
-Date: Thu, 10 Oct 2024 14:11:26 -0300
-Message-Id: <20241010171128.107819-2-hiagofranco@gmail.com>
+Subject: [PATCH v2 2/3] ARM: dts: imx6qdl-colibri: Update audio card name
+Date: Thu, 10 Oct 2024 14:11:27 -0300
+Message-Id: <20241010171128.107819-3-hiagofranco@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241010171128.107819-1-hiagofranco@gmail.com>
 References: <20241010171128.107819-1-hiagofranco@gmail.com>
@@ -81,11 +81,11 @@ Content-Transfer-Encoding: 8bit
 
 From: Hiago De Franco <hiago.franco@toradex.com>
 
-Update the audio card name for Apalis iMX6 to match its specific SoM
+Update the audio card name for Colibri iMX6 to match its specific SoM
 name, making it less than 15 characters to fix the following warning
 
-fsl-asoc-card sound: ASoC: driver name too long 'imx6q-apalis-sgtl5000'
--> 'imx6q-apalis-sg'
+fsl-asoc-card sound: ASoC: driver name too long
+'imx6dl-colibri-sgtl5000' -> 'imx6dl-colibri-'
 
 making it compliant with the ALSA configuration specification [1].
 
@@ -97,21 +97,21 @@ currently exist and we are in the the process of creating them.
 
 Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
 ---
- arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi | 2 +-
+ arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-index edf55760a5c1..1c72da417011 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-@@ -191,7 +191,7 @@ sound {
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi
+index b01670cdd52c..9f33419c260b 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi
+@@ -136,7 +136,7 @@ sound {
+ 			"LINE_IN", "Line In Jack",
  			"MIC_IN", "Mic Jack",
- 			"Mic Jack", "Mic Bias",
- 			"Headphone Jack", "HP_OUT";
--		model = "imx6q-apalis-sgtl5000";
-+		model = "apalis-imx6";
- 		mux-ext-port = <4>;
+ 			"Mic Jack", "Mic Bias";
+-		model = "imx6dl-colibri-sgtl5000";
++		model = "colibri-imx6";
  		mux-int-port = <1>;
+ 		mux-ext-port = <5>;
  		ssi-controller = <&ssi1>;
 -- 
 2.39.5
