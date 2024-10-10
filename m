@@ -1,108 +1,99 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49EC91DFDAB;
-	Wed,  9 Oct 2024 20:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5183C28F1;
+	Thu, 10 Oct 2024 00:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728507186; cv=none; b=REz/pfsJTAxjNoWJqoHMWoKEfPIrtisGZGLfKOwoT3VANMwbfYBe1a+iB3pBqUw2qVdwbW1sNsswLHFdwsWwKkQK+gDKKTOdBtn3JMK+rU/pOxizH4Xo1dWsi9mlC4XfygeYDzAvqw9NKqqv7gP9zEcLMEsDyEP8yFtl4E+Sj1A=
+	t=1728519696; cv=none; b=pGXJq9ViniVVNIPfxA4e5K0GSxLx16bo+SQbJdtx96usAXL6pIYwpyWltFE0zv/LV/5Y1/QvXgvaoWihsguW7+mXJ7JFHIrdoho8xbsuG/+hcrQBwdWJ0UircCcaDRbtLmBauHbjcjPUKVID45AS5Xh0nHpT8e5dfP/rZ6MRtJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728507186; c=relaxed/simple;
-	bh=z3NFl3JU4cXkyowzq5opNhTPBloo/S0tofmm6les7ds=;
+	s=arc-20240116; t=1728519696; c=relaxed/simple;
+	bh=B7hqZAaS2mOo9sVTu9vPgawB2ROJ3lP9/bA1L4lGT/c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QEvKIkvIZOBvtmvdjX+T1nK9PLm5dofgZkTY1ygu0hmFVgD7+pVDptHGwIC4/jnLDe+jOE4XCM+OAQWoHAHKWMnAVOw0jcNAkeLEg+Um3ghXc9nPe89uBHiiYhsuxEUGbZtEDeFXaE2JKi+1/ZuWAABSeSz5l5EftHffoHSsAWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DQCxYEML; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zyh/uPcf874mYURbW6QBRHrEvL2eUSIhZXS+na9F7Z3wJ4S4L/YODFr0ITLtdf1NgVV2SDaRqm6x/Xy75XvRJRNa6i+Us049i9W8CRtIVvWaez63TbYAFxyZ4Udwjymu7g4lPgNH3E05GqH1ElfYhj9PjmdAaaQkS0UrMUJuCPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nM2Wlcn4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DQCxYEML"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E87C4CEC3;
-	Wed,  9 Oct 2024 20:53:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nM2Wlcn4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2A8C4CEC3;
+	Thu, 10 Oct 2024 00:21:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728507185;
-	bh=z3NFl3JU4cXkyowzq5opNhTPBloo/S0tofmm6les7ds=;
+	s=k20201202; t=1728519695;
+	bh=B7hqZAaS2mOo9sVTu9vPgawB2ROJ3lP9/bA1L4lGT/c=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DQCxYEMLzlgshGROEYfKV/8alUi36hXQwa0orX8JGwReVH5Ym1TNjOLdR8knjfiH3
-	 uHBKqP1xLZD6eN0aZGe5c2Yf6+1QsRBJ250iZdpG1IgO/a/21inaa41shI03t2U+wf
-	 8aCUK4DKa2aIdjK7IO8qVDttEaI7fE/7m/rAfuYEVCE5wjfMZTAoj3IvDrnyQgsUot
-	 Iycb4fgKZREQU6SO2UdnJ6iwgV9bcHEX02p+PU5PL27oMIZzXib/W1eHDexxpkEWrN
-	 2f6fFs/vnpEWsItbdy4xZvrrkpDZzZm0ydj9LGMKKh55+ZH3zs3T4f4cnlf9dhNnHV
-	 24KMvDoZS47Yw==
-Date: Wed, 9 Oct 2024 15:53:04 -0500
-From: Rob Herring <robh@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Wei Fang <wei.fang@nxp.com>, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, krzk+dt@kernel.org,
-	conor+dt@kernel.org, vladimir.oltean@nxp.com,
-	claudiu.manoil@nxp.com, xiaoning.wang@nxp.com,
-	christophe.leroy@csgroup.eu, linux@armlinux.org.uk,
-	bhelgaas@google.com, imx@lists.linux.dev, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH net-next 02/11] dt-bindings: net: add i.MX95 ENETC support
-Message-ID: <20241009205304.GA615678-robh@kernel.org>
-References: <20241009095116.147412-1-wei.fang@nxp.com>
- <20241009095116.147412-3-wei.fang@nxp.com>
- <ZwavhfKthzaOR2R9@lizhi-Precision-Tower-5810>
+	b=nM2Wlcn4xzfse8dAoKFug5dvbfO1zYtz6Fn6fmY7zCmRpg1UxQvN6i/0+U8QolGux
+	 ba5ntYdisUgqfxN7lVYR8npzOjpUiY0YEUCXGucBGkLki8HSeubrwcOhjO75+ZDPI5
+	 utJAlirwmgW/j8kp43PuH2rNTXkvRSJ7E1wr914Lp5VjfjmGLPNHXp6UjbPekVr8QC
+	 btcBb5DteiDaHfiovEJYg0POireUdK9h/onxxS60LxKGQlz2Y03HZEm3PO2Lss4Wpc
+	 VUWHJc/uO91fGjYPD7LHgd2nUplksd13XsiIOEGIN27gRCu6YGnkUWpsS1AwK9RBZW
+	 RsG9//WpluFZg==
+Date: Wed, 9 Oct 2024 17:21:33 -0700
+From: Namhyung Kim <namhyung@kernel.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: Frank.li@nxp.com, will@kernel.org, mark.rutland@arm.com,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, john.g.garry@oracle.com, james.clark@linaro.org,
+	mike.leach@linaro.org, leo.yan@linux.dev, peterz@infradead.org,
+	mingo@redhat.com, acme@kernel.org,
+	alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+	irogers@google.com, adrian.hunter@intel.com,
+	kan.liang@linux.intel.com, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-perf-users@vger.kernel.org
+Subject: Re: [PATCH 3/3] perf vendor events arm64: Add i.MX91 DDR Performance
+ Monitor metrics
+Message-ID: <ZwceDV3xNXijFF_8@google.com>
+References: <20240924061251.3387850-1-xu.yang_2@nxp.com>
+ <20240924061251.3387850-3-xu.yang_2@nxp.com>
+ <ZvsTJ47yHFUjo1uw@google.com>
+ <20241008054935.zi2kqcaj4fwf2bda@hippo>
+ <ZwYncyUlAtTAeOjo@google.com>
+ <20241009093750.6mbq3zkmupahrzmm@hippo>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ZwavhfKthzaOR2R9@lizhi-Precision-Tower-5810>
+In-Reply-To: <20241009093750.6mbq3zkmupahrzmm@hippo>
 
-On Wed, Oct 09, 2024 at 12:29:57PM -0400, Frank Li wrote:
-> On Wed, Oct 09, 2024 at 05:51:07PM +0800, Wei Fang wrote:
-> > The ENETC of i.MX95 has been upgraded to revision 4.1, and the vendor
-> > ID and device ID have also changed, so add the new compatible strings
-> > for i.MX95 ENETC. In addition, i.MX95 supports configuration of RGMII
-> > or RMII reference clock.
-> >
-> > Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> > ---
-> >  .../devicetree/bindings/net/fsl,enetc.yaml    | 23 +++++++++++++++----
-> >  1 file changed, 19 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/net/fsl,enetc.yaml b/Documentation/devicetree/bindings/net/fsl,enetc.yaml
-> > index e152c93998fe..1a6685bb7230 100644
-> > --- a/Documentation/devicetree/bindings/net/fsl,enetc.yaml
-> > +++ b/Documentation/devicetree/bindings/net/fsl,enetc.yaml
-> > @@ -20,14 +20,29 @@ maintainers:
-> >
-> >  properties:
-> >    compatible:
-> > -    items:
-> > -      - enum:
-> > -          - pci1957,e100
-> > -      - const: fsl,enetc
-> > +    oneOf:
-> > +      - items:
-> > +          - enum:
-> > +              - pci1957,e100
-> > +          - const: fsl,enetc
-> > +      - items:
-> > +          - const: pci1131,e101
-> > +      - items:
-> > +          - enum:
-> > +              - nxp,imx95-enetc
-> > +          - const: pci1131,e101
+On Wed, Oct 09, 2024 at 05:38:25PM +0800, Xu Yang wrote:
+> On Tue, Oct 08, 2024 at 11:49:23PM -0700, Namhyung Kim wrote:
+> > On Tue, Oct 08, 2024 at 01:49:35PM +0800, Xu Yang wrote:
+> > > Hi Namhyung,
+> > > 
+> > > On Mon, Sep 30, 2024 at 02:07:51PM -0700, Namhyung Kim wrote:
+> > > > Hello,
+> > > > 
+> > > > On Tue, Sep 24, 2024 at 02:12:51PM +0800, Xu Yang wrote:
+> > > > > Add JSON metrics for i.MX91 DDR Performance Monitor.
+> > > > > 
+> > > > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > > > > ---
+> > > > >  .../arch/arm64/freescale/imx91/sys/ddrc.json  |  9 +++++++
+> > > > >  .../arm64/freescale/imx91/sys/metrics.json    | 26 +++++++++++++++++++
+> > > > >  2 files changed, 35 insertions(+)
+> > > > >  create mode 100644 tools/perf/pmu-events/arch/arm64/freescale/imx91/sys/ddrc.json
+> > > > >  create mode 100644 tools/perf/pmu-events/arch/arm64/freescale/imx91/sys/metrics.json
+> > > > 
+> > > > How do you want to route this?  As it's mixed with kernel changes, I
+> > > > would generally request to split but it's a change just to add new
+> > > > files so it should be ok to go with other tree.  In that case,
+> > > 
+> > > Sorry for late.
+> > > 
+> > > How about you pick up this one to perf-tools tree and Will Deacon pick up
+> > > the first 2 patches to his tree? I didn't see Will apply perf-tools patch
+> > > before.
+> > 
+> > Did Will pick up the kernel patches already?
 > 
->     oneOf:
->       - items:
->           - enum:
->               - pci1957,e100
->           - const: fsl,enetc
->       - items:
->           - const: pci1131,e101
->           - enum:
->               - nxp,imx95-enetc
+> Not yet. I could ping you once it's done, is it ok?
 
-const.
+Sure!
 
-Or maybe just drop it. Hopefully the PCI ID changes with each chip. If 
-not, we kind of have the compatibles backwards.
+Thanks,
+Namhyung
 
->           minItems: 1
-
-Then why have the fallback?
