@@ -1,128 +1,241 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BFA21949D
-	for <imx@lists.linux.dev>; Fri, 11 Oct 2024 13:30:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31F5184
+	for <imx@lists.linux.dev>; Fri, 11 Oct 2024 14:36:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728653457; cv=none; b=sYNTVkKSX/Ea9pquJk9Ku3hXemQ6fjC/M6wv/pe8aT9P9V5WMmO7vFuaKzmNTc24bmDgNRpf/hboxZ3hU283DkiRMp0vl946Y1sb3jJUyWQGDhY2ONsw7/rjFadMXX+KhiEYHuIWr0HEOPBF4o2HPqGDBBIrM8eVwrYxbzpBwSk=
+	t=1728657387; cv=none; b=twLv3c6WajZYIVvo4jGiHyCQPD4rfM9OTZBqDw6iRrp8Ru7gLPbN72+xtamwLGpQTGI8DwAj758C1JzBDYdfNIrEktt+r3I6B3dXmqT2807iXYnhFcnqnfAG+r/X6PpJPPSYsw21/xVkuoRBB8TcoZ41+bKk8NDF566lAm/aqjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728653457; c=relaxed/simple;
-	bh=WX4yQMiZlACIymUMFw/9tLA0YSPfMay9XRpwftgT080=;
+	s=arc-20240116; t=1728657387; c=relaxed/simple;
+	bh=S/gBI6wBV/CBFfLTQS/Sr9jpxcODjvvha33rK1iqEkI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eKd5UUr0CEpFsWn2+jPshYYzIhm+kVbB7PQVjR4uQveYFfuAhME8/wrVc/UDzfkLq5NJIef10s6JiAdFp0nJ84wtCO3ENJn4ca3/bYJ7KqrRydaBbfTrbk4EQ9LpTJJEUpk5hAbfG0Zha4VpPsa2m+tyTXDeOwb8TjVcU6ckg24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=tmM2ieZC; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=QQXgVTW6A6/akyjDHnZvvCPLaywkn0043T9bUxGxU+7ezUYl8/gGFC32aPxe7xJrXoUgnDdLtAHoMMPwP92kj9S59yEDt/AdEmnM9kLR7SY5XTVSu47smNsLCIVVlb2aDz3hY7ZWHZjh3wqjDSBErGA0ctUgtHS10rMd28SaIoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FXteg5b3; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="tmM2ieZC"
-Received: from pendragon.ideasonboard.com (unknown [132.205.230.15])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id BA5FE220;
-	Fri, 11 Oct 2024 15:29:13 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1728653354;
-	bh=WX4yQMiZlACIymUMFw/9tLA0YSPfMay9XRpwftgT080=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tmM2ieZCXdmNLvd0eM0pVtItEpmGCvSIxGkX6DHnMvObgAvLD8wJnd5EHf4EW4JJj
-	 y5aDQgyzKS818f9VA4JYgicGOuwUndqSC9fwRjyLy6q+hY/sLTtSugYSVCPgYXMCaq
-	 5fGQ8l/5Dohnes6+boRxv9W5xXU7AFR2KIn+K4CY=
-Date: Fri, 11 Oct 2024 16:30:47 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: guoniu.zhou@oss.nxp.com
-Cc: linux-media@vger.kernel.org, jacopo@jmondi.org, mchehab@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.d,
-	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] media: nxp: imx8-isi: Add i.MX8ULP support
-Message-ID: <20241011133047.GC9543@pendragon.ideasonboard.com>
-References: <20241011101711.704226-1-guoniu.zhou@oss.nxp.com>
- <20241011101711.704226-2-guoniu.zhou@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FXteg5b3"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-37d495d217bso1699229f8f.0
+        for <imx@lists.linux.dev>; Fri, 11 Oct 2024 07:36:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728657384; x=1729262184; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=C/UtyB2uWIm739F4MXYMRShLe9+F8H6vI52MdDvVTyA=;
+        b=FXteg5b36sG7IjbyMgGoIpwYBlAHkTHkoxqLQVTaClJf0H2lo8UWe0G1b1g7F0qCcz
+         dnpWFahGGjJ+raDkfzsLeYGxiCJu7Vi1JD+MTMiqIDCyyOtOA5Mneg9ia25SiSu5QoCz
+         DBIL36HoPdEeL2iuanEJlyresfEDqXBIqC4jRdwxr4E/Gdl0U/J+QRNyvQlcnUzQ/wn1
+         bL79CkNbNK34u/z22XFJvl5slxiaCLuOo3VbsnDiqDs6CjZKnYLTVaNbBbYDYTefOxxl
+         7CeD/Rd/RKyXZzgjvNB+zy07DlrkZ+rJYB/J/ckgQwRIDP5RjLjkodVJCBG7z9c0iICX
+         w1Hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728657384; x=1729262184;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=C/UtyB2uWIm739F4MXYMRShLe9+F8H6vI52MdDvVTyA=;
+        b=biW2tZCJgcApTcFcskKyY+KGzVa7MVOsJzTyIok/j05NXV8MokR5c0m1k/1Q19Tr2c
+         C9Yr8RMefcOzSh980LH7dQWBcWldIu/Z8q8vdu9vbp6E6c7kgOrnrRp6LmCNXET6VTce
+         9l/ZkBhjEYjgMrqywsf8sUVsnTz6F0Mb+xuIpPY6Ats2YdopSXU6gsl/StVoQg3Y18cO
+         JheHbIE1VJfyrogW/LSwvuuFUxnsYU9fMTARsKMhg7Slm33eJECcABSCoPyaYhxSutdR
+         7B5XtewNvQIj9ZgFhe66U3/aolct/gTcAzfdASwtCh29beid/NunK3tm0/A/ZukB3r7v
+         +rdw==
+X-Forwarded-Encrypted: i=1; AJvYcCVA50CB/C1YIkwkg5TVLoXBs9SA1Lovt7krczGwhLK4gw4T28q1HHQ7bdQXWjfoFHfKiS8=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywyk3H30R7gGCE8rasELlcpEh5KfNsZlhb2j9SYZudZzzGihN4W
+	rcbpfIkUN10CuZqtuNWedR5DwSuvreR/aOOvKsHGSJ0FIbQXBi0d
+X-Google-Smtp-Source: AGHT+IFlnrR3OqGd8XdhiXG/glDXZS1+OWZdJWElmbQjUA5D2o+fvQ2WDzXsVd68UTgo7ViCacocYQ==
+X-Received: by 2002:a5d:62c2:0:b0:37d:39bf:37e3 with SMTP id ffacd0b85a97d-37d55199c2dmr2624425f8f.16.1728657383878;
+        Fri, 11 Oct 2024 07:36:23 -0700 (PDT)
+Received: from eichest-laptop ([2a02:168:af72:0:5e49:8e15:b881:5968])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b9180f8sm4071123f8f.115.2024.10.11.07.36.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Oct 2024 07:36:23 -0700 (PDT)
+Date: Fri, 11 Oct 2024 16:36:21 +0200
+From: Stefan Eichenberger <eichest@gmail.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>, hongxing.zhu@nxp.com,
+	l.stach@pengutronix.de, lpieralisi@kernel.org, kw@linux.com,
+	manivannan.sadhasivam@linaro.org, robh@kernel.org,
+	bhelgaas@google.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com,
+	francesco.dolcini@toradex.com, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: Re: [PATCH v2] PCI: imx6: Add suspend/resume support for i.MX6QDL
+Message-ID: <Zwk35efNI4EO1eir@eichest-laptop>
+References: <20241009131659.29616-1-eichest@gmail.com>
+ <ZwgykRyE+jDU0CiU@lizhi-Precision-Tower-5810>
+ <20241010201121.GA88411@francesco-nb>
+ <ZwhY/dtSNPptgs27@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241011101711.704226-2-guoniu.zhou@oss.nxp.com>
+In-Reply-To: <ZwhY/dtSNPptgs27@lizhi-Precision-Tower-5810>
 
-Hi Guoniu,
+Hi Frank,
 
-Thank you for the patch.
-
-On Fri, Oct 11, 2024 at 06:17:12PM +0800, guoniu.zhou@oss.nxp.com wrote:
-> From: "Guoniu.zhou" <guoniu.zhou@nxp.com>
+On Thu, Oct 10, 2024 at 06:45:17PM -0400, Frank Li wrote:
+> On Thu, Oct 10, 2024 at 10:11:21PM +0200, Francesco Dolcini wrote:
+> > Hello Frank,
+> >
+> > On Thu, Oct 10, 2024 at 04:01:21PM -0400, Frank Li wrote:
+> > > On Wed, Oct 09, 2024 at 03:14:05PM +0200, Stefan Eichenberger wrote:
+> > > > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> > > >
+> > > > The suspend/resume support is broken on the i.MX6QDL platform. This
+> > > > patch resets the link upon resuming to recover functionality. It shares
+> > > > most of the sequences with other i.MX devices but does not touch the
+> > > > critical registers, which might break PCIe. This patch addresses the
+> > > > same issue as the following downstream commit:
+> > > > https://github.com/nxp-imx/linux-imx/commit/4e92355e1f79d225ea842511fcfd42b343b32995
+> > > > In comparison this patch will also reset the device if possible. Without
+> > > > this patch suspend/resume will not work if a PCIe device is connected.
+> > > > The kernel will hang on resume and print an error:
+> > > > ath10k_pci 0000:01:00.0: Unable to change power state from D3hot to D0, device inaccessible
+> > > > 8<--- cut here ---
+> > > > Unhandled fault: imprecise external abort (0x1406) at 0x0106f944
+> > > >
+> > > > Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> > > > ---
+> > >
+> > > Thank you for your patch.
+> > >
+> > > But it may conflict with another suspend/resume patch
+> > > https://lore.kernel.org/imx/1727245477-15961-8-git-send-email-hongxing.zhu@nxp.com/
+> >
+> > Thanks for the head-up.
+> >
+> > Do you see any issue with this patch apart that? Because this patch is
+> > fixing a crash, so I would expect this to be merged, once ready, and
+> > such a series rebased afterward.
+> >
+> > I am writing this explicitly since you wrote a similar comment on the
+> > v1 (https://lore.kernel.org/all/ZsNXDq%2FkidZdyhvD@lizhi-Precision-Tower-5810/)
+> > and I would like to prevent to have this fix starving for long just because
+> > multiple people is working on the same driver.
 > 
-> Add ISI support for i.MX8ULP.
-> 
-> Signed-off-by: Guoniu.zhou <guoniu.zhou@nxp.com>
-> ---
->  .../platform/nxp/imx8-isi/imx8-isi-core.c      | 18 ++++++++++++++++++
->  .../platform/nxp/imx8-isi/imx8-isi-core.h      |  1 +
->  2 files changed, 19 insertions(+)
-> 
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> index c2013995049c..f5d076d7f50b 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> @@ -279,6 +279,10 @@ static const struct clk_bulk_data mxc_imx8mn_clks[] = {
->  	{ .id = "apb" },
->  };
->  
-> +static const struct clk_bulk_data mxc_imx8ulp_clks[] = {
-> +	{ .id = "per" },
+> My key comment for this patch is use flags IMX_PCIE_FLAG_SKIP_TURN_OFF
+> in suspend()/resume(), it is up to kw to pick which one firstly.
 
-This doesn't match the DT bindings. Which one is wrong ?
+I will try to implement it as you proposed with the new flag. 
 
-> +};
-> +
->  static const struct mxc_isi_plat_data mxc_imx8mn_data = {
->  	.model			= MXC_ISI_IMX8MN,
->  	.num_ports		= 1,
-> @@ -307,6 +311,19 @@ static const struct mxc_isi_plat_data mxc_imx8mp_data = {
->  	.has_36bit_dma		= true,
->  };
->  
-> +static const struct mxc_isi_plat_data mxc_imx8ulp_data = {
-> +	.model			= MXC_ISI_IMX8ULP,
-> +	.num_ports		= 1,
-> +	.num_channels		= 1,
-> +	.reg_offset		= 0x0,
-> +	.ier_reg		= &mxc_imx8_isi_ier_v2,
-> +	.set_thd		= &mxc_imx8_isi_thd_v1,
-> +	.clks			= mxc_imx8ulp_clks,
-> +	.num_clks		= ARRAY_SIZE(mxc_imx8ulp_clks),
-> +	.buf_active_reverse	= true,
-> +	.has_36bit_dma		= false,
-> +};
-> +
->  static const struct mxc_isi_plat_data mxc_imx93_data = {
->  	.model			= MXC_ISI_IMX93,
->  	.num_ports		= 1,
-> @@ -528,6 +545,7 @@ static void mxc_isi_remove(struct platform_device *pdev)
->  static const struct of_device_id mxc_isi_of_match[] = {
->  	{ .compatible = "fsl,imx8mn-isi", .data = &mxc_imx8mn_data },
->  	{ .compatible = "fsl,imx8mp-isi", .data = &mxc_imx8mp_data },
-> +	{ .compatible = "fsl,imx8ulp-isi", .data = &mxc_imx8ulp_data },
->  	{ .compatible = "fsl,imx93-isi", .data = &mxc_imx93_data },
->  	{ /* sentinel */ },
->  };
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> index 2810ebe9b5f7..9c7fe9e5f941 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> @@ -158,6 +158,7 @@ struct mxc_gasket_ops {
->  enum model {
->  	MXC_ISI_IMX8MN,
->  	MXC_ISI_IMX8MP,
-> +	MXC_ISI_IMX8ULP,
->  	MXC_ISI_IMX93,
->  };
->  
+However, what I figured out with kernel v6.12-rc1 I get the following
+warning when booting on an i.MX6QDL even without my patch applied:
+[    1.901199] PCI: bus0: Fast back to back transfers disabled
+[    1.904754] mmc1: SDHCI controller on 2190000.mmc [2190000.mmc] using ADMA
+[    1.904914] mmc2: SDHCI controller on 2194000.mmc [2194000.mmc] using ADMA
+[    1.910686] pci 0000:01:00.0: [168c:003c] type 00 class 0x028000 PCIe Endpoint
+[    1.918390] NET: Registered PF_PACKET protocol family
+[    1.918573] mmc0: SDHCI controller on 2198000.mmc [2198000.mmc] using ADMA
+[    1.924322] pci 0000:01:00.0: BAR 0 [mem 0x00000000-0x001fffff 64bit]
+[    1.931635] Key type dns_resolver registered
+[    1.936764] pci 0000:01:00.0: ROM [mem 0x00000000-0x0000ffff pref]
+[    1.961043] pci 0000:01:00.0: supports D1 D2
+[    1.961526] Registering SWP/SWPB emulation handler
+[    1.965601] mmc0: new DDR MMC card at address 0001
+[    1.976575] mmcblk0: mmc0:0001 Q2J54A 3.59 GiB
+[    1.979794] Loading compiled-in X.509 certificates
+[    1.985036] PCI: bus1: Fast back to back transfers disabled
+[    1.991531] pci 0000:00:00.0: bridge window [mem 0x01000000-0x011fffff]: assigned
+[    1.998742]  mmcblk0: p1 p2 p3
+[    1.999163] pci 0000:00:00.0: BAR 0 [mem 0x01200000-0x012fffff]: assigned
+[    2.003947] mmcblk0boot0: mmc0:0001 Q2J54A 16.0 MiB
+[    2.008990] pci 0000:00:00.0: bridge window [mem 0x01300000-0x013fffff pref]: assigned
+[    2.009023] pci 0000:00:00.0: ROM [mem 0x01400000-0x0140ffff pref]: assigned
+[    2.009054] pci 0000:01:00.0: BAR 0 [mem 0x01000000-0x011fffff 64bit]: assigned
+[    2.017526] mmcblk0boot1: mmc0:0001 Q2J54A 16.0 MiB
+[    2.022015] pci 0000:01:00.0: ROM [mem 0x01300000-0x0130ffff pref]: assigned
+[    2.032133] mmcblk0rpmb: mmc0:0001 Q2J54A 512 KiB, chardev (242:0)
+[    2.036347] pci 0000:00:00.0: PCI bridge to [bus 01-ff]
+[    2.036370] pci 0000:00:00.0:   bridge window [mem 0x01000000-0x011fffff]
+[    2.036384] pci 0000:00:00.0:   bridge window [mem 0x01300000-0x013fffff pref]
+[    2.042552] pps pps0: new PPS source ptp0
+[    2.048338] pci_bus 0000:00: resource 4 [io  0x0000-0xffff]
+[    2.083626] pci_bus 0000:00: resource 5 [mem 0x01000000-0x01efffff]
+[    2.089972] pci_bus 0000:01: resource 1 [mem 0x01000000-0x011fffff]
+[    2.093461] fec 2188000.ethernet eth0: registered PHC device 0
+[    2.096283] pci_bus 0000:01: resource 2 [mem 0x01300000-0x013fffff pref]
+[    2.096352] sysfs: cannot create duplicate filename '/devices/platform/soc/1ffc000.pcie/pci0000:00/0000:00:00.0/resource0'
+[    2.096365] CPU: 3 UID: 0 PID: 52 Comm: kworker/u19:2 Not tainted 6.12.0-rc1 #54
+[    2.096381] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
+[    2.096391] Workqueue: async async_run_entry_fn
+[    2.103025] imx_thermal 20c8000.anatop:tempmon: Industrial CPU temperature grade - max:105C critical:100C passive:95C
+[    2.108932]
+[    2.108940] Call trace:
+[    2.108950]  unwind_backtrace from show_stack+0x10/0x14
+[    2.121391] clk: Disabling unused clocks
+[    2.127423]  show_stack from dump_stack_lvl+0x54/0x68
+[    2.127451]  dump_stack_lvl from sysfs_warn_dup+0x58/0x64
+[    2.134265] PM: genpd: Disabling unused power domains
+[    2.138525]  sysfs_warn_dup from sysfs_add_bin_file_mode_ns+0xbc/0xcc
+[    2.138547]  sysfs_add_bin_file_mode_ns from sysfs_create_bin_file+0xac/0xb4
+[    2.149242] ALSA device list:
+[    2.150647]  sysfs_create_bin_file from pci_create_resource_files+0x84/0x148
+[    2.153183]   No soundcards found.
+[    2.158407]  pci_create_resource_files from pci_bus_add_device+0x24/0xe4
+[    2.211699]  pci_bus_add_device from pci_bus_add_devices+0x2c/0x70
+[    2.217930]  pci_bus_add_devices from pci_host_probe+0x7c/0xa4
+[    2.223806]  pci_host_probe from dw_pcie_host_init+0x4ec/0x71c
+[    2.229682]  dw_pcie_host_init from imx_pcie_probe+0x3a8/0x75c
+[    2.235559]  imx_pcie_probe from platform_probe+0x5c/0xb0
+[    2.241010]  platform_probe from really_probe+0xd0/0x3a4
+[    2.246364]  really_probe from __driver_probe_device+0x8c/0x1d4
+[    2.252321]  __driver_probe_device from driver_probe_device+0x30/0xc0
+[    2.258803]  driver_probe_device from __driver_attach_async_helper+0x50/0xd8
+[    2.265892]  __driver_attach_async_helper from async_run_entry_fn+0x30/0x144
+[    2.272980]  async_run_entry_fn from process_one_work+0x154/0x2dc
+[    2.279115]  process_one_work from worker_thread+0x250/0x3f0
+[    2.284811]  worker_thread from kthread+0x110/0x12c
+[    2.289726]  kthread from ret_from_fork+0x14/0x28
+[    2.294461] Exception stack(0xe6a0dfb0 to 0xe6a0dff8)
+[    2.299535] dfa0:                                     00000000 00000000 00000000 00000000
+[    2.307740] dfc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+[    2.315942] dfe0: 00000000 00000000 00000000 00000000 00000013 00000000
+[    2.323156] pcieport 0000:00:00.0: PME: Signaling with IRQ 293
+[    2.329645] pcieport 0000:00:00.0: AER: enabled with IRQ 293
+[    2.335553] sysfs: cannot create duplicate filename '/devices/platform/soc/1ffc000.pcie/pci0000:00/0000:00:00.0/0000:01:00.0/resource0'
+[    2.347794] CPU: 3 UID: 0 PID: 52 Comm: kworker/u19:2 Not tainted 6.12.0-rc1 #54
+[    2.355229] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
+[    2.361779] Workqueue: async async_run_entry_fn
+[    2.366349] Call trace:
+[    2.366362]  unwind_backtrace from show_stack+0x10/0x14
+[    2.374183]  show_stack from dump_stack_lvl+0x54/0x68
+[    2.379273]  dump_stack_lvl from sysfs_warn_dup+0x58/0x64
+[    2.384706]  sysfs_warn_dup from sysfs_add_bin_file_mode_ns+0xbc/0xcc
+[    2.391183]  sysfs_add_bin_file_mode_ns from sysfs_create_bin_file+0xac/0xb4
+[    2.398270]  sysfs_create_bin_file from pci_create_resource_files+0x84/0x148
+[    2.405360]  pci_create_resource_files from pci_bus_add_device+0x24/0xe4
+[    2.412113]  pci_bus_add_device from pci_bus_add_devices+0x2c/0x70
+[    2.418334]  pci_bus_add_devices from pci_bus_add_devices+0x60/0x70
+[    2.424642]  pci_bus_add_devices from pci_host_probe+0x7c/0xa4
+[    2.430511]  pci_host_probe from dw_pcie_host_init+0x4ec/0x71c
+[    2.436384]  dw_pcie_host_init from imx_pcie_probe+0x3a8/0x75c
+[    2.442258]  imx_pcie_probe from platform_probe+0x5c/0xb0
+[    2.447704]  platform_probe from really_probe+0xd0/0x3a4
+[    2.453057]  really_probe from __driver_probe_device+0x8c/0x1d4
+[    2.459014]  __driver_probe_device from driver_probe_device+0x30/0xc0
+[    2.465493]  driver_probe_device from __driver_attach_async_helper+0x50/0xd8
+[    2.472580]  __driver_attach_async_helper from async_run_entry_fn+0x30/0x144
+[    2.479666]  async_run_entry_fn from process_one_work+0x154/0x2dc
+[    2.485800]  process_one_work from worker_thread+0x250/0x3f0
+[    2.491494]  worker_thread from kthread+0x110/0x12c
+[    2.496408]  kthread from ret_from_fork+0x14/0x28
+[    2.501140] Exception stack(0xe6a0dfb0 to 0xe6a0dff8)
+[    2.506214] dfa0:                                     00000000 00000000 00000000 00000000
+[    2.514418] dfc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+[    2.522620] dfe0: 00000000 00000000 00000000 00000000 00000013 00000000
 
--- 
+This was not the case with kernel v6.11, do you have an idea where this
+comes from? I did not dig into more detail yet but it looks a bit like a
+regression. The driver still works, it just prints this duplicate
+filename warning.
+
 Regards,
-
-Laurent Pinchart
+Stefan
