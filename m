@@ -1,45 +1,45 @@
 Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4681CEAD1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4BE1CF7D0
 	for <imx@lists.linux.dev>; Fri, 11 Oct 2024 20:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728677836; cv=none; b=PbCDLAz8pyues57bCazMqhjVORhsdiXhgKXk//+PZat/6DDeA1VNz8qAWDdt12IbE1RM5kIMPlCNVAkfKKTzsBTGYNEV45DkteuZx1po2870FFvUjiiWXD51+NyohVTb3TVLNZPuRk+iYj7buGDrc2cbc56m6TgOmbnWHJtbe5k=
+	t=1728677838; cv=none; b=Z/MwRGOifFz3PMkxrDvdUWYKqelNbgsT0p2kilw3ziL5CehtnV65zXCcmCNH2LtCdm3XbOT+8o9lmKw2xKtvL+F0lwcTlXlKw/yeFj5ukgCQTo/YtMP+4ZrlJunzi/7sBSTlL7sx2hONmgZWXC2gUY5XUSl/Qm4/W0qK5usIsXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728677836; c=relaxed/simple;
-	bh=bM81m61bwS2UN2Svbu/r1zfl/LDb+tjGoL6u8SEWQWE=;
+	s=arc-20240116; t=1728677838; c=relaxed/simple;
+	bh=F1JZZ3VxwsSKTg2LjGq0rUIE/gVME8qmJ40fxossfJc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j5Q8+6x2C2E0KFqGbS6s2A5pZkhqPJu0Brl9SygpsME/dlVB/fRBU8ME6kDiA7gy/U2JJ40+JE8b+fpT/F5zCyOA0in6BDx5FOka2B8HbDHVHjreOuYqwiihaKYQpTe4fe4rdLohpQ4gegTJvKKfn5Y3rJWQqM2XzjpxI+Fqz+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Ys1tgLpu; arc=none smtp.client-ip=198.47.19.142
+	 MIME-Version:Content-Type; b=pYd0la8AeEArUHsnV6ASymVyChoJdDsiwEsj6kow14pAJeoFE1x6JsF9GRwTzbtwBb6+T+JT3QJ7vKCYxju4KbyJcuuD2zZULaZ4tVRiZezCt9UjMAekLXNx6M8J1IxlirW/VpcepJzPnyLXKURfu8wVrVuai4ktOb4xjCv4gs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=tiJlTzew; arc=none smtp.client-ip=198.47.19.142
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Ys1tgLpu"
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 49BKGoCh081117;
-	Fri, 11 Oct 2024 15:16:50 -0500
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="tiJlTzew"
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 49BKGnDu081112;
+	Fri, 11 Oct 2024 15:16:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
 	s=ti-com-17Q1; t=1728677810;
-	bh=UUkIu/8Qmux6+/va5NpKSfNIFMGEqp8ObO5jfrobR38=;
+	bh=8gIz69rx+O7g3l2dUBVUwaQsvlZ4QBJNSMujzHzSCeo=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=Ys1tgLpuFXSBnj0huEtZLyJs+aQzdephLYChH632hJqcX4hjvmw57FjmBlodrFHrn
-	 ROd9EZnMNY3aoJHcFfOmKKa4BmT9lMBCP/255q0gFHxBdJZUa7CSBiTFLnvznI/6HE
-	 sMs6DD3+xlqLxQloBPOdsQQaO2Ruv2/9eEsWmzB4=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 49BKGoBm107009
+	b=tiJlTzewA8RT6Ar2WrjqwVi38PgJaLnwp1K2Lf/cvbbF94QkBHP+qmy35pbumjYmK
+	 g0NfsFhGsLS864+6GIsiZhudJBjrRRkJlDPU4u3nL0e5w39x0SOO32ual8/dJ9egSp
+	 yfPzjxMDUJVjOxwnCOLeE1Rl6cwhx1FluiA+mm/E=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 49BKGnL7028961
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 11 Oct 2024 15:16:50 -0500
-Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 11
- Oct 2024 15:16:50 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE113.ent.ti.com
+	Fri, 11 Oct 2024 15:16:49 -0500
+Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE113.ent.ti.com
  (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 11
+ Oct 2024 15:16:49 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 11 Oct 2024 15:16:50 -0500
+ Frontend Transport; Fri, 11 Oct 2024 15:16:49 -0500
 Received: from fllvsmtp7.itg.ti.com ([10.249.42.149])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 49BKGkCL102075;
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 49BKGkCK102075;
 	Fri, 11 Oct 2024 15:16:49 -0500
 From: Andrew Davis <afd@ti.com>
 To: Andre Przywara <andre.przywara@arm.com>,
@@ -59,9 +59,9 @@ To: Andre Przywara <andre.przywara@arm.com>,
         Robert Jarzmik <robert.jarzmik@free.fr>
 CC: <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <imx@lists.linux.dev>, Andrew Davis <afd@ti.com>
-Subject: [PATCH v3 5/6] ARM: vt8500: Switch to new sys-off handler API
-Date: Fri, 11 Oct 2024 15:16:44 -0500
-Message-ID: <20241011201645.797394-6-afd@ti.com>
+Subject: [PATCH v3 4/6] ARM: sa1100: Switch to new sys-off handler API
+Date: Fri, 11 Oct 2024 15:16:43 -0500
+Message-ID: <20241011201645.797394-5-afd@ti.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20241011201645.797394-1-afd@ti.com>
 References: <20241011201645.797394-1-afd@ti.com>
@@ -82,22 +82,22 @@ are converted to the new sys-off API.
 
 Signed-off-by: Andrew Davis <afd@ti.com>
 ---
- arch/arm/mach-vt8500/vt8500.c | 2 +-
+ arch/arm/mach-sa1100/generic.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-vt8500/vt8500.c b/arch/arm/mach-vt8500/vt8500.c
-index 0ab40087ae1cc..1d294255d7083 100644
---- a/arch/arm/mach-vt8500/vt8500.c
-+++ b/arch/arm/mach-vt8500/vt8500.c
-@@ -141,7 +141,7 @@ static void __init vt8500_init(void)
- 			pr_err("%s:ioremap(power_off) failed\n", __func__);
- 	}
- 	if (pmc_base)
--		pm_power_off = &vt8500_power_off;
-+		register_platform_power_off(vt8500_power_off);
- 	else
- 		pr_err("%s: PMC Hibernation register could not be remapped, not enabling power off!\n", __func__);
- }
+diff --git a/arch/arm/mach-sa1100/generic.c b/arch/arm/mach-sa1100/generic.c
+index 0c586047d130f..5383a26f51169 100644
+--- a/arch/arm/mach-sa1100/generic.c
++++ b/arch/arm/mach-sa1100/generic.c
+@@ -298,7 +298,7 @@ static struct platform_device *sa11x0_devices[] __initdata = {
+ static int __init sa1100_init(void)
+ {
+ 	struct resource wdt_res = DEFINE_RES_MEM(0x90000000, 0x20);
+-	pm_power_off = sa1100_power_off;
++	register_platform_power_off(sa1100_power_off);
+ 
+ 	regulator_has_full_constraints();
+ 
 -- 
 2.39.2
 
