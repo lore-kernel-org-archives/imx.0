@@ -1,241 +1,180 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2059.outbound.protection.outlook.com [40.107.22.59])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31F5184
-	for <imx@lists.linux.dev>; Fri, 11 Oct 2024 14:36:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728657387; cv=none; b=twLv3c6WajZYIVvo4jGiHyCQPD4rfM9OTZBqDw6iRrp8Ru7gLPbN72+xtamwLGpQTGI8DwAj758C1JzBDYdfNIrEktt+r3I6B3dXmqT2807iXYnhFcnqnfAG+r/X6PpJPPSYsw21/xVkuoRBB8TcoZ41+bKk8NDF566lAm/aqjs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728657387; c=relaxed/simple;
-	bh=S/gBI6wBV/CBFfLTQS/Sr9jpxcODjvvha33rK1iqEkI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QQXgVTW6A6/akyjDHnZvvCPLaywkn0043T9bUxGxU+7ezUYl8/gGFC32aPxe7xJrXoUgnDdLtAHoMMPwP92kj9S59yEDt/AdEmnM9kLR7SY5XTVSu47smNsLCIVVlb2aDz3hY7ZWHZjh3wqjDSBErGA0ctUgtHS10rMd28SaIoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FXteg5b3; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8950D126C01
+	for <imx@lists.linux.dev>; Fri, 11 Oct 2024 14:38:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728657533; cv=fail; b=FBjp9AUGFMifI4RTmw1uVwh33AeN/REJTAI20erIEIhrxf/XTxwmAZHOj7vaZ5W+TX//7abMW4u6cq8Qz4KysnffFheJAwS6hkT17Riw6RiU43auUqDrl9jjoq1A3P243NDuy/uQdDdYD4lXcIG+8Y8+HR0LDU4SizgKb2OwgV0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728657533; c=relaxed/simple;
+	bh=vvS7kqB1IEMn+Bf6YHXRB2CwMyt0Jj+Vu6zNPmHibTg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=XZMnPM3yitjKv6s3WRUYNPWUFSt+f7vhp6JLBGr8HBNKs7yHWtzwMRtL9reIx3bsNdc7qiLjEf2hgWzlid+C1957LuUaqci5EhIbbVZ2sw5FvoBP+T53fCTkq6sU4rr4gwK3tFGxSqZC5pRUxyV/txXxhFe385/sKS4vh/inS7o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BG57y2Br; arc=fail smtp.client-ip=40.107.22.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FXteg5b3"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-37d495d217bso1699229f8f.0
-        for <imx@lists.linux.dev>; Fri, 11 Oct 2024 07:36:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728657384; x=1729262184; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=C/UtyB2uWIm739F4MXYMRShLe9+F8H6vI52MdDvVTyA=;
-        b=FXteg5b36sG7IjbyMgGoIpwYBlAHkTHkoxqLQVTaClJf0H2lo8UWe0G1b1g7F0qCcz
-         dnpWFahGGjJ+raDkfzsLeYGxiCJu7Vi1JD+MTMiqIDCyyOtOA5Mneg9ia25SiSu5QoCz
-         DBIL36HoPdEeL2iuanEJlyresfEDqXBIqC4jRdwxr4E/Gdl0U/J+QRNyvQlcnUzQ/wn1
-         bL79CkNbNK34u/z22XFJvl5slxiaCLuOo3VbsnDiqDs6CjZKnYLTVaNbBbYDYTefOxxl
-         7CeD/Rd/RKyXZzgjvNB+zy07DlrkZ+rJYB/J/ckgQwRIDP5RjLjkodVJCBG7z9c0iICX
-         w1Hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728657384; x=1729262184;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=C/UtyB2uWIm739F4MXYMRShLe9+F8H6vI52MdDvVTyA=;
-        b=biW2tZCJgcApTcFcskKyY+KGzVa7MVOsJzTyIok/j05NXV8MokR5c0m1k/1Q19Tr2c
-         C9Yr8RMefcOzSh980LH7dQWBcWldIu/Z8q8vdu9vbp6E6c7kgOrnrRp6LmCNXET6VTce
-         9l/ZkBhjEYjgMrqywsf8sUVsnTz6F0Mb+xuIpPY6Ats2YdopSXU6gsl/StVoQg3Y18cO
-         JheHbIE1VJfyrogW/LSwvuuFUxnsYU9fMTARsKMhg7Slm33eJECcABSCoPyaYhxSutdR
-         7B5XtewNvQIj9ZgFhe66U3/aolct/gTcAzfdASwtCh29beid/NunK3tm0/A/ZukB3r7v
-         +rdw==
-X-Forwarded-Encrypted: i=1; AJvYcCVA50CB/C1YIkwkg5TVLoXBs9SA1Lovt7krczGwhLK4gw4T28q1HHQ7bdQXWjfoFHfKiS8=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywyk3H30R7gGCE8rasELlcpEh5KfNsZlhb2j9SYZudZzzGihN4W
-	rcbpfIkUN10CuZqtuNWedR5DwSuvreR/aOOvKsHGSJ0FIbQXBi0d
-X-Google-Smtp-Source: AGHT+IFlnrR3OqGd8XdhiXG/glDXZS1+OWZdJWElmbQjUA5D2o+fvQ2WDzXsVd68UTgo7ViCacocYQ==
-X-Received: by 2002:a5d:62c2:0:b0:37d:39bf:37e3 with SMTP id ffacd0b85a97d-37d55199c2dmr2624425f8f.16.1728657383878;
-        Fri, 11 Oct 2024 07:36:23 -0700 (PDT)
-Received: from eichest-laptop ([2a02:168:af72:0:5e49:8e15:b881:5968])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b9180f8sm4071123f8f.115.2024.10.11.07.36.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Oct 2024 07:36:23 -0700 (PDT)
-Date: Fri, 11 Oct 2024 16:36:21 +0200
-From: Stefan Eichenberger <eichest@gmail.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Francesco Dolcini <francesco@dolcini.it>, hongxing.zhu@nxp.com,
-	l.stach@pengutronix.de, lpieralisi@kernel.org, kw@linux.com,
-	manivannan.sadhasivam@linaro.org, robh@kernel.org,
-	bhelgaas@google.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	francesco.dolcini@toradex.com, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: Re: [PATCH v2] PCI: imx6: Add suspend/resume support for i.MX6QDL
-Message-ID: <Zwk35efNI4EO1eir@eichest-laptop>
-References: <20241009131659.29616-1-eichest@gmail.com>
- <ZwgykRyE+jDU0CiU@lizhi-Precision-Tower-5810>
- <20241010201121.GA88411@francesco-nb>
- <ZwhY/dtSNPptgs27@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BG57y2Br"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=C/1zUeifphdFFWnx1F63Jo+Kn+BeKQO7gBpkDaEhvI66jMjGsLAGFH1CP01BAhvMgM4y6nCRfWqOYO/gjS3jQSNUVsnHfHh/TYlRJx73+J7yh5E5YO4tl959MKlEl7QFZBpPje6Pt8pOclWHJuh7hXSzryCa+PbQNmLsNuvYKsX+mIrmRfossFAWK+yFjJYTQNvH5xBYSnD1bR1URX/TIlh5mBZHeJsCT/ILzDHRdsPdz2+2Gi3/06NFJ9FEiNNiSuqaKJxwtRbalmlXecblZ8luaq790TIh4JZ2dcEHL3OtFKXfXG2f2hu/Z4ISX1maX/mCEHEjWeJA+ak9E99MmQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=U1IBjiBPIi8CHUJozZfWAmr8AAJKh0QARz1a4JYfWbo=;
+ b=Dgm7KlrIu+yK3fNKJ1U0CLe4q7v6SECJned0q0aXMiuMqCcJWGycLbL1O+LBYbVseGRM7S6tFFiyxOtoxd142uKE6i7SDvfVdlhKq1xGpa+XgN04Lq9EInLmIbcOWtFu6jHrw2o2sFb84xlVcFwMtY4y5w/3KdMTqjlmYv5mUdlPKW8+MgWAudkvYeZoIQlrkNNpwPTq4xP35NcweYfgDiOrzUYi3irN2MvNYgZZP9PGrFD7Btc6nA6Y2PHY6NXHyyT02mPNNIOPiOsttpVV5HBj2mfJTN1eToZ1SWLQobR+thJ7rslcULZ3fYk6lKjS/dpVORo4zg5gRMQN1tPK6g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=U1IBjiBPIi8CHUJozZfWAmr8AAJKh0QARz1a4JYfWbo=;
+ b=BG57y2Br7hU8sD3jyBWAEq3n4Y991bhbu6MBamrqVH3ZCezFwojM7838kjeEVMO8iSzkuet1Q46WHWfxXXGeNVy7mKDNQb6fuUWKcqbr0Pwp8WqBTne0+r9Gi3FyJF/7sAYMD7hskSL7xYmFjaDiipGUvqe8JVdisgyCey5Z4009ObLHbXH9i559GOR6YIBgL05LGLoXgrMloRiaW2uxobzuA70DEntimLcjRc1tFGmFigfsC7U/XJUqXgRXiuE8nUytTC3yaLbgl+ACtX5ibBs0Ujj34dpDqrX5spYHX1OWmW7Zq3JwEQdgxPvqVbMd5zlAVle1pnmGv41NW6agaA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
+ by AM9PR04MB8422.eurprd04.prod.outlook.com (2603:10a6:20b:3ea::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.16; Fri, 11 Oct
+ 2024 14:38:47 +0000
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2%3]) with mapi id 15.20.8048.013; Fri, 11 Oct 2024
+ 14:38:46 +0000
+Date: Fri, 11 Oct 2024 17:38:42 +0300
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, claudiu.manoil@nxp.com, ast@kernel.org,
+	daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	bpf@vger.kernel.org, stable@vger.kernel.org, imx@lists.linux.dev,
+	rkannoth@marvell.com, maciej.fijalkowski@intel.com,
+	sbhatta@marvell.com
+Subject: Re: [PATCH v4 net 2/4] net: enetc: block concurrent XDP
+ transmissions during ring reconfiguration
+Message-ID: <20241011143842.zmbelkh57xuk4pnt@skbuf>
+References: <20241010092056.298128-1-wei.fang@nxp.com>
+ <20241010092056.298128-1-wei.fang@nxp.com>
+ <20241010092056.298128-3-wei.fang@nxp.com>
+ <20241010092056.298128-3-wei.fang@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241010092056.298128-3-wei.fang@nxp.com>
+ <20241010092056.298128-3-wei.fang@nxp.com>
+X-ClientProxiedBy: VI1PR04CA0116.eurprd04.prod.outlook.com
+ (2603:10a6:803:f0::14) To AM8PR04MB7779.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24b::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZwhY/dtSNPptgs27@lizhi-Precision-Tower-5810>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|AM9PR04MB8422:EE_
+X-MS-Office365-Filtering-Correlation-Id: fb0430ee-26ae-445b-a311-08dcea02697f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?SbX9GD+TF4zd8AGyNThDRjCkpjhDnvav0Q8VOL2HkxZDFDy/2CxoMVMK73lK?=
+ =?us-ascii?Q?KPkqk3uLlTGhsUwbIXXpHo10pn9BnBPa8Mwp03WIjD7sq6+THJA0K/aZQ+AE?=
+ =?us-ascii?Q?3oWddkMMaaI1GjD6Ixrgq0p0egPz7xGUGmzVBrNxxK+xr+eY3vzqHKRCS8x9?=
+ =?us-ascii?Q?vYxWylGtwnKKfNmJxNL/j7unBDaAnMjT3DnpDtoJIs9NKbCA8sFftKqa677/?=
+ =?us-ascii?Q?wWT+AZFDPFp1DYS8WKvHD86MeKTTy3pNC+FO0p5vQORCYBDz1/y0KiiOKDhx?=
+ =?us-ascii?Q?PsAkEg0rzzLBj1uIKlQ2wJdvP7cmNu4pbyD6zBNwitM37jWguFH26kS+IZzH?=
+ =?us-ascii?Q?Zbo1lKpxbMgZORU8WIMZqMSIpNOHY0ULEHRdy/mqh5zWGy1DJo2d/ekGaik4?=
+ =?us-ascii?Q?FtIX0yezJ+M//koJfHGceebrXxhjNsMcWKJz6uALZI6X60d59BlRDsqhtC9T?=
+ =?us-ascii?Q?F9iUQnj05D2hGCHeryqRITwpk8Kx0KnjxOLXJxyqqUPT5rDuvJzxQWr++LVp?=
+ =?us-ascii?Q?Ng7ehEasbIS7g5bFo+6TNnwhOi0n/d982ip/UVI4TMauAyxB+gxH72KbNesi?=
+ =?us-ascii?Q?fsRWz1kaWUR6ZmzNSabbVvFlIpOVTX3yskYZOP/LM62pxDKZmyYIlzgbDUDt?=
+ =?us-ascii?Q?+OKlOL+Ox99Ii5cjt8X1hRSYWuSVq7UiMoTX14irxPFHhMeKP/BeNTpvYbGO?=
+ =?us-ascii?Q?keF222PX8IARvS39I6QriUsMGbPA3upd0LS0Ari8XGp/LIlV4r77f60LFghx?=
+ =?us-ascii?Q?5tIES/NyfQ8tZdX7MV01o/jGnx4PCTzQNZS8D4Ze4ZWA4fxy/qSr4EIxkguj?=
+ =?us-ascii?Q?F2M9d/u6d9Dbwp5PaMPBsZy7vNltO6osDfSILFILSJAP/phR2MRbcRMmEOUa?=
+ =?us-ascii?Q?y0XXSpPMap8KfusjscqSBa/+o+xJ9yWt8vlkB/9G1j2ZftIjsKL4Ie+6cKNX?=
+ =?us-ascii?Q?Qm6+u91R9OS76VvSwHG0CAJweM+/Y9OSkigmfSTMhhR7czW7ZTioPD3n1Wjs?=
+ =?us-ascii?Q?kc172Fv4dg309oFM0nw+yvzmx1AmUbQShxyr4WwppHR54Ocp+yrRm2Phg1E+?=
+ =?us-ascii?Q?CrdGh0vXmE6MxUkTylRI6tbJ59gfKnTHIUiGy2uhHodee4256dhQvnEa9eCo?=
+ =?us-ascii?Q?cfu50PdR1tj+M/9qFcZ63fombQW4iu0Nhxz0C4Bs1oLhg/yibUstUMQhcQGK?=
+ =?us-ascii?Q?vDLnjqBeb/GGrrVBZZjveGaJHzuw+cGJUn7xzU4650rOISbJGTDtTRqyGNyc?=
+ =?us-ascii?Q?rFuarFalT7LRSScOI2M/jHYGrhni86hKqKU/ipzf/w=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?XsbJexM1tXdpbVL7ulWL3nx13b2L0qabJRH80AVUzi20MUVwrWF7jCWslwjD?=
+ =?us-ascii?Q?Ri8791fLklsf/UvkMMf98T+70lqGKxyXVg+seeu6xprpnL3oUKhpR3RJ9iby?=
+ =?us-ascii?Q?w0eZp/M0UoCWq1TuLOvWZVSeL5VatSIuTEbckwoVeDHR2116chfrJgnGJSY9?=
+ =?us-ascii?Q?WOTTMpbZ0SnKg6jprBMDC5vx8j+Rfwtk9ienroHOAwE6AW1F7I9i2fKQ8tIc?=
+ =?us-ascii?Q?I+0tBvuloexlE8NezPZnBYXYAsqykNkYEsR7+qJ4Q9KFSsbMr5AuXs6JSLtj?=
+ =?us-ascii?Q?wvjwrTUpWlLPs0w62DofJb5UIrX0F6dxHwp/flcmvkRAkkF11JBSpvlWyHUX?=
+ =?us-ascii?Q?a4c76SuUfe1KN/mzKcagJvZy6/xqpvIRwiyQTrZjQrjUPlt1CDKsDrsjVnOH?=
+ =?us-ascii?Q?WOZpZxnGWyWkpC+xFNTdFXRRzbSkWi+Y0xxd7r+fTqC+picX13Ghvkg+bHNl?=
+ =?us-ascii?Q?IC2tYDdnK1h+6xOUy4e5TupwejqlmFPUnal+2FEthItEXhRCMoAYDhgf9DWX?=
+ =?us-ascii?Q?GcQgwyyoxBEr5Jppd8Xx+osOCofZxKGX6DJE9k+g40nbCTNmPznBGKKRPMjV?=
+ =?us-ascii?Q?rU/W4cjNBJfpgFwos0GXnP+WKyVTczKCssqAEpOoQ4HoBoWPy0D7AiGaA9TU?=
+ =?us-ascii?Q?3VhrPh8ZSaaDCKUQ6wDVOk0q5HpO9YcT4TyIstw0GkTAFFF+Slf0NoT+bgpb?=
+ =?us-ascii?Q?PDO/5s4NxTQn2HHOIurWKUuggasIIGySRCsWOgJY7dPqXEVV1SWi2ovbCUTr?=
+ =?us-ascii?Q?WIjAVtQSIwCDWnRMfzkTKXSH9tJIDzJL1ZXV0Ze0aiNnssGdm+KrCtn4TYlT?=
+ =?us-ascii?Q?C5fD107DneFTsqtB0nv4DQqCiUd/ZhCCSvwy5pSfOmIIN/Q23u6r6eSm8wcN?=
+ =?us-ascii?Q?UsFgHdbIsqFImp/Xo6v3UVb/Z5a4MciNr3uHoO16A3VibQP2VwldtZHrMyeI?=
+ =?us-ascii?Q?9M8ZP3Z4FGuNkvCH6ih/q7QOVBIFumogiDLJ/qhIL1N9KtLPoYlKp4jDdbUW?=
+ =?us-ascii?Q?DfFMl9suH44jlteh3ZZJLDk+Z74PBaTlk7QxKMlS8GCt4xyTlshpMhW/R4vY?=
+ =?us-ascii?Q?f4k43xgECBoC6jIrcacrYFFEOZ4/ytLhzM9rwOLTLNPekcE6gWtFPfXyXZc/?=
+ =?us-ascii?Q?unn8a2RsokqJI6tkNtLQ2hLAzsdopt4j+DUhzsv8MDQ875wKo+hw7673mJN+?=
+ =?us-ascii?Q?TY16lYzbu79Wi1fQ5V2oLQc1wlNY1sXYEXTtd+I3jZrHZsXtJwg8SdGaljby?=
+ =?us-ascii?Q?k8ZOscb0fvhp0BLdpG7EwxGtsPH1EPzsLpXLjeTQYJsK8nSL0zT4CwCkmd8D?=
+ =?us-ascii?Q?A3O9BBXbokXRb2F1mpRer8U3o7tqALwRrnxCOeS1niGMorSpCXNkXVFAkqyC?=
+ =?us-ascii?Q?jnfyhYa52yNSLBFlgL6SyusS/S938zOLCqlYxwyUYNIcYVIJ8H0+Nm9Rq6Lm?=
+ =?us-ascii?Q?hmQXoa/olTM1Cl0KMLwe48fzfD1ML8BGztEHfa7YSygXt2MZNIeUYPzkil77?=
+ =?us-ascii?Q?LWFcgojMpRJCiT+UhwDClIxEsrUya0xNV6WCo5sOq48U0TU9mDDFG3j9Mghc?=
+ =?us-ascii?Q?X+Kl9OIMV3uOGjx7pFG9SsIDOFnc4yNBSdC5GpxaQRQ4TcRbATvDKI6POOK+?=
+ =?us-ascii?Q?sA=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fb0430ee-26ae-445b-a311-08dcea02697f
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2024 14:38:46.9198
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hsaGURpO+pPhh1PD8PK5xPdeYSVB2p5GgsxqCIA/erVmJnh7usRmz7Lel/7cWaZTFZppTfqTeYdFexiewQqZJg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8422
 
-Hi Frank,
-
-On Thu, Oct 10, 2024 at 06:45:17PM -0400, Frank Li wrote:
-> On Thu, Oct 10, 2024 at 10:11:21PM +0200, Francesco Dolcini wrote:
-> > Hello Frank,
-> >
-> > On Thu, Oct 10, 2024 at 04:01:21PM -0400, Frank Li wrote:
-> > > On Wed, Oct 09, 2024 at 03:14:05PM +0200, Stefan Eichenberger wrote:
-> > > > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> > > >
-> > > > The suspend/resume support is broken on the i.MX6QDL platform. This
-> > > > patch resets the link upon resuming to recover functionality. It shares
-> > > > most of the sequences with other i.MX devices but does not touch the
-> > > > critical registers, which might break PCIe. This patch addresses the
-> > > > same issue as the following downstream commit:
-> > > > https://github.com/nxp-imx/linux-imx/commit/4e92355e1f79d225ea842511fcfd42b343b32995
-> > > > In comparison this patch will also reset the device if possible. Without
-> > > > this patch suspend/resume will not work if a PCIe device is connected.
-> > > > The kernel will hang on resume and print an error:
-> > > > ath10k_pci 0000:01:00.0: Unable to change power state from D3hot to D0, device inaccessible
-> > > > 8<--- cut here ---
-> > > > Unhandled fault: imprecise external abort (0x1406) at 0x0106f944
-> > > >
-> > > > Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> > > > ---
-> > >
-> > > Thank you for your patch.
-> > >
-> > > But it may conflict with another suspend/resume patch
-> > > https://lore.kernel.org/imx/1727245477-15961-8-git-send-email-hongxing.zhu@nxp.com/
-> >
-> > Thanks for the head-up.
-> >
-> > Do you see any issue with this patch apart that? Because this patch is
-> > fixing a crash, so I would expect this to be merged, once ready, and
-> > such a series rebased afterward.
-> >
-> > I am writing this explicitly since you wrote a similar comment on the
-> > v1 (https://lore.kernel.org/all/ZsNXDq%2FkidZdyhvD@lizhi-Precision-Tower-5810/)
-> > and I would like to prevent to have this fix starving for long just because
-> > multiple people is working on the same driver.
+On Thu, Oct 10, 2024 at 05:20:54PM +0800, Wei Fang wrote:
+> When testing the XDP_REDIRECT function on the LS1028A platform, we
+> found a very reproducible issue that the Tx frames can no longer be
+> sent out even if XDP_REDIRECT is turned off. Specifically, if there
+> is a lot of traffic on Rx direction, when XDP_REDIRECT is turned on,
+> the console may display some warnings like "timeout for tx ring #6
+> clear", and all redirected frames will be dropped, the detailed log
+> is as follows.
 > 
-> My key comment for this patch is use flags IMX_PCIE_FLAG_SKIP_TURN_OFF
-> in suspend()/resume(), it is up to kw to pick which one firstly.
+> root@ls1028ardb:~# ./xdp-bench redirect eno0 eno2
+> Redirecting from eno0 (ifindex 3; driver fsl_enetc) to eno2 (ifindex 4; driver fsl_enetc)
+> [203.849809] fsl_enetc 0000:00:00.2 eno2: timeout for tx ring #5 clear
+> [204.006051] fsl_enetc 0000:00:00.2 eno2: timeout for tx ring #6 clear
+> [204.161944] fsl_enetc 0000:00:00.2 eno2: timeout for tx ring #7 clear
+> eno0->eno2     1420505 rx/s       1420590 err,drop/s      0 xmit/s
+>   xmit eno0->eno2    0 xmit/s     1420590 drop/s     0 drv_err/s     15.71 bulk-avg
+> eno0->eno2     1420484 rx/s       1420485 err,drop/s      0 xmit/s
+>   xmit eno0->eno2    0 xmit/s     1420485 drop/s     0 drv_err/s     15.71 bulk-avg
+> 
+> By analyzing the XDP_REDIRECT implementation of enetc driver, the
+> driver will reconfigure Tx and Rx BD rings when a bpf program is
+> installed or uninstalled, but there is no mechanisms to block the
+> redirected frames when enetc driver reconfigures rings. Similarly,
+> XDP_TX verdicts on received frames can also lead to frames being
+> enqueued in the Tx rings. Because XDP ignores the state set by the
+> netif_tx_wake_queue() API, so introduce the ENETC_TX_DOWN flag to
+> suppress transmission of XDP frames.
+> 
+> Fixes: c33bfaf91c4c ("net: enetc: set up XDP program under enetc_reconfigure()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> ---
 
-I will try to implement it as you proposed with the new flag. 
-
-However, what I figured out with kernel v6.12-rc1 I get the following
-warning when booting on an i.MX6QDL even without my patch applied:
-[    1.901199] PCI: bus0: Fast back to back transfers disabled
-[    1.904754] mmc1: SDHCI controller on 2190000.mmc [2190000.mmc] using ADMA
-[    1.904914] mmc2: SDHCI controller on 2194000.mmc [2194000.mmc] using ADMA
-[    1.910686] pci 0000:01:00.0: [168c:003c] type 00 class 0x028000 PCIe Endpoint
-[    1.918390] NET: Registered PF_PACKET protocol family
-[    1.918573] mmc0: SDHCI controller on 2198000.mmc [2198000.mmc] using ADMA
-[    1.924322] pci 0000:01:00.0: BAR 0 [mem 0x00000000-0x001fffff 64bit]
-[    1.931635] Key type dns_resolver registered
-[    1.936764] pci 0000:01:00.0: ROM [mem 0x00000000-0x0000ffff pref]
-[    1.961043] pci 0000:01:00.0: supports D1 D2
-[    1.961526] Registering SWP/SWPB emulation handler
-[    1.965601] mmc0: new DDR MMC card at address 0001
-[    1.976575] mmcblk0: mmc0:0001 Q2J54A 3.59 GiB
-[    1.979794] Loading compiled-in X.509 certificates
-[    1.985036] PCI: bus1: Fast back to back transfers disabled
-[    1.991531] pci 0000:00:00.0: bridge window [mem 0x01000000-0x011fffff]: assigned
-[    1.998742]  mmcblk0: p1 p2 p3
-[    1.999163] pci 0000:00:00.0: BAR 0 [mem 0x01200000-0x012fffff]: assigned
-[    2.003947] mmcblk0boot0: mmc0:0001 Q2J54A 16.0 MiB
-[    2.008990] pci 0000:00:00.0: bridge window [mem 0x01300000-0x013fffff pref]: assigned
-[    2.009023] pci 0000:00:00.0: ROM [mem 0x01400000-0x0140ffff pref]: assigned
-[    2.009054] pci 0000:01:00.0: BAR 0 [mem 0x01000000-0x011fffff 64bit]: assigned
-[    2.017526] mmcblk0boot1: mmc0:0001 Q2J54A 16.0 MiB
-[    2.022015] pci 0000:01:00.0: ROM [mem 0x01300000-0x0130ffff pref]: assigned
-[    2.032133] mmcblk0rpmb: mmc0:0001 Q2J54A 512 KiB, chardev (242:0)
-[    2.036347] pci 0000:00:00.0: PCI bridge to [bus 01-ff]
-[    2.036370] pci 0000:00:00.0:   bridge window [mem 0x01000000-0x011fffff]
-[    2.036384] pci 0000:00:00.0:   bridge window [mem 0x01300000-0x013fffff pref]
-[    2.042552] pps pps0: new PPS source ptp0
-[    2.048338] pci_bus 0000:00: resource 4 [io  0x0000-0xffff]
-[    2.083626] pci_bus 0000:00: resource 5 [mem 0x01000000-0x01efffff]
-[    2.089972] pci_bus 0000:01: resource 1 [mem 0x01000000-0x011fffff]
-[    2.093461] fec 2188000.ethernet eth0: registered PHC device 0
-[    2.096283] pci_bus 0000:01: resource 2 [mem 0x01300000-0x013fffff pref]
-[    2.096352] sysfs: cannot create duplicate filename '/devices/platform/soc/1ffc000.pcie/pci0000:00/0000:00:00.0/resource0'
-[    2.096365] CPU: 3 UID: 0 PID: 52 Comm: kworker/u19:2 Not tainted 6.12.0-rc1 #54
-[    2.096381] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
-[    2.096391] Workqueue: async async_run_entry_fn
-[    2.103025] imx_thermal 20c8000.anatop:tempmon: Industrial CPU temperature grade - max:105C critical:100C passive:95C
-[    2.108932]
-[    2.108940] Call trace:
-[    2.108950]  unwind_backtrace from show_stack+0x10/0x14
-[    2.121391] clk: Disabling unused clocks
-[    2.127423]  show_stack from dump_stack_lvl+0x54/0x68
-[    2.127451]  dump_stack_lvl from sysfs_warn_dup+0x58/0x64
-[    2.134265] PM: genpd: Disabling unused power domains
-[    2.138525]  sysfs_warn_dup from sysfs_add_bin_file_mode_ns+0xbc/0xcc
-[    2.138547]  sysfs_add_bin_file_mode_ns from sysfs_create_bin_file+0xac/0xb4
-[    2.149242] ALSA device list:
-[    2.150647]  sysfs_create_bin_file from pci_create_resource_files+0x84/0x148
-[    2.153183]   No soundcards found.
-[    2.158407]  pci_create_resource_files from pci_bus_add_device+0x24/0xe4
-[    2.211699]  pci_bus_add_device from pci_bus_add_devices+0x2c/0x70
-[    2.217930]  pci_bus_add_devices from pci_host_probe+0x7c/0xa4
-[    2.223806]  pci_host_probe from dw_pcie_host_init+0x4ec/0x71c
-[    2.229682]  dw_pcie_host_init from imx_pcie_probe+0x3a8/0x75c
-[    2.235559]  imx_pcie_probe from platform_probe+0x5c/0xb0
-[    2.241010]  platform_probe from really_probe+0xd0/0x3a4
-[    2.246364]  really_probe from __driver_probe_device+0x8c/0x1d4
-[    2.252321]  __driver_probe_device from driver_probe_device+0x30/0xc0
-[    2.258803]  driver_probe_device from __driver_attach_async_helper+0x50/0xd8
-[    2.265892]  __driver_attach_async_helper from async_run_entry_fn+0x30/0x144
-[    2.272980]  async_run_entry_fn from process_one_work+0x154/0x2dc
-[    2.279115]  process_one_work from worker_thread+0x250/0x3f0
-[    2.284811]  worker_thread from kthread+0x110/0x12c
-[    2.289726]  kthread from ret_from_fork+0x14/0x28
-[    2.294461] Exception stack(0xe6a0dfb0 to 0xe6a0dff8)
-[    2.299535] dfa0:                                     00000000 00000000 00000000 00000000
-[    2.307740] dfc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-[    2.315942] dfe0: 00000000 00000000 00000000 00000000 00000013 00000000
-[    2.323156] pcieport 0000:00:00.0: PME: Signaling with IRQ 293
-[    2.329645] pcieport 0000:00:00.0: AER: enabled with IRQ 293
-[    2.335553] sysfs: cannot create duplicate filename '/devices/platform/soc/1ffc000.pcie/pci0000:00/0000:00:00.0/0000:01:00.0/resource0'
-[    2.347794] CPU: 3 UID: 0 PID: 52 Comm: kworker/u19:2 Not tainted 6.12.0-rc1 #54
-[    2.355229] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
-[    2.361779] Workqueue: async async_run_entry_fn
-[    2.366349] Call trace:
-[    2.366362]  unwind_backtrace from show_stack+0x10/0x14
-[    2.374183]  show_stack from dump_stack_lvl+0x54/0x68
-[    2.379273]  dump_stack_lvl from sysfs_warn_dup+0x58/0x64
-[    2.384706]  sysfs_warn_dup from sysfs_add_bin_file_mode_ns+0xbc/0xcc
-[    2.391183]  sysfs_add_bin_file_mode_ns from sysfs_create_bin_file+0xac/0xb4
-[    2.398270]  sysfs_create_bin_file from pci_create_resource_files+0x84/0x148
-[    2.405360]  pci_create_resource_files from pci_bus_add_device+0x24/0xe4
-[    2.412113]  pci_bus_add_device from pci_bus_add_devices+0x2c/0x70
-[    2.418334]  pci_bus_add_devices from pci_bus_add_devices+0x60/0x70
-[    2.424642]  pci_bus_add_devices from pci_host_probe+0x7c/0xa4
-[    2.430511]  pci_host_probe from dw_pcie_host_init+0x4ec/0x71c
-[    2.436384]  dw_pcie_host_init from imx_pcie_probe+0x3a8/0x75c
-[    2.442258]  imx_pcie_probe from platform_probe+0x5c/0xb0
-[    2.447704]  platform_probe from really_probe+0xd0/0x3a4
-[    2.453057]  really_probe from __driver_probe_device+0x8c/0x1d4
-[    2.459014]  __driver_probe_device from driver_probe_device+0x30/0xc0
-[    2.465493]  driver_probe_device from __driver_attach_async_helper+0x50/0xd8
-[    2.472580]  __driver_attach_async_helper from async_run_entry_fn+0x30/0x144
-[    2.479666]  async_run_entry_fn from process_one_work+0x154/0x2dc
-[    2.485800]  process_one_work from worker_thread+0x250/0x3f0
-[    2.491494]  worker_thread from kthread+0x110/0x12c
-[    2.496408]  kthread from ret_from_fork+0x14/0x28
-[    2.501140] Exception stack(0xe6a0dfb0 to 0xe6a0dff8)
-[    2.506214] dfa0:                                     00000000 00000000 00000000 00000000
-[    2.514418] dfc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-[    2.522620] dfe0: 00000000 00000000 00000000 00000000 00000013 00000000
-
-This was not the case with kernel v6.11, do you have an idea where this
-comes from? I did not dig into more detail yet but it looks a bit like a
-regression. The driver still works, it just prints this duplicate
-filename warning.
-
-Regards,
-Stefan
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
