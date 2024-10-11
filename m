@@ -1,182 +1,138 @@
-Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2044.outbound.protection.outlook.com [40.107.103.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5A228689
-	for <imx@lists.linux.dev>; Fri, 11 Oct 2024 03:16:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728616576; cv=fail; b=cvlIuwq+l8R3ysFNlBnRh33sjAtt4+fyfWsBreCK9oPJW/3UNIer0AuDV2YemVrO8SAvdQQLylwuJhq1eW5KYP1YpSGST7hGE27gYi0BeBoXx720c4YFqTaKSKlDs1UKp0+wHq8mD4uAajAd/EHDWfTEDrEHH3JvrHOD2cIa+b4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728616576; c=relaxed/simple;
-	bh=ddQdb5QBAMBR+SV7tGl7aBEDzwxzYV62dGo+VKveEq0=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=RqEC5V9B3+FDfG1KuW1TUF/EyAwXNbUyVx7U3sLipBh0xY0OIqaHGgUkTrj9MFFn+ebRbjd6L6FBcLaCPCf+mukXR0hFPogM+46fkwQYat1M+N874hMt7kq6wnugyzfB2/SZtkHh2OTaGzFaM+E35pwpwvJccEEeJPzbhkfzjnM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XLipNquW; arc=fail smtp.client-ip=40.107.103.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AA93EA64
+	for <imx@lists.linux.dev>; Fri, 11 Oct 2024 03:39:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728617995; cv=none; b=cUqSUfwmv/vdveCl6RwgJGSqddgK46zKh8RqpYk4sUweGFo67nudr0apIJyLLMdzI35kGR6WfGD8snv1Jmi8D4beB/sWx2NjeOjfHRQhq1ZB+LU4XJMlq1J+jJdNo3Z3OhmToqwRXSmZUPd+cdyxGeILyJ2gRkmNuFhqE2fRBno=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728617995; c=relaxed/simple;
+	bh=ioZItuDgAyJtcNqhQeJY+0onCqf56cJ+JJQlgfuNPnQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Gi2W+z6TtPSfG/GK4q/p3shR7+7zhugSfSEmXe7Y7iZ0GIP93lUp9/rsSTlYqvvIRzJ4tUtBkPNADH3kzPFx8ulOmcEiIbEm3RN8+ouL2JXoriNyC8TaSKawSJvQo1VPWBjEgh3268qWGk65Lez6NvJ6FRhq2QXxxB9iMMZUEEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=hJyethe3; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XLipNquW"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aIA/s4hxa8Z2Pg7CwiM5CV7S5vba40yesuHZmtHK106i5cSob6cLi09ejfYE+HdQdLF5M0JOTlobw5H/YwIe8fzbnCNPCBXfNkTCLPIh0rPQ8oogKxwLTZRkL02Y4EJuUHA7YydaRURFLfwUkexuDOtky6qRa/lXFG48vsPNk9wBtLcx91cCz216fuYuf0zyt5zfhgXv/SzEz1Bv1pWFlwTJLqx5uPEmezGALiDo3MTRV7eSKUZpKz9lQlW5EOA+xkf5wLMj9CQ4lmxtlKbAlKT7vs93Dp4Tp1v0vuqqTwS1+sOCdVe446wLKvZv/4OAIvjSbBVA6bVT9U8lNzGBsA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=waCzLYymp369lq2JaGe2UTMDulnmUfPcw7tlc4zpad4=;
- b=Xh4NgNF+wEjyMKw4t5D4EidfltYfT6Bc5BZWeUwXHjuKdvWXJPygaKERFBqTemcHFSZ/3U6StY+tdMlC0OV9n2oamfcY02eipFHd8QZ/VmiF0EiDM7uq7dkCnFvKS34BiWOE7OT2Jp/Sh2sp8VDKaqQ9ZU8+4s9rShZ6mPYHuRW/7hTgNN+pBMazbMB+59Ep6L9Mbvs8b7lVCTbHMUbmLnX4FACc3mmWdSbMPrhSatJiLhjIoUbq6lYq5rFRpfkIpcdu2zBKmwHGgH/IaKH7bX0d7Lmwrp3RPMP6ZNReW9xj3IFvNcpM+Qv3xPqk2s1GDtfVoZ38eqJsqYJj2Wsgsw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=waCzLYymp369lq2JaGe2UTMDulnmUfPcw7tlc4zpad4=;
- b=XLipNquWJ9tXKRyq2se5B8QX1ZeEkD9h7NFmFqc8l2eMg8pV6fCNM+n3Q2fo1GMvdCO42BjbQzEwUAu1NSnbE1srFQID+EP/QauNy3VVzXqoc+ONvI0beiYhvK4pkpmByCrkBVOjiTYojuSP3IhyqHJ0FnWSUQa4blO/8ecce7Jfk9ObP8YhGp0nJkZkPdpq/ZY/Rp0jsGV2E+EY9wPK3nKdNNZezhyIJrUPOg2rsV4Og+PpiVkO3ohvcQhYK4cUaI5w0v3BNSAvd4ffa199D+4bmYuDz4HYM1BfugRYFWjjcyEtjeXkiS8LuIWB04HWa6GNoBe+ftYuKmx6DP4LoA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by VI0PR04MB10999.eurprd04.prod.outlook.com (2603:10a6:800:266::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.16; Fri, 11 Oct
- 2024 03:16:10 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%7]) with mapi id 15.20.8026.019; Fri, 11 Oct 2024
- 03:16:10 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	christophe.leroy@csgroup.eu
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH net] net: enetc: add missing static descriptor and inline keyword
-Date: Fri, 11 Oct 2024 11:01:03 +0800
-Message-Id: <20241011030103.392362-1-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR02CA0038.apcprd02.prod.outlook.com
- (2603:1096:3:18::26) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="hJyethe3"
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id B3E24891FC;
+	Fri, 11 Oct 2024 05:39:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1728617991;
+	bh=fv/JN3MQljG4mzTl445+5tx3NcTRrnwGCG0aSAOrlwY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hJyethe37grP0kHoQdjb2lmStpeUBI711TbqYzdVkmHuYU9EMvCu2sL64ftqkXLkS
+	 AcmBgDHQTZhDNk0XFu0BnO7/ElJA7yvZGsUP6OIdjkipSZeoY1rkKAwszNr/fDBq0X
+	 SSVB5mxwPjZH54xZ+UGf0SkjmMx7JdmpdbHNBFRA6WgCri/3pXMjmbnSrfZKuxmehL
+	 iFXtDwWVAD8vfnhmcNNM8nvTWGNb690MjVXMF4wVa1MxJHkwp6Zal+T84trlgfZW5e
+	 v0LJJkNMmZRP+V3I3DD8WnnudfMDibLfisiqwNpAMI1aeXgDyXbWb9ODTNMr5g++z5
+	 4mVHMKGb3tNKA==
+Message-ID: <00ffd38c-b01a-40cd-9130-19c35a387ca0@denx.de>
+Date: Fri, 11 Oct 2024 03:55:00 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|VI0PR04MB10999:EE_
-X-MS-Office365-Filtering-Correlation-Id: 079c5914-dc3b-4ec2-c65e-08dce9a30dd2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|366016|376014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?8f7SfF29biAnKxsg9nEpS3YVutP/sZJi0qj+FfaeMXM8fSlcQi/jkDCLWzN3?=
- =?us-ascii?Q?Vn1dJwcLnURo8PtvTLNDqj1TzHz9f8WEClO0VKwkYRKqY/C8sV8EUSWdzMso?=
- =?us-ascii?Q?y0pE8yaU/TOt4EvQ5nHuKCofgmxkCys/Bifz5xhY96dQkVHh6bdbec7QIFHA?=
- =?us-ascii?Q?ALp6phkps2WwYys4ll864VA0vDWH4mfYNJzKZxQe454hgElqF4If74eFtGZj?=
- =?us-ascii?Q?BWubGYbLqQdikKBqtM80WERNd/xVDj3CclPJnMccZgbKKKIWkr/6gyGvGxM0?=
- =?us-ascii?Q?EC5/R4swq/91WvBhIoQa8D79Tb+l19n0hyYuBgDYIMDtgqPlooCO0J3kOVRP?=
- =?us-ascii?Q?/8gpqcbOQ0JWh6LLGSvdwt2TkO9A6ccCAWLR6wwInxp2l6vCl6/TP5o9RCZB?=
- =?us-ascii?Q?EBFeh2Hoi3zv7bKsHpOnN3x2rIsQ6snEayfzibRX6qQKVUl6YxJJ/vtQljM5?=
- =?us-ascii?Q?SrSrvR2fRXIrPfB3cZBAt1s+5K09HeezjEEsPqyqS+l9qE8a5Lsm2631QOZS?=
- =?us-ascii?Q?Q+MAVHLa77Poer0UDpci5LPskADvVMUasRp6NLTkrOVAF+hDIB1zVpLFk0Sh?=
- =?us-ascii?Q?b36eJbySiu5Kj2mswTNRCJfF1bfK+q1KQkiMupWcPdyoTK0Seb8Dg5K9UW9k?=
- =?us-ascii?Q?j6YXpIJPeGQqXnc+HdnjrhKewYfUh8wrOdbO+hDexxoQnXf//iw1hrAnBctN?=
- =?us-ascii?Q?5fAVDp9XXK1UWuX0X7cbDt34p7xQuQLlV9d6V+eDJOalvFm2/TzZ0C985zjX?=
- =?us-ascii?Q?qxKJb4BOYbtjraAJvLXCMBPWLe5BagrjoikLQ/HU78MlXp7RNEG+SwQ+WtIr?=
- =?us-ascii?Q?R7JZdYc4fX1W29QmEI+n1407DTU5Du6bXwamf/v6Ra+Vb/dVje0GEDriNJy0?=
- =?us-ascii?Q?92UXKP3m5w/ZoUn+C0KUZR4D9orgcoOp3MCn5KtmmEEimwNkMuFYzInWUDuO?=
- =?us-ascii?Q?LhCqp2qaENPhTbTm5LjhA4Qwb/KBDrsOVzcb1uIhSet020QtC/ehEo+7aMr8?=
- =?us-ascii?Q?Nn01XLrXUdMxXiWnNcQfVlRzlamrxGGi6dBsTK7OnkANKeUvGXwDjneBjRpT?=
- =?us-ascii?Q?dJWUS808bJjvx8KqnsJoM1QwqDWJD+HTPz/uhXqsn78kmrzFeSmVgjh7dbjv?=
- =?us-ascii?Q?IQsisTPNZl2fDeUHuqXGogY3w9ywtAFAVxQsnV47vXvCKmOW22IZLUycpMy2?=
- =?us-ascii?Q?dHx97LdJw15XUA2ja9vtTmMcP+sCVt5mArziBgwuIyDfb5zSMKCTA2gJZSdK?=
- =?us-ascii?Q?NzOBGqD/8F2cpEG+Lc/SiLquPkqAli96MUn3opyAXVAglsnwZd2x5Is+8OyB?=
- =?us-ascii?Q?L5kdTwB17Y3Bzgf2YaQIYYteEewsXm5vkaTSSKPrJUcptw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?51gg2zTJsInJumtTJ7cJjf5uvy5dRjRpRSRPLM+rkkm8WKS2Y4yPYevHaglQ?=
- =?us-ascii?Q?d1pIIDZgyUHNbeR8U1O5rd+vthW8bQ0Jy7ojbYq3+gMxWDvDllqWz2h9FP1X?=
- =?us-ascii?Q?WZgcTEBILtKyKg8NyBj4UyCa3wOKztLJh/tCDLNOducleGf7NiSDY44oF8Ad?=
- =?us-ascii?Q?f4o3HkT0nhgmh8QYFcmkcwM5hVdLeF4igOt/Twj+YwvCt6KWiDijg+9nTQ3/?=
- =?us-ascii?Q?ElgH+lvxSbxGgYQevVj/8awW5lH6H8LBHSQrO/EqqKaKDbg/nYnOyFlXIvFg?=
- =?us-ascii?Q?0DIs1b/QOKd1zRR1FCBjRb4axIr6PNjz2tOnYaPxGOq4YqrdV50sYyHV7OMj?=
- =?us-ascii?Q?WID1ME350oMb8+gdprvLYpqUBjwsnczWcQ2OVuLAsSsrptP/0qvdQlL4XD0d?=
- =?us-ascii?Q?NdoGg2K1ZVHba2zmukhcXwqU7gCDGH94pIY/GGvSXXS9nrKPrhmtcCfamuo8?=
- =?us-ascii?Q?FkV/Vl4sRzwZecHbRbbJbLf6cxRjUXdHIDL8EXPynZaoxe/CeWUH7hiPVror?=
- =?us-ascii?Q?+VItcieh76sX7J+0CphYNDYzTb3pq8GdJEFMP5c1wpPE1b1BAeMvksmNsDE7?=
- =?us-ascii?Q?aRHxNIbLDuMjabaac5Te51Jhh5oUYTTLIdGFYV0lokUbO7O/KIEfG0d1UxzY?=
- =?us-ascii?Q?3IM1QYSkD3NRV9IzrlCaCa+ejmZcm/AgUcywb2ETm92474Mq0Axxyhe4/Lxn?=
- =?us-ascii?Q?RF5nrscHZgErFVsCM8mIkcTnFe/UppBcJv/l+1iHpG8UODxjoRusA1wUmTd2?=
- =?us-ascii?Q?KtDpsGLb7l7Yted/lY+6u7V7Q3KgofsgOS4N4EN0J1I5JTtQR63dTZHcjnLk?=
- =?us-ascii?Q?+u4giWmj/YEnRodaAzW7M9u0rDqK8W9t2DGhLTcnrCg38dBrEgT0DAB8OvBO?=
- =?us-ascii?Q?q6CbDKCr6095GwhHoJ3xwmgj23zK7KDhYjUL7rgC3MtNvQIwJBAhR2gIaBJz?=
- =?us-ascii?Q?uZLpIru7YWPzg4v/I7Os5VGlExFsk3XwyKZ6uruvQVM+vaPYvt1IM4t41gX3?=
- =?us-ascii?Q?vi8IjjNFAiNKir2wtZ4DBdVB8JJY0RwM2+JvloXZnKGHKT4kTIN2mo6+v0qG?=
- =?us-ascii?Q?gfVe/dj1iBe6uSDjxeMiGTk6G/O+PmpETl0pPQcHMwFKtSivPb+6hLyubynY?=
- =?us-ascii?Q?IK1vD6QUyjqjGupPFjXMToUAy3wIDqnFaYEXVdrT4zdCkoqzBwXJFyq4YmRK?=
- =?us-ascii?Q?O1z3ML+fU63VjviY/4GX5MR6doQPD6sVxBTpAoO3L8ybgcvFZMLE1yNGXwxA?=
- =?us-ascii?Q?6uYz2gedvqxOtXXy9myxQ3I+IKgo5qtJSeo7+mycBtkh+jj6u5MwLqCVGBDk?=
- =?us-ascii?Q?ihBhl0ON8EXuoAhzq0vE4Loj63QN1vA5GSXY6QaEByctR3FyQiIAVw2h+zFG?=
- =?us-ascii?Q?hL4b080oMnv44NrWOHy/+a1AURQrYqr8NUKUKWbl91obvedwsBRJG3T4CKxT?=
- =?us-ascii?Q?KBNiM34bIqSpm7TmrKcF0yQ6mGaIwvjiLRGCue6H2HtMJBkERw9W5MEkdAa+?=
- =?us-ascii?Q?lE9VtbIlQsUaF2EF8iCxVlWqRfPr+dSEtu0JNTuyapMxFfg4gX1y6yKJj2nH?=
- =?us-ascii?Q?VaLAdcfSTDifCmiQZl0D7x5wCdzMU0qVptpT/TJU?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 079c5914-dc3b-4ec2-c65e-08dce9a30dd2
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2024 03:16:10.2485
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /07sUNvPDwU8a/CXIbIhfjVSADllcsSzlWzrRtWeO4AK6lqZMgtjhDlnzbM9KIzTF44eNjz5EVM/hePTyrIC1w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10999
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] clk: imx: clk-imx8mp: Allow LDB serializer clock
+ reconfigure parent rate
+To: Liu Ying <victor.liu@nxp.com>, dri-devel@lists.freedesktop.org
+Cc: Abel Vesa <abelvesa@kernel.org>, Andrzej Hajda <andrzej.hajda@intel.com>,
+ David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ Isaac Scott <isaac.scott@ideasonboard.com>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>, Jonas Karlman <jonas@kwiboo.se>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Peng Fan <peng.fan@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Robert Foss <rfoss@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>,
+ Stephen Boyd <sboyd@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ imx@lists.linux.dev, kernel@dh-electronics.com,
+ linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
+References: <20241008223846.337162-1-marex@denx.de>
+ <dbede671-c97b-4ad7-8a54-f1b381fea082@nxp.com>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <dbede671-c97b-4ad7-8a54-f1b381fea082@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-Fix the build warnings when CONFIG_FSL_ENETC_MDIO is not enabled.
-The detailed warnings are shown as follows.
+On 10/10/24 7:22 AM, Liu Ying wrote:
+> On 10/09/2024, Marek Vasut wrote:
+>> The media_ldb_root_clk supply LDB serializer. These clock are usually
+>> shared with the LCDIFv3 pixel clock and supplied by the Video PLL on
+>> i.MX8MP, but the LDB clock run at either x7 or x14 rate of the LCDIFv3
+>> pixel clock. Allow the LDB to reconfigure Video PLL as needed, as that
+>> results in accurate serializer clock.
+>>
+>> Signed-off-by: Marek Vasut <marex@denx.de>
+>> ---
+>> Cc: Abel Vesa <abelvesa@kernel.org>
+>> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+>> Cc: David Airlie <airlied@gmail.com>
+>> Cc: Fabio Estevam <festevam@gmail.com>
+>> Cc: Isaac Scott <isaac.scott@ideasonboard.com>
+>> Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+>> Cc: Jonas Karlman <jonas@kwiboo.se>
+>> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+>> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+>> Cc: Maxime Ripard <mripard@kernel.org>
+>> Cc: Michael Turquette <mturquette@baylibre.com>
+>> Cc: Neil Armstrong <neil.armstrong@linaro.org>
+>> Cc: Peng Fan <peng.fan@nxp.com>
+>> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+>> Cc: Robert Foss <rfoss@kernel.org>
+>> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+>> Cc: Shawn Guo <shawnguo@kernel.org>
+>> Cc: Simona Vetter <simona@ffwll.ch>
+>> Cc: Stephen Boyd <sboyd@kernel.org>
+>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+>> Cc: dri-devel@lists.freedesktop.org
+>> Cc: imx@lists.linux.dev
+>> Cc: kernel@dh-electronics.com
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Cc: linux-clk@vger.kernel.org
+>> ---
+>>   drivers/clk/imx/clk-imx8mp.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
+>> index 516dbd170c8a3..2e61d340b8ab7 100644
+>> --- a/drivers/clk/imx/clk-imx8mp.c
+>> +++ b/drivers/clk/imx/clk-imx8mp.c
+>> @@ -611,7 +611,7 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
+>>   	hws[IMX8MP_CLK_MEDIA_MIPI_PHY1_REF] = imx8m_clk_hw_composite("media_mipi_phy1_ref", imx8mp_media_mipi_phy1_ref_sels, ccm_base + 0xbd80);
+>>   	hws[IMX8MP_CLK_MEDIA_DISP1_PIX] = imx8m_clk_hw_composite_bus_flags("media_disp1_pix", imx8mp_media_disp_pix_sels, ccm_base + 0xbe00, CLK_SET_RATE_PARENT);
+>>   	hws[IMX8MP_CLK_MEDIA_CAM2_PIX] = imx8m_clk_hw_composite("media_cam2_pix", imx8mp_media_cam2_pix_sels, ccm_base + 0xbe80);
+>> -	hws[IMX8MP_CLK_MEDIA_LDB] = imx8m_clk_hw_composite("media_ldb", imx8mp_media_ldb_sels, ccm_base + 0xbf00);
+>> +	hws[IMX8MP_CLK_MEDIA_LDB] = imx8m_clk_hw_composite_bus_flags("media_ldb", imx8mp_media_ldb_sels, ccm_base + 0xbf00, CLK_SET_RATE_PARENT);
+> 
+> This patch would cause the below in-flight LDB bridge driver
+> patch[1] fail to do display mode validation upon display modes
+> read from LVDS to HDMI converter IT6263's DDC I2C bus.
 
-include/linux/fsl/enetc_mdio.h:62:18: warning: no previous prototype for function 'enetc_hw_alloc' [-Wmissing-prototypes]
-      62 | struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
-         |                  ^
-include/linux/fsl/enetc_mdio.h:62:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-      62 | struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
-         | ^
-         | static
-8 warnings generated.
+Why ?
 
-Fixes: 6517798dd343 ("enetc: Make MDIO accessors more generic and export to include/linux/fsl")
-Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202410102136.jQHZOcS4-lkp@intel.com/
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
- include/linux/fsl/enetc_mdio.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Also, please Cc me on fsl-ldb.c patches.
 
-diff --git a/include/linux/fsl/enetc_mdio.h b/include/linux/fsl/enetc_mdio.h
-index df25fffdc0ae..623ccfcbf39c 100644
---- a/include/linux/fsl/enetc_mdio.h
-+++ b/include/linux/fsl/enetc_mdio.h
-@@ -59,7 +59,8 @@ static inline int enetc_mdio_read_c45(struct mii_bus *bus, int phy_id,
- static inline int enetc_mdio_write_c45(struct mii_bus *bus, int phy_id,
- 				       int devad, int regnum, u16 value)
- { return -EINVAL; }
--struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
-+static inline struct enetc_hw *enetc_hw_alloc(struct device *dev,
-+					      void __iomem *port_regs)
- { return ERR_PTR(-EINVAL); }
- 
- #endif
--- 
-2.34.1
-
+> Unsupported display modes cannot be ruled out.  Note that
+> "media_ldb" is derived from "video_pll1_out" by default as the
+> parent is set in imx8mp.dtsi.  And, the only 4 rates supported
+> by "video_pll1" are listed in imx_pll1443x_tbl[] - 1.0395GHz,
+> 650MHz, 594MHz and 519.75MHz.
+I disagree with this part, since commit b09c68dc57c9 ("clk: imx: 
+pll14xx: Support dynamic rates") the 1443x PLLs can be configured to 
+arbitrary rates which for video PLL is desirable as those should produce 
+accurate clock.
