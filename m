@@ -1,57 +1,57 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA8612C491
-	for <imx@lists.linux.dev>; Fri, 11 Oct 2024 15:05:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2122194A6B
+	for <imx@lists.linux.dev>; Fri, 11 Oct 2024 15:05:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728659152; cv=none; b=dEYaxSKWSog+lh3V2f6buGoMKYPkGQ9MERT4YQbBjVkMkMxv1gSvcIzX3y3ntkunxsrrGEhAPzmmHrgnDuU5DDDAw92x2NREb25sfz3WSrssC71Anih+GNVHeiVsIim88NTUp3/zBObReQtFpDw4deMrPrEHKV2H5dFIzkXu3Sc=
+	t=1728659155; cv=none; b=k8YLLEjVPtGGEfLxdPSxnRUF0TlSd1p44TsPXovgsseZQEQ1Js4bhBGsg0uo71x394klbhcr7iwEFOPwR6I3KjgXNqipicPSHvHKM0ycsKEcvxWeVFKpF4KffnHQiPqVSDATAf9VVwKDWOE8w2klNfFKlmCXSQ7XsCneYYK7cWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728659152; c=relaxed/simple;
-	bh=P+yE5KdCcIMm14HPs4c/lUI3dwW9bilamH4sLkmXczw=;
+	s=arc-20240116; t=1728659155; c=relaxed/simple;
+	bh=LGVhaUUChqajyskYrQm9WHiHcIjADKr0XAo1qvMtYQc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hhJB8qAuhI2ZGC26usDZ2Q/ISINWgRbllPHOaQ66tFw77dqq79FT8hP8FWhczQSNshV3geeH3iYs42V3NY/5/c5biEEreO3VYZw2zVk00WiSfmdsdDwDl8rwy4ZUGbJhAixh/OMy9DK6lsH5kSRbnzVDNRO5ijTl+7jKgJzPOq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I7qsbrPo; arc=none smtp.client-ip=209.85.167.48
+	 MIME-Version; b=SZXP68gVVB9mE7yBHP4GOiWtwKvhqok05yIIax8JChrHxOyUE3Ws2KauK9V/jowShn86MuzP+k3YUWr1EBzYDyP1eyuMc7dcEz00rLazKpScHe+pkV1rbBvvK1BiLgqPHNAD+ArVTSmBb+f5euQ8U87xceMh1mdfTcAoU1fDY8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Apb6keNp; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I7qsbrPo"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5399041167cso3440183e87.0
-        for <imx@lists.linux.dev>; Fri, 11 Oct 2024 08:05:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Apb6keNp"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a993302fa02so334851066b.0
+        for <imx@lists.linux.dev>; Fri, 11 Oct 2024 08:05:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728659149; x=1729263949; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1728659152; x=1729263952; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=M6d2HEGva1FumwMFJbWr9u9NWQ5NOhQR6SBLNsRd724=;
-        b=I7qsbrPoNJAhAOGzU3HZjKl/x1P5/ayj1c5JQLWlGfslIvlZOX648lEyiSII7OMSBo
-         OVzQAbC/0ov2lwgA9CY4ygCDzEA+ygc3iI7LJGccOD3VfKCZ5Uu2mN5FzCsxLDs+nY2e
-         9VTq6BQPWEl3a9+Y3oe+Lj7kcIm+0gE8PSagLTg+1bPVGFevSHYWmxwhBFJQH/ySnni4
-         H9xEJOoONDbMpM+FnIymgziH0PlO+YCKQkrfP3dQJx53n05UTswuaL/oUNKtkpEyJ76J
-         S9H7TZ9Lpjk/nJVz4go3DAJ0g+lmRbRNo7AbxHRfnDA9kJGOIahHbjByU62CKel4yf1w
-         Q09w==
+        bh=R9RR/LNdmVk5RE6b8H3OC/NCxgwdW3Avob2obi0lAvg=;
+        b=Apb6keNp7ph4vGse1HQ/h9s9LlnCcqeI/s7fQmi5NdrfLfmvRfhxkKfshOzhf8rxSN
+         b5LjzBVR1AhEZqWv0eIohRQGPPgQmTIUr+Lg4YVFtm/Ytuvd5msIi8oWo6goff5wcyvQ
+         WgqvB39EPt/+AV8RfKCBs37eHP84/gh+q0B+tlyr9ogcCmAbZ/YvEaHU3irpp4K2FdRx
+         nuvQQYC9j4mV38Zn2Il41xS95bAB+Fs8H1zJM1Q/ONFe4x9j1tpLGnAnO1cT8TDioqOq
+         sjuvSZfryNp/hMTlJjmtvSmvrSD8UvjA/wNtkDSa1j1yV5Kv2DOdmgUgvbht9M5IctUn
+         3jfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728659149; x=1729263949;
+        d=1e100.net; s=20230601; t=1728659152; x=1729263952;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=M6d2HEGva1FumwMFJbWr9u9NWQ5NOhQR6SBLNsRd724=;
-        b=ErvmQRa0Q6m6Ya5Acerx2x5v+1sXsI6klxgxkVoW0jBXeSd98sD5EyAT3KU3zsdFZj
-         MSEEWUIwMO2w9+qGzyGj+KxOdMfRm1z1dV/VhFf8oWe/yQjqLOtBJ+yHrZmsgdeJQfmh
-         5kRCFEk4CMMQE5O3c+3nyDkAmhL8e0/vmvGybGQStDtkk69U5Lzq45H4u8bZyFcswbN5
-         qt9Zn456A9Cmcale6fc2lXUnFS0uekG0CMrCWyHM0B6dtz+UZHE3uqr+dmdGJECgfIYw
-         YYbXccdE7iG0hsr4TiH3HBJe437zvs8zKKtrPjlSg8QE8fJIvQvjm+iVhyzzFC24wDji
-         noiA==
-X-Forwarded-Encrypted: i=1; AJvYcCWGB3BlZNt7qyI67p4BKYHgVlBPDL+YNqxznYUUD7Qc+Z/zZl/yIi9l5C+kH1n4aZafeFg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzCMDczGJ4OAjSQST1GZ/Vvu5bRP+W3F3NYiQhoNKnOBwHUQNBg
-	fzI47u9chpUZRf9OmSzjHdbCbJ/2cue1Hriw1ifrf3iiSv8+J6WT
-X-Google-Smtp-Source: AGHT+IGwGf+d6KP0pDSl5JptpFK3ku9j3zBqS2D7qrlBlzrhKGLUNO+lTF/x4nO5NF3hbj3e4pBmwQ==
-X-Received: by 2002:a05:6512:b17:b0:539:8fbd:5218 with SMTP id 2adb3069b0e04-539da5938a6mr2681944e87.56.1728659148651;
-        Fri, 11 Oct 2024 08:05:48 -0700 (PDT)
+        bh=R9RR/LNdmVk5RE6b8H3OC/NCxgwdW3Avob2obi0lAvg=;
+        b=iqB9D5LMYNGbHh56I0oonBlNu52qKIstCCKbcVMmFlEqlzGSbO+4m6GxIOg+4my8hV
+         E0tOpZV9jTEoqJtewjR59yc3wOCt8kd1bddwmDSFRH9ZwUE3E/eGCSafDsTkzSWKjZiU
+         DrokFNoWUphNhLOh2MW/7Y1BusejXovFtH3SzK3Errz/G8Ap4gKJC1rMrTwXt1CdCtB7
+         +m4ZgamwddQdz36mvejdnQdeYO7kFbKuA8+14nuksJq/lZWiOAeZ4roSop/HVMO0AQjy
+         zMM5o8RUoPzKRBoCoQ1dCpA7XFimShiiB+UqTgSxBmm6SHXneEbtjp074CeN6ICSfpb8
+         rm5g==
+X-Forwarded-Encrypted: i=1; AJvYcCVwgRB5qw3SRoVQZtEZto3tTwz2T9EsHeW6c1XZ2HDtRV8nTAxf0OaIG6jw60SXe8BgvmI=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy9BCSvk9K0Zke/cmfMNoqUec8tNFXaUm1JixGjPteo4Ao4/vLS
+	ZaSmo74MHjMY9m/IYb5wuQU00R6MG4dygBe8hzaQTtyXhAcntRO+
+X-Google-Smtp-Source: AGHT+IHTn+VL0X7tyXuVlxpt/mf2ksJlWhyQf3mF1ncv60BdLFcR+sjHrNcdVKotSY87pp+ieGaa1A==
+X-Received: by 2002:a17:906:4788:b0:a99:44ef:5e6c with SMTP id a640c23a62f3a-a99b9585dbemr205597066b.48.1728659151953;
+        Fri, 11 Oct 2024 08:05:51 -0700 (PDT)
 Received: from playground.localdomain ([86.127.146.72])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99a7f5b0b5sm220879366b.94.2024.10.11.08.05.46
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99a7f5b0b5sm220879366b.94.2024.10.11.08.05.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Oct 2024 08:05:47 -0700 (PDT)
+        Fri, 11 Oct 2024 08:05:51 -0700 (PDT)
 From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -68,9 +68,9 @@ Cc: devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v3 1/6] dt-bindings: dsp: fsl,dsp: fix power domain count
-Date: Fri, 11 Oct 2024 11:04:34 -0400
-Message-Id: <20241011150439.4027-2-laurentiumihalcea111@gmail.com>
+Subject: [PATCH v3 2/6] arm64: dts: imx8-ss-audio: configure dsp node for rproc usage
+Date: Fri, 11 Oct 2024 11:04:35 -0400
+Message-Id: <20241011150439.4027-3-laurentiumihalcea111@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241011150439.4027-1-laurentiumihalcea111@gmail.com>
 References: <20241011150439.4027-1-laurentiumihalcea111@gmail.com>
@@ -84,100 +84,58 @@ Content-Transfer-Encoding: 8bit
 
 From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-Per the current binding, QM/QXP DSPs are supposed to have 4
-power domains, while the rest just 1. For QM/QXP, the 4 power
-domains are: DSP, DSP_RAM, MU13A, MU13B.
+The 'dsp' node is currently configured for running an
+audio firmware. Since the firmware requires that some
+audio-related IPs be disabled in Linux, this will clash
+with the configurations from the imx8 board DTs
+(i.e: imx8qm-mek, imx8qxp-mek, etc...), thus making the
+dsp unusable (since the firmware won't function properly).
 
-First off, drop MU13A from the count as its already attached
-to lsio_mu13. This decreases the count to 3.
-
-Secondly, drop DSP and DSP_RAM from the count for QXP. These
-are already attached to the DSP's LPCGs.
-
-Thirdly, a new power domain is required for DSP-SCU communication
-(MU2A). With this in mind, the number of required power domains
-for QXP is 2 (MU2A, MU13B), while for QM it's 4 (MU13B, DSP,
-DSP_RAM, MU2A).
-
-Update the fsl,dsp binding to reflect all of this information.
-Since the arm,mhuv2 binding has an example node using the
-fsl,imx8qxp-dsp compatible, remove two of the extra PDs to
-align with the required power domain count.
+To avoid this issue, configure the 'dsp' node for rproc.
+This way, users will be able to use the dsp alongside the
+board-level audio configuration as long as the firmware
+doesn't need the audio IPs.
 
 Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 ---
- .../devicetree/bindings/dsp/fsl,dsp.yaml      | 31 +++++++++++++++----
- .../bindings/mailbox/arm,mhuv2.yaml           |  2 +-
- 2 files changed, 26 insertions(+), 7 deletions(-)
+ .../boot/dts/freescale/imx8-ss-audio.dtsi     | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml b/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
-index 9af40da5688e..ab93ffd3d2e5 100644
---- a/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
-+++ b/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
-@@ -99,14 +99,35 @@ allOf:
-           contains:
-             enum:
-               - fsl,imx8qxp-dsp
--              - fsl,imx8qm-dsp
-               - fsl,imx8qxp-hifi4
-+    then:
-+      properties:
-+        power-domains:
-+          minItems: 2
-+          maxItems: 2
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - fsl,imx8qm-dsp
-               - fsl,imx8qm-hifi4
-     then:
-       properties:
-         power-domains:
-           minItems: 4
--    else:
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - fsl,imx8mp-dsp
-+              - fsl,imx8mp-hifi4
-+              - fsl,imx8ulp-dsp
-+              - fsl,imx8ulp-hifi4
-+    then:
-       properties:
-         power-domains:
-           maxItems: 1
-@@ -157,10 +178,8 @@ examples:
-                  <&adma_lpcg IMX_ADMA_LPCG_OCRAM_IPG_CLK>,
-                  <&adma_lpcg IMX_ADMA_LPCG_DSP_CORE_CLK>;
-         clock-names = "ipg", "ocram", "core";
--        power-domains = <&pd IMX_SC_R_MU_13A>,
--                        <&pd IMX_SC_R_MU_13B>,
--                        <&pd IMX_SC_R_DSP>,
--                        <&pd IMX_SC_R_DSP_RAM>;
-+        power-domains = <&pd IMX_SC_R_MU_13B>,
-+                        <&pd IMX_SC_R_MU_2A>;
-         mbox-names = "txdb0", "txdb1", "rxdb0", "rxdb1";
-         mboxes = <&lsio_mu13 2 0>, <&lsio_mu13 2 1>, <&lsio_mu13 3 0>, <&lsio_mu13 3 1>;
-         memory-region = <&dsp_reserved>;
-diff --git a/Documentation/devicetree/bindings/mailbox/arm,mhuv2.yaml b/Documentation/devicetree/bindings/mailbox/arm,mhuv2.yaml
-index a4f1fe63659a..02f06314d85f 100644
---- a/Documentation/devicetree/bindings/mailbox/arm,mhuv2.yaml
-+++ b/Documentation/devicetree/bindings/mailbox/arm,mhuv2.yaml
-@@ -197,7 +197,7 @@ examples:
-             reg = <0 0x596e8000 0 0x88000>;
-             clocks = <&adma_lpcg 0>, <&adma_lpcg 1>, <&adma_lpcg 2>;
-             clock-names = "ipg", "ocram", "core";
--            power-domains = <&pd 0>, <&pd 1>, <&pd 2>, <&pd 3>;
-+            power-domains = <&pd 0>, <&pd 1>;
-             mbox-names = "txdb0", "txdb1", "rxdb0", "rxdb1";
-             mboxes = <&mhu_tx 2 0>, //data-transfer protocol with 5 windows, mhu-tx
-                      <&mhu_tx 3 0>, //data-transfer protocol with 7 windows, mhu-tx
+diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
+index ff5df0fed9e9..a60ebb718789 100644
+--- a/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
+@@ -431,22 +431,19 @@ dsp_ram_lpcg: clock-controller@59590000 {
+ 	};
+ 
+ 	dsp: dsp@596e8000 {
+-		compatible = "fsl,imx8qxp-dsp";
++		compatible = "fsl,imx8qxp-hifi4";
+ 		reg = <0x596e8000 0x88000>;
+ 		clocks = <&dsp_lpcg IMX_LPCG_CLK_5>,
+ 			 <&dsp_ram_lpcg IMX_LPCG_CLK_4>,
+ 			 <&dsp_lpcg IMX_LPCG_CLK_7>;
+ 		clock-names = "ipg", "ocram", "core";
+-		power-domains = <&pd IMX_SC_R_MU_13A>,
+-			<&pd IMX_SC_R_MU_13B>,
+-			<&pd IMX_SC_R_DSP>,
+-			<&pd IMX_SC_R_DSP_RAM>;
+-		mbox-names = "txdb0", "txdb1",
+-			"rxdb0", "rxdb1";
+-		mboxes = <&lsio_mu13 2 0>,
+-			<&lsio_mu13 2 1>,
+-			<&lsio_mu13 3 0>,
+-			<&lsio_mu13 3 1>;
++		power-domains = <&pd IMX_SC_R_MU_13B>,
++				<&pd IMX_SC_R_MU_2A>;
++		mbox-names = "tx", "rx", "rxdb";
++		mboxes = <&lsio_mu13 0 0>,
++			 <&lsio_mu13 1 0>,
++			 <&lsio_mu13 3 0>;
++		firmware-name = "imx/dsp/hifi4.bin";
+ 		status = "disabled";
+ 	};
+ 
 -- 
 2.34.1
 
