@@ -1,285 +1,272 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2087.outbound.protection.outlook.com [40.107.22.87])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD11415CD52
-	for <imx@lists.linux.dev>; Sat, 12 Oct 2024 11:11:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.87
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728731463; cv=fail; b=DiA5fx8pFhXVxig+jl9eCQT5hcjmORlSIDomlYGn9OSX+imsCOwOcInuVwdpZun034lrUiouSemptJlK06eHcsq1qtwoa4FKl/qrqTOAQ0oobBLl/GXtWIc9Ru5+3VT6ZYQAV++Y/HRe/ZtcxNAPnnI7h/YRcsOr16u5whrOVXQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728731463; c=relaxed/simple;
-	bh=adiFVz1pnYNTnHF0eEEBEKw1U7qW2yntRsUDjiTWQZ8=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=L/m/wBjj6pGm8W/eQXPgIsBE3sN5RojJ+OtMkIfFEXcePbwZ/xynvA7ngoo69tU3xL0b1J0ZzX1DXCvekZbfwaAX8cS1KegrMgIjXbE7kIYjwFHV7OZPQ+SJT5hRZSSo5XnzJH5ThwhHkBGEDQES7R0v3NtH9KlXF8bf8wy1Wyw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=RSSS7t6o; arc=fail smtp.client-ip=40.107.22.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F0F15C13F
+	for <imx@lists.linux.dev>; Sat, 12 Oct 2024 15:02:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728745379; cv=none; b=X429wm+VGCV71oC1ChTo54dqhSh/HUUwQnoDNSQ/7zHcPsByqfl0fLe8BCXTfifZBrMCZqtvPdESxv0olFddS/Zp9XL5ysqhfKmi3UnhbzrH8f+xcIzGlSF32uNmHTh8vXPLZ4bRaasLmo/QBesDL9v3m70oVnZv1CLW4y48N00=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728745379; c=relaxed/simple;
+	bh=7/wKzul0scp9pQ5g512GmaXU8tMjoZV1C9VucuWy3qk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=XHNnkqEFeb8glEQw3A2rtB0opNrBox6399mszsOPg3uQxrnzKdwMfddD+iTOzFBDQgZuqOmQdGZJmbqsOf6BfJlzqrUGwMPc4qXOwG21V3W6CwZI1Dd2LmC1QJ2Z4cYoUbGPuQ9ZwJ6OPds4riudLGbC9yBsVe2MJ/KmV7hYPyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=b6jjCSXn; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="RSSS7t6o"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YGpqRyKW/yOlZUmxFi+/ZAV1iB3qI0AS3ueGU4rR2Ro1iPKR0AZ/GtYP2q+Sk9chvMc9rNYObKVmBqwWR+jDL37SIlbaBJh0BXKWtwWqv3Z+BheAZc+ZzISGYSx5LGsHeVsM+g8lS0gkvAW+ezEtmwG+IqIvCMLb9cZTxGdmWjSYzMaA8WS4UeUNNMbU66O3KMIDmGRU3WATyuhv5zwvUYvxdD5RFc0C6xY0vDy21E7rtz5CroQFJOLowRvYpgDEg1NSbpPsgN7ssy1gW8LtxLL/9NzYY+LOXvSj4eIzcd7eeR2RgbGrmjxw4+mqCe93662kolF3kkZjyqs2CMfd2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iGOdf8unAq3AOxut7wf/53KD0eDvI/A7/VjhpPxRdoY=;
- b=o+9dgzNe1OvAxEdqnR06zYsYVUgj4YPv8lsXZmv4PjewfQTHau5GOVwGphTjjw7qvVVEPLda+BboF7wVxh/KYHeFXdQzVSGFCHVfzN+s9QxV0zfgE62I/ZhKGoukD+Zld/S3ufVqHv4aKUmAxzqSr4QiLuWbOEPyypCo7fbguItwYdEt47JmtLv3bbjfyDlwPnUkwuVisHL0WhYYIsi4Itt2jsdEuq5fKm/e5e1wXZNBXng3amhb4jjzJklmsQXt8vn+kX1bPwjsEZPiutZ37AnS/fQ/UQ34QM1LXzaeG8STLNLwmm2MjV1DrhStsDRMAg3F1D0yXqvgriv6NnBWpQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iGOdf8unAq3AOxut7wf/53KD0eDvI/A7/VjhpPxRdoY=;
- b=RSSS7t6oTbANqBsvQ/8e7b60wmcVbs1IhADsA5TXU4Xd9T8y9KuQx+AitL8gS2p8JLonmfkQ9vs0w/iz+UHvs7RMMScRCvZZGoj4JwlYVUljvtkkzkKNOUZrifYNrJuUTDX18b9UQtbnZEjk0zDbOp8VK4jEirB5mHPRAlgpBpxm2p1TpLmKheiFBOSwnGXJWKtrWS1P7cfV1cVOEdRDcCk6GFJKoNc8Gv7/WRtL3X8s/M9jfGH5fABknnTzyeEDBdMAuhoX1p0XdFyq3t3wb9DBF41RHvyp/NOshthKqgYWkCZtK3hzGA7VR1Ef7ULlANe59LaHtADJ81k7gppz9g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by AM0PR04MB6771.eurprd04.prod.outlook.com (2603:10a6:208:18d::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.16; Sat, 12 Oct
- 2024 11:10:58 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%5]) with mapi id 15.20.8048.020; Sat, 12 Oct 2024
- 11:10:58 +0000
-From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Date: Sat, 12 Oct 2024 19:19:14 +0800
-Subject: [PATCH v3 7/7] arm64: dts: imx95-19x19-evk: add lpi2c[5,6] and
- sub-nodes
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241012-imx95-dts-new-v3-7-edfab0054c71@nxp.com>
-References: <20241012-imx95-dts-new-v3-0-edfab0054c71@nxp.com>
-In-Reply-To: <20241012-imx95-dts-new-v3-0-edfab0054c71@nxp.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Peng Fan <peng.fan@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1728731962; l=2799;
- i=peng.fan@nxp.com; s=20230812; h=from:subject:message-id;
- bh=yAG3mCRVs4xnMV0dnxeY7gpeK6jc/MWYjYb3za+wqB8=;
- b=9ruvEqBfr6qynL25X23mVN8ZObEhaQG5N4S+Y/wbzaPq/bmMv3UiOERaxCkLBYia3Ly6wCDo8
- 5oCrWTbeLy/DMHaLe4TGaaDKZwxWY9ALZrWCWQBzgnajU2igcrNJ8bZ
-X-Developer-Key: i=peng.fan@nxp.com; a=ed25519;
- pk=I4sJg7atIT1g63H7bb5lDRGR2gJW14RKDD0wFL8TT1g=
-X-ClientProxiedBy: SG3P274CA0020.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::32)
- To PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="b6jjCSXn"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a93c1cc74fdso460700066b.3
+        for <imx@lists.linux.dev>; Sat, 12 Oct 2024 08:02:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1728745374; x=1729350174; darn=lists.linux.dev;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/n15P79kGSTnE8MuMR1LpYchP7c+rsbkgGOXacYIjPE=;
+        b=b6jjCSXnNxZunQfrKpjiENF6vFf/ClBLrG5xd2khholSbKtQHAh90QYdskqQxvRr7a
+         09ABZJHCXC5HFKzUosDLPJoEUk+nxzUiGgs+jWEPI4Rl2FE2XR3QHjFslhWTh12tPqUv
+         DmoRKAFLl/p1UKsKuNRyZe/I+3IfwTRcYM5ihipWaFDCzM32JAWocTLMjAIuTplqmHYm
+         UpiKcmOAuirVImetP/4NjEypNW7Eoh46Df5hLFB4w+OafoRLMl/H0DpxlyVlc1gAqUSL
+         8bB659ouQTsTymAXR9n6pSfT9zS85PL5V3Mlt6lO99el+NnLUOexZFGp8fx0YYpR+25X
+         N26Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728745374; x=1729350174;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/n15P79kGSTnE8MuMR1LpYchP7c+rsbkgGOXacYIjPE=;
+        b=bJBbJQIU8nqsKObfYTgoYblGQX1BEVTzKr5zGtCXV2/oJCd3cqbFgyNKTChD6Pszbq
+         0e0aRfXYDH67x+verCysjkAwWBwRusOhLQVIuEOp6ZfK/se+/dyC71LPZZtghWfRefl9
+         k8f2TaQFZxw1w3QngistVu9GqLOmal2oEcUie2Xfw2KPV/t9SZJ9CSuhX7SUx9lHV8Ty
+         Y4Y83lccqSdbXIwUje22N8B5P104YkUzN4Lo4Dflma9b66Zhez8LVbbqmr3Q4pZ8zEER
+         gwgO2VNxMY7F2/meZUJ9yNANSXJ70a+p2iTEbl4YgZ3VTJP3/F76LNEaOGKNyhst99Yv
+         FoOA==
+X-Forwarded-Encrypted: i=1; AJvYcCWs1+rOaYTSAXhjsac1AzUPI9GZEIHHU8bmVI7668Gx2sXFh1lE2iqLTMcvbU6ZEr+1ONI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzhRgjHYaTFOQcp9dRIwiEYBnPQzWYGGzYdDA9Hh4ngFmrdZ/iT
+	u/dOb8hkaGGFmLK7smWWddpFXKuYPaHwWWI5wZjuVR7RfelH8x5qRiV0UGh69LM=
+X-Google-Smtp-Source: AGHT+IHziNZj9PpTrQmX1i7t/EH8XoqG/RaNoa4pDWvdo14/Czfa5WvohIYfJG1PE2K4Y5haJ2eqOA==
+X-Received: by 2002:a17:907:d17:b0:a99:ee42:1f38 with SMTP id a640c23a62f3a-a99ee421fdamr208327366b.31.1728745374508;
+        Sat, 12 Oct 2024 08:02:54 -0700 (PDT)
+Received: from [127.0.0.1] ([176.61.106.227])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99f148b224sm63730166b.50.2024.10.12.08.02.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 12 Oct 2024 08:02:54 -0700 (PDT)
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Date: Sat, 12 Oct 2024 16:02:50 +0100
+Subject: [PATCH 1/2] media: dt-bindings: Remove assigned-clock-* from
+ various schema
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|AM0PR04MB6771:EE_
-X-MS-Office365-Filtering-Correlation-Id: 17129326-7cba-4c76-d48f-08dceaae8cd0
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|52116014|1800799024|376014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?aDAzcnFIVkJ6ZTFPVElsQU1GOC8rUmFaNFY3UVJxL2NRcExIQWtxWG51YUdT?=
- =?utf-8?B?ZEVzQmtzaUREZ0VpUHpKNWxCVnEyVnU0QkcrNlJHS1dyTU9TeGx3OTB0TDhE?=
- =?utf-8?B?a1luaEZXVTduSVRLZzl2TmtKZWlqY2RIS0NSQ2ZFZll6ZXdQazZPVVQ2Z21D?=
- =?utf-8?B?SXZzM1YwYjBpenZQZjBpKzRjcDlLa1Q5L09XemhFVmRvZWZYRy84TkJpVkNE?=
- =?utf-8?B?dHZ6eXZMeVZkaGhTSlN4UmJUK1k1YkhjeHN0THVqbFFnUjFjNDc3SUpJUVVk?=
- =?utf-8?B?T2RRWVFYbUlVTkRYTU5rTWdHWXd2Y245VFpVS3pwb1FMWS84VjVWSDFNMFRm?=
- =?utf-8?B?b1FyaGxtVFJBaitkdUd1N2MzRloyNVdmSVp3ejFyM3haaU1DbGl1WWpVR3d6?=
- =?utf-8?B?allvVGdONEkvWW9SdVNvSnIydmlidEl1L2FzZFVMWEV3azUwMDdzK2lTc3hp?=
- =?utf-8?B?Q3BSdE5UZHc0alJZUC93RjBjdVRBd24vM1NrSTdJR2dubHc2eDVxL1FoVytS?=
- =?utf-8?B?MFAySldnWWppQ0hEUzMwR0h0TWNDc1RHbmZMQlJIdUFaeUVHWCt6RXZ5R3dv?=
- =?utf-8?B?SXpXQ2dYVjhPeU1yZlppQkJHeDJLY0ZaQzZjRjVNeW5BdS9OYWZzc0tMUnl1?=
- =?utf-8?B?S01SWUxUUjdDQWxVSnFCemIwQnFFc2c4cnBJMFlKUGtZYmVVa21kVjI2aTdQ?=
- =?utf-8?B?SXZsNEU4V2xuT0I1cUZsWWdqNHFXbHY5M2xSQlNmSkNodnhNVElpTWtyWTFq?=
- =?utf-8?B?RUFZeWZyWW1aS3ZyMHk4aFdpNFM2TVJrZitUc1FpdmpVSkx1WjgzaHpjd2V5?=
- =?utf-8?B?aHFJRVZwaXZnb0JMOTYzb3p0YnVtTXM2aWRjdXNjOTFHQ3oyMHNZcEphS0Rq?=
- =?utf-8?B?a0tvRkVXbzRUd0dqaFl6NlQ4OUt4QjQ0QWs3YXVGWnBnZlVqd3hlMUtTOHRQ?=
- =?utf-8?B?U2ZpNFJHeVlGd0NTN1cxM1pTeTZBNWtjQkFIVXFKM0pIQjJNVHZ0MzJWVUNK?=
- =?utf-8?B?UVVzUmJvUGp5ZkpteGltTElZZW1TZXlObG9TeU5hRjV1dnR1K1c1eWoyS3A3?=
- =?utf-8?B?SUgrZmxBNzBLekpxaWkyR2RiaVBKbmQrTTAraFNOTndzNTZtMzBPdGtpclRH?=
- =?utf-8?B?dzBRdFovVUt5aENwaGd2Umt0TS9WWjEyZGU5VnR6bUI3VFZobkhIQlRwNDEw?=
- =?utf-8?B?LzJlR0RNdUl2UVQySGdzSXFzQk9PU1puUW5yT2E3OVJwaHVIMHlxbFZ5VlM0?=
- =?utf-8?B?RjJwVHpUSTlPMEVxUzVQZFZQMUc3K1JtbHhSUUxRNEtRMlQ5VWl0OUVDT1BB?=
- =?utf-8?B?cWtnREZjZU9mVzd4bk1mSWxRc0IzQkJpTEdDWk1IM3JtQWxkWi9senNJWk1k?=
- =?utf-8?B?VzFqenhWenpEZEE4ci82M2RiZ2RET2t6eVpXYlVscEQ2K0c1UVRCSkNHOVJu?=
- =?utf-8?B?TEpacCtjU2l2cUJwZ2NwblozVm1OSmRycEc4dUxFR3hiVldVMUMvSDVoc1Vh?=
- =?utf-8?B?Uktxb2psQjlYNDZHMzN6dk93Ky9Ob0FBTHRNVVhJN2NNbkhiczArSVNVbzVi?=
- =?utf-8?B?cnJreVZrMXI1SVVCK2RYblhXSXVaL2VFdVRCV1BBc1hLNE5SRXhRcWI1RjFy?=
- =?utf-8?B?OWdrWDhnd0hCOEVLRFBFY1p2NVRjb1VUMkpzU0ZqallMSjBhWktOcTVjVjJW?=
- =?utf-8?B?VDhVU2N2NWpOS1o5S2dlSHdCeHU3VnIzbHZNZkIzSlVPUWdaWWtmdW8yMFln?=
- =?utf-8?B?bzY2Sk5sdUl0RmlwZlhoTnZMbE96NWVPdTEyTzlwakpBbjlGVDZVV2hJUFdS?=
- =?utf-8?B?a1FwZE5ycGk0OXNjR1FYQT09?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(1800799024)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WDJ2amtYeWVld0M0NktwdzRORmRVWnMveFNlaUVrL0thYTFvWDllcE5hOUlJ?=
- =?utf-8?B?eDkvTERZMXFQUnhPRzg0a0dUWHVtc0dVWWdVYldac1AxMUUzVUlhK2t0Qlpo?=
- =?utf-8?B?NzNhczFpMkVubTVOMHp4K1pYRExnSXlUNWVMaUcxQm12V2xsdjcvb1k4QTlP?=
- =?utf-8?B?NUoyNm42ZDV6cWlCZEd0Y3k1NXhHVXNtZlArRytEaDFxMmJSczJpMFpHRS95?=
- =?utf-8?B?eEdpWVNJZXRoa3ZGaUUzZGNMY1Mvb2dkRExncmJWVVM1VTdQdEd1THNsT0dG?=
- =?utf-8?B?T080c29aOXluREFMM1FzYWc1WStTSExCYXgrdGNoOUxRdU5sWVRIRzQ2Y0F3?=
- =?utf-8?B?N3h1VWNONFcrancxd1dhNSs4NmJ5Wm1mL3FJeFViVmUyc2w5N0VXYU1UTEo4?=
- =?utf-8?B?a21BYk9xWjg4aTBLMHhNQ1pucDB5Q1lycUROSlVWVmRuR3VDbUlKcWhiQUhZ?=
- =?utf-8?B?TldnUG5MTU5ENkVDYTRRYVBoK2J3Uk1hc2xvbmtMR3Z2Ymw4M0xhYjlVYnNh?=
- =?utf-8?B?K3NlVEk1emJlejN5ZTRVTHAyeWRVVXBoaW91TEJEOVhweW1VeWR1VzY2aTd4?=
- =?utf-8?B?SXdpeWcybG04QXpNNlNzT2NsdWN2ZUxLTWpmdFpJdnpPSWpKZnRZUU1Oc1hC?=
- =?utf-8?B?NFNDMnY4MEV2aEVsRytvYmFENjB1RkQxUjdGLzFPbzRKSkZnTFZJcm9aaWxM?=
- =?utf-8?B?U2FiajNmV1Q3d2xGdlpLdDRjdGhYUERNcmdIdmFsdFR3NkFjQnFTZ1ovQVo4?=
- =?utf-8?B?Yno5eE5wQVFhdmc2aFB1aHg3QWtQb2VEd25yT0pJekRVNnNSRk9ZRkFxMTVI?=
- =?utf-8?B?enpBVi8vMFVCYXNSQUY5NVhUZzNaR1lmOFBrbmJwRVl1ODhJbFNFRzFVUVdO?=
- =?utf-8?B?QmxwOU41em9DWWtLQVMrTGpxUHRPdWVHV3BtV3BMSTVOdGNaeit1bUtvUHJP?=
- =?utf-8?B?ZnVNM2tWemwwYUJ3dUJpVDJjZXRyWkFuclJaTGV3REg2QThBMEhKakozQ1kz?=
- =?utf-8?B?NytkQmYxRjdJR0p4SUQ3SGV0OENjM3Y4a2lZYmpRckNEYXdHOG90MDJMT2pR?=
- =?utf-8?B?bXpiMEV4QkNzRmhIbWZ5b3JNNGxLWkV6MFRQOHdPQTh4TFlINi9YT2Z3VU5o?=
- =?utf-8?B?QjNqTjhRWFg1dUFhNUZucFpKSGNOMWpFalU1cHErT2U1dFNpMTFldEduQmZo?=
- =?utf-8?B?ZXYxS1JWZDBmNjlQWTNoQmFsT0JUUytFRkw1NlFQT0xKSHJYWElnRmRzQUJF?=
- =?utf-8?B?SG5IbmZwdVVPMU9kVWNDa0NGQ2xBRnpXZGtGQko5eloxOEROTzkxdkF1a0g3?=
- =?utf-8?B?SlB2WmhXL0thSm1IM28reDNjaWJFekE1MktjUFpFNi9ha2xia2FNT0VCY3Ev?=
- =?utf-8?B?bVVZNTk1cnMxay92VFMvRUdqaWx5NXc1a1U4WSs3RmhYUEFWd01uSHVTQ0JU?=
- =?utf-8?B?djJIQkp4ZXkrSE9XYjcweUtwYVI3Y1hLZW5NN003LzJNMmlzWG9vMmh6ZGNw?=
- =?utf-8?B?ME9wR0JrNjdDSElHeUp2TGp3ZjM4aThibGpXUEtVazZFajhPZTMvWno0TGFR?=
- =?utf-8?B?SHMzK0lEZ2FZVnZYQ3laYUFHTThOcUtrOGpwVTFjOVh3MDB3R1VuS0xTZDNn?=
- =?utf-8?B?OXl4SldkMDVqQ3hnL2lCMzlZREV1UHZVeVArdzFPajkvaXN4VVY2L3I2TFlm?=
- =?utf-8?B?MTFETzFOSmNQOUVQTzFDdCtDWUQ3M3QydUw1UEVaU1hWUXR3aFFPUkwvZWZ1?=
- =?utf-8?B?bGNjMUFSd3VjK2FOUFdIV3FUeUIwZU1WY2tDWEVsYk5PdC9naFhMVnNXOTk0?=
- =?utf-8?B?TnFVM3B1NWJyR2Y5YjU2M240akQ1YU1jL20wS1dhY3ROZDFiN2pjNEsxaGIz?=
- =?utf-8?B?dCtMeHd5N0pIdTMvdGdMMWVyVkxzQmVrY2d5OWJUblFTLzJtbTNhUUVURjlH?=
- =?utf-8?B?Q1hLN2xTVDE2c01QZmdXVkllY0dNZEpFVFFQeFhpMGI1eHFWTUt4Yk5ubzJs?=
- =?utf-8?B?VkI2Z21FcnVBVXNSZytnOFVvQ2NjN05lZy9wRUUrRnA1Ry9tQURTWW9kbzFD?=
- =?utf-8?B?ZFFVdmpoZ2tmYS9ndFhsNnkzYk42NndIbWU3UkszbWd2R2ZVaWZtYW11UGxQ?=
- =?utf-8?Q?WJZCbhKyt5Sd7n0+gtPwvu+t/?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 17129326-7cba-4c76-d48f-08dceaae8cd0
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2024 11:10:58.8517
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZwmLu8W2WtKssP9XlIpQ3qitEQ7wHeBWVmcp4CkHqk1bd4sVueca4GBQZq4HoIWRCa6wVqF8SI00kNi0PLcS8A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6771
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-1-a2bb12a1796d@linaro.org>
+References: <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-0-a2bb12a1796d@linaro.org>
+In-Reply-To: <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-0-a2bb12a1796d@linaro.org>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Martin Kepplinger <martink@posteo.de>, 
+ Paul Kocialkowski <paul.kocialkowski@bootlin.com>, 
+ "Paul J. Murphy" <paul.j.murphy@intel.com>, 
+ Daniele Alessandrelli <daniele.alessandrelli@intel.com>, 
+ Tommaso Merciai <tomm.merciai@gmail.com>, 
+ Martin Hecht <martin.hecht@avnet.eu>, Zhi Mao <zhi.mao@mediatek.com>, 
+ Alain Volmat <alain.volmat@foss.st.com>, 
+ Mikhail Rudenko <mike.rudenko@gmail.com>, 
+ Ricardo Ribalda <ribalda@kernel.org>, 
+ Kieran Bingham <kieran.bingham@ideasonboard.com>, 
+ Umang Jain <umang.jain@ideasonboard.com>, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
+ Dongchun Zhu <dongchun.zhu@mediatek.com>, 
+ Quentin Schulz <quentin.schulz@theobroma-systems.com>, 
+ Todor Tomov <todor.too@gmail.com>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, linux-media@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+X-Mailer: b4 0.15-dev-dedf8
 
-From: Peng Fan <peng.fan@nxp.com>
+Remove extraneous assigned-clock* from media/i2c/* schemas, retain in the
+relevant examples.
 
-Add LPI2C[5,6] and the gpio expander subnodes.
-Since we are at here, also add the alias for all lpi2c and gpio nodes.
-
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/linux-media/j7kgz2lyxnler5qwd7yiazdq6fmsv77kyozdrxf33h54ydakjz@uqjhwhoyv6re
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 ---
- arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts | 69 +++++++++++++++++++++++
- 1 file changed, 69 insertions(+)
+ Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml | 8 --------
+ Documentation/devicetree/bindings/media/i2c/ovti,ov5648.yaml | 8 --------
+ Documentation/devicetree/bindings/media/i2c/ovti,ov8865.yaml | 8 --------
+ Documentation/devicetree/bindings/media/i2c/ovti,ov9282.yaml | 4 ----
+ Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml | 4 ----
+ Documentation/devicetree/bindings/media/i2c/sony,imx334.yaml | 4 ----
+ Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml | 4 ----
+ Documentation/devicetree/bindings/media/i2c/sony,imx412.yaml | 4 ----
+ 8 files changed, 44 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-index 5101cd171e095fb5209464055a52ebdfa7dc5a61..6086cb7fa5a0e14882be3a8c609725e15c179392 100644
---- a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-@@ -22,6 +22,19 @@ / {
- 	compatible = "fsl,imx95-19x19-evk", "fsl,imx95";
+diff --git a/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+index 60f19e1152b33128cf3baa15b8c70a874ca6d52e..d18ead8f7fc43bfacc291aed85b5ca9166c46edb 100644
+--- a/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
++++ b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+@@ -28,12 +28,6 @@ properties:
+     items:
+       - description: Reference to the mclk clock.
  
- 	aliases {
-+		gpio0 = &gpio1;
-+		gpio1 = &gpio2;
-+		gpio2 = &gpio3;
-+		gpio3 = &gpio4;
-+		gpio4 = &gpio5;
-+		i2c0 = &lpi2c1;
-+		i2c1 = &lpi2c2;
-+		i2c2 = &lpi2c3;
-+		i2c3 = &lpi2c4;
-+		i2c4 = &lpi2c5;
-+		i2c5 = &lpi2c6;
-+		i2c6 = &lpi2c7;
-+		i2c7 = &lpi2c8;
- 		mmc0 = &usdhc1;
- 		mmc1 = &usdhc2;
- 		serial0 = &lpuart1;
-@@ -241,6 +254,42 @@ i2c4_gpio_expander_21: gpio@21 {
- 	};
- };
+-  assigned-clocks:
+-    maxItems: 1
+-
+-  assigned-clock-rates:
+-    maxItems: 1
+-
+   reset-gpios:
+     description: Reference to the GPIO connected to the RESETB pin. Active low.
+     maxItems: 1
+@@ -82,8 +76,6 @@ required:
+   - compatible
+   - reg
+   - clocks
+-  - assigned-clocks
+-  - assigned-clock-rates
+   - vddio-supply
+   - vdda-supply
+   - vddd-supply
+diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov5648.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov5648.yaml
+index 1f497679168c8395a94b3867beb49b251ef621fc..622243cae03caa5d14aa312df40ef5907e190d2c 100644
+--- a/Documentation/devicetree/bindings/media/i2c/ovti,ov5648.yaml
++++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov5648.yaml
+@@ -20,12 +20,6 @@ properties:
+     items:
+       - description: XVCLK Clock
  
-+&lpi2c5 {
-+	clock-frequency = <100000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_lpi2c5>;
-+	status = "okay";
-+
-+	i2c5_pcal6408: gpio@21 {
-+		compatible = "nxp,pcal6408";
-+		reg = <0x21>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+		vcc-supply = <&reg_3p3v>;
-+	};
-+};
-+
-+&lpi2c6 {
-+	clock-frequency = <100000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_lpi2c6>;
-+	status = "okay";
-+
-+	i2c6_pcal6416: gpio@21 {
-+		compatible = "nxp,pcal6416";
-+		reg = <0x21>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+		interrupt-controller;
-+		#interrupt-cells = <2>;
-+		interrupt-parent = <&gpio4>;
-+		interrupts = <28 IRQ_TYPE_LEVEL_LOW>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_pcal6416>;
-+		vcc-supply = <&reg_3p3v>;
-+	};
-+};
-+
- &lpi2c7 {
- 	clock-frequency = <1000000>;
- 	pinctrl-names = "default";
-@@ -427,6 +476,20 @@ IMX95_PAD_GPIO_IO31__LPI2C4_SCL			0x40000b9e
- 		>;
- 	};
+-  assigned-clocks:
+-    maxItems: 1
+-
+-  assigned-clock-rates:
+-    maxItems: 1
+-
+   dvdd-supply:
+     description: Digital Domain Power Supply
  
-+	pinctrl_lpi2c5: lpi2c5grp {
-+		fsl,pins = <
-+			IMX95_PAD_GPIO_IO22__LPI2C5_SDA			0x40000b9e
-+			IMX95_PAD_GPIO_IO23__LPI2C5_SCL			0x40000b9e
-+		>;
-+	};
-+
-+	pinctrl_lpi2c6: lpi2c6grp {
-+		fsl,pins = <
-+			IMX95_PAD_GPIO_IO02__LPI2C6_SDA			0x40000b9e
-+			IMX95_PAD_GPIO_IO03__LPI2C6_SCL			0x40000b9e
-+		>;
-+	};
-+
- 	pinctrl_lpi2c7: lpi2c7grp {
- 		fsl,pins = <
- 			IMX95_PAD_GPIO_IO08__LPI2C7_SDA			0x40000b9e
-@@ -446,6 +509,12 @@ IMX95_PAD_GPIO_IO35__HSIOMIX_TOP_PCIE2_CLKREQ_B		0x4000031e
- 		>;
- 	};
+@@ -68,8 +62,6 @@ required:
+   - compatible
+   - reg
+   - clocks
+-  - assigned-clocks
+-  - assigned-clock-rates
+   - dvdd-supply
+   - dovdd-supply
+   - port
+diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov8865.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov8865.yaml
+index 8a70e23ba6abed67d8b61c33bd7a261089bddda2..382d7de7a89bcea11be384a2a3800512994f9346 100644
+--- a/Documentation/devicetree/bindings/media/i2c/ovti,ov8865.yaml
++++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov8865.yaml
+@@ -20,12 +20,6 @@ properties:
+     items:
+       - description: EXTCLK Clock
  
-+	pinctrl_pcal6416: pcal6416grp {
-+		fsl,pins = <
-+			IMX95_PAD_CCM_CLKO3__GPIO4_IO_BIT28			0x31e
-+		>;
-+	};
-+
- 	pinctrl_pdm: pdmgrp {
- 		fsl,pins = <
- 			IMX95_PAD_PDM_CLK__AONMIX_TOP_PDM_CLK				0x31e
+-  assigned-clocks:
+-    maxItems: 1
+-
+-  assigned-clock-rates:
+-    maxItems: 1
+-
+   dvdd-supply:
+     description: Digital Domain Power Supply
+ 
+@@ -68,8 +62,6 @@ required:
+   - compatible
+   - reg
+   - clocks
+-  - assigned-clocks
+-  - assigned-clock-rates
+   - dvdd-supply
+   - avdd-supply
+   - dovdd-supply
+diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov9282.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov9282.yaml
+index 79a7658f6d0547e4d6fb2267e5757eedf49fd416..38325cf318f7bd2cd60a4c7bbb6a65b54b855e26 100644
+--- a/Documentation/devicetree/bindings/media/i2c/ovti,ov9282.yaml
++++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov9282.yaml
+@@ -27,10 +27,6 @@ properties:
+     description: I2C address
+     maxItems: 1
+ 
+-  assigned-clocks: true
+-  assigned-clock-parents: true
+-  assigned-clock-rates: true
+-
+   clocks:
+     description: Clock frequency from 6 to 27MHz
+     maxItems: 1
+diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+index c978abc0cdb35cfe2b85069946cf1be435a58cb8..f0f9726a2add89492b8c56e17ed607841baa3a0d 100644
+--- a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
++++ b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+@@ -24,10 +24,6 @@ properties:
+       - sony,imx258
+       - sony,imx258-pdaf
+ 
+-  assigned-clocks: true
+-  assigned-clock-parents: true
+-  assigned-clock-rates: true
+-
+   clocks:
+     description:
+       Clock frequency from 6 to 27 MHz.
+diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx334.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx334.yaml
+index bce57b22f7b63bd73f08d8831d9bb04858ef03e0..872b8288948b2bba743f2365a55165181df156ae 100644
+--- a/Documentation/devicetree/bindings/media/i2c/sony,imx334.yaml
++++ b/Documentation/devicetree/bindings/media/i2c/sony,imx334.yaml
+@@ -24,10 +24,6 @@ properties:
+     description: I2C address
+     maxItems: 1
+ 
+-  assigned-clocks: true
+-  assigned-clock-parents: true
+-  assigned-clock-rates: true
+-
+   clocks:
+     description: Clock frequency from 6 to 27 MHz, 37.125MHz, 74.25MHz
+     maxItems: 1
+diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml
+index 77bf3a4ee89db3b5d16149470c0380ef8f1aeac1..38bd1c7304a59bb5fea90954c1e4e626a7c86f2f 100644
+--- a/Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml
++++ b/Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml
+@@ -24,10 +24,6 @@ properties:
+     description: I2C address
+     maxItems: 1
+ 
+-  assigned-clocks: true
+-  assigned-clock-parents: true
+-  assigned-clock-rates: true
+-
+   clocks:
+     description: Clock frequency from 6 to 27 MHz, 37.125MHz, 74.25MHz
+     maxItems: 1
+diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx412.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx412.yaml
+index d9b7815650fdb890418fc96c828acc9147dfb6e8..ece1e17fe34553671e61c965eb1833c5eb08131b 100644
+--- a/Documentation/devicetree/bindings/media/i2c/sony,imx412.yaml
++++ b/Documentation/devicetree/bindings/media/i2c/sony,imx412.yaml
+@@ -26,10 +26,6 @@ properties:
+     description: I2C address
+     maxItems: 1
+ 
+-  assigned-clocks: true
+-  assigned-clock-parents: true
+-  assigned-clock-rates: true
+-
+   clocks:
+     description: Clock frequency 6MHz, 12MHz, 18MHz, 24MHz or 27MHz
+     maxItems: 1
 
 -- 
-2.37.1
+2.46.2
 
