@@ -1,204 +1,334 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2076.outbound.protection.outlook.com [40.107.22.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFC185283
-	for <imx@lists.linux.dev>; Sat, 12 Oct 2024 06:03:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728713023; cv=none; b=q93eizmdNFLjRCODOBQksQ++8gLUO6tai2W8/KfgXaNzNv05JF0d9Tz3NEMxa/gRbYrub2xJEfIlYmmMPSGatLSpnCY+94mu99lRNOSNzkFQ/04GrHE6S5tgnfP+u+lEorjrV3N7xOiXLJhD1//YyY1nmXsruVzWVLPPWC05PRQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728713023; c=relaxed/simple;
-	bh=J2TustJFmQhWXjGx6NOiuh9awKxLdvCa94b52DO9Lqw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ouH1d+WYAkiaaEPLjqd8xwrl/K8JU80tfaDxGnXqevio3bP8qoDziT4omuY9pWs0YYAjZLCMvgQSFsdHU5KUceZhV76dRDPeJLq1m0pcW18/gy6r3f8pTrn3fYtKPoIzKsd4fAzRxcjns0/te1eW6CoDQvpDM5TGgLIHMQ32idw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ifmyGRz5; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD0912D760
+	for <imx@lists.linux.dev>; Sat, 12 Oct 2024 06:17:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728713878; cv=fail; b=LmcfdN3CrhG7uC4orcazg/ALZA3ldwrkuaQhEw770/mh/b7unGawdS/nvEllNeEG0FOfywe3YflAHlmuI0DaYrdsxGMJa0s0rzI9XkftLoO59Zhk1MZk8JEDh4gyQNM4FLoBki81HHzPl1dKHPQ4dbd93Zx/e1VvRar6u5o4304=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728713878; c=relaxed/simple;
+	bh=qDsDUNvEa31h0maj18aRnGxUyPIJxXnepxcchuQvqJw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Htugub37tVbBZXPNCFexDmVid/nKkaHWVa3J3zrnX+9pFRjqZ8UieQfpiGjCG5jh7y4txDZlFiaJQqmBitbVjuC6Q9HNreMWryHMq0TX6reDQtYGSCN4jHScWKSGo3wsmk3ImMu7u4WriWhxmyITLECisPLD3TaESZXydM6dddQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=lmtHawoq; arc=fail smtp.client-ip=40.107.22.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ifmyGRz5"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2e2cc469c62so1882464a91.2
-        for <imx@lists.linux.dev>; Fri, 11 Oct 2024 23:03:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728713020; x=1729317820; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=B7i1vG7nS3MEbwW7yINVeMEOCisWKNqd/JkjCeZOvZc=;
-        b=ifmyGRz5WSoKIKju1nrkx3dpoROjbw88q1McpdZ+RjzM6bh0KuTa8xr1VMkwWnQAcO
-         0yMeSr7NLkSFJnvEf6m1NoSm02nT+IhTN/D1/eX9TVGrVciQN3Xnwgqde/MmbDoO6cqR
-         tkvLJDCqKejNDdQdAdEXCUiUo9XVBEbO7JwL/aku3WJDbJb4fduUTaA6quCFj/vHUeSe
-         DCJAMJat3cS+NNM5A+SGnEJd7yY9PS37YpOkWfv1gOysDJnctSryY6HuSGjQgzJuhhZ+
-         m7f/HiLyggw3lDbLwDLL4Pnlxj9qGAQxKNyZu/5sgKGaojbZJbGOGNs3cmmtwRrJJVLI
-         HXmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728713020; x=1729317820;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=B7i1vG7nS3MEbwW7yINVeMEOCisWKNqd/JkjCeZOvZc=;
-        b=GM3p6RZCfGuJgBcHis9lpDZTzXQSGFxVI8Q79csKCxhcVD13CiB//CE219Kwzn8jRL
-         nn5yib2YJpCSVM3KlNyWIQmI2BseApXet1HUKVfpDJGhNh2QVVON6TR399GZ12sK/YO+
-         8jveECWwz/J76NXzWRJSDQxl9s+nCuURV+GkqjZbnKz/FgqdK+fE5ZDADNWdn4TvDd8R
-         z/5tGb23k5pWRli19jknXkxv/LztArvkLnAaRoZghuxyG/WZKYr9Mkhh1NZ1MrXg5uFa
-         3jeIcLIECLnhpjsBs39A/zHe3MeW/5Sj29w0zJsSjw/E2e5giEa6bzdMYVp0rHMpwmC+
-         OYdw==
-X-Forwarded-Encrypted: i=1; AJvYcCVh/X5CockSsQc0mL5nq72wimisUfjpaM6ukjCsDQusWKDKDj6as/9Nm5qJaWtdbaczKXU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxW4KWCrj6kDo2iBRrmMVsim+720j1qERnylo8DgBLGKsGIODA3
-	XCU1Z73ogQKtz3gjFcPiUVcA18MBwFnFwNh+sSV4LVEWLK8HYCtsuD+OjqZKvw==
-X-Google-Smtp-Source: AGHT+IF4cxofKdamMXoh6GejxCThsjFpoK4fI8ENq63PGBWZFrQ03WP1/0ig+veyGFwj0STjKLLEwg==
-X-Received: by 2002:a17:90a:ff0e:b0:2e2:d3ab:2d77 with SMTP id 98e67ed59e1d1-2e31538f3edmr2150039a91.39.1728713019980;
-        Fri, 11 Oct 2024 23:03:39 -0700 (PDT)
-Received: from thinkpad ([220.158.156.122])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e2d5fa6fc6sm4294003a91.43.2024.10.11.23.03.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Oct 2024 23:03:39 -0700 (PDT)
-Date: Sat, 12 Oct 2024 11:33:32 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Stefan Eichenberger <eichest@gmail.com>
-Cc: Frank Li <Frank.li@nxp.com>, Francesco Dolcini <francesco@dolcini.it>,
-	hongxing.zhu@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
-	kw@linux.com, robh@kernel.org, bhelgaas@google.com,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, francesco.dolcini@toradex.com,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: Re: [PATCH v2] PCI: imx6: Add suspend/resume support for i.MX6QDL
-Message-ID: <20241012060332.54ppztpztp37p224@thinkpad>
-References: <20241009131659.29616-1-eichest@gmail.com>
- <ZwgykRyE+jDU0CiU@lizhi-Precision-Tower-5810>
- <20241010201121.GA88411@francesco-nb>
- <ZwhY/dtSNPptgs27@lizhi-Precision-Tower-5810>
- <Zwk35efNI4EO1eir@eichest-laptop>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="lmtHawoq"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HX44UJS/xmq94cvxQ/pJbhJaFJ/ka/guAjjgtJfxZwFdmGHWCnEONk+CN623F0Hppykuj3etqzddcpN7BSZZP24rv83vJdbLYjRXJfIq3mM2ykfLrVuDZsAUPL3EQlCKk+Z3M5Vf5ltzSAKRtvZWZGbSao0CzQJTth5rgqJm7J03O93KxNUEfdNo+5lMFPs80qRLeGp/VwN8gg6Ezr5DyuZCLtzk5jsXL17sAHljNECuwU2srUnjMC6dMaOTCFK/5djVZW+n23gMPoYAd0yv/7SYBcr8bxChfq/0NZg9OPfauj5E119XFImPwN26Zi75CW04+OhpVgbzcuegAaFFEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sv1Co+exwwbx5vdzXdoPDIevOdPnNJvFOLXoJUsiJpk=;
+ b=TcpjMpQyYTCDyJlcgjPeCeyyZuNfu9lnxSnACmdFflqWo9EfyjSZMitDzWVSF2omPHs9wVXvvc9qqMCcY1u3xo5ZEDL/6dfgv7wwH2dzJKHSo3Hpl5mBpjxFhCB8tWTi1/BuTdFiqnPDIK4gJy/bOZ8QEkn+rzu2WxSrZH0BQoKyqUGNxj704joMxTITS6T8HWQb38CU54bvYC455BNfEACNXM9jCK284ck1b78WL44WszvlnPaLPR8qPWSED4QBQziuNjxxhhXPuxf5KYg97FDJ25nafPNEPuPphoBfWLnwfQWFuUNe4wNINkpy0AupbPetggrcEZVAaADBFnEUsw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sv1Co+exwwbx5vdzXdoPDIevOdPnNJvFOLXoJUsiJpk=;
+ b=lmtHawoq7BbtZzZGCjBc63YqmhTyCBTbbZlmDS7lhGLGcm8YOmmYeNg21ZGlH88EV3EDJK0PjZb88Q0qkn81IBw24KX7Rn+4a2t7wkkSGTaKy/JIODZ/cyY8W2bQRZ7yKZrDLN1zgL0hpaSPGDwShQwG9nruXmOnlDEHER02kUKy46K9E5LbvSjsah+WNGnfXsRz90R6Sh3BGWTAZeWxGIVSK8/nLh+AzEnCxgrmKxPtbLRTh3zQvjD5tPZVDOl3udjZVByzvXHJmzaXnfMgPdXun0ch5fwqMKiydkKQx13jCAahQ5slxsh2lOQjdYuFqdCoo3HVaQT7KVzISQnQkA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by VI0PR04MB11024.eurprd04.prod.outlook.com (2603:10a6:800:260::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.18; Sat, 12 Oct
+ 2024 06:17:52 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90%4]) with mapi id 15.20.8048.020; Sat, 12 Oct 2024
+ 06:17:52 +0000
+Message-ID: <6be9d2ac-7e0b-4b6a-885d-ad40158a2998@nxp.com>
+Date: Sat, 12 Oct 2024 14:18:16 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/8] drm/bridge: fsl-ldb: Use clk_round_rate() to validate
+ "ldb" clock rate
+To: Maxime Ripard <mripard@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, andrzej.hajda@intel.com,
+ neil.armstrong@linaro.org, rfoss@kernel.org,
+ Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+ jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
+ tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ catalin.marinas@arm.com, will@kernel.org, quic_bjorande@quicinc.com,
+ geert+renesas@glider.be, dmitry.baryshkov@linaro.org, arnd@arndb.de,
+ nfraprado@collabora.com, o.rempel@pengutronix.de, y.moog@phytec.de
+References: <20240930052903.168881-1-victor.liu@nxp.com>
+ <20240930052903.168881-5-victor.liu@nxp.com>
+ <2on4bu5jsxvaxckqz3wouwrf2z6nwbtv34ek4xda2dvobqhbsf@g7z7kxq5xrxi>
+ <5fb80bf6-96be-4654-bd54-dc4f1d5136ae@nxp.com>
+ <20241011-mottled-translucent-dodo-8877e6@houat>
+From: Liu Ying <victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <20241011-mottled-translucent-dodo-8877e6@houat>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SG2P153CA0019.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c7::6)
+ To AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Zwk35efNI4EO1eir@eichest-laptop>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|VI0PR04MB11024:EE_
+X-MS-Office365-Filtering-Correlation-Id: d8bb6140-0edd-4c22-cbed-08dcea859a38
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+ =?utf-8?B?VHJ3L05GUnQ2UVl5UEI0NEtwQkw0ZnF0ZUlHdkJCNWErdmtjeFV4dUxTbHd1?=
+ =?utf-8?B?ZlVZNmtBdU9RZjRDakpicm1KYy9DRk5mMlkyeEwyZmJYMXpWSnRNcE1FZTM2?=
+ =?utf-8?B?MXB2RTRTdEZXM1hwM3dVVy80cGRqcGZacmsvQzEwOEJGYUpYSGpGRFdXVy9t?=
+ =?utf-8?B?M3VVdjcwV2YxSm12cEsxdkQwbTI0SngzQUIzS3VOdDU1MzdPMkwwb0xtRTJa?=
+ =?utf-8?B?cmdWeUgvSmtjeVlvVFVzbEpCeVN3ODlrRHdTczFScE1nV0FKdVJXTHVzdEpl?=
+ =?utf-8?B?WWQzc1FsUjRER3NpV2kwK2F4ZEJpMWl1UzNJaXVqbWRLakZDTmV4VW9nS3R2?=
+ =?utf-8?B?WkhSNCtHZld3SDZRdlg2YVp1MHFiRlNvNk5zNUxmM2Yvb1NWaTVET09iVXdu?=
+ =?utf-8?B?VkwzUHRHczhndS83d0pka1VQZUNMb2QwYks3TGpLYUZhN0p4MTRaQTF5b3FK?=
+ =?utf-8?B?dnhFbHNONFhTYjFjcW5ZK0F0MHRET2FXeFEwTGJ5VmJWRXNTQ0Z6dVZkcVRD?=
+ =?utf-8?B?YXZZM0RCbDZyUytIbWtrM0tNZjZjZ2VpQnJnSWdHOFVaMlU4U3Fvb0RwUW9s?=
+ =?utf-8?B?WndHMlYrMnlOd3ppTWkzTEtBNTluR0Q0RHg5WTFzTCtGdE4zUmJpWUhRRTdw?=
+ =?utf-8?B?WERsR3dGbnJVQkRMZTAxUGpIL3pROUVJUno2ZFBXeHE0YjJXN3IxcUtGcUxD?=
+ =?utf-8?B?NVlBSHB2L2JoaDd2Q3pPYXRObUV2WFpRVjljbmg4NCtGYzhkVHp2MEZRelow?=
+ =?utf-8?B?NG1PMUx4UUlOeDM3OVVaQjhWS2FGMWlvemt1b0xHaEE0aTU5TGQzSW5vZ2NL?=
+ =?utf-8?B?TU4yYi9hNWZvd0RZQzRoUDlhbUJZR3RGSkVjTHhzeDh2akVyQ1JGdzBvenlr?=
+ =?utf-8?B?NXNhKzJua3p2Z2pVTWRVbEV1d0M1SHBJQWF1UitQbGRxMzN4ZjFTaDZDV05E?=
+ =?utf-8?B?b0xpZ2w1S3dSbzRqazQ5dnM1VWZmTkhJMHN0dkQwVVhWczErL0srcW9yYndY?=
+ =?utf-8?B?bzM2bGp1R2lZV0hneVhNclNvdXExWWFhdm4zcHVBQVJwNlRmRng2UzdpREVQ?=
+ =?utf-8?B?UTI1d2VUL2R5U2FCTngwVml6ZjVDdlVEOW9UL1hWOURURnA2akJjQVc0UTlu?=
+ =?utf-8?B?RTkxb0k5bmsvdEZqaWJoK2dVNzdJbjZDaWlja0FIbXJXNTNtTlBvemMvdGU4?=
+ =?utf-8?B?NWErdGpjOFRzS3h4SUlXajI1bVZKdWRoS0Jrc1lzdmlSdzA2TERWYjNDSEFa?=
+ =?utf-8?B?RnZkRW4wa3ZGTUhIR3FOSXgwT0ZRSnNHZXlVNC9jNnNRMFVHdmhibGpmNFcv?=
+ =?utf-8?B?NHBNTmhNUlhsdjB3WDhhNjUwOTcrVmxDOUhSSElxRDhPWGFTSnlsV3VZWE1t?=
+ =?utf-8?B?WDZVVnJuRjUxVTcvb094aFlmWVVEQVE2Nm8yUjc4WVk1Q2JUcnZ6bjFtWFNS?=
+ =?utf-8?B?NDcvdjdxWTZnMGxFekJkZVBMejZxV1pDaU5wSkQ3Qnd3UmlES2JpYjlxWVRh?=
+ =?utf-8?B?T202N3JTQWJPZTFqcjFyRUxuN1FCcFhtNUhHL245LzZCMk80ZHpaUDU3NmRl?=
+ =?utf-8?B?Y2Y3U3hFOHNHT2xEL2EvUnBWK0o3ZFg0NFZIVExJMm1UT1d6OFNsdS9sYUpN?=
+ =?utf-8?B?WGQxQk9BWHJreXd3SHZqUk5OOVJkV0VnMnhNbHBDRmc4MzdhQXBGUkhUYkhz?=
+ =?utf-8?B?RitFdEdVV2lJZ0MwS3VqQlR6Q0Q1VHNiMkhXblpRd1VkY3BTYkVCWXBBPT0=?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?Mll3aXFxU1piWldMTUxVN1JJcmRDMzVnM1FHS205WnphTEh6dWRpdGN3TWxs?=
+ =?utf-8?B?elFLMUxuTWRzN25hbDhrQkgvdE5PdGlyTTNPUHdHdnhsRVVFc1AxTzhISWQv?=
+ =?utf-8?B?UzZ1b3pGdW50bEg3dFY4S0ptKzdWZlhaWkxMTncvSW9KeVF4UFYrWVo0cHZC?=
+ =?utf-8?B?TWVPWXJBNFVSclFtS0tERDNaKy9meFJhVERVTDJIWGpGVU9WU2F1VG9oNHZQ?=
+ =?utf-8?B?ZkJFa04rNGlPYlI4UTkwU2R6Vmg1aVM3OWhNR3BpWC9EV1FwZWJMb293NnBv?=
+ =?utf-8?B?WVErMGQ5S2tJcEh3eitkLzRFVnduOXlqUHpoNGpjdTZENXdXblJPdGJVN3Zs?=
+ =?utf-8?B?NTVOSEtmZ1dJbFRYazN5akFZc2JCaEh0OXpDd0QvUlBtd3dIeEwvZjFIUzVC?=
+ =?utf-8?B?UHJxQThIR1VnRXVHTXd5NGtYRnFJaEVnMVgzUVQwbEVqczU5dmV3blVVeWJW?=
+ =?utf-8?B?dFFCZ1l0WHJSV0U0Mk1jU3BXZzNod2djZndaOWh6U0wwM3RWWnhwZVMrTkF3?=
+ =?utf-8?B?Qms3SDdQNHd1VUtCM05SSHRMTlpwOER0ZFVlM0FSbndzT1kvYVFtTEVoVHVh?=
+ =?utf-8?B?UTgzekl2U213NnY2K1ZwWUMzMVpMUW9RTHBIREdYaG1lbnZIbkdab0Y3OVZV?=
+ =?utf-8?B?eE9kRWxyL21rN0tHK2srSjlMRnhYZXFQUEVoUWxrczB3Ri9TNGxJakthbEk5?=
+ =?utf-8?B?bUJ4bDdrdEwxOG1lalhwaEUxUXhDSUpJNTFxNUlhRHpQb3lGMGNZWms3SHJi?=
+ =?utf-8?B?NkpVb1hWaWxueU9kSXhFM0YxdzNha3czWGdKbzVNcHFGajdQTlVPNzBaSDZn?=
+ =?utf-8?B?aEg1NDVsRVRSK0lxdGZVOFdZZTR5MWM3UWtHdmg0MnREV2I3STFRMkdwS3RL?=
+ =?utf-8?B?QlliZmZwclVTemtNN3UrSnlDa3h3WFlrR29haEljdjNEQlN6ZVczQWJMOFJW?=
+ =?utf-8?B?WEdKenVJRU1SS283Y1UrRVQzRk5PdkhiUnc3emtQRTZuZjVjNnlIaXp2OUgy?=
+ =?utf-8?B?NFRTOW9IMGZWNW13czhIeHlXQkZBckQrMjhreGJNZUp6RGdpTW1ibVZoS2xq?=
+ =?utf-8?B?dGlzenlKcmpyWE5OUW9tQzRlc0drczM0aTBMNk1aK1M0ZUd6cXl5bkk4ZWkv?=
+ =?utf-8?B?a3hXK2ljL2RLU1U1alVsa2VZbDdxWHZoYkE4aUdVbEhCdUh3LzBScTJCbzRK?=
+ =?utf-8?B?d2U2R3BTNi9QeCsrM25hSmhnc0F6WHp4VjV2Z0dvR2pZM2d1RnIwaUpCRmZP?=
+ =?utf-8?B?cUx6SG1QZGNlQ0NNa3JLbHVOVHVTaDJTaUJrMjZCWlZNb05wUTZjb0FBOUQy?=
+ =?utf-8?B?azZEVGd6VDlFbnMvY2FkSHNDUUJhenRtOHJjdHkvSmR4SXJPYXE3UzVVUERZ?=
+ =?utf-8?B?TS9PYkdtQ2Z1MEpNcHZDTUJacmxHVmd3SDUvWVNRdEU2bWkzcGMvd1Q3Slor?=
+ =?utf-8?B?ajE2Qk5HMThEOG1XQWpXWFN3UXUyVnliTnFSa09MTHdEMzhqNEliRGRHUEhz?=
+ =?utf-8?B?YW1mWnpuWTUveHpFSjJOYVZIdGRVdnpnbk1HczZGVmIwZkF3aDNRUDZodnhv?=
+ =?utf-8?B?dlNtaHhFMldyb1ZMNVNHMTdIU2k5a0l2WmlyWWp6VzZvSGcrZUNRcldmQ3NK?=
+ =?utf-8?B?dFFNMnlIVGVHekZBdkI3Z3pZeU9MdWdLazZjK045bno3SW5sZkFkb09WSDRl?=
+ =?utf-8?B?aytCNWc2ME9IcDFJTTZXT3hHQlVheEQ0bVNGT2VmbjFMRTd4dEZWYXp4ZC94?=
+ =?utf-8?B?RTVhcURRV2hFMmF1M29xN2gyaFNoS09Qbkl6UDZLTU5zRTBldXQ0MGZDNVJl?=
+ =?utf-8?B?blNIelNtVUJZTlRLalhRajFZUFlmaGltQUExUHF4cDdLM0NCQ2ppejBYTG53?=
+ =?utf-8?B?a2NBTERWaStISWJUTzVNaEMxZzFSbEdLWE14R1FVTGJJcExYSytwL2I4MGsv?=
+ =?utf-8?B?ZzlocStDaWtkTUdENHZXMmJGOVVjUTFUQzZCMm02SG15bEdpWHl1MG4rc2RI?=
+ =?utf-8?B?cFRNZExIOGJnZVZOa0p1cWl6cHNLTDN0Yy9FYnpmWC9QVWllcW9rM1dRSXR1?=
+ =?utf-8?B?ODhvTTRESnJhTHVLdVU3ZmdyZzhERW5JNzNGanJWd1d1MG5HSkZuQ1dWYWc0?=
+ =?utf-8?Q?MNI4/n9Golnmt1uN+DxdEdAjl?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d8bb6140-0edd-4c22-cbed-08dcea859a38
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2024 06:17:52.0398
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IJzXM9gcv6aD4i9mSlI1F4fwVYHxuDe2f5ovyES0D6+pO8MKWfma+Rn/u3HCjlwg4nVOmhUjQImUJVKTyEx6oQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11024
 
-On Fri, Oct 11, 2024 at 04:36:21PM +0200, Stefan Eichenberger wrote:
-
-[...]
-
-> However, what I figured out with kernel v6.12-rc1 I get the following
-> warning when booting on an i.MX6QDL even without my patch applied:
-> [    1.901199] PCI: bus0: Fast back to back transfers disabled
-> [    1.904754] mmc1: SDHCI controller on 2190000.mmc [2190000.mmc] using ADMA
-> [    1.904914] mmc2: SDHCI controller on 2194000.mmc [2194000.mmc] using ADMA
-> [    1.910686] pci 0000:01:00.0: [168c:003c] type 00 class 0x028000 PCIe Endpoint
-> [    1.918390] NET: Registered PF_PACKET protocol family
-> [    1.918573] mmc0: SDHCI controller on 2198000.mmc [2198000.mmc] using ADMA
-> [    1.924322] pci 0000:01:00.0: BAR 0 [mem 0x00000000-0x001fffff 64bit]
-> [    1.931635] Key type dns_resolver registered
-> [    1.936764] pci 0000:01:00.0: ROM [mem 0x00000000-0x0000ffff pref]
-> [    1.961043] pci 0000:01:00.0: supports D1 D2
-> [    1.961526] Registering SWP/SWPB emulation handler
-> [    1.965601] mmc0: new DDR MMC card at address 0001
-> [    1.976575] mmcblk0: mmc0:0001 Q2J54A 3.59 GiB
-> [    1.979794] Loading compiled-in X.509 certificates
-> [    1.985036] PCI: bus1: Fast back to back transfers disabled
-> [    1.991531] pci 0000:00:00.0: bridge window [mem 0x01000000-0x011fffff]: assigned
-> [    1.998742]  mmcblk0: p1 p2 p3
-> [    1.999163] pci 0000:00:00.0: BAR 0 [mem 0x01200000-0x012fffff]: assigned
-> [    2.003947] mmcblk0boot0: mmc0:0001 Q2J54A 16.0 MiB
-> [    2.008990] pci 0000:00:00.0: bridge window [mem 0x01300000-0x013fffff pref]: assigned
-> [    2.009023] pci 0000:00:00.0: ROM [mem 0x01400000-0x0140ffff pref]: assigned
-> [    2.009054] pci 0000:01:00.0: BAR 0 [mem 0x01000000-0x011fffff 64bit]: assigned
-> [    2.017526] mmcblk0boot1: mmc0:0001 Q2J54A 16.0 MiB
-> [    2.022015] pci 0000:01:00.0: ROM [mem 0x01300000-0x0130ffff pref]: assigned
-> [    2.032133] mmcblk0rpmb: mmc0:0001 Q2J54A 512 KiB, chardev (242:0)
-> [    2.036347] pci 0000:00:00.0: PCI bridge to [bus 01-ff]
-> [    2.036370] pci 0000:00:00.0:   bridge window [mem 0x01000000-0x011fffff]
-> [    2.036384] pci 0000:00:00.0:   bridge window [mem 0x01300000-0x013fffff pref]
-> [    2.042552] pps pps0: new PPS source ptp0
-> [    2.048338] pci_bus 0000:00: resource 4 [io  0x0000-0xffff]
-> [    2.083626] pci_bus 0000:00: resource 5 [mem 0x01000000-0x01efffff]
-> [    2.089972] pci_bus 0000:01: resource 1 [mem 0x01000000-0x011fffff]
-> [    2.093461] fec 2188000.ethernet eth0: registered PHC device 0
-> [    2.096283] pci_bus 0000:01: resource 2 [mem 0x01300000-0x013fffff pref]
-> [    2.096352] sysfs: cannot create duplicate filename '/devices/platform/soc/1ffc000.pcie/pci0000:00/0000:00:00.0/resource0'
-> [    2.096365] CPU: 3 UID: 0 PID: 52 Comm: kworker/u19:2 Not tainted 6.12.0-rc1 #54
-> [    2.096381] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
-> [    2.096391] Workqueue: async async_run_entry_fn
-> [    2.103025] imx_thermal 20c8000.anatop:tempmon: Industrial CPU temperature grade - max:105C critical:100C passive:95C
-> [    2.108932]
-> [    2.108940] Call trace:
-> [    2.108950]  unwind_backtrace from show_stack+0x10/0x14
-> [    2.121391] clk: Disabling unused clocks
-> [    2.127423]  show_stack from dump_stack_lvl+0x54/0x68
-> [    2.127451]  dump_stack_lvl from sysfs_warn_dup+0x58/0x64
-> [    2.134265] PM: genpd: Disabling unused power domains
-> [    2.138525]  sysfs_warn_dup from sysfs_add_bin_file_mode_ns+0xbc/0xcc
-> [    2.138547]  sysfs_add_bin_file_mode_ns from sysfs_create_bin_file+0xac/0xb4
-> [    2.149242] ALSA device list:
-> [    2.150647]  sysfs_create_bin_file from pci_create_resource_files+0x84/0x148
-> [    2.153183]   No soundcards found.
-> [    2.158407]  pci_create_resource_files from pci_bus_add_device+0x24/0xe4
-> [    2.211699]  pci_bus_add_device from pci_bus_add_devices+0x2c/0x70
-> [    2.217930]  pci_bus_add_devices from pci_host_probe+0x7c/0xa4
-> [    2.223806]  pci_host_probe from dw_pcie_host_init+0x4ec/0x71c
-> [    2.229682]  dw_pcie_host_init from imx_pcie_probe+0x3a8/0x75c
-> [    2.235559]  imx_pcie_probe from platform_probe+0x5c/0xb0
-> [    2.241010]  platform_probe from really_probe+0xd0/0x3a4
-> [    2.246364]  really_probe from __driver_probe_device+0x8c/0x1d4
-> [    2.252321]  __driver_probe_device from driver_probe_device+0x30/0xc0
-> [    2.258803]  driver_probe_device from __driver_attach_async_helper+0x50/0xd8
-> [    2.265892]  __driver_attach_async_helper from async_run_entry_fn+0x30/0x144
-> [    2.272980]  async_run_entry_fn from process_one_work+0x154/0x2dc
-> [    2.279115]  process_one_work from worker_thread+0x250/0x3f0
-> [    2.284811]  worker_thread from kthread+0x110/0x12c
-> [    2.289726]  kthread from ret_from_fork+0x14/0x28
-> [    2.294461] Exception stack(0xe6a0dfb0 to 0xe6a0dff8)
-> [    2.299535] dfa0:                                     00000000 00000000 00000000 00000000
-> [    2.307740] dfc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-> [    2.315942] dfe0: 00000000 00000000 00000000 00000000 00000013 00000000
-> [    2.323156] pcieport 0000:00:00.0: PME: Signaling with IRQ 293
-> [    2.329645] pcieport 0000:00:00.0: AER: enabled with IRQ 293
-> [    2.335553] sysfs: cannot create duplicate filename '/devices/platform/soc/1ffc000.pcie/pci0000:00/0000:00:00.0/0000:01:00.0/resource0'
-> [    2.347794] CPU: 3 UID: 0 PID: 52 Comm: kworker/u19:2 Not tainted 6.12.0-rc1 #54
-> [    2.355229] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
-> [    2.361779] Workqueue: async async_run_entry_fn
-> [    2.366349] Call trace:
-> [    2.366362]  unwind_backtrace from show_stack+0x10/0x14
-> [    2.374183]  show_stack from dump_stack_lvl+0x54/0x68
-> [    2.379273]  dump_stack_lvl from sysfs_warn_dup+0x58/0x64
-> [    2.384706]  sysfs_warn_dup from sysfs_add_bin_file_mode_ns+0xbc/0xcc
-> [    2.391183]  sysfs_add_bin_file_mode_ns from sysfs_create_bin_file+0xac/0xb4
-> [    2.398270]  sysfs_create_bin_file from pci_create_resource_files+0x84/0x148
-> [    2.405360]  pci_create_resource_files from pci_bus_add_device+0x24/0xe4
-> [    2.412113]  pci_bus_add_device from pci_bus_add_devices+0x2c/0x70
-> [    2.418334]  pci_bus_add_devices from pci_bus_add_devices+0x60/0x70
-> [    2.424642]  pci_bus_add_devices from pci_host_probe+0x7c/0xa4
-> [    2.430511]  pci_host_probe from dw_pcie_host_init+0x4ec/0x71c
-> [    2.436384]  dw_pcie_host_init from imx_pcie_probe+0x3a8/0x75c
-> [    2.442258]  imx_pcie_probe from platform_probe+0x5c/0xb0
-> [    2.447704]  platform_probe from really_probe+0xd0/0x3a4
-> [    2.453057]  really_probe from __driver_probe_device+0x8c/0x1d4
-> [    2.459014]  __driver_probe_device from driver_probe_device+0x30/0xc0
-> [    2.465493]  driver_probe_device from __driver_attach_async_helper+0x50/0xd8
-> [    2.472580]  __driver_attach_async_helper from async_run_entry_fn+0x30/0x144
-> [    2.479666]  async_run_entry_fn from process_one_work+0x154/0x2dc
-> [    2.485800]  process_one_work from worker_thread+0x250/0x3f0
-> [    2.491494]  worker_thread from kthread+0x110/0x12c
-> [    2.496408]  kthread from ret_from_fork+0x14/0x28
-> [    2.501140] Exception stack(0xe6a0dfb0 to 0xe6a0dff8)
-> [    2.506214] dfa0:                                     00000000 00000000 00000000 00000000
-> [    2.514418] dfc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-> [    2.522620] dfe0: 00000000 00000000 00000000 00000000 00000013 00000000
+On 10/11/2024, Maxime Ripard wrote:
+> On Mon, Sep 30, 2024 at 03:55:30PM GMT, Liu Ying wrote:
+>> On 09/30/2024, Maxime Ripard wrote:
+>>> On Mon, Sep 30, 2024 at 01:28:59PM GMT, Liu Ying wrote:
+>>>> Multiple display modes could be read from a display device's EDID.
+>>>> Use clk_round_rate() to validate the "ldb" clock rate for each mode
+>>>> in drm_bridge_funcs::mode_valid() to filter unsupported modes out.
+>>>>
+>>>> Also, if the "ldb" clock and the pixel clock are sibling in clock
+>>>> tree, use clk_round_rate() to validate the pixel clock rate against
+>>>> the "ldb" clock.  This is not done in display controller driver
+>>>> because drm_crtc_helper_funcs::mode_valid() may not decide to do
+>>>> the validation or not if multiple encoders are connected to the CRTC,
+>>>> e.g., i.MX93 LCDIF may connect with MIPI DSI controller, LDB and
+>>>> parallel display output simultaneously.
+>>>>
+>>>> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+>>>> ---
+>>>>  drivers/gpu/drm/bridge/fsl-ldb.c | 22 ++++++++++++++++++++++
+>>>>  1 file changed, 22 insertions(+)
+>>>>
+>>>> diff --git a/drivers/gpu/drm/bridge/fsl-ldb.c b/drivers/gpu/drm/bridge/fsl-ldb.c
+>>>> index b559f3e0bef6..ee8471c86617 100644
+>>>> --- a/drivers/gpu/drm/bridge/fsl-ldb.c
+>>>> +++ b/drivers/gpu/drm/bridge/fsl-ldb.c
+>>>> @@ -11,6 +11,7 @@
+>>>>  #include <linux/of_graph.h>
+>>>>  #include <linux/platform_device.h>
+>>>>  #include <linux/regmap.h>
+>>>> +#include <linux/units.h>
+>>>>  
+>>>>  #include <drm/drm_atomic_helper.h>
+>>>>  #include <drm/drm_bridge.h>
+>>>> @@ -64,6 +65,7 @@ struct fsl_ldb_devdata {
+>>>>  	u32 lvds_ctrl;
+>>>>  	bool lvds_en_bit;
+>>>>  	bool single_ctrl_reg;
+>>>> +	bool ldb_clk_pixel_clk_sibling;
+>>>>  };
+>>>>  
+>>>>  static const struct fsl_ldb_devdata fsl_ldb_devdata[] = {
+>>>> @@ -74,11 +76,13 @@ static const struct fsl_ldb_devdata fsl_ldb_devdata[] = {
+>>>>  	[IMX8MP_LDB] = {
+>>>>  		.ldb_ctrl = 0x5c,
+>>>>  		.lvds_ctrl = 0x128,
+>>>> +		.ldb_clk_pixel_clk_sibling = true,
+>>>>  	},
+>>>>  	[IMX93_LDB] = {
+>>>>  		.ldb_ctrl = 0x20,
+>>>>  		.lvds_ctrl = 0x24,
+>>>>  		.lvds_en_bit = true,
+>>>> +		.ldb_clk_pixel_clk_sibling = true,
+>>>>  	},
+>>>>  };
+>>>>  
+>>>> @@ -269,11 +273,29 @@ fsl_ldb_mode_valid(struct drm_bridge *bridge,
+>>>>  		   const struct drm_display_info *info,
+>>>>  		   const struct drm_display_mode *mode)
+>>>>  {
+>>>> +	unsigned long link_freq, pclk_rate, rounded_pclk_rate;
+>>>>  	struct fsl_ldb *fsl_ldb = to_fsl_ldb(bridge);
+>>>>  
+>>>>  	if (mode->clock > (fsl_ldb_is_dual(fsl_ldb) ? 160000 : 80000))
+>>>>  		return MODE_CLOCK_HIGH;
+>>>>  
+>>>> +	/* Validate "ldb" clock rate. */
+>>>> +	link_freq = fsl_ldb_link_frequency(fsl_ldb, mode->clock);
+>>>> +	if (link_freq != clk_round_rate(fsl_ldb->clk, link_freq))
+>>>> +		return MODE_NOCLOCK;
+>>>> +
+>>>> +	/*
+>>>> +	 * Use "ldb" clock to validate pixel clock rate,
+>>>> +	 * if the two clocks are sibling.
+>>>> +	 */
+>>>> +	if (fsl_ldb->devdata->ldb_clk_pixel_clk_sibling) {
+>>>> +		pclk_rate = mode->clock * HZ_PER_KHZ;
+>>>> +
+>>>> +		rounded_pclk_rate = clk_round_rate(fsl_ldb->clk, pclk_rate);
+>>>> +		if (rounded_pclk_rate != pclk_rate)
+>>>> +			return MODE_NOCLOCK;
+>>>> +	}
+>>>> +
+>>>
+>>> I guess this is to workaround the fact that the parent rate would be
+>>> changed, and thus the sibling rate as well? This should be documented in
+>>> a comment if so.
+>>
+>> This is to workaround the fact that the display controller driver
+>> (lcdif_kms.c) cannot do the mode validation against pixel clock, as
+>> the commit message mentions.
 > 
-> This was not the case with kernel v6.11, do you have an idea where this
-> comes from? I did not dig into more detail yet but it looks a bit like a
-> regression. The driver still works, it just prints this duplicate
-> filename warning.
+> That part is still not super clear to me, but it's also not super
+> important to the discussion.
 
-Could you please do bisect to find the offending commit?
+As kerneldoc of drm_crtc_helper_funcs::mode_valid mentions that
+it is not allowed to look at anything else but the passed-in mode,
+it doesn't know of the connected encoder(s)/bridge(s) and thus
+cannot decide if it should do mode validation against pixel clock
+or not.  Encoder/bridge drivers could adjust pixel clock rates
+for display modes.  So, mode validation against pixel clock should
+be done in this bridge driver.
 
-- Mani
+In fact, the pixel clock should have been defined as a DT property
+in fsl,ldb.yaml because the clock routes to LDB as an input signal.
+However, it's too late...  If the DT property was defined in the
+first place, then this driver can naturally do mode validation
+against pixel clock instead of this workaround.
+
+> 
+> My point is: from a clock API standpoint, there's absolutely no reason
+> to consider sibling clocks. clk_round_rate() should give you the rate
+
+Agree, but it's a workaround.
+
+> you want. If it affects other clocks it shouldn't, it's a clock driver
+> bug.
+
+The sibling clocks are the same type of clocks from HW design
+point of view and derived from the same clock parent/PLL.
+That's the reason why the workaround works.
+
+> 
+> You might want to workaround it, but this is definitely not something
+> you should gloss over: it's a hack, it needs to be documented as such.
+
+I can add some documentation in next version to clarify this
+a bit.
+
+> 
+>> The parent clock is IMX8MP_VIDEO_PLL1_OUT and it's clock rate is not
+>> supposed to be changed any more once IMX8MP_VIDEO_PLL1 clock rate is
+>> set by using DT assigned-clock-rates property.  For i.MX8MP EVK, the
+>> clock rate is assigned to 1039500000Hz in imx8mp.dtsi in media_blk_ctrl
+>> node.
+> 
+> There's two things wrong with what you just described:
+> 
+>   - assigned-clock-rates never provided the guarantee that the clock
+>     rate wouldn't change later on. So if you rely on that, here's your
+>     first bug.
+
+I'm not relying on that.  Instead, the PLL clock rate is not
+supposed to change since IMX8MP_CLK_MEDIA_LDB clock("ldb" clock
+parent clock) hasn't the CLK_SET_RATE_PARENT flag.  And, we don't
+want to change the PLL clock rate at runtime because the PLL can
+be used by i.MX8MP MIPI DSI and LDB display pipelines at the same
+time, driven by two LCDIFv3 display controllers respectively with
+two imx-lcdif KMS instances.  We don't want to see the two display
+pipelines to step on each other.
+
+> 
+>   - If the parent clock rate must not change, why does that clock has
+>     SET_RATE_PARENT then? Because that's the bug you're trying to work
+>     around.
+
+IMX8MP_CLK_MEDIA_LDB clock hasn't the CLK_SET_RATE_PARENT flag.
+I'm fine with the "ldb" clock tree from the current clock driver
+PoV - just trying to validate pixel clock rate as a workaround.
+
+> 
+> Maxime
 
 -- 
-மணிவண்ணன் சதாசிவம்
+Regards,
+Liu Ying
+
