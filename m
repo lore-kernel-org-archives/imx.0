@@ -1,70 +1,75 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DD9126C1D
-	for <imx@lists.linux.dev>; Sat, 12 Oct 2024 04:13:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFC185283
+	for <imx@lists.linux.dev>; Sat, 12 Oct 2024 06:03:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728706404; cv=none; b=DGkDZp+vhrCM0f+EXYZdkZ8J/ogvcygOZ4vDa6hWtpk+kEJd/8n88AhPPtOkakk2aNeyoqKnJXlALsmxxTwNbIivi/RIrNXO9lYW5q0s1Kw2Y+MD2dWQRaR3Bl7zDlth+rSSWvwPWnSuGUfkYCVfqx/QgdHkB3kmS9bNNQIZ5zg=
+	t=1728713023; cv=none; b=q93eizmdNFLjRCODOBQksQ++8gLUO6tai2W8/KfgXaNzNv05JF0d9Tz3NEMxa/gRbYrub2xJEfIlYmmMPSGatLSpnCY+94mu99lRNOSNzkFQ/04GrHE6S5tgnfP+u+lEorjrV3N7xOiXLJhD1//YyY1nmXsruVzWVLPPWC05PRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728706404; c=relaxed/simple;
-	bh=Cjqq2VsIvnOWJtSBSmaGd8a62UyC2iakIp8Y/CTbhIY=;
+	s=arc-20240116; t=1728713023; c=relaxed/simple;
+	bh=J2TustJFmQhWXjGx6NOiuh9awKxLdvCa94b52DO9Lqw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T+EDQ7owyIi5Z91DE8iNJw3wObsbyQXPcNVCo0ps3xPXSwmO5NHVqXxfUGeab7RTm6X934DesdjLjPS+DDJBoX2qeCyHlTAKZOiqFAXASu226qR2my4xK8tMkXQyeqsl8zRbosqBqDmyPaiBrhReGur6nskSFGc/b3nazeY2ivA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EVD0URSF; arc=none smtp.client-ip=209.85.214.178
+	 Content-Type:Content-Disposition:In-Reply-To; b=ouH1d+WYAkiaaEPLjqd8xwrl/K8JU80tfaDxGnXqevio3bP8qoDziT4omuY9pWs0YYAjZLCMvgQSFsdHU5KUceZhV76dRDPeJLq1m0pcW18/gy6r3f8pTrn3fYtKPoIzKsd4fAzRxcjns0/te1eW6CoDQvpDM5TGgLIHMQ32idw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ifmyGRz5; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EVD0URSF"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-20c803787abso18211655ad.0
-        for <imx@lists.linux.dev>; Fri, 11 Oct 2024 21:13:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ifmyGRz5"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2e2cc469c62so1882464a91.2
+        for <imx@lists.linux.dev>; Fri, 11 Oct 2024 23:03:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728706402; x=1729311202; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1728713020; x=1729317820; darn=lists.linux.dev;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=vB16VpCDewcAwoYN49nbK+yIU/0PlYPRJKRICrTJZE8=;
-        b=EVD0URSF9CPyKLiVuGYUTKE7NfRVNKAoW6fLAZ+pSy1uitE1pL9yekimwRMHJrFx25
-         Z3PbjFCEgVMHMe+G1bw2fBmKbpaNID/WdGUEcf3iupK/QCioZorb47OK0TaWe4MLtpCm
-         RRkCLWMw/1mkloFLohmSGojP+CJcXC3UVxQbJLtdqeniG9blEFmKrxMCyffMchP59AXI
-         embqUY+kdxgchExTPENKg5abXQI6O934YFdBa0XNakD+qPTTW7zC1TmoQdnRTz1olGFO
-         o+DCRu2CCWlO/U1JTmt97uCyD9woWRCQ+7QIMz03WfMG4Ho1h4XOGr2GN10FbS5uPkhb
-         pCIw==
+        bh=B7i1vG7nS3MEbwW7yINVeMEOCisWKNqd/JkjCeZOvZc=;
+        b=ifmyGRz5WSoKIKju1nrkx3dpoROjbw88q1McpdZ+RjzM6bh0KuTa8xr1VMkwWnQAcO
+         0yMeSr7NLkSFJnvEf6m1NoSm02nT+IhTN/D1/eX9TVGrVciQN3Xnwgqde/MmbDoO6cqR
+         tkvLJDCqKejNDdQdAdEXCUiUo9XVBEbO7JwL/aku3WJDbJb4fduUTaA6quCFj/vHUeSe
+         DCJAMJat3cS+NNM5A+SGnEJd7yY9PS37YpOkWfv1gOysDJnctSryY6HuSGjQgzJuhhZ+
+         m7f/HiLyggw3lDbLwDLL4Pnlxj9qGAQxKNyZu/5sgKGaojbZJbGOGNs3cmmtwRrJJVLI
+         HXmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728706402; x=1729311202;
+        d=1e100.net; s=20230601; t=1728713020; x=1729317820;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vB16VpCDewcAwoYN49nbK+yIU/0PlYPRJKRICrTJZE8=;
-        b=xViOWvuxq1zjQdiVeWsIxJFAshmQ7t1NlRX3FJR5eYeEEOdA3rbqG1ZUOMgUd4X6yn
-         Aho5+1T+ywZcaJebR+ZHO7vjTad8R89P6FFEJG+KAOE1TM+O/azhT+MNBU+DjGDGfaDg
-         KCbuKILveueeZ4QE5B8lvLtDLKN5+GZ2J1Kg7kcsnZRxYvFpmBLHxy78sufU1zrjNALp
-         HkkxNiv1LOsW1XofzLjMsNP/1SN4O6cOFOm16OA1EE7ujFpdyRMqWpbfPPoY07aWDU6n
-         0SM687F8qtgfYsGmPyapk5bKosXLAgGc5Up1XjJiZC7XfllACkKWm8kMvptzXX1oHEcv
-         JC6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVyXUJ4dfB8sSWKFL6P6ZQLnliXizyMoKvEneA8lgLNAMs/Jnk6HE9/h8nC84BbMy4UDWU=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy8Uunbhd5yOXuhl7pRr2MruTKSZSKSuniyVDjKf+SlY70cU07K
-	NbCdmFv7ZcO3oQ3ULGo/hs/pvnxhXRXJI3vNXViF+JUdDHZDJ92iJtkI7s9k7A==
-X-Google-Smtp-Source: AGHT+IEUBN4nc8fDzuF7ww7X5ksu78JTjsuqiB3sE0EdJOBGzVs3tTuontBwHvcsi4XzGJlZlVJueQ==
-X-Received: by 2002:a17:902:f70c:b0:20c:c482:1d72 with SMTP id d9443c01a7336-20cc4821f28mr10112675ad.20.1728706401976;
-        Fri, 11 Oct 2024 21:13:21 -0700 (PDT)
-Received: from thinkpad ([36.255.17.101])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c8bad32basm30934345ad.57.2024.10.11.21.13.17
+        bh=B7i1vG7nS3MEbwW7yINVeMEOCisWKNqd/JkjCeZOvZc=;
+        b=GM3p6RZCfGuJgBcHis9lpDZTzXQSGFxVI8Q79csKCxhcVD13CiB//CE219Kwzn8jRL
+         nn5yib2YJpCSVM3KlNyWIQmI2BseApXet1HUKVfpDJGhNh2QVVON6TR399GZ12sK/YO+
+         8jveECWwz/J76NXzWRJSDQxl9s+nCuURV+GkqjZbnKz/FgqdK+fE5ZDADNWdn4TvDd8R
+         z/5tGb23k5pWRli19jknXkxv/LztArvkLnAaRoZghuxyG/WZKYr9Mkhh1NZ1MrXg5uFa
+         3jeIcLIECLnhpjsBs39A/zHe3MeW/5Sj29w0zJsSjw/E2e5giEa6bzdMYVp0rHMpwmC+
+         OYdw==
+X-Forwarded-Encrypted: i=1; AJvYcCVh/X5CockSsQc0mL5nq72wimisUfjpaM6ukjCsDQusWKDKDj6as/9Nm5qJaWtdbaczKXU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxW4KWCrj6kDo2iBRrmMVsim+720j1qERnylo8DgBLGKsGIODA3
+	XCU1Z73ogQKtz3gjFcPiUVcA18MBwFnFwNh+sSV4LVEWLK8HYCtsuD+OjqZKvw==
+X-Google-Smtp-Source: AGHT+IF4cxofKdamMXoh6GejxCThsjFpoK4fI8ENq63PGBWZFrQ03WP1/0ig+veyGFwj0STjKLLEwg==
+X-Received: by 2002:a17:90a:ff0e:b0:2e2:d3ab:2d77 with SMTP id 98e67ed59e1d1-2e31538f3edmr2150039a91.39.1728713019980;
+        Fri, 11 Oct 2024 23:03:39 -0700 (PDT)
+Received: from thinkpad ([220.158.156.122])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e2d5fa6fc6sm4294003a91.43.2024.10.11.23.03.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Oct 2024 21:13:21 -0700 (PDT)
-Date: Sat, 12 Oct 2024 09:43:15 +0530
+        Fri, 11 Oct 2024 23:03:39 -0700 (PDT)
+Date: Sat, 12 Oct 2024 11:33:32 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Stefan Eichenberger <eichest@gmail.com>
-Cc: hongxing.zhu@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
+Cc: Frank Li <Frank.li@nxp.com>, Francesco Dolcini <francesco@dolcini.it>,
+	hongxing.zhu@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
 	kw@linux.com, robh@kernel.org, bhelgaas@google.com,
 	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, francesco.dolcini@toradex.com, Frank.li@nxp.com,
+	festevam@gmail.com, francesco.dolcini@toradex.com,
 	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
 	Stefan Eichenberger <stefan.eichenberger@toradex.com>
 Subject: Re: [PATCH v2] PCI: imx6: Add suspend/resume support for i.MX6QDL
-Message-ID: <20241012041315.vtmixcxbqwb63kno@thinkpad>
+Message-ID: <20241012060332.54ppztpztp37p224@thinkpad>
 References: <20241009131659.29616-1-eichest@gmail.com>
+ <ZwgykRyE+jDU0CiU@lizhi-Precision-Tower-5810>
+ <20241010201121.GA88411@francesco-nb>
+ <ZwhY/dtSNPptgs27@lizhi-Precision-Tower-5810>
+ <Zwk35efNI4EO1eir@eichest-laptop>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -74,110 +79,124 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241009131659.29616-1-eichest@gmail.com>
+In-Reply-To: <Zwk35efNI4EO1eir@eichest-laptop>
 
-On Wed, Oct 09, 2024 at 03:14:05PM +0200, Stefan Eichenberger wrote:
-> From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+On Fri, Oct 11, 2024 at 04:36:21PM +0200, Stefan Eichenberger wrote:
+
+[...]
+
+> However, what I figured out with kernel v6.12-rc1 I get the following
+> warning when booting on an i.MX6QDL even without my patch applied:
+> [    1.901199] PCI: bus0: Fast back to back transfers disabled
+> [    1.904754] mmc1: SDHCI controller on 2190000.mmc [2190000.mmc] using ADMA
+> [    1.904914] mmc2: SDHCI controller on 2194000.mmc [2194000.mmc] using ADMA
+> [    1.910686] pci 0000:01:00.0: [168c:003c] type 00 class 0x028000 PCIe Endpoint
+> [    1.918390] NET: Registered PF_PACKET protocol family
+> [    1.918573] mmc0: SDHCI controller on 2198000.mmc [2198000.mmc] using ADMA
+> [    1.924322] pci 0000:01:00.0: BAR 0 [mem 0x00000000-0x001fffff 64bit]
+> [    1.931635] Key type dns_resolver registered
+> [    1.936764] pci 0000:01:00.0: ROM [mem 0x00000000-0x0000ffff pref]
+> [    1.961043] pci 0000:01:00.0: supports D1 D2
+> [    1.961526] Registering SWP/SWPB emulation handler
+> [    1.965601] mmc0: new DDR MMC card at address 0001
+> [    1.976575] mmcblk0: mmc0:0001 Q2J54A 3.59 GiB
+> [    1.979794] Loading compiled-in X.509 certificates
+> [    1.985036] PCI: bus1: Fast back to back transfers disabled
+> [    1.991531] pci 0000:00:00.0: bridge window [mem 0x01000000-0x011fffff]: assigned
+> [    1.998742]  mmcblk0: p1 p2 p3
+> [    1.999163] pci 0000:00:00.0: BAR 0 [mem 0x01200000-0x012fffff]: assigned
+> [    2.003947] mmcblk0boot0: mmc0:0001 Q2J54A 16.0 MiB
+> [    2.008990] pci 0000:00:00.0: bridge window [mem 0x01300000-0x013fffff pref]: assigned
+> [    2.009023] pci 0000:00:00.0: ROM [mem 0x01400000-0x0140ffff pref]: assigned
+> [    2.009054] pci 0000:01:00.0: BAR 0 [mem 0x01000000-0x011fffff 64bit]: assigned
+> [    2.017526] mmcblk0boot1: mmc0:0001 Q2J54A 16.0 MiB
+> [    2.022015] pci 0000:01:00.0: ROM [mem 0x01300000-0x0130ffff pref]: assigned
+> [    2.032133] mmcblk0rpmb: mmc0:0001 Q2J54A 512 KiB, chardev (242:0)
+> [    2.036347] pci 0000:00:00.0: PCI bridge to [bus 01-ff]
+> [    2.036370] pci 0000:00:00.0:   bridge window [mem 0x01000000-0x011fffff]
+> [    2.036384] pci 0000:00:00.0:   bridge window [mem 0x01300000-0x013fffff pref]
+> [    2.042552] pps pps0: new PPS source ptp0
+> [    2.048338] pci_bus 0000:00: resource 4 [io  0x0000-0xffff]
+> [    2.083626] pci_bus 0000:00: resource 5 [mem 0x01000000-0x01efffff]
+> [    2.089972] pci_bus 0000:01: resource 1 [mem 0x01000000-0x011fffff]
+> [    2.093461] fec 2188000.ethernet eth0: registered PHC device 0
+> [    2.096283] pci_bus 0000:01: resource 2 [mem 0x01300000-0x013fffff pref]
+> [    2.096352] sysfs: cannot create duplicate filename '/devices/platform/soc/1ffc000.pcie/pci0000:00/0000:00:00.0/resource0'
+> [    2.096365] CPU: 3 UID: 0 PID: 52 Comm: kworker/u19:2 Not tainted 6.12.0-rc1 #54
+> [    2.096381] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
+> [    2.096391] Workqueue: async async_run_entry_fn
+> [    2.103025] imx_thermal 20c8000.anatop:tempmon: Industrial CPU temperature grade - max:105C critical:100C passive:95C
+> [    2.108932]
+> [    2.108940] Call trace:
+> [    2.108950]  unwind_backtrace from show_stack+0x10/0x14
+> [    2.121391] clk: Disabling unused clocks
+> [    2.127423]  show_stack from dump_stack_lvl+0x54/0x68
+> [    2.127451]  dump_stack_lvl from sysfs_warn_dup+0x58/0x64
+> [    2.134265] PM: genpd: Disabling unused power domains
+> [    2.138525]  sysfs_warn_dup from sysfs_add_bin_file_mode_ns+0xbc/0xcc
+> [    2.138547]  sysfs_add_bin_file_mode_ns from sysfs_create_bin_file+0xac/0xb4
+> [    2.149242] ALSA device list:
+> [    2.150647]  sysfs_create_bin_file from pci_create_resource_files+0x84/0x148
+> [    2.153183]   No soundcards found.
+> [    2.158407]  pci_create_resource_files from pci_bus_add_device+0x24/0xe4
+> [    2.211699]  pci_bus_add_device from pci_bus_add_devices+0x2c/0x70
+> [    2.217930]  pci_bus_add_devices from pci_host_probe+0x7c/0xa4
+> [    2.223806]  pci_host_probe from dw_pcie_host_init+0x4ec/0x71c
+> [    2.229682]  dw_pcie_host_init from imx_pcie_probe+0x3a8/0x75c
+> [    2.235559]  imx_pcie_probe from platform_probe+0x5c/0xb0
+> [    2.241010]  platform_probe from really_probe+0xd0/0x3a4
+> [    2.246364]  really_probe from __driver_probe_device+0x8c/0x1d4
+> [    2.252321]  __driver_probe_device from driver_probe_device+0x30/0xc0
+> [    2.258803]  driver_probe_device from __driver_attach_async_helper+0x50/0xd8
+> [    2.265892]  __driver_attach_async_helper from async_run_entry_fn+0x30/0x144
+> [    2.272980]  async_run_entry_fn from process_one_work+0x154/0x2dc
+> [    2.279115]  process_one_work from worker_thread+0x250/0x3f0
+> [    2.284811]  worker_thread from kthread+0x110/0x12c
+> [    2.289726]  kthread from ret_from_fork+0x14/0x28
+> [    2.294461] Exception stack(0xe6a0dfb0 to 0xe6a0dff8)
+> [    2.299535] dfa0:                                     00000000 00000000 00000000 00000000
+> [    2.307740] dfc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+> [    2.315942] dfe0: 00000000 00000000 00000000 00000000 00000013 00000000
+> [    2.323156] pcieport 0000:00:00.0: PME: Signaling with IRQ 293
+> [    2.329645] pcieport 0000:00:00.0: AER: enabled with IRQ 293
+> [    2.335553] sysfs: cannot create duplicate filename '/devices/platform/soc/1ffc000.pcie/pci0000:00/0000:00:00.0/0000:01:00.0/resource0'
+> [    2.347794] CPU: 3 UID: 0 PID: 52 Comm: kworker/u19:2 Not tainted 6.12.0-rc1 #54
+> [    2.355229] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
+> [    2.361779] Workqueue: async async_run_entry_fn
+> [    2.366349] Call trace:
+> [    2.366362]  unwind_backtrace from show_stack+0x10/0x14
+> [    2.374183]  show_stack from dump_stack_lvl+0x54/0x68
+> [    2.379273]  dump_stack_lvl from sysfs_warn_dup+0x58/0x64
+> [    2.384706]  sysfs_warn_dup from sysfs_add_bin_file_mode_ns+0xbc/0xcc
+> [    2.391183]  sysfs_add_bin_file_mode_ns from sysfs_create_bin_file+0xac/0xb4
+> [    2.398270]  sysfs_create_bin_file from pci_create_resource_files+0x84/0x148
+> [    2.405360]  pci_create_resource_files from pci_bus_add_device+0x24/0xe4
+> [    2.412113]  pci_bus_add_device from pci_bus_add_devices+0x2c/0x70
+> [    2.418334]  pci_bus_add_devices from pci_bus_add_devices+0x60/0x70
+> [    2.424642]  pci_bus_add_devices from pci_host_probe+0x7c/0xa4
+> [    2.430511]  pci_host_probe from dw_pcie_host_init+0x4ec/0x71c
+> [    2.436384]  dw_pcie_host_init from imx_pcie_probe+0x3a8/0x75c
+> [    2.442258]  imx_pcie_probe from platform_probe+0x5c/0xb0
+> [    2.447704]  platform_probe from really_probe+0xd0/0x3a4
+> [    2.453057]  really_probe from __driver_probe_device+0x8c/0x1d4
+> [    2.459014]  __driver_probe_device from driver_probe_device+0x30/0xc0
+> [    2.465493]  driver_probe_device from __driver_attach_async_helper+0x50/0xd8
+> [    2.472580]  __driver_attach_async_helper from async_run_entry_fn+0x30/0x144
+> [    2.479666]  async_run_entry_fn from process_one_work+0x154/0x2dc
+> [    2.485800]  process_one_work from worker_thread+0x250/0x3f0
+> [    2.491494]  worker_thread from kthread+0x110/0x12c
+> [    2.496408]  kthread from ret_from_fork+0x14/0x28
+> [    2.501140] Exception stack(0xe6a0dfb0 to 0xe6a0dff8)
+> [    2.506214] dfa0:                                     00000000 00000000 00000000 00000000
+> [    2.514418] dfc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+> [    2.522620] dfe0: 00000000 00000000 00000000 00000000 00000013 00000000
 > 
-> The suspend/resume support is broken on the i.MX6QDL platform. This
+> This was not the case with kernel v6.11, do you have an idea where this
+> comes from? I did not dig into more detail yet but it looks a bit like a
+> regression. The driver still works, it just prints this duplicate
+> filename warning.
 
-You mean the 'system suspend/resume'?
-
-> patch resets the link upon resuming to recover functionality. It shares
-> most of the sequences with other i.MX devices but does not touch the
-> critical registers, which might break PCIe. This patch addresses the
-> same issue as the following downstream commit:
-> https://github.com/nxp-imx/linux-imx/commit/4e92355e1f79d225ea842511fcfd42b343b32995
-> In comparison this patch will also reset the device if possible. Without
-> this patch suspend/resume will not work if a PCIe device is connected.
-> The kernel will hang on resume and print an error:
-> ath10k_pci 0000:01:00.0: Unable to change power state from D3hot to D0, device inaccessible
-
-Looks like the device is turned off during suspend.
-
-> 8<--- cut here ---
-> Unhandled fault: imprecise external abort (0x1406) at 0x0106f944
-> 
-> Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> ---
-> v1 -> v2: Share most code with other i.MX platforms and set suspend
-> 	  support flag for i.MX6QDL. Version 1 can be found here:
-> 	  https://lore.kernel.org/all/20240819090428.17349-1-eichest@gmail.com/
-> 
->  drivers/pci/controller/dwc/pci-imx6.c | 44 +++++++++++++++++++++++++--
->  1 file changed, 41 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 808d1f1054173..f33bef0aa1071 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -1238,8 +1238,23 @@ static int imx_pcie_suspend_noirq(struct device *dev)
->  
->  	imx_pcie_msi_save_restore(imx_pcie, true);
->  	imx_pcie_pm_turnoff(imx_pcie);
-> -	imx_pcie_stop_link(imx_pcie->pci);
-> -	imx_pcie_host_exit(pp);
-> +	/*
-> +	 * Do not turn off the PCIe controller because of ERR003756, ERR004490, ERR005188,
-> +	 * they all document issues with LLTSSM and the PCIe controller which
-
-LTSSM
-
-But LTSSM is for the PCIe link state, not sure how it impacts controller state.
-Can you share the link to those erratums?
-
-> +	 * does not come out of reset properly. Therefore, try to keep the controller enabled
-> +	 * and only reset the link. However, the reference clock still needs to be turned off,
-
-You are resetting the *device* below, not the link.
-
-> +	 * else the controller will freeze on resume.
-> +	 */
-
-Please use 80 columns for comments. Exception is for the code.
-
-> +	if (imx_pcie->drvdata->variant == IMX6Q) {
-> +		/* Reset the PCIe device */
-> +		gpiod_set_value_cansleep(imx_pcie->reset_gpiod, 1);
-> +
-> +		if (imx_pcie->drvdata->enable_ref_clk)
-> +			imx_pcie->drvdata->enable_ref_clk(imx_pcie, false);
-> +	} else {
-> +		imx_pcie_stop_link(imx_pcie->pci);
-> +		imx_pcie_host_exit(pp);
-> +	}
->  
->  	return 0;
->  }
-> @@ -1253,6 +1268,28 @@ static int imx_pcie_resume_noirq(struct device *dev)
->  	if (!(imx_pcie->drvdata->flags & IMX_PCIE_FLAG_SUPPORTS_SUSPEND))
->  		return 0;
->  
-> +	/*
-> +	 * Even though the i.MX6Q does not support proper suspend/resume, we
-> +	 * need to reset the link after resume or the memory mapped PCIe I/O
-> +	 * space will be inaccessible. This will cause the system to freeze.
-> +	 */
-
-This comment is not really needed.
-
-> +	if (imx_pcie->drvdata->variant == IMX6Q) {
-> +		if (imx_pcie->drvdata->enable_ref_clk)
-> +			imx_pcie->drvdata->enable_ref_clk(imx_pcie, true);
-> +
-> +		imx_pcie_deassert_core_reset(imx_pcie);
-
-There is no corresponding imx_pcie_assert_core_reset() in suspend.
-
-> +
-> +		/*
-> +		 * Setup the root complex again and enable msi. Without this PCIe will
-> +		 * not work in msi mode and drivers will crash if they try to access
-> +		 * the device memory area
-> +		 */
-
-This indicates that the controller state is not preserved. I think we need a bit
-more understanding on what is going on during system suspend on this platform.
+Could you please do bisect to find the offending commit?
 
 - Mani
 
