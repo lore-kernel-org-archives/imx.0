@@ -1,417 +1,733 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBD91EA65;
-	Sat, 12 Oct 2024 17:35:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8071311185
+	for <imx@lists.linux.dev>; Sat, 12 Oct 2024 18:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728754540; cv=none; b=F1QDKg0lUFFd9gv8Efz+Y0M6fu6z8aDqEAjIx5Dr6CyypN509HOJmWh1iJ8oKFb1zl3DriOOSiKAg94QnAEPt5qClVrjByOLL3rAwu4vgsiYgN2O5K2itXGuCo+ZOkFoSO7YSr6xLVALra09Tz52edqjwNq6hVceoEJn2w7aujw=
+	t=1728756607; cv=none; b=nUvRaEQeJI62OdROh/DKN8JgrvBmY37mpaMuyXz3X0XbAEGRVOLr7xs5/SWL4fjRX6i9u2rBxnXSYdKfNaOSUEvZ2z1geA8irp/WYMSob6VeDhGjzDA7Deag5kGab3IbSvr4ay3px1hSvz1DiLwI4FlzUrNzfQF0Q17QuKlFdh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728754540; c=relaxed/simple;
-	bh=FUj3m7AxwKhLtalglvHoMqNJU6DbmtxgHK1NyIs6RcE=;
+	s=arc-20240116; t=1728756607; c=relaxed/simple;
+	bh=RlGNorzjVHm9kw32mhWKejp/5jhHHRtlv3tETncOF3o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=omhw2ELAOO/SMCa8G1+Jl4ELAmlYG0D+Tob9BQUj3ZHSdzbWYUVT5ffYMJ+oIFOkfIhReJ6s/ihM0V/airkdkwpxyIbsmfpwW6VzpUtP4/pOMnOLSEKq18EYblQDlR7kbuMCLyszFKTZLt5QDDsyaSeT+U+9apxFgIPdvMiZLbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pqvg0Fvx; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=B26hrDpW/1mVxNm8z9rl1tbVSMyUviTVcNvFVMFWPfcWWXtN/BnXGOgeW+GSzPZo3wewcHS5vdOvzvRL07xv0QuQWH2NpoqUfmcIK0XVtzVN2u1PZDcc/M7LBhggYHzozBWPshXetL/T3KhSuqDbWey6bfk3jUuA+eiL3xaJ9So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=VjwWB+JC; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pqvg0Fvx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EAF8C4CEC6;
-	Sat, 12 Oct 2024 17:35:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728754540;
-	bh=FUj3m7AxwKhLtalglvHoMqNJU6DbmtxgHK1NyIs6RcE=;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="VjwWB+JC"
+Received: from pendragon.ideasonboard.com (unknown [23.233.251.139])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 5D0448BF;
+	Sat, 12 Oct 2024 20:08:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1728756503;
+	bh=RlGNorzjVHm9kw32mhWKejp/5jhHHRtlv3tETncOF3o=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pqvg0FvxCGiQuZMNtxbF4TyokIAWf4Hg79BMflKEdfKw7Caj5+5ycLeJMn3QBXXuu
-	 fHEAaRDcLutjB4jesWjt2XEmWwoYBmXBhOuvxBbbzFaBqiVE61CXV/W+p9Q4x41EPK
-	 A5hCJLF0UwM8AK3KbKIUozTMuOjuRy1kP3422JnPe9w2jd3njjTpK5hD53erQz4AS8
-	 tjD1XVYIlSgMMNLIyhvo5oEJkUIcoyWtz/BhSsrFHIfJmlrO8xtu/Ld/AxAgkbnrYa
-	 cVH654pGqdpPuMGL2LR9hFQMuw+3A+VvulMumunCHNfsdF1rIXYumtbniMj2WJwXh9
-	 2X9AHxlxpThqg==
-Date: Sat, 12 Oct 2024 23:05:36 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: kishon@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	gregkh@linuxfoundation.org, peter.chen@kernel.org,
-	herve.codina@bootlin.com, linux-phy@lists.infradead.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-usb@vger.kernel.org,
-	jun.li@nxp.com
-Subject: Re: [PATCH v7 1/3] phy: fsl-imx8mq-usb: add tca function driver for
- imx95
-Message-ID: <ZwqzaKH9Ub8poNgX@vaman>
-References: <20241010090822.3915064-1-xu.yang_2@nxp.com>
+	b=VjwWB+JCPWbNVUpOrXWSHqpG/vhlzui+J1ySviyDIbY/0GSxMVu03KKLu3NAAylrn
+	 fmz+PvQUxEUv60r7nqGbPDuDtiptA+UrpLVzxu54bnzPGe06F1vQtQ3aUPrp60pmne
+	 SB9w68HV2EmZW+LdxRbPlEhC+f8L0fBHEIetfCsQ=
+Date: Sat, 12 Oct 2024 21:09:35 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+	"Paul J. Murphy" <paul.j.murphy@intel.com>,
+	Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
+	Tommaso Merciai <tomm.merciai@gmail.com>,
+	Martin Hecht <martin.hecht@avnet.eu>,
+	Zhi Mao <zhi.mao@mediatek.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Mikhail Rudenko <mike.rudenko@gmail.com>,
+	Ricardo Ribalda <ribalda@kernel.org>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Umang Jain <umang.jain@ideasonboard.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Dongchun Zhu <dongchun.zhu@mediatek.com>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Todor Tomov <todor.too@gmail.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 2/2] media: dt-bindings: Use additionalProperties: false
+ for endpoint: properties:
+Message-ID: <20241012180935.GC5212@pendragon.ideasonboard.com>
+References: <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-0-a2bb12a1796d@linaro.org>
+ <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-2-a2bb12a1796d@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241010090822.3915064-1-xu.yang_2@nxp.com>
+In-Reply-To: <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-2-a2bb12a1796d@linaro.org>
 
-On 10-10-24, 17:08, Xu Yang wrote:
-> The i.MX95 USB3 phy has a Type-C Assist block (TCA). This block consists
-> two functional blocks (XBar assist and VBus assist) and one system
-> access interface using APB.
+Hi Bryan,
+
+Thank you for the patch.
+
+On Sat, Oct 12, 2024 at 04:02:51PM +0100, Bryan O'Donoghue wrote:
+> Some of our sensor schemas use unevaluatedProperities: false for endpoint:
+
+s/unevaluatedProperities/unevaluatedProperties/
+
+Same below.
+
+> properties: while other schemas use additionalProperties: false.
 > 
-> The primary functionality of XBar assist is:
->  - switching lane for flip
->  - moving unused lanes into lower power states.
+> The effect of using unevaluatedProperities: false in this instance is that
+> any property in media/video-interfaces.yaml can be considered in a dts for
+> an endpoint.
 > 
-> This info can be get from:
-> i.MX95 RM Chapter 163.3.8 Type-C assist (TCA) block.
+> Converting to additionalProperties: false and running DT checkers show that
+> such a liberal policy is unnecessary.
 > 
-> This will add support for TCA block to achieve lane switching and tca
-> lower power functionality.
+> We should have a consistent way of defining these properties if for no
+> other reason than aid other developers in the preferred way of writing
+> these schemas for media/i2c in the future.
 > 
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> Reviewed-by: Jun Li <jun.li@nxp.com>
+> Convert to additionalProperties: as a result remote-endpoint needs to be
+> added to the property list for most sensors. In a few cases some
+> additional properties clock data-lanes or clock-lanes need to be added too
+> but, for-the-most-part remote-endpoint is the only missing property.
 > 
+> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 > ---
-> Changes in v2:
->  - return the value of imx95_usb_phy_get_tca()
-> Changes in v3:
->  - no changes
-> Changes in v4:
->  - remove compatible check for imx95
->  - check whether tca register region exist or not, yes means has tca,
->    otherwise skip tca setup
-> Changes in v5:
->  - no changes
-> Changes in v6:
->  - no changes
-> Changes in v7:
->  - fix sparse warnings in imx95_usb_phy_get_tca()
-> ---
->  drivers/phy/freescale/Kconfig              |   1 +
->  drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 243 +++++++++++++++++++++
->  2 files changed, 244 insertions(+)
+>  .../devicetree/bindings/media/i2c/alliedvision,alvium-csi2.yaml     | 5 ++++-
+>  Documentation/devicetree/bindings/media/i2c/galaxycore,gc05a2.yaml  | 4 +++-
+>  Documentation/devicetree/bindings/media/i2c/galaxycore,gc08a3.yaml  | 4 +++-
+>  Documentation/devicetree/bindings/media/i2c/galaxycore,gc2145.yaml  | 6 +++++-
+>  Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml        | 4 +++-
+>  Documentation/devicetree/bindings/media/i2c/imx219.yaml             | 6 +++++-
+>  Documentation/devicetree/bindings/media/i2c/mipi-ccs.yaml           | 4 +++-
+>  Documentation/devicetree/bindings/media/i2c/ovti,og01a1b.yaml       | 4 +++-
+>  Documentation/devicetree/bindings/media/i2c/ovti,ov02a10.yaml       | 4 +++-
+>  Documentation/devicetree/bindings/media/i2c/ovti,ov4689.yaml        | 4 +++-
+>  Documentation/devicetree/bindings/media/i2c/ovti,ov5648.yaml        | 5 ++++-
+>  Documentation/devicetree/bindings/media/i2c/ovti,ov5675.yaml        | 3 ++-
+>  Documentation/devicetree/bindings/media/i2c/ovti,ov7251.yaml        | 4 +++-
+>  Documentation/devicetree/bindings/media/i2c/ovti,ov8865.yaml        | 5 ++++-
+>  Documentation/devicetree/bindings/media/i2c/ovti,ov9282.yaml        | 4 +++-
+>  Documentation/devicetree/bindings/media/i2c/sony,imx214.yaml        | 4 +++-
+>  Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml        | 4 +++-
+>  Documentation/devicetree/bindings/media/i2c/sony,imx283.yaml        | 4 +++-
+>  Documentation/devicetree/bindings/media/i2c/sony,imx290.yaml        | 4 +++-
+>  Documentation/devicetree/bindings/media/i2c/sony,imx334.yaml        | 4 +++-
+>  Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml        | 4 +++-
+>  Documentation/devicetree/bindings/media/i2c/sony,imx412.yaml        | 4 +++-
+>  Documentation/devicetree/bindings/media/i2c/toshiba,tc358746.yaml   | 4 +++-
+>  23 files changed, 75 insertions(+), 23 deletions(-)
 > 
-> diff --git a/drivers/phy/freescale/Kconfig b/drivers/phy/freescale/Kconfig
-> index dcd9acff6d01..81f53564ee15 100644
-> --- a/drivers/phy/freescale/Kconfig
-> +++ b/drivers/phy/freescale/Kconfig
-> @@ -5,6 +5,7 @@ if (ARCH_MXC && ARM64) || COMPILE_TEST
->  config PHY_FSL_IMX8MQ_USB
->  	tristate "Freescale i.MX8M USB3 PHY"
->  	depends on OF && HAS_IOMEM
-> +	depends on TYPEC || TYPEC=n
->  	select GENERIC_PHY
->  	default ARCH_MXC && ARM64
+> diff --git a/Documentation/devicetree/bindings/media/i2c/alliedvision,alvium-csi2.yaml b/Documentation/devicetree/bindings/media/i2c/alliedvision,alvium-csi2.yaml
+> index d3329e991d1652936fcf671012b8018e4317ea40..ba166ecf4fcbb77efab69ebcbdb46f5666af8e77 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/alliedvision,alvium-csi2.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/alliedvision,alvium-csi2.yaml
+> @@ -32,7 +32,7 @@ properties:
+>      properties:
+>        endpoint:
+>          $ref: /schemas/media/video-interfaces.yaml#
+> -        unevaluatedProperties: false
+> +        additionalProperties: false
 >  
-> diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-> index adc6394626ce..661191276b27 100644
-> --- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-> +++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-> @@ -10,6 +10,7 @@
->  #include <linux/phy/phy.h>
->  #include <linux/platform_device.h>
->  #include <linux/regulator/consumer.h>
-> +#include <linux/usb/typec_mux.h>
+>          properties:
+>            link-frequencies: true
+> @@ -45,9 +45,12 @@ properties:
+>                - const: 3
+>                - const: 4
 >  
->  #define PHY_CTRL0			0x0
->  #define PHY_CTRL0_REF_SSP_EN		BIT(2)
-> @@ -50,11 +51,66 @@
+> +          remote-endpoint: true
+> +
+>          required:
+>            - data-lanes
+>            - link-frequencies
+> +          - remote-endpoint
 >  
->  #define PHY_TUNE_DEFAULT		0xffffffff
+>  required:
+>    - compatible
+> diff --git a/Documentation/devicetree/bindings/media/i2c/galaxycore,gc05a2.yaml b/Documentation/devicetree/bindings/media/i2c/galaxycore,gc05a2.yaml
+> index 0e7a7b5ac89f618e6cba0d86f6f7ea853e59ae1e..8b42440586aa8c853d8bf6046ccab0c3b23cb907 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/galaxycore,gc05a2.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/galaxycore,gc05a2.yaml
+> @@ -44,7 +44,7 @@ properties:
+>      properties:
+>        endpoint:
+>          $ref: /schemas/media/video-interfaces.yaml#
+> -        unevaluatedProperties: false
+> +        additionalProperties: false
 >  
-> +#define TCA_CLK_RST			0x00
-> +#define TCA_CLK_RST_SW			BIT(9)
-> +#define TCA_CLK_RST_REF_CLK_EN		BIT(1)
-> +#define TCA_CLK_RST_SUSPEND_CLK_EN	BIT(0)
-> +
-> +#define TCA_INTR_EN			0x04
-> +#define TCA_INTR_STS			0x08
-> +
-> +#define TCA_GCFG			0x10
-> +#define TCA_GCFG_ROLE_HSTDEV		BIT(4)
-> +#define TCA_GCFG_OP_MODE		GENMASK(1, 0)
-> +#define TCA_GCFG_OP_MODE_SYSMODE	0
-> +#define TCA_GCFG_OP_MODE_SYNCMODE	1
-> +
-> +#define TCA_TCPC			0x14
-> +#define TCA_TCPC_VALID			BIT(4)
-> +#define TCA_TCPC_LOW_POWER_EN		BIT(3)
-> +#define TCA_TCPC_ORIENTATION_NORMAL	BIT(2)
-> +#define TCA_TCPC_MUX_CONTRL		GENMASK(1, 0)
-> +#define TCA_TCPC_MUX_CONTRL_NO_CONN	0
-> +#define TCA_TCPC_MUX_CONTRL_USB_CONN	1
-> +
-> +#define TCA_SYSMODE_CFG			0x18
-> +#define TCA_SYSMODE_TCPC_DISABLE	BIT(3)
-> +#define TCA_SYSMODE_TCPC_FLIP		BIT(2)
-> +
-> +#define TCA_CTRLSYNCMODE_CFG0		0x20
-> +#define TCA_CTRLSYNCMODE_CFG1           0x20
-> +
-> +#define TCA_PSTATE			0x30
-> +#define TCA_PSTATE_CM_STS		BIT(4)
-> +#define TCA_PSTATE_TX_STS		BIT(3)
-> +#define TCA_PSTATE_RX_PLL_STS		BIT(2)
-> +#define TCA_PSTATE_PIPE0_POWER_DOWN	GENMASK(1, 0)
-> +
-> +#define TCA_GEN_STATUS			0x34
-> +#define TCA_GEN_DEV_POR			BIT(12)
-> +#define TCA_GEN_REF_CLK_SEL		BIT(8)
-> +#define TCA_GEN_TYPEC_FLIP_INVERT	BIT(4)
-> +#define TCA_GEN_PHY_TYPEC_DISABLE	BIT(3)
-> +#define TCA_GEN_PHY_TYPEC_FLIP		BIT(2)
-> +
-> +#define TCA_VBUS_CTRL			0x40
-> +#define TCA_VBUS_STATUS			0x44
-> +
-> +#define TCA_INFO			0xFC
+>          properties:
+>            data-lanes:
+> @@ -59,10 +59,12 @@ properties:
+>                    - const: 2
+>  
+>            link-frequencies: true
+> +          remote-endpoint: true
+>  
+>          required:
+>            - data-lanes
+>            - link-frequencies
+> +          - remote-endpoint
+>  
+>      required:
+>        - endpoint
+> diff --git a/Documentation/devicetree/bindings/media/i2c/galaxycore,gc08a3.yaml b/Documentation/devicetree/bindings/media/i2c/galaxycore,gc08a3.yaml
+> index 51b8ece09c722e057fdb01b38d3e360e7604f39a..c15169ef901139411273e110523a311d87b4322e 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/galaxycore,gc08a3.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/galaxycore,gc08a3.yaml
+> @@ -44,7 +44,7 @@ properties:
+>      properties:
+>        endpoint:
+>          $ref: /schemas/media/video-interfaces.yaml#
+> -        unevaluatedProperties: false
+> +        additionalProperties: false
+>  
+>          properties:
+>            data-lanes:
+> @@ -59,10 +59,12 @@ properties:
+>                    - const: 2
+>  
+>            link-frequencies: true
+> +          remote-endpoint: true
+>  
+>          required:
+>            - data-lanes
+>            - link-frequencies
+> +          - remote-endpoint
+>  
+>      required:
+>        - endpoint
+> diff --git a/Documentation/devicetree/bindings/media/i2c/galaxycore,gc2145.yaml b/Documentation/devicetree/bindings/media/i2c/galaxycore,gc2145.yaml
+> index 9eac588de0bc28d85f44663afe5472e35f1e652c..702625962d90ea7fafb4f4f4f865659097b51406 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/galaxycore,gc2145.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/galaxycore,gc2145.yaml
+> @@ -56,13 +56,17 @@ properties:
+>      properties:
+>        endpoint:
+>          $ref: /schemas/media/video-interfaces.yaml#
+> -        unevaluatedProperties: false
+> +        additionalProperties: false
+>  
+>          properties:
+> +          data-lanes: true
 
-lowercase please
+We should have a more precise constraint here. The sensor supports
+single or dual data lanes operation, so you can write
 
-> +
-> +struct tca_blk {
-> +	struct typec_switch_dev *sw;
-> +	void __iomem *base;
-> +	struct mutex mutex;
-> +	enum typec_orientation orientation;
-> +};
-> +
->  struct imx8mq_usb_phy {
->  	struct phy *phy;
->  	struct clk *clk;
->  	void __iomem *base;
->  	struct regulator *vbus;
-> +	struct tca_blk *tca;
->  	u32 pcs_tx_swing_full;
->  	u32 pcs_tx_deemph_3p5db;
->  	u32 tx_vref_tune;
-> @@ -64,6 +120,175 @@ struct imx8mq_usb_phy {
->  	u32 comp_dis_tune;
->  };
->  
-> +
-> +static void tca_blk_orientation_set(struct tca_blk *tca,
-> +				enum typec_orientation orientation);
-> +
-> +#ifdef CONFIG_TYPEC
-> +
-> +static int tca_blk_typec_switch_set(struct typec_switch_dev *sw,
-> +				enum typec_orientation orientation)
-> +{
-> +	struct imx8mq_usb_phy *imx_phy = typec_switch_get_drvdata(sw);
-> +	struct tca_blk *tca = imx_phy->tca;
-> +	int ret;
-> +
-> +	if (tca->orientation == orientation)
-> +		return 0;
-> +
-> +	ret = clk_prepare_enable(imx_phy->clk);
-> +	if (ret)
-> +		return ret;
-> +
-> +	tca_blk_orientation_set(tca, orientation);
-> +	clk_disable_unprepare(imx_phy->clk);
-> +
-> +	return 0;
-> +}
-> +
-> +static struct typec_switch_dev *tca_blk_get_typec_switch(struct platform_device *pdev,
-> +					struct imx8mq_usb_phy *imx_phy)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct typec_switch_dev *sw;
-> +	struct typec_switch_desc sw_desc = { };
-> +
-> +	sw_desc.drvdata = imx_phy;
-> +	sw_desc.fwnode = dev->fwnode;
-> +	sw_desc.set = tca_blk_typec_switch_set;
-> +	sw_desc.name = NULL;
-> +
-> +	sw = typec_switch_register(dev, &sw_desc);
-> +	if (IS_ERR(sw)) {
-> +		dev_err(dev, "Error register tca orientation switch: %ld",
-> +				PTR_ERR(sw));
-> +		return NULL;
-> +	}
-> +
-> +	return sw;
-> +}
-> +
-> +static void tca_blk_put_typec_switch(struct typec_switch_dev *sw)
-> +{
-> +	typec_switch_unregister(sw);
-> +}
+          data-lanes:
+	    minItems: 1
+	    items:
+	      - const: 1
+	      - const: 2
 
-Why to put a wrapper over an API, call this instead?
+>            link-frequencies: true
+> +          remote-endpoint: true
+>  
+>          required:
+> +          - data-lanes
+>            - link-frequencies
+> +          - remote-endpoint
+>  
+>      required:
+>        - endpoint
+> diff --git a/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> index d18ead8f7fc43bfacc291aed85b5ca9166c46edb..52bb089bd67fd0f9b5464e068b8db0b8e4406b3d 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> @@ -52,7 +52,7 @@ properties:
+>      properties:
+>        endpoint:
+>          $ref: /schemas/media/video-interfaces.yaml#
+> -        unevaluatedProperties: false
+> +        additionalProperties: false
+>  
+>          properties:
+>            data-lanes:
+> @@ -67,10 +67,12 @@ properties:
+>                    - const: 2
+>  
+>            link-frequencies: true
+> +          remote-endpoint: true
+>  
+>          required:
+>            - data-lanes
+>            - link-frequencies
+> +          - remote-endpoint
+>  
+>  required:
+>    - compatible
+> diff --git a/Documentation/devicetree/bindings/media/i2c/imx219.yaml b/Documentation/devicetree/bindings/media/i2c/imx219.yaml
+> index 07d088cf66e0bde362b12d3494e5c91a1dd96bf3..5f395cf04b95ca47d5e685b8c43b8265db6910ae 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/imx219.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/imx219.yaml
+> @@ -52,7 +52,7 @@ properties:
+>      properties:
+>        endpoint:
+>          $ref: /schemas/media/video-interfaces.yaml#
+> -        unevaluatedProperties: false
+> +        additionalProperties: false
+>  
+>          properties:
+>            data-lanes:
+> @@ -65,10 +65,14 @@ properties:
+>                - const: 2
+>  
+>            clock-noncontinuous: true
+> +          clock-lanes: true
 
-> +
-> +#else
-> +
-> +static struct typec_switch_dev *tca_blk_get_typec_switch(struct platform_device *pdev,
-> +			struct imx8mq_usb_phy *imx_phy)
-> +{
-> +	return NULL;
-> +}
-> +
-> +static void tca_blk_put_typec_switch(struct typec_switch_dev *sw) {}
-> +
-> +#endif /* CONFIG_TYPEC */
-> +
-> +static void tca_blk_orientation_set(struct tca_blk *tca,
-> +				enum typec_orientation orientation)
-> +{
-> +	u32 val;
-> +
-> +	mutex_lock(&tca->mutex);
-> +
-> +	if (orientation == TYPEC_ORIENTATION_NONE) {
-> +		/*
-> +		 * use Controller Synced Mode for TCA low power enable and
-> +		 * put PHY to USB safe state.
-> +		 */
-> +		val = readl(tca->base + TCA_GCFG);
-> +		val = FIELD_PREP(TCA_GCFG_OP_MODE, TCA_GCFG_OP_MODE_SYNCMODE);
-> +		writel(val, tca->base + TCA_GCFG);
-> +
-> +		val = readl(tca->base + TCA_TCPC);
-> +		val = TCA_TCPC_VALID | TCA_TCPC_LOW_POWER_EN;
-> +		writel(val, tca->base + TCA_TCPC);
-> +
-> +		goto out;
-> +	}
-> +
-> +	/* use System Configuration Mode for TCA mux control. */
-> +	val = readl(tca->base + TCA_GCFG);
-> +	val = FIELD_PREP(TCA_GCFG_OP_MODE, TCA_GCFG_OP_MODE_SYSMODE);
-> +	writel(val, tca->base + TCA_GCFG);
-> +
-> +	/* Disable TCA module */
-> +	val = readl(tca->base + TCA_SYSMODE_CFG);
-> +	val |= TCA_SYSMODE_TCPC_DISABLE;
-> +	writel(val, tca->base + TCA_SYSMODE_CFG);
-> +
-> +	if (orientation == TYPEC_ORIENTATION_REVERSE)
-> +		val |= TCA_SYSMODE_TCPC_FLIP;
-> +	else if (orientation == TYPEC_ORIENTATION_NORMAL)
-> +		val &= ~TCA_SYSMODE_TCPC_FLIP;
-> +
-> +	writel(val, tca->base + TCA_SYSMODE_CFG);
-> +
-> +	/* Enable TCA module */
-> +	val &= ~TCA_SYSMODE_TCPC_DISABLE;
-> +	writel(val, tca->base + TCA_SYSMODE_CFG);
-> +
-> +out:
-> +	tca->orientation = orientation;
-> +	mutex_unlock(&tca->mutex);
-> +}
-> +
-> +static void tca_blk_init(struct tca_blk *tca)
-> +{
-> +	u32 val;
-> +
-> +	/* reset XBar block */
-> +	val = readl(tca->base + TCA_CLK_RST);
-> +	val &= ~TCA_CLK_RST_SW;
-> +	writel(val, tca->base + TCA_CLK_RST);
-> +
-> +	udelay(100);
-> +
-> +	/* clear reset */
-> +	val |= TCA_CLK_RST_SW;
-> +	writel(val, tca->base + TCA_CLK_RST);
-> +
-> +	tca_blk_orientation_set(tca, tca->orientation);
-> +}
-> +
-> +static struct tca_blk *imx95_usb_phy_get_tca(struct platform_device *pdev,
-> +				struct imx8mq_usb_phy *imx_phy)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct resource *res;
-> +	struct tca_blk *tca;
-> +
-> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-> +	if (!res)
-> +		return NULL;
-> +
-> +	tca = devm_kzalloc(dev, sizeof(*tca), GFP_KERNEL);
-> +	if (!tca)
-> +		return ERR_PTR(-ENOMEM);
-> +
-> +	tca->base = devm_ioremap_resource(&pdev->dev, res);
-> +	if (IS_ERR(tca->base))
-> +		return ERR_CAST(tca->base);
-> +
-> +	mutex_init(&tca->mutex);
-> +
-> +	tca->orientation = TYPEC_ORIENTATION_NORMAL;
-> +	tca->sw = tca_blk_get_typec_switch(pdev, imx_phy);
-> +
-> +	return tca;
-> +}
-> +
-> +static void imx95_usb_phy_put_tca(struct imx8mq_usb_phy *imx_phy)
-> +{
-> +	struct tca_blk *tca = imx_phy->tca;
-> +
-> +	if (!tca)
-> +		return;
-> +
-> +	tca_blk_put_typec_switch(tca->sw);
-> +}
-> +
->  static u32 phy_tx_vref_tune_from_property(u32 percent)
->  {
->  	percent = clamp(percent, 94U, 124U);
-> @@ -315,6 +540,9 @@ static int imx8mp_usb_phy_init(struct phy *phy)
+This shouldn't be needed, as the sensor doesn't support clock lane
+remapping. Could we drop the clock-lanes property from upstream device
+tree sources instead ?
+
+>            link-frequencies: true
+> +          remote-endpoint: true
 >  
->  	imx8m_phy_tune(imx_phy);
+>          required:
+> +          - data-lanes
+>            - link-frequencies
+> +          - remote-endpoint
 >  
-> +	if (imx_phy->tca)
-> +		tca_blk_init(imx_phy->tca);
+>  required:
+>    - compatible
+> diff --git a/Documentation/devicetree/bindings/media/i2c/mipi-ccs.yaml b/Documentation/devicetree/bindings/media/i2c/mipi-ccs.yaml
+> index f8ace8cbccdbac482ffba733d5b28a3a38aaf822..ce45bd8409597fa6989f632d68cd4aa1a468d152 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/mipi-ccs.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/mipi-ccs.yaml
+> @@ -77,7 +77,7 @@ properties:
+>      properties:
+>        endpoint:
+>          $ref: /schemas/media/video-interfaces.yaml#
+> -        unevaluatedProperties: false
+> +        additionalProperties: false
+>  
+>          properties:
+>            link-frequencies: true
+> @@ -87,11 +87,13 @@ properties:
+>                - 1 # CSI-2 C-PHY
+>                - 3 # CCP2
+>                - 4 # CSI-2 D-PHY
+> +          remote-endpoint: true
+>  
+>          required:
+>            - link-frequencies
+>            - data-lanes
+>            - bus-type
+> +          - remote-endpoint
+>  
+>  required:
+>    - compatible
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,og01a1b.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,og01a1b.yaml
+> index ca57c01739d2b93100a37db56255ab717c1197ff..9b3738956c482d8826bf64f557c2e91630ea9799 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/ovti,og01a1b.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/ovti,og01a1b.yaml
+> @@ -55,7 +55,7 @@ properties:
+>      properties:
+>        endpoint:
+>          $ref: /schemas/media/video-interfaces.yaml#
+> -        unevaluatedProperties: false
+> +        additionalProperties: false
+>  
+>          properties:
+>            data-lanes:
+> @@ -65,10 +65,12 @@ properties:
+>                enum: [1, 2]
+>  
+>            link-frequencies: true
+> +          remote-endpoint: true
+>  
+>          required:
+>            - data-lanes
+>            - link-frequencies
+> +          - remote-endpoint
+>  
+>  required:
+>    - compatible
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov02a10.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov02a10.yaml
+> index 67c1c291327b7febb6a039bf6f28c8dc1f32ed7f..b8db4be137085fe31ec2f076c7dc66b30bf0b66c 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/ovti,ov02a10.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov02a10.yaml
+> @@ -77,7 +77,7 @@ properties:
+>      properties:
+>        endpoint:
+>          $ref: /schemas/media/video-interfaces.yaml#
+> -        unevaluatedProperties: false
+> +        additionalProperties: false
+>  
+>          properties:
+>            link-frequencies: true
+> @@ -88,9 +88,11 @@ properties:
+>                the link speed defined by the 'link-frequencies' property.
+>                If present, the value shall be in the range of 0-4.
+>              default: 4
+> +          remote-endpoint: true
+>  
+>          required:
+>            - link-frequencies
+> +          - remote-endpoint
+>  
+>      required:
+>        - endpoint
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov4689.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov4689.yaml
+> index d96199031b66c5c162a034824f195e277f2a1795..7499523a6e0fbd64b9b980333adaa14a0c40a33b 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/ovti,ov4689.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov4689.yaml
+> @@ -61,7 +61,7 @@ properties:
+>      properties:
+>        endpoint:
+>          $ref: /schemas/media/video-interfaces.yaml#
+> -        unevaluatedProperties: false
+> +        additionalProperties: false
+>  
+>          properties:
+>            data-lanes:
+> @@ -77,10 +77,12 @@ properties:
+>                - items:
+>                    - const: 1
+>            link-frequencies: true
+> +          remote-endpoint: true
+>  
+>          required:
+>            - data-lanes
+>            - link-frequencies
+> +          - remote-endpoint
+>  
+>  required:
+>    - compatible
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov5648.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov5648.yaml
+> index 622243cae03caa5d14aa312df40ef5907e190d2c..358c0422451f7faa8e0ebfc9226a5cfb087e3598 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/ovti,ov5648.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov5648.yaml
+> @@ -45,7 +45,7 @@ properties:
+>      properties:
+>        endpoint:
+>          $ref: /schemas/media/video-interfaces.yaml#
+> -        unevaluatedProperties: false
+> +        additionalProperties: false
+>  
+>          properties:
+>            link-frequencies: true
+> @@ -54,9 +54,12 @@ properties:
+>              minItems: 1
+>              maxItems: 2
+>  
+> +          remote-endpoint: true
 > +
->  	return 0;
->  }
+>          required:
+>            - data-lanes
+>            - link-frequencies
+> +          - remote-endpoint
 >  
-> @@ -359,6 +587,8 @@ static const struct of_device_id imx8mq_usb_phy_of_match[] = {
->  	 .data = &imx8mq_usb_phy_ops,},
->  	{.compatible = "fsl,imx8mp-usb-phy",
->  	 .data = &imx8mp_usb_phy_ops,},
-> +	{.compatible = "fsl,imx95-usb-phy",
-> +	 .data = &imx8mp_usb_phy_ops,},
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(of, imx8mq_usb_phy_of_match);
-> @@ -398,6 +628,11 @@ static int imx8mq_usb_phy_probe(struct platform_device *pdev)
+>  required:
+>    - compatible
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov5675.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov5675.yaml
+> index ad07204057f979ade534d29c99c3aff7372bd332..eff212524bf3c7b1ec6aa7e826d4318d58ba53a5 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/ovti,ov5675.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov5675.yaml
+> @@ -60,7 +60,7 @@ properties:
+>      properties:
+>        endpoint:
+>          $ref: /schemas/media/video-interfaces.yaml#
+> -        unevaluatedProperties: false
+> +        additionalProperties: false
 >  
->  	phy_set_drvdata(imx_phy->phy, imx_phy);
+>          properties:
+>            data-lanes:
+> @@ -69,6 +69,7 @@ properties:
 >  
-> +	imx_phy->tca = imx95_usb_phy_get_tca(pdev, imx_phy);
-> +	if (IS_ERR(imx_phy->tca))
-> +		return dev_err_probe(dev, PTR_ERR(imx_phy->tca),
-> +					"failed to get tca\n");
+>            # Supports max data transfer of 900 Mbps per lane
+>            link-frequencies: true
+> +          remote-endpoint: true
+>  
+>  required:
+>    - compatible
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov7251.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov7251.yaml
+> index 2e5187acbbb89728cbb8a402559d24766198a3da..cbbe3c9ce151eb33d2b0cc1a44e6ebf66d9b59fa 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/ovti,ov7251.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov7251.yaml
+> @@ -53,7 +53,7 @@ properties:
+>      properties:
+>        endpoint:
+>          $ref: /schemas/media/video-interfaces.yaml#
+> -        unevaluatedProperties: false
+> +        additionalProperties: false
+>  
+>          properties:
+>            clock-lanes:
+> @@ -63,10 +63,12 @@ properties:
+>              maxItems: 1
+>  
+>            link-frequencies: true
+> +          remote-endpoint: true
+>  
+>          required:
+>            - data-lanes
+>            - link-frequencies
+> +          - remote-endpoint
+>  
+>  required:
+>    - compatible
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov8865.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov8865.yaml
+> index 382d7de7a89bcea11be384a2a3800512994f9346..dd5c5715fdcfc00e6d851f375f41e4d077b92bc0 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/ovti,ov8865.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov8865.yaml
+> @@ -45,7 +45,7 @@ properties:
+>      properties:
+>        endpoint:
+>          $ref: /schemas/media/video-interfaces.yaml#
+> -        unevaluatedProperties: false
+> +        additionalProperties: false
+>  
+>          properties:
+>            link-frequencies: true
+> @@ -54,9 +54,12 @@ properties:
+>              minItems: 1
+>              maxItems: 4
+>  
+> +          remote-endpoint: true
 > +
->  	imx8m_get_phy_tuning_data(imx_phy);
+>          required:
+>            - data-lanes
+>            - link-frequencies
+> +          - remote-endpoint
 >  
->  	phy_provider = devm_of_phy_provider_register(dev, of_phy_simple_xlate);
-> @@ -405,8 +640,16 @@ static int imx8mq_usb_phy_probe(struct platform_device *pdev)
->  	return PTR_ERR_OR_ZERO(phy_provider);
->  }
+>  required:
+>    - compatible
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov9282.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov9282.yaml
+> index 38325cf318f7bd2cd60a4c7bbb6a65b54b855e26..dde4e7426bf00920f1bd9ed1bf4d8594932dedaf 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/ovti,ov9282.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov9282.yaml
+> @@ -51,15 +51,17 @@ properties:
+>      properties:
+>        endpoint:
+>          $ref: /schemas/media/video-interfaces.yaml#
+> -        unevaluatedProperties: false
+> +        additionalProperties: false
 >  
-> +static void imx8mq_usb_phy_remove(struct platform_device *pdev)
-> +{
-> +	struct imx8mq_usb_phy *imx_phy = platform_get_drvdata(pdev);
-> +
-> +	imx95_usb_phy_put_tca(imx_phy);
-> +}
-> +
->  static struct platform_driver imx8mq_usb_phy_driver = {
->  	.probe	= imx8mq_usb_phy_probe,
-> +	.remove = imx8mq_usb_phy_remove,
->  	.driver = {
->  		.name	= "imx8mq-usb-phy",
->  		.of_match_table	= imx8mq_usb_phy_of_match,
-> -- 
-> 2.34.1
+>          properties:
+>            data-lanes: true
+>            link-frequencies: true
+> +          remote-endpoint: true
+>  
+>          required:
+>            - data-lanes
+>            - link-frequencies
+> +          - remote-endpoint
+>  
+>      required:
+>        - endpoint
+> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx214.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx214.yaml
+> index 0162eec8ca993a7614d29908f89fa9fe6d4b545d..9b78ff6bd5f114c7f63ac90e71fa677445ddf702 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/sony,imx214.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx214.yaml
+> @@ -58,7 +58,7 @@ properties:
+>      properties:
+>        endpoint:
+>          $ref: /schemas/media/video-interfaces.yaml#
+> -        unevaluatedProperties: false
+> +        additionalProperties: false
+>  
+>          properties:
+>            data-lanes:
+> @@ -73,10 +73,12 @@ properties:
+>                    - const: 4
+>  
+>            link-frequencies: true
+> +          remote-endpoint: true
+>  
+>          required:
+>            - data-lanes
+>            - link-frequencies
+> +          - remote-endpoint
+>  
+>      additionalProperties: false
+>  
+> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+> index f0f9726a2add89492b8c56e17ed607841baa3a0d..4cf49472c24f1b800f6d2e41b8716e2ac32f959a 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+> @@ -56,7 +56,7 @@ properties:
+>      properties:
+>        endpoint:
+>          $ref: /schemas/media/video-interfaces.yaml#
+> -        unevaluatedProperties: false
+> +        additionalProperties: false
+>  
+>          properties:
+>            data-lanes:
+> @@ -71,10 +71,12 @@ properties:
+>                    - const: 2
+>  
+>            link-frequencies: true
+> +          remote-endpoint: true
+>  
+>          required:
+>            - data-lanes
+>            - link-frequencies
+> +          - remote-endpoint
+>  
+>  required:
+>    - compatible
+> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx283.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx283.yaml
+> index e4f49f1435a5c2e6e1507d250662ea6ecbf3c7dc..75b78a3e925ed2fd09f56c8349d234a32739f141 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/sony,imx283.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx283.yaml
+> @@ -48,7 +48,7 @@ properties:
+>      properties:
+>        endpoint:
+>          $ref: /schemas/media/video-interfaces.yaml#
+> -        unevaluatedProperties: false
+> +        additionalProperties: false
+>  
+>          properties:
+>            data-lanes:
+> @@ -60,10 +60,12 @@ properties:
+>                    - const: 4
+>  
+>            link-frequencies: true
+> +          remote-endpoint: true
+>  
+>          required:
+>            - data-lanes
+>            - link-frequencies
+> +          - remote-endpoint
+>  
+>      required:
+>        - endpoint
+> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx290.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx290.yaml
+> index bf05ca48601abda53d60a3d03aa556e7b8fd825b..e6aec7a1ba2b22a11111d19a61384f1200041df5 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/sony,imx290.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx290.yaml
+> @@ -71,7 +71,7 @@ properties:
+>      properties:
+>        endpoint:
+>          $ref: /schemas/media/video-interfaces.yaml#
+> -        unevaluatedProperties: false
+> +        additionalProperties: false
+>  
+>          properties:
+>            data-lanes:
+> @@ -86,10 +86,12 @@ properties:
+>                    - const: 4
+>  
+>            link-frequencies: true
+> +          remote-endpoint: true
+>  
+>          required:
+>            - data-lanes
+>            - link-frequencies
+> +          - remote-endpoint
+>  
+>      additionalProperties: false
+>  
+> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx334.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx334.yaml
+> index 872b8288948b2bba743f2365a55165181df156ae..d30ef330e5af225728d1a6c40b26050cd33ba4be 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/sony,imx334.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx334.yaml
+> @@ -38,15 +38,17 @@ properties:
+>      properties:
+>        endpoint:
+>          $ref: /schemas/media/video-interfaces.yaml#
+> -        unevaluatedProperties: false
+> +        additionalProperties: false
+>  
+>          properties:
+>            data-lanes: true
+>            link-frequencies: true
+> +          remote-endpoint: true
+>  
+>          required:
+>            - data-lanes
+>            - link-frequencies
+> +          - remote-endpoint
+>  
+>      required:
+>        - endpoint
+> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml
+> index 38bd1c7304a59bb5fea90954c1e4e626a7c86f2f..36c3a0ba7822475770cd903cec3343d31bb66520 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml
+> @@ -48,15 +48,17 @@ properties:
+>      properties:
+>        endpoint:
+>          $ref: /schemas/media/video-interfaces.yaml#
+> -        unevaluatedProperties: false
+> +        additionalProperties: false
+>  
+>          properties:
+>            data-lanes: true
+>            link-frequencies: true
+> +          remote-endpoint: true
+>  
+>          required:
+>            - data-lanes
+>            - link-frequencies
+> +          - remote-endpoint
+>  
+>      required:
+>        - endpoint
+> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx412.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx412.yaml
+> index ece1e17fe34553671e61c965eb1833c5eb08131b..0bbdf657a8c0643ffe512ae04c14dfc8e6b4fc94 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/sony,imx412.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx412.yaml
+> @@ -50,15 +50,17 @@ properties:
+>      properties:
+>        endpoint:
+>          $ref: /schemas/media/video-interfaces.yaml#
+> -        unevaluatedProperties: false
+> +        additionalProperties: false
+>  
+>          properties:
+>            data-lanes: true
+>            link-frequencies: true
+> +          remote-endpoint: true
+>  
+>          required:
+>            - data-lanes
+>            - link-frequencies
+> +          - remote-endpoint
+>  
+>      required:
+>        - endpoint
+> diff --git a/Documentation/devicetree/bindings/media/i2c/toshiba,tc358746.yaml b/Documentation/devicetree/bindings/media/i2c/toshiba,tc358746.yaml
+> index 1c476b635b690865cff0882578d72b1db2dc7c50..367d669ad864ed6b2a8762f953f58e206c8c8194 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/toshiba,tc358746.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/toshiba,tc358746.yaml
+> @@ -96,7 +96,7 @@ properties:
+>          properties:
+>            endpoint:
+>              $ref: /schemas/media/video-interfaces.yaml#
+> -            unevaluatedProperties: false
+> +            additionalProperties: false
+>  
+>              properties:
+>                data-lanes:
+> @@ -105,10 +105,12 @@ properties:
+>  
+>                clock-noncontinuous: true
+>                link-frequencies: true
+> +              remote-endpoint: true
+>  
+>              required:
+>                - data-lanes
+>                - link-frequencies
+> +              - remote-endpoint
+>  
+>      required:
+>        - port@0
+> 
 
 -- 
-~Vinod
+Regards,
+
+Laurent Pinchart
