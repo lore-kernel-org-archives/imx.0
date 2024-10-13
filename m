@@ -1,136 +1,93 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C020E13A868
-	for <imx@lists.linux.dev>; Sun, 13 Oct 2024 11:08:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1BF14831E
+	for <imx@lists.linux.dev>; Sun, 13 Oct 2024 16:24:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728817714; cv=none; b=M+bNONueIDr3ZN1EKDyjaM8nz8PFLD+dFDanjj0t8vKaDxFlZgEdAzR8B4RqS5OQ8NxMuXRjyL7J7HVG9fQ1TEP//f80lrVroHkGse7duG4RwuJ/AJ85xNTpoJLrHmDf4q63eoli1TO7KOgIjWzxiBQOzSzC4/nWNO40x9ul6ZI=
+	t=1728836673; cv=none; b=hGoto7rTJ04ldgoeF1eXogAjpqAmRLh6pi2IfHY4GQ3r9q1thzg+a9d7OhH13bvA58ZFaL5GVCkOjc4zOHx0pa6AVPVmQtX+O2PaMsO9Nxy2NU+BJ2/eVe790dg2bGsxlzHcl0JCM86k/mYOp5sZU2ERU3Q7slJjwnWoD50MGXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728817714; c=relaxed/simple;
-	bh=/Ct3FGY7j5Fv5z63HvviD2bGOyouMPvYri4nmXi1OT0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LIC8mp1v/2jYqET2zcJEOqMupe/jYrVCwQnIaVciXjLhsppu2eRIR1CeFQz1lCy07DWREW6dvCMYlCTaQJ96r9AfQy5OE5D0f7AqvFhVoRpE6Gx0p2UWyXSAyBgTmyliFNWWYEqHVR3vRGZnIdDoDMYqFrrJ7f95a6xTcWnB2Co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=koKF8oqW; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1728836673; c=relaxed/simple;
+	bh=NE4FbCOloT4eH5vN817TuK0z5R9di0EBvDq7W5Sn73U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oVTzrLq0uBkJNbryKIsQTWMmG4vLXU1vulZuy/wFz/UOoyxW6Y+JPeWWGNfvwpfFmnRThigzsWfW2yavq6KITy2DxG0FuxuI//L9AKTdqaYWt85ZIVO7eRUJ929NdF42/wj9xKTwuSUpk8gMX7AieY5qKvc6bUG+4K2jb48kP6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=bR+1dp+G; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="koKF8oqW"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43117ed8adbso35564885e9.2
-        for <imx@lists.linux.dev>; Sun, 13 Oct 2024 04:08:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728817711; x=1729422511; darn=lists.linux.dev;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lO4MDn91uaEGvfavIYEn+tk1h5d1HCRNmemjl9PlHpI=;
-        b=koKF8oqWTO87Ro2yeG6jF1omjZbRZpHw2txI451zE+ZoHiKJVpMQzZU+fDwH5S63oM
-         Gsg3p0ImlzRKqwATMQW10vZGuQp+H24iRwmc1pQHIDoqE4mtL0rp47ATpj8TQQKjDKj6
-         FD7/NUI94kAIBVly/4gPSyqO0ddW09x8lHAAwJNbQngXRDkPzoV+JRo1EkFVSz9+OB/K
-         T8vI/wklySDnWC/fVcFGwmE1ao7RAxI9CzGZjnYav9w75jEHw/36g0s2spB5iZRZmiM5
-         Ub9xJ6bsPi6cAYKVafhN9cA2XZMPvtq141/WfrV81eh2CXzlIAIeGoj6p9nRf/po3Oym
-         4MNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728817711; x=1729422511;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lO4MDn91uaEGvfavIYEn+tk1h5d1HCRNmemjl9PlHpI=;
-        b=KKZJ86Jdong3DMgLSHaddvuPKmzMZcp7oFU6842X+Wn8/xyrcYZs5XRiDVQB5gLXJp
-         eZWquzkulN5fYukrXfBQNCz+avNA+gSdnCICyLt5nWlbR3NymUoC3ORFwNLGydpddT50
-         0X29PB6xbkNBbF5HaYjuOYFGHzGfucwMAGN0QaZgcoR+LFi84uadBOZBprO0rQtDdOBA
-         lHUAPr7onDsNZ1NbYYNguUjt9CfBCWy8EeRwqIoGFa2mFlJRu8+hANVzPDCQaQbiIcMZ
-         QNljBtOhamF7uVyPYo5GtzNZg3opd22Hism4mrhCswj+wHSiQtxjjqFi7uDJH1t4QeRW
-         Qx+g==
-X-Gm-Message-State: AOJu0YxgVEPqOVAj2maKOBQeqOhZqg8/6b6uJ5VrVgScb7e4bX7wrsEa
-	NsorHD09Iw0eeR3dxI1k/sTS9fIODdv5F/GdsKLTFiuO0j29fTMQ
-X-Google-Smtp-Source: AGHT+IEpt28WqlOtcR7JiEHn62be6MZu+AUL/8FkJVzMqj9pgksgxOIMj1aGELxQfKwtgbaEsgCMfA==
-X-Received: by 2002:a05:600c:468b:b0:42c:bae0:f05f with SMTP id 5b1f17b1804b1-431255db4b1mr61558305e9.13.1728817710963;
-        Sun, 13 Oct 2024 04:08:30 -0700 (PDT)
-Received: from [127.0.1.1] (2a02-8389-41cf-e200-01f9-6cb5-d67b-9d29.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:1f9:6cb5:d67b:9d29])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b9180f8sm8269238f8f.115.2024.10.13.04.08.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Oct 2024 04:08:30 -0700 (PDT)
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Sun, 13 Oct 2024 13:08:27 +0200
-Subject: [PATCH] soc: imx8m: Fix missing refcount decrement in error path
- for np
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="bR+1dp+G"
+Received: from pendragon.ideasonboard.com (unknown [23.233.251.139])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 7336882E;
+	Sun, 13 Oct 2024 18:22:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1728836569;
+	bh=NE4FbCOloT4eH5vN817TuK0z5R9di0EBvDq7W5Sn73U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bR+1dp+GIl4PTHoXhkmQCE84uMDZH/Q2T+6RZ4g3kURHmZopOTYzTdcN2oMeWhWOD
+	 HadkG+VNrP13ODUJLVxGfFywRvsbmlqjBuO2g3DOy0UQdjI7Zr8ZbEmSHHu/DPgERJ
+	 iLZX78BCmGGP0ON4E5+AVGom+DZA1iFZ2M0jvajE=
+Date: Sun, 13 Oct 2024 19:24:22 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: guoniu.zhou@oss.nxp.com
+Cc: linux-media@vger.kernel.org, jacopo@jmondi.org, mchehab@kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.d,
+	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] dt-bindings: media: nxp,imx8-isi: Add i.MX8ULP
+ ISI compatible string
+Message-ID: <20241013162422.GE5212@pendragon.ideasonboard.com>
+References: <20241012084732.1036652-1-guoniu.zhou@oss.nxp.com>
+ <20241012084732.1036652-3-guoniu.zhou@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241013-soc-imx8m-of_node_put-v1-1-515fdb85765d@gmail.com>
-X-B4-Tracking: v=1; b=H4sIACqqC2cC/x3MQQqAIBBA0avErBtQy4iuEhFmY80iDa0IorsnL
- d/i/wcSRaYEXfFApIsTB58hywLsavxCyHM2KKFqKWSFKVjk7W43DG70YaZxPw/UqjHStmbStYD
- c7pEc3/+3H973A2Ui6V5nAAAA
-To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Xiaolei Wang <xiaolei.wang@windriver.com>, 
- Lucas Stach <l.stach@pengutronix.de>
-Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>
-X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1728817709; l=1748;
- i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=/Ct3FGY7j5Fv5z63HvviD2bGOyouMPvYri4nmXi1OT0=;
- b=WwBORZEjEFmsgtb2S7roLxpu2+aWUj2PwcFQFtk6exJ2ohyiWfhp9Y2N14NodRpo3feqkB7wm
- fXpaRhtkZ1/AVUdxRQ7TsRMaakqSB2sVzjll/IpvPiS04nOiTyhlDI1
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241012084732.1036652-3-guoniu.zhou@oss.nxp.com>
 
-An error path was introduced without including the required call to
-of_node_put() to decrement the node's refcount and avoid leaking memory.
-If the call to of_clk_get_by_name() for 'clk' fails, the probe returns
-without decrementing the refcount.
+Hi Guoniu,
 
-Use the automatic cleanup facility to fix the bug and protect the code
-against new error paths where the call to of_node_put() might be missing
-again.
+Thank you for the patch.
 
-Cc: stable@vger.kernel.org
-Fixes: 836fb30949d9 ("soc: imx8m: Enable OCOTP clock before reading the register")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
----
- drivers/soc/imx/soc-imx8m.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+On Sat, Oct 12, 2024 at 04:47:35PM +0800, guoniu.zhou@oss.nxp.com wrote:
+> From: "Guoniu.zhou" <guoniu.zhou@nxp.com>
+> 
+> Add the compatible string support for i.MX8ULP ISI.
+> 
+> Signed-off-by: Guoniu.zhou <guoniu.zhou@nxp.com>
 
-diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
-index fe111bae38c8..ba8c0bdd60aa 100644
---- a/drivers/soc/imx/soc-imx8m.c
-+++ b/drivers/soc/imx/soc-imx8m.c
-@@ -99,12 +99,12 @@ static u32 __init imx8mq_soc_revision(void)
- static void __init imx8mm_soc_uid(void)
- {
- 	void __iomem *ocotp_base;
--	struct device_node *np;
-+	struct device_node *np __free(device_node) =
-+		of_find_compatible_node(NULL, NULL, "fsl,imx8mm-ocotp");
- 	struct clk *clk;
- 	u32 offset = of_machine_is_compatible("fsl,imx8mp") ?
- 		     IMX8MP_OCOTP_UID_OFFSET : 0;
- 
--	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mm-ocotp");
- 	if (!np)
- 		return;
- 
-@@ -125,7 +125,6 @@ static void __init imx8mm_soc_uid(void)
- 	clk_disable_unprepare(clk);
- 	clk_put(clk);
- 	iounmap(ocotp_base);
--	of_node_put(np);
- }
- 
- static u32 __init imx8mm_soc_revision(void)
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
----
-base-commit: d61a00525464bfc5fe92c6ad713350988e492b88
-change-id: 20241013-soc-imx8m-of_node_put-526a1c8ab540
+> ---
+>  Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml b/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml
+> index 4d5348d456a1..f43b91984f01 100644
+> --- a/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml
+> +++ b/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml
+> @@ -21,6 +21,7 @@ properties:
+>      enum:
+>        - fsl,imx8mn-isi
+>        - fsl,imx8mp-isi
+> +      - fsl,imx8ulp-isi
+>        - fsl,imx93-isi
+>  
+>    reg:
+> @@ -75,6 +76,7 @@ allOf:
+>            contains:
+>              enum:
+>                - fsl,imx8mn-isi
+> +              - fsl,imx8ulp-isi
+>                - fsl,imx93-isi
+>      then:
+>        properties:
 
-Best regards,
 -- 
-Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Regards,
 
+Laurent Pinchart
