@@ -1,167 +1,159 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC98F194125
-	for <imx@lists.linux.dev>; Sat, 12 Oct 2024 21:26:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF3923A9;
+	Sun, 13 Oct 2024 02:28:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728768376; cv=none; b=M/AompROcLPJUl7mK6aaq+eJNnY5ZorC1hriVJER2VfnS8EcOoHNqb+ivATboW1IQpfOuZp2D2RnwsSNeO8PaJLY7TfAfG1qwslv8AlCurj+AZDEI/cfuiqmz+qety1uhEZpdyET3J8mTRA4I6itV0dKSoptRcMGoZwg2+W8GnM=
+	t=1728786520; cv=none; b=Jm2ooTJfezVuVDBkBak9nxYw45YlPFeB2ihgcquEhvXaP1EpWrbyQBYUbCP0S1hZ8H3JrrG8hhMtB7sYB9X50ZyV26+Mz0Y1pYHcv8ieWW5uoCXHuCE6mTHLtsq++9ZSzVXCGZNKZCrUzOBo6AQLmT8JpFnINty5COBqB86ad4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728768376; c=relaxed/simple;
-	bh=0lvr+qyqTe5hWF+1wIRkSzOcekXhMgrf/X4cLLMMr9E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gbu4u8pMD/q1tjBQodUsA/1bLUEsjrPnwqKKDdEUWXNtOQwdClLJUTskyy0eZjGzdg2ZNNzgvstqstO8ullVxC8FGiqrIrsxUrbLFrUFMMXtWwh6WaN3FrUD6HORKGaVdKxXxInWD8P+TAxj9+3gMfl25NLyO45jBf84GySudm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=aCAQo/2Z; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1728786520; c=relaxed/simple;
+	bh=kxw0/5KQqdN8nbP5+1lX3aIizA0MM7Ku7mcSHuuSt78=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q1z4baoQMNCnxUMMUXaZxpASYeM/L2cODz9BiupJJCnmDYxGCHM3BkPpH7jjWTd6pOB9fCbh3oYd93LnkMUdXs+0hL8gREs8ffvG62+O7oLg8XknhfpSbIrL0aF/v+eAkMtLSRGsCEVDUrEJy4BcpM6SsKahvl6ngmAThCuQdHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WrGhdZ5A; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="aCAQo/2Z"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 3222488E0F;
-	Sat, 12 Oct 2024 23:26:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1728768369;
-	bh=n0gUqPu0L9PwDtoZ6oud8EjC999D6KiLx0miig+Q668=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aCAQo/2Z3WzrkPFGWG9CNKR5Q8y+q1PTKmsVQjglOxSQ4VEP7zhzHKYNl8zufNiM8
-	 krgEJs8JtZlB1vxP0UsKEEmf85k+YT/5Ic5rQP+i+2/zeyWQSZVkMRrYNSDAmpGvea
-	 R78zdO11EmGongwbpEVDwMYXyTzLoJzILxU3BHtvkVq8W+wLbUxwLnR0IuYiyYFAOm
-	 XwZpL36xvQk4R0qZwkeJ4M5qVR9fPQQqNXPWVBKyAWmMqXRrqj6Q1A8JB/3b0LhZl5
-	 JR1pN7SSiKvYFtBLEkX8Qci0b38yHxq4SNf4RiWeXI4LIgyNadHbiMDwSXiXQKiFwi
-	 qaQ0R7AGolbfQ==
-Message-ID: <207b20ff-cc7b-40aa-8dde-bc5aabdfb414@denx.de>
-Date: Sat, 12 Oct 2024 23:12:37 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WrGhdZ5A"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728786517; x=1760322517;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=kxw0/5KQqdN8nbP5+1lX3aIizA0MM7Ku7mcSHuuSt78=;
+  b=WrGhdZ5AosXWjiZOSFaMtToHiFij0gvT1WZ4p2gR0ui5X1+7VztdCtae
+   proKltb9ZHkdec2Lkpp+7nO3PXKEehyL3ZISX6TP6PIInjNG3+8Kbgkkn
+   6DQn4WTucTt21rZvqFVciFESRTb4NlMgwslJflFITKxFXpGPnZrhSXKaE
+   +WfBlreK82gMioCsQdSYKqaE5llbKInDKxH17AAv3r02Nyax+qJ4j3M9w
+   CSJCThAy0z1FxxU8emEIiFihUO94WXMlec9v+8jDCjbnA8qqnSzfpXoU+
+   JvnoemjKwTiZhd5ofU7qOak8TI25BP5bkyrJhAfKIA57mDiAJQa/jk//V
+   g==;
+X-CSE-ConnectionGUID: zL226nN5Qxun4J01FB1hiA==
+X-CSE-MsgGUID: P3aKUfNIT+OzhZKbYAiTog==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="38731317"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="38731317"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2024 19:28:37 -0700
+X-CSE-ConnectionGUID: do3bFO2CTB68Q54myxA8Nw==
+X-CSE-MsgGUID: pH9+hgyLT8y7Svldl/1AxA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="77172345"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa010.jf.intel.com with ESMTP; 12 Oct 2024 19:28:32 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1szoLN-000E0B-1Z;
+	Sun, 13 Oct 2024 02:28:29 +0000
+Date: Sun, 13 Oct 2024 10:27:32 +0800
+From: kernel test robot <lkp@intel.com>
+To: Wei Fang <wei.fang@nxp.com>, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, vladimir.oltean@nxp.com,
+	claudiu.manoil@nxp.com, xiaoning.wang@nxp.com, Frank.Li@nxp.com,
+	christophe.leroy@csgroup.eu, linux@armlinux.org.uk,
+	bhelgaas@google.com
+Cc: oe-kbuild-all@lists.linux.dev, imx@lists.linux.dev,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH net-next 05/11] net: enetc: add enetc-pf-common driver
+ support
+Message-ID: <202410131001.KjFCfYWr-lkp@intel.com>
+References: <20241009095116.147412-6-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] drm: bridge: ldb: Configure LDB clock in .mode_set
-To: Liu Ying <victor.liu@nxp.com>, dri-devel@lists.freedesktop.org
-Cc: Abel Vesa <abelvesa@kernel.org>, Andrzej Hajda <andrzej.hajda@intel.com>,
- David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Isaac Scott <isaac.scott@ideasonboard.com>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Jonas Karlman <jonas@kwiboo.se>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Peng Fan <peng.fan@nxp.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Robert Foss <rfoss@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>,
- Stephen Boyd <sboyd@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- imx@lists.linux.dev, kernel@dh-electronics.com,
- linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
-References: <20241008223846.337162-1-marex@denx.de>
- <20241008223846.337162-2-marex@denx.de>
- <d6a34efa-47ad-439b-8b0c-a427cf087cb3@nxp.com>
- <0e47b529-59f2-4d25-8c5d-30ca1dc4e964@denx.de>
- <3341a6a7-ac0e-4594-a670-b3a6d583b344@nxp.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <3341a6a7-ac0e-4594-a670-b3a6d583b344@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241009095116.147412-6-wei.fang@nxp.com>
 
-On 10/11/24 8:49 AM, Liu Ying wrote:
-> On 10/11/2024, Marek Vasut wrote:
->> On 10/10/24 9:15 AM, Liu Ying wrote:
->>> On 10/09/2024, Marek Vasut wrote:
->>>> The LDB serializer clock operate at either x7 or x14 rate of the input
->>>
->>> Isn't it either x7 or 3.5x?
->>
->> Is it 3.5 for the dual-link LVDS ?
-> 
-> Yes.
-> 
-> static unsigned long fsl_ldb_link_frequency(struct fsl_ldb *fsl_ldb, int clock)
-> {
->          if (fsl_ldb_is_dual(fsl_ldb))
->                  return clock * 3500;
->          else
->                  return clock * 7000;
-> }
-> 
->> I don't have such a panel right now to test.
-> 
-> You can add a panel DT node for test to see the relationship
-> between the clocks, without a real dual-link LVDS panel.
+Hi Wei,
 
-I'll take your word for this.
+kernel test robot noticed the following build errors:
 
->> [...]
->>
->>>> diff --git a/drivers/gpu/drm/bridge/fsl-ldb.c b/drivers/gpu/drm/bridge/fsl-ldb.c
->>>> index 0e4bac7dd04ff..a3a31467fcc85 100644
->>>> --- a/drivers/gpu/drm/bridge/fsl-ldb.c
->>>> +++ b/drivers/gpu/drm/bridge/fsl-ldb.c
->>>> @@ -278,6 +278,16 @@ fsl_ldb_mode_valid(struct drm_bridge *bridge,
->>>>        return MODE_OK;
->>>>    }
->>>>    +static void fsl_ldb_mode_set(struct drm_bridge *bridge,
->>>> +                   const struct drm_display_mode *mode,
->>>> +                   const struct drm_display_mode *adj)
->>>> +{
->>>> +    struct fsl_ldb *fsl_ldb = to_fsl_ldb(bridge);
->>>> +    unsigned long requested_link_freq = fsl_ldb_link_frequency(fsl_ldb, mode->clock);
->>>> +
->>>> +    clk_set_rate(fsl_ldb->clk, requested_link_freq);
->>>
->>> The mode_set callback won't be called when only crtc_state->active
->>> is changed from false to true in an atomic commit, e.g., blanking
->>> the emulated fbdev first and then unblanking it.  So, in this case,
->>> the clk_set_rate() in fsl_ldb_atomic_enable() is still called after
->>> those from mxsfb_kms or lcdif_kms.
->>>
->>> Also, it doesn't look neat to call clk_set_rate() from both mode_set
->>> callback and atomic_enable callback.
->>
->> I agree the mode_set callback is not the best place for this.
->> Do you know of a better callback where to do this ? I couldn't find one.
-> 
-> A wild idea is to change the order between the CRTC atomic_enable
-> callback and the bridge one by implementing your own
-> atomic_commit_tail...  I don't think there is any place to do this
-> other than atomic_enable callback.
+[auto build test ERROR on net-next/main]
 
-I will give that a try, thanks.
+url:    https://github.com/intel-lab-lkp/linux/commits/Wei-Fang/dt-bindings-net-add-compatible-string-for-i-MX95-EMDIO/20241009-181113
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20241009095116.147412-6-wei.fang%40nxp.com
+patch subject: [PATCH net-next 05/11] net: enetc: add enetc-pf-common driver support
+config: powerpc-randconfig-r062-20241013 (https://download.01.org/0day-ci/archive/20241013/202410131001.KjFCfYWr-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 14.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241013/202410131001.KjFCfYWr-lkp@intel.com/reproduce)
 
-> Anyway, I don't think it is necessary to manage the clk_set_rate()
-> function calls between this driver and mxsfb_kms or lcdif_kms
-> because "video_pll1" clock rate is supposed to be assigned in DT...
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410131001.KjFCfYWr-lkp@intel.com/
 
-I disagree with this part. I believe the assignment of clock in DT is 
-only a temporary workaround which should be removed. The drivers should 
-be able to figure out and set the clock tree configuration.
+All errors (new ones prefixed by >>):
 
->>> The idea is to assign a reasonable PLL clock rate in DT to make
->>> display drivers' life easier, especially for i.MX8MP where LDB,
->>> Samsung MIPI DSI may use a single PLL at the same time.
->> I would really like to avoid setting arbitrary clock in DT, esp. if it can be avoided. And it surely can be avoided for this simple use case.
-> 
-> ... just like I said in patch 1/2, "video_pll1" clock rate needs
-> to be x2 "media_ldb" clock rate for dual LVDS link mode. Without
-> an assigned "video_pll1" clock rate in DT, this driver cannot
-> achieve that.
+   powerpc-linux-ld: drivers/net/ethernet/freescale/enetc/enetc_pf_common.o: in function `enetc_sriov_configure':
+>> drivers/net/ethernet/freescale/enetc/enetc_pf_common.c:336:(.text+0x55c): undefined reference to `enetc_msg_psi_free'
+>> powerpc-linux-ld: drivers/net/ethernet/freescale/enetc/enetc_pf_common.c:349:(.text+0x5e4): undefined reference to `enetc_msg_psi_init'
+>> powerpc-linux-ld: drivers/net/ethernet/freescale/enetc/enetc_pf_common.c:365:(.text+0x658): undefined reference to `enetc_msg_psi_free'
+   powerpc-linux-ld: drivers/net/ethernet/freescale/enetc/enetc_pf_common.o: in function `enetc_pf_netdev_setup':
+   drivers/net/ethernet/freescale/enetc/enetc_pf_common.c:106:(.text+0xb00): undefined reference to `enetc_set_ethtool_ops'
 
-This is something the LDB driver can infer from DT and configure the 
-clock tree accordingly.
 
-> And, the i.MX8MP LDB + Samsung MIPI DSI case is
-> not simple considering using one single PLL and display modes
-> read from EDID.
-You could use separate PLLs for each LCDIF scanout engine in such a 
-deployment, I already ran into that, so I am aware of it. That is 
-probably the best way out of such a problem, esp. if accurate pixel 
-clock are the requirement.
+vim +336 drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
 
-[...]
+   324	
+   325	int enetc_sriov_configure(struct pci_dev *pdev, int num_vfs)
+   326	{
+   327		struct enetc_si *si = pci_get_drvdata(pdev);
+   328		struct enetc_pf *pf = enetc_si_priv(si);
+   329		int err;
+   330	
+   331		if (!IS_ENABLED(CONFIG_PCI_IOV))
+   332			return 0;
+   333	
+   334		if (!num_vfs) {
+   335			pci_disable_sriov(pdev);
+ > 336			enetc_msg_psi_free(pf);
+   337			kfree(pf->vf_state);
+   338			pf->num_vfs = 0;
+   339		} else {
+   340			pf->num_vfs = num_vfs;
+   341	
+   342			pf->vf_state = kcalloc(num_vfs, sizeof(struct enetc_vf_state),
+   343					       GFP_KERNEL);
+   344			if (!pf->vf_state) {
+   345				pf->num_vfs = 0;
+   346				return -ENOMEM;
+   347			}
+   348	
+ > 349			err = enetc_msg_psi_init(pf);
+   350			if (err) {
+   351				dev_err(&pdev->dev, "enetc_msg_psi_init (%d)\n", err);
+   352				goto err_msg_psi;
+   353			}
+   354	
+   355			err = pci_enable_sriov(pdev, num_vfs);
+   356			if (err) {
+   357				dev_err(&pdev->dev, "pci_enable_sriov err %d\n", err);
+   358				goto err_en_sriov;
+   359			}
+   360		}
+   361	
+   362		return num_vfs;
+   363	
+   364	err_en_sriov:
+ > 365		enetc_msg_psi_free(pf);
+   366	err_msg_psi:
+   367		kfree(pf->vf_state);
+   368		pf->num_vfs = 0;
+   369	
+   370		return err;
+   371	}
+   372	EXPORT_SYMBOL_GPL(enetc_sriov_configure);
+   373	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
