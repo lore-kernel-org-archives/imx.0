@@ -1,117 +1,169 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B8484A31
-	for <imx@lists.linux.dev>; Sun, 13 Oct 2024 16:40:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B6B8F64;
+	Sun, 13 Oct 2024 21:27:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728837641; cv=none; b=IBRhAd3iW/2i8kLerHnt4e4lAXWStadVD9s7dhnl5A4IjalN8iOpXZYVGwW80Nrq1aTIwc+GJxO83WBt1Mahud7exxNKQLlHQpgsfrbbQjCXSCN1jUdeo0F8w2SdUWkwi/kvNEvTRumpWULg/sHMQLPUnBVvSHj+/xy//5UPma8=
+	t=1728854877; cv=none; b=TqvYVfzUaFuS6doqTNyrFc1vHqDkFNTy9+kOyF6fCZD1KrQ/3cbOPupQXhZumKLE6uDzY3VyrPPsoyvgXkvHCenJ51k0pehEpasSNYm+5GjEMvWqVAb+liudm0Je6R6Jw53cI+mFzYMJg7NOMfwxL+CFxl58BgwN5dvbiVYFmHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728837641; c=relaxed/simple;
-	bh=mmZw7M9O1GIWt6P92qdT3sGi9Pe39NII7ZWkNZD/eSw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oNWqxqv2jxsOnykQEEReE7LbmSsA6+7XgLNze7xyudqmpuqnSwqWcuxDfL8oqwg6/QUstQqgqkduj3O8ZRHyCoRFTGWm5RTmzIOyrF43JsaQyz+sU5g/oKrdjIrcxVLubduERe6hjmNtFtgtZYxQZ0VWPj6hiN/0s57joLweIu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=oXIYWfiE; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1728854877; c=relaxed/simple;
+	bh=2J/X2hiCuNODJ8Ht7z/AVpabipXFZ+tjUjf+e1KY4Bc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=hNPRd6t66lRamXqDQG7Cxl7WQk/O/O2TYSaEXt/UJkh5tpUs9e9rYyiyzYJmkjyjOQ5+/v9wlyR4B6shYvylSVKUNy+ljA47z6wb/mMy3T5RdXJ55/OSIgTX41bXYrJd2hG9mZb+eEZWQPV8ci6Xxv8bufGNtPzXlzYFRBwV45E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oQyJ9f1I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="oXIYWfiE"
-Received: from pendragon.ideasonboard.com (unknown [23.233.251.139])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 1322082E;
-	Sun, 13 Oct 2024 18:38:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1728837537;
-	bh=mmZw7M9O1GIWt6P92qdT3sGi9Pe39NII7ZWkNZD/eSw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oXIYWfiEmhEpNUN6L+7eHgIvkXyS+r+xH7ARjVj7sLJauTkvROl2g5vkIWZbU6Zpn
-	 e6J+vbzQfs65hGUuOmr1bW6z6e8XrY0SQFgWY4C1jDgQM391s0De92hQcBm6TpWSj4
-	 KocXJQP845oWt52Olj2CK/8SUO+ozWcWHxS7c0HY=
-Date: Sun, 13 Oct 2024 19:40:30 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: guoniu.zhou@oss.nxp.com
-Cc: linux-media@vger.kernel.org, jacopo@jmondi.org, mchehab@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.d,
-	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] media: nxp: imx8-isi: Add i.MX8ULP support
-Message-ID: <20241013164030.GF5212@pendragon.ideasonboard.com>
-References: <20241012084732.1036652-1-guoniu.zhou@oss.nxp.com>
- <20241012084732.1036652-2-guoniu.zhou@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oQyJ9f1I"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 87542C4CEC5;
+	Sun, 13 Oct 2024 21:27:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728854877;
+	bh=2J/X2hiCuNODJ8Ht7z/AVpabipXFZ+tjUjf+e1KY4Bc=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=oQyJ9f1IxArTESrxsU6Qy/b9vgNtSpYoTlB2W+1unAU1ILkDe4TQAwdL4Y3f09DbY
+	 npkIB4XN3+qkAT3BOOvy25d1WmiFGHwXopcnY3F9i9+Qrkbkd10W13PgJOguBCqAOO
+	 kHmN+o/5WJ/kd81Q/v51kvyohk1l4IBimFjeOCBN1v8HUL6n7rgKcyvp0JuO00F1OL
+	 P6AJkFmlWm0Dd95u2EXEUrY/Xk8liyiIkl6QT7x0YQ/XN16/2UYDHJEfqhJD4uV1Fd
+	 2zdMgmgJXmh+1J2b/2Vu26wU/iD1uqmAwVsTnn7NGTooV+p5IALXAVjbkztRQnYXZ1
+	 dZs/Ke1hQ7LdA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B891CF2591;
+	Sun, 13 Oct 2024 21:27:57 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Subject: [PATCH v3 00/16] Add support for Synopsis DWMAC IP on NXP
+ Automotive SoCs S32G2xx/S32G3xx/S32R45
+Date: Sun, 13 Oct 2024 23:27:35 +0200
+Message-Id: <20241013-upstream_s32cc_gmac-v3-0-d84b5a67b930@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241012084732.1036652-2-guoniu.zhou@oss.nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEc7DGcC/x3MSQqAMAxA0atI1hY0db6KSKk1ahYONCqCeHeLy
+ 7f4/wEhzyTQRA94ulh4WwN0HIGb7TqR4iEYMMEsqVGrc5fDk12MaHTOTIt1qqjqlPoy71MsIJS
+ 7p5Hv/9p27/sBCKI3SmUAAAA=
+To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Jose Abreu <joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
+ Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Emil Renner Berthing <kernel@esmil.dk>, 
+ Minda Chen <minda.chen@starfivetech.com>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Iyappan Subramanian <iyappan@os.amperecomputing.com>, 
+ Keyur Chudgar <keyur@os.amperecomputing.com>, 
+ Quan Nguyen <quan@os.amperecomputing.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>
+Cc: linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, 
+ devicetree@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>, 
+ Jacob Keller <jacob.e.keller@intel.com>, 
+ Serge Semin <fancer.lancer@gmail.com>, 
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, 
+ Andrei Botila <andrei.botila@nxp.org>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1728854875; l=3830;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=2J/X2hiCuNODJ8Ht7z/AVpabipXFZ+tjUjf+e1KY4Bc=;
+ b=N1XXm6twcb9Ly1bnTdMtCh4TGGSqesmvTCxPJmrgU+2pNf3ToKecL1yajDIOnK73jRj1Q3EHe
+ vxK6Gt65iKWB8mchgSwkwz0/M1t85nndEj/7IowP7Z6TX/iJwOdUGoa
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
-Hi Guoniu,
+The SoC series S32G2xx and S32G3xx feature one DWMAC instance,
+the SoC S32R45 has two instances. The devices can use RGMII/RMII/MII
+interface over Pinctrl device or the output can be routed
+to the embedded SerDes for SGMII connectivity.
 
-Thank you for the patch.
+The provided stmmac glue code implements only basic functionality,
+interface support is restricted to RGMII only. More, including
+SGMII/SerDes support will come later.
 
-On Sat, Oct 12, 2024 at 04:47:33PM +0800, guoniu.zhou@oss.nxp.com wrote:
-> From: "Guoniu.zhou" <guoniu.zhou@nxp.com>
-> 
-> Add ISI support for i.MX8ULP.
-> 
-> Signed-off-by: Guoniu.zhou <guoniu.zhou@nxp.com>
+This patchset adds stmmac glue driver based on downstream NXP git [0].
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+[0] https://github.com/nxp-auto-linux/linux
 
-> ---
->  .../media/platform/nxp/imx8-isi/imx8-isi-core.c    | 14 ++++++++++++++
->  .../media/platform/nxp/imx8-isi/imx8-isi-core.h    |  1 +
->  2 files changed, 15 insertions(+)
-> 
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> index c2013995049c..528e723114d5 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> @@ -307,6 +307,19 @@ static const struct mxc_isi_plat_data mxc_imx8mp_data = {
->  	.has_36bit_dma		= true,
->  };
->  
-> +static const struct mxc_isi_plat_data mxc_imx8ulp_data = {
-> +	.model			= MXC_ISI_IMX8ULP,
-> +	.num_ports		= 1,
-> +	.num_channels		= 1,
-> +	.reg_offset		= 0x0,
-> +	.ier_reg		= &mxc_imx8_isi_ier_v2,
-> +	.set_thd		= &mxc_imx8_isi_thd_v1,
-> +	.clks			= mxc_imx8mn_clks,
-> +	.num_clks		= ARRAY_SIZE(mxc_imx8mn_clks),
-> +	.buf_active_reverse	= true,
-> +	.has_36bit_dma		= false,
-> +};
-> +
->  static const struct mxc_isi_plat_data mxc_imx93_data = {
->  	.model			= MXC_ISI_IMX93,
->  	.num_ports		= 1,
-> @@ -528,6 +541,7 @@ static void mxc_isi_remove(struct platform_device *pdev)
->  static const struct of_device_id mxc_isi_of_match[] = {
->  	{ .compatible = "fsl,imx8mn-isi", .data = &mxc_imx8mn_data },
->  	{ .compatible = "fsl,imx8mp-isi", .data = &mxc_imx8mp_data },
-> +	{ .compatible = "fsl,imx8ulp-isi", .data = &mxc_imx8ulp_data },
->  	{ .compatible = "fsl,imx93-isi", .data = &mxc_imx93_data },
->  	{ /* sentinel */ },
->  };
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> index 2810ebe9b5f7..9c7fe9e5f941 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> @@ -158,6 +158,7 @@ struct mxc_gasket_ops {
->  enum model {
->  	MXC_ISI_IMX8MN,
->  	MXC_ISI_IMX8MP,
-> +	MXC_ISI_IMX8ULP,
->  	MXC_ISI_IMX93,
->  };
->  
+v3:
+- switched to b4 WoW to overcome threading issue with b4
+- extracted the hunk with the typo fix from v2 patch#1 to separate patch
+  as Jacob suggested
+- removed dead code for RMII/MII support, which will be added alter
+- used new rgmii_clock() helper in other stmmac:dwmac glue drivers
+- yaml: compatible strings compressed to simple one "nxp,s32-dwmac",
+  removed duplicated required properties, already defined in snps,dwmac,
+  fixed example
 
+v2:
+- send to wider audience as first version missed many maintainers
+- created rgmi_clk() helper as Russell suggested (see patch#4)
+- address Andrew's, Russell's, Serge's and Simon's comments
+
+Message-ID: <AM9PR04MB85066576AD6848E2402DA354E2832@AM9PR04MB8506.eurprd04.prod.outlook.com>
+
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+---
+Jan Petrous (OSS) (16):
+      net: driver: stmmac: Fix CSR divider comment
+      net: driver: stmmac: Extend CSR calc support
+      net: stmmac: Fix clock rate variables size
+      net: phy: Add helper for mapping RGMII link speed to clock rate
+      net: dwmac-dwc-qos-eth: Use helper rgmii_clock
+      net: dwmac-imx: Use helper rgmii_clock
+      net: dwmac-intel-plat: Use helper rgmii_clock
+      net: dwmac-rk: Use helper rgmii_clock
+      net: dwmac-starfive: Use helper rgmii_clock
+      net: macb: Use helper rgmii_clock
+      net: xgene_enet: Use helper rgmii_clock
+      net: dwmac-sti: Use helper rgmii_clock
+      dt-bindings: net: Add DT bindings for DWMAC on NXP S32G/R SoCs
+      net: stmmac: dwmac-s32: add basic NXP S32G/S32R glue driver
+      MAINTAINERS: Add Jan Petrous as the NXP S32G/R DWMAC driver maintainer
+      net: stmmac: dwmac-s32: Read PTP clock rate when ready
+
+ .../devicetree/bindings/net/nxp,s32-dwmac.yaml     |  97 +++++++++
+ .../devicetree/bindings/net/snps,dwmac.yaml        |   1 +
+ MAINTAINERS                                        |   7 +
+ drivers/net/ethernet/apm/xgene/xgene_enet_hw.c     |  16 +-
+ drivers/net/ethernet/cadence/macb_main.c           |  14 +-
+ drivers/net/ethernet/stmicro/stmmac/Kconfig        |  12 ++
+ drivers/net/ethernet/stmicro/stmmac/Makefile       |   1 +
+ drivers/net/ethernet/stmicro/stmmac/common.h       |   2 +
+ .../ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c    |  11 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c    |  15 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-intel-plat.c |  20 +-
+ .../ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c    |   2 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c     |  30 +--
+ drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c    | 237 +++++++++++++++++++++
+ .../net/ethernet/stmicro/stmmac/dwmac-starfive.c   |  19 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c    |  18 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c  |   2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  |   6 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_platform.c  |   2 +-
+ include/linux/phy.h                                |  21 ++
+ include/linux/stmmac.h                             |  10 +-
+ 21 files changed, 424 insertions(+), 119 deletions(-)
+---
+base-commit: 18ba6034468e7949a9e2c2cf28e2e123b4fe7a50
+change-id: 20240923-upstream_s32cc_gmac-6891eb75b126
+
+Best regards,
 -- 
-Regards,
+Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 
-Laurent Pinchart
+
