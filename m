@@ -1,323 +1,116 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2077.outbound.protection.outlook.com [40.107.21.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83666156F3B
-	for <imx@lists.linux.dev>; Mon, 14 Oct 2024 08:28:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.77
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728894498; cv=fail; b=fnYbT7EABhDhiKS0EfJm/HEigCS9NZ+Xnp0+Tjb/wMwXBarhGHuZVBFFe2IVA0qVEIAJX0fKwOC6wvTX5W3rczUVmdxibK0I9Qo8Gk4t0AqroTmRcUSSW5+7w96lmWpsKx1ypbtH67/LRzXYSUL3dRjG0mxjKVgwsCiMZsIhzTY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728894498; c=relaxed/simple;
-	bh=w7cCmnAG7Vn7zmkLsCVpG9+aWA47aOdAh4WIicgelkU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=tmLEugQP5NeppJusaMqH/nz6qjOovBYSHJzU3vTydBKefS+ro5OoknC41p0qiUAYLUlIr1hUOD23HBJmWEbC6PkQK++kEWYy28HlBzzk3pch7uvkyA1H92UlXVplrH4zYI2rl2HQNvVJj03w8s1upDaQS+vAAjvYB7qdlQ3CrFc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Km3P7FMe; arc=fail smtp.client-ip=40.107.21.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8241514FB
+	for <imx@lists.linux.dev>; Mon, 14 Oct 2024 08:29:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728894557; cv=none; b=fupKKVjQkwTK5+e4a4C09HKkvEBO4kXhr8xM9ymtzjV2PSfyTMMc/mWcv7XlpCrImSoznv9BlvhFR/iqLwbyiQKLA827njv0l/K8Ekdx4MGYW13a0gsIMijAE+s/NVZGuYhMR5D+H02Mdjegifb1xZ9D1zyx8BQR8xSo1v2oQNA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728894557; c=relaxed/simple;
+	bh=vcsyM6w5SlFGcrqYwvPSlCYxhrylpBGSgkSppQKyoMw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LM2AqkF/R4KF63HDxqbzcVkJ0d0BTlO8cuTWydkYEU3kpZ96wxziJbdwFDHU1OUfT4bSlP1dF7AwL/zn/nBjtjiTM0A94ZEYf4FpYg0KssxKOah4sfEKIxb97uxcuETN7IxpQ8M8R+IQxOh+qOshFizjiVzP7th5Fo5rx5B5vwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TVKbDhca; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Km3P7FMe"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DST5dka0bObE1dGB/Zi5X/9suxzZ1HEyr9r78hnNS2nqM4RTpVPEmNGlf0xyrVexfvCQjk5ct+y4JqZqN5tzoOBVM6fzSU9/v/AAHVVDLpBz2D/NszBiJFmkuhc5WuhdbYiZQNqPs0al6RpioF7ITg7g35lB5iosfrNvwW2kfr+F+HEL11Edp0UqRyLPcg/BlUh4mLwcBng6hs44B3RMncbLpBA9cq3Vg0dTlw8CjCY5V02STfCKM+jDALJBnT4ExFSqOH3cj60CaXJ+6QJUESthopH6SrWdTQb7zNOubqb7hfHqXo/sKtP6whKGw5oA9GtD3Vk5rnQcCFjC8OeLsA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=z8zt7bLNPmwHZdp6oavDy0/TIiEE4vH9XUkEO+fSD4A=;
- b=WBFBshXb0WS+Vf27gkA+SYMHoClqNA4Zh9mxBYMNaKJ1u5SPYmMNpEtXstzCUTP62rX6eekBSSCxQIwI1KbDg2bPYejd2l1Oy89iCUDVvppIFBiNLKKoZy4l1hhCYrH3mZD60iD22gqs8n/9awPt75jFf/jbUzmNBrHtsdg6+wSgKiuDALrDJtghsIM/T+0mhqApg+kMzWQlPJVkMeAOaQOlvKq1fkSg129NSOQSjmSqccAnldyJA6xx+S1PEBRMNN07BbZCwjHcxz9QjvXYSq1zFoEvQ+ozn8eGz0V8/NmaJ486F/CYJt8pBa4h6rzzNfB0uovmSsQoYlkWrJVVpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=z8zt7bLNPmwHZdp6oavDy0/TIiEE4vH9XUkEO+fSD4A=;
- b=Km3P7FMesbTlKx5ftvon7JP1746jrc77oY9THDUtPfhLtmq4quugJ4vQGzJ9NxSf9IvBMbSkWu84gvHc+kdLa+AOROzQzA2/qHB3papKkvE5dkVOclJnmuASynn+mBxLoweIglbMYwlBuoETRDH8EerNrfD1PHHeZWjLBg31IlChQVEH7BDIK8lIfORoo5MTMMo1bLgvFLJafS+RuuHkIHhWrzCSSQD/joSJ8scJMFNF6DKo5PoFcauGD3Za9KkKDPl4XMqQgk3l3o1nVaYzJDu3HwkzofMrLs43xzcRWseznAK/P0eA98cEhv4GR6cSwD6FrQLwSYiEe81MODSEvw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by AS8PR04MB8756.eurprd04.prod.outlook.com (2603:10a6:20b:42f::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.27; Mon, 14 Oct
- 2024 08:28:07 +0000
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90%4]) with mapi id 15.20.8048.020; Mon, 14 Oct 2024
- 08:28:07 +0000
-Message-ID: <91d1e176-f578-466b-991b-2df1728e2f78@nxp.com>
-Date: Mon, 14 Oct 2024 16:28:29 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/9] drm/bridge: Add ITE IT6263 LVDS to HDMI converter
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, andrzej.hajda@intel.com,
- neil.armstrong@linaro.org, rfoss@kernel.org,
- Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, airlied@gmail.com, simona@ffwll.ch,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, catalin.marinas@arm.com, will@kernel.org,
- quic_bjorande@quicinc.com, geert+renesas@glider.be, arnd@arndb.de,
- nfraprado@collabora.com, o.rempel@pengutronix.de, y.moog@phytec.de,
- marex@denx.de, isaac.scott@ideasonboard.com, biju.das.jz@bp.renesas.com
-References: <20241012073543.1388069-1-victor.liu@nxp.com>
- <20241012073543.1388069-7-victor.liu@nxp.com>
- <dtloyyghjep5rm34qjjinvhvrar5jzj3n24czvpdmnkfesntjq@t2uijuez7myj>
- <f47bc3f1-20d9-4f7e-acdd-85eabdb8d743@nxp.com>
- <kaoqse23we5lyhaawk6xe2ouxwwjtjfpkiqb3j7xe64o2jscny@3yswlkjhuuxw>
-From: Liu Ying <victor.liu@nxp.com>
-Content-Language: en-US
-In-Reply-To: <kaoqse23we5lyhaawk6xe2ouxwwjtjfpkiqb3j7xe64o2jscny@3yswlkjhuuxw>
-Content-Type: text/plain; charset=UTF-8
-X-ClientProxiedBy: SG2PR04CA0164.apcprd04.prod.outlook.com (2603:1096:4::26)
- To AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TVKbDhca"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5c9150f9ed4so5155851a12.0
+        for <imx@lists.linux.dev>; Mon, 14 Oct 2024 01:29:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1728894554; x=1729499354; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=d91S4I2UZXSrPkvBmzWLzGhfndrc3g6nHTmmorzhjG0=;
+        b=TVKbDhcatRYbzPBD9sAkvLy9WRw4khaJu8ldWCESdHPN1VmFMz0RCSKKU9Tye6T9ho
+         FuF6robu80I7OYyPR52Sho42tP+8BGh3cxIQM43946/nkvhzVL2G7Umg7lgBBlMN6SSS
+         55ko1nMvmz/pusJdGdjIZLeenVMMCBgrypB7oZGZ0Bys3epwb3WWKONo34B0G+gj6l5n
+         YMCtUjQlClbh+DHXsT8Lw47pRqEkexEs8B6j2yeErBiKGd/wz2NZO1VvFlQdc23t60cU
+         hqqemqRlv9cOlflEYU7ArYOu+FFtpDZ69AWqXorgBT2vpxR7U/9V1HkFHAlYfN3omqWw
+         h+LA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728894554; x=1729499354;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=d91S4I2UZXSrPkvBmzWLzGhfndrc3g6nHTmmorzhjG0=;
+        b=cJu3JhVJEA8CsEw7cCh6A470R1tmdg32EvbYVq/zXmUI4cn4x6269onh4/pHA0ULz/
+         jQWrITZhKSxKZio9IXWVocZOfagOGfFbn2GQe3D3U3UC+3ifO+xe2X4sssTJE7xc/mFy
+         ASDHGh7m/ommkQK3nawuvfKEpXjTKkUuK5K760nNPY2vb0TR4ju5lwLKbANUqHTT0VOP
+         pmNYtXuQoNsQ62tX2Ilf/5egp8VvplkO60WPKusxobn8zYPLSYvJNUevTh5+OqZvatvr
+         DSG7+OThD8tU0JDJ4M6HzqTnh0acJKr1OWkrI37Zi47AiunapYch19oJpEg/0CAHZfpz
+         wGzw==
+X-Forwarded-Encrypted: i=1; AJvYcCW77i6t5kRDyoHtLq2IdtTmKixwenFfDpTAQ6aSiOIMdvFs13vQN1tSBRVHQFziBcJiLMk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzBLFkR50Zzy5faW52Lo3QAlTwY/WFb7j0eGR3FM3QObzAs3WrQ
+	9H1OrfMD0BeY8AqfOOPLF6mQul1Qq6SmvlmnKFgpxD0JPT6Y/ERMo5KYD+j52c4=
+X-Google-Smtp-Source: AGHT+IF6RwCW+FyEK3/Fal9ivHW7iWGPlCDb/O1Fkx9nd90PKRCkEMCBSO4PJJepAjsrqveEArsROw==
+X-Received: by 2002:a05:6402:1e8b:b0:5c8:79fa:2e4f with SMTP id 4fb4d7f45d1cf-5c948d764e2mr7389203a12.32.1728894554097;
+        Mon, 14 Oct 2024 01:29:14 -0700 (PDT)
+Received: from [192.168.0.40] ([176.61.106.227])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c937153032sm4707474a12.53.2024.10.14.01.29.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Oct 2024 01:29:13 -0700 (PDT)
+Message-ID: <ca48de1b-b45e-4b27-a186-3bb7eb5859fa@linaro.org>
+Date: Mon, 14 Oct 2024 09:29:12 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|AS8PR04MB8756:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7a2f6162-d592-4dd1-af69-08dcec2a2104
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|366016|376014;
-X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?ZytuNUtoMmMyQ3Vvc0p1ZEN5djYrOEY0ckhQNTN5U3BraW15ay9DSWRId29T?=
- =?utf-8?B?cWNQQXZwdG5EU3VJS1orSURMYXRCN1RXZFIxMFB0N1dQVlcxTk1KaHV2dkFR?=
- =?utf-8?B?OUFEQ0dtNzY4RkxJNUwyZUxQSUtwdnNNZDd2S3ZiQk4vQktjSjROa3pQTWtt?=
- =?utf-8?B?WnhoWFRhMmVyc3BaVitFSC9XSHRIdWdvcGFiZlgydFROeTNJVVpYaWVVMXBW?=
- =?utf-8?B?VWlRaUJ3ei92Q0sydXhoRlZ0bzNjUGVZR3ZMSUlHUlVlSERTYzZDQ3crU0RL?=
- =?utf-8?B?M2kwVmJmRXVRY3M2T3o3eEpmVmJObnYwenpKTWJGS3RQZzRVZ0VYTjVyM3ly?=
- =?utf-8?B?Mi9JejdWUE1hYjVGczg3VHhwYVk4UnZPSzNMSGFHVUVFMWc2UStSc0VVMkFl?=
- =?utf-8?B?cXh2QkhpcFVvM1V6QkRKcmxrNjkwZ2ZMWWdpU3FyY0g3WjI0NWppWUNwRHRl?=
- =?utf-8?B?djdzYmxvSmw2RGlYSU1RQjF6SmYwSnZnUjBrZU9DZis0cVF3cDk2ZmF2Y2lY?=
- =?utf-8?B?WFR3Zk1WUHk3SEMxaEtOd2pyaTAvU2dvMmhqUmxCS000VVZFTlk2M3A5VTg0?=
- =?utf-8?B?UE1XYkpuTXVmdnhwU2Vla0NST2JOWDROUVMya2Zac3VDdDhCS1NVYVdhWTBm?=
- =?utf-8?B?aXNaUmt3ZWdKVlMxYWFGV2lJaHdhaVVqRFppZTZEQVdZaDhaVk9HTTZPZFZM?=
- =?utf-8?B?dnRRUUxtN3o5a3hqcXJsaFNCOHprelRiU29sZXo3anQ5elpnR0tQSTFIZjBE?=
- =?utf-8?B?UDBiVVJLK24xUEI5RHpJa2ZiK1YvbEkyT2ZYMnFnMWEvd0ZOQS9wT1RlWXFW?=
- =?utf-8?B?UHBwc3dEZVlMTlB2TmJJdngvMjE1NFMvVy9ReXl2ejZxLzNZZEVLaFozcG9J?=
- =?utf-8?B?aGVrN1BwNTRCSWpYQ293UlVsYy9KUGhvckw0MkVvcHhhVlkxZlNRalA0c0xk?=
- =?utf-8?B?bTFhUk50NS9iODNiVTczM0pKRzFwcmhwYURUUTFHWEVqOVZSMzFJMzR1ZWE1?=
- =?utf-8?B?REtSM3htVDc3dUc1WmhoaE02RE5FUFZuY3AxdEZ4aWpNTFFjZisvRnVhWi9N?=
- =?utf-8?B?WHlFRjNpWFJRajlEdENxekUzS3pHbGxCKzJXeEFLenZ3dnNuZTdUZkRHci9n?=
- =?utf-8?B?bFA1bHVVRWlYelFLRkprdUJud2Z5b05PN0kydnFmcWF2ZmxtK3p1WENDTlY1?=
- =?utf-8?B?SXo0eXJiN1Z0a0tuWklZbE9CU2VHTlh4TGZCeFhUYm9ibElSRVY4bUNSNFdz?=
- =?utf-8?B?ems5SXJ0VXBFOGdBYlByRWRhNkUzcm9lZG40N2FRWGRUL09GS2RMeU5qTVVO?=
- =?utf-8?B?WUlpa2d4dnRSK2tWK2tTZ1I1MVBzZ3J3RmhXZG1Ib1dNUy9pTFZNRit0SDRz?=
- =?utf-8?B?bS8yWVZPNGVIV2oyaWdublh0ZkZjRFpGcmNpSWFYNlJEWTNTc0RVZGdDdURy?=
- =?utf-8?B?RW1uUXJZWTZnL2tUK2xtVWN1NFprdDlIRm5zZkVjVTlmM0RRTC9YVFZENkFD?=
- =?utf-8?B?aksyTThVTm1TWnhVWGdkSWMyV2NibysvUTZSWlJIb1JPb0xKNS96emo5N0J6?=
- =?utf-8?B?dXR6K00ycWN5OGFMZllwa3ViaE9OOWdTNkFDTXd4bkxDSjd2ZG5uZEphdGdz?=
- =?utf-8?B?VTdkdE1DZFc0c3JkREt6aFprbExlSXVtbW1PN0RVWi9NazJOek5sbTdTb21C?=
- =?utf-8?B?Y3F6VTBvaTdSYkxzOWVxcHZ1SkpQelVQZk90MzYxRVBBQzllcG11QzVRPT0=?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?VjUvcWVJaGwrRmpONEdFbStWeHY5eVNaSFRDckJiMFZlK1JRK25CeFlERnB2?=
- =?utf-8?B?YnQxSFN6djRCQ1dJNUFvcDNWVjBCNjh1dkMrTXphTW0yaGZIOTlxTGFGbG9s?=
- =?utf-8?B?NXAvM2VJSzlhZFhiWGxSc3MvL2ZkdEkwSzByYzRkQkpzcnU5NWdVUnZLeEUy?=
- =?utf-8?B?ZkszNHJWRzNHWDFjc1BpYjhBQzhlWWdsSXBlWFk0bkpzd2wzMmtZNzE3ZXZw?=
- =?utf-8?B?Q1FDTm43VGp2aVNDWlpFSlZUQTBDODk3eStsenhma0huY0JFak5ySEs4QXZo?=
- =?utf-8?B?NTdhSEU4SXQ5U3hFN0ZDU25kU0VDMFJyWWJSTFN4dEFCZzdHZmM3Ri9jc2wx?=
- =?utf-8?B?TE9xOFB3ekNISGZETkVxeGNPbzMvc0xVckM1UFp6Y0NjTDZRMHJ5MXBNWVBI?=
- =?utf-8?B?Zis3QlRnWjNWTWxVV2Rkc0N4WVp0L0x3UWY1cmErc0dvanZJd1FncFlrSkFo?=
- =?utf-8?B?TkJtQTdYV3hoRzByNTkrRnhBQ2dJOWhVYmFXWFA4clZJZC9VOGdpTGpRMHJa?=
- =?utf-8?B?d3QvRkJqbWZVN3EzeTA1NUJ6N3I2S2FKeG1lSkZNWjdnU0hWcThBZTcwNXd1?=
- =?utf-8?B?ZkNFNWlHelIzQ05WaW5xd29TRnMrZU0zM2lITmdHTVRTWDZiU0E1aGp2S29x?=
- =?utf-8?B?aEtnOEF1cDc1eUN0TjhHL1ZPMDZLbURLRkkvSnJyUUh4MjVPb0xRV3cvVFhX?=
- =?utf-8?B?Qjh5bjBxMHp2WVFDTitFdUFrZFBSMmVSSUdJci9pcjZuN2drdXdiWXphaWYy?=
- =?utf-8?B?bnJPcHl3aTlNbE9XdFRWM2x4TlZsZEY0cFVVLzhDQ3dwYU1OTzExZTBRSFRM?=
- =?utf-8?B?dXlYZVVIRXpDa0NSQzc0OVAvdExuUGZsMTRNOUlqelN0NGtrNDJ0NTFBYks5?=
- =?utf-8?B?Y1hrdzlCQjB0cXBIdFVBN0ZnVVIxMjdzTUQ4ODc3N3hjQSt2dWhFY0UyUGZQ?=
- =?utf-8?B?MXRacHNzL1dybHE1cmRPTFljQ2ptWHhVNENwK0RLZnROT3NsZTNaMTNNR1V1?=
- =?utf-8?B?bkt1OXRTZlIyU0FSL2xxZUNDaGEwMnd3Q1NZUG0yN2IyTGkxSnFuWUZsN1dk?=
- =?utf-8?B?TUt3dVlTSWxWWXJ0SUhIcnlNcjY0OTVsMERsc0hIaWlkT0FidXI1bDhIaWhx?=
- =?utf-8?B?cTgydVVIZ2d2TFQ0TERnVWp3RUg3akZWQUpyemJJYWY5bFFoUzRZM2NRREJL?=
- =?utf-8?B?WnIya2c2dDFZTWxwRVkzdUJxR3JmM2lpcHhmUE5tb3VNTitFVmJhbHpXY3g0?=
- =?utf-8?B?UW11aWRSTUIwZ0paZHdFWkhxbWJENXlYQ3lUMCs2enJPdCtUT2MwT1BrZTRp?=
- =?utf-8?B?QlNkMTJTcEFEUElvdUdsTFdMMFFLdjFTQitncVFxZCttRzg0TEtwNzB0NUVo?=
- =?utf-8?B?Qy92cUNRWGFoS0xveWYybXA3cFduL1JkTzhPZmxqZ29sQUovNFlzRmVPdnhF?=
- =?utf-8?B?M3pNKzdKZXdsSHV2WngzZklsZlFtTkFoREhVUDMwb2lrOXBKNGJnb1ZuVFZn?=
- =?utf-8?B?d3d5bDY1dXE2RzcwVm5Md3g2RC9WVSt1Smk2MjhhM1BnTHNpM1Y1Y0Fic01J?=
- =?utf-8?B?d1gzNUE2eG8vVHVKWk1WRjRPV3lKcnJTYkFPbXk0ZERrKzBrZ3MzSHpjTnhC?=
- =?utf-8?B?TW1TS0xBZE1wc3Vmdkd6ZjQ2ckROemZQUzl6MkdNUUhCWmgraHJzUjNuaWs5?=
- =?utf-8?B?WC9Tb0lxNGJ4aUZZTjB5YUhJQXFOaWQzSnFNMlhGbG56dDV4WlcrekZEZWha?=
- =?utf-8?B?MzZ6QWo1cTNqQUxwYWU1T2xrVXRBMEZCWjNaSU83eG9rQzB6ell4aDI4ZElF?=
- =?utf-8?B?RFNaVERMMWFrbGE3bzcwZ0JQandXVVR6YUxaZ0V0dlpyL1hEYVVxemw2cnJG?=
- =?utf-8?B?MDRhRTJoVUhtSGtTNWNNSjdFakltaDA1RWh2WjBINHlmSXRiNVdZSVhsb2NT?=
- =?utf-8?B?SnpuVWtBL1pYMjd0VkllRVltbmdKYkZER1lBN1FtRTlNbHdMY1Brc0hQaUl4?=
- =?utf-8?B?eU9kaXdwVENMUkJhTEpscm9IUkJlNkUwaDZyRmd4cUp4dmwyd1I0M1ZRT0tn?=
- =?utf-8?B?VDlUYUptR2xySUlUOURsQ1RoZjNYdEU0RTREMHBKYkVLeE1iNUpBWklEMjN3?=
- =?utf-8?Q?dKW3nnhzs4I/2IRGqk62Ls3ES?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7a2f6162-d592-4dd1-af69-08dcec2a2104
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2024 08:28:06.8760
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4Phnuo7AwonzLZtrr55fMZHqPgVxAN/Qt3H6buFvwlFZjIPtL47DHk+XqNdT/gbOFsdrGc0wkXuOKJvDfQwSPQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8756
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] media: dt-bindings: Remove assigned-clock-* from
+ various schema
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Dave Stevenson <dave.stevenson@raspberrypi.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Martin Kepplinger <martink@posteo.de>,
+ Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+ "Paul J. Murphy" <paul.j.murphy@intel.com>,
+ Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
+ Tommaso Merciai <tomm.merciai@gmail.com>,
+ Martin Hecht <martin.hecht@avnet.eu>, Zhi Mao <zhi.mao@mediatek.com>,
+ Alain Volmat <alain.volmat@foss.st.com>,
+ Mikhail Rudenko <mike.rudenko@gmail.com>,
+ Ricardo Ribalda <ribalda@kernel.org>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ Umang Jain <umang.jain@ideasonboard.com>,
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Dongchun Zhu <dongchun.zhu@mediatek.com>,
+ Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+ Todor Tomov <todor.too@gmail.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+References: <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-0-a2bb12a1796d@linaro.org>
+ <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-1-a2bb12a1796d@linaro.org>
+ <w4ta26svh34gojqpakrgp5cpsempedkewkmbllyvs5z5fm274z@jqs3tvunxq2s>
+Content-Language: en-US
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+In-Reply-To: <w4ta26svh34gojqpakrgp5cpsempedkewkmbllyvs5z5fm274z@jqs3tvunxq2s>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 10/14/2024, Dmitry Baryshkov wrote:
-> On Mon, Oct 14, 2024 at 03:18:15PM +0800, Liu Ying wrote:
->> On 10/14/2024, Dmitry Baryshkov wrote:
->>> On Sat, Oct 12, 2024 at 03:35:40PM +0800, Liu Ying wrote:
->>>> Add basic HDMI video output support. Currently, only RGB888 output
->>>> pixel format is supported.  At the LVDS input side, the driver
->>>> supports single LVDS link and dual LVDS links with "jeida-24" LVDS
->>>> mapping.
->>>>
->>>> Product link:
->>>> https://www.ite.com.tw/en/product/cate1/IT6263
->>>>
->>>> Signed-off-by: Liu Ying <victor.liu@nxp.com>
->>>> ---
->>>> v2:
->>>> * Add AVI inforframe support.  (Maxime)
->>>> * Add DRM_MODE_CONNECTOR_HDMIA.  (Biju)
->>>> * Rename it6263_reset() to it6263_hw_reset().  (Biju)
->>>> * Check number of LVDS link data lanes.  (Biju)
->>>>
->>>>  drivers/gpu/drm/bridge/Kconfig      |   8 +
->>>>  drivers/gpu/drm/bridge/Makefile     |   1 +
->>>>  drivers/gpu/drm/bridge/ite-it6263.c | 919 ++++++++++++++++++++++++++++
->>>>  3 files changed, 928 insertions(+)
->>>>  create mode 100644 drivers/gpu/drm/bridge/ite-it6263.c
->>>>
->>>
->>> [...]
->>>
->>>> +static int it6263_parse_dt(struct it6263 *it)
->>>> +{
->>>> +	struct device *dev = it->dev;
->>>> +	struct device_node *port0, *port1;
->>>> +	int ret;
->>>> +
->>>> +	ret = of_property_read_u8(dev->of_node, "ite,lvds-link-num-data-lanes",
->>>> +				  &it->lvds_link_num_dlanes);
->>>> +	if (ret) {
->>>> +		dev_err(dev, "failed to get LVDS link number of data lanes: %d\n",
->>>> +			ret);
->>>> +		return ret;
->>>> +	}
->>>> +
->>>> +	it->next_bridge = devm_drm_of_get_bridge(dev, dev->of_node, 2, 0);
->>>> +	if (IS_ERR(it->next_bridge))
->>>> +		return dev_err_probe(dev, PTR_ERR(it->next_bridge),
->>>> +				     "failed to get next bridge\n");
->>>> +
->>>> +	port0 = of_graph_get_port_by_id(dev->of_node, 0);
->>>> +	port1 = of_graph_get_port_by_id(dev->of_node, 1);
->>>> +	if (port0 && port1) {
->>>> +		if (of_property_read_bool(port0, "dual-lvds-even-pixels") &&
->>>> +		    of_property_read_bool(port1, "dual-lvds-odd-pixels")) {
->>>> +			it->lvds_dual_link = true;
->>>> +			it->lvds_link12_swap = true;
->>>> +		} else if (of_property_read_bool(port0, "dual-lvds-odd-pixels") &&
->>>> +			   of_property_read_bool(port1, "dual-lvds-even-pixels")) {
->>>> +			it->lvds_dual_link = true;
->>>> +		}
->>>> +
->>>> +		if (!it->lvds_dual_link) {
->>>> +			dev_err(dev,
->>>> +				"failed to get LVDS dual link pixel order\n");
->>>> +			ret = -EINVAL;
->>>> +		}
->>>
->>> Please use drm_of_lvds_get_dual_link_pixel_order(), it validates that
->>> the DT definition is sound: one port for odd pixels, one port for even
->>> pixels.
->>
->> It cannot be used, because it get the pixel order for the LVDS
->> source not sink. IT6263 is the LVDS sink.
+On 14/10/2024 08:43, Krzysztof Kozlowski wrote:
+>> -  - assigned-clocks
+>> -  - assigned-clock-rates
+> That's not extraneous, but has a meaning that without assigned-clocks
+> this device or driver will not operate.
 > 
-> Then you need a similar function for the sink side. Add it to the
-> drm_of.c
+> File should rather stay as is.
 
-How about getting remote LVDS source ports first and use
-drm_of_lvds_get_dual_link_pixel_order() like the snippet below?
-This way, no need to add a similar function or modify
-drm_of_lvds_get_dual_link_pixel_order() implementation.
+Hmm, I've obviously missed a trick here.
 
-If you don't like this, can you please suggest a similar function
-name or maybe an additional parameter(with type and name) for
-drm_of_lvds_get_dual_link_pixel_order()?
+I'll check it out.
 
----8<---
-        port0_ep = of_graph_get_endpoint_by_regs(dev->of_node, 0, -1);           
-        if (port0_ep) {                                                          
-                remote_port0 = of_graph_get_remote_port(port0_ep);               
-                of_node_put(port0_ep);                                           
-        }                                                                        
-        port1_ep = of_graph_get_endpoint_by_regs(dev->of_node, 1, -1);           
-        if (port1_ep) {                                                          
-                remote_port1 = of_graph_get_remote_port(port1_ep);               
-                of_node_put(port1_ep);                                           
-        }                                                                        
-                                                                                 
-        if (remote_port0 && remote_port1) {                                      
-                order = drm_of_lvds_get_dual_link_pixel_order(remote_port0,      
-                                                              remote_port1);     
-                if (order < 0) {                                                 
-                        dev_err(dev,                                             
-                                "failed to get dual link pixel order: %d\n",     
-                                order);                                          
-                        ret = order;                                             
-                } else if (order == DRM_LVDS_DUAL_LINK_ODD_EVEN_PIXELS) {        
-                        it->lvds_dual_link = true;                               
-                } else if (order == DRM_LVDS_DUAL_LINK_EVEN_ODD_PIXELS) {        
-                        it->lvds_dual_link = true;                               
-                        it->lvds_link12_swap = true;                             
-                }                                                                
-        } else if (remote_port1) {                                               
-                ret = -EINVAL;                                                   
-                dev_err(dev, "single input LVDS port1 is not supported\n");      
-        } else if (!remote_port0) {                                              
-                ret = -EINVAL;                                                   
-                dev_err(dev, "no input LVDS port\n");                            
-        }                                                                        
-                                                                                 
-        of_node_put(remote_port0);                                               
-        of_node_put(remote_port1); 
----8<---
-
-> 
->>
->>  * drm_of_lvds_get_dual_link_pixel_order - Get LVDS dual-link pixel order        
->>  * @port1: First DT port node of the Dual-link LVDS source                       
->>  * @port2: Second DT port node of the Dual-link LVDS source      
->>
->>>
->>>> +	} else if (port1) {
->>>> +		ret = -EINVAL;
->>>> +		dev_err(dev, "single input LVDS port1 is not supported\n");
->>>> +	} else if (!port0) {
->>>> +		ret = -EINVAL;
->>>> +		dev_err(dev, "no input LVDS port\n");
->>>> +	}
->>>> +
->>>> +	of_node_put(port0);
->>>> +	of_node_put(port1);
->>>> +
->>>> +	return ret;
->>>> +}
->>>> +
->>>
->>
->> -- 
->> Regards,
->> Liu Ying
->>
-> 
-
--- 
-Regards,
-Liu Ying
-
+---
+bod
