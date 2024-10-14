@@ -1,265 +1,144 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2069.outbound.protection.outlook.com [40.107.22.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24EB315575B
-	for <imx@lists.linux.dev>; Mon, 14 Oct 2024 09:03:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728896588; cv=fail; b=LvMzaq4dUiE/CnQt6OvQmJoBIOA7p/IHDmZ0iXFZu887gK9UTXIxqnKNWR6RD07AecSIPChArNtGOn6BqOHh7S3t+gi074UrzMe0lPpCw1LBYJh24Z6Y1c/wCCZ3ZC1IxTNqhGVXidx7AmanGh8k4k+2iAP5C+/IHsRl3varlhE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728896588; c=relaxed/simple;
-	bh=NMaixJesrwjgxBT4NT5looPIkUt0ihb+TNQ2+BNtgIw=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=lMcoDQo1iaQ4RZjFBMV9RCj0GkF3ihSDgf0/kJwJ8b0eMXi4cSUgQ7s5K5KdeliHVv5wDYz6PGCwwQhMphXebe0kSOBpihXAM4zcxzseK6KhWknGkJKpTRDNPyF+ADajrYIK1u72Aapwvbq1vpSekSfXUXThTAOQ8jrujXdGNJY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=S1KD4wRk; arc=fail smtp.client-ip=40.107.22.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3666E154BE2
+	for <imx@lists.linux.dev>; Mon, 14 Oct 2024 09:03:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728896630; cv=none; b=l1LhKp5ezttvGGp9ofeZS520vcP85QSwi0+xbyYIBHSLGhqZXmak0lr78hbyUAMR7BVjwWA2Hv288oux5pJDU1TsYSq4IIzCcF//C45RZArXewLFbgfbNJD12S2bnSgRBlcUJNBrO/5qIcY+vugCIO84Mw5zUPrQNpoQuGgv5ug=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728896630; c=relaxed/simple;
+	bh=sHpyCuwQq/I2DTs7dmBgkBNOQIwrlp6onpFJ3nE1MTI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iljtzMVPqWDaKEbXfKepYha455NHUwNPQg1Y+1p9IMoHf+GexjG1l1yJgd/VJ+8vO+ZTlA5tPZdXkuEFr8Vwdi7QvMvNQ5X8aqv9aUId2j+vY/pIZg1WpSS0SUx60odw7ei7rzx1WTdSjBVK3fDPkoxW2wU/wayCCXqn75mYXsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=R4iXGzcf; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="S1KD4wRk"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MMrCnwgRSiwplz/dcLLVYrtVzhyX4m66vvCLXIo+CbK4tKUkHjsAgb7QjEDIy/63/0bqfAKzRjtuE8Z73iBAmJLzu/IF9GhCBPopYFFMmUGlKLu1F2aumS40MK69Yq+GFnkG8yxQRHO1wxyYXnN6whmmjDDpUlLCWNwPXuq6Gvq4DBS8uJ9WodfZ7dGwQNQ0KxEKO3ATUhS8ph6FKvZ7zeS/xWkzVy3k3vZp48Ik7SBmgJV0bQzclVZFuqGxvNOAUljWX5njzy2YCYuyan3pwpTMHQJQPfyxZXWziv37VhhhYLesWF7G3HA5XDoINhZIJgvpiBNJrY9p4n/TpuUBmA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=d2X07okjtdl9vOjnNmLbOm2lrZztvIEIJlDlOPNZ4ds=;
- b=rlpJ2HLOeS/KFRIKjxm7QtrtuwiCJrkMsWseds+d9aa1GFaEJFFxMk7yoaAwW+G4SK4jCQDVX8h0zFPine4NMRGPID7nsmqFfQ1d68TDFSur4ki3pLsjX6FbIUPX/oih8ab2lBmyJSA5IVML/KnMxzfNR0eIheSQg0YsxPpUgNjguS68StOg9c86Id/9K/++otYOj+pAq9/ZpjymhG7nwXOZaHD6ZzrZyVowZL83Xf6WbvtDHiZsJBRoch9Yy694ow1BseDHuG4jhaNFt12FVXhCNkmoFIqCiw3ib4wfZAfLUbR1HiA2PayHblShPxsuYuCLos4W11L91RsEhvlkOg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d2X07okjtdl9vOjnNmLbOm2lrZztvIEIJlDlOPNZ4ds=;
- b=S1KD4wRkDU6UTXdvnfJrWWbNWneNvOuDZBLmdO5R8jFiNiXaaSmtKi2qpk0hyC/PMWPs/B3mcQqw/zwxJwilrzdx5bTv4v9FtBtfWm0u2BVGAMsC5unNiOlprmVonEWyXYnzWwxhPWg7/HTsPq50NFc1DIylGb7oHodwsYs7UIditm0R0wf7F6Cp31isFE5REAu35t51T4t96JwcElHjL1K4bcueAyev91PCNXx9ANmMPqWcDnbniLpLU+k3xFR08jeXRHG3/57yfNqbfDJpOZ8DWInPTYyPwvfDCVKkwmnlDSQ7Dx7caCSewT+HWYS4rb0WEYv51ev2G2v2YFNsNg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DB9PR04MB8461.eurprd04.prod.outlook.com (2603:10a6:10:2cf::20)
- by AM9PR04MB8292.eurprd04.prod.outlook.com (2603:10a6:20b:3ef::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.26; Mon, 14 Oct
- 2024 09:03:02 +0000
-Received: from DB9PR04MB8461.eurprd04.prod.outlook.com
- ([fe80::b1b9:faa9:901b:c197]) by DB9PR04MB8461.eurprd04.prod.outlook.com
- ([fe80::b1b9:faa9:901b:c197%3]) with mapi id 15.20.8048.020; Mon, 14 Oct 2024
- 09:03:02 +0000
-From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Date: Mon, 14 Oct 2024 17:11:25 +0800
-Subject: [PATCH 4/4] clk: imx: fracn-gppll: fix pll power up
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241014-imx-clk-v1-v1-4-ee75876d3102@nxp.com>
-References: <20241014-imx-clk-v1-v1-0-ee75876d3102@nxp.com>
-In-Reply-To: <20241014-imx-clk-v1-v1-0-ee75876d3102@nxp.com>
-To: Abel Vesa <abelvesa@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Aisheng Dong <aisheng.dong@nxp.com>
-Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Peng Fan <peng.fan@nxp.com>, Jacky Bai <ping.bai@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1728897092; l=3465;
- i=peng.fan@nxp.com; s=20230812; h=from:subject:message-id;
- bh=0FRtVJRoldZWhrjsnYMTTv4H4lNFEH+cZfZjwCflnCg=;
- b=8NTWCY5GXXjje1CkaoW6y/mFO1bx+tz2QgAgzl7GsiW3xX6ovzrYy+mMu0oUsXnSMEZ/O29R6
- YrXBlhmXuYKA3h+FU2nsAxCb4vuPpegjyLNUzG6wGlbJXiHAL6msu32
-X-Developer-Key: i=peng.fan@nxp.com; a=ed25519;
- pk=I4sJg7atIT1g63H7bb5lDRGR2gJW14RKDD0wFL8TT1g=
-X-ClientProxiedBy: SI1PR02CA0019.apcprd02.prod.outlook.com
- (2603:1096:4:1f4::15) To DB9PR04MB8461.eurprd04.prod.outlook.com
- (2603:10a6:10:2cf::20)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="R4iXGzcf"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5c97cc837c3so1145663a12.0
+        for <imx@lists.linux.dev>; Mon, 14 Oct 2024 02:03:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1728896626; x=1729501426; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ej1J1uipGZreJY91YHwmy1fCwa14PATNAE1OP3F9fzI=;
+        b=R4iXGzcfVpMKnokOV23FbZLCryymyG3InNV2wiud7QfZPntyMU7tT3UgxCIHO173y+
+         UbZnpUczPM8C4M+qbJoDqwoPTjs3i34YrEpxWtCkuIti56I5p88168oY1uiNSK7NXisN
+         3D5von60vXroxZiFEn4xuOuROF8JswXk6qxyfk73oNbrkJBdsjhsvoc/7iffTvkuK6tg
+         Btc2m+eD5Jno9EnLm9swC/6u3FME7L2iBGuSM9EJ1FSp2VWL2Ez4epv9J5y3MdSr/Bm0
+         9g+x6uStC1zyfsG8IxsdcBe2fA1HllE7jHxkga+ROk33Lh4+Eeq9yGAXgmZIHwPmqQR0
+         qTNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728896626; x=1729501426;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ej1J1uipGZreJY91YHwmy1fCwa14PATNAE1OP3F9fzI=;
+        b=haoA1cnJchqA+BV0MDKlnVyElSPf1ONEpusX//4CNhiy7QAlLqVeNNmIMQFQiXWg8y
+         dSIRVwcBudmcWVmGRHGaWLvKnEuzSGeVfWpAYOr7106xKSBTGj9dNdXXYSjmNbJS5ssk
+         WpJc+56h6JDW75mnu9bOfC4IVU0peg1VMENXCj8AalsAJLD0kvHeVp8nWZdz1hTOwL6+
+         iCPtkAEJRMn9TDNbygdu6zQ/K9IWmcbZyEbKVv1tzmT1/NLi563zDlmIHgOLrdRPSLO0
+         2D8YYJyaDjkyDQwsvlzvxyKH+DQmK9FbcXY+n6pGoiJ1dxRNMF06TEakZvPGnc3THjcx
+         nkNA==
+X-Forwarded-Encrypted: i=1; AJvYcCUr3oGY96I/Qxxc9Ccs1/MkT4cm/ovcKzM/kOxs2Ia8ql0yGhk4O4Bn1LLEcpZkgHnZOFo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwGwKMExVTLSxxBBpwcBNcEcnmChcUL1fiycPLs3JAUpn5VZicK
+	8Br/qELeMBL2EDmyGxK0dbI8V0muiBKbFTlSdkkvN5tJfk5s6j78lFoIkcOkXAA=
+X-Google-Smtp-Source: AGHT+IGb7GDEfrG1cF+8kZu+KeiDnhyofexGNBASYbiwubzKma7DssNASeS3npGWfvqJswAeHNJYow==
+X-Received: by 2002:a05:6402:278e:b0:5c9:5a96:2869 with SMTP id 4fb4d7f45d1cf-5c95a962ce0mr7082905a12.10.1728896626352;
+        Mon, 14 Oct 2024 02:03:46 -0700 (PDT)
+Received: from [192.168.0.40] ([176.61.106.227])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c93711bb78sm4924587a12.33.2024.10.14.02.03.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Oct 2024 02:03:45 -0700 (PDT)
+Message-ID: <2afe4f3c-e2ce-4cc0-88ac-348e6f3f7e26@linaro.org>
+Date: Mon, 14 Oct 2024 10:03:43 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB8461:EE_|AM9PR04MB8292:EE_
-X-MS-Office365-Filtering-Correlation-Id: 406ee9bb-5e03-440e-920b-08dcec2f01dc
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?WlA1TkxqSkpoOWdkYk9NY1VnMERuQXZUR1o2NGlzRDlvMGIydnh1S25zNVhF?=
- =?utf-8?B?UjFoWUEyY2ZLWnk1T0lzZDViTEFZQkZJQ1laRm1LRWRQYzdKYkd5K0ptR3h1?=
- =?utf-8?B?WndDOVlHSFo3VEwzNmR3aS9HU21uS3ViRm9vd0tqd2t1TURWVmpTUHh1eC9S?=
- =?utf-8?B?K0VWMGIva0lQQzhyMWVZaXV4UllyalhxZ2I3dVJQblBhSlRCMld0RVl1S29z?=
- =?utf-8?B?SjQ4d3oyWGNZbGJ2ZjhGa1p2T3V2TE1KZTlWYjk1ckxjWlQrSWFPS1gzdWtj?=
- =?utf-8?B?amNlRHRaSS8rUlVEaXNUSGlCNmtLWWRSWktxQzh5WTljZmc2OUhlVUVKSEZ3?=
- =?utf-8?B?djc0QlYyQ01lM0ZGdnhWNEZIakMzT2R5dFZTYU85dU1uRXJtbXNRaCtEWUtr?=
- =?utf-8?B?cThIbXpKUFBoWUFjak5XR3Jyc1pTc2lVWlhZbFE0ZmhIMGE1Q2VOR3BWUUU5?=
- =?utf-8?B?Umw5U0RpY2ZpOGJSWXd2aXFJS3hUdEFzam1OS3RwYVZJemxCaENmdFEvQXph?=
- =?utf-8?B?blpyci84UE9ZcXNUVTVNRGc5WnlvQnkwUnFHQ2d3ZU5Tb1lkOURoYU9OTUJq?=
- =?utf-8?B?Y2lZZUpuSHBkTDNLcjNLaWwxbmYyWmtzZTBRSGx1eGlmaGNCc1BZZlg2WVRq?=
- =?utf-8?B?M0o1d2dNSC9qZkVoTWRVTkRUQVlqUVk3b2RiajdnVlV2dnorUWxaVjBZa0Zh?=
- =?utf-8?B?VlpJMHl0NjdFOXNqcEVzL0xweWdBRS96N3R2eVVrcUhSRlh4MHQ3V0Z2R2Va?=
- =?utf-8?B?eFNrYXhVRXJ3Q1d3WnVRTGl4blRLL1JoM2o3SmhGM0ZkSTJWNGdacTZwekRD?=
- =?utf-8?B?d2Q1cG16MklrdS9SOUNzK01aTmJCajZ1WGRPT1lIWUNwQUp2eUdtUjdmem8w?=
- =?utf-8?B?dmx3NTVGb0dacUMwc3kxR0p4U1FOa2JPYWkrbk8xT0VJaTlzOGxFeUFPZStz?=
- =?utf-8?B?cWlsOXNHUklOaU1jZFpOYzhYVllEVDVmM0hkRVY2Tzh4VkpCeVIwZlg4dWt2?=
- =?utf-8?B?ZU1mTE5UVUFpaGRpSjhBbDY1MU95ekYzWG1SOUIrOVE0bDllYStpR1NrNFVB?=
- =?utf-8?B?Z3Q2ZlN0Wi9TZTNOS3RmdFF6QXVuSDFiUVRBeFZJOGg3NXA5cVBHZGJhUXRi?=
- =?utf-8?B?bFdPOUxodnRxcGxsOThlRVBBRXZrTnh2Tkl5VmZ5RERtcSt3b3ptaVJnd2xN?=
- =?utf-8?B?cUxyU2hCTllXMFNvZGJuZGZjazgzMHExQm9EcUFXY1l3SXhxbkZ6aUlJVURU?=
- =?utf-8?B?VitxUFhRSzF0aE5xSUJVL2pUOGFqT2xSSHNXOFhoRmlVYW9Qd1R0NGhFbzZi?=
- =?utf-8?B?dDlyY2Y0QTk5dHp1MlplUUNjMFZSZTlZQ2dLdDU1eW5ZUVdHblVnRWQ1djg4?=
- =?utf-8?B?YWZWOXJxN1Zsa2xueGlrSzdxdWVzc3F2TVBNOExvZWJhYlV5aG9CZFNqMWd5?=
- =?utf-8?B?Q283eEJMYkxZL1RCK3ZUaTdnNjQ5SUcvOWY5cjI5ZXpBOWZUWkNIOGRtK2JI?=
- =?utf-8?B?ZUxLdVd3UnZzUG1JU2RqQXNIZmxGcG9sTUsvK3pyWmZFbFh0UjZQbVlmYlY4?=
- =?utf-8?B?MWJZcVBCZ2R2RFA5R3ExUFMzU2htOSs3SG9sOEw5NXdvN3VpSWU5MHg1VHpl?=
- =?utf-8?B?SHlacGJRNzQyQk1OL1dOVENUMkI4S3dzKzRSaTJUaTFMaFNha2JjRGhxckx3?=
- =?utf-8?B?V1lMUnBRa0EvNUJ5andFekVtbTdaWlZVL2thS2hPWnprZEtoZXdSR05FSCt4?=
- =?utf-8?B?NHdoeXZVelJqL2taVzBrQUFxVkNHVVdBMk5qc0cwYzBIUldEVVVtMDBnMUVT?=
- =?utf-8?B?eWIwMXpKL3IzVU5ISFRXQT09?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB8461.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RUZFUDhiRmJzTmd4SmJHZlVXNUMvS1d2UjZyT1FMRlYwdEhHdThTVmFIOS92?=
- =?utf-8?B?dlhNNE02VTRjbnVRZ0ZRSVlTQjFIZlFCVUcrS0JCL3FrNEJ0ckRWM01ONTNx?=
- =?utf-8?B?Y29IOU12dEEySHRzaEV2VjNNTHBNWSs0RXlKM09qSk5qWFV5N2l3dEhtYVpY?=
- =?utf-8?B?dFFWaVI3bGFER0JQSm1HNHJBRUVjUTZ3SHdzZHBtQ2tJZWxkSy81aEZ4QUtU?=
- =?utf-8?B?bUNsaHBUQndtWGYwTXMrTGRTWkcvVTlJUGY0YnQyVGtiS2xvQVFEcmE0R21k?=
- =?utf-8?B?UHAzQ0VIODhDcXd6Q0dUWFZNR2lDNW8yS2h4bGdXY3BWOFdsbEJac2FpVGNG?=
- =?utf-8?B?ODhGcEVsT092bUtHN3dKSy9RUU1sY2kxMDZnNFNGa3IwbnczemJISCsxdW56?=
- =?utf-8?B?Y3ZsZnQySmhDV25iY01YeE9va1c1V2JPUkh4ZDRFOHJMS0w0djhHWTBJWU56?=
- =?utf-8?B?RWNqNEVEQVpKQU5hWGhpMVM2R3k3NzlhbTZVek1ESkdNR2N3M1p2SlROVzJw?=
- =?utf-8?B?R2d1WWs5L3ZxLzVKOG9lOWdmbHNoem9pd3puckY2YlZiemZrUUQ0anY0dmo1?=
- =?utf-8?B?V3V5azJZeUY4dk5VQ1h2ZHlKZ2ZkUUpFT2xnelQ1Y0NWYnNybktpRmpvU3hN?=
- =?utf-8?B?UlhXRUdtWk5DSDJ3RUZESzFtRDUvNjN5alNuOWg2OUJnZTQ0TlRhdHdCREJP?=
- =?utf-8?B?NHMyQ3d2Qm9LMThoVzRmaGswSFgrMUJqZ1pLbmgrQmx5NlphVVJ3bTY2QTNE?=
- =?utf-8?B?R2tLSmJPK0pSbWJZY3dFeC9wQTdOYXY5U292cXFwcGdORmEvdkRGNHRhVjZP?=
- =?utf-8?B?d3lsWG9GQ2QxRkFmVGk3bkhTMHo2N09URW1hM2NEVVBqWVBpVFRTK2MwS2dK?=
- =?utf-8?B?K2hZMzNFTFlvaHJqTGs0d040eFNaRno0bXh2YzAyQTBXL01sWWNoSW9xNnVI?=
- =?utf-8?B?cTEwdEdKcXdkWlZsZDk4MUpwWVl3QkZiVDFuTE8rT2FSSTRNb09oZXlSQXVG?=
- =?utf-8?B?cFh3S0EzWjNpVDNiWUt6WHJGRUoxYnhOaHdDeTlMUytaL2NIV1VrcHBNY05G?=
- =?utf-8?B?ZWtlTXFMM0JYdXlwYXFKeWx4OHI2cy9MN01XZlltRXlFWTJKaHVZZW1TU2hX?=
- =?utf-8?B?ZXVDSWRQU2ZWODFiY2ZxTDFGUWphUitZdU9MOWVQUm4yc2ZVNE8rRWNrWmlJ?=
- =?utf-8?B?NllkTjZVcHQ3L01xYzJkMmpCZ1l4QUV3bFNDeGJVUXh5Ylpsc2VOUWhNM3F6?=
- =?utf-8?B?Y3plcTYzT3VGa3FTdWp2YWtrbE5kVlk3OXJrUXQzd1lwYmtCOUpBTDIxZGhQ?=
- =?utf-8?B?ZWJBdWwxbk9uRjJEVElHOVNOek4vemxUeUFWQ1JNVUE5VlgvQ3Z3YWgxOWxY?=
- =?utf-8?B?Yjd2aGJsaVhDaFg3Y09KRFh4R29ZL1hzRHgxa3NjNEZDZ3RhTm93dWRkam15?=
- =?utf-8?B?UkNSVXEyNW4yYlZwNmppcGFoQTM4cTg3SFBTTWtXeTNzWmhuaXB4ZTRCREFC?=
- =?utf-8?B?T0hTSVEzdTFNNnNhY1N2aGdKRlB6VWc5ZjRoNWd1cEh6ZVhjN3FFbUV1WGZ0?=
- =?utf-8?B?L2g5T090M2ozZlJ6NWo3dnd1N2Q1ejMyamI1T3d4UjdjMFgrVGdTWXBQenkr?=
- =?utf-8?B?OVBKQVIwUEQ0aU1TbkZ5MHM0NCtTMTh1OVBMTW1oYklKSFVJYXZsWHdnblBV?=
- =?utf-8?B?Z3BQRERzOW9neWFoZGtOZS9KOW1RUEhpamRxVkpKM0VUZC9YNDVSNm9tRnRX?=
- =?utf-8?B?dUpPbnp3cE5xdk4yOTBQNFV5TTRndXE3aDZxVEhYclFMN09HSDVDZjY1V0tO?=
- =?utf-8?B?Z08rK0c3QmNEUmJJbWFoV3JadkZWUTNBMlRpU3A3a0lyS0JDeDJqY01SazNq?=
- =?utf-8?B?VTgrckY5ajRMZFZuSjh1azhjZU5aWlNQQ0ZvbjR1cnhoTjIzWUZrZ2o5WEZO?=
- =?utf-8?B?RlNtOFA1MXUzNEF6WFAvYUJDbUJOM1FwTnk3UFhnMVhlMFVMeHY2czZRN2pz?=
- =?utf-8?B?SFJRczRic1NSd2ZOZzloTy9xQktWUURwSU81bDVFb3QxZ00xQ0pGcnllZ0tm?=
- =?utf-8?B?bk03amJOMjN4UEFSTnBzTmhzck1CY2k0MU5FWmduY2JiWHdqSzBCUDBWaExR?=
- =?utf-8?Q?al6dUtOGgrua6CAusqshx85gQ?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 406ee9bb-5e03-440e-920b-08dcec2f01dc
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB8461.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2024 09:03:01.9321
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ei540PbxXxQN/EWN6gjYUk/jjqlVrkCOc0OgriF+Xo3+dSvh/sUlKUsJbY4yfqlZRtqs1ptY6a+n0wn8wNxiYg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8292
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] media: dt-bindings: Use additionalProperties: false
+ for endpoint: properties:
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Dave Stevenson <dave.stevenson@raspberrypi.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Martin Kepplinger <martink@posteo.de>,
+ Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+ "Paul J. Murphy" <paul.j.murphy@intel.com>,
+ Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
+ Tommaso Merciai <tomm.merciai@gmail.com>,
+ Martin Hecht <martin.hecht@avnet.eu>, Zhi Mao <zhi.mao@mediatek.com>,
+ Alain Volmat <alain.volmat@foss.st.com>,
+ Mikhail Rudenko <mike.rudenko@gmail.com>,
+ Ricardo Ribalda <ribalda@kernel.org>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ Umang Jain <umang.jain@ideasonboard.com>,
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Dongchun Zhu <dongchun.zhu@mediatek.com>,
+ Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+ Todor Tomov <todor.too@gmail.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+References: <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-0-a2bb12a1796d@linaro.org>
+ <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-2-a2bb12a1796d@linaro.org>
+ <7ecxjoa7aije46cxmkyfd6ihxnqw4wleqkioddomxbwlu7qtrc@4dkfitppeksu>
+ <6f461cb3-3a41-4a3d-b9b2-71b1c6be77f7@linaro.org>
+ <9510b546-28fa-4fb4-b06e-0af5f9fd3bbb@kernel.org>
+Content-Language: en-US
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+In-Reply-To: <9510b546-28fa-4fb4-b06e-0af5f9fd3bbb@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Peng Fan <peng.fan@nxp.com>
+On 14/10/2024 09:47, Krzysztof Kozlowski wrote:
+> If a common binding for a group of devices encourages you to list its
+> subset, then it is not that common.
+> 
+> Solution is to fix that, e.g. split it per classes of devices.
 
-To i.MX93 which features dual Cortex-A55 cores and DSU, when using
-writel_relaxed to write value to PLL registers, the value might be
-buffered. To make sure the value has been written into the hardware,
-using readl to read back the register could make sure the value
-written into hardware.
+It might be possible to have
 
-current PLL power up flow can be simplified as below:
-  1. writel_relaxed to set the PLL POWERUP bit;
-  2. readl_poll_timeout to check the PLL lock bit:
-     a). timeout = ktime_add_us(ktime_get(), timeout_us);
-     b). readl the pll the lock reg;
-     c). check if the pll lock bit ready
-     d). check if timeout
+          $ref: /schemas/media/video-interfaces-endpoint-defaults.yaml#
 
-But in some corner cases, both the write in step 1 and read in
-step 2 will be blocked by other bus transaction in the SoC for a
-long time, saying the value into real hardware is just before step b).
-That means the timeout counting has begins for quite sometime since
-step a), but value still not written into real hardware until bus
-released just at a point before step b).
+which declares the typical list ->
 
-Then there maybe chances that the pll lock bit is not ready
-when readl done but the timeout happens. readl_poll_timeout will
-err return due to timeout. To avoid such unexpected failure,
-read back the reg to make sure the write has been done in HW
-reg.
+$ref: /schemas/media/video-interfaces.yaml#
+additonalProperties:false
 
-Introduce fence_write for this purpose.
+properties:
+     data-lanes: true
+     link-frequencies: true
+     remote-endpoints: true
 
-Since we are here, to avoid udelay to run before writel_relaxed, use
-fence_write before udelay.
+required:
+     data-lanes
+     link-frequencies
+     remote-endpoints
 
-Fixes: 1b26cb8a77a4 ("clk: imx: support fracn gppll")
-Co-developed-by: Jacky Bai <ping.bai@nxp.com>
-Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
+and then if you need say clock-noncontinuous you'd just include
+
+$ref: /schemas/media/video-interfaces.yaml#
+unevaluatedProperties: false
+
+and then list whatever you need
+
+> Or don't care and use unevaluatedProps because it makes people's life
+> easier and is still correct. If it is not correct, then this should be
+> used as an argument.
+
+I'll wait to see what people think before progressing this patch further.
+
 ---
- drivers/clk/imx/clk-fracn-gppll.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/clk/imx/clk-fracn-gppll.c b/drivers/clk/imx/clk-fracn-gppll.c
-index 4749c3e0b7051cf53876664808aa28742f6861f7..6a4b3745d3d9aa1b583c9bd390c884bcb689e4c7 100644
---- a/drivers/clk/imx/clk-fracn-gppll.c
-+++ b/drivers/clk/imx/clk-fracn-gppll.c
-@@ -63,6 +63,12 @@
- 		.odiv	=	(_odiv),			\
- 	}
- 
-+#define fence_write(val, reg)			\
-+	do {					\
-+		writel_relaxed(val, reg);	\
-+		readl(reg);			\
-+	} while (0)
-+
- struct clk_fracn_gppll {
- 	struct clk_hw			hw;
- 	void __iomem			*base;
-@@ -253,10 +259,10 @@ static int clk_fracn_gppll_set_rate(struct clk_hw *hw, unsigned long drate,
- 
- 	pll_div = FIELD_PREP(PLL_RDIV_MASK, rate->rdiv) | rate->odiv |
- 		FIELD_PREP(PLL_MFI_MASK, rate->mfi);
--	writel_relaxed(pll_div, pll->base + PLL_DIV);
-+	fence_write(pll_div, pll->base + PLL_DIV);
- 	if (pll->flags & CLK_FRACN_GPPLL_FRACN) {
- 		writel_relaxed(rate->mfd, pll->base + PLL_DENOMINATOR);
--		writel_relaxed(FIELD_PREP(PLL_MFN_MASK, rate->mfn), pll->base + PLL_NUMERATOR);
-+		fence_write(FIELD_PREP(PLL_MFN_MASK, rate->mfn), pll->base + PLL_NUMERATOR);
- 	}
- 
- 	/* Wait for 5us according to fracn mode pll doc */
-@@ -264,7 +270,7 @@ static int clk_fracn_gppll_set_rate(struct clk_hw *hw, unsigned long drate,
- 
- 	/* Enable Powerup */
- 	tmp |= POWERUP_MASK;
--	writel_relaxed(tmp, pll->base + PLL_CTRL);
-+	fence_write(tmp, pll->base + PLL_CTRL);
- 
- 	/* Wait Lock */
- 	ret = clk_fracn_gppll_wait_lock(pll);
-@@ -301,7 +307,7 @@ static int clk_fracn_gppll_prepare(struct clk_hw *hw)
- 	writel_relaxed(val, pll->base + PLL_CTRL);
- 
- 	val |= POWERUP_MASK;
--	writel_relaxed(val, pll->base + PLL_CTRL);
-+	fence_write(val, pll->base + PLL_CTRL);
- 
- 	ret = clk_fracn_gppll_wait_lock(pll);
- 	if (ret)
-
--- 
-2.37.1
-
+bod
