@@ -1,150 +1,222 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DD2155300;
-	Mon, 14 Oct 2024 08:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1854C145B1F
+	for <imx@lists.linux.dev>; Mon, 14 Oct 2024 08:48:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728895661; cv=none; b=u/D+hLSTLJDSgG536HSla6/aRtsxxxYc1nseB24Xr2gWnXO04N6fgGmFdk1e+ANiYaU87fbcyM2/p1bwnwYFD9iyvbNPcGnhRwgz6v5KZDJMDRame0QxYUGwHI7iS3PZY7liM0e9ZjWkUuGJS1fH149MMd4ED7fQ8mMQC8Zm//M=
+	t=1728895697; cv=none; b=gYFc/U61xmNqdu2AmchAo95jeYBgAKI2if7fz2BTAjd/HgG8n5pNK96Vc3P28aLV9WTMLbxHvOlA1+ZT05AMS4ff3/C1FpHz58U29X991hSW5KeEkFNj6N5aK7yY7Zs4RV6DbC0PN0RKWRd2lHG+NpqhXBsjgyg/2kSlmGRKWJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728895661; c=relaxed/simple;
-	bh=zrvtMHe1s04dHvmkw1UtZtAB96rdOnmBrzsn6WfJtjE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=anmUppYgA1ziTeJZZgYmM4w116CcwLqS0k/Qgp0vlCanzTWdn+LUW2Eth+swVUwyUDHQlZjUeiS8gSH8p45+loabdqkaXpNPhwFh8n/YJmTecjtFygnlA4OaAk5qU0rzr2VrA5Lt8bwsLw9t7hnRK4dmYIfjRNSbuXPtrWmAekc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JwbimzvP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1728895697; c=relaxed/simple;
+	bh=XUlH7SBebbNpINAE+wx39Vw/oLjGTMOCSxxpABkV8L8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cdOyBa/ihABdIyW/Hpn9drGi76jHnr4tgd4KPBNad0iitLbcQ3MU8rXxKufZYcrgNeWCYIQ7g0VqqPiuGgNSbU4RPxah9QNs3TYvOz1FDekopbqFHIdCLldQEnl5CxJk4ZYgh0ZpuQl8GAvi1bUtCgSG+BGP6XcmuLaG1iMU320=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GZ18mbnr; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JwbimzvP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32CC9C4CEC3;
-	Mon, 14 Oct 2024 08:47:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728895661;
-	bh=zrvtMHe1s04dHvmkw1UtZtAB96rdOnmBrzsn6WfJtjE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JwbimzvPPcmHg5xlEngFWLV6jGmcmcTw0K6OZ3IXR8hT2tqENO4JY7EgO4WHbDAS1
-	 z5rftYaPloX1HdMBqdTS/x6EmZuUdRbaQddn/Xl7Z0INvyykWixERkWnGldWl3XI1q
-	 RddN2G53A7pYvNeD4GvGVSNLomAv4utC98lqUG9V2R+0lCkcOt0XOEunTknyQGFnnJ
-	 WkC0GcmbiX554BsvQ4q+fHjupOO/Fb111Wz1owK4FF45wfi7dkNJLOr5UvDYlQB9FM
-	 4hAUVP9tOoCmftiQtvgPtJhZ0QOqUivb+/4Te8sFdvnnMhL7Xpg9Tix5LEwoQtviwa
-	 PwgcnTwVn16eQ==
-Message-ID: <9510b546-28fa-4fb4-b06e-0af5f9fd3bbb@kernel.org>
-Date: Mon, 14 Oct 2024 10:47:31 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GZ18mbnr"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4311ae6426aso25218505e9.2
+        for <imx@lists.linux.dev>; Mon, 14 Oct 2024 01:48:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728895693; x=1729500493; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=WPs81oFcWH+51u7WuJEjyNlpMlepy7CsftIdGzaBCYE=;
+        b=GZ18mbnrKIYhiy1/wOecI2YKHuuzR72juJrxRAsa0u8lu9vdxHO3iwFNjWOR+OI34P
+         ivTDcpc8cMk6UmAmCeQRGD3Dkqk0XXrAxqjAZSg23j/q/qI3SVKz1VvY1Lygx6bLFh6/
+         Ke3bBK61q3ZjN7lKYsQnqheCxHkW1QHiUDqkdhjm1nTHbuvSuGGU5uUBwfSzwLm78RZS
+         nAINHeE86GA6hM7NPD5hSfsvexeVvjsCEB3O3b2sUMBdJ9b4fUh6SAKaa31XCfrhnKM0
+         vQ7EQAyo3SCI3YBTw+5EFCwCEViy+jJ4JkFn7NdK5WOU0mAsxUkA0kONMJghT0UxZ/2y
+         mS4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728895693; x=1729500493;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WPs81oFcWH+51u7WuJEjyNlpMlepy7CsftIdGzaBCYE=;
+        b=EK/dggfmgolfMQNrr85yvzecbD0ako44y8+61wI+Eh8cm1lJKggaqVcBsHfUy5/6EJ
+         KNFdzYZXOBlBIGiMn33QSOWnEELXQ7B+FYyqKZa3pBbb/l9I91LOfIOXnO41XwZIAxdb
+         WBI8Eh/rbYe/hN5YfSWBE1ItvuGUl3/V7hNABh/AVXyNp9Ztojz5Y8oK1qJJQAVMt7L6
+         Xyec8qZgCL9TtTmxTv4c/yGjUrBFKtrz+OoATYAPPE/aoNokWyRAxApa/yvLRHNDt6xx
+         0QBtcb9EZJaVEQFOwhdTc7rH1vok5I4z8rqig5wRCnFg7MMZrFgtTPxcV+jiM86ysHYX
+         LmTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVbuZoKWKb6E40z3xijepmeENapdhByRW9vbb02osdZvfy2beS5jaStnoygl+zuDzh+iu4=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxq7y0Op90DcVtCTgno/rZ/HgOJWlkDSEAvbJMwXkcwmYG1dWqq
+	QI1ZVFrKOmRM09J38tW2IZROiN+Ta0RwFFf4HmPhnys52G842NXU
+X-Google-Smtp-Source: AGHT+IGlBLalOk4/ecKUuRu4nTec1HLQ/slf1/Edv4CqJxEq3RkHgt8/qX/nMWuy9553izNMXfOzrw==
+X-Received: by 2002:a05:600c:3b19:b0:430:54a4:5b03 with SMTP id 5b1f17b1804b1-4311deba4bbmr89399895e9.6.1728895693147;
+        Mon, 14 Oct 2024 01:48:13 -0700 (PDT)
+Received: from eichest-laptop ([2a02:168:af72:0:fd1:3993:f12c:5deb])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431182d7bddsm114580875e9.8.2024.10.14.01.48.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Oct 2024 01:48:12 -0700 (PDT)
+Date: Mon, 14 Oct 2024 10:48:11 +0200
+From: Stefan Eichenberger <eichest@gmail.com>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: hongxing.zhu@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
+	kw@linux.com, robh@kernel.org, bhelgaas@google.com,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, francesco.dolcini@toradex.com, Frank.li@nxp.com,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: Re: [PATCH v2] PCI: imx6: Add suspend/resume support for i.MX6QDL
+Message-ID: <ZwzayxXuJWc1uhab@eichest-laptop>
+References: <20241009131659.29616-1-eichest@gmail.com>
+ <20241012041315.vtmixcxbqwb63kno@thinkpad>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] media: dt-bindings: Use additionalProperties: false
- for endpoint: properties:
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Dave Stevenson <dave.stevenson@raspberrypi.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Martin Kepplinger <martink@posteo.de>,
- Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
- "Paul J. Murphy" <paul.j.murphy@intel.com>,
- Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
- Tommaso Merciai <tomm.merciai@gmail.com>,
- Martin Hecht <martin.hecht@avnet.eu>, Zhi Mao <zhi.mao@mediatek.com>,
- Alain Volmat <alain.volmat@foss.st.com>,
- Mikhail Rudenko <mike.rudenko@gmail.com>,
- Ricardo Ribalda <ribalda@kernel.org>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>,
- Umang Jain <umang.jain@ideasonboard.com>,
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Dongchun Zhu <dongchun.zhu@mediatek.com>,
- Quentin Schulz <quentin.schulz@theobroma-systems.com>,
- Todor Tomov <todor.too@gmail.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- linux-media@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-References: <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-0-a2bb12a1796d@linaro.org>
- <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-2-a2bb12a1796d@linaro.org>
- <7ecxjoa7aije46cxmkyfd6ihxnqw4wleqkioddomxbwlu7qtrc@4dkfitppeksu>
- <6f461cb3-3a41-4a3d-b9b2-71b1c6be77f7@linaro.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <6f461cb3-3a41-4a3d-b9b2-71b1c6be77f7@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241012041315.vtmixcxbqwb63kno@thinkpad>
 
-On 14/10/2024 10:31, Bryan O'Donoghue wrote:
-> On 14/10/2024 08:45, Krzysztof Kozlowski wrote:
->> I do not understand the reasoning behind this change at all. I don't
->> think DT maintainers ever suggested it (in fact, rather opposite:
->> suggested using unevaluatedProps) and I think is not a consensus of any
->> talks.
+Hi Mani,
+
+Thanks a lot for the comments.
+
+On Sat, Oct 12, 2024 at 09:43:15AM +0530, Manivannan Sadhasivam wrote:
+> On Wed, Oct 09, 2024 at 03:14:05PM +0200, Stefan Eichenberger wrote:
+> > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> > 
+> > The suspend/resume support is broken on the i.MX6QDL platform. This
 > 
-> No there is not but then, how do you give consistent feedback except 
-> proposing something to be a baseline.
+> You mean the 'system suspend/resume'?
 > 
-> On the one hand you have upstream additionalProperties: false and 
-> unevaluatedProperites: false - it'd be better to have a consistent 
-> message on which is to be used.
+> > patch resets the link upon resuming to recover functionality. It shares
+> > most of the sequences with other i.MX devices but does not touch the
+> > critical registers, which might break PCIe. This patch addresses the
+> > same issue as the following downstream commit:
+> > https://github.com/nxp-imx/linux-imx/commit/4e92355e1f79d225ea842511fcfd42b343b32995
+> > In comparison this patch will also reset the device if possible. Without
+> > this patch suspend/resume will not work if a PCIe device is connected.
+> > The kernel will hang on resume and print an error:
+> > ath10k_pci 0000:01:00.0: Unable to change power state from D3hot to D0, device inaccessible
+> 
+> Looks like the device is turned off during suspend.
 
-Well, I am afraid that push towards additionalProps will lead to grow
-common schema (video-interface-devices or video-interfaces) into huge
-one-fit-all binding. And that's not good.
+Yes, I don't have a deep understanding about PCIe to be honest. However,
+my understanding is that the PCIe devices will always try to suspend and
+there is no way from the PCIe host controller to prevent this. Or am I
+wrong? Currently suspend is not implemented for the i.MX6Dual/Quad
+variant in the pci-imx6 driver and the device will still be turned off
+by the PCI subsystem. On the other side I don't think it will fix
+anything if I can prevent suspend for the devices because the
+communication will still fail after resume.
 
-If a common binding for a group of devices encourages you to list its
-subset, then it is not that common.
+> 
+> > 8<--- cut here ---
+> > Unhandled fault: imprecise external abort (0x1406) at 0x0106f944
+> > 
+> > Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> > ---
+> > v1 -> v2: Share most code with other i.MX platforms and set suspend
+> > 	  support flag for i.MX6QDL. Version 1 can be found here:
+> > 	  https://lore.kernel.org/all/20240819090428.17349-1-eichest@gmail.com/
+> > 
+> >  drivers/pci/controller/dwc/pci-imx6.c | 44 +++++++++++++++++++++++++--
+> >  1 file changed, 41 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> > index 808d1f1054173..f33bef0aa1071 100644
+> > --- a/drivers/pci/controller/dwc/pci-imx6.c
+> > +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> > @@ -1238,8 +1238,23 @@ static int imx_pcie_suspend_noirq(struct device *dev)
+> >  
+> >  	imx_pcie_msi_save_restore(imx_pcie, true);
+> >  	imx_pcie_pm_turnoff(imx_pcie);
+> > -	imx_pcie_stop_link(imx_pcie->pci);
+> > -	imx_pcie_host_exit(pp);
+> > +	/*
+> > +	 * Do not turn off the PCIe controller because of ERR003756, ERR004490, ERR005188,
+> > +	 * they all document issues with LLTSSM and the PCIe controller which
+> 
+> LTSSM
+> 
+> But LTSSM is for the PCIe link state, not sure how it impacts controller state.
+> Can you share the link to those erratums?
 
-Solution is to fix that, e.g. split it per classes of devices.
+The erratas are all from this document:
+https://www.nxp.com/docs/en/errata/IMX6DQCE.pdf
 
-Or don't care and use unevaluatedProps because it makes people's life
-easier and is still correct. If it is not correct, then this should be
-used as an argument.
+Only the i.MX 6Dual/6Quad variant is affected but not the newer Plus
+variants.
 
-Best regards,
-Krzysztof
+> 
+> > +	 * does not come out of reset properly. Therefore, try to keep the controller enabled
+> > +	 * and only reset the link. However, the reference clock still needs to be turned off,
+> 
+> You are resetting the *device* below, not the link.
 
+Thanks, I will fix this comment.
+
+> > +	 * else the controller will freeze on resume.
+> > +	 */
+> 
+> Please use 80 columns for comments. Exception is for the code.
+
+Thanks, I will fix this.
+
+> > +	if (imx_pcie->drvdata->variant == IMX6Q) {
+> > +		/* Reset the PCIe device */
+> > +		gpiod_set_value_cansleep(imx_pcie->reset_gpiod, 1);
+> > +
+> > +		if (imx_pcie->drvdata->enable_ref_clk)
+> > +			imx_pcie->drvdata->enable_ref_clk(imx_pcie, false);
+> > +	} else {
+> > +		imx_pcie_stop_link(imx_pcie->pci);
+> > +		imx_pcie_host_exit(pp);
+> > +	}
+> >  
+> >  	return 0;
+> >  }
+> > @@ -1253,6 +1268,28 @@ static int imx_pcie_resume_noirq(struct device *dev)
+> >  	if (!(imx_pcie->drvdata->flags & IMX_PCIE_FLAG_SUPPORTS_SUSPEND))
+> >  		return 0;
+> >  
+> > +	/*
+> > +	 * Even though the i.MX6Q does not support proper suspend/resume, we
+> > +	 * need to reset the link after resume or the memory mapped PCIe I/O
+> > +	 * space will be inaccessible. This will cause the system to freeze.
+> > +	 */
+
+Thanks, I will fix this.
+
+> 
+> > +	if (imx_pcie->drvdata->variant == IMX6Q) {
+> > +		if (imx_pcie->drvdata->enable_ref_clk)
+> > +			imx_pcie->drvdata->enable_ref_clk(imx_pcie, true);
+> > +
+> > +		imx_pcie_deassert_core_reset(imx_pcie);
+> 
+> There is no corresponding imx_pcie_assert_core_reset() in suspend.
+
+Thanks, I will try to fix this similar to what they do in the host_init.
+
+> > +
+> > +		/*
+> > +		 * Setup the root complex again and enable msi. Without this PCIe will
+> > +		 * not work in msi mode and drivers will crash if they try to access
+> > +		 * the device memory area
+> > +		 */
+> 
+> This indicates that the controller state is not preserved. I think we need a bit
+> more understanding on what is going on during system suspend on this platform.
+
+Yes I fully agree, but unfortunately I don't really know how to fix it
+properly. I just tried to fix the driver by searching for an absolute
+minimum that is required to make suspend/resume work when a PCIe device
+is connected. As an alternative the downstream patch would do something
+similar but I thought also resetting the device would be a better
+solution (to stay closer to what the other variants do):
+https://github.com/nxp-imx/linux-imx/commit/4e92355e1f79d225ea842511fcfd42b343b32995
+I just now saw that I didn't mention ERR005723 at all, sorry for that.
+If this would be a more acceptable solution I would do some more tests
+with this patch in our setup.
+
+Regards,
+Stefan
