@@ -1,444 +1,263 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazon11010040.outbound.protection.outlook.com [52.101.229.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0E1147C98
-	for <imx@lists.linux.dev>; Mon, 14 Oct 2024 08:10:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728893448; cv=none; b=CM0C4iX0LXRvKhrwv34RFdE1S2716A4jpUz0wiAXfjAc2TtJ1c+8qiB809lZsHZzEdE5gAFGfM2szZaDGbOCi7TZZ/c3pValerrbWHVxzJTevc9K1hwmWE3EZ3rnqx6TBBHHEhxhqXdff7iyvavieHdA6yoX96hjeUbVqd8A848=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728893448; c=relaxed/simple;
-	bh=6zY8EbhkGqptT08+pBMxn4kxXqfuOwf/dUQsikKnakQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q/w2jrorxR8PSNdmkMXnSfi0XX1GJuNmJTtWEg1OV0zgFMiTCuSH1Nh2h1DVMzXIYZpzWrtLzFEr+YW/mImlwk2fdnUgDJm8bTBPk1ZoKqM1RVdzZZRRmgCPHzfRJFi0uD6UxOJwcdiEGQxNBtJwmKtuVQSCZgMY10r+RsHn0oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nC7BRjIo; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5390142E77
+	for <imx@lists.linux.dev>; Mon, 14 Oct 2024 08:14:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.229.40
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728893649; cv=fail; b=oT7lMqzKyEthhZe+x/8nXJ8DIhvFYnxTZ12UurMxSmD9G2K1PaG24fxAaYcxGsk0cdYfICtyD00Aa0j5727GSx2zjrX0zI6JhGfkvJWcCz536ZIvPyeAYQibZTTg85t1MtlFlVTke8DUPgMcZb8/kW7kkb6NCt8vE9DLzlLE1g0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728893649; c=relaxed/simple;
+	bh=FJkl9OXwACJk3s4EWfTYxwqzVaHnCHMScoyNdRgp5b4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Wei91KwkbMS5a0Y8HiI7wWr7P8YUzYWlaDVy4z2SLfIgP+y74L/3pM/Te0iGKe2J6Ml7TrEkfS3iFlGwTd8CrFeJo8P7EjWVGLpJtdUh/b7o7bYsGSj8Jy3ZcxPr4RpexFwlv0AilWcY19aGQceXRnNYp4F6dQFQF8IfB9TxzJQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b=R+iMYEOa; arc=fail smtp.client-ip=52.101.229.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nC7BRjIo"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-37d4d1b48f3so2484300f8f.1
-        for <imx@lists.linux.dev>; Mon, 14 Oct 2024 01:10:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728893443; x=1729498243; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=KW7kLQuHbcf54sFy0QOJU4AGEwenotEzl7dxQ9KdqLo=;
-        b=nC7BRjIouQC0fuODLNmU0sdsYwQU/6RxcwIANWhLwIdCSjqQR6OLkXtlEQVA/uET6Y
-         CXFrw1iEjMJViGzNytOhKxSwZRqGZgJtiH8jBHxLxYnDCo0Gj5G0Absk/6tyEeLJ2lAn
-         /Cdy13+km3qnGQPg3E72pPwAWPAeD33/mQkpp3CbSImaQgkMYOIOX8GjlBkOwaBfiRzD
-         eMJYZNGJA/5Y+6yWO7/W1HxI1BLjx5atY6v9preoR0jYQ2zMUY0I7fk5Vb91gmR9dXZu
-         +PUYARN452X0Fgdvio9Ds4JDhH9jau9wsBEu+LJzw1RrclGQKdlYOMWS95qnCtdZ0Pij
-         jKLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728893443; x=1729498243;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KW7kLQuHbcf54sFy0QOJU4AGEwenotEzl7dxQ9KdqLo=;
-        b=RQXoMWqhcFVE9iDs5X512FqVvEBx2nCKrYL67nfm9i1PSmRMHPagKL1923WHRN1mNU
-         xgZolwoDsnKmJZQES8DkCcguCVbIHox6DM5xxEyH/LUqDMesgDsxTWFdMIijtyy4SvT6
-         FOvnd1JkPQQBIgGYKcDZ44BcOURQrT4Oijdq5cpKLeUQH0FyXNHIx161GptHv/clthBM
-         v9uwPdcKwN6jSraIIVstmrzPSOPyaVOZbRP8TL2UKJp4zox+UXwPZ+H7ZxKJLBOiCAe6
-         6MJ6sXCaEYjRJcnp9fs3awsvSlhtjTmlUu3YAJ5HEweCGKeg1q4KUTSK+6nr6eEDX7ll
-         Dc+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW3e6xGmowQ545mAhcVFnfdVBd6waXGyO/hiFTdTKYRb3gtT261ZQmx3FwKgq2OM27rlfI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwH+fjLlHnaeO/INOSzC6U8lrHJicbzBPcdCtrkiYlgN6RvUsyT
-	jW/iDEsyEghQ4PmXBrVaNVkhNuhoH7f0CBZ5qz07OHbr+PCo+9rr
-X-Google-Smtp-Source: AGHT+IHB551ffar+NCF/WbpQWRYMbBi4jUBFqKY6gFU4dyhsV5DnQg2e5zBiqHEqblV6Wx0Yv1ntWA==
-X-Received: by 2002:adf:f050:0:b0:37d:454f:b49a with SMTP id ffacd0b85a97d-37d55262f0cmr7730417f8f.43.1728893442801;
-        Mon, 14 Oct 2024 01:10:42 -0700 (PDT)
-Received: from eichest-laptop ([2a02:168:af72:0:fd1:3993:f12c:5deb])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b6a8671sm10788932f8f.18.2024.10.14.01.10.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Oct 2024 01:10:42 -0700 (PDT)
-Date: Mon, 14 Oct 2024 10:10:40 +0200
-From: Stefan Eichenberger <eichest@gmail.com>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: Frank Li <frank.li@nxp.com>, Francesco Dolcini <francesco@dolcini.it>,
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"kw@linux.com" <kw@linux.com>,
-	"manivannan.sadhasivam@linaro.org" <manivannan.sadhasivam@linaro.org>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b="R+iMYEOa"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IAV5Q/SRPkvzD7HBOdvPkQRfF8GK7/Hfx+xMN64BBBbFOnFzontBKb9TM5uhS92W+JTFsj+B9rMSFD5Gepj0M8GdUbKdaFFDMYBFSy5fptpXRR+quW6QjooIRYaINkTKqWX3FZLpPfR9XIi93MxkOszLTaJI3Oi/c/lFtD4IPfjRwp5alu4FoS/x5PLm+KToKmTeUkB3BfZ6JLZaBRCgm+WXGVKU8kxeppPFv5iBzcdnooy4hkEfC1Udauf4q4yBqwS8FdNwBiFupSbvzEYM3HVze71ZaZ0ha3aOJdxM6nbSk87pngEh7iebH+KNt6E/yEM5aZd65lkYro1jzzS5ag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FJkl9OXwACJk3s4EWfTYxwqzVaHnCHMScoyNdRgp5b4=;
+ b=jlra8poR9hsFORuyUu/rgajeq04qvEqP5S7N8XFmoZ28gYEoOZVwuvKjAgvPm6HnBo1ck4YDWAO85dkQynvnW2eJUWfHYP3/Mkg20GGZm4fStJEC/GDNBmGZEhGEEykbdN1MTIg5BH57RwLAYZIe8+nlrBl/qhG1lR4UOOQXyNGqqbwjb7Wpuhj102u2b6dlc1kYrG3iD+fwns8UWvG6OsIFXT92WDOfN0DaL/HS9yL/FploQNNynsLVvgDoQ6CNssWi1OlhrDsVL4ZbGMASd7NZU3SLZJEURqC1WX1NHpm8JqE/dhTTZ0/lz0JbBvxy2Ygp8/cz3916YGpIny5EkQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
+ header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FJkl9OXwACJk3s4EWfTYxwqzVaHnCHMScoyNdRgp5b4=;
+ b=R+iMYEOaFjTcDCMsnr6JxY8vVaVpBk19ISFjoKoXeHxy6QUWWJeWXrhr1/z7LDV8O6rwH4wcOQ6/yiVniJS5oEYW/YGJKzRA9cuHlSWBFE/S7rK0RTJJ4kydcrkpiV/bjL7AgBbQR3SwbcQQ1tQtBOL/4ZqqXXLLHUGV6rb/SDc=
+Received: from TY3PR01MB11346.jpnprd01.prod.outlook.com (2603:1096:400:3d0::7)
+ by TY4PR01MB12749.jpnprd01.prod.outlook.com (2603:1096:405:1e6::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.26; Mon, 14 Oct
+ 2024 08:14:00 +0000
+Received: from TY3PR01MB11346.jpnprd01.prod.outlook.com
+ ([fe80::86ef:ca98:234d:60e1]) by TY3PR01MB11346.jpnprd01.prod.outlook.com
+ ([fe80::86ef:ca98:234d:60e1%3]) with mapi id 15.20.8048.020; Mon, 14 Oct 2024
+ 08:14:00 +0000
+From: Biju Das <biju.das.jz@bp.renesas.com>
+To: Liu Ying <victor.liu@nxp.com>, Dmitry Baryshkov
+	<dmitry.baryshkov@linaro.org>
+CC: "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: Re: [PATCH v2] PCI: imx6: Add suspend/resume support for i.MX6QDL
-Message-ID: <ZwzSAH3tfOo_6Cez@eichest-laptop>
-References: <20241009131659.29616-1-eichest@gmail.com>
- <ZwgykRyE+jDU0CiU@lizhi-Precision-Tower-5810>
- <20241010201121.GA88411@francesco-nb>
- <ZwhY/dtSNPptgs27@lizhi-Precision-Tower-5810>
- <Zwk35efNI4EO1eir@eichest-laptop>
- <AS8PR04MB8676468EE98DDFEAD0D075AC8C7A2@AS8PR04MB8676.eurprd04.prod.outlook.com>
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "andrzej.hajda@intel.com"
+	<andrzej.hajda@intel.com>, "neil.armstrong@linaro.org"
+	<neil.armstrong@linaro.org>, "rfoss@kernel.org" <rfoss@kernel.org>,
+	laurent.pinchart <laurent.pinchart@ideasonboard.com>, "jonas@kwiboo.se"
+	<jonas@kwiboo.se>, "jernej.skrabec@gmail.com" <jernej.skrabec@gmail.com>,
+	"airlied@gmail.com" <airlied@gmail.com>, "simona@ffwll.ch" <simona@ffwll.ch>,
+	"maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
+	"mripard@kernel.org" <mripard@kernel.org>, "tzimmermann@suse.de"
+	<tzimmermann@suse.de>, "robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org"
+	<conor+dt@kernel.org>, "shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de"
+	<kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>,
+	"catalin.marinas@arm.com" <catalin.marinas@arm.com>, "will@kernel.org"
+	<will@kernel.org>, "quic_bjorande@quicinc.com" <quic_bjorande@quicinc.com>,
+	"geert+renesas@glider.be" <geert+renesas@glider.be>, "arnd@arndb.de"
+	<arnd@arndb.de>, "nfraprado@collabora.com" <nfraprado@collabora.com>,
+	"o.rempel@pengutronix.de" <o.rempel@pengutronix.de>, "y.moog@phytec.de"
+	<y.moog@phytec.de>, "marex@denx.de" <marex@denx.de>,
+	"isaac.scott@ideasonboard.com" <isaac.scott@ideasonboard.com>
+Subject: RE: [PATCH v2 6/9] drm/bridge: Add ITE IT6263 LVDS to HDMI converter
+Thread-Topic: [PATCH v2 6/9] drm/bridge: Add ITE IT6263 LVDS to HDMI converter
+Thread-Index: AQHbHHmjKrSxUtUM4UujDkcK4B2m5bKF102AgAACN4CAAA6FIA==
+Date: Mon, 14 Oct 2024 08:14:00 +0000
+Message-ID:
+ <TY3PR01MB11346C710A5E7621314C5DADC86442@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+References: <20241012073543.1388069-1-victor.liu@nxp.com>
+ <20241012073543.1388069-7-victor.liu@nxp.com>
+ <dtloyyghjep5rm34qjjinvhvrar5jzj3n24czvpdmnkfesntjq@t2uijuez7myj>
+ <f47bc3f1-20d9-4f7e-acdd-85eabdb8d743@nxp.com>
+In-Reply-To: <f47bc3f1-20d9-4f7e-acdd-85eabdb8d743@nxp.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=bp.renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TY3PR01MB11346:EE_|TY4PR01MB12749:EE_
+x-ms-office365-filtering-correlation-id: fcdeb1f2-8634-4fe6-e046-08dcec2828d3
+x-ld-processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|366016|1800799024|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?Q0RVVlZYRGRIaTBQdncwc2sxekhIdEJCam53ems3UDA4ZVRMcm4rcFRmcXg3?=
+ =?utf-8?B?R0ZLTWUvakQyQitaK2swQjhlT0VsMmVQREVyOUVUdFU0V0hyWXkwekx3di9Z?=
+ =?utf-8?B?YURUOGQwcHc2SVJRYWYzbmE0cmV6ZWlacFpMT2dVVU1pWndHVGxPSXc5bTNw?=
+ =?utf-8?B?ekZUM1d0eWNmQmlRWkRSUWsvVlJzZjBlZzJoL2hFWEIwLytvWEVPMzdVaDlQ?=
+ =?utf-8?B?VXpJSHoxcUxkaWduWkxWajJKQkplUVBmdFIrQ0d6a21KMkFkVWovdmJaMlBa?=
+ =?utf-8?B?UWc4UFUrSklMZVd4ZjdtaUN5OGEzcW5nbWlZS2IwQkNySWVEL2Zaa081T2xo?=
+ =?utf-8?B?cjRpbmxzTnlMaDBoWkFqUWJDdDFJbTQyVW12MEdBM0R6NnhONXFWVVVrdHJH?=
+ =?utf-8?B?Zkw3YzB2N3hjYk9MVjRRcDRjTmh2bzNFd1JRanVWcWk5cFNSRmhnQXlBWjg3?=
+ =?utf-8?B?SUQ5OFI2Nm9Zano1cVlSWm9tQmM4akNOeU52eUE5QlY5eVV6TklLL2lFcENr?=
+ =?utf-8?B?RUhyYkkvcEE5UDdqeldVVXlVY1I5TE5sVmg2ZlNPUmFNUGZFZStJOEI5Unlo?=
+ =?utf-8?B?Z2M2SjJmVnBlOGhZbjBHb1lkUTJmZEQyYVRVWklmNkpZU3JRSmoyV1VzMmhO?=
+ =?utf-8?B?NkxKWm1TV3BQaTducHNaOEE1Z1dhZEdVVndaekcwT1grbFliUGZwYzg2dk9S?=
+ =?utf-8?B?dUtTKzdLNFl0NjRhK2hzNGoxUi9FeGkwYy9CS1NDUWFhM2d0dUdyZzA5N0tC?=
+ =?utf-8?B?QTVRMXJIb013b0lPWU9xR0w4TFJ2VDFRa1FXcWpFMVd2SEFFaTI5cGRQUElT?=
+ =?utf-8?B?NkpMR05pSTBEb0FZY215ZFc2K3p4aVkxQ1lnWmJ0ZnRUb3hOZmRPOGt6aXdv?=
+ =?utf-8?B?LzhDOVVtREJmeGJhNDRSUnhxdUgrbkJFUVBNSjRmNlBGdHlMNVVJUzhnVUNk?=
+ =?utf-8?B?cUY5OWM3Z0YyYWlXQ2JoN2VuQU1tV3Y1d3FabkFKalZKc0NHaHp2bVhWdFVa?=
+ =?utf-8?B?WU53TUVFMWpxLzJyb0NIMHc2SE9aR3JXcFZhSXh4U2ZDZnNpa1lIU2llWit4?=
+ =?utf-8?B?eTJJSUlZSkFHekhGa2IrUDNGTW9yZEp5UnIyWXk0cEFWYTJnWnZ5RjcwOURP?=
+ =?utf-8?B?dms4NzVLUHBoNXBZL3JhbzFzZTM3Mlp5czFWem9lNE1vMmdzOGREVmZLMkFZ?=
+ =?utf-8?B?OGhBTWluclg4Zi96VVd6bzlEVE55WWJvWEFPNDliRUdKQnRXWTBIZFBYeW90?=
+ =?utf-8?B?Vm5WK1VBNUxWUzhQTmczRHdJT20rUFF0cXZmNEMvbmhKclU5VTg5ajQwYzF2?=
+ =?utf-8?B?TFN1N2xlS2NNSzF1NklnNTY3ZFVISHN5TE1hR3NNK1R1d29kcDluZ1ZVTjQ2?=
+ =?utf-8?B?MXU0eFMzV0JIdG9TRjlVNThEMjdnRWtEWnp4MUJiN0RxNDJ6WUJFQzhiMTlF?=
+ =?utf-8?B?OUhlai81WnVCK0V3SE9TZldSUTVQbUZuSmpwcUFBb3RWZ3packlqcW51NEJD?=
+ =?utf-8?B?aGFJZHF2QVhIR3VIK0RJT3gwOTM0RE9GMmt0ekNNTmJDbjdwRDlBenBzVWl6?=
+ =?utf-8?B?QThnb0pkZ29raFRPSWVOMGluaWZMOGxlbURVdTR0SWgzQ3VRRFE5ZHZkL1Z3?=
+ =?utf-8?B?YXY0ZGlTelVIeFhHM1M3c2lUb3dNemYvaDVPWThlQ2dHWEVEdFpCb3puTmUw?=
+ =?utf-8?B?bXRjekNaM3F3a1lad2JyR1hXOENHelZMOE42ZG9qWEZNMytxaHlzb21DSDVM?=
+ =?utf-8?B?UXRxbmtZaEs2enNSYURla1R0aDc5aDluTlJhSFhoTkVDMitEOUg0NGt4R0tw?=
+ =?utf-8?B?Q21nbWxqdW51REZtUTJsQT09?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY3PR01MB11346.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?MDUvNllzVENGeW9Nam9tOGxhZmxzRFo5clNzYXBzSkMrbXRXUVdvcityUjFz?=
+ =?utf-8?B?bFpzaTZSZDE3a0xrVEx0TzhMSExSdVlUQlpWcVZJa0o0ZVFMRlQrQWxHQWM1?=
+ =?utf-8?B?bUtsZi9yem4vWVhKZ2FDandyQzdXc3c5NUNEYW5jWnhWd3E4NzF5OHJhTE5X?=
+ =?utf-8?B?NWN5ZDBqUUtrYWhVUU5aVGgzd2xMNFdzMHZLVzg2ekZLWUlSNjlTcDFUU3BU?=
+ =?utf-8?B?UG15R1hnZHNyQk96YU1xZGQ4M2JPNHNIMm1mUDFCak1HaUdacTFPQVIvemsr?=
+ =?utf-8?B?YlRoZkt5QVA4MnRmbzdwWnFzcmFkS0pEdGN0Q2c0bnJQeDhGSXZkdWVOdmxJ?=
+ =?utf-8?B?NVowVWxiMWVVdk9iaDR0Ry95aGF5VUFzTDZzZUo3MzE0bEFQbXRiSks3ekxl?=
+ =?utf-8?B?OHR0WEtPUG9ieFZVVVdrRDkwS2VkQ1Vqb2o0elNLcm13TitGREhPdjUvU3RK?=
+ =?utf-8?B?U21LYlRTVS93L0wzZmxUbHJCeXZHaU9vaTRCNzZEOU12ZHg2ZEFFdVJvZkNX?=
+ =?utf-8?B?NjJvQTA4dStobFlIdHFQS1NleHBpSnY1RVlEVENiNzdyWkhrTVRZdE9abWt1?=
+ =?utf-8?B?aFVCTEF2cWxic3JsZlBkclcyNWVFSWtpanlEaTBlUlFWVENWVXYrakV3QWJw?=
+ =?utf-8?B?Q2lVeDZLNS9iRkNnNmY0NGhvMTc0WDlmR25QeDVuRzg3bERiTVRNMTNnbkRs?=
+ =?utf-8?B?VU9CQ1pVa1lxdVJiQVJhWnVQYWNVK0JNWUlDK1JxL0Rwem9NSCt1RHdvZy9i?=
+ =?utf-8?B?b0dPUnZtdk1SMzlLOVdROHU5aHdvaFZQR0pRTDdJdStkMWU3bmI0TEtZVCtR?=
+ =?utf-8?B?UUpyaEFNMmdyVjNGZ1k3d2lXLy9XRm5PM3IyL2NSSUZ3aDc0TWZXT0owL3B5?=
+ =?utf-8?B?a3gyMlpXdW1oQ09NM2diMFRNbUR5NWdMUjZ2Z2tzSDdQbFZGeEw4UlVpM3lH?=
+ =?utf-8?B?d1l0RXV4VkJRNXFLbEtwb1FETVVpYXpnNEJlWFRwZHh6ZER1TU15MnVaQThB?=
+ =?utf-8?B?dUdXWTNCZllwamZSOTBhNVhaM3NKdGI4TzRGN3g2Qk5IS0sxd045cjJKQXV1?=
+ =?utf-8?B?R2xGeVVDMG0xTzBCeTNkY3oxOGhWYUNOcncveTNtTFBzdmpMRlUybkQyZWpW?=
+ =?utf-8?B?Ym03eEU5U1RIQUFZMGNjVXZRSVZkNmdCOC9OdWlocmUvYzYrelV5NFFVUmls?=
+ =?utf-8?B?TTFIZEgwWVQwVlhIVi9DQlBJWlh2SkMvdkkrOTNkT0tRZjJlb0kzUVJaTDdH?=
+ =?utf-8?B?L1VNQkhpLytDVzFXSFk4WlMyd2RKeUk3SmkyTG5BaGNERTVaSGdRZjRRV0la?=
+ =?utf-8?B?MlN5Z0xQU3J5OWxuRktQWk1LemNSUUlodXY3ZDVPWVhoS1RTZUMwTWhzTU5v?=
+ =?utf-8?B?VEhPSHVFMmpjV2IrQWE4OER5MzVaWCtmdjJSeVFkaEtjTWg2MCtSa0VJOEV1?=
+ =?utf-8?B?VngzUzFHSWVKWkk2SXNCTE5tSXBtNDlWSWdQRmg0ZmZucmJzNE9wMTJJSnpx?=
+ =?utf-8?B?T2xESENscDZ4RmYzQVlPSGp6WVNpZjZuU3FqZFlNNkY1V0Z2N1JDSjJnNGZm?=
+ =?utf-8?B?T01jMkwyNkI5SEw2a3N0SDZEVDJQZjJKMk9kOUZhTHhuMEs2bkpid3BDOHNX?=
+ =?utf-8?B?bFBDS2U2TjdTWXF4UnJJMTJNaWFzVDNSK2xGdUNHUjhGMkxSOUhPSzBjdDVN?=
+ =?utf-8?B?blhJUHltdDRFRFE2YUFyZUVlS3ZWaHJGZUg0SVU5OHVmcDBlbVQwMVp5L0sy?=
+ =?utf-8?B?SVp4VUExaWF3Y25zYTN6UUlWcTQ0ZmxkT1VWY2U5TGFCRGNPZ0o1YzkxS2Ft?=
+ =?utf-8?B?N0pHTVBpZkNkZXJaekt6VFFCbzVsZk9sVmZZL3Vra1dPY2xtbG9sYjU4Tmls?=
+ =?utf-8?B?OWw2Qkh2Y0svZiswUDN6SUNoSUlSZzZDSzNlVmdoYXFFS0g0Tk05SFZsVHk5?=
+ =?utf-8?B?aWJyQ0VJVHVlSWI0MjBUdmQ4RUx3N1h2UFpmellISG1BNU5HUlZLeTEyKzFX?=
+ =?utf-8?B?Zk8xSE1TNVcxeHcrc29yem53YzRjMTB2MkNvbHdyR0NJamxUSkhLMzFBWWR0?=
+ =?utf-8?B?VEV6Sk0rWEpSVWwvUUR2QlI5VElveVdCUk0zbGNpdTZEcnZ2akhDQjJRMEh1?=
+ =?utf-8?Q?SYeocPvzFs6/5VFMNzKr6eP7J?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <AS8PR04MB8676468EE98DDFEAD0D075AC8C7A2@AS8PR04MB8676.eurprd04.prod.outlook.com>
+X-OriginatorOrg: bp.renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TY3PR01MB11346.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fcdeb1f2-8634-4fe6-e046-08dcec2828d3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Oct 2024 08:14:00.7205
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: qmqZctYoP218gCutlshvD0CaTQwAPWHy5x+nvdap1PaGMW12fERpYgJ2ghnYlkEcwC/oII73vKKjH9gmbNpbG5Ez1SYcTW7czdpcP4DCSAM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY4PR01MB12749
 
-Hi Richard and Frank,
-
-On Sat, Oct 12, 2024 at 09:02:28AM +0000, Hongxing Zhu wrote:
-> > -----Original Message-----
-> > From: Stefan Eichenberger <eichest@gmail.com>
-> > Sent: 2024年10月11日 22:36
-> > To: Frank Li <frank.li@nxp.com>
-> > Cc: Francesco Dolcini <francesco@dolcini.it>; Hongxing Zhu
-> > <hongxing.zhu@nxp.com>; l.stach@pengutronix.de; lpieralisi@kernel.org;
-> > kw@linux.com; manivannan.sadhasivam@linaro.org; robh@kernel.org;
-> > bhelgaas@google.com; shawnguo@kernel.org; s.hauer@pengutronix.de;
-> > kernel@pengutronix.de; festevam@gmail.com; Francesco Dolcini
-> > <francesco.dolcini@toradex.com>; linux-pci@vger.kernel.org;
-> > linux-arm-kernel@lists.infradead.org; imx@lists.linux.dev;
-> > linux-kernel@vger.kernel.org; Stefan Eichenberger
-> > <stefan.eichenberger@toradex.com>
-> > Subject: Re: [PATCH v2] PCI: imx6: Add suspend/resume support for i.MX6QDL
-> > 
-> > Hi Frank,
-> > 
-> > On Thu, Oct 10, 2024 at 06:45:17PM -0400, Frank Li wrote:
-> > > On Thu, Oct 10, 2024 at 10:11:21PM +0200, Francesco Dolcini wrote:
-> > > > Hello Frank,
-> > > >
-> > > > On Thu, Oct 10, 2024 at 04:01:21PM -0400, Frank Li wrote:
-> > > > > On Wed, Oct 09, 2024 at 03:14:05PM +0200, Stefan Eichenberger wrote:
-> > > > > > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> > > > > >
-> > > > > > The suspend/resume support is broken on the i.MX6QDL platform.
-> > > > > > This patch resets the link upon resuming to recover
-> > > > > > functionality. It shares most of the sequences with other i.MX
-> > > > > > devices but does not touch the critical registers, which might
-> > > > > > break PCIe. This patch addresses the same issue as the following
-> > downstream commit:
-> > > > > > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%
-> > > > > >
-> > 2Fgithub.com%2Fnxp-imx%2Flinux-imx%2Fcommit%2F4e92355e1f79d225ea
-> > > > > >
-> > 842511fcfd42b343b32995&data=05%7C02%7Chongxing.zhu%40nxp.com%7C4
-> > > > > >
-> > 9cdf8aaeee54cec71c508dcea0215b1%7C686ea1d3bc2b4c6fa92cd99c5c3016
-> > > > > >
-> > 35%7C0%7C0%7C638642541899874406%7CUnknown%7CTWFpbGZsb3d8eyJWI
-> > joi
-> > > > > >
-> > MC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7
-> > > > > >
-> > C%7C%7C&sdata=DQGwcXYy0soCov1Uf4ycLQiisP8qlbBzOslyX3FY5Cs%3D&res
-> > > > > > erved=0 In comparison this patch will also reset the device if
-> > > > > > possible. Without this patch suspend/resume will not work if a
-> > > > > > PCIe device is connected.
-> > > > > > The kernel will hang on resume and print an error:
-> > > > > > ath10k_pci 0000:01:00.0: Unable to change power state from D3hot
-> > > > > > to D0, device inaccessible
-> > > > > > 8<--- cut here ---
-> > > > > > Unhandled fault: imprecise external abort (0x1406) at 0x0106f944
-> > > > > >
-> > > > > > Signed-off-by: Stefan Eichenberger
-> > > > > > <stefan.eichenberger@toradex.com>
-> > > > > > ---
-> > > > >
-> > > > > Thank you for your patch.
-> > > > >
-> > > > > But it may conflict with another suspend/resume patch
-> > > > > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2F
-> > > > > lore.kernel.org%2Fimx%2F1727245477-15961-8-git-send-email-hongxing
-> > > > > .zhu%40nxp.com%2F&data=05%7C02%7Chongxing.zhu%40nxp.com%7C4
-> > 9cdf8aa
-> > > > >
-> > eee54cec71c508dcea0215b1%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%
-> > 7C
-> > > > >
-> > 0%7C638642541899892894%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjA
-> > wMDA
-> > > > >
-> > iLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata
-> > > > >
-> > =xPBKoiWL8IceLlv%2F6lWoqkPWosh%2BRvG8jyA8NjKSsOI%3D&reserved=0
-> > > >
-> > > > Thanks for the head-up.
-> > > >
-> > > > Do you see any issue with this patch apart that? Because this patch
-> > > > is fixing a crash, so I would expect this to be merged, once ready,
-> > > > and such a series rebased afterward.
-> > > >
-> > > > I am writing this explicitly since you wrote a similar comment on
-> > > > the
-> > > > v1
-> > > > (https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fl
-> > > > ore.kernel.org%2Fall%2FZsNXDq%252FkidZdyhvD%40lizhi-Precision-Tower-
-> > > >
-> > 5810%2F&data=05%7C02%7Chongxing.zhu%40nxp.com%7C49cdf8aaeee54cec
-> > 71c5
-> > > >
-> > 08dcea0215b1%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C63864
-> > 25418
-> > > >
-> > 99904634%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2l
-> > uMzI
-> > > >
-> > iLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=x2OVvZsi4YIxSg
-> > KGD
-> > > > 7ZzqbRQjiTFK4%2BzMdgDv2qSdig%3D&reserved=0)
-> > > > and I would like to prevent to have this fix starving for long just
-> > > > because multiple people is working on the same driver.
-> > >
-> > > My key comment for this patch is use flags IMX_PCIE_FLAG_SKIP_TURN_OFF
-> > > in suspend()/resume(), it is up to kw to pick which one firstly.
-> > 
-> > I will try to implement it as you proposed with the new flag.
-> > 
-> > However, what I figured out with kernel v6.12-rc1 I get the following warning
-> > when booting on an i.MX6QDL even without my patch applied:
-> > [    1.901199] PCI: bus0: Fast back to back transfers disabled
-> > [    1.904754] mmc1: SDHCI controller on 2190000.mmc [2190000.mmc]
-> > using ADMA
-> > [    1.904914] mmc2: SDHCI controller on 2194000.mmc [2194000.mmc]
-> > using ADMA
-> > [    1.910686] pci 0000:01:00.0: [168c:003c] type 00 class 0x028000 PCIe
-> > Endpoint
-> > [    1.918390] NET: Registered PF_PACKET protocol family
-> > [    1.918573] mmc0: SDHCI controller on 2198000.mmc [2198000.mmc]
-> > using ADMA
-> > [    1.924322] pci 0000:01:00.0: BAR 0 [mem 0x00000000-0x001fffff 64bit]
-> > [    1.931635] Key type dns_resolver registered
-> > [    1.936764] pci 0000:01:00.0: ROM [mem 0x00000000-0x0000ffff pref]
-> > [    1.961043] pci 0000:01:00.0: supports D1 D2
-> > [    1.961526] Registering SWP/SWPB emulation handler
-> > [    1.965601] mmc0: new DDR MMC card at address 0001
-> > [    1.976575] mmcblk0: mmc0:0001 Q2J54A 3.59 GiB
-> > [    1.979794] Loading compiled-in X.509 certificates
-> > [    1.985036] PCI: bus1: Fast back to back transfers disabled
-> > [    1.991531] pci 0000:00:00.0: bridge window [mem 0x01000000-0x011fffff]:
-> > assigned
-> > [    1.998742]  mmcblk0: p1 p2 p3
-> > [    1.999163] pci 0000:00:00.0: BAR 0 [mem 0x01200000-0x012fffff]:
-> > assigned
-> > [    2.003947] mmcblk0boot0: mmc0:0001 Q2J54A 16.0 MiB
-> > [    2.008990] pci 0000:00:00.0: bridge window [mem 0x01300000-0x013fffff
-> > pref]: assigned
-> > [    2.009023] pci 0000:00:00.0: ROM [mem 0x01400000-0x0140ffff pref]:
-> > assigned
-> > [    2.009054] pci 0000:01:00.0: BAR 0 [mem 0x01000000-0x011fffff 64bit]:
-> > assigned
-> > [    2.017526] mmcblk0boot1: mmc0:0001 Q2J54A 16.0 MiB
-> > [    2.022015] pci 0000:01:00.0: ROM [mem 0x01300000-0x0130ffff pref]:
-> > assigned
-> > [    2.032133] mmcblk0rpmb: mmc0:0001 Q2J54A 512 KiB, chardev (242:0)
-> > [    2.036347] pci 0000:00:00.0: PCI bridge to [bus 01-ff]
-> > [    2.036370] pci 0000:00:00.0:   bridge window [mem
-> > 0x01000000-0x011fffff]
-> > [    2.036384] pci 0000:00:00.0:   bridge window [mem
-> > 0x01300000-0x013fffff pref]
-> > [    2.042552] pps pps0: new PPS source ptp0
-> > [    2.048338] pci_bus 0000:00: resource 4 [io  0x0000-0xffff]
-> > [    2.083626] pci_bus 0000:00: resource 5 [mem 0x01000000-0x01efffff]
-> > [    2.089972] pci_bus 0000:01: resource 1 [mem 0x01000000-0x011fffff]
-> > [    2.093461] fec 2188000.ethernet eth0: registered PHC device 0
-> > [    2.096283] pci_bus 0000:01: resource 2 [mem 0x01300000-0x013fffff pref]
-> > [    2.096352] sysfs: cannot create duplicate filename
-> > '/devices/platform/soc/1ffc000.pcie/pci0000:00/0000:00:00.0/resource0'
-> > [    2.096365] CPU: 3 UID: 0 PID: 52 Comm: kworker/u19:2 Not tainted
-> > 6.12.0-rc1 #54
-> > [    2.096381] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
-> > [    2.096391] Workqueue: async async_run_entry_fn
-> > [    2.103025] imx_thermal 20c8000.anatop:tempmon: Industrial CPU
-> > temperature grade - max:105C critical:100C passive:95C
-> > [    2.108932]
-> > [    2.108940] Call trace:
-> > [    2.108950]  unwind_backtrace from show_stack+0x10/0x14
-> > [    2.121391] clk: Disabling unused clocks
-> > [    2.127423]  show_stack from dump_stack_lvl+0x54/0x68
-> > [    2.127451]  dump_stack_lvl from sysfs_warn_dup+0x58/0x64
-> > [    2.134265] PM: genpd: Disabling unused power domains
-> > [    2.138525]  sysfs_warn_dup from sysfs_add_bin_file_mode_ns+0xbc/0xcc
-> > [    2.138547]  sysfs_add_bin_file_mode_ns from
-> > sysfs_create_bin_file+0xac/0xb4
-> > [    2.149242] ALSA device list:
-> > [    2.150647]  sysfs_create_bin_file from
-> > pci_create_resource_files+0x84/0x148
-> > [    2.153183]   No soundcards found.
-> > [    2.158407]  pci_create_resource_files from
-> > pci_bus_add_device+0x24/0xe4
-> > [    2.211699]  pci_bus_add_device from pci_bus_add_devices+0x2c/0x70
-> > [    2.217930]  pci_bus_add_devices from pci_host_probe+0x7c/0xa4
-> > [    2.223806]  pci_host_probe from dw_pcie_host_init+0x4ec/0x71c
-> > [    2.229682]  dw_pcie_host_init from imx_pcie_probe+0x3a8/0x75c
-> > [    2.235559]  imx_pcie_probe from platform_probe+0x5c/0xb0
-> > [    2.241010]  platform_probe from really_probe+0xd0/0x3a4
-> > [    2.246364]  really_probe from __driver_probe_device+0x8c/0x1d4
-> > [    2.252321]  __driver_probe_device from driver_probe_device+0x30/0xc0
-> > [    2.258803]  driver_probe_device from
-> > __driver_attach_async_helper+0x50/0xd8
-> > [    2.265892]  __driver_attach_async_helper from
-> > async_run_entry_fn+0x30/0x144
-> > [    2.272980]  async_run_entry_fn from process_one_work+0x154/0x2dc
-> > [    2.279115]  process_one_work from worker_thread+0x250/0x3f0
-> > [    2.284811]  worker_thread from kthread+0x110/0x12c
-> > [    2.289726]  kthread from ret_from_fork+0x14/0x28
-> > [    2.294461] Exception stack(0xe6a0dfb0 to 0xe6a0dff8)
-> > [    2.299535] dfa0:                                     00000000
-> > 00000000 00000000 00000000
-> > [    2.307740] dfc0: 00000000 00000000 00000000 00000000 00000000
-> > 00000000 00000000 00000000
-> > [    2.315942] dfe0: 00000000 00000000 00000000 00000000 00000013
-> > 00000000
-> > [    2.323156] pcieport 0000:00:00.0: PME: Signaling with IRQ 293
-> > [    2.329645] pcieport 0000:00:00.0: AER: enabled with IRQ 293
-> > [    2.335553] sysfs: cannot create duplicate filename
-> > '/devices/platform/soc/1ffc000.pcie/pci0000:00/0000:00:00.0/0000:01:00.0/res
-> > ource0'
-> > [    2.347794] CPU: 3 UID: 0 PID: 52 Comm: kworker/u19:2 Not tainted
-> > 6.12.0-rc1 #54
-> > [    2.355229] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
-> > [    2.361779] Workqueue: async async_run_entry_fn
-> > [    2.366349] Call trace:
-> > [    2.366362]  unwind_backtrace from show_stack+0x10/0x14
-> > [    2.374183]  show_stack from dump_stack_lvl+0x54/0x68
-> > [    2.379273]  dump_stack_lvl from sysfs_warn_dup+0x58/0x64
-> > [    2.384706]  sysfs_warn_dup from sysfs_add_bin_file_mode_ns+0xbc/0xcc
-> > [    2.391183]  sysfs_add_bin_file_mode_ns from
-> > sysfs_create_bin_file+0xac/0xb4
-> > [    2.398270]  sysfs_create_bin_file from
-> > pci_create_resource_files+0x84/0x148
-> > [    2.405360]  pci_create_resource_files from
-> > pci_bus_add_device+0x24/0xe4
-> > [    2.412113]  pci_bus_add_device from pci_bus_add_devices+0x2c/0x70
-> > [    2.418334]  pci_bus_add_devices from pci_bus_add_devices+0x60/0x70
-> > [    2.424642]  pci_bus_add_devices from pci_host_probe+0x7c/0xa4
-> > [    2.430511]  pci_host_probe from dw_pcie_host_init+0x4ec/0x71c
-> > [    2.436384]  dw_pcie_host_init from imx_pcie_probe+0x3a8/0x75c
-> > [    2.442258]  imx_pcie_probe from platform_probe+0x5c/0xb0
-> > [    2.447704]  platform_probe from really_probe+0xd0/0x3a4
-> > [    2.453057]  really_probe from __driver_probe_device+0x8c/0x1d4
-> > [    2.459014]  __driver_probe_device from driver_probe_device+0x30/0xc0
-> > [    2.465493]  driver_probe_device from
-> > __driver_attach_async_helper+0x50/0xd8
-> > [    2.472580]  __driver_attach_async_helper from
-> > async_run_entry_fn+0x30/0x144
-> > [    2.479666]  async_run_entry_fn from process_one_work+0x154/0x2dc
-> > [    2.485800]  process_one_work from worker_thread+0x250/0x3f0
-> > [    2.491494]  worker_thread from kthread+0x110/0x12c
-> > [    2.496408]  kthread from ret_from_fork+0x14/0x28
-> > [    2.501140] Exception stack(0xe6a0dfb0 to 0xe6a0dff8)
-> > [    2.506214] dfa0:                                     00000000
-> > 00000000 00000000 00000000
-> > [    2.514418] dfc0: 00000000 00000000 00000000 00000000 00000000
-> > 00000000 00000000 00000000
-> > [    2.522620] dfe0: 00000000 00000000 00000000 00000000 00000013
-> > 00000000
-> > 
-> > This was not the case with kernel v6.11, do you have an idea where this comes
-> > from? I did not dig into more detail yet but it looks a bit like a regression. The
-> > driver still works, it just prints this duplicate filename warning.
-> Hi Stefan:
-> I use my i.MX6QP SabreSD board to make a quick boot test when both the
->  v6.12-rc2 and v6.12-rc1 are used.
-> Since I don't have the i.MX6QDL board at my hand now.
-> There is no dump, kernel boots successfully, and PCIe works well too.
-> Do I miss something?
-> BTW, the imx_v6_v7_defconfig is used in my tests.
-> 
-> root@imx6qpdlsolox:~# lspci
-> 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
-> 01:00.0 Ethernet controller: Intel Corporation 82574L Gigabit Network Connection
-> root@imx6qpdlsolox:~# uname -a
-> Linux imx6qpdlsolox 6.12.0-rc2 #11 SMP Sat Oct 12 16:56:57 CST 2024 armv7l GNU/Linux
-> root@imx6qpdlsolox:~#
-> root@imx6qpdlsolox:~#
-> root@imx6qpdlsolox:~# dmesg | grep pci
-> [    0.442344] imx6q-pcie 1ffc000.pcie: host bridge /soc/pcie@1ffc000 ranges:
-> [    0.442397] imx6q-pcie 1ffc000.pcie:       IO 0x0001f80000..0x0001f8ffff -> 0x0000000000
-> [    0.442427] imx6q-pcie 1ffc000.pcie:      MEM 0x0001000000..0x0001efffff -> 0x0001000000
-> [    1.659104] imx6q-pcie 1ffc000.pcie: iATU: unroll F, 4 ob, 4 ib, align 64K, limit 4G
-> [    1.765277] imx6q-pcie 1ffc000.pcie: PCIe Gen.1 x1 link up
-> [    1.770809] imx6q-pcie 1ffc000.pcie: Link: Only Gen1 is enabled
-> [    1.770820] imx6q-pcie 1ffc000.pcie: Link up, Gen1
-> [    1.784066] imx6q-pcie 1ffc000.pcie: PCIe Gen.1 x1 link up
-> [    1.796446] imx6q-pcie 1ffc000.pcie: PCI host bridge to bus 0000:00
-> [    1.809095] pci_bus 0000:00: root bus resource [bus 00-ff]
-> [    1.809113] pci_bus 0000:00: root bus resource [io  0x0000-0xffff]
-> [    1.809125] pci_bus 0000:00: root bus resource [mem 0x01000000-0x01efffff]
-> [    1.822423] pci 0000:00:00.0: [16c3:abcd] type 01 class 0x060400 PCIe Root Port
-> [    1.822451] pci 0000:00:00.0: BAR 0 [mem 0x00000000-0x000fffff]
-> [    1.834148] pci 0000:00:00.0: ROM [mem 0x00000000-0x0000ffff pref]
-> [    1.849760] pci 0000:00:00.0: PCI bridge to [bus 01-ff]
-> [    1.890183] pci 0000:00:00.0:   bridge window [io  0x0000-0x0fff]
-> [    1.896293] pci 0000:00:00.0:   bridge window [mem 0x00000000-0x000fffff]
-> [    1.903109] pci 0000:00:00.0:   bridge window [mem 0x00000000-0x000fffff pref]
-> [    1.910386] pci 0000:00:00.0: Limiting cfg_size to 512
-> [    1.915588] pci 0000:00:00.0: supports D1
-> [    1.919638] pci 0000:00:00.0: PME# supported from D0 D1 D3hot D3cold
-> [    1.944036] pci 0000:01:00.0: [8086:10d3] type 00 class 0x020000 PCIe Endpoint
-> [    1.951427] pci 0000:01:00.0: BAR 0 [mem 0x00000000-0x0001ffff]
-> [    1.961171] pci 0000:01:00.0: BAR 1 [mem 0x00000000-0x0007ffff]
-> [    1.967149] pci 0000:01:00.0: BAR 2 [io  0x0000-0x001f]
-> [    1.972456] pci 0000:01:00.0: BAR 3 [mem 0x00000000-0x00003fff]
-> [    1.978528] pci 0000:01:00.0: ROM [mem 0x00000000-0x0003ffff pref]
-> [    1.985185] pci 0000:01:00.0: PME# supported from D0 D3hot D3cold
-> [    2.020060] pci 0000:00:00.0: BAR 0 [mem 0x01000000-0x010fffff]: assigned
-> [    2.032893] pci 0000:00:00.0: bridge window [mem 0x01100000-0x011fffff]: assigned
-> [    2.046230] pci 0000:00:00.0: bridge window [mem 0x01200000-0x012fffff pref]: assigned
-> [    2.059918] pci 0000:00:00.0: ROM [mem 0x01300000-0x0130ffff pref]: assigned
-> [    2.072647] pci 0000:00:00.0: bridge window [io  0x1000-0x1fff]: assigned
-> [    2.085371] pci 0000:01:00.0: BAR 1 [mem 0x01100000-0x0117ffff]: assigned
-> [    2.097773] pci 0000:01:00.0: ROM [mem 0x01200000-0x0123ffff pref]: assigned
-> [    2.112229] pci 0000:01:00.0: BAR 0 [mem 0x01180000-0x0119ffff]: assigned
-> [    2.112266] pci 0000:01:00.0: BAR 3 [mem 0x011a0000-0x011a3fff]: assigned
-> [    2.124738] pci 0000:01:00.0: BAR 2 [io  0x1000-0x101f]: assigned
-> [    2.137379] pci 0000:00:00.0: PCI bridge to [bus 01-ff]
-> [    2.149485] pci 0000:00:00.0:   bridge window [io  0x1000-0x1fff]
-> [    2.149502] pci 0000:00:00.0:   bridge window [mem 0x01100000-0x011fffff]
-> [    2.160835] pci 0000:00:00.0:   bridge window [mem 0x01200000-0x012fffff pref]
-> [    2.173722] pci_bus 0000:00: resource 4 [io  0x0000-0xffff]
-> [    2.193124] pci_bus 0000:00: resource 5 [mem 0x01000000-0x01efffff]
-> [    2.193139] pci_bus 0000:01: resource 0 [io  0x1000-0x1fff]
-> [    2.222093] pci_bus 0000:01: resource 1 [mem 0x01100000-0x011fffff]
-> [    2.228389] pci_bus 0000:01: resource 2 [mem 0x01200000-0x012fffff pref]
-
-Thanks a lot for testing on your side.
-
-I think I was too early to assume it is a regression. I did some more
-tests today and I can't see the issue with most configurations. I
-uploaded the one that generates the issue on my system with kernel
-v6.12-rc1.
-https://drive.google.com/file/d/1ZHpg6tG82QjmiXylq0W2HSLnz97AgyN8
-
-However, even if I enhance the pci-imx6.c driver with a simple pr_info
-the trace disappears:
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 808d1f1054173..047f4ae0a2ed3 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1282,6 +1282,8 @@ static int imx_pcie_probe(struct platform_device *pdev)
-        u16 val;
-        int i;
-
-+       pr_info("%s - %s:%d\n", __func__, __FILE__, __LINE__);
-+
-        imx_pcie = devm_kzalloc(dev, sizeof(*imx_pcie), GFP_KERNEL);
-        if (!imx_pcie)
-                return -ENOMEM;
-
-So most likely it is some sequence/timing issue. I have to check if I
-find the time to investigate it further, but I guess it would be on my
-side to figure out what happens.
-
-Sorry for the (kind of) false alarm.
-
-Regards,
-Stefan
+SGkgTGl1IFlpbmcsDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTGl1
+IFlpbmcgPHZpY3Rvci5saXVAbnhwLmNvbT4NCj4gU2VudDogTW9uZGF5LCBPY3RvYmVyIDE0LCAy
+MDI0IDg6MTggQU0NCj4gU3ViamVjdDogUmU6IFtQQVRDSCB2MiA2LzldIGRybS9icmlkZ2U6IEFk
+ZCBJVEUgSVQ2MjYzIExWRFMgdG8gSERNSSBjb252ZXJ0ZXINCj4gDQo+IE9uIDEwLzE0LzIwMjQs
+IERtaXRyeSBCYXJ5c2hrb3Ygd3JvdGU6DQo+ID4gT24gU2F0LCBPY3QgMTIsIDIwMjQgYXQgMDM6
+MzU6NDBQTSArMDgwMCwgTGl1IFlpbmcgd3JvdGU6DQo+ID4+IEFkZCBiYXNpYyBIRE1JIHZpZGVv
+IG91dHB1dCBzdXBwb3J0LiBDdXJyZW50bHksIG9ubHkgUkdCODg4IG91dHB1dA0KPiA+PiBwaXhl
+bCBmb3JtYXQgaXMgc3VwcG9ydGVkLiAgQXQgdGhlIExWRFMgaW5wdXQgc2lkZSwgdGhlIGRyaXZl
+cg0KPiA+PiBzdXBwb3J0cyBzaW5nbGUgTFZEUyBsaW5rIGFuZCBkdWFsIExWRFMgbGlua3Mgd2l0
+aCAiamVpZGEtMjQiIExWRFMNCj4gPj4gbWFwcGluZy4NCj4gPj4NCj4gPj4gUHJvZHVjdCBsaW5r
+Og0KPiA+PiBodHRwczovL3d3dy5pdGUuY29tLnR3L2VuL3Byb2R1Y3QvY2F0ZTEvSVQ2MjYzDQo+
+ID4+DQo+ID4+IFNpZ25lZC1vZmYtYnk6IExpdSBZaW5nIDx2aWN0b3IubGl1QG54cC5jb20+DQo+
+ID4+IC0tLQ0KPiA+PiB2MjoNCj4gPj4gKiBBZGQgQVZJIGluZm9yZnJhbWUgc3VwcG9ydC4gIChN
+YXhpbWUpDQo+ID4+ICogQWRkIERSTV9NT0RFX0NPTk5FQ1RPUl9IRE1JQS4gIChCaWp1KQ0KPiA+
+PiAqIFJlbmFtZSBpdDYyNjNfcmVzZXQoKSB0byBpdDYyNjNfaHdfcmVzZXQoKS4gIChCaWp1KQ0K
+PiA+PiAqIENoZWNrIG51bWJlciBvZiBMVkRTIGxpbmsgZGF0YSBsYW5lcy4gIChCaWp1KQ0KPiA+
+Pg0KPiA+PiAgZHJpdmVycy9ncHUvZHJtL2JyaWRnZS9LY29uZmlnICAgICAgfCAgIDggKw0KPiA+
+PiAgZHJpdmVycy9ncHUvZHJtL2JyaWRnZS9NYWtlZmlsZSAgICAgfCAgIDEgKw0KPiA+PiAgZHJp
+dmVycy9ncHUvZHJtL2JyaWRnZS9pdGUtaXQ2MjYzLmMgfCA5MTkNCj4gPj4gKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKw0KPiA+PiAgMyBmaWxlcyBjaGFuZ2VkLCA5MjggaW5zZXJ0aW9ucygr
+KQ0KPiA+PiAgY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvZ3B1L2RybS9icmlkZ2UvaXRlLWl0
+NjI2My5jDQo+ID4+DQo+ID4NCj4gPiBbLi4uXQ0KPiA+DQo+ID4+ICtzdGF0aWMgaW50IGl0NjI2
+M19wYXJzZV9kdChzdHJ1Y3QgaXQ2MjYzICppdCkgew0KPiA+PiArCXN0cnVjdCBkZXZpY2UgKmRl
+diA9IGl0LT5kZXY7DQo+ID4+ICsJc3RydWN0IGRldmljZV9ub2RlICpwb3J0MCwgKnBvcnQxOw0K
+PiA+PiArCWludCByZXQ7DQo+ID4+ICsNCj4gPj4gKwlyZXQgPSBvZl9wcm9wZXJ0eV9yZWFkX3U4
+KGRldi0+b2Zfbm9kZSwgIml0ZSxsdmRzLWxpbmstbnVtLWRhdGEtbGFuZXMiLA0KPiA+PiArCQkJ
+CSAgJml0LT5sdmRzX2xpbmtfbnVtX2RsYW5lcyk7DQo+ID4+ICsJaWYgKHJldCkgew0KPiA+PiAr
+CQlkZXZfZXJyKGRldiwgImZhaWxlZCB0byBnZXQgTFZEUyBsaW5rIG51bWJlciBvZiBkYXRhIGxh
+bmVzOiAlZFxuIiwNCj4gPj4gKwkJCXJldCk7DQo+ID4+ICsJCXJldHVybiByZXQ7DQo+ID4+ICsJ
+fQ0KPiA+PiArDQo+ID4+ICsJaXQtPm5leHRfYnJpZGdlID0gZGV2bV9kcm1fb2ZfZ2V0X2JyaWRn
+ZShkZXYsIGRldi0+b2Zfbm9kZSwgMiwgMCk7DQo+ID4+ICsJaWYgKElTX0VSUihpdC0+bmV4dF9i
+cmlkZ2UpKQ0KPiA+PiArCQlyZXR1cm4gZGV2X2Vycl9wcm9iZShkZXYsIFBUUl9FUlIoaXQtPm5l
+eHRfYnJpZGdlKSwNCj4gPj4gKwkJCQkgICAgICJmYWlsZWQgdG8gZ2V0IG5leHQgYnJpZGdlXG4i
+KTsNCj4gPj4gKw0KPiA+PiArCXBvcnQwID0gb2ZfZ3JhcGhfZ2V0X3BvcnRfYnlfaWQoZGV2LT5v
+Zl9ub2RlLCAwKTsNCj4gPj4gKwlwb3J0MSA9IG9mX2dyYXBoX2dldF9wb3J0X2J5X2lkKGRldi0+
+b2Zfbm9kZSwgMSk7DQo+ID4+ICsJaWYgKHBvcnQwICYmIHBvcnQxKSB7DQo+ID4+ICsJCWlmIChv
+Zl9wcm9wZXJ0eV9yZWFkX2Jvb2wocG9ydDAsICJkdWFsLWx2ZHMtZXZlbi1waXhlbHMiKSAmJg0K
+PiA+PiArCQkgICAgb2ZfcHJvcGVydHlfcmVhZF9ib29sKHBvcnQxLCAiZHVhbC1sdmRzLW9kZC1w
+aXhlbHMiKSkgew0KPiA+PiArCQkJaXQtPmx2ZHNfZHVhbF9saW5rID0gdHJ1ZTsNCj4gPj4gKwkJ
+CWl0LT5sdmRzX2xpbmsxMl9zd2FwID0gdHJ1ZTsNCj4gPj4gKwkJfSBlbHNlIGlmIChvZl9wcm9w
+ZXJ0eV9yZWFkX2Jvb2wocG9ydDAsICJkdWFsLWx2ZHMtb2RkLXBpeGVscyIpICYmDQo+ID4+ICsJ
+CQkgICBvZl9wcm9wZXJ0eV9yZWFkX2Jvb2wocG9ydDEsICJkdWFsLWx2ZHMtZXZlbi1waXhlbHMi
+KSkgew0KPiA+PiArCQkJaXQtPmx2ZHNfZHVhbF9saW5rID0gdHJ1ZTsNCj4gPj4gKwkJfQ0KPiA+
+PiArDQo+ID4+ICsJCWlmICghaXQtPmx2ZHNfZHVhbF9saW5rKSB7DQo+ID4+ICsJCQlkZXZfZXJy
+KGRldiwNCj4gPj4gKwkJCQkiZmFpbGVkIHRvIGdldCBMVkRTIGR1YWwgbGluayBwaXhlbCBvcmRl
+clxuIik7DQo+ID4+ICsJCQlyZXQgPSAtRUlOVkFMOw0KPiA+PiArCQl9DQo+ID4NCj4gPiBQbGVh
+c2UgdXNlIGRybV9vZl9sdmRzX2dldF9kdWFsX2xpbmtfcGl4ZWxfb3JkZXIoKSwgaXQgdmFsaWRh
+dGVzIHRoYXQNCj4gPiB0aGUgRFQgZGVmaW5pdGlvbiBpcyBzb3VuZDogb25lIHBvcnQgZm9yIG9k
+ZCBwaXhlbHMsIG9uZSBwb3J0IGZvciBldmVuDQo+ID4gcGl4ZWxzLg0KPiANCj4gSXQgY2Fubm90
+IGJlIHVzZWQsIGJlY2F1c2UgaXQgZ2V0IHRoZSBwaXhlbCBvcmRlciBmb3IgdGhlIExWRFMgc291
+cmNlIG5vdCBzaW5rLiBJVDYyNjMgaXMgdGhlIExWRFMNCj4gc2luay4NCj4gDQo+ICAqIGRybV9v
+Zl9sdmRzX2dldF9kdWFsX2xpbmtfcGl4ZWxfb3JkZXIgLSBHZXQgTFZEUyBkdWFsLWxpbmsgcGl4
+ZWwgb3JkZXINCj4gICogQHBvcnQxOiBGaXJzdCBEVCBwb3J0IG5vZGUgb2YgdGhlIER1YWwtbGlu
+ayBMVkRTIHNvdXJjZQ0KPiAgKiBAcG9ydDI6IFNlY29uZCBEVCBwb3J0IG5vZGUgb2YgdGhlIER1
+YWwtbGluayBMVkRTIHNvdXJjZQ0KDQoNCkNhbid0IHlvdSB1c2UgZHJtX29mX2x2ZHNfZ2V0X2R1
+YWxfbGlua19waXhlbF9vcmRlcigpIGZyb20gaG9zdCBmb3IgdGhlIHNhbWUgdXNlIGNhc2UuIFNl
+ZSBbMV0/DQoNClsxXQ0KaHR0cHM6Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5l
+bC9naXQvbmV4dC9saW51eC1uZXh0LmdpdC90cmVlL2RyaXZlcnMvZ3B1L2RybS9yZW5lc2FzL3Jj
+YXItZHUvcmNhcl9sdmRzLmM/aD1uZXh0LTIwMjQxMDExDQoNCmx2ZHNfYnJpZGdlMDogbHZkcy10
+by1oZG1pLWJyaWRnZUA0YyB7DQoJCWNvbXBhdGlibGUgPSAiaXRlLGl0NjI2MyI7DQoJCXJlZyA9
+IDwweDRjPjsNCgkJcG9ydHMgew0KCQkJI2FkZHJlc3MtY2VsbHMgPSA8MT47DQoJCQkjc2l6ZS1j
+ZWxscyA9IDwwPjsNCg0KCQkJcG9ydEAwIHsNCgkJCQlyZWcgPSA8MD47DQoJCQkJZHVhbC1sdmRz
+LW9kZC1waXhlbHM7DQoJCQkJbHZkczBfaW4wOiBlbmRwb2ludEAwIHsNCgkJCQkJcmVtb3RlLWVu
+ZHBvaW50ID0gPCZsdmRzMF9vdXQ+Ow0KCQkJCX07DQoJCQl9Ow0KDQoJCQlwb3J0QDEgew0KCQkJ
+CXJlZyA9IDwxPjsNCgkJCQlkdWFsLWx2ZHMtZXZlbi1waXhlbHM7DQoJCQkJbHZkczBfaW4xOiBl
+bmRwb2ludEAxIHsNCgkJCQkJcmVtb3RlLWVuZHBvaW50ID0gPCZsdmRzMV9vdXQ+Ow0KCQkJCX07
+DQoJCQl9Ow0KDQoJCQlwb3J0QDIgew0KCQkJCXJlZyA9IDwyPjsNCgkJCQlpdDYyNjNfb3V0OiBl
+bmRwb2ludEAyIHsNCgkJCQkJcmVtb3RlLWVuZHBvaW50ID0gPCZsdmRzX3RvX2hkbWlfY29uX291
+dD47DQoJCQkJfTsNCgkJCX07DQoJCX07DQoJfTsNCn07DQoNCkNoZWVycywNCkJpanUNCg0KDQo+
+IA0KPiA+DQo+ID4+ICsJfSBlbHNlIGlmIChwb3J0MSkgew0KPiA+PiArCQlyZXQgPSAtRUlOVkFM
+Ow0KPiA+PiArCQlkZXZfZXJyKGRldiwgInNpbmdsZSBpbnB1dCBMVkRTIHBvcnQxIGlzIG5vdCBz
+dXBwb3J0ZWRcbiIpOw0KPiA+PiArCX0gZWxzZSBpZiAoIXBvcnQwKSB7DQo+ID4+ICsJCXJldCA9
+IC1FSU5WQUw7DQo+ID4+ICsJCWRldl9lcnIoZGV2LCAibm8gaW5wdXQgTFZEUyBwb3J0XG4iKTsN
+Cj4gPj4gKwl9DQo+ID4+ICsNCj4gPj4gKwlvZl9ub2RlX3B1dChwb3J0MCk7DQo+ID4+ICsJb2Zf
+bm9kZV9wdXQocG9ydDEpOw0KPiA+PiArDQo+ID4+ICsJcmV0dXJuIHJldDsNCj4gPj4gK30NCj4g
+Pj4gKw0KPiA+DQo+IA0KPiAtLQ0KPiBSZWdhcmRzLA0KPiBMaXUgWWluZw0KDQo=
