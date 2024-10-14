@@ -1,271 +1,140 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2054.outbound.protection.outlook.com [40.107.21.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60ADD158A04
-	for <imx@lists.linux.dev>; Mon, 14 Oct 2024 10:01:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728900091; cv=fail; b=IoQJQBYRFvZULdzQTf2OEeafenVYQm48LFAmov2lGl0JfHfcPnva/OSa8sLvzjCpV+emYLc7DbNH33POoPLlZR585wPbO1GmtlBbCz6kenJaNTPvc0VVhe5OnYbZqJu3MVNpJ5pMwmoJIe0wMy/8OVteMfCv67kSGVa23Y0Na2s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728900091; c=relaxed/simple;
-	bh=rjExYRn6yCnhup12BVvD5r31q3LxtQ46MBKTX+vE8qQ=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=XfwDSkW5ZXKtl1mLWQT973ko1qD8UP2XBaYdIMBPnQakWRwckCGrN20n3Cz/0smvbNlgZiaw7ukVDbKOROsWXq5I1hUM93RHw+KXOMZ8GPHpf47D4mNbilrza3m6dO8LaSQjhC+sRvemBPxovkCJV0fRwIpcIHeuzE6exzuBabU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=V5uarZlt; arc=fail smtp.client-ip=40.107.21.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0681F15958A
+	for <imx@lists.linux.dev>; Mon, 14 Oct 2024 10:08:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728900529; cv=none; b=kio2ntBx4i72Xx3M/2cqnGyS1HkVHNpqx19Ju6bsno2+1nrNxNhwxtANWA9155LO9o75LQ/MxK6JeDECOTR5EzhuO+gPsHNgdcTlG6ba/8PNl1Ou6KEh+337OrTxbeTTYMLZyyq92s6n3LG4TKFeyxtTwoBh0gahIDmW9yrnLv4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728900529; c=relaxed/simple;
+	bh=/sWlEGgfHHX9djG/FSb50XLkDF+y1KqaTESwoXdZHSs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U6WcJFTcJJHl0tO23MdfnRaSiDujw2nBnbuwSWcU+9dTvPWI2fp3JnAoKfqE8bXIubmjpS8oaDYh0u3CiZv8jYp4/dyyGct4tgTNo4lz7k9BVCi1vhIRD7j8qEj41Ewx5Qfd1GYHsWYC6PIAwU5dGUMqk7Pav1HmdLmIpDEG6nI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rgP1axhA; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="V5uarZlt"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sWUA7XX89e9KFRDqv3uqdZ0Kxp1AyhYHY4ptLQTWp1WX6BjLkjEUIVYdfmE2KHw21gHJx5C/HqJLkWr9bqMiDUzfsSiMxcUDhCTjtqd9g9ydCWy90sEg/MxfavqS7Xc6Qbpyi87cgv/deWtXz5/DHoZHg00ZbS8o9K0A2lGUNl9HApNfbbn2E1qlNiTyLGffDN5P99kjY3xv9dsHZWHu5MXJqPKHSs+JU4yNreOXfJAIeHdPe2dOqjplTh3SOfMciLaWxCFL8ieAWPqd9o9lt+DlERW0qDpPTy5CsSBctERbNMrltOyEAC1+8MR7JrhdjuGu8ANAyav6kcx/EvxXHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5GiyX47Jecs7gxaIbccktqFZ7qKULFgehH0FnnszTM8=;
- b=rwRVyfqWcW3MNd7HRqO9wLZ11GfyQsX7/YAZUg2F7Dq6fRiQaZ2W46Q7JqfooI0/HUTxBebfrJrgq8ReExtJr+SSDY04VRt50xKV2kAs7Z8Ms4RqYiKWhJMuwU1iJHPmzONiv7qCykT4KzJXSp67lwggeIu7voc7KUgvMLWBA1VdkYk5XpHXFO/jpVO4p1pv+b/NsnFsq7k1+P+iZSNVpyxNsC0NcM0qNWaysClUS7NfmzdT/I4c52gEpKwgYzAZdh60sXLJ8LX7ZmtBZXMr1Fd6BnWimdKisq3zKok45c7YUZDk3Vl+WiIvSsdohs7X3AQnYfe+XhQwSVOZj2iCsg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5GiyX47Jecs7gxaIbccktqFZ7qKULFgehH0FnnszTM8=;
- b=V5uarZlt5zcnhhAT16GlhwpnTIVzUv5+hjs1xr5O9ROVQ1ekhSZOi6Kg9HG41EzchO0WLxmJW7olnH30Uf+AJy4fbOInxUXbO37LmrWB4/zXTWr7XicvImifXnuwcMJFMjFqca4/wACXp6DDpYMlfD51w7SH3lX2VCDf0VE+Dr6v2Bdr+uADAA8yoJ3T93ozNit/PEMIY8TRQBRSU6GY00Iw/iiZVj9Qq1OjdcUt37AhVMYXu4HT32c5cYOFa4llfhmqtQv57z1O1zJaMuvEnmv/X6Jg0SxjH4863w4dN0BWSmnYDFvA68VQNS/L26BRqvUv6wZa0sHSlimBYGvCCw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by AM9PR04MB8147.eurprd04.prod.outlook.com (2603:10a6:20b:3e0::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.27; Mon, 14 Oct
- 2024 10:01:25 +0000
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90%4]) with mapi id 15.20.8048.020; Mon, 14 Oct 2024
- 10:01:25 +0000
-Message-ID: <20dfe41f-7aca-4321-a5e9-5c6b8513b400@nxp.com>
-Date: Mon, 14 Oct 2024 18:01:49 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/9] dt-bindings: display: bridge: Add ITE IT6263 LVDS
- to HDMI converter
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, andrzej.hajda@intel.com,
- neil.armstrong@linaro.org, rfoss@kernel.org,
- Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, airlied@gmail.com, simona@ffwll.ch,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, catalin.marinas@arm.com, will@kernel.org,
- quic_bjorande@quicinc.com, geert+renesas@glider.be, arnd@arndb.de,
- nfraprado@collabora.com, o.rempel@pengutronix.de, y.moog@phytec.de,
- marex@denx.de, isaac.scott@ideasonboard.com, biju.das.jz@bp.renesas.com
-References: <20241012073543.1388069-1-victor.liu@nxp.com>
- <20241012073543.1388069-6-victor.liu@nxp.com>
- <4a7rwguypyaspgr5akpxgw4c45gph4h3lx6nkjv3znn32cldrk@k7qskts7ws73>
- <07b47f70-5dab-4813-97fa-388a0c0f42e9@nxp.com>
- <dvcdy32dig3w3r3a7eib576zaumsoxw4xb5iw6u6b2rds3zaov@lvdevbyl6skf>
- <90e0c4ac-1636-4936-ba40-2f7693bc6b32@nxp.com>
- <lcogrc6uztckwwwsuag5tlk5otidmo7rudsl7zshe3wpfot3wc@ziljns5phhfe>
-From: Liu Ying <victor.liu@nxp.com>
-Content-Language: en-US
-In-Reply-To: <lcogrc6uztckwwwsuag5tlk5otidmo7rudsl7zshe3wpfot3wc@ziljns5phhfe>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI2PR01CA0017.apcprd01.prod.exchangelabs.com
- (2603:1096:4:191::19) To AM7PR04MB7046.eurprd04.prod.outlook.com
- (2603:10a6:20b:113::22)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rgP1axhA"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5c97c7852e8so1194068a12.1
+        for <imx@lists.linux.dev>; Mon, 14 Oct 2024 03:08:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1728900526; x=1729505326; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FWUSe6Dna6tclDo/Nzgx/0TudE4bBGcoklr8vby/lzw=;
+        b=rgP1axhAGC6+jr8A561xHfnJE+eZ2GC9nU20bPS7Xuno6zsjkYRB8fKoRAMdGePL5y
+         SCNbt97YX/L1YrPcAiDXhQ/c8mqLUIBugmC6h00XN+BDCKYDLNJx0PLMx80bw/Rz23YN
+         5EIY4C141jIe8oiqSXswwph7WR4W93n+381nlwTWEBX4NpcED5I0ZyEbICTXYmVxWI6H
+         fENgAavOTQjXFh7+54dyerQwEeVtUXKKS4D75tJvM+W3sbAn3IbiQZW5GFzEqerHxVQZ
+         WJGoOaYtcK1G8z4ck9Pl+QYgOhGQrYZLd8dpzrHRAxJmVJiG0h89kvRu2LCxyB2mEywp
+         ClRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728900526; x=1729505326;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FWUSe6Dna6tclDo/Nzgx/0TudE4bBGcoklr8vby/lzw=;
+        b=IX3vedrICiOqQa3FhumMbJiDMOk+GYyP1yMJ2ZOdK9Z7UBGOHsUwW3NKbS4z4j/fKL
+         ojpBbSXDdEN2fBcu94d2AV9hKa85GtsAqdfy85+ZaekfSl++TlrgKsgeXb1BEcR6VG3u
+         vw0sCvtDuKfw5Acr0LmGfGOToVlFKjY66xgPNfJSM9dZEs/R02mD9sxT7w6lv6QeSwAk
+         aW0UWVGk8dd6RfC9qNZqv7AhgVPwUbu7XJiIYKisTPDWW5BzyPyLhCvzCiJg2wF+Xffl
+         RdU59gShT4W3ex3IWLdk7+opyCPXbxBIboJApZ+Ivid7wwx/7QthhuiEYFT4pKjG9nYJ
+         +5qg==
+X-Forwarded-Encrypted: i=1; AJvYcCXPdZmJI2zS+k6CM6Lk7VKRiaCesWKyzbtSwUZTC0m9tOKrDJ0Hm+mt6ssm+F8nwQR7ZpU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzXgb2a7DoY9+MCKbW4BV37I+8TsekKy9D0gSqolwQD+Q8vrR75
+	yQMO+XaMZSQJnlog6/Z0MUq0sb2AC6RdSJO9d0tJkRLyfvrFrfkQeMnuu3EAY9U=
+X-Google-Smtp-Source: AGHT+IESQDbU2/QoUk/jd6BnyeOUUPQzo77RwiIkyssfzTbI61MYXbPAfDvLUJDHZOc5ItYRiz14Fw==
+X-Received: by 2002:a05:6402:5191:b0:5c9:5e43:9480 with SMTP id 4fb4d7f45d1cf-5c95e43f157mr4714225a12.7.1728900526354;
+        Mon, 14 Oct 2024 03:08:46 -0700 (PDT)
+Received: from [192.168.0.40] ([176.61.106.227])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c937152f12sm4802674a12.44.2024.10.14.03.08.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Oct 2024 03:08:45 -0700 (PDT)
+Message-ID: <0240feca-541d-4aa9-abde-c0b0b0b477e5@linaro.org>
+Date: Mon, 14 Oct 2024 11:08:43 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|AM9PR04MB8147:EE_
-X-MS-Office365-Filtering-Correlation-Id: e4450f7d-776b-4876-3835-08dcec3729e9
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?NW1MUFM0WHNodE9GRWtOOEE4WmN5aEFnWGh2V0EzbVp1aEdEUGdEcEZZSnVC?=
- =?utf-8?B?SER1NWltZ0pyTmdVWDR3K1lRaVM2NjREclA1Vi84RTZZd0UyRTB0Z0d0V25C?=
- =?utf-8?B?MkVwcmdhTmhmTDZlc1BsdmoyMldmTWpJOWdsR05RZlBOSVRDcVhhOEp3N24v?=
- =?utf-8?B?ekRHN2tKMW9TaHpqKzFlWnNSdGRBbEJUUW43WE42OStEc3lLSnhwWm5OeTRa?=
- =?utf-8?B?QVFWeWtzaXlrM3N4K0JaV002TFBqWE1oMW9FaW1BY1BiNzJ2bzZqVEhOTVZD?=
- =?utf-8?B?TGxIOTdidldsNEI5OUxST3R2bUZwRlBld0twOEtFTUl0ZktwZVBaZnRTc2F1?=
- =?utf-8?B?dWcrbHpSa3UwdnRZRWYvTmhIcDZpdCtUTlNYOUllRmlFV2VjQTV2WjVZdWNh?=
- =?utf-8?B?QnJ0QlB5RHdneHVoN0xQdW4yUWFjUW9TY3VTdzVNVkZXUlFCcXF4SkhBVXJo?=
- =?utf-8?B?cmg3WGZEMU54bUw0M3pZdnI5dGNmbS9VRmlJRXRZZFJuMjBMRE9VWHE1ZkNa?=
- =?utf-8?B?UUxHMDZmU3BVSFd3Z0VHRVlMMlRJeGllOGVtLzZJd0JHWUNuQlZJc3NjNEVy?=
- =?utf-8?B?N1JXR1lmclJTNGJRR1diN0ljOGNKYzRjZ2pCOHhjdnZxQWFnZFdCOGdRMm93?=
- =?utf-8?B?cFZjWnU1VlUrQitiSDBJV0ticTh6bVRaTU5CL2tITmtSVHhmaStTSi85MHQv?=
- =?utf-8?B?TTRHZ1U1U0JzUnFPbnRiOU5HOUd5ZWQ0RGR0Rk1IcEk2ZWhyMEJjUTRWUE93?=
- =?utf-8?B?bnp0VllsRE9mbmNIaFRmbWVINnZsNm9iNXptYlpVWjd0MmV6SEprSlhJYzhS?=
- =?utf-8?B?UkZvbVpweTBIMFVPakhPcmJ2UkZEV1N4bXhmZlZwMWxtRW1lZExFWTNsSVV6?=
- =?utf-8?B?OFo1WkRrSk1tNXo2WEh2VThxekF0allCRHhWRFY0L2JUQ1FnUFA1SFR0Wi9u?=
- =?utf-8?B?c295M0dqNS9KU3pDOFN2d2tVWFVqQWx5WlhBUHVzRzBiRElsc0pYWmJlV3do?=
- =?utf-8?B?MzJMRERxZVl0QTVlejE3Z0dkbEU2R01SOXJmY1hOTTF1ODcxRXJPR0daalVh?=
- =?utf-8?B?SElXZEhzQTQ4U2p0UEFkdEFCbWVmZnErK2RQL0htT2FUaXBJMHMyWml1MFg3?=
- =?utf-8?B?M0Q0U3Y1WW9VZmpyTnhWalpOSVVEam9pNHVKWVNINXZGRWg4TXhoYjVqR1dm?=
- =?utf-8?B?eGZqQW1HM0F3Y2JLNzYrWVZOOTNxZEdwd0NGbGFNa3JPQXUxVUZhWjZUdEsr?=
- =?utf-8?B?MjNRcDU3S2NWcDNBNkUvZ29ERHg5bDk2bWJQOTh0L2lFUkxld3Z3YlIrNkZh?=
- =?utf-8?B?VjJiRWhGeTZXQmJ6MmJvanZPNEJxY284ME1HVkE5NUYvb1U1cEQxTDBWN29D?=
- =?utf-8?B?aGdsTnltK0YxWDRlK3pBK000alQvWXdncHVPV0xGamxhS0VNbjF5anA5eDFn?=
- =?utf-8?B?Zkp4WWw3MkZDQ2xmZzRJQ0RBTkxvZ09mcGNRdDNmeTZFUTRHTTFOdWwyYWlK?=
- =?utf-8?B?NEVndmg5UXdCQ21RaGl3eUVHcUEwQXU2K3VyRC82YzdGSU9TL09hdFVYN2Y3?=
- =?utf-8?B?cVY3ZGM0NjJGaGt6d0puM0Q5dU85d002VW5ranRxano2U3hWN3ZyaEtYZFh2?=
- =?utf-8?B?aEg4K05qQXlEQkFLWlhUMm13eXczcElzNklZTmhKTDdSb00xVTl6UnFrWHBE?=
- =?utf-8?B?L1p5NWE1SkdBWm03REQwY09QK2piS3J0UHFhTHIxYkhWWW54ZWdNNjFBPT0=?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?RG9aaDRSQXJOOU4vN295NkN1N29NN1RlZFl4OFJWcVprcGEra2h1OVFOdFpM?=
- =?utf-8?B?MnZCbTlRS0dwdXAxRlhKU2l4TlF4ZGkrNmNOVWp1ZVhMMncrMGVmU0o1bW4r?=
- =?utf-8?B?OW5lcDhvVXBRMSs5S3VoamlGNURGTlY0dVQ0UHRia2JPZVZQMFJiVS9ianRa?=
- =?utf-8?B?cGs3d3IxQmpwVkRnb0kyODJXKzN5alNQdHhJTUo3UWhGY3luckFPV0p3bUwx?=
- =?utf-8?B?bnVnOU15RDkrZkNKRVhwaG5oTkE4MktNM1QvVHhIcExXejR1NGNyeEI3aFhW?=
- =?utf-8?B?QWJpRkFNSUNIb0VDMnRsVGFtRnM4am8yMlRXVnZHSzVsQXV4aTRqYktpZGU4?=
- =?utf-8?B?Rmd5M0dHWUFLQWlXQTBEK1Q4THZEWUJHOUZiVnQ0MTRyUWpYRmNvaXozVnlH?=
- =?utf-8?B?dDNlZ1VMZEU2TkFYSTk2SG9OQVRHc3hyWEYyMWF0SnMrMDBWUkdUV0RxcVBr?=
- =?utf-8?B?SmFMYWtiNWYyQXA1M1oyYnBEZEZ3ekFIUUgzdXNNUVFGUEdkYzFZeXZMV3Mv?=
- =?utf-8?B?VTErbVMxM3BXc2s1U2F2SUlzSGFTdWc5elZaSXJOYmpCREJrOU94SnNXcTAx?=
- =?utf-8?B?Z0g2YnFOTHBZdk9BdXovZVovcjdvRFNjcVhseCtHRGZpREpobmREWll3TkVl?=
- =?utf-8?B?ZlovVVpuSGxYWjJRT3VQZk82MzZoL0FnYlU4Yk1EeGNpWmY5U2hCL25PY3B5?=
- =?utf-8?B?YXJldmtCQUs0dkJMTUIwRWM3ckRxWkNiS1c0UVo2L3hray9qSFRRMnVFYUpW?=
- =?utf-8?B?VlFBNFBFbmozbEtSaEQ2WVhYNmRNV2dWZ21Hc0hINGVZK05SOWlFNkJKZ05u?=
- =?utf-8?B?L202alhjVVFMWXRSTEd1Wk1vait4R1NrbENjZVcwSkxFVEZDRGdVbDJyRnNl?=
- =?utf-8?B?a3I5MzMvQ0tzM3M2WjR1TFBZdWxpUXF4bEl1MStPZmlGR1duZ1ZEV1FvMlAr?=
- =?utf-8?B?VjZIV1NELzkrVkh1am1aV01DMnZqOFZmUm5mMVlxU2FkRTAzWkdpNkVlWmVa?=
- =?utf-8?B?clZIZjlHalEyWlBaQ1l2OGkveHFORkpqaWFBbytFaUwyWm9vb1RxdU8reUZ6?=
- =?utf-8?B?ZnFHUzBCclVzS3RvVE1OSUdDYUhkMzhsV0xCcFRFS2FzeHg4OXFqRHNvNWw4?=
- =?utf-8?B?ZzNORGVvTmtRcXZ1QkR4Nmt3ZmZrcjlhKzZ0bWMvblU1SHVGbkZoSDJWaUVa?=
- =?utf-8?B?R0JwS3liN2RQazVvVkhyanA0bHI5VGtSV0p1NEl0U255MUdEUHhSd0JybG9x?=
- =?utf-8?B?ZjlYV1hOTUdKcWlqY05jeExjSFNTQjhIQWpDMXdMSE1aTVFZQkRkT1BYMyts?=
- =?utf-8?B?Z3B1aStacFBpemdybHZSZlZwcEpiR0NsbHFUVEx2SkJtWmlXMXFRcWtMcmVj?=
- =?utf-8?B?U2haVmFrckxYenB5Y2NKUCtxbDk3SmhSRk01M3FnVUFreTBLc3FSL052MXJt?=
- =?utf-8?B?ek80M0o4dmRvdHZTZ0ljZlRaOC81cWhvSTU1cHVETk9mZWh1c2J2aVpOY3li?=
- =?utf-8?B?TVBTSU9RcS9RN3NBaFVQMWRHWU1ob2NFcFFJaHdlR0pNSUlhLzQwcWEzbVlJ?=
- =?utf-8?B?bnpqQ1FXSGVNSHB3Q3YyV3BJV3I5ZEVBSy95V01CVGM5a0xNbk5KQUxZY0pM?=
- =?utf-8?B?ZFE5R05KNzBydEZjMXBTbHZtUktSKzFRUk1BamNqUTBIMnRMcFJiYUlFWUVp?=
- =?utf-8?B?RDJNTFE1OTZvQmRDQUlqRXpzV3JqVllMNlp5UkNRVW4vbVg1TEtLc3Y4NGkv?=
- =?utf-8?B?TUY5OHIyeWR5MDRDRjZpQmxsRjk1djBiZk1WY1hTLzhCMW10R1owbFhGV2Iw?=
- =?utf-8?B?dU1xdGtJeUU2QnNZR2xNTFpJb2tmdEF5SmxqQjRmYTRQNW5HelQ4VWYrU0Fs?=
- =?utf-8?B?Z1Z5Z2szZkFzUU1xWW1WWk5hL1RRdUNXYUVKdUdESGJSNFRZN2NnRkRnZUo4?=
- =?utf-8?B?cDZpSGkvMGc3dEp0eWF6VUxqZEhVVkhGd3JjS3Y5Y1h6NkttU1FpdjQ0RUFn?=
- =?utf-8?B?K3N2S01vOXYxLzg4R2VRNlV4OXBJb0pmUWhsTkc5UUs3Z2h6QXlyaGpVeGk5?=
- =?utf-8?B?b2UyL2FRV1RwU1BTbmtreFk0bXhNaC91UUlxakNQZmZmUXVpNnlwZ2s4ZkI3?=
- =?utf-8?Q?FqHjtv4PW8ujSov4G9j983QFD?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e4450f7d-776b-4876-3835-08dcec3729e9
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2024 10:01:25.1893
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: U7FmsZ0i4DhmiZxrckASH+1bdsAiGD+tskp7v3SqTEa4fNcN5T1C55dbRjNRbNa5EMpK7VFJJElKuzRri2blOA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8147
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] media: dt-bindings: Remove assigned-clock-* from
+ various schema
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Dave Stevenson <dave.stevenson@raspberrypi.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Martin Kepplinger <martink@posteo.de>,
+ Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+ "Paul J. Murphy" <paul.j.murphy@intel.com>,
+ Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
+ Tommaso Merciai <tomm.merciai@gmail.com>,
+ Martin Hecht <martin.hecht@avnet.eu>, Zhi Mao <zhi.mao@mediatek.com>,
+ Alain Volmat <alain.volmat@foss.st.com>,
+ Mikhail Rudenko <mike.rudenko@gmail.com>,
+ Ricardo Ribalda <ribalda@kernel.org>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ Umang Jain <umang.jain@ideasonboard.com>,
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Dongchun Zhu <dongchun.zhu@mediatek.com>,
+ Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+ Todor Tomov <todor.too@gmail.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+References: <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-0-a2bb12a1796d@linaro.org>
+ <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-1-a2bb12a1796d@linaro.org>
+ <w4ta26svh34gojqpakrgp5cpsempedkewkmbllyvs5z5fm274z@jqs3tvunxq2s>
+ <ca48de1b-b45e-4b27-a186-3bb7eb5859fa@linaro.org>
+ <9e3d86b4-fad7-4467-af7c-9195855cd318@kernel.org>
+Content-Language: en-US
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+In-Reply-To: <9e3d86b4-fad7-4467-af7c-9195855cd318@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 10/14/2024, Dmitry Baryshkov wrote:
-
-[...]
-
->>>>> My suggestion would be to add a single root-level property which
->>>>> specifies which port provides even pixel data.
->>>>
->>>> That won't work.  The LVDS source side expects the ports of
->>>> the sink side specify dual-lvds-{odd,even}-pixels properties.
+On 14/10/2024 09:44, Krzysztof Kozlowski wrote:
+> On 14/10/2024 10:29, Bryan O'Donoghue wrote:
+>> On 14/10/2024 08:43, Krzysztof Kozlowski wrote:
+>>>> -  - assigned-clocks
+>>>> -  - assigned-clock-rates
+>>> That's not extraneous, but has a meaning that without assigned-clocks
+>>> this device or driver will not operate.
 >>>
->>> I didn't notice that these properties are already defined.
->>>
->>> As these properties are common between several schema files, please
->>> extract them to a common schema file (like lvds.yaml).
+>>> File should rather stay as is.
 >>
->> I'm not sure how to do that. Is it obvious?
->> Please shed some light. 
+>> Hmm, I've obviously missed a trick here.
 >>
->> Only two panel schema files are defining even/odd pixels now -
->> advantech,idk-2121wr.yaml and panel-simple-lvds-dual-ports.yaml.
->> Maybe, extract them later when more schema files(especially for
->> bridges) try to define the same?  I'd like to keep a low profile
->> for now.
+>> I'll check it out.
 > 
-> I'd say, please extract those now. Adding third is more than enough and
-> should be avoided. Extracting is pretty simple. One patch to move the
-> definition and descriptions from panel-simple-lvds-dual-ports to a
-> common location (e.g. lvds-dual-ports.yaml). Leave the required
-> constrains in place. Second patch is to add oneOf constraints to the
-> ports. 
+> My response was probably not complete: this still might be extraneous,
+> because maybe the driver/device do not care. But in general requiring
+> assigned-clocks could have a meaning.
 
-oneOf just sits below ports so that single-port and dual-port
-are documented separately?  That won't pass dt_binding_check
-as the v1 binding has proved that warnings will be generated.
+No I see what you mean
 
-> port@0 might get the same oneOf + the
-> dual-lvds-{odd,even}-pixels:false case, allowing a single-port
-> definition.
+Even though assigned-clock* is a property of the SoC this driver..
 
-I don't catch this.
-Below snippet is a draft lvds-dual-port.yaml.
-How can it be referenced in ite,it6263.yaml?
+drivers/media/i2c/hi846.c
+         mclk_freq = clk_get_rate(hi846->clock);
+         if (mclk_freq != 25000000)
+                 dev_warn(&client->dev,
+                          "External clock freq should be 25000000, not 
+%u.\n",
+                          mclk_freq);
 
----8<---
-allOf:                                                                           
-  - $ref: lvds.yaml#                                                             
-                                                                                 
-properties:                                                                      
-  ports:                                                                         
-    $ref: /schemas/graph.yaml#/properties/ports                                  
-                                                                                 
-    properties:                                                                  
-      port@0:                                                                    
-        $ref: /schemas/graph.yaml#/$defs/port-base                               
-        unevaluatedProperties: false                                             
-        description: the first LVDS input link                                   
-                                                                                 
-        properties:                                                              
-          dual-lvds-odd-pixels:                                                  
-            type: boolean                                                        
-            description: the first sink port for odd pixels                      
-                                                                                 
-          dual-lvds-even-pixels:                                                           
-            type: boolean                                                        
-            description: the first sink port for even pixels                     
-                                                                                 
-        oneOf:                                                                   
-          - required: [dual-lvds-even-pixels]                                    
-          - required: [dual-lvds-odd-pixels]                                     
-                                                                                 
-      port@1:                                                                    
-        $ref: /schemas/graph.yaml#/$defs/port-base                               
-        unevaluatedProperties: false                                             
-        description: the second LVDS input link                                  
-                                                                                 
-        properties:                                                              
-          dual-lvds-even-pixels:                                                 
-            type: boolean                                                        
-            description: the second sink port for even pixels                    
-                                                                                 
-          dual-lvds-odd-pixels:                                                  
-            type: boolean                                                        
-            description: the second sink port for odd pixels                     
-                                                                                 
-        oneOf:                                                                   
-          - required: [dual-lvds-even-pixels]                                    
-          - required: [dual-lvds-odd-pixels]                                     
-                                                                                 
-    required:                                                                    
-      - port@0                                                                   
-      - port@1                                                                   
-                                                                                 
-unevaluatedProperties: false   
----8<---
+doesn't support setting the clock.
 
--- 
-Regards,
-Liu Ying
+So it actually is a requirement, yes.
 
+---
+bod
