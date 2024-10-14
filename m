@@ -1,93 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3768214E2E6;
-	Mon, 14 Oct 2024 07:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50BA3146A72
+	for <imx@lists.linux.dev>; Mon, 14 Oct 2024 07:48:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728891952; cv=none; b=sJOyerYrnGHgiG2eJlBXytIGmGdMZKg2KOmpLR7IPhMb2ZCgBPNDFzZpb9r1bxtz2yaCYcy4y1D8DPzLY2FfJs7LR51vUTOo5AR7UXEr33kyRCPCBTiyQ+OPGa+RmsHwYorRn2ytpB1o4+GlD9n7BRheK0r4allVx+UWXFVORU4=
+	t=1728892140; cv=none; b=hDeI2tLq8L9w3OSX3+zS64uoszoouJeYQhZZSB9ykQxSLG18I9RA/RgFdDzsoBssdJfbK3XE8sOxB2bbEdA6Z1Yj/a1xaasSZ6oscM3fz3dX/PysxZlOdNQFcB2BeC6FEJD/igor4dAIqqijVDAMjOSqz399zKhvRMzx0CIrYPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728891952; c=relaxed/simple;
-	bh=KuzBE1eS2VzzpIWZRpNHIKPPUfuZf7rQ4X3PVZ4j6c4=;
+	s=arc-20240116; t=1728892140; c=relaxed/simple;
+	bh=3rkZwtyh6Rfwszh3yxvTLn4jOr2u46BL520LAHsC2bE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mS7Jf8tam0FRPntzPd7UgWIUyYrHhiRTsoeWAtYhh+NgaI+nQuqh5VEo2zSuBfdaXeTxTQ9dJEmPfHZypcKjXiYrfAsmcNA9uzwkC4ufC2fyXg07PVvpId0ltc/xzu/7JLBBm1TahzIRJQVQLPpSbJ2ks3/nDvFZShsXzrkHip8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lWJqjVtO; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lWJqjVtO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1048FC4CEC3;
-	Mon, 14 Oct 2024 07:45:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728891951;
-	bh=KuzBE1eS2VzzpIWZRpNHIKPPUfuZf7rQ4X3PVZ4j6c4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lWJqjVtOshtHq7acROzpzAtjqI2ZO2lQn3W3cmhit+Qkhldri0LiD6+Cf17L2Pe3v
-	 svd8ibHhIdB6Vr+jUyyppIJFCnJeqxSIzx9sVBD5H82LsIrI8C95BYWHHqvrToBHFu
-	 G92VKK04ClmZujWMLa4y9PdQNRi+5KCJhyWL9B/mYZBfAL/h+RciyYUcUlTjhTT5ii
-	 nzXYo8h1xosHWCje+fJIOXQluZRRry3bC2AvkaK1A70lly482XfzUu80mQX3KsZTZf
-	 bXJQMCzdOdRHqjN2XN+GePKXZulEKL0WQQ7thiETSbbJ/tNQWOv3cWuiMTK/6YVIsn
-	 +tz8liFtI+X6A==
-Date: Mon, 14 Oct 2024 09:45:49 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Dave Stevenson <dave.stevenson@raspberrypi.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Martin Kepplinger <martink@posteo.de>, 
-	Paul Kocialkowski <paul.kocialkowski@bootlin.com>, "Paul J. Murphy" <paul.j.murphy@intel.com>, 
-	Daniele Alessandrelli <daniele.alessandrelli@intel.com>, Tommaso Merciai <tomm.merciai@gmail.com>, 
-	Martin Hecht <martin.hecht@avnet.eu>, Zhi Mao <zhi.mao@mediatek.com>, 
-	Alain Volmat <alain.volmat@foss.st.com>, Mikhail Rudenko <mike.rudenko@gmail.com>, 
-	Ricardo Ribalda <ribalda@kernel.org>, Kieran Bingham <kieran.bingham@ideasonboard.com>, 
-	Umang Jain <umang.jain@ideasonboard.com>, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, Dongchun Zhu <dongchun.zhu@mediatek.com>, 
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>, Todor Tomov <todor.too@gmail.com>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, linux-media@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/2] media: dt-bindings: Use additionalProperties: false
- for endpoint: properties:
-Message-ID: <7ecxjoa7aije46cxmkyfd6ihxnqw4wleqkioddomxbwlu7qtrc@4dkfitppeksu>
-References: <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-0-a2bb12a1796d@linaro.org>
- <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-2-a2bb12a1796d@linaro.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=VnXTTWSE8gvMB4lR/KfgjFRYqfPKDdHmNPPohEwdGLUABUJM7HA9pWK7Uz38k2UodGksp4nnaVlYS3D1qLC1st271PWHfnDpov+Fr12w/QXJPZTo9IwmilVcqt5R/KZAXuqEJeEfwHDJPjM9L3mI/kt+xdnxT44BBkni44dYxvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 9A57920083D;
+	Mon, 14 Oct 2024 09:48:50 +0200 (CEST)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 892942021D8;
+	Mon, 14 Oct 2024 09:48:50 +0200 (CEST)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 3319B20327;
+	Mon, 14 Oct 2024 09:48:51 +0200 (CEST)
+Date: Mon, 14 Oct 2024 09:48:50 +0200
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Minda Chen <minda.chen@starfivetech.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+	Keyur Chudgar <keyur@os.amperecomputing.com>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	NXP S32 Linux Team <s32@nxp.com>
+Subject: Re: [PATCH v3 13/16] dt-bindings: net: Add DT bindings for DWMAC on
+ NXP S32G/R SoCs
+Message-ID: <ZwzM4tx3zj8+M/Om@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20241013-upstream_s32cc_gmac-v3-0-d84b5a67b930@oss.nxp.com>
+ <20241013-upstream_s32cc_gmac-v3-13-d84b5a67b930@oss.nxp.com>
+ <44745af3-1644-4a71-82b6-a33fb7dc1ff4@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-2-a2bb12a1796d@linaro.org>
+In-Reply-To: <44745af3-1644-4a71-82b6-a33fb7dc1ff4@kernel.org>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-On Sat, Oct 12, 2024 at 04:02:51PM +0100, Bryan O'Donoghue wrote:
-> Some of our sensor schemas use unevaluatedProperities: false for endpoint:
-> properties: while other schemas use additionalProperties: false.
+On Mon, Oct 14, 2024 at 08:56:58AM +0200, Krzysztof Kozlowski wrote:
+> On 13/10/2024 23:27, Jan Petrous via B4 Relay wrote:
+> > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> > 
+> > Add basic description for DWMAC ethernet IP on NXP S32G2xx, S32G3xx
+> > and S32R45 automotive series SoCs.
+> > 
+> > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> > ---
+> >  .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 97 ++++++++++++++++++++++
+> >  .../devicetree/bindings/net/snps,dwmac.yaml        |  1 +
+> >  2 files changed, 98 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+> > new file mode 100644
+> > index 000000000000..4c65994cbe8b
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+> > @@ -0,0 +1,97 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +# Copyright 2021-2024 NXP
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/net/nxp,s32-dwmac.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: NXP S32G2xx/S32G3xx/S32R45 GMAC ethernet controller
+> > +
+> > +maintainers:
+> > +  - Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> > +
+> > +description:
+> > +  This device is a Synopsys DWC IP, integrated on NXP S32G/R SoCs.
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - nxp,s32g2-dwmac
 > 
-> The effect of using unevaluatedProperities: false in this instance is that
-> any property in media/video-interfaces.yaml can be considered in a dts for
-> an endpoint.
+> Where are the other compatibles? Commit msg mentions several devices.
 
-... which is what we want and what is expected.
+Well, I removed other compatibles thinking we can re-use this only one
+also for other SoCs as, on currect stage, we don't need to do any
+SoC specific setup.
 
-You change the code from expected to less expected variant, so please
-clearly document why.
+Is it ok or shall I reinsert them?
 
 > 
-> Converting to additionalProperties: false and running DT checkers show that
-> such a liberal policy is unnecessary.
+> > +
+> > +  reg:
+> > +    items:
+> > +      - description: Main GMAC registers
+> > +      - description: GMAC PHY mode control register
+> > +
 > 
-> We should have a consistent way of defining these properties if for no
-> other reason than aid other developers in the preferred way of writing
-> these schemas for media/i2c in the future.
+> ...
+> 
+> > +
+> > +        mdio {
+> > +          #address-cells = <1>;
+> > +          #size-cells = <0>;
+> > +          compatible = "snps,dwmac-mdio";
+> > +
+> > +          phy0: ethernet-phy@0 {
+> > +              reg = <0>;
+> > +          };
+> > +
+> 
+> Stray blank line.
+> 
 
-There is consistent way - common schema defines them.
+Ah, missed it. Thanks. Will fix it in v4.
 
-I do not understand the reasoning behind this change at all. I don't
-think DT maintainers ever suggested it (in fact, rather opposite:
-suggested using unevaluatedProps) and I think is not a consensus of any
-talks.
-
-Best regards,
-Krzysztof
-
+/Jan
