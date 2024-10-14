@@ -1,72 +1,72 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270EB1AAE27
-	for <imx@lists.linux.dev>; Mon, 14 Oct 2024 18:17:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A5D1D0943
+	for <imx@lists.linux.dev>; Mon, 14 Oct 2024 20:29:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728929846; cv=none; b=BsGq6Jr1JrJ3NwcKLGADhS/WBj5ghkOTZbDeVJdV3Se+9gpnnmejZ4VhJDBF5wH047LR881ZXzMGuNnhZPbu6DIm1m7XtLmEZLQa71rXdf+r+0pmWA/+NRADP9xL7VRCBOv929JSyQbRjF5tKsqBKgUJdP1pNRPTq7oeMTFA7l0=
+	t=1728937773; cv=none; b=Lu6UP7VeWosxjCjgjf4/vLPQSjcy82qyQ/BbRoLWfkWIBtVjXQKGX19ZzYtZvw0x51khpaitOlc/GqjaJ8ZGIrAszzX5mZW1kePdc25fbNjrIFcl9nuadilpc/JMtHZHvNNxQeNIsxyr/+kOuvvTlVqQwpa1E53nFQAkDmSHrO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728929846; c=relaxed/simple;
-	bh=P3Pzj722a0qn2KFz7CJfgBKO+JfL3dlBqaxecPwjeek=;
+	s=arc-20240116; t=1728937773; c=relaxed/simple;
+	bh=/6Bwl8GdfKt9wKEv9irV46hddphh9+JWAeSKfvQhJL8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CFGkk5o1pzdtfz5fYcP0UBWLzT2xunZO365RmQynvBX3w50YCFfHS5KHgiPNn+Uc/+AcA+nvi713Rap18Z32id2ZObZypZQ5+FkS8L/dnLnc50aRCY/JIhgckyIxx5YZPuDTAhmwxv1q846pFLptBI3yIW0w0tv55FEQs3ibyrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=MTPMgIde; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=hG24GA1DemO3994ujBMQvoYYuPv50RaVYslriTkzs5DUQC0rUktCVL+gU0FcA77X3zzUKFoDNmuDJD+f9gbNkSqdtCHMhEl045jaerNSwHEZIkt14Yu/GM1eTBuEpFOnGMc7gG/I2XTUPBRjnZLPF+IOqAhjo0HVj40UO1+ISUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ro94D9AD; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="MTPMgIde"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 9DA5440E0184;
-	Mon, 14 Oct 2024 18:17:20 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id FdZTbS5Yi9uB; Mon, 14 Oct 2024 18:17:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1728929835; bh=rRulwwslaCiKpYQiRcp3k5u/GU44D2gHabFxhCGCe2k=;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ro94D9AD"
+Received: from pendragon.ideasonboard.com (unknown [23.233.251.139])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 38241667;
+	Mon, 14 Oct 2024 22:27:45 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1728937668;
+	bh=/6Bwl8GdfKt9wKEv9irV46hddphh9+JWAeSKfvQhJL8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MTPMgIdelKAHQlU+HXCBeAaSxV0Ui/L3cr6Xmo31ldIIcLmnP7D4yadrMwJr3I6DK
-	 x5aRFKCygueVgCT4ABt6WkPjIxfTQtJzn8scvo7XLEWuY0MP3ryR+G1mU5+x39zRxy
-	 0qTqJs2sr8nTWfEW4A7rDf55zuMOCqrTx65nAnEaRGkxsw+Xeq3XJopNq+hv2+NZ0w
-	 zEtzEVBvFR4S5lKwKvOmwJ/gr9Samx+3Pmtkg+yd1ffZCRx3J4xoSKA9Xwh4LhGBzY
-	 EssseZkPgIMoGB/ZkMXGcSdK2LhUYkqOfWJVZTz/ztw+PpEio9q6ZDI27wv3pvAxon
-	 P1VUpTRXcW/ouQ1U+cD96In1NZp4abLzIxWHUDR8XuYHvnY+Szuk1LxXSS5hvNVYH6
-	 SFjQD+1N7hCHFHBbVRfzIvxQ2EUjsCIMzYOn1y9Iw6g6YO+hbBU5DodBMmsoOQl4zF
-	 tzxkkFFTbOiwpmsu+zHwtih92WPYNA0LSE+Yq/iMZu8XiVlF7LoVHuwaTYeM+H8hOB
-	 MA0rljcPbgb5E6hGaRfnWzViLNb/ASRRL2utzBls+bEOA/tWIKGttv/AneXcKt0gzT
-	 0Cxt6mJKJ/wkS+n5PXZ2t+zpKTrmVwtv6Da+sWW5OQBbWRvQISXRcNnQh8lsey/uOZ
-	 yPUGFx3OJTY7fvqQ4Y2BFTLk=
-Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E5E4140E0163;
-	Mon, 14 Oct 2024 18:16:52 +0000 (UTC)
-Date: Mon, 14 Oct 2024 20:16:47 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: York Sun <york.sun@nxp.com>, Tony Luck <tony.luck@intel.com>,
-	James Morse <james.morse@arm.com>,
+	b=ro94D9AD36bGxvoRG/gu0ffuYITKqYCmMHZ5ixnafqskvvbE4Jn59igyPZ3QHYKhx
+	 agEG9rQ96bwy1rrRULK4YtqvwgEYwz8Tjeuw6C32VGvDdAyn7q08gqpIY9hk3PYplZ
+	 KC4Il+n0SdR+ok8Bp/9tDN4a0RGaAlSG97B9ftmE=
+Date: Mon, 14 Oct 2024 23:29:20 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Robert Richter <rric@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-edac@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Priyanka Singh <priyanka.singh@nxp.com>,
-	Sherry Sun <sherry.sun@nxp.com>, Li Yang <leoyang.li@nxp.com>
-Subject: Re: [PATCH v2 3/6] EDAC/fsl_ddr: Fix bad bit shift operations
-Message-ID: <20241014181647.GQZw1gDwIhBdnFnleH@fat_crate.local>
-References: <20241011-imx95_edac-v2-0-011b68290951@nxp.com>
- <20241011-imx95_edac-v2-3-011b68290951@nxp.com>
+	Fabio Estevam <festevam@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+	"Paul J. Murphy" <paul.j.murphy@intel.com>,
+	Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
+	Tommaso Merciai <tomm.merciai@gmail.com>,
+	Martin Hecht <martin.hecht@avnet.eu>,
+	Zhi Mao <zhi.mao@mediatek.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Mikhail Rudenko <mike.rudenko@gmail.com>,
+	Ricardo Ribalda <ribalda@kernel.org>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Umang Jain <umang.jain@ideasonboard.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Dongchun Zhu <dongchun.zhu@mediatek.com>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Todor Tomov <todor.too@gmail.com>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 2/2] media: dt-bindings: Use additionalProperties: false
+ for endpoint: properties:
+Message-ID: <20241014202920.GE5522@pendragon.ideasonboard.com>
+References: <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-0-a2bb12a1796d@linaro.org>
+ <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-2-a2bb12a1796d@linaro.org>
+ <7ecxjoa7aije46cxmkyfd6ihxnqw4wleqkioddomxbwlu7qtrc@4dkfitppeksu>
+ <6f461cb3-3a41-4a3d-b9b2-71b1c6be77f7@linaro.org>
+ <9510b546-28fa-4fb4-b06e-0af5f9fd3bbb@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -75,81 +75,65 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241011-imx95_edac-v2-3-011b68290951@nxp.com>
+In-Reply-To: <9510b546-28fa-4fb4-b06e-0af5f9fd3bbb@kernel.org>
 
-On Fri, Oct 11, 2024 at 11:31:31AM -0400, Frank Li wrote:
-> From: Priyanka Singh <priyanka.singh@nxp.com>
+On Mon, Oct 14, 2024 at 10:47:31AM +0200, Krzysztof Kozlowski wrote:
+> On 14/10/2024 10:31, Bryan O'Donoghue wrote:
+> > On 14/10/2024 08:45, Krzysztof Kozlowski wrote:
+> >> I do not understand the reasoning behind this change at all. I don't
+> >> think DT maintainers ever suggested it (in fact, rather opposite:
+> >> suggested using unevaluatedProps) and I think is not a consensus of any
+> >> talks.
+> > 
+> > No there is not but then, how do you give consistent feedback except 
+> > proposing something to be a baseline.
+> > 
+> > On the one hand you have upstream additionalProperties: false and 
+> > unevaluatedProperites: false - it'd be better to have a consistent 
+> > message on which is to be used.
 > 
-> Fix undefined behavior caused by left-shifting a negative value in the
-> expression:
+> Well, I am afraid that push towards additionalProps will lead to grow
+> common schema (video-interface-devices or video-interfaces) into huge
+> one-fit-all binding. And that's not good.
 > 
->     cap_high ^ (1 << (bad_data_bit - 32))
+> If a common binding for a group of devices encourages you to list its
+> subset, then it is not that common.
 > 
-> The variable `bad_data_bit` ranges from 0 to 63. When `bad_data_bit` is
-> less than 32, `bad_data_bit - 32` becomes negative, and left-shifting by a
-> negative value in C is undefined behavior.
-> 
-> Fix this by checking the range of `bad_data_bit` before performing the
-> shift.
-> 
-> Fixes: ea2eb9a8b620 ("EDAC, fsl-ddr: Separate FSL DDR driver from MPC85xx")
+> Solution is to fix that, e.g. split it per classes of devices.
 
-Is this an urgent fix which needs to go to stable or someone just caught it
-from code review?
+I think splitting large schemas per class is a good idea, but the
+problem will still exist. For instance, if we were to move the
+CSI-2-specific properties to a separate schema, that schema would define
+clock-lanes, data-lanes and clock-noncontinuous. The clock-lanes and
+clock-noncontinuous properties do not apply to every device, how would
+we then handle that ? I see three options:
 
-Does it trigger in real life, IOW?
+- Use "additionalProperties: false" and explicitly list the properties that apply
+  to the device with "$prop: true". This is what this series does.
 
-> Signed-off-by: Priyanka Singh <priyanka.singh@nxp.com>
-> Reviewed-by: Sherry Sun <sherry.sun@nxp.com>
-> Signed-off-by: Li Yang <leoyang.li@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/edac/fsl_ddr_edac.c | 17 ++++++++++++-----
->  1 file changed, 12 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/edac/fsl_ddr_edac.c b/drivers/edac/fsl_ddr_edac.c
-> index 7a9fb1202f1a0..ccc13c2adfd6f 100644
-> --- a/drivers/edac/fsl_ddr_edac.c
-> +++ b/drivers/edac/fsl_ddr_edac.c
-> @@ -338,11 +338,18 @@ static void fsl_mc_check(struct mem_ctl_info *mci)
->  			fsl_mc_printk(mci, KERN_ERR,
->  				"Faulty ECC bit: %d\n", bad_ecc_bit);
->  
-> -		fsl_mc_printk(mci, KERN_ERR,
-> -			"Expected Data / ECC:\t%#8.8x_%08x / %#2.2x\n",
-> -			cap_high ^ (1 << (bad_data_bit - 32)),
-> -			cap_low ^ (1 << bad_data_bit),
-> -			syndrome ^ (1 << bad_ecc_bit));
-> +		if ((bad_data_bit > 0 && bad_data_bit < 32) && bad_ecc_bit > 0) {
-> +			fsl_mc_printk(mci, KERN_ERR,
-> +				      "Expected Data / ECC:\t%#8.8x_%08x / %#2.2x\n",
-> +				      cap_high, cap_low ^ (1 << bad_data_bit),
-> +				      syndrome ^ (1 << bad_ecc_bit));
-> +		}
-> +		if (bad_data_bit >= 32 && bad_ecc_bit > 0) {
-> +			fsl_mc_printk(mci, KERN_ERR,
-> +				      "Expected Data / ECC:\t%#8.8x_%08x / %#2.2x\n",
-> +				      cap_high ^ (1 << (bad_data_bit - 32)),
-> +				      cap_low, syndrome ^ (1 << bad_ecc_bit));
-> +		}
+- Use "unevaluatedProperites: false" and explicitly list the properties
+  that do not apply to the device with "$prop: false". The drawback is
+  that any property being added to the common schema will require
+  modifications to all bindings that use the schema.
 
-This is getting unnecessarily clumsy than it should be. Please do the
-following:
+- Use "unevaluatedProperites: false" and don't list any property with
+  "$prop: false". This is what is being done today in many bindings. The
+  drawback is that device tree sources that specify invalid properties
+  for the device will validate.
 
-	if (bad_data_bit != 1 && bad_ecc_bit != -1) {
+Among those options, my preference goes to the first one. It catches the
+most issues in device tree sources, while not having the drawback of the
+second option. It requires explicitly listing the valid properties, but
+I don't consider that as a drawback, I think it's actually a good thing
+as it clearly shows to the developers which properties are valid.
 
-		// prep the values you need to print
+Are there other options I haven't considered ?
 
-		// do an exactly one fsl_mc_printk() with the prepared values.
-
-	}
-
-Not have 4 fsl_mc_printks with a bunch of silly if-checks in front.
-
-Thx.
+> Or don't care and use unevaluatedProps because it makes people's life
+> easier and is still correct. If it is not correct, then this should be
+> used as an argument.
 
 -- 
-Regards/Gruss,
-    Boris.
+Regards,
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Laurent Pinchart
