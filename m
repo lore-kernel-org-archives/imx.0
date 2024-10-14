@@ -1,518 +1,141 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A34F1AAE22
-	for <imx@lists.linux.dev>; Mon, 14 Oct 2024 13:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3821514CB;
+	Mon, 14 Oct 2024 13:41:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728911809; cv=none; b=ufBVEwUq0+e20l+cuwAISoiXcIz8nc7+RlgyvyB6eHsvAmqDB5Dq59Qu1wmfqqiNBQ1MisUDdwCq2IUxgnFElJo3QEQOmWU/Txwcp17/FqfMEMIQCO8jKS1jPTD8HtHcC9XT9iXEe2CYRWsX0fA0YSniu6mkYcEBzdDHdc4JcT0=
+	t=1728913282; cv=none; b=O4kFelpfc3bWZGwLrcdC4CPJwdvDsqj8Wu/UJcEko2lF/6SkzcYx2mfnOrohRbSxl7amwBK31sX+azYeo7dOHJerOb+W8pRa2tOzY6fm5qVh/gRuXewH9BEqZpu4/+q9ui+8/HaQ15wKvSxkh6ImxjoPgTZ04zhe5SeTnhvfhOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728911809; c=relaxed/simple;
-	bh=kvvmChFrSbblWuUVErG1yoY692+URj+sFtAUcBkjepk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xb9ivwPXkHgThz0t9tyiQop0aEL8AelOy1xriXHHknow1xLDR/sc75txZ/NTm8fEqIFUcML0UWe5SynpL5peiHVpRzo+oj93v1EMqIRWmj2G+ztADihDLpy/EbpdA7Q11ysGSxsFevz0VlTROmsaoFujb/TryFJlxBufWNImoWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Oohuy2rf; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1728913282; c=relaxed/simple;
+	bh=NILg4tqzsVL0wLhELbKghHTZAqAzPu7Mn94ypvVJycI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ww+NWTWfCv/cIEWY6VlICasMTSg9OUSTGGIC+8arMQNf+tRAtSVSp1CgcWORKI/cVfV3jLJl/rs52FNSGkcMlcuHmbl4sDY+0a9S4CtBHe6rm7ImNtgaFrk8SS4Qxn9Ld95mTcncSqKLe/HVgVGxyQ/7iOmzaOWfyJy1ApCGOIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=A1kWSnBt; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oohuy2rf"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-37d4ac91d97so3705532f8f.2
-        for <imx@lists.linux.dev>; Mon, 14 Oct 2024 06:16:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728911805; x=1729516605; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t8AezVwPrFjuUUf+MrjbX+IGpei906KShJIFKpwBFic=;
-        b=Oohuy2rfMqd4/qHdLTZ9Nd+iFYslDp7J2Sr+keDGRnHHSovKMaEOeBweCtee1U4Qlf
-         VG7RJlDHr8Ep73KbC8IBPSkj5RymgkEa9pXO6REK8Eyu+QMUSIclmFHT06bgt7u/+JRU
-         l5ryjpYKYr3kCcz49T9+84UIHXNgRdiNcjmOlW3zGNHu7EpOH7fLvhakzUbhvmI5WwgE
-         dVKbWROxL/9/X2+TTYq9BZ6bNGYgrqPDex2up2JNvOJqopFJo69NPaLouIf8k3ALTFtw
-         CnGc9zH2c4rR858dmopCz/ZcP9TaZK70FKqisaqCWMr09aG/G4DgUoobMEYWQi7iUsj7
-         lvEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728911805; x=1729516605;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=t8AezVwPrFjuUUf+MrjbX+IGpei906KShJIFKpwBFic=;
-        b=uwb3XlX2DGTfxqKYBhprSWolrDBHJWerQJbSKXkyuvuDs4cWAwkrWT+Lnl7iAskHDy
-         mWt1y8pR6pNqRLnr2IDJ3WNylSNtHXlyE9I3q1ZLR+8mlBZlsTl6l5HVHCyVTyop9F+T
-         9oro7e+ZqZ1lGiXxdGT6RRvEk/ZB+0bf1zaspQYkf1DSnD7sB9mireKq2fnqwjET5b6R
-         siyg4qWNZD8qH2rfkix5k/B6PCy0UyE8oAA0vfaVSahd9/jI3wW0x7LOneCjdUmROQEC
-         FmVunI7lv61sVU3P8OUQfI741cDGJRGARHiVFHu2IF/bROnsPFocbZDenFYXaxLq+EgQ
-         4uJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV/LFRK8Tmo3/1QsFOkqrZ7XIyO6ZEw49uFj0Knoreu0imfyH8xPUh1f4nsL0XlOQL6tXY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyS/i03np5eosdKX9j0wbS2evRJSekA4AFox0mbE2zWh12rfEaF
-	0cSqHMFikutdoI6UOrferBxMPsQoCFq+e6Cbc21fYmO+PuC6FUC7
-X-Google-Smtp-Source: AGHT+IEkcxsBd8EXsI3mjGhSeBuRkydLwhmHeXnNkmO+AuXIs5FW/RFlG2XvEEvTWzZ/6bVzK2oHCQ==
-X-Received: by 2002:adf:fcc3:0:b0:37d:542a:7995 with SMTP id ffacd0b85a97d-37d5ffb63d0mr7092665f8f.34.1728911804410;
-        Mon, 14 Oct 2024 06:16:44 -0700 (PDT)
-Received: from eichest-laptop.lan ([2a02:168:af72:0:d130:f8ef:c6c1:55ee])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-430d748d42fsm153420425e9.43.2024.10.14.06.16.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Oct 2024 06:16:43 -0700 (PDT)
-From: Stefan Eichenberger <eichest@gmail.com>
-To: o.rempel@pengutronix.de,
-	kernel@pengutronix.de,
-	andi.shyti@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	festevam@gmail.com,
-	francesco.dolcini@toradex.com,
-	l.stach@pengutronix.de,
-	arnd@arndb.de,
-	Frank.Li@nxp.com
-Cc: linux-i2c@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: [PATCH v5 3/3] i2c: imx: prevent rescheduling in non dma mode
-Date: Mon, 14 Oct 2024 15:15:14 +0200
-Message-ID: <20241014131635.205489-4-eichest@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241014131635.205489-1-eichest@gmail.com>
-References: <20241014131635.205489-1-eichest@gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="A1kWSnBt"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=O/yDHelZkZbEyouxYDEGSFyuC5vdHTQjMNQBxEU6cxs=; b=A1kWSnBtnNvgq117bQonvW7NGB
+	ivzTefIRpDZr5RKxS59WshY6ydHPOP70BVMfmFz/UrESTk+lj5+ylhVB9+pu2Vz+nBJmC8M4t4TV4
+	jqrfgqU+Ku4heNIzvZz7Glq1kZzRhooGJW5zrDPXqIzwMjIoqqVHk+350Z2xMISLyduQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1t0LJb-009vh1-Sn; Mon, 14 Oct 2024 15:40:51 +0200
+Date: Mon, 14 Oct 2024 15:40:51 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: jan.petrous@oss.nxp.com
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Minda Chen <minda.chen@starfivetech.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+	Keyur Chudgar <keyur@os.amperecomputing.com>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	NXP S32 Linux Team <s32@nxp.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Subject: Re: [PATCH v3 04/16] net: phy: Add helper for mapping RGMII link
+ speed to clock rate
+Message-ID: <4686019c-f6f1-4248-9555-c736813417b7@lunn.ch>
+References: <20241013-upstream_s32cc_gmac-v3-0-d84b5a67b930@oss.nxp.com>
+ <20241013-upstream_s32cc_gmac-v3-4-d84b5a67b930@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241013-upstream_s32cc_gmac-v3-4-d84b5a67b930@oss.nxp.com>
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+On Sun, Oct 13, 2024 at 11:27:39PM +0200, Jan Petrous via B4 Relay wrote:
+> From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> 
+> The helper rgmii_clock() implemented Russel's hint during stmmac
+> glue driver review:
+> 
+>   > We seem to have multiple cases of very similar logic in lots of stmmac
+>   > platform drivers, and I think it's about time we said no more to this.
+>   > So, what I think we should do is as follows:
+>   >
+>   > add the following helper - either in stmmac, or more generically
+>   > (phylib? - in which case its name will need changing.)
+>   >
+>   > static long stmmac_get_rgmii_clock(int speed)
+>   > {
+>   >        switch (speed) {
+>   >        case SPEED_10:
+>   >                return 2500000;
+>   >
+>   >        case SPEED_100:
+>   >                return 25000000;
+>   >
+>   >        case SPEED_1000:
+>   >                return 125000000;
+>   >
+>   >        default:
+>   >                return -ENVAL;
+>   >        }
+>   > }
+>   >
+>   > Then, this can become:
+>   >
+>   >        long tx_clk_rate;
+>   >
+>   >        ...
+>   >
+>   >        tx_clk_rate = stmmac_get_rgmii_clock(speed);
+>   >        if (tx_clk_rate < 0) {
+>   >                dev_err(gmac->dev, "Unsupported/Invalid speed: %d\n", speed);
+>   >                return;
+>   >        }
+>   >
+>   >        ret = clk_set_rate(gmac->tx_clk, tx_clk_rate);
+> 
+> Suggested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 
-We are experiencing a problem with the i.MX I2C controller when
-communicating with SMBus devices. We are seeing devices time-out because
-the time between sending/receiving two bytes is too long, and the SMBus
-device returns to the idle state. This happens because the i.MX I2C
-controller sends and receives byte by byte. When a byte is sent or
-received, we get an interrupt and can send or receive the next byte.
+But of an unusual commit message, but it does explain the "Why?".
 
-The current implementation sends a byte and then waits for an event
-generated by the interrupt subroutine. After the event is received, the
-next byte is sent and we wait again. This waiting allows the scheduler
-to reschedule other tasks, with the disadvantage that we may not send
-the next byte for a long time because the send task is not immediately
-scheduled. For example, if the rescheduling takes more than 25ms, this
-can cause SMBus devices to timeout and communication to fail.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-This patch changes the behavior so that we do not reschedule the
-send/receive task, but instead send or receive the next byte in the
-interrupt subroutine. This prevents rescheduling and drastically reduces
-the time between sending/receiving bytes. The cost in the interrupt
-subroutine is relatively small, we check what state we are in and then
-send/receive the next byte. Before we had to call wake_up, which is even
-less expensive. However, we also had to do some scheduling, which
-increased the overall cost compared to the new solution. The wake_up
-function to wake up the send/receive task is now only called when an
-error occurs or when the transfer is complete.
+>  
+> +/**
+> + * rgmii_clock - map link speed to the clock rate
+> + * @speed: link speed value
+> + *
+> + * Description: maps RGMII supported link speeds
+> + * into the clock rates.
+> + */
 
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- drivers/i2c/busses/i2c-imx.c | 272 ++++++++++++++++++++++++++++++++---
- 1 file changed, 249 insertions(+), 23 deletions(-)
+A Returns: line would be nice. 
 
-diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index e0821332c439a..44749e594ddb6 100644
---- a/drivers/i2c/busses/i2c-imx.c
-+++ b/drivers/i2c/busses/i2c-imx.c
-@@ -197,6 +197,17 @@ struct imx_i2c_dma {
- 	enum dma_data_direction dma_data_dir;
- };
- 
-+enum imx_i2c_state {
-+	IMX_I2C_STATE_DONE,
-+	IMX_I2C_STATE_FAILED,
-+	IMX_I2C_STATE_WRITE,
-+	IMX_I2C_STATE_DMA,
-+	IMX_I2C_STATE_READ,
-+	IMX_I2C_STATE_READ_CONTINUE,
-+	IMX_I2C_STATE_READ_BLOCK_DATA,
-+	IMX_I2C_STATE_READ_BLOCK_DATA_LEN,
-+};
-+
- struct imx_i2c_struct {
- 	struct i2c_adapter	adapter;
- 	struct clk		*clk;
-@@ -216,6 +227,12 @@ struct imx_i2c_struct {
- 	struct i2c_client	*slave;
- 	enum i2c_slave_event last_slave_event;
- 
-+	struct i2c_msg		*msg;
-+	unsigned int		msg_buf_idx;
-+	int			isr_result;
-+	bool			is_lastmsg;
-+	enum imx_i2c_state	state;
-+
- 	bool			multi_master;
- 
- 	/* For checking slave events. */
-@@ -908,11 +925,156 @@ static int i2c_imx_unreg_slave(struct i2c_client *client)
- 	return ret;
- }
- 
-+static inline int i2c_imx_isr_acked(struct imx_i2c_struct *i2c_imx)
-+{
-+	i2c_imx->isr_result = 0;
-+
-+	if (imx_i2c_read_reg(i2c_imx, IMX_I2C_I2SR) & I2SR_RXAK) {
-+		i2c_imx->state = IMX_I2C_STATE_FAILED;
-+		i2c_imx->isr_result = -ENXIO;
-+		wake_up(&i2c_imx->queue);
-+	}
-+
-+	return i2c_imx->isr_result;
-+}
-+
-+static inline int i2c_imx_isr_write(struct imx_i2c_struct *i2c_imx)
-+{
-+	int result;
-+
-+	result = i2c_imx_isr_acked(i2c_imx);
-+	if (result)
-+		return result;
-+
-+	if (i2c_imx->msg->len == i2c_imx->msg_buf_idx)
-+		return 0;
-+
-+	imx_i2c_write_reg(i2c_imx->msg->buf[i2c_imx->msg_buf_idx++], i2c_imx, IMX_I2C_I2DR);
-+
-+	return 1;
-+}
-+
-+static inline int i2c_imx_isr_read(struct imx_i2c_struct *i2c_imx)
-+{
-+	int result;
-+	unsigned int temp;
-+
-+	result = i2c_imx_isr_acked(i2c_imx);
-+	if (result)
-+		return result;
-+
-+	/* setup bus to read data */
-+	temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
-+	temp &= ~I2CR_MTX;
-+	if (i2c_imx->msg->len - 1)
-+		temp &= ~I2CR_TXAK;
-+
-+	imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
-+	imx_i2c_read_reg(i2c_imx, IMX_I2C_I2DR); /* dummy read */
-+
-+	return 0;
-+}
-+
-+static inline void i2c_imx_isr_read_continue(struct imx_i2c_struct *i2c_imx)
-+{
-+	unsigned int temp;
-+
-+	if ((i2c_imx->msg->len - 1) == i2c_imx->msg_buf_idx) {
-+		if (i2c_imx->is_lastmsg) {
-+			/*
-+			 * It must generate STOP before read I2DR to prevent
-+			 * controller from generating another clock cycle
-+			 */
-+			temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
-+			if (!(temp & I2CR_MSTA))
-+				i2c_imx->stopped =  1;
-+			temp &= ~(I2CR_MSTA | I2CR_MTX);
-+			imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
-+		} else {
-+			/*
-+			 * For i2c master receiver repeat restart operation like:
-+			 * read -> repeat MSTA -> read/write
-+			 * The controller must set MTX before read the last byte in
-+			 * the first read operation, otherwise the first read cost
-+			 * one extra clock cycle.
-+			 */
-+			temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
-+			temp |= I2CR_MTX;
-+			imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
-+		}
-+	} else if (i2c_imx->msg_buf_idx == (i2c_imx->msg->len - 2)) {
-+		temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
-+		temp |= I2CR_TXAK;
-+		imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
-+	}
-+
-+	i2c_imx->msg->buf[i2c_imx->msg_buf_idx++] = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2DR);
-+}
-+
-+static inline void i2c_imx_isr_read_block_data_len(struct imx_i2c_struct *i2c_imx)
-+{
-+	u8 len = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2DR);
-+
-+	if (len == 0 || len > I2C_SMBUS_BLOCK_MAX) {
-+		i2c_imx->isr_result = -EPROTO;
-+		i2c_imx->state = IMX_I2C_STATE_FAILED;
-+		wake_up(&i2c_imx->queue);
-+	}
-+	i2c_imx->msg->len += len;
-+}
-+
- static irqreturn_t i2c_imx_master_isr(struct imx_i2c_struct *i2c_imx, unsigned int status)
- {
--	/* save status register */
--	i2c_imx->i2csr = status;
--	wake_up(&i2c_imx->queue);
-+	/*
-+	 * This state machine handles I2C reception and transmission in non-DMA
-+	 * mode. We must process all the data in the ISR to reduce the delay
-+	 * between two consecutive messages. If the data is not processed in
-+	 * the ISR, SMBus devices may timeout, leading to a bus error.
-+	 */
-+	switch (i2c_imx->state) {
-+	case IMX_I2C_STATE_DMA:
-+		i2c_imx->i2csr = status;
-+		wake_up(&i2c_imx->queue);
-+		break;
-+
-+	case IMX_I2C_STATE_READ:
-+		if (i2c_imx_isr_read(i2c_imx))
-+			break;
-+		i2c_imx->state = IMX_I2C_STATE_READ_CONTINUE;
-+		break;
-+
-+	case IMX_I2C_STATE_READ_CONTINUE:
-+		i2c_imx_isr_read_continue(i2c_imx);
-+		if (i2c_imx->msg_buf_idx == i2c_imx->msg->len) {
-+			i2c_imx->state = IMX_I2C_STATE_DONE;
-+			wake_up(&i2c_imx->queue);
-+		}
-+		break;
-+
-+	case IMX_I2C_STATE_READ_BLOCK_DATA:
-+		if (i2c_imx_isr_read(i2c_imx))
-+			break;
-+		i2c_imx->state = IMX_I2C_STATE_READ_BLOCK_DATA_LEN;
-+		break;
-+
-+	case IMX_I2C_STATE_READ_BLOCK_DATA_LEN:
-+		i2c_imx_isr_read_block_data_len(i2c_imx);
-+		i2c_imx->state = IMX_I2C_STATE_READ_CONTINUE;
-+		break;
-+
-+	case IMX_I2C_STATE_WRITE:
-+		if (i2c_imx_isr_write(i2c_imx))
-+			break;
-+		i2c_imx->state = IMX_I2C_STATE_DONE;
-+		wake_up(&i2c_imx->queue);
-+		break;
-+
-+	default:
-+		i2c_imx->i2csr = status;
-+		i2c_imx->state = IMX_I2C_STATE_FAILED;
-+		i2c_imx->isr_result = -EINVAL;
-+		wake_up(&i2c_imx->queue);
-+	}
- 
- 	return IRQ_HANDLED;
- }
-@@ -959,6 +1121,8 @@ static int i2c_imx_dma_write(struct imx_i2c_struct *i2c_imx,
- 	struct imx_i2c_dma *dma = i2c_imx->dma;
- 	struct device *dev = &i2c_imx->adapter.dev;
- 
-+	i2c_imx->state = IMX_I2C_STATE_DMA;
-+
- 	dma->chan_using = dma->chan_tx;
- 	dma->dma_transfer_dir = DMA_MEM_TO_DEV;
- 	dma->dma_data_dir = DMA_TO_DEVICE;
-@@ -1012,15 +1176,14 @@ static int i2c_imx_dma_write(struct imx_i2c_struct *i2c_imx,
- }
- 
- static int i2c_imx_prepare_read(struct imx_i2c_struct *i2c_imx,
--				struct i2c_msg *msgs, bool atomic,
--				bool use_dma)
-+				struct i2c_msg *msgs, bool use_dma)
- {
- 	int result;
- 	unsigned int temp = 0;
- 
- 	/* write slave address */
- 	imx_i2c_write_reg(i2c_8bit_addr_from_msg(msgs), i2c_imx, IMX_I2C_I2DR);
--	result = i2c_imx_trx_complete(i2c_imx, atomic);
-+	result = i2c_imx_trx_complete(i2c_imx, !use_dma);
- 	if (result)
- 		return result;
- 	result = i2c_imx_acked(i2c_imx);
-@@ -1058,7 +1221,9 @@ static int i2c_imx_dma_read(struct imx_i2c_struct *i2c_imx,
- 	struct imx_i2c_dma *dma = i2c_imx->dma;
- 	struct device *dev = &i2c_imx->adapter.dev;
- 
--	result = i2c_imx_prepare_read(i2c_imx, msgs, false, true);
-+	i2c_imx->state = IMX_I2C_STATE_DMA;
-+
-+	result = i2c_imx_prepare_read(i2c_imx, msgs, true);
- 	if (result)
- 		return result;
- 
-@@ -1139,8 +1304,8 @@ static int i2c_imx_dma_read(struct imx_i2c_struct *i2c_imx,
- 	return 0;
- }
- 
--static int i2c_imx_write(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
--			 bool atomic)
-+static int i2c_imx_atomic_write(struct imx_i2c_struct *i2c_imx,
-+				struct i2c_msg *msgs)
- {
- 	int i, result;
- 
-@@ -1149,7 +1314,7 @@ static int i2c_imx_write(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
- 
- 	/* write slave address */
- 	imx_i2c_write_reg(i2c_8bit_addr_from_msg(msgs), i2c_imx, IMX_I2C_I2DR);
--	result = i2c_imx_trx_complete(i2c_imx, atomic);
-+	result = i2c_imx_trx_complete(i2c_imx, true);
- 	if (result)
- 		return result;
- 	result = i2c_imx_acked(i2c_imx);
-@@ -1163,7 +1328,7 @@ static int i2c_imx_write(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
- 			"<%s> write byte: B%d=0x%X\n",
- 			__func__, i, msgs->buf[i]);
- 		imx_i2c_write_reg(msgs->buf[i], i2c_imx, IMX_I2C_I2DR);
--		result = i2c_imx_trx_complete(i2c_imx, atomic);
-+		result = i2c_imx_trx_complete(i2c_imx, true);
- 		if (result)
- 			return result;
- 		result = i2c_imx_acked(i2c_imx);
-@@ -1173,19 +1338,44 @@ static int i2c_imx_write(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
- 	return 0;
- }
- 
--static int i2c_imx_atomic_write(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs)
-+static int i2c_imx_write(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs)
- {
--	return i2c_imx_write(i2c_imx, msgs, true);
-+	dev_dbg(&i2c_imx->adapter.dev, "<%s> write slave address: addr=0x%x\n",
-+		__func__, i2c_8bit_addr_from_msg(msgs));
-+
-+	i2c_imx->state = IMX_I2C_STATE_WRITE;
-+	i2c_imx->msg = msgs;
-+	i2c_imx->msg_buf_idx = 0;
-+
-+	/*
-+	 * By writing the device address we start the state machine in the ISR.
-+	 * The ISR will report when it is done or when it fails.
-+	 */
-+	imx_i2c_write_reg(i2c_8bit_addr_from_msg(msgs), i2c_imx, IMX_I2C_I2DR);
-+	wait_event_timeout(i2c_imx->queue,
-+			   i2c_imx->state == IMX_I2C_STATE_DONE ||
-+			   i2c_imx->state == IMX_I2C_STATE_FAILED,
-+			   (msgs->len + 1) * HZ / 10);
-+	if (i2c_imx->state == IMX_I2C_STATE_FAILED) {
-+		dev_dbg(&i2c_imx->adapter.dev, "<%s> write failed with %d\n",
-+			__func__, i2c_imx->isr_result);
-+		return i2c_imx->isr_result;
-+	}
-+	if (i2c_imx->state != IMX_I2C_STATE_DONE) {
-+		dev_err(&i2c_imx->adapter.dev, "<%s> write timedout\n", __func__);
-+		return -ETIMEDOUT;
-+	}
-+	return 0;
- }
- 
--static int i2c_imx_read(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
--			bool is_lastmsg, bool atomic)
-+static int i2c_imx_atomic_read(struct imx_i2c_struct *i2c_imx,
-+			       struct i2c_msg *msgs, bool is_lastmsg)
- {
- 	int i, result;
- 	unsigned int temp;
- 	int block_data = msgs->flags & I2C_M_RECV_LEN;
- 
--	result = i2c_imx_prepare_read(i2c_imx, msgs, atomic, false);
-+	result = i2c_imx_prepare_read(i2c_imx, msgs, false);
- 	if (result)
- 		return result;
- 
-@@ -1195,7 +1385,7 @@ static int i2c_imx_read(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
- 	for (i = 0; i < msgs->len; i++) {
- 		u8 len = 0;
- 
--		result = i2c_imx_trx_complete(i2c_imx, atomic);
-+		result = i2c_imx_trx_complete(i2c_imx, true);
- 		if (result)
- 			return result;
- 		/*
-@@ -1226,7 +1416,7 @@ static int i2c_imx_read(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
- 				temp &= ~(I2CR_MSTA | I2CR_MTX);
- 				imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
- 				if (!i2c_imx->stopped)
--					i2c_imx_bus_busy(i2c_imx, 0, atomic);
-+					i2c_imx_bus_busy(i2c_imx, 0, true);
- 			} else {
- 				/*
- 				 * For i2c master receiver repeat restart operation like:
-@@ -1257,10 +1447,46 @@ static int i2c_imx_read(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
- 	return 0;
- }
- 
--static int i2c_imx_atomic_read(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
--			       bool is_lastmsg)
-+static int i2c_imx_read(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
-+			bool is_lastmsg)
- {
--	return i2c_imx_read(i2c_imx, msgs, is_lastmsg, true);
-+	int block_data = msgs->flags & I2C_M_RECV_LEN;
-+
-+	dev_dbg(&i2c_imx->adapter.dev,
-+		"<%s> write slave address: addr=0x%x\n",
-+		__func__, i2c_8bit_addr_from_msg(msgs));
-+
-+	i2c_imx->is_lastmsg = is_lastmsg;
-+
-+	if (block_data)
-+		i2c_imx->state = IMX_I2C_STATE_READ_BLOCK_DATA;
-+	else
-+		i2c_imx->state = IMX_I2C_STATE_READ;
-+	i2c_imx->msg = msgs;
-+	i2c_imx->msg_buf_idx = 0;
-+
-+	/*
-+	 * By writing the device address we start the state machine in the ISR.
-+	 * The ISR will report when it is done or when it fails.
-+	 */
-+	imx_i2c_write_reg(i2c_8bit_addr_from_msg(msgs), i2c_imx, IMX_I2C_I2DR);
-+	wait_event_timeout(i2c_imx->queue,
-+			   i2c_imx->state == IMX_I2C_STATE_DONE ||
-+			   i2c_imx->state == IMX_I2C_STATE_FAILED,
-+			   (msgs->len + 1) * HZ / 10);
-+	if (i2c_imx->state == IMX_I2C_STATE_FAILED) {
-+		dev_dbg(&i2c_imx->adapter.dev, "<%s> read failed with %d\n",
-+			__func__, i2c_imx->isr_result);
-+		return i2c_imx->isr_result;
-+	}
-+	if (i2c_imx->state != IMX_I2C_STATE_DONE) {
-+		dev_err(&i2c_imx->adapter.dev, "<%s> read timedout\n", __func__);
-+		return -ETIMEDOUT;
-+	}
-+	if (!i2c_imx->stopped)
-+		return i2c_imx_bus_busy(i2c_imx, 0, false);
-+
-+	return 0;
- }
- 
- static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
-@@ -1334,14 +1560,14 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
- 			else if (use_dma && !block_data)
- 				result = i2c_imx_dma_read(i2c_imx, &msgs[i], is_lastmsg);
- 			else
--				result = i2c_imx_read(i2c_imx, &msgs[i], is_lastmsg, false);
-+				result = i2c_imx_read(i2c_imx, &msgs[i], is_lastmsg);
- 		} else {
- 			if (atomic)
- 				result = i2c_imx_atomic_write(i2c_imx, &msgs[i]);
- 			else if (use_dma)
- 				result = i2c_imx_dma_write(i2c_imx, &msgs[i]);
- 			else
--				result = i2c_imx_write(i2c_imx, &msgs[i], false);
-+				result = i2c_imx_write(i2c_imx, &msgs[i]);
- 		}
- 		if (result)
- 			goto fail0;
--- 
-2.43.0
-
+	Andrew
