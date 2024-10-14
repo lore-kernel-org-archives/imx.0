@@ -1,94 +1,290 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2053.outbound.protection.outlook.com [40.107.249.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3FC215667B;
-	Mon, 14 Oct 2024 09:06:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728896805; cv=none; b=P265ywHm4RJwfcyL5kbY4OKIlmQwpv+2MFYFZ0pfN3d/rd28qkAaFfiU2NjX3HuULgC5unyeHE5k6Q+8S7TwglB+Q+RFvVGXWM/RGn7g/FlRmkfPUOdZoG3WyBQnB8d0egkz3cqvkMgYMUgODGIsvYiUB7C/flS3naU/GZ7St1k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728896805; c=relaxed/simple;
-	bh=+arRMI4oQdev8xohI0seqIw/A02usyfTpyh9Hsbvkr0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=utRK7T6zAehxpefp9BcnxSjtLU2i0xMtDbNgoE7au9XqT5htDTCwnVMqZHASVNV/fbiIptRwQVWhUoq2RDqtfDBEpFoWN4jtyOevMlrg2vI2bTxMXgTZGE4TzgnP6IBD7Qr/BFbYQD/Foz6mI0+z9VIcq8D4eTlV+HZVRbpwR4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=te8x9fNI; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1981ABEC7
+	for <imx@lists.linux.dev>; Mon, 14 Oct 2024 09:09:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728896972; cv=fail; b=o44jQ9dZsYAEEhtWHchJPBJOFad8JCThC39UmC6YTHz8QiI735lEP1BTDuOgBfbl8xsoI/2DqI1YdsI9zJ4714N2wXT9fP9D1bXRqN1kCTzAaRmLTAhH/GEPoh8VNL2HqX1xoxl93JWNBKLWPG9XUY6uV8FbmQLjMP+tUTx0Lxs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728896972; c=relaxed/simple;
+	bh=u0z2S4au1f+koSwRKzJkJR0UpbF+/pwH0rWaOPj2njQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=lxC5YsfezsRhAK3fBFY5JhjPHRdCT/bqp5Is5HXEOx/VqsLdyNQRQ+SL7HYxXBlG+AiVmI5qLarnOLxzh9cRbaRoXnXc2pwemWsPrrxuwVKsUFcGwpkHtzcWlGzgipPDEurvIJL1iDkAnBa2tihcB2DGPcLYZ1Rnw1sSBHKvnYI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=XPbtwjiX; arc=fail smtp.client-ip=40.107.249.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="te8x9fNI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75E6C4CEC3;
-	Mon, 14 Oct 2024 09:06:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728896804;
-	bh=+arRMI4oQdev8xohI0seqIw/A02usyfTpyh9Hsbvkr0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=te8x9fNI3KAT1D6jE9pbMiNDNHsraRIIfzZoigMAw+OnWrlxyNQ1r1CcDQsaMjFIY
-	 t3CAvebnHa6mgNmrkyJ8pggylF265Pc/JW9fpx5lmzDrhhXClafwNtqU5zMFXcIyLs
-	 y128HlSiks0G9YaUa5usg8FAd6k8qHhBTVUvcqYt3N4b0/SzVGeFdLbVUPLqD1tC2Y
-	 Qb74m0thhPIXj0aT7yN8myX+jMz0Vx/ibjh5oOhmau1WLg/tj2ZM+jPwuPGLE65kyv
-	 6e/SRF854M7PD2kue6PIH/gtbYV0tzE/Ao3vzdno9H5k4hg1OXU1qAZfKtsIrAW9Kv
-	 Ki2zfpXhuJ4/w==
-Date: Mon, 14 Oct 2024 10:06:38 +0100
-From: Simon Horman <horms@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, vladimir.oltean@nxp.com,
-	claudiu.manoil@nxp.com, xiaoning.wang@nxp.com, Frank.Li@nxp.com,
-	christophe.leroy@csgroup.eu, linux@armlinux.org.uk,
-	bhelgaas@google.com, imx@lists.linux.dev, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH net-next 10/11] net: enetc: add preliminary support for
- i.MX95 ENETC PF
-Message-ID: <20241014090638.GP77519@kernel.org>
-References: <20241009095116.147412-1-wei.fang@nxp.com>
- <20241009095116.147412-11-wei.fang@nxp.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="XPbtwjiX"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lWg/c4nOj+sZS5aKOidyP3avsPVzGc1Ckv2YzQWV5LCY+2X+1e3ih6y5cY/AJ0b6dz1cCIYhFRphhKObATgBpSNtvfNlJYMfQwAIxBGCdIBQpG/Wn960qYXt5229ZJnIHz+n5I/zRDo4xy/xKeqqwhTIy/CtwjukmtUmdlkr6PkE7n2qjENfDTSewkT6eejstDbmEzPg6mbEPD6e5WPb87qNqaMjEKr0gF52RMyoY6Ejiu6LkZdid57yI25anyxP1GZ6ZrYq3aapOnoF+iRP/kwq8wKRwRrNWJo4jeuXtX3GqFAwLD+LxTaDgWAWME6cfOuMiGZTJfUTAnCTwsJO8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OBmZKker1n9bOwmeNWdnZ/y2Rt4qikijZOhEi8TVGoY=;
+ b=VpiRy+W07x5xk5yMNgdr4LXsPCyxmAGlqXorkq+kNkBqHo2ksTnNrYJI3+6AaekSXkUwTvgH876+OBPbjHU7Toc/TeP1qngUMkmrTbN/53feqaHNZ6hfK/cHtk823ZpjcmKpUgARInBt2MgPnLdKEO2OJzqhgi/Nf+Wo41Cy+MBoH7/CfoY9EXZyqXVPUtVw4LLifE848PlPFgTgt39sKTKI5HMgHo2HvM/1wkS5/1O5JWmy0/sXPljSmJXgokrWl9y7jZgqV9NIVsK0fshijAvBUipv/SE40zDzHKlrssKJ5lvGC7kN6AL8t7nqx8LfLT1swWBGFS2PGjWjRTG7DA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OBmZKker1n9bOwmeNWdnZ/y2Rt4qikijZOhEi8TVGoY=;
+ b=XPbtwjiXlmD5kw+U9zeFYtuoGxt8bjb2J/dGGk39Il+DBe64fYTup4x+iBXhTddw4upM+j8yVJRG9Ak2ZG8BI5jQGa1n+XPO69ymdVinravMpZabbnIPjPmW9fA2zmMuEKChhGoIpkF6bHISmBuNdKViQOlIG3Ol+yqHJ5UyzUCME3bsxqH2slSXgEgXK9KTsoUzuA83u3P5T/yKBS/TNlIzosvFQVPct8wntXygJdDJkduwm6/Uc6vQz18utK4v31qWoCICEKDT7tN1CqRHXphOUiC4wVvbUT5TrDpZ5CuDhq9aIWAD/bsE46qN8nZt0XYOXpsqff4YnBadxuKZ9g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AS8PR04MB9080.eurprd04.prod.outlook.com (2603:10a6:20b:447::16)
+ by VI2PR04MB10265.eurprd04.prod.outlook.com (2603:10a6:800:221::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.25; Mon, 14 Oct
+ 2024 09:09:24 +0000
+Received: from AS8PR04MB9080.eurprd04.prod.outlook.com
+ ([fe80::93bd:316b:682f:5e59]) by AS8PR04MB9080.eurprd04.prod.outlook.com
+ ([fe80::93bd:316b:682f:5e59%6]) with mapi id 15.20.8048.020; Mon, 14 Oct 2024
+ 09:09:24 +0000
+From: guoniu.zhou@oss.nxp.com
+To: linux-media@vger.kernel.org
+Cc: laurent.pinchart@ideasonboard.com,
+	mchehab@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] media: nxp: imx8-isi: Add suspend/resume support for ISI mem2mem
+Date: Mon, 14 Oct 2024 17:09:59 +0800
+Message-Id: <20241014090958.1551492-1-guoniu.zhou@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SI2PR02CA0022.apcprd02.prod.outlook.com
+ (2603:1096:4:195::23) To AS8PR04MB9080.eurprd04.prod.outlook.com
+ (2603:10a6:20b:447::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241009095116.147412-11-wei.fang@nxp.com>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB9080:EE_|VI2PR04MB10265:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4cda3fd9-cddd-403b-838a-08dcec2fe5ce
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|1800799024|52116014|366016|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ =?utf-8?B?cFEyOWlLVXN3ZzRxU283RHNIdmt0THYzalV6WkkvSE1OR1Y3VGZUK0s2S0I0?=
+ =?utf-8?B?ci83VGlXQTFja3I4dXVGOGlHaVNPeGNhSXQ0YjQ2Z2s2TEYrMzNuSytGanc3?=
+ =?utf-8?B?SzZvR0NuN3NTVDBUcmROeXFJMkJrcXpPVzF5Q1FDQVY4Z29KQkRQVlVBeGdR?=
+ =?utf-8?B?N1ZJY3FrOUFIblJlZ0xUaklROWd3QzRpcXAzSUZGSWJWcStPdmlsTEE3TVR5?=
+ =?utf-8?B?Sm04S24rc0FSMWVkbTdKSnQ3REFNZWR5LzE2Q21RZ3pPbHBGaWZ5RGRMSmNj?=
+ =?utf-8?B?K2NjK1Q1M0E1QXNsOSszcTljUnVXd2k4YzZ4TlY4SHV6aC9SOURhaGkyaVVk?=
+ =?utf-8?B?dldPZVVNUDM0Zy96Q0MwOFRLdGlSbS82T2pXWGJBb08xR2tkS0JqYUMycXdr?=
+ =?utf-8?B?dGxRS3k2UjNzdDBGL0xOa1RobWdiT2tMRHBDVEZtNDFDZlJFWVpjQ3YwYnhF?=
+ =?utf-8?B?QURnZHQxYXNaNVNEUFpJZWdOSm5La0lrbHdyaExWQURPRE42ZmNEeTFFdkI5?=
+ =?utf-8?B?NFJ5aWV4SE5FekNBZVhPR0tjc3RMaVZ4c2taTGpqazRkRWhVdUM3OXBtK0VC?=
+ =?utf-8?B?Wi9kbWZteWZSQjJBMHZYU283Tk9XYTQ3amQvanFjdDVYRDhWNS84MmYwZ0E4?=
+ =?utf-8?B?Y2dNUHJRYmxDMDgyeU04a2lzcmVMWnE1d3NLeFBDczB4QXkzVStaZ0trSkxQ?=
+ =?utf-8?B?NVB3RWJHbmlzREZ2a2hNMUJWRXRsMGowN2gwajJraEE4VUpNbjcydjhjK0xs?=
+ =?utf-8?B?a3dldldGZzRMR0JXTXArSy9MVHoyR0c4WnJKT1VWcHFTeWlGeXFZQ0xrd1dx?=
+ =?utf-8?B?QTBtZ0NKMzd6bFRmUjVYdU5JQ1Vua0EvbkgxTWNKTFdvRFJrL0dBRGQrVE4x?=
+ =?utf-8?B?NHZ3VTh1QjMwTEhaNEdJOWtCbURoeW9pa2F4ckVSVHJNaVN3WTFVZUxkdUVv?=
+ =?utf-8?B?aGV6Skl3YXhrNkFMcFpFaGxLSlZWUmxMRThwZ0xwa2gxOXB6Z0tHV0tHb1k4?=
+ =?utf-8?B?bGx4QUo4MkpoYlpMMUE2SUYrQWEvRmU0ZFNLeUlPNW9NZnRMVlRacEVwQjRC?=
+ =?utf-8?B?bTRIdHllaXM1NWV2SWhxYmVYNWU2SnVJeSs5L0crTlMvNnNqZEhJNXd5RExp?=
+ =?utf-8?B?TlpEVTlETjZxbW16YSswajBGUlRwQ0NobnRrdWxoVVFxQ1o0NjJYbUJUbkZl?=
+ =?utf-8?B?allJZkIvSXdKdFRSSEU0eHZwWVF3dGdrMkFtRzZ3NHR6ZXBYdzZCcDRwbzFY?=
+ =?utf-8?B?MGp6dXpObjRENnRYR3QwY2JzNkhMeTNrczZCVm9GN0VVRXh3K0ppbFpBaUFT?=
+ =?utf-8?B?dGpOSTVrK2FMNkF2MEx1VWROb0liMk1HNGM5RFQ2dTlMMXZzVktGQmJnejNj?=
+ =?utf-8?B?RDdrZFl0V01JbVdST0x3V1F0TE4zenFiWTZlbjFXUHlhQjRybGVaejYvVS9S?=
+ =?utf-8?B?Tjc2OGg4TGUxakxFT1ZLejdjOUZ2ZWE5ek5zNW5vV0toc09xekhLMEp4UEZF?=
+ =?utf-8?B?Q1RRcDZIekN3Sm1nMGx2ZW9CcmhCOVlacXcyNDZLMkRNc2hxckNyTFF4YlRC?=
+ =?utf-8?B?MDlqTkpVU2pscmNyOGlpc2NIZ0xOb0JFM1Y2ZUljaXpMcVVqejZ4cUlIUWlT?=
+ =?utf-8?B?anhmUlUxUUR2dm5jQUxjYWhoczdjWDVHZVM4UjJUT2JQQ0FkUDUwVjFxT2NS?=
+ =?utf-8?B?NHNCMEY5RDU5WXdZSzM0ZlZqWlBxcU8rRFk5VjJvdSszdWpoUTdZOEhOMWVZ?=
+ =?utf-8?B?WDJQZFl2YnN4Q0pubjE3VE1UYWU0YjJQZXJIOFNKTkRPSEVTLzFkVUpHNDl1?=
+ =?utf-8?B?OFNVbFEwREE0UnlMS1dxZz09?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB9080.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(366016)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?WDdpV1dSeVpKUTdweWtBMGxPKzVhcDNTZDlWTjFpM1ZiTElVVVFQUGd5L3Zy?=
+ =?utf-8?B?eUsxdWo2Q2w2cTFaUm9icGQ3QnlMVUsxeDRwYitzbHlWb0N2QjlGNUxBWFNU?=
+ =?utf-8?B?alNIaEh0K3dNVjJsZHd5RUJYdy90akZOaXBMSUloajhpSnZHUGZJQ29WY3RT?=
+ =?utf-8?B?VktqVmhJTnJkcXNCL0I1N2pHclV6cVY4Mi9QaXFscUloVXFDM2tIcHFJaHVy?=
+ =?utf-8?B?bDZvOWl6Y3BKQ295bE1RZVIzaVR3TjJUOThvN2oxNFNESVV1MHppWEEwUHFS?=
+ =?utf-8?B?RVc4bXp1bkVyYTA1NGJGMk9aWm1QTnhndEtWazh4RW43TVlBdm9LSmZmaHlr?=
+ =?utf-8?B?aFlSVzROY0QzNnp6b0M4RTZmRU1Bdng5a3gxZmtwU0pnU3I0S3lNbjN4dWNY?=
+ =?utf-8?B?Z0l0ak5BM2ZYZzZwTlV5VTdqVmErdkY3R3ppUTNOdCtOQ2tFU0ZFdUgvSWFa?=
+ =?utf-8?B?OFBXZFZHVitGZ2lrZWw2L1ZCdmZYRjl1eTBjeC9udEVaN2tPYlJwTC9iSWx0?=
+ =?utf-8?B?MnFIUS95ZTJwblBmSjluWmxZTkthTnNNczNHakgrdThQM2duZUIyV2JJMHVB?=
+ =?utf-8?B?dWlWUnVOMTZYWXFLYmFFMTBLN3BmN3dERk5EU2FRUWt2ampHSzFWaERTTkpv?=
+ =?utf-8?B?em90MkF0ME9UaXN1UWIwSnRDZFdIVWNMNzhtZlkwTXdRVlg0QUk4TWRza0xH?=
+ =?utf-8?B?U3Nmc1ZxL3pYdkl2UTBlTFN5aXZUQ1pCRVRrMGJ6azBCamE0UXlBM09LWVJR?=
+ =?utf-8?B?NTdKS3NhRjExbkV6SHdhV3ZTSE9adnRzUTlFWmhTQW1kbmtDZ0JyUTVLUFlI?=
+ =?utf-8?B?dlRXZTBhNjhxQWNvVGVWeCtRa2t1djVnWFduV1RpbFVJWFZuRFJPYk9VTlBq?=
+ =?utf-8?B?TFNqdTBxU2dyYitWb0hnNmVwalhtMEFhZ2NrZktZd3VmZGNEVUl0dlcvUm16?=
+ =?utf-8?B?ZjMxN0wxQVhYdlNCeURWYXhFMndqTXIvWk42anhjZzVpUDJLQmNyVDZWaXVB?=
+ =?utf-8?B?SXJ4RThHU2ozUkpTUytjZGJVTE0rMFFXbEhEemJoS045amJYUkZQUXhtQzVw?=
+ =?utf-8?B?djlhT0lnRzlBb2FIWWl6UXdSM1hGZmpaRExEdHp6YXdmOWhFUWNWT1VtSitu?=
+ =?utf-8?B?ZnpOdDN2R24xU0pXZkZWbE9ubFdibDZFRktRMkpNS2dlVzNONVoySlNLZXlK?=
+ =?utf-8?B?ekJwR3RXRjYxbnZuQ08ya2JqYTB2VEJ2NGlVTUZqOXkzWjhjczlkaHpOYlJI?=
+ =?utf-8?B?Q3hUSlBPRGVnQUFRRU1xVHZGc0llb2REa1JOVFpWRW5DSTRETEpvVHR1VnR5?=
+ =?utf-8?B?YWlnMVo3YldHM01BaGxteGNHa3BxZmYrQ0JCRUNRRkZVTm1Jc2U0T1pHNGxr?=
+ =?utf-8?B?Ni9EWjd0WHZFcjN5YU9OTmhpRFFXK2R4NWFreVduUUV5OHlPL2d1Q3pQZ3ZZ?=
+ =?utf-8?B?Wks0ajhLNlg0TC93aGFsQ3RFUWhPMmt0WE9Oa2lyeHNjUjZVKzVQQTJRRTBG?=
+ =?utf-8?B?bSt6azZtUFVTeXBNTlA2aU5VM2hDMUh1ZkkwMDlWaHBUaEVrZjdlakpXYmZI?=
+ =?utf-8?B?MVF1SnFVRUNLajhXNi9EMHRPRkpqb2dKaHBkUkFvSFNlSUFhZlRRb2x4SjJY?=
+ =?utf-8?B?dkdTcXgxbWJpdWtJOEtraEJ3UmNEVEUwdndDSnYwOUxDckw4NjZ5anFTUVBi?=
+ =?utf-8?B?S3NaMVI1dEJ2elJqUUw4bkhzMDRNZFBhd3d5Q3NBaVhwVzdZcllYRU9NdWRH?=
+ =?utf-8?B?OUdxdTFpbUIzRG14Nm1WeFQvb2N6clk5cE0vZ2lGZ3hmdlFwVkVmQXF2Z0tQ?=
+ =?utf-8?B?L1NjUGFncEh0WmJaVGdPbUtObzEralpHczRzS0J3RDBYVVpORWt5T2tYbkcx?=
+ =?utf-8?B?MlBHTC8wWDdjRFYxNEQ2S1FMYzV3bDFzc3VoYy9SOHJhQ0VYY1BSUFdBRHpJ?=
+ =?utf-8?B?V09wdTFHVXg4ek1PNTFpeWFTUVVydCt3czd3VHprQkN1UTRYNEJTVWQ2cjR3?=
+ =?utf-8?B?TTJ1aUVnRWQyVW5pVmRseWJGNEdON0FGK3huK0RvZnFPRTB0M25Lc2ZUc1d6?=
+ =?utf-8?B?ODhxSkQrWkF2RUMwTFFWK2hBcnJ6TmlhOGZXOUxPak5KNVVhQmhzM0xoaVIy?=
+ =?utf-8?Q?0cyHwklDTsjSyM0WJkakc5ivw?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4cda3fd9-cddd-403b-838a-08dcec2fe5ce
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB9080.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2024 09:09:24.6555
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CYNSqADtYc/Ijlqpbuv8Ybx8sZNaA4j/lUqcG6OTciH9vk3vjKrYpHGqF69/6hE1wJgwhuDs3o08cTawB3en0w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10265
 
-On Wed, Oct 09, 2024 at 05:51:15PM +0800, Wei Fang wrote:
-> The i.MX95 ENETC has been upgraded to revision 4.1, which is very
-> different from the LS1028A ENETC (revision 1.0) except for the SI
-> part. Therefore, the fsl-enetc driver is incompatible with i.MX95
-> ENETC PF. So we developed the nxp-enetc4 driver for i.MX95 ENETC
-> PF, and this driver will be used to support the ENETC PF with major
-> revision 4 in the future.
-> 
-> Currently, the nxp-enetc4 driver only supports basic transmission
-> feature for i.MX95 ENETC PF, the more basic and advanced features
-> will be added in the subsequent patches.
-> 
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+From: Guoniu Zhou <guoniu.zhou@nxp.com>
 
-...
+Add suspend/resume support for ISI when work at memory to memory mode.
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+---
+ .../platform/nxp/imx8-isi/imx8-isi-core.c     |  8 ++++
+ .../platform/nxp/imx8-isi/imx8-isi-core.h     | 11 +++++
+ .../platform/nxp/imx8-isi/imx8-isi-m2m.c      | 48 +++++++++++++++++++
+ 3 files changed, 67 insertions(+)
 
-...
+diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+index 528e723114d5..35a771714614 100644
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+@@ -347,6 +347,7 @@ static int mxc_isi_pm_suspend(struct device *dev)
+ 		struct mxc_isi_pipe *pipe = &isi->pipes[i];
+ 
+ 		mxc_isi_video_suspend(pipe);
++		mxc_isi_m2m_suspend(pipe);
+ 	}
+ 
+ 	return pm_runtime_force_suspend(dev);
+@@ -376,6 +377,13 @@ static int mxc_isi_pm_resume(struct device *dev)
+ 			 */
+ 			err = ret;
+ 		}
++
++		ret = mxc_isi_m2m_resume(pipe);
++		if (ret) {
++			dev_err(dev, "Failed to resume ISI%u (%d) for m2m\n", i,
++				ret);
++			err = ret;
++		}
+ 	}
+ 
+ 	return err;
+diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+index 9c7fe9e5f941..895b47ef4658 100644
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+@@ -343,6 +343,8 @@ int mxc_isi_video_buffer_prepare(struct mxc_isi_dev *isi, struct vb2_buffer *vb2
+ #ifdef CONFIG_VIDEO_IMX8_ISI_M2M
+ int mxc_isi_m2m_register(struct mxc_isi_dev *isi, struct v4l2_device *v4l2_dev);
+ int mxc_isi_m2m_unregister(struct mxc_isi_dev *isi);
++void mxc_isi_m2m_suspend(struct mxc_isi_pipe *pipe);
++int mxc_isi_m2m_resume(struct mxc_isi_pipe *pipe);
+ #else
+ static inline int mxc_isi_m2m_register(struct mxc_isi_dev *isi,
+ 				       struct v4l2_device *v4l2_dev)
+@@ -353,6 +355,15 @@ static inline int mxc_isi_m2m_unregister(struct mxc_isi_dev *isi)
+ {
+ 	return 0;
+ }
++
++static inline void mxc_isi_m2m_suspend(struct mxc_isi_pipe *pipe)
++{
++}
++
++static inline int mxc_isi_m2m_resume(struct mxc_isi_pipe *pipe)
++{
++	return 0;
++}
+ #endif
+ 
+ int mxc_isi_channel_acquire(struct mxc_isi_pipe *pipe,
+diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+index 9745d6219a16..2d10c0639096 100644
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+@@ -722,6 +722,54 @@ static const struct v4l2_file_operations mxc_isi_m2m_fops = {
+ 	.mmap		= v4l2_m2m_fop_mmap,
+ };
+ 
++/* -----------------------------------------------------------------------------
++ * Suspend & resume
++ */
++
++void mxc_isi_m2m_suspend(struct mxc_isi_pipe *pipe)
++{
++	struct mxc_isi_m2m *m2m = &pipe->isi->m2m;
++	struct mxc_isi_m2m_ctx *ctx = m2m->last_ctx;
++
++	/*
++	 * Check pipe for ISI memory to memory since only
++	 * channel 0 support this feature.
++	 */
++	if (m2m->pipe != pipe || m2m->usage_count == 0)
++		return;
++
++	v4l2_m2m_suspend(m2m->m2m_dev);
++
++	if (ctx->chained)
++		mxc_isi_channel_unchain(pipe);
++
++	mxc_isi_channel_disable(pipe);
++	mxc_isi_channel_put(pipe);
++}
++
++int mxc_isi_m2m_resume(struct mxc_isi_pipe *pipe)
++{
++	struct mxc_isi_m2m *m2m = &pipe->isi->m2m;
++	struct mxc_isi_m2m_ctx *ctx = m2m->last_ctx;
++
++	/*
++	 * Check pipe for ISI memory to memory since only
++	 * channel 0 support this feature.
++	 */
++	if (m2m->pipe != pipe || m2m->usage_count == 0)
++		return 0;
++
++	mxc_isi_channel_get(pipe);
++
++	if (ctx->chained)
++		mxc_isi_channel_chain(pipe, false);
++
++	m2m->last_ctx = NULL;
++	v4l2_m2m_resume(m2m->m2m_dev);
++
++	return 0;
++}
++
+ /* -----------------------------------------------------------------------------
+  * Registration
+  */
+-- 
+2.34.1
 
-> +static void enetc4_pf_remove(struct pci_dev *pdev)
-> +{
-> +	struct enetc_si *si;
-> +	struct enetc_pf *pf;
-> +
-> +	si = pci_get_drvdata(pdev);
-> +	pf = enetc_si_priv(si);
-
-Hi Wei Fang,
-
-pf is set but otherwise unused in this function.  So I think that it, and
-the call to enetc_si_priv() should probably be removed. They can be added
-back if and when they are needed in subsequent patches.
-
-> +
-> +	enetc4_pf_netdev_destroy(si);
-> +	enetc_pci_remove(pdev);
-> +}
-
-...
