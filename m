@@ -1,101 +1,271 @@
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2054.outbound.protection.outlook.com [40.107.21.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337B3156886
-	for <imx@lists.linux.dev>; Mon, 14 Oct 2024 09:49:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728899392; cv=none; b=Cpr9gMyzZ9JOZgkoHD4T1FvWADyDvPR80w1YsT85QcAFoDR+OnLJd63Kv9GMK9rAOY4mcrhHURz+F41rX/sjvXEs/3sCX5PB3YU2j/JVsbfmz2b0KWwKyFQqHybP1zoC3QqAxtEp+3Je7YKCnZmSMtk1Ruk6/h8gVXxd4UTZOKA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728899392; c=relaxed/simple;
-	bh=itMazNT5IeHaWiGMC76BKTAnxUDQZPiJp1MX6wqPgUQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=vBxfaFabzBscq67piW4fajhMKxaD4QzpIOcGOV1wWEXBNzFAdXFP5vtgr5Ar4SK9LQviVP8fOvojui4PjLrqxCihagLfgYDpS2LgCxs0i5l56IfVElxjI+st0KPjL0Ysn4iVTU88l0Z6xvUYP4+9Xh14S33Dzb85m7Us4VEJ6Sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=V7CXkB+e; arc=none smtp.client-ip=217.70.183.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60ADD158A04
+	for <imx@lists.linux.dev>; Mon, 14 Oct 2024 10:01:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728900091; cv=fail; b=IoQJQBYRFvZULdzQTf2OEeafenVYQm48LFAmov2lGl0JfHfcPnva/OSa8sLvzjCpV+emYLc7DbNH33POoPLlZR585wPbO1GmtlBbCz6kenJaNTPvc0VVhe5OnYbZqJu3MVNpJ5pMwmoJIe0wMy/8OVteMfCv67kSGVa23Y0Na2s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728900091; c=relaxed/simple;
+	bh=rjExYRn6yCnhup12BVvD5r31q3LxtQ46MBKTX+vE8qQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=XfwDSkW5ZXKtl1mLWQT973ko1qD8UP2XBaYdIMBPnQakWRwckCGrN20n3Cz/0smvbNlgZiaw7ukVDbKOROsWXq5I1hUM93RHw+KXOMZ8GPHpf47D4mNbilrza3m6dO8LaSQjhC+sRvemBPxovkCJV0fRwIpcIHeuzE6exzuBabU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=V5uarZlt; arc=fail smtp.client-ip=40.107.21.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="V7CXkB+e"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 97457E0003;
-	Mon, 14 Oct 2024 09:49:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1728899383;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9aFx25tuhpkab3VLe5pFlLF4S8kUqB2ME9LU6u6s7R8=;
-	b=V7CXkB+eoiNjHEDAlFMYvE1Wf7ibLqhDoUAlDMSZsgjtW/NtkHTUA6C86J3INKIL+h24ue
-	qwow9vaMF3+v8cyneRgveqE5v5GaiqyYfQP+PzwK/VPR0cSNB92zhORabBtYcXqXKQPsHz
-	k7k0Qt+9hooTinTU2U4mZkIT1qeoXivhWt3uj5PUAK9FvMNwJDuilksTtZP3aI2vp++z4I
-	QkdLLNCg932dVc3EGOroHYb7M/0pWvDF/eEaCT4zW2GwLvh002SpUZ6X9Ux+4MNI6kUH0t
-	43wdgGYNs4sZ7jOBcME7oMN8dgSU+Ub7XpvULJI5GyX1+PdYLr1U+gVIzPg4sQ==
-From: Gregory CLEMENT <gregory.clement@bootlin.com>
-To: Andrew Davis <afd@ti.com>, Andre Przywara <andre.przywara@arm.com>,
- Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Andrew Lunn
- <andrew@lunn.ch>, Sebastian
- Hesselbarth <sebastian.hesselbarth@gmail.com>, Daniel Mack
- <daniel@zonque.org>, Haojian
- Zhuang <haojian.zhuang@gmail.com>, Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, Andrew Davis <afd@ti.com>
-Subject: Re: [PATCH v3 0/6] Switch more ARM plats to sys-off handler API
-In-Reply-To: <20241011201645.797394-1-afd@ti.com>
-References: <20241011201645.797394-1-afd@ti.com>
-Date: Mon, 14 Oct 2024 11:49:41 +0200
-Message-ID: <87cyk3c8ui.fsf@BLaptop.bootlin.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="V5uarZlt"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sWUA7XX89e9KFRDqv3uqdZ0Kxp1AyhYHY4ptLQTWp1WX6BjLkjEUIVYdfmE2KHw21gHJx5C/HqJLkWr9bqMiDUzfsSiMxcUDhCTjtqd9g9ydCWy90sEg/MxfavqS7Xc6Qbpyi87cgv/deWtXz5/DHoZHg00ZbS8o9K0A2lGUNl9HApNfbbn2E1qlNiTyLGffDN5P99kjY3xv9dsHZWHu5MXJqPKHSs+JU4yNreOXfJAIeHdPe2dOqjplTh3SOfMciLaWxCFL8ieAWPqd9o9lt+DlERW0qDpPTy5CsSBctERbNMrltOyEAC1+8MR7JrhdjuGu8ANAyav6kcx/EvxXHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5GiyX47Jecs7gxaIbccktqFZ7qKULFgehH0FnnszTM8=;
+ b=rwRVyfqWcW3MNd7HRqO9wLZ11GfyQsX7/YAZUg2F7Dq6fRiQaZ2W46Q7JqfooI0/HUTxBebfrJrgq8ReExtJr+SSDY04VRt50xKV2kAs7Z8Ms4RqYiKWhJMuwU1iJHPmzONiv7qCykT4KzJXSp67lwggeIu7voc7KUgvMLWBA1VdkYk5XpHXFO/jpVO4p1pv+b/NsnFsq7k1+P+iZSNVpyxNsC0NcM0qNWaysClUS7NfmzdT/I4c52gEpKwgYzAZdh60sXLJ8LX7ZmtBZXMr1Fd6BnWimdKisq3zKok45c7YUZDk3Vl+WiIvSsdohs7X3AQnYfe+XhQwSVOZj2iCsg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5GiyX47Jecs7gxaIbccktqFZ7qKULFgehH0FnnszTM8=;
+ b=V5uarZlt5zcnhhAT16GlhwpnTIVzUv5+hjs1xr5O9ROVQ1ekhSZOi6Kg9HG41EzchO0WLxmJW7olnH30Uf+AJy4fbOInxUXbO37LmrWB4/zXTWr7XicvImifXnuwcMJFMjFqca4/wACXp6DDpYMlfD51w7SH3lX2VCDf0VE+Dr6v2Bdr+uADAA8yoJ3T93ozNit/PEMIY8TRQBRSU6GY00Iw/iiZVj9Qq1OjdcUt37AhVMYXu4HT32c5cYOFa4llfhmqtQv57z1O1zJaMuvEnmv/X6Jg0SxjH4863w4dN0BWSmnYDFvA68VQNS/L26BRqvUv6wZa0sHSlimBYGvCCw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by AM9PR04MB8147.eurprd04.prod.outlook.com (2603:10a6:20b:3e0::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.27; Mon, 14 Oct
+ 2024 10:01:25 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90%4]) with mapi id 15.20.8048.020; Mon, 14 Oct 2024
+ 10:01:25 +0000
+Message-ID: <20dfe41f-7aca-4321-a5e9-5c6b8513b400@nxp.com>
+Date: Mon, 14 Oct 2024 18:01:49 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 5/9] dt-bindings: display: bridge: Add ITE IT6263 LVDS
+ to HDMI converter
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, andrzej.hajda@intel.com,
+ neil.armstrong@linaro.org, rfoss@kernel.org,
+ Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+ jernej.skrabec@gmail.com, airlied@gmail.com, simona@ffwll.ch,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, catalin.marinas@arm.com, will@kernel.org,
+ quic_bjorande@quicinc.com, geert+renesas@glider.be, arnd@arndb.de,
+ nfraprado@collabora.com, o.rempel@pengutronix.de, y.moog@phytec.de,
+ marex@denx.de, isaac.scott@ideasonboard.com, biju.das.jz@bp.renesas.com
+References: <20241012073543.1388069-1-victor.liu@nxp.com>
+ <20241012073543.1388069-6-victor.liu@nxp.com>
+ <4a7rwguypyaspgr5akpxgw4c45gph4h3lx6nkjv3znn32cldrk@k7qskts7ws73>
+ <07b47f70-5dab-4813-97fa-388a0c0f42e9@nxp.com>
+ <dvcdy32dig3w3r3a7eib576zaumsoxw4xb5iw6u6b2rds3zaov@lvdevbyl6skf>
+ <90e0c4ac-1636-4936-ba40-2f7693bc6b32@nxp.com>
+ <lcogrc6uztckwwwsuag5tlk5otidmo7rudsl7zshe3wpfot3wc@ziljns5phhfe>
+From: Liu Ying <victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <lcogrc6uztckwwwsuag5tlk5otidmo7rudsl7zshe3wpfot3wc@ziljns5phhfe>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SI2PR01CA0017.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:191::19) To AM7PR04MB7046.eurprd04.prod.outlook.com
+ (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-GND-Sasl: gregory.clement@bootlin.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|AM9PR04MB8147:EE_
+X-MS-Office365-Filtering-Correlation-Id: e4450f7d-776b-4876-3835-08dcec3729e9
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+ =?utf-8?B?NW1MUFM0WHNodE9GRWtOOEE4WmN5aEFnWGh2V0EzbVp1aEdEUGdEcEZZSnVC?=
+ =?utf-8?B?SER1NWltZ0pyTmdVWDR3K1lRaVM2NjREclA1Vi84RTZZd0UyRTB0Z0d0V25C?=
+ =?utf-8?B?MkVwcmdhTmhmTDZlc1BsdmoyMldmTWpJOWdsR05RZlBOSVRDcVhhOEp3N24v?=
+ =?utf-8?B?ekRHN2tKMW9TaHpqKzFlWnNSdGRBbEJUUW43WE42OStEc3lLSnhwWm5OeTRa?=
+ =?utf-8?B?QVFWeWtzaXlrM3N4K0JaV002TFBqWE1oMW9FaW1BY1BiNzJ2bzZqVEhOTVZD?=
+ =?utf-8?B?TGxIOTdidldsNEI5OUxST3R2bUZwRlBld0twOEtFTUl0ZktwZVBaZnRTc2F1?=
+ =?utf-8?B?dWcrbHpSa3UwdnRZRWYvTmhIcDZpdCtUTlNYOUllRmlFV2VjQTV2WjVZdWNh?=
+ =?utf-8?B?QnJ0QlB5RHdneHVoN0xQdW4yUWFjUW9TY3VTdzVNVkZXUlFCcXF4SkhBVXJo?=
+ =?utf-8?B?cmg3WGZEMU54bUw0M3pZdnI5dGNmbS9VRmlJRXRZZFJuMjBMRE9VWHE1ZkNa?=
+ =?utf-8?B?UUxHMDZmU3BVSFd3Z0VHRVlMMlRJeGllOGVtLzZJd0JHWUNuQlZJc3NjNEVy?=
+ =?utf-8?B?N1JXR1lmclJTNGJRR1diN0ljOGNKYzRjZ2pCOHhjdnZxQWFnZFdCOGdRMm93?=
+ =?utf-8?B?cFZjWnU1VlUrQitiSDBJV0ticTh6bVRaTU5CL2tITmtSVHhmaStTSi85MHQv?=
+ =?utf-8?B?TTRHZ1U1U0JzUnFPbnRiOU5HOUd5ZWQ0RGR0Rk1IcEk2ZWhyMEJjUTRWUE93?=
+ =?utf-8?B?bnp0VllsRE9mbmNIaFRmbWVINnZsNm9iNXptYlpVWjd0MmV6SEprSlhJYzhS?=
+ =?utf-8?B?UkZvbVpweTBIMFVPakhPcmJ2UkZEV1N4bXhmZlZwMWxtRW1lZExFWTNsSVV6?=
+ =?utf-8?B?OFo1WkRrSk1tNXo2WEh2VThxekF0allCRHhWRFY0L2JUQ1FnUFA1SFR0Wi9u?=
+ =?utf-8?B?c295M0dqNS9KU3pDOFN2d2tVWFVqQWx5WlhBUHVzRzBiRElsc0pYWmJlV3do?=
+ =?utf-8?B?MzJMRERxZVl0QTVlejE3Z0dkbEU2R01SOXJmY1hOTTF1ODcxRXJPR0daalVh?=
+ =?utf-8?B?SElXZEhzQTQ4U2p0UEFkdEFCbWVmZnErK2RQL0htT2FUaXBJMHMyWml1MFg3?=
+ =?utf-8?B?M0Q0U3Y1WW9VZmpyTnhWalpOSVVEam9pNHVKWVNINXZGRWg4TXhoYjVqR1dm?=
+ =?utf-8?B?eGZqQW1HM0F3Y2JLNzYrWVZOOTNxZEdwd0NGbGFNa3JPQXUxVUZhWjZUdEsr?=
+ =?utf-8?B?MjNRcDU3S2NWcDNBNkUvZ29ERHg5bDk2bWJQOTh0L2lFUkxld3Z3YlIrNkZh?=
+ =?utf-8?B?VjJiRWhGeTZXQmJ6MmJvanZPNEJxY284ME1HVkE5NUYvb1U1cEQxTDBWN29D?=
+ =?utf-8?B?aGdsTnltK0YxWDRlK3pBK000alQvWXdncHVPV0xGamxhS0VNbjF5anA5eDFn?=
+ =?utf-8?B?Zkp4WWw3MkZDQ2xmZzRJQ0RBTkxvZ09mcGNRdDNmeTZFUTRHTTFOdWwyYWlK?=
+ =?utf-8?B?NEVndmg5UXdCQ21RaGl3eUVHcUEwQXU2K3VyRC82YzdGSU9TL09hdFVYN2Y3?=
+ =?utf-8?B?cVY3ZGM0NjJGaGt6d0puM0Q5dU85d002VW5ranRxano2U3hWN3ZyaEtYZFh2?=
+ =?utf-8?B?aEg4K05qQXlEQkFLWlhUMm13eXczcElzNklZTmhKTDdSb00xVTl6UnFrWHBE?=
+ =?utf-8?B?L1p5NWE1SkdBWm03REQwY09QK2piS3J0UHFhTHIxYkhWWW54ZWdNNjFBPT0=?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?RG9aaDRSQXJOOU4vN295NkN1N29NN1RlZFl4OFJWcVprcGEra2h1OVFOdFpM?=
+ =?utf-8?B?MnZCbTlRS0dwdXAxRlhKU2l4TlF4ZGkrNmNOVWp1ZVhMMncrMGVmU0o1bW4r?=
+ =?utf-8?B?OW5lcDhvVXBRMSs5S3VoamlGNURGTlY0dVQ0UHRia2JPZVZQMFJiVS9ianRa?=
+ =?utf-8?B?cGs3d3IxQmpwVkRnb0kyODJXKzN5alNQdHhJTUo3UWhGY3luckFPV0p3bUwx?=
+ =?utf-8?B?bnVnOU15RDkrZkNKRVhwaG5oTkE4MktNM1QvVHhIcExXejR1NGNyeEI3aFhW?=
+ =?utf-8?B?QWJpRkFNSUNIb0VDMnRsVGFtRnM4am8yMlRXVnZHSzVsQXV4aTRqYktpZGU4?=
+ =?utf-8?B?Rmd5M0dHWUFLQWlXQTBEK1Q4THZEWUJHOUZiVnQ0MTRyUWpYRmNvaXozVnlH?=
+ =?utf-8?B?dDNlZ1VMZEU2TkFYSTk2SG9OQVRHc3hyWEYyMWF0SnMrMDBWUkdUV0RxcVBr?=
+ =?utf-8?B?SmFMYWtiNWYyQXA1M1oyYnBEZEZ3ekFIUUgzdXNNUVFGUEdkYzFZeXZMV3Mv?=
+ =?utf-8?B?VTErbVMxM3BXc2s1U2F2SUlzSGFTdWc5elZaSXJOYmpCREJrOU94SnNXcTAx?=
+ =?utf-8?B?Z0g2YnFOTHBZdk9BdXovZVovcjdvRFNjcVhseCtHRGZpREpobmREWll3TkVl?=
+ =?utf-8?B?ZlovVVpuSGxYWjJRT3VQZk82MzZoL0FnYlU4Yk1EeGNpWmY5U2hCL25PY3B5?=
+ =?utf-8?B?YXJldmtCQUs0dkJMTUIwRWM3ckRxWkNiS1c0UVo2L3hray9qSFRRMnVFYUpW?=
+ =?utf-8?B?VlFBNFBFbmozbEtSaEQ2WVhYNmRNV2dWZ21Hc0hINGVZK05SOWlFNkJKZ05u?=
+ =?utf-8?B?L202alhjVVFMWXRSTEd1Wk1vait4R1NrbENjZVcwSkxFVEZDRGdVbDJyRnNl?=
+ =?utf-8?B?a3I5MzMvQ0tzM3M2WjR1TFBZdWxpUXF4bEl1MStPZmlGR1duZ1ZEV1FvMlAr?=
+ =?utf-8?B?VjZIV1NELzkrVkh1am1aV01DMnZqOFZmUm5mMVlxU2FkRTAzWkdpNkVlWmVa?=
+ =?utf-8?B?clZIZjlHalEyWlBaQ1l2OGkveHFORkpqaWFBbytFaUwyWm9vb1RxdU8reUZ6?=
+ =?utf-8?B?ZnFHUzBCclVzS3RvVE1OSUdDYUhkMzhsV0xCcFRFS2FzeHg4OXFqRHNvNWw4?=
+ =?utf-8?B?ZzNORGVvTmtRcXZ1QkR4Nmt3ZmZrcjlhKzZ0bWMvblU1SHVGbkZoSDJWaUVa?=
+ =?utf-8?B?R0JwS3liN2RQazVvVkhyanA0bHI5VGtSV0p1NEl0U255MUdEUHhSd0JybG9x?=
+ =?utf-8?B?ZjlYV1hOTUdKcWlqY05jeExjSFNTQjhIQWpDMXdMSE1aTVFZQkRkT1BYMyts?=
+ =?utf-8?B?Z3B1aStacFBpemdybHZSZlZwcEpiR0NsbHFUVEx2SkJtWmlXMXFRcWtMcmVj?=
+ =?utf-8?B?U2haVmFrckxYenB5Y2NKUCtxbDk3SmhSRk01M3FnVUFreTBLc3FSL052MXJt?=
+ =?utf-8?B?ek80M0o4dmRvdHZTZ0ljZlRaOC81cWhvSTU1cHVETk9mZWh1c2J2aVpOY3li?=
+ =?utf-8?B?TVBTSU9RcS9RN3NBaFVQMWRHWU1ob2NFcFFJaHdlR0pNSUlhLzQwcWEzbVlJ?=
+ =?utf-8?B?bnpqQ1FXSGVNSHB3Q3YyV3BJV3I5ZEVBSy95V01CVGM5a0xNbk5KQUxZY0pM?=
+ =?utf-8?B?ZFE5R05KNzBydEZjMXBTbHZtUktSKzFRUk1BamNqUTBIMnRMcFJiYUlFWUVp?=
+ =?utf-8?B?RDJNTFE1OTZvQmRDQUlqRXpzV3JqVllMNlp5UkNRVW4vbVg1TEtLc3Y4NGkv?=
+ =?utf-8?B?TUY5OHIyeWR5MDRDRjZpQmxsRjk1djBiZk1WY1hTLzhCMW10R1owbFhGV2Iw?=
+ =?utf-8?B?dU1xdGtJeUU2QnNZR2xNTFpJb2tmdEF5SmxqQjRmYTRQNW5HelQ4VWYrU0Fs?=
+ =?utf-8?B?Z1Z5Z2szZkFzUU1xWW1WWk5hL1RRdUNXYUVKdUdESGJSNFRZN2NnRkRnZUo4?=
+ =?utf-8?B?cDZpSGkvMGc3dEp0eWF6VUxqZEhVVkhGd3JjS3Y5Y1h6NkttU1FpdjQ0RUFn?=
+ =?utf-8?B?K3N2S01vOXYxLzg4R2VRNlV4OXBJb0pmUWhsTkc5UUs3Z2h6QXlyaGpVeGk5?=
+ =?utf-8?B?b2UyL2FRV1RwU1BTbmtreFk0bXhNaC91UUlxakNQZmZmUXVpNnlwZ2s4ZkI3?=
+ =?utf-8?Q?FqHjtv4PW8ujSov4G9j983QFD?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4450f7d-776b-4876-3835-08dcec3729e9
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2024 10:01:25.1893
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: U7FmsZ0i4DhmiZxrckASH+1bdsAiGD+tskp7v3SqTEa4fNcN5T1C55dbRjNRbNa5EMpK7VFJJElKuzRri2blOA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8147
 
-Hello Andrew,
+On 10/14/2024, Dmitry Baryshkov wrote:
 
-> Hello all,
->
-> Continuing the quest to remove the legacy pm_power_off() global
-> function handler. Remove uses from arch/arm/ using the helper
-> register_platform_power_off().
+[...]
 
-I am in CC of this series, however, I am not the maintainer of any of
-these platforms, and I don't remember making any changes related to your
-series recently. Could you tell me what you expect from me?
+>>>>> My suggestion would be to add a single root-level property which
+>>>>> specifies which port provides even pixel data.
+>>>>
+>>>> That won't work.  The LVDS source side expects the ports of
+>>>> the sink side specify dual-lvds-{odd,even}-pixels properties.
+>>>
+>>> I didn't notice that these properties are already defined.
+>>>
+>>> As these properties are common between several schema files, please
+>>> extract them to a common schema file (like lvds.yaml).
+>>
+>> I'm not sure how to do that. Is it obvious?
+>> Please shed some light. 
+>>
+>> Only two panel schema files are defining even/odd pixels now -
+>> advantech,idk-2121wr.yaml and panel-simple-lvds-dual-ports.yaml.
+>> Maybe, extract them later when more schema files(especially for
+>> bridges) try to define the same?  I'd like to keep a low profile
+>> for now.
+> 
+> I'd say, please extract those now. Adding third is more than enough and
+> should be avoided. Extracting is pretty simple. One patch to move the
+> definition and descriptions from panel-simple-lvds-dual-ports to a
+> common location (e.g. lvds-dual-ports.yaml). Leave the required
+> constrains in place. Second patch is to add oneOf constraints to the
+> ports. 
 
-Thanks,
+oneOf just sits below ports so that single-port and dual-port
+are documented separately?  That won't pass dt_binding_check
+as the v1 binding has proved that warnings will be generated.
 
-Gregory
+> port@0 might get the same oneOf + the
+> dual-lvds-{odd,even}-pixels:false case, allowing a single-port
+> definition.
 
->
-> Thanks,
-> Andrew
->
-> Changes for v3:
->  - Rebase on v6.12-rc1
->
-> Changes for v2:
->  - Collect Reviewed/Acked-bys
->  - Rebase on v6.11-rc1
->
-> Andrew Davis (6):
->   ARM: highbank: Switch to new sys-off handler API
->   ARM: imx: Switch to new sys-off handler API
->   ARM: pxa: Switch to new sys-off handler API
->   ARM: sa1100: Switch to new sys-off handler API
->   ARM: vt8500: Switch to new sys-off handler API
->   arm/xen: Switch to new sys-off handler API
->
->  arch/arm/mach-highbank/highbank.c | 2 +-
->  arch/arm/mach-imx/pm-imx6.c       | 6 ++----
->  arch/arm/mach-pxa/spitz.c         | 2 +-
->  arch/arm/mach-sa1100/generic.c    | 2 +-
->  arch/arm/mach-vt8500/vt8500.c     | 2 +-
->  arch/arm/xen/enlighten.c          | 2 +-
->  6 files changed, 7 insertions(+), 9 deletions(-)
->
-> -- 
-> 2.39.2
+I don't catch this.
+Below snippet is a draft lvds-dual-port.yaml.
+How can it be referenced in ite,it6263.yaml?
+
+---8<---
+allOf:                                                                           
+  - $ref: lvds.yaml#                                                             
+                                                                                 
+properties:                                                                      
+  ports:                                                                         
+    $ref: /schemas/graph.yaml#/properties/ports                                  
+                                                                                 
+    properties:                                                                  
+      port@0:                                                                    
+        $ref: /schemas/graph.yaml#/$defs/port-base                               
+        unevaluatedProperties: false                                             
+        description: the first LVDS input link                                   
+                                                                                 
+        properties:                                                              
+          dual-lvds-odd-pixels:                                                  
+            type: boolean                                                        
+            description: the first sink port for odd pixels                      
+                                                                                 
+          dual-lvds-even-pixels:                                                           
+            type: boolean                                                        
+            description: the first sink port for even pixels                     
+                                                                                 
+        oneOf:                                                                   
+          - required: [dual-lvds-even-pixels]                                    
+          - required: [dual-lvds-odd-pixels]                                     
+                                                                                 
+      port@1:                                                                    
+        $ref: /schemas/graph.yaml#/$defs/port-base                               
+        unevaluatedProperties: false                                             
+        description: the second LVDS input link                                  
+                                                                                 
+        properties:                                                              
+          dual-lvds-even-pixels:                                                 
+            type: boolean                                                        
+            description: the second sink port for even pixels                    
+                                                                                 
+          dual-lvds-odd-pixels:                                                  
+            type: boolean                                                        
+            description: the second sink port for odd pixels                     
+                                                                                 
+        oneOf:                                                                   
+          - required: [dual-lvds-even-pixels]                                    
+          - required: [dual-lvds-odd-pixels]                                     
+                                                                                 
+    required:                                                                    
+      - port@0                                                                   
+      - port@1                                                                   
+                                                                                 
+unevaluatedProperties: false   
+---8<---
+
+-- 
+Regards,
+Liu Ying
+
