@@ -1,137 +1,155 @@
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470F71C7608
-	for <imx@lists.linux.dev>; Mon, 14 Oct 2024 18:13:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270EB1AAE27
+	for <imx@lists.linux.dev>; Mon, 14 Oct 2024 18:17:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728929639; cv=none; b=IVG2t11IFQ1PaSzN5uhry29ZunkuiudAm+tJDdki+oyaD/v6I6wrv7fB25cIguYgXayNQ5EMO5bgjiwmhtaOMg3Mn/dFfJYzeGDd0Z7WjjFd0nm7IGqFQQgAZ7F7uflSNiZQ+gKAGTT2bCSp3S3pKluyGPe43se+R4IZrOZ95Yg=
+	t=1728929846; cv=none; b=BsGq6Jr1JrJ3NwcKLGADhS/WBj5ghkOTZbDeVJdV3Se+9gpnnmejZ4VhJDBF5wH047LR881ZXzMGuNnhZPbu6DIm1m7XtLmEZLQa71rXdf+r+0pmWA/+NRADP9xL7VRCBOv929JSyQbRjF5tKsqBKgUJdP1pNRPTq7oeMTFA7l0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728929639; c=relaxed/simple;
-	bh=JVEevRHg7jROvFiWyNYmSBG80g3xEtUHD6zmo82d5wA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=VHxPDMDROUVxRJpe079myLvCRgmGQoco1slqOHZz5fnAFD7RO43gsAf2ngJnZUS/hN7z79BdFhcKR47ri7uBstGfiia1xhMY6LYIxV0T4azvcphImuX6q2U/bzzGwPnj5vJlQ70M8OfL69sysWzFba1cAETUJA/JAcLCe9UNSjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=bvp1p2//; arc=none smtp.client-ip=198.47.19.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1728929846; c=relaxed/simple;
+	bh=P3Pzj722a0qn2KFz7CJfgBKO+JfL3dlBqaxecPwjeek=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CFGkk5o1pzdtfz5fYcP0UBWLzT2xunZO365RmQynvBX3w50YCFfHS5KHgiPNn+Uc/+AcA+nvi713Rap18Z32id2ZObZypZQ5+FkS8L/dnLnc50aRCY/JIhgckyIxx5YZPuDTAhmwxv1q846pFLptBI3yIW0w0tv55FEQs3ibyrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=MTPMgIde; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="bvp1p2//"
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 49EIDZKh129076;
-	Mon, 14 Oct 2024 13:13:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1728929615;
-	bh=wpbIaxYim+IbIS6Col4NYLeorX2DPDL/x3PXTs/v44g=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=bvp1p2//JJqADugTPrwxA3ksqYOXcLhhNKjnHtjZ58vFzss96fZV/tQvVqw40/61E
-	 Z/WCDPYN/AFveGM7IzcA6K1L/bMaqemjO5LCHyqhjs8TE75tmWO2eN0XVwBkHWHkLv
-	 O80PzSH/RbKpnCvVE22uI4oDmsC4uBeYRVMCH580=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 49EIDZJD023764
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 14 Oct 2024 13:13:35 -0500
-Received: from flwvowa01.ent.ti.com (10.64.41.90) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 14
- Oct 2024 13:13:35 -0500
-Received: from DFLE104.ent.ti.com (10.64.6.25) by flwvowa01.ent.ti.com
- (10.64.41.90) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2507.34; Mon, 14 Oct
- 2024 13:13:34 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 14 Oct 2024 13:13:34 -0500
-Received: from [10.249.42.149] ([10.249.42.149])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 49EIDY2I032080;
-	Mon, 14 Oct 2024 13:13:34 -0500
-Message-ID: <7a09bb95-fa22-4c60-af4a-16720fa8633d@ti.com>
-Date: Mon, 14 Oct 2024 13:13:33 -0500
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="MTPMgIde"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 9DA5440E0184;
+	Mon, 14 Oct 2024 18:17:20 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id FdZTbS5Yi9uB; Mon, 14 Oct 2024 18:17:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1728929835; bh=rRulwwslaCiKpYQiRcp3k5u/GU44D2gHabFxhCGCe2k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MTPMgIdelKAHQlU+HXCBeAaSxV0Ui/L3cr6Xmo31ldIIcLmnP7D4yadrMwJr3I6DK
+	 x5aRFKCygueVgCT4ABt6WkPjIxfTQtJzn8scvo7XLEWuY0MP3ryR+G1mU5+x39zRxy
+	 0qTqJs2sr8nTWfEW4A7rDf55zuMOCqrTx65nAnEaRGkxsw+Xeq3XJopNq+hv2+NZ0w
+	 zEtzEVBvFR4S5lKwKvOmwJ/gr9Samx+3Pmtkg+yd1ffZCRx3J4xoSKA9Xwh4LhGBzY
+	 EssseZkPgIMoGB/ZkMXGcSdK2LhUYkqOfWJVZTz/ztw+PpEio9q6ZDI27wv3pvAxon
+	 P1VUpTRXcW/ouQ1U+cD96In1NZp4abLzIxWHUDR8XuYHvnY+Szuk1LxXSS5hvNVYH6
+	 SFjQD+1N7hCHFHBbVRfzIvxQ2EUjsCIMzYOn1y9Iw6g6YO+hbBU5DodBMmsoOQl4zF
+	 tzxkkFFTbOiwpmsu+zHwtih92WPYNA0LSE+Yq/iMZu8XiVlF7LoVHuwaTYeM+H8hOB
+	 MA0rljcPbgb5E6hGaRfnWzViLNb/ASRRL2utzBls+bEOA/tWIKGttv/AneXcKt0gzT
+	 0Cxt6mJKJ/wkS+n5PXZ2t+zpKTrmVwtv6Da+sWW5OQBbWRvQISXRcNnQh8lsey/uOZ
+	 yPUGFx3OJTY7fvqQ4Y2BFTLk=
+Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E5E4140E0163;
+	Mon, 14 Oct 2024 18:16:52 +0000 (UTC)
+Date: Mon, 14 Oct 2024 20:16:47 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: York Sun <york.sun@nxp.com>, Tony Luck <tony.luck@intel.com>,
+	James Morse <james.morse@arm.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Robert Richter <rric@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Priyanka Singh <priyanka.singh@nxp.com>,
+	Sherry Sun <sherry.sun@nxp.com>, Li Yang <leoyang.li@nxp.com>
+Subject: Re: [PATCH v2 3/6] EDAC/fsl_ddr: Fix bad bit shift operations
+Message-ID: <20241014181647.GQZw1gDwIhBdnFnleH@fat_crate.local>
+References: <20241011-imx95_edac-v2-0-011b68290951@nxp.com>
+ <20241011-imx95_edac-v2-3-011b68290951@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/6] Switch more ARM plats to sys-off handler API
-To: Gregory CLEMENT <gregory.clement@bootlin.com>,
-        Andre Przywara
-	<andre.przywara@arm.com>,
-        Russell King <linux@armlinux.org.uk>, Shawn Guo
-	<shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        "Pengutronix
- Kernel Team" <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth
-	<sebastian.hesselbarth@gmail.com>,
-        Daniel Mack <daniel@zonque.org>,
-        "Haojian
- Zhuang" <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>
-CC: <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <imx@lists.linux.dev>
-References: <20241011201645.797394-1-afd@ti.com>
- <87cyk3c8ui.fsf@BLaptop.bootlin.com>
-Content-Language: en-US
-From: Andrew Davis <afd@ti.com>
-In-Reply-To: <87cyk3c8ui.fsf@BLaptop.bootlin.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241011-imx95_edac-v2-3-011b68290951@nxp.com>
 
-On 10/14/24 4:49 AM, Gregory CLEMENT wrote:
-> Hello Andrew,
+On Fri, Oct 11, 2024 at 11:31:31AM -0400, Frank Li wrote:
+> From: Priyanka Singh <priyanka.singh@nxp.com>
 > 
->> Hello all,
->>
->> Continuing the quest to remove the legacy pm_power_off() global
->> function handler. Remove uses from arch/arm/ using the helper
->> register_platform_power_off().
+> Fix undefined behavior caused by left-shifting a negative value in the
+> expression:
 > 
-> I am in CC of this series, however, I am not the maintainer of any of
-> these platforms, and I don't remember making any changes related to your
-> series recently. Could you tell me what you expect from me?
+>     cap_high ^ (1 << (bad_data_bit - 32))
 > 
+> The variable `bad_data_bit` ranges from 0 to 63. When `bad_data_bit` is
+> less than 32, `bad_data_bit - 32` becomes negative, and left-shifting by a
+> negative value in C is undefined behavior.
+> 
+> Fix this by checking the range of `bad_data_bit` before performing the
+> shift.
+> 
+> Fixes: ea2eb9a8b620 ("EDAC, fsl-ddr: Separate FSL DDR driver from MPC85xx")
 
-I had CC'd you for v1/v2 of this series as it had a patch for Orion5x, but
-since you have already taken that patch I should have removed you from CC,
-my bad. Nothing needed from you here.
+Is this an urgent fix which needs to go to stable or someone just caught it
+from code review?
 
-Thanks,
-Andrew
+Does it trigger in real life, IOW?
 
-> Thanks,
+> Signed-off-by: Priyanka Singh <priyanka.singh@nxp.com>
+> Reviewed-by: Sherry Sun <sherry.sun@nxp.com>
+> Signed-off-by: Li Yang <leoyang.li@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/edac/fsl_ddr_edac.c | 17 ++++++++++++-----
+>  1 file changed, 12 insertions(+), 5 deletions(-)
 > 
-> Gregory
-> 
->>
->> Thanks,
->> Andrew
->>
->> Changes for v3:
->>   - Rebase on v6.12-rc1
->>
->> Changes for v2:
->>   - Collect Reviewed/Acked-bys
->>   - Rebase on v6.11-rc1
->>
->> Andrew Davis (6):
->>    ARM: highbank: Switch to new sys-off handler API
->>    ARM: imx: Switch to new sys-off handler API
->>    ARM: pxa: Switch to new sys-off handler API
->>    ARM: sa1100: Switch to new sys-off handler API
->>    ARM: vt8500: Switch to new sys-off handler API
->>    arm/xen: Switch to new sys-off handler API
->>
->>   arch/arm/mach-highbank/highbank.c | 2 +-
->>   arch/arm/mach-imx/pm-imx6.c       | 6 ++----
->>   arch/arm/mach-pxa/spitz.c         | 2 +-
->>   arch/arm/mach-sa1100/generic.c    | 2 +-
->>   arch/arm/mach-vt8500/vt8500.c     | 2 +-
->>   arch/arm/xen/enlighten.c          | 2 +-
->>   6 files changed, 7 insertions(+), 9 deletions(-)
->>
->> -- 
->> 2.39.2
+> diff --git a/drivers/edac/fsl_ddr_edac.c b/drivers/edac/fsl_ddr_edac.c
+> index 7a9fb1202f1a0..ccc13c2adfd6f 100644
+> --- a/drivers/edac/fsl_ddr_edac.c
+> +++ b/drivers/edac/fsl_ddr_edac.c
+> @@ -338,11 +338,18 @@ static void fsl_mc_check(struct mem_ctl_info *mci)
+>  			fsl_mc_printk(mci, KERN_ERR,
+>  				"Faulty ECC bit: %d\n", bad_ecc_bit);
+>  
+> -		fsl_mc_printk(mci, KERN_ERR,
+> -			"Expected Data / ECC:\t%#8.8x_%08x / %#2.2x\n",
+> -			cap_high ^ (1 << (bad_data_bit - 32)),
+> -			cap_low ^ (1 << bad_data_bit),
+> -			syndrome ^ (1 << bad_ecc_bit));
+> +		if ((bad_data_bit > 0 && bad_data_bit < 32) && bad_ecc_bit > 0) {
+> +			fsl_mc_printk(mci, KERN_ERR,
+> +				      "Expected Data / ECC:\t%#8.8x_%08x / %#2.2x\n",
+> +				      cap_high, cap_low ^ (1 << bad_data_bit),
+> +				      syndrome ^ (1 << bad_ecc_bit));
+> +		}
+> +		if (bad_data_bit >= 32 && bad_ecc_bit > 0) {
+> +			fsl_mc_printk(mci, KERN_ERR,
+> +				      "Expected Data / ECC:\t%#8.8x_%08x / %#2.2x\n",
+> +				      cap_high ^ (1 << (bad_data_bit - 32)),
+> +				      cap_low, syndrome ^ (1 << bad_ecc_bit));
+> +		}
+
+This is getting unnecessarily clumsy than it should be. Please do the
+following:
+
+	if (bad_data_bit != 1 && bad_ecc_bit != -1) {
+
+		// prep the values you need to print
+
+		// do an exactly one fsl_mc_printk() with the prepared values.
+
+	}
+
+Not have 4 fsl_mc_printks with a bunch of silly if-checks in front.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
