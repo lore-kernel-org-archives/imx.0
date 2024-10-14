@@ -1,255 +1,143 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A2417C227
-	for <imx@lists.linux.dev>; Mon, 14 Oct 2024 11:36:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5071E4AD
+	for <imx@lists.linux.dev>; Mon, 14 Oct 2024 13:16:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728905787; cv=none; b=tDVAARB4krU53Y8atib3dKvh5Kbvjw92gQsb25nPWVHF2vT6sS5zjZ4gzNwdFu1h78ogAFG9U0fBAlp7D/iphZvLXZ/pKYZb2ham4c1edgseq11hrP8RED8QycYCod5ZzdAzHLD6tQmgBe5k+3ifj9ZkZe0FIlr1IMLIULlVuYI=
+	t=1728911800; cv=none; b=i83ErIlBbod9mrbWNvG+jqANrc3N6OjokdEtNJhr7j5lVO4m/jZLsi6eUsnbPrb5rpLt4jo6+rXK+S6HczblkLoyJAJVtpNyWWDSrJq5iTekhgTqnjBDAJY34n936qu6wZmuQipblgtOSVrbNA5JTsdIg3QgNfeyD9bwAv3e8Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728905787; c=relaxed/simple;
-	bh=SXHKxT2y7Z7lNf5pYB6RCgpmwrOCpynfldpInI1bKIo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HpVLSrWF8Qv5rq8AbdnK4pLubhiWNLT2AxKIk6Ntrg3UTTlxuPNSuFED89Wdug/h/Lqmo2Cua12wOJbkzVAi0pC9LAneDzICOnlX/mJ9wv7B77GAHB1t0cNwxZg3cQqaZUuDu0Vd4E8NBTM8vtEeojSftLjXtyBvzxlAAvxIOME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=U2U9gKZH; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1728911800; c=relaxed/simple;
+	bh=qe08cPMfzQajnQupPuyS8gl/j/iYhFZGr01Yq9ms1Ow=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CNqK5VBDDGGp/Ct8zoKmSOM2jfv5YEPQxZEnu/fJfTh7O/VtjkotoW1kEAbSt8/kfFfVp0KX6oD8h7FLnIou+vcKfwlZexGT7GXO1VwoP25qeuMZ7DpFEU1hgQq1ghbazhi2zGN78vvgnRgskITdbgtA1Va0lEMfOTjPpis05oA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RH6zYvuV; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="U2U9gKZH"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-539e4b7409fso1961829e87.0
-        for <imx@lists.linux.dev>; Mon, 14 Oct 2024 04:36:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RH6zYvuV"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-42f6bec84b5so41597555e9.1
+        for <imx@lists.linux.dev>; Mon, 14 Oct 2024 06:16:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728905783; x=1729510583; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TbTXzF0osqbJDrE5clHyzGt3K+Yl/D9mRlBFQz2gB+k=;
-        b=U2U9gKZHaiwG7A7iga6T1bOk8VbKUgN78K0KicEfsehB34dNKhU89RpqD+ACmdQNfc
-         yecueUDWBnaIvm4OUtA28fGL2U0nSNAEAX5nP6e7lPkUnUXIKBDWQP1m7AZwHzCJCznl
-         vF0Zw6jx1iL+Yh2WYUOPZRq0MT38dLJT6Yld78qjJ+CgKyqUING4KBTI/9NQGIS+cp+y
-         lWPYmV7nbBTXv0Bjc2gYhBenYQHbfAWYg7aOe+vpM0EZMsT/NakTh95RJzNY/N045EpC
-         02iKH0N4XfxLGAFqPBow7HPIbttDsBfdGF1WvClulvH4EwdvEzAf4Efg3sp9AeF22HtT
-         zPgw==
+        d=gmail.com; s=20230601; t=1728911797; x=1729516597; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qiu63abS+lcmc+QEZqAra0R6AmKde2YbO88Y6AxKGhw=;
+        b=RH6zYvuVGi7XkLvEiq10J5RKn/EDmEsCOaMJy4/g6WAPjE9hWivxzWLcih3IQbKavD
+         pxs+h+Epc7SR+Y5uMS5+KJtxay5UHH9hoRfHdfBa3KPtg5lBq0SG0Qy/g4mjaPirqmXr
+         RKqTVD6b/7b4uO290TCM8g4hFPrwUg06nWOKqotplOkORIa5yd9aBxUpt4Nrx9sIBQTD
+         3slrqYyPpeoFUSztNJtdMBI3cC7uaYYfIxfqOUF5EtPciWOLCTQPezl3weLE8fRkAVIn
+         4EczotwKLHOsljlfLQX53YyL5gWD4DE8bF6cyu8IE1no+KPyqfgIexuqBXgif4SHvKYp
+         vB1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728905783; x=1729510583;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TbTXzF0osqbJDrE5clHyzGt3K+Yl/D9mRlBFQz2gB+k=;
-        b=TOrWNB1FgcsA1yMjHK2WwQj/G+RX9afRllYO+aDM0OqD4mibSi7pwJrFtT7z1RTEg/
-         5j8F0dHt26Lem3oEV2qslxne3d0lGnAXbPXS1yBByJflLBL0KO4FQmI8dLaTFGPbJV/M
-         D6qp/OILdeyE7PKRB+h/lX8QHcgGDZMzWJROawxiiuWu4WifYgTO00YxKYkcNYhwfDnI
-         UTKPYzC5DFWVRlcTe6lEmeOXxIX3K0E2BctIKx7/QqO5vilx+RQKFfSmFOXEe+9k4Bs6
-         +JQj8uULNE1PMT3kx8GxP5mmDBfedboxm49O4IHeYMyN1ciLM1WlSMKCPycOOlsAnnun
-         w/+A==
-X-Forwarded-Encrypted: i=1; AJvYcCXdwnzXIsspTjBKeydc8ZB7udFO7O6qZ/5fYVz08wmy6K8EKvNVC5YuXkKG4A0XXd9AW8w=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyV76D5Gwua42OznlCf3mXpUkCQzTRaGQB2VpxTHAUpshSsqwmp
-	bpv15zPXEdE1CWR36wIqWEoRBCdGBjCWhsh8bQK9cHAsQB2P8gTqXi4DjX2urDA=
-X-Google-Smtp-Source: AGHT+IHxzBuSXYdsI7gy+YwHTvuSjC2W0gKjQgcsdxMHXJdB25sL8phB2jb/do78k4so6lsJSE68rQ==
-X-Received: by 2002:a05:6512:31d2:b0:539:e4ad:8bab with SMTP id 2adb3069b0e04-539e4ad8e8dmr2509315e87.16.1728905783155;
-        Mon, 14 Oct 2024 04:36:23 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-539dd4273cbsm1216279e87.299.2024.10.14.04.36.22
+        d=1e100.net; s=20230601; t=1728911797; x=1729516597;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qiu63abS+lcmc+QEZqAra0R6AmKde2YbO88Y6AxKGhw=;
+        b=AZGgqa8hVL1+yB7bM+GWanJtwxAw+66wHDW/moSh1qNAqJ54eNRqECenUpAMsaPZrn
+         ulLiFqm5ob50F3dIhT8cSu/Ay05wZqxtL1D63sfuxcKBhzb+NWXNlcfsqSOmkrI00qIc
+         n9RvRuZgyHwptdMfm6rGxPInwTlapC6WfsiwYXUSY/Njuj1LBvVwtX9fnAnG5WzlrTVh
+         5NVp5rOS3zPKzZC7ZlH3EEQi/ulElCCRKNwDVYa49B3HlqsXddJ0QcAJ35jodxiI+7f4
+         Y+5CPZa+cCcA7D7HfL8dc80+a/ErN/hXyEZymUj8Y7m+7KiKZNSnbdOUeCViI9572Bu6
+         8vAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWYwcjy03XuA2j4f1xJA29iaBPKgurJ7xtKh7aY8IFigtGpoIMRqGbpgKiWULSU3Ry0mBI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwLXn5HfQY6SAspFow9CCSxo8yiF+rMJDlOZu2tumpwY7tlM2iW
+	wwlHBhbUdhzlpY/tVCs+T8U0Ii7SFwFPDmCOECmVy3LCQB/auZ8M
+X-Google-Smtp-Source: AGHT+IFcCp01a+hQ3E59skIEwWoYCKjNqEuIfGS+TTlAmsmQTY97kQB30zIN0dZ9uu9D+NYoMH5lpg==
+X-Received: by 2002:a05:600c:1d0e:b0:42c:c080:7954 with SMTP id 5b1f17b1804b1-4311df55bc4mr96397855e9.30.1728911796745;
+        Mon, 14 Oct 2024 06:16:36 -0700 (PDT)
+Received: from eichest-laptop.lan ([2a02:168:af72:0:d130:f8ef:c6c1:55ee])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-430d748d42fsm153420425e9.43.2024.10.14.06.16.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Oct 2024 04:36:22 -0700 (PDT)
-Date: Mon, 14 Oct 2024 14:36:21 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Biju Das <biju.das.jz@bp.renesas.com>
-Cc: Liu Ying <victor.liu@nxp.com>, 
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "andrzej.hajda@intel.com" <andrzej.hajda@intel.com>, 
-	"neil.armstrong@linaro.org" <neil.armstrong@linaro.org>, "rfoss@kernel.org" <rfoss@kernel.org>, 
-	"laurent.pinchart" <laurent.pinchart@ideasonboard.com>, "jonas@kwiboo.se" <jonas@kwiboo.se>, 
-	"jernej.skrabec@gmail.com" <jernej.skrabec@gmail.com>, "airlied@gmail.com" <airlied@gmail.com>, 
-	"simona@ffwll.ch" <simona@ffwll.ch>, 
-	"maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>, "mripard@kernel.org" <mripard@kernel.org>, 
-	"tzimmermann@suse.de" <tzimmermann@suse.de>, "robh@kernel.org" <robh@kernel.org>, 
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
-	"shawnguo@kernel.org" <shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
-	"catalin.marinas@arm.com" <catalin.marinas@arm.com>, "will@kernel.org" <will@kernel.org>, 
-	"quic_bjorande@quicinc.com" <quic_bjorande@quicinc.com>, "geert+renesas@glider.be" <geert+renesas@glider.be>, 
-	"arnd@arndb.de" <arnd@arndb.de>, "nfraprado@collabora.com" <nfraprado@collabora.com>, 
-	"o.rempel@pengutronix.de" <o.rempel@pengutronix.de>, "y.moog@phytec.de" <y.moog@phytec.de>, 
-	"marex@denx.de" <marex@denx.de>, "isaac.scott@ideasonboard.com" <isaac.scott@ideasonboard.com>
-Subject: Re: [PATCH v2 5/9] dt-bindings: display: bridge: Add ITE IT6263 LVDS
- to HDMI converter
-Message-ID: <3vdvdbgf5mof3alc4o2ahvhgcxgvfvxt2kdi2rkypptegv3pw4@7bkkwliluml2>
-References: <20241012073543.1388069-6-victor.liu@nxp.com>
- <4a7rwguypyaspgr5akpxgw4c45gph4h3lx6nkjv3znn32cldrk@k7qskts7ws73>
- <07b47f70-5dab-4813-97fa-388a0c0f42e9@nxp.com>
- <dvcdy32dig3w3r3a7eib576zaumsoxw4xb5iw6u6b2rds3zaov@lvdevbyl6skf>
- <90e0c4ac-1636-4936-ba40-2f7693bc6b32@nxp.com>
- <TY3PR01MB11346530A53C8085561713B6086442@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <ki7zj2qvf64oi45kcnxl4maoxfvxtawko3vcdikg7dc5q6gw7u@5obyfvyylb3w>
- <TY3PR01MB113463A0E53DAA7481926219186442@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <p42wdftkplib2c3hrnobinhytglok53cunqywtbcdfcp4gg7cg@4oclcixgcxso>
- <TY3PR01MB1134657F6286446CE3A9D168586442@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+        Mon, 14 Oct 2024 06:16:36 -0700 (PDT)
+From: Stefan Eichenberger <eichest@gmail.com>
+To: o.rempel@pengutronix.de,
+	kernel@pengutronix.de,
+	andi.shyti@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	festevam@gmail.com,
+	francesco.dolcini@toradex.com,
+	l.stach@pengutronix.de,
+	arnd@arndb.de,
+	Frank.Li@nxp.com
+Cc: linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v5 0/3] i2c: imx: prevent rescheduling in non-dma mode
+Date: Mon, 14 Oct 2024 15:15:11 +0200
+Message-ID: <20241014131635.205489-1-eichest@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <TY3PR01MB1134657F6286446CE3A9D168586442@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 14, 2024 at 11:25:00AM +0000, Biju Das wrote:
-> Hi Dmitry,
-> 
-> > -----Original Message-----
-> > From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> > Sent: Monday, October 14, 2024 12:16 PM
-> > Subject: Re: [PATCH v2 5/9] dt-bindings: display: bridge: Add ITE IT6263 LVDS to HDMI converter
-> > 
-> > On Mon, Oct 14, 2024 at 08:09:44AM +0000, Biju Das wrote:
-> > > Hi Dmitry,
-> > >
-> > > > -----Original Message-----
-> > > > From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> > > > Sent: Monday, October 14, 2024 9:04 AM
-> > > > Subject: Re: [PATCH v2 5/9] dt-bindings: display: bridge: Add ITE
-> > > > IT6263 LVDS to HDMI converter
-> > > >
-> > > > On Mon, Oct 14, 2024 at 07:39:16AM +0000, Biju Das wrote:
-> > > > > Hi Liu and Dmitry,
-> > > > >
-> > > > > > -----Original Message-----
-> > > > > > From: Liu Ying <victor.liu@nxp.com>
-> > > > > > Sent: Monday, October 14, 2024 6:34 AM
-> > > > > > Subject: Re: [PATCH v2 5/9] dt-bindings: display: bridge: Add
-> > > > > > ITE
-> > > > > > IT6263 LVDS to HDMI converter
-> > > > > >
-> > > > > > On 10/14/2024, Dmitry Baryshkov wrote:
-> > > > > > > On Sat, Oct 12, 2024 at 05:14:13PM +0800, Liu Ying wrote:
-> > > > > > >> On 10/12/2024, Dmitry Baryshkov wrote:
-> > > > > > >>> On Sat, Oct 12, 2024 at 03:35:39PM +0800, Liu Ying wrote:
-> > > > > > >>>> Document ITE IT6263 LVDS to HDMI converter.
-> > > > > > >>>>
-> > > > > > >>>> Product link:
-> > > > > > >>>> https://www.ite.com.tw/en/product/cate1/IT6263
-> > > > > > >>>>
-> > > > > > >>>> Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> > > > > > >>>> ---
-> > > > > > >>>> v2:
-> > > > > > >>>> * Document number of LVDS link data lanes.  (Biju)
-> > > > > > >>>> * Simplify ports property by dropping "oneOf".  (Rob)
-> > > > > > >>>>
-> > > > > > >>>>  .../bindings/display/bridge/ite,it6263.yaml   | 276 ++++++++++++++++++
-> > > > > > >>>>  1 file changed, 276 insertions(+)  create mode 100644
-> > > > > > >>>> Documentation/devicetree/bindings/display/bridge/ite,it6263
-> > > > > > >>>> .yam
-> > > > > > >>>> l
-> > > > > > >>>>
-> > > > > > >>>> diff --git
-> > > > > > >>>> a/Documentation/devicetree/bindings/display/bridge/ite,it62
-> > > > > > >>>> 63.y
-> > > > > > >>>> aml
-> > > > > > >>>> b/Documentation/devicetree/bindings/display/bridge/ite,it62
-> > > > > > >>>> 63.y
-> > > > > > >>>> aml
-> > > > > > >>>> new file mode 100644
-> > > > > > >>>> index 000000000000..bc2bbec07623
-> > > > > > >>>> --- /dev/null
-> > > > > > >>>> +++ b/Documentation/devicetree/bindings/display/bridge/ite,
-> > > > > > >>>> +++ it62
-> > > > > > >>>> +++ 63.y
-> > > > > > >>>> +++ aml
-> > > > > > >>>> @@ -0,0 +1,276 @@
-> > > > > > >>>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > > > > > >>>> +%YAML
-> > > > > > >>>> +1.2
-> > > > > > >>>> +---
-> > > > > > >>>> +$id:
-> > > > > > >>>> +http://devicetree.org/schemas/display/bridge/ite,it6263.ya
-> > > > > > >>>> +ml#
-> > > > > > >>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > > > > >>>> +
-> > > > > > >>>> +title: ITE IT6263 LVDS to HDMI converter
-> > > > > > >>>> +
-> > > > > > >>>> +maintainers:
-> > > > > > >>>> +  - Liu Ying <victor.liu@nxp.com>
-> > > > > > >>>> +
-> > > > > > >>>> +description: |
-> > > > > > >>>> +  The IT6263 is a high-performance single-chip
-> > > > > > >>>> +De-SSC(De-Spread
-> > > > > > >>>> +Spectrum) LVDS
-> > > > > > >>>> +  to HDMI converter.  Combined with LVDS receiver and HDMI
-> > > > > > >>>> +1.4a transmitter,
-> > > > > > >>>> +  the IT6263 supports LVDS input and HDMI 1.4 output by conversion function.
-> > > > > > >>>> +  The built-in LVDS receiver can support single-link and
-> > > > > > >>>> +dual-link LVDS inputs,
-> > > > > > >>>> +  and the built-in HDMI transmitter is fully compliant
-> > > > > > >>>> +with HDMI 1.4a/3D, HDCP
-> > > > > > >>>> +  1.2 and backward compatible with DVI 1.0 specification.
-> > > > > > >>>> +
-> > > > > > >>>> +  The IT6263 also encodes and transmits up to 8 channels
-> > > > > > >>>> + of I2S digital audio,  with sampling rate up to 192KHz
-> > > > > > >>>> + and sample size up to 24 bits. In addition,  an S/PDIF
-> > > > > > >>>> + input port takes in compressed audio of up to 192KHz
-> > > > > > frame rate.
-> > > > > > >>>> +
-> > > > > > >>>> +  The newly supported High-Bit Rate(HBR) audio by HDMI
-> > > > > > >>>> + specifications v1.3 is  provided by the IT6263 in two interfaces:
-> > > > > > >>>> + the four I2S input ports or the  S/PDIF input port.  With
-> > > > > > >>>> + both interfaces the highest possible HBR frame rate  is supported at up to 768KHz.
-> > > > > > >>>> +
-> > > > > > >>>> +properties:
-> > > > > > >>>
-> > > > > > >>> No LVDS data-mapping support?
-> > > > > > >>
-> > > > > > >> It is enough to document number of LVDS link data lanes
-> > > > > > >> because OS should be able to determine the data-mapping by
-> > > > > > >> looking at the number and the data-mapping capability of the other side of the LVDS link.
-> > > > > > >
-> > > > > > > From what I can see, data-mapping is specified on the consumer
-> > > > > > > sink side of the LVDS link. This means it should go to the bridge's device node.
-> > > > > >
-> > > > > > Then, I won't define data-lanes, because data-mapping implies
-> > > > > > it, e.g., jeida-24 implies data lanes 0/1/2/3, see lvds-data-mapping.yaml.
-> > > > > >
-> > > > > > Please let me know which one you prefer.
-> > > > >
-> > > > > Assume a top level use case where a user changes the format from
-> > > > > JEDAI to VESA using On screen display or modetest(if some one adds
-> > > > > support for lvds-mapping) then setting of the lvds data mapping should be dynamic.
-> > > > >
-> > > > > Maybe for initial version hardcode with JEDAI or VESA as default
-> > > > > and provide a way to override the host driver and bridge with
-> > > > > requested lvds-data mapping dynamically
-> > > > later??
-> > > >
-> > > > The ite,lvds-link-num-data-lanes property should be removed, it is
-> > > > not standard. I foresee two ways to specify the number of lanes
-> > > > used: either the data-lanes property or the data-mapping property.
-> > > > Granted that data-mapping replaces the data-lanes functionality for LVDS links, I think it's
-> > better to use it from the start.
-> > > >
-> > > > Frankly speaking, what is the usecase for specifying the data
-> > > > mapping dynamically? What kind of uAPI do you have in mind and what is the usecase for it?
-> > >
-> > > It simple just want to change from VESA to JEDAI, how do you change it with existing DRM framework?
-> > 
-> > Why do you want to change it on the fly?
-> 
-> It will reduce validation effort for LVDS and bridge driver for testing various bus formats.
-> 
-> By allowing on the fly, with single dtb, we can validate various bus formats.
-> Otherwise each dtb for testing each bus format.
+While running tests on an i.MX8M Mini connected to a TI ADS1015 ADC, we
+found that the ADC would stop responding to i2c requests because it
+would timeout after the bus was idle for 25ms. This timeout could be
+traced back to the rescheduling events in the i2c-imx driver. The
+problem is that if the system is under heavy load, the schedule call and
+the wait_event_timeout may be rescheduled too late to reach the 25ms
+timeout. The same problem may occur with other SMBus devices. Therefore,
+this patchset removes the scheduling calls for non-DMA mode by handling
+the interrupt events directly in the ISR instead of scheduling a task to
+handle the events.
 
-I see your point, but I don't think it falls into the uAPI area. Feel
-free to propose a mechanism to change data-mapping through the debugfs
-though. I think that's the best possible option.
+This patch will introduce some bigger changes because the logic for
+handling events in the ISR had to be rewritten. Therefore we have tested
+the following combinations:
+- i.MX8M Mini with dma
+- i.MX8M Mini without dma
+- i.MX8M Plus with dma
+- i.MX8M Plus without dma
+- i.MX7D with dma
+- i.MX7D without dma
+- i.MX7D atomic mode
 
-> 
-> From a product perspective, this use case is not valid.
-> 
-> Cheers,
-> Biju
-> 
+Because we do not have any devices that use the SMBus block transfer
+mode, we were not able to test it. 
+
+The ideas are based on the RFC:
+https://lore.kernel.org/all/20240531142437.74831-1-eichest@gmail.com/
+However, the handling of events in the ISR is new, because further
+testing showed that it was not enough to simply remove the schedule
+call.
+
+Changes since v4:
+- Drop patch 3 use relaxed readb and writeb (Arnd)
+- Make multi master default again and use simple-master as property (Lucas)
+- Print a debug message instead of an error if read and write fails. An
+  error message would spam the kernel log when using i2cdetect -r -y 0.
+- Fix error message in read (read instead of write)
+
+Changes since v3:
+- Fixed style issues with checkpatch.pl --strict (Andi)
+- Add comments to explain the code (Andi)
+
+Changes since v2:
+- Add Acked-by tags from Oleksij
+- Renamed i2c_imx_start_read to i2c_imx_prepare_read
+- I did not add a Fixes tag because the issues from Flavio have a
+  different root cause and are not fixed by this patchset
+
+Changes since v1:
+- Add Reviewed-by tags from Frank
+- Add new patch to use readb_relaxed and writeb_relaxed (Frank)
+- Update commit message for patch 1 with some clarifications (Frank)
+
+Stefan Eichenberger (3):
+  i2c: imx: do not poll for bus busy in single master mode
+  i2c: imx: separate atomic, dma and non-dma use case
+  i2c: imx: prevent rescheduling in non dma mode
+
+ drivers/i2c/busses/i2c-imx.c | 370 ++++++++++++++++++++++++++++++-----
+ 1 file changed, 320 insertions(+), 50 deletions(-)
 
 -- 
-With best wishes
-Dmitry
+2.43.0
+
