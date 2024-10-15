@@ -1,208 +1,148 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2065.outbound.protection.outlook.com [40.107.104.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841191B395D
-	for <imx@lists.linux.dev>; Tue, 15 Oct 2024 16:58:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729011514; cv=fail; b=N8bMT1ZFna+SVoGH22FrSggooOeOqws/PpZ2gd8xO/cov05FiD4xeHFmU0R47Dl52hxEgpB+KXgyj49Ns1Sa2vi1nVqtntI1awcnQe5krJbv3QyXZnP6lJD42FwHGxOMWNsKTvd6X5k3e19RI2dFy9UOtTwKpHD9rsmwyPRHRik=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729011514; c=relaxed/simple;
-	bh=mUr90TeLgR/uCobxGMSnbcYQ/KqDbhwA6QI4jjnfK6c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=qVBbsUwWkLEohNCFJFw5n+KcGuNH8x9SLJOYeNDZgW94UA9gSzEsiYPtbD1W7O4Qdcem+bthlmmqK3yxkzBDLgdUbln1sbHJwUyL7DjXFA8iPAvam5rQnMZxzs1C+KtPt5U877lVS7YJgaWpsEHhHSBUvorqe6OKQqZlW73PUAY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XTCoOWFa; arc=fail smtp.client-ip=40.107.104.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C681FAF08
+	for <imx@lists.linux.dev>; Tue, 15 Oct 2024 17:31:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729013473; cv=none; b=PekyvUFe+QD4wgiQwR9w/U7rMCnvnP0bUOi+UhP8pYrvCUMuZJxnwjCk5oQndxUQfSp+lBJAUa3UsNwGxCL1QCLk5qujuxJau43lmIQQeZQ/+KHCsrJU+S6ia4EFqIECC26Pzx2EBsIX4sIzhEJx7p0gp2TsmYIOmeqnOuLWtXE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729013473; c=relaxed/simple;
+	bh=Nlkt2Fthyuj+02wChbrIoEHBospBClzz0I96zymXtIg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=fOjeNeg3/VsXMiolIMAFz8QU70JElvfn/xbgz4EFDFf6/3T7EG9DXEnZwkH75yRQ2hJbJ7RszEUsiZLg0Nlu7EmsDcsrnurY6isVdUI+1DerN+lXeb7b/T+yYXpPdEmFAefIW14++a5UmpstNsIRi2e4snCXiT4hEYomCmvERSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=EUMmOnxw; arc=none smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XTCoOWFa"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=C0ME/AtqwC2ReN5rBG3fEIhYno6ML3luS5H023Fg3r1f9oKIRqyg7b1Z2csTvFwqEW6E9iAHDFpYR1HRlfTbGEFwrUsZwNxa3ujgPV4+C4C3s/fVnSApRB5boA4zVLMM1j42gr5GD1VDsclgmuHQo+bK/7pCu/1hMamhpd770khqMMorycKu6bheg/O/zEGpQ/n7CqhpvfxpF9z63IIILe8xi2+OAeZKirovIr1slGHCABcgsVXbioboH3u29HV7EcPFWm8SbZPvTTopCQQtUPJ8SwGEO0spX9S1lHogH1a6ES4FZqsQ5o/ekTOu0NdZktuDgV3IBCsQ5+u7lJad7A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=E5Mq8EaQWcWqM5uqCN4TI82PbONubJ6vNR5ZK/3YJ7c=;
- b=wKVCcxzrWMSdq+UoiHCAuNfj1C0Q5wcyfXFegAhkbRFf4MC/iKw1lILmbl2yAShJpbFHA3T+FBuGRQF+Ooz1xnyWMB/wKD+HjhvariGouo1ihN1TVj6xgEep3hrHvCK2yOrZHnQBSmpB/CqDB4DU1gSzRBi3Jaxo9r1QmmeADni/n0QyFkN1NLeOltpH1K4F+VX/lyvcYBuR3IW6G5eGQWb4FQvZu1nAts/jdbYor2kRZkzZU1lgstbNwdIoSgn/luyoyPgU+jrdu9POlIhFuFUxd6JSWcUEToGUTaDeEuaoR7I6I0nOEnZPAiFXK/63m8JyN7CzTsRgqT/zmSqEww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E5Mq8EaQWcWqM5uqCN4TI82PbONubJ6vNR5ZK/3YJ7c=;
- b=XTCoOWFamzpV8jfB+s67y03qL5sNJUoovbXBbr/th6KvwHmoaDWsIM7AIhNEYF9jXABauooIgXnUEEd76kPxzDXmillVz8XO02F9x+Z5FtiGpHdudlZZrF64qFLkJvI/XCZFDpAUgjPawUDQHJ3vsjFH74RyXBkcdU8/gxnwcv1o2RAwZGjqu0wX4F/Gte/VxpD9Oh5qH/kL9HLe255wzECmlptnUch/QcvrIq/qH9HRRZK6Eq+qlTQhnM8dqp3fIzAj15Zt+ir43tO9UDtbTbwZtVpxUOhx8uPHJRlJ105aSdGAmCJb4mIx2+Pb1wMgYT1UmhQH/UgX5avR8uhPrQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by GVXPR04MB10828.eurprd04.prod.outlook.com (2603:10a6:150:227::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.26; Tue, 15 Oct
- 2024 16:58:28 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8069.016; Tue, 15 Oct 2024
- 16:58:26 +0000
-Date: Tue, 15 Oct 2024 12:58:16 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, vladimir.oltean@nxp.com,
-	claudiu.manoil@nxp.com, xiaoning.wang@nxp.com,
-	christophe.leroy@csgroup.eu, linux@armlinux.org.uk,
-	bhelgaas@google.com, horms@kernel.org, imx@lists.linux.dev,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v2 net-next 11/13] net: enetc: optimize the allocation of
- tx_bdr
-Message-ID: <Zw6fKHOXbQsoV4MV@lizhi-Precision-Tower-5810>
-References: <20241015125841.1075560-1-wei.fang@nxp.com>
- <20241015125841.1075560-12-wei.fang@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241015125841.1075560-12-wei.fang@nxp.com>
-X-ClientProxiedBy: SJ0PR05CA0105.namprd05.prod.outlook.com
- (2603:10b6:a03:334::20) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="EUMmOnxw"
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4605674e9cdso35207221cf.2
+        for <imx@lists.linux.dev>; Tue, 15 Oct 2024 10:31:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1729013471; x=1729618271; darn=lists.linux.dev;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Nlkt2Fthyuj+02wChbrIoEHBospBClzz0I96zymXtIg=;
+        b=EUMmOnxw6q1N1zT09/zDRe3R7Uaw6TmbNZMXkUVj6aZhKXCdi/k5+aTRHzNtjo+kNi
+         iaT6qkK9renLNTfjAr3hziRH9P8VG2tSDHmo8lTEN5FWDXrF5n0Yhdzx+GTWCdSz51Y+
+         BMfFa/zu51D5fSho3V+Jz99GXsnVXLYmMwwcTAl01LYtMk3y+VAVStIwhMtiQ5c7d8/x
+         WMj9K9Histpo3F6h4Wgz3+Bz/xS0SQDHD6aRZBgs+trzRxovdTKUmKPAckAsLUf86bSX
+         4NksN9Se/zhCyYincJEx7BgFu5f57uNKHHkG5Ufrifv400BkQ6xLivBHzvOCL0TKJRDM
+         ++lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729013471; x=1729618271;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Nlkt2Fthyuj+02wChbrIoEHBospBClzz0I96zymXtIg=;
+        b=f9/yXeCzX/36Pe79nBWYV4Aalnb2c98QfM8JuvFc5Mykwxuu1znA2fTZOBm6WBDw5D
+         lVmNPfjohokiY49sV//Nd9lSk6P7smhJNmNtV/my/tl3s3A/HBJbBKzIgVvhnwBs0uGJ
+         fGSkv8N/YrbGdb8rsH3wKdyIdWi13Cap8OK0Q2fnbOXNgVOfgX/ng6hHtwlKLRu47eqa
+         269wMm2hRPgz3I7xpJ/W2qcaGTILeSYJ/vD1K1qY5p9fl0+HKMLzNoGqprMikMKxMXKI
+         Rf2+UmdBLtSQkuB3+cnmaGcgccV2Qz6hb+pymEz2fURCiwzvmHftXs+oDPrnHrByrqaJ
+         XJxg==
+X-Forwarded-Encrypted: i=1; AJvYcCW6SA0Fj81RnUmi+K8cg7l0RisUzzioh8ODo6Fmv9uBvy2NSMg+xJ0KeBceTklcl9aGbJg=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx8lVF9N81NVOV4Po7QDonczeTgD7HSvCXz/afkpwSuK8HuzlZF
+	5ux41j4iSyEnFAKQXVUuqsxCQg9MJCwbgzww0oMkdw+cnzLoESYqajehEGHbFWg=
+X-Google-Smtp-Source: AGHT+IHQTEqtyG1hqwhDEXmkug0vsLn7tK0TUCZGlPkVwJk5Fmx3FpOukVPbin+a6nZZiv9VlOtyKA==
+X-Received: by 2002:a05:6214:33c3:b0:6cc:1dd9:296 with SMTP id 6a1803df08f44-6cc1dd9048bmr55656576d6.0.1729013471113;
+        Tue, 15 Oct 2024 10:31:11 -0700 (PDT)
+Received: from nicolas-tpx395.lan ([2606:6d00:15:862e::7a9])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cc229245f1sm8990646d6.57.2024.10.15.10.31.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Oct 2024 10:31:10 -0700 (PDT)
+Message-ID: <c31b33f9c4c0a42e66249e2a108f4eadaf105ce2.camel@ndufresne.ca>
+Subject: Re: [PATCH v2 2/2] media: imx: vdic: Introduce mem2mem VDI
+ deinterlacer driver
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: Marek Vasut <marex@denx.de>, linux-media@vger.kernel.org
+Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>, Fabio
+ Estevam <festevam@gmail.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Helge Deller <deller@gmx.de>, Mauro Carvalho
+ Chehab <mchehab@kernel.org>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Philipp Zabel <p.zabel@pengutronix.de>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Steve
+ Longerbeam <slongerbeam@gmail.com>, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev,  linux-arm-kernel@lists.infradead.org,
+ linux-fbdev@vger.kernel.org,  linux-staging@lists.linux.dev
+Date: Tue, 15 Oct 2024 13:31:09 -0400
+In-Reply-To: <8aea6cc0-10bf-48b8-add9-eb3f1caa2d66@denx.de>
+References: <20240724002044.112544-1-marex@denx.de>
+	 <20240724002044.112544-2-marex@denx.de>
+	 <5e5fba4fd6c3c0c9df23697bd328367e5fdfa923.camel@ndufresne.ca>
+	 <8aea6cc0-10bf-48b8-add9-eb3f1caa2d66@denx.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GVXPR04MB10828:EE_
-X-MS-Office365-Filtering-Correlation-Id: db91f4a7-ada5-4b70-e2d5-08dced3a9614
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?pQZTAcpBVe+kuZUbF18LBhqzJIsg8RVvWMDkuHwUxcjV9f++9/478gpFWw8t?=
- =?us-ascii?Q?9Q9EsDNPDeZeEaSyU6yGwYJ9hU9gHPX0ibzwXGc3bbXZACHBgjIMoRIwKz7F?=
- =?us-ascii?Q?l4otpcKLXg5umlDqWQafBMZ8nzM4oUbWP8dsfnM7nPo84cV8+TkHqF8hUrcs?=
- =?us-ascii?Q?vNP94G61m2oe2QXryhLaBqots2YBzO/LvFxXcO9BYQSU4WLrOE2vACh36W07?=
- =?us-ascii?Q?I9mn0QVSF8OQMnuAmXSgApCyAXUedJhP10ttBnshzp82HB+2H8xN6ErtDWr7?=
- =?us-ascii?Q?Pd9S5mknJmNVRM/K097G9iWEQuO7SvYZ3cdExZ47ttgok9p+RbJvzOS3nT8B?=
- =?us-ascii?Q?RyPIDfUYmK5PGaS+zWdeK5KMknI/AHMF9UvjS8DwxpeQ9JNrinjODzPMtkSj?=
- =?us-ascii?Q?yVIwhRMeJ2XYbYAs5VfxBVAmcsD1Y4VZ+JyN2qjjwW8wZwdc6x5wt5aiSPST?=
- =?us-ascii?Q?p1tS8TUEUrg9y8da1+w4Yv9k2+iMQEC1aFCZG4EWN6keAHUEP1xD9YEEiX1h?=
- =?us-ascii?Q?9lct6sod7Qem9hDDZ2KBM7lxHkgv4hguk3mX2pc/QDdGuUziV4Thwe+1pk3l?=
- =?us-ascii?Q?4hQfEPsihhNREEeFKk2nyBb0SghYChvKP3rd6hcjwg0sks3F7RfLAqMCM93V?=
- =?us-ascii?Q?UjLk3Eh6XtuMR13cz1LWqEveKaQt4lRD5HuNL7+INJmWJvGY/sSp7kpXPYZj?=
- =?us-ascii?Q?3RVhRKHKvBwJrsggBmYjONYAkSQmNkZvmipcObqtF/gSnVpLHQfg/luAyyqr?=
- =?us-ascii?Q?iKWJyJ4SPPlTrA3BYQDvVEUWTjL7LQHHX7x/yDjg6wV5bAXUhaBOapHtTl0R?=
- =?us-ascii?Q?AuskI8T/md8sKs0MK3tLLydhkjnOQaHakmWvSgZybNWTMWDtIfvb5e+hOCQP?=
- =?us-ascii?Q?8eyPH1XhPpqC2UbPy7Dy/UpVu5YzPMJQ4F3YdonMeyZIYy9rX1tfXgObX20+?=
- =?us-ascii?Q?kcl0OadATBEj9ZxAJFU5PV8hJiJ2iL3aWcQkHr+yf4HvF4hGAeoJg64jE4Mu?=
- =?us-ascii?Q?mj3OXJwbx433Jz8kVoAwi0BD8XiZw1l2wsCmfzo8d+2ilv2merC4B0lCP91r?=
- =?us-ascii?Q?kAdknlhncnKAg4YI9pJRX1n69VXQyN+lrGMHh7OrF7lMW0DquOmGi1kQcRFc?=
- =?us-ascii?Q?w0aDDhtuJfDb5el74/iTHe6Mzq8T7sUjvKEAyn7BTZyqZGMFgvzrsiPADhSy?=
- =?us-ascii?Q?C17HEjgoDfa+Rv/fTAgs5XfEF7Z/Uk/uJA24bSL5BuwcN650OPkCLai0a6dZ?=
- =?us-ascii?Q?jpm9NbxdtFK9azaEAScLl17HIhQWPAsTPvTspfknWsSDUttEuG/V0WsXFMT8?=
- =?us-ascii?Q?INXoD8wnTQOYuqpRgmonOPYc5Aj1ZY1HZPekHV7wozerUw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?4Br0HKFPaHg91cQirdhubgD95KSCv0VQIrquOb2O4dvjtUH2nMpnGCwsxJC+?=
- =?us-ascii?Q?lIImql+L3jcgmKNQUL7nK8cmAQQC1GUkTj15utBHtemofSm58albC7Z7lukK?=
- =?us-ascii?Q?SAmSd0qGzU0v8prkaOcATumGUN+E74S35t/vTCJanfTgtywkkeRLZ4d4h5dY?=
- =?us-ascii?Q?w5QShD2cDRFrKg6msaaGB7NrSu58GMaGSax8KsG8AKSJwP51fgPA2+QW/X0y?=
- =?us-ascii?Q?atP3bdpJY2oO3d7ww+C8qns0jTR+zoMBn+o2y3oa/efv2uXuyRsoOnShLLKG?=
- =?us-ascii?Q?XN8+93MVHxjIDapPvUjEF+TH4CtUmdSHW0wxXQVSpipHpVJHCXGuTlM/Scrd?=
- =?us-ascii?Q?fTwzk0stGjhVE214X4LMqiZh/xJLK0PqsU/0l+yUvSah/IBXZ1hFndAQayX3?=
- =?us-ascii?Q?hcWhRlBXKvv7kaSJLTJ4N1qCFximTGURy7ZK2KJpa4akemqMED73g7bM+xLI?=
- =?us-ascii?Q?s+gm8DvtDsJK/UDuAelIA2Z82HnrxzOB3M2J4cEUziQw+Hrq/7oJU2lB9BwL?=
- =?us-ascii?Q?/tX+a4MaaGF9Ns/zXKOpZHvVJy7QhyRteOJIINLLR1thJ9ps3Ugu8X9El+RX?=
- =?us-ascii?Q?ktdjoEoXBGM0Y1PkrlhzfcUc5iUxvIUJJmc6Q2hlI237BHvQPPNnC0QPEi2o?=
- =?us-ascii?Q?JbblypBm9qDfpOh9HlO8o10DzMZsfsDWVi9TH++xr/ZVWuw6TTmms9Sl/dSG?=
- =?us-ascii?Q?xAw+/SPZ2zItMhSUjqpWaypIuTOIb4RGcm55SonORRA2ivpx5PB1bdHU+MZK?=
- =?us-ascii?Q?uecjiqkvsc106cDSR8upEiyISGEVJx2HJ+oXsGUrsD6HUT6Fvc7cb/TxOJ/H?=
- =?us-ascii?Q?K0BqqMtu982BE3+oMEcQfru9QB+qICrhaJ5vlmNsDw5pGSs8hPUsw9Do5tsl?=
- =?us-ascii?Q?gcqscK11I6r79kC8CJWTlqM5mJfTieIHvZBKpb/R4BswaWaqduHtazYe6e49?=
- =?us-ascii?Q?/PCKO9AB+CyLuJ4s/87rNTsJ8MZXlk3k9D0aA0pf0JYhPfKQAxNnQw54KaQk?=
- =?us-ascii?Q?wNGgnoZap8jjCuQ1Bj/zhpW/r4XtdHdQWWyHfVtjr9o47O8tpU2jwz8/VVmi?=
- =?us-ascii?Q?LGjLMZ53g0g8o7s9nzWfejR/xSJPtxC/lHWsMTi1AdKewdapEs8UqfXJrl2z?=
- =?us-ascii?Q?OSFNI7RjVjONuDTCQu+Gz79piRdhqW5FJ30N1R16RaMiyBlSdk8p0sMSXrUR?=
- =?us-ascii?Q?nA81ShCIYcXWNZ8nGLg5zs+6XXknfA83egwlcCkdJO3P41cBQ8wIApo8z5aA?=
- =?us-ascii?Q?TKPpkfocVetE0qIa/pL966aEf87ep0bF3ePHcwtHuiipyhfPICy7BiiFITwe?=
- =?us-ascii?Q?tq3cjEgQJAADVOSF1Y2U1fDr7wRImbp/YEDhBIoinnz3VQ7CeXKZJzpYA8qH?=
- =?us-ascii?Q?8LLMZojBe4lZNcbmEUYQxhyR1l1YKqA5bNFmdVhNU5jXHunJjCFsGLJizwlw?=
- =?us-ascii?Q?Dhw7T1559ZMpgcSwAMUbF95vXI3wJIpwdOdq93JNL5q/mEeklX9Gddie+NU1?=
- =?us-ascii?Q?CXvfGxAkegp73L9HLdd9a3YJaVhfzHdjpj70Awu15czpZWC525gztIjTt7Zm?=
- =?us-ascii?Q?ajT+RXvemFR8eSUx2Bk=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: db91f4a7-ada5-4b70-e2d5-08dced3a9614
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2024 16:58:26.3138
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Kvr7LiG3wfh2y6G891aYwwRskRBowdz6eeHomR/4ePQhvV4MXm1o5MzyATHWK/D4gKxB8puxDr1I7Xc4AR9/JA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10828
 
-On Tue, Oct 15, 2024 at 08:58:39PM +0800, Wei Fang wrote:
-> From: Clark Wang <xiaoning.wang@nxp.com>
->
-> There is a situation where num_tx_rings cannot be divided by bdr_int_num.
-> For example, num_tx_rings is 8 and bdr_int_num is 3. According to the
-> previous logic, this results in two tx_bdr corresponding memories not
-> being allocated, so when sending packets to tx ring 6 or 7, wild pointers
-> will be accessed. Of course, this issue doesn't exist on LS1028A, because
-> its num_tx_rings is 8, and bdr_int_num is either 1 or 2. However, there
-> is a risk for the upcoming i.MX95. Therefore, it is necessary to ensure
-> that each tx_bdr can be allocated to the corresponding memory.
->
-> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
-> v2 changes:
-> This patch is separated from v1 patch 9 ("net: enetc: optimize the
-> allocation of tx_bdr"). Only the optimized part is kept.
-> ---
->  drivers/net/ethernet/freescale/enetc/enetc.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-> index d36af3f8ba31..72ddf8b16271 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> @@ -3049,10 +3049,10 @@ static void enetc_int_vector_destroy(struct enetc_ndev_priv *priv, int i)
->  int enetc_alloc_msix(struct enetc_ndev_priv *priv)
->  {
->  	struct pci_dev *pdev = priv->si->pdev;
-> +	int v_tx_rings, v_remainder;
->  	int num_stack_tx_queues;
->  	int first_xdp_tx_ring;
->  	int i, n, err, nvec;
-> -	int v_tx_rings;
+Le lundi 29 juillet 2024 =C3=A0 04:16 +0200, Marek Vasut a =C3=A9crit=C2=A0=
+:
+> On 7/24/24 6:08 PM, Nicolas Dufresne wrote:
+> > Hi Marek,
+>=20
+> Hi,
+>=20
+> > Le mercredi 24 juillet 2024 =C3=A0 02:19 +0200, Marek Vasut a =C3=A9cri=
+t=C2=A0:
+> > > Introduce dedicated memory-to-memory IPUv3 VDI deinterlacer driver.
+> > > Currently the IPUv3 can operate VDI in DIRECT mode, from sensor to
+> > > memory. This only works for single stream, that is, one input from
+> > > one camera is deinterlaced on the fly with a helper buffer in DRAM
+> > > and the result is written into memory.
+> > >=20
+> > > The i.MX6Q/QP does support up to four analog cameras via two IPUv3
+> > > instances, each containing one VDI deinterlacer block. In order to
+> > > deinterlace all four streams from all four analog cameras live, it
+> > > is necessary to operate VDI in INDIRECT mode, where the interlaced
+> > > streams are written to buffers in memory, and then deinterlaced in
+> > > memory using VDI in INDIRECT memory-to-memory mode.
+> >=20
+> > Just a quick design question. Is it possible to chain the deinterlacer =
+and the
+> > csc-scaler ?
+>=20
+> I think you could do that.
+>=20
+> > If so, it would be much more efficient if all this could be
+> > combined into the existing m2m driver, since you could save a memory ro=
+untrip
+> > when needing to deinterlace, change the colorspace and possibly scale t=
+oo.
+>=20
+> The existing PRP/IC driver is similar to what this driver does, yes, but=
+=20
+> it uses a different DMA path , I believe it is IDMAC->PRP->IC->IDMAC .=
+=20
+> This driver uses IDMAC->VDI->IC->IDMAC . I am not convinced mixing the=
+=20
+> two paths into a single driver would be beneficial, but I am reasonably=
+=20
+> sure it would be very convoluted. Instead, this driver could be extended=
+=20
+> to do deinterlacing and scaling using the IC if that was needed. I think=
+=20
+> that would be the cleaner approach.
 
-Nit: Needn't move v_tx_rings.
+No strong opinion, in an ideal world all these hacks are removed and we do =
+a
+single multi-context / m2m media controller, that let user pick the path th=
+ey
+need for their task. When I look at the hardware documentation, you can do
+inline from VDI to IC, and having IC in both drivers duplicates the CSC
+handling. If you allow bypassing the VDI, then you have a duplicated driver=
+ and
+highly confused users. The fact the ipuv3 (internal) drm driver does not ha=
+ve
+the VDI already seems because the display controller driver is missing
+interlaced video support, but I could be wrong. Same if you want to support=
+ IRT
+(even though that is not inline, but using a custom memory protocol).
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-
->
->  	nvec = ENETC_BDR_INT_BASE_IDX + priv->bdr_int_num;
->  	/* allocate MSIX for both messaging and Rx/Tx interrupts */
-> @@ -3066,10 +3066,14 @@ int enetc_alloc_msix(struct enetc_ndev_priv *priv)
->
->  	/* # of tx rings per int vector */
->  	v_tx_rings = priv->num_tx_rings / priv->bdr_int_num;
-> +	v_remainder = priv->num_tx_rings % priv->bdr_int_num;
->
-> -	for (i = 0; i < priv->bdr_int_num; i++)
-> -		if (enetc_int_vector_init(priv, i, v_tx_rings))
-> +	for (i = 0; i < priv->bdr_int_num; i++) {
-> +		int num_tx_rings = i < v_remainder ? v_tx_rings + 1 : v_tx_rings;
-> +
-> +		if (enetc_int_vector_init(priv, i, num_tx_rings))
->  			goto fail;
-> +	}
->
->  	num_stack_tx_queues = enetc_num_stack_tx_queues(priv);
->
-> --
-> 2.34.1
->
+Nicolas
