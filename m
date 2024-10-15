@@ -1,32 +1,36 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E27D4C7E;
-	Tue, 15 Oct 2024 07:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C053F18BB88;
+	Tue, 15 Oct 2024 07:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728977411; cv=none; b=Ep9lNLodlmfdct8KmB3+UQfJ4gMmIRO5yheFWxNeBtJDlLN4ygpU2g054A0XXLlSK4NK8WVEhYTyvRxZvXU3M1EpPX4JWEt0W7ReWnF7ceAwUaatGMC9oth7oZdJoGsj9S8pkXHMb7kBUzyp+UlDnaZCcZKkwNrxuee3+eRUc6g=
+	t=1728977421; cv=none; b=Zt/uw3w3YmEuZuyOTplEfLG8aGjFB9Jcxi7X5l2qRzaTRw1SFD6Yq7hqgG9hMC7oCUc9VDedRs3vzYjlhneycv6gg6Vg2L+Sn9qQO3mpCvQZ+usxXuzH7DpdrM07DrFCFuW95ZR+DrlE8T99Oh43m2tHLkOsu/nwhCBbdes4cJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728977411; c=relaxed/simple;
-	bh=WzQng1jqigLHiW/ZeFs9Mk/VLb7dmk5XfaPiLi6P/U4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=H0En4a6/mEuNbIV7mA4RrWH3vD0sT8aCOeKvIwqFoLYAqSV5jsTMET4PWtvGjUQMWLJUyPWSRZBEdLUWvKOmlbZJ1r1oOQoLmnVnKD1zRJoxVfnQnUrDjK13/GIBw/Dqe47RAGRmAdcSbosKV05dYwyNMpZ3VIC2XEqLuof2LEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G/aMMY2R; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1728977421; c=relaxed/simple;
+	bh=keUb9CjekSjahuXcS0fp1hkqPH8WA5k0uSQIqftR4l8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=lKJFCU24wF9ZJgOajS6Gv2ATX6hyLmuN9PRQlCPF7k+KqJyLzElkkdNiML0HA7uNzzdyZ9kYaTn/ryeK+H9eRvMgJisA4ZM1qLeHb2h/1U2w8CQZ/rEwixBmmpHmdNC4e6PKBmhPewl4gixYNAZOuhuIGpjruqQvl2a11HxeBdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ta48acNc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G/aMMY2R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5810CC4CEC7;
-	Tue, 15 Oct 2024 07:30:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ta48acNc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 975B3C4CEC7;
+	Tue, 15 Oct 2024 07:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728977411;
-	bh=WzQng1jqigLHiW/ZeFs9Mk/VLb7dmk5XfaPiLi6P/U4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=G/aMMY2RTpSHa/d9iSlkbAP8/2+6vPMCQj7WcPtrsPpvFCOFje8w2wZwdz+e4wQiu
-	 Kp7Bq6TEHSUSsD5IpvX9ZK8mOkQEENGT5w0qlsCCBL5Mt6QibSOEFXs5FVsDLbuJUX
-	 cuJvFXopzldl1ywj+8eSw5aDrOuAa7q4a+KOxAHeMX0jHV2+3eINPuL38nigxOIW78
-	 6WJD9ZJeTb2zVlU8X7gi1A+EoXvTNx1jBpiusAg26WbwWs5yFjx4A6P6ekxAmwqXws
-	 DPEZGlNnx2OSiYnHgvH82/uyGMtR1xUJxW2b6L7cMAyARYp9IvWMSO7njdAZooskBg
-	 B8/XL1sUO8rlA==
+	s=k20201202; t=1728977421;
+	bh=keUb9CjekSjahuXcS0fp1hkqPH8WA5k0uSQIqftR4l8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Ta48acNcynUOpgmz3NbgHOdyKvRbF5kdZTeBYj1zR5EWlO/CWkDpGcAR7vaW0KLlo
+	 qAkRglYbA8OTOkt3Hhzw4++KYGVUXSV3NhpxOatcTIRPridmwpHPev3rppTCf6xIGi
+	 UQz4fgcUuYALT7yVtzCjJBkOWpGhvrtZ/F5ySDIHNZUH3Vhe8MzoLC//15pzUrx21Q
+	 UAEMQpgv/CLlluIryWb44OklhFOLmxO4SXPXaj+nayMwtDWc4W6ANKpMaejOSMcT90
+	 qYN1aZpf3Q+uP1WKxehU5iXCDsO+gzck9xfu7gsvxJqTrmMdb83QkG/NCwyKzMgruD
+	 THf1KiqTBKdrQ==
 From: Arnd Bergmann <arnd@kernel.org>
-To: Philipp Zabel <p.zabel@pengutronix.de>,
+To: Liu Ying <victor.liu@nxp.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
 	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Maxime Ripard <mripard@kernel.org>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
@@ -34,20 +38,24 @@ To: Philipp Zabel <p.zabel@pengutronix.de>,
 	Simona Vetter <simona@ffwll.ch>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>
 Cc: Arnd Bergmann <arnd@arndb.de>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
 	dri-devel@lists.freedesktop.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/2] drm/imx: parallel-display: add legacy bridge Kconfig dependency
-Date: Tue, 15 Oct 2024 07:29:57 +0000
-Message-Id: <20241015073004.4066457-1-arnd@kernel.org>
+Subject: [PATCH 2/2] drm/imx: legacy-bridge: add MODULE_DESCRIPTION
+Date: Tue, 15 Oct 2024 07:29:58 +0000
+Message-Id: <20241015073004.4066457-2-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241015073004.4066457-1-arnd@kernel.org>
+References: <20241015073004.4066457-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -58,31 +66,24 @@ Content-Transfer-Encoding: 8bit
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-The driver now uses the legacy bridge helper code but can be configured
-to get built without it:
+Every module should have a description, without this we get a
+build time warning.
 
-ERROR: modpost: "devm_imx_drm_legacy_bridge" [drivers/gpu/drm/imx/ipuv3/parallel-display.ko] undefined!
-
-Add the required dependency, same as in the ldb driver.
-
-Fixes: f94b9707a1c9 ("drm/imx: parallel-display: switch to imx_legacy_bridge / drm_bridge_connector")
+Fixes: cc3e8a216d6b ("drm/imx: add internal bridge handling display-timings DT node")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- drivers/gpu/drm/imx/ipuv3/Kconfig | 1 +
+ drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/imx/ipuv3/Kconfig b/drivers/gpu/drm/imx/ipuv3/Kconfig
-index 0ea1feb84672..acaf25089001 100644
---- a/drivers/gpu/drm/imx/ipuv3/Kconfig
-+++ b/drivers/gpu/drm/imx/ipuv3/Kconfig
-@@ -15,6 +15,7 @@ config DRM_IMX_PARALLEL_DISPLAY
- 	depends on DRM_IMX
- 	select DRM_BRIDGE
- 	select DRM_BRIDGE_CONNECTOR
-+	select DRM_IMX_LEGACY_BRIDGE
- 	select DRM_PANEL_BRIDGE
- 	select VIDEOMODE_HELPERS
+diff --git a/drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c b/drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c
+index 07a78a02a884..3ebf0b9866de 100644
+--- a/drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c
++++ b/drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c
+@@ -85,3 +85,4 @@ struct drm_bridge *devm_imx_drm_legacy_bridge(struct device *dev,
+ EXPORT_SYMBOL_GPL(devm_imx_drm_legacy_bridge);
  
+ MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Freescale i.MX DRM bridge driver for legacy DT bindings");
 -- 
 2.39.5
 
