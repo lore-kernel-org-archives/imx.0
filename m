@@ -1,68 +1,99 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9EE118BC21
-	for <imx@lists.linux.dev>; Tue, 15 Oct 2024 08:12:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C637A1CC8B1
+	for <imx@lists.linux.dev>; Tue, 15 Oct 2024 08:57:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728979965; cv=none; b=p3J5l+wdHOmgpUugN9IEJLayCo64ElL6K5jJA5zRqPo1tY/k7aN5b4fN2WT1W8Qqwev9kDdxJp9zWHXconwwbCnegzkvWC23Z+hmY/9Xhm1Vseq8sYM1+8MnQ3Qc7IB2Gk4SYU6JwKp2bQ5czXjC0jOPtSMfdTYGtB3aNTXKVn4=
+	t=1728982645; cv=none; b=PVh3Qef54zJWefnWInMr6nuyzhPLVM+qq/SJfPCNakkeIZu8mhYF5ClUM2OtaxH5TNMTtony4Ybow/Lk8baPEbg2NnCTIth4EN/W1EL8bCGM+sdDwjQWtmCyujx+kqZUeSx73Zzdp2orSPbkq149VBzcz6erowdxqNk+GRI+Ofg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728979965; c=relaxed/simple;
-	bh=e2+iFrOJzwzNfSbMrK1Gg5aTCjWbwMktcisESyQ/0Gg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TY5O7FjMo9/8f0XoFhTizDfYh5fu5JN5Z4Kbf0Rj/Z62lLLkAagFlo8ng12nhkUOiGpJpaRwW7egEmI4gZ897DA/zUS1iTOtuGopinDQTI3PwjlGpgL4azOuEoPnaEzcPn+YxCigjZzB09Z5YgD2OlVHxZNdsBTfNJeMMbidkfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=Wyb4/JxW; arc=none smtp.client-ip=220.197.32.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="Wyb4/JxW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=VnWpEMqsaiHx1UpbckYzGM7hHu3/g8tn6M+IPcoVc1s=;
-	b=Wyb4/JxWriALg09AHwSs3VPSyIISJ1nCkehabr0kVFDRIEEmT3hRLqEcvVdSJ3
-	2Qi+DXdQ9zE/ItF2nN1J2iTRTv1cuWmNFSiPNQwmc4WQtPHN7qLvphFkZf0CmVvd
-	F13zNkjxCAjaPCQHxFGenxCfN0+gngjM4U+x9t8mcPhCA=
-Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgD3ny3dIw5nQJgDAA--.7183S3;
-	Tue, 15 Oct 2024 16:12:15 +0800 (CST)
-Date: Tue, 15 Oct 2024 16:12:13 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Tarang Raval <tarang.raval@siliconsignals.io>
-Cc: shawnguo@kernel.org, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5] arm64: dts: imx8mm-emtop-baseboard: Add Peripherals
- Support
-Message-ID: <Zw4j3XOxhdO/dztA@dragon>
-References: <20240903091720.443091-1-tarang.raval@siliconsignals.io>
+	s=arc-20240116; t=1728982645; c=relaxed/simple;
+	bh=U6yQ/f3Naq0OsRV96BmYWiqs7sstzCIDACQi/JYJ5nY=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=cMqcr6V0I3mv/UwypjjX1sMg2okz/imw9WH/y27iU2q+cWjb6Gak+GQ3ipphMN7qRfIiPeqgSEVBvuO5Q5xkDW+FpsBaz7OCP2TiNotlC9Xcp21Hqe9YkBB6gFCryFQDpTDsoyYVFmdgAXBjbPqWmyn+1nxrptCkep0Q1ShkORU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 56AFA200CA9;
+	Tue, 15 Oct 2024 10:57:22 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 1AC7E2004C4;
+	Tue, 15 Oct 2024 10:57:22 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id DF572183DC04;
+	Tue, 15 Oct 2024 16:57:19 +0800 (+08)
+From: Richard Zhu <hongxing.zhu@nxp.com>
+To: kw@linux.com,
+	manivannan.sadhasivam@linaro.org,
+	bhelgaas@google.com,
+	lpieralisi@kernel.org,
+	frank.li@nxp.com,
+	l.stach@pengutronix.de,
+	robh+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	festevam@gmail.com,
+	s.hauer@pengutronix.de
+Cc: hongxing.zhu@nxp.com,
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	kernel@pengutronix.de,
+	imx@lists.linux.dev
+Subject: [PATCH v4 0/9] A bunch of changes to refine i.MX PCIe driver
+Date: Tue, 15 Oct 2024 16:33:24 +0800
+Message-Id: <1728981213-8771-1-git-send-email-hongxing.zhu@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240903091720.443091-1-tarang.raval@siliconsignals.io>
-X-CM-TRANSID:M88vCgD3ny3dIw5nQJgDAA--.7183S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUxCJmUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBBx5ZWcN2zvY+AAAsu
 
-On Tue, Sep 03, 2024 at 02:47:20PM +0530, Tarang Raval wrote:
-> Add following peripherals support for the Emtop i.MX8M Mini Baseboard
-> 
->         * Wi-Fi
->         * Audio
->         * SD card
->         * RTC
->         * CAN bus
->         * USB OTG
-> 
-> Signed-off-by: Tarang Raval <tarang.raval@siliconsignals.io>
+A bunch of changes to refine i.MX PCIe driver.
+- Add ref clock gate for i.MX95 PCIe by #1, #2 and #9 patches.
+  The changes of clock part are here [1].
+  [1] https://lkml.org/lkml/2024/10/15/390
+- #3 and #4 patches clean i.MX PCIe driver by removing useless codes.
+  Patch #3 depends on dts changes. And the dts changes had been applied
+  by Shawn, there is no dependecy now.
+- Make core reset and enable_ref_clk symmetric for i.MX PCIe driver by
+  #5 and #6 patches.
+- Use dwc common suspend resume method, and enable i.MX8MQ, i.MX8Q and
+  i.MX95 PCIe PM supports by #7 and #8 patches.
 
-Applied, thanks!
+v4 changes:
+It's my fault that I missing Manivanna in the reviewer list.
+I'm sorry about that.
+- Rebase to v6.12-rc3, and resolve the dtsi conflictions.
+  Add Manivanna into reviewer list.
+
+v3 changes:
+- Update EP binding refer to comments provided by Krzysztof Kozlowski.
+  Thanks.
+
+v2 changes:
+- Add the reasons why one more clock is added for i.MX95 PCIe in patch #1.
+- Add the "Reviewed-by: Frank Li <Frank.Li@nxp.com>" into patch #2, #4, #5,
+  #6, #8 and #9.
+
+[PATCH v4 1/9] dt-bindings: imx6q-pcie: Add ref clock for i.MX95 PCIe
+[PATCH v4 2/9] PCI: imx6: Add ref clock for i.MX95 PCIe
+[PATCH v4 3/9] PCI: imx6: Fetch dbi2 and iATU base addesses from DT
+[PATCH v4 4/9] PCI: imx6: Correct controller_id generation logic for
+[PATCH v4 5/9] PCI: imx6: Make core reset assertion deassertion
+[PATCH v4 6/9] PCI: imx6: Make *_enable_ref_clk() function symmetric
+[PATCH v4 7/9] PCI: imx6: Use dwc common suspend resume method
+[PATCH v4 8/9] PCI: imx6: Add i.MX8MQ i.MX8Q and i.MX95 PCIe PM
+[PATCH v4 9/9] arm64: dts: imx95: Add ref clock for i.MX95 PCIe
+
+Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml |   4 +-
+Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml     |   1 +
+Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml        |  25 ++++++++++--
+arch/arm64/boot/dts/freescale/imx95.dtsi                         |  18 +++++++--
+drivers/pci/controller/dwc/pci-imx6.c                            | 166 +++++++++++++++++++++++++++-------------------------------------------------
+5 files changed, 97 insertions(+), 117 deletions(-)
 
