@@ -1,179 +1,236 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2082.outbound.protection.outlook.com [40.107.21.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8750D19B3FF;
-	Tue, 15 Oct 2024 11:51:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728993115; cv=none; b=acTsufDuobd4fpnsLnIPl3e1wdqzAXHs8vc3oRi+kKRQNeekFcOrgJxC6Gj8PSyv6xA0El2rIZcQMGmxLF+XgQSUsYU4sGagat5YtnRhD/2J4jk0rVkzheyyxOlkZ92HBnt1im5CFJ+8cxYe2+vxH+AuHL0UXcCLs7LnLWESXII=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728993115; c=relaxed/simple;
-	bh=+0r1udq374oab/kn6p7coOzMnCmavq5jR+mo4tQ6GYA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UhL2OslBPCrVRW0ps/RC6yI7ob0mzopp3PmOeckx0DUhq4qGTM0gsH2fPXgkWX6vJ/ctR9vEnz8M2Tpj2et6Dqokwg4PQK55xK6jBJZQc4CQnZP/SJQM026jXUFPNBfDq+ZV4ioCpr/+yJzH3GkfQ98Frl5aDkkpHndT3q4Vcuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uuxSSGy1; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E6C1D90A4
+	for <imx@lists.linux.dev>; Tue, 15 Oct 2024 13:13:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.82
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728998021; cv=fail; b=gxIWKlfHLKbYMUWyKaDxmshvXZbBD89256pIcuLO9Eg5fhzkOOr0uW4uNfnJrYQLE0LUT4CL5yrqUmRPAc1JIoRrYvaxotOefMD54ylihtC6R31xdUA8My2MM/7phKwKXr+CA6sijpSFoiitpPHDwfag6AkIW/NgYwKiWyGITrg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728998021; c=relaxed/simple;
+	bh=xNuR7brCRFLc/p73luP0tIHoGPuxfb4+T9O4p9iVFAU=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=PqxTgcyfW6UZngVJA1gZgit34nMkh/ighCAbre9ufSZPrtOTVL1EEcekNZt48zqQsieyiPdH+JTSkZ09NPrLaJ6fvyDHZJaOGf6a7SzRNTAq9WSyOVIgdWY5hbDMxO8EWj2hyIB5ACOLoPpTHrU+Bz53yoZ1/y27zs/SRopoE6c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=A8SuP6l5; arc=fail smtp.client-ip=40.107.21.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uuxSSGy1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B67C4CECE;
-	Tue, 15 Oct 2024 11:51:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728993115;
-	bh=+0r1udq374oab/kn6p7coOzMnCmavq5jR+mo4tQ6GYA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uuxSSGy17yQd40mq1CMFBH0+Png5FUO3jmqpTArY/cCfntCc3p4S4IlIR3uUCDZCW
-	 gjLSb8K7riK3UiSnL4pqpXTVGHHOIpGjglogkp6UHgL9KuaPZDPq6XzjprxuVb7ncD
-	 P5FjMEbc/ONcSWxtqt8bFzTN3E1y0jiqb9fWx5hdZgFtx3AhumkZiWqwBrD3vj9Pqe
-	 pz4+DbnzLOm0trJr8I2CtUL7Ljow16KUgCwwwdPE+9GnGWWOgmKVyCVPpISLS5sdSf
-	 xmAKy5GkSQp6g2l2y+bibDNwwU+STvv4I1X2irKMELoiZhbsJsA7F+jnqZtW1AhEpJ
-	 Gylm7vPYIFxFg==
-Message-ID: <0c4d199a-ed74-4d44-a715-ceb498898ddc@kernel.org>
-Date: Tue, 15 Oct 2024 13:51:43 +0200
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="A8SuP6l5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cdhMVPPfI2RHU9r2qupK8jA3W4zPxju/FESQCv6t4E9E+gUGSRpXZrpiE28KGSEe3AChSOMn9cQWtBSXG4OxMeBNOgzpTd+aTFTZCEHqzDwGbdftEG0R1nxp8sdYq37pg6HqM5fzpF6rWWT5zwMARrds1/h6pib5cEt/IqRo71ZezXthZa68H/AuCvBZcU7+uLrBah7a4H99eNj25NT6PD9+vbUgSxzpiNMKuNz1/nkIy4Ve+dv2bmDfTdZLZuUV6gjEsaI1AkjmZYXtuY1tnO1IXQ5i/UZSh+wVt9UetcHw3k3FSIK2I/mYwl7xDLb9dQAlQjPS+EAgHmb2kcfDdg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=D87dY1jQu7dekKDZc0SO9JQX6BWM88bkIfMual7bpx8=;
+ b=XqzYt/NWQ29mcpnltg+1HxGKOMpmmJFX758znrmBUAShMKufY9lNY3naz7lcoLITbyzyuxnb9VeWPoBnV8Dxs84OJRdqlkoz12njNDYkUAo5+3EmsoZiyY0Ugj8MuIdlWAY1lmDbMupD2xj8nNmG5cvVTxJ7izu6KTFGumguTgkQPINxuVFgZFFZ51qEDEzDQRMZ0gngCSfpjyV4Cs4+dqZfzq9UkPGui1U9VOjDDW3f7IOZJSlGGGC8X07gMkJgpURlI+SrC0f5bpEqxEPZQ39dHf1yvWyoid1Z7hZ704i/A/eGCQPoclRjsGr0WJFwC0drVHtBbUQWqRHNs06xbQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=D87dY1jQu7dekKDZc0SO9JQX6BWM88bkIfMual7bpx8=;
+ b=A8SuP6l5EYbRiJiaWclZgkdti80zhAmIx1O7M1GLqHu07jwPQ/nVpUfBbelhHLmqjL13o4BmGNo/xdzY7ETQnBZohoxEmq2hsF1BbJlMFsBL/4AdbM5YRkB7V1w6TR+w9ymf6/W2xX6+DQvtUPkLZ9kgT8+4SbNOiyBlpMafXoSYuTlUUwmSvRnsblt2riCjVkAPaJVR83qaUSxlQho8/AOGyNOmPkzqFJRGQQhRO+pgglrUvvjtgUAVg+h9Wv0eq0xGwrLiHgTv6ABrR7isB2U+12fes5or/pEyqJjKVzPidoYKb3e5hHUSyOnRjMtnptJnVP1dBmJs94oFyLJIjQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by GVXPR04MB11041.eurprd04.prod.outlook.com (2603:10a6:150:218::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.26; Tue, 15 Oct
+ 2024 13:13:32 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%7]) with mapi id 15.20.8026.019; Tue, 15 Oct 2024
+ 13:13:32 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	vladimir.oltean@nxp.com,
+	claudiu.manoil@nxp.com,
+	xiaoning.wang@nxp.com,
+	Frank.Li@nxp.com,
+	christophe.leroy@csgroup.eu,
+	linux@armlinux.org.uk,
+	bhelgaas@google.com,
+	horms@kernel.org
+Cc: imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: [PATCH v2 net-next 00/13] add basic support for i.MX95 NETC
+Date: Tue, 15 Oct 2024 20:58:28 +0800
+Message-Id: <20241015125841.1075560-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI1PR02CA0008.apcprd02.prod.outlook.com
+ (2603:1096:4:1f7::14) To PAXPR04MB8510.eurprd04.prod.outlook.com
+ (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] media: dt-bindings: Use additionalProperties: false
- for endpoint: properties:
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Dave Stevenson <dave.stevenson@raspberrypi.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Martin Kepplinger <martink@posteo.de>,
- Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
- "Paul J. Murphy" <paul.j.murphy@intel.com>,
- Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
- Tommaso Merciai <tomm.merciai@gmail.com>,
- Martin Hecht <martin.hecht@avnet.eu>, Zhi Mao <zhi.mao@mediatek.com>,
- Alain Volmat <alain.volmat@foss.st.com>,
- Mikhail Rudenko <mike.rudenko@gmail.com>,
- Ricardo Ribalda <ribalda@kernel.org>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>,
- Umang Jain <umang.jain@ideasonboard.com>,
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Dongchun Zhu <dongchun.zhu@mediatek.com>,
- Quentin Schulz <quentin.schulz@theobroma-systems.com>,
- Todor Tomov <todor.too@gmail.com>, linux-media@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-0-a2bb12a1796d@linaro.org>
- <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-2-a2bb12a1796d@linaro.org>
- <7ecxjoa7aije46cxmkyfd6ihxnqw4wleqkioddomxbwlu7qtrc@4dkfitppeksu>
- <6f461cb3-3a41-4a3d-b9b2-71b1c6be77f7@linaro.org>
- <9510b546-28fa-4fb4-b06e-0af5f9fd3bbb@kernel.org>
- <20241014202920.GE5522@pendragon.ideasonboard.com>
- <f265576c-7d83-40cb-b857-7ec54ef9ab46@kernel.org>
- <20241015112806.GA2712@pendragon.ideasonboard.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20241015112806.GA2712@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|GVXPR04MB11041:EE_
+X-MS-Office365-Filtering-Correlation-Id: e57e48ce-80d1-4467-9713-08dced1b2b2f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|7416014|52116014|1800799024|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?wmg83wuy78lFYP1BW/SQTAqpJwcaHrldMW33ixgveLTIGlpaHQzV8WFrbMlx?=
+ =?us-ascii?Q?Of7wYNfkM8e23NeZzx3ylyZLh+58PIWT3eylJhSkSJrDS2XPLhq46a1c2dcJ?=
+ =?us-ascii?Q?jOf9hhIJR1fslpRsH+OZCiBUKTQv+qXvmCdTF4fhzEbOQ9HnmGcOrD7fAmzL?=
+ =?us-ascii?Q?/Rg/CO/RuG3IJ1/qtfmYJKSJLgEnOcku4qAkPDXRT1a1PNnZc2nDsIw0oLBl?=
+ =?us-ascii?Q?biXkIKmiy4HB2PPspebhmZyVG1dJ02ofLKg4Hvw6cUKR+Se6fZAR7W1jnkBg?=
+ =?us-ascii?Q?OkatpciRvMmlLkN6r04E4UOB9/UenYf2k8qVmWNTEiYmnv590l7hassVM9wG?=
+ =?us-ascii?Q?0zjWMEgJSjiZ1F/lVI/349Ul6/aM66y1vWwQUQ28EPlIM2PGOiEsUNd5Gula?=
+ =?us-ascii?Q?sI3V9/PjCH00rK9icFq/9nGH/hHWmrVSk6WFZXOkxRi6xnfrOdKkd5EyyoIN?=
+ =?us-ascii?Q?BBkGZY6vbIw5/oLgdwHXdFcDrNLoyhlNURojgN51STc4P9mLGq/dsP49qQPM?=
+ =?us-ascii?Q?iwAZRRqko4CGhjKFCiejiVjvc4c7Zfp++tfcz4LNEs64IszNW/uyzRMQtIcl?=
+ =?us-ascii?Q?Bk0wLPR1dJf1lagR8kXfP3hphLJtcR5PZ+WR4Xm8GmapqIZ8Cimz3jZQ7rgV?=
+ =?us-ascii?Q?bD842hz245uLHB9iuxRRceV8ixvyC2w6PLSiOZ4Co4iHwHCdkmZECi5ujT7l?=
+ =?us-ascii?Q?2yaIPuQhutG7tGUqeRF9bMWtc0r4mkD+8cTaPyCQFlkjv2UdD18LXmMFeLWP?=
+ =?us-ascii?Q?gfZxpsl56n638+q/DcZPfB+kM55aw+g6WOdEboy1+5T1+fkBD1WkSwoOlFMa?=
+ =?us-ascii?Q?c24PbL3X68kjusc52LIRLPDaCelZuYSvNDQH0TXJtZVSD+H98V3+nNIGAjhA?=
+ =?us-ascii?Q?PCLLDcjg3+tXhg/Y48hEJKLgn8MWwHAYQV/KYZ5SpMjGU9yLhLqgWNITBqTA?=
+ =?us-ascii?Q?WZnjNr9rRO4dRcOcBzZazuaLwQ4heDRQfkEA/zdQORo26wt7c9qEXAe+MvJe?=
+ =?us-ascii?Q?LQGhnbwR5W6Zhf0jJNvCj6wdpFCmC0Fw4v4ewmESK6KI1mpVmZtp8HmB1mcX?=
+ =?us-ascii?Q?FRR00MUBnPjs28BExe7bFFUrL80OsMTSOCWbEiDfLzbPo8AyT4VDqdlZ7Z7N?=
+ =?us-ascii?Q?m0XzpkdaZO5HIwrO9cyyIIaiUT1TzQDpFS1oi5sEC7dyxfUCiBj2QPS83pki?=
+ =?us-ascii?Q?W6ODpu9PqMkzSv2azA6owVyoPhnGrYy7FbPcp8O7A6fAy7gKl2d1fK2PkwNc?=
+ =?us-ascii?Q?9b/Ni78xAyXEJjAdpw6SA61rGPkJyGaV8RFhEbIEEgZfNhicNx3kz5KiQPFh?=
+ =?us-ascii?Q?HMjimI5BmVd5rzctDzWk4WTrQfL5eoag3bJPnLDZ3EG9jfKu5AZEGDvJK0ge?=
+ =?us-ascii?Q?7fobodc=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(52116014)(1800799024)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?oBo0zBvSpDdmA/EJJBJvYnBZhosqhRg3OXg3Vs8nAJfihJjEzsF4lHc7nlh1?=
+ =?us-ascii?Q?vgxt7QCIhtT1glW2gAlLrpON7sMq0WRQo8ZCJJW2q0zS6oQWWVVj5sLrHkvs?=
+ =?us-ascii?Q?mNvTNQ53XiDQVJYjDzKT+6EAZlbiQP2BYo0JjlEYQSddnZlxWMB48Rx+uJOr?=
+ =?us-ascii?Q?13g82rHogE9lcIUOwsH/lCsoluT73TFwCMDzA7bJgDm38Gj095VexJFr9SMh?=
+ =?us-ascii?Q?NtHU0h7gL/4uutl+akgXF4tfnUQwHze/gwOb5ww0+euZ7C59EhTZIwJ/7N/R?=
+ =?us-ascii?Q?2VBkjB9yTnyf7ONMro9zJ0cGkxSpiZeJ4SIsd84Im5Fijf3RP4jOVjhWzpwT?=
+ =?us-ascii?Q?33hZELxi7CyU9Qu9vLUfgMKRNB4Yg3NLUsBXk+oVBCZ1oTTC+bTiZAbuhsbX?=
+ =?us-ascii?Q?e3zLtFrI40Gg11eJItEUxUnADRld91ognB7Bpsmn71TugJQQ439x5CqYnbMk?=
+ =?us-ascii?Q?Bi30+1K1k/gpY9l6OT7hSRW3mMa01poZxLdeCOncLmTjtnJaCDppnWp9cb2M?=
+ =?us-ascii?Q?mOUZxDBTvqc+9iqsmcrMJRMWR73GJQn2efarN1bz/lmTKbMK19Tfyx1R3kJH?=
+ =?us-ascii?Q?S0GRF2EOefNay1DOdL4ZfqUFlj02jxVcvdLWoy442z/3mfNjLv0Oo3PMoY3Y?=
+ =?us-ascii?Q?Fl3eE74Qyj4MMirr2RJrLyf0EU4OvMqqd/zbHgKu2NOpmmFKKvoSKVsC3Iuc?=
+ =?us-ascii?Q?FrLx16cjxVZB5FuTc6WLvJlnm1XNOePDaHzsq2NlI/Ki/DiGq8uWzkuZ8EoU?=
+ =?us-ascii?Q?TuhexBeaTQspSvUlgLoP8TaLyO2BmU1zA2OH19pmbdM2NKgUeiKPl6LaVCSG?=
+ =?us-ascii?Q?eQ+3XSX0qpSUdWTf+CabBog9D9huDoYB0xvZ8Z4MhwqabadYOmorKzos+BgS?=
+ =?us-ascii?Q?YQxBui8w2v31OARyWZv7XVwaKRrbJliczfZEpnUePB8nLYrUVXlAs4H7ADto?=
+ =?us-ascii?Q?a7ew/wq34D5KXiHcEva1oQGLWQCev1Amh4e93i2DkomdLCmwLnDGJsconlwL?=
+ =?us-ascii?Q?asR6GkGq7byukYmzosxqF5xPxdRX/+ccJG6KnhWueuRwM0rqX7+gzfghpfdi?=
+ =?us-ascii?Q?t1SO60ReFia/oO48XhWWYKPCgWdTBIkiq9QM8NYBPUlO+5Z9VoD68q3H4pCG?=
+ =?us-ascii?Q?plC9+Or9CWLKzqffRgOBm787Ur2gLhDPfUJ6I+2/eU0PBVXY42XascNe8gIs?=
+ =?us-ascii?Q?RgUbxw5q5uuQMJUPSVy1/Wjf41WZuz6OjFak+w8ymqP10V7HgoS7lx92Vgt8?=
+ =?us-ascii?Q?HKIeEs0BjGWDWNOpC+gPTFdP8Q506A7IFmC7LiNNpF6I0PNgqPSoI5aWolec?=
+ =?us-ascii?Q?gdDGz7kin+BSyDWVm+kR7idvYUvkg0bFTrrO7h+4eTNywn2SJm9bALIucMP+?=
+ =?us-ascii?Q?R2Bgu7dVMiK5MHjdMQ6liK8JtJbU7HeVkQZ/8r+KNrMikuALmHnwtr5Bt07u?=
+ =?us-ascii?Q?TG2CCSKd3B3cXLWyiLcwvyGN/fbSrlrPpNSdphHI7790FyzAKRI4fQCVsoZJ?=
+ =?us-ascii?Q?PPx6N4KPznkLkm3+X7mMj73k1XpbT/4vlbsFCryWKPQ9+RGdb/d3qH38xlah?=
+ =?us-ascii?Q?rQAUQftf/9FxRwRNaY79PuUq6tq6BarATCkindPy?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e57e48ce-80d1-4467-9713-08dced1b2b2f
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2024 13:13:32.6969
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8fcdXVr2yHJY0+i4L8qKK6SFwc+gxApGopesN6QXEZYzN/bIN/XZUrRX3JZ1kTNI0rdQC83J2CFplFm+2GAQyQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB11041
 
-On 15/10/2024 13:28, Laurent Pinchart wrote:
-> Hi Krzysztof,
-> 
-> On Tue, Oct 15, 2024 at 08:11:18AM +0200, Krzysztof Kozlowski wrote:
->> On 14/10/2024 22:29, Laurent Pinchart wrote:
->>> On Mon, Oct 14, 2024 at 10:47:31AM +0200, Krzysztof Kozlowski wrote:
->>>> On 14/10/2024 10:31, Bryan O'Donoghue wrote:
->>>>> On 14/10/2024 08:45, Krzysztof Kozlowski wrote:
->>>>>> I do not understand the reasoning behind this change at all. I don't
->>>>>> think DT maintainers ever suggested it (in fact, rather opposite:
->>>>>> suggested using unevaluatedProps) and I think is not a consensus of any
->>>>>> talks.
->>>>>
->>>>> No there is not but then, how do you give consistent feedback except 
->>>>> proposing something to be a baseline.
->>>>>
->>>>> On the one hand you have upstream additionalProperties: false and 
->>>>> unevaluatedProperites: false - it'd be better to have a consistent 
->>>>> message on which is to be used.
->>>>
->>>> Well, I am afraid that push towards additionalProps will lead to grow
->>>> common schema (video-interface-devices or video-interfaces) into huge
->>>> one-fit-all binding. And that's not good.
->>>>
->>>> If a common binding for a group of devices encourages you to list its
->>>> subset, then it is not that common.
->>>>
->>>> Solution is to fix that, e.g. split it per classes of devices.
->>>
->>> I think splitting large schemas per class is a good idea, but the
->>> problem will still exist. For instance, if we were to move the
->>> CSI-2-specific properties to a separate schema, that schema would define
->>> clock-lanes, data-lanes and clock-noncontinuous. The clock-lanes and
->>> clock-noncontinuous properties do not apply to every device, how would
->>> we then handle that ? I see three options:
->>
->> Why is this a problem? Why is this a problem here, but not in other
->> subsystems having exactly the same case?
-> 
-> I won't talk for other subsystems, but I can say I see value in
-> explicitly expressing what properties are valid for a device in DT
-> bindings both to inform DT authors and to perform validation on DT
-> sources. That's the whole point of YAML schemas, and I can't see a good
-> reason not to use the tooling we have developed when it has an easy way
-> to do the job.
+This is first time that the NETC IP is applied on i.MX MPU platform.
+Its revision has been upgraded to 4.1, which is very different from
+the NETC of LS1028A (its revision is 1.0). Therefore, some existing
+drivers of NETC devices in the Linux kernel are not compatible with
+the current hardware. For example, the fsl-enetc driver is used to
+drive the ENETC PF of LS1028A, but for i.MX95 ENETC PF, its registers
+and tables configuration are very different from those of LS1028A,
+and only the station interface (SI) part remains basically the same.
+For the SI part, Vladimir has separated the fsl-enetc-core driver, so
+we can reuse this driver on i.MX95. However, for other parts of PF,
+the fsl-enetc driver cannot be reused, so the nxp-enetc4 driver is
+added to support revision 4.1 and later.
 
-I understand. The benefit, which you see, comes with complexity of the
-binding and need of listing properties.
+During the development process, we found that the two PF drivers have
+some interfaces with basically the same logic, and the only difference
+is the hardware configuration. So in order to reuse these interfaces
+and reduce code redundancy, we extracted these interfaces and compiled
+them into a separate nxp-enetc-pf-common driver for use by the two PF
+drivers.
 
-We do not enforce such rules (narrowing common schema in very strict
-way) in other subsystems, maybe with exception of input and touchscreen
-devices, but there common schema is quite big. And DT maintainers
-suggested to drop such code even for these, BTW.
+In addition, we have developed the nxp-netc-blk-ctrl driver, which
+is used to control three blocks, namely Integrated Endpoint Register
+Block (IERB), Privileged Register Block (PRB) and NETCMIX block. The
+IERB contains registers that are used for pre-boot initialization,
+debug, and non-customer configuration. The PRB controls global reset
+and global error handling for NETC. The NETCMIX block is mainly used
+to set MII protocol and PCS protocol of the links, it also contains
+settings for some other functions.
 
-Best regards,
-Krzysztof
+---
+v1 Link: https://lore.kernel.org/imx/20241009095116.147412-1-wei.fang@nxp.com/
+---
+
+Clark Wang (2):
+  net: enetc: extract enetc_int_vector_init/destroy() from
+    enetc_alloc_msix()
+  net: enetc: optimize the allocation of tx_bdr
+
+Vladimir Oltean (1):
+  net: enetc: only enable ERR050089 workaround on LS1028A
+
+Wei Fang (10):
+  dt-bindings: net: add compatible string for i.MX95 EMDIO
+  dt-bindings: net: add i.MX95 ENETC support
+  dt-bindings: net: add bindings for NETC blocks control
+  net: enetc: add initial netc-blk-ctrl driver support
+  net: enetc: move some common interfaces to enetc_pf_common.c
+  net: enetc: build enetc_pf_common.c as a separate module
+  PCI: Add NXP NETC vendor ID and device IDs
+  net: enetc: add i.MX95 EMDIO support
+  net: enetc: add preliminary support for i.MX95 ENETC PF
+  MAINTAINERS: update ENETC driver files and maintainers
+
+ .../bindings/net/fsl,enetc-mdio.yaml          |  11 +-
+ .../devicetree/bindings/net/fsl,enetc.yaml    |  19 +-
+ .../bindings/net/nxp,netc-blk-ctrl.yaml       | 107 +++
+ MAINTAINERS                                   |   7 +
+ drivers/net/ethernet/freescale/enetc/Kconfig  |  40 +
+ drivers/net/ethernet/freescale/enetc/Makefile |   9 +
+ drivers/net/ethernet/freescale/enetc/enetc.c  | 224 +++---
+ drivers/net/ethernet/freescale/enetc/enetc.h  |  19 +-
+ .../net/ethernet/freescale/enetc/enetc4_hw.h  | 153 ++++
+ .../net/ethernet/freescale/enetc/enetc4_pf.c  | 757 ++++++++++++++++++
+ .../ethernet/freescale/enetc/enetc_ethtool.c  |  68 +-
+ .../net/ethernet/freescale/enetc/enetc_hw.h   |  46 +-
+ .../ethernet/freescale/enetc/enetc_pci_mdio.c |  21 +
+ .../net/ethernet/freescale/enetc/enetc_pf.c   | 303 +------
+ .../net/ethernet/freescale/enetc/enetc_pf.h   |  37 +
+ .../freescale/enetc/enetc_pf_common.c         | 336 ++++++++
+ .../ethernet/freescale/enetc/netc_blk_ctrl.c  | 472 +++++++++++
+ include/linux/fsl/netc_global.h               |  39 +
+ include/linux/pci_ids.h                       |   7 +
+ 19 files changed, 2265 insertions(+), 410 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/nxp,netc-blk-ctrl.yaml
+ create mode 100644 drivers/net/ethernet/freescale/enetc/enetc4_hw.h
+ create mode 100644 drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+ create mode 100644 drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
+ create mode 100644 drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
+ create mode 100644 include/linux/fsl/netc_global.h
+
+-- 
+2.34.1
 
