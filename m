@@ -1,299 +1,157 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2059.outbound.protection.outlook.com [40.107.104.59])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F106B1F669C
-	for <imx@lists.linux.dev>; Tue, 15 Oct 2024 16:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729010518; cv=fail; b=LZvRH5mg1sMOl0uebDilGacGPQSlBX4MPvXEetCtl0VhqVH3PehFuJbiT/7BsOdVpKvHOqM2zU3nK0TosVznICzQTSP/vtedX8d5/3pH2lm/LddulkcZrG13aqcbmKofxawVWnZsdqrCmC4iJYyzbqxyKWVvRXZCY/DJgFnpw5w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729010518; c=relaxed/simple;
-	bh=eQn7Maskr7kxSqqjSpK1WFuScrtI4YaqS2fe1Q8FOMc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=YlE6CS9HEQqFmGV6IExdt0Ysyq0rVazaOSS8a1luwS89Wngmx8KwIIpZkWc4s4JiAg4/qQIU6IpKhYmjet8/1lIWnH9J+7agnSRChxfWWBk4Z9HZy279wDt/7vjBLslQ3jnpG8hSV6rSEJSlGS1cpcZo732rXzbkVXMIdEFimQw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=k1Tq6ZbP; arc=fail smtp.client-ip=40.107.104.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915961D5169;
+	Tue, 15 Oct 2024 16:46:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729010771; cv=none; b=PaIkHJ46uMXqyAn8HfJKwiryxl61JNXda65VC5/MD9p2tNv1TcR97z60DP1ZTUo/ffZ30+tawZUveEQT7RxOIR/8K0YNN08+Q+NiXAb0ujASqe+LLrM8DOubjP0hMD+q4eTUOxFS3z08CpkxuG75iwLlCGpMNTuRRoCWFpBRylg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729010771; c=relaxed/simple;
+	bh=ty485hgQRf36tvCdf7hLCpqH8wPJP/ov3etpcqFjYBw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A55+WbkrObhGcxpWS9TXBHU/l6BgCg0SLECN0RuErtsBgNE7UlPNDhVwZr3yFae26RVMYpuEXxnw01NKS88Tfs5uwP/pWl7PFOc3mCuAO6MwkLHeOw/LacyFTGNYhNuPT8kJsAzE7ZJ7p6tetaX3m9Tb2R5sfL8Cp0gY4bqBClw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QCsBMBtc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="k1Tq6ZbP"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XPE51g2NAaE755IXZNV+873Ru9+cc+zvrSGUBmtYw6EXgUVhvalhpTvibmfg72c3xsMLj37qH8OZW/4zrly7M1gC9P8rMFuL+YIk7oSFUuT81J6PXRUVuZiiGKpwSJRknLgXJqXx8daaY57ob0Ufa23AMqJAJbo1c9ypVeJQjeKQR9TmgON89sbsTqKS7Bv8VbZkFC+FSENtyLlKMNcmhx+l2ZHS2cAp7ZexW/kdS/6xC2/Cgkvql4EtpXoyKhPBKKlpb2qadL6iNLls0JzMnl+TdSqE0YCqI4yP7fCn5dnRLD0zJatQP0Nq/AbRxpmToAyIoIEg9UH9D+/JmFD35w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3TX4oDaZ/mWRRsvQ8S7wor13K/u+Ko9ElOs1Qv3apEQ=;
- b=C/JFCQLJldQVUaJSX9opduDA2ao4hPu1RV4/JPOXB+w1BcaVU5IovQHsYAH9TEQLnAHSlvCD+9nt+EY6atwj8o6KoYXxlqXhNEdbCLKbPXf3OMUHdqfll4d302/7K/WkN1hFzT9IwPzIimY7Bsqh0EP266HkSB5BGEEkrTMcF10Vkx5CIEsYwBC3PGet6AXVlHfFaWa62GFO5N4UpFHbHhWBw6ZlaJkpca/tjQHAT+e/Sacf4PeJUwQ2UQzRbCASkumWkx4eLJLc8Z6IA13bc0SAcMKMr2i7n8OOoCuukIQfOhwqRTQbTt7qPSybOcjl2t+gY8Ij0qSfvyJhVkOL6A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3TX4oDaZ/mWRRsvQ8S7wor13K/u+Ko9ElOs1Qv3apEQ=;
- b=k1Tq6ZbPy4nQUcTGvsvrVJvBrI4MelRzBHbkuf3bpP9T9bmhRsxBy3kaNO3tEYU571EwzJuuvRrWUJSKfadO4m0RQvJ6OE4gCv4giMqLuTEWdjlxAjYPSJTVtrjNGT2gbyXM/i6w0Y/EyL6807NEsPugmOGoUQmhit8EV/pZZtGyZuMtJk+CMaOo2X+XbuCYqCTVALigNfB2MCVQse10MOmeXG0xO6A2msnbVoKvMiQ6l4ZHR+XKKDH7ypVCCNfDRwbjqrogBVOzdFfkYnjtnYWXPXPeRZoMJx6w6G+UvUQT2ytVC1Fvz8cHxObLBiSFLO03YXMU3VE0uCcL0GWQRw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM0PR04MB6787.eurprd04.prod.outlook.com (2603:10a6:208:18a::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.27; Tue, 15 Oct
- 2024 16:41:54 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8069.016; Tue, 15 Oct 2024
- 16:41:52 +0000
-Date: Tue, 15 Oct 2024 12:41:43 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, vladimir.oltean@nxp.com,
-	claudiu.manoil@nxp.com, xiaoning.wang@nxp.com,
-	christophe.leroy@csgroup.eu, linux@armlinux.org.uk,
-	bhelgaas@google.com, horms@kernel.org, imx@lists.linux.dev,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v2 net-next 07/13] net: enetc: only enable ERR050089
- workaround on LS1028A
-Message-ID: <Zw6bR0L9tBOhQWkE@lizhi-Precision-Tower-5810>
-References: <20241015125841.1075560-1-wei.fang@nxp.com>
- <20241015125841.1075560-8-wei.fang@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241015125841.1075560-8-wei.fang@nxp.com>
-X-ClientProxiedBy: SJ0PR13CA0116.namprd13.prod.outlook.com
- (2603:10b6:a03:2c5::31) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QCsBMBtc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9660C4CEC6;
+	Tue, 15 Oct 2024 16:46:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729010771;
+	bh=ty485hgQRf36tvCdf7hLCpqH8wPJP/ov3etpcqFjYBw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QCsBMBtcCWJ6BusDVYweMMvwHStKIq9JHRukZj/8ReMVp/piTWhlQAiNOCUn00IDT
+	 KW9tfaN4Op8u0JikMfXBgS8HaSOBo1FDnUsHzFJb8e2UKdW5s8G8zg6taztjhTeWe/
+	 G+THbdgIw4Nuezq2itQRuQJsHwJe71+7nQOsgS/XVanPnTEIUAgIgBsb+jU2qut9iz
+	 NwIRhfqgXLwcaEABQk4e3E0zK/8Y7JpwEB2RMc5napn7msbHYyNRA5oN8zEXA/+fcB
+	 MthVhQ4oWpMs9mJZXhusjDSHsRhA6yIuTYJkhI9l4CvKuLDbKKg67vLo/JKFzjWw0x
+	 q1MKryp1rv7vw==
+Date: Tue, 15 Oct 2024 11:46:09 -0500
+From: Rob Herring <robh@kernel.org>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+	"Paul J. Murphy" <paul.j.murphy@intel.com>,
+	Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
+	Tommaso Merciai <tomm.merciai@gmail.com>,
+	Martin Hecht <martin.hecht@avnet.eu>,
+	Zhi Mao <zhi.mao@mediatek.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Mikhail Rudenko <mike.rudenko@gmail.com>,
+	Ricardo Ribalda <ribalda@kernel.org>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Umang Jain <umang.jain@ideasonboard.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Dongchun Zhu <dongchun.zhu@mediatek.com>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Todor Tomov <todor.too@gmail.com>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/2] media: dt-bindings: Remove assigned-clock-* from
+ various schema
+Message-ID: <20241015164609.GA1235530-robh@kernel.org>
+References: <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-0-a2bb12a1796d@linaro.org>
+ <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-1-a2bb12a1796d@linaro.org>
+ <w4ta26svh34gojqpakrgp5cpsempedkewkmbllyvs5z5fm274z@jqs3tvunxq2s>
+ <20241014203441.GF5522@pendragon.ideasonboard.com>
+ <b0154e75-370e-4a5f-9309-6a3ae5d85b5c@kernel.org>
+ <20241015112922.GB2712@pendragon.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM0PR04MB6787:EE_
-X-MS-Office365-Filtering-Correlation-Id: 165d286b-f877-48c5-8b56-08dced3845a4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|52116014|1800799024|376014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?AHnl1TSulsBf481ozWGkTVkiivkE1Rq8jjegq3Wy1P3vmwf3yXMMiI9jZ9ZJ?=
- =?us-ascii?Q?kwmknLCzD8DhVeWsah/rvTrL4CacWtHbz3EOFwEyWcqE6B3O4/JClAlPdaDW?=
- =?us-ascii?Q?idbmOy5+KLnkvH7RFUtoqVJTgQu6ISzX7sq4Eil0Q2J7ybj+JID4EwEBrfU+?=
- =?us-ascii?Q?JuvuWDVpUEGhSPiUKb1hSvwBycedwOt314mqnA89MHzsqPPSW9GXygSMuTs2?=
- =?us-ascii?Q?smskCHI8ZIerZ6+V6tAfqcDEnHGzACu5qj3fgPgT6ZekpMETAzPu8qQya/Mr?=
- =?us-ascii?Q?NfePnDC7IHYwdB2u9qF+38Z3Y5BqOpiY8HllrG5f4IzFj0rHRBnEt8GTYFs2?=
- =?us-ascii?Q?XAo+2MvydJ5dbG4IpeGcHX61F0R84EBDGUJc4ARJjclKKn9bcFKe4PRJ0u5I?=
- =?us-ascii?Q?wb7MoX9yS2v5p3EJEwSS+LVfEDuB4igctEotGR2gJzdKJAZg+qYAd5UceepB?=
- =?us-ascii?Q?PNdX7QHC0Srf1U2Y0s+pW8KYZFbm/ufCaMobJEPfs+JtLPfDOT1cP+8EqPLO?=
- =?us-ascii?Q?ybeU3hDNDpfw2vXEvwCR8M2X5D+5yk8cQqekf7iB8eWMr/g22Cn8J0sD8S7E?=
- =?us-ascii?Q?Eoo1zwwRv+s7gEvK4ZTQ0PpjrAkxLEwytqigLXRXCDtQhWZgLBFpfGTPWwNc?=
- =?us-ascii?Q?5Tc5tZJNSwBlDpji7bmkqaq1d+/I6Ko4nkk8dLuJWYTjqGuOcSfO6TvDKQiu?=
- =?us-ascii?Q?oxhS33/PYhfN9MGEeVbu2C9i9ode/oj/VZFP3g74HfEClP5cXEg5OkhEzHkz?=
- =?us-ascii?Q?lOAqv6usN3DNhs5R31X7OevURTVqclCRQXraUwzf1wFukWlN8B5LWCAkNIB7?=
- =?us-ascii?Q?RqvIXNWNWZ1ZpeVel7jzjNSzopNQbAT9s4epZqbRtIGaPQM+T560Oj9i6COb?=
- =?us-ascii?Q?d2PYfYksWG05etf42GeR9km2PB3UKZwwibjQLa2+KdUpyWTR+NBgOYxT6EnY?=
- =?us-ascii?Q?B3H3I04/lwkldRvWpRpg2ZcOHmJERk28yKFYcgsTXfqpVZnqT4ArjgsZVaRi?=
- =?us-ascii?Q?SAFQWuckdZOG9RwU0TcTnJQATp6Tqzp0KuX2C7HxUjJVXti8wdidp/7Jz5dQ?=
- =?us-ascii?Q?qOu7nkxMiqgDC0vb8MyxTU+xA060DK3vkEntgnQXg/0RjL2MsPz2vza5wbEW?=
- =?us-ascii?Q?lnqM9IH4Ip3OE4Hg6Wh0KSoe97lkmY4a2117qvdcf0xHxLdPfxwDOGxqBSE8?=
- =?us-ascii?Q?kyK2cfVQL7PyD2pA0U9eXpR5fu0rgkFtOsbvK/5g/QpxNZnquiC4w5ZIVJJ3?=
- =?us-ascii?Q?XZUFjBmwCy6fgZOqaHcq07hilBaiqi0Hv9TbB2jZfWomjUfXHG8769tSHFhO?=
- =?us-ascii?Q?dbGPAfAIKv4mAIPZciWPkaelVIdEmW2XcZyvGpvjXdQkFw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(1800799024)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?huZw3A+eVn53YuFq7BPPqG5cCEeJM5oGxjAef+z7lh8BfnQpown5ZZ8XHnRt?=
- =?us-ascii?Q?7hGPtMDShKIwBEswZgKd75TkmeSKeI/xS3Ct1E2LfgWFm9ncm+vOo09+c3V8?=
- =?us-ascii?Q?SBrqcn/P10Lde+lvunxgUtmdVNt13chv/ot55zvphq4iR2rcJzJmjLeEEWHQ?=
- =?us-ascii?Q?mwugyBCk2HQQsIqVIRCE2C6gDEQot31xLItLvdZprrua7Izdrq2Yi59cItq4?=
- =?us-ascii?Q?jD04Sku+SSfip4Zj0l420qfPRfbt5GEkkX1vsZund0thlA6oOKseeg91RRN2?=
- =?us-ascii?Q?L1r9B+0B/M1DF7YsjRX3YZNWGPtyDjNPqIBeZ1uIK3CQ2dar/JRhqBHK+TFz?=
- =?us-ascii?Q?V9UZztsRB5b+t7HcjK+RpxedDp218ZbaiqoF22ikvYhpbdyjnA7GDuLZeROC?=
- =?us-ascii?Q?Hq+1k2FHFzRyDB0shRicYHR3dAOvoxJyLXoUxgf61Earhzb+CIVoxKVJanBU?=
- =?us-ascii?Q?tZeBXNhGjvmFwrK1fR+Dz9nuykx6ipwsaJY/PIgXmBawBKdi150Gkf560PIL?=
- =?us-ascii?Q?stio+6Ku2SV9LSG1hlZ/dh59uLqwjKoOMQvLKN/7tvzYDXkQesbV2Ljq744P?=
- =?us-ascii?Q?DqU7ZOqs9+sGpPfFJw9PvPWkHZDgvWoDZ4tyifB4W9g/MXiAUwSWkN82tF44?=
- =?us-ascii?Q?LC5InTe9iDOphl6ZZOYFS4SIftWxtFUBh1hwre0bwyquRvOgcnP0ML17a1Tr?=
- =?us-ascii?Q?owPHBBVu2dYkvop0TQdY0KuQH74juNJVwVvjCpNz/gVKWrhZGXYq/ZZNy0Pl?=
- =?us-ascii?Q?voN0bxKQfr3viTbW8AaaAj2BmLKfyAy1UQUc4qxm7VdFrwxt9omDpPJl0gC/?=
- =?us-ascii?Q?w+wCWZJ0rrqpurpQR4Q4nKP27Pf+bADEZqZabs1q+rReVeohdAY+jHZqsdQt?=
- =?us-ascii?Q?iqp5UkiTxeC2mZvQUpbjUNgvlqL3XQCHyB0M8nvSmtz6TewBZrFUPCxKChxS?=
- =?us-ascii?Q?P7tXp1RUoCJDXknihC0KP0/k7gVzG+xRN82Z7iL2wC/PPqIugyRHpKjZMgL5?=
- =?us-ascii?Q?bC0rpnnHn12Bv2bT1gQ+fMafgbwbKPDu46BDaRr69xKee2aLq40yLvLirn5B?=
- =?us-ascii?Q?MQ763K9skRXRFZ9yj9CTF8ghjKVZn7BM5aJ777xtaz1PBHT8w7c1RcZ0ARi+?=
- =?us-ascii?Q?KA4DmTXaBblls4+RwVUAq4/6sFbFarnOGM4sBfjXPJ0M8TbdE7ZaTJAmKbZB?=
- =?us-ascii?Q?8X2yyWpyTJpA7KrU4SLpmkMfzdlPeYn83CXXbwq3hEEG3ikEP6faEu0ysUvO?=
- =?us-ascii?Q?YLqWHfKxhL4NQk/nFYmPlltQd14xWw3e/2LsKA3KBWbmXermIN/fV58HY8GZ?=
- =?us-ascii?Q?laSkEd5bnHztUSFhJn1yjbTfE/xYb4Kbm5U3N3Vs2HSO/BgR1J6woSxQ68l8?=
- =?us-ascii?Q?RKit5cnEjVED66RUNsO8FIlqBsUNgPrxuvOU0kVC7sgfdrWebG7ROSj1mL6J?=
- =?us-ascii?Q?PVUbJSVF1i325bH1epbywMT+KuRvukVoSp47H668WSd+NxJY8XEvI8GTXQkT?=
- =?us-ascii?Q?1vTd+y3YPGnL/gb8pkhWAdhMHTBZHr7aCi2ciKv/AInSXcDxFtn9+r7wgJbL?=
- =?us-ascii?Q?EZjEGIOZGtlP2rD1aVUEGJyyjq051NMdwYdtKv11?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 165d286b-f877-48c5-8b56-08dced3845a4
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2024 16:41:52.3832
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ma/0+HxvgLDvFaAb9MwZ0OF12EahGNInaJ5s2wA0cQCEmu2m1XDH+bY7/d5wgggcLxhPhFT9E+fkY1XcQhszuw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6787
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241015112922.GB2712@pendragon.ideasonboard.com>
 
-On Tue, Oct 15, 2024 at 08:58:35PM +0800, Wei Fang wrote:
-> From: Vladimir Oltean <vladimir.oltean@nxp.com>
->
-> There are performance issues associated with the ERR050089 workaround,
-> as well as potential functional issues (RCU stalls) under certain
-> workloads. There is no reason why new SoCs like i.MX95 should even do
-> anything in enetc_lock_mdio() and enetc_unlock_mdio(), so just use a
-> static key so that they're compiled out at runtime.
+On Tue, Oct 15, 2024 at 02:29:22PM +0300, Laurent Pinchart wrote:
+> On Tue, Oct 15, 2024 at 08:13:19AM +0200, Krzysztof Kozlowski wrote:
+> > On 14/10/2024 22:34, Laurent Pinchart wrote:
+> > > On Mon, Oct 14, 2024 at 09:43:07AM +0200, Krzysztof Kozlowski wrote:
+> > >> On Sat, Oct 12, 2024 at 04:02:50PM +0100, Bryan O'Donoghue wrote:
+> > >>> Remove extraneous assigned-clock* from media/i2c/* schemas, retain in the
+> > >>> relevant examples.
+> > >>>
+> > >>> Link: https://lore.kernel.org/linux-media/j7kgz2lyxnler5qwd7yiazdq6fmsv77kyozdrxf33h54ydakjz@uqjhwhoyv6re
+> > >>> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> > >>> ---
+> > >>>  Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml | 8 --------
+> > >>>  Documentation/devicetree/bindings/media/i2c/ovti,ov5648.yaml | 8 --------
+> > >>>  Documentation/devicetree/bindings/media/i2c/ovti,ov8865.yaml | 8 --------
+> > >>>  Documentation/devicetree/bindings/media/i2c/ovti,ov9282.yaml | 4 ----
+> > >>>  Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml | 4 ----
+> > >>>  Documentation/devicetree/bindings/media/i2c/sony,imx334.yaml | 4 ----
+> > >>>  Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml | 4 ----
+> > >>>  Documentation/devicetree/bindings/media/i2c/sony,imx412.yaml | 4 ----
+> > >>>  8 files changed, 44 deletions(-)
+> > >>>
+> > >>> diff --git a/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> > >>> index 60f19e1152b33128cf3baa15b8c70a874ca6d52e..d18ead8f7fc43bfacc291aed85b5ca9166c46edb 100644
+> > >>> --- a/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> > >>> +++ b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> > >>> @@ -28,12 +28,6 @@ properties:
+> > >>>      items:
+> > >>>        - description: Reference to the mclk clock.
+> > >>>  
+> > >>> -  assigned-clocks:
+> > >>> -    maxItems: 1
+> > >>> -
+> > >>> -  assigned-clock-rates:
+> > >>> -    maxItems: 1
+> > >>> -
+> > >>>    reset-gpios:
+> > >>>      description: Reference to the GPIO connected to the RESETB pin. Active low.
+> > >>>      maxItems: 1
+> > >>> @@ -82,8 +76,6 @@ required:
+> > >>>    - compatible
+> > >>>    - reg
+> > >>>    - clocks
+> > >>> -  - assigned-clocks
+> > >>> -  - assigned-clock-rates
+> > >>
+> > >> That's not extraneous, but has a meaning that without assigned-clocks
+> > >> this device or driver will not operate.
+> > > 
+> > > How so ? Even if we assume that the device requires a specific clock
+> > > frequency (which is often not the case for camera sensors, the
+> > > limitation usually comes from drivers, so the constraint shouldn't be
+> > > expressed in the bindings in that case), there is no overall requirement
+> > > to assign a clock rate as in many cases the clock will come from a
+> > > fixed-frequency oscillator. This seems to be a constraint that is
+> > > outside of the scope of DT bindings. It is similar to regulators, where
+> > > the regulator consumer doesn't have a way to express supported voltages
+> > > in its DT bindings.
+> > 
+> > This property does not say it comes from a fixed-frequency oscillator,
+> > so I do not understand why you think it is unreasonable constraint. I
+> > have no clue what the author wanted to say here, so I just explained
+> > that there is a meaning behind requiring such properties. If you claim
+> > device or implementations do not have such requirement, after
+> > investigating each case, feel free to drop this. I think I also stated
+> > this already in other reply.
+> 
+> For camera sensor drivers I'm pretty sure we can drop those properties
+> when they're marked as required, as there's no intrinsic characteristics
+> of camera sensors that would require assigned-clock*.
 
-Remove ERR050089 workaround for i.MX95
+I tend to agree, and would take it one step further to say that applies 
+everywhere. Whatever clock setup needed is outside the scope of a 
+binding. The simplest case is all input clocks are fixed. The next 
+simplest case is firmware did all clock setup needed for a specific 
+board and the boot time default works.
 
-The ERR050089 workaround causes performance degradation and potential
-functional issues (e.g., RCU stalls) under certain workloads. Since new
-SoCs like i.MX95 do not require this workaround, use a static key to
-compile out enetc_lock_mdio() and enetc_unlock_mdio() at runtime, improving
-performance and avoiding unnecessary logic.
-
->
-> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
-> v2 changes: no changes
-> ---
->  .../net/ethernet/freescale/enetc/enetc_hw.h   | 34 +++++++++++++------
->  .../ethernet/freescale/enetc/enetc_pci_mdio.c | 17 ++++++++++
->  2 files changed, 41 insertions(+), 10 deletions(-)
->
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> index 1619943fb263..6a7b9b75d660 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> @@ -396,18 +396,22 @@ struct enetc_hw {
->   */
->  extern rwlock_t enetc_mdio_lock;
->
-> +DECLARE_STATIC_KEY_FALSE(enetc_has_err050089);
-> +
->  /* use this locking primitive only on the fast datapath to
->   * group together multiple non-MDIO register accesses to
->   * minimize the overhead of the lock
->   */
->  static inline void enetc_lock_mdio(void)
->  {
-> -	read_lock(&enetc_mdio_lock);
-> +	if (static_branch_unlikely(&enetc_has_err050089))
-> +		read_lock(&enetc_mdio_lock);
->  }
->
->  static inline void enetc_unlock_mdio(void)
->  {
-> -	read_unlock(&enetc_mdio_lock);
-> +	if (static_branch_unlikely(&enetc_has_err050089))
-> +		read_unlock(&enetc_mdio_lock);
->  }
->
->  /* use these accessors only on the fast datapath under
-> @@ -416,14 +420,16 @@ static inline void enetc_unlock_mdio(void)
->   */
->  static inline u32 enetc_rd_reg_hot(void __iomem *reg)
->  {
-> -	lockdep_assert_held(&enetc_mdio_lock);
-> +	if (static_branch_unlikely(&enetc_has_err050089))
-> +		lockdep_assert_held(&enetc_mdio_lock);
->
->  	return ioread32(reg);
->  }
->
->  static inline void enetc_wr_reg_hot(void __iomem *reg, u32 val)
->  {
-> -	lockdep_assert_held(&enetc_mdio_lock);
-> +	if (static_branch_unlikely(&enetc_has_err050089))
-> +		lockdep_assert_held(&enetc_mdio_lock);
->
->  	iowrite32(val, reg);
->  }
-> @@ -452,9 +458,13 @@ static inline u32 _enetc_rd_mdio_reg_wa(void __iomem *reg)
->  	unsigned long flags;
->  	u32 val;
->
-> -	write_lock_irqsave(&enetc_mdio_lock, flags);
-> -	val = ioread32(reg);
-> -	write_unlock_irqrestore(&enetc_mdio_lock, flags);
-> +	if (static_branch_unlikely(&enetc_has_err050089)) {
-> +		write_lock_irqsave(&enetc_mdio_lock, flags);
-> +		val = ioread32(reg);
-> +		write_unlock_irqrestore(&enetc_mdio_lock, flags);
-> +	} else {
-> +		val = ioread32(reg);
-> +	}
->
->  	return val;
->  }
-> @@ -463,9 +473,13 @@ static inline void _enetc_wr_mdio_reg_wa(void __iomem *reg, u32 val)
->  {
->  	unsigned long flags;
->
-> -	write_lock_irqsave(&enetc_mdio_lock, flags);
-> -	iowrite32(val, reg);
-> -	write_unlock_irqrestore(&enetc_mdio_lock, flags);
-> +	if (static_branch_unlikely(&enetc_has_err050089)) {
-> +		write_lock_irqsave(&enetc_mdio_lock, flags);
-> +		iowrite32(val, reg);
-> +		write_unlock_irqrestore(&enetc_mdio_lock, flags);
-> +	} else {
-> +		iowrite32(val, reg);
-> +	}
->  }
->
->  #ifdef ioread64
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c b/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
-> index a1b595bd7993..2445e35a764a 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
-> @@ -9,6 +9,9 @@
->  #define ENETC_MDIO_BUS_NAME	ENETC_MDIO_DEV_NAME " Bus"
->  #define ENETC_MDIO_DRV_NAME	ENETC_MDIO_DEV_NAME " driver"
->
-> +DEFINE_STATIC_KEY_FALSE(enetc_has_err050089);
-> +EXPORT_SYMBOL_GPL(enetc_has_err050089);
-> +
->  static int enetc_pci_mdio_probe(struct pci_dev *pdev,
->  				const struct pci_device_id *ent)
->  {
-> @@ -62,6 +65,12 @@ static int enetc_pci_mdio_probe(struct pci_dev *pdev,
->  		goto err_pci_mem_reg;
->  	}
->
-> +	if (pdev->vendor == PCI_VENDOR_ID_FREESCALE &&
-> +	    pdev->device == ENETC_MDIO_DEV_ID) {
-> +		static_branch_inc(&enetc_has_err050089);
-> +		dev_info(&pdev->dev, "Enabled ERR050089 workaround\n");
-> +	}
-> +
->  	err = of_mdiobus_register(bus, dev->of_node);
->  	if (err)
->  		goto err_mdiobus_reg;
-> @@ -88,6 +97,14 @@ static void enetc_pci_mdio_remove(struct pci_dev *pdev)
->  	struct enetc_mdio_priv *mdio_priv;
->
->  	mdiobus_unregister(bus);
-> +
-> +	if (pdev->vendor == PCI_VENDOR_ID_FREESCALE &&
-> +	    pdev->device == ENETC_MDIO_DEV_ID) {
-> +		static_branch_dec(&enetc_has_err050089);
-> +		if (!static_key_enabled(&enetc_has_err050089.key))
-> +			dev_info(&pdev->dev, "Disabled ERR050089 workaround\n");
-> +	}
-> +
->  	mdio_priv = bus->priv;
->  	iounmap(mdio_priv->hw->port);
->  	pci_release_region(pdev, 0);
-> --
-> 2.34.1
->
+Rob
