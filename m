@@ -1,109 +1,91 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675241C233E
-	for <imx@lists.linux.dev>; Tue, 15 Oct 2024 07:57:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 186141C8767
+	for <imx@lists.linux.dev>; Tue, 15 Oct 2024 08:09:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728979067; cv=none; b=hT1Urzv9AyIF9Ds9mWZ0MNwdVa9yWNc6QtiMJq03wgqiT/1RFrGVbjHuAkdGTc/a6HGDS6hiXv1RpGjOFLrqqJ7yJj8ewdUE7GIvFmFb+gMojqfqUaZ6toT9t4Iwjxl20CgZ9HLPDptrphJ1AX3yqjje+USfeW7alPX34Nlhj00=
+	t=1728979757; cv=none; b=KDq96gkMxCvr1RC4YJm1yXGnRZTzKiywDWt/5ggd54HbJ1SOP8t4LtB7R0q0Tyul5FB8K9TFhWvRZFRb96SQsP+lpDKrwPCafAm7ooQ1gLv02iTuWVfrvE74MYORW7oBLEwxopst6JUwQIPRQa5OMiuWNP8XXZtj8cRob9ovoBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728979067; c=relaxed/simple;
-	bh=+W7tmOplPpwq8DoVsxdIHh6sDNgpjkPfm6+bC2x1s7Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=OeyTNLLiXHDVxeVI4bQgPAeeW3AX1MXW0/nO5o/9Mv+9OI11+1nWfxL9iEeYa5Qlpb3B6SW+G0ZQWpf+bjHeohi7OTS/fI8JJIo5dg2WRYCCMYNOhAT8oqqDE9OKq1L47qaBw3TpSd57K3tmjtLPG4ERwhbvSqiho4y4tdrQG8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 74D5E2001C1;
-	Tue, 15 Oct 2024 09:57:38 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 33BA620055E;
-	Tue, 15 Oct 2024 09:57:38 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 33C5B183DC03;
-	Tue, 15 Oct 2024 15:57:36 +0800 (+08)
-From: Richard Zhu <hongxing.zhu@nxp.com>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	abelvesa@kernel.org,
-	peng.fan@nxp.com,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	festevam@gmail.com
-Cc: hongxing.zhu@nxp.com,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-clk@vger.kernel.org,
-	imx@lists.linux.dev,
-	kernel@pengutronix.de
-Subject: [PATCH v5 2/2] clk: imx95-blk-ctl: Add one clock gate for HSIO block
-Date: Tue, 15 Oct 2024 15:34:04 +0800
-Message-Id: <1728977644-8207-3-git-send-email-hongxing.zhu@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1728977644-8207-1-git-send-email-hongxing.zhu@nxp.com>
-References: <1728977644-8207-1-git-send-email-hongxing.zhu@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+	s=arc-20240116; t=1728979757; c=relaxed/simple;
+	bh=t3sEdcPl4t0kzq0n8YkPIMG3A22CLK1lCGNiS88mZY4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p+jrX7CB4Fab8XQR9s9vg3xKJTKK6dsBMr40UbWx5XwT8H5nCflheGabyKfFnVWa0ibELJ+oAkdpcqWck7yIx6Ke4GM1jVtKQH0cyQ6RDaNDAMQgHj1hLRQnBuqAyXPScp9mdMTBt2xl/TQs3XYSxb2i/8aY9yRvZCqvjxVAYXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=jgY0lHK5; arc=none smtp.client-ip=1.95.21.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="jgY0lHK5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=AcpoIiyTTEPEyHLpa+DZ5Ssn9s/ruKNgo/dm3QnpIhE=;
+	b=jgY0lHK5ggXbgF9usPiF6NDaNsPwCYVy9elJeOHI8E7CTPDpZsarEH97I1nV1C
+	VNu6rIzPDyERMrdERq4Rko+RvDJ6dC36Ut/Rp6eWHCfj7tV2DOO7zWuMnmoy/d4H
+	jJeG184WBAO/CWWpCt9rz44zlEPhw+TZDFAh7LbxBP5ls=
+Received: from dragon (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDHTxj_Ig5ncaIDAA--.6203S3;
+	Tue, 15 Oct 2024 16:08:33 +0800 (CST)
+Date: Tue, 15 Oct 2024 16:08:31 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/5] arm64: dts: imx8-apalis: Various improvements and
+ additions
+Message-ID: <Zw4i/670z7QLBcM1@dragon>
+References: <20240903091231.20035-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240903091231.20035-1-francesco@dolcini.it>
+X-CM-TRANSID:Ms8vCgDHTxj_Ig5ncaIDAA--.6203S3
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Xr1DXF47Ar1xWr4fJF4rAFb_yoWfurb_ur
+	yFgF18uw48KFWfJws0qFnI9rW7Ww15CryFqryIgwn3X3s7ZFy5AF4ku34fZa1xKFWFkr4D
+	A3Z0g392qwn8WjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0tl1DUUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAhF5ZWcOEpU4vgAAsn
 
-CREF_EN (Bit6) of LFAST_IO_REG control i.MX95 PCIe REF clock out
-enable/disable.
+On Tue, Sep 03, 2024 at 11:12:26AM +0200, Francesco Dolcini wrote:
+> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+> 
+> This series improves Toradex Apalis iMX8Q support adding:
+>  - correct thermal zones
+>  - analogue audio
+>  - USB Host (Apalis USBH4 interface)
+> 
+> In addition to these it also removes the adma_pwm from the i.MX8QM SoC dtsi, as
+> this IP is not available on this specific SoC.
+> 
+> v2:
+>  - Keep I2C nodes sorted by address
+> 
+> v1: https://lore.kernel.org/all/20240826221541.15669-1-francesco@dolcini.it/
+> 
+> Andrejs Cainikovs (2):
+>   arm: dts: imx8qm: Remove adma pwm
 
-Add compatible string "nxp,imx95-hsio-blk-ctl" to support PCIe REF clock
-out gate.
+arm64: dts: ...
 
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
----
- drivers/clk/imx/clk-imx95-blk-ctl.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+Fixed it up and applied the series.
 
-diff --git a/drivers/clk/imx/clk-imx95-blk-ctl.c b/drivers/clk/imx/clk-imx95-blk-ctl.c
-index 19a62da74be4..25974947ad0c 100644
---- a/drivers/clk/imx/clk-imx95-blk-ctl.c
-+++ b/drivers/clk/imx/clk-imx95-blk-ctl.c
-@@ -277,6 +277,25 @@ static const struct imx95_blk_ctl_dev_data netcmix_dev_data = {
- 	.clk_reg_offset = 0,
- };
- 
-+static const struct imx95_blk_ctl_clk_dev_data hsio_blk_ctl_clk_dev_data[] = {
-+	[0] = {
-+		.name = "hsio_blk_ctl_clk",
-+		.parent_names = (const char *[]){ "hsio_pll", },
-+		.num_parents = 1,
-+		.reg = 0,
-+		.bit_idx = 6,
-+		.bit_width = 1,
-+		.type = CLK_GATE,
-+		.flags = CLK_SET_RATE_PARENT,
-+	}
-+};
-+
-+static const struct imx95_blk_ctl_dev_data hsio_blk_ctl_dev_data = {
-+	.num_clks = 1,
-+	.clk_dev_data = hsio_blk_ctl_clk_dev_data,
-+	.clk_reg_offset = 0,
-+};
-+
- static int imx95_bc_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -447,6 +466,7 @@ static const struct of_device_id imx95_bc_of_match[] = {
- 	{ .compatible = "nxp,imx95-display-master-csr", },
- 	{ .compatible = "nxp,imx95-lvds-csr", .data = &lvds_csr_dev_data },
- 	{ .compatible = "nxp,imx95-display-csr", .data = &dispmix_csr_dev_data },
-+	{ .compatible = "nxp,imx95-hsio-blk-ctl", .data = &hsio_blk_ctl_dev_data },
- 	{ .compatible = "nxp,imx95-vpu-csr", .data = &vpublk_dev_data },
- 	{ .compatible = "nxp,imx95-netcmix-blk-ctrl", .data = &netcmix_dev_data},
- 	{ /* Sentinel */ },
--- 
-2.37.1
+Shawn
+
+>   arm64: dts: imx8-apalis: Set thermal thresholds
+> 
+> Hiago De Franco (1):
+>   arm64: dts: imx8-apalis: Add nau8822 audio-codec to apalis eval v1.2
+> 
+> João Paulo Gonçalves (2):
+>   arm64: dts: imx8-apalis: Add audio support
+>   arm64: dts: imx8-apalis: Add usb4 host support
 
