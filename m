@@ -1,92 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974C8149E16;
-	Tue, 15 Oct 2024 14:21:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F681AF0C3
+	for <imx@lists.linux.dev>; Tue, 15 Oct 2024 14:53:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729002108; cv=none; b=rpm6vsyELLfc/SuC1SK7QBzwD5rvuX2VmKyav1j+WPkUtj9weH86KdZ/VIHvoM/ZYA86Kjxh4XlmKT/pQBClrQXR7Agv8Ijms0NZRx8505S/0vHCdDeBYb0afv/BBu1pErrMIT+Z72O2sqiMN0xWpphLxnld6Vl0Snw8XnloIvY=
+	t=1729003995; cv=none; b=WYSwkHG4C061zdk2a3oBFAbLT6T65gyy8cfgdf1+WlepbvKqpP/1T0pCo/006WMPm/k7pmT8GZoBa2udtgfekovttnyPDVT/E5qN8/vka2NODAvTma48vdnblyqnTSOo4ITVmX/K/m3bWdL4kWttLFwI5sNkEwgbonEXyVVFbzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729002108; c=relaxed/simple;
-	bh=y9Remuzhazsl6jG4wSR5jXZQPRLnrYUCmNCQ7YesZps=;
+	s=arc-20240116; t=1729003995; c=relaxed/simple;
+	bh=TXL5ECwjpaQl9xrzbHeNrLMJad9K2tD5pt8Y+USrQcg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aNoPfWki6bzVpvrnlmHfK+QhAe1m9wN9X2i/sWC0G11slzMRTeMAY6CpJUv9f/h7gc/BtUbANiFFvzTW2UIFwBtcUFCYlPqggNekl1mjeTbylwoxjMo9GFhHcghHQliWOf3ynwxKepmo9L+VlJt8Z+/ZkCtdTHrKSpmGAHGTQ24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jbkm/EVO; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=OBt/Zlk4EjLkaKgiLIlGRNC5DmMUadCbyn9RA8TFLFiIBZuYKrx5pI3oToXo8FOCCi3TzAXBsUcJeKtLoP8Kq/q7aMJYGqF0+rGvAhzByJMmiq7xIgL5RnczvdqfKDBg7wDP1hAqAU3VSCXnzbMOtFsVWYPl4t8woGowOYUfpkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=LhEqlfvw; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jbkm/EVO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E50C9C4CECE;
-	Tue, 15 Oct 2024 14:21:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729002108;
-	bh=y9Remuzhazsl6jG4wSR5jXZQPRLnrYUCmNCQ7YesZps=;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="LhEqlfvw"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A679740E0194;
+	Tue, 15 Oct 2024 14:53:09 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id eTQLnIpnaaak; Tue, 15 Oct 2024 14:53:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1729003984; bh=IWu4dX3tvzxOwCtQqhtsDrxvJqZWaM0N7YGfox1xlSc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Jbkm/EVOBnWAwjn0Odp22gnMBUiYL6syoS5SHuyG+e4D7572qMJgnKfvVJPTL/S6w
-	 HDegeDPnibo9WmnsXAZxaeC22x5zSFSLSF5RT68Agu7KXe7eicpzvZ+FRCJbUs7UeO
-	 qxx8t2v7bukGdXXLJlWMdS1QxyKbk1qj4ZNsHwl8+AG3tJRN7A54q3xqud/1O4DxeM
-	 tGkMAzmK7ElI2fVPl2FOHbSk8FtDJcZOacm7/dkh0FJQkG4jTBvxUDCdr6SimJwO0X
-	 aoRwyHVenpuSV9SbM9FsX4huGBk5t5cDnsiuMcvOIbMd+cbH9vUUgzBXWqKoIWG4Uk
-	 9o5cJ4AlmjY6g==
-Date: Tue, 15 Oct 2024 09:21:45 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Pankaj Gupta <pankaj.gupta@nxp.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	b=LhEqlfvwFailZ+MIpmFomDMYfFNQnVJTcMpPK31TtPGDjT2YbTH4rgGG4Pj02chhX
+	 7j66HnnZKf2bL+ontS+YzhtVtau4PD5ulUpVwt2fWWV2e/2QeYyyOMPAIj5HJsJSFM
+	 LOF/Osf1rGG2PQTvJG7B1Lq5bKTC8Ss7ap+G89YWLZt2hY90ExdDn8JMiG6lUt6iS4
+	 E7JEPDfrKGJq74CsZYzogfEGXit681oxix7iQ1nkr+Zh4Er+8WkpYkjjTU0Q7Hq7n0
+	 PREPPsbfQStwnfjsayZfUR7hJwa85PyNkjyDLxp8NU2DeiOsmvNedzSgn2eRbwHDoA
+	 Yhb9ZFhIN9tHHEYAR6T4eiTmlzzPsmRHgRDuQ3TUb/yMIfpiOPcChGgAK8mMKy60Tq
+	 7IAqvVEEQ42bPAENIriDrf6/miWqu6jKNuUqwGClT2Ef27azW7RhmMv7k8o8qrGxeE
+	 57r5uELf1Z6ZVWUZVb8FSpapTICC7EFUvGakVW3G6lV5DdBk346BgckLC4pWhTohFP
+	 5g2vhZxW14hWs2VjBM3B7r390mhDgRxt53thdFQ6Uw0jaycMmEJNlgqJF63REaQomp
+	 yxzsM4jcw/elUs79mvLMaybJ6Feskdqfl5ex5AglQfvmi8KkRdr8NfHWgOARSs5NRH
+	 jKYYjBC9wGkgNnD0XlBPK+VU=
+Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 571FC40E0169;
+	Tue, 15 Oct 2024 14:52:42 +0000 (UTC)
+Date: Tue, 15 Oct 2024 16:52:34 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: York Sun <york.sun@nxp.com>, Tony Luck <tony.luck@intel.com>,
+	James Morse <james.morse@arm.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Robert Richter <rric@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-doc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 2/5] dt-bindings: arm: fsl: add imx-se-fw binding doc
-Message-ID: <172900201303.807870.3079581090690762853.robh@kernel.org>
-References: <20241015-imx-se-if-v8-0-915438e267d3@nxp.com>
- <20241015-imx-se-if-v8-2-915438e267d3@nxp.com>
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Borislav Petkov <bp@suse.de>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, Ye Li <ye.li@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 5/6] EDAC/fsl_ddr: Add support for i.MX9 DDR controller
+Message-ID: <20241015145234.GRZw6BsqnIbaGWMzG_@fat_crate.local>
+References: <20241011-imx95_edac-v2-0-011b68290951@nxp.com>
+ <20241011-imx95_edac-v2-5-011b68290951@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241015-imx-se-if-v8-2-915438e267d3@nxp.com>
+In-Reply-To: <20241011-imx95_edac-v2-5-011b68290951@nxp.com>
 
-
-On Tue, 15 Oct 2024 14:31:00 +0530, Pankaj Gupta wrote:
-> The NXP security hardware IP(s) like: i.MX EdgeLock Enclave, V2X etc.,
-> creates an embedded secure enclave within the SoC boundary to enable
-> features like:
-> - HSM
-> - SHE
-> - V2X
+On Fri, Oct 11, 2024 at 11:31:33AM -0400, Frank Li wrote:
+> From: Ye Li <ye.li@nxp.com>
 > 
-> Secure-Enclave(s) communication interface are typically via message
-> unit, i.e., based on mailbox linux kernel driver. This driver enables
-> communication ensuring well defined message sequence protocol between
-> Application Core and enclave's firmware.
+> Add support for the i.MX9 DDR controller, which has different register
+> offsets and some function changes compared to the existing fsl_ddr
+> controller. The ECC and error injection functions are almost the same, so
+> update and reuse the driver for i.MX9. A special type 'TYPE_IMX9' is added
+> specifically for the i.MX9 controller to distinguish the differences.
 > 
-> Driver configures multiple misc-device on the MU, for multiple
-> user-space applications, to be able to communicate over single MU.
-> 
-> It exists on some i.MX processors. e.g. i.MX8ULP, i.MX93 etc.
-> 
-> Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
+> Signed-off-by: Ye Li <ye.li@nxp.com>
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  .../devicetree/bindings/firmware/fsl,imx-se.yaml   | 91 ++++++++++++++++++++++
->  1 file changed, 91 insertions(+)
-> 
+>  drivers/edac/fsl_ddr_edac.c    | 48 ++++++++++++++++++++++++++++++++++++------
+>  drivers/edac/fsl_ddr_edac.h    | 10 +++++++++
+>  drivers/edac/layerscape_edac.c |  1 +
+>  3 files changed, 53 insertions(+), 6 deletions(-)
 
+checking file drivers/edac/fsl_ddr_edac.c
+Hunk #1 FAILED at 31.
+Hunk #2 succeeded at 442 (offset 4 lines).
+Hunk #3 succeeded at 478 (offset 4 lines).
+Hunk #4 succeeded at 492 (offset 4 lines).
+Hunk #5 succeeded at 520 (offset 4 lines).
+Hunk #6 succeeded at 550 (offset 4 lines).
+Hunk #7 succeeded at 577 (offset 4 lines).
+1 out of 7 hunks FAILED
+checking file drivers/edac/fsl_ddr_edac.h
+Hunk #3 FAILED at 71.
+1 out of 3 hunks FAILED
+checking file drivers/edac/layerscape_edac.c
 
-Please add Acked-by/Reviewed-by tags when posting new versions. However,
-there's no need to repost patches *only* to add the tags. The upstream
-maintainer will do that for acks received on the version they apply.
+What tree have you created your patches against?
 
-If a tag was not added on purpose, please state why and what changed.
+> diff --git a/drivers/edac/fsl_ddr_edac.c b/drivers/edac/fsl_ddr_edac.c
+> index ccc13c2adfd6f..3e4c2869a07cd 100644
+> --- a/drivers/edac/fsl_ddr_edac.c
+> +++ b/drivers/edac/fsl_ddr_edac.c
+> @@ -31,16 +31,28 @@
+>  
+>  static int edac_mc_idx;
 
-Missing tags:
+I see here:
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+|static int edac_mc_idx;
+|
+|static u32 orig_ddr_err_disable; 
+|static u32 orig_ddr_err_sbe;
+|static bool little_endian;
+|
+|static inline u32 ddr_in32(struct fsl_mc_pdata *pdata, unsigned int off)
 
+and you don't have those in your diff.
 
+What's up?
 
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
