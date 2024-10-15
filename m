@@ -1,81 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16F71BE854;
-	Tue, 15 Oct 2024 09:20:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60E21B0137
+	for <imx@lists.linux.dev>; Tue, 15 Oct 2024 09:35:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728984026; cv=none; b=sgOO2e7vWP0YEH4CsJDa60pEiavzDNQMiQCV694TLP3IqcCNTKK4VCYYdAiKDiTeDsg1dt5xKcg6CkA7XG+8RFqOQDh9HvtITDgBvwrLZpZWEIX+0pw/KjVIyTtoIWGUk6M4eB+gDPmC0gBg9c+rYQo3G+3WfD9LvDZ8FZS0lIU=
+	t=1728984935; cv=none; b=m7x1y9rE3LLw7zr2E7I4NArzNhKpSHEWYKcsmw5kT7LJmA3FzdJO34DIv0jDEDL+2eFlVjJgW284s4YbGrE62hII0dLlXBU0IcFyQQ8CNc7M3p0jkKMbsA8iq9NkFlyqgDNHWeU6P/eUwu6eK24sOh61bA1rpBsBvWKBkgVyrrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728984026; c=relaxed/simple;
-	bh=0/2K0bhJeAkm6/7sg4ysryFBGytwQfnlFQcMiTWVRyk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=CB09PS0sbG12T3NoCepyrPcsKHczIj/E3bGOSiA5jTQMl79pDTabKSlN2I9rL7qUSV4p1/iIWnFtYOkSRTrvZCi6WSAlSQpkOn/uGqsnYxXGHnijUfd8IruVk7tnUhaaGKpL6UvOVubNZZNp/h4BrJgAvdDBwh+sxvBGhUOSl9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BsGpLfO4; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BsGpLfO4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA02C4CEC6;
-	Tue, 15 Oct 2024 09:20:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728984026;
-	bh=0/2K0bhJeAkm6/7sg4ysryFBGytwQfnlFQcMiTWVRyk=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=BsGpLfO479fGxceEcZN98XeYHDLTzPqQSEYLXEzIxF19jRpO20Lz+VJJYkfBblQax
-	 el0vzmzm5wsZ3G9kXZItI9p30/NafDSpBxDSuHM7iPrrbrGkYlO2/MiUiUuk1asMaP
-	 zcLFNYd8DrZcNxPjCoSQ3lp96ZUQTgywIuP4dlQa/iJMzOiyYd1Ul6QSQCYr3tR/Lx
-	 NFaEO+U1LrjAPxOgNx64TJgewxrwsU7jtiQ8MewFfCh4WxDU25E4zE+D+CRfe0doZG
-	 nNDg8MldmLw3sETnlJPDcU60dE8d1TOiKVsRMND4UvRhCY9LiHYqcrvtf81T/E2GIp
-	 StvkJehS+Wpgw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAF853809A8A;
-	Tue, 15 Oct 2024 09:20:32 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1728984935; c=relaxed/simple;
+	bh=JheizOOh92xYasGYS1s6y2lJIToByxPQTHVdmHl+yA0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R3udB0DM4vDkJNE8HkrJ+hbeZVWHZjyFXy+1h31VH0mNkRLuyzMWCN1PU2EjKbcYTdFKeF6M/eS96xYfVRXjRWZtbGTxYXtj5fSsGIkX0eJdDPWd3QvHbTu700W9L03UhFjPwU7keV4socQ20HHcjBZSfc03QCwc4zTXIXXuLn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1t0dxZ-0007gA-3y; Tue, 15 Oct 2024 11:35:21 +0200
+Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1t0dxY-00202N-Jj; Tue, 15 Oct 2024 11:35:20 +0200
+Received: from pengutronix.de (pd9e595f8.dip0.t-ipconnect.de [217.229.149.248])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 3CFD5353187;
+	Tue, 15 Oct 2024 09:35:20 +0000 (UTC)
+Date: Tue, 15 Oct 2024 11:35:19 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Pankaj Gupta <pankaj.gupta@nxp.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v8 0/5] v8: firmware: imx: driver for NXP secure-enclave
+Message-ID: <20241015-silky-mussel-of-tolerance-b3f5ba-mkl@pengutronix.de>
+References: <20241015-imx-se-if-v8-0-915438e267d3@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v5 net-next 0/2] make PHY output RMII reference clock
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <172898403175.1090412.4776964842960064624.git-patchwork-notify@kernel.org>
-Date: Tue, 15 Oct 2024 09:20:31 +0000
-References: <20241010061944.266966-1-wei.fang@nxp.com>
-In-Reply-To: <20241010061944.266966-1-wei.fang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- andrew@lunn.ch, f.fainelli@gmail.com, hkallweit1@gmail.com,
- andrei.botila@oss.nxp.com, linux@armlinux.org.uk, horms@kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, imx@lists.linux.dev
-
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Thu, 10 Oct 2024 14:19:42 +0800 you wrote:
-> The TJA11xx PHYs have the capability to provide 50MHz reference clock
-> in RMII mode and output on REF_CLK pin. Therefore, add the new property
-> "nxp,rmii-refclk-output" to support this feature. This property is only
-> available for PHYs which use nxp-c45-tja11xx driver, such as TJA1103,
-> TJA1104, TJA1120 and TJA1121.
-> 
-> 
-> [...]
-
-Here is the summary with links:
-  - [v5,net-next,1/2] dt-bindings: net: tja11xx: add "nxp,rmii-refclk-out" property
-    https://git.kernel.org/netdev/net-next/c/09277e4fc9a6
-  - [v5,net-next,2/2] net: phy: c45-tja11xx: add support for outputting RMII reference clock
-    https://git.kernel.org/netdev/net-next/c/6d8d89873ae0
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ve7ngvhuovj33gje"
+Content-Disposition: inline
+In-Reply-To: <20241015-imx-se-if-v8-0-915438e267d3@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
 
+--ve7ngvhuovj33gje
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On 15.10.2024 14:30:58, Pankaj Gupta wrote:
+> base-commit: b63ff26648537a5600cf79bd62f916792c53e015
+
+Where can I obtain the base-commit?
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--ve7ngvhuovj33gje
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmcON1QACgkQKDiiPnot
+vG9X2Af+J+xuxalOSQSQcrU4QulynDR7mUOqjhFSIuBwZ5BB56PMabTK88v+zwFW
+HbNp07my5v/vfjTZMBHcnvgIhkDk2L3Ko90AaOU03GQgl4HDmFC1XfUITOVQt5Ke
+JH5FOI9oCyhI0NsoKLnAhrL4Mf2LvU4suSgnEnGuIeQTqbZgfNJV/YiCx+WyJSpC
+HpevZ+dv8eZ/8FUt33GIbOmu0rkSM9s5C5XSCCLaNEIyTFwTPpe7e6QsLWlSuh6U
+zBybW65UpnnQVO4INSRsBENiOp7cMWkCwDcjaiQLRBSr75vp2xXLQMlTBZpXq4iC
+4uw415bFodLqdtYaLHZYPlWee5IeDw==
+=/T01
+-----END PGP SIGNATURE-----
+
+--ve7ngvhuovj33gje--
