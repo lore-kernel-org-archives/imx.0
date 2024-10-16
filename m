@@ -1,159 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A1518B478;
-	Wed, 16 Oct 2024 07:47:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CAA11D2708
+	for <imx@lists.linux.dev>; Wed, 16 Oct 2024 07:56:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729064865; cv=none; b=qCo/Ch1K/FaqxTWt0l0rAlvUZmKYgmJ35zHMEaRaA93eza1kSPaODFwSU7Zol5ATF4tHD0zaHTSN3ZMXLLIrtfkxiyDGZV/FcKJ7Kmx2gmxnFMHUK6/PT+wXqman6EER+6Xd714r2COC3IINPFA3g4+fqx5eNDqISHH5QUjJ+vg=
+	t=1729065387; cv=none; b=tQVLlWgg4wqSfIJlFsceftBOzk+y8kdDCLCSYyhf3VrQwj2oiunYg8bhCXdF733K1dhUg0y4LRODerq9InnQdnFPEOZA7bZH2My3wSrAN37whjpha5RQykLNeReSsUcPvX0tYOYmxjS23kkAQN+UzFSIIm15Vo4OC5gVWgxDivc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729064865; c=relaxed/simple;
-	bh=czXhcOILBBQYTDKkgqs9P1fyWETcj7HUoKiQBbwDsOE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qBnMpVhv1h4EvdMNtzCfQ0knhuDLdMXh/gtKR3rUW81KnPAu9iARmrp7DJjhiK75mspziuFd4UeOnyoAA2FX6/WXGcqrIWNmcPyuuEJJivqrRwJipXePfiK0F1Ccm6dykU/dnygcwHA4E74VU4+vS8guDNm0wC5A8Z7Va3R7ieQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VhDDcXmT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729065387; c=relaxed/simple;
+	bh=7ZGza0D4+DJc0I3mcLDXZs6PWKHYl9GrfKvQnjQrUDU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=soQ0UV/VIc8/6Q3zxr4DSSD037xoHaWOtPEMZb8Ka3XXu3GIp+AVabH0OQzGVFWUdaxsQ2kpXMjDmB8a1BRbUj5gsDONywFHOICJhDNZ3hoZRwZGee/b9oKgd3cY2XEgKVmPSFshPWgyZZjXds821cen7M9QiK00NH8fYT/BwsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=EzdNoxqu; arc=none smtp.client-ip=1.95.21.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VhDDcXmT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE42C4CED3;
-	Wed, 16 Oct 2024 07:47:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729064865;
-	bh=czXhcOILBBQYTDKkgqs9P1fyWETcj7HUoKiQBbwDsOE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VhDDcXmT+2obzJm+IRQuDcu9VRtL9pQFrHP1Xra3icq6fuEzLwN4MKU2xemle2xLN
-	 E1fNGqauW4VDGZG2i7pmt6guRc1EPlczoTXzk76o6MNSUY827yrbBP+s8JZgABsN8C
-	 1H5WOiKxSNVxgIja8S1yzRBF6bMzCSGfgJl+JhM2bwnp6REu0oxNPoSl2+TNjuMgaW
-	 IHMaFrML/H9z7HAQKjOBWd0Uf5QUdfYpDDmuQkHcefUWDniDubUDCWdI9vTcexQHGA
-	 wOaQdAkzRsCOT7mkWbej9LYBHDX7kiVisF44kja8oFitjRuZ72NLgehQVhwlXDQe/0
-	 q8uW/pGUmBcgQ==
-Message-ID: <17b5032b-8ad2-470b-8d92-41f2721930ac@kernel.org>
-Date: Wed, 16 Oct 2024 09:47:32 +0200
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="EzdNoxqu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=RhxSP9FPCj+a+dDaeGpQ2xdy8rq7kJ/iFQi/d8ef/w4=;
+	b=EzdNoxquQIQB6Ji5DiKy7MAGDo+H96tb6sRR6BJ9gQ/J8c5Nd1vQmlt7hMomTx
+	q9cTYnYhUOfCHUHzOBSCrjc+dAUAyc0vjJqfxQ6IEfGPTCqULslY6zpH+Avbt2PE
+	HJQTs9grCWhk+o3IlRXQ45nj7aWYAA6+manTBve6xaak8=
+Received: from dragon (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDH7uyPcQ9nYMAZAA--.432S3;
+	Wed, 16 Oct 2024 15:56:01 +0800 (CST)
+Date: Wed, 16 Oct 2024 15:55:59 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: vkoul@kernel.org, kishon@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	gregkh@linuxfoundation.org, Frank.Li@nxp.com, jun.li@nxp.com,
+	l.stach@pengutronix.de, aford173@gmail.com, hongxing.zhu@nxp.com,
+	alexander.stein@ew.tq-group.com, linux-phy@lists.infradead.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH v5 4/5] arm64: dts: imx95: add usb3 related nodes
+Message-ID: <Zw9xj4JWHssfOtQP@dragon>
+References: <20240911061720.495606-1-xu.yang_2@nxp.com>
+ <20240911061720.495606-4-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] media: dt-bindings: Remove assigned-clock-* from
- various schema
-To: Rob Herring <robh@kernel.org>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Dave Stevenson <dave.stevenson@raspberrypi.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Martin Kepplinger <martink@posteo.de>,
- Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
- "Paul J. Murphy" <paul.j.murphy@intel.com>,
- Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
- Tommaso Merciai <tomm.merciai@gmail.com>,
- Martin Hecht <martin.hecht@avnet.eu>, Zhi Mao <zhi.mao@mediatek.com>,
- Alain Volmat <alain.volmat@foss.st.com>,
- Mikhail Rudenko <mike.rudenko@gmail.com>,
- Ricardo Ribalda <ribalda@kernel.org>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>,
- Umang Jain <umang.jain@ideasonboard.com>,
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Dongchun Zhu <dongchun.zhu@mediatek.com>,
- Quentin Schulz <quentin.schulz@theobroma-systems.com>,
- Todor Tomov <todor.too@gmail.com>, linux-media@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-0-a2bb12a1796d@linaro.org>
- <20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-1-a2bb12a1796d@linaro.org>
- <w4ta26svh34gojqpakrgp5cpsempedkewkmbllyvs5z5fm274z@jqs3tvunxq2s>
- <20241014203441.GF5522@pendragon.ideasonboard.com>
- <b0154e75-370e-4a5f-9309-6a3ae5d85b5c@kernel.org>
- <20241015112922.GB2712@pendragon.ideasonboard.com>
- <20241015164609.GA1235530-robh@kernel.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20241015164609.GA1235530-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240911061720.495606-4-xu.yang_2@nxp.com>
+X-CM-TRANSID:Ms8vCgDH7uyPcQ9nYMAZAA--.432S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJry7Jry3ZFW8Kw43Kr17KFg_yoW8tFy8pr
+	yDGay5Zrs2gr1xCFWaqF48KF95J3y0kFZ5Wr1Sgryjkr9xZ347KFWIkF1S9r18XrsrXw4j
+	qFnaqr1xKrnxtw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j4mhrUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCQZ6ZWcPLG3NiQAAs9
 
-On 15/10/2024 18:46, Rob Herring wrote:
->>>>
->>>> How so ? Even if we assume that the device requires a specific clock
->>>> frequency (which is often not the case for camera sensors, the
->>>> limitation usually comes from drivers, so the constraint shouldn't be
->>>> expressed in the bindings in that case), there is no overall requirement
->>>> to assign a clock rate as in many cases the clock will come from a
->>>> fixed-frequency oscillator. This seems to be a constraint that is
->>>> outside of the scope of DT bindings. It is similar to regulators, where
->>>> the regulator consumer doesn't have a way to express supported voltages
->>>> in its DT bindings.
->>>
->>> This property does not say it comes from a fixed-frequency oscillator,
->>> so I do not understand why you think it is unreasonable constraint. I
->>> have no clue what the author wanted to say here, so I just explained
->>> that there is a meaning behind requiring such properties. If you claim
->>> device or implementations do not have such requirement, after
->>> investigating each case, feel free to drop this. I think I also stated
->>> this already in other reply.
->>
->> For camera sensor drivers I'm pretty sure we can drop those properties
->> when they're marked as required, as there's no intrinsic characteristics
->> of camera sensors that would require assigned-clock*.
+On Wed, Sep 11, 2024 at 02:17:19PM +0800, Xu Yang wrote:
+> Add usb3 phy and controller nodes for imx95.
 > 
-> I tend to agree, and would take it one step further to say that applies 
-> everywhere. Whatever clock setup needed is outside the scope of a 
-> binding. The simplest case is all input clocks are fixed. The next 
-> simplest case is firmware did all clock setup needed for a specific 
-> board and the boot time default works.
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> 
+> ---
+> Changes in v2:
+>  - no changes
+> Changes in v3:
+>  - no changes
+> Changes in v4:
+>  - reorder nodes
+> Changes in v5:
+>  - no changes
+> ---
+>  arch/arm64/boot/dts/freescale/imx95.dtsi | 43 ++++++++++++++++++++++++
+>  1 file changed, 43 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> index 425272aa5a81..2377b3ade95a 100644
+> --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> @@ -1188,5 +1188,48 @@ pcie1_ep: pcie-ep@4c380000 {
+>  			power-domains = <&scmi_devpd IMX95_PD_HSIO_TOP>;
+>  			status = "disabled";
+>  		};
+> +
+> +		usb3: usb@4c010010 {
 
-Ack.
+Could this be added in order of unit-address?
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Shawn
 
-Best regards,
-Krzysztof
+> +			compatible = "fsl,imx95-dwc3", "fsl,imx8mp-dwc3";
+> +			reg = <0x0 0x4c010010 0x0 0x04>,
+> +			      <0x0 0x4c1f0000 0x0 0x20>;
+> +			clocks = <&scmi_clk IMX95_CLK_HSIO>,
+> +				 <&scmi_clk IMX95_CLK_32K>;
+> +			clock-names = "hsio", "suspend";
+> +			interrupts = <GIC_SPI 173 IRQ_TYPE_LEVEL_HIGH>;
+> +			#address-cells = <2>;
+> +			#size-cells = <2>;
+> +			ranges;
+> +			power-domains = <&scmi_devpd IMX95_PD_HSIO_TOP>;
+> +			dma-ranges = <0x0 0x0 0x0 0x0 0x10 0x0>;
+> +			status = "disabled";
+> +
+> +			usb3_dwc3: usb@4c100000 {
+> +				compatible = "snps,dwc3";
+> +				reg = <0x0 0x4c100000 0x0 0x10000>;
+> +				clocks = <&scmi_clk IMX95_CLK_HSIO>,
+> +					 <&scmi_clk IMX95_CLK_24M>,
+> +					 <&scmi_clk IMX95_CLK_32K>;
+> +				clock-names = "bus_early", "ref", "suspend";
+> +				interrupts = <GIC_SPI 175 IRQ_TYPE_LEVEL_HIGH>;
+> +				phys = <&usb3_phy>, <&usb3_phy>;
+> +				phy-names = "usb2-phy", "usb3-phy";
+> +				snps,gfladj-refclk-lpm-sel-quirk;
+> +				snps,parkmode-disable-ss-quirk;
+> +				iommus = <&smmu 0xe>;
+> +			};
+> +		};
+> +
+> +		usb3_phy: phy@4c1f0040 {
+> +			compatible = "fsl,imx95-usb-phy", "fsl,imx8mp-usb-phy";
+> +			reg = <0x0 0x4c1f0040 0x0 0x40>,
+> +			      <0x0 0x4c1fc000 0x0 0x100>;
+> +			clocks = <&scmi_clk IMX95_CLK_HSIO>;
+> +			clock-names = "phy";
+> +			#phy-cells = <0>;
+> +			power-domains = <&scmi_devpd IMX95_PD_HSIO_TOP>;
+> +			orientation-switch;
+> +			status = "disabled";
+> +		};
+>  	};
+>  };
+> -- 
+> 2.34.1
+> 
 
