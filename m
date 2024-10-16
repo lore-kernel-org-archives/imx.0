@@ -1,39 +1,41 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.16])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9BC1F80DC
-	for <imx@lists.linux.dev>; Wed, 16 Oct 2024 08:43:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.16
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2DE204F86
+	for <imx@lists.linux.dev>; Wed, 16 Oct 2024 08:50:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729068184; cv=none; b=Ca4ykcwSrc0zYraMjH+6X8uBMVklgAdtTXUaa17KhmOxNqF8ZHgyC8XOAp3G8yFsXOaejhBPc2H16rk9J5P0u2CeLVB903MnUgc8LEbPL3aIqU2waY0i0ggnTz5oMjSyu064hH82t8CZR4zA3iQn5Wj5DIDGzhMJ+vuG2mRVGPg=
+	t=1729068626; cv=none; b=QQ8vbivFEXh5W6tXXVG3t2jkKZrqL4jbqwyPxpMhTWtCjiPft2tjFUPe6l+E9ZMNJ4BfKTj0ZSY2gWx/n9mm37TajIAbuhbEdNylkSiE4ZdgWgp8JvjVRF9pP1mssiXIcVK7vNscy5kT2rGTmg/D49y6JCOY0se2dIhgYFauPyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729068184; c=relaxed/simple;
-	bh=jzDEQX0G4aFdYBgBD8Q9TVHHCXcVx8mUrzPKx46F6UY=;
+	s=arc-20240116; t=1729068626; c=relaxed/simple;
+	bh=LtVByiWSZtHR8mgWIuhwk6J8AyO9HCJMjno04GmKUF0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m3DesTClBfmf/0zn+mDBapNqYz9tCPmpLMwiIOJxheEhyy1UoKTNKU9SuWOtxKaZbGME9iRzWNpahaWcC+Ot/6dpt3WaxmFVofy9kAuYwBcMK8q2Ywtz5Pq7sBwS2KJgu8kjlKJ0KggUimyNTX2PBAqdVVWc80j7CVl3cWoW6uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=HEENpf4S; arc=none smtp.client-ip=220.197.32.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=NE4eeEqAoVswXbWl2s4ZH4jwbwloTr46Vk/wlYLJNQjUyycCj50KV2VD86kVyB3tFPR1m9VBnvA7X7P3oKG1vrNYo/cb7PhA1FQeD63Y7AE5PISojMAX55YiKz47Mavwer7OAfSfrXsywDdwJCRjjrSyYlrkLdYoNSRpQU2Eiwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=J3N3M59F; arc=none smtp.client-ip=1.95.21.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="HEENpf4S"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="J3N3M59F"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=8cxRSQIWKMfv15uvq9UbQkjHI3xRuImVJscKgphQC98=;
-	b=HEENpf4SpRrJHEpj+Zhrj5da5JQGEtelKCSUETcT4e+UMtQHKtjxglAJR5KAtE
-	Pe21yv2hrClsDEA0YxjmNWki3ftRr7btgi6oQfSqXH/NEjfxzd7IwULySUsI73E/
-	SIZfv7lzF3MTh0I8Umvm8/TH0HPZ4D5zgZ+uTYa8bdZxw=
+	Content-Type; bh=Po78hYeDV+J0PQFG2Fu9nvFQPh5C5GSX/UuSGg42/T0=;
+	b=J3N3M59Fe0DM4EM7PCLZ9tvp8SzuUw7q87nZZKGo14mn6DN1n9EM6P1di3uOSO
+	tflcMGxERAAWu2bfb1qEuNbPLfgj2q2KPlBNuFuBNhmdMHoC9CzCFaPAJoOjZP+E
+	053Pqy8tTIf5dEwZRDTxzfeMwvNLLlgRz1syQuZRm1OTw=
 Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgCXH7OBfA9n8OQZAA--.452S3;
-	Wed, 16 Oct 2024 16:42:43 +0800 (CST)
-Date: Wed, 16 Oct 2024 16:42:40 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgCXWNwqfg9nJTkaAA--.410S3;
+	Wed, 16 Oct 2024 16:49:47 +0800 (CST)
+Date: Wed, 16 Oct 2024 16:49:45 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Diogo Silva <diogompaissilva@gmail.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, aisheng.dong@nxp.com, Frank.Li@nxp.com,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: dts: imx8: Fix lvds0 device tree
-Message-ID: <Zw98gEMgXbx8lIjr@dragon>
-References: <20240917065801.2579750-1-diogompaissilva@gmail.com>
+To: Sean Nyekjaer <sean@geanix.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] ARM: dts: nxp: imx6ul*: add uart dma support
+Message-ID: <Zw9+KYSP69O9Hgb3@dragon>
+References: <20240918-imx6ul-sdma-v1-0-d25abd56e65c@geanix.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -42,18 +44,16 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240917065801.2579750-1-diogompaissilva@gmail.com>
-X-CM-TRANSID:M88vCgCXH7OBfA9n8OQZAA--.452S3
+In-Reply-To: <20240918-imx6ul-sdma-v1-0-d25abd56e65c@geanix.com>
+X-CM-TRANSID:Mc8vCgCXWNwqfg9nJTkaAA--.410S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUsPfHUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCxB6ZWcPLTjrhwAAsV
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVvedUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCxB6ZWcPLTjrhwABsU
 
-On Tue, Sep 17, 2024 at 08:58:01AM +0200, Diogo Silva wrote:
-> Some clock output names on lvds0 device tree were duplicated from mipi1,
-> which caused an -EEXIST when registering these clocks during probe.
-> 
-> Fixes: 0fba24b3b956 ("arm64: dts: imx8: add basic lvds0 and lvds1 subsystem")
-> Signed-off-by: Diogo Silva <diogompaissilva@gmail.com>
+On Wed, Sep 18, 2024 at 02:07:41PM +0200, Sean Nyekjaer wrote:
+> Sean Nyekjaer (2):
+>       ARM: dts: nxp: imx6ul: add dma support for all uarts
+>       ARM: dts: nxp: imx6ull: add dma support for uart8
 
-Applied, thanks!
+Applied both, thanks!
 
