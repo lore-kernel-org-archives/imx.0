@@ -1,202 +1,317 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2068.outbound.protection.outlook.com [40.107.249.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0519320C03B
-	for <imx@lists.linux.dev>; Wed, 16 Oct 2024 18:18:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729102716; cv=none; b=s7mE5A2YEakyFF8BZi0dZ9wrBk/hx8VxXKp12hx0v5qsFPc9OHm+9ylgNQRpam83tIaEzerv3yTkURAkj6KIsus2m5UqA2lNHg8+RZrSn5MGB56HFH+pEcy8OvL3yitR8GIS+w6tRxlMbti+lDo9EH1LHmJwjBV5Q949e/Cy/IE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729102716; c=relaxed/simple;
-	bh=0RLxWeRy7lIWLtpH6trxl5wUyZXhGtOIOX2LMCj6/wo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vehw9nsbLokUdwKYd4UTd6YwnIDb3y7Nk2bAn+uurDgFycONdB3POApbOfmKn9LZjEu/VWJXOKpgzCHBub/6QlpmjiG0vF3Js67Bm46dMn0BvkPtf4kW8dxK51Gk0O/1Q14XWB2E0U1wg6iX72riRaOaqMjeMeKM9iHX4xm5KEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=s56yo/Ma; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3715B20F5D4
+	for <imx@lists.linux.dev>; Wed, 16 Oct 2024 19:11:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729105862; cv=fail; b=HopoHzSSQ8W3bc4JI6X1zV0TqRLAS6/BmUD42ciRCgJ1NjNVmcGKA+ggF3+Flwtb/GeSaH9/ixUIsrXdl0HYcM52FKQEaKK3ynz8As35V8pOozH/zjF00ws2QDVSyOU6DTwW6Lnx3s8leGgnPViAr8Ojs2z7yUcx/ohGWztyC3A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729105862; c=relaxed/simple;
+	bh=m6K+o8+5wsCW67pnPe0IneuvJAFV0GAS/9/obPD9U3A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Ls/Roec8q/ID+utyl3wBEWPHLoJFG28qloDX8F1mfcbQA2ElqKs74yVxVpuh3YvbxL+W9xtNGoQBsgM04PcFBxFKByu64ZA4q+EYcrHaJNJOLHUgRZctgGZs0c0Z9bA2YZVYUxcyiBqoEaBxFfwhZbwnAKIzOfaTUQRKyY41Kzg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=D92/aWC5; arc=fail smtp.client-ip=40.107.249.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="s56yo/Ma"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-20c8b557f91so1068635ad.2
-        for <imx@lists.linux.dev>; Wed, 16 Oct 2024 11:18:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729102714; x=1729707514; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=KSLOhR9xxYJXQViHS9mwcM/ewvXBBg+Ia/LYbbJpFyw=;
-        b=s56yo/Ma4K46Lw6Bob+QpC6tK9Oq3JESbY9Lkeh2X68mfOkXu6aR1GYdywzn5MGPDC
-         +l35j9s9oYiWAUlHL8w/pfcKtWllCG5Jhd7P1rWbir5kN1fsFhtLjniQibU1XHlDBoft
-         /H3NyrNpFq4zJ4d+l3noikavqlaoiBYrfEqwhQ9zon8gKNBWk1vXT7iU6TtZR1/yWo3W
-         uAYb9c9b1fV5/WKke7W11cdoN37DhTga9Ww9zsbugpTC4i9Ca9dUQrpB/7DXtFjsJ8oj
-         pv1GGIePx6IoBHf4geQktx8CQ49GYbGe9wH6ymVWGLgldTCtxeDNvF3wH1t+PFBg7lRA
-         VPnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729102714; x=1729707514;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KSLOhR9xxYJXQViHS9mwcM/ewvXBBg+Ia/LYbbJpFyw=;
-        b=iK6Jki+wzBgvPPgmf2HJ5vXUgp8F3VHtM3xf2k2NcPQR33xHHj1M6ppUvLFX1s2o7X
-         fCBmj7ddwx6fJNm4HhfPDaZo+TVQHIOwmtbFdZ4kzvyg/o605oJOH9FAgTvnmtWcbaoM
-         OYNi/8aTeYnvP9IahbNw2LhcUnkapfvkEK6fr/DlTprJ9oIOr8Gj2WnwqemEqR4q1Q6t
-         Zfxl3/pv7aRDaBaIqS3yChyOOHNhwcvwAfJoVrCkXOFVVM6ZAAO2eImGjuubf67KoYdF
-         3YdaIa50WFgthdknTZz+HHsMOwK1c5NQ1mTK2yPHXSvzHXC78qMzzDe8rM4YgDeaHabP
-         3mcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX3vSCrDsOqXMxLJ5C9Lg8pEJmv4Aggmyc9q3fw+XZ8ih/C/MKpQOjfDCrDyXyNtik9A9E=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzWCWNibrgcYvBHvAg0zWvGPs5zDk2FUHB8lzJWwA2F2izUFprh
-	QZj0khXkFxWCyfUUFPwBdhn6uuiRt/q5LekQOnMLLDds+Me8XU3Ocj4Dxd8lUQ==
-X-Google-Smtp-Source: AGHT+IGL15xkEGVz/G0WNUShtqNUkX0igr2aU5z36X8kq9Zvhx6EQrdSgDcWVqEV88nIpdgYWyyv2Q==
-X-Received: by 2002:a17:902:c951:b0:20c:9983:27ae with SMTP id d9443c01a7336-20d27f275b3mr70371435ad.48.1729102714364;
-        Wed, 16 Oct 2024 11:18:34 -0700 (PDT)
-Received: from thinkpad ([220.158.156.88])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20d1806c6f3sm31527825ad.300.2024.10.16.11.18.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Oct 2024 11:18:33 -0700 (PDT)
-Date: Wed, 16 Oct 2024 23:48:29 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: "jingoohan1@gmail.com" <jingoohan1@gmail.com>,
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	Frank Li <frank.li@nxp.com>, "robh@kernel.org" <robh@kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: [PATCH v1 1/2] PCI: dwc: Fix resume failure if no EP is
- connected on some platforms
-Message-ID: <20241016181829.lfgjtw76sm6pzgcz@thinkpad>
-References: <1727243317-15729-1-git-send-email-hongxing.zhu@nxp.com>
- <1727243317-15729-2-git-send-email-hongxing.zhu@nxp.com>
- <20241003060421.lartgrmpabw2noqg@thinkpad>
- <AS8PR04MB8676495DB585E7F2C9F6659B8C7E2@AS8PR04MB8676.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="D92/aWC5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kPkiBAzwfxdx/CGL0Vr93X+jrbMz9ScLlxn+xn8L+FhRTu38EBG9wu+wK9/KpWcorBnbVLukJox3uBi9+5ExrpSecd2fPTMlEZHFn+1OvZ4Xxx3BrTLdXkocJefEZ/I3jvRQerwowkA2Yvm8Oz3LHolkSSRKtJKNwrPJQd8c9APgPX+rULx6XUWFUvJCmyB/ZJWN4Dw6/+1QV8YKT9FJFXHJuoIouZZ3bv/22GTmixVBXT4xKmIcFf/KgkwGruZVaXWkKe4L8DxR+lVGH+dlpG3aLiQqysshfWDUJ/2CPsuE6RPajt7Ux32jbR7a6PBBLneCX49YAdRYuT89PWyFyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=G93qL6ZxM+HkQPT8/RITdgqAc8X6akuJvkrBUbVVFfQ=;
+ b=aOIkXdsw5Uq2rQfTA7zJ9x0od3sih67XKWxhKqzCX5LDGtuL6IhiSl3svrvdym9iQYfSxbkk4r11zdqSn5XwNY65jm+vUIhFORAO8wxBZ7R9xDcvngX+kFgWDDrNb3kzblFHa7WX/RrvuPelCJRWgBacXu2mEAWqkcjgsjIwXbZ3nlu7qsFHdv9lsgtsDqsm6i8WePAAx1/4u2N0jmXdU4DDIbSPoVhmJK8lyDH2b9uA0MEI+D57bPW3RxeoE86Dx5eqM4+gU2N1iBdBCwOdNRk/EyzSoX7i/U6pZmRR2n7BLJG37bXtTLhz8uYe5DqJyKaiAx58HRHTWqYSMcnlLw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=G93qL6ZxM+HkQPT8/RITdgqAc8X6akuJvkrBUbVVFfQ=;
+ b=D92/aWC5aygQmPIhoAFAeb09tG7cg/QkBZKLBWDuZSLw/Me+wKPyye30EhsqzoXGUMa8PsPkMQOY1Xz7FqvV3Myzl2hH5qwBeowZYYG5fJLBFMN3ooHaKOo7Rk+ToV3nBqKWSQT73t9rDYrdIVR+QnK2g+8+PmyJ2RLm/I38PKww8lmXd6HNS8Kwd3C2LlJfB7w5ip6EaHEgNgSU1t0JkfHDpU9ZfR9AgQvYzhxqvPpcSMBBp/kwd/hLiIU924Wkujvh90Km8YmP4n0nN2rkqP+tT+07zy7cwHHTyHGx3KJRvu+rcqCApmWZi1K/nmv0Dx3nEG5Pt7e6KrfpzqRCOA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AS1PR04MB9681.eurprd04.prod.outlook.com (2603:10a6:20b:480::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.26; Wed, 16 Oct
+ 2024 19:10:56 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8069.016; Wed, 16 Oct 2024
+ 19:10:55 +0000
+Date: Wed, 16 Oct 2024 15:10:45 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Abraham I <kishon@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+	Jesper Nilsson <jesper.nilsson@axis.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-pci@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: Re: [PATCH v2 1/4] PCI: dwc: ep: Add bus_addr_base for outbound
+ window
+Message-ID: <ZxAPtfOhYBsz3ygC@lizhi-Precision-Tower-5810>
+References: <20240923-pcie_ep_range-v2-0-78d2ea434d9f@nxp.com>
+ <20240923-pcie_ep_range-v2-1-78d2ea434d9f@nxp.com>
+ <20241016180849.w7vppj2bsvagqhb7@thinkpad>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241016180849.w7vppj2bsvagqhb7@thinkpad>
+X-ClientProxiedBy: BYAPR21CA0009.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::19) To DB9PR04MB9626.eurprd04.prod.outlook.com
+ (2603:10a6:10:309::18)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <AS8PR04MB8676495DB585E7F2C9F6659B8C7E2@AS8PR04MB8676.eurprd04.prod.outlook.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS1PR04MB9681:EE_
+X-MS-Office365-Filtering-Correlation-Id: e7c94cd7-ac39-4682-82c4-08dcee164265
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|366016|376014|7416014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZS96aUd4UXJ5ZkhCazhVcGhrNERmMWQ4NkpNSHYrQ1E2aTlvL2M3cWFhVkc2?=
+ =?utf-8?B?VkVQY0gwQTF0Q3ZFMFR0ME8yM0dXQ2Jqa0NLcXM5a1VJWE5YRnRIbVB0SFh3?=
+ =?utf-8?B?ZTR4UTNFdW9FQ0MyR2pJL3o0OGd0TCtIS29mTG81b2tzaTd3bG1hb3dLSW9T?=
+ =?utf-8?B?SGVPQXZyZVZsUkJtSnNDNXAvYmFaZm5taVpvVTM2UmRtTEtYMEU4VW4ybkZ1?=
+ =?utf-8?B?eXphaUE1NTBOWkg1c1Q0QXhVeDQ3cTNSL2JmQXZDdERtdS9vT2xGR0psMVR4?=
+ =?utf-8?B?dENBM0w3U3NMNnBQaUh1SU84NTRHOGFwRHY2RGZiRWQySGF3N0tXcCtoQWR3?=
+ =?utf-8?B?SzRzM3FxM1ZKcmhvZElkMStSbWtyM0JNL0t2NDlSdW90TFJTM01jVnlvb1RW?=
+ =?utf-8?B?Wjl6bUlYL1hjNmVqdFdJb2lraHlScjlYbVFNTnAvdktncXErMWhISUhWbGJF?=
+ =?utf-8?B?WklvQ1loazVRemJ2WTJVZ3MwMEZsT05hSU9ua0l4bWRtZ2hTMWxsUnpkRlZV?=
+ =?utf-8?B?aW1QajZpcHpNeUE0TVpkMEFzV2ZBYkR3Mnp1ZVJRMW4zVmhLbWVFek5PRE1Z?=
+ =?utf-8?B?MnVQRlBrSG0rQ2pvdms3L0xZUTB2clRqLzg5eFdxMVdQbXNDNmt6MlZ4UzB0?=
+ =?utf-8?B?YWFLSktFc0gvQ0UrR2l6akpWdHl3OXU4dDVja1J2aUg3QUNObUdaWTNlNlRk?=
+ =?utf-8?B?RnFCeGUvelFUcG9VcUJEWVN4cklqaDVxTmtudXovcXVYVDdhNzVhVFlDTVB5?=
+ =?utf-8?B?QmxUbmRMazlzUlBUZXBoUzZpNXdKRGdZRHFNU2p3UmlTQm8wQnpOQ2g4OHBy?=
+ =?utf-8?B?MjlXYUZSVjRaWkNmdjlsMTFjWFl3bGFkZVFCS2xvblVZR1FnTzFXMzlicDBK?=
+ =?utf-8?B?MWMxS0pXcXZkRDhVS0NyL04rV1poRGEvbGF0dVNoV1VmQnEvK2Q4OVFibmk4?=
+ =?utf-8?B?cCt1Vk44RXNOQ09weEVlaHNvT2s5eWZLbUQ4Qk9LZzQ3ZWZLTG9vSXZHZ1dp?=
+ =?utf-8?B?cTB1WmxnbmhTNDFObkJ5MWI3YmJzVzhKQ0lBdnFFYnkwTWlIUkV5NGk3Z0Ur?=
+ =?utf-8?B?Nit2RlcxZHFGUGFJN0tUSEhabWNxQzhCZ2FFK0RITWU3b0NLOXlMb1ZQeEpy?=
+ =?utf-8?B?aUxIOUUzakR3QjBJVTBxcEh1czBuQkY2eGIyZUxXZENmSkhNWTdWV0cxMjIv?=
+ =?utf-8?B?U001VVl0ZzdsYWhvQjNmVkVQVnFmZU5Vc1RFQTBtN0JuZ2hNK0VJTXlYbk80?=
+ =?utf-8?B?MDRUUk9ZcXJmbS94Z3EyR1JSRitwMDNxLzBlTm9UNERKa3B0c1lhZ2syQUlt?=
+ =?utf-8?B?Y2Jwb0FURGFVZDJRbXlQVVMzYWtYTWhzb0d1YXlOS1dyanlqRGpqWTBmcFNU?=
+ =?utf-8?B?eWxqNGJGSzYzQXRaQ3BINjkvL2lySHZQbWxNZVZwbnpkUTRqYWpnTU1Fb2FE?=
+ =?utf-8?B?TVQzNWtzSWN2TkVWakc0Vlh5cFRkd2E5akQzR0w5QU5MRnhTRHc1Um9sRUdu?=
+ =?utf-8?B?aHJEYjV4QjVMQlYyTUdTOFJwUDc1T0c3NzJReGM3dmVjS0tVR1htVzhGZnRy?=
+ =?utf-8?B?UzJ5UlcyRlVRZ1llc3NPbzdlTGhQTkQ4M05Gb3ZDbkFZTENmNDRyYWlFQUVW?=
+ =?utf-8?B?SHk1RTl5TjBXdHNMY1lQUjdqYUJJUVJhanF0Q3RQRkJZREpBZ21KMkVmOVJH?=
+ =?utf-8?B?RmhsMHFLWDNDUXp2eEFZWlhmcFVpTFNBTWlkL1ZQdXRRVndVWUxsTVB0S1I3?=
+ =?utf-8?B?dUtNbExmLzdGdWxGbm1hWmJEck9MUEdDdXRWK2hGNTQ5NCt0N1c3Tk83MlFv?=
+ =?utf-8?B?TS93bzVDYW1JVStQbE0xUT09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(376014)(7416014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aGFJSWJVaGJEY29KZjdRWkEyWk1CNzFTTEd3RW9OSU9HQ2x2aVl2MGJFZEIv?=
+ =?utf-8?B?djVBTVdXVHJmY0dKOGJNQmxoTnRHS0RQUHpBYldXWmhpZnRUK28xTGt2T0Zj?=
+ =?utf-8?B?Y0YrNHBTOWtzakNqL1VQYksxd0dFbDhRdVh2UExkNEhmZWtzVFp6UVcxU0Zo?=
+ =?utf-8?B?VUdCZmc5bUpoVjRjQXF1RUF0TGxjaHZrYTVjcFFqTTBRdGpJdlZwdEppaThk?=
+ =?utf-8?B?MEQ5bDNmek5mcGUzWm55YTA0MkxhL3A0V01QcjhvYS9RMW5oM1BRTm9WR1Nz?=
+ =?utf-8?B?NXduUG5oMFh3THhzendEajlTQnVmMGl5MmkwN3BCV1Vvb1p2dUVXMUxKUWVw?=
+ =?utf-8?B?dU5Kc2M3MHpnaSs5bXdKSEVHV0VFWUFyZ0YySmRBWVhQRmdvU3Yzc0hlWmMz?=
+ =?utf-8?B?Wm1EZWQ1U3pybjhjU3NCS3dzc2diOVBDekdUVkZTc0tDa1VjOXh3Q3p2TXQv?=
+ =?utf-8?B?WThNbDJNck0vdUpUaGhhUFpNdHB4a0RCVU1Dc1hPVmpaSnYrV2J1VlV4YkpM?=
+ =?utf-8?B?OEpaQXFqQS9iN0FIOHZpbmFGdk04bGx3S1dqcWJoNHB1WUYxWitkRXBNbzR1?=
+ =?utf-8?B?ekdGaFY4N0lmeFIzclY5SVlzTy9oTFZPeThWaEM0VzdzcEtBaDl3aDVZYlF0?=
+ =?utf-8?B?ZmpKeXhHaHdoMkE0QjcwSWRnbmJXVW9yMk51a01NOUd3KzgycEtmcnBZUXp0?=
+ =?utf-8?B?U0Z3MTRXa05IZ21WZGxCYytscDdQTzZIMXFEQ043aHlCNW95S1ZaaWs3ZWxj?=
+ =?utf-8?B?VlBCRERON2FkMEMyK0tpdnlMSkhxS1d3Sm53VHpJc1NJazVzbnNxQ3VUMkNV?=
+ =?utf-8?B?RVZTWDJJTFp4dzloY2dnNWVGcGt1QjZwR2FPS0lOaXVqb3NtWkZYUGw2T0VL?=
+ =?utf-8?B?R1dlYXFrUmsraXZQWjlnSGV6NFJsd2hBN2RlN2tnQkY5WFp5VFRXY0tqcDVJ?=
+ =?utf-8?B?Qmx2aGU5VVFnR2U4NWpDQmpTeWlJQXZ4Q1FqYzUyVXl1aC9VeEVuQWpRaWtu?=
+ =?utf-8?B?b25BMkFGcm4rck0vYmUzc21zMERnV3ZQVzhFbkRPUmxTOVBuT2hsazRyZjRS?=
+ =?utf-8?B?b1paU1J5aVVlRUFNL0h6RkU1K29zRmRLOUhXMThJRU1ZT01yaUxscitkLzBt?=
+ =?utf-8?B?c2NYNUNBWTE2T3BOTlR5dlpBZUpDeHVaeDRMVUJQMnZLcnUzUWlDOGJITUZx?=
+ =?utf-8?B?RFJmeDJBSG0rRFBONDIvMCsrbVJybnltRG1FYXMyVlhVWFlKaTFNaWRLWk1S?=
+ =?utf-8?B?SWl4Sk9uUWtXdS8vWmN4dXhjNUc5MkgvdWUzWHBoamhZd1RoL3pUWVZtdjZv?=
+ =?utf-8?B?M3RxeEJkRFFGaVo3T3R2eXp1OFQzaU56WTNUcnNMQjVucnAzTng1M2hpeE4z?=
+ =?utf-8?B?dkR2SCt4NWpkUUVnYUdJSElWQ0RjbElOQ3BpcTVpQ3dtK1hjc0hmNm9xbmwx?=
+ =?utf-8?B?Rm41dExWL0dHd3JTTU8wNWJRNFk1akJ0VkRNczJTUm15ZHd6OG5HeHc3Y25V?=
+ =?utf-8?B?QUVNN0ZUU1JwbGJISzhrYnBKUUtCcDJvSE55ZXJRazdvRGprQVBZYUxEb2Jr?=
+ =?utf-8?B?eDhRd2t2RmJFUHJ1YnNOTVRBU1M2TDdMazJ6N3U0Ti8xbTF0SGVxb3YwMDg3?=
+ =?utf-8?B?dnlzS2lVd0dlN0MwSDJYR2s0eG5qMmlYK3pvUjRYVmtXeDRscXdFY3BaWVho?=
+ =?utf-8?B?a1FwbjFJQTJkeTRiNDhESXdqelM1NTRuV3hSL3ZZQkVycDJLS0RScWEwcjY0?=
+ =?utf-8?B?M3cxaGxGMHFtWHAyVS81VGUyNDN4QkEwNDhGUWl0S1A3Sk04Q3hnOEhPUk14?=
+ =?utf-8?B?YVYycjhPdUJER2RNWkFMNXlGdlNocEdWS2ZrdVdydDBpMnhxSUdLVURZYWVQ?=
+ =?utf-8?B?VzNqS0YyQUs4TEJLT3VlR1dFOTV2Y3FTdFNwUnZMeXhaandXMXhOTDFZNG13?=
+ =?utf-8?B?Z3VlYTR0T0pTdGFwb2pJb3NZTnBxZHVJSXNGVjA4bDhlYzZ2NE4veVBicW5J?=
+ =?utf-8?B?ZVkwWjBmcmNpNmFjV093U1BscHJ6WWtLRDM5NEdmRzI2bkFIcGRFR2dkZVhN?=
+ =?utf-8?B?QTJxYVZEYStoc1J3byt1Y0xldko4K3BPSTJlQ1poOTNHN3RQWlV6a0dLWHNS?=
+ =?utf-8?Q?hRZM=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e7c94cd7-ac39-4682-82c4-08dcee164265
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2024 19:10:55.6890
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: G/9RXv/di8H2v3sGhVJAldinEXNH3OiitLmeaOXR9FpxguiXevWIaJwn2wX7qNw8ZuySMAn4ligJq2Ab3VJBsA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9681
 
-On Tue, Oct 08, 2024 at 08:25:32AM +0000, Hongxing Zhu wrote:
-> > -----Original Message-----
-> > From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > Sent: 2024年10月3日 14:04
-> > To: Hongxing Zhu <hongxing.zhu@nxp.com>
-> > Cc: jingoohan1@gmail.com; kwilczynski@kernel.org; bhelgaas@google.com;
-> > lpieralisi@kernel.org; Frank Li <frank.li@nxp.com>; robh@kernel.org;
-> > linux-pci@vger.kernel.org; linux-kernel@vger.kernel.org; imx@lists.linux.dev
-> > Subject: Re: [PATCH v1 1/2] PCI: dwc: Fix resume failure if no EP is connected on
-> > some platforms
-> > 
-> > On Wed, Sep 25, 2024 at 01:48:36PM +0800, Richard Zhu wrote:
-> > > The dw_pcie_suspend_noirq() function currently returns success
-> > > directly if no endpoint (EP) device is connected. However, on some
-> > > platforms, power loss occurs during suspend, causing dw_resume() to do
-> > nothing in this case.
-> > > This results in a system halt because the DWC controller is not
-> > > initialized after power-on during resume.
-> > >
-> > > Change call to deinit() in suspend and init() at resume regardless of
-> > 
-> > s/Change call to/Call
-> > 
-> > > whether there are EP device connections or not. It is not harmful to
-> > > perform deinit() and init() again for the no power-off case, and it
-> > > keeps the code simple and consistent in logic.
-> > >
-> > > Fixes: 4774faf854f5 ("PCI: dwc: Implement generic suspend/resume
-> > > functionality")
-> > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >  .../pci/controller/dwc/pcie-designware-host.c | 30
-> > > +++++++++----------
-> > >  1 file changed, 15 insertions(+), 15 deletions(-)
-> > >
-> > > diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > index a0822d5371bc..cb8c3c2bcc79 100644
-> > > --- a/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > @@ -933,23 +933,23 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
-> > >  	if (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) &
-> > PCI_EXP_LNKCTL_ASPM_L1)
-> > >  		return 0;
-> > >
-> > 
-> > There is one more condition above. It checks whether the link is in L1ss state or
-> > not and if it is, the just returns 0. Going by your case, if the power goes off during
-> > suspend, then it will be an issue, right?
-> > 
-> Hi Manivannan:
-> Thanks for your comments.
-> Yes, you're right. It's a problem that power is off in suspend when link
->  is in L1ss.
-> How about to issue another patch to fix this problem?
-> Since this commit is verified to fix the resume failure when no EP is
->  connected. I'm not sure I can combine them together or not.
-> 
+On Wed, Oct 16, 2024 at 11:38:49PM +0530, Manivannan Sadhasivam wrote:
+> On Mon, Sep 23, 2024 at 02:59:19PM -0400, Frank Li wrote:
+> >                                Endpoint          Root complex
+> >                              ┌───────┐        ┌─────────┐
+> >                ┌─────┐       │ EP    │        │         │      ┌─────┐
+> >                │     │       │ Ctrl  │        │         │      │ CPU │
+> >                │ DDR │       │       │        │ ┌────┐  │      └──┬──┘
+> >                │     │◄──────┼─ATU ◄─┼────────┼─┤BarN│◄─┼─────────┘
+> >                │     │       │       │        │ └────┘  │ Outbound Transfer
+> >                └─────┘       │       │        │         │
+> >                              │       │        │         │
+> >                              │       │        │         │
+> >                              │       │        │         │ Inbound Transfer
+> >                              │       │        │         │      ┌──▼──┐
+> >               ┌───────┐      │       │        │ ┌───────┼─────►│DDR  │
+> >               │       │ outbound Transfer*    │ │       │      └─────┘
+> >    ┌─────┐    │ Bus   ┼─────►│ ATU  ─┬────────┼─┘       │
+> >    │     │    │ Fabric│Bus   │       │ PCI Addr         │
+> >    │ CPU ├───►│       │Addr  │       │ 0xA000_0000      │
+> >    │     │CPU │       │0x8000_0000   │        │         │
+> >    └─────┘Addr└───────┘      │       │        │         │
+> >           0x7000_0000        └───────┘        └─────────┘
+> >
+> > Add `bus_addr_base` to configure the outbound window address for CPU write.
+> > The bus fabric generally passes the same address to the PCIe EP controller,
+> > but some bus fabrics convert the address before sending it to the PCIe EP
+> > controller.
+> >
+> > Above diagram, CPU write data to outbound windows address 0x7000_0000,
+> > Bus fabric convert it to 0x8000_0000. ATU should use bus address
+> > 0x8000_0000 as input address and convert to PCI address 0xA000_0000.
+> >
+> > Previously, `cpu_addr_fixup()` was used to handle address conversion. Now,
+> > the device tree provides this information, preferring a common method.
+> >
+> > bus@5f000000 {
+> > 	compatible = "simple-bus";
+> > 	ranges = <0x5f000000 0x0 0x5f000000 0x21000000>,
+> > 		 <0x80000000 0x0 0x70000000 0x10000000>;
+> >
+> > 	pcie-ep@5f010000 {
+> > 		reg = <0x5f010000 0x00010000>,
+> > 		      <0x80000000 0x10000000>;
+> > 		reg-names = "dbi", "addr_space";
+> > 		...
+> > 	};
+> > 	...
+> > };
+> >
+> > 'ranges' in bus@5f000000 descript how address convert from CPU address
+> > to bus address.
+> >
+> > Use `of_property_read_reg()` to obtain the bus address and set it to the
+> > ATU correctly, eliminating the need for vendor-specific cpu_addr_fixup().
+> >
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> >  drivers/pci/controller/dwc/pcie-designware-ep.c | 12 +++++++++++-
+> >  drivers/pci/controller/dwc/pcie-designware.h    |  1 +
+> >  2 files changed, 12 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> > index 43ba5c6738df1..51eefdcb1b293 100644
+> > --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
+> > +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> > @@ -9,6 +9,7 @@
+> >  #include <linux/align.h>
+> >  #include <linux/bitfield.h>
+> >  #include <linux/of.h>
+> > +#include <linux/of_address.h>
+> >  #include <linux/platform_device.h>
+> >
+> >  #include "pcie-designware.h"
+> > @@ -294,7 +295,7 @@ static int dw_pcie_ep_map_addr(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+> >
+> >  	atu.func_no = func_no;
+> >  	atu.type = PCIE_ATU_TYPE_MEM;
+> > -	atu.cpu_addr = addr;
+> > +	atu.cpu_addr = addr - ep->phys_base + ep->bus_addr_base;
+>
+> If you convert the address here, aren't he drivers with cpu_addr_fixup() will be
+> broken? You should only update the address if the callback is not available.
 
-Fine with me.
+Supposed not, ep->phys_base and ep->bus_addr_base should be same when
+use cpu_addr_fixup(). but I warry about some old dts have not reflect
+hardware bus address translate correct.
 
-- Mani
+How about use below method:
+https://lore.kernel.org/imx/20241008-pci_fixup_addr-v4-2-25e5200657bc@nxp.com/
 
-> Best Regards
-> Richard Zhu
-> > > -	if (dw_pcie_get_ltssm(pci) <= DW_PCIE_LTSSM_DETECT_ACT)
-> > > -		return 0;
-> > > -
-> > > -	if (pci->pp.ops->pme_turn_off)
-> > > -		pci->pp.ops->pme_turn_off(&pci->pp);
-> > > -	else
-> > > -		ret = dw_pcie_pme_turn_off(pci);
-> > > +	if (dw_pcie_get_ltssm(pci) > DW_PCIE_LTSSM_DETECT_ACT) {
-> > > +		/* Only send out PME_TURN_OFF when PCIE link is up */
-> > 
-> > Move this comment above the 'if' condition.
-> > 
-> > - Mani
-> > 
-> > > +		if (pci->pp.ops->pme_turn_off)
-> > > +			pci->pp.ops->pme_turn_off(&pci->pp);
-> > > +		else
-> > > +			ret = dw_pcie_pme_turn_off(pci);
-> > >
-> > > -	if (ret)
-> > > -		return ret;
-> > > +		if (ret)
-> > > +			return ret;
-> > >
-> > > -	ret = read_poll_timeout(dw_pcie_get_ltssm, val, val ==
-> > DW_PCIE_LTSSM_L2_IDLE,
-> > > -				PCIE_PME_TO_L2_TIMEOUT_US/10,
-> > > -				PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
-> > > -	if (ret) {
-> > > -		dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n",
-> > val);
-> > > -		return ret;
-> > > +		ret = read_poll_timeout(dw_pcie_get_ltssm, val, val ==
-> > DW_PCIE_LTSSM_L2_IDLE,
-> > > +					PCIE_PME_TO_L2_TIMEOUT_US/10,
-> > > +					PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
-> > > +		if (ret) {
-> > > +			dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n",
-> > val);
-> > > +			return ret;
-> > > +		}
-> > >  	}
-> > >
-> > >  	if (pci->pp.ops->deinit)
-> > > --
-> > > 2.37.1
-> > >
-> > 
+Involve a varible 'using_dtbus_info' to controller it.
+
+Frank
+
+>
+> - Mani
+>
+> >  	atu.pci_addr = pci_addr;
+> >  	atu.size = size;
+> >  	ret = dw_pcie_ep_outbound_atu(ep, &atu);
+> > @@ -861,6 +862,7 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
+> >  	struct device *dev = pci->dev;
+> >  	struct platform_device *pdev = to_platform_device(dev);
+> >  	struct device_node *np = dev->of_node;
+> > +	int index;
+> >
+> >  	INIT_LIST_HEAD(&ep->func_list);
+> >
+> > @@ -873,6 +875,14 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
+> >  		return -EINVAL;
+> >
+> >  	ep->phys_base = res->start;
+> > +	ep->bus_addr_base = ep->phys_base;
+> > +
+> > +	index = of_property_match_string(np, "reg-names", "addr_space");
+> > +	if (index < 0)
+> > +		return -EINVAL;
+> > +
+> > +	of_property_read_reg(np, index, &ep->bus_addr_base, NULL);
+> > +
+> >  	ep->addr_size = resource_size(res);
+> >
+> >  	if (ep->ops->pre_init)
+> > diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+> > index 347ab74ac35aa..c189781524fb8 100644
+> > --- a/drivers/pci/controller/dwc/pcie-designware.h
+> > +++ b/drivers/pci/controller/dwc/pcie-designware.h
+> > @@ -410,6 +410,7 @@ struct dw_pcie_ep {
+> >  	struct list_head	func_list;
+> >  	const struct dw_pcie_ep_ops *ops;
+> >  	phys_addr_t		phys_base;
+> > +	phys_addr_t		bus_addr_base;
+> >  	size_t			addr_size;
+> >  	size_t			page_size;
+> >  	u8			bar_to_atu[PCI_STD_NUM_BARS];
+> >
 > > --
-> > மணிவண்ணன் சதாசிவம்
-
--- 
-மணிவண்ணன் சதாசிவம்
+> > 2.34.1
+> >
+>
+> --
+> மணிவண்ணன் சதாசிவம்
