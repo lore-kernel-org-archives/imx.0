@@ -1,155 +1,85 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62E81D63F4
-	for <imx@lists.linux.dev>; Tue, 15 Oct 2024 23:59:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49659EAD8;
+	Wed, 16 Oct 2024 01:12:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729036794; cv=none; b=JtXMO3xsDI5FbOtbu2d5k/LiPZp6cHV3GQMERKvQgpoU6jDPoN9L7rs/EKmxzKqgAy1Hiy3yURxqvMYjUtkr1AWUoY5ns39hJxO0GdR6U0UjmmWM2FY6RTqY4TYE29ERF7KeIqAa0gacW3bWdvQEYZJ09cGBDMPD/hjERm4VIJg=
+	t=1729041174; cv=none; b=sRFvo31pXj5ZGFnvnO/I3PAO24Jx+B/dMgsJaLGU4/yI3BI+a/2cH2IK6hoo+HCZOtN9QLoA9SJP56k0gxjBwSgiIvRth/V7WqzsujYRC8b6C/utiT+PcsT5oozk0r8ujiE8fpYCVCaOvWoh6LbhtHoz5mEO7R0ncl/QvurR8w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729036794; c=relaxed/simple;
-	bh=b5cHyWBOfyu2SFHBcdLtZIDVG2MH8i0+A7M4xuXIYaM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ewMJfrKTfvhBs6ZDu9qB34PDT+eEwJ/bxDUwN2OlXNsJqaV4YAETYH534cZK4CqCDRcyb8YE0i3wXPtFns9JjN0cVh1km5/7EJhJ3eq1r02gvnTZFsfEDmi1MZa/fygovEIKjnZBt1g2h/bbE2f7igNNaSzoNzro2XcVmN2i5nU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=Pdm1H70T; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1729041174; c=relaxed/simple;
+	bh=VxWTJtL4UhcHUgiO8c9vRLgmVY3RWfHNeBKpSIE1xXg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VJEJR9jJI+h3qyrP6ij5pI9Hjviaq3FOptqi2A6Nk0Zf/kimobV5eK3CfxYiTEkIyXhzodnwkX0KDfAyIdO50Fh+R6NHignVx//CQWZ/7tJomtnh/eqh2fOtPZfMVUzmtgnzAO1joeGl6+u/cwV6HPPG5tdVsar4B+C9xzGVvoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pG4bHGBa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="Pdm1H70T"
-Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 1FD92889AA;
-	Wed, 16 Oct 2024 01:59:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1729036789;
-	bh=z7oJ4eldV++8WReLLKVVuSPOVo/xhffio4OF/7VkpCg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pdm1H70TGICcUR0kXpV/AzyItqaZx60Wc105xAhrI2iEnHW/xnvNWQOtSLK8CK7he
-	 otk1hTOpEuQJu8CuiSGUJOKy82IEKZe3nv0510YvwplEpAXnfId0LKeTrLmdP9Xdct
-	 CdtGJbO37tAeZdvFJbeCcl5ZljT1u69cnJVreDx7T5ZN4JD2sTSzIK9na5JI29MCiE
-	 TWvBVEtJ9rCHl7l2TH7jHKTP3f0K41kKLJb6jt+IjKgCTlI0eez+KfD0Onqj8hpogL
-	 exGRaMfDy5TYXETb42eJKbMd8BUGC14QegSxTLzadBC/pGC74HtGC1F56SanGZJs1f
-	 StOD9lk8mzpNg==
-From: Marek Vasut <marex@denx.de>
-To: linux-arm-kernel@lists.infradead.org
-Cc: Marek Vasut <marex@denx.de>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
-	Hiago De Franco <hiago.franco@toradex.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Mathieu Othacehe <m.othacehe@gmail.com>,
-	Max Merchel <Max.Merchel@ew.tq-group.com>,
-	Michael Walle <mwalle@kernel.org>,
-	Parthiban Nallathambi <parthiban@linumiz.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	kernel@dh-electronics.com
-Subject: [PATCH 2/2] ARM: dts: imx6dl: Add support for i.MX6DL DHCOM SoM on PDK2 carrier board
-Date: Wed, 16 Oct 2024 01:58:36 +0200
-Message-ID: <20241015235926.168582-2-marex@denx.de>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241015235926.168582-1-marex@denx.de>
-References: <20241015235926.168582-1-marex@denx.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pG4bHGBa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9836EC4CEC6;
+	Wed, 16 Oct 2024 01:12:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729041173;
+	bh=VxWTJtL4UhcHUgiO8c9vRLgmVY3RWfHNeBKpSIE1xXg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=pG4bHGBa+pDf/vRO0j2iEMVaXQI0mfI5zAk3nEPv7xO0wrtOTPTcgkr7/9U0blrqN
+	 FPZbKQ/kXqr7X5Guu5LDQq84HAXilY2+QdioUscPUvrCMjGcMN4UW4OjLGvJOwxhUH
+	 c4XjtSN5So/DjQ7OZtMJ+24wKINeiF/aGb9AAypo2xonhI6rV9f05r9Xdn9f0aEXXQ
+	 63DXSkxlwyWVENBdxXOsWZRDlBOlpWt+nw10H12hzUyQUCUd5YqsLhq0ss6gCh7Izo
+	 Mxx0B9pj3rToHV3hrh/oi6oXHEZiE1ErnOszaVdFufhwWYQ0oZL5aIGNVgxofKp2bH
+	 /qwrKz9RM30mg==
+Message-ID: <8a83918f-6885-4766-9648-de88a7a99f07@kernel.org>
+Date: Wed, 16 Oct 2024 10:12:50 +0900
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/6] genirq/msi: Add cleanup guard define for
+ msi_lock_descs()/msi_unlock_descs()
+To: Frank Li <Frank.Li@nxp.com>,
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
+ Kishon Vijay Abraham I <kishon@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+ imx@lists.linux.dev, Niklas Cassel <cassel@kernel.org>, maz@kernel.org,
+ tglx@linutronix.de, jdmason@kudzu.us
+References: <20241015-ep-msi-v3-0-cedc89a16c1a@nxp.com>
+ <20241015-ep-msi-v3-1-cedc89a16c1a@nxp.com>
+From: Damien Le Moal <dlemoal@kernel.org>
+Content-Language: en-US
+Organization: Western Digital Research
+In-Reply-To: <20241015-ep-msi-v3-1-cedc89a16c1a@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add support for the DH electronics i.MX6DL DHCOM SoM and a PDK2 evaluation
-board. The evaluation board features three serial ports, USB OTG, USB host
-with an USB hub, Fast or Gigabit ethernet, eMMC, uSD, SD, analog audio,
-PCIe and HDMI video output.
+On 10/16/24 7:07 AM, Frank Li wrote:
+> Add a cleanup DEFINE_GUARD macro for msi_lock_descs() and
+> msi_unlock_descs() to simplify lock and unlock operations in error path.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  include/linux/msi.h | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/include/linux/msi.h b/include/linux/msi.h
+> index b10093c4d00ea..0b6cb7f303887 100644
+> --- a/include/linux/msi.h
+> +++ b/include/linux/msi.h
+> @@ -228,6 +228,8 @@ int msi_setup_device_data(struct device *dev);
+>  void msi_lock_descs(struct device *dev);
+>  void msi_unlock_descs(struct device *dev);
+>  
+> +DEFINE_GUARD(msi_descs, struct device *, msi_lock_descs(_T), msi_unlock_descs(_T))
+> +
 
-All of the aforementioned features except for mSATA are supported, mSATA
-is not available on i.MX6DL and is only available on DHCOM populated with
-i.MX6Q SoC which is already supported upstream.
+This belongs with patch 3 since it is first used there.
 
-Signed-off-by: Marek Vasut <marex@denx.de>
----
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Gregor Herburger <gregor.herburger@ew.tq-group.com>
-Cc: Hiago De Franco <hiago.franco@toradex.com>
-Cc: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Cc: Joao Paulo Goncalves <joao.goncalves@toradex.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Marek Vasut <marex@denx.de>
-Cc: Mathieu Othacehe <m.othacehe@gmail.com>
-Cc: Max Merchel <Max.Merchel@ew.tq-group.com>
-Cc: Michael Walle <mwalle@kernel.org>
-Cc: Parthiban Nallathambi <parthiban@linumiz.com>
-Cc: Peng Fan <peng.fan@nxp.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: devicetree@vger.kernel.org
-Cc: imx@lists.linux.dev
-Cc: kernel@dh-electronics.com
-Cc: linux-arm-kernel@lists.infradead.org
----
- arch/arm/boot/dts/nxp/imx/Makefile            |  1 +
- .../boot/dts/nxp/imx/imx6dl-dhcom-pdk2.dts    | 20 +++++++++++++++++++
- 2 files changed, 21 insertions(+)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-pdk2.dts
+>  struct msi_desc *msi_domain_first_desc(struct device *dev, unsigned int domid,
+>  				       enum msi_desc_filter filter);
 
-diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-index 92e291603ea13..541eebb968cf4 100644
---- a/arch/arm/boot/dts/nxp/imx/Makefile
-+++ b/arch/arm/boot/dts/nxp/imx/Makefile
-@@ -73,6 +73,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
- 	imx6dl-cubox-i-emmc-som-v15.dtb \
- 	imx6dl-cubox-i-som-v15.dtb \
- 	imx6dl-dfi-fs700-m60.dtb \
-+	imx6dl-dhcom-pdk2.dtb \
- 	imx6dl-dhcom-picoitx.dtb \
- 	imx6dl-eckelmann-ci4x10.dtb \
- 	imx6dl-emcon-avari.dtb \
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-pdk2.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-pdk2.dts
-new file mode 100644
-index 0000000000000..38235925257a7
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-pdk2.dts
-@@ -0,0 +1,20 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Copyright (C) 2024 Marek Vasut <marex@denx.de>
-+ *
-+ * DHCOM iMX6 variant:
-+ * DHCM-iMX6DL-C080-R102-F0819-E-SD-RTC-T-HS-I-01D2
-+ * DHCOM PCB number: 493-400 or newer
-+ * PDK2 PCB number: 516-400 or newer
-+ */
-+/dts-v1/;
-+
-+#include "imx6dl.dtsi"
-+#include "imx6qdl-dhcom-som.dtsi"
-+#include "imx6qdl-dhcom-pdk2.dtsi"
-+
-+/ {
-+	model = "DH electronics i.MX6DL DHCOM on Premium Developer Kit (2)";
-+	compatible = "dh,imx6dl-dhcom-pdk2", "dh,imx6dl-dhcom-som",
-+		     "fsl,imx6dl";
-+};
 -- 
-2.45.2
-
+Damien Le Moal
+Western Digital Research
