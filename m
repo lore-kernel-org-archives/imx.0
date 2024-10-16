@@ -1,99 +1,173 @@
-Received: from mx2.securetransport.de (mx2.securetransport.de [188.68.39.254])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEACD1FCC68
-	for <imx@lists.linux.dev>; Wed, 16 Oct 2024 08:38:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.39.254
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D9F1F80C7
+	for <imx@lists.linux.dev>; Wed, 16 Oct 2024 08:39:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729067901; cv=none; b=eAWe42oTytcqabzD6ZQAH0r+lNfT8rPo1WGiQoJdbd12KKCl1o85BtBdvfxpoyGwOcJlxZwsgM8nOYVJYEKhnfxte2fk6JtX+HxrSCTJ2yWlpZzzO3Zg7/oUQiN+yaODtfDKXtvDDhC9PZXAPwQgUDplqLxnPoJoctUG8CAkPok=
+	t=1729067950; cv=none; b=i67uRyva4BVvAZl5cqsFwOEJsH1o21ca15rYThVTcYrKzWHaIDR9Zk2D1kXTdEFC47Wv2QNKyDJ6YtgCjG3ejoBgcCU5sgw+vWp5GYHulKOwb6NMTLHq+xm7ZgGQHWbLCxNkJGm9/COLmjXU1hhERoW5b5CQ3GkaYg/63PoQerc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729067901; c=relaxed/simple;
-	bh=ewoe3vedlayS1xEi+v/MXlGCg/D0oEtfIAcvhqAp/W4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=iQ+7z3eqvclSwKwfV9MShS3llj5XMLQeJnQIMu478MVNxsrOcWrWMBopkjt2Gw9M6qJ/8PnMCmEZN0VLUX7qXARDMC8SzPfeCOC765Db7ajwBgZGKnFWyxc7M/K7Q+nYZpSUDj6PucGIPHljsbRHojFnm8XTmCWa/AovojSwFaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dh-electronics.com; spf=pass smtp.mailfrom=dh-electronics.com; dkim=pass (2048-bit key) header.d=dh-electronics.com header.i=@dh-electronics.com header.b=oVVbZI1m; arc=none smtp.client-ip=188.68.39.254
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dh-electronics.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dh-electronics.com
+	s=arc-20240116; t=1729067950; c=relaxed/simple;
+	bh=mehmMREzKVUPaEox8LznLADvon9wFJNdguwngVxldaE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lPXPjIIhNswz6wEuCm/gV6gHFF5XuTvXCVvD5vrlNRvD047rU+cj4QlpmLtte/ROSjrD/VXLrSAxTPfWMR5KcBPDA/vtRIJpGdJkGhK+UUL4Y5trFkHRH3EsvpI6sxzZ2RnYzqB4ABFz22HkHhP90KldIajdS62RzU5CPsINzC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=eYK3uUAD; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=cbUb64k0 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dh-electronics.com header.i=@dh-electronics.com header.b="oVVbZI1m"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dh-electronics.com;
-	s=dhelectronicscom; t=1729067280;
-	bh=ewoe3vedlayS1xEi+v/MXlGCg/D0oEtfIAcvhqAp/W4=;
-	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
-	b=oVVbZI1mStK0sJhVws02cGYagr5a4BieIRVjDPK4z+jXQW19KLPeaWTd2URL8JSKx
-	 h0BTZAG374fD86uZv4zNs/gDmXC+PDnbWS5idMmCZko3JLiBCRTl3nsyFw2n5s/9Vo
-	 7NnO/SpD2iedh8PRM84swT3JtYKLtzaNckGwrebY3sZI2KFNg7ycZoOgpTopG1lxag
-	 aRwUSvZX6BYUcVP6HwP2Pj7uGJTgwVebVX99ArkzzIm+znHAaVA2Ik5BEfWkINBgfF
-	 OS4BCqbd6VNHFE/fj2qyQmkAiB+X9aHxVxgfcKAVZx1l9Wp77wCHX7NyGybA9TsTGD
-	 ocUgq5/tcfUlg==
-X-secureTransport-forwarded: yes
-From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Complaints-To: abuse@cubewerk.de
-To: Marek Vasut <marex@denx.de>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-CC: Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, Sascha Hauer
-	<s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, kernel
-	<kernel@dh-electronics.com>
-Subject: RE: [PATCH] ARM: dts: imx6qdl-dhcom-som: Drop bogus
- regulator-suspend-mem-microvolt
-Thread-Topic: [PATCH] ARM: dts: imx6qdl-dhcom-som: Drop bogus
- regulator-suspend-mem-microvolt
-Thread-Index: AQHbH1Pa5VAylNnm602N/DDrWsmwgrKJC7YQ
-Date: Wed, 16 Oct 2024 08:27:54 +0000
-Message-ID: <852fe9261ac941d29f691abcf3c5604b@dh-electronics.com>
-References: <20241015224436.94334-1-marex@denx.de>
-In-Reply-To: <20241015224436.94334-1-marex@denx.de>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="eYK3uUAD";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="cbUb64k0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1729067946; x=1760603946;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Al16EzMBGhlTDMwmtBM4msdAumqBKH3tC5qZ61ZgNHo=;
+  b=eYK3uUADXY8jdfK/OJ/OI7vcV3ZOcgpFWVfGdRNt8pOAgKC+dzHgbDIK
+   YnDI1haZ/sVeRdH5hTJJkpDJQAFNBaXuR46TJuMK9sF6CYRH4HkiSFnue
+   zygrDPq3KHx87Ug5cPidD/3kMF4zJiXzgbVw/29CKPcUn8RHfLgq244e2
+   8x4+KvAOUwqyZ9m1+BVeENknCnkAzBJcPB/aihrMinrS2MIE+BjRTOZ6e
+   5c1fMQw6fF6LF6Y+aiIHPsgq5HKTm5FYj8gENXIxWDG35EWELVsZN0T9C
+   POWHedvlFECuBQlsc/Z6Py2KH9tDSkBOZXNfeKAonv4xHcN7dLFQBEYEg
+   A==;
+X-CSE-ConnectionGUID: Fi5IwMEnS1239q5Z2avZ4w==
+X-CSE-MsgGUID: B2edffbpQDayc5i4k+NcIw==
+X-IronPort-AV: E=Sophos;i="6.11,207,1725314400"; 
+   d="scan'208";a="39487747"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 16 Oct 2024 10:39:03 +0200
+X-CheckPoint: {670F7BA7-24-8E59014-E6F31237}
+X-MAIL-CPID: FEC6AC4042E72B571F7164006AB52AB5_1
+X-Control-Analysis: str=0001.0A682F1E.670F7BA7.0111,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DD23B169731;
+	Wed, 16 Oct 2024 10:38:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1729067939;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=Al16EzMBGhlTDMwmtBM4msdAumqBKH3tC5qZ61ZgNHo=;
+	b=cbUb64k0DGgAGUFfgmMKQ6F1/UnLGvEJdf3Iy/3oVwTiBiA84LPKazf5LEwLtuafRK48C/
+	MGLHRyLNif3HfiJMcCY/oQ94zla/JcR4D58sjU4nnQGbfKmHOIz/Sq4EI8eBYgmEY5AfKr
+	GM3SaGF5nwImNLYB7Uw51p3A6gylzmWdPWXCb/reUuO+NL5TeaMZu/wGGpPoi+E0ZeIWsS
+	8Vw6drhx9vNylbhz2fjx40m3Y75Drt/SYpCnx5g6xMO2dCsigiKcHB4mI1HHR7GtivzI+a
+	zAtV3FM3LknyPP0l6t5QHwnc7XeC7dbmI43HLBjR7I6ccsT8PVvv+m/Ah01hvQ==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: vkoul@kernel.org, kishon@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, gregkh@linuxfoundation.org, peter.chen@kernel.org, herve.codina@bootlin.com, Xu Yang <xu.yang_2@nxp.com>
+Cc: linux-phy@lists.infradead.org, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-usb@vger.kernel.org, jun.li@nxp.com
+Subject: Re: [PATCH v8 2/3] arm64: dts: imx95: add usb3 related nodes
+Date: Wed, 16 Oct 2024 10:38:52 +0200
+Message-ID: <3321333.aeNJFYEL58@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20241015111018.2388913-2-xu.yang_2@nxp.com>
+References: <20241015111018.2388913-1-xu.yang_2@nxp.com> <20241015111018.2388913-2-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-RnJvbTogTWFyZWsgVmFzdXQgPG1hcmV4QGRlbnguZGU+DQpTZW50OiBXZWRuZXNkYXksIE9jdG9i
-ZXIgMTYsIDIwMjQgMTI6NDQgQU0NCj4gRHJvcCB1bnVzZWQgcmVndWxhdG9yLXN1c3BlbmQtbWVt
-LW1pY3Jvdm9sdCBwcm9wZXJ0eSBmcm9tIFBNSUMgcmVndWxhdG9yIG5vZGVzLg0KPiBUaGlzIHBy
-b3BlcnR5IGlzIG5vdCB1c2VkIGJ5IGVpdGhlciBVLUJvb3QsIExpbnV4LCBub3IgaXMgaXQgZG9j
-dW1lbnRlZCBpbiB0aGUNCj4gRFQgYmluZGluZ3MsIHJlbW92ZSBpdC4NCj4gDQo+IFNpZ25lZC1v
-ZmYtYnk6IE1hcmVrIFZhc3V0IDxtYXJleEBkZW54LmRlPg0KPiAtLS0NCj4gQ2M6IENocmlzdG9w
-aCBOaWVkZXJtYWllciA8Y25pZWRlcm1haWVyQGRoLWVsZWN0cm9uaWNzLmNvbT4NCj4gQ2M6IENv
-bm9yIERvb2xleSA8Y29ub3IrZHRAa2VybmVsLm9yZz4NCj4gQ2M6IEZhYmlvIEVzdGV2YW0gPGZl
-c3RldmFtQGdtYWlsLmNvbT4NCj4gQ2M6IEtyenlzenRvZiBLb3psb3dza2kgPGtyemsrZHRAa2Vy
-bmVsLm9yZz4NCj4gQ2M6IFBlbmd1dHJvbml4IEtlcm5lbCBUZWFtIDxrZXJuZWxAcGVuZ3V0cm9u
-aXguZGU+DQo+IENjOiBSb2IgSGVycmluZyA8cm9iaEBrZXJuZWwub3JnPg0KPiBDYzogU2FzY2hh
-IEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPg0KPiBDYzogU2hhd24gR3VvIDxzaGF3bmd1
-b0BrZXJuZWwub3JnPg0KPiBDYzogZGV2aWNldHJlZUB2Z2VyLmtlcm5lbC5vcmcNCj4gQ2M6IGlt
-eEBsaXN0cy5saW51eC5kZXYNCj4gQ2M6IGtlcm5lbEBkaC1lbGVjdHJvbmljcy5jb20NCj4gQ2M6
-IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZw0KPiAtLS0NCj4gIGFyY2gvYXJt
-L2Jvb3QvZHRzL254cC9pbXgvaW14NnFkbC1kaGNvbS1zb20uZHRzaSB8IDIgLS0NCj4gIDEgZmls
-ZSBjaGFuZ2VkLCAyIGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2Jv
-b3QvZHRzL254cC9pbXgvaW14NnFkbC1kaGNvbS1zb20uZHRzaQ0KPiBiL2FyY2gvYXJtL2Jvb3Qv
-ZHRzL254cC9pbXgvaW14NnFkbC1kaGNvbS1zb20uZHRzaQ0KPiBpbmRleCBlYWE4N2IzMzMxNjQ4
-Li5hZjBkOTUzOTZjZDUxIDEwMDY0NA0KPiAtLS0gYS9hcmNoL2FybS9ib290L2R0cy9ueHAvaW14
-L2lteDZxZGwtZGhjb20tc29tLmR0c2kNCj4gKysrIGIvYXJjaC9hcm0vYm9vdC9kdHMvbnhwL2lt
-eC9pbXg2cWRsLWRoY29tLXNvbS5kdHNpDQo+IEBAIC0yNTYsNyArMjU2LDYgQEAgc3cxX3JlZzog
-c3cxIHsNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICByZWd1bGF0b3ItbWF4LW1p
-Y3Jvdm9sdCA9IDwxNTI3MjcyPjsNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBy
-ZWd1bGF0b3ItbWluLW1pY3Jvdm9sdCA9IDw3ODc1MDA+Ow0KPiAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIHJlZ3VsYXRvci1yYW1wLWRlbGF5ID0gPDcwMDA+Ow0KPiAtICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIHJlZ3VsYXRvci1zdXNwZW5kLW1lbS1taWNyb3ZvbHQgPSA8
-MTA0MDAwMD47DQo+ICAgICAgICAgICAgICAgICAgICAgICAgIH07DQo+IA0KPiAgICAgICAgICAg
-ICAgICAgICAgICAgICBzdzJfcmVnOiBzdzIgew0KPiBAQCAtMjc1LDcgKzI3NCw2IEBAIHN3M19y
-ZWc6IHN3MyB7DQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVndWxhdG9yLW1h
-eC1taWNyb3ZvbHQgPSA8MTUyNzI3Mj47DQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgcmVndWxhdG9yLW1pbi1taWNyb3ZvbHQgPSA8Nzg3NTAwPjsNCj4gICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICByZWd1bGF0b3ItcmFtcC1kZWxheSA9IDw3MDAwPjsNCj4gLSAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICByZWd1bGF0b3Itc3VzcGVuZC1tZW0tbWljcm92b2x0
-ID0gPDk4MDAwMD47DQo+ICAgICAgICAgICAgICAgICAgICAgICAgIH07DQo+IA0KPiAgICAgICAg
-ICAgICAgICAgICAgICAgICBzdzRfcmVnOiBzdzQgew0KDQpSZXZpZXdlZC1ieTogQ2hyaXN0b3Bo
-IE5pZWRlcm1haWVyIDxjbmllZGVybWFpZXJAZGgtZWxlY3Ryb25pY3MuY29tPg0K
+Hello,
+
+Am Dienstag, 15. Oktober 2024, 13:10:17 CEST schrieb Xu Yang:
+> Add usb3 phy and controller nodes for imx95.
+>=20
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+>=20
+> ---
+> Changes in v2:
+>  - no changes
+> Changes in v3:
+>  - no changes
+> Changes in v4:
+>  - reorder nodes
+> Changes in v5:
+>  - no changes
+> Changes in v6:
+>  - rebase to latest
+> Changes in v7:
+>  - no changes
+> Changes in v8:
+>  - no changes
+> ---
+>  arch/arm64/boot/dts/freescale/imx95.dtsi | 43 ++++++++++++++++++++++++
+>  1 file changed, 43 insertions(+)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/d=
+ts/freescale/imx95.dtsi
+> index 03661e76550f..e3faa8462759 100644
+> --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> @@ -1473,6 +1473,49 @@ smmu: iommu@490d0000 {
+>  			};
+>  		};
+> =20
+> +		usb3: usb@4c010010 {
+> +			compatible =3D "fsl,imx95-dwc3", "fsl,imx8mp-dwc3";
+> +			reg =3D <0x0 0x4c010010 0x0 0x04>,
+> +			      <0x0 0x4c1f0000 0x0 0x20>;
+> +			clocks =3D <&scmi_clk IMX95_CLK_HSIO>,
+> +				 <&scmi_clk IMX95_CLK_32K>;
+> +			clock-names =3D "hsio", "suspend";
+> +			interrupts =3D <GIC_SPI 173 IRQ_TYPE_LEVEL_HIGH>;
+> +			#address-cells =3D <2>;
+> +			#size-cells =3D <2>;
+> +			ranges;
+> +			power-domains =3D <&scmi_devpd IMX95_PD_HSIO_TOP>;
+> +			dma-ranges =3D <0x0 0x0 0x0 0x0 0x10 0x0>;
+> +			status =3D "disabled";
+> +
+> +			usb3_dwc3: usb@4c100000 {
+> +				compatible =3D "snps,dwc3";
+> +				reg =3D <0x0 0x4c100000 0x0 0x10000>;
+> +				clocks =3D <&scmi_clk IMX95_CLK_HSIO>,
+> +					 <&scmi_clk IMX95_CLK_24M>,
+> +					 <&scmi_clk IMX95_CLK_32K>;
+> +				clock-names =3D "bus_early", "ref", "suspend";
+> +				interrupts =3D <GIC_SPI 175 IRQ_TYPE_LEVEL_HIGH>;
+> +				phys =3D <&usb3_phy>, <&usb3_phy>;
+> +				phy-names =3D "usb2-phy", "usb3-phy";
+> +				snps,gfladj-refclk-lpm-sel-quirk;
+> +				snps,parkmode-disable-ss-quirk;
+
+Downstream kernel also configures
+> snps,tx-max-burst =3D /bits/ 8 <4>;
+> snps,tx-thr-num-pkt =3D /bits/ 8 <1>;
+
+is this not needed and omitted on purpose?
+
+Best regards,
+Alexander
+
+> +				iommus =3D <&smmu 0xe>;
+> +			};
+> +		};
+> +
+> +		usb3_phy: phy@4c1f0040 {
+> +			compatible =3D "fsl,imx95-usb-phy", "fsl,imx8mp-usb-phy";
+> +			reg =3D <0x0 0x4c1f0040 0x0 0x40>,
+> +			      <0x0 0x4c1fc000 0x0 0x100>;
+> +			clocks =3D <&scmi_clk IMX95_CLK_HSIO>;
+> +			clock-names =3D "phy";
+> +			#phy-cells =3D <0>;
+> +			power-domains =3D <&scmi_devpd IMX95_PD_HSIO_TOP>;
+> +			orientation-switch;
+> +			status =3D "disabled";
+> +		};
+> +
+>  		pcie0: pcie@4c300000 {
+>  			compatible =3D "fsl,imx95-pcie";
+>  			reg =3D <0 0x4c300000 0 0x10000>,
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
