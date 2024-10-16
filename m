@@ -1,134 +1,101 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57EC520606B
-	for <imx@lists.linux.dev>; Wed, 16 Oct 2024 09:37:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF522206945
+	for <imx@lists.linux.dev>; Wed, 16 Oct 2024 10:11:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729071452; cv=none; b=llm/nWuMNb85BzPfe+T5h8BpnkvJhE/r1EJzXvYznlDPMAoL3JNZz4C/Fesk8H60Ex6uNDnGVRWn1SYA/cGxh66vLtOhBs+sHH7J46wrzUQWlSgVOhoLuYZ7GPUK+JmGaMlOzv6HStSdQNtVo2nTKbm+riFvIbQLxENmQbhsUxQ=
+	t=1729073512; cv=none; b=OwZZjmiN9fWq4AmW34LStBWxTgnyel/iY8jdA9N0eOyM8lUkZ+ccVz7ZKHf+0cCYm6M/4Vyt54EtHWk3tQdO17HAKBrsGEJQoiX5FhdL44Gq+do9kMMhwAjIghcuYRpIxlDA5tf7lhCwY6HtP5bqaiR0nytnnuvR16CdqVQNHPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729071452; c=relaxed/simple;
-	bh=D4zI+rQlQEVVZMvQWRLpn6/tR3p1GCpBgzi5LDRp5vM=;
+	s=arc-20240116; t=1729073512; c=relaxed/simple;
+	bh=XgjoL1JGKiRYyCSWTxkTF2OWBUtB9joLuVL77iOB5jk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kLFE742X/Je/oVpLBFUjT0hohgfBwnESSmiNIw9DZ73WHKdDWoAuWDeuTg2cKiNdHJ7ZVPDZGBrX2oghs2+56al33h1xQIk7BlBf/GNoo9Tg7R07y/fEjdsVA8S13Shf+hqTFjWhifQqeIfpog5V5q5RoGyez7kF4mwLtmhsxG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=P8scmqm9; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="P8scmqm9"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-43120f65540so36715215e9.0
-        for <imx@lists.linux.dev>; Wed, 16 Oct 2024 02:37:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729071449; x=1729676249; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WuNBRxUMporUa0FNsiiNZn9Rv9n9DRUgpvNg4YbFQvM=;
-        b=P8scmqm94E3S0Kpe1VVy00NHfF6KxnbqUvVfQCBUzJxHeQxLDOcfqmgkdAHfQxjWdD
-         +XZjAOk1A0hrqzdoIWiKqk8Sb7PCpbd/6GNsXbcCUCBW3QSMM0pln+BLQq9kGu5z8BI8
-         zVGKKXxak87Qd0NOXJUakzMDPTUVuBhWDqh6RRPZ1dICefXTnKFx3UhGlnEO8kPU/tbD
-         mjWuZ2Y+7dw39vBuZCB60Bn7F/+/eMueeWS68Ag//nuxI1Yy5m587NggbpGBcKG3k4pZ
-         r7ziwgeUOqFuwboAB1MsOXFxIX/NePEw8gexCIXqFBNevCsXuHEoQjPcQsbfcSMRe2yH
-         c1Sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729071449; x=1729676249;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WuNBRxUMporUa0FNsiiNZn9Rv9n9DRUgpvNg4YbFQvM=;
-        b=poke/5L1dof4EzkNpXoPNAUiTOfKu9Je2lT1SUVOEovEnqnv2FHwENpRCafs0iCBhA
-         rlrRFFkix6jFtt2zVJCsLmdGZeYISR/y7KLbBpsrHEsQ4/jWBQ3VD0pj06yP46aWHDwh
-         zP04ENaBrVFS6uuqHIAQY7AASY8qYigLrKDAkBU1zs+HSogBSRAq5hFYSpC7gSAWrmJk
-         elIo3XecC1cnjeSdfNubapFsRil3HjVziBbVpwjwg9XvyzXgpqKH8RbXQqdWfqYIWbuz
-         GDvH065V/CxA/uiFzOCvuvAOrJBcSnq6FHwBAQEHzUyWDX8ZUHPTshRyrQcqgGpBEmBG
-         ZpXg==
-X-Forwarded-Encrypted: i=1; AJvYcCVwZYbypoNWfE9lOlY9FjNoSyNmw+SvRK7ZKZ1wAq+v4Y3WC59yXUTUqmbvcFfNDRVImdU=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyz2VBNlTmZeK7wbim8eb8KXH3yAu0sVTWHtWQ9an4RSy1/K2cK
-	1wjoRjkXyVIBP46tc2Pzlgqc2UraPkqUwTLbu41OfSWgwq5EnOxsAKDk4ROeBSg=
-X-Google-Smtp-Source: AGHT+IFl01Hs8Y2oPgUjtWeCz06Ma1XKh0Ko3SybFFsK9UgNIKR54kvBgw8mfSI2xW39eatk07bhcw==
-X-Received: by 2002:a05:600c:3b07:b0:431:537d:b3b4 with SMTP id 5b1f17b1804b1-431537db5d4mr7539275e9.11.1729071448643;
-        Wed, 16 Oct 2024 02:37:28 -0700 (PDT)
-Received: from localhost (p200300f65f19e3002f38cf427133ca7b.dip0.t-ipconnect.de. [2003:f6:5f19:e300:2f38:cf42:7133:ca7b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4313f6c606esm43580235e9.44.2024.10.16.02.37.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Oct 2024 02:37:28 -0700 (PDT)
-Date: Wed, 16 Oct 2024 11:37:27 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: jan.petrous@oss.nxp.com
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Jose Abreu <joabreu@synopsys.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
-	Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Emil Renner Berthing <kernel@esmil.dk>, Minda Chen <minda.chen@starfivetech.com>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>, Keyur Chudgar <keyur@os.amperecomputing.com>, 
-	Quan Nguyen <quan@os.amperecomputing.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, 
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZJncaPafDdNlFN205YEqH0uXT7gPyg5vA7nMqaRwG3a2yHxji5xu8srZTs2XUxRPFQaJWVReV2WkIQLFkQU5dRv2SXLlqydnZiXK/lzBOF05jkk3akwRSNCZvBhmsL0gkU2EDAEkKXr3whlo8FyodaZNHd+9k42+019+Udg+8yE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 37C6A201F78;
+	Wed, 16 Oct 2024 12:11:49 +0200 (CEST)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 27BD7201F6F;
+	Wed, 16 Oct 2024 12:11:49 +0200 (CEST)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 53259203E0;
+	Wed, 16 Oct 2024 12:11:49 +0200 (CEST)
+Date: Wed, 16 Oct 2024 12:11:49 +0200
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Minda Chen <minda.chen@starfivetech.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+	Keyur Chudgar <keyur@os.amperecomputing.com>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
 	NXP S32 Linux Team <s32@nxp.com>
 Subject: Re: [PATCH v3 14/16] net: stmmac: dwmac-s32: add basic NXP S32G/S32R
  glue driver
-Message-ID: <urxfash5qmvahjubhk5knrt53j2tw7hje35qyst3x3ltg4mpgo@dw73m73o36b3>
+Message-ID: <Zw+RZQDt4lopPqFW@lsv051416.swis.nl-cdc01.nxp.com>
 References: <20241013-upstream_s32cc_gmac-v3-0-d84b5a67b930@oss.nxp.com>
  <20241013-upstream_s32cc_gmac-v3-14-d84b5a67b930@oss.nxp.com>
+ <urxfash5qmvahjubhk5knrt53j2tw7hje35qyst3x3ltg4mpgo@dw73m73o36b3>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3rgewbnae3w46mrf"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20241013-upstream_s32cc_gmac-v3-14-d84b5a67b930@oss.nxp.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <urxfash5qmvahjubhk5knrt53j2tw7hje35qyst3x3ltg4mpgo@dw73m73o36b3>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
+On Wed, Oct 16, 2024 at 11:37:27AM +0200, Uwe Kleine-König wrote:
+> Hello,
+> 
+> On Sun, Oct 13, 2024 at 11:27:49PM +0200, Jan Petrous via B4 Relay wrote:
+> > +static struct platform_driver s32_dwmac_driver = {
+> > +	.probe		= s32_dwmac_probe,
+> > +	.remove_new	= stmmac_pltfr_remove,
+> > +	.driver		= {
+> > +			    .name		= "s32-dwmac",
+> > +			    .pm		= &stmmac_pltfr_pm_ops,
+> > +			    .of_match_table = s32_dwmac_match,
+> > +	},
+> > +};
+> > +module_platform_driver(s32_dwmac_driver);
+> 
+> After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
+> return void") .remove() is (again) the right callback to implement for
+> platform drivers. Please just drop "_new".
+> 
 
---3rgewbnae3w46mrf
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Subject: Re: [PATCH v3 14/16] net: stmmac: dwmac-s32: add basic NXP S32G/S32R
- glue driver
-MIME-Version: 1.0
+Thank you, I was not aware of it. Will be included in v4.
 
-Hello,
+/Jan
 
-On Sun, Oct 13, 2024 at 11:27:49PM +0200, Jan Petrous via B4 Relay wrote:
-> +static struct platform_driver s32_dwmac_driver = {
-> +	.probe		= s32_dwmac_probe,
-> +	.remove_new	= stmmac_pltfr_remove,
-> +	.driver		= {
-> +			    .name		= "s32-dwmac",
-> +			    .pm		= &stmmac_pltfr_pm_ops,
-> +			    .of_match_table = s32_dwmac_match,
-> +	},
-> +};
-> +module_platform_driver(s32_dwmac_driver);
-
-After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
-return void") .remove() is (again) the right callback to implement for
-platform drivers. Please just drop "_new".
-
-Best regards
-Uwe
-
---3rgewbnae3w46mrf
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmcPiVMACgkQj4D7WH0S
-/k5nvwgAuwyNlZ0+t4WBDYiT5Gz/XG+UlD8Gxq09jGYiM7ZQuaUMVhaZX2EGtw4j
-d+a7PY7H1Q8CSSzlRd8slK6qfFH3k/wg11NO0xOi/lW7uY+2Mou/nKFAa8HitBw3
-ciZmWaiBmTaeer34RvNqwit6OIs16tHjlcWE4Ls+BqHzjXLKRw4ME0G5CHih3NeH
-dG9mrc9d8yY9ufokGwyutKBMwgesxuK9Rm6q2/BFS9l3jkQwB95bfnuc7EY6Z/lt
-Yg0td4KQmT3hHNnQ/NBIyp59RUoPddmazMhl3BvN3BkQa/0VKeoXlEfIO2Y6QsB4
-czW2X/X5vQl1CM4TOIf7BSHZyRkOMg==
-=npHo
------END PGP SIGNATURE-----
-
---3rgewbnae3w46mrf--
