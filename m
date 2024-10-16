@@ -1,39 +1,39 @@
 Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9BD723A6
-	for <imx@lists.linux.dev>; Thu, 17 Oct 2024 00:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6688E3FC7
+	for <imx@lists.linux.dev>; Thu, 17 Oct 2024 00:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729124685; cv=none; b=gX2UE7RprO5mr2Q0pn/DFr2UoWIYIKZcYZJ0kw0NZc4z8zS5mRKHV5v6pHYWuI/nQF1jxDQG2z68UZhSithN9MTHaz9NfFZ6Edr9KCimPCMzCWNzBZ3lHXzhrBTL1yqp0efNQ+SGj1drG9bSoWZ1plJsT8XLqSfcwCXCTr9qZMQ=
+	t=1729124686; cv=none; b=V32VH6tYA+RJB+LtBBOtEt22hJmHKbdIE3b2UfnFggK+i2uUOuGsn8a3sfqCTEh1qX3YxyJQMq7lSJD5z7cDTYAohmfV5jVzXdk1qlrXmMG27vQfB2d/GfHtYGJZ0r0HF+jEi/S8zx+qRjlTQ059HJai6siB+KwGW4iNaERAjx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729124685; c=relaxed/simple;
-	bh=S6xk3KTEVhY6bAWjK44TBxfAGGua3/k6U07RZx+0kGw=;
+	s=arc-20240116; t=1729124686; c=relaxed/simple;
+	bh=7g0aC8MALwVGRPVCCSINwLL7HrVEmpwktOlBZPETjQc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VXqqX/3FAXU6XfPJwJZuRahcXK63VVkBc6ILSSLnqk7TjgandK/aAA5oOWAr0t0IZJQS6e/sl1Z15+AFpg28htw1RvSfXj66tkj0KPTVxlvQBwKaviY5Eib4XKT81pDG3q1cxkj41TqEPZOTj/9tZjGawX6ixR+eM/TiMLjD54Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=bPp/qMLO; arc=none smtp.client-ip=85.214.62.61
+	 In-Reply-To:Content-Type; b=iHM2alkJv1F3g/WGenmFFGQbtBaJjIKh8UwbmVo7zYdkslpVQJhK8PK/iGpPYAosEJyAppTW/rnJcAmCKyeqheuRwl58qZw5vksXABcW4EaTQ6gEJgDQggzLdqJPsuff1FoQvUk4UU/6BIVttddt+ay3s7IxR2iESvOaxeiGRms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=mCpjlRxd; arc=none smtp.client-ip=85.214.62.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="bPp/qMLO"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="mCpjlRxd"
 Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
 	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id B548888DE6;
-	Thu, 17 Oct 2024 02:24:40 +0200 (CEST)
+	by phobos.denx.de (Postfix) with ESMTPSA id 9E71288E14;
+	Thu, 17 Oct 2024 02:24:42 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1729124682;
-	bh=vtLESTNVUfNdc+GE1WO1rf4aioCJeinbP3+V6+iQ8Ow=;
+	s=phobos-20191101; t=1729124683;
+	bh=M6fhzpLMexaXGKuiI41TaABaPZfkUsLvBKtsOHdEIEE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bPp/qMLOSDFgy64+QKaCk7OWgG8M0dWjBncfo1SCjhgaxwVYyjebpQRjOst3PqPrb
-	 K6dHGe/4PPi0eezAGqUM/JJKgPr0cH60WKWJFozdYydWf/Lm1CzHCjng0N7CX+3fbS
-	 dmqejYTX4o8QEA8RWUPC3rkUucZ/5Hg1m1H4IIN7yZypRhR4BVlrYb/sNywaPxjntG
-	 ukBxhduQktMlJ3zAvLs0V41VXX977hKU7dnl4qfdO/GF6Lf4M6n1gv7hDg+kaZtxiV
-	 1R7byNKeEkzP25wDFkdxTZK61Y1TwBQg6btJequ2tdy0yjhMwEKXFESUl2Rl3orkC0
-	 bzroeWvnIj2rg==
-Message-ID: <b82e55af-6b6d-473b-9b74-c0f0b26e12f8@denx.de>
-Date: Thu, 17 Oct 2024 00:51:38 +0200
+	b=mCpjlRxd0OSFlp6IHUZ+OJxtxLNrr/2w2OFNZo1z6GsXLuCWLx+AaL/iMJAOm1l3x
+	 einB9skbUrHQz0DSpxtVpU/rBTbA5t+/20fUbf5+RtFVpqsj/eWh9hHONiLjFuw+/2
+	 i72LUr5HTAD236S6/DNgs/7UfluhDtrZEFB2irvvM91YLPkzFf834wcL2ZbS2QDR8U
+	 +bAJ+fjS8QzFwRVCxi6b2CN86TgSVWlMSygaT2qAVW0xgtaW9Zrh/6xVDYzAi/j230
+	 Hx/oOnTup7u4hOAYjtN7Q0G47atjYxP6KqUPGeVPSKOQzQiRpfPSqC6K8DEinje6ex
+	 7JJwq7Nct+h8g==
+Message-ID: <98a43b52-00b3-4d3f-bbfc-23c0b9d85738@denx.de>
+Date: Thu, 17 Oct 2024 01:13:44 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,117 +41,80 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: Document i.MX6DL DHCOM SoM on
- PDK2 carrier board
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Joao Paulo Goncalves <joao.goncalves@toradex.com>,
- linux-arm-kernel@lists.infradead.org, Michael Walle <mwalle@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Christoph Niedermaier <cniedermaier@dh-electronics.com>,
- Gregor Herburger <gregor.herburger@ew.tq-group.com>,
- Peng Fan <peng.fan@nxp.com>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Alexander Stein <alexander.stein@ew.tq-group.com>,
- Parthiban Nallathambi <parthiban@linumiz.com>,
- Hiago De Franco <hiago.franco@toradex.com>, imx@lists.linux.dev,
- kernel@dh-electronics.com, Max Merchel <Max.Merchel@ew.tq-group.com>,
- Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, devicetree@vger.kernel.org,
- Mathieu Othacehe <m.othacehe@gmail.com>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>
-References: <20241015235926.168582-1-marex@denx.de>
- <172909288999.1676333.15859258003756492401.robh@kernel.org>
+Subject: Re: [PATCH] dt-bindings: pinctrl: fsl, imx6ul-pinctrl: Convert
+ i.MX35/5x/6 to YAML
+To: Alexander Stein <alexander.stein@ew.tq-group.com>,
+ devicetree@vger.kernel.org
+Cc: Conor Dooley <conor+dt@kernel.org>, Dong Aisheng <aisheng.dong@nxp.com>,
+ Fabio Estevam <festevam@gmail.com>, Jacky Bai <ping.bai@nxp.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, imx@lists.linux.dev,
+ kernel@dh-electronics.com, linux-arm-kernel@lists.infradead.org,
+ linux-gpio@vger.kernel.org
+References: <20241015232107.100771-1-marex@denx.de>
+ <2205972.irdbgypaU6@steina-w>
 Content-Language: en-US
 From: Marek Vasut <marex@denx.de>
-In-Reply-To: <172909288999.1676333.15859258003756492401.robh@kernel.org>
+In-Reply-To: <2205972.irdbgypaU6@steina-w>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
 X-Virus-Status: Clean
 
-On 10/16/24 5:38 PM, Rob Herring (Arm) wrote:
-> 
-> On Wed, 16 Oct 2024 01:58:35 +0200, Marek Vasut wrote:
->> Document the DH electronics i.MX6DL DHCOM SoM and a PDK2 evaluation board.
->> The evaluation board features three serial ports, USB OTG, USB host with
->> an USB hub, Fast or Gigabit ethernet, eMMC, uSD, SD, analog audio, PCIe
->> and HDMI video output.
->>
->> All of the aforementioned features except for mSATA are supported, mSATA
->> is not available on i.MX6DL and is only available on DHCOM populated with
->> i.MX6Q SoC which is already supported upstream.
->>
->> Signed-off-by: Marek Vasut <marex@denx.de>
->> ---
->> Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
->> Cc: Christoph Niedermaier <cniedermaier@dh-electronics.com>
->> Cc: Conor Dooley <conor+dt@kernel.org>
->> Cc: Fabio Estevam <festevam@gmail.com>
->> Cc: Gregor Herburger <gregor.herburger@ew.tq-group.com>
->> Cc: Hiago De Franco <hiago.franco@toradex.com>
->> Cc: Hugo Villeneuve <hvilleneuve@dimonoff.com>
->> Cc: Joao Paulo Goncalves <joao.goncalves@toradex.com>
->> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
->> Cc: Marek Vasut <marex@denx.de>
->> Cc: Mathieu Othacehe <m.othacehe@gmail.com>
->> Cc: Max Merchel <Max.Merchel@ew.tq-group.com>
->> Cc: Michael Walle <mwalle@kernel.org>
->> Cc: Parthiban Nallathambi <parthiban@linumiz.com>
->> Cc: Peng Fan <peng.fan@nxp.com>
->> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
->> Cc: Rob Herring <robh@kernel.org>
->> Cc: Sascha Hauer <s.hauer@pengutronix.de>
->> Cc: Shawn Guo <shawnguo@kernel.org>
->> Cc: devicetree@vger.kernel.org
->> Cc: imx@lists.linux.dev
->> Cc: kernel@dh-electronics.com
->> Cc: linux-arm-kernel@lists.infradead.org
->> ---
->>   Documentation/devicetree/bindings/arm/fsl.yaml | 6 ++++--
->>   1 file changed, 4 insertions(+), 2 deletions(-)
->>
-> 
-> 
-> My bot found new DTB warnings on the .dts files added or changed in this
-> series.
-> 
-> Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-> are fixed by another series. Ultimately, it is up to the platform
-> maintainer whether these warnings are acceptable or not. No need to reply
-> unless the platform maintainer has comments.
-> 
-> If you already ran DT checks and didn't see these error(s), then
-> make sure dt-schema is up to date:
-> 
->    pip3 install dtschema --upgrade
-> 
-> 
-> New warnings running 'make CHECK_DTBS=y nxp/imx/imx6dl-dhcom-pdk2.dtb' for 20241015235926.168582-1-marex@denx.de:
-> 
-> arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-pdk2.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
-> arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-pdk2.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
-> arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-pdk2.dtb: iomuxc-gpr@20e0000: 'ipu1_csi0_mux', 'ipu1_csi1_mux' do not match any of the regexes: 'pinctrl-[0-9]+'
-> 	from schema $id: http://devicetree.org/schemas/soc/imx/fsl,imx-iomuxc-gpr.yaml#
-> arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-pdk2.dtb: /soc/bus@2000000/pinctrl@20e0000: failed to match any schema with compatible: ['fsl,imx6dl-iomuxc']
-> arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-pdk2.dtb: /soc/bus@2100000/i2c@21a8000/pmic@3c: failed to match any schema with compatible: ['lltc,ltc3676']
-> arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-pdk2.dtb: /soc/bus@2100000/mipi@21dc000: failed to match any schema with compatible: ['fsl,imx6-mipi-csi2']
-> arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-pdk2.dtb: /soc/bus@2100000/vdoa@21e4000: failed to match any schema with compatible: ['fsl,imx6q-vdoa']
-> arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-pdk2.dtb: /soc/ipu@2400000: failed to match any schema with compatible: ['fsl,imx6q-ipu']
-> arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-pdk2.dtb: /capture-subsystem: failed to match any schema with compatible: ['fsl,imx-capture-subsystem']
-> arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-pdk2.dtb: /display-subsystem: failed to match any schema with compatible: ['fsl,imx-display-subsystem']
-> arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-pdk2.dtb: /disp0: failed to match any schema with compatible: ['fsl,imx-parallel-display']
-> arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-pdk2.dtb: gpio-keys: '#size-cells' does not match any of the regexes: '^(button|event|key|switch|(button|event|key|switch)-[a-z0-9-]+|[a-z0-9-]+-(button|event|key|switch))$', 'pinctrl-[0-9]+'
-> 	from schema $id: http://devicetree.org/schemas/input/gpio-keys.yaml#
-> arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-pdk2.dtb: gpio-keys: '#address-cells' is a dependency of '#size-cells'
-> 	from schema $id: http://devicetree.org/schemas/reg.yaml#
-> arch/arm/boot/dts/nxp/imx/imx6dl-dhcom-pdk2.dtb: panel: 'power-supply' is a required property
-> 	from schema $id: http://devicetree.org/schemas/display/panel/panel-simple.yaml#
-Most of them are missing DT schemas, the last two are fixed in:
+On 10/16/24 8:58 AM, Alexander Stein wrote:
+> Hi Marek,
 
-ARM: dts: imx6qdl-dhcom-pdk2: Drop incorrect size-cells in GPIO keys
-ARM: dts: imx6qdl-dhcom-pdk2: Fill in missing panel power-supply
+Hi,
 
-And once the LTC3676 schema gets picked up, the bot will also complain 
-about this:
+> thanks for the conversion.
 
-ARM: dts: imx6qdl-dhcom-som: Drop bogus regulator-suspend-mem-microvolt
+Sure
+
+[...]
+
+>> @@ -19,6 +19,15 @@ allOf:
+>>   properties:
+>>     compatible:
+>>       enum:
+>> +      - fsl,imx35-iomuxc
+>> +      - fsl,imx50-iomuxc
+>> +      - fsl,imx51-iomuxc
+>> +      - fsl,imx53-iomuxc
+> 
+> imx50.dtsi is using
+>> "fsl,imx50-iomuxc", "fsl,imx53-iomuxc";
+> 
+> So either the .dtsi or this schema needs to be adjusted.
+
+I'll be special-casing this in V2, thanks.
+
+>> +      - fsl,imx6dl-iomuxc
+>> +      - fsl,imx6q-iomuxc
+>> +      - fsl,imx6sl-iomuxc
+>> +      - fsl,imx6sll-iomuxc
+>> +      - fsl,imx6sx-iomuxc
+>>         - fsl,imx6ul-iomuxc
+>>         - fsl,imx6ull-iomuxc-snvs
+>>   
+
+[...]
+
+>> +                Common i.MX6 bits
+>>                     PAD_CTL_HYS                     (1 << 16)
+>>                     PAD_CTL_PUS_100K_DOWN           (0 << 14)
+>>                     PAD_CTL_PUS_47K_UP              (1 << 14)
+>> @@ -69,6 +112,11 @@ patternProperties:
+>>                     PAD_CTL_SPEED_MED               (1 << 6)
+>>                     PAD_CTL_SPEED_HIGH              (3 << 6)
+>>                     PAD_CTL_DSE_DISABLE             (0 << 3)
+>> +                  PAD_CTL_SRE_FAST                (1 << 0)
+>> +                  PAD_CTL_SRE_SLOW                (0 << 0)
+>> +                i.MX6SL/MX6SLL specific bits
+>> +                  PAD_CTL_LVE                     (1 << 22) (MX6SL/SLL only)
+> 
+> Is this comment 'MX6SL/SLL only' really needed? This bit is already in the
+> i.MX6SL/MX6SLL only section.
+I think yes, because this particular bit is MX6SL/MX6SLL-only specific.
