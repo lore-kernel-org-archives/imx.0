@@ -1,43 +1,41 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CAA11D2708
-	for <imx@lists.linux.dev>; Wed, 16 Oct 2024 07:56:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD1F1B07D4
+	for <imx@lists.linux.dev>; Wed, 16 Oct 2024 08:02:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729065387; cv=none; b=tQVLlWgg4wqSfIJlFsceftBOzk+y8kdDCLCSYyhf3VrQwj2oiunYg8bhCXdF733K1dhUg0y4LRODerq9InnQdnFPEOZA7bZH2My3wSrAN37whjpha5RQykLNeReSsUcPvX0tYOYmxjS23kkAQN+UzFSIIm15Vo4OC5gVWgxDivc=
+	t=1729065737; cv=none; b=egDMiWarrilvzFDFbFfnEHra4LNB9LIi7s5D4vG37m9LFgzHhEybAqd8a4SR4Amu4khvwpu0Xx6KeH2lDgzswPKCslmBiL37ed78M3aT51bydNEU1f2XOYJJeqOgb2Jh6KuR5oCTNOfbzt/w08eIQo9EEc/zkNd7qRmdr9C7PVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729065387; c=relaxed/simple;
-	bh=7ZGza0D4+DJc0I3mcLDXZs6PWKHYl9GrfKvQnjQrUDU=;
+	s=arc-20240116; t=1729065737; c=relaxed/simple;
+	bh=/8EZ5d33aVstxkBsP37ajT8/LEvDSLg38YMUJYuEIJY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=soQ0UV/VIc8/6Q3zxr4DSSD037xoHaWOtPEMZb8Ka3XXu3GIp+AVabH0OQzGVFWUdaxsQ2kpXMjDmB8a1BRbUj5gsDONywFHOICJhDNZ3hoZRwZGee/b9oKgd3cY2XEgKVmPSFshPWgyZZjXds821cen7M9QiK00NH8fYT/BwsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=EzdNoxqu; arc=none smtp.client-ip=1.95.21.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=MU0IvScjqOX3ZqN/LkG0oUhUejUGTLZ+Wer+Bb/pCE3uJMKZhH3KvJ96Dxjfzb7GVsPGQ4TDAg7wWjoxL0vf+ecJNm3xCKU2FY7LJbRdfrTZ3yOKOHdcNRZSL4NLFgid2OxibsAca5fuRROOTMWIlFd3dGiX6Qxa6LWgF04Ef8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=N12qOrVn; arc=none smtp.client-ip=220.197.32.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="EzdNoxqu"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="N12qOrVn"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=RhxSP9FPCj+a+dDaeGpQ2xdy8rq7kJ/iFQi/d8ef/w4=;
-	b=EzdNoxquQIQB6Ji5DiKy7MAGDo+H96tb6sRR6BJ9gQ/J8c5Nd1vQmlt7hMomTx
-	q9cTYnYhUOfCHUHzOBSCrjc+dAUAyc0vjJqfxQ6IEfGPTCqULslY6zpH+Avbt2PE
-	HJQTs9grCWhk+o3IlRXQ45nj7aWYAA6+manTBve6xaak8=
+	Content-Type; bh=+kd8E0tUUE88A8KHdSiWw5mBRqTS3PtOuVObV/42bZ8=;
+	b=N12qOrVn0038JMV9Qb1PvaHdg0P2yezMX9lp1KGUqX9tiLyBg35+FjqqBZJ5NU
+	YW+3Nf8Q1aDGshlhg+CZl4f1DAy7tWuUluHiJJo5mUtpsn4ot2ulQXreTNxmfWlr
+	Y8eH+DCQz03UhUJ6J+gZZmjpSIQTUFy5NxwA5xyTp1Hdg=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDH7uyPcQ9nYMAZAA--.432S3;
-	Wed, 16 Oct 2024 15:56:01 +0800 (CST)
-Date: Wed, 16 Oct 2024 15:55:59 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgDHxAP0cg9n8ngZAA--.391S3;
+	Wed, 16 Oct 2024 16:01:58 +0800 (CST)
+Date: Wed, 16 Oct 2024 16:01:55 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: vkoul@kernel.org, kishon@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	gregkh@linuxfoundation.org, Frank.Li@nxp.com, jun.li@nxp.com,
-	l.stach@pengutronix.de, aford173@gmail.com, hongxing.zhu@nxp.com,
-	alexander.stein@ew.tq-group.com, linux-phy@lists.infradead.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH v5 4/5] arm64: dts: imx95: add usb3 related nodes
-Message-ID: <Zw9xj4JWHssfOtQP@dragon>
-References: <20240911061720.495606-1-xu.yang_2@nxp.com>
- <20240911061720.495606-4-xu.yang_2@nxp.com>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	shengjiu.wang@gmail.com
+Subject: Re: [PATCH v2 1/3] arm64: dts: imx93-9x9-qsb: Enable sound-wm8962
+ sound card
+Message-ID: <Zw9y84AzNwUhUAhJ@dragon>
+References: <1726106381-1138-1-git-send-email-shengjiu.wang@nxp.com>
+ <1726106381-1138-2-git-send-email-shengjiu.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,90 +44,149 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240911061720.495606-4-xu.yang_2@nxp.com>
-X-CM-TRANSID:Ms8vCgDH7uyPcQ9nYMAZAA--.432S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJry7Jry3ZFW8Kw43Kr17KFg_yoW8tFy8pr
-	yDGay5Zrs2gr1xCFWaqF48KF95J3y0kFZ5Wr1Sgryjkr9xZ347KFWIkF1S9r18XrsrXw4j
-	qFnaqr1xKrnxtw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j4mhrUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCQZ6ZWcPLG3NiQAAs9
+In-Reply-To: <1726106381-1138-2-git-send-email-shengjiu.wang@nxp.com>
+X-CM-TRANSID:Mc8vCgDHxAP0cg9n8ngZAA--.391S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGw4kJFWkurWktw18AFW7CFg_yoWrJF1xpr
+	9xursagr1FgFyxt3sxX3ZIkrW3Gw4kKr9I9r12vrW8ArsFvasFq345Kr1ruryrGrn5Zw4Y
+	yFy5Xry7C3ZIqw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jzc_fUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCQZ6ZWcPLG3NiQABs8
 
-On Wed, Sep 11, 2024 at 02:17:19PM +0800, Xu Yang wrote:
-> Add usb3 phy and controller nodes for imx95.
+On Thu, Sep 12, 2024 at 09:59:39AM +0800, Shengjiu Wang wrote:
+> Add wm8962 sound card which connects to sai3. The connection
+> of SAI3 and wm8962 is controlled by PCAL6524HEAZ module, add
+> gpio-hog for it.
 > 
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 > ---
-> Changes in v2:
->  - no changes
-> Changes in v3:
->  - no changes
-> Changes in v4:
->  - reorder nodes
-> Changes in v5:
->  - no changes
-> ---
->  arch/arm64/boot/dts/freescale/imx95.dtsi | 43 ++++++++++++++++++++++++
->  1 file changed, 43 insertions(+)
+>  .../boot/dts/freescale/imx93-9x9-qsb.dts      | 74 +++++++++++++++++++
+>  1 file changed, 74 insertions(+)
 > 
-> diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
-> index 425272aa5a81..2377b3ade95a 100644
-> --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
-> @@ -1188,5 +1188,48 @@ pcie1_ep: pcie-ep@4c380000 {
->  			power-domains = <&scmi_devpd IMX95_PD_HSIO_TOP>;
->  			status = "disabled";
->  		};
+> diff --git a/arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dts b/arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dts
+> index f8a73612fa05..10f3366b8253 100644
+> --- a/arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dts
+> @@ -68,6 +68,15 @@ reg_vref_1v8: regulator-adc-vref {
+>  		regulator-max-microvolt = <1800000>;
+>  	};
+>  
+> +	reg_audio_pwr: regulator-audio-pwr {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "audio-pwr";
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-max-microvolt = <3300000>;
+> +		gpio = <&pcal6524 16 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +	};
 > +
-> +		usb3: usb@4c010010 {
+>  	reg_rpi_3v3: regulator-rpi {
+>  		compatible = "regulator-fixed";
+>  		regulator-name = "VDD_RPI_3V3";
+> @@ -88,6 +97,22 @@ reg_usdhc2_vmmc: regulator-usdhc2 {
+>  		enable-active-high;
+>  		off-on-delay-us = <12000>;
+>  	};
+> +
+> +	sound-wm8962 {
+> +		compatible = "fsl,imx-audio-wm8962";
+> +		model = "wm8962-audio";
+> +		audio-cpu = <&sai3>;
+> +		audio-codec = <&wm8962>;
+> +		hp-det-gpio = <&pcal6524 4 GPIO_ACTIVE_HIGH>;
+> +		audio-routing =
+> +			"Headphone Jack", "HPOUTL",
+> +			"Headphone Jack", "HPOUTR",
+> +			"Ext Spk", "SPKOUTL",
+> +			"Ext Spk", "SPKOUTR",
+> +			"AMIC", "MICBIAS",
+> +			"IN3R", "AMIC",
+> +			"IN1R", "AMIC";
+> +	};
+>  };
+>  
+>  &adc1 {
+> @@ -136,6 +161,28 @@ &lpi2c1 {
+>  	pinctrl-0 = <&pinctrl_lpi2c1>;
+>  	status = "okay";
+>  
+> +	wm8962: codec@1a {
 
-Could this be added in order of unit-address?
+Can we use audio-codec for node name?
 
 Shawn
 
-> +			compatible = "fsl,imx95-dwc3", "fsl,imx8mp-dwc3";
-> +			reg = <0x0 0x4c010010 0x0 0x04>,
-> +			      <0x0 0x4c1f0000 0x0 0x20>;
-> +			clocks = <&scmi_clk IMX95_CLK_HSIO>,
-> +				 <&scmi_clk IMX95_CLK_32K>;
-> +			clock-names = "hsio", "suspend";
-> +			interrupts = <GIC_SPI 173 IRQ_TYPE_LEVEL_HIGH>;
-> +			#address-cells = <2>;
-> +			#size-cells = <2>;
-> +			ranges;
-> +			power-domains = <&scmi_devpd IMX95_PD_HSIO_TOP>;
-> +			dma-ranges = <0x0 0x0 0x0 0x0 0x10 0x0>;
-> +			status = "disabled";
+> +		compatible = "wlf,wm8962";
+> +		reg = <0x1a>;
+> +		clocks = <&clk IMX93_CLK_SAI3_GATE>;
+> +		DCVDD-supply = <&reg_audio_pwr>;
+> +		DBVDD-supply = <&reg_audio_pwr>;
+> +		AVDD-supply = <&reg_audio_pwr>;
+> +		CPVDD-supply = <&reg_audio_pwr>;
+> +		MICVDD-supply = <&reg_audio_pwr>;
+> +		PLLVDD-supply = <&reg_audio_pwr>;
+> +		SPKVDD1-supply = <&reg_audio_pwr>;
+> +		SPKVDD2-supply = <&reg_audio_pwr>;
+> +		gpio-cfg = <
+> +			0x0000 /* 0:Default */
+> +			0x0000 /* 1:Default */
+> +			0x0000 /* 2:FN_DMICCLK */
+> +			0x0000 /* 3:Default */
+> +			0x0000 /* 4:FN_DMICCDAT */
+> +			0x0000 /* 5:Default */
+> +		>;
+> +	};
 > +
-> +			usb3_dwc3: usb@4c100000 {
-> +				compatible = "snps,dwc3";
-> +				reg = <0x0 0x4c100000 0x0 0x10000>;
-> +				clocks = <&scmi_clk IMX95_CLK_HSIO>,
-> +					 <&scmi_clk IMX95_CLK_24M>,
-> +					 <&scmi_clk IMX95_CLK_32K>;
-> +				clock-names = "bus_early", "ref", "suspend";
-> +				interrupts = <GIC_SPI 175 IRQ_TYPE_LEVEL_HIGH>;
-> +				phys = <&usb3_phy>, <&usb3_phy>;
-> +				phy-names = "usb2-phy", "usb3-phy";
-> +				snps,gfladj-refclk-lpm-sel-quirk;
-> +				snps,parkmode-disable-ss-quirk;
-> +				iommus = <&smmu 0xe>;
-> +			};
-> +		};
+>  	ptn5110: tcpc@50 {
+>  		compatible = "nxp,ptn5110", "tcpci";
+>  		reg = <0x50>;
+> @@ -194,6 +241,12 @@ pcal6524: gpio@22 {
+>  		interrupts = <26 IRQ_TYPE_LEVEL_LOW>;
+>  		pinctrl-names = "default";
+>  		pinctrl-0 = <&pinctrl_pcal6524>;
 > +
-> +		usb3_phy: phy@4c1f0040 {
-> +			compatible = "fsl,imx95-usb-phy", "fsl,imx8mp-usb-phy";
-> +			reg = <0x0 0x4c1f0040 0x0 0x40>,
-> +			      <0x0 0x4c1fc000 0x0 0x100>;
-> +			clocks = <&scmi_clk IMX95_CLK_HSIO>;
-> +			clock-names = "phy";
-> +			#phy-cells = <0>;
-> +			power-domains = <&scmi_devpd IMX95_PD_HSIO_TOP>;
-> +			orientation-switch;
-> +			status = "disabled";
+> +		exp-sel-hog {
+> +			gpio-hog;
+> +			gpios = <22 GPIO_ACTIVE_HIGH>;
+> +			output-low;
 > +		};
 >  	};
+>  
+>  	pmic@25 {
+> @@ -286,6 +339,17 @@ &mu2 {
+>  	status = "okay";
 >  };
+>  
+> +&sai3 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_sai3>;
+> +	assigned-clocks = <&clk IMX93_CLK_SAI3>;
+> +	assigned-clock-parents = <&clk IMX93_CLK_AUDIO_PLL>;
+> +	assigned-clock-rates = <12288000>;
+> +	fsl,sai-mclk-direction-output;
+> +	fsl,sai-synchronous-rx;
+> +	status = "okay";
+> +};
+> +
+>  &usbotg1 {
+>  	dr_mode = "otg";
+>  	hnp-disable;
+> @@ -443,6 +507,16 @@ MX93_PAD_SD2_RESET_B__GPIO3_IO07	0x31e
+>  		>;
+>  	};
+>  
+> +	pinctrl_sai3: sai3grp {
+> +		fsl,pins = <
+> +			MX93_PAD_GPIO_IO12__SAI3_RX_SYNC		0x31e
+> +			MX93_PAD_GPIO_IO18__SAI3_RX_BCLK		0x31e
+> +			MX93_PAD_GPIO_IO17__SAI3_MCLK			0x31e
+> +			MX93_PAD_GPIO_IO19__SAI3_TX_DATA00		0x31e
+> +			MX93_PAD_GPIO_IO20__SAI3_RX_DATA00		0x31e
+> +		>;
+> +	};
+> +
+>  	pinctrl_usdhc2_gpio: usdhc2gpiogrp {
+>  		fsl,pins = <
+>  			MX93_PAD_SD2_CD_B__GPIO3_IO00		0x31e
 > -- 
 > 2.34.1
 > 
