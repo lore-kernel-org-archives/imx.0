@@ -1,42 +1,39 @@
 Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B405221
-	for <imx@lists.linux.dev>; Wed, 16 Oct 2024 05:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4602B41C69
+	for <imx@lists.linux.dev>; Wed, 16 Oct 2024 06:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729058259; cv=none; b=Z/+wEX9IxuUKVM3+xNBiAQd6ciW5FDOm02ukjwxln1c6kmp3yO7BUb/Tn1EEjcrhOO2zUB2rpWudRZ7ByhR4lu9pcHQF/PvHprabAIrrVL1XVKfVwaUBEcTQJiU9rkp0ru5JB2hVu+el7yK+G68gAPnZxTWs8BSs0zOty+cB9qY=
+	t=1729061039; cv=none; b=U70TMWs0vkLxzODnpqr2JQu74rZYu9QpMkBHkSjWZt8AsVkyId4tl7QapWz/9hjeAKlvPMZNDaQ1v2Q1vDiP3cwapogsEi+lebx/ZQh7MIWl3oGtHI73eRfQc5IWOUG7LhLKhdDFZ6xJyDK2XY/5/MTlKGNAFcthwDjcxEKwqZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729058259; c=relaxed/simple;
-	bh=FBN2kl/WzmXyuFZE/grMu57N0gK5+Swu06SfieOmINA=;
+	s=arc-20240116; t=1729061039; c=relaxed/simple;
+	bh=FVSU2WBNfgz9zSK+jKgIZGH55UJ7KG8hdJ30EJWrr7k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WbjjTDlb1VjveOiuWP4o+3GuMBw4GFIKI3ZMtXsQQIMoGaqW69r0wXW91dIR99Rdn5XC/u/RbGiQ11bsqTSkbphxFUceOXZhlHo9kAyu/Xy7T6m/WjQfEHUBkKl0aM6Y2pm2NcG6kV9Ho7Gf1URV68vBbseXuYeXXYi+1Ew2rww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=eh5M4We4; arc=none smtp.client-ip=1.95.21.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=cU7iHXVovgkUp0Y8w5Q4iZhEicp4aq/HCr0WrMHUULTbCFJSMw2q47BalrgwatO7EKdMDtpKFriri7egixNMxImgjpKcla4M6PTBUyxhsjIIbqEnVS2fY0SBM3Jt3RtBiM5TwXe/VPWlak0mmH35oiNJ4L1NPN7cvG9uJ2YS7HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=Cq8Ooz/u; arc=none smtp.client-ip=1.95.21.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="eh5M4We4"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="Cq8Ooz/u"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=adk+fAx+LK097goAKszCL9jLGtGKHbBuW0Xq1csUd1s=;
-	b=eh5M4We4ZrSRQ6XHkEyQOQsFrZN0zs56RS8tQJYH/F6jEj41ZoOFMDo2fOdf9s
-	V1O5a7uI0Bv7TMqYSr28ZAA0GMs5BHE/gbYo3lsjuO0Vll0/B4xn9mmSZktVV9T7
-	HBgd5jGe347X0PS654cvnHVbPIOtSY4KWFuZpavrQMa+Y=
+	Content-Type; bh=6M75V2q+Tktv1OJM9mVkAGxnLytVuUPATxTb88TgW5A=;
+	b=Cq8Ooz/uoD8SQSMQmF+dtrlGvK1vgCkUlO128CgyHR5UhctrSnz1DQw/MhQdAM
+	j1TwOnOQxpcFw7HiRRSQRkjwGWmLF/f90vttqdI7BlgA/AGFuMjos1805CbYrRu4
+	TQBCLMOGS2GlssqCWv+sAJPH1wSeXFf34mOhlVimpY8nM=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgCX3b2dVQ9nRewXAA--.356S3;
-	Wed, 16 Oct 2024 13:56:47 +0800 (CST)
-Date: Wed, 16 Oct 2024 13:56:45 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgCHlQWUYA9nc0kYAA--.375S3;
+	Wed, 16 Oct 2024 14:43:33 +0800 (CST)
+Date: Wed, 16 Oct 2024 14:43:31 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Tim Harvey <tharvey@gateworks.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: imx8mp-venice-gw74xx: add M2SKT_GPIO10 gpio
- configuration
-Message-ID: <Zw9VnRyNss59AD/F@dragon>
-References: <20240905183228.517422-1-tharvey@gateworks.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: peng.fan@nxp.com, shawnguo@kernel.org, conor+dt@kernel.org,
+	devicetree@vger.kernel.org, festevam@gmail.com, imx@lists.linux.dev,
+	kernel@pengutronix.de, krzk+dt@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	robh@kernel.org, s.hauer@pengutronix.de
+Subject: Re: [PATCH v2 1/1] arm64: dts: imx93-9x9-qsb: add I3C overlay file
+Message-ID: <Zw9gk2jGnq4fu/+G@dragon>
+References: <20240906201501.2249242-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,19 +42,20 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240905183228.517422-1-tharvey@gateworks.com>
-X-CM-TRANSID:Ms8vCgCX3b2dVQ9nRewXAA--.356S3
+In-Reply-To: <20240906201501.2249242-1-Frank.Li@nxp.com>
+X-CM-TRANSID:Mc8vCgCHlQWUYA9nc0kYAA--.375S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
 	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVpVbDUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEQB6ZWcPEbbV8QAAsl
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBBB6ZWcPKkWcfwAAsv
 
-On Thu, Sep 05, 2024 at 11:32:28AM -0700, Tim Harvey wrote:
-> The GW74xx D revision has added a M2SKT_GPIO10 GPIO which routes to the
-> GPIO10 pin of the M.2 socket for compatibility with certain devices.
+On Fri, Sep 06, 2024 at 04:15:01PM -0400, Frank Li wrote:
+> Add an overlay file to enable I3C support on the i.MX93, replacing I2C1
+> with I3C. I3C is compatible with I2C, but it has not yet been enabled in
+> arm64's defconfig. This overlay allows users to conveniently utilize I3C
+> on the imx93-9x9-qsb platform until I3C and its driver become more mature
+> and ready for full switch to I3C.
 > 
-> Add the iomux and a line name for this.
-> 
-> Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
 Applied, thanks!
 
