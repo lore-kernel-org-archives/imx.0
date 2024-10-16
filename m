@@ -1,229 +1,92 @@
-Received: from mail-il1-f170.google.com (mail-il1-f170.google.com [209.85.166.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx2.securetransport.de (mx2.securetransport.de [188.68.39.254])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA64BB641
-	for <imx@lists.linux.dev>; Wed, 16 Oct 2024 08:17:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0071D14E3
+	for <imx@lists.linux.dev>; Wed, 16 Oct 2024 08:29:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.39.254
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729066639; cv=none; b=UVZOCMPmZpZnlIhMa8ttYyQ4PS0C2Z0fW1TOP+5Wpvwxd6u5ThQQk65NAfWiWoWHaKiKseqcWTvJxQHZ280OLTraDPXE6UVmPdPL3clNPsgQQc6HLfELrqUw8CGPAw8BoC4DVDYqFAeM7lUbObeH+dFutAYhWh/O6kYberXq/lI=
+	t=1729067348; cv=none; b=MdJn0ud4Q3b8PiOHLzdpZHbIhsaAVu45whvIHh2/KL509QW/K9en8vGMINKlEp1yXTswYBi71M+a+6QE3ISp1mbzzlDP+fg4o7nH2xeVuGMt2pLPwyh+GfmdnGOhqJxiY8CNTUKE6FZ1dhimCNY5syZY7WbZPRsbFACkp0xwen0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729066639; c=relaxed/simple;
-	bh=W7RowBdHT4f+P8dR62eXduVYuqH0YV4BoB3Kz9EFdy0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rkN9P2PXz+GiQ3eKpvTccXpyZOarhGOksFm+ZHj4vldWSURT7wGTcxhzVlv5SylaTTwXke7h/1CMnnkk2M0urZdtVwyq1t9zPHBRiFGyEb+jhrVc0XlJ/buBKr2N9vl6CSDXM2tgPj1yL/h8xbg5lXiZcyIRGCooMFhxTQRLdoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IeZ452lC; arc=none smtp.client-ip=209.85.166.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729067348; c=relaxed/simple;
+	bh=YPCg5g13y42ht/3sW9miW8aU/7XPK0SieIvWxUTxjHg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Sbt5aq8iYWo3DWHOpqogWyR5l+UKh1dDPmsX4iiedG96r3D7AwzB2b13vF2sXgEYEsvWXLXhRAKcnUBchp1F92NrvQBDAP+69U7El7Atj34KXgOYmAck+ZTB1N+u25Bo+NVX06heWjR/E/hRv6yIGZYQX4gK73Sylj/9XKaY1AQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dh-electronics.com; spf=pass smtp.mailfrom=dh-electronics.com; dkim=pass (2048-bit key) header.d=dh-electronics.com header.i=@dh-electronics.com header.b=QMynq8d0; arc=none smtp.client-ip=188.68.39.254
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dh-electronics.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dh-electronics.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IeZ452lC"
-Received: by mail-il1-f170.google.com with SMTP id e9e14a558f8ab-3a39f73a2c7so23842675ab.0
-        for <imx@lists.linux.dev>; Wed, 16 Oct 2024 01:17:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729066637; x=1729671437; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VZ7Yl/IADUsYDzfDC27LTc+4OQ90sFAT2PacItaEUAU=;
-        b=IeZ452lC60wCady3J21LSGUaacwAAQmo0/xJ9E3m2BHWkhWNwbNCbmGBbOhc2BkfVS
-         QUmWkD/++1Do08vKMXchOeyHuBOTG62UuYUemy3YmfCAVSxFNoy6vufogXPBjulELIys
-         RK9mHSR+k1x0jTJY6leJugJdOSDjC4Ogr79b5EKSNbibg0VjoKFT5whYGdzd40N1Wcyj
-         5lRZXEeQSrFHOLTPd5GofEc4vUo3YJh3FLZfK5Qi8I53XZM8AGzCyEpJXrVaV28xRtQj
-         7WzNntxtbpCxQki07vla//b8ncsuVPaifmyiPa+pGg4vp7fI/KNztRQJMLo2ILOrds2J
-         olFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729066637; x=1729671437;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VZ7Yl/IADUsYDzfDC27LTc+4OQ90sFAT2PacItaEUAU=;
-        b=DNMyhQjKZbE41KiwzKXMFtErGfgHhyfM2Q6U3PULSmLR3Ee6U9KW8FganNjVmh7/rB
-         hIag8WDk6UP23EM+DeC0yq2P4Hxskemso+z2EkN4LbgkGN6GEHnClm8ADw4dM+jlzGaf
-         gxbJ8TVFXtZCyuaTFTuPt9nG0T8rrTDfdiBof0DBGk0+1uZa46ApZE7ZyJnzfyXJDiRD
-         6kpnQ8jCUCMuZZ0Tydydjw3oAT24Pgq2qEB8pjlnulb7MLA/QhTqCX1ZvEYdb5bz5Cpm
-         bjstn6kAcQxeUjhqnU64y4cFWT9Djlxe5cZfEJlea0PahXYYsVQ7+wPMf3hJI+Qk3YiC
-         9wSA==
-X-Forwarded-Encrypted: i=1; AJvYcCUwuI/8Imf4mmF9W1lyvSOwa/3LkUUMxN4OXkr3TxGQYDWveMr2t8I8vll7CzNY50S/2Wg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwWtymp0j/FlIgqDRC9qu4eBYgYVbYoKOGfnhyAYQP+5Z6vp+1W
-	Yka5fgp3Zc4IdzQiTWq7mEG1GV/1PGBg+0GG54MRG4OvYjtWuYyYmoF/PFYwe2awsP28P0OlJza
-	YAudgmHtYermKRigUJmHDFc17ARg=
-X-Google-Smtp-Source: AGHT+IGMGwemmX8QKJFS/YeT0BUqntktDJUHCQOSIR3XNqG5e5BuUkFwWEi1dzGtv+YrGwI7DX/vejugt8v79fdr6tI=
-X-Received: by 2002:a05:6e02:1d15:b0:3a3:3e17:993f with SMTP id
- e9e14a558f8ab-3a3b5f4411fmr161294395ab.8.1729066636855; Wed, 16 Oct 2024
- 01:17:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dh-electronics.com header.i=@dh-electronics.com header.b="QMynq8d0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dh-electronics.com;
+	s=dhelectronicscom; t=1729067321;
+	bh=YPCg5g13y42ht/3sW9miW8aU/7XPK0SieIvWxUTxjHg=;
+	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+	b=QMynq8d0vI9p3DtprOy/8pKNv11xLSXIEYRQI1cCRycXhNvzz9Oz5nBolEYkjJbJE
+	 Xa4qXG0C4/Hi3vZ9KrRHWq3wGSykaCCFroF35acmnRYkzulxrk9rvdOe5mYq0ql/LZ
+	 tKLAikxIuyQjdgcDVMmGPGEH2ZBpYDigEXwDXbnif4vjebXwR8CYv9wjgU6ByzkVTO
+	 4xWtY7I0oy6AJJb1v9tSBwMsYGXzS51ahjF1RIIInLSBVJOReMMnRjVxuBk+YSPRFo
+	 AqGO7QJobGS+s6sI60ZNk2oPG8cahGP3CI8DGz9De9IjmVSxMt1H2EvykbJzeS4ds+
+	 9w45r9J2dcDvA==
+X-secureTransport-forwarded: yes
+From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Complaints-To: abuse@cubewerk.de
+To: Marek Vasut <marex@denx.de>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>
+CC: Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, Sascha Hauer
+	<s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, kernel
+	<kernel@dh-electronics.com>
+Subject: RE: [PATCH] ARM: dts: imx6qdl-dhcom-pdk2: Drop incorrect size-cells
+ in GPIO keys
+Thread-Topic: [PATCH] ARM: dts: imx6qdl-dhcom-pdk2: Drop incorrect size-cells
+ in GPIO keys
+Thread-Index: AQHbH1PumK9xDnPhM0Kj/N8bhEPJlLKJC/pA
+Date: Wed, 16 Oct 2024 08:28:40 +0000
+Message-ID: <09ed8d5735494da487d1b0dc72395c1d@dh-electronics.com>
+References: <20241015224505.94359-1-marex@denx.de>
+In-Reply-To: <20241015224505.94359-1-marex@denx.de>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <1726106381-1138-1-git-send-email-shengjiu.wang@nxp.com>
- <1726106381-1138-2-git-send-email-shengjiu.wang@nxp.com> <Zw9y84AzNwUhUAhJ@dragon>
-In-Reply-To: <Zw9y84AzNwUhUAhJ@dragon>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Wed, 16 Oct 2024 16:17:04 +0800
-Message-ID: <CAA+D8APK+6ErUHXe7c0ooLcm3TLCNgYPeuC4ywgPME_o+TM4+g@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] arm64: dts: imx93-9x9-qsb: Enable sound-wm8962
- sound card
-To: Shawn Guo <shawnguo2@yeah.net>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 16, 2024 at 4:03=E2=80=AFPM Shawn Guo <shawnguo2@yeah.net> wrot=
-e:
->
-> On Thu, Sep 12, 2024 at 09:59:39AM +0800, Shengjiu Wang wrote:
-> > Add wm8962 sound card which connects to sai3. The connection
-> > of SAI3 and wm8962 is controlled by PCAL6524HEAZ module, add
-> > gpio-hog for it.
-> >
-> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > ---
-> >  .../boot/dts/freescale/imx93-9x9-qsb.dts      | 74 +++++++++++++++++++
-> >  1 file changed, 74 insertions(+)
-> >
-> > diff --git a/arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dts b/arch/arm=
-64/boot/dts/freescale/imx93-9x9-qsb.dts
-> > index f8a73612fa05..10f3366b8253 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dts
-> > +++ b/arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dts
-> > @@ -68,6 +68,15 @@ reg_vref_1v8: regulator-adc-vref {
-> >               regulator-max-microvolt =3D <1800000>;
-> >       };
-> >
-> > +     reg_audio_pwr: regulator-audio-pwr {
-> > +             compatible =3D "regulator-fixed";
-> > +             regulator-name =3D "audio-pwr";
-> > +             regulator-min-microvolt =3D <3300000>;
-> > +             regulator-max-microvolt =3D <3300000>;
-> > +             gpio =3D <&pcal6524 16 GPIO_ACTIVE_HIGH>;
-> > +             enable-active-high;
-> > +     };
-> > +
-> >       reg_rpi_3v3: regulator-rpi {
-> >               compatible =3D "regulator-fixed";
-> >               regulator-name =3D "VDD_RPI_3V3";
-> > @@ -88,6 +97,22 @@ reg_usdhc2_vmmc: regulator-usdhc2 {
-> >               enable-active-high;
-> >               off-on-delay-us =3D <12000>;
-> >       };
-> > +
-> > +     sound-wm8962 {
-> > +             compatible =3D "fsl,imx-audio-wm8962";
-> > +             model =3D "wm8962-audio";
-> > +             audio-cpu =3D <&sai3>;
-> > +             audio-codec =3D <&wm8962>;
-> > +             hp-det-gpio =3D <&pcal6524 4 GPIO_ACTIVE_HIGH>;
-> > +             audio-routing =3D
-> > +                     "Headphone Jack", "HPOUTL",
-> > +                     "Headphone Jack", "HPOUTR",
-> > +                     "Ext Spk", "SPKOUTL",
-> > +                     "Ext Spk", "SPKOUTR",
-> > +                     "AMIC", "MICBIAS",
-> > +                     "IN3R", "AMIC",
-> > +                     "IN1R", "AMIC";
-> > +     };
-> >  };
-> >
-> >  &adc1 {
-> > @@ -136,6 +161,28 @@ &lpi2c1 {
-> >       pinctrl-0 =3D <&pinctrl_lpi2c1>;
-> >       status =3D "okay";
-> >
-> > +     wm8962: codec@1a {
->
-> Can we use audio-codec for node name?
-
-Ok,  will update it.
-
-Best regards
-Shengjiu Wang
-
->
-> Shawn
->
-> > +             compatible =3D "wlf,wm8962";
-> > +             reg =3D <0x1a>;
-> > +             clocks =3D <&clk IMX93_CLK_SAI3_GATE>;
-> > +             DCVDD-supply =3D <&reg_audio_pwr>;
-> > +             DBVDD-supply =3D <&reg_audio_pwr>;
-> > +             AVDD-supply =3D <&reg_audio_pwr>;
-> > +             CPVDD-supply =3D <&reg_audio_pwr>;
-> > +             MICVDD-supply =3D <&reg_audio_pwr>;
-> > +             PLLVDD-supply =3D <&reg_audio_pwr>;
-> > +             SPKVDD1-supply =3D <&reg_audio_pwr>;
-> > +             SPKVDD2-supply =3D <&reg_audio_pwr>;
-> > +             gpio-cfg =3D <
-> > +                     0x0000 /* 0:Default */
-> > +                     0x0000 /* 1:Default */
-> > +                     0x0000 /* 2:FN_DMICCLK */
-> > +                     0x0000 /* 3:Default */
-> > +                     0x0000 /* 4:FN_DMICCDAT */
-> > +                     0x0000 /* 5:Default */
-> > +             >;
-> > +     };
-> > +
-> >       ptn5110: tcpc@50 {
-> >               compatible =3D "nxp,ptn5110", "tcpci";
-> >               reg =3D <0x50>;
-> > @@ -194,6 +241,12 @@ pcal6524: gpio@22 {
-> >               interrupts =3D <26 IRQ_TYPE_LEVEL_LOW>;
-> >               pinctrl-names =3D "default";
-> >               pinctrl-0 =3D <&pinctrl_pcal6524>;
-> > +
-> > +             exp-sel-hog {
-> > +                     gpio-hog;
-> > +                     gpios =3D <22 GPIO_ACTIVE_HIGH>;
-> > +                     output-low;
-> > +             };
-> >       };
-> >
-> >       pmic@25 {
-> > @@ -286,6 +339,17 @@ &mu2 {
-> >       status =3D "okay";
-> >  };
-> >
-> > +&sai3 {
-> > +     pinctrl-names =3D "default";
-> > +     pinctrl-0 =3D <&pinctrl_sai3>;
-> > +     assigned-clocks =3D <&clk IMX93_CLK_SAI3>;
-> > +     assigned-clock-parents =3D <&clk IMX93_CLK_AUDIO_PLL>;
-> > +     assigned-clock-rates =3D <12288000>;
-> > +     fsl,sai-mclk-direction-output;
-> > +     fsl,sai-synchronous-rx;
-> > +     status =3D "okay";
-> > +};
-> > +
-> >  &usbotg1 {
-> >       dr_mode =3D "otg";
-> >       hnp-disable;
-> > @@ -443,6 +507,16 @@ MX93_PAD_SD2_RESET_B__GPIO3_IO07 0x31e
-> >               >;
-> >       };
-> >
-> > +     pinctrl_sai3: sai3grp {
-> > +             fsl,pins =3D <
-> > +                     MX93_PAD_GPIO_IO12__SAI3_RX_SYNC                0=
-x31e
-> > +                     MX93_PAD_GPIO_IO18__SAI3_RX_BCLK                0=
-x31e
-> > +                     MX93_PAD_GPIO_IO17__SAI3_MCLK                   0=
-x31e
-> > +                     MX93_PAD_GPIO_IO19__SAI3_TX_DATA00              0=
-x31e
-> > +                     MX93_PAD_GPIO_IO20__SAI3_RX_DATA00              0=
-x31e
-> > +             >;
-> > +     };
-> > +
-> >       pinctrl_usdhc2_gpio: usdhc2gpiogrp {
-> >               fsl,pins =3D <
-> >                       MX93_PAD_SD2_CD_B__GPIO3_IO00           0x31e
-> > --
-> > 2.34.1
-> >
->
+RnJvbTogTWFyZWsgVmFzdXQgPG1hcmV4QGRlbnguZGU+DQpTZW50OiBXZWRuZXNkYXksIE9jdG9i
+ZXIgMTYsIDIwMjQgMTI6NDUgQU0NCj4gQmluZGluZ3MgZG8gbm90IGFsbG93IGFkZHJlc3Mvc2l6
+ZS1jZWxscyBpbiBHUElPIGtleXMgYW5kIHRoZSBHUElPIGtleXMNCj4gaXMgbm90IGEgYnVzLCBz
+ZWUgZHRic19jaGVjayB3YXJuaW5nOg0KPiANCj4gIg0KPiBhcmNoL2FybS9ib290L2R0cy9ueHAv
+aW14L2lteDZkbC1kaGNvbS1wZGsyLmR0YjogZ3Bpby1rZXlzOiAnI2FkZHJlc3MtY2VsbHMnLCAn
+I3NpemUtDQo+IGNlbGxzJyBkbyBub3QgbWF0Y2ggYW55IG9mIHRoZSByZWdleGVzOg0KPiAnXihi
+dXR0b258ZXZlbnR8a2V5fHN3aXRjaHwoYnV0dG9ufGV2ZW50fGtleXxzd2l0Y2gpLVthLXowLTkt
+XSt8W2EtejAtOS1dKy0NCj4gKGJ1dHRvbnxldmVudHxrZXl8c3dpdGNoKSkkJywgJ3BpbmN0cmwt
+WzAtOV0rJw0KPiAiDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBNYXJlayBWYXN1dCA8bWFyZXhAZGVu
+eC5kZT4NCj4gLS0tDQo+IENjOiBDaHJpc3RvcGggTmllZGVybWFpZXIgPGNuaWVkZXJtYWllckBk
+aC1lbGVjdHJvbmljcy5jb20+DQo+IENjOiBDb25vciBEb29sZXkgPGNvbm9yK2R0QGtlcm5lbC5v
+cmc+DQo+IENjOiBGYWJpbyBFc3RldmFtIDxmZXN0ZXZhbUBnbWFpbC5jb20+DQo+IENjOiBLcnp5
+c3p0b2YgS296bG93c2tpIDxrcnprK2R0QGtlcm5lbC5vcmc+DQo+IENjOiBQZW5ndXRyb25peCBL
+ZXJuZWwgVGVhbSA8a2VybmVsQHBlbmd1dHJvbml4LmRlPg0KPiBDYzogUm9iIEhlcnJpbmcgPHJv
+YmhAa2VybmVsLm9yZz4NCj4gQ2M6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5k
+ZT4NCj4gQ2M6IFNoYXduIEd1byA8c2hhd25ndW9Aa2VybmVsLm9yZz4NCj4gQ2M6IGRldmljZXRy
+ZWVAdmdlci5rZXJuZWwub3JnDQo+IENjOiBpbXhAbGlzdHMubGludXguZGV2DQo+IENjOiBrZXJu
+ZWxAZGgtZWxlY3Ryb25pY3MuY29tDQo+IENjOiBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJh
+ZGVhZC5vcmcNCj4gLS0tDQo+ICBhcmNoL2FybS9ib290L2R0cy9ueHAvaW14L2lteDZxZGwtZGhj
+b20tcGRrMi5kdHNpIHwgMSAtDQo+ICAxIGZpbGUgY2hhbmdlZCwgMSBkZWxldGlvbigtKQ0KPiAN
+Cj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2Jvb3QvZHRzL254cC9pbXgvaW14NnFkbC1kaGNvbS1w
+ZGsyLmR0c2kNCj4gYi9hcmNoL2FybS9ib290L2R0cy9ueHAvaW14L2lteDZxZGwtZGhjb20tcGRr
+Mi5kdHNpDQo+IGluZGV4IDYyNDhiMTI2YjU1NzguLjc3M2ZkY2ZjZDAwMTUgMTAwNjQ0DQo+IC0t
+LSBhL2FyY2gvYXJtL2Jvb3QvZHRzL254cC9pbXgvaW14NnFkbC1kaGNvbS1wZGsyLmR0c2kNCj4g
+KysrIGIvYXJjaC9hcm0vYm9vdC9kdHMvbnhwL2lteC9pbXg2cWRsLWRoY29tLXBkazIuZHRzaQ0K
+PiBAQCAtNTYsNyArNTYsNiBAQCBsY2RfZGlzcGxheV9vdXQ6IGVuZHBvaW50IHsNCj4gICAgICAg
+ICB9Ow0KPiANCj4gICAgICAgICBncGlvLWtleXMgew0KPiAtICAgICAgICAgICAgICAgI3NpemUt
+Y2VsbHMgPSA8MD47DQo+ICAgICAgICAgICAgICAgICBjb21wYXRpYmxlID0gImdwaW8ta2V5cyI7
+DQo+IA0KPiAgICAgICAgICAgICAgICAgYnV0dG9uLTAgew0KDQpSZXZpZXdlZC1ieTogQ2hyaXN0
+b3BoIE5pZWRlcm1haWVyIDxjbmllZGVybWFpZXJAZGgtZWxlY3Ryb25pY3MuY29tPg0K
