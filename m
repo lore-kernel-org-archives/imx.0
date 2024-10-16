@@ -1,47 +1,42 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8401F1B218C;
-	Wed, 16 Oct 2024 07:29:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DEEF433CE
+	for <imx@lists.linux.dev>; Wed, 16 Oct 2024 07:31:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729063775; cv=none; b=aEmwfO/2xD7QeA9jX/O3Ff7z+KNbwpXPhkWpO3k2SaXQDowdciQ+c4iSN1V1OdwZ9c1cSmpt77vSy298Nq6NKgbsX+ciGA2VOGgqT+UGVP0bMOn+1orjPF5SOMiNqsTpxsjzoLDiBITRQLJYFUs8kRkFtGel13JiDTZyIeNws6U=
+	t=1729063918; cv=none; b=PyEp6wkXPMwfqpmBhmMERVFVSicQbb9lv1j+wyL/vZec5sLwPJN9PLbPOmdHUHCgwv+YJnsHkIj3NBqT5EKjnrxFBus6OT27KxV/LBL0EqHb3Wum6PFOX8qx/fMkkZnCh5Y88ALWgtvsjaaOvnwXqthI9hei7xiZ5QC8jAn6wiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729063775; c=relaxed/simple;
-	bh=oyVzPIXWh8SgdGYhhreMtS6eYl9vpvKp3W4abajSFNM=;
+	s=arc-20240116; t=1729063918; c=relaxed/simple;
+	bh=1VcKXLqcRWYjptJfOGs0sR3n+z23n4N9252C2R6GmB4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZluyWsNofpRHuDMcjBE9cs/8Xhme6SfsLvV+w+MARSejgDTHC6m889HwTN3hKOjb/5+nbZSmQ8LRa71ECSNZJ0GTF/n4JmrHbDJ1sAXSF2TQadqxOfMD5OTknh/3CvfrYHwPPTJwWRUfQJSlkt1grEel3VYCfqHrKmdtA2gxHM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WCajMOzJ; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=g++q3Fu7y27ufTah0hI9ERW2fPwlTM4Fr69OgmHPP7pVEgq7eOYZrI4SE1tkknatHRR8s/Js74RPtOZt3ffgqeBFrtkS5nuyUMwtSuNwcNS1Q9tv9qkUmFk8iRmsXgBGEtOGk1S4LqbjvGK7yZICXhG02mZxqscMQ6hw7KYOG2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=klu0LFE/; arc=none smtp.client-ip=220.197.32.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WCajMOzJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 786DDC4CEC5;
-	Wed, 16 Oct 2024 07:29:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729063775;
-	bh=oyVzPIXWh8SgdGYhhreMtS6eYl9vpvKp3W4abajSFNM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WCajMOzJ5QkaGdE00N+57EHtenrZH62UzIrz+faKKQeXbgc+P3/jr+O8TSYkNMJT2
-	 R1uQa+XGPMhByFtVyS93U6NHUqHPWdwn9H+/XA2OGXcmT0ApWvTAftOknkvBhjfQne
-	 C8UGvVlEf0COyvCcC0MvxVVPRv6S3m8Ydw8k2OPkohVJuD4lw7MeCqcbT3DIfKWA4e
-	 C7avxFd1Q+hIYO5M/GX7iKtkZVWEVYboWtOEnb/YmWxVeItdldNhi/UvbtibzJiIiX
-	 osiiCFubzdWIv7RAbY86oxffRW3ir9zX5rEefcsHixkDcWzuQ/wMwksbB9Zb0ZjFRu
-	 DNTBbn0Vg6f9w==
-Date: Wed, 16 Oct 2024 08:29:29 +0100
-From: Simon Horman <horms@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, vladimir.oltean@nxp.com,
-	claudiu.manoil@nxp.com, xiaoning.wang@nxp.com, Frank.Li@nxp.com,
-	christophe.leroy@csgroup.eu, linux@armlinux.org.uk,
-	bhelgaas@google.com, imx@lists.linux.dev, netdev@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="klu0LFE/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=ZIq7bLLD7CDFOySZChcNUEzc38kxhtLroVQls+zB/io=;
+	b=klu0LFE/UmhM5nW2BX8vP48bh2I6ObOj2DqUtTmBDSMWmJsJu+njZKAuRVIPJG
+	DgTuT1AL+iPCWDY0ge2ezZn3H9voP+1xFKNNCO+fe09zuBuPWCn/TnFSivviC4N5
+	oq/omkMo1HdO7X4oBCPEioi+ipGmvY/a9zVX/FkYLjleQ=
+Received: from dragon (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgCXLX6Uaw9nFv8YAA--.378S3;
+	Wed, 16 Oct 2024 15:30:30 +0800 (CST)
+Date: Wed, 16 Oct 2024 15:30:28 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Tim Harvey <tharvey@gateworks.com>
+Cc: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Li Yang <leoyang.li@nxp.com>,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH v2 net-next 10/13] net: enetc: extract
- enetc_int_vector_init/destroy() from enetc_alloc_msix()
-Message-ID: <20241016072929.GD2162@kernel.org>
-References: <20241015125841.1075560-1-wei.fang@nxp.com>
- <20241015125841.1075560-11-wei.fang@nxp.com>
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] arm64: dts: imx8mm-venice-*: add RTC aliases
+Message-ID: <Zw9rlO/x+spy3NS8@dragon>
+References: <20240909221501.806515-1-tharvey@gateworks.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,80 +45,19 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241015125841.1075560-11-wei.fang@nxp.com>
+In-Reply-To: <20240909221501.806515-1-tharvey@gateworks.com>
+X-CM-TRANSID:Mc8vCgCXLX6Uaw9nFv8YAA--.378S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUsBMNUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAhJ6ZWcPZBUaEQAAsd
 
-On Tue, Oct 15, 2024 at 08:58:38PM +0800, Wei Fang wrote:
-> From: Clark Wang <xiaoning.wang@nxp.com>
+On Mon, Sep 09, 2024 at 03:15:01PM -0700, Tim Harvey wrote:
+> Add aliases for the RTCs on the Gateworks Venice boards and on the imx8m
+> SoC. This ensures that the primary RTC is always the one on-board
+> provided by the Gateworks System Controller (GSC) which is battery
+> backed as opposed to the one in the IMX8M.
 > 
-> Extract enetc_int_vector_init() and enetc_int_vector_destroy() from
-> enetc_alloc_msix() so that the code is more concise and readable.
-> 
-> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
-> v2 changes:
-> This patch is separated from v1 patch 9 ("net: enetc: optimize the
-> allocation of tx_bdr"). Separate enetc_int_vector_init() from the
-> original patch. In addition, add new help function
-> enetc_int_vector_destroy().
-> ---
->  drivers/net/ethernet/freescale/enetc/enetc.c | 174 +++++++++----------
->  1 file changed, 87 insertions(+), 87 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-> index 032d8eadd003..d36af3f8ba31 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> @@ -2965,6 +2965,87 @@ int enetc_ioctl(struct net_device *ndev, struct ifreq *rq, int cmd)
->  }
->  EXPORT_SYMBOL_GPL(enetc_ioctl);
->  
-> +static int enetc_int_vector_init(struct enetc_ndev_priv *priv, int i,
-> +				 int v_tx_rings)
-> +{
-> +	struct enetc_int_vector *v __free(kfree);
-> +	struct enetc_bdr *bdr;
-> +	int j, err;
-> +
-> +	v = kzalloc(struct_size(v, tx_ring, v_tx_rings), GFP_KERNEL);
-> +	if (!v)
-> +		return -ENOMEM;
+> Signed-off-by: Tim Harvey <tharvey@gateworks.com>
 
-...
+Applied, thanks!
 
->  int enetc_alloc_msix(struct enetc_ndev_priv *priv)
->  {
->  	struct pci_dev *pdev = priv->si->pdev;
-
-...
-
-> @@ -2986,64 +3067,9 @@ int enetc_alloc_msix(struct enetc_ndev_priv *priv)
->  	/* # of tx rings per int vector */
->  	v_tx_rings = priv->num_tx_rings / priv->bdr_int_num;
->  
-> -	for (i = 0; i < priv->bdr_int_num; i++) {
-> -		struct enetc_int_vector *v;
-> -		struct enetc_bdr *bdr;
-> -		int j;
-> -
-> -		v = kzalloc(struct_size(v, tx_ring, v_tx_rings), GFP_KERNEL);
-> -		if (!v) {
-> -			err = -ENOMEM;
-> +	for (i = 0; i < priv->bdr_int_num; i++)
-> +		if (enetc_int_vector_init(priv, i, v_tx_rings))
->  			goto fail;
-
-Hi Wei Fang,
-
-It looks like, if we reach this error handling during the first iteration
-of the for loop then err, which will be return value returned by the function,
-is ininitialised. Perhaps this would be better expressed as follows?
-(Completely untested!)
-
-		err = enetc_int_vector_init(priv, i, v_tx_rings);
-		if (err)
-			goto fail;
-
-Flagged by Smatch.
-
-...
