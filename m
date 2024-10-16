@@ -1,61 +1,290 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4602B41C69
-	for <imx@lists.linux.dev>; Wed, 16 Oct 2024 06:43:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1EC4409
+	for <imx@lists.linux.dev>; Wed, 16 Oct 2024 06:59:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729061039; cv=none; b=U70TMWs0vkLxzODnpqr2JQu74rZYu9QpMkBHkSjWZt8AsVkyId4tl7QapWz/9hjeAKlvPMZNDaQ1v2Q1vDiP3cwapogsEi+lebx/ZQh7MIWl3oGtHI73eRfQc5IWOUG7LhLKhdDFZ6xJyDK2XY/5/MTlKGNAFcthwDjcxEKwqZM=
+	t=1729061944; cv=none; b=fPpyPedDwwYlprWlk2ZmsfJMmU85+h/aJIU4HOAUwBWK6GVj1Jzr61BpkIvo/7lAxoxQbKuNhMAVB6+aZdwKI+oyfEH86UYXlskezCy3OanHg7L3EOtVnFkLkIAtGt1tL5iGkdRiA4uzBb7RavGVrEobfa/IIbMNE0YArXE2dh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729061039; c=relaxed/simple;
-	bh=FVSU2WBNfgz9zSK+jKgIZGH55UJ7KG8hdJ30EJWrr7k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cU7iHXVovgkUp0Y8w5Q4iZhEicp4aq/HCr0WrMHUULTbCFJSMw2q47BalrgwatO7EKdMDtpKFriri7egixNMxImgjpKcla4M6PTBUyxhsjIIbqEnVS2fY0SBM3Jt3RtBiM5TwXe/VPWlak0mmH35oiNJ4L1NPN7cvG9uJ2YS7HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=Cq8Ooz/u; arc=none smtp.client-ip=1.95.21.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1729061944; c=relaxed/simple;
+	bh=5tTt0CYVrlFoN/zPjxeeLXJTuGrDNok35bzaWO14+Cw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TC/7iGMqQHrcarKLoWyGn5Di9dn1liPAZKfsUVGQgWqDR3FqM+JDKCGEbKkrNs5zKkqcQQpPl2LRO9nWtWgldhlCJZDgSGaQHM9IJ5UVY5Wai7jftenR4W47Li1vBtDWX8vwYeu2dmdlT+ga0dCvNvLNJt/2GjRdUbfxouiv5gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=iODSIOfr; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=i1p38VoJ reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="Cq8Ooz/u"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=6M75V2q+Tktv1OJM9mVkAGxnLytVuUPATxTb88TgW5A=;
-	b=Cq8Ooz/uoD8SQSMQmF+dtrlGvK1vgCkUlO128CgyHR5UhctrSnz1DQw/MhQdAM
-	j1TwOnOQxpcFw7HiRRSQRkjwGWmLF/f90vttqdI7BlgA/AGFuMjos1805CbYrRu4
-	TQBCLMOGS2GlssqCWv+sAJPH1wSeXFf34mOhlVimpY8nM=
-Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgCHlQWUYA9nc0kYAA--.375S3;
-	Wed, 16 Oct 2024 14:43:33 +0800 (CST)
-Date: Wed, 16 Oct 2024 14:43:31 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: peng.fan@nxp.com, shawnguo@kernel.org, conor+dt@kernel.org,
-	devicetree@vger.kernel.org, festevam@gmail.com, imx@lists.linux.dev,
-	kernel@pengutronix.de, krzk+dt@kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	robh@kernel.org, s.hauer@pengutronix.de
-Subject: Re: [PATCH v2 1/1] arm64: dts: imx93-9x9-qsb: add I3C overlay file
-Message-ID: <Zw9gk2jGnq4fu/+G@dragon>
-References: <20240906201501.2249242-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="iODSIOfr";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="i1p38VoJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1729061940; x=1760597940;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=h3FiAS2c8YizfFhld4Gkb8iu9XdO1cCizUpi3AL9Jj0=;
+  b=iODSIOfr/swbEOI9u8XBgd8wtWEdkpExgVsXzAeB1AxLguKH0PB793zp
+   N3goVK4Xdx/2XlLtGItnuq6VKDr1LXXLRojsNBQOMLvDAHX8L/Jnqoeie
+   IhWu68+SqhcnPQcQK599o0xs1D+WiTuM40yaojBXLfTGWB1Mi1OG8S8Jj
+   VXYLem3LMEpdVppuKq2rI/XtuRMczpRVtssU5gHTfSmFhdb9KzD2En/PC
+   1jbs4Q0m3q1HsshfJOmXjtl99mY7fmknbUEuMy7JBceWFsl6FpOQX0o2Y
+   zJ5lDqp8Ix8ZafBWq6ihvT/hsMKbH8n3yclWdK0TrM1rxJpGfsf00I4mU
+   g==;
+X-CSE-ConnectionGUID: Rg86gjIzTH+50giFFivXVQ==
+X-CSE-MsgGUID: H1giANbDTES1H3Icy75oUQ==
+X-IronPort-AV: E=Sophos;i="6.11,207,1725314400"; 
+   d="scan'208";a="39483479"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 16 Oct 2024 08:58:58 +0200
+X-CheckPoint: {670F6431-33-BD84CFBF-E7C15A70}
+X-MAIL-CPID: 170C6D7412C83B37F70B93F383F63A79_3
+X-Control-Analysis: str=0001.0A682F19.670F6432.0044,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B2EB216FAFC;
+	Wed, 16 Oct 2024 08:58:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1729061933;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=h3FiAS2c8YizfFhld4Gkb8iu9XdO1cCizUpi3AL9Jj0=;
+	b=i1p38VoJ/6fn8+qB2vEr6ZIOwxGUKXApLYF2RNUVZSGTiT2GVUSIKjakXaa6InFGcTpyrF
+	CbXoU3KO6mLiYl2vy6k6OjrIzPheOE565QltyIRibok8Gx+DGGm5+ovFik/qMXAvZjWAlN
+	OOJVVfIL5+hV7vpgxubsUFCTanKL7FI+yBlM1EtJviR7aFJpYNUjTUJFDxD8gCnE65MEis
+	OjI3mGFAGIBYYSNzP94Z0IZtXygviXpZgvhg6aeLzlsuC6xo2i4xA0SaaLZ0Av8Y0pyyg6
+	op9R30679lpT+cu8Hxtcv7Bdnsfoy283dmZlYKCs6p+n1BDJUuh+4U0oeSS+qA==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: devicetree@vger.kernel.org, Marek Vasut <marex@denx.de>
+Cc: Marek Vasut <marex@denx.de>, Conor Dooley <conor+dt@kernel.org>, Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, Jacky Bai <ping.bai@nxp.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, imx@lists.linux.dev, kernel@dh-electronics.com, linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: pinctrl: fsl, imx6ul-pinctrl: Convert i.MX35/5x/6 to YAML
+Date: Wed, 16 Oct 2024 08:58:51 +0200
+Message-ID: <2205972.irdbgypaU6@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20241015232107.100771-1-marex@denx.de>
+References: <20241015232107.100771-1-marex@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240906201501.2249242-1-Frank.Li@nxp.com>
-X-CM-TRANSID:Mc8vCgCHlQWUYA9nc0kYAA--.375S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVpVbDUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBBB6ZWcPKkWcfwAAsv
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Sep 06, 2024 at 04:15:01PM -0400, Frank Li wrote:
-> Add an overlay file to enable I3C support on the i.MX93, replacing I2C1
-> with I3C. I3C is compatible with I2C, but it has not yet been enabled in
-> arm64's defconfig. This overlay allows users to conveniently utilize I3C
-> on the imx93-9x9-qsb platform until I3C and its driver become more mature
-> and ready for full switch to I3C.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Hi Marek,
 
-Applied, thanks!
+thanks for the conversion.
+
+Am Mittwoch, 16. Oktober 2024, 01:20:51 CEST schrieb Marek Vasut:
+> The IOMUXC controller description is almost identical on i.MX35/5x/6 SoCs,
+> except for the configuration bits which differ across SoCs. Rename the
+> fsl,imx6ul-pinctrl.yaml to fsl,imx35-pinctrl.yaml, fill in compatible
+> strings for the other SoCs and fill in the various bits into desciption.
+> This way, i.MX35/5x/6 series SoCs can all be converted to YAML DT. Remove
+> the old text DT bindings description.
+>=20
+> Signed-off-by: Marek Vasut <marex@denx.de>
+> ---
+> Cc: Conor Dooley <conor+dt@kernel.org>
+> Cc: Dong Aisheng <aisheng.dong@nxp.com>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: Jacky Bai <ping.bai@nxp.com>
+> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Rob Herring <robh@kernel.org>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: devicetree@vger.kernel.org
+> Cc: imx@lists.linux.dev
+> Cc: kernel@dh-electronics.com
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-gpio@vger.kernel.org
+> ---
+>  .../bindings/pinctrl/fsl,imx35-pinctrl.txt    | 33 --------
+>  ...ul-pinctrl.yaml =3D> fsl,imx35-pinctrl.yaml} | 79 +++++++++++++++++--
+>  .../bindings/pinctrl/fsl,imx50-pinctrl.txt    | 32 --------
+>  .../bindings/pinctrl/fsl,imx51-pinctrl.txt    | 32 --------
+>  .../bindings/pinctrl/fsl,imx53-pinctrl.txt    | 32 --------
+>  .../bindings/pinctrl/fsl,imx6dl-pinctrl.txt   | 38 ---------
+>  .../bindings/pinctrl/fsl,imx6q-pinctrl.txt    | 38 ---------
+>  .../bindings/pinctrl/fsl,imx6sl-pinctrl.txt   | 39 ---------
+>  .../bindings/pinctrl/fsl,imx6sll-pinctrl.txt  | 40 ----------
+>  .../bindings/pinctrl/fsl,imx6sx-pinctrl.txt   | 36 ---------
+>  10 files changed, 72 insertions(+), 327 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx35-p=
+inctrl.txt
+>  rename Documentation/devicetree/bindings/pinctrl/{fsl,imx6ul-pinctrl.yam=
+l =3D> fsl,imx35-pinctrl.yaml} (51%)
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx50-p=
+inctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx51-p=
+inctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx53-p=
+inctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6dl-=
+pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6q-p=
+inctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6sl-=
+pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6sll=
+=2Dpinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6sx-=
+pinctrl.txt
+>=20
+> [snip]
+> diff --git a/Documentation/devicetree/bindings/pinctrl/fsl,imx6ul-pinctrl=
+=2Eyaml b/Documentation/devicetree/bindings/pinctrl/fsl,imx35-pinctrl.yaml
+> similarity index 51%
+> rename from Documentation/devicetree/bindings/pinctrl/fsl,imx6ul-pinctrl.=
+yaml
+> rename to Documentation/devicetree/bindings/pinctrl/fsl,imx35-pinctrl.yaml
+> index 906b264a9e3cd..780d5fe0137e5 100644
+> --- a/Documentation/devicetree/bindings/pinctrl/fsl,imx6ul-pinctrl.yaml
+> +++ b/Documentation/devicetree/bindings/pinctrl/fsl,imx35-pinctrl.yaml
+> @@ -1,10 +1,10 @@
+>  # SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/pinctrl/fsl,imx6ul-pinctrl.yaml#
+> +$id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+> -title: Freescale IMX6UL IOMUX Controller
+> +title: Freescale IMX35/IMX5x/IMX6 IOMUX Controller
+> =20
+>  maintainers:
+>    - Dong Aisheng <aisheng.dong@nxp.com>
+> @@ -19,6 +19,15 @@ allOf:
+>  properties:
+>    compatible:
+>      enum:
+> +      - fsl,imx35-iomuxc
+> +      - fsl,imx50-iomuxc
+> +      - fsl,imx51-iomuxc
+> +      - fsl,imx53-iomuxc
+
+imx50.dtsi is using
+> "fsl,imx50-iomuxc", "fsl,imx53-iomuxc";
+
+So either the .dtsi or this schema needs to be adjusted.
+
+> +      - fsl,imx6dl-iomuxc
+> +      - fsl,imx6q-iomuxc
+> +      - fsl,imx6sl-iomuxc
+> +      - fsl,imx6sll-iomuxc
+> +      - fsl,imx6sx-iomuxc
+>        - fsl,imx6ul-iomuxc
+>        - fsl,imx6ull-iomuxc-snvs
+> =20
+> @@ -39,9 +48,9 @@ patternProperties:
+>            each entry consists of 6 integers and represents the mux and c=
+onfig
+>            setting for one pin. The first 5 integers <mux_reg conf_reg in=
+put_reg
+>            mux_val input_val> are specified using a PIN_FUNC_ID macro, wh=
+ich can
+> -          be found in <arch/arm/boot/dts/imx6ul-pinfunc.h>. The last int=
+eger
+> +          be found in <arch/arm/boot/dts/nxp/imx/imx*-pinfunc.h>. The la=
+st integer
+>            CONFIG is the pad setting value like pull-up on this pin. Plea=
+se
+> -          refer to i.MX6UL Reference Manual for detailed CONFIG settings.
+> +          refer to matching i.MX Reference Manual for detailed CONFIG se=
+ttings.
+>          $ref: /schemas/types.yaml#/definitions/uint32-matrix
+>          items:
+>            items:
+> @@ -56,7 +65,41 @@ patternProperties:
+>              - description: |
+>                  "input_val" indicates the select input value to be appli=
+ed.
+>              - description: |
+> -                "pad_setting" indicates the pad configuration value to b=
+e applied:
+> +                "pad_setting" indicates the pad configuration value to b=
+e applied.
+> +                Common i.MX35
+> +                  PAD_CTL_DRIVE_VOLAGAGE_18       (1 << 13)
+> +                  PAD_CTL_DRIVE_VOLAGAGE_33       (0 << 13)
+> +                  PAD_CTL_HYS                     (1 << 8)
+> +                  PAD_CTL_PKE                     (1 << 7)
+> +                  PAD_CTL_PUE                     (1 << 6)
+> +                  PAD_CTL_PUS_100K_DOWN           (0 << 4)
+> +                  PAD_CTL_PUS_47K_UP              (1 << 4)
+> +                  PAD_CTL_PUS_100K_UP             (2 << 4)
+> +                  PAD_CTL_PUS_22K_UP              (3 << 4)
+> +                  PAD_CTL_ODE_CMOS                (0 << 3)
+> +                  PAD_CTL_ODE_OPENDRAIN           (1 << 3)
+> +                  PAD_CTL_DSE_NOMINAL             (0 << 1)
+> +                  PAD_CTL_DSE_HIGH                (1 << 1)
+> +                  PAD_CTL_DSE_MAX                 (2 << 1)
+> +                  PAD_CTL_SRE_FAST                (1 << 0)
+> +                  PAD_CTL_SRE_SLOW                (0 << 0)
+> +                Common i.MX50/i.MX51/i.MX53 bits
+> +                  PAD_CTL_HVE                     (1 << 13)
+> +                  PAD_CTL_HYS                     (1 << 8)
+> +                  PAD_CTL_PKE                     (1 << 7)
+> +                  PAD_CTL_PUE                     (1 << 6)
+> +                  PAD_CTL_PUS_100K_DOWN           (0 << 4)
+> +                  PAD_CTL_PUS_47K_UP              (1 << 4)
+> +                  PAD_CTL_PUS_100K_UP             (2 << 4)
+> +                  PAD_CTL_PUS_22K_UP              (3 << 4)
+> +                  PAD_CTL_ODE                     (1 << 3)
+> +                  PAD_CTL_DSE_LOW                 (0 << 1)
+> +                  PAD_CTL_DSE_MED                 (1 << 1)
+> +                  PAD_CTL_DSE_HIGH                (2 << 1)
+> +                  PAD_CTL_DSE_MAX                 (3 << 1)
+> +                  PAD_CTL_SRE_FAST                (1 << 0)
+> +                  PAD_CTL_SRE_SLOW                (0 << 0)
+> +                Common i.MX6 bits
+>                    PAD_CTL_HYS                     (1 << 16)
+>                    PAD_CTL_PUS_100K_DOWN           (0 << 14)
+>                    PAD_CTL_PUS_47K_UP              (1 << 14)
+> @@ -69,6 +112,11 @@ patternProperties:
+>                    PAD_CTL_SPEED_MED               (1 << 6)
+>                    PAD_CTL_SPEED_HIGH              (3 << 6)
+>                    PAD_CTL_DSE_DISABLE             (0 << 3)
+> +                  PAD_CTL_SRE_FAST                (1 << 0)
+> +                  PAD_CTL_SRE_SLOW                (0 << 0)
+> +                i.MX6SL/MX6SLL specific bits
+> +                  PAD_CTL_LVE                     (1 << 22) (MX6SL/SLL o=
+nly)
+
+Is this comment 'MX6SL/SLL only' really needed? This bit is already in the
+i.MX6SL/MX6SLL only section.
+
+Despite that, this looks good.
+Best regards,
+Alexander
+
+> +                i.MX6SLL/i.MX6SX/i.MX6UL/i.MX6ULL specific bits
+>                    PAD_CTL_DSE_260ohm              (1 << 3)
+>                    PAD_CTL_DSE_130ohm              (2 << 3)
+>                    PAD_CTL_DSE_87ohm               (3 << 3)
+> @@ -76,8 +124,14 @@ patternProperties:
+>                    PAD_CTL_DSE_52ohm               (5 << 3)
+>                    PAD_CTL_DSE_43ohm               (6 << 3)
+>                    PAD_CTL_DSE_37ohm               (7 << 3)
+> -                  PAD_CTL_SRE_FAST                (1 << 0)
+> -                  PAD_CTL_SRE_SLOW                (0 << 0)
+> +                i.MX6DL/i.MX6Q/i.MX6SL specific bits
+> +                  PAD_CTL_DSE_240ohm              (1 << 3)
+> +                  PAD_CTL_DSE_120ohm              (2 << 3)
+> +                  PAD_CTL_DSE_80ohm               (3 << 3)
+> +                  PAD_CTL_DSE_60ohm               (4 << 3)
+> +                  PAD_CTL_DSE_48ohm               (5 << 3)
+> +                  PAD_CTL_DSE_40ohm               (6 << 3)
+> +                  PAD_CTL_DSE_34ohm               (7 << 3)
+> =20
+>      required:
+>        - fsl,pins
+> [snip]
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
