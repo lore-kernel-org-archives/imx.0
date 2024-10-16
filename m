@@ -1,198 +1,176 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2057.outbound.protection.outlook.com [40.107.249.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE15C207200
-	for <imx@lists.linux.dev>; Wed, 16 Oct 2024 11:04:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729076652; cv=none; b=dDdpjQpWG89ZM8xyqm3Y5/aRFlaVPN2zd8dtfq/9fqSp78XqwMBkPRNBqRZtV8czxEMUmFg31ETzTQSc2P5gHMilapAOO24k8ZOVBjT8wZZPA67Zf8JkhxCF1IfdBrvJU0uSsCrMUlAd8HJUEDgsBDBHuF884dhJaXnJ44Tabbc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729076652; c=relaxed/simple;
-	bh=j7uqkslzjH6CNz0CR36nqNmHhVeQAxFmnElgWhQTsrY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=buX2ddmtpyzOwmRbMxzN7eIotT5jEnPeAaUPJ1YEQOI8V/X2dJykXIvMicUnhuf5pg5Vvd0tPNXYtuGawiGXyfUBth/DdOVrTYowf03VyXlIjXFo56pFDx7dqeL46iPNThdXhjJiDNrcWtub3r9NLvzawRY/c6ZrkNs8P6LsfZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=e8WH66Tm; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=XI2MQPm+ reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31575206953
+	for <imx@lists.linux.dev>; Wed, 16 Oct 2024 11:47:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729079223; cv=fail; b=H1MkrZNgt8GE1gSyGADiaockXYWUwVKFoVwNNYTQC5U5W50G6TrFlbiIBFdztN0WM6qUm+jN2Ov0KbkTacaS4z+zWT7mwQ++/Nh2zhszG327M/VNPe9SPi5VVU70uGWXIodfTcK3TXuQ5WFpPLznoSCtFaW/kiKZTi7iNw8ESQo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729079223; c=relaxed/simple;
+	bh=EnfrSyuiv1+GG6ypjryv9D0vYaGdR3LVJ9rinkIlCO4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=P34azWv5qPLKA1LMldsfsFXXdtKmkV731d3P9zirzrpx5H5juuBHVRW78WPQGf+lVwhyyDKi0Bye43BmVNK8qMoHQt9N9OfvW7OXOCs/Ud6IbxDJ4wjJ/jgIgxLvjQfltzb7ynzkHbyNlwSFT8m6SnqJbEfpb6e+UAHs1+YdN5U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jnpxjyQ6; arc=fail smtp.client-ip=40.107.249.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="e8WH66Tm";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="XI2MQPm+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1729076649; x=1760612649;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=UQnSqYqpBfUV+6/cvpHKfQx6TgwRy+1JDtpQMvdUWAY=;
-  b=e8WH66TmofbeTntJ5onHovsqJLOEu0vQu3OBsaJ210n76uIggIsRiCGI
-   4Vm0mHRjH1en0Z5No9zh3LGh8eKJ4yzYBqVa5PHp3xh7OreBpn9ipbJHO
-   vNOUy74Op6gULUBXNgyxwI4dwDXqAwu+943qAeJ52vDbEEAI8HeTogCA/
-   e9kRjPu8XTsID/d6KS/eB+vo0Cvz+7FOpRN6JDUe3dnDm7b8IfnngPted
-   k0X34tFXhyTAs/ZUkCjebDki1KL0M3ua7Gg42P9vpdMUc+HCLRXXZqDa6
-   IIPovpa3AjbUlMCL8B+mVbYGoJ8Hdh6bog4JImGSzw/xJ63x+IXMEfy/q
-   A==;
-X-CSE-ConnectionGUID: 4/UoR85oRzeG0PblB3UK6Q==
-X-CSE-MsgGUID: YU0fFkq7QwqVGtD9L/F5uw==
-X-IronPort-AV: E=Sophos;i="6.11,207,1725314400"; 
-   d="scan'208";a="39492910"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 16 Oct 2024 13:04:00 +0200
-X-CheckPoint: {670F9DA0-E-21611FC3-DAD22B0C}
-X-MAIL-CPID: 7354DE9C6207C2B376A359CA9647EA1D_4
-X-Control-Analysis: str=0001.0A682F1E.670F9DA0.00D7,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3D9C116853D;
-	Wed, 16 Oct 2024 13:03:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1729076635;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=UQnSqYqpBfUV+6/cvpHKfQx6TgwRy+1JDtpQMvdUWAY=;
-	b=XI2MQPm+Mb/NIn/vSlonjdjH9uLgzitytNffKH4fG82nU/9taJXmCN4sJ/t2FzcSPgaNP4
-	XRgidS1bmOo2sLA+p8MAGqjA6j9wAOU+rM1ufpkxT5Fi3kpMZBlICZToZPblxy5kISnejT
-	ltUEKOB2f+q3JYvaP1ebe561GvmJyVrygQOXO9swUbWkzQ34dGqAXse3nJRhBefmPya+Re
-	oV3q2cbZPzVXOST2dHeS/hT7WgCLUsLAyhVsnV4hjbpAykUth8RHN/FBPVz+e4/02ga163
-	qA6ialNJio94VChL6mUXQGKZ+GFHW72i8KIq3tt8M47szxmlG/XhFeFCk41BhQ==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: vkoul@kernel.org, kishon@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, gregkh@linuxfoundation.org, peter.chen@kernel.org, herve.codina@bootlin.com, linux-phy@lists.infradead.org, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-usb@vger.kernel.org, jun.li@nxp.com
-Subject: Re: [PATCH v8 2/3] arm64: dts: imx95: add usb3 related nodes
-Date: Wed, 16 Oct 2024 13:03:53 +0200
-Message-ID: <3252989.5fSG56mABF@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20241016104140.rjmszgplmql4hwrs@hippo>
-References: <20241015111018.2388913-1-xu.yang_2@nxp.com> <22464382.EfDdHjke4D@steina-w> <20241016104140.rjmszgplmql4hwrs@hippo>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jnpxjyQ6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AsnZemEWVsC2OFNqGW3hv5sd5CnUISzhk4zWpTQkjGMXb9N3jsOTO1DAvPkBkPiSVmbL4f6/qOb+P/aWTvw1B1UDdIfwmsItKWAM2/enYqvpL/Q+Fllt03eDgvPyODXFOVh58QdoP2AkmicnndD8Dw1/b7wCA8nw2Wf77Fm8x3wBMYDVPS7E8ofQdznSEy++EP2bFQyHp+Zji422twSon4/gf5QvAzu5eziO8HhabZkD6juB0xx/fpSyRTB6fqOSZGGIiSBFV5bOUFUC8uSOeZUYPfSwH4OCsYkoZsZ0lmZuNH0aTTeEiDyubB2S2t2TgV5O/Neuj9VfV5TeduWzvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EnfrSyuiv1+GG6ypjryv9D0vYaGdR3LVJ9rinkIlCO4=;
+ b=JlhViMfDpwqMgcj158k6gUKd/TwNvVyXUyYvSRegk1vDxGWh3oWzHTKou8ItniNx6eVZZ4Qk47HI+AEYwRt5oXzvm+vEogzOLNkczyPo2DLIlBEE0604i24sKJedirOJU+wOWeHeE/nTxUJBEEDsAo4osQtrxVlRlmz+9N75gdX2ROw0ssqyRH5BrQp8ak3MrSmcc+5v/dy3seFA5lzyoAM+5EAHY0fITYiYZcA8qFJPU7ff3gO/0Ilps89+WkmbIoee0rZgC0odLOyaX1g85RQOrwKWaqG1COG5kdtfpE/RrTFV9AEp4VIgWmzbcCbGy6mN5XfVby2ROOaZQkzXKA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EnfrSyuiv1+GG6ypjryv9D0vYaGdR3LVJ9rinkIlCO4=;
+ b=jnpxjyQ6AptfH+FotdW8Z3LzFt7Ta4rqHXMbTnX8mHi1I7L/sfhuFal58OAwPrqLxj+pp5JsyWyWNdC61X8twr0nq9ZbOZqeOUyIOOKrOOIVF7R9CrH3tzWaBtIr4c3HHK7UO16TG8qBw7cvYvDB+zGEhffm8pE0zZKgkpJeBU1hyZ2DrNQjjYriFZGba+jMCxO5LHU3PKJkDtvASgi18zhFQjO8HGyi6c2N9ZZFEItqUsOjb+8ckjGX4WXHg9y7sFQpM25Ntpscu6m6ytzUxUHU3scaeLPEM76xjJgqkOMj/6SH++3mGt8EF/DYthNLU3LpfWZ86KLuPtkYoTvy4Q==
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by VI1PR04MB9929.eurprd04.prod.outlook.com (2603:10a6:800:1dc::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.18; Wed, 16 Oct
+ 2024 11:46:57 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%5]) with mapi id 15.20.8048.020; Wed, 16 Oct 2024
+ 11:46:57 +0000
+From: Peng Fan <peng.fan@nxp.com>
+To: Pengfei Li <pengfei.li_1@nxp.com>, "krzk+dt@kernel.org"
+	<krzk+dt@kernel.org>, "robh@kernel.org" <robh@kernel.org>,
+	"abelvesa@kernel.org" <abelvesa@kernel.org>, "mturquette@baylibre.com"
+	<mturquette@baylibre.com>, "sboyd@kernel.org" <sboyd@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>, "shawnguo@kernel.org"
+	<shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	Jacky Bai <ping.bai@nxp.com>, Ye Li <ye.li@nxp.com>, Aisheng Dong
+	<aisheng.dong@nxp.com>, Frank Li <frank.li@nxp.com>
+CC: "kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
+	<festevam@gmail.com>, "linux-clk@vger.kernel.org"
+	<linux-clk@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v4 4/4] clk: imx: add i.MX91 clk
+Thread-Topic: [PATCH v4 4/4] clk: imx: add i.MX91 clk
+Thread-Index: AQHbHeAjm9fLRS2nnUiA8tP+KG2SAbKJRUtQ
+Date: Wed, 16 Oct 2024 11:46:57 +0000
+Message-ID:
+ <PAXPR04MB8459B770DC2356B2177FCA3488462@PAXPR04MB8459.eurprd04.prod.outlook.com>
+References: <20241014182438.732444-1-pengfei.li_1@nxp.com>
+ <20241014182438.732444-5-pengfei.li_1@nxp.com>
+In-Reply-To: <20241014182438.732444-5-pengfei.li_1@nxp.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8459:EE_|VI1PR04MB9929:EE_
+x-ms-office365-filtering-correlation-id: e575b8a3-6d30-4742-37d8-08dcedd83d06
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|376014|7416014|38070700018|921020;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?7kvsekatQzCXoi8Uox1S+390j2LI4tTaySzhio/gOLrNQ0muYQ53NwP6kw0o?=
+ =?us-ascii?Q?BPGirdPEbI8Fqqrg4No5rg4VRQnj35AGH+E3bP8882Nru3Mb1X1kfUvOAyOV?=
+ =?us-ascii?Q?ihw1IUdXor60Wpump5Lb991wyI6b5UEJ3nscYcjeMFIOHmgIUAQ8tkbRqEa2?=
+ =?us-ascii?Q?i5DlFOV2Q4skX6QVg+2PPAQwPIVz1jmQftTiSQpVM7h1QMuAVQEjkRR0I++I?=
+ =?us-ascii?Q?C6DflPkZXXsWJHTQR7xJTygag5C3Du23C9qXcbf4CpCIUB/D7gUJio/XDMl4?=
+ =?us-ascii?Q?1T1ARgy5NLUYon4KKAHNBWAQOof05jAYamrlbDOnMWZE758/utePMYCWzAGC?=
+ =?us-ascii?Q?5JQy8wX81IC1YytayDxGuIBm83ZpEVui372dlhYEk8iIrzoH9+uDGS0ON+hm?=
+ =?us-ascii?Q?nb67CiK3Avm4BzPIix3tVn+vE4rcT7cdGeEPQ53Jp6e4jak0qtQFUfsT8E/+?=
+ =?us-ascii?Q?fMRKYXIcDQqaS6ocaPUKsdXwyr40UvFSySQIdQTc+yhiWoGO2iM85xyEPczh?=
+ =?us-ascii?Q?DS//bAUu8xxnE3900DBxXDn27xiZIX9OIqh+NxyMqBuXJKvWkJVqA9//NkB3?=
+ =?us-ascii?Q?LlVWo2aE0jAOMboQZbQ6RErpxPQaVzZVf3SabDDf4wBgPrQtDv9+cCZOxDA9?=
+ =?us-ascii?Q?CgcWUODrVCfJ0rAXl0fbOBxNSyAMabdRNk8APR6JmV7L+s/EBxOGEr1NE3Ka?=
+ =?us-ascii?Q?itLF3PTl0viGvP2VJCSEdAbTXhGMDHKW2MNCnPRT5Lxshj7MoqUwuQiS/3E6?=
+ =?us-ascii?Q?bvs7uB5HnMwRqnU2avRdRWMZnIQ3z+YAfHgxxtxQhjx92+FWQNN7e+ZBzutP?=
+ =?us-ascii?Q?mF3DjVdoBxgFvKv2EalmECge1a1fTTQTwMPqXKHk2XS4Dj/ltcJ4X/030KI3?=
+ =?us-ascii?Q?IYG3UWXlzRm3EkvPmQG7JaY/0OoAORT1zrhjkrk7WbsqhCTHyMH4+30ux14+?=
+ =?us-ascii?Q?LAykMUvPDnuREz9mwzWXcbMAF9FmWCcZdvXb0DtkzAhgGWnPTxpHjJUwkQ8H?=
+ =?us-ascii?Q?bq1KaNfkPZHPg6eFnwsKfABAsd9ne4vpHBnuIXcPsMe25sl/w9SpS7mJPjE8?=
+ =?us-ascii?Q?FlG9wA4B308pm9pGRKGVENrKRqSzU7cgxvvwBFtDUe67e8kZceMM+iJk4s8Z?=
+ =?us-ascii?Q?rohZ5KaTXVERwdfHy4t+U4dJ3t6lzGcK2SJO7HCfncf8y7tJorUxVD4C9+ru?=
+ =?us-ascii?Q?vb5/afdUez7ETFs+ji5rZENZQgo1Qk2qtIGekLS6VC0AiqFtVDsAjVbA1Bft?=
+ =?us-ascii?Q?xfSUsXCvkEYjUaTra1KVJ7hsRsC6KmfIa6OVyKXcSaChz/WmamD5kMropODO?=
+ =?us-ascii?Q?oMJ9bmZ2aCNftubdZWQQIPm42NRXIFJ+WE6oqFiHp9Mmyw=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(38070700018)(921020);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?CfyIGyGPyXwrk8I1DPbvXLiy+lillezRuuqMVNZc8f8w74FALQb2dTHu+UIb?=
+ =?us-ascii?Q?xNq5T+8O1rttVkWSc1lcjFdLGgqxCNuGihMeux00s/kfGN2eZYoypmBHc9UT?=
+ =?us-ascii?Q?ngh4QWXLvihqwSWwu6rqBpKfwIWBzyX0/zmxU94XA0DQ/4/Vwq7thJ3rABmR?=
+ =?us-ascii?Q?BLDBueO/x/YFUH4IQeWWtbsiJKs//Rlf808drLJlYJnx9+QIerYlEjkSiYwy?=
+ =?us-ascii?Q?BtnfvoSsuC6qpPlTA1Gyz76OTnTAOxDVD+aY7Qln/4fVMcr9oW8VfTxOCKM8?=
+ =?us-ascii?Q?BRx+n+5p1uMEkYHRkZ3T+U5veFrPg2PyoxuhsxZ6ldYAFIV/AB787dgVvhtT?=
+ =?us-ascii?Q?7T3CThkwCILUDWdETpWihXWHEjaBdwo4gAZOURz3HjiWDIS9NQs1KaRv1EMf?=
+ =?us-ascii?Q?lOcRS2wyK9yNM91vtOGhdKuB+mlgUa8eSjNXWePeYhxhZe4glNCXLD3b+Ix6?=
+ =?us-ascii?Q?F8bdgMXQEV/fYZ8L9NdWx8VWqE5opdoSAyzBoSyyPH544xZnOoLJiBo1qNLV?=
+ =?us-ascii?Q?Z8NcY6aaGGh64hSSfqGRUo1aaezCc8eYQKNH45LMGzZMjaPNjZs8MsccL/lL?=
+ =?us-ascii?Q?mcVq9uiaUrbONZneedXDX6Y2nxasKVOpfBQSnNZWiIMd6P1FrWZfYvcrYL9m?=
+ =?us-ascii?Q?PoGvzLV/oSMzpsnk7Up4VGwpUGHrEWvgU/M2FmWW/Tkql+IsW2J7+1hiJsb+?=
+ =?us-ascii?Q?hxcR7QFbQe9amwyq6+r30cbTe+9kmJ2P+CkNamJv4/hcx1qZYb4ouG9wc7E0?=
+ =?us-ascii?Q?5cyvfa5yFOxRjMgkBGhxSIudjJSHtEjYbyfa3MEClxm8KScwsSu9UumG9vez?=
+ =?us-ascii?Q?0XvSalpwvR7lPsV9kVu21NvrEzA0u9lurPVHGMaD6yq2di+QwwqHKS7TP+pJ?=
+ =?us-ascii?Q?YtGf/taxE0J2fV31P0iJOr+OdITdT9edevVjXu0hQjUEw4wvFBnovf1i5PR7?=
+ =?us-ascii?Q?BYDdeUICjFLYVRS7kQXgMccn+vyWvCvwUcqp1G42fR3U2ZlZ3RfJB3XdXc0K?=
+ =?us-ascii?Q?brs2mZfCj6vU6UcF7e4rTsxTXW37B4Wa3d7eMP8hm2c1baZy8Py5JzPidQlg?=
+ =?us-ascii?Q?4KVI4bMiJV21JlLe5241KxyJEr824LjHlUHa+Xi0m6vHwvR1w1D4q1boQ1V5?=
+ =?us-ascii?Q?3x7zh5Om5Xel9kTDGee5vGGVyIjA8FjBV3JprhFVpA/am7raq5DbLcspRAzM?=
+ =?us-ascii?Q?da64SXuSRZYTcE/Nq5o0UMGQFMAlEYsGBeR4PjT7TRiVipOk1U3gipGlBgs7?=
+ =?us-ascii?Q?vSFAt1+QNOhQKxIlMGSO9BQ43tPsYsBXU0EMF212nCEIUFYDWq3vDxMJfsp5?=
+ =?us-ascii?Q?0LD0Udn/vNFbn/189HZ5Jqvq6bvx6o/9bgrjNoenbjcM40Ov7fujXf11Lvnu?=
+ =?us-ascii?Q?aWG40y12tQA2OK3CokjgVWVtu5c9kC03yp7kLGGVYDMAj5AJ7qLwNdYOKie8?=
+ =?us-ascii?Q?GsIUK5YoJc8hjVEY+FSO4jjPJLKs3qXLt0RcyBLPq1+a6ZD/O6A5o8nyeE84?=
+ =?us-ascii?Q?gg3RAAiTmp07zvSN1fa6bKvG25hUi8U1v+5iqcN6QpYa1ACTc09v7nkyV3jN?=
+ =?us-ascii?Q?PNRVeX3w6bHQTQi9SsA=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e575b8a3-6d30-4742-37d8-08dcedd83d06
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Oct 2024 11:46:57.1919
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: XLgskby42EEqhyGq/VA4DbhJNaih2u0FUN4VL3ToXbnu2RhLp9DsLZMYKHvN7pmv73gy3czZf9gx1QtVZ6nNGQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9929
 
-Hi,
-
-Am Mittwoch, 16. Oktober 2024, 12:41:40 CEST schrieb Xu Yang:
-> On Wed, Oct 16, 2024 at 10:53:50AM +0200, Alexander Stein wrote:
-> > Hi,
-> >=20
-> > another thing I just noticed.
-> >=20
-> > Am Dienstag, 15. Oktober 2024, 13:10:17 CEST schrieb Xu Yang:
-> > > Add usb3 phy and controller nodes for imx95.
-> > >=20
-> > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> > >=20
-> > > ---
-> > > Changes in v2:
-> > >  - no changes
-> > > Changes in v3:
-> > >  - no changes
-> > > Changes in v4:
-> > >  - reorder nodes
-> > > Changes in v5:
-> > >  - no changes
-> > > Changes in v6:
-> > >  - rebase to latest
-> > > Changes in v7:
-> > >  - no changes
-> > > Changes in v8:
-> > >  - no changes
-> > > ---
-> > >  arch/arm64/boot/dts/freescale/imx95.dtsi | 43 ++++++++++++++++++++++=
-++
-> > >  1 file changed, 43 insertions(+)
-> > >=20
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/bo=
-ot/dts/freescale/imx95.dtsi
-> > > index 03661e76550f..e3faa8462759 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-> > > +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
-> > > @@ -1473,6 +1473,49 @@ smmu: iommu@490d0000 {
-> > >  			};
-> > >  		};
-> > > =20
-> > > +		usb3: usb@4c010010 {
-> > > +			compatible =3D "fsl,imx95-dwc3", "fsl,imx8mp-dwc3";
-> > > +			reg =3D <0x0 0x4c010010 0x0 0x04>,
-> > > +			      <0x0 0x4c1f0000 0x0 0x20>;
-> > > +			clocks =3D <&scmi_clk IMX95_CLK_HSIO>,
-> > > +				 <&scmi_clk IMX95_CLK_32K>;
-> > > +			clock-names =3D "hsio", "suspend";
-> > > +			interrupts =3D <GIC_SPI 173 IRQ_TYPE_LEVEL_HIGH>;
-> > > +			#address-cells =3D <2>;
-> > > +			#size-cells =3D <2>;
-> > > +			ranges;
-> > > +			power-domains =3D <&scmi_devpd IMX95_PD_HSIO_TOP>;
-> > > +			dma-ranges =3D <0x0 0x0 0x0 0x0 0x10 0x0>;
-> > > +			status =3D "disabled";
-> > > +
-> > > +			usb3_dwc3: usb@4c100000 {
-> > > +				compatible =3D "snps,dwc3";
-> > > +				reg =3D <0x0 0x4c100000 0x0 0x10000>;
-> > > +				clocks =3D <&scmi_clk IMX95_CLK_HSIO>,
-> > > +					 <&scmi_clk IMX95_CLK_24M>,
-> > > +					 <&scmi_clk IMX95_CLK_32K>;
-> > > +				clock-names =3D "bus_early", "ref", "suspend";
-> > > +				interrupts =3D <GIC_SPI 175 IRQ_TYPE_LEVEL_HIGH>;
-> > > +				phys =3D <&usb3_phy>, <&usb3_phy>;
-> > > +				phy-names =3D "usb2-phy", "usb3-phy";
-> > > +				snps,gfladj-refclk-lpm-sel-quirk;
-> > > +				snps,parkmode-disable-ss-quirk;
-> > > +				iommus =3D <&smmu 0xe>;
-> > > +			};
-> > > +		};
-> > > +
-> > > +		usb3_phy: phy@4c1f0040 {
-> > > +			compatible =3D "fsl,imx95-usb-phy", "fsl,imx8mp-usb-phy";
-> > > +			reg =3D <0x0 0x4c1f0040 0x0 0x40>,
-> > > +			      <0x0 0x4c1fc000 0x0 0x100>;
-> > > +			clocks =3D <&scmi_clk IMX95_CLK_HSIO>;
-> > > +			clock-names =3D "phy";
-> > > +			#phy-cells =3D <0>;
-> > > +			power-domains =3D <&scmi_devpd IMX95_PD_HSIO_TOP>;
-> > > +			orientation-switch;
-> > > +			status =3D "disabled";
-> >=20
-> > I got these dtbs check warnings:
-> >=20
-> > arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dtb:
-> >  phy@4c1f0040: 'oneOf' conditional failed, one must be fixed:
-> >         'port' is a required property
-> >         'ports' is a required property
-> >         from schema $id: http://devicetree.org/schemas/phy/fsl,imx8mq-u=
-sb-phy.yaml#
-> > arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dtb:=20
-> >  phy@4c1f0040: Unevaluated properties are not allowed ('orientation-swi=
-tch' was unexpected)
-> >         from schema $id: http://devicetree.org/schemas/phy/fsl,imx8mq-u=
-sb-phy.yaml#
+> Subject: [PATCH v4 4/4] clk: imx: add i.MX91 clk
 >=20
-> Are you checking on usb tree? You need below two dt-binding patch.
->=20
->  - dt-bindings: usb: dwc3-imx8mp: add compatible string for imx95
->  - dt-bindings: phy: imx8mq-usb: add compatible "fsl,imx95-usb-phy"
+> Add i.MX91 clk driver which reuses the 93 driver and removes some
+> clks.
 
-Yes, these patches are already in linux-next. I'm on next-20241016.
+Please rephase, example:
 
-> >=20
-> >=20
-> > How am I supposed to specify a port when the usb3 is used in host mode,=
- thus
-> > no USB Type-C connector and no 'port' OF-graph accordingly?
->=20
-> Host-only mode with Type-A connector? No Typec-C connector?
-> Sorry, I do not get your meaning.
+"
+Reuse i.MX93 clk driver for i.MX91, because i.MX91 reuses the Clock
+Control Module from i.MX93, with only a few clocks removed and
+a few clocks added.
 
-Yes, no Type-C connector. Actually not even a Type-A as there is an
-on-board USB hub attached to this host.
+For clocks specific to i.MX93 use PLAT_IMX93 to flag them, for
+clocks specific to i.MX91, use PLAT_IMX91 to flag them. Others are
+shared by both.
+"
 
-Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+Then:
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
 
-
+Regards,
+Peng.
