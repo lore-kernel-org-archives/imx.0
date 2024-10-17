@@ -1,71 +1,49 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516F217BEC8
-	for <imx@lists.linux.dev>; Thu, 17 Oct 2024 20:34:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC2017BB32;
+	Thu, 17 Oct 2024 20:36:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729197269; cv=none; b=R/d+L4c9krvOHxW7jVAQAWx4SisXqFgP0/RR8B95u5iQX+1TsfMtwUsfLFv/ljb3eLWjcRrH2lIZMf4W1MJ4qPdpr/gxymxYfskpzzTmJ71Lf5bBRxLcLlkfwKPYxfwHc1wyVd020/Sn0x//BNC72rqSkm9ECi+4oyHJLk7IqLQ=
+	t=1729197411; cv=none; b=EiR3N86rHbCqX7z0mtxyBKlinQ764NJ5qnpm8yh/ld8JR3j7BhHX7iBN60ciO3Kj0s2xJUw0M6AXhPN4fiwh3Y1LVdBSeAtkkPF7mIwFXLFGvjV0d7VMuhpt3CzNMdgQKgVLzpSr5iD1nbkfDnxueGZiEt/1QLfi9SJoenQAG6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729197269; c=relaxed/simple;
-	bh=DpHYpfP4wfR+URtc3nLIT4CXA+r4pWyOSFTF/zEameU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=L9LOHDKuiJCki+poKzNAjhOsfIO4lKA2+u3ig8XBOGuTvISZQWQeAwpmCcWFPLfenPE43U/VYHOhx4GeIA7zyEnQF2CL7P+9IAdI83MqSgX2BxwsSbgfvvB8yhCp4nayrk4z+A3R05DAimLvldTsWh0NoB3Xs7YAfZ2XkZBxrQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=J28sbAzF; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1729197411; c=relaxed/simple;
+	bh=3pORoOZs/yeiJDi/XhX2w922zKobaooCEiTENuXDMS0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CKrPN7VZR8q8OD90oCvNL8Vz71l7u4kNINC7lqVl2efV6Ek539c41cBGarwHSb0puIK7rycBKbaAkDaKal4tgdBGi1tfeUThxSs5tKTsSsIQX42GGZJ8/auKHhAzsMFGfw2tNtlT5UfvMva0xo48Lurs2X+f36v2oiXPD2ZkvUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dns8aEgL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="J28sbAzF"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a9a3da96a8aso218270566b.0
-        for <imx@lists.linux.dev>; Thu, 17 Oct 2024 13:34:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729197261; x=1729802061; darn=lists.linux.dev;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tGfGq8AYZ7Nk9tfcNf0RUEE9wnLOSE1tLqUZ0uRmdU8=;
-        b=J28sbAzFe27UQRT4iP6NXQJ+zSLCSrD5tvOaK9y5z84kUzc8QPYdz/0jpDM3qZoGph
-         2sGqcX+O1SSNXOClPhfgF/s7B+fgke0uY8ChRzIcLObryBYqeQklFNReQyM4o8Qb+tlT
-         8DIcPhqLf8KElz88P/eFEW3gJs+8E3cvcu1kKp19PtHtjFQTE4U64XtUD7EczC4kDZw1
-         ie259CWbQerY2FPUhdJR1M5Y16kxSeoDP/lrIV8zu9HjtYoF0KyMfJn364A/inumKKi7
-         BnfvF+EYDjo/4MXrgTp7lqPynBcAeHaoK2na0Gj5QRDZkx5mk1Nw62gW84Swy9Pvj0du
-         TFUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729197261; x=1729802061;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tGfGq8AYZ7Nk9tfcNf0RUEE9wnLOSE1tLqUZ0uRmdU8=;
-        b=g4l7isNaac7G1wEJ7uYxPH7lKxlsEp6UC1wRv6dOArO53mFO/C21JeFGuQN8fGI090
-         4oiUIcYX+n3KBW3g5i1GmYJwbRH3f/M7AA+ONtc8RnPQAoZXQ7FfuZh7wNFtKABa+QfD
-         IThuPRj1iMbmhNrL4qqyc5c3Xxu6DQCPL5600Q/KwNtePUSbgM4Ic/vVWFVZntT0XUtH
-         HtyqCnY/dam//Cq/IBvg6jYfSsTBXiLOXyAETXu8+8G05ZVjNEMUsk28QjLzEa+rFkKe
-         h+PoMR8oGYw0f4QXPDU+R7ZJAhBNBEPmho14YGErw/L21D8yANHXDLux6+tY2zfQQPlE
-         d9Sg==
-X-Forwarded-Encrypted: i=1; AJvYcCUXKc2aVElx3LsSMVHTE+++AChFbYbRSC+SVT+auX50RVA1xEpaV6DkwNtWl8c/z2Ci6fA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxYK9Zc9ha9VzqIQDOnnURI9CKrXkY4l+U4gQ6dTs/C1KVjr6Jm
-	0rS3/9DWvClaF9OxIclz3GENBH5PbAieFxBHh9EP3sWc8YfOgbn/ZYy0T3yyeJs=
-X-Google-Smtp-Source: AGHT+IEmgPvX1kkIRYEDJUNIKySkuA4+HXCNFKzqTi2T8I5tzNgjLRaV5zSnWNszCG4Cmi9deiEQMQ==
-X-Received: by 2002:a17:907:9404:b0:a99:ee26:f416 with SMTP id a640c23a62f3a-a9a4c2ef2a6mr454115166b.14.1729197260600;
-        Thu, 17 Oct 2024 13:34:20 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a68c284dfsm9818466b.197.2024.10.17.13.34.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Oct 2024 13:34:19 -0700 (PDT)
-Date: Thu, 17 Oct 2024 23:34:16 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Ming Qian <ming.qian@nxp.com>
-Cc: Mirela Rabulea <mirela.rabulea@nxp.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dns8aEgL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DBEFC4CEC3;
+	Thu, 17 Oct 2024 20:36:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729197410;
+	bh=3pORoOZs/yeiJDi/XhX2w922zKobaooCEiTENuXDMS0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dns8aEgL9oz06vBjmKgsjs5U/WQK0+HMPVsHtyG72gLWPXo3uYyvmvdg3/epyGjY/
+	 Di6Nuo1+0mPE+slaPlrsKbYcGrB+XpLjUsWcjAFhc4AwF8HR2c21/iPKrPCeAcsQsZ
+	 dRpgZkOGt7h4iY7TRQ0qPGDFPzpJqRZhnVjzwsX/8WSgiVEUwyZxQ1MyyrOS791Trr
+	 HD/Xr/robdZSO26qsbDgQv18XBPWcLyx3+M4TmuivGGyegxEiL7S79AXD7fk1zrf6W
+	 swbGLxDnTHtRJ26E1/XpIYYvj2vS6SbT8HyJvXh4UCEPORSLDTCFtNw4/mKmNMGCoL
+	 D+7ux1Yxo1IYw==
+Date: Thu, 17 Oct 2024 15:36:49 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Marek Vasut <marex@denx.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	devicetree@vger.kernel.org, kernel@dh-electronics.com,
+	linux-gpio@vger.kernel.org, Fabio Estevam <festevam@gmail.com>,
+	linux-arm-kernel@lists.infradead.org,
 	Shawn Guo <shawnguo@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>, TaoJiang <tao.jiang_2@nxp.com>,
-	imx@lists.linux.dev, linux-media@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH v2 next] media: imx-jpeg: Fix potential error pointer
- dereference in detach_pm()
-Message-ID: <ZxF0yOCms6cldOlV@stanley.mountain>
+	Conor Dooley <conor+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>, imx@lists.linux.dev
+Subject: Re: [PATCH v2 01/12] dt-bindings: pinctrl: fsl,imx6ul-pinctrl:
+ Convert i.MX35/5x/6 to YAML
+Message-ID: <172919740857.813589.2711206203512774093.robh@kernel.org>
+References: <20241017000801.149276-1-marex@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -74,46 +52,60 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20241017000801.149276-1-marex@denx.de>
 
-The proble is on the first line:
 
-	if (jpeg->pd_dev[i] && !pm_runtime_suspended(jpeg->pd_dev[i]))
+On Thu, 17 Oct 2024 02:06:47 +0200, Marek Vasut wrote:
+> The IOMUXC controller description is almost identical on i.MX35/5x/6 SoCs,
+> except for the configuration bits which differ across SoCs. Rename the
+> fsl,imx6ul-pinctrl.yaml to fsl,imx35-pinctrl.yaml, fill in compatible
+> strings for the other SoCs and fill in the various bits into desciption.
+> This way, i.MX35/5x/6 series SoCs can all be converted to DT schema.
+> Remove the old text DT bindings description.
+> 
+> Signed-off-by: Marek Vasut <marex@denx.de>
+> ---
+> Cc: Conor Dooley <conor+dt@kernel.org>
+> Cc: Dong Aisheng <aisheng.dong@nxp.com>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: Jacky Bai <ping.bai@nxp.com>
+> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Rob Herring <robh@kernel.org>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: devicetree@vger.kernel.org
+> Cc: imx@lists.linux.dev
+> Cc: kernel@dh-electronics.com
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-gpio@vger.kernel.org
+> ---
+> V2: - Use DT schema to refer to the fsl,imx35-pinctrl.yaml file
+>     - Special-case the iMX50 compatible string
+> ---
+>  .../bindings/pinctrl/fsl,imx35-pinctrl.txt    | 33 -------
+>  ...ul-pinctrl.yaml => fsl,imx35-pinctrl.yaml} | 88 ++++++++++++++++---
+>  .../bindings/pinctrl/fsl,imx50-pinctrl.txt    | 32 -------
+>  .../bindings/pinctrl/fsl,imx51-pinctrl.txt    | 32 -------
+>  .../bindings/pinctrl/fsl,imx53-pinctrl.txt    | 32 -------
+>  .../bindings/pinctrl/fsl,imx6dl-pinctrl.txt   | 38 --------
+>  .../bindings/pinctrl/fsl,imx6q-pinctrl.txt    | 38 --------
+>  .../bindings/pinctrl/fsl,imx6sl-pinctrl.txt   | 39 --------
+>  .../bindings/pinctrl/fsl,imx6sll-pinctrl.txt  | 40 ---------
+>  .../bindings/pinctrl/fsl,imx6sx-pinctrl.txt   | 36 --------
+>  10 files changed, 78 insertions(+), 330 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx35-pinctrl.txt
+>  rename Documentation/devicetree/bindings/pinctrl/{fsl,imx6ul-pinctrl.yaml => fsl,imx35-pinctrl.yaml} (50%)
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx50-pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx51-pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx53-pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6dl-pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6q-pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6sl-pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6sll-pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6sx-pinctrl.txt
+> 
 
-If jpeg->pd_dev[i] is an error pointer, then passing it to
-pm_runtime_suspended() will lead to an Oops.  The other conditions
-check for both error pointers and NULL, but it would be more clear to
-use the IS_ERR_OR_NULL() check for that.
-
-Fixes: fd0af4cd35da ("media: imx-jpeg: Ensure power suppliers be suspended before detach them")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
-v2: The buggy patch hasn't hit Linus's tree yet, but it's destined for stable so
-    add a stable tag to this too.
-
- drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-index d8e946aebba2..918ab12edc9e 100644
---- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-@@ -2679,11 +2679,12 @@ static void mxc_jpeg_detach_pm_domains(struct mxc_jpeg_dev *jpeg)
- 	int i;
- 
- 	for (i = 0; i < jpeg->num_domains; i++) {
--		if (jpeg->pd_dev[i] && !pm_runtime_suspended(jpeg->pd_dev[i]))
-+		if (!IS_ERR_OR_NULL(jpeg->pd_dev[i]) &&
-+		    !pm_runtime_suspended(jpeg->pd_dev[i]))
- 			pm_runtime_force_suspend(jpeg->pd_dev[i]);
--		if (jpeg->pd_link[i] && !IS_ERR(jpeg->pd_link[i]))
-+		if (!IS_ERR_OR_NULL(jpeg->pd_link[i]))
- 			device_link_del(jpeg->pd_link[i]);
--		if (jpeg->pd_dev[i] && !IS_ERR(jpeg->pd_dev[i]))
-+		if (!IS_ERR_OR_NULL(jpeg->pd_dev[i]))
- 			dev_pm_domain_detach(jpeg->pd_dev[i], true);
- 		jpeg->pd_dev[i] = NULL;
- 		jpeg->pd_link[i] = NULL;
--- 
-2.45.2
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
