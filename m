@@ -1,37 +1,37 @@
 Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D86B1EE010
-	for <imx@lists.linux.dev>; Thu, 17 Oct 2024 21:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50AD1EE035
+	for <imx@lists.linux.dev>; Thu, 17 Oct 2024 21:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729199598; cv=none; b=J6m1/9OZEB29l1sJKYHji9MRdo68KmT4vS17tOaYh6MrbIBrfaMY0bXJe72aTf6b3UtrI2M6HQtvzPTy/jMWo42dJbBnhwB+bpej1+p2dE4Zo/XzPXqPPzFrbjpK82sHVeg9flL+R9Oy4CGvPnVmeC03N1M+wW/SeLzOohoE+7M=
+	t=1729199600; cv=none; b=M+MGUZKBkLZ12kkr1XlrSXAMbfWR6VZE3GDmMxb6egpjhg+tjQbfVZPJsdeQISzDxp97GuDyCSaVmsC51EXpsJOvw5pbRddu406MvmMPAK4RT0n4KrPjwrV/3r+e6aeiQqigXKJ+4KtE2dn5mIqCzRkiZ47fZACQ3ij9BE26nqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729199598; c=relaxed/simple;
-	bh=ZFx8ZFOeO15vR6B4VBk83WpPuP7G+vNjecZ5lmcixWY=;
+	s=arc-20240116; t=1729199600; c=relaxed/simple;
+	bh=d3NBK3NwRQ9Yshpnir5ehH3oqu9VpQLFpHKgvihAmyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tPZG/jUMIYlwQmy4SrH1/1YHgUlH9TDWVGRWUxIZZjW5uyupEe1pwBq4bIN1qiSvqWwKb8Gk0pLa1OKU/Dtzq7F79kfn0utiIR3I7vESnYUinHc6MNbT7ukl7ObIAp+G2138vJdHW+OqHwOZ3Hd8ChvUwEpnVjQGRdU0FYzXlvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=Wmfqy/dr; arc=none smtp.client-ip=85.214.62.61
+	 MIME-Version; b=ig0/+g5qR10kF7bAoe1XXg6u2mN5b03xF+w0nU+wMIjT6tPP3Y8fCmq0cbOFmdMz9t3xC+IvBVhSYG+vstMlzttA19qIhiMyF8nZjk5PVIa6rmu7mFdQlt5BOwMbdq23yJpCmq3jhBlG949YlGdfbTrPJVG1F6IKT+tE9bZwD58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=KyjSJWvm; arc=none smtp.client-ip=85.214.62.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="Wmfqy/dr"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="KyjSJWvm"
 Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
 	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id CB7F48909B;
-	Thu, 17 Oct 2024 23:13:08 +0200 (CEST)
+	by phobos.denx.de (Postfix) with ESMTPSA id 6196D890BB;
+	Thu, 17 Oct 2024 23:13:13 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1729199589;
-	bh=uoxVD8d2mOItEDGmZ8F8IPnCSQ0AVxbR883grQtZxNE=;
+	s=phobos-20191101; t=1729199594;
+	bh=oNFf+bbEcN+76kySwX79EOuxsJb/zmioGR3x5mPdnmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wmfqy/dr07n31+Mvh5vBFwvZwWLisX8yedxWeVaKPxsmNx+ZxQM4sd+L2JPeVvuW/
-	 MZ+EVVObc5D+FuhPJP2Yb2hXkp/MAKKq+HLUZQYeQku8kCcQS3GYF+CCeMQ6qjrzNE
-	 Lfk8C1qPyxXOxmt+lcy8hAfdpIZIr9cG45bD66AYk1NFNOEjSkFEJNp0xphiIlQjFM
-	 DVIa5jIcLPs00IE90fHS29+7aKtTKvgEVlFBdng6QSZ/UH5/8XSPaMSx47axv6XZrh
-	 5sIVVn1lE9AVwpDs6hmLUnCKf8CtIa0gMYGpJIQg6UjBLk8JAPqd7xUs3zYW4fHcQZ
-	 ojN1cod7yZhzQ==
+	b=KyjSJWvmBvAbhzu8xFJpmR0XuWzBUvweeG7uCdtUkk3n6L31ObsNEbiEX3dJNw1fx
+	 hNod+AU3YtX65FV6GPXDtXAJSYP5ZPjm/EKDp/yGi0KDhy1rEoRZNO31VM2GSL3Ux4
+	 xoeNmpWh16M5AmUF1slXreNnWVzB7B1WBvV5nGuQ5BzDgPLXGfeXgSfYKBA01v5BrU
+	 jvfLYafvdgshMqa+jK1zzd3lOIkhwVx03d9JdFhHtGi9egEvCsLNboJjVWHhb2ynT5
+	 Q0sF3d6w/h7odgp9fWQB0h8T02Sp/Bw1BBaHZVEw9eFyEVsincLhqzgbtYkxc3h8vn
+	 YN0W5mM1S2pxA==
 From: Marek Vasut <marex@denx.de>
 To: linux-arm-kernel@lists.infradead.org
 Cc: Marek Vasut <marex@denx.de>,
@@ -51,9 +51,9 @@ Cc: Marek Vasut <marex@denx.de>,
 	imx@lists.linux.dev,
 	kernel@dh-electronics.com,
 	linux-gpio@vger.kernel.org
-Subject: [PATCH v3 05/12] ARM: dts: imx53: Align pin config nodes with bindings
-Date: Thu, 17 Oct 2024 23:11:22 +0200
-Message-ID: <20241017211241.170861-5-marex@denx.de>
+Subject: [PATCH v3 10/12] ARM: dts: imx6sl: imx6sll: Align pin config nodes with bindings
+Date: Thu, 17 Oct 2024 23:11:27 +0200
+Message-ID: <20241017211241.170861-10-marex@denx.de>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241017211241.170861-1-marex@denx.de>
 References: <20241017211241.170861-1-marex@denx.de>
@@ -97,3031 +97,1081 @@ Cc: linux-arm-kernel@lists.infradead.org
 Cc: linux-gpio@vger.kernel.org
 ---
 V2: New patch
-V3: - Rename iomuxc@ node to pinctrl@ node
-    - Fix up a couple of conversion omissions in CPU and .dtsi files
+V3: Fix up a couple of conversion omissions in CPU and .dtsi files
 ---
- arch/arm/boot/dts/nxp/imx/imx53-ard.dts       | 116 +++--
- arch/arm/boot/dts/nxp/imx/imx53-kp-ddc.dts    |  62 ++-
- arch/arm/boot/dts/nxp/imx/imx53-kp.dtsi       |  90 ++--
- arch/arm/boot/dts/nxp/imx/imx53-m53.dtsi      |  64 ++-
- arch/arm/boot/dts/nxp/imx/imx53-m53evk.dts    | 268 +++++-----
- arch/arm/boot/dts/nxp/imx/imx53-m53menlo.dts  | 320 ++++++------
- arch/arm/boot/dts/nxp/imx/imx53-mba53.dts     | 114 ++---
- .../boot/dts/nxp/imx/imx53-qsb-common.dtsi    | 274 ++++++-----
- arch/arm/boot/dts/nxp/imx/imx53-qsrb.dts      |  10 +-
- arch/arm/boot/dts/nxp/imx/imx53-smd.dts       | 242 +++++----
- arch/arm/boot/dts/nxp/imx/imx53-tqma53.dtsi   | 274 ++++++-----
- arch/arm/boot/dts/nxp/imx/imx53-tx53-x03x.dts | 112 +++--
- arch/arm/boot/dts/nxp/imx/imx53-tx53-x13x.dts |  62 ++-
- arch/arm/boot/dts/nxp/imx/imx53-tx53.dtsi     | 460 +++++++++---------
- .../arm/boot/dts/nxp/imx/imx53-voipac-bsb.dts | 110 ++---
- .../dts/nxp/imx/imx53-voipac-dmm-668.dtsi     | 124 +++--
- arch/arm/boot/dts/nxp/imx/imx53.dtsi          |   2 +-
- 17 files changed, 1334 insertions(+), 1370 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx6sl-evk.dts      | 480 +++++++++---------
+ .../dts/nxp/imx/imx6sl-tolino-shine2hd.dts    |  16 +-
+ .../boot/dts/nxp/imx/imx6sl-tolino-shine3.dts |  16 +-
+ .../dts/nxp/imx/imx6sl-tolino-vision5.dts     |   4 +-
+ arch/arm/boot/dts/nxp/imx/imx6sl-warp.dts     | 208 ++++----
+ arch/arm/boot/dts/nxp/imx/imx6sll-evk.dts     |  12 +-
+ .../boot/dts/nxp/imx/imx6sll-kobo-clarahd.dts |  16 +-
+ .../dts/nxp/imx/imx6sll-kobo-librah2o.dts     |   4 +-
+ 8 files changed, 376 insertions(+), 380 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx53-ard.dts b/arch/arm/boot/dts/nxp/imx/imx53-ard.dts
-index 165e1b00b721b..e580427660b1d 100644
---- a/arch/arm/boot/dts/nxp/imx/imx53-ard.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx53-ard.dts
-@@ -101,67 +101,65 @@ &iomuxc {
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6sl-evk.dts b/arch/arm/boot/dts/nxp/imx/imx6sl-evk.dts
+index 7c899291ab0da..55cdfa7ea2067 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6sl-evk.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6sl-evk.dts
+@@ -287,271 +287,269 @@ &iomuxc {
  	pinctrl-names = "default";
  	pinctrl-0 = <&pinctrl_hog>;
  
--	imx53-ard {
+-	imx6sl-evk {
 -		pinctrl_hog: hoggrp {
 -			fsl,pins = <
--				MX53_PAD_GPIO_1__GPIO1_1             0x80000000
--				MX53_PAD_GPIO_9__GPIO1_9             0x80000000
--				MX53_PAD_EIM_EB3__GPIO2_31           0x80000000
--				MX53_PAD_GPIO_10__GPIO4_0            0x80000000
--				MX53_PAD_DISP0_DAT16__GPIO5_10	     0x80000000
--				MX53_PAD_DISP0_DAT17__GPIO5_11       0x80000000
--				MX53_PAD_DISP0_DAT18__GPIO5_12       0x80000000
--				MX53_PAD_DISP0_DAT19__GPIO5_13       0x80000000
--				MX53_PAD_EIM_D16__EMI_WEIM_D_16      0x80000000
--				MX53_PAD_EIM_D17__EMI_WEIM_D_17      0x80000000
--				MX53_PAD_EIM_D18__EMI_WEIM_D_18      0x80000000
--				MX53_PAD_EIM_D19__EMI_WEIM_D_19      0x80000000
--				MX53_PAD_EIM_D20__EMI_WEIM_D_20      0x80000000
--				MX53_PAD_EIM_D21__EMI_WEIM_D_21      0x80000000
--				MX53_PAD_EIM_D22__EMI_WEIM_D_22      0x80000000
--				MX53_PAD_EIM_D23__EMI_WEIM_D_23      0x80000000
--				MX53_PAD_EIM_D24__EMI_WEIM_D_24      0x80000000
--				MX53_PAD_EIM_D25__EMI_WEIM_D_25      0x80000000
--				MX53_PAD_EIM_D26__EMI_WEIM_D_26      0x80000000
--				MX53_PAD_EIM_D27__EMI_WEIM_D_27      0x80000000
--				MX53_PAD_EIM_D28__EMI_WEIM_D_28      0x80000000
--				MX53_PAD_EIM_D29__EMI_WEIM_D_29      0x80000000
--				MX53_PAD_EIM_D30__EMI_WEIM_D_30      0x80000000
--				MX53_PAD_EIM_D31__EMI_WEIM_D_31      0x80000000
--				MX53_PAD_EIM_DA0__EMI_NAND_WEIM_DA_0 0x80000000
--				MX53_PAD_EIM_DA1__EMI_NAND_WEIM_DA_1 0x80000000
--				MX53_PAD_EIM_DA2__EMI_NAND_WEIM_DA_2 0x80000000
--				MX53_PAD_EIM_DA3__EMI_NAND_WEIM_DA_3 0x80000000
--				MX53_PAD_EIM_DA4__EMI_NAND_WEIM_DA_4 0x80000000
--				MX53_PAD_EIM_DA5__EMI_NAND_WEIM_DA_5 0x80000000
--				MX53_PAD_EIM_DA6__EMI_NAND_WEIM_DA_6 0x80000000
--				MX53_PAD_EIM_OE__EMI_WEIM_OE	     0x80000000
--				MX53_PAD_EIM_RW__EMI_WEIM_RW	     0x80000000
--				MX53_PAD_EIM_CS1__EMI_WEIM_CS_1	     0x80000000
+-				MX6SL_PAD_KEY_ROW7__GPIO4_IO07    0x17059
+-				MX6SL_PAD_KEY_COL7__GPIO4_IO06    0x17059
+-				MX6SL_PAD_SD2_DAT7__GPIO5_IO00    0x17059
+-				MX6SL_PAD_SD2_DAT6__GPIO4_IO29    0x17059
+-				MX6SL_PAD_REF_CLK_32K__GPIO3_IO22 0x17059
+-				MX6SL_PAD_KEY_COL4__GPIO4_IO00	0x80000000
+-				MX6SL_PAD_KEY_COL5__GPIO4_IO02	0x80000000
+-				MX6SL_PAD_AUD_MCLK__AUDIO_CLK_OUT 0x4130b0
 -			>;
 -		};
 +	pinctrl_hog: hoggrp {
 +		fsl,pins = <
-+			MX53_PAD_GPIO_1__GPIO1_1             0x80000000
-+			MX53_PAD_GPIO_9__GPIO1_9             0x80000000
-+			MX53_PAD_EIM_EB3__GPIO2_31           0x80000000
-+			MX53_PAD_GPIO_10__GPIO4_0            0x80000000
-+			MX53_PAD_DISP0_DAT16__GPIO5_10	     0x80000000
-+			MX53_PAD_DISP0_DAT17__GPIO5_11       0x80000000
-+			MX53_PAD_DISP0_DAT18__GPIO5_12       0x80000000
-+			MX53_PAD_DISP0_DAT19__GPIO5_13       0x80000000
-+			MX53_PAD_EIM_D16__EMI_WEIM_D_16      0x80000000
-+			MX53_PAD_EIM_D17__EMI_WEIM_D_17      0x80000000
-+			MX53_PAD_EIM_D18__EMI_WEIM_D_18      0x80000000
-+			MX53_PAD_EIM_D19__EMI_WEIM_D_19      0x80000000
-+			MX53_PAD_EIM_D20__EMI_WEIM_D_20      0x80000000
-+			MX53_PAD_EIM_D21__EMI_WEIM_D_21      0x80000000
-+			MX53_PAD_EIM_D22__EMI_WEIM_D_22      0x80000000
-+			MX53_PAD_EIM_D23__EMI_WEIM_D_23      0x80000000
-+			MX53_PAD_EIM_D24__EMI_WEIM_D_24      0x80000000
-+			MX53_PAD_EIM_D25__EMI_WEIM_D_25      0x80000000
-+			MX53_PAD_EIM_D26__EMI_WEIM_D_26      0x80000000
-+			MX53_PAD_EIM_D27__EMI_WEIM_D_27      0x80000000
-+			MX53_PAD_EIM_D28__EMI_WEIM_D_28      0x80000000
-+			MX53_PAD_EIM_D29__EMI_WEIM_D_29      0x80000000
-+			MX53_PAD_EIM_D30__EMI_WEIM_D_30      0x80000000
-+			MX53_PAD_EIM_D31__EMI_WEIM_D_31      0x80000000
-+			MX53_PAD_EIM_DA0__EMI_NAND_WEIM_DA_0 0x80000000
-+			MX53_PAD_EIM_DA1__EMI_NAND_WEIM_DA_1 0x80000000
-+			MX53_PAD_EIM_DA2__EMI_NAND_WEIM_DA_2 0x80000000
-+			MX53_PAD_EIM_DA3__EMI_NAND_WEIM_DA_3 0x80000000
-+			MX53_PAD_EIM_DA4__EMI_NAND_WEIM_DA_4 0x80000000
-+			MX53_PAD_EIM_DA5__EMI_NAND_WEIM_DA_5 0x80000000
-+			MX53_PAD_EIM_DA6__EMI_NAND_WEIM_DA_6 0x80000000
-+			MX53_PAD_EIM_OE__EMI_WEIM_OE	     0x80000000
-+			MX53_PAD_EIM_RW__EMI_WEIM_RW	     0x80000000
-+			MX53_PAD_EIM_CS1__EMI_WEIM_CS_1	     0x80000000
++			MX6SL_PAD_KEY_ROW7__GPIO4_IO07    0x17059
++			MX6SL_PAD_KEY_COL7__GPIO4_IO06    0x17059
++			MX6SL_PAD_SD2_DAT7__GPIO5_IO00    0x17059
++			MX6SL_PAD_SD2_DAT6__GPIO4_IO29    0x17059
++			MX6SL_PAD_REF_CLK_32K__GPIO3_IO22 0x17059
++			MX6SL_PAD_KEY_COL4__GPIO4_IO00	0x80000000
++			MX6SL_PAD_KEY_COL5__GPIO4_IO02	0x80000000
++			MX6SL_PAD_AUD_MCLK__AUDIO_CLK_OUT 0x4130b0
 +		>;
 +	};
  
--		pinctrl_esdhc1: esdhc1grp {
+-		pinctrl_audmux3: audmux3grp {
 -			fsl,pins = <
--				MX53_PAD_SD1_DATA0__ESDHC1_DAT0		0x1d5
--				MX53_PAD_SD1_DATA1__ESDHC1_DAT1		0x1d5
--				MX53_PAD_SD1_DATA2__ESDHC1_DAT2		0x1d5
--				MX53_PAD_SD1_DATA3__ESDHC1_DAT3		0x1d5
--				MX53_PAD_PATA_DATA8__ESDHC1_DAT4	0x1d5
--				MX53_PAD_PATA_DATA9__ESDHC1_DAT5	0x1d5
--				MX53_PAD_PATA_DATA10__ESDHC1_DAT6	0x1d5
--				MX53_PAD_PATA_DATA11__ESDHC1_DAT7	0x1d5
--				MX53_PAD_SD1_CMD__ESDHC1_CMD		0x1d5
--				MX53_PAD_SD1_CLK__ESDHC1_CLK		0x1d5
+-				MX6SL_PAD_AUD_RXD__AUD3_RXD	  0x4130b0
+-				MX6SL_PAD_AUD_TXC__AUD3_TXC	  0x4130b0
+-				MX6SL_PAD_AUD_TXD__AUD3_TXD	  0x4110b0
+-				MX6SL_PAD_AUD_TXFS__AUD3_TXFS	  0x4130b0
 -			>;
 -		};
-+	pinctrl_esdhc1: esdhc1grp {
++	pinctrl_audmux3: audmux3grp {
 +		fsl,pins = <
-+			MX53_PAD_SD1_DATA0__ESDHC1_DAT0		0x1d5
-+			MX53_PAD_SD1_DATA1__ESDHC1_DAT1		0x1d5
-+			MX53_PAD_SD1_DATA2__ESDHC1_DAT2		0x1d5
-+			MX53_PAD_SD1_DATA3__ESDHC1_DAT3		0x1d5
-+			MX53_PAD_PATA_DATA8__ESDHC1_DAT4	0x1d5
-+			MX53_PAD_PATA_DATA9__ESDHC1_DAT5	0x1d5
-+			MX53_PAD_PATA_DATA10__ESDHC1_DAT6	0x1d5
-+			MX53_PAD_PATA_DATA11__ESDHC1_DAT7	0x1d5
-+			MX53_PAD_SD1_CMD__ESDHC1_CMD		0x1d5
-+			MX53_PAD_SD1_CLK__ESDHC1_CLK		0x1d5
-+		>;
-+	};
- 
--		pinctrl_uart1: uart1grp {
--			fsl,pins = <
--				MX53_PAD_PATA_DIOW__UART1_TXD_MUX	0x1e4
--				MX53_PAD_PATA_DMACK__UART1_RXD_MUX	0x1e4
--			>;
--		};
-+	pinctrl_uart1: uart1grp {
-+		fsl,pins = <
-+			MX53_PAD_PATA_DIOW__UART1_TXD_MUX	0x1e4
-+			MX53_PAD_PATA_DMACK__UART1_RXD_MUX	0x1e4
-+		>;
- 	};
- };
- 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx53-kp-ddc.dts b/arch/arm/boot/dts/nxp/imx/imx53-kp-ddc.dts
-index f6f1163666434..9c480e4d27cef 100644
---- a/arch/arm/boot/dts/nxp/imx/imx53-kp-ddc.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx53-kp-ddc.dts
-@@ -102,38 +102,36 @@ gpio-expander2@21 {
- };
- 
- &iomuxc {
--	imx53-kp-ddc {
--		pinctrl_disp: dispgrp {
--			fsl,pins = <
--				MX53_PAD_EIM_A16__IPU_DI1_DISP_CLK      0x4
--				MX53_PAD_EIM_DA10__IPU_DI1_PIN15        0x4
--				MX53_PAD_EIM_DA9__IPU_DISP1_DAT_0       0x4
--				MX53_PAD_EIM_DA8__IPU_DISP1_DAT_1       0x4
--				MX53_PAD_EIM_DA7__IPU_DISP1_DAT_2       0x4
--				MX53_PAD_EIM_DA6__IPU_DISP1_DAT_3       0x4
--				MX53_PAD_EIM_DA5__IPU_DISP1_DAT_4       0x4
--				MX53_PAD_EIM_DA4__IPU_DISP1_DAT_5       0x4
--				MX53_PAD_EIM_DA3__IPU_DISP1_DAT_6       0x4
--				MX53_PAD_EIM_DA2__IPU_DISP1_DAT_7       0x4
--				MX53_PAD_EIM_DA1__IPU_DISP1_DAT_8       0x4
--				MX53_PAD_EIM_DA0__IPU_DISP1_DAT_9       0x4
--				MX53_PAD_EIM_EB1__IPU_DISP1_DAT_10      0x4
--				MX53_PAD_EIM_EB0__IPU_DISP1_DAT_11      0x4
--				MX53_PAD_EIM_A17__IPU_DISP1_DAT_12      0x4
--				MX53_PAD_EIM_A18__IPU_DISP1_DAT_13      0x4
--				MX53_PAD_EIM_A19__IPU_DISP1_DAT_14      0x4
--				MX53_PAD_EIM_A20__IPU_DISP1_DAT_15      0x4
--				MX53_PAD_EIM_A21__IPU_DISP1_DAT_16      0x4
--				MX53_PAD_EIM_A22__IPU_DISP1_DAT_17      0x4
--				MX53_PAD_EIM_A23__IPU_DISP1_DAT_18      0x4
--				MX53_PAD_EIM_A24__IPU_DISP1_DAT_19      0x4
--				MX53_PAD_EIM_D31__IPU_DISP1_DAT_20      0x4
--				MX53_PAD_EIM_D30__IPU_DISP1_DAT_21      0x4
--				MX53_PAD_EIM_D26__IPU_DISP1_DAT_22      0x4
--				MX53_PAD_EIM_D27__IPU_DISP1_DAT_23      0x4
--				MX53_PAD_GPIO_1__PWM2_PWMO 0x4
--			>;
--		};
-+	pinctrl_disp: dispgrp {
-+		fsl,pins = <
-+			MX53_PAD_EIM_A16__IPU_DI1_DISP_CLK      0x4
-+			MX53_PAD_EIM_DA10__IPU_DI1_PIN15        0x4
-+			MX53_PAD_EIM_DA9__IPU_DISP1_DAT_0       0x4
-+			MX53_PAD_EIM_DA8__IPU_DISP1_DAT_1       0x4
-+			MX53_PAD_EIM_DA7__IPU_DISP1_DAT_2       0x4
-+			MX53_PAD_EIM_DA6__IPU_DISP1_DAT_3       0x4
-+			MX53_PAD_EIM_DA5__IPU_DISP1_DAT_4       0x4
-+			MX53_PAD_EIM_DA4__IPU_DISP1_DAT_5       0x4
-+			MX53_PAD_EIM_DA3__IPU_DISP1_DAT_6       0x4
-+			MX53_PAD_EIM_DA2__IPU_DISP1_DAT_7       0x4
-+			MX53_PAD_EIM_DA1__IPU_DISP1_DAT_8       0x4
-+			MX53_PAD_EIM_DA0__IPU_DISP1_DAT_9       0x4
-+			MX53_PAD_EIM_EB1__IPU_DISP1_DAT_10      0x4
-+			MX53_PAD_EIM_EB0__IPU_DISP1_DAT_11      0x4
-+			MX53_PAD_EIM_A17__IPU_DISP1_DAT_12      0x4
-+			MX53_PAD_EIM_A18__IPU_DISP1_DAT_13      0x4
-+			MX53_PAD_EIM_A19__IPU_DISP1_DAT_14      0x4
-+			MX53_PAD_EIM_A20__IPU_DISP1_DAT_15      0x4
-+			MX53_PAD_EIM_A21__IPU_DISP1_DAT_16      0x4
-+			MX53_PAD_EIM_A22__IPU_DISP1_DAT_17      0x4
-+			MX53_PAD_EIM_A23__IPU_DISP1_DAT_18      0x4
-+			MX53_PAD_EIM_A24__IPU_DISP1_DAT_19      0x4
-+			MX53_PAD_EIM_D31__IPU_DISP1_DAT_20      0x4
-+			MX53_PAD_EIM_D30__IPU_DISP1_DAT_21      0x4
-+			MX53_PAD_EIM_D26__IPU_DISP1_DAT_22      0x4
-+			MX53_PAD_EIM_D27__IPU_DISP1_DAT_23      0x4
-+			MX53_PAD_GPIO_1__PWM2_PWMO 0x4
-+		>;
- 	};
- };
- 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx53-kp.dtsi b/arch/arm/boot/dts/nxp/imx/imx53-kp.dtsi
-index ae5f87b8612d4..ebbd4d93e4606 100644
---- a/arch/arm/boot/dts/nxp/imx/imx53-kp.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx53-kp.dtsi
-@@ -98,56 +98,54 @@ &iomuxc {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_kp_common>;
- 
--	imx53-kp-common {
--		pinctrl_buzzer: buzzergrp {
--			fsl,pins = <
--				MX53_PAD_SD1_DATA3__PWM1_PWMO 0x1e4
--			>;
--		};
-+	pinctrl_buzzer: buzzergrp {
-+		fsl,pins = <
-+			MX53_PAD_SD1_DATA3__PWM1_PWMO 0x1e4
-+		>;
-+	};
- 
--		pinctrl_gpiobuttons: gpiobuttonsgrp {
--			fsl,pins = <
--				MX53_PAD_EIM_RW__GPIO2_26 0x1e4
--				MX53_PAD_EIM_D22__GPIO3_22 0x1e4
--			>;
--		};
-+	pinctrl_gpiobuttons: gpiobuttonsgrp {
-+		fsl,pins = <
-+			MX53_PAD_EIM_RW__GPIO2_26 0x1e4
-+			MX53_PAD_EIM_D22__GPIO3_22 0x1e4
-+		>;
-+	};
- 
--		pinctrl_kp_common: kpcommongrp {
--			fsl,pins = <
--				MX53_PAD_EIM_CS0__GPIO2_23 0x1e4
--				MX53_PAD_GPIO_19__GPIO4_5  0x1e4
--				MX53_PAD_PATA_DATA6__GPIO2_6 0x1e4
--				MX53_PAD_PATA_DATA7__GPIO2_7 0xe0
--				MX53_PAD_CSI0_DAT14__GPIO6_0 0x1e4
--				MX53_PAD_CSI0_DAT16__GPIO6_2 0x1e4
--				MX53_PAD_CSI0_DAT18__GPIO6_4 0x1e4
--				MX53_PAD_EIM_D17__GPIO3_17 0x1e4
--				MX53_PAD_EIM_D18__GPIO3_18 0x1e4
--				MX53_PAD_EIM_D21__GPIO3_21 0x1e4
--				MX53_PAD_EIM_D29__GPIO3_29 0x1e4
--				MX53_PAD_EIM_DA11__GPIO3_11 0x1e4
--				MX53_PAD_EIM_DA13__GPIO3_13 0x1e4
--				MX53_PAD_EIM_DA14__GPIO3_14 0x1e4
--				MX53_PAD_SD1_DATA0__GPIO1_16 0x1e4
--				MX53_PAD_SD1_CMD__GPIO1_18 0x1e4
--				MX53_PAD_SD1_CLK__GPIO1_20 0x1e4
--			>;
--		};
-+	pinctrl_kp_common: kpcommongrp {
-+		fsl,pins = <
-+			MX53_PAD_EIM_CS0__GPIO2_23 0x1e4
-+			MX53_PAD_GPIO_19__GPIO4_5  0x1e4
-+			MX53_PAD_PATA_DATA6__GPIO2_6 0x1e4
-+			MX53_PAD_PATA_DATA7__GPIO2_7 0xe0
-+			MX53_PAD_CSI0_DAT14__GPIO6_0 0x1e4
-+			MX53_PAD_CSI0_DAT16__GPIO6_2 0x1e4
-+			MX53_PAD_CSI0_DAT18__GPIO6_4 0x1e4
-+			MX53_PAD_EIM_D17__GPIO3_17 0x1e4
-+			MX53_PAD_EIM_D18__GPIO3_18 0x1e4
-+			MX53_PAD_EIM_D21__GPIO3_21 0x1e4
-+			MX53_PAD_EIM_D29__GPIO3_29 0x1e4
-+			MX53_PAD_EIM_DA11__GPIO3_11 0x1e4
-+			MX53_PAD_EIM_DA13__GPIO3_13 0x1e4
-+			MX53_PAD_EIM_DA14__GPIO3_14 0x1e4
-+			MX53_PAD_SD1_DATA0__GPIO1_16 0x1e4
-+			MX53_PAD_SD1_CMD__GPIO1_18 0x1e4
-+			MX53_PAD_SD1_CLK__GPIO1_20 0x1e4
-+		>;
-+	};
- 
--		pinctrl_leds: ledgrp {
--			fsl,pins = <
--				MX53_PAD_EIM_EB2__GPIO2_30 0x1d4
--				MX53_PAD_EIM_D28__GPIO3_28 0x1d4
--				MX53_PAD_EIM_WAIT__GPIO5_0 0x1d4
--			>;
--		};
-+	pinctrl_leds: ledgrp {
-+		fsl,pins = <
-+			MX53_PAD_EIM_EB2__GPIO2_30 0x1d4
-+			MX53_PAD_EIM_D28__GPIO3_28 0x1d4
-+			MX53_PAD_EIM_WAIT__GPIO5_0 0x1d4
-+		>;
-+	};
- 
--		pinctrl_uart4: uart4grp {
--			fsl,pins = <
--				MX53_PAD_CSI0_DAT12__UART4_TXD_MUX 0x1e4
--				MX53_PAD_CSI0_DAT13__UART4_RXD_MUX 0x1e4
--			>;
--		};
-+	pinctrl_uart4: uart4grp {
-+		fsl,pins = <
-+			MX53_PAD_CSI0_DAT12__UART4_TXD_MUX 0x1e4
-+			MX53_PAD_CSI0_DAT13__UART4_RXD_MUX 0x1e4
-+		>;
- 	};
- };
- 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx53-m53.dtsi b/arch/arm/boot/dts/nxp/imx/imx53-m53.dtsi
-index 00b8d7ca41a2c..df543b4751e0a 100644
---- a/arch/arm/boot/dts/nxp/imx/imx53-m53.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx53-m53.dtsi
-@@ -77,41 +77,39 @@ &iomuxc {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_hog>;
- 
--	imx53-m53evk {
--		pinctrl_hog: hoggrp {
--			fsl,pins = <
--				MX53_PAD_GPIO_0__CCM_SSI_EXT1_CLK	0x80000000
--				MX53_PAD_EIM_EB3__GPIO2_31		0x80000000
--				MX53_PAD_PATA_DA_0__GPIO7_6		0x80000000
--			>;
--		};
-+	pinctrl_hog: hoggrp {
-+		fsl,pins = <
-+			MX53_PAD_GPIO_0__CCM_SSI_EXT1_CLK	0x80000000
-+			MX53_PAD_EIM_EB3__GPIO2_31		0x80000000
-+			MX53_PAD_PATA_DA_0__GPIO7_6		0x80000000
-+		>;
-+	};
- 
--		pinctrl_i2c2: i2c2grp {
--			fsl,pins = <
--				MX53_PAD_EIM_D16__I2C2_SDA		0xc0000000
--				MX53_PAD_EIM_EB2__I2C2_SCL		0xc0000000
--			>;
--		};
-+	pinctrl_i2c2: i2c2grp {
-+		fsl,pins = <
-+			MX53_PAD_EIM_D16__I2C2_SDA		0xc0000000
-+			MX53_PAD_EIM_EB2__I2C2_SCL		0xc0000000
-+		>;
-+	};
- 
--		pinctrl_nand: nandgrp {
--			fsl,pins = <
--				MX53_PAD_NANDF_WE_B__EMI_NANDF_WE_B	0x4
--				MX53_PAD_NANDF_RE_B__EMI_NANDF_RE_B	0x4
--				MX53_PAD_NANDF_CLE__EMI_NANDF_CLE	0x4
--				MX53_PAD_NANDF_ALE__EMI_NANDF_ALE	0x4
--				MX53_PAD_NANDF_WP_B__EMI_NANDF_WP_B	0xe0
--				MX53_PAD_NANDF_RB0__EMI_NANDF_RB_0	0xe0
--				MX53_PAD_NANDF_CS0__EMI_NANDF_CS_0	0x4
--				MX53_PAD_PATA_DATA0__EMI_NANDF_D_0	0xa4
--				MX53_PAD_PATA_DATA1__EMI_NANDF_D_1	0xa4
--				MX53_PAD_PATA_DATA2__EMI_NANDF_D_2	0xa4
--				MX53_PAD_PATA_DATA3__EMI_NANDF_D_3	0xa4
--				MX53_PAD_PATA_DATA4__EMI_NANDF_D_4	0xa4
--				MX53_PAD_PATA_DATA5__EMI_NANDF_D_5	0xa4
--				MX53_PAD_PATA_DATA6__EMI_NANDF_D_6	0xa4
--				MX53_PAD_PATA_DATA7__EMI_NANDF_D_7	0xa4
--			>;
--		};
-+	pinctrl_nand: nandgrp {
-+		fsl,pins = <
-+			MX53_PAD_NANDF_WE_B__EMI_NANDF_WE_B	0x4
-+			MX53_PAD_NANDF_RE_B__EMI_NANDF_RE_B	0x4
-+			MX53_PAD_NANDF_CLE__EMI_NANDF_CLE	0x4
-+			MX53_PAD_NANDF_ALE__EMI_NANDF_ALE	0x4
-+			MX53_PAD_NANDF_WP_B__EMI_NANDF_WP_B	0xe0
-+			MX53_PAD_NANDF_RB0__EMI_NANDF_RB_0	0xe0
-+			MX53_PAD_NANDF_CS0__EMI_NANDF_CS_0	0x4
-+			MX53_PAD_PATA_DATA0__EMI_NANDF_D_0	0xa4
-+			MX53_PAD_PATA_DATA1__EMI_NANDF_D_1	0xa4
-+			MX53_PAD_PATA_DATA2__EMI_NANDF_D_2	0xa4
-+			MX53_PAD_PATA_DATA3__EMI_NANDF_D_3	0xa4
-+			MX53_PAD_PATA_DATA4__EMI_NANDF_D_4	0xa4
-+			MX53_PAD_PATA_DATA5__EMI_NANDF_D_5	0xa4
-+			MX53_PAD_PATA_DATA6__EMI_NANDF_D_6	0xa4
-+			MX53_PAD_PATA_DATA7__EMI_NANDF_D_7	0xa4
-+		>;
- 	};
- };
- 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx53-m53evk.dts b/arch/arm/boot/dts/nxp/imx/imx53-m53evk.dts
-index ba0c62994f75d..eb3d663053950 100644
---- a/arch/arm/boot/dts/nxp/imx/imx53-m53evk.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx53-m53evk.dts
-@@ -156,155 +156,153 @@ &iomuxc {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_hog>;
- 
--	imx53-m53evk {
--		pinctrl_usb: usbgrp {
--			fsl,pins = <
--				MX53_PAD_GPIO_2__GPIO1_2		0x80000000
--				MX53_PAD_GPIO_3__USBOH3_USBH1_OC	0x80000000
--			>;
--		};
-+	pinctrl_usb: usbgrp {
-+		fsl,pins = <
-+			MX53_PAD_GPIO_2__GPIO1_2		0x80000000
-+			MX53_PAD_GPIO_3__USBOH3_USBH1_OC	0x80000000
-+		>;
-+	};
- 
--		pinctrl_usbotg: usbotggrp {
--			fsl,pins = <
--				MX53_PAD_GPIO_4__GPIO1_4		0x000b0
--			>;
--		};
-+	pinctrl_usbotg: usbotggrp {
-+		fsl,pins = <
-+			MX53_PAD_GPIO_4__GPIO1_4		0x000b0
-+		>;
-+	};
- 
--		led_pin_gpio: led_gpio {
--			fsl,pins = <
--				MX53_PAD_PATA_DATA8__GPIO2_8		0x80000000
--				MX53_PAD_PATA_DATA9__GPIO2_9		0x80000000
--			>;
--		};
-+	led_pin_gpio: ledgpiogrp {
-+		fsl,pins = <
-+			MX53_PAD_PATA_DATA8__GPIO2_8		0x80000000
-+			MX53_PAD_PATA_DATA9__GPIO2_9		0x80000000
-+		>;
-+	};
- 
--		pinctrl_audmux: audmuxgrp {
--			fsl,pins = <
--				MX53_PAD_SD2_DATA3__AUDMUX_AUD4_TXC	0x80000000
--				MX53_PAD_SD2_DATA2__AUDMUX_AUD4_TXD	0x80000000
--				MX53_PAD_SD2_DATA1__AUDMUX_AUD4_TXFS	0x80000000
--				MX53_PAD_SD2_DATA0__AUDMUX_AUD4_RXD	0x80000000
--			>;
--		};
-+	pinctrl_audmux: audmuxgrp {
-+		fsl,pins = <
-+			MX53_PAD_SD2_DATA3__AUDMUX_AUD4_TXC	0x80000000
-+			MX53_PAD_SD2_DATA2__AUDMUX_AUD4_TXD	0x80000000
-+			MX53_PAD_SD2_DATA1__AUDMUX_AUD4_TXFS	0x80000000
-+			MX53_PAD_SD2_DATA0__AUDMUX_AUD4_RXD	0x80000000
-+		>;
-+	};
- 
--		pinctrl_can1: can1grp {
--			fsl,pins = <
--				MX53_PAD_GPIO_7__CAN1_TXCAN		0x80000000
--				MX53_PAD_GPIO_8__CAN1_RXCAN		0x80000000
--			>;
--		};
-+	pinctrl_can1: can1grp {
-+		fsl,pins = <
-+			MX53_PAD_GPIO_7__CAN1_TXCAN		0x80000000
-+			MX53_PAD_GPIO_8__CAN1_RXCAN		0x80000000
-+		>;
-+	};
- 
--		pinctrl_can2: can2grp {
--			fsl,pins = <
--				MX53_PAD_KEY_COL4__CAN2_TXCAN		0x80000000
--				MX53_PAD_KEY_ROW4__CAN2_RXCAN		0x80000000
--			>;
--		};
-+	pinctrl_can2: can2grp {
-+		fsl,pins = <
-+			MX53_PAD_KEY_COL4__CAN2_TXCAN		0x80000000
-+			MX53_PAD_KEY_ROW4__CAN2_RXCAN		0x80000000
-+		>;
-+	};
- 
--		pinctrl_esdhc1: esdhc1grp {
--			fsl,pins = <
--				MX53_PAD_SD1_DATA0__ESDHC1_DAT0		0x1d5
--				MX53_PAD_SD1_DATA1__ESDHC1_DAT1		0x1d5
--				MX53_PAD_SD1_DATA2__ESDHC1_DAT2		0x1d5
--				MX53_PAD_SD1_DATA3__ESDHC1_DAT3		0x1d5
--				MX53_PAD_SD1_CMD__ESDHC1_CMD		0x1d5
--				MX53_PAD_SD1_CLK__ESDHC1_CLK		0x1d5
--			>;
--		};
-+	pinctrl_esdhc1: esdhc1grp {
-+		fsl,pins = <
-+			MX53_PAD_SD1_DATA0__ESDHC1_DAT0		0x1d5
-+			MX53_PAD_SD1_DATA1__ESDHC1_DAT1		0x1d5
-+			MX53_PAD_SD1_DATA2__ESDHC1_DAT2		0x1d5
-+			MX53_PAD_SD1_DATA3__ESDHC1_DAT3		0x1d5
-+			MX53_PAD_SD1_CMD__ESDHC1_CMD		0x1d5
-+			MX53_PAD_SD1_CLK__ESDHC1_CLK		0x1d5
-+		>;
-+	};
- 
--		pinctrl_fec: fecgrp {
--			fsl,pins = <
--				MX53_PAD_FEC_MDC__FEC_MDC		0x80000000
--				MX53_PAD_FEC_MDIO__FEC_MDIO		0x80000000
--				MX53_PAD_FEC_REF_CLK__FEC_TX_CLK	0x80000000
--				MX53_PAD_FEC_RX_ER__FEC_RX_ER		0x80000000
--				MX53_PAD_FEC_CRS_DV__FEC_RX_DV		0x80000000
--				MX53_PAD_FEC_RXD1__FEC_RDATA_1		0x80000000
--				MX53_PAD_FEC_RXD0__FEC_RDATA_0		0x80000000
--				MX53_PAD_FEC_TX_EN__FEC_TX_EN		0x80000000
--				MX53_PAD_FEC_TXD1__FEC_TDATA_1		0x80000000
--				MX53_PAD_FEC_TXD0__FEC_TDATA_0		0x80000000
--			>;
--		};
-+	pinctrl_fec: fecgrp {
-+		fsl,pins = <
-+			MX53_PAD_FEC_MDC__FEC_MDC		0x80000000
-+			MX53_PAD_FEC_MDIO__FEC_MDIO		0x80000000
-+			MX53_PAD_FEC_REF_CLK__FEC_TX_CLK	0x80000000
-+			MX53_PAD_FEC_RX_ER__FEC_RX_ER		0x80000000
-+			MX53_PAD_FEC_CRS_DV__FEC_RX_DV		0x80000000
-+			MX53_PAD_FEC_RXD1__FEC_RDATA_1		0x80000000
-+			MX53_PAD_FEC_RXD0__FEC_RDATA_0		0x80000000
-+			MX53_PAD_FEC_TX_EN__FEC_TX_EN		0x80000000
-+			MX53_PAD_FEC_TXD1__FEC_TDATA_1		0x80000000
-+			MX53_PAD_FEC_TXD0__FEC_TDATA_0		0x80000000
-+		>;
-+	};
- 
--		pinctrl_i2c1: i2c1grp {
--			fsl,pins = <
--				MX53_PAD_EIM_D21__I2C1_SCL		0xc0000000
--				MX53_PAD_EIM_D28__I2C1_SDA		0xc0000000
--			>;
--		};
-+	pinctrl_i2c1: i2c1grp {
-+		fsl,pins = <
-+			MX53_PAD_EIM_D21__I2C1_SCL		0xc0000000
-+			MX53_PAD_EIM_D28__I2C1_SDA		0xc0000000
-+		>;
-+	};
- 
--		pinctrl_i2c3: i2c3grp {
--			fsl,pins = <
--				MX53_PAD_GPIO_6__I2C3_SDA		0xc0000000
--				MX53_PAD_GPIO_5__I2C3_SCL		0xc0000000
--			>;
--		};
-+	pinctrl_i2c3: i2c3grp {
-+		fsl,pins = <
-+			MX53_PAD_GPIO_6__I2C3_SDA		0xc0000000
-+			MX53_PAD_GPIO_5__I2C3_SCL		0xc0000000
-+		>;
-+	};
- 
--		pinctrl_ipu_disp1: ipudisp1grp {
--			fsl,pins = <
--				MX53_PAD_EIM_DA9__IPU_DISP1_DAT_0	0x5
--				MX53_PAD_EIM_DA8__IPU_DISP1_DAT_1	0x5
--				MX53_PAD_EIM_DA7__IPU_DISP1_DAT_2	0x5
--				MX53_PAD_EIM_DA6__IPU_DISP1_DAT_3	0x5
--				MX53_PAD_EIM_DA5__IPU_DISP1_DAT_4	0x5
--				MX53_PAD_EIM_DA4__IPU_DISP1_DAT_5	0x5
--				MX53_PAD_EIM_DA3__IPU_DISP1_DAT_6	0x5
--				MX53_PAD_EIM_DA2__IPU_DISP1_DAT_7	0x5
--				MX53_PAD_EIM_DA1__IPU_DISP1_DAT_8	0x5
--				MX53_PAD_EIM_DA0__IPU_DISP1_DAT_9	0x5
--				MX53_PAD_EIM_EB1__IPU_DISP1_DAT_10	0x5
--				MX53_PAD_EIM_EB0__IPU_DISP1_DAT_11	0x5
--				MX53_PAD_EIM_A17__IPU_DISP1_DAT_12	0x5
--				MX53_PAD_EIM_A18__IPU_DISP1_DAT_13	0x5
--				MX53_PAD_EIM_A19__IPU_DISP1_DAT_14	0x5
--				MX53_PAD_EIM_A20__IPU_DISP1_DAT_15	0x5
--				MX53_PAD_EIM_A21__IPU_DISP1_DAT_16	0x5
--				MX53_PAD_EIM_A22__IPU_DISP1_DAT_17	0x5
--				MX53_PAD_EIM_A23__IPU_DISP1_DAT_18	0x5
--				MX53_PAD_EIM_A24__IPU_DISP1_DAT_19	0x5
--				MX53_PAD_EIM_D31__IPU_DISP1_DAT_20	0x5
--				MX53_PAD_EIM_D30__IPU_DISP1_DAT_21	0x5
--				MX53_PAD_EIM_D26__IPU_DISP1_DAT_22	0x5
--				MX53_PAD_EIM_D27__IPU_DISP1_DAT_23	0x5
--				MX53_PAD_EIM_A16__IPU_DI1_DISP_CLK	0x5
--				MX53_PAD_EIM_DA13__IPU_DI1_D0_CS	0x5
--				MX53_PAD_EIM_DA14__IPU_DI1_D1_CS	0x5
--				MX53_PAD_EIM_DA15__IPU_DI1_PIN1		0x5
--				MX53_PAD_EIM_DA11__IPU_DI1_PIN2		0x5
--				MX53_PAD_EIM_DA12__IPU_DI1_PIN3		0x5
--				MX53_PAD_EIM_A25__IPU_DI1_PIN12		0x5
--				MX53_PAD_EIM_DA10__IPU_DI1_PIN15	0x5
--			>;
--		};
-+	pinctrl_ipu_disp1: ipudisp1grp {
-+		fsl,pins = <
-+			MX53_PAD_EIM_DA9__IPU_DISP1_DAT_0	0x5
-+			MX53_PAD_EIM_DA8__IPU_DISP1_DAT_1	0x5
-+			MX53_PAD_EIM_DA7__IPU_DISP1_DAT_2	0x5
-+			MX53_PAD_EIM_DA6__IPU_DISP1_DAT_3	0x5
-+			MX53_PAD_EIM_DA5__IPU_DISP1_DAT_4	0x5
-+			MX53_PAD_EIM_DA4__IPU_DISP1_DAT_5	0x5
-+			MX53_PAD_EIM_DA3__IPU_DISP1_DAT_6	0x5
-+			MX53_PAD_EIM_DA2__IPU_DISP1_DAT_7	0x5
-+			MX53_PAD_EIM_DA1__IPU_DISP1_DAT_8	0x5
-+			MX53_PAD_EIM_DA0__IPU_DISP1_DAT_9	0x5
-+			MX53_PAD_EIM_EB1__IPU_DISP1_DAT_10	0x5
-+			MX53_PAD_EIM_EB0__IPU_DISP1_DAT_11	0x5
-+			MX53_PAD_EIM_A17__IPU_DISP1_DAT_12	0x5
-+			MX53_PAD_EIM_A18__IPU_DISP1_DAT_13	0x5
-+			MX53_PAD_EIM_A19__IPU_DISP1_DAT_14	0x5
-+			MX53_PAD_EIM_A20__IPU_DISP1_DAT_15	0x5
-+			MX53_PAD_EIM_A21__IPU_DISP1_DAT_16	0x5
-+			MX53_PAD_EIM_A22__IPU_DISP1_DAT_17	0x5
-+			MX53_PAD_EIM_A23__IPU_DISP1_DAT_18	0x5
-+			MX53_PAD_EIM_A24__IPU_DISP1_DAT_19	0x5
-+			MX53_PAD_EIM_D31__IPU_DISP1_DAT_20	0x5
-+			MX53_PAD_EIM_D30__IPU_DISP1_DAT_21	0x5
-+			MX53_PAD_EIM_D26__IPU_DISP1_DAT_22	0x5
-+			MX53_PAD_EIM_D27__IPU_DISP1_DAT_23	0x5
-+			MX53_PAD_EIM_A16__IPU_DI1_DISP_CLK	0x5
-+			MX53_PAD_EIM_DA13__IPU_DI1_D0_CS	0x5
-+			MX53_PAD_EIM_DA14__IPU_DI1_D1_CS	0x5
-+			MX53_PAD_EIM_DA15__IPU_DI1_PIN1		0x5
-+			MX53_PAD_EIM_DA11__IPU_DI1_PIN2		0x5
-+			MX53_PAD_EIM_DA12__IPU_DI1_PIN3		0x5
-+			MX53_PAD_EIM_A25__IPU_DI1_PIN12		0x5
-+			MX53_PAD_EIM_DA10__IPU_DI1_PIN15	0x5
-+		>;
-+	};
- 
--		pinctrl_pwm1: pwm1grp {
--			fsl,pins = <
--				MX53_PAD_DISP0_DAT8__PWM1_PWMO		0x5
--			>;
--		};
-+	pinctrl_pwm1: pwm1grp {
-+		fsl,pins = <
-+			MX53_PAD_DISP0_DAT8__PWM1_PWMO		0x5
-+		>;
-+	};
- 
--		pinctrl_uart1: uart1grp {
--			fsl,pins = <
--				MX53_PAD_PATA_DIOW__UART1_TXD_MUX	0x1e4
--				MX53_PAD_PATA_DMACK__UART1_RXD_MUX	0x1e4
--			>;
--		};
-+	pinctrl_uart1: uart1grp {
-+		fsl,pins = <
-+			MX53_PAD_PATA_DIOW__UART1_TXD_MUX	0x1e4
-+			MX53_PAD_PATA_DMACK__UART1_RXD_MUX	0x1e4
-+		>;
-+	};
- 
--		pinctrl_uart2: uart2grp {
--			fsl,pins = <
--				MX53_PAD_PATA_BUFFER_EN__UART2_RXD_MUX	0x1e4
--				MX53_PAD_PATA_DMARQ__UART2_TXD_MUX	0x1e4
--			>;
--		};
-+	pinctrl_uart2: uart2grp {
-+		fsl,pins = <
-+			MX53_PAD_PATA_BUFFER_EN__UART2_RXD_MUX	0x1e4
-+			MX53_PAD_PATA_DMARQ__UART2_TXD_MUX	0x1e4
-+		>;
-+	};
- 
--		pinctrl_uart3: uart3grp {
--			fsl,pins = <
--				MX53_PAD_PATA_CS_0__UART3_TXD_MUX	0x1e4
--				MX53_PAD_PATA_CS_1__UART3_RXD_MUX	0x1e4
--				MX53_PAD_PATA_DA_1__UART3_CTS		0x1e4
--				MX53_PAD_PATA_DA_2__UART3_RTS		0x1e4
--			>;
--		};
-+	pinctrl_uart3: uart3grp {
-+		fsl,pins = <
-+			MX53_PAD_PATA_CS_0__UART3_TXD_MUX	0x1e4
-+			MX53_PAD_PATA_CS_1__UART3_RXD_MUX	0x1e4
-+			MX53_PAD_PATA_DA_1__UART3_CTS		0x1e4
-+			MX53_PAD_PATA_DA_2__UART3_RTS		0x1e4
-+		>;
- 	};
- };
- 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx53-m53menlo.dts b/arch/arm/boot/dts/nxp/imx/imx53-m53menlo.dts
-index 558751e730f3e..6210673f93bea 100644
---- a/arch/arm/boot/dts/nxp/imx/imx53-m53menlo.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx53-m53menlo.dts
-@@ -278,186 +278,184 @@ &iomuxc {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_hog>;
- 
--	imx53-m53evk {
--		hoggrp {
--			fsl,pins = <
--				MX53_PAD_GPIO_19__CCM_CLKO		0x1e4
--				MX53_PAD_CSI0_DATA_EN__GPIO5_20		0x1e4
--				MX53_PAD_CSI0_DAT4__GPIO5_22		0x1e4
--				MX53_PAD_CSI0_DAT5__GPIO5_23		0x1c4
--				MX53_PAD_CSI0_DAT6__GPIO5_24		0x1e4
--				MX53_PAD_CSI0_DAT7__GPIO5_25		0x1e4
--				MX53_PAD_CSI0_DAT8__GPIO5_26		0x1e4
--				MX53_PAD_CSI0_DAT9__GPIO5_27		0x1c4
--				MX53_PAD_CSI0_DAT10__GPIO5_28		0x1e4
--				MX53_PAD_CSI0_DAT11__GPIO5_29		0x1e4
--				MX53_PAD_PATA_DATA11__GPIO2_11		0x1e4
--				MX53_PAD_EIM_D24__GPIO3_24		0x1e4
--				MX53_PAD_EIM_D25__GPIO3_25		0x1e4
--				MX53_PAD_EIM_D29__GPIO3_29		0x1e4
--				MX53_PAD_CSI0_PIXCLK__GPIO5_18		0x1e4
--				MX53_PAD_CSI0_VSYNC__GPIO5_21		0x1e4
--				MX53_PAD_CSI0_DAT18__GPIO6_4		0x1c4
--				MX53_PAD_PATA_DATA8__GPIO2_8		0x1e4
--			>;
--		};
-+	hoggrp {
-+		fsl,pins = <
-+			MX53_PAD_GPIO_19__CCM_CLKO		0x1e4
-+			MX53_PAD_CSI0_DATA_EN__GPIO5_20		0x1e4
-+			MX53_PAD_CSI0_DAT4__GPIO5_22		0x1e4
-+			MX53_PAD_CSI0_DAT5__GPIO5_23		0x1c4
-+			MX53_PAD_CSI0_DAT6__GPIO5_24		0x1e4
-+			MX53_PAD_CSI0_DAT7__GPIO5_25		0x1e4
-+			MX53_PAD_CSI0_DAT8__GPIO5_26		0x1e4
-+			MX53_PAD_CSI0_DAT9__GPIO5_27		0x1c4
-+			MX53_PAD_CSI0_DAT10__GPIO5_28		0x1e4
-+			MX53_PAD_CSI0_DAT11__GPIO5_29		0x1e4
-+			MX53_PAD_PATA_DATA11__GPIO2_11		0x1e4
-+			MX53_PAD_EIM_D24__GPIO3_24		0x1e4
-+			MX53_PAD_EIM_D25__GPIO3_25		0x1e4
-+			MX53_PAD_EIM_D29__GPIO3_29		0x1e4
-+			MX53_PAD_CSI0_PIXCLK__GPIO5_18		0x1e4
-+			MX53_PAD_CSI0_VSYNC__GPIO5_21		0x1e4
-+			MX53_PAD_CSI0_DAT18__GPIO6_4		0x1c4
-+			MX53_PAD_PATA_DATA8__GPIO2_8		0x1e4
-+		>;
-+	};
- 
--		pinctrl_led: ledgrp {
--			fsl,pins = <
--				MX53_PAD_CSI0_DAT15__GPIO6_1		0x1c4
--				MX53_PAD_CSI0_DAT16__GPIO6_2		0x1c4
--			>;
--		};
-+	pinctrl_led: ledgrp {
-+		fsl,pins = <
-+			MX53_PAD_CSI0_DAT15__GPIO6_1		0x1c4
-+			MX53_PAD_CSI0_DAT16__GPIO6_2		0x1c4
-+		>;
-+	};
- 
--		pinctrl_beeper: beepergrp {
--			fsl,pins = <
--				MX53_PAD_CSI0_DAT17__GPIO6_3		0x1c4
--			>;
--		};
-+	pinctrl_beeper: beepergrp {
-+		fsl,pins = <
-+			MX53_PAD_CSI0_DAT17__GPIO6_3		0x1c4
-+		>;
-+	};
- 
--		pinctrl_can1: can1grp {
--			fsl,pins = <
--				MX53_PAD_GPIO_7__CAN1_TXCAN		0x1c4
--				MX53_PAD_GPIO_8__CAN1_RXCAN		0x1c4
--			>;
--		};
-+	pinctrl_can1: can1grp {
-+		fsl,pins = <
-+			MX53_PAD_GPIO_7__CAN1_TXCAN		0x1c4
-+			MX53_PAD_GPIO_8__CAN1_RXCAN		0x1c4
-+		>;
-+	};
- 
--		pinctrl_can2: can2grp {
--			fsl,pins = <
--				MX53_PAD_KEY_COL4__CAN2_TXCAN		0x1e4
--				MX53_PAD_KEY_ROW4__CAN2_RXCAN		0x1c4
--			>;
--		};
-+	pinctrl_can2: can2grp {
-+		fsl,pins = <
-+			MX53_PAD_KEY_COL4__CAN2_TXCAN		0x1e4
-+			MX53_PAD_KEY_ROW4__CAN2_RXCAN		0x1c4
-+		>;
-+	};
- 
--		pinctrl_display_gpio: display-gpiogrp {
--			fsl,pins = <
--				MX53_PAD_CSI0_DAT12__GPIO5_30		0x1c4 /* Reset */
--				MX53_PAD_CSI0_MCLK__GPIO5_19		0x1e4 /* Int-K */
--				MX53_PAD_CSI0_DAT13__GPIO5_31		0x1c4 /* Int-I */
-+	pinctrl_display_gpio: display-gpiogrp {
-+		fsl,pins = <
-+			MX53_PAD_CSI0_DAT12__GPIO5_30		0x1c4 /* Reset */
-+			MX53_PAD_CSI0_MCLK__GPIO5_19		0x1e4 /* Int-K */
-+			MX53_PAD_CSI0_DAT13__GPIO5_31		0x1c4 /* Int-I */
- 
--				MX53_PAD_CSI0_DAT14__GPIO6_0		0x1c4 /* Power down */
--			>;
--		};
-+			MX53_PAD_CSI0_DAT14__GPIO6_0		0x1c4 /* Power down */
-+		>;
-+	};
- 
--		pinctrl_edt_ft5x06: edt-ft5x06grp {
--			fsl,pins = <
--				MX53_PAD_PATA_DATA9__GPIO2_9		0x1e4 /* Reset */
--				MX53_PAD_CSI0_DAT19__GPIO6_5		0x1c4 /* Interrupt */
--				MX53_PAD_PATA_DATA10__GPIO2_10		0x1e4 /* Wake */
--			>;
--		};
-+	pinctrl_edt_ft5x06: edt-ft5x06grp {
-+		fsl,pins = <
-+			MX53_PAD_PATA_DATA9__GPIO2_9		0x1e4 /* Reset */
-+			MX53_PAD_CSI0_DAT19__GPIO6_5		0x1c4 /* Interrupt */
-+			MX53_PAD_PATA_DATA10__GPIO2_10		0x1e4 /* Wake */
-+		>;
-+	};
- 
--		pinctrl_ecspi2: ecspi2grp {
--			fsl,pins = <
--				MX53_PAD_EIM_CS0__ECSPI2_SCLK		0xe4
--				MX53_PAD_EIM_OE__ECSPI2_MISO		0xe4
--				MX53_PAD_EIM_CS1__ECSPI2_MOSI		0xe4
--				MX53_PAD_EIM_RW__GPIO2_26		0xe4
--				MX53_PAD_EIM_LBA__GPIO2_27		0xe4
--			>;
--		};
-+	pinctrl_ecspi2: ecspi2grp {
-+		fsl,pins = <
-+			MX53_PAD_EIM_CS0__ECSPI2_SCLK		0xe4
-+			MX53_PAD_EIM_OE__ECSPI2_MISO		0xe4
-+			MX53_PAD_EIM_CS1__ECSPI2_MOSI		0xe4
-+			MX53_PAD_EIM_RW__GPIO2_26		0xe4
-+			MX53_PAD_EIM_LBA__GPIO2_27		0xe4
-+		>;
-+	};
- 
--		pinctrl_esdhc1: esdhc1grp {
--			fsl,pins = <
--				MX53_PAD_SD1_DATA0__ESDHC1_DAT0		0x1e4
--				MX53_PAD_SD1_DATA1__ESDHC1_DAT1		0x1e4
--				MX53_PAD_SD1_DATA2__ESDHC1_DAT2		0x1e4
--				MX53_PAD_SD1_DATA3__ESDHC1_DAT3		0x1e4
--				MX53_PAD_SD1_CMD__ESDHC1_CMD		0x1e4
--				MX53_PAD_SD1_CLK__ESDHC1_CLK		0x1e4
--				MX53_PAD_GPIO_1__GPIO1_1		0x1c4
--				MX53_PAD_GPIO_9__GPIO1_9		0x1e4
--			>;
--		};
-+	pinctrl_esdhc1: esdhc1grp {
-+		fsl,pins = <
-+			MX53_PAD_SD1_DATA0__ESDHC1_DAT0		0x1e4
-+			MX53_PAD_SD1_DATA1__ESDHC1_DAT1		0x1e4
-+			MX53_PAD_SD1_DATA2__ESDHC1_DAT2		0x1e4
-+			MX53_PAD_SD1_DATA3__ESDHC1_DAT3		0x1e4
-+			MX53_PAD_SD1_CMD__ESDHC1_CMD		0x1e4
-+			MX53_PAD_SD1_CLK__ESDHC1_CLK		0x1e4
-+			MX53_PAD_GPIO_1__GPIO1_1		0x1c4
-+			MX53_PAD_GPIO_9__GPIO1_9		0x1e4
-+		>;
-+	};
- 
--		pinctrl_fec: fecgrp {
--			fsl,pins = <
--				MX53_PAD_FEC_MDC__FEC_MDC		0x1e4
--				MX53_PAD_FEC_MDIO__FEC_MDIO		0x1e4
--				MX53_PAD_FEC_REF_CLK__FEC_TX_CLK	0x1e4
--				MX53_PAD_FEC_RX_ER__FEC_RX_ER		0x1e4
--				MX53_PAD_FEC_CRS_DV__FEC_RX_DV		0x1e4
--				MX53_PAD_FEC_RXD1__FEC_RDATA_1		0x1e4
--				MX53_PAD_FEC_RXD0__FEC_RDATA_0		0x1e4
--				MX53_PAD_FEC_TX_EN__FEC_TX_EN		0x1c4
--				MX53_PAD_FEC_TXD1__FEC_TDATA_1		0x1e4
--				MX53_PAD_FEC_TXD0__FEC_TDATA_0		0x1e4
--				MX53_PAD_PATA_DA_1__GPIO7_7		0x1e4
--				MX53_PAD_EIM_EB3__GPIO2_31		0x1e4
--			>;
--		};
-+	pinctrl_fec: fecgrp {
-+		fsl,pins = <
-+			MX53_PAD_FEC_MDC__FEC_MDC		0x1e4
-+			MX53_PAD_FEC_MDIO__FEC_MDIO		0x1e4
-+			MX53_PAD_FEC_REF_CLK__FEC_TX_CLK	0x1e4
-+			MX53_PAD_FEC_RX_ER__FEC_RX_ER		0x1e4
-+			MX53_PAD_FEC_CRS_DV__FEC_RX_DV		0x1e4
-+			MX53_PAD_FEC_RXD1__FEC_RDATA_1		0x1e4
-+			MX53_PAD_FEC_RXD0__FEC_RDATA_0		0x1e4
-+			MX53_PAD_FEC_TX_EN__FEC_TX_EN		0x1c4
-+			MX53_PAD_FEC_TXD1__FEC_TDATA_1		0x1e4
-+			MX53_PAD_FEC_TXD0__FEC_TDATA_0		0x1e4
-+			MX53_PAD_PATA_DA_1__GPIO7_7		0x1e4
-+			MX53_PAD_EIM_EB3__GPIO2_31		0x1e4
-+		>;
-+	};
- 
--		pinctrl_i2c1: i2c1grp {
--			fsl,pins = <
--				MX53_PAD_EIM_D21__I2C1_SCL		0x400001e4
--				MX53_PAD_EIM_D28__I2C1_SDA		0x400001e4
--			>;
--		};
-+	pinctrl_i2c1: i2c1grp {
-+		fsl,pins = <
-+			MX53_PAD_EIM_D21__I2C1_SCL		0x400001e4
-+			MX53_PAD_EIM_D28__I2C1_SDA		0x400001e4
-+		>;
-+	};
- 
--		pinctrl_i2c3: i2c3grp {
--			fsl,pins = <
--				MX53_PAD_GPIO_6__I2C3_SDA		0x400001e4
--				MX53_PAD_GPIO_5__I2C3_SCL		0x400001e4
--			>;
--		};
-+	pinctrl_i2c3: i2c3grp {
-+		fsl,pins = <
-+			MX53_PAD_GPIO_6__I2C3_SDA		0x400001e4
-+			MX53_PAD_GPIO_5__I2C3_SCL		0x400001e4
-+		>;
-+	};
- 
--		pinctrl_lvds0: lvds0grp {
--			/* LVDS pins only have pin mux configuration */
--			fsl,pins = <
--				MX53_PAD_LVDS0_CLK_P__LDB_LVDS0_CLK	0x80000000
--				MX53_PAD_LVDS0_TX0_P__LDB_LVDS0_TX0	0x80000000
--				MX53_PAD_LVDS0_TX1_P__LDB_LVDS0_TX1	0x80000000
--				MX53_PAD_LVDS0_TX2_P__LDB_LVDS0_TX2	0x80000000
--				MX53_PAD_LVDS0_TX3_P__LDB_LVDS0_TX3	0x80000000
--			>;
--		};
-+	pinctrl_lvds0: lvds0grp {
-+		/* LVDS pins only have pin mux configuration */
-+		fsl,pins = <
-+			MX53_PAD_LVDS0_CLK_P__LDB_LVDS0_CLK	0x80000000
-+			MX53_PAD_LVDS0_TX0_P__LDB_LVDS0_TX0	0x80000000
-+			MX53_PAD_LVDS0_TX1_P__LDB_LVDS0_TX1	0x80000000
-+			MX53_PAD_LVDS0_TX2_P__LDB_LVDS0_TX2	0x80000000
-+			MX53_PAD_LVDS0_TX3_P__LDB_LVDS0_TX3	0x80000000
-+		>;
-+	};
- 
--		pinctrl_power_button: powerbutgrp {
--			fsl,pins = <
--				MX53_PAD_SD2_DATA0__GPIO1_15		0x1e4
--			>;
--		};
-+	pinctrl_power_button: powerbutgrp {
-+		fsl,pins = <
-+			MX53_PAD_SD2_DATA0__GPIO1_15		0x1e4
-+		>;
-+	};
- 
--		pinctrl_power_out: poweroutgrp {
--			fsl,pins = <
--				MX53_PAD_SD2_DATA2__GPIO1_13		0x1e4
--			>;
--		};
-+	pinctrl_power_out: poweroutgrp {
-+		fsl,pins = <
-+			MX53_PAD_SD2_DATA2__GPIO1_13		0x1e4
-+		>;
-+	};
- 
--		pinctrl_uart1: uart1grp {
--			fsl,pins = <
--				MX53_PAD_PATA_DIOW__UART1_TXD_MUX	0x1e4
--				MX53_PAD_PATA_DMACK__UART1_RXD_MUX	0x1e4
--				MX53_PAD_PATA_IORDY__UART1_RTS		0x1e4
--				MX53_PAD_PATA_RESET_B__UART1_CTS	0x1e4
--			>;
--		};
-+	pinctrl_uart1: uart1grp {
-+		fsl,pins = <
-+			MX53_PAD_PATA_DIOW__UART1_TXD_MUX	0x1e4
-+			MX53_PAD_PATA_DMACK__UART1_RXD_MUX	0x1e4
-+			MX53_PAD_PATA_IORDY__UART1_RTS		0x1e4
-+			MX53_PAD_PATA_RESET_B__UART1_CTS	0x1e4
-+		>;
-+	};
- 
--		pinctrl_uart2: uart2grp {
--			fsl,pins = <
--				MX53_PAD_PATA_BUFFER_EN__UART2_RXD_MUX	0x1e4
--				MX53_PAD_PATA_DMARQ__UART2_TXD_MUX	0x1e4
--				MX53_PAD_PATA_DIOR__UART2_RTS		0x1e4
--				MX53_PAD_PATA_INTRQ__UART2_CTS		0x1e4
--			>;
--		};
-+	pinctrl_uart2: uart2grp {
-+		fsl,pins = <
-+			MX53_PAD_PATA_BUFFER_EN__UART2_RXD_MUX	0x1e4
-+			MX53_PAD_PATA_DMARQ__UART2_TXD_MUX	0x1e4
-+			MX53_PAD_PATA_DIOR__UART2_RTS		0x1e4
-+			MX53_PAD_PATA_INTRQ__UART2_CTS		0x1e4
-+		>;
-+	};
- 
--		pinctrl_uart3: uart3grp {
--			fsl,pins = <
--				MX53_PAD_PATA_CS_1__UART3_RXD_MUX	0x1e4
--				MX53_PAD_PATA_CS_0__UART3_TXD_MUX	0x1e4
--				MX53_PAD_PATA_DA_2__UART3_RTS		0x1e4
--			>;
--		};
-+	pinctrl_uart3: uart3grp {
-+		fsl,pins = <
-+			MX53_PAD_PATA_CS_1__UART3_RXD_MUX	0x1e4
-+			MX53_PAD_PATA_CS_0__UART3_TXD_MUX	0x1e4
-+			MX53_PAD_PATA_DA_2__UART3_RTS		0x1e4
-+		>;
-+	};
- 
--		pinctrl_usb: usbgrp {
--			fsl,pins = <
--				MX53_PAD_GPIO_2__GPIO1_2		0x1c4
--				MX53_PAD_GPIO_3__USBOH3_USBH1_OC	0x1c4
--				MX53_PAD_GPIO_4__GPIO1_4		0x1c4
--				MX53_PAD_GPIO_18__GPIO7_13		0x1c4
--			>;
--		};
-+	pinctrl_usb: usbgrp {
-+		fsl,pins = <
-+			MX53_PAD_GPIO_2__GPIO1_2		0x1c4
-+			MX53_PAD_GPIO_3__USBOH3_USBH1_OC	0x1c4
-+			MX53_PAD_GPIO_4__GPIO1_4		0x1c4
-+			MX53_PAD_GPIO_18__GPIO7_13		0x1c4
-+		>;
- 	};
- };
- 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx53-mba53.dts b/arch/arm/boot/dts/nxp/imx/imx53-mba53.dts
-index 0d336cbdb4513..c14eb7280f09e 100644
---- a/arch/arm/boot/dts/nxp/imx/imx53-mba53.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx53-mba53.dts
-@@ -75,71 +75,65 @@ &ldb {
- };
- 
- &iomuxc {
--	lvds1 {
--		pinctrl_lvds1_1: lvds1-grp1 {
--			fsl,pins = <
--				MX53_PAD_LVDS0_TX3_P__LDB_LVDS0_TX3 0x80000000
--				MX53_PAD_LVDS0_CLK_P__LDB_LVDS0_CLK 0x80000000
--				MX53_PAD_LVDS0_TX2_P__LDB_LVDS0_TX2 0x80000000
--				MX53_PAD_LVDS0_TX1_P__LDB_LVDS0_TX1 0x80000000
--				MX53_PAD_LVDS0_TX0_P__LDB_LVDS0_TX0 0x80000000
--			>;
--		};
-+	pinctrl_lvds1_1: lvds1-1-grp {
-+		fsl,pins = <
-+			MX53_PAD_LVDS0_TX3_P__LDB_LVDS0_TX3 0x80000000
-+			MX53_PAD_LVDS0_CLK_P__LDB_LVDS0_CLK 0x80000000
-+			MX53_PAD_LVDS0_TX2_P__LDB_LVDS0_TX2 0x80000000
-+			MX53_PAD_LVDS0_TX1_P__LDB_LVDS0_TX1 0x80000000
-+			MX53_PAD_LVDS0_TX0_P__LDB_LVDS0_TX0 0x80000000
-+		>;
-+	};
- 
--		pinctrl_lvds1_2: lvds1-grp2 {
--			fsl,pins = <
--				MX53_PAD_LVDS1_TX3_P__LDB_LVDS1_TX3 0x80000000
--				MX53_PAD_LVDS1_TX2_P__LDB_LVDS1_TX2 0x80000000
--				MX53_PAD_LVDS1_CLK_P__LDB_LVDS1_CLK 0x80000000
--				MX53_PAD_LVDS1_TX1_P__LDB_LVDS1_TX1 0x80000000
--				MX53_PAD_LVDS1_TX0_P__LDB_LVDS1_TX0 0x80000000
--			>;
--		};
-+	pinctrl_lvds1_2: lvds1-2-grp {
-+		fsl,pins = <
-+			MX53_PAD_LVDS1_TX3_P__LDB_LVDS1_TX3 0x80000000
-+			MX53_PAD_LVDS1_TX2_P__LDB_LVDS1_TX2 0x80000000
-+			MX53_PAD_LVDS1_CLK_P__LDB_LVDS1_CLK 0x80000000
-+			MX53_PAD_LVDS1_TX1_P__LDB_LVDS1_TX1 0x80000000
-+			MX53_PAD_LVDS1_TX0_P__LDB_LVDS1_TX0 0x80000000
-+		>;
- 	};
- 
--	disp1 {
--		pinctrl_disp1_1: disp1-grp1 {
--			fsl,pins = <
--				MX53_PAD_EIM_A16__IPU_DI1_DISP_CLK 0x80000000 /* DISP1_CLK */
--				MX53_PAD_EIM_DA10__IPU_DI1_PIN15   0x80000000 /* DISP1_DRDY */
--				MX53_PAD_EIM_D23__IPU_DI1_PIN2     0x80000000 /* DISP1_HSYNC */
--				MX53_PAD_EIM_EB3__IPU_DI1_PIN3     0x80000000 /* DISP1_VSYNC */
--				MX53_PAD_EIM_D26__IPU_DISP1_DAT_22 0x80000000
--				MX53_PAD_EIM_D27__IPU_DISP1_DAT_23 0x80000000
--				MX53_PAD_EIM_D30__IPU_DISP1_DAT_21 0x80000000
--				MX53_PAD_EIM_D31__IPU_DISP1_DAT_20 0x80000000
--				MX53_PAD_EIM_A24__IPU_DISP1_DAT_19 0x80000000
--				MX53_PAD_EIM_A23__IPU_DISP1_DAT_18 0x80000000
--				MX53_PAD_EIM_A22__IPU_DISP1_DAT_17 0x80000000
--				MX53_PAD_EIM_A21__IPU_DISP1_DAT_16 0x80000000
--				MX53_PAD_EIM_A20__IPU_DISP1_DAT_15 0x80000000
--				MX53_PAD_EIM_A19__IPU_DISP1_DAT_14 0x80000000
--				MX53_PAD_EIM_A18__IPU_DISP1_DAT_13 0x80000000
--				MX53_PAD_EIM_A17__IPU_DISP1_DAT_12 0x80000000
--				MX53_PAD_EIM_EB0__IPU_DISP1_DAT_11 0x80000000
--				MX53_PAD_EIM_EB1__IPU_DISP1_DAT_10 0x80000000
--				MX53_PAD_EIM_DA0__IPU_DISP1_DAT_9  0x80000000
--				MX53_PAD_EIM_DA1__IPU_DISP1_DAT_8  0x80000000
--				MX53_PAD_EIM_DA2__IPU_DISP1_DAT_7  0x80000000
--				MX53_PAD_EIM_DA3__IPU_DISP1_DAT_6  0x80000000
--				MX53_PAD_EIM_DA4__IPU_DISP1_DAT_5  0x80000000
--				MX53_PAD_EIM_DA5__IPU_DISP1_DAT_4  0x80000000
--				MX53_PAD_EIM_DA6__IPU_DISP1_DAT_3  0x80000000
--				MX53_PAD_EIM_DA7__IPU_DISP1_DAT_2  0x80000000
--				MX53_PAD_EIM_DA8__IPU_DISP1_DAT_1  0x80000000
--				MX53_PAD_EIM_DA9__IPU_DISP1_DAT_0  0x80000000
--			>;
--		};
-+	pinctrl_disp1_1: disp1-1-grp {
-+		fsl,pins = <
-+			MX53_PAD_EIM_A16__IPU_DI1_DISP_CLK 0x80000000 /* DISP1_CLK */
-+			MX53_PAD_EIM_DA10__IPU_DI1_PIN15   0x80000000 /* DISP1_DRDY */
-+			MX53_PAD_EIM_D23__IPU_DI1_PIN2     0x80000000 /* DISP1_HSYNC */
-+			MX53_PAD_EIM_EB3__IPU_DI1_PIN3     0x80000000 /* DISP1_VSYNC */
-+			MX53_PAD_EIM_D26__IPU_DISP1_DAT_22 0x80000000
-+			MX53_PAD_EIM_D27__IPU_DISP1_DAT_23 0x80000000
-+			MX53_PAD_EIM_D30__IPU_DISP1_DAT_21 0x80000000
-+			MX53_PAD_EIM_D31__IPU_DISP1_DAT_20 0x80000000
-+			MX53_PAD_EIM_A24__IPU_DISP1_DAT_19 0x80000000
-+			MX53_PAD_EIM_A23__IPU_DISP1_DAT_18 0x80000000
-+			MX53_PAD_EIM_A22__IPU_DISP1_DAT_17 0x80000000
-+			MX53_PAD_EIM_A21__IPU_DISP1_DAT_16 0x80000000
-+			MX53_PAD_EIM_A20__IPU_DISP1_DAT_15 0x80000000
-+			MX53_PAD_EIM_A19__IPU_DISP1_DAT_14 0x80000000
-+			MX53_PAD_EIM_A18__IPU_DISP1_DAT_13 0x80000000
-+			MX53_PAD_EIM_A17__IPU_DISP1_DAT_12 0x80000000
-+			MX53_PAD_EIM_EB0__IPU_DISP1_DAT_11 0x80000000
-+			MX53_PAD_EIM_EB1__IPU_DISP1_DAT_10 0x80000000
-+			MX53_PAD_EIM_DA0__IPU_DISP1_DAT_9  0x80000000
-+			MX53_PAD_EIM_DA1__IPU_DISP1_DAT_8  0x80000000
-+			MX53_PAD_EIM_DA2__IPU_DISP1_DAT_7  0x80000000
-+			MX53_PAD_EIM_DA3__IPU_DISP1_DAT_6  0x80000000
-+			MX53_PAD_EIM_DA4__IPU_DISP1_DAT_5  0x80000000
-+			MX53_PAD_EIM_DA5__IPU_DISP1_DAT_4  0x80000000
-+			MX53_PAD_EIM_DA6__IPU_DISP1_DAT_3  0x80000000
-+			MX53_PAD_EIM_DA7__IPU_DISP1_DAT_2  0x80000000
-+			MX53_PAD_EIM_DA8__IPU_DISP1_DAT_1  0x80000000
-+			MX53_PAD_EIM_DA9__IPU_DISP1_DAT_0  0x80000000
-+		>;
- 	};
- 
--	tve {
--		pinctrl_vga_sync_1: vgasync-grp1 {
--			fsl,pins = <
--				/* VGA_VSYNC, HSYNC with max drive strength */
--				MX53_PAD_EIM_CS1__IPU_DI1_PIN6	   0xe6
--				MX53_PAD_EIM_DA15__IPU_DI1_PIN4	   0xe6
--			>;
--		};
-+	pinctrl_vga_sync_1: vgasync-1-grp {
-+		fsl,pins = <
-+			/* VGA_VSYNC, HSYNC with max drive strength */
-+			MX53_PAD_EIM_CS1__IPU_DI1_PIN6	   0xe6
-+			MX53_PAD_EIM_DA15__IPU_DI1_PIN4	   0xe6
-+		>;
- 	};
- };
- 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx53-qsb-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx53-qsb-common.dtsi
-index 05d7a462ea25a..1869ad86baf20 100644
---- a/arch/arm/boot/dts/nxp/imx/imx53-qsb-common.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx53-qsb-common.dtsi
-@@ -170,157 +170,155 @@ &iomuxc {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_hog>;
- 
--	imx53-qsb {
--		pinctrl_hog: hoggrp {
--			fsl,pins = <
--				MX53_PAD_GPIO_8__GPIO1_8          0x80000000
--				MX53_PAD_PATA_DATA14__GPIO2_14    0x80000000
--				MX53_PAD_PATA_DATA15__GPIO2_15    0x80000000
--				MX53_PAD_EIM_DA11__GPIO3_11       0x80000000
--				MX53_PAD_EIM_DA12__GPIO3_12       0x80000000
--				MX53_PAD_PATA_DA_0__GPIO7_6       0x80000000
--				MX53_PAD_PATA_DA_2__GPIO7_8	  0x80000000
--				MX53_PAD_GPIO_16__GPIO7_11        0x80000000
--			>;
--		};
-+	pinctrl_hog: hoggrp {
-+		fsl,pins = <
-+			MX53_PAD_GPIO_8__GPIO1_8          0x80000000
-+			MX53_PAD_PATA_DATA14__GPIO2_14    0x80000000
-+			MX53_PAD_PATA_DATA15__GPIO2_15    0x80000000
-+			MX53_PAD_EIM_DA11__GPIO3_11       0x80000000
-+			MX53_PAD_EIM_DA12__GPIO3_12       0x80000000
-+			MX53_PAD_PATA_DA_0__GPIO7_6       0x80000000
-+			MX53_PAD_PATA_DA_2__GPIO7_8	  0x80000000
-+			MX53_PAD_GPIO_16__GPIO7_11        0x80000000
-+		>;
-+	};
- 
--		led_pin_gpio7_7: led_gpio7_7 {
--			fsl,pins = <
--				MX53_PAD_PATA_DA_1__GPIO7_7 0x80000000
--			>;
--		};
-+	led_pin_gpio7_7: led_gpio7-7-grp {
-+		fsl,pins = <
-+			MX53_PAD_PATA_DA_1__GPIO7_7 0x80000000
-+		>;
-+	};
- 
--		pinctrl_audmux: audmuxgrp {
--			fsl,pins = <
--				MX53_PAD_KEY_COL0__AUDMUX_AUD5_TXC	0x80000000
--				MX53_PAD_KEY_ROW0__AUDMUX_AUD5_TXD	0x80000000
--				MX53_PAD_KEY_COL1__AUDMUX_AUD5_TXFS	0x80000000
--				MX53_PAD_KEY_ROW1__AUDMUX_AUD5_RXD	0x80000000
--			>;
--		};
-+	pinctrl_audmux: audmuxgrp {
-+		fsl,pins = <
-+			MX53_PAD_KEY_COL0__AUDMUX_AUD5_TXC	0x80000000
-+			MX53_PAD_KEY_ROW0__AUDMUX_AUD5_TXD	0x80000000
-+			MX53_PAD_KEY_COL1__AUDMUX_AUD5_TXFS	0x80000000
-+			MX53_PAD_KEY_ROW1__AUDMUX_AUD5_RXD	0x80000000
-+		>;
-+	};
- 
--		pinctrl_codec: codecgrp {
--			fsl,pins = <
--				MX53_PAD_GPIO_0__CCM_SSI_EXT1_CLK	0x1c4
--			>;
--		};
-+	pinctrl_codec: codecgrp {
-+		fsl,pins = <
-+			MX53_PAD_GPIO_0__CCM_SSI_EXT1_CLK	0x1c4
-+		>;
-+	};
- 
--		pinctrl_display_power: displaypowergrp {
--			fsl,pins = <
--				MX53_PAD_EIM_D24__GPIO3_24		0x1e4
--			>;
--		};
-+	pinctrl_display_power: displaypowergrp {
-+		fsl,pins = <
-+			MX53_PAD_EIM_D24__GPIO3_24		0x1e4
-+		>;
-+	};
- 
--		pinctrl_esdhc1: esdhc1grp {
--			fsl,pins = <
--				MX53_PAD_SD1_DATA0__ESDHC1_DAT0		0x1d5
--				MX53_PAD_SD1_DATA1__ESDHC1_DAT1		0x1d5
--				MX53_PAD_SD1_DATA2__ESDHC1_DAT2		0x1d5
--				MX53_PAD_SD1_DATA3__ESDHC1_DAT3		0x1d5
--				MX53_PAD_SD1_CMD__ESDHC1_CMD		0x1d5
--				MX53_PAD_SD1_CLK__ESDHC1_CLK		0x1d5
--				MX53_PAD_EIM_DA13__GPIO3_13		0xe4
--			>;
--		};
-+	pinctrl_esdhc1: esdhc1grp {
-+		fsl,pins = <
-+			MX53_PAD_SD1_DATA0__ESDHC1_DAT0		0x1d5
-+			MX53_PAD_SD1_DATA1__ESDHC1_DAT1		0x1d5
-+			MX53_PAD_SD1_DATA2__ESDHC1_DAT2		0x1d5
-+			MX53_PAD_SD1_DATA3__ESDHC1_DAT3		0x1d5
-+			MX53_PAD_SD1_CMD__ESDHC1_CMD		0x1d5
-+			MX53_PAD_SD1_CLK__ESDHC1_CLK		0x1d5
-+			MX53_PAD_EIM_DA13__GPIO3_13		0xe4
-+		>;
-+	};
- 
--		pinctrl_esdhc3: esdhc3grp {
--			fsl,pins = <
--				MX53_PAD_PATA_DATA8__ESDHC3_DAT0	0x1d5
--				MX53_PAD_PATA_DATA9__ESDHC3_DAT1	0x1d5
--				MX53_PAD_PATA_DATA10__ESDHC3_DAT2	0x1d5
--				MX53_PAD_PATA_DATA11__ESDHC3_DAT3	0x1d5
--				MX53_PAD_PATA_DATA0__ESDHC3_DAT4	0x1d5
--				MX53_PAD_PATA_DATA1__ESDHC3_DAT5	0x1d5
--				MX53_PAD_PATA_DATA2__ESDHC3_DAT6	0x1d5
--				MX53_PAD_PATA_DATA3__ESDHC3_DAT7	0x1d5
--				MX53_PAD_PATA_RESET_B__ESDHC3_CMD	0x1d5
--				MX53_PAD_PATA_IORDY__ESDHC3_CLK		0x1d5
--			>;
--		};
-+	pinctrl_esdhc3: esdhc3grp {
-+		fsl,pins = <
-+			MX53_PAD_PATA_DATA8__ESDHC3_DAT0	0x1d5
-+			MX53_PAD_PATA_DATA9__ESDHC3_DAT1	0x1d5
-+			MX53_PAD_PATA_DATA10__ESDHC3_DAT2	0x1d5
-+			MX53_PAD_PATA_DATA11__ESDHC3_DAT3	0x1d5
-+			MX53_PAD_PATA_DATA0__ESDHC3_DAT4	0x1d5
-+			MX53_PAD_PATA_DATA1__ESDHC3_DAT5	0x1d5
-+			MX53_PAD_PATA_DATA2__ESDHC3_DAT6	0x1d5
-+			MX53_PAD_PATA_DATA3__ESDHC3_DAT7	0x1d5
-+			MX53_PAD_PATA_RESET_B__ESDHC3_CMD	0x1d5
-+			MX53_PAD_PATA_IORDY__ESDHC3_CLK		0x1d5
-+		>;
-+	};
- 
--		pinctrl_fec: fecgrp {
--			fsl,pins = <
--				MX53_PAD_FEC_MDC__FEC_MDC		0x4
--				MX53_PAD_FEC_MDIO__FEC_MDIO		0x1fc
--				MX53_PAD_FEC_REF_CLK__FEC_TX_CLK	0x180
--				MX53_PAD_FEC_RX_ER__FEC_RX_ER		0x180
--				MX53_PAD_FEC_CRS_DV__FEC_RX_DV		0x180
--				MX53_PAD_FEC_RXD1__FEC_RDATA_1		0x180
--				MX53_PAD_FEC_RXD0__FEC_RDATA_0		0x180
--				MX53_PAD_FEC_TX_EN__FEC_TX_EN		0x4
--				MX53_PAD_FEC_TXD1__FEC_TDATA_1		0x4
--				MX53_PAD_FEC_TXD0__FEC_TDATA_0		0x4
--			>;
--		};
-+	pinctrl_fec: fecgrp {
-+		fsl,pins = <
-+			MX53_PAD_FEC_MDC__FEC_MDC		0x4
-+			MX53_PAD_FEC_MDIO__FEC_MDIO		0x1fc
-+			MX53_PAD_FEC_REF_CLK__FEC_TX_CLK	0x180
-+			MX53_PAD_FEC_RX_ER__FEC_RX_ER		0x180
-+			MX53_PAD_FEC_CRS_DV__FEC_RX_DV		0x180
-+			MX53_PAD_FEC_RXD1__FEC_RDATA_1		0x180
-+			MX53_PAD_FEC_RXD0__FEC_RDATA_0		0x180
-+			MX53_PAD_FEC_TX_EN__FEC_TX_EN		0x4
-+			MX53_PAD_FEC_TXD1__FEC_TDATA_1		0x4
-+			MX53_PAD_FEC_TXD0__FEC_TDATA_0		0x4
-+		>;
-+	};
- 
--		/* open drain */
--		pinctrl_i2c1: i2c1grp {
--			fsl,pins = <
--				MX53_PAD_CSI0_DAT8__I2C1_SDA		0x400001ec
--				MX53_PAD_CSI0_DAT9__I2C1_SCL		0x400001ec
--			>;
--		};
-+	/* open drain */
-+	pinctrl_i2c1: i2c1grp {
-+		fsl,pins = <
-+			MX53_PAD_CSI0_DAT8__I2C1_SDA		0x400001ec
-+			MX53_PAD_CSI0_DAT9__I2C1_SCL		0x400001ec
-+		>;
-+	};
- 
--		pinctrl_i2c2: i2c2grp {
--			fsl,pins = <
--				MX53_PAD_KEY_ROW3__I2C2_SDA		0xc0000000
--				MX53_PAD_KEY_COL3__I2C2_SCL		0xc0000000
--			>;
--		};
-+	pinctrl_i2c2: i2c2grp {
-+		fsl,pins = <
-+			MX53_PAD_KEY_ROW3__I2C2_SDA		0xc0000000
-+			MX53_PAD_KEY_COL3__I2C2_SCL		0xc0000000
-+		>;
-+	};
- 
--		pinctrl_ipu_disp0: ipudisp0grp {
--			fsl,pins = <
--				MX53_PAD_DI0_DISP_CLK__IPU_DI0_DISP_CLK	0x5
--				MX53_PAD_DI0_PIN15__IPU_DI0_PIN15	0x5
--				MX53_PAD_DI0_PIN2__IPU_DI0_PIN2		0x5
--				MX53_PAD_DI0_PIN3__IPU_DI0_PIN3		0x5
--				MX53_PAD_DISP0_DAT0__IPU_DISP0_DAT_0	0x5
--				MX53_PAD_DISP0_DAT1__IPU_DISP0_DAT_1	0x5
--				MX53_PAD_DISP0_DAT2__IPU_DISP0_DAT_2	0x5
--				MX53_PAD_DISP0_DAT3__IPU_DISP0_DAT_3	0x5
--				MX53_PAD_DISP0_DAT4__IPU_DISP0_DAT_4	0x5
--				MX53_PAD_DISP0_DAT5__IPU_DISP0_DAT_5	0x5
--				MX53_PAD_DISP0_DAT6__IPU_DISP0_DAT_6	0x5
--				MX53_PAD_DISP0_DAT7__IPU_DISP0_DAT_7	0x5
--				MX53_PAD_DISP0_DAT8__IPU_DISP0_DAT_8	0x5
--				MX53_PAD_DISP0_DAT9__IPU_DISP0_DAT_9	0x5
--				MX53_PAD_DISP0_DAT10__IPU_DISP0_DAT_10	0x5
--				MX53_PAD_DISP0_DAT11__IPU_DISP0_DAT_11	0x5
--				MX53_PAD_DISP0_DAT12__IPU_DISP0_DAT_12	0x5
--				MX53_PAD_DISP0_DAT13__IPU_DISP0_DAT_13	0x5
--				MX53_PAD_DISP0_DAT14__IPU_DISP0_DAT_14	0x5
--				MX53_PAD_DISP0_DAT15__IPU_DISP0_DAT_15	0x5
--				MX53_PAD_DISP0_DAT16__IPU_DISP0_DAT_16	0x5
--				MX53_PAD_DISP0_DAT17__IPU_DISP0_DAT_17	0x5
--				MX53_PAD_DISP0_DAT18__IPU_DISP0_DAT_18	0x5
--				MX53_PAD_DISP0_DAT19__IPU_DISP0_DAT_19	0x5
--				MX53_PAD_DISP0_DAT20__IPU_DISP0_DAT_20	0x5
--				MX53_PAD_DISP0_DAT21__IPU_DISP0_DAT_21	0x5
--				MX53_PAD_DISP0_DAT22__IPU_DISP0_DAT_22	0x5
--				MX53_PAD_DISP0_DAT23__IPU_DISP0_DAT_23	0x5
--			>;
--		};
-+	pinctrl_ipu_disp0: ipudisp0grp {
-+		fsl,pins = <
-+			MX53_PAD_DI0_DISP_CLK__IPU_DI0_DISP_CLK	0x5
-+			MX53_PAD_DI0_PIN15__IPU_DI0_PIN15	0x5
-+			MX53_PAD_DI0_PIN2__IPU_DI0_PIN2		0x5
-+			MX53_PAD_DI0_PIN3__IPU_DI0_PIN3		0x5
-+			MX53_PAD_DISP0_DAT0__IPU_DISP0_DAT_0	0x5
-+			MX53_PAD_DISP0_DAT1__IPU_DISP0_DAT_1	0x5
-+			MX53_PAD_DISP0_DAT2__IPU_DISP0_DAT_2	0x5
-+			MX53_PAD_DISP0_DAT3__IPU_DISP0_DAT_3	0x5
-+			MX53_PAD_DISP0_DAT4__IPU_DISP0_DAT_4	0x5
-+			MX53_PAD_DISP0_DAT5__IPU_DISP0_DAT_5	0x5
-+			MX53_PAD_DISP0_DAT6__IPU_DISP0_DAT_6	0x5
-+			MX53_PAD_DISP0_DAT7__IPU_DISP0_DAT_7	0x5
-+			MX53_PAD_DISP0_DAT8__IPU_DISP0_DAT_8	0x5
-+			MX53_PAD_DISP0_DAT9__IPU_DISP0_DAT_9	0x5
-+			MX53_PAD_DISP0_DAT10__IPU_DISP0_DAT_10	0x5
-+			MX53_PAD_DISP0_DAT11__IPU_DISP0_DAT_11	0x5
-+			MX53_PAD_DISP0_DAT12__IPU_DISP0_DAT_12	0x5
-+			MX53_PAD_DISP0_DAT13__IPU_DISP0_DAT_13	0x5
-+			MX53_PAD_DISP0_DAT14__IPU_DISP0_DAT_14	0x5
-+			MX53_PAD_DISP0_DAT15__IPU_DISP0_DAT_15	0x5
-+			MX53_PAD_DISP0_DAT16__IPU_DISP0_DAT_16	0x5
-+			MX53_PAD_DISP0_DAT17__IPU_DISP0_DAT_17	0x5
-+			MX53_PAD_DISP0_DAT18__IPU_DISP0_DAT_18	0x5
-+			MX53_PAD_DISP0_DAT19__IPU_DISP0_DAT_19	0x5
-+			MX53_PAD_DISP0_DAT20__IPU_DISP0_DAT_20	0x5
-+			MX53_PAD_DISP0_DAT21__IPU_DISP0_DAT_21	0x5
-+			MX53_PAD_DISP0_DAT22__IPU_DISP0_DAT_22	0x5
-+			MX53_PAD_DISP0_DAT23__IPU_DISP0_DAT_23	0x5
-+		>;
-+	};
- 
--		pinctrl_pwm2: pwm2grp {
--			fsl,pins = <
--				MX53_PAD_GPIO_1__PWM2_PWMO		0x5
--			>;
--		};
-+	pinctrl_pwm2: pwm2grp {
-+		fsl,pins = <
-+			MX53_PAD_GPIO_1__PWM2_PWMO		0x5
-+		>;
-+	};
- 
--		pinctrl_vga_sync: vgasync-grp {
--			fsl,pins = <
--				/* VGA_HSYNC, VSYNC with max drive strength */
--				MX53_PAD_EIM_OE__IPU_DI1_PIN7 0xe6
--				MX53_PAD_EIM_RW__IPU_DI1_PIN8 0xe6
--			>;
--		};
-+	pinctrl_vga_sync: vgasync-grp {
-+		fsl,pins = <
-+			/* VGA_HSYNC, VSYNC with max drive strength */
-+			MX53_PAD_EIM_OE__IPU_DI1_PIN7 0xe6
-+			MX53_PAD_EIM_RW__IPU_DI1_PIN8 0xe6
-+		>;
-+	};
- 
--		pinctrl_uart1: uart1grp {
--			fsl,pins = <
--				MX53_PAD_CSI0_DAT10__UART1_TXD_MUX	0x1e4
--				MX53_PAD_CSI0_DAT11__UART1_RXD_MUX	0x1e4
--			>;
--		};
-+	pinctrl_uart1: uart1grp {
-+		fsl,pins = <
-+			MX53_PAD_CSI0_DAT10__UART1_TXD_MUX	0x1e4
-+			MX53_PAD_CSI0_DAT11__UART1_RXD_MUX	0x1e4
-+		>;
- 	};
- };
- 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx53-qsrb.dts b/arch/arm/boot/dts/nxp/imx/imx53-qsrb.dts
-index 1bbf24ad308a1..2f06ad61a7665 100644
---- a/arch/arm/boot/dts/nxp/imx/imx53-qsrb.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx53-qsrb.dts
-@@ -13,12 +13,10 @@ / {
- };
- 
- &iomuxc {
--	imx53-qsrb {
--		pinctrl_pmic: pmicgrp {
--			fsl,pins = <
--				MX53_PAD_CSI0_DAT5__GPIO5_23	0x1c4 /* IRQ */
--			>;
--		};
-+	pinctrl_pmic: pmicgrp {
-+		fsl,pins = <
-+			MX53_PAD_CSI0_DAT5__GPIO5_23	0x1c4 /* IRQ */
-+		>;
- 	};
- };
- 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx53-smd.dts b/arch/arm/boot/dts/nxp/imx/imx53-smd.dts
-index 55435dfdff8aa..386371c816f4d 100644
---- a/arch/arm/boot/dts/nxp/imx/imx53-smd.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx53-smd.dts
-@@ -98,140 +98,138 @@ &iomuxc {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_hog>;
- 
--	imx53-smd {
--		pinctrl_hog: hoggrp {
--			fsl,pins = <
--				MX53_PAD_PATA_DATA14__GPIO2_14 0x80000000
--				MX53_PAD_PATA_DATA15__GPIO2_15 0x80000000
--				MX53_PAD_EIM_EB2__GPIO2_30     0x80000000
--				MX53_PAD_EIM_DA13__GPIO3_13    0x80000000
--				MX53_PAD_EIM_D19__GPIO3_19     0x80000000
--				MX53_PAD_KEY_ROW2__GPIO4_11    0x80000000
--				MX53_PAD_PATA_DA_0__GPIO7_6    0x80000000
--			>;
--		};
-+	pinctrl_hog: hoggrp {
-+		fsl,pins = <
-+			MX53_PAD_PATA_DATA14__GPIO2_14 0x80000000
-+			MX53_PAD_PATA_DATA15__GPIO2_15 0x80000000
-+			MX53_PAD_EIM_EB2__GPIO2_30     0x80000000
-+			MX53_PAD_EIM_DA13__GPIO3_13    0x80000000
-+			MX53_PAD_EIM_D19__GPIO3_19     0x80000000
-+			MX53_PAD_KEY_ROW2__GPIO4_11    0x80000000
-+			MX53_PAD_PATA_DA_0__GPIO7_6    0x80000000
++			MX6SL_PAD_AUD_RXD__AUD3_RXD	  0x4130b0
++			MX6SL_PAD_AUD_TXC__AUD3_TXC	  0x4130b0
++			MX6SL_PAD_AUD_TXD__AUD3_TXD	  0x4110b0
++			MX6SL_PAD_AUD_TXFS__AUD3_TXFS	  0x4130b0
 +		>;
 +	};
  
 -		pinctrl_ecspi1: ecspi1grp {
 -			fsl,pins = <
--				MX53_PAD_EIM_D16__ECSPI1_SCLK		0x80000000
--				MX53_PAD_EIM_D17__ECSPI1_MISO		0x80000000
--				MX53_PAD_EIM_D18__ECSPI1_MOSI		0x80000000
+-				MX6SL_PAD_ECSPI1_MISO__ECSPI1_MISO	0x100b1
+-				MX6SL_PAD_ECSPI1_MOSI__ECSPI1_MOSI	0x100b1
+-				MX6SL_PAD_ECSPI1_SCLK__ECSPI1_SCLK	0x100b1
+-				MX6SL_PAD_ECSPI1_SS0__GPIO4_IO11	0x80000000
 -			>;
 -		};
 +	pinctrl_ecspi1: ecspi1grp {
 +		fsl,pins = <
-+			MX53_PAD_EIM_D16__ECSPI1_SCLK		0x80000000
-+			MX53_PAD_EIM_D17__ECSPI1_MISO		0x80000000
-+			MX53_PAD_EIM_D18__ECSPI1_MOSI		0x80000000
-+		>;
-+	};
- 
--		pinctrl_esdhc1: esdhc1grp {
--			fsl,pins = <
--				MX53_PAD_SD1_DATA0__ESDHC1_DAT0		0x1d5
--				MX53_PAD_SD1_DATA1__ESDHC1_DAT1		0x1d5
--				MX53_PAD_SD1_DATA2__ESDHC1_DAT2		0x1d5
--				MX53_PAD_SD1_DATA3__ESDHC1_DAT3		0x1d5
--				MX53_PAD_SD1_CMD__ESDHC1_CMD		0x1d5
--				MX53_PAD_SD1_CLK__ESDHC1_CLK		0x1d5
--			>;
--		};
-+	pinctrl_esdhc1: esdhc1grp {
-+		fsl,pins = <
-+			MX53_PAD_SD1_DATA0__ESDHC1_DAT0		0x1d5
-+			MX53_PAD_SD1_DATA1__ESDHC1_DAT1		0x1d5
-+			MX53_PAD_SD1_DATA2__ESDHC1_DAT2		0x1d5
-+			MX53_PAD_SD1_DATA3__ESDHC1_DAT3		0x1d5
-+			MX53_PAD_SD1_CMD__ESDHC1_CMD		0x1d5
-+			MX53_PAD_SD1_CLK__ESDHC1_CLK		0x1d5
-+		>;
-+	};
- 
--		pinctrl_esdhc2: esdhc2grp {
--			fsl,pins = <
--				MX53_PAD_SD2_CMD__ESDHC2_CMD		0x1d5
--				MX53_PAD_SD2_CLK__ESDHC2_CLK		0x1d5
--				MX53_PAD_SD2_DATA0__ESDHC2_DAT0		0x1d5
--				MX53_PAD_SD2_DATA1__ESDHC2_DAT1		0x1d5
--				MX53_PAD_SD2_DATA2__ESDHC2_DAT2		0x1d5
--				MX53_PAD_SD2_DATA3__ESDHC2_DAT3		0x1d5
--			>;
--		};
-+	pinctrl_esdhc2: esdhc2grp {
-+		fsl,pins = <
-+			MX53_PAD_SD2_CMD__ESDHC2_CMD		0x1d5
-+			MX53_PAD_SD2_CLK__ESDHC2_CLK		0x1d5
-+			MX53_PAD_SD2_DATA0__ESDHC2_DAT0		0x1d5
-+			MX53_PAD_SD2_DATA1__ESDHC2_DAT1		0x1d5
-+			MX53_PAD_SD2_DATA2__ESDHC2_DAT2		0x1d5
-+			MX53_PAD_SD2_DATA3__ESDHC2_DAT3		0x1d5
-+		>;
-+	};
- 
--		pinctrl_esdhc3: esdhc3grp {
--			fsl,pins = <
--				MX53_PAD_PATA_DATA8__ESDHC3_DAT0	0x1d5
--				MX53_PAD_PATA_DATA9__ESDHC3_DAT1	0x1d5
--				MX53_PAD_PATA_DATA10__ESDHC3_DAT2	0x1d5
--				MX53_PAD_PATA_DATA11__ESDHC3_DAT3	0x1d5
--				MX53_PAD_PATA_DATA0__ESDHC3_DAT4	0x1d5
--				MX53_PAD_PATA_DATA1__ESDHC3_DAT5	0x1d5
--				MX53_PAD_PATA_DATA2__ESDHC3_DAT6	0x1d5
--				MX53_PAD_PATA_DATA3__ESDHC3_DAT7	0x1d5
--				MX53_PAD_PATA_RESET_B__ESDHC3_CMD	0x1d5
--				MX53_PAD_PATA_IORDY__ESDHC3_CLK		0x1d5
--			>;
--		};
-+	pinctrl_esdhc3: esdhc3grp {
-+		fsl,pins = <
-+			MX53_PAD_PATA_DATA8__ESDHC3_DAT0	0x1d5
-+			MX53_PAD_PATA_DATA9__ESDHC3_DAT1	0x1d5
-+			MX53_PAD_PATA_DATA10__ESDHC3_DAT2	0x1d5
-+			MX53_PAD_PATA_DATA11__ESDHC3_DAT3	0x1d5
-+			MX53_PAD_PATA_DATA0__ESDHC3_DAT4	0x1d5
-+			MX53_PAD_PATA_DATA1__ESDHC3_DAT5	0x1d5
-+			MX53_PAD_PATA_DATA2__ESDHC3_DAT6	0x1d5
-+			MX53_PAD_PATA_DATA3__ESDHC3_DAT7	0x1d5
-+			MX53_PAD_PATA_RESET_B__ESDHC3_CMD	0x1d5
-+			MX53_PAD_PATA_IORDY__ESDHC3_CLK		0x1d5
++			MX6SL_PAD_ECSPI1_MISO__ECSPI1_MISO	0x100b1
++			MX6SL_PAD_ECSPI1_MOSI__ECSPI1_MOSI	0x100b1
++			MX6SL_PAD_ECSPI1_SCLK__ECSPI1_SCLK	0x100b1
++			MX6SL_PAD_ECSPI1_SS0__GPIO4_IO11	0x80000000
 +		>;
 +	};
  
 -		pinctrl_fec: fecgrp {
 -			fsl,pins = <
--				MX53_PAD_FEC_MDC__FEC_MDC		0x80000000
--				MX53_PAD_FEC_MDIO__FEC_MDIO		0x80000000
--				MX53_PAD_FEC_REF_CLK__FEC_TX_CLK	0x80000000
--				MX53_PAD_FEC_RX_ER__FEC_RX_ER		0x80000000
--				MX53_PAD_FEC_CRS_DV__FEC_RX_DV		0x80000000
--				MX53_PAD_FEC_RXD1__FEC_RDATA_1		0x80000000
--				MX53_PAD_FEC_RXD0__FEC_RDATA_0		0x80000000
--				MX53_PAD_FEC_TX_EN__FEC_TX_EN		0x80000000
--				MX53_PAD_FEC_TXD1__FEC_TDATA_1		0x80000000
--				MX53_PAD_FEC_TXD0__FEC_TDATA_0		0x80000000
+-				MX6SL_PAD_FEC_MDC__FEC_MDC		0x1b0b0
+-				MX6SL_PAD_FEC_MDIO__FEC_MDIO		0x1b0b0
+-				MX6SL_PAD_FEC_CRS_DV__FEC_RX_DV		0x1b0b0
+-				MX6SL_PAD_FEC_RXD0__FEC_RX_DATA0	0x1b0b0
+-				MX6SL_PAD_FEC_RXD1__FEC_RX_DATA1	0x1b0b0
+-				MX6SL_PAD_FEC_TX_EN__FEC_TX_EN		0x1b0b0
+-				MX6SL_PAD_FEC_TXD0__FEC_TX_DATA0	0x1b0b0
+-				MX6SL_PAD_FEC_TXD1__FEC_TX_DATA1	0x1b0b0
+-				MX6SL_PAD_FEC_REF_CLK__FEC_REF_OUT	0x4001b0a8
 -			>;
 -		};
 +	pinctrl_fec: fecgrp {
 +		fsl,pins = <
-+			MX53_PAD_FEC_MDC__FEC_MDC		0x80000000
-+			MX53_PAD_FEC_MDIO__FEC_MDIO		0x80000000
-+			MX53_PAD_FEC_REF_CLK__FEC_TX_CLK	0x80000000
-+			MX53_PAD_FEC_RX_ER__FEC_RX_ER		0x80000000
-+			MX53_PAD_FEC_CRS_DV__FEC_RX_DV		0x80000000
-+			MX53_PAD_FEC_RXD1__FEC_RDATA_1		0x80000000
-+			MX53_PAD_FEC_RXD0__FEC_RDATA_0		0x80000000
-+			MX53_PAD_FEC_TX_EN__FEC_TX_EN		0x80000000
-+			MX53_PAD_FEC_TXD1__FEC_TDATA_1		0x80000000
-+			MX53_PAD_FEC_TXD0__FEC_TDATA_0		0x80000000
++			MX6SL_PAD_FEC_MDC__FEC_MDC		0x1b0b0
++			MX6SL_PAD_FEC_MDIO__FEC_MDIO		0x1b0b0
++			MX6SL_PAD_FEC_CRS_DV__FEC_RX_DV		0x1b0b0
++			MX6SL_PAD_FEC_RXD0__FEC_RX_DATA0	0x1b0b0
++			MX6SL_PAD_FEC_RXD1__FEC_RX_DATA1	0x1b0b0
++			MX6SL_PAD_FEC_TX_EN__FEC_TX_EN		0x1b0b0
++			MX6SL_PAD_FEC_TXD0__FEC_TX_DATA0	0x1b0b0
++			MX6SL_PAD_FEC_TXD1__FEC_TX_DATA1	0x1b0b0
++			MX6SL_PAD_FEC_REF_CLK__FEC_REF_OUT	0x4001b0a8
++		>;
++	};
+ 
+-		pinctrl_fec_sleep: fecgrp-sleep {
+-			fsl,pins = <
+-				MX6SL_PAD_FEC_MDC__GPIO4_IO23      0x3080
+-				MX6SL_PAD_FEC_CRS_DV__GPIO4_IO25   0x3080
+-				MX6SL_PAD_FEC_RXD0__GPIO4_IO17     0x3080
+-				MX6SL_PAD_FEC_RXD1__GPIO4_IO18     0x3080
+-				MX6SL_PAD_FEC_TX_EN__GPIO4_IO22    0x3080
+-				MX6SL_PAD_FEC_TXD0__GPIO4_IO24     0x3080
+-				MX6SL_PAD_FEC_TXD1__GPIO4_IO16     0x3080
+-				MX6SL_PAD_FEC_REF_CLK__GPIO4_IO26  0x3080
+-			>;
+-		};
++	pinctrl_fec_sleep: fec-sleep-grp {
++		fsl,pins = <
++			MX6SL_PAD_FEC_MDC__GPIO4_IO23      0x3080
++			MX6SL_PAD_FEC_CRS_DV__GPIO4_IO25   0x3080
++			MX6SL_PAD_FEC_RXD0__GPIO4_IO17     0x3080
++			MX6SL_PAD_FEC_RXD1__GPIO4_IO18     0x3080
++			MX6SL_PAD_FEC_TX_EN__GPIO4_IO22    0x3080
++			MX6SL_PAD_FEC_TXD0__GPIO4_IO24     0x3080
++			MX6SL_PAD_FEC_TXD1__GPIO4_IO16     0x3080
++			MX6SL_PAD_FEC_REF_CLK__GPIO4_IO26  0x3080
++		>;
++	};
+ 
+-		pinctrl_hp: hpgrp {
+-			fsl,pins = <
+-				MX6SL_PAD_FEC_RX_ER__GPIO4_IO19	  0x1b0b0
+-			>;
+-		};
++	pinctrl_hp: hpgrp {
++		fsl,pins = <
++			MX6SL_PAD_FEC_RX_ER__GPIO4_IO19	  0x1b0b0
 +		>;
 +	};
  
 -		pinctrl_i2c1: i2c1grp {
 -			fsl,pins = <
--				MX53_PAD_CSI0_DAT8__I2C1_SDA		0xc0000000
--				MX53_PAD_CSI0_DAT9__I2C1_SCL		0xc0000000
+-				MX6SL_PAD_I2C1_SCL__I2C1_SCL	0x4001b8b1
+-				MX6SL_PAD_I2C1_SDA__I2C1_SDA	0x4001b8b1
 -			>;
 -		};
 +	pinctrl_i2c1: i2c1grp {
 +		fsl,pins = <
-+			MX53_PAD_CSI0_DAT8__I2C1_SDA		0xc0000000
-+			MX53_PAD_CSI0_DAT9__I2C1_SCL		0xc0000000
++			MX6SL_PAD_I2C1_SCL__I2C1_SCL	0x4001b8b1
++			MX6SL_PAD_I2C1_SDA__I2C1_SDA	0x4001b8b1
 +		>;
 +	};
  
+ 
 -		pinctrl_i2c2: i2c2grp {
 -			fsl,pins = <
--				MX53_PAD_KEY_ROW3__I2C2_SDA		0xc0000000
--				MX53_PAD_KEY_COL3__I2C2_SCL		0xc0000000
+-				MX6SL_PAD_I2C2_SCL__I2C2_SCL	0x4001b8b1
+-				MX6SL_PAD_I2C2_SDA__I2C2_SDA	0x4001b8b1
 -			>;
 -		};
 +	pinctrl_i2c2: i2c2grp {
 +		fsl,pins = <
-+			MX53_PAD_KEY_ROW3__I2C2_SDA		0xc0000000
-+			MX53_PAD_KEY_COL3__I2C2_SCL		0xc0000000
-+		>;
-+	};
- 
--		pinctrl_ipu_csi0: ipucsi0grp {
--			fsl,pins = <
--				MX53_PAD_CSI0_DAT12__IPU_CSI0_D_12    0x1c4
--				MX53_PAD_CSI0_DAT13__IPU_CSI0_D_13    0x1c4
--				MX53_PAD_CSI0_DAT14__IPU_CSI0_D_14    0x1c4
--				MX53_PAD_CSI0_DAT15__IPU_CSI0_D_15    0x1c4
--				MX53_PAD_CSI0_DAT16__IPU_CSI0_D_16    0x1c4
--				MX53_PAD_CSI0_DAT17__IPU_CSI0_D_17    0x1c4
--				MX53_PAD_CSI0_DAT18__IPU_CSI0_D_18    0x1c4
--				MX53_PAD_CSI0_DAT19__IPU_CSI0_D_19    0x1c4
--				MX53_PAD_CSI0_PIXCLK__IPU_CSI0_PIXCLK 0x1e4
--				MX53_PAD_CSI0_VSYNC__IPU_CSI0_VSYNC   0x1e4
--				MX53_PAD_CSI0_MCLK__IPU_CSI0_HSYNC    0x1e4
--				MX53_PAD_CSI0_DATA_EN__IPU_CSI0_DATA_EN 0x1e4
--			>;
--		};
-+	pinctrl_ipu_csi0: ipucsi0grp {
-+		fsl,pins = <
-+			MX53_PAD_CSI0_DAT12__IPU_CSI0_D_12    0x1c4
-+			MX53_PAD_CSI0_DAT13__IPU_CSI0_D_13    0x1c4
-+			MX53_PAD_CSI0_DAT14__IPU_CSI0_D_14    0x1c4
-+			MX53_PAD_CSI0_DAT15__IPU_CSI0_D_15    0x1c4
-+			MX53_PAD_CSI0_DAT16__IPU_CSI0_D_16    0x1c4
-+			MX53_PAD_CSI0_DAT17__IPU_CSI0_D_17    0x1c4
-+			MX53_PAD_CSI0_DAT18__IPU_CSI0_D_18    0x1c4
-+			MX53_PAD_CSI0_DAT19__IPU_CSI0_D_19    0x1c4
-+			MX53_PAD_CSI0_PIXCLK__IPU_CSI0_PIXCLK 0x1e4
-+			MX53_PAD_CSI0_VSYNC__IPU_CSI0_VSYNC   0x1e4
-+			MX53_PAD_CSI0_MCLK__IPU_CSI0_HSYNC    0x1e4
-+			MX53_PAD_CSI0_DATA_EN__IPU_CSI0_DATA_EN 0x1e4
-+		>;
-+	};
- 
--		pinctrl_ov5642: ov5642grp {
--			fsl,pins = <
--				MX53_PAD_NANDF_WP_B__GPIO6_9   0x1e4
--				MX53_PAD_NANDF_RB0__GPIO6_10   0x1e4
--				MX53_PAD_GPIO_0__CCM_SSI_EXT1_CLK 0x1c4
--			>;
--		};
-+	pinctrl_ov5642: ov5642grp {
-+		fsl,pins = <
-+			MX53_PAD_NANDF_WP_B__GPIO6_9   0x1e4
-+			MX53_PAD_NANDF_RB0__GPIO6_10   0x1e4
-+			MX53_PAD_GPIO_0__CCM_SSI_EXT1_CLK 0x1c4
-+		>;
-+	};
- 
--		pinctrl_uart1: uart1grp {
--			fsl,pins = <
--				MX53_PAD_CSI0_DAT10__UART1_TXD_MUX	0x1e4
--				MX53_PAD_CSI0_DAT11__UART1_RXD_MUX	0x1e4
--			>;
--		};
-+	pinctrl_uart1: uart1grp {
-+		fsl,pins = <
-+			MX53_PAD_CSI0_DAT10__UART1_TXD_MUX	0x1e4
-+			MX53_PAD_CSI0_DAT11__UART1_RXD_MUX	0x1e4
-+		>;
-+	};
- 
--		pinctrl_uart2: uart2grp {
--			fsl,pins = <
--				MX53_PAD_PATA_BUFFER_EN__UART2_RXD_MUX	0x1e4
--				MX53_PAD_PATA_DMARQ__UART2_TXD_MUX	0x1e4
--			>;
--		};
-+	pinctrl_uart2: uart2grp {
-+		fsl,pins = <
-+			MX53_PAD_PATA_BUFFER_EN__UART2_RXD_MUX	0x1e4
-+			MX53_PAD_PATA_DMARQ__UART2_TXD_MUX	0x1e4
-+		>;
-+	};
- 
--		pinctrl_uart3: uart3grp {
--			fsl,pins = <
--				MX53_PAD_PATA_CS_0__UART3_TXD_MUX	0x1e4
--				MX53_PAD_PATA_CS_1__UART3_RXD_MUX	0x1e4
--				MX53_PAD_PATA_DA_1__UART3_CTS		0x1e4
--				MX53_PAD_PATA_DA_2__UART3_RTS		0x1e4
--			>;
--		};
-+	pinctrl_uart3: uart3grp {
-+		fsl,pins = <
-+			MX53_PAD_PATA_CS_0__UART3_TXD_MUX	0x1e4
-+			MX53_PAD_PATA_CS_1__UART3_RXD_MUX	0x1e4
-+			MX53_PAD_PATA_DA_1__UART3_CTS		0x1e4
-+			MX53_PAD_PATA_DA_2__UART3_RTS		0x1e4
-+		>;
- 	};
- };
- 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx53-tqma53.dtsi b/arch/arm/boot/dts/nxp/imx/imx53-tqma53.dtsi
-index c34ee84bd7167..0f0245df380fc 100644
---- a/arch/arm/boot/dts/nxp/imx/imx53-tqma53.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx53-tqma53.dtsi
-@@ -61,144 +61,142 @@ &iomuxc {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_hog>;
- 
--	imx53-tqma53 {
--		pinctrl_hog: hoggrp {
--			fsl,pins = <
--				 MX53_PAD_GPIO_0__CCM_SSI_EXT1_CLK 0x80000000 /* SSI_MCLK */
--				 MX53_PAD_PATA_DA_1__GPIO7_7     0x80000000 /* LCD_BLT_EN */
--				 MX53_PAD_PATA_DA_2__GPIO7_8     0x80000000 /* LCD_RESET */
--				 MX53_PAD_PATA_DATA5__GPIO2_5    0x80000000 /* LCD_POWER */
--				 MX53_PAD_PATA_DATA6__GPIO2_6    0x80000000 /* PMIC_INT */
--				 MX53_PAD_PATA_DATA14__GPIO2_14  0x80000000 /* CSI_RST */
--				 MX53_PAD_PATA_DATA15__GPIO2_15  0x80000000 /* CSI_PWDN */
--				 MX53_PAD_GPIO_19__GPIO4_5 	 0x80000000 /* #SYSTEM_DOWN */
--				 MX53_PAD_GPIO_3__GPIO1_3        0x80000000
--				 MX53_PAD_PATA_DA_0__GPIO7_6	 0x80000000 /* #PHY_RESET */
--				 MX53_PAD_GPIO_1__PWM2_PWMO	 0x80000000 /* LCD_CONTRAST */
--			>;
--		};
--
--		pinctrl_audmux: audmuxgrp {
--			fsl,pins = <
--				MX53_PAD_KEY_COL0__AUDMUX_AUD5_TXC	0x80000000
--				MX53_PAD_KEY_ROW0__AUDMUX_AUD5_TXD	0x80000000
--				MX53_PAD_KEY_COL1__AUDMUX_AUD5_TXFS	0x80000000
--				MX53_PAD_KEY_ROW1__AUDMUX_AUD5_RXD	0x80000000
--			>;
--		};
--
--		pinctrl_can1: can1grp {
--			fsl,pins = <
--				MX53_PAD_KEY_COL2__CAN1_TXCAN		0x80000000
--				MX53_PAD_KEY_ROW2__CAN1_RXCAN		0x80000000
--			>;
--		};
--
--		pinctrl_can2: can2grp {
--			fsl,pins = <
--				MX53_PAD_KEY_COL4__CAN2_TXCAN		0x80000000
--				MX53_PAD_KEY_ROW4__CAN2_RXCAN		0x80000000
--			>;
--		};
--
--		pinctrl_cspi: cspigrp {
--			fsl,pins = <
--				MX53_PAD_SD1_DATA0__CSPI_MISO		0x1d5
--				MX53_PAD_SD1_CMD__CSPI_MOSI		0x1d5
--				MX53_PAD_SD1_CLK__CSPI_SCLK		0x1d5
--			>;
--		};
--
--		pinctrl_ecspi1: ecspi1grp {
--			fsl,pins = <
--				MX53_PAD_EIM_D16__ECSPI1_SCLK		0x80000000
--				MX53_PAD_EIM_D17__ECSPI1_MISO		0x80000000
--				MX53_PAD_EIM_D18__ECSPI1_MOSI		0x80000000
--			>;
--		};
--
--		pinctrl_esdhc2: esdhc2grp {
--			fsl,pins = <
--				MX53_PAD_SD2_CMD__ESDHC2_CMD		0x1d5
--				MX53_PAD_SD2_CLK__ESDHC2_CLK		0x1d5
--				MX53_PAD_SD2_DATA0__ESDHC2_DAT0		0x1d5
--				MX53_PAD_SD2_DATA1__ESDHC2_DAT1		0x1d5
--				MX53_PAD_SD2_DATA2__ESDHC2_DAT2		0x1d5
--				MX53_PAD_SD2_DATA3__ESDHC2_DAT3		0x1d5
--			>;
--		};
--
--		pinctrl_esdhc2_cdwp: esdhc2cdwp {
--			fsl,pins = <
--				MX53_PAD_GPIO_4__GPIO1_4	0x80000000 /* SD2_CD */
--				MX53_PAD_GPIO_2__GPIO1_2	0x80000000 /* SD2_WP */
--			>;
--		};
--
--		pinctrl_esdhc3: esdhc3grp {
--			fsl,pins = <
--				MX53_PAD_PATA_DATA8__ESDHC3_DAT0	0x1d5
--				MX53_PAD_PATA_DATA9__ESDHC3_DAT1	0x1d5
--				MX53_PAD_PATA_DATA10__ESDHC3_DAT2	0x1d5
--				MX53_PAD_PATA_DATA11__ESDHC3_DAT3	0x1d5
--				MX53_PAD_PATA_DATA0__ESDHC3_DAT4	0x1d5
--				MX53_PAD_PATA_DATA1__ESDHC3_DAT5	0x1d5
--				MX53_PAD_PATA_DATA2__ESDHC3_DAT6	0x1d5
--				MX53_PAD_PATA_DATA3__ESDHC3_DAT7	0x1d5
--				MX53_PAD_PATA_RESET_B__ESDHC3_CMD	0x1d5
--				MX53_PAD_PATA_IORDY__ESDHC3_CLK		0x1d5
--			>;
--		};
--
--		pinctrl_fec: fecgrp {
--			fsl,pins = <
--				MX53_PAD_FEC_MDC__FEC_MDC		0x80000000
--				MX53_PAD_FEC_MDIO__FEC_MDIO		0x80000000
--				MX53_PAD_FEC_REF_CLK__FEC_TX_CLK	0x80000000
--				MX53_PAD_FEC_RX_ER__FEC_RX_ER		0x80000000
--				MX53_PAD_FEC_CRS_DV__FEC_RX_DV		0x80000000
--				MX53_PAD_FEC_RXD1__FEC_RDATA_1		0x80000000
--				MX53_PAD_FEC_RXD0__FEC_RDATA_0		0x80000000
--				MX53_PAD_FEC_TX_EN__FEC_TX_EN		0x80000000
--				MX53_PAD_FEC_TXD1__FEC_TDATA_1		0x80000000
--				MX53_PAD_FEC_TXD0__FEC_TDATA_0		0x80000000
--			>;
--		};
--
--		pinctrl_i2c2: i2c2grp {
--			fsl,pins = <
--				MX53_PAD_KEY_ROW3__I2C2_SDA		0xc0000000
--				MX53_PAD_KEY_COL3__I2C2_SCL		0xc0000000
--			>;
--		};
--
--		pinctrl_i2c3: i2c3grp {
--			fsl,pins = <
--				MX53_PAD_GPIO_6__I2C3_SDA		0xc0000000
--				MX53_PAD_GPIO_5__I2C3_SCL		0xc0000000
--			>;
--		};
--
--		pinctrl_uart1: uart1grp {
--			fsl,pins = <
--				MX53_PAD_PATA_DIOW__UART1_TXD_MUX	0x1e4
--				MX53_PAD_PATA_DMACK__UART1_RXD_MUX	0x1e4
--			>;
--		};
--
--		pinctrl_uart2: uart2grp {
--			fsl,pins = <
--				MX53_PAD_PATA_BUFFER_EN__UART2_RXD_MUX	0x1e4
--				MX53_PAD_PATA_DMARQ__UART2_TXD_MUX	0x1e4
--			>;
--		};
--
--		pinctrl_uart3: uart3grp {
--			fsl,pins = <
--				MX53_PAD_PATA_CS_0__UART3_TXD_MUX	0x1e4
--				MX53_PAD_PATA_CS_1__UART3_RXD_MUX	0x1e4
--			>;
--		};
-+	pinctrl_hog: hoggrp {
-+		fsl,pins = <
-+			 MX53_PAD_GPIO_0__CCM_SSI_EXT1_CLK 0x80000000 /* SSI_MCLK */
-+			 MX53_PAD_PATA_DA_1__GPIO7_7     0x80000000 /* LCD_BLT_EN */
-+			 MX53_PAD_PATA_DA_2__GPIO7_8     0x80000000 /* LCD_RESET */
-+			 MX53_PAD_PATA_DATA5__GPIO2_5    0x80000000 /* LCD_POWER */
-+			 MX53_PAD_PATA_DATA6__GPIO2_6    0x80000000 /* PMIC_INT */
-+			 MX53_PAD_PATA_DATA14__GPIO2_14  0x80000000 /* CSI_RST */
-+			 MX53_PAD_PATA_DATA15__GPIO2_15  0x80000000 /* CSI_PWDN */
-+			 MX53_PAD_GPIO_19__GPIO4_5 	 0x80000000 /* #SYSTEM_DOWN */
-+			 MX53_PAD_GPIO_3__GPIO1_3        0x80000000
-+			 MX53_PAD_PATA_DA_0__GPIO7_6	 0x80000000 /* #PHY_RESET */
-+			 MX53_PAD_GPIO_1__PWM2_PWMO	 0x80000000 /* LCD_CONTRAST */
-+		>;
-+	};
-+
-+	pinctrl_audmux: audmuxgrp {
-+		fsl,pins = <
-+			MX53_PAD_KEY_COL0__AUDMUX_AUD5_TXC	0x80000000
-+			MX53_PAD_KEY_ROW0__AUDMUX_AUD5_TXD	0x80000000
-+			MX53_PAD_KEY_COL1__AUDMUX_AUD5_TXFS	0x80000000
-+			MX53_PAD_KEY_ROW1__AUDMUX_AUD5_RXD	0x80000000
-+		>;
-+	};
-+
-+	pinctrl_can1: can1grp {
-+		fsl,pins = <
-+			MX53_PAD_KEY_COL2__CAN1_TXCAN		0x80000000
-+			MX53_PAD_KEY_ROW2__CAN1_RXCAN		0x80000000
-+		>;
-+	};
-+
-+	pinctrl_can2: can2grp {
-+		fsl,pins = <
-+			MX53_PAD_KEY_COL4__CAN2_TXCAN		0x80000000
-+			MX53_PAD_KEY_ROW4__CAN2_RXCAN		0x80000000
-+		>;
-+	};
-+
-+	pinctrl_cspi: cspigrp {
-+		fsl,pins = <
-+			MX53_PAD_SD1_DATA0__CSPI_MISO		0x1d5
-+			MX53_PAD_SD1_CMD__CSPI_MOSI		0x1d5
-+			MX53_PAD_SD1_CLK__CSPI_SCLK		0x1d5
-+		>;
-+	};
-+
-+	pinctrl_ecspi1: ecspi1grp {
-+		fsl,pins = <
-+			MX53_PAD_EIM_D16__ECSPI1_SCLK		0x80000000
-+			MX53_PAD_EIM_D17__ECSPI1_MISO		0x80000000
-+			MX53_PAD_EIM_D18__ECSPI1_MOSI		0x80000000
-+		>;
-+	};
-+
-+	pinctrl_esdhc2: esdhc2grp {
-+		fsl,pins = <
-+			MX53_PAD_SD2_CMD__ESDHC2_CMD		0x1d5
-+			MX53_PAD_SD2_CLK__ESDHC2_CLK		0x1d5
-+			MX53_PAD_SD2_DATA0__ESDHC2_DAT0		0x1d5
-+			MX53_PAD_SD2_DATA1__ESDHC2_DAT1		0x1d5
-+			MX53_PAD_SD2_DATA2__ESDHC2_DAT2		0x1d5
-+			MX53_PAD_SD2_DATA3__ESDHC2_DAT3		0x1d5
-+		>;
-+	};
-+
-+	pinctrl_esdhc2_cdwp: esdhc2cdwpgrp {
-+		fsl,pins = <
-+			MX53_PAD_GPIO_4__GPIO1_4	0x80000000 /* SD2_CD */
-+			MX53_PAD_GPIO_2__GPIO1_2	0x80000000 /* SD2_WP */
-+		>;
-+	};
-+
-+	pinctrl_esdhc3: esdhc3grp {
-+		fsl,pins = <
-+			MX53_PAD_PATA_DATA8__ESDHC3_DAT0	0x1d5
-+			MX53_PAD_PATA_DATA9__ESDHC3_DAT1	0x1d5
-+			MX53_PAD_PATA_DATA10__ESDHC3_DAT2	0x1d5
-+			MX53_PAD_PATA_DATA11__ESDHC3_DAT3	0x1d5
-+			MX53_PAD_PATA_DATA0__ESDHC3_DAT4	0x1d5
-+			MX53_PAD_PATA_DATA1__ESDHC3_DAT5	0x1d5
-+			MX53_PAD_PATA_DATA2__ESDHC3_DAT6	0x1d5
-+			MX53_PAD_PATA_DATA3__ESDHC3_DAT7	0x1d5
-+			MX53_PAD_PATA_RESET_B__ESDHC3_CMD	0x1d5
-+			MX53_PAD_PATA_IORDY__ESDHC3_CLK		0x1d5
-+		>;
-+	};
-+
-+	pinctrl_fec: fecgrp {
-+		fsl,pins = <
-+			MX53_PAD_FEC_MDC__FEC_MDC		0x80000000
-+			MX53_PAD_FEC_MDIO__FEC_MDIO		0x80000000
-+			MX53_PAD_FEC_REF_CLK__FEC_TX_CLK	0x80000000
-+			MX53_PAD_FEC_RX_ER__FEC_RX_ER		0x80000000
-+			MX53_PAD_FEC_CRS_DV__FEC_RX_DV		0x80000000
-+			MX53_PAD_FEC_RXD1__FEC_RDATA_1		0x80000000
-+			MX53_PAD_FEC_RXD0__FEC_RDATA_0		0x80000000
-+			MX53_PAD_FEC_TX_EN__FEC_TX_EN		0x80000000
-+			MX53_PAD_FEC_TXD1__FEC_TDATA_1		0x80000000
-+			MX53_PAD_FEC_TXD0__FEC_TDATA_0		0x80000000
-+		>;
-+	};
-+
-+	pinctrl_i2c2: i2c2grp {
-+		fsl,pins = <
-+			MX53_PAD_KEY_ROW3__I2C2_SDA		0xc0000000
-+			MX53_PAD_KEY_COL3__I2C2_SCL		0xc0000000
-+		>;
-+	};
-+
-+	pinctrl_i2c3: i2c3grp {
-+		fsl,pins = <
-+			MX53_PAD_GPIO_6__I2C3_SDA		0xc0000000
-+			MX53_PAD_GPIO_5__I2C3_SCL		0xc0000000
-+		>;
-+	};
-+
-+	pinctrl_uart1: uart1grp {
-+		fsl,pins = <
-+			MX53_PAD_PATA_DIOW__UART1_TXD_MUX	0x1e4
-+			MX53_PAD_PATA_DMACK__UART1_RXD_MUX	0x1e4
-+		>;
-+	};
-+
-+	pinctrl_uart2: uart2grp {
-+		fsl,pins = <
-+			MX53_PAD_PATA_BUFFER_EN__UART2_RXD_MUX	0x1e4
-+			MX53_PAD_PATA_DMARQ__UART2_TXD_MUX	0x1e4
-+		>;
-+	};
-+
-+	pinctrl_uart3: uart3grp {
-+		fsl,pins = <
-+			MX53_PAD_PATA_CS_0__UART3_TXD_MUX	0x1e4
-+			MX53_PAD_PATA_CS_1__UART3_RXD_MUX	0x1e4
-+		>;
- 	};
- };
- 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx53-tx53-x03x.dts b/arch/arm/boot/dts/nxp/imx/imx53-tx53-x03x.dts
-index a02d77bb56725..5f62c99909c59 100644
---- a/arch/arm/boot/dts/nxp/imx/imx53-tx53-x03x.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx53-tx53-x03x.dts
-@@ -262,66 +262,64 @@ touchscreen: tsc2007@48 {
- };
- 
- &iomuxc {
--	imx53-tx53-x03x {
--		pinctrl_edt_ft5x06_1: edt-ft5x06grp-1 {
--			fsl,pins = <
--				MX53_PAD_NANDF_CS2__GPIO6_15 0x1f0 /* Interrupt */
--				MX53_PAD_EIM_A16__GPIO2_22   0x04 /* Reset */
--				MX53_PAD_EIM_A17__GPIO2_21   0x04 /* Wake */
--			>;
--		};
-+	pinctrl_edt_ft5x06_1: edt-ft5x06-1-grp {
-+		fsl,pins = <
-+			MX53_PAD_NANDF_CS2__GPIO6_15 0x1f0 /* Interrupt */
-+			MX53_PAD_EIM_A16__GPIO2_22   0x04 /* Reset */
-+			MX53_PAD_EIM_A17__GPIO2_21   0x04 /* Wake */
++			MX6SL_PAD_I2C2_SCL__I2C2_SCL	0x4001b8b1
++			MX6SL_PAD_I2C2_SDA__I2C2_SDA	0x4001b8b1
 +		>;
 +	};
  
 -		pinctrl_kpp: kppgrp {
 -			fsl,pins = <
--				MX53_PAD_GPIO_9__KPP_COL_6 0x1f4
--				MX53_PAD_GPIO_4__KPP_COL_7 0x1f4
--				MX53_PAD_KEY_COL2__KPP_COL_2 0x1f4
--				MX53_PAD_KEY_COL3__KPP_COL_3 0x1f4
--				MX53_PAD_GPIO_2__KPP_ROW_6 0x1f4
--				MX53_PAD_GPIO_5__KPP_ROW_7 0x1f4
--				MX53_PAD_KEY_ROW2__KPP_ROW_2 0x1f4
--				MX53_PAD_KEY_ROW3__KPP_ROW_3 0x1f4
+-				MX6SL_PAD_KEY_ROW0__KEY_ROW0    0x1b010
+-				MX6SL_PAD_KEY_ROW1__KEY_ROW1    0x1b010
+-				MX6SL_PAD_KEY_ROW2__KEY_ROW2    0x1b0b0
+-				MX6SL_PAD_KEY_COL0__KEY_COL0    0x110b0
+-				MX6SL_PAD_KEY_COL1__KEY_COL1    0x110b0
+-				MX6SL_PAD_KEY_COL2__KEY_COL2    0x110b0
 -			>;
 -		};
 +	pinctrl_kpp: kppgrp {
 +		fsl,pins = <
-+			MX53_PAD_GPIO_9__KPP_COL_6 0x1f4
-+			MX53_PAD_GPIO_4__KPP_COL_7 0x1f4
-+			MX53_PAD_KEY_COL2__KPP_COL_2 0x1f4
-+			MX53_PAD_KEY_COL3__KPP_COL_3 0x1f4
-+			MX53_PAD_GPIO_2__KPP_ROW_6 0x1f4
-+			MX53_PAD_GPIO_5__KPP_ROW_7 0x1f4
-+			MX53_PAD_KEY_ROW2__KPP_ROW_2 0x1f4
-+			MX53_PAD_KEY_ROW3__KPP_ROW_3 0x1f4
++			MX6SL_PAD_KEY_ROW0__KEY_ROW0    0x1b010
++			MX6SL_PAD_KEY_ROW1__KEY_ROW1    0x1b010
++			MX6SL_PAD_KEY_ROW2__KEY_ROW2    0x1b0b0
++			MX6SL_PAD_KEY_COL0__KEY_COL0    0x110b0
++			MX6SL_PAD_KEY_COL1__KEY_COL1    0x110b0
++			MX6SL_PAD_KEY_COL2__KEY_COL2    0x110b0
 +		>;
 +	};
  
--		pinctrl_rgb24_vga1: rgb24-vgagrp1 {
+-		pinctrl_lcd: lcdgrp {
 -			fsl,pins = <
--				MX53_PAD_DI0_DISP_CLK__IPU_DI0_DISP_CLK		0x5
--				MX53_PAD_DI0_PIN15__IPU_DI0_PIN15		0x5
--				MX53_PAD_DI0_PIN2__IPU_DI0_PIN2			0x5
--				MX53_PAD_DI0_PIN3__IPU_DI0_PIN3			0x5
--				MX53_PAD_DISP0_DAT0__IPU_DISP0_DAT_0		0x5
--				MX53_PAD_DISP0_DAT1__IPU_DISP0_DAT_1		0x5
--				MX53_PAD_DISP0_DAT2__IPU_DISP0_DAT_2		0x5
--				MX53_PAD_DISP0_DAT3__IPU_DISP0_DAT_3		0x5
--				MX53_PAD_DISP0_DAT4__IPU_DISP0_DAT_4		0x5
--				MX53_PAD_DISP0_DAT5__IPU_DISP0_DAT_5		0x5
--				MX53_PAD_DISP0_DAT6__IPU_DISP0_DAT_6		0x5
--				MX53_PAD_DISP0_DAT7__IPU_DISP0_DAT_7		0x5
--				MX53_PAD_DISP0_DAT8__IPU_DISP0_DAT_8		0x5
--				MX53_PAD_DISP0_DAT9__IPU_DISP0_DAT_9		0x5
--				MX53_PAD_DISP0_DAT10__IPU_DISP0_DAT_10		0x5
--				MX53_PAD_DISP0_DAT11__IPU_DISP0_DAT_11		0x5
--				MX53_PAD_DISP0_DAT12__IPU_DISP0_DAT_12		0x5
--				MX53_PAD_DISP0_DAT13__IPU_DISP0_DAT_13		0x5
--				MX53_PAD_DISP0_DAT14__IPU_DISP0_DAT_14		0x5
--				MX53_PAD_DISP0_DAT15__IPU_DISP0_DAT_15		0x5
--				MX53_PAD_DISP0_DAT16__IPU_DISP0_DAT_16		0x5
--				MX53_PAD_DISP0_DAT17__IPU_DISP0_DAT_17		0x5
--				MX53_PAD_DISP0_DAT18__IPU_DISP0_DAT_18		0x5
--				MX53_PAD_DISP0_DAT19__IPU_DISP0_DAT_19		0x5
--				MX53_PAD_DISP0_DAT20__IPU_DISP0_DAT_20		0x5
--				MX53_PAD_DISP0_DAT21__IPU_DISP0_DAT_21		0x5
--				MX53_PAD_DISP0_DAT22__IPU_DISP0_DAT_22		0x5
--				MX53_PAD_DISP0_DAT23__IPU_DISP0_DAT_23		0x5
+-				MX6SL_PAD_LCD_DAT0__LCD_DATA00 0x1b0b0
+-				MX6SL_PAD_LCD_DAT1__LCD_DATA01 0x1b0b0
+-				MX6SL_PAD_LCD_DAT2__LCD_DATA02 0x1b0b0
+-				MX6SL_PAD_LCD_DAT3__LCD_DATA03 0x1b0b0
+-				MX6SL_PAD_LCD_DAT4__LCD_DATA04 0x1b0b0
+-				MX6SL_PAD_LCD_DAT5__LCD_DATA05 0x1b0b0
+-				MX6SL_PAD_LCD_DAT6__LCD_DATA06 0x1b0b0
+-				MX6SL_PAD_LCD_DAT7__LCD_DATA07 0x1b0b0
+-				MX6SL_PAD_LCD_DAT8__LCD_DATA08 0x1b0b0
+-				MX6SL_PAD_LCD_DAT9__LCD_DATA09 0x1b0b0
+-				MX6SL_PAD_LCD_DAT10__LCD_DATA10 0x1b0b0
+-				MX6SL_PAD_LCD_DAT11__LCD_DATA11 0x1b0b0
+-				MX6SL_PAD_LCD_DAT12__LCD_DATA12 0x1b0b0
+-				MX6SL_PAD_LCD_DAT13__LCD_DATA13 0x1b0b0
+-				MX6SL_PAD_LCD_DAT14__LCD_DATA14 0x1b0b0
+-				MX6SL_PAD_LCD_DAT15__LCD_DATA15 0x1b0b0
+-				MX6SL_PAD_LCD_DAT16__LCD_DATA16 0x1b0b0
+-				MX6SL_PAD_LCD_DAT17__LCD_DATA17 0x1b0b0
+-				MX6SL_PAD_LCD_DAT18__LCD_DATA18 0x1b0b0
+-				MX6SL_PAD_LCD_DAT19__LCD_DATA19 0x1b0b0
+-				MX6SL_PAD_LCD_DAT20__LCD_DATA20 0x1b0b0
+-				MX6SL_PAD_LCD_DAT21__LCD_DATA21 0x1b0b0
+-				MX6SL_PAD_LCD_DAT22__LCD_DATA22 0x1b0b0
+-				MX6SL_PAD_LCD_DAT23__LCD_DATA23 0x1b0b0
+-				MX6SL_PAD_LCD_CLK__LCD_CLK 0x1b0b0
+-				MX6SL_PAD_LCD_ENABLE__LCD_ENABLE 0x1b0b0
+-				MX6SL_PAD_LCD_HSYNC__LCD_HSYNC 0x1b0b0
+-				MX6SL_PAD_LCD_VSYNC__LCD_VSYNC 0x1b0b0
 -			>;
 -		};
-+	pinctrl_rgb24_vga1: rgb24-vga1grp {
++	pinctrl_lcd: lcdgrp {
 +		fsl,pins = <
-+			MX53_PAD_DI0_DISP_CLK__IPU_DI0_DISP_CLK		0x5
-+			MX53_PAD_DI0_PIN15__IPU_DI0_PIN15		0x5
-+			MX53_PAD_DI0_PIN2__IPU_DI0_PIN2			0x5
-+			MX53_PAD_DI0_PIN3__IPU_DI0_PIN3			0x5
-+			MX53_PAD_DISP0_DAT0__IPU_DISP0_DAT_0		0x5
-+			MX53_PAD_DISP0_DAT1__IPU_DISP0_DAT_1		0x5
-+			MX53_PAD_DISP0_DAT2__IPU_DISP0_DAT_2		0x5
-+			MX53_PAD_DISP0_DAT3__IPU_DISP0_DAT_3		0x5
-+			MX53_PAD_DISP0_DAT4__IPU_DISP0_DAT_4		0x5
-+			MX53_PAD_DISP0_DAT5__IPU_DISP0_DAT_5		0x5
-+			MX53_PAD_DISP0_DAT6__IPU_DISP0_DAT_6		0x5
-+			MX53_PAD_DISP0_DAT7__IPU_DISP0_DAT_7		0x5
-+			MX53_PAD_DISP0_DAT8__IPU_DISP0_DAT_8		0x5
-+			MX53_PAD_DISP0_DAT9__IPU_DISP0_DAT_9		0x5
-+			MX53_PAD_DISP0_DAT10__IPU_DISP0_DAT_10		0x5
-+			MX53_PAD_DISP0_DAT11__IPU_DISP0_DAT_11		0x5
-+			MX53_PAD_DISP0_DAT12__IPU_DISP0_DAT_12		0x5
-+			MX53_PAD_DISP0_DAT13__IPU_DISP0_DAT_13		0x5
-+			MX53_PAD_DISP0_DAT14__IPU_DISP0_DAT_14		0x5
-+			MX53_PAD_DISP0_DAT15__IPU_DISP0_DAT_15		0x5
-+			MX53_PAD_DISP0_DAT16__IPU_DISP0_DAT_16		0x5
-+			MX53_PAD_DISP0_DAT17__IPU_DISP0_DAT_17		0x5
-+			MX53_PAD_DISP0_DAT18__IPU_DISP0_DAT_18		0x5
-+			MX53_PAD_DISP0_DAT19__IPU_DISP0_DAT_19		0x5
-+			MX53_PAD_DISP0_DAT20__IPU_DISP0_DAT_20		0x5
-+			MX53_PAD_DISP0_DAT21__IPU_DISP0_DAT_21		0x5
-+			MX53_PAD_DISP0_DAT22__IPU_DISP0_DAT_22		0x5
-+			MX53_PAD_DISP0_DAT23__IPU_DISP0_DAT_23		0x5
++			MX6SL_PAD_LCD_DAT0__LCD_DATA00 0x1b0b0
++			MX6SL_PAD_LCD_DAT1__LCD_DATA01 0x1b0b0
++			MX6SL_PAD_LCD_DAT2__LCD_DATA02 0x1b0b0
++			MX6SL_PAD_LCD_DAT3__LCD_DATA03 0x1b0b0
++			MX6SL_PAD_LCD_DAT4__LCD_DATA04 0x1b0b0
++			MX6SL_PAD_LCD_DAT5__LCD_DATA05 0x1b0b0
++			MX6SL_PAD_LCD_DAT6__LCD_DATA06 0x1b0b0
++			MX6SL_PAD_LCD_DAT7__LCD_DATA07 0x1b0b0
++			MX6SL_PAD_LCD_DAT8__LCD_DATA08 0x1b0b0
++			MX6SL_PAD_LCD_DAT9__LCD_DATA09 0x1b0b0
++			MX6SL_PAD_LCD_DAT10__LCD_DATA10 0x1b0b0
++			MX6SL_PAD_LCD_DAT11__LCD_DATA11 0x1b0b0
++			MX6SL_PAD_LCD_DAT12__LCD_DATA12 0x1b0b0
++			MX6SL_PAD_LCD_DAT13__LCD_DATA13 0x1b0b0
++			MX6SL_PAD_LCD_DAT14__LCD_DATA14 0x1b0b0
++			MX6SL_PAD_LCD_DAT15__LCD_DATA15 0x1b0b0
++			MX6SL_PAD_LCD_DAT16__LCD_DATA16 0x1b0b0
++			MX6SL_PAD_LCD_DAT17__LCD_DATA17 0x1b0b0
++			MX6SL_PAD_LCD_DAT18__LCD_DATA18 0x1b0b0
++			MX6SL_PAD_LCD_DAT19__LCD_DATA19 0x1b0b0
++			MX6SL_PAD_LCD_DAT20__LCD_DATA20 0x1b0b0
++			MX6SL_PAD_LCD_DAT21__LCD_DATA21 0x1b0b0
++			MX6SL_PAD_LCD_DAT22__LCD_DATA22 0x1b0b0
++			MX6SL_PAD_LCD_DAT23__LCD_DATA23 0x1b0b0
++			MX6SL_PAD_LCD_CLK__LCD_CLK 0x1b0b0
++			MX6SL_PAD_LCD_ENABLE__LCD_ENABLE 0x1b0b0
++			MX6SL_PAD_LCD_HSYNC__LCD_HSYNC 0x1b0b0
++			MX6SL_PAD_LCD_VSYNC__LCD_VSYNC 0x1b0b0
 +		>;
 +	};
  
--		pinctrl_tsc2007: tsc2007grp {
+-		pinctrl_led: ledgrp {
 -			fsl,pins = <
--				MX53_PAD_EIM_D26__GPIO3_26 0x1f0 /* Interrupt */
+-				MX6SL_PAD_HSIC_STROBE__GPIO3_IO20 0x17059
 -			>;
 -		};
-+	pinctrl_tsc2007: tsc2007grp {
++	pinctrl_led: ledgrp {
 +		fsl,pins = <
-+			MX53_PAD_EIM_D26__GPIO3_26 0x1f0 /* Interrupt */
++			MX6SL_PAD_HSIC_STROBE__GPIO3_IO20 0x17059
 +		>;
- 	};
- };
++	};
  
-diff --git a/arch/arm/boot/dts/nxp/imx/imx53-tx53-x13x.dts b/arch/arm/boot/dts/nxp/imx/imx53-tx53-x13x.dts
-index e10c179dbdb39..9c9122da3737a 100644
---- a/arch/arm/boot/dts/nxp/imx/imx53-tx53-x13x.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx53-tx53-x13x.dts
-@@ -139,42 +139,40 @@ sgtl5000: codec@a {
- };
- 
- &iomuxc {
--	imx53-tx53-x13x {
--		pinctrl_lvds0: lvds0grp {
+-		pinctrl_pwm1: pwmgrp {
 -			fsl,pins = <
--				MX53_PAD_LVDS0_TX3_P__LDB_LVDS0_TX3 0x80000000
--				MX53_PAD_LVDS0_CLK_P__LDB_LVDS0_CLK 0x80000000
--				MX53_PAD_LVDS0_TX2_P__LDB_LVDS0_TX2 0x80000000
--				MX53_PAD_LVDS0_TX1_P__LDB_LVDS0_TX1 0x80000000
--				MX53_PAD_LVDS0_TX0_P__LDB_LVDS0_TX0 0x80000000
+-				MX6SL_PAD_PWM1__PWM1_OUT 0x110b0
 -			>;
 -		};
-+	pinctrl_lvds0: lvds0grp {
++	pinctrl_pwm1: pwmgrp {
 +		fsl,pins = <
-+			MX53_PAD_LVDS0_TX3_P__LDB_LVDS0_TX3 0x80000000
-+			MX53_PAD_LVDS0_CLK_P__LDB_LVDS0_CLK 0x80000000
-+			MX53_PAD_LVDS0_TX2_P__LDB_LVDS0_TX2 0x80000000
-+			MX53_PAD_LVDS0_TX1_P__LDB_LVDS0_TX1 0x80000000
-+			MX53_PAD_LVDS0_TX0_P__LDB_LVDS0_TX0 0x80000000
++			MX6SL_PAD_PWM1__PWM1_OUT 0x110b0
 +		>;
 +	};
  
--		pinctrl_lvds1: lvds1grp {
+-		pinctrl_reg_lcd_3v3: reglcd3v3grp {
 -			fsl,pins = <
--				MX53_PAD_LVDS1_TX3_P__LDB_LVDS1_TX3 0x80000000
--				MX53_PAD_LVDS1_TX2_P__LDB_LVDS1_TX2 0x80000000
--				MX53_PAD_LVDS1_CLK_P__LDB_LVDS1_CLK 0x80000000
--				MX53_PAD_LVDS1_TX1_P__LDB_LVDS1_TX1 0x80000000
--				MX53_PAD_LVDS1_TX0_P__LDB_LVDS1_TX0 0x80000000
+-				MX6SL_PAD_KEY_ROW5__GPIO4_IO03    0x17059
 -			>;
 -		};
-+	pinctrl_lvds1: lvds1grp {
++	pinctrl_reg_lcd_3v3: reglcd3v3grp {
 +		fsl,pins = <
-+			MX53_PAD_LVDS1_TX3_P__LDB_LVDS1_TX3 0x80000000
-+			MX53_PAD_LVDS1_TX2_P__LDB_LVDS1_TX2 0x80000000
-+			MX53_PAD_LVDS1_CLK_P__LDB_LVDS1_CLK 0x80000000
-+			MX53_PAD_LVDS1_TX1_P__LDB_LVDS1_TX1 0x80000000
-+			MX53_PAD_LVDS1_TX0_P__LDB_LVDS1_TX0 0x80000000
-+		>;
-+	};
- 
--		pinctrl_pwm1: pwm1grp {
--			fsl,pins = <MX53_PAD_GPIO_9__PWM1_PWMO 0x04>;
--		};
-+	pinctrl_pwm1: pwm1grp {
-+		fsl,pins = <MX53_PAD_GPIO_9__PWM1_PWMO 0x04>;
-+	};
- 
--		pinctrl_eeti1: eeti1grp {
--			fsl,pins = <
--				MX53_PAD_EIM_D22__GPIO3_22 0x1f0 /* Interrupt */
--			>;
--		};
-+	pinctrl_eeti1: eeti1grp {
-+		fsl,pins = <
-+			MX53_PAD_EIM_D22__GPIO3_22 0x1f0 /* Interrupt */
-+		>;
-+	};
- 
--		pinctrl_eeti2: eeti2grp {
--			fsl,pins = <
--				MX53_PAD_EIM_D23__GPIO3_23 0x1f0 /* Interrupt */
--			>;
--		};
-+	pinctrl_eeti2: eeti2grp {
-+		fsl,pins = <
-+			MX53_PAD_EIM_D23__GPIO3_23 0x1f0 /* Interrupt */
-+		>;
- 	};
- };
- 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx53-tx53.dtsi b/arch/arm/boot/dts/nxp/imx/imx53-tx53.dtsi
-index a439a47fb65ac..29e3f5f37c25d 100644
---- a/arch/arm/boot/dts/nxp/imx/imx53-tx53.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx53-tx53.dtsi
-@@ -257,261 +257,259 @@ &iomuxc {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_hog>;
- 
--	imx53-tx53 {
--		pinctrl_hog: hoggrp {
--			/* pins not in use by any device on the Starterkit board series */
--			fsl,pins = <
--				/* CMOS Sensor Interface */
--				MX53_PAD_CSI0_DAT12__GPIO5_30 0x1f4
--				MX53_PAD_CSI0_DAT13__GPIO5_31 0x1f4
--				MX53_PAD_CSI0_DAT14__GPIO6_0 0x1f4
--				MX53_PAD_CSI0_DAT15__GPIO6_1 0x1f4
--				MX53_PAD_CSI0_DAT16__GPIO6_2 0x1f4
--				MX53_PAD_CSI0_DAT17__GPIO6_3 0x1f4
--				MX53_PAD_CSI0_DAT18__GPIO6_4 0x1f4
--				MX53_PAD_CSI0_DAT19__GPIO6_5 0x1f4
--				MX53_PAD_CSI0_MCLK__GPIO5_19 0x1f4
--				MX53_PAD_CSI0_VSYNC__GPIO5_21 0x1f4
--				MX53_PAD_CSI0_PIXCLK__GPIO5_18 0x1f4
--				MX53_PAD_GPIO_0__GPIO1_0 0x1f4
--				/* Module Specific Signal */
--				/* MX53_PAD_NANDF_CS2__GPIO6_15 0x1f4 maybe used by EDT-FT5x06 */
--				/* MX53_PAD_EIM_A16__GPIO2_22 0x1f4 maybe used by EDT-FT5x06 */
--				MX53_PAD_EIM_D29__GPIO3_29 0x1f4
--				MX53_PAD_EIM_EB3__GPIO2_31 0x1f4
--				/* MX53_PAD_EIM_A17__GPIO2_21 0x1f4 maybe used by EDT-FT5x06 */
--				/* MX53_PAD_EIM_A18__GPIO2_20 0x1f4 used by LED */
--				MX53_PAD_EIM_A19__GPIO2_19 0x1f4
--				MX53_PAD_EIM_A20__GPIO2_18 0x1f4
--				MX53_PAD_EIM_A21__GPIO2_17 0x1f4
--				MX53_PAD_EIM_A22__GPIO2_16 0x1f4
--				MX53_PAD_EIM_A23__GPIO6_6 0x1f4
--				MX53_PAD_EIM_A24__GPIO5_4 0x1f4
--				MX53_PAD_CSI0_DAT8__GPIO5_26 0x1f4
--				MX53_PAD_CSI0_DAT9__GPIO5_27 0x1f4
--				MX53_PAD_CSI0_DAT10__GPIO5_28 0x1f4
--				MX53_PAD_CSI0_DAT11__GPIO5_29 0x1f4
--				/* MX53_PAD_EIM_D22__GPIO3_22 0x1f4 maybe used by EETI touchpanel driver */
--				/* MX53_PAD_EIM_D23__GPIO3_23 0x1f4 maybe used by EETI touchpanel driver */
--				MX53_PAD_GPIO_13__GPIO4_3 0x1f4
--				MX53_PAD_EIM_CS0__GPIO2_23 0x1f4
--				MX53_PAD_EIM_CS1__GPIO2_24 0x1f4
--				MX53_PAD_CSI0_DATA_EN__GPIO5_20 0x1f4
--				MX53_PAD_EIM_WAIT__GPIO5_0 0x1f4
--				MX53_PAD_EIM_EB0__GPIO2_28 0x1f4
--				MX53_PAD_EIM_EB1__GPIO2_29 0x1f4
--				MX53_PAD_EIM_OE__GPIO2_25 0x1f4
--				MX53_PAD_EIM_LBA__GPIO2_27 0x1f4
--				MX53_PAD_EIM_RW__GPIO2_26 0x1f4
--				MX53_PAD_EIM_DA8__GPIO3_8 0x1f4
--				MX53_PAD_EIM_DA9__GPIO3_9 0x1f4
--				MX53_PAD_EIM_DA10__GPIO3_10 0x1f4
--				MX53_PAD_EIM_DA11__GPIO3_11 0x1f4
--				MX53_PAD_EIM_DA12__GPIO3_12 0x1f4
--				MX53_PAD_EIM_DA13__GPIO3_13 0x1f4
--				MX53_PAD_EIM_DA14__GPIO3_14 0x1f4
--				MX53_PAD_EIM_DA15__GPIO3_15 0x1f4
--				>;
--		};
--
--		pinctrl_can1: can1grp {
--			fsl,pins = <
--				MX53_PAD_GPIO_7__CAN1_TXCAN		0x80000000
--				MX53_PAD_GPIO_8__CAN1_RXCAN		0x80000000
-+	pinctrl_hog: hoggrp {
-+		/* pins not in use by any device on the Starterkit board series */
-+		fsl,pins = <
-+			/* CMOS Sensor Interface */
-+			MX53_PAD_CSI0_DAT12__GPIO5_30 0x1f4
-+			MX53_PAD_CSI0_DAT13__GPIO5_31 0x1f4
-+			MX53_PAD_CSI0_DAT14__GPIO6_0 0x1f4
-+			MX53_PAD_CSI0_DAT15__GPIO6_1 0x1f4
-+			MX53_PAD_CSI0_DAT16__GPIO6_2 0x1f4
-+			MX53_PAD_CSI0_DAT17__GPIO6_3 0x1f4
-+			MX53_PAD_CSI0_DAT18__GPIO6_4 0x1f4
-+			MX53_PAD_CSI0_DAT19__GPIO6_5 0x1f4
-+			MX53_PAD_CSI0_MCLK__GPIO5_19 0x1f4
-+			MX53_PAD_CSI0_VSYNC__GPIO5_21 0x1f4
-+			MX53_PAD_CSI0_PIXCLK__GPIO5_18 0x1f4
-+			MX53_PAD_GPIO_0__GPIO1_0 0x1f4
-+			/* Module Specific Signal */
-+			/* MX53_PAD_NANDF_CS2__GPIO6_15 0x1f4 maybe used by EDT-FT5x06 */
-+			/* MX53_PAD_EIM_A16__GPIO2_22 0x1f4 maybe used by EDT-FT5x06 */
-+			MX53_PAD_EIM_D29__GPIO3_29 0x1f4
-+			MX53_PAD_EIM_EB3__GPIO2_31 0x1f4
-+			/* MX53_PAD_EIM_A17__GPIO2_21 0x1f4 maybe used by EDT-FT5x06 */
-+			/* MX53_PAD_EIM_A18__GPIO2_20 0x1f4 used by LED */
-+			MX53_PAD_EIM_A19__GPIO2_19 0x1f4
-+			MX53_PAD_EIM_A20__GPIO2_18 0x1f4
-+			MX53_PAD_EIM_A21__GPIO2_17 0x1f4
-+			MX53_PAD_EIM_A22__GPIO2_16 0x1f4
-+			MX53_PAD_EIM_A23__GPIO6_6 0x1f4
-+			MX53_PAD_EIM_A24__GPIO5_4 0x1f4
-+			MX53_PAD_CSI0_DAT8__GPIO5_26 0x1f4
-+			MX53_PAD_CSI0_DAT9__GPIO5_27 0x1f4
-+			MX53_PAD_CSI0_DAT10__GPIO5_28 0x1f4
-+			MX53_PAD_CSI0_DAT11__GPIO5_29 0x1f4
-+			/* MX53_PAD_EIM_D22__GPIO3_22 0x1f4 maybe used by EETI touchpanel driver */
-+			/* MX53_PAD_EIM_D23__GPIO3_23 0x1f4 maybe used by EETI touchpanel driver */
-+			MX53_PAD_GPIO_13__GPIO4_3 0x1f4
-+			MX53_PAD_EIM_CS0__GPIO2_23 0x1f4
-+			MX53_PAD_EIM_CS1__GPIO2_24 0x1f4
-+			MX53_PAD_CSI0_DATA_EN__GPIO5_20 0x1f4
-+			MX53_PAD_EIM_WAIT__GPIO5_0 0x1f4
-+			MX53_PAD_EIM_EB0__GPIO2_28 0x1f4
-+			MX53_PAD_EIM_EB1__GPIO2_29 0x1f4
-+			MX53_PAD_EIM_OE__GPIO2_25 0x1f4
-+			MX53_PAD_EIM_LBA__GPIO2_27 0x1f4
-+			MX53_PAD_EIM_RW__GPIO2_26 0x1f4
-+			MX53_PAD_EIM_DA8__GPIO3_8 0x1f4
-+			MX53_PAD_EIM_DA9__GPIO3_9 0x1f4
-+			MX53_PAD_EIM_DA10__GPIO3_10 0x1f4
-+			MX53_PAD_EIM_DA11__GPIO3_11 0x1f4
-+			MX53_PAD_EIM_DA12__GPIO3_12 0x1f4
-+			MX53_PAD_EIM_DA13__GPIO3_13 0x1f4
-+			MX53_PAD_EIM_DA14__GPIO3_14 0x1f4
-+			MX53_PAD_EIM_DA15__GPIO3_15 0x1f4
- 			>;
--		};
-+	};
- 
--		pinctrl_can2: can2grp {
--			fsl,pins = <
--				MX53_PAD_KEY_COL4__CAN2_TXCAN		0x80000000
--				MX53_PAD_KEY_ROW4__CAN2_RXCAN		0x80000000
--			>;
--		};
-+	pinctrl_can1: can1grp {
-+		fsl,pins = <
-+			MX53_PAD_GPIO_7__CAN1_TXCAN		0x80000000
-+			MX53_PAD_GPIO_8__CAN1_RXCAN		0x80000000
-+		>;
-+	};
- 
--		pinctrl_can_xcvr: can-xcvrgrp {
--			fsl,pins = <MX53_PAD_DISP0_DAT0__GPIO4_21 0xe0>; /* Flexcan XCVR enable */
--		};
-+	pinctrl_can2: can2grp {
-+		fsl,pins = <
-+			MX53_PAD_KEY_COL4__CAN2_TXCAN		0x80000000
-+			MX53_PAD_KEY_ROW4__CAN2_RXCAN		0x80000000
-+		>;
-+	};
- 
--		pinctrl_ds1339: ds1339grp {
--			fsl,pins = <MX53_PAD_DI0_PIN4__GPIO4_20 0xe0>;
--		};
-+	pinctrl_can_xcvr: can-xcvrgrp {
-+		fsl,pins = <MX53_PAD_DISP0_DAT0__GPIO4_21 0xe0>; /* Flexcan XCVR enable */
-+	};
- 
--		pinctrl_ecspi1: ecspi1grp {
--			fsl,pins = <
--				MX53_PAD_GPIO_19__ECSPI1_RDY		0x80000000
--				MX53_PAD_EIM_EB2__ECSPI1_SS0		0x80000000
--				MX53_PAD_EIM_D16__ECSPI1_SCLK		0x80000000
--				MX53_PAD_EIM_D17__ECSPI1_MISO		0x80000000
--				MX53_PAD_EIM_D18__ECSPI1_MOSI		0x80000000
--				MX53_PAD_EIM_D19__ECSPI1_SS1		0x80000000
--			>;
--		};
-+	pinctrl_ds1339: ds1339grp {
-+		fsl,pins = <MX53_PAD_DI0_PIN4__GPIO4_20 0xe0>;
-+	};
- 
--		pinctrl_esdhc1: esdhc1grp {
--			fsl,pins = <
--				MX53_PAD_SD1_DATA0__ESDHC1_DAT0		0x1d5
--				MX53_PAD_SD1_DATA1__ESDHC1_DAT1		0x1d5
--				MX53_PAD_SD1_DATA2__ESDHC1_DAT2		0x1d5
--				MX53_PAD_SD1_DATA3__ESDHC1_DAT3		0x1d5
--				MX53_PAD_SD1_CMD__ESDHC1_CMD		0x1d5
--				MX53_PAD_SD1_CLK__ESDHC1_CLK		0x1d5
--				MX53_PAD_EIM_D24__GPIO3_24 0x1f0
--			>;
--		};
-+	pinctrl_ecspi1: ecspi1grp {
-+		fsl,pins = <
-+			MX53_PAD_GPIO_19__ECSPI1_RDY		0x80000000
-+			MX53_PAD_EIM_EB2__ECSPI1_SS0		0x80000000
-+			MX53_PAD_EIM_D16__ECSPI1_SCLK		0x80000000
-+			MX53_PAD_EIM_D17__ECSPI1_MISO		0x80000000
-+			MX53_PAD_EIM_D18__ECSPI1_MOSI		0x80000000
-+			MX53_PAD_EIM_D19__ECSPI1_SS1		0x80000000
-+		>;
-+	};
- 
--		pinctrl_esdhc2: esdhc2grp {
--			fsl,pins = <
--				MX53_PAD_SD2_CMD__ESDHC2_CMD		0x1d5
--				MX53_PAD_SD2_CLK__ESDHC2_CLK		0x1d5
--				MX53_PAD_SD2_DATA0__ESDHC2_DAT0		0x1d5
--				MX53_PAD_SD2_DATA1__ESDHC2_DAT1		0x1d5
--				MX53_PAD_SD2_DATA2__ESDHC2_DAT2		0x1d5
--				MX53_PAD_SD2_DATA3__ESDHC2_DAT3		0x1d5
--				MX53_PAD_EIM_D25__GPIO3_25 0x1f0
--			>;
--		};
-+	pinctrl_esdhc1: esdhc1grp {
-+		fsl,pins = <
-+			MX53_PAD_SD1_DATA0__ESDHC1_DAT0		0x1d5
-+			MX53_PAD_SD1_DATA1__ESDHC1_DAT1		0x1d5
-+			MX53_PAD_SD1_DATA2__ESDHC1_DAT2		0x1d5
-+			MX53_PAD_SD1_DATA3__ESDHC1_DAT3		0x1d5
-+			MX53_PAD_SD1_CMD__ESDHC1_CMD		0x1d5
-+			MX53_PAD_SD1_CLK__ESDHC1_CLK		0x1d5
-+			MX53_PAD_EIM_D24__GPIO3_24 0x1f0
-+		>;
-+	};
- 
--		pinctrl_fec: fecgrp {
--			fsl,pins = <
--				MX53_PAD_FEC_MDC__FEC_MDC		0x80000000
--				MX53_PAD_FEC_MDIO__FEC_MDIO		0x80000000
--				MX53_PAD_FEC_REF_CLK__FEC_TX_CLK	0x80000000
--				MX53_PAD_FEC_RX_ER__FEC_RX_ER		0x80000000
--				MX53_PAD_FEC_CRS_DV__FEC_RX_DV		0x80000000
--				MX53_PAD_FEC_RXD1__FEC_RDATA_1		0x80000000
--				MX53_PAD_FEC_RXD0__FEC_RDATA_0		0x80000000
--				MX53_PAD_FEC_TX_EN__FEC_TX_EN		0x80000000
--				MX53_PAD_FEC_TXD1__FEC_TDATA_1		0x80000000
--				MX53_PAD_FEC_TXD0__FEC_TDATA_0		0x80000000
--			>;
--		};
-+	pinctrl_esdhc2: esdhc2grp {
-+		fsl,pins = <
-+			MX53_PAD_SD2_CMD__ESDHC2_CMD		0x1d5
-+			MX53_PAD_SD2_CLK__ESDHC2_CLK		0x1d5
-+			MX53_PAD_SD2_DATA0__ESDHC2_DAT0		0x1d5
-+			MX53_PAD_SD2_DATA1__ESDHC2_DAT1		0x1d5
-+			MX53_PAD_SD2_DATA2__ESDHC2_DAT2		0x1d5
-+			MX53_PAD_SD2_DATA3__ESDHC2_DAT3		0x1d5
-+			MX53_PAD_EIM_D25__GPIO3_25 0x1f0
-+		>;
-+	};
- 
--		pinctrl_gpio_key: gpio-keygrp {
--			fsl,pins = <MX53_PAD_EIM_A25__GPIO5_2 0x1f4>;
--		};
-+	pinctrl_fec: fecgrp {
-+		fsl,pins = <
-+			MX53_PAD_FEC_MDC__FEC_MDC		0x80000000
-+			MX53_PAD_FEC_MDIO__FEC_MDIO		0x80000000
-+			MX53_PAD_FEC_REF_CLK__FEC_TX_CLK	0x80000000
-+			MX53_PAD_FEC_RX_ER__FEC_RX_ER		0x80000000
-+			MX53_PAD_FEC_CRS_DV__FEC_RX_DV		0x80000000
-+			MX53_PAD_FEC_RXD1__FEC_RDATA_1		0x80000000
-+			MX53_PAD_FEC_RXD0__FEC_RDATA_0		0x80000000
-+			MX53_PAD_FEC_TX_EN__FEC_TX_EN		0x80000000
-+			MX53_PAD_FEC_TXD1__FEC_TDATA_1		0x80000000
-+			MX53_PAD_FEC_TXD0__FEC_TDATA_0		0x80000000
-+		>;
-+	};
- 
--		pinctrl_i2c1: i2c1grp {
--			fsl,pins = <
--				MX53_PAD_EIM_D21__I2C1_SCL		0x400001e4
--				MX53_PAD_EIM_D28__I2C1_SDA		0x400001e4
--			>;
--		};
-+	pinctrl_gpio_key: gpio-keygrp {
-+		fsl,pins = <MX53_PAD_EIM_A25__GPIO5_2 0x1f4>;
-+	};
- 
--		pinctrl_i2c1_gpio: i2c1-gpiogrp {
--			fsl,pins = <
--				MX53_PAD_EIM_D21__GPIO3_21		0x400001e6
--				MX53_PAD_EIM_D28__GPIO3_28		0x400001e6
--			>;
--		};
-+	pinctrl_i2c1: i2c1grp {
-+		fsl,pins = <
-+			MX53_PAD_EIM_D21__I2C1_SCL		0x400001e4
-+			MX53_PAD_EIM_D28__I2C1_SDA		0x400001e4
-+		>;
-+	};
- 
--		pinctrl_i2c3: i2c3grp {
--			fsl,pins = <
--				MX53_PAD_GPIO_3__I2C3_SCL		0x400001e4
--				MX53_PAD_GPIO_6__I2C3_SDA		0x400001e4
--			>;
--		};
-+	pinctrl_i2c1_gpio: i2c1-gpiogrp {
-+		fsl,pins = <
-+			MX53_PAD_EIM_D21__GPIO3_21		0x400001e6
-+			MX53_PAD_EIM_D28__GPIO3_28		0x400001e6
-+		>;
-+	};
- 
--		pinctrl_i2c3_gpio: i2c3-gpiogrp {
--			fsl,pins = <
--				MX53_PAD_GPIO_3__GPIO1_3		0x400001e6
--				MX53_PAD_GPIO_6__GPIO1_6		0x400001e6
--			>;
--		};
-+	pinctrl_i2c3: i2c3grp {
-+		fsl,pins = <
-+			MX53_PAD_GPIO_3__I2C3_SCL		0x400001e4
-+			MX53_PAD_GPIO_6__I2C3_SDA		0x400001e4
-+		>;
-+	};
- 
--		pinctrl_nand: nandgrp {
--			fsl,pins = <
--				MX53_PAD_NANDF_WE_B__EMI_NANDF_WE_B	0x4
--				MX53_PAD_NANDF_RE_B__EMI_NANDF_RE_B	0x4
--				MX53_PAD_NANDF_CLE__EMI_NANDF_CLE	0x4
--				MX53_PAD_NANDF_ALE__EMI_NANDF_ALE	0x4
--				MX53_PAD_NANDF_WP_B__EMI_NANDF_WP_B	0xe0
--				MX53_PAD_NANDF_RB0__EMI_NANDF_RB_0	0xe0
--				MX53_PAD_NANDF_CS0__EMI_NANDF_CS_0	0x4
--				MX53_PAD_EIM_DA0__EMI_NAND_WEIM_DA_0	0xa4
--				MX53_PAD_EIM_DA1__EMI_NAND_WEIM_DA_1	0xa4
--				MX53_PAD_EIM_DA2__EMI_NAND_WEIM_DA_2	0xa4
--				MX53_PAD_EIM_DA3__EMI_NAND_WEIM_DA_3	0xa4
--				MX53_PAD_EIM_DA4__EMI_NAND_WEIM_DA_4	0xa4
--				MX53_PAD_EIM_DA5__EMI_NAND_WEIM_DA_5	0xa4
--				MX53_PAD_EIM_DA6__EMI_NAND_WEIM_DA_6	0xa4
--				MX53_PAD_EIM_DA7__EMI_NAND_WEIM_DA_7	0xa4
--			>;
--		};
-+	pinctrl_i2c3_gpio: i2c3-gpiogrp {
-+		fsl,pins = <
-+			MX53_PAD_GPIO_3__GPIO1_3		0x400001e6
-+			MX53_PAD_GPIO_6__GPIO1_6		0x400001e6
-+		>;
-+	};
- 
--		pinctrl_pwm2: pwm2grp {
--			fsl,pins = <
--				MX53_PAD_GPIO_1__PWM2_PWMO		0x80000000
--			>;
--		};
-+	pinctrl_nand: nandgrp {
-+		fsl,pins = <
-+			MX53_PAD_NANDF_WE_B__EMI_NANDF_WE_B	0x4
-+			MX53_PAD_NANDF_RE_B__EMI_NANDF_RE_B	0x4
-+			MX53_PAD_NANDF_CLE__EMI_NANDF_CLE	0x4
-+			MX53_PAD_NANDF_ALE__EMI_NANDF_ALE	0x4
-+			MX53_PAD_NANDF_WP_B__EMI_NANDF_WP_B	0xe0
-+			MX53_PAD_NANDF_RB0__EMI_NANDF_RB_0	0xe0
-+			MX53_PAD_NANDF_CS0__EMI_NANDF_CS_0	0x4
-+			MX53_PAD_EIM_DA0__EMI_NAND_WEIM_DA_0	0xa4
-+			MX53_PAD_EIM_DA1__EMI_NAND_WEIM_DA_1	0xa4
-+			MX53_PAD_EIM_DA2__EMI_NAND_WEIM_DA_2	0xa4
-+			MX53_PAD_EIM_DA3__EMI_NAND_WEIM_DA_3	0xa4
-+			MX53_PAD_EIM_DA4__EMI_NAND_WEIM_DA_4	0xa4
-+			MX53_PAD_EIM_DA5__EMI_NAND_WEIM_DA_5	0xa4
-+			MX53_PAD_EIM_DA6__EMI_NAND_WEIM_DA_6	0xa4
-+			MX53_PAD_EIM_DA7__EMI_NAND_WEIM_DA_7	0xa4
-+		>;
-+	};
- 
--		pinctrl_ssi1: ssi1grp {
--			fsl,pins = <
--				MX53_PAD_KEY_COL0__AUDMUX_AUD5_TXC	0x80000000
--				MX53_PAD_KEY_ROW0__AUDMUX_AUD5_TXD	0x80000000
--				MX53_PAD_KEY_COL1__AUDMUX_AUD5_TXFS	0x80000000
--				MX53_PAD_KEY_ROW1__AUDMUX_AUD5_RXD	0x80000000
--			>;
--		};
-+	pinctrl_pwm2: pwm2grp {
-+		fsl,pins = <
-+			MX53_PAD_GPIO_1__PWM2_PWMO		0x80000000
-+		>;
-+	};
- 
--		pinctrl_ssi2: ssi2grp {
--			fsl,pins = <
--				MX53_PAD_CSI0_DAT4__AUDMUX_AUD3_TXC	0x80000000
--				MX53_PAD_CSI0_DAT5__AUDMUX_AUD3_TXD	0x80000000
--				MX53_PAD_CSI0_DAT6__AUDMUX_AUD3_TXFS	0x80000000
--				MX53_PAD_CSI0_DAT7__AUDMUX_AUD3_RXD	0x80000000
--				MX53_PAD_EIM_D27__GPIO3_27 0x1f0
--			>;
--		};
-+	pinctrl_ssi1: ssi1grp {
-+		fsl,pins = <
-+			MX53_PAD_KEY_COL0__AUDMUX_AUD5_TXC	0x80000000
-+			MX53_PAD_KEY_ROW0__AUDMUX_AUD5_TXD	0x80000000
-+			MX53_PAD_KEY_COL1__AUDMUX_AUD5_TXFS	0x80000000
-+			MX53_PAD_KEY_ROW1__AUDMUX_AUD5_RXD	0x80000000
-+		>;
-+	};
- 
--		pinctrl_stk5led: stk5ledgrp {
--			fsl,pins = <MX53_PAD_EIM_A18__GPIO2_20 0xc0>;
--		};
-+	pinctrl_ssi2: ssi2grp {
-+		fsl,pins = <
-+			MX53_PAD_CSI0_DAT4__AUDMUX_AUD3_TXC	0x80000000
-+			MX53_PAD_CSI0_DAT5__AUDMUX_AUD3_TXD	0x80000000
-+			MX53_PAD_CSI0_DAT6__AUDMUX_AUD3_TXFS	0x80000000
-+			MX53_PAD_CSI0_DAT7__AUDMUX_AUD3_RXD	0x80000000
-+			MX53_PAD_EIM_D27__GPIO3_27 0x1f0
++			MX6SL_PAD_KEY_ROW5__GPIO4_IO03    0x17059
 +		>;
 +	};
  
 -		pinctrl_uart1: uart1grp {
 -			fsl,pins = <
--				MX53_PAD_PATA_DIOW__UART1_TXD_MUX	0x1e4
--				MX53_PAD_PATA_DMACK__UART1_RXD_MUX	0x1e4
--				MX53_PAD_PATA_RESET_B__UART1_CTS	0x1c5
--				MX53_PAD_PATA_IORDY__UART1_RTS		0x1c5
--			>;
--		};
-+	pinctrl_stk5led: stk5ledgrp {
-+		fsl,pins = <MX53_PAD_EIM_A18__GPIO2_20 0xc0>;
-+	};
- 
--		pinctrl_uart2: uart2grp {
--			fsl,pins = <
--				MX53_PAD_PATA_BUFFER_EN__UART2_RXD_MUX	0x1c5
--				MX53_PAD_PATA_DMARQ__UART2_TXD_MUX	0x1c5
--				MX53_PAD_PATA_DIOR__UART2_RTS		0x1c5
--				MX53_PAD_PATA_INTRQ__UART2_CTS		0x1c5
+-				MX6SL_PAD_UART1_RXD__UART1_RX_DATA	0x1b0b1
+-				MX6SL_PAD_UART1_TXD__UART1_TX_DATA	0x1b0b1
 -			>;
 -		};
 +	pinctrl_uart1: uart1grp {
 +		fsl,pins = <
-+			MX53_PAD_PATA_DIOW__UART1_TXD_MUX	0x1e4
-+			MX53_PAD_PATA_DMACK__UART1_RXD_MUX	0x1e4
-+			MX53_PAD_PATA_RESET_B__UART1_CTS	0x1c5
-+			MX53_PAD_PATA_IORDY__UART1_RTS		0x1c5
++			MX6SL_PAD_UART1_RXD__UART1_RX_DATA	0x1b0b1
++			MX6SL_PAD_UART1_TXD__UART1_TX_DATA	0x1b0b1
 +		>;
 +	};
  
+-		pinctrl_usbotg1: usbotg1grp {
+-			fsl,pins = <
+-				MX6SL_PAD_EPDC_PWRCOM__USB_OTG1_ID	0x17059
+-			>;
+-		};
++	pinctrl_usbotg1: usbotg1grp {
++		fsl,pins = <
++			MX6SL_PAD_EPDC_PWRCOM__USB_OTG1_ID	0x17059
++		>;
++	};
+ 
+-		pinctrl_usdhc1: usdhc1grp {
+-			fsl,pins = <
+-				MX6SL_PAD_SD1_CMD__SD1_CMD		0x17059
+-				MX6SL_PAD_SD1_CLK__SD1_CLK		0x10059
+-				MX6SL_PAD_SD1_DAT0__SD1_DATA0		0x17059
+-				MX6SL_PAD_SD1_DAT1__SD1_DATA1		0x17059
+-				MX6SL_PAD_SD1_DAT2__SD1_DATA2		0x17059
+-				MX6SL_PAD_SD1_DAT3__SD1_DATA3		0x17059
+-				MX6SL_PAD_SD1_DAT4__SD1_DATA4		0x17059
+-				MX6SL_PAD_SD1_DAT5__SD1_DATA5		0x17059
+-				MX6SL_PAD_SD1_DAT6__SD1_DATA6		0x17059
+-				MX6SL_PAD_SD1_DAT7__SD1_DATA7		0x17059
+-			>;
+-		};
++	pinctrl_usdhc1: usdhc1grp {
++		fsl,pins = <
++			MX6SL_PAD_SD1_CMD__SD1_CMD		0x17059
++			MX6SL_PAD_SD1_CLK__SD1_CLK		0x10059
++			MX6SL_PAD_SD1_DAT0__SD1_DATA0		0x17059
++			MX6SL_PAD_SD1_DAT1__SD1_DATA1		0x17059
++			MX6SL_PAD_SD1_DAT2__SD1_DATA2		0x17059
++			MX6SL_PAD_SD1_DAT3__SD1_DATA3		0x17059
++			MX6SL_PAD_SD1_DAT4__SD1_DATA4		0x17059
++			MX6SL_PAD_SD1_DAT5__SD1_DATA5		0x17059
++			MX6SL_PAD_SD1_DAT6__SD1_DATA6		0x17059
++			MX6SL_PAD_SD1_DAT7__SD1_DATA7		0x17059
++		>;
++	};
+ 
+-		pinctrl_usdhc1_100mhz: usdhc1-100mhz-grp {
+-			fsl,pins = <
+-				MX6SL_PAD_SD1_CMD__SD1_CMD		0x170b9
+-				MX6SL_PAD_SD1_CLK__SD1_CLK		0x100b9
+-				MX6SL_PAD_SD1_DAT0__SD1_DATA0		0x170b9
+-				MX6SL_PAD_SD1_DAT1__SD1_DATA1		0x170b9
+-				MX6SL_PAD_SD1_DAT2__SD1_DATA2		0x170b9
+-				MX6SL_PAD_SD1_DAT3__SD1_DATA3		0x170b9
+-				MX6SL_PAD_SD1_DAT4__SD1_DATA4		0x170b9
+-				MX6SL_PAD_SD1_DAT5__SD1_DATA5		0x170b9
+-				MX6SL_PAD_SD1_DAT6__SD1_DATA6		0x170b9
+-				MX6SL_PAD_SD1_DAT7__SD1_DATA7		0x170b9
+-			>;
+-		};
++	pinctrl_usdhc1_100mhz: usdhc1-100mhz-grp {
++		fsl,pins = <
++			MX6SL_PAD_SD1_CMD__SD1_CMD		0x170b9
++			MX6SL_PAD_SD1_CLK__SD1_CLK		0x100b9
++			MX6SL_PAD_SD1_DAT0__SD1_DATA0		0x170b9
++			MX6SL_PAD_SD1_DAT1__SD1_DATA1		0x170b9
++			MX6SL_PAD_SD1_DAT2__SD1_DATA2		0x170b9
++			MX6SL_PAD_SD1_DAT3__SD1_DATA3		0x170b9
++			MX6SL_PAD_SD1_DAT4__SD1_DATA4		0x170b9
++			MX6SL_PAD_SD1_DAT5__SD1_DATA5		0x170b9
++			MX6SL_PAD_SD1_DAT6__SD1_DATA6		0x170b9
++			MX6SL_PAD_SD1_DAT7__SD1_DATA7		0x170b9
++		>;
++	};
+ 
+-		pinctrl_usdhc1_200mhz: usdhc1-200mhz-grp {
+-			fsl,pins = <
+-				MX6SL_PAD_SD1_CMD__SD1_CMD		0x170f9
+-				MX6SL_PAD_SD1_CLK__SD1_CLK		0x100f9
+-				MX6SL_PAD_SD1_DAT0__SD1_DATA0		0x170f9
+-				MX6SL_PAD_SD1_DAT1__SD1_DATA1		0x170f9
+-				MX6SL_PAD_SD1_DAT2__SD1_DATA2		0x170f9
+-				MX6SL_PAD_SD1_DAT3__SD1_DATA3		0x170f9
+-				MX6SL_PAD_SD1_DAT4__SD1_DATA4		0x170f9
+-				MX6SL_PAD_SD1_DAT5__SD1_DATA5		0x170f9
+-				MX6SL_PAD_SD1_DAT6__SD1_DATA6		0x170f9
+-				MX6SL_PAD_SD1_DAT7__SD1_DATA7		0x170f9
+-			>;
+-		};
++	pinctrl_usdhc1_200mhz: usdhc1-200mhz-grp {
++		fsl,pins = <
++			MX6SL_PAD_SD1_CMD__SD1_CMD		0x170f9
++			MX6SL_PAD_SD1_CLK__SD1_CLK		0x100f9
++			MX6SL_PAD_SD1_DAT0__SD1_DATA0		0x170f9
++			MX6SL_PAD_SD1_DAT1__SD1_DATA1		0x170f9
++			MX6SL_PAD_SD1_DAT2__SD1_DATA2		0x170f9
++			MX6SL_PAD_SD1_DAT3__SD1_DATA3		0x170f9
++			MX6SL_PAD_SD1_DAT4__SD1_DATA4		0x170f9
++			MX6SL_PAD_SD1_DAT5__SD1_DATA5		0x170f9
++			MX6SL_PAD_SD1_DAT6__SD1_DATA6		0x170f9
++			MX6SL_PAD_SD1_DAT7__SD1_DATA7		0x170f9
++		>;
++	};
+ 
+-		pinctrl_usdhc2: usdhc2grp {
+-			fsl,pins = <
+-				MX6SL_PAD_SD2_CMD__SD2_CMD		0x17059
+-				MX6SL_PAD_SD2_CLK__SD2_CLK		0x10059
+-				MX6SL_PAD_SD2_DAT0__SD2_DATA0		0x17059
+-				MX6SL_PAD_SD2_DAT1__SD2_DATA1		0x17059
+-				MX6SL_PAD_SD2_DAT2__SD2_DATA2		0x17059
+-				MX6SL_PAD_SD2_DAT3__SD2_DATA3		0x17059
+-			>;
+-		};
++	pinctrl_usdhc2: usdhc2grp {
++		fsl,pins = <
++			MX6SL_PAD_SD2_CMD__SD2_CMD		0x17059
++			MX6SL_PAD_SD2_CLK__SD2_CLK		0x10059
++			MX6SL_PAD_SD2_DAT0__SD2_DATA0		0x17059
++			MX6SL_PAD_SD2_DAT1__SD2_DATA1		0x17059
++			MX6SL_PAD_SD2_DAT2__SD2_DATA2		0x17059
++			MX6SL_PAD_SD2_DAT3__SD2_DATA3		0x17059
++		>;
++	};
+ 
+-		pinctrl_usdhc2_100mhz: usdhc2-100mhz-grp {
+-			fsl,pins = <
+-				MX6SL_PAD_SD2_CMD__SD2_CMD		0x170b9
+-				MX6SL_PAD_SD2_CLK__SD2_CLK		0x100b9
+-				MX6SL_PAD_SD2_DAT0__SD2_DATA0		0x170b9
+-				MX6SL_PAD_SD2_DAT1__SD2_DATA1		0x170b9
+-				MX6SL_PAD_SD2_DAT2__SD2_DATA2		0x170b9
+-				MX6SL_PAD_SD2_DAT3__SD2_DATA3		0x170b9
+-			>;
+-		};
++	pinctrl_usdhc2_100mhz: usdhc2-100mhz-grp {
++		fsl,pins = <
++			MX6SL_PAD_SD2_CMD__SD2_CMD		0x170b9
++			MX6SL_PAD_SD2_CLK__SD2_CLK		0x100b9
++			MX6SL_PAD_SD2_DAT0__SD2_DATA0		0x170b9
++			MX6SL_PAD_SD2_DAT1__SD2_DATA1		0x170b9
++			MX6SL_PAD_SD2_DAT2__SD2_DATA2		0x170b9
++			MX6SL_PAD_SD2_DAT3__SD2_DATA3		0x170b9
++		>;
++	};
+ 
+-		pinctrl_usdhc2_200mhz: usdhc2-200mhz-grp {
+-			fsl,pins = <
+-				MX6SL_PAD_SD2_CMD__SD2_CMD		0x170f9
+-				MX6SL_PAD_SD2_CLK__SD2_CLK		0x100f9
+-				MX6SL_PAD_SD2_DAT0__SD2_DATA0		0x170f9
+-				MX6SL_PAD_SD2_DAT1__SD2_DATA1		0x170f9
+-				MX6SL_PAD_SD2_DAT2__SD2_DATA2		0x170f9
+-				MX6SL_PAD_SD2_DAT3__SD2_DATA3		0x170f9
+-			>;
+-		};
++	pinctrl_usdhc2_200mhz: usdhc2-200mhz-grp {
++		fsl,pins = <
++			MX6SL_PAD_SD2_CMD__SD2_CMD		0x170f9
++			MX6SL_PAD_SD2_CLK__SD2_CLK		0x100f9
++			MX6SL_PAD_SD2_DAT0__SD2_DATA0		0x170f9
++			MX6SL_PAD_SD2_DAT1__SD2_DATA1		0x170f9
++			MX6SL_PAD_SD2_DAT2__SD2_DATA2		0x170f9
++			MX6SL_PAD_SD2_DAT3__SD2_DATA3		0x170f9
++		>;
++	};
+ 
+-		pinctrl_usdhc3: usdhc3grp {
+-			fsl,pins = <
+-				MX6SL_PAD_SD3_CMD__SD3_CMD		0x17059
+-				MX6SL_PAD_SD3_CLK__SD3_CLK		0x10059
+-				MX6SL_PAD_SD3_DAT0__SD3_DATA0		0x17059
+-				MX6SL_PAD_SD3_DAT1__SD3_DATA1		0x17059
+-				MX6SL_PAD_SD3_DAT2__SD3_DATA2		0x17059
+-				MX6SL_PAD_SD3_DAT3__SD3_DATA3		0x17059
+-			>;
+-		};
++	pinctrl_usdhc3: usdhc3grp {
++		fsl,pins = <
++			MX6SL_PAD_SD3_CMD__SD3_CMD		0x17059
++			MX6SL_PAD_SD3_CLK__SD3_CLK		0x10059
++			MX6SL_PAD_SD3_DAT0__SD3_DATA0		0x17059
++			MX6SL_PAD_SD3_DAT1__SD3_DATA1		0x17059
++			MX6SL_PAD_SD3_DAT2__SD3_DATA2		0x17059
++			MX6SL_PAD_SD3_DAT3__SD3_DATA3		0x17059
++		>;
++	};
+ 
+-		pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
+-			fsl,pins = <
+-				MX6SL_PAD_SD3_CMD__SD3_CMD		0x170b9
+-				MX6SL_PAD_SD3_CLK__SD3_CLK		0x100b9
+-				MX6SL_PAD_SD3_DAT0__SD3_DATA0		0x170b9
+-				MX6SL_PAD_SD3_DAT1__SD3_DATA1		0x170b9
+-				MX6SL_PAD_SD3_DAT2__SD3_DATA2		0x170b9
+-				MX6SL_PAD_SD3_DAT3__SD3_DATA3		0x170b9
+-			>;
+-		};
++	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
++		fsl,pins = <
++			MX6SL_PAD_SD3_CMD__SD3_CMD		0x170b9
++			MX6SL_PAD_SD3_CLK__SD3_CLK		0x100b9
++			MX6SL_PAD_SD3_DAT0__SD3_DATA0		0x170b9
++			MX6SL_PAD_SD3_DAT1__SD3_DATA1		0x170b9
++			MX6SL_PAD_SD3_DAT2__SD3_DATA2		0x170b9
++			MX6SL_PAD_SD3_DAT3__SD3_DATA3		0x170b9
++		>;
++	};
+ 
+-		pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
+-			fsl,pins = <
+-				MX6SL_PAD_SD3_CMD__SD3_CMD		0x170f9
+-				MX6SL_PAD_SD3_CLK__SD3_CLK		0x100f9
+-				MX6SL_PAD_SD3_DAT0__SD3_DATA0		0x170f9
+-				MX6SL_PAD_SD3_DAT1__SD3_DATA1		0x170f9
+-				MX6SL_PAD_SD3_DAT2__SD3_DATA2		0x170f9
+-				MX6SL_PAD_SD3_DAT3__SD3_DATA3		0x170f9
+-			>;
+-		};
++	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
++		fsl,pins = <
++			MX6SL_PAD_SD3_CMD__SD3_CMD		0x170f9
++			MX6SL_PAD_SD3_CLK__SD3_CLK		0x100f9
++			MX6SL_PAD_SD3_DAT0__SD3_DATA0		0x170f9
++			MX6SL_PAD_SD3_DAT1__SD3_DATA1		0x170f9
++			MX6SL_PAD_SD3_DAT2__SD3_DATA2		0x170f9
++			MX6SL_PAD_SD3_DAT3__SD3_DATA3		0x170f9
++		>;
+ 	};
+ };
+ 
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-shine2hd.dts b/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-shine2hd.dts
+index 03d6965f01495..56040da0bd25d 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-shine2hd.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-shine2hd.dts
+@@ -382,7 +382,7 @@ MX6SL_PAD_I2C1_SDA__I2C1_SDA	 0x4001f8b1
+ 		>;
+ 	};
+ 
+-	pinctrl_i2c1_sleep: i2c1grp-sleep {
++	pinctrl_i2c1_sleep: i2c1sleep-grp {
+ 		fsl,pins = <
+ 			MX6SL_PAD_I2C1_SCL__I2C1_SCL	 0x400108b1
+ 			MX6SL_PAD_I2C1_SDA__I2C1_SDA	 0x400108b1
+@@ -396,7 +396,7 @@ MX6SL_PAD_I2C2_SDA__I2C2_SDA	 0x4001f8b1
+ 		>;
+ 	};
+ 
+-	pinctrl_i2c2_sleep: i2c2grp-sleep {
++	pinctrl_i2c2_sleep: i2c2sleep-grp {
+ 		fsl,pins = <
+ 			MX6SL_PAD_I2C2_SCL__I2C2_SCL	 0x400108b1
+ 			MX6SL_PAD_I2C2_SDA__I2C2_SDA	 0x400108b1
+@@ -456,7 +456,7 @@ MX6SL_PAD_SD2_DAT3__SD2_DATA3		0x17059
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc2_100mhz: usdhc2grp-100mhz {
++	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+ 		fsl,pins = <
+ 			MX6SL_PAD_SD2_CMD__SD2_CMD		0x170b9
+ 			MX6SL_PAD_SD2_CLK__SD2_CLK		0x130b9
+@@ -467,7 +467,7 @@ MX6SL_PAD_SD2_DAT3__SD2_DATA3		0x170b9
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc2_200mhz: usdhc2grp-200mhz {
++	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
+ 		fsl,pins = <
+ 			MX6SL_PAD_SD2_CMD__SD2_CMD		0x170f9
+ 			MX6SL_PAD_SD2_CLK__SD2_CLK		0x130f9
+@@ -478,7 +478,7 @@ MX6SL_PAD_SD2_DAT3__SD2_DATA3		0x170f9
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc2_sleep: usdhc2grp-sleep {
++	pinctrl_usdhc2_sleep: usdhc2sleep-grp {
+ 		fsl,pins = <
+ 			MX6SL_PAD_SD2_CMD__GPIO5_IO04		0x100f9
+ 			MX6SL_PAD_SD2_CLK__GPIO5_IO05		0x100f9
+@@ -500,7 +500,7 @@ MX6SL_PAD_SD3_DAT3__SD3_DATA3	0x11059
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc3_100mhz: usdhc3grp-100mhz {
++	pinctrl_usdhc3_100mhz: usdhc3-100mhzgrp {
+ 		fsl,pins = <
+ 			MX6SL_PAD_SD3_CMD__SD3_CMD	0x170b9
+ 			MX6SL_PAD_SD3_CLK__SD3_CLK	0x170b9
+@@ -511,7 +511,7 @@ MX6SL_PAD_SD3_DAT3__SD3_DATA3	0x170b9
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc3_200mhz: usdhc3grp-200mhz {
++	pinctrl_usdhc3_200mhz: usdhc3-200mhzgrp {
+ 		fsl,pins = <
+ 			MX6SL_PAD_SD3_CMD__SD3_CMD	0x170f9
+ 			MX6SL_PAD_SD3_CLK__SD3_CLK	0x170f9
+@@ -522,7 +522,7 @@ MX6SL_PAD_SD3_DAT3__SD3_DATA3	0x170f9
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc3_sleep: usdhc3grp-sleep {
++	pinctrl_usdhc3_sleep: usdhc3sleep-grp {
+ 		fsl,pins = <
+ 			MX6SL_PAD_SD3_CMD__GPIO5_IO21	0x100c1
+ 			MX6SL_PAD_SD3_CLK__GPIO5_IO18	0x100c1
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-shine3.dts b/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-shine3.dts
+index db5d8509935f1..5ba6f15e9ed5a 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-shine3.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-shine3.dts
+@@ -111,7 +111,7 @@ MX6SL_PAD_I2C1_SDA__I2C1_SDA	 0x4001f8b1
+ 		>;
+ 	};
+ 
+-	pinctrl_i2c1_sleep: i2c1grp-sleep {
++	pinctrl_i2c1_sleep: i2c1sleep-grp {
+ 		fsl,pins = <
+ 			MX6SL_PAD_I2C1_SCL__I2C1_SCL	 0x400108b1
+ 			MX6SL_PAD_I2C1_SDA__I2C1_SDA	 0x400108b1
+@@ -125,7 +125,7 @@ MX6SL_PAD_I2C2_SDA__I2C2_SDA	 0x4001f8b1
+ 		>;
+ 	};
+ 
+-	pinctrl_i2c2_sleep: i2c2grp-sleep {
++	pinctrl_i2c2_sleep: i2c2sleep-grp {
+ 		fsl,pins = <
+ 			MX6SL_PAD_I2C2_SCL__I2C2_SCL	 0x400108b1
+ 			MX6SL_PAD_I2C2_SDA__I2C2_SDA	 0x400108b1
+@@ -190,7 +190,7 @@ MX6SL_PAD_SD2_DAT3__SD2_DATA3		0x17059
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc2_100mhz: usdhc2grp-100mhz {
++	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+ 		fsl,pins = <
+ 			MX6SL_PAD_SD2_CMD__SD2_CMD		0x170b9
+ 			MX6SL_PAD_SD2_CLK__SD2_CLK		0x130b9
+@@ -201,7 +201,7 @@ MX6SL_PAD_SD2_DAT3__SD2_DATA3		0x170b9
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc2_200mhz: usdhc2grp-200mhz {
++	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
+ 		fsl,pins = <
+ 			MX6SL_PAD_SD2_CMD__SD2_CMD		0x170f9
+ 			MX6SL_PAD_SD2_CLK__SD2_CLK		0x130f9
+@@ -212,7 +212,7 @@ MX6SL_PAD_SD2_DAT3__SD2_DATA3		0x170f9
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc2_sleep: usdhc2grp-sleep {
++	pinctrl_usdhc2_sleep: usdhc2sleep-grp {
+ 		fsl,pins = <
+ 			MX6SL_PAD_SD2_CMD__GPIO5_IO04		0x100f9
+ 			MX6SL_PAD_SD2_CLK__GPIO5_IO05		0x100f9
+@@ -234,7 +234,7 @@ MX6SL_PAD_SD3_DAT3__SD3_DATA3	0x11059
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc3_100mhz: usdhc3grp-100mhz {
++	pinctrl_usdhc3_100mhz: usdhc3-100mhzgrp {
+ 		fsl,pins = <
+ 			MX6SL_PAD_SD3_CMD__SD3_CMD	0x170b9
+ 			MX6SL_PAD_SD3_CLK__SD3_CLK	0x170b9
+@@ -245,7 +245,7 @@ MX6SL_PAD_SD3_DAT3__SD3_DATA3	0x170b9
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc3_200mhz: usdhc3grp-200mhz {
++	pinctrl_usdhc3_200mhz: usdhc3-200mhzgrp {
+ 		fsl,pins = <
+ 			MX6SL_PAD_SD3_CMD__SD3_CMD	0x170f9
+ 			MX6SL_PAD_SD3_CLK__SD3_CLK	0x170f9
+@@ -256,7 +256,7 @@ MX6SL_PAD_SD3_DAT3__SD3_DATA3	0x170f9
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc3_sleep: usdhc3grp-sleep {
++	pinctrl_usdhc3_sleep: usdhc3sleep-grp {
+ 		fsl,pins = <
+ 			MX6SL_PAD_SD3_CMD__GPIO5_IO21	0x100c1
+ 			MX6SL_PAD_SD3_CLK__GPIO5_IO18	0x100c1
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-vision5.dts b/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-vision5.dts
+index 6bc342035e2b6..a2534c422a522 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-vision5.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-vision5.dts
+@@ -111,7 +111,7 @@ MX6SL_PAD_I2C1_SDA__I2C1_SDA	 0x4001f8b1
+ 		>;
+ 	};
+ 
+-	pinctrl_i2c1_sleep: i2c1grp-sleep {
++	pinctrl_i2c1_sleep: i2c1sleep-grp {
+ 		fsl,pins = <
+ 			MX6SL_PAD_I2C1_SCL__I2C1_SCL	 0x400108b1
+ 			MX6SL_PAD_I2C1_SDA__I2C1_SDA	 0x400108b1
+@@ -125,7 +125,7 @@ MX6SL_PAD_I2C2_SDA__I2C2_SDA	 0x4001f8b1
+ 		>;
+ 	};
+ 
+-	pinctrl_i2c2_sleep: i2c2grp-sleep {
++	pinctrl_i2c2_sleep: i2c2sleep-grp {
+ 		fsl,pins = <
+ 			MX6SL_PAD_I2C2_SCL__I2C2_SCL	 0x400108b1
+ 			MX6SL_PAD_I2C2_SDA__I2C2_SDA	 0x400108b1
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6sl-warp.dts b/arch/arm/boot/dts/nxp/imx/imx6sl-warp.dts
+index 2545c0fe47c82..a5d48c3823146 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6sl-warp.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6sl-warp.dts
+@@ -125,110 +125,108 @@ &usdhc3 {
+ };
+ 
+ &iomuxc {
+-	imx6sl-warp {
+-		pinctrl_uart1: uart1grp {
+-			fsl,pins = <
+-				MX6SL_PAD_UART1_RXD__UART1_RX_DATA	0x41b0b1
+-				MX6SL_PAD_UART1_TXD__UART1_TX_DATA	0x41b0b1
+-			>;
+-		};
+-
+-
 -		pinctrl_uart3: uart3grp {
 -			fsl,pins = <
--				MX53_PAD_PATA_CS_0__UART3_TXD_MUX	0x1e4
--				MX53_PAD_PATA_CS_1__UART3_RXD_MUX	0x1e4
--				MX53_PAD_PATA_DA_1__UART3_CTS		0x1e4
--				MX53_PAD_PATA_DA_2__UART3_RTS		0x1e4
+-				MX6SL_PAD_AUD_RXC__UART3_RX_DATA	0x41b0b1
+-				MX6SL_PAD_AUD_RXC__UART3_TX_DATA	0x41b0b1
 -			>;
 -		};
-+	pinctrl_uart2: uart2grp {
-+		fsl,pins = <
-+			MX53_PAD_PATA_BUFFER_EN__UART2_RXD_MUX	0x1c5
-+			MX53_PAD_PATA_DMARQ__UART2_TXD_MUX	0x1c5
-+			MX53_PAD_PATA_DIOR__UART2_RTS		0x1c5
-+			MX53_PAD_PATA_INTRQ__UART2_CTS		0x1c5
-+		>;
-+	};
- 
--		pinctrl_usbh1: usbh1grp {
--			fsl,pins = <
--				MX53_PAD_EIM_D30__GPIO3_30 0x100 /* OC */
--			>;
--		};
-+	pinctrl_uart3: uart3grp {
-+		fsl,pins = <
-+			MX53_PAD_PATA_CS_0__UART3_TXD_MUX	0x1e4
-+			MX53_PAD_PATA_CS_1__UART3_RXD_MUX	0x1e4
-+			MX53_PAD_PATA_DA_1__UART3_CTS		0x1e4
-+			MX53_PAD_PATA_DA_2__UART3_RTS		0x1e4
-+		>;
-+	};
- 
--		pinctrl_usbh1_vbus: usbh1-vbusgrp {
--			fsl,pins = <
--				MX53_PAD_EIM_D31__GPIO3_31 0xe0 /* VBUS ENABLE */
--			>;
--		};
-+	pinctrl_usbh1: usbh1grp {
-+		fsl,pins = <
-+			MX53_PAD_EIM_D30__GPIO3_30 0x100 /* OC */
-+		>;
-+	};
- 
--		pinctrl_usbotg_vbus: usbotg-vbusgrp {
--			fsl,pins = <
--				MX53_PAD_GPIO_7__GPIO1_7 0xe0 /* VBUS ENABLE */
--				MX53_PAD_GPIO_8__GPIO1_8 0x100 /* OC */
--			>;
--		};
-+	pinctrl_usbh1_vbus: usbh1-vbusgrp {
-+		fsl,pins = <
-+			MX53_PAD_EIM_D31__GPIO3_31 0xe0 /* VBUS ENABLE */
-+		>;
-+	};
-+
-+	pinctrl_usbotg_vbus: usbotg-vbusgrp {
-+		fsl,pins = <
-+			MX53_PAD_GPIO_7__GPIO1_7 0xe0 /* VBUS ENABLE */
-+			MX53_PAD_GPIO_8__GPIO1_8 0x100 /* OC */
-+		>;
- 	};
- };
- 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx53-voipac-bsb.dts b/arch/arm/boot/dts/nxp/imx/imx53-voipac-bsb.dts
-index ae53d178a6830..ae9cc04f23eb5 100644
---- a/arch/arm/boot/dts/nxp/imx/imx53-voipac-bsb.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx53-voipac-bsb.dts
-@@ -40,67 +40,65 @@ led2 {
- 
- &iomuxc {
- 	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_hog>;
 -
--	imx53-voipac {
--		pinctrl_hog: hoggrp {
+-		pinctrl_uart5: uart5grp {
 -			fsl,pins = <
--				/* SD2_CD */
--				MX53_PAD_EIM_D25__GPIO3_25	0x80000000
--				/* SD2_WP */
--				MX53_PAD_EIM_A19__GPIO2_19 	0x80000000
+-				MX6SL_PAD_ECSPI1_SCLK__UART5_RX_DATA	0x41b0b1
+-				MX6SL_PAD_ECSPI1_MOSI__UART5_TX_DATA	0x41b0b1
+-				MX6SL_PAD_ECSPI1_MISO__UART5_RTS_B	0x4130b1
+-				MX6SL_PAD_ECSPI1_SS0__UART5_CTS_B	0x4130b1
 -			>;
 -		};
-+	pinctrl-0 = <&pinctrl_hogbsb>;
-+
-+	pinctrl_hogbsb: hogbsbgrp {
-+		fsl,pins = <
-+			/* SD2_CD */
-+			MX53_PAD_EIM_D25__GPIO3_25	0x80000000
-+			/* SD2_WP */
-+			MX53_PAD_EIM_A19__GPIO2_19 	0x80000000
-+		>;
-+	};
- 
--		led_pin_gpio: led_gpio {
+-
+-		pinctrl_usdhc2: usdhc2grp {
 -			fsl,pins = <
--				MX53_PAD_EIM_D29__GPIO3_29	0x80000000
--				MX53_PAD_EIM_EB3__GPIO2_31	0x80000000
+-				MX6SL_PAD_SD2_CMD__SD2_CMD		0x417059
+-				MX6SL_PAD_SD2_CLK__SD2_CLK		0x410059
+-				MX6SL_PAD_SD2_DAT0__SD2_DATA0		0x417059
+-				MX6SL_PAD_SD2_DAT1__SD2_DATA1		0x417059
+-				MX6SL_PAD_SD2_DAT2__SD2_DATA2		0x417059
+-				MX6SL_PAD_SD2_DAT3__SD2_DATA3		0x417059
+-				MX6SL_PAD_SD2_DAT4__SD2_DATA4		0x417059
+-				MX6SL_PAD_SD2_DAT5__SD2_DATA5		0x417059
+-				MX6SL_PAD_SD2_DAT6__SD2_DATA6		0x417059
+-				MX6SL_PAD_SD2_DAT7__SD2_DATA7		0x417059
+-				MX6SL_PAD_SD2_RST__SD2_RESET		0x417059
 -			>;
 -		};
-+	led_pin_gpio: ledgpiogrp {
-+		fsl,pins = <
-+			MX53_PAD_EIM_D29__GPIO3_29	0x80000000
-+			MX53_PAD_EIM_EB3__GPIO2_31	0x80000000
-+		>;
-+	};
- 
--		/* Keyboard controller */
--		pinctrl_kpp_1: kppgrp-1 {
+-
+-		pinctrl_usdhc2_100mhz: usdhc2-100mhz-grp {
 -			fsl,pins = <
--				MX53_PAD_GPIO_9__KPP_COL_6	0xe8
--				MX53_PAD_GPIO_4__KPP_COL_7	0xe8
--				MX53_PAD_KEY_COL2__KPP_COL_2	0xe8
--				MX53_PAD_KEY_COL3__KPP_COL_3	0xe8
--				MX53_PAD_KEY_COL4__KPP_COL_4	0xe8
--				MX53_PAD_GPIO_2__KPP_ROW_6	0xe0
--				MX53_PAD_GPIO_5__KPP_ROW_7	0xe0
--				MX53_PAD_KEY_ROW2__KPP_ROW_2	0xe0
--				MX53_PAD_KEY_ROW3__KPP_ROW_3	0xe0
--				MX53_PAD_KEY_ROW4__KPP_ROW_4	0xe0
+-				MX6SL_PAD_SD2_CMD__SD2_CMD		0x4170b9
+-				MX6SL_PAD_SD2_CLK__SD2_CLK		0x4100b9
+-				MX6SL_PAD_SD2_DAT0__SD2_DATA0		0x4170b9
+-				MX6SL_PAD_SD2_DAT1__SD2_DATA1		0x4170b9
+-				MX6SL_PAD_SD2_DAT2__SD2_DATA2		0x4170b9
+-				MX6SL_PAD_SD2_DAT3__SD2_DATA3		0x4170b9
+-				MX6SL_PAD_SD2_DAT4__SD2_DATA4		0x4170b9
+-				MX6SL_PAD_SD2_DAT5__SD2_DATA5		0x4170b9
+-				MX6SL_PAD_SD2_DAT6__SD2_DATA6		0x4170b9
+-				MX6SL_PAD_SD2_DAT7__SD2_DATA7		0x4170b9
+-				MX6SL_PAD_SD2_RST__SD2_RESET		0x4170b9
 -			>;
 -		};
-+	/* Keyboard controller */
-+	pinctrl_kpp_1: kpp1grp {
-+		fsl,pins = <
-+			MX53_PAD_GPIO_9__KPP_COL_6	0xe8
-+			MX53_PAD_GPIO_4__KPP_COL_7	0xe8
-+			MX53_PAD_KEY_COL2__KPP_COL_2	0xe8
-+			MX53_PAD_KEY_COL3__KPP_COL_3	0xe8
-+			MX53_PAD_KEY_COL4__KPP_COL_4	0xe8
-+			MX53_PAD_GPIO_2__KPP_ROW_6	0xe0
-+			MX53_PAD_GPIO_5__KPP_ROW_7	0xe0
-+			MX53_PAD_KEY_ROW2__KPP_ROW_2	0xe0
-+			MX53_PAD_KEY_ROW3__KPP_ROW_3	0xe0
-+			MX53_PAD_KEY_ROW4__KPP_ROW_4	0xe0
-+		>;
-+	};
- 
--		pinctrl_audmux: audmuxgrp {
+-
+-		pinctrl_usdhc2_200mhz: usdhc2-200mhz-grp {
 -			fsl,pins = <
--				MX53_PAD_KEY_COL0__AUDMUX_AUD5_TXC	0x80000000
--				MX53_PAD_KEY_ROW0__AUDMUX_AUD5_TXD	0x80000000
--				MX53_PAD_KEY_COL1__AUDMUX_AUD5_TXFS	0x80000000
--				MX53_PAD_KEY_ROW1__AUDMUX_AUD5_RXD	0x80000000
+-				MX6SL_PAD_SD2_CMD__SD2_CMD		0x4170f9
+-				MX6SL_PAD_SD2_CLK__SD2_CLK		0x4100f9
+-				MX6SL_PAD_SD2_DAT0__SD2_DATA0		0x4170f9
+-				MX6SL_PAD_SD2_DAT1__SD2_DATA1		0x4170f9
+-				MX6SL_PAD_SD2_DAT2__SD2_DATA2		0x4170f9
+-				MX6SL_PAD_SD2_DAT3__SD2_DATA3		0x4170f9
+-				MX6SL_PAD_SD2_DAT4__SD2_DATA4		0x4170f9
+-				MX6SL_PAD_SD2_DAT5__SD2_DATA5		0x4170f9
+-				MX6SL_PAD_SD2_DAT6__SD2_DATA6		0x4170f9
+-				MX6SL_PAD_SD2_DAT7__SD2_DATA7		0x4170f9
+-				MX6SL_PAD_SD2_RST__SD2_RESET		0x4170f9
 -			>;
 -		};
-+	pinctrl_audmux: audmuxgrp {
-+		fsl,pins = <
-+			MX53_PAD_KEY_COL0__AUDMUX_AUD5_TXC	0x80000000
-+			MX53_PAD_KEY_ROW0__AUDMUX_AUD5_TXD	0x80000000
-+			MX53_PAD_KEY_COL1__AUDMUX_AUD5_TXFS	0x80000000
-+			MX53_PAD_KEY_ROW1__AUDMUX_AUD5_RXD	0x80000000
-+		>;
-+	};
- 
--		pinctrl_esdhc2: esdhc2grp {
+-
+-		pinctrl_usdhc3: usdhc3grp {
 -			fsl,pins = <
--				MX53_PAD_SD2_CMD__ESDHC2_CMD		0x1d5
--				MX53_PAD_SD2_CLK__ESDHC2_CLK		0x1d5
--				MX53_PAD_SD2_DATA0__ESDHC2_DAT0		0x1d5
--				MX53_PAD_SD2_DATA1__ESDHC2_DAT1		0x1d5
--				MX53_PAD_SD2_DATA2__ESDHC2_DAT2		0x1d5
--				MX53_PAD_SD2_DATA3__ESDHC2_DAT3		0x1d5
+-				MX6SL_PAD_SD3_CMD__SD3_CMD		0x417059
+-				MX6SL_PAD_SD3_CLK__SD3_CLK		0x410059
+-				MX6SL_PAD_SD3_DAT0__SD3_DATA0		0x417059
+-				MX6SL_PAD_SD3_DAT1__SD3_DATA1		0x417059
+-				MX6SL_PAD_SD3_DAT2__SD3_DATA2		0x417059
+-				MX6SL_PAD_SD3_DAT3__SD3_DATA3		0x417059
 -			>;
 -		};
-+	pinctrl_esdhc2: esdhc2grp {
-+		fsl,pins = <
-+			MX53_PAD_SD2_CMD__ESDHC2_CMD		0x1d5
-+			MX53_PAD_SD2_CLK__ESDHC2_CLK		0x1d5
-+			MX53_PAD_SD2_DATA0__ESDHC2_DAT0		0x1d5
-+			MX53_PAD_SD2_DATA1__ESDHC2_DAT1		0x1d5
-+			MX53_PAD_SD2_DATA2__ESDHC2_DAT2		0x1d5
-+			MX53_PAD_SD2_DATA3__ESDHC2_DAT3		0x1d5
-+		>;
-+	};
- 
--		pinctrl_i2c3: i2c3grp {
+-
+-		pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
 -			fsl,pins = <
--				MX53_PAD_GPIO_3__I2C3_SCL		0xc0000000
--				MX53_PAD_GPIO_6__I2C3_SDA		0xc0000000
+-				MX6SL_PAD_SD3_CMD__SD3_CMD		0x4170b9
+-				MX6SL_PAD_SD3_CLK__SD3_CLK		0x4100b9
+-				MX6SL_PAD_SD3_DAT0__SD3_DATA0		0x4170b9
+-				MX6SL_PAD_SD3_DAT1__SD3_DATA1		0x4170b9
+-				MX6SL_PAD_SD3_DAT2__SD3_DATA2		0x4170b9
+-				MX6SL_PAD_SD3_DAT3__SD3_DATA3		0x4170b9
 -			>;
 -		};
-+	pinctrl_i2c3: i2c3grp {
-+		fsl,pins = <
-+			MX53_PAD_GPIO_3__I2C3_SCL		0xc0000000
-+			MX53_PAD_GPIO_6__I2C3_SDA		0xc0000000
-+		>;
- 	};
- };
- 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx53-voipac-dmm-668.dtsi b/arch/arm/boot/dts/nxp/imx/imx53-voipac-dmm-668.dtsi
-index c0622cf7188ce..6dc70a92d831b 100644
---- a/arch/arm/boot/dts/nxp/imx/imx53-voipac-dmm-668.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx53-voipac-dmm-668.dtsi
-@@ -37,74 +37,72 @@ &iomuxc {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_hog>;
- 
--	imx53-voipac {
--		pinctrl_hog: hoggrp {
+-
+-		pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
 -			fsl,pins = <
--				/* Make DA9053 regulator functional */
--				MX53_PAD_GPIO_16__GPIO7_11	0x80000000
--				/* FEC Power enable */
--				MX53_PAD_GPIO_11__GPIO4_1	0x80000000
--				/* FEC RST */
--				MX53_PAD_GPIO_12__GPIO4_2	0x80000000
--			>;
--		};
-+	pinctrl_hog: hoggrp {
-+		fsl,pins = <
-+			/* Make DA9053 regulator functional */
-+			MX53_PAD_GPIO_16__GPIO7_11	0x80000000
-+			/* FEC Power enable */
-+			MX53_PAD_GPIO_11__GPIO4_1	0x80000000
-+			/* FEC RST */
-+			MX53_PAD_GPIO_12__GPIO4_2	0x80000000
-+		>;
-+	};
- 
--		pinctrl_ecspi1: ecspi1grp {
--			fsl,pins = <
--				MX53_PAD_EIM_D16__ECSPI1_SCLK		0x80000000
--				MX53_PAD_EIM_D17__ECSPI1_MISO		0x80000000
--				MX53_PAD_EIM_D18__ECSPI1_MOSI		0x80000000
--			>;
--		};
-+	pinctrl_ecspi1: ecspi1grp {
-+		fsl,pins = <
-+			MX53_PAD_EIM_D16__ECSPI1_SCLK		0x80000000
-+			MX53_PAD_EIM_D17__ECSPI1_MISO		0x80000000
-+			MX53_PAD_EIM_D18__ECSPI1_MOSI		0x80000000
-+		>;
-+	};
- 
--		pinctrl_fec: fecgrp {
--			fsl,pins = <
--				MX53_PAD_FEC_MDC__FEC_MDC		0x80000000
--				MX53_PAD_FEC_MDIO__FEC_MDIO		0x80000000
--				MX53_PAD_FEC_REF_CLK__FEC_TX_CLK	0x80000000
--				MX53_PAD_FEC_RX_ER__FEC_RX_ER		0x80000000
--				MX53_PAD_FEC_CRS_DV__FEC_RX_DV		0x80000000
--				MX53_PAD_FEC_RXD1__FEC_RDATA_1		0x80000000
--				MX53_PAD_FEC_RXD0__FEC_RDATA_0		0x80000000
--				MX53_PAD_FEC_TX_EN__FEC_TX_EN		0x80000000
--				MX53_PAD_FEC_TXD1__FEC_TDATA_1		0x80000000
--				MX53_PAD_FEC_TXD0__FEC_TDATA_0		0x80000000
--			>;
--		};
-+	pinctrl_fec: fecgrp {
-+		fsl,pins = <
-+			MX53_PAD_FEC_MDC__FEC_MDC		0x80000000
-+			MX53_PAD_FEC_MDIO__FEC_MDIO		0x80000000
-+			MX53_PAD_FEC_REF_CLK__FEC_TX_CLK	0x80000000
-+			MX53_PAD_FEC_RX_ER__FEC_RX_ER		0x80000000
-+			MX53_PAD_FEC_CRS_DV__FEC_RX_DV		0x80000000
-+			MX53_PAD_FEC_RXD1__FEC_RDATA_1		0x80000000
-+			MX53_PAD_FEC_RXD0__FEC_RDATA_0		0x80000000
-+			MX53_PAD_FEC_TX_EN__FEC_TX_EN		0x80000000
-+			MX53_PAD_FEC_TXD1__FEC_TDATA_1		0x80000000
-+			MX53_PAD_FEC_TXD0__FEC_TDATA_0		0x80000000
-+		>;
-+	};
- 
--		pinctrl_i2c1: i2c1grp {
--			fsl,pins = <
--				MX53_PAD_EIM_D21__I2C1_SCL		0xc0000000
--				MX53_PAD_EIM_D28__I2C1_SDA		0xc0000000
--			>;
--		};
-+	pinctrl_i2c1: i2c1grp {
-+		fsl,pins = <
-+			MX53_PAD_EIM_D21__I2C1_SCL		0xc0000000
-+			MX53_PAD_EIM_D28__I2C1_SDA		0xc0000000
-+		>;
-+	};
- 
--		pinctrl_uart1: uart1grp {
--			fsl,pins = <
--				MX53_PAD_PATA_DIOW__UART1_TXD_MUX	0x1e4
--				MX53_PAD_PATA_DMACK__UART1_RXD_MUX	0x1e4
+-				MX6SL_PAD_SD3_CMD__SD3_CMD		0x4170f9
+-				MX6SL_PAD_SD3_CLK__SD3_CLK		0x4100f9
+-				MX6SL_PAD_SD3_DAT0__SD3_DATA0		0x4170f9
+-				MX6SL_PAD_SD3_DAT1__SD3_DATA1		0x4170f9
+-				MX6SL_PAD_SD3_DAT2__SD3_DATA2		0x4170f9
+-				MX6SL_PAD_SD3_DAT3__SD3_DATA3		0x4170f9
 -			>;
 -		};
 +	pinctrl_uart1: uart1grp {
 +		fsl,pins = <
-+			MX53_PAD_PATA_DIOW__UART1_TXD_MUX	0x1e4
-+			MX53_PAD_PATA_DMACK__UART1_RXD_MUX	0x1e4
++			MX6SL_PAD_UART1_RXD__UART1_RX_DATA	0x41b0b1
++			MX6SL_PAD_UART1_TXD__UART1_TX_DATA	0x41b0b1
 +		>;
 +	};
- 
--		pinctrl_nand: nandgrp {
--			fsl,pins = <
--				MX53_PAD_NANDF_WE_B__EMI_NANDF_WE_B	0x4
--				MX53_PAD_NANDF_RE_B__EMI_NANDF_RE_B	0x4
--				MX53_PAD_NANDF_CLE__EMI_NANDF_CLE	0x4
--				MX53_PAD_NANDF_ALE__EMI_NANDF_ALE	0x4
--				MX53_PAD_NANDF_WP_B__EMI_NANDF_WP_B	0xe0
--				MX53_PAD_NANDF_RB0__EMI_NANDF_RB_0	0xe0
--				MX53_PAD_NANDF_CS0__EMI_NANDF_CS_0	0x4
--				MX53_PAD_PATA_DATA0__EMI_NANDF_D_0	0xa4
--				MX53_PAD_PATA_DATA1__EMI_NANDF_D_1	0xa4
--				MX53_PAD_PATA_DATA2__EMI_NANDF_D_2	0xa4
--				MX53_PAD_PATA_DATA3__EMI_NANDF_D_3	0xa4
--				MX53_PAD_PATA_DATA4__EMI_NANDF_D_4	0xa4
--				MX53_PAD_PATA_DATA5__EMI_NANDF_D_5	0xa4
--				MX53_PAD_PATA_DATA6__EMI_NANDF_D_6	0xa4
--				MX53_PAD_PATA_DATA7__EMI_NANDF_D_7	0xa4
--			>;
--		};
-+	pinctrl_nand: nandgrp {
++
++
++	pinctrl_uart3: uart3grp {
 +		fsl,pins = <
-+			MX53_PAD_NANDF_WE_B__EMI_NANDF_WE_B	0x4
-+			MX53_PAD_NANDF_RE_B__EMI_NANDF_RE_B	0x4
-+			MX53_PAD_NANDF_CLE__EMI_NANDF_CLE	0x4
-+			MX53_PAD_NANDF_ALE__EMI_NANDF_ALE	0x4
-+			MX53_PAD_NANDF_WP_B__EMI_NANDF_WP_B	0xe0
-+			MX53_PAD_NANDF_RB0__EMI_NANDF_RB_0	0xe0
-+			MX53_PAD_NANDF_CS0__EMI_NANDF_CS_0	0x4
-+			MX53_PAD_PATA_DATA0__EMI_NANDF_D_0	0xa4
-+			MX53_PAD_PATA_DATA1__EMI_NANDF_D_1	0xa4
-+			MX53_PAD_PATA_DATA2__EMI_NANDF_D_2	0xa4
-+			MX53_PAD_PATA_DATA3__EMI_NANDF_D_3	0xa4
-+			MX53_PAD_PATA_DATA4__EMI_NANDF_D_4	0xa4
-+			MX53_PAD_PATA_DATA5__EMI_NANDF_D_5	0xa4
-+			MX53_PAD_PATA_DATA6__EMI_NANDF_D_6	0xa4
-+			MX53_PAD_PATA_DATA7__EMI_NANDF_D_7	0xa4
++			MX6SL_PAD_AUD_RXC__UART3_RX_DATA	0x41b0b1
++			MX6SL_PAD_AUD_RXC__UART3_TX_DATA	0x41b0b1
++		>;
++	};
++
++	pinctrl_uart5: uart5grp {
++		fsl,pins = <
++			MX6SL_PAD_ECSPI1_SCLK__UART5_RX_DATA	0x41b0b1
++			MX6SL_PAD_ECSPI1_MOSI__UART5_TX_DATA	0x41b0b1
++			MX6SL_PAD_ECSPI1_MISO__UART5_RTS_B	0x4130b1
++			MX6SL_PAD_ECSPI1_SS0__UART5_CTS_B	0x4130b1
++		>;
++	};
++
++	pinctrl_usdhc2: usdhc2grp {
++		fsl,pins = <
++			MX6SL_PAD_SD2_CMD__SD2_CMD		0x417059
++			MX6SL_PAD_SD2_CLK__SD2_CLK		0x410059
++			MX6SL_PAD_SD2_DAT0__SD2_DATA0		0x417059
++			MX6SL_PAD_SD2_DAT1__SD2_DATA1		0x417059
++			MX6SL_PAD_SD2_DAT2__SD2_DATA2		0x417059
++			MX6SL_PAD_SD2_DAT3__SD2_DATA3		0x417059
++			MX6SL_PAD_SD2_DAT4__SD2_DATA4		0x417059
++			MX6SL_PAD_SD2_DAT5__SD2_DATA5		0x417059
++			MX6SL_PAD_SD2_DAT6__SD2_DATA6		0x417059
++			MX6SL_PAD_SD2_DAT7__SD2_DATA7		0x417059
++			MX6SL_PAD_SD2_RST__SD2_RESET		0x417059
++		>;
++	};
++
++	pinctrl_usdhc2_100mhz: usdhc2-100mhz-grp {
++		fsl,pins = <
++			MX6SL_PAD_SD2_CMD__SD2_CMD		0x4170b9
++			MX6SL_PAD_SD2_CLK__SD2_CLK		0x4100b9
++			MX6SL_PAD_SD2_DAT0__SD2_DATA0		0x4170b9
++			MX6SL_PAD_SD2_DAT1__SD2_DATA1		0x4170b9
++			MX6SL_PAD_SD2_DAT2__SD2_DATA2		0x4170b9
++			MX6SL_PAD_SD2_DAT3__SD2_DATA3		0x4170b9
++			MX6SL_PAD_SD2_DAT4__SD2_DATA4		0x4170b9
++			MX6SL_PAD_SD2_DAT5__SD2_DATA5		0x4170b9
++			MX6SL_PAD_SD2_DAT6__SD2_DATA6		0x4170b9
++			MX6SL_PAD_SD2_DAT7__SD2_DATA7		0x4170b9
++			MX6SL_PAD_SD2_RST__SD2_RESET		0x4170b9
++		>;
++	};
++
++	pinctrl_usdhc2_200mhz: usdhc2-200mhz-grp {
++		fsl,pins = <
++			MX6SL_PAD_SD2_CMD__SD2_CMD		0x4170f9
++			MX6SL_PAD_SD2_CLK__SD2_CLK		0x4100f9
++			MX6SL_PAD_SD2_DAT0__SD2_DATA0		0x4170f9
++			MX6SL_PAD_SD2_DAT1__SD2_DATA1		0x4170f9
++			MX6SL_PAD_SD2_DAT2__SD2_DATA2		0x4170f9
++			MX6SL_PAD_SD2_DAT3__SD2_DATA3		0x4170f9
++			MX6SL_PAD_SD2_DAT4__SD2_DATA4		0x4170f9
++			MX6SL_PAD_SD2_DAT5__SD2_DATA5		0x4170f9
++			MX6SL_PAD_SD2_DAT6__SD2_DATA6		0x4170f9
++			MX6SL_PAD_SD2_DAT7__SD2_DATA7		0x4170f9
++			MX6SL_PAD_SD2_RST__SD2_RESET		0x4170f9
++		>;
++	};
++
++	pinctrl_usdhc3: usdhc3grp {
++		fsl,pins = <
++			MX6SL_PAD_SD3_CMD__SD3_CMD		0x417059
++			MX6SL_PAD_SD3_CLK__SD3_CLK		0x410059
++			MX6SL_PAD_SD3_DAT0__SD3_DATA0		0x417059
++			MX6SL_PAD_SD3_DAT1__SD3_DATA1		0x417059
++			MX6SL_PAD_SD3_DAT2__SD3_DATA2		0x417059
++			MX6SL_PAD_SD3_DAT3__SD3_DATA3		0x417059
++		>;
++	};
++
++	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
++		fsl,pins = <
++			MX6SL_PAD_SD3_CMD__SD3_CMD		0x4170b9
++			MX6SL_PAD_SD3_CLK__SD3_CLK		0x4100b9
++			MX6SL_PAD_SD3_DAT0__SD3_DATA0		0x4170b9
++			MX6SL_PAD_SD3_DAT1__SD3_DATA1		0x4170b9
++			MX6SL_PAD_SD3_DAT2__SD3_DATA2		0x4170b9
++			MX6SL_PAD_SD3_DAT3__SD3_DATA3		0x4170b9
++		>;
++	};
++
++	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
++		fsl,pins = <
++			MX6SL_PAD_SD3_CMD__SD3_CMD		0x4170f9
++			MX6SL_PAD_SD3_CLK__SD3_CLK		0x4100f9
++			MX6SL_PAD_SD3_DAT0__SD3_DATA0		0x4170f9
++			MX6SL_PAD_SD3_DAT1__SD3_DATA1		0x4170f9
++			MX6SL_PAD_SD3_DAT2__SD3_DATA2		0x4170f9
++			MX6SL_PAD_SD3_DAT3__SD3_DATA3		0x4170f9
 +		>;
  	};
  };
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6sll-evk.dts b/arch/arm/boot/dts/nxp/imx/imx6sll-evk.dts
+index febc2dd9967de..05d6827ea2af3 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6sll-evk.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6sll-evk.dts
+@@ -461,7 +461,7 @@ MX6SLL_PAD_SD1_DATA3__SD1_DATA3	0x17059
+ 		>;
+ 	};
  
-diff --git a/arch/arm/boot/dts/nxp/imx/imx53.dtsi b/arch/arm/boot/dts/nxp/imx/imx53.dtsi
-index 07658e477095f..845e2bf8460ad 100644
---- a/arch/arm/boot/dts/nxp/imx/imx53.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx53.dtsi
-@@ -458,7 +458,7 @@ srtc: rtc@53fa4000 {
- 				clocks = <&clks IMX5_CLK_SRTC_GATE>;
- 			};
+-	pinctrl_usdhc1_100mhz: usdhc1grp-100mhz {
++	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
+ 		fsl,pins = <
+ 			MX6SLL_PAD_SD1_CMD__SD1_CMD	0x170b9
+ 			MX6SLL_PAD_SD1_CLK__SD1_CLK	0x130b9
+@@ -472,7 +472,7 @@ MX6SLL_PAD_SD1_DATA3__SD1_DATA3	0x170b9
+ 		>;
+ 	};
  
--			iomuxc: iomuxc@53fa8000 {
-+			iomuxc: pinctrl@53fa8000 {
- 				compatible = "fsl,imx53-iomuxc";
- 				reg = <0x53fa8000 0x4000>;
- 			};
+-	pinctrl_usdhc1_200mhz: usdhc1grp-200mhz {
++	pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
+ 		fsl,pins = <
+ 			MX6SLL_PAD_SD1_CMD__SD1_CMD	0x170f9
+ 			MX6SLL_PAD_SD1_CLK__SD1_CLK	0x130f9
+@@ -499,7 +499,7 @@ MX6SLL_PAD_GPIO4_IO21__SD2_STROBE	0x13059
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc2_100mhz: usdhc2grp-100mhz {
++	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+ 		fsl,pins = <
+ 			MX6SLL_PAD_SD2_CMD__SD2_CMD		0x170b9
+ 			MX6SLL_PAD_SD2_CLK__SD2_CLK		0x130b9
+@@ -515,7 +515,7 @@ MX6SLL_PAD_GPIO4_IO21__SD2_STROBE	0x130b9
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc2_200mhz: usdhc2grp-200mhz {
++	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
+ 		fsl,pins = <
+ 			MX6SLL_PAD_SD2_CMD__SD2_CMD		0x170f9
+ 			MX6SLL_PAD_SD2_CLK__SD2_CLK		0x130f9
+@@ -549,7 +549,7 @@ MX6SLL_PAD_REF_CLK_32K__GPIO3_IO22	0x17059
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc3_100mhz: usdhc3grp-100mhz {
++	pinctrl_usdhc3_100mhz: usdhc3-100mhzgrp {
+ 		fsl,pins = <
+ 			MX6SLL_PAD_SD3_CMD__SD3_CMD		0x170a1
+ 			MX6SLL_PAD_SD3_CLK__SD3_CLK		0x130a1
+@@ -561,7 +561,7 @@ MX6SLL_PAD_REF_CLK_32K__GPIO3_IO22	0x17059
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc3_200mhz: usdhc3grp-200mhz {
++	pinctrl_usdhc3_200mhz: usdhc3-200mhzgrp {
+ 		fsl,pins = <
+ 			MX6SLL_PAD_SD3_CMD__SD3_CMD		0x170e9
+ 			MX6SLL_PAD_SD3_CLK__SD3_CLK		0x130f9
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clarahd.dts b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clarahd.dts
+index c7cfe0b70f04e..18c9ac8f7560e 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clarahd.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clarahd.dts
+@@ -121,7 +121,7 @@ MX6SLL_PAD_I2C1_SDA__I2C1_SDA	0x4001f8b1
+ 		>;
+ 	};
+ 
+-	pinctrl_i2c1_sleep: i2c1grp-sleep {
++	pinctrl_i2c1_sleep: i2c1sleep-grp {
+ 		fsl,pins = <
+ 			MX6SLL_PAD_I2C1_SCL__I2C1_SCL	0x400108b1
+ 			MX6SLL_PAD_I2C1_SDA__I2C1_SDA	0x400108b1
+@@ -135,7 +135,7 @@ MX6SLL_PAD_I2C2_SDA__I2C2_SDA	0x4001f8b1
+ 		>;
+ 	};
+ 
+-	pinctrl_i2c2_sleep: i2c2grp-sleep {
++	pinctrl_i2c2_sleep: i2c2sleep-grp {
+ 		fsl,pins = <
+ 			MX6SLL_PAD_I2C2_SCL__I2C2_SCL	0x400108b1
+ 			MX6SLL_PAD_I2C2_SDA__I2C2_SDA	0x400108b1
+@@ -200,7 +200,7 @@ MX6SLL_PAD_SD2_DATA3__SD2_DATA3		0x17059
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc2_100mhz: usdhc2grp-100mhz {
++	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+ 		fsl,pins = <
+ 			MX6SLL_PAD_SD2_CMD__SD2_CMD		0x170b9
+ 			MX6SLL_PAD_SD2_CLK__SD2_CLK		0x130b9
+@@ -211,7 +211,7 @@ MX6SLL_PAD_SD2_DATA3__SD2_DATA3		0x170b9
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc2_200mhz: usdhc2grp-200mhz {
++	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
+ 		fsl,pins = <
+ 			MX6SLL_PAD_SD2_CMD__SD2_CMD		0x170f9
+ 			MX6SLL_PAD_SD2_CLK__SD2_CLK		0x130f9
+@@ -222,7 +222,7 @@ MX6SLL_PAD_SD2_DATA3__SD2_DATA3		0x170f9
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc2_sleep: usdhc2grp-sleep {
++	pinctrl_usdhc2_sleep: usdhc2sleep-grp {
+ 		fsl,pins = <
+ 			MX6SLL_PAD_SD2_CMD__GPIO5_IO04		0x100f9
+ 			MX6SLL_PAD_SD2_CLK__GPIO5_IO05		0x100f9
+@@ -244,7 +244,7 @@ MX6SLL_PAD_SD3_DATA3__SD3_DATA3	0x11059
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc3_100mhz: usdhc3grp-100mhz {
++	pinctrl_usdhc3_100mhz: usdhc3-100mhzgrp {
+ 		fsl,pins = <
+ 			MX6SLL_PAD_SD3_CMD__SD3_CMD	0x170b9
+ 			MX6SLL_PAD_SD3_CLK__SD3_CLK	0x170b9
+@@ -255,7 +255,7 @@ MX6SLL_PAD_SD3_DATA3__SD3_DATA3	0x170b9
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc3_200mhz: usdhc3grp-200mhz {
++	pinctrl_usdhc3_200mhz: usdhc3-200mhzgrp {
+ 		fsl,pins = <
+ 			MX6SLL_PAD_SD3_CMD__SD3_CMD	0x170f9
+ 			MX6SLL_PAD_SD3_CLK__SD3_CLK	0x170f9
+@@ -266,7 +266,7 @@ MX6SLL_PAD_SD3_DATA3__SD3_DATA3	0x170f9
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc3_sleep: usdhc3grp-sleep {
++	pinctrl_usdhc3_sleep: usdhc3sleep-grp {
+ 		fsl,pins = <
+ 			MX6SLL_PAD_SD3_CMD__GPIO5_IO21	0x100c1
+ 			MX6SLL_PAD_SD3_CLK__GPIO5_IO18	0x100c1
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-librah2o.dts b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-librah2o.dts
+index 7e4f38dd11e20..660620d226f71 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-librah2o.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-librah2o.dts
+@@ -121,7 +121,7 @@ MX6SLL_PAD_I2C1_SDA__I2C1_SDA   0x4001f8b1
+ 		>;
+ 	};
+ 
+-	pinctrl_i2c1_sleep: i2c1grp-sleep {
++	pinctrl_i2c1_sleep: i2c1sleep-grp {
+ 		fsl,pins = <
+ 			MX6SLL_PAD_I2C1_SCL__I2C1_SCL   0x400108b1
+ 			MX6SLL_PAD_I2C1_SDA__I2C1_SDA   0x400108b1
+@@ -135,7 +135,7 @@ MX6SLL_PAD_I2C2_SDA__I2C2_SDA   0x4001f8b1
+ 		>;
+ 	};
+ 
+-	pinctrl_i2c2_sleep: i2c2grp-sleep {
++	pinctrl_i2c2_sleep: i2c2sleep-grp {
+ 		fsl,pins = <
+ 			MX6SLL_PAD_I2C2_SCL__I2C2_SCL   0x400108b1
+ 			MX6SLL_PAD_I2C2_SDA__I2C2_SDA   0x400108b1
 -- 
 2.45.2
 
