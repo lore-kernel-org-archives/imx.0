@@ -1,75 +1,86 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525851D95A3
-	for <imx@lists.linux.dev>; Thu, 17 Oct 2024 09:30:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035931D90AD
+	for <imx@lists.linux.dev>; Thu, 17 Oct 2024 09:37:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729157416; cv=none; b=Ob0hlq6g/GEupX5/XOcdl7OfML8FiMTOVvfUd+j38LiP4b6K80fXS8rwjZPIM2eU1Idhfz5O9suOVFebu3gOqMs37bu5sIu3ef8jayIF7i/+IbkBUU9eEYw6PmnKu5AaRmcA3wvinIoBArby2VbR3S3IrtUBfGwGb7xogFbKZik=
+	t=1729157827; cv=none; b=Ky2+GuWJEiPIIH5MHvTqoFdzhCSfDBLGInR4goy8Q2F+ZUEkaRDLZKKAonk1ELKfycsLBpxYWgiPRcS5Qi6INsqJokvuJJGXNCAdcz+LYrT4yTUxUei0CbpKVG5hZn6cgQGoXlEkwPyq8IUhP+DjfgFCJzWdqAL/Rhy7N0n8x5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729157416; c=relaxed/simple;
-	bh=tpjG1VzlcbKlqImlMTci/wT9sMew797mn03v3At5H4w=;
+	s=arc-20240116; t=1729157827; c=relaxed/simple;
+	bh=xWI71f8VNY/6jODKPIHujw3pQm8LwrhuDJJKQbpkQ7I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LIHMaavZsyqNitQo0f2Idq+rCLI36CySfs9faVnwoF/ul11hcsnk9WTbcQJ/k6ut/BPtsBb7SgyH+So5ZJs5iolEqibMP3RHFwn+IT/Ruth27Vs4SRhWdkqpkViVg8Of4kWpqIXfaWzFIREw3AwtCFEHDSkV1+EWM6s29ucghMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=bYhcebF9; arc=none smtp.client-ip=220.197.32.19
+	 Content-Type:Content-Disposition:In-Reply-To; b=m6o2K24Haa7eofqrz82a2zWmTnghViua4r8UHuDVoAdnBl/Tf5tNLQVHiLdBevwHnUBsmOxrjPclhoQgSJorCNfj8V5dW0A44AqPHNYbcXErY3KCF6f7HcTDDElwPyLyrTHT1xqTwDI/td7S5nPLX5kRuLoZWeYCgsikqntN67c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=gBRHIGkZ; arc=none smtp.client-ip=220.197.32.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="bYhcebF9"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="gBRHIGkZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=5RNGgtfTwAvQY9/y046REOp1czW+WTASXN0YNwPj/G8=;
-	b=bYhcebF9oG89CR6a3vDpBFiUROxHgE6xJfKDyEniiSIwKTsuhEvXIwLWUt7uu3
-	qGQBEhYO3+2KvXfOdLu/TFNtp0JbcF2Ag0zkbXdnEYxGF++j1Vm1gExV6qAbFQA8
-	ULjA3Hu84i8L9o1YvIAjfyo1zHxzUeoXt96JNEbSRAc4w=
+	Content-Type; bh=wyYoVD4usF91bR4K+1sOdk/jm+L3Cg0tKmREs07tdtU=;
+	b=gBRHIGkZvcShdsfxMkTZJUay4GMo4foYD0arYDwW3ElAWvkZwSfsGlf1OYrCDs
+	S2lnrLQswFUXrhGgwzSHJ6cm8SSgy29bjmVejE+Keuz0xGk8FMxZEfjnlorQJaPV
+	aCNzcRcSrUFAtRJnUuXQ/qCu2gCKF64yqWQy/sc4MbL9s=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDXW7D92BBndAAxAA--.1315S3;
-	Thu, 17 Oct 2024 17:29:35 +0800 (CST)
-Date: Thu, 17 Oct 2024 17:29:33 +0800
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgBn78N52hBnzR0xAA--.1286S3;
+	Thu, 17 Oct 2024 17:35:55 +0800 (CST)
+Date: Thu, 17 Oct 2024 17:35:52 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+To: Michal =?utf-8?B?Vm9rw6HEjQ==?= <michal.vokac@ysoft.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Petr Benes <petr.benes@ysoft.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Herburger <gregor.herburger@ew.tq-group.com>,
+	Hiago De Franco <hiago.franco@toradex.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Mathieu Othacehe <m.othacehe@gmail.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v1 0/3] arm64: dts: freescale: imx8mp-verdin: Add Ivy
- carrier
-Message-ID: <ZxDY/SiDSaz0HcsJ@dragon>
-References: <20240924114053.127737-1-francesco@dolcini.it>
+Subject: Re: [PATCH v5 0/2] Add support for new IMX8MP based board
+Message-ID: <ZxDaeH2ZJ2vzFmRh@dragon>
+References: <20240925124903.1837869-1-michal.vokac@ysoft.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240924114053.127737-1-francesco@dolcini.it>
-X-CM-TRANSID:Ms8vCgDXW7D92BBndAAxAA--.1315S3
-X-Coremail-Antispam: 1Uf129KBjvdXoW7JFWftFykCr4DKw4ktFW5Jrb_yoW3ArgE9F
-	WFgr10gr4DKrnxtws8KF47Xw1vkw4Fyr10q3sFgr1fXF97Za98Ja9rKryrXFnIgan8tF93
-	J3WSgrZ3trWYkjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0t8nUUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEQl7ZWcQs3R00QAAsT
+In-Reply-To: <20240925124903.1837869-1-michal.vokac@ysoft.com>
+X-CM-TRANSID:Ms8vCgBn78N52hBnzR0xAA--.1286S3
+X-Coremail-Antispam: 1Uf129KBjvdXoWrZrW3GF45KryxZw1UtrW5Jrb_yoWxAwbEk3
+	4ku3WxW347ArW7G3y3trnxWrZxGr1UJr40q34fXwsFkFyxZFn8Xa4vk3s5J34jvF4UAr4f
+	JryFya4vvrWagjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU03fQtUUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCRx7ZWcQ0mcYuAAAsp
 
-On Tue, Sep 24, 2024 at 01:40:50PM +0200, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+On Wed, Sep 25, 2024 at 02:49:01PM +0200, Michal Vokáč wrote:
+> Hi,
+> this series adds support for a new member in our IOTA platform.
+> The board is based on the i.MX8MP SoC. It adds support for most
+> of the board functionality except USB Type-C port and some other
+> minor things.
 > 
-> Add support for the Toradex Verdin iMX8MP Ivy carrier board. Ivy is a carrier
-> board designed for industrial environments, supporting industrial
-> I/O interfaces such as CAN, RS485, RS232, Gigabit Ethernet, 0-25mA analog
-> inputs, relays, PCIe and more. The board also includes a TPM for security
-> applications.
+> This series originally included the dt-binding for that Type-C
+> port controller but I finally removed it based on a good comment
+> from Krzysztof. I will post the Type-C binding including the driver
+> in a followup series.
 > 
-> https://www.toradex.com/products/carrier-board/ivy-carrier-board
+> Michal
 > 
-> Jo�o Paulo Gon�alves (3):
->   dt-bindings: arm: freescale: Add verdin imx8mp ivy board
->   arm64: dts: freescale: imx8mp-verdin: add labels to som nodes
->   arm64: dts: freescale: imx8mp-verdin: Add Ivy carrier board
+> Michal Vokáč (2):
+>   dt-bindings: arm: Add i.MX8MP IOTA2 Lumpy board
+>   arm64: dts: imx: Add imx8mp-iota2-lumpy board
 
-Applied all, thanks!
+Applied both, thanks!
 
