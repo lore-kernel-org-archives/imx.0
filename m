@@ -1,215 +1,191 @@
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2057.outbound.protection.outlook.com [40.107.249.57])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D1D1DE4E8
-	for <imx@lists.linux.dev>; Thu, 17 Oct 2024 16:23:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729182204; cv=fail; b=u4XZEK/8NDNW715rY/uWyKuYOozju5sBOUpgnWxBsVgofd5BM3l7ToZlH8Twbsl8/CoFFYUMBSSHUKD0VzVRMBnKwYJoB8L3cWxdKy7IWCqBvCSXV/RICsAF62wQXFq7yekquFqWQdELWsgM6yqgZ9Va4ISxz0pWdV3WLWOaFkU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729182204; c=relaxed/simple;
-	bh=BaW15bBUS3lIzKlhHRMdeGzlr5WcVQ1b5fsyPh4JaaU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=uKR4oKgPgCpi9ZuYmVY9DBHPfpmSxkuwO+c7a7mqDAO+UuzWudmxxheyRWaOTQA9wOMRK3Ub4q2eVwpt1K6Y0Va5U5QMNfAsprkQcXYPSNb8PC+STPyjEx7l2hCaUEKCDwhPgJVYVI05AZvzrc2smMAHvNq4unT+JDPQOLEAH/Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=co0vJGKO; arc=fail smtp.client-ip=40.107.249.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168191DF753;
+	Thu, 17 Oct 2024 16:26:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729182377; cv=none; b=XHqg7SpCYPkDrOYxoNCp9lTPBDum77mST/HdsH+zmkf5+X9eG0hfnBv7yDaj9c5NlxI0XW80kp/II8n4R0v4amWOQf6PzjLGXxgeTj9otXPQZa6djYFqqZD72S40192eh7xptZ1vj8vCOfL3pwmpM2gH+BcNqC6ke91ydZBpfbw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729182377; c=relaxed/simple;
+	bh=LJxym/IX46Idqi5/awjEuZbkCGhp1zKVDK4mPBJUVG8=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=XARCG4m+dWAXEaHWluBkyzKofrdnuKlbVYQ4LYoNUK5J5iazIch9tiJ8p7qpDbYtvSW6xjrwpR1Q18J/LobJj29/lGKFCmcwnwcH2H6IZo1LstRHQV612CB0DfZB/UCUKo6HwEKzBXLVn45ddPFZ+WdJnrhXve1b+6EUWSNwe50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CkOyGRqn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="co0vJGKO"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XVdavAVOfQ1pn4+o25NG7DZA0Xe4GSwawMyBQSh2JDULtOr22F0G7vMcPIx3Ca4vaUqPVyCqqUvZlYIqx8fdt724QrduuQg5YAqqR0ICuHKBuMzuhQcb9LtBFprjyW8pv+YYFp4N40vWFdeMLk+79f+ndXo56pb+LlB3/UpZ72gn2vQVGguGSvf7AXas5LSGwrx5bQz1vgoEYw02noWkejEbVEn72+RK/jUfY0rEMRFb+0Q3ofJrC96YRXFqj9kkfLmHYQQsScYA0QX76rujVAOPa98W8DG8xJIW2bwZa7yvNEcGIIPs1y8O7y+JuIjLyX/4tQQRXDdBx8smwYtPlw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ua9zTRDP7ycjMF7YsiM8GVTqJLA8bhkLno929VYtXrI=;
- b=Ua2eYn+Lz72xqvJHges5hd5LRnT4eJ3crydykxYuUVvOKaEZrBUaaj+oe1mPrHWlDNFPqMgP2rbbb/OdRFJafUgJMqjNIN3xWNOlVVXOvw5x5cl0LEkBDcVhfEosDF1Hs2PgqjVcFq3u7LE1qVKGTTdk85dOMjzzafycsBNiZ8GhnzZSwmwWnLC/feEIL9pF0XHIBeJ1vkGRWmlJxttOU/B5HE+JSkjWDRjkXu2i960EnpRy0HmPDdebfqe/c9ydkMkInOKPwJ7RQz3WWz1u/Ie72SUTctCmjlW173RXRNmMoKTU1aTwV4z+LidKydiTJchpryY+mimZ6wZ3yAeGPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ua9zTRDP7ycjMF7YsiM8GVTqJLA8bhkLno929VYtXrI=;
- b=co0vJGKOgbDvJYJaDOjv9/l4DvPtXfWc4xevuoD7jPSnFxzRq4JqdfbPWBdcYQiv3IsVAd1kQmCsp4eZBWEwP5b5WSUkOtITINbNrbEDCu+YZrgzL83zKPo6ykC7CEznXi/hxLBOyMVzxcp3BKoOq9jyAK8dYjb/04qH0o1euSxTfIV+Z6S6jF01tbN/dhe5uCFoMOm/mkS8bpsq9NtZ/hWACLKkcbKFQ/oZHK+zDxrOc07xll3GXdXnHQKjgdn5pUbJ45BuxGnT5b8ApBhH/u9aomPiXCHT5WPr0WuV3hIMtHsGjC9vaQv6kqnUlw/APh7Qq/GaNmm0ayx/8gbuMg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PAWPR04MB9815.eurprd04.prod.outlook.com (2603:10a6:102:381::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.18; Thu, 17 Oct
- 2024 16:23:15 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8069.016; Thu, 17 Oct 2024
- 16:23:15 +0000
-Date: Thu, 17 Oct 2024 12:23:05 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, vladimir.oltean@nxp.com,
-	claudiu.manoil@nxp.com, xiaoning.wang@nxp.com,
-	christophe.leroy@csgroup.eu, linux@armlinux.org.uk,
-	bhelgaas@google.com, horms@kernel.org, imx@lists.linux.dev,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v3 net-next 02/13] dt-bindings: net: add i.MX95 ENETC
- support
-Message-ID: <ZxE56eMyN791RsgK@lizhi-Precision-Tower-5810>
-References: <20241017074637.1265584-1-wei.fang@nxp.com>
- <20241017074637.1265584-3-wei.fang@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241017074637.1265584-3-wei.fang@nxp.com>
-X-ClientProxiedBy: SJ0PR13CA0124.namprd13.prod.outlook.com
- (2603:10b6:a03:2c6::9) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CkOyGRqn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84112C4CECD;
+	Thu, 17 Oct 2024 16:26:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729182376;
+	bh=LJxym/IX46Idqi5/awjEuZbkCGhp1zKVDK4mPBJUVG8=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=CkOyGRqnng7F3eIIiCuSiZ1PNY1mLhpS+GIq+QCuCnPNF6JDTIFpwW1lc8F6OWGNl
+	 S2xmMYGnJm+8uAKYsqNhVNwx+YEJfuKsp9IZ4mszxEaIM2KoFlSaAqh/tRwAxtpxeq
+	 BX7Wc/axAM8Ra07DHuMTJ8CHbHjEmlsoFuzT9nBoLbBbbT5SsstRbyC0tXRinvOaua
+	 NZteQ0wYOcpBA+KNRGqf0bBnuzvuHyfKkb0z9vsGFiCzDrUgHCX5L8PR9BJ0C+3sSe
+	 kk6IeQPGf3H1wHBPyNujpLgGRuaKmO/pSAbWEaTCAV0hML1cpd9nWF8J254l4v/8Cy
+	 bENxMxRbS3beQ==
+Date: Thu, 17 Oct 2024 11:26:15 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAWPR04MB9815:EE_
-X-MS-Office365-Filtering-Correlation-Id: be808ee7-0203-4175-04ab-08dceec800c7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|7416014|366016|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?+pnc2uAyUVDLOCTe2RjvW4TUPBvH2KtWNTBVklD3xCUxlbnPlhA8jXTCSYsa?=
- =?us-ascii?Q?6OZ/mHXlMDJqAE8fDT8rAIC1w+DZ7gHE5HA1dW/9sSDhtavSRhueKtsJ3vrY?=
- =?us-ascii?Q?HMzx8QfbGKyk+BQKm4jzDtGECv6pOpEfnQTqu3PhGbuJeUfk+/2zaHsXYCzo?=
- =?us-ascii?Q?g6d0t+UtXKD2xUkw85nOAQ88aDjmt6rblj15v3p8oGsJTXDGfmo3QgyNtbTW?=
- =?us-ascii?Q?bZzgv6WP20nw+QDgQ5iVXb6bk7qnRU6Bj+i+93qdtFO3giQQX0p/lgVppmtA?=
- =?us-ascii?Q?ScYVOIAGylmDkJ3Z8WC1ovaTT2xHfffL1ivdcrgBE0fJ/Wv28QC35Ehmnqjl?=
- =?us-ascii?Q?GphWXnLMPY1TJWEtqs/JvRYPgc2i2j3cA0Yhe4oGYLVOd2+4trCP1zy8rjR2?=
- =?us-ascii?Q?BtbXzr/5hW0ukPIRudcb/kfca2L0o3xmzuC0t9yBefq2X9K8toyFyvgwcvXc?=
- =?us-ascii?Q?0fAjc8JzqMbGcaQ5d2vVHL31IADHV+N7DsPHAUnvGr8n6h/rrIBvFcthuxqw?=
- =?us-ascii?Q?A57yFiR6CeBay0avx4wIFc1lPirxSIzPosutKt6AHJ8vdOv1VT19MBjPg0+q?=
- =?us-ascii?Q?hd+EQgghNhS3d3CDAZdtwHaoryYa9dzV1bjui/VBJ4cmuAqgo09ZRvhuuLtP?=
- =?us-ascii?Q?RKhQGMt4mzgxYC/WVzA76KOTBx8hubr1O3VcgSzE+B9BohkNRM5JYFq9XVOW?=
- =?us-ascii?Q?rlgGGjvUXy8SpZw3SPCSvsB2np23fwqz0uQ47BzAepF0QVHoMM5RxOSi/9qS?=
- =?us-ascii?Q?pMiPygnsZFNBjELUjWIzao7GPCDNwnQewk9WMXzTvHtLLfbGajAWJtMM176J?=
- =?us-ascii?Q?hUvxwz5dGlajTQBlJekoTQCoFXLYkjLOJWL9n6+MqpNr1PRtPtPJ8FldaTF4?=
- =?us-ascii?Q?TnQ4VvpiS0wS1+s1S3mh6caOhP9zkWZ0AalwC1DIrE2ti9zm6MjENCtItiTe?=
- =?us-ascii?Q?uDPb3o+b9kLqanvCHU0dy29wmIUomXrgjDpu+ASPdl3KVl3fUusdAH97+erj?=
- =?us-ascii?Q?5tZLQFQsEDB7S6Ecmf3D5xNN/w1SLbLRdlNg8pgQAvs+sBdJIWjXp7m0IbWC?=
- =?us-ascii?Q?C/Z9SWHt6pvwHwRyHA3Ms5urtpfMNI8q4I6Ok80EBusmai8QhG58UfKDnI/C?=
- =?us-ascii?Q?WfnlT+SKfMUCW/U349OJ2EaSdFhrGlpF9ISjl8vQxtlLrFUQaJ6oIQaJKNQl?=
- =?us-ascii?Q?VevtEtiguRC/rn/xLsj6sayHPZovp/QR90lhegQ+pPdzsRKa55RM7xEFozQ9?=
- =?us-ascii?Q?Pw/Bck0RDx/Ld5EqutiWUI9yi1wfGxKCaQwuaonDiasZp1QYTFs2R8f7gt7q?=
- =?us-ascii?Q?R5fs9KTZxQrFW36XJlbIZ7heggRSH4v8afhGoqqDBPXHeU17AtdTotZEQfhk?=
- =?us-ascii?Q?YWQpiBc=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?nE+i1XHWprJgVB3Sv58GgXyjs63uw1ZLDLnpEsKo5abOVGIBiC1/2uzKQld7?=
- =?us-ascii?Q?oYxdjp8YK26BCskBNlWHW8fOQBdP59/78AQfJwMLmu2/U8YHafyERlHIwFYl?=
- =?us-ascii?Q?X3zBuY7S1yE667nMgK57YLSbzd0975ORYeyDe3pMaWUs4EmFQBKOMmvkOiAo?=
- =?us-ascii?Q?x1r18FO/j3E6WfUpF+1ooBkp4yuukNMNssGE9r9btheudXhmazhWsc4isbSa?=
- =?us-ascii?Q?g6JXcoB1EfeKpqzgm2iZVw8HU73jjjKyYEVjWAnAT9HajDcBaCefVeh8Z/LE?=
- =?us-ascii?Q?IfeOQCd/tbibqDW3p2jWNd74zZW2vSTyeHqPUDFiKjsDSUH3duGXCz7vvmXU?=
- =?us-ascii?Q?jy2VSIJabPH6i9xIU9ROkn9I+1wPo3tQLf9YWLynYaA59iW8I6lQp6gQBTuQ?=
- =?us-ascii?Q?Ru5Y/JwtzuH9+17NMwCI93TyRG+96aVBXlTHG560YvumOKSc15IO67IdG2xv?=
- =?us-ascii?Q?evntP8GA3PYgemwLfFEfS/meGAR6x9qJSSYyn5nOnKpAh8Ha4Ek4sH0EFE4S?=
- =?us-ascii?Q?ijSkHbkjE6YDfEJOqtZQxTgjxd6FDKQyrqUpZBiJW29NRoKd9AIrE+aSLsj/?=
- =?us-ascii?Q?tCq6b/4iMxHiu8/RgX2sM6luuVjqf8j2CX1SZcy3bBuTeDeLgJ3Gt5zCkGIx?=
- =?us-ascii?Q?ojC3xuyv5L3mT8x2AfcJ6sBAK5w8UkL/3852YJ3I3ZYqoB5BLpMCK7vWp0+i?=
- =?us-ascii?Q?NnbQyiEA/mTxJVM2t123zONN6DUOkTuS34/bvs4pyIRGjed95JPHeQpenXiQ?=
- =?us-ascii?Q?AlWyGY0PgUlgfwjQCFTOI+2ckXRHI+JiFj5V7L+6B0FLYnBIk2bu18oBsOfm?=
- =?us-ascii?Q?+pty9fuQTQnDmlLcnXHajPuKeL4ScJzHpF94pq+LGLrVtRQvyegNEJRdGh5j?=
- =?us-ascii?Q?fSRiChawDHRyU7sDHfm9V88y+K+6wdz3AFsId2TZ3GHC53njO+eGGFTRPSGL?=
- =?us-ascii?Q?LFbx26lCAoEddWbPqXy8V57lRhg+vqL2c5CFbCXIdYcBg/T3gBnVtuI7Apv6?=
- =?us-ascii?Q?SP/d7+CEvt3FioIcc4FW1sD0WGQ4g0JYvmQtEPdp1gY6U8ChCCbfVnnRithV?=
- =?us-ascii?Q?3HvCJlgmunLngbkGfeYnAZEXfVGZXX9VNPpIC93QxqzxWPNjuW1TvmIT/66t?=
- =?us-ascii?Q?Li7T4BOr+Wr4FiHFJV0b9a4BS0nsZI89e7CtGJf8VnGI9mfmMqx8pfzVn8h9?=
- =?us-ascii?Q?IlHxm3Ia9U9YWkTsaVjxzmqvotBdQZSLfZBfLj2ulafzw9yHQ0qwiKW4DjAD?=
- =?us-ascii?Q?1vBB/6vIsyLER3e7Fkh1PG+Njnxf+QkQS9DNnaRZI2leHcT4dJ/LTU/gzT1N?=
- =?us-ascii?Q?AqahbKDNHeb19Uu5ujHE6BCC0tpkWItXHJvIMQxPhJGN2hM6s5WEyOWg05CK?=
- =?us-ascii?Q?wc5vyGxLh7HZjwdjCTmCkyl5v6xOIu1t4MYqrbUwvFKh2InOPZuS7GUZKIgG?=
- =?us-ascii?Q?Q+DFbdDaTGe7uqbu4rCaQEZ68Bt8JgFp5BNoAhPF5qV/77Xtc9icF40gl6xY?=
- =?us-ascii?Q?dDhfGor6Vmme1P4JBpzbb6+1qnoTXPKss6ZsRB+bXXbMzHaQAQhF2seI9LE+?=
- =?us-ascii?Q?ZpBt3MDyzl9WN8b6mwwXHkgnCtNhTb65ItHncwM0?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: be808ee7-0203-4175-04ab-08dceec800c7
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2024 16:23:15.5163
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XMUxxVft71Y3ha9ktdpVKvLUPRvi39Sflr5HwRhVGoqvTbiXtsL/u5lkqfNPgc5iWRoiOleWdO526P1ztUAsTA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB9815
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Marek Vasut <marex@denx.de>
+Cc: Dong Aisheng <aisheng.dong@nxp.com>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Shawn Guo <shawnguo@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ devicetree@vger.kernel.org, Jacky Bai <ping.bai@nxp.com>, 
+ Fabio Estevam <festevam@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ kernel@dh-electronics.com, Conor Dooley <conor+dt@kernel.org>, 
+ linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ imx@lists.linux.dev
+In-Reply-To: <20241017000801.149276-1-marex@denx.de>
+References: <20241017000801.149276-1-marex@denx.de>
+Message-Id: <172917871107.3590077.2079873873330727395.robh@kernel.org>
+Subject: Re: [PATCH v2 01/12] dt-bindings: pinctrl: fsl,imx6ul-pinctrl:
+ Convert i.MX35/5x/6 to YAML
 
-On Thu, Oct 17, 2024 at 03:46:26PM +0800, Wei Fang wrote:
-> The ENETC of i.MX95 has been upgraded to revision 4.1, and the vendor
-> ID and device ID have also changed, so add the new compatible strings
-> for i.MX95 ENETC. In addition, i.MX95 supports configuration of RGMII
-> or RMII reference clock.
->
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+
+On Thu, 17 Oct 2024 02:06:47 +0200, Marek Vasut wrote:
+> The IOMUXC controller description is almost identical on i.MX35/5x/6 SoCs,
+> except for the configuration bits which differ across SoCs. Rename the
+> fsl,imx6ul-pinctrl.yaml to fsl,imx35-pinctrl.yaml, fill in compatible
+> strings for the other SoCs and fill in the various bits into desciption.
+> This way, i.MX35/5x/6 series SoCs can all be converted to DT schema.
+> Remove the old text DT bindings description.
+> 
+> Signed-off-by: Marek Vasut <marex@denx.de>
 > ---
-> v2: Remove "nxp,imx95-enetc" compatible string.
-> v3:
-> 1. Add restriction to "clcoks" and "clock-names" properties and rename
-> the clock, also remove the items from these two properties.
-> 2. Remove unnecessary items for "pci1131,e101" compatible string.
+> Cc: Conor Dooley <conor+dt@kernel.org>
+> Cc: Dong Aisheng <aisheng.dong@nxp.com>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: Jacky Bai <ping.bai@nxp.com>
+> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Rob Herring <robh@kernel.org>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: devicetree@vger.kernel.org
+> Cc: imx@lists.linux.dev
+> Cc: kernel@dh-electronics.com
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-gpio@vger.kernel.org
 > ---
->  .../devicetree/bindings/net/fsl,enetc.yaml    | 22 ++++++++++++++++---
->  1 file changed, 19 insertions(+), 3 deletions(-)
->
-> diff --git a/Documentation/devicetree/bindings/net/fsl,enetc.yaml b/Documentation/devicetree/bindings/net/fsl,enetc.yaml
-> index e152c93998fe..e418c3e6e6b1 100644
-> --- a/Documentation/devicetree/bindings/net/fsl,enetc.yaml
-> +++ b/Documentation/devicetree/bindings/net/fsl,enetc.yaml
-> @@ -20,10 +20,13 @@ maintainers:
->
->  properties:
->    compatible:
-> -    items:
-> +    oneOf:
-> +      - items:
-> +          - enum:
-> +              - pci1957,e100
-> +          - const: fsl,enetc
->        - enum:
-> -          - pci1957,e100
-> -      - const: fsl,enetc
-> +          - pci1131,e101
->
->    reg:
->      maxItems: 1
-> @@ -40,6 +43,19 @@ required:
->  allOf:
->    - $ref: /schemas/pci/pci-device.yaml
->    - $ref: ethernet-controller.yaml
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - pci1131,e101
-> +    then:
-> +      properties:
-> +        clocks:
-> +          maxItems: 1
-> +          description: MAC transmit/receiver reference clock
-> +        clock-names:
-> +          const: ref
+> V2: - Use DT schema to refer to the fsl,imx35-pinctrl.yaml file
+>     - Special-case the iMX50 compatible string
+> ---
+>  .../bindings/pinctrl/fsl,imx35-pinctrl.txt    | 33 -------
+>  ...ul-pinctrl.yaml => fsl,imx35-pinctrl.yaml} | 88 ++++++++++++++++---
+>  .../bindings/pinctrl/fsl,imx50-pinctrl.txt    | 32 -------
+>  .../bindings/pinctrl/fsl,imx51-pinctrl.txt    | 32 -------
+>  .../bindings/pinctrl/fsl,imx53-pinctrl.txt    | 32 -------
+>  .../bindings/pinctrl/fsl,imx6dl-pinctrl.txt   | 38 --------
+>  .../bindings/pinctrl/fsl,imx6q-pinctrl.txt    | 38 --------
+>  .../bindings/pinctrl/fsl,imx6sl-pinctrl.txt   | 39 --------
+>  .../bindings/pinctrl/fsl,imx6sll-pinctrl.txt  | 40 ---------
+>  .../bindings/pinctrl/fsl,imx6sx-pinctrl.txt   | 36 --------
+>  10 files changed, 78 insertions(+), 330 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx35-pinctrl.txt
+>  rename Documentation/devicetree/bindings/pinctrl/{fsl,imx6ul-pinctrl.yaml => fsl,imx35-pinctrl.yaml} (50%)
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx50-pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx51-pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx53-pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6dl-pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6q-pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6sl-pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6sll-pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6sx-pinctrl.txt
+> 
 
-Did you run CHECK_DTBS for your dts file? clocks\clock-names should be
-under top 'properties" firstly. Then use 'if' restrict it. But I am not
-sure for that. only dt_binding_check is not enough because your example
-have not use clocks and clok-names.
 
-Frank
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
->
->  unevaluatedProperties: false
->
-> --
-> 2.34.1
->
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y nxp/imx/imx35-eukrea-mbimxsd35-baseboard.dtb nxp/imx/imx35-pdk.dtb nxp/imx/imx50-evk.dtb nxp/imx/imx51-apf51.dtb nxp/imx/imx51-apf51dev.dtb nxp/imx/imx51-babbage.dtb nxp/imx/imx51-digi-connectcore-jsk.dtb nxp/imx/imx51-eukrea-mbimxsd51-baseboard.dtb nxp/imx/imx53-ard.dtb nxp/imx/imx53-kp-ddc.dtb nxp/imx/imx53-m53evk.dtb nxp/imx/imx53-m53menlo.dtb nxp/imx/imx53-qsrb.dtb nxp/imx/imx53-smd.dtb nxp/imx/imx53-tx53-x03x.dtb nxp/imx/imx53-tx53-x13x.dtb nxp/imx/imx53-voipac-bsb.dtb nxp/imx/imx6dl-colibri-aster.dtb nxp/imx/imx6dl-eckelmann-ci4x10.dtb nxp/imx/imx6dl-prtmvt.dtb nxp/imx/imx6dl-prtrvt.dtb nxp/imx/imx6dl-prtvt7.dtb nxp/imx/imx6dl-riotboard.dtb nxp/imx/imx6q-dmo-edmqmx6.dtb nxp/imx/imx6q-gk802.dtb nxp/imx/imx6q-h100.dtb nxp/imx/imx6q-logicpd.dtb nxp/imx/imx6q-novena.dtb nxp/imx/imx6q-prti6q.dtb nxp/imx/imx6q-prtwd2.dtb nxp/imx/imx6q-sbc6x.dtb nxp/imx/imx6q-utilite-pro.dtb nxp/imx/imx6qp-prtwd3.dtb nxp/imx/imx6qp-sabreauto.dtb nxp/imx/imx6qp-sabresd.dtb nxp/imx/imx6sl-evk.dtb nxp/imx/imx6sl-tolino-shine2hd.dtb nxp/imx/imx6sl-tolino-shine3.dtb nxp/imx/imx6sll-evk.dtb nxp/imx/imx6sll-kobo-clarahd.dtb nxp/imx/imx6sx-sabreauto.dtb nxp/imx/imx6sx-softing-vining-2000.dtb' for 20241017000801.149276-1-marex@denx.de:
+
+arch/arm/boot/dts/nxp/imx/imx35-eukrea-mbimxsd35-baseboard.dtb: iomuxc@43fac000: $nodename:0: 'iomuxc@43fac000' does not match '^(pinctrl|pinmux)(@[0-9a-f]+)?$'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx35-eukrea-mbimxsd35-baseboard.dtb: iomuxc@43fac000: 'imx35-eukrea', 'reg-lcd-3v3' do not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx50-evk.dtb: iomuxc@53fa8000: $nodename:0: 'iomuxc@53fa8000' does not match '^(pinctrl|pinmux)(@[0-9a-f]+)?$'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx53-kp-ddc.dtb: iomuxc@53fa8000: $nodename:0: 'iomuxc@53fa8000' does not match '^(pinctrl|pinmux)(@[0-9a-f]+)?$'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx53-kp-ddc.dtb: iomuxc@53fa8000: 'imx53-kp-common', 'imx53-tqma53' do not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx51-apf51dev.dtb: iomuxc@73fa8000: $nodename:0: 'iomuxc@73fa8000' does not match '^(pinctrl|pinmux)(@[0-9a-f]+)?$'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx51-babbage.dtb: iomuxc@73fa8000: $nodename:0: 'iomuxc@73fa8000' does not match '^(pinctrl|pinmux)(@[0-9a-f]+)?$'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx51-apf51.dtb: iomuxc@73fa8000: $nodename:0: 'iomuxc@73fa8000' does not match '^(pinctrl|pinmux)(@[0-9a-f]+)?$'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx51-digi-connectcore-jsk.dtb: iomuxc@73fa8000: $nodename:0: 'iomuxc@73fa8000' does not match '^(pinctrl|pinmux)(@[0-9a-f]+)?$'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx51-digi-connectcore-jsk.dtb: iomuxc@73fa8000: 'imx51-digi-connectcore-som' does not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx53-ard.dtb: iomuxc@53fa8000: $nodename:0: 'iomuxc@53fa8000' does not match '^(pinctrl|pinmux)(@[0-9a-f]+)?$'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx51-eukrea-mbimxsd51-baseboard.dtb: iomuxc@73fa8000: $nodename:0: 'iomuxc@73fa8000' does not match '^(pinctrl|pinmux)(@[0-9a-f]+)?$'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx51-eukrea-mbimxsd51-baseboard.dtb: iomuxc@73fa8000: 'backlightgrp-1', 'esdhc1_cd', 'gpiokeysgrp-1', 'gpioledgrp-1', 'imx51-eukrea', 'reg_lcd_3v3' do not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx35-pdk.dtb: iomuxc@43fac000: $nodename:0: 'iomuxc@43fac000' does not match '^(pinctrl|pinmux)(@[0-9a-f]+)?$'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx53-m53menlo.dtb: iomuxc@53fa8000: $nodename:0: 'iomuxc@53fa8000' does not match '^(pinctrl|pinmux)(@[0-9a-f]+)?$'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx53-m53menlo.dtb: iomuxc@53fa8000: 'imx53-m53evk' does not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx53-m53evk.dtb: iomuxc@53fa8000: $nodename:0: 'iomuxc@53fa8000' does not match '^(pinctrl|pinmux)(@[0-9a-f]+)?$'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx53-m53evk.dtb: iomuxc@53fa8000: 'imx53-m53evk', 'led_gpio' do not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx53-smd.dtb: iomuxc@53fa8000: $nodename:0: 'iomuxc@53fa8000' does not match '^(pinctrl|pinmux)(@[0-9a-f]+)?$'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx53-qsrb.dtb: iomuxc@53fa8000: $nodename:0: 'iomuxc@53fa8000' does not match '^(pinctrl|pinmux)(@[0-9a-f]+)?$'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx53-qsrb.dtb: iomuxc@53fa8000: 'led_gpio7_7' does not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx53-tx53-x03x.dtb: iomuxc@53fa8000: $nodename:0: 'iomuxc@53fa8000' does not match '^(pinctrl|pinmux)(@[0-9a-f]+)?$'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx53-tx53-x03x.dtb: iomuxc@53fa8000: 'edt-ft5x06grp-1', 'imx53-tx53', 'rgb24-vgagrp1' do not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx53-tx53-x13x.dtb: iomuxc@53fa8000: $nodename:0: 'iomuxc@53fa8000' does not match '^(pinctrl|pinmux)(@[0-9a-f]+)?$'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx53-tx53-x13x.dtb: iomuxc@53fa8000: 'imx53-tx53' does not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx53-voipac-bsb.dtb: iomuxc@53fa8000: $nodename:0: 'iomuxc@53fa8000' does not match '^(pinctrl|pinmux)(@[0-9a-f]+)?$'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx53-voipac-bsb.dtb: iomuxc@53fa8000: 'kppgrp-1', 'led_gpio' do not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx6sl-evk.dtb: pinctrl@20e0000: 'fecgrp-sleep' does not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx6sl-tolino-shine2hd.dtb: pinctrl@20e0000: 'i2c1grp-sleep', 'i2c2grp-sleep', 'usdhc2grp-sleep', 'usdhc3grp-sleep' do not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx6sl-tolino-shine3.dtb: pinctrl@20e0000: 'i2c1grp-sleep', 'i2c2grp-sleep', 'usdhc2grp-sleep', 'usdhc3grp-sleep' do not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clarahd.dtb: pinctrl@20e0000: 'i2c1grp-sleep', 'i2c2grp-sleep', 'usdhc2grp-sleep', 'usdhc3grp-sleep' do not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx35-pinctrl.yaml#
+
+
+
+
+
