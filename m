@@ -1,217 +1,75 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2071.outbound.protection.outlook.com [40.107.104.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037D51DA305
-	for <imx@lists.linux.dev>; Thu, 17 Oct 2024 09:20:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729156862; cv=fail; b=iFhfQY/h6yJ3frAgk0x+hrxIiCGnG5ISx+tT31CJvIUtyEVUEJlxdL+mj9WRkE+A9viMLrtFr+Ek/GRBmPLKWV4RRkoK7IHP3uItPCtFVov4EeHtrbyQI/CwRulSdHfqXi5Cj9nFXht4D7dYu7VBi0cc5iu51LPQunF79WbQn6k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729156862; c=relaxed/simple;
-	bh=uOwMQIkZ9RIxIpbFlViNiVIbaql1bLSvdFZewvkcJzk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=c/rabuyghFdNFu+3KFup5A7hqHtcJX95zCDVr/aJbyz4M4C4OoMyKoRUvuDHnLwkfe/eiB6l2+i9qnSekHMw23PHWAbiSA2xiNaUWSFqZG4Qew1Qp5wEs8gHTmc1cBoEYFfm3FRG4s/pTc9F397XL/sDQNiH9Nr4MLjcKzanMtE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=CoeDfK2T; arc=fail smtp.client-ip=40.107.104.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525851D95A3
+	for <imx@lists.linux.dev>; Thu, 17 Oct 2024 09:30:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729157416; cv=none; b=Ob0hlq6g/GEupX5/XOcdl7OfML8FiMTOVvfUd+j38LiP4b6K80fXS8rwjZPIM2eU1Idhfz5O9suOVFebu3gOqMs37bu5sIu3ef8jayIF7i/+IbkBUU9eEYw6PmnKu5AaRmcA3wvinIoBArby2VbR3S3IrtUBfGwGb7xogFbKZik=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729157416; c=relaxed/simple;
+	bh=tpjG1VzlcbKlqImlMTci/wT9sMew797mn03v3At5H4w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LIHMaavZsyqNitQo0f2Idq+rCLI36CySfs9faVnwoF/ul11hcsnk9WTbcQJ/k6ut/BPtsBb7SgyH+So5ZJs5iolEqibMP3RHFwn+IT/Ruth27Vs4SRhWdkqpkViVg8Of4kWpqIXfaWzFIREw3AwtCFEHDSkV1+EWM6s29ucghMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=bYhcebF9; arc=none smtp.client-ip=220.197.32.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="CoeDfK2T"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XV2OKcx/FKhb7SgYqR+0euKbdYZIowN4W2IWY5GZVMnY21NsuzSDgwzFwyONT2yza62jPY3r0rf+e70QPbs7U9aBZcEhd5nMjk3oSXe1m8OzcgEZT0231G+ekU+o4+a6dm2/noAEWkVkxOCd+8//MwktnNF5gVMWoRTUBhemjJ2mIFt0bndaM/ByemMf15howivXodWgYIjKOHcigdqJr8vNoGhux7ct2YHF3o8Q+/WbEmFIMyv5APEP01VNe1tOOtVQeTZZf3qHYj+B4bqGpaS4EFUI7w9nOAvjoct3O8tSLDNBqWYm0f+6VUMACsPYexvx81Q7V8fgeGSRxMa6vw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZsrsilQB6hYf/CppEdLlZz46gXU+VJmSX74tnVqkasg=;
- b=Y2wJfwNizD3lfP3/ONRm1gRkajqVkV5uqe6QU2BnY51GTCdwTgY74u/a+lvyS9SOb4h6IqAQPbQSv0HXKqpfaA9i+KSQQIw8Wn6Khbv/HF3AzMk2h5mAkNtsL3yVNFR3l+MS1r0fWVrwa5PUibT887cu5/cVHIVhjvPvg1uPkXV5hWgTwT3c7opA+CuNyj+VakbNR/No3EjoSFN3gpKqaMmbVNZ3Zx53aXyft0gd50RySQO4HghPndTVtMGdUc1yvjEGgq01/Zw3NAXul0m5pvJFq2xeWJahv2dnyhICoFyTHKpmodsOdKrDfqAbIMSF88ORKV/6SJy8lHtat4NGTw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZsrsilQB6hYf/CppEdLlZz46gXU+VJmSX74tnVqkasg=;
- b=CoeDfK2T2IfQ8XbrjZN4+Sb1YVpmHabcXUShjEukKhRPirsuA5A6Mx0TGBVahYVBd4DubTxKLb8aVVAUaNkw3PMX3YkZn3lG/raJlTkShCqH7T85rjzOBF7JzZtVkPnUrfyLJBf5ur2ZJszX7G0O69NXAl2H36RlZnlR8T3lHstYQhsWS3L3uTtrhcp8MOtpQGU8bIVMuZRZwekM+BeW5Xt9d/0YsLqUjeq3TQjbyEoZ66gsuNN1tq2H92Kk8aYDdMk/XkCX7BzRRiwxufp6gK9bOWQzuCiAU/f1lrhfHktXHb0oPNJgTPiay0UCPZFgj+S9VqgAfrgOr84V2Q18uQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
- by AS8PR04MB9061.eurprd04.prod.outlook.com (2603:10a6:20b:444::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.18; Thu, 17 Oct
- 2024 09:20:54 +0000
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::2755:55ac:5d6f:4f87]) by PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::2755:55ac:5d6f:4f87%6]) with mapi id 15.20.8069.016; Thu, 17 Oct 2024
- 09:20:54 +0000
-From: Ming Qian <ming.qian@nxp.com>
-To: mchehab@kernel.org,
-	hverkuil-cisco@xs4all.nl
-Cc: yunkec@google.com,
-	nicolas@ndufresne.ca,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	linux-imx@nxp.com,
-	xiahong.bao@nxp.com,
-	eagle.zhou@nxp.com,
-	tao.jiang_2@nxp.com,
-	ming.qian@oss.nxp.com,
-	imx@lists.linux.dev,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [RFC 6/6] media: vivid: Add a video region ctrl
-Date: Thu, 17 Oct 2024 18:19:51 +0900
-Message-ID: <20241017091951.2160314-7-ming.qian@nxp.com>
-X-Mailer: git-send-email 2.43.0-rc1
-In-Reply-To: <20241017091951.2160314-1-ming.qian@nxp.com>
-References: <20241017091951.2160314-1-ming.qian@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR02CA0129.apcprd02.prod.outlook.com
- (2603:1096:4:188::19) To PAXPR04MB8254.eurprd04.prod.outlook.com
- (2603:10a6:102:1cd::24)
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="bYhcebF9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=5RNGgtfTwAvQY9/y046REOp1czW+WTASXN0YNwPj/G8=;
+	b=bYhcebF9oG89CR6a3vDpBFiUROxHgE6xJfKDyEniiSIwKTsuhEvXIwLWUt7uu3
+	qGQBEhYO3+2KvXfOdLu/TFNtp0JbcF2Ag0zkbXdnEYxGF++j1Vm1gExV6qAbFQA8
+	ULjA3Hu84i8L9o1YvIAjfyo1zHxzUeoXt96JNEbSRAc4w=
+Received: from dragon (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDXW7D92BBndAAxAA--.1315S3;
+	Thu, 17 Oct 2024 17:29:35 +0800 (CST)
+Date: Thu, 17 Oct 2024 17:29:33 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v1 0/3] arm64: dts: freescale: imx8mp-verdin: Add Ivy
+ carrier
+Message-ID: <ZxDY/SiDSaz0HcsJ@dragon>
+References: <20240924114053.127737-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|AS8PR04MB9061:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3c79d7d8-c2b2-4ca9-219d-08dcee8cffa6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|52116014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Ds/78agqoIlNAiOhoZ5Q+HxhZuZq7ER1GHxM5EBV3Nrif7PrebEYpmZ/Gm+M?=
- =?us-ascii?Q?X9twJLULk8S5HGcIXmr+ySLGWfQVpW0e7gwvXndL5PbHBeX6BNx1BKyvgRbN?=
- =?us-ascii?Q?iRqL22YvtxzsXcm/hWqa2GWlk8UHMu6wobMdlOH0DGlIG3Q2REhGmykA4wB4?=
- =?us-ascii?Q?HphViK9lIOiH0ekdqn/A1XEE3v3bYTFKVPoBlQSuOUtZk9r5vFDKWnSJ1lKd?=
- =?us-ascii?Q?4nAtD/LKSTWTxnU/FV4rxLH8WBX0sFoSZgHw0JYmq9c7f1lYgHLLK6JDUwWt?=
- =?us-ascii?Q?cbQDin7cV3WjYqdPrcqZs7i3pLLAbVjy9ELHdiHSiocnbUWL8w3pJiPFBbq0?=
- =?us-ascii?Q?/6XPNufx0N9W9Zbv+4OMTjsBDPrXoAiFnwr3ZRb80wvpyOToHmMQLoUQHydL?=
- =?us-ascii?Q?PZvBQAfFqDnGE5Q8AnHUs6M9NTlCoy0e6pBwxYMSuTDDoXs9hjlexHgk2/dY?=
- =?us-ascii?Q?TkmE5Fz5irbo/UpWtdJJ6N6c3+vi4UPvx85ypt1Q5qeayBGC6nhT37xTUH1S?=
- =?us-ascii?Q?SDBL1ppxB7y+aGLtkWsbROgTjLUdyJGcka6zQYExXiDgNaqvCcFl2q39hwSl?=
- =?us-ascii?Q?v/mWvboN0uXC0dM4q7mQrbFFu21DEGnyIso4zV5aHsccLGZvvBGM7clBcLql?=
- =?us-ascii?Q?GxI22U+sKtDnm0Q6eoYyaHL7ebdWXUw8q85vxVqUO7bl/+53MqNCIAgYzzpX?=
- =?us-ascii?Q?8qhHnhM5HMQUxoLBrT4sI3XUk3Zjg7QMfqX9OvVeQXvT0mA0muLdZ/wPQh49?=
- =?us-ascii?Q?OmOu9ogAvU+pRdcze1ibnLy+sRs0jPu1AE4ugCIVA4bHMnnnZ4cRgg1NCoLf?=
- =?us-ascii?Q?Dwwa0oIvNtnLrkUzTDu0PrXAFwlnl+hAXipfokui9jZ9EPFcMax7XOhKpNv4?=
- =?us-ascii?Q?WVLp97BC6+2wjxY32xt9nnwzVN/bRl4Y49CEG254iLeu39xHcDjFPidNMvFs?=
- =?us-ascii?Q?th29xyFav7Cd+D2cC01cfQVYqYQ/txH5teSzyYwbB0aiq/1XlyBvEgdU5eGj?=
- =?us-ascii?Q?mbkA3y7SjfB1bV86s8ZcOqfrj9zQvBFYh9E8KApChGSXcC5mvvvbIizVztTG?=
- =?us-ascii?Q?2D9o0zlkjnxrCduCDX5aUSmZaS7aU4cS+VsmKJOpIe7GEfBaARla7G99ijpW?=
- =?us-ascii?Q?ujyTI6xPKkOwHKSJ95EHany2evmLPjP+1/sJ0BvtaSJAhc/mGdm2GqSSdEAW?=
- =?us-ascii?Q?qxCHE8kQzFou3wWysrIMkwi4buHk3HHWmm7tckLDJChOgXqL2HcvqotRFuST?=
- =?us-ascii?Q?OY2LyptogXgM3ea6MPjQU8vj1iiBbSV1gF23It/J/SdY0Am2LYrxo1PrzD4v?=
- =?us-ascii?Q?IeWm6QyYig+56n8Sq2x0exXy2iJDMsUj6KW28S+nApd1l01JqyL1LX3VTEpf?=
- =?us-ascii?Q?7JmGn2w=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?wqMyBIiSEoKZDdx91ID3tw8Kuy+1OzkT2ORy7BeY9Uo2VSSL+MlXOXIBqmWw?=
- =?us-ascii?Q?mjul3R+B7GLbXfhmTu/mLSc1C8hXiEXnfrMYE2p3aJOzb5ZfzP2wzVApu901?=
- =?us-ascii?Q?R3pMZGV1dvHA/PV3IKlKmaffS20Z3XGzL0fRAvhDLTbo5+mltLeMkuw/uk5r?=
- =?us-ascii?Q?1wDuPfItTv2Lx0vxYWbzywQKrXhdn7vgB9OK9WcdmEBNlYbw3jGJJF3bEuyS?=
- =?us-ascii?Q?UWu3CZKPWYVAQEdxNLHjX5/aWSGCt+ZZT/stes3CRu9IW4SaUF+S+YjhWKB2?=
- =?us-ascii?Q?EnHyG7wUT7z7r/5oN93URhHvT1HZRxJrYKwd0VIZM4g/zngcbB1V0mg18N8D?=
- =?us-ascii?Q?ti1iTtXtWdIJsXvIHLk5AvQ0eubn2+OMI2OZ9L0QoufJqeYYS6S9qPj0TCEF?=
- =?us-ascii?Q?TM39kSqLmy2TOqDjEUKo9aiBWGBazMT3cTJ9IpFMLCr8yegbfpFNUrRQ/MZF?=
- =?us-ascii?Q?bT4pegrDLc8ByUYC1znlDPBT6tNiCwzy4P7fH3NlIxUhLrXM6hbu5x7Ti7Xf?=
- =?us-ascii?Q?HzpNYq9NfDFOxmFsH44tWuHSwn1QGTTl2DWbCiR4JGvzyII+Ebg2s6zV7n+J?=
- =?us-ascii?Q?VSV/mwVpG0cp1EHBtiN+V4FvpU2c6vdqHMoatYuCDRZ5ZQ2iDMJxiq9PTBCQ?=
- =?us-ascii?Q?0gN3ijg1b7rRVTUI21X/db786+CUpe5Vnptdgz22TZPWPtPPrBlfflm4y+oH?=
- =?us-ascii?Q?6nYgtP8Hs0NbNJvBm5c9fas4oBcwxNPRcdRF0yskyizOQAPXf973xzoQyDRI?=
- =?us-ascii?Q?2rAKFfv8tn98uNpA4mQ6BRo8DYsTeQonMEuhoAWBkBllbKnfQ9cQYzt3UAmK?=
- =?us-ascii?Q?kLlLtl7UCYhCDMsA3wUO1NQiOLLCv37dTs6SjvozbdF+yWq70WVHEdV0ZV8i?=
- =?us-ascii?Q?55OA3ucq5H4WLV4QRJJV/yJflYELvBRJVSCFn2/9YltoUOzeLDT2x5MB8BPf?=
- =?us-ascii?Q?tLcW+JVB6fDjcuGvfS04oMkrVxoMXhG07Gs/EeLwqXdN3fgcTLgdWjZaagP+?=
- =?us-ascii?Q?GXGq6VBK3QxEDeFLJWk+j3/UKU8NV92ktfAqW2JsSza4VjPuvt/CI7MwRflR?=
- =?us-ascii?Q?752RouKFLHhpqMz5JSM9rZbsNx48kymAQy9+Vnj3VJ2QnrNhDyK+xPtI6X+C?=
- =?us-ascii?Q?7+iwICA901ymcO8AS8xz3Ywa7eNQye1YAnhlpzNoH3VzupWUsAXZLV7n2Ru9?=
- =?us-ascii?Q?APP8ol+FRvSCL8nYuMA37ppFDGiHjhgDjqv9xoyH+eapHjvLKxDlW7O7iHNj?=
- =?us-ascii?Q?7OUZ2J0Fd06zDnDQDmO5MoFo5VdM0zlD9SR6ohbzy25TgFn8eJGGv/qf9KKE?=
- =?us-ascii?Q?X3IPXYbxxXhw4XO65WtEXiPegigkVX4L7V2RenLPBNyvKWW2Ka4e8msBeJCj?=
- =?us-ascii?Q?skGtmT4oTH0YvzUFKraVZ1/7UlAIyIwXT8I+Ej3wEZMrDyzIfN+6hynSVvU9?=
- =?us-ascii?Q?AyuZ9IKFEzUFpmKjekyXv1I2LCwaKsDxRyx62yByRj3L8ZABHAdCnGQ7m2OB?=
- =?us-ascii?Q?eL1WZZz8szh0kCfUpxGYtiffXl9F8q8dvdxncmgKq0TixaqE+RFJ/xrpSSFs?=
- =?us-ascii?Q?yJ8pL9mSZDIldltCFeR9liozHl7Ai6ca6ffds1ck?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3c79d7d8-c2b2-4ca9-219d-08dcee8cffa6
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2024 09:20:53.9269
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LHWKERgcjRNW1oVN7NE9PegOdHyfAq0IiUJjkq2vJgw156ewuerO12stkcmnUkvthyNSBIAdYLNN8y7M/GjsEA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9061
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240924114053.127737-1-francesco@dolcini.it>
+X-CM-TRANSID:Ms8vCgDXW7D92BBndAAxAA--.1315S3
+X-Coremail-Antispam: 1Uf129KBjvdXoW7JFWftFykCr4DKw4ktFW5Jrb_yoW3ArgE9F
+	WFgr10gr4DKrnxtws8KF47Xw1vkw4Fyr10q3sFgr1fXF97Za98Ja9rKryrXFnIgan8tF93
+	J3WSgrZ3trWYkjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0t8nUUUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEQl7ZWcQs3R00QAAsT
 
-This control represents a generic read/write region.
-It supports V4L2_CTRL_WHICH_MIN/MAX_VAL.
+On Tue, Sep 24, 2024 at 01:40:50PM +0200, Francesco Dolcini wrote:
+> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+> 
+> Add support for the Toradex Verdin iMX8MP Ivy carrier board. Ivy is a carrier
+> board designed for industrial environments, supporting industrial
+> I/O interfaces such as CAN, RS485, RS232, Gigabit Ethernet, 0-25mA analog
+> inputs, relays, PCIe and more. The board also includes a TPM for security
+> applications.
+> 
+> https://www.toradex.com/products/carrier-board/ivy-carrier-board
+> 
+> João Paulo Gonçalves (3):
+>   dt-bindings: arm: freescale: Add verdin imx8mp ivy board
+>   arm64: dts: freescale: imx8mp-verdin: add labels to som nodes
+>   arm64: dts: freescale: imx8mp-verdin: Add Ivy carrier board
 
-Signed-off-by: Ming Qian <ming.qian@nxp.com>
-Signed-off-by: TaoJiang <tao.jiang_2@nxp.com>
----
- .../media/test-drivers/vivid/vivid-ctrls.c    | 28 +++++++++++++++++++
- 1 file changed, 28 insertions(+)
-
-diff --git a/drivers/media/test-drivers/vivid/vivid-ctrls.c b/drivers/media/test-drivers/vivid/vivid-ctrls.c
-index bed5f4fb0c69..6ea64bea13de 100644
---- a/drivers/media/test-drivers/vivid/vivid-ctrls.c
-+++ b/drivers/media/test-drivers/vivid/vivid-ctrls.c
-@@ -38,6 +38,7 @@
- #define VIVID_CID_S32_ARRAY		(VIVID_CID_CUSTOM_BASE + 15)
- #define VIVID_CID_S64_ARRAY		(VIVID_CID_CUSTOM_BASE + 16)
- #define VIVID_CID_RECT			(VIVID_CID_CUSTOM_BASE + 17)
-+#define VIVID_CID_REGION		(VIVID_CID_CUSTOM_BASE + 18)
- 
- #define VIVID_CID_VIVID_BASE		(0x00f00000 | 0xf000)
- #define VIVID_CID_VIVID_CLASS		(0x00f00000 | 1)
-@@ -393,6 +394,32 @@ static const struct v4l2_ctrl_config vivid_ctrl_rect = {
- 	.p_max.p_const = &rect_max,
- };
- 
-+static const struct v4l2_ctrl_video_region_param region_def = {
-+	.rect = { 0, 0, 0, 0 },
-+	.parameter = 0,
-+};
-+
-+static const struct v4l2_ctrl_video_region_param region_min = {
-+	.rect = { 0, 0, 0, 0 },
-+	.parameter = -51,
-+};
-+
-+static const struct v4l2_ctrl_video_region_param region_max = {
-+	.rect = { 0, 0, 1920, 1080 },
-+	.parameter = 51,
-+};
-+
-+static const struct v4l2_ctrl_config vivid_ctrl_region = {
-+	.ops = &vivid_user_gen_ctrl_ops,
-+	.id = VIVID_CID_REGION,
-+	.name = "Region",
-+	.type = V4L2_CTRL_TYPE_REGION,
-+	.flags = V4L2_CTRL_FLAG_HAS_WHICH_MIN_MAX,
-+	.p_def.p_const = &region_def,
-+	.p_min.p_const = &region_min,
-+	.p_max.p_const = &region_max,
-+};
-+
- /* Framebuffer Controls */
- 
- static int vivid_fb_s_ctrl(struct v4l2_ctrl *ctrl)
-@@ -1719,6 +1746,7 @@ int vivid_create_controls(struct vivid_dev *dev, bool show_ccs_cap,
- 	dev->ro_int32 = v4l2_ctrl_new_custom(hdl_user_gen, &vivid_ctrl_ro_int32, NULL);
- 	v4l2_ctrl_new_custom(hdl_user_gen, &vivid_ctrl_area, NULL);
- 	v4l2_ctrl_new_custom(hdl_user_gen, &vivid_ctrl_rect, NULL);
-+	v4l2_ctrl_new_custom(hdl_user_gen, &vivid_ctrl_region, NULL);
- 	v4l2_ctrl_new_custom(hdl_user_gen, &vivid_ctrl_u32_array, NULL);
- 	v4l2_ctrl_new_custom(hdl_user_gen, &vivid_ctrl_u32_dyn_array, NULL);
- 	v4l2_ctrl_new_custom(hdl_user_gen, &vivid_ctrl_u16_matrix, NULL);
--- 
-2.43.0-rc1
+Applied all, thanks!
 
