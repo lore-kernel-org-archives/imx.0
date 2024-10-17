@@ -1,111 +1,196 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC2017BB32;
-	Thu, 17 Oct 2024 20:36:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3871EE00B
+	for <imx@lists.linux.dev>; Thu, 17 Oct 2024 21:13:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729197411; cv=none; b=EiR3N86rHbCqX7z0mtxyBKlinQ764NJ5qnpm8yh/ld8JR3j7BhHX7iBN60ciO3Kj0s2xJUw0M6AXhPN4fiwh3Y1LVdBSeAtkkPF7mIwFXLFGvjV0d7VMuhpt3CzNMdgQKgVLzpSr5iD1nbkfDnxueGZiEt/1QLfi9SJoenQAG6U=
+	t=1729199592; cv=none; b=K9zuynkv2amnRCN7Bec9G1WtwqnL2FhZg6sfC1t0TmVrpkmzSCiPbvhiNKX2/hBsVMU6iifU1hKILJvFz/TovGb+ZlKhTu2PTaWmV5z38taM14FmI/h/fbMii6pgd7SdzPHKImHbYdVz5N9vLmkGQxd5KN1Zc8bs/3V+3fP/KBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729197411; c=relaxed/simple;
-	bh=3pORoOZs/yeiJDi/XhX2w922zKobaooCEiTENuXDMS0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CKrPN7VZR8q8OD90oCvNL8Vz71l7u4kNINC7lqVl2efV6Ek539c41cBGarwHSb0puIK7rycBKbaAkDaKal4tgdBGi1tfeUThxSs5tKTsSsIQX42GGZJ8/auKHhAzsMFGfw2tNtlT5UfvMva0xo48Lurs2X+f36v2oiXPD2ZkvUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dns8aEgL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729199592; c=relaxed/simple;
+	bh=3WdaJrD4mTVvGTcQ8uVgxjbxCRMDUo0NRLAKQRHhIE8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=m3uNvl8pBjdVeK09cOoJmhUa4Nhkfna9GU1dP/X7rLkTaXXJYf9vGrlEnP/NNjxcuTstJuk+F7oz2GG74KC3XPZ6DxYfsfcroUhHxzvJunNkBAnSX2/sXyu4uKY9kkcDwQT5DLT8QK9dkYHfuvOTt0onwZz1XJ3g9M24LwAx9lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=ify6yhHw; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dns8aEgL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DBEFC4CEC3;
-	Thu, 17 Oct 2024 20:36:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729197410;
-	bh=3pORoOZs/yeiJDi/XhX2w922zKobaooCEiTENuXDMS0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dns8aEgL9oz06vBjmKgsjs5U/WQK0+HMPVsHtyG72gLWPXo3uYyvmvdg3/epyGjY/
-	 Di6Nuo1+0mPE+slaPlrsKbYcGrB+XpLjUsWcjAFhc4AwF8HR2c21/iPKrPCeAcsQsZ
-	 dRpgZkOGt7h4iY7TRQ0qPGDFPzpJqRZhnVjzwsX/8WSgiVEUwyZxQ1MyyrOS791Trr
-	 HD/Xr/robdZSO26qsbDgQv18XBPWcLyx3+M4TmuivGGyegxEiL7S79AXD7fk1zrf6W
-	 swbGLxDnTHtRJ26E1/XpIYYvj2vS6SbT8HyJvXh4UCEPORSLDTCFtNw4/mKmNMGCoL
-	 D+7ux1Yxo1IYw==
-Date: Thu, 17 Oct 2024 15:36:49 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Marek Vasut <marex@denx.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	devicetree@vger.kernel.org, kernel@dh-electronics.com,
-	linux-gpio@vger.kernel.org, Fabio Estevam <festevam@gmail.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Shawn Guo <shawnguo@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="ify6yhHw"
+Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id AECB08901D;
+	Thu, 17 Oct 2024 23:13:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1729199587;
+	bh=kBtiSu49qbpF05noLgBzezJqOeoCTeLWHzLeSdi1HUI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ify6yhHwfVdL2j8z2C+Oy+TAVlK6qrvafYE4xvYHke21Xg0awMJ9K98YHlWyKywLG
+	 lCTq+KraiBN+jAHuxwwtOC0mGccy9tF4lI1tE06yrSC6X0ReFmVBw2Ks5hmZryt30X
+	 sIKQp5u5U8sCfyYeZH4c1PPkSAp7Ii83//2LxpcdSsHHB65ZAvIDf/5SQrihogYzT1
+	 LH1zCddW89h1/0zAQNZo4PbBXeb5frOIdvWJUe2/k3nqrpX1nOEkNMFwBpg/BfZova
+	 ByG+V3NiWe8C7WWlP6E62HS8NCRI3I64OdgRbsFcgJWjnGyUHyT0rg/nLDI8g1/zpc
+	 uDlBQcuXI2Cfg==
+From: Marek Vasut <marex@denx.de>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Marek Vasut <marex@denx.de>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
 	Conor Dooley <conor+dt@kernel.org>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jacky Bai <ping.bai@nxp.com>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>, imx@lists.linux.dev
-Subject: Re: [PATCH v2 01/12] dt-bindings: pinctrl: fsl,imx6ul-pinctrl:
- Convert i.MX35/5x/6 to YAML
-Message-ID: <172919740857.813589.2711206203512774093.robh@kernel.org>
-References: <20241017000801.149276-1-marex@denx.de>
+	Linus Walleij <linus.walleij@linaro.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	kernel@dh-electronics.com,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH v3 03/12] ARM: dts: imx50: Align pin config nodes with bindings
+Date: Thu, 17 Oct 2024 23:11:20 +0200
+Message-ID: <20241017211241.170861-3-marex@denx.de>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241017211241.170861-1-marex@denx.de>
+References: <20241017211241.170861-1-marex@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241017000801.149276-1-marex@denx.de>
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
+Bindings expect pin configuration nodes in pinctrl to match certain
+naming and not be part of another fake node:
 
-On Thu, 17 Oct 2024 02:06:47 +0200, Marek Vasut wrote:
-> The IOMUXC controller description is almost identical on i.MX35/5x/6 SoCs,
-> except for the configuration bits which differ across SoCs. Rename the
-> fsl,imx6ul-pinctrl.yaml to fsl,imx35-pinctrl.yaml, fill in compatible
-> strings for the other SoCs and fill in the various bits into desciption.
-> This way, i.MX35/5x/6 series SoCs can all be converted to DT schema.
-> Remove the old text DT bindings description.
-> 
-> Signed-off-by: Marek Vasut <marex@denx.de>
-> ---
-> Cc: Conor Dooley <conor+dt@kernel.org>
-> Cc: Dong Aisheng <aisheng.dong@nxp.com>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: Jacky Bai <ping.bai@nxp.com>
-> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> Cc: Linus Walleij <linus.walleij@linaro.org>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Rob Herring <robh@kernel.org>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: devicetree@vger.kernel.org
-> Cc: imx@lists.linux.dev
-> Cc: kernel@dh-electronics.com
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-gpio@vger.kernel.org
-> ---
-> V2: - Use DT schema to refer to the fsl,imx35-pinctrl.yaml file
->     - Special-case the iMX50 compatible string
-> ---
->  .../bindings/pinctrl/fsl,imx35-pinctrl.txt    | 33 -------
->  ...ul-pinctrl.yaml => fsl,imx35-pinctrl.yaml} | 88 ++++++++++++++++---
->  .../bindings/pinctrl/fsl,imx50-pinctrl.txt    | 32 -------
->  .../bindings/pinctrl/fsl,imx51-pinctrl.txt    | 32 -------
->  .../bindings/pinctrl/fsl,imx53-pinctrl.txt    | 32 -------
->  .../bindings/pinctrl/fsl,imx6dl-pinctrl.txt   | 38 --------
->  .../bindings/pinctrl/fsl,imx6q-pinctrl.txt    | 38 --------
->  .../bindings/pinctrl/fsl,imx6sl-pinctrl.txt   | 39 --------
->  .../bindings/pinctrl/fsl,imx6sll-pinctrl.txt  | 40 ---------
->  .../bindings/pinctrl/fsl,imx6sx-pinctrl.txt   | 36 --------
->  10 files changed, 78 insertions(+), 330 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx35-pinctrl.txt
->  rename Documentation/devicetree/bindings/pinctrl/{fsl,imx6ul-pinctrl.yaml => fsl,imx35-pinctrl.yaml} (50%)
->  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx50-pinctrl.txt
->  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx51-pinctrl.txt
->  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx53-pinctrl.txt
->  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6dl-pinctrl.txt
->  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6q-pinctrl.txt
->  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6sl-pinctrl.txt
->  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6sll-pinctrl.txt
->  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6sx-pinctrl.txt
-> 
+pinctrl@30330000: '...' does not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Drop the wrapping node and adjust the names to have "grp" prefix.
+Diff looks big but this should have no functional impact, use e.g.
+git show -w to view the diff.
+
+Signed-off-by: Marek Vasut <marex@denx.de>
+---
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Dong Aisheng <aisheng.dong@nxp.com>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Jacky Bai <ping.bai@nxp.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Stefan Wahren <wahrenst@gmx.net>
+Cc: devicetree@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: kernel@dh-electronics.com
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-gpio@vger.kernel.org
+---
+V2: New patch
+V3: Rename iomuxc@ node to pinctrl@ node
+---
+ arch/arm/boot/dts/nxp/imx/imx50-evk.dts | 62 ++++++++++++-------------
+ arch/arm/boot/dts/nxp/imx/imx50.dtsi    |  2 +-
+ 2 files changed, 31 insertions(+), 33 deletions(-)
+
+diff --git a/arch/arm/boot/dts/nxp/imx/imx50-evk.dts b/arch/arm/boot/dts/nxp/imx/imx50-evk.dts
+index 3f45c01d9cce3..f40b0d5fdb85f 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx50-evk.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx50-evk.dts
+@@ -52,40 +52,38 @@ &fec {
+ };
+ 
+ &iomuxc {
+-	imx50-evk {
+-		pinctrl_cspi: cspigrp {
+-			fsl,pins = <
+-				MX50_PAD_CSPI_SCLK__CSPI_SCLK		0x00
+-				MX50_PAD_CSPI_MISO__CSPI_MISO		0x00
+-				MX50_PAD_CSPI_MOSI__CSPI_MOSI		0x00
+-				MX50_PAD_CSPI_SS0__GPIO4_11		0xc4
+-				MX50_PAD_ECSPI1_MOSI__GPIO4_13		0x84
+-			>;
+-		};
++	pinctrl_cspi: cspigrp {
++		fsl,pins = <
++			MX50_PAD_CSPI_SCLK__CSPI_SCLK		0x00
++			MX50_PAD_CSPI_MISO__CSPI_MISO		0x00
++			MX50_PAD_CSPI_MOSI__CSPI_MOSI		0x00
++			MX50_PAD_CSPI_SS0__GPIO4_11		0xc4
++			MX50_PAD_ECSPI1_MOSI__GPIO4_13		0x84
++		>;
++	};
+ 
+-		pinctrl_fec: fecgrp {
+-			fsl,pins = <
+-				MX50_PAD_SSI_RXFS__FEC_MDC		0x80
+-				MX50_PAD_SSI_RXC__FEC_MDIO		0x80
+-				MX50_PAD_DISP_D0__FEC_TX_CLK		0x80
+-				MX50_PAD_DISP_D1__FEC_RX_ERR		0x80
+-				MX50_PAD_DISP_D2__FEC_RX_DV		0x80
+-				MX50_PAD_DISP_D3__FEC_RDATA_1		0x80
+-				MX50_PAD_DISP_D4__FEC_RDATA_0		0x80
+-				MX50_PAD_DISP_D5__FEC_TX_EN		0x80
+-				MX50_PAD_DISP_D6__FEC_TDATA_1		0x80
+-				MX50_PAD_DISP_D7__FEC_TDATA_0		0x80
+-			>;
+-		};
++	pinctrl_fec: fecgrp {
++		fsl,pins = <
++			MX50_PAD_SSI_RXFS__FEC_MDC		0x80
++			MX50_PAD_SSI_RXC__FEC_MDIO		0x80
++			MX50_PAD_DISP_D0__FEC_TX_CLK		0x80
++			MX50_PAD_DISP_D1__FEC_RX_ERR		0x80
++			MX50_PAD_DISP_D2__FEC_RX_DV		0x80
++			MX50_PAD_DISP_D3__FEC_RDATA_1		0x80
++			MX50_PAD_DISP_D4__FEC_RDATA_0		0x80
++			MX50_PAD_DISP_D5__FEC_TX_EN		0x80
++			MX50_PAD_DISP_D6__FEC_TDATA_1		0x80
++			MX50_PAD_DISP_D7__FEC_TDATA_0		0x80
++		>;
++	};
+ 
+-		pinctrl_uart1: uart1grp {
+-			fsl,pins = <
+-				MX50_PAD_UART1_TXD__UART1_TXD_MUX	0x1e4
+-				MX50_PAD_UART1_RXD__UART1_RXD_MUX	0x1e4
+-				MX50_PAD_UART1_RTS__UART1_RTS		0x1e4
+-				MX50_PAD_UART1_CTS__UART1_CTS		0x1e4
+-			>;
+-		};
++	pinctrl_uart1: uart1grp {
++		fsl,pins = <
++			MX50_PAD_UART1_TXD__UART1_TXD_MUX	0x1e4
++			MX50_PAD_UART1_RXD__UART1_RXD_MUX	0x1e4
++			MX50_PAD_UART1_RTS__UART1_RTS		0x1e4
++			MX50_PAD_UART1_CTS__UART1_CTS		0x1e4
++		>;
+ 	};
+ };
+ 
+diff --git a/arch/arm/boot/dts/nxp/imx/imx50.dtsi b/arch/arm/boot/dts/nxp/imx/imx50.dtsi
+index c5b25d2f6264a..1b6f444443dd1 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx50.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx50.dtsi
+@@ -283,7 +283,7 @@ gpt: timer@53fa0000 {
+ 				clock-names = "ipg", "per";
+ 			};
+ 
+-			iomuxc: iomuxc@53fa8000 {
++			iomuxc: pinctrl@53fa8000 {
+ 				compatible = "fsl,imx50-iomuxc", "fsl,imx53-iomuxc";
+ 				reg = <0x53fa8000 0x4000>;
+ 			};
+-- 
+2.45.2
 
