@@ -1,224 +1,243 @@
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2056.outbound.protection.outlook.com [40.107.21.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7993C1DDC16
-	for <imx@lists.linux.dev>; Thu, 17 Oct 2024 13:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729170482; cv=none; b=f+6jMg+IBatilHR13sgsHqRQdgEUSDx4X2utXcrkE9qF7rJppZxsDjjxxa7Ga8jCN6X21EmnnLO8LLw76ToAhMcoaktyK33GFnLP4UQtJSkSiMub4/hH/rrVc1NNUPoI50FzYEJbU2cC39F6X2D9YqGSbMc9+JWNDKb3iDaKu6g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729170482; c=relaxed/simple;
-	bh=c0bfB1CKojeKX92hRJPTg5p5/+lQ8IefKxOSkHcyjO0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hysI90VRVu0CnSw5Dh+qynbt4Q4ViOakjEJenmDditTZ+PkKtmELKbxhV2ctAMeC9Q7+z0cocDWtVCoIhixjopYMxQN2mRB72YQisamVGEVYdsrww4JC4gJZ7tcD9LLLyuX5Cjbu8UcA8RLK1+w1S4LhCHhOrvESrhcg/F7er+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Kx7HXUXD; arc=none smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56841DE2D7
+	for <imx@lists.linux.dev>; Thu, 17 Oct 2024 14:04:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.56
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729173848; cv=fail; b=N/EnMO9smccHgFX7MKswL3UfQuCYIOH7LFYNbdINWdwTHSZJNajOnE1Xd+h4MbRJEjiREnXVRRo9dQSM6TfZQp4ylFjFt8mSIhgzRogfxYBF/kHguVWfFWQs/AT9H5nroZPvwRmJCtDgmI6Ygaz0rzCRuHOY/SxId64qbrcmIyU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729173848; c=relaxed/simple;
+	bh=6gFPMhqLD4JSV6PAGnMDTJ39Np/1dG9pW0frRU6D+SU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=c6MhFTYZuTY4KstazpNnon4hrluxPbjWA4xT68DgGBOExkXeR2lyaLhMQi80SA/WikixtYgcNsQmMFqQahoHdXPkROkk+3EmuLqzEiFNv0pSbIy+lghRZweEsMDjT5gGnyiywvMDzoASrC06wbFfdHWTOAz8NTzoOc0Sa6qaiLE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=H5kNTpYq reason="signature verification failed"; arc=fail smtp.client-ip=40.107.21.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Kx7HXUXD"
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-6e5a5abc915so7870067b3.3
-        for <imx@lists.linux.dev>; Thu, 17 Oct 2024 06:07:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729170478; x=1729775278; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZazD9r+QSLhnAO9QyZ44wGVSQLeXIw2HIXMUQofmO6w=;
-        b=Kx7HXUXDYgJGVN/uh44qUtjMXqSV3sXqeThEIIWsWpKV3dSl8jE8YemIX7OzhrRMFa
-         uL2MsejSN3866LybLs/bDuUJi+nUtM+j3WG1AUOBk5c4UodNddV6zrF/rpNBEz2SogLf
-         WKYUZdwWqF/iTfXlaT+Bz8qQmjQ/XYzhEJynS10Ys5RAentXXZlYuDyBUwkXZXrguR3x
-         ylWdFXkf8GrCtnhtXBUHYTGJL7G5UZSadGbJzS6hd+/qQjH+NJVOtAauxptsPHPxzr0r
-         KcYFs7sswUK0rXxRCTKwQayLwRPjcyYKDFgme3KUbgqP1Qzh4nfx4k4TsxMxIsElrjcK
-         8d3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729170478; x=1729775278;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZazD9r+QSLhnAO9QyZ44wGVSQLeXIw2HIXMUQofmO6w=;
-        b=Hxv3FGAJj2yhysdOtpS6f5+ZH/G9LeAMuf9KV6iYC79HZmLwfLWPnUGZK4URu6Rx9u
-         a/4TnZmCdGvXE6gd2GinJsG+rUVy3VagoYcm5PDMldJyqUaiyw/Fzm9O4AcwCrnTBLrH
-         ++AVL3BkNlOKugC4YX0rUGBEs9y07AlZtwS4Ibi1Dn1GqzjYpJiR6GoIHaD/p4l0O1bE
-         f1iDABuK098k09MJwtbR62h7fCWD2AaoLrWmy5Ql4cUPmJhkfQQY23JK0NYvRWYa5+PJ
-         0lYqh2/vJXCzVpBKMhFK6pDywSSSLEvSpWHiHZlRbdnJycnl3uZgmFuQhAuFJ4PphKO0
-         HTLg==
-X-Forwarded-Encrypted: i=1; AJvYcCUauJlYt3TOlzVvtecFKaBqTkYNLqXFAEXw0gQN/PNHM7Fqmd4NmiQmdRiJ46YMTCXWNYo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwVpVRivk8fOEGIcRjz+6MaFRZhDxRFw//Cw7S/rEqatozgSBCd
-	JnbGsXTDutjYAvCzC+3bM68lHTWz5GSfkdr85hs+gw1vau6Frf/96GDp0vCTq6lgsmZp0z4FBrA
-	pSLfEoJpX7cGVXZHP4mjfYqzotJE6Rd1P7sJ5uA==
-X-Google-Smtp-Source: AGHT+IFD/gjUzQbbNJWQ5oL5BN76j/UHFd9jGMXlet0DrOEnAF5gNXy8XvWpGdFQ9Exj+PRU+DXn5f1++kiRqKhMIr0=
-X-Received: by 2002:a05:690c:389:b0:64b:5cc7:bcbc with SMTP id
- 00721157ae682-6e347c48627mr218937157b3.32.1729170478430; Thu, 17 Oct 2024
- 06:07:58 -0700 (PDT)
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="H5kNTpYq"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=E+Hr0loCpU3cOWQ1uQ6mY+hlThgHrCcBmPqstBmFkY8M7eduAqKFiEfy1UdEd/RL3436T99zKJ4ZhsHON9UkcrlvZWPLxipVi9bjayRDyt3rs5lpiR6lQSS8w7xsNrkBbONZ9I4akQk5KNB8f7XaZbP00L6QC5CG81qc9sOfbhiR2Oyu4K0Nt6sgMJkNpaJe0b+1mSxhJRqQ44xj4NZOnWKqVe5Z6GETeLjM4U5RQpJnobvAo5q6oqEpu2zdbip352TqkKpEkkKRW3FPw0iPNEAIY5li728R//l+D7v/dEgtOMDbHB/XpGCkzN17GyWeejoYoa/EOQX0AfdZhISbPg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WF+s45YtFd6VeKrDmwwsY5DAO70lBOWxMjLLBXHQ/qE=;
+ b=LIDpl4SFHJUOq0FHK9/7G7wscnYPqpdn49TPMzgy4YZ9JOUZcbobC22Jz6T0p9g8RNqctgqlU3ML3t3Vds/Dut8kF+HATsXIPFoSiDUMLnMkNZw0iGsNopzbgsudVh6DEdjZF+TR9sY2A4gc+zXJUWxjUMR8Kg/V/CiJKX8ivsrUzsrmfDWAxvk0pV536I8m9yCXQ1IRfytKOEu5E9h9iSdWW6ga3efGQ5/gIdIJm/RPrVuDZmNNd8MNUaW+QI/QcXVw5KmWRfmLprYAcApEPMVm0sRbfBRneDvF1JFbYyc5AhMVbNuZA1TaBPolosPK6z00pvXHcRUmF9P1TVGgYQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WF+s45YtFd6VeKrDmwwsY5DAO70lBOWxMjLLBXHQ/qE=;
+ b=H5kNTpYqAvFD4KubcnoFHrIxrI27WQmxVbloGy5pBJZKaa5bqm16TxS3ec+Z6kRi1rOTnMc7mvkBlGERkf9r4VmlJJWMmHysDB5phbBq92LGXhFCSmEg/vK/1ze+zEzw1qWMDIycDHKRb7xiGwd+8tfh3Q5xpCBfbBY6K8lAb9apVjGqVU5Hwgq1CNrgZiKeF5BMGGf1ROI29ZljfWVDRUVvW9QzrUNsoHxTHgjdTgw+08D7hWHbs6ShmeZaSVTmY1qkLeG1ocRC3nzhOQ/JGi1CMKlW5BLWkbH16rCkhHFHtRVTvPoOS0lgOhvPm89h1xH7qRAiPWS0cogf0Qv9hg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PA1PR04MB10206.eurprd04.prod.outlook.com (2603:10a6:102:456::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.18; Thu, 17 Oct
+ 2024 14:03:59 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8069.016; Thu, 17 Oct 2024
+ 14:03:59 +0000
+Date: Thu, 17 Oct 2024 10:03:51 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>
+Subject: Re: RE: RE: [PATCH net-next 07/13] net: fec: fec_probe(): update
+ quirk: bring IRQs in correct order
+Message-ID: <ZxEZR2lmIbX6+xX2@lizhi-Precision-Tower-5810>
+References: <20241016-fec-cleanups-v1-0-de783bd15e6a@pengutronix.de>
+ <20241016-fec-cleanups-v1-7-de783bd15e6a@pengutronix.de>
+ <PAXPR04MB85103D3E433F3FBE5DDFA15C88472@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20241017-affable-impartial-rhino-a422ec-mkl@pengutronix.de>
+ <PAXPR04MB8510149D0E8AC39E048941F988472@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20241017-manipulative-dove-of-renovation-88d00b-mkl@pengutronix.de>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241017-manipulative-dove-of-renovation-88d00b-mkl@pengutronix.de>
+X-ClientProxiedBy: BY3PR10CA0027.namprd10.prod.outlook.com
+ (2603:10b6:a03:255::32) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241014060130.1162629-1-haibo.chen@nxp.com> <20241014060130.1162629-3-haibo.chen@nxp.com>
-In-Reply-To: <20241014060130.1162629-3-haibo.chen@nxp.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Thu, 17 Oct 2024 15:07:22 +0200
-Message-ID: <CAPDyKFr37wLYxdFJ-Lgbq7PbWyiQz+CuwMxwgeeP3QpMvdyjqg@mail.gmail.com>
-Subject: Re: [PATCH 2/4] mmc: host: sdhci-esdhc-imx: refactor the system PM logic
-To: haibo.chen@nxp.com
-Cc: adrian.hunter@intel.com, linux-mmc@vger.kernel.org, imx@lists.linux.dev, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, s32@nxp.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA1PR04MB10206:EE_
+X-MS-Office365-Filtering-Correlation-Id: 27ace39d-0ce2-414e-8a6d-08dceeb48c2a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|7416014|376014|366016|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?iso-8859-1?Q?vEwnkcfKf0+Gvagp16K6+kHFCz7TQeQHZlsGa0EtJCNyPyQmQ2OzyJ5+4W?=
+ =?iso-8859-1?Q?zHC84STHvhWmKlw0IR8iO+rp0Z4euNyloUkT7m0JDw88LGITbRoRwz2nSp?=
+ =?iso-8859-1?Q?OT+I/lqhHf2Y8RN0QuDknvByu8czTb8dY4Gl0/GAeMMjH8Pla8S+TsF7kC?=
+ =?iso-8859-1?Q?r3/XIIiqrod5SRptYo6oW7BgnDrn5Tzh88aj4h+OIMNwypc7ql0c3om/FC?=
+ =?iso-8859-1?Q?x76hF83cDKTlrIX4TigMbO1Y67bfiKgQWUr3a40dTEu70MppMDf1rzQact?=
+ =?iso-8859-1?Q?5NAPyYXMMo0kgFWiioS2n20CDd+UwZl33y5TaXvFhxtDW2sS83GW09FTHV?=
+ =?iso-8859-1?Q?/Kv/vuM4SDG+rxop0WmoviIp8J9AIwWhqHMyu3wD3UZUSsyY04mwhO+7jr?=
+ =?iso-8859-1?Q?P/vaWvAIKNNSdrCEB0X5H7UZzrrkgwCgnwQP2hjTQepNGq/kPVYPmFk5JT?=
+ =?iso-8859-1?Q?J7e6fHnzdgs2rM5PmrxxU2ZSv2vJvphgGF1ArFQ6SfnYfS5TKhvzLsvs29?=
+ =?iso-8859-1?Q?YXdjDiBIko3UkmKyPEP82g1BpiPTIzCkRRf2W3zV1il7WekVRPylKl38wW?=
+ =?iso-8859-1?Q?w4s8glwfMlpgkIPPac/SSypi9RuHB2h7uhrvqa2ykgGVBn2D1R9huqL3Z7?=
+ =?iso-8859-1?Q?Jn97EcOJWNrgVu7Mgp5SY4zzneu8Hjy0g0Zz8uN67dV56oNi+6wl+b3Q9u?=
+ =?iso-8859-1?Q?JoVEilmPXmYtA6CkuUq1V5DSN8Iwpga2qJlYWxws6Ea+iQWyMKG9xoa76y?=
+ =?iso-8859-1?Q?QmGkQAKJjUkPu24BC0625Z7KjnDRjA8AJrTeJ3+M5fWgbptHM6vYZgQJUs?=
+ =?iso-8859-1?Q?4dPX2rEifweOOyL47tcPdFA4ywY+hs9iMvz3trkMUzuAZdHNd8y8e+yKQg?=
+ =?iso-8859-1?Q?zWTAnKpkdqz7rVRwpM5nyXTQC3YE2JGoT2kY/EnvflHaPd2JHQObZbHYj3?=
+ =?iso-8859-1?Q?yfgAdbCFK8O5Z028cV05+98kqtGOa1Mw+7CjkNnynRJNfG+PkrmKwnKq34?=
+ =?iso-8859-1?Q?1CfFajijnavm+Osyqo6Ji0pfdZmpNhillnCRAf2tXVKrgD2tG9m2vvKcfB?=
+ =?iso-8859-1?Q?/cMxZa+BTJu6cACbYcPm9s8OcnpyMNg2FDdyMO/+AxuAwKI7+b7YrE2Jyp?=
+ =?iso-8859-1?Q?Z4l+zQ1j/Eu5ovFpK5K3cL0Nt+Yab3AqJOT5Ll/1Lp/Smv1pkXTGi9zRIk?=
+ =?iso-8859-1?Q?WkjsopMXHRz373dg8IZX9tq7ScMkwfa61YMkR8wLdiyc8wuHlkqIlhYk2Q?=
+ =?iso-8859-1?Q?5ma4V8S/zsVZNMcedBKGZ0oAUBfuqIPWXNCFmfkviiWh/oR+DCTZmCwrVw?=
+ =?iso-8859-1?Q?DEBYvoruP+uWT4J/J/el0vIpsMtqCr+U2bDwZ/WpUExIhfs=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?twjbO+otuO+0DGloWgDtHnzI1AW0F22qkTAabPlxtq9j3iYCpMiuapmvCN?=
+ =?iso-8859-1?Q?TSK7nLAmz6//2vy33LL0mrzPq6bzw0pIDqEbSayXRV6zmbRcym90cHFyi1?=
+ =?iso-8859-1?Q?bfSkLw+Lfz3evFrFgPPbayc7k1QflbvU2WXgpqE1AT6SEkDUJ1fdsE1N5P?=
+ =?iso-8859-1?Q?iR/QVHdoVKEb+0FktvVkBVF2E1amANU9Jfoc7/ivI0t7xvnZ8/R6ghX46E?=
+ =?iso-8859-1?Q?g13P+XtiJKD9G1be9qmXNBpL6r3zqhp5Fig5vbpLF5totQR4SDtrVxz9Fm?=
+ =?iso-8859-1?Q?LARoOmdyObV6VApHOtYyomcOOMF0kffEJLlxNnOwLz5QB2oCfdcGXRKwmg?=
+ =?iso-8859-1?Q?q7LKOqIMZJMbuG/V9g/NDVAUQqPRtYYAU1kZvKfxjp3t/sQS88g6SFg7Nw?=
+ =?iso-8859-1?Q?Pj+ZlygZIIwbSClBJYvlUmmH+CbCJtmJTEA9M7VCdMmtsW8RUlKwvNN6+g?=
+ =?iso-8859-1?Q?rlreC2CafM6DKSlMEybifDosSLeO5Edop/y9oOz7wWWFoY5XM/ZhRdUx/z?=
+ =?iso-8859-1?Q?/6nt7hzK9AqOif9g1jUFrm3aCOjSywXQvrVpm5lP6CrDHDLAPCOStxqAQC?=
+ =?iso-8859-1?Q?w/ptv1Z/03nxNDViLAJT/zZVwVdolr6f38/uYTDfIgjWmY6/wPrw+uV3s/?=
+ =?iso-8859-1?Q?Kb0jiMkgxZfoeXtdGtDbbyVtJteTBXEAHxaO/XJsvr7zepz2Ut5WFsFVJ5?=
+ =?iso-8859-1?Q?86k9gjn5eCrM/5iH/6Lhpma/D9zNhQt9f7EK847zAI4SyapRnP4apc8LmO?=
+ =?iso-8859-1?Q?NA5pmavMSZcafPjy6vFKolhW7vSgF0B3cVF0I8lk/rqNVvwRimL2W1qTSz?=
+ =?iso-8859-1?Q?v61f+irTPzV8H7mHrNhrEomen44C7RHReQCZBK9hrqgXaUwFv13cbl3jMN?=
+ =?iso-8859-1?Q?zyVpYwck9vhtEahualCddfUhxNXWDr9d3vf89ozNsqIsF3EyEvsOpFgRkU?=
+ =?iso-8859-1?Q?ituMQqVqKNpnd6aYKDwSUXlcscxFPgaXh+egsXRNai3hDTEwNE6IDBP5dZ?=
+ =?iso-8859-1?Q?ihP1yDGMxEjpZmxZ4Jz3alyUzjF1eeFgPOTYriIlhJIbOYTdSdifMmZ52W?=
+ =?iso-8859-1?Q?ck7DgIW6Fl+6yuwQsDFNxuhJZ1TxIUwo0c82YwJAsMF2KfdzG987yARdSa?=
+ =?iso-8859-1?Q?1h/YPqOHV/bbyjU2tXekGzDinUe5EihP/ZiDF+o/wQsXYGHVPL5wXsdWBv?=
+ =?iso-8859-1?Q?jHJPNYs5YlRiWdT46QQ89w2paw7VWnD4nRuWLAWrIIaowFlkF3K5XFxjHR?=
+ =?iso-8859-1?Q?DSp0VycNggMDYPnKbq1cwxHQs4fLuoO5Sgkgw19WJOp+j3KyqjlHafzwQS?=
+ =?iso-8859-1?Q?aTXr7zlJzXnvan4KJzvF84b9wqrpD+zWZ83iC23kSnZyNM0gvrTWXRRZPZ?=
+ =?iso-8859-1?Q?WomER5Y8XXJ/VTR1G2pQIDYrUndND25yskXPy2hnyUGVAbcgScW/yRm7/4?=
+ =?iso-8859-1?Q?WL6FavebYWs7S63AphOWBmdlqJD5ZN4seGWVuVO8IGWYFR27ZK5Zt7P4WI?=
+ =?iso-8859-1?Q?CA+ClVsWWSBcn95s1jK4XvKLFH0SXVz1LsvUSuJn38ntTrdhy9waZ0/9+Y?=
+ =?iso-8859-1?Q?J9Y7eI5D7Tc8iM1DTOwxDl3DWE/ytIZ+PMT+yJG4DuYifmyL6yl+27BC/I?=
+ =?iso-8859-1?Q?BzVC5YpTkXkE0=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 27ace39d-0ce2-414e-8a6d-08dceeb48c2a
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2024 14:03:59.4911
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: WuUiU/0GsMHrfGao4KT3jbG3zPSYSWau8lBKni3fBrGVg7jBAsCxa09FJyluEjVfO8ciMKbqK+FCcnbOGJhKkg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10206
 
-On Mon, 14 Oct 2024 at 08:00, <haibo.chen@nxp.com> wrote:
+On Thu, Oct 17, 2024 at 12:21:10PM +0200, Marc Kleine-Budde wrote:
+> On 17.10.2024 07:43:55, Wei Fang wrote:
+> > > > > Subject: [PATCH net-next 07/13] net: fec: fec_probe(): update quirk: bring
+> > > IRQs
+> > > > > in correct order
+> > > > >
+> > > > > With i.MX8MQ and compatible SoCs, the order of the IRQs in the device
+> > > > > tree is not optimal. The driver expects the first three IRQs to match
+> > > > > their corresponding queue, while the last (fourth) IRQ is used for the
+> > > > > PPS:
+> > > > >
+> > > > > - 1st IRQ: "int0": queue0 + other IRQs
+> > > > > - 2nd IRQ: "int1": queue1
+> > > > > - 3rd IRQ: "int2": queue2
+> > > > > - 4th IRQ: "pps": pps
+> > > > >
+> > > > > However, the i.MX8MQ and compatible SoCs do not use the
+> > > > > "interrupt-names" property and specify the IRQs in the wrong order:
+> > > > >
+> > > > > - 1st IRQ: queue1
+> > > > > - 2nd IRQ: queue2
+> > > > > - 3rd IRQ: queue0 + other IRQs
+> > > > > - 4th IRQ: pps
+> > > > >
+> > > > > First rename the quirk from FEC_QUIRK_WAKEUP_FROM_INT2 to
+> > > > > FEC_QUIRK_INT2_IS_MAIN_IRQ, to better reflect it's functionality.
+> > > > >
+> > > > > If the FEC_QUIRK_INT2_IS_MAIN_IRQ quirk is active, put the IRQs back
+> > > > > in the correct order, this is done in fec_probe().
+> > > > >
+> > > >
+> > > > I think FEC_QUIRK_INT2_IS_MAIN_IRQ or FEC_QUIRK_WAKEUP_FROM_INT2
+> > > > is *NO* needed anymore. Actually, INT2 is also the main IRQ for i.MX8QM
+> > > and
+> > > > its compatible SoCs, but i.MX8QM uses a different solution. I don't know
+> > > why
+> > > > there are two different ways of doing it, as I don't know the history. But you
+> > > can
+> > > > refer to the solution of i.MX8QM, which I think is more suitable.
+> > > >
+> > > > See arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi, the IRQ 258 is
+> > > > placed first.
+> > >
+> > > Yes, that is IMHO the correct description of the IP core, but the
+> > > i.MX8M/N/Q DTS have the wrong order of IRQs. And for compatibility
+> > > reasons (fixed DTS with old driver) it's IMHO not possible to change the
+> > > DTS.
+> > >
+> >
+> > I don't think it is a correct behavior for old drivers to use new DTBs or new
+> > drivers to use old DTBs. Maybe you are correct, Frank also asked the same
+> > question, let's see how Frank responded.
 >
-> From: Haibo Chen <haibo.chen@nxp.com>
+> DTBs should be considered stable ABI.
 >
-> Current suspend/resume logic has one issue. in suspend, will config
-> register when call sdhci_suspend_host(), but at this time, can't
-> guarantee host in runtime resume state. if not, the per clock is gate
-> off, access register will hung.
->
-> Now use pm_runtime_force_suspend/resume() in NOIRQ_SYSTEM_SLEEP_PM,
-> add in NOIRQ stage can cover SDIO wakeup feature, because in interrupt
-> handler, there is register access, need the per clock on.
->
-> In sdhci_esdhc_suspend/sdhci_esdhc_resume, remove sdhci_suspend_host()
-> and sdhci_resume_host(), all are handled in runtime PM callbacks except
-> the wakeup irq setting.
->
-> Remove pinctrl_pm_select_default_state() in sdhci_esdhc_resume, because
-> pm_runtime_force_resume() already config the pinctrl state according to
-> ios timing, and here config the default pinctrl state again is wrong for
-> SDIO3.0 device if it keep power in suspend.
 
-I had a look at the code - and yes, there are certainly several
-problems with PM support in this driver.
+ABI defined at binding doc.
+  interrupt-names:
+    oneOf:
+      - items:
+          - const: int0
+      - items:
+          - const: int0
+          - const: pps
+      - items:
+          - const: int0
+          - const: int1
+          - const: int2
+      - items:
+          - const: int0
+          - const: int1
+          - const: int2
+          - const: pps
 
->
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-> ---
->  drivers/mmc/host/sdhci-esdhc-imx.c | 39 +++++++++++++++---------------
->  1 file changed, 19 insertions(+), 20 deletions(-)
->
-> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-> index c7582ad45123..18febfeb60cf 100644
-> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
-> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-> @@ -1871,11 +1871,13 @@ static int sdhci_esdhc_suspend(struct device *dev)
->         struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
->         int ret;
->
-> -       if (host->mmc->caps2 & MMC_CAP2_CQE) {
-> -               ret = cqhci_suspend(host->mmc);
-> -               if (ret)
-> -                       return ret;
-> -       }
-> +       /*
-> +        * Switch to runtime resume for two reasons:
-> +        * 1, there is register access, so need to make sure gate on ipg clock.
+DTB should align binding doc. There are not 'descriptions' at 'interrupt',
+which should match 'interrupt-names'. So IMX8MP dts have not match ABI,
+which defined by binding doc. So it is DTS implement wrong.
 
-You are right that we need to call pm_runtime_get_sync() for this reason.
+Frank
 
-However, the real question is rather; Under what circumstances do we
-really need to make a register access beyond this point?
-
-If the device is already runtime suspended, I am sure we could just
-leave it in that state without having to touch any of its registers.
-
-As I understand it, there are mainly two reasons why the device may be
-runtime resumed at this point:
-*) The runtime PM usage count has been bumped in
-sdhci_enable_sdio_irq(), since the SDIO irqs are enabled and it's
-likely that we will configure them for system wakeup too.
-*) The device has been used, but nothing really prevents it from being
-put into a low power state via the ->runtime_suspend() callback.
-
-> +        * 2, make sure the pm_runtime_force_suspend() in NOIRQ stage really
-> +        *    invoke its ->runtime_suspend callback.
-> +        */
-
-Rather than using the *noirq-callbacks, we should be able to call
-pm_runtime_force_suspend() from sdhci_esdhc_suspend(). And vice versa
-for sdhci_esdhc_resume().
-
-Although, according to my earlier comment above, we also need to take
-into account the SDIO irq. If it's being enabled for system wakeup, we
-must not put the controller into low power mode by calling
-pm_runtime_force_suspend(), otherwise we will not be able to deliver
-the wakeup, right?
-
-> +       pm_runtime_get_sync(dev);
+> regards,
+> Marc
 >
->         if ((imx_data->socdata->flags & ESDHC_FLAG_STATE_LOST_IN_LPMODE) &&
->                 (host->tuning_mode != SDHCI_TUNING_MODE_1)) {
-> @@ -1883,12 +1885,11 @@ static int sdhci_esdhc_suspend(struct device *dev)
->                 mmc_retune_needed(host->mmc);
->         }
->
-> -       if (host->tuning_mode != SDHCI_TUNING_MODE_3)
-> -               mmc_retune_needed(host->mmc);
-> -
-> -       ret = sdhci_suspend_host(host);
-> -       if (ret)
-> -               return ret;
-> +       if (device_may_wakeup(dev)) {
-> +               ret = sdhci_enable_irq_wakeups(host);
-> +               if (!ret)
-> +                       dev_warn(dev, "Failed to enable irq wakeup\n");
-> +       }
->
->         ret = pinctrl_pm_select_sleep_state(dev);
->         if (ret)
-> @@ -1904,22 +1905,18 @@ static int sdhci_esdhc_resume(struct device *dev)
->         struct sdhci_host *host = dev_get_drvdata(dev);
->         int ret;
->
-> -       ret = pinctrl_pm_select_default_state(dev);
-> +       ret = mmc_gpio_set_cd_wake(host->mmc, false);
->         if (ret)
->                 return ret;
->
->         /* re-initialize hw state in case it's lost in low power mode */
->         sdhci_esdhc_imx_hwinit(host);
-
-This looks like another special use-case. If I understand correctly,
-on some platforms some additional re-initialization of the controller
-may be needed at system resume.
-
-If you want to move towards using pm_runtime_force_suspend|resume(), I
-suggest moving the above call into the ->runtime_resume() callback. To
-allow the ->runtime_resume() callback to know when this
-re-initialization is needed, we can use a flag that we set here and
-clear in the ->runtime_resume() callback.
-
->
-> -       ret = sdhci_resume_host(host);
-> -       if (ret)
-> -               return ret;
-> -
-> -       if (host->mmc->caps2 & MMC_CAP2_CQE)
-> -               ret = cqhci_resume(host->mmc);
-> +       if (host->irq_wake_enabled)
-> +               sdhci_disable_irq_wakeups(host);
->
-> -       if (!ret)
-> -               ret = mmc_gpio_set_cd_wake(host->mmc, false);
-> +       pm_runtime_mark_last_busy(dev);
-> +       pm_runtime_put_autosuspend(dev);
->
->         return ret;
->  }
-> @@ -2011,6 +2008,8 @@ static const struct dev_pm_ops sdhci_esdhc_pmops = {
->         SET_SYSTEM_SLEEP_PM_OPS(sdhci_esdhc_suspend, sdhci_esdhc_resume)
->         SET_RUNTIME_PM_OPS(sdhci_esdhc_runtime_suspend,
->                                 sdhci_esdhc_runtime_resume, NULL)
-> +       SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
-> +                                       pm_runtime_force_resume)
->  };
->
->  static struct platform_driver sdhci_esdhc_imx_driver = {
 > --
-> 2.34.1
->
+> Pengutronix e.K.                 | Marc Kleine-Budde          |
+> Embedded Linux                   | https://www.pengutronix.de |
+> Vertretung Nürnberg              | Phone: +49-5121-206917-129 |
+> Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
-Kind regards
-Uffe
+
