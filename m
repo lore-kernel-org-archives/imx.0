@@ -1,118 +1,257 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545291D5CDE
-	for <imx@lists.linux.dev>; Wed, 16 Oct 2024 21:52:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69558A2D
+	for <imx@lists.linux.dev>; Thu, 17 Oct 2024 00:08:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729115556; cv=none; b=OxRQDKUraZQwbnb/7KlmURydDXWFnVXjk2a3Byk0xRvcXRJxLFj8p2N4vnfl7LShM1UiNWW9hjzELICuLeUW2MhGx5XrmcXtdDn+drR7260OY2shd4lOFuqAlBgk4UJ79cDTxZkxBVEs8/PjgdijSzY2yCCXQV6BYgommt1to9Q=
+	t=1729123714; cv=none; b=Yh4BB8prm06M/srMnFNx8fFvDM7rVpqu8cMdD6ZoYVRKl62O72W3CM417XevOgT+xpZfR7JhNaEtwg9PL3SVrQC+QenXncsgEwX3jl7yX4QMgQz74ho8JlWXg2QwtNIJZpr7Yw/xwqCQUSi9Mgy2LqbG/rEKmlWI6RdmtLRz+nE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729115556; c=relaxed/simple;
-	bh=3modV2VgvYS7hcnK3euWQGrdAXopfGcsu0hX01ZRK1c=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=S7eTtcoplkVDH9aXIJ3iKZLB2K5xu4bvsqdofI46v5HN1RRdi33PNAeWOHwNA9OxS7AQSZtzhtbHf7yd/SDnNM/2aGSnCcTCW0BN+v8rOzB/AWzx6jc07hRX+0eknJciWp6JtbWKFXfamfZY0A5LyRr+fr5NYZMyBgjwVBXMRfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1t1BwT-0003NK-R4
-	for imx@lists.linux.dev; Wed, 16 Oct 2024 23:52:29 +0200
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1t1BwP-002ORm-5a
-	for imx@lists.linux.dev; Wed, 16 Oct 2024 23:52:25 +0200
-Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 7424E3548EF
-	for <imx@lists.linux.dev>; Wed, 16 Oct 2024 21:52:24 +0000 (UTC)
-Received: from hardanger.blackshift.org (unknown [172.20.34.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 997B735488D;
-	Wed, 16 Oct 2024 21:52:20 +0000 (UTC)
-Received: from [172.20.34.65] (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 41ec2a27;
-	Wed, 16 Oct 2024 21:52:19 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Wed, 16 Oct 2024 23:51:57 +0200
-Subject: [PATCH net-next 09/13] net: fec: fec_enet_rx_queue(): use same
- signature as fec_enet_tx_queue()
+	s=arc-20240116; t=1729123714; c=relaxed/simple;
+	bh=ugld2ptKJkIXxGLt5xF7mAfO11dZs174Hiy68EzOqTs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TDaCyZoxbDxs3rRCFbefeMl5CUT09KgSWT/0GC0qHM1eQODjMeR1t6vYIiOr2xSYhIjlIKznzuo3aasIGfqoKILjTJUlybpLrJspgJqPxweRsjGFULbu5IYVX7NedkegiMidD+03zPHEzeQO/CBqwlbCF/F0VtobGkOF9KdtC/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=gbhveNLt; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="gbhveNLt"
+Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 5F63288CBB;
+	Thu, 17 Oct 2024 02:08:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1729123710;
+	bh=xq4RHi/GkbJxqGH66LreDilC6Uaf0zTZnXr6ftxjGmc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gbhveNLt8tWO0/PAVRU1RiG1Rnql6Qpuy7LfShNGM8fTD8geGxpezD78Y3SpeGF8l
+	 sg/GXsJ9piECDSlMnijZGSfCzIjzBPdu8NVkuza9QU40o+sc0RcsXXKJ5Pxl3QoURg
+	 PtnnqS4QRzNw2Kl0gBa1uFGOK6R1r6Vgvmc0623kQuW6ZKwL0KhE7adkwBlSiRQUQn
+	 DgikR2HF4flcH+e9js8bocY6lMxjMgFYmz4S4saqUg4GJsWCd1m3LbeQ4xCj18RiBF
+	 Ag0EHwkHX0sO8g6LNn1yIHs8UEVCXBs/q57c15XEcUDfwqDvl+mdEVFqBAMBex6mGo
+	 Zvoc7l53rAVYg==
+From: Marek Vasut <marex@denx.de>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Marek Vasut <marex@denx.de>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	kernel@dh-electronics.com,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH v2 02/12] ARM: dts: imx35: Align pin config nodes with bindings
+Date: Thu, 17 Oct 2024 02:06:48 +0200
+Message-ID: <20241017000801.149276-2-marex@denx.de>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241017000801.149276-1-marex@denx.de>
+References: <20241017000801.149276-1-marex@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241016-fec-cleanups-v1-9-de783bd15e6a@pengutronix.de>
-References: <20241016-fec-cleanups-v1-0-de783bd15e6a@pengutronix.de>
-In-Reply-To: <20241016-fec-cleanups-v1-0-de783bd15e6a@pengutronix.de>
-To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
- Clark Wang <xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>
-Cc: imx@lists.linux.dev, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, kernel@pengutronix.de, 
- Marc Kleine-Budde <mkl@pengutronix.de>
-X-Mailer: b4 0.15-dev-dedf8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1494; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=3modV2VgvYS7hcnK3euWQGrdAXopfGcsu0hX01ZRK1c=;
- b=owEBbQGS/pANAwAKASg4oj56LbxvAcsmYgBnEDWLMUCGJ7B2kmVE/4WclSRlu7dyPVT/hNfsr
- ocFFQgxc46JATMEAAEKAB0WIQRQQLqG4LYE3Sm8Pl8oOKI+ei28bwUCZxA1iwAKCRAoOKI+ei28
- b4LNB/41HL9fHYATnmHoSeZtgD0bcPKt5OCG3/ZY3CkYfgfed0ASifgg+x6sBSTdITW3XL3wn71
- 4svi7TKDHgKm0dwJKTyBI3SoJdCWvpQniQZbOKmW0rJ35vdeNhXikfju31MdteUMmSDNDnja4kZ
- CLtHdHTnkcoRT9v2pMC/Wt+m46OC+JqU/piQDe7z0CnlnFe6DkjBCbfPL2VDxmlxidizwpcIyys
- idH0dBroUK2n0g4+srD9iJUJDvJT2VmcgTHCUPb4hVKX3nOUID/oz/f4i9wM0ERbkXCEs+aXxSu
- OsSvUdmzxKRsmNeCzLls0wTqM8jIeM4mKB4HehoEoIWW1rqR
-X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
- fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-There are the functions fec_enet_rx_queue() and fec_enet_tx_queue(),
-one for handling the RX queue the other one handles the TX queue.
+Bindings expect pin configuration nodes in pinctrl to match certain
+naming and not be part of another fake node:
 
-However they don't have the same signature. To make the code more
-readable make the signature of fec_enet_rx_queue() identical to the
-signature of fec_enet_tx_queue().
+pinctrl@30330000: '...' does not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
 
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Drop the wrapping node and adjust the names to have "grp" prefix.
+Diff looks big but this should have no functional impact, use e.g.
+git show -w to view the diff.
+
+Signed-off-by: Marek Vasut <marex@denx.de>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Dong Aisheng <aisheng.dong@nxp.com>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Jacky Bai <ping.bai@nxp.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: devicetree@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: kernel@dh-electronics.com
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-gpio@vger.kernel.org
+---
+V2: New patch
+---
+ .../imx/imx35-eukrea-mbimxsd35-baseboard.dts  | 88 +++++++++----------
+ arch/arm/boot/dts/nxp/imx/imx35-pdk.dts       | 38 ++++----
+ 2 files changed, 61 insertions(+), 65 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index c8b2170735e599cd10492169ab32d0e20b28311b..eb26e869c026225194f4df66db145494408bfe8a 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1678,7 +1678,7 @@ fec_enet_run_xdp(struct fec_enet_private *fep, struct bpf_prog *prog,
-  * effectively tossing the packet.
-  */
- static int
--fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
-+fec_enet_rx_queue(struct net_device *ndev, u16 queue_id, int budget)
- {
- 	struct fec_enet_private *fep = netdev_priv(ndev);
- 	struct fec_enet_priv_rx_q *rxq;
-@@ -1899,7 +1899,7 @@ static int fec_enet_rx(struct net_device *ndev, int budget)
+diff --git a/arch/arm/boot/dts/nxp/imx/imx35-eukrea-mbimxsd35-baseboard.dts b/arch/arm/boot/dts/nxp/imx/imx35-eukrea-mbimxsd35-baseboard.dts
+index 7f4f812b08111..19d907fa1c330 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx35-eukrea-mbimxsd35-baseboard.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx35-eukrea-mbimxsd35-baseboard.dts
+@@ -69,57 +69,55 @@ tlv320aic23: codec@1a {
+ };
  
- 	/* Make sure that AVB queues are processed first. */
- 	for (i = fep->num_rx_queues - 1; i >= 0; i--)
--		done += fec_enet_rx_queue(ndev, budget - done, i);
-+		done += fec_enet_rx_queue(ndev, i, budget - done);
+ &iomuxc {
+-	imx35-eukrea {
+-		pinctrl_audmux: audmuxgrp {
+-			fsl,pins = <
+-				MX35_PAD_STXFS4__AUDMUX_AUD4_TXFS	0x80000000
+-				MX35_PAD_STXD4__AUDMUX_AUD4_TXD		0x80000000
+-				MX35_PAD_SRXD4__AUDMUX_AUD4_RXD		0x80000000
+-				MX35_PAD_SCK4__AUDMUX_AUD4_TXC		0x80000000
+-			>;
+-		};
++	pinctrl_audmux: audmuxgrp {
++		fsl,pins = <
++			MX35_PAD_STXFS4__AUDMUX_AUD4_TXFS	0x80000000
++			MX35_PAD_STXD4__AUDMUX_AUD4_TXD		0x80000000
++			MX35_PAD_SRXD4__AUDMUX_AUD4_RXD		0x80000000
++			MX35_PAD_SCK4__AUDMUX_AUD4_TXC		0x80000000
++		>;
++	};
  
- 	return done;
- }
-
+-		pinctrl_bp1: bp1grp {
+-			fsl,pins = <MX35_PAD_LD19__GPIO3_25  0x80000000>;
+-		};
++	pinctrl_bp1: bp1grp {
++		fsl,pins = <MX35_PAD_LD19__GPIO3_25  0x80000000>;
++	};
+ 
+-		pinctrl_esdhc1: esdhc1grp {
+-			fsl,pins = <
+-				MX35_PAD_SD1_CMD__ESDHC1_CMD		0x80000000
+-				MX35_PAD_SD1_CLK__ESDHC1_CLK		0x80000000
+-				MX35_PAD_SD1_DATA0__ESDHC1_DAT0		0x80000000
+-				MX35_PAD_SD1_DATA1__ESDHC1_DAT1		0x80000000
+-				MX35_PAD_SD1_DATA2__ESDHC1_DAT2		0x80000000
+-				MX35_PAD_SD1_DATA3__ESDHC1_DAT3		0x80000000
+-				MX35_PAD_LD18__GPIO3_24			0x80000000 /* CD */
+-			>;
+-		};
++	pinctrl_esdhc1: esdhc1grp {
++		fsl,pins = <
++			MX35_PAD_SD1_CMD__ESDHC1_CMD		0x80000000
++			MX35_PAD_SD1_CLK__ESDHC1_CLK		0x80000000
++			MX35_PAD_SD1_DATA0__ESDHC1_DAT0		0x80000000
++			MX35_PAD_SD1_DATA1__ESDHC1_DAT1		0x80000000
++			MX35_PAD_SD1_DATA2__ESDHC1_DAT2		0x80000000
++			MX35_PAD_SD1_DATA3__ESDHC1_DAT3		0x80000000
++			MX35_PAD_LD18__GPIO3_24			0x80000000 /* CD */
++		>;
++	};
+ 
+-		pinctrl_led1: led1grp {
+-			fsl,pins = <MX35_PAD_LD23__GPIO3_29  0x80000000>;
+-		};
++	pinctrl_led1: led1grp {
++		fsl,pins = <MX35_PAD_LD23__GPIO3_29  0x80000000>;
++	};
+ 
+-		pinctrl_reg_lcd_3v3: reg-lcd-3v3 {
+-			fsl,pins = <MX35_PAD_D3_CLS__GPIO1_4 0x80000000>;
+-		};
++	pinctrl_reg_lcd_3v3: reg-lcd-3v3 {
++		fsl,pins = <MX35_PAD_D3_CLS__GPIO1_4 0x80000000>;
++	};
+ 
+-		pinctrl_uart1: uart1grp {
+-			fsl,pins = <
+-				MX35_PAD_TXD1__UART1_TXD_MUX		0x1c5
+-				MX35_PAD_RXD1__UART1_RXD_MUX		0x1c5
+-				MX35_PAD_CTS1__UART1_CTS		0x1c5
+-				MX35_PAD_RTS1__UART1_RTS		0x1c5
+-			>;
+-		};
++	pinctrl_uart1: uart1grp {
++		fsl,pins = <
++			MX35_PAD_TXD1__UART1_TXD_MUX		0x1c5
++			MX35_PAD_RXD1__UART1_RXD_MUX		0x1c5
++			MX35_PAD_CTS1__UART1_CTS		0x1c5
++			MX35_PAD_RTS1__UART1_RTS		0x1c5
++		>;
++	};
+ 
+-		pinctrl_uart2: uart2grp {
+-			fsl,pins = <
+-				MX35_PAD_RXD2__UART2_RXD_MUX		0x1c5
+-				MX35_PAD_TXD2__UART2_TXD_MUX		0x1c5
+-				MX35_PAD_RTS2__UART2_RTS		0x1c5
+-				MX35_PAD_CTS2__UART2_CTS		0x1c5
+-			>;
+-		};
++	pinctrl_uart2: uart2grp {
++		fsl,pins = <
++			MX35_PAD_RXD2__UART2_RXD_MUX		0x1c5
++			MX35_PAD_TXD2__UART2_TXD_MUX		0x1c5
++			MX35_PAD_RTS2__UART2_RTS		0x1c5
++			MX35_PAD_CTS2__UART2_CTS		0x1c5
++		>;
+ 	};
+ };
+ 
+diff --git a/arch/arm/boot/dts/nxp/imx/imx35-pdk.dts b/arch/arm/boot/dts/nxp/imx/imx35-pdk.dts
+index ddce0a844758b..a2baf8202f94e 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx35-pdk.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx35-pdk.dts
+@@ -24,26 +24,24 @@ &esdhc1 {
+ };
+ 
+ &iomuxc {
+-	imx35-pdk {
+-		pinctrl_esdhc1: esdhc1grp {
+-			fsl,pins = <
+-				MX35_PAD_SD1_CMD__ESDHC1_CMD		0x80000000
+-				MX35_PAD_SD1_CLK__ESDHC1_CLK		0x80000000
+-				MX35_PAD_SD1_DATA0__ESDHC1_DAT0		0x80000000
+-				MX35_PAD_SD1_DATA1__ESDHC1_DAT1		0x80000000
+-				MX35_PAD_SD1_DATA2__ESDHC1_DAT2		0x80000000
+-				MX35_PAD_SD1_DATA3__ESDHC1_DAT3		0x80000000
+-			>;
+-		};
+-
+-		pinctrl_uart1: uart1grp {
+-			fsl,pins = <
+-				MX35_PAD_TXD1__UART1_TXD_MUX		0x1c5
+-				MX35_PAD_RXD1__UART1_RXD_MUX		0x1c5
+-				MX35_PAD_CTS1__UART1_CTS		0x1c5
+-				MX35_PAD_RTS1__UART1_RTS		0x1c5
+-			>;
+-		};
++	pinctrl_esdhc1: esdhc1grp {
++		fsl,pins = <
++			MX35_PAD_SD1_CMD__ESDHC1_CMD		0x80000000
++			MX35_PAD_SD1_CLK__ESDHC1_CLK		0x80000000
++			MX35_PAD_SD1_DATA0__ESDHC1_DAT0		0x80000000
++			MX35_PAD_SD1_DATA1__ESDHC1_DAT1		0x80000000
++			MX35_PAD_SD1_DATA2__ESDHC1_DAT2		0x80000000
++			MX35_PAD_SD1_DATA3__ESDHC1_DAT3		0x80000000
++		>;
++	};
++
++	pinctrl_uart1: uart1grp {
++		fsl,pins = <
++			MX35_PAD_TXD1__UART1_TXD_MUX		0x1c5
++			MX35_PAD_RXD1__UART1_RXD_MUX		0x1c5
++			MX35_PAD_CTS1__UART1_CTS		0x1c5
++			MX35_PAD_RTS1__UART1_RTS		0x1c5
++		>;
+ 	};
+ };
+ 
 -- 
 2.45.2
-
 
