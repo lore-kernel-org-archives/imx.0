@@ -1,146 +1,154 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0DB1D517D
-	for <imx@lists.linux.dev>; Thu, 17 Oct 2024 12:18:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B03A1DD0DB;
+	Thu, 17 Oct 2024 12:20:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729167505; cv=none; b=jpe5y+DC279GTBW5SJkfIVAWTLImhIYnWhy3iP1Gzw/juyE34LFCeYpRRC7NWACO2En8gXjx54d0yaCOLTZaDkUArG4+I7l2MEObUkC2FYCB4xJZEDfGzaA90uMKs+Ugs1s1XJBS6dLQxvJQdeu5Ewdolha+q8g6WzGpUrEXh08=
+	t=1729167629; cv=none; b=GD8TRXsXejgHb0t0GnN/O7p7cFdC2mBKfBTTQqXDi4eR7AynudF2xzAvpD/StCf/WRRBEYdWPjkaH2Mh05yGcQQjYCM3WZpY7S/wLrcCshU2dvNG49kNwKpAInsNfYWmngg547n9Bs2zyS6kMNKh77woss/FqUd29H08pFNQcbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729167505; c=relaxed/simple;
-	bh=gt8gvpe6J2AdHwJ+LUNpkrX8JWv+1a66G9T6SpCOtLA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gdmh8vOlhq9CRN+95/XNVzzHRzFh82MnARTtUuhc5B9FXQg1oOylvkPvGX4zAKCn5W2Ao89x/azofaZmJDINSFMSxmaYy3rBCgW6dTCgn1hTirOeJr2u4kddMttM++7nUEkNlIRqJti8Lq4w0H7yO/xcWTxwY/Hy72zEUm1MHNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=q74oSr2O; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1729167629; c=relaxed/simple;
+	bh=UzEC933QNlyBQvfZIOIfz6b58fWhPD60XcUGJX9oNa8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KvZNna0bnN6tLHwiYekGaD9AMkeBd2VxZKU9gGuNBjlCLFxXEfCX37NUyDqaG45Vh3FAcNBlALAU4TnnBze1GP0aoNPHcQwojeEfh9y5cQLrLFVsmdD5NcFG2EC4ff83zHDy8w/qQMJiYDK0/Aa7s9ObwGi0gGJJIHoE7CAk3Gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Uv57JiCx; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="q74oSr2O"
-Received: from wsk (85-222-111-42.dynamic.chello.pl [85.222.111.42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	(Authenticated sender: lukma@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id DEEC288B0C;
-	Thu, 17 Oct 2024 14:18:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1729167500;
-	bh=pVUgWkPelntpCEb7Gok5hnVy4nS3JZLLW/8rBG0KN2I=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=q74oSr2OPreCTa+OV9WA3F1v4onZTttSfbgIuzwylZRRdDkFpXYw2no75iEuMs2ZN
-	 6mBoYNmLP/tn6SAmATsJv7KfGXQF0x2pAGB+Q0rWVS99YU4/FmpFBBDdhyIOFy1pe/
-	 x1pra9iI57+Gkn0OPTKDtEwUCXYs0B7ojs318dRTk1xtOvVCXmK1hRs0N/znVLgUuZ
-	 o/JZwZGiD9ffzqfCfl/Qt9IVTIYDG1JRzfu4uuHu+37bIdK7dVvMkHZvncZXVr/N8c
-	 Wp46fVG/IpqzakpfsPm7he3HXoClJ4DmlQmUUmfBWHzYQuwFzzvDjUeFCAYeIMfYYd
-	 SC1P+5j0M6Mlg==
-Date: Thu, 17 Oct 2024 14:18:18 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Stefan Wahren <wahrenst@gmx.net>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 2/2] ARM: dts: mxs: Add descriptions for imx287 based
- btt3-[012] devices
-Message-ID: <20241017141818.2cf462ce@wsk>
-In-Reply-To: <CAOMZO5DkmU4C0YQoVwCbHTBo=DTRGcz+9K1qHY=3V29eWAfEKQ@mail.gmail.com>
-References: <20241010081719.2993296-1-lukma@denx.de>
-	<20241010081719.2993296-2-lukma@denx.de>
-	<20241017103534.259584f6@wsk>
-	<CAOMZO5DkmU4C0YQoVwCbHTBo=DTRGcz+9K1qHY=3V29eWAfEKQ@mail.gmail.com>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Uv57JiCx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729167627; x=1760703627;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=UzEC933QNlyBQvfZIOIfz6b58fWhPD60XcUGJX9oNa8=;
+  b=Uv57JiCx79KF7o34poMKYKSu+hNArpZ9oTB70oNtFYdWQkRR7rr9tvDB
+   ybdTRDcjxaOk/17GXeuyXar0+52jWrWRh7cVkH+CrBRcsoi6C8AIUfYG7
+   Xe9YN0ThkMCxB/PbOzaFZRfyOASxZDgIJOeTqkAWYJpmsrt4+NzM0KCFh
+   9jOzb+CFPezp54JpzUreM3BT8J12aYtNXzoDY+qt0ETesHaW+V2w2yHJM
+   zQxcQziDg+Zn4IH37tZ6v0jPajLPqedIjAmO5nSCpI6N3EwTKz8DzkSRe
+   OqmauI07IHSZvxbBwGeglvKv/0NzKvJpdEfDNZvk3mLvLbQXjtnTHwe4k
+   Q==;
+X-CSE-ConnectionGUID: EIRuC9TEQkG2+7Iz7PjB5Q==
+X-CSE-MsgGUID: FRS7/RL5TMSxUclpMD6Kaw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28440398"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="28440398"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2024 05:20:26 -0700
+X-CSE-ConnectionGUID: rLJKg05STUGFOV8gcxCyLQ==
+X-CSE-MsgGUID: AB2sSXubSny3l8h1ZROPHw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,210,1725346800"; 
+   d="scan'208";a="115966099"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 17 Oct 2024 05:20:22 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t1PUJ-000MIh-2I;
+	Thu, 17 Oct 2024 12:20:19 +0000
+Date: Thu, 17 Oct 2024 20:20:04 +0800
+From: kernel test robot <lkp@intel.com>
+To: Pankaj Gupta <pankaj.gupta@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v9 5/5] firmware: imx: adds miscdev
+Message-ID: <202410172012.K2lpYYqD-lkp@intel.com>
+References: <20241016-imx-se-if-v9-5-fd8fa0c04eab@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/JwpjArDAe6QUo9hHvQoT_3b";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241016-imx-se-if-v9-5-fd8fa0c04eab@nxp.com>
 
---Sig_/JwpjArDAe6QUo9hHvQoT_3b
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Hi Pankaj,
 
-Hi Fabio,
+kernel test robot noticed the following build errors:
 
-> Hi Lukasz,
->=20
-> On Thu, Oct 17, 2024 at 5:35=E2=80=AFAM Lukasz Majewski <lukma@denx.de> w=
-rote:
->=20
-> > Stefan, do you have comments for this version? =20
->=20
-> Rob's bot reported new warnings after applying your series:
->=20
->         from schema $id:
-> http://devicetree.org/schemas/display/panel/panel-dpi.yaml#
-> arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: panel: compatible:
-> ['panel-dpi'] is too short
->         from schema $id:
-> http://devicetree.org/schemas/display/panel/panel-dpi.yaml#
-> arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: panel: compatible:
-> ['panel-dpi'] is too short
->         from schema $id:
-> http://devicetree.org/schemas/display/panel/panel-dpi.yaml#
->=20
-> Please address it.
+[auto build test ERROR on 9852d85ec9d492ebef56dc5f229416c925758edc]
 
-The problem is that I don't know the name of the display itself
-(different vendors) [*].
+url:    https://github.com/intel-lab-lkp/linux/commits/Pankaj-Gupta/Documentation-firmware-add-imx-se-to-other_interfaces/20241017-002539
+base:   9852d85ec9d492ebef56dc5f229416c925758edc
+patch link:    https://lore.kernel.org/r/20241016-imx-se-if-v9-5-fd8fa0c04eab%40nxp.com
+patch subject: [PATCH v9 5/5] firmware: imx: adds miscdev
+config: x86_64-buildonly-randconfig-002-20241017 (https://download.01.org/0day-ci/archive/20241017/202410172012.K2lpYYqD-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241017/202410172012.K2lpYYqD-lkp@intel.com/reproduce)
 
-Schema requires following syntax:
-arch/arm/boot/dts/ti/omap/am437x-gp-evm.dts:89:         compatible =3D
-"osddisplays,osd070t1718-19ts", "panel-dpi";
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410172012.K2lpYYqD-lkp@intel.com/
 
-arch/arm/boot/dts/ti/omap/omap3-thunder.dts:86:         compatible =3D
-"samsung,lte430wq-f0c", "panel-dpi";
+All errors (new ones prefixed by >>):
 
-which require two compatible entries - one specific type of the display
-(e.g. "samsung,lte430wq-f0c") and the second one generic ("panel-dpi").
+   In file included from <command-line>:
+>> ./usr/include/linux/se_ioctl.h:13:9: error: unknown type name 'u32'
+      13 |         u32 length;
+         |         ^~~
+   ./usr/include/linux/se_ioctl.h:14:9: error: unknown type name 'u32'
+      14 |         u32 flags;
+         |         ^~~
+>> ./usr/include/linux/se_ioctl.h:15:9: error: unknown type name 'u64'
+      15 |         u64 ele_addr;
+         |         ^~~
+   ./usr/include/linux/se_ioctl.h:19:9: error: unknown type name 'u32'
+      19 |         u32 base_offset;
+         |         ^~~
+   ./usr/include/linux/se_ioctl.h:20:9: error: unknown type name 'u32'
+      20 |         u32 size;
+         |         ^~~
+>> ./usr/include/linux/se_ioctl.h:24:9: error: unknown type name 'u8'
+      24 |         u8 se_if_id;
+         |         ^~
+   ./usr/include/linux/se_ioctl.h:25:9: error: unknown type name 'u8'
+      25 |         u8 interrupt_idx;
+         |         ^~
+   ./usr/include/linux/se_ioctl.h:26:9: error: unknown type name 'u8'
+      26 |         u8 tz;
+         |         ^~
+   ./usr/include/linux/se_ioctl.h:27:9: error: unknown type name 'u8'
+      27 |         u8 did;
+         |         ^~
+   ./usr/include/linux/se_ioctl.h:28:9: error: unknown type name 'u8'
+      28 |         u8 cmd_tag;
+         |         ^~
+   ./usr/include/linux/se_ioctl.h:29:9: error: unknown type name 'u8'
+      29 |         u8 rsp_tag;
+         |         ^~
+   ./usr/include/linux/se_ioctl.h:30:9: error: unknown type name 'u8'
+      30 |         u8 success_tag;
+         |         ^~
+   ./usr/include/linux/se_ioctl.h:31:9: error: unknown type name 'u8'
+      31 |         u8 base_api_ver;
+         |         ^~
+   ./usr/include/linux/se_ioctl.h:32:9: error: unknown type name 'u8'
+      32 |         u8 fw_api_ver;
+         |         ^~
+   ./usr/include/linux/se_ioctl.h:36:9: error: unknown type name 'u32'
+      36 |         u32 *tx_buf;
+         |         ^~~
+   ./usr/include/linux/se_ioctl.h:38:9: error: unknown type name 'u32'
+      38 |         u32 *rx_buf;
+         |         ^~~
+>> ./usr/include/linux/se_ioctl.h:43:9: error: unknown type name 'u16'
+      43 |         u16 soc_id;
+         |         ^~~
+   ./usr/include/linux/se_ioctl.h:44:9: error: unknown type name 'u16'
+      44 |         u16 soc_rev;
+         |         ^~~
 
-As I don't know what is the manufacturer of it - I can add:
-
- compatible =3D "foo", "panel-dpi";
-
-and then Schema and Rob's scripts would be happy...
-
-
-Another option is to adjust the
-Documentation/devicetree/bindings/display/panel/panel-dpi.yaml to allow
-only single entry.
-
-
-[*] maybe I can obtain the info regarding at least one vendor ...
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/JwpjArDAe6QUo9hHvQoT_3b
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmcRAIoACgkQAR8vZIA0
-zr1NHwf9EZhOkrZrNMYoRDxZ9kwVP/qQ8IcrI4dlPE+B2zHqZNUIecNWsoTdeasW
-83zprstpywZTQvmkC5Np4qFQTNvFsdDPFXK9IgEnoJnHGlqFWF2YETLRFmE73cCK
-wzXpipCZcM9N14gByMrctugXelTRPos6Wxfg5JTBCqi/6MZKVM4I0kf4xlbxWqO6
-68uqCSF7eAfzsWrkC8+JRQm5GNuJ8mnMWrsbaq82i4t6wmYFyMByobXPO3D9LAZj
-7i7jEknC1TrGAvF9x2c6/I/5X1oCUylWKe85xnHr0MAokKV91TWOiJHEv13y+DOj
-lTDYew5AUH05crsTgunWSE8645E07A==
-=x9MY
------END PGP SIGNATURE-----
-
---Sig_/JwpjArDAe6QUo9hHvQoT_3b--
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
