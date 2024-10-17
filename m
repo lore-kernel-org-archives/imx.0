@@ -1,123 +1,101 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD221953B0
-	for <imx@lists.linux.dev>; Thu, 17 Oct 2024 06:55:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C2716F8F5
+	for <imx@lists.linux.dev>; Thu, 17 Oct 2024 06:56:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729148128; cv=none; b=KDb8iUt9QdRvQp1hS2T6/LGIMxWQ4uvOmyLa80OhWy+aIxHaALGZUKPMoKafAFye0m95eSCUxJG1tNnv8YuDRSNjHa3phrO331cFKqSufuRdWI/kf7bqMY8nisjwZPun5kY9Ejaqg6pFef6pU2W6WQRJTZ+aBUOIje6AjW6Ed/I=
+	t=1729148178; cv=none; b=Q9o4T4BDiOYe3uxf+0mN5rkSutPyXl4NcaFBeP6Mk1wiUTnhZnVaATHojMXduS1X974olsUi7/as3XnAXnAk4kv0KmO+AmO4Gl8Qskfw2hJ3tu486rY0ch1cR4Dk9/NXXwV7/rbGKnMqnW1vu3OoQnkgihDXl5UgbGgrNQ2S9EE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729148128; c=relaxed/simple;
-	bh=6YD5Cpi+w5UzlJe8jXh9Eokm8yqHtO7+XpX7JpvbRrc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PLKZx3BliIitXb0JVVuBmeFgid683zaEMWaGMOGLj/q6Vu2CyVa3fpSyAsORI6PmmmZb/di4bE++ry6B8XUR3pMBkvax2iQgbVgdRM8JhQfE+l7hKEs43E8D+nKangEdetONARkYDpB87PcFTs/znjrxCLkKtByN1WMjPiG4jgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=cfqSH6i1; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=SSQdTJ+r reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="cfqSH6i1";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="SSQdTJ+r"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1729148124; x=1760684124;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=gvM3ylQqJpV87mr3f63xQKKWoegM6/qRcERu3MpW1Rk=;
-  b=cfqSH6i1leUEtKU5hL8LbbqwL5ac155mCx44l6Z8DKjIqGpTnFfeO/xp
-   WSwAPymYVWuhXNne5HhxfOVNPGTrNHqKflYlrtJwjRzIRv9ZCumLuxjfs
-   DEvH/WWEc6PFPrGbeL0ZFwz/fYF/1bRtvdZrHHccPZSkoDfPloI4PRInx
-   70GfPOeScBtskGKzs4QAI/gEbh0Zb0ckFu8bMe8AI1mF1s+ti+VtbS1qg
-   V7w2KweUPraE5TFKNQWtK3FBp8oUGg3xkcUZZGsUX3jGOExOtyYglVbiX
-   chJWtaKrTPs5by5MajnnIOqGzY4DZiHzyVt1fFPivEkK/J6PQpuVyMlvf
-   g==;
-X-CSE-ConnectionGUID: Ymo5EWPfRfS0qgAvOdrI9w==
-X-CSE-MsgGUID: PIfOfzyLRiedtZbMLCiKKA==
-X-IronPort-AV: E=Sophos;i="6.11,210,1725314400"; 
-   d="scan'208";a="39509098"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 17 Oct 2024 08:55:21 +0200
-X-CheckPoint: {6710B4D9-27-21611FC3-DAD22B0C}
-X-MAIL-CPID: 9CBEAB64C40454D6C197246A96EC91C0_4
-X-Control-Analysis: str=0001.0A682F1A.6710B4D8.007E,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9072A167B0B;
-	Thu, 17 Oct 2024 08:55:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1729148117;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=gvM3ylQqJpV87mr3f63xQKKWoegM6/qRcERu3MpW1Rk=;
-	b=SSQdTJ+rAYW1U9hBi0ygz/AEsbS/rgh/gaUBxWc/bdQZb7J5JwvIHf36JH4WHcgrYuu50l
-	WOOCzipZg0OU8992x85QtsNVENnlM4YLGL2zq4UVTBNpT/tWDfSGSyqO6lPNuMUi7tNt87
-	OWamhhixbPeRTkVO+ky3iTcVs02LJSG9h7zlNKPh+yyhCHUPyUr4k4VgWRjLch6gjz+7HN
-	nbnGjnENnc5krzrJOzZFOm3CBsFe3yC3ZqDweYtHeYVg+abDPcxmrYk/Q/FGLt3U9g1Dlz
-	U0xTOdby7KPXPqj1QH2/M9QpVy4o1XUX9ka9uRF666jZinu2Gvc3pvOWwlBnQw==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: linux-arm-kernel@lists.infradead.org, Marek Vasut <marex@denx.de>
-Cc: Marek Vasut <marex@denx.de>, Conor Dooley <conor+dt@kernel.org>, Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, Jacky Bai <ping.bai@nxp.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org, imx@lists.linux.dev, kernel@dh-electronics.com, linux-gpio@vger.kernel.org
-Subject: Re: [PATCH v2 07/12] ARM: dts: imx6q: Align pin config nodes with bindings
-Date: Thu, 17 Oct 2024 08:55:15 +0200
-Message-ID: <23695903.6Emhk5qWAg@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20241017000801.149276-7-marex@denx.de>
-References: <20241017000801.149276-1-marex@denx.de> <20241017000801.149276-7-marex@denx.de>
+	s=arc-20240116; t=1729148178; c=relaxed/simple;
+	bh=2LXFTfPKVtP+wXDiw37jeu5qX7y5o0JZRZk1/lZryKA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rJiGx6sbvVhtM93Du6f0JozpxOKAv9Vq6Kt3ySBDSDN7P9HRsi5C4ybZVHBo//clCCZSXhqHxQFZ4sYP9wxRD5JFdFnPmjVJOfHuTXTFFIUJ09ytYRG0ZoqfQybUFmy+1w9EsLE2Y4IEiDTWN94FS8jQK3nMJ+0JwxDC1Og6rLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1t1KQZ-0008Qx-Q2; Thu, 17 Oct 2024 08:56:07 +0200
+Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1t1KQZ-002U7v-A0; Thu, 17 Oct 2024 08:56:07 +0200
+Received: from pengutronix.de (pd9e595f8.dip0.t-ipconnect.de [217.229.149.248])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 04DA6354D79;
+	Thu, 17 Oct 2024 06:56:07 +0000 (UTC)
+Date: Thu, 17 Oct 2024 08:56:06 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
+	Clark Wang <xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, imx@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH net-next 05/13] net: fec: fec_restart(): introduce a
+ define for FEC_ECR_SPEED
+Message-ID: <20241017-elegant-smilodon-of-fascination-0ccf4c-mkl@pengutronix.de>
+References: <20241016-fec-cleanups-v1-0-de783bd15e6a@pengutronix.de>
+ <20241016-fec-cleanups-v1-5-de783bd15e6a@pengutronix.de>
+ <ZxBw8Jph6mPW8ExQ@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="fzhhiooh6gpdajeh"
+Content-Disposition: inline
+In-Reply-To: <ZxBw8Jph6mPW8ExQ@lizhi-Precision-Tower-5810>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
+
+
+--fzhhiooh6gpdajeh
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Marek,
-
-Am Donnerstag, 17. Oktober 2024, 02:06:53 CEST schrieb Marek Vasut:
-> Bindings expect pin configuration nodes in pinctrl to match certain
-> naming and not be part of another fake node:
+On 16.10.2024 22:05:36, Frank Li wrote:
+> On Wed, Oct 16, 2024 at 11:51:53PM +0200, Marc Kleine-Budde wrote:
+> > Instead of open coding the bit mask to configure for 1000 MBit/s add a
+> > define for it.
 >=20
-> pinctrl@30330000: '...' does not match any of the regexes: 'grp$', 'pinct=
-rl-[0-9]+'
->=20
-> Drop the wrapping node and adjust the names to have "grp" prefix.
-> Diff looks big but this should have no functional impact, use e.g.
-> git show -w to view the diff.
->=20
-> Signed-off-by: Marek Vasut <marex@denx.de>
-> ---
-> Cc: Conor Dooley <conor+dt@kernel.org>
-> Cc: Dong Aisheng <aisheng.dong@nxp.com>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: Jacky Bai <ping.bai@nxp.com>
-> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> Cc: Linus Walleij <linus.walleij@linaro.org>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Rob Herring <robh@kernel.org>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: devicetree@vger.kernel.org
-> Cc: imx@lists.linux.dev
-> Cc: kernel@dh-electronics.com
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-gpio@vger.kernel.org
-> ---
-> V2: New patch
-> ---
->  arch/arm/boot/dts/nxp/imx/imx6q-ba16.dtsi     |   2 +-
->  .../boot/dts/nxp/imx/imx6q-dmo-edmqmx6.dts    | 232 +++++++++---------
->  arch/arm/boot/dts/nxp/imx/imx6q-gk802.dts     |  92 ++++---
->  arch/arm/boot/dts/nxp/imx/imx6q-h100.dts      | 200 ++++++++-------
->  arch/arm/boot/dts/nxp/imx/imx6q-logicpd.dts   |   4 +-
->  arch/arm/boot/dts/nxp/imx/imx6q-mba6.dtsi     |   2 +-
+> Replace "1 << 5" for configuring 1000 MBit/s with a defined constant to
+> improve code readability and maintainability.
 
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com> # imx6q-mba6
+Fixed,
+Marc
 
-Thanks and best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
+--fzhhiooh6gpdajeh
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmcQtQQACgkQKDiiPnot
+vG/HNQf+Ibh78Ah8wakBm9pOmoQ66lmfz/spL7rOeMDtANUon1MNOBbVlRku0aFs
+nS35Nbc2rOXw5gkqUO/3xS06xPWMD0I+JSn0kS3K5kAVI1rWJxNYZ1aeFh6ErdYR
+fL7WdYCEgwHSFx7wmTpUCRNr071qf58rYemuflT5sk6pj5JTQ5grjEXj/nKaPZSq
+R1p+NbYKuN2v7rUxaxSBj5XOztiHPaPOqFlpn3Gi96291q2OqssZS0rrI0EWz8ST
+tL7Y9Ao2qLCARsA1NDwFBGCBc8YUwE6amp8mpZu1yynn2bkAZm0AJz5vlmreQZFv
+Jhgo7W5sSbLW/dR7iwg8t/nobYNcBA==
+=ury5
+-----END PGP SIGNATURE-----
+
+--fzhhiooh6gpdajeh--
