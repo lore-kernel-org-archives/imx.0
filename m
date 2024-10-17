@@ -1,158 +1,143 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8A1155A24
-	for <imx@lists.linux.dev>; Thu, 17 Oct 2024 07:09:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E775139FE5
+	for <imx@lists.linux.dev>; Thu, 17 Oct 2024 07:41:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729148966; cv=none; b=iQ3AwSczy0Evg3MJzeWJK9rPdxaTuW/B2LhiMmeaZfFaqgd9l2WR40FwEdssNKzcll3V9r3ONhVp3hOUnrvZlzSwQyPyc+MkE1oq3tjf9DSJjVI3z/a7Wo4Ilf6XYZufj/EPaSv+fNLIOjHTTlte/pyQQSz7O7aaNJPvDlFQoOA=
+	t=1729150869; cv=none; b=GIfYf8FzaSzsoj08EKxTrg2VhiP3h9hWPHfL6U7uOIjOKw5Y+OvrmWAeC/gbtxy5qmAUIGe2uPAxSqdML0nl9MjleU52upw3c5ipIRPb78RVQUFCBRvfkZXZfSsB0jJKLyKaadP7aTJ1FESBjVyFOGFPlbTilImS4gk3ONGmF8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729148966; c=relaxed/simple;
-	bh=XBzZoUWwSEObEugZNOrcy6598cbZcniaUW2TeBRHQQQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LEx8JtEUiRrY0grurv4zq3fMHZSqOWgfNY+FBadmFpFL3oZXGrrY/3lgM0Mb8lhH7nQPFWTHcyvuOeKWxIv8IRP1acyj9VVaU1CGED7W38Cp+ppHcHX6SQfh+79jyQCOJt9m0A6hqZy2xtWQELEgQfeoX03Iy3DERb+SaEbRnL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1t1KdJ-0001gV-BX; Thu, 17 Oct 2024 09:09:17 +0200
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1t1KdI-002UGJ-FV; Thu, 17 Oct 2024 09:09:16 +0200
-Received: from pengutronix.de (pd9e595f8.dip0.t-ipconnect.de [217.229.149.248])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 21AF4354DC9;
-	Thu, 17 Oct 2024 07:09:16 +0000 (UTC)
-Date: Thu, 17 Oct 2024 09:09:15 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: Shenwei Wang <shenwei.wang@nxp.com>, 
-	Clark Wang <xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kernel@pengutronix.de" <kernel@pengutronix.de>
-Subject: Re: RE: [PATCH net-next 13/13] net: fec: fec_enet_rx_queue(): factor
- out VLAN handling into separate function fec_enet_rx_vlan()
-Message-ID: <20241017-fox-of-awesome-blizzard-544df5-mkl@pengutronix.de>
-References: <20241016-fec-cleanups-v1-0-de783bd15e6a@pengutronix.de>
- <20241016-fec-cleanups-v1-13-de783bd15e6a@pengutronix.de>
- <PAXPR04MB85104DCA7DED14565615E4A588472@PAXPR04MB8510.eurprd04.prod.outlook.com>
+	s=arc-20240116; t=1729150869; c=relaxed/simple;
+	bh=lxbhKpjIWxwh6qu8TuuaTXt/ctrJ8zonrWfRF9sT0NA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SL9sJsJa2R3gFhf5OOnZ/oNYAFKqgXgPV22TGAeEgpybKTxdbgmssfAay4f0Uq5Q4qDWcwpvipvbFvuPLzaSff8akFXfvDQIMPDZttH1SosgUC3lkvDM0guzD0//knM4cqcB5T+KaUEqhVQ1u5daTnxlMTeq8ljEsnUghk4f8xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=NR7QYgU3; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="NR7QYgU3"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id BCF9C20004;
+	Thu, 17 Oct 2024 07:41:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1729150864;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=f5XJitMQNSPDDFsYL9nvyuekdXE449S3Jl1KSVsNvJU=;
+	b=NR7QYgU36NuU0PcIfex/TStyG0H14UWJIdJ8/bARkJ53gVAZ7r7l2nt/M9/7bOBkW+N3Ah
+	CSqgBjw3lJ8YmTf+sbbKHsaOH6h8HEClBch/7KieOLmoTl/gAxhqej6BiiJLmurdSE/UFV
+	UXcnPzUy3RM7m0wZUOSd7OzoQXgpCgBYdLUOwqYk7/XC4JS6dMf5hL4yA+RVUC4heHVoJy
+	URi+mo60N49Uaoo8iAogijQxg7gDDoGVwV2g+CfhjJkc/m8hyAk+ep//IuSe7H2QRZ+xM5
+	hJRkz5B7uIeP6e3/PuiUqRR9D6yD0bTEGBBOHlg1D1E/fflupnZTI2HPxTTnFQ==
+Date: Thu, 17 Oct 2024 09:40:59 +0200
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org, arnd@arndb.de,
+ bbrezillon@kernel.org, boris.brezillon@collabora.com,
+ conor.culhane@silvaco.com, gregkh@linuxfoundation.org, imx@lists.linux.dev,
+ pthombar@cadence.com, ravindra.yashvant.shinde@nxp.com
+Subject: Re: [PATCH v7 2/3] i3c: master: Extend address status bit to 4 and
+ add I3C_ADDR_SLOT_EXT_DESIRED
+Message-ID: <20241017094059.4e4ed56d@xps-13>
+In-Reply-To: <Zw/lH9pCrkFoXsbH@lizhi-Precision-Tower-5810>
+References: <20241008-i3c_dts_assign-v7-0-96ec93d1f34c@nxp.com>
+	<20241008-i3c_dts_assign-v7-2-96ec93d1f34c@nxp.com>
+	<Zw/lH9pCrkFoXsbH@lizhi-Precision-Tower-5810>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="kdko7g4iyimtpy44"
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB85104DCA7DED14565615E4A588472@PAXPR04MB8510.eurprd04.prod.outlook.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
-
-
---kdko7g4iyimtpy44
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On 17.10.2024 03:33:09, Wei Fang wrote:
-> > -----Original Message-----
-> > From: Marc Kleine-Budde <mkl@pengutronix.de>
-> > Sent: 2024=E5=B9=B410=E6=9C=8817=E6=97=A5 5:52
-> > To: Wei Fang <wei.fang@nxp.com>; Shenwei Wang <shenwei.wang@nxp.com>;
-> > Clark Wang <xiaoning.wang@nxp.com>; David S. Miller
-> > <davem@davemloft.net>; Eric Dumazet <edumazet@google.com>; Jakub
-> > Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; Richard
-> > Cochran <richardcochran@gmail.com>
-> > Cc: imx@lists.linux.dev; netdev@vger.kernel.org; linux-kernel@vger.kern=
-el.org;
-> > kernel@pengutronix.de; Marc Kleine-Budde <mkl@pengutronix.de>
-> > Subject: [PATCH net-next 13/13] net: fec: fec_enet_rx_queue(): factor o=
-ut
-> > VLAN handling into separate function fec_enet_rx_vlan()
-> >=20
-> > In order to clean up of the VLAN handling, factor out the VLAN
-> > handling into separate function fec_enet_rx_vlan().
-> >=20
-> > Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> > ---
-> >  drivers/net/ethernet/freescale/fec_main.c | 32
-> > ++++++++++++++++++-------------
-> >  1 file changed, 19 insertions(+), 13 deletions(-)
-> >=20
-> > diff --git a/drivers/net/ethernet/freescale/fec_main.c
-> > b/drivers/net/ethernet/freescale/fec_main.c
-> > index
-> > d9415c7c16cea3fc3d91e198c21af9fe9e21747e..e14000ba85586b9cd73151e
-> > 62924c3b4597bb580 100644
-> > --- a/drivers/net/ethernet/freescale/fec_main.c
-> > +++ b/drivers/net/ethernet/freescale/fec_main.c
-> > @@ -1672,6 +1672,22 @@ fec_enet_run_xdp(struct fec_enet_private *fep,
-> > struct bpf_prog *prog,
-> >  	return ret;
-> >  }
-> >=20
-> > +static void fec_enet_rx_vlan(struct net_device *ndev, struct sk_buff *=
-skb)
-> > +{
-> > +	struct vlan_ethhdr *vlan_header =3D skb_vlan_eth_hdr(skb);
+Hi Frank,
+
+Frank.li@nxp.com wrote on Wed, 16 Oct 2024 12:09:03 -0400:
+
+> On Tue, Oct 08, 2024 at 11:18:25AM -0400, Frank Li wrote:
+> > Extend the address status bit to 4 and introduce the
+> > I3C_ADDR_SLOT_EXT_DESIRED macro to indicate that a device prefers a
+> > specific address. This is generally set by the 'assigned-address' in the
+> > device tree source (dts) file.
+> >
+> >  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=AC=E2=94=80=E2=94=80=E2=94=80=E2=94=90
+> >  =E2=94=82S/Sr=E2=94=82 7'h7E RnW=3D0 =E2=94=82ACK=E2=94=82 ENTDAA  =E2=
+=94=82 T =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90
+> >  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=B4=E2=94=80=E2=94=80=E2=94=80=E2=94=98    =E2=94=82
+> >  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=98
+> >  =E2=94=82  =E2=94=8C=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=AC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=AC=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90
+> >  =E2=94=94=E2=94=80=E2=96=BA=E2=94=82Sr=E2=94=827'h7E RnW=3D1  =E2=94=
+=82ACK=E2=94=8248bit UID BCR DCR=E2=94=82Assign 7bit Addr=E2=94=82PAR=E2=94=
+=82 ACK/NACK=E2=94=82
+> >     =E2=94=94=E2=94=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98
+> >
+> > Some master controllers (such as HCI) need to prepare the entire above
+> > transaction before sending it out to the I3C bus. This means that a 7-b=
+it
+> > dynamic address needs to be allocated before knowing the target device's
+> > UID information.
+> >
+> > However, some I3C targets may request specific addresses (called as
+> > "init_dyn_addr"), which is typically specified by the DT-'s
+> > assigned-address property. Lower addresses having higher IBI priority. =
+If
+> > it is available, i3c_bus_get_free_addr() preferably return a free addre=
+ss
+> > that is not in the list of desired addresses (called as "init_dyn_addr"=
+).
+> > This allows the device with the "init_dyn_addr" to switch to its
+> > "init_dyn_addr" when it hot-joins the I3C bus. Otherwise, if the
+> > "init_dyn_addr" is already in use by another I3C device, the target dev=
+ice
+> > will not be able to switch to its desired address.
+> >
+> > If the previous step fails, fallback returning one of the remaining
+> > unassigned address, regardless of its state in the desired list.
+> >
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > --- =20
 >=20
-> Why not move vlan_header into the if statement?
+> Miquel:
+>=20
+> 	Do you have a chance to check this patch again?
 
-I've an upcoming patch that adds NETIF_F_HW_VLAN_STAG_RX (a.k.a.
-801.2ad, S-VLAN) handling that changes this function.
+No worries, it's in my todo list ;)
 
-One hunk looks like this, it uses the vlan_header outside of the if:
-
-@@ -1675,15 +1678,19 @@ fec_enet_run_xdp(struct fec_enet_private *fep, stru=
-ct bpf_prog *prog,
- static void fec_enet_rx_vlan(struct net_device *ndev, struct sk_buff *skb)
- {
-         struct vlan_ethhdr *vlan_header =3D skb_vlan_eth_hdr(skb);
-+        __be16 vlan_proto =3D vlan_header->h_vlan_proto;
-=20
--        if (ndev->features & NETIF_F_HW_VLAN_CTAG_RX) {
-+        if ((vlan_proto =3D=3D htons(ETH_P_8021Q) &&
-+             ndev->features & NETIF_F_HW_VLAN_CTAG_RX) ||
-+            (vlan_proto =3D=3D htons(ETH_P_8021AD) &&
-+             ndev->features & NETIF_F_HW_VLAN_STAG_RX)) {
-                 /* Push and remove the vlan tag */
-                 u16 vlan_tag =3D ntohs(vlan_header->h_vlan_TCI);
-
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---kdko7g4iyimtpy44
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmcQuBkACgkQKDiiPnot
-vG+1Awf/bepBsoNajHzaS0pV6MTSyE3H/Zj4qBfrFCaf4LrffGO1q2RzdRluG2cj
-71GqXA4WmKmhSIcIpdWtHm17BsOCi3idHeXF3/50gLgHDFQj7r0d84JKmbPAiDdG
-PJxL2bWuqSXUjPXoJDd8M7nkiATzep9RU6UGDmE7/g4uNBoieYyDOkCAQ0XnJSGw
-0Leij7j4/5IrA9RBnyCwFamq/utxiShnBqjfq7yZORX8R+BNUiNAu2GvudnpbVlh
-lr4Nvh8EkGn8IqzOLWH6RgoloCeWSCvcZP6bDizN79UXeBrxV13j0m4loYT+N7yv
-ulYcfHzxyQaHCzByASE49us4gAJ4tg==
-=mrNP
------END PGP SIGNATURE-----
-
---kdko7g4iyimtpy44--
+Thanks,
+Miqu=C3=A8l
