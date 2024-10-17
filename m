@@ -1,41 +1,43 @@
 Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 919EF154454
-	for <imx@lists.linux.dev>; Thu, 17 Oct 2024 08:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8DEF5CB8
+	for <imx@lists.linux.dev>; Thu, 17 Oct 2024 09:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729154848; cv=none; b=X8thL7kQ8SBZwDX4iosSLfB8g1piyAXqCHJeiCIynEw9d/phBdEKZDSODNkFywn0v8J96jzW1vP07CPrYnJAecA8NxchBsHmtK6bAodPPbKPPgo5SeP1F2UEq3pDFwWgv9bPM3tMVZBN+uwo0PSbc1oGwLjGlrA8ZaEw8GXuL18=
+	t=1729156562; cv=none; b=a+5euC2qmObX6KHmljj21y88jHT4X3enz/iSPa7H7IL9Tt73SMhbLMq5s6D3OfexiXOFW19ls8Nogow1Xrv31QCYMO1UJtECIWqChs2sc9Y7ybgN34nT4lL1G24vjRpotgAXwFwGcl+SkAm8nlJEVv76tTlMvN+y/hKFdievksM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729154848; c=relaxed/simple;
-	bh=1ESagQClO2AWMP+Hg8twSTNPEQ1rgZEFFyRT9VoZX/0=;
+	s=arc-20240116; t=1729156562; c=relaxed/simple;
+	bh=JWabqzFfdfHDY5VXB1QNVz3uYR9IzYBLiOTvssAvKoM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gLSHCSZHsti4NngwmkI13GCQjVQdHtaD2x70GKGGOd0wYtiYtAT0p633y2PhhDUQdMpMRaPO0Qb/EOo4EwfqQpB6wPExhoQF4DMZ74EIfFwgos9HwbqHEZDOQm9G2/A562DnepJHk0V+IRbn+hLiN0q1eoZodCMPdRQaMo5PJAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=IAPob5fr; arc=none smtp.client-ip=1.95.21.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=IK+toTzieJNutG+fKbHKQmsE4avVN8HVoDZi44G34oOlXHFtEA+QPq93t9TvVL1FfG5yhNcjF7dVLdMe6BVUg34NQ4khCIWWDTLX+166oHkli1i/xHzb3CtQyopjBgyAHBvghid/rUnJyRedF5BadO/RoqnwTCK0bdJMb+9pK00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=bWPSRdcm; arc=none smtp.client-ip=1.95.21.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="IAPob5fr"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="bWPSRdcm"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=4lsm30lYRi4dwTD4J9fQ9TfYvcm5Gfz4W7SeXm0DybE=;
-	b=IAPob5frcFBuh99vbolYyAQRuUGs+LMfdFHOyCGoB0bqq7loVBX3OgOt4jtOaw
-	YxqUIqzYYcBccwSAE5k0YXpNxX/O+2w3O8dmQ84XVxYyR5+RD0Vn64HDDl3yM2EE
-	qldzw1wTidHgsL3mHWhuVpqjWS3y96WJxHMHdxxDISMOM=
+	Content-Type; bh=8+YKKCmfji2YTt+NeUXJzgiQgBkMcY806Vacbq8VGt8=;
+	b=bWPSRdcmg/lB2bXoMntFK0KLofvk1KjTyfmMCdCKKcikJhDTZbOxnvVhhTmxU2
+	YujQzaWPPEtEmVR/HcUg8/1jRkhysHiL0nPI1QuI0odBubnXzNB+0R+q8mURppWP
+	pHQEEP2zLz9qzj9Rx2OAag8maqKScUzbvfzW/gcmzt88A=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD3fgP3zhBnfzswAA--.1282S3;
-	Thu, 17 Oct 2024 16:46:49 +0800 (CST)
-Date: Thu, 17 Oct 2024 16:46:47 +0800
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgBnu+Wm1RBnkL8wAA--.1316S3;
+	Thu, 17 Oct 2024 17:15:19 +0800 (CST)
+Date: Thu, 17 Oct 2024 17:15:17 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Yannic Moog <y.moog@phytec.de>
+To: Francesco Dolcini <francesco@dolcini.it>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, upstream@lists.phytec.de
-Subject: Re: [PATCH] arm64: dts: imx8mp-phyboard-pollux-rdk: add gpio-fan
-Message-ID: <ZxDO9wPQZOsXcJ6b@dragon>
-References: <20240924-wip-y-moog-phytec-de-phyboard-pollux-fan-v1-1-9ea6ec43f27b@phytec.de>
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v1 0/3] arm64: dts: freescale: imx8mm-verdin: Add Ivy
+ carrier board
+Message-ID: <ZxDVpbynwzKgNQtF@dragon>
+References: <20240924113048.125761-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,18 +47,29 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240924-wip-y-moog-phytec-de-phyboard-pollux-fan-v1-1-9ea6ec43f27b@phytec.de>
-X-CM-TRANSID:Ms8vCgD3fgP3zhBnfzswAA--.1282S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUxCJmUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEgl7ZWcQs0ZXfgAAsu
+In-Reply-To: <20240924113048.125761-1-francesco@dolcini.it>
+X-CM-TRANSID:Ms8vCgBnu+Wm1RBnkL8wAA--.1316S3
+X-Coremail-Antispam: 1Uf129KBjvdXoW7XFW5Kw4rAr13Ar48CFyrCrg_yoW3ArX_uF
+	WxKr10gr4DKrnrtws8Ka17Xw4vk3yFyr1Fq34vgrn3XF9xZa98AanrKryrXFnIg3Z0qF93
+	J3WfKrZ3trWYkjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0tl1DUUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBA97ZWcQ0T0OSAAAsI
 
-On Tue, Sep 24, 2024 at 09:53:04AM +0200, Yannic Moog wrote:
-> A GPIO fan may be connected to Pollux fan header. The fan should
-> activate at 60°C and stay active until critical SoC temperature is
-> reached and the board shuts down.
+On Tue, Sep 24, 2024 at 01:30:45PM +0200, Francesco Dolcini wrote:
+> From: Francesco Dolcini <francesco.dolcini@toradex.com>
 > 
-> Signed-off-by: Yannic Moog <y.moog@phytec.de>
+> Add support for the Toradex Verdin iMX8MM Ivy carrier board. Ivy is a carrier
+> board designed for industrial environments, supporting industrial
+> I/O interfaces such as CAN, RS485, RS232, Gigabit Ethernet, 0-25mA analog
+> inputs, relays, PCIe and more. The board also includes a TPM for security
+> applications.
+> 
+> https://www.toradex.com/products/carrier-board/ivy-carrier-board
+> 
+> João Paulo Gonçalves (3):
+>   dt-bindings: arm: freescale: Add verdin imx8mm ivy board
+>   arm64: dts: freescale: imx8mm-verdin: add label to som adc node
+>   arm64: dts: freescale: imx8mm-verdin: Add Ivy carrier board
 
-Applied, thanks!
+Applied all, thanks!
 
