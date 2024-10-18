@@ -1,120 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD54E1CD2B;
-	Fri, 18 Oct 2024 13:09:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12D61A288
+	for <imx@lists.linux.dev>; Fri, 18 Oct 2024 13:13:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729256967; cv=none; b=QYFAPHSRqGhoz5D5c+9vNblYvFB6CN2Lx0s68xX9vPlmS11sYomzID6I83I31JNw5Ar78T8hvmH/I3WXxBeOtA+6ucddUViC+rT9PKc/lvr/r45X3qUmh1RTl5zREljw7vthzleKTdv8TiwsvdVpQ2MP4xp8/Xkcw0I+US/i34g=
+	t=1729257189; cv=none; b=TkVl9BWvhAd/BfOUlapaL5Irwi/6gGA4wTeVdVT0/95xFF0Thg5KfBseAadqCFxDdPh/r9Id2wYDhAAIkVX8hvfJf9GM6zlftmr761CLJHtlsRlKO8S76pKJCe9TBu0IK1OI7/Owr57KPbTdBYkxLpfJVklDhERTxmn2njmglXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729256967; c=relaxed/simple;
-	bh=f8rBGROSLgXNregcpfB3wCWzvZVSp7htP3J+i4I0wZ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=do+s9izG6qTLQB3pwI2uaWAX38k3gx1B7uhkssS6gD/xb0uEXgh2ejsD3+pqgj+0gGLKksEvgZzVTex8OUMy1oGyw0N+1LHQ7ndZ8wliSpLXsLxvKWgbGRoxPBduyKX49LmnITGo+wxCT2CMHEMZ+vJgKsodm11Cm2+Nw6SQGR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UbfN91Th; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729257189; c=relaxed/simple;
+	bh=2vmr+dE/VV7F+z9njB5tZ6dmwWw4bhIy2k2SVn0tfOY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=W9AT3was2TEZ9nfxglBkzJGR0Hv87JEZQKcEqt240iVGQ9Byhk+PMund+5vVVwvju/dW/lQXkZ95HuJVUdSSOv7BSf9jrVclaDnhRG5qWx/ULj9uGmqKyRduHeNC7rUJRUCSlviQIm948mNO796K8F+6uUBkGeeWQo4uQuF5snw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=XQI9DpM+; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=l4abCq4G reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UbfN91Th"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3660BC4CEC3;
-	Fri, 18 Oct 2024 13:09:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729256967;
-	bh=f8rBGROSLgXNregcpfB3wCWzvZVSp7htP3J+i4I0wZ8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UbfN91ThmSxeT6kDWXc7oCnCMxV2pscXTk2f8+oKp1TAi26EUjBFab2KzDahG/4BD
-	 7BLhb5aLrdyODFMMRNB35teNrMaUuggRt5U/SEP1GYzeRVvlvAfjp8pOEGIIwhL8Hz
-	 Lz1RitvzaSWUOX2JO5x5DgB8wy2WXoTjbPZFDvvwbXOrmWpWfVKrbhoq5qpb/bFD0V
-	 t79vAUejTP6T005PXbzdAXhvKY4KscgDlsJekkgpHPAm/te4XFLBRwhSwmepRXZl89
-	 H3WfWMQhdcvjpFzOncHwJY/7gdcvP4DQjqvzWVWOID1nWXzT2VxyyluY2CGrQnKP1Y
-	 tpUpmyZvbrUpg==
-Date: Fri, 18 Oct 2024 08:09:26 -0500
-From: Rob Herring <robh@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Wei Fang <wei.fang@nxp.com>, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, krzk+dt@kernel.org,
-	conor+dt@kernel.org, vladimir.oltean@nxp.com,
-	claudiu.manoil@nxp.com, xiaoning.wang@nxp.com,
-	christophe.leroy@csgroup.eu, linux@armlinux.org.uk,
-	bhelgaas@google.com, horms@kernel.org, imx@lists.linux.dev,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v3 net-next 02/13] dt-bindings: net: add i.MX95 ENETC
- support
-Message-ID: <20241018130926.GA45536-robh@kernel.org>
-References: <20241017074637.1265584-1-wei.fang@nxp.com>
- <20241017074637.1265584-3-wei.fang@nxp.com>
- <ZxE56eMyN791RsgK@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="XQI9DpM+";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="l4abCq4G"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1729257185; x=1760793185;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=xrzeEoBsCionoKUR266fpAo3BaG9LZtKR8xkrwhis4I=;
+  b=XQI9DpM+qwgCApxn4+EP9PfbEYEyetjAoX0FepZUTHmGXK0kCltUTlNt
+   oxqc4LGvK2iOIG6pGqHbysVErZD9uGxJsP3Z8dTiZvRxXtDdDqDHycUjv
+   gWSwDw1l9VnGZ5PlGDzpuIQCXNstlTsEaKBwUjWmclormrZ7Yn1t/4njg
+   J0x2i4qPqESBVpXG3LAP6OlQ5GcY9guaYbcmcHabpY78MexN4ylNE9Upc
+   ikMaBfW41zgP1KqJmn3bZwgX/Dzogg/ft9qOVIeEA4WwQlIdV/8ze+qyw
+   +9WFj/Px/OdE58Rc54a47SGuQS+AwliUDV8wg6WvVFh0/Tyo1TtbjF2wQ
+   A==;
+X-CSE-ConnectionGUID: 3KoUDJEnQRaRloi9VBQ63A==
+X-CSE-MsgGUID: NPQH+y/pSTScykETWFj9YQ==
+X-IronPort-AV: E=Sophos;i="6.11,213,1725314400"; 
+   d="scan'208";a="39543900"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 18 Oct 2024 15:12:58 +0200
+X-CheckPoint: {67125EDA-9-BD84CFBF-E7C15A70}
+X-MAIL-CPID: 1966C4EF9B0FB9E0C3310EAEA66099E9_3
+X-Control-Analysis: str=0001.0A682F19.67125EDA.0060,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AB87F16ACBC;
+	Fri, 18 Oct 2024 15:12:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1729257173;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=xrzeEoBsCionoKUR266fpAo3BaG9LZtKR8xkrwhis4I=;
+	b=l4abCq4GzoqmZ9BJX3njeI/FwjZI05uwLBz+mQMuGVbCBcbm1vRsJbUvYSO5vvavbmWhEv
+	y38ZqQMrSpXDdl5nfXYT/JHFBzztTs0+BGKJtB9TRP8jNwct3OJ9BGPLlxMHQ1nzO+uSHY
+	jW9NvLXRt1L/k40SMmI0ImpPm8H38zP7b5Z7XVkCk3kS16WZnpnoRaHh4qSSAYXxmc0YCj
+	H7nii7oha2YVtDLjD33iRrAzwTQHHLIjVaVBh6G8uWt63MyibvhKD5GUYIZfI3gEY9CsBw
+	/LumWuZE7UPbJBgSvdhgHmK6/uEGDhg9kGk6WHA9AhAxqiQ2JZRqA/LO6JWM2g==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Liu Ying <victor.liu@nxp.com>, dri-devel@lists.freedesktop.org
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org, Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, marex@denx.de, stefan@agner.ch, Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: Re: [PATCH 4/5] drm/bridge: imx8mp-hdmi-tx: Set output_port to 1
+Date: Fri, 18 Oct 2024 15:12:49 +0200
+Message-ID: <5035853.0VBMTVartN@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <vvsj6ri2ke25nzocbq736yv7rphzma6pn3yk2uh7iu43zfe2sa@2fwye4k4w6he>
+References: <20241018064813.2750016-1-victor.liu@nxp.com> <20241018064813.2750016-5-victor.liu@nxp.com> <vvsj6ri2ke25nzocbq736yv7rphzma6pn3yk2uh7iu43zfe2sa@2fwye4k4w6he>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZxE56eMyN791RsgK@lizhi-Precision-Tower-5810>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, Oct 17, 2024 at 12:23:05PM -0400, Frank Li wrote:
-> On Thu, Oct 17, 2024 at 03:46:26PM +0800, Wei Fang wrote:
-> > The ENETC of i.MX95 has been upgraded to revision 4.1, and the vendor
-> > ID and device ID have also changed, so add the new compatible strings
-> > for i.MX95 ENETC. In addition, i.MX95 supports configuration of RGMII
-> > or RMII reference clock.
-> >
-> > Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Am Freitag, 18. Oktober 2024, 14:31:20 CEST schrieb Dmitry Baryshkov:
+> On Fri, Oct 18, 2024 at 02:48:12PM +0800, Liu Ying wrote:
+> > Set DW HDMI platform data's output_port to 1 in imx8mp_dw_hdmi_probe()
+> > so that dw_hdmi_probe() called by imx8mp_dw_hdmi_probe() can tell the
+> > DW HDMI bridge core driver about the output port we are using, hence
+> > the next bridge can be found in dw_hdmi_parse_dt() according to the port
+> > index, and furthermore the next bridge can be attached to bridge chain =
+in
+> > dw_hdmi_bridge_attach() when the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag is
+> > set.  The output_port value aligns to the value used by devicetree.
+> > This is a preparation for making the i.MX8MP LCDIF driver use
+> > drm_bridge_connector which requires the DRM_BRIDGE_ATTACH_NO_CONNECTOR
+> > flag.
+> >=20
+> > Signed-off-by: Liu Ying <victor.liu@nxp.com>
 > > ---
-> > v2: Remove "nxp,imx95-enetc" compatible string.
-> > v3:
-> > 1. Add restriction to "clcoks" and "clock-names" properties and rename
-> > the clock, also remove the items from these two properties.
-> > 2. Remove unnecessary items for "pci1131,e101" compatible string.
-> > ---
-> >  .../devicetree/bindings/net/fsl,enetc.yaml    | 22 ++++++++++++++++---
-> >  1 file changed, 19 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/net/fsl,enetc.yaml b/Documentation/devicetree/bindings/net/fsl,enetc.yaml
-> > index e152c93998fe..e418c3e6e6b1 100644
-> > --- a/Documentation/devicetree/bindings/net/fsl,enetc.yaml
-> > +++ b/Documentation/devicetree/bindings/net/fsl,enetc.yaml
-> > @@ -20,10 +20,13 @@ maintainers:
-> >
-> >  properties:
-> >    compatible:
-> > -    items:
-> > +    oneOf:
-> > +      - items:
-> > +          - enum:
-> > +              - pci1957,e100
-> > +          - const: fsl,enetc
-> >        - enum:
-> > -          - pci1957,e100
-> > -      - const: fsl,enetc
-> > +          - pci1131,e101
-> >
-> >    reg:
-> >      maxItems: 1
-> > @@ -40,6 +43,19 @@ required:
-> >  allOf:
-> >    - $ref: /schemas/pci/pci-device.yaml
-> >    - $ref: ethernet-controller.yaml
-> > +  - if:
-> > +      properties:
-> > +        compatible:
-> > +          contains:
-> > +            enum:
-> > +              - pci1131,e101
-> > +    then:
-> > +      properties:
-> > +        clocks:
-> > +          maxItems: 1
-> > +          description: MAC transmit/receiver reference clock
-> > +        clock-names:
-> > +          const: ref
-> 
-> Did you run CHECK_DTBS for your dts file? clocks\clock-names should be
-> under top 'properties" firstly. Then use 'if' restrict it. But I am not
-> sure for that. only dt_binding_check is not enough because your example
-> have not use clocks and clok-names.
+> >  drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >=20
+> > diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c b/drivers/gpu/=
+drm/bridge/imx/imx8mp-hdmi-tx.c
+> > index 8fcc6d18f4ab..54a53f96929a 100644
+> > --- a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+> > +++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+> > @@ -96,6 +96,7 @@ static int imx8mp_dw_hdmi_probe(struct platform_devic=
+e *pdev)
+> >  		return dev_err_probe(dev, PTR_ERR(hdmi->pixclk),
+> >  				     "Unable to get pixel clock\n");
+> > =20
+> > +	plat_data->output_port =3D 1;
+>=20
+> This will break compatibility with older DT files, which don't have
+> output port. I think you need to add output_port_optional flag to
+> dw_hdmi_plat_data and still return 0 from dw_hdmi_parse_dt() if the flag
+> is set, but there is no remote node.
+>=20
+> Last, but not least, this changes behaviour of the connector.
+> dw_hdmi_connector_create() implements CEC support, handles
+> ycbcr_420_allowed, HDR metadata, etc.
 
-That's a manual check, but yes. Define all properties at top level.
+Mh, I was suspecting the same, but I couldn't see any regression regarding =
+CEC.
+Maybe the change is not doing what it is supposed to do...
+I'll check again on Monday.
 
-Rob
+Best regards,
+Alexander
+
+> We are slowly moving towards the supporting all of this in bridge
+> connector via the HDMI Connector framework, but this is not
+> implemented for now.
+>=20
+> >  	plat_data->mode_valid =3D imx8mp_hdmi_mode_valid;
+> >  	plat_data->phy_ops =3D &imx8mp_hdmi_phy_ops;
+> >  	plat_data->phy_name =3D "SAMSUNG HDMI TX PHY";
+>=20
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
