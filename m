@@ -1,186 +1,104 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2087.outbound.protection.outlook.com [40.107.22.87])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456E4204F84
-	for <imx@lists.linux.dev>; Fri, 18 Oct 2024 19:39:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.87
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729280355; cv=fail; b=I3+hoZ3TWjWuwXaCy104oKkgSQwbrEi2fw1oSgggnowkU+3PnhiijxDIABTZ55de6slDED8FIkC5ZCLXpYB0WI/+Vdya7BDAIzRoh5Z6jIRlKUGOWrkfNVeIH77kTGvlA2TgU/72nkh0V/DmN4ITWBjGy4arEIEdPSTnhAd0R9c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729280355; c=relaxed/simple;
-	bh=kC97CuLrMGzMPst32+ycRaI6xUgXYa+gkO9+0ufGwgs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=uAFC7YaNNhzIz7BhFT7kuaO1NiJpoz4kFypXMX0np54Di8LsfNxrGICJnWCIEOvQ1FsY8ekAx2zcoDPyED/vJePoivIgh3IDntMgVGXX558pcs7qKJRZPRFxB3YNmoaftFiBEaRmzEfNq35ngjhLprpQtA5CSzexaCmcrTbCB0k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=D9AsXbTE; arc=fail smtp.client-ip=40.107.22.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C905218990C;
+	Fri, 18 Oct 2024 21:10:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729285811; cv=none; b=XZ7B3s2F82906VDpAUmizgkNSbfNUhvPPpRmgQ+aI/dFzqWKPjy90bFeGgvJc47ZF6sV8//qVatXB9Nl7sli6afoqVVWx1SLCbPVm88JU59I4L8Z3VksNLGtWYp1Do15ofG4PRgWP64EwywLe+0h3HECkXHDjsEeN9kutJVyA2M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729285811; c=relaxed/simple;
+	bh=hQ0DG6/Eb3j0prKHYX364xskTLEd+9vKpIg1xcOPcDw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kxxOBegOZrX3Dfm9/r/tfspMHt2SJNwdCgDvIwFEoOhgXXqbBXrqpY7hmhp5kAenC/djxkZ4wiOzPti2U/Rt06Fg6xPI14dfyhVbH8iyu+TlXYCotDbIVqldYCH0SNvrKG/pawp8F8uLPiDi2PfvtxmzEyinmNzyP41xVgbbBSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GCC/aZR8; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="D9AsXbTE"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TYaLNEHTR4DlCfk3FGKmcjEmDLuJVqyE+geL/wl3Jlw6KSezVauMXAIC4iwyo/NWq1ffL+akG4F5JI/3urdvhFgceD6PtwnA+vQX4ixJFf/XGUl94txIRX+VXSKAwkcmEXu2GqB5vJLsFiH5KKT0RCHZl7thMW4AivH2sjxbv9AtHlgGEwlNzhCvP79F/CF97WfpclFZ8+0ebsrUvOWlsJdpJ3X0HsaIsi9eYM0BVIV5e+pJBHahoS02/SGXnnLfTZYb1Jc0I6FdS1fxwAiq0ezIjRpwid8YHzJZp63pokGsKvdPqbVhWNk2WcCe7DHtMivfPuV++g+2Ze5aXS8Nbw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yIXeiLvf4nMrSe0nkgrWiReR/VMgkEMls06/P/f3RDU=;
- b=Uo5N9ixNmbPNojlRMcTaXNFs2wZ11kKekDu6njb/aYA6NxxHCqtcYgkQmY1KuL6kPPtqn9FD/RyL7Ja4PbF6fFldPoajjj5IbabNZJdg41sf3NC55Pz1FTIpU680dKX0ShJN2AhpxLWgJc7Xjxd7bHRcS2UckRsnO/W3oA055MqXpRduTlkxv7JCOdDqbWSFXylvpcQNWEupC161smhF2BLzn5ezMojd5eA/SwBiL7UdIDHOIdH51tkAlxg9F7DuIn68HSYkARMCSWNmZ5i/CYdWy5ID9wWYi/PwgfjdNvtMKJZnfrvP+w49xIZc3SpFZYN6CVPq9hN/wY7cO2oySA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yIXeiLvf4nMrSe0nkgrWiReR/VMgkEMls06/P/f3RDU=;
- b=D9AsXbTEq1xheX8qpycoOHVNQipljC+3rXto+xx80/COA/LUlBwc6OD/UX8Bjm80k8Bp30Nad/OWbVErMS9Ml4MQVAMTknKp9iFShfHpfDcRMpbc27vgviCeaSTZjHP2B0UNuE5p7CY6P9q24JZ4nWsu9YtdF7RH4fJrC20LBKMxMd1UxQ2kAxMvoCepvZEu+SfsE+3dn6y3wkoC04/Hd/+BYICgwDjE4I2pLR9cXqjbqmSzvjvSNwhdTiE/DHX8NuKSvFYV7kcuPA7ZngTEaPt1aXsa8lcnmS23IsuPQKeITGa7YykCcPvA9ZS4RajYEbUAw1Ej0ZV9hOf6D9wmkQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM9PR04MB7713.eurprd04.prod.outlook.com (2603:10a6:20b:2d4::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.24; Fri, 18 Oct
- 2024 19:39:10 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8069.016; Fri, 18 Oct 2024
- 19:39:10 +0000
-Date: Fri, 18 Oct 2024 15:39:02 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	Shawn Guo <shawnguo@kernel.org>, linux-kernel@vger.kernel.org,
-	Fabio Estevam <festevam@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
-	Conor Dooley <conor+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>
-Subject: Re: [PATCH 1/6] arm64: dts: imx8qxp-mek: add bluetooth audio codec
-Message-ID: <ZxK5VqKzvZLE8DHM@lizhi-Precision-Tower-5810>
-References: <20240930212604.118756-1-Frank.Li@nxp.com>
- <172784021530.525807.17173207157125562594.robh@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <172784021530.525807.17173207157125562594.robh@kernel.org>
-X-ClientProxiedBy: BY5PR16CA0018.namprd16.prod.outlook.com
- (2603:10b6:a03:1a0::31) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GCC/aZR8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729285809; x=1760821809;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hQ0DG6/Eb3j0prKHYX364xskTLEd+9vKpIg1xcOPcDw=;
+  b=GCC/aZR8vwcft9DKreLN/fmFJWkpkZJFH67WpSDHNksW/CR04ZaKyeWL
+   XtoZtoCtFYtmcegKvkavN+KJGVxCjzqAhdXbd+IOOezcGUxYRgKG+kMbb
+   xQAYv8nfmcqKBuL0PvyKpfNP6vX9UeHUun1IeLr+j7jsejyAHejBEg/tT
+   s16Q+FTgxKC0wfRkNfHwQWmF7NPSlPljsyZ789mZrfGKSamDYzSLkMm8y
+   KtP6Yza+q5j5uz+ift8Tp9tKB45O2JaoAIcvYkYlpHFTGrcFA2Cp6MUp4
+   QCHIHtEr9tqwvVvFf4T9CQFxMMesDXYZZQ5B3/anHpvfvyAoXOs6vFg0M
+   Q==;
+X-CSE-ConnectionGUID: f/RywqOSTq6OMnvxWDTopQ==
+X-CSE-MsgGUID: by2L74I2QvuZHPe6s4w4HA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28993133"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="28993133"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2024 14:10:08 -0700
+X-CSE-ConnectionGUID: dr8iIfhTSkuHbpup6ssh2A==
+X-CSE-MsgGUID: zkUFIu82SCqVszaErv+rJw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,214,1725346800"; 
+   d="scan'208";a="78938262"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa010.jf.intel.com with ESMTP; 18 Oct 2024 14:10:02 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t1uES-000OJS-0e;
+	Fri, 18 Oct 2024 21:10:00 +0000
+Date: Sat, 19 Oct 2024 05:09:12 +0800
+From: kernel test robot <lkp@intel.com>
+To: Wei Fang <wei.fang@nxp.com>, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, vladimir.oltean@nxp.com,
+	claudiu.manoil@nxp.com, xiaoning.wang@nxp.com, Frank.Li@nxp.com,
+	christophe.leroy@csgroup.eu, linux@armlinux.org.uk,
+	bhelgaas@google.com, horms@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, imx@lists.linux.dev,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v3 net-next 06/13] net: enetc: build enetc_pf_common.c as
+ a separate module
+Message-ID: <202410190431.wiCDZy8G-lkp@intel.com>
+References: <20241017074637.1265584-7-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB7713:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6d5bb759-6610-4b6e-40d4-08dcefac8968
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|7416014|376014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?nK11EME23tMOxx4RvEuXBsyhGBf+i7yw3dYxoGmQkQaCiB0KqKcctbSCrlhn?=
- =?us-ascii?Q?koYvQtWAW7K+QBpL5mtfhOeVwo5RO7rhLU56TBTRfF+rncwnk85kBltOvpnP?=
- =?us-ascii?Q?PN0ydxc2910JCcvpNKqDupr4BdXXpdOn27+ZdycgHXCUXj2Nh9E5jPnk9s2S?=
- =?us-ascii?Q?7NhH3YrGSRCh6uK4XlALkCahVSFsEiby26BWjypnqVkdsQ7BriyvOvLS3rXd?=
- =?us-ascii?Q?VljVulyvcQuYyYtVqsSmGSJe32fOkE2A2dlVG6TUfRhP6sh6hOtkUQjong11?=
- =?us-ascii?Q?1DM9KaGzbw1np7kXR7UmhjLUdHBAlItJgiwCYXUttDxe2fJBNXFpP6l59z9x?=
- =?us-ascii?Q?7kYfa8jSEV0+ymmGpeg81eCJZ5YMJY4qpShBVCUjGbsFidwGR1VgFTvvFvja?=
- =?us-ascii?Q?3ZbywztrVknoMVnFSgCfLin45rPwT6+5EPitXE9pJxVkWadUJ4+WI34wurdi?=
- =?us-ascii?Q?c0u9/yMtPH3m+aMVEklZjGsEdNev7+hjK5GoGaxHVkRnJJcn1QpX44qAHZlZ?=
- =?us-ascii?Q?X9uBEXUR13q4E3DHjoB1+BTUpcFT/kRTGhgDjXRQOrOtL7o64GpAnIBGZdO0?=
- =?us-ascii?Q?vmiFWWNuzNh12448YXdgaGbEkYamLkGf+sGm8+hFjCt9dy7Y6vPM8epxUGjy?=
- =?us-ascii?Q?xtFq57H5zcm5V0fnBXilmZFn9MekrQn8QMBpFH48kUcQW4s0u4fjdr1WnVLc?=
- =?us-ascii?Q?yguWlt20Q0oQ1utmoniTKnlTCUbeHSg8j6mTfhUVTWoDhvJNrpVAUdLCTOUG?=
- =?us-ascii?Q?iREV8VkUm7KyxduiOGahtPpAvl4FjjSGdslWA3qFdbvcrJQ0cacUeUNFDBn1?=
- =?us-ascii?Q?ylcFNyt5qkslb5L0QRF+MK+jPydOUgu+3y32B1z+UVbiFwFq7yot9lFqct/g?=
- =?us-ascii?Q?NihYwoPIDLG03UOlyiwToOS4tENImNxCvIsa9k2rQApAPch1Ylj6Z9XcHWkG?=
- =?us-ascii?Q?JbUJ4tPE8g6odj8L3PF7mjTWhs6ac/Gqc/C4amHA/Uw90WPch1QLslcF0JUt?=
- =?us-ascii?Q?5oTuiwTZU+K5lL7i6ECJBxGz4EdirLRW4Ae1Yev1f3QI39o2nUuvm2ArsLxd?=
- =?us-ascii?Q?kfQS6bV1G5i9opprymU5iNZwbaTXZndThHkIGc24B59Aogr/vAiVI1hKMVow?=
- =?us-ascii?Q?Cw+vXvsmaSIct5xOtlJ5bGKPLLJIpE2Gymp/Ck3KbvIa3ieJsoXsB8LotDxS?=
- =?us-ascii?Q?Mmx4UWhKz/cnvkfIfnNcL8fM4nClLG0GPiGocktNpq7K5f8i/b8TnQYHkxKV?=
- =?us-ascii?Q?b8yh8lGNDMlFWhNIx95gap7IqFVfkGhDh7FGGpb9oC4bqqrxy0/yilQVUb42?=
- =?us-ascii?Q?8KhijHzmbAJK4HVDuEMP4rBS?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(7416014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?8N7TIsAWzP3GHQiwld7zEaVfuGIqUhVzN5CJI9SxG0PFDYlJPcP4w22oN99R?=
- =?us-ascii?Q?2YejSh1Ns2pCCGw6S7m/q+eN/LzEE7xk+irtrl0VLPWBPkcdsipHy3wnYSKe?=
- =?us-ascii?Q?y1YjVB80j3gdvPLoUbHtIuUzxaxMhPOxruOJnrneK94NRq6HGpW8ZHeWI8jL?=
- =?us-ascii?Q?QKjMz0sysWoI0wPFgN8eEegt3LYd5duIkS4gNF3R2edsXUmxzgTpvvUPGNTJ?=
- =?us-ascii?Q?wl+hRWTfMCLM/zDqkhkPJ86tNs4BXWn+DhXk9Iwba5tQGR13FwgMV277PGoj?=
- =?us-ascii?Q?rZC7oOv6Nk6ssKZWh4SlknUeyRd164529wPpW25tUvvAkbDDx+HhtNtW6T+E?=
- =?us-ascii?Q?q8yPCnvKY4OXMbK97xI2ode2CgucOuDUc7sDqJYPsmvv08CtpWuLOyPb7OZ0?=
- =?us-ascii?Q?AOItkWW++8IzFbZYhf6xNfPeQ9ZA3lLc8vOWuKvDVN6OBB+qe49k5d7IQm1s?=
- =?us-ascii?Q?/ooSabaZINko5mc+zY2FZFKcr4N4BdbfRpwTDlRu1FBR/7AGXt6/HiUXcwVR?=
- =?us-ascii?Q?29A6vHBruMgyGfLeXfPdYzKgomnrNi4XX6q0kyLbY7mYnRbwDxBgBLoWE/73?=
- =?us-ascii?Q?BkE8CLokEQQaWGLYJDV8KjRtXGKtnoPUZG7IWpCil4rJVM+3q1Czu/YkJdNb?=
- =?us-ascii?Q?vnGuVBemIdy2xCk4wqAYxJSQAUyELUyrFSrGvr3w+WWvjP2CZtGVJj4aNaA2?=
- =?us-ascii?Q?QvEf0wEUvzYeAy6Vq2L/w30t0wHGfCZ3LFsm+zQ50qFI6Uzx6Q8kRHfaRzDe?=
- =?us-ascii?Q?6tP82sBN/DafimTVe2zgT/usOzUFEsmDMroJZbimlcfnP/o5JsSAslqJ7van?=
- =?us-ascii?Q?7bzFpbb8oR0hhCYyt1ZNH42qTA9en92OTL6Rh4fOQhhPPXNClfioqmcBTmZX?=
- =?us-ascii?Q?M5FnL9zToPaRNMEB9p3bf0uZcOPtgKkqFW3fsXTbXfHGBv8zq2Br2o9lk8hl?=
- =?us-ascii?Q?4SXLWBTAk1TMbfOnnQHvaVdxaAg67qBvcmysCEp0xIQe+9vW4i1N48oeKWX8?=
- =?us-ascii?Q?nRJf/aQ4uDomNZt8Pj4BL4XXhv95K1rbDSyRwJKDOhseqoZtzg2umFbNyN+J?=
- =?us-ascii?Q?l1tBTNNlbZY7usD39Rno0o+E7bvf+7UTVyrPzxR5EMs2oORe5+qZgl8J31pJ?=
- =?us-ascii?Q?y4GsGW5jV8bSYzSbeww14c9ZF2Ky6QSVRlXKJFpp44+psXFs8riehCZd0YyV?=
- =?us-ascii?Q?sO82giZICOb9YPWHE9TyTgzKoXGWqGMwTNkUjLck3Y7xjR5AeYSKA3ik4VoG?=
- =?us-ascii?Q?9gJulJcnzbEbftAB14HY8oaJef9hS2YscqOlpR2p8jek6mwHIwU6UJm3i6oP?=
- =?us-ascii?Q?6FEMKU367ETss1LcHZ/BqDDHBgoHNlVU6vwh7fPrynGF3dxKRXlOb4y0QQGl?=
- =?us-ascii?Q?bC1QH0uu4TkRMlzLyoz2CcIX5eBmn7HuqNwUa6khiZHhHNa3CxLyXiN2erbg?=
- =?us-ascii?Q?snrj9TlfUdvQT1pLCpQ/FXbgWHwQHWyuhSDhRvOh5RBK/h6VRYzPgeQVF4j2?=
- =?us-ascii?Q?VV2ciM++JHFm2W6vUCsfuEwSedDG2tT0GrXKtvWoI8UkosafxURc3ofz0dYZ?=
- =?us-ascii?Q?SX8m0R6ag4qM3zNniSY=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6d5bb759-6610-4b6e-40d4-08dcefac8968
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Oct 2024 19:39:09.9677
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9SYbtH1yW9gsLXeQcjBgjS6KlU3AhLWy9Q4Cj1dKyhA122GFeSLoUTrMRAlFxD3nV+GJVtabrJ52lD/tbZjQIA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7713
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241017074637.1265584-7-wei.fang@nxp.com>
 
-On Tue, Oct 01, 2024 at 10:51:01PM -0500, Rob Herring (Arm) wrote:
->
-> On Mon, 30 Sep 2024 17:25:58 -0400, Frank Li wrote:
-> > Add bluetooth audio codec.
-> >
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  arch/arm64/boot/dts/freescale/imx8qxp-mek.dts | 24 +++++++++++++++++++
-> >  1 file changed, 24 insertions(+)
-> >
+Hi Wei,
 
-shawn:
-	Do you have chance to check these patches. The below warning is not
-caused by these patches. And this warning's fixed patch already in mail
-list.
+kernel test robot noticed the following build errors:
 
-Frank
+[auto build test ERROR on net-next/main]
 
->
->
-> My bot found new DTB warnings on the .dts files added or changed in this
-> series.
->
-> Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-> are fixed by another series. Ultimately, it is up to the platform
-> maintainer whether these warnings are acceptable or not. No need to reply
-> unless the platform maintainer has comments.
->
-> If you already ran DT checks and didn't see these error(s), then
-> make sure dt-schema is up to date:
->
->   pip3 install dtschema --upgrade
->
->
-> New warnings running 'make CHECK_DTBS=y freescale/imx8qxp-mek.dtb' for 20240930212604.118756-1-Frank.Li@nxp.com:
->
-> arch/arm64/boot/dts/freescale/imx8qxp-mek.dtb: usbphy@5b100000: 'nxp,sim' is a required property
-> 	from schema $id: http://devicetree.org/schemas/phy/fsl,mxs-usbphy.yaml#
->
->
->
->
->
+url:    https://github.com/intel-lab-lkp/linux/commits/Wei-Fang/dt-bindings-net-add-compatible-string-for-i-MX95-EMDIO/20241017-160848
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20241017074637.1265584-7-wei.fang%40nxp.com
+patch subject: [PATCH v3 net-next 06/13] net: enetc: build enetc_pf_common.c as a separate module
+config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20241019/202410190431.wiCDZy8G-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 14.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241019/202410190431.wiCDZy8G-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410190431.wiCDZy8G-lkp@intel.com/
+
+All errors (new ones prefixed by >>, old ones prefixed by <<):
+
+ERROR: modpost: "__delay" [drivers/net/mdio/mdio-cavium.ko] undefined!
+>> ERROR: modpost: "enetc_set_ethtool_ops" [drivers/net/ethernet/freescale/enetc/nxp-enetc-pf-common.ko] undefined!
+ERROR: modpost: "devm_of_clk_add_hw_provider" [drivers/media/i2c/tc358746.ko] undefined!
+ERROR: modpost: "devm_clk_hw_register" [drivers/media/i2c/tc358746.ko] undefined!
+ERROR: modpost: "of_clk_hw_simple_get" [drivers/media/i2c/tc358746.ko] undefined!
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
