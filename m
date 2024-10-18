@@ -1,99 +1,131 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from finn.localdomain (finn.gateworks.com [108.161.129.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 478C81DF26C
-	for <imx@lists.linux.dev>; Fri, 18 Oct 2024 16:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD1620262E;
+	Fri, 18 Oct 2024 17:36:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=108.161.129.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729267559; cv=none; b=nZdj2vK7RBgZOAmGL2gEB4w3htAb6sTPOyCZzhdH6ytMvaQLnHrEtnmvFMEIa6e2F0SrEPvINlAi2y22PrRGR9TgipNV5gkFDWquUtTYAMTrsmWwE5NQhL87xO36zlUdKh3nyiOWeYV32WxaH6Wc8TchcoLVcqjGDKWEJxCea9o=
+	t=1729272978; cv=none; b=PZj2tm0hGqNU7wRCr9w5JeZchY3NaHDhtQs/4f1qOjDFcmFW6CXEpo6NM8QEP4rE+BZ8QfKI7NAdWbpo9EyZR7uYCmQPbCySpBLHy5UhqU7i9FOCQvfcyg6ivUtgnIqW1rcaNePFIu8CGo6Vq/gzcUwLoYjXEo3fX0QPOiD6RN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729267559; c=relaxed/simple;
-	bh=QCypCPA1T95iwk3UdXBpT27F7o85oRluEEm4OPgylck=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lFiT391KzQvgtLCG6w/87nCxMDNBsawbgJCOV68ZaKzBB1vCDWaBfcyRRDnekXt1ccMr84SMzA0gwkwWaBsnmxo3JOrfA9NLpoU0HlOezNLwXUAc4oeEYm1lvqnnDCXWp/60V21WP2FAN1qz+BTT2ogrVreqTqmP/X3Bnkpe5FM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rxfEHdN1; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rxfEHdN1"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-539e8586b53so2807760e87.1
-        for <imx@lists.linux.dev>; Fri, 18 Oct 2024 09:05:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729267555; x=1729872355; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0wYEvLE5AoTVEsvqBPjLtagcoJbMeHJO2qbYoBljMjc=;
-        b=rxfEHdN1/P8sQh16O8S1lfKa+oQ2pUFqjzq0cbDr7naOwc33KkJjdzcdvOax+sZhSP
-         jbiqFSWD76CrCcEuWCYGB/IRYKvxt7AaLnSXCH2vi69XO3hq9UcLriQP6RTNeo74/jmo
-         dLSvxZ489aSnwnNL5lo56QO4UGDlmdfkY6zdePOxWQLFphSfw28cs8YOeQRcO9cEFOZc
-         uYutdVAs16WAwVBqesce2Vippihvfc13pOFdPCvQf88kmROnpqWnFJXBXnFqI0REwvCb
-         IDSaRBA8sPJeJXjIds/r1IasdUYl7tlLScO99AAVvuskf+GIIHih+kR7uH1IuHYx8qVs
-         kjQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729267555; x=1729872355;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0wYEvLE5AoTVEsvqBPjLtagcoJbMeHJO2qbYoBljMjc=;
-        b=aH5mMM/FL2RLsxRNGJSXPM5jenpUQRALh/dVYOlFYAoH4lwifcWh8rVOXcaV0J+uu8
-         2a+6dcuqs0S0VagphAvhRBHAx/ShMRF/EbSDG/Jjy/2tRNpWQM79sF3iEyMk1Y3pHwhf
-         FO2Cv6audQajyQZqU/069j8kM/Cfns9PsiDn5rkSk6lWlMm4Yx1gLGhyvXsF+jmjF26b
-         r/BH1TYdH842L/bRicg+i2Yw1vXIqKOsBYZIWtpurHJDGseA3geDavfAoPUxVmy8j0JW
-         T5J3mJE9mwAoEyGcQaQeU986VG5tT8sRFB75imA/muPE9TQrV8DRvr6yvDb3L+287nDe
-         msjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXEXt3ahC2uPEoRm9v03O9Gb7p7A4UWq5b/DESSejSgRAF+Arj2DZp4lWtlds676uDw0y8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzMhmjohC3Ekw42n1MWM9VaUbZj0RlSEnVNDUZmI0/OBOprpxB8
-	m8POXRXBe9ivKevG51Q+b31x2RFlpwuDyWvPjwcPMuMnQRkU+bbJFrNhMO51JSs=
-X-Google-Smtp-Source: AGHT+IFjhdbJ7YZZcyfL2UU7JQ9UyXrDu19ycBJ6CNiQ0dGXU9v10DHjdks2qgl0GgCmrtOLG2ajIA==
-X-Received: by 2002:a05:6512:33cb:b0:52f:1b08:d2d8 with SMTP id 2adb3069b0e04-53a15844da5mr947314e87.7.1729267555106;
-        Fri, 18 Oct 2024 09:05:55 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53a152044b8sm251517e87.221.2024.10.18.09.05.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Oct 2024 09:05:53 -0700 (PDT)
-Date: Fri, 18 Oct 2024 19:05:51 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: Liu Ying <victor.liu@nxp.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Arnd Bergmann <arnd@arndb.de>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
-	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] drm/imx: legacy-bridge: add MODULE_DESCRIPTION
-Message-ID: <7ppx4rpyxrsr7spzopocv2hojwzxivojfpc2ze4leippuvvrj5@drhmfqmajzrp>
-References: <20241015073004.4066457-1-arnd@kernel.org>
- <20241015073004.4066457-2-arnd@kernel.org>
+	s=arc-20240116; t=1729272978; c=relaxed/simple;
+	bh=cpjtLhNwKyFaaIwtnbQjoebKf3gL8XG9kk/gIxRT7y0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HPqXTdWWzGdE4JwfPG8E2ffVY8Pd0SMhQMQ5s06GqRNJjdks3yUwDRRBhZNMeoR4pwnWJBqdy6yV9wC6JLyRJBGw6R8MjF2LvjTSfTR9fAfmNp2kZ/Ul3pDCEu7Jrmo8uZSMy3ef/t+Ouy9u7D/PtaivbSdGRLRq26PbqKNx3Aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; arc=none smtp.client-ip=108.161.129.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
+Received: from syn-068-189-091-139.biz.spectrum.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
+	by finn.localdomain with esmtp (Exim 4.95)
+	(envelope-from <tharvey@gateworks.com>)
+	id 1t1qtW-0013O1-L2;
+	Fri, 18 Oct 2024 17:36:10 +0000
+From: Tim Harvey <tharvey@gateworks.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Li Yang <leoyang.li@nxp.com>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: Tim Harvey <tharvey@gateworks.com>
+Subject: [PATCH v3] arm64: dts: imx8m*-venice-gw75xx: add Accelerometer device
+Date: Fri, 18 Oct 2024 10:36:08 -0700
+Message-Id: <20241018173608.810073-1-tharvey@gateworks.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241015073004.4066457-2-arnd@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 15, 2024 at 07:29:58AM +0000, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> Every module should have a description, without this we get a
-> build time warning.
-> 
-> Fixes: cc3e8a216d6b ("drm/imx: add internal bridge handling display-timings DT node")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
+The GW75xx has a LIS2DE12TR 3-axis accelerometer on the I2C bus with an
+interrupt pin. Add it to the device-tree.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+----
+v3: move reg directly after compatible and before pinctrl
+v2: make sure compatible is on top and vendor specific props are at the
+    end per:
+    https://docs.kernel.org/devicetree/bindings/dts-coding-style.html
+---
+ .../boot/dts/freescale/imx8mm-venice-gw75xx.dtsi | 16 ++++++++++++++++
+ .../boot/dts/freescale/imx8mp-venice-gw75xx.dtsi | 16 ++++++++++++++++
+ 2 files changed, 32 insertions(+)
 
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw75xx.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw75xx.dtsi
+index 5eb92005195c..53004c4a13aa 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw75xx.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw75xx.dtsi
+@@ -116,6 +116,16 @@ &i2c2 {
+ 	pinctrl-0 = <&pinctrl_i2c2>;
+ 	status = "okay";
+ 
++	accelerometer@19 {
++		compatible = "st,lis2de12";
++		reg = <0x19>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_accel>;
++		interrupt-parent = <&gpio5>;
++		interrupts = <8 IRQ_TYPE_LEVEL_LOW>;
++		st,drdy-int-pin = <1>;
++	};
++
+ 	eeprom@52 {
+ 		compatible = "atmel,24c32";
+ 		reg = <0x52>;
+@@ -198,6 +208,12 @@ MX8MM_IOMUXC_SPDIF_RX_GPIO5_IO4		0x40000040 /* GPIOC */
+ 		>;
+ 	};
+ 
++	pinctrl_accel: accelgrp {
++		fsl,pins = <
++			MX8MM_IOMUXC_ECSPI1_MISO_GPIO5_IO8	0x159
++		>;
++	};
++
+ 	pinctrl_gpio_leds: gpioledgrp {
+ 		fsl,pins = <
+ 			MX8MM_IOMUXC_SAI1_RXFS_GPIO4_IO0	0x6	/* LEDG */
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw75xx.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw75xx.dtsi
+index 0d40cb0f05f6..f90b293c85fc 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw75xx.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw75xx.dtsi
+@@ -104,6 +104,16 @@ &i2c2 {
+ 	pinctrl-0 = <&pinctrl_i2c2>;
+ 	status = "okay";
+ 
++	accelerometer@19 {
++		compatible = "st,lis2de12";
++		reg = <0x19>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_accel>;
++		interrupt-parent = <&gpio5>;
++		interrupts = <8 IRQ_TYPE_LEVEL_LOW>;
++		st,drdy-int-pin = <1>;
++	};
++
+ 	eeprom@52 {
+ 		compatible = "atmel,24c32";
+ 		reg = <0x52>;
+@@ -204,6 +214,12 @@ MX8MP_IOMUXC_SAI3_RXFS__GPIO4_IO28	0x40000106 /* PCI_WDIS# */
+ 		>;
+ 	};
+ 
++	pinctrl_accel: accelgrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_ECSPI1_MISO__GPIO5_IO08	0x159
++		>;
++	};
++
+ 	pinctrl_gpio_leds: gpioledgrp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_SAI2_RXC__GPIO4_IO22	0x6	/* LEDG */
 -- 
-With best wishes
-Dmitry
+2.25.1
+
