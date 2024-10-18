@@ -1,104 +1,93 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C905218990C;
-	Fri, 18 Oct 2024 21:10:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E73013A244
+	for <imx@lists.linux.dev>; Fri, 18 Oct 2024 21:13:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729285811; cv=none; b=XZ7B3s2F82906VDpAUmizgkNSbfNUhvPPpRmgQ+aI/dFzqWKPjy90bFeGgvJc47ZF6sV8//qVatXB9Nl7sli6afoqVVWx1SLCbPVm88JU59I4L8Z3VksNLGtWYp1Do15ofG4PRgWP64EwywLe+0h3HECkXHDjsEeN9kutJVyA2M=
+	t=1729286003; cv=none; b=ulChZ0fi+9pvqF7m29REXTHZBVqoN5aAPCqoWtJoJJdiFmIuD62uiU3SbtwkTRCj3jVvD9/KnTcsMI6OumHmvV1gR9NqsocGraphZ7j0qDry2DNtZ/oxWfJN5oK0OLc9TnvX+p5ijAOsIoN6stJT1wHyyheZoQ37512ghabnBNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729285811; c=relaxed/simple;
-	bh=hQ0DG6/Eb3j0prKHYX364xskTLEd+9vKpIg1xcOPcDw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kxxOBegOZrX3Dfm9/r/tfspMHt2SJNwdCgDvIwFEoOhgXXqbBXrqpY7hmhp5kAenC/djxkZ4wiOzPti2U/Rt06Fg6xPI14dfyhVbH8iyu+TlXYCotDbIVqldYCH0SNvrKG/pawp8F8uLPiDi2PfvtxmzEyinmNzyP41xVgbbBSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GCC/aZR8; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1729286003; c=relaxed/simple;
+	bh=c3tp8WEfTQg96L+JmiTzQuNoT8H1hD7dHZSz1KNVVKs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=auZAlv2sVFfPq4cDdeoIaZME5F+cixw9MPE3U34sSV691bm8HzzToKuqc2EuM9vjdZpFr5wedJRNrSE4njPfrgo9uokLRb1Sy1qSzAZKFeB8ObTmss1HjyYFUORj7iJG8kJboI8b4RSescXSHfmJc97m97h1jtHE2NGJSVm2gS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cKxIS/SA; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GCC/aZR8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729285809; x=1760821809;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=hQ0DG6/Eb3j0prKHYX364xskTLEd+9vKpIg1xcOPcDw=;
-  b=GCC/aZR8vwcft9DKreLN/fmFJWkpkZJFH67WpSDHNksW/CR04ZaKyeWL
-   XtoZtoCtFYtmcegKvkavN+KJGVxCjzqAhdXbd+IOOezcGUxYRgKG+kMbb
-   xQAYv8nfmcqKBuL0PvyKpfNP6vX9UeHUun1IeLr+j7jsejyAHejBEg/tT
-   s16Q+FTgxKC0wfRkNfHwQWmF7NPSlPljsyZ789mZrfGKSamDYzSLkMm8y
-   KtP6Yza+q5j5uz+ift8Tp9tKB45O2JaoAIcvYkYlpHFTGrcFA2Cp6MUp4
-   QCHIHtEr9tqwvVvFf4T9CQFxMMesDXYZZQ5B3/anHpvfvyAoXOs6vFg0M
-   Q==;
-X-CSE-ConnectionGUID: f/RywqOSTq6OMnvxWDTopQ==
-X-CSE-MsgGUID: by2L74I2QvuZHPe6s4w4HA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28993133"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="28993133"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2024 14:10:08 -0700
-X-CSE-ConnectionGUID: dr8iIfhTSkuHbpup6ssh2A==
-X-CSE-MsgGUID: zkUFIu82SCqVszaErv+rJw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,214,1725346800"; 
-   d="scan'208";a="78938262"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 18 Oct 2024 14:10:02 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t1uES-000OJS-0e;
-	Fri, 18 Oct 2024 21:10:00 +0000
-Date: Sat, 19 Oct 2024 05:09:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: Wei Fang <wei.fang@nxp.com>, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, vladimir.oltean@nxp.com,
-	claudiu.manoil@nxp.com, xiaoning.wang@nxp.com, Frank.Li@nxp.com,
-	christophe.leroy@csgroup.eu, linux@armlinux.org.uk,
-	bhelgaas@google.com, horms@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, imx@lists.linux.dev,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v3 net-next 06/13] net: enetc: build enetc_pf_common.c as
- a separate module
-Message-ID: <202410190431.wiCDZy8G-lkp@intel.com>
-References: <20241017074637.1265584-7-wei.fang@nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cKxIS/SA"
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-53a097aa3daso2614984e87.1
+        for <imx@lists.linux.dev>; Fri, 18 Oct 2024 14:13:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729286000; x=1729890800; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T4x7ryulF+Xq2OWl3XXy8Jt9zfrfW6IZJJuqxol9fSc=;
+        b=cKxIS/SACV2Vy2j61YFz7WltQ/Pwq996AUiASDoLz3LqkegK5hA3rfp+jCALJgTxph
+         uyckDrfqXJz30oRLTA4m/LdeV6kBs2K8SYzVdmulJfrTFJpaZupYWVJSNE6JSwb8nB3I
+         T4K9DthjbD/1gC1/iM5Ioc7QbKJba/AZBOy/5ckdvFgiYIEDRsy8HsqIJAiKAq6RbzCC
+         6vAfTEiOEFr44b984YxCojFvsOAt2msuwdSLTSRy9lYtlXGdRSRcGNNYKwaLUxOuXDEJ
+         +fcEbjKC/FZBXWeDB4B1I+ad/FlUo5b73MCVLk3NZOYRJgizsPRpZ2eTWnkWhihJpoqL
+         4IkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729286000; x=1729890800;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=T4x7ryulF+Xq2OWl3XXy8Jt9zfrfW6IZJJuqxol9fSc=;
+        b=nKp3JTX8hj7xdY0CiA8ngBx5eBkAJ19J6P1YRc/j83XELLIV4/B6q6cpFFdO7YoXtm
+         Ws7MwzhWzI6KInTGc9p5NcM/U5T1VJWf4bp0nN7A4zyNANB7nkG5IfM5FNdQv4QoC8oa
+         AsDbVy6LO27DyGIO9d5l1iq64GoKoCYNsMKj4NNCfyANyjc35V2XLMNhqI44VQkn4vsY
+         KC2YmBzO69upSun1gm873UBzBja3GZiaJF47px6TWHnfKE4RjP6gppUyYKNLkwhmonKc
+         eG+ncGR1NCT57ic1qBkXaSY/Vtxm7GO86BOSIULSYCSF/LMHnvzkeFEZvVATx3eJfXc6
+         z8Ng==
+X-Forwarded-Encrypted: i=1; AJvYcCV0qnM3UMea0LtR3hm4VgXF8/gzLrpyk2Ja6JxPQw60NjIiRmXi9zH11lIssr6pCf0eiXQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzMX8/u7iHo9GfZrg+7l5f24z4QLIfavT3yW6Vm0+fKSu/EJ8pr
+	XhqH9vJrOryhlBNdz/n6wOnVK7QwBPM8Y7sd8YMdifrFJH8EJAe0Kk+IZDeRMThcHmYx0JpO/aF
+	ZSv0jo5b+QQpJ8L+SckVigmzpBpY=
+X-Google-Smtp-Source: AGHT+IEErlKXWoPM1xS28jgh1kUWgN6OFYJM9ESE/RBdz6vaFn0+yNR0nyqNLewi/Mv0WXUwP/askR+vNF7ulEFp5Fo=
+X-Received: by 2002:a05:6512:104f:b0:538:9efb:dbe4 with SMTP id
+ 2adb3069b0e04-53a15449685mr2238300e87.46.1729285999322; Fri, 18 Oct 2024
+ 14:13:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241017074637.1265584-7-wei.fang@nxp.com>
+References: <ZxK1yAZkJOTQN++s@lizhi-Precision-Tower-5810>
+In-Reply-To: <ZxK1yAZkJOTQN++s@lizhi-Precision-Tower-5810>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Fri, 18 Oct 2024 18:13:07 -0300
+Message-ID: <CAOMZO5AcyVeq8TN9qK=_54gP6y_rrCLjh22LnA=E6pLnxjbpNw@mail.gmail.com>
+Subject: Re: panel-lvds for imx8mm-verdin boards
+To: Frank Li <Frank.li@nxp.com>, Francesco Dolcini <francesco.dolcini@toradex.com>
+Cc: marcel.ziswiler@toradex.com, imx@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Wei,
+Adding Francesco.
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on net-next/main]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Wei-Fang/dt-bindings-net-add-compatible-string-for-i-MX95-EMDIO/20241017-160848
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20241017074637.1265584-7-wei.fang%40nxp.com
-patch subject: [PATCH v3 net-next 06/13] net: enetc: build enetc_pf_common.c as a separate module
-config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20241019/202410190431.wiCDZy8G-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 14.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241019/202410190431.wiCDZy8G-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410190431.wiCDZy8G-lkp@intel.com/
-
-All errors (new ones prefixed by >>, old ones prefixed by <<):
-
-ERROR: modpost: "__delay" [drivers/net/mdio/mdio-cavium.ko] undefined!
->> ERROR: modpost: "enetc_set_ethtool_ops" [drivers/net/ethernet/freescale/enetc/nxp-enetc-pf-common.ko] undefined!
-ERROR: modpost: "devm_of_clk_add_hw_provider" [drivers/media/i2c/tc358746.ko] undefined!
-ERROR: modpost: "devm_clk_hw_register" [drivers/media/i2c/tc358746.ko] undefined!
-ERROR: modpost: "of_clk_hw_simple_get" [drivers/media/i2c/tc358746.ko] undefined!
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+On Fri, Oct 18, 2024 at 4:24=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
+>
+> There are some dtb check warning
+>
+> arch/arm64/boot/dts/freescale/imx8mm-mx8menlo.dtb: panel-lvds: compatible=
+:0: 'panel-lvds' is not one of ['admatec,9904379', 'auo,b101ew05', 'chunghw=
+a,claa070wp03xg', 'edt,etml0700z9ndha', 'hannstar,hsd101pww2', 'hydis,hv070=
+wx2-1e0', 'jenson,bl-jt60050-01a', 'tbs,a711-panel']
+>
+> Can you help add actual pannel-lvds compatible string to clean up these
+> warning?
+>
+> Over 50 lines warning related this one.
+>
+> next-20241018, all warning under arm64 freescale is 814. My local tree
+> is about 138 line.
+>
+> If you can help fix this warning,  It should reduce to below to 100 line
+> warnings.
+>
+> Frank
+>
