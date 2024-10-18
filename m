@@ -1,199 +1,160 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB401878
-	for <imx@lists.linux.dev>; Fri, 18 Oct 2024 11:39:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BE3E573
+	for <imx@lists.linux.dev>; Fri, 18 Oct 2024 12:15:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729251564; cv=none; b=epAss6/tIkBT8z3P/oswlPGHit2e7nXL5Zd2DoenDRR8Nnq12Ul9LMfRId0AhzsSxuAz2ekYeBcaboCwAZJBos+FiEokPD1P/76bdLCAPD4vXM7wKJkRMs00hzfFwC1z5SnngahjvSAnTcoQvTWDVSDwidzG9vzJx8yhI980MlE=
+	t=1729253709; cv=none; b=cHRA/xIW7vgSe5KiytFjarV6UlCEEaqWsjT1+Is7XvJZClyRsTtluFrD32yPTYORzD8RGmImfNPs+oKcg4ZsBtx2Mndog+/g8nxqjRFQY1ui2A5M8l7SzSSvlDUcNDX65iZmPGUc15+JWzrwEth5Dri6ZA1TEPWx+IBVHVQTTkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729251564; c=relaxed/simple;
-	bh=Rwphs5qi5S1XzQ4OWSmFTarZA+fNuWErHOY/vR7cDzM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FqNZr8H8eM0o3IrhYCIAA4l/aH7nOZrhApn6AFpmGFYRsBhkINNy+pOjiw7Qdm0nZWKM/flyWCRGWB1NPOv7SsxATImwZyoNrg342nRFquRxlknVJFCuxpVejQ3aXZ9xNoN/phTcThZ/9b5Iirbb6oPIFB21PMaC1vfeXwvhyF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=c+Cc5+R3; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=qiLznpSu reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1729253709; c=relaxed/simple;
+	bh=now3J6G/3UbZHE/WU7lQXQuwfG3tyrUmFgArj673/oY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L4/sFMdeCsG1oJI7IAK9kE63Lb/tExkaWPTFZUOlMrLPfN6DOrcUroVxGbzbhFh7sPuM9nalsxxv2usiP/+rn4edS6FSRhpmD+AtXFcnzxT/TiockySrZ2yRA/sTl9EYzmEZibrSatTwY+PtzzNxExwl47xVdrac1K5+EGt0a2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CXFKe8kl; arc=none smtp.client-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="c+Cc5+R3";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="qiLznpSu"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CXFKe8kl"
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2fb388e64b0so21401331fa.0
+        for <imx@lists.linux.dev>; Fri, 18 Oct 2024 05:15:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1729251560; x=1760787560;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=IIQWDK07jPvUzisRnHdaspHYVQzk9bJrYJb1eqyhans=;
-  b=c+Cc5+R3Z3Gq5UGTAmULd0BU2yAJJk2OWHi6fXLeKZANPBcdpZYD0tcz
-   uDaRa8TvyBONEWUwMmN0rZZbXRPPWC9vxwvQHMlu2UxY36DeCsYSZ+3H9
-   DPt4bW4reUoAZ4P4rGW8qzcwxUXVUkyHy89afO6FRvxwuySk/D28SuqiP
-   TnRBVRmew6pXq95O+oQEBAxqErBB9J6hGjMbsTZ3OH3hzbxQdMVU0Ll/r
-   KROc8o9/AJThX9LJnnlLvHXkGa9sRLBSnG+ardpyWF3ISDdRFIVrzyUZs
-   FjMogq6JPDcy+Dcw9+RwQfIEVx/r/sds+AoRxu1eUNaHRSo7AbZZk41DA
-   A==;
-X-CSE-ConnectionGUID: LfXkwjYRSVuTYfD3twpHWg==
-X-CSE-MsgGUID: QTkz3N6uRJKx8nYMqH3iXw==
-X-IronPort-AV: E=Sophos;i="6.11,213,1725314400"; 
-   d="scan'208";a="39542041"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 18 Oct 2024 13:39:17 +0200
-X-CheckPoint: {671248E5-28-21611FC3-DAD22B0C}
-X-MAIL-CPID: 9F6785E2A16242C205A18BDDCAE8529D_4
-X-Control-Analysis: str=0001.0A682F19.671248E6.0003,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BEDDA16006D;
-	Fri, 18 Oct 2024 13:39:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1729251553;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=IIQWDK07jPvUzisRnHdaspHYVQzk9bJrYJb1eqyhans=;
-	b=qiLznpSuavnpXEaldsfL7ZcfXTgINywoO/R9IVRztdyafx51bURrJCjjgD/IKBaD1yz7bp
-	Tkjp8ReZz7u4oxExxp7GASKSqRZIZ+M1HftSk0Ulpzq5GK/i3HgaJejQ5g/SJuJ1KERuKh
-	2/anYtLvhu3/neYyVdfTEcfTUMBMgpXn9zbLzzRTZiSYzHNXBv44N/99o5q4+LF5Dcmt4d
-	FDLAMJVsoCRLzaF3mtHp/U1OwiAA9hmg5nRNslN5TcVV0bz1Md8FauMVSGFT4lb5iVQXdq
-	yM360OCiCRd54g1jTXmFkpPN9L+KNzQrOTl+2HncZHwNWTVCt7uke5z6D3sQvA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Frank Li <frank.li@nxp.com>, Wei Fang <wei.fang@nxp.com>
-Cc: "davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>, "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, Vladimir Oltean <vladimir.oltean@nxp.com>, Claudiu Manoil <claudiu.manoil@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, "christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>, "bhelgaas@google.com" <bhelgaas@google.com>, "horms@kernel.org" <horms@kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v3 net-next 02/13] dt-bindings: net: add i.MX95 ENETC support
-Date: Fri, 18 Oct 2024 13:39:10 +0200
-Message-ID: <9407049.rMLUfLXkoz@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <PAXPR04MB8510B252A7EDE73B2E1F00BD88402@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20241017074637.1265584-1-wei.fang@nxp.com> <3657116.R56niFO833@steina-w> <PAXPR04MB8510B252A7EDE73B2E1F00BD88402@PAXPR04MB8510.eurprd04.prod.outlook.com>
+        d=linaro.org; s=google; t=1729253706; x=1729858506; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QjL3pHhlawZmked9cDer2cCqaq7RfeznftLlGVpNcgU=;
+        b=CXFKe8klltNQHxdrjWq1taZRw+obuily6AqV7oJqpiI2jADm4zfle2Rc4OTHYc2sW2
+         oKxFedqilkYQZJnlXPeleGYLdnz8IkuqreiSqXKqdK+RRThU2wLmFYZBc4JktsVvr6f4
+         KwvUkKPWYR02as5a7EPvp+C60iyHFpxPV/vhB7Fbt7+kzBFmTwY20vCuZ3T77XHIhOdy
+         q2MQxCtP4f3Xx3CeaHgSdDqN3duD5A+ScW5BJXD3UMvzSY004a+nIoq6GSt2/nA2U3Gi
+         LMIZy9fYsofWkUcuzlxZWLEbaiRFzdpuSuQlm2Ln4pS+dsSaohwvwjZSeXVW2NMX4UVN
+         Y90w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729253706; x=1729858506;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QjL3pHhlawZmked9cDer2cCqaq7RfeznftLlGVpNcgU=;
+        b=T1e/S8+NfAsREoSh6WE6f0zWNFY6a20X4cMcMZWvNEm1hoH9Yom2PdbGPmMuSA7ngs
+         HYJTsTpU/3OQ8qvogdLICDqYa1vZaVaGpICo829KaIQeP28Dr365m4xaeJEZqIpWgB+U
+         MXYnxQLbiTMr0pJFzcvY0aRkAUcYFOhLwAMIw0Laqv4naQ4OPLGYvZ1wuXf2Av2LQVqI
+         OspMH5ZgGNpHVoMFGqEAz9q8bI8P6RduNPrmTPyU89FIAtvxriz57k7vIs/Vmi2ORbOY
+         ThsLmGE8+oekcPrPMoZ3R1Z8OzNbdLCKmNFohBjLxbv6lJy/WUWTAn0rGreYVU6A/+dc
+         SR2w==
+X-Forwarded-Encrypted: i=1; AJvYcCW4KG+gx5DE8i1Vf2RO9GwnaMAGxgMP6TNvhNfviDh392185WOQHckRQhQUPms/BZs93Ks=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzYt4uaJ26fSMZnmW7VTVMLvVM0wvwaiheaFQFcSBakBsd7YRCa
+	l6yGDIBLSXNmvfjvWhggPy8tTkiz1O2xjjnGGSyvsT+TvYTZDW2fmn6WIUsfjdQ=
+X-Google-Smtp-Source: AGHT+IF5eDKvPUdoitD+7fdWywacF4U/7oQTrEfnwaNWZvVwt8eJAqa0dkV02VzR/63JN4AWDeU6JA==
+X-Received: by 2002:a05:651c:b13:b0:2fb:569a:553d with SMTP id 38308e7fff4ca-2fb8323b1fdmr11544041fa.42.1729253705640;
+        Fri, 18 Oct 2024 05:15:05 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2fb809f9b62sm2015311fa.96.2024.10.18.05.15.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Oct 2024 05:15:04 -0700 (PDT)
+Date: Fri, 18 Oct 2024 15:15:01 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org, 
+	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com, 
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, 
+	simona@ffwll.ch, marex@denx.de, stefan@agner.ch
+Subject: Re: [PATCH 5/5] drm: lcdif: Use drm_bridge_connector
+Message-ID: <7isauhmti3vtyseanqveizlhrwmg2iade6kixhhx27edfk4bbm@yj4mekgbvpj4>
+References: <20241018064813.2750016-1-victor.liu@nxp.com>
+ <20241018064813.2750016-6-victor.liu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241018064813.2750016-6-victor.liu@nxp.com>
 
-Hi,
+On Fri, Oct 18, 2024 at 02:48:13PM +0800, Liu Ying wrote:
+> Initialize a connector by calling drm_bridge_connector_init() for
+> each encoder so that down stream bridge drivers don't need to create
+> connectors any more.
+> 
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> ---
+>  drivers/gpu/drm/mxsfb/Kconfig     |  1 +
+>  drivers/gpu/drm/mxsfb/lcdif_drv.c | 17 ++++++++++++++++-
+>  2 files changed, 17 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/mxsfb/Kconfig b/drivers/gpu/drm/mxsfb/Kconfig
+> index 264e74f45554..06c95e556380 100644
+> --- a/drivers/gpu/drm/mxsfb/Kconfig
+> +++ b/drivers/gpu/drm/mxsfb/Kconfig
+> @@ -27,6 +27,7 @@ config DRM_IMX_LCDIF
+>  	depends on DRM && OF
+>  	depends on COMMON_CLK
+>  	depends on ARCH_MXC || COMPILE_TEST
+> +	select DRM_BRIDGE_CONNECTOR
+>  	select DRM_CLIENT_SELECTION
 
-Am Freitag, 18. Oktober 2024, 09:50:43 CEST schrieb Wei Fang:
-> > -----Original Message-----
-> > From: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > Sent: 2024=E5=B9=B410=E6=9C=8818=E6=97=A5 14:53
-> > To: Frank Li <frank.li@nxp.com>; Wei Fang <wei.fang@nxp.com>
-> > Cc: davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
-> > pabeni@redhat.com; robh@kernel.org; krzk+dt@kernel.org;
-> > conor+dt@kernel.org; Vladimir Oltean <vladimir.oltean@nxp.com>; Claudiu
-> > Manoil <claudiu.manoil@nxp.com>; Clark Wang <xiaoning.wang@nxp.com>;
-> > christophe.leroy@csgroup.eu; linux@armlinux.org.uk; bhelgaas@google.com;
-> > horms@kernel.org; imx@lists.linux.dev; netdev@vger.kernel.org;
-> > devicetree@vger.kernel.org; linux-kernel@vger.kernel.org;
-> > linux-pci@vger.kernel.org
-> > Subject: Re: [PATCH v3 net-next 02/13] dt-bindings: net: add i.MX95 ENE=
-TC
-> > support
-> >=20
-> > Hi,
-> >=20
-> > Am Freitag, 18. Oktober 2024, 03:20:55 CEST schrieb Wei Fang:
-> > > > -----Original Message-----
-> > > > From: Frank Li <frank.li@nxp.com>
-> > > > Sent: 2024=E5=B9=B410=E6=9C=8818=E6=97=A5 0:23
-> > > > To: Wei Fang <wei.fang@nxp.com>
-> > > > Cc: davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
-> > > > pabeni@redhat.com; robh@kernel.org; krzk+dt@kernel.org;
-> > > > conor+dt@kernel.org; Vladimir Oltean <vladimir.oltean@nxp.com>;
-> > > > conor+Claudiu
-> > > > Manoil <claudiu.manoil@nxp.com>; Clark Wang
-> > <xiaoning.wang@nxp.com>;
-> > > > christophe.leroy@csgroup.eu; linux@armlinux.org.uk;
-> > > > bhelgaas@google.com; horms@kernel.org; imx@lists.linux.dev;
-> > > > netdev@vger.kernel.org; devicetree@vger.kernel.org;
-> > > > linux-kernel@vger.kernel.org; linux-pci@vger.kernel.org
-> > > > Subject: Re: [PATCH v3 net-next 02/13] dt-bindings: net: add i.MX95
-> > > > ENETC support
-> > > >
-> > > > On Thu, Oct 17, 2024 at 03:46:26PM +0800, Wei Fang wrote:
-> > > > > The ENETC of i.MX95 has been upgraded to revision 4.1, and the
-> > > > > vendor ID and device ID have also changed, so add the new
-> > > > > compatible strings for i.MX95 ENETC. In addition, i.MX95 supports
-> > > > > configuration of RGMII or RMII reference clock.
-> > > > >
-> > > > > Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> > > > > ---
-> > > > > v2: Remove "nxp,imx95-enetc" compatible string.
-> > > > > v3:
-> > > > > 1. Add restriction to "clcoks" and "clock-names" properties and
-> > > > > rename the clock, also remove the items from these two properties.
-> > > > > 2. Remove unnecessary items for "pci1131,e101" compatible string.
-> > > > > ---
-> > > > >  .../devicetree/bindings/net/fsl,enetc.yaml    | 22
-> > ++++++++++++++++---
-> > > > >  1 file changed, 19 insertions(+), 3 deletions(-)
-> > > > >
-> > > > > diff --git a/Documentation/devicetree/bindings/net/fsl,enetc.yaml
-> > > > > b/Documentation/devicetree/bindings/net/fsl,enetc.yaml
-> > > > > index e152c93998fe..e418c3e6e6b1 100644
-> > > > > --- a/Documentation/devicetree/bindings/net/fsl,enetc.yaml
-> > > > > +++ b/Documentation/devicetree/bindings/net/fsl,enetc.yaml
-> > > > > @@ -20,10 +20,13 @@ maintainers:
-> > > > >
-> > > > >  properties:
-> > > > >    compatible:
-> > > > > -    items:
-> > > > > +    oneOf:
-> > > > > +      - items:
-> > > > > +          - enum:
-> > > > > +              - pci1957,e100
-> > > > > +          - const: fsl,enetc
-> > > > >        - enum:
-> > > > > -          - pci1957,e100
-> > > > > -      - const: fsl,enetc
-> > > > > +          - pci1131,e101
-> > > > >
-> > > > >    reg:
-> > > > >      maxItems: 1
-> > > > > @@ -40,6 +43,19 @@ required:
-> > > > >  allOf:
-> > > > >    - $ref: /schemas/pci/pci-device.yaml
-> > > > >    - $ref: ethernet-controller.yaml
-> > > > > +  - if:
-> > > > > +      properties:
-> > > > > +        compatible:
-> > > > > +          contains:
-> > > > > +            enum:
-> > > > > +              - pci1131,e101
-> > > > > +    then:
-> > > > > +      properties:
-> > > > > +        clocks:
-> > > > > +          maxItems: 1
-> > > > > +          description: MAC transmit/receiver reference clock
-> > > > > +        clock-names:
-> > > > > +          const: ref
-> > > >
-> > > > Did you run CHECK_DTBS for your dts file? clocks\clock-names should
-> > > > be under top 'properties" firstly. Then use 'if' restrict it. But I
-> > > > am not sure for that. only dt_binding_check is not enough because
-> > > > your example have not use clocks and clok-names.
-> > > >
-> > >
-> > > I have run dtbs_check and dt_binding_check in my local env. there were
-> > > no warnings and errors.
-> >=20
-> > Is there already the DT part somewhere? Do you mind sharing it?
-> >=20
-> I will prepare the DT patch when this series is applied. Below is my local
-> patch of imx95.dtsi. FYI.
-> > [snip]
+Missing `select DRM_DISPLAY_HELPER`. LGTM otherwise.
 
-Thanks for providing the DT patch. With this I was able to get ethernet
-running on my i.MX95 based board.
-Please keep me on CC if you send DT patch. Thanks.
+>  	select DRM_MXS
+>  	select DRM_KMS_HELPER
+> diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lcdif_drv.c
+> index 58ccad9c425d..d4521da6675e 100644
+> --- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
+> +++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
+> @@ -16,7 +16,9 @@
+>  
+>  #include <drm/drm_atomic_helper.h>
+>  #include <drm/drm_bridge.h>
+> +#include <drm/drm_bridge_connector.h>
+>  #include <drm/drm_client_setup.h>
+> +#include <drm/drm_connector.h>
+>  #include <drm/drm_drv.h>
+>  #include <drm/drm_encoder.h>
+>  #include <drm/drm_fbdev_dma.h>
+> @@ -56,6 +58,7 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
+>  		struct device_node *remote;
+>  		struct of_endpoint of_ep;
+>  		struct drm_encoder *encoder;
+> +		struct drm_connector *connector;
+>  
+>  		remote = of_graph_get_remote_port_parent(ep);
+>  		if (!of_device_is_available(remote)) {
+> @@ -97,13 +100,25 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
+>  			return ret;
+>  		}
+>  
+> -		ret = drm_bridge_attach(encoder, bridge, NULL, 0);
+> +		ret = drm_bridge_attach(encoder, bridge, NULL,
+> +					DRM_BRIDGE_ATTACH_NO_CONNECTOR);
+>  		if (ret) {
+>  			of_node_put(ep);
+>  			return dev_err_probe(dev, ret,
+>  					     "Failed to attach bridge for endpoint%u\n",
+>  					     of_ep.id);
+>  		}
+> +
+> +		connector = drm_bridge_connector_init(lcdif->drm, encoder);
+> +		if (IS_ERR(connector)) {
+> +			ret = PTR_ERR(connector);
+> +			dev_err(dev, "Failed to initialize bridge connector: %d\n",
+> +				ret);
+> +			of_node_put(ep);
+> +			return ret;
+> +		}
+> +
+> +		drm_connector_attach_encoder(connector, encoder);
+>  	}
+>  
+>  	return 0;
+> -- 
+> 2.34.1
+> 
 
-Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
-any
-Amtsgericht M=C3=BCnchen, HRB 105018
-Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
-neider
-http://www.tq-group.com/
-
-
+-- 
+With best wishes
+Dmitry
