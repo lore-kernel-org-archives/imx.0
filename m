@@ -1,235 +1,200 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2062.outbound.protection.outlook.com [40.107.249.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839E5168C3F;
-	Fri, 18 Oct 2024 06:27:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729232873; cv=none; b=CPt87KLY+KMY2tKVvFgdH7v9KK1HXADaI+k+9Yr/b6F5YPmxo15bVdBRPjq63n8rxbWa8krbSGzsV1eUpEE4hzG2Nbhcfh5+lygxdZyGrDqiLd89R07NBGofdRm13C3BPe6jEe7HGO4+SeOaLt+NKj8z4cet2bnAtGLotCvSD6E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729232873; c=relaxed/simple;
-	bh=3GSSLALAwUy7M5hozWs8dJRtWJVQG7LsIfxb144DR9k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bHqNPABifjlS3bxgCzI/EtN16xK6W0hRnSqiFmmGWGnCmeP+i52liMFSNG8flVdHX4KgvOmO5mtvaqU4YPeVunkgiJvF7G7QEuPOow8YE28iPATKlQv2E0mr4/Byx5fsY92ds27iTzmL4XpFIy1YrJ/0cTw+d2MSYI6WkUa4syk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9600C4CEC3;
-	Fri, 18 Oct 2024 06:27:49 +0000 (UTC)
-Message-ID: <6bde2e39-b422-490f-b3b1-142a5671e770@xs4all.nl>
-Date: Fri, 18 Oct 2024 08:27:48 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892D62905
+	for <imx@lists.linux.dev>; Fri, 18 Oct 2024 06:48:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.62
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729234085; cv=fail; b=j/ogeeTRChMljZ4xR18XCZ6dBHyGC5Nqp4H+XV5LHdsXb24VUFUozXbGzRewUe55k2lTsd6Jzu7Nmhd3gM7uScoqjYcS29OZImk5/05CcXOfjs4vp/mAU+aSL49pxqfAmw29SEivv4LZcrTDe1SSvrHLJo28Ayn9I3DU2vUWaYk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729234085; c=relaxed/simple;
+	bh=dGOPWUOyPDrJ61FV9sVffAAwMHlBxzDudROrnI/izrA=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=soEKYGAu7ykK3aH7VFcz7b1Ol0ftu3WWpDGZY0YPs4kVSiPncer9RBcBFp2ldbcxrWy/7zfWznDcZSm8GnPswqS0+fpNE4pBfv99BtH9+uIhnCnsLMK2ZcBIrYBgr0oHK+Q+KH8H2o130t1x/cYtY88yXIYkmlBJTpPq32mc97I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=fQoK3UVf; arc=fail smtp.client-ip=40.107.249.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="fQoK3UVf"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=s2xWl13tcf6jsJqwQbKqzo9IS4foeE4r6iaTPcd0szx4Va1fn2WF04onL/yvm23+OiOpefp1QS+qi0LJMb0K49sxedP5NeDb9kwj5+iKOpqDWwC9cI9ehkJw4NO9OjyVluOnk9HFyF/J+cO990VkVp5uTRgu7EqWORv/gMU/n6wDf8F2Hbtl5UiUjZhb1+pxfuugN1x9IkWjeoZqqrQwSgYpsqVpELmAzgCSylkDVQYvv4HBvhbqSrZBaHODP4Uya0pWAcJLe4o2qCwUvWJ8oM7+F8POM4TcWShLpSeg7hItsmsP/V82f0KHbnqw6qqVb94hxwdvurIxJDf/uucIgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ae6WsYwoEWAp7tiQJzLiju/EVhyX0deUjHBzWAv3ies=;
+ b=COb9vq1RT/ZI2bm5C4VKEYSli6rR0yre4u9j/ufqeP1j/PMvrqd0uX1DpT7qkxPDumsU79fC9Int0ng9AUm53cy5S3o0d1f8Nbe/gvuh+bLo4lheOfQfDXVlvjfoL6NTub8QqCx/cL0XNrWRrCgWeA0A8vSykbZ/bLUFvWbSjdS9tlqKEcFkRJCUI7mNxufU5q6EfVdIVOb2iYMq0QPsASejS+ceYYx/+PwZouP4ApJ9VkUQheos9lW8apoXL6ZJi/TyNm8/NOxAVmqlruNLqzMxDuTTn8q7o+oR1JqMD2eyXJLw/K11zQ/+EnykTb0n5AJ8f1br5DYIy+c/cBFepw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ae6WsYwoEWAp7tiQJzLiju/EVhyX0deUjHBzWAv3ies=;
+ b=fQoK3UVfU7pS06e8bbdg1kUfar1DVChf2UXUZXLudTKSwKYS36spHU9nbqJfwCpyDsX2e8upWxqW0BnRWOeZ2BnrM4ldE56kiBP7ygQQAAzHwiseJZkJhg8zqDGktPX6sbgX62hpMFOYm29hzowL3oq2VcYFgbGsLrMB+N/5gCE2cg5t5aytEgmrSM6ZSgOqTivOVcfccaDm2qATGrsnup8F6v3zvuwXzsNsAUv3ZmxrEUh7BI2bk7LiXr+XANrFM5f6SybY3NPrVBrpXlnZ1bIa1umlynHefw6bgvyht8/NlEGi8B3TwiJGZePwQCWusi+OtGByfFpDKmYSl0nJzw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by VI1PR04MB9787.eurprd04.prod.outlook.com (2603:10a6:800:1d8::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.18; Fri, 18 Oct
+ 2024 06:47:58 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90%4]) with mapi id 15.20.8069.020; Fri, 18 Oct 2024
+ 06:47:58 +0000
+From: Liu Ying <victor.liu@nxp.com>
+To: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Cc: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org,
+	rfoss@kernel.org,
+	Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se,
+	jernej.skrabec@gmail.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	marex@denx.de,
+	stefan@agner.ch,
+	dmitry.baryshkov@linaro.org
+Subject: [PATCH 0/5] drm: lcdif: Use drm_bridge_connector
+Date: Fri, 18 Oct 2024 14:48:08 +0800
+Message-Id: <20241018064813.2750016-1-victor.liu@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR04CA0204.apcprd04.prod.outlook.com
+ (2603:1096:4:187::16) To AM7PR04MB7046.eurprd04.prod.outlook.com
+ (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v2 5/6] media: v4l2-ctrls: Add video roi ctrls
-To: Ming Qian <ming.qian@nxp.com>, mchehab@kernel.org
-Cc: yunkec@google.com, nicolas@ndufresne.ca, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
- xiahong.bao@nxp.com, ming.zhou@nxp.com, eagle.zhou@nxp.com,
- tao.jiang_2@nxp.com, ming.qian@oss.nxp.com, imx@lists.linux.dev,
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-References: <20241018054448.3190423-1-ming.qian@nxp.com>
- <20241018054448.3190423-6-ming.qian@nxp.com>
-Content-Language: en-US, nl
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-In-Reply-To: <20241018054448.3190423-6-ming.qian@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|VI1PR04MB9787:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4e89dd10-96cd-4867-48b2-08dcef40ccd8
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|376014|7416014|366016|1800799024|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ =?us-ascii?Q?pWdAv3VDcjB2yMIYFhQ/Vqi0zbWQRJHlY2ghE4KDpp41iraP1xWOEIdI/yjN?=
+ =?us-ascii?Q?anURSp8P4ZDWv0ZMXpGC4p4wsMU+WmUnxH+3nkNOuBriUHeAgv9q1CO2xI5g?=
+ =?us-ascii?Q?0LHj2FxDM/X7xt56dCCC2Kegc+vb71b/mcAKMDx6Mu+X7zs87KrvG3haarnm?=
+ =?us-ascii?Q?6l8Lu8NQ/H1w0ardc8MiNJ8mN//vrF1YbPvrwl+SJTR+6tFPg18hMxKQku5f?=
+ =?us-ascii?Q?19mOZSSpR3/boIzGNrCeWs3lWNP2OiK+QTFU0pcNaUT3Nfi0YIPDFT2p3HU5?=
+ =?us-ascii?Q?7X6/LGktW17JtwLNJrZm3Dlx+U/DBuv3stpE0FUabTs5Aa1GaveGJ6wLoWsp?=
+ =?us-ascii?Q?Be07CJ4rhxoW4O1WA8Rb37V62QpnJQ+AZitb6ArUkMmtUFxyKhvxCrr4iVCi?=
+ =?us-ascii?Q?wL2wnkEIN801+cx7KNYTVnt1yUgVHxKoOWeH5lDYGX5j7N5qnKz+hl/XpJ62?=
+ =?us-ascii?Q?9paekdz1zhDUcKNhU0U+V7fZzDM2uNnMnhMIR7kIEdUa1xQuJTp9TadLNaSC?=
+ =?us-ascii?Q?eLPnR/3B7pQRis/9Db6PbxiTQEo9X8ANJ4S00S7a2h5WGCCif/2zYUzAKLpa?=
+ =?us-ascii?Q?KYd0WH6XoFLqJlZL7RlvRa3xd8oAOqVShLNdW9ZlxS7Tbwjzx7UT9NQ2kaLf?=
+ =?us-ascii?Q?urCgV7a4zJRH5O+yBgkXbMbR4ve7th8+1YUtzCQb19ZkKr87IEBVMTVMwQMu?=
+ =?us-ascii?Q?016CHpUmf3AyioHCGsEXArtiFZeSqeZZj27h+T4PeSEqRdVuTH+A86CJ1JPp?=
+ =?us-ascii?Q?udl/LvO/mVaJ+uiGZFaCCxICBxWu8JHvLPbCgblqlxKS/0Ei26+p8IqLbDrQ?=
+ =?us-ascii?Q?kcOwgByfarb9tC40NCJBcs/kCo4ZxV7+supPIOtLXwcolvubTCm2NsOuDERu?=
+ =?us-ascii?Q?wVaYva6cMEqnS4fQgwKrmP0oeD5xifP0oj1lrUtp7WGOXdSkuMW5hQf8u7ry?=
+ =?us-ascii?Q?hIIsQOu4PO02cK3E1FWJCJvYuz4Z3rjI1S3ks7InbeElNSbWYrN3nDkTqpqI?=
+ =?us-ascii?Q?rTi4LMdp3w1l/EZycSAzOU7VYczF3kBUYyAqL0gFRp2wHddVqljG+nlT/f6R?=
+ =?us-ascii?Q?/3swbctrwqzxI29CGWm9zk7ln4p/9v9p8B0/V2+QoHd/Tbpl6FWJkkl4h1R4?=
+ =?us-ascii?Q?74VYDyNJeb3eT1/Om0VLXqJF0ztjYatwyK5+r7R7T6CAHhpncKmnGljouCJ0?=
+ =?us-ascii?Q?6zi7lbQsgVGLTYhJgrnvgM9ut5g7AmgyDzShjcWbBYi6w6lXMVNqoBDrcn7+?=
+ =?us-ascii?Q?m4bgR+JBEPEUB9ejPITFsmMxtgPf9ziTbMP+jXr46P0MxSQIkZ0aJtc6AVDL?=
+ =?us-ascii?Q?Y2fLnUfzVw3Aev0a+8sLoCc4?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?B3i1dOdq/7O7njTvGoDWjGPPXF+ow010U54U7sC50hVZqyfD66PCuFAcKT80?=
+ =?us-ascii?Q?QwopwHkI9FOseT3vgXTyA+jxC/k3zaasQgqM3SXzjgiWYtSNNR9LDMqI/SSw?=
+ =?us-ascii?Q?BGZhSyRWeLRJ7Rd4G841c5TaLBpt7BE9//mW0pMtgl0b5bl08TNvtEwFIN84?=
+ =?us-ascii?Q?YinonhYIr24tIRz+sybpl3gJvyORbOvjxbmJ2BnIdlkw0J0u24z6iFVJdSSK?=
+ =?us-ascii?Q?u/svGxZLneKy0v1B7B2hcwtDoiEjsC2efI4UsIl0xhFkeAmFJlYm4uRzNnCd?=
+ =?us-ascii?Q?XroIfYX1jdsoB3a3tyglXc0dKI40Qx3bpbnEqk6LP5QkFjdX4DLOF90zv8yq?=
+ =?us-ascii?Q?/iwOaM+mur/mHLG7ErJdMpiJ6WOoAOAaTRcylHYMUXm+ecGCVJdA6D89oa3Q?=
+ =?us-ascii?Q?I8+zHN19xVBOQDyb/wn8/cWlugVx9UxDOSlifGE2h1mIQqH2W+gGCbLlY5w8?=
+ =?us-ascii?Q?D5ykExO5y6LU+f79JMnV549TuSVAUoDJ3Yvtvv6pnku/SwZXWlaXsarzIpCv?=
+ =?us-ascii?Q?AHWmJK56zv/OCOoYigDhYhSFarbg0zVNUBmdAOf6UmaWT0+5EMmaiXj34J28?=
+ =?us-ascii?Q?3XF6t+y5lyUayReknJ7CLxOzhld/NpW53ks3aFan2dkRzkHTUF6RekNoqWy2?=
+ =?us-ascii?Q?COTcIghk5yPOOoUGEWRrBqfMc3Jgppn/5BCafQi725BWAqzRHTfFMBA0yqzq?=
+ =?us-ascii?Q?xlRci/E6agbF1k6kGplJJiU1LtATK1EM1JCJffDgQAUCvLVf+8yCCeMdwPWy?=
+ =?us-ascii?Q?vRQzx7fPLqdq2gWGkRhOtuJVwwltqgsANuFiXzcTZXmotJmAbf9RPqrHoJLr?=
+ =?us-ascii?Q?oJw4EFCFgFXj4GlJKpGhvKkxnJoSLuO2NKdcRojLyZZ1TE6ZX3HPEJhm4a/V?=
+ =?us-ascii?Q?hWTgFPrWIT/6yTE0qOFB9+Y9at1eyrBVFblfaN4EDHLL+Rt8/fYpSuFG1qPx?=
+ =?us-ascii?Q?55JNOfHhYzzLY56vKszONkSrwgGsFQUR4kwuxMzkce46WwJhS9rg7hzE77DN?=
+ =?us-ascii?Q?1wtzdsQl59DLVtNIJiTrL3nKULbS9ieAlvHq0RsTV3iBw4i9IfWKQ7Z/bySx?=
+ =?us-ascii?Q?zgzaFOAzUtosfr29tZr+qZ7r3zVFFsZeeR3ilBFTnBo9l6Aw/6M4AGqD5RdA?=
+ =?us-ascii?Q?vFhwglaGLhWiHDTQxfeUYvyJx5X6o+0ODnj2ApYtHbdM7ZAV6xRNJVoMDmqN?=
+ =?us-ascii?Q?7SpKO6XzErW7aAPzqQMY14vAtZnQKwwl/5BC5UEHtWbwqEvZtTpJaLZG9hrJ?=
+ =?us-ascii?Q?5xpqvXnmsGRrVaImt3xZ8Cn6wKBP+/i8Hqg7tbjjMsKuBS575HJcgGPeIBQt?=
+ =?us-ascii?Q?CG26nriKLl587dVCE/8dqWiQLnAL4VVsnECfPttiUD/8JSduZEIlyuSeo0xS?=
+ =?us-ascii?Q?rdZHvNPsw4/naNB9SgTLs1joY0TFEoD8Fpzl8fc56eV3zkDRUKr+lJVXqs0w?=
+ =?us-ascii?Q?E0IVsz1YJUFqzhZ/Xyqc66Aq4Jis+jg/CAW16cSylDaoE1AsuWUg0cG2oYjC?=
+ =?us-ascii?Q?hY1EEiTF07ofrhgzEcnyTTG/kEOSnICQ5Ia83MXbB9s1Kc0K+uKikzoRl7Hc?=
+ =?us-ascii?Q?2Nau1g8bKKp8FR+QQLX4jptdM+X9A03CHzNNzLa0?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4e89dd10-96cd-4867-48b2-08dcef40ccd8
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Oct 2024 06:47:58.1754
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kIwZ8xq0V1f1t9Lu6eu2y5vQBKFJYhjWQO6/i+ka5Xe+lERbrsBEEOVAPoliLhm+cM6cT4LLTgR/1GvMWcjetw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9787
 
-On 18/10/2024 07:44, Ming Qian wrote:
-> Add some ctrls to support the video encoder ROI feature.
-> Support 2 encoder ROI configurations that are rectangular region and
-> QP map
-> 
-> Signed-off-by: Ming Qian <ming.qian@nxp.com>
-> Signed-off-by: TaoJiang <tao.jiang_2@nxp.com>
-> ---
->  .../media/v4l/ext-ctrls-codec.rst             | 73 +++++++++++++++++++
->  drivers/media/v4l2-core/v4l2-ctrls-defs.c     | 29 ++++++++
->  include/uapi/linux/v4l2-controls.h            | 11 +++
->  3 files changed, 113 insertions(+)
-> 
-> diff --git a/Documentation/userspace-api/media/v4l/ext-ctrls-codec.rst b/Documentation/userspace-api/media/v4l/ext-ctrls-codec.rst
-> index 4a379bd9e3fb..6b972247778c 100644
-> --- a/Documentation/userspace-api/media/v4l/ext-ctrls-codec.rst
-> +++ b/Documentation/userspace-api/media/v4l/ext-ctrls-codec.rst
-> @@ -1667,6 +1667,79 @@ enum v4l2_mpeg_video_h264_hierarchical_coding_type -
->      Codecs need to always use the specified range, rather then a HW custom range.
->      Applicable to encoders
->  
-> +``V4L2_CID_MPEG_VIDEO_ROI_MODE``
-> +    (enum)
-> +
-> +enum v4l2_mpeg_video_roi_mode -
-> +    Video roi mode. Possible values are:
-> +
-> +
-> +
-> +.. flat-table::
-> +    :header-rows:  0
-> +    :stub-columns: 0
-> +
-> +    * - ``V4L2_MPEG_VIDEO_ROI_MODE_NONE``
-> +      - No ROI in the MPEG stream
-> +    * - ``V4L2_MPEG_VIDEO_ROI_MODE_RECT``
-> +      - Rectangle ROI mode
-> +    * - ``V4L2_MPEG_VIDEO_ROI_MODE_MAP``
-> +      - Map ROI mode
-> +
-> +``V4L2_CID_MPEG_VIDEO_ROI_RECT (struct)``
-> +    Select rectangular regions and specify the QP offset. The
-> +    struct :c:type:`v4l2_ctrl_video_region_param` provides the
-> +    rectangular region and the parameter to describe QP offset.
-> +    The maximum number of rectangular regions depends on the
-> +    hardware.  This control is a dynamically sized array. This
-> +    control is applicable when ``V4L2_CID_MPEG_VIDEO_ROI_MODE``
-> +    value is ``V4L2_MPEG_VIDEO_ROI_MODE_RECT``. Applicable to
-> +    encoders.
-> +
-> +.. c:type:: v4l2_ctrl_video_region_param
-> +
-> +.. raw:: latex
-> +
-> +    \small
-> +
-> +.. tabularcolumns:: |p{4.0cm}|p{4.0cm}|p{4.0cm}|
-> +
-> +.. flat-table:: struct v4l2_ctrl_video_region_param
-> +    :header-rows:  0
-> +    :stub-columns: 0
-> +    :widths:       1 1 1
-> +
-> +    * - struct :c:type:`v4l2_rect`
-> +      - ``rect``
-> +      - The rectangular region
+Hi,
 
-What is the unit? I assume pixels. And inside what larger area is this
-rectangle located? It probably needs to refer to one of the SEL_TGT targets as
-described here:
+This patch series aims to use drm_bridge_connector in the i.MX8MP LCDIF
+driver so that bridge drivers don't need to initialize DRM connectors.
 
-https://hverkuil.home.xs4all.nl/spec/userspace-api/v4l/v4l2-selection-targets.html
+Patch 1-3 add HDMI connectors to some i.MX8MP platforms's DT as preparation
+work.  The Synopsys DW HDMI bridge core driver would try to find the bridge
+of the HDMI connector after the LCDIF driver starts to use
+drm_bridge_connector.
 
-> +    * - __s32
-> +      - ``parameter``
-> +      -
+Patch 4 sets output_port to 1 in i.MX8MP HDMI TX driver, as a preparation
+work too.  The Synopsys DW HDMI bridge core driver needs to know the output
+port index so that the driver can use the port index to find and attach
+the next bridge.  The next bridge attachment is needed after the LCDIF driver
+starts to use drm_bridge_connector.
 
-So what is the parameter? It has no description.
+Patch 5 makes the LCDIF driver use drm_bridge_connector.
 
-> +    * - __u32
-> +      - ``reserved[2]``
-> +      -
+With this patch set, an in-flight ITE IT6263 bridge driver[1] doesn't need
+to initialize a DRM connector.
 
-Add "Applications and drivers must set this to zero."
+[1] https://patchwork.freedesktop.org/patch/619465/?series=139266&rev=2
 
-> +
-> +.. raw:: latex
-> +
-> +    \normalsize
-> +
-> +``V4L2_CID_MPEG_VIDEO_ROI_MAP (integer)``
-> +    Specifies the QP offset for each block. This control is a
-> +    dynamically sized array. The array size can be calculated
-> +    from video resolution and the roi map block size which can
-> +    be got from ``V4L2_CID_MPEG_VIDEO_ROI_MAP_BLOCK_SIZE``. This
-> +    control is applicable when ``V4L2_CID_MPEG_VIDEO_ROI_MODE``
-> +    value is ``V4L2_MPEG_VIDEO_ROI_MODE_MAP``. Applicable to
-> +    encoders.
-> +
-> +``V4L2_CID_MPEG_VIDEO_ROI_MAP_BLOCK_SIZE (struct)``
-> +    This control returns the roi block size in pixels. The struct
-> +    :c:type:`v4l2_area` provides the width and height in separate
-> +    fields. This control is applicable when
-> +    ``V4L2_CID_MPEG_VIDEO_ROI_MODE`` value is
-> +    ``V4L2_MPEG_VIDEO_ROI_MODE_MAP``. This control depends on the
-> +    encoding format. Applicable to encoders.
-> +
->  .. raw:: latex
->  
->      \normalsize
-> diff --git a/drivers/media/v4l2-core/v4l2-ctrls-defs.c b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
-> index 1ea52011247a..54219a3b215a 100644
-> --- a/drivers/media/v4l2-core/v4l2-ctrls-defs.c
-> +++ b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
-> @@ -612,6 +612,13 @@ const char * const *v4l2_ctrl_get_menu(u32 id)
->  		NULL,
->  	};
->  
-> +	static const char * const mpeg_video_roi_mode[] = {
-> +		"None",
-> +		"Rectangle",
-> +		"Map",
-> +		NULL,
-> +	};
-> +
->  	switch (id) {
->  	case V4L2_CID_MPEG_AUDIO_SAMPLING_FREQ:
->  		return mpeg_audio_sampling_freq;
-> @@ -750,6 +757,8 @@ const char * const *v4l2_ctrl_get_menu(u32 id)
->  		return camera_orientation;
->  	case V4L2_CID_MPEG_VIDEO_INTRA_REFRESH_PERIOD_TYPE:
->  		return intra_refresh_period_type;
-> +	case V4L2_CID_MPEG_VIDEO_ROI_MODE:
-> +		return mpeg_video_roi_mode;
->  	default:
->  		return NULL;
->  	}
-> @@ -971,6 +980,10 @@ const char *v4l2_ctrl_get_name(u32 id)
->  	case V4L2_CID_MPEG_VIDEO_FRAME_LTR_INDEX:		return "Frame LTR Index";
->  	case V4L2_CID_MPEG_VIDEO_USE_LTR_FRAMES:		return "Use LTR Frames";
->  	case V4L2_CID_MPEG_VIDEO_AVERAGE_QP:			return "Average QP Value";
-> +	case V4L2_CID_MPEG_VIDEO_ROI_MODE:			return "Video ROI Mode";
-> +	case V4L2_CID_MPEG_VIDEO_ROI_RECT:			return "Video ROI Rectangle";
-> +	case V4L2_CID_MPEG_VIDEO_ROI_MAP:			return "Video ROI Map";
-> +	case V4L2_CID_MPEG_VIDEO_ROI_MAP_BLOCK_SIZE:		return "Video ROI Map Block Size";
->  	case V4L2_CID_FWHT_I_FRAME_QP:				return "FWHT I-Frame QP Value";
->  	case V4L2_CID_FWHT_P_FRAME_QP:				return "FWHT P-Frame QP Value";
->  
-> @@ -1512,6 +1525,22 @@ void v4l2_ctrl_fill(u32 id, const char **name, enum v4l2_ctrl_type *type,
->  		*type = V4L2_CTRL_TYPE_INTEGER;
->  		*flags |= V4L2_CTRL_FLAG_READ_ONLY;
->  		break;
-> +	case V4L2_CID_MPEG_VIDEO_ROI_MODE:
-> +		*type = V4L2_CTRL_TYPE_MENU;
-> +		*flags |= V4L2_CTRL_FLAG_UPDATE;
-> +		break;
-> +	case V4L2_CID_MPEG_VIDEO_ROI_RECT:
-> +		*type =	V4L2_CTRL_TYPE_REGION;
-> +		*flags |= V4L2_CTRL_FLAG_DYNAMIC_ARRAY | V4L2_CTRL_FLAG_HAS_WHICH_MIN_MAX;
-> +		break;
-> +	case V4L2_CID_MPEG_VIDEO_ROI_MAP:
-> +		*type = V4L2_CTRL_TYPE_INTEGER;
-> +		*flags |= V4L2_CTRL_FLAG_DYNAMIC_ARRAY | V4L2_CTRL_FLAG_HAS_WHICH_MIN_MAX;
-> +		break;
-> +	case V4L2_CID_MPEG_VIDEO_ROI_MAP_BLOCK_SIZE:
-> +		*type = V4L2_CTRL_TYPE_AREA;
-> +		*flags |= V4L2_CTRL_FLAG_READ_ONLY;
-> +		break;
->  	case V4L2_CID_PIXEL_RATE:
->  		*type = V4L2_CTRL_TYPE_INTEGER64;
->  		*flags |= V4L2_CTRL_FLAG_READ_ONLY;
-> diff --git a/include/uapi/linux/v4l2-controls.h b/include/uapi/linux/v4l2-controls.h
-> index 974fd254e573..169a676fd64c 100644
-> --- a/include/uapi/linux/v4l2-controls.h
-> +++ b/include/uapi/linux/v4l2-controls.h
-> @@ -900,6 +900,17 @@ enum v4l2_mpeg_video_av1_level {
->  
->  #define V4L2_CID_MPEG_VIDEO_AVERAGE_QP  (V4L2_CID_CODEC_BASE + 657)
->  
-> +enum v4l2_mpeg_video_roi_mode {
-> +	V4L2_MPEG_VIDEO_ROI_MODE_NONE,
-> +	V4L2_MPEG_VIDEO_ROI_MODE_RECT,
-> +	V4L2_MPEG_VIDEO_ROI_MODE_MAP
-> +};
-> +
-> +#define V4L2_CID_MPEG_VIDEO_ROI_MODE		(V4L2_CID_CODEC_BASE + 658)
-> +#define V4L2_CID_MPEG_VIDEO_ROI_RECT		(V4L2_CID_CODEC_BASE + 659)
-> +#define V4L2_CID_MPEG_VIDEO_ROI_MAP		(V4L2_CID_CODEC_BASE + 660)
-> +#define V4L2_CID_MPEG_VIDEO_ROI_MAP_BLOCK_SIZE	(V4L2_CID_CODEC_BASE + 661)
-> +
->  /*  MPEG-class control IDs specific to the CX2341x driver as defined by V4L2 */
->  #define V4L2_CID_CODEC_CX2341X_BASE				(V4L2_CTRL_CLASS_CODEC | 0x1000)
->  #define V4L2_CID_MPEG_CX2341X_VIDEO_SPATIAL_FILTER_MODE		(V4L2_CID_CODEC_CX2341X_BASE+0)
+Liu Ying (5):
+  arm64: dts: imx8mp-kontron-bl-osm-s: Add HDMI connector
+  arm64: dts: imx8mp-kontron-smarc-eval-carrier: Add HDMI connector
+  arm64: dts: imx8mp-msc-sm2s-ep1: Add HDMI connector
+  drm/bridge: imx8mp-hdmi-tx: Set output_port to 1
+  drm: lcdif: Use drm_bridge_connector
+
+ .../dts/freescale/imx8mp-kontron-bl-osm-s.dts | 19 +++++++++++++++++++
+ .../imx8mp-kontron-smarc-eval-carrier.dts     | 19 +++++++++++++++++++
+ .../dts/freescale/imx8mp-msc-sm2s-ep1.dts     | 19 +++++++++++++++++++
+ drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c   |  1 +
+ drivers/gpu/drm/mxsfb/Kconfig                 |  1 +
+ drivers/gpu/drm/mxsfb/lcdif_drv.c             | 17 ++++++++++++++++-
+ 6 files changed, 75 insertions(+), 1 deletion(-)
+
+-- 
+2.34.1
 
