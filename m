@@ -1,237 +1,174 @@
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2089.outbound.protection.outlook.com [40.107.249.89])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3C41885B8
-	for <imx@lists.linux.dev>; Fri, 18 Oct 2024 06:48:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.89
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729234121; cv=fail; b=jZlYqxWZIN7RlkkkTRc7grv8QKAdLFBSHs+0LHTlWoKz+7vfqwfspEQyZ9Eh21TSJokLelc6GGqzr8/Mv8lfcVLodeyhdDlIf70F4ZN/SfB1GLytlmV2TN1hDoJH15hcpcmH9uwYVdkXgHGFFWllMYSaFnMOFqVE6Bs66SHeZ78=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729234121; c=relaxed/simple;
-	bh=KLOCICtliJdnjdEbs24yLUuFDF4BU3dLTeko+zXzVQg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pMHigWSUXEjwKmF4OSN7Oim0IDPdigUqb7EUcwIhmtfFSOko4PZbiPqbbJmLSEJm9KS5vv/snSK09r+CelXBITAD+IChMm5e+yRfbO3nmAqXl5qaIbwXCuXoxdkTGaY256/hcVl/kH9qS/Tnojd5Ap6rdccEqE8j0okBRkwc+oM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=UDcoUJNW; arc=fail smtp.client-ip=40.107.249.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A859E2905
+	for <imx@lists.linux.dev>; Fri, 18 Oct 2024 06:53:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729234389; cv=none; b=fAbW5jrK1hYhgoPrechdOycH1/KKWLjAQUiS7hZwJIjjYjeuPckL7xndkI5wh86XJv28elZj5/K35l1r6YONb4Ta0QcXThmDy+7e41GPjAOYt7/sLOcz0dmRfxiUdfdM3SyAO0+2K8GIqNV6F6Wb0RGw2Po1CkWZiLscRTsBwNQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729234389; c=relaxed/simple;
+	bh=dd79JXjqD2Inpu0DT31fpEk2eIY2MmSwqg8qI66yzgU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HEEwUIda5b+0byuAjwS+ej8YLYQ7oANH6zMHv43So2s9zqx9VZTd+OxFYnSC1SThUQ1baVol8s1LyNg09flNCebio5oM8q46dkPrnvp4HP2W4kphFLZVVXGc9/10mY9/m8Qm0nV/UoLgsn2b+Amq9NWmO+YxfKpB8K6NSkW0PD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=RPdT3MBh; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=dDDvIocM reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="UDcoUJNW"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nshbs9BsrYxm/CfvvaguOhLGeKtalJKKyHJobmyFfZU36VHFSMcsAJjM1Zq+88x7oTToGIqo4NgFpjVmRIVr35ESk7oYzkcLBnp80aiyDCkm8rf+sx/Qw4JqO8y4LRqZA3qG+L0BZvbyS9QDwjcHGKG4tTTq960JStWIbtAF4kLf11h8P/HnoVZKbUlrKTd4VGAs/BirQt6wYmlAh6WufEI7M2Da6ebYoBuLOs3w8//sAQMQQQ0bDBQh01ftJ0YQW2MQ3vR0fWVsQ4dVMfSw9wDvLZgcBhTqKa8aEqQG9In9kHpdlMRFg2Gd4eBy5SCmwGUbarfFMSx4w5haM7Vf3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zwSh//d1CaRqxOSZh6QlhILY+X1BgTdgaYR7pJsi57M=;
- b=glCAvg5uGR/KCUY5xC9viL9iGu5hNqu1C2kW+kEipHZPjM1k8O3QjIHbfPN+pd3tt8KSNWV98RWq8x76namhl1TG3p9sQ5ah+bURLeyirZANm+mq3j0/sM6JXya47jACa7I5cuBMDLfWHuZHposf1g3+r/IjZ1seHqkuuMIt7p/8d103nTjxQA8uA1BABb/wF0yxobHvOynS/LoyUC0YiUKfGE5UbQWe+VUub1dVhHXl0uPeADsRiU8YeOea0lymu/gDaozGUJ140bdOagv/twFouNYWf6uJoPLQ3FGmQOeim0BfRNiJWvivAc1Rg4Wj7jQlgH9tRSrYOC1dat2FRg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zwSh//d1CaRqxOSZh6QlhILY+X1BgTdgaYR7pJsi57M=;
- b=UDcoUJNWbQ0NyXwyDB7tUYnEy89bUwDtoSPziXNrbGAxAeItFVI1GK+mXwQqbo7djYhMVCG7IJ/tXCchuQ0A54m3JBMVybnbPxoRaC7vkLnGfTum/L8B7ohuV0HNrND/rHmoPNx+E0VPPX0djXuW0NW3gU5YthtpIRRWsH17LRXJvoN8AWlTJi2KFLXyanpY8dVAqghwGE4txfF8Qic2sFUi3yl0l0oE2ZKtbxzoEgx2NbjenHTxsmTaAYnmUd4O9LCNWfPY4plcsT/iIcF70qaMfFMi5CgZb8RCtpH5xGt5Ni4bRf+WYF6VoClh+Z4G8Nl0CRh/geNFYmT/weKpDQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by VI1PR04MB9787.eurprd04.prod.outlook.com (2603:10a6:800:1d8::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.18; Fri, 18 Oct
- 2024 06:48:35 +0000
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90%4]) with mapi id 15.20.8069.020; Fri, 18 Oct 2024
- 06:48:35 +0000
-From: Liu Ying <victor.liu@nxp.com>
-To: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Cc: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org,
-	rfoss@kernel.org,
-	Laurent.pinchart@ideasonboard.com,
-	jonas@kwiboo.se,
-	jernej.skrabec@gmail.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	marex@denx.de,
-	stefan@agner.ch,
-	dmitry.baryshkov@linaro.org
-Subject: [PATCH 5/5] drm: lcdif: Use drm_bridge_connector
-Date: Fri, 18 Oct 2024 14:48:13 +0800
-Message-Id: <20241018064813.2750016-6-victor.liu@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241018064813.2750016-1-victor.liu@nxp.com>
-References: <20241018064813.2750016-1-victor.liu@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR04CA0204.apcprd04.prod.outlook.com
- (2603:1096:4:187::16) To AM7PR04MB7046.eurprd04.prod.outlook.com
- (2603:10a6:20b:113::22)
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="RPdT3MBh";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="dDDvIocM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1729234385; x=1760770385;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=AOulUfPRBlXnZ1KIBNZoiOR6DzCBisOIaMADQx53Pk8=;
+  b=RPdT3MBhPQAjbwgdpAYuiUoE1GlekWIqEj2lCW/qhy8gwnTC6yqd1Jio
+   DPeKFWsFMgJFT3VnkWtF+8jSC8k/Ktz/GWMfiS1JV2HqZjQJI//D39jYV
+   J84Adef7Du+lkg7c9BeSEB5TNxSOQ8+QgVd57t6EvcR7L+FTrmmh3N41S
+   TfXHd03P47NeZqdlc4gqDYare3wK1QGD8uNdZUmlzDwZBJ/6MmeG2td/c
+   7Zfn6OiMP+Zn/H5GQfvd4vEvKpOjE5F7IkXYj2VWTWwfv5Aez2j96qFgZ
+   c6NA3s6eVNJLUujCFP/+a0gnnBhOvt2ikhPUXQKVW8FM0YCuCwMzCul69
+   A==;
+X-CSE-ConnectionGUID: R/jNJlE+S46o+UEHtedAiQ==
+X-CSE-MsgGUID: kAkKmz8cSJmj4GNr4Mj4qA==
+X-IronPort-AV: E=Sophos;i="6.11,212,1725314400"; 
+   d="scan'208";a="39533507"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 18 Oct 2024 08:53:03 +0200
+X-CheckPoint: {671205CF-B-69FF9A8E-EE9CEDAF}
+X-MAIL-CPID: B5F18021BCC74157624FFD4DB3589D2D_0
+X-Control-Analysis: str=0001.0A682F1B.671205CF.0082,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3588816A505;
+	Fri, 18 Oct 2024 08:52:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1729234378;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=AOulUfPRBlXnZ1KIBNZoiOR6DzCBisOIaMADQx53Pk8=;
+	b=dDDvIocMcwuq7gjz2SZ8X4aCFesIG/2l7z2zp0RNsE3xB87lvFsvG363AIiMYJJzmEAFex
+	l9Toa6J/9fwbyrZsIjz6hhD9ll1QCvrAKQcmonbRljTZ6gZTbqqkK8IQ0+rm7QYqqs3DIl
+	OjCOtN445vhYDrr3A1qMwE8nU84x7ISVMKI79KJFmBPIoMQikjFwXQQxs7KFtdr7k/PjET
+	T7ghFp32zR0NBuiLqqm7MCUpq1rROCOD8XXF0Us+DFNbwQpEx/6hll48p45Hq2vjh+gxyF
+	pE96m4L/HVFVrGSDrOqbIShZkWG23RWTOgWlNkK91HlNE084TQZmIhQWNCumEw==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Frank Li <frank.li@nxp.com>, Wei Fang <wei.fang@nxp.com>
+Cc: "davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>, "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, Vladimir Oltean <vladimir.oltean@nxp.com>, Claudiu Manoil <claudiu.manoil@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, "christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>, "bhelgaas@google.com" <bhelgaas@google.com>, "horms@kernel.org" <horms@kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH v3 net-next 02/13] dt-bindings: net: add i.MX95 ENETC support
+Date: Fri, 18 Oct 2024 08:52:55 +0200
+Message-ID: <3657116.R56niFO833@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <PAXPR04MB851058F40F264FA9D20F385888402@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20241017074637.1265584-1-wei.fang@nxp.com> <ZxE56eMyN791RsgK@lizhi-Precision-Tower-5810> <PAXPR04MB851058F40F264FA9D20F385888402@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|VI1PR04MB9787:EE_
-X-MS-Office365-Filtering-Correlation-Id: 248c1190-f928-4c4e-addb-08dcef40e31d
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|376014|7416014|366016|1800799024|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
- =?us-ascii?Q?TQtdneAbOqSU9/IE47q8irRGA6D2M2py9mbdu7OaESwkQ42NpV4hgNpUAZgA?=
- =?us-ascii?Q?aFAV1PuYBfi8T03MZd44JNOq+avtU/jUcw6vzuxe7bIT9aeZWTZc8Kun5atZ?=
- =?us-ascii?Q?rWlTpjcYVqaV4a5ArXac/GW6Grp0/e/ncyqh3XQTrGQ2Bf5g1uZyTyolXtJV?=
- =?us-ascii?Q?a1+CImvf8KyZLQgxjUK4xI0UtV9uTwvK2R/Ae0C1xXTgOv2lOfLV/5DpuiIm?=
- =?us-ascii?Q?9KFyfNcIdh2fEpOfg21qes5F/+bgvhQ3OYx4Y7d2W9CwkxzXOjSKZSOmDEXb?=
- =?us-ascii?Q?y5IsGyS4dW6iuGQPIO76lG1LECM5LpcEj1shIye0Dg3PnsLyJHD/UrAdP7YK?=
- =?us-ascii?Q?1vQBtBPtbfa+1sg8eQyG4eKE07ZIs+u308n+7khPnBTvPREAOl+W7olabtt/?=
- =?us-ascii?Q?MnxtFvSQ6KAzF7/DfGi5/kpNjQRJtKaRlDGPw9gqaMfwH0KWtg5aSVERMo/I?=
- =?us-ascii?Q?Rtadfnn1/UfDNjzOW/DVksGKSsb0IX1WJzkqmQ1fE7Qz0UlB9u7ZHs87u8Ah?=
- =?us-ascii?Q?nog5BZEMITTFEhxhQWxiiXiTo6fmdpY51XZd2ODKj3weo6X2t/F7EoHytGpL?=
- =?us-ascii?Q?rcxJSFBRW2iqnIAVEYraOszggBp+h0UbOXyNDSfDudVZZLQVVBQzM8/qYhvU?=
- =?us-ascii?Q?oeZe0Md96dDJNnmTnazXKbauHaQRJSA2x9dt8V2OmJUL8hlwHuRSu9KKzH+w?=
- =?us-ascii?Q?arU38Zjhta6HPoo/kSgM1gitRiVQl48yp7yFL8l9bsebYBDlJhdfZt3F9+9u?=
- =?us-ascii?Q?juONUxXZmNUgzVzZhNw0uXGjo0HEbbGRAkjyBKXaVQBDx4e4afzDYpEBfbh9?=
- =?us-ascii?Q?o1+eK8PR8OyNfDcD/bfsamfqLS3SEYijZlnoTR4YCoE8cyjWHr2FDNEHzStV?=
- =?us-ascii?Q?MFUVj+OHXyTJqIJAx8hiNz8u6ym/0yBcjLZPxXTDyBo8/C90MwJ5004ULRPF?=
- =?us-ascii?Q?oolhTRgYPE/AFpZDBkrEvYOx5bqWchzNplI1Y+oWsNQfZNQeWX2Cl/YK3Zbv?=
- =?us-ascii?Q?cDY2spgKXood4vhw1yUB+RXXAcybHIXvEGX4Vg31bP5tsPLqSEg23iLcfOYx?=
- =?us-ascii?Q?vyLSsnhWWMef7ORocUWPXyeoW8j2mEONrAxZTQ1k9FW67+ebbOL88w/25j8X?=
- =?us-ascii?Q?kTENsXwIKshjZzZP/VdMld5qwB9KPov2p8RGRJ5pu9fv0MlrO/Y1u7tmEKsy?=
- =?us-ascii?Q?Fl1JPqUGid9DZn3jCCwCeMgAK/mjTNw/L+piymu5lhwu9aVQ/NswSOmOFhlr?=
- =?us-ascii?Q?bxAiTXq5Oc+mMef3CG9FLdX24ggwQqmX41PqY/ociRrKp8X1+n9yaZkvWcQo?=
- =?us-ascii?Q?PMEJS9h6ghimEeVIDgj5r8DH20QZnAe88HDFnbd3X/xNrmMJTtRmRE/P0hz6?=
- =?us-ascii?Q?QyUcRcI=3D?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?3EwSxJdXLDEu/JgcugezO0m9T7m2jbn4JFcmVLYGbkRWfme7TAaHDTJZ2cxr?=
- =?us-ascii?Q?UN2Mc8ZCoNHZGX2woeftr++9JZ5lngJevtYft5IfTpPuAaT2sTvEltI1tNW8?=
- =?us-ascii?Q?Ml8gOjP1A/ISP8ikF7l4tCfXn2x5o1tWS0sNkAiakB9qfCQQIjMkDOoHqEZr?=
- =?us-ascii?Q?chH0Rq56rxJo2u4aWb9jLFOAlE/LfN6DLauZfvPvt8ls0e8wMG26B8bxKrpe?=
- =?us-ascii?Q?YHiW5HwSGCzUSazYMzypEGOyx4oVPZGS7gvbvva0rfhWdOxzLtvqBEMH3AZ9?=
- =?us-ascii?Q?4awiouviIKwQ5TK1UF4q0bHTtVYVERIF+nkIbjuCVsCpGnu6zDWvbAKsyA7b?=
- =?us-ascii?Q?/INF/3NieQXyiPLeh9+pQKIMoNth5MATFi7R48Rv2XBuUROyeM/zsEI0wS0A?=
- =?us-ascii?Q?iUni9DHkdpdzdxACHJTaKNa1h5h+Z2f8QwEmjEEku0cBO+r6N77qhuteRWE+?=
- =?us-ascii?Q?fNJ6Dl2oAj7hxCHLjnCYCCbE52+1IuMU01ASbJPNcjvXSujuRPCY1OYSZapW?=
- =?us-ascii?Q?PMg5Lu1cucuIGdrcAT4YSCNRLaRgrlPEo3Z4p3tZAUW95YjY4jKflJYcYMxm?=
- =?us-ascii?Q?4YjvdTST3zjMfIfxZ/5biR0JlElxHj/oDEVQ/cgtOCwpUqpJir6qSatYWSY5?=
- =?us-ascii?Q?UZq+7nbBQugtz3opkgrZ5qSgPVp1ARYeJZpcuwAKDw7gbp0vC7c9ERc8BWCK?=
- =?us-ascii?Q?x1Tac1ooG8UfrwLJuNHlfLrEsqxikKNZfFWFFY45TiwUOQ70uDJYa6abIR5A?=
- =?us-ascii?Q?bFyb1tuQn2FsKbftpjsI3XT9wvfrhHa5kRlt3bUnGzbkd+xrS1+yb6SgCtmH?=
- =?us-ascii?Q?/7ZliPAilMyePywttSuYMaaA4GzK/KgGlDNFP9tat086tfsvb7oyqNe9fe9+?=
- =?us-ascii?Q?b/HJkK5mbOVPn7O18y28jLF67G0MCyue4w900m5uzrfZ9HXRE+sWzM2artDQ?=
- =?us-ascii?Q?YIZ4mgyDmbiFmNa5tzfc21vMasj2JNRKpvGj1GpQMRFPL8hzCL5HsFf4xWbW?=
- =?us-ascii?Q?ft5A6nFgy4I5b955B/nvrovbME/U2G7GtvALwMRcdgjlhX9DyjXHYEZW+5px?=
- =?us-ascii?Q?pJkw19yqgpyg0wkNA6NqOZeVx4B2Z0+kMWW29Bs6Aetha/GABoT7AL4cz11/?=
- =?us-ascii?Q?QPBczzrWqfNlMp1ulVoRmAC4sRUaHKAOMGGR+rdwyh158lPjRB4yNiibeVBS?=
- =?us-ascii?Q?g15omZ7cCBnumQPJWb3+svS3kVCkMwZkl8FSH+5PrmXlAommREdzkONz7Olq?=
- =?us-ascii?Q?NDqVte74UO74tKdyYtKFUAAjpTLU2mb08MkYm43Zd45ywscqptdjYNArqK2s?=
- =?us-ascii?Q?MICkp7xlfAC8FaXR1H9mHTDUa6UUCwn3qZg5rJcYVjm+9LGOu0p6oABxnPeK?=
- =?us-ascii?Q?XX/ZyRC7W1WLFEf6m45u9k2hOe9obdOt4HneUdZPtCdyoDborPqsXmLp+dTz?=
- =?us-ascii?Q?4ERBsIL6cAcrz39xvpKpNSJZaH4zkdbtQtYbQeZEPZtwEuCvlZhF9HAq2l3s?=
- =?us-ascii?Q?FFyktywJ2dAxIEKLYZhs7bsshyR3TjuFY/En7i4rrlFo5ooGQgvtqxS8COGZ?=
- =?us-ascii?Q?coYIIsc7cU28vjxxvTLdY9SvrgY6nXtFx3893t+7?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 248c1190-f928-4c4e-addb-08dcef40e31d
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Oct 2024 06:48:34.9886
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: S9Nv6ftxpUDn4c+dAE6w3tuyELWUYZhKmczAa1xakPFP1ZOn5yzGKzNkhv1u9IBBz/iTy4o9q7zq6/a9ApUwBw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9787
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+X-Last-TLS-Session-Version: TLSv1.3
 
-Initialize a connector by calling drm_bridge_connector_init() for
-each encoder so that down stream bridge drivers don't need to create
-connectors any more.
+Hi,
 
-Signed-off-by: Liu Ying <victor.liu@nxp.com>
----
- drivers/gpu/drm/mxsfb/Kconfig     |  1 +
- drivers/gpu/drm/mxsfb/lcdif_drv.c | 17 ++++++++++++++++-
- 2 files changed, 17 insertions(+), 1 deletion(-)
+Am Freitag, 18. Oktober 2024, 03:20:55 CEST schrieb Wei Fang:
+> > -----Original Message-----
+> > From: Frank Li <frank.li@nxp.com>
+> > Sent: 2024=E5=B9=B410=E6=9C=8818=E6=97=A5 0:23
+> > To: Wei Fang <wei.fang@nxp.com>
+> > Cc: davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
+> > pabeni@redhat.com; robh@kernel.org; krzk+dt@kernel.org;
+> > conor+dt@kernel.org; Vladimir Oltean <vladimir.oltean@nxp.com>; Claudiu
+> > Manoil <claudiu.manoil@nxp.com>; Clark Wang <xiaoning.wang@nxp.com>;
+> > christophe.leroy@csgroup.eu; linux@armlinux.org.uk; bhelgaas@google.com;
+> > horms@kernel.org; imx@lists.linux.dev; netdev@vger.kernel.org;
+> > devicetree@vger.kernel.org; linux-kernel@vger.kernel.org;
+> > linux-pci@vger.kernel.org
+> > Subject: Re: [PATCH v3 net-next 02/13] dt-bindings: net: add i.MX95 ENE=
+TC
+> > support
+> >=20
+> > On Thu, Oct 17, 2024 at 03:46:26PM +0800, Wei Fang wrote:
+> > > The ENETC of i.MX95 has been upgraded to revision 4.1, and the vendor
+> > > ID and device ID have also changed, so add the new compatible strings
+> > > for i.MX95 ENETC. In addition, i.MX95 supports configuration of RGMII
+> > > or RMII reference clock.
+> > >
+> > > Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> > > ---
+> > > v2: Remove "nxp,imx95-enetc" compatible string.
+> > > v3:
+> > > 1. Add restriction to "clcoks" and "clock-names" properties and rename
+> > > the clock, also remove the items from these two properties.
+> > > 2. Remove unnecessary items for "pci1131,e101" compatible string.
+> > > ---
+> > >  .../devicetree/bindings/net/fsl,enetc.yaml    | 22 ++++++++++++++++-=
+=2D-
+> > >  1 file changed, 19 insertions(+), 3 deletions(-)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/net/fsl,enetc.yaml
+> > > b/Documentation/devicetree/bindings/net/fsl,enetc.yaml
+> > > index e152c93998fe..e418c3e6e6b1 100644
+> > > --- a/Documentation/devicetree/bindings/net/fsl,enetc.yaml
+> > > +++ b/Documentation/devicetree/bindings/net/fsl,enetc.yaml
+> > > @@ -20,10 +20,13 @@ maintainers:
+> > >
+> > >  properties:
+> > >    compatible:
+> > > -    items:
+> > > +    oneOf:
+> > > +      - items:
+> > > +          - enum:
+> > > +              - pci1957,e100
+> > > +          - const: fsl,enetc
+> > >        - enum:
+> > > -          - pci1957,e100
+> > > -      - const: fsl,enetc
+> > > +          - pci1131,e101
+> > >
+> > >    reg:
+> > >      maxItems: 1
+> > > @@ -40,6 +43,19 @@ required:
+> > >  allOf:
+> > >    - $ref: /schemas/pci/pci-device.yaml
+> > >    - $ref: ethernet-controller.yaml
+> > > +  - if:
+> > > +      properties:
+> > > +        compatible:
+> > > +          contains:
+> > > +            enum:
+> > > +              - pci1131,e101
+> > > +    then:
+> > > +      properties:
+> > > +        clocks:
+> > > +          maxItems: 1
+> > > +          description: MAC transmit/receiver reference clock
+> > > +        clock-names:
+> > > +          const: ref
+> >=20
+> > Did you run CHECK_DTBS for your dts file? clocks\clock-names should be =
+under
+> > top 'properties" firstly. Then use 'if' restrict it. But I am not sure =
+for that. only
+> > dt_binding_check is not enough because your example have not use clocks=
+ and
+> > clok-names.
+> >=20
+>=20
+> I have run dtbs_check and dt_binding_check in my local env. there were no
+> warnings and errors.
 
-diff --git a/drivers/gpu/drm/mxsfb/Kconfig b/drivers/gpu/drm/mxsfb/Kconfig
-index 264e74f45554..06c95e556380 100644
---- a/drivers/gpu/drm/mxsfb/Kconfig
-+++ b/drivers/gpu/drm/mxsfb/Kconfig
-@@ -27,6 +27,7 @@ config DRM_IMX_LCDIF
- 	depends on DRM && OF
- 	depends on COMMON_CLK
- 	depends on ARCH_MXC || COMPILE_TEST
-+	select DRM_BRIDGE_CONNECTOR
- 	select DRM_CLIENT_SELECTION
- 	select DRM_MXS
- 	select DRM_KMS_HELPER
-diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-index 58ccad9c425d..d4521da6675e 100644
---- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
-+++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-@@ -16,7 +16,9 @@
- 
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_bridge.h>
-+#include <drm/drm_bridge_connector.h>
- #include <drm/drm_client_setup.h>
-+#include <drm/drm_connector.h>
- #include <drm/drm_drv.h>
- #include <drm/drm_encoder.h>
- #include <drm/drm_fbdev_dma.h>
-@@ -56,6 +58,7 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
- 		struct device_node *remote;
- 		struct of_endpoint of_ep;
- 		struct drm_encoder *encoder;
-+		struct drm_connector *connector;
- 
- 		remote = of_graph_get_remote_port_parent(ep);
- 		if (!of_device_is_available(remote)) {
-@@ -97,13 +100,25 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
- 			return ret;
- 		}
- 
--		ret = drm_bridge_attach(encoder, bridge, NULL, 0);
-+		ret = drm_bridge_attach(encoder, bridge, NULL,
-+					DRM_BRIDGE_ATTACH_NO_CONNECTOR);
- 		if (ret) {
- 			of_node_put(ep);
- 			return dev_err_probe(dev, ret,
- 					     "Failed to attach bridge for endpoint%u\n",
- 					     of_ep.id);
- 		}
-+
-+		connector = drm_bridge_connector_init(lcdif->drm, encoder);
-+		if (IS_ERR(connector)) {
-+			ret = PTR_ERR(connector);
-+			dev_err(dev, "Failed to initialize bridge connector: %d\n",
-+				ret);
-+			of_node_put(ep);
-+			return ret;
-+		}
-+
-+		drm_connector_attach_encoder(connector, encoder);
- 	}
- 
- 	return 0;
--- 
-2.34.1
+Is there already the DT part somewhere? Do you mind sharing it?
+
+Best regards,
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
+any
+Amtsgericht M=C3=BCnchen, HRB 105018
+Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
+neider
+http://www.tq-group.com/
+
 
