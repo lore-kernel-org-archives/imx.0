@@ -1,110 +1,136 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCFC1885BE
-	for <imx@lists.linux.dev>; Fri, 18 Oct 2024 07:21:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B80175D5F
+	for <imx@lists.linux.dev>; Fri, 18 Oct 2024 07:31:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.26.50.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729236094; cv=none; b=uMl4+hCDxSonSzzoUgMri71mkQHH4W5AqTB2aZCQy/DstgOP5Ilo8NbA+1O9s8/3rh25+Ku4KgJCZtG5xtj5WZAjiV0HK2/MSbSq3dZGD0VALMhBwUJg27E0jMlJa0KADl3gLlv4es/00WtSKHXt3NCJvaohrcX3ns2ist2tlTc=
+	t=1729236714; cv=none; b=bZMtZyR+lGqIGdOVOjOfR+nRvqcp9yOheMC2EASxEbUg7UkoDXEMA217AwFl1fSOEB8wn5X1VjdwWBC/p105RnL7xOLYGPhwYJThrfJ2VG5dS/JjcRFnjmB133KeaZU2D23WgPwOFPkTWcN/BAEOOXdkxWpfkNLJxdrIZ7bmgoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729236094; c=relaxed/simple;
-	bh=3Hc+QKWRe6CJdpdWi0kYQtpq7TAIE4a9KyFJhaDo2Bw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=thTFSWRmJwtHb2/EuzP70oE3QEq/GhjDy6pL8itSOmEy5M6sCHnKbtwkUgmOzn+dpOUYx0qhVR3nLhr8OzZ1q7LQVmsnQCQIeMKiZx5+xATjxSBGw1p15r4nSGwMskyp0INGn+nDlYbLAccssR3NbQFkpMBvfh2OpcdsyCu4U58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1t1hId-0001VB-Ef; Fri, 18 Oct 2024 09:21:27 +0200
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1t1hIb-000Ajz-2u;
-	Fri, 18 Oct 2024 09:21:25 +0200
-Received: from pengutronix.de (pd9e595f8.dip0.t-ipconnect.de [217.229.149.248])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	s=arc-20240116; t=1729236714; c=relaxed/simple;
+	bh=Bcyhl5kY/sOHE7DfxpuYkTfNLNsdv4JRLJMRoGawewE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=TjBkzN/lgBUnhuzPD8f/hR8Iyh3wkNYHtxvKBqimwtkkJmpFSm01gzDMYeD861kw6y0S1XD1vymjNRPCEn2XdmwfasTVmtXhkRZ2KwUGn6zkvuxyH7WPrK6TnhigOz9uBrICMnTRzMFV0VAJTVec0MZy/P/jpyDPVJnDTnI3O8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=V39sBBwj; arc=none smtp.client-ip=91.26.50.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="V39sBBwj"
+DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
+	q=dns/txt; i=@phytec.de; t=1729236707; x=1731828707;
+	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Bcyhl5kY/sOHE7DfxpuYkTfNLNsdv4JRLJMRoGawewE=;
+	b=V39sBBwjG9ZoO7smG9yANIxsIkBgp94bnC238Z3WxXWtAitbJ5QwvQd0pgwMcNlO
+	5tw3N/K7Q0m3aXfi7RWabd42XbT8DdYFHlZIcgDeYqis0YJ9nkqfONqrnMZ6AAYu
+	vweDXcooBMSsOD3JJUIaBDLhzIvGA3CS/PVXs00v3xw=;
+X-AuditID: ac14000a-4577e70000004e2a-8c-67120ee3e23a
+Received: from Diagnostix.phytec.de (Diagnostix.phytec.de [172.25.0.14])
+	(using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 8038A355AEC;
-	Fri, 18 Oct 2024 07:21:25 +0000 (UTC)
-Date: Fri, 18 Oct 2024 09:21:24 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: Shenwei Wang <shenwei.wang@nxp.com>, 
-	Clark Wang <xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kernel@pengutronix.de" <kernel@pengutronix.de>
-Subject: Re: RE: RE: [PATCH net-next 13/13] net: fec: fec_enet_rx_queue():
- factor out VLAN handling into separate function fec_enet_rx_vlan()
-Message-ID: <20241018-thundering-cicada-of-prosperity-e29ec8-mkl@pengutronix.de>
-References: <20241016-fec-cleanups-v1-0-de783bd15e6a@pengutronix.de>
- <20241016-fec-cleanups-v1-13-de783bd15e6a@pengutronix.de>
- <PAXPR04MB85104DCA7DED14565615E4A588472@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20241017-fox-of-awesome-blizzard-544df5-mkl@pengutronix.de>
- <PAXPR04MB8510969C2BE65FD3D08ACBC788472@PAXPR04MB8510.eurprd04.prod.outlook.com>
+	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id B3.A2.20010.3EE02176; Fri, 18 Oct 2024 09:31:47 +0200 (CEST)
+Received: from Berlix.phytec.de (172.25.0.12) by Diagnostix.phytec.de
+ (172.25.0.14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Fri, 18 Oct
+ 2024 09:31:47 +0200
+Received: from Berlix.phytec.de ([fe80::197e:d26b:2ca:c7b4]) by
+ berlix.phytec.de ([fe80::197e:d26b:2ca:c7b4%4]) with mapi id 15.01.2507.006;
+ Fri, 18 Oct 2024 09:31:47 +0200
+From: Yannic Moog <Y.Moog@phytec.de>
+To: "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "marex@denx.de" <marex@denx.de>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
+	<festevam@gmail.com>, "isaac.scott@ideasonboard.com"
+	<isaac.scott@ideasonboard.com>, "kernel@dh-electronics.com"
+	<kernel@dh-electronics.com>, "robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "victor.liu@nxp.com"
+	<victor.liu@nxp.com>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "shawnguo@kernel.org"
+	<shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH] arm64: dts: imx8mp-phyboard-pollux: Set Video PLL1
+ frequency to 506.8 MHz
+Thread-Topic: [PATCH] arm64: dts: imx8mp-phyboard-pollux: Set Video PLL1
+ frequency to 506.8 MHz
+Thread-Index: AQHbIEJYdOojGCieyEaB2fu4YX6curKL/YeA
+Date: Fri, 18 Oct 2024 07:31:47 +0000
+Message-ID: <7094f3c17319ccb4676e7b539fc4bb52bea674e6.camel@phytec.de>
+References: <20241017031146.157996-1-marex@denx.de>
+In-Reply-To: <20241017031146.157996-1-marex@denx.de>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <617401BAA2C620438450CA58711C95DE@phytec.de>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="cp2jxqpoyuqg4cys"
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB8510969C2BE65FD3D08ACBC788472@PAXPR04MB8510.eurprd04.prod.outlook.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrMIsWRmVeSWpSXmKPExsWyRpKBT/cxn1C6wcNzVhZr9p5jsph/5Byr
+	xcOr/hYz77WyWbw7/Z7Z4vORG2wWq6buZLF4Oesem8Wmx9dYLS7vmsNm8aatkdHi/54d7BZ/
+	t29isXixRdziW9tmdgd+j3mzTrB43Du+h9lj56y77B6zO2ayemxa1cnmsXlJvceLzTMZPTa+
+	28Hk0f/XwOPzJrkArigum5TUnMyy1CJ9uwSujEXrFjMXHJGueHTzLVsD4wupLkZODgkBE4k3
+	kw+wdzFycQgJrGOSONF/gg3CecwosWvxEihnA6PEussvWUBa2ARUJE7OuMQIYosIlEh82NwO
+	VsQsMJ1VYtqZXnaQhLBAgsT3P03MXYwcQEWJEofOy0DUG0kcm/8erIRFQFVi+otfbCA2r4Cb
+	ROusi6wgtpCAscTpTUuYQGxOoPM6vmwB28UoICuxYcN5ZhCbWUBcYtOz76wQLwhILNkDEZcQ
+	EJV4+fgfVFxe4sStaUwgJzALaEqs36UP0Wohcbz9LhOErSgxpfshO8QJghInZz5hmcAoPgvJ
+	hlkI3bOQdM9C0j0LSfcCRtZVjEK5mcnZqUWZ2XoFGZUlqcl6KambGEEJQ4SBawdj3xyPQ4xM
+	HIyHGCU4mJVEeJPqBdOFeFMSK6tSi/Lji0pzUosPMUpzsCiJ867uCE4VEkhPLEnNTk0tSC2C
+	yTJxcEo1MMr4XZnmdP5M4Ns9M63ZmEyP/up6vqdQ+RXHiQMz5rsoZxgnLz7XlXflWtH6FYdk
+	pTruy51J8pRc+vF8S5tlxKNERydu8de7e96mv1JnqFzPbu9icVfqnNfEMw3XrmlW/1bcni5e
+	vp9lr4zzwS/cbHM3Trr19b6+6/T/Zz7738mfFTbH6NGctQFKLMUZiYZazEXFiQDp8wIMBgMA
+	AA==
 
-
---cp2jxqpoyuqg4cys
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On 17.10.2024 07:48:34, Wei Fang wrote:
-> > > Why not move vlan_header into the if statement?
-> >=20
-> > I've an upcoming patch that adds NETIF_F_HW_VLAN_STAG_RX (a.k.a.
-> > 801.2ad, S-VLAN) handling that changes this function.
-> >=20
-> > One hunk looks like this, it uses the vlan_header outside of the if:
-> >=20
->=20
-> You can move valn_header out of the 'if' when it happens.
-
-Ok.
-
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---cp2jxqpoyuqg4cys
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmcSDG0ACgkQKDiiPnot
-vG+lAQf+NwO+/a/yS8s35LmZ8JJuXTwoi8ta39vutpDPQYtHgOxWmjVR2ElMrrGe
-B4l/W9zeATUFFZpRnriXWXIJOvn9A11K8Ddo6gyaORrMphlgJ/RefJdI6919vPQH
-iV8+8m4pOpNaXBEj5Rau4ZFgoa0/C86O0eYbtgjUgJdkLWk9mdzfFlWDjTrCpiuY
-4i4AnelJ29HHqqxPXTwIYBaNmFHJsA7JvAEF0L35NLQVxrIZJm1BH6ZG5KydP0rA
-olUVm9Gthntvnzcbs67EDXQbM2JCvguXm4+dAdjBWvtG5aVKvJzEn1QUjQijV5WB
-y4o2hwQ3204oxbEoFlZPdH5kH/Il5w==
-=qorl
------END PGP SIGNATURE-----
-
---cp2jxqpoyuqg4cys--
+T24gVGh1LCAyMDI0LTEwLTE3IGF0IDA1OjExICswMjAwLCBNYXJlayBWYXN1dCB3cm90ZToNCj4g
+VGhlIExWRFMgcGFuZWwgb24gdGhpcyBkZXZpY2UgdXNlcyA3Mi40IE1IeiBwaXhlbCBjbG9jaywg
+c2V0IElNWDhNUF9WSURFT19QTEwxDQo+IHRvIDcyLjQgKiA3ID0gNTA2LjggTUh6IHNvIHRoZSBM
+REIgc2VyaWFsaXplciBhbmQgTENESUZ2MyBzY2Fub3V0IGVuZ2luZSBjYW4NCj4gcmVhY2ggYWNj
+dXJhdGUgcGl4ZWwgY2xvY2sgb2YgZXhhY3RseSA3Mi40IE1Iei4NCj4gDQo+IFdpdGhvdXQgdGhp
+cyBwYXRjaCwgdGhlIFZpZGVvIFBMTDEgZnJlcXVlbmN5IGlzIHRoZSBkZWZhdWx0IHNldCBpbiBp
+bXg4bXAuZHRzaQ0KPiB3aGljaCBpcyAxMDM5LjUgTUh6LCB3aGljaCBkaXZpZGVzIGRvd24gdG8g
+aW5hY2N1cmF0ZSBwaXhlbCBjbG9jayBvZiA3NC4yNSBNSHoNCj4gd2hpY2ggd29ya3MgZm9yIHRo
+aXMgcGFydGljdWxhciBwYW5lbCBieSBzaGVlciBjaGFuY2UuDQo+IA0KPiBTdG9wIHRha2luZyB0
+aGF0IGNoYW5jZSBhbmQgc2V0IGNvcnJlY3QgYWNjdXJhdGUgcGl4ZWwgY2xvY2sgZnJlcXVlbmN5
+IGluc3RlYWQuDQo+IA0KPiBGaXhlczogMzI2ZDg2ZTE5N2ZjICgiYXJtNjQ6IGR0czogaW14OG1w
+LXBoeWJvYXJkLXBvbGx1eC1yZGs6IGFkZCBldG1sIHBhbmVsIHN1cHBvcnQiKQ0KPiBSZXBvcnRl
+ZC1ieTogSXNhYWMgU2NvdHQgPGlzYWFjLnNjb3R0QGlkZWFzb25ib2FyZC5jb20+DQo+IFNpZ25l
+ZC1vZmYtYnk6IE1hcmVrIFZhc3V0IDxtYXJleEBkZW54LmRlPg0KDQpSZXZpZXdlZC1ieTogWWFu
+bmljIE1vb2cgPHkubW9vZ0BwaHl0ZWMuZGU+DQpUZXN0ZWQtYnk6IFlhbm5pYyBNb29nIDx5Lm1v
+b2dAcGh5dGVjLmRlPg0KDQo+IC0tLQ0KPiBDYzogQ29ub3IgRG9vbGV5IDxjb25vcitkdEBrZXJu
+ZWwub3JnPg0KPiBDYzogRmFiaW8gRXN0ZXZhbSA8ZmVzdGV2YW1AZ21haWwuY29tPg0KPiBDYzog
+SXNhYWMgU2NvdHQgPGlzYWFjLnNjb3R0QGlkZWFzb25ib2FyZC5jb20+DQo+IENjOiBLcnp5c3p0
+b2YgS296bG93c2tpIDxrcnprK2R0QGtlcm5lbC5vcmc+DQo+IENjOiBMaXUgWWluZyA8dmljdG9y
+LmxpdUBueHAuY29tPg0KPiBDYzogUGVuZ3V0cm9uaXggS2VybmVsIFRlYW0gPGtlcm5lbEBwZW5n
+dXRyb25peC5kZT4NCj4gQ2M6IFJvYiBIZXJyaW5nIDxyb2JoQGtlcm5lbC5vcmc+DQo+IENjOiBT
+YXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+DQo+IENjOiBTaGF3biBHdW8gPHNo
+YXduZ3VvQGtlcm5lbC5vcmc+DQo+IENjOiBZYW5uaWMgTW9vZyA8eS5tb29nQHBoeXRlYy5kZT4N
+Cj4gQ2M6IGRldmljZXRyZWVAdmdlci5rZXJuZWwub3JnDQo+IENjOiBpbXhAbGlzdHMubGludXgu
+ZGV2DQo+IENjOiBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcNCj4gQ2M6IGxp
+bnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcNCj4gLS0tDQo+IE5vdGU6IEkgZG8gbm90IGhhdmUg
+dGhlIGJvYXJkLCBidXQgSXNhYWMgcmVwb3J0ZWQgdGhleSB0ZXN0ZWQgaXQgc3VjY2Vzc2Z1bGx5
+Lg0KPiDCoMKgwqDCoMKgIFRCIHdvdWxkIGJlIG5pY2UuDQo+IC0tLQ0KPiDCoC4uLi9kdHMvZnJl
+ZXNjYWxlL2lteDhtcC1waHlib2FyZC1wb2xsdXgtcmRrLmR0c8KgwqDCoMKgIHwgMTIgKysrKysr
+KysrKysrDQo+IMKgMSBmaWxlIGNoYW5nZWQsIDEyIGluc2VydGlvbnMoKykNCj4gDQo+IGRpZmYg
+LS1naXQgYS9hcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bXAtcGh5Ym9hcmQtcG9s
+bHV4LXJkay5kdHMNCj4gYi9hcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bXAtcGh5
+Ym9hcmQtcG9sbHV4LXJkay5kdHMNCj4gaW5kZXggNTBkZWJlODIxYzQyMS4uOWMxMDJhY2I4MDUy
+YyAxMDA2NDQNCj4gLS0tIGEvYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1wLXBo
+eWJvYXJkLXBvbGx1eC1yZGsuZHRzDQo+ICsrKyBiL2FyY2gvYXJtNjQvYm9vdC9kdHMvZnJlZXNj
+YWxlL2lteDhtcC1waHlib2FyZC1wb2xsdXgtcmRrLmR0cw0KPiBAQCAtMjE4LDYgKzIxOCwxOCBA
+QCBsZGJfbHZkc19jaDE6IGVuZHBvaW50IHsNCj4gwqAJfTsNCj4gwqB9Ow0KPiDCoA0KPiArJm1l
+ZGlhX2Jsa19jdHJsIHsNCj4gKwkvKg0KPiArCSAqIFRoZSBMVkRTIHBhbmVsIG9uIHRoaXMgZGV2
+aWNlIHVzZXMgNzIuNCBNSHogcGl4ZWwgY2xvY2ssDQo+ICsJICogc2V0IElNWDhNUF9WSURFT19Q
+TEwxIHRvIDcyLjQgKiA3ID0gNTA2LjggTUh6IHNvIHRoZSBMREINCj4gKwkgKiBzZXJpYWxpemVy
+IGFuZCBMQ0RJRnYzIHNjYW5vdXQgZW5naW5lIGNhbiByZWFjaCBhY2N1cmF0ZQ0KPiArCSAqIHBp
+eGVsIGNsb2NrIG9mIGV4YWN0bHkgNzIuNCBNSHouDQo+ICsJICovDQo+ICsJYXNzaWduZWQtY2xv
+Y2stcmF0ZXMgPSA8NTAwMDAwMDAwPiwgPDIwMDAwMDAwMD4sDQo+ICsJCQnCoMKgwqDCoMKgwqAg
+PDA+LCA8MD4sIDw1MDAwMDAwMDA+LA0KPiArCQkJwqDCoMKgwqDCoMKgIDw1MDY4MDAwMDA+Ow0K
+PiArfTsNCj4gKw0KPiDCoCZzbnZzX3B3cmtleSB7DQo+IMKgCXN0YXR1cyA9ICJva2F5IjsNCj4g
+wqB9Ow0KDQo=
