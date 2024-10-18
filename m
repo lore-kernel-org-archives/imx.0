@@ -1,57 +1,57 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BE3E573
-	for <imx@lists.linux.dev>; Fri, 18 Oct 2024 12:15:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D5220E323
+	for <imx@lists.linux.dev>; Fri, 18 Oct 2024 12:31:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729253709; cv=none; b=cHRA/xIW7vgSe5KiytFjarV6UlCEEaqWsjT1+Is7XvJZClyRsTtluFrD32yPTYORzD8RGmImfNPs+oKcg4ZsBtx2Mndog+/g8nxqjRFQY1ui2A5M8l7SzSSvlDUcNDX65iZmPGUc15+JWzrwEth5Dri6ZA1TEPWx+IBVHVQTTkc=
+	t=1729254687; cv=none; b=GR/S6rxgi4azfW1MiyOg3QXqGdQN25O72AUJs7wuRUtXwrS1T6IMBZ2ECULfZwMS6WZvB9pdcSBTNIvGFth/svr0gpJMwBGXJil6JZYSAbr//HiBSe0vcxukNqDphfs6vT++MiQ6gFAR4fRtTlGIZrvA0LWu7ynDjs+nwbCVj4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729253709; c=relaxed/simple;
-	bh=now3J6G/3UbZHE/WU7lQXQuwfG3tyrUmFgArj673/oY=;
+	s=arc-20240116; t=1729254687; c=relaxed/simple;
+	bh=aw6mseRDDe/wDjXyXjamvdSdeBFmFUV1YRWwiLwkZ7g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L4/sFMdeCsG1oJI7IAK9kE63Lb/tExkaWPTFZUOlMrLPfN6DOrcUroVxGbzbhFh7sPuM9nalsxxv2usiP/+rn4edS6FSRhpmD+AtXFcnzxT/TiockySrZ2yRA/sTl9EYzmEZibrSatTwY+PtzzNxExwl47xVdrac1K5+EGt0a2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CXFKe8kl; arc=none smtp.client-ip=209.85.208.177
+	 Content-Type:Content-Disposition:In-Reply-To; b=XSwDui0QV6i3PLU/wOizAykdzVRoKk6J6m/h4DsdlCeJXDf9t36yamZ6WMgfwqEwiH4qO9UXYdzq5X9e9qg+3bh0ScqN/m9BdrhftTtL5OK86Jqqa9ChQP9RsJQtXfJm/LOU0ZIbRGEdpVXptg10U1tzqo47V3ZJGUevFST6gKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FC+4zwIx; arc=none smtp.client-ip=209.85.167.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CXFKe8kl"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2fb388e64b0so21401331fa.0
-        for <imx@lists.linux.dev>; Fri, 18 Oct 2024 05:15:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FC+4zwIx"
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-539f58c68c5so3353339e87.3
+        for <imx@lists.linux.dev>; Fri, 18 Oct 2024 05:31:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729253706; x=1729858506; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1729254683; x=1729859483; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QjL3pHhlawZmked9cDer2cCqaq7RfeznftLlGVpNcgU=;
-        b=CXFKe8klltNQHxdrjWq1taZRw+obuily6AqV7oJqpiI2jADm4zfle2Rc4OTHYc2sW2
-         oKxFedqilkYQZJnlXPeleGYLdnz8IkuqreiSqXKqdK+RRThU2wLmFYZBc4JktsVvr6f4
-         KwvUkKPWYR02as5a7EPvp+C60iyHFpxPV/vhB7Fbt7+kzBFmTwY20vCuZ3T77XHIhOdy
-         q2MQxCtP4f3Xx3CeaHgSdDqN3duD5A+ScW5BJXD3UMvzSY004a+nIoq6GSt2/nA2U3Gi
-         LMIZy9fYsofWkUcuzlxZWLEbaiRFzdpuSuQlm2Ln4pS+dsSaohwvwjZSeXVW2NMX4UVN
-         Y90w==
+        bh=8AGZam4n06viI04ibKwIHu8ebEmTULIu0XIfkMmLleM=;
+        b=FC+4zwIx5b4tDXojC3UJOtyKQb79ye2dHx23Z1jLaFzmkyy/AMuZLMA1u/LfMGeOtd
+         TajGnOz6e9XZK7S/FzCuNk3GS4lTTWD9ki99HcCs/K6Qzp2OUVezNqkq943eY76XeEkt
+         LGXSWGpRxZXqMUzlEXXDbRuLCfmYzIHqbYNEjDsU9WjFVyKNhiqVm0itWx64HCfMj7uk
+         lRq965J7GvPQ9N5mcYLuIu+Eu1JQTahmhdba4Y4HEcht6pAOgIJzLXfcZXwkKqKRLlq6
+         nB1Q2R0MApuMhVoR+wvi2F9Ce1SJbA0PeHT2Z5FAGm+xtIPzLcVrpIeX1ciBBXJcoz1+
+         PO2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729253706; x=1729858506;
+        d=1e100.net; s=20230601; t=1729254683; x=1729859483;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QjL3pHhlawZmked9cDer2cCqaq7RfeznftLlGVpNcgU=;
-        b=T1e/S8+NfAsREoSh6WE6f0zWNFY6a20X4cMcMZWvNEm1hoH9Yom2PdbGPmMuSA7ngs
-         HYJTsTpU/3OQ8qvogdLICDqYa1vZaVaGpICo829KaIQeP28Dr365m4xaeJEZqIpWgB+U
-         MXYnxQLbiTMr0pJFzcvY0aRkAUcYFOhLwAMIw0Laqv4naQ4OPLGYvZ1wuXf2Av2LQVqI
-         OspMH5ZgGNpHVoMFGqEAz9q8bI8P6RduNPrmTPyU89FIAtvxriz57k7vIs/Vmi2ORbOY
-         ThsLmGE8+oekcPrPMoZ3R1Z8OzNbdLCKmNFohBjLxbv6lJy/WUWTAn0rGreYVU6A/+dc
-         SR2w==
-X-Forwarded-Encrypted: i=1; AJvYcCW4KG+gx5DE8i1Vf2RO9GwnaMAGxgMP6TNvhNfviDh392185WOQHckRQhQUPms/BZs93Ks=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzYt4uaJ26fSMZnmW7VTVMLvVM0wvwaiheaFQFcSBakBsd7YRCa
-	l6yGDIBLSXNmvfjvWhggPy8tTkiz1O2xjjnGGSyvsT+TvYTZDW2fmn6WIUsfjdQ=
-X-Google-Smtp-Source: AGHT+IF5eDKvPUdoitD+7fdWywacF4U/7oQTrEfnwaNWZvVwt8eJAqa0dkV02VzR/63JN4AWDeU6JA==
-X-Received: by 2002:a05:651c:b13:b0:2fb:569a:553d with SMTP id 38308e7fff4ca-2fb8323b1fdmr11544041fa.42.1729253705640;
-        Fri, 18 Oct 2024 05:15:05 -0700 (PDT)
+        bh=8AGZam4n06viI04ibKwIHu8ebEmTULIu0XIfkMmLleM=;
+        b=vwDg6EyZuvXuYZZIa3LQKM8Leql/Om7hr8BDKcw0ACJnMHReoxtTVsXa3xtp3bCy6v
+         hJ1WkZ4cciKf/nX+6GcuS4wamG0mvoScWv/d4vF30s0/2Vdhgt6hNdWqrRbiCISKEIiG
+         wsDKKACgD24I0LV8zP+lP9fMoVnu91ApCKh3utNobxQolxU27fQrGlDdTvoBNjEkpFzl
+         +uOPNogyAIc/Mw7Rkbl7v5qcv5OkXgovjIQ+6DdB7qXzyHGpTMXGG67hgYOD1a0A4Ksa
+         SDgh7t6eqCdQmW9kZTfnxR1nT6QlMMkq8mdssSfZsDTSqczsQZgpDd2+XpMjbe3sDv3i
+         J5hg==
+X-Forwarded-Encrypted: i=1; AJvYcCVU7noGiOm9f8Ubw0opiZ5K04I/CrFhB1AKvSVyJtPvTLDIAOBwtLB0ILW5iZHYmwSfF6g=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzHdZ4m3lT9tNu6eCIxfp40bQqv7YDR6Z3vs/MtLfNvolUy5/aP
+	Xr2JSBZt85ikRYjHCe/bLSD9XOnIF7P/XUxWlBtaNgClfbNKeGEOIDQA1DatKcA=
+X-Google-Smtp-Source: AGHT+IF5+uQbidjUeJm/YIP54JRQhHenrE8LF08c1wGN7AL7hbF7Y70yrjPM2DsLa+7UkJwLWiqkDA==
+X-Received: by 2002:a05:6512:1384:b0:53a:64:6818 with SMTP id 2adb3069b0e04-53a154c9d93mr2164357e87.47.1729254683205;
+        Fri, 18 Oct 2024 05:31:23 -0700 (PDT)
 Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2fb809f9b62sm2015311fa.96.2024.10.18.05.15.03
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53a1521fecdsm206273e87.298.2024.10.18.05.31.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Oct 2024 05:15:04 -0700 (PDT)
-Date: Fri, 18 Oct 2024 15:15:01 +0300
+        Fri, 18 Oct 2024 05:31:22 -0700 (PDT)
+Date: Fri, 18 Oct 2024 15:31:20 +0300
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 To: Liu Ying <victor.liu@nxp.com>
 Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
@@ -62,10 +62,10 @@ Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
 	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com, 
 	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, 
 	simona@ffwll.ch, marex@denx.de, stefan@agner.ch
-Subject: Re: [PATCH 5/5] drm: lcdif: Use drm_bridge_connector
-Message-ID: <7isauhmti3vtyseanqveizlhrwmg2iade6kixhhx27edfk4bbm@yj4mekgbvpj4>
+Subject: Re: [PATCH 4/5] drm/bridge: imx8mp-hdmi-tx: Set output_port to 1
+Message-ID: <vvsj6ri2ke25nzocbq736yv7rphzma6pn3yk2uh7iu43zfe2sa@2fwye4k4w6he>
 References: <20241018064813.2750016-1-victor.liu@nxp.com>
- <20241018064813.2750016-6-victor.liu@nxp.com>
+ <20241018064813.2750016-5-victor.liu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -74,83 +74,51 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241018064813.2750016-6-victor.liu@nxp.com>
+In-Reply-To: <20241018064813.2750016-5-victor.liu@nxp.com>
 
-On Fri, Oct 18, 2024 at 02:48:13PM +0800, Liu Ying wrote:
-> Initialize a connector by calling drm_bridge_connector_init() for
-> each encoder so that down stream bridge drivers don't need to create
-> connectors any more.
+On Fri, Oct 18, 2024 at 02:48:12PM +0800, Liu Ying wrote:
+> Set DW HDMI platform data's output_port to 1 in imx8mp_dw_hdmi_probe()
+> so that dw_hdmi_probe() called by imx8mp_dw_hdmi_probe() can tell the
+> DW HDMI bridge core driver about the output port we are using, hence
+> the next bridge can be found in dw_hdmi_parse_dt() according to the port
+> index, and furthermore the next bridge can be attached to bridge chain in
+> dw_hdmi_bridge_attach() when the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag is
+> set.  The output_port value aligns to the value used by devicetree.
+> This is a preparation for making the i.MX8MP LCDIF driver use
+> drm_bridge_connector which requires the DRM_BRIDGE_ATTACH_NO_CONNECTOR
+> flag.
 > 
 > Signed-off-by: Liu Ying <victor.liu@nxp.com>
 > ---
->  drivers/gpu/drm/mxsfb/Kconfig     |  1 +
->  drivers/gpu/drm/mxsfb/lcdif_drv.c | 17 ++++++++++++++++-
->  2 files changed, 17 insertions(+), 1 deletion(-)
+>  drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/drivers/gpu/drm/mxsfb/Kconfig b/drivers/gpu/drm/mxsfb/Kconfig
-> index 264e74f45554..06c95e556380 100644
-> --- a/drivers/gpu/drm/mxsfb/Kconfig
-> +++ b/drivers/gpu/drm/mxsfb/Kconfig
-> @@ -27,6 +27,7 @@ config DRM_IMX_LCDIF
->  	depends on DRM && OF
->  	depends on COMMON_CLK
->  	depends on ARCH_MXC || COMPILE_TEST
-> +	select DRM_BRIDGE_CONNECTOR
->  	select DRM_CLIENT_SELECTION
+> diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+> index 8fcc6d18f4ab..54a53f96929a 100644
+> --- a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+> +++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+> @@ -96,6 +96,7 @@ static int imx8mp_dw_hdmi_probe(struct platform_device *pdev)
+>  		return dev_err_probe(dev, PTR_ERR(hdmi->pixclk),
+>  				     "Unable to get pixel clock\n");
+>  
+> +	plat_data->output_port = 1;
 
-Missing `select DRM_DISPLAY_HELPER`. LGTM otherwise.
+This will break compatibility with older DT files, which don't have
+output port. I think you need to add output_port_optional flag to
+dw_hdmi_plat_data and still return 0 from dw_hdmi_parse_dt() if the flag
+is set, but there is no remote node.
 
->  	select DRM_MXS
->  	select DRM_KMS_HELPER
-> diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-> index 58ccad9c425d..d4521da6675e 100644
-> --- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
-> +++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-> @@ -16,7 +16,9 @@
->  
->  #include <drm/drm_atomic_helper.h>
->  #include <drm/drm_bridge.h>
-> +#include <drm/drm_bridge_connector.h>
->  #include <drm/drm_client_setup.h>
-> +#include <drm/drm_connector.h>
->  #include <drm/drm_drv.h>
->  #include <drm/drm_encoder.h>
->  #include <drm/drm_fbdev_dma.h>
-> @@ -56,6 +58,7 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
->  		struct device_node *remote;
->  		struct of_endpoint of_ep;
->  		struct drm_encoder *encoder;
-> +		struct drm_connector *connector;
->  
->  		remote = of_graph_get_remote_port_parent(ep);
->  		if (!of_device_is_available(remote)) {
-> @@ -97,13 +100,25 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
->  			return ret;
->  		}
->  
-> -		ret = drm_bridge_attach(encoder, bridge, NULL, 0);
-> +		ret = drm_bridge_attach(encoder, bridge, NULL,
-> +					DRM_BRIDGE_ATTACH_NO_CONNECTOR);
->  		if (ret) {
->  			of_node_put(ep);
->  			return dev_err_probe(dev, ret,
->  					     "Failed to attach bridge for endpoint%u\n",
->  					     of_ep.id);
->  		}
-> +
-> +		connector = drm_bridge_connector_init(lcdif->drm, encoder);
-> +		if (IS_ERR(connector)) {
-> +			ret = PTR_ERR(connector);
-> +			dev_err(dev, "Failed to initialize bridge connector: %d\n",
-> +				ret);
-> +			of_node_put(ep);
-> +			return ret;
-> +		}
-> +
-> +		drm_connector_attach_encoder(connector, encoder);
->  	}
->  
->  	return 0;
+Last, but not least, this changes behaviour of the connector.
+dw_hdmi_connector_create() implements CEC support, handles
+ycbcr_420_allowed, HDR metadata, etc.
+
+We are slowly moving towards the supporting all of this in bridge
+connector via the HDMI Connector framework, but this is not
+implemented for now.
+
+>  	plat_data->mode_valid = imx8mp_hdmi_mode_valid;
+>  	plat_data->phy_ops = &imx8mp_hdmi_phy_ops;
+>  	plat_data->phy_name = "SAMSUNG HDMI TX PHY";
 > -- 
 > 2.34.1
 > 
