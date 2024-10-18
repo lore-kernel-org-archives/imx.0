@@ -1,118 +1,261 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazon11010013.outbound.protection.outlook.com [52.101.229.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF18F18858C
-	for <imx@lists.linux.dev>; Fri, 18 Oct 2024 07:32:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729236757; cv=none; b=PD6o3DCzVbDOyG9kJNi+QlJv7tn4jdgnC7qPx8FMc/ImG+iMh4g0CbXcPKy5qWdsfafy0T14+UfCEjM+Hgol1eoAjAL6Ha6yIuEDuoe+AhUZbDgTpS33eSsUZ5eT/AnJFvzXzCIAWW3EuHhmR4k2a8qrMyYuv+gFmiswasLxZGE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729236757; c=relaxed/simple;
-	bh=rnX3urMY7eauJPF3vIsiRxe1XtHNowUicZLjrD2H758=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ETdUtuAKH6eaXOSrQ2y2ZUyHYpsA3TtDD/pLYd3etIlM3BZUee7VcUL1vEJhx9mvkK+cSMGfiAXSik801XYunh4yggqPCRVKVlQXBHd3ESR6/rFAamzLud+zJSST9LujeRXs9W9QPRkhzxpv4MFj0mlYtDWp7iGfUj9tIaTOCD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=GBEeRAb1; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=M2Cewint reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B90016B3B7
+	for <imx@lists.linux.dev>; Fri, 18 Oct 2024 07:34:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.229.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729236867; cv=fail; b=Px2GetRj5O7SFPcBxPsLB1R77lzW/jbX7ZxnxGanAe6IUjUxoiqfvY8encEEXvzhrgCWrLy0fpgll1AfHnjx6BEL4G/GjDNshfxb1d9Y3Iufst5j35Fq4cGhBJCn3qglIOF+466IH5zxV8SEjhLng3xBZaY2TMNkNJyqMZX0auM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729236867; c=relaxed/simple;
+	bh=uvbf5AOG7T1uMYEnq/rwrTwvp02TlfzloQNvqGIiGtk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=mZw8hjvwvXJTTtaVMFEAaltOb0rGQXjjhvbQqRMUL7JdFGn236QAqwLrQCQFizzzHtv8tNYsnS0r/1GhqVejfmnQ2Q4fOd3yAuyYXzXgoOyGEAcrSGDZjUt6N7jCV3e6YPHW9RRBaXEcMy/GS7nUmRhOh2pcqtcKw9XqsXr48/I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b=rJ32Q61i; arc=fail smtp.client-ip=52.101.229.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="GBEeRAb1";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="M2Cewint"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1729236754; x=1760772754;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=iD4e3E6WAb3v3t3LKPK8kagukMfYt9x+P4AkPaprOXM=;
-  b=GBEeRAb184gDhi3Z8p2Mu6PxgxW0/J0Etiw9KD8xH7kkGMXuLIPB7zS4
-   7qyv6VIE8c82KOmEhRkXek3y40Rq0pDUtccKEotCYYCy5XXv563iH3kbt
-   DDfaeeLr95k0/3HOqVcZLRl29IigQc0Hltzvlp1AU2qzc8R8IkdCGtpHh
-   I9VDHNlGISIx39hWfoaNKa3DnRSdEXwjraZtbww7gDU3ZKJfXlWYXUggW
-   PhGGshdxLsA8xRoMFrf2Vb1xaX+hwDBg55NjudmIQwHVCAJvw6EuDjQHw
-   Wsy6XCXr2TNCbJVdBUM2Ta5gZ2UD2qAmVUo6odKKrLczHH6WCfDdAuodC
-   g==;
-X-CSE-ConnectionGUID: 5s2JibW8TkKhBDmm3SSLwg==
-X-CSE-MsgGUID: dPcjoGrGROOj/ycT4Q4aVw==
-X-IronPort-AV: E=Sophos;i="6.11,213,1725314400"; 
-   d="scan'208";a="39534799"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 18 Oct 2024 09:32:31 +0200
-X-CheckPoint: {67120F0F-B-236878CD-F32272AF}
-X-MAIL-CPID: 9916A76D1D510FFF75EFD12B72D979C2_2
-X-Control-Analysis: str=0001.0A682F1B.67120F0F.00A7,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C735B17031A;
-	Fri, 18 Oct 2024 09:32:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1729236746;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=iD4e3E6WAb3v3t3LKPK8kagukMfYt9x+P4AkPaprOXM=;
-	b=M2CewintWs1uqCXwnMPUcVGIgkNZwGx05Xj/m43DnyXgqZOPCN2RQrUa55HHdXP/wMOzXU
-	dMrwvNEJVLtiTcJdKSNSo+dJGuWtcimQoFMGSqaIh9pUekPd/a3ul7jtbWSu9GnaKCBMwp
-	DDG3rd4DE1jvGaA2OO/Ff17o/XuDEOtlbUqf99Xz4xrkHCkLw9p++mm5LVrQd2ona9hunw
-	kB+16dDFE+uZF+7dU+v1iAbGV6WnR5RFvUsFUcr7HeDbZfU9JtyhuvO6rxXGuMpy2dj1y2
-	VyDSh+LhZEz4RBCtvZcX/TVkgstDPntK8nNDApeoajNaj9yaRnN9ZlHteOEM3g==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org, Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, marex@denx.de, stefan@agner.ch, dmitry.baryshkov@linaro.org, Liu Ying <victor.liu@nxp.com>
-Subject: Re: [PATCH 4/5] drm/bridge: imx8mp-hdmi-tx: Set output_port to 1
-Date: Fri, 18 Oct 2024 09:32:22 +0200
-Message-ID: <46745071.fMDQidcC6G@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20241018064813.2750016-5-victor.liu@nxp.com>
-References: <20241018064813.2750016-1-victor.liu@nxp.com> <20241018064813.2750016-5-victor.liu@nxp.com>
+	dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b="rJ32Q61i"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VCuZboEsNQy4t1tHmjhR0T/xeEcyr02MqRSoNy7zgbg7ezcWYCU3NjPD1F0IglZWDoTobEvtqLSMf4CCcD9dX6spODVEvj3u1j9sWBf+0P4GUn1eW4suU+R2lRgOVC63qtx9dM+g8qAA+H6NMuayAPaqUy4gbjvA9IGnBrXs5nljCi/P/vvYHa+7BKEY4pajvTtHVKWiF/IwYh9zuiIOyTtLeGt+R4QlfnIGebn2QyLWRzMEFVyi/kf6y4HU4nkjzpXjSBfHEosCI2A/os+nJZwrftz/zJCNBRKZhUnvUatn1aCqXyyRS+YqjbGu3Pv/GhHVi9UQqGuzboAb5hEINA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gy0p3FVlgi+rtFyhz9fF6yNIvsjlQFf4AIYPz/WLV7M=;
+ b=pbOE6YjGQ7anX+QSLiQhHSOnC9MGbTpsgBZh08b0H9w1Dhao8isf0+SbRPELZ2e9PwEfbZU3PIvpp70zhw3FBF3qAP5sO/3QhQnXRrC7ML8HzmOolpMy4RJ5V3Nc2JG4C+ErSwycRYpJeOtvkKhVOJEvp/HJRO/GbI/ZEBjqZEwFoXaQjUAu2xC0WVZwGI4QJVeP+5AKOqfqFbF8uZNaQMM+rexOMGVvYeP0a9kL48TfuWURerWR9HV4ibsfQJOGiIc1ylzpL/Z8kKRyuNWjoizC9Ng58YskqzoTC23BbVcVIs9kWR5kpeIji3z1CCOArkkQVjsUaBWK0HeJvcJxZA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
+ header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gy0p3FVlgi+rtFyhz9fF6yNIvsjlQFf4AIYPz/WLV7M=;
+ b=rJ32Q61i7YCPIR+EgbPgJU8A/lVui1ybSD+nlcro0+Wq4G+GW0RqHAqUn9aaV0IMgVnc7vZjsKbP5QzbthMLlm/Ua/vuopdDNVZ7nEmwd2varLQ5QlroaNl1kL1kqQED1HOl3YVmfO2iBgGrmxMT+QbIjOP9DzWlbjolZhCoVbQ=
+Received: from TYCPR01MB11332.jpnprd01.prod.outlook.com (2603:1096:400:3c0::7)
+ by OS0PR01MB5906.jpnprd01.prod.outlook.com (2603:1096:604:be::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.18; Fri, 18 Oct
+ 2024 07:34:19 +0000
+Received: from TYCPR01MB11332.jpnprd01.prod.outlook.com
+ ([fe80::7497:30af:3081:1479]) by TYCPR01MB11332.jpnprd01.prod.outlook.com
+ ([fe80::7497:30af:3081:1479%7]) with mapi id 15.20.8069.019; Fri, 18 Oct 2024
+ 07:34:19 +0000
+From: Biju Das <biju.das.jz@bp.renesas.com>
+To: Liu Ying <victor.liu@nxp.com>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "dri-devel@lists.freedesktop.org"
+	<dri-devel@lists.freedesktop.org>
+CC: "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>, "s.hauer@pengutronix.de"
+	<s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>, "andrzej.hajda@intel.com"
+	<andrzej.hajda@intel.com>, "neil.armstrong@linaro.org"
+	<neil.armstrong@linaro.org>, "rfoss@kernel.org" <rfoss@kernel.org>,
+	laurent.pinchart <laurent.pinchart@ideasonboard.com>, "jonas@kwiboo.se"
+	<jonas@kwiboo.se>, "jernej.skrabec@gmail.com" <jernej.skrabec@gmail.com>,
+	"maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
+	"mripard@kernel.org" <mripard@kernel.org>, "tzimmermann@suse.de"
+	<tzimmermann@suse.de>, "airlied@gmail.com" <airlied@gmail.com>,
+	"simona@ffwll.ch" <simona@ffwll.ch>, "marex@denx.de" <marex@denx.de>,
+	"stefan@agner.ch" <stefan@agner.ch>, "dmitry.baryshkov@linaro.org"
+	<dmitry.baryshkov@linaro.org>
+Subject: RE: [PATCH 5/5] drm: lcdif: Use drm_bridge_connector
+Thread-Topic: [PATCH 5/5] drm: lcdif: Use drm_bridge_connector
+Thread-Index: AQHbISv3sPpwi6VcD0S7zRnbRJ8jF7KMHKyA
+Date: Fri, 18 Oct 2024 07:34:19 +0000
+Message-ID:
+ <TYCPR01MB113325E42E2E31FB953B1CDF586402@TYCPR01MB11332.jpnprd01.prod.outlook.com>
+References: <20241018064813.2750016-1-victor.liu@nxp.com>
+ <20241018064813.2750016-6-victor.liu@nxp.com>
+In-Reply-To: <20241018064813.2750016-6-victor.liu@nxp.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=bp.renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TYCPR01MB11332:EE_|OS0PR01MB5906:EE_
+x-ms-office365-filtering-correlation-id: fd16628c-142a-4854-5a18-08dcef47474a
+x-ld-processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?7d4Ef5iav6DEDfNckpJ3xn4YRLwMMrmuvh762x3d0Ux1IUAttK38IqmoFWs2?=
+ =?us-ascii?Q?gkb9xL8IDHiam+YSy7biifngrE3zGNuv9rAXVk0G80FmH4kVfAo+zuG75Dn0?=
+ =?us-ascii?Q?J0OAYR8uCKa/ZQnGj+qArhBG/54XhXmXsm1RLAs2B/qohk04TiITdLfCXmLI?=
+ =?us-ascii?Q?Ue7DMzKu6BQOpsDL/W/6lhGt6vR7T1iIjgjml5Ra7k/kMSmjkY8Ifi2GCVJQ?=
+ =?us-ascii?Q?TPmKeKUu+D5fcucoy4HnYkZhRhQhw3oPb8H6d5JctvysnyEHeL/gBWblnGe3?=
+ =?us-ascii?Q?56uo/RLr5oF+x2Z3y2b1csOlW0TlSMgPXSLHnx8LRMVL91Iv0T59vtzaytF1?=
+ =?us-ascii?Q?FFbzfWn7zbr6Fy3sw/TTTBws6bXFFVDToYuMaNxjfsGqAh48gZJ9cz0QFAVu?=
+ =?us-ascii?Q?8j3h0eHCdHXi8/HN5sfeKOXRVZzYLlbuPUhHJAg3lKtWMoQx/YlA8ytnZ7j9?=
+ =?us-ascii?Q?eIoQwHyJumYMn8c/Wg76S9l4kBjxa1jwrZ71XSt2qd9mPX5LFs6hyTlJi6MF?=
+ =?us-ascii?Q?THSUmYelfI5TIJrlDiX3SHDcZ3kATARtM+KSGj9Q2aL0rZvU/mSR3KBgjKU/?=
+ =?us-ascii?Q?pTkEljEBL1r+vJT2+SohN0eQ7vvyX0KVGYfpHK76OobsSEOpZQc83iV7DQeh?=
+ =?us-ascii?Q?ueeo/842K3tsIbti/H7POXTa6xy4pAOrZ51fTt43ghnU/NsXlJ8Mj+tg+kRS?=
+ =?us-ascii?Q?8sHQANSauDQo+1g5BjoUMGS0pZXdwTlYoNADxgn2FVnPSNxyvkJjgg1oneFJ?=
+ =?us-ascii?Q?a7js1g+mE/gnNoAuBvo1l8MZVHm41uutpk/Uz/3/pAQHhB4obRofOzSqBEtt?=
+ =?us-ascii?Q?y8wimKEJb2gyoMTJnTzVacJKBO34lSGvByZoU+0CwYpLErjPEtJDalBeVC25?=
+ =?us-ascii?Q?LDe/J8nXG5woL3jap8HU3CfC6xBC1e3UbZHuuN4khBA8wBr2/1fJPXlHoEXt?=
+ =?us-ascii?Q?Yr475Bcz/nFXihSzztbxqx+1zN2n5nVHzBOkuS5aXGViv4aqMd6G1jq3nVkV?=
+ =?us-ascii?Q?5iWsDb5cz8KiqmRAAP3q6fvE0twSmH2TuuNBU+GSNsHXNF4/tme41GEsFMt/?=
+ =?us-ascii?Q?61ktR+w2+jkbEZSXmmJBgWq5j1evtK6YWMXL9aPSdIlEE4HqwGd7XAJaXkIL?=
+ =?us-ascii?Q?SxqvI0Sbovl40CC6A8OP2GJEVZ6TgNvOx+odgffNsDo1I5q3RGpgm7shm0t9?=
+ =?us-ascii?Q?zFyRKYITvftzhZ5vB3u4LXzd1JSXjPuPnIddrrDfQhcv/U2cxGC78E/aNunf?=
+ =?us-ascii?Q?IN5M/gSIhnP6pw/C9z90MvOsRE0u6n8H8DF1kclZB34XXtAueWN2k0XkjySg?=
+ =?us-ascii?Q?mjJ1rvxn4ZLoWJ2uHQWn1YRte8ShE+jTodk4UrtyvXVy/V08mCbsKLpSsk+O?=
+ =?us-ascii?Q?TtHeJoQ=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB11332.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?3xBsfl0XsHbLBgjXKUwVBpFod28TyP3GQjDiVd2+NObJUR5QIwgIPehny25X?=
+ =?us-ascii?Q?D1h0f/TL1aIB3w01jqNpQXj0opI686T9M38LgqTm2+nfpfGL33F3FYwnJBdd?=
+ =?us-ascii?Q?ElgpiNeC6CCm45zWsMRNRB5PvM/uN7g2GCAu+/rHBmaHUDs8tdMz6qyqYk+T?=
+ =?us-ascii?Q?8mLdUaX1Gio5ZHhj5vSepuMhrydd/GlyWNg2TjlbSrRk/daM3iKFly3j/wRN?=
+ =?us-ascii?Q?8JKj40vXt8ep6Hu0XjXgJTn46Yw4AY2RdAnHepOpgfPfQ3LdoQCLp0F/w/Dg?=
+ =?us-ascii?Q?MiPjX7XtKjnhW38c8AdJ/JnzWRkVWfSo4JESIxsviXHOb5kdl8ZP9cvn6/ut?=
+ =?us-ascii?Q?5qgn+cQDPdpoQrBE+qOPvaIhPewdQh636yHNfCw7aqPUZLZwo3OW5hTvN+Q0?=
+ =?us-ascii?Q?pcxJnWimx+h2nNlVBIRuVux3AHvgmXbeL/QNMTk3CkMyAPwgKiNvZkE27TAe?=
+ =?us-ascii?Q?ceq8RYz1wB4rpqf4Yx9rJNWlPzSti0CaBZrQAGDvXw118M5p4MOA0dcln4gL?=
+ =?us-ascii?Q?18VfrJrRES6glVNcUwm+ZwtAHz3S5VoSFh6ARE0euFyQnEcOHsjhNNYvqF/D?=
+ =?us-ascii?Q?/qVQrW+wmc8QSLF0BqJhZo+0gpEJQsFCI0SYRiuJ1cpfnoLtS5vnyFUlI9Ep?=
+ =?us-ascii?Q?afgHv7NDGte4meNhEghFOeTGnA40yNmTgBNB9Dz65PIRWrxyVjPcSoxF49kp?=
+ =?us-ascii?Q?ZyY/SJDyUfF9ubw5jXg7kvjtXxzet6kAZTlpQ417RE05VnE8LfVGz4BwZSDf?=
+ =?us-ascii?Q?BPPMKecJuZE3ipPhNUk4cpP6ovoOVM3wVbWaeu5d7lQmUAlVX/8B6cuhvoVa?=
+ =?us-ascii?Q?LVZLnk0NvZN+yq5IJBR7HDqbOjZPpMzTZQsNd3y8UgT72K8RnC29vnIrU5cA?=
+ =?us-ascii?Q?RcBXamFHhgz3NZtDmvBsEwokUhYm8XS9B55h2tmLLgDx/c79CYamKW1Aexjm?=
+ =?us-ascii?Q?Bsc+HZLc82PT+0doELkHFhi1GGeUZZkge+jcfxK7A9njA2lzjSgI+iSuhpTg?=
+ =?us-ascii?Q?UB6Nl+V4snAO4JCxs0B5URDuKOM14KtA0puA3FPgsBIDfKJc2Y+PBIo29F6V?=
+ =?us-ascii?Q?WZ5mrXdRtxP+Fq9lzWc8sVEZITLgk6wxHquwTeFevvCQ6/HCtLwbqTHDII8Y?=
+ =?us-ascii?Q?Jdb74RrjevU+e2ss2iiadpRFPxEApifiEPe/yrwvM5ZSiQ+9lhcXsuEXSmYr?=
+ =?us-ascii?Q?H97gv/4UmBpQyT4F51LifTyeKn7fr/AnggLN/jTiC4jOnd/GQS2eLml3uufi?=
+ =?us-ascii?Q?Zn8Q/nhTgCR+4X1eseJnso+5gP34fdQw4LCVtSWi1ZfnmNIcdTbW9o4iAR2W?=
+ =?us-ascii?Q?c9luLETJvvk1FXBH128YETgtWo6kV19LFJ9VMnu9rL4CcOHnl8VZIMX+Mbzm?=
+ =?us-ascii?Q?+48wnPVI/Grp/SLYdpF1PnAAi0Rd4vFxYfQAanFfEoTjX19OtmM8bgK7gf3Q?=
+ =?us-ascii?Q?e/jvw3meoIn/11RSqL5h0LNPAilms7K3zYBHA5C65sSWKM64M57vhJgdyHrA?=
+ =?us-ascii?Q?qSGMAowguw/3xK3N62lDeODLmvMIqEDH0DpDGr63n/LLxFjlMGnFiD7RN+BC?=
+ =?us-ascii?Q?JJ+7hFhCeUyuZq54Wfuuo/HPj8nPmmMxB/hzt7ItA54DoV8cAP4E/oRgGEpy?=
+ =?us-ascii?Q?6A=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+X-OriginatorOrg: bp.renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB11332.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fd16628c-142a-4854-5a18-08dcef47474a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Oct 2024 07:34:19.7440
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Mb+dqfmqUGW/LeY+jTLkGYOW6d1ygZd9OJpI4qPjBVtGXaZbNdqv7bcVE23z2E7vf3ciDgEmnSEcthEG6ceNynx5ck9kV4vuDTuoP999CcY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS0PR01MB5906
 
-Hi,
+Hi Liu Ying,
 
-Am Freitag, 18. Oktober 2024, 08:48:12 CEST schrieb Liu Ying:
-> Set DW HDMI platform data's output_port to 1 in imx8mp_dw_hdmi_probe()
-> so that dw_hdmi_probe() called by imx8mp_dw_hdmi_probe() can tell the
-> DW HDMI bridge core driver about the output port we are using, hence
-> the next bridge can be found in dw_hdmi_parse_dt() according to the port
-> index, and furthermore the next bridge can be attached to bridge chain in
-> dw_hdmi_bridge_attach() when the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag is
-> set.  The output_port value aligns to the value used by devicetree.
-> This is a preparation for making the i.MX8MP LCDIF driver use
-> drm_bridge_connector which requires the DRM_BRIDGE_ATTACH_NO_CONNECTOR
-> flag.
+Thanks for the patch.
+
+> -----Original Message-----
+> From: linux-arm-kernel <linux-arm-kernel-bounces@lists.infradead.org> On =
+Behalf Of Liu Ying
+> Sent: Friday, October 18, 2024 7:48 AM
+> Subject: [PATCH 5/5] drm: lcdif: Use drm_bridge_connector
+>=20
+> Initialize a connector by calling drm_bridge_connector_init() for each en=
+coder so that down stream
+> bridge drivers don't need to create connectors any more.
 >=20
 > Signed-off-by: Liu Ying <victor.liu@nxp.com>
-
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-
 > ---
->  drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/gpu/drm/mxsfb/Kconfig     |  1 +
+>  drivers/gpu/drm/mxsfb/lcdif_drv.c | 17 ++++++++++++++++-
+>  2 files changed, 17 insertions(+), 1 deletion(-)
 >=20
-> diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c b/drivers/gpu/dr=
-m/bridge/imx/imx8mp-hdmi-tx.c
-> index 8fcc6d18f4ab..54a53f96929a 100644
-> --- a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
-> +++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
-> @@ -96,6 +96,7 @@ static int imx8mp_dw_hdmi_probe(struct platform_device =
-*pdev)
->  		return dev_err_probe(dev, PTR_ERR(hdmi->pixclk),
->  				     "Unable to get pixel clock\n");
-> =20
-> +	plat_data->output_port =3D 1;
->  	plat_data->mode_valid =3D imx8mp_hdmi_mode_valid;
->  	plat_data->phy_ops =3D &imx8mp_hdmi_phy_ops;
->  	plat_data->phy_name =3D "SAMSUNG HDMI TX PHY";
+> diff --git a/drivers/gpu/drm/mxsfb/Kconfig b/drivers/gpu/drm/mxsfb/Kconfi=
+g index
+> 264e74f45554..06c95e556380 100644
+> --- a/drivers/gpu/drm/mxsfb/Kconfig
+> +++ b/drivers/gpu/drm/mxsfb/Kconfig
+> @@ -27,6 +27,7 @@ config DRM_IMX_LCDIF
+>  	depends on DRM && OF
+>  	depends on COMMON_CLK
+>  	depends on ARCH_MXC || COMPILE_TEST
+> +	select DRM_BRIDGE_CONNECTOR
+>  	select DRM_CLIENT_SELECTION
+>  	select DRM_MXS
+>  	select DRM_KMS_HELPER
+> diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lc=
+dif_drv.c
+> index 58ccad9c425d..d4521da6675e 100644
+> --- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
+> +++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
+> @@ -16,7 +16,9 @@
 >=20
+>  #include <drm/drm_atomic_helper.h>
+>  #include <drm/drm_bridge.h>
+> +#include <drm/drm_bridge_connector.h>
+>  #include <drm/drm_client_setup.h>
+> +#include <drm/drm_connector.h>
+>  #include <drm/drm_drv.h>
+>  #include <drm/drm_encoder.h>
+>  #include <drm/drm_fbdev_dma.h>
+> @@ -56,6 +58,7 @@ static int lcdif_attach_bridge(struct lcdif_drm_private=
+ *lcdif)
+>  		struct device_node *remote;
+>  		struct of_endpoint of_ep;
+>  		struct drm_encoder *encoder;
+> +		struct drm_connector *connector;
+>=20
+>  		remote =3D of_graph_get_remote_port_parent(ep);
+>  		if (!of_device_is_available(remote)) { @@ -97,13 +100,25 @@ static int
+> lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
+>  			return ret;
+>  		}
+>=20
+> -		ret =3D drm_bridge_attach(encoder, bridge, NULL, 0);
+> +		ret =3D drm_bridge_attach(encoder, bridge, NULL,
+> +					DRM_BRIDGE_ATTACH_NO_CONNECTOR);
+>  		if (ret) {
+>  			of_node_put(ep);
+>  			return dev_err_probe(dev, ret,
+>  					     "Failed to attach bridge for endpoint%u\n",
+>  					     of_ep.id);
+>  		}
+> +
+> +		connector =3D drm_bridge_connector_init(lcdif->drm, encoder);
+> +		if (IS_ERR(connector)) {
+> +			ret =3D PTR_ERR(connector);
+> +			dev_err(dev, "Failed to initialize bridge connector: %d\n",
+> +				ret);
+> +			of_node_put(ep);
+> +			return ret;
 
+Maybe same error path style like above??
+		of_node_put(ep);
+		return dev_err_probe(dev, PTR_ERR(connector),"Failed to initialize bridge=
+ connector");
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+Cheers,
+Biju
 
+> +		}
+> +
+> +		drm_connector_attach_encoder(connector, encoder);
+>  	}
+>=20
+>  	return 0;
+> --
+> 2.34.1
+>=20
 
