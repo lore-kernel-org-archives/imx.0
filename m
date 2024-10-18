@@ -1,136 +1,118 @@
-Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B80175D5F
-	for <imx@lists.linux.dev>; Fri, 18 Oct 2024 07:31:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.26.50.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF18F18858C
+	for <imx@lists.linux.dev>; Fri, 18 Oct 2024 07:32:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729236714; cv=none; b=bZMtZyR+lGqIGdOVOjOfR+nRvqcp9yOheMC2EASxEbUg7UkoDXEMA217AwFl1fSOEB8wn5X1VjdwWBC/p105RnL7xOLYGPhwYJThrfJ2VG5dS/JjcRFnjmB133KeaZU2D23WgPwOFPkTWcN/BAEOOXdkxWpfkNLJxdrIZ7bmgoc=
+	t=1729236757; cv=none; b=PD6o3DCzVbDOyG9kJNi+QlJv7tn4jdgnC7qPx8FMc/ImG+iMh4g0CbXcPKy5qWdsfafy0T14+UfCEjM+Hgol1eoAjAL6Ha6yIuEDuoe+AhUZbDgTpS33eSsUZ5eT/AnJFvzXzCIAWW3EuHhmR4k2a8qrMyYuv+gFmiswasLxZGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729236714; c=relaxed/simple;
-	bh=Bcyhl5kY/sOHE7DfxpuYkTfNLNsdv4JRLJMRoGawewE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=TjBkzN/lgBUnhuzPD8f/hR8Iyh3wkNYHtxvKBqimwtkkJmpFSm01gzDMYeD861kw6y0S1XD1vymjNRPCEn2XdmwfasTVmtXhkRZ2KwUGn6zkvuxyH7WPrK6TnhigOz9uBrICMnTRzMFV0VAJTVec0MZy/P/jpyDPVJnDTnI3O8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=V39sBBwj; arc=none smtp.client-ip=91.26.50.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
+	s=arc-20240116; t=1729236757; c=relaxed/simple;
+	bh=rnX3urMY7eauJPF3vIsiRxe1XtHNowUicZLjrD2H758=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ETdUtuAKH6eaXOSrQ2y2ZUyHYpsA3TtDD/pLYd3etIlM3BZUee7VcUL1vEJhx9mvkK+cSMGfiAXSik801XYunh4yggqPCRVKVlQXBHd3ESR6/rFAamzLud+zJSST9LujeRXs9W9QPRkhzxpv4MFj0mlYtDWp7iGfUj9tIaTOCD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=GBEeRAb1; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=M2Cewint reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="V39sBBwj"
-DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
-	q=dns/txt; i=@phytec.de; t=1729236707; x=1731828707;
-	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Bcyhl5kY/sOHE7DfxpuYkTfNLNsdv4JRLJMRoGawewE=;
-	b=V39sBBwjG9ZoO7smG9yANIxsIkBgp94bnC238Z3WxXWtAitbJ5QwvQd0pgwMcNlO
-	5tw3N/K7Q0m3aXfi7RWabd42XbT8DdYFHlZIcgDeYqis0YJ9nkqfONqrnMZ6AAYu
-	vweDXcooBMSsOD3JJUIaBDLhzIvGA3CS/PVXs00v3xw=;
-X-AuditID: ac14000a-4577e70000004e2a-8c-67120ee3e23a
-Received: from Diagnostix.phytec.de (Diagnostix.phytec.de [172.25.0.14])
-	(using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(Client did not present a certificate)
-	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id B3.A2.20010.3EE02176; Fri, 18 Oct 2024 09:31:47 +0200 (CEST)
-Received: from Berlix.phytec.de (172.25.0.12) by Diagnostix.phytec.de
- (172.25.0.14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Fri, 18 Oct
- 2024 09:31:47 +0200
-Received: from Berlix.phytec.de ([fe80::197e:d26b:2ca:c7b4]) by
- berlix.phytec.de ([fe80::197e:d26b:2ca:c7b4%4]) with mapi id 15.01.2507.006;
- Fri, 18 Oct 2024 09:31:47 +0200
-From: Yannic Moog <Y.Moog@phytec.de>
-To: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "marex@denx.de" <marex@denx.de>
-CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
-	<festevam@gmail.com>, "isaac.scott@ideasonboard.com"
-	<isaac.scott@ideasonboard.com>, "kernel@dh-electronics.com"
-	<kernel@dh-electronics.com>, "robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "victor.liu@nxp.com"
-	<victor.liu@nxp.com>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "shawnguo@kernel.org"
-	<shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: Re: [PATCH] arm64: dts: imx8mp-phyboard-pollux: Set Video PLL1
- frequency to 506.8 MHz
-Thread-Topic: [PATCH] arm64: dts: imx8mp-phyboard-pollux: Set Video PLL1
- frequency to 506.8 MHz
-Thread-Index: AQHbIEJYdOojGCieyEaB2fu4YX6curKL/YeA
-Date: Fri, 18 Oct 2024 07:31:47 +0000
-Message-ID: <7094f3c17319ccb4676e7b539fc4bb52bea674e6.camel@phytec.de>
-References: <20241017031146.157996-1-marex@denx.de>
-In-Reply-To: <20241017031146.157996-1-marex@denx.de>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <617401BAA2C620438450CA58711C95DE@phytec.de>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="GBEeRAb1";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="M2Cewint"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1729236754; x=1760772754;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=iD4e3E6WAb3v3t3LKPK8kagukMfYt9x+P4AkPaprOXM=;
+  b=GBEeRAb184gDhi3Z8p2Mu6PxgxW0/J0Etiw9KD8xH7kkGMXuLIPB7zS4
+   7qyv6VIE8c82KOmEhRkXek3y40Rq0pDUtccKEotCYYCy5XXv563iH3kbt
+   DDfaeeLr95k0/3HOqVcZLRl29IigQc0Hltzvlp1AU2qzc8R8IkdCGtpHh
+   I9VDHNlGISIx39hWfoaNKa3DnRSdEXwjraZtbww7gDU3ZKJfXlWYXUggW
+   PhGGshdxLsA8xRoMFrf2Vb1xaX+hwDBg55NjudmIQwHVCAJvw6EuDjQHw
+   Wsy6XCXr2TNCbJVdBUM2Ta5gZ2UD2qAmVUo6odKKrLczHH6WCfDdAuodC
+   g==;
+X-CSE-ConnectionGUID: 5s2JibW8TkKhBDmm3SSLwg==
+X-CSE-MsgGUID: dPcjoGrGROOj/ycT4Q4aVw==
+X-IronPort-AV: E=Sophos;i="6.11,213,1725314400"; 
+   d="scan'208";a="39534799"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 18 Oct 2024 09:32:31 +0200
+X-CheckPoint: {67120F0F-B-236878CD-F32272AF}
+X-MAIL-CPID: 9916A76D1D510FFF75EFD12B72D979C2_2
+X-Control-Analysis: str=0001.0A682F1B.67120F0F.00A7,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C735B17031A;
+	Fri, 18 Oct 2024 09:32:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1729236746;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=iD4e3E6WAb3v3t3LKPK8kagukMfYt9x+P4AkPaprOXM=;
+	b=M2CewintWs1uqCXwnMPUcVGIgkNZwGx05Xj/m43DnyXgqZOPCN2RQrUa55HHdXP/wMOzXU
+	dMrwvNEJVLtiTcJdKSNSo+dJGuWtcimQoFMGSqaIh9pUekPd/a3ul7jtbWSu9GnaKCBMwp
+	DDG3rd4DE1jvGaA2OO/Ff17o/XuDEOtlbUqf99Xz4xrkHCkLw9p++mm5LVrQd2ona9hunw
+	kB+16dDFE+uZF+7dU+v1iAbGV6WnR5RFvUsFUcr7HeDbZfU9JtyhuvO6rxXGuMpy2dj1y2
+	VyDSh+LhZEz4RBCtvZcX/TVkgstDPntK8nNDApeoajNaj9yaRnN9ZlHteOEM3g==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org, Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, marex@denx.de, stefan@agner.ch, dmitry.baryshkov@linaro.org, Liu Ying <victor.liu@nxp.com>
+Subject: Re: [PATCH 4/5] drm/bridge: imx8mp-hdmi-tx: Set output_port to 1
+Date: Fri, 18 Oct 2024 09:32:22 +0200
+Message-ID: <46745071.fMDQidcC6G@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20241018064813.2750016-5-victor.liu@nxp.com>
+References: <20241018064813.2750016-1-victor.liu@nxp.com> <20241018064813.2750016-5-victor.liu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrMIsWRmVeSWpSXmKPExsWyRpKBT/cxn1C6wcNzVhZr9p5jsph/5Byr
-	xcOr/hYz77WyWbw7/Z7Z4vORG2wWq6buZLF4Oesem8Wmx9dYLS7vmsNm8aatkdHi/54d7BZ/
-	t29isXixRdziW9tmdgd+j3mzTrB43Du+h9lj56y77B6zO2ayemxa1cnmsXlJvceLzTMZPTa+
-	28Hk0f/XwOPzJrkArigum5TUnMyy1CJ9uwSujEXrFjMXHJGueHTzLVsD4wupLkZODgkBE4k3
-	kw+wdzFycQgJrGOSONF/gg3CecwosWvxEihnA6PEussvWUBa2ARUJE7OuMQIYosIlEh82NwO
-	VsQsMJ1VYtqZXnaQhLBAgsT3P03MXYwcQEWJEofOy0DUG0kcm/8erIRFQFVi+otfbCA2r4Cb
-	ROusi6wgtpCAscTpTUuYQGxOoPM6vmwB28UoICuxYcN5ZhCbWUBcYtOz76wQLwhILNkDEZcQ
-	EJV4+fgfVFxe4sStaUwgJzALaEqs36UP0Wohcbz9LhOErSgxpfshO8QJghInZz5hmcAoPgvJ
-	hlkI3bOQdM9C0j0LSfcCRtZVjEK5mcnZqUWZ2XoFGZUlqcl6KambGEEJQ4SBawdj3xyPQ4xM
-	HIyHGCU4mJVEeJPqBdOFeFMSK6tSi/Lji0pzUosPMUpzsCiJ867uCE4VEkhPLEnNTk0tSC2C
-	yTJxcEo1MMr4XZnmdP5M4Ns9M63ZmEyP/up6vqdQ+RXHiQMz5rsoZxgnLz7XlXflWtH6FYdk
-	pTruy51J8pRc+vF8S5tlxKNERydu8de7e96mv1JnqFzPbu9icVfqnNfEMw3XrmlW/1bcni5e
-	vp9lr4zzwS/cbHM3Trr19b6+6/T/Zz7738mfFTbH6NGctQFKLMUZiYZazEXFiQDp8wIMBgMA
-	AA==
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-T24gVGh1LCAyMDI0LTEwLTE3IGF0IDA1OjExICswMjAwLCBNYXJlayBWYXN1dCB3cm90ZToNCj4g
-VGhlIExWRFMgcGFuZWwgb24gdGhpcyBkZXZpY2UgdXNlcyA3Mi40IE1IeiBwaXhlbCBjbG9jaywg
-c2V0IElNWDhNUF9WSURFT19QTEwxDQo+IHRvIDcyLjQgKiA3ID0gNTA2LjggTUh6IHNvIHRoZSBM
-REIgc2VyaWFsaXplciBhbmQgTENESUZ2MyBzY2Fub3V0IGVuZ2luZSBjYW4NCj4gcmVhY2ggYWNj
-dXJhdGUgcGl4ZWwgY2xvY2sgb2YgZXhhY3RseSA3Mi40IE1Iei4NCj4gDQo+IFdpdGhvdXQgdGhp
-cyBwYXRjaCwgdGhlIFZpZGVvIFBMTDEgZnJlcXVlbmN5IGlzIHRoZSBkZWZhdWx0IHNldCBpbiBp
-bXg4bXAuZHRzaQ0KPiB3aGljaCBpcyAxMDM5LjUgTUh6LCB3aGljaCBkaXZpZGVzIGRvd24gdG8g
-aW5hY2N1cmF0ZSBwaXhlbCBjbG9jayBvZiA3NC4yNSBNSHoNCj4gd2hpY2ggd29ya3MgZm9yIHRo
-aXMgcGFydGljdWxhciBwYW5lbCBieSBzaGVlciBjaGFuY2UuDQo+IA0KPiBTdG9wIHRha2luZyB0
-aGF0IGNoYW5jZSBhbmQgc2V0IGNvcnJlY3QgYWNjdXJhdGUgcGl4ZWwgY2xvY2sgZnJlcXVlbmN5
-IGluc3RlYWQuDQo+IA0KPiBGaXhlczogMzI2ZDg2ZTE5N2ZjICgiYXJtNjQ6IGR0czogaW14OG1w
-LXBoeWJvYXJkLXBvbGx1eC1yZGs6IGFkZCBldG1sIHBhbmVsIHN1cHBvcnQiKQ0KPiBSZXBvcnRl
-ZC1ieTogSXNhYWMgU2NvdHQgPGlzYWFjLnNjb3R0QGlkZWFzb25ib2FyZC5jb20+DQo+IFNpZ25l
-ZC1vZmYtYnk6IE1hcmVrIFZhc3V0IDxtYXJleEBkZW54LmRlPg0KDQpSZXZpZXdlZC1ieTogWWFu
-bmljIE1vb2cgPHkubW9vZ0BwaHl0ZWMuZGU+DQpUZXN0ZWQtYnk6IFlhbm5pYyBNb29nIDx5Lm1v
-b2dAcGh5dGVjLmRlPg0KDQo+IC0tLQ0KPiBDYzogQ29ub3IgRG9vbGV5IDxjb25vcitkdEBrZXJu
-ZWwub3JnPg0KPiBDYzogRmFiaW8gRXN0ZXZhbSA8ZmVzdGV2YW1AZ21haWwuY29tPg0KPiBDYzog
-SXNhYWMgU2NvdHQgPGlzYWFjLnNjb3R0QGlkZWFzb25ib2FyZC5jb20+DQo+IENjOiBLcnp5c3p0
-b2YgS296bG93c2tpIDxrcnprK2R0QGtlcm5lbC5vcmc+DQo+IENjOiBMaXUgWWluZyA8dmljdG9y
-LmxpdUBueHAuY29tPg0KPiBDYzogUGVuZ3V0cm9uaXggS2VybmVsIFRlYW0gPGtlcm5lbEBwZW5n
-dXRyb25peC5kZT4NCj4gQ2M6IFJvYiBIZXJyaW5nIDxyb2JoQGtlcm5lbC5vcmc+DQo+IENjOiBT
-YXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+DQo+IENjOiBTaGF3biBHdW8gPHNo
-YXduZ3VvQGtlcm5lbC5vcmc+DQo+IENjOiBZYW5uaWMgTW9vZyA8eS5tb29nQHBoeXRlYy5kZT4N
-Cj4gQ2M6IGRldmljZXRyZWVAdmdlci5rZXJuZWwub3JnDQo+IENjOiBpbXhAbGlzdHMubGludXgu
-ZGV2DQo+IENjOiBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcNCj4gQ2M6IGxp
-bnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcNCj4gLS0tDQo+IE5vdGU6IEkgZG8gbm90IGhhdmUg
-dGhlIGJvYXJkLCBidXQgSXNhYWMgcmVwb3J0ZWQgdGhleSB0ZXN0ZWQgaXQgc3VjY2Vzc2Z1bGx5
-Lg0KPiDCoMKgwqDCoMKgIFRCIHdvdWxkIGJlIG5pY2UuDQo+IC0tLQ0KPiDCoC4uLi9kdHMvZnJl
-ZXNjYWxlL2lteDhtcC1waHlib2FyZC1wb2xsdXgtcmRrLmR0c8KgwqDCoMKgIHwgMTIgKysrKysr
-KysrKysrDQo+IMKgMSBmaWxlIGNoYW5nZWQsIDEyIGluc2VydGlvbnMoKykNCj4gDQo+IGRpZmYg
-LS1naXQgYS9hcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bXAtcGh5Ym9hcmQtcG9s
-bHV4LXJkay5kdHMNCj4gYi9hcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bXAtcGh5
-Ym9hcmQtcG9sbHV4LXJkay5kdHMNCj4gaW5kZXggNTBkZWJlODIxYzQyMS4uOWMxMDJhY2I4MDUy
-YyAxMDA2NDQNCj4gLS0tIGEvYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1wLXBo
-eWJvYXJkLXBvbGx1eC1yZGsuZHRzDQo+ICsrKyBiL2FyY2gvYXJtNjQvYm9vdC9kdHMvZnJlZXNj
-YWxlL2lteDhtcC1waHlib2FyZC1wb2xsdXgtcmRrLmR0cw0KPiBAQCAtMjE4LDYgKzIxOCwxOCBA
-QCBsZGJfbHZkc19jaDE6IGVuZHBvaW50IHsNCj4gwqAJfTsNCj4gwqB9Ow0KPiDCoA0KPiArJm1l
-ZGlhX2Jsa19jdHJsIHsNCj4gKwkvKg0KPiArCSAqIFRoZSBMVkRTIHBhbmVsIG9uIHRoaXMgZGV2
-aWNlIHVzZXMgNzIuNCBNSHogcGl4ZWwgY2xvY2ssDQo+ICsJICogc2V0IElNWDhNUF9WSURFT19Q
-TEwxIHRvIDcyLjQgKiA3ID0gNTA2LjggTUh6IHNvIHRoZSBMREINCj4gKwkgKiBzZXJpYWxpemVy
-IGFuZCBMQ0RJRnYzIHNjYW5vdXQgZW5naW5lIGNhbiByZWFjaCBhY2N1cmF0ZQ0KPiArCSAqIHBp
-eGVsIGNsb2NrIG9mIGV4YWN0bHkgNzIuNCBNSHouDQo+ICsJICovDQo+ICsJYXNzaWduZWQtY2xv
-Y2stcmF0ZXMgPSA8NTAwMDAwMDAwPiwgPDIwMDAwMDAwMD4sDQo+ICsJCQnCoMKgwqDCoMKgwqAg
-PDA+LCA8MD4sIDw1MDAwMDAwMDA+LA0KPiArCQkJwqDCoMKgwqDCoMKgIDw1MDY4MDAwMDA+Ow0K
-PiArfTsNCj4gKw0KPiDCoCZzbnZzX3B3cmtleSB7DQo+IMKgCXN0YXR1cyA9ICJva2F5IjsNCj4g
-wqB9Ow0KDQo=
+Hi,
+
+Am Freitag, 18. Oktober 2024, 08:48:12 CEST schrieb Liu Ying:
+> Set DW HDMI platform data's output_port to 1 in imx8mp_dw_hdmi_probe()
+> so that dw_hdmi_probe() called by imx8mp_dw_hdmi_probe() can tell the
+> DW HDMI bridge core driver about the output port we are using, hence
+> the next bridge can be found in dw_hdmi_parse_dt() according to the port
+> index, and furthermore the next bridge can be attached to bridge chain in
+> dw_hdmi_bridge_attach() when the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag is
+> set.  The output_port value aligns to the value used by devicetree.
+> This is a preparation for making the i.MX8MP LCDIF driver use
+> drm_bridge_connector which requires the DRM_BRIDGE_ATTACH_NO_CONNECTOR
+> flag.
+>=20
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+
+> ---
+>  drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c b/drivers/gpu/dr=
+m/bridge/imx/imx8mp-hdmi-tx.c
+> index 8fcc6d18f4ab..54a53f96929a 100644
+> --- a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+> +++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+> @@ -96,6 +96,7 @@ static int imx8mp_dw_hdmi_probe(struct platform_device =
+*pdev)
+>  		return dev_err_probe(dev, PTR_ERR(hdmi->pixclk),
+>  				     "Unable to get pixel clock\n");
+> =20
+> +	plat_data->output_port =3D 1;
+>  	plat_data->mode_valid =3D imx8mp_hdmi_mode_valid;
+>  	plat_data->phy_ops =3D &imx8mp_hdmi_phy_ops;
+>  	plat_data->phy_name =3D "SAMSUNG HDMI TX PHY";
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
