@@ -1,138 +1,75 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12D61A288
-	for <imx@lists.linux.dev>; Fri, 18 Oct 2024 13:13:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5483383A5;
+	Fri, 18 Oct 2024 13:45:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729257189; cv=none; b=TkVl9BWvhAd/BfOUlapaL5Irwi/6gGA4wTeVdVT0/95xFF0Thg5KfBseAadqCFxDdPh/r9Id2wYDhAAIkVX8hvfJf9GM6zlftmr761CLJHtlsRlKO8S76pKJCe9TBu0IK1OI7/Owr57KPbTdBYkxLpfJVklDhERTxmn2njmglXg=
+	t=1729259155; cv=none; b=sBt5v9DQWd+zR3PK65nkUWGYvVlUGTfMtFtUNt+h/MQzEJIUXE/0uil2C9KxVcGhfw15+QgeislEqbNFJW7E/PEOAu/XQD7MzThQbbkCPgfMg6mLiCM5Sazdew9s93DUhp1kCqA6XONcw0xugMGO/3m832ATsl1O3wG39PKxM5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729257189; c=relaxed/simple;
-	bh=2vmr+dE/VV7F+z9njB5tZ6dmwWw4bhIy2k2SVn0tfOY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W9AT3was2TEZ9nfxglBkzJGR0Hv87JEZQKcEqt240iVGQ9Byhk+PMund+5vVVwvju/dW/lQXkZ95HuJVUdSSOv7BSf9jrVclaDnhRG5qWx/ULj9uGmqKyRduHeNC7rUJRUCSlviQIm948mNO796K8F+6uUBkGeeWQo4uQuF5snw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=XQI9DpM+; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=l4abCq4G reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1729259155; c=relaxed/simple;
+	bh=CklTe/sXewxTep/j2tX2kpLI/u7HR37XRwOnv0QXBoA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BL2kSNdBEtld7bEKS58EsUXozuaqu05T2FJXR6VB3jJigTsuxV/sSqVdDjMduser9UhvtK4ASShXAMzJY76ETwWphYjqh1sCcYSmy3ypxmo+3V/5Za2Pcp88IPnOoE6XdhGOPBpIhLN7FkXUqMmyRpQEsNFE2EvmYQZfq7j8TzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RWTPB9DJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="XQI9DpM+";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="l4abCq4G"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1729257185; x=1760793185;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=xrzeEoBsCionoKUR266fpAo3BaG9LZtKR8xkrwhis4I=;
-  b=XQI9DpM+qwgCApxn4+EP9PfbEYEyetjAoX0FepZUTHmGXK0kCltUTlNt
-   oxqc4LGvK2iOIG6pGqHbysVErZD9uGxJsP3Z8dTiZvRxXtDdDqDHycUjv
-   gWSwDw1l9VnGZ5PlGDzpuIQCXNstlTsEaKBwUjWmclormrZ7Yn1t/4njg
-   J0x2i4qPqESBVpXG3LAP6OlQ5GcY9guaYbcmcHabpY78MexN4ylNE9Upc
-   ikMaBfW41zgP1KqJmn3bZwgX/Dzogg/ft9qOVIeEA4WwQlIdV/8ze+qyw
-   +9WFj/Px/OdE58Rc54a47SGuQS+AwliUDV8wg6WvVFh0/Tyo1TtbjF2wQ
-   A==;
-X-CSE-ConnectionGUID: 3KoUDJEnQRaRloi9VBQ63A==
-X-CSE-MsgGUID: NPQH+y/pSTScykETWFj9YQ==
-X-IronPort-AV: E=Sophos;i="6.11,213,1725314400"; 
-   d="scan'208";a="39543900"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 18 Oct 2024 15:12:58 +0200
-X-CheckPoint: {67125EDA-9-BD84CFBF-E7C15A70}
-X-MAIL-CPID: 1966C4EF9B0FB9E0C3310EAEA66099E9_3
-X-Control-Analysis: str=0001.0A682F19.67125EDA.0060,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AB87F16ACBC;
-	Fri, 18 Oct 2024 15:12:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1729257173;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=xrzeEoBsCionoKUR266fpAo3BaG9LZtKR8xkrwhis4I=;
-	b=l4abCq4GzoqmZ9BJX3njeI/FwjZI05uwLBz+mQMuGVbCBcbm1vRsJbUvYSO5vvavbmWhEv
-	y38ZqQMrSpXDdl5nfXYT/JHFBzztTs0+BGKJtB9TRP8jNwct3OJ9BGPLlxMHQ1nzO+uSHY
-	jW9NvLXRt1L/k40SMmI0ImpPm8H38zP7b5Z7XVkCk3kS16WZnpnoRaHh4qSSAYXxmc0YCj
-	H7nii7oha2YVtDLjD33iRrAzwTQHHLIjVaVBh6G8uWt63MyibvhKD5GUYIZfI3gEY9CsBw
-	/LumWuZE7UPbJBgSvdhgHmK6/uEGDhg9kGk6WHA9AhAxqiQ2JZRqA/LO6JWM2g==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Liu Ying <victor.liu@nxp.com>, dri-devel@lists.freedesktop.org
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org, Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, marex@denx.de, stefan@agner.ch, Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: Re: [PATCH 4/5] drm/bridge: imx8mp-hdmi-tx: Set output_port to 1
-Date: Fri, 18 Oct 2024 15:12:49 +0200
-Message-ID: <5035853.0VBMTVartN@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <vvsj6ri2ke25nzocbq736yv7rphzma6pn3yk2uh7iu43zfe2sa@2fwye4k4w6he>
-References: <20241018064813.2750016-1-victor.liu@nxp.com> <20241018064813.2750016-5-victor.liu@nxp.com> <vvsj6ri2ke25nzocbq736yv7rphzma6pn3yk2uh7iu43zfe2sa@2fwye4k4w6he>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RWTPB9DJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27AB9C4CEC6;
+	Fri, 18 Oct 2024 13:45:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729259155;
+	bh=CklTe/sXewxTep/j2tX2kpLI/u7HR37XRwOnv0QXBoA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RWTPB9DJFYBjqHATlsU3j74Kyfijd/bxM6XtTF7Kv2aZdrgndLqrHZwSyOWljZiQ7
+	 P7XVNQ9L9tQJ+rGU4UtxqtUDfTPfst3MxzEc2/hjnPkZtxcoj0VJ5xVt6uK55iS4fK
+	 gQf8xY2KMCN6gyuyyHppQ5u8w7d2fAJOQ4RBRqONYnTU2agYBTP6sqBfmLgu/Egqd/
+	 E5A7teDhUM84DxbKG+ksnccow8rmRFkCvCEtjt1pbdxDvaqo13RzjuSnmZ2hKBPe+y
+	 66jxPFULuf0+/Gh9Sjl0QOgr3BwA2LtugZprgF1sJnmQkk18J5rgi56UVGWjWjn1GT
+	 FTg+zwEpCkq6Q==
+Date: Fri, 18 Oct 2024 08:45:54 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Bhavin Sharma <bhavin.sharma@siliconsignals.io>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Hiago De Franco <hiago.franco@toradex.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Conor Dooley <conor+dt@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+	Max Merchel <Max.Merchel@ew.tq-group.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Michael Walle <mwalle@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>, krzk+dt@kernel.org,
+	imx@lists.linux.dev, Tim Harvey <tharvey@gateworks.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	shawnguo@kernel.org,
+	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
+	Mathieu Othacehe <m.othacehe@gmail.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 2/2] dt-bindings: arm: fsl: Add Boundary Device
+ Nitrogen8MP Universal SMARC Carrier Board
+Message-ID: <172925915337.90053.2297657985749667518.robh@kernel.org>
+References: <20241018091023.29286-1-bhavin.sharma@siliconsignals.io>
+ <20241018091023.29286-3-bhavin.sharma@siliconsignals.io>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
-
-Am Freitag, 18. Oktober 2024, 14:31:20 CEST schrieb Dmitry Baryshkov:
-> On Fri, Oct 18, 2024 at 02:48:12PM +0800, Liu Ying wrote:
-> > Set DW HDMI platform data's output_port to 1 in imx8mp_dw_hdmi_probe()
-> > so that dw_hdmi_probe() called by imx8mp_dw_hdmi_probe() can tell the
-> > DW HDMI bridge core driver about the output port we are using, hence
-> > the next bridge can be found in dw_hdmi_parse_dt() according to the port
-> > index, and furthermore the next bridge can be attached to bridge chain =
-in
-> > dw_hdmi_bridge_attach() when the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag is
-> > set.  The output_port value aligns to the value used by devicetree.
-> > This is a preparation for making the i.MX8MP LCDIF driver use
-> > drm_bridge_connector which requires the DRM_BRIDGE_ATTACH_NO_CONNECTOR
-> > flag.
-> >=20
-> > Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> > ---
-> >  drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >=20
-> > diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c b/drivers/gpu/=
-drm/bridge/imx/imx8mp-hdmi-tx.c
-> > index 8fcc6d18f4ab..54a53f96929a 100644
-> > --- a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
-> > +++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
-> > @@ -96,6 +96,7 @@ static int imx8mp_dw_hdmi_probe(struct platform_devic=
-e *pdev)
-> >  		return dev_err_probe(dev, PTR_ERR(hdmi->pixclk),
-> >  				     "Unable to get pixel clock\n");
-> > =20
-> > +	plat_data->output_port =3D 1;
->=20
-> This will break compatibility with older DT files, which don't have
-> output port. I think you need to add output_port_optional flag to
-> dw_hdmi_plat_data and still return 0 from dw_hdmi_parse_dt() if the flag
-> is set, but there is no remote node.
->=20
-> Last, but not least, this changes behaviour of the connector.
-> dw_hdmi_connector_create() implements CEC support, handles
-> ycbcr_420_allowed, HDR metadata, etc.
-
-Mh, I was suspecting the same, but I couldn't see any regression regarding =
-CEC.
-Maybe the change is not doing what it is supposed to do...
-I'll check again on Monday.
-
-Best regards,
-Alexander
-
-> We are slowly moving towards the supporting all of this in bridge
-> connector via the HDMI Connector framework, but this is not
-> implemented for now.
->=20
-> >  	plat_data->mode_valid =3D imx8mp_hdmi_mode_valid;
-> >  	plat_data->phy_ops =3D &imx8mp_hdmi_phy_ops;
-> >  	plat_data->phy_name =3D "SAMSUNG HDMI TX PHY";
->=20
->=20
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241018091023.29286-3-bhavin.sharma@siliconsignals.io>
 
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+On Fri, 18 Oct 2024 14:39:28 +0530, Bhavin Sharma wrote:
+> Adds support for the Nitrogen8MP SMARC System on Module and
+> the Nitrogen8MP Universal SMARC Carrier Board.
+> 
+> Signed-off-by: Bhavin Sharma <bhavin.sharma@siliconsignals.io>
+> ---
+>  Documentation/devicetree/bindings/arm/fsl.yaml | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
 
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
