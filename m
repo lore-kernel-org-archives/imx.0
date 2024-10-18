@@ -1,291 +1,101 @@
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2084.outbound.protection.outlook.com [40.107.249.84])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7982746B
-	for <imx@lists.linux.dev>; Fri, 18 Oct 2024 15:26:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.84
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729265178; cv=fail; b=VDdR9L/obPtybZXeK/SROkl4M90X3gEOQ8lIbdCWoqqMv7EYYrzIx5zsujUmWnme5zn/8kZ8TwyHwLiWGkdPRim41lU5jae1zTJWcpaK7vG26pg4vJ1F4c1NvSpxcrYomSC4LAbuG2ZS+9ugpwuOTTdgZqYJ/JB0mIzEULLGV6M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729265178; c=relaxed/simple;
-	bh=kCS/iwog329Ia4dieQLH7Bo/RHVAOjvQPKCO/ylH/BM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=hatr4cGdEgYpbo6mki9CrDAB9B4k67FWYDXSwDot703/5Ky4oALGt83sqjBwwSAGTN1FyZdj4cOjVUU3Vc/+aHFdQfCVEMdz1uGYvAZqHTHj2ZcGxHHQO9dRSs7TzpH/E2ok3Y6FxHTJVu8Im4hOMsi0pseceg85rUyKj+oclk4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=kSeoUb49 reason="signature verification failed"; arc=fail smtp.client-ip=40.107.249.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D281DED5B
+	for <imx@lists.linux.dev>; Fri, 18 Oct 2024 16:05:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729267546; cv=none; b=BC+gwLSk0d2nSTZKrjsDTnMK7ro+5JWzma5rVPzOGC1uZgVuLt4V5acs7ZHB28r5auxo60uqR/Xbob1PoDnbDsGmzqCQTXtwFOYV1ugZjjcfK4Eh3SIJvbTGSp0BkQTmUGFCVgKpAh6vT73ALBX8FW8UKkLGVlUn/jlc42nd6B0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729267546; c=relaxed/simple;
+	bh=6zIz7rLqvlLD78tMosqFxFhvxskFnkIyYamCQ3zyCFc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hq0DrwQ2T3IlOAjB8jKyFs8dWDj3TeqdZxNxlqBEwoEtMdWWribne/v5Imgsu7zwCkVXcDQz9GoBGmyU9q2/9hJv7yCj7nBuRmwcT7dKxJwWLkbOimvjKMpd3PetX41Io0OsIIpyXEzCG75cYZLn0dBPeoJb5vcrYpdSF5/aaGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Av20QTe9; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="kSeoUb49"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QOoQ3LYT0Y5UiMujwSvkGeoxliADVDq4p4C0ujQmM3zjIksFX4e98HFrQvtfGvaFven0UktlsnuOlsCK04/z11FlR+2CoULiCLsMQxNc2AI3UoU/eSCyEXyjPWsFWytW8u1PjLVITPPz8ohM0Kd7SeV49dJSvQWWNy6ZjQ5eRFEL3gyBHvSQ5LuSPhX80cZH6/Mo9aw+irVZqjHyXBptseIKvKLZQWz55Va/5ijsyePZXxI03F2t91dbIy9Nuy+8vpiacocY0ZQb/uhBh6kNHaX0o0lKS70itvXR7U+qyHZWtuUY+F5mEgEJ7EVhLHaaZptNSGI0XCc1SmfhT6X56g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3AEYhrJYGYxM+a7rk+6Bc8BFsUQS8Zebbuk4s4qlAgQ=;
- b=U9BNgAewDKFbuOoAklw03IJrmLooy7/pby0AQlS/U2w10dcgWtwN1r59V2Rumy2QwKT+r7uJSQN65+qASPjLK6HBJgUY8SXegktE5Vw3d2upQiMQucGtfyEdzdJoxUPDwrHBRpz6dL2/GUNpdcvz/K1D3heKR1IYDmanpXcnxPOkapYD7zxJZAL81f4OoCA8Kvfat0wBxXZ/Cb0QtOia2eT7j+Q2oaPBru9jC+nYP3cZ/+SmaCNcjCC8r7uEEmuX6VJLtO1sk9RNgHGeIRY0Ur21RG3TIiCuShRIeCgETCC1ZFPnvqqKw8+Pv6psULgd1+0tRGUrwIeDsGnNQnUMSA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3AEYhrJYGYxM+a7rk+6Bc8BFsUQS8Zebbuk4s4qlAgQ=;
- b=kSeoUb49WCpYR2gF2GfPoeiv8y9i7nJTRiPLay5l2i583AoVk4qujyhbKJudAbua/Dvc0Q7OMTneVh9VwTXS1Gari0vilIeDGfb8lTvqke7v68e6Kc9zYpyZ8vHdLlfjW9wbvNtvRog568xBeKEn5+/qthzSn/K63aoJgKUd/4O3EC6TCrnACcwsztrUjZGfhXLn3Bc5Ufd8o0uKsF5pE5jFWaQgbKpapmlAxKWT4FAMgvh+bxGoDXtGGaxvAm8J4+IBJbvYjpeDsDsAD34AMvzanEB9kJEt0DLDf0CqDcuM8R0tzjrDedhY62XZX2XhmI3wGcH7NNp4FDyCjsMCdw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DU4PR04MB10574.eurprd04.prod.outlook.com (2603:10a6:10:581::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.18; Fri, 18 Oct
- 2024 15:26:13 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8069.016; Fri, 18 Oct 2024
- 15:26:12 +0000
-Date: Fri, 18 Oct 2024 11:26:04 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>
-Subject: Re: RE: RE: [PATCH net-next 07/13] net: fec: fec_probe(): update
- quirk: bring IRQs in correct order
-Message-ID: <ZxJ+DAn7fRE3Aiqm@lizhi-Precision-Tower-5810>
-References: <20241016-fec-cleanups-v1-0-de783bd15e6a@pengutronix.de>
- <20241016-fec-cleanups-v1-7-de783bd15e6a@pengutronix.de>
- <PAXPR04MB85103D3E433F3FBE5DDFA15C88472@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20241017-affable-impartial-rhino-a422ec-mkl@pengutronix.de>
- <PAXPR04MB8510149D0E8AC39E048941F988472@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20241017-manipulative-dove-of-renovation-88d00b-mkl@pengutronix.de>
- <ZxEZR2lmIbX6+xX2@lizhi-Precision-Tower-5810>
- <20241017-rainbow-nifty-gazelle-9acee4-mkl@pengutronix.de>
- <ZxEtpRWsi+QiYsFh@lizhi-Precision-Tower-5810>
- <20241018-black-dormouse-of-exercise-f7fed0-mkl@pengutronix.de>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241018-black-dormouse-of-exercise-f7fed0-mkl@pengutronix.de>
-X-ClientProxiedBy: BYAPR05CA0067.namprd05.prod.outlook.com
- (2603:10b6:a03:74::44) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Av20QTe9"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2fb51f39394so26271961fa.2
+        for <imx@lists.linux.dev>; Fri, 18 Oct 2024 09:05:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1729267543; x=1729872343; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8lHZpTCnaSttFJL3uIXwXWK6iRmjck9Nu4C1mKRZ028=;
+        b=Av20QTe9jFYYgjYyyTXLUA04OrmhNvx/FHd3+CZoA6Kwn8cE/42uighRnKzG1pnE4+
+         hgD9MFEfaWJeUz4hLeiKVugOPuDPQx5ChBJZqfaHG5vrpGZz7tXapy5Qvr7+AME/1q0L
+         cU5lAtF04pVQtP3Iq3E+6UGzemqA5Gu8M7KxnHGlVNjI2SWgkcRj65cBGoG59i31h3+z
+         xG6tzkUqf0pY1zAmJimMRw/WP0SPywKurWSsT9jGhU8+gzcKL6De8buiI2M+TVU/xTP3
+         6IQyqegtTsgS0X1J5OFakyLlfbDv6v6n6Lm5tTxBWmA+oH1G+6rOYJdh9Z4hM0WTh3OD
+         lyqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729267543; x=1729872343;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8lHZpTCnaSttFJL3uIXwXWK6iRmjck9Nu4C1mKRZ028=;
+        b=cyoiuUsRMUve3zOL4f3Csw8d2uAtyYVqxmKy5iXmXpKUkD0LqOUnQd05w3m4tRcSWj
+         6kzq0hbdwE0fD0FgSKU0IKntIJAaEPEd5f0yT/Z8gfhaUr/jlznl7jr7ET+rlotTsklb
+         /Lowa6/D762CXkSejkfgiqVklu+KeM+EV4AooBOdpdnVxZ9lfu3iQLo8E1L9IQ86E8wI
+         LieU3y7MtkKcYw/9Qp9Kwe6rWXLZ3zOMnd1Ody6FukCB7SOzguOWhbSyLGstURiPJkRU
+         2EgTKEt5RrvxjBoS9cFn9VhvZg8Zj8kq1pEV7XiCruxmgNPdbGgnEAY0VhXWx2jJlPya
+         HBmg==
+X-Forwarded-Encrypted: i=1; AJvYcCVzZRoTW3aMdwm04A9ly7MuPlbWNrvk8S6MpR8zUo/gdXtbohtLcwpG/xhp/QfTAh4bLCI=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yykduq2IGACRYb4yPoSJAqpY0OzlJZIdZvfTUexykaVDEfdthRA
+	ndFyeSrPYlqCBZc+TK27bwqg15ehy0QJndVR83+KfhNYaY+hoYYXQYtJQZH6z/s=
+X-Google-Smtp-Source: AGHT+IEpeWFLJ8yL29qE6iphuWnFhSa96/H/Y2vX/YZ6kUiZe2MzqHfEFttDD3Eg9ojiGCjOGWPbXw==
+X-Received: by 2002:a2e:712:0:b0:2fb:5504:7966 with SMTP id 38308e7fff4ca-2fb831e92aemr16524871fa.30.1729267542646;
+        Fri, 18 Oct 2024 09:05:42 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2fb809a69f3sm2445361fa.26.2024.10.18.09.05.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Oct 2024 09:05:41 -0700 (PDT)
+Date: Fri, 18 Oct 2024 19:05:38 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Arnd Bergmann <arnd@arndb.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Alexander Stein <alexander.stein@ew.tq-group.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] drm/imx: parallel-display: add legacy bridge Kconfig
+ dependency
+Message-ID: <ccpkyf46bbfe4z4lo76kokixocgfofc4gltifnlesnvfuj4ndc@q66ke2mf5uqu>
+References: <20241015073004.4066457-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU4PR04MB10574:EE_
-X-MS-Office365-Filtering-Correlation-Id: b09a630a-f081-417a-67a7-08dcef8932fb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|52116014|366016|7416014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?bPh9sg+vUc3mPRTeCYr015axLbwmsAzfQZUYS2123suyHYs+zeUqLwEgIG?=
- =?iso-8859-1?Q?GFayQsNBnLY/LcknUppNrD/8W7NEfnGE2PeeNqGWLV92UG84e6dYzaxU8y?=
- =?iso-8859-1?Q?e1EBvasDZCRhpkeg50Ul13evd+j1ezHNDvmlaNV/JMezhufuHKd/jFz0JB?=
- =?iso-8859-1?Q?ogRVUvoFbpz0Auo7Ujk4p5gfJi5mi2FxUgRdLYtyhhiVd+n2qGbklDZgFm?=
- =?iso-8859-1?Q?23p/quGv6O87wemF7b0zfP1hB+I2iNPlSmSeK5KfTECh+02oQMTUquq1y2?=
- =?iso-8859-1?Q?PgDLbN2DrF3nOWGugu0CtppY+HZ5s0l/vCDMadsFkWzqY9xhnpd/CP5mTg?=
- =?iso-8859-1?Q?rLPNjcpA6soJvf7c75NgaD2pqHwrAU91Dqsr8OcmBaLeDPZgI4G6kuFdQ1?=
- =?iso-8859-1?Q?2ZzkIr2G2+uMFVIWGuny9bJisEOVU/VFTjK+8Bh9Q8ULp4zMdx3zyEkV5W?=
- =?iso-8859-1?Q?td+CNzfrprsr/+MYSgOq/wc48KRTaJ9Y52S+mq0MVb66/+KgzcXL8YLDu8?=
- =?iso-8859-1?Q?EtQu/QyPDhk0Gx5uG9T0f0vbD0sCFkYKd2+AqZKstYNdl6uxKBJjDo2fYH?=
- =?iso-8859-1?Q?TsiAVfLCqpJVhj8HDX4OEugneExIa2qMHT+H8qM4zWX0gCtd3+ZBkplYoN?=
- =?iso-8859-1?Q?hEu7I79ZPG4aQTZakOo3TFPXpSRNwFXogybEo8aZaUH3jSQCY3+MTUPA8C?=
- =?iso-8859-1?Q?SpmuqDk7Zva5IGg/3miIv11Phz5fPFfUycd+vxou71GBKarNEhdFbPV0CS?=
- =?iso-8859-1?Q?VS/pV8yBMalQ1OWwiYWBHxPOKPGM0zOWhihur05MlVVrGaOQ+sF+h+esBd?=
- =?iso-8859-1?Q?ePYABs/EldGd2PSNHdQODQVGSEu5lmTftLp2/O5/DRSeMI3kP2pb1NPHm2?=
- =?iso-8859-1?Q?btZf4QUj3wiSAkGiJ6Y/pbxfkEWBfsJiMQbG4efN6MArE409Q9C0s5IA9a?=
- =?iso-8859-1?Q?7WciK3P+Vvhutlb/4TgUk1se+gfvTsaKfWMnLwfCRmwgkp7JeCxjEXlJ0B?=
- =?iso-8859-1?Q?GRMQBD/pOXK1CATOtc4N4M4UEZ9C7ssaWu1iVsO7+sL3xKkSKial1Qo+oq?=
- =?iso-8859-1?Q?ni/dfoky70mUZOHN8M5FPlr7Iom3qP31LXnpRq6pxttbSDW7FppFYDFBws?=
- =?iso-8859-1?Q?dNzaM/dWEESIlk88LKgN1bDpPb2IsCxq4M6XBfvSWIhTllCCvhF98EZlbp?=
- =?iso-8859-1?Q?pNCmEsNDHpRfSBO5MeKzvvozZBuVS9HXvOPmkhioVUcrVkr3Ivg4Ju2bCF?=
- =?iso-8859-1?Q?ridTalApUZuTV2Lh7CYQr7qP78P2cWHWc5lJoG2NybE0WI9PtfgzLqJ7bh?=
- =?iso-8859-1?Q?rUxAxsDFfepI3yC4ZiYO/u8kA6boxiQaFzr7tDwITkopIyA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(366016)(7416014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?qbkbh/qMsLEyMpnSPbQnOewUTOcr0FeRhT/IPesPFnUaWt0y98s9PmN7gS?=
- =?iso-8859-1?Q?wXGwYimsIuasayGGPJxfg1/7R3odSeWijfNilZjR5jBcs1tX+fuLrmuOiO?=
- =?iso-8859-1?Q?5qaCR7wduxwgon2NpjQoY/hXv1AIIpOh+j4wOsD5osc84C/BTV7EffI7sr?=
- =?iso-8859-1?Q?8c7uhl7L7o5Qvyp7/fMeilHUYi6Vx5MSUEjkJ9Mimc13OAxrxetzjaL7/D?=
- =?iso-8859-1?Q?gYkbYMZHgG609Fh4omaQf1AZl6zZL2ZrSV3oytBcRtv9jRIqzxec4mb7Xq?=
- =?iso-8859-1?Q?A7J2NaE/whFv/3Fspr70y7WFSTICmMfj1xWqhkb2LDrE1fZ3JEDqAWj+El?=
- =?iso-8859-1?Q?i7HwlZrfWmUVnM2TzORUqIiWDrn5abjtpt9n597Jx2VpLNv6xqnfljA81e?=
- =?iso-8859-1?Q?aGO31PTpaNM+SFcu3ACqWgdGmAgaVewFAGXN07bPracOKU2DDu/K8+m4QQ?=
- =?iso-8859-1?Q?G8ZEMygkbs7EZO6I5zxVJPlA/zK0mL8ZmTwG2QmD7kORFVYIuvwwHsNE7F?=
- =?iso-8859-1?Q?9ICVQGLX4zsf98U7tOfJ7KCPj/wIN+BiZT1mC8ySx87KQALS6gAyjtf05k?=
- =?iso-8859-1?Q?8F3CwWRTLmoj/NZJOspn45yIrGY/ipfjjYIGDL29LEqnO8tQchReIsIuXq?=
- =?iso-8859-1?Q?a8CSwRMh/AZSt89OeEMRX9YkUy9VJZ8icODqBOS2mAh7GhuJaBveKeeopo?=
- =?iso-8859-1?Q?cZDCAfFP6oEdkbERT3l44acJNSLYFNXdHCtx7ucZANPvMf5k9d7YBW59xS?=
- =?iso-8859-1?Q?R47ylwM51PnvYLVLWz9OnA+FVGVRdYe6YHq/LpeV326WDJg4msD0y01y9S?=
- =?iso-8859-1?Q?vDQHiVWohMYi6wiATFkaIE2MwE2uvmgXvZqpdqZK1/UVPhYwWE54Gary5/?=
- =?iso-8859-1?Q?5bxfZeZFe4tvNC08jmf+tOu9XyBvCszyZtWUcUSC2K1aAVdFrDHFfzRIR7?=
- =?iso-8859-1?Q?2r0T6zzVvOxDWoFq45D3XFzhFMqMB+4TxHTViFONa2wO9fbLfeemVvFeaB?=
- =?iso-8859-1?Q?zhmRGoCKwZ3e6v/sc+w/Ye6/mSxdvPqweiFUAKg69jK74DlzplEv9Yuy4L?=
- =?iso-8859-1?Q?XsE1jQkVh0vhl1J0payO2gtR+1/lMTdyZ5dglYytHpo6ZusRMBP7Mebyq7?=
- =?iso-8859-1?Q?6pO3E4HidGy/9wtpXytVWZDQwMjc6LnR1x5aFurFJ2dH714Bl0IZGXdA2U?=
- =?iso-8859-1?Q?Qej280QNuoXlMHtveVN0Sl64KwdZ3kK9GynjSCTbnnsah32Bh+8Cp/N46L?=
- =?iso-8859-1?Q?YC7/pUlD/qxwm5s51mxPfIdDuz6BRK+f1eCZ05RYGq7dzF1wJQFin4WW6H?=
- =?iso-8859-1?Q?XpAWmLXQN9wi6GDZb0MRiLT0Gs8gdkw6o517EpDo7aSCFOf5/Dl+YgqeY+?=
- =?iso-8859-1?Q?rruxOcwWa+NrwWdCnxgF7ZBTlxbGLi9A7tL2A/WRkEoqMplVK1b6QJ0b9V?=
- =?iso-8859-1?Q?NxUe/q7zPQN45BW4GHmgYWc3pXtuna6Xwed32A1EySokKPpCY1XLPocMGW?=
- =?iso-8859-1?Q?196JZcb6YzTgIQOrd4DT2hOU6va7k8uHYETBphRVpzZRptoOgP9meOyjkz?=
- =?iso-8859-1?Q?CVKp4VBvtNNjO2CjoUbFxHoEl47J4ELveH6pqusLJh6j4Puq7DSPHAyiLb?=
- =?iso-8859-1?Q?X5Yp9ojsv7Jrq7zFe8sWF2fYOHHje60CJ9?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b09a630a-f081-417a-67a7-08dcef8932fb
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Oct 2024 15:26:12.5983
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gFl0UrPgrcaDBPE3u6Qb9+FRkgpz2DKs1PHjX4HmHZ1NhHHcBvrL/MJG7uJPQmvaQDrl89d3J8gKT/H2fwb5lw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10574
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241015073004.4066457-1-arnd@kernel.org>
 
-On Fri, Oct 18, 2024 at 11:16:46AM +0200, Marc Kleine-Budde wrote:
-> On 17.10.2024 11:30:45, Frank Li wrote:
-> > On Thu, Oct 17, 2024 at 04:21:33PM +0200, Marc Kleine-Budde wrote:
-> > > On 17.10.2024 10:03:51, Frank Li wrote:
-> > > > > > > Yes, that is IMHO the correct description of the IP core, but the
-> > > > > > > i.MX8M/N/Q DTS have the wrong order of IRQs. And for compatibility
-> > > > > > > reasons (fixed DTS with old driver) it's IMHO not possible to change the
-> > > > > > > DTS.
-> > > > > > >
-> > > > > >
-> > > > > > I don't think it is a correct behavior for old drivers to use new DTBs or new
-> > > > > > drivers to use old DTBs. Maybe you are correct, Frank also asked the same
-> > > > > > question, let's see how Frank responded.
-> > > > >
-> > > > > DTBs should be considered stable ABI.
-> > > > >
-> > > >
-> > > > ABI defined at binding doc.
-> > > >   interrupt-names:
-> > > >     oneOf:
-> > > >       - items:
-> > > >           - const: int0
-> > > >       - items:
-> > > >           - const: int0
-> > > >           - const: pps
-> > > >       - items:
-> > > >           - const: int0
-> > > >           - const: int1
-> > > >           - const: int2
-> > > >       - items:
-> > > >           - const: int0
-> > > >           - const: int1
-> > > >           - const: int2
-> > > >           - const: pps
-> > > >
-> > > > DTB should align binding doc. There are not 'descriptions' at 'interrupt',
-> > > > which should match 'interrupt-names'. So IMX8MP dts have not match ABI,
-> > > > which defined by binding doc. So it is DTS implement wrong.
-> > >
-> > > I follow your conclusion. But keep in mind, fixing the DTB would break
-> > > compatibility. The wrong DTS looks like this:
-> > >
-> > > - const: int1
-> > > - const: int2
-> > > - const: int0
-> > > - const: pps
-> > >
-> > > Currently we have broken DTS on the i.MX8M* and the
-> > > FEC_QUIRK_WAKEUP_FROM_INT2 that "fixes" this.
-> > >
-> > > This patch uses this quirk to correct the IRQ <-> queue assignment in
-> > > the driver.
-> >
-> > This current code
-> >
-> > for (i = 0; i < irq_cnt; i++) {
-> >                 snprintf(irq_name, sizeof(irq_name), "int%d", i);
-> >                 irq = platform_get_irq_byname_optional(pdev, irq_name);
-> > 		      ^^^^^^^^^^^^^^^^^^^^^
-> >
-> > You just need add interrupt-names at imx8mp dts and reorder it to pass
-> > DTB check.
->
-> ACK
->
-> >
-> >                 if (irq < 0)
-> >                         irq = platform_get_irq(pdev, i);
-> >                 if (irq < 0) {
-> >                         ret = irq;
-> >                         goto failed_irq;
-> >                 }
-> >                 ret = devm_request_irq(&pdev->dev, irq, fec_enet_interrupt,
-> >                                        0, pdev->name, ndev);
-> >                 if (ret)
-> >                         goto failed_irq;
-> >
-> >                 fep->irq[i] = irq;
-> >         }
-> >
-> > All irq handle by the same fec_enet_interrupt().  Change dts irq orders
-> > doesn't broken compatiblity.
->
-> I'm sorry, but this is not 100% correct. Changing the _order_ of IRQs
-> does break compatibility. New DT (with changed IRQ order) with old
-> driver breaks wakeup functionality.
->
-> Have a look at b7cdc9658ac8 ("net: fec: add WoL support for i.MX8MQ"),
-> but keep in mind the patch description is not 100% correct:
->
-> | By default FEC driver treat irq[0] (i.e. int0 described in dt-binding)
-> | as wakeup interrupt, but this situation changed on i.MX8M serials, SoC
-> | integration guys mix wakeup interrupt signal into int2 interrupt line.
->                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->
-> This statement is wrong. The SoC integration is correct, the DT is
-> wrong.
+On Tue, Oct 15, 2024 at 07:29:57AM +0000, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> The driver now uses the legacy bridge helper code but can be configured
+> to get built without it:
+> 
+> ERROR: modpost: "devm_imx_drm_legacy_bridge" [drivers/gpu/drm/imx/ipuv3/parallel-display.ko] undefined!
+> 
+> Add the required dependency, same as in the ldb driver.
+> 
+> Fixes: f94b9707a1c9 ("drm/imx: parallel-display: switch to imx_legacy_bridge / drm_bridge_connector")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  drivers/gpu/drm/imx/ipuv3/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-We should fix wrong thing instead of continuing on the wrong path. No
-much user use wakeup funcationlity. Actually you enable both int0 and int2
-as wakeup source if try to keep compatility.
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-for example:
-	fec->wake_irq = fep->irq[0];
-	if (FEC_QUIRK_WAKEUP_FROM_INT2)
-		fec->wake_irq2 = fep->irq[2];
-
-
-...
-	if (fep->wake_irq2 > 0) {
-                                disable_irq(fep->wake_irq2);
-                                enable_irq_wake(fep->wake_irq2);
-                        }
-
-I perfer fix dts and remove FEC_QUIRK_WAKEUP_FROM_INT2.
-
-
->
-> | This patch introduces FEC_QUIRK_WAKEUP_FROM_INT2 to indicate int2 as
-> | wakeup interrupt for i.MX8MQ.
->
-> > "pre-equeue" irq is new features. You can enable this feature only
-> > when "interrupt-names" exist in future.
->
-> regards,
-> Marc
->
-> --
-> Pengutronix e.K.                 | Marc Kleine-Budde          |
-> Embedded Linux                   | https://www.pengutronix.de |
-> Vertretung Nürnberg              | Phone: +49-5121-206917-129 |
-> Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
-
+-- 
+With best wishes
+Dmitry
