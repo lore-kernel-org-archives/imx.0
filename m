@@ -1,91 +1,133 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FD01DFE0C
-	for <imx@lists.linux.dev>; Sat, 19 Oct 2024 12:24:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AEC47F53
+	for <imx@lists.linux.dev>; Sat, 19 Oct 2024 21:49:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729340693; cv=none; b=pdmCNxDUzigVOoByGJUe2p1qMcRmmBEFpH84sjwattwfqR/2nH7N++3qCWcSHGSZ0Oo9QifAiK9Z2bs57Kzi3Vf9LcqAnbKQVSsRbWAZ97QZzA3yxwvryeAPm8nURl4VlfMdK+RObNKt3Rvd81sMThUesgNADjlm9geFhkneIcY=
+	t=1729374551; cv=none; b=u11GREHQ/D5ZOV3yM/4ICW9Msgc5t4LR+6fkKcnaAHV6N5ffYfJvlOoi6fiu7tZr7biANdYMpGlwdNaL4aAZG8xG+pr/iyydUfZkPTQK5DeMqWBeSvAN/9usZDE899iLwzFXhUNutQeV7eL20HBVyJS8xeTSXtl6eR0o99cGhKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729340693; c=relaxed/simple;
-	bh=59z0vk9jSRT/Hektv9lYc7s4D3nCJX9RgikMYJZSGYo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nePz1vT2yEt+5EOEvxAsncDaCSoCrSipU0AnGNQipIBqZYEGnJl1Buuu2wuvN9p5RsUIspqdQZ61IVCUgUBt3gtYQZ8GdvfhzaAhVhw364e5tMsiVa2d9uW81ZRQpJNYs9DRHjGUhkgy80sm+TE3jWTVYMnhwhV+i+rW5Q3Js9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dwZmGRRB; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729374551; c=relaxed/simple;
+	bh=tfvr+zOblZGTruP4mpM7adeSPSX93PwmhoRyBwJcdvw=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=K2onLGaCibp9CN3THxAzreEd8O9MdSZiy1hvW83tm8IVRuLIGdUhrn92b5eY7yYPzqoWJ0bLj6ekgPdmmFcLiGXso4r5yaAb/hMlifg152KMIGH1hPWWu8AdD5QTCzkAojP/FctvTYFgL/6/5NIL2vL6qJvuuaF5o+NfZlCd1sI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=N2u8pOFe; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dwZmGRRB"
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-539e63c8678so3765651e87.0
-        for <imx@lists.linux.dev>; Sat, 19 Oct 2024 05:24:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729340689; x=1729945489; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=59z0vk9jSRT/Hektv9lYc7s4D3nCJX9RgikMYJZSGYo=;
-        b=dwZmGRRB+uluAmJp9VJ+3Vu8fxL4Zn9IIJ2K6wImO0e9oODfhSHnVqUdaeH0f8+moz
-         hIZQz6Ir7An1u6cS792X5ZxjQjSEMMF2g5465hOrkyZkmkbmOt3cs+CmqRs/g6d18pQa
-         ksGuRAviRp69X8V/D1eMVjdnC2hzvgxgPOfyYeHmbSks5KFBQ3Hv5rGJIJ3bJzWML/ov
-         NMoUU3M5IylgeTlwVGfT14zsRwhe+O7Wl7rtJhFhii9jQS8ME4uqcitRf/i/0IU0xsLL
-         Ismk4PI/axzlYCPmvWVYyv3p/1Y8t57RWONYV0gre/+CbQiscx9PpCI519VFhp4Kccsv
-         CW3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729340689; x=1729945489;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=59z0vk9jSRT/Hektv9lYc7s4D3nCJX9RgikMYJZSGYo=;
-        b=Mmc5bFe0jAkW+aPu1KyvOtLQXBypp7Vuf1+zasMcKx4kAu+7DMYzWZAG9GDOPcRDEf
-         d0cOSMxhFdw4Cc/zn+nhKOd8qnVZnMLru2TtlPOlzFzFs/jLmjY1DGYsMh31VTfj+u2H
-         g+9cN8EiPN+P7StWTE4WWjTWiQ+nugCCdMTBqpKRRL0Mp2aX7sD6MTm+mpEGyQ+3tPCZ
-         Yj727IIgeMm7Rdeo/qOIut4LH4YBBZEl7BRc5qAzQum5sUrvPecS9XQaMuVIVWxRxqXv
-         Y7JlKFd5TnqLBn/rFeIza/Dtj5ajTo+v8iMsZvybkZWBbtJiJjyf+5BN4BjMTuActSnp
-         E1gg==
-X-Forwarded-Encrypted: i=1; AJvYcCXLCeBNUBPT5wj7NzKieCWBPPlRjj9OjzGDaVTOL+juhcfid50CAQ4f18H3gGnjhiW7T0k=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyfzHAvxCyrQop0lGlh4dowYxpBAE6z32tDdTz7UeUDz1iI21sP
-	irU2/1W9Xw+rBVWWWCWq4SEV3cq2gpVSpdIHAcLXZzSLfmi4QwYAURs95l/Ovq3IgRPwklXqJO1
-	kJFk2GHTX0RYHmAzpK9R5STPZsus=
-X-Google-Smtp-Source: AGHT+IGUrTXwWiv1lKL67SWJIsNA/hXh7zoipBe5Wg23cvu0dcs9bp2eLa3387Yv1dQp+DUEmW3HYGfmFS3x65zmVLk=
-X-Received: by 2002:a05:6512:3b2a:b0:539:94aa:d512 with SMTP id
- 2adb3069b0e04-53a15508b0fmr2672892e87.53.1729340688831; Sat, 19 Oct 2024
- 05:24:48 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="N2u8pOFe"
+Received: from pendragon.ideasonboard.com (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 70A015B3;
+	Sat, 19 Oct 2024 23:47:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1729374442;
+	bh=tfvr+zOblZGTruP4mpM7adeSPSX93PwmhoRyBwJcdvw=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=N2u8pOFedv7qs9a38FB00VK5lo+s5Aa9K2tmh+IO3EPzKYlum3L5Ul7q7fpKpwkpP
+	 X7S/hTezjEY3SibLzlGLMWj5DgK4aoOnSAVQknLcwSaYYAS9CT4Ywx3qknvhASgow+
+	 inV+coV7B7KeHSXZdKcysF/dh9KmvE30E8GIS0MQ=
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <ZxK1yAZkJOTQN++s@lizhi-Precision-Tower-5810> <CAOMZO5AcyVeq8TN9qK=_54gP6y_rrCLjh22LnA=E6pLnxjbpNw@mail.gmail.com>
-In-Reply-To: <CAOMZO5AcyVeq8TN9qK=_54gP6y_rrCLjh22LnA=E6pLnxjbpNw@mail.gmail.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Sat, 19 Oct 2024 09:24:37 -0300
-Message-ID: <CAOMZO5B+sJih9A24-NLUvKQXVkBrvFjf+9Fi2x1CFhRjD8EYsA@mail.gmail.com>
-Subject: Re: panel-lvds for imx8mm-verdin boards
-To: Frank Li <Frank.li@nxp.com>, Francesco Dolcini <francesco.dolcini@toradex.com>
-Cc: marcel.ziswiler@toradex.com, imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <f4b083ec-58b5-477a-a0a4-c4c8d02027a7@denx.de>
+References: <20240531202813.277109-1-marex@denx.de> <ab2eb32e-a458-4c9b-8324-27ccb00336c5@denx.de> <7ae0cd7774f4b3e30cc033a7e543546732dbced0.camel@ideasonboard.com> <de285fc0-728f-4ba0-86e0-0069d2cc9a35@denx.de> <64e18ceed5279a9346a6a1141f02ead93383bd1e.camel@ideasonboard.com> <84f505af-1066-4fcf-84b7-28c152c09b89@denx.de> <a7143bd9-a5e0-4afc-98ed-2d4d58171a32@nxp.com> <d70a9c51-6fd7-46fe-8009-b42d0ab4e142@denx.de> <23d9df90-cb80-4d97-afd6-5c573face4bc@nxp.com> <f4b083ec-58b5-477a-a0a4-c4c8d02027a7@denx.de>
+Subject: Re: [PATCH] drm: lcdif: Use adjusted_mode .clock instead of .crtc_clock
+From: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>, Lukas F . Hartmann <lukas@mntmn.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Stefan Agner <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>, imx@lists.linux.dev, kernel@dh-electronics.com, linux-arm-kernel@lists.infradead.org
+To: Alexander Stein <alexander.stein@ew.tq-group.com>, Isaac Scott <isaac.scott@ideasonboard.com>, Liu Ying <victor.liu@nxp.com>, Marek Vasut <marex@denx.de>, dri-devel@lists.freedesktop.org
+Date: Sat, 19 Oct 2024 22:49:04 +0100
+Message-ID: <172937454426.2485972.12472740284222343769@ping.linuxembedded.co.uk>
+User-Agent: alot/0.10
 
-Hi Frank,
+Quoting Marek Vasut (2024-10-12 21:37:59)
+> On 10/11/24 5:10 AM, Liu Ying wrote:
+>=20
+> Hi,
+>=20
+> >>>> This Video PLL1 configuration since moved to &media_blk_ctrl {} , bu=
+t it is still in the imx8mp.dtsi . Therefore, to make your panel work at th=
+e correct desired pixel clock frequency instead of some random one inherite=
+d from imx8mp.dtsi, add the following to the pollux DT, I believe that will=
+ fix the problem and is the correct fix:
+> >>>>
+> >>>> &media_blk_ctrl {
+> >>>>  =C2=A0=C2=A0=C2=A0 // 506800000 =3D 72400000 * 7 (for single-link L=
+VDS, this is enough)
+> >>>>  =C2=A0=C2=A0=C2=A0 // there is no need to multiply the clock by * 2
+> >>>>  =C2=A0=C2=A0=C2=A0 assigned-clock-rates =3D <500000000>, <200000000=
+>, <0>, <0>, <500000000>, <506800000>;
+> >>>
+> >>> This assigns "video_pll1" clock rate to 506.8MHz which is currently n=
+ot
+> >>> listed in imx_pll1443x_tbl[].
+> >>
+> >> Since commit b09c68dc57c9 ("clk: imx: pll14xx: Support dynamic rates")=
+ the 1443x PLLs can be configured to arbitrary rates which for video PLL is=
+ desirable as those should produce accurate clock.
+> >=20
+> > Ack.
+> >=20
+> >>
+> >>> Does the below patch[1] fix the regression issue? It explicitly sets
+> >>> the clock frequency of the panel timing to 74.25MHz.
+> >>>
+> >>> [1] https://patchwork.freedesktop.org/patch/616905/?series=3D139266&r=
+ev=3D1
+> >> That patch is wrong, there is an existing entry for this panel in pane=
+l-simple.c which is correct and precise, please do not add that kind of imp=
+recise duplicate timings into DT.
+> >=20
+> > At least the patch[1] is legitimate now to override the display
+> > timing of the panel because the override mode is something
+> > panel-simple.c supports.
+>=20
+> It may be possible to override the mode, but why would this be the=20
+> desired if the panel-simple.c already contains valid accurate timings=20
+> for this particular panel ?
 
-On Fri, Oct 18, 2024 at 6:13=E2=80=AFPM Fabio Estevam <festevam@gmail.com> =
-wrote:
->
-> Adding Francesco.
->
-> On Fri, Oct 18, 2024 at 4:24=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote=
-:
-> >
-> > There are some dtb check warning
-> >
-> > arch/arm64/boot/dts/freescale/imx8mm-mx8menlo.dtb: panel-lvds: compatib=
-le:0: 'panel-lvds' is not one of ['admatec,9904379', 'auo,b101ew05', 'chung=
-hwa,claa070wp03xg', 'edt,etml0700z9ndha', 'hannstar,hsd101pww2', 'hydis,hv0=
-70wx2-1e0', 'jenson,bl-jt60050-01a', 'tbs,a711-panel']
-> >
-> > Can you help add actual pannel-lvds compatible string to clean up these
-> > warning?
+I'm confused a little here. Why is it that setting the panel timings in
+the DT as per [1] make the display work, while the panel timeings in
+panel-simple alone are not enough?
 
-Would it make sense to change panel-lvds.yaml to allow a single
-panel-lvds entry?
+Is there some difference in code path for 'how' the panel timings are
+set as to whether they will apply fully or not ?
+
+
+--
+Kieran
+
+
+>=20
+> > And, pixel clock @74.25MHz is not out
+> > of the panel specification since edt_etml1010g3dra_timing
+> > indicates the minimum as 66.3MHz and the maximum as 78.9MHz.
+>=20
+> The panel-simple.c already contains timings for this panel, which are=20
+> accurate and follow the panel datasheet. If the goal here is to support=20
+> approximate panel timings between the currently available three options=20
+> (min/typ/max) listed in panel-simple, then that is another discussion=20
+> for another patch.
+>=20
+> > Furthermore, if "PHYTEC phyBOARD-Pollux i.MX8MP" also supports
+> > something like MIPI DSI to HDMI, then 74.25MHz panel pixel clock
+> > rate is more desirable because the LVDS display and the MIPI DSI
+> > display pipeline with typical 148.5MHz/74.25MHz pixel clock rates
+> > may use one single "video_pll1" clock.
+>=20
+> I actually do have exactly this use case on one system -- one LVDS panel =
+
+> and one MIPI DSI panel -- the solution is really easy, source the LVDS=20
+> pixel clock from Video PLL and the DSI clock from e.g. PLL3 .
+>=20
+> > Anyway, I think it is ok to use the patch[1] or assigning
+> > "video_pll1" clock rate to 506.8MHz in DT(no things like MIPI
+> > DSI to HDMI in existing DT).
+> I believe for the current release, it is better to update the Video PLL=20
+> clock in this one board DT, because that is minimum impact change=20
+> isolated to this board and fixes a real issue where the LVDS panel=20
+> worked within specification only by sheer chance.
