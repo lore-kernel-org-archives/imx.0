@@ -1,127 +1,128 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EAD4B661
-	for <imx@lists.linux.dev>; Sun, 20 Oct 2024 05:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231FB1DFDE;
+	Sun, 20 Oct 2024 14:41:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729400574; cv=none; b=JRmotvw8sgQ9qv3MJ/ePOusq+qCToI8zAAl1SPwHfLcdfj2BsjOTGXaHd3MvzwXYVMZz/gf5r9xx7FUoHs1La+s44A8Tc3aiNBvc+Qryr6ukPDPdXwwpAGQxYZyoN6oTXJU6v8f+6smnPC8vYnFbN479Ux5PBCK+3GmpXz7meq0=
+	t=1729435293; cv=none; b=CkGUI6y4zRUgni1oQm4X4MqpFZOH8t88SXlD4GV+prz1ADR/UHaWQlmGibdZJFqEWDfkM9d2GzgUXi6SwB4ZHf0hTeiRVPB+M1JEMU/5AtRA3eE1qsxYQggIIa14BZiPCfTNcOXPqqPVyp+I2L7+On9OxqLPCwUfNOjCGVU2Dww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729400574; c=relaxed/simple;
-	bh=w+QtEOHmaKSldBYhFpYrl7n1gLOIzwgzhxW04e7my5o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H3mp2FHjsR73/xFsUH7R8ztILXAbt0F6esaXFBdFTQWIDJStnPbr+ywnjIH/2Euu0he2kqMLRWjs97VQv8wZLN1p9DEgFW0WL0Y4NDN8ngqEgMZHKGOwdphtApmV36TdNDc63/yC2SpRfud3pKFcKtDzXLUtl46bKpQOmKEvC54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=jrIOnf+m; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1729435293; c=relaxed/simple;
+	bh=LwfanjgEQjqyWcvwDJM9Gy7OKlQwPcMP7YlWcbF+oPE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=osr50ebIt+Slszr90Y1G4kxn6mfwurYvYjxTvsi1NKzgpNgY1dKo+9AZIfuZHuPJVevPX1oRoVgUBTNSeLcKMTKe2wQUUQ4rRbPLLdkAuQ62qD1jANwt+ih/hiS4MpYFgUQd0UJO05mw8tCGa+r9axKKwnNPEY16H0s5cZDNIFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VhSAIBH+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="jrIOnf+m"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 0742D88E51;
-	Sun, 20 Oct 2024 07:02:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1729400565;
-	bh=hYRBZQsmpk838yCvMz6guFI1ilJdszUEzAPlUeDX8ck=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jrIOnf+miP+e+nCClb/sp1LFMaw4aTBCXLnGGS2GqwfKTOGYm+XQpEZAgSALiGil6
-	 fjEtu9SKs1o/TMoaaMjqQTHM5/l0NzznNdsKG7Hr56x91vapmUh463s0QrAF7GbrPm
-	 oOvzgYBw3TZrjcKcIWMYpDrqSX92WSBbtbfIVQ2ZupUkwMFozKzp9xUzsnCh9MJgyu
-	 kmTIYWVGzU8JPup67CQVe3pEzyhuZb3gYQDFFU6XirFmQyktBkmI1GnOfm1xYIFRRp
-	 zX1BbD/JPNabIHrNDZt1xjfa7ZLQrQtuD5Fx+IuP5d/o9/3d+ITtqSRfasfpOLxcob
-	 0Js2VldSDEV2A==
-Message-ID: <eee5649b-ca5a-42c5-a6ec-246ee21fb6e4@denx.de>
-Date: Sun, 20 Oct 2024 04:49:29 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VhSAIBH+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B39ACC4CEC6;
+	Sun, 20 Oct 2024 14:41:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729435292;
+	bh=LwfanjgEQjqyWcvwDJM9Gy7OKlQwPcMP7YlWcbF+oPE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VhSAIBH+KyvhoemjtmfVf14Yu7DhyPJFJ04d/eY6gx3QP1MfPbAFexhBaA5i+scti
+	 JJx0CV0bT9fs+jULlxw7lwCDCCvQUgRopoqs+ScVS3EkQWn1WWQ3Q2NS9NU7Kp7gEN
+	 4QtvMnJYrN7gesnb/X/Hb2hoNaM6uKQIWl/tg0v4ZMIqZFOWmjP2vV6VLrnFwLgGpl
+	 a+1mX/MAmrIW5P6d35gueW8xCxVlyYAURIULTgUadCaHoJwJwWCs74PqfSmjGgnnb7
+	 zi68ghQQP3U982unoBk9Qj2Mk+NFxKquzykV1Ve9oEtagQIuE/BwQ5E9UtYiOSLYqv
+	 1fk8g+WRBisGg==
+Date: Sun, 20 Oct 2024 16:41:25 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, dlemoal@kernel.org, maz@kernel.org,
+	tglx@linutronix.de, jdmason@kudzu.us
+Subject: Re: [PATCH v3 4/6] PCI: endpoint: pci-epf-test: Add doorbell test
+ support
+Message-ID: <ZxUWlSFEPDCCXaq0@x1-carbon.lan>
+References: <20241015-ep-msi-v3-0-cedc89a16c1a@nxp.com>
+ <20241015-ep-msi-v3-4-cedc89a16c1a@nxp.com>
+ <ZxJqITunljv0PGxn@ryzen.lan>
+ <ZxJ7HoSuYNr8mwSi@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm: lcdif: Use adjusted_mode .clock instead of
- .crtc_clock
-To: Kieran Bingham <kieran.bingham@ideasonboard.com>,
- Alexander Stein <alexander.stein@ew.tq-group.com>,
- Isaac Scott <isaac.scott@ideasonboard.com>, Liu Ying <victor.liu@nxp.com>,
- dri-devel@lists.freedesktop.org
-Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
- Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>,
- "Lukas F.Hartmann" <lukas@mntmn.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Stefan Agner <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>,
- imx@lists.linux.dev, kernel@dh-electronics.com,
- linux-arm-kernel@lists.infradead.org
-References: <20240531202813.277109-1-marex@denx.de>
- <ab2eb32e-a458-4c9b-8324-27ccb00336c5@denx.de>
- <7ae0cd7774f4b3e30cc033a7e543546732dbced0.camel@ideasonboard.com>
- <de285fc0-728f-4ba0-86e0-0069d2cc9a35@denx.de>
- <64e18ceed5279a9346a6a1141f02ead93383bd1e.camel@ideasonboard.com>
- <84f505af-1066-4fcf-84b7-28c152c09b89@denx.de>
- <a7143bd9-a5e0-4afc-98ed-2d4d58171a32@nxp.com>
- <d70a9c51-6fd7-46fe-8009-b42d0ab4e142@denx.de>
- <23d9df90-cb80-4d97-afd6-5c573face4bc@nxp.com>
- <f4b083ec-58b5-477a-a0a4-c4c8d02027a7@denx.de>
- <172937454426.2485972.12472740284222343769@ping.linuxembedded.co.uk>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <172937454426.2485972.12472740284222343769@ping.linuxembedded.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZxJ7HoSuYNr8mwSi@lizhi-Precision-Tower-5810>
 
-On 10/19/24 11:49 PM, Kieran Bingham wrote:
-> Quoting Marek Vasut (2024-10-12 21:37:59)
->> On 10/11/24 5:10 AM, Liu Ying wrote:
->>
->> Hi,
->>
->>>>>> This Video PLL1 configuration since moved to &media_blk_ctrl {} , but it is still in the imx8mp.dtsi . Therefore, to make your panel work at the correct desired pixel clock frequency instead of some random one inherited from imx8mp.dtsi, add the following to the pollux DT, I believe that will fix the problem and is the correct fix:
->>>>>>
->>>>>> &media_blk_ctrl {
->>>>>>       // 506800000 = 72400000 * 7 (for single-link LVDS, this is enough)
->>>>>>       // there is no need to multiply the clock by * 2
->>>>>>       assigned-clock-rates = <500000000>, <200000000>, <0>, <0>, <500000000>, <506800000>;
->>>>>
->>>>> This assigns "video_pll1" clock rate to 506.8MHz which is currently not
->>>>> listed in imx_pll1443x_tbl[].
->>>>
->>>> Since commit b09c68dc57c9 ("clk: imx: pll14xx: Support dynamic rates") the 1443x PLLs can be configured to arbitrary rates which for video PLL is desirable as those should produce accurate clock.
->>>
->>> Ack.
->>>
->>>>
->>>>> Does the below patch[1] fix the regression issue? It explicitly sets
->>>>> the clock frequency of the panel timing to 74.25MHz.
->>>>>
->>>>> [1] https://patchwork.freedesktop.org/patch/616905/?series=139266&rev=1
->>>> That patch is wrong, there is an existing entry for this panel in panel-simple.c which is correct and precise, please do not add that kind of imprecise duplicate timings into DT.
->>>
->>> At least the patch[1] is legitimate now to override the display
->>> timing of the panel because the override mode is something
->>> panel-simple.c supports.
->>
->> It may be possible to override the mode, but why would this be the
->> desired if the panel-simple.c already contains valid accurate timings
->> for this particular panel ?
+On Fri, Oct 18, 2024 at 11:13:34AM -0400, Frank Li wrote:
+> On Fri, Oct 18, 2024 at 04:01:05PM +0200, Niklas Cassel wrote:
+> > > +	/* Only revid >=1 support RC-to-EP Door bell */
+> > > +	ret = epf->header->revid > 0 ?  pci_epf_alloc_doorbell(epf, 1) : -EINVAL;
+> >
+> > I really, really don't like this idea.
+> >
+> > This means that you would need to write a revid > 1 in configfs to test this.
+> > I also don't think that it is right that pci-epf-test takes ownership of "rev".
+> >
+> > How about something like this instead:
+> >
+> > My thinking is that you add a doorbell_capable struct member to epc_features,
+> > and then populate CAPS_DOORBELL_SUPPORT based on epc_features in
+> > pci_epf_test_init_caps() (similar to how my proposal sets CAPS_MSI_SUPPORT).
 > 
-> I'm confused a little here. Why is it that setting the panel timings in
-> the DT as per [1] make the display work, while the panel timeings in
-> panel-simple alone are not enough?
-> 
-> Is there some difference in code path for 'how' the panel timings are
-> set as to whether they will apply fully or not ?
-Because [1] sets inaccurate pixel clock of 74.25 MHz, which can be 
-divided down from random default Video PLL setting of 1039.5 MHz set in 
-imx8mp.dtsi media_blk_ctrl , 1039.5 / 74.25 = 14 .
+> The primary issue is that the doorbell is not a capability of the EPC
+> itself; rather, it's a capability of the entire system that requires an
+> external MSI/ITS controller. The CAPS_DOORBELL_SUPPORT should handle this
+> feature. Even we needn't CAPS_DOORBELL_SUPPORT, just call
+> pci_epf_alloc_doorbell(), if error return, means not support DOORBELL.
 
-The panel-simple pixel clock are 72.4 MHz, to achieve that accurately, 
-it is necessary to reconfigure the Video PLL frequency to 506.8 MHz , 
-which LCDIFv3 can do, but LDB can not, hence it has to be done in DT for 
-now.
+Well, the idea is that CAPS_DOORBELL_SUPPORT bit is to tell the host side
+driver (pci-endpoint-test.c) that the EPF supports doorbell.
+
+In other words, if pcitest -B is executed, but the EP (pci-epf-test) does
+not set the CAPS_DOORBELL_SUPPORT bit to one in the CAPS register,
+the host side driver (pci-endpoint-test.c) can error out immediately,
+no need to even trying to send any command to the EP.
+
+(We can do the same with MSI and MSI-X, no need to send a command to the EP
+if the EP has CAPS (CAPS_MAGIC is set), but does not indicate support for
+MSI/MSI-X.)
+
+
+> To use the doorbell functionality, the revid can clearly inform users that
+> this feature breaks previous compatibility. Users will need to update the
+> host-side driver, PID/VID values, and the pcitest tools accordingly.
+
+I still really don't like the revid idea.
+
+
+> One potential problem is that if the EPC supports CAPS_DOORBELL_SUPPORT,
+> but the user continues to use older PID/VID values to enable EPF testing,
+> the pcitest tool may treat the doorbell BAR as a normal BAR. This could
+> lead to confusion for users as to why their system breaks after a kernel
+> update.
+
+How about we add a new pcitest --set-doorbell-mode option
+(that is similar to pcitest -i which sets the interrupt mode to use).
+
+That way, we can do:
+./pcitest --set-doorbell-mode 1
+(This will enable doorbell for e.g. BAR0, pci-epf-test will call
+pci_epf_alloc_doorbell() when receiving this command from the RC side.
+The command will return failure if pci_epf_alloc_doorbell() returned failure.)
+
+./pcitest -B
+(This will perform the doorbell test)
+
+./pcitest --set-doorbell-mode 0
+(This will disable the doorbell for BAR0,
+so it will again not trigger IRQs when BAR0 is written,
+and pcitest's tests to read/write the BARs will again behave as expected.)
+
+(We probably also need another option pcitest --get-doorbell-mode.)
+
+I think this should solve all your concerns. Thoughts?
+
+
+Kind regards,
+Niklas
