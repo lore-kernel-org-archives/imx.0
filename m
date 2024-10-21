@@ -1,70 +1,174 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2901E38384
-	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 01:47:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA761311A7
+	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 02:07:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729561675; cv=none; b=NU9RXgWciH/3E+7vQuor4emcOW901Pz4ZNsXUIlPJ74qfnahpBfHkkbI14BWyr7uQANkKCNK4j5iTfYgRhTgZqGHZb86+lnzPf9m4GQbLY5+EdvUEDX3bBrk0Vk9Oi7gpzJ2TiwPzoAZZZvrntEeCSGnNk3X25o6L7L65NBiVB8=
+	t=1729562848; cv=none; b=ePtDSE/HSXZ/DElldPO0wpGyV6NEm9Dns147MALS/jTHZ7kx65rpnnX1xOXBKllAoIH1Q0zjalAYWOurjGFxwHFU9a7LzAm3Yd77pKRJpUB/LRAGmD3zXfacUZ2LLcjNHVRn+veWwQdaDokEWXOU1QbSBEBq1IFfFgyVQZ4Bj0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729561675; c=relaxed/simple;
-	bh=hqYD/CBNsaLsrn8FBvCiBFGdvxlp3H8BJorx44bx5xU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o3aA0Oxo69P54Hdn20vMAKmaXwJhjl0KbGr+qfFp4OgSSJnm1XW3trjkXiix+K36YyAe8CrSacoSG5p8zfp2lyr6spPZidVoDqyYtiTGa1SBma70QjqLBaQht4p2RtASZ8o2yIAfOI6P2Ne/HtdpuvIgmkJQnuhhOBR7aAsuCRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=eol339eT; arc=none smtp.client-ip=1.95.21.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1729562848; c=relaxed/simple;
+	bh=TsqJaVpC83Vn9ojjK90UAzUm9mRMnkl7gSxWZe2UMxU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=js5UNmcMho58wEGuLhLv/47GwFX+cfo2Fs4xWYfmI9BjapCkX2p92pDBT/YXpCvxY40NJxFxs0FKjqZ5Ob9mys/QfNtapmY8ymUAcDaOVOwrhs6KYjJFJ9ufxeHFgkb8DICpUUElMCG7sUizV/Vp9NXulsYjFkogXz60nYYDF0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=alDO9aCH; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="eol339eT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=eWBEveVJM0G1RyM83TGGBhWjSPPu5+wqEZFI9XnVW1Q=;
-	b=eol339eTJt+loXgGdojJkVLcrpCrYmvbxfw8lfFRrttEejnU1HKsht0B+Gfr4T
-	rfbj9cr/5vRhoAL15QRVv3E53VTHvzk6nQ8xA0E3E53eBk51u94sY4eLIJNCnl8B
-	ijVJ5BgUHhmKlbKSRFz82z6qJBqeYumEztB9zxiocIYDs=
-Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgCX3XwlBBdnaAaSAA--.5191S3;
-	Tue, 22 Oct 2024 09:47:18 +0800 (CST)
-Date: Tue, 22 Oct 2024 09:47:16 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Marek Vasut <marex@denx.de>
-Cc: linux-arm-kernel@lists.infradead.org,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, kernel@dh-electronics.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: imx6qdl-dhcom-pdk2: Fill in missing panel
- power-supply
-Message-ID: <ZxcEJIZVdMSxbx27@dragon>
-References: <20241015232509.101206-1-marex@denx.de>
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="alDO9aCH"
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id D308588F4F;
+	Tue, 22 Oct 2024 04:07:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1729562844;
+	bh=59zZ86KbR0eSe7tOpX+4JjORXjImszu7jagouoaujTg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=alDO9aCHL+TxHH435J+X3yEyxlr0ovAacFGQUC2AqUvVj3ryOPM01Zfoj5U6Q1CEL
+	 Xer6fIWvF2KpM2Vu19hDckyj769VFV2i4cbxtxt7XCbgDsWJ3gEtvPrppR8JStH0dl
+	 u2Y+k+OLdp4mIZDAydBc05ivXoK4Toa0Q/FsGUOBD9e35l/qGvDiqu2RqCNvV2ifBi
+	 3rrCaSXsjZGWSHAoXCsXhXBaWpueg9fqCo3Zu2kaSZejvERUB1OgS93vrCFJzD+d7e
+	 OrkNd1TWbGGCjwYUEzOHnKOCeYnv/oPe0rFmrXAzm4QMcWIhNBfQDiEKaaLbhJMYhW
+	 0kmtDYhUpfZLg==
+Message-ID: <377f62e8-f622-4c54-bd44-00ee67829607@denx.de>
+Date: Mon, 21 Oct 2024 23:00:43 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241015232509.101206-1-marex@denx.de>
-X-CM-TRANSID:M88vCgCX3XwlBBdnaAaSAA--.5191S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU3mhFUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAgaAZWcW3kZhjwAAsm
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm: lcdif: Use adjusted_mode .clock instead of
+ .crtc_clock
+To: Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Isaac Scott <isaac.scott@ideasonboard.com>, Liu Ying <victor.liu@nxp.com>,
+ dri-devel@lists.freedesktop.org
+Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
+ Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>,
+ "Lukas F.Hartmann" <lukas@mntmn.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Stefan Agner <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>,
+ imx@lists.linux.dev, kernel@dh-electronics.com,
+ linux-arm-kernel@lists.infradead.org
+References: <20240531202813.277109-1-marex@denx.de>
+ <de285fc0-728f-4ba0-86e0-0069d2cc9a35@denx.de>
+ <64e18ceed5279a9346a6a1141f02ead93383bd1e.camel@ideasonboard.com>
+ <84f505af-1066-4fcf-84b7-28c152c09b89@denx.de>
+ <a7143bd9-a5e0-4afc-98ed-2d4d58171a32@nxp.com>
+ <d70a9c51-6fd7-46fe-8009-b42d0ab4e142@denx.de>
+ <23d9df90-cb80-4d97-afd6-5c573face4bc@nxp.com>
+ <f4b083ec-58b5-477a-a0a4-c4c8d02027a7@denx.de>
+ <172937454426.2485972.12472740284222343769@ping.linuxembedded.co.uk>
+ <eee5649b-ca5a-42c5-a6ec-246ee21fb6e4@denx.de>
+ <172950900212.3353069.2089097805440086007@ping.linuxembedded.co.uk>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <172950900212.3353069.2089097805440086007@ping.linuxembedded.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On Wed, Oct 16, 2024 at 01:24:51AM +0200, Marek Vasut wrote:
-> Add missing panel power-supply property to DT to fix the following warning.
-> The power supply on this device is very simple chain of regulators from the
-> main 24V input, describe those.
+On 10/21/24 1:10 PM, Kieran Bingham wrote:
+> Quoting Marek Vasut (2024-10-20 03:49:29)
+>> On 10/19/24 11:49 PM, Kieran Bingham wrote:
+>>> Quoting Marek Vasut (2024-10-12 21:37:59)
+>>>> On 10/11/24 5:10 AM, Liu Ying wrote:
+>>>>
+>>>> Hi,
+>>>>
+>>>>>>>> This Video PLL1 configuration since moved to &media_blk_ctrl {} , but it is still in the imx8mp.dtsi . Therefore, to make your panel work at the correct desired pixel clock frequency instead of some random one inherited from imx8mp.dtsi, add the following to the pollux DT, I believe that will fix the problem and is the correct fix:
+>>>>>>>>
+>>>>>>>> &media_blk_ctrl {
+>>>>>>>>        // 506800000 = 72400000 * 7 (for single-link LVDS, this is enough)
+>>>>>>>>        // there is no need to multiply the clock by * 2
+>>>>>>>>        assigned-clock-rates = <500000000>, <200000000>, <0>, <0>, <500000000>, <506800000>;
+>>>>>>>
+>>>>>>> This assigns "video_pll1" clock rate to 506.8MHz which is currently not
+>>>>>>> listed in imx_pll1443x_tbl[].
+>>>>>>
+>>>>>> Since commit b09c68dc57c9 ("clk: imx: pll14xx: Support dynamic rates") the 1443x PLLs can be configured to arbitrary rates which for video PLL is desirable as those should produce accurate clock.
+>>>>>
+>>>>> Ack.
+>>>>>
+>>>>>>
+>>>>>>> Does the below patch[1] fix the regression issue? It explicitly sets
+>>>>>>> the clock frequency of the panel timing to 74.25MHz.
+>>>>>>>
+>>>>>>> [1] https://patchwork.freedesktop.org/patch/616905/?series=139266&rev=1
+>>>>>> That patch is wrong, there is an existing entry for this panel in panel-simple.c which is correct and precise, please do not add that kind of imprecise duplicate timings into DT.
+>>>>>
+>>>>> At least the patch[1] is legitimate now to override the display
+>>>>> timing of the panel because the override mode is something
+>>>>> panel-simple.c supports.
+>>>>
+>>>> It may be possible to override the mode, but why would this be the
+>>>> desired if the panel-simple.c already contains valid accurate timings
+>>>> for this particular panel ?
+>>>
+>>> I'm confused a little here. Why is it that setting the panel timings in
+>>> the DT as per [1] make the display work, while the panel timeings in
+>>> panel-simple alone are not enough?
+>>>
+>>> Is there some difference in code path for 'how' the panel timings are
+>>> set as to whether they will apply fully or not ?
+>> Because [1] sets inaccurate pixel clock of 74.25 MHz, which can be
+>> divided down from random default Video PLL setting of 1039.5 MHz set in
+>> imx8mp.dtsi media_blk_ctrl , 1039.5 / 74.25 = 14 .
+>>
+>> The panel-simple pixel clock are 72.4 MHz, to achieve that accurately,
+>> it is necessary to reconfigure the Video PLL frequency to 506.8 MHz ,
+>> which LCDIFv3 can do, but LDB can not, hence it has to be done in DT for
+>> now.
 > 
-> "
-> arch/arm/boot/dts/nxp/imx/imx6q-dhcom-pdk2.dtb: panel: 'power-supply' is a required property
-> "
+> Aha - right - Thanks, I'd missed the part that 74.25 MHz /is not/ the
+> correct or supported pixel clock for the panel
+
+It is inaccurate, it is still within the spec ...
+
+> , so it just becomes
+> 'close enough' and lucky that it works...
+
+... but only by sheer chance, because the Video PLL in imx8mp.dtsi is 
+accidentally set to frequency that is just close enough to be divisible 
+to the inaccurate 74.25 MHz .
+
+> Now I understand how your proposed :
 > 
-> Signed-off-by: Marek Vasut <marex@denx.de>
+>>>>>>>> &media_blk_ctrl {
+>>>>>>>>        // 506800000 = 72400000 * 7 (for single-link LVDS, this is enough)
+>>>>>>>>        // there is no need to multiply the clock by * 2
+>>>>>>>>        assigned-clock-rates = <500000000>, <200000000>, <0>, <0>, <500000000>, <506800000>;
+>>>>>>>
+>>>>>>> This assigns "video_pll1" clock rate to 506.8MHz which is currently not
+>>>>>>> listed in imx_pll1443x_tbl[].
+> 
+> is more accurate. But is that acceptable for DT ? To just hardcode
+> clocks like that?
 
-Applied, thanks!
+I am not happy about it, but it is the best we can do right now.
 
+See these two patches, they might address that part for next cycle:
+
+clk: imx: clk-imx8mp: Allow LDB serializer clock reconfigure parent rate
+drm: bridge: ldb: Configure LDB clock in .mode_set
+
+> Or is this something we'll then remove when the additional patches make
+> it upstream? (I'm curious on the basis that I thought we treat DT as
+> 'firmware' so if we put this in we expect it to be there forever?)
+
+It is already there in imx8mp.dtsi , so we are not making the situation 
+any worse, rather the opposite.
+
+> All of this seems like perhaps it should be in an overlay for the
+> display too - but given this board comes with this panel as a kit - I
+> suspect it's fine to keep it all there.
+That's a separate topic, but yes, DTOs for displays are a good thing to 
+have.
