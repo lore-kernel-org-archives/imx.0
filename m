@@ -1,203 +1,116 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F3E1EF92B
-	for <imx@lists.linux.dev>; Mon, 21 Oct 2024 12:49:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EAEC1F1314
+	for <imx@lists.linux.dev>; Mon, 21 Oct 2024 13:48:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729514971; cv=none; b=HlUR29LaCNb6rkcwrRPqPi0UaPwsQejf/GwfrFE5vXYS1bcSVj+kWU7cWXx/f4JJngB3UFqCVRJ4UqKJue7rtn5jBJvAQXJ3kaTT0St6+rFI2rybe451owN6M9zHUO3VIJG0x41HXCbvOHcrwOJlAeN0yngpNWRjwC7Nvazx/HQ=
+	t=1729518504; cv=none; b=KuR4LIiJhSSfg4mXzsff137iLYd97LBxai1sZY0lMb/AevBRBnvkTie4iQznjRNCnLtetYslvPHhEROp3IdE1jgsJDSjoQvJmcP7OxnorlQwUsckhkpHO/dO3vPG7xRxct66luDv2brxTVb8UdepTSmpJANT+EhcqrMuB7L9WJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729514971; c=relaxed/simple;
-	bh=GH+Q9t87101VfCb8kbMrKjRlxSEEKEOk1jtATHA+GOM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tfkv6TJtxrYwuTAqaSE47kd9pxkkROc/+bKX/N0IFUeyswvH9P4hjTWb3LJ8Qa8vD7aCW50c3gxdY0adTJ708vW2dbLI4xpJZ+/ytMTjvPNTsZ9jylLOaEWzwXpLP49Cl5kVSEPzzMe9AbCEnf8OfIkijJ7ozEjZbwqxXYUkRNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NYIOCaJM; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729518504; c=relaxed/simple;
+	bh=Zv+uXFl0RQcRbDUrQN5TBTqjzzSX7jumC0m+kpAaEZk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sxIfp8eKs02COVkcaYYtENKouBiofXXeunq5mfFLimkKQZreNt9MWbtBxv7jfanQC6KzrlT0ULT7evxTt0OorLy1t+rhDWAsl345/LHiNmZfEQ/L8zWbtmGFGUI/xgznnzZFIFF0MWFL7mhfg9gN8ShIWM+OAjQFkIWpiVx391g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=q0M+l5LX; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=IktmwYTY reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NYIOCaJM"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43161c0068bso30422295e9.1
-        for <imx@lists.linux.dev>; Mon, 21 Oct 2024 05:49:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="q0M+l5LX";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="IktmwYTY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729514967; x=1730119767; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3Q32sh+uJFSpt9TLvxk2ifmsRw8yfE9HNNl0na2PYAU=;
-        b=NYIOCaJM1dccTT32egetTcMyoIiHI11d6F88pW9xUY36QjT0oOAADImEEDiwiiyNwL
-         dLF/onRZSogjaoBzAZmp2U3XY2jmlbPZRsTjeFgqPe20jlgLjL+/SuW9JLLai4JtgoSU
-         sTNkwXlncDQqBBKhP6liSx7Qt2rgr/HJPNfSYHj3lJOlBf1EywcAl8d2PFqKDfhDfwqG
-         AgfkNrUboDUFavqKcSOmvFqMT9f3u2Oud4kpHxNZU9JH0j+5YPo1lDlHZjgogrBzI60y
-         yhVGH295f37A56UkXaIWdl385q7gf8BsNbba3DnyTEXsAMv08QwTtkiGB95FnvDpR9+O
-         kfOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729514967; x=1730119767;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3Q32sh+uJFSpt9TLvxk2ifmsRw8yfE9HNNl0na2PYAU=;
-        b=XleSwA+YKipCXRKtuclojWlyFTT7E71AsvMxzBuQXsmYOJFXcxJnuC2q/fzlkhbyvd
-         kRCbYu4rqH9rVOcauR7PLB32/gnn07Z1fQBPslIuHhAuNN1DnPYjqeaI90C1Ue/Pmqcg
-         CckpMKEDy7y2sVKEiS9UU1UpAINsc44NMzeIrurciKITowJoOPFlek+/JsQD9JtA2qY+
-         S817IMazw821YmuPdIO1Iyh3ThMenGGvOKCKNWK0Bymvexgo4taQ1Yvh7VEdugHjG1RZ
-         KQE5jXstN7x0P0I6fyNBrpQqBT+DgMWBuevjeYDkXQuOdd4m0zAJ7yU42aYDmM6sxRif
-         kciw==
-X-Forwarded-Encrypted: i=1; AJvYcCXJ2Qo7E60RdNOnFwejVuTTXzCz6fjwJlSjLjwm3hqQi7AtyLlpF0aDsZqyR9o4n23abpM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz1dj5JunnPGRvXtGf4dWMcjGk3LxdxrbQyHMdd/zP53mYjfP3y
-	tGcA5vzseFP8pm/6U88XHYv9T4KGLxQRawMqOnhPvjUXqVtiZHeN
-X-Google-Smtp-Source: AGHT+IF7y/aVuMR4dM/wOhaLHG4+/0yWCkNhdRhKrO6vRCRYPe8M7QABDKRdq1+Ho2EKQbs991Zaig==
-X-Received: by 2002:a05:600c:4595:b0:431:3b53:105e with SMTP id 5b1f17b1804b1-4316163bccfmr99788485e9.9.1729514966811;
-        Mon, 21 Oct 2024 05:49:26 -0700 (PDT)
-Received: from eichest-laptop.. ([178.197.202.204])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4316f5c2df7sm56460595e9.33.2024.10.21.05.49.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Oct 2024 05:49:26 -0700 (PDT)
-From: Stefan Eichenberger <eichest@gmail.com>
-To: hongxing.zhu@nxp.com,
-	l.stach@pengutronix.de,
-	lpieralisi@kernel.org,
-	kw@linux.com,
-	manivannan.sadhasivam@linaro.org,
-	robh@kernel.org,
-	bhelgaas@google.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	francesco.dolcini@toradex.com,
-	Frank.li@nxp.com
-Cc: linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: [PATCH v3] PCI: imx6: Add suspend/resume support for i.MX6QDL
-Date: Mon, 21 Oct 2024 14:49:13 +0200
-Message-ID: <20241021124922.5361-1-eichest@gmail.com>
-X-Mailer: git-send-email 2.43.0
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1729518499; x=1761054499;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=KEFV90NtjKhk5WP7S+oF07G1Q6k1s2xpduU//Ae0D2s=;
+  b=q0M+l5LX0z4uSY1eoIeZJ+MLg5rh3oCvRELQoGnUkUhAriuUdflIW3o0
+   ydlqYOLPZLhbZGRMXRLGDpLMUWEwqqNRE5DctzJlouIdgt9lT9BmR1SCC
+   tWwANhTG8cNuZqp5NmXBywv2DjCwrMBEIyUzRiHC0OTTQcJod0GYFK6TQ
+   FgxMCPRA2b+H7QADZGJAH6NP8X7c9UbcDqAToQ4dSFTdhdEwEGs6mM+c4
+   /3xBBXMRQiitiszbr0JG9u0iUkisW6WZJJR3haXVyYRLqLnWtypyi2b2b
+   ZRMyLn6On5JYZl7TVPRNRQGzX+SteWtfIdFFe+TduqQchnw+AmFYa/401
+   g==;
+X-CSE-ConnectionGUID: HFLFfOkzTreLiUJYWJ10yQ==
+X-CSE-MsgGUID: jkaZF85fTAGn0EnQ8v2ucQ==
+X-IronPort-AV: E=Sophos;i="6.11,221,1725314400"; 
+   d="scan'208";a="39576079"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 21 Oct 2024 15:48:17 +0200
+X-CheckPoint: {67165BA1-F-69FF9A8E-EE9CEDAF}
+X-MAIL-CPID: 5835941C4BD768457DA0DE859DEFCF6C_0
+X-Control-Analysis: str=0001.0A682F18.67165BA1.005B,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BB15D16B491;
+	Mon, 21 Oct 2024 15:48:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1729518492;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=KEFV90NtjKhk5WP7S+oF07G1Q6k1s2xpduU//Ae0D2s=;
+	b=IktmwYTY1/ITpIkYod18GzpOJd2buw1RXiqxY5+mJQlX2WDPqs2RFxrNIHkvUc42DpYe7z
+	O4u0t1at+eER5RHHvhf7NEVdLtxeE8T0Hm9F54XBQHRKOn4N9s/KHkfDldT/ftsah7Vrqo
+	+j/K2fTrQGTjUr9zXs3fnTdmBAIOoFTUlSCD3AYj+vCKkbUsvfZOcOrcHy8YRSusrhKu7U
+	bpY+kZ0XxF0lOuwqc7jTaWVDib/2FX3e4ilDVVWdnwR4FcdsgVOxOXIp4bXWRnJIIJdiuW
+	wysouKNGijPive6QIccT6Ux/kIppJd3KMY3qOkHzG0ZQL6bGuqEwfLYJwE/SCg==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-arm-kernel@lists.infradead.org
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Subject: Re: [PATCH v3 1/7] arm64: dts: imx95: set max-rx-timeout-ms
+Date: Mon, 21 Oct 2024 15:48:11 +0200
+Message-ID: <2755523.mvXUDI8C0e@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20241012-imx95-dts-new-v3-1-edfab0054c71@nxp.com>
+References: <20241012-imx95-dts-new-v3-0-edfab0054c71@nxp.com> <20241012-imx95-dts-new-v3-1-edfab0054c71@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Am Samstag, 12. Oktober 2024, 13:19:08 CEST schrieb Peng Fan (OSS):
+> From: Peng Fan <peng.fan@nxp.com>
+>=20
+> With 'max-rx-timeout-ms' property added in 'Documentation/devicetree/
+> indings/firmware/arm,scmi.yaml', set the value for i.MX95.
+>=20
+> NXP i.MX95 SCMI Firmware designation does not allow timeout, it will not
+> recover if the Agents use timeout design. So set a large value (5000ms)
+> here.
+>=20
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx95.dtsi | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/d=
+ts/freescale/imx95.dtsi
+> index 03661e76550f4d5b8e5e706ad51d6f7620cb1dc3..9c802c2344fcfb2802e5d52c7=
+62b0178a2a88ba8 100644
+> --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> @@ -293,6 +293,7 @@ scmi {
+>  			shmem =3D <&scmi_buf0>, <&scmi_buf1>;
+>  			#address-cells =3D <1>;
+>  			#size-cells =3D <0>;
+> +			max-rx-timeout-ms =3D <5000>;
 
-The suspend/resume support is broken on the i.MX6QDL platform. This
-patch resets the link upon resuming to recover functionality. It shares
-most of the sequences with other i.MX devices but does not touch the
-critical registers, which might break PCIe. This patch addresses the
-same issue as the following downstream commit:
-https://github.com/nxp-imx/linux-imx/commit/4e92355e1f79d225ea842511fcfd42b343b32995
-In comparison this patch will also reset the device if possible because
-the downstream patch alone would still make the ath10k driver crash.
-Without this patch suspend/resume will not work if a PCIe device is
-connected. The kernel will hang on resume and print an error:
-ath10k_pci 0000:01:00.0: Unable to change power state from D3hot to D0, device inaccessible
-8<--- cut here ---
-Unhandled fault: imprecise external abort (0x1406) at 0x0106f944
+Acked-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
----
-Changes in v3:
-- Added a new flag to the driver data to indicate that the suspend/resume
-  is broken on the i.MX6QDL platform. (Frank)
-- Fix comments to be more relevant (Mani)
-- Use imx_pcie_assert_core_reset in suspend (Mani)
+Best regards,
+Alexander
+>  			scmi_devpd: protocol@11 {
+>  				reg =3D <0x11>;
+>=20
+>=20
 
- drivers/pci/controller/dwc/pci-imx6.c | 57 +++++++++++++++++++++------
- 1 file changed, 46 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 808d1f1054173..09e3b15f0908a 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -82,6 +82,11 @@ enum imx_pcie_variants {
- #define IMX_PCIE_FLAG_HAS_SERDES		BIT(6)
- #define IMX_PCIE_FLAG_SUPPORT_64BIT		BIT(7)
- #define IMX_PCIE_FLAG_CPU_ADDR_FIXUP		BIT(8)
-+/**
-+ * Because of ERR005723 (PCIe does not support L2 power down) we need to
-+ * workaround suspend resume on some devices which are affected by this errata.
-+ */
-+#define IMX_PCIE_FLAG_BROKEN_SUSPEND		BIT(9)
- 
- #define imx_check_flag(pci, val)	(pci->drvdata->flags & val)
- 
-@@ -1237,9 +1242,19 @@ static int imx_pcie_suspend_noirq(struct device *dev)
- 		return 0;
- 
- 	imx_pcie_msi_save_restore(imx_pcie, true);
--	imx_pcie_pm_turnoff(imx_pcie);
--	imx_pcie_stop_link(imx_pcie->pci);
--	imx_pcie_host_exit(pp);
-+	if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_BROKEN_SUSPEND)) {
-+		/**
-+		 * The minimum for a workaround would be to set PERST# and to
-+		 * set the PCIE_TEST_PD flag. However, we can also disable the
-+		 * clock which saves some power.
-+		 */
-+		imx_pcie_assert_core_reset(imx_pcie);
-+		imx_pcie->drvdata->enable_ref_clk(imx_pcie, false);
-+	} else {
-+		imx_pcie_pm_turnoff(imx_pcie);
-+		imx_pcie_stop_link(imx_pcie->pci);
-+		imx_pcie_host_exit(pp);
-+	}
- 
- 	return 0;
- }
-@@ -1253,14 +1268,32 @@ static int imx_pcie_resume_noirq(struct device *dev)
- 	if (!(imx_pcie->drvdata->flags & IMX_PCIE_FLAG_SUPPORTS_SUSPEND))
- 		return 0;
- 
--	ret = imx_pcie_host_init(pp);
--	if (ret)
--		return ret;
--	imx_pcie_msi_save_restore(imx_pcie, false);
--	dw_pcie_setup_rc(pp);
-+	if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_BROKEN_SUSPEND)) {
-+		ret = imx_pcie->drvdata->enable_ref_clk(imx_pcie, true);
-+		if (ret)
-+			return ret;
-+		ret = imx_pcie_deassert_core_reset(imx_pcie);
-+		if (ret)
-+			return ret;
-+		/**
-+		 * Using PCIE_TEST_PD seems to disable msi and powers down the
-+		 * root complex. This is why we have to setup the rc again and
-+		 * why we have to restore the msi register.
-+		 */
-+		ret = dw_pcie_setup_rc(&imx_pcie->pci->pp);
-+		if (ret)
-+			return ret;
-+		imx_pcie_msi_save_restore(imx_pcie, false);
-+	} else {
-+		ret = imx_pcie_host_init(pp);
-+		if (ret)
-+			return ret;
-+		imx_pcie_msi_save_restore(imx_pcie, false);
-+		dw_pcie_setup_rc(pp);
- 
--	if (imx_pcie->link_is_up)
--		imx_pcie_start_link(imx_pcie->pci);
-+		if (imx_pcie->link_is_up)
-+			imx_pcie_start_link(imx_pcie->pci);
-+	}
- 
- 	return 0;
- }
-@@ -1485,7 +1518,9 @@ static const struct imx_pcie_drvdata drvdata[] = {
- 	[IMX6Q] = {
- 		.variant = IMX6Q,
- 		.flags = IMX_PCIE_FLAG_IMX_PHY |
--			 IMX_PCIE_FLAG_IMX_SPEED_CHANGE,
-+			 IMX_PCIE_FLAG_IMX_SPEED_CHANGE |
-+			 IMX_PCIE_FLAG_BROKEN_SUSPEND |
-+			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
- 		.dbi_length = 0x200,
- 		.gpr = "fsl,imx6q-iomuxc-gpr",
- 		.clk_names = imx6q_clks,
--- 
-2.43.0
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
