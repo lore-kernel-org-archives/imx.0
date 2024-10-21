@@ -1,666 +1,247 @@
-Received: from finn.localdomain (finn.gateworks.com [108.161.129.64])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5DAE1EBA02;
-	Mon, 21 Oct 2024 20:53:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=108.161.129.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED62E1FEFBA
+	for <imx@lists.linux.dev>; Mon, 21 Oct 2024 23:05:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729544027; cv=none; b=hvo7ydQSq8tRS6+WHk8HkFZIgLNbU56G6AsBgQX3v9V/WVC2f0yvMwx+PCPQs5uI/zyhQbc50Dex0YE3xu2DGX66NXkJMaGs8jJpR/+c/gK33qHbp9SEo6nkj8LhFGaGeAOZ9D0ADSB39KebTQtJlasFDAOpcG+dhKCjCyXI06A=
+	t=1729551934; cv=none; b=muwWi+yLxyipOd7KlM/XVPPjl0yTjTcQEt8eA3KOZl8HYcaHuU1kzdfTH7evfJkbMixrwIu15YBORp0iE0cP+p795njh7HywfZzmRa43FLNwHkJ+I8PyQmVe+C1f7azqZ4xwFpHEUa6CQ9ToFPKsOlqsDmPQ2eYcq1ZeCZ7M7T8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729544027; c=relaxed/simple;
-	bh=zufJTBTpX6f6E/Laa9CCPwsz6UDfYiwdeofWtHnpst8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VV2VmSaLr/3eVY0HLdIq4QmfQZXToK/xO0gxN8xgivz8GNA2blrEPHV72U0Z8l6cQDRArkDRo/Z9aQb9TUrmPLlFywOw20DX7l2mOoJtFoG2lnfAZuaf2y2vHZTuJAEOoOgGsiNNZbe9caDO8zOjU1cOAjG34isai61239cJoOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; arc=none smtp.client-ip=108.161.129.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
-Received: from syn-068-189-091-139.biz.spectrum.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
-	by finn.localdomain with esmtp (Exim 4.95)
-	(envelope-from <tharvey@gateworks.com>)
-	id 1t2zPA-00174U-PK;
-	Mon, 21 Oct 2024 20:53:32 +0000
-From: Tim Harvey <tharvey@gateworks.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+	s=arc-20240116; t=1729551934; c=relaxed/simple;
+	bh=YKdo+Uxlo1eCoawACV9oWjMlaGMaBHJ/ijXI/XMZF4Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=At8oifVhZb8rNZ4wSLkHmxYljmlMs5vEY/IYPXxrJfW3rkWKP0s1QeEnloFBBpP7mHYoIj8jkG+kBK2AxGwMIdK/UVvyBx7bxwh0fJnmNiSJk7fODBM5OMS3uHNZ/pfg3o5NKAVtW1ojmfSgPqXhP13Bmy7c756YAMebKzWOYdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=JAq94tn9; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="JAq94tn9"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id EB763CCC;
+	Tue, 22 Oct 2024 01:03:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1729551819;
+	bh=YKdo+Uxlo1eCoawACV9oWjMlaGMaBHJ/ijXI/XMZF4Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JAq94tn9mUqktHPHFzsTtzJlmc2s1AUFUYocxqZDZGfxRgM29RCjBNtWvAAlqBVeV
+	 gIn+WEY1/4F9Pr6S1mRFD2GVTEk/m+uZ6NYUbGQ0y5WlK8hK8wPC0GNTIm1FLC68hq
+	 HGu5tzqMnSSxEYZNgl7Rft0WBaJbmsVEKRQxUCsE=
+Date: Tue, 22 Oct 2024 02:05:19 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: Tim Harvey <tharvey@gateworks.com>
-Subject: [PATCH v2 2/2] arm64: dts: imx: Add i.MX8M Plus Gateworks GW82XX-2X support
-Date: Mon, 21 Oct 2024 13:53:29 -0700
-Message-Id: <20241021205329.1179426-2-tharvey@gateworks.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241021205329.1179426-1-tharvey@gateworks.com>
-References: <20241021205329.1179426-1-tharvey@gateworks.com>
+	Stefan Riedmueller <s.riedmueller@phytec.de>,
+	Guoniu Zhou <guoniu.zhou@nxp.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Christian Hemp <c.hemp@phytec.de>, linux-media@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] media: nxp: imx8-isi: better handle the m2m
+ usage_count
+Message-ID: <20241021230519.GB8113@pendragon.ideasonboard.com>
+References: <20240927080420.3867806-1-laurentiu.palcu@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240927080420.3867806-1-laurentiu.palcu@oss.nxp.com>
 
-The Gateworks GW82XX-2X is an ARM based single board computer (SBC)
-comprised of the i.MX8M Plus based gw702x SoM and the gw82xx baseboard
-featuring:
- - i.MX8M Plus SoC
- - LPDDR4 DRAM
- - eMMC FLASH
- - Gateworks System Controller (GSC)
- - microSD (1.8V/3.3V Capable)
- - panel status bi-color LED
- - pushbutton switch
- - fan controller with tachometer
- - USB Type-C connector
- - PCIe switch
- - 2x GbE RJ45 connectors
- - multi-protocol RS232/RS485/RS422 Serial ports
- - 2x Flexible Socket Adapters with SDIO/UART/USB/PCIe
-   (for M.2 and miniPCIe expansion)
- - 2x isolated CAN
- - GPS
- - accelerometer
- - magnetometer
- - off-board connectors for: SPI, GPIO, I2C, ADC
- - Wide range DC power input
- - support for 802.3at PoE (via adapter)
+On Fri, Sep 27, 2024 at 11:04:20AM +0300, Laurentiu Palcu wrote:
+> Currently, if streamon/streamoff calls are imbalanced we can either end up
+> with a negative ISI m2m usage_count (if streamoff() is called more times
+> than streamon()) in which case we'll not be able to restart the ISI pipe
+> next time, or the usage_count never gets to 0 and the pipe is never
+> switched off.
+> 
+> So, to avoid that, add an 'in_use' flag in the ctx structure that will
+> keep track whether the output/capture queues have been started or not,
+> and use it to avoid decrementing/incrementing the usage_count
+> unnecessarily.
+> 
+> Fixes: cf21f328fcafac ("media: nxp: Add i.MX8 ISI driver")
+> Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+> ---
+> v2:
+>  * Changed the way 'usage_count' is incremented/decremented by taking
+>    into account the context the streamon/streamoff functions are called
+>    from;
+>  * Changed the commit message and subject to reflect the changes;
+> 
+>  .../platform/nxp/imx8-isi/imx8-isi-m2m.c      | 24 +++++++++++++++----
+>  1 file changed, 20 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+> index 9745d6219a166..3f06ae1349e53 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+> @@ -65,6 +65,7 @@ struct mxc_isi_m2m_ctx {
+>  	} ctrls;
+>  
+>  	bool chained;
+> +	bool in_use[2];
 
-Signed-off-by: Tim Harvey <tharvey@gateworks.com>
----
-v2:
-- remove invalid st,drdy-int-pin from LIS2MDL magnetometer
-- remove {adp,hnp,srp}-disable props from USB controller in host mode
-  (these are only applicable if the controller is in OTG/Peripheral mode)
----
- arch/arm64/boot/dts/freescale/Makefile        |   1 +
- .../dts/freescale/imx8mp-venice-gw82xx-2x.dts |  19 +
- .../dts/freescale/imx8mp-venice-gw82xx.dtsi   | 533 ++++++++++++++++++
- 3 files changed, 553 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-venice-gw82xx-2x.dts
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-venice-gw82xx.dtsi
+I think you can store this in mxc_isi_m2m_ctx_queue_data instead as a
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 91b72a1d5bb8..d1f205187454 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -196,6 +196,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw72xx-2x.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw73xx-2x.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw74xx.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw75xx-2x.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw82xx-2x.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-nonwifi-dahlia.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-nonwifi-dev.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-nonwifi-ivy.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw82xx-2x.dts b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw82xx-2x.dts
-new file mode 100644
-index 000000000000..597813308630
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw82xx-2x.dts
-@@ -0,0 +1,19 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2024 Gateworks Corporation
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx8mp.dtsi"
-+#include "imx8mp-venice-gw702x.dtsi"
-+#include "imx8mp-venice-gw82xx.dtsi"
-+
-+/ {
-+	model = "Gateworks Venice GW82xx-2x i.MX8MP Development Kit";
-+	compatible = "gateworks,imx8mp-gw82xx-2x", "fsl,imx8mp";
-+
-+	chosen {
-+		stdout-path = &uart2;
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw82xx.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw82xx.dtsi
-new file mode 100644
-index 000000000000..d931815adc26
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw82xx.dtsi
-@@ -0,0 +1,533 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2024 Gateworks Corporation
-+ */
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/leds/common.h>
-+#include <dt-bindings/phy/phy-imx8-pcie.h>
-+
-+/ {
-+	aliases {
-+		ethernet1 = &eth1;
-+		fsa1 = &fsa0;
-+		fsa2 = &fsa1;
-+	};
-+
-+	led-controller {
-+		compatible = "gpio-leds";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_gpio_leds>;
-+
-+		led-0 {
-+			function = LED_FUNCTION_STATUS;
-+			color = <LED_COLOR_ID_GREEN>;
-+			gpios = <&gpio4 1 GPIO_ACTIVE_HIGH>;
-+			default-state = "on";
-+			linux,default-trigger = "heartbeat";
-+		};
-+
-+		led-1 {
-+			function = LED_FUNCTION_STATUS;
-+			color = <LED_COLOR_ID_RED>;
-+			gpios = <&gpio4 5 GPIO_ACTIVE_HIGH>;
-+			default-state = "off";
-+		};
-+	};
-+
-+	pcie0_refclk: clock-pcie0 {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <100000000>;
-+	};
-+
-+	pps {
-+		compatible = "pps-gpio";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_pps>;
-+		gpios = <&gpio4 3 GPIO_ACTIVE_HIGH>;
-+	};
-+
-+	reg_usb2_vbus: regulator-usb2 {
-+		compatible = "regulator-fixed";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_reg_usb2_en>;
-+		regulator-name = "usb2_vbus";
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		gpio = <&gpio4 12 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+	};
-+
-+	reg_usdhc2_vmmc: regulator-usdhc2-vmmc {
-+		compatible = "regulator-fixed";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_usdhc2_vmmc>;
-+		regulator-name = "VDD_3V3_SD";
-+		regulator-max-microvolt = <3300000>;
-+		regulator-min-microvolt = <3300000>;
-+		gpio = <&gpio2 19 0>; /* SD2_RESET */
-+		enable-active-high;
-+		off-on-delay-us = <12000>;
-+		startup-delay-us = <100>;
-+	};
-+};
-+
-+&ecspi2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_spi2>;
-+	cs-gpios = <&gpio1 10 GPIO_ACTIVE_LOW>,	/* CS0 onboard TPM */
-+		   <&gpio5 13 GPIO_ACTIVE_LOW>, /* CS1 off-board J32 SPI */
-+		   <&gpio1 12 GPIO_ACTIVE_LOW>, /* CS3 off-board J52 FSA1 */
-+		   <&gpio4 26 GPIO_ACTIVE_LOW>; /* CS2 off-board J51 FSA2 */
-+	status = "okay";
-+
-+	tpm@0 {
-+		compatible = "atmel,attpm20p", "tcg,tpm_tis-spi";
-+		reg = <0x0>;
-+		spi-max-frequency = <10000000>;
-+	};
-+};
-+
-+&flexcan1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_can1>;
-+	status = "okay";
-+};
-+
-+&flexcan2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_can2>;
-+	status = "okay";
-+};
-+
-+&gpio1 {
-+	gpio-line-names =
-+		"", "", "", "",
-+		"", "", "", "",
-+		"", "", "", "",
-+		"", "fsa2_gpio1", "", "",
-+		"", "", "", "",
-+		"", "", "", "",
-+		"", "", "", "",
-+		"", "", "", "";
-+};
-+
-+&gpio4 {
-+	gpio-line-names =
-+		"", "", "", "",
-+		"", "", "", "",
-+		"dio1", "fsa1_gpio2", "", "dio0",
-+		"", "", "", "",
-+		"", "", "", "",
-+		"", "", "rs485_en", "rs485_term",
-+		"fsa2_gpio2", "fsa1_gpio1", "", "rs485_half",
-+		"", "", "", "";
-+};
-+
-+&i2c2 {
-+	accelerometer@19 {
-+		compatible = "st,lis2de12";
-+		reg = <0x19>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_accel>;
-+		interrupt-parent = <&gpio4>;
-+		interrupts = <21 IRQ_TYPE_LEVEL_LOW>;
-+		st,drdy-int-pin = <1>;
-+	};
-+
-+	magnetometer@1e {
-+		compatible = "st,lis2mdl";
-+		reg = <0x1e>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_mag>;
-+		interrupt-parent = <&gpio4>;
-+		interrupts = <28 IRQ_TYPE_LEVEL_LOW>;
-+	};
-+};
-+
-+&i2c3 {
-+	i2c-mux@70 {
-+		compatible = "nxp,pca9548";
-+		reg = <0x70>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		/* J30 */
-+		fsa1: i2c@0 {
-+			reg = <0>;
-+			pinctrl-names = "default";
-+			pinctrl-0 = <&pinctrl_fsa2i2c>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			gpio@20 {
-+				compatible = "nxp,pca9555";
-+				reg = <0x20>;
-+				interrupt-parent = <&gpio4>;
-+				interrupts = <4 IRQ_TYPE_EDGE_FALLING>;
-+				interrupt-controller;
-+				#interrupt-cells = <2>;
-+				gpio-controller;
-+				#gpio-cells = <2>;
-+			};
-+
-+			eeprom@54 {
-+				compatible = "atmel,24c02";
-+				reg = <0x54>;
-+				pagesize = <16>;
-+			};
-+
-+			eeprom@55 {
-+				compatible = "atmel,24c02";
-+				reg = <0x55>;
-+				pagesize = <16>;
-+			};
-+		};
-+
-+		/* J29 */
-+		fsa0: i2c@1 {
-+			reg = <1>;
-+			pinctrl-names = "default";
-+			pinctrl-0 = <&pinctrl_fsa1i2c>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			gpio@20 {
-+				compatible = "nxp,pca9555";
-+				reg = <0x20>;
-+				interrupt-parent = <&gpio4>;
-+				interrupts = <14 IRQ_TYPE_EDGE_FALLING>;
-+				interrupt-controller;
-+				#interrupt-cells = <2>;
-+				gpio-controller;
-+				#gpio-cells = <2>;
-+			};
-+
-+			eeprom@54 {
-+				compatible = "atmel,24c02";
-+				reg = <0x54>;
-+				pagesize = <16>;
-+			};
-+
-+			eeprom@55 {
-+				compatible = "atmel,24c02";
-+				reg = <0x55>;
-+				pagesize = <16>;
-+			};
-+		};
-+
-+		/* J33 */
-+		i2c@2 {
-+			reg = <2>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+		};
-+	};
-+};
-+
-+&pcie_phy {
-+	clocks = <&pcie0_refclk>;
-+	clock-names = "ref";
-+	fsl,refclk-pad-mode = <IMX8_PCIE_REFCLK_PAD_INPUT>;
-+	fsl,clkreq-unsupported;
-+	status = "okay";
-+};
-+
-+&pcie {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_pcie0>;
-+	reset-gpio = <&gpio4 29 GPIO_ACTIVE_LOW>;
-+	status = "okay";
-+
-+	pcie@0,0 {
-+		reg = <0x0000 0 0 0 0>;
-+		device_type = "pci";
-+		#address-cells = <3>;
-+		#size-cells = <2>;
-+		ranges;
-+
-+		pcie@0,0 {
-+			reg = <0x0000 0 0 0 0>;
-+			device_type = "pci";
-+			#address-cells = <3>;
-+			#size-cells = <2>;
-+			ranges;
-+
-+			pcie@7,0 {
-+				reg = <0x3800 0 0 0 0>;
-+				device_type = "pci";
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				ranges;
-+
-+				eth1: ethernet@0,0 {
-+					reg = <0x0000 0 0 0 0>;
-+					#address-cells = <3>;
-+					#size-cells = <2>;
-+					ranges;
-+					local-mac-address = [00 00 00 00 00 00];
-+				};
-+			};
-+		};
-+	};
-+};
-+
-+/* GPS */
-+&uart1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart1>;
-+	status = "okay";
-+};
-+
-+/* RS232 */
-+&uart4 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart4>;
-+	status = "okay";
-+};
-+
-+/* USB1 - FSA1 */
-+&usb3_0 {
-+	fsl,permanently-attached;
-+	fsl,disable-port-power-control;
-+	status = "okay";
-+};
-+
-+&usb3_phy0 {
-+	status = "okay";
-+};
-+
-+&usb_dwc3_0 {
-+	dr_mode = "host";
-+	status = "okay";
-+};
-+
-+/* USB2 - USB3.0 Hub */
-+&usb3_1 {
-+	fsl,permanently-attached;
-+	fsl,disable-port-power-control;
-+	status = "okay";
-+};
-+
-+&usb3_phy1 {
-+	vbus-supply = <&reg_usb2_vbus>;
-+	status = "okay";
-+};
-+
-+&usb_dwc3_1 {
-+	dr_mode = "host";
-+	status = "okay";
-+};
-+
-+/* SDIO 1.8V */
-+&usdhc1 {
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&pinctrl_usdhc1>;
-+	pinctrl-1 = <&pinctrl_usdhc1_100mhz>;
-+	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
-+	bus-width = <4>;
-+	non-removable;
-+	status = "okay";
-+};
-+
-+/* microSD */
-+&usdhc2 {
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
-+	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
-+	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
-+	cd-gpios = <&gpio2 12 GPIO_ACTIVE_HIGH>; /* CD is active high */
-+	bus-width = <4>;
-+	vmmc-supply = <&reg_usdhc2_vmmc>;
-+	status = "okay";
-+};
-+
-+&iomuxc {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_hog>;
-+
-+	pinctrl_hog: hoggrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI1_RXD6__GPIO4_IO08	0x40000146 /* DIO1 */
-+			MX8MP_IOMUXC_SAI1_TXC__GPIO4_IO11	0x40000146 /* DIO0 */
-+			MX8MP_IOMUXC_SAI2_MCLK__GPIO4_IO27	0x40000106 /* RS485_HALF */
-+			MX8MP_IOMUXC_SAI2_RXC__GPIO4_IO22	0x40000106 /* RS485_EN */
-+			MX8MP_IOMUXC_SAI2_RXD0__GPIO4_IO23	0x40000106 /* RS485_TERM */
-+		>;
-+	};
-+
-+	pinctrl_accel: accelgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI2_RXFS__GPIO4_IO21	0x150	/* IRQ# */
-+		>;
-+	};
-+
-+	pinctrl_can1: can1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SPDIF_TX__CAN1_TX		0x154
-+			MX8MP_IOMUXC_SPDIF_RX__CAN1_RX		0x154
-+		>;
-+	};
-+
-+	pinctrl_can2: can2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI5_RXD3__CAN2_TX		0x154
-+			MX8MP_IOMUXC_SAI5_MCLK__CAN2_RX		0x154
-+		>;
-+	};
-+
-+	pinctrl_gpio_leds: gpioledgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI1_RXC__GPIO4_IO01	0x6	/* LEDG */
-+			MX8MP_IOMUXC_SAI1_RXD3__GPIO4_IO05	0x6	/* LEDR */
-+		>;
-+	};
-+
-+	pinctrl_fsa1i2c: fsa1i2cgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI1_TXD2__GPIO4_IO14	0x1d0		/* FSA1_ALERT# */
-+			MX8MP_IOMUXC_SAI2_TXC__GPIO4_IO25	0x400001d0	/* FSA1_GPIO1 */
-+			MX8MP_IOMUXC_SAI1_RXD7__GPIO4_IO09	0x400001d0	/* FSA1_GPIO2 */
-+		>;
-+	};
-+
-+	pinctrl_fsa2i2c: fsa2i2cgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI1_RXD2__GPIO4_IO04	0x1d0		/* FSA2_ALERT# */
-+			MX8MP_IOMUXC_GPIO1_IO13__GPIO1_IO13	0x400001d0	/* FSA2_GPIO1 */
-+			MX8MP_IOMUXC_SAI2_TXFS__GPIO4_IO24	0x400001d0	/* FSA2_GPIO2 */
-+		>;
-+	};
-+
-+	pinctrl_mag: maggrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI3_RXFS__GPIO4_IO28	0x140	/* IRQ# */
-+		>;
-+	};
-+
-+	pinctrl_pcie0: pcie0grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI3_RXC__GPIO4_IO29	0x106	/* PERST# */
-+		>;
-+	};
-+
-+	pinctrl_pps: ppsgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI1_RXD1__GPIO4_IO03	0x146
-+		>;
-+	};
-+
-+	pinctrl_reg_usb2_en: regusb2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI1_TXD0__GPIO4_IO12	0x146	/* USBHUB_RST# */
-+		>;
-+	};
-+
-+	pinctrl_spi2: spi2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_ECSPI2_SCLK__ECSPI2_SCLK	0xd0
-+			MX8MP_IOMUXC_ECSPI2_MOSI__ECSPI2_MOSI	0xd0
-+			MX8MP_IOMUXC_ECSPI2_MISO__ECSPI2_MISO	0xd0
-+			MX8MP_IOMUXC_ECSPI2_SS0__GPIO5_IO13	0x140	/* J32_CS */
-+			MX8MP_IOMUXC_GPIO1_IO10__GPIO1_IO10	0x140	/* TPM_CS */
-+			MX8MP_IOMUXC_GPIO1_IO12__GPIO1_IO12	0x140	/* FSA1_CS */
-+			MX8MP_IOMUXC_SAI2_TXD0__GPIO4_IO26	0x140	/* FSA2_CS */
-+		>;
-+	};
-+
-+	pinctrl_uart1: uart1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_UART1_RXD__UART1_DCE_RX	0x140
-+			MX8MP_IOMUXC_UART1_TXD__UART1_DCE_TX	0x140
-+		>;
-+	};
-+
-+	pinctrl_uart4: uart4grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_UART4_RXD__UART4_DCE_RX	0x140
-+			MX8MP_IOMUXC_UART4_TXD__UART4_DCE_TX	0x140
-+		>;
-+	};
-+
-+	pinctrl_usdhc1: usdhc1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD1_CLK__USDHC1_CLK	0x190
-+			MX8MP_IOMUXC_SD1_CMD__USDHC1_CMD	0x1d0
-+			MX8MP_IOMUXC_SD1_DATA0__USDHC1_DATA0	0x1d0
-+			MX8MP_IOMUXC_SD1_DATA1__USDHC1_DATA1	0x1d0
-+			MX8MP_IOMUXC_SD1_DATA2__USDHC1_DATA2	0x1d0
-+			MX8MP_IOMUXC_SD1_DATA3__USDHC1_DATA3	0x1d0
-+		>;
-+	};
-+
-+	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD1_CLK__USDHC1_CLK	0x194
-+			MX8MP_IOMUXC_SD1_CMD__USDHC1_CMD	0x1d4
-+			MX8MP_IOMUXC_SD1_DATA0__USDHC1_DATA0	0x1d4
-+			MX8MP_IOMUXC_SD1_DATA1__USDHC1_DATA1	0x1d4
-+			MX8MP_IOMUXC_SD1_DATA2__USDHC1_DATA2	0x1d4
-+			MX8MP_IOMUXC_SD1_DATA3__USDHC1_DATA3	0x1d4
-+		>;
-+	};
-+
-+	pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD1_CLK__USDHC1_CLK	0x196
-+			MX8MP_IOMUXC_SD1_CMD__USDHC1_CMD	0x1d6
-+			MX8MP_IOMUXC_SD1_DATA0__USDHC1_DATA0	0x1d6
-+			MX8MP_IOMUXC_SD1_DATA1__USDHC1_DATA1	0x1d6
-+			MX8MP_IOMUXC_SD1_DATA2__USDHC1_DATA2	0x1d6
-+			MX8MP_IOMUXC_SD1_DATA3__USDHC1_DATA3	0x1d6
-+		>;
-+	};
-+
-+	pinctrl_usdhc2: usdhc2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK	0x190
-+			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD	0x1d0
-+			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0	0x1d0
-+			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1	0x1d0
-+			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2	0x1d0
-+			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3	0x1d0
-+			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT	0xc1
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK	0x194
-+			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD	0x1d4
-+			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0	0x1d4
-+			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1	0x1d4
-+			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2	0x1d4
-+			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3	0x1d4
-+			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT	0xc1
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK	0x196
-+			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD	0x1d6
-+			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0	0x1d6
-+			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1	0x1d6
-+			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2	0x1d6
-+			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3	0x1d6
-+			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT	0xc1
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_vmmc: usdhc2-vmmc-grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD2_RESET_B__GPIO2_IO19	0x1d0
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_gpio: usdhc2gpiogrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD2_CD_B__GPIO2_IO12	0x1c4
-+		>;
-+	};
-+};
+	bool streaming;
+
+>  };
+>  
+>  static inline struct mxc_isi_m2m_buffer *
+> @@ -491,6 +492,7 @@ static int mxc_isi_m2m_streamon(struct file *file, void *fh,
+>  	const struct mxc_isi_format_info *cap_info = ctx->queues.cap.info;
+>  	const struct mxc_isi_format_info *out_info = ctx->queues.out.info;
+>  	struct mxc_isi_m2m *m2m = ctx->m2m;
+> +	bool already_in_use;
+>  	bool bypass;
+>  
+>  	int ret;
+> @@ -502,6 +504,8 @@ static int mxc_isi_m2m_streamon(struct file *file, void *fh,
+>  		goto unlock;
+>  	}
+>  
+> +	already_in_use = ctx->in_use[type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE];
+> +
+
+As the streamon and streamoff operation are covered by the same queue
+lock for all contexts, you can do all this outside of the m2m->lock
+sections. I think the following patch (untested) should do and would be
+simpler:
+
+diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+index 9745d6219a16..cd6c52e9d158 100644
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+@@ -43,6 +43,7 @@ struct mxc_isi_m2m_ctx_queue_data {
+ 	struct v4l2_pix_format_mplane format;
+ 	const struct mxc_isi_format_info *info;
+ 	u32 sequence;
++	bool streaming;
+ };
+
+ struct mxc_isi_m2m_ctx {
+@@ -486,15 +487,18 @@ static int mxc_isi_m2m_streamon(struct file *file, void *fh,
+ 				enum v4l2_buf_type type)
+ {
+ 	struct mxc_isi_m2m_ctx *ctx = to_isi_m2m_ctx(fh);
++	struct mxc_isi_m2m_ctx_queue_data *q = mxc_isi_m2m_ctx_qdata(ctx, type);
+ 	const struct v4l2_pix_format_mplane *out_pix = &ctx->queues.out.format;
+ 	const struct v4l2_pix_format_mplane *cap_pix = &ctx->queues.cap.format;
+ 	const struct mxc_isi_format_info *cap_info = ctx->queues.cap.info;
+ 	const struct mxc_isi_format_info *out_info = ctx->queues.out.info;
+ 	struct mxc_isi_m2m *m2m = ctx->m2m;
+ 	bool bypass;
+-
+ 	int ret;
+
++	if (q->streaming)
++		return 0;
++
+ 	mutex_lock(&m2m->lock);
+
+ 	if (m2m->usage_count == INT_MAX) {
+@@ -547,6 +551,8 @@ static int mxc_isi_m2m_streamon(struct file *file, void *fh,
+ 		goto unchain;
+ 	}
+
++	q->streaming = true;
++
+ 	return 0;
+
+ unchain:
+@@ -569,10 +575,14 @@ static int mxc_isi_m2m_streamoff(struct file *file, void *fh,
+ 				 enum v4l2_buf_type type)
+ {
+ 	struct mxc_isi_m2m_ctx *ctx = to_isi_m2m_ctx(fh);
++	struct mxc_isi_m2m_ctx_queue_data *q = mxc_isi_m2m_ctx_qdata(ctx, type);
+ 	struct mxc_isi_m2m *m2m = ctx->m2m;
+
+ 	v4l2_m2m_ioctl_streamoff(file, fh, type);
+
++	if (!q->streaming)
++		return 0;
++
+ 	mutex_lock(&m2m->lock);
+
+ 	/*
+@@ -598,6 +608,8 @@ static int mxc_isi_m2m_streamoff(struct file *file, void *fh,
+
+ 	mutex_unlock(&m2m->lock);
+
++	q->streaming = false;
++
+ 	return 0;
+ }
+
+If this works for you, could you turn it into a v3 ?
+
+>  	bypass = cap_pix->width == out_pix->width &&
+>  		 cap_pix->height == out_pix->height &&
+>  		 cap_info->encoding == out_info->encoding;
+> @@ -520,7 +524,10 @@ static int mxc_isi_m2m_streamon(struct file *file, void *fh,
+>  		mxc_isi_channel_get(m2m->pipe);
+>  	}
+>  
+> -	m2m->usage_count++;
+> +	if (!already_in_use) {
+> +		m2m->usage_count++;
+> +		ctx->in_use[type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE] = true;
+> +	}
+>  
+>  	/*
+>  	 * Allocate resources for the channel, counting how many users require
+> @@ -555,7 +562,12 @@ static int mxc_isi_m2m_streamon(struct file *file, void *fh,
+>  	ctx->chained = false;
+>  
+>  deinit:
+> -	if (--m2m->usage_count == 0) {
+> +	if (!already_in_use) {
+> +		m2m->usage_count--;
+> +		ctx->in_use[type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE] = false;
+> +	}
+> +
+> +	if (m2m->usage_count == 0) {
+>  		mxc_isi_channel_put(m2m->pipe);
+>  		mxc_isi_channel_release(m2m->pipe);
+>  	}
+> @@ -575,6 +587,9 @@ static int mxc_isi_m2m_streamoff(struct file *file, void *fh,
+>  
+>  	mutex_lock(&m2m->lock);
+>  
+> +	if (!ctx->in_use[type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE])
+> +		goto unlock;
+> +
+>  	/*
+>  	 * If the last context is this one, reset it to make sure the device
+>  	 * will be reconfigured when streaming is restarted.
+> @@ -587,6 +602,8 @@ static int mxc_isi_m2m_streamoff(struct file *file, void *fh,
+>  		mxc_isi_channel_unchain(m2m->pipe);
+>  	ctx->chained = false;
+>  
+> +	ctx->in_use[type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE] = false;
+> +
+>  	/* Turn off the light with the last user. */
+>  	if (--m2m->usage_count == 0) {
+>  		mxc_isi_channel_disable(m2m->pipe);
+> @@ -594,8 +611,7 @@ static int mxc_isi_m2m_streamoff(struct file *file, void *fh,
+>  		mxc_isi_channel_release(m2m->pipe);
+>  	}
+>  
+> -	WARN_ON(m2m->usage_count < 0);
+> -
+> +unlock:
+>  	mutex_unlock(&m2m->lock);
+>  
+>  	return 0;
+
 -- 
-2.25.1
+Regards,
 
+Laurent Pinchart
