@@ -1,120 +1,143 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F079A1E3DF9
-	for <imx@lists.linux.dev>; Mon, 21 Oct 2024 11:06:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73654194C6B
+	for <imx@lists.linux.dev>; Mon, 21 Oct 2024 11:10:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729508809; cv=none; b=nrcpEcCorLJfFSp0snrklUDNpcKr33W5ZWPZXFpkiGZmRyDkb6qtIiCbxrBKLRKKIvipZGvkZ9UhCPmxZdT38WhsyXaLKiDbqfevupQBmDDT3wzhRrtP+aXtVBExhR3jzxHe2b16elkaxh4tVbKEtbfZ98y6cpffH8MSgm8wmM8=
+	t=1729509009; cv=none; b=IKJZdD7hVegnOklMXyDu379/cYeKcXJrIuDoi8YVPv53QOXXzBe6+ZqUwhTgBYLBiCRs6kSom3c2TXO/ZJwxDlJlhk6qjCjM5f3/Mr+FdOQuEzuPRtUZbIDsjkN4JaYD+cK9CUl34q0R06iFLB8RpjRKoIoWF4+Uy5EwQDjCjNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729508809; c=relaxed/simple;
-	bh=j/cqU4YQ9xO8Fy6AsqoJKZ8kYO9WpzGiOTJL1LCyPps=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZSbNUyhUp9PcS2P0tPriSgt1DkoQQSAL7bbwIDfvy2YQWtbMdXFkhT3l84wYow031buzLd9QtQPk6oQMgmpTb0KVHoSA4KNJW4pK/7eLryJGfUBHe8vVzDU8PN8dtiFJDpYiJY9Dnkvxgyt1SBTmMjKF7MAzqUFTlfDB8DLiyC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lH1X8urh; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1729509009; c=relaxed/simple;
+	bh=SNzKSWHvJVDDSQ9Feoygg0Z+XxDwpbrEq5wv+It3to0=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=YDENAqkvlDT4J3rhEwYeGhTQqgOkUvoEPg4i5iGZSaveeyrCYpFqOi0NiyjbCJ4RplyF7orW7lg2TTzT5kh+P0MeLgwUV3Inr711PfBSkMEw0j3pjUeSHYlPK4lWO9oQpQg8tOztCawQS0vphESXv6PZPwLoyGcn9oQwYkRioc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=WGpIVq5f; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lH1X8urh"
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-539e8586b53so4517462e87.1
-        for <imx@lists.linux.dev>; Mon, 21 Oct 2024 04:06:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729508804; x=1730113604; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RnolULg5KM7EXLrBuCEsj9PWWGa59GTkIO/LQyKKSQ4=;
-        b=lH1X8urhTEScAXs2Z7qEm4PLKaWoV9chdITAVDyn40/WirReeAXUboFuaC2NfbnDfA
-         JDSi5qqrnRzQUSQOBU+9awcOWPzgHGZ4Y6LUlMKshatuB7HiQMkTKRlAjTrTxAzjVgkJ
-         2GJALyRGOIXl+3hcPiqFCcxoU2oC4wEuVTgTtsEAPtiAMbFS/iHeXso+wSnZljBxyL8d
-         OhZ9bqyIxu9R4Enh8MJYeKD69ChERQM/0PrZoTAocUkHKTbyn6dacuFawebaEdgtluDV
-         LTl5S+CaUnv2+y9uyrcFgLDTGgriED9edtvS7KHP39DVQYVgtDfEvKbOTrrmSdvVnHib
-         Z1cA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729508804; x=1730113604;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RnolULg5KM7EXLrBuCEsj9PWWGa59GTkIO/LQyKKSQ4=;
-        b=e5G0w2QdyblRtEv0SHxbYts42bgyaIJAKInxvkYOOSyLvnXCECrBYPr2T09MKk8i4h
-         Zp8Sh9Z7L+1mAEqUaPILGgVc5K0dxyAHqKiWdUcsOEGyixc7g5Zq9YGJMvsOhZ/Db8R5
-         s/9KBUTf1Kgu+qUUqsKftUYt/Se9I31MorpQ09UgSUpOG4GmjBYAQME+9He4BAs/AucM
-         3qVluNa3P7RxuLusU6cSAcA1ARjTOi/rAbj+NMh4rx8VdI5EQ3VPtooYl+NCSo6QVOW5
-         P29WW/3ChJXAhHT7D9tcZS9DfzR+ajbyUXRc9lOdyevJGUlLneMu5NEanP6nz+HAnuln
-         dYiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWIWOQA/FJS/SszsF1rUmUu/BMtzNgtiLVMiw4nxE527xBXGUsLMJx71cvr5ZHn/Wnhr1o=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzS8F/U3zfcfqQj03Al3Bppbvte2zQg8IOqTitpg+hFCxQx35/g
-	jzq7oSCyb2SSOgWldalXRNQe2jAugTq9KPi/47V7A6nZbgj0dKF06PVRKRbnArw=
-X-Google-Smtp-Source: AGHT+IGm7aR5j3IDD6zj2Is7qEysFSvXPXkRuXdOrYhmnokCl1jooJeLNZfITl/g4HX8vOeeK4W3tw==
-X-Received: by 2002:a05:6512:3d8b:b0:539:e263:331c with SMTP id 2adb3069b0e04-53a1586059emr4022787e87.17.1729508803900;
-        Mon, 21 Oct 2024 04:06:43 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53a2242017csm456428e87.130.2024.10.21.04.06.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Oct 2024 04:06:42 -0700 (PDT)
-Date: Mon, 21 Oct 2024 14:06:40 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Liu Ying <victor.liu@nxp.com>, dri-devel@lists.freedesktop.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, andrzej.hajda@intel.com, 
-	neil.armstrong@linaro.org, rfoss@kernel.org, Laurent.pinchart@ideasonboard.com, 
-	jonas@kwiboo.se, jernej.skrabec@gmail.com, airlied@gmail.com, simona@ffwll.ch, 
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, quic_jesszhan@quicinc.com, 
-	mchehab@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, catalin.marinas@arm.com, will@kernel.org, 
-	sakari.ailus@linux.intel.com, hverkuil@xs4all.nl, tomi.valkeinen@ideasonboard.com, 
-	quic_bjorande@quicinc.com, geert+renesas@glider.be, arnd@arndb.de, nfraprado@collabora.com, 
-	thierry.reding@gmail.com, prabhakar.mahadev-lad.rj@bp.renesas.com, sam@ravnborg.org, 
-	marex@denx.de, biju.das.jz@bp.renesas.com
-Subject: Re: [PATCH v3 09/15] dt-bindings: display:
- panel-simple-lvds-dual-ports: Reference lvds-dual-ports.yaml
-Message-ID: <xzvjrvp6raqeyx555x3msbdm3ugyjefv4b5qv3dwt3thnblsvf@r37cjtcicuuv>
-References: <20241021064446.263619-1-victor.liu@nxp.com>
- <20241021064446.263619-10-victor.liu@nxp.com>
- <3qrtknxsgxzyhwivd7d4eqqg7v6twgtczxotg7rhkdumjkl3p7@u2fso5hexiu4>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="WGpIVq5f"
+Received: from pendragon.ideasonboard.com (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 32509526;
+	Mon, 21 Oct 2024 13:08:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1729508899;
+	bh=SNzKSWHvJVDDSQ9Feoygg0Z+XxDwpbrEq5wv+It3to0=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=WGpIVq5fHdac57nBRQjviMmeNHL/r9azywuQF56RPvWw7kwoGcbUHFDuCtvYnGacu
+	 FoLt85a5z+KYwZsRAbnSb+jtwSN5allih11WiiKvceLbxf5IXgUA38tR/vLUhflJxX
+	 qZnHmkBdU4LrxipW6fzwAgNCrKsUru2xhaRs29BA=
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3qrtknxsgxzyhwivd7d4eqqg7v6twgtczxotg7rhkdumjkl3p7@u2fso5hexiu4>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <eee5649b-ca5a-42c5-a6ec-246ee21fb6e4@denx.de>
+References: <20240531202813.277109-1-marex@denx.de> <de285fc0-728f-4ba0-86e0-0069d2cc9a35@denx.de> <64e18ceed5279a9346a6a1141f02ead93383bd1e.camel@ideasonboard.com> <84f505af-1066-4fcf-84b7-28c152c09b89@denx.de> <a7143bd9-a5e0-4afc-98ed-2d4d58171a32@nxp.com> <d70a9c51-6fd7-46fe-8009-b42d0ab4e142@denx.de> <23d9df90-cb80-4d97-afd6-5c573face4bc@nxp.com> <f4b083ec-58b5-477a-a0a4-c4c8d02027a7@denx.de> <172937454426.2485972.12472740284222343769@ping.linuxembedded.co.uk> <eee5649b-ca5a-42c5-a6ec-246ee21fb6e4@denx.de>
+Subject: Re: [PATCH] drm: lcdif: Use adjusted_mode .clock instead of .crtc_clock
+From: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>, Lukas F.Hartmann <lukas@mntmn.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Stefan Agner <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>, imx@lists.linux.dev, kernel@dh-electronics.com, linux-arm-kernel@lists.infradead.org
+To: Alexander Stein <alexander.stein@ew.tq-group.com>, Isaac Scott <isaac.scott@ideasonboard.com>, Liu Ying <victor.liu@nxp.com>, Marek Vasut <marex@denx.de>, dri-devel@lists.freedesktop.org
+Date: Mon, 21 Oct 2024 12:10:02 +0100
+Message-ID: <172950900212.3353069.2089097805440086007@ping.linuxembedded.co.uk>
+User-Agent: alot/0.10
 
-On Mon, Oct 21, 2024 at 09:43:30AM +0200, Krzysztof Kozlowski wrote:
-> On Mon, Oct 21, 2024 at 02:44:40PM +0800, Liu Ying wrote:
-> > This schema documents LVDS panels with dual links.  lvds-dual-ports.yaml
-> > documents dual-link LVDS display common properties.  Reference the ports
-> > property defined in lvds-dual-ports.yaml to save lines.
-> > 
-> > Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> > Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> > ---
-> > v3:
-> > * New patch.  (Dmitry)
-> > 
-> >  .../panel/panel-simple-lvds-dual-ports.yaml   | 20 +------------------
-> >  1 file changed, 1 insertion(+), 19 deletions(-)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple-lvds-dual-ports.yaml b/Documentation/devicetree/bindings/display/panel/panel-simple-lvds-dual-ports.yaml
-> > index 10ed4b57232b..e80fc7006984 100644
-> > --- a/Documentation/devicetree/bindings/display/panel/panel-simple-lvds-dual-ports.yaml
-> > +++ b/Documentation/devicetree/bindings/display/panel/panel-simple-lvds-dual-ports.yaml
-> > @@ -22,6 +22,7 @@ description: |
-> >    If the panel is more advanced a dedicated binding file is required.
-> >  
-> >  allOf:
-> > +  - $ref: /schemas/display/lvds-dual-ports.yaml#
-> >    - $ref: panel-common.yaml#
-> 
-> So dual link panels common binding does not fit here? sorry, this is
-> just introducing mess and confusion.
+Quoting Marek Vasut (2024-10-20 03:49:29)
+> On 10/19/24 11:49 PM, Kieran Bingham wrote:
+> > Quoting Marek Vasut (2024-10-12 21:37:59)
+> >> On 10/11/24 5:10 AM, Liu Ying wrote:
+> >>
+> >> Hi,
+> >>
+> >>>>>> This Video PLL1 configuration since moved to &media_blk_ctrl {} , =
+but it is still in the imx8mp.dtsi . Therefore, to make your panel work at =
+the correct desired pixel clock frequency instead of some random one inheri=
+ted from imx8mp.dtsi, add the following to the pollux DT, I believe that wi=
+ll fix the problem and is the correct fix:
+> >>>>>>
+> >>>>>> &media_blk_ctrl {
+> >>>>>>   =C2=A0=C2=A0=C2=A0 // 506800000 =3D 72400000 * 7 (for single-lin=
+k LVDS, this is enough)
+> >>>>>>   =C2=A0=C2=A0=C2=A0 // there is no need to multiply the clock by =
+* 2
+> >>>>>>   =C2=A0=C2=A0=C2=A0 assigned-clock-rates =3D <500000000>, <200000=
+000>, <0>, <0>, <500000000>, <506800000>;
+> >>>>>
+> >>>>> This assigns "video_pll1" clock rate to 506.8MHz which is currently=
+ not
+> >>>>> listed in imx_pll1443x_tbl[].
+> >>>>
+> >>>> Since commit b09c68dc57c9 ("clk: imx: pll14xx: Support dynamic rates=
+") the 1443x PLLs can be configured to arbitrary rates which for video PLL =
+is desirable as those should produce accurate clock.
+> >>>
+> >>> Ack.
+> >>>
+> >>>>
+> >>>>> Does the below patch[1] fix the regression issue? It explicitly sets
+> >>>>> the clock frequency of the panel timing to 74.25MHz.
+> >>>>>
+> >>>>> [1] https://patchwork.freedesktop.org/patch/616905/?series=3D139266=
+&rev=3D1
+> >>>> That patch is wrong, there is an existing entry for this panel in pa=
+nel-simple.c which is correct and precise, please do not add that kind of i=
+mprecise duplicate timings into DT.
+> >>>
+> >>> At least the patch[1] is legitimate now to override the display
+> >>> timing of the panel because the override mode is something
+> >>> panel-simple.c supports.
+> >>
+> >> It may be possible to override the mode, but why would this be the
+> >> desired if the panel-simple.c already contains valid accurate timings
+> >> for this particular panel ?
+> >=20
+> > I'm confused a little here. Why is it that setting the panel timings in
+> > the DT as per [1] make the display work, while the panel timeings in
+> > panel-simple alone are not enough?
+> >=20
+> > Is there some difference in code path for 'how' the panel timings are
+> > set as to whether they will apply fully or not ?
+> Because [1] sets inaccurate pixel clock of 74.25 MHz, which can be=20
+> divided down from random default Video PLL setting of 1039.5 MHz set in=20
+> imx8mp.dtsi media_blk_ctrl , 1039.5 / 74.25 =3D 14 .
+>=20
+> The panel-simple pixel clock are 72.4 MHz, to achieve that accurately,=20
+> it is necessary to reconfigure the Video PLL frequency to 506.8 MHz ,=20
+> which LCDIFv3 can do, but LDB can not, hence it has to be done in DT for =
 
-Why? It's allOf, so it is panel-common.yaml AND lvds-dual-ports.yaml.
-Where does the confusion come from?
+> now.
 
--- 
-With best wishes
-Dmitry
+Aha - right - Thanks, I'd missed the part that 74.25 MHz /is not/ the
+correct or supported pixel clock for the panel, so it just becomes
+'close enough' and lucky that it works...
+
+
+Now I understand how your proposed :
+
+> >>>>>> &media_blk_ctrl {
+> >>>>>>   =C2=A0=C2=A0=C2=A0 // 506800000 =3D 72400000 * 7 (for single-lin=
+k LVDS, this is enough)
+> >>>>>>   =C2=A0=C2=A0=C2=A0 // there is no need to multiply the clock by =
+* 2
+> >>>>>>   =C2=A0=C2=A0=C2=A0 assigned-clock-rates =3D <500000000>, <200000=
+000>, <0>, <0>, <500000000>, <506800000>;
+> >>>>>
+> >>>>> This assigns "video_pll1" clock rate to 506.8MHz which is currently=
+ not
+> >>>>> listed in imx_pll1443x_tbl[].
+
+is more accurate. But is that acceptable for DT ? To just hardcode
+clocks like that?
+
+Or is this something we'll then remove when the additional patches make
+it upstream? (I'm curious on the basis that I thought we treat DT as
+'firmware' so if we put this in we expect it to be there forever?)
+
+All of this seems like perhaps it should be in an overlay for the
+display too - but given this board comes with this panel as a kit - I
+suspect it's fine to keep it all there.
+
+--
+Kieran
