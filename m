@@ -1,163 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDC07581A
-	for <imx@lists.linux.dev>; Mon, 21 Oct 2024 11:48:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE766BB5B
+	for <imx@lists.linux.dev>; Mon, 21 Oct 2024 12:15:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729511328; cv=none; b=Efle5mO2gkdhBnCCm0JFx9jWWrp4q8k13uOg6hiy6atq7iYcF1KfLQczQ5ShZ8vtFZdeK3PWUm2dyiGJYZnbckbhV5FMmZzE1LJfVYAnbDeElO5TSB52y0BJkA4dUc5X06LFe177Pfz8XZVAwrYaa4YtM5GnhRR2HzEOn5HwEAw=
+	t=1729512939; cv=none; b=P87iVxAhTrBPYfj9YLRExL260+kr8B51Rg5JWepxDw2xQ5AAisl93U+XCQAezgBL+xCi2lvbRSD9SENCmyc4HJ5voCg9l4uB6Sy/F1PiI2vfm1JMVcsQ7zvostf7/hKg+GH9yk3oAp3UONsJA4DdSGWQ9il+bLXtAk43cxcTsJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729511328; c=relaxed/simple;
-	bh=4imDbdbcRr/rcPfFf8p6R73xU94bD/Fg7qv/zrZw238=;
+	s=arc-20240116; t=1729512939; c=relaxed/simple;
+	bh=ubniCwvujlyUXuESJ+QlEf9nz56jGqzEaECw2Ab5mVU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sFBHviZK3zTn45xdpQ5eDMn+Oo17uBbJQ7/VgjsDOYQMrmtO3jZi/qDZap0h8DO1Mnaa63DdBQrGpvYi9C24YGi5AUjADLcRXjRsT3cUdb0fKBTr0YuXG0Y5DKCivL30ebdvbeoOnSPF9pwLXih+X098pdF2t2w5OcwjK5kId/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nJVr10Kx; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=HxAgX1+ZFFHBlwdMAhpmXywmTfvbZKMzovoraMLuV31qPy10HtHlTGq4kUXVKU+Gt0vwxQKP3nVOarOI9fUeKLTPlc7UzEQa4Hzr9A9VF09byeDPI6Tay63d14ivh8ExkIr3iETRuHvfx2eMCpOAeZa++DsS0LACEPKkvt2gHjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RtfS+lNZ; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nJVr10Kx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0712C4CEC3;
-	Mon, 21 Oct 2024 11:48:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729511328;
-	bh=4imDbdbcRr/rcPfFf8p6R73xU94bD/Fg7qv/zrZw238=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nJVr10KxL0JzirH7dCBXHuCE6kQI2jwKbx4B+vOq0riewhdefh5KBRINnI20M4Ltj
-	 WUZI2Wuthv5GOMKcwCc9dUVf5LD0RMDAxag3qZOEQvzO+fWcp/XLj/zHvhsbaO9Uci
-	 bT8hQdFrKS2lB8a5RSVtiX2k+1yjVG3YZOnuYqlxyOpULqokP80Nv5pj/r25kJlvE3
-	 XrQxqGSmUcF3fBxNZmc1TVGAKR2mI1GeWintHYEH0OMsV9+aBUgjTLqFVtXYkh/8gW
-	 Nm+BLK8vmteWtVyC/pxBk24oCKABgN+Zi7+IMY2Otg71RMaQDrsn6POiXwvJKCcZ7W
-	 eJwLI3ialdU5g==
-Date: Mon, 21 Oct 2024 13:48:45 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Marek Vasut <marex@denx.de>
-Cc: Kieran Bingham <kieran.bingham@ideasonboard.com>, 
-	Alexander Stein <alexander.stein@ew.tq-group.com>, Isaac Scott <isaac.scott@ideasonboard.com>, 
-	Liu Ying <victor.liu@nxp.com>, dri-devel@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>, 
-	David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>, 
-	Lucas Stach <l.stach@pengutronix.de>, "Lukas F.Hartmann" <lukas@mntmn.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Stefan Agner <stefan@agner.ch>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, imx@lists.linux.dev, kernel@dh-electronics.com, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] drm: lcdif: Use adjusted_mode .clock instead of
- .crtc_clock
-Message-ID: <20241021-silky-aspiring-bonobo-f4ecf7@houat>
-References: <7ae0cd7774f4b3e30cc033a7e543546732dbced0.camel@ideasonboard.com>
- <de285fc0-728f-4ba0-86e0-0069d2cc9a35@denx.de>
- <64e18ceed5279a9346a6a1141f02ead93383bd1e.camel@ideasonboard.com>
- <84f505af-1066-4fcf-84b7-28c152c09b89@denx.de>
- <a7143bd9-a5e0-4afc-98ed-2d4d58171a32@nxp.com>
- <d70a9c51-6fd7-46fe-8009-b42d0ab4e142@denx.de>
- <23d9df90-cb80-4d97-afd6-5c573face4bc@nxp.com>
- <f4b083ec-58b5-477a-a0a4-c4c8d02027a7@denx.de>
- <172937454426.2485972.12472740284222343769@ping.linuxembedded.co.uk>
- <eee5649b-ca5a-42c5-a6ec-246ee21fb6e4@denx.de>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RtfS+lNZ"
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2fabb837ddbso59375811fa.1
+        for <imx@lists.linux.dev>; Mon, 21 Oct 2024 05:15:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1729512935; x=1730117735; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ixvYPjSjHOI3A6bs62BEm+orBMViEbYtWgKUxWp9vmA=;
+        b=RtfS+lNZKxIussykAqIrusklu7k8WJyv33WJOs0eaA/OD4CE/XyFvjq9QZXRAUjT6h
+         Fp2mmAO2h9YW3trhb6n8rErVmYHVPac+MfYZxpK6A6KzTYzQSjeamRgTxlZ80rTlqdBT
+         5aTZeS3bN85G10doMExlBdK2irnlvrD0YzOqRJOpdOhopr8yv9mNH8FUrhnhD7OQL6b5
+         5pxn7zFinys7Kk1CEQUxH/wDTs+0qmZfxEI0zYwViOWyM5JWMXPiuaVHo7mjjhULbxbj
+         ahueitk7UydfqeKgfNM53PMWXKKpWmkam1XcWrxjyBToqr6fTCpbM/e9P2X+NxGuK4/g
+         uPeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729512935; x=1730117735;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ixvYPjSjHOI3A6bs62BEm+orBMViEbYtWgKUxWp9vmA=;
+        b=Vj7z/lIBsC/vQPC91PiNa1E1+ZTQvOAjRPPFicQEPuDrt/xFIUtNz3trQbcQHTT8ED
+         WSnNZOA9U7CM1tR63hd8nUzlPgdCXsD7vPRyyDqaLKbBeTOpDhI1oZRg/gOwCgDmqtIZ
+         UoyWyjV+74UWMPNT81Sctw4ny85YqVXxvzhQ4H/yhpgcj3oS4k3RVzhod/jhlH+kvUkT
+         /99b6q5xKvOguUn346tS8Dc3R8oxAbdK//Yheu6zWKgvOevK3+IDMPZQYo/Tb4j5V0nf
+         zUAzUNrVqd8lKI9qwr0myoRlufER4YUmDKHgDthMnR4+4AGjQ7oyF3LXvtmRTrOkDQAs
+         ctCA==
+X-Forwarded-Encrypted: i=1; AJvYcCWG/WQMxEVR3+mlsEFf9k04KRbnkob3InUY93dK2kDnSGGFqSM+SHZ2IetAsDv6ezW+uNE=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy1XN1Vd4ZV9l7fkjkRpYcm4n/+o75/nofg7uR7aBn7GFvrRlt4
+	4d6mdRFpjxXEwPJQs+NcRzN23VoMpMLc3NLdYnCA5raohi2gjiL7FLptspLmL+w=
+X-Google-Smtp-Source: AGHT+IEkcKoatMCDEuy5jqS04CW2sFmKYlfJWSMdE2NyRaxseViNDhyaFOJIPHQ/mBlzZ4JfzX+iAA==
+X-Received: by 2002:a05:651c:2124:b0:2fa:d7ea:a219 with SMTP id 38308e7fff4ca-2fb8320f101mr78774851fa.37.1729512934612;
+        Mon, 21 Oct 2024 05:15:34 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2fb9ad60d95sm4785161fa.33.2024.10.21.05.15.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Oct 2024 05:15:33 -0700 (PDT)
+Date: Mon, 21 Oct 2024 15:15:31 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, andrzej.hajda@intel.com, neil.armstrong@linaro.org, 
+	rfoss@kernel.org, Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, 
+	jernej.skrabec@gmail.com, airlied@gmail.com, simona@ffwll.ch, 
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, quic_jesszhan@quicinc.com, 
+	mchehab@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, catalin.marinas@arm.com, will@kernel.org, 
+	sakari.ailus@linux.intel.com, hverkuil@xs4all.nl, tomi.valkeinen@ideasonboard.com, 
+	quic_bjorande@quicinc.com, geert+renesas@glider.be, arnd@arndb.de, nfraprado@collabora.com, 
+	thierry.reding@gmail.com, prabhakar.mahadev-lad.rj@bp.renesas.com, sam@ravnborg.org, 
+	marex@denx.de, biju.das.jz@bp.renesas.com
+Subject: Re: [PATCH v3 06/15] drm: of: Add
+ drm_of_lvds_get_dual_link_pixel_order_sink()
+Message-ID: <zaraulehid255ij3hs7hazd463ye4l5ju6sguoos243kda6552@lztoq22vzqyk>
+References: <20241021064446.263619-1-victor.liu@nxp.com>
+ <20241021064446.263619-7-victor.liu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="ho5ibfuonweqf5yb"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <eee5649b-ca5a-42c5-a6ec-246ee21fb6e4@denx.de>
+In-Reply-To: <20241021064446.263619-7-victor.liu@nxp.com>
 
+On Mon, Oct 21, 2024 at 02:44:37PM +0800, Liu Ying wrote:
+> drm_of_lvds_get_dual_link_pixel_order() gets LVDS dual-link source pixel
+> order.  Similar to it, add it's counterpart function
+> drm_of_lvds_get_dual_link_pixel_order_sink() to get LVDS dual-link sink
+> pixel order.
+> 
+> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> ---
+> v3:
+> * New patch.  (Dmitry)
+> 
+>  drivers/gpu/drm/drm_of.c | 76 ++++++++++++++++++++++++++++++++++------
+>  include/drm/drm_of.h     |  9 +++++
+>  2 files changed, 74 insertions(+), 11 deletions(-)
+> 
 
---ho5ibfuonweqf5yb
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] drm: lcdif: Use adjusted_mode .clock instead of
- .crtc_clock
-MIME-Version: 1.0
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-On Sun, Oct 20, 2024 at 04:49:29AM +0200, Marek Vasut wrote:
-> On 10/19/24 11:49 PM, Kieran Bingham wrote:
-> > Quoting Marek Vasut (2024-10-12 21:37:59)
-> > > On 10/11/24 5:10 AM, Liu Ying wrote:
-> > >=20
-> > > Hi,
-> > >=20
-> > > > > > > This Video PLL1 configuration since moved to &media_blk_ctrl =
-{} , but it is still in the imx8mp.dtsi . Therefore, to make your panel wor=
-k at the correct desired pixel clock frequency instead of some random one i=
-nherited from imx8mp.dtsi, add the following to the pollux DT, I believe th=
-at will fix the problem and is the correct fix:
-> > > > > > >=20
-> > > > > > > &media_blk_ctrl {
-> > > > > > >   =A0=A0=A0 // 506800000 =3D 72400000 * 7 (for single-link LV=
-DS, this is enough)
-> > > > > > >   =A0=A0=A0 // there is no need to multiply the clock by * 2
-> > > > > > >   =A0=A0=A0 assigned-clock-rates =3D <500000000>, <200000000>=
-, <0>, <0>, <500000000>, <506800000>;
-> > > > > >=20
-> > > > > > This assigns "video_pll1" clock rate to 506.8MHz which is curre=
-ntly not
-> > > > > > listed in imx_pll1443x_tbl[].
-> > > > >=20
-> > > > > Since commit b09c68dc57c9 ("clk: imx: pll14xx: Support dynamic ra=
-tes") the 1443x PLLs can be configured to arbitrary rates which for video P=
-LL is desirable as those should produce accurate clock.
-> > > >=20
-> > > > Ack.
-> > > >=20
-> > > > >=20
-> > > > > > Does the below patch[1] fix the regression issue? It explicitly=
- sets
-> > > > > > the clock frequency of the panel timing to 74.25MHz.
-> > > > > >=20
-> > > > > > [1] https://patchwork.freedesktop.org/patch/616905/?series=3D13=
-9266&rev=3D1
-> > > > > That patch is wrong, there is an existing entry for this panel in=
- panel-simple.c which is correct and precise, please do not add that kind o=
-f imprecise duplicate timings into DT.
-> > > >=20
-> > > > At least the patch[1] is legitimate now to override the display
-> > > > timing of the panel because the override mode is something
-> > > > panel-simple.c supports.
-> > >=20
-> > > It may be possible to override the mode, but why would this be the
-> > > desired if the panel-simple.c already contains valid accurate timings
-> > > for this particular panel ?
-> >=20
-> > I'm confused a little here. Why is it that setting the panel timings in
-> > the DT as per [1] make the display work, while the panel timeings in
-> > panel-simple alone are not enough?
-> >=20
-> > Is there some difference in code path for 'how' the panel timings are
-> > set as to whether they will apply fully or not ?
-> Because [1] sets inaccurate pixel clock of 74.25 MHz, which can be divided
-> down from random default Video PLL setting of 1039.5 MHz set in imx8mp.dt=
-si
-> media_blk_ctrl , 1039.5 / 74.25 =3D 14 .
->=20
-> The panel-simple pixel clock are 72.4 MHz, to achieve that accurately, it=
- is
-> necessary to reconfigure the Video PLL frequency to 506.8 MHz , which
-> LCDIFv3 can do, but LDB can not, hence it has to be done in DT for now.
-
-That the clock driver is broken and thus should be fixed through the DT is a
-bit backward, don't you think?
-
-AFAIU, the clock can't reach the ideal pixel clock panel-simple has. Do
-you have the datasheet for that panel?
-
-If so, using display_timings and shortening/extending the blanking
-timings to match the clock that can be provided seems like a more robust
-solution.
-
-Maxime
-
---ho5ibfuonweqf5yb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZxY/lwAKCRAnX84Zoj2+
-djQkAX9pau0RK4avN6KXYqDPuudxIDGUmhGo2wFADyiSsh+KOHNKfeoiyZWGuJkE
-J7jkTNgBfj2uJ4GaH+pTnvQGNCZmM6hf/T2rUJRm2JaiExu5jUEPzRhGp4lN8fVl
-luAfNx27XA==
-=i+ss
------END PGP SIGNATURE-----
-
---ho5ibfuonweqf5yb--
+-- 
+With best wishes
+Dmitry
