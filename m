@@ -1,52 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D44440C;
-	Mon, 21 Oct 2024 07:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1318A199933;
+	Mon, 21 Oct 2024 08:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729496614; cv=none; b=nJtl6kQN63c2luMDCSHMf08JSkf7PdLktj0ehMsTs8/A9Jy7g34qlURaCja9EwncQ4rBYjb9/2of7z5H3KvV+MMqoWrWPnTsO0DBP7ZySKp7eO5HDvJkZbdU7Vu69XYwAMH6i5apYtNQyHvI47I9Bv5yrC8tYzSSySi1/tsOZpk=
+	t=1729497700; cv=none; b=FUwyKp6ZZwSVXq1XoCD/fj3wK63NHHJvA70IE96zmN0PCPilm37iJez0VKIL+cLEZftWKe6kUHie+F5p0tHnAFJsTbqaOtxyAqsVDUfUI9V8rYjM04Ljl33Pw9SjeF5y+8Fu7/P3XJ5wTLhD+U/dAhCkRK1vVJGc7jMc0QCFTwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729496614; c=relaxed/simple;
-	bh=NH5HPey058GB0TD3/kCCLHNV5gW+T94GSK3qrZ1VWiY=;
+	s=arc-20240116; t=1729497700; c=relaxed/simple;
+	bh=wS3x1bBk72iAzhy+QOSkGx+nvDN5sxeUmsyJDpqcBms=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YlPKj5AuQMW82QTeKgVmUiizzjiyRPM5TpKQJ1T4jPVFlApKff55dGjq7fEo4GNshcXTCGhw7j0nROkKR0gzkLoWW5uizvz3YtqICllldKr5Nc/Nje/S4MdkFdeaiqqidKG8UyjANVR6IiPk/+w6P9XMM+iSYjBg4hJJpO+VA5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LB912OwV; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=TtV2bp0ZoL8Ijcs/85LYXmSskNSSo2dpcrb+2HMdAA3qRAamH6k2zCcrzbkIsvz/Mxz/7Y1WkSxA4YyASoZ63ktw+E1QczPD8PKsgXO0EqB6WUGAZhDypNvS7EZhlO2oNUXAUOSfSVl13t2AIM4QwqO+b95mMvWwcevzkIu/e7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rOnCoMlt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LB912OwV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC73CC4CEC3;
-	Mon, 21 Oct 2024 07:43:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rOnCoMlt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F85FC4CEE6;
+	Mon, 21 Oct 2024 08:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729496614;
-	bh=NH5HPey058GB0TD3/kCCLHNV5gW+T94GSK3qrZ1VWiY=;
+	s=k20201202; t=1729497699;
+	bh=wS3x1bBk72iAzhy+QOSkGx+nvDN5sxeUmsyJDpqcBms=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LB912OwVWVQBbCAUgaq4D1R/4Og6UCpREUBV4dKCf+HA9Zj1HV8KK0m4R4hcz7jJT
-	 K2DNo2u9RJOAMvm8oGHCeIjoGOc82wg+Z/uAMrQF59mRFlxLrw/Dvtusk+/XPgHAbG
-	 RwLfXTRZ8inyMo7QDAGkTp+Dl7LRT2sq8HZFZAyC/KHUw+3NxIc7+0N5f5fnHOPiYA
-	 JpntmH9LClGKULiEDJwj1TkRzVY4R7wUl3i92nI205HTbxF3n2HVNy8GCQqdtHNXo0
-	 aK46AjjWGwMFbpvJyvMWjlIdRfUwNt4W4wF1axsJUEV95dtWi6NYIoSBaoE0PD6Mhv
-	 qL42rpN3KVVAA==
-Date: Mon, 21 Oct 2024 09:43:30 +0200
+	b=rOnCoMltOSX8XM4dM7hK3Fq7JsSBwU+YsKDhMN9WXl0EODsppr8yy2ICB7Jxf3A8h
+	 sMA7MFbY2TlbgzwA3xcACFOVOIue+eUsazC2cnzvijH7DD48Lmfi+EVLvnBEuyGUG8
+	 oYDWzBbCoBcA37tLxLvwYyhsdCfngiT60dp/Q6NEpvNG2CsM0T4x4q+M0TGr7Nrn0g
+	 U+X5HZu4H6kmQweY+1rQcAgZNHFeW2PqIZaG52tqYPYWUK6xiYO8MiMbH4I8QW/9Qq
+	 Wonr5Z5kwlg5lba68WWyVnwDJ9+j6JsmOsyvdpXcxOtJJ7T3BTW2TPBbxMdd+x4bi8
+	 gjSf9Sgpwygzg==
+Date: Mon, 21 Oct 2024 10:01:35 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, andrzej.hajda@intel.com, neil.armstrong@linaro.org, 
-	rfoss@kernel.org, Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, 
-	jernej.skrabec@gmail.com, airlied@gmail.com, simona@ffwll.ch, 
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, quic_jesszhan@quicinc.com, 
-	mchehab@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, catalin.marinas@arm.com, will@kernel.org, 
-	sakari.ailus@linux.intel.com, hverkuil@xs4all.nl, tomi.valkeinen@ideasonboard.com, 
-	quic_bjorande@quicinc.com, geert+renesas@glider.be, dmitry.baryshkov@linaro.org, 
-	arnd@arndb.de, nfraprado@collabora.com, thierry.reding@gmail.com, 
-	prabhakar.mahadev-lad.rj@bp.renesas.com, sam@ravnborg.org, marex@denx.de, biju.das.jz@bp.renesas.com
-Subject: Re: [PATCH v3 09/15] dt-bindings: display:
- panel-simple-lvds-dual-ports: Reference lvds-dual-ports.yaml
-Message-ID: <3qrtknxsgxzyhwivd7d4eqqg7v6twgtczxotg7rhkdumjkl3p7@u2fso5hexiu4>
-References: <20241021064446.263619-1-victor.liu@nxp.com>
- <20241021064446.263619-10-victor.liu@nxp.com>
+To: Tim Harvey <tharvey@gateworks.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: Add Gateworks GW82XX-2x dev
+ kit
+Message-ID: <m37tqalh4ek7ldwtdy5yy7j5wn4nmbr7lpkdxaswzlgc7sg6ns@5zu5pquyqmer>
+References: <20241018182444.817848-1-tharvey@gateworks.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,35 +46,18 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241021064446.263619-10-victor.liu@nxp.com>
+In-Reply-To: <20241018182444.817848-1-tharvey@gateworks.com>
 
-On Mon, Oct 21, 2024 at 02:44:40PM +0800, Liu Ying wrote:
-> This schema documents LVDS panels with dual links.  lvds-dual-ports.yaml
-> documents dual-link LVDS display common properties.  Reference the ports
-> property defined in lvds-dual-ports.yaml to save lines.
+On Fri, Oct 18, 2024 at 11:24:45AM -0700, Tim Harvey wrote:
+> Adds support for the Gateworks GW82XX-2X development kit
+> based on a GW82XX baseboard and a GW702X System On Module.
 > 
-> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> Signed-off-by: Tim Harvey <tharvey@gateworks.com>
 > ---
-> v3:
-> * New patch.  (Dmitry)
-> 
->  .../panel/panel-simple-lvds-dual-ports.yaml   | 20 +------------------
->  1 file changed, 1 insertion(+), 19 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple-lvds-dual-ports.yaml b/Documentation/devicetree/bindings/display/panel/panel-simple-lvds-dual-ports.yaml
-> index 10ed4b57232b..e80fc7006984 100644
-> --- a/Documentation/devicetree/bindings/display/panel/panel-simple-lvds-dual-ports.yaml
-> +++ b/Documentation/devicetree/bindings/display/panel/panel-simple-lvds-dual-ports.yaml
-> @@ -22,6 +22,7 @@ description: |
->    If the panel is more advanced a dedicated binding file is required.
->  
->  allOf:
-> +  - $ref: /schemas/display/lvds-dual-ports.yaml#
->    - $ref: panel-common.yaml#
+>  Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 
-So dual link panels common binding does not fit here? sorry, this is
-just introducing mess and confusion.
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
