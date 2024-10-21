@@ -1,171 +1,683 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4B81FAC55;
-	Mon, 21 Oct 2024 17:58:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C09C1991D4
+	for <imx@lists.linux.dev>; Mon, 21 Oct 2024 18:01:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729533520; cv=none; b=cyeGT2UOLj7dhT2hp7l5JqQbDVR9Yo7WOgkerurOeq/RWmeb17MxHOEAQIt5LAsQtVwpCOOxgvTvpDrTt07YZSJ4UGH/BlomUtebhGbghOROkQT8iobhnUP4MFe45N4ubSo7NApKcRJUEizOIuUj9OeVC+BZiHv85bXnFBFcSao=
+	t=1729533679; cv=none; b=pyTDV8Z8qqIBJb/GDncxRQsOpGxb76mgLguGxLerDk+zmBN+3pilKQ85KB14AGV52E97CnKq1rOtIj9anQkW3Wh2I1IZK/+ozUl8oBRLbQDjLCLILmQzXEba84XwaKdx7m6CLz3vEIMHvmfxtPTSp6F39tFqs9/yMejEXaHRDwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729533520; c=relaxed/simple;
-	bh=hnpNkTi64LrScn1Bgp2+ovnjeRy1qvPFMA5AR/o8KNo=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=HUIoJu+Y45KySMsqTC6NLfLSWeJ1O+WHgYQD4zS1mcEXiZkk3Httc82L9zxP4nWCAYfhuye8vg3SzBJZpTO7tKolNmJvn1ECaCRAYzSZQibntX5fcGlxoSQ9RpUgvjiahrUXJZdaaxjyoh7kWW1MCg790lGRniB7oBGsSYzoGh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LqEXCTmn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729533679; c=relaxed/simple;
+	bh=nNr3J+ulCwLW4h7DsY2JNNrqXQSpBdpX3zuofBoBsvo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=naCLal3uVl7fHS+utGJeNmSETSNIkmEpS4lobLzuURnvFuhCSNPpt7FIzPEHDHLOKDxVIBGLOwBjwIRtmFAvsgsXdYIWpkZtFkLlEQhaiwHB0CtpA/dROVa4l0gQFMNcGQfF0lv6jm4pFvvbhjgdTVCqTa5X6V9MApa6S/K7lZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=FvL3MtNU; arc=none smtp.client-ip=161.97.139.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LqEXCTmn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC5A9C4CEEC;
-	Mon, 21 Oct 2024 17:58:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729533520;
-	bh=hnpNkTi64LrScn1Bgp2+ovnjeRy1qvPFMA5AR/o8KNo=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=LqEXCTmnO8168iX+y73l+PPsl3U7jFmzzHQagJddQlIQSW6V4LIMgmTHT3UEE+w2l
-	 uhy5jM2B8EnB4tOuVdUS7YUiH7IgQ9HZnUCYw3Rxh/4QWIM6HBhpuGANRsfVb6RmGx
-	 FAu/EJce1HwbZqCoNc7gZ/F8eAqGONOFlXwYMs34TrMVuapUDh1U7fSoWK05/6EhOD
-	 aHQuS4X2+zqXegEpckKan6qu6z7l1z9FMHz6PmUZAK9xfyfBZHYbS+bALXnF1crdQ1
-	 h+gVF+hv/WPV+9JpaXHF3x/FhNEQJ8EGaI1a/YTxRHATEawGTqwS2SDHuFbV5UZ0+q
-	 gti0a/3egI84g==
-Date: Mon, 21 Oct 2024 12:58:38 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="FvL3MtNU"
+Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
+	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <andreas@kemnade.info>)
+	id 1t2wL2-00A4Yz-0W
+	for imx@lists.linux.dev;
+	Mon, 21 Oct 2024 19:37:04 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=Sii2Ptkvit7fWtfs/m4y207nfoB7h5hv5UGimz5TFyY=; b=FvL3MtNUPwtzoorSkl0IYM9zqD
+	9+S2wdwFnNvxJ0nyh+Egf629X/gx4n/BfKfLIpOJoMYbUun3/b3y3/BsHPPssGMHZFGodKA3klc9P
+	mP7UFDkBN+WbosS62hjPAxX2/Scx/3zSuh+U9w92tK1+Qq5IyqvZxb1Bb1pgp4JiuaqXotlLrRzC/
+	5oGFl39z71tzJpOOKlBD1sIRqk9zbul2RQ9fx+cQ0qOY+FuQM4eeb/f2W/R3zNb+9VapeFw3yEDre
+	lsAExywWg53qEug1Vd0YzSqflKtohgrKzWRHxpbRazPBFJSXl3o3Gq9VkM1hik+XAAhuNult5FxKr
+	3ckZ4gSw==;
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Shawn Guo <shawnguo@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Fabio Estevam <festevam@gmail.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	imx@lists.linux.dev,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	devicetree@vger.kernel.org,
+	Rob Herring <robh@kernel.org>
+Cc: Andreas Kemnade <andreas@kemnade.info>
+Subject: [PATCH 2/3] ARM: dts: imx: Add devicetree for Kobo Clara 2E
+Date: Mon, 21 Oct 2024 19:36:30 +0200
+Message-Id: <20241021173631.299143-3-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241021173631.299143-1-andreas@kemnade.info>
+References: <20241021173631.299143-1-andreas@kemnade.info>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Lukasz Majewski <lukma@denx.de>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
- Shawn Guo <shawnguo@kernel.org>, imx@lists.linux.dev, 
- Stefan Wahren <wahrenst@gmx.net>
-In-Reply-To: <20241021100224.116129-1-lukma@denx.de>
-References: <20241021100224.116129-1-lukma@denx.de>
-Message-Id: <172953338254.748553.15523899251574030216.robh@kernel.org>
-Subject: Re: [PATCH v9 1/4] dt-bindings: display: Add powertip,st7272 as DT
- Schema description
+Content-Transfer-Encoding: 8bit
 
+Adds a devicetree for the Kobo Clara 2E Ebook reader. It is based
+on boards marked with "37NB-E60K2M+4A2" or "37NB-E60K2M+4B0". It is
+equipped with an i.MX6SLL SoC.
 
-On Mon, 21 Oct 2024 12:02:21 +0200, Lukasz Majewski wrote:
-> This patch provides the DT Schema description of powertip,st7272 320 x
-> 240 LCD display.
-> 
-> Signed-off-by: Lukasz Majewski <lukma@denx.de>
-> ---
-> 
-> Changes for v9:
-> - New patch
-> ---
->  .../display/panel/powertip,st7272.yaml        | 29 +++++++++++++++++++
->  1 file changed, 29 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
-> 
+Expected to work:
+  - Buttons
+  - Wifi
+  - Bluetooth
+    (if Wifi is initialized first, driver does not handle regulators
+     yet)
+  - LED
+  - uSD
+  - USB
+  - RTC
 
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+---
+ arch/arm/boot/dts/nxp/imx/Makefile            |   2 +
+ .../dts/nxp/imx/imx6sll-kobo-clara2e-a.dts    |  23 +
+ .../dts/nxp/imx/imx6sll-kobo-clara2e-b.dts    |  23 +
+ .../nxp/imx/imx6sll-kobo-clara2e-common.dtsi  | 514 ++++++++++++++++++
+ 4 files changed, 562 insertions(+)
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-common.dtsi
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
-
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-New warnings running 'make CHECK_DTBS=y nxp/mxs/imx28-btt3-0.dtb nxp/mxs/imx28-btt3-1.dtb nxp/mxs/imx28-btt3-2.dtb' for 20241021100224.116129-1-lukma@denx.de:
-
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: /apb@80000000/apbh-bus@80000000/interrupt-controller@80000000: failed to match any schema with compatible: ['fsl,imx28-icoll', 'fsl,icoll']
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: /apb@80000000/apbh-bus@80000000/interrupt-controller@80000000: failed to match any schema with compatible: ['fsl,imx28-icoll', 'fsl,icoll']
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: nand-controller@8000c000: #size-cells: 0 was expected
-	from schema $id: http://devicetree.org/schemas/mtd/gpmi-nand.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: /apb@80000000/apbh-bus@80000000/interrupt-controller@80000000: failed to match any schema with compatible: ['fsl,imx28-icoll', 'fsl,icoll']
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: /apb@80000000/apbh-bus@80000000/interrupt-controller@80000000: failed to match any schema with compatible: ['fsl,imx28-icoll', 'fsl,icoll']
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: nand-controller@8000c000: #size-cells: 0 was expected
-	from schema $id: http://devicetree.org/schemas/mtd/nand-controller.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: spi@80010000: $nodename:0: 'spi@80010000' does not match '^mmc(@.*)?$'
-	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: spi@80010000: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'bus-width', 'clocks', 'non-removable', 'vmmc-supply' were unexpected)
-	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: /apb@80000000/apbh-bus@80000000/interrupt-controller@80000000: failed to match any schema with compatible: ['fsl,imx28-icoll', 'fsl,icoll']
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: /apb@80000000/apbh-bus@80000000/interrupt-controller@80000000: failed to match any schema with compatible: ['fsl,imx28-icoll', 'fsl,icoll']
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: spi@80012000: $nodename:0: 'spi@80012000' does not match '^mmc(@.*)?$'
-	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: spi@80012000: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'bus-width', 'clocks', 'keep-power-in-suspend', 'mmc-pwrseq', 'no-1-8-v', 'non-removable', 'vmmc-supply', 'wlan@1' were unexpected)
-	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: nand-controller@8000c000: #size-cells: 0 was expected
-	from schema $id: http://devicetree.org/schemas/mtd/gpmi-nand.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: nand-controller@8000c000: #size-cells: 0 was expected
-	from schema $id: http://devicetree.org/schemas/mtd/nand-controller.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: spi@80010000: $nodename:0: 'spi@80010000' does not match '^mmc(@.*)?$'
-	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: spi@80010000: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'bus-width', 'clocks', 'non-removable', 'vmmc-supply' were unexpected)
-	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: spi@80014000: Unevaluated properties are not allowed ('clocks' was unexpected)
-	from schema $id: http://devicetree.org/schemas/spi/mxs-spi.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: nand-controller@8000c000: #size-cells: 0 was expected
-	from schema $id: http://devicetree.org/schemas/mtd/gpmi-nand.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: spi@80012000: $nodename:0: 'spi@80012000' does not match '^mmc(@.*)?$'
-	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: spi@80012000: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'bus-width', 'clocks', 'keep-power-in-suspend', 'mmc-pwrseq', 'no-1-8-v', 'non-removable', 'vmmc-supply', 'wlan@1' were unexpected)
-	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: nand-controller@8000c000: #size-cells: 0 was expected
-	from schema $id: http://devicetree.org/schemas/mtd/nand-controller.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: spi@80016000: Unevaluated properties are not allowed ('clocks' was unexpected)
-	from schema $id: http://devicetree.org/schemas/spi/mxs-spi.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: spi@80010000: $nodename:0: 'spi@80010000' does not match '^mmc(@.*)?$'
-	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: spi@80010000: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'bus-width', 'clocks', 'non-removable', 'vmmc-supply' were unexpected)
-	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: spi@80012000: $nodename:0: 'spi@80012000' does not match '^mmc(@.*)?$'
-	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: spi@80012000: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'bus-width', 'clocks', 'keep-power-in-suspend', 'mmc-pwrseq', 'no-1-8-v', 'non-removable', 'vmmc-supply', 'wlan@1' were unexpected)
-	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: spi@80014000: Unevaluated properties are not allowed ('clocks' was unexpected)
-	from schema $id: http://devicetree.org/schemas/spi/mxs-spi.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: spi@80016000: Unevaluated properties are not allowed ('clocks' was unexpected)
-	from schema $id: http://devicetree.org/schemas/spi/mxs-spi.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: spi@80014000: Unevaluated properties are not allowed ('clocks' was unexpected)
-	from schema $id: http://devicetree.org/schemas/spi/mxs-spi.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: spi@80016000: Unevaluated properties are not allowed ('clocks' was unexpected)
-	from schema $id: http://devicetree.org/schemas/spi/mxs-spi.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: pinctrl@80018000: compatible: ['fsl,imx28-pinctrl', 'simple-bus'] is too long
-	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: pinctrl@80018000: 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog@0', 'hog@1', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'keypad-bttc@0', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-bttc@0', 'lcdif-bttc@1', 'lcdif-sync@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'ssp1-sdio@0', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1', 'wifi-en-pin@0' do not match any of the regexes: 'gpio@[0-9]+$', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: pinctrl@80018000: compatible: ['fsl,imx28-pinctrl', 'simple-bus'] is too long
-	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: pinctrl@80018000: 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog@0', 'hog@1', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'keypad-bttc@0', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-bttc@0', 'lcdif-bttc@1', 'lcdif-sync@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'ssp1-sdio@0', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1', 'wifi-en-pin@0' do not match any of the regexes: 'gpio@[0-9]+$', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: pinctrl@80018000: compatible: ['fsl,imx28-pinctrl', 'simple-bus'] is too long
-	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: pinctrl@80018000: 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog@0', 'hog@1', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'keypad-bttc@0', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-bttc@0', 'lcdif-bttc@1', 'lcdif-sync@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'ssp1-sdio@0', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1', 'wifi-en-pin@0' do not match any of the regexes: 'gpio@[0-9]+$', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: /apb@80000000/apbh-bus@80000000/digctl@8001c000: failed to match any schema with compatible: ['fsl,imx28-digctl', 'fsl,imx23-digctl']
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: /apb@80000000/apbh-bus@80000000/digctl@8001c000: failed to match any schema with compatible: ['fsl,imx28-digctl', 'fsl,imx23-digctl']
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: /apb@80000000/apbh-bus@80000000/digctl@8001c000: failed to match any schema with compatible: ['fsl,imx28-digctl', 'fsl,imx23-digctl']
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: /apb@80000000/apbh-bus@80000000/digctl@8001c000: failed to match any schema with compatible: ['fsl,imx28-digctl', 'fsl,imx23-digctl']
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: /apb@80000000/apbh-bus@80000000/digctl@8001c000: failed to match any schema with compatible: ['fsl,imx28-digctl', 'fsl,imx23-digctl']
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: /apb@80000000/apbh-bus@80000000/digctl@8001c000: failed to match any schema with compatible: ['fsl,imx28-digctl', 'fsl,imx23-digctl']
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: /apb@80000000/apbx-bus@80040000/lradc@80050000: failed to match any schema with compatible: ['fsl,imx28-lradc']
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: /apb@80000000/apbx-bus@80040000/lradc@80050000: failed to match any schema with compatible: ['fsl,imx28-lradc']
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: /apb@80000000/apbx-bus@80040000/timrot@80068000: failed to match any schema with compatible: ['fsl,imx28-timrot', 'fsl,timrot']
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: /apb@80000000/apbx-bus@80040000/timrot@80068000: failed to match any schema with compatible: ['fsl,imx28-timrot', 'fsl,timrot']
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: /apb@80000000/apbx-bus@80040000/lradc@80050000: failed to match any schema with compatible: ['fsl,imx28-lradc']
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: /apb@80000000/apbx-bus@80040000/timrot@80068000: failed to match any schema with compatible: ['fsl,imx28-timrot', 'fsl,timrot']
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: /apb@80000000/apbx-bus@80040000/timrot@80068000: failed to match any schema with compatible: ['fsl,imx28-timrot', 'fsl,timrot']
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: /apb@80000000/apbx-bus@80040000/timrot@80068000: failed to match any schema with compatible: ['fsl,imx28-timrot', 'fsl,timrot']
-arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: /apb@80000000/apbx-bus@80040000/timrot@80068000: failed to match any schema with compatible: ['fsl,imx28-timrot', 'fsl,timrot']
-
-
-
-
+diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
+index 92e291603ea13..58db45352b666 100644
+--- a/arch/arm/boot/dts/nxp/imx/Makefile
++++ b/arch/arm/boot/dts/nxp/imx/Makefile
+@@ -290,6 +290,8 @@ dtb-$(CONFIG_SOC_IMX6SL) += \
+ dtb-$(CONFIG_SOC_IMX6SLL) += \
+ 	imx6sll-evk.dtb \
+ 	imx6sll-kobo-clarahd.dtb \
++	imx6sll-kobo-clara2e-a.dtb \
++	imx6sll-kobo-clara2e-b.dtb \
+ 	imx6sll-kobo-librah2o.dtb
+ dtb-$(CONFIG_SOC_IMX6SX) += \
+ 	imx6sx-nitrogen6sx.dtb \
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts
+new file mode 100644
+index 0000000000000..33756d6de7aa0
+--- /dev/null
++++ b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts
+@@ -0,0 +1,23 @@
++// SPDX-License-Identifier: (GPL-2.0)
++/*
++ * Device tree for the Kobo Clara 2E rev A ebook reader
++ *
++ * Name on mainboard is: 37NB-E60K2M+4A2
++ * Serials start with: E60K2M (a number also seen in
++ * vendor kernel sources)
++ *
++ * Copyright 2024 Andreas Kemnade
++ */
++
++/dts-v1/;
++
++#include "imx6sll-kobo-clara2e-common.dtsi"
++
++/ {
++	model = "Kobo Clara 2E";
++	compatible = "kobo,clara2e-b", "kobo,clara2e", "fsl,imx6sll";
++};
++
++&i2c2 {
++	/* EPD PMIC SY7636 at 0x62 */
++};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dts b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dts
+new file mode 100644
+index 0000000000000..f81aeacf51420
+--- /dev/null
++++ b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dts
+@@ -0,0 +1,23 @@
++// SPDX-License-Identifier: (GPL-2.0)
++/*
++ * Device tree for the Kobo Clara 2E rev B ebook reader
++ *
++ * Name on mainboard is: 37NB-E60K2M+4B0
++ * Serials start with: E60K2M (a number also seen in
++ * vendor kernel sources)
++ *
++ * Copyright 2024 Andreas Kemnade
++ */
++
++/dts-v1/;
++
++#include "imx6sll-kobo-clara2e-common.dtsi"
++
++/ {
++	model = "Kobo Clara 2E";
++	compatible = "kobo,clara2e-b", "kobo,clara2e", "fsl,imx6sll";
++};
++
++&i2c2 {
++	/* EPD PMIC JD9930 at 0x18 */
++};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-common.dtsi
+new file mode 100644
+index 0000000000000..dd347253bc7be
+--- /dev/null
++++ b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-common.dtsi
+@@ -0,0 +1,514 @@
++// SPDX-License-Identifier: (GPL-2.0)
++/*
++ * Common part for Kobo Clara 2e device tree
++ * Copyright 2024 Andreas Kemnade
++ */
++
++/dts-v1/;
++
++#include <dt-bindings/input/input.h>
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/leds/common.h>
++#include "imx6sll.dtsi"
++
++/ {
++	aliases {
++		mmc0 = &usdhc2;
++		mmc1 = &usdhc3;
++	};
++
++	chosen {
++		stdout-path = &uart1;
++	};
++
++	gpio-keys {
++		compatible = "gpio-keys";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_gpio_keys>;
++
++		key-cover {
++			label = "Cover";
++			gpios = <&gpio4 23 GPIO_ACTIVE_LOW>;
++			linux,code = <SW_LID>;
++			linux,input-type = <EV_SW>;
++			wakeup-source;
++		};
++	};
++
++	leds {
++		compatible = "gpio-leds";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_led>;
++
++		led {
++			color = <LED_COLOR_ID_WHITE>;
++			function = LED_FUNCTION_POWER;
++			gpios = <&gpio4 17 GPIO_ACTIVE_LOW>;
++			linux,default-trigger = "timer";
++		};
++	};
++
++	memory@80000000 {
++		device_type = "memory";
++		reg = <0x80000000 0x20000000>;
++	};
++
++	reg_wifi: regulator-wifi {
++		compatible = "regulator-fixed";
++		regulator-name = "SD3_SPWR";
++		regulator-min-microvolt = <3000000>;
++		regulator-max-microvolt = <3000000>;
++		gpio = <&gpio4 29 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++	};
++};
++
++&clks {
++	assigned-clocks = <&clks IMX6SLL_CLK_PLL4_AUDIO_DIV>;
++	assigned-clock-rates = <393216000>;
++};
++
++&cpu0 {
++	arm-supply = <&buck1>;
++	soc-supply = <&buck2>;
++};
++
++&i2c1 {
++	pinctrl-names = "default","sleep";
++	pinctrl-0 = <&pinctrl_i2c1>;
++	pinctrl-1 = <&pinctrl_i2c1_sleep>;
++	clock-frequency = <100000>;
++	status = "okay";
++
++	/* backlight aw99703 at 0x36 */
++};
++
++&i2c2 {
++	pinctrl-names = "default","sleep";
++	pinctrl-0 = <&pinctrl_i2c2>;
++	pinctrl-1 = <&pinctrl_i2c2_sleep>;
++	clock-frequency = <100000>;
++	status = "okay";
++
++	/* backlight aw99703 at 0x36 */
++
++	touchscreen@38 {
++		compatible = "focaltech,ft5426";
++		reg = <0x38>;
++		pinctrl-names = "default", "suspend";
++		pinctrl-0 = <&pinctrl_touch_gpio>;
++		pinctrl-1 = <&pinctrl_touch_gpio_sleep>;
++		interrupt-parent = <&gpio4>;
++		interrupts = <24 IRQ_TYPE_EDGE_FALLING>;
++		reset-gpios = <&gpio4 18 GPIO_ACTIVE_LOW>;
++		touchscreen-size-x = <1072>;
++		touchscreen-size-y = <1448>;
++		touchscreen-swapped-x-y;
++	};
++};
++
++&i2c3 {
++	/* Bus seems to be in bad state after boot, allow full recovery */
++	pinctrl-names = "default", "gpio";
++	pinctrl-0 = <&pinctrl_i2c3>;
++	pinctrl-1 = <&pinctrl_i2c3_gpio>;
++	sda-gpios = <&gpio3 22 GPIO_ACTIVE_HIGH>;
++	scl-gpios = <&gpio3 21 GPIO_ACTIVE_HIGH>;
++	clock-frequency = <100000>;
++	status = "okay";
++
++	pmic@4b {
++		compatible = "rohm,bd71879", "rohm,bd71828";
++		reg = <0x4b>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_bd71828>;
++
++		interrupt-parent = <&gpio4>;
++		interrupts = <19 IRQ_TYPE_LEVEL_LOW>;
++		system-power-controller;
++
++		clocks = <&clks 0>;
++		#clock-cells = <0>;
++		clock-output-names = "bd71828-32k-out";
++
++		gpio-controller;
++		#gpio-cells = <2>;
++		gpio-reserved-ranges = <0 1>, <2 1>;
++
++		rohm,charger-sense-resistor-ohms = <30000000>;
++
++		regulators {
++			LDO1 {
++				name = "LDO1";
++				regulator-name = "ldo1";
++				regulator-min-microvolt = <800000>;
++				regulator-max-microvolt = <3300000>;
++			};
++
++			LDO2 {
++				name = "LDO2";
++				regulator-name = "ldo2";
++				regulator-min-microvolt = <800000>;
++				regulator-max-microvolt = <3300000>;
++			};
++
++			LDO3 {
++				name = "LDO3";
++				regulator-name = "ldo3";
++				regulator-min-microvolt = <800000>;
++				regulator-max-microvolt = <3300000>;
++			};
++
++			ldo4: LDO4 {
++				name = "LDO4";
++				regulator-name = "ldo4";
++				regulator-always-on;
++				regulator-min-microvolt = <1100000>;
++				regulator-max-microvolt = <1100000>;
++			};
++
++			LDO5 {
++				name = "LDO5";
++				regulator-name = "ldo5";
++				regulator-always-on;
++				regulator-min-microvolt = <800000>;
++				regulator-max-microvolt = <3300000>;
++			};
++
++			LDO6 {
++				name = "LDO6";
++				regulator-name = "ldo6";
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++			};
++
++			LDO7 {
++				name = "LDO7";
++				regulator-name = "ldo7";
++				regulator-always-on;
++				regulator-min-microvolt = <800000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-boot-on;
++			};
++
++			buck1: BUCK1 {
++				name = "BUCK1";
++				regulator-name = "buck1";
++				regulator-always-on;
++				regulator-min-microvolt = <500000>;
++				regulator-max-microvolt = <1400000>;
++				regulator-boot-on;
++			};
++
++			buck2: BUCK2 {
++				name = "BUCK2";
++				regulator-name = "buck2";
++				regulator-always-on;
++				regulator-min-microvolt = <500000>;
++				regulator-max-microvolt = <2000000>;
++				regulator-boot-on;
++			};
++
++			BUCK3 {
++				name = "BUCK3";
++				regulator-name = "buck3";
++				regulator-always-on;
++				regulator-min-microvolt = <1200000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-boot-on;
++			};
++
++			BUCK4 {
++				name = "BUCK4";
++				regulator-name = "buck4";
++				regulator-always-on;
++				regulator-min-microvolt = <1000000>;
++				regulator-max-microvolt = <1200000>;
++				regulator-boot-on;
++			};
++
++			BUCK5 {
++				name = "BUCK5";
++				regulator-name = "buck5";
++				regulator-always-on;
++				regulator-min-microvolt = <2500000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-boot-on;
++			};
++
++			BUCK6 {
++				name = "BUCK6";
++				regulator-name = "buck6";
++				regulator-min-microvolt = <500000>;
++				regulator-max-microvolt = <2000000>;
++			};
++
++			BUCK7 {
++				name = "BUCK7";
++				regulator-name = "buck7";
++				regulator-min-microvolt = <500000>;
++				regulator-max-microvolt = <2000000>;
++			};
++		};
++	};
++};
++
++&iomuxc {
++	pinctrl_touch_gpio: touch-gpiogrp {
++		fsl,pins = <
++			MX6SLL_PAD_GPIO4_IO24__GPIO4_IO24	0x17059 /* TP_INT */
++			MX6SLL_PAD_GPIO4_IO18__GPIO4_IO18	0x10059 /* TP_RST */
++		>;
++	};
++
++	pinctrl_touch_gpio_sleep: touch-gpio-sleepgrp {
++		fsl,pins = <
++			MX6SLL_PAD_GPIO4_IO24__GPIO4_IO24	0x10059 /* TP_INT */
++			MX6SLL_PAD_GPIO4_IO18__GPIO4_IO18	0x10059 /* TP_RST */
++		>;
++	};
++
++	pinctrl_gpio_keys: gpio-keysgrp {
++		fsl,pins = <
++			MX6SLL_PAD_GPIO4_IO25__GPIO4_IO25	0x17059	/* PWR_SW */
++			MX6SLL_PAD_GPIO4_IO23__GPIO4_IO23	0x17059	/* HALL_EN */
++		>;
++	};
++
++	pinctrl_i2c1: i2c1grp {
++		fsl,pins = <
++			MX6SLL_PAD_I2C1_SCL__I2C1_SCL	0x4001f8b1
++			MX6SLL_PAD_I2C1_SDA__I2C1_SDA	0x4001f8b1
++		>;
++	};
++
++	pinctrl_i2c1_sleep: i2c1-sleepgrp {
++		fsl,pins = <
++			MX6SLL_PAD_I2C1_SCL__I2C1_SCL	0x400108b1
++			MX6SLL_PAD_I2C1_SDA__I2C1_SDA	0x400108b1
++		>;
++	};
++
++	pinctrl_i2c2: i2c2grp {
++		fsl,pins = <
++			MX6SLL_PAD_I2C2_SCL__I2C2_SCL	0x4001f8b1
++			MX6SLL_PAD_I2C2_SDA__I2C2_SDA	0x4001f8b1
++		>;
++	};
++
++	pinctrl_i2c2_sleep: i2c2-sleepgrp {
++		fsl,pins = <
++			MX6SLL_PAD_I2C2_SCL__I2C2_SCL	0x400108b1
++			MX6SLL_PAD_I2C2_SDA__I2C2_SDA	0x400108b1
++		>;
++	};
++
++	pinctrl_i2c3: i2c3grp {
++		fsl,pins = <
++			MX6SLL_PAD_REF_CLK_24M__I2C3_SCL 0x4001f8b1
++			MX6SLL_PAD_REF_CLK_32K__I2C3_SDA 0x4001f8b1
++		>;
++	};
++
++	pinctrl_i2c3_gpio: i2c3-gpiogrp {
++		fsl,pins = <
++			MX6SLL_PAD_REF_CLK_24M__GPIO3_IO21 0x4001f8b1
++			MX6SLL_PAD_REF_CLK_32K__GPIO3_IO22 0x4001f8b1
++		>;
++	};
++
++	pinctrl_led: ledgrp {
++		fsl,pins = <
++			MX6SLL_PAD_GPIO4_IO17__GPIO4_IO17 0x10059
++		>;
++	};
++
++	pinctrl_uart1: uart1grp {
++		fsl,pins = <
++			MX6SLL_PAD_UART1_TXD__UART1_DCE_TX 0x1b0b1
++			MX6SLL_PAD_UART1_RXD__UART1_DCE_RX 0x1b0b1
++		>;
++	};
++
++	pinctrl_uart2: uart2grp {
++		fsl,pins = <
++			MX6SLL_PAD_LCD_ENABLE__UART2_DCE_RX	0x41b0b1
++			MX6SLL_PAD_LCD_HSYNC__UART2_DCE_TX	0x41b0b1
++			MX6SLL_PAD_LCD_VSYNC__UART2_DCE_RTS	0x41b0b1
++			MX6SLL_PAD_LCD_RESET__UART2_DCE_CTS	0x41b0b1
++		>;
++	};
++
++	pinctrl_uart2_sleep: uart2grp-sleep {
++		fsl,pins = <
++			MX6SLL_PAD_LCD_ENABLE__GPIO2_IO16	0x10059
++			MX6SLL_PAD_LCD_HSYNC__GPIO2_IO17	0x10059
++			MX6SLL_PAD_LCD_VSYNC__GPIO2_IO18	0x10059
++			MX6SLL_PAD_LCD_RESET__GPIO2_IO19	0x10059
++		>;
++	};
++
++	pinctrl_usbotg1: usbotg1grp {
++		fsl,pins = <
++			MX6SLL_PAD_EPDC_PWR_COM__USB_OTG1_ID 0x17059
++		>;
++	};
++
++	pinctrl_usdhc2: usdhc2grp {
++		fsl,pins = <
++			MX6SLL_PAD_SD2_CMD__SD2_CMD		0x17059
++			MX6SLL_PAD_SD2_CLK__SD2_CLK		0x13059
++			MX6SLL_PAD_SD2_DATA0__SD2_DATA0		0x17059
++			MX6SLL_PAD_SD2_DATA1__SD2_DATA1		0x17059
++			MX6SLL_PAD_SD2_DATA2__SD2_DATA2		0x17059
++			MX6SLL_PAD_SD2_DATA3__SD2_DATA3		0x17059
++		>;
++	};
++
++	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
++		fsl,pins = <
++			MX6SLL_PAD_SD2_CMD__SD2_CMD		0x170b9
++			MX6SLL_PAD_SD2_CLK__SD2_CLK		0x130b9
++			MX6SLL_PAD_SD2_DATA0__SD2_DATA0		0x170b9
++			MX6SLL_PAD_SD2_DATA1__SD2_DATA1		0x170b9
++			MX6SLL_PAD_SD2_DATA2__SD2_DATA2		0x170b9
++			MX6SLL_PAD_SD2_DATA3__SD2_DATA3		0x170b9
++		>;
++	};
++
++	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
++		fsl,pins = <
++			MX6SLL_PAD_SD2_CMD__SD2_CMD		0x170f9
++			MX6SLL_PAD_SD2_CLK__SD2_CLK		0x130f9
++			MX6SLL_PAD_SD2_DATA0__SD2_DATA0		0x170f9
++			MX6SLL_PAD_SD2_DATA1__SD2_DATA1		0x170f9
++			MX6SLL_PAD_SD2_DATA2__SD2_DATA2		0x170f9
++			MX6SLL_PAD_SD2_DATA3__SD2_DATA3		0x170f9
++		>;
++	};
++
++	pinctrl_usdhc2_sleep: usdhc2-sleepgrp {
++		fsl,pins = <
++			MX6SLL_PAD_SD2_CMD__GPIO5_IO04		0x100f9
++			MX6SLL_PAD_SD2_CLK__GPIO5_IO05		0x100f9
++			MX6SLL_PAD_SD2_DATA0__GPIO5_IO01	0x100f9
++			MX6SLL_PAD_SD2_DATA1__GPIO4_IO30	0x100f9
++			MX6SLL_PAD_SD2_DATA2__GPIO5_IO03	0x100f9
++			MX6SLL_PAD_SD2_DATA3__GPIO4_IO28	0x100f9
++		>;
++	};
++
++	pinctrl_usdhc3: usdhc3grp {
++		fsl,pins = <
++			MX6SLL_PAD_SD3_CMD__SD3_CMD	0x11059
++			MX6SLL_PAD_SD3_CLK__SD3_CLK	0x11059
++			MX6SLL_PAD_SD3_DATA0__SD3_DATA0	0x11059
++			MX6SLL_PAD_SD3_DATA1__SD3_DATA1	0x11059
++			MX6SLL_PAD_SD3_DATA2__SD3_DATA2	0x11059
++			MX6SLL_PAD_SD3_DATA3__SD3_DATA3	0x11059
++		>;
++	};
++
++	pinctrl_usdhc3_100mhz: usdhc3-100mhzgrp {
++		fsl,pins = <
++			MX6SLL_PAD_SD3_CMD__SD3_CMD	0x170b9
++			MX6SLL_PAD_SD3_CLK__SD3_CLK	0x170b9
++			MX6SLL_PAD_SD3_DATA0__SD3_DATA0	0x170b9
++			MX6SLL_PAD_SD3_DATA1__SD3_DATA1	0x170b9
++			MX6SLL_PAD_SD3_DATA2__SD3_DATA2	0x170b9
++			MX6SLL_PAD_SD3_DATA3__SD3_DATA3	0x170b9
++		>;
++	};
++
++	pinctrl_usdhc3_200mhz: usdhc3-200mhzgrp {
++		fsl,pins = <
++			MX6SLL_PAD_SD3_CMD__SD3_CMD	0x170f9
++			MX6SLL_PAD_SD3_CLK__SD3_CLK	0x170f9
++			MX6SLL_PAD_SD3_DATA0__SD3_DATA0	0x170f9
++			MX6SLL_PAD_SD3_DATA1__SD3_DATA1	0x170f9
++			MX6SLL_PAD_SD3_DATA2__SD3_DATA2	0x170f9
++			MX6SLL_PAD_SD3_DATA3__SD3_DATA3	0x170f9
++		>;
++	};
++
++	pinctrl_usdhc3_sleep: usdhc3-sleepgrp {
++		fsl,pins = <
++			MX6SLL_PAD_SD3_CMD__GPIO5_IO21	0x100c1
++			MX6SLL_PAD_SD3_CLK__GPIO5_IO18	0x100c1
++			MX6SLL_PAD_SD3_DATA0__GPIO5_IO19	0x100c1
++			MX6SLL_PAD_SD3_DATA1__GPIO5_IO20	0x100c1
++			MX6SLL_PAD_SD3_DATA2__GPIO5_IO16	0x100c1
++			MX6SLL_PAD_SD3_DATA3__GPIO5_IO17	0x100c1
++		>;
++	};
++
++	pinctrl_wifi_power: wifi-powergrp {
++		fsl,pins = <
++			MX6SLL_PAD_SD2_DATA6__GPIO4_IO29	0x10059
++		>;
++	};
++
++	pinctrl_bd71828: bd71828-gpiogrp {
++		fsl,pins = <
++			MX6SLL_PAD_KEY_COL0__GPIO3_IO24		0x1b8b1
++			MX6SLL_PAD_GPIO4_IO19__GPIO4_IO19	0x1b8b1
++		>;
++	};
++};
++
++&snvs_rtc {
++	/* we are using the rtc in the pmic, not disabled in imx6sll.dtsi */
++	status = "disabled";
++};
++
++&uart1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart1>;
++	status = "okay";
++};
++
++&uart2 {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&pinctrl_uart2>;
++	pinctrl-1 = <&pinctrl_uart2_sleep>;
++	status = "okay";
++
++	/* requires LDO4 + power enable gpio */
++	bluetooth {
++		compatible = "nxp,88w8987-bt";
++		fw-init-baudrate = <1500000>;
++	};
++};
++
++&usbotg1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_usbotg1>;
++	disable-over-current;
++	srp-disable;
++	hnp-disable;
++	adp-disable;
++	status = "okay";
++};
++
++&usdhc2 {
++	pinctrl-names = "default", "state_100mhz", "state_200mhz","sleep";
++	pinctrl-0 = <&pinctrl_usdhc2>;
++	pinctrl-1 = <&pinctrl_usdhc2_100mhz>;
++	pinctrl-2 = <&pinctrl_usdhc2_200mhz>;
++	pinctrl-3 = <&pinctrl_usdhc2_sleep>;
++	non-removable;
++	status = "okay";
++};
++
++&usdhc3 {
++	pinctrl-names = "default", "state_100mhz", "state_200mhz","sleep";
++	pinctrl-0 = <&pinctrl_usdhc3>;
++	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
++	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
++	pinctrl-3 = <&pinctrl_usdhc3_sleep>;
++	/* card requires also ldo4 */
++	vmmc-supply = <&reg_wifi>;
++	cap-power-off-card;
++	non-removable;
++	status = "okay";
++};
+-- 
+2.39.5
 
