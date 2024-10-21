@@ -1,45 +1,39 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4611A1E1C22
-	for <imx@lists.linux.dev>; Mon, 21 Oct 2024 09:27:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.16])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 655D41E3771
+	for <imx@lists.linux.dev>; Mon, 21 Oct 2024 09:42:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729502879; cv=none; b=suzxlRGIfH3IAhgOoy45eP8sd1RaHVIClRlx4GymGd1OBX1HGYk3Rp3OOZkkGUoqp0h4ddq0psPMpLXKMPvKtqll9Wp4uhL7aaxyLJB/9y77D3kzgRV7WEEI+C54aQACl4+zKgfF1Jknt4ZW3myQ+tyNMAG9KRuX1gOyUVMPdqw=
+	t=1729503779; cv=none; b=dQrGiuBGtHTes3hFZLgF9LE1GshaGnmPfvVnTqUr3Qe6xZkJFl9OOK1o1C88Qy25F5YkrkSXBEqAsLSOqDofjeyHqUetsYMWIg6m0aKOvvL1gFSQ4DBMCTr4vuo9LC9u40S4eX8aar9KIfYMaDNy0CwXvbNuHmEwZB6K/7oviQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729502879; c=relaxed/simple;
-	bh=ll7At9nIH9NUcF3cfpSsh7DnwpHJyoRpUcmDz8PvqeY=;
+	s=arc-20240116; t=1729503779; c=relaxed/simple;
+	bh=OL44tXeoxalIZKSmbvd+NvtT+kQ8M6pJ8t8GR13R0wk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RryTYIaNmxABkE108RzUL8VLEXQUzVqIumzpuTRAy4KUuFHaMev56JOBnlI6MMzpsVA4q08DfAl1rO0f/TolT7XbxKTq52WMtk2pecQA6moZO0JeLVI1FV/Y6+9DGQiqc+qZdBW7LSwfCEYWwk3uf8DYj+68phLKULTblM42GIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=hZAPVk0B; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	 Content-Type:Content-Disposition:In-Reply-To; b=Algl0/zxhCb4VcIBDQNeWCm9Icpvt3KaJnyuJ9uqkBiz0E3qUBi3kLjkR+e5l8qtbOy/m6V2p3ephfo8yZxiE7ewvSA9yXCeWGxWkbrKbhTq740Ri3IPbHOH8dS4cf5hz888EbuBvpH7tbaKqamShx8rlofEeKrR9AGrNNMSS+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=ZWAykMsO; arc=none smtp.client-ip=220.197.32.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="hZAPVk0B"
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 4F6A01F910;
-	Mon, 21 Oct 2024 11:27:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1729502867;
-	bh=mSgpzAFgc/z8kyQlEP+bYSHF4QmpnixYUN3WVSsK7sE=; h=From:To:Subject;
-	b=hZAPVk0BpGHOPRa87cRaWp3nX9mkTjq4rVaSOFaEpg6pLB1SWACbmRkUUA3i5M2s8
-	 4BHJnNURc2wYCo413nuyAI8AEMkYksjXqHQ/oX5u24jVgAUKptClzfMW0tkZBOkAOy
-	 jT1G8BA2F6bSfZ/0ZOSl5qZEdu3SszIlY97HpJHD4Ya8RWdzpP7W3eUu/Yy+z/C1Gu
-	 ownS2rjyZ7Z4i8OLavxbqdrxTeG4PcrBiIpIaR+6AR2YiA5Fs0jPoxDCEXoPqQieKY
-	 WYkii8iaSwPaNMMiaGzFkLKdCGFXldMD4IPh42U6oWIg5ZWWtvjw+aVuYRgNaFpzA7
-	 7ittoMivMBVDg==
-Date: Mon, 21 Oct 2024 11:27:43 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: carlos.song@nxp.com
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="ZWAykMsO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=YkZ4qiiMuubjDD/b8aOn38w6UrzOXZrqBqxzSQrF+Dk=;
+	b=ZWAykMsOQ1ljAeLPFa6AMNUqHm4addGoow458FJRQAMYUV87+3GQ39jxuXDiTa
+	zd0LsHDf1UZAQfL85pxNKZVBZvFXA50uDqm7s9emYptozxJ7hfWBcFLiTjMHqas0
+	14wKJokvmomA5efRh37o+L+kFWolzEU+do7lqxgcJQjeA=
+Received: from dragon (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id M88vCgBHr9ULIhZnXh+EAA--.4753S3;
+	Mon, 21 Oct 2024 17:42:36 +0800 (CST)
+Date: Mon, 21 Oct 2024 17:42:34 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Catalin Popescu <catalin.popescu@leica-geosystems.com>
 Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
 	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, frank.li@nxp.com, haibo.chen@nxp.com,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: imx7s: change i2c compatible string for
- applying errata ERR007805
-Message-ID: <20241021092743.GA21104@francesco-nb>
-References: <20241021031148.2682015-1-carlos.song@nxp.com>
+	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	m.felsch@pengutronix.de, bsp-development.geo@leica-geosystems.com
+Subject: Re: [PATCH] arm64: dts: imx8mp: add cpuidle state "cpu-pd-wait"
+Message-ID: <ZxYiCv6SpLq9uh08@dragon>
+References: <20241007134424.859467-1-catalin.popescu@leica-geosystems.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,22 +42,18 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241021031148.2682015-1-carlos.song@nxp.com>
+In-Reply-To: <20241007134424.859467-1-catalin.popescu@leica-geosystems.com>
+X-CM-TRANSID:M88vCgBHr9ULIhZnXh+EAA--.4753S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU4IJmUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBAl-ZWcV6t2pkwAAso
 
-Hello Carlos,
-
-On Mon, Oct 21, 2024 at 11:11:48AM +0800, carlos.song@nxp.com wrote:
-> From: Carlos Song <carlos.song@nxp.com>
+On Mon, Oct 07, 2024 at 03:44:24PM +0200, Catalin Popescu wrote:
+> So far, only WFI is supported on i.MX8mp platform. Add support for
+> deeper cpuidle state "cpu-pd-wait" that would allow for better power
+> usage during runtime. This is a port from NXP downstream kernel.
 > 
-> Compatible string "fsl,imx7d-i2c" is not exited at i2c-imx driver
-> compatible string table, at the result, "fsl,imx21-i2c" will be
-> matched, but it will cause errata ERR007805 not be applied in fact.
-> 
-> Replace "fsl,imx7d-i2c" by "fsl,imx7s-i2c" compatible string in dts
-> file for appling the errata ERR007805.
+> Signed-off-by: Catalin Popescu <catalin.popescu@leica-geosystems.com>
 
-Did you considered changing the driver instead? If I understand this
-correctly it would be a better solution.
-
-Francesco
+Applied, thanks!
 
