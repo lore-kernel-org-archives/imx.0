@@ -1,94 +1,157 @@
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A4C1A4F01
-	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 17:36:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA13B1BE853
+	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 17:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729618615; cv=none; b=Tj1WYPXfDNsO2V96Gk9YclAcBEUhLHF6jZs/K8X0+v0ZSiQpGF/VKB+WYDCq31QpWuVfj3XmmkBCpTnZtoX4x6S3ea/an8M5DHvYnpllL3G495oJ4lOnJGA2Hh+tA1/dmn8RgyUzMeMDwuj/GDC08FkS2hh4le3ERIAGW+twTnc=
+	t=1729618957; cv=none; b=DmesGKZ3980kXoWNOpDeLVol0CuTtBpGrFoO5cyd8RcXcFu/XotiwSRwuaSlVRpufqG3bojlKXrx5M3eSJQhFCuEEINN1uKDacl4VTaIMs7WJXGak6GOJk4KYoz6+chLn6k1kQOpYrM+Zvut9EatiLs/9DG0WtI0+4JIBCPOqTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729618615; c=relaxed/simple;
-	bh=A0rRwiZmVRMudCLJX+9pCJK3ES+/ITJWDtgwWJHsQME=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aUx5eG6vv/+2n4dgL2rO5quKbx2BQPgq5hF6zq3PFXhs3RnsV885lodwlAvEmzF6E6aNUGmXD4fUS3lG2dusuGbLY0ua4WROH3iVkVq2h0f9jNCSMFCW5WwCwQffKozKyp+68igmR8Ls/WPN8TkSnyNZRwZs5m1Il0/q7TFcKYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L+tLwSV2; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729618957; c=relaxed/simple;
+	bh=v9o+diiWPAzNW6fcahbOqHdppyHhmJ37GjMy4tZPO6A=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OO2dhZ4zguLOeTMU3BL9CiwBQSGuyHsd8EBM/Rhbpn49cvNlFA0JchvnNcI8MGTMvgOfdewmgbMK3Tz/boZUxve94yfuD9fqsp4mbGfFx7qElRbPJrnKSwn1eK5dcAEqdJuF2/4douW4diTReoWotgWhtMrhbLXxiJb8ypZJBG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=WrCJ8CIS; arc=none smtp.client-ip=161.97.139.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L+tLwSV2"
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-539fbe22ac0so6671736e87.2
-        for <imx@lists.linux.dev>; Tue, 22 Oct 2024 10:36:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729618612; x=1730223412; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A0rRwiZmVRMudCLJX+9pCJK3ES+/ITJWDtgwWJHsQME=;
-        b=L+tLwSV2FAQu1TvuWzf7hLBANmqohHjTqn53NEzcD3eWWxZ7KZx92DB+SCHRShZ7HH
-         4WbJ6m6qMY3L7DSNWVifwdlajhCuTr7+kJ5LF7OA+okqa5bPhBdI6GoJCiXJm8DG9qzT
-         2Lt3KWAejOFB7iu6cDQlXINjUKdx7V6e7RgDCuiM3NA6nrU5aSpvFiY7OFDdFRQiMPc6
-         lwJWIHDdqavBKmPN/lHAzBBc9mF+eVrhflXQVdmSHdTh94OnosKHlI/wJVXiAOOgui3t
-         VI//jDPGDzzx8l3eTx1/Jo5245pyxrRg5ibsn+YaJ/2UsMgrgWNsTUbxRyW1/p1DBf2W
-         I9Zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729618612; x=1730223412;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=A0rRwiZmVRMudCLJX+9pCJK3ES+/ITJWDtgwWJHsQME=;
-        b=Jbhb1wup0qni6D7ztrOdCMbL3RMg1Es4R4Q5Rq90tJ1GVg5JSC7E6d4jfom93fOmnE
-         RKpZCMtH7JQO/r6SCwhjA1/iKRJ1zlyXPp/KP9Cnnj3DwewgFxGIvHHXgFnZtJk7nKBu
-         uQ/XxNlhxzfZm+M/l47F44mf6KdVihaxrD96bpO/iXxa5mXVG7KT733flO3qiak2Ns8T
-         MrDbWoRiJkEJt0CJaWeWThJzJpszzIaZWmg1C+HwBctnen/FHjw2O0IVVTyPM+KMeSJT
-         WKJUtL8yUhX09EtHUrz+l+DZz0hOVZXVCaWljGnFAW2Fqr+82eS5nAxXuw3m2RbYVTI/
-         QZzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXRy/+9E9PWev09bRVsUtuZFhv5eLTrfW2x6wWy3mwif4cPKrPlZYJlHgqobAFNrYIBEMQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz5NKvIUkYlZ+zVc2ANJXm9JxUhIoMoCKz5cTi9yDCEflT4T8AJ
-	yoXw28H4sZfLP7Y3kO9Nn89Fa1ADGoqZwbrJuEdQ+AhIijMwsMnxlyc0le71lvnsQv59zTJarlP
-	JqwwasGNJCewJJktvsBbIlFes83X/MzoU
-X-Google-Smtp-Source: AGHT+IHESL1pgIga/1DcaFprc680IQPO/MbgmFx2MwT8kkePvAJwX89NW38rjSyD8aBcw7tZ2hZZ8Om6l64XvUJHk88=
-X-Received: by 2002:a05:6512:1304:b0:539:fa43:fc36 with SMTP id
- 2adb3069b0e04-53a1520b1d2mr8509712e87.12.1729618611710; Tue, 22 Oct 2024
- 10:36:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="WrCJ8CIS"
+Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
+	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <andreas@kemnade.info>)
+	id 1t3Itn-00A6XL-2V
+	for imx@lists.linux.dev;
+	Tue, 22 Oct 2024 19:42:27 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=YzXiqSqg0aayLyb7AVqmSvNxO5PvD8+CWdeuiriR2g4=; b=WrCJ8CISZzKR5F2k23TGKepHhJ
+	AmOqL5WWVvwpujLtGGbInXiQsofKfQ6xN1HBHTd9jnbuwTeNXRBElnzZyGaIVU//dsb9pSgVGfxO1
+	9mrqlMaxDHWr8adQivIIl97piVyPc1u2LWwQ0T6EVfzBbc/90bbi59QNJrZFjavcFgZXwmsVdBgBx
+	zG40HCAtTJF9I5Q1y1MLf0bULCuOQ1Kvyy8UhRyQ388bxkJLGfSoproLFmGXNM1HNBPa8G9P6J37S
+	njkI06N7B57rT3mh29Ggx9+YxeavFAhS1AgfiZpKvUOeZiNOUJVpwGKmzYEIGACNTbgqa/qZUjQAJ
+	es6L8phw==;
+Date: Tue, 22 Oct 2024 19:42:21 +0200
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Conor Dooley <conor@kernel.org>
+Cc: Shawn Guo <shawnguo@kernel.org>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Alexander Stein <alexander.stein@ew.tq-group.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Fabio
+ Estevam <festevam@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ imx@lists.linux.dev, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, devicetree@vger.kernel.org, Rob Herring
+ <robh@kernel.org>
+Subject: Re: [PATCH 2/3] ARM: dts: imx: Add devicetree for Kobo Clara 2E
+Message-ID: <20241022194221.43b9073b@akair>
+In-Reply-To: <20241022-refurbish-laborious-e7cc067966dc@spud>
+References: <20241021173631.299143-1-andreas@kemnade.info>
+	<20241021173631.299143-3-andreas@kemnade.info>
+	<20241022-refurbish-laborious-e7cc067966dc@spud>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241021100224.116129-1-lukma@denx.de>
-In-Reply-To: <20241021100224.116129-1-lukma@denx.de>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Tue, 22 Oct 2024 14:36:40 -0300
-Message-ID: <CAOMZO5DpJmWOExk4i6CWQ6XG_zyU=uz-ZCOBS1t9Xbk1YO2MVA@mail.gmail.com>
-Subject: Re: [PATCH v9 1/4] dt-bindings: display: Add powertip,st7272 as DT
- Schema description
-To: Lukasz Majewski <lukma@denx.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Stefan Wahren <wahrenst@gmx.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Lukasz,
+Am Tue, 22 Oct 2024 17:59:10 +0100
+schrieb Conor Dooley <conor@kernel.org>:
 
-On Mon, Oct 21, 2024 at 7:02=E2=80=AFAM Lukasz Majewski <lukma@denx.de> wro=
-te:
+> On Mon, Oct 21, 2024 at 07:36:30PM +0200, Andreas Kemnade wrote:
+> > Adds a devicetree for the Kobo Clara 2E Ebook reader. It is based
+> > on boards marked with "37NB-E60K2M+4A2" or "37NB-E60K2M+4B0". It is
+> > equipped with an i.MX6SLL SoC.
+> > 
+> > Expected to work:
+> >   - Buttons
+> >   - Wifi
+> >   - Bluetooth
+> >     (if Wifi is initialized first, driver does not handle regulators
+> >      yet)
+> >   - LED
+> >   - uSD
+> >   - USB
+> >   - RTC
+
+and also touchscreen.
+> > 
+
+
+
+> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> > ---
+> >  arch/arm/boot/dts/nxp/imx/Makefile            |   2 +
+> >  .../dts/nxp/imx/imx6sll-kobo-clara2e-a.dts    |  23 +
+> >  .../dts/nxp/imx/imx6sll-kobo-clara2e-b.dts    |  23 +
+> >  .../nxp/imx/imx6sll-kobo-clara2e-common.dtsi  | 514
+> > ++++++++++++++++++ 4 files changed, 562 insertions(+)
+> >  create mode 100644
+> > arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts create mode
+> > 100644 arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dts create
+> > mode 100644
+> > arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-common.dtsi
+> > 
+> > diff --git a/arch/arm/boot/dts/nxp/imx/Makefile
+> > b/arch/arm/boot/dts/nxp/imx/Makefile index
+> > 92e291603ea13..58db45352b666 100644 ---
+> > a/arch/arm/boot/dts/nxp/imx/Makefile +++
+> > b/arch/arm/boot/dts/nxp/imx/Makefile @@ -290,6 +290,8 @@
+> > dtb-$(CONFIG_SOC_IMX6SL) += \ dtb-$(CONFIG_SOC_IMX6SLL) += \
+> >  	imx6sll-evk.dtb \
+> >  	imx6sll-kobo-clarahd.dtb \
+> > +	imx6sll-kobo-clara2e-a.dtb \
+> > +	imx6sll-kobo-clara2e-b.dtb \
+> >  	imx6sll-kobo-librah2o.dtb
+> >  dtb-$(CONFIG_SOC_IMX6SX) += \
+> >  	imx6sx-nitrogen6sx.dtb \
+> > diff --git a/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts
+> > b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts new file
+> > mode 100644 index 0000000000000..33756d6de7aa0
+> > --- /dev/null
+> > +++ b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts
+> > @@ -0,0 +1,23 @@
+> > +// SPDX-License-Identifier: (GPL-2.0)
+> > +/*
+> > + * Device tree for the Kobo Clara 2E rev A ebook reader
+> > + *
+> > + * Name on mainboard is: 37NB-E60K2M+4A2
+> > + * Serials start with: E60K2M (a number also seen in
+> > + * vendor kernel sources)
+> > + *
+> > + * Copyright 2024 Andreas Kemnade
+> > + */
+> > +
+> > +/dts-v1/;
+> > +
+> > +#include "imx6sll-kobo-clara2e-common.dtsi"
+> > +
+> > +/ {
+> > +	model = "Kobo Clara 2E";
+> > +	compatible = "kobo,clara2e-b", "kobo,clara2e",
+> > "fsl,imx6sll"; +};
+> > +
+> > +&i2c2 {
+> > +	/* EPD PMIC SY7636 at 0x62 */  
+> 
+> Could you explain what you're doing here, please?
 >
-> This patch provides the DT Schema description of powertip,st7272 320 x
-> 240 LCD display.
+I am not sure what you are really after with this question...
+So I am guessing a bit.
+I describe the hardware as good as possible. The sy7636a (apparently
+=sy7636) driver could probably be used here but the driver and its
+bindings needs to be extended to specify an input supply and some gpios.
+So at the moment I could not use a machine-readable way of fully
+describe the stuff here. But I want to put a human-readable mark here
+so if someone extends the driver, he/she might be aware that there are
+some possible users and candidates for a Tested-by here.
+For the JD9930 it is even worse. No driver in kernel. I have a pretty
+dirty one requiring some rounds with the brush before sending it.
+So the mark is good for information what is missing and for teaming up.
 
-Using "This patch" is not recommended per submitting-patches.rst:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Doc=
-umentation/process/submitting-patches.rst?h=3Dv6.12-rc4#n94
-
-"Describe your changes in imperative mood, e.g. "make xyzzy do frotz"
-instead of "[This patch] makes xyzzy do frotz" or "[I] changed xyzzy
-to do frotz", as if you are giving orders to the codebase to change
-its behaviour."
-
-The same applies to patch 2/4.
+Regards,
+Andreas
