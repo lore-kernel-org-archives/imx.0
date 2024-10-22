@@ -1,42 +1,45 @@
 Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255798F66
-	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 01:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6DB912D75C
+	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 01:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729560743; cv=none; b=Fj8+r+PwGKYAV8Tk6VpLzlE6lrifvzT0SqibFANqXAC9nb/U32YkHr/k3hET2nQ96EFjHtyy+BlGdBzRZC68jxTXT2RJ7VPrPGYUuL2UpftfoJeii27pIpI73DyS4AB2v0y1nDzQ2Wi4ZHpsghMTADINGBFjYgIifeqb/LNTscU=
+	t=1729561435; cv=none; b=qUQ4zXSsZVYNyJRokxsH8QsHhjul4efOtZGk5gTiN5wVN/TJHjoMyWvaxCX0Zr9/nXMRYWN5TJWCVz7m4560AGanEr2vD0o5J5gtH87HsHK2JUnibX17KMY4NnrwxsC0+f9I00ZOYXblL6Gyfmr5DFcrwyQwFtTE1Zi/sgOCsY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729560743; c=relaxed/simple;
-	bh=OMkw5dnxET0m6i1oeX8vKcSmAhjj/0kZ0bp/cpjgfkk=;
+	s=arc-20240116; t=1729561435; c=relaxed/simple;
+	bh=WC4pv3dSIjy6aP2HHVm8azLCcRMZNd04QR490tF5vMM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P9N3SZ03JYGHwP9CfIMjj85E6rxMaCc/usHcP+My+ok0UA6gvb8rkaBxdEpz7g6++6G9Y/BA672wpwyj8usmWhZgYQzs2XUTydJng7nXZKC8cqrB6NGYBa86UJe527rGQyNYlRnapzOQCvkoR54NDcY94tE0oVAn8WKKVxugZt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=AsTDbaKW; arc=none smtp.client-ip=1.95.21.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q2HvXTAaPFBBG/KnRso9qKtRyfBmwvtq47XJQ1Uo5CvN0O3PfSL2Sab2VM7HotgjeUzDKYg/tJcmGFRmDQrGTHe1l6yhsLrW1CttFyIdL0wX9zS6bSy6mWBwrYcpR4kol516cdPSTMWGC7/60WdkdAfpMO/1KK58qMGF63GHtzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=Q1LI30X4; arc=none smtp.client-ip=1.95.21.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="AsTDbaKW"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="Q1LI30X4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=1X8kVmEbMFJxApTAaGolOIOVn5C/D1ylt7AqE6Lsdlk=;
-	b=AsTDbaKWt9TrwbvX6xHRv2hgIP77UgHetYAxOpxHPYXOi1Vnrlh+bnN46ILpGN
-	XGttILnw8fWb7UjO8no3O7euz2AbOYLf5FRg6MEzgDJb3vWGs99P18AljhSlJXUU
-	+79fsH0clARBfGpPUjbImRRrnT1u+n6a7KQXnjJM9VyyM=
+	Content-Type; bh=UTDYYpNu+5uqNO4xAI5XnvKJiD3mmG/Tcf4hYx/vfnU=;
+	b=Q1LI30X45+Qgr3jtFeYK6aU3xs6NwUchBAKwrXeOZMWHWLRrizRxlZ+UrGDC48
+	KZE7aApuErOWcnDjONSe0DAZ8upROme7lAf4ITR+CCaDtmkXEBj7Xmnh6MJCIerK
+	QFYKE75cNLCQ8zYRb4XT4boVDNWP5vTDi7R1VSZQwWZ5o=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDH5tWNABdncyiVAA--.5247S3;
-	Tue, 22 Oct 2024 09:31:59 +0800 (CST)
-Date: Tue, 22 Oct 2024 09:31:57 +0800
+	by gzsmtp3 (Coremail) with SMTP id M88vCgAnxucqAxdne_aRAA--.5255S3;
+	Tue, 22 Oct 2024 09:43:08 +0800 (CST)
+Date: Tue, 22 Oct 2024 09:43:06 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+To: Marek Vasut <marex@denx.de>
+Cc: linux-arm-kernel@lists.infradead.org,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>
-Subject: Re: [PATCH v3 0/7] arm64: dts: imx95: add various nodes
-Message-ID: <ZxcAjXzQjsmtcwDa@dragon>
-References: <20241012-imx95-dts-new-v3-0-edfab0054c71@nxp.com>
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, kernel@dh-electronics.com
+Subject: Re: [PATCH] ARM: dts: imx6qdl-dhcom-som: Drop bogus
+ regulator-suspend-mem-microvolt
+Message-ID: <ZxcDKmRJNNI855uR@dragon>
+References: <20241015224436.94334-1-marex@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,21 +48,18 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241012-imx95-dts-new-v3-0-edfab0054c71@nxp.com>
-X-CM-TRANSID:Ms8vCgDH5tWNABdncyiVAA--.5247S3
+In-Reply-To: <20241015224436.94334-1-marex@denx.de>
+X-CM-TRANSID:M88vCgAnxucqAxdne_aRAA--.5255S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU4IJmUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAgeAZWcW3kZSbQABs3
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVdWFUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBBaAZWcWmiDHaQAAsS
 
-On Sat, Oct 12, 2024 at 07:19:07PM +0800, Peng Fan (OSS) wrote:
-> Peng Fan (7):
->       arm64: dts: imx95: set max-rx-timeout-ms
->       arm64: dts: imx95: add bbm/misc/syspower scmi nodes
->       arm64: dts: imx95: update a55 thermal trip points
->       arm64: dts: imx95: add anamix temperature thermal zone and cooling node
->       arm64: dts: imx95: enable A55 cpuidle
->       arm64: dts: imx95-19x19-evk: add nxp,ctrl-ids property
->       arm64: dts: imx95-19x19-evk: add lpi2c[5,6] and sub-nodes
+On Wed, Oct 16, 2024 at 12:44:10AM +0200, Marek Vasut wrote:
+> Drop unused regulator-suspend-mem-microvolt property from PMIC regulator nodes.
+> This property is not used by either U-Boot, Linux, nor is it documented in the
+> DT bindings, remove it.
+> 
+> Signed-off-by: Marek Vasut <marex@denx.de>
 
-Applied all, thanks!
+Applied, thanks!
 
