@@ -1,99 +1,115 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28DCE199EBB
-	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 12:55:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61FA4689
+	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 13:30:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729601756; cv=none; b=bpMm7vdFdV711CrR5RuRzJ7KUn24/E0CTMltu4MDS+yWKs4uglGmWhdJ1J3C4zwohS6W0zM4V9p0RTaRJopqGtJ5lDlI5PHdnB2BlGp9EnaHZpUkD3Pt1DaEjCC7poktbc/JQukxgOqFNaphqIa3G/oi+5hJtHTzhetFYKwQN9g=
+	t=1729603859; cv=none; b=T9M5jj9lJW2lM4w2KBG0OccE0KEDkqY+RAssK0JneFRCnS0gqlBt3qgBCJqVPB46v5Ceu6v1cifUP2q8RGh3kA2Gl4MEGV2Ep8KzOEJbIjELk8UpnT3wQwAJyn+Xi36Qfuz+WLUoZhlnJGREsEcBfC5JZJadExmPEkvJa54WUdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729601756; c=relaxed/simple;
-	bh=7fOT4Xjo1xMpe/0KKsIBBl8n9H1ikaNSOO20uuJA0HM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JupzrZDWoHf80PxNgROVq7njBAPBMV09sJ/UPaGCUabK/nNoGqqWMb/1CknY9/q7nXB0KWxZLRhRkfD0oPwulyKwRJUBljv/5pgJZ9v9I6MKYq9iX15ZVWYdvukRw7T9jIima5CHSfwH8HuXrb8gtTz/6MUsx3KXBd5Tl8SrY9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=A3Ub382j; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1729603859; c=relaxed/simple;
+	bh=UBYWg/P38ggldnAitd4Wh6uQZdkGVVp0Kscv3ChErLQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tkAKwG78skOTHi23BPF1UMyNeQusHatNyUIj2VAIZwszoYuvCoPIX8YnH/o5L9nJwLYzxue4aRWQK6aHDooQAuvZB7uN6JILHPgvSdUIOF323yTZ+0H1xhqPMQkWnh+XWAxhbVjl1OFdvWxc4g+s4Qg3xcEvDlWnhydTP0qtEmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=G8oU/LcQ; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="A3Ub382j"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-539e7e73740so5009297e87.3
-        for <imx@lists.linux.dev>; Tue, 22 Oct 2024 05:55:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729601753; x=1730206553; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7fOT4Xjo1xMpe/0KKsIBBl8n9H1ikaNSOO20uuJA0HM=;
-        b=A3Ub382j4kaqLy6pq55rP1r0UANfd6wtfck8t8Lu8Etc4DYv/9SmUXS/s7zqXGcQvg
-         o3RNkSbkN+7rtATPuED1C+9OqaiHpFD+oLJfrvAJ5XklFig2lmGS/crMb4arOvVdBO7l
-         FXjFnMzFPczwhylJhuFcfV0knj6GP6sO4L96HhgmXgG2oqH/C5MdaM67SNlinFQ5Hyij
-         4kfyfsRdP4lvRUaPS0uKdE1UJrbbDXo68G5bxdFY+8cTM73vbq0NBmw4ZQ8Pcv0CoNuq
-         AGK7K/MwJTcFL2MEVPAxHDbN5Biw8J2z/ifZu/OklHUBvwIJdnnN+z5Rsh5rS3utO2di
-         MY2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729601753; x=1730206553;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7fOT4Xjo1xMpe/0KKsIBBl8n9H1ikaNSOO20uuJA0HM=;
-        b=LTk8c53Bn37sLrYxupn0Pid0heTvxJbT95z/h3Fk7zumG2eQ1zTY5DNiLcxSmpnk5i
-         j2v35gOSutKGTPLjlenO3FzZ+2VYfd3Mhu4OSHvhfoWBcYXcFCZXy94z/4oJZyoY9VjC
-         Y0PqSCL99kKDusfLO4BF66ivTOv5oqLfxT0n5ddM2cBoLbaJrsdmXmO0inz7FwLu/QHP
-         nJ0buzSl9zVI4xMIL7YhPsFn3zvEQt9MGbSk8/6U9/nxVttfLYHngqP83SwL1+IGhGDs
-         xKTf+2QVM6uiB/mhq6Aazdpo5Ink6GTv6GHtWs4YMa0VbjUuRCXF/uhXlqe9T/UEi2tZ
-         VQ1g==
-X-Forwarded-Encrypted: i=1; AJvYcCVEyJCEe4I4OOcsi/NaIvGBc+X+QfFgQw9MJV1D1qIATKcXjN/iO0oa8h1dgAQFrmZ3TOE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzZhz4PqPP+A1eoRV0jfWgjWRXFu245huhMztRjJwlQdA6Weee/
-	GgDTpAKJSg7tAYBGikR4W1xEmD8Scuaf3R2/TS1Od+4xVgJVKYaSy1n0f4V1gXNuPaSX+BwNdvn
-	sMdALxUvVZwda9k9C6PRKLxiFVOwyIzLzUXrpdg==
-X-Google-Smtp-Source: AGHT+IEApsleJ++LyDXUKi77PnqAoKOGDzM+ehV1eZLJi+inAOZKg62iYgBKSaWzgGuDYSSU2dftJO0ptCxWO71V4Yw=
-X-Received: by 2002:a05:6512:401a:b0:539:eb82:d453 with SMTP id
- 2adb3069b0e04-53b12c36e60mr1673392e87.39.1729601753275; Tue, 22 Oct 2024
- 05:55:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="G8oU/LcQ"
+Received: from localhost.localdomain (85-222-111-42.dynamic.chello.pl [85.222.111.42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: lukma@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 325BE88DFD;
+	Tue, 22 Oct 2024 15:30:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1729603856;
+	bh=VaH7happnKXdf7oo35GO2g1xolgMuGQVULSYYPmeZLg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=G8oU/LcQFZR1RALjySKuAkLGDbXlEv4tjyKuz21Pa7t8Y8gFj7kaJUUVbKdLq6Myk
+	 g/cLsdxkFGuOrdTTBMh3tx0V7Xwzgih4HLx/xcTI0AkMiiy98NkTKbjmKI+MpIfx5Z
+	 4Hti02u1rxdlN0DtjIDpP7wQJ752aoQmSYQ8T69dHOcc+qX9QH9BCFnsu3o+/aPZRl
+	 GdaZ5JNIvZP4TrJVzSXl8t8eHPkVn8GKgNnTBXsyXVn6nr8BYxa6vtOAsBoXY1xxMK
+	 dGLSPV/zQfu7g/dv2uqUPF2oQJPDknTpmc6UEbKoC0Jqm14Q8ZUg6B2hpin+oWVedq
+	 9/ZcowI70evOQ==
+From: Lukasz Majewski <lukma@denx.de>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Lukasz Majewski <lukma@denx.de>
+Subject: [PATCH v10 1/4] dt-bindings: display: Add powertip,st7272 as DT Schema description
+Date: Tue, 22 Oct 2024 15:30:37 +0200
+Message-Id: <20241022133040.686562-1-lukma@denx.de>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241017211241.170861-1-marex@denx.de>
-In-Reply-To: <20241017211241.170861-1-marex@denx.de>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 22 Oct 2024 14:55:42 +0200
-Message-ID: <CACRpkdYvMWABqw1tC5YSh+RXcHiCwUGsbOGAfkysThYQZTPWzg@mail.gmail.com>
-Subject: Re: [PATCH v3 01/12] dt-bindings: pinctrl: fsl,imx6ul-pinctrl:
- Convert i.MX35/5x/6 to YAML
-To: Marek Vasut <marex@denx.de>
-Cc: linux-arm-kernel@lists.infradead.org, Rob Herring <robh@kernel.org>, 
-	Alexander Stein <alexander.stein@ew.tq-group.com>, Conor Dooley <conor+dt@kernel.org>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, Jacky Bai <ping.bai@nxp.com>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Stefan Wahren <wahrenst@gmx.net>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	kernel@dh-electronics.com, linux-gpio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-Hi Marek,
+This patch provides the DT Schema description of powertip,st7272 320 x
+240 LCD display.
 
-thanks for your hard work on this!
+Signed-off-by: Lukasz Majewski <lukma@denx.de>
+---
 
-On Thu, Oct 17, 2024 at 11:13=E2=80=AFPM Marek Vasut <marex@denx.de> wrote:
+Changes for v9:
+- New patch
 
-> The IOMUXC controller description is almost identical on i.MX35/5x/6 SoCs=
-,
-> except for the configuration bits which differ across SoCs. Rename the
-> fsl,imx6ul-pinctrl.yaml to fsl,imx35-pinctrl.yaml, fill in compatible
-> strings for the other SoCs and fill in the various bits into desciption.
-> This way, i.MX35/5x/6 series SoCs can all be converted to DT schema.
-> Remove the old text DT bindings description.
->
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> Signed-off-by: Marek Vasut <marex@denx.de>
+Changes for v10:
+- None
+---
+ .../display/panel/powertip,st7272.yaml        | 29 +++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
 
-Is this v5 patch 1/12 something I can just apply to the pinctrl
-tree or do you want it on some immutable branch or so to be able
-to pull it into the SoC tree for dependencies?
+diff --git a/Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml b/Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
+new file mode 100644
+index 000000000000..f09450da44a2
+--- /dev/null
++++ b/Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
+@@ -0,0 +1,29 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/display/panel/powertip,st7272.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Powertip Electronic Technology Co."320 x 240 LCD panel"
++
++maintainers:
++  - Lukasz Majewski <lukma@denx.de>
++
++allOf:
++  - $ref: panel-dpi.yaml#
++
++properties:
++  compatible:
++    items:
++      - const: powertip,st7272
++      - {} # panel-dpi, but not listed here to avoid false select
++
++  height-mm: true
++  panel-timing: true
++  port: true
++  power-supply: true
++  width-mm: true
++
++additionalProperties: false
++
++...
+-- 
+2.39.5
 
-Yours,
-Linus Walleij
