@@ -1,71 +1,73 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C811A08B2
-	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 14:27:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D20219F485
+	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 14:29:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729607255; cv=none; b=kH8IFM9BnAmkJLVMLjKaqDCWKIjheOG/nyvhYi21kzxWBu69/Fnj/IuAlOXTQG9872riYGASmdYwGnNVJRhk3v7aQ7g05cCS6DXbsUS1ZqxwLMnLCNf0lxT/qrjBH2kypigbACMcrk9NNk6zZoebZRY1uAH03g5+Q0lfAoErMYk=
+	t=1729607363; cv=none; b=Oqkud4G6/VKj+Pjr+ObUvCeb0cAhZA8WBfaipPOHFEAhnCy/62GkRLjdRKpVZlHiMlNnH0Vbh5PY5nt95tpOJEkTSWcaYtxwdllvhbM7a/NrkfLhn2JAPqYosx5u07iH8cRhVi6hY3J/L1A6reQQT3ag6ity1/QJXwBJvhDpN6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729607255; c=relaxed/simple;
-	bh=EEGZjkBVFIydk64RZp3TZOhsFaf+H/aAhwxYkoxUgWM=;
+	s=arc-20240116; t=1729607363; c=relaxed/simple;
+	bh=U1vel9b4kuugM7u5sQxQV4OKtSAB7wEvpIwskiiHw/Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PVxFfNpgFizzm0rLaOslmPpHebDsHNOM7GADaU9XkDdCtJyG5Qqt/0okUrm1KTcEWXxvXvTDvsGB/Cy5lJuvyUDU4laSPvyVZHGdGud8OBiuLQLnq8jNs44XmPYPqOgOmhT/QQsIs18ZKwnqtopRYdrlWNoXrSMBzrLsaozq3ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YWTMraz8; arc=none smtp.client-ip=209.85.128.44
+	 Content-Type:Content-Disposition:In-Reply-To; b=C6bPZkYh7MAkzh9h9KASK2YV9clkR2Ssu04xTK5RaCvS9qfvnY5L8TF2EhloETtY6D6agmrEWq215/bvIMrdwLrlIgChe7S7JuYEPE9KBVHdiK6LX79VK5bY1GGihc2zlpOWcQPr7ae1UwtB0eHiOivI39TNDBKF4cEOr25b/qI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UoqEysz/; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YWTMraz8"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-431688d5127so33850895e9.0
-        for <imx@lists.linux.dev>; Tue, 22 Oct 2024 07:27:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UoqEysz/"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4315c1c7392so52607065e9.1
+        for <imx@lists.linux.dev>; Tue, 22 Oct 2024 07:29:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729607252; x=1730212052; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1729607360; x=1730212160; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ng8I+0cJXe7sxBRT/nYKZfXgC2lDhrQoGCa5lmPF3wo=;
-        b=YWTMraz8tzROotdjJ5u0sa23+GA+dakQuvjlEOfGJ8/UnKKzlQ7A+qZR0ecdm1KXXG
-         XvmeTKOAQgIUOa3v7rZ6dfq8WavxrVAivsytJuIdLATKfIPLBKpQ0MSIj92gVteLJNQx
-         Ob+90rdWkOkAOGqkDVAh44qglPwX0nNTUO/CEGzcUzGbTmIuQ5yjmVPLnJR5B/B4Wq74
-         9GzJ+tz78CzUi6Emd/ItSSfRCBrHVpuQ+PF7kq4YDn5k4QrCYHE3EKWUgyri4RKEOJJv
-         SRnAxl/ixlx2oYscojG+Rd6jumPL016pn5pbOqt0iJJkGHlJHsL9oMKflXlWSLWcRU8a
-         VOrQ==
+        bh=DkutHKlfF595sYSPoVn9FoUtRcuWewPbATznGxjSDTo=;
+        b=UoqEysz/CvgvjPcj2fwM/OPO9vNHLQdqyfnzZi0myByuc3JGzdysq8FjWu2gth+Br+
+         COs39Wl0as6ZA+rRfH03PN18mAwmuwZ2vCS4FHXgC63Iahmojfm8TqP5Ndflolj5s10S
+         IgvVOEwqjdfCBnAjjgQFmJ2/xWuR7Am6bKyTkGiXzLx1vfHOaSPMH+QxhkOmuS1XmH12
+         QI0kjJ5YzEz/06Bz4ZceCILQ1GfH+q3FcoqanpUbjwPlvuYk72ltvuRHx7g8Dnmrmxiy
+         Bvqw1+YOJkaU2w3Xk8kfsfyaEHwK7y69k5gEVm5InoaAZIbnZYgnMoIlH/IWpQS8HpJZ
+         9zPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729607252; x=1730212052;
+        d=1e100.net; s=20230601; t=1729607360; x=1730212160;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ng8I+0cJXe7sxBRT/nYKZfXgC2lDhrQoGCa5lmPF3wo=;
-        b=lHaMWQrPiWMxr2FrbquHy2LZ6r/ttAcSi/wEyDCbi0724su9qapW5mgRDm2xZe5eoe
-         rfaCXPO4VdlEiyFWBzbOx9XAKm7u1WCwABCNC6t2BgUnXSsUhoOgPmLrgdHolQueoj9k
-         BrHBmBamrAlwHHM27XIt7RNwujCoUuEhHl6VD89Q0JYqsZUCnLSYZTlkLPAulZnEampu
-         VDk0mnzsfAseKSMAzAs1/8DBe5tDVL5jbx3/tia0fbb4tCNgCptcOg76Rb2aZPjaBiUg
-         i7wGOGpTh/p7uDBlqAsToh2LVVfbQ1rL9zCMwg/PQghzXCUf8IwKndqo37MG/RKzwJdC
-         x/2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUf7d0a4NoGJ7akWU7ilXap6+WpXibZnKAi+WLsqwMJB0wNkaXkbc3gx/9fVC+DNG3srAc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyUgkU18j7BRas4enEjoE5P41wEDfAcyC7GcO4kmWUuhEtN0lLx
-	bd2gY0in/fr8JYaLm0XEQuiiUxwHOJIqN9c1/VDYnXt2lY7gv0lf64FuFKguXsU=
-X-Google-Smtp-Source: AGHT+IHQr5kFrKkenH9d+GMyxeVy1Tq7YzzpDy2LwfKIpAZkqFFPymqGx6C8CE6KYGTO2dSqHqAtkA==
-X-Received: by 2002:a05:600c:35c6:b0:431:547e:81d0 with SMTP id 5b1f17b1804b1-431616318e5mr126513205e9.11.1729607251813;
-        Tue, 22 Oct 2024 07:27:31 -0700 (PDT)
+        bh=DkutHKlfF595sYSPoVn9FoUtRcuWewPbATznGxjSDTo=;
+        b=gWa/WxDwXbM2R6VtSdIdw7vUTCOsRdNL+2zOn8Szvb+ivJ2ZKgzHJ8P9n14iSR6QUy
+         Bx2BtZjJn3+KozLnR34TWlkiTeFcI+IzojtVlavPZ7LHlgapNdslZdnflzx6eOitMxSc
+         oL19fmfL92Cw7sdEm+wvpkJBm7xFgS+Fyy9PPB7uBceVmlBto4RjWwDS8DuuQHl70mLE
+         u8LgOyJXJf+L5VEtpSOzS1cjSGDQrOcKbh+80poQd9EP/2mNt73bnzUxGtqTC79rmieO
+         GiO5lkQ3MlPnSwM6FqT+kdKF8k/6FNu4iwANzpRsVK36hz2+oXf/JMkU7bTd7+KOgx1L
+         /PGA==
+X-Forwarded-Encrypted: i=1; AJvYcCU9+irQmg8EGdITDkft0hZRrlr9eUXz1jttZCGzurfN2TtbpXUEI1VqookHPsdzv+cA2e4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwzK8ZO33kTfKfWmibGCmRijm7KtDXxt6rZYFfDWWkDQYU3jBE1
+	WMjnp40Am1iO30wdRGkOzg5y2/2c2OM9R/d0ws1za7bT4aCurE2QHv8fyCJOYF8=
+X-Google-Smtp-Source: AGHT+IHYxdT55nb92Bpp1rmrk81yk5eULeipYCC5+xOcm0icNZ2mIb7EGDVsgFsrblrkQv2bAtiBLA==
+X-Received: by 2002:a05:600c:4ed4:b0:42a:a6d2:3270 with SMTP id 5b1f17b1804b1-43161669e34mr123005205e9.21.1729607360299;
+        Tue, 22 Oct 2024 07:29:20 -0700 (PDT)
 Received: from linaro.org ([82.76.168.176])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4316f57f89fsm88544175e9.16.2024.10.22.07.27.30
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4316f5c300csm90227375e9.30.2024.10.22.07.29.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Oct 2024 07:27:31 -0700 (PDT)
-Date: Tue, 22 Oct 2024 17:27:29 +0300
+        Tue, 22 Oct 2024 07:29:19 -0700 (PDT)
+Date: Tue, 22 Oct 2024 17:29:18 +0300
 From: Abel Vesa <abel.vesa@linaro.org>
-To: Pengfei Li <pengfei.li_1@nxp.com>
-Cc: krzk+dt@kernel.org, robh@kernel.org, abelvesa@kernel.org,
-	mturquette@baylibre.com, sboyd@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, ping.bai@nxp.com,
-	ye.li@nxp.com, peng.fan@nxp.com, aisheng.dong@nxp.com,
-	frank.li@nxp.com, kernel@pengutronix.de, festevam@gmail.com,
-	linux-clk@vger.kernel.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 4/4] clk: imx: add i.MX91 clk
-Message-ID: <Zxe2UUzhAR3yfG8L@linaro.org>
-References: <20241017225137.1158924-1-pengfei.li_1@nxp.com>
- <20241017225137.1158924-5-pengfei.li_1@nxp.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Abel Vesa <abelvesa@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Aisheng Dong <aisheng.dong@nxp.com>, linux-clk@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 1/4] clk: imx: lpcg-scu: SW workaround for errata
+ (e10858)
+Message-ID: <Zxe2vtwKP0hFrPKV@linaro.org>
+References: <20241018-imx-clk-v1-v2-0-92c0b66ca970@nxp.com>
+ <20241018-imx-clk-v1-v2-1-92c0b66ca970@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -74,185 +76,111 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241017225137.1158924-5-pengfei.li_1@nxp.com>
+In-Reply-To: <20241018-imx-clk-v1-v2-1-92c0b66ca970@nxp.com>
 
-On 24-10-17 15:51:37, Pengfei Li wrote:
-> Reuse i.MX93 clk driver for i.MX91, because i.MX91 reuses the
-> Clock Control Module from i.MX93, with only a few clocks removed
-> and a few clocks added.
+On 24-10-18 18:00:55, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
 > 
-> For clocks specific to i.MX93 use PLAT_IMX93 to flag them, for
-> clocks specific to i.MX91, use PLAT_IMX91 to flag them. Others
-> are shared by both.
+> Back-to-back LPCG writes can be ignored by the LPCG register due to
+> a HW bug. The writes need to be separated by at least 4 cycles of
+> the gated clock. See https://www.nxp.com.cn/docs/en/errata/IMX8_1N94W.pdf
 > 
-> Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
-> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> The workaround is implemented as follows:
+> 1. For clocks running greater than or equal to 24MHz, a read
+> followed by the write will provide sufficient delay.
+> 2. For clocks running below 24MHz, add a delay of 4 clock cylces
+> after the write to the LPCG register.
+> 
+> Fixes: 2f77296d3df9 ("clk: imx: add lpcg clock support")
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 > ---
->  drivers/clk/imx/clk-imx93.c | 64 +++++++++++++++++++++++--------------
->  1 file changed, 40 insertions(+), 24 deletions(-)
+>  drivers/clk/imx/clk-lpcg-scu.c | 35 +++++++++++++++++++++++++++++++----
+>  1 file changed, 31 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/clk/imx/clk-imx93.c b/drivers/clk/imx/clk-imx93.c
-> index c8b65146e76e..4d1123f51903 100644
-> --- a/drivers/clk/imx/clk-imx93.c
-> +++ b/drivers/clk/imx/clk-imx93.c
-> @@ -15,7 +15,11 @@
+> diff --git a/drivers/clk/imx/clk-lpcg-scu.c b/drivers/clk/imx/clk-lpcg-scu.c
+> index dd5abd09f3e206a5073767561b517d5b3320b28c..cd42190233662c66f2c354f0a2eee3a2531eeb3a 100644
+> --- a/drivers/clk/imx/clk-lpcg-scu.c
+> +++ b/drivers/clk/imx/clk-lpcg-scu.c
+> @@ -6,10 +6,12 @@
 >  
->  #include "clk.h"
+>  #include <linux/bits.h>
+>  #include <linux/clk-provider.h>
+> +#include <linux/delay.h>
+>  #include <linux/err.h>
+>  #include <linux/io.h>
+>  #include <linux/slab.h>
+>  #include <linux/spinlock.h>
+> +#include <linux/units.h>
 >  
-> -#define IMX93_CLK_END 202
+>  #include "clk-scu.h"
+>  
+> @@ -41,6 +43,31 @@ struct clk_lpcg_scu {
+>  
+>  #define to_clk_lpcg_scu(_hw) container_of(_hw, struct clk_lpcg_scu, hw)
+>  
+> +/* e10858 -LPCG clock gating register synchronization errata */
+> +static void lpcg_e10858_writel(unsigned long rate, void __iomem *reg, u32 val)
+> +{
+> +	u32 reg1;
 > +
-> +#define IMX93_CLK_END 207
+> +	writel(val, reg);
 > +
-> +#define PLAT_IMX93 BIT(0)
-> +#define PLAT_IMX91 BIT(1)
+> +	if (rate >= 24 * HZ_PER_MHZ || rate == 0) {
+> +		/*
+> +		 * The time taken to access the LPCG registers from the AP core
+> +		 * through the interconnect is longer than the minimum delay
+> +		 * of 4 clock cycles required by the errata.
+> +		 * Adding a readl will provide sufficient delay to prevent
+> +		 * back-to-back writes.
+> +		 */
+> +		reg1 = readl(reg);
+> +	} else {
+> +		/*
+> +		 * For clocks running below 24MHz, wait a minimum of
+> +		 * 4 clock cycles.
+> +		 */
+> +		ndelay(4 * (DIV_ROUND_UP(1000 * HZ_PER_MHZ, rate)));
+> +	}
+> +}
+> +
+>  static int clk_lpcg_scu_enable(struct clk_hw *hw)
+>  {
+>  	struct clk_lpcg_scu *clk = to_clk_lpcg_scu(hw);
+> @@ -57,7 +84,8 @@ static int clk_lpcg_scu_enable(struct clk_hw *hw)
+>  		val |= CLK_GATE_SCU_LPCG_HW_SEL;
 >  
->  enum clk_sel {
->  	LOW_SPEED_IO_SEL,
-> @@ -55,6 +59,7 @@ static const struct imx93_clk_root {
->  	u32 off;
->  	enum clk_sel sel;
->  	unsigned long flags;
-> +	unsigned long plat;
->  } root_array[] = {
->  	/* a55/m33/bus critical clk for system run */
->  	{ IMX93_CLK_A55_PERIPH,		"a55_periph_root",	0x0000,	FAST_SEL, CLK_IS_CRITICAL },
-> @@ -65,7 +70,7 @@ static const struct imx93_clk_root {
->  	{ IMX93_CLK_BUS_AON,		"bus_aon_root",		0x0300,	LOW_SPEED_IO_SEL, CLK_IS_CRITICAL },
->  	{ IMX93_CLK_WAKEUP_AXI,		"wakeup_axi_root",	0x0380,	FAST_SEL, CLK_IS_CRITICAL },
->  	{ IMX93_CLK_SWO_TRACE,		"swo_trace_root",	0x0400,	LOW_SPEED_IO_SEL, },
-> -	{ IMX93_CLK_M33_SYSTICK,	"m33_systick_root",	0x0480,	LOW_SPEED_IO_SEL, },
-> +	{ IMX93_CLK_M33_SYSTICK,	"m33_systick_root",	0x0480,	LOW_SPEED_IO_SEL, 0, PLAT_IMX93, },
->  	{ IMX93_CLK_FLEXIO1,		"flexio1_root",		0x0500,	LOW_SPEED_IO_SEL, },
->  	{ IMX93_CLK_FLEXIO2,		"flexio2_root",		0x0580,	LOW_SPEED_IO_SEL, },
->  	{ IMX93_CLK_LPTMR1,		"lptmr1_root",		0x0700,	LOW_SPEED_IO_SEL, },
-> @@ -122,15 +127,15 @@ static const struct imx93_clk_root {
->  	{ IMX93_CLK_HSIO_ACSCAN_80M,	"hsio_acscan_80m_root",	0x1f80,	LOW_SPEED_IO_SEL, },
->  	{ IMX93_CLK_HSIO_ACSCAN_480M,	"hsio_acscan_480m_root", 0x2000, MISC_SEL, },
->  	{ IMX93_CLK_NIC_AXI,		"nic_axi_root",		0x2080, FAST_SEL, CLK_IS_CRITICAL, },
-> -	{ IMX93_CLK_ML_APB,		"ml_apb_root",		0x2180,	LOW_SPEED_IO_SEL, },
-> -	{ IMX93_CLK_ML,			"ml_root",		0x2200,	FAST_SEL, },
-> +	{ IMX93_CLK_ML_APB,		"ml_apb_root",		0x2180,	LOW_SPEED_IO_SEL, 0, PLAT_IMX93, },
-> +	{ IMX93_CLK_ML,			"ml_root",		0x2200,	FAST_SEL, 0, PLAT_IMX93, },
->  	{ IMX93_CLK_MEDIA_AXI,		"media_axi_root",	0x2280,	FAST_SEL, },
->  	{ IMX93_CLK_MEDIA_APB,		"media_apb_root",	0x2300,	LOW_SPEED_IO_SEL, },
-> -	{ IMX93_CLK_MEDIA_LDB,		"media_ldb_root",	0x2380,	VIDEO_SEL, },
-> +	{ IMX93_CLK_MEDIA_LDB,		"media_ldb_root",	0x2380,	VIDEO_SEL, 0, PLAT_IMX93, },
->  	{ IMX93_CLK_MEDIA_DISP_PIX,	"media_disp_pix_root",	0x2400,	VIDEO_SEL, },
->  	{ IMX93_CLK_CAM_PIX,		"cam_pix_root",		0x2480,	VIDEO_SEL, },
-> -	{ IMX93_CLK_MIPI_TEST_BYTE,	"mipi_test_byte_root",	0x2500,	VIDEO_SEL, },
-> -	{ IMX93_CLK_MIPI_PHY_CFG,	"mipi_phy_cfg_root",	0x2580,	VIDEO_SEL, },
-> +	{ IMX93_CLK_MIPI_TEST_BYTE,	"mipi_test_byte_root",	0x2500,	VIDEO_SEL, 0, PLAT_IMX93, },
-> +	{ IMX93_CLK_MIPI_PHY_CFG,	"mipi_phy_cfg_root",	0x2580,	VIDEO_SEL, 0, PLAT_IMX93, },
->  	{ IMX93_CLK_ADC,		"adc_root",		0x2700,	LOW_SPEED_IO_SEL, },
->  	{ IMX93_CLK_PDM,		"pdm_root",		0x2780,	AUDIO_SEL, },
->  	{ IMX93_CLK_TSTMR1,		"tstmr1_root",		0x2800,	LOW_SPEED_IO_SEL, },
-> @@ -139,13 +144,16 @@ static const struct imx93_clk_root {
->  	{ IMX93_CLK_MQS2,		"mqs2_root",		0x2980,	AUDIO_SEL, },
->  	{ IMX93_CLK_AUDIO_XCVR,		"audio_xcvr_root",	0x2a00,	NON_IO_SEL, },
->  	{ IMX93_CLK_SPDIF,		"spdif_root",		0x2a80,	AUDIO_SEL, },
-> -	{ IMX93_CLK_ENET,		"enet_root",		0x2b00,	NON_IO_SEL, },
-> -	{ IMX93_CLK_ENET_TIMER1,	"enet_timer1_root",	0x2b80,	LOW_SPEED_IO_SEL, },
-> -	{ IMX93_CLK_ENET_TIMER2,	"enet_timer2_root",	0x2c00,	LOW_SPEED_IO_SEL, },
-> -	{ IMX93_CLK_ENET_REF,		"enet_ref_root",	0x2c80,	NON_IO_SEL, },
-> -	{ IMX93_CLK_ENET_REF_PHY,	"enet_ref_phy_root",	0x2d00,	LOW_SPEED_IO_SEL, },
-> -	{ IMX93_CLK_I3C1_SLOW,		"i3c1_slow_root",	0x2d80,	LOW_SPEED_IO_SEL, },
-> -	{ IMX93_CLK_I3C2_SLOW,		"i3c2_slow_root",	0x2e00,	LOW_SPEED_IO_SEL, },
-> +	{ IMX93_CLK_ENET,		"enet_root",		0x2b00,	NON_IO_SEL, 0, PLAT_IMX93, },
-> +	{ IMX93_CLK_ENET_TIMER1,	"enet_timer1_root",	0x2b80,	LOW_SPEED_IO_SEL, 0, PLAT_IMX93, },
-> +	{ IMX93_CLK_ENET_TIMER2,	"enet_timer2_root",	0x2c00,	LOW_SPEED_IO_SEL, 0, PLAT_IMX93, },
-> +	{ IMX93_CLK_ENET_REF,		"enet_ref_root",	0x2c80,	NON_IO_SEL, 0, PLAT_IMX93, },
-> +	{ IMX93_CLK_ENET_REF_PHY,	"enet_ref_phy_root",	0x2d00,	LOW_SPEED_IO_SEL, 0, PLAT_IMX93, },
-> +	{ IMX91_CLK_ENET1_QOS_TSN, 	"enet1_qos_tsn_root",   0x2b00, NON_IO_SEL, 0, PLAT_IMX91, },
-> +	{ IMX91_CLK_ENET_TIMER,		"enet_timer_root",      0x2b80, LOW_SPEED_IO_SEL, 0, PLAT_IMX91, },
-> +	{ IMX91_CLK_ENET2_REGULAR,	"enet2_regular_root",   0x2c80, NON_IO_SEL, 0, PLAT_IMX91, },
-> +	{ IMX93_CLK_I3C1_SLOW,		"i3c1_slow_root",	0x2d80,	LOW_SPEED_IO_SEL, 0, PLAT_IMX93, },
-> +	{ IMX93_CLK_I3C2_SLOW,		"i3c2_slow_root",	0x2e00,	LOW_SPEED_IO_SEL, 0, PLAT_IMX93, },
->  	{ IMX93_CLK_USB_PHY_BURUNIN,	"usb_phy_root",		0x2e80,	LOW_SPEED_IO_SEL, },
->  	{ IMX93_CLK_PAL_CAME_SCAN,	"pal_came_scan_root",	0x2f00,	MISC_SEL, }
->  };
-> @@ -157,6 +165,7 @@ static const struct imx93_clk_ccgr {
->  	u32 off;
->  	unsigned long flags;
->  	u32 *shared_count;
-> +	unsigned long plat;
->  } ccgr_array[] = {
->  	{ IMX93_CLK_A55_GATE,		"a55_alt",	"a55_alt_root",		0x8000, },
->  	/* M33 critical clk for system run */
-> @@ -246,8 +255,10 @@ static const struct imx93_clk_ccgr {
->  	{ IMX93_CLK_AUD_XCVR_GATE,	"aud_xcvr",	"audio_xcvr_root",	0x9b80, },
->  	{ IMX93_CLK_SPDIF_GATE,		"spdif",	"spdif_root",		0x9c00, },
->  	{ IMX93_CLK_HSIO_32K_GATE,	"hsio_32k",	"osc_32k",		0x9dc0, },
-> -	{ IMX93_CLK_ENET1_GATE,		"enet1",	"wakeup_axi_root",	0x9e00, },
-> -	{ IMX93_CLK_ENET_QOS_GATE,	"enet_qos",	"wakeup_axi_root",	0x9e40, },
-> +	{ IMX93_CLK_ENET1_GATE,		"enet1",	"wakeup_axi_root",	0x9e00, 0, NULL, PLAT_IMX93, },
-> +	{ IMX93_CLK_ENET_QOS_GATE,	"enet_qos",	"wakeup_axi_root",	0x9e40, 0, NULL, PLAT_IMX93, },
-> +	{ IMX91_CLK_ENET2_REGULAR_GATE, "enet2_regular",        "wakeup_axi_root",      0x9e00, 0, NULL, PLAT_IMX91, },
-> +	{ IMX91_CLK_ENET1_QOS_TSN_GATE,     "enet1_qos_tsn",        "wakeup_axi_root",      0x9e40, 0, NULL, PLAT_IMX91, },
->  	/* Critical because clk accessed during CPU idle */
->  	{ IMX93_CLK_SYS_CNT_GATE,	"sys_cnt",	"osc_24m",		0x9e80, CLK_IS_CRITICAL},
->  	{ IMX93_CLK_TSTMR1_GATE,	"tstmr1",	"bus_aon_root",		0x9ec0, },
-> @@ -267,6 +278,7 @@ static int imx93_clocks_probe(struct platform_device *pdev)
->  	const struct imx93_clk_ccgr *ccgr;
->  	void __iomem *base, *anatop_base;
->  	int i, ret;
-> +	const unsigned long plat = (unsigned long)device_get_match_data(&pdev->dev);
+>  	reg |= val << clk->bit_idx;
+> -	writel(reg, clk->reg);
+> +
+> +	lpcg_e10858_writel(clk_hw_get_rate(hw), clk->reg, reg);
 >  
->  	clk_hw_data = devm_kzalloc(dev, struct_size(clk_hw_data, hws,
->  					  IMX93_CLK_END), GFP_KERNEL);
-> @@ -316,17 +328,20 @@ static int imx93_clocks_probe(struct platform_device *pdev)
+>  	spin_unlock_irqrestore(&imx_lpcg_scu_lock, flags);
 >  
->  	for (i = 0; i < ARRAY_SIZE(root_array); i++) {
->  		root = &root_array[i];
-> -		clks[root->clk] = imx93_clk_composite_flags(root->name,
-> -							    parent_names[root->sel],
-> -							    4, base + root->off, 3,
-> -							    root->flags);
-> +		if (!root->plat || root->plat & plat)
-> +			clks[root->clk] = imx93_clk_composite_flags(root->name,
-> +						parent_names[root->sel],
-> +						4, base + root->off, 3,
-> +						root->flags);
->  	}
+> @@ -74,7 +102,7 @@ static void clk_lpcg_scu_disable(struct clk_hw *hw)
 >  
->  	for (i = 0; i < ARRAY_SIZE(ccgr_array); i++) {
->  		ccgr = &ccgr_array[i];
-> -		clks[ccgr->clk] = imx93_clk_gate(NULL, ccgr->name, ccgr->parent_name,
-> -						 ccgr->flags, base + ccgr->off, 0, 1, 1, 3,
-> -						 ccgr->shared_count);
-> +		if (!ccgr->plat || ccgr->plat & plat)
-> +			clks[ccgr->clk] = imx93_clk_gate(NULL,
-> +				ccgr->name, ccgr->parent_name,
-> +				ccgr->flags, base + ccgr->off, 0, 1, 1, 3,
-> +				ccgr->shared_count);
->  	}
-
-CHECK: Alignment should match open parenthesis             
-#137: FILE: drivers/clk/imx/clk-imx93.c:333:            
-+                       clks[root->clk] = imx93_clk_composite_flags(root->name,      
-+                                               parent_names[root->sel],             
-                                                           
-CHECK: Alignment should match open parenthesis
-#149: FILE: drivers/clk/imx/clk-imx93.c:342:
-+                       clks[ccgr->clk] = imx93_clk_gate(NULL,                       
-+                               ccgr->name, ccgr->parent_name,                       
-
-
-Please run checkpatch before sending.
-
-I'll apply once these are fixed.
-
+>  	reg = readl_relaxed(clk->reg);
+>  	reg &= ~(CLK_GATE_SCU_LPCG_MASK << clk->bit_idx);
+> -	writel(reg, clk->reg);
+> +	lpcg_e10858_writel(clk_hw_get_rate(hw), clk->reg, reg);
 >  
->  	clks[IMX93_CLK_A55_SEL] = imx_clk_hw_mux2("a55_sel", base + 0x4820, 0, 1, a55_core_sels,
-> @@ -356,7 +371,8 @@ static int imx93_clocks_probe(struct platform_device *pdev)
+>  	spin_unlock_irqrestore(&imx_lpcg_scu_lock, flags);
 >  }
+> @@ -149,9 +177,8 @@ static int __maybe_unused imx_clk_lpcg_scu_resume(struct device *dev)
+>  	 * FIXME: Sometimes writes don't work unless the CPU issues
+>  	 * them twice
+>  	 */
+> -
+> -	writel(clk->state, clk->reg);
+
+Now that you removed one of the writes, doesn't the comment above has to
+be removed as well ?
+
+>  	writel(clk->state, clk->reg);
+> +	lpcg_e10858_writel(0, clk->reg, clk->state);
+>  	dev_dbg(dev, "restore lpcg state 0x%x\n", clk->state);
 >  
->  static const struct of_device_id imx93_clk_of_match[] = {
-> -	{ .compatible = "fsl,imx93-ccm" },
-> +	{ .compatible = "fsl,imx93-ccm", .data = (void *)PLAT_IMX93 },
-> +	{ .compatible = "fsl,imx91-ccm", .data = (void *)PLAT_IMX91 },
->  	{ /* Sentinel */ },
->  };
->  MODULE_DEVICE_TABLE(of, imx93_clk_of_match);
+>  	return 0;
+> 
 > -- 
-> 2.34.1
+> 2.37.1
 > 
