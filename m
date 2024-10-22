@@ -1,157 +1,135 @@
-Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA13B1BE853
-	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 17:42:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48021C9DC9;
+	Tue, 22 Oct 2024 18:09:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729618957; cv=none; b=DmesGKZ3980kXoWNOpDeLVol0CuTtBpGrFoO5cyd8RcXcFu/XotiwSRwuaSlVRpufqG3bojlKXrx5M3eSJQhFCuEEINN1uKDacl4VTaIMs7WJXGak6GOJk4KYoz6+chLn6k1kQOpYrM+Zvut9EatiLs/9DG0WtI0+4JIBCPOqTk=
+	t=1729620601; cv=none; b=d7NBEzvlQJIgcwlNeST859Wv7gtK7GxoOex0HMCz5H4rHg2gshsBCSVY1cIW1XFBxfRCHg6E+gYNpFk6SVHgVvvOX0XBb1r4zHviBdYEHWmTFoUL/HqLiGpy3issmOfaOk6dVpq7WYH2FHcdLXzc+yuBB40z2MOhgexGHDcEy3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729618957; c=relaxed/simple;
-	bh=v9o+diiWPAzNW6fcahbOqHdppyHhmJ37GjMy4tZPO6A=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OO2dhZ4zguLOeTMU3BL9CiwBQSGuyHsd8EBM/Rhbpn49cvNlFA0JchvnNcI8MGTMvgOfdewmgbMK3Tz/boZUxve94yfuD9fqsp4mbGfFx7qElRbPJrnKSwn1eK5dcAEqdJuF2/4douW4diTReoWotgWhtMrhbLXxiJb8ypZJBG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=WrCJ8CIS; arc=none smtp.client-ip=161.97.139.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+	s=arc-20240116; t=1729620601; c=relaxed/simple;
+	bh=OYH9WPNs01cYeqbOUy3BVBhL9OiM6lYYx0bzKdkMt4Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oCJ4EF9HL72TVOgw+xVWqhdbonFTaG84E8Jn5lP6RtMrUhomzFVcmrhecrnFHG5BcBk2syITG5lfhlNHx6CZbgGKTFeEnzYuCc1FMXhoS6rLK50BuB0zi/kmO/VSB4b3UbaGE1ZDYvq0sa2elbNOId79eI7Xxo5ehocgf6k7+Fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MC1CwyNT; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="WrCJ8CIS"
-Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
-	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <andreas@kemnade.info>)
-	id 1t3Itn-00A6XL-2V
-	for imx@lists.linux.dev;
-	Tue, 22 Oct 2024 19:42:27 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=YzXiqSqg0aayLyb7AVqmSvNxO5PvD8+CWdeuiriR2g4=; b=WrCJ8CISZzKR5F2k23TGKepHhJ
-	AmOqL5WWVvwpujLtGGbInXiQsofKfQ6xN1HBHTd9jnbuwTeNXRBElnzZyGaIVU//dsb9pSgVGfxO1
-	9mrqlMaxDHWr8adQivIIl97piVyPc1u2LWwQ0T6EVfzBbc/90bbi59QNJrZFjavcFgZXwmsVdBgBx
-	zG40HCAtTJF9I5Q1y1MLf0bULCuOQ1Kvyy8UhRyQ388bxkJLGfSoproLFmGXNM1HNBPa8G9P6J37S
-	njkI06N7B57rT3mh29Ggx9+YxeavFAhS1AgfiZpKvUOeZiNOUJVpwGKmzYEIGACNTbgqa/qZUjQAJ
-	es6L8phw==;
-Date: Tue, 22 Oct 2024 19:42:21 +0200
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Conor Dooley <conor@kernel.org>
-Cc: Shawn Guo <shawnguo@kernel.org>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Alexander Stein <alexander.stein@ew.tq-group.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Fabio
- Estevam <festevam@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- imx@lists.linux.dev, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, devicetree@vger.kernel.org, Rob Herring
- <robh@kernel.org>
-Subject: Re: [PATCH 2/3] ARM: dts: imx: Add devicetree for Kobo Clara 2E
-Message-ID: <20241022194221.43b9073b@akair>
-In-Reply-To: <20241022-refurbish-laborious-e7cc067966dc@spud>
-References: <20241021173631.299143-1-andreas@kemnade.info>
-	<20241021173631.299143-3-andreas@kemnade.info>
-	<20241022-refurbish-laborious-e7cc067966dc@spud>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MC1CwyNT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729620600; x=1761156600;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=OYH9WPNs01cYeqbOUy3BVBhL9OiM6lYYx0bzKdkMt4Y=;
+  b=MC1CwyNTPHlss5NvyboHFendtvU7wj/Ln/zT8nBbCCNHftJLOFmqwJQO
+   sBog2dqQYfI6GJuu1sOx7xwqM7FChK7aVVPQbFiE7TkRjNWe8pCVA0XIG
+   KOoppy+hr4kfIglKaflBGYC3Jo/aRiNg4remKjgv30gbj63nDPDMnev60
+   KQ6jO2Qx9cZN4NaFGUFtayD2tUQ0S9WtWp180HrkGKb8KD9FjbQvql/L3
+   /k05viCLcZFTj15AfkjWWLgBz1Q70M8HAYuMWAU42ktFmEc4+q5l/pjNt
+   VvJr1z1P2G6OnjckPo1TPzGlNJz9a8mkV0kJBtiRGnQriIZEk804lra9M
+   A==;
+X-CSE-ConnectionGUID: pgHNWxxMTMmM3R8izSHvqQ==
+X-CSE-MsgGUID: 82d18x4dTJajND6yi3mxSg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="32869489"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="32869489"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 11:09:57 -0700
+X-CSE-ConnectionGUID: ED0qKapQQDK2hjuRPfgUpg==
+X-CSE-MsgGUID: fzS0ty/STD6leYXJa+oPDw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; 
+   d="scan'208";a="80363723"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 22 Oct 2024 11:09:54 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t3JKJ-000TvB-1G;
+	Tue, 22 Oct 2024 18:09:51 +0000
+Date: Wed, 23 Oct 2024 02:09:17 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	Abel Vesa <abelvesa@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Aisheng Dong <aisheng.dong@nxp.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-clk@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 1/4] clk: imx: lpcg-scu: SW workaround for errata
+ (e10858)
+Message-ID: <202410230141.3xLvkclt-lkp@intel.com>
+References: <20241018-imx-clk-v1-v2-1-92c0b66ca970@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241018-imx-clk-v1-v2-1-92c0b66ca970@nxp.com>
 
-Am Tue, 22 Oct 2024 17:59:10 +0100
-schrieb Conor Dooley <conor@kernel.org>:
+Hi Peng,
 
-> On Mon, Oct 21, 2024 at 07:36:30PM +0200, Andreas Kemnade wrote:
-> > Adds a devicetree for the Kobo Clara 2E Ebook reader. It is based
-> > on boards marked with "37NB-E60K2M+4A2" or "37NB-E60K2M+4B0". It is
-> > equipped with an i.MX6SLL SoC.
-> > 
-> > Expected to work:
-> >   - Buttons
-> >   - Wifi
-> >   - Bluetooth
-> >     (if Wifi is initialized first, driver does not handle regulators
-> >      yet)
-> >   - LED
-> >   - uSD
-> >   - USB
-> >   - RTC
+kernel test robot noticed the following build warnings:
 
-and also touchscreen.
-> > 
+[auto build test WARNING on d61a00525464bfc5fe92c6ad713350988e492b88]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Peng-Fan-OSS/clk-imx-lpcg-scu-SW-workaround-for-errata-e10858/20241018-175440
+base:   d61a00525464bfc5fe92c6ad713350988e492b88
+patch link:    https://lore.kernel.org/r/20241018-imx-clk-v1-v2-1-92c0b66ca970%40nxp.com
+patch subject: [PATCH v2 1/4] clk: imx: lpcg-scu: SW workaround for errata (e10858)
+config: arm64-randconfig-r061-20241022 (https://download.01.org/0day-ci/archive/20241023/202410230141.3xLvkclt-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 14.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241023/202410230141.3xLvkclt-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410230141.3xLvkclt-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/clk/imx/clk-lpcg-scu.c: In function 'lpcg_e10858_writel':
+>> drivers/clk/imx/clk-lpcg-scu.c:49:13: warning: variable 'reg1' set but not used [-Wunused-but-set-variable]
+      49 |         u32 reg1;
+         |             ^~~~
 
 
+vim +/reg1 +49 drivers/clk/imx/clk-lpcg-scu.c
 
-> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> > ---
-> >  arch/arm/boot/dts/nxp/imx/Makefile            |   2 +
-> >  .../dts/nxp/imx/imx6sll-kobo-clara2e-a.dts    |  23 +
-> >  .../dts/nxp/imx/imx6sll-kobo-clara2e-b.dts    |  23 +
-> >  .../nxp/imx/imx6sll-kobo-clara2e-common.dtsi  | 514
-> > ++++++++++++++++++ 4 files changed, 562 insertions(+)
-> >  create mode 100644
-> > arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts create mode
-> > 100644 arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dts create
-> > mode 100644
-> > arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-common.dtsi
-> > 
-> > diff --git a/arch/arm/boot/dts/nxp/imx/Makefile
-> > b/arch/arm/boot/dts/nxp/imx/Makefile index
-> > 92e291603ea13..58db45352b666 100644 ---
-> > a/arch/arm/boot/dts/nxp/imx/Makefile +++
-> > b/arch/arm/boot/dts/nxp/imx/Makefile @@ -290,6 +290,8 @@
-> > dtb-$(CONFIG_SOC_IMX6SL) += \ dtb-$(CONFIG_SOC_IMX6SLL) += \
-> >  	imx6sll-evk.dtb \
-> >  	imx6sll-kobo-clarahd.dtb \
-> > +	imx6sll-kobo-clara2e-a.dtb \
-> > +	imx6sll-kobo-clara2e-b.dtb \
-> >  	imx6sll-kobo-librah2o.dtb
-> >  dtb-$(CONFIG_SOC_IMX6SX) += \
-> >  	imx6sx-nitrogen6sx.dtb \
-> > diff --git a/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts
-> > b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts new file
-> > mode 100644 index 0000000000000..33756d6de7aa0
-> > --- /dev/null
-> > +++ b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts
-> > @@ -0,0 +1,23 @@
-> > +// SPDX-License-Identifier: (GPL-2.0)
-> > +/*
-> > + * Device tree for the Kobo Clara 2E rev A ebook reader
-> > + *
-> > + * Name on mainboard is: 37NB-E60K2M+4A2
-> > + * Serials start with: E60K2M (a number also seen in
-> > + * vendor kernel sources)
-> > + *
-> > + * Copyright 2024 Andreas Kemnade
-> > + */
-> > +
-> > +/dts-v1/;
-> > +
-> > +#include "imx6sll-kobo-clara2e-common.dtsi"
-> > +
-> > +/ {
-> > +	model = "Kobo Clara 2E";
-> > +	compatible = "kobo,clara2e-b", "kobo,clara2e",
-> > "fsl,imx6sll"; +};
-> > +
-> > +&i2c2 {
-> > +	/* EPD PMIC SY7636 at 0x62 */  
-> 
-> Could you explain what you're doing here, please?
->
-I am not sure what you are really after with this question...
-So I am guessing a bit.
-I describe the hardware as good as possible. The sy7636a (apparently
-=sy7636) driver could probably be used here but the driver and its
-bindings needs to be extended to specify an input supply and some gpios.
-So at the moment I could not use a machine-readable way of fully
-describe the stuff here. But I want to put a human-readable mark here
-so if someone extends the driver, he/she might be aware that there are
-some possible users and candidates for a Tested-by here.
-For the JD9930 it is even worse. No driver in kernel. I have a pretty
-dirty one requiring some rounds with the brush before sending it.
-So the mark is good for information what is missing and for teaming up.
+    45	
+    46	/* e10858 -LPCG clock gating register synchronization errata */
+    47	static void lpcg_e10858_writel(unsigned long rate, void __iomem *reg, u32 val)
+    48	{
+  > 49		u32 reg1;
+    50	
+    51		writel(val, reg);
+    52	
+    53		if (rate >= 24 * HZ_PER_MHZ || rate == 0) {
+    54			/*
+    55			 * The time taken to access the LPCG registers from the AP core
+    56			 * through the interconnect is longer than the minimum delay
+    57			 * of 4 clock cycles required by the errata.
+    58			 * Adding a readl will provide sufficient delay to prevent
+    59			 * back-to-back writes.
+    60			 */
+    61			reg1 = readl(reg);
+    62		} else {
+    63			/*
+    64			 * For clocks running below 24MHz, wait a minimum of
+    65			 * 4 clock cycles.
+    66			 */
+    67			ndelay(4 * (DIV_ROUND_UP(1000 * HZ_PER_MHZ, rate)));
+    68		}
+    69	}
+    70	
 
-Regards,
-Andreas
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
