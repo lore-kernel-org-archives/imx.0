@@ -1,58 +1,58 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A4D1BC9F6
-	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 16:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FFAA1B6CF2
+	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 17:05:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729616397; cv=none; b=XfrvW28uAqURgwuxk5TYdkUOllfSITkp13IVB8vOQ1+i51AOz4Oz7AvXfJ3zC/BlfOKY4vBgQR4ha38CeZd3bIGdJwZwnrt8iSDDUzh4Jx7dmAn2rbNEQ1Bl76DJvP4MEMtD5qh1SDPbLQbZ8WeF+xlV3cSJ4JiqaZpR9g0a+5I=
+	t=1729616723; cv=none; b=gsnKUnyVfkRA04jJ4MGnFJ2jKiaznpjXBUQq96qwuYR6e7k0THfAR3CdZIQXdQZfHZWYsS0z3uVfVI1pnCFKFwppDImOQlaXfiB/7MBI4HiiT3m0Ld92SBCHD+5jqsqvMkkDb2JIInXDj33ndDoexnGWc/d+iT8Nx8Lgf7pPQtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729616397; c=relaxed/simple;
-	bh=NY/4WIGOYWbosC9nYshjQw+85FLhnQpOJ5Wim0TS7rk=;
+	s=arc-20240116; t=1729616723; c=relaxed/simple;
+	bh=GIQYkP95DpNNqjHPx+GVVjcUxfLNLK4bVCRYu91sUN4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dRPf8IgXAhNghlzYqlTlgHsFoRvpWAW36Fa39cH0bqffY2csQ2Ed1DXB9oZ+RyEbMqpEGGOrOqRzNMV9RA5WjAHAh7Jy5LVQw/gGiHx7YB0qXpS7bSvsh/OhCRK+VaDe0wRr89YXH8lZi6wBSdQI4Fb4Du+Lf41bprDH5Aeowek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MTD0HlBO; arc=none smtp.client-ip=209.85.214.182
+	 Content-Type:Content-Disposition:In-Reply-To; b=m72coXHl+1/0dNBnYJUspcRC/Cvk716bI8ruHVEUn124QTdrkFjybizh9pf1bi2KT4WFdIvXppwqYJD1i9x3GS4D5IteAXp7pmfTnO+kB40Y2o/G36xkiDRXrrDAMz58BghQnXVwO2wFUbSKJkWoH9Q4PF4ByY786wFkYGNHebk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CAUCGxjC; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MTD0HlBO"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-20cbca51687so58824815ad.1
-        for <imx@lists.linux.dev>; Tue, 22 Oct 2024 09:59:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CAUCGxjC"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-20c9978a221so67175715ad.1
+        for <imx@lists.linux.dev>; Tue, 22 Oct 2024 10:05:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729616396; x=1730221196; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1729616721; x=1730221521; darn=lists.linux.dev;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=VS3tXfWam2DO1i7ilVLotgRr0xGMHWMFEHP5fSK9K/M=;
-        b=MTD0HlBO81V/tGlt0Wz4+8s4dO8n69BhWNz3qWmovgw/rurLXm5bSXz5uWFuv6xzwC
-         b+cAIrgrghSX90hXcOsj0DQrYO8NTzzsQkl806s5BgKb1gcDFnTTgp/GUcHeB10EW60/
-         u5rOauOyBOAjnkiGO1FELtHmccd8u6bCKM1Bb8d1jKwikltEScYk8h6jVPVb6K03j6Sg
-         NIV/CnXnAhDSTI/a6z17bO7Taf4e+lRJrHQfZ+iaZryoy+Wmca+Ff1peL3wVIsn4PfVG
-         ABUZFVDNsuHmacBDmPSDD8F/0CebahsmgkgpK8i4x2LagB4SgOoQ+w0HOFQSjXCj+BwT
-         36RQ==
+        bh=ApU3fV+UtKxcEYZyM6H87gs38rNpBSSNhr/eTWWEXY4=;
+        b=CAUCGxjCU0FC3ie3H4B2XPIZblGr3opoGI3ZyQ0pab0eRD8UcrjtKcCfowcIKwPIaw
+         jK8dDycod4XrYPWgQ59N6UqUs8pdo3IA8PFEKa6tu5z4nwZzhlTAyR8vQ9kO20ObCuf1
+         aRM272nNqzdU6GLcfbCV2VZUfKmg60ef7ChhOXKwEciUitxg3Yxz6Iutx1GZcJ8HjiRF
+         3ToglhUhLEoRfKVgTFcugGyl+htEGOT071X6FIztvxmiTNiKLXH8MXo9uXGI1RGd8QHO
+         /rNCQqASRuuzaZ05ZkxA36pmKJlmkvkjcfFgtyvpXxSxmOuPOGCLCqedbhagQoe1I5cq
+         hSNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729616396; x=1730221196;
+        d=1e100.net; s=20230601; t=1729616721; x=1730221521;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VS3tXfWam2DO1i7ilVLotgRr0xGMHWMFEHP5fSK9K/M=;
-        b=u0G5uFCuUxPIdze1WGkICDDck+6Hv6rzCcKE9FyqZ/rYQOTbO4AT3x+8c8c5zCF1ml
-         u29ljmsttYXrr3aBR0/+ru34dmATXKXoTWWuKeWuR7nd/YxwfK7fvO2xgaNuLJ0joXsx
-         xk8d9ejrLPXmFN5yK8mikcPOgIDa2FTV0CkJ/QtYFyYZrwuPgJPnYMo/xsAB21s/H7fs
-         KGP76B7W+6Rvyv/+mGw21iyyw9dDwnejiKBBUQ9ruuTVVQRycUjdPIDWuR7hSAXySjtI
-         bseiq3XF9JSt+QpWAogbCaH3m66XA5IcinoE4IWKwt6atuH4BfiqwWrPtv+P7PKOlSHT
-         sixg==
-X-Forwarded-Encrypted: i=1; AJvYcCXuTE7xde6AYr2mJvUrkjT9jkH2+Gm8MQ0LTKA1M5CTVjJleqHvCVEhHXwG6O0O/yxpUmE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzcXilmUtOOW3kFklDK+BHD6jKPFUzWkg6mbng/LpzN+EZzpL10
-	+JRQj+KomyLfYGGZ0v+y6cMeHMDS/xPlPHTvwu4Uvqtb0mUOy6YWhh8UwBVPZA==
-X-Google-Smtp-Source: AGHT+IEYx820a1axe7TYA5uJ7U5XpkZcGO8wslMBvWfwxZnRbZqXMJz1tinZzuebUznia7UTdzMS7g==
-X-Received: by 2002:a17:902:ea0e:b0:20c:8331:cb6e with SMTP id d9443c01a7336-20f39628369mr1028375ad.19.1729616395600;
-        Tue, 22 Oct 2024 09:59:55 -0700 (PDT)
+        bh=ApU3fV+UtKxcEYZyM6H87gs38rNpBSSNhr/eTWWEXY4=;
+        b=NHJ9X7Ql1mOe0GERGyB0Mgj4XzRX8eJ1ktWT5sWMMHyFWt6IpaQk2/HXuAFkPTOxgd
+         sdbHHKywrjbYtu7DEaMh3oo+VKjXTgS4511t8tk/adjq+0IVSjAaJlUEakqhvxGuTghF
+         2dlJxNT4RTMtXQ/gvSbOV+Fq2uFdqsWgkCmUXJxW+lQPeYcocP0dllIwSngbhfOS2zV8
+         EKsrGy9xfsbrLxwgcvN+kbcj3mBH/BHFQgHyHKlpC2lBzitfab/Cwfi+soWd9ECXEwDa
+         zkuheUhDgb0BdC7YoJz2H/ZMd9BZOH+Qv7cq6COmOdFvPCY2ksJkycuk90eB9xFft3a5
+         jvfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWb3C0LBvS4dPtKmoyaD64ZomOsUlhhGQSJYumyZiMbd8elSkXCgxsQ9cAP1kmqdT/1Xso=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz7xm0XeNvUhgM/w42yDDZQMxxjhL69TUxO++eCyDYJ6KauPlYJ
+	0u5wmA4for0eEiL5fTVo7MT79L3n2iJ6uPni9GOeK1Zdm0EddRn0zmAT+5ga1g==
+X-Google-Smtp-Source: AGHT+IHRqsW0sRulSaBfDKEdAZUSpR9q80CX2UTyubbP2o+xbSDVjhZp8NPAD81dLI0BL9hvAVo41w==
+X-Received: by 2002:a17:90b:1185:b0:2e2:cef9:4d98 with SMTP id 98e67ed59e1d1-2e561a01146mr16890078a91.25.1729616721232;
+        Tue, 22 Oct 2024 10:05:21 -0700 (PDT)
 Received: from thinkpad ([36.255.17.224])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20e7f0bf197sm45044345ad.150.2024.10.22.09.59.50
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e5ad389146sm6432096a91.26.2024.10.22.10.05.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Oct 2024 09:59:55 -0700 (PDT)
-Date: Tue, 22 Oct 2024 22:29:49 +0530
+        Tue, 22 Oct 2024 10:05:20 -0700 (PDT)
+Date: Tue, 22 Oct 2024 22:35:14 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Richard Zhu <hongxing.zhu@nxp.com>
 Cc: kw@linux.com, bhelgaas@google.com, lpieralisi@kernel.org,
@@ -63,11 +63,11 @@ Cc: kw@linux.com, bhelgaas@google.com, lpieralisi@kernel.org,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	devicetree@vger.kernel.org, kernel@pengutronix.de,
 	imx@lists.linux.dev
-Subject: Re: [PATCH v4 5/9] PCI: imx6: Make core reset assertion deassertion
+Subject: Re: [PATCH v4 6/9] PCI: imx6: Make *_enable_ref_clk() function
  symmetric
-Message-ID: <20241022165949.dn6wzgeocond2ia7@thinkpad>
+Message-ID: <20241022170514.s6ejwj2w64nivqui@thinkpad>
 References: <1728981213-8771-1-git-send-email-hongxing.zhu@nxp.com>
- <1728981213-8771-6-git-send-email-hongxing.zhu@nxp.com>
+ <1728981213-8771-7-git-send-email-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -77,42 +77,66 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1728981213-8771-6-git-send-email-hongxing.zhu@nxp.com>
+In-Reply-To: <1728981213-8771-7-git-send-email-hongxing.zhu@nxp.com>
 
-On Tue, Oct 15, 2024 at 04:33:29PM +0800, Richard Zhu wrote:
-> Add apps_reset deassertion in the imx_pcie_deassert_core_reset(). Let it be
-> symmetric with imx_pcie_assert_core_reset().
+On Tue, Oct 15, 2024 at 04:33:30PM +0800, Richard Zhu wrote:
+> Ensure the *_enable_ref_clk() function is symmetric by addressing missing
+> disable parts on some platforms.
+
+This warrants a Fixes tag. And the patch subject should be something like,
+
+"PCI: imx6: Fix the missing reference clock disable logic"
+
+> Also, remove the duplicate
+> imx7d_pcie_init_phy() function as it is the same as
+> imx7d_pcie_enable_ref_clk().
 > 
 
-Am I correctly interpreting that this patch adds the *missing* reset deassert
-for 'apps reset' line?
-
-If so, then there should be a relevant Fixes tag. Also, there should be some
-info about the implications of not deasserting it.
-
-- Mani
+This is a cleanup, so should be a separate patch.
 
 > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
 > Reviewed-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  drivers/pci/controller/dwc/pci-imx6.c | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/pci/controller/dwc/pci-imx6.c | 33 +++++++++++----------------
+>  1 file changed, 13 insertions(+), 20 deletions(-)
 > 
 > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index ca8714c625fe..93e2bcf9aa0a 100644
+> index 93e2bcf9aa0a..161daad34a94 100644
 > --- a/drivers/pci/controller/dwc/pci-imx6.c
 > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -770,6 +770,7 @@ static void imx_pcie_assert_core_reset(struct imx_pcie *imx_pcie)
->  static int imx_pcie_deassert_core_reset(struct imx_pcie *imx_pcie)
->  {
->  	reset_control_deassert(imx_pcie->pciephy_reset);
-> +	reset_control_deassert(imx_pcie->apps_reset);
+> @@ -388,13 +388,6 @@ static int imx8mq_pcie_init_phy(struct imx_pcie *imx_pcie)
+>  	return 0;
+>  }
 >  
->  	if (imx_pcie->drvdata->core_reset)
->  		imx_pcie->drvdata->core_reset(imx_pcie, false);
-> -- 
-> 2.37.1
-> 
+> -static int imx7d_pcie_init_phy(struct imx_pcie *imx_pcie)
+> -{
+> -	regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12, IMX7D_GPR12_PCIE_PHY_REFCLK_SEL, 0);
+> -
+> -	return 0;
+> -}
+> -
+>  static int imx_pcie_init_phy(struct imx_pcie *imx_pcie)
+>  {
+>  	regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
+> @@ -593,13 +586,13 @@ static int imx_pcie_attach_pd(struct device *dev)
+>  
+>  static int imx6sx_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
+>  {
+> -	if (enable)
+> -		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
+> -				  IMX6SX_GPR12_PCIE_TEST_POWERDOWN);
+> -
+> +	regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
+> +			   IMX6SX_GPR12_PCIE_TEST_POWERDOWN,
+> +			   enable ? 0 : IMX6SX_GPR12_PCIE_TEST_POWERDOWN);
+>  	return 0;
+>  }
+>  
+> +
+
+Spurious change.
+
+- Mani
 
 -- 
 மணிவண்ணன் சதாசிவம்
