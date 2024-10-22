@@ -1,235 +1,214 @@
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012042.outbound.protection.outlook.com [52.101.66.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30167184540
-	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 08:29:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729585770; cv=none; b=ZS+XATYs3/j7MdvYLmoizayZMyV3Ps546XrwjcHXVdzj9m6nAZyl/w5P0/k7YC8A4qo41sFwIjsAusb7ihGX8D8Wup1qs+JRjTVYK/gzlI7tmjrR2zB6jprnbQGcE6I9shyv18YDFpnwjfpvOnBwE+keXmeFHyhBLfdD31BeG9A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729585770; c=relaxed/simple;
-	bh=91JYyvnl+Fdi6fkf5FSlb8LxDeQ2IrQc7l6lvJQCgto=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NyknxxS07s5CgSgM/p3dctIKB7C5SjRbVew4SNV5759tl5zfn/3cO/+cpvzU7nSpohe9QpDulUZpYaxv1kZX563x7khyiaWSQodShfE5xRrD1PCimIbKANuyBvXsbFs1GsKfiAo75gX7pj1O+yFljJXwKM+EoaZQh5bcP9MT5hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=c60IZTQ1; arc=none smtp.client-ip=209.85.128.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4011891B2
+	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 08:41:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729586477; cv=fail; b=jN6hGe4WK+XdWt8wgdTf24zFVVBduXzXXsiQ5w0ummg4lVlcOgEdVWHnUabJr+xWdUB/slgmXK3gzkGU42IL1GgFznRrPANJr2zYzLfLd0a3kHXx4Bncg6nHdeXDrRfnqtowyT+xTI4gTwe+ONzDvulFbM81uisW4TqRi+CqAH8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729586477; c=relaxed/simple;
+	bh=FOw6CxVHK0jpzdLXOkr9j7EgRq4zlzREECkEyZnKMRA=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=BTdMNx+t5F9GlVKCDKqaTQJIpS0D55pa7yCov3F7Hg938pK/v12hgWauzImmBXqq7EOK08+ToV/ma3K4bz7rXKE0udgn4FO02pKBZIR95ihvBxIQ67SFO6zKfqGKPtbGD/mwoyoIK1r6aHGbcrLfZUCM5AJZrRuYN+H36Bzqjao=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=KHTc4qQo; arc=fail smtp.client-ip=52.101.66.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="c60IZTQ1"
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-6db20e22c85so45920987b3.0
-        for <imx@lists.linux.dev>; Tue, 22 Oct 2024 01:29:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729585767; x=1730190567; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kLQbdGQU/v5ri2hhQLOr8G4Wt+hC9tXpUHCmYp6zu9E=;
-        b=c60IZTQ1Xk7hjDTPGQ1W+3XdBHqFPJMIPE4ShVYaujLUxRsdwkRpycHO1o/mgmtmr7
-         lfOKVgwE6Rl5bKSj/DGQUS/EZ6N16xy1XLVOPulT4XM6xUlKWxgqHfCEWi/+77JQl6QK
-         /PGKfsjrzbwHvZf3bxZEAGcIy+CYJWTHaBSI8keLNC+pov9sIFPL43Qb6T+HhCe7+yl4
-         sAHxbg13qEN8S4mwoQ4sZForYJoEYn8ij+zToCZ82RmT+7XfCrQDCfl9NIVcMh4AWUS9
-         Ud6+XAh0ccNUtQapB6iisnHq2n/QzsO/W8GoydyygILPDdNof57ZVh2gyUR0Ym3FiB+1
-         m5qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729585767; x=1730190567;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kLQbdGQU/v5ri2hhQLOr8G4Wt+hC9tXpUHCmYp6zu9E=;
-        b=T5ipNHvyy6rIhZJ3/wRM8HeSkPUMVkXQgGZtHaHudUFtiykCg8YcuVAdya9DVl0GOG
-         2NvjWulhI8mgr+4lomVE7ShzxdxhgPzwg8Cu3xmc2gvBGSimx/R9ZnfBtVhTmkOM/jcV
-         3qDgRFsTPc6u0X6X54g6ofBItN+TmBiZEaQZrfa34L/T0w/dN3jDzbBqI/2k2c2FqlUG
-         4mQXF3X8bU08soySmA4/UYljC9bO9SLgy0ezH81awRWmQV7gX3hYkzKTqcyvaGhBv+zI
-         OIa1LrmH/xlHcaQkRHq6byNDoyurGfg3fMg+lC6HpJGXXyaXq811RFI4n0gZ+VECSaW9
-         Z3+A==
-X-Forwarded-Encrypted: i=1; AJvYcCVtgG7W0V1urtPXhV0p1v+iPpcjApAn7zjzDtpc9cny48nZ0bxYQ/+Br1VfHvoNoxdwMck=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzGWq0QKLTPDPSin88lB99mSa3njPPDs0XoQsg9Yhm/j8I0F2FU
-	PhvOR99eZJL0WPhbLknw4Oj6P+iGp+HvuTmxvsNir9MbfMST2CgHHJpBqyOonBEUbLdwmoJ1O1U
-	s7JQhOEfAVd4NTz92cK6n20hLHxJaqUO01cWlmw==
-X-Google-Smtp-Source: AGHT+IG9Q3YEuJr8VKnJyP4ALVy/0ok/SYBCMzoi2I9bl8cdDzUPuqepo05ucF6AILKeMjf8mXd/KxO/YrS7ZIa3T0w=
-X-Received: by 2002:a05:690c:4907:b0:6e5:de2d:39e0 with SMTP id
- 00721157ae682-6e5de2d5659mr108655877b3.42.1729585767136; Tue, 22 Oct 2024
- 01:29:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="KHTc4qQo"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Qa7uPxqLdyw+M8tWe2gCmrh7nODRwCuIqRd+1SZL0FBTGs5wD/lFPG4cl3UyE/uEQZ0DJfilI18lMLIgDwOmp7W3Xb1UIhAQPy9yTjVPMLBgquu1FWSYWf5ToJ1Z6Y8VKq1KhiqkAzbqRbKBxxgaBtPJvVMEQYd/dxqO6uHXd7Rdk5qhvPpamyNDPTegFY1OhMaS35klH1bH1yJ+B0sqJGtbQDRBE8GsiPq4RC3zbhHWHAadzaWYPgtb931liNIP3kas78+mGBWA9jxhdBUYAaI4aNA6wLmCT3SDci6u4i+UqOJwQ5IembSCami8tk79asZ7kjoJuBsWa22FZRk7YA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/PzC/SLr00KRRMxUbP7bMhLcwPvcGunnB2TADIWUYAw=;
+ b=PzFDj+S6nKVLVpx5USbucYJMR7DrXQhDkXyrObF12HDdX3Dtm25OqUxx+jnAqsgfARvlNsFoOWElmV/9XpM4SmaWD7sfhkVzYDZCDsqB91xdArzGo2JyjI6UXP0KU1Nt8xV4S3Dq7zMTGUw6xeZLoLPEYiu/MIT1C0njhWW7A71Vde0M/hfXEjVRkIgw/vy1Oi4lcT8rJdyR/VBNNIjh+53q+14xHibXv4zGeZqJzJs/+zIbFhgNDxsC5KLzKyWQqD/W3W5rl9sHTohi5NQNqmRNE0Nu09vBW5BDOI9Y7m2TA67wR8WbbLU3S24Uv6bbYoyD/KdjrQAK750mNgInDw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/PzC/SLr00KRRMxUbP7bMhLcwPvcGunnB2TADIWUYAw=;
+ b=KHTc4qQordKiBR76aDiodeOnZHNXfxMNzBtYFEvT3MonDH7QdKFkM5vFYy2V85c7cZ4mxrOLx1+6+9llRN4vJQi5cqGXXT0dsbZZShUQFlxpoN1jmq1RDoMiFmfF7HXCcHqmxw0Nl3M8djs89ny/w9noSeBC5vYWD8KQJW3E68cwrF7dBYI3RzlVPZL+m0MOdCFTJP9OZq3f+Iw3zXaa1fnadRIXqTVa0XxmDwXNn0FOOUFdKCdOFCFlZKKClEmD6jp/AqNcP6zGTeWPVxT9KVLG058EknkYg5j3npka4TUtuh3VyQir9LH5zIH+9fGF9kImjM+QUBFFv5S/9UBX8A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
+ by AS8PR04MB7831.eurprd04.prod.outlook.com (2603:10a6:20b:2a8::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.28; Tue, 22 Oct
+ 2024 08:41:05 +0000
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::2755:55ac:5d6f:4f87]) by PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::2755:55ac:5d6f:4f87%3]) with mapi id 15.20.8069.027; Tue, 22 Oct 2024
+ 08:41:05 +0000
+From: Ming Qian <ming.qian@nxp.com>
+To: mchehab@kernel.org,
+	hverkuil-cisco@xs4all.nl
+Cc: yunkec@google.com,
+	nicolas@ndufresne.ca,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	linux-imx@nxp.com,
+	xiahong.bao@nxp.com,
+	ming.zhou@nxp.com,
+	eagle.zhou@nxp.com,
+	tao.jiang_2@nxp.com,
+	ming.qian@oss.nxp.com,
+	imx@lists.linux.dev,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [RFC v3 0/4] Add video encoder ROI ctrls
+Date: Tue, 22 Oct 2024 17:40:36 +0900
+Message-ID: <20241022084040.3390878-1-ming.qian@nxp.com>
+X-Mailer: git-send-email 2.43.0-rc1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2P153CA0007.APCP153.PROD.OUTLOOK.COM (2603:1096::17) To
+ PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241014060130.1162629-1-haibo.chen@nxp.com> <20241014060130.1162629-3-haibo.chen@nxp.com>
- <CAPDyKFr37wLYxdFJ-Lgbq7PbWyiQz+CuwMxwgeeP3QpMvdyjqg@mail.gmail.com>
- <DU0PR04MB949604108991809742E83E5D90402@DU0PR04MB9496.eurprd04.prod.outlook.com>
- <DU0PR04MB9496801A4571142F914BBF4990402@DU0PR04MB9496.eurprd04.prod.outlook.com>
-In-Reply-To: <DU0PR04MB9496801A4571142F914BBF4990402@DU0PR04MB9496.eurprd04.prod.outlook.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 22 Oct 2024 10:28:49 +0200
-Message-ID: <CAPDyKFpectKosHEU7cm7uNCNwHZaT0XCSn674dGtu8Y+hmf_Pw@mail.gmail.com>
-Subject: Re: [PATCH 2/4] mmc: host: sdhci-esdhc-imx: refactor the system PM logic
-To: Bough Chen <haibo.chen@nxp.com>
-Cc: "adrian.hunter@intel.com" <adrian.hunter@intel.com>, 
-	"linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"shawnguo@kernel.org" <shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, dl-S32 <S32@nxp.com>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|AS8PR04MB7831:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5314754a-a696-4257-22dc-08dcf2754478
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?RKbrb9S5gwdvBATclWWU28iBMrpZfXoP4XDv+bZypqUHLQ+Te31/QIb8dR32?=
+ =?us-ascii?Q?tqnqVyHk6tdUjIjWIH9VJJ4ZUQ+mCSXKBiqeXRYbnKK86nB6BhBuxY6bORaf?=
+ =?us-ascii?Q?zBRNqAwNA5sLqJxvYnDkNQ2MT9N8DAZ4S6udH9qAcro6SaahSYO9ZCyNQdVn?=
+ =?us-ascii?Q?vXBDJyFt8MGChNEdXf3dJ7J+Xn/bNBl+NXWo2+K9x7SNasomWAOfTNQlt5Eu?=
+ =?us-ascii?Q?G6YKG8Z9XCDO6VvHuzpsOnv/VwBfN40F4WVRDCUM48hhmoY2GV621dQ4f7W9?=
+ =?us-ascii?Q?3U4zMPDQB04yWmN5YFbhfNIir86Oou3jGggEMI1wp0rCRWAeAxNkYUgBYxpE?=
+ =?us-ascii?Q?i35aveK5mLDVHrjPJYxE5hWWNZqJgHIrvdPPMnTATZbpo0WG5hDWxyvSJkxB?=
+ =?us-ascii?Q?ejKNw+BCf6bDeNLKpD3ZZ27/WgLk5AkJ8GI39DjMHchMo4+K4HMoHOEtXYkE?=
+ =?us-ascii?Q?akCCyQ27BBcs2JqDX98ANvlU+UK8XOOcHDDIC16B31u0qUBKV/9W8/8rELGs?=
+ =?us-ascii?Q?yqtXMglUcApo9a06xmI5WEL4aau11mWPbm71JXJfBLqYseKkgEj8LyPZIPyR?=
+ =?us-ascii?Q?CnvmaOIapH/0u6zS5qjD062sqAxaxgwargbzHf9/Z2IjD7e2zr8V5hF34dPU?=
+ =?us-ascii?Q?NoH4BpQPvvib5RSb9eJU/jSGA6qxdu0xDCSQH8RFd+HhubeRtJ3wynktKBRl?=
+ =?us-ascii?Q?2a3dyIwyEx7nHdTNUGFG+/wgaNuWnYQ/y4RfIh8LSA94w6KLFFFYxBXIHf32?=
+ =?us-ascii?Q?lZ9eRVvbyMH/My8pBcMm/0eCrWgxaDugtst5OZ5czsccY+nmjlRqh6J3/p85?=
+ =?us-ascii?Q?4fcY4NLq+BXG45CjpJUtqbNns84u491xNtTNoteHYfNpWwwTIxOMLFivO8KZ?=
+ =?us-ascii?Q?Ydum2u5CVSLjPSDoptRsiuacQqGil2WMZ7dsSrRlxPFB0MpKpyI1dRLC+Jhw?=
+ =?us-ascii?Q?h3uhM0BZnh7fVYDuS5VapaEC1SLu7vXcsCMlm7X57E5k7WC3rt/btMjty9Hk?=
+ =?us-ascii?Q?qd7Ci81CKzae+DWnT566e1QW2T1ssulcPx+3rcQTmeFKAkGIgQnPtqSe8IBx?=
+ =?us-ascii?Q?pXFhVKWjIYlrW9AUAZAWJYlL2rGUdbt849C+7DDr7VCY9eU8DPHqlsHc6J2R?=
+ =?us-ascii?Q?l5bSkkE1RUtpOQTomzAlKNvShGlIIYAgCQGxupGDJ0Sox00BaSsGRsHOaw5L?=
+ =?us-ascii?Q?GMaDPO6pQiHYPZHcrhMfqExe8Cpic58EJ+GcYsNnBccRlv2WU85gqUO6XXTb?=
+ =?us-ascii?Q?im8xO3R8txAgZEnQkjVOPJuVyyFzT+6/kr1mmkv/lpwfRh8YMlntak3oPpgZ?=
+ =?us-ascii?Q?gQdr8FWp92Npb98S6m2P+Aa/+WPyPjtl2zgl0gn69BnzU7J4w4krLAIkURk5?=
+ =?us-ascii?Q?tO/OF1UfwdzXxwP4H87nXMrZY/Ce?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?CfLkZghtHyBanKeiCc7jdz/XRilu1NWMRUuuimLP5lzXdcScAhye35BXa5z5?=
+ =?us-ascii?Q?+e4RkLwG41F9Ud4AHP90+ke+mmwzC2tAaVzfCIQfH9RfMybo3EjNtQnfE2R/?=
+ =?us-ascii?Q?rdWvjZvk+XZOLgELFJr3TNSjwlRbqEr3sukgK7pPOcJ8H1acYYRgoColrWh1?=
+ =?us-ascii?Q?XhkfGgAbYUca9yooQabowTdNPsZW4r9jkwEFGHhZR8Wr6Sf7kl7EUXsMOhhw?=
+ =?us-ascii?Q?IXk+rmrWr0cvIH7j40s+akOS+F2m9SsZysfWEJ3G+en9OguBzwgD8qR5ZLz5?=
+ =?us-ascii?Q?HzKqpz77SaEUflXKIU8gNN0CULqUiGiKMnUWCx5RTIR+19zuUXPL2sHzFNd7?=
+ =?us-ascii?Q?SXDKINQ316isn2fEelH7qiKDZwSX30yqPdBhO2J/46qSLp9+ZJaUDybITlC6?=
+ =?us-ascii?Q?coXMbG4/hAjWtRX/QzypxOcpRjV7Cdc3VCCmwqC3bWh+5A6o3RNFm8pPAJle?=
+ =?us-ascii?Q?OMMqWP7ZaUuVdZMG4mkPvLOk0FcdwL/ssWgbLTJASnj/JJ1Gt4PQK3vWt81I?=
+ =?us-ascii?Q?2SJ0o9eQF5YP4oeaumaW/z00049bqjCJuVZ8ai5MHaDiDWaQZImy5N1d0vy/?=
+ =?us-ascii?Q?roZXz35GAtBZ+GT8Oy6FWAW0va1ToZFFJfMyonrs39+PtBsmhl7o0xgHBbl9?=
+ =?us-ascii?Q?Hj3EKcXxhnaFaeMxh0u8KA2UlRVjIc+/RDMSMIuo/0J5BSigS30jvCW3t9u1?=
+ =?us-ascii?Q?R7zmlbHkg/QspnmH7C27Sx6j4knNZilDMxHBMLd5xT92hMswxf2JVGkX16Iw?=
+ =?us-ascii?Q?vjYYnrcMljUK8BhPa28zaa9jQw0IoK8F27EWPdvp6J2mdP7bUv/sPL1vamJ2?=
+ =?us-ascii?Q?hQYX1WDjxqPacWVM5STUcsSx3XfL5LWFuYHWgiOOLE0Q476Bpa+vHPJrW8jd?=
+ =?us-ascii?Q?N+TG/pNC1+r81zOmkL4dc239cbJyhlz0H+egYmw49azz3xPX/r+2guPH0cu9?=
+ =?us-ascii?Q?tZr3OE+QS+4rutBNQ0468rBgHqEm7vrmEFIrY3SLeFNqc4PKl1VBMRaDhEEJ?=
+ =?us-ascii?Q?ZRTFAcmYVdwhnxtQNtmqFsIcG+Xf7gr373usD3f1db99+/v7Y4FwoDZoXwFP?=
+ =?us-ascii?Q?Gea6XHdNwH4Pt9Nb8lufxPYRdAvQcZjUP26wjambCYyUQLZuXafXWTuZbqXq?=
+ =?us-ascii?Q?b3nbHftJ8hI3oJUC3FBQfrroF2xfsTRdZsHURCEqOODFwKCYJuSJ3R8kfz4D?=
+ =?us-ascii?Q?wVGvqG70v1bDu8VaoecWZOBriCD1b5f8WMzu3hyg/HXJF9ps3gTSv6+t0bGs?=
+ =?us-ascii?Q?OQ29Q5Kcnl3X1cydB4UNcPn17K/qh+z/WJN/2zDI3pLPL+yFaYbBIy8LTgBh?=
+ =?us-ascii?Q?+gl7YXGXRKYEUUVVMHFuD2Fe2Qk4NYgJXxVGV/zNBVziQK027fi8rl6NiqkA?=
+ =?us-ascii?Q?4UIp+GX5UAXFkbFFs7nDRo8Dtx61bQvSur+u/1PrRwkD9Ta0ISp7iNL2CnPy?=
+ =?us-ascii?Q?YIhZVJ40drW/GLpw7QmvzHupDhBKVx3TW5tGVqC5jzHlT1GDpbRveHCrA47+?=
+ =?us-ascii?Q?rQkSf0AW9anSgoQY74kamGpwcgKil9aBlHmPUH8kIYLqUHtzOm46bd9fv9sQ?=
+ =?us-ascii?Q?rMqVK7xpFISLdl30hwsW0HaBENKCLwkV6EZCgns+?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5314754a-a696-4257-22dc-08dcf2754478
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2024 08:41:05.5370
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: veRf+/6lrhIqMODz1i/jFIxgdBKN+/J8vePmyhocQLK45xoP1IMepsyRpOLMiaI6jZTCbt1tX9ID9uCRhw0Rug==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7831
 
-On Fri, 18 Oct 2024 at 05:20, Bough Chen <haibo.chen@nxp.com> wrote:
->
-> > -----Original Message-----
-> > From: Bough Chen
-> > Sent: 2024=E5=B9=B410=E6=9C=8818=E6=97=A5 9:23
-> > To: Ulf Hansson <ulf.hansson@linaro.org>
-> > Cc: adrian.hunter@intel.com; linux-mmc@vger.kernel.org; imx@lists.linux=
-.dev;
-> > shawnguo@kernel.org; s.hauer@pengutronix.de; kernel@pengutronix.de;
-> > festevam@gmail.com; dl-S32 <S32@nxp.com>;
-> > linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org
-> > Subject: RE: [PATCH 2/4] mmc: host: sdhci-esdhc-imx: refactor the syste=
-m PM
-> > logic
-> >
-> > > -----Original Message-----
-> > > From: Ulf Hansson <ulf.hansson@linaro.org>
-> > > Sent: 2024=E5=B9=B410=E6=9C=8817=E6=97=A5 21:07
-> > > To: Bough Chen <haibo.chen@nxp.com>
-> > > Cc: adrian.hunter@intel.com; linux-mmc@vger.kernel.org;
-> > > imx@lists.linux.dev; shawnguo@kernel.org; s.hauer@pengutronix.de;
-> > > kernel@pengutronix.de; festevam@gmail.com; dl-S32 <S32@nxp.com>;
-> > > linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org
-> > > Subject: Re: [PATCH 2/4] mmc: host: sdhci-esdhc-imx: refactor the
-> > > system PM logic
-> > >
-> > > On Mon, 14 Oct 2024 at 08:00, <haibo.chen@nxp.com> wrote:
-> > > >
-> > > > From: Haibo Chen <haibo.chen@nxp.com>
-> > > >
-> > > > Current suspend/resume logic has one issue. in suspend, will config
-> > > > register when call sdhci_suspend_host(), but at this time, can't
-> > > > guarantee host in runtime resume state. if not, the per clock is
-> > > > gate off, access register will hung.
-> > > >
-> > > > Now use pm_runtime_force_suspend/resume() in
-> > NOIRQ_SYSTEM_SLEEP_PM,
-> > > > add in NOIRQ stage can cover SDIO wakeup feature, because in
-> > > > interrupt handler, there is register access, need the per clock on.
-> > > >
-> > > > In sdhci_esdhc_suspend/sdhci_esdhc_resume, remove
-> > > > sdhci_suspend_host() and sdhci_resume_host(), all are handled in
-> > > > runtime PM callbacks except the wakeup irq setting.
-> > > >
-> > > > Remove pinctrl_pm_select_default_state() in sdhci_esdhc_resume,
-> > > > because
-> > > > pm_runtime_force_resume() already config the pinctrl state accordin=
-g
-> > > > to ios timing, and here config the default pinctrl state again is
-> > > > wrong for
-> > > > SDIO3.0 device if it keep power in suspend.
-> > >
-> > > I had a look at the code - and yes, there are certainly several
-> > > problems with PM support in this driver.
-> > >
-> > > >
-> > > > Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-> > > > ---
-> > > >  drivers/mmc/host/sdhci-esdhc-imx.c | 39
-> > > > +++++++++++++++---------------
-> > > >  1 file changed, 19 insertions(+), 20 deletions(-)
-> > > >
-> > > > diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c
-> > > > b/drivers/mmc/host/sdhci-esdhc-imx.c
-> > > > index c7582ad45123..18febfeb60cf 100644
-> > > > --- a/drivers/mmc/host/sdhci-esdhc-imx.c
-> > > > +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-> > > > @@ -1871,11 +1871,13 @@ static int sdhci_esdhc_suspend(struct devic=
-e
-> > > *dev)
-> > > >         struct pltfm_imx_data *imx_data =3D sdhci_pltfm_priv(pltfm_=
-host);
-> > > >         int ret;
-> > > >
-> > > > -       if (host->mmc->caps2 & MMC_CAP2_CQE) {
-> > > > -               ret =3D cqhci_suspend(host->mmc);
-> > > > -               if (ret)
-> > > > -                       return ret;
-> > > > -       }
-> > > > +       /*
-> > > > +        * Switch to runtime resume for two reasons:
-> > > > +        * 1, there is register access, so need to make sure gate o=
-n ipg
-> > clock.
-> > >
-> > > You are right that we need to call pm_runtime_get_sync() for this rea=
-son.
-> > >
-> > > However, the real question is rather; Under what circumstances do we
-> > > really need to make a register access beyond this point?
-> > >
-> > > If the device is already runtime suspended, I am sure we could just
-> > > leave it in that state without having to touch any of its registers.
-> > >
-> > > As I understand it, there are mainly two reasons why the device may b=
-e
-> > > runtime resumed at this point:
-> > > *) The runtime PM usage count has been bumped in
-> > > sdhci_enable_sdio_irq(), since the SDIO irqs are enabled and it's
-> > > likely that we will configure them for system wakeup too.
-> > > *) The device has been used, but nothing really prevents it from bein=
-g
-> > > put into a low power state via the ->runtime_suspend() callback.
-> > >
-> > > > +        * 2, make sure the pm_runtime_force_suspend() in NOIRQ
-> > > > + stage
-> > > really
-> > > > +        *    invoke its ->runtime_suspend callback.
-> > > > +        */
-> > >
-> > > Rather than using the *noirq-callbacks, we should be able to call
-> > > pm_runtime_force_suspend() from sdhci_esdhc_suspend(). And vice versa
-> > > for sdhci_esdhc_resume().
-> > >
-> > > Although, according to my earlier comment above, we also need to take
-> > > into account the SDIO irq. If it's being enabled for system wakeup, w=
-e
-> > > must not put the controller into low power mode by calling
-> > > pm_runtime_force_suspend(), otherwise we will not be able to deliver =
-the
-> > wakeup, right?
-> >
-> > Thanks for your careful review!
-> > Yes, I agree.
->
-> Hi Ulf,
->
-> Sorry, I maybe give the wrong answer.
->
-> I double check the IP, usdhc can support sdio irq wakeup even when usdhc =
-clock gate off.
+Hi,
 
-Okay, so there is some out-band logic that can manage the SDIO irq,
-even when the controller has been runtime suspended?
+This patch set implements region of interest (ROI) ctrls for video
+encoder.
 
-In these cases, we use dev_pm_set_dedicated_wake_irq* to manage that
-wake-irq. There are other mmc host drivers that implement support for
-this too.
+One video encoder IP may support the following two ROI configurations or
+one of them:
+    1. configure ROI as a rectangular region, and set a delta QP parameter.
+    2. configure ROI as a rectangular region, and set a priority parameter.
+    3. configure ROI as a QP map as an array. Each value represents the delta QP
+of a block in raster scan order. The block size is determined by
+the specific IP.
+    4. configure ROI as a QP map as an array. Each value represents the absolute QP
+of a block in raster scan order. The block size is determined by
+the specific IP.
 
-If you are referring to solely clock gating, that is not going to
-work. A runtime suspended controller is not supposed to deliver
-in-band irqs.
+To achieve this, I made the following change:
+    1. I reuse the type V4L2_CTRL_TYPE_RECT that is defined in the UVC ROI patchset
+    2. Define a ctrl V4L2_CID_MPEG_VIDEO_ROI_MODE to choose ROI configuration
+    3. Define some ctrl to configure ROI
+    4. Define a ctrl V4L2_CID_MPEG_VIDEO_ROI_BLOCK_SIZE to query block size
 
-> So to save power, need to call pm_runtime_force_suspend() to gate off the=
- clock when enable sdio irq for system wakeup.
-> This is the main reason I involve pm_runtime_force_suspend in noirq stage=
-, because in sdhci_irq, there is register access, need gate on clock.
+I referred the patchset "Implement UVC v1.5 ROI" (https://lwn.net/Articles/953532/)
+and pick some patches from it.
 
-In summary, to support the out-band irq as a wakeup for runtime and
-system suspend, dev_pm_set_dedicated_wake_irq* should be used.
+changelog:
 
-To move things forward, I suggest you start simple and add support for
-the out-band irq as a step on top.
+v3
+- Drop the type V4L2_CTRL_TYPE_REGION
+- Split the compound control into 2 ctrls
+- Define 4 ROI mode
 
-[...]
+v2
+- export symbol of v4l2_ctrl_type_op_minimum
+- export symbol of v4l2_ctrl_type_op_maximum
 
-Kind regards
-Uffe
+Hans Verkuil (1):
+  media: v4l2-ctrls: add support for V4L2_CTRL_WHICH_MIN/MAX_VAL
+
+Ming Qian (1):
+  media: v4l2-ctrls: Add video encoder ROI ctrls
+
+Yunke Cao (2):
+  media: v4l2_ctrl: Add V4L2_CTRL_TYPE_RECT
+  media: vivid: Add an rectangle control
+
+ .../media/v4l/ext-ctrls-codec.rst             |  95 ++++++++++
+ .../media/v4l/vidioc-g-ext-ctrls.rst          |  26 ++-
+ .../media/v4l/vidioc-queryctrl.rst            |  14 ++
+ .../media/videodev2.h.rst.exceptions          |   4 +
+ drivers/media/i2c/imx214.c                    |   4 +-
+ .../media/platform/qcom/venus/venc_ctrls.c    |   9 +-
+ .../media/test-drivers/vivid/vivid-ctrls.c    |  34 ++++
+ drivers/media/v4l2-core/v4l2-ctrls-api.c      |  54 ++++--
+ drivers/media/v4l2-core/v4l2-ctrls-core.c     | 169 +++++++++++++++---
+ drivers/media/v4l2-core/v4l2-ctrls-defs.c     |  46 +++++
+ drivers/media/v4l2-core/v4l2-ioctl.c          |   4 +-
+ include/media/v4l2-ctrls.h                    |  62 ++++++-
+ include/uapi/linux/v4l2-controls.h            |  16 ++
+ include/uapi/linux/videodev2.h                |   5 +
+ 14 files changed, 493 insertions(+), 49 deletions(-)
+
+-- 
+2.43.0-rc1
+
