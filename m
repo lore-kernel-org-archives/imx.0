@@ -1,58 +1,58 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5308839F4
-	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 16:46:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43DD256D
+	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 16:48:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729615572; cv=none; b=d4YMuAr+1MIx59LN+jBqSUjNFjaKi4IKB9U1nemrE5wghXqLKeZyQ/S6ZllzpKR7fVotgERicD9hYac5Xj+1LNU7uG2bbhgbxAyUA/zDL2t2K8b96AQ8loWNPegwO5u7ZCzOKb5CU187w4v6v6jItOS26+lKRycwI52ZHjN1hBk=
+	t=1729615692; cv=none; b=b6cpLV0TkWKXJAeZwWjfX1HOIWQpT65coSerfMBkgm7L5fIU0pDlj8jxONr95D+4go2AeAY00CW2Gkx7v7GRhP+JHRX9OrlbkdGNIbCUPI1iyR+b8s51CZSqdlWyZ9Jl+ns4tvEFKpelOBN3nwQd4OLI+b5ibK+rLI+iVRAhAjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729615572; c=relaxed/simple;
-	bh=Lj6PNMCNIu8hj4OyaUbUFkAeau2NGIb0esj+zs559b4=;
+	s=arc-20240116; t=1729615692; c=relaxed/simple;
+	bh=eB2r4a4nMF7jLZ5dNv6AlWAk7IIKZ4EHpTdNsNxxefk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rNo3nZSxZvXIoXUrZ7o1MJjF8SqzVfejk6Vs9t2voMO0F41OHmdW7DkjyBxpMVQHZgrYg285R2JY8mXu1ayi4ZcFG8YQ/TSV+3yddSX7OpxWidrY+l1niJo0JPHco1tEaGK8tPaeKSwPjiYRNv9A/95Of/lj+14OdGge/kwJoCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dV7O2EZP; arc=none smtp.client-ip=209.85.210.173
+	 Content-Type:Content-Disposition:In-Reply-To; b=WFib7rax5acRo9A+sTPNkYBsLXReCs+WOwsCbvQl1niAtp26z7pvtvrlB0Fqvn7+AjNf4EZhljQyv+XpNr6D5a5ehWJvaS6jUVctaXgWwRSiaO4bPV14vlgyEi1wk0lWE+xwyhUVjVjwXDc2NwXrXnEwyu/GbOC7eErmoShZu3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lrf1TmiH; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dV7O2EZP"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-71e52582d0bso4460457b3a.3
-        for <imx@lists.linux.dev>; Tue, 22 Oct 2024 09:46:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lrf1TmiH"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-20c70abba48so48622895ad.0
+        for <imx@lists.linux.dev>; Tue, 22 Oct 2024 09:48:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729615570; x=1730220370; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1729615690; x=1730220490; darn=lists.linux.dev;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=pPeTnArfy3kVD9qdVEi17t1QYmpfbQ/+MP9HcRzS7Mw=;
-        b=dV7O2EZPj+TWQ7rC5Mh+zljmQRpjwMV72haY8o1eLgbynVivhX+ytjI4IE0dGmc1wG
-         XD0ggqTgkVUVPXLKftUiDBDuvJLZqUc/PjHSjvSO72SV4iT+3L/QkIDDiI1Nmmb2dwAN
-         TcjRD0kvQ5+Zz7w4TjTBeB52s50YFeQJfn7NkefEjVnKpuaYyt0yCf0gzJ0VT6Ibaomx
-         iImyz5nZKX+ngJ5nIt9QyS//NXIGKnFYg77z8KQpq7RtqiWjbxlL1nKvfv5J+TC94gbD
-         l0ZGiVfcsJFHljXAchRBeXxFYO2SDJnKbMipROpNnzz9nY4B0HmRz/t0jJgztTZDmE1G
-         FXjw==
+        bh=3JEQ9MM+0bQRBQpufIz+g9Ep0xv8kpXfh0HhFXLCte8=;
+        b=lrf1TmiHMhpIZgUGVgUT75M3yp/qsvn3Y/+RbLhuSM2XAgwse+Yob/GBGLbmpFObVj
+         lfT9JHRidvGRRB9DRs7ttki0ELPNkgTw5Uq8IRkiKrKnUBS2BHOvLUmLyPVGjmI9deUS
+         iGWsZCMjh/UulPt52dY8Fod+0/ZylVR6CqzGoGQKB8LeeJZCZR2UYYpjg6O0EycueEfj
+         RTuy8JBJ91qfPV8Bn5y1iW9jG6bCH9/SHWpPmgWZirnfi94nPffiDfAVNNUE2+r4bX2F
+         BXunW4uYk8+/ezYBq1xePA1v/DkIrmvx+NmLxyZfeDWKKhrvFH78AUPPJP7gt3hecDEI
+         /lHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729615570; x=1730220370;
+        d=1e100.net; s=20230601; t=1729615690; x=1730220490;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pPeTnArfy3kVD9qdVEi17t1QYmpfbQ/+MP9HcRzS7Mw=;
-        b=VFLTNLVKZ9uyg6Mqypm+jPr4EJ5fnHHUmlvAoEuigCcXHu0VGXU/KSjFaYxD6mF0tu
-         TI1e5lqUJOUjj4njAzG1Eqpntcwo8PyWiEjQkre/7Rl2Gkb2VqpW2O2ArDI1/jKBf0Cg
-         oQSlb/QUGRU0NbnY5ekNyI53X0dq/OrAaD7d/QdEr6lCHA2ByCoyBR7VN4PAY+j9V46s
-         em43p/o2kzfZulEbQJ7vaTJoxBp07pKog1eoLDo0X2+ZdwT+60HCkWcHRIfbKLPkDoIc
-         JDPKePq0avoO87BfeFx0905bgHLtVAh64Yc66bQIorrUjf0xirtn4pxPwtxaqDP/qA+F
-         H4KQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXd4aTMN2vwQs/6OBNt0VOF5ctOxrc7R4XKHo8HecocGudv6314YPhpkFTFXRL3sM7+LI4=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxdi4OkDLBzsA6fnkxs1a++JEb8SHkee7rlklylUp5IBfDoGuj0
-	cqY5aJUVQQ5FIugDKZOFudhHtnW0IC3ASrhA0cSfMul/TEOJ+tT4KB1G852T5Q==
-X-Google-Smtp-Source: AGHT+IHTS9yyMdGSpDBkN1ZywG4L881bK6lpw9juFK/sdg8K6E7YS49sKlIWRIuG+HaxSkMO8HbgaA==
-X-Received: by 2002:aa7:88d4:0:b0:71e:b8:1930 with SMTP id d2e1a72fcca58-71ea321e7famr21475298b3a.16.1729615569937;
-        Tue, 22 Oct 2024 09:46:09 -0700 (PDT)
+        bh=3JEQ9MM+0bQRBQpufIz+g9Ep0xv8kpXfh0HhFXLCte8=;
+        b=wglBOqf/iUrkpECKfUVGWpmw7k9KsF0+9CiXI1K0c+R5r1nqgbzX9pVAiB3uJHop1U
+         zpSEhmwv5J0WEFDzkkSvECozLYWY+ZKrStzeOQIPd2iuhDNsaoj9DBZPO8A/HA9PBzYU
+         oxYsd/1Ds+U2UlYR9zEtbRUBILpeuHxJ8PU2mDzmlGQmkAvu1NR2eW9zme1PVML0H5C3
+         iF1QZZkAiXw56PPxUAIsMJF4knaPzfnq1hj8qaD5RMYLLInnGujUfNwVfwNg205IOL8r
+         x5ze6yQuCH3Efg+hVGXknWX09nD8Q+5iB2DAa2zNVjZWkBxRwi2eaIHnbxIhsVy0R94p
+         Whqw==
+X-Forwarded-Encrypted: i=1; AJvYcCV2IafgbwvCcxJgjIWzKucVyeteCfWJGD4tANtE9Z02vxXDtJt33bSl4qpbYI4K+SIKjX0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzAdO9Zu0AoBD07h/8KjsmPaWYcsVFImewMCLU2JLvW6X3wwCIr
+	le1H62CE5J28OG9jBksMN+8X+jkITH47kbyDB4HEu50J/ZoitPi/MC2DZzavQA==
+X-Google-Smtp-Source: AGHT+IFa07tHycQZi4y8Cv96iyWVS9+/qqyom7Z+lob5auNlXr7DiOgX6ejk3Gy2vlhqcjfCd1hWNw==
+X-Received: by 2002:a17:902:eccc:b0:20c:ca83:31c7 with SMTP id d9443c01a7336-20f54395ebdmr472615ad.54.1729615690130;
+        Tue, 22 Oct 2024 09:48:10 -0700 (PDT)
 Received: from thinkpad ([36.255.17.224])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71ec13336d1sm4966249b3a.56.2024.10.22.09.46.05
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20e7f10dbf9sm44820105ad.308.2024.10.22.09.48.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Oct 2024 09:46:09 -0700 (PDT)
-Date: Tue, 22 Oct 2024 22:16:03 +0530
+        Tue, 22 Oct 2024 09:48:09 -0700 (PDT)
+Date: Tue, 22 Oct 2024 22:18:01 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Richard Zhu <hongxing.zhu@nxp.com>
 Cc: kw@linux.com, bhelgaas@google.com, lpieralisi@kernel.org,
@@ -63,10 +63,11 @@ Cc: kw@linux.com, bhelgaas@google.com, lpieralisi@kernel.org,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	devicetree@vger.kernel.org, kernel@pengutronix.de,
 	imx@lists.linux.dev
-Subject: Re: [PATCH v4 2/9] PCI: imx6: Add ref clock for i.MX95 PCIe
-Message-ID: <20241022164603.gndz4vgbm2sgwtfj@thinkpad>
+Subject: Re: [PATCH v4 3/9] PCI: imx6: Fetch dbi2 and iATU base addesses from
+ DT
+Message-ID: <20241022164801.h7eh2gkuiy7pfkmr@thinkpad>
 References: <1728981213-8771-1-git-send-email-hongxing.zhu@nxp.com>
- <1728981213-8771-3-git-send-email-hongxing.zhu@nxp.com>
+ <1728981213-8771-4-git-send-email-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -76,53 +77,60 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1728981213-8771-3-git-send-email-hongxing.zhu@nxp.com>
+In-Reply-To: <1728981213-8771-4-git-send-email-hongxing.zhu@nxp.com>
 
-On Tue, Oct 15, 2024 at 04:33:26PM +0800, Richard Zhu wrote:
-> Add "ref" clock to enable reference clock.
-> 
-> If use external clock, ref clock should point to external reference.
-> 
-> If use internal clock, CREF_EN in LAST_TO_REG controls reference output,
-> which implement in drivers/clk/imx/clk-imx95-blk-ctl.c.
+On Tue, Oct 15, 2024 at 04:33:27PM +0800, Richard Zhu wrote:
+> Since dbi2 and atu regs are added for i.MX8M PCIes. Fetch the dbi2 and iATU
+> base addresses from DT directly, and remove the useless codes.
 > 
 
-So this means the driver won't work with old devicetrees. Am I right? Then you
-are breaking the DT compatibility.
-
-You should make the clock optional in the driver.
+Again, what will happen to old dts that don't define these regions?
 
 - Mani
 
 > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  drivers/pci/controller/dwc/pci-imx6.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+>  drivers/pci/controller/dwc/pci-imx6.c | 20 --------------------
+>  1 file changed, 20 deletions(-)
 > 
 > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 808d1f105417..52a8b2dc828a 100644
+> index 52a8b2dc828a..2ae6fa4b5d32 100644
 > --- a/drivers/pci/controller/dwc/pci-imx6.c
 > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -1480,6 +1480,7 @@ static const char * const imx8mm_clks[] = {"pcie_bus", "pcie", "pcie_aux"};
->  static const char * const imx8mq_clks[] = {"pcie_bus", "pcie", "pcie_phy", "pcie_aux"};
->  static const char * const imx6sx_clks[] = {"pcie_bus", "pcie", "pcie_phy", "pcie_inbound_axi"};
->  static const char * const imx8q_clks[] = {"mstr", "slv", "dbi"};
-> +static const char * const imx95_clks[] = {"pcie_bus", "pcie", "pcie_phy", "pcie_aux", "ref"};
+> @@ -1113,7 +1113,6 @@ static int imx_add_pcie_ep(struct imx_pcie *imx_pcie,
+>  			   struct platform_device *pdev)
+>  {
+>  	int ret;
+> -	unsigned int pcie_dbi2_offset;
+>  	struct dw_pcie_ep *ep;
+>  	struct dw_pcie *pci = imx_pcie->pci;
+>  	struct dw_pcie_rp *pp = &pci->pp;
+> @@ -1123,25 +1122,6 @@ static int imx_add_pcie_ep(struct imx_pcie *imx_pcie,
+>  	ep = &pci->ep;
+>  	ep->ops = &pcie_ep_ops;
 >  
->  static const struct imx_pcie_drvdata drvdata[] = {
->  	[IMX6Q] = {
-> @@ -1593,8 +1594,8 @@ static const struct imx_pcie_drvdata drvdata[] = {
->  	[IMX95] = {
->  		.variant = IMX95,
->  		.flags = IMX_PCIE_FLAG_HAS_SERDES,
-> -		.clk_names = imx8mq_clks,
-> -		.clks_cnt = ARRAY_SIZE(imx8mq_clks),
-> +		.clk_names = imx95_clks,
-> +		.clks_cnt = ARRAY_SIZE(imx95_clks),
->  		.ltssm_off = IMX95_PE0_GEN_CTRL_3,
->  		.ltssm_mask = IMX95_PCIE_LTSSM_EN,
->  		.mode_off[0]  = IMX95_PE0_GEN_CTRL_1,
+> -	switch (imx_pcie->drvdata->variant) {
+> -	case IMX8MQ_EP:
+> -	case IMX8MM_EP:
+> -	case IMX8MP_EP:
+> -		pcie_dbi2_offset = SZ_1M;
+> -		break;
+> -	default:
+> -		pcie_dbi2_offset = SZ_4K;
+> -		break;
+> -	}
+> -
+> -	pci->dbi_base2 = pci->dbi_base + pcie_dbi2_offset;
+> -
+> -	/*
+> -	 * FIXME: Ideally, dbi2 base address should come from DT. But since only IMX95 is defining
+> -	 * "dbi2" in DT, "dbi_base2" is set to NULL here for that platform alone so that the DWC
+> -	 * core code can fetch that from DT. But once all platform DTs were fixed, this and the
+> -	 * above "dbi_base2" setting should be removed.
+> -	 */
+>  	if (device_property_match_string(dev, "reg-names", "dbi2") >= 0)
+>  		pci->dbi_base2 = NULL;
+>  
 > -- 
 > 2.37.1
 > 
