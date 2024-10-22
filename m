@@ -1,125 +1,179 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from IND01-MAX-obe.outbound.protection.outlook.com (mail-maxind01on2104.outbound.protection.outlook.com [40.107.222.104])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49C1127E37;
-	Tue, 22 Oct 2024 07:53:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729583627; cv=none; b=cEUDDPfcw+Dmc6CKAd+iO/JfRpdz3OzHtXRTdpaoSXUkS1lLYC02YxRAW0TV3qo+Wl9CoUKI7RFJ8mK8Q3thrPOH+h78KRB0zk7BSysbjTRI8BoCECtnEVdjCQ27W0DwP912KnGDePyD2rqUDrPJUhYy0fhxP5cdWcCaW/N9TTo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729583627; c=relaxed/simple;
-	bh=94yBtoN+NpXDkZbfuTm6IbHirn/x4DZTEvDfAeXAcpA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O+CvHS6dSa1oR+AwwSm83XwCy+dpOofL4ui5Ig9A+hyXEnz35X8PQn/cXZn9gTS2LnopUKbZdejEbxmfu/5Fy0+8+3zk57vxtKafS5L3uTNn1lXmfXlV/P7IkRsaJlepJXhhygR+TmkZMSiyPVZPSnaEiwjQA6ObUuOTJ9pC/JE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WP+vrCJG; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WP+vrCJG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 157F3C4CEC3;
-	Tue, 22 Oct 2024 07:53:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729583627;
-	bh=94yBtoN+NpXDkZbfuTm6IbHirn/x4DZTEvDfAeXAcpA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WP+vrCJGa7gZyLVrVwi+VFRTM0ScCecdKxk+Li7zOUiaDW2pfTG6XrcpVzRGv9STR
-	 T7OeATEZTlF+IPmvX0czoTTOOtsAP2de3OUrShTxlShJMVjoZ/9QRRQTLHnFIazkDM
-	 oI+HVzjH2p4APM0aW14CGQfNl9lvZGyKjDbEKgip52Bss+DcL0a1nOliVeJ+3p5aZ9
-	 Wkdmh1eo8Wr+dfhbRH+zTuDP0aTU0AW2nJ5mDLB+bo2geepiQNAus+kMdvvTPfizSO
-	 pF9vugoJRndcp9osV0GvvkoAEOoeCWBPhf6CKZZg3cRUoEJ+jlKKKDFysKiyQb9vaG
-	 fMUjSgsr37F2g==
-Date: Tue, 22 Oct 2024 09:53:44 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, andrzej.hajda@intel.com, neil.armstrong@linaro.org, 
-	rfoss@kernel.org, Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, 
-	jernej.skrabec@gmail.com, airlied@gmail.com, simona@ffwll.ch, 
-	maarten.lankhorst@linux.intel.com, tzimmermann@suse.de, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, quic_jesszhan@quicinc.com, mchehab@kernel.org, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, catalin.marinas@arm.com, will@kernel.org, 
-	sakari.ailus@linux.intel.com, hverkuil@xs4all.nl, tomi.valkeinen@ideasonboard.com, 
-	quic_bjorande@quicinc.com, geert+renesas@glider.be, dmitry.baryshkov@linaro.org, 
-	arnd@arndb.de, nfraprado@collabora.com, thierry.reding@gmail.com, 
-	prabhakar.mahadev-lad.rj@bp.renesas.com, sam@ravnborg.org, marex@denx.de, biju.das.jz@bp.renesas.com
-Subject: Re: [PATCH v3 12/15] drm/bridge: Add ITE IT6263 LVDS to HDMI
- converter
-Message-ID: <20241022-wondrous-fractal-lion-aedcd9@houat>
-References: <20241021064446.263619-1-victor.liu@nxp.com>
- <20241021064446.263619-13-victor.liu@nxp.com>
- <20241021-thick-cockle-of-popularity-c5e28c@houat>
- <889594b9-e6cb-4d90-b959-cd0258b2f166@nxp.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3208E14B08C
+	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 08:07:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.222.104
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729584478; cv=fail; b=AL4okgmhO2VvQfihEnlzoa6ada7tiaiRWYUkigyp74yWEgL2HO032MvgzOHuGz/3zFClFazn7JkZU6dNkF9xML6JFKpAnOcOLYZOPSmYpRz37ge9o68fGYPAad5XAszwjJpZoTfl5l9acGhnPEmh9VEe4mN2ViUgnsfbCiBjwcs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729584478; c=relaxed/simple;
+	bh=lAAjuoKiQb4YyL2Gs9/f9Uo5QWLH0h69GUqpTASY158=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=IuB3JBWsK0HipjdSE9TzbUM56/C23hYo68HkIgtSkQf0M9USwrGwFOd85iLUDoX8CgbJrgFzSBL4yQczHKNjnleatIftjRrJKtGGfnGmtfpIqpQmpK0EUsStbEi5xWte1v+2UTqLRXtQ+VBymB7Nu5v+3pRXU10KgWKXj/G2yX4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io; spf=pass smtp.mailfrom=siliconsignals.io; arc=fail smtp.client-ip=40.107.222.104
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siliconsignals.io
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wFJ8LL2K2wDto+61w0UaAlFrTQozxWJmIwEz4B5o4nToetH8J+QOGt4X96LuUGT3QxFlxlqwSrEOtF+F/y6ygA7fPW57S6Q1Cz5vdX4p53XKMcPw/KqeO0GPQopvYy+xWBrDiHcXrBjCtpidtSaJke4uR2VIB4o0d8Jpm9GLS42X+MhQICe5UEX+17xcxsg1zbW3eKistmNE7KEtVyLS9uVJf4mVfY0RcoVskLtKlCQyrOLEzlvFjwn1qtlzUYWk2G74zjOnfmYG8b4yRVP10zM7/xVN4lO72oi1LrW7f6s2K87zUENAfnPw3yP5LkvsinNPitvwdyoSVmK7lqZLlA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CYY6HycvDYNr0qDeuMZeidwqEjHE9ISHsKrNHLsN778=;
+ b=a4t6/vh+phsl9chCeV/ymab+b8nX0quIMZ62MWMGJbpSztsCFhdgxcUd7AVh9oHXWpbeyOIa9I/cDLa1xXGtTK/hbRnEbuoOaq0jOqTENgl64l5xOsLOx338aG9sjRYDk2rFGUubw3JMjlbVvW73N4GEnR1ulybLms+wmGAXP/oHdkt0N7onC25EHlaCWa/UvOxmnfYyLJem1fJEmZQoraFn4Kn9/PZ+VBjCETlNB5czjuGff6ApFch5JUjHSuT3VieplFoTC5xGJD1Cprik1oZyrORM/X1pq1GBvEgARgmY9QnQC97H+0KptlJzdQYkxAT4wG7ceFzk1hm5FPv6DA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=siliconsignals.io; dmarc=pass action=none
+ header.from=siliconsignals.io; dkim=pass header.d=siliconsignals.io; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=siliconsignals.io;
+Received: from PN3P287MB1171.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:1a1::5)
+ by PN2P287MB0824.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:136::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.23; Tue, 22 Oct
+ 2024 08:07:53 +0000
+Received: from PN3P287MB1171.INDP287.PROD.OUTLOOK.COM
+ ([fe80::12a8:c951:3e4b:5a8a]) by PN3P287MB1171.INDP287.PROD.OUTLOOK.COM
+ ([fe80::12a8:c951:3e4b:5a8a%4]) with mapi id 15.20.8069.027; Tue, 22 Oct 2024
+ 08:07:53 +0000
+From: Bhavin Sharma <bhavin.sharma@siliconsignals.io>
+To: shawnguo@kernel.org
+Cc: Bhavin Sharma <bhavin.sharma@siliconsignals.io>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Hiago De Franco <hiago.franco@toradex.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Mathieu Othacehe <m.othacehe@gmail.com>,
+	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
+	Max Merchel <Max.Merchel@ew.tq-group.com>,
+	Tim Harvey <tharvey@gateworks.com>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v2 0/2] Add support Boundary Device Nitrogen8MP Universal SMARC Carrier Board 
+Date: Tue, 22 Oct 2024 13:36:12 +0530
+Message-ID: <20241022080645.39536-1-bhavin.sharma@siliconsignals.io>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PN3PR01CA0192.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:be::16) To PN3P287MB1171.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:c01:1a1::5)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="ndesq6xmp4pn532m"
-Content-Disposition: inline
-In-Reply-To: <889594b9-e6cb-4d90-b959-cd0258b2f166@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PN3P287MB1171:EE_|PN2P287MB0824:EE_
+X-MS-Office365-Filtering-Correlation-Id: d1da40bb-528f-4e21-88aa-08dcf270a0d0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|7416014|366016|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?6zuGpol9StMX0Db/FIHfG+v3Vyhpk0jXMBC7awkNvJMZneNBIuIYMmFifMCn?=
+ =?us-ascii?Q?k+/KKjK30rKAXSEYTa0Fc6SkWzy1OAxETJtZX9iX9ngVTqm5HESRZBJ/I5xK?=
+ =?us-ascii?Q?KIpO8KA4P9QEIpoQoZnFt4hKsEN6dDj/NqMXB+Shli4fXFOuUuYTvO6LJk+l?=
+ =?us-ascii?Q?PNRpa67pjbeEprc6gjgoLLIj6kPlD5KdGSC/UKP/zy67ztnpvJ6mCk79rr39?=
+ =?us-ascii?Q?Lftg4r3jvSf4h0pqdvusg9aD0jNHJId4Si418VxJH/g/ziYwrhWbukqLjuuG?=
+ =?us-ascii?Q?K3m+JCDOA45kHYKXsAu9XZIYTlW8yygCe5QepWjYPjzDJtXIw/L65L9yw08t?=
+ =?us-ascii?Q?ZZc00OxlqY9wxLXzXISFgCCFPJMTubM4PSFVaWi1y3u2N/RBVdkzG1oWmiyV?=
+ =?us-ascii?Q?8DHJ2l9rljdlSh9CYab8SfM2EJLhOYE73rHZwD9c0fIg7cWp8cNytCCwmEUy?=
+ =?us-ascii?Q?3Ai69g2CFw9Vc6qv7GWcU566HIDYFKqSBBBat84fHMKITwOtSwK4M5wfB5Ba?=
+ =?us-ascii?Q?7krGDCTEK2chkyPCpO8p7KAt1HMSEBcHNo8VKeODrH3vc4Ra72Ykcbyd8WRC?=
+ =?us-ascii?Q?tD32qFth3Za54iVu+5HYNiQKT4jkkqukEFo/wpSgIZTjxzPeI32GfZGO02oV?=
+ =?us-ascii?Q?3DCCNdb9lwS+WPY2PadS54JhDl0tYYSJZJ7Ag3jkBckUsPyat7uciyQGcRk9?=
+ =?us-ascii?Q?8j2DqpAhqmPX7xMD7/nUOnalZDSRXE8N1rhrWQoQ/luBgwAwX10ZrajIA9o/?=
+ =?us-ascii?Q?yBYyct4EYVEbC1diRtArjiNTLhgVfLMQlyne1vu2G8HYI95mYHKzmEDoFrqt?=
+ =?us-ascii?Q?qaH8mUgMn45Jojy1a9SSwRxIo00N/3e4HgzD4oPFRmd737sZT33kTobGxgO5?=
+ =?us-ascii?Q?D3ww4hgOli/HDo3TaKknC5yuSjiQKKt0fVIxEbbC3WxV3PHGBEB8REODf/N3?=
+ =?us-ascii?Q?YerM3wp4A46CASZG4M/dJri7qah/JycCrHqjvT3WM/TyeMGREMKzN6z2hZvs?=
+ =?us-ascii?Q?ca+ZtOF1stywrEq3ji+715agMX8v89owiua0X45DMDWOq3GW7Nfwak2uhizG?=
+ =?us-ascii?Q?S2ptxjxzNeyE2X7ziUEDETd36zCqlBZ+6JnuHlF9dUTT9RY2qkJ/oj/xKOVc?=
+ =?us-ascii?Q?aCA4nDZbf/Kyz9Ei2HXtMdpNb2geClLcAXel2IF59uT6TkuicFi0WP5MUwdI?=
+ =?us-ascii?Q?IphNDkBEejCAnThF09qAtLPI+yxIHJ96ccbt96h4m4uOx2pt3BAaHXPWD7H+?=
+ =?us-ascii?Q?leVfvfOi0mIjq9iOeDK2h4bXp0b6nGvS37ZbUVsMKxQ+BnM0vuHtcrBQr7B1?=
+ =?us-ascii?Q?tZbUG0FAiJofO7iYN+I2wgbzOYdRfBHqxuH/0BcQw9kHm12w3ceIQ5MtF92E?=
+ =?us-ascii?Q?n2qiazc=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PN3P287MB1171.INDP287.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+L6pq7QXlXlUQjDrHpJ+JlQGBkR7ycQQszGDlVWSmo6btiJxDNFDUSD3jfhY?=
+ =?us-ascii?Q?4dBwtiFpxNjTzDVmgACL26vfQolVQudMiQrlZKT/FG2mDCyOiVJUG0/gu3XX?=
+ =?us-ascii?Q?0hzKgu6xVzELSqPbgGczZXAadjloFsoV5xvqRI5Hy4YXsj3clMOpqT/5w2XW?=
+ =?us-ascii?Q?gotz0+0TKFiyUe29Rqnb4w4u237lEWSMXMJm+4SLTLToixA8qXhxYNOUPstZ?=
+ =?us-ascii?Q?IVPld+M35xdPlGxycTyKakpQBlJZXtsRo6Qk2yesK3ffQFaZGSFjGzQoUcj5?=
+ =?us-ascii?Q?F7EZxXClB+PhalBGPWM/7dh7vyG94f0djGYFS8lwnc+cuFlL7L+sUIHD3uFh?=
+ =?us-ascii?Q?5kyNCs/SbAZGtYt5I2JN3+rgtYFse85peGa9t9O1kRccamamXboWeGtJDTbl?=
+ =?us-ascii?Q?QtKAzv8yKgQ+yyr6iIKkNmdTEQrTkwGvJigLY3PcB54s/y6p97IaqeKyPyAL?=
+ =?us-ascii?Q?f6MetlWYSQVpFlp3pznHGxDGyBWYv322xE7NAx4OmZR3zpNjcS63qyxnAl26?=
+ =?us-ascii?Q?i1yNwvqUwEKB3BK6p70gDzVR8H/GXwTk6XQe8GtsivN5satUo81AW2xa75JQ?=
+ =?us-ascii?Q?gCydTrI9tWWAEmbHxo1kTDvBWvBjyGpxOcIvEI1h5OMS+SikvijRoJHkDUxo?=
+ =?us-ascii?Q?ekSmNCF8i7F6t/HAcJw7tc9JL4RzwB/z2uE2eaIAd8L0tYrdrBasTDhGOclq?=
+ =?us-ascii?Q?/QeXX27X29QEiJ/FgMVokKWhhTAybnma3oFGKTz60asErC1heasYPhXTr1yd?=
+ =?us-ascii?Q?9O6AeLEkLrS4OPYIE9LiCGHM6vFzq8IkOklxroQozA3DGY46jbr6je0hycxo?=
+ =?us-ascii?Q?2wVwTDsSSNurzb47WQ/6ePxtaqTnsJCszztqBZhpV2gWcZJH4605kYM7icsk?=
+ =?us-ascii?Q?LrKg6euWBWV4CF4GXTjk8pmzAgwAouV0DmldZ8xS4OK3TO6wkXRTXRasWxLL?=
+ =?us-ascii?Q?lE+T5cc6sYzt4fifSyqQQBP8ne0xl0HSfivjgizcJQX+/ogR8DDa67jwzENP?=
+ =?us-ascii?Q?xVNITJPGx/GuFJgabanRZ1h3vEvYLXcds6Cl7VtpC27vI4k37SNyZoahbhaH?=
+ =?us-ascii?Q?uhtgK77j2JOia31zgNUdM3RNdNlLvBvet2nozZi3ZFZL3916OpixfXNOLXoU?=
+ =?us-ascii?Q?1c33k3mX/Hgg9HfQf62MG187KHsCHfGB0gBg4rpghWrGEaJd06W6+QxiRNro?=
+ =?us-ascii?Q?S81XdfWbqIrQONSg8Vy1AtDIujWXCng5xuM/37oiS001Tzq5sZs8tzeFfBGc?=
+ =?us-ascii?Q?h/Jkk+Vo+FG3XtXSPE4IVZTEcveuioAnErV5hMcPO02QSycGEzmzAJaGxCLA?=
+ =?us-ascii?Q?IorvXEbs1tYlMNWMh0l3r7ZE1aAVjh0DFmDdzDK/1Og0qD+xcUc76+F0FhMV?=
+ =?us-ascii?Q?e2bRUT0qpvzkKFEnzVgHQs4RDAfw+Hf/9anCN1K99BaEzDwhzdPt9E9Pk8ER?=
+ =?us-ascii?Q?bd3mgCIDI/70tOInhQ4idtUQfkSqC+FJzMlBeItnQxfF+ZMOhl18Xj2wUad1?=
+ =?us-ascii?Q?8Y98X7xEagxo6AJOLm7CK6+DK2q5yUnfNKukVp2t5206tuIHJEeNvzY6bIS7?=
+ =?us-ascii?Q?tHQRG3TRAW6fri9mVBUw1b6gcPaYjvPQRZIJhmrq/jDn8dlW2DioHDrRmENZ?=
+ =?us-ascii?Q?1I02w0UACTD9srozcY4UPPc=3D?=
+X-OriginatorOrg: siliconsignals.io
+X-MS-Exchange-CrossTenant-Network-Message-Id: d1da40bb-528f-4e21-88aa-08dcf270a0d0
+X-MS-Exchange-CrossTenant-AuthSource: PN3P287MB1171.INDP287.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2024 08:07:52.8932
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7ec5089e-a433-4bd1-a638-82ee62e21d37
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 04Qi5hTW2mjRinmjBx2xYcOJxkF2Fb9fXxocK7pP6hQWpx8gw7osao8Q40DqkJ4RQc0Y6UaHkf1W1ndKbsrMqfAOtj5Yazg5PvbE4h+KxWA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN2P287MB0824
+
+Add initial support for Nitrogen8MP Universal SMARC Carrier Board with
+Nitrogen8MP SMARC System on Module.
 
 
---ndesq6xmp4pn532m
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v3 12/15] drm/bridge: Add ITE IT6263 LVDS to HDMI
- converter
-MIME-Version: 1.0
+Change in V2:
 
-On Tue, Oct 22, 2024 at 03:36:47PM +0800, Liu Ying wrote:
-> Hi Maxime,
->=20
-> On 10/21/2024, Maxime Ripard wrote:
-> > On Mon, Oct 21, 2024 at 02:44:43PM +0800, Liu Ying wrote:
-> >> +static int it6263_bridge_atomic_check(struct drm_bridge *bridge,
-> >> +				      struct drm_bridge_state *bridge_state,
-> >> +				      struct drm_crtc_state *crtc_state,
-> >> +				      struct drm_connector_state *conn_state)
-> >> +{
-> >> +	struct drm_display_mode *mode =3D &crtc_state->adjusted_mode;
-> >> +	int ret;
-> >> +
-> >> +	ret =3D drm_atomic_helper_connector_hdmi_check(conn_state->connector,
-> >> +						     conn_state->state);
-> >> +	if (ret)
-> >> +		return ret;
-> >> +
-> >> +	return mode->clock > MAX_PIXEL_CLOCK_KHZ ? -EINVAL : 0;
-> >=20
-> > drm_atomic_helper_connector_hdmi_check will already make that check, so
-> > it's redundant.
->=20
-> MAX_PIXEL_CLOCK_KHZ is 150MHz. With 150MHz pixel clock rate, we'll get
-> 150MHz HDMI character rate for 8bpc and 187.5MHz HDMI character rate
-> for 10bpc, both are lower than MAX_HDMI_TMDS_CHAR_RATE_HZ =3D 225MHz.
+in patch 1/2:
+	- Drop Unneeded line 
+	- Correct the indentation
 
-I guess? I have no idea how that's relevant though. Where are those
-constraints coming from, and why aren't you checking for them in
-tmds_char_rate_valid?
+in patch 2/2:
+	- Add Acked-by tag
 
-> So, it looks like pixel clock rate is the bottleneck.
+Bhavin Sharma (2):
+  dt-bindings: arm: fsl: Add Boundary Device Nitrogen8MP Universal SMARC
+    Carrier Board
+  arm64: dts: imx8mp: Add Boundary Device Nitrogen8MP Universal SMARC
+    Carrier Board
 
-The bottleneck to what?
+ .../devicetree/bindings/arm/fsl.yaml          |   6 +
+ .../freescale/imx8mp-nitrogen-smarc-som.dtsi  | 348 ++++++++++++++++++
+ .../imx8mp-nitrogen-smarc-universal-board.dts |  17 +
+ 3 files changed, 371 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-nitrogen-smarc-som.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-nitrogen-smarc-universal-board.dts
 
-> Remove drm_atomic_helper_connector_hdmi_check() or keep this as-is?
+-- 
+2.43.0
 
-No, like I said, remove the final check for mode->clock.
-
-Maxime
-
---ndesq6xmp4pn532m
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZxdaCAAKCRAnX84Zoj2+
-dkMtAX0bABUvvrQvsEVfC/FsHL24JniTnXVp5PfMg4bNoZgQKIMXrttSyJhmufST
-5RbQcPUBfRss1fUSXSj1YNr6FqAGDfJUWa++ed7TSbFOKM1yWDyQJwOyznEzViOj
-kYYL52W9yg==
-=wUZL
------END PGP SIGNATURE-----
-
---ndesq6xmp4pn532m--
