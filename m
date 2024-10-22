@@ -1,323 +1,556 @@
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2047.outbound.protection.outlook.com [40.107.249.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F72884D25
-	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 06:13:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729577619; cv=fail; b=OIRMzexfbGbjfJeCnsjVMcgBTxQwDkvVXufy5EhaGLFWN9uLg/GHQsfjHp5EFa9vcWIJALWNBiNiXzvLbUcAbn9RRp228K6Aq5x0blxgOri0JHUrJEnWOKwZlFxS7XeYawEBPZoM164FIqzYcpulfxtHG8ZSB4qIB13Ex90l2Go=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729577619; c=relaxed/simple;
-	bh=LPWSfEJ6qzWhK2plCG8UYMP+54Gy5GRExUx2HpezNfw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=qoG/CN4Ehl2eCHFxv3vMw+H0bJqun30RYtd6Zj+rQDlvN8gzrR3oyy1fbkHNF4WWfJQZe2jUyxlP7YgY+URgYZh6NvS41iY1miwm1xMDcI2IoVCg5PfwTA/r6tI4tIzJpwB7iL8QbTt/ZXXjm+QgceCx116/ClxslhmEuvDRV6E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=YN69C1kg; arc=fail smtp.client-ip=40.107.249.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07351E529
+	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 06:13:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729577623; cv=none; b=SRFnU7pFQrpknWZnZ5Ror1810lDH8H1JqOt9nD1koTlzbyy+Z6C2gopUhFZAr+BjUWymNZs/dJr51tPohItUZRlOQZVCUMNlxPuolw/0BCsclQ6R1tX5EUtqBGmZih6wWM37TNvzoCdGOPAXQdiimwL/1Hzs/xDwbXwLneShyL8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729577623; c=relaxed/simple;
+	bh=p7CdNf8IVbdGij5h3NGXq1KCDLNvJEwvWNaZrfIXpgA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SKKQ20dAilEEbPMHyApmUgk+v9S4H4g1qs5RPPWrGXcwDBDhQBv/XV/CEqt5+djp4WBXFI0H3kkFWrOC5V5DzCkjUO0NxE3a6Rzu55m4yWeH8FySCQwZn1eofYwXZcDR8voA1NNZ+tz4fFP+fCiHpgfBbq02EgSMkURNO+1BK1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=MEONlF2M; arc=none smtp.client-ip=220.197.32.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="YN69C1kg"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n5N5J4Gz9zt3Rw3yUD8XDpXA2I3IiPqBbINWT153PKM9jIHRdFP8F8fM/qFecpBzoJxLUVc7McwT/G6xUNEBodbr0HB+TvMAFfhEIcFBZOEtlE/YOgVtoJMjKP0hH0NMvl1JNC0TsDwmk45wPxSdfzmTBoBZyXrWSjCfK0juij+i+jjgxn53p1WpvOQeYsxOzFicMrS5/xj926xGLruyrpWJxPKhwzqAG8ljkAQYDWcy+0xjTQRbg9OrRu+j9BjKY0L79p9aEtpfXcIfQzm1gmNDLoa+BzyRHkG3ObdBn9+wT6nJi9lkaaOEcW8b+4ztQ0NO30+tkyLIPL5HpAhI/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yMZ6J+KrDL383SQx5fQMDmQFkPqdP2fbmoiSbSk6jeU=;
- b=Wib1tkqSXklF8oJN37t9yN1YbHTWEcXAy4uvv5MODUalT9WPJeM5Pf7CcPsrcnQdOeJBCc9ENlk0JwlZ1ClQzLtqHF3bfyVlUtNwIjRLeDZiv0LyLTzUPNVpl6n5rDdLDOW/XrlEDIz5XKrsQGmfU/IFaQVDGSrKYEUQj3iqQeopdOksg/tAHWUbR9SE+t8J9E0yw3CDDcfT50WY0J1YEgIjnm3PObXCmxMFBukQ4Ocmdz2pSm4QSSMNVZQGudNCiBoEDXUQ/xfpfg+XOSHt5y32kD5aucD3Q0E2glBqhpB1HHna6nmBkNYAmVEXPf5L01wXkreDrrHJUvoy3C2kpw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yMZ6J+KrDL383SQx5fQMDmQFkPqdP2fbmoiSbSk6jeU=;
- b=YN69C1kgYUELxeHv1HoABdap0xvXUPnCCZILO1LFuVePO6Uuk6KImPNxKVDPpJuxRx/O4rdcIDxfxOkFs984YR4NRM83hETIw3hLA8yyMQ2ta8iFkwm59amM4fpXfHrb7Yx+hVFZX8CNCRAE2ZeQb98YQHZJm5neupZVhWhz13m8270klAwqXYalGhZzFzszb6XsM+Hf25zOIyrea9oEAP1mHqMRpVvwJu5Cd5twiDUkUSn6cAGz0HUyk4M/C5a/1EZBDBVWb5l9WXF8P2g5DitrOXYI3SOTujRg1FAQjy5hVwIAwTcjih3xFH9mtzHlXr3wLVQJrKWzfrjUBDm67g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by GVXPR04MB10491.eurprd04.prod.outlook.com (2603:10a6:150:1eb::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.28; Tue, 22 Oct
- 2024 06:13:32 +0000
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90%4]) with mapi id 15.20.8069.027; Tue, 22 Oct 2024
- 06:13:32 +0000
-Message-ID: <d1307426-9a86-4356-93b8-9a10c8369ad8@nxp.com>
-Date: Tue, 22 Oct 2024 14:13:57 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] clk: imx: clk-imx8mp: Allow LDB serializer clock
- reconfigure parent rate
-To: Marek Vasut <marex@denx.de>, dri-devel@lists.freedesktop.org
-Cc: Abel Vesa <abelvesa@kernel.org>, Andrzej Hajda <andrzej.hajda@intel.com>,
- David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Isaac Scott <isaac.scott@ideasonboard.com>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Jonas Karlman <jonas@kwiboo.se>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Peng Fan <peng.fan@nxp.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Robert Foss <rfoss@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>,
- Stephen Boyd <sboyd@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- imx@lists.linux.dev, kernel@dh-electronics.com,
- linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
-References: <20241008223846.337162-1-marex@denx.de>
- <dbede671-c97b-4ad7-8a54-f1b381fea082@nxp.com>
- <00ffd38c-b01a-40cd-9130-19c35a387ca0@denx.de>
- <819380c3-d13f-4989-b305-388fc60d30e4@nxp.com>
- <d99e0021-3253-4312-9b50-6031ae0f8d8e@denx.de>
-From: Liu Ying <victor.liu@nxp.com>
-Content-Language: en-US
-In-Reply-To: <d99e0021-3253-4312-9b50-6031ae0f8d8e@denx.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SG2PR01CA0166.apcprd01.prod.exchangelabs.com
- (2603:1096:4:28::22) To AM7PR04MB7046.eurprd04.prod.outlook.com
- (2603:10a6:20b:113::22)
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="MEONlF2M"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=vuBLl3n9Km4FVEIASOsGFYa1N5ElEvdvN+ihHRmgzmM=;
+	b=MEONlF2MgnjAMGFhz5Lfw0GVZ/nWzCAZ6XwqERmqQemrbTwQPI1U/Z0X/mZ2CG
+	ams3aYJpgce7q6snrOq2blAGzH+wzZwlIwvMciMlGMaxhdo0VB+sD71rJII+VoQk
+	W3FKqQsuO/FzJD55d7ftGh/TkkMqcsNNjIfQ00jxqmuIo=
+Received: from dragon (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDHTtRzQhdng2WZAA--.5610S3;
+	Tue, 22 Oct 2024 14:13:08 +0800 (CST)
+Date: Tue, 22 Oct 2024 14:13:06 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Lukasz Majewski <lukma@denx.de>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Stefan Wahren <wahrenst@gmx.net>
+Subject: Re: [PATCH v9 4/4] ARM: dts: mxs: Add descriptions for imx287 based
+ btt3-[012] devices
+Message-ID: <ZxdCcsq0Zjjm4hYT@dragon>
+References: <20241021100224.116129-1-lukma@denx.de>
+ <20241021100224.116129-4-lukma@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|GVXPR04MB10491:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0db1b79d-da56-47f0-6b3e-08dcf260a76f
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?dUxjc2hjaXhlMk5QV05ETFFhY2RTSTFPNEIwTlFOQTQ5cFBOamRnaFN5NXcz?=
- =?utf-8?B?Nk5CY01JTWI3eG5NUmtrQWF2VVZNL1BhYWZ3T1VXRVhuRnltVUovdGoraThu?=
- =?utf-8?B?U0YyRkhEcnFyOUZOSTN3ZXZxbWRrRFE4NG4vVnVyUmtpMjRDTEVtWkdZWUc4?=
- =?utf-8?B?YU5Eak84VlJuQVMzQkhkb3dmS05Ea1JKNjduakZzV21tbnhSK1VZK3lLNm5S?=
- =?utf-8?B?TUlwUFNTVTJQUDRBbEIzelBZVVRzRWFDZUhaMFNPbVdYSnNoSVpDdHB4ZnpJ?=
- =?utf-8?B?OEt0NXJDT3k1RkRlTDM0NU1pYUwrUHc1azRjVlhqSzhqdnZtamNyYXVsRjc4?=
- =?utf-8?B?RWxmRWdrYlpnZ3VIS3pQSHYzRm9KV013RHVscDdleXdoZ004bG43OHBrVkpt?=
- =?utf-8?B?dTNVVDdJSURPeU9WbnZVU0tsNy9kNnhuc3p0V1JoN1VtTzdVME5jeDdPcTdU?=
- =?utf-8?B?U0NZZzY2dTRxMUxjWEZVZkVCbXIxQ25PS2pHZmZGeDRDTnBlc3dvVGU2RnZD?=
- =?utf-8?B?VE9Na1RnZmV2TGwyeW5xRFVQUG1kQmRTWFg5cXZiNEZhMjJlTTBUOFo2S2Ji?=
- =?utf-8?B?VkRvWDZPRDVTVENPUEx4YUNzV1NHcjBnaGxidjZLNXN1d2RoWVJRU2JhaFl0?=
- =?utf-8?B?R3BGSHNDVlY1Ly9LeFFwVndxZFpwYU1PQzVSMTR2NWhqQTFWVjlsTEVRTkc5?=
- =?utf-8?B?alFLSTV5RmgzUnlSa3RuOVl5TUVuREJNZjFocm1KVG04YUdaU2hKbng4dVhy?=
- =?utf-8?B?bG1KTDQ5WThrMkU3R3FZUWwrNFVjbGpQSWpSZTUwVDhOMkhpRVI4aEVsbWd3?=
- =?utf-8?B?Y09FalFNelB3K0FsZTdTZWc1T0dlamxCcEVDZnFoWjRYWDZ2bUp3cExqQjRL?=
- =?utf-8?B?THB2Y0pRa0VjMWlObko5Rzc1WDFpT2NVVjdKaFE4eDNnc3N0U2tEamJHZTJN?=
- =?utf-8?B?R1FVNmN1S0g5SSt4aE45MEJMNWg3TURLMzJqQ20zN20wTEhEK3J5NmhySklo?=
- =?utf-8?B?YlRjenoyc1VqMmQzSlE3QitZa1Zyd0Z5MXVYVEJwVDlsMnhieTduaWVscVJV?=
- =?utf-8?B?ekF0WVd2Z3VlbG1NSEs4ZnpVWVV6RUpHU2w4alBKaFpqQkRhQVROQWZ5d0ht?=
- =?utf-8?B?djRleWxmWXJrdVoxeHBvUk9ONGxhaER0UVdBT0RtRW94K3BiMXpyaUEzWmRo?=
- =?utf-8?B?WmZPaXA1dWJlNmVBbnBlWkhzUGE0bEpuR3RPOE9FVU9GZkwvRzQ2R3R4U1RT?=
- =?utf-8?B?Mkd5ZWpYbHJMTXRkTlF1bTh0eUsyWlZzVkN1L205YjBXdEdxVkQraFFMQ1M1?=
- =?utf-8?B?ZmFVYzVVQmNvcVRnWkh5L0lkVnd4QkJvMUlmMnYrMVozL2x1ejlEcTE4Lzc0?=
- =?utf-8?B?UVRMSkI2azIxZTVLUk1FcTF3N05nSXNSbElRV1lSNzVVWndOcnJ4ZUpQTW1n?=
- =?utf-8?B?N3hCbVV4K3l1OEtrSHJORTg2SEVFQ0U2dzM0WERINzZEYkhtRVBsMjBhUERa?=
- =?utf-8?B?SzRiNmJUSmVxTm1TOTNudndBUmRUL3BDemRGamFvenAvRDRoRkVrL0tSZmtu?=
- =?utf-8?B?Si9lSUlLQXl0bkpoRG9qZ1pCa0VFMHdRanhkeFZrVUxKMEtZUENQL0lZTGgw?=
- =?utf-8?B?YWlNZ3dVd2pxbFUvOU1XUUtSRFh2Vk5HMzRpRE1YTk5kRlhXbG9Kc3g0TTVh?=
- =?utf-8?B?SldTWDBNSUFIV0wyNVRQcnlJVVdDTFJ2bENMb0ljTFlOKzJraXZqcVhvUnFj?=
- =?utf-8?Q?WLGCF0xlkE3kbidzQpC1GY/VMirzg/pONAAVteX?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?VVBsaWFpSFNaTmUrL01iODFrYnJLMnBGRU1ka1dTbUw2TncweEVjN2F3NUJp?=
- =?utf-8?B?VlVBZTA0cUVoaVc2N3lnSWxnVVNwZmszbHBkbm0yMnVlQWJYa0FVektJVzh6?=
- =?utf-8?B?ajhzUlA0OWE1VlNuV3l1Qno3RUFhZExGQnpMNCtaUVFtYzh0cnZQam5vSmxP?=
- =?utf-8?B?VndUM3BSbXNaZEZQRWFRZ25GSFI1aWZFb2ZTZmhpTnZaWHhZVHFxQXJXeXZq?=
- =?utf-8?B?amNhcjJVcXdrSmtobU9VQk9URzdOamNiZzkvQ1VaUVlMYXpMMmFXd04wZjFL?=
- =?utf-8?B?U3NROFdvYUVYWk81STRCSXFXNTRydXM5MVVacGt1WUNNeFR3a1UrSEdEaDhu?=
- =?utf-8?B?LzFjd2dlZm8rWVMraVg0WUM0VnlOaGt6bXh5dnhCeUZQZ3gxb1U5U2twQ0tZ?=
- =?utf-8?B?bEg4OVNSd1EzeFR1T3RHT1dUWTc3bUw2dnNwdHNmZnZlQW14MVJ0aUp6TTI5?=
- =?utf-8?B?d3Q2Z1p6c0JxUW9VTGxjYWxTUFdRY1VhZ0UrcGJ0ekxMRUZyeHN0TWVkTzEx?=
- =?utf-8?B?UjVLUkZNOVlLazI3c29aaTF6dTRhMDZVQS9QVHZmQ3Y4VEt0NWtlOFBicGkw?=
- =?utf-8?B?YlN5SVpscjFvQjZIemxqVEhVNi9mS29FdTV1WUt5QlVkL2wxQ0Z0OXZNa1cr?=
- =?utf-8?B?TDkrUVozMkhMNWE2K3BuT2JCMWxnb3FqWlBDK3JyVDdjWUtKQnRFL0hJcEpo?=
- =?utf-8?B?SWtnSDRPaCtLRjJLdmZPcHIzYjEwcnZuZEJGdWw3VmI1ODFld2VDRmhkRS8z?=
- =?utf-8?B?dGdPem9PWTdqRFhOV3hSSXFoN1kzMS9YZEJZQ08raUY5Q0pIbHRRS3JDcENx?=
- =?utf-8?B?Rnp4eVdCOTdtenVjc082NWNBUUtnd3g2cHpqYk1MSTlVWFMxMkN1VHAvN1JK?=
- =?utf-8?B?VEFtNnF3RWJWMEdna3RWbnBES2VBZmhiUmsvUlNkdDJncmNjK2lieTR0TTJ4?=
- =?utf-8?B?emJSYkVCNGJkdncvMXdCMCszRkFrK2tWbWVKZ3d4cWdrMG03SDV0K0J5cldo?=
- =?utf-8?B?NVU0Z2k4dlJpSW1PNk1xb1lnRVQxQWlnc091cktLRld0ZHpkVTIzdnFIeHN4?=
- =?utf-8?B?d1liZ3g0S3ZVcUFNNWswSURsVVhab2t6SitpR3RTak9vOXBaSHJaYnNUZ0pk?=
- =?utf-8?B?MFYrb3MrcjRTSjJ5UUcxMWJsSzVWS3ZKYlJrQmRqUk5WK0I0UHFHSjAyRjBl?=
- =?utf-8?B?dldPV1JzNFdXckZmd3MxOG9JMHB5L2ppa3JDeWNRU2E2RTFFeEVpTDltaDRS?=
- =?utf-8?B?OVIvTkNzTHUvdHlaR3YwVFMvVFJCcGxtT0JUZzJJR3p3bnlJQjYvbWIvYlJF?=
- =?utf-8?B?VkdmaitXdEswSmtENmp0dVJ0SW1KRi9nN3lsZjZlNWM4WHpWWDNWeUNYdy9l?=
- =?utf-8?B?TUpoTHFmSzVNdnZhZEVZWm1adDhteUc3NnJocTU3cTJsY1l6d0lhUlpKRUJ1?=
- =?utf-8?B?d1dtaGlZWlIrVXRseDVMNWU1RGNDZXlXVTNQVU55QnloK3ZHYlZJdmRoQ2hy?=
- =?utf-8?B?a3NpamMxSkEwdzcwWGhZR2F3MFpqYU5kRStXTjhLK2VzaHhyN1N1THVTdHR3?=
- =?utf-8?B?Y1Noc25ZTy9uQW5uc1RuR3ZvOWF2RGZCMENUbHBlZUZ4TEYxQjZ1M0xkZFdM?=
- =?utf-8?B?dlpTelBGbFVUNGIyRmhEMmVzdFVDV0NSVmhzT0dQUTlzUHJ5L1dkd2g0S2s2?=
- =?utf-8?B?RytBcDlWdURLRSs0dmVIK3MxcjRURXRlV2NZOXR5d0hmamZudFpGMzB1WERw?=
- =?utf-8?B?b1hNYmM3Z1JvZU5JSlpvUjR5dHUvbUhhRzI2LzJUaG9zREY2RGs5YXhGZ1R1?=
- =?utf-8?B?TDZZbkQvcUNQYTBWQjlhYzBCQ3VtUGxqWTY2clh4Ylh1dWJqTFNFaVFxcDhh?=
- =?utf-8?B?Nk9aWnhvWWlVR2NsbjBlamtva2l4a1NCNXk3SW9VSHBMU2RSK3NGNWJ6a3ly?=
- =?utf-8?B?b1lHYzllZm0xem13T0RiY3RUeExYVHVjMzRlK0xxNS8yUTA4S1N4KzdCS2sy?=
- =?utf-8?B?T2R5cXJVc2d6RmRiTHdpeWIxVjVEc3VXNUhuYVZPMjhrSE15NkRhWktjRXNU?=
- =?utf-8?B?ZU84WTlKQ1dNSC9yS0hXVXFaVE02QXBMbU5DVG1PUC9DRS8vM2d5RC9zMmxm?=
- =?utf-8?Q?nQP7Fr8pWn1Z7pNICURlP3IEE?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0db1b79d-da56-47f0-6b3e-08dcf260a76f
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2024 06:13:32.1128
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Iow9MVFZpWZBRVI79DkVbpzimhK8oMzsNS+mdyH/HD0GTFb9XS/tZ88Hvr1PncqjPNGFLa5+rnycZXPdZVzX6A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10491
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241021100224.116129-4-lukma@denx.de>
+X-CM-TRANSID:Ms8vCgDHTtRzQhdng2WZAA--.5610S3
+X-Coremail-Antispam: 1Uf129KBjvAXoWfGrWUWw4DGr4fWFWruFy5CFg_yoW8JF1DWo
+	ZIyFsYkrW0kw47Cws3Gr17Kw47AF4ktr4rGay5ArWrJ3Z0ya98Ar1rKw4vqr45CrW0q34k
+	u342vFW5Aa109ws5n29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
+	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU4uc_DUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCw6AZWcXFXKApQAAsS
 
-On 10/13/2024, Marek Vasut wrote:
-> On 10/11/24 8:18 AM, Liu Ying wrote:
->> On 10/11/2024, Marek Vasut wrote:
->>> On 10/10/24 7:22 AM, Liu Ying wrote:
->>>> On 10/09/2024, Marek Vasut wrote:
->>>>> The media_ldb_root_clk supply LDB serializer. These clock are usually
->>>>> shared with the LCDIFv3 pixel clock and supplied by the Video PLL on
->>>>> i.MX8MP, but the LDB clock run at either x7 or x14 rate of the LCDIFv3
->>>>> pixel clock. Allow the LDB to reconfigure Video PLL as needed, as that
->>>>> results in accurate serializer clock.
->>>>>
->>>>> Signed-off-by: Marek Vasut <marex@denx.de>
->>>>> ---
->>>>> Cc: Abel Vesa <abelvesa@kernel.org>
->>>>> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
->>>>> Cc: David Airlie <airlied@gmail.com>
->>>>> Cc: Fabio Estevam <festevam@gmail.com>
->>>>> Cc: Isaac Scott <isaac.scott@ideasonboard.com>
->>>>> Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
->>>>> Cc: Jonas Karlman <jonas@kwiboo.se>
->>>>> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
->>>>> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
->>>>> Cc: Maxime Ripard <mripard@kernel.org>
->>>>> Cc: Michael Turquette <mturquette@baylibre.com>
->>>>> Cc: Neil Armstrong <neil.armstrong@linaro.org>
->>>>> Cc: Peng Fan <peng.fan@nxp.com>
->>>>> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
->>>>> Cc: Robert Foss <rfoss@kernel.org>
->>>>> Cc: Sascha Hauer <s.hauer@pengutronix.de>
->>>>> Cc: Shawn Guo <shawnguo@kernel.org>
->>>>> Cc: Simona Vetter <simona@ffwll.ch>
->>>>> Cc: Stephen Boyd <sboyd@kernel.org>
->>>>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
->>>>> Cc: dri-devel@lists.freedesktop.org
->>>>> Cc: imx@lists.linux.dev
->>>>> Cc: kernel@dh-electronics.com
->>>>> Cc: linux-arm-kernel@lists.infradead.org
->>>>> Cc: linux-clk@vger.kernel.org
->>>>> ---
->>>>>    drivers/clk/imx/clk-imx8mp.c | 2 +-
->>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>
->>>>> diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
->>>>> index 516dbd170c8a3..2e61d340b8ab7 100644
->>>>> --- a/drivers/clk/imx/clk-imx8mp.c
->>>>> +++ b/drivers/clk/imx/clk-imx8mp.c
->>>>> @@ -611,7 +611,7 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
->>>>>        hws[IMX8MP_CLK_MEDIA_MIPI_PHY1_REF] = imx8m_clk_hw_composite("media_mipi_phy1_ref", imx8mp_media_mipi_phy1_ref_sels, ccm_base + 0xbd80);
->>>>>        hws[IMX8MP_CLK_MEDIA_DISP1_PIX] = imx8m_clk_hw_composite_bus_flags("media_disp1_pix", imx8mp_media_disp_pix_sels, ccm_base + 0xbe00, CLK_SET_RATE_PARENT);
->>>>>        hws[IMX8MP_CLK_MEDIA_CAM2_PIX] = imx8m_clk_hw_composite("media_cam2_pix", imx8mp_media_cam2_pix_sels, ccm_base + 0xbe80);
->>>>> -    hws[IMX8MP_CLK_MEDIA_LDB] = imx8m_clk_hw_composite("media_ldb", imx8mp_media_ldb_sels, ccm_base + 0xbf00);
->>>>> +    hws[IMX8MP_CLK_MEDIA_LDB] = imx8m_clk_hw_composite_bus_flags("media_ldb", imx8mp_media_ldb_sels, ccm_base + 0xbf00, CLK_SET_RATE_PARENT);
->>>>
->>>> This patch would cause the below in-flight LDB bridge driver
->>>> patch[1] fail to do display mode validation upon display modes
->>>> read from LVDS to HDMI converter IT6263's DDC I2C bus.
->>>
->>> Why ?
->>
->> Mode validation is affected only for dual LVDS link mode.
->> For single LVDS link mode, this patch does open more display
->> modes read from the DDC I2C bus.  The reason behind is that
->> LVDS serial clock rate/pixel clock rate = 3.5 for dual LVDS
->> link mode, while it's 7 for single LVDS link mode.
->>
->> In my system, "video_pll1" clock rate is assigned to 1.0395GHz
->> in imx8mp.dtsi.  For 1920x1080-60.00Hz with 148.5MHz pixel
->> clock rate, "media_ldb" clock rate is 519.75MHz and
->> "media_disp2_pix" clock rate is 148.5MHz, which is fine for
->> dual LVDS link mode(x3.5).  For newly opened up 1920x1080-59.94Hz
->> with 148.352MHz pixel clock rate, "video_pll1" clock rate will
->> be changed to 519.232MHz, "media_ldb" clock rate is 519.232MHz
->> and "media_disp2_pix" clock rate is wrongly set to 519.232MHz
->> too because "media_disp2_pix" clock cannot handle the 3.5
->> division ratio from "video_pll1_out" clock running at
->> 519.232MHz.  See the below clk_summary.
+On Mon, Oct 21, 2024 at 12:02:24PM +0200, Lukasz Majewski wrote:
+> The btt3 device' HW revisions from 0 to 2 use imx287 SoC and are to
+> some extend similar to already upstreamed XEA devices, hence are
+> using common imx28-lwe.dtsi file.
 > 
-> Shouldn't this patch help exactly with that ?
-
-No, it doesn't help but only makes clk_round_rate() called in
-LDB driver's .mode_valid() against 148.352MHz return 148.352MHz
-which allows the unexpected 1920x1080-59.94Hz display mode.
-
+> New, imx28-btt3.dtsi has been added to embrace common DTS
+> properties for different HW revisions for this device.
 > 
-> It should allow you to set video_pll1_out to whatever is necessary by LDB first, fixate that frequency, and the LCDIFv3 would then be forced to use /7 divider from faster Video PLL1 , right ?
-
-Yes, it allows that for single-link LVDS use cases.
-And, __no__, for dual-link LVDS use cases because the
-video_pll1_out clock rate needs to be 2x the LVDS serial clock
-rate. 
-
+> As a result - changes introduced in imx28-btt3-[012].dts are
+> minimal.
 > 
->>      video_pll1_ref_sel               1       1        0        24000000    0          0     50000      Y      deviceless                      no_connection_id
->>         video_pll1                    1       1        0        519232000   0          0     50000      Y         deviceless                      no_connection_id
->>            video_pll1_bypass          1       1        0        519232000   0          0     50000      Y            deviceless                      no_connection_id
->>               video_pll1_out          2       2        0        519232000   0          0     50000      Y               deviceless                      no_connection_id
->>                  media_ldb            1       1        0        519232000   0          0     50000      Y                  deviceless                      no_connection_id
->>                     media_ldb_root_clk 1       1        0        519232000   0          0     50000      Y                     32ec0000.blk-ctrl:bridge@5c     ldb
->>                                                                                                                               deviceless                      no_connection_id
->>                  media_disp1_pix      0       0        0        129808000   0          0     50000      N                  deviceless                      no_connection_id
->>                     media_disp1_pix_root_clk 0       0        0        129808000   0          0     50000      N                     32e80000.display-controller     pix
->>                                                                                                                               32ec0000.blk-ctrl               disp1
->>                                                                                                                               deviceless                      no_connection_id
->>                  media_disp2_pix      1       1        0        519232000   0          0     50000      Y                  deviceless                      no_connection_id
->>                     media_disp2_pix_root_clk 1       1        0        519232000   0          0     50000      Y                     32e90000.display-controller     pix
->>                                                                                                                               32ec0000.blk-ctrl               disp2
->>                                                                                                                               deviceless                      no_connection_id
->>
->> Single LVDS link mode is not affected because "media_disp2_pix"
->> clock can handle the 7 division ratio.
->>
->> To support the dual LVDS link mode, "video_pll1" clock rate needs
->> to be x2 "media_ldb" clock rate so that "media_disp2_pix" clock
->> can use 7 division ratio to achieve the /3.5 clock rate comparing
->> to "media_ldb" clock rate.  However, "video_pll1" is not seen by
->> LDB driver thus not directly controlled by it.  This is another
->> reason why assigning a reasonable "video_pll1" clock rate in DT
->> makes sense.
+> Signed-off-by: Lukasz Majewski <lukma@denx.de>
 > 
-> I agree that _right_now_, the DT clock assignment is the only option.
-> I would like to see that DT part disappear and instead would prefer if the LDB/LCDIF could figure out the clock tree configuration themselves.
+> ---
+> Changes for v2:
+> - Rename dts file from btt3-[012] to imx28-btt3-[012] to match current
+>   linux kernel naming convention
+> - Remove 'wlf,wm8974' from compatible for codec@1a
+> 
+> Changes for v3:
+> - Keep alphabethical order for Makefile entries
+> 
+> Changes for v4:
+> - Change compatible for btt3 board (to 'lwn,imx28-btt3')
+> 
+> Changes for v5:
+> - Combine patch, which adds btt3-[012] with one adding board entry to
+>   fsl.yaml
+> 
+> Changes for v6:
+> - Make the patch series for adding entry in fsl.yaml and btt3
+> 
+> Changes for v7:
+> - Use "panel" property as suggested by the community
+> - Use panel-timing to specify the display parameters
+> - Update subject line with correct tags
+> 
+> Changes for v8:
+> - Use GPIO_ACTIVE_HIGH instead of '0'
+> - Add the comment regarding mac address specification
+> - Remove superfluous comment
+> - Change wifi-en-pin node name
+> 
+> Changes for v9:
+> - Remove not used 'pm-ignore-notify'
+> - Add display names for 'panel-dpi' compatible to avoid Schema warnings
+> ---
+>  arch/arm/boot/dts/nxp/mxs/Makefile         |   3 +
+>  arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dts |  12 +
+>  arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dts |   8 +
+>  arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dts |  40 +++
+>  arch/arm/boot/dts/nxp/mxs/imx28-btt3.dtsi  | 312 +++++++++++++++++++++
+>  5 files changed, 375 insertions(+)
+>  create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dts
+>  create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dts
+>  create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dts
+>  create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-btt3.dtsi
+> 
+> diff --git a/arch/arm/boot/dts/nxp/mxs/Makefile b/arch/arm/boot/dts/nxp/mxs/Makefile
+> index a430d04f9c69..96dd31ea19ba 100644
+> --- a/arch/arm/boot/dts/nxp/mxs/Makefile
+> +++ b/arch/arm/boot/dts/nxp/mxs/Makefile
+> @@ -8,6 +8,9 @@ dtb-$(CONFIG_ARCH_MXS) += \
+>  	imx28-apf28.dtb \
+>  	imx28-apf28dev.dtb \
+>  	imx28-apx4devkit.dtb \
+> +	imx28-btt3-0.dtb \
+> +	imx28-btt3-1.dtb \
+> +	imx28-btt3-2.dtb \
+>  	imx28-cfa10036.dtb \
+>  	imx28-cfa10037.dtb \
+>  	imx28-cfa10049.dtb \
+> diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dts b/arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dts
+> new file mode 100644
+> index 000000000000..6ac46e4b21bb
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dts
+> @@ -0,0 +1,12 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+> +/*
+> + * Copyright 2024
+> + * Lukasz Majewski, DENX Software Engineering, lukma@denx.de
+> + */
+> +
+> +/dts-v1/;
+> +#include "imx28-btt3.dtsi"
+> +
+> +&hog_pins_rev {
+> +	fsl,pull-up = <MXS_PULL_ENABLE>;
+> +};
+> diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dts b/arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dts
+> new file mode 100644
+> index 000000000000..213fe931c58b
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dts
+> @@ -0,0 +1,8 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+> +/*
+> + * Copyright 2024
+> + * Lukasz Majewski, DENX Software Engineering, lukma@denx.de
+> + */
+> +
+> +/dts-v1/;
+> +#include "imx28-btt3.dtsi"
+> diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dts b/arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dts
+> new file mode 100644
+> index 000000000000..314a22cb736f
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dts
+> @@ -0,0 +1,40 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+> +/*
+> + * Copyright 2024
+> + * Lukasz Majewski, DENX Software Engineering, lukma@denx.de
+> + */
+> +
+> +/dts-v1/;
+> +#include "imx28-btt3.dtsi"
+> +
+> +/ {
+> +	panel {
+> +		compatible = "powertip,st7272", "panel-dpi";
+> +		power-supply = <&reg_3v3>;
+> +		width-mm = <70>;
+> +		height-mm = <52>;
+> +
+> +		panel-timing {
+> +			clock-frequency = <6500000>;
+> +			hactive = <320>;
+> +			vactive = <240>;
+> +			hfront-porch = <20>;
+> +			hback-porch = <68>;
+> +			hsync-len = <30>;
+> +			vfront-porch = <4>;
+> +			vback-porch = <14>;
+> +			vsync-len = <4>;
+> +
 
-I think we'll live with the assigned clock rate in DT, because the
-i.MX8MP LDB and Samsung MIPI DSI display pipelines need to share a
-video PLL, like I mentioned in comments for patch 2.
+Nit: can we drop this newline?
 
-> 
->>> Also, please Cc me on fsl-ldb.c patches.
->>
->> Ok, will do.  BTW, if MAINTAINERS is updated, then you'll always
->> receive fsl-ldb.c patches.
-> 
-> Thanks
-> 
->>>> Unsupported display modes cannot be ruled out.  Note that
->>>> "media_ldb" is derived from "video_pll1_out" by default as the
->>>> parent is set in imx8mp.dtsi.  And, the only 4 rates supported
->>>> by "video_pll1" are listed in imx_pll1443x_tbl[] - 1.0395GHz,
->>>> 650MHz, 594MHz and 519.75MHz.
->>> I disagree with this part, since commit b09c68dc57c9 ("clk: imx: pll14xx: Support dynamic rates") the 1443x PLLs can be configured to arbitrary rates which for video PLL is desirable as those should produce accurate clock.
->>
->> Kinda ack - that commit does open up many more clock rates.
->> But, the commit just says dynamic rates, not arbitrary rates or
->> any rate.
-> I am fine with that.
+> +			hsync-active = <0>;
+> +			vsync-active = <0>;
+> +			de-active = <1>;
+> +			pixelclk-active = <1>;
+> +		};
+> +
+> +		port {
+> +			panel_in: endpoint {
+> +				remote-endpoint = <&display_out>;
+> +			};
+> +		};
+> +	};
+> +};
+> diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-btt3.dtsi b/arch/arm/boot/dts/nxp/mxs/imx28-btt3.dtsi
+> new file mode 100644
+> index 000000000000..cb999082f0f4
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/mxs/imx28-btt3.dtsi
+> @@ -0,0 +1,312 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+> +/*
+> + * Copyright 2024
+> + * Lukasz Majewski, DENX Software Engineering, lukma@denx.de
+> + */
+> +/dts-v1/;
+> +#include "imx28-lwe.dtsi"
+> +
+> +/ {
+> +	model = "BTT3";
+> +
+> +	compatible = "lwn,imx28-btt3", "fsl,imx28";
+> +
+> +	chosen {
+> +	       bootargs = "root=/dev/mmcblk0p2 rootfstype=ext4 ro rootwait console=ttyAMA0,115200 panic=1 quiet";
+> +	};
+> +
+> +	memory@40000000 {
+> +		reg = <0x40000000 0x10000000>;
+> +		device_type = "memory";
+> +	};
+> +
+> +	panel {
+> +		compatible = "powertip,hx8238a", "panel-dpi";
+> +		power-supply = <&reg_3v3>;
+> +		width-mm = <70>;
+> +		height-mm = <52>;
+> +
+> +		panel-timing {
+> +			clock-frequency = <6500000>;
+> +			hactive = <320>;
+> +			vactive = <240>;
+> +			hfront-porch = <20>;
+> +			hback-porch = <38>;
+> +			hsync-len = <30>;
+> +			vfront-porch = <4>;
+> +			vback-porch = <14>;
+> +			vsync-len = <4>;
+> +
 
--- 
-Regards,
-Liu Ying
+Ditto
+
+> +			hsync-active = <0>;
+> +			vsync-active = <0>;
+> +			de-active = <0>;
+> +			pixelclk-active = <1>;
+> +		};
+> +
+> +		port {
+> +			panel_in: endpoint {
+> +				remote-endpoint = <&display_out>;
+> +			};
+> +		};
+> +	};
+> +
+> +	poweroff {
+> +		compatible = "gpio-poweroff";
+> +		gpios = <&gpio0 24 GPIO_ACTIVE_HIGH>;
+> +	};
+> +
+> +	sound {
+> +		compatible = "simple-audio-card";
+> +		simple-audio-card,name = "BTTC Audio";
+> +		simple-audio-card,widgets = "Speaker", "BTTC Speaker";
+> +		simple-audio-card,routing = "BTTC Speaker", "SPKOUTN", "BTTC Speaker", "SPKOUTP";
+
+Have a newline between property list and child node.
+
+> +		simple-audio-card,dai-link@0 {
+> +			format = "left_j";
+> +			bitclock-master = <&dai0_master>;
+> +			frame-master = <&dai0_master>;
+> +			mclk-fs = <256>;
+
+Ditto
+
+> +			dai0_master: cpu {
+> +				sound-dai = <&saif0>;
+> +			};
+
+Have a newline between nodes.
+
+> +			codec {
+> +				sound-dai = <&wm89xx>;
+> +				clocks = <&saif0>;
+> +			};
+> +		};
+> +	};
+> +
+> +	wifi_pwrseq: sdio-pwrseq {
+> +		compatible = "mmc-pwrseq-simple";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&wifi_en_pin_bttc>;
+> +		reset-gpios = <&gpio0 27 GPIO_ACTIVE_LOW>;
+> +		/* W1-163 needs 60us for WL_EN to be low and */
+> +		/* 150ms after high before downloading FW is possible */
+> +		post-power-on-delay-ms = <200>;
+> +		power-off-delay-us = <100>;
+> +	};
+> +};
+> +
+> +&auart0 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&auart0_2pins_a>;
+> +	status = "okay";
+> +};
+> +
+> +&auart3 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&auart3_pins_a>;
+> +	uart-has-rtscts;
+> +	status = "okay";
+> +};
+> +
+> +&i2c0 {
+> +	wm89xx: codec@1a {
+
+audio-codec for node name.
+
+> +		compatible = "wlf,wm8940";
+> +		reg = <0x1a>;
+> +		#sound-dai-cells = <0>;
+> +	};
+> +};
+> +
+> +&lcdif {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&lcdif_24bit_pins_a>, <&lcdif_sync_pins_bttc>,
+> +		    <&lcdif_reset_pins_bttc>;
+> +	status = "okay";
+> +
+> +	port {
+> +		display_out: endpoint {
+> +			remote-endpoint = <&panel_in>;
+> +		};
+> +	};
+> +};
+> +
+> +&mac0 {
+> +	clocks = <&clks 57>, <&clks 57>, <&clks 64>;
+> +	clock-names = "ipg", "ahb", "enet_out";
+> +	phy-handle = <&mac0_phy>;
+> +	phy-mode = "rmii";
+> +	phy-supply = <&reg_3v3>;
+> +	/*
+> +	 * This MAC address is adjusted during production.
+> +	 * Value specified below is used as a fallback during recovery.
+> +	 */
+> +	local-mac-address = [ 00 11 B8 00 BF 8A ];
+> +	status = "okay";
+> +
+> +	mdio {
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		mac0_phy: ethernet-phy@0 {
+> +			/* LAN8720Ai - PHY ID */
+> +			compatible = "ethernet-phy-id0007.c0f0","ethernet-phy-ieee802.3-c22";
+> +			reg = <0>;
+> +			smsc,disable-energy-detect;
+> +			max-speed = <100>;
+> +
+
+Nit: unneeded newline.
+
+> +			reset-gpios = <&gpio4 12 GPIO_ACTIVE_LOW>;
+> +			reset-assert-us = <1000>;
+> +			reset-deassert-us = <1000>;
+> +		};
+> +	};
+> +};
+> +
+> +&pinctrl {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&hog_pins_a>, <&hog_pins_rev>;
+> +
+> +	hog_pins_a: hog@0 {
+> +		reg = <0>;
+> +		fsl,pinmux-ids = <
+> +			MX28_PAD_GPMI_RDY2__GPIO_0_22
+> +			MX28_PAD_GPMI_RDY3__GPIO_0_23
+> +			MX28_PAD_GPMI_RDN__GPIO_0_24
+> +			MX28_PAD_LCD_VSYNC__GPIO_1_28
+> +			MX28_PAD_SSP2_SS1__GPIO_2_20
+> +			MX28_PAD_SSP2_SS2__GPIO_2_21
+> +			MX28_PAD_AUART2_CTS__GPIO_3_10
+> +			MX28_PAD_AUART2_RTS__GPIO_3_11
+> +			MX28_PAD_GPMI_WRN__GPIO_0_25
+> +			MX28_PAD_ENET0_RXD2__GPIO_4_9
+> +			MX28_PAD_ENET0_TXD2__GPIO_4_11
+> +		>;
+> +		fsl,drive-strength = <MXS_DRIVE_4mA>;
+> +		fsl,voltage = <MXS_VOLTAGE_HIGH>;
+> +		fsl,pull-up = <MXS_PULL_DISABLE>;
+> +	};
+> +
+> +	hog_pins_rev: hog@1 {
+> +		reg = <1>;
+> +		fsl,pinmux-ids = <
+> +			MX28_PAD_ENET0_RXD3__GPIO_4_10
+> +			MX28_PAD_ENET0_TX_CLK__GPIO_4_5
+> +			MX28_PAD_ENET0_COL__GPIO_4_14
+> +			MX28_PAD_ENET0_CRS__GPIO_4_15
+> +		>;
+> +		fsl,drive-strength = <MXS_DRIVE_4mA>;
+> +		fsl,voltage = <MXS_VOLTAGE_HIGH>;
+> +		fsl,pull-up = <MXS_PULL_DISABLE>;
+> +	};
+> +
+> +	keypad_pins_bttc: keypad-bttc@0 {
+> +		reg = <0>;
+> +		fsl,pinmux-ids = <
+> +			MX28_PAD_GPMI_D00__GPIO_0_0
+> +			MX28_PAD_AUART0_CTS__GPIO_3_2
+> +			MX28_PAD_AUART0_RTS__GPIO_3_3
+> +			MX28_PAD_GPMI_D03__GPIO_0_3
+> +			MX28_PAD_GPMI_D04__GPIO_0_4
+> +			MX28_PAD_GPMI_D05__GPIO_0_5
+> +			MX28_PAD_GPMI_D06__GPIO_0_6
+> +			MX28_PAD_GPMI_D07__GPIO_0_7
+> +			MX28_PAD_GPMI_CE1N__GPIO_0_17
+> +			MX28_PAD_GPMI_CE2N__GPIO_0_18
+> +			MX28_PAD_GPMI_CE3N__GPIO_0_19
+> +			MX28_PAD_GPMI_RDY0__GPIO_0_20
+> +		>;
+> +		fsl,drive-strength = <MXS_DRIVE_4mA>;
+> +		fsl,voltage = <MXS_VOLTAGE_HIGH>;
+> +		fsl,pull-up = <MXS_PULL_DISABLE>;
+> +	};
+> +
+> +	lcdif_sync_pins_bttc: lcdif-bttc@0 {
+> +		reg = <0>;
+> +		fsl,pinmux-ids = <
+> +			MX28_PAD_LCD_DOTCLK__LCD_DOTCLK
+> +			MX28_PAD_LCD_ENABLE__LCD_ENABLE
+> +			MX28_PAD_LCD_HSYNC__LCD_HSYNC
+> +			MX28_PAD_LCD_RD_E__LCD_VSYNC
+> +		>;
+> +		fsl,drive-strength = <MXS_DRIVE_4mA>;
+> +		fsl,voltage = <MXS_VOLTAGE_HIGH>;
+> +		fsl,pull-up = <MXS_PULL_DISABLE>;
+> +	};
+> +
+> +	lcdif_reset_pins_bttc: lcdif-bttc@1 {
+> +		reg = <1>;
+> +		fsl,pinmux-ids = <
+> +			MX28_PAD_LCD_RESET__GPIO_3_30
+> +		>;
+> +		fsl,drive-strength = <MXS_DRIVE_4mA>;
+> +		fsl,voltage = <MXS_VOLTAGE_HIGH>;
+> +		fsl,pull-up = <MXS_PULL_ENABLE>;
+> +	};
+> +
+> +	ssp1_sdio_pins_a: ssp1-sdio@0 {
+> +		reg = <0>;
+> +		fsl,pinmux-ids = <
+> +			MX28_PAD_SSP1_DATA0__SSP1_D0
+> +			MX28_PAD_GPMI_D01__SSP1_D1
+> +			MX28_PAD_GPMI_D02__SSP1_D2
+> +			MX28_PAD_SSP1_DATA3__SSP1_D3
+> +			MX28_PAD_SSP1_CMD__SSP1_CMD
+> +			MX28_PAD_SSP1_SCK__SSP1_SCK
+> +		>;
+> +		fsl,drive-strength = <MXS_DRIVE_8mA>;
+> +		fsl,voltage = <MXS_VOLTAGE_HIGH>;
+> +		fsl,pull-up = <MXS_PULL_ENABLE>;
+> +	};
+> +
+> +	wifi_en_pin_bttc: wifi-en-pin@0 {
+> +		reg = <0>;
+> +		fsl,pinmux-ids = <
+> +			MX28_PAD_GPMI_CLE__GPIO_0_27
+> +		>;
+> +		fsl,drive-strength = <MXS_DRIVE_8mA>;
+> +		fsl,voltage = <MXS_VOLTAGE_HIGH>;
+> +		fsl,pull-up = <MXS_PULL_ENABLE>;
+> +	};
+> +};
+> +
+> +&pwm {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pwm3_pins_a>;
+> +	status = "okay";
+> +};
+> +
+> +&reg_usb_5v {
+> +	gpio = <&gpio1 28 GPIO_ACTIVE_HIGH>;
+> +};
+> +
+> +&saif0 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&saif0_pins_a>;
+> +	#sound-dai-cells = <0>;
+> +	assigned-clocks = <&clks 53>;
+> +	assigned-clock-rates = <12000000>;
+> +	status = "okay";
+> +};
+> +
+> +&saif1 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&saif1_pins_a>;
+
+> +	fsl,saif-master = <&saif0>;
+> +	#sound-dai-cells = <0>;
+
+Can we flip these two properties, so that we have vendor specific
+property after generic one?
+
+Shawn
+
+> +	status = "okay";
+> +};
+> +
+> +&ssp1 {
+> +	compatible = "fsl,imx28-mmc";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&ssp1_sdio_pins_a>;
+> +	bus-width = <4>;
+> +	no-1-8-v;       /* force 3.3V VIO */
+> +	non-removable;
+> +	vmmc-supply = <&reg_3v3>;
+> +	mmc-pwrseq = <&wifi_pwrseq>;
+> +	keep-power-in-suspend;
+> +	status = "okay";
+> +
+> +	wlan@1 {
+> +		reg = <1>;
+> +		compatible = "brcm,bcm4329-fmac";
+> +	};
+> +};
+> +
+> +&ssp2 {
+> +	compatible = "fsl,imx28-spi";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&spi2_pins_a>;
+> +	status = "okay";
+> +};
+> -- 
+> 2.39.5
+> 
 
