@@ -1,47 +1,40 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2FE139D
-	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 03:26:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3017F41760
+	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 03:27:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729567598; cv=none; b=JZMZqrbxpUJaDR80RxM///bHClXFYjAL+v0Q9H8+lZwRz5Y894Sbr0VLMMkKXFShwN5pkZ1Mw4B+eZUmyl+EWJuW5HxriR1RfwMYB6sxS9Fl3TorAKj31kz+5EEtiC11ijN+e9QOOOuKVwtSUm0RZjISUUPbI6+re12TOkW3wEs=
+	t=1729567645; cv=none; b=G09OOvWFjo97LfQHQ0Dmh1q53at1ht7b2+MFPPtwXrVQU6jFZGhnlaC6pPBApAvUlByqtKLE86HM4fm3sZXikCu+mcAIXKkOKk4UNPippgUBRUJ+HZKw9/P9Jef81dJptbkSWCIdu8onqkfsBQka5ot1FmH3kou5AdCloKeCeyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729567598; c=relaxed/simple;
-	bh=z2hBaEruSsLM6/Zo7sUE44f+ijaXA6DoNK/dOgi5T94=;
+	s=arc-20240116; t=1729567645; c=relaxed/simple;
+	bh=5E/MUIWR/Iyu+JIdQ/r/WMUE9ombsVBOFdb/G/DxTYI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O0JMWc4OOstpXBRIX1f88HT5enMDiLQdqvd4V5QGU0HfFi1rMSv60etXNDk5y4IWCubmDUKuoRgLyCJccZprgv70iJ9PkrL2kedAEDnrHZMo1JIoi9iNowz0BGQn8Gu96rckTt9c1OE0S2E0dNiYLxvggDFa3ZuUlyJYdUbJrRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=k2pWVWwD; arc=none smtp.client-ip=1.95.21.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=YZjK6Hag7lnryJiuzh/jZz+1t1Ip+LWBIqUnIjsywvwdneP4zzpDWTtY8iClpAIWGegYzkQEwB7Jz8CWadcNqLvyCLY6lghKAzbmpGTljX7R6OBMb8ddelchxsr7Q8kkwu3naQZEWz1tT2uo5p6nDUFld14Hralnr+ID9l70kBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=CkdjjShL; arc=none smtp.client-ip=1.95.21.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="k2pWVWwD"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="CkdjjShL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=7RbKn0b+kpGQ6S/hPfYtTmOrZZ+NkDPxwPNincGKVpo=;
-	b=k2pWVWwDB7l5kvwmEf1ffX2oPM4Ibh1Ab1X045zZtvzYcmI2tr/kak0B7gMobM
-	pRmGUxOFIh1yO0d/AXFTJqI1p4sdeH2sElXKwRcQKCLu81/vu/BgRwjFHIZ/QxzF
-	mUDR3HD7m4Mb+NBR63rXBDU18hJVtZhcYkD0kAG4l+HWk=
+	Content-Type; bh=dkDU2h6uW+xJKLl9ZR9Wm9eDWO5GXIm5Do45ucbhOLg=;
+	b=CkdjjShLW0crzKcz4i7Pe3NeRQcu5dh7LAZ9xHowsCuZYpCp8SSBNHr+1VTRV1
+	+WR5INlGK3Y0M56zBpb6q0xlSbKBDNLKhp2s3MqVXzPKLcO72J45FpqxPP6ozMk4
+	vf+I0wzHe3eLEqPNa7NVAnNTJZtq8pR0Mts/VPcA+Rnls=
 Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgCnL3MdGxdnoa2UAA--.5286S3;
-	Tue, 22 Oct 2024 11:25:19 +0800 (CST)
-Date: Tue, 22 Oct 2024 11:25:17 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgDnrfWCGxdnpbOUAA--.5406S3;
+	Tue, 22 Oct 2024 11:27:00 +0800 (CST)
+Date: Tue, 22 Oct 2024 11:26:58 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Marek Vasut <marex@denx.de>
-Cc: linux-arm-kernel@lists.infradead.org, Rob Herring <robh@kernel.org>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Jacky Bai <ping.bai@nxp.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, Stefan Wahren <wahrenst@gmx.net>,
+To: WangYuli <wangyuli@uniontech.com>
+Cc: robh@kernel.org, saravanak@google.com, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	krzk+dt@kernel.org, conor+dt@kernel.org, horms@kernel.org,
 	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	kernel@dh-electronics.com, linux-gpio@vger.kernel.org
-Subject: Re: [PATCH v3 01/12] dt-bindings: pinctrl: fsl,imx6ul-pinctrl:
- Convert i.MX35/5x/6 to YAML
-Message-ID: <ZxcbHb5v05+XhFnM@dragon>
-References: <20241017211241.170861-1-marex@denx.de>
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	philippe.schenker@toradex.com
+Subject: Re: [PATCH] arm64: dts: colibri-imx8x: Fix typo "rewritting"
+Message-ID: <ZxcbggAgGx67+xsX@dragon>
+References: <45F06B5D4CA9F444+20241018023340.47617-1-wangyuli@uniontech.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,71 +43,18 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241017211241.170861-1-marex@denx.de>
-X-CM-TRANSID:Mc8vCgCnL3MdGxdnoa2UAA--.5286S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxAryDuw1fWFy7Jr1rCrWfKrg_yoW5uryrpa
-	nIkFy3tryrAF4xG3s7ta40kry3u3WxAr10gwnrt34ktrZxZrn8tryakr1rZ3yDKrW8XF45
-	JFn8Gryjg34UAF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jI9a9UUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBACAZWcXEdoi0wAAsr
+In-Reply-To: <45F06B5D4CA9F444+20241018023340.47617-1-wangyuli@uniontech.com>
+X-CM-TRANSID:Mc8vCgDnrfWCGxdnpbOUAA--.5406S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVco2UUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCxCAZWcXFXIWFAAAsr
 
-On Thu, Oct 17, 2024 at 11:11:18PM +0200, Marek Vasut wrote:
-> The IOMUXC controller description is almost identical on i.MX35/5x/6 SoCs,
-> except for the configuration bits which differ across SoCs. Rename the
-> fsl,imx6ul-pinctrl.yaml to fsl,imx35-pinctrl.yaml, fill in compatible
-> strings for the other SoCs and fill in the various bits into desciption.
-> This way, i.MX35/5x/6 series SoCs can all be converted to DT schema.
-> Remove the old text DT bindings description.
+On Fri, Oct 18, 2024 at 10:33:40AM +0800, WangYuli wrote:
+> There is a spelling mistake of 'rewritting' in comments which
+> should be 'rewriting'.
 > 
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> Signed-off-by: Marek Vasut <marex@denx.de>
-> ---
-> Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
-> Cc: Conor Dooley <conor+dt@kernel.org>
-> Cc: Dong Aisheng <aisheng.dong@nxp.com>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: Jacky Bai <ping.bai@nxp.com>
-> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> Cc: Linus Walleij <linus.walleij@linaro.org>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Rob Herring <robh@kernel.org>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Stefan Wahren <wahrenst@gmx.net>
-> Cc: devicetree@vger.kernel.org
-> Cc: imx@lists.linux.dev
-> Cc: kernel@dh-electronics.com
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-gpio@vger.kernel.org
-> ---
-> V2: - Use DT schema to refer to the fsl,imx35-pinctrl.yaml file
->     - Special-case the iMX50 compatible string
-> V3: Add RB from Rob
-> ---
->  .../bindings/pinctrl/fsl,imx35-pinctrl.txt    | 33 -------
->  ...ul-pinctrl.yaml => fsl,imx35-pinctrl.yaml} | 88 ++++++++++++++++---
->  .../bindings/pinctrl/fsl,imx50-pinctrl.txt    | 32 -------
->  .../bindings/pinctrl/fsl,imx51-pinctrl.txt    | 32 -------
->  .../bindings/pinctrl/fsl,imx53-pinctrl.txt    | 32 -------
->  .../bindings/pinctrl/fsl,imx6dl-pinctrl.txt   | 38 --------
->  .../bindings/pinctrl/fsl,imx6q-pinctrl.txt    | 38 --------
->  .../bindings/pinctrl/fsl,imx6sl-pinctrl.txt   | 39 --------
->  .../bindings/pinctrl/fsl,imx6sll-pinctrl.txt  | 40 ---------
->  .../bindings/pinctrl/fsl,imx6sx-pinctrl.txt   | 36 --------
->  10 files changed, 78 insertions(+), 330 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx35-pinctrl.txt
->  rename Documentation/devicetree/bindings/pinctrl/{fsl,imx6ul-pinctrl.yaml => fsl,imx35-pinctrl.yaml} (50%)
->  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx50-pinctrl.txt
->  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx51-pinctrl.txt
->  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx53-pinctrl.txt
->  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6dl-pinctrl.txt
->  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6q-pinctrl.txt
->  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6sl-pinctrl.txt
->  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6sll-pinctrl.txt
->  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6sx-pinctrl.txt
+> Suggested-by: Simon Horman <horms@kernel.org>
+> Signed-off-by: WangYuli <wangyuli@uniontech.com>
 
-I'm not sure it makes a lot sense to have "fsl,imx6ul-pinctrl: " in the
-subject prefix.
-
-Shawn
+Applied, thanks!
 
