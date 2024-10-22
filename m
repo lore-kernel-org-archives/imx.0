@@ -1,193 +1,199 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010008.outbound.protection.outlook.com [52.101.69.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57ECC1A2C11;
-	Tue, 22 Oct 2024 15:53:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729612432; cv=none; b=qqycrjvFUPCqCKB491gALRn5rn4Em/NMOBY1QZIEDGjXBthtNk1CYjd3Vr8UX8atagcxcNcEUxe1zuBKHUNYykcoRwMpxGPE+NJrkpH/vUi9Gc/YY45UVWETsYujy8NXBlwLK9NHUN6cwTMZ8qN/eGchPLUfIrcc9SmVm8phy4o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729612432; c=relaxed/simple;
-	bh=NCPHS5bmUtmyFfGQb7gvqJyh2iCM3PUOw9Dl1pgSsME=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=duinIqd0517xk8sLnwwml8bDlIwu8SropO10R2G/SSLTsf7nG769Gna16bTZ2R6x1wP68q68j6cKoVB1coj6TRa3leFf6BeSj+w7UI+8hJXHL/KATfqwi4Mkat6JABsta7FViVC6YNuU71pHORN6D0l9ts6I60QACJPu1YCA5Tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KrzyoCB5; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675301B5808
+	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 16:01:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729612915; cv=fail; b=cCYfHgQHZv4AdhWSJHm8Gdv7sMRSNfYe2SBz+NDMYlGi2IIapcFHaRzT1/msscmhyd2IiJgo2f1ASbUeO5rj+sOVMugSJ1UvXCWRU91w85Y8NAQGgNjNW3HhhGi1xm2ZYzv828d32wg9yjEjR+WzP3yVZQO9huY0Cnzrl0+462I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729612915; c=relaxed/simple;
+	bh=iDG++B391EjlZhhb17gw2/NsXyyKFAaZmgJmRWdAPhE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=GnuBYg603LZlefMB3WG+ffRqqX6Vk7fIGSFTz0gMgj9uVvy8alE+JzLttC4NrtbsjJP98Y2QLmQPBh0vz/SBveXOMK3+Hu6y7rttuewlKyE1KwbWexn8hNcZdh2pyDim1JOlUnQjDzbW6T+s49ZAa1BJcrVyZzuoiHjpF7to4VM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=YShDMB9U reason="signature verification failed"; arc=fail smtp.client-ip=52.101.69.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KrzyoCB5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7A8C4CEC7;
-	Tue, 22 Oct 2024 15:53:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729612431;
-	bh=NCPHS5bmUtmyFfGQb7gvqJyh2iCM3PUOw9Dl1pgSsME=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=KrzyoCB5kRxaoJ9qB7Q1JxYdRfnriknOZAkJvZC1q7+njWYo9p8Phs6KoT0l/su4Y
-	 Y0BkWhS3J89Ru6Oymx0vVsjWMlvoqEMWBUJVysJnKD+WiVc2VsJiMHPPiPcjtECGlU
-	 jdqPTDsPgcn/335zWliWtmBeVUViRcQgcFcfRFHjGOyr3t2eW/ATLoSGKPDOUcQEoD
-	 JwuKJ6Ra5Fx5J6U7fDl0eqnsBFcO6hsMMYM9+Wm3RZmwUOXS2oNDTjJ3VdX6IT2qp2
-	 LltwbygvlJOXnDegjq2zaKyzX77SrRDpQ+Pg/EQqdQnqhzYSBNFgCb9+ot28WDukDd
-	 K0/KkOvqYw1SA==
-Date: Tue, 22 Oct 2024 10:53:49 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Stefan Eichenberger <eichest@gmail.com>
-Cc: hongxing.zhu@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
-	kw@linux.com, manivannan.sadhasivam@linaro.org, robh@kernel.org,
-	bhelgaas@google.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	francesco.dolcini@toradex.com, Frank.li@nxp.com,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: Re: [PATCH v3] PCI: imx6: Add suspend/resume support for i.MX6QDL
-Message-ID: <20241022155349.GA880566@bhelgaas>
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="YShDMB9U"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cFIWCqFxaulvam9YJDzJavdZTzSPifgEFtwrtD4xFbwQX7inSBHYk8urmCVkRbhnF7ASSuPqhs84yuBPPwiUCPzlWRyv6EkBHxwaPA9SS5wO0x8vqonlfaB4LEhSfsSJu2w8BKNriL3IsVk70uhPIKMbeECoC2qktk0KUhj4r3VphzTs5I4rD1Vzr69VUHIl6GVgWPyvg1aYuND2TSXZWC6i+ARxWhRqvhCp/+dfzIJ0v2YpRr2l3gj6VaSho7IcL93pmkPmt8phmof+yfOFwpQ+SYPwt3YFlXEqJGO1CpzJfyxS5gkt/z1SEGMM+43D6Jq10dcpKAmb9LhXQqpwxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=m42Vk7PiEQj0Cn1GBcu9AsU6c9rpcvqhftjTPQC8gic=;
+ b=AmBM9RSJqo8kwSxPOZAWEO2JuNdGpHqUZT69gVh71kMMa19HWgtneK6T6wHjlZUy6By5tlc8k64IwhBVCiC1JBTJpbxYB6GNninZo+QHn1S8DSSJWrFFdw0EsPmrwYX39r1xYF2aQM00XZ33nsQdT8Y6qZTxXvlcb7boj/3yJs7/8q+ufPitvJ4EXKaVIBhZax+szzwmF3nLCCyufLNLuvRIrcN5jV4yfbDX8TJFRZ7Ymb66iu6ETD1SyZCyaGtu055LGgY96ePesmDcFxD/kDC0Bcd4z78t6QWh3Qls3U2LYDDLtavy/e4O3f7rPgPWK3GnB3YErzYJa6jGrTwcoQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=m42Vk7PiEQj0Cn1GBcu9AsU6c9rpcvqhftjTPQC8gic=;
+ b=YShDMB9U1zpMYhhlx3ApsqUSls6SOq8EKwYu/zUyQznDTYWh6r7NjoCLOtQVum6T12J/VZUxpjtEBpVz1WxANSytr+ZOoC+8gEexKfUY3FOKBYTIqmPIRXYrLnX8Dno+lszXdPBJ1EceOj5GF8S+9+N5vVvCKWQAATfO+SuDw+MYIckIhwm1DQqg3b+dryXyEss3mkmoX/TgfwmF8dMkf+lTKdhe2dK2kLmORwigqvuIfPSjWtVlyCO4eobpcxqz0ixtvK/BEyQmWeucXAdr4csCc0trQ2rqxwYw3VogvjepnVokzYBshkkDC1S1A7llt6NsmmuuDVXh0j7UqaDJvQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PR3PR04MB7417.eurprd04.prod.outlook.com (2603:10a6:102:8e::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.28; Tue, 22 Oct
+ 2024 16:01:49 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8069.024; Tue, 22 Oct 2024
+ 16:01:49 +0000
+Date: Tue, 22 Oct 2024 12:01:42 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Marek Vasut <marex@denx.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>, linux-pwm@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	pratikmanvar09@gmail.com, francesco@dolcini.it
+Subject: Re: [PATCH v3 2/3] pwm: imx27: Use clk_bulk_*() API to simplify
+ clock handling
+Message-ID: <ZxfMZobFdBA7ffhU@lizhi-Precision-Tower-5810>
+References: <20240910-pwm-v3-0-fbb047896618@nxp.com>
+ <20240910-pwm-v3-2-fbb047896618@nxp.com>
+ <7kplk52i7e2nha5ym4loza5oc3lwghifjfk3aut24w3hjagfk3@zusb2naeaevw>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7kplk52i7e2nha5ym4loza5oc3lwghifjfk3aut24w3hjagfk3@zusb2naeaevw>
+X-ClientProxiedBy: SN6PR05CA0019.namprd05.prod.outlook.com
+ (2603:10b6:805:de::32) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241021124922.5361-1-eichest@gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PR3PR04MB7417:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8ad8fa24-fdae-4057-44e6-08dcf2b2d626
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|52116014|7416014|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?iso-8859-1?Q?DnsGjtgjAjnZVn9D5Q2hRgM+ATZKNuih/FB7oqPdd22Z4/T11lBTcc4z7b?=
+ =?iso-8859-1?Q?Of9Ix7UUolB4+LVwHhiin/ss8Bo7Iou7HOYd+D4/O7z3OJISXajUgPsbGB?=
+ =?iso-8859-1?Q?bEKZnVnJZSuMBa9uo0wwGed40Kp2jQth9cmjorIFV8Wsko/3/hASMU3CoQ?=
+ =?iso-8859-1?Q?ogjBKVfabIyVx08M1XFnbIjzs1U5x/kI2GsfKHGJAtmtJItnjth7pHbvHr?=
+ =?iso-8859-1?Q?CB8A9k4wFZ493uAfG3N+OxkyBl0p11CG4Fvt4AQrIIgdtiPLRM1h3RkJS6?=
+ =?iso-8859-1?Q?lxZ614KZQAGfJUXKodBnHfHQt9rfGVg9i15l1Pa2sHqG20aVb2GiDiVsnT?=
+ =?iso-8859-1?Q?HwRkSV3D9rDlP/8i3ieGg8ouLzLe0ThV9QQhdZW3BYXYmFJYYIGsgTsefc?=
+ =?iso-8859-1?Q?n/4Oz5y1Ly5xXJbDjc792gwaAEennViiFIHBJ2vpnT8C/aFvnJjL/9DiVK?=
+ =?iso-8859-1?Q?y6jWcCriZECjFhJOH80Q8KLFlsSOdnMnNANzpPfzm+JnTOYLiOlu6+twjt?=
+ =?iso-8859-1?Q?40PoVuFSc3/YJO5e7tuE56vSNtkhJ/qzCok2r+ZEUFNm2A7W1J3SlV07W0?=
+ =?iso-8859-1?Q?scT7OcCC1gffZqWxgnkHwQwk9TuSV57QTPe90KeUL5GZaETpPHzC1eDWa1?=
+ =?iso-8859-1?Q?/94Ze8qy6HFGirNyBoghDyXU3FLOOj/7DzMqo4dJXcwWdVOH+r6QIUEwGl?=
+ =?iso-8859-1?Q?U8eSSh6SS4LgndqofNIUhfTbE4U21UQOu2WvqsH0M+hkf8Bh/wARsrQqeq?=
+ =?iso-8859-1?Q?oOxBtuKKt+vWJ6i+fqo2VywM34MG0OkIOuJSS1Tboc8zk+iDhl/YUaha7W?=
+ =?iso-8859-1?Q?1OdfRYzMvOBKt4wpk4t3GShV3/3YWCXnhe9RHZt0KxdlxySveGu7GFskq3?=
+ =?iso-8859-1?Q?OzfFWEaK3nUfBgzl+hH+sm5gLMhuSb6+w4xgDOS3y4+uBvAMxnKiLBGe0m?=
+ =?iso-8859-1?Q?CYsGPcYT7W+PO2/X6qviM/vHHNgnPFVwtcyl+AaPlyic2H8lZy+cvbHpfx?=
+ =?iso-8859-1?Q?PN13Fq4KiaPAOwLQKmMoifkwIVjcWqtJXCcWzHQB3HbOeW0nQNtm1uFmfN?=
+ =?iso-8859-1?Q?VH0opqZTbu4bQRx+CoQJyhRn2fxXa/T54DTBvkrzTx20RfzyljyVWFgWbn?=
+ =?iso-8859-1?Q?8khDGbAmUuWpVTj3+vo7NDjKjIneeJKZMUsdx8SXYUJmHqEL+en9rbpsjb?=
+ =?iso-8859-1?Q?//n5+WM27M3e+8UXgh9eeQTZjWdSske8yEppG0UfJ67IYjhVBpISU1AifW?=
+ =?iso-8859-1?Q?yS/XaxgGPmVhWab4gsDxgN+97FhyzpssijjuKeSY9sbMHMibjScQ2ZAXjk?=
+ =?iso-8859-1?Q?C3hxMgPqmB8LGUbcQusruFfK7HpyKCniqKXwNOFeVNz71rqWkSO5nlJh2A?=
+ =?iso-8859-1?Q?BVdRIhQ+h6Yh17z5FwuFbmFCzn8n669s5V2gjpFWQAiyyDqioVaUoL62Z7?=
+ =?iso-8859-1?Q?jjE5xHtuvf99VNeU?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(7416014)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?o36YfO1nLR+Q2+Wqgvz+bRQQ5Um+jMU66rYaWLQ80sRZrMAovEyR5231ce?=
+ =?iso-8859-1?Q?4Kq7mEbSOX61R0zriJUH/KBMGDSLrDELdHcPcd+FBfD5vLTIWJu2tDLo+F?=
+ =?iso-8859-1?Q?sc4lG6rm/pMThbDsO4FQE3SXV669DGI3GNYG6oQB1so7F2bChAqagF/5kj?=
+ =?iso-8859-1?Q?OO01AoRD5yslkJ4l+uk54RO/hSMFeH7orIdo+gt+U2spKRqcyNSkiZbHcb?=
+ =?iso-8859-1?Q?FDQoKhk93xvCR8SgloMBdR3a+HPecWE1VRmNbG/t7LGi6jinOjUm/ZL8Z2?=
+ =?iso-8859-1?Q?OIDoHfLOQWeRW3C06ekn3Q0qKDBEMllH/z/izd9p8C4PzXevydSpHus3cq?=
+ =?iso-8859-1?Q?8v/j6ckFMZSDRN4TEpL1oh1PwvUJRPN7BOs3E9tyDjDJSVBzy092tPcGWx?=
+ =?iso-8859-1?Q?d1IA+nHGzcOSVD4J9qhGyK70sBtluGlN0+/8j5shO5+dDvDQb44raTM6L6?=
+ =?iso-8859-1?Q?OZbhdqLKdFoXOgZrJBSrtpDSFXAEwNL7n7TOlyOT8DKyjxaNM9v7wga+w2?=
+ =?iso-8859-1?Q?uZcm3En0dGJd1M57osoZOeROhwR/fElomlw4DRXsjvnU3qmdByzC44XbnM?=
+ =?iso-8859-1?Q?qXv8fpGEhy315SYrX/sEbCvOv+6Kbq0g/DN0wgoeL0+9aMk81XuM6tLcxg?=
+ =?iso-8859-1?Q?Ti4rsB7cmw6eCUda6seZn+zkffianQVntY9LeT0bz0mAAwPSlFVQRIonVD?=
+ =?iso-8859-1?Q?zG5nH9ltMCm3ayca03ztr1wWl7eyumPC5HddQc3dvWwb2LKir8Fk7VWv3G?=
+ =?iso-8859-1?Q?a/2salyPVGVnOW1nSxhT3rvQTt90aUIGJP/mN3WMo2dXDP39vSjnsbh7cS?=
+ =?iso-8859-1?Q?zopR6sYXloEMhlnTZFHFBWgs7WBuj4SO8BS14YlEQ+g0iKDNj1M7pcRUWz?=
+ =?iso-8859-1?Q?7ltxgDG2V5/ETNk1vv3AjMsSFaAdTvssl5vtzD0GdEBaNvncg2PNG4IBy1?=
+ =?iso-8859-1?Q?U0UYkGbr1l6isfwZKHOO+3vuHG8/myXhhF5aJWF9khMwRX5sQNq8Ksuph0?=
+ =?iso-8859-1?Q?4jtrvUO5iIYy6/qDZpDXo6jArT1dqrafip3U7ikb3cc+OHpDLM3pjVJtCx?=
+ =?iso-8859-1?Q?eXkMAcRF59VrGnwKtHOJZgAp3O61uHxPaVmwK7Bn0keaEJk/1cgHDtzafG?=
+ =?iso-8859-1?Q?Q1kg3LWqxTXU0WdhqB50/sJcrLBBW6Du1uwW6Ow1BM+rVvO5oH4fw+vpfN?=
+ =?iso-8859-1?Q?ksHS1I6FVRWltJPDDb3eO95B2ZCkdkzgOSc1st39/p/Sxv+Ng57nPDDAbs?=
+ =?iso-8859-1?Q?n+F04i1A8YNOcSd1Hvd+BWNQD79tFP6dmjsaUwSZmbIFD7Y1Pf+hEfcIkW?=
+ =?iso-8859-1?Q?iSR+FFi/OqhufpbNyJmm69Y6SdiHwvWACyOvzEOmojc/2theygiDxq9dxl?=
+ =?iso-8859-1?Q?bjQ5CfBJACH6O2wvUw+WLw2C0URg/jSvW0zs0e54ha1k6okcsADD/+c4gg?=
+ =?iso-8859-1?Q?M0hBg1jBOKmxYmkVE0xO9t9xh9Ig2yrv3RVR0vf/KeviSiK7Z0vfW418tl?=
+ =?iso-8859-1?Q?vFTsiEPrIZTwBhJ5wBTQYe0E7wFGqG+UCU5zM75iFRcoja16YQzvGfBxji?=
+ =?iso-8859-1?Q?FpaM/M9dl+kKk/LRAb8el/b97CiHYoBaMaZlAu3NVQOPDqQN666wH+zG4h?=
+ =?iso-8859-1?Q?g2Gq9Ovx4ljD69vD6mwi8oRvv5ee87Ezpn?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8ad8fa24-fdae-4057-44e6-08dcf2b2d626
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2024 16:01:49.1895
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nWrugPw4BFNXPTSFtRT3Pws5NW1fZnojgpGMjdjINDL4Mr1wPtYE57+cTyMaHpxrlO4sWHwDZWwV24EW3eVDEw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7417
 
-On Mon, Oct 21, 2024 at 02:49:13PM +0200, Stefan Eichenberger wrote:
-> From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> 
-> The suspend/resume support is broken on the i.MX6QDL platform. This
-> patch resets the link upon resuming to recover functionality. It shares
-> most of the sequences with other i.MX devices but does not touch the
-> critical registers, which might break PCIe. This patch addresses the
-> same issue as the following downstream commit:
-> https://github.com/nxp-imx/linux-imx/commit/4e92355e1f79d225ea842511fcfd42b343b32995
-> In comparison this patch will also reset the device if possible because
-> the downstream patch alone would still make the ath10k driver crash.
-> Without this patch suspend/resume will not work if a PCIe device is
-> connected. The kernel will hang on resume and print an error:
-> ath10k_pci 0000:01:00.0: Unable to change power state from D3hot to D0, device inaccessible
-> 8<--- cut here ---
-> Unhandled fault: imprecise external abort (0x1406) at 0x0106f944
+On Tue, Oct 22, 2024 at 08:53:40AM +0200, Uwe Kleine-König wrote:
+> Hello,
+>
+> On Tue, Sep 10, 2024 at 03:07:19PM -0400, Frank Li wrote:
+> > @@ -229,7 +209,7 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+> >  	int ret;
+> >  	u32 cr;
+> >
+> > -	clkrate = clk_get_rate(imx->clk_per);
+> > +	clkrate = clk_get_rate(imx->clks[PWM_IMX27_PER].clk);
+> >  	c = clkrate * state->period;
+>
+> Unrelated to this patch: clk_get_rate() should only be called on enabled
+> clocks. Given that further down in that function (see next hunk)
+> pwm_imx27_clk_prepare_enable() (or clk_bulk_prepare_enable()
+> respectively) is called, that clk might be off?!
+>
+> >  	do_div(c, NSEC_PER_SEC);
+> > @@ -259,7 +239,7 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+> >  	if (pwm->state.enabled) {
+> >  		pwm_imx27_wait_fifo_slot(chip, pwm);
+> >  	} else {
+> > -		ret = pwm_imx27_clk_prepare_enable(imx);
+> > +		ret = clk_bulk_prepare_enable(imx->clks_cnt, imx->clks);
+> >  		if (ret)
+> >  			return ret;
+> >
+>
+> I applied just this patch to
+> https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git pwm/for-next
+> . The others are still under discussion, right?
 
-https://chris.beams.io/posts/git-commit/
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/maintainer-tip.rst?id=v6.11#n134
+Yes, thanks. I think 32k is not necessary and need more research.
 
-Add blank lines between paragraphs.  Drop the "8<--- cut here" thing.
+>
+> I see you signed your patch (which is fine!), but I couldn't find your
+> key, neither on hkps://keys.openpgp.org/ nor on
 
-What does "reset the link" mean?  Please use the same terminology as
-the PCIe spec when possible.
+Thanks. Fixed.
 
-The downstream commit log ("WARNING: this is not the official
-workaround; user should take own risk to use it") doesn't exactly
-inspire confidence.
+> hkps://keyserver.ubuntu.com nor in the kernel keyring. At least the
+> first two should be easy to fix.
+>
+> Best regards
+> Uwe
 
-It sounds like this resets *endpoints*?  That sounds scary and
-unexpected in suspend/resume.
 
-> Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> ---
-> Changes in v3:
-> - Added a new flag to the driver data to indicate that the suspend/resume
->   is broken on the i.MX6QDL platform. (Frank)
-> - Fix comments to be more relevant (Mani)
-> - Use imx_pcie_assert_core_reset in suspend (Mani)
-> 
->  drivers/pci/controller/dwc/pci-imx6.c | 57 +++++++++++++++++++++------
->  1 file changed, 46 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 808d1f1054173..09e3b15f0908a 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -82,6 +82,11 @@ enum imx_pcie_variants {
->  #define IMX_PCIE_FLAG_HAS_SERDES		BIT(6)
->  #define IMX_PCIE_FLAG_SUPPORT_64BIT		BIT(7)
->  #define IMX_PCIE_FLAG_CPU_ADDR_FIXUP		BIT(8)
-> +/**
-> + * Because of ERR005723 (PCIe does not support L2 power down) we need to
-> + * workaround suspend resume on some devices which are affected by this errata.
-> + */
-> +#define IMX_PCIE_FLAG_BROKEN_SUSPEND		BIT(9)
->  
->  #define imx_check_flag(pci, val)	(pci->drvdata->flags & val)
->  
-> @@ -1237,9 +1242,19 @@ static int imx_pcie_suspend_noirq(struct device *dev)
->  		return 0;
->  
->  	imx_pcie_msi_save_restore(imx_pcie, true);
-> -	imx_pcie_pm_turnoff(imx_pcie);
-> -	imx_pcie_stop_link(imx_pcie->pci);
-> -	imx_pcie_host_exit(pp);
-> +	if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_BROKEN_SUSPEND)) {
-> +		/**
-
-Single asterisks above, here, and below.
-
-> +		 * The minimum for a workaround would be to set PERST# and to
-> +		 * set the PCIE_TEST_PD flag. However, we can also disable the
-> +		 * clock which saves some power.
-> +		 */
-> +		imx_pcie_assert_core_reset(imx_pcie);
-> +		imx_pcie->drvdata->enable_ref_clk(imx_pcie, false);
-> +	} else {
-> +		imx_pcie_pm_turnoff(imx_pcie);
-> +		imx_pcie_stop_link(imx_pcie->pci);
-> +		imx_pcie_host_exit(pp);
-> +	}
->  
->  	return 0;
->  }
-> @@ -1253,14 +1268,32 @@ static int imx_pcie_resume_noirq(struct device *dev)
->  	if (!(imx_pcie->drvdata->flags & IMX_PCIE_FLAG_SUPPORTS_SUSPEND))
->  		return 0;
->  
-> -	ret = imx_pcie_host_init(pp);
-> -	if (ret)
-> -		return ret;
-> -	imx_pcie_msi_save_restore(imx_pcie, false);
-> -	dw_pcie_setup_rc(pp);
-> +	if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_BROKEN_SUSPEND)) {
-> +		ret = imx_pcie->drvdata->enable_ref_clk(imx_pcie, true);
-> +		if (ret)
-> +			return ret;
-> +		ret = imx_pcie_deassert_core_reset(imx_pcie);
-> +		if (ret)
-> +			return ret;
-> +		/**
-> +		 * Using PCIE_TEST_PD seems to disable msi and powers down the
-> +		 * root complex. This is why we have to setup the rc again and
-> +		 * why we have to restore the msi register.
-
-s/msi/MSI/
-
-> +		 */
-> +		ret = dw_pcie_setup_rc(&imx_pcie->pci->pp);
-> +		if (ret)
-> +			return ret;
-> +		imx_pcie_msi_save_restore(imx_pcie, false);
-> +	} else {
-> +		ret = imx_pcie_host_init(pp);
-> +		if (ret)
-> +			return ret;
-> +		imx_pcie_msi_save_restore(imx_pcie, false);
-> +		dw_pcie_setup_rc(pp);
->  
-> -	if (imx_pcie->link_is_up)
-> -		imx_pcie_start_link(imx_pcie->pci);
-> +		if (imx_pcie->link_is_up)
-> +			imx_pcie_start_link(imx_pcie->pci);
-> +	}
->  
->  	return 0;
->  }
-> @@ -1485,7 +1518,9 @@ static const struct imx_pcie_drvdata drvdata[] = {
->  	[IMX6Q] = {
->  		.variant = IMX6Q,
->  		.flags = IMX_PCIE_FLAG_IMX_PHY |
-> -			 IMX_PCIE_FLAG_IMX_SPEED_CHANGE,
-> +			 IMX_PCIE_FLAG_IMX_SPEED_CHANGE |
-> +			 IMX_PCIE_FLAG_BROKEN_SUSPEND |
-> +			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
->  		.dbi_length = 0x200,
->  		.gpr = "fsl,imx6q-iomuxc-gpr",
->  		.clk_names = imx6q_clks,
-> -- 
-> 2.43.0
-> 
