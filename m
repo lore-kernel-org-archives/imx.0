@@ -1,63 +1,74 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651745A79B;
-	Tue, 22 Oct 2024 05:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292361E4BE;
+	Tue, 22 Oct 2024 05:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729574486; cv=none; b=ej1x6WrxDhWYOKgApexaIN1XJTf+Qe9Et8T7LN+Nk363lXriVLa45e7Ozr2asG9bUQsDRzSwvBoqyzvQmko+cn/OPFXwp47ic4/j+jCg4ki/lNzOiETSs8oy1gP13Ex2Ah8tVZscac+WDa3hw7ianHx2Pbpe8E/mGV6j0H1ngeM=
+	t=1729575115; cv=none; b=csGAplfLpvQHjzGZ28dJvVWgp4yFCqlvY8LeV4pa5mMHWmCHUZA0nfcCLEOt9k44pV306QaTwsAmOy681xr5/OpeHjrHjQCMCwPrFvx3Xxqar2s6rD4/SbRZu5dCZbuVKPLWQgBvVjRaGVakoqkxQPAyAH+94Yqm9t2WSIv70us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729574486; c=relaxed/simple;
-	bh=nZDFAcO6yoRsupbSgjsjHQewvJyGH7Kw3eZxIShUBWQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a3O855If+biXChxJkYEiHgN76euGmQwJ2iE/9A4iy0AQfv3W7euHD0GCmWUrUs0hjKaaLYO+YqTOqyCbRAGHN4J6zLqWZKC6EFO9ce4n5y/aNmz3JpSrsGcMd0FY0VXOz9/Pu4rPQoNmC5hXtkIAqE2MapzW7EtrCwZo7DI2fl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ugu3A4bs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729575115; c=relaxed/simple;
+	bh=WpzUCD5oMsbsOUreT838w9WGsW4pfnJSXOpKPCHuzLo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=qHxovsCdoTsykqPS5pPCUT/bgSt73MT457HsIu7vnnPDY8O2/vtnVNqqOfRbYF8IVEpOsth2LSgIorEYSzB0aZCQK3i625tSKQfJWdIL1bSCMwQG4K7n2ywJ59REI8DhZ7avN61duLlwPIhp1z0iOXmOZS5bTzHI4Dxozu4xG4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S2IyjgqM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ugu3A4bs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61B56C4CEC7;
-	Tue, 22 Oct 2024 05:21:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S2IyjgqM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC3CC4CEC3;
+	Tue, 22 Oct 2024 05:31:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729574486;
-	bh=nZDFAcO6yoRsupbSgjsjHQewvJyGH7Kw3eZxIShUBWQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ugu3A4bslGKXQIl2HM0BuEVqkKqFuFV8A0YSDL/V2uNdii445fe8qDXY5U9kzYWMa
-	 4azUfmktSEEO/M1ok11n3nlIHrhhFxjm7YKCec7FEtpVIT+nItP0G3ng+bUfEaexAL
-	 0LBHOQlCyLTee7I7Cc296qFEeEQUEa7LQuJXRMvfd7TNGcCDyMQnEmNP0YFjFM+aGF
-	 m0Rmn0Vsc8b12jwrNl77bEQxp7BmzZhiL9SPzEa6vaqgRundKEaBL053w0dsqxkGUl
-	 AuERW+O9LoPHRKHp9jln4NBi9m2SKSDoc6+jJPmnYFSrFb+IBPOnMp4Fyo0aKnTJqo
-	 TuMMCq5XPDGcg==
-Date: Tue, 22 Oct 2024 07:21:22 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Tim Harvey <tharvey@gateworks.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: arm: fsl: Add Gateworks GW82XX-2x
- dev kit
-Message-ID: <ilooeedyqplrqvgxooylzdjrdqdb4m4e3nl6zhm5bm5cs2ms4b@wc7wsoxrlgej>
-References: <20241021205329.1179426-1-tharvey@gateworks.com>
+	s=k20201202; t=1729575115;
+	bh=WpzUCD5oMsbsOUreT838w9WGsW4pfnJSXOpKPCHuzLo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=S2IyjgqM5W0v7zmpWqqYUZn0H6eP7jFPoFQUgwNuo5OYXfxGUrg0FgfL0pXQyyfYX
+	 m8mXRW3oYdAHAHLWsTjQo8qR6r4zj2hwGp8Xx98VG3XB2/GcpS4cKiMcaYd2ntG/vo
+	 AvB5d66unhA7iMHLXdXEyLoT4pVCnRZSYZ6Gy4knKkxgJ3MVckGv5+LsPiVhE+EdXZ
+	 GRXcTr/S4kVWq0VdUGZAuVpRN9N7t3MdTzDl1TobRCPyp+dxvwfTprtF8yLv+Cp94O
+	 K1oqFa9bwuN5cSaWGmq+4UNp/dGpDI3ptQNKOpgnCa8OL9TYigIW3ShnwoGyf0SXxi
+	 znWN5LEy0nLOA==
+From: Vinod Koul <vkoul@kernel.org>
+To: kishon@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+ festevam@gmail.com, Frank.Li@nxp.com, marcel.ziswiler@toradex.com, 
+ Richard Zhu <hongxing.zhu@nxp.com>
+Cc: linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+ kernel@pengutronix.de, stable@vger.kernel.org
+In-Reply-To: <1728444303-32416-1-git-send-email-hongxing.zhu@nxp.com>
+References: <1728444303-32416-1-git-send-email-hongxing.zhu@nxp.com>
+Subject: Re: [PATCH] phy: freescale: imx8m-pcie: Do CMN_RST just before PHY
+ PLL lock check
+Message-Id: <172957511146.488725.17746215467139693428.b4-ty@kernel.org>
+Date: Tue, 22 Oct 2024 11:01:51 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241021205329.1179426-1-tharvey@gateworks.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 
-On Mon, Oct 21, 2024 at 01:53:28PM -0700, Tim Harvey wrote:
-> Adds support for the Gateworks GW82XX-2X development kit
-> based on a GW82XX baseboard and a GW702X System On Module.
+
+On Wed, 09 Oct 2024 11:25:03 +0800, Richard Zhu wrote:
+> When enable initcall_debug together with higher debug level below.
+> CONFIG_CONSOLE_LOGLEVEL_DEFAULT=9
+> CONFIG_CONSOLE_LOGLEVEL_QUIET=9
+> CONFIG_MESSAGE_LOGLEVEL_DEFAULT=7
 > 
-> Signed-off-by: Tim Harvey <tharvey@gateworks.com>
-> ---
-> v2: no changes
+> The initialization of i.MX8MP PCIe PHY might be timeout failed randomly.
+> To fix this issue, adjust the sequence of the resets refer to the power
+> up sequence listed below.
+> 
+> [...]
 
-Why? What about my email?
+Applied, thanks!
+
+[1/1] phy: freescale: imx8m-pcie: Do CMN_RST just before PHY PLL lock check
+      commit: f89263b69731e0144d275fff777ee0dd92069200
 
 Best regards,
-Krzysztof
+-- 
+~Vinod
+
 
