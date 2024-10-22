@@ -1,47 +1,47 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99457139D
-	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 03:23:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2FE139D
+	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 03:26:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729567394; cv=none; b=sVm4tATfTHQz+/G9y2NhTJ9JlQmS8z1DN38m84aoTL3GxuoT6cHadFJS1K4luG3Boqj0VcKKtd2rydXF0FPItW2jCa6XOaxfGvisZgBsD6xX768167/bNXjUDUmWkPTBQPB5B+ae8lhlgBbVHqORBhnMNt90Si6JXS+TlK3DHlY=
+	t=1729567598; cv=none; b=JZMZqrbxpUJaDR80RxM///bHClXFYjAL+v0Q9H8+lZwRz5Y894Sbr0VLMMkKXFShwN5pkZ1Mw4B+eZUmyl+EWJuW5HxriR1RfwMYB6sxS9Fl3TorAKj31kz+5EEtiC11ijN+e9QOOOuKVwtSUm0RZjISUUPbI6+re12TOkW3wEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729567394; c=relaxed/simple;
-	bh=304yaoaCARna+FcF24l7FxM/Dgl17c7QokKKCoRlgGA=;
+	s=arc-20240116; t=1729567598; c=relaxed/simple;
+	bh=z2hBaEruSsLM6/Zo7sUE44f+ijaXA6DoNK/dOgi5T94=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QS3yQPN2eCfAh2HuY8rvjkiV5aDvk3e/vs4S//Tss0Ja750wsQGVDE+5uRKbRSIq+8lTq+vNyEf/E9OjBB/UkwaSYqdN9DtbdfP9toZrSwjwBA9+/XEQ+8xQ/ALUhHSHex3P4xDm/0+ZYauaizom1NSQVfIycFGGZaBWIFIz3Zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=nVYp5Heq; arc=none smtp.client-ip=220.197.32.19
+	 Content-Type:Content-Disposition:In-Reply-To; b=O0JMWc4OOstpXBRIX1f88HT5enMDiLQdqvd4V5QGU0HfFi1rMSv60etXNDk5y4IWCubmDUKuoRgLyCJccZprgv70iJ9PkrL2kedAEDnrHZMo1JIoi9iNowz0BGQn8Gu96rckTt9c1OE0S2E0dNiYLxvggDFa3ZuUlyJYdUbJrRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=k2pWVWwD; arc=none smtp.client-ip=1.95.21.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="nVYp5Heq"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="k2pWVWwD"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=AmUReFKhicS3m0ObmDL8efshVJq3oQSu+lPrt4djDi4=;
-	b=nVYp5HeqTZhDi4moSQB0yQLG02Kt7hakD7BwYxPin3OZUPF3IAXeNJ2KoGKaCI
-	/dqoOMX1Rh+eX/9mMVM8EL37pHjU/vfXWntc+dTOP8m87BwGsdnv2vsSmft/XJ2R
-	tdpNPWiJSS0sUqYJwaD7WrESDq3bIFdj9KVqP8NKGEnBU=
+	Content-Type; bh=7RbKn0b+kpGQ6S/hPfYtTmOrZZ+NkDPxwPNincGKVpo=;
+	b=k2pWVWwDB7l5kvwmEf1ffX2oPM4Ibh1Ab1X045zZtvzYcmI2tr/kak0B7gMobM
+	pRmGUxOFIh1yO0d/AXFTJqI1p4sdeH2sElXKwRcQKCLu81/vu/BgRwjFHIZ/QxzF
+	mUDR3HD7m4Mb+NBR63rXBDU18hJVtZhcYkD0kAG4l+HWk=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgBXPrh_Ghdnp9yWAA--.5441S3;
-	Tue, 22 Oct 2024 11:22:40 +0800 (CST)
-Date: Tue, 22 Oct 2024 11:22:38 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgCnL3MdGxdnoa2UAA--.5286S3;
+	Tue, 22 Oct 2024 11:25:19 +0800 (CST)
+Date: Tue, 22 Oct 2024 11:25:17 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
 To: Marek Vasut <marex@denx.de>
-Cc: linux-arm-kernel@lists.infradead.org, kernel@dh-electronics.com,
-	Isaac Scott <isaac.scott@ideasonboard.com>,
+Cc: linux-arm-kernel@lists.infradead.org, Rob Herring <robh@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Jacky Bai <ping.bai@nxp.com>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Liu Ying <victor.liu@nxp.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, Yannic Moog <y.moog@phytec.de>,
+	Shawn Guo <shawnguo@kernel.org>, Stefan Wahren <wahrenst@gmx.net>,
 	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: imx8mp-phyboard-pollux: Set Video PLL1
- frequency to 506.8 MHz
-Message-ID: <ZxcafhdxyIwI0Sq2@dragon>
-References: <20241017031146.157996-1-marex@denx.de>
+	kernel@dh-electronics.com, linux-gpio@vger.kernel.org
+Subject: Re: [PATCH v3 01/12] dt-bindings: pinctrl: fsl,imx6ul-pinctrl:
+ Convert i.MX35/5x/6 to YAML
+Message-ID: <ZxcbHb5v05+XhFnM@dragon>
+References: <20241017211241.170861-1-marex@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,28 +50,71 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241017031146.157996-1-marex@denx.de>
-X-CM-TRANSID:Ms8vCgBXPrh_Ghdnp9yWAA--.5441S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWrur1DJrWxCF4kKF4kGFyDJrb_yoW3CwcE9F
-	1kuws7CrnxW34rJwnxtr15t3y2kw4UX3ykZr1xXw47XFyrGFWUJ3W09ryF9w15ZasIqasr
-	Ja45Xay5Kwn8ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8kb1UUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAgqAZWcW3ka23AAAsu
+In-Reply-To: <20241017211241.170861-1-marex@denx.de>
+X-CM-TRANSID:Mc8vCgCnL3MdGxdnoa2UAA--.5286S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAryDuw1fWFy7Jr1rCrWfKrg_yoW5uryrpa
+	nIkFy3tryrAF4xG3s7ta40kry3u3WxAr10gwnrt34ktrZxZrn8tryakr1rZ3yDKrW8XF45
+	JFn8Gryjg34UAF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jI9a9UUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBACAZWcXEdoi0wAAsr
 
-On Thu, Oct 17, 2024 at 05:11:20AM +0200, Marek Vasut wrote:
-> The LVDS panel on this device uses 72.4 MHz pixel clock, set IMX8MP_VIDEO_PLL1
-> to 72.4 * 7 = 506.8 MHz so the LDB serializer and LCDIFv3 scanout engine can
-> reach accurate pixel clock of exactly 72.4 MHz.
+On Thu, Oct 17, 2024 at 11:11:18PM +0200, Marek Vasut wrote:
+> The IOMUXC controller description is almost identical on i.MX35/5x/6 SoCs,
+> except for the configuration bits which differ across SoCs. Rename the
+> fsl,imx6ul-pinctrl.yaml to fsl,imx35-pinctrl.yaml, fill in compatible
+> strings for the other SoCs and fill in the various bits into desciption.
+> This way, i.MX35/5x/6 series SoCs can all be converted to DT schema.
+> Remove the old text DT bindings description.
 > 
-> Without this patch, the Video PLL1 frequency is the default set in imx8mp.dtsi
-> which is 1039.5 MHz, which divides down to inaccurate pixel clock of 74.25 MHz
-> which works for this particular panel by sheer chance.
-> 
-> Stop taking that chance and set correct accurate pixel clock frequency instead.
-> 
-> Fixes: 326d86e197fc ("arm64: dts: imx8mp-phyboard-pollux-rdk: add etml panel support")
-> Reported-by: Isaac Scott <isaac.scott@ideasonboard.com>
+> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 > Signed-off-by: Marek Vasut <marex@denx.de>
+> ---
+> Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
+> Cc: Conor Dooley <conor+dt@kernel.org>
+> Cc: Dong Aisheng <aisheng.dong@nxp.com>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: Jacky Bai <ping.bai@nxp.com>
+> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Rob Herring <robh@kernel.org>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: Stefan Wahren <wahrenst@gmx.net>
+> Cc: devicetree@vger.kernel.org
+> Cc: imx@lists.linux.dev
+> Cc: kernel@dh-electronics.com
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-gpio@vger.kernel.org
+> ---
+> V2: - Use DT schema to refer to the fsl,imx35-pinctrl.yaml file
+>     - Special-case the iMX50 compatible string
+> V3: Add RB from Rob
+> ---
+>  .../bindings/pinctrl/fsl,imx35-pinctrl.txt    | 33 -------
+>  ...ul-pinctrl.yaml => fsl,imx35-pinctrl.yaml} | 88 ++++++++++++++++---
+>  .../bindings/pinctrl/fsl,imx50-pinctrl.txt    | 32 -------
+>  .../bindings/pinctrl/fsl,imx51-pinctrl.txt    | 32 -------
+>  .../bindings/pinctrl/fsl,imx53-pinctrl.txt    | 32 -------
+>  .../bindings/pinctrl/fsl,imx6dl-pinctrl.txt   | 38 --------
+>  .../bindings/pinctrl/fsl,imx6q-pinctrl.txt    | 38 --------
+>  .../bindings/pinctrl/fsl,imx6sl-pinctrl.txt   | 39 --------
+>  .../bindings/pinctrl/fsl,imx6sll-pinctrl.txt  | 40 ---------
+>  .../bindings/pinctrl/fsl,imx6sx-pinctrl.txt   | 36 --------
+>  10 files changed, 78 insertions(+), 330 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx35-pinctrl.txt
+>  rename Documentation/devicetree/bindings/pinctrl/{fsl,imx6ul-pinctrl.yaml => fsl,imx35-pinctrl.yaml} (50%)
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx50-pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx51-pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx53-pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6dl-pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6q-pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6sl-pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6sll-pinctrl.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx6sx-pinctrl.txt
 
-Applied, thanks!
+I'm not sure it makes a lot sense to have "fsl,imx6ul-pinctrl: " in the
+subject prefix.
+
+Shawn
 
