@@ -1,199 +1,308 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2086.outbound.protection.outlook.com [40.107.104.86])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FB813D882
-	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 07:41:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.86
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729582907; cv=fail; b=FJiBrdr44a1AHUkIKtBSD3TqwkzpuaRfwWE5t6Tl76FuPCEVaWexANs3cyj5tqbFqulSfXq03Ak32wBruFwPd4GabGjaTGESA06iCImo5ezuL86vFhIls6h6wMecmbwoZrIrn6q26SsxpuHi9EWXVDLJHVF+ufsCeldBJPLtFh4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729582907; c=relaxed/simple;
-	bh=F+xZgo6sTomk12jQtrtuYwVvjHUbtWQEKNIgNVZcYrU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ceAjlE9OvG5JJSIj/xYrUp+jnUhxCS6zIFUg4hhoLmiaJ8Py0rl/k4r+6GcKI2i7Kk7v83p9eHC7pqJ/oN2C0g/Bvp7i4KZBDYmDUVEUu/ITOs3eQuRfnUVKqHkVaF8Z5pgv70xliYcUya8DV+DaUt0ksNvMU2TEqCaOfzHjXoY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=J0NNUdij; arc=fail smtp.client-ip=40.107.104.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D1513AD2A;
+	Tue, 22 Oct 2024 07:50:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729583428; cv=none; b=MtGcKkjO5uotlJHZHSDgRtiJkHzbzoSJWMszrM9msz3YV6/ASZb0bYMaM2ntHjfMCke50GZuyAh7KHRZ84bv8eSoocMvYtzn4sQuB0cIwDyyraOZva1JqiRBn2OYmimucwswbYWaGVQrdvloq5o6w7xFbY3fJZWFjfszIuhsZmU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729583428; c=relaxed/simple;
+	bh=gbeWCIO9Ao198j49EzWUIGHbVOEQyu22n3aIfHPCsQY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XL7JBJ61sYCh4W5aAPxD0079bmo7tMOcC+Ezo5xqD3pythzYf7r8cB/CE/TYYAtcVIbdCZBuX5Y4ubb886jIgSaY6rrjhD7NpqcOxNsjG45DyIu4d+2hjaafAR+6eWJlPOo2cTmRde3wH8fgozX4pjeNUrtdwJzqfCaaY6QZF0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oZEo4z6c; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="J0NNUdij"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Qt3gw3ZZ7U8Al4DFNoXZiFE9j10Y7Iam2Xm4NPGG2n9/cB2pXBGDA8y8qHkmb65c/khpMHy6OkLazflboX5UJQlWs376ysf93STqB50Py/EDKLzYoy6C7TPMK8adn0N+61gTOrtwNB2tY/BakHvuBdZ0YdfNC+jGExLnzixJxjQEFb9JRrNjGmSusIISvUC/axXTalisovw7VuNX7xxTXzplbYBVifriRDJOdNurDIXMtmVI9UN+0K1l/1h+bSVCkEXrbLr8UWYby7XvrHDJJJYcY0Mymq8lzoaCNvNhWxIKMuWa6mZPhNEV/LCMOwi7PFSi71jJidm8p9zKwXLYAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oe1pjV1Z0SRgdvTdVs8Y7Kv9fCm3/dOc0yS0cBrou18=;
- b=WL6aNkUko2KfXuPzr/z6PLbk4WqxcetB5139Qo0Ivu+0f2JTuhwYwkWgp4GfkUU8VpNs1XDOUr5hPdalIsGpHcCO/DR1OYbJsz9f9eBiPESYYZf3b+pgSyI7KNoAE16EJYntQyWZEqYUxMDh3KObYrwn9WAqEO75kLmYmxIWV3i8zTVdhIy5rLqeXtNN4w9MSWlaJNVCF6g80fV5ylexhiIkIZJmRhMwQe2s4v3bEYoGZvHSMFdas/OqvyjVJxy4/dLHbWasERAUV4jDC0eeoAKp7G42E8CuO4EAjCD0yHukgg1ZXgTrKC3tHhs4Jdg2LiH71Qzczl7pmRL/VuQxuw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oe1pjV1Z0SRgdvTdVs8Y7Kv9fCm3/dOc0yS0cBrou18=;
- b=J0NNUdijzPku18cYHAiTYNoSk5qgRB6/aJOXcE6y2lcUS6yqNFzkxaQ/FxSSKJse7JXjyDq5a36teGOX8WEFsj1VHLmvb9WcXqHH+vNxQIwpTVaxsmj2dP5Q4BScPJ/zK1rHrYJEr1AzW4c3YBiYy3Bv8fsYBQ1iclqyBon2FRnD4Dv9s94+0up0OOcjlMjUQubig5pDj5unGiMZg3H1u5sGYdVzOBZIiY0QdH5qmH9mSi3+0ImqQkA+P3n9pXtcZkChjx4vqa4u4OLgJTVQScxEWHk60DE7DgrKK0RyLyJjfu0RBRsBF9xX6TjEdNtarYpd0q1SMTwTBIHvxU3P/Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by GV1PR04MB9071.eurprd04.prod.outlook.com (2603:10a6:150:22::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.20; Tue, 22 Oct
- 2024 07:41:41 +0000
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90%4]) with mapi id 15.20.8069.027; Tue, 22 Oct 2024
- 07:41:41 +0000
-Message-ID: <74ead950-5ab9-4a2b-8520-5af7a4931f45@nxp.com>
-Date: Tue, 22 Oct 2024 15:42:01 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/15] dt-bindings: display:
- panel-simple-lvds-dual-ports: Reference lvds-dual-ports.yaml
-To: Rob Herring <robh@kernel.org>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
- Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, airlied@gmail.com, simona@ffwll.ch,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- krzk+dt@kernel.org, conor+dt@kernel.org, quic_jesszhan@quicinc.com,
- mchehab@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, catalin.marinas@arm.com,
- will@kernel.org, sakari.ailus@linux.intel.com, hverkuil@xs4all.nl,
- tomi.valkeinen@ideasonboard.com, quic_bjorande@quicinc.com,
- geert+renesas@glider.be, dmitry.baryshkov@linaro.org, arnd@arndb.de,
- nfraprado@collabora.com, thierry.reding@gmail.com,
- prabhakar.mahadev-lad.rj@bp.renesas.com, sam@ravnborg.org, marex@denx.de,
- biju.das.jz@bp.renesas.com
-References: <20241021064446.263619-1-victor.liu@nxp.com>
- <20241021064446.263619-10-victor.liu@nxp.com>
- <20241021194020.GA1011261-robh@kernel.org>
-From: Liu Ying <victor.liu@nxp.com>
-Content-Language: en-US
-In-Reply-To: <20241021194020.GA1011261-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: KL1PR0401CA0034.apcprd04.prod.outlook.com
- (2603:1096:820:e::21) To AM7PR04MB7046.eurprd04.prod.outlook.com
- (2603:10a6:20b:113::22)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oZEo4z6c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C7FC4CEC3;
+	Tue, 22 Oct 2024 07:50:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729583427;
+	bh=gbeWCIO9Ao198j49EzWUIGHbVOEQyu22n3aIfHPCsQY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oZEo4z6cPLgawcEkuwfQqtUX8Yw7wJqlDNry2YOo3Ve27Ri+WGu2mShxYq6OrqYgZ
+	 TgU44b6g/SWDktQQIWdqAZ692VAk8MhTXVmV5a3O+O/v2m0Dd9wtd76GsrEsLy5lrx
+	 wzfeoRgn+c+3naavRyp91CKr3+pMfIAEK9gv1kK2fhCPf8Bmi+WHBxztg9IYBsbOcZ
+	 NHu4nZoMc34g0tj5pjYu5oiackr/COvmjfp8Wjltrdi3X7su8pzxvA6Zy6oEIJ0jBn
+	 Jnb8vedP/DK8Jt2pHDLj5p/PnsvPUjT2eJvUzrnc2x5n+9vsFlwp4INqjF0wyclekS
+	 tmzTDCjmW5m2w==
+Date: Tue, 22 Oct 2024 09:50:24 +0200
+From: Maxime Ripard <mripard@kernel.org>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: Marek Vasut <marex@denx.de>, dri-devel@lists.freedesktop.org, 
+	Abel Vesa <abelvesa@kernel.org>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+	David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>, 
+	Isaac Scott <isaac.scott@ideasonboard.com>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Jonas Karlman <jonas@kwiboo.se>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Michael Turquette <mturquette@baylibre.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Peng Fan <peng.fan@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Robert Foss <rfoss@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>, 
+	Stephen Boyd <sboyd@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, imx@lists.linux.dev, 
+	kernel@dh-electronics.com, linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
+Subject: Re: [PATCH 1/2] clk: imx: clk-imx8mp: Allow LDB serializer clock
+ reconfigure parent rate
+Message-ID: <20241022-quirky-ubiquitous-hamster-11dca5@houat>
+References: <20241008223846.337162-1-marex@denx.de>
+ <dbede671-c97b-4ad7-8a54-f1b381fea082@nxp.com>
+ <00ffd38c-b01a-40cd-9130-19c35a387ca0@denx.de>
+ <819380c3-d13f-4989-b305-388fc60d30e4@nxp.com>
+ <d99e0021-3253-4312-9b50-6031ae0f8d8e@denx.de>
+ <d1307426-9a86-4356-93b8-9a10c8369ad8@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|GV1PR04MB9071:EE_
-X-MS-Office365-Filtering-Correlation-Id: 34af82c4-a5d0-4910-066b-08dcf26cf7e8
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?SDVDR0IxZUhOa2FHSXR0Zm9GL3NMOEZnMVJtUjhZTGRNQk1ERXV0RkxqR0Nn?=
- =?utf-8?B?QWxFd1hiNi9HMnJnaXhkaDluN3I0SUV2ZGZZQ090RURTMWkxbXJLRE1lb3lT?=
- =?utf-8?B?SnVveWJwQUpWbDZmenNWS056RmtuNld4S0doOEZ5RDZxTE05dy81L05Tcldh?=
- =?utf-8?B?RGpKQjdWbGZldStYMmxUT052ZHpLaW1wTnQxZThIVDRsQUtjT0JCa3ZuSEl4?=
- =?utf-8?B?WlFLQlBhS3dtZHRLRVJvMnVwNlU0NDRiZ3BxNkl6bzIzam40QnE4VDhtdjA0?=
- =?utf-8?B?RnJxNkFOOWpLM2JCMW1lVGdaVlpER1dwVDBnQ05pYk5XTklGQ1ZWZWJzWXdB?=
- =?utf-8?B?cTRpbXFPdkFGcU5scXZsUWRxWjl2cWdrejlvWW5vQVk5UmlPd2JZMW8xLzYw?=
- =?utf-8?B?Zmt1V0haWm02NitSRDNXVXZ6TmhZZklhSzY4TnpYQktkcGhScjMxazRhWEds?=
- =?utf-8?B?d3BydEFsTkZmUmRyYWZjUnRvekdEcTR4TkkrN3JhOS9vRnZGaCtSelZSaGs5?=
- =?utf-8?B?ZjczWUFBOEhjc3lMelR1M3hYMHNrcHA0ei93UTVxSnZ5SDZSZ1N4cWlUYitv?=
- =?utf-8?B?K21oc3YrTnY1V2c2Q2R3SU1IbUNlclNBNW9xOWd5a2tYeEl1Z1QzMnlJbld5?=
- =?utf-8?B?UFRweHRvbkJ1MWZ1cVI4TlRnekVXMVByc0QvdjljZGFRL2ZqaktCdHNTZGhI?=
- =?utf-8?B?THJtcWVnbjhzUGpiaEtyWDZsRHQvUFZrQTJ1a2l2SEljWnVKOXU2YXV6ellz?=
- =?utf-8?B?WFdFT25WdVVIK1ZKUFZMaHh2M0xJRW0yeWVqRWIvUHN1Z0Z1Ly85VFpNQkpS?=
- =?utf-8?B?WkZieVBUNTZPVEY2b24zdFMrby9ienFxSG1OVmJ5bGRjcEdBM2ZRdWZVcXlY?=
- =?utf-8?B?UzUwL0hNRTRQUGg5L3o0a3ZOUUtSbmlXQlNRcXY3dWJMcG4zQlorT1hrVGdD?=
- =?utf-8?B?OTdUbzJQWEU1QmxnTFpkSWM0b2F5dFJueEdLZERqVkxyU01GMjJQc1h3cEdZ?=
- =?utf-8?B?TFZwNGEweGgwcTVEbEQ5Zms0enlxOTFJQ2djWll0Yi82RWoxRzBVcjBWT1FD?=
- =?utf-8?B?a3FFSFhXNTlMamY1RkdXQTMxVjJRMXVLK29iN05PM0VLVXRDc2p0dVc5cXFx?=
- =?utf-8?B?SlJ4czE2U09zSjhUUlBWT2NMNXAzNXdFb1k2TkoxVFdPQm5MTlgyOCtlZnN1?=
- =?utf-8?B?NDgvNXMyRzBZejRnK2c4TXVkZFNVMlBVckZoMWp3cEdhOXFvRWZ6Rld2ZHhJ?=
- =?utf-8?B?cXloL0RQNkRaQTBvSXRyZWR6N0xBSU1yWGJJTmYxSEwvRGVidVJyc1ZqK3BD?=
- =?utf-8?B?UFlzK3hRdkJYbTg5SUxFY3E0Uzh4Kzg0d3NHcVI0R0RiYjJ5VGlDckU1SWxX?=
- =?utf-8?B?M2ZWcGxhT2NhaDhjUEdFQWVMWERhc3ZRQTJFejR5b3U2RVZXL0xDU2J3SFJW?=
- =?utf-8?B?KzY3SHdZYmlrQXpxZjBoNGJud1ZIK1hsWTJLUmRNVFR2MHRuakp4QTJlVnlG?=
- =?utf-8?B?bGl1U2JYamM3WXpsdm1oWm5CcTg4WGsvVlpvZE01U0IwTzk5eHREYTd1N095?=
- =?utf-8?B?Q2Q4TnpRNHVVdmlOZXdzV1p4anVISnJZbVJYblErK014alIzN2lrM1V3OXZO?=
- =?utf-8?B?NGtnQVlyWERvSGZVcnBMV1plcGp1b0dRNkxtR0J0bXVqMTJnR1I1UTRXS2Vp?=
- =?utf-8?B?VWNlR3hNWE00KzlWdnduTithQStDaW1OVlBQQ3pHeWhJcXZrRzBsN1lHTjhL?=
- =?utf-8?Q?NmlNUM9m86EY0JwLIDSmh/LA0lZpherhDfLIPtG?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?Q0ZTMWZKdlJnRDZPOWQ4blpJNDhLT1pxMUE0RlJKRzBZZFhUOWFCWHZwY0Jv?=
- =?utf-8?B?S0s0OEtsNlZkcTA4b2dOQTNlMGthWGJyZjlKamRObmhVcmo0VnNndC8yWVl4?=
- =?utf-8?B?OWZIOU9oYlNJT01oSEdUVjRLdEZyVG9UdVZqVVMvRE9Pdkw1WW9PZEZBbzk1?=
- =?utf-8?B?dTFMWk5kOU5VcUVoUUZwamx4MTdVNWVtcEhIRG04WHQvUUJlZTNYQjEzLy9x?=
- =?utf-8?B?cFNkNGhuangxWUVFc0s2TVlya1FMYUptdmxKSktQbEEzbU5yVlhSZkdkSi9H?=
- =?utf-8?B?ajdwNFpScVU4Z2R5ZzRjM011a3RwMURlU1hKcEZMNTQ2Q0lrTzg2cWFKSXQ4?=
- =?utf-8?B?cTF3R2xKMTFtbDkvRTFZOWRmOXo5Y2w3YWlBVFp3SGYrZEVST2pRL3M0YVFZ?=
- =?utf-8?B?QXB2UDl5WURxeHRLbW1Mc01yTDlDMHQxNStIOTdid0hzSFkzVUdKT3Q2NGxr?=
- =?utf-8?B?WHhwRktwOW8zM1poS1VGVGg2aXFtTXUrbVVJZU52VCtxYjJQVmwxQnhSQlZv?=
- =?utf-8?B?eC84aXRWNXhtSDhYMlZkSWZqaXQ1SE5NQmFuUVRWYW5sQldqTUNJTGhka1gv?=
- =?utf-8?B?S2M2bVZMQVFSZlpLRjh6dmZFYUxQL1RhYjhteWU1c1RQcEFoSGwyU2dVcjJ3?=
- =?utf-8?B?V2dtVmM5a01XT2thL1QvS2psSE5OOFpvaFlnMEsvVXVqMW03ZS81UlJyS3hH?=
- =?utf-8?B?SkFyRUVxSnB4K000WldBeE4xUkR2cTV2Qk5GWnZEQXBKM2ppUGNWNTA3eTQz?=
- =?utf-8?B?TlZEcFRBNkhpRzV5ODhXZys3WjYvVlJIVTdXODhSOUVDNzBMTUZDVU83OFk5?=
- =?utf-8?B?aEdxU2F3aVNnREdxNzROekVuRk4wdlVSSXZLQW9ZZVdsQ0FwTEI3WDdKTVpV?=
- =?utf-8?B?cDYxYWlNek9KUjgwendUNGgrdmF0cFd2RGtLaVMrK3c4ZU94UzZXaU9TU3dj?=
- =?utf-8?B?TkNJZm1xTG1KaDlXcjJoaHR5cWM5bTEwaGxDc2dscGhEbWVTeXlvbzcveElX?=
- =?utf-8?B?T2lkOXRMd2FNdXNUcVB3QlFEd2RDSmgxT1JsTDgyQksxMHpramhVMkJyVHVO?=
- =?utf-8?B?Vll6TThXM3dMUU1nMUdjUXhTZkZwVDBwd3dqNjZsZW9tQU05ZVNIcjA4RGpq?=
- =?utf-8?B?ME9aVFp0VGtpS3NXYkMzMXYxZE9PT3Nua3N1SXlRUWZIOFJVMit3WUdBbEtn?=
- =?utf-8?B?QmtFcXVzTzJyd3VXcFJ0ejZaOU9tVEREMFYwS2QrbDFDYlUyS1BqV3VpMXBj?=
- =?utf-8?B?YTlFZU5ReWU1d3VaS0tFV1dnZjRBZnhTd04zZnIzbitmSGg5dFdnZDk2S1cz?=
- =?utf-8?B?YUlPM0U3eVQvZzMyT0w2SVdidiszWFYwYk5vNjF0TC9TOEpoU2p5Vk83WEdo?=
- =?utf-8?B?NlhQVHAreFNtQ0Q0bVJ0aXhQNlNjanlBc1ArZ1hBVzlmeER1dVM2dkRlSGh2?=
- =?utf-8?B?STI2WHZKaGlkOHZiVTUxTW0veDJRR0lNZXZYTkk3SDFIQnAwTEVXZE4zbm9q?=
- =?utf-8?B?TThhNWNWRGx1alpWRThkL3RHaDhYL1RKam1FZU5MNjg1MTUycW9SNlhrR3ZT?=
- =?utf-8?B?Q0Q2U2E4QmJOd1lrNzFRWStBcnQwZThzSmVIWmdLb1pWUVZkSlhNbzViTFhM?=
- =?utf-8?B?UlIxR3VGUUNUeFZBSXJiU3dJOVJWL1hIZjJIMTZ2bEM4TGtFNTdxNnBCMHZW?=
- =?utf-8?B?Zmp0OGlNY0VIcnlZcWpXenNCV1NuOXNQYnBXT05ZdWhCb2I0QUxaRUpKa1hm?=
- =?utf-8?B?WmlTWm9vRUJEaXVOeG1XOWMxZjRMMnNKQUxYQjJCenU4ZVBzZzk4RFdNL2hL?=
- =?utf-8?B?aG9wVDByOGhBUDUveUlaWENja1AyZ2h0U1gydkRHVS81SXhCZU1RRGt4dlZL?=
- =?utf-8?B?UEtXRXpHOWZxOURlSkJvRUFQenloT1Bnd1M2TUtCamdJWks2R29LMjNDcTNZ?=
- =?utf-8?B?UHpXWDA1ZU13U1ZISDJPNDF4U0ZpTGZ5T0V3Wjd3dDRSM2hwdGdtVXBXQmhQ?=
- =?utf-8?B?aHhLWmp1OEhhSVVSV21saFc2ZDJlMGRNWUJrN0pEQmJiK2lVandjbUlJYUNy?=
- =?utf-8?B?cnNNNFY0MnhHeVI4RjBtNFc5blhiOEVta2g5VzBqQTRDVkdCRldyWk1nTzRH?=
- =?utf-8?Q?eq7/anvTjy78yP+X5pZK/6Wmo?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 34af82c4-a5d0-4910-066b-08dcf26cf7e8
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2024 07:41:41.2295
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TJ42Uqsg01Jso1iYlAkQ9wT4VjiyArgL3iaXXnBvuM1JoO3gphV30X7RwHyuvD8kHQPFtHaJfErQ5WCkO6KVgg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB9071
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="5ljitx3vl2u5lehv"
+Content-Disposition: inline
+In-Reply-To: <d1307426-9a86-4356-93b8-9a10c8369ad8@nxp.com>
 
-On 10/22/2024, Rob Herring wrote:
-> On Mon, Oct 21, 2024 at 02:44:40PM +0800, Liu Ying wrote:
->> This schema documents LVDS panels with dual links.  lvds-dual-ports.yaml
->> documents dual-link LVDS display common properties.  Reference the ports
->> property defined in lvds-dual-ports.yaml to save lines.
->>
->> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
->> Signed-off-by: Liu Ying <victor.liu@nxp.com>
->> ---
->> v3:
->> * New patch.  (Dmitry)
->>
->>  .../panel/panel-simple-lvds-dual-ports.yaml   | 20 +------------------
->>  1 file changed, 1 insertion(+), 19 deletions(-)
-> 
-> Squash this with patch 8 then it doesn't look like you are duplicating 
-> things.
 
-Will squash this and patch 10 with patch 8.  Thanks.
+--5ljitx3vl2u5lehv
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 1/2] clk: imx: clk-imx8mp: Allow LDB serializer clock
+ reconfigure parent rate
+MIME-Version: 1.0
 
-> 
-> Rob
+On Tue, Oct 22, 2024 at 02:13:57PM +0800, Liu Ying wrote:
+> On 10/13/2024, Marek Vasut wrote:
+> > On 10/11/24 8:18 AM, Liu Ying wrote:
+> >> On 10/11/2024, Marek Vasut wrote:
+> >>> On 10/10/24 7:22 AM, Liu Ying wrote:
+> >>>> On 10/09/2024, Marek Vasut wrote:
+> >>>>> The media_ldb_root_clk supply LDB serializer. These clock are usual=
+ly
+> >>>>> shared with the LCDIFv3 pixel clock and supplied by the Video PLL on
+> >>>>> i.MX8MP, but the LDB clock run at either x7 or x14 rate of the LCDI=
+Fv3
+> >>>>> pixel clock. Allow the LDB to reconfigure Video PLL as needed, as t=
+hat
+> >>>>> results in accurate serializer clock.
+> >>>>>
+> >>>>> Signed-off-by: Marek Vasut <marex@denx.de>
+> >>>>> ---
+> >>>>> Cc: Abel Vesa <abelvesa@kernel.org>
+> >>>>> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+> >>>>> Cc: David Airlie <airlied@gmail.com>
+> >>>>> Cc: Fabio Estevam <festevam@gmail.com>
+> >>>>> Cc: Isaac Scott <isaac.scott@ideasonboard.com>
+> >>>>> Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+> >>>>> Cc: Jonas Karlman <jonas@kwiboo.se>
+> >>>>> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+> >>>>> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> >>>>> Cc: Maxime Ripard <mripard@kernel.org>
+> >>>>> Cc: Michael Turquette <mturquette@baylibre.com>
+> >>>>> Cc: Neil Armstrong <neil.armstrong@linaro.org>
+> >>>>> Cc: Peng Fan <peng.fan@nxp.com>
+> >>>>> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> >>>>> Cc: Robert Foss <rfoss@kernel.org>
+> >>>>> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> >>>>> Cc: Shawn Guo <shawnguo@kernel.org>
+> >>>>> Cc: Simona Vetter <simona@ffwll.ch>
+> >>>>> Cc: Stephen Boyd <sboyd@kernel.org>
+> >>>>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> >>>>> Cc: dri-devel@lists.freedesktop.org
+> >>>>> Cc: imx@lists.linux.dev
+> >>>>> Cc: kernel@dh-electronics.com
+> >>>>> Cc: linux-arm-kernel@lists.infradead.org
+> >>>>> Cc: linux-clk@vger.kernel.org
+> >>>>> ---
+> >>>>> =A0=A0 drivers/clk/imx/clk-imx8mp.c | 2 +-
+> >>>>> =A0=A0 1 file changed, 1 insertion(+), 1 deletion(-)
+> >>>>>
+> >>>>> diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx=
+8mp.c
+> >>>>> index 516dbd170c8a3..2e61d340b8ab7 100644
+> >>>>> --- a/drivers/clk/imx/clk-imx8mp.c
+> >>>>> +++ b/drivers/clk/imx/clk-imx8mp.c
+> >>>>> @@ -611,7 +611,7 @@ static int imx8mp_clocks_probe(struct platform_=
+device *pdev)
+> >>>>> =A0=A0=A0=A0=A0=A0 hws[IMX8MP_CLK_MEDIA_MIPI_PHY1_REF] =3D imx8m_cl=
+k_hw_composite("media_mipi_phy1_ref", imx8mp_media_mipi_phy1_ref_sels, ccm_=
+base + 0xbd80);
+> >>>>> =A0=A0=A0=A0=A0=A0 hws[IMX8MP_CLK_MEDIA_DISP1_PIX] =3D imx8m_clk_hw=
+_composite_bus_flags("media_disp1_pix", imx8mp_media_disp_pix_sels, ccm_bas=
+e + 0xbe00, CLK_SET_RATE_PARENT);
+> >>>>> =A0=A0=A0=A0=A0=A0 hws[IMX8MP_CLK_MEDIA_CAM2_PIX] =3D imx8m_clk_hw_=
+composite("media_cam2_pix", imx8mp_media_cam2_pix_sels, ccm_base + 0xbe80);
+> >>>>> -=A0=A0=A0 hws[IMX8MP_CLK_MEDIA_LDB] =3D imx8m_clk_hw_composite("me=
+dia_ldb", imx8mp_media_ldb_sels, ccm_base + 0xbf00);
+> >>>>> +=A0=A0=A0 hws[IMX8MP_CLK_MEDIA_LDB] =3D imx8m_clk_hw_composite_bus=
+_flags("media_ldb", imx8mp_media_ldb_sels, ccm_base + 0xbf00, CLK_SET_RATE_=
+PARENT);
+> >>>>
+> >>>> This patch would cause the below in-flight LDB bridge driver
+> >>>> patch[1] fail to do display mode validation upon display modes
+> >>>> read from LVDS to HDMI converter IT6263's DDC I2C bus.
+> >>>
+> >>> Why ?
+> >>
+> >> Mode validation is affected only for dual LVDS link mode.
+> >> For single LVDS link mode, this patch does open more display
+> >> modes read from the DDC I2C bus.=A0 The reason behind is that
+> >> LVDS serial clock rate/pixel clock rate =3D 3.5 for dual LVDS
+> >> link mode, while it's 7 for single LVDS link mode.
+> >>
+> >> In my system, "video_pll1" clock rate is assigned to 1.0395GHz
+> >> in imx8mp.dtsi.=A0 For 1920x1080-60.00Hz with 148.5MHz pixel
+> >> clock rate, "media_ldb" clock rate is 519.75MHz and
+> >> "media_disp2_pix" clock rate is 148.5MHz, which is fine for
+> >> dual LVDS link mode(x3.5).=A0 For newly opened up 1920x1080-59.94Hz
+> >> with 148.352MHz pixel clock rate, "video_pll1" clock rate will
+> >> be changed to 519.232MHz, "media_ldb" clock rate is 519.232MHz
+> >> and "media_disp2_pix" clock rate is wrongly set to 519.232MHz
+> >> too because "media_disp2_pix" clock cannot handle the 3.5
+> >> division ratio from "video_pll1_out" clock running at
+> >> 519.232MHz.=A0 See the below clk_summary.
+> >=20
+> > Shouldn't this patch help exactly with that ?
+>=20
+> No, it doesn't help but only makes clk_round_rate() called in
+> LDB driver's .mode_valid() against 148.352MHz return 148.352MHz
+> which allows the unexpected 1920x1080-59.94Hz display mode.
+>=20
+> >=20
+> > It should allow you to set video_pll1_out to whatever is necessary by L=
+DB first, fixate that frequency, and the LCDIFv3 would then be forced to us=
+e /7 divider from faster Video PLL1 , right ?
+>=20
+> Yes, it allows that for single-link LVDS use cases.
+> And, __no__, for dual-link LVDS use cases because the
+> video_pll1_out clock rate needs to be 2x the LVDS serial clock
+> rate.=20
+>=20
+> >=20
+> >> =A0=A0=A0=A0 video_pll1_ref_sel=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 1=A0=A0=A0=A0=A0=A0 1=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=A0 24000=
+000=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0 50000=A0=A0=A0=A0=
+=A0 Y=A0=A0=A0=A0=A0 deviceless=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0 no_connection_id
+> >> =A0=A0=A0=A0=A0=A0=A0 video_pll1=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0 1=A0=A0=A0=A0=A0=A0 1=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=
+=A0=A0=A0=A0 519232000=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0 500=
+00=A0=A0=A0=A0=A0 Y=A0=A0=A0=A0=A0=A0=A0=A0 deviceless=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 no_connection_id
+> >> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 video_pll1_bypass=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 1=A0=A0=A0=A0=A0=A0 1=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=A0 51=
+9232000=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0 50000=A0=A0=A0=A0=
+=A0 Y=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 deviceless=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 no_connection_id
+> >> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 video_pll1_out=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0 2=A0=A0=A0=A0=A0=A0 2=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=
+=A0 519232000=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0 50000=A0=A0=
+=A0=A0=A0 Y=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 deviceless=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 no_connection_id
+> >> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 media_ldb=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0 1=A0=A0=A0=A0=A0=A0 1=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=
+=A0=A0=A0=A0 519232000=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0 500=
+00=A0=A0=A0=A0=A0 Y=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 devi=
+celess=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 no_co=
+nnection_id
+> >> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 media_ldb_ro=
+ot_clk 1=A0=A0=A0=A0=A0=A0 1=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=A0 51=
+9232000=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0 50000=A0=A0=A0=A0=
+=A0 Y=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 32ec0000.=
+blk-ctrl:bridge@5c=A0=A0=A0=A0 ldb
+> >> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 deviceless=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 no_connection_id
+> >> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 media_disp1_pix=A0=A0=
+=A0=A0=A0 0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=
+ 129808000=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0 50000=A0=A0=A0=
+=A0=A0 N=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 deviceless=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 no_connection_=
+id
+> >> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 media_disp1_=
+pix_root_clk 0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=
+=A0 129808000=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0 50000=A0=A0=
+=A0=A0=A0 N=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 32e=
+80000.display-controller=A0=A0=A0=A0 pix
+> >> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 32ec0000.blk-ctrl=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 disp1
+> >> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 deviceless=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 no_connection_id
+> >> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 media_disp2_pix=A0=A0=
+=A0=A0=A0 1=A0=A0=A0=A0=A0=A0 1=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=
+ 519232000=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0 50000=A0=A0=A0=
+=A0=A0 Y=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 deviceless=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 no_connection_=
+id
+> >> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 media_disp2_=
+pix_root_clk 1=A0=A0=A0=A0=A0=A0 1=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=
+=A0 519232000=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0 50000=A0=A0=
+=A0=A0=A0 Y=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 32e=
+90000.display-controller=A0=A0=A0=A0 pix
+> >> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 32ec0000.blk-ctrl=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 disp2
+> >> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 deviceless=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 no_connection_id
+> >>
+> >> Single LVDS link mode is not affected because "media_disp2_pix"
+> >> clock can handle the 7 division ratio.
+> >>
+> >> To support the dual LVDS link mode, "video_pll1" clock rate needs
+> >> to be x2 "media_ldb" clock rate so that "media_disp2_pix" clock
+> >> can use 7 division ratio to achieve the /3.5 clock rate comparing
+> >> to "media_ldb" clock rate.=A0 However, "video_pll1" is not seen by
+> >> LDB driver thus not directly controlled by it.=A0 This is another
+> >> reason why assigning a reasonable "video_pll1" clock rate in DT
+> >> makes sense.
+> >=20
+> > I agree that _right_now_, the DT clock assignment is the only option.
+> > I would like to see that DT part disappear and instead would prefer if =
+the LDB/LCDIF could figure out the clock tree configuration themselves.
+>=20
+> I think we'll live with the assigned clock rate in DT, because the
+> i.MX8MP LDB and Samsung MIPI DSI display pipelines need to share a
+> video PLL, like I mentioned in comments for patch 2.
 
--- 
-Regards,
-Liu Ying
+Guys. There's 4 different discussions that look to be on the same topic,
+and doing workarounds in the DT, DRM driver and clock driver for
+something that looks like a broken clock.
 
+Could we have *somewhere* a proper description of what the problem is
+exactly, so we can review it? Because at the moment, it's certainly not
+helping.
+
+Maxime
+
+--5ljitx3vl2u5lehv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZxdZNwAKCRAnX84Zoj2+
+do5AAYD9Cvhd9aqpnBOy5WzwqBPOkxSDwk7s4YVwlvjsU4LO9OXrAFitX8qW8dCA
+yF4+UCEBgOkuykrO2NWU3AO6aoUlJKlKGLDsPZFS7OLTIppco01TwDhTsxQNM0Qu
+2py5EVywJg==
+=Pvc4
+-----END PGP SIGNATURE-----
+
+--5ljitx3vl2u5lehv--
