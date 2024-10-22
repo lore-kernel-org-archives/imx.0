@@ -1,100 +1,91 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4471E1A0BE0
-	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 14:36:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0636E1A2645
+	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 14:44:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729607784; cv=none; b=X7pauzcSEPXa9Mjy5oZvK1zgXB05/dYc8iHQb5KHWGQqggBeRL30Sn5daGg4lYE0BYyRItQS/Li9LukWvr9YepfuXgXMVoQeQjjbYpiEOK2QfolRsuLObAubIxOFpLf1tCohuMKQiInru4/rZAD/uR2WMUDI89P57bgehLzS62w=
+	t=1729608271; cv=none; b=Wff4wQ3hBKaEF+G5C5Kg0SbtwVYA5/ksIwQo9/sX6yVOaZ1Qgz90Yhhuk1h5nWtdA2vJqqCWm0mbvpc38TT7UUMEhQGQHZIitEeagl5eGV4awvHfEj/Jy8PnTIghTOGCkyegDQc315v//R6nWUW93VHM9Tf9oYWtjGoGSVlmCBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729607784; c=relaxed/simple;
-	bh=XPTt/DRcxaXM3jq+HjKo66FdsyRj2Gi2+pHUZZljpsY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=nAyOb7aw6sfTnmdHUJ/7k9sEDQq5yj6V6wu6Mh9u/i/5wXU0A46E8dT4rCU+25YshlfodgsOi8wAJLimr7q8u8cSFn2Y3BCK7pNdhxvIq0hZFCdZGj4IaoeTx2x3APGX/mhn3caN5M588aO+Yie3/PzAW60ny6prde8zVpQ7eA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XNSDEYnS; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1729608271; c=relaxed/simple;
+	bh=eURP4ar4+HITlep6dZUO0eNRMf3wwVBadmodatCMtSs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UaJ0GkPtPCMhGmAoXcjGCRyhluikSeN0UN6pxPOGh7RNYMmgNU/0msgK/S117npCsEAVKrVrVnAYaGsNt4u4dWx2E1+o+IoWTqyA56aEiL7tMGPK6/5xXrgwnhP8JgCKrwG1JKeFqtWzhdLDLctzLaBf4JiGHgxG4hsKXipvvq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=zPsfDhy5; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XNSDEYnS"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-37d4a5ecc44so4225971f8f.2
-        for <imx@lists.linux.dev>; Tue, 22 Oct 2024 07:36:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729607782; x=1730212582; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GrUWXWfzIj5zJMMGxBfqh3qOh40//ZAdcEGnfXtiphw=;
-        b=XNSDEYnSDd93wHVOYnNpo8wLdZ999p5mLoo7tfKRotwnjWsZcjQ6Krxa70E+lxwIO9
-         nNoAk6mIi3BNY0vIv2ykKekoJzZgIH9by2fvhNx8Nkbmw0Yws+CVnm+feF9CH3Pz1E87
-         CNPfOkt7yfBzkczKZD1IBLy8eM/x0K0zwUH+3jYaWChonWZNpvm5apc0T/tjfw7DuRoB
-         fgz/MWmd2hvo9qi6rtfLMcTgz62xdy71OxzdK214W8bmou3qEYNFgxcDzchEGLafO4Mg
-         phL8F2bvTATMfdVw/KZmYT1wwxd9UPNYKQv3/zHn3VtjAQP3Rec3Fts0AbYVL9O+1WJO
-         eCIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729607782; x=1730212582;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GrUWXWfzIj5zJMMGxBfqh3qOh40//ZAdcEGnfXtiphw=;
-        b=mWTfBVr1C3ogGkbMgeBe39vzhMnsHoXWO6HqbUTGTxeR4GxyfISxJrU2R1B6kcpqHu
-         McF4klFHxwH9uZL7YDr12ep4Suv06Oaiy6Lw8cvmf+U7McUV5w6L5ifYb9RuvVEyq309
-         19n4tpPFNuUj8yTYS0QL6nFXeRFsPnKXKa2tSAAc240Zcdxi//WHa7AEYryUB+Yn916i
-         0D0YUOQqZ0lT60jzMXKj95G/0FjI3RatvueGW5l2xqeLlYmCnuk7Hd5estx33aXIfW25
-         qI3JhB+Yk2PABT1VazXl7i5RgLHqNJ6SZIWYCnI6n9w6fuEE63HRtqSpW/xkm5w6VV5x
-         k0fw==
-X-Forwarded-Encrypted: i=1; AJvYcCUuPbkGy1z08Flnp0OzP2dgdQUVY00dp2FgqjZFZDvaTokWh4OPIdpiSfG781JJIUrnOl4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzjOvfQCe99QoWnnrRm0+VjYeuGEDerry7neU5DIBVRlAZ7x3on
-	9+KqqcZ4VpBFjN5rmDbmEfqfjln8G55U4gBPwy6tWpLMMUlQOf3LRu6JsJX7WT8=
-X-Google-Smtp-Source: AGHT+IH1gDK1/uDRHCxw8RYMyjPcimj1r1WhkfVOpVJ9j0PYqU0pkA6VBIa7LJdkDoJQNlhbE2+Oig==
-X-Received: by 2002:a05:6000:c85:b0:37d:4e74:68a with SMTP id ffacd0b85a97d-37eb5a59780mr8701399f8f.46.1729607781629;
-        Tue, 22 Oct 2024 07:36:21 -0700 (PDT)
-Received: from [127.0.1.1] ([82.76.168.176])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ee0a47caesm6723587f8f.28.2024.10.22.07.36.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Oct 2024 07:36:20 -0700 (PDT)
-From: Abel Vesa <abel.vesa@linaro.org>
-To: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
- abelvesa@kernel.org, peng.fan@nxp.com, mturquette@baylibre.com, 
- sboyd@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
- festevam@gmail.com, Richard Zhu <hongxing.zhu@nxp.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, 
- imx@lists.linux.dev, kernel@pengutronix.de
-In-Reply-To: <1728977644-8207-1-git-send-email-hongxing.zhu@nxp.com>
-References: <1728977644-8207-1-git-send-email-hongxing.zhu@nxp.com>
-Subject: Re: [PATCH v5 0/2] Add one clock gate for i.MX95 HSIO block
-Message-Id: <172960777824.2281007.10515356955760469298.b4-ty@linaro.org>
-Date: Tue, 22 Oct 2024 17:36:18 +0300
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="zPsfDhy5"
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 7F5CE88EBA;
+	Tue, 22 Oct 2024 16:44:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1729608268;
+	bh=8JCWEFiVxTgldvfx2ew36UU69vLDsIQ+wcH6mkzO9Is=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=zPsfDhy5oryqqBV+Ic3xo10tNvaLLB1ttADNgufC5PYpGS1vKw5xSsP1Q8HXF5oLa
+	 LTASKwtUNO/uKlpy588coRiqHVZQUJXbwZlu6sj4F6spD+DsmDTKV/UOxdmItG8ETJ
+	 ZJshR9NtvCyyBMLy1J9ky5IPFJk/vMmOvzj5nMn6atIN2RbDPJ3QOvuqFpxcVJ+KGc
+	 qSmus+JL2H+lD7oOYbTXEZytYFzruUZ/iVVaD0ZKkF7gqcZLWDWHXEU6rKqo9xZXPt
+	 pmt9oYK79A0k1wu7g7zM5domLaPESR9MOwT1vTAe7VbIA/BshvuE0A15CNjTjBTPrc
+	 UHMSI1BK0027w==
+Message-ID: <b382b08a-4ce9-4070-adbf-45ef5e91ce1d@denx.de>
+Date: Tue, 22 Oct 2024 15:56:12 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-dedf8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 01/12] dt-bindings: pinctrl: fsl,imx6ul-pinctrl:
+ Convert i.MX35/5x/6 to YAML
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-arm-kernel@lists.infradead.org, Rob Herring <robh@kernel.org>,
+ Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Conor Dooley <conor+dt@kernel.org>, Dong Aisheng <aisheng.dong@nxp.com>,
+ Fabio Estevam <festevam@gmail.com>, Jacky Bai <ping.bai@nxp.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Stefan Wahren <wahrenst@gmx.net>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, kernel@dh-electronics.com, linux-gpio@vger.kernel.org
+References: <20241017211241.170861-1-marex@denx.de>
+ <CACRpkdYvMWABqw1tC5YSh+RXcHiCwUGsbOGAfkysThYQZTPWzg@mail.gmail.com>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <CACRpkdYvMWABqw1tC5YSh+RXcHiCwUGsbOGAfkysThYQZTPWzg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
+On 10/22/24 2:55 PM, Linus Walleij wrote:
+> Hi Marek,
 
-On Tue, 15 Oct 2024 15:34:02 +0800, Richard Zhu wrote:
-> REF_EN (Bit6) of LFAST_IO_REG control i.MX95 PCIe REF clock out
-> enable/disable.
-> Add one clock gate for i.MX95 HSIO block to support PCIe REF clock
-> out gate.
+Hi,
+
+> thanks for your hard work on this!
 > 
-> v5 changes:
-> - Rebase to v6.12-rc3.
+> On Thu, Oct 17, 2024 at 11:13 PM Marek Vasut <marex@denx.de> wrote:
 > 
-> [...]
+>> The IOMUXC controller description is almost identical on i.MX35/5x/6 SoCs,
+>> except for the configuration bits which differ across SoCs. Rename the
+>> fsl,imx6ul-pinctrl.yaml to fsl,imx35-pinctrl.yaml, fill in compatible
+>> strings for the other SoCs and fill in the various bits into desciption.
+>> This way, i.MX35/5x/6 series SoCs can all be converted to DT schema.
+>> Remove the old text DT bindings description.
+>>
+>> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+>> Signed-off-by: Marek Vasut <marex@denx.de>
+> 
+> Is this v5 patch 1/12 something I can just apply to the pinctrl
+> tree or do you want it on some immutable branch or so to be able
+> to pull it into the SoC tree for dependencies?
+I do not have a preference, really. If Shawn maybe has one, then I will 
+defer to Shawn's preference.
 
-Applied, thanks!
-
-[1/2] dt-bindings: clock: nxp,imx95-blk-ctl: Add compatible string for i.MX95 HSIO BLK CTRL
-      commit: 731237359d83bfb4f27eea5b7a8935af5c72a5ac
-[2/2] clk: imx95-blk-ctl: Add one clock gate for HSIO block
-      commit: cf295252f0d88410d5793fa6db56a7192a65d66f
-
-Best regards,
--- 
-Abel Vesa <abel.vesa@linaro.org>
-
+I'm sorry I cannot be of more help.
