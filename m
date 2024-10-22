@@ -1,146 +1,235 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EAA5154C03;
-	Tue, 22 Oct 2024 08:15:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30167184540
+	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 08:29:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729584922; cv=none; b=KiP5/7mwX5sWCLU4MT3R+eVVW3Dom4IYiG3EsYR7QZKMie6Z3unijmZ2HbH5tpG/JlHYKLuokODl9NSk33dEd1vRc0ol8BJk7PHxQQ/NaLegBt0A3vm5j9+Ha0NEKilp/onXdoFzs2uXcRyA5Uhqnhk1Z2Jy84DL42GWQiihl94=
+	t=1729585770; cv=none; b=ZS+XATYs3/j7MdvYLmoizayZMyV3Ps546XrwjcHXVdzj9m6nAZyl/w5P0/k7YC8A4qo41sFwIjsAusb7ihGX8D8Wup1qs+JRjTVYK/gzlI7tmjrR2zB6jprnbQGcE6I9shyv18YDFpnwjfpvOnBwE+keXmeFHyhBLfdD31BeG9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729584922; c=relaxed/simple;
-	bh=ED+LZhJhE26ThOoJvug3eIlGNitTZP5Mq2j85RJfjA0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eRRP3RlGixPeXa1gCBxiNdj0qbKxfNOJlNPkf0dcjFqMIcFDRvmv9W5PPVTETFpPqCkqi0+e4uNaaiqKemjij5HXn81aE3Fur6nGVbapucu6oCBq+zpypAyo30Ea20CDHj3bQL7ibDp93kIL/deRMnvW0EBFASBMJ7fpLU8RiUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ka8qOXVc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729585770; c=relaxed/simple;
+	bh=91JYyvnl+Fdi6fkf5FSlb8LxDeQ2IrQc7l6lvJQCgto=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NyknxxS07s5CgSgM/p3dctIKB7C5SjRbVew4SNV5759tl5zfn/3cO/+cpvzU7nSpohe9QpDulUZpYaxv1kZX563x7khyiaWSQodShfE5xRrD1PCimIbKANuyBvXsbFs1GsKfiAo75gX7pj1O+yFljJXwKM+EoaZQh5bcP9MT5hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=c60IZTQ1; arc=none smtp.client-ip=209.85.128.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ka8qOXVc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37DE2C4CEC3;
-	Tue, 22 Oct 2024 08:15:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729584921;
-	bh=ED+LZhJhE26ThOoJvug3eIlGNitTZP5Mq2j85RJfjA0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ka8qOXVcbwuemlUXAnev4yBNY0NkM0WPW5XLI2Xv4xxSRjyH2PXtU1NX3OeQQ1DqR
-	 ctV44H/93iiU+iazoEDmIAcF5UZlUtyLumdw5/bvqk7vAAeb2umOphDF2hdmITv4ld
-	 5Iq6FRxkQjSZIt1WfCG9ItMlVz6K7gqcLxGb4rgwoDr2ASCacNwpF3uanbgPb5c8pY
-	 dmIJzrGspNAFodoW1mSkKN/8r2EBNy0dgzSPREN8z22O5DGrXCZIL8ZzrHbShW5Vpq
-	 lwbDuU/CqHqZGvzLufVCMgNNZyoGCyFecBoChO1JyWdy2dvwbzlFK+QBWnObrV4fjq
-	 6YfyORkX7yN9Q==
-Date: Tue, 22 Oct 2024 10:15:19 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, andrzej.hajda@intel.com, neil.armstrong@linaro.org, 
-	rfoss@kernel.org, Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, 
-	jernej.skrabec@gmail.com, airlied@gmail.com, simona@ffwll.ch, 
-	maarten.lankhorst@linux.intel.com, tzimmermann@suse.de, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, quic_jesszhan@quicinc.com, mchehab@kernel.org, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, catalin.marinas@arm.com, will@kernel.org, 
-	sakari.ailus@linux.intel.com, hverkuil@xs4all.nl, tomi.valkeinen@ideasonboard.com, 
-	quic_bjorande@quicinc.com, geert+renesas@glider.be, dmitry.baryshkov@linaro.org, 
-	arnd@arndb.de, nfraprado@collabora.com, thierry.reding@gmail.com, 
-	prabhakar.mahadev-lad.rj@bp.renesas.com, sam@ravnborg.org, marex@denx.de, biju.das.jz@bp.renesas.com
-Subject: Re: [PATCH v3 12/15] drm/bridge: Add ITE IT6263 LVDS to HDMI
- converter
-Message-ID: <20241022-amazing-fresh-agouti-fb6eda@houat>
-References: <20241021064446.263619-1-victor.liu@nxp.com>
- <20241021064446.263619-13-victor.liu@nxp.com>
- <20241021-thick-cockle-of-popularity-c5e28c@houat>
- <889594b9-e6cb-4d90-b959-cd0258b2f166@nxp.com>
- <20241022-wondrous-fractal-lion-aedcd9@houat>
- <7a83230b-292c-4e28-813d-a07ea1b6a66a@nxp.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="c60IZTQ1"
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-6db20e22c85so45920987b3.0
+        for <imx@lists.linux.dev>; Tue, 22 Oct 2024 01:29:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1729585767; x=1730190567; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kLQbdGQU/v5ri2hhQLOr8G4Wt+hC9tXpUHCmYp6zu9E=;
+        b=c60IZTQ1Xk7hjDTPGQ1W+3XdBHqFPJMIPE4ShVYaujLUxRsdwkRpycHO1o/mgmtmr7
+         lfOKVgwE6Rl5bKSj/DGQUS/EZ6N16xy1XLVOPulT4XM6xUlKWxgqHfCEWi/+77JQl6QK
+         /PGKfsjrzbwHvZf3bxZEAGcIy+CYJWTHaBSI8keLNC+pov9sIFPL43Qb6T+HhCe7+yl4
+         sAHxbg13qEN8S4mwoQ4sZForYJoEYn8ij+zToCZ82RmT+7XfCrQDCfl9NIVcMh4AWUS9
+         Ud6+XAh0ccNUtQapB6iisnHq2n/QzsO/W8GoydyygILPDdNof57ZVh2gyUR0Ym3FiB+1
+         m5qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729585767; x=1730190567;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kLQbdGQU/v5ri2hhQLOr8G4Wt+hC9tXpUHCmYp6zu9E=;
+        b=T5ipNHvyy6rIhZJ3/wRM8HeSkPUMVkXQgGZtHaHudUFtiykCg8YcuVAdya9DVl0GOG
+         2NvjWulhI8mgr+4lomVE7ShzxdxhgPzwg8Cu3xmc2gvBGSimx/R9ZnfBtVhTmkOM/jcV
+         3qDgRFsTPc6u0X6X54g6ofBItN+TmBiZEaQZrfa34L/T0w/dN3jDzbBqI/2k2c2FqlUG
+         4mQXF3X8bU08soySmA4/UYljC9bO9SLgy0ezH81awRWmQV7gX3hYkzKTqcyvaGhBv+zI
+         OIa1LrmH/xlHcaQkRHq6byNDoyurGfg3fMg+lC6HpJGXXyaXq811RFI4n0gZ+VECSaW9
+         Z3+A==
+X-Forwarded-Encrypted: i=1; AJvYcCVtgG7W0V1urtPXhV0p1v+iPpcjApAn7zjzDtpc9cny48nZ0bxYQ/+Br1VfHvoNoxdwMck=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzGWq0QKLTPDPSin88lB99mSa3njPPDs0XoQsg9Yhm/j8I0F2FU
+	PhvOR99eZJL0WPhbLknw4Oj6P+iGp+HvuTmxvsNir9MbfMST2CgHHJpBqyOonBEUbLdwmoJ1O1U
+	s7JQhOEfAVd4NTz92cK6n20hLHxJaqUO01cWlmw==
+X-Google-Smtp-Source: AGHT+IG9Q3YEuJr8VKnJyP4ALVy/0ok/SYBCMzoi2I9bl8cdDzUPuqepo05ucF6AILKeMjf8mXd/KxO/YrS7ZIa3T0w=
+X-Received: by 2002:a05:690c:4907:b0:6e5:de2d:39e0 with SMTP id
+ 00721157ae682-6e5de2d5659mr108655877b3.42.1729585767136; Tue, 22 Oct 2024
+ 01:29:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="u3pcdhq2tn2xfgvk"
-Content-Disposition: inline
-In-Reply-To: <7a83230b-292c-4e28-813d-a07ea1b6a66a@nxp.com>
-
-
---u3pcdhq2tn2xfgvk
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
+References: <20241014060130.1162629-1-haibo.chen@nxp.com> <20241014060130.1162629-3-haibo.chen@nxp.com>
+ <CAPDyKFr37wLYxdFJ-Lgbq7PbWyiQz+CuwMxwgeeP3QpMvdyjqg@mail.gmail.com>
+ <DU0PR04MB949604108991809742E83E5D90402@DU0PR04MB9496.eurprd04.prod.outlook.com>
+ <DU0PR04MB9496801A4571142F914BBF4990402@DU0PR04MB9496.eurprd04.prod.outlook.com>
+In-Reply-To: <DU0PR04MB9496801A4571142F914BBF4990402@DU0PR04MB9496.eurprd04.prod.outlook.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 22 Oct 2024 10:28:49 +0200
+Message-ID: <CAPDyKFpectKosHEU7cm7uNCNwHZaT0XCSn674dGtu8Y+hmf_Pw@mail.gmail.com>
+Subject: Re: [PATCH 2/4] mmc: host: sdhci-esdhc-imx: refactor the system PM logic
+To: Bough Chen <haibo.chen@nxp.com>
+Cc: "adrian.hunter@intel.com" <adrian.hunter@intel.com>, 
+	"linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"shawnguo@kernel.org" <shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
+	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, dl-S32 <S32@nxp.com>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v3 12/15] drm/bridge: Add ITE IT6263 LVDS to HDMI
- converter
-MIME-Version: 1.0
 
-On Tue, Oct 22, 2024 at 04:10:51PM +0800, Liu Ying wrote:
-> Hi Maxime,
->=20
-> On 10/22/2024, Maxime Ripard wrote:
-> > On Tue, Oct 22, 2024 at 03:36:47PM +0800, Liu Ying wrote:
-> >> Hi Maxime,
-> >>
-> >> On 10/21/2024, Maxime Ripard wrote:
-> >>> On Mon, Oct 21, 2024 at 02:44:43PM +0800, Liu Ying wrote:
-> >>>> +static int it6263_bridge_atomic_check(struct drm_bridge *bridge,
-> >>>> +				      struct drm_bridge_state *bridge_state,
-> >>>> +				      struct drm_crtc_state *crtc_state,
-> >>>> +				      struct drm_connector_state *conn_state)
-> >>>> +{
-> >>>> +	struct drm_display_mode *mode =3D &crtc_state->adjusted_mode;
-> >>>> +	int ret;
-> >>>> +
-> >>>> +	ret =3D drm_atomic_helper_connector_hdmi_check(conn_state->connect=
-or,
-> >>>> +						     conn_state->state);
-> >>>> +	if (ret)
-> >>>> +		return ret;
-> >>>> +
-> >>>> +	return mode->clock > MAX_PIXEL_CLOCK_KHZ ? -EINVAL : 0;
-> >>>
-> >>> drm_atomic_helper_connector_hdmi_check will already make that check, =
-so
-> >>> it's redundant.
-> >>
-> >> MAX_PIXEL_CLOCK_KHZ is 150MHz. With 150MHz pixel clock rate, we'll get
-> >> 150MHz HDMI character rate for 8bpc and 187.5MHz HDMI character rate
-> >> for 10bpc, both are lower than MAX_HDMI_TMDS_CHAR_RATE_HZ =3D 225MHz.
-> >=20
-> > I guess? I have no idea how that's relevant though. Where are those
-> > constraints coming from, and why aren't you checking for them in
-> > tmds_char_rate_valid?
->=20
-> All constraints come from IT6263 data sheet. They are also mentioned
-> in IT6263 product link(commit message contains the link).
->=20
-> https://www.ite.com.tw/en/product/cate1/IT6263
->=20
-> "
-> LVDS RX
-> Support input clock rate up to 150 MHz
->=20
-> HDMI TX
-> Support link speeds of up to 2.25 Gbps (link clock rate of 225 MHz)=20
-> "
->=20
-> If no objection, I'll check mode clock rate against
-> MAX_PIXEL_CLOCK_KHZ in tmds_char_rate_valid.
+On Fri, 18 Oct 2024 at 05:20, Bough Chen <haibo.chen@nxp.com> wrote:
+>
+> > -----Original Message-----
+> > From: Bough Chen
+> > Sent: 2024=E5=B9=B410=E6=9C=8818=E6=97=A5 9:23
+> > To: Ulf Hansson <ulf.hansson@linaro.org>
+> > Cc: adrian.hunter@intel.com; linux-mmc@vger.kernel.org; imx@lists.linux=
+.dev;
+> > shawnguo@kernel.org; s.hauer@pengutronix.de; kernel@pengutronix.de;
+> > festevam@gmail.com; dl-S32 <S32@nxp.com>;
+> > linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org
+> > Subject: RE: [PATCH 2/4] mmc: host: sdhci-esdhc-imx: refactor the syste=
+m PM
+> > logic
+> >
+> > > -----Original Message-----
+> > > From: Ulf Hansson <ulf.hansson@linaro.org>
+> > > Sent: 2024=E5=B9=B410=E6=9C=8817=E6=97=A5 21:07
+> > > To: Bough Chen <haibo.chen@nxp.com>
+> > > Cc: adrian.hunter@intel.com; linux-mmc@vger.kernel.org;
+> > > imx@lists.linux.dev; shawnguo@kernel.org; s.hauer@pengutronix.de;
+> > > kernel@pengutronix.de; festevam@gmail.com; dl-S32 <S32@nxp.com>;
+> > > linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org
+> > > Subject: Re: [PATCH 2/4] mmc: host: sdhci-esdhc-imx: refactor the
+> > > system PM logic
+> > >
+> > > On Mon, 14 Oct 2024 at 08:00, <haibo.chen@nxp.com> wrote:
+> > > >
+> > > > From: Haibo Chen <haibo.chen@nxp.com>
+> > > >
+> > > > Current suspend/resume logic has one issue. in suspend, will config
+> > > > register when call sdhci_suspend_host(), but at this time, can't
+> > > > guarantee host in runtime resume state. if not, the per clock is
+> > > > gate off, access register will hung.
+> > > >
+> > > > Now use pm_runtime_force_suspend/resume() in
+> > NOIRQ_SYSTEM_SLEEP_PM,
+> > > > add in NOIRQ stage can cover SDIO wakeup feature, because in
+> > > > interrupt handler, there is register access, need the per clock on.
+> > > >
+> > > > In sdhci_esdhc_suspend/sdhci_esdhc_resume, remove
+> > > > sdhci_suspend_host() and sdhci_resume_host(), all are handled in
+> > > > runtime PM callbacks except the wakeup irq setting.
+> > > >
+> > > > Remove pinctrl_pm_select_default_state() in sdhci_esdhc_resume,
+> > > > because
+> > > > pm_runtime_force_resume() already config the pinctrl state accordin=
+g
+> > > > to ios timing, and here config the default pinctrl state again is
+> > > > wrong for
+> > > > SDIO3.0 device if it keep power in suspend.
+> > >
+> > > I had a look at the code - and yes, there are certainly several
+> > > problems with PM support in this driver.
+> > >
+> > > >
+> > > > Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> > > > ---
+> > > >  drivers/mmc/host/sdhci-esdhc-imx.c | 39
+> > > > +++++++++++++++---------------
+> > > >  1 file changed, 19 insertions(+), 20 deletions(-)
+> > > >
+> > > > diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c
+> > > > b/drivers/mmc/host/sdhci-esdhc-imx.c
+> > > > index c7582ad45123..18febfeb60cf 100644
+> > > > --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> > > > +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> > > > @@ -1871,11 +1871,13 @@ static int sdhci_esdhc_suspend(struct devic=
+e
+> > > *dev)
+> > > >         struct pltfm_imx_data *imx_data =3D sdhci_pltfm_priv(pltfm_=
+host);
+> > > >         int ret;
+> > > >
+> > > > -       if (host->mmc->caps2 & MMC_CAP2_CQE) {
+> > > > -               ret =3D cqhci_suspend(host->mmc);
+> > > > -               if (ret)
+> > > > -                       return ret;
+> > > > -       }
+> > > > +       /*
+> > > > +        * Switch to runtime resume for two reasons:
+> > > > +        * 1, there is register access, so need to make sure gate o=
+n ipg
+> > clock.
+> > >
+> > > You are right that we need to call pm_runtime_get_sync() for this rea=
+son.
+> > >
+> > > However, the real question is rather; Under what circumstances do we
+> > > really need to make a register access beyond this point?
+> > >
+> > > If the device is already runtime suspended, I am sure we could just
+> > > leave it in that state without having to touch any of its registers.
+> > >
+> > > As I understand it, there are mainly two reasons why the device may b=
+e
+> > > runtime resumed at this point:
+> > > *) The runtime PM usage count has been bumped in
+> > > sdhci_enable_sdio_irq(), since the SDIO irqs are enabled and it's
+> > > likely that we will configure them for system wakeup too.
+> > > *) The device has been used, but nothing really prevents it from bein=
+g
+> > > put into a low power state via the ->runtime_suspend() callback.
+> > >
+> > > > +        * 2, make sure the pm_runtime_force_suspend() in NOIRQ
+> > > > + stage
+> > > really
+> > > > +        *    invoke its ->runtime_suspend callback.
+> > > > +        */
+> > >
+> > > Rather than using the *noirq-callbacks, we should be able to call
+> > > pm_runtime_force_suspend() from sdhci_esdhc_suspend(). And vice versa
+> > > for sdhci_esdhc_resume().
+> > >
+> > > Although, according to my earlier comment above, we also need to take
+> > > into account the SDIO irq. If it's being enabled for system wakeup, w=
+e
+> > > must not put the controller into low power mode by calling
+> > > pm_runtime_force_suspend(), otherwise we will not be able to deliver =
+the
+> > wakeup, right?
+> >
+> > Thanks for your careful review!
+> > Yes, I agree.
+>
+> Hi Ulf,
+>
+> Sorry, I maybe give the wrong answer.
+>
+> I double check the IP, usdhc can support sdio irq wakeup even when usdhc =
+clock gate off.
 
-If you don't support bpc other than 8, and no other format than RGB,
-then it's a good enough approximation.
+Okay, so there is some out-band logic that can manage the SDIO irq,
+even when the controller has been runtime suspended?
 
-It should be documented though
+In these cases, we use dev_pm_set_dedicated_wake_irq* to manage that
+wake-irq. There are other mmc host drivers that implement support for
+this too.
 
-Maxime
+If you are referring to solely clock gating, that is not going to
+work. A runtime suspended controller is not supposed to deliver
+in-band irqs.
 
---u3pcdhq2tn2xfgvk
-Content-Type: application/pgp-signature; name="signature.asc"
+> So to save power, need to call pm_runtime_force_suspend() to gate off the=
+ clock when enable sdio irq for system wakeup.
+> This is the main reason I involve pm_runtime_force_suspend in noirq stage=
+, because in sdhci_irq, there is register access, need gate on clock.
 
------BEGIN PGP SIGNATURE-----
+In summary, to support the out-band irq as a wakeup for runtime and
+system suspend, dev_pm_set_dedicated_wake_irq* should be used.
 
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZxdfFgAKCRAnX84Zoj2+
-dkBpAYCTeWy3zA6iD+/mbISTuTA/oxVJr3H30Y/l4YAaYrxfiRnjSilMM+ckG3ph
-I3wUIxkBgO6JaDPbvX/C2fiSO1tM2GF/EadgjnJcVNSM3abhxJrUp3a2Z7LivwPC
-xgrGePQkkQ==
-=x6hs
------END PGP SIGNATURE-----
+To move things forward, I suggest you start simple and add support for
+the out-band irq as a step on top.
 
---u3pcdhq2tn2xfgvk--
+[...]
+
+Kind regards
+Uffe
