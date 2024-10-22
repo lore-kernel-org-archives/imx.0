@@ -1,74 +1,81 @@
-Received: from IND01-BMX-obe.outbound.protection.outlook.com (mail-bmxind01on2106.outbound.protection.outlook.com [40.107.239.106])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2084.outbound.protection.outlook.com [40.107.22.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80ECD1553A7
-	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 08:08:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.239.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881C317758
+	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 08:10:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.84
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729584504; cv=fail; b=oP7EQg6CXl1tKZGWVQxnIRaOb6OZz0WfdY9B3zjGMtTcvpTm/UbFHq76hDsn9bG37gUnfbYLeoappCYztfnwOlrkFAmM9MtfOqS8sM6RxBT8W86hJS94b0fG3tY6r5aTgaWs8QGIEbqak3fFaFxJtYWNaFqikJkR9zKS1J4xEzw=
+	t=1729584634; cv=fail; b=lxj+bWyNl/S177/KFySGlJVXYaZnZWJ6v5nriDfSbjFi/nl9bOBPBeHDfIJXbe8bW5rLh+UcR5Ao99VYJsPMW8Xu2+Ml/Na+v6zT+AGXIIopDjypEAHI5jI0cpQdP3+hprbJJtaHqYjIe58KSp2EPTazPaIaDaCy3azEsKe5Sak=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729584504; c=relaxed/simple;
-	bh=hxgQYmbct9VIie4uX0UNizAVai9CVIVjYnoSfNSasJU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BkJbI1znzmwn4oK5TtQElGsu3gohWCM7HQy1ohyx211JXyY46e/zSS9EaQLZJ5TgsqHiW3FTbUTPPyCo0MjhY76CftcWGU0SKJLPGB8frG7mYcrkciG+I+RDJPbR4ZFPLq5h8LcrbJBrDuQyaOG5u0Prl4Fxj649ThAFEFhYBqA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io; spf=pass smtp.mailfrom=siliconsignals.io; arc=fail smtp.client-ip=40.107.239.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siliconsignals.io
+	s=arc-20240116; t=1729584634; c=relaxed/simple;
+	bh=hoRmFJkZBP253y3ZxpmXM2ajWakTiIUz/dsJn3sw4kM=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=d7xCMeZoqr3faUotNaw4vZ4xujlMwNo70+OT+rvlbcbIHEZyDGp6L8DMRpMI2rhSi4PYrorQvlQVC8xbL2ZYP5wo9RmagP1d8uaP9a/L4l29MO2dYC9MEORNX7v1BjXXhq+LBJAyjhImQYlRiRwSOBLHeRoAR3oVP2xj+RLEP6g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XXs1UNiY; arc=fail smtp.client-ip=40.107.22.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XXs1UNiY"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IYyPIOcp1pWgV6th6OZFk0gToa49bM9qUQPfJA3OauWr18PdIXVoXnQAa1JNLLXZYYMmFxjFrrfLzZaPZugmjLcQpQT2wGbDlAEegdsAxgTCnzpFBFtabCzClD7neZAUqLJXPcvl4PLLb4gz76aC2Inf0x2Mx5wbcKdw9Wi2VFL5TeGG+j4NBPBsz4mV/ocibMhINJkDFHb3lDQRkXPYZydgjAaB45wtjsL0rWb92GX7ayGaiwF4YH61mw3rSLgJHZYcT5l/XvaErNdbBns21MXitScNK/YoweH0tYbtxmhM+OZOjYUaX3Hr7DVqu1KuCqPEHU276DOkTqT2j+xH9A==
+ b=yevszvDNeVJX4Hfhz421oKIYte8X7bGKqs0yydEyALo/Mwzd6RvOJM92CdChbHEAffgoJXilc7ZqhsOjVLTTyyXlbiT4pqk9jB/dcJca4J64uohe6+NqLX2LOjPG5hChbNqMwMhFUmVDoTpVrmiJrDm0Y4RYRCSr2rdLsGgh10uturAfWPBaIllQKn9fAHwQ6y0dSFcPRBE4GJOgrBULPwHgHBHN5wtcJR/1QyUH0JzXBkLwiSZmx07chaM8k9+W2AWNZtipt+SvLrYnCUDivHaWh2EETojnJqX10y8e3igA1s8K194sc7ELAcY1sZLQ1kaP+ahsNlJnGgO83Ltmyg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AM1BoDjmsWGc4WBW0tB7Ca7BeMUgyxMXJ+BSl3v32UU=;
- b=nnzpjHx/0dG9FjhadZL+LyQSYUB9XvwN8sTgNlCbueK4M2Z/aPSJNNGDUkE0uDns1Xi7j98dujC+UT1tLJw/MABl40h5OAZ5xaLOGYWi197ltHXkuomw78Q4PDS4lKwWud/+a3hYu/3w2ZRe0B86inszh8aXI9m0ZESQr/bS5RW4kyw8esS0VxhjijRf6H83S1tI3zi9U/QuK6W15eAYvLsT9v46+1RTty7JXLxazHbMLrT6I+kAIGUPy81rVrTS76oWydQY4+bV38QJGg/p2mNdy9CBQlB99c89KMIH1DqQgUHeZwtc2gdUgLh8IXJ8nsodXjy95oj+P4374kGewQ==
+ bh=mBT7Yawja4t5KOzpO1HC8aPsQiOUdr1KXHnLoYiFhXE=;
+ b=u+qwQiAWFtNfVNmZfyrIOqsBPxOIsM9a5bYrAsa+Ha9nUkW7RISGEYtDtjhy0JvZKpKhaDkv+uTUbEvgm8+0ZduOuDU4TOUgtMfxxveujtATcPtgU8W3uEJ9rIZFSWii5mSV/2GIPkwbu/W+9NsViAMoeQsBQs4st76dFumOzGrrv/HfwonKJ6QlHcUl4EuGUH9ssfefx3bY9p2dCbnkVHgPgvRoh2kr+8qJsZiwWmfI4iWTklV+61YDgSoc0Udzbu3CxTnH04OqNys3RrArjuwCCnc9J4PwTeNJHaFdPAH+j47t0d18nccYwnfqnlE1SlWIdeMPfZ6GHhpbVcoi3Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=siliconsignals.io; dmarc=pass action=none
- header.from=siliconsignals.io; dkim=pass header.d=siliconsignals.io; arc=none
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mBT7Yawja4t5KOzpO1HC8aPsQiOUdr1KXHnLoYiFhXE=;
+ b=XXs1UNiYivtUZokx6nU3Y7inI9/D6vksx0WD24g4oFGZiacL7OaLhzUqgkxWaI8XVrR75WOkR5d6AdpwOmpZNIYMZIeynn9VP9sLs8rQ+zyoUhFdgAIsAp28ijmeaDGK/uVQld3nsz/XVMdwcPbcm6gia2LvN787Mk/lHHIlrwUDZioNhW1g7S8quz0JwcldqtI6+B3h04dQhKYrg2bC63dcTy2HooSmWKJiQL6sbXkEVt4/eySBMCMw4qbdewYuq7wVKvBaBjEhwZIJmLR9Ns97uP9f73CQjTth6VqiTgaxSyewVEp1eil59iXNZZ0xlMG0DcJx2ebSI+Q32fOvfQ==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=siliconsignals.io;
-Received: from PN3P287MB1171.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:1a1::5)
- by PN2P287MB0824.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:136::13) with
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by AS5PR04MB10020.eurprd04.prod.outlook.com (2603:10a6:20b:682::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.23; Tue, 22 Oct
- 2024 08:08:18 +0000
-Received: from PN3P287MB1171.INDP287.PROD.OUTLOOK.COM
- ([fe80::12a8:c951:3e4b:5a8a]) by PN3P287MB1171.INDP287.PROD.OUTLOOK.COM
- ([fe80::12a8:c951:3e4b:5a8a%4]) with mapi id 15.20.8069.027; Tue, 22 Oct 2024
- 08:08:17 +0000
-From: Bhavin Sharma <bhavin.sharma@siliconsignals.io>
-To: shawnguo@kernel.org
-Cc: Bhavin Sharma <bhavin.sharma@siliconsignals.io>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Hiago De Franco <hiago.franco@toradex.com>,
-	Michael Walle <mwalle@kernel.org>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Mathieu Othacehe <m.othacehe@gmail.com>,
-	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
-	Max Merchel <Max.Merchel@ew.tq-group.com>,
-	Tim Harvey <tharvey@gateworks.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2 2/2] arm64: dts: imx8mp: Add Boundary Device Nitrogen8MP Universal SMARC Carrier Board
-Date: Tue, 22 Oct 2024 13:36:14 +0530
-Message-ID: <20241022080645.39536-3-bhavin.sharma@siliconsignals.io>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241022080645.39536-1-bhavin.sharma@siliconsignals.io>
-References: <20241022080645.39536-1-bhavin.sharma@siliconsignals.io>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: PN3PR01CA0192.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:be::16) To PN3P287MB1171.INDP287.PROD.OUTLOOK.COM
- (2603:1096:c01:1a1::5)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.28; Tue, 22 Oct
+ 2024 08:10:28 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90%4]) with mapi id 15.20.8069.027; Tue, 22 Oct 2024
+ 08:10:28 +0000
+Message-ID: <7a83230b-292c-4e28-813d-a07ea1b6a66a@nxp.com>
+Date: Tue, 22 Oct 2024 16:10:51 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 12/15] drm/bridge: Add ITE IT6263 LVDS to HDMI
+ converter
+To: Maxime Ripard <mripard@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
+ Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+ jernej.skrabec@gmail.com, airlied@gmail.com, simona@ffwll.ch,
+ maarten.lankhorst@linux.intel.com, tzimmermann@suse.de, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, quic_jesszhan@quicinc.com,
+ mchehab@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, catalin.marinas@arm.com,
+ will@kernel.org, sakari.ailus@linux.intel.com, hverkuil@xs4all.nl,
+ tomi.valkeinen@ideasonboard.com, quic_bjorande@quicinc.com,
+ geert+renesas@glider.be, dmitry.baryshkov@linaro.org, arnd@arndb.de,
+ nfraprado@collabora.com, thierry.reding@gmail.com,
+ prabhakar.mahadev-lad.rj@bp.renesas.com, sam@ravnborg.org, marex@denx.de,
+ biju.das.jz@bp.renesas.com
+References: <20241021064446.263619-1-victor.liu@nxp.com>
+ <20241021064446.263619-13-victor.liu@nxp.com>
+ <20241021-thick-cockle-of-popularity-c5e28c@houat>
+ <889594b9-e6cb-4d90-b959-cd0258b2f166@nxp.com>
+ <20241022-wondrous-fractal-lion-aedcd9@houat>
+From: Liu Ying <victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <20241022-wondrous-fractal-lion-aedcd9@houat>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SI2P153CA0026.APCP153.PROD.OUTLOOK.COM
+ (2603:1096:4:190::18) To AM7PR04MB7046.eurprd04.prod.outlook.com
+ (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -76,474 +83,160 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PN3P287MB1171:EE_|PN2P287MB0824:EE_
-X-MS-Office365-Filtering-Correlation-Id: 26683fa4-9e6a-4780-062b-08dcf270afa5
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|AS5PR04MB10020:EE_
+X-MS-Office365-Filtering-Correlation-Id: 554f082c-6558-4521-f682-08dcf270fd85
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|7416014|366016|1800799024|38350700014;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|366016|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?zn9rSyLM2UAQtk2OaRYHKO/vNjn+Q9cGWIyBU6kLnpzp81iOkpC/5iZIKy8q?=
- =?us-ascii?Q?3uzKDnlyZoPp+KS12VktfaY0ZTT+zMQgXGIBhOzhIvLvKcN4KJ52XrH9ITN2?=
- =?us-ascii?Q?NzoAaIilI4+4ZCT/MuYjAkQcTHAVz1+d09tbY2prlpbXVFIifro3kW9A1ZTB?=
- =?us-ascii?Q?RkXe+DNFEmjAOuWf/zaG4kUkxX0+XsnzZTNVHmyiYWM6e4uNYlzpj+0n9CFH?=
- =?us-ascii?Q?B7zaXMp0sWS6AR6TUbJCtUc1Ujcc+XLZ3RTtcmswygtgyX48Ht0bJxJlaBQy?=
- =?us-ascii?Q?QxttMfxAYznaNB20iatbrqDggBSvsxo6SDcX3gVuJ43k4qj9miIRtBmKEWs5?=
- =?us-ascii?Q?oXmo5D0VD2zCwovZouoysvJE5z/Ejha2g7FJ2st2fDFOuAZreL9P/ao87WXT?=
- =?us-ascii?Q?YoK/V/pLSnz0wT3ZQLcHqhPw+qmEQhwJWfDZzjrQTJeKxH6RzCJc8tFS6ZWv?=
- =?us-ascii?Q?nQztwwPlubjEkA/KHQyOSSQHZ5HycIg6dsATrjdRC8UzFYMhEictk4gsP2jH?=
- =?us-ascii?Q?qzI/HjHNoeOQ+dy3vKEEiKtQgorVDoAgdg3LClxz5iT3dJ+lV5nXfaYKA/Q/?=
- =?us-ascii?Q?y6xzEiMZjIUTzszK7oe5MSb8DMNwE+VihEdaJ3G04XS979P7743SKA/SnsTP?=
- =?us-ascii?Q?Hf9L5zLPfDR76x91rKh7a0FvTJi1Ahj9gsB32thH+kWnwiyWGswvAeoJkiE3?=
- =?us-ascii?Q?8mTj1xwiUXy88tkJnJ7WqrC5r7xh1dFirWGDmELmuGUNs6r82XDXEeThlSZF?=
- =?us-ascii?Q?uuuM0InjKjcfdUWFXlb+nhrmPNiGu2oRUFycEL5YUk6qaD3XJ0hN0pIHKjYb?=
- =?us-ascii?Q?/XnRr9TBqd8qzTbgtNxcvAmjKmzC3A5MwYLw17nv5hAa4qcJPdVxArhhpZ79?=
- =?us-ascii?Q?Y+3OLrtUVUlVRNGuJtVsRvbdKPAmOOePutygF9wz6TfSv/V6IW15JxwvV4mZ?=
- =?us-ascii?Q?y4U+x5rT3zpSD3MYxY6L2HWoOii/dYXN8QmGlJAzYzsUvQE8Zy+nu/MKH9DS?=
- =?us-ascii?Q?BS0Dg2nMLoSPakHYCNa4mYWhUe9ZhjSJdr8Uy3+UHn9c7qDDsU7LdrPL3TYs?=
- =?us-ascii?Q?VZL/91CnUxtxwPnIjXS9sg9DqL1hKHDDyHPUsCeVxVmPFxFm85tLHKmNt6g0?=
- =?us-ascii?Q?q8c8LD1GKn8y18YjnzqQSctWSe09mEshalNJcxWcSlo1/cqkXxY8Ao6tb82t?=
- =?us-ascii?Q?XKx42Q24vF5+QLY5nUlpz3bzzDdm4jmj32Ndm57PDCh/T4qeQxr7JQxlUIaj?=
- =?us-ascii?Q?Ju0312dTiiikQS+WhbqraL2BTthttv7NBnwgObnSXibL76vNNyXRxxJwzNgw?=
- =?us-ascii?Q?3LHwQLt+akEHJDNL3shFsbrEzzhslwjapTGcdwphs20qasYhGcmJv5F6D2t4?=
- =?us-ascii?Q?aOu4J9c=3D?=
+ =?utf-8?B?cnZqTGR3Q3dkRE1qaWVzNEovTVozRUcwaUZLSkF0UVZhemZSb1o4elRPQ0F1?=
+ =?utf-8?B?TkRVN0d6TnNiMTc5OEFoa2JZOEVBbjdJeTNabUVwdGFqYnp6ZWlZekl2bWV0?=
+ =?utf-8?B?c0xPa255WVZXYTVJZnJBS20zbDNMVE1TZkNnUUpSWU5La0p4dlZicnlnM29F?=
+ =?utf-8?B?KzRlb3R6aE11OEZyZjRaY3E3WHJYdnVQaWtGb2hIanhWWUVFQjZ3eXdHdDNV?=
+ =?utf-8?B?aU9uT1Q4MmtBbDJ1ZjQxT051eHJidTIyUDhVM0Z2ejErZkhmM1Z2MnJaMmto?=
+ =?utf-8?B?S1RuQUE4a0RWSUlXZHMvK1VDNmEvM2pzcFRJazJtVVpMMVI0SXZaNytMb1dZ?=
+ =?utf-8?B?MW5nRHlyNnEwV1RQU2NEaFRzWndSZHcxQlRrWEZ1bDlZZWRkNS9IUERCUU5G?=
+ =?utf-8?B?b1hrMHMwanpFTG1CVFJua1d2SCtPTXozL2pTcFBrVVVlejlmSmgvQlNyaVV5?=
+ =?utf-8?B?b1QwMDBib0dDeU8yR2JGL1lmNENmQVhtODk4Q3dPWkkrZkREbHRRcU1tNG5M?=
+ =?utf-8?B?QmpPc1ZFbGpSU1RqVXhqVElKKzhRRWZFajVBVGQ3RE00QUFFUmNpWVhkLzcx?=
+ =?utf-8?B?dmZMM0JxTjVnNjViN2N2ckQweGpRSy94cml3UDY1ZEE0N2diNmcvaDBya05B?=
+ =?utf-8?B?UHVlM1FPSmFmVmJzMmhsaFFhRThXUU5YcmVWMlcyaUl4bTlMdTVLM2JhVnJ0?=
+ =?utf-8?B?Y2sxTVkwY3hYTW5DUko0WWhZaENGYS8ycEFHZ2U1UVBEY1NLeEdQblpudW9V?=
+ =?utf-8?B?MUs5MHVUMTZ2Q3NRT0lCMU93Y0t5cDBNR1dNWldUd3dETmpLS0hIcEhrUWJK?=
+ =?utf-8?B?VG40bXdSbTA4NVdkc0d6TzA1UldISFVsaHFrMkdBY0NsdXo3azdCSUJoTVlD?=
+ =?utf-8?B?djUrclMxTlVrL05sSjVNalpjZU1xYXNIbCtHQVpGRHF3WXdPaTZhRXI3Y0E5?=
+ =?utf-8?B?enVLWnY3Q3JjeXJtU0FnbVgxTFBTQnl1Qmd0RWgxbG0xcHhaN0ZQaVlqRW5F?=
+ =?utf-8?B?aVd0VkJaVkpBdGNQaFBvU052UE13OTFzVjMyWXlSRmlCMFIvTlQ0SVlnR2ht?=
+ =?utf-8?B?akxoSjBvWHBWN3lGYmVINXExWjlpdC9UbTZJZE1zNWhTRUlBZkgxQXJVRDk3?=
+ =?utf-8?B?Rk1CczdPem9CUmN5V2Y2VTdKZVcyM0dmRzVES2FDd3JPRnJhdGNvRlczRTN5?=
+ =?utf-8?B?a0h6UUM1N05hVXd0dkNzS3B2MnNFLzhjaVk3MzVabUFPeTVkSTJ4WmMvcTh6?=
+ =?utf-8?B?RnpXeXNQRTAyTXhoY1JxTnFWU3pSc0oyMWU3d0ZhK0RBbDBuak1RY1hiMURJ?=
+ =?utf-8?B?ZDJIR3VzYU9pRmF6VkV5Qm85QVJzOVM0MmxXbGg2SHJwK0ZqQWZXc1RKTzJh?=
+ =?utf-8?B?RjhZRlY1V1J2WDRQNFZ4MHd0bnBmNDdwc0lMYUR5enJYU09oSGdYVmJqZUhp?=
+ =?utf-8?B?SVZUUW5yK3l4MGxXVEdJYUg2dE1mbjVjNHI3aE9yWlFKVHVIUXJXTFhsM1dz?=
+ =?utf-8?B?eTBDSytoOWl3WmpyejZSa1NIZm1Hc0lSMkMwVnQyZEJKRmEwSDd2Nm9YQWRk?=
+ =?utf-8?B?b1g3ME9xSDhwaUYwZlRMSDVFNHVSN0c1TlEwVVRTemlMck1EdTh4TUJPb3VJ?=
+ =?utf-8?B?SlFCcmFkZ3V3RksvRzFlWmQrM3NxbStHWE9pTWwwSFowSjdUQk00L0RhRXZl?=
+ =?utf-8?B?WCtRSDJlbEZkQzNRZGp5andGeDhZdzFSdFJvL0JreGVZcWxrVG4rQ0Myb2ZK?=
+ =?utf-8?Q?i2tIkvssAjEKfB5l0zSWGTqWrXqq6pHb7EYAEVW?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PN3P287MB1171.INDP287.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1102;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?hIPqrTPrC0S8xJS+JoIU1Sg1ib91Q8apqYkBNrW5hRfeVXVAewprNgp90wvr?=
- =?us-ascii?Q?MA57BHCin0KFy48bUim6LYRpypjzgwwowxdckZitP4I5u7K/GYZyDIyARdDD?=
- =?us-ascii?Q?qnbOV07ag/BdHrs3u25TexCbponrhdsO4LvKXgMuqGsJ5MMR21GDbTCOxE8r?=
- =?us-ascii?Q?ALXyQGXdmTmwHcyrgRYeRZwGhw+nKIjIDu7fzc7uQpGgkvG0lxz/zhEsugNM?=
- =?us-ascii?Q?eP4n9Y03gJYctCu/2j0Q1vUOOSol2a0qVe3FSx5H6gT6LaigKKS8mC0BeBZc?=
- =?us-ascii?Q?hZRZ0zLyMLG66XBeN0lWqavdYlIrk5muUDSXoTm3Ym/qsBd5m3y6aTdlgurl?=
- =?us-ascii?Q?P7kp3+8TRRSmWtrFB3BggPX5lk3t02aJZGamt1HbAIhTyaECBIm1tz6XfwW/?=
- =?us-ascii?Q?NkaZqeXz+xMxHwIJtrm2WfgtW+yRaPMhJwPk49Dod7Asnli0dCRSySNKBknA?=
- =?us-ascii?Q?kv2/vmstsz4K8A3xMf6TgJZh45I36QU3Wu4dZnXgbcwvloyV+Bg380U2lEXH?=
- =?us-ascii?Q?2P09KCdPoXoiKv1MdvXKrTt6r/LT36c2WiO/oSLwp1T1U/PcnPe5RVIqbd0x?=
- =?us-ascii?Q?dQEWX5uduJWX8bZEfj8YzGHuqqAQgl7YdCrRz189YV3W8ci60nbnZidp4SA7?=
- =?us-ascii?Q?TD1kUlYy9gjYSXCJLe8CUCS+zjeTCLmZUrVVudLIVWdc2aW+Plc5qQtRvr60?=
- =?us-ascii?Q?pmU3qKnJiKYSVzVqwz1aXFFL5ZJoJYfdA5ipdc+60yZaXdy/hACBNfxOhyeE?=
- =?us-ascii?Q?0yc3gFikca2lfv2vUoyc+QmYhL5GbAXqICFhuqoGhumYYkkxj2BOQmSHwrMI?=
- =?us-ascii?Q?buRBGk7YT4Qeu31vVgFDvIB7G9H1X5MpXWGks530uYeXda/caq2IEYQmfXML?=
- =?us-ascii?Q?A0XC7MetUrNruF8pcMYq7+KyBWywcia0RuYZMV6nG5l7x9AapDKVVhRTpBr7?=
- =?us-ascii?Q?26NZlCaqCugMWmPtLIa9x6dWr6KF6UCtP5DevR1dEoZpHUjM8vzAlXT5QbkL?=
- =?us-ascii?Q?ap+/SmKwULw43jEvL6IcZwwM2v5Ev9adjQ/w0c/D95m1z/d2AF6Oc+xVaOGl?=
- =?us-ascii?Q?ahhqiOpW/XBchRTchSH09Nuh7XmcqJm2Sw2fi0SnPzWY5OSFJ8NldyPGJZv2?=
- =?us-ascii?Q?1QB3ms0+UcJxXS/E2rlu61b1VY2JVCBP6qhXIYfDhtL5iBzY6Bmpq5369DH3?=
- =?us-ascii?Q?xfGOWpYErkRuUugpOi4bS5gvQwzQInYGgUeuQCMLlvoAjsbHNCKDbtXrU8Yy?=
- =?us-ascii?Q?AgdQTNbYkJHnh5vb7xo8x2s/U7J4qohBrwjIb7Ex0qYAAuByhN5uf5E/Xq6z?=
- =?us-ascii?Q?v2GBJhg4a+KD7LZQ6q2asqPR6YvjcZp30AzrPJ0t2SAd8OfTq/wEF6SyQzgB?=
- =?us-ascii?Q?u5LhEIfCG4gtlHoLvPgAZhRdFbdGKZdN7+DDmpbUiqlNP6+uwlhlh12yGxBH?=
- =?us-ascii?Q?/uCMnA35rJzNyZvWanuBkdpw69prQG12QechnWY+Kdfet82epawz9bXavmRl?=
- =?us-ascii?Q?DD8WdYSVJiQLtVAKxqOqKdiPOYi9nnzOQSUF34TEjnJkeYKF8+CAqH317ODU?=
- =?us-ascii?Q?TDWzWjY3qko2+/mzQx5W2zt2XJ7tqeguqX7YsFQCDYfKciW+PakQLYrFWA0L?=
- =?us-ascii?Q?sLDrYT3zOK159B3Zkih8UXU=3D?=
-X-OriginatorOrg: siliconsignals.io
-X-MS-Exchange-CrossTenant-Network-Message-Id: 26683fa4-9e6a-4780-062b-08dcf270afa5
-X-MS-Exchange-CrossTenant-AuthSource: PN3P287MB1171.INDP287.PROD.OUTLOOK.COM
+ =?utf-8?B?UzJRZ3NMNDBrWEo2blNEcm5DelFVQ1JUdGRWM2NpLzFXVDJvSVQ2M3JkUnBx?=
+ =?utf-8?B?cjFZRVFjQVlzZzd4WmJiS2Nvald1QmJtYWNacm55MkZJMmhZelBocnpCd1h0?=
+ =?utf-8?B?NnFORXVYNFl4dDBvWUIwZFdBQy8ydGdIbGlMM1Y2ZXJrZHo5VzRLemNiKy94?=
+ =?utf-8?B?TlFPVGhTUmlTM1pQYU9HMlpSWEdJN1FFQ1A4WVJ5TDBWM1hCV3hnaTVIZzRV?=
+ =?utf-8?B?UzFyM1VTSXNTb1RDMkFnMUZsZGg0SFdaem1Wc2JaSFBPSitKUHpocmxBVTBR?=
+ =?utf-8?B?MVJjc0pLaDFqSnZ1aFB4UkpCb0RmbFBkK0QxMGdHNWhUbjlvSlNKVkNFekUv?=
+ =?utf-8?B?aXFwd2RQd1NSOHlmVTRFRXNlbFpaa0U0Q2ZJTU9hc3VndkJXdFBtMVVMMmR3?=
+ =?utf-8?B?Tk5XRzh6U2dJdzBmL081U24vZFhFWXpoalN3ZU9ucDArekI1MytjdWFzQUVL?=
+ =?utf-8?B?c2xxcVpzRmJOMm4vVjVHOXowZ0pvbk9La1JqanlqSEQya3Rxb0tVRG9FUUNn?=
+ =?utf-8?B?WmdDUEk0UkUrY1FFTVByd0xYTjdUZml6N3R3WVBUanhNODlBcUovU2ZVTGNH?=
+ =?utf-8?B?dGl1NGplVGdMaHVMVEc2RThQNzZGQ3BvdU1QRzZHVWp2OXlWUEhDVU1iYzV0?=
+ =?utf-8?B?eDhucmV6UmtHZjk3eWxkbUZzQ2dZVkxJaTgxQmtvL0FWdzBIamJHK3dHellw?=
+ =?utf-8?B?aklVcUNkZ0wwYTJWekI3QWJPbXl1SjFkOWlpTHNsSlNmUVhEZUZkT29KTnRX?=
+ =?utf-8?B?YnlzSFZxQkhyS00rQVlEYm5aMXFSelJKK2RMZU9Cd2FnbmdIK1ZYQmkvSC9L?=
+ =?utf-8?B?OHZFN3IyUW5TMDF2RVlTakVlMmFka0tTOTlFVWhiRi9yQllIR1liNG9jMTlJ?=
+ =?utf-8?B?SXdNMDRYdndjektXZ0tKYytIQm4raTh0ZFBJWUhqVEd6dGIxanpTVlZxZlda?=
+ =?utf-8?B?VEVGMWttMnVZcWFlWHlqU1E1ZWRyVkNSdHdPeDJPMWNvL3lzZFE0L1JRRyth?=
+ =?utf-8?B?WFpmbW50OTRQdk9saVBLazM4WE1oNkdoYjFsZm40YXVzKzlkMHJ3Rit0UjV5?=
+ =?utf-8?B?cEdOK2dBQVpiVTNKanhoVURtaSs5c3dwWWJlN1ZEZ2tzNG5jR0lKdXJydXAy?=
+ =?utf-8?B?M0ppcGwyY1hpWDl5SUMxeXlXMUY0NTlGK1Y2N1Rnc0g2VWszR1hlYmtIaHdM?=
+ =?utf-8?B?L28zRVJsVno2Y0I5WlF1di81OHNmaDBQVFozMk1UME5UNVBVME0ycXpVaHpX?=
+ =?utf-8?B?WmNZOFI2Vy9lc0hCNHlnWjljcGwvaW01OSt1WGNGRkwxbUkzSjdOcnlydHoy?=
+ =?utf-8?B?K21wQUQwWkhxR1YxbGVGR2JIYi9nUkRTM0l1VmxubUFsVyszd0lxam1TV2xy?=
+ =?utf-8?B?TldGQit0dk54c21Dd3VPR3dsajN3Zk9adjA5SkZyNjhYVE5MWEVqTW9qQ3NI?=
+ =?utf-8?B?MVBPeHgwaWMxalFBWVptaG5IeXJMUVlRS1RXZHc0WHRyY0lvK3hESkN4dW9S?=
+ =?utf-8?B?WGEzVVhocnBYelNldTk5N2FVRFVSb2dhbll2YjJuN2sxRHV4VWhPRGxUeDVM?=
+ =?utf-8?B?OFJLdXBCUFc2RXYwRWlweEI2aW14djl1Z0xrR2U2dFZRR1hENlhmYnlNQmFQ?=
+ =?utf-8?B?MTVsNDE0L2hhTldmRUlPQkY5S2hkZ2RBenZIVmdrNlZGZ2U1RjFiclZwbnFu?=
+ =?utf-8?B?NUJMK21FalZNM2RlZ3FyVjM2SUZ3aVN5YXk3S1dFcVZaekJzQWlXWFlsbFlL?=
+ =?utf-8?B?dkRoU0h3RlJUbXVZUEg1TG0xUk9Vc05SbytVbVYrdm9NV2c5cHhJZVBrdE1h?=
+ =?utf-8?B?QUZwcHNKZWNkQXIrUXNnOHFQVFR2dERzcjZhbUMzSlJqWGszb0FKVXcyWmFZ?=
+ =?utf-8?B?c0Npa05zTzYra1VjQ1pwK0htUWU4NDhhRU5JZWZNcHBUaXlxc0VTblQrbm16?=
+ =?utf-8?B?MmdrMlgxaTFxZXNVNmdJRVA4V0lydTQvZnRuNk9HbXdvcDlYSlVMQVdUNmtx?=
+ =?utf-8?B?N0V5SjBacEI5NGw2V1lpY3ozNnI0OFkvS2lPRU0ySG9tSXNCQXZCUEFsenY3?=
+ =?utf-8?B?Mmt0UnVOd2ZEMTd0V05QVkd6eW5uUlEybVA5L2cxUXNUWnhSeEpudSt6YmhN?=
+ =?utf-8?Q?S6C+npMWG4rb4JPjlu7rtIhhp?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 554f082c-6558-4521-f682-08dcf270fd85
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2024 08:08:17.8572
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2024 08:10:28.4710
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7ec5089e-a433-4bd1-a638-82ee62e21d37
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8Occa23+15rXHRbIYz+fgZTF3mOgT6EbwoQG4NJt9mL4bCL8SbKikBvh3u54EK5mqtOislXjYQ9tzoJwLYu4vUf5QRdqGOI7AE+KruRcCLw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN2P287MB0824
+X-MS-Exchange-CrossTenant-UserPrincipalName: zjw0fIC7SsyR6zSy607sBDxCQ5lSJbe+2vEiKmb7LcUgVtyV51GxN+prlm9EGy+yTVycOOfyOuQsxj2rE3Fnwg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB10020
 
-Adds the DTSI file for the Nitrogen8MP SMARC System on Module which
-is delivered with the Nitrogen8MP Universal SMARC Carrier Board.
+Hi Maxime,
 
-Initial support includes:
-- Serial console
-- eMMC
-- SD card
+On 10/22/2024, Maxime Ripard wrote:
+> On Tue, Oct 22, 2024 at 03:36:47PM +0800, Liu Ying wrote:
+>> Hi Maxime,
+>>
+>> On 10/21/2024, Maxime Ripard wrote:
+>>> On Mon, Oct 21, 2024 at 02:44:43PM +0800, Liu Ying wrote:
+>>>> +static int it6263_bridge_atomic_check(struct drm_bridge *bridge,
+>>>> +				      struct drm_bridge_state *bridge_state,
+>>>> +				      struct drm_crtc_state *crtc_state,
+>>>> +				      struct drm_connector_state *conn_state)
+>>>> +{
+>>>> +	struct drm_display_mode *mode = &crtc_state->adjusted_mode;
+>>>> +	int ret;
+>>>> +
+>>>> +	ret = drm_atomic_helper_connector_hdmi_check(conn_state->connector,
+>>>> +						     conn_state->state);
+>>>> +	if (ret)
+>>>> +		return ret;
+>>>> +
+>>>> +	return mode->clock > MAX_PIXEL_CLOCK_KHZ ? -EINVAL : 0;
+>>>
+>>> drm_atomic_helper_connector_hdmi_check will already make that check, so
+>>> it's redundant.
+>>
+>> MAX_PIXEL_CLOCK_KHZ is 150MHz. With 150MHz pixel clock rate, we'll get
+>> 150MHz HDMI character rate for 8bpc and 187.5MHz HDMI character rate
+>> for 10bpc, both are lower than MAX_HDMI_TMDS_CHAR_RATE_HZ = 225MHz.
+> 
+> I guess? I have no idea how that's relevant though. Where are those
+> constraints coming from, and why aren't you checking for them in
+> tmds_char_rate_valid?
 
-Signed-off-by: Bhavin Sharma <bhavin.sharma@siliconsignals.io>
----
- .../freescale/imx8mp-nitrogen-smarc-som.dtsi  | 348 ++++++++++++++++++
- .../imx8mp-nitrogen-smarc-universal-board.dts |  17 +
- 2 files changed, 365 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-nitrogen-smarc-som.dtsi
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-nitrogen-smarc-universal-board.dts
+All constraints come from IT6263 data sheet. They are also mentioned
+in IT6263 product link(commit message contains the link).
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-nitrogen-smarc-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-nitrogen-smarc-som.dtsi
-new file mode 100644
-index 000000000000..a85acb422000
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-nitrogen-smarc-som.dtsi
-@@ -0,0 +1,348 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2023 Boundary Devices
-+ * Copyright 2024 Silicon Signals Pvt. Ltd.
-+ *
-+ * Author : Bhavin Sharma <bhavin.sharma@siliconsignals.io>
-+ */
-+
-+/dts-v1/;
-+
-+#include <dt-bindings/leds/common.h>
-+#include "imx8mp.dtsi"
-+
-+/ {
-+	model = "Boundary Device Nitrogen8MP SMARC SoM";
-+	compatible = "boundary,imx8mp-nitrogen-smarc-som", "fsl,imx8mp";
-+
-+	chosen {
-+		stdout-path = &uart2;
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_gpio_led>;
-+
-+		led-0 {
-+			function = LED_FUNCTION_POWER;
-+			gpios = <&gpio1 10 GPIO_ACTIVE_HIGH>;
-+			linux,default-trigger = "heartbeat";
-+		};
-+	};
-+
-+	reg_usdhc2_vmmc: regulator-usdhc2-vmmc {
-+	        compatible = "regulator-fixed";
-+	        regulator-name = "VSD_3V3";
-+	        regulator-min-microvolt = <3300000>;
-+	        regulator-max-microvolt = <3300000>;
-+	        gpios = <&gpio2 19 GPIO_ACTIVE_HIGH>;
-+	        enable-active-high;
-+	};
-+};
-+
-+&A53_0 {
-+        cpu-supply = <&buck2>;
-+};
-+
-+&A53_1 {
-+        cpu-supply = <&buck2>;
-+};
-+
-+&A53_2 {
-+        cpu-supply = <&buck2>;
-+};
-+
-+&A53_3 {
-+        cpu-supply = <&buck2>;
-+};
-+
-+&i2c1 {
-+	clock-frequency = <400000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c1>;
-+	status = "okay";
-+	
-+	pmic@25 {
-+		compatible = "nxp,pca9450c";
-+		reg = <0x25>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_pmic>;
-+		interrupt-parent = <&gpio1>;
-+		interrupts = <14 IRQ_TYPE_LEVEL_LOW>;
-+		
-+		regulators {
-+			buck1: BUCK1 {
-+				regulator-name = "BUCK1";
-+				regulator-min-microvolt = <600000>;
-+				regulator-max-microvolt = <2187500>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+				regulator-ramp-delay = <3125>;
-+			};
-+			
-+			buck2: BUCK2 {
-+				regulator-name = "BUCK2";
-+				regulator-min-microvolt = <600000>;
-+				regulator-max-microvolt = <2187500>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+				regulator-ramp-delay = <3125>;
-+				nxp,dvs-run-voltage = <950000>;
-+				nxp,dvs-standby-voltage = <850000>;
-+			};
-+			
-+			buck4: BUCK4 {
-+				regulator-name = "BUCK4";
-+				regulator-min-microvolt = <600000>;
-+				regulator-max-microvolt = <3400000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			
-+			buck5: BUCK5 {
-+				regulator-name = "BUCK5";
-+				regulator-min-microvolt = <600000>;
-+				regulator-max-microvolt = <3400000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			
-+			buck6: BUCK6 {
-+				regulator-name = "BUCK6";
-+				regulator-min-microvolt = <600000>;
-+				regulator-max-microvolt = <3400000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			
-+			ldo1: LDO1 {
-+				regulator-name = "LDO1";
-+				regulator-min-microvolt = <1600000>;
-+				regulator-max-microvolt = <3300000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			
-+			ldo2: LDO2 {
-+				regulator-name = "LDO2";
-+				regulator-min-microvolt = <800000>;
-+				regulator-max-microvolt = <1150000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			
-+			ldo3: LDO3 {
-+				regulator-name = "LDO3";
-+				regulator-min-microvolt = <800000>;
-+				regulator-max-microvolt = <3300000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			
-+			ldo4: LDO4 {
-+				regulator-name = "LDO4";
-+				regulator-min-microvolt = <800000>;
-+				regulator-max-microvolt = <3300000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			
-+			ldo5: LDO5 {
-+				regulator-name = "LDO5";
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <3300000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+		};
-+	};
-+};
-+
-+&i2c6 {
-+	clock-frequency = <100000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c6>;
-+	status = "okay";
-+	
-+	mcp23018: gpio@20 {
-+		compatible = "microchip,mcp23018";
-+		gpio-controller;
-+		#gpio-cells = <0x2>;
-+		reg = <0x20>;
-+		interrupts-extended = <&gpio4 22 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-controller;
-+		#interrupt-cells = <0x2>;
-+		microchip,irq-mirror;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_mcp23018>;
-+		reset-gpios = <&gpio4 27 GPIO_ACTIVE_LOW>;
-+	};
-+};
-+
-+/* Console */
-+&uart2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart2>;
-+	status = "okay";
-+};
-+
-+/* SD-card */
-+&usdhc2 {
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&pinctrl_usdhc2>;
-+	pinctrl-1 = <&pinctrl_usdhc2_100mhz>;
-+	pinctrl-2 = <&pinctrl_usdhc2_200mhz>;
-+	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
-+	vmmc-supply = <&reg_usdhc2_vmmc>;
-+	bus-width = <4>;
-+	status = "okay";
-+};
-+
-+/* eMMC */
-+&usdhc1 {
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&pinctrl_usdhc1>;
-+	pinctrl-1 = <&pinctrl_usdhc1_100mhz>;
-+	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
-+	bus-width = <8>;
-+	non-removable;
-+	status = "okay";
-+};
-+
-+&wdog1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_wdog>;
-+	fsl,ext-reset-output;
-+	status = "okay";
-+};
-+
-+&iomuxc {
-+	pinctrl_gpio_led: gpioledgrp {
-+		fsl,pins = <
-+		        MX8MP_IOMUXC_GPIO1_IO10__GPIO1_IO10                     	0x19
-+		>;
-+	};
-+	
-+	pinctrl_i2c1: i2c1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_I2C1_SCL__I2C1_SCL					0x400001c3
-+			MX8MP_IOMUXC_I2C1_SDA__I2C1_SDA					0x400001c3
-+		>;
-+	};
-+	
-+	pinctrl_i2c6: i2c6grp {
-+		fsl,pins = <
-+		        MX8MP_IOMUXC_SAI5_RXFS__I2C6_SCL            			0x400001c3
-+		        MX8MP_IOMUXC_SAI5_RXC__I2C6_SDA                 		0x400001c3
-+		>;
-+	};
-+	
-+	pinctrl_mcp23018: mcp23018grp {
-+		fsl,pins = <
-+		        MX8MP_IOMUXC_SAI2_RXC__GPIO4_IO22            			0x1c0
-+			MX8MP_IOMUXC_SAI2_MCLK__GPIO4_IO27             			0x100
-+		>;
-+	};
-+	
-+	pinctrl_pmic: pmicgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO14__GPIO1_IO14				0x1c0
-+		>;
-+	};
-+	
-+	pinctrl_uart2: uart2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_UART2_RXD__UART2_DCE_RX                            0x40
-+			MX8MP_IOMUXC_UART2_TXD__UART2_DCE_TX                            0x40
-+		>;
-+	};
-+	
-+	pinctrl_usdhc1: usdhc1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD1_CLK__USDHC1_CLK        			0x10
-+			MX8MP_IOMUXC_SD1_CMD__USDHC1_CMD        			0x150
-+			MX8MP_IOMUXC_SD1_DATA0__USDHC1_DATA0    			0x150
-+			MX8MP_IOMUXC_SD1_DATA1__USDHC1_DATA1    			0x150
-+			MX8MP_IOMUXC_SD1_DATA2__USDHC1_DATA2    			0x150
-+			MX8MP_IOMUXC_SD1_DATA3__USDHC1_DATA3    			0x150
-+			MX8MP_IOMUXC_SD1_DATA4__USDHC1_DATA4    			0x150
-+			MX8MP_IOMUXC_SD1_DATA5__USDHC1_DATA5    			0x150
-+			MX8MP_IOMUXC_SD1_DATA6__USDHC1_DATA6    			0x150
-+			MX8MP_IOMUXC_SD1_DATA7__USDHC1_DATA7    			0x150
-+			MX8MP_IOMUXC_SD1_STROBE__USDHC1_STROBE  			0x10
-+			MX8MP_IOMUXC_SD1_RESET_B__USDHC1_RESET_B 			0x140
-+		>;
-+	};
-+	
-+	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD1_CLK__USDHC1_CLK        			0x14
-+			MX8MP_IOMUXC_SD1_CMD__USDHC1_CMD        			0x154
-+			MX8MP_IOMUXC_SD1_DATA0__USDHC1_DATA0    			0x154
-+			MX8MP_IOMUXC_SD1_DATA1__USDHC1_DATA1    			0x154
-+			MX8MP_IOMUXC_SD1_DATA2__USDHC1_DATA2    			0x154
-+			MX8MP_IOMUXC_SD1_DATA3__USDHC1_DATA3    			0x154
-+			MX8MP_IOMUXC_SD1_DATA4__USDHC1_DATA4    			0x154
-+			MX8MP_IOMUXC_SD1_DATA5__USDHC1_DATA5    			0x154
-+			MX8MP_IOMUXC_SD1_DATA6__USDHC1_DATA6    			0x154
-+			MX8MP_IOMUXC_SD1_DATA7__USDHC1_DATA7    			0x154
-+			MX8MP_IOMUXC_SD1_STROBE__USDHC1_STROBE  			0x14
-+		>;
-+	};
-+	
-+	pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD1_CLK__USDHC1_CLK        			0x12
-+			MX8MP_IOMUXC_SD1_CMD__USDHC1_CMD        			0x152
-+			MX8MP_IOMUXC_SD1_DATA0__USDHC1_DATA0    			0x152
-+			MX8MP_IOMUXC_SD1_DATA1__USDHC1_DATA1    			0x152
-+			MX8MP_IOMUXC_SD1_DATA2__USDHC1_DATA2    			0x152
-+			MX8MP_IOMUXC_SD1_DATA3__USDHC1_DATA3    			0x152
-+			MX8MP_IOMUXC_SD1_DATA4__USDHC1_DATA4    			0x152
-+			MX8MP_IOMUXC_SD1_DATA5__USDHC1_DATA5    			0x152
-+			MX8MP_IOMUXC_SD1_DATA6__USDHC1_DATA6    			0x152
-+			MX8MP_IOMUXC_SD1_DATA7__USDHC1_DATA7    			0x152
-+			MX8MP_IOMUXC_SD1_STROBE__USDHC1_STROBE  			0x12
-+		>;
-+	};
-+	
-+	pinctrl_usdhc2: usdhc2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK                                0x190
-+			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD                                0x1d0
-+			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0                            0x1d0
-+			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1                            0x1d0
-+			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2                            0x1d0
-+			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3                            0x1d0
-+		>;
-+	};
-+	
-+	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK                                0x194
-+			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD                                0x1d4
-+			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0                            0x1d4
-+			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1                            0x1d4
-+			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2                            0x1d4
-+			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3                            0x1d4
-+		>;
-+	};
-+	
-+	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK                                0x196
-+			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD                                0x1d6
-+			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0                            0x1d6
-+			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1                            0x1d6
-+			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2                            0x1d6
-+			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3                            0x1d6
-+		>;
-+	};
-+	
-+	pinctrl_wdog: wdoggrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO02__WDOG1_WDOG_B				0x140
-+		>;
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-nitrogen-smarc-universal-board.dts b/arch/arm64/boot/dts/freescale/imx8mp-nitrogen-smarc-universal-board.dts
-new file mode 100644
-index 000000000000..4a08fa38dcde
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-nitrogen-smarc-universal-board.dts
-@@ -0,0 +1,17 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2023 Boundary Devices
-+ * Copyright 2024 Silicon Signals Pvt. Ltd.
-+ *
-+ * Author : Bhavin Sharma <bhavin.sharma@siliconsignals.io> 
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx8mp-nitrogen-smarc-som.dtsi"
-+
-+/ {
-+	model = "Boundary Device Nitrogen8MP Universal SMARC Carrier Board";
-+	compatible = "boundary,imx8mp-nitrogen-smarc-universal-board", 
-+			"boundary,imx8mp-nitrogen-smarc-som", "fsl,imx8mp";
-+};
+https://www.ite.com.tw/en/product/cate1/IT6263
+
+"
+LVDS RX
+Support input clock rate up to 150 MHz
+
+HDMI TX
+Support link speeds of up to 2.25 Gbps (link clock rate of 225 MHz) 
+"
+
+If no objection, I'll check mode clock rate against
+MAX_PIXEL_CLOCK_KHZ in tmds_char_rate_valid.
+
+> 
+>> So, it looks like pixel clock rate is the bottleneck.
+> 
+> The bottleneck to what?
+
+To the IT6263 video processing throughput capability.
+
+> 
+>> Remove drm_atomic_helper_connector_hdmi_check() or keep this as-is?
+> 
+> No, like I said, remove the final check for mode->clock.
+> 
+> Maxime
+
 -- 
-2.43.0
+Regards,
+Liu Ying
 
