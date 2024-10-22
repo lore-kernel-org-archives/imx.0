@@ -1,487 +1,146 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02430C8FE
-	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 06:53:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE37146A9F
+	for <imx@lists.linux.dev>; Tue, 22 Oct 2024 06:53:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729579986; cv=none; b=W3aaQZDDVtZ73x1BAcjT6BL0U9hvl6CHpwJUmHijqizs4ZSbRlhxOS33O7uVQXO9jNOyThZU9TMnbOdRbjhHA6tZ34aN2vvXnYOusOvhUFL1nTYNSwByx4XVKUsLNtz5JWJ+WMpYYr1R0U7q21akfE5uii3MsqEvGKlnl+en9Jw=
+	t=1729580026; cv=none; b=iu+mwVaxAEcDcfMCpIPB5OKbEbwbvrmImeCdX8zPGrPikp7S+Yc8FffmdQKl1qbkdLSb7Vaysa0r+hNxDZ7DdIYajBf/F7G7/HrMoKDRBCi+B4rOTxNbm28urPgF8KIh2dJJ0p4QEX/o0V1Ay34WZO01d1cFvJSBkoxqHVuC9iI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729579986; c=relaxed/simple;
-	bh=QabyGLfGo9D7o0GeOOFH5A21VcpbZCBSnnjRALjpon4=;
+	s=arc-20240116; t=1729580026; c=relaxed/simple;
+	bh=5uEPeXTznO+zq/VrowXIv/nZTT75BAURDha2R40cA8Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZW41qGZBEe4DGAoJOm+J2Dn/ZxhAhdjGUdvW86tPAnYLVB5Sva4HgzscrklpOgamuUweHZUDxHItMCpe3OYTsHs1MDwjwm9cYcTSom4fdK0+rYp2fMegVXQY44DDPqpbh02uxDsZdpJ4QEBcitWksHNQ7o+g9IDAPGV62M3T/Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=iuC9htlc; arc=none smtp.client-ip=220.197.32.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=AtCysS5D5q7CgWGxAP258T8kNvqJU3Y1GMZPukXtpgrBHwI8wgWdmnMsOclbOD3aceAtihRjNDJz7a5PvjRpku+aFAEkvYSDbTufdOaXsiMwynh4lDut22Fh5+IJ6Rbncu9M2xsW9fQMOpw6IP2lWCmpQPdeX5r5g1wDXp1pVNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=CAVanvv0; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="iuC9htlc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=3Ey0LprXeMFdSZgnRemkWeQFZ8Dckiqkz1H7LCPkZU0=;
-	b=iuC9htlcqSX5c4f2NBRBhYRrIVS+/Klg6R/JBdfnNLyigMCrSD67OQPu8aCMTJ
-	676T6Xsiv+kW1Uvx1lYWx3PRI8HcsHb5mNzjVwA8lVqkiDkaM5AS5e6o7PU1ocnr
-	jU4UHwCahSmnvPn2OaCakb526YuZf1CIbiGEn2ZwVlFUI=
-Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgA3fzWOSxdna7mXAA--.5542S3;
-	Tue, 22 Oct 2024 14:52:00 +0800 (CST)
-Date: Tue, 22 Oct 2024 14:51:58 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Bhavin Sharma <bhavin.sharma@siliconsignals.io>
-Cc: shawnguo@kernel.org, krzk+dt@kernel.org, robh@kernel.org,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
-	Hiago De Franco <hiago.franco@toradex.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Michael Walle <mwalle@kernel.org>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Mathieu Othacehe <m.othacehe@gmail.com>,
-	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
-	Max Merchel <Max.Merchel@ew.tq-group.com>,
-	Tim Harvey <tharvey@gateworks.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/2] arm64: dts: imx8mp: Add Boundary Device Nitrogen8MP
- Universal SMARC Carrier Board
-Message-ID: <ZxdLjtXfuknBywru@dragon>
-References: <20241018091023.29286-1-bhavin.sharma@siliconsignals.io>
- <20241018091023.29286-2-bhavin.sharma@siliconsignals.io>
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="CAVanvv0"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4315f24a6bbso44375225e9.1
+        for <imx@lists.linux.dev>; Mon, 21 Oct 2024 23:53:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729580022; x=1730184822; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1gGKS5/KjNKqMu0CnZ1nG3vuEUT3rVS9BxXtvnX9ivk=;
+        b=CAVanvv0VB2S9jDwFJXFzFTxg2HJhFkfSAU/K0Fd+6/L3qxY0YPgyfWUWaa8JpKXYT
+         Y8d4THWLSje3cVkMYM9I/2VzJV05REHl+0HKO4dVZ9jzet3jkR+/d1hB96LZWBFl+lHs
+         qVfeAh8GkpsSkesTs6tNx6agwUaYktfxbq5vUpRHVyUIJHRUm6NxWLWCDWZWuMcnrdt7
+         JM8eD2RsfuZGoS5tZSd7BiO45fKuRpNLxCDQoy4kpxldj7DnvB4X+rYj5Gca7kO+leDB
+         p90B7cq9ezfCkWf6ORSP2GLRugwwyxNc/TS1uMzt3j/k6DIJoQAyMjLeMBJlcO+yhete
+         CYNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729580022; x=1730184822;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1gGKS5/KjNKqMu0CnZ1nG3vuEUT3rVS9BxXtvnX9ivk=;
+        b=WmliDNj200rjycaAmAjjjOTBfHR6qnBiW2bOGf6OEKhfVan6Y7kP9wagqwBFfpIhE1
+         qo3eKhNKnVatoiDjV7/iy5pjwtkUNAXcjLKvAByeCMR9Kr9b3ISEjhB/mucSBSDQQLjZ
+         CzW0NdEURz0ZbT/UTB+cj1ygqc5HfnmXDtZ5k+Cx9zqdKXNqpGPP75mY1oEwdiL2mfgj
+         wVkSign703k6cd5461hJOnxMrEr/+DDVO3Wnup6PsjyROsTQfnfoLS4y2SuiMyyrz7yq
+         jOtyy0Vl4mV+NUibPL1n/lqVCalQslXWGPmX08i0xDJN3YggdRsjG12DPy9Zy/EswwOB
+         UHJA==
+X-Forwarded-Encrypted: i=1; AJvYcCU45iJ+a9RLqGlANV+DmmtL1xoCi06F052/jfcqZqxRYPn6ZXuycl2I3KkDyrKloIHbKc4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxIRD0A8HW/TmyyaLzsTVPza28OiX+F0b/2OX53mwMbla6X3JdX
+	y+bMHhyvSWMedXySur6Nvaa55lnSD7kdhVnMfFg/dbVNoWDrOP6ocuhLv5a4f2Y=
+X-Google-Smtp-Source: AGHT+IFyICfACBpi7T/crxG0x8ivlGRMR53KD4SiK/OFtztf44if/Rm8vT9be/4sTTsfE2WW+prIog==
+X-Received: by 2002:a05:600c:6012:b0:431:5ba2:2450 with SMTP id 5b1f17b1804b1-4316169391dmr102908315e9.33.1729580022314;
+        Mon, 21 Oct 2024 23:53:42 -0700 (PDT)
+Received: from localhost (p50915d2d.dip0.t-ipconnect.de. [80.145.93.45])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4316f58ae0asm78563945e9.23.2024.10.21.23.53.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Oct 2024 23:53:41 -0700 (PDT)
+Date: Tue, 22 Oct 2024 08:53:40 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Marek Vasut <marex@denx.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, linux-pwm@vger.kernel.org, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, pratikmanvar09@gmail.com, francesco@dolcini.it
+Subject: Re: [PATCH v3 2/3] pwm: imx27: Use clk_bulk_*() API to simplify
+ clock handling
+Message-ID: <7kplk52i7e2nha5ym4loza5oc3lwghifjfk3aut24w3hjagfk3@zusb2naeaevw>
+References: <20240910-pwm-v3-0-fbb047896618@nxp.com>
+ <20240910-pwm-v3-2-fbb047896618@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="v4u73livoku4nk7u"
 Content-Disposition: inline
-In-Reply-To: <20241018091023.29286-2-bhavin.sharma@siliconsignals.io>
-X-CM-TRANSID:Mc8vCgA3fzWOSxdna7mXAA--.5542S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWfGFy5KFy7Kr4rCrWDWrWfXwb_yoWkKFWfpr
-	9ay39rCrnYyr1fAFykGF12kr15ZaykK3Wv934DWFy0yrWqyasrXrZY9Fn8Gr4DJws8Zw48
-	ZFW8ZrWIkFnrKw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j4mhrUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCQqAZWcXFF+d1QAAsV
+In-Reply-To: <20240910-pwm-v3-2-fbb047896618@nxp.com>
 
-On Fri, Oct 18, 2024 at 02:39:27PM +0530, Bhavin Sharma wrote:
-> Adds the DTSI file for the Nitrogen8MP SMARC System on Module which
-> is delivered with the Nitrogen8MP Universal SMARC Carrier Board.
-> 
-> Initial support includes:
-> - Serial console
-> - eMMC
-> - SD card
-> 
-> Signed-off-by: Bhavin Sharma <bhavin.sharma@siliconsignals.io>
-> ---
->  arch/arm64/boot/dts/freescale/Makefile        |   1 +
->  .../freescale/imx8mp-nitrogen-smarc-som.dtsi  | 349 ++++++++++++++++++
->  .../imx8mp-nitrogen-smarc-universal-board.dts |  17 +
->  3 files changed, 367 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-nitrogen-smarc-som.dtsi
->  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-nitrogen-smarc-universal-board.dts
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-> index 9d3df8b218a2..c7f4cf51dc14 100644
-> --- a/arch/arm64/boot/dts/freescale/Makefile
-> +++ b/arch/arm64/boot/dts/freescale/Makefile
-> @@ -173,6 +173,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx8mp-icore-mx8mp-edimm2.2.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx8mp-msc-sm2s-ep1.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx8mp-navqp.dtb
-> +dtb-$(CONFIG_ARCH_MXC) += imx8mp-nitrogen-smarc-universal-board.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk.dtb
->  imx8mp-phyboard-pollux-rdk-no-eth-dtbs += imx8mp-phyboard-pollux-rdk.dtb imx8mp-phycore-no-eth.dtbo
->  dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk-no-eth.dtb
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-nitrogen-smarc-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-nitrogen-smarc-som.dtsi
-> new file mode 100644
-> index 000000000000..89f820ddad54
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-nitrogen-smarc-som.dtsi
-> @@ -0,0 +1,349 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +/*
-> + * Copyright 2023 Boundary Devices
-> + * Copyright 2024 Silicon Signals Pvt. Ltd.
-> + *
-> + * Author : Bhavin Sharma <bhavin.sharma@siliconsignals.io>
-> + */
-> +
-> +/dts-v1/;
-> +
-> +#include <dt-bindings/leds/common.h>
-> +#include "imx8mp.dtsi"
-> +
-> +/ {
-> +        model = "Boundary Device Nitrogen8MP SMARC SoM";
-> +        compatible = "boundary,imx8mp-nitrogen-smarc-som", "fsl,imx8mp";
 
-Use tab instead of space for indent.
+--v4u73livoku4nk7u
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3 2/3] pwm: imx27: Use clk_bulk_*() API to simplify
+ clock handling
+MIME-Version: 1.0
 
-It appears there are quite many such cases in this patch.
+Hello,
 
-> +
-> +	chosen {
-> +        	stdout-path = &uart2;
-> +	};
-> +	
-> +	leds {
-> +		compatible = "gpio-leds";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_gpio_led>;
-> +
-> +		led-0 {
-> +			function = LED_FUNCTION_POWER;
-> +			gpios = <&gpio1 10 GPIO_ACTIVE_HIGH>;
-> +			linux,default-trigger = "heartbeat";
-> +		};
-> +	};
-> +
-> +	reg_usdhc2_vmmc: regulator-usdhc2-vmmc {
-> +	        compatible = "regulator-fixed";
-> +	        regulator-name = "VSD_3V3";
-> +	        regulator-min-microvolt = <3300000>;
-> +	        regulator-max-microvolt = <3300000>;
-> +	        gpios = <&gpio2 19 GPIO_ACTIVE_HIGH>;
-> +	        enable-active-high;
-> +	};
-> +};
-> +
-> +&A53_0 {
-> +        cpu-supply = <&buck2>;
-> +};
-> +
-> +&A53_1 {
-> +        cpu-supply = <&buck2>;
-> +};
-> +
-> +&A53_2 {
-> +        cpu-supply = <&buck2>;
-> +};
-> +
-> +&A53_3 {
-> +        cpu-supply = <&buck2>;
-> +};
-> +
-> +&i2c1 {
-> +        clock-frequency = <400000>;
-> +        pinctrl-names = "default";
-> +        pinctrl-0 = <&pinctrl_i2c1>;
-> +        status = "okay";
-> +
-> +        pmic@25 {
-> +                compatible = "nxp,pca9450c";
-> +                reg = <0x25>;
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_pmic>;
-> +		interrupt-parent = <&gpio1>;
-> +		interrupts = <14 IRQ_TYPE_LEVEL_LOW>;
-> +
-> +                regulators {
-> +                        buck1: BUCK1 {
-> +                                regulator-name = "BUCK1";
-> +                                regulator-min-microvolt = <600000>;
-> +                                regulator-max-microvolt = <2187500>;
-> +                                regulator-boot-on;
-> +                                regulator-always-on;
-> +                                regulator-ramp-delay = <3125>;
-> +                        };
-> +
-> +                        buck2: BUCK2 {
-> +                                regulator-name = "BUCK2";
-> +                                regulator-min-microvolt = <600000>;
-> +                                regulator-max-microvolt = <2187500>;
-> +                                regulator-boot-on;
-> +                                regulator-always-on;
-> +                                regulator-ramp-delay = <3125>;
-> +                                nxp,dvs-run-voltage = <950000>;
-> +                                nxp,dvs-standby-voltage = <850000>;
-> +                        };
-> +
-> +                        buck4: BUCK4 {
-> +                                regulator-name = "BUCK4";
-> +                                regulator-min-microvolt = <600000>;
-> +                                regulator-max-microvolt = <3400000>;
-> +                                regulator-boot-on;
-> +                                regulator-always-on;
-> +                        };
-> +
-> +                        buck5: BUCK5 {
-> +                                regulator-name = "BUCK5";
-> +                                regulator-min-microvolt = <600000>;
-> +                                regulator-max-microvolt = <3400000>;
-> +                                regulator-boot-on;
-> +                                regulator-always-on;
-> +                        };
-> +
-> +                        buck6: BUCK6 {
-> +                                regulator-name = "BUCK6";
-> +                                regulator-min-microvolt = <600000>;
-> +                                regulator-max-microvolt = <3400000>;
-> +                                regulator-boot-on;
-> +                                regulator-always-on;
-> +                        };
-> +
-> +                        ldo1: LDO1 {
-> +                                regulator-name = "LDO1";
-> +                                regulator-min-microvolt = <1600000>;
-> +                                regulator-max-microvolt = <3300000>;
-> +                                regulator-boot-on;
-> +                                regulator-always-on;
-> +                        };
-> +
-> +                        ldo2: LDO2 {
-> +                                regulator-name = "LDO2";
-> +                                regulator-min-microvolt = <800000>;
-> +                                regulator-max-microvolt = <1150000>;
-> +                                regulator-boot-on;
-> +                                regulator-always-on;
-> +                        };
-> +
-> +                        ldo3: LDO3 {
-> +                                regulator-name = "LDO3";
-> +                                regulator-min-microvolt = <800000>;
-> +                                regulator-max-microvolt = <3300000>;
-> +                                regulator-boot-on;
-> +                                regulator-always-on;
-> +                        };
-> +
-> +                        ldo4: LDO4 {
-> +                                regulator-name = "LDO4";
-> +                                regulator-min-microvolt = <800000>;
-> +                                regulator-max-microvolt = <3300000>;
-> +                                regulator-boot-on;
-> +                                regulator-always-on;
-> +                        };
-> +
-> +                        ldo5: LDO5 {
-> +                                regulator-name = "LDO5";
-> +                                regulator-min-microvolt = <1800000>;
-> +                                regulator-max-microvolt = <3300000>;
-> +                                regulator-boot-on;
-> +                                regulator-always-on;
-> +                        };
-> +                };
-> +        };
-> +};
-> +
-> +&i2c6 {
-> +        clock-frequency = <100000>;
-> +        pinctrl-names = "default";
-> +        pinctrl-0 = <&pinctrl_i2c6>;
-> +        status = "okay";
-> +
-> +	mcp23018: gpio@20 {
-> +	        compatible = "microchip,mcp23018";
-> +	        gpio-controller;
-> +	        #gpio-cells = <0x2>;
-> +	        reg = <0x20>;
-> +	        interrupts-extended = <&gpio4 22 IRQ_TYPE_LEVEL_LOW>;
-> +	        interrupt-controller;
-> +	        #interrupt-cells = <0x2>;
-> +	        microchip,irq-mirror;
-> +	        pinctrl-names = "default";
-> +	        pinctrl-0 = <&pinctrl_mcp23018>;
-> +	        reset-gpios = <&gpio4 27 GPIO_ACTIVE_LOW>;
-> +	};
-> +};
-> +
-> +/* Console */
-> +&uart2 {
-> +        pinctrl-names = "default";
-> +        pinctrl-0 = <&pinctrl_uart2>;
-> +        status = "okay";
-> +};
-> +
-> +/* eMMC */
-> +&usdhc1 {
-> +        pinctrl-names = "default", "state_100mhz", "state_200mhz";
-> +        pinctrl-0 = <&pinctrl_usdhc1>;
-> +        pinctrl-1 = <&pinctrl_usdhc1_100mhz>;
-> +        pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
-> +        bus-width = <8>;
-> +        non-removable;
-> +        status = "okay";
-> +};
-> +
-> +/* SD-card */
-> +&usdhc2 {
-> +        pinctrl-names = "default", "state_100mhz", "state_200mhz";
-> +        pinctrl-0 = <&pinctrl_usdhc2>;
-> +        pinctrl-1 = <&pinctrl_usdhc2_100mhz>;
-> +        pinctrl-2 = <&pinctrl_usdhc2_200mhz>;
-> +        cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
-> +        vmmc-supply = <&reg_usdhc2_vmmc>;
-> +        bus-width = <4>;
-> +        status = "okay";
-> +};
-> +
-> +&wdog1 {
-> +        pinctrl-names = "default";
-> +        pinctrl-0 = <&pinctrl_wdog>;
-> +        fsl,ext-reset-output;
-> +        status = "okay";
-> +};
-> +	
-> +&iomuxc {
-> +
+On Tue, Sep 10, 2024 at 03:07:19PM -0400, Frank Li wrote:
+> @@ -229,7 +209,7 @@ static int pwm_imx27_apply(struct pwm_chip *chip, str=
+uct pwm_device *pwm,
+>  	int ret;
+>  	u32 cr;
+> =20
+> -	clkrate =3D clk_get_rate(imx->clk_per);
+> +	clkrate =3D clk_get_rate(imx->clks[PWM_IMX27_PER].clk);
+>  	c =3D clkrate * state->period;
 
-Unneeded newline.
+Unrelated to this patch: clk_get_rate() should only be called on enabled
+clocks. Given that further down in that function (see next hunk)
+pwm_imx27_clk_prepare_enable() (or clk_bulk_prepare_enable()
+respectively) is called, that clk might be off?!
 
-Shawn
+>  	do_div(c, NSEC_PER_SEC);
+> @@ -259,7 +239,7 @@ static int pwm_imx27_apply(struct pwm_chip *chip, str=
+uct pwm_device *pwm,
+>  	if (pwm->state.enabled) {
+>  		pwm_imx27_wait_fifo_slot(chip, pwm);
+>  	} else {
+> -		ret =3D pwm_imx27_clk_prepare_enable(imx);
+> +		ret =3D clk_bulk_prepare_enable(imx->clks_cnt, imx->clks);
+>  		if (ret)
+>  			return ret;
+> =20
 
-> +	pinctrl_gpio_led: gpioledgrp {
-> +	        fsl,pins = <
-> +	                MX8MP_IOMUXC_GPIO1_IO10__GPIO1_IO10                     	0x19
-> +	        >;
-> +	};
-> +	
-> +	pinctrl_i2c1: i2c1grp {
-> +		fsl,pins = <
-> +			MX8MP_IOMUXC_I2C1_SCL__I2C1_SCL					0x400001c3
-> +			MX8MP_IOMUXC_I2C1_SDA__I2C1_SDA					0x400001c3
-> +		>;
-> +	};
-> +
-> +	pinctrl_i2c6: i2c6grp {
-> +	        fsl,pins = <
-> +	                MX8MP_IOMUXC_SAI5_RXFS__I2C6_SCL            			0x400001c3
-> +	                MX8MP_IOMUXC_SAI5_RXC__I2C6_SDA                 		0x400001c3
-> +	        >;
-> +	};
-> +	
-> +	pinctrl_mcp23018: mcp23018grp {
-> +	        fsl,pins = <
-> +        	        MX8MP_IOMUXC_SAI2_RXC__GPIO4_IO22            			0x1c0
-> +                	MX8MP_IOMUXC_SAI2_MCLK__GPIO4_IO27             			0x100
-> +        	>;
-> +	};
-> +	
-> +	pinctrl_pmic: pmicgrp {
-> +		fsl,pins = <
-> +			MX8MP_IOMUXC_GPIO1_IO14__GPIO1_IO14				0x1c0
-> +		>;
-> +	};
-> +
-> +	pinctrl_uart2: uart2grp {
-> +	        fsl,pins = <
-> +	                MX8MP_IOMUXC_UART2_RXD__UART2_DCE_RX                            0x40
-> +	                MX8MP_IOMUXC_UART2_TXD__UART2_DCE_TX                            0x40
-> +	        >;
-> +	};
-> +        
-> +        pinctrl_usdhc1: usdhc1grp {
-> +                fsl,pins = <
-> +                        MX8MP_IOMUXC_SD1_CLK__USDHC1_CLK        			0x10
-> +                        MX8MP_IOMUXC_SD1_CMD__USDHC1_CMD        			0x150
-> +                        MX8MP_IOMUXC_SD1_DATA0__USDHC1_DATA0    			0x150
-> +                        MX8MP_IOMUXC_SD1_DATA1__USDHC1_DATA1    			0x150
-> +                        MX8MP_IOMUXC_SD1_DATA2__USDHC1_DATA2    			0x150
-> +                        MX8MP_IOMUXC_SD1_DATA3__USDHC1_DATA3    			0x150
-> +                        MX8MP_IOMUXC_SD1_DATA4__USDHC1_DATA4    			0x150
-> +                        MX8MP_IOMUXC_SD1_DATA5__USDHC1_DATA5    			0x150
-> +                        MX8MP_IOMUXC_SD1_DATA6__USDHC1_DATA6    			0x150
-> +                        MX8MP_IOMUXC_SD1_DATA7__USDHC1_DATA7    			0x150
-> +                        MX8MP_IOMUXC_SD1_STROBE__USDHC1_STROBE  			0x10
-> +                        MX8MP_IOMUXC_SD1_RESET_B__USDHC1_RESET_B 			0x140
-> +                >;
-> +        };
-> +
-> +        pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
-> +                fsl,pins = <
-> +                        MX8MP_IOMUXC_SD1_CLK__USDHC1_CLK        			0x14
-> +                        MX8MP_IOMUXC_SD1_CMD__USDHC1_CMD        			0x154
-> +                        MX8MP_IOMUXC_SD1_DATA0__USDHC1_DATA0    			0x154
-> +                        MX8MP_IOMUXC_SD1_DATA1__USDHC1_DATA1    			0x154
-> +                        MX8MP_IOMUXC_SD1_DATA2__USDHC1_DATA2    			0x154
-> +                        MX8MP_IOMUXC_SD1_DATA3__USDHC1_DATA3    			0x154
-> +                        MX8MP_IOMUXC_SD1_DATA4__USDHC1_DATA4    			0x154
-> +                        MX8MP_IOMUXC_SD1_DATA5__USDHC1_DATA5    			0x154
-> +                        MX8MP_IOMUXC_SD1_DATA6__USDHC1_DATA6    			0x154
-> +                        MX8MP_IOMUXC_SD1_DATA7__USDHC1_DATA7    			0x154
-> +                        MX8MP_IOMUXC_SD1_STROBE__USDHC1_STROBE  			0x14
-> +                >;
-> +        };
-> +
-> +        pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
-> +                fsl,pins = <
-> +                        MX8MP_IOMUXC_SD1_CLK__USDHC1_CLK        			0x12
-> +                        MX8MP_IOMUXC_SD1_CMD__USDHC1_CMD        			0x152
-> +                        MX8MP_IOMUXC_SD1_DATA0__USDHC1_DATA0    			0x152
-> +                        MX8MP_IOMUXC_SD1_DATA1__USDHC1_DATA1    			0x152
-> +                        MX8MP_IOMUXC_SD1_DATA2__USDHC1_DATA2    			0x152
-> +                        MX8MP_IOMUXC_SD1_DATA3__USDHC1_DATA3    			0x152
-> +                        MX8MP_IOMUXC_SD1_DATA4__USDHC1_DATA4    			0x152
-> +                        MX8MP_IOMUXC_SD1_DATA5__USDHC1_DATA5    			0x152
-> +                        MX8MP_IOMUXC_SD1_DATA6__USDHC1_DATA6    			0x152
-> +                        MX8MP_IOMUXC_SD1_DATA7__USDHC1_DATA7    			0x152
-> +                        MX8MP_IOMUXC_SD1_STROBE__USDHC1_STROBE  			0x12
-> +                >;
-> +        };
-> +
-> +	pinctrl_usdhc2: usdhc2grp {
-> +                fsl,pins = <
-> +                        MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK                                0x190
-> +                        MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD                                0x1d0
-> +                        MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0                            0x1d0
-> +                        MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1                            0x1d0
-> +                        MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2                            0x1d0
-> +                        MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3                            0x1d0
-> +                >;
-> +        };
-> +
-> +        pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
-> +                fsl,pins = <
-> +                        MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK                                0x194
-> +                        MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD                                0x1d4
-> +                        MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0                            0x1d4
-> +                        MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1                            0x1d4
-> +                        MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2                            0x1d4
-> +                        MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3                            0x1d4
-> +                >;
-> +        };
-> +
-> +        pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
-> +                fsl,pins = <
-> +                        MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK                                0x196
-> +                        MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD                                0x1d6
-> +                        MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0                            0x1d6
-> +                        MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1                            0x1d6
-> +                        MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2                            0x1d6
-> +                        MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3                            0x1d6
-> +                >;
-> +	};
-> +
-> +	pinctrl_wdog: wdoggrp {
-> +		fsl,pins = <
-> +			MX8MP_IOMUXC_GPIO1_IO02__WDOG1_WDOG_B				0x140
-> +		>;
-> +	};
-> +};
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-nitrogen-smarc-universal-board.dts b/arch/arm64/boot/dts/freescale/imx8mp-nitrogen-smarc-universal-board.dts
-> new file mode 100644
-> index 000000000000..4a08fa38dcde
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-nitrogen-smarc-universal-board.dts
-> @@ -0,0 +1,17 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +/*
-> + * Copyright 2023 Boundary Devices
-> + * Copyright 2024 Silicon Signals Pvt. Ltd.
-> + *
-> + * Author : Bhavin Sharma <bhavin.sharma@siliconsignals.io> 
-> + */
-> +
-> +/dts-v1/;
-> +
-> +#include "imx8mp-nitrogen-smarc-som.dtsi"
-> +
-> +/ {
-> +	model = "Boundary Device Nitrogen8MP Universal SMARC Carrier Board";
-> +	compatible = "boundary,imx8mp-nitrogen-smarc-universal-board", 
-> +			"boundary,imx8mp-nitrogen-smarc-som", "fsl,imx8mp";
-> +};
-> -- 
-> 2.43.0
-> 
+I applied just this patch to
+https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git pwm/for-=
+next
+=2E The others are still under discussion, right?
 
+I see you signed your patch (which is fine!), but I couldn't find your
+key, neither on hkps://keys.openpgp.org/ nor on
+hkps://keyserver.ubuntu.com nor in the kernel keyring. At least the
+first two should be easy to fix.
+
+Best regards
+Uwe
+
+--v4u73livoku4nk7u
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmcXS/EACgkQj4D7WH0S
+/k5sBggAqO4ZT0/OYhnXz4EtDfNYkq7vy4oX9E/FFWF7QqEm7Q6PfyrY6lOanGOX
+imauNxmocF70rk2IX9aPaAmzQiou3jGgb+9JfG6ZubDfSzlm9FSqPxHramxmY2up
+HnSCux8OpU/OZ8PfdGwDrv6NP4lDwRBBT0JUS4p/ojwCr0gW+kgEpI8oL88jI598
+eBiweBQlFM7rOFMsIuVsyhr9yz5GPwxcsDoLdQ6Fi95zA/ZqdRlLT7b26VZhiMFt
+x1bnfHOK08RaZX+uFDttyYB1wkW2gzopZrHhG8i7hNVz7QdWdxm8DPW8gHtg8Xmo
+uwjcm7qBXbwwl2Vq3Rk0K2ZMme9zKw==
+=bPF5
+-----END PGP SIGNATURE-----
+
+--v4u73livoku4nk7u--
