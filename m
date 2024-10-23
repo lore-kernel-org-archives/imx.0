@@ -1,263 +1,354 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2050.outbound.protection.outlook.com [40.107.21.50])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2071.outbound.protection.outlook.com [40.107.22.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6301D15746E
-	for <imx@lists.linux.dev>; Wed, 23 Oct 2024 08:18:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6450C15A848
+	for <imx@lists.linux.dev>; Wed, 23 Oct 2024 08:41:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.71
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729671533; cv=fail; b=TJEmrq6WKvSMm1CIvNuOEqVYjmmH/dsdZ2/0N0egj12rpOgoJCUKvHvO4EXP3edbFofHOcqt0/CPhqIYnRRLh7yImQNRk48ddHdHk51g1FDXdQaz+qUwL3tMUvDTt53rWzU29HKxIFitMFWx/t1eRrCDCrAEebphtkW2hfju7DA=
+	t=1729672889; cv=fail; b=tMPI2XS2PYzcRrbdDYLLQd1G8SoJCsj0tZ3mfkT2xFH+c1jPldDlhZqyQYtKyAJSgZiZqlpefHH1RPCktaPRQl4fVcVbj5sIOMozrx3Zh+Cc6mwpLzU2/taqbxL2MUY3eMviS/bcFYChRGG9hvAnlrEKiXQker8Ese3HCq82i+Q=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729671533; c=relaxed/simple;
-	bh=sOXHi80Wj3+R2DkQNjKOIgezdQMCQ3nX+JUCca/jXU8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=bnc1UVkFqE+gkXCJSDOeyq2ywAbRO4la38Lym35lnvoq/4xyTgWfN0qOcCh9s1C5a9IoGWXk8kPfGdinalQG+m4zc4Jc7oVl5BU/TJfNJ7kSOa3GFxAbnEPPpBOux0G0IyD7e2hx6jyYX0tIvHGZLA00fEyq79G45LdaBC86Op0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aVZREeso; arc=fail smtp.client-ip=40.107.21.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1729672889; c=relaxed/simple;
+	bh=LIoaPzRb5Ts43e1Pa0CWtIXJQifX4d3yI7vPZnIpY8E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=DLULhcYgC1eUKPxnCGoslJHc3/fNOHBrEVqMzEHb+xJjiqC6KjVSiPq7fXQ40DbjA5hL8BvJV+KS90fMKjaS1y2hdXlnClZu03WqeRvXQj8MAJCT0sxMtjpbVIjdqAaVySkj0qqMbP47W5j4xRjl/JaiNkvVwoKVOTnfzDtFNKU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=aXzbZHgk; arc=fail smtp.client-ip=40.107.22.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aVZREeso"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="aXzbZHgk"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=No7dGGTLiLxPW3uP7iv5FuILhDE5xYle6vIfsfYkarw23Nh+KRFY6smmU+kg9L03J/kMPgoGHdlBTELAHH2/tRrb2CmcOoRTkhcwTXYC4+cDkh5UIEQARvcpCKX3wl0tbFsjtnwMreIdi9N+RolDxlIQ3RIycoA+CEmLNK2VhfZHgVezH2vas0HwRhZlV7Ar8vyFjgrvvZ+ZsrBoC/aFk3K4ATBZbCd7jSIt5CTrjSfL+ljhEZ1fxjsiy5izt2g3XKAFmKR4n/rltkebr/2TLWbSq8M0Tb5Ll2JqITRxiGjw3NEjDPMw/kCN5MfYo+kF0AM5lU0YJBCoSZDd0TU7Pw==
+ b=xulo8HCeTJXyuQBi+Dif8uPgZAewXUny1kQZ9c92XEdl1W3ZVWDBPsJJaxoSaNU0dARtlw97ywtXYrm2e3DZ1v+aCNYNiOaQ28bGwn0d7zomp//vm49fyzjZDTs1lk60iAu4DMQJaqyNk4oh6ojHMWiw1sFHLIluxm3QTzWyvFIdlw0qhTWwwSsTXm4t3rNt0mG/VgZjy+skt7ZRwy6qEvb5k0ma8NVB3/qRzCUC2/fi5Qk2rFLntdRTwONl/cyvVZC2JoHwjRuZcywz09zsqkcTI6XLluQjOF80u4LZB/pTqCuBQkdpFdF5JGe+cxCQVaWvGk5BtXSIcTdo5UOZRg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RBaKQcT1Cx0jrBSSkCevsGKVzSnzcBdEuJQAvm53few=;
- b=kWRpbCnkXraVDqi/yXu2AxMEvBxh6GniZNM0G4PLS8qvTS0DBc61V/E4eCx+ZeUkDl+pFWHimYNNpFGfkqXgKDw2Dd526ihG2SOj5Quuf2GgWq8FpMYhmLEXxHmtcIiNArpPsvkpWeyAFtbiYXqEBnxUe+WB8fWcAmTiZxfo+uQkTHH1ZUJchG5rzzOLMsd4vg+nD54Ns2JDhkGdiNF+RxGMKekB+Uz1kjtb2g+y+bvS57el/SMwW8abYfgb5ahjFkb2gmvB2lq1mJ18vV9l+/xQxkA/H68+o8474jaYD+GYyGzhODixVAUgEsKQxqe4YaHhKGxjop5pW9GgLObpXw==
+ bh=jx6kBDaQZE/EiHL3xS3TkZt8wrRjHShV3fRez9GxyHw=;
+ b=tU7ilyQJ+DRDF1/fxFutHSfq6obKO0KFOfxJEZaTnjfcTbPOTBwi5eR+F0XvFUPKxw5ewROBbw+A1Pbodb3+XK6v/0CuEquT2nblrZ+KB0O8KqWdiGKiQ9palrF8hdEN6te02qOR5x4qm4ShzOwUNy4Fj9P3bq50dAHaOvjlwcpcDxfDbSoaxO9VgXwloibMQfEE3HIs1sKz62AFv5rEeVElxoV3un8pG11vUSxB8bd2aO4DWcudDsbnJPzRcImwAI1t9WvAaXMYTrllD3TVsEdWLDXJWF7Wf+DpmqnZocCdsYshyo6C4WJpP9b3DuIDybChym9M8uJX+T/lWrzbsw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RBaKQcT1Cx0jrBSSkCevsGKVzSnzcBdEuJQAvm53few=;
- b=aVZREesoEOTsQtWPbxMT8jqRs3/vrkLrTNJgA2KTiE7pC7qZN8GOWUaeLqp0XKiOfZHR6/M9zTSyQr2nRTvz+YSNEDqMa0r2XX41kXYZeG5usfXfyynt55YqIBJlw6DVmTV5vUX9wMdrXU4jZ/N92gR5FlpWAUuX6mdL7DnHkb/HAtohaKhxHPe8zG+ecyuvNSbt6h5EMaQAdAb4etc24OZQY9+TsnnP1A9vkHzcGDxuzlnfrMu89tB4At9b+krBE5v1ELmSHa4uLeWr++T70a6167N2C5IYORXA4gZWbh67dhFeUMK+7iKWcX0fzbnO8VCh+Mn7ukkQw4rl9ASS2A==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by DU4PR04MB10387.eurprd04.prod.outlook.com (2603:10a6:10:568::11) with
+ bh=jx6kBDaQZE/EiHL3xS3TkZt8wrRjHShV3fRez9GxyHw=;
+ b=aXzbZHgklRDgTVQHSqWJg1yGrzYsydyij+MYVWqxM92Vu+ujTDr42iOIFUIarU8Brg3lLdEbglJsmvAaToKSKukpqLPHgr7OVGSPneo8S9Xwo5T1844ic0B/QEpqEa+im12H1IdkXrjEZPKU8oME7JFxyThmZbTDGrFW+Ow8QwtIvKwYWlNFl0yCBvBDBRfP+j4lVK8hzSfpDkhxQikGvYDddIgmqOUPiDcbSPrYCzTgZgTRM2EPmyc0G74Jc+rBVW79h+hnOJ2kFeMZFp8AsriTcMmzCC+xLR/J38+WMg6fQcY6Z6MtROEwKkCIL2odOvGHTqOe0aTF+Fx57KLDwQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AS4PR04MB9576.eurprd04.prod.outlook.com (2603:10a6:20b:4fe::12)
+ by GV1PR04MB9071.eurprd04.prod.outlook.com (2603:10a6:150:22::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.28; Wed, 23 Oct
- 2024 08:18:44 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%7]) with mapi id 15.20.8069.027; Wed, 23 Oct 2024
- 08:18:43 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-CC: "davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org"
-	<conor+dt@kernel.org>, Vladimir Oltean <vladimir.oltean@nxp.com>, Claudiu
- Manoil <claudiu.manoil@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Frank Li
-	<frank.li@nxp.com>, "christophe.leroy@csgroup.eu"
-	<christophe.leroy@csgroup.eu>, "linux@armlinux.org.uk"
-	<linux@armlinux.org.uk>, "bhelgaas@google.com" <bhelgaas@google.com>,
-	"horms@kernel.org" <horms@kernel.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"alexander.stein@ew.tq-group.com" <alexander.stein@ew.tq-group.com>
-Subject: RE: [PATCH v4 net-next 03/13] dt-bindings: net: add bindings for NETC
- blocks control
-Thread-Topic: [PATCH v4 net-next 03/13] dt-bindings: net: add bindings for
- NETC blocks control
-Thread-Index: AQHbJEi1opWCvzFL8kS18Y10TWXurLKT6McAgAAQObA=
-Date: Wed, 23 Oct 2024 08:18:43 +0000
-Message-ID:
- <PAXPR04MB851034FDAC4E63F1866356B4884D2@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20241022055223.382277-1-wei.fang@nxp.com>
- <20241022055223.382277-4-wei.fang@nxp.com>
- <xx4l4bs4iqmtgafs63ly2labvqzul2a7wkpyvxkbde257hfgs2@xgfs57rcdsk6>
-In-Reply-To: <xx4l4bs4iqmtgafs63ly2labvqzul2a7wkpyvxkbde257hfgs2@xgfs57rcdsk6>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|DU4PR04MB10387:EE_
-x-ms-office365-filtering-correlation-id: f9a1c7c9-a24a-45b7-d1e4-08dcf33b4f44
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|376014|366016|7416014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?GJ5Vg3BAGDKuPetWoctP3s6+urnlyB0MkgzPOqS8192Ymlaf6Zoc/9/GUvVe?=
- =?us-ascii?Q?PUjHwd6zGGGldh5iPHj7mPk6xsmPOgODtmzE2ozRjYCe0q/gfPkQexr63a8B?=
- =?us-ascii?Q?hjGeJb02Bke4IbrITfgebeqW1pkwf0uStUnbCvaojJc9R4DV/9Uumr2ngAln?=
- =?us-ascii?Q?e6fgU2WKlhOmo9poa6+Ig3o8mxBEYHy10VHrb38U2Ma+685TmZuKO7mPhe8h?=
- =?us-ascii?Q?PDEKrpyBMXuNSudEgxUfew8TXGtmbl3HsVQRH1Fp2F9DlZ91+jRsRaJQs+QQ?=
- =?us-ascii?Q?UAHrvzNxP0dpAKah3ehI/b38YWnFHhp0FFjTTxItd9YHFHxNvnfnKxwZkMV6?=
- =?us-ascii?Q?OfYMkkHkgP3LWhoBCkysMvnvMlFDAy+yePcv7W9ydpC6o0sKiibAcZAyJB4B?=
- =?us-ascii?Q?h0/FP5zDlGVXFiFOimYD/8/DKoW5O1Ny3t44xeg2u6zk6mxK+/LkopIlO+p8?=
- =?us-ascii?Q?HebTtHdWveRmIUYh+csgjh9GnrlAeDSyAgmoGBansSi7tkfvcUykYuSrDVUY?=
- =?us-ascii?Q?Baq2MsqvhC4ONMaL39Rfnm/FBz2eyJlU5cstirX3jGhlHCOj+WQgKaOKZhf1?=
- =?us-ascii?Q?KbsIWUL8Sji5cIMBhPO1IO1vf2xU/WdIMLBTiWKKojU2ZUBKA3gzKagHDgqb?=
- =?us-ascii?Q?BI+kD/grEVWIUAMpgjxgMRPLJGychFFwK2NQbIY9NNqPLv7UqmoG1RrQ3+7i?=
- =?us-ascii?Q?I5dOwrAXumaY1g49YRsD7Dc7pF3GDvqt2sJzVzgCxOwkpIK05CXooiSgGeMQ?=
- =?us-ascii?Q?v49cNWHLKUJLWZ4+Xis2HfgX1F5SO870RVrLYTLxli1xfPfLwSoyE5LRPYiR?=
- =?us-ascii?Q?HhwRncgfl2rmw5l+cmw0t7ZyzkggpaDsGA+DW/kv0ZeASOUtQbxAu/biR4QV?=
- =?us-ascii?Q?6eH3JLY0IvmYLQoRYIyevQyszz88V+HvjKM59nfThornh6QXSboGif1Ro9ah?=
- =?us-ascii?Q?R8YtAltwA7p3QdSR7lgKOszn2/fALj9z7NHAEKhrioiaOmE4KxIgggUMbsaX?=
- =?us-ascii?Q?n6HLal30pBJfT9e1F8cXmxueL955FTHlj9jv0m6OLgp+gU88joo9jvLIk/nC?=
- =?us-ascii?Q?e+MDJunjIQCOhfU7FT2lvM47j25hKqJXPK7uWRpeI7DCnzy9Y/QhtGQlJJPj?=
- =?us-ascii?Q?jiWeI62IOc7annlP7U3LzqdROBDz7UgQanWpdoSINvj2IMzi8XjkgBMA9iME?=
- =?us-ascii?Q?kPsCrZBP9+wI2YnsgDco9qgdCFuLSqr1+4gwb8yZcyqtAFg2YNQOAgmU7crs?=
- =?us-ascii?Q?hFw4Szp6lQpmMew2eF/wril6NbEm8+hxxqlawiEibpTmGKeGGa0wEjLjOBoD?=
- =?us-ascii?Q?EE06Ohk/9jnIIEpL875T+uXcSf4WTEEOYAjmRE5RLnfpDGAHiQgvA1oQRHBL?=
- =?us-ascii?Q?zJD8lD4=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?4Q+F9W+jenTvUfLv0aaPvf/+ev2ar18PgYxRpTJ7cH2rnnzTyIYKTp47cdhi?=
- =?us-ascii?Q?Q1ruTqTXXoy4Yuaak8kJUPZzm1Ck4OmUKuTbQ/BvshvTnUVhqiF1JWDR6icI?=
- =?us-ascii?Q?X1TSAkUV2ZjoaIpRUsVI2VZys1hJZSGBA4ADe6EI+U5p2DZqm5IByiDZXPAf?=
- =?us-ascii?Q?TWh4Sdh66TE7Pgg/H1/76/t1qC7o6KjP7gEkVD7HvfzhVinGERlqMPOk7mch?=
- =?us-ascii?Q?WgYArq5WtbIYgv+lIQY0BvR/Ze0UunU7fDdThudpb3u4bl9W3anpBOX4p9M4?=
- =?us-ascii?Q?Uc9aOsBuryJgCAJZg4ooyg9aOPb8zFlb4QaXuhODA5C7BINSxSOLbP73rZyC?=
- =?us-ascii?Q?niDTdsAuiSqqPXvTIGk40Q21REq2+ihUEr+4Dki24mFo7RVlwzHE8K+lXM9G?=
- =?us-ascii?Q?kX81mKF2dxV+i5HQ4Gs2HMdKjHO6y9msDHh0swz2V5lqnBs5IpLx0j1DZeLT?=
- =?us-ascii?Q?v3nk9rpQEO0rRWtL1jWPN5TVTVVrxQzLFBwz49TMxrm6KvQm7BNGKjjcpOcl?=
- =?us-ascii?Q?GbRYR1QyUPxHI1USNi2NtDr/rHbw7SHMDodM00hwU9n8Si4ki9wGhIL1icg5?=
- =?us-ascii?Q?2XRUHu3TmAfzcU95E5wHlMGayvctBNXscXItuF8ixeyF0cgAJp8h639sB0FJ?=
- =?us-ascii?Q?VTNyJ6fwGvxQwtNLwttUyiCPOM15+ZUZIl5zltVlmKubCGzDJCBLQklJ8nSZ?=
- =?us-ascii?Q?NyTsNO2ith8bmdv0j6wIKSDGW6vOlhgYNt0XbruoHFWAR/P6pDUzc2A1TuSw?=
- =?us-ascii?Q?bMBXGhdt4Iox/pYHCGJ2Flo575191dzsE5boEKeq2N4OsAf+TXU73MMEuQKj?=
- =?us-ascii?Q?o0U5hF9VJLFeS+LRZtd/ag4wruESPotLles4L2SsFlkBMvERRft2B6A4WCUl?=
- =?us-ascii?Q?LDxC0BFFS2pKcB4aAjkT4scqtHGCaqM8CdeC50aH3TW1FO0wuxrG0PKfIkPt?=
- =?us-ascii?Q?j8YqGqmxvTWIKzs77jBpu3s1nhewBspJSHEwiwi+NMpwi9beKMODXlTXd38B?=
- =?us-ascii?Q?vEa173FA2yeYxadnWrmW8gIe2NCvmYQ3080lke72kPQSiqA4l/LcXbWzueCp?=
- =?us-ascii?Q?gSMqUzkXwUYVJPUaY+/lJO0SN13NPY5XHHNNoFc6SYjXjAYEiBCUcOk+wmLB?=
- =?us-ascii?Q?Fp818wIU34ZBnA6dAy/zxExv93x2ma2YcEqIcCLH1bDA7uORuhSw27hz1axm?=
- =?us-ascii?Q?fX+LZWTtIQKzlqqvfCAqWgqMQx8Z7DwOpexNnR6QsIjb52kk6SeECw77tf7i?=
- =?us-ascii?Q?4pVQp5UR2EEa2IHiIX4NEuRdvLbzExKLoq03LQeYLq9bplpxF0WNvaCHDHbB?=
- =?us-ascii?Q?EkfgCluSueN2JqVNwT4omcMZ805skub5GTs8dzzlAYggzCli+pBtJizrQB1F?=
- =?us-ascii?Q?LulTO5s0kSC4NsVeeQUEcYz0dBUADyXMZImjW3qLbgRCXLsdRFqybi0wCZH/?=
- =?us-ascii?Q?PfwA7XOwnLY9rH8t6avQcgLg+cu+9SrIRRyLya4UGhim+TEFPlrZ9OcfG7sP?=
- =?us-ascii?Q?+ueFBMvnJEw6fqAI4Qk4RLy5wzh7ArWVPKEDm2rswpOXAnpu3B2gT1nrTXT2?=
- =?us-ascii?Q?e7ytRKpzuVGr4LY/T68=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.20; Wed, 23 Oct
+ 2024 08:41:21 +0000
+Received: from AS4PR04MB9576.eurprd04.prod.outlook.com
+ ([fe80::9cf2:8eae:c3d1:2f30]) by AS4PR04MB9576.eurprd04.prod.outlook.com
+ ([fe80::9cf2:8eae:c3d1:2f30%7]) with mapi id 15.20.8069.027; Wed, 23 Oct 2024
+ 08:41:20 +0000
+Date: Wed, 23 Oct 2024 11:41:16 +0300
+From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Stefan Riedmueller <s.riedmueller@phytec.de>, Guoniu Zhou <guoniu.zhou@nxp.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Christian Hemp <c.hemp@phytec.de>, linux-media@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] media: nxp: imx8-isi: better handle the m2m
+ usage_count
+Message-ID: <3bgx37htukergd4zph4ahwp6bbz4n6efevnjgaivokhwjpx6e3@fl5bq35gbiin>
+References: <20240927080420.3867806-1-laurentiu.palcu@oss.nxp.com>
+ <20241021230519.GB8113@pendragon.ideasonboard.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241021230519.GB8113@pendragon.ideasonboard.com>
+X-ClientProxiedBy: AM0PR10CA0128.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:208:e6::45) To AS4PR04MB9576.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4fe::12)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS4PR04MB9576:EE_|GV1PR04MB9071:EE_
+X-MS-Office365-Filtering-Correlation-Id: 75f41426-2e5c-41d8-7cb9-08dcf33e77db
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+ =?us-ascii?Q?9CvN8EPxUFcjK1tDGDMKS31kv+dWk0Vp5iSFcbRL/VMmYoZbpIj8RIEyg5Zo?=
+ =?us-ascii?Q?QXjK1jaTXLhXeH9I6JfQnmSVNWwJm0xikiP0Yy8/LQixvCtqhU7blvu9QYW4?=
+ =?us-ascii?Q?c/VddzcAF2RMiihyqS8X6absBb9DJLiuDCoKmUhi6HMohgJO2aK+5J0kK/MB?=
+ =?us-ascii?Q?zxQ7Kve0eR1/D4y3279YXiuykDAm7YBQYNNz5IMjsMiHjz/Fg8+YbClhXmlO?=
+ =?us-ascii?Q?H/4ngua9cYX7FNp5M/p2sxlUSD7Doak4fe6MfFwdpLgwQTyx1BcyVKwctTAe?=
+ =?us-ascii?Q?+L3fm0U9GJzVFU+pwqC3mPQHWxsduLmtfAvbNFEnHOiBFSY+2Q42xdYEN4Cw?=
+ =?us-ascii?Q?ZDu3gngkSjxMUzTlBtp4ZanafK8QbEDMk61eoQIwIFzgY5Sa4ZI72GW7oDTe?=
+ =?us-ascii?Q?HfHnPOgGy2lZdWuwRbbqyKYmAJHfWJ9t90yKik2AZ/v3tlgsjNr3RLBImpUB?=
+ =?us-ascii?Q?6YHVZrC6l142tj0gAX2pVhTIWgh4Msd5ev0pYcbye+hC0l5s+qMb7dPzV12H?=
+ =?us-ascii?Q?zqxzfDRwvTxAvw1B9swcb8y1v1OhJh/j5P+rCchG4mKtKOH0r3tJfyQyLdMq?=
+ =?us-ascii?Q?9eVn7d5hB5BOK2m+fMgJ0eLoqjViZwJqwJhCxICt64955ObylXCbPcK66bgm?=
+ =?us-ascii?Q?Q+aplf4CKCu/r3jepZkjrpk6LX4lwZFhpkYIzREhigRXt5cPIuTJg1kEHFZB?=
+ =?us-ascii?Q?82DC/9H+gmQDTrfT7wgGpaubPbs1QpK0ZkfNN7c/jEjzod0epoFYTlkZvmq8?=
+ =?us-ascii?Q?q9EU5gDgabMoBvWjkWZoIZ6Tb5OdHfYAgGQet6seESjf47kFlouE+7JknUoQ?=
+ =?us-ascii?Q?cuYDdpDKwV+gjMu8DVnSXuDELicRC4VybgFaiJNrn31YWDKENA3HH3S0yJrT?=
+ =?us-ascii?Q?Ci4FFDh/pkVEoIQZTjHgQz2FLeumtR2L2PCcwBHBU5IPEvbqQOKnDscsZdnD?=
+ =?us-ascii?Q?cuIHQQwMCWTCrq1Wt3uMBATbGl260GErQaqrMKrVSzWV7FkWkl5v2uetS8Sz?=
+ =?us-ascii?Q?tt0pvUmp2NZhMh+3uSJjtN47HkWnHRVULjQ0tIq+bjXi1hGzSwo5Nd58v3vm?=
+ =?us-ascii?Q?lP4vr3M4+C0KCjwJmQfWKv6LG2RBALbGi1fNyuLUlI2WUAa5BahEUrAPJdDb?=
+ =?us-ascii?Q?vJBtc+ng9rRN49k5oCm68fV02XQQY5oCdJac8PlAP9bYIlD8CQdAmhxQTspm?=
+ =?us-ascii?Q?tgV48mCkUvZ0xmsGlgquAgyNf3PHlsCo/Nq3XDFq5JUfxe6XP2D04p/Q2Y5w?=
+ =?us-ascii?Q?qAchoRdFGZz3cw9XZ6lf/irxHH8UT70ciDGLjH+ms4NRqhfdvydd6Bhj5BVA?=
+ =?us-ascii?Q?mqtCAS1O2R3GxjQqn4eNRNAs?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9576.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?raAk5yaPIlho6UlW2HI4uvrjq021TiWe0996sAoqm28Fgdh4N65FlTMzKvnc?=
+ =?us-ascii?Q?71yYD9xz2gKsIOxZhJMzBlDNT3s7PJIaLgegvL5QBRwmy3N0YuGlpPqjhbyT?=
+ =?us-ascii?Q?KHdAD1CS9FqXPYjAMa8cn0xePjOHDES934Ang4JSH9yiAjjTzl5jZeEU62s2?=
+ =?us-ascii?Q?jZNuppnCJGHagczSXaLDT0NNbvLgEBf/qjRgegAJh0zTu+hn2wZvXt03inXx?=
+ =?us-ascii?Q?yHCLukTLWkQWQgj4jhrcZQagIWW6dDh5x45R6Wk6CkwwpaqfU/3tiWFhTLCA?=
+ =?us-ascii?Q?JHdOuHEEMdHXxYKRc1+uTAmOmKaS1+0LGw1AYY2BlCs5tIAAlCACADjWlbat?=
+ =?us-ascii?Q?FsSmM1g29ak3RIDTCgSsoeA/aJX5oq+m5rzSvpLACuThzJkPTkfUAKWOX7GX?=
+ =?us-ascii?Q?mkmDYCttGFUySU7p7NNI8VIsQIqkHQ0U+kzzhaW7jVHjwbXN1G1CLo07ibBJ?=
+ =?us-ascii?Q?NID00aiE1QBkH6V2x2qM8KBhAJgYEKmlSHAujv4P24fZ/Q2rM+iwl5CMBEIz?=
+ =?us-ascii?Q?OSHxfC/W1XF2jYgWp6xTJcLVUSxyTqUSkFqB7PEr8Vd80+dVRBVxcGpDu8kZ?=
+ =?us-ascii?Q?ecr01URizxPMwB0LTVamqFeEF+Bx3UlKbT8t+tox5AxscJfOk01VCE1u1/bN?=
+ =?us-ascii?Q?kC8SiBIXRP4feSvECosX5X43eeOVbvGovWedzqDEVFQnbzu8QYaBwZ0Nqyh+?=
+ =?us-ascii?Q?HBKEwc0ZM5ADBnzapQTMqmfI6RtHIc3Shbs3U72WidlD8cANGHU/Ch4T4FiU?=
+ =?us-ascii?Q?v733pM6aao6eexV0jF0TziFZC2OAxm1dMsgFeRJAEW/TwltPNExiioP+iipc?=
+ =?us-ascii?Q?zjty8kkGvUcJV/+72e5dEd5+l6pLiKp05vAZ8PwRuXjkaaPmWNVnQFPnbRrl?=
+ =?us-ascii?Q?KOzY3IYylVLZzCfRrCjEWr5KeN9FaLY2adCpcp0+gleTgbmM8yZXu36fAkLC?=
+ =?us-ascii?Q?i0tImfsCYyQqRnxI5FwHJR1VFl2g04eqp16Bzm7NJT/k8yGq32iQ6grWIbTV?=
+ =?us-ascii?Q?MM0Rjusjjxrq1LpPNqEfnRW9S5GbWw0z5+DOjz3UrIoXSodkivbJZUc8suvH?=
+ =?us-ascii?Q?xP66bFyOzbelLpecl4LyNOXcN4HqOye2y7FeO1tUkMd4K6Fm0/U5xvVEZ6xN?=
+ =?us-ascii?Q?YO6SQW5bc/5viZXV3VFMR0dUbdOs1wnu0LJsuYd/NZFYOS/807b2Z+x9DqJK?=
+ =?us-ascii?Q?TSsc71P68CNR/i6OCncb7+9jvB0dOLeBBtMsbAZMnZGcUzjkuz2l1zEsIX+F?=
+ =?us-ascii?Q?UQrdDPi37h4yaS8TfN8iMaOvyKBLIabzIcCXldS11mcf7/hoCjVS1/XrXOgD?=
+ =?us-ascii?Q?TlLRyg69/yAGx1imom2UBOzOx0CPR3+Zz9kM7MBCFNnK1G85PUkf95OrUAuY?=
+ =?us-ascii?Q?hyHvQLkK84J/OuANbh5qHr2xhQehnXOqJd/zrywIuen4kYhtgQwYsNsZLfep?=
+ =?us-ascii?Q?osqpkQOjLQ/R5apHw5kao0wvMoyGKNwhhMb96NsVC/z91o9xB8sEtEugn90o?=
+ =?us-ascii?Q?c701MnM+7Xlff6cw0Tbs429N7nG+PiFwVAznDYYf0J91AE6Yq+XqvdRR851Y?=
+ =?us-ascii?Q?zb1i/644qBSir4qqirgb4ZBp+Ld4ntv5KS3cFUppTiDwc3633xkdzPmLuOad?=
+ =?us-ascii?Q?jA=3D=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 75f41426-2e5c-41d8-7cb9-08dcf33e77db
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9576.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f9a1c7c9-a24a-45b7-d1e4-08dcf33b4f44
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Oct 2024 08:18:43.7772
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2024 08:41:20.7704
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: X+mVqgGvDJ0voceyqtPOuo7ID+AlJBqY63s3ocKOmG/fYJGcX9thBhSMoNmLn7wH/+5bbK1o5KRmTMWa5l6TuA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10387
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: U68p4RAnkskprLpd/eGyj69ALwRbfPO934ffWoHIdeaXXfRVaczi0UTkWPzUBcN+kGrakswCPTPBTBN/ExoqXg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB9071
 
-> > +maintainers:
-> > +  - Wei Fang <wei.fang@nxp.com>
-> > +  - Clark Wang <xiaoning.wang@nxp.com>
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - nxp,imx95-netc-blk-ctrl
-> > +
-> > +  reg:
-> > +    minItems: 2
-> > +    maxItems: 3
->=20
-> You have one device, why this is flexible? Device either has exactly 2
-> or exactly 3 IO spaces, not both depending on the context.
->=20
+Hi Laurent,
 
-There are three register blocks, IERB and PRB are inside NETC IP, but NETCM=
-IX
-is outside NETC. There are dependencies between these three blocks, so it i=
-s
-better to configure them in one driver. But for other platforms like S32, i=
-t does
-not have NETCMIX, so NETCMIX is optional.
+On Tue, Oct 22, 2024 at 02:05:19AM +0300, Laurent Pinchart wrote:
+> On Fri, Sep 27, 2024 at 11:04:20AM +0300, Laurentiu Palcu wrote:
+> > Currently, if streamon/streamoff calls are imbalanced we can either end up
+> > with a negative ISI m2m usage_count (if streamoff() is called more times
+> > than streamon()) in which case we'll not be able to restart the ISI pipe
+> > next time, or the usage_count never gets to 0 and the pipe is never
+> > switched off.
+> > 
+> > So, to avoid that, add an 'in_use' flag in the ctx structure that will
+> > keep track whether the output/capture queues have been started or not,
+> > and use it to avoid decrementing/incrementing the usage_count
+> > unnecessarily.
+> > 
+> > Fixes: cf21f328fcafac ("media: nxp: Add i.MX8 ISI driver")
+> > Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+> > ---
+> > v2:
+> >  * Changed the way 'usage_count' is incremented/decremented by taking
+> >    into account the context the streamon/streamoff functions are called
+> >    from;
+> >  * Changed the commit message and subject to reflect the changes;
+> > 
+> >  .../platform/nxp/imx8-isi/imx8-isi-m2m.c      | 24 +++++++++++++++----
+> >  1 file changed, 20 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+> > index 9745d6219a166..3f06ae1349e53 100644
+> > --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+> > +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+> > @@ -65,6 +65,7 @@ struct mxc_isi_m2m_ctx {
+> >  	} ctrls;
+> >  
+> >  	bool chained;
+> > +	bool in_use[2];
+> 
+> I think you can store this in mxc_isi_m2m_ctx_queue_data instead as a
+> 
+> 	bool streaming;
+> 
+> >  };
+> >  
+> >  static inline struct mxc_isi_m2m_buffer *
+> > @@ -491,6 +492,7 @@ static int mxc_isi_m2m_streamon(struct file *file, void *fh,
+> >  	const struct mxc_isi_format_info *cap_info = ctx->queues.cap.info;
+> >  	const struct mxc_isi_format_info *out_info = ctx->queues.out.info;
+> >  	struct mxc_isi_m2m *m2m = ctx->m2m;
+> > +	bool already_in_use;
+> >  	bool bypass;
+> >  
+> >  	int ret;
+> > @@ -502,6 +504,8 @@ static int mxc_isi_m2m_streamon(struct file *file, void *fh,
+> >  		goto unlock;
+> >  	}
+> >  
+> > +	already_in_use = ctx->in_use[type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE];
+> > +
+> 
+> As the streamon and streamoff operation are covered by the same queue
+> lock for all contexts, you can do all this outside of the m2m->lock
+> sections. I think the following patch (untested) should do and would be
+> simpler:
+> 
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+> index 9745d6219a16..cd6c52e9d158 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+> @@ -43,6 +43,7 @@ struct mxc_isi_m2m_ctx_queue_data {
+>  	struct v4l2_pix_format_mplane format;
+>  	const struct mxc_isi_format_info *info;
+>  	u32 sequence;
+> +	bool streaming;
+>  };
+> 
+>  struct mxc_isi_m2m_ctx {
+> @@ -486,15 +487,18 @@ static int mxc_isi_m2m_streamon(struct file *file, void *fh,
+>  				enum v4l2_buf_type type)
+>  {
+>  	struct mxc_isi_m2m_ctx *ctx = to_isi_m2m_ctx(fh);
+> +	struct mxc_isi_m2m_ctx_queue_data *q = mxc_isi_m2m_ctx_qdata(ctx, type);
+>  	const struct v4l2_pix_format_mplane *out_pix = &ctx->queues.out.format;
+>  	const struct v4l2_pix_format_mplane *cap_pix = &ctx->queues.cap.format;
+>  	const struct mxc_isi_format_info *cap_info = ctx->queues.cap.info;
+>  	const struct mxc_isi_format_info *out_info = ctx->queues.out.info;
+>  	struct mxc_isi_m2m *m2m = ctx->m2m;
+>  	bool bypass;
+> -
+>  	int ret;
+> 
+> +	if (q->streaming)
+> +		return 0;
+> +
+>  	mutex_lock(&m2m->lock);
+> 
+>  	if (m2m->usage_count == INT_MAX) {
+> @@ -547,6 +551,8 @@ static int mxc_isi_m2m_streamon(struct file *file, void *fh,
+>  		goto unchain;
+>  	}
+> 
+> +	q->streaming = true;
+> +
+>  	return 0;
+> 
+>  unchain:
+> @@ -569,10 +575,14 @@ static int mxc_isi_m2m_streamoff(struct file *file, void *fh,
+>  				 enum v4l2_buf_type type)
+>  {
+>  	struct mxc_isi_m2m_ctx *ctx = to_isi_m2m_ctx(fh);
+> +	struct mxc_isi_m2m_ctx_queue_data *q = mxc_isi_m2m_ctx_qdata(ctx, type);
+>  	struct mxc_isi_m2m *m2m = ctx->m2m;
+> 
+>  	v4l2_m2m_ioctl_streamoff(file, fh, type);
+> 
+> +	if (!q->streaming)
+> +		return 0;
+> +
+>  	mutex_lock(&m2m->lock);
+> 
+>  	/*
+> @@ -598,6 +608,8 @@ static int mxc_isi_m2m_streamoff(struct file *file, void *fh,
+> 
+>  	mutex_unlock(&m2m->lock);
+> 
+> +	q->streaming = false;
+> +
+>  	return 0;
+>  }
+> 
+> If this works for you, could you turn it into a v3 ?
+>
 
-> > +
-> > +  reg-names:
-> > +    minItems: 2
-> > +    items:
-> > +      - const: ierb
-> > +      - const: prb
-> > +      - const: netcmix
-> > +
-> > +  "#address-cells":
-> > +    const: 2
-> > +
-> > +  "#size-cells":
-> > +    const: 2
-> > +
-> > +  ranges: true
-> > +  assigned-clocks: true
-> > +  assigned-clock-parents: true
-> > +  assigned-clock-rates: true
->=20
-> Drop these three.
->=20
+It's funny that in my first tries to fix this I added a 'streaming' flag
+to mxc_isi_m2m_ctx_queue_data too. But I must've messed up something
+else as I dropped it and chose the other, more complicated, solution. :/
 
-Okay, I will drop them. Thanks.
+Anyway, I gave your patch a test and it seems to work fine so far.
 
-> > +
-> > +  clocks:
-> > +    maxItems: 1
-> > +
-> > +  clock-names:
-> > +    const: ipg
-> > +
-> > +  power-domains:
-> > +    maxItems: 1
-> > +
-> > +patternProperties:
-> > +  "^pcie@[0-9a-f]+$":
-> > +    $ref: /schemas/pci/host-generic-pci.yaml#
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - reg-names
-> > +  - "#address-cells"
-> > +  - "#size-cells"
-> > +  - ranges
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    bus {
-> > +        #address-cells =3D <2>;
-> > +        #size-cells =3D <2>;
-> > +
-> > +        netc-blk-ctrl@4cde0000 {
->=20
-> system-controller? Don't use compatible as node name.
->=20
+I'll send a v3 with your suggestion.
 
-netc-blk-ctrl provides pre-configuration and warm reset services for the en=
-tire NETC
-IP, so system-controller sounds good.
+Thanks,
+Laurentiu
 
-> Node names should be generic. See also an explanation and list of
-> examples (not exhaustive) in DT specification:
-> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fdevic=
-etr
-> ee-specification.readthedocs.io%2Fen%2Flatest%2Fchapter2-devicetree-basic=
-s.
-> html%23generic-names-recommendation&data=3D05%7C02%7Cwei.fang%40nx
-> p.com%7C35715ef05b824c5d479f08dcf32fd256%7C686ea1d3bc2b4c6fa92cd
-> 99c5c301635%7C0%7C0%7C638652633944352532%7CUnknown%7CTWFpb
-> GZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6
-> Mn0%3D%7C0%7C%7C%7C&sdata=3DunWcE1OaH2Id%2FEny9UFAUH%2F5Xablg
-> PM0Yj4Br2jfQuI%3D&reserved=3D0
->=20
-> Best regards,
-> Krzysztof
-
+> >  	bypass = cap_pix->width == out_pix->width &&
+> >  		 cap_pix->height == out_pix->height &&
+> >  		 cap_info->encoding == out_info->encoding;
+> > @@ -520,7 +524,10 @@ static int mxc_isi_m2m_streamon(struct file *file, void *fh,
+> >  		mxc_isi_channel_get(m2m->pipe);
+> >  	}
+> >  
+> > -	m2m->usage_count++;
+> > +	if (!already_in_use) {
+> > +		m2m->usage_count++;
+> > +		ctx->in_use[type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE] = true;
+> > +	}
+> >  
+> >  	/*
+> >  	 * Allocate resources for the channel, counting how many users require
+> > @@ -555,7 +562,12 @@ static int mxc_isi_m2m_streamon(struct file *file, void *fh,
+> >  	ctx->chained = false;
+> >  
+> >  deinit:
+> > -	if (--m2m->usage_count == 0) {
+> > +	if (!already_in_use) {
+> > +		m2m->usage_count--;
+> > +		ctx->in_use[type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE] = false;
+> > +	}
+> > +
+> > +	if (m2m->usage_count == 0) {
+> >  		mxc_isi_channel_put(m2m->pipe);
+> >  		mxc_isi_channel_release(m2m->pipe);
+> >  	}
+> > @@ -575,6 +587,9 @@ static int mxc_isi_m2m_streamoff(struct file *file, void *fh,
+> >  
+> >  	mutex_lock(&m2m->lock);
+> >  
+> > +	if (!ctx->in_use[type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE])
+> > +		goto unlock;
+> > +
+> >  	/*
+> >  	 * If the last context is this one, reset it to make sure the device
+> >  	 * will be reconfigured when streaming is restarted.
+> > @@ -587,6 +602,8 @@ static int mxc_isi_m2m_streamoff(struct file *file, void *fh,
+> >  		mxc_isi_channel_unchain(m2m->pipe);
+> >  	ctx->chained = false;
+> >  
+> > +	ctx->in_use[type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE] = false;
+> > +
+> >  	/* Turn off the light with the last user. */
+> >  	if (--m2m->usage_count == 0) {
+> >  		mxc_isi_channel_disable(m2m->pipe);
+> > @@ -594,8 +611,7 @@ static int mxc_isi_m2m_streamoff(struct file *file, void *fh,
+> >  		mxc_isi_channel_release(m2m->pipe);
+> >  	}
+> >  
+> > -	WARN_ON(m2m->usage_count < 0);
+> > -
+> > +unlock:
+> >  	mutex_unlock(&m2m->lock);
+> >  
+> >  	return 0;
+> 
+> -- 
+> Regards,
+> 
+> Laurent Pinchart
