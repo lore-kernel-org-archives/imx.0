@@ -1,125 +1,99 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0FF1537AC
-	for <imx@lists.linux.dev>; Wed, 23 Oct 2024 07:27:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAF7158525
+	for <imx@lists.linux.dev>; Wed, 23 Oct 2024 08:12:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729668454; cv=none; b=YIWo791GwIQOlssBqWy/Hv9E3yVZP6heHYEO4HoEJZ9HNvNhx0IRy1PLbMPk5TSV7cUTqrsCf7G0LkrIjWMA5elpOkjq2ZeX4M9YV0JUc8iigPOis5tF3N+ByK9ccKZYf7Acbh4iLiPreYkVsyaFVbr1yD4826sG6+UgK6FYoMQ=
+	t=1729671163; cv=none; b=pIxgfQr7GC4Y57DgAfRc6plUMC6dfahnSbdWZu6uVN+HX5A5lwX689VXJJR2wI3Nn22ZblqRFgoR+Cc0S8cYUPxCmHWr69JIoaMBkQjYKNmnrKpMg/doAcC7Mr6qfypXxvj0AmRkvvDeTLUYP9l46v/KMFtSQrFYmGgeEhEZC0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729668454; c=relaxed/simple;
-	bh=UOdGmteuDF17WaDKUsAm9bMSO1DRsXO+5b96m5laO4g=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VSAr50Xj8I8M+yH6e9jI64rPrz2dZ3TWgDvuN/IWmmnKMMUL0ujriLVDU5W7vRyz0GcbWF0tHXCgJpP9WBgYpg+ppqhrBWDcooUKTzQZfz/6lKNSptFBH0TgGOTZf9pLf8k9W0e0P4rjCW+twLPe/gi2fEPN6a1Rex/ml+JyXIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=qHDwvzxU; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=HjRos3+J reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="qHDwvzxU";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="HjRos3+J"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1729668451; x=1761204451;
-  h=from:to:subject:date:message-id:in-reply-to:references:
-   mime-version:content-transfer-encoding;
-  bh=8QvoeAYq84HcWFFGcAF42FU7PXi0chXEy68ubmj3kl8=;
-  b=qHDwvzxURovGLoPvWg+1nfZx6SLzICxvmuamhWBip2VLlsihVOr31LvT
-   CJ3+gdf5m/xTcOEV5sv201bJrFyqMatGev0ZXCW45ivj8D4afa+wfKEVi
-   nvDY41OB+rfuT6ZLpYJrVb/UvoVUPRCTr4YploRp04Nu6Kvv5Bu84cH0A
-   +bpXmEN2YeH2lv+qfuzIN1CzcHI9hGJu8Kum2Cer+yR61DVCAs0t1/kMn
-   0RDNY4e0WjuAa9pWnLL2WdcOHCqtJWot36f69D2xQKUe3CNbq2imN9Kz0
-   peuc+pKPSspAitZBDd3WE0hqwXuhEd2V+R10YLhiIRysdcGPkOY8ncCcY
-   A==;
-X-CSE-ConnectionGUID: rDH59LECStGuVPIcPtvpUw==
-X-CSE-MsgGUID: glc2ETSXSCusCZzvvITlUw==
-X-IronPort-AV: E=Sophos;i="6.11,225,1725314400"; 
-   d="scan'208";a="39615366"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 23 Oct 2024 09:27:28 +0200
-X-CheckPoint: {6718A560-36-8E59014-E6F31237}
-X-MAIL-CPID: 69246EAEBA9715DF528DC60B9732E311_1
-X-Control-Analysis: str=0001.0A682F28.6718A561.000F,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 96700161479;
-	Wed, 23 Oct 2024 09:27:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1729668444; h=from:subject:date:message-id:to:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=8QvoeAYq84HcWFFGcAF42FU7PXi0chXEy68ubmj3kl8=;
-	b=HjRos3+JIqRURrrlHtwap8O7c9iftlfAa/6SI48kI10SmsVrpT8gJh3SBk2i6pZD69s0cW
-	NClUuq19LuLN0LSPXLMmnM5nT/Uhr9gGPs9S9zPNpON1WuyuDClgAe/frWL3htYHSlzFsq
-	ijX2FkP8Y1/3LLubC7SLR+5ad7ph74BJJ1tX3KF6iq8WSfeDues3BEfQByxiKeaPg8HNQm
-	YdHaHXcSMj5WTV+oZKFnxgZWe3w8XcSbwkNc0trkUpDhba1sgylqsVH5LKS3XT3NL1zSGE
-	UWaR5FPGItWmquCWPNWhOuj0/jIfbxFO+2sSte0In712T1bAg0iGtHUrTm9XmA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, "open list:TQ SYSTEMS BOARD & DRIVER SUPPORT" <linux@ew.tq-group.com>, "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH 1/1] arm64: dts: freescale: mba8mx: remove undocument 'data-lanes' at panel
-Date: Wed, 23 Oct 2024 09:27:23 +0200
-Message-ID: <4606074.LvFx2qVVIh@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20241022202342.1263766-1-Frank.Li@nxp.com>
-References: <20241022202342.1263766-1-Frank.Li@nxp.com>
+	s=arc-20240116; t=1729671163; c=relaxed/simple;
+	bh=TcTBNj7+iYOpxE3v9b4DJqZG6L5zlKG1LkB0qWPMVnM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=c4ANt5ClOA6MH9zrmaf1NOQY0PAo9pxC51SADUVufuICSzjhhyrwhabQtIU1jFaNZY1t/Tu3uV6kQw2J5LiBTkFs2H3z7ESPECy0GH9B06nPoMc6yvqbfV74Q8O5exfhVmEjUlF2zOKyoQP5T5c0MEUDYr9STysqwX4vGjJ/QPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1t3WTv-0004YQ-3C; Wed, 23 Oct 2024 10:12:39 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1t3WTu-0010Hi-1W;
+	Wed, 23 Oct 2024 10:12:38 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1t3WTu-00FrPY-1K;
+	Wed, 23 Oct 2024 10:12:38 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 23 Oct 2024 10:12:28 +0200
+Subject: [PATCH 1/4] nvmem: imx-ocotp-ele: simplify read beyond device
+ check
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241023-imx-ele-ocotp-fixes-v1-1-4adc00ce288f@pengutronix.de>
+References: <20241023-imx-ele-ocotp-fixes-v1-0-4adc00ce288f@pengutronix.de>
+In-Reply-To: <20241023-imx-ele-ocotp-fixes-v1-0-4adc00ce288f@pengutronix.de>
+To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
+ Shawn Guo <shawnguo@kernel.org>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1729671158; l=938;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=TcTBNj7+iYOpxE3v9b4DJqZG6L5zlKG1LkB0qWPMVnM=;
+ b=ZUec58O0Z2WMBmVreT/O9n4WGnFhNX4RcR81wyRt8p73ZbJqxufTkPLPL17TFzk9T9zeHpBLT
+ wvXATQ7a4QJBdIDkCLmh/nU7OXvzM6jspOa5lHL2fA7UN7oPvN/KaRX
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: s.hauer@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hi Frank,
+Do the read beyond device check on function entry in bytes instead of
+32bit words which is easier to follow.
 
-thanks for your patch.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/nvmem/imx-ocotp-ele.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Am Dienstag, 22. Oktober 2024, 22:23:41 CEST schrieb Frank Li:
-> 'data-lanes' is port0 of lvds bridge. Needn't set it for simple panel. Fix
-> below CHECK_DTBS warning:
->=20
-> arm64/boot/dts/freescale/imx8mm-tqma8mqml-mba8mx-lvds-tm070jvhg33.dtb:
->    panel-lvds: port:endpoint: Unevaluated properties are not allowed ('da=
-ta-lanes' was unexpected)
->        from schema $id: http://devicetree.org/schemas/display/panel/panel=
-=2Dsimple.yaml#
->=20
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
+index 1ba4944976987..2e186b7d3b040 100644
+--- a/drivers/nvmem/imx-ocotp-ele.c
++++ b/drivers/nvmem/imx-ocotp-ele.c
+@@ -72,13 +72,13 @@ static int imx_ocotp_reg_read(void *context, unsigned int offset, void *val, siz
+ 	void *p;
+ 	int i;
+ 
++	if (offset + bytes > priv->data->size)
++		bytes = priv->data->size - offset;
++
+ 	index = offset;
+ 	num_bytes = round_up(bytes, 4);
+ 	count = num_bytes >> 2;
+ 
+-	if (count > ((priv->data->size >> 2) - index))
+-		count = (priv->data->size >> 2) - index;
+-
+ 	p = kzalloc(num_bytes, GFP_KERNEL);
+ 	if (!p)
+ 		return -ENOMEM;
 
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-
-> ---
-> I have not such hardware to test.
-> Alexander Stein:
-> 	Can you help check it?
-
-I noticed myself already. This patch fixes the warning.
-
-Best regards,
-Alexander
-
-> ---
->  arch/arm64/boot/dts/freescale/mba8mx.dtsi | 1 -
->  1 file changed, 1 deletion(-)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/mba8mx.dtsi b/arch/arm64/boot/=
-dts/freescale/mba8mx.dtsi
-> index c60c7a9e54aff..3d26b6981c06f 100644
-> --- a/arch/arm64/boot/dts/freescale/mba8mx.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/mba8mx.dtsi
-> @@ -100,7 +100,6 @@ panel: panel-lvds {
-> =20
->  		port {
->  			panel_in_lvds: endpoint {
-> -				data-lanes =3D <1 2 3 4>;
->  				remote-endpoint =3D <&lvds_bridge_out>;
->  			};
->  		};
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+-- 
+2.39.5
 
