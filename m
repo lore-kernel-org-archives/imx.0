@@ -1,174 +1,157 @@
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2047.outbound.protection.outlook.com [40.107.249.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA521C1AB4
-	for <imx@lists.linux.dev>; Wed, 23 Oct 2024 15:26:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729697221; cv=fail; b=fPVxXqHXZNzjCamJSjEKqVmIKowUZ2v9bxrqJkJrwMApgadHtsbsbJPq98kWMjrCPrQH1xdbZqvk/wC2wIZYZZw3bA/ukCVE0508lEkQ2yAMdn+aVM+IwwJjhrqb0gTErkjrPDm2sX3x8aCank4aSugI2ZfSm83iAwCvizCq72E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729697221; c=relaxed/simple;
-	bh=C51Z7O88CHWKEUSU7v74PNBQlKLmYGauV01rnEXGHug=;
-	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=jMj8eI2AhEdAhwd9ASTciEktcr7EdQ1BGhvJUqlYH9qLxQpFXtGY1hjrNTgDj9byDsdUuzJTWmSsIsXHHx/JzsvXpyuhC3LHd3xG9jCnEy0LD6OcMg/b7jqjymhQP1VZMoNOsshiJcp2bZKCuy6TMZVqjfvspLAszRRZfQ762dI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BmgHQdhT; arc=fail smtp.client-ip=40.107.249.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B621BDA8F
+	for <imx@lists.linux.dev>; Wed, 23 Oct 2024 15:32:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729697531; cv=none; b=sHXbCyaeXo6Ub8jM/3zmhn81LgldDsSwcui+Q4jS2y5w0nRdSevIZq2ILiCCJoqu8p2QFBsYtDv4kp9qQ/c/zXk6nh+meE+UvvWHCQ8iMivBUq9gjH+2tcv2AEXl8ygScVU0CFcZhIhLNlAJD+Lk+r8dXvWjAGpIRRfyvpGd9QM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729697531; c=relaxed/simple;
+	bh=uJiT7hVx/xahCA0VcyVkbeg7wZqhI1sP4Nlvax/O2s4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r6ebxRFFfleGrL9HbIdVQiJ/sajbvSrdPQlEYVLr7+uIq4i15D6K1JrpDiz5KGq47+6Ev9sgl8HNe1vNeqWngpEH8YObSd2Z3+jxuQgdm3oOE7dhsl945ifOyXHnmvLeoJBnfXw/FEaGAr9iw4xUVn/QGnpZcL30rJ5RfRfnCkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cENAyv+7; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BmgHQdhT"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=e7gmsn5ztl8tK6bQP763Kl5YXy0/ys1y4W31qSQ6DtvRgtOD6azTI7e165R3Ns5eDTqMBWyXnVpENx23gr7U2mX4RuNQbjPiwPW+C5naU8SZJLxJgOs8BMe3rz4BV+BSn3w7XCfWbfkF6I99e8K73BhHrbly+eJg2vkMTWwRUZfka0WL0d0ce4z3rqAHh7QFH1L4zmVeoWW3xqbdrClVmkkJgqoGYlU379a45o2h5sn17vJbXn0+RwwDj4qL2uewggBzsGHonlYZR41MfK08yXemzouSlnZvVWv/B4CdXqaEyQqGz8Cl4mreguJPeuB1PdtN31M+XvvxRi7xqmBJXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bSRbxLpPEwUJI8t8rB9n7TGg2dxmDujJ6x2YMTkzI2Y=;
- b=n7l+xGQtnkbrpnzD+MwvK/UmBESMT7YMH5EDgf+Eu/f0OMJcWfjo6MlHyGrTbvVOILkuLbtH9e6/EKT0on5Sqh+pSjm/4r84mglEcnB+AICurrLnDcYJLDit1dhI4zrWv054ptxCEA7EU2VY8z+BhEJe0CQWgb4oNoUeI6XXNj4EvnykukcVJuy6gN65FdhVm9/Sk+ouJfKzvQeZZ3/pVMc4j8qnT7jAmuN6eHq9h1wV/ujUV3rvxKFun8NtYtijSHRPpFtwYg3jCrexaWV4uHxwzxeoL0IZyxzT9j1yMzTnuxkXyhAFYkB2v0aVn6vFc51sOmcSSxWLBMV+zOL2Lg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bSRbxLpPEwUJI8t8rB9n7TGg2dxmDujJ6x2YMTkzI2Y=;
- b=BmgHQdhTMqXP6BL9OA8DpXm86usFiP/vV0pqh8lz/c4oMzEHwa/cmM1ivvpKgH4t1D53LADL0ZKzrNH/HYKlh/jKsdFbrxbCnzG0kt0IvL64qZMFvMBIGENTdJL2gAQSd3EVeS8p9u56FG00dyF56yeu4/ftfyJozBbFTIMJSphzEUx7Xb3Q7SSh6WhHl+BJnUDKcjLWppjJ6Bqm5Ly1eMB9XABa4NskH+4KFjYkSx9R+eDPb8OFCTEl+ROB2v8AGEy3gEscIbCw9shPuxvIAX55gZDfwGl1u21EyLEZ3rJKbzrbsosHuHfE9XTTVPn0HPzTvhVOyWuJkKDTwdSA8g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM9PR04MB9001.eurprd04.prod.outlook.com (2603:10a6:20b:408::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.29; Wed, 23 Oct
- 2024 15:26:56 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8069.024; Wed, 23 Oct 2024
- 15:26:55 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: frieder.schrempf@kontron.de,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH 1/1] arm64: dts: imx8mp-kontron-dl: change touchscreen power-supply to AVDD28-supply
-Date: Wed, 23 Oct 2024 11:26:36 -0400
-Message-Id: <20241023152637.1301847-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BY1P220CA0011.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:59d::11) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cENAyv+7"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-71e93d551a3so4963200b3a.1
+        for <imx@lists.linux.dev>; Wed, 23 Oct 2024 08:32:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1729697529; x=1730302329; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dN8a7fvduKCx2N8X+Fze1sdag/dsDlxBspq41TWyoeg=;
+        b=cENAyv+7FuiQHNBbK2453Rqu7aUv8WIiiDBr/3bX+kiNlnTmX+OZ046I57pVnSfQDY
+         KzaXddOKemHJuVouRGN+Pdl/Fd9DRaokgL/VqTSGY3FY+nyN14eGfk7z0gVyAg5uE40J
+         3WGs11OV7RklSOJR69/Ph6wDjGEAxAAFeEdG0iDOmadT/2475S0efgl3V4QsQHritpj8
+         0w/89ls0hFP4vtaaZeD1sEaIBgHMHgYNPKO5Vlq60d3rPqTuIm4DTCL92Til7nuZD8AP
+         huQ75BWvJOJKul6Ohwr3JM4O16augItbe9fyWMO1myFSBcDIsv+zJlF+sRCorMHr88kT
+         lknQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729697529; x=1730302329;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dN8a7fvduKCx2N8X+Fze1sdag/dsDlxBspq41TWyoeg=;
+        b=I7j/5/zR1uypMwmDf4MtdJKNsjPwM8bxnFqUC1YGBa7/mH7/Uj6SRNAbbQ4l1ebtkl
+         Hi7N5k4JJoYaHXQ/FepaAO2kcSocjnz14zbitq3bN6SrjnQDiS5koQos7/Fxcz4GKFh0
+         S7vwS2hlGmZFpfVewMoWZPe2aFdZpnzH827I2QoBk6EOKzHEkX5NuqkweoFdOZWDtIsZ
+         LFQLZPiH5fZ7P1RKqNz8puvjL869WWNJW+OLerNgW55BrLiV+qJbaRYMpHFZqfwECNpP
+         FcLRSQk8rFKSlW/1QY+tVxk5WJKLTqIa4l6x8nG07r/6ex7+mGidRuUzxlpKmd9tRHtz
+         JD7A==
+X-Forwarded-Encrypted: i=1; AJvYcCV8gsP1pBYH2sOBxOVuoQzO5uM7L+ELaD4Df15pUfROEAAjFqykxbqGC3pX2bV0QYQdUaM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxXWZdpWThoBYpAVA+Qtc9f/5Pd+oBAA1xceWO72TPNtpPAeNL7
+	mHrUj4UHSj1AagsuxzqCfL+7ucR+2jXlAkr60yd/uO+LPhWWcSg15awpN/0W+5s=
+X-Google-Smtp-Source: AGHT+IEuMqNTvUaDPURzgubw6rU0RA+n8yh/M6Nh+flur01DK+b9L/ZnZf5Kb+mWgIm3kN/nyflVwg==
+X-Received: by 2002:a05:6a20:c901:b0:1cf:3a52:6ad6 with SMTP id adf61e73a8af0-1d978b3daacmr3402937637.24.1729697528716;
+        Wed, 23 Oct 2024 08:32:08 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:4d51:82be:d1c9:bc03])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71ec1407f19sm6456248b3a.190.2024.10.23.08.32.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2024 08:32:08 -0700 (PDT)
+Date: Wed, 23 Oct 2024 09:32:05 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Daniel Baluta <daniel.baluta@nxp.com>
+Cc: andersson@kernel.org, linux-remoteproc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	iuliana.prodan@nxp.com, peng.fan@nxp.com,
+	Alexandru Lastur <alexandru.lastur@nxp.com>
+Subject: Re: [RFC PATCH] remoteproc: core: Add support for predefined
+ notifyids
+Message-ID: <ZxkW9SUr91PyH9c/@p14s>
+References: <20241018110929.1646410-1-daniel.baluta@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB9001:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1d430c56-0a64-40b5-c996-08dcf37720c9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|366016|52116014|376014|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?oENdp/odKKjIoeO88d0DJ/CoZ+2qS1q5BAq5rxkhUPgTz+srm6+sS+BhoLWH?=
- =?us-ascii?Q?aDMTP8sJSdqeLnJrf07KzsoF4VQqhlkDxt92MuZX1zPnRTN7vzohkr7z/+4L?=
- =?us-ascii?Q?TH+PaghxFPslDrCS8BUOCCAM3MiOf0jDogJFJkOSvpDgvTInM+Yt7u9Su0Cs?=
- =?us-ascii?Q?xpVETR03ocMOIKzmejljKSYYGXD3Z9kIevprGLwRRS2IQjJg/7R4kdoJHVxe?=
- =?us-ascii?Q?4+MJ5at4lB/zblkCeqZIeZhaPHz560bGJSyEvS50VZZezFRDhQ3XRkaishqu?=
- =?us-ascii?Q?jVaybXh6u5a6Edr/5gHSSM/e7W4JGPTfUiX5vNvRHjDp3IhRhS+1E6A+BWiq?=
- =?us-ascii?Q?5RnV/7zjsAUabWTRAE9yFYrok1FmQSMRGngHjFjsfxhHz6ALhdRBAq4FmIdM?=
- =?us-ascii?Q?aqM6PravT+HmL6QBLmFXsfN/TGSz/7NBvI8YzxLcUfRGNwNbX3K0gdV5LFdQ?=
- =?us-ascii?Q?6CAKa+6IDO1ao6mFViXMQX4wUJ1eDfyBhJzo3PGXCHpwCeOupuDOm2J8MVmc?=
- =?us-ascii?Q?pEN2xnKayfZHVfOTpjCG57qFObiVYVI2YCWnyXXVDDRQOOeIBotydbjS2pu5?=
- =?us-ascii?Q?S5jqnhZfwjRX+YGtKo+Ri2e8uFrVTgcrYT5VLJ8JS2vYbQ9Gdc/1WHgTNoRt?=
- =?us-ascii?Q?j2gf+/+js5Vczurswsf345x2dfFTtK3WINhT7DI0G8IpBxfG0ZkIFa0jF84V?=
- =?us-ascii?Q?+2UhUj8YSgoeoWbuMODvgfOb9d4Qc3tTYQeVCbC+IEXkvPvdgpbnGzMKHeYw?=
- =?us-ascii?Q?zU7tkmEvBGCf8MYWvQpUVsZNq7YdKCiTvuTz/ADCqPWgBa8edCgKww5+ogS0?=
- =?us-ascii?Q?GdJjmS57k856Bzux33qdARYMKJcQ3t2KEbg6Bj9SR+jjBP5h+e03co5enrJU?=
- =?us-ascii?Q?g1r3U/K4Wrlv8UK5he6KtwidkVt5zZhm6wTs25EmzJx0NWXYrp5e1kwyNeLO?=
- =?us-ascii?Q?OZasYFY//kqCkacnZBpibcvzpWBGmrvIBPI9Ox71ykaM9sPZh3DERoTVgM7w?=
- =?us-ascii?Q?vS3R9He/QyKnARyS3jRq4M++3eIu4Q17VtA93UrhprqQ0DK9S/iYqI7CeLFv?=
- =?us-ascii?Q?+LUCEzGWpqsf/SE0yHOk6wqENQvllxDcLfrz43mIE10stpaWTQnLXR5w9DDb?=
- =?us-ascii?Q?LeM8bqxKWnuAtdM5eXtb06vta85xgUy8N5pkslAQ8kVOdPnM5sa01BeEj+ml?=
- =?us-ascii?Q?/AqgYBU9fMCwHh3jGLuQViQP2/Kbe4URdk1iI93y8zqblfdaqbRNeV1j7ncY?=
- =?us-ascii?Q?vVAFlmG68qXePSASOhIOSB5RuSWWnxuy7zwdOfelDMDm4ibeQUoFgUiruVr6?=
- =?us-ascii?Q?/bVdpA4ryIc24PqhIuBp4u2AJ0qAzKAEeaGQ7zObL5VpPQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(52116014)(376014)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?KDZABoHhfYuxmdP//lFYshozUe4FvgBAxj0FFs18WpDlWM9UKscEcPHgF/kb?=
- =?us-ascii?Q?ctFUmXSlcxH9Lx+TkM5eZmaYHXUvr96nw6aN7jd4RBahJMMW+zfoF4S8+d7t?=
- =?us-ascii?Q?Yi3szkF+v5Uuh7k9UmJyxZLngSokyBxHS9iwU8ZZwMxeA9xImBPnnLRsLfbP?=
- =?us-ascii?Q?okPB+yBTqg4GLWa4bgcQYnH8NlYxHxhqFK0UrrPrPkNugSyl+C1ExjiFpUxG?=
- =?us-ascii?Q?w7qMEX3k61pX0O9DSxxSY3K0xGuxZ16Oyjtn3XyDVazhTirDQJWEbkJJ+Nsr?=
- =?us-ascii?Q?aDnkbteRdAXn5wJygVtUhu7zm8OfuCWXNBwAagkwCxcCSHsBVWXvQn4kr5oj?=
- =?us-ascii?Q?FlcJ2y0wGXChu2m4XUEIw8/GGbuGGhPkAyR9tPFqTfmRpWY4szNuCd+SxWRo?=
- =?us-ascii?Q?A8jYdEDJHXYgnyB/54mTDg6BvGm1ciexCrcjNdaxGYDxwRypTzqJDx/UIFf9?=
- =?us-ascii?Q?rWlsgafl5X9Le7uVMzFyTiyIFJIoh0UlJIp3y/mi2VsphEb0INtjxdMF6lWq?=
- =?us-ascii?Q?YgRcNjL/82Xefxl6kRVcPpsR6r0p0ymcvZOKvNPfbgVj/ncFNDuVLPYgCvma?=
- =?us-ascii?Q?TbgrOrTLeXlMmgyhac0KEfSF4vrPDPh8lDdAeaqKEOTBBz5UeS+6eUulpdCK?=
- =?us-ascii?Q?gQsmuHe0dJMvJAg4exZGyNTwxlMhKrnEpMouGXV/EEa0u6H5aLBw8ACHKadu?=
- =?us-ascii?Q?b7qXqpNonHJSN9bLFkYK1+w8wOLEwUD4WGOdhIMS/BXkKlkXvZ2MIFpWtAzf?=
- =?us-ascii?Q?j7KjPj08n3PO0OEGhcOLI3WYTSYKkEdy2iIZLvxCFk19JB/YJuQ/J3WtqzVR?=
- =?us-ascii?Q?BBp9g+2rWhAWQLdd9ly/pIRCGO0+utQYF6CYTCAHI5fGtOIQdgeb/YJRWNKJ?=
- =?us-ascii?Q?+xGGxrTIj8vMaDNdrqAUWPvC5fZbrf+ZE3cvOSioRd0cKbJFGH9l2kAk2Xwv?=
- =?us-ascii?Q?h77q9OHJ2iNlFtDpaKdEKkJDvz9xRNhhKjR4ipTdJXkX38n1tyLQlNzgcLk5?=
- =?us-ascii?Q?Mb89j6ejeHgjOrhJZOggTZXrKNRbZp/deVwQ2QFOu7yrDncltuyMAagJErm+?=
- =?us-ascii?Q?w82wBQwopNwVVNGYDPriZN7q9Z27s5twQWxmpBdUwA/X03CPE9a2LCJPEqJG?=
- =?us-ascii?Q?4N8XGlLa0UBclaTBNb8PLtjWb74W48NsrNqF49lZ1VFjWu+ey1oDBW1itfFR?=
- =?us-ascii?Q?Xo4536WA3/6kgp+twOat00G3RuO40UJb+Y6QWCdjtv4FCWWoeMSj5pjgVD73?=
- =?us-ascii?Q?lb3ku097zg6wIzwlk2UJRN/p42uypYi/lUC3iI8c/3pplfz1cnBmSSZFRKF+?=
- =?us-ascii?Q?NCxW8FHRS8gQ6Q62b28rIFuK57Cd8ZwPwkJwKil/tx9ncS86NsrC9j/ZoOVB?=
- =?us-ascii?Q?X+BjsCDPPztVBlU7bqGEmLfbGnwkjiKoR+uPx21nX19GeGOpxPPh9+dJlTxp?=
- =?us-ascii?Q?dX2w0WaKhxexEpcxsq8UdQ6YnnP2874qclUI4pngK4WhmEV6HXJreKzRHVb7?=
- =?us-ascii?Q?Nz+sB6JWKKszVHP+EqFU8JNXUl+zh8F/IJ4Gz35RMUmyVpb83ixxEB3OVUj0?=
- =?us-ascii?Q?FlFoV2eC4WyaPH9iSLwxhbA/WEhKBRyhsQekldGF?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1d430c56-0a64-40b5-c996-08dcf37720c9
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2024 15:26:55.9370
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: o2VohvuyqcFbUUGOhEGJEAat89GHd52G94Wcm0zz6oOSsRDD/WT1ecSYY57S0cbEmiJKLKZZOkEwfcx5bTyAjg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB9001
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241018110929.1646410-1-daniel.baluta@nxp.com>
 
-Update the touchscreen power-supply from 'power-supply' to 'AVDD28-supply' and
-'VDDIO-supply' as per the binding documentation in goodix.yaml.
+Hello Daniel,
 
-Fix below warning:
-arch/arm64/boot/dts/freescale/imx8mp-kontron-dl.dtb: touchscreen@5d:
-    'power-supply' does not match any of the regexes: 'pinctrl-[0-9]+'
-        from schema $id: http://devicetree.org/schemas/input/touchscreen/goodix.yaml
+On Fri, Oct 18, 2024 at 02:09:29PM +0300, Daniel Baluta wrote:
+> Currently we generate notifyids in the linux kernel and override
+> those found in rsc_table.
+> 
+> This doesn't play well with users expecting to use the exact ids
+> from rsc_table.
+> 
+> So, use predefined notifyids found in rsc_table if any. Otherwise,
+> let Linux generate the ids as before.
+> 
+> Keypoint is we also define an invalid notifid as 0xFFFFFFFFU. This
+> should be placed as notifids if users want Linux to generate the ids.
+> 
+> Signed-off-by: Alexandru Lastur <alexandru.lastur@nxp.com>
+> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> ---
+>  drivers/remoteproc/remoteproc_core.c | 14 ++++++++++++--
+>  include/linux/remoteproc.h           |  1 +
+>  2 files changed, 13 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
+> index f276956f2c5c..9f00fe16da38 100644
+> --- a/drivers/remoteproc/remoteproc_core.c
+> +++ b/drivers/remoteproc/remoteproc_core.c
+> @@ -332,6 +332,7 @@ int rproc_alloc_vring(struct rproc_vdev *rvdev, int i)
+>  	int ret, notifyid;
+>  	struct rproc_mem_entry *mem;
+>  	size_t size;
+> +	int start, end;
+>  
+>  	/* actual size of vring (in bytes) */
+>  	size = PAGE_ALIGN(vring_size(rvring->num, rvring->align));
+> @@ -363,9 +364,18 @@ int rproc_alloc_vring(struct rproc_vdev *rvdev, int i)
+>  	/*
+>  	 * Assign an rproc-wide unique index for this vring
+>  	 * TODO: assign a notifyid for rvdev updates as well
+> -	 * TODO: support predefined notifyids (via resource table)
+>  	 */
+> -	ret = idr_alloc(&rproc->notifyids, rvring, 0, 0, GFP_KERNEL);
+> +
+> +	start = 0;
+> +	end = 0;
+> +
+> +	/* use id if specified in rsc table */
+> +	if (rsc->vring[i].notifyid != RSC_INVALID_NOTIFYID) {
+> +		start = rsc->vring[i].notifyid;
+> +		end = start + 1;
+> +	}
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx8mp-kontron-dl.dtso | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+This will likely introduce a backward compatibility issue where anyone that
+has more than one vring and set their notifyids to anything else than 0xFFFFFFFF
+in the resource table will see a boot failure.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-kontron-dl.dtso b/arch/arm64/boot/dts/freescale/imx8mp-kontron-dl.dtso
-index 134bdf156607c..a3cba41d2b531 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-kontron-dl.dtso
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-kontron-dl.dtso
-@@ -80,7 +80,8 @@ touchscreen@5d {
- 		interrupt-parent = <&gpio1>;
- 		interrupts = <6 8>;
- 		irq-gpios = <&gpio1 6 0>;
--		power-supply = <&reg_vcc_panel>;
-+		AVDD28-supply = <&reg_vcc_panel>;
-+		VDDIO-supply = <&reg_vcc_panel>;
- 		reset-gpios = <&gpio1 7 0>;
- 	};
- };
--- 
-2.34.1
+A while back the openAMP group started discussions on using the configuration
+space of a virtio device to enhance device discovery, with exactly this kind of
+use case in mind.  I think it is the only way to move forward with this
+feature, though it is a big job that requires a lot of community interactions.
 
+Regards,
+Mathieu
+
+> +
+> +	ret = idr_alloc(&rproc->notifyids, rvring, start, end, GFP_KERNEL);
+>  	if (ret < 0) {
+>  		dev_err(dev, "idr_alloc failed: %d\n", ret);
+>  		return ret;
+> diff --git a/include/linux/remoteproc.h b/include/linux/remoteproc.h
+> index b4795698d8c2..98c3e181086e 100644
+> --- a/include/linux/remoteproc.h
+> +++ b/include/linux/remoteproc.h
+> @@ -238,6 +238,7 @@ struct fw_rsc_trace {
+>  	u8 name[32];
+>  } __packed;
+>  
+> +#define RSC_INVALID_NOTIFYID 0xFFFFFFFFU
+>  /**
+>   * struct fw_rsc_vdev_vring - vring descriptor entry
+>   * @da: device address
+> -- 
+> 2.43.0
+> 
