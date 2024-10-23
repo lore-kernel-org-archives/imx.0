@@ -1,57 +1,57 @@
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309401CEE8C
-	for <imx@lists.linux.dev>; Wed, 23 Oct 2024 16:21:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDA01CF29B
+	for <imx@lists.linux.dev>; Wed, 23 Oct 2024 16:21:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729700514; cv=none; b=p7SijAsH9UI0cn6bM5pbfs4oE/p/vsebloV0xgIYAuU13iq692tXLYTPmqUEZtKAb6xSWxdP0o0x4Nyq7en5Jsv47YOBkFnQnkL5RcDfobg1VZp6O8mfZekho9p288PXe6ZfKYknyqa0qUfJnD/9X6r5Kd9fbippPSb+8hI0V4U=
+	t=1729700518; cv=none; b=TwnDEIbONG9NIDx9dN7pfyy8OwsZHsY7BE+Er9m4Y0vBLfbV4DeJIF9a2r942GzOyVojnLz1L7KjQ0L01Fd3UTBzh7jRKVa9DP6ilxKl5H1Ks0CbJ44t/VIRgoUjUmAUv4RMkj4DmXgvtXZ8/1DVdmYRH5yw06Va4rQfuhxuDgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729700514; c=relaxed/simple;
-	bh=u5/D8JkS0pteSch/iFvi0JPXftSiwu6DySluq4qPaU0=;
+	s=arc-20240116; t=1729700518; c=relaxed/simple;
+	bh=aD4ZDGMB/0Exiwv1vFpmzxZEkElwM8K5XNyCEfr/VBE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dAU9uBuIL5GYCwdbO/Sc/5uBavlcAVuNergPtxG1Skjyh8z0GGX1FHOZhc0dYeD4Dop52fdHWSGguE3kD5d6ykBKR2EtAZkQjDRpUX/wVqEq2Nqri0jwg7MGbiQi5aVaiXX1JHhVbqFSefefesaJn5g9X8dte6dOp6Hi0Jals/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JbVQzetC; arc=none smtp.client-ip=209.85.208.179
+	 MIME-Version; b=e9Jwmod/Yew41PnZf0qEeufG9mo/JgYuwAHUCwM1IzVHno3e4ZLmGUGd6GQvKvdWY8o54YH0cuPBiXozeFc2MVuZIx2XeRdJQC16DbdTprez1nX9doP2vBZps11azQHgsSuppx7ZWslBW4aUNb04zfxpW6+73LM2BUwcaUOpSs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z2SGq3fI; arc=none smtp.client-ip=209.85.208.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JbVQzetC"
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2fb3debdc09so55586881fa.3
-        for <imx@lists.linux.dev>; Wed, 23 Oct 2024 09:21:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z2SGq3fI"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2fb5a9c7420so71959001fa.3
+        for <imx@lists.linux.dev>; Wed, 23 Oct 2024 09:21:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729700511; x=1730305311; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1729700515; x=1730305315; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bgC15d/pQkY9/ZdNYZmW9U8JEuWcaoADNmU9EGiwgmk=;
-        b=JbVQzetCP7IOcAUs/2NAyxno3/vbihjYnGW7GnITIiPR2CGYsqh/nmOFxps54BNXM1
-         s4IS/czrjUVRCWsEHh4SSq4G/xeUxIbL/VdF4ea+lVcweyH8tY0aDxl+jWDLkVNlFqD2
-         0TFP5TWs1+Vpr1RJHHPf0xr2hGqB/ci/GbqmNabmbws7CJ5AEz0ON0aEZ0i9JsFquYN+
-         ojE5qncUzzqGs2JKdGE5yFv3QSvFce7tsazrBFlnpsxnijcO49VGJUv6RG7w2lMurRQJ
-         fpnZsCuHfcpuCUQ0yJYTU4CVGgklLIAY3MRy8O1uO8x88500fMjO7TXHgzZ1cxSYTJ2P
-         MIuw==
+        bh=4T91d+bznCB7MrilGZZnGDp0TGLFXhhuyuq/BXHaJaU=;
+        b=Z2SGq3fIk9Z1vi2Fq57i3OatO1Pwno7kUGiT3jjmNkAt4YRjJr3wFN4+ioC7w1n6Sp
+         9PxvGZM6Rs4g2XqJiFZTfx+wP04hm1NZFoBePT0rr0bkHKWPPHkLKQfq9EDQy69Zbs5u
+         hIweL47wNGKlSz36vXAoy3h1kGiCuGQOj6eWwGKh2S9F3UEq98xsd14seTOxz4UUDNr+
+         jXhiPrOXrP1zWyp0hL5N0ZYAphA4Av0ZRIE1Vj0Ay8iEhCKV/OS4tTkHIjaXOuycO+5v
+         W1jW6Sqt6e1xAlRTfXp2iNP6Si1ZIqEZRGFSxY2OQWS4aDqF3PY0cbDlPCgvA6HFswDW
+         M9Sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729700511; x=1730305311;
+        d=1e100.net; s=20230601; t=1729700515; x=1730305315;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=bgC15d/pQkY9/ZdNYZmW9U8JEuWcaoADNmU9EGiwgmk=;
-        b=ZKRvpWAqBmS50uWkSmCR9eSX/7kYrTXsphjOUiP35ps3oFACeizaQP0/mmLMxeb77v
-         8UMh56BDsz2uuJ+AcPBdIQ6d0TQ6WjBWgkmDGqxp1h2lpwEqP3UNonMsURfKh+njDjqK
-         US3wcmj8+pIx0DyhECXicPP68TNxYb25zehxZRrBd1soV/ADLKr3uf+thR3I9athwena
-         VJYFMQbJlUL9I0g6tZPE7+HOwKcgFYe8Jryl3vJrW3kIBkvcmcADcUydhN5vWxzMEFkA
-         vARsyVHiBdCaWMCP1NWQzA4/XI7g/8TmoxXoRq/hVxhgKYPKHpMQ807HwzklVZSJYpuq
-         HrSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXbvjwLA28bNXN4Nkqv0VF1mNeZI0plgJGCcye0CuKPyj6W7HzKN6elsm5n/Yrk7ebjCwI=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywpp4QkXeL7m4HGh9Ayohux3C++h2EbJoI0hE3l1qG/j6CwJMA5
-	tF7jW+tNnFR21/LlEhwhzTxaO8o8D3YZBVvWv13Kqw7xJZAxWRiW
-X-Google-Smtp-Source: AGHT+IH6A0+R1gxcuSRH5wO+QbdVBb6hBn6+S5OLqazKgIRlUbTwpM/jY7yy8fE+80bw1Otx1SyW+w==
-X-Received: by 2002:a2e:be09:0:b0:2fa:e52f:4470 with SMTP id 38308e7fff4ca-2fc9d2ddc23mr14523171fa.9.1729700511046;
-        Wed, 23 Oct 2024 09:21:51 -0700 (PDT)
+        bh=4T91d+bznCB7MrilGZZnGDp0TGLFXhhuyuq/BXHaJaU=;
+        b=V5OPCD68ooxS4jtEwC9avOq2oUcMmmVM29laH96+ziV3Quno1uzPW89vSnAxh1yVyp
+         FHGO2lRr+4Gj3HweCMrWTdI16EBEFy4F261PjINLtjvy7b3ayi2Y9iJvRDtI6PphzgfD
+         3AUnUcShWp6mU14Pj4+HwR6VLh7+afXGEX3T1xMZJ4S0xEqH8WLz9qY6fIzNKvBZapVi
+         SoC7LtZnwgE0otDuvuRoBaKpge3yNUAIwodUVp9XxNkFMOQ2mE8+a54wAEVDafeGrwPB
+         Ic59fGMiqWaHU+zs2zPeL32fbKXqKY5qhZNW0ay46snQFrNDKRZ6GtQDqbl4MQNlTKTR
+         QnRA==
+X-Forwarded-Encrypted: i=1; AJvYcCWxa+kyx8byYsuS8w6uq+Md/k8qfWxP1oGcVzgoPqYgxEZsLhr88qlCVnFybMK3IcKhnGk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwUeNFQfqIawDq6Ost9zl5xmX0FKpKV+64gPPjyNrZTxqjx6OqL
+	6It2jlpoKEnsHCtU/DT1ZQHCWmECMRfJ5tdgaXIgte8o2uhDUYwh
+X-Google-Smtp-Source: AGHT+IGSuRDP9QiG7QKq9fGBE5EgHFrsYc0Z88Wu4omye9JKc34vnBuHAWvJD+QR/DERkoh54VOejA==
+X-Received: by 2002:a2e:819:0:b0:2fb:c20:dbc3 with SMTP id 38308e7fff4ca-2fc9d5d4042mr14177941fa.39.1729700514531;
+        Wed, 23 Oct 2024 09:21:54 -0700 (PDT)
 Received: from playground.localdomain ([86.127.146.72])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cb66c72609sm4588382a12.88.2024.10.23.09.21.48
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cb66c72609sm4588382a12.88.2024.10.23.09.21.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Oct 2024 09:21:50 -0700 (PDT)
+        Wed, 23 Oct 2024 09:21:53 -0700 (PDT)
 From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -75,9 +75,9 @@ Cc: linux-remoteproc@vger.kernel.org,
 	linux-sound@vger.kernel.org,
 	sound-open-firmware@alsa-project.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/4] dt-bindings: remoteproc: fsl,imx-rproc: add new compatible
-Date: Wed, 23 Oct 2024 12:21:11 -0400
-Message-Id: <20241023162114.3354-2-laurentiumihalcea111@gmail.com>
+Subject: [PATCH 2/4] ASoC: dt-bindings: audio-graph-card2: add widgets and hp-det-gpios support
+Date: Wed, 23 Oct 2024 12:21:12 -0400
+Message-Id: <20241023162114.3354-3-laurentiumihalcea111@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241023162114.3354-1-laurentiumihalcea111@gmail.com>
 References: <20241023162114.3354-1-laurentiumihalcea111@gmail.com>
@@ -91,110 +91,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-Add new compatible for imx95's CM7 with SOF.
+Introduce the 'widgets' property, allowing the creation of widgets from
+4 template widgets: Microphone, Line, Headphone, and Speaker. Also
+introduce the 'hp-det-gpios' property, which allows using headphone
+detection using the specified GPIO.
 
 Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 ---
- .../bindings/remoteproc/fsl,imx-rproc.yaml    | 58 +++++++++++++++++--
- 1 file changed, 53 insertions(+), 5 deletions(-)
+ .../devicetree/bindings/sound/audio-graph-card2.yaml     | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-index 57d75acb0b5e..ab0d8e017965 100644
---- a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-+++ b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-@@ -28,6 +28,15 @@ properties:
-       - fsl,imx8qxp-cm4
-       - fsl,imx8ulp-cm33
-       - fsl,imx93-cm33
-+      - fsl,imx95-cm7-sof
-+
-+  reg:
-+    maxItems: 2
-+
-+  reg-names:
-+    items:
-+      - const: dram
-+      - const: mailbox
+diff --git a/Documentation/devicetree/bindings/sound/audio-graph-card2.yaml b/Documentation/devicetree/bindings/sound/audio-graph-card2.yaml
+index f943f90d8b15..f0300a08f7fe 100644
+--- a/Documentation/devicetree/bindings/sound/audio-graph-card2.yaml
++++ b/Documentation/devicetree/bindings/sound/audio-graph-card2.yaml
+@@ -37,6 +37,15 @@ properties:
+   codec2codec:
+     type: object
+     description: Codec to Codec node
++  hp-det-gpios:
++    maxItems: 1
++  widgets:
++    description:
++      User specified audio sound widgets.
++      Each entry is a pair of strings, the first being the type of
++      widget ("Microphone", "Line", "Headphone", "Speaker"), the
++      second being the machine specific name for the widget.
++    $ref: /schemas/types.yaml#/definitions/non-unique-string-array
  
-   clocks:
-     maxItems: 1
-@@ -38,10 +47,8 @@ properties:
-       Phandle to syscon block which provide access to System Reset Controller
- 
-   mbox-names:
--    items:
--      - const: tx
--      - const: rx
--      - const: rxdb
-+    minItems: 1
-+    maxItems: 4
- 
-   mboxes:
-     description:
-@@ -49,7 +56,7 @@ properties:
-       List of <&phandle type channel> - 1 channel for TX, 1 channel for RX, 1 channel for RXDB.
-       (see mailbox/fsl,mu.yaml)
-     minItems: 1
--    maxItems: 3
-+    maxItems: 4
- 
-   memory-region:
-     description:
-@@ -84,6 +91,10 @@ properties:
-       This property is to specify the resource id of the remote processor in SoC
-       which supports SCFW
- 
-+  port:
-+    $ref: /schemas/sound/audio-graph-port.yaml#
-+    unevaluatedProperties: false
-+
  required:
    - compatible
- 
-@@ -114,6 +125,43 @@ allOf:
-       properties:
-         power-domains: false
- 
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: fsl,imx95-cm7-sof
-+    then:
-+      properties:
-+        mboxes:
-+          minItems: 4
-+        mbox-names:
-+          items:
-+            - const: txdb0
-+            - const: txdb1
-+            - const: rxdb0
-+            - const: rxdb1
-+        memory-region:
-+          maxItems: 1
-+      required:
-+        - reg
-+        - reg-names
-+        - mboxes
-+        - mbox-names
-+        - memory-region
-+        - port
-+    else:
-+      properties:
-+        reg: false
-+        reg-names: false
-+        mboxes:
-+          maxItems: 3
-+        mbox-names:
-+          items:
-+            - const: tx
-+            - const: rx
-+            - const: rxdb
-+        port: false
-+
- additionalProperties: false
- 
- examples:
 -- 
 2.34.1
 
