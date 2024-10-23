@@ -1,178 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A202622318;
-	Wed, 23 Oct 2024 06:56:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0FF1537AC
+	for <imx@lists.linux.dev>; Wed, 23 Oct 2024 07:27:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729666588; cv=none; b=YesP2fBPAy38BTQRtqiqynE/nsWnGR6A6N7mm6VALQRdt7RsYoq52LsRsgNfV0cKmkufgTCy/+ihKnfWnDDdO9NgBkVTlSQTnarlD68rfvf4SA54hzXwYl5X7MZoQQaK+Uo/R3v7P/f8l9MZX1ZvGpe0gsnRhQAbIWF6qYDi2zk=
+	t=1729668454; cv=none; b=YIWo791GwIQOlssBqWy/Hv9E3yVZP6heHYEO4HoEJZ9HNvNhx0IRy1PLbMPk5TSV7cUTqrsCf7G0LkrIjWMA5elpOkjq2ZeX4M9YV0JUc8iigPOis5tF3N+ByK9ccKZYf7Acbh4iLiPreYkVsyaFVbr1yD4826sG6+UgK6FYoMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729666588; c=relaxed/simple;
-	bh=4qN2s5zoqbBxdDlMfTyfRaNHDkUJuWvdiUUIKG6VDd0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tkbcRsID6+rI0IXOpz7hGzMkxWDDjsjfxo1i/WKfB5qoxzaMgMh8idRzIoNINW5ZlgDzg7X+Q8Vz1zQn9RwozHdYqKMetaSNXDLZvwenJQhan28ZEheO6DCchnHn7FMnJTXQipgXcP9F5yKLHhzyR/VYMXFG7LYHVi6aqMNaRBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YVE5WCO5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729668454; c=relaxed/simple;
+	bh=UOdGmteuDF17WaDKUsAm9bMSO1DRsXO+5b96m5laO4g=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VSAr50Xj8I8M+yH6e9jI64rPrz2dZ3TWgDvuN/IWmmnKMMUL0ujriLVDU5W7vRyz0GcbWF0tHXCgJpP9WBgYpg+ppqhrBWDcooUKTzQZfz/6lKNSptFBH0TgGOTZf9pLf8k9W0e0P4rjCW+twLPe/gi2fEPN6a1Rex/ml+JyXIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=qHDwvzxU; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=HjRos3+J reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YVE5WCO5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B394C4CEC6;
-	Wed, 23 Oct 2024 06:56:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729666588;
-	bh=4qN2s5zoqbBxdDlMfTyfRaNHDkUJuWvdiUUIKG6VDd0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YVE5WCO5DRwWkG+GV1aoV89agNuEAs2GEodGFVvE+MsGkHdnK5b/XaWcJ5fUxe3vu
-	 sPxulQMsTQWdRANFmgkaQGGeN3fVFRTwWFqtwsuYFZiptRaZAwoAzhAYgLbWdFXtno
-	 0eC2n3lEIVE+JI/Cs2Ct5QgtOt3/dPBN5+zPsPccvmT0KvrxAYYme92SocA+1/25OW
-	 lkjNaOCjkGJkrKAxr6KwESPq0uO/H/cXZi/LA7ao8rDu7SsqcHeCnc9d5GNtrSscFY
-	 PhCv245wOYnuTBn52IfMG60dxDDmSG5Q/tqSHKaNHzk0br0mIad0WjA4ZoWeL6vqlf
-	 x958z8MBz1CCA==
-Date: Wed, 23 Oct 2024 08:56:24 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	vladimir.oltean@nxp.com, claudiu.manoil@nxp.com, xiaoning.wang@nxp.com, Frank.Li@nxp.com, 
-	christophe.leroy@csgroup.eu, linux@armlinux.org.uk, bhelgaas@google.com, horms@kernel.org, 
-	imx@lists.linux.dev, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, alexander.stein@ew.tq-group.com
-Subject: Re: [PATCH v4 net-next 03/13] dt-bindings: net: add bindings for
- NETC blocks control
-Message-ID: <xx4l4bs4iqmtgafs63ly2labvqzul2a7wkpyvxkbde257hfgs2@xgfs57rcdsk6>
-References: <20241022055223.382277-1-wei.fang@nxp.com>
- <20241022055223.382277-4-wei.fang@nxp.com>
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="qHDwvzxU";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="HjRos3+J"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1729668451; x=1761204451;
+  h=from:to:subject:date:message-id:in-reply-to:references:
+   mime-version:content-transfer-encoding;
+  bh=8QvoeAYq84HcWFFGcAF42FU7PXi0chXEy68ubmj3kl8=;
+  b=qHDwvzxURovGLoPvWg+1nfZx6SLzICxvmuamhWBip2VLlsihVOr31LvT
+   CJ3+gdf5m/xTcOEV5sv201bJrFyqMatGev0ZXCW45ivj8D4afa+wfKEVi
+   nvDY41OB+rfuT6ZLpYJrVb/UvoVUPRCTr4YploRp04Nu6Kvv5Bu84cH0A
+   +bpXmEN2YeH2lv+qfuzIN1CzcHI9hGJu8Kum2Cer+yR61DVCAs0t1/kMn
+   0RDNY4e0WjuAa9pWnLL2WdcOHCqtJWot36f69D2xQKUe3CNbq2imN9Kz0
+   peuc+pKPSspAitZBDd3WE0hqwXuhEd2V+R10YLhiIRysdcGPkOY8ncCcY
+   A==;
+X-CSE-ConnectionGUID: rDH59LECStGuVPIcPtvpUw==
+X-CSE-MsgGUID: glc2ETSXSCusCZzvvITlUw==
+X-IronPort-AV: E=Sophos;i="6.11,225,1725314400"; 
+   d="scan'208";a="39615366"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 23 Oct 2024 09:27:28 +0200
+X-CheckPoint: {6718A560-36-8E59014-E6F31237}
+X-MAIL-CPID: 69246EAEBA9715DF528DC60B9732E311_1
+X-Control-Analysis: str=0001.0A682F28.6718A561.000F,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 96700161479;
+	Wed, 23 Oct 2024 09:27:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1729668444; h=from:subject:date:message-id:to:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=8QvoeAYq84HcWFFGcAF42FU7PXi0chXEy68ubmj3kl8=;
+	b=HjRos3+JIqRURrrlHtwap8O7c9iftlfAa/6SI48kI10SmsVrpT8gJh3SBk2i6pZD69s0cW
+	NClUuq19LuLN0LSPXLMmnM5nT/Uhr9gGPs9S9zPNpON1WuyuDClgAe/frWL3htYHSlzFsq
+	ijX2FkP8Y1/3LLubC7SLR+5ad7ph74BJJ1tX3KF6iq8WSfeDues3BEfQByxiKeaPg8HNQm
+	YdHaHXcSMj5WTV+oZKFnxgZWe3w8XcSbwkNc0trkUpDhba1sgylqsVH5LKS3XT3NL1zSGE
+	UWaR5FPGItWmquCWPNWhOuj0/jIfbxFO+2sSte0In712T1bAg0iGtHUrTm9XmA==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, "open list:TQ SYSTEMS BOARD & DRIVER SUPPORT" <linux@ew.tq-group.com>, "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH 1/1] arm64: dts: freescale: mba8mx: remove undocument 'data-lanes' at panel
+Date: Wed, 23 Oct 2024 09:27:23 +0200
+Message-ID: <4606074.LvFx2qVVIh@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20241022202342.1263766-1-Frank.Li@nxp.com>
+References: <20241022202342.1263766-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241022055223.382277-4-wei.fang@nxp.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Oct 22, 2024 at 01:52:13PM +0800, Wei Fang wrote:
-> Add bindings for NXP NETC blocks control. Usually, NETC has 2 blocks of
-> 64KB registers, integrated endpoint register block (IERB) and privileged
-> register block (PRB). IERB is used for pre-boot initialization for all
-> NETC devices, such as ENETC, Timer, EMDIO and so on. And PRB controls
-> global reset and global error handling for NETC. Moreover, for the i.MX
-> platform, there is also a NETCMIX block for link configuration, such as
-> MII protocol, PCS protocol, etc.
-> 
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Hi Frank,
+
+thanks for your patch.
+
+Am Dienstag, 22. Oktober 2024, 22:23:41 CEST schrieb Frank Li:
+> 'data-lanes' is port0 of lvds bridge. Needn't set it for simple panel. Fix
+> below CHECK_DTBS warning:
+>=20
+> arm64/boot/dts/freescale/imx8mm-tqma8mqml-mba8mx-lvds-tm070jvhg33.dtb:
+>    panel-lvds: port:endpoint: Unevaluated properties are not allowed ('da=
+ta-lanes' was unexpected)
+>        from schema $id: http://devicetree.org/schemas/display/panel/panel=
+=2Dsimple.yaml#
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+
 > ---
-> v2 changes:
-> 1. Rephrase the commit message.
-> 2. Change unevaluatedProperties to additionalProperties.
-> 3. Remove the useless lables from examples.
-> v3 changes:
-> 1. Remove the items from clocks and clock-names, add maxItems to clocks
-> and rename the clock.
-> v4 changes:
-> 1. Reorder the required properties.
-> 2. Add assigned-clocks, assigned-clock-parents and assigned-clock-rates.
-> ---
->  .../bindings/net/nxp,netc-blk-ctrl.yaml       | 111 ++++++++++++++++++
->  1 file changed, 111 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/net/nxp,netc-blk-ctrl.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/net/nxp,netc-blk-ctrl.yaml b/Documentation/devicetree/bindings/net/nxp,netc-blk-ctrl.yaml
-> new file mode 100644
-> index 000000000000..0b7fd2c5e0d8
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/nxp,netc-blk-ctrl.yaml
-> @@ -0,0 +1,111 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/nxp,netc-blk-ctrl.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NETC Blocks Control
-> +
-> +description:
-> +  Usually, NETC has 2 blocks of 64KB registers, integrated endpoint register
-> +  block (IERB) and privileged register block (PRB). IERB is used for pre-boot
-> +  initialization for all NETC devices, such as ENETC, Timer, EMIDO and so on.
-> +  And PRB controls global reset and global error handling for NETC. Moreover,
-> +  for the i.MX platform, there is also a NETCMIX block for link configuration,
-> +  such as MII protocol, PCS protocol, etc.
-> +
-> +maintainers:
-> +  - Wei Fang <wei.fang@nxp.com>
-> +  - Clark Wang <xiaoning.wang@nxp.com>
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - nxp,imx95-netc-blk-ctrl
-> +
-> +  reg:
-> +    minItems: 2
-> +    maxItems: 3
+> I have not such hardware to test.
+> Alexander Stein:
+> 	Can you help check it?
 
-You have one device, why this is flexible? Device either has exactly 2
-or exactly 3 IO spaces, not both depending on the context.
-
-> +
-> +  reg-names:
-> +    minItems: 2
-> +    items:
-> +      - const: ierb
-> +      - const: prb
-> +      - const: netcmix
-> +
-> +  "#address-cells":
-> +    const: 2
-> +
-> +  "#size-cells":
-> +    const: 2
-> +
-> +  ranges: true
-> +  assigned-clocks: true
-> +  assigned-clock-parents: true
-> +  assigned-clock-rates: true
-
-Drop these three.
-
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  clock-names:
-> +    const: ipg
-> +
-> +  power-domains:
-> +    maxItems: 1
-> +
-> +patternProperties:
-> +  "^pcie@[0-9a-f]+$":
-> +    $ref: /schemas/pci/host-generic-pci.yaml#
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - reg-names
-> +  - "#address-cells"
-> +  - "#size-cells"
-> +  - ranges
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    bus {
-> +        #address-cells = <2>;
-> +        #size-cells = <2>;
-> +
-> +        netc-blk-ctrl@4cde0000 {
-
-system-controller? Don't use compatible as node name.
-
-Node names should be generic. See also an explanation and list of
-examples (not exhaustive) in DT specification:
-https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+I noticed myself already. This patch fixes the warning.
 
 Best regards,
-Krzysztof
+Alexander
+
+> ---
+>  arch/arm64/boot/dts/freescale/mba8mx.dtsi | 1 -
+>  1 file changed, 1 deletion(-)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/mba8mx.dtsi b/arch/arm64/boot/=
+dts/freescale/mba8mx.dtsi
+> index c60c7a9e54aff..3d26b6981c06f 100644
+> --- a/arch/arm64/boot/dts/freescale/mba8mx.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/mba8mx.dtsi
+> @@ -100,7 +100,6 @@ panel: panel-lvds {
+> =20
+>  		port {
+>  			panel_in_lvds: endpoint {
+> -				data-lanes =3D <1 2 3 4>;
+>  				remote-endpoint =3D <&lvds_bridge_out>;
+>  			};
+>  		};
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
