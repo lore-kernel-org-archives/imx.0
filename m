@@ -1,72 +1,74 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ABFB1A0BD6
-	for <imx@lists.linux.dev>; Thu, 24 Oct 2024 10:35:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D61C1B219E
+	for <imx@lists.linux.dev>; Thu, 24 Oct 2024 10:47:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729766147; cv=none; b=bDc9eYxQaXYxeQ9Ow+SoSTe4vKrC93mI3z1Qd0zWxLkXACVc07jEjZlXiTO/wSRr0PUVIcNTCakL1/um9Q1graGeza0uUboXKDTZvXUClBRN0Bjz7efkKrdxBIjMgtWn0I/toKUgdgeb6xK1rumd8n3cD0D6zz9doWObMh5Ue9s=
+	t=1729766829; cv=none; b=LsPEPH51qVZ9NWpn55Ivl8zDuAuMDpRPZOMQYWNHuKPcWtBrZgrtj9982q6fjoNqiuJrShgoE1yys/9ODXiNwlxLRa0OMBCcUxuZKvBpLvlBOqAQ2l3HCrIAVZODEpAeuw0MPtUJK06+Ir5iLsEPjRNdlYKEqSmqNtpt2GsUKQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729766147; c=relaxed/simple;
-	bh=XkI+Pc7w60k8OQH0O7omuaUb38zv0zNaiQvi7wOn+CQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RcViZAimQI2yM9WGaymjPUm7Sl0f5paCngeZrvc+6JZPDxTdyRPjLJDNmMGFbHYUBrDnXtcYYJG7QXlanw5DXPjjVNTD44uO6PTyZg2ybnmHehh6qA+EP6ZAWzIOpDlU72fEI9kK+bb7+gXoMsGmJ1RzBJCY3YY0n852FO94zyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=bo2p/V/k; arc=none smtp.client-ip=209.85.218.52
+	s=arc-20240116; t=1729766829; c=relaxed/simple;
+	bh=J+Ml2vYTBt/Fy6h5aoBXUKaZKw4ZkG3ADLT7XdI9X74=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qH32GSuzdGwugXXLHFBvdqUtAo+wjBIc+U3YEwRZELYiirmDWmhISKuYwnA7AqptZjbvVNQxEWymbWyFa6sXOBt9SSjE9bOiqrpLb1zyrE7LWtrKdygIv2oNdh+MiXL1uE1UyZdZy3qCyfIzoWmWEEkAX04ZmzGJdZrvN4GJ0h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=DTEcevbI; arc=none smtp.client-ip=209.85.208.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="bo2p/V/k"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a99eb8b607aso76453566b.2
-        for <imx@lists.linux.dev>; Thu, 24 Oct 2024 03:35:44 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="DTEcevbI"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5c99be0a4bbso946904a12.2
+        for <imx@lists.linux.dev>; Thu, 24 Oct 2024 03:47:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1729766143; x=1730370943; darn=lists.linux.dev;
+        d=amarulasolutions.com; s=google; t=1729766825; x=1730371625; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=u9pUdYv82xqt7Xgtl7+4X7WHgZzcjvtNIADtHzAjrXQ=;
-        b=bo2p/V/klpODczpZhIZuFiNci+ZY1V71HoQwJrA4PMv8MZqhJLfnIfSs1E7LLRl/s3
-         J9IJB1gt0zTcTPxmPv/D3AIMJXslScHknVB7iHGRFonbHorpt/SwZWN74mhmZQmtPC8m
-         iDCRh5uReP8ugd7fKmvKx86HJib1IQI5GOE7k=
+        bh=f9ybzaQqZA8Pvjk1KH4zw/EHpgyxOggbtBG60Qj3t28=;
+        b=DTEcevbIfA7pFY9dDyxencE4vWC3lTIb1VjbmgonfTiXVioWpXnu60BNWUTd4o4sh6
+         ncT9f+YlRzT0HhRlva90l6Ewryev+bosU67gzyxACrGKswo+4DzwJaR0uTqV0x5ZNoRw
+         3txOviM2fj2tFQ4UAt5P7Tt8NFO3mPoLG+gGc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729766143; x=1730370943;
+        d=1e100.net; s=20230601; t=1729766825; x=1730371625;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=u9pUdYv82xqt7Xgtl7+4X7WHgZzcjvtNIADtHzAjrXQ=;
-        b=jjnLEQWBRlOTnuQfxlN5hpkdYtggUelzjsnDS5Hms5nBQ6aqoS9NyIm5nWO3d4tadV
-         WtF7AgFz69vraUC06m7lAz/kqABAVhYdc8ujnzSRkPNzZ0c0ff62Fg5OvOvEOSjJAdua
-         sNg56u0xGR63loH3Q8WQhslsfJ4dKfDOlyNa0Rv9eBxPnRWa1hc0JBDPHIHmmoQ3tsIU
-         2OKidH/YCffAThtGpDu7Bcht1IJYOwHxgzwVVZUplszGOH+uZYsfIXAUbQAq0ZOFNivX
-         nXyq3FRMEgSxzgyTEF9mYNkQzTZkNIRnFoXYrP61diOmj3EZ7Lq/9cVVUOp5ZnN1VRLt
-         VGvA==
-X-Forwarded-Encrypted: i=1; AJvYcCV0Pd8D8DeUH52yko5vgxFQID3hVq+H1Zw6rJ+jYXETORi1fvpKnJRU1cUAvjulOXZj3Dw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YytW5GUl4T6DSnpu0cvhwAxHXsm6tzLhmQ/Kb47bpn0n5Dq370g
-	Ca/TnZ7k5vTo1wc2lmnfluKdBRSibBR2q6y5rKKkPB6C1mTPX/HPxJP4wmNzvda3cLgcXUoa0IF
-	BNYU=
-X-Google-Smtp-Source: AGHT+IHfb3oc/tXlxpxsflSckSQeMBrns/+C2m2gpMY+5B92QOH21Ab4FKnncfZAer2tZKtes4/KtA==
-X-Received: by 2002:a17:907:3e1c:b0:a9a:835b:fc8e with SMTP id a640c23a62f3a-a9ad286b976mr132409566b.54.1729766143356;
-        Thu, 24 Oct 2024 03:35:43 -0700 (PDT)
+        bh=f9ybzaQqZA8Pvjk1KH4zw/EHpgyxOggbtBG60Qj3t28=;
+        b=oLskzBwcfZ3zO/sVck07Im+vJuc3zvcXZz8SIOTk6G8305O4ZHE8z+B+ec9uBOIto2
+         JGWY1JxSmbeREHE37KPaUxM0tw1IdGdEDhS7+9mxNarUUSO7tagvsGcvfFoYgAgwRxZ0
+         SRgccKHgE2N3GVvOAe9yPbT1YXOf4y0SlpAkqd8oVwTmsqxgfliab5zS44OrJJUnz8mp
+         AWMd+TejbFD1PixacjYr+LySiynZHkeRdL//cKUtAIAm08jPRM9OzC6yrmvreMnYIaka
+         xCWE72MXRj8dP/YUsdgY5IKpECp8R7DfRaXMjAenEXAelg/vFkb2/ZomszX5nHEO4tsd
+         MclA==
+X-Forwarded-Encrypted: i=1; AJvYcCUt+dIpgZa1A+aw35OBdFFfMyKhazU2bIVhdGaGjeiwqmai1M1lcnLTx0cOT4ea9jAi1cQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxvXruIhfRy6Q4npHlXKF+X4/8iwEmZoOHAecBx8otxlCBt320C
+	3T2/1qX7DfloG+2Avy6Th0qWOErxLQzZfBFg1gEk5vQy20NC6vQ9L1yFq9wFoKQ=
+X-Google-Smtp-Source: AGHT+IGhRRSH+oniiEMk6gBxA1VDr8hXYtyBVOVbECHZq5NiyEASc4rpB50zkmMNgG6T0wMWjBuJiA==
+X-Received: by 2002:a05:6402:278c:b0:5c9:709c:247f with SMTP id 4fb4d7f45d1cf-5cb8ac380damr4405184a12.2.1729766825261;
+        Thu, 24 Oct 2024 03:47:05 -0700 (PDT)
 Received: from localhost.localdomain ([2001:b07:6474:ebbf:f79d:49dd:b804:3f48])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a91559f15sm598592866b.133.2024.10.24.03.35.42
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cb66c72866sm5525261a12.95.2024.10.24.03.47.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Oct 2024 03:35:43 -0700 (PDT)
+        Thu, 24 Oct 2024 03:47:04 -0700 (PDT)
 From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-amarula@amarulasolutions.com,
 	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
 	Michael Trimarchi <michael@amarulasolutions.com>,
+	David Airlie <airlied@gmail.com>,
 	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Marek Vasut <marex@denx.de>,
+	Maxime Ripard <mripard@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Shawn Guo <shawnguo@kernel.org>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Simona Vetter <simona@ffwll.ch>,
+	Stefan Agner <stefan@agner.ch>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	dri-devel@lists.freedesktop.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-pm@vger.kernel.org
-Subject: [PATCH] pmdomain: imx: gpcv2: replace dev_err() with dev_err_probe()
-Date: Thu, 24 Oct 2024 12:35:36 +0200
-Message-ID: <20241024103540.3482216-1-dario.binacchi@amarulasolutions.com>
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] drm/mxsfb: Remove generic DRM drivers in probe function
+Date: Thu, 24 Oct 2024 12:46:49 +0200
+Message-ID: <20241024104654.3483125-1-dario.binacchi@amarulasolutions.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -76,9 +78,8 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The patch standardizes the probe() code by replacing the two occurrences
-of dev_err() with dev_err_probe(). Indeed, dev_err_probe() was used in all
-other error paths of the probe() function.
+Use aperture helpers to remove all generic graphics drivers before
+loading mxsfb. Makes mxsfb compatible with simpledrm.
 
 Co-developed-by: Michael Trimarchi <michael@amarulasolutions.com>
 Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
@@ -86,31 +87,37 @@ Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
 ---
 
- drivers/pmdomain/imx/gpcv2.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/mxsfb/mxsfb_drv.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/pmdomain/imx/gpcv2.c b/drivers/pmdomain/imx/gpcv2.c
-index 963d61c5af6d..6e6ecbf2e152 100644
---- a/drivers/pmdomain/imx/gpcv2.c
-+++ b/drivers/pmdomain/imx/gpcv2.c
-@@ -1356,7 +1356,7 @@ static int imx_pgc_domain_probe(struct platform_device *pdev)
+diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.c b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+index cb5ce4e81fc7..a8d6dffcd02c 100644
+--- a/drivers/gpu/drm/mxsfb/mxsfb_drv.c
++++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+@@ -17,6 +17,7 @@
+ #include <linux/property.h>
+ #include <linux/pm_runtime.h>
  
- 	ret = pm_genpd_init(&domain->genpd, NULL, true);
- 	if (ret) {
--		dev_err(domain->dev, "Failed to init power domain\n");
-+		dev_err_probe(domain->dev, ret, "Failed to init power domain\n");
- 		goto out_domain_unmap;
- 	}
++#include <drm/drm_aperture.h>
+ #include <drm/drm_atomic_helper.h>
+ #include <drm/drm_bridge.h>
+ #include <drm/drm_connector.h>
+@@ -360,6 +361,15 @@ static int mxsfb_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err_free;
  
-@@ -1367,7 +1367,7 @@ static int imx_pgc_domain_probe(struct platform_device *pdev)
- 	ret = of_genpd_add_provider_simple(domain->dev->of_node,
- 					   &domain->genpd);
- 	if (ret) {
--		dev_err(domain->dev, "Failed to add genpd provider\n");
-+		dev_err_probe(domain->dev, ret, "Failed to add genpd provider\n");
- 		goto out_genpd_remove;
- 	}
- 
++	/*
++	 * Remove early framebuffers (ie. simplefb). The framebuffer can be
++	 * located anywhere in RAM
++	 */
++	ret = drm_aperture_remove_framebuffers(&mxsfb_driver);
++	if (ret)
++		return dev_err_probe(&pdev->dev, ret,
++				     "can't kick out existing framebuffers\n");
++
+ 	ret = drm_dev_register(drm, 0);
+ 	if (ret)
+ 		goto err_unload;
 -- 
 2.43.0
 
