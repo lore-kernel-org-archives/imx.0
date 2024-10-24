@@ -1,153 +1,147 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC74018B477
-	for <imx@lists.linux.dev>; Thu, 24 Oct 2024 07:52:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65FD1AF0A8
+	for <imx@lists.linux.dev>; Thu, 24 Oct 2024 08:06:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729756331; cv=none; b=c7/0AU4tqqGqXBuP27fSb/2gHZ8S6uR173Jf5HAvmCwmpPVL2Zcj3As0zGaZbP7KKbd243K8YEB6jEcLrbHcQ3Va+RV8mH7J3+BjzRaduSQy4hho5hOPEDKTj6LyJbV7XkiIcAduC5bZLMcZFPhP1IipIR7jny8wSWQ46AEMuvE=
+	t=1729757182; cv=none; b=fvXZb1TlIvUp+YedfbqjCqvkuC4092upikwktzAak9i4tHwge5LKeyKdxkGKoH8mtx7WhsgGwJebr8etaNMjUk20+sckJuN60FLuybgvxnJnxLEeX2iOc552JL24hsT+KstUUFOKxrry0155JdI6dKjVxAxsmd1n22FOmBSkl1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729756331; c=relaxed/simple;
-	bh=pn1YGm5bTJvzIAVJSwFls+B3zLaFehop00/DygkHELg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qdfk6hRZv9JMbSUxyJUnmShi9K8ZjkW5heJuBqvid6Ze5e3VsC40AYhNyx6JPSVab8pNSk/JlHgI/DnL8tI7qO8+3GrB4HZFpXOXtyi/Kq2Q4P9A7x484y/2IS6TcJZ77+QQ02LBQtSKU+mCIBPeoNZbNhb/zBTUqCUtkYbE/z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aNWD6ima; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729757182; c=relaxed/simple;
+	bh=oPU8wiykirsXlfsK3FEHZM1SuFheE2lq9GeofLJroZY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=I+WUC1uLJOsHezahSyPGBMfbDAMVFq5FcuS4v701rdPHDR3Iz7m+QI7emZK5Hu/GQ+/i4QTioApeHlUH4lppKPA5Pjha4b2HTVwcLCAJlgsHbDaSQLcnf/poXMpUApMwKSNDut7plj7HEramYb6dkI2kierlw+sC4Q83AH0nvXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=pLytsr+Z; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aNWD6ima"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a966de2f4d3so9442366b.2
-        for <imx@lists.linux.dev>; Thu, 24 Oct 2024 00:52:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="pLytsr+Z"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-37d5689eea8so432336f8f.1
+        for <imx@lists.linux.dev>; Thu, 24 Oct 2024 01:06:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729756327; x=1730361127; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dfJuRq/b6qwtgMPyTFyvJlc2k8o4i9OgvL9elbu5Hpc=;
-        b=aNWD6imaP2rH1bm6MrwjmV6BKB87DuQ88tFMXqVBQ9SgXGwl5DkXwsaFuptJxlTFLQ
-         QgafvpObLRornzZFUg0B+W/iWzgkwXwAqpP58ehtwml4qRyJ/uI63m+YOjOLoYTXrsDP
-         T/mPRTkrlGQZHGMEO/disK9DftlnPrQJQLyQcUMv1W5BTk0sQdy5gcL5zcbI53qRfeCU
-         chH5t2dHReiKq6mhlEjWr4yq/WktQqvby2rUMmnfEsh6VPMrwretzfvVqiZp/TVg/F4k
-         8cGzKhb71LEUQW/XotZmDZbC8/tNh2wmBldkNvTE/mijb6znkgdlNJhphlrJk7oZqn6G
-         LWPA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729757177; x=1730361977; darn=lists.linux.dev;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zMW6I0sTEYqubA9v2uS/l/YanQ/0kwQs3KpAh7vOnLI=;
+        b=pLytsr+Z6crS0c3CRhYbZW9VjQ9RD6Mo2N6zIuwCWo/UuojpBFmAAYdrPYjC7LHTcj
+         5xCbeVjuUfaXE5eUusegNTilu6buz5Ajgc6VKFgac5Zh9M77ShJsZch0M9Cb4+wvjiAk
+         6y+TmXByaC9NBx5DY1JaeWAiiqgSuK24cXofmD28vtGp4+s8+dyEmd1U/acp2/wN+nff
+         Py1GqOwqnU8QJMgHE3IJbgigTw1Xj5PE/p45nX2HyW9rvcPVryrpVOvyov6DpmpCOqhW
+         pzRu2N/WP9GIfcvSAzQPfwvG1fEILgGuH/BTvNB1Yb/wBQ9pe5mad2nAKM0vaoXZv7WM
+         hd4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729756327; x=1730361127;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dfJuRq/b6qwtgMPyTFyvJlc2k8o4i9OgvL9elbu5Hpc=;
-        b=qxc7J6l72+eDxjAVCzbxpVWr0dImxXNWGDNxvy4JJQH+oHYkPG0L/UubOcNi3wDgqX
-         Hz2oZ/fhSnCQEZ7jvJTIaa3h9GMHf6l004DNwCHfsIttFD7PqSSKHjwRB20vxAl6/GsR
-         /qbSwjmxOSyLnzCic03l1pRPf7ty65Ar5hI110zVwEvXWx2HypowObJMVyRdtbehxBFh
-         krk53BXoVYFTBTjfrXCOoLsd8GQkunRXhBy5SHZS5T6rjhPq5b9Be44ZTDw4ltuJ73Ij
-         p/9LJKDEITvv8ZB5Mjl6Hola/E0BTpcbwZfPJ3gHg9SnAaQAZQyaz6/0ZkeppqhHa4E/
-         xldw==
-X-Forwarded-Encrypted: i=1; AJvYcCWZXO46Trhs5SNvxIieaER0cdstLxxpVC+ZRAgIz+Yh267BC8KdTJ3ABmG3FWt3q12Kc8E=@lists.linux.dev
-X-Gm-Message-State: AOJu0YySHJyVD5Ncl3H7rYbfPHkAPXg5+Lrd6/5TiiCGI9SNgXQacD/6
-	omzy4P3ThqupRDP/W6BB4p+9Hyug9L4HSOffFF7PLebUrXKCprLI
-X-Google-Smtp-Source: AGHT+IHZkWypryMqz4bOsre9+5N72ivCGvCDfFrtcuQw5at0TLFywfrbAHOiAweigPae4YmGuyaAwg==
-X-Received: by 2002:a17:907:7d88:b0:a99:d6e1:6056 with SMTP id a640c23a62f3a-a9abf927d9emr232957066b.10.1729756326879;
-        Thu, 24 Oct 2024 00:52:06 -0700 (PDT)
-Received: from skbuf ([188.25.134.29])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a912d62efsm575009666b.44.2024.10.24.00.52.05
+        d=1e100.net; s=20230601; t=1729757177; x=1730361977;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zMW6I0sTEYqubA9v2uS/l/YanQ/0kwQs3KpAh7vOnLI=;
+        b=WVCi2/QgJzSb5ZIIVoBnFeIfqBAraNz6nZ94t/mpu4sFiZsQX634167eZjl4bqfGLG
+         DsoQGqxdYusbH3ocpgMzq0Kgu5iPmICrUf1wYNDc5qU7+sKUIvznZIF1gMIa5T4HJOGK
+         t6hoq4GEFnNNKRA0GR3S+RwYBNmIBox/mXlih4cyOiQoKDqkYgkviGarU9l+caDehStZ
+         VH1Qj/bo3ngA9YJv6T5nehGYGrWm7xSARLkIiiQv69Qw+UofIVSIe7j1kz/EQWHuzHuL
+         /zwOdmwL+4uiSrEoSfPBjLvr1uVNV0i+3p5DBtcRPvaRj/EFGX1AOjPvoRO9LejyCW5f
+         Z4aw==
+X-Forwarded-Encrypted: i=1; AJvYcCXejbTwHZiplXdWk1xfuwDLa9JtGCcEjkPgrYc609k8iJgpJdBOzU+jvtvXE/HjQRCo7uo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxoLJaYlfOhPtnYaUl+uMOJKckvEXqqEyo8GF6MiUVU2VWHc9m+
+	yFCcidJqBv5/oTf9IN9/GoqBl80HM+AdmPRpn/WfohxdBmgF2zbSa2wL1Ubr2KU=
+X-Google-Smtp-Source: AGHT+IEoZMVKgD69poA0dFC1qIUTHJdJvAa3Cg9Ax/TeZWkK7ol7nwHmrhD5d8D+xQZ2BLd9/bn72g==
+X-Received: by 2002:adf:e903:0:b0:37c:d001:856f with SMTP id ffacd0b85a97d-380458ee3fbmr839512f8f.56.1729757177038;
+        Thu, 24 Oct 2024 01:06:17 -0700 (PDT)
+Received: from localhost ([2a01:e0a:3c5:5fb1:c04c:f30a:b45c:dbb])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ee0a64daasm10701229f8f.64.2024.10.24.01.06.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Oct 2024 00:52:06 -0700 (PDT)
-Date: Thu, 24 Oct 2024 10:52:03 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Mark Brown <broonie@kernel.org>,
-	William Zhang <william.zhang@broadcom.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	=?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
-	Dhruva Gole <d-gole@ti.com>,
-	Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
-	"open list:FREESCALE DSPI DRIVER" <linux-spi@vger.kernel.org>,
-	"open list:FREESCALE DSPI DRIVER" <imx@lists.linux.dev>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/1] spi: spi-fsl-dspi: Fix crash when not using GPIO
- chip select
-Message-ID: <20241024075203.ifih3rxwyzl7dn4s@skbuf>
-References: <20241023203032.1388491-1-Frank.Li@nxp.com>
- <20241023203032.1388491-1-Frank.Li@nxp.com>
+        Thu, 24 Oct 2024 01:06:16 -0700 (PDT)
+From: Jerome Brunet <jbrunet@baylibre.com>
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc: Jaroslav Kysela <perex@perex.cz>,  Kevin Hilman <khilman@baylibre.com>,
+  Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,  Liam Girdwood
+ <lgirdwood@gmail.com>,  Mark Brown <broonie@kernel.org>,  Neil Armstrong
+ <neil.armstrong@linaro.org>,  Sascha Hauer <s.hauer@pengutronix.de>,
+  Shawn Guo <shawnguo@kernel.org>,  Shengjiu Wang
+ <shengjiu.wang@gmail.com>,  Takashi Iwai <tiwai@suse.com>,  Vinod Koul
+ <vkoul@kernel.org>,  Xiubo Li <Xiubo.Lee@gmail.com>,
+  alsa-devel@alsa-project.org,  imx@lists.linux.dev,
+  linux-rpi-kernel@lists.infradead.org,  linux-sound@vger.kernel.org,
+  linux-stm32@st-md-mailman.stormreply.com,  patches@opensource.cirrus.com
+Subject: Re: [PATCH 3/8] ASoC: meson: switch to use rtd->id from rtd->num
+In-Reply-To: <87wmhyb85l.wl-kuninori.morimoto.gx@renesas.com> (Kuninori
+	Morimoto's message of "Thu, 24 Oct 2024 01:29:27 +0000")
+References: <871q06cmsl.wl-kuninori.morimoto.gx@renesas.com>
+	<87wmhyb85l.wl-kuninori.morimoto.gx@renesas.com>
+Date: Thu, 24 Oct 2024 10:06:15 +0200
+Message-ID: <1ja5eudix4.fsf@starbuckisacylon.baylibre.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241023203032.1388491-1-Frank.Li@nxp.com>
- <20241023203032.1388491-1-Frank.Li@nxp.com>
+Content-Type: text/plain
 
-Hi Frank,
+On Thu 24 Oct 2024 at 01:29, Kuninori Morimoto <kuninori.morimoto.gx@renesas.com> wrote:
 
-On Wed, Oct 23, 2024 at 04:30:32PM -0400, Frank Li wrote:
-> Add check for the return value of spi_get_csgpiod() to avoid passing a NULL
-> pointer to gpiod_direction_output(), preventing a crash when GPIO chip
-> select is not used.
-> 
-> Fix below crash:
-> [    4.251960] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-> [    4.260762] Mem abort info:
-> [    4.263556]   ESR = 0x0000000096000004
-> [    4.267308]   EC = 0x25: DABT (current EL), IL = 32 bits
-> [    4.272624]   SET = 0, FnV = 0
-> [    4.275681]   EA = 0, S1PTW = 0
-> [    4.278822]   FSC = 0x04: level 0 translation fault
-> [    4.283704] Data abort info:
-> [    4.286583]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-> [    4.292074]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-> [    4.297130]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-> [    4.302445] [0000000000000000] user address but active_mm is swapper
-> [    4.308805] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-> [    4.315072] Modules linked in:
-> [    4.318124] CPU: 2 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-rc4-next-20241023-00008-ga20ec42c5fc1 #359
-> [    4.328130] Hardware name: LS1046A QDS Board (DT)
-> [    4.332832] pstate: 40000005 (nZcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> [    4.339794] pc : gpiod_direction_output+0x34/0x5c
-> [    4.344505] lr : gpiod_direction_output+0x18/0x5c
-> [    4.349208] sp : ffff80008003b8f0
-> [    4.352517] x29: ffff80008003b8f0 x28: 0000000000000000 x27: ffffc96bcc7e9068
-> [    4.359659] x26: ffffc96bcc6e00b0 x25: ffffc96bcc598398 x24: ffff447400132810
-> [    4.366800] x23: 0000000000000000 x22: 0000000011e1a300 x21: 0000000000020002
-> [    4.373940] x20: 0000000000000000 x19: 0000000000000000 x18: ffffffffffffffff
-> [    4.381081] x17: ffff44740016e600 x16: 0000000500000003 x15: 0000000000000007
-> [    4.388221] x14: 0000000000989680 x13: 0000000000020000 x12: 000000000000001e
-> [    4.395362] x11: 0044b82fa09b5a53 x10: 0000000000000019 x9 : 0000000000000008
-> [    4.402502] x8 : 0000000000000002 x7 : 0000000000000007 x6 : 0000000000000000
-> [    4.409641] x5 : 0000000000000200 x4 : 0000000002000000 x3 : 0000000000000000
-> [    4.416781] x2 : 0000000000022202 x1 : 0000000000000000 x0 : 0000000000000000
-> [    4.423921] Call trace:
-> [    4.426362]  gpiod_direction_output+0x34/0x5c (P)
-> [    4.431067]  gpiod_direction_output+0x18/0x5c (L)
-> [    4.435771]  dspi_setup+0x220/0x334
-> 
-> Fixes: 9e264f3f85a5 ("spi: Replace all spi->chip_select and spi->cs_gpiod references with function call")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Now rtd->num is renamed to rtd->id. Let's switch.
+>
+> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+
+Acked-by: Jerome Brunet <jbrunet@baylibre.com>
+
+Just one comment: I understand why you have split this into multiple
+patches, I suppose it will help with the review but I wonder if it
+wouldn't be better to squash it all into a single change before
+applying ? To avoid exposing the intermediate state. It might be
+confusing too. The change would not be that big actually.
+
+Just a suggestion ;)
+
 > ---
+>  sound/soc/meson/axg-card.c | 6 +++---
+>  sound/soc/meson/gx-card.c  | 2 +-
+>  2 files changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/sound/soc/meson/axg-card.c b/sound/soc/meson/axg-card.c
+> index 5ebf287fe7004..a2dfccb7990f3 100644
+> --- a/sound/soc/meson/axg-card.c
+> +++ b/sound/soc/meson/axg-card.c
+> @@ -43,7 +43,7 @@ static int axg_card_tdm_be_hw_params(struct snd_pcm_substream *substream,
+>  	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
+>  	struct meson_card *priv = snd_soc_card_get_drvdata(rtd->card);
+>  	struct axg_dai_link_tdm_data *be =
+> -		(struct axg_dai_link_tdm_data *)priv->link_data[rtd->num];
+> +		(struct axg_dai_link_tdm_data *)priv->link_data[rtd->id];
+>  
+>  	return meson_card_i2s_set_sysclk(substream, params, be->mclk_fs);
+>  }
+> @@ -56,7 +56,7 @@ static int axg_card_tdm_dai_init(struct snd_soc_pcm_runtime *rtd)
+>  {
+>  	struct meson_card *priv = snd_soc_card_get_drvdata(rtd->card);
+>  	struct axg_dai_link_tdm_data *be =
+> -		(struct axg_dai_link_tdm_data *)priv->link_data[rtd->num];
+> +		(struct axg_dai_link_tdm_data *)priv->link_data[rtd->id];
+>  	struct snd_soc_dai *codec_dai;
+>  	int ret, i;
+>  
+> @@ -86,7 +86,7 @@ static int axg_card_tdm_dai_lb_init(struct snd_soc_pcm_runtime *rtd)
+>  {
+>  	struct meson_card *priv = snd_soc_card_get_drvdata(rtd->card);
+>  	struct axg_dai_link_tdm_data *be =
+> -		(struct axg_dai_link_tdm_data *)priv->link_data[rtd->num];
+> +		(struct axg_dai_link_tdm_data *)priv->link_data[rtd->id];
+>  	int ret;
+>  
+>  	/* The loopback rx_mask is the pad tx_mask */
+> diff --git a/sound/soc/meson/gx-card.c b/sound/soc/meson/gx-card.c
+> index 455f6bfc9f8fa..b408cc2bbc919 100644
+> --- a/sound/soc/meson/gx-card.c
+> +++ b/sound/soc/meson/gx-card.c
+> @@ -32,7 +32,7 @@ static int gx_card_i2s_be_hw_params(struct snd_pcm_substream *substream,
+>  	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
+>  	struct meson_card *priv = snd_soc_card_get_drvdata(rtd->card);
+>  	struct gx_dai_link_i2s_data *be =
+> -		(struct gx_dai_link_i2s_data *)priv->link_data[rtd->num];
+> +		(struct gx_dai_link_i2s_data *)priv->link_data[rtd->id];
+>  
+>  	return meson_card_i2s_set_sysclk(substream, params, be->mclk_fs);
+>  }
 
-Sadly I do not reproduce this NULL pointer dereference. I also know from
-hearsay that the GPIO consumer API is more or less NULL-tolerant. Could
-you "make drivers/gpio/gpiolib.lst" and see what's at offsets 0x18 and
-0x34 into gpiod_direction_output()? The first thing in that function is
-the VALIDATE_DESC() macro, which does:
-
-static int validate_desc(const struct gpio_desc *desc, const char *func)
-{
-	if (!desc)
-		return 0;
-
-	if (IS_ERR(desc)) {
-		pr_warn("%s: invalid GPIO (errorpointer)\n", func);
-		return PTR_ERR(desc);
-	}
-
-	return 1;
-}
-
-#define VALIDATE_DESC(desc) do { \
-	int __valid = validate_desc(desc, __func__); \
-	if (__valid <= 0) \
-		return __valid; \
-	} while (0)
+-- 
+Jerome
