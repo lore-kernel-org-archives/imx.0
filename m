@@ -1,161 +1,156 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2057.outbound.protection.outlook.com [40.107.105.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DC71E2019
-	for <imx@lists.linux.dev>; Thu, 24 Oct 2024 14:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729778761; cv=none; b=mMfQbv+zcRVHO97NsDzWVTvAtc0NCKVjLfssUxSdk/jVB13QERcGaB2jXByam9mgL1+FEOZtc9+3w5g2QDIwyg2KwWbGJI8+qm+MZx9OLvnSeGkwsY3IKbHgkgYIfgEe+MM5z637SsWUv+Vnm8jicgYbt5RkxX5CDOGoE5V775g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729778761; c=relaxed/simple;
-	bh=q+Oe0bTom/S230sfkLA0xaDCMKVJbIM9iCi+2pFjYhM=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZjwR9955IbwtCiy9jmoWJ85e4AAFR1LM0X732QF/SSGyEBAWfipkbEqqkawP86X7utmHD1wZATg7XzlYLhDCk663GKd1/V5DA3Bh4YXnuYlGwoKQDN2NbZH/MQxZvbo2QH78LQEejJOIrvbxp5+aoWDHgKawLsNyl0ZjbPnsR7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=dxofVv61; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=RdTj2nYm reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E161F6663
+	for <imx@lists.linux.dev>; Thu, 24 Oct 2024 14:06:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729778792; cv=fail; b=LqDC6iZtsdMP5jsqUAfvB3Wr9iNNFQT1c0sNTDyqnCTBAIP4dH8TbPf5nEG2rMlGZiFX1Iz37yeAU+wFdZrt2OWoFHls05rlnOOg+7OyIGBXxxDSr2+t7NYfskpsAmaze9iZs3N8XfG6CyX5I681/FvB+hDJ9lP0wKYAKFYmXu4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729778792; c=relaxed/simple;
+	bh=jhVOxV/yv31HFAKxWeOF0LsvGurUd5L+Bot20NbXE4I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=rkOK5ACDYQkorJ+R1+2XX16Y5nqDlv6w8xVJdhYy9lxNZxRFA9U0fKvRxyNpyrgWzJYDFs9y2OxwFjX6csRIENNyS8OLhCvVXixg6EtE+iu3DCgpQXLhLl4u2fRy1BmcboCpQvPetQot4T1CY/naW7UTHBbyfRgCkXMUaEa7hSg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BBtzRT/i; arc=fail smtp.client-ip=40.107.105.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="dxofVv61";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="RdTj2nYm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1729778757; x=1761314757;
-  h=from:to:subject:date:message-id:in-reply-to:references:
-   mime-version:content-transfer-encoding;
-  bh=B4rZ85uABm1rBWYYFvnPSd8gxVULaUc5YT80QXzNgb4=;
-  b=dxofVv61/3ZNv0Wyat2HjjmA8JNKeZr1k3gIfipg9U8ZRJX6fiSN2F2g
-   1IofYUen8LlGvhCsCAJGXPWgfiVCpN1s5E7x5XielDhoWLILZ3DHneNbj
-   sNPMePi8ziv3hEJN96NX5as3FQhWaA8Y7hYaAHsUJQW2sIOkSC8xnPJwB
-   jZ/qnHG/i4Iqhg7Lf/SKGvMKXx2Hlo5FA5+weZq9YKhuhwx0Dh5gX+LhZ
-   KCDwmThE/rWMLc0QcREZdm6Wxnt4F8t8eu8DY/VH76x6yqj2806ceKk0t
-   0jpFSpvG2Q2ppvsFMhufdHQyG+BFE2uTXxbGE9Xtw6rBI2QV5Ciu2K54K
-   w==;
-X-CSE-ConnectionGUID: 4+/5weJtQWig6PIjf/4DBQ==
-X-CSE-MsgGUID: UOiXlctXSkuUnieqcw8T6g==
-X-IronPort-AV: E=Sophos;i="6.11,229,1725314400"; 
-   d="scan'208";a="39654474"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 24 Oct 2024 16:05:49 +0200
-X-CheckPoint: {671A543D-F-65F98A6A-FADAF7F3}
-X-MAIL-CPID: 3E82C7D35B6B9BF454F6351958F5EAB0_5
-X-Control-Analysis: str=0001.0A682F1D.671A543D.008C,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E867B1614D7;
-	Thu, 24 Oct 2024 16:05:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1729778745; h=from:subject:date:message-id:to:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=B4rZ85uABm1rBWYYFvnPSd8gxVULaUc5YT80QXzNgb4=;
-	b=RdTj2nYmrsEIh0AFTJcu9izdoML6Yywu/vHG9n0EbmEzC9JQMSehsZHnQbfmT8H1LMNqpL
-	VK62Ga92/ChQ64VURPbHX3ogPlbTNJbM7Yv/OIAjaId2MaLm2nQfLAflvOrXbGKbp9f40Y
-	7TndtjmJ32pTMMs9VzFTfmm7pHiJa2/pPcuex1A3lusjBQppLs3WJv9vgMaOsQvMauNeRW
-	trv9ZSU3zrTnqlgFDcBRBUINA4m3EBUkbrUmFSTj2+2mJfbuFETxxDXd/y7jSsSiFseB+Q
-	RTSkvd3c9JrdhZx0rvg2y69rbM9keP1GDGGxOfK6QsdZOlDvWeOSZzctO+Dzlw==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, "open list:TQ SYSTEMS BOARD & DRIVER SUPPORT" <linux@ew.tq-group.com>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, open list <linux-kernel@vger.kernel.org>, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH 1/1] arm64: dts: imx8mn-tqma8mqnl-mba8mx-usbot: fix coexistence of output-low and output-high in GPIO
-Date: Thu, 24 Oct 2024 16:05:43 +0200
-Message-ID: <8443837.T7Z3S40VBb@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20241023210313.1390767-1-Frank.Li@nxp.com>
-References: <20241023210313.1390767-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BBtzRT/i"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IMdkBXZZa6PrIQvyKudTz8meyLmFD0VQ6uGzo42/WWAeLnPO+eaVpoTirMzeAJVPSg/gOx2Jo258kaYn9ZzCcQswr3Zz5cKoY0d1ue0Imy9x4GyqGY2W9WhD2YvKjj0x2jMyJexdruWFf2TbmxwDExRqvH5ovoUtPtYLsMFCZMHTt47glQ1+6bXE8YWw5q5iVA8isEoUd79t6JU/RSIdWd8zwc1qITHb4ynp1N/HcvpFLPQvZRkxLwYBSOMKbQZy/p4oOQ+x1HXrfgcFRy2SXXQ1WCgyVM4zDto4NrQr8ETAlXKGEWdgVmI2NaRp1FEpFNrydOYqul6iXjf4IIXMeQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=28lhZMPaEqWLjsypx9eenXJnHWzghLwS1fLosq8lNSM=;
+ b=wC4OThTUUOXXcVSFO+lnHw8DlY5ZVnBF2QQRhRvdPuGT6aB0pi3l/9/TkPhUKxtUlgFB0LeB8HIoBBNVO3OJw4B8gJMSmaxSa3w8PWWfSqLX5zSYYhYrFQ84wgQDGromTHie3fqShVRGrgnv6OFs3IhSLedLTR2x83bJkw8LAs8DxGvSI7U2KVQlQlrZYPwp8K5gsMUnll45QusuJDyprCqIjIS12Mei2JL797X6S18JHoT0jKhnmQd61EeNyvDIpWhh9LCmmYmQvqHCcjqPwgy/T0vkqWGuFQ9z1VsE172raktMM57SSUFv084oPn0PY0BDtI6D9853e+jCRUbpkw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=28lhZMPaEqWLjsypx9eenXJnHWzghLwS1fLosq8lNSM=;
+ b=BBtzRT/iXIF+/J2GxYkbpKQj3+0qH6ar32I0TnloOdpL357i/yEaRBENrY7cjq3i8Obr8LnypCziheih4TsIu4qyWPEta9QKfY1mU7tlcw1WLLvyh8YjuY+gzx2gifarm9IlY8eJr3fRb6JZto6UEBBLTjUg8hmzdy12tch2h3bDw9iJFoQFnivrlpmCpVsbqDstVryDdbxPYncVhY0gLnHKujb5jQIgYYK+jIvOkE25V3GES2ttSHMbdx7V0Wd3o5XzavXm/Bdby4kBHZI2MvN7B3lBrSpWB6jBGlHS99K0pz57nWWa/vLO8LGq8SIwpRtuPGFFbXrBoZ15U7ufiw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
+ by GV1PR04MB10560.eurprd04.prod.outlook.com (2603:10a6:150:203::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.18; Thu, 24 Oct
+ 2024 14:06:26 +0000
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2%3]) with mapi id 15.20.8093.014; Thu, 24 Oct 2024
+ 14:06:26 +0000
+Date: Thu, 24 Oct 2024 17:06:23 +0300
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, claudiu.manoil@nxp.com, xiaoning.wang@nxp.com,
+	Frank.Li@nxp.com, christophe.leroy@csgroup.eu,
+	linux@armlinux.org.uk, bhelgaas@google.com, horms@kernel.org,
+	imx@lists.linux.dev, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, alexander.stein@ew.tq-group.com
+Subject: Re: [PATCH v4 net-next 01/13] dt-bindings: net: add compatible
+ string for i.MX95 EMDIO
+Message-ID: <20241024140623.yr4lgjp7pryx344i@skbuf>
+References: <20241022055223.382277-1-wei.fang@nxp.com>
+ <20241022055223.382277-2-wei.fang@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241022055223.382277-2-wei.fang@nxp.com>
+X-ClientProxiedBy: BE1P281CA0122.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:b10:7a::13) To AM8PR04MB7779.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24b::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|GV1PR04MB10560:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9d5f4280-0441-49a9-b487-08dcf4350ca5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|7416014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?5pfMLovlrSgV4JcdVZwmPQi21a3qPX9QKXa6kcapO4/YUyMHrzKLRSIo/8Tm?=
+ =?us-ascii?Q?jBIEDUq+263uZAWC0NksoezXFncn9XFvjaRh4filfX/JHXsuR1vD049a7A2g?=
+ =?us-ascii?Q?tcdx2l2BRkb/3CSFXHBbRywCnI6RVbT3IYwXuL/C0PR8an1K8jM/rHlHQuXV?=
+ =?us-ascii?Q?64yl30N6D/uvEStanQcq+ZSBRuyusH/Ca0oyJ3QwHCzyC/yxcXsWRc3IXHmP?=
+ =?us-ascii?Q?e5kMyJ1AI16/AItYbHgC5Cbo+aPt0+U4wCgRCxugfR7xOo+nTi3/8meK9yxB?=
+ =?us-ascii?Q?MeINP4Bbg0D0W5G80UxLZ7wyA7Nl6Wu5zQQM2DhZYxraVc8oTpB5ZQzp+GHO?=
+ =?us-ascii?Q?8HJslUOdLAUxPw4Jo676JDvtJK/aLYnqlx2HL7ZtRUdy0Eub+NsnRyq9ibal?=
+ =?us-ascii?Q?INPvvIZ2VenY0URR7ANgXf9zzGGEnNs3tRFImLO/aQIuSWd7WirXCkZjOSzf?=
+ =?us-ascii?Q?6PShOh6IkOAtO3qH74q1F3FmHE6zTkLLjswcwtFZIUsLsSH6IcyE5K03agZg?=
+ =?us-ascii?Q?woVwhqo2X8hKzYVlzsoMBaBcjgi3FcwGjGA8jaqWGGZSjGVm93iqBxQNUIWh?=
+ =?us-ascii?Q?LhXhL1Xy04uaOw70e/e0A6ttoYCaAF8atZL3/A9N2z3nXasPeknwzN6anqPw?=
+ =?us-ascii?Q?By153YYx6Dq/M/wsex9lXQNBRP0NpyBKtPpAIgVC46N2f6GFvwfL0aRYRI49?=
+ =?us-ascii?Q?WNrJmYmjBvFULR4bwy9UB7Cm4p6sRYaxx0YF8xJaGXrQ2TswHWXXmkVKpBLf?=
+ =?us-ascii?Q?qCWPa6MyTrXDfbo4xaXTTEDwljBTcIOnPjYoIUWkowysxotLgfzy56gSpbmr?=
+ =?us-ascii?Q?2eR9GdTsP/jpSn1uwbUg0E5aUewE0ZUHMMUMd/YnqYPAHf+aDRBKDHupcILa?=
+ =?us-ascii?Q?icNDQQRKfVp4b/jq59n/1fOc2HiU3DKIvsaxzeAcQjmsMlhTNV18pBGVmc33?=
+ =?us-ascii?Q?WtIKy6TIoTEAYBId1Uf5OUjpfLtGasnENLdZLW7SBM6W0hUebfCwZX+iOjIe?=
+ =?us-ascii?Q?Zy9nwm2UPKubrjZxQluAepW96CgVeoyNBr2f6djz97Qj/NAWq+Djgo8ocChF?=
+ =?us-ascii?Q?TdrzTvS1TNC/g16CkNEByGF3d9oSaRaFH9fbpYOs3ZYjRJMA1TWpoQkQFGhB?=
+ =?us-ascii?Q?SEGUjlm97IqOpIJ7po2sFfLhkm5JA08mInYAdSzvf4uvujQhiOt2u032rOMD?=
+ =?us-ascii?Q?D8o/QkZ9hOOlKw7l6EQtkahVJhEcIF19CiG3MsmlE2UQoowf7NvQJRaPkYQ6?=
+ =?us-ascii?Q?v3AfZUT7lRViKTa5uMfCgVwElij2MSAvk1oH+P9dFELxYMtdzcLkEPxtcU7g?=
+ =?us-ascii?Q?A5I=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+x7/fXQWYZ9k5c8UOdN0nPHfqK03a2C1PLHSAdlHNheeL3s8gSFCun6iUw42?=
+ =?us-ascii?Q?1PLPpCz5sLvRSTEmnEqCNPz+ib0JLlIOuk06fjES5zD9VgMEL0eiRfZiUPop?=
+ =?us-ascii?Q?rMDi7VK9XcufQOZZb17Qlhe+AibefyflHXVafAIY2vW/6Ig/3c7iDWtrjUpL?=
+ =?us-ascii?Q?OfriVSezHsYop1mevTkAgbRynacOL6FLboBQujt44RY8IB+q57S7b+Cb5UU4?=
+ =?us-ascii?Q?00q4RM8N3tr1lQ3P8zMZ83IS7MjX0dHmG85GZUFmLm/vIzK1zP5txmQ/lJW9?=
+ =?us-ascii?Q?AP/SWMLZLhdeMDhVostNtpD3ky0jlyWyGl8lDyjlYLcW9msA1kAkgmLGxFeD?=
+ =?us-ascii?Q?rqPYrDvg6xDwsIGe6UIfu20oSiRLgHjYdSGWrvUuKuJr5DQrErgEx+yeoMmE?=
+ =?us-ascii?Q?/ufSHA1Vewx1Bdu2VpzA+Ip2/fqUD39PCGTPaHSCmwvyVbMl0icw6n0qawfi?=
+ =?us-ascii?Q?ujboF5RJ2YoR0trpC2Ia77vfnEDi+kuzAy4s5efG5rXOvjxZjZxxfXby7hWh?=
+ =?us-ascii?Q?heHJTBrGpwME117SUyZBvpsYf1OTfTk1GEssN68HQkdjfJAcDrbQ22yh2Ntj?=
+ =?us-ascii?Q?fj/NaoZGNaxOCvSOEwetgCkPw/eM2qxljKKNaRCNB9e2lddOWe9q+SLcPhWD?=
+ =?us-ascii?Q?5XLp1XkCr+18Dz1+Tqh3B/t5p8LLVqDB729PP8AXX4TArN11/Td5e7jYNS24?=
+ =?us-ascii?Q?uEI9+uROlQAgYDk/9sKVklWMpDJeedbhjkSZCaezMtl34kBjirDggwQLqN+P?=
+ =?us-ascii?Q?IWcFRvEc/cE8X5b+5vJpMgppc5gYTIqlWaUbjZG8utHTgcpx+HAicnbu9Xrd?=
+ =?us-ascii?Q?NlJd3GWQjUWLyvt6pdJfAwd27NrPry3rrWxBf4t2aKWpfmr6um25CSRAVVUi?=
+ =?us-ascii?Q?9d60VvqTHOg6UufN5DaexZO0PMaoFgTcGpfRv1qteBu2Uh3o1hH2JAtR8Mm/?=
+ =?us-ascii?Q?ulEgt4ZwbfOvaNvNyoGPx8kKIwdofc8TDVIp987kVdkm3g/kVuh19e/sEzRm?=
+ =?us-ascii?Q?ZbJpd1G9ASo5IXVo5dGARfwXOpLNyR1UHUf6xllu+iE8dOFMa0cRdoL9DwSa?=
+ =?us-ascii?Q?zn/x6qSt8K9XKDsd5hVR6wVxxhhSXqZyRxF9kTiGe3BM0Qwk5rnWZTuMOYyh?=
+ =?us-ascii?Q?gc4iHFlscTrGOgBy0qejlt+H4UbwiJpJ6xbMRtCBYtTwhj2C5sg4eTPydD7q?=
+ =?us-ascii?Q?WMnYAS772MiQCcZO94L8+tZo/l4Z2DUoZzDBWpkxdw+ZNSVXwG0WyHJADedI?=
+ =?us-ascii?Q?TjnaThWtTaBnuW6G9OmHJ/DWYG5x2jJHtL2kJMy+D6puE5idm2+/3UKsholy?=
+ =?us-ascii?Q?FuFiKPKmbA0cd1dI1tFKxIsb+wjZpoAbFWRXB/h+n4ofNGPgWmQ3ui2NO8SN?=
+ =?us-ascii?Q?+mhJm0b8WcJKzd5+Uqm3UU1bvvyCULS7xXcKO722C9gwO5aTXUQhl5anSa0S?=
+ =?us-ascii?Q?muv9xGLT9vrjrcaJknRHIq0LXFjz/8cX2zpRhaRyIxGy/tOh0thVSV6SW5kO?=
+ =?us-ascii?Q?TvkiHVhjm5cXKu3ifTMo7B864k7bZHlhxqoFgB4XWiO2Vm6/3sqI5bqW62j0?=
+ =?us-ascii?Q?l4dvXrgvDFdS8TSqLhhF2Ehtcwu/NoHPG5lB82HL3XsI0Kvk0mOOv8P2qgyT?=
+ =?us-ascii?Q?Sg=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9d5f4280-0441-49a9-b487-08dcf4350ca5
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2024 14:06:26.4720
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /A4GGOSaiHuGIIlhruKaIVDaV9o4TcZmDf2LRLpPxx5z4/O+FgEzydayuz4p5hiFS/85P4INFNDEyCjDpuFVnQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10560
 
-Hi Frank,
-
-thanks for noticing the issue and also providing a patch.
-
-Am Mittwoch, 23. Oktober 2024, 23:03:13 CEST schrieb Frank Li:
-> Fix the issue where both 'output-low' and 'output-high' exist under GPIO
-> hog nodes  (rst_usb_hub_hog and sel_usb_hub_hog) when applying device
-> tree overlays. Since /delete-property/ is not supported in the overlays,
-> setting 'output-low' results in both properties being present. The
-> workaround is to disable these hogs and create new ones with 'output-low'
-> as needed.
->=20
-> Fix below CHECK_DTBS warning:
-> arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-usbotg.dtb: sel-usb=
-=2Dhub-hog:
->    {'output-low': True, 'gpio-hog': True, 'gpios': [[1, 0]], 'output-high=
-': True, 'phandle': 108, '$nodename': ['sel-usb-hub-hog']}
->        is valid under each of {'required': ['output-low']}, {'required': =
-['output-high']
->=20
-> Fixes: 3f6fc30abebc ("arm64: dts: imx8mn: tqma8mqnl-mba8mx: Add USB DR ov=
-erlay")
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-
-Thanks, this works as intended. If this overlay applied the USB OTG connect=
-or (X19) can be used.
-
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-
+On Tue, Oct 22, 2024 at 01:52:11PM +0800, Wei Fang wrote:
+> The EMDIO of i.MX95 has been upgraded to revision 4.1, and the vendor
+> ID and device ID have also changed, so add the new compatible strings
+> for i.MX95 EMDIO.
+> 
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 > ---
-> Alex:
-> 	I have not hardware to run it. I check dtb output is correct.
-> ---
->  .../imx8mn-tqma8mqnl-mba8mx-usbotg.dtso       | 29 +++++++++++++++++--
->  1 file changed, 27 insertions(+), 2 deletions(-)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-usbotg=
-=2Edtso b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-usbotg.dtso
-> index 96db07fc9bece..1f2a0fe70a0a2 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-usbotg.dtso
-> +++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-usbotg.dtso
-> @@ -29,12 +29,37 @@ usb_dr_connector: endpoint {
->  	};
->  };
-> =20
-> +/*
-> + * rst_usb_hub_hog and sel_usb_hub_hog have property 'output-high',
-> + * dt overlay don't support /delete-property/. Both 'output-low' and
-> + * 'output-high' will be exist under hog nodes if overlay file set
-> + * 'output-low'. Workaround is disable these hog and create new hog with
-> + * 'output-low'.
-> + */
-> +
->  &rst_usb_hub_hog {
-> -	output-low;
-> +	status =3D "disabled";
-> +};
-> +
-> +&expander0 {
-> +	rst-usb-low-hub-hog {
-> +		gpio-hog;
-> +		gpios =3D <13 0>;
-> +		output-low;
-> +		line-name =3D "RST_USB_HUB#";
-> +	};
->  };
-> =20
->  &sel_usb_hub_hog {
-> -	output-low;
-> +	status =3D "disabled";
-> +};
-> +
-> +&gpio2 {
-> +	sel-usb-low-hub-hog {
-> +		gpio-hog;
-> +		gpios =3D <1 GPIO_ACTIVE_HIGH>;
-> +		output-low;
-> +	};
->  };
-> =20
->  &usbotg1 {
->=20
 
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
-
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
