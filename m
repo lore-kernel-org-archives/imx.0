@@ -1,104 +1,112 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B501FF7D1
-	for <imx@lists.linux.dev>; Thu, 24 Oct 2024 18:14:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D921ABEC5;
+	Thu, 24 Oct 2024 18:16:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729793662; cv=none; b=OKjthMgW/EMzkBCraC7/8vlZOjEolsdhsNDcLIHzxSDd9Kl7ETBUQ36DCxBxgUWhy1yLa45XawTt0VgW25qc41AEdoF/o/so37PTncN5AxNCPMi8AxCX7ZBN2KnloVoGID83VUit7Ncrhmn36IFGD4rBuPUEJW14lDIK25+HrhE=
+	t=1729793793; cv=none; b=SnkoL9zkFHr8XFIS/SZ9Uj7avKWZlTVHBE9JWHX6/zYEaeNX0yvVv7zNnN3RsyMxI5nNZKpxNzQ0CuwSKPd/U9WU5nSTvkaS/+RSIenzq0odn6NAUOfb5+A/lkRsQSHQiy4XGVVhAU+BFKEcVMGxZeja9LGV8ySIymzhWZugAnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729793662; c=relaxed/simple;
-	bh=b6bXM70L8ttQQAERg0pKOeOQ7SPw82oq1yMl/099naY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kaazvSqAl7pA80xheqvtgEARPqIiwuQTw9Dab5YqmTaD8VSpnaSLlemSk/EtXXLb3c4VZzCB+7P6ngLN+P+hdVKKhiHCO5BUtGa+4Rqr+VeyyODir7XD+nwRTj5dT8KC3CeJAccsuI2b2coNh7aDufdEEyRRsyl1le7ZWGWAvxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ymua56+W; arc=none smtp.client-ip=209.85.215.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729793793; c=relaxed/simple;
+	bh=wLQMy1fODAkR42k9k6/+Wm4LDF7pthKYgpT1trqgyOw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=f7f+AsqWmGpl50Ub80pl3SKNVLQrhgsSKMJxINv9OD6zjBV8fSk3JUDhwtupTytrJ88mghNuA1sur1rU9hZNxg4A7OPUkq6aNsMW3F5JZTqVuxQt7sXqiDJkC4vZWk216IucN7xxIxJz0Yc4NbYOAg1L5SlX66W3cJYecJTU5/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vh6jwWlf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ymua56+W"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-7ea9739647bso799470a12.0
-        for <imx@lists.linux.dev>; Thu, 24 Oct 2024 11:14:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729793659; x=1730398459; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=E2mRYwktrmZtlfT2nFMLWD2hPCZTt5hXE/NuFZYD1KE=;
-        b=Ymua56+WCFlLiM3etjoQQqUIS8MB1cWVvBcMTjUxhXu8Qad8iq+X4yi5YaJxK/lYLJ
-         RtAnprOfc2NnxhKdtYBmCrXahqel6vsF46mhpaZjNPEb36XDsnpGlSXP9IJywH1bSzIG
-         0EH6NI6smiWXqPcKCclP9PVQrfMu6vwY+hAl5RNM5F3qcgGoSj6GngOvaFmuUUULvLME
-         xVgnZzbQB6XPiVsaJFOBuSfRPFKh9u+MrqHqtsl5j36wZR6+w2ATqxfMSIhW4hyypB5w
-         p3ooDcMzNhC+gG149BygBX551RA+5u4h5Td9nWQHgT7/4XJpY6dMV10/OGfH0DZnc7CM
-         4iUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729793659; x=1730398459;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E2mRYwktrmZtlfT2nFMLWD2hPCZTt5hXE/NuFZYD1KE=;
-        b=FhfwPpVyPo6RUiS58zXXNTvLMt3M/crA0C2ZPQyMexH+VhZQY8LHRZquxR7XuH27kJ
-         w6Nlt5kwrNrMxt1x/YSehYpIJ5UqDoxVLLuPUc/Fv0fcpfceqSowIAbsJfeCZT59PCw/
-         qNW2440+JMebjQYzCsvhvMzp8+tD09vUYto9vayGun+/ktlhOkyEd5VLc9XqaOo8cSZ+
-         9j/KRfnSVRFSxYZ/YgfI//X6iToVdcbM0lpLy69FwT3aAiqMckWL61O6H2S+GjjJD63p
-         /ANn1/TmxasxsT+F6MfUEqg9lUj1dYUjHpnjDWrDSs2gyrS5xZm/52LK3okiaIp2Da5F
-         +bXA==
-X-Forwarded-Encrypted: i=1; AJvYcCX2/GDpGX/PC83Tu2QuiJk6mC0k8ZEfsq2efMbmMX+fJ89tnr8uTu1kesjIeJVVvL5W8Og=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzRXiFlo9TSHo8nXerFZNwJe0P5bsH0ll/O50aRxB7Ymu/LGWCX
-	QNwto/tCzGXSkzMmeL9wdXSc4uHMLDIQGWwI0/YwdCt+Q87URwdKgoe3cA==
-X-Google-Smtp-Source: AGHT+IF15FANv02/HX5OJM9MTivD/8lQBJRNT9ZUddV/kotfU3iNdSgaePzvpQs3OCWOW5wJ1NIpAQ==
-X-Received: by 2002:a05:6a20:43a7:b0:1d8:a3ab:7220 with SMTP id adf61e73a8af0-1d98976e70fmr3697478637.0.1729793658893;
-        Thu, 24 Oct 2024 11:14:18 -0700 (PDT)
-Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:b160:3edf:6e5d:8d4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71ec13d74d9sm8208171b3a.133.2024.10.24.11.14.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Oct 2024 11:14:18 -0700 (PDT)
-From: Fabio Estevam <festevam@gmail.com>
-To: shawnguo@kernel.org
-Cc: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	shengjiu.wang@nxp.com,
-	Fabio Estevam <festevam@denx.de>
-Subject: [PATCH] ARM: dts: imx6sll: Fix the last SPDIF clock name
-Date: Thu, 24 Oct 2024 15:14:09 -0300
-Message-Id: <20241024181409.1461997-1-festevam@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vh6jwWlf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FBD6C4CEC7;
+	Thu, 24 Oct 2024 18:16:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729793792;
+	bh=wLQMy1fODAkR42k9k6/+Wm4LDF7pthKYgpT1trqgyOw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=Vh6jwWlfQPZQfjGlftsi17vLLxsL5zZfNiCQJA2ugdrSPwdnao4cYzJyH0fJ6SOtW
+	 EF4BpJJSaW/azYChmUCGPgtF60kJ5Ga+F4UOY8t7jAnOrlLrMyGn4oouunBZzHCT1M
+	 fvE8QLJsWMtwAf8CzmBC9u+E5eiOfJXEK1ooBb+gyXZpVlB5b8noHv+zXIw2wVG1Fu
+	 XrKE3eaAMgLNmhlgI+83nsVQldtJ8ATNVcV1uV+zZQgJ4B4p/0iP//CxA9VKOft6Q7
+	 moGu1Ut3ybCF+ODoRccN/cyOjJDWUAM3zQPUSl1hfdEOGZ0XB0t7lJ2ZVYWaUK8Knr
+	 YtTARepCr42mQ==
+Date: Thu, 24 Oct 2024 13:16:30 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, vladimir.oltean@nxp.com,
+	claudiu.manoil@nxp.com, xiaoning.wang@nxp.com, Frank.Li@nxp.com,
+	christophe.leroy@csgroup.eu, linux@armlinux.org.uk,
+	bhelgaas@google.com, horms@kernel.org, imx@lists.linux.dev,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	alexander.stein@ew.tq-group.com
+Subject: Re: [PATCH v5 net-next 08/13] PCI: Add NXP NETC vendor ID and device
+ IDs
+Message-ID: <20241024181630.GA966301@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241024065328.521518-9-wei.fang@nxp.com>
 
-From: Fabio Estevam <festevam@denx.de>
+On Thu, Oct 24, 2024 at 02:53:23PM +0800, Wei Fang wrote:
+> NXP NETC is a multi-function RCiEP and it contains multiple functions,
+> such as EMDIO, PTP Timer, ENETC PF and VF. Therefore, add these device
+> IDs to pci_ids.h.
+> 
+> Below are the device IDs and corresponding drivers.
+> PCI_DEVICE_ID_NXP2_ENETC_PF: nxp-enetc4
+> PCI_DEVICE_ID_NXP2_NETC_EMDIO: fsl-enetc-mdio
+> PCI_DEVICE_ID_NXP2_NETC_TIMER: ptp_netc
+> PCI_DEVICE_ID_NXP2_ENETC_VF: fsl-enetc-vf
+> 
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 
-The last SPDIF clock is IMX6SLL_CLK_SPBA, so change the last
-clock-name entry to 'spba' as expected by fsl,spdif.yaml.
+Please drop my ack.  I don't think these meet the spirit of the
+guidance in pci_ids.h, which is there to minimize churn in that file
+and make backports easier:
 
-This fixes the following dt-schema warning:
+ *      Do not add new entries to this file unless the definitions
+ *      are shared between multiple drivers.
 
-spdif@2004000: clock-names:9: 'spba' was expected
+PCI_DEVICE_ID_NXP2_NETC_TIMER and PCI_DEVICE_ID_NXP2_ENETC_VF aren't
+used at all by this series, so they shouldn't be added to pci_ids.h.
 
-Signed-off-by: Fabio Estevam <festevam@denx.de>
----
- arch/arm/boot/dts/nxp/imx/imx6sll.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+PCI_DEVICE_ID_NXP2_NETC_EMDIO is used only by
+drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c, so it should be
+defined there, not in pci_ids.h.
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6sll.dtsi b/arch/arm/boot/dts/nxp/imx/imx6sll.dtsi
-index 85fe2a4ab97a..207b193db3ba 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6sll.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6sll.dtsi
-@@ -173,7 +173,7 @@ spdif: spdif@2004000 {
- 						      "rxtx1", "rxtx2",
- 						      "rxtx3", "rxtx4",
- 						      "rxtx5", "rxtx6",
--						      "rxtx7", "dma";
-+						      "rxtx7", "spba";
- 					status = "disabled";
- 				};
- 
--- 
-2.34.1
+PCI_DEVICE_ID_NXP2_ENETC_PF is used by enetc.c and enetc4_pf.c, but
+it looks like those are basically part of the same driver, and it
+could be defined in enetc4_hw.h or similar.
 
+> ---
+> v5: no changes
+> ---
+>  include/linux/pci_ids.h | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+> index 4cf6aaed5f35..acd7ae774913 100644
+> --- a/include/linux/pci_ids.h
+> +++ b/include/linux/pci_ids.h
+> @@ -1556,6 +1556,13 @@
+>  #define PCI_DEVICE_ID_PHILIPS_SAA7146	0x7146
+>  #define PCI_DEVICE_ID_PHILIPS_SAA9730	0x9730
+>  
+> +/* NXP has two vendor IDs, the other one is 0x1957 */
+> +#define PCI_VENDOR_ID_NXP2		PCI_VENDOR_ID_PHILIPS
+> +#define PCI_DEVICE_ID_NXP2_ENETC_PF	0xe101
+> +#define PCI_DEVICE_ID_NXP2_NETC_EMDIO	0xee00
+> +#define PCI_DEVICE_ID_NXP2_NETC_TIMER	0xee02
+> +#define PCI_DEVICE_ID_NXP2_ENETC_VF	0xef00
+> +
+>  #define PCI_VENDOR_ID_EICON		0x1133
+>  #define PCI_DEVICE_ID_EICON_DIVA20	0xe002
+>  #define PCI_DEVICE_ID_EICON_DIVA20_U	0xe004
+> -- 
+> 2.34.1
+> 
