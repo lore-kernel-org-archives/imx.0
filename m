@@ -1,360 +1,180 @@
-Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11010071.outbound.protection.outlook.com [52.101.228.71])
+Received: from FR6P281CU001.outbound.protection.outlook.com (mail-germanywestcentralazon11020089.outbound.protection.outlook.com [52.101.171.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9499A482EF
-	for <imx@lists.linux.dev>; Thu, 24 Oct 2024 01:30:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD211741D4
+	for <imx@lists.linux.dev>; Thu, 24 Oct 2024 06:11:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.171.89
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729733405; cv=fail; b=mvTGjYBPPIv+Gyu3fZzwDfzaYHGR6JAXV903po1eF3Hq+Z6+LhFwUlafvCUMfgmHF6NS4atFKqVj9de/0xVXmX1RyyMIfeEDbzraYiLbh9xKDzRSedJJRVmc5z8UPalvbEVTkYkswYeGRCJLuSyvYeLJ0UbFNYKK88hnojFL5qw=
+	t=1729750270; cv=fail; b=Hc4zQBCQQjdDfMvrAB3VPNIATYIj/sdQ2xrlLiyglfoQTP7U/h/UaVxADMk7A8smfO5YBEERGft8ARrGNwUpRSPti5eL5J0ymN9yIH8wyjDzjq99bxTQ+CKB9xIpaXI93F5SnyQ07kpATxNQ9rbkJX4tsed2vh+DjS22MZ2fI44=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729733405; c=relaxed/simple;
-	bh=iLqPNhNv54ZR7u+m94DbveiYQPx/xmpnKsSCxpQ5LqU=;
-	h=Message-ID:From:To:In-Reply-To:References:Subject:Content-Type:
-	 Date:MIME-Version; b=DlmAU1hb5ktKUcP4QWhjHn02XA/PEdlEWVyjpH67yIz5N19k2JzojpkcobWu35ryiK0BrmTsufcW794XRBV2obl1HpQBMxyK9vk6wmefyHEPJ4wTUi4JCRYyAL/13EN+dJFwmqt3lcwLcQOxGM31MsKel01/GkBOS+CftEqMIak=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=HxyFQegY; arc=fail smtp.client-ip=52.101.228.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+	s=arc-20240116; t=1729750270; c=relaxed/simple;
+	bh=dVCK50bNEjVLgCUgG2YXc/QvN5ACnFAC0CDYP6iAhSI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=l3u8eLpwcSji0yHRwkhZfMjE6Pl6LEwsnyr+PDfq3hYwPYgW2AIasbKiGWQxc3OSGkTf74Ew9k1OjOWDYCXe7kKX89+/Ujvc18XIA1VHqshzr5RImYcUwYQ343bDWmBsPNXjDnXc3teNl2krqrzqfgIHA6f+YaWjHYYtq9wtfPA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iris-sensing.com; spf=pass smtp.mailfrom=iris-sensing.com; dkim=pass (2048-bit key) header.d=iris-sensing.com header.i=@iris-sensing.com header.b=4pby1CFv; arc=fail smtp.client-ip=52.101.171.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iris-sensing.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iris-sensing.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="HxyFQegY"
+	dkim=pass (2048-bit key) header.d=iris-sensing.com header.i=@iris-sensing.com header.b="4pby1CFv"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t+6o/ry8XNS0DQ++8LwjSifMGKo8YFfIWPyr5vokpuuVBlvqFEKWNSkRG3esnuiP2Gncwm/ujK6kvGwpcdh61fuWPKw+iSZ1ie5A+fhBaDamBuea8aDpVleb88/2G9ik/mR2r0QsH7HxsI8RRd2CFT5fKIGmTNE3WheOc5REyTg4Y0766oKlZz00ZMaPTcGNqJ6JgPxWWKF5oRTY+UDE6VVhgIrPmmetQHzR7rClqr/gMl/xWLQKkmkiqhr+LnscDHeLNaoC+1uYFQtX8ivoEP6noMmAf9sBYhFADT7AQRq4a+pbpTcz2KzDn1AUWYk5j8vAcKvwOdN82kBl7y24fQ==
+ b=gg1Uk6MyNwTn48YDIWIcAYoGDCN8D9XGk8cYAqjrtPQQZYhCH79OVdwijZOR0OLxtI8pmbLvZjz2dUOldyGxZce8SfzvDi0f/2K6/TxnrE/5IF3/DksVkS+lpgD46gap2vwxNKsfDCAm/6v8wSAXV6M9EeO6jXOF0UnD5Rw+8nPVXSjGuBbh+1Vnn1suM0kswpluuD+N8l3mjLvESMZlqPZcsUoLpO4ZFiQEYsjN7zWxczfszpfdMuuFJwgS58zrYFW2GYLGRU9QAGJTWusoHS9H6XY6heacYm7vbKjMltX7YVtPtYTGa1AvaHFRDgvUeaPRfYSO4I56J3lkv2GalA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DiCPtb68hvMqTY12hBjqsqiOckeFNI1HfeSGkNlX0Yg=;
- b=OPuIrdKndE5J+Oh4MV6Bsja0iqM7ExYCd8viXI8rjU2YKCL9+A9hLq/Z5pZvz5258DwJn4z862ZrshTVSoAXmLw7zwPGpo84To/EtEFUEa0Xw1a48OOb+pVtjpS9V4Pyf30nycmIa2eGu9smt/jA6zkodigyyXVsP85BQuDcftoUY0oyMroA3jeORjnS0PumIanGmbseFoIk38gljBREPAcS0AxKEkTbepOxizjVpWwsEmGj4rzn4ljvDyDOhFkHwSUs22NHj121IQVRxvFGWHNkaFj/Dsd1kDppDuySwwZgWUCfVI+1UaqpGbVfM05q9AJfFyB9hOiyb9cvoROx+g==
+ bh=dVCK50bNEjVLgCUgG2YXc/QvN5ACnFAC0CDYP6iAhSI=;
+ b=F362U3nGm40AuWJZFoj7ytMrhYuF8I37T/o72avNv0ZZy+kR1SycKV1n82GlSk4kKArDXYMQIjwNddF/3t4zHAYLbreUh/Dl1s2vpYLLddE4+3OQwT6Ms6eb3TYfD5pyHejubqWCXInYE5215/3kpEqiO+DZ93vL89r8YSiv42Msqslbqh8qlAHu8leUIZgUowM2kH84lxzIRz54OjQ4RvT1tqt437LawGbvWjzTk26JiXvcEyoWhntNZyzx2nrzRZHA9hNrz9xc2aD/BhtRyYmrJxAYMwxMk9fLzXeKPXmiLp1vPpLL/rNC3OHPBJMKfPwa4ivjfUg4MSXMfguJdw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ smtp.mailfrom=iris-sensing.com; dmarc=pass action=none
+ header.from=iris-sensing.com; dkim=pass header.d=iris-sensing.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iris-sensing.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DiCPtb68hvMqTY12hBjqsqiOckeFNI1HfeSGkNlX0Yg=;
- b=HxyFQegY+pUPPl7eDobe+zrbbq4HRHQHFXerni5VCyszXREBKb/jIALAvwO11XBh6Fmun5z739ExMdI4OQ+yDAt6lzPH8l7SS3hOpYCe2d5A8mmyyCfJUR1TadULaFKFVaby8W0D9PuJEaelCLtcHh4nYu4wS1sXqjCG8Dlrk6k=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=renesas.com;
-Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
- (2603:1096:400:3a9::11) by TYCPR01MB12111.jpnprd01.prod.outlook.com
- (2603:1096:400:43d::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.16; Thu, 24 Oct
- 2024 01:29:59 +0000
-Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
- ([fe80::c568:1028:2fd1:6e11]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
- ([fe80::c568:1028:2fd1:6e11%5]) with mapi id 15.20.8093.014; Thu, 24 Oct 2024
- 01:29:59 +0000
-Message-ID: <87plnqb84p.wl-kuninori.morimoto.gx@renesas.com>
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-To: Jaroslav Kysela <perex@perex.cz>, Jerome Brunet <jbrunet@baylibre.com>, Kevin Hilman <khilman@baylibre.com>, Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Shengjiu Wang <shengjiu.wang@gmail.com>, Takashi Iwai <tiwai@suse.com>, Vinod Koul <vkoul@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>, alsa-devel@alsa-project.org, imx@lists.linux.dev, linux-rpi-kernel@lists.infradead.org, linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, patches@opensource.cirrus.com
-In-Reply-To: <871q06cmsl.wl-kuninori.morimoto.gx@renesas.com>
-References: <871q06cmsl.wl-kuninori.morimoto.gx@renesas.com>
-Subject: [PATCH 8/8] ASoC: cleanup function parameter for rtd and its id
-User-Agent: Wanderlust/2.15.9 Emacs/29.3 Mule/6.0
-Content-Type: text/plain; charset=US-ASCII
-Date: Thu, 24 Oct 2024 01:29:58 +0000
-X-ClientProxiedBy: TYAPR01CA0197.jpnprd01.prod.outlook.com
- (2603:1096:404:29::17) To TYCPR01MB10914.jpnprd01.prod.outlook.com
- (2603:1096:400:3a9::11)
+ bh=dVCK50bNEjVLgCUgG2YXc/QvN5ACnFAC0CDYP6iAhSI=;
+ b=4pby1CFvzz05n7ERfFwhGtvDbO0Pqb54wAp03xckYB2ZyRY/aMApBlE7TFVIrrDu8qu3Mqla0bdEgdL817XYngZg2w5qn1O+swUctwyFYAn7fT3N4vuasdGTyV7qDGkdQeKQ/zLdYKtsJaJ4Dif2CCiD433MSlsJ57hXSnmpI6xTWNOn6qSYgkRuHaaJK4sS5g4dQTM8GuyqzWe1IKfrsHg0ZYkT+Q+cxaIG56jcBERxi4KvTdXnuNa4JJRmdC/932IpScPf4bijAJy/RMcoZpd/dVlSBoEHHcDwgQS3TyFRgdHTTM3bfLD4Cpk0j5zMe9ItTqQeNGedWH2yZAsRLw==
+Received: from FR0P281MB2809.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:23::8) by
+ FR6P281MB3454.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:c0::12) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8093.18; Thu, 24 Oct 2024 06:11:05 +0000
+Received: from FR0P281MB2809.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::d685:f312:e114:519e]) by FR0P281MB2809.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::d685:f312:e114:519e%4]) with mapi id 15.20.8093.018; Thu, 24 Oct 2024
+ 06:11:05 +0000
+From: Erik Schumacher <erik.schumacher@iris-sensing.com>
+To: "Frank.li@nxp.com" <Frank.li@nxp.com>
+CC: "kernel@pengutronix.de" <kernel@pengutronix.de>, "s.hauer@pengutronix.de"
+	<s.hauer@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "ukleinek@kernel.org"
+	<ukleinek@kernel.org>, "linux-pwm@vger.kernel.org"
+	<linux-pwm@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH] pwm: imx-tpm: Use correct MODULO value for EPWM mode
+Thread-Topic: [PATCH] pwm: imx-tpm: Use correct MODULO value for EPWM mode
+Thread-Index: AQHbJUfRxNwwaOjAIEiewaTXGCuTjbKUd9CAgAD0ooA=
+Date: Thu, 24 Oct 2024 06:11:04 +0000
+Message-ID: <9f65248cd396524ebe977ea48d87284e14c399c9.camel@iris-sensing.com>
+References: <349a25ddce02d55cf5a321f27133cae1f34f1962.camel@iris-sensing.com>
+	 <ZxkXwTXwfkC9W5C3@lizhi-Precision-Tower-5810>
+In-Reply-To: <ZxkXwTXwfkC9W5C3@lizhi-Precision-Tower-5810>
+Accept-Language: de-DE, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=iris-sensing.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: FR0P281MB2809:EE_|FR6P281MB3454:EE_
+x-ms-office365-filtering-correlation-id: 31e6e643-9896-4619-4de4-08dcf3f2a4a9
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|376014|7416014|1800799024|10070799003|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?OW0xNUlwZHpMVDM5YWRPYitxSWgyR09kWlQ2MmdxcXhheGhqUjR2WnpWWEtN?=
+ =?utf-8?B?czdibEdDL1hianE3b3FKTjcvQXdtcDNjbFIveG1scisxQ0RBY2Q0R0FjZ3Jm?=
+ =?utf-8?B?RU83aXBQZW5iWDhzT3U0TCtJeUxRaWptb2c5cFpIT3gyV0lVUVhra2JQOEpM?=
+ =?utf-8?B?NnUvOW81U1k3YXBBV3dHQWNqR2FKeGkrcWg4OTlNVE1QUUN2OS8ybUYyUGZo?=
+ =?utf-8?B?L01FM2pwUG12RjQydHpZTkJpZ2ZrL0w2aWRFTW9TTFlacGQ1cFJtQURTR0NC?=
+ =?utf-8?B?aDBKb3RqTCtTcFNuRHpKN3BYOVNPZkpjQ2FGNVFrOEFNUmFPSGhXR01PdjF2?=
+ =?utf-8?B?ZytIQWs0ZXpjMXNXaXFqbHMyc3E2anBVaDFlc1lpWWZ2NU1IKzJjVTJ0dFNT?=
+ =?utf-8?B?bHZhNVlKUkdwT1c4M3k2WmlrTzBDcmhobzh2c3R5dGZSQkw4N0FIV2kyUXNa?=
+ =?utf-8?B?di95bDVQU2hXekFRSm1ERDVrZndmNlFXT2xmdURRdWVhSXJFQ0QremFuaFox?=
+ =?utf-8?B?TXVqNXhQMG9BSlY0bWgvRVozYWQveXB4NFZhZ2hwVjlucFhvb0lRWjB0cnJm?=
+ =?utf-8?B?V3d5KzdEd3laTWhwaDFHZUJuemcybDVVNHZETC93QU8rUW03aDh4VlpwbjZG?=
+ =?utf-8?B?TldFMUtUeG9TcmgyNGQ1amxkVms3bENEdXdXd0d3RWIrMVZUSDNyNllGTXJn?=
+ =?utf-8?B?RG1JWENHYkxydy9JZ1ZVbE1KTlNhVFhRb3VETitQRTA4VE9xK28xZmM5ejY5?=
+ =?utf-8?B?TkZUaFhaRG5IaDNqc3dXeHhNbmtZMnM3VmFKcUpxVDFhM2dKcTRNODhyc0F3?=
+ =?utf-8?B?emYvK3o4dE9BbE5jL0dUSFdEU3pVREcrYnhpdDNablZtdHV0V2dldnF2REE1?=
+ =?utf-8?B?SVV0T2JDTHFwMnRneWlFR2F0VE1FaEJTc2RjS21JTkpKWTdoQ0g2SmZwNHdG?=
+ =?utf-8?B?ZUFXYWw3TmRuZjRvM0RvV1I2dmxlM2hWNVBwV3RiZFVPVEZlR3hLMGtGaGk0?=
+ =?utf-8?B?cmVyQkZ6dDBMMEhyV0s1czRkUFVUdURtOStHNE5uNkFRaFlkM3hKVHZBNDhZ?=
+ =?utf-8?B?cEF3dE02TFdSeXpZalRmbk51NVhwQ0VSd3lBbjlTREhveXFaVHZvUlRDbEUz?=
+ =?utf-8?B?K09KSUs1K3FRV0hqN1VubllUNmFHL3E5MUpySGw4em1sbzloSHU1aXBoMmJ5?=
+ =?utf-8?B?UEY4eURHeWEyY3V5V1VhN0dlQkV1NFFuMGJabFE0Z0RoOVIzMDdnQUlGV2Rt?=
+ =?utf-8?B?ZzdqYXJ6aG50VGVUZjdkOW5GbXpyRlZEcnZtYmR6RFVVeGpGV2VEZmNkMXp4?=
+ =?utf-8?B?cklqYWlQWEpGV21UY0tFY3JxQlhrM0FFNlU1SEJvM1c2QlVOSDA1UkpOL0hW?=
+ =?utf-8?B?TmVGVWoyMHI0cFQzbWJBdjY3djdoWk11RURtR2hEWFVqOVRJOFhVMzZKeHUw?=
+ =?utf-8?B?WURxVkM5V1NDTEo4WEc4K2FMQkE1dGIvMUM1bHRzcU5qdkJTZHZDc21wWWNs?=
+ =?utf-8?B?dTVFWGdEZkhGR3lURHNZQk5DdXlGVDM1WXdiUkVCR2p1SWxCak5KWU1MNjZG?=
+ =?utf-8?B?azYxbUMyNDdaZ2s5ZWF0YzZOSCtuZ29KRjlRUGtKVkNzcVdzdTg4SEJKUDBF?=
+ =?utf-8?B?S2Jjb0FBbUlYamN3UVd0Z1QybnliVm1oR2tTZmRjd2FpWVJwK0xRd3lrdDQ5?=
+ =?utf-8?B?TzVEbXkxdGx6WkZiemEydGZWenRzOWpReEcwWXNaZWJWMTMzdFUvUWJMNlhK?=
+ =?utf-8?B?VDJMVXJUTkgrOExTK3E3clh0VXU5bzdHV0ZGdDB0dktEY0xkQ0ZCZW55aDBu?=
+ =?utf-8?Q?1uvS47rgP/ViEyubJn+e8lMYmsTtWEvGJkNz0=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:FR0P281MB2809.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(10070799003)(38070700018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?OXQ5THlMTFdWN0xVY1c0U0g4cEx3M3VYcjN4MDJnWUFQMkRTV3d5dHNZRlFj?=
+ =?utf-8?B?NHNrOWRVMFdiMlVkb2hPUFVQTjZRMmpXK0hOMlI1eWJMRUJXUVF3REZBYWp5?=
+ =?utf-8?B?WnlCdEp6UUtYbkUxMHdpYVVYL1Eva2NYK1c3SXcyc1V5NjV6eG1TNTBIa3gz?=
+ =?utf-8?B?MmNGRXFaYzF5cnUrSU5ZK0pINXR3SDJ4V3d5cWZkeThVOUNrODVRRTVNL0pz?=
+ =?utf-8?B?L2FLUUVER3dXalpUb0NxNklacnRMMkJZZDUyNlFkOEN0UnJzMG96UnZVUWtn?=
+ =?utf-8?B?TkF4K0VsamlJNW13TlMwOWJtQXM2WGM0NnluNE9heFZBb01udHllelZOemwz?=
+ =?utf-8?B?d21NSndzajhnSktEK3JTUDFmTTk5M3VwOFcxNnFSN0liU2FIc3BnL2t5cHBx?=
+ =?utf-8?B?WVlGWlJhM0N2d0VCYldDR3JvQkpSby9ZWXRMbzdTUlNlZGwwbXN4Z29pMlR6?=
+ =?utf-8?B?dFFlUWlZQVgwSWE2cFltQ1N1WkRmaEcyM2drczF3YUZjWnBFQ0VWS3dxWS9I?=
+ =?utf-8?B?bXNwdXQzNVlONHVqN3Vac3RyMk1Xem1ScnQ4Q3lwTUV2SU5udmlvYWFIKzNP?=
+ =?utf-8?B?YUxHZG1OdkFoMG04VlVkTkdNdnA4dXJ6YTJsbnBMQzdFSzB4VzJFY0x4dWxY?=
+ =?utf-8?B?dG1CcG54ckZDK3l6WGExOWwyVjlXc3FIakxERGgxbVZwN25IWXlBSGRTYWpj?=
+ =?utf-8?B?R3NTYzB2bjNmVG9ZVUlrV0N4U05yQ1oxbGQ0aG9PSS8zY1lSVXZtREl5TmdF?=
+ =?utf-8?B?d3VlYnNRUXJCa00razFGaTBud1BTOGVOcjlYTUtuRWNtL3J4MHNGT29VYlJh?=
+ =?utf-8?B?cFlGcFlueGxIVEgxWU5lUDhDeFFHVU96ck9TVXFMK2dHMXg4c0xBb05WS0ZN?=
+ =?utf-8?B?aElyc3hLc0N4NTRvZ2RmNExzS1JVeEYwcHJsRnRLblUvSktBSXdtZVhtOGZS?=
+ =?utf-8?B?dHNyMEVKRUNubUFhcEwrS01hTkNucjF4WGNwMGZobll2ZnZSemg2TVo1RCtF?=
+ =?utf-8?B?cm5uUHJ2RnBXYzZ3bmFNQ2JJektXd1pwSzZ2WWhvUkdxaHVLY2pUVkpQLzMw?=
+ =?utf-8?B?NFpadHdrSnBPdG8wQi9tcEQ0UFJQTWMrcXZ3ZUhlaENSWmJ1a3Rubk1uNU83?=
+ =?utf-8?B?bnNWMWNJaVoyZSs4Z3p5NzhkKzVsMU8rOFdEeTJLMkxsK3RtUXV1N2taUmZh?=
+ =?utf-8?B?VUJqMG8vYS9qRkZua2g4RmlsWXBSU2lBTmw3MXJLbE9FWm9iOVlTbWlTZWxv?=
+ =?utf-8?B?NEdKYkQ5RWRpWEVUV29ncGdqa09ZMU9jSVZTZ2ZQTFM1WWQ5b0UwR3dMYVps?=
+ =?utf-8?B?cVNUbjh4M05yUDhzU1p6MVRwRWhoclRrWFlOWEEyOFQ3WmNhQTJKVFk3VnQ3?=
+ =?utf-8?B?czJldEFzZEVaTlhacWNLUUZVcVN4d0pISGQ1Y0YzK0pqUWVtWGxpVFhoNVUy?=
+ =?utf-8?B?enU3bkFydnVielZnTWFVYllCMHdZZ0p3b1M3WlE1OG9sWjFtT1VOR0pUSDJF?=
+ =?utf-8?B?ZmRjWStZanV6YTZFVU9id2FiVU0zdi9zVFB3SzA0UWtXTnB2eS9BVzZYZ0pN?=
+ =?utf-8?B?V2Z5SVYwVlN0T2xFSlFWQnJTRkxjMllGZ2F6Yk02cmF5a3ZNT1puVlhUMit0?=
+ =?utf-8?B?MGxvbktWNlpsR0g5UTN5dDZlRUMyYlY1akc3UU1SSFo0VzZ6TnpZYU9JNDZv?=
+ =?utf-8?B?UDgxNjM2d3VpaFJxTFVtdDZEdU4vbGYvbTNnTkVNdnhYMGVKcGJJaUY5eG93?=
+ =?utf-8?B?NUNVWm9Neis0VWIzZGFWRTlEVXVLRVYwSDBEU2tZZndtM2dIRzV4dDRoUnhm?=
+ =?utf-8?B?R1VUalozNUkwQlpRZ3NmTm1pM1FLSW5pazhkdVRpZUJENWpJZWhSY3kvT2xE?=
+ =?utf-8?B?eHJ2S1BFS29MT1c4L2RMa2VPZVhwdXJ5ZnJEb3VpcWt1MFVDQmFmcSt4bEFG?=
+ =?utf-8?B?Wi9haTdJK3NhMGxaQmV0VkJ2ZFdpOEgxRmlSclgxZFgwcy96RzNXTFVjTUFl?=
+ =?utf-8?B?SXIrZWt1a1hBR2orVjlFNTVuWlMyRUdkYnhVaTNUcUVMdUd1T0dIbTFLTVpy?=
+ =?utf-8?B?aXpiTHNWNUphcy8zQWhPb0lqeEtMRWRqTi9Vd2FOS1kwaDVwNDlwaExWNUFD?=
+ =?utf-8?B?WHV0T1ZCVkRsb3BIbGlkbTRlV29GNUNFWkJMNGJXQlpJc1pZaEoraHdqYWZB?=
+ =?utf-8?B?TXQ2RmNsYmJYcm9XYXZGQ3R1RCtnYnhkK2FSeVNLcENMQS9ac0d5SHpSNXNk?=
+ =?utf-8?Q?dtq9XBAJLsQEJhRVZywt85EPzHZriznAAHWKqjYt4c=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E6010D648E11C94C90E091FD6E30BDC7@DEUP281.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|TYCPR01MB12111:EE_
-X-MS-Office365-Filtering-Correlation-Id: 094e79d7-1ba1-43a1-56a7-08dcf3cb5fb2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|52116014|376014|366016|1800799024|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?vL5je6wGMQj+VR4L2UtHqhZxoP+wg0iE2+B+TzifCBnAenCnEfy+mh2n4Q7z?=
- =?us-ascii?Q?itWc92EitrsHZnGjRqQcKK6q3IHz9aSiRyJpGlv8P94PGX0cPpcDTFnL+7WA?=
- =?us-ascii?Q?eeqR3W5Rbp00V3kAtNzR2juYs7+UCk05Lyi7xUTDDdexPPsej9+1LverxMyA?=
- =?us-ascii?Q?7epHi1rYm3yBINM91jd7gX1lL2r03JUz0fWLRElqwnAMIOAtK4oHHBS/L15S?=
- =?us-ascii?Q?vwuWcUd8ZcZW1w5IHaGCGb6nfTXr/gRkh+fSavKICcEig3uEY132ES03PQYz?=
- =?us-ascii?Q?84Tv/vuBcqk1srrcrewapdVyamwZJAmOYS5JPPGOhRYgEtpFgNgVZQJqBq4r?=
- =?us-ascii?Q?PSrmXx5ex8KPYQj44TRtHSEz8pXfIzhZCWM3L8FLcgtEZ1N5T/VT/TXm+AD+?=
- =?us-ascii?Q?gyR5nTWWOc61yiQHU6c0ghFy3Rp2octcArYc0YAaRK0gvZSysSYErs5qnaIA?=
- =?us-ascii?Q?4+o+SKE3CccZJjn3zVt8NOcd+rxrhh74QNoMAhO6NuLkPN+ovBJ8pdFBWR2U?=
- =?us-ascii?Q?VM2NLtEznD/0q14w6kArnJtHXIqIibDzbPes4vjA0Rfm0naJ3p+SGC9EI3Dm?=
- =?us-ascii?Q?3usu7vMIO+4jWNwMR3u6fJM30ejAL/M8WN2L4F+ZymtiboO42YMfM2U9tpxl?=
- =?us-ascii?Q?QECeQAtSzV4GpZP1bdkuSD0dOi3cMB1WW09fUPwmwrHKNqfKVEV9Ed/t16Nc?=
- =?us-ascii?Q?myQW4goAlVQiSckiF28Eshr/ONMzyTfXEasjVsh/mb6FPwYlnlcc9penJV3q?=
- =?us-ascii?Q?FKf+s84FiSzVBIm2ZpEdHaSedbOETu3HOnrrFlvgzooLOGUYQyHC3U8KKkwQ?=
- =?us-ascii?Q?RrD9yZNR7sL0B1UZYEMFcRsvEKH2pLBtOhMRnfG58LFBqejhVf+rprnYhlyP?=
- =?us-ascii?Q?GgcwNd7sPaOIWDmwI7OKSydIZ90ip02zmRs0nrwM66geHBh6D74hv40NYYyD?=
- =?us-ascii?Q?WSwkrONQahilHBBPoiiANd2fWHZZ5NJURuduGibH0TzjS2So1hK9sfFTVx8N?=
- =?us-ascii?Q?OgV6K+hlk7b021k4SJrIjrNV3O+chMmJxFNRdkg7yrxkvfaEo7nkYepr6eKw?=
- =?us-ascii?Q?A8TMUVC909+q/u8lUcn7ZoiUT0hg0Jgzgu4VX4/4ZNGDp3LONW127vf6eYNX?=
- =?us-ascii?Q?uyJBd+h49JxUHY910E+okUjNPqehtyn6OUiB27uACmVf64FHawjGCM7tiHzj?=
- =?us-ascii?Q?njmWme+F/kFxqTPJl2T8eOE0YXa1gUs6hU9hvtOwnsa866LezQBWFrb6Gyy+?=
- =?us-ascii?Q?87frx+BMZ0oD9lVAmQ11l8sxE2IHcrF1KjNQFSHH7Rkn1JpzkND4fuaJsL1l?=
- =?us-ascii?Q?9SYWV4+tFcsA9FYsEixCTN/+QHli/P9tJYCoKDidn8foxCwEFy8ouqDgSLkP?=
- =?us-ascii?Q?ekfAuc/JVtLbMUufw7rU66+GiVdA?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(366016)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?D6z40hxnf/qyF5SzeW48jDaWLr0AG4ujHQrW2ifa5TvQDZJx0h0KUmHYaGxg?=
- =?us-ascii?Q?QnDYJKeoWh6Dl19onnljHwrbLFMBilrPidlqMX/bbqJGZiAf9hAu5Nn2XOwe?=
- =?us-ascii?Q?NW5O3rIFQ8Qg4w8wyMUgop6HQ35GcjJQnLYbzq8hYkf8rNtAlenCOp8seOG1?=
- =?us-ascii?Q?Rm4gIwaW/MitbTAvMYWA9duzW//VysPW5+PgZ+NI6EvWy1B5DWknvXmmfnay?=
- =?us-ascii?Q?ZMWjcFUX5xVvI+q1d2g5A5qpHKjQzvSDaS4g3Xd8p7iljIwf0LOn/Jb+DR+8?=
- =?us-ascii?Q?7URPirxpBtZQnGBllaCc6JC4HGAexcwKN8rLE2LHcqh5r2vxsRJpYUjQKqP4?=
- =?us-ascii?Q?EtFcrBHbOclGF1wdAgQY15DZod3oCSAJq4cAyhy4O7u0yhALxojdFYDx8/26?=
- =?us-ascii?Q?MqFM/bFtVMMaSzsfBUA4Hcjw38vzKXvejVmQla1ao/+lH28OzQzmjDG5W9dY?=
- =?us-ascii?Q?d8OapbxHDi8oUbplPp/bULHRfA5UgFN7MuKtp+j1hQLBBrcISjAKb07wxjvI?=
- =?us-ascii?Q?sd2tZFmlaxqfVG5jx38LqshRXgAtnjfTbZcRVbGYCKcdAgtSq9mb4je4maRV?=
- =?us-ascii?Q?9GvINudZr+Rbsn/EN1uEL09675/cPZ20pJSXZZWdAm09KyYMJNLIZpeiJ158?=
- =?us-ascii?Q?/jMSOxf9Yd5pB8Mif8znbgH5bSiyHRFx/fDihggGogBw90LJkjR7rAWbo2wi?=
- =?us-ascii?Q?oFLe36ScAo8VasAefJfFiJkckuAHO51b/OcLuJ3uh9XBj1kj0XPHqot03KDV?=
- =?us-ascii?Q?GUQ5wVNbKUo4Be+4FWlzq5MM30z6BcedBfoOZ6puqyDd26/OHDUknZJFYNhR?=
- =?us-ascii?Q?V3GRfNnFxja7P45jRyz5DQb7b/d6tsBrAYp/82Cip38VFTJfXDRI/amCQPot?=
- =?us-ascii?Q?ByYEsqSha354vk9m5JHxUGr5vK4APYDgOZb+GtgvcBDnihngqAhVcwR0KTJw?=
- =?us-ascii?Q?8pUxgzoBeWfaYL+2Lx14LV9aqVjGdXuYq6/Y4rvDVIpMDoV2gQcu5Hgvw0lB?=
- =?us-ascii?Q?yenvTPpl1ED8/e6e2Iiu3sXOYcbyn1BhdBh6k7zZIookKwiN8U6AaKdRkmXL?=
- =?us-ascii?Q?gsZ/AYiOeUFvgNytjFVfM1wf90uNT/oeARx7qQp6kse3vo6kPlHxJpBt0R+f?=
- =?us-ascii?Q?7gwjB29/rd5Mlx1CUt5urmlUxB4gzYbo23dtwCAlc5jen9wPwOvj2tW+gqFN?=
- =?us-ascii?Q?wGI4snZm8xa8NjmEzSQshOMMOjAhz7YfVyyzrb4WLy33n9uQtAUfAv4cGFgR?=
- =?us-ascii?Q?49YZTRnQ3cLOvcMUz49BFK0fGtP9gSQpVT9Q7jiBe/gP9sH15SXY4XMK5C3e?=
- =?us-ascii?Q?71yTYh5GfLXlU7L0lyCAzwTtYHVvKpeqiu9KB291fgpe8vkh9zWo81O/bD+R?=
- =?us-ascii?Q?CcaxlgK/kA0LUR7b4OUk8Za41AqIc674WO8XdTFwvKzBuowY7pK5FTP0fvKD?=
- =?us-ascii?Q?dKJdWwRa2sAfTvGWviqgciARTRzQ5YstHTAIiGP+iF9QkJAsDPW46KswF/gi?=
- =?us-ascii?Q?ul3JFUe2636Rq5JjOF/mx0KNJ7ozAce/OkGs9MpJ4CmPLe6e1jUfy4mvdVqx?=
- =?us-ascii?Q?ASW0x5s2I4yhLLIdlz7+bmnapUoxi9NtzHYSWaaO9/N57RQjN9rkxHnTdXBh?=
- =?us-ascii?Q?uiTmgIVRFARChOn03sdyA9Y=3D?=
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 094e79d7-1ba1-43a1-56a7-08dcf3cb5fb2
-X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
+X-OriginatorOrg: iris-sensing.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2024 01:29:59.0149
+X-MS-Exchange-CrossTenant-AuthSource: FR0P281MB2809.DEUP281.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 31e6e643-9896-4619-4de4-08dcf3f2a4a9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Oct 2024 06:11:04.9928
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rxH+s3W3wZTv63S3yiMdnja0Yb2S9k6WQDc4EguYISWGEk/3JbHP3AROiwEWHIFzTyvQNRfva+JJ88yD+nEl+wxFB7K6wT1N8/gKIEy758GjfDb3ri89KWnKNEHPkAWw
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB12111
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 963f3913-ffae-43fd-856b-2dfd3f6604e3
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: MHNJkPmHgiT6KAASX1ypF4oA0rgRc9Nw9xaP94ts/gKwTEDau1l5WYzBFN9LOVYyj564H9FzslzL1bpQxbNHTYiX/7+MbpT2ChT9zpfH91lXVj1TJmn7Lt362HPeSptc
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR6P281MB3454
 
-some functions had parameter like below
-
-	xxx(..., rtd, ..., id);
-
-This "id" is rtd->id. We don't need to have "id" on each functions
-because we can get it from "rtd". Let's cleanup it.
-
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
----
- include/sound/soc-dai.h  |  5 ++---
- include/sound/soc.h      |  6 +++---
- sound/soc/soc-compress.c |  9 ++++-----
- sound/soc/soc-core.c     |  8 +++-----
- sound/soc/soc-dai.c      |  4 ++--
- sound/soc/soc-pcm.c      | 16 ++++++++--------
- 6 files changed, 22 insertions(+), 26 deletions(-)
-
-diff --git a/include/sound/soc-dai.h b/include/sound/soc-dai.h
-index 9dbeedf6da13b..b275201b02f60 100644
---- a/include/sound/soc-dai.h
-+++ b/include/sound/soc-dai.h
-@@ -216,8 +216,7 @@ void snd_soc_dai_shutdown(struct snd_soc_dai *dai,
- 			  struct snd_pcm_substream *substream, int rollback);
- void snd_soc_dai_suspend(struct snd_soc_dai *dai);
- void snd_soc_dai_resume(struct snd_soc_dai *dai);
--int snd_soc_dai_compress_new(struct snd_soc_dai *dai,
--			     struct snd_soc_pcm_runtime *rtd, int id);
-+int snd_soc_dai_compress_new(struct snd_soc_dai *dai, struct snd_soc_pcm_runtime *rtd);
- bool snd_soc_dai_stream_valid(const struct snd_soc_dai *dai, int stream);
- void snd_soc_dai_action(struct snd_soc_dai *dai,
- 			int stream, int action);
-@@ -275,7 +274,7 @@ struct snd_soc_dai_ops {
- 	int (*probe)(struct snd_soc_dai *dai);
- 	int (*remove)(struct snd_soc_dai *dai);
- 	/* compress dai */
--	int (*compress_new)(struct snd_soc_pcm_runtime *rtd, int id);
-+	int (*compress_new)(struct snd_soc_pcm_runtime *rtd);
- 	/* Optional Callback used at pcm creation*/
- 	int (*pcm_new)(struct snd_soc_pcm_runtime *rtd,
- 		       struct snd_soc_dai *dai);
-diff --git a/include/sound/soc.h b/include/sound/soc.h
-index 828ab19258f0a..30a9d1853dc18 100644
---- a/include/sound/soc.h
-+++ b/include/sound/soc.h
-@@ -486,11 +486,11 @@ struct snd_soc_component *snd_soc_lookup_component_nolocked(struct device *dev,
- struct snd_soc_component *snd_soc_lookup_component(struct device *dev,
- 						   const char *driver_name);
- 
--int soc_new_pcm(struct snd_soc_pcm_runtime *rtd, int id);
-+int soc_new_pcm(struct snd_soc_pcm_runtime *rtd);
- #ifdef CONFIG_SND_SOC_COMPRESS
--int snd_soc_new_compress(struct snd_soc_pcm_runtime *rtd, int id);
-+int snd_soc_new_compress(struct snd_soc_pcm_runtime *rtd);
- #else
--static inline int snd_soc_new_compress(struct snd_soc_pcm_runtime *rtd, int id)
-+static inline int snd_soc_new_compress(struct snd_soc_pcm_runtime *rtd)
- {
- 	return 0;
- }
-diff --git a/sound/soc/soc-compress.c b/sound/soc/soc-compress.c
-index fb664c775dda5..3c514703fa33d 100644
---- a/sound/soc/soc-compress.c
-+++ b/sound/soc/soc-compress.c
-@@ -537,11 +537,10 @@ static struct snd_compr_ops soc_compr_dyn_ops = {
-  * snd_soc_new_compress - create a new compress.
-  *
-  * @rtd: The runtime for which we will create compress
-- * @id: the device index number (zero based - shared with normal PCMs)
-  *
-  * Return: 0 for success, else error.
-  */
--int snd_soc_new_compress(struct snd_soc_pcm_runtime *rtd, int id)
-+int snd_soc_new_compress(struct snd_soc_pcm_runtime *rtd)
- {
- 	struct snd_soc_component *component;
- 	struct snd_soc_dai *codec_dai = snd_soc_rtd_to_codec(rtd, 0);
-@@ -617,7 +616,7 @@ int snd_soc_new_compress(struct snd_soc_pcm_runtime *rtd, int id)
- 		snprintf(new_name, sizeof(new_name), "(%s)",
- 			rtd->dai_link->stream_name);
- 
--		ret = snd_pcm_new_internal(rtd->card->snd_card, new_name, id,
-+		ret = snd_pcm_new_internal(rtd->card->snd_card, new_name, rtd->id,
- 				playback, capture, &be_pcm);
- 		if (ret < 0) {
- 			dev_err(rtd->card->dev,
-@@ -638,7 +637,7 @@ int snd_soc_new_compress(struct snd_soc_pcm_runtime *rtd, int id)
- 		memcpy(compr->ops, &soc_compr_dyn_ops, sizeof(soc_compr_dyn_ops));
- 	} else {
- 		snprintf(new_name, sizeof(new_name), "%s %s-%d",
--			rtd->dai_link->stream_name, codec_dai->name, id);
-+			rtd->dai_link->stream_name, codec_dai->name, rtd->id);
- 
- 		memcpy(compr->ops, &soc_compr_ops, sizeof(soc_compr_ops));
- 	}
-@@ -652,7 +651,7 @@ int snd_soc_new_compress(struct snd_soc_pcm_runtime *rtd, int id)
- 		break;
- 	}
- 
--	ret = snd_compress_new(rtd->card->snd_card, id, direction,
-+	ret = snd_compress_new(rtd->card->snd_card, rtd->id, direction,
- 				new_name, compr);
- 	if (ret < 0) {
- 		component = snd_soc_rtd_to_codec(rtd, 0)->component;
-diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
-index 4f0bfe73fe15e..a1dace4bb6166 100644
---- a/sound/soc/soc-core.c
-+++ b/sound/soc/soc-core.c
-@@ -1479,7 +1479,7 @@ static int soc_init_pcm_runtime(struct snd_soc_card *card,
- {
- 	struct snd_soc_dai_link *dai_link = rtd->dai_link;
- 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
--	int ret, id;
-+	int ret;
- 
- 	/* do machine specific initialization */
- 	ret = snd_soc_link_init(rtd);
-@@ -1494,15 +1494,13 @@ static int soc_init_pcm_runtime(struct snd_soc_card *card,
- 	/* add DPCM sysfs entries */
- 	soc_dpcm_debugfs_add(rtd);
- 
--	id = rtd->id;
--
- 	/* create compress_device if possible */
--	ret = snd_soc_dai_compress_new(cpu_dai, rtd, id);
-+	ret = snd_soc_dai_compress_new(cpu_dai, rtd);
- 	if (ret != -ENOTSUPP)
- 		goto err;
- 
- 	/* create the pcm */
--	ret = soc_new_pcm(rtd, id);
-+	ret = soc_new_pcm(rtd);
- 	if (ret < 0) {
- 		dev_err(card->dev, "ASoC: can't create pcm %s :%d\n",
- 			dai_link->stream_name, ret);
-diff --git a/sound/soc/soc-dai.c b/sound/soc/soc-dai.c
-index 2feb76bf57bb7..34ba1a93a4c95 100644
---- a/sound/soc/soc-dai.c
-+++ b/sound/soc/soc-dai.c
-@@ -457,12 +457,12 @@ void snd_soc_dai_shutdown(struct snd_soc_dai *dai,
- }
- 
- int snd_soc_dai_compress_new(struct snd_soc_dai *dai,
--			     struct snd_soc_pcm_runtime *rtd, int id)
-+			     struct snd_soc_pcm_runtime *rtd)
- {
- 	int ret = -ENOTSUPP;
- 	if (dai->driver->ops &&
- 	    dai->driver->ops->compress_new)
--		ret = dai->driver->ops->compress_new(rtd, id);
-+		ret = dai->driver->ops->compress_new(rtd);
- 	return soc_dai_ret(dai, ret);
- }
- 
-diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
-index 81b63e547a099..fb7f25fd8ec5b 100644
---- a/sound/soc/soc-pcm.c
-+++ b/sound/soc/soc-pcm.c
-@@ -2891,7 +2891,7 @@ static int soc_get_playback_capture(struct snd_soc_pcm_runtime *rtd,
- 
- static int soc_create_pcm(struct snd_pcm **pcm,
- 			  struct snd_soc_pcm_runtime *rtd,
--			  int playback, int capture, int id)
-+			  int playback, int capture)
- {
- 	char new_name[64];
- 	int ret;
-@@ -2901,13 +2901,13 @@ static int soc_create_pcm(struct snd_pcm **pcm,
- 		snprintf(new_name, sizeof(new_name), "codec2codec(%s)",
- 			 rtd->dai_link->stream_name);
- 
--		ret = snd_pcm_new_internal(rtd->card->snd_card, new_name, id,
-+		ret = snd_pcm_new_internal(rtd->card->snd_card, new_name, rtd->id,
- 					   playback, capture, pcm);
- 	} else if (rtd->dai_link->no_pcm) {
- 		snprintf(new_name, sizeof(new_name), "(%s)",
- 			rtd->dai_link->stream_name);
- 
--		ret = snd_pcm_new_internal(rtd->card->snd_card, new_name, id,
-+		ret = snd_pcm_new_internal(rtd->card->snd_card, new_name, rtd->id,
- 				playback, capture, pcm);
- 	} else {
- 		if (rtd->dai_link->dynamic)
-@@ -2916,9 +2916,9 @@ static int soc_create_pcm(struct snd_pcm **pcm,
- 		else
- 			snprintf(new_name, sizeof(new_name), "%s %s-%d",
- 				rtd->dai_link->stream_name,
--				soc_codec_dai_name(rtd), id);
-+				soc_codec_dai_name(rtd), rtd->id);
- 
--		ret = snd_pcm_new(rtd->card->snd_card, new_name, id, playback,
-+		ret = snd_pcm_new(rtd->card->snd_card, new_name, rtd->id, playback,
- 			capture, pcm);
- 	}
- 	if (ret < 0) {
-@@ -2926,13 +2926,13 @@ static int soc_create_pcm(struct snd_pcm **pcm,
- 			new_name, rtd->dai_link->name, ret);
- 		return ret;
- 	}
--	dev_dbg(rtd->card->dev, "ASoC: registered pcm #%d %s\n", id, new_name);
-+	dev_dbg(rtd->card->dev, "ASoC: registered pcm #%d %s\n", rtd->id, new_name);
- 
- 	return 0;
- }
- 
- /* create a new pcm */
--int soc_new_pcm(struct snd_soc_pcm_runtime *rtd, int id)
-+int soc_new_pcm(struct snd_soc_pcm_runtime *rtd)
- {
- 	struct snd_soc_component *component;
- 	struct snd_pcm *pcm;
-@@ -2943,7 +2943,7 @@ int soc_new_pcm(struct snd_soc_pcm_runtime *rtd, int id)
- 	if (ret < 0)
- 		return ret;
- 
--	ret = soc_create_pcm(&pcm, rtd, playback, capture, id);
-+	ret = soc_create_pcm(&pcm, rtd, playback, capture);
- 	if (ret < 0)
- 		return ret;
- 
--- 
-2.43.0
-
+QW0gTWl0dHdvY2gsIGRlbSAyMy4xMC4yMDI0IHVtIDExOjM1IC0wNDAwIHNjaHJpZWIgRnJhbmsg
+TGk6DQo+IE9uIFdlZCwgT2N0IDIzLCAyMDI0IGF0IDEyOjMzOjUzUE0gKzAwMDAsIEVyaWsgU2No
+dW1hY2hlciB3cm90ZToNCj4gPiBUaGUgbW9kdWxvIHJlZ2lzdGVyIGRlZmluZXMgdGhlIHBlcmlv
+ZCBvZiB0aGUgZWRnZS1hbGlnbmVkIFBXTSBtb2RlDQo+ID4gKHdoaWNoIGlzIHRoZSBvbmx5IG1v
+ZGUgaW1wbGVtZW50ZWQpLiBUaGUgcmVmZXJlbmNlIG1hbnVhbCBzdGF0ZXM6DQo+ID4gIlRoZSBF
+UFdNIHBlcmlvZCBpcyBkZXRlcm1pbmVkIGJ5IChNT0QgKyAwMDAxaCkgLi4uIiBTbyB0aGUgdmFs
+dWUgdGhhdA0KPiA+IGlzIHdyaXR0ZW4gdG8gdGhlIE1PRCByZWdpc3RlciBtdXN0IHRoZXJlZm9y
+ZSBiZSBvbmUgbGVzcyB0aGFuIHRoZQ0KPiA+IGNhbGN1bGF0ZWQgcGVyaW9kIGxlbmd0aC4NCj4g
+PiBBIGNvcnJlY3QgTU9EVUxPIHZhbHVlIGlzIHBhcnRpY3VsYXJseSByZWxldmFudCBpZiB0aGUg
+UFdNIGhhcyB0byBvdXRwdXQNCj4gPiBhIGhpZ2ggZnJlcXVlbmN5IGR1ZSB0byBhIGxvdyBwZXJp
+b2QgdmFsdWUuDQo+ID4gDQo+IFRoaXMgaXMgYnVnIGZpeCzCoCBhZGQgZml4IHRhZyBhbmQgY2Mg
+c3RhYmxlDQo+IA0KPiBGcmFuaw0KDQpUaGF0J3MgdHJ1ZS4gSSB3aWxsIGRvIGEgdjIgd2l0aCB0
+aGVzZSB0YWdzLg0KVGhhbmsgeW91IQ0KDQpFcmlrDQo+IA0K
