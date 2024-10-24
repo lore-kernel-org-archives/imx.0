@@ -1,98 +1,173 @@
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11011033.outbound.protection.outlook.com [40.107.74.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E308BE6C
-	for <imx@lists.linux.dev>; Thu, 24 Oct 2024 01:09:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729732193; cv=none; b=P9/IdD7+KJ4k7MF2wIzGf2SkHLGYQPotXMWSlC6xO3Rt34x/QB66Nl9NuRbgoGhzB+rF6+DCE0kjEb7+KrpHyOdDcqnrGjWDEBkocUzogLvis7vJYcleir3tz/CWaGdNbo2wKJc1oLvJmVl6755T4zHOPcDjlaWcG8Vfn+xXR/g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729732193; c=relaxed/simple;
-	bh=Wg9Wp5kk0vEFCDe4okqM3rWzYPqqTfbIGApRoVaMR14=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kSakhJMOXTAWwYO5MsOA9nXinhjkpbmMYt92eAbQFjD0CSAhe2aE2/EOq9Uvg3WkIX1NV1WOk00Cfd8yMwwr2/FFjTKq9FcA7zMnEtpQxCYw3sS2ph4PIJ/vZKPFGf2MD2ulLZ3Om6LN4vaKFxhy8hW2RsrG0KXMRZBjAK5QGeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FljqJ7aC; arc=none smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED4174068
+	for <imx@lists.linux.dev>; Thu, 24 Oct 2024 01:28:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.33
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729733298; cv=fail; b=EhD845OjR7RLqLnHowrXQb8/ik0NKYOwpefvXAY95kiVF16oGvfTC4BhOVz1P3w8dDxJ3RJyWPCVwi/rQqu7jf7f9CLrHr+I63dJPbmddkqjGHofHYunZ3r4epIa9GmSOYhrROR/7pmrerPSU0CzQdkQtZmeaJWn5+7bQQQzEfY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729733298; c=relaxed/simple;
+	bh=CSWyKEfMPHxf6jeE0QXZd74wD2muKt+WvILdodY/GzM=;
+	h=Message-ID:From:To:Subject:Content-Type:Date:MIME-Version; b=tbWPmS1Hx84E6HHTguIhehXlVcK7yyjOU1oa3ykC6FPPOvXv9PFByauFGOQ6hu/LEx6IqYJegZpEUWDglWfkYQS63547s+zzDJGEQjOESK1KGCOD+4wLfIW3J7ALwtclYnutRci6wL0cHRf9Voz9VKjw8ZocJxmh/jXLF0EdxbA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=NnhTcWNa; arc=fail smtp.client-ip=40.107.74.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FljqJ7aC"
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2fb49510250so3571241fa.0
-        for <imx@lists.linux.dev>; Wed, 23 Oct 2024 18:09:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729732189; x=1730336989; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zbcd5uRapQhQxq5MJJTWR2sL5XsG0N0yna5jn5lare0=;
-        b=FljqJ7aCAWoUapL2JaXyYdYDBZDdxC3e7wTSlSQD/66oB5i4jI3NHdUkHcJLHMNtiK
-         MflXCZ49X3yYHUX5n6eM9XbumbbdXKTRp1JjmJGLoLl167rUuqSNIvqIENMLBIeVLtAq
-         1AJkL9bHNFz3c2Y0VfgQoLDt8Mb2Z/2JcQ0wK/ytp0Yx0MsB/1kz7O7/sBntRgP1dm6q
-         rrPgpTRQm1i3UMj5v5aHIVUlMAPn0uwqY9JyDOIWNg/gEYrlD6/givCBcDbug7lqQVDd
-         9T8fNuBHIliFBv5rBZtSZjYi3xpbkpXEFaWMLJIYwElGBsRh2h4FQqbKxuGHSwjRwm9D
-         rO0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729732189; x=1730336989;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zbcd5uRapQhQxq5MJJTWR2sL5XsG0N0yna5jn5lare0=;
-        b=Kd8YwIqnNrWEc/deDzuS/GCoHNaDVJIqnPrJ76+Zh5JSrHHfyDOCDbQOBKQPBcjiMM
-         dK45hd2CkmO/Xorsbq666tR014ghmQS0D3oLdwddTxXlEJ9Aqd1PT3eMO9LBxsrXhelb
-         hXLb6k+0q4uM/DaAzivwB7EtIcR0KVdiKBJr+e4h7sLPQAeD2IdFWeTd5t9qwz/O3I4n
-         IIeasKGnoZgybf6JydiXacbVdqFqQYdhjvRLPtSgavdKSt3JkgOLbPnNjNonA1Zzl/0o
-         cl8zFU4uRxnAplosRU9CPkvaSNEaN+F+uOdYVYr1+meypeedwrYZKVLuR/uEvx4Ipwbr
-         cCPw==
-X-Forwarded-Encrypted: i=1; AJvYcCXUKpkiu2J3+i2KyyhD0PnYzXI89WXiX2t5xL6+BEmMSpsPoyuH0M15ZVUcnSL7DAJyrks=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyu+19uQodAAXcet/nj8z9sFI2PKsG4EJ66JL6HYTvTqyQsOGyy
-	eyTbLLNq9j0OLx8kve9166eoSijyiDdntegUZQMim07oaOFKcMtnBrRJ+3EJXZq4q/1LlSNgiXG
-	EL4AJVw+8eOxspvrxKVTDpyncYtg=
-X-Google-Smtp-Source: AGHT+IF2Ax60z242ilbI2EuA61CSMux8GznaUwVN4gBzSDilDhsogRyUKPdE6YgVBW9AvJpAlEtab7CwKd3munRiSXs=
-X-Received: by 2002:a05:6512:23a9:b0:539:e6fc:4170 with SMTP id
- 2adb3069b0e04-53b1a33ca83mr2476739e87.32.1729732189049; Wed, 23 Oct 2024
- 18:09:49 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="NnhTcWNa"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gBPwM6SkudokMIrhzY2qomcwPuxZLUmIQ4JrLOntzDOnZ/udXkhvmg93hrRPbtgKbVWJNIi2G+5UfNMKDq8ScWCupvRbDiLDVqR3U1bI9DnK8GWWZ/HlXJGwkML1XGDNTIPQTKdiuV/cFaRMPBuoEtMOpDgeXETYdie/gC0kWQQVIb5d2oLAyQIMShS0FYnEYvif7f304878InRc4I42GW3AQKqqN5k6CJbi354cuMpCAkNlxjSHFzBFLk8IVy2skVsqc4BCXyrZ6gVVDBvAEUuv4a+KoRmcD1hByI3kV46lj/ed1Za3CV8VO8tIfh0aQygGWgpMKjcSdhU67ALdjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IPDsVQP0V8w5ZLQG2WMlAvLFktQWKpybL83ZVlQ96Hk=;
+ b=XEZRgYJBx2wcEJaORsJ/MY9rtsM1lJ5b3HUpaeEKU9JexyeiG0eEBLUnNhu5lH8DSTZY37oCRQlAXu+fd1VKvx8LdB3q5UpbjY1NPiVWEHViCmzccxQyzQfDu+C3raBPq4Spu746yWEiB63CE7ESD81JkT1kgTUXdY2dJCeHTUoBUX7rCkMMZkbjav7LYt0q+ytXJSZnBjdrgXiLG/BpFz/c+KzKsCK0GTzJE9ENRj0xbke4Rj5AR+VfEW3ly4QNM/eQqj9ac8xP6bTwF86xuMssUS9wOsNifgK8x1oh5T3/TG6s3zVap1E78AMG7IKTnuaf8U/5d0l+urgdTI4DMQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IPDsVQP0V8w5ZLQG2WMlAvLFktQWKpybL83ZVlQ96Hk=;
+ b=NnhTcWNaOLyy0tOkfU6WOqeTawt+QUyij+aF7GtfRI76r1cK5QFnpDajCfluwWEykmD7wrksNFvaN/W9WLajzQxe+Kq+zQ8pqthblNHQPOFva5ASHxau3aOGYv5V8GLF+uMN/bJs8zWnf7eih09Q6oVzytPM15x7IOGxL4fByFM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11) by TYVPR01MB10892.jpnprd01.prod.outlook.com
+ (2603:1096:400:29a::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.20; Thu, 24 Oct
+ 2024 01:28:11 +0000
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::c568:1028:2fd1:6e11]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::c568:1028:2fd1:6e11%5]) with mapi id 15.20.8093.014; Thu, 24 Oct 2024
+ 01:28:10 +0000
+Message-ID: <871q06cmsl.wl-kuninori.morimoto.gx@renesas.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+To: Jaroslav Kysela <perex@perex.cz>, Jerome Brunet <jbrunet@baylibre.com>, Kevin Hilman <khilman@baylibre.com>, Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Shengjiu Wang <shengjiu.wang@gmail.com>, Takashi Iwai <tiwai@suse.com>, Vinod Koul <vkoul@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>, alsa-devel@alsa-project.org, imx@lists.linux.dev, linux-rpi-kernel@lists.infradead.org, linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, patches@opensource.cirrus.com
+Subject: [PATCH 0/8] ASoC: cleasnup rtd and its ID
+User-Agent: Wanderlust/2.15.9 Emacs/29.3 Mule/6.0
+Content-Type: text/plain; charset=US-ASCII
+Date: Thu, 24 Oct 2024 01:28:10 +0000
+X-ClientProxiedBy: TYCP286CA0089.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:2b3::16) To TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241023-imx-ele-ocotp-fixes-v1-0-4adc00ce288f@pengutronix.de>
-In-Reply-To: <20241023-imx-ele-ocotp-fixes-v1-0-4adc00ce288f@pengutronix.de>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 23 Oct 2024 22:09:37 -0300
-Message-ID: <CAOMZO5Ar0Pa6RpjmXkX4cd4oao3ggbs4a+OsSp==PGO1CV_-RQ@mail.gmail.com>
-Subject: Re: [PATCH 0/4] nvmem: imx-ocotp-ele: fix reading from ELE OCOTP
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|TYVPR01MB10892:EE_
+X-MS-Office365-Filtering-Correlation-Id: ea3c3cff-d2a4-4106-bb0b-08dcf3cb1f0a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|52116014|7416014|376014|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?8U22NNYBYj6Z7c6dpfmmjbQnXhOf4fcccAQc4zDH2iOYyL6iBvV8OAzeRM74?=
+ =?us-ascii?Q?tcyNRA9/pkPdqifGJNkjgYW6ztUUxe5suPi6Pzs3cKzVfnKq1tOLuyU7pyZu?=
+ =?us-ascii?Q?eyAih98mH5vrOXzss835S4I5c2F+c4TRT/jRPytd9ubE0mmjIP92vF/KbOvX?=
+ =?us-ascii?Q?vINUBZdD6mOYr4gmeiVF7VSZ7T9B68vPy7/F3D0+uVi8+cizBZsCcjolc00U?=
+ =?us-ascii?Q?txhkQQIorF2L7cISiRtTEqWZGXujB7w7k0ENH4ae9Ddb93r5sOoBHsgD9ppv?=
+ =?us-ascii?Q?pW7tfHktp6xy++0gX+9G3ookU2UmDL4s4YUbziWceVd4/a4u6+sYhNriF48d?=
+ =?us-ascii?Q?HJQhyt0kJhWC15+lFmPw+l8XSRWhV1IfjpI2lGJNVghqyb3+NiuhckqCeIBS?=
+ =?us-ascii?Q?WdPpe6ofqwmJFfc73sLShJP6yCW3thV7EGjawwVSUDFdN4acb8BYKo4/OCof?=
+ =?us-ascii?Q?RbwFgcEpzihfI6Divdmbw0CyUt1Z24b1HxdjpA+kfRQVF/Zrl4dLqok/koSR?=
+ =?us-ascii?Q?j++eTOAJmJ79adOID2SyHFLXl2QF1MqmJGtkXsSeoLqPCsfkW5CJdxPVkzOc?=
+ =?us-ascii?Q?ozGkWLFX4vk/6ZI8hFPac3aKCecN7y7PK2AoelPH1FGSC5pc1OwB61sb1KsT?=
+ =?us-ascii?Q?OSHU3zZbvLMnZ4Ka1fhJM5/1eO9RUUKevpV6JFNgimCSm91Pc7TqsS6XHDqU?=
+ =?us-ascii?Q?XjdDujK1V5+pV6qotbYwyKyGMfZA2dDiY0X2idirfKZWKayLNdaV2jY+6j1l?=
+ =?us-ascii?Q?Ji3e+PYhLTr47+bDI5s1q1qYqWTO51CrVx13wiNka0QWVnrVpEQnNxwKam7F?=
+ =?us-ascii?Q?NJJo054o6HQYg2zlv0/Y8XUKNmPv9h7Cq8Shp1/GOQbA5zkYS230GcP02xrp?=
+ =?us-ascii?Q?sSuisntLIIJygqdjccTkmihKH2RLfb8tiRb3CyhZSGP0OHdG5aXP6/IryYyQ?=
+ =?us-ascii?Q?gSBh0z3h37JojA/aVWMsc+KySQd0zyW7NDWF/wZQvsytA7yG9grLzO6BIRip?=
+ =?us-ascii?Q?k0Nzo8ZBwr5MoHWFrUQYh2hc7KdffTrKJzsdfVKZFNRGN75S/G97pyddWgiM?=
+ =?us-ascii?Q?u1v4xL0eMHQgMHE3dHu6voEqQWLtgaVR+s9QC3lx3N+nmfwrADW+t/TDXsnZ?=
+ =?us-ascii?Q?EnMhs3voetv2qMoR495DQtEJCdUYRMV38onuueVMwM/oMlD+RudkzEjxc9ce?=
+ =?us-ascii?Q?DJJyk/2rt9q/z3drBic+haSeFJG1oyGp5MiM4BXuNOMecDUf/ptgJ0zVl6mK?=
+ =?us-ascii?Q?RWTDAMKnlAr5cbS29TsUy340YSO3crOZ5iK9EV92Pr8Ostw6i5/UreWdd64U?=
+ =?us-ascii?Q?fb6pJ2J62m7qWS5v9C3sO34gN5W36TlkP1qxBSed6n7Qj1pSyAP0jBKyuqfD?=
+ =?us-ascii?Q?anE2Yw8rFwjIw9eevk/+rFhlSER4?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(7416014)(376014)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ZJtJl3jl8568zXr7PB5klDzJwThfVb5PxYngNjsh0EfFTgJJXR79X5j7M/lr?=
+ =?us-ascii?Q?LdmITdT76BAUk16jYb7Vos2PXUc3pYp89z7/KWRDyto4lx/z0NR4Cj7ni5TD?=
+ =?us-ascii?Q?MIzOEScJphQFlnP830ZG4/RN1Q+y7KfgCwuyCIYvbMB7T1WT6KsDDcslY8SU?=
+ =?us-ascii?Q?0v/DfRU2q2onN5dkXzM2c73wHLxBFJ1V0a7wbf9WT3JouxEOKOsL7mzK6M/R?=
+ =?us-ascii?Q?J1zr78W6j0Rpr6QVj+I3PJ5dZjtEczwYleJ5ZwpDXHdSydozRRbTAfi3iiOC?=
+ =?us-ascii?Q?DesXXrRAkwtP12R9MmPL02s/xZtFPBgIq1gM4jLYN7bIWTLU2WvriwzKi6/N?=
+ =?us-ascii?Q?eBUrC8y3yjMArbtqBbpfKELnMjdnGil48SZ0wX7R1+g/hr6PUjFgaHF9Z7aF?=
+ =?us-ascii?Q?ed8SlhJGxO3SIc5QvkQDYsia+MvHctzHtfnYngFgSojAi364lfzAnlv2e6NV?=
+ =?us-ascii?Q?/xTQxsXfdS8w4k+T8nrRbEGSoAUxJRMJy+f5RM3fL5C2CEsZVIxv/FqeXNLs?=
+ =?us-ascii?Q?OLJit18pYn6D3blntS80bEQkdHaw5C47j1GEHzEgfnHmkFf13aRmN/dXyX5b?=
+ =?us-ascii?Q?blOMuIPef0JEaxH1cdxCjsYdUiLzn4Gb2NXSTAGXDiyp4g1qsp2eJX5pa81r?=
+ =?us-ascii?Q?9BMmbRNqTnsM6upQT9LS0IrGHiQxRadkJTJUJ6z+v9lD8ejWXagMmVy0X/0o?=
+ =?us-ascii?Q?nzIIyOHxc03zznTKCOJdvTdKGHRu9nzivOE2WlBzi2f6J1dBYA61tabgqOwo?=
+ =?us-ascii?Q?csT78pT1TT10ckR8NzIioEyjtjJhYLBHKOZ/IbDfgrZrAso1xNiGNcdgWWEu?=
+ =?us-ascii?Q?6SLeLacdxchtTE0HaE5g87ZQ8ATVgbI/qJOhSCVkJxupbNVqlPBxjfkl3cY/?=
+ =?us-ascii?Q?CzmpN2w5fykKWRsQj8OGTR69pLRSicWqyapMvomOgbNOSE3kACzWZ9bRWiZV?=
+ =?us-ascii?Q?Cnvqi0VXPdsB1sP8uw9+qBvFJedIs32bW6Rd7OEQHqZLZMjOOagO1/sP0SPW?=
+ =?us-ascii?Q?yElmblwfcasEAKIRmjRNLD+c3o0Myuj8Z86tETVQGxjor+XdJcGjVmUWLDVT?=
+ =?us-ascii?Q?/gWYleRQagY9FaPHwgkNrQ3NeuPmmJF4A3HBKflbSNnga5CJcndWIU/Nq/Ul?=
+ =?us-ascii?Q?KPaysFVzXl4kQWPu4MWR+7qXCM7JvpTKiXVg5465dVGwForFxjRU/9RQfac8?=
+ =?us-ascii?Q?u1lYIGI1sp7edMJFnUfTnauhXP5ea3t20a0hKoq5KKHdSZmTqQosxPFPseC7?=
+ =?us-ascii?Q?yBlQgR13ObdUy2Z3ixhUFFmU6AYb19SonTNmr8aJPy/4cXTeK0x3pX4gMHOf?=
+ =?us-ascii?Q?asGp2orpv24DnYLdavQQHAN0ATjML+VNDL10XPKLdHgfirX9gjSIU8r+bB77?=
+ =?us-ascii?Q?69yJgeMbRl6R8hA0wl2HM3zm2iEFcSnTXMgYP6ollukVsq4IJp/ryszLKCWh?=
+ =?us-ascii?Q?aJJzx4x6SE0g/31mUWkdW8irFjaLlPPsQnQAn76YujTd/dC/+nVlq/2NXbv6?=
+ =?us-ascii?Q?km9dmaTvh94epWy+KmJG1RA0PfPD9JyceprBLB3vvozhw++CwiqkyK40mb8j?=
+ =?us-ascii?Q?6wZM4/Q8mvWFn9gPP+f1Somzcr0RXJR6Tf2Ua1EKJqdRRtx2mlqTP/z0lzWh?=
+ =?us-ascii?Q?aCjepwYXZ0qidRUzT36UlPM=3D?=
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ea3c3cff-d2a4-4106-bb0b-08dcf3cb1f0a
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2024 01:28:10.6372
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qAPFmHKOFOe/mIJqfPlfI+gr32l4o2bw8gR5BlS9IKGCYJrcMe2Mrvotz/h4PDJtkrgHo2oFwC9Wo0nB+vLTPS+7TSbhowoWrYrDyY/hqlJEqktnVJYhcdTXmU0nR4nt
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYVPR01MB10892
 
-Hi Sascha,
+Hi Mark
 
-On Wed, Oct 23, 2024 at 5:12=E2=80=AFAM Sascha Hauer <s.hauer@pengutronix.d=
-e> wrote:
->
-> Commits b2ab0edaf484 ("arm64: dts: imx93: add nvmem property for fec1")
-> and 0d4fbaffbdca ("arm64: dts: imx93: add nvmem property for eqos")
-> introduced NVMEM cell bindings for reading MAC addresses from the ELE
-> OCOTP. This doesn't work as expected due to bugs in the driver:
->
-> - imx_ocotp_reg_read() interprets the incoming offset as 32bit word
->   offset, but it really is in bytes which means the driver reads bogus
->   values whenever the offset is non zero
-> - imx_ocotp_reg_read() reads wrong results when the offset is not 32bit
->   word aligned
-> - MAC addresses are stored in reverse byte order in the ELE OCOTP, we
->   have to swap the order before passing them to the upper layer
->
-> This likely went through unnoticed because the bootloader normally adds
-> the MAC addresses to the ethernet nodes and in this case they are
-> preferred over the NVMEM addresses.
->
-> This series fixes these issues.
+rtd has own ID, but it is naming "num" for it. The naming is confusable.
+This patch rename it to "id".
+And many functions request both "rtd" and its "id" as function parameter,
+but rtd itself has rtd->id. This patch cleanup it.
 
-Patches 2, 3, and 4 should have a Fixes tag and Cc: stable.
+And, Qcom driver want to use irregular rtd ID because of its topology,
+and thus, soc-core need irregular calculation. I'm not sure why only Qcom
+needs such calculation, but this patch also cleanup it.
+But I guess we want to cleanup is not soc-core but Qcom side (?)
 
-Thanks
+Kuninori Morimoto (8):
+  ASoC: rename rtd->num to rtd->id
+  ASoC: fsl: switch to use rtd->id from rtd->num
+  ASoC: meson: switch to use rtd->id from rtd->num
+  ASoC: sh: switch to use rtd->id from rtd->num
+  ASoC: generic: switch to use rtd->id from rtd->num
+  ASoC: remove rtd->num
+  ASoC: soc-core: do rtd->id trick at snd_soc_add_pcm_runtime()
+  ASoC: cleanup function parameter for rtd and its id
+
+ include/sound/soc-dai.h               |  5 ++-
+ include/sound/soc.h                   |  8 ++---
+ sound/soc/fsl/imx-card.c              |  6 ++--
+ sound/soc/generic/simple-card-utils.c | 10 +++---
+ sound/soc/meson/axg-card.c            |  6 ++--
+ sound/soc/meson/gx-card.c             |  2 +-
+ sound/soc/sh/rcar/core.c              |  2 +-
+ sound/soc/soc-compress.c              |  9 +++--
+ sound/soc/soc-core.c                  | 50 +++++++++++++++------------
+ sound/soc/soc-dai.c                   |  4 +--
+ sound/soc/soc-pcm.c                   | 16 ++++-----
+ 11 files changed, 60 insertions(+), 58 deletions(-)
+
+-- 
+2.43.0
+
