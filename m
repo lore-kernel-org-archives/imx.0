@@ -1,147 +1,129 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65FD1AF0A8
-	for <imx@lists.linux.dev>; Thu, 24 Oct 2024 08:06:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728E11C07D1
+	for <imx@lists.linux.dev>; Thu, 24 Oct 2024 10:28:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729757182; cv=none; b=fvXZb1TlIvUp+YedfbqjCqvkuC4092upikwktzAak9i4tHwge5LKeyKdxkGKoH8mtx7WhsgGwJebr8etaNMjUk20+sckJuN60FLuybgvxnJnxLEeX2iOc552JL24hsT+KstUUFOKxrry0155JdI6dKjVxAxsmd1n22FOmBSkl1k=
+	t=1729765691; cv=none; b=HSA10uq4OHKJYy01F3OLCu5SUhA/7T+3m0b+TIMCbL741f3APaGaH99dfXe9GRwj8cfrfQpyZSK7GKA/RfQ5fwBylIcllhh6S5Wmrh1r/vQYAVStQHiNfuClC1mqWcpjXaqjiXR5b2Bbpgf+XSKo1YEcTMxQx9Dc6oHtpZGk4TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729757182; c=relaxed/simple;
-	bh=oPU8wiykirsXlfsK3FEHZM1SuFheE2lq9GeofLJroZY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=I+WUC1uLJOsHezahSyPGBMfbDAMVFq5FcuS4v701rdPHDR3Iz7m+QI7emZK5Hu/GQ+/i4QTioApeHlUH4lppKPA5Pjha4b2HTVwcLCAJlgsHbDaSQLcnf/poXMpUApMwKSNDut7plj7HEramYb6dkI2kierlw+sC4Q83AH0nvXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=pLytsr+Z; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1729765691; c=relaxed/simple;
+	bh=wnIvT3IpVrnkazOAfuknkSg50yEaXIoQFrYlNgWuD0o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NTTUvb4XVGSa+gp7nNi8d3E3Vnp415azG4uIamQu6seUjmPAJ1XjDVrGdXAt4BdfU6mKiH3lPpe1nCNFoRZfK8TuuP0WE/siRlQjsR9bdc9cmvJVGjuMi4sEqONmQ6nQkWPgt8KVVXoSn53NNwdtiUQRUXzkhTcE/UJnBOJpHLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=Spjcyjid; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="pLytsr+Z"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-37d5689eea8so432336f8f.1
-        for <imx@lists.linux.dev>; Thu, 24 Oct 2024 01:06:18 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="Spjcyjid"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5cb72918bddso963535a12.3
+        for <imx@lists.linux.dev>; Thu, 24 Oct 2024 03:28:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729757177; x=1730361977; darn=lists.linux.dev;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zMW6I0sTEYqubA9v2uS/l/YanQ/0kwQs3KpAh7vOnLI=;
-        b=pLytsr+Z6crS0c3CRhYbZW9VjQ9RD6Mo2N6zIuwCWo/UuojpBFmAAYdrPYjC7LHTcj
-         5xCbeVjuUfaXE5eUusegNTilu6buz5Ajgc6VKFgac5Zh9M77ShJsZch0M9Cb4+wvjiAk
-         6y+TmXByaC9NBx5DY1JaeWAiiqgSuK24cXofmD28vtGp4+s8+dyEmd1U/acp2/wN+nff
-         Py1GqOwqnU8QJMgHE3IJbgigTw1Xj5PE/p45nX2HyW9rvcPVryrpVOvyov6DpmpCOqhW
-         pzRu2N/WP9GIfcvSAzQPfwvG1fEILgGuH/BTvNB1Yb/wBQ9pe5mad2nAKM0vaoXZv7WM
-         hd4w==
+        d=amarulasolutions.com; s=google; t=1729765688; x=1730370488; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MVJNmqv90FijvAIp/3GkvDIQz+9MpbG95NCFvDT1TVU=;
+        b=SpjcyjidOt8foVxHVbdPxp8WbCNR17uXX4mNUJobWaGnhyVaOlfiV1ks3zuE1b3Zw7
+         yBy62WxHeeSJ8OkYJfMbs+rw2E7/bQLWe1DQ+98ZA6AYkK3b5XN/L6A+hJZd7+Kmss/C
+         DTdMSz9Lh3iIV4qgr6Kdqbo+xYiy010YyrCto=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729757177; x=1730361977;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zMW6I0sTEYqubA9v2uS/l/YanQ/0kwQs3KpAh7vOnLI=;
-        b=WVCi2/QgJzSb5ZIIVoBnFeIfqBAraNz6nZ94t/mpu4sFiZsQX634167eZjl4bqfGLG
-         DsoQGqxdYusbH3ocpgMzq0Kgu5iPmICrUf1wYNDc5qU7+sKUIvznZIF1gMIa5T4HJOGK
-         t6hoq4GEFnNNKRA0GR3S+RwYBNmIBox/mXlih4cyOiQoKDqkYgkviGarU9l+caDehStZ
-         VH1Qj/bo3ngA9YJv6T5nehGYGrWm7xSARLkIiiQv69Qw+UofIVSIe7j1kz/EQWHuzHuL
-         /zwOdmwL+4uiSrEoSfPBjLvr1uVNV0i+3p5DBtcRPvaRj/EFGX1AOjPvoRO9LejyCW5f
-         Z4aw==
-X-Forwarded-Encrypted: i=1; AJvYcCXejbTwHZiplXdWk1xfuwDLa9JtGCcEjkPgrYc609k8iJgpJdBOzU+jvtvXE/HjQRCo7uo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxoLJaYlfOhPtnYaUl+uMOJKckvEXqqEyo8GF6MiUVU2VWHc9m+
-	yFCcidJqBv5/oTf9IN9/GoqBl80HM+AdmPRpn/WfohxdBmgF2zbSa2wL1Ubr2KU=
-X-Google-Smtp-Source: AGHT+IEoZMVKgD69poA0dFC1qIUTHJdJvAa3Cg9Ax/TeZWkK7ol7nwHmrhD5d8D+xQZ2BLd9/bn72g==
-X-Received: by 2002:adf:e903:0:b0:37c:d001:856f with SMTP id ffacd0b85a97d-380458ee3fbmr839512f8f.56.1729757177038;
-        Thu, 24 Oct 2024 01:06:17 -0700 (PDT)
-Received: from localhost ([2a01:e0a:3c5:5fb1:c04c:f30a:b45c:dbb])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ee0a64daasm10701229f8f.64.2024.10.24.01.06.16
+        d=1e100.net; s=20230601; t=1729765688; x=1730370488;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MVJNmqv90FijvAIp/3GkvDIQz+9MpbG95NCFvDT1TVU=;
+        b=uWs7IHAb14Ae9dakMsJ9JwgWYhUFUpnb3Tc2Pq2zAmh3s47GGdLBzB2e5DeVQrH2y3
+         R4RhQmM/jqcqv+RkbRGQ0aNqPbAOYeegLH4XGfnTMFQDxgE8lyK1iKAwy7l6RhY3aj/e
+         nRdYFZMbOsMQebe/dcFfiTC3vAoOVT/gYl1d4HZfbdMgPKGJrzbvhqLrQbc4yrdvkXYs
+         3PNTnSXlZgGBHNTvtNp5b/S6EvO5CEgoaupE0i47Np+lNx+2FisXexo19ECDgXXNoX2B
+         kzR64QggRqRa+iJ0EHjFZG1gSg1IUFquAk9mllLGOG63wa8YmsFZE2ioUIjA72cSBU3u
+         MhZg==
+X-Forwarded-Encrypted: i=1; AJvYcCUG7iq6MypVLdkOePk0YiRj+y71GQ/k6L3fcKBUVcFCjh9Dzn7D+2n0dYvesYI/YlVOayw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzO9/TDjz2X0Xixe8vRGa1mOHBOvxhwn2BreYxIBUNxFPkaZ1VZ
+	KLb1sPzqJu2wbIn8dTDG/umDpM6znAu09dVHtC9o756THK8JTZNZtmaKRgM2PUg=
+X-Google-Smtp-Source: AGHT+IFIqyj+bFhDT0bT0Yue3u7gj7a0OTnPThmVI8x1ivIOOR0hXbcRig1qWOZuLaJ3Cyrf5Wbirg==
+X-Received: by 2002:a05:6402:3591:b0:5cb:6ca4:f552 with SMTP id 4fb4d7f45d1cf-5cb8b1a982emr4924713a12.35.1729765687354;
+        Thu, 24 Oct 2024 03:28:07 -0700 (PDT)
+Received: from localhost.localdomain ([2001:b07:6474:ebbf:f79d:49dd:b804:3f48])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cb66c726besm5538534a12.93.2024.10.24.03.28.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Oct 2024 01:06:16 -0700 (PDT)
-From: Jerome Brunet <jbrunet@baylibre.com>
-To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Cc: Jaroslav Kysela <perex@perex.cz>,  Kevin Hilman <khilman@baylibre.com>,
-  Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,  Liam Girdwood
- <lgirdwood@gmail.com>,  Mark Brown <broonie@kernel.org>,  Neil Armstrong
- <neil.armstrong@linaro.org>,  Sascha Hauer <s.hauer@pengutronix.de>,
-  Shawn Guo <shawnguo@kernel.org>,  Shengjiu Wang
- <shengjiu.wang@gmail.com>,  Takashi Iwai <tiwai@suse.com>,  Vinod Koul
- <vkoul@kernel.org>,  Xiubo Li <Xiubo.Lee@gmail.com>,
-  alsa-devel@alsa-project.org,  imx@lists.linux.dev,
-  linux-rpi-kernel@lists.infradead.org,  linux-sound@vger.kernel.org,
-  linux-stm32@st-md-mailman.stormreply.com,  patches@opensource.cirrus.com
-Subject: Re: [PATCH 3/8] ASoC: meson: switch to use rtd->id from rtd->num
-In-Reply-To: <87wmhyb85l.wl-kuninori.morimoto.gx@renesas.com> (Kuninori
-	Morimoto's message of "Thu, 24 Oct 2024 01:29:27 +0000")
-References: <871q06cmsl.wl-kuninori.morimoto.gx@renesas.com>
-	<87wmhyb85l.wl-kuninori.morimoto.gx@renesas.com>
-Date: Thu, 24 Oct 2024 10:06:15 +0200
-Message-ID: <1ja5eudix4.fsf@starbuckisacylon.baylibre.com>
+        Thu, 24 Oct 2024 03:28:07 -0700 (PDT)
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-amarula@amarulasolutions.com,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Michael Trimarchi <michael@amarulasolutions.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] arm64: dts: imx8mn-bsh-smm-s2/pro: add simple-framebuffer
+Date: Thu, 24 Oct 2024 12:27:56 +0200
+Message-ID: <20241024102800.3481574-1-dario.binacchi@amarulasolutions.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-On Thu 24 Oct 2024 at 01:29, Kuninori Morimoto <kuninori.morimoto.gx@renesas.com> wrote:
+Add a simple-framebuffer node for U-Boot to further fill and activate.
 
-> Now rtd->num is renamed to rtd->id. Let's switch.
->
-> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Co-developed-by: Michael Trimarchi <michael@amarulasolutions.com>
+Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-Acked-by: Jerome Brunet <jbrunet@baylibre.com>
+---
 
-Just one comment: I understand why you have split this into multiple
-patches, I suppose it will help with the review but I wonder if it
-wouldn't be better to squash it all into a single change before
-applying ? To avoid exposing the intermediate state. It might be
-confusing too. The change would not be that big actually.
+ .../freescale/imx8mn-bsh-smm-s2-display.dtsi  | 28 +++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-Just a suggestion ;)
-
-> ---
->  sound/soc/meson/axg-card.c | 6 +++---
->  sound/soc/meson/gx-card.c  | 2 +-
->  2 files changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/sound/soc/meson/axg-card.c b/sound/soc/meson/axg-card.c
-> index 5ebf287fe7004..a2dfccb7990f3 100644
-> --- a/sound/soc/meson/axg-card.c
-> +++ b/sound/soc/meson/axg-card.c
-> @@ -43,7 +43,7 @@ static int axg_card_tdm_be_hw_params(struct snd_pcm_substream *substream,
->  	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
->  	struct meson_card *priv = snd_soc_card_get_drvdata(rtd->card);
->  	struct axg_dai_link_tdm_data *be =
-> -		(struct axg_dai_link_tdm_data *)priv->link_data[rtd->num];
-> +		(struct axg_dai_link_tdm_data *)priv->link_data[rtd->id];
->  
->  	return meson_card_i2s_set_sysclk(substream, params, be->mclk_fs);
->  }
-> @@ -56,7 +56,7 @@ static int axg_card_tdm_dai_init(struct snd_soc_pcm_runtime *rtd)
->  {
->  	struct meson_card *priv = snd_soc_card_get_drvdata(rtd->card);
->  	struct axg_dai_link_tdm_data *be =
-> -		(struct axg_dai_link_tdm_data *)priv->link_data[rtd->num];
-> +		(struct axg_dai_link_tdm_data *)priv->link_data[rtd->id];
->  	struct snd_soc_dai *codec_dai;
->  	int ret, i;
->  
-> @@ -86,7 +86,7 @@ static int axg_card_tdm_dai_lb_init(struct snd_soc_pcm_runtime *rtd)
->  {
->  	struct meson_card *priv = snd_soc_card_get_drvdata(rtd->card);
->  	struct axg_dai_link_tdm_data *be =
-> -		(struct axg_dai_link_tdm_data *)priv->link_data[rtd->num];
-> +		(struct axg_dai_link_tdm_data *)priv->link_data[rtd->id];
->  	int ret;
->  
->  	/* The loopback rx_mask is the pad tx_mask */
-> diff --git a/sound/soc/meson/gx-card.c b/sound/soc/meson/gx-card.c
-> index 455f6bfc9f8fa..b408cc2bbc919 100644
-> --- a/sound/soc/meson/gx-card.c
-> +++ b/sound/soc/meson/gx-card.c
-> @@ -32,7 +32,7 @@ static int gx_card_i2s_be_hw_params(struct snd_pcm_substream *substream,
->  	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
->  	struct meson_card *priv = snd_soc_card_get_drvdata(rtd->card);
->  	struct gx_dai_link_i2s_data *be =
-> -		(struct gx_dai_link_i2s_data *)priv->link_data[rtd->num];
-> +		(struct gx_dai_link_i2s_data *)priv->link_data[rtd->id];
->  
->  	return meson_card_i2s_set_sysclk(substream, params, be->mclk_fs);
->  }
-
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi
+index 7675583a6b67..3d670534a714 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi
+@@ -4,6 +4,34 @@
+  */
+ 
+ / {
++	chosen {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		ranges;
++
++		framebuffer-panel0 {
++			compatible = "simple-framebuffer";
++			clocks = <&clk IMX8MN_CLK_DISP_PIXEL_ROOT>, /* lcdif */
++				 <&clk IMX8MN_CLK_DISP_APB_ROOT>,
++				 <&clk IMX8MN_CLK_DISP_AXI_ROOT>,
++				 <&clk IMX8MN_VIDEO_PLL1>,
++				 <&clk IMX8MN_CLK_DISP_AXI_ROOT>, /* pgc_dispmix */
++				 <&clk IMX8MN_CLK_DISP_APB_ROOT>,
++				 <&clk IMX8MN_CLK_DISP_AXI>,
++				 <&clk IMX8MN_CLK_DISP_APB>,
++				 <&clk IMX8MN_SYS_PLL2_1000M>,
++				 <&clk IMX8MN_SYS_PLL1_800M>,
++				 <&clk IMX8MN_CLK_DSI_CORE>, /* mipi_disi */
++				 <&clk IMX8MN_CLK_DSI_PHY_REF>;
++
++			power-domains = <&disp_blk_ctrl IMX8MN_DISPBLK_PD_LCDIF>,
++					<&disp_blk_ctrl IMX8MN_DISPBLK_PD_MIPI_DSI>;
++			dvdd-supply = <&reg_3v3_dvdd>;
++			avdd-supply = <&reg_v3v3_avdd>;
++			status = "disabled";
++		};
++	};
++
+ 	backlight: backlight {
+ 		compatible = "pwm-backlight";
+ 		pwms = <&pwm1 0 700000 0>;	/* 700000 ns = 1337Hz */
 -- 
-Jerome
+2.43.0
+
