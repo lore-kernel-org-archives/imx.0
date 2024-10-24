@@ -1,129 +1,98 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CDB1FF60E
-	for <imx@lists.linux.dev>; Thu, 24 Oct 2024 17:26:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72CFC1F9ED1
+	for <imx@lists.linux.dev>; Thu, 24 Oct 2024 17:26:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729790794; cv=none; b=LeVwVxuEM0oKQgJa9zTEG44OI518cvX67hkcQEaFzDx7wddVXLhFE499vfoFzcpueOtrawo3uG8D/RfBgde0JExm+eirMD2sju+OWskozx0Rt2I7B2i/75hB8TGlvDkIk8nGNoXuICVX8UoGWv0LvwZDUOWp1U1zvA5ByS7U0lY=
+	t=1729790807; cv=none; b=q6pD229dDbyKO/wkXF50mvq2kXa/81Y4GPO7tlBVVnJGeF6sU6aY1MP08fv1MB+OXsOLRJUM+41o1BezQsL/Hr06A6WQV5Iuxv38Xu11PT1p3CX5YOwCh4R8bDQvNTGkf+bsEplMT+NG10lDzdyq1aN1mxJD60/EjbV3r3tuDlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729790794; c=relaxed/simple;
-	bh=RwEePPnICKDq/hGzPzFY9TDugPuK4+JiAhBYXPj1EVU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qBQhWj/XmZhRr0u84Jyew7S5/E2/gfQkIVogI868ZykIAXP0jxsMiwCLpMW++upB8/yKo72/IgBOqh+F2oRrdsMSPFmAtW7x4Za5gMXrLplAqX/mVUMbqe5UD8K1byJhWQ3ZUxhjn9AKpfRkbUgAjgZR1LgcEXdRQvfaGiKvXR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=KVeIRsda; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1729790807; c=relaxed/simple;
+	bh=y3x/Yzqr5rOkV6VpVIRWrECyDD+bnzjGWzKCC9ld0xY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UaDC3Cb6lP0zxK7COh3b8Xvq2MpKIMGvHYax/GG/A62deFnP8cUri4jPf1pbCVRFLLGnO19ffCEuC1608lHF5elqnULKNaywx58gVzUdwZeq2btqKyYjUhY8PdS/+e55apY39siYEhGPA2t6YOOdQTKWpeBMmAOkuDRBUdjuyBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WgT58sxs; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="KVeIRsda"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-43162cf1eaaso16105605e9.0
-        for <imx@lists.linux.dev>; Thu, 24 Oct 2024 10:26:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WgT58sxs"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-539f72c8fc1so1521318e87.1
+        for <imx@lists.linux.dev>; Thu, 24 Oct 2024 10:26:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729790789; x=1730395589; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=df4TNSGzSNKm0QFOAhtHpnlWhy9nagHU1mwVeiJhueE=;
-        b=KVeIRsdaAVHLsRs1NCQdnCTIca0qnmfAmObHRruqPjdOTtEzewqEg8WVvPBzRF7GFN
-         XxghvmNKAOkEqkYfxo4p5ZiJqxAsPio9PAHf1Wm3rlaus2VPLmE9FwlfqCbS+o/4mxUP
-         5WoTmCWr7w2iBPTJUfL2yVu3WsrVwRLNF7f9TjRp+uPuOng+pcMIxRFPTh4h6WXGdOqD
-         9bRXa3FnhI3Zbi2y/infCqXDIGQD5Ts4/menNPxWGm0XlJolERnY+QkaXObSl5pXJVLi
-         d2r8rDZFD7gi8xeu3mnc61yHxfmcTKe374o0ZuYuQNq+L8fu8TRlXjPY65uUWHvqTdCk
-         2ffA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729790789; x=1730395589;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1729790803; x=1730395603; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=df4TNSGzSNKm0QFOAhtHpnlWhy9nagHU1mwVeiJhueE=;
-        b=SRwSn9ppyX5kbDFirMxcx9hwMmxXyDB/g1EkNkLipBnJ3FDVgk7VBGlqaWm51iDiDw
-         nLjmn7kEDU8/s3P1Laqs59YkVBMwiYemDY6QK8f+IT7PpQCE8Nz5GMKA94Jw5kMsoZ2b
-         E4LrdDNiKYaGDvryRJc0jQ3g0D5Vbt782mDlvmEZad3HPpcfzK7guIUPjv6nm5KODDnb
-         jzB45GobVNUBfPx/RyBWdbMsa2uVVFkzfSpDiouCyskwDTlj6ujytisUVwb8ZdzHMaie
-         qNLnGJhFgdOqWx8eIs4mQQtHRRrSU81t7JmCRd3/R8nVnFrmlsT3E+UsQyq3uOSjTUpG
-         iKIg==
-X-Forwarded-Encrypted: i=1; AJvYcCWh5kJ38wpSfcgZKNt/d+5xPdpsVMLceuMA2N7Hqxv1+xAPX/WWLH30P9lpmLfp0SARauA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyfrvIvL2QGMgckB96wFiCRUsPCsAKuU7SladqPdgWcXX63+Ckc
-	Ml4qnl0wVZ3HFI+0dQ1hJWqbK6W1LDPoAie6jEuOfT4cOp82Ul1PT+8djMOZn3Q=
-X-Google-Smtp-Source: AGHT+IERuGJIotkBPQnG/sDjxSCMdboz8SG9EaUnlFwZt5gyjZXzk4XrIIAOtG10KxDOLzg+kXRQFQ==
-X-Received: by 2002:a5d:4cc3:0:b0:37d:46fa:d1d7 with SMTP id ffacd0b85a97d-37efcf91b9emr6075835f8f.57.1729790789509;
-        Thu, 24 Oct 2024 10:26:29 -0700 (PDT)
-Received: from localhost (p50915d2d.dip0.t-ipconnect.de. [80.145.93.45])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ee0b9bb15sm11814624f8f.99.2024.10.24.10.26.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Oct 2024 10:26:29 -0700 (PDT)
-Date: Thu, 24 Oct 2024 19:26:28 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: Dario Binacchi <dario.binacchi@amarulasolutions.com>, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Michael Trimarchi <michael@amarulasolutions.com>, linux-pm@vger.kernel.org, linux-amarula@amarulasolutions.com, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] pmdomain: imx: gpcv2: replace dev_err() with
- dev_err_probe()
-Message-ID: <4vws5lnu4efupunha74pdlgtd754w6n2loymgywrxhwm2rqic2@gz4efozdrpqm>
-References: <20241024103540.3482216-1-dario.binacchi@amarulasolutions.com>
- <20241024110123.wix35njjbh3nx7kn@pengutronix.de>
+        bh=y3x/Yzqr5rOkV6VpVIRWrECyDD+bnzjGWzKCC9ld0xY=;
+        b=WgT58sxsTN40eZjRY9vlDHpoeGeLEZZOzRoQ3W51MmVLNu7z+M4tE1f3eKVmg2ebLT
+         QwisPEkthgz065/NUqK/TQO10G6iSvoFXjPW3fPguiVwmv5bW4BWzy4PhuIFHdOwJpGy
+         d7nIwwe23ldgX2g9cGf/iHSnQCz5U48px8C8XttqS0xR202inlvZjfNK93J0OfbBrI8D
+         RVIwVnUTy/rivvY+bG2RPH24r6LqFWiUnLtoVPUsArHqh0gROvi8wOvI/Me2NOm/vS8p
+         GKME8D2zl6S6PxOVHyXCxhH+lsauFVhOwZ8ZQG1Qc1GKP8gbRSHnOPWDd7Q5emayoYIC
+         jz2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729790803; x=1730395603;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=y3x/Yzqr5rOkV6VpVIRWrECyDD+bnzjGWzKCC9ld0xY=;
+        b=XrjftEh4yzmv5hhtilsIBa2/QywiPMlgnTPT1EE0D/i8YopTckfKBT6OHcXUAepR28
+         bafa2H6D9XIVktddipYFeKhVeLLBgNvalLkSn20m57SwqLcfwxCekizkZytzmAqwti9l
+         mOMx8TH1ARhrMnePfj4zbjRcFiuidX+FtYrPKmw7qM1d3OJp7rk74aKsGTEkUlvg93od
+         7uYAI//Mve4K1GPrsxfwOoZn8IE1gyy1PE4V+ktbasYNoD5fBvWKzC7pBZTNixJvvQ+H
+         Zuap91wK3NrkYSPJdXJ6e8eI2K55CwGd3dMszKUQ85e1oZxU86SRolPaNDU1lOFNeB6h
+         CgyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUGUGkIzz++3Trcv9HDZPuaKliBHTVAuFf4rXKAQRXVU/KgloRc3s/+h/Bzy3GeHvGz0wI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzHQB347RkxAbrtQPn5jcOmIKbkueiNoizBHWt4egu35eJlBwvl
+	Z5HGKxhqZhjIP0eMukjWXikMCG7RrjZlNvby0ssHRvPHtgKxH/z++h4ssTzOYmJndVdh6sT+pp6
+	YupPDpAyvLl77QYV6zUzOSVYufj4=
+X-Google-Smtp-Source: AGHT+IGRxl832jNWkv4G/j5EbOky9Qs4+WgynnzzESmftSbrAVOpsaZoETsc+U+/YcqbVeYhcE4fW5L3Lrc4zeMjs1g=
+X-Received: by 2002:a05:6512:10d4:b0:539:ebe5:2986 with SMTP id
+ 2adb3069b0e04-53b1a2fe4f1mr4269898e87.12.1729790803049; Thu, 24 Oct 2024
+ 10:26:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ow3mz7ffba4wu6es"
-Content-Disposition: inline
-In-Reply-To: <20241024110123.wix35njjbh3nx7kn@pengutronix.de>
-
-
---ow3mz7ffba4wu6es
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
+References: <20241023091231.10050-1-bhavin.sharma@siliconsignals.io> <172978739819.623555.106741073057492931.robh@kernel.org>
+In-Reply-To: <172978739819.623555.106741073057492931.robh@kernel.org>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Thu, 24 Oct 2024 14:26:31 -0300
+Message-ID: <CAOMZO5A7Erks3CHh97AN-XP=Aj2QBUcikAT0ijxkGEchqMfWVA@mail.gmail.com>
+Subject: Re: [PATCH v3 0/2] Add support Boundary Device Nitrogen8MP Universal
+ SMARC Carrier Board
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Bhavin Sharma <bhavin.sharma@siliconsignals.io>, 
+	Hiago De Franco <hiago.franco@toradex.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Michael Walle <mwalle@kernel.org>, Tim Harvey <tharvey@gateworks.com>, 
+	Parthiban Nallathambi <parthiban@linumiz.com>, Max Merchel <Max.Merchel@ew.tq-group.com>, 
+	Conor Dooley <conor+dt@kernel.org>, shawnguo@kernel.org, 
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>, 
+	Joao Paulo Goncalves <joao.goncalves@toradex.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Gregor Herburger <gregor.herburger@ew.tq-group.com>, imx@lists.linux.dev, 
+	Peng Fan <peng.fan@nxp.com>, Mathieu Othacehe <m.othacehe@gmail.com>, linux-kernel@vger.kernel.org, 
+	Alexander Stein <alexander.stein@ew.tq-group.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] pmdomain: imx: gpcv2: replace dev_err() with
- dev_err_probe()
-MIME-Version: 1.0
 
-Hallo Marco,
+Hi Bhavin,
 
-On Thu, Oct 24, 2024 at 01:01:23PM +0200, Marco Felsch wrote:
-> On 24-10-24, Dario Binacchi wrote:
-> > The patch standardizes the probe() code by replacing the two occurrences
-> > of dev_err() with dev_err_probe(). Indeed, dev_err_probe() was used in =
-all
-> > other error paths of the probe() function.
->=20
-> I assume that this paths aren't using dev_err_probe because these paths
-> can't return EPROBE_DEFER and therefore dev_err_probe() would use
-> dev_err() anyway.
+On Thu, Oct 24, 2024 at 1:33=E2=80=AFPM Rob Herring (Arm) <robh@kernel.org>=
+ wrote:
 
-Note that dev_err_probe() has advantages even if the error code isn't
-EPROBE_DEFER. In this case it's mentioning the error code.
+> New warnings running 'make CHECK_DTBS=3Dy freescale/imx8mp-nitrogen-smarc=
+-universal-board.dtb' for 20241023091231.10050-1-bhavin.sharma@siliconsigna=
+ls.io:
+>
+> arch/arm64/boot/dts/freescale/imx8mp-nitrogen-smarc-universal-board.dtb: =
+/soc@0/bus@30800000/i2c@30ae0000/gpio@20: failed to match any schema with c=
+ompatible: ['microchip,mcp23018']
 
-See also commits
-	7065f92255bb ("driver core: Clarify that dev_err_probe() is OK even w/out =
--EPROBE_DEFER")
-	532888a59505 ("driver core: Better advertise dev_err_probe()")
+Please convert Documentation/devicetree/bindings/pinctrl/pinctrl-mcp23s08.t=
+xt
+to yaml.
 
-Best regards
-Uwe
-
-
---ow3mz7ffba4wu6es
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmcag0EACgkQj4D7WH0S
-/k7z5wf8CJItP63PC6N/D5K9sQTx0ydliUNv7dA1lUSVuiADSLncCZVZu3zmSuiZ
-6Ta9uxNeZuOyJSAtq5mXX70s8vNrRycm/rYxPoZNvvB62ZHQOyweWF0f0Ce1AwGn
-keWSqZ3/B9mNSgtSqmyEi3HHcx61NbjjO230wOBvNKfUElyL4ozrgbzFv2qbLZYF
-Nt5xFEoEQiw0riAk7lgyOazrA/6D5ZyJ60YZ5AdifNXgDLfU5OkRmpVh4/eOGKD0
-x/Rn15dujV72q8n+ZyXqyifZUbnGVTXYWnNzNwqwcPT/y2ESWjPMC6uyeUwiEMuo
-xHEVQMNz7SHRR8PmDEwbI/fmJdDOjg==
-=kHdL
------END PGP SIGNATURE-----
-
---ow3mz7ffba4wu6es--
+Thanks
