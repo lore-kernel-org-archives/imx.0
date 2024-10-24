@@ -1,688 +1,230 @@
-Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2085.outbound.protection.outlook.com [40.107.20.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E8B1E7670
-	for <imx@lists.linux.dev>; Thu, 24 Oct 2024 14:22:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729779758; cv=none; b=aGs2HZUQC84rMXNgPa9bNkGItX4PzlfAGPO4lPRE7KvidC7pPTxgNOyNaRVPe187OyliXH1TxRbnEm5Y0fg1oyCXkbIINwaLteNUpJ7WqbPFZ8pFwM+WIv0SrgTYBI9RT7U1DkZOjJTEw1nUcnyaWNDTyExPMaZEMjVDiw5OmzI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729779758; c=relaxed/simple;
-	bh=9oA4REkAuUTRy4FK6+Ud98LTpVd4fO3ZtF/evBK/U60=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IewyhIbbFUpsZU3qvGcAkOjGQwYRP8DavGBQ8rjybMhnNf+P3pAubPDSmx4TTQbb2iY1OLwb7HRRzRD90FuyJSE/4ySmnOR8uzSG2nWDeTFq0U6chND/Md0nT3ilCtgsnj8uUGvVfyXugLkKwNg/GACOZb59lu3iNH48+BAPC5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=wAd571kw; arc=none smtp.client-ip=161.97.139.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA22E1D1745
+	for <imx@lists.linux.dev>; Thu, 24 Oct 2024 14:32:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.85
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729780343; cv=fail; b=iEo3UyBBtnxQnoSHfoKUYggRcfwVUw94ViRf9XFCgihFZARCSdawTq4oyEzV+1ZpFCxqVe97nf/gmB1n5kyjIM5b3t5b1KjllcKVocwpB664cbhs8vmAtCEpo4u0g5YxhxPf4wtB+ZBrzP15SKNYHdWajyqyRBcn7xdx+WDIoME=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729780343; c=relaxed/simple;
+	bh=oVTVJCsinDFUc/ibIOvgY+7QGQ1VlkPpgJOFTGD2T4E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=vFFk24WOS7V5+iezq4boyzDPug60h9rd8XDiWceeOKp2uJXGq9taLGfT5KLU23kUXqV4gJ8mEOh1lhEWFoofkzhEKA2mmr2ENJe9kaU4wO35k+5LtYYdPqt7Ga8GVTu3S/9C381JaEj0WKLCbjijZdi8li3jBBUdRhX6u3ecWr0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Edt7LwMl; arc=fail smtp.client-ip=40.107.20.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="wAd571kw"
-Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
-	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <andreas@kemnade.info>)
-	id 1t3yjM-00AA6I-0o
-	for imx@lists.linux.dev;
-	Thu, 24 Oct 2024 16:22:28 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=DNJ1P0mAk9HA+lNQrBqoEqrIoNuQ3ZUoEAAvklV+/oI=; b=wAd571kwPe+2Arp9Zj0bf4TC2s
-	26r6UE63OX9LArd1ETFjLBlexm2S29c/bYVKYAp57NwEyrcvyaJmOwrZLbdKKof4gHJHus5f5NJZM
-	sQOVKrIDnuGsl4qz99Lt05OWTcbxl6BlxcMDQOn+5OSySROavgh1mk0mATYrUA+ISAdIzhyibRBGF
-	ZSGjyX3SbRGhVxBNzFubCgW5hgOoNBCTc3FQiapWnWIc2dxUZ82jnuS8q3mpK/kOaI8qllPgIX+AI
-	SVcsK2rw7EekbbRYBNDPoVXEHsTnZy15RApsbdEJ54VSUxB7ZQC1FCRUVn5TcM0uu0V4zff+2cLGz
-	utcTnMbA==;
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	imx@lists.linux.dev
-Cc: Andreas Kemnade <andreas@kemnade.info>
-Subject: [PATCH v2 2/3] ARM: dts: imx: Add devicetree for Kobo Clara 2E
-Date: Thu, 24 Oct 2024 16:22:05 +0200
-Message-Id: <20241024142206.411336-3-andreas@kemnade.info>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241024142206.411336-1-andreas@kemnade.info>
-References: <20241024142206.411336-1-andreas@kemnade.info>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Edt7LwMl"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lguWlbZij5JC8RwUCPLFypx9Goqonv7uOSUFUPslIKsFcjhvB3Eo0WpLaorQWvTCdVphBB2CjUF0TZDl/uRbsy5YpAhmAFdy8nK8JLw1xYmwqdlCZ+B/1Os6ML84sOidQVVdoHyiN99hhIHLqYqp2x8OZphVvI2Ut/406xHiGyLyfYLfyfVwGO89qddRfS/Ovpttt2cziGgGZqPY8wm2ptxPq5T4AW9VPjMz80SQ6Bs8duztOznIvlP6MCGh0gDT7aTdujRtNhlqGJDX/Ro9yAA7jgGOEVbGEgub1SsSxUB17UFYUgo73+XFRhdP30lFer8+MCx2IAjpupi45BnU7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jd8tz3D9o0UyUxSkVxSLmpvqo/s++Jb/DYkt2Ab6XcA=;
+ b=ldEjKZ4Q8kpgiOUMOiHtT8MkO6ZNJy1ZM81qjPEMHJMfa6DvCUuBysIRh9lv5RYhWbpAFGM9sPiSvobZioPCQqtzHpbqQ361tw+JOUKW8oTJ6kjb/MjP9RvrKMnLMUrTMnHP3N2yrbGqHIllViRy848yTlFFbHOChHgYkswL1y+lql75omKs7IopJFtgiKA/YbXdRGOWbeOT8E50xYcjlWBlROXIgMace3Wsym+vou88ZBmjfYRRpy6PVcVY7tQcHsWomiMldnaZkeopDaSPPb+VGLssk/y7n5yaEnYBPPirkPGj9NLDPnHlXvcfYDgqrGqZNfOG89ESSM+1Yf0wxQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jd8tz3D9o0UyUxSkVxSLmpvqo/s++Jb/DYkt2Ab6XcA=;
+ b=Edt7LwMlJrjI4deyUUtru5aaYNYvWPmwvgOpcFCQ+AcZNe7NztqRMXr+b1vb14GC7IITLWyj4jkfE49Vyu/KNma3V+xYzdyyuGava/+6YT7xzAJOzZ8XJ4H4yuYkcw4+3XvvKSF5gkoQJM/V0e6wMkWJpd773T39qSM0AAWLTJsWI262OgFOV0BllNLMZ2OIKiD+tnBXAsNZ9O8bKZBBYSl8o7e0APkvKzIZpoOcXigO528WCIJehZf9ry9KK3fobrKnGfcqq62eAbaxy1ubZCgzKI5ozN7G5GNvTaEco/z/jv4fypAz7AuEr5MWdwzJ7qRcclHl7E3wpt7d+F4alw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
+ by PA4PR04MB7741.eurprd04.prod.outlook.com (2603:10a6:102:c6::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.18; Thu, 24 Oct
+ 2024 14:32:18 +0000
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2%3]) with mapi id 15.20.8093.014; Thu, 24 Oct 2024
+ 14:32:18 +0000
+Date: Thu, 24 Oct 2024 17:32:14 +0300
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>, Frank Li <frank.li@nxp.com>,
+	"christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+	"bhelgaas@google.com" <bhelgaas@google.com>,
+	"horms@kernel.org" <horms@kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"alexander.stein@ew.tq-group.com" <alexander.stein@ew.tq-group.com>
+Subject: Re: [PATCH v4 net-next 03/13] dt-bindings: net: add bindings for
+ NETC blocks control
+Message-ID: <20241024143214.qhsxghepykrxbiyk@skbuf>
+References: <20241022055223.382277-1-wei.fang@nxp.com>
+ <20241022055223.382277-4-wei.fang@nxp.com>
+ <xx4l4bs4iqmtgafs63ly2labvqzul2a7wkpyvxkbde257hfgs2@xgfs57rcdsk6>
+ <PAXPR04MB851034FDAC4E63F1866356B4884D2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PAXPR04MB851034FDAC4E63F1866356B4884D2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+X-ClientProxiedBy: BE1P281CA0193.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:b10:8d::13) To AM8PR04MB7779.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24b::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|PA4PR04MB7741:EE_
+X-MS-Office365-Filtering-Correlation-Id: 12e8b853-b1fb-48f7-8f35-08dcf438a97d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?OyPVzSxQFjv/NnEPkgAn23FI5SOdyRJr6jDPsQAFByc9GOFs1l0sJhcnJGki?=
+ =?us-ascii?Q?j7XgF4VXwc8GfvNqvifuxS0pgCK86flptz62+IMdTBjzODLhc7Y2Tw1AAf3v?=
+ =?us-ascii?Q?D1VxP6ct+R//ILYoMfHej2CwXs9h5z7DpzC+0OfUXvMKoUC6sTmgQLte3OVK?=
+ =?us-ascii?Q?iRUpiIi267Vu75TOEh1U4SjxyN891nDUUM2Nrr3/DrUl5dqdzdflWMJoofD2?=
+ =?us-ascii?Q?Huo5E5WUfsF+w0bxPdKOyXY2gl1qFE+/PMRisl8sX/pwVNjDbPfp6xBVxE0Q?=
+ =?us-ascii?Q?wUEdp0vck0zZc3P50qLw0lXmJ0PQvJo0/DQ5CzZYf9W7xnOwpG9JCCzBMm3S?=
+ =?us-ascii?Q?z39VuwFERdnpRA5bmcuzuPA05U0mRh/3ZnamIKhrzzznSOlfMs/0JrzDXxv7?=
+ =?us-ascii?Q?lrXyKiLTH2IQHyYjgq0ulC5OhpOWiXyk+qQN5wdZlb6ZW6d4mCWV2UPBzYul?=
+ =?us-ascii?Q?CBX9NYwZUMLQiWPyYXUnpd5gZR+jkcNRYTUkeLoJIrWIw8b8+3iDN6Lns1pP?=
+ =?us-ascii?Q?21Zl3OXDckk8sqfZ7KqXY2mw1hrLWuLfvJO99ngmoPloTfPpylJ3HOXng0n3?=
+ =?us-ascii?Q?0REMRSBRufMP29ntIV4aOhgq/br1PVA17wpKfvQanALUhL1UtAfoW94vyrEt?=
+ =?us-ascii?Q?xWCf24bVnvRX7E0gXnUrRZc1cVwhux30B7n9aLy/mZQq0MLdz6fSHizyDo4x?=
+ =?us-ascii?Q?gTn5DiGmHCBdGjDLj7IP9gaHOdZalZUpXE4gIwbi591WX5JrVHI80b/SqHAj?=
+ =?us-ascii?Q?GL+TPZTz2WOushiKC2JVbH7LtN+FsvkhQkw9jwrgZL0XEfLE8ds9/HcbnxSw?=
+ =?us-ascii?Q?jiMJijHGfVeDKHcEDCKatvxJH0J3GD4/1ZhHG0oFfCBxduPZh1LjmjeXOiJb?=
+ =?us-ascii?Q?78gxkmVrDDR70zKrhvOJa7ns/GTMo/88+PlpKYoQjS0TlT9ndKy2PkXa5ppi?=
+ =?us-ascii?Q?jX3cWmvd8ISMEmz4ZGMG/Ko4RiIrTGLkMu3skAiRJ6HqGiRQUreG/6eam+34?=
+ =?us-ascii?Q?N/C/3y6musnJyKf+2FTEYZ8cpqNr1mY59YAM07VC2f9VkZrLg2HBJjAqX5aq?=
+ =?us-ascii?Q?SliuQMK2Nz76GpADfQM7MxIix8mHDh0L2mmIqLU8qyVr92LyZkQtJZHF/nIF?=
+ =?us-ascii?Q?F4/sQkXK5LMPEg9a3CNE4d4lyDv1EKnVJTwRjDd91qOeNi4xKUA/ETZVTj33?=
+ =?us-ascii?Q?KjbriGRjYbJ2CGSTJXXQBsgF+1Yv/ARNF4Hzr8yPOiQtqCiL7kNxkMgMutga?=
+ =?us-ascii?Q?6kLP+xOUmc+Nh7gbNdeMJ7CmMyi0O+yrCdokyfMfDqZKSGVVvawRTjNDf6tw?=
+ =?us-ascii?Q?151FhxAqs4uq3I1oXA3MgrK/?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?tafOzX9yeLMHciFyDPPUCtS3NsmYdsbY2gwmwJYvCcemz/JsyXdXADbKQOLA?=
+ =?us-ascii?Q?BKFn6gkgnYDI2r7sPZ7i61ZysBrjrTfW6cEC8OdNxwzghGuvQyI+dpt4JVrR?=
+ =?us-ascii?Q?kuNJzIcDk9YOsdw7aIItp/KmZR7cwchPhd0edRl9bHKOunBIb2qTvJGjWyF/?=
+ =?us-ascii?Q?vp9oXT8ng5oydTyogIkPmDJy3pcnAyP3Up24CYXP8XhDkIeqZMQy1qZjARn1?=
+ =?us-ascii?Q?2czt/LkUheRvomI+AVvzMy1CORuOEvlSsPN626vRwAOd6S5wAHWdaNGRiK2H?=
+ =?us-ascii?Q?y1A9J7eM4agORPGsXgXCcYJZFkZP/IxtoA86Y5xPMwIpGnyq1NnOYbUhfhXc?=
+ =?us-ascii?Q?LVtmxsplbbz7CPiiwKhFMQ0DXPHkh6mq96bDIqkt2ZQj7w1nlVvvCV5DlVGQ?=
+ =?us-ascii?Q?qTCV6Nzc2BOP8dHcCJ/X0ACwWSwyh7fRRRFSSreUQbwisSPIFUUWLUUYoO+a?=
+ =?us-ascii?Q?miU5J8nj/bqa4jpASh6R9IbXsePOJXCWqmIN5CU7MiB4IXB7uxQv+vgd5ByV?=
+ =?us-ascii?Q?KFN4rseBz0NEJRWw9xCyAYceNSCNL9DQUQot/BMaYsoNlEdS8kUzqAkOhTdT?=
+ =?us-ascii?Q?VTFUApah4JeJkm0IU0Dc9dIMjPbsJUVcZCkpjaxvNmTeEPvhM70S0hhQPJPY?=
+ =?us-ascii?Q?v81bKGDOZvaNhOCxXrxn2zlR5AQ8UFeY3PEfpr0UvPjfQJrBKv4T9Vft6bDf?=
+ =?us-ascii?Q?c0Bey0lilzvQF0Hu2r13pL7lu4xvEc319myl6tNlZ28yneRLSDUYqWr5YPpf?=
+ =?us-ascii?Q?r+YzfysdsLoNe7ePCCyi2xFXFecWZjnmF2r7dwphKHpnIN+pwmXl0M83Nlzi?=
+ =?us-ascii?Q?XnN73fhqD8G+ShDr8LMA3aJNiYxReXt2X4DuN1nNErJXxCuki9JtetFl1Mpc?=
+ =?us-ascii?Q?m9qAdsrpkYaGn+g4Vlwc5drtOKohPzvkLKpnPKNDxAfxAchMohztBp5vSCRR?=
+ =?us-ascii?Q?4Z8bsXj0ro3jopnn8mP/IZ0OafKg02JzL4SxBFzQgNJ7u/H8Dhy8xMuyzWa1?=
+ =?us-ascii?Q?8n63B1Yyt7gzpkc6Y0ZOvDa5G9C2WMMKTndJLIy4ACmXVL+iBZhqSiK75Hyi?=
+ =?us-ascii?Q?jF+jA+GL65PoTuoCS87ZbFbrXvy4qmtrDyMTGVmaAlYFlXX86BNUn3MvTtxw?=
+ =?us-ascii?Q?5UaUBegyi3vF/DvD7K0wUgzicgXRlwKRYxcUpEa0BTT4giHIpF+tYlnTHFbC?=
+ =?us-ascii?Q?GmVrFpx9lrg/aG4VCsqbD5o1cEsf2DT1mBvYo29SSuzCo3M1fqFlhs4jJy7L?=
+ =?us-ascii?Q?XQycjb7XMeK9YxWllX1nOu5o32llxqN8iZ2mnw7N9Whsbt4s86CYYOXiQo/C?=
+ =?us-ascii?Q?UathnXzLMyjoBiyuHmuS0QUEJnz2bbBn6FG1Mqpd/45H2GGcuPPBYCo3ohbx?=
+ =?us-ascii?Q?IFx/RR3f/qAJzhF+bdTTiks9VqtlikQqnYSwaRwVV5s+lBgfg1Pllxj4LV0F?=
+ =?us-ascii?Q?Y5U5841lowyVxpP1VNrlZFhPe6nwOa1bKYWnuwjvsfUbok0ck+cv2ERnGFK0?=
+ =?us-ascii?Q?GFhzFwFKW1y8MyaaAq1fDe5PPNso96neXx4gh1OB1H9v4Qa71uQvrxB0FvVC?=
+ =?us-ascii?Q?ZIvJJbMkMEkSEIji77JQWEcSvSfCAmMV9YHA5tmU/dqbKfyBBROfAGN5jYfe?=
+ =?us-ascii?Q?RA=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 12e8b853-b1fb-48f7-8f35-08dcf438a97d
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2024 14:32:17.9660
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 182u9pEIP20807ZvlIuTdliem1U6QT6bW2rnMjC17YpzsMycWVOT3RA3k7RNG7dORFjK2FgQVTa1cY/lDF/zTg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7741
 
-Adds a devicetree for the Kobo Clara 2E Ebook reader. It is based
-on boards marked with "37NB-E60K2M+4A2" or "37NB-E60K2M+4B0". It is
-equipped with an i.MX6SLL SoC.
+On Wed, Oct 23, 2024 at 11:18:43AM +0300, Wei Fang wrote:
+> > > +maintainers:
+> > > +  - Wei Fang <wei.fang@nxp.com>
+> > > +  - Clark Wang <xiaoning.wang@nxp.com>
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    enum:
+> > > +      - nxp,imx95-netc-blk-ctrl
+> > > +
+> > > +  reg:
+> > > +    minItems: 2
+> > > +    maxItems: 3
+> > 
+> > You have one device, why this is flexible? Device either has exactly 2
+> > or exactly 3 IO spaces, not both depending on the context.
+> > 
+> 
+> There are three register blocks, IERB and PRB are inside NETC IP, but NETCMIX
+> is outside NETC. There are dependencies between these three blocks, so it is
+> better to configure them in one driver. But for other platforms like S32, it does
+> not have NETCMIX, so NETCMIX is optional.
 
-Expected to work:
-  - Buttons
-  - Wifi
-  - Bluetooth
-    (if Wifi is initialized first, driver does not handle regulators
-     yet)
-  - LED
-  - uSD
-  - USB
-  - RTC
-  - Touchscreen
+Looking at this patch (in v5), I was confused as to why you've made pcie@4cb00000
+a child of system-controller@4cde0000, when there's no obvious parent/child
+relationship between them (the ECAM node is not even within the same address
+space as the "system-controller@4cde0000" address space, and it's not
+even clear what the "system-controller@4cde0000" node _represents_:
 
-Add human-readable comments for devices without mainlined driver and
-binding. Such comments can e.g. be help to find testers if someone
-starts to work on the missing drivers.
+examples:
+  - |
+    bus {
+        #address-cells = <2>;
+        #size-cells = <2>;
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
----
- arch/arm/boot/dts/nxp/imx/Makefile            |   2 +
- .../dts/nxp/imx/imx6sll-kobo-clara2e-a.dts    |  23 +
- .../dts/nxp/imx/imx6sll-kobo-clara2e-b.dts    |  23 +
- .../nxp/imx/imx6sll-kobo-clara2e-common.dtsi  | 514 ++++++++++++++++++
- 4 files changed, 562 insertions(+)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-common.dtsi
+        system-controller@4cde0000 {
+            compatible = "nxp,imx95-netc-blk-ctrl";
+            reg = <0x0 0x4cde0000 0x0 0x10000>,
+                  <0x0 0x4cdf0000 0x0 0x10000>,
+                  <0x0 0x4c81000c 0x0 0x18>;
+            reg-names = "ierb", "prb", "netcmix";
+            #address-cells = <2>;
+            #size-cells = <2>;
+            ranges;
+            clocks = <&scmi_clk 98>;
+            clock-names = "ipg";
+            power-domains = <&scmi_devpd 18>;
 
-diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-index 92e291603ea13..58db45352b666 100644
---- a/arch/arm/boot/dts/nxp/imx/Makefile
-+++ b/arch/arm/boot/dts/nxp/imx/Makefile
-@@ -290,6 +290,8 @@ dtb-$(CONFIG_SOC_IMX6SL) += \
- dtb-$(CONFIG_SOC_IMX6SLL) += \
- 	imx6sll-evk.dtb \
- 	imx6sll-kobo-clarahd.dtb \
-+	imx6sll-kobo-clara2e-a.dtb \
-+	imx6sll-kobo-clara2e-b.dtb \
- 	imx6sll-kobo-librah2o.dtb
- dtb-$(CONFIG_SOC_IMX6SX) += \
- 	imx6sx-nitrogen6sx.dtb \
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts
-new file mode 100644
-index 0000000000000..33756d6de7aa0
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts
-@@ -0,0 +1,23 @@
-+// SPDX-License-Identifier: (GPL-2.0)
-+/*
-+ * Device tree for the Kobo Clara 2E rev A ebook reader
-+ *
-+ * Name on mainboard is: 37NB-E60K2M+4A2
-+ * Serials start with: E60K2M (a number also seen in
-+ * vendor kernel sources)
-+ *
-+ * Copyright 2024 Andreas Kemnade
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx6sll-kobo-clara2e-common.dtsi"
-+
-+/ {
-+	model = "Kobo Clara 2E";
-+	compatible = "kobo,clara2e-b", "kobo,clara2e", "fsl,imx6sll";
-+};
-+
-+&i2c2 {
-+	/* EPD PMIC SY7636 at 0x62 */
-+};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dts b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dts
-new file mode 100644
-index 0000000000000..f81aeacf51420
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dts
-@@ -0,0 +1,23 @@
-+// SPDX-License-Identifier: (GPL-2.0)
-+/*
-+ * Device tree for the Kobo Clara 2E rev B ebook reader
-+ *
-+ * Name on mainboard is: 37NB-E60K2M+4B0
-+ * Serials start with: E60K2M (a number also seen in
-+ * vendor kernel sources)
-+ *
-+ * Copyright 2024 Andreas Kemnade
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx6sll-kobo-clara2e-common.dtsi"
-+
-+/ {
-+	model = "Kobo Clara 2E";
-+	compatible = "kobo,clara2e-b", "kobo,clara2e", "fsl,imx6sll";
-+};
-+
-+&i2c2 {
-+	/* EPD PMIC JD9930 at 0x18 */
-+};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-common.dtsi
-new file mode 100644
-index 0000000000000..dd347253bc7be
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-common.dtsi
-@@ -0,0 +1,514 @@
-+// SPDX-License-Identifier: (GPL-2.0)
-+/*
-+ * Common part for Kobo Clara 2e device tree
-+ * Copyright 2024 Andreas Kemnade
-+ */
-+
-+/dts-v1/;
-+
-+#include <dt-bindings/input/input.h>
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/leds/common.h>
-+#include "imx6sll.dtsi"
-+
-+/ {
-+	aliases {
-+		mmc0 = &usdhc2;
-+		mmc1 = &usdhc3;
-+	};
-+
-+	chosen {
-+		stdout-path = &uart1;
-+	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_gpio_keys>;
-+
-+		key-cover {
-+			label = "Cover";
-+			gpios = <&gpio4 23 GPIO_ACTIVE_LOW>;
-+			linux,code = <SW_LID>;
-+			linux,input-type = <EV_SW>;
-+			wakeup-source;
-+		};
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_led>;
-+
-+		led {
-+			color = <LED_COLOR_ID_WHITE>;
-+			function = LED_FUNCTION_POWER;
-+			gpios = <&gpio4 17 GPIO_ACTIVE_LOW>;
-+			linux,default-trigger = "timer";
-+		};
-+	};
-+
-+	memory@80000000 {
-+		device_type = "memory";
-+		reg = <0x80000000 0x20000000>;
-+	};
-+
-+	reg_wifi: regulator-wifi {
-+		compatible = "regulator-fixed";
-+		regulator-name = "SD3_SPWR";
-+		regulator-min-microvolt = <3000000>;
-+		regulator-max-microvolt = <3000000>;
-+		gpio = <&gpio4 29 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+	};
-+};
-+
-+&clks {
-+	assigned-clocks = <&clks IMX6SLL_CLK_PLL4_AUDIO_DIV>;
-+	assigned-clock-rates = <393216000>;
-+};
-+
-+&cpu0 {
-+	arm-supply = <&buck1>;
-+	soc-supply = <&buck2>;
-+};
-+
-+&i2c1 {
-+	pinctrl-names = "default","sleep";
-+	pinctrl-0 = <&pinctrl_i2c1>;
-+	pinctrl-1 = <&pinctrl_i2c1_sleep>;
-+	clock-frequency = <100000>;
-+	status = "okay";
-+
-+	/* backlight aw99703 at 0x36 */
-+};
-+
-+&i2c2 {
-+	pinctrl-names = "default","sleep";
-+	pinctrl-0 = <&pinctrl_i2c2>;
-+	pinctrl-1 = <&pinctrl_i2c2_sleep>;
-+	clock-frequency = <100000>;
-+	status = "okay";
-+
-+	/* backlight aw99703 at 0x36 */
-+
-+	touchscreen@38 {
-+		compatible = "focaltech,ft5426";
-+		reg = <0x38>;
-+		pinctrl-names = "default", "suspend";
-+		pinctrl-0 = <&pinctrl_touch_gpio>;
-+		pinctrl-1 = <&pinctrl_touch_gpio_sleep>;
-+		interrupt-parent = <&gpio4>;
-+		interrupts = <24 IRQ_TYPE_EDGE_FALLING>;
-+		reset-gpios = <&gpio4 18 GPIO_ACTIVE_LOW>;
-+		touchscreen-size-x = <1072>;
-+		touchscreen-size-y = <1448>;
-+		touchscreen-swapped-x-y;
-+	};
-+};
-+
-+&i2c3 {
-+	/* Bus seems to be in bad state after boot, allow full recovery */
-+	pinctrl-names = "default", "gpio";
-+	pinctrl-0 = <&pinctrl_i2c3>;
-+	pinctrl-1 = <&pinctrl_i2c3_gpio>;
-+	sda-gpios = <&gpio3 22 GPIO_ACTIVE_HIGH>;
-+	scl-gpios = <&gpio3 21 GPIO_ACTIVE_HIGH>;
-+	clock-frequency = <100000>;
-+	status = "okay";
-+
-+	pmic@4b {
-+		compatible = "rohm,bd71879", "rohm,bd71828";
-+		reg = <0x4b>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_bd71828>;
-+
-+		interrupt-parent = <&gpio4>;
-+		interrupts = <19 IRQ_TYPE_LEVEL_LOW>;
-+		system-power-controller;
-+
-+		clocks = <&clks 0>;
-+		#clock-cells = <0>;
-+		clock-output-names = "bd71828-32k-out";
-+
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+		gpio-reserved-ranges = <0 1>, <2 1>;
-+
-+		rohm,charger-sense-resistor-ohms = <30000000>;
-+
-+		regulators {
-+			LDO1 {
-+				name = "LDO1";
-+				regulator-name = "ldo1";
-+				regulator-min-microvolt = <800000>;
-+				regulator-max-microvolt = <3300000>;
-+			};
-+
-+			LDO2 {
-+				name = "LDO2";
-+				regulator-name = "ldo2";
-+				regulator-min-microvolt = <800000>;
-+				regulator-max-microvolt = <3300000>;
-+			};
-+
-+			LDO3 {
-+				name = "LDO3";
-+				regulator-name = "ldo3";
-+				regulator-min-microvolt = <800000>;
-+				regulator-max-microvolt = <3300000>;
-+			};
-+
-+			ldo4: LDO4 {
-+				name = "LDO4";
-+				regulator-name = "ldo4";
-+				regulator-always-on;
-+				regulator-min-microvolt = <1100000>;
-+				regulator-max-microvolt = <1100000>;
-+			};
-+
-+			LDO5 {
-+				name = "LDO5";
-+				regulator-name = "ldo5";
-+				regulator-always-on;
-+				regulator-min-microvolt = <800000>;
-+				regulator-max-microvolt = <3300000>;
-+			};
-+
-+			LDO6 {
-+				name = "LDO6";
-+				regulator-name = "ldo6";
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <1800000>;
-+			};
-+
-+			LDO7 {
-+				name = "LDO7";
-+				regulator-name = "ldo7";
-+				regulator-always-on;
-+				regulator-min-microvolt = <800000>;
-+				regulator-max-microvolt = <3300000>;
-+				regulator-boot-on;
-+			};
-+
-+			buck1: BUCK1 {
-+				name = "BUCK1";
-+				regulator-name = "buck1";
-+				regulator-always-on;
-+				regulator-min-microvolt = <500000>;
-+				regulator-max-microvolt = <1400000>;
-+				regulator-boot-on;
-+			};
-+
-+			buck2: BUCK2 {
-+				name = "BUCK2";
-+				regulator-name = "buck2";
-+				regulator-always-on;
-+				regulator-min-microvolt = <500000>;
-+				regulator-max-microvolt = <2000000>;
-+				regulator-boot-on;
-+			};
-+
-+			BUCK3 {
-+				name = "BUCK3";
-+				regulator-name = "buck3";
-+				regulator-always-on;
-+				regulator-min-microvolt = <1200000>;
-+				regulator-max-microvolt = <1800000>;
-+				regulator-boot-on;
-+			};
-+
-+			BUCK4 {
-+				name = "BUCK4";
-+				regulator-name = "buck4";
-+				regulator-always-on;
-+				regulator-min-microvolt = <1000000>;
-+				regulator-max-microvolt = <1200000>;
-+				regulator-boot-on;
-+			};
-+
-+			BUCK5 {
-+				name = "BUCK5";
-+				regulator-name = "buck5";
-+				regulator-always-on;
-+				regulator-min-microvolt = <2500000>;
-+				regulator-max-microvolt = <3300000>;
-+				regulator-boot-on;
-+			};
-+
-+			BUCK6 {
-+				name = "BUCK6";
-+				regulator-name = "buck6";
-+				regulator-min-microvolt = <500000>;
-+				regulator-max-microvolt = <2000000>;
-+			};
-+
-+			BUCK7 {
-+				name = "BUCK7";
-+				regulator-name = "buck7";
-+				regulator-min-microvolt = <500000>;
-+				regulator-max-microvolt = <2000000>;
-+			};
-+		};
-+	};
-+};
-+
-+&iomuxc {
-+	pinctrl_touch_gpio: touch-gpiogrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_GPIO4_IO24__GPIO4_IO24	0x17059 /* TP_INT */
-+			MX6SLL_PAD_GPIO4_IO18__GPIO4_IO18	0x10059 /* TP_RST */
-+		>;
-+	};
-+
-+	pinctrl_touch_gpio_sleep: touch-gpio-sleepgrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_GPIO4_IO24__GPIO4_IO24	0x10059 /* TP_INT */
-+			MX6SLL_PAD_GPIO4_IO18__GPIO4_IO18	0x10059 /* TP_RST */
-+		>;
-+	};
-+
-+	pinctrl_gpio_keys: gpio-keysgrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_GPIO4_IO25__GPIO4_IO25	0x17059	/* PWR_SW */
-+			MX6SLL_PAD_GPIO4_IO23__GPIO4_IO23	0x17059	/* HALL_EN */
-+		>;
-+	};
-+
-+	pinctrl_i2c1: i2c1grp {
-+		fsl,pins = <
-+			MX6SLL_PAD_I2C1_SCL__I2C1_SCL	0x4001f8b1
-+			MX6SLL_PAD_I2C1_SDA__I2C1_SDA	0x4001f8b1
-+		>;
-+	};
-+
-+	pinctrl_i2c1_sleep: i2c1-sleepgrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_I2C1_SCL__I2C1_SCL	0x400108b1
-+			MX6SLL_PAD_I2C1_SDA__I2C1_SDA	0x400108b1
-+		>;
-+	};
-+
-+	pinctrl_i2c2: i2c2grp {
-+		fsl,pins = <
-+			MX6SLL_PAD_I2C2_SCL__I2C2_SCL	0x4001f8b1
-+			MX6SLL_PAD_I2C2_SDA__I2C2_SDA	0x4001f8b1
-+		>;
-+	};
-+
-+	pinctrl_i2c2_sleep: i2c2-sleepgrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_I2C2_SCL__I2C2_SCL	0x400108b1
-+			MX6SLL_PAD_I2C2_SDA__I2C2_SDA	0x400108b1
-+		>;
-+	};
-+
-+	pinctrl_i2c3: i2c3grp {
-+		fsl,pins = <
-+			MX6SLL_PAD_REF_CLK_24M__I2C3_SCL 0x4001f8b1
-+			MX6SLL_PAD_REF_CLK_32K__I2C3_SDA 0x4001f8b1
-+		>;
-+	};
-+
-+	pinctrl_i2c3_gpio: i2c3-gpiogrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_REF_CLK_24M__GPIO3_IO21 0x4001f8b1
-+			MX6SLL_PAD_REF_CLK_32K__GPIO3_IO22 0x4001f8b1
-+		>;
-+	};
-+
-+	pinctrl_led: ledgrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_GPIO4_IO17__GPIO4_IO17 0x10059
-+		>;
-+	};
-+
-+	pinctrl_uart1: uart1grp {
-+		fsl,pins = <
-+			MX6SLL_PAD_UART1_TXD__UART1_DCE_TX 0x1b0b1
-+			MX6SLL_PAD_UART1_RXD__UART1_DCE_RX 0x1b0b1
-+		>;
-+	};
-+
-+	pinctrl_uart2: uart2grp {
-+		fsl,pins = <
-+			MX6SLL_PAD_LCD_ENABLE__UART2_DCE_RX	0x41b0b1
-+			MX6SLL_PAD_LCD_HSYNC__UART2_DCE_TX	0x41b0b1
-+			MX6SLL_PAD_LCD_VSYNC__UART2_DCE_RTS	0x41b0b1
-+			MX6SLL_PAD_LCD_RESET__UART2_DCE_CTS	0x41b0b1
-+		>;
-+	};
-+
-+	pinctrl_uart2_sleep: uart2grp-sleep {
-+		fsl,pins = <
-+			MX6SLL_PAD_LCD_ENABLE__GPIO2_IO16	0x10059
-+			MX6SLL_PAD_LCD_HSYNC__GPIO2_IO17	0x10059
-+			MX6SLL_PAD_LCD_VSYNC__GPIO2_IO18	0x10059
-+			MX6SLL_PAD_LCD_RESET__GPIO2_IO19	0x10059
-+		>;
-+	};
-+
-+	pinctrl_usbotg1: usbotg1grp {
-+		fsl,pins = <
-+			MX6SLL_PAD_EPDC_PWR_COM__USB_OTG1_ID 0x17059
-+		>;
-+	};
-+
-+	pinctrl_usdhc2: usdhc2grp {
-+		fsl,pins = <
-+			MX6SLL_PAD_SD2_CMD__SD2_CMD		0x17059
-+			MX6SLL_PAD_SD2_CLK__SD2_CLK		0x13059
-+			MX6SLL_PAD_SD2_DATA0__SD2_DATA0		0x17059
-+			MX6SLL_PAD_SD2_DATA1__SD2_DATA1		0x17059
-+			MX6SLL_PAD_SD2_DATA2__SD2_DATA2		0x17059
-+			MX6SLL_PAD_SD2_DATA3__SD2_DATA3		0x17059
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_SD2_CMD__SD2_CMD		0x170b9
-+			MX6SLL_PAD_SD2_CLK__SD2_CLK		0x130b9
-+			MX6SLL_PAD_SD2_DATA0__SD2_DATA0		0x170b9
-+			MX6SLL_PAD_SD2_DATA1__SD2_DATA1		0x170b9
-+			MX6SLL_PAD_SD2_DATA2__SD2_DATA2		0x170b9
-+			MX6SLL_PAD_SD2_DATA3__SD2_DATA3		0x170b9
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_SD2_CMD__SD2_CMD		0x170f9
-+			MX6SLL_PAD_SD2_CLK__SD2_CLK		0x130f9
-+			MX6SLL_PAD_SD2_DATA0__SD2_DATA0		0x170f9
-+			MX6SLL_PAD_SD2_DATA1__SD2_DATA1		0x170f9
-+			MX6SLL_PAD_SD2_DATA2__SD2_DATA2		0x170f9
-+			MX6SLL_PAD_SD2_DATA3__SD2_DATA3		0x170f9
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_sleep: usdhc2-sleepgrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_SD2_CMD__GPIO5_IO04		0x100f9
-+			MX6SLL_PAD_SD2_CLK__GPIO5_IO05		0x100f9
-+			MX6SLL_PAD_SD2_DATA0__GPIO5_IO01	0x100f9
-+			MX6SLL_PAD_SD2_DATA1__GPIO4_IO30	0x100f9
-+			MX6SLL_PAD_SD2_DATA2__GPIO5_IO03	0x100f9
-+			MX6SLL_PAD_SD2_DATA3__GPIO4_IO28	0x100f9
-+		>;
-+	};
-+
-+	pinctrl_usdhc3: usdhc3grp {
-+		fsl,pins = <
-+			MX6SLL_PAD_SD3_CMD__SD3_CMD	0x11059
-+			MX6SLL_PAD_SD3_CLK__SD3_CLK	0x11059
-+			MX6SLL_PAD_SD3_DATA0__SD3_DATA0	0x11059
-+			MX6SLL_PAD_SD3_DATA1__SD3_DATA1	0x11059
-+			MX6SLL_PAD_SD3_DATA2__SD3_DATA2	0x11059
-+			MX6SLL_PAD_SD3_DATA3__SD3_DATA3	0x11059
-+		>;
-+	};
-+
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhzgrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_SD3_CMD__SD3_CMD	0x170b9
-+			MX6SLL_PAD_SD3_CLK__SD3_CLK	0x170b9
-+			MX6SLL_PAD_SD3_DATA0__SD3_DATA0	0x170b9
-+			MX6SLL_PAD_SD3_DATA1__SD3_DATA1	0x170b9
-+			MX6SLL_PAD_SD3_DATA2__SD3_DATA2	0x170b9
-+			MX6SLL_PAD_SD3_DATA3__SD3_DATA3	0x170b9
-+		>;
-+	};
-+
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhzgrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_SD3_CMD__SD3_CMD	0x170f9
-+			MX6SLL_PAD_SD3_CLK__SD3_CLK	0x170f9
-+			MX6SLL_PAD_SD3_DATA0__SD3_DATA0	0x170f9
-+			MX6SLL_PAD_SD3_DATA1__SD3_DATA1	0x170f9
-+			MX6SLL_PAD_SD3_DATA2__SD3_DATA2	0x170f9
-+			MX6SLL_PAD_SD3_DATA3__SD3_DATA3	0x170f9
-+		>;
-+	};
-+
-+	pinctrl_usdhc3_sleep: usdhc3-sleepgrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_SD3_CMD__GPIO5_IO21	0x100c1
-+			MX6SLL_PAD_SD3_CLK__GPIO5_IO18	0x100c1
-+			MX6SLL_PAD_SD3_DATA0__GPIO5_IO19	0x100c1
-+			MX6SLL_PAD_SD3_DATA1__GPIO5_IO20	0x100c1
-+			MX6SLL_PAD_SD3_DATA2__GPIO5_IO16	0x100c1
-+			MX6SLL_PAD_SD3_DATA3__GPIO5_IO17	0x100c1
-+		>;
-+	};
-+
-+	pinctrl_wifi_power: wifi-powergrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_SD2_DATA6__GPIO4_IO29	0x10059
-+		>;
-+	};
-+
-+	pinctrl_bd71828: bd71828-gpiogrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_KEY_COL0__GPIO3_IO24		0x1b8b1
-+			MX6SLL_PAD_GPIO4_IO19__GPIO4_IO19	0x1b8b1
-+		>;
-+	};
-+};
-+
-+&snvs_rtc {
-+	/* we are using the rtc in the pmic, not disabled in imx6sll.dtsi */
-+	status = "disabled";
-+};
-+
-+&uart1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart1>;
-+	status = "okay";
-+};
-+
-+&uart2 {
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-0 = <&pinctrl_uart2>;
-+	pinctrl-1 = <&pinctrl_uart2_sleep>;
-+	status = "okay";
-+
-+	/* requires LDO4 + power enable gpio */
-+	bluetooth {
-+		compatible = "nxp,88w8987-bt";
-+		fw-init-baudrate = <1500000>;
-+	};
-+};
-+
-+&usbotg1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_usbotg1>;
-+	disable-over-current;
-+	srp-disable;
-+	hnp-disable;
-+	adp-disable;
-+	status = "okay";
-+};
-+
-+&usdhc2 {
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz","sleep";
-+	pinctrl-0 = <&pinctrl_usdhc2>;
-+	pinctrl-1 = <&pinctrl_usdhc2_100mhz>;
-+	pinctrl-2 = <&pinctrl_usdhc2_200mhz>;
-+	pinctrl-3 = <&pinctrl_usdhc2_sleep>;
-+	non-removable;
-+	status = "okay";
-+};
-+
-+&usdhc3 {
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz","sleep";
-+	pinctrl-0 = <&pinctrl_usdhc3>;
-+	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
-+	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
-+	pinctrl-3 = <&pinctrl_usdhc3_sleep>;
-+	/* card requires also ldo4 */
-+	vmmc-supply = <&reg_wifi>;
-+	cap-power-off-card;
-+	non-removable;
-+	status = "okay";
-+};
--- 
-2.39.5
+            pcie@4cb00000 {
+                compatible = "pci-host-ecam-generic";
+                reg = <0x0 0x4cb00000 0x0 0x100000>;
+                #address-cells = <3>;
+                #size-cells = <2>;
+                device_type = "pci";
+                bus-range = <0x1 0x1>;
+                ranges = <0x82000000 0x0 0x4cce0000  0x0 0x4cce0000  0x0 0x20000
+                          0xc2000000 0x0 0x4cd10000  0x0 0x4cd10000  0x0 0x10000>;
 
+But then I saw your response, and I think your response answers my confusion.
+The "system-controller@4cde0000" node doesn't represent anything in and
+of itself, it is just a container to make the implementation easier.
+
+The Linux driver treatment should not have a definitive say in the device tree bindings.
+To solve the dependencies problem, you have options such as the component API at
+your disposal to have a "component master" driver which waits until all its
+components have probed.
+
+But if the IERB, PRB and NETCMIX are separate register blocks, they should have
+separate OF nodes under their respective buses, and the ECAM should be on the same
+level. You should describe the hierarchy from the perspective of the SoC address
+space, and not abuse the "ranges" property here.
