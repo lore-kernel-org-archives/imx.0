@@ -1,94 +1,71 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF1D1D5165;
-	Thu, 24 Oct 2024 12:27:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E5C1B6CF1
+	for <imx@lists.linux.dev>; Thu, 24 Oct 2024 13:07:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729772822; cv=none; b=dkmTjnprkJxy3W4XBhToI5vXwbn8qY6+Fhe5Dl6HHeo2fSvrnDDQclLj1PzCmrpRmYPMVHzH0SphE4FQiZY1G8j5HM8LaqzjPNbZMNpDNMjSFkmVdXD1y7mXQwkJHGu4THEgC2A9KDCZdNnWUR2GzfVUX4WE5EoFuEJFqzHgyPc=
+	t=1729775223; cv=none; b=LeNmkISvPQE/YUbNJHJs7vsfvG5WHvUixivkD0AvqBpm3kFyQHi1/fEUOIqnQttBdI6bf+DUC3r+8dGzfhxPddsxY8C/eQHzi621OpBztDg1UPm4EhrWzD3Imj6f+LwZ3mIorSB6SgtNtL1xKwgheQ5/wMQ+Uc7sbe2Qdud2hac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729772822; c=relaxed/simple;
-	bh=lw6sXiQ6wtFxX+kp2lb3mbfcoAhgOy+cKDBtWDndOkc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eLjakN5En/48fg9Nn69VBLasnAKV4MTqFK/uxKbrB3JuqD4ja5tj+UB7a8K2XdsbNMyHRS5p+fk1QxlQmcIdy8x7VnHrAQK5KP3maagv8BukguoHx4CCM+MB0wSLy8m6UcAW54Qkag6qM+C2LVav4MWWowo+//5jgHnMwHGLWkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MAY2d50D; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729775223; c=relaxed/simple;
+	bh=De25Vhx+uasigBPfAuH+QLWUBBz+5PYWUPpFmRSD44Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=brMKl4urriFkOSvKaMVhcDZtlpLYqK1feZ1tqgYEp3YOAHNBSwrjziy327h0Wph9GDqgnRk31PPw1JzqNrgYoc6c5L5MrROF2VCgDp9vPLa74TrAIL7sCT0kFEADw4EBjY+zoQJeSyo53E39sjdCNYrl4Pidip1IYvEbgL5maSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=cIXGvtpG; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MAY2d50D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 281EAC4CEC7;
-	Thu, 24 Oct 2024 12:26:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729772821;
-	bh=lw6sXiQ6wtFxX+kp2lb3mbfcoAhgOy+cKDBtWDndOkc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MAY2d50D8Q7Wngqp0j8nZOH+BiwQOIsrnP+QRDrthfgGBvPGB9yfX9p0zHpriPPkK
-	 x8vR4T3QMoIoWPHiPF/dvosNZaUypb+QsESwMxmIostN6Vtso5Wtvw44heyRhCBWqy
-	 diff+uzfBTVyunZmp3KJ2kSJxnhzoj0WgfnTMiCch6SWcOqZnVyHr6S10+KlmNyf+F
-	 kJbKak7k3cEqMbYPIgXMTzTNn8yHhulHP8ORYa+Dfb0FgUAT0BtG1XdUuqDYJ0nZOE
-	 TOnDSplIg0k8dxGKQGQ3UimuK4ZkLTCeqQ/1CdbpRH/mKXopcb00jZ94r3kzsXSeCk
-	 hxVeyh2if7Y6g==
-Date: Thu, 24 Oct 2024 13:26:54 +0100
-From: Will Deacon <will@kernel.org>
-To: Namhyung Kim <namhyung@kernel.org>
-Cc: Xu Yang <xu.yang_2@nxp.com>, Frank.li@nxp.com, mark.rutland@arm.com,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, john.g.garry@oracle.com, james.clark@linaro.org,
-	mike.leach@linaro.org, leo.yan@linux.dev, peterz@infradead.org,
-	mingo@redhat.com, acme@kernel.org,
-	alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-	irogers@google.com, adrian.hunter@intel.com,
-	kan.liang@linux.intel.com, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-perf-users@vger.kernel.org
-Subject: Re: [PATCH 3/3] perf vendor events arm64: Add i.MX91 DDR Performance
- Monitor metrics
-Message-ID: <20241024122651.GA30704@willie-the-truck>
-References: <20240924061251.3387850-1-xu.yang_2@nxp.com>
- <20240924061251.3387850-3-xu.yang_2@nxp.com>
- <ZvsTJ47yHFUjo1uw@google.com>
- <20241008054935.zi2kqcaj4fwf2bda@hippo>
- <ZwYncyUlAtTAeOjo@google.com>
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="cIXGvtpG"
+Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 7188D1F99C;
+	Thu, 24 Oct 2024 15:06:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1729775218;
+	bh=U2WiB+g/HawECyadHqc18p2lcEQdvPgRpIqGrQpt9EM=; h=From:To:Subject;
+	b=cIXGvtpGnjuv6sP+m18GCQo+7vY4iBu19JRynCqQmJp9tD4lP0uDkhfVmxpUWkSr1
+	 NlVXrpxNkiL8OMI7d5b4Qp3J8jsQ+7TD+9BbBSMmFmac3w+7sAfUulxfFeflL9+SFO
+	 CIRfUb4Bi5gX/6DGA7sc7NsipH14yseKlAfFJzdAeGOzjLdaZyA4OnrJUOTE7afOxL
+	 QdBT+rTC6uzObAJIF9B46+Uu3OBpwmST9m1wbcwf4ViXsv34tOu34ABhdaWfjTxdmH
+	 6g4tUv9r6mIKfexV9AUHjlaTqsImECdt0Qa09CAFQbr/7SL3s2rJK1t6p0mvDRlwqz
+	 aXutOsrR0ipUw==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1 0/2] arm64: dts: freescale: imx8m[mp]-verdin: Fix SD regulator startup delay
+Date: Thu, 24 Oct 2024 15:06:49 +0200
+Message-Id: <20241024130651.49718-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZwYncyUlAtTAeOjo@google.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 08, 2024 at 11:49:23PM -0700, Namhyung Kim wrote:
-> On Tue, Oct 08, 2024 at 01:49:35PM +0800, Xu Yang wrote:
-> > Hi Namhyung,
-> > 
-> > On Mon, Sep 30, 2024 at 02:07:51PM -0700, Namhyung Kim wrote:
-> > > Hello,
-> > > 
-> > > On Tue, Sep 24, 2024 at 02:12:51PM +0800, Xu Yang wrote:
-> > > > Add JSON metrics for i.MX91 DDR Performance Monitor.
-> > > > 
-> > > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> > > > ---
-> > > >  .../arch/arm64/freescale/imx91/sys/ddrc.json  |  9 +++++++
-> > > >  .../arm64/freescale/imx91/sys/metrics.json    | 26 +++++++++++++++++++
-> > > >  2 files changed, 35 insertions(+)
-> > > >  create mode 100644 tools/perf/pmu-events/arch/arm64/freescale/imx91/sys/ddrc.json
-> > > >  create mode 100644 tools/perf/pmu-events/arch/arm64/freescale/imx91/sys/metrics.json
-> > > 
-> > > How do you want to route this?  As it's mixed with kernel changes, I
-> > > would generally request to split but it's a change just to add new
-> > > files so it should be ok to go with other tree.  In that case,
-> > 
-> > Sorry for late.
-> > 
-> > How about you pick up this one to perf-tools tree and Will Deacon pick up
-> > the first 2 patches to his tree? I didn't see Will apply perf-tools patch
-> > before.
-> 
-> Did Will pick up the kernel patches already?
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-I have done now, sorry for the delay.
+The power switch used to power the SD card interface might have
+more than 2ms turn-on time, increase the startup delay to 20ms to
+prevent failures.
 
-Will
+Francesco Dolcini (2):
+  arm64: dts: freescale: imx8mm-verdin: Fix SD regulator startup delay
+  arm64: dts: freescale: imx8mp-verdin: Fix SD regulator startup delay
+
+ arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi | 2 +-
+ arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+-- 
+2.39.5
+
