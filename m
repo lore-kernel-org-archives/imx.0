@@ -1,141 +1,118 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31071D9324
-	for <imx@lists.linux.dev>; Fri, 25 Oct 2024 09:59:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D6A1D8DF8
+	for <imx@lists.linux.dev>; Fri, 25 Oct 2024 10:14:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729850364; cv=none; b=Q8wCHR2ZwsSBEg8sZHtc8EyAeAbV74mCzVszpkqg0Bwvqt/hZbFWf4M8Yw8ZPnUH26ZtsA1S4g3h52MrAlR3lf52UUwv3xjGpY90z0KklIhwGvs7j42SSJQAD+wNA7rNKO9YXZ02fhapqGOd0WWRZYAr2Kbt78xnIVv2Y43Rwpk=
+	t=1729851292; cv=none; b=Kza8o5oiOCpDM/rICeLf5LQciYuJ9P9xpoVCfoeHTbuhFXH6RRalM18/efQU22v/Kjh3vQzpisC/nW8ciOKXXeLZHzpWqvlhQOTA1WypKNwgBMdHSPNkpUBJ78AyGD8dhaIBZpxiJTiAcuEc2dyP1IvK86CXk95JyLFIn2SKtdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729850364; c=relaxed/simple;
-	bh=fBmyIDKPno0DYsTiITeI60p5mA0bO0r2hrftp9ABmLA=;
+	s=arc-20240116; t=1729851292; c=relaxed/simple;
+	bh=bnLMRIPG1uT1fyzLMtDgvyO+WWZCLslcDL7ZrN928b0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P04i6OkuRLrV2x/Ui1J7S5R7wRdAl3o71hOJgXZNQiz4Lh4XMCZ/t36loJ8waNZtPDxY8fO98fCs+o6LJnRmHxcXB7OqrJ6nxCbyfl05JoaVXwg5Cz2uMSG9ZwNzTcm4ZUNLtgjspIspc2GPqCvWhFWHYOvMINVJQn0GRjw1g4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gJ6Rd13+; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 MIME-Version:Content-Type; b=Yy7Hfk2D9OBfiLr0kMSzMdLF167pi3zuds5Nfjiu0wlgd8GkaeY/Abh9dlpzQTjh0JKJkWsLQkF+btWaBUAYEHsX/Hb1fPaOKg7vwRKSQKalOtVGJJ+Z5sBhrcTR7/pf1oCevb3rjFAm4Jc0dXxbLlurZk7Wc+78oUgppx1QMaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=d/v+ddq8; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=msPGqsJP reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gJ6Rd13+"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-37f52925fc8so1278016f8f.1
-        for <imx@lists.linux.dev>; Fri, 25 Oct 2024 02:59:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="d/v+ddq8";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="msPGqsJP"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729850361; x=1730455161; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ujk9DybyKkZDF/2MtHXApKNICNk9/HaCwbVOr5hVCKk=;
-        b=gJ6Rd13+I4fVobZZr/kwMF0/Q2gSSuaOciGBFQvLEVOa+dIEiDyV7WaPuwrGlUlWhm
-         JFEeKh6yr9PTMN37c1C8dJk7Ct3smZzggA3wqhXRHs8VXj7dRbEiCCKz1lsk19WpEHEu
-         4MXCnH49hoX8MGUn+/Qrs9vfN7/BLsOGFjV/iYAn64jZslbFAenMWadQHZm23EHwhj9k
-         iETWuH98rh4k78NQDoH53L50OQNOf9xQVbzZGt/CO64cuZlhZt98rGg+1pSiLrlGZQuE
-         CkPmcBCxnfM7toGEO1WTPEYomUniOWtlKG90LCQk/SxYhRp83yDEYAKFwxpnKFZGDteE
-         Wy6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729850361; x=1730455161;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ujk9DybyKkZDF/2MtHXApKNICNk9/HaCwbVOr5hVCKk=;
-        b=scVgxD+v5jAD2302TRIcdNoak2D5Oq7qA+5KPk7ywds5I+0t5LbD5Ny74/GXIsBw7f
-         x+7hFAtrwuLLw1n4VzjAhQ1zTPr2F8sbrFD4pY1O+przUDwR9iXBhLazBkpixMVXeXKx
-         JrekdNUrbok58v3Zlxf1myUMZGyIOZe6BI/O3BNgVd0zy6agVIuAZbHDmTICGN1yveAD
-         iUdCLQ8EDOYx0+vW/oYkSlvqFLYAhq9sx8q53K8zFTC//QGoZcFkqMgVlrifquRJUIRH
-         +BdPOoIhMUz9MhgTdV0+dY/lJHthYZPYlbwFh4MQ5g7g+XrN9+BtBCgqoJbixFv8ujNc
-         Sjig==
-X-Forwarded-Encrypted: i=1; AJvYcCVsrpTonKZUX+zXuGlzRXzYkEkV37f4HIy0+QgAoaLXmxH7OLlxnMf4SC05G2nkGdkbcvg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzGRU3Rks+Zd6HxLafmfDTrRxCfhLJYyWTJqXwSlFkS4QxEJlba
-	Y4U4Nf3J45IEjtf8OZQj2JvUUE/KoBgM/V0FAm/Znzd1flRzfgRh
-X-Google-Smtp-Source: AGHT+IGQ/FkY+lqoyXqrOcHuZexookS5gw8fVWByzJEmmycGhV4kbog53gMdjkWU0W54WsbGNSPHXw==
-X-Received: by 2002:adf:a442:0:b0:378:7f15:d51e with SMTP id ffacd0b85a97d-37efcf7f306mr5781853f8f.43.1729850360713;
-        Fri, 25 Oct 2024 02:59:20 -0700 (PDT)
-Received: from eichest-laptop.lan ([2a02:168:af72:0:7bc0:826e:69e3:7e40])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b3c7b9sm1098214f8f.32.2024.10.25.02.59.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Oct 2024 02:59:20 -0700 (PDT)
-From: Stefan Eichenberger <eichest@gmail.com>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	francesco.dolcini@toradex.com
-Cc: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: [PATCH v1 2/2] arm64: dts: imx8mp-verdin: add single-master property to all i2c nodes
-Date: Fri, 25 Oct 2024 11:58:03 +0200
-Message-ID: <20241025095915.22313-3-eichest@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241025095915.22313-1-eichest@gmail.com>
-References: <20241025095915.22313-1-eichest@gmail.com>
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1729851289; x=1761387289;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=7v6o4+naE0x6CItW5mEz8zlqR9bkW3D/RUmioNzQIUo=;
+  b=d/v+ddq8zYb8mg6HuxU6IlPD40h4RY6PJ1YAQvj5+5epvmsnpPxxBMAB
+   d15mywXM8UQ3bAjeRh/Nn6N1d7UyzpDkeZ4q2lf18ShaEB+9IGjRnkBpg
+   UkNAfa0C9SKT4xMkAbZQBPCd/B20blvCo15URnoIWm8JtokD/6xCo4z+Y
+   iSjpYtj1acwB7cLM0a0mf7Dkxlvb29aHLJfxEL9fkMfo1N0ck2xZV3Ec+
+   T2/pqx1mLEvAWAWSs4PNmW8QH56rVjZPKJis79Nt7sUrVT9CmZqsPlRi8
+   mrujgwcHcJvcsPM+yVP45IwYTOkekyYDf/F2k+wComr9EzqNozfZvoZPj
+   w==;
+X-CSE-ConnectionGUID: uabkpS4oTLKXMfXpxgMRow==
+X-CSE-MsgGUID: ycQgDt52TAeJqqBfpZqJvw==
+X-IronPort-AV: E=Sophos;i="6.11,231,1725314400"; 
+   d="scan'208";a="39672755"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 25 Oct 2024 12:14:46 +0200
+X-CheckPoint: {671B6F96-9-21611FC3-DAD22B0C}
+X-MAIL-CPID: 036AAD7BA8D7328E22C5439D9AECCE7F_4
+X-Control-Analysis: str=0001.0A682F27.671B6F96.0096,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7ABE816809A;
+	Fri, 25 Oct 2024 12:14:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1729851282;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=7v6o4+naE0x6CItW5mEz8zlqR9bkW3D/RUmioNzQIUo=;
+	b=msPGqsJPFEIgsFTBz+I8O12F2odlwZDIOd6TNNY85T1ielLBw+aVMYg6rbN6+eTcxqcTcJ
+	zNhdq57uUbwYWFhTcJgpkly4eQXkHk2ciiuxATlU/sTUSb62lIOJIgAVz8wGQWJSWCQEPT
+	xnI2eLf1wpdjkH6QEjIp9psQitEhEQfFsROBxSO0Ezq7ADHk3sHRwLOPoLyZ7oa/AEc/Hh
+	RL3YMY9D3C7VtJNIDPwLAgG5wV+9P96Fe7Z4wBTIO7Jxy+Tx042UlwZHzW1mXjCEUAJ6/V
+	9pbrtvzMFkPhvrhPxB0q9XsQnRtUQqFFdFGEpwyabs4SCzQfvzIfaNDQgk1c0w==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: shawnguo@kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, Fabio Estevam <festevam@denx.de>, Fabio Estevam <festevam@gmail.com>
+Subject: Re: [PATCH 2/2] dt-bindings: soc: imx: fsl, imx-anatop: Add additional regulators
+Date: Fri, 25 Oct 2024 12:14:40 +0200
+Message-ID: <3594795.iIbC2pHGDl@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20241025004159.1571782-2-festevam@gmail.com>
+References: <20241025004159.1571782-1-festevam@gmail.com> <20241025004159.1571782-2-festevam@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Hi Fabio,
 
-By default we expect all i2c nodes to be single-master, we do not have
-any module or carrier board that uses multi-master mode on any i2c
-controller. With this property set, we benefit from optimisations made
-exclusively for single-masters.
+thanks for the patch.
 
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
----
- arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi | 5 +++++
- 1 file changed, 5 insertions(+)
+Am Freitag, 25. Oktober 2024, 02:41:59 CEST schrieb Fabio Estevam:
+> From: Fabio Estevam <festevam@denx.de>
+>=20
+> i.MX7 has the following anatop regulators: vdd1p0d and vdd1p2.
+>=20
+> i.MX6SX has the following anatop regulators: vddpcie.
+>=20
+> Add them to the allowed patternProperties.
+>=20
+> Signed-off-by: Fabio Estevam <festevam@denx.de>
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-index a19ad5ee7f792..323b45bac281e 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-@@ -478,6 +478,7 @@ &i2c1 {
- 	pinctrl-1 = <&pinctrl_i2c1_gpio>;
- 	scl-gpios = <&gpio5 14 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 	sda-gpios = <&gpio5 15 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	single-master;
- 	status = "okay";
- 
- 	pca9450: pmic@25 {
-@@ -669,6 +670,7 @@ &i2c2 {
- 	pinctrl-1 = <&pinctrl_i2c2_gpio>;
- 	scl-gpios = <&gpio5 16 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 	sda-gpios = <&gpio5 17 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	single-master;
- 
- 	atmel_mxt_ts_mezzanine: touch-mezzanine@4a {
- 		compatible = "atmel,maxtouch";
-@@ -690,6 +692,7 @@ &i2c3 {
- 	pinctrl-1 = <&pinctrl_i2c3_gpio>;
- 	scl-gpios = <&gpio5 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 	sda-gpios = <&gpio5 19 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	single-master;
- };
- 
- /* Verdin I2C_1 */
-@@ -700,6 +703,7 @@ &i2c4 {
- 	pinctrl-1 = <&pinctrl_i2c4_gpio>;
- 	scl-gpios = <&gpio5 20 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 	sda-gpios = <&gpio5 21 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	single-master;
- 
- 	gpio_expander_21: gpio-expander@21 {
- 		compatible = "nxp,pcal6416";
-@@ -788,6 +792,7 @@ &i2c5 {
- 	pinctrl-1 = <&pinctrl_i2c5_gpio>;
- 	scl-gpios = <&gpio3 26 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 	sda-gpios = <&gpio3 27 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	single-master;
- };
- 
- /* Verdin PCIE_1 */
--- 
-2.43.0
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+
+> ---
+>  Documentation/devicetree/bindings/soc/imx/fsl,imx-anatop.yaml | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx-anatop.yam=
+l b/Documentation/devicetree/bindings/soc/imx/fsl,imx-anatop.yaml
+> index ae708a658d52..f40c157908aa 100644
+> --- a/Documentation/devicetree/bindings/soc/imx/fsl,imx-anatop.yaml
+> +++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx-anatop.yaml
+> @@ -44,7 +44,7 @@ properties:
+>      $ref: /schemas/thermal/imx-thermal.yaml
+> =20
+>  patternProperties:
+> -  "regulator-((1p1)|(2p5)|(3p0)|(vddcore)|(vddpu)|(vddsoc))$":
+> +  "regulator-((1p1)|(2p5)|(3p0)|(vdd1p0d)|(vdd1p2)|(vddcore)|(vddpcie)|(=
+vddpu)|(vddsoc))$":
+>      type: object
+>      unevaluatedProperties: false
+>      $ref: /schemas/regulator/anatop-regulator.yaml
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
