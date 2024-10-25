@@ -1,59 +1,68 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68721531C1
-	for <imx@lists.linux.dev>; Fri, 25 Oct 2024 16:21:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5521885B7
+	for <imx@lists.linux.dev>; Fri, 25 Oct 2024 16:42:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729873307; cv=none; b=HatIkxAfxTmsZPJXfk9xCjHEkzrb/jczLKlVUXB0NfUbY+3STEsvKKrpmEnEzSlWuNS49EPTeAXmHjByk4KDVm9MPMonKP68sVxUXdjhAHU/xu/tsJvlI7ojPHRlIydR3Gl1CGW06SjSgCJevs7oWhWCD3DfZKQik8LwhPzN/GE=
+	t=1729874560; cv=none; b=RY6QdkmFzFRGe7V/idIt+CZx6lAoXltJMlbyP3NB0vytyFmHoJVBcTSGH7fMdCgopVmHxeTF/6Yc0NqOhkp2N0rasPey3MOp+Fo33TMWdvmoh5JpJOpMn7gwIAu98uYJFkv7SdSswu36xkvEpo2F1V1pyZP6+uTCQJzDtJd2VRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729873307; c=relaxed/simple;
-	bh=4U6UHnhVIZfwooHUtB61nNdp00jUpPMdAj6gGI32hvo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=nL/EcJy6nbqMS3Dsjpuf1SoUFr226Ffij7EhWjMWcYG5+EJPrmcgpI27cK0I6vmiG++LXDDanIpJoz8kkUylY0tnuWA9KR9pCjx7BZ1g6bV4raMUCD5JT7tysCv6u3EZDIDVQE9U/a5lKwhNLQ4wGfhRYBUaJOs8kCoN1fuR1Lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OJw3n8Bf; arc=none smtp.client-ip=209.85.128.42
+	s=arc-20240116; t=1729874560; c=relaxed/simple;
+	bh=w0JT1TqESpVV9gsS7lH9mOWo3pQnOkcgm2i/+kqVMjk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=uXvZmsKfQZ8sc0YSG8pQzLbCL8XYTupWQNg3E9TftoR0Zfleqc73dtQUpqbAhiktZ/gkrrrdo4169whezZD40MyPxtz4FTTrw9xX4URs1iPdjKxqs8/V4ChQJBypu3wZBJhD/v3VONuNI69ulQRNSiIYTAcdWsubiQe/VjqYqLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QaBuost4; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OJw3n8Bf"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4314c4cb752so21897295e9.2
-        for <imx@lists.linux.dev>; Fri, 25 Oct 2024 09:21:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QaBuost4"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-37d3ecad390so2474215f8f.1
+        for <imx@lists.linux.dev>; Fri, 25 Oct 2024 09:42:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729873302; x=1730478102; darn=lists.linux.dev;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xKMe0kTY9Xwhvqu9PTgbz7NZVWtehoaaceI1KFjE78c=;
-        b=OJw3n8BfRGoGcehFjsYDW+pB+jNuV0omBpcJc833Mcx1JUdhUgmf3WKwWfwlPtgMoO
-         75JVqwQrqhiLPICKMGC6gWxlFVAafoCqgpK/MZ+iPbcM/AzsvyjrQ9mVSz6M7lnUWLaB
-         +cxsyetuHLkvoY5IaEOjviSj6vMn3wRTklZzJNKsljaAYfVwihN95ZR3lxXkTpTm+FF4
-         nGCtxw7B/vOR5WDZY7wJ3dJq3TESDTOAPVFc/MQzhzyajl/P2Rq773SJt9zZiCAddcH6
-         lvvfopW/ctyYUmOwyfSR/u69iSGKV5+7q5+BXSU3nVy/8EZkwIqfTEnbNuHot1wqkmiq
-         FhWA==
+        d=linaro.org; s=google; t=1729874556; x=1730479356; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0O8Uc0wNSl4D87GHeRKCxI8rppppACfX2yHi51S2vCI=;
+        b=QaBuost4NTQ6bQ+QPck5S8RB7e7tt6X4ZWfSpHGT8iUsxNpG7Q5O0NVoR6A4JOy2sJ
+         UkD+TyWLo8+/q/nddpK7j/O19kpV+68qqujAis53B9MCnySK5nlq09LBX4I3knsgc+c4
+         AzZkINlrT1Ah/1/H+KceRYegGJUt4uSfu9AW3nmPcltKxy8acORS1vjnpwvMDulHj3Kz
+         E7i1LUIXw3mU2q2shGof/r6vImW4lGFqs6lBeajq881bp0KaSRZRr+0Zciihttm97bgt
+         A7Gc1maYOqL+JWJLA5Fov/STtAsBv+qpS/0c5BBrNrAF9Yek/HBgIfa1xevi4ODc6+6o
+         cp/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729873302; x=1730478102;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xKMe0kTY9Xwhvqu9PTgbz7NZVWtehoaaceI1KFjE78c=;
-        b=I+yXJ4iTVLB8NjTkfkxlHQ24d5OzuX/12GiyQseu5kPR4FsbneSloZNhXnSzkkJVSf
-         OnE05YATIqCAz9zxK1sKCIlhojVTcCM9ixp9hCy1WgRjCktfbnLnwwMXWq1fD1OiuZWe
-         5rOXEVzf/SiXDlGGmEYgT9YnITbY4CDIp9wJpmIzEw1QSPmfx+ZwZdEAkppI8LxLJkNB
-         36be/QPQ8e2t3Q9R63HEjIKyz+asmTrSR1O+IIMfaHP1bT246MO4rdcCrhMwfUsJLkrv
-         8XxZ0dedVb6hBuv0RVOuisim5UbJFbfzlh5fwvoNgJWuWERObhCLLQbgAZvb8Hi2vT7Y
-         C7AA==
-X-Forwarded-Encrypted: i=1; AJvYcCWBqzTIopy6KB47vobFm0rE9qeUIGAF86eiH8rWNjn41QSz0MTLwyREHOaBdsXqtClwQgM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyf/QsO/S259CKOAabZi7LlSUZhfwC5GdBfCCgkfJXeVf1z894k
-	1r4tHpuf52Ri0znLOUswSJN7VKjb5SRnMUO2L8U17dguwUv+qLlsZrBfHB92H2g=
-X-Google-Smtp-Source: AGHT+IEvBNXGVxmL27N28gPJzfVMQ9d1oUlz1dnIvip3TXWHgZAWbblC123aTBWd1euJZj/YLE214A==
-X-Received: by 2002:a05:600c:5490:b0:431:5d14:1cae with SMTP id 5b1f17b1804b1-4318415fee0mr86584145e9.19.1729873302024;
-        Fri, 25 Oct 2024 09:21:42 -0700 (PDT)
-Received: from [127.0.0.1] ([176.61.106.227])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431935f6df1sm22322915e9.35.2024.10.25.09.21.40
+        d=1e100.net; s=20230601; t=1729874556; x=1730479356;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0O8Uc0wNSl4D87GHeRKCxI8rppppACfX2yHi51S2vCI=;
+        b=qDfFFr1YWDtYfF2DICr1jW3zNRymjEesLvXWij6pJDnPACMd/KwplHik0aalLm0z7b
+         7FpEkVVnBmUHH0vNztKfsGcywiVOxYUXZM1YVQpRYIScL11r/xEQXczR16IAV4Z1LYSB
+         bNl2zxtAcIAObJS+SV8RsMRot7j1xGqEwo32fKTim678TYGSVW+RKyWEndg5wm/hwjV+
+         95avx5DpOHx8mqFGJ0ccZ3duT0J3kItlAdFxabsF6BxW1zFSiqlM2DrM2NkRrQ187fjA
+         vONNEJDQj5SlUbDpivurkvZdHQJ98iYIRXIwvVO+Jq2s3ZVJBH4InlPRTYDEA9MOzdJ9
+         fRPg==
+X-Forwarded-Encrypted: i=1; AJvYcCXuktLFJtQnsDgRwB/OB7qH87G096JKS4jSEWRRRnnSGYHmuDB/uf9GDq7Wma85uRN3NSU=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxf1cFtam8u7C02nW9T3XlAr3nYZ8EiFdtjQvaOSm23b5MXeBIi
+	WIzWxAKUrq+s3GqNQEo5Y8IMjcdxSU8W2wgNAX5ff4fp27/wzuIlUdLrTIr1f6k=
+X-Google-Smtp-Source: AGHT+IGWWlWECktFU+fFJCf5hYHzpUI+6GWpy6U6Cca42a1A4pI401RfzC4B5K/VBVBk4wLfYXYleg==
+X-Received: by 2002:a05:6000:e88:b0:37d:460d:2d07 with SMTP id ffacd0b85a97d-3803ac21c2dmr5083831f8f.10.1729874556540;
+        Fri, 25 Oct 2024 09:42:36 -0700 (PDT)
+Received: from [192.168.68.111] ([5.133.47.210])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b1cc0asm1992815f8f.10.2024.10.25.09.42.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Oct 2024 09:21:41 -0700 (PDT)
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Date: Fri, 25 Oct 2024 17:21:40 +0100
-Subject: [PATCH v2] media: dt-bindings: Remove assigned-clock-* from
- various schema
+        Fri, 25 Oct 2024 09:42:36 -0700 (PDT)
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+To: shawnguo@kernel.org, s.hauer@pengutronix.de, 
+ Shen Lichuan <shenlichuan@vivo.com>
+Cc: kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ opensource.kernel@vivo.com
+In-Reply-To: <20240920021250.4758-1-shenlichuan@vivo.com>
+References: <20240920021250.4758-1-shenlichuan@vivo.com>
+Subject: Re: [PATCH v1] nvmem: imx-iim: Convert comma to semicolon
+Message-Id: <172987455573.287868.16389296993768691961.b4-ty@linaro.org>
+Date: Fri, 25 Oct 2024 17:42:35 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,261 +71,22 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241025-b4-linux-next-202041004-i2c-media-yaml-fixes-v2-1-1b4535174a5a@linaro.org>
-X-B4-Tracking: v=1; b=H4sIAJPFG2cC/5WNTQqDMBBGryJZd0omxP6teo/iIiajDmhSEiuKe
- PdG6QW6fG+Y760iUWRK4lGsItLEiYPPoE6FsJ3xLQG7zEJJpVHKEmoNPfvPDJ7mEbKWu9fAysJ
- Ajg0sZuih4ZkSNLYprbRI8uZEnnxHOg558VVl7jiNIS5HfcLd/kKo/gtNCBKMqmtUBq/3i3vmX
- xPDOcRWVNu2fQGLDFeI6QAAAA==
-X-Change-ID: 20241005-b4-linux-next-202041004-i2c-media-yaml-fixes-fcf5c0c1e08d
-To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Dave Stevenson <dave.stevenson@raspberrypi.com>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Martin Kepplinger <martink@posteo.de>, 
- Paul Kocialkowski <paul.kocialkowski@bootlin.com>, 
- "Paul J. Murphy" <paul.j.murphy@intel.com>, 
- Daniele Alessandrelli <daniele.alessandrelli@intel.com>, 
- Tommaso Merciai <tomm.merciai@gmail.com>, 
- Martin Hecht <martin.hecht@avnet.eu>, Zhi Mao <zhi.mao@mediatek.com>, 
- Alain Volmat <alain.volmat@foss.st.com>, 
- Mikhail Rudenko <mike.rudenko@gmail.com>, 
- Ricardo Ribalda <ribalda@kernel.org>, 
- Kieran Bingham <kieran.bingham@ideasonboard.com>, 
- Umang Jain <umang.jain@ideasonboard.com>, 
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
- Dongchun Zhu <dongchun.zhu@mediatek.com>, 
- Quentin Schulz <quentin.schulz@theobroma-systems.com>, 
- Todor Tomov <todor.too@gmail.com>, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, linux-media@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-X-Mailer: b4 0.15-dev-dedf8
+X-Mailer: b4 0.12.2
 
-Remove extraneous assigned-clock* from media/i2c/* schemas, retain in the
-relevant examples.
 
-Link: https://lore.kernel.org/linux-media/j7kgz2lyxnler5qwd7yiazdq6fmsv77kyozdrxf33h54ydakjz@uqjhwhoyv6re
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
----
-v2:
+On Fri, 20 Sep 2024 10:12:50 +0800, Shen Lichuan wrote:
+> To ensure code clarity and prevent potential errors, it's advisable
+> to employ the ';' as a statement separator, except when ',' are
+> intentionally used for specific purposes.
+> 
+> 
 
-- Changes series name was: media: i2c: Cleanup assigned-clocks and endpoint: properties: unevaluatedProperties: false
-  Dropping the second patch in the series means the title changes too - bod
-- Drops unevaluatedProperties -> additionalProperties change
-  There is no clear consensus on this right now.
-- Adds Reviewed-by and Acked-by as indicated to patch #1 Laurent, Krzysztof 
-- Link to v1: https://lore.kernel.org/r/20241012-b4-linux-next-202041004-i2c-media-yaml-fixes-v1-0-a2bb12a1796d@linaro.org
+Applied, thanks!
 
-v1:
-
-On a recent schema submission I did what most well adjusted schema writers
-do and tried to find a base file to work from to copy/paste and forget.
-
-Confusingly/predictably I received feedback to remove or alter several of
-the properties included in my devious copy/paste plan.
-
-The first bit of feedback was that assigned-clock-* was to be dropped.
-Removing assigned-clock-* as assigned-clock-* is a core property which
-doesn't need to be listed in a schema.
-
-The second bit of feedback landed on use of additionalProperties:false
-along with enumeration of all required endpoint properties instead of an
-implied list of valid properties from unevaluatedProperties:false.
-
-Link: https://lore.kernel.org/linux-media/20241010-b4-master-24-11-25-ov08x40-v6-0-cf966e34e685@linaro.org
-
-This series removes the assigned-clock-* from upstream sensor property
-schemas and applies additionalProperities:false to properties: endpoint:.
-
-A few missing properties: or required: are added to the schemas based on
-output of DT checkers.
-
-The one new DT complaint I didn't fix with the move to
-additionalProperties: false is:
-
-/home/deckard/Development/qualcomm/qlt-kernel-tools/qlt-kernel/build/x1e80100-crd_qlt_integration/arch/arm64/boot/dts/renesas/r8a774c0-ek874-mipi-2.1.dtb: imx219@10: port:endpoint: 'remote-endpoint' is a required property
-
-Since this appears to be some sort of temporary/commented thing upstream
-which I don't know the provenance of.
----
- Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml | 8 --------
- Documentation/devicetree/bindings/media/i2c/ovti,ov5648.yaml | 8 --------
- Documentation/devicetree/bindings/media/i2c/ovti,ov8865.yaml | 8 --------
- Documentation/devicetree/bindings/media/i2c/ovti,ov9282.yaml | 4 ----
- Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml | 4 ----
- Documentation/devicetree/bindings/media/i2c/sony,imx334.yaml | 4 ----
- Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml | 4 ----
- Documentation/devicetree/bindings/media/i2c/sony,imx412.yaml | 4 ----
- 8 files changed, 44 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
-index 60f19e1152b33128cf3baa15b8c70a874ca6d52e..d18ead8f7fc43bfacc291aed85b5ca9166c46edb 100644
---- a/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
-+++ b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
-@@ -28,12 +28,6 @@ properties:
-     items:
-       - description: Reference to the mclk clock.
- 
--  assigned-clocks:
--    maxItems: 1
--
--  assigned-clock-rates:
--    maxItems: 1
--
-   reset-gpios:
-     description: Reference to the GPIO connected to the RESETB pin. Active low.
-     maxItems: 1
-@@ -82,8 +76,6 @@ required:
-   - compatible
-   - reg
-   - clocks
--  - assigned-clocks
--  - assigned-clock-rates
-   - vddio-supply
-   - vdda-supply
-   - vddd-supply
-diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov5648.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov5648.yaml
-index 1f497679168c8395a94b3867beb49b251ef621fc..622243cae03caa5d14aa312df40ef5907e190d2c 100644
---- a/Documentation/devicetree/bindings/media/i2c/ovti,ov5648.yaml
-+++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov5648.yaml
-@@ -20,12 +20,6 @@ properties:
-     items:
-       - description: XVCLK Clock
- 
--  assigned-clocks:
--    maxItems: 1
--
--  assigned-clock-rates:
--    maxItems: 1
--
-   dvdd-supply:
-     description: Digital Domain Power Supply
- 
-@@ -68,8 +62,6 @@ required:
-   - compatible
-   - reg
-   - clocks
--  - assigned-clocks
--  - assigned-clock-rates
-   - dvdd-supply
-   - dovdd-supply
-   - port
-diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov8865.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov8865.yaml
-index 8a70e23ba6abed67d8b61c33bd7a261089bddda2..382d7de7a89bcea11be384a2a3800512994f9346 100644
---- a/Documentation/devicetree/bindings/media/i2c/ovti,ov8865.yaml
-+++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov8865.yaml
-@@ -20,12 +20,6 @@ properties:
-     items:
-       - description: EXTCLK Clock
- 
--  assigned-clocks:
--    maxItems: 1
--
--  assigned-clock-rates:
--    maxItems: 1
--
-   dvdd-supply:
-     description: Digital Domain Power Supply
- 
-@@ -68,8 +62,6 @@ required:
-   - compatible
-   - reg
-   - clocks
--  - assigned-clocks
--  - assigned-clock-rates
-   - dvdd-supply
-   - avdd-supply
-   - dovdd-supply
-diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov9282.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov9282.yaml
-index 79a7658f6d0547e4d6fb2267e5757eedf49fd416..38325cf318f7bd2cd60a4c7bbb6a65b54b855e26 100644
---- a/Documentation/devicetree/bindings/media/i2c/ovti,ov9282.yaml
-+++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov9282.yaml
-@@ -27,10 +27,6 @@ properties:
-     description: I2C address
-     maxItems: 1
- 
--  assigned-clocks: true
--  assigned-clock-parents: true
--  assigned-clock-rates: true
--
-   clocks:
-     description: Clock frequency from 6 to 27MHz
-     maxItems: 1
-diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
-index c978abc0cdb35cfe2b85069946cf1be435a58cb8..f0f9726a2add89492b8c56e17ed607841baa3a0d 100644
---- a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
-+++ b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
-@@ -24,10 +24,6 @@ properties:
-       - sony,imx258
-       - sony,imx258-pdaf
- 
--  assigned-clocks: true
--  assigned-clock-parents: true
--  assigned-clock-rates: true
--
-   clocks:
-     description:
-       Clock frequency from 6 to 27 MHz.
-diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx334.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx334.yaml
-index bce57b22f7b63bd73f08d8831d9bb04858ef03e0..872b8288948b2bba743f2365a55165181df156ae 100644
---- a/Documentation/devicetree/bindings/media/i2c/sony,imx334.yaml
-+++ b/Documentation/devicetree/bindings/media/i2c/sony,imx334.yaml
-@@ -24,10 +24,6 @@ properties:
-     description: I2C address
-     maxItems: 1
- 
--  assigned-clocks: true
--  assigned-clock-parents: true
--  assigned-clock-rates: true
--
-   clocks:
-     description: Clock frequency from 6 to 27 MHz, 37.125MHz, 74.25MHz
-     maxItems: 1
-diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml
-index 77bf3a4ee89db3b5d16149470c0380ef8f1aeac1..38bd1c7304a59bb5fea90954c1e4e626a7c86f2f 100644
---- a/Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml
-+++ b/Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml
-@@ -24,10 +24,6 @@ properties:
-     description: I2C address
-     maxItems: 1
- 
--  assigned-clocks: true
--  assigned-clock-parents: true
--  assigned-clock-rates: true
--
-   clocks:
-     description: Clock frequency from 6 to 27 MHz, 37.125MHz, 74.25MHz
-     maxItems: 1
-diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx412.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx412.yaml
-index d9b7815650fdb890418fc96c828acc9147dfb6e8..ece1e17fe34553671e61c965eb1833c5eb08131b 100644
---- a/Documentation/devicetree/bindings/media/i2c/sony,imx412.yaml
-+++ b/Documentation/devicetree/bindings/media/i2c/sony,imx412.yaml
-@@ -26,10 +26,6 @@ properties:
-     description: I2C address
-     maxItems: 1
- 
--  assigned-clocks: true
--  assigned-clock-parents: true
--  assigned-clock-rates: true
--
-   clocks:
-     description: Clock frequency 6MHz, 12MHz, 18MHz, 24MHz or 27MHz
-     maxItems: 1
-
----
-base-commit: 58ca61c1a866bfdaa5e19fb19a2416764f847d75
-change-id: 20241005-b4-linux-next-202041004-i2c-media-yaml-fixes-fcf5c0c1e08d
+[1/1] nvmem: imx-iim: Convert comma to semicolon
+      commit: e2ba37350d1d95c5614defcec32020479fb5148d
 
 Best regards,
 -- 
-Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
