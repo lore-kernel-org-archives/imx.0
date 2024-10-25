@@ -1,57 +1,57 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D91125DE
-	for <imx@lists.linux.dev>; Fri, 25 Oct 2024 01:09:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5632FB6
+	for <imx@lists.linux.dev>; Fri, 25 Oct 2024 01:09:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729818570; cv=none; b=eqbsC49YSFvx+F++5ce0ALRf9UumcXZvGIsMgjFyXsPcQLrmeV0EqBsTcGA9G6kRjNN55L9GNgXU2869vdlwzMxW5XeTVWULbSZ6/8s2gLkJG9qDGNLTTx3BP3PJnjTDhCG9ePJXuUG0bsZ7br/090Z4t+SOC1r0FaB2sXcm4t0=
+	t=1729818573; cv=none; b=DRAvX92NtqiJi09H0wMojVk5EVrK1AZ2ZyUB52qDxQqqauPn7nOjwYU6+RCB0R6Gzia+vDCrgJh7BLMj6cc7EFwmodTpSw0D3Mytwzl8ff2bo/siE7yBd8BUM1hvy4ru+mJmd0Oy1H/Ryy5Lf/D6WzhQGY1mPDbz04NAmF7xZxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729818570; c=relaxed/simple;
-	bh=kwpQFCul6ljSc988E5zCOYCV2xunq5crF6fjEdTWrw8=;
+	s=arc-20240116; t=1729818573; c=relaxed/simple;
+	bh=+emsQFoCbsa5HyG/22HH3bVMiwgUB13Ah2l8gAn7jJA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RJOi78o+4EpGAc5zZSvuNyuz8509lCcMVHaF7D8AKiGQY9Lh2iOkI9/mYmdxf+AH7zdITZiL8fYauG8GxPfY+988AvthyG6DPhbhFBPVU+ZT4XF2+87mhssDSYyr7NLtQ6eIyA3MbW0EuGchsBjFYUdncw8WqpY93DYzUlwHW54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WbHknaq4; arc=none smtp.client-ip=209.85.210.180
+	 MIME-Version; b=GnEBJur3U7r99BQcf9RG8wZWTGgiNIXObVC4aMt9NqWRMu746gM90AKlgcF0u8oMsc35k8Qdh+UD1CLcc1heCcUlQ0UtXJKX/PhSkY3rOSHaFffRBfbsJVPOrX14+mRcUcc/y/67Lw0f7rti25VE5vOq+MTK8VXMyfqfvbFP538=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RsTYZ8vf; arc=none smtp.client-ip=209.85.215.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WbHknaq4"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-71e52582d0bso1129331b3a.3
-        for <imx@lists.linux.dev>; Thu, 24 Oct 2024 18:09:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RsTYZ8vf"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-7ea6a4f287bso925559a12.3
+        for <imx@lists.linux.dev>; Thu, 24 Oct 2024 18:09:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729818567; x=1730423367; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1729818570; x=1730423370; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=A2I/3Lu6OBvOC4tuDnDafL3hhaN2i1Q4Fcz+C2/JdxM=;
-        b=WbHknaq43l4//BFZW4pS31ko5h3zHeZMrtzaelpLrnHN5ntvUb5PgCG2dLh2fm2BxE
-         ggMRsNWsXPDnPjURBloAL4EH9wAJRLM/OYltwQK6I9YaTSTM2MiJyF7vpBkN02tUF6Ve
-         3wGIjdyK1K4lrxupLU/M0TkrDKUxTdnLxJPEpFGbyTGfEfynyot3Y09cXSUIPGVoNbMC
-         fA4EbNvXdcz8al0cWPzXG/5ajB+I7J7v19yxhYoEmciUqS459ZKZApFPPOmDwP96ohcO
-         dfTK7tenEZSkboGOnsNEQkxOOKFAHlreA212niGfQk05+F8fjbtBTj4rboe5wGdnPdoL
-         oInQ==
+        bh=jGdp4UlHi9Rl6xWRgeoMoP+ShACtzGL6t7tsX92UPPE=;
+        b=RsTYZ8vfAFBwGz2wp7TLiNnO1nVnEPDiGMv7s+Wk5Fxw/iG0ESDVZetXvvUwZPDggU
+         kj8YpBBugELkykRgzSmsT214cBVL0HSEMXEqEUXG59cX5mtYYcIa3GGbjIjCrL+iTaDK
+         dkAwmUPWn0C5jJw/IF812O5Ouz8gpEJw6B7S2Ryzpxdh2lPDbu0OckJm7dMuHmMJvHU2
+         8hZ0PO65y86D/TFECt6XHsIkXyYQsmKwQEy/uJkF/57tdH7tJE8Y8sIVqctXP8zlBI/x
+         gHlkDKjxc1KZ6N68E7Y0pHV44hrTwynA3xtXa3lBzDiR/zswgIr7cIIizaAFdJLNhodU
+         LNgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729818567; x=1730423367;
+        d=1e100.net; s=20230601; t=1729818570; x=1730423370;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=A2I/3Lu6OBvOC4tuDnDafL3hhaN2i1Q4Fcz+C2/JdxM=;
-        b=QkXJmxmBM9xjoUpFtavrzLw2iJLYf7ECDLzIDZm0rEIuKHBGNG5NIm/PIFUE8jaE+5
-         l10Gqppv1AaNhDNOcyrpucLJFTFSztIj7J+A6/tQRUD8+KIddnnamv4K3iIO4N8cfWuQ
-         Vv/HHCpcm7YiNYmsl3d8H4zIcki05UUmPG6H4LUIucsfhIPxT3ZTSgRXsJTmFM2fbiMw
-         3pFp/4Fsh0H6Iwjl6sZkOB15H5jSHV/9C6oIQ7LMbhnLGT7LaHSpV9TgagfnFXAnUSFb
-         u45rJvzBlP+GcKcTYCyc860iLxO5K6W7H4wy6WUsljljNiGIWonE9YVDiLmPz8Lvid/a
-         NrLg==
-X-Forwarded-Encrypted: i=1; AJvYcCWAJ6y8OfGaZqd6tmNZyk6bl0ERzwN6SSeR79s8JPauIyLyJuH/1eECj6C67iFw+xMwvhI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwcpnY9Z2HdkFV3H5xsfrlXELbSwTi1NFLltUGw9fK17HI1wP9o
-	vSuFv8bEW33i6lqKxnNiT4IpmX7MsaCVU0nBwcJx8zsz/Rsm8WPX
-X-Google-Smtp-Source: AGHT+IG0dZYus0dKlZXhILQCNo4QWnAtvU9O1prTfWjP1IqAIAetcVP41UgZHVHhX+1lDBk4WUiuGA==
-X-Received: by 2002:a05:6a20:c997:b0:1d9:1dcd:b22c with SMTP id adf61e73a8af0-1d978bd014amr9387766637.47.1729818567100;
-        Thu, 24 Oct 2024 18:09:27 -0700 (PDT)
+        bh=jGdp4UlHi9Rl6xWRgeoMoP+ShACtzGL6t7tsX92UPPE=;
+        b=GZtQkNp0rxss0ZN94nYGTRUXYR7vgk6C6HFCioacgX+Czp6SVlCRwYP64Z4Kenazs9
+         TwD74E7o6M4qsTLHIa83qQcPkIQ5IVRPcZyyIIMcEpKVSHzGyGCSMn0fbQtMwxkSn+ug
+         gQmg14DE/lc+3+il48i3PIpm/84JFfgwbgbnadXOQsky9asyJpPhJBPZ2Hx3YpKtSLOh
+         PstTOaf8uycwTYBCkWPgSx0ay0o+Gm+LQKhmf3TwiDLtCKk6ZQSKICnSWpAIipN9zNeN
+         R+xYOiqTQ7xk3YTVqA4dMGqok7ZpFbBLVvsLgoAgM4ya55DVoxFNqB6TgFEaou4Jw93e
+         RxtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXDV1BZN+tvq96CnHfptZxN7D4abzndFnapbBHZTpuOayuJa6SZatGCeratndUGH9QyLE0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwVSowTNQEJhQVR6NzECkhbdYG+IFFAQ60QRsdqtGC8y1nULO+s
+	5UoYcUbBuyvJvO22mSN+DiedHK3BWmAu407tsE+7+SKVtX2/upjq
+X-Google-Smtp-Source: AGHT+IHYYcX6rcKuACmUMAqT2j7xUKhF7rX1Eq0psxApSO+AaLQHyyTER201tiR+T8CoSPfZiRyBIw==
+X-Received: by 2002:a05:6a20:cf8c:b0:1d8:fcf2:9ce2 with SMTP id adf61e73a8af0-1d978bb3472mr9319125637.44.1729818570143;
+        Thu, 24 Oct 2024 18:09:30 -0700 (PDT)
 Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:b160:3edf:6e5d:8d4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72057a0b93csm52875b3a.137.2024.10.24.18.09.24
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72057a0b93csm52875b3a.137.2024.10.24.18.09.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Oct 2024 18:09:26 -0700 (PDT)
+        Thu, 24 Oct 2024 18:09:29 -0700 (PDT)
 From: Fabio Estevam <festevam@gmail.com>
 To: shawnguo@kernel.org
 Cc: robh@kernel.org,
@@ -61,9 +61,9 @@ Cc: robh@kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	imx@lists.linux.dev,
 	Fabio Estevam <festevam@denx.de>
-Subject: [PATCH 2/3] ARM: dts: imx6sx: Fix tempmon description
-Date: Thu, 24 Oct 2024 22:08:54 -0300
-Message-Id: <20241025010855.1593365-2-festevam@gmail.com>
+Subject: [PATCH 3/3] ARM: dts: imx6sl: Pass tempmon #thermal-sensor-cells
+Date: Thu, 24 Oct 2024 22:08:55 -0300
+Message-Id: <20241025010855.1593365-3-festevam@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241025010855.1593365-1-festevam@gmail.com>
 References: <20241025010855.1593365-1-festevam@gmail.com>
@@ -77,32 +77,26 @@ Content-Transfer-Encoding: 8bit
 
 From: Fabio Estevam <festevam@denx.de>
 
-According to imx-thermal.yaml, the valid compatible string
-for i.MX6SX is just: compatible = "fsl,imx6sx-tempmon".
+According to fsl,imx-anatop.yaml, #thermal-sensor-cells is a required
+property.
 
-Also pass #thermal-sensor-cells = <0> as it is a required property.
+Add it to fix the following dt-schema warning: 
+
+tempmon: '#thermal-sensor-cells' is a required property
 
 Signed-off-by: Fabio Estevam <festevam@denx.de>
 ---
- arch/arm/boot/dts/nxp/imx/imx6sx.dtsi | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/nxp/imx/imx6sl.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6sx.dtsi b/arch/arm/boot/dts/nxp/imx/imx6sx.dtsi
-index b386448486df..a4abaee771eb 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6sx.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6sx.dtsi
-@@ -715,13 +715,14 @@ reg_soc: regulator-vddsoc {
- 				};
- 
- 				tempmon: tempmon {
--					compatible = "fsl,imx6sx-tempmon", "fsl,imx6q-tempmon";
-+					compatible = "fsl,imx6sx-tempmon";
- 					interrupt-parent = <&gpc>;
- 					interrupts = <GIC_SPI 49 IRQ_TYPE_LEVEL_HIGH>;
- 					fsl,tempmon = <&anatop>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6sl.dtsi b/arch/arm/boot/dts/nxp/imx/imx6sl.dtsi
+index 6aa61235e39e..6c98670a44ff 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6sl.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6sl.dtsi
+@@ -631,6 +631,7 @@ tempmon: tempmon {
  					nvmem-cells = <&tempmon_calib>, <&tempmon_temp_grade>;
  					nvmem-cell-names = "calib", "temp_grade";
- 					clocks = <&clks IMX6SX_CLK_PLL3_USB_OTG>;
+ 					clocks = <&clks IMX6SL_CLK_PLL3_USB_OTG>;
 +					#thermal-sensor-cells = <0>;
  				};
  			};
