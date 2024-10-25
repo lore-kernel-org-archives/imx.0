@@ -1,206 +1,282 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011010.outbound.protection.outlook.com [52.101.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82397213141
-	for <imx@lists.linux.dev>; Fri, 25 Oct 2024 22:08:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729894118; cv=fail; b=iVsUlW1Gc7K7u0xBwUXLB0rbcye7HSaIIdLikHG/XHkEItDUUd+R+xsYxD9tRsEnFQk2od/MBB9JrQ4TgEdopfwLnkDkOPWYu3OcpC9IwoQmPbvbChfMD5XK4JAq/cEgsndyIV5VT9JqRSlr2vJuEz2lw7gLVsVkqzgdF4ZrHrE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729894118; c=relaxed/simple;
-	bh=VF4kz/tJ9ZUI0uuxgQlr8uC+hfC53Dx4ZmJXcwCQ9wk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Wj8Pp6Sb342/Mv+dqRO2Ea1C93HIRoIT0HXkYmTO6luCkpqdjnfBq6IZmW1SqHXz8yaSufwL+JFCIUF7xcYCmYBtSovTkMkfWvk1TB7EsSytAMWyjci0YYRWriv+NhH2tHNhrrNmo9Ap4FApM7I9VQlx8kbUCq52Fw8KQtWuht0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=fI2A2BdK; arc=fail smtp.client-ip=52.101.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8618D13D8B1;
+	Fri, 25 Oct 2024 22:31:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729895464; cv=none; b=K3Gm4geXsuKhgshTA9DGxRkBk81xqINvEMBdLFP2PgQn5ruMSH32HTpolOqVk/DzhQNjRCxoIym0EFDonWs3EbdThpQXYQvUtalPphWXJapCeXOz+N3WwQxQ1HEN3zccVgUcxIFttoNtr5jwTAwDFpQeuuu+LYzZt2D0kecCK4Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729895464; c=relaxed/simple;
+	bh=e9UZsK6yoNGuTeM8ImClDT58R9Ad0kplRUUu9ysuAJ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=UbiI5Fjx7G2F/KVR4ltUo9+wDYwvlncDzmf+YnK7TdAVEnU75pLhi/8p+i5vtyfh6GMkd/iFA4dlw4BbWEM7C/zaM4530H+Z7rp5Jlw56PcVooIg+s7u592DGLLtbeYvVsHfwX9JTmRU2y1iGGAAFokwkRYjz+X/hafq2S/oLr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qNEiENyR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="fI2A2BdK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dsgG1zsnGET+Djf69mGP0wR/wkuRrPU44q+sE5ry6+GsKomLmItSIh9APBmhzFfMPYKbx3+xGItml31UcaTjJ602coQAwlWJX58WX2Z5cHRLGox8jdZgXPpAoarocpoGmVz+cVVjhpVYrg1hygpKPQaFa5Obzf+JZExZChSXahKLdHRMU5qV+cPgGn4evMAraaydLrF4XcfI9kXgK8hKDdJyBMBaKwEWOBFXGCJAdkRINC5SO551EYKcglA/XaoDKDuJW8OTMlx34H/VKcflcuLErTGpEuF14aKV2LEcsUgN9Kf69pq+u1ZEu1Jq/TBbA/qmrU9cEKTE7HZBIxxEZQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UTbuz0jxAwiykMv13rH0mVbXcqXEW3MW4KvSLsFNNnM=;
- b=hlpMv5WV3Cc3eOzwz2WvgnPh6MsJAKC5006Wg9x90yRs6Z+0/XssuBgChnBamvB1HeLZSJBGqvOZdg0TyN1he8rfRmpnrdZIIRbflN+7w1V2l0lY98XgZp4Kqn0gmvitdYoYqRMIOMeccmGf4grlC7ali831cKz32EG7YSnmJgow2tRUzjH/kZgpLREpQwju94gOoUiBpVCbzgQ7SC/AbXWZzHticfOY8sJTNUoztovdTgNC25fmphBhuJGhQ/H4XKfidx5t6CpTI3Fnvjk8HSDISSMgLRQKxQxsoLCSkDGx3TKJTAManskTCS03HxCaOhnnOMCTI1W7QenlKfXoHg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UTbuz0jxAwiykMv13rH0mVbXcqXEW3MW4KvSLsFNNnM=;
- b=fI2A2BdK3QaMJWrBKAvwJ9J1fGCDqbAF3jQrM2PcGzZNC1iGYO2sjyffgHEhe3Bw998tsyfhCTUOcF+nLDSXlOzVKP1F4xhGy1W02AqY+u1y0Z1+ndb6lWB/7uqKc7CR1j4oXrHtEajV4VjJmQpNMMr79hqBSivMHouRLy1oZPdvzOJ6eawBN17kcGFhRP7jPV4Np9Qcz4GPcQ2u0pLvdTn05r2XttiiMq7LD2sWhj70Ze2SOyWQw5azopBJKKtRMw+ES553vE0XwkFkol7XbYT1kUogt4Kfh8VmN6IQCFb0OIyn0isZE3gjDeyFdGZwZlcVCIk5TAmpkGWvBSx+0Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PAWPR04MB9987.eurprd04.prod.outlook.com (2603:10a6:102:387::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.27; Fri, 25 Oct
- 2024 22:08:34 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8069.024; Fri, 25 Oct 2024
- 22:08:33 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qNEiENyR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3ABC4CEC3;
+	Fri, 25 Oct 2024 22:31:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729895464;
+	bh=e9UZsK6yoNGuTeM8ImClDT58R9Ad0kplRUUu9ysuAJ4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=qNEiENyRow1zkUKlGDesaiB2BCDUXVV6QJFBiRhrK7QwB0dqBCWzpQL/G16crJrxq
+	 tkqmEXINJDcVW98hnnk+gLaDxetCPb+SQ4ZJ7t+M9TCrQ1pvW+RjLNubTFBZiKFHOL
+	 fKQNw25C8RCDbkbrZHdtoEIvm2k+/+TQHc/ycYL02WXA0Q95ue85LBZMUAOXG6U4z6
+	 1Y1hes/gexQjwToENV6Z+FrqU7R0uT/SibpnwW+hs+ZrScxYYchmZxsOcIi4N73+yX
+	 L/EV16/tyiKqhBkQCgCbLH8s9E6CgwB8nUTl22CYjCb0EvGC6OVUT7pP3Y7QBM0jPG
+	 vOe8MRT+27rtg==
+Date: Fri, 25 Oct 2024 17:31:02 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Abraham I <kishon@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+	Jesper Nilsson <jesper.nilsson@axis.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH 3/3] arm64: dts: imx8qm-ss-hsio: fix PCI and SATA clock indices
-Date: Fri, 25 Oct 2024 18:08:10 -0400
-Message-Id: <20241025220810.1833819-3-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241025220810.1833819-1-Frank.Li@nxp.com>
-References: <20241025220810.1833819-1-Frank.Li@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR05CA0098.namprd05.prod.outlook.com
- (2603:10b6:a03:334::13) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	Fabio Estevam <festevam@gmail.com>, linux-pci@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: Re: [PATCH v4 1/4] PCI: dwc: ep: Add bus_addr_base for outbound
+ window
+Message-ID: <20241025223102.GA1029107@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAWPR04MB9987:EE_
-X-MS-Office365-Filtering-Correlation-Id: ac83b206-9bf2-4f4d-95c3-08dcf541912a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|7416014|376014|1800799024|366016|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?q5/29t0utDb1TSu/How1mzZsvQgFIn2g+5IGzvbGiJFQGXXphYcla51WJgh9?=
- =?us-ascii?Q?Mkp33/h1IDRdWM5n9CvMV9znMk+GsVG1SHhMIA7HHNETG8nNlc6L/YUvIvlM?=
- =?us-ascii?Q?c89H7+VuS2w7MQGAn4QoCDMY8YCzN7ULiHZbMwcFGppAU60Z/pKB/MkU2AUu?=
- =?us-ascii?Q?lhBQrv11he8p9POmdlZT3Q7Q4CiZUmTxJutdXNHBVFjkTR66APlE4gV92njA?=
- =?us-ascii?Q?jkwbSxFHQQ0wIaGpG9+DrmGJaWtnz0R1xiMd7QwJ9gtfSCFvpMSOZcgx4M8p?=
- =?us-ascii?Q?310I0ZZKsPl+XGzZKxuCTEiLltV5VLPfCjJga2HpRkX1JZvL22wNVeQVEqxn?=
- =?us-ascii?Q?no6ExU3Zyge9jh6cdE/PjVRjuRvsyYUEEJkzkNZSPYkbtB/8ArVfoXh2XibV?=
- =?us-ascii?Q?QiN7GmAGiVzq5RIAErdux6oVFklJL0OUCKMqUfzFhwk/MeVWIWkNOzlA/Mqo?=
- =?us-ascii?Q?adoPaG99zC8YLAeMUig6fydwxbMxUjJiOrxyAt0REOUknhsW0xrDSTmEmEm8?=
- =?us-ascii?Q?r9cZkCBhlYsLqGpVD2cv/Y0JJ0QRYCDkEWu8iU0yiVTcX6iXdfwNIZhORc2n?=
- =?us-ascii?Q?XXEbAeD7LuWFNTh4UsnETmIqn/1DiP4mAxX+AbEvu/4QxiwkV1MkDRDhCtJg?=
- =?us-ascii?Q?ml+EK6wvmrnhKAZxQViV3v0nnkyJ0u7asFcoesO3CLFM5uZtQs2I2oU9Oi3d?=
- =?us-ascii?Q?KVydA+h4FvbId+CdK0r99bib5xxVsbY09YZwcppyriGPlHH1SakOi15BCSDB?=
- =?us-ascii?Q?SHgm9NVEEqICD+TjbbEBuc4LpSy8AaoGRVfxmuSoiHdl1/iF5BAv0VP3PWuU?=
- =?us-ascii?Q?KD/jahlY50eYkeem2zVBBNUGVzLVZDIkXlK1X9zXZF7kkLlVnt2II0FMWqjx?=
- =?us-ascii?Q?hpWPyjgz+NIpgtNfLCMZLUVJXm6XeXhVI9T/GP/fOahKCvkfrX2iKoWtY7aV?=
- =?us-ascii?Q?VaCTMqbfhJYdruc5h25rCpGdK8mPGKmBeRlMD1dTGf1aw4bNHOcsBmK3DAUM?=
- =?us-ascii?Q?hkrEuk2fq84svx6BxBoz7ouy8FuEM3GqsvB2Uq5nWvRzDYRk5ipwBOJnWtJu?=
- =?us-ascii?Q?PCkVpM1l4N/miUoTPbEq9K2ZtJQfNlkbTYnN1Et+F7nS16MxC1JkQRGwMxpp?=
- =?us-ascii?Q?ZEgHQi/nB33drNaWNybhIPA5Y04DZB87koHVN2GvvKpgCVAoysuL7farYuJX?=
- =?us-ascii?Q?Ryzv242mh6/dTazYtUdc1FwXJecirfDP58kf+uPmgn8eVTVNhnNwewQem4An?=
- =?us-ascii?Q?sYN1oV+YhQ2NlsaKi3mPFnULdjZouwisinLsR8+ek1iMpIdEsvczTOJIFPYe?=
- =?us-ascii?Q?nBpZOMaYydKuZCmLz0VQojzlvYefPYeZ5YhoSPd3SidPiAI02SglGD5mMDHs?=
- =?us-ascii?Q?JERkqImfx32bdHx4NszJVJ7FA5E9?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(1800799024)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ZZmDaN92mGnyUFXV94VKwf97IHAA8QdxKsAf5xVGBzsg3gtK+XPdAEqh3icu?=
- =?us-ascii?Q?WCafK5v+wmEkapa5FzbTZA9z4QiPMZKBNsH9q+nKfrVg5RtFPj7lM0b4OJQn?=
- =?us-ascii?Q?JDwLi6mPBD3Xzfvg1whStBqQDHSmkJN/MS5U+pEpqt9GYDwbE6c6oOe/9Zrs?=
- =?us-ascii?Q?jGjUoxs1yuPCX7uxoOFZtTMzodZL8Pv0GQ5HgScQ2gheRurPatz4bXDANQ/M?=
- =?us-ascii?Q?AwKoguOKNkD2QJn7IyqtMcFIYCdteI+iHpJLBif0bWKJgRGbPpOp8RF5kIZc?=
- =?us-ascii?Q?e8d8mQv2WpyS1PSQyH87ArLIs6X6sYDtkKHKLhOPP4HLuLTPWwsT5RpDVkNd?=
- =?us-ascii?Q?gRny4vueg71gucf31N/09s8/3SJBQP8TR3c4++e+aN6yAwJu938kDdfKxrYw?=
- =?us-ascii?Q?kwBWCF6RyMdkj9I+NS5YvYChd/FcnrQNKqV9+r0HKUZ7ZzQv1Rcmfbn0iSUf?=
- =?us-ascii?Q?rHbfhmr/SKnL1ZoUirBSeYmZyOde5W7+QjNkB9XX/RjClI/zSH9jRE24Fon7?=
- =?us-ascii?Q?A6hpXa90ICA0p7Qiaq1fRdR8rdYPQ2T0kabBQMssoX/ZKOoFppO52bQVijKm?=
- =?us-ascii?Q?czm+x6NVEX81YWsHvqZOo8J3gmkOKFltK0r4v5oWvgYAY4WLtas+Y/p49XvF?=
- =?us-ascii?Q?LfQai7OOrp86F62YMTtsn5iXoyXC0xKB89/NKjvTHijclnF1R3vE200KhhwZ?=
- =?us-ascii?Q?uQlmY9nClB7rI4Vclj1rdqbDj8Y+MjoME3FOTgU0G2FdY/rQ7UTP9n538biP?=
- =?us-ascii?Q?XKsdIE4cmws69JAO1ct0ltqV/VnbAdd4/aLJJkCOeN4OXEOeA4bvINqtOZfY?=
- =?us-ascii?Q?H9w6rgGGykoh1UyhWYMzJRbnht3sNYygoOk5D8BGKarAnNLOlsRxPHlyJ4z1?=
- =?us-ascii?Q?m1nDblOq5tfGrScTVT9gKAu9J2uEWN0DVtROLn459A1MObeGB91IvmnllpFq?=
- =?us-ascii?Q?ZgyVAa4vJZvEgvhizgJoIa+XqjN/LyXIjYx3gXNkUzASB2w10EUBmVaBcQzX?=
- =?us-ascii?Q?who1TM9RJo8x3eHK4Dj3U1WxJ6ftDB8js+4bhZxnQzGNAu83H6s1oGz2YfOd?=
- =?us-ascii?Q?InzXqXLBpgVeeB0U3ps9UWLiI8eHVkpJsRBl5pSo5qZYwb0gqc2E8cceFvIn?=
- =?us-ascii?Q?hQJ4OWDtuw1aW8YQyJeyvMCw8EdsMuzWc1taihR0Ylbsw9+OqEJAUx7Po2wb?=
- =?us-ascii?Q?KVV9XWkKI24z+UL2BRFeTtdQQOqYCdXHMC2Ajl+vyKx+nMJMFIAoa9CjyhDm?=
- =?us-ascii?Q?gZ15abjtPdHRMFgurJTAg5vX3tverrNO8PtbZizMGBSCXG4wRoVAKXiip1k4?=
- =?us-ascii?Q?JpOMkZckMHRTyd2hYJJrD0mUka6WtbT5fevcYBTWE2Ex3f/hEXLbmnJgWkIl?=
- =?us-ascii?Q?2P/pZMHQsnHOUZ0xd6jsS5Mczq1BqIXHU7zNvDdyJ+KDoQJoISYaKpq2Qfeg?=
- =?us-ascii?Q?uZEV+oWQ2oyQt+mzKhq7HjRIZZC0IB3+kWU6+hK8l8MxNaJCs5CqH46VtYeB?=
- =?us-ascii?Q?7XIktg4k/qpGe2fRvTXfMEBLIcFtvGj0QuCCYsqz0jUO9a9y0xQS837ALBwQ?=
- =?us-ascii?Q?ENdy1yZzTkvAuE8QBSXTdNbh30b/62axqLhWjbM8?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ac83b206-9bf2-4f4d-95c3-08dcf541912a
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2024 22:08:33.8208
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YYExoyt9q0wtYrxpdAwplJFMtipSCnTqZxhpvROjI/TRxMu5LbAtjT+84IErdKbKNeyuL0RTn0Crd77Fz/AOoQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB9987
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241024-pcie_ep_range-v4-1-08f8dcd4e481@nxp.com>
 
-The first argument of lpcg should indices, instead of index. Fix it by
-use predefined macro.
+On Thu, Oct 24, 2024 at 04:41:43PM -0400, Frank Li wrote:
+>                                Endpoint          Root complex
+>                              ┌───────┐        ┌─────────┐
+>                ┌─────┐       │ EP    │        │         │      ┌─────┐
+>                │     │       │ Ctrl  │        │         │      │ CPU │
+>                │ DDR │       │       │        │ ┌────┐  │      └──┬──┘
+>                │     │◄──────┼─ATU ◄─┼────────┼─┤BarN│◄─┼─────────┘
+>                │     │       │       │        │ └────┘  │ Outbound Transfer
+>                └─────┘       │       │        │         │
+>                              │       │        │         │
+>                              │       │        │         │
+>                              │       │        │         │ Inbound Transfer
+>                              │       │        │         │      ┌──▼──┐
+>               ┌───────┐      │       │        │ ┌───────┼─────►│DDR  │
+>               │       │ outbound Transfer*    │ │       │      └─────┘
+>    ┌─────┐    │ Bus   ┼─────►│ ATU  ─┬────────┼─┘       │
+>    │     │    │ Fabric│Bus   │       │ PCI Addr         │
+>    │ CPU ├───►│       │Addr  │       │ 0xA000_0000      │
+>    │     │CPU │       │0x8000_0000   │        │         │
+>    └─────┘Addr└───────┘      │       │        │         │
+>           0x7000_0000        └───────┘        └─────────┘
+> 
+> Add `bus_addr_base` to configure the outbound window address for CPU write.
+> The bus fabric generally passes the same address to the PCIe EP controller,
+> but some bus fabrics convert the address before sending it to the PCIe EP
+> controller.
+> 
+> Above diagram, CPU write data to outbound windows address 0x7000_0000,
+> Bus fabric convert it to 0x8000_0000. ATU should use bus address
+> 0x8000_0000 as input address and convert to PCI address 0xA000_0000.
 
-Fixes: 9f7053f67c8a ("arm64: dts: imx8-ss-hsio: Add PCIe and SATA support")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-Shanw:
-Sorry, I miss check this again. If you like, you can squash to previous
-patch
----
- .../arm64/boot/dts/freescale/imx8qm-ss-hsio.dtsi | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+Thanks for the diagram and description.  I don't think the top half is
+relevant to *this* patch, is it?  I think this patch is only concerned
+with the address translations between the CPU in the endpoint and the
+PCI bus address.  In this case it happens in two steps: the bus fabric
+applies one offset, and the ATU applies a second offset.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-hsio.dtsi b/arch/arm64/boot/dts/freescale/imx8qm-ss-hsio.dtsi
-index 59b6a670462c7..b1d0189a17258 100644
---- a/arch/arm64/boot/dts/freescale/imx8qm-ss-hsio.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-hsio.dtsi
-@@ -24,9 +24,9 @@ pciea: pcie@5f000000 {
- 		interrupt-names = "msi";
- 		#address-cells = <3>;
- 		#size-cells = <2>;
--		clocks = <&pciea_lpcg 2>,
--			 <&pciea_lpcg 0>,
--			 <&pciea_lpcg 1>;
-+		clocks = <&pciea_lpcg IMX_LPCG_CLK_6>,
-+			 <&pciea_lpcg IMX_LPCG_CLK_4>,
-+			 <&pciea_lpcg IMX_LPCG_CLK_5>;
- 		clock-names = "dbi", "mstr", "slv";
- 		bus-range = <0x00 0xff>;
- 		device_type = "pci";
-@@ -54,9 +54,9 @@ pcieb: pcie@5f010000 {
- 		interrupt-names = "msi";
- 		#address-cells = <3>;
- 		#size-cells = <2>;
--		clocks = <&pcieb_lpcg 2>,
--			 <&pcieb_lpcg 0>,
--			 <&pcieb_lpcg 1>;
-+		clocks = <&pcieb_lpcg IMX_LPCG_CLK_6>,
-+			 <&pcieb_lpcg IMX_LPCG_CLK_4>,
-+			 <&pcieb_lpcg IMX_LPCG_CLK_5>;
- 		clock-names = "dbi", "mstr", "slv";
- 		bus-range = <0x00 0xff>;
- 		device_type = "pci";
-@@ -76,8 +76,8 @@ sata: sata@5f020000 {
- 		compatible = "fsl,imx8qm-ahci";
- 		reg = <0x5f020000 0x10000>;
- 		interrupts = <GIC_SPI 88 IRQ_TYPE_LEVEL_HIGH>;
--		clocks = <&sata_lpcg 0>,
--			 <&sata_crr4_lpcg 0>;
-+		clocks = <&sata_lpcg IMX_LPCG_CLK_4>,
-+			 <&sata_crr4_lpcg IMX_LPCG_CLK_4>;
- 		clock-names = "sata", "sata_ref";
- 		phy-names = "sata-phy", "cali-phy0", "cali-phy1";
- 		power-domains = <&pd IMX_SC_R_SATA_0>;
--- 
-2.34.1
+Unless the top half is relevant, I would omit it and simply use
+something like this:
 
+                   Endpoint
+  ┌───────────────────────────────────────────────┐
+  │                             pcie-ep@5f010000  │
+  │                             ┌────────────────┐│
+  │                             │   Endpoint     ││
+  │                             │   PCIe         ││
+  │                             │   Controller   ││
+  │           bus@5f000000      │                ││
+  │           ┌──────────┐      │                ││
+  │           │          │ Outbound Transfer     ││
+  │┌─────┐    │  Bus     ┼─────►│ ATU  ──────────┬┬─────►
+  ││     │    │  Fabric  │Bus   │                ││PCI Addr
+  ││ CPU ├───►│          │Addr  │                ││0xA000_0000
+  ││     │CPU │          │0x8000_0000            ││
+  │└─────┘Addr└──────────┘      │                ││
+  │       0x7000_0000           └────────────────┘│
+  └───────────────────────────────────────────────┘
+
+If you don't want a big "Endpoint" box including the CPU and bus
+fabric, that's OK with me, too.  I added it because everything on the
+PCI side only sees TLPs that contain PCI bus addresses, and can't tell
+anything about the internal implementation of the Endpoint.
+
+> Previously, `cpu_addr_fixup()` was used to handle address conversion. Now,
+> the device tree provides this information, preferring a common method.
+> 
+> bus@5f000000 {
+> 	compatible = "simple-bus";
+> 	ranges = <0x80000000 0x0 0x70000000 0x10000000>;
+> 
+> 	pcie-ep@5f010000 {
+> 		reg = <0x5f010000 0x00010000>,
+> 		      <0x80000000 0x10000000>;
+> 		reg-names = "dbi", "addr_space";
+> 		...
+> 	};
+> 	...
+> };
+
+I guess bus@5f000000 includes a "ranges" property because that
+translation from 0x7000_0000 -> 0x8000_0000 is fixed or at least
+not touched by Linux?
+
+And the pcie-ep@5f010000 address translation from 0x8000_0000 to
+0xA000_0000 *is* programmed by Linux and therefore can't be described
+by a DT?  But I guess Linux only programs the *PCI* side, and the
+parent side (0x8000_0000) is fixed?
+
+AFAICT, the "reg = <0x5f010000 0x00010000>" part is not relevant here.
+
+I guess this implementation assumes there's only a single aperture
+through the Bus Fabric, right?
+
+And also a single ATU aperture through the endpoint PCIe controller?
+
+And also that there's only one layer of Bus Fabric address
+translation?  The fact that only a few DWC controllers have this
+translation suggests that this part of the picture might be external
+to the DWC IP and there could be more variation.  But I guess there's
+no point in adding code for topologies that don't exist; we can deal
+with that if the need ever arises.
+
+> 'ranges' in bus@5f000000 descript how address convert from CPU address
+> to bus address.
+> 
+> Use `of_property_read_reg()` to obtain the bus address and set it to the
+> ATU correctly, eliminating the need for vendor-specific cpu_addr_fixup().
+> 
+> Add 'using_dtbus_info' to indicate device tree reflect correctly bus
+> address translation in case break compatibility.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Change from v3 to v4
+> - change bus_addr_base to u64 to fix 32bit build error
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202410230328.BTHareG1-lkp@intel.com/
+> 
+> Change from v2 to v3
+> - Add using_dtbus_info to control if use device tree bus ranges
+> information.
+> ---
+>  drivers/pci/controller/dwc/pcie-designware-ep.c | 14 +++++++++++++-
+>  drivers/pci/controller/dwc/pcie-designware.h    |  9 +++++++++
+>  2 files changed, 22 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> index 43ba5c6738df1..81b4057befa62 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> @@ -9,6 +9,7 @@
+>  #include <linux/align.h>
+>  #include <linux/bitfield.h>
+>  #include <linux/of.h>
+> +#include <linux/of_address.h>
+>  #include <linux/platform_device.h>
+>  
+>  #include "pcie-designware.h"
+> @@ -294,7 +295,7 @@ static int dw_pcie_ep_map_addr(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+>  
+>  	atu.func_no = func_no;
+>  	atu.type = PCIE_ATU_TYPE_MEM;
+> -	atu.cpu_addr = addr;
+> +	atu.cpu_addr = addr - ep->phys_base + ep->bus_addr_base;
+
+Tangent: Maybe dw_pcie_ob_atu_cfg.cpu_addr isn't exactly the right
+name, since it now contains an address that is not a CPU physical
+address.  Not a question for *this* patch though.
+
+>  	atu.pci_addr = pci_addr;
+>  	atu.size = size;
+>  	ret = dw_pcie_ep_outbound_atu(ep, &atu);
+> @@ -861,6 +862,7 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
+>  	struct device *dev = pci->dev;
+>  	struct platform_device *pdev = to_platform_device(dev);
+>  	struct device_node *np = dev->of_node;
+> +	int index;
+>  
+>  	INIT_LIST_HEAD(&ep->func_list);
+>  
+> @@ -873,6 +875,16 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
+>  		return -EINVAL;
+>  
+>  	ep->phys_base = res->start;
+> +	ep->bus_addr_base = ep->phys_base;
+> +
+> +	if (pci->using_dtbus_info) {
+> +		index = of_property_match_string(np, "reg-names", "addr_space");
+> +		if (index < 0)
+> +			return -EINVAL;
+> +
+> +		of_property_read_reg(np, index, &ep->bus_addr_base, NULL);
+> +	}
+
+If this translation were fixed, I suppose we'd extract something from
+a "ranges" property that contains (child-bus-address,
+parent-bus-address) information.  So I suppose "addr_space" contains a
+fixed parent-bus-address, and is setting the child (PCI) bus address,
+right?
+
+If so, I might add a comment here for other readers who come this way.
+(And me, because I won't remember the next time I read it :)
+
+>  	ep->addr_size = resource_size(res);
+>  
+>  	if (ep->ops->pre_init)
+> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+> index 347ab74ac35aa..f10b533b04f77 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware.h
+> +++ b/drivers/pci/controller/dwc/pcie-designware.h
+> @@ -410,6 +410,7 @@ struct dw_pcie_ep {
+>  	struct list_head	func_list;
+>  	const struct dw_pcie_ep_ops *ops;
+>  	phys_addr_t		phys_base;
+> +	u64			bus_addr_base;
+>  	size_t			addr_size;
+>  	size_t			page_size;
+>  	u8			bar_to_atu[PCI_STD_NUM_BARS];
+> @@ -463,6 +464,14 @@ struct dw_pcie {
+>  	struct reset_control_bulk_data	core_rsts[DW_PCIE_NUM_CORE_RSTS];
+>  	struct gpio_desc		*pe_rst;
+>  	bool			suspended;
+> +	/*
+> +	 * Use device tree 'ranges' property of bus node instead using
+> +	 * cpu_addr_fixup(). Some old platform dts 'ranges' in bus node may not
+> +	 * reflect real hardware's behavior. In case break these platform back
+> +	 * compatibility, add below flags. Set it true if dts already correct
+> +	 * indicate bus fabric address convert.
+> +	 */
+> +	bool			using_dtbus_info;
+>  };
+>  
+>  #define to_dw_pcie_from_pp(port) container_of((port), struct dw_pcie, pp)
+> 
+> -- 
+> 2.34.1
+> 
