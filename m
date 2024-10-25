@@ -1,89 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEE270815;
-	Fri, 25 Oct 2024 14:08:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA7D1D4604
+	for <imx@lists.linux.dev>; Fri, 25 Oct 2024 14:10:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729865323; cv=none; b=Qf+B5saP1dmcLCq4U0CxoxXAPGvUwGhm2HiLNY4xfME+isl/X5kPE3J/Y+a/i8/WeGhDWw7i338V4NoBl5QjAmYCUZmnLbw6HlHAB1wybII9x5mrPKClqDymza8sBC6+Lb6hsRZczM8PuRIxZll8surw0BgPprL1MMDxBUmSEZ8=
+	t=1729865433; cv=none; b=kvsfkuEuoCNQaqRkGx98oFJSS4nElYr3LG0V6uBxBNDAAoq6QXj3vJD0hH2e2VxnXiunuHS8nxpIXcW3FPkWOZuueBRrtlLmt87xsMMDPwEBmeOtn0rL1kkZKyWckQJH3P3fq5cSR799ecJkI83YzZTyT9CiTW/UsNNDTT4T00I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729865323; c=relaxed/simple;
-	bh=UAhvGKQMZlcxZYweANcgZFVrALev3+1WlKHnBYS7k3I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fKK9Ot8shgA7qQIwnBQj8VAGW81kCREOGT/HwjFbdBW80Cuhy6VD7nSfjwh51TLFBPYCLUVLWq4VPIelAQ+uIzKxwUJcw8NHhBuV32k0engfiCXGg5LHw29xTTO3eFqrBynqX8IwG7+kXE6/oj8M8yN62pmQkJ6mJZbkTHLi3v0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YKqFICCZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729865433; c=relaxed/simple;
+	bh=UNZphZRiAU7HwBE54GXF6AQmf4CgwHYIZ6gfOVxLRws=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qXlD0YBDpJequJOIITWOHNVraAc6/8LFoMsfh42FvmFOL1pTiwAhkHGW4hNQ0KvIXHj8p2nU6ZlTSGcSvZUs9ysVDzjiDTS9R5AEzYlBWir5+LVUcyghbw4R0w8gQnFUuIsLYJPhaCu4gOXvMpLJK5SqjvaQ9SekyV2B1OYWM9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VHLjaCFA; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YKqFICCZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7019C4CEC3;
-	Fri, 25 Oct 2024 14:08:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729865323;
-	bh=UAhvGKQMZlcxZYweANcgZFVrALev3+1WlKHnBYS7k3I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YKqFICCZWx0mw2CpNzBm/oM2WUJc8PCl2UjDMwHyPEqMpWTZUJ2Z00LirgG8CG+FI
-	 cPI11i31kiYQDevCurmv7OZNVbbl+dg+PJoGBUpGYpKR3bQRcCXrcKYUpZgbb+RrJt
-	 9EzI3vZkNgT2MtcvdDAaG9+uInxui892/SgYoWjyYyWFKvHevuv3CLdpkvzchrIN0L
-	 hpH+l6zP+i06phfviIXiCp2RS4hoxFzmZ95oxFZXLMWoob3rSvQkdivXR6gLCuwcmS
-	 QN6JPVYSDrIy5leqdIN4KZMVojLOfYKw5ClTCC3lZrNeitoAuRrvG+zr2EElhMq6gf
-	 XARMdTJLZ4W0A==
-Date: Fri, 25 Oct 2024 09:08:42 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: linux-kernel@vger.kernel.org, edumazet@google.com,
-	xiaoning.wang@nxp.com, imx@lists.linux.dev,
-	christophe.leroy@csgroup.eu, linux-pci@vger.kernel.org,
-	bhelgaas@google.com, alexander.stein@ew.tq-group.com,
-	kuba@kernel.org, pabeni@redhat.com, krzk+dt@kernel.org,
-	devicetree@vger.kernel.org, davem@davemloft.net,
-	vladimir.oltean@nxp.com, horms@kernel.org, netdev@vger.kernel.org,
-	linux@armlinux.org.uk, Frank.Li@nxp.com, claudiu.manoil@nxp.com,
-	conor+dt@kernel.org
-Subject: Re: [PATCH v5 net-next 03/13] dt-bindings: net: add bindings for
- NETC blocks control
-Message-ID: <172986532146.2064042.10356681291273456543.robh@kernel.org>
-References: <20241024065328.521518-1-wei.fang@nxp.com>
- <20241024065328.521518-4-wei.fang@nxp.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VHLjaCFA"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 9B29924000A;
+	Fri, 25 Oct 2024 14:10:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1729865423;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UNZphZRiAU7HwBE54GXF6AQmf4CgwHYIZ6gfOVxLRws=;
+	b=VHLjaCFAEFG+cxatoXyaUlHYx/dlKo12fKFbWCMcrp4s8PokLQddoLf19eKvZcG1GfpjDD
+	JHkqYksUil83JkRe6MVgJTa35SRjUPk9c463407JhjNbfY8dMhjHujIRT7AdOYWCVZWEJV
+	uKpdRvFtqNHjsiSdZSmYKaN2Xc61fKdDHD8CmqTDENoszI2ZHTe4iXkVw4KlCU9prPeUyS
+	nsWZ3OHPNfHApIv6cbgsD72uwNOxfCWyf0x/MWEHpXa1v/pVLXH/wq3hbVx69ILhanfEHU
+	DPK4I3q/pTlNEFjo4PzYG2eMP7biMBhtTDW8OG/U4VqIs6DX7Sfkze3ORNB2RQ==
+Date: Fri, 25 Oct 2024 16:10:20 +0200
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Conor Culhane <conor.culhane@silvaco.com>, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, Clark Wang <xiaoning.wang@nxp.com>,
+ "moderated list:SILVACO I3C DUAL-ROLE MASTER"
+ <linux-i3c@lists.infradead.org>, open list <linux-kernel@vger.kernel.org>,
+ imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] i3c: master: svc: Modify enabled_events bit 7:0 to
+ act as IBI enable counter
+Message-ID: <20241025161020.11765f79@xps-13>
+In-Reply-To: <ZxukksXwyWN2HQ3I@lizhi-Precision-Tower-5810>
+References: <20241024203855.1584416-1-Frank.Li@nxp.com>
+	<20241025095318.4785df2c@xps-13>
+	<ZxukksXwyWN2HQ3I@lizhi-Precision-Tower-5810>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241024065328.521518-4-wei.fang@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
+Hi Frank,
 
-On Thu, 24 Oct 2024 14:53:18 +0800, Wei Fang wrote:
-> Add bindings for NXP NETC blocks control. Usually, NETC has 2 blocks of
-> 64KB registers, integrated endpoint register block (IERB) and privileged
-> register block (PRB). IERB is used for pre-boot initialization for all
-> NETC devices, such as ENETC, Timer, EMDIO and so on. And PRB controls
-> global reset and global error handling for NETC. Moreover, for the i.MX
-> platform, there is also a NETCMIX block for link configuration, such as
-> MII protocol, PCS protocol, etc.
-> 
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
-> v2 changes:
-> 1. Rephrase the commit message.
-> 2. Change unevaluatedProperties to additionalProperties.
-> 3. Remove the useless lables from examples.
-> v3 changes:
-> 1. Remove the items from clocks and clock-names, add maxItems to clocks
-> and rename the clock.
-> v4 changes:
-> 1. Reorder the required properties.
-> 2. Add assigned-clocks, assigned-clock-parents and assigned-clock-rates.
-> v5 changes:
-> 1. Remove assigned-clocks, assigned-clock-parents and assigned-clock-rates
-> 2. Remove minItems from reg and reg-names
-> 3. Rename the node in the examples to be more general
-> ---
->  .../bindings/net/nxp,netc-blk-ctrl.yaml       | 104 ++++++++++++++++++
->  1 file changed, 104 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/net/nxp,netc-blk-ctrl.yaml
-> 
+Frank.li@nxp.com wrote on Fri, 25 Oct 2024 10:00:50 -0400:
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+> On Fri, Oct 25, 2024 at 09:53:18AM +0200, Miquel Raynal wrote:
+> > Hi Frank,
+> >
+> > Frank.Li@nxp.com wrote on Thu, 24 Oct 2024 16:38:55 -0400:
+> > =20
+> > > Fix issue where disabling IBI on one device disables the entire IBI
+> > > interrupt. Modify bit 7:0 of enabled_events to serve as an IBI enable=
+ =20
+> >
+> > Is this bitfield arbitrary?
+> >
+> > Is there a rationale behind it? =20
+>=20
+> Max devices number under a I3C bus is 128 because dynamic address is 7 bi=
+t.
+> So 8 bits for it should be enough.
+>=20
+> Bit31 as hotjoin, Bit30 reserved as control switch request.
 
+Makes sense.
+
+Thanks,
+Miqu=C3=A8l
