@@ -1,196 +1,200 @@
-Received: from mx08-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62583215C77
-	for <imx@lists.linux.dev>; Fri, 25 Oct 2024 20:41:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A01A21A4D9;
+	Fri, 25 Oct 2024 20:48:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729888868; cv=none; b=YBakc4cjKVCsbnpXI+9fxVEBLXG8GQZbcn+BQNj6X0JIxI26iNm38lT6oZ2OSr4x2KrUeF0i3P+4WdIQ3UPHJUHEQU2nfLLDayqUK7JR5x/vSFP5/Ri/GNYjbrbQE1fUWIDt9+BTk0HNCm8auJoIv49TjTiGBPtMOsJqUJYAwgY=
+	t=1729889301; cv=none; b=iEIFGlTiaHevsXj6YoFWiI5ts8fIYBHdIS07uTHwZfeaGt03Vfhfbc0HPd/djXeZIrAkeAXtJXt46lBiSfJiGRa9fg5sViLuO5z+6Ny35mTgWc0RUTNB8W5wrsnzzRDo+7UamherUU7hTcxVol3igMn9A63tPD795wAjEvBRLK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729888868; c=relaxed/simple;
-	bh=37pHMme/eA+cwWgStWjnLTJBrA/6jf8f3LxJCLG/Z9I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=cyoLySFTcAsBhSjudMUbHsGICAJpTUxhMYT1IcCd+vNh1VVQ+YR9bvAlCV0LMKjjlgBkzgF9oAleZq1Nc7FNRGNZvPzGQk1MvEKnzZf4wQH1JLFP8RLHDjYgKihG7zwIJ3YVx4N8Jtk3q3WH6JR2E7zg3/v1jLBSPCinovWEic0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=m8Hgo1Sp; arc=none smtp.client-ip=91.207.212.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+	s=arc-20240116; t=1729889301; c=relaxed/simple;
+	bh=Qa6XR9RW2tuGLCT9wz9qCCFF4BPpg05WsUdkaKPe9fc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=qvuWcosi3kk2SRgbiB2Jiq5KtZq9kXvT2mZlX8306Ci5RD8+6w5nILmhsgu7p7Gx/lJ96bkOvxbvs6njty1qhY0tv99pWMbqxwqFrmQP7BTV5FVNOFtMaoE2pPi2IBLN403QkrOze+Ktea/MDIg5R1YKaG/DjTIyaiVoc+zo8a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O0JoU/cz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="m8Hgo1Sp"
-Received: from pps.filterd (m0369457.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49PJKt0c032047;
-	Fri, 25 Oct 2024 22:40:46 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	cBn+C5y6NRQQzDtpDKzFDt3ls8RVqF24UE75aofdF90=; b=m8Hgo1Sp45KcQsF3
-	cHgqhTKRwIawoV4ibOYYThQ/fTIO1+qk3rH7YgFcG0tvBgX2WVlZrPxbPZbIb4CJ
-	2p5hBQz4iE3RMrWkUcywbeT5fMRJmZzR59cSgir37+q56JcXRAiBiltjN1mdEcJ1
-	rBnmGBEDvSQt1e48fLoe5nA6XwqRAiQ6SDSgnTiw9S9zF+gjWK/1OgK93KUZW2oD
-	04oxtCA64jqExDQI4Mj9wMQPi49hAsLcgi0teyAagKOr1O23BPIxC4SB1VXpdpHx
-	J7eOhYJBh4Ha8Nz40WIDGBEOctZy+6QtsKHN2HAyCCCdfD7PzG6dm1Jw0PWA2dwQ
-	jinizg==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 42em4dyj02-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Oct 2024 22:40:46 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 785A64002D;
-	Fri, 25 Oct 2024 22:39:32 +0200 (CEST)
-Received: from Webmail-eu.st.com (eqndag1node6.st.com [10.75.129.135])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id C163A229A72;
-	Fri, 25 Oct 2024 22:38:54 +0200 (CEST)
-Received: from SAFDAG1NODE1.st.com (10.75.90.17) by EQNDAG1NODE6.st.com
- (10.75.129.135) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Fri, 25 Oct
- 2024 22:38:54 +0200
-Received: from [10.252.3.121] (10.252.3.121) by SAFDAG1NODE1.st.com
- (10.75.90.17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Fri, 25 Oct
- 2024 22:38:53 +0200
-Message-ID: <75427b09-6823-426e-b0dc-66caf97abbea@foss.st.com>
-Date: Fri, 25 Oct 2024 22:38:51 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O0JoU/cz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 899B8C4CEC3;
+	Fri, 25 Oct 2024 20:48:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729889300;
+	bh=Qa6XR9RW2tuGLCT9wz9qCCFF4BPpg05WsUdkaKPe9fc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=O0JoU/czSmbl+S8+9DjdgPrBH4OmStTDDTzQIXwjc/OMHpIXfOrQFB4U6ZVqzv0xf
+	 F1MBOFsMXtjYe4DoZdxBedNzkL7+2ieGaLLZK+yuVaTzyVti3Exkg4lm0TkWNnnr1f
+	 huLA4gDA4gUde3lNmzInCEadt86mhXxFsWeoUuL5kuu+N9hoYpz9Awaedcotpo98ol
+	 eRikEEuML8bhWNUsDjWgoM+NGO04UqXJwse0KOc43uQAa88h5Nqm+UlXR4wI4IE5b0
+	 s7TfTXzVRq2ntiZbmQOHmiBI0TxH1+Tuf+umrAbPcjDQTfMzZ6vhiFMBVibpuuY/H6
+	 J/ZkDfqrihYTQ==
+Date: Fri, 25 Oct 2024 15:48:18 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Abraham I <kishon@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+	Jesper Nilsson <jesper.nilsson@axis.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-pci@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: Re: [PATCH v4 0/4] PCI: ep: dwc/imx6: Add bus address support for
+ PCI endpoint devices
+Message-ID: <20241025204818.GA1028925@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] remoteproc: core: Add support for predefined
- notifyids
-To: Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Daniel Baluta
-	<daniel.baluta@nxp.com>
-CC: <andersson@kernel.org>, <linux-remoteproc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <imx@lists.linux.dev>,
-        <iuliana.prodan@nxp.com>, <peng.fan@nxp.com>,
-        Alexandru Lastur
-	<alexandru.lastur@nxp.com>
-References: <20241018110929.1646410-1-daniel.baluta@nxp.com>
- <ZxkW9SUr91PyH9c/@p14s>
-Content-Language: en-US
-From: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
-Organization: STMicroelectronics
-In-Reply-To: <ZxkW9SUr91PyH9c/@p14s>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SAFDAG1NODE1.st.com
- (10.75.90.17)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241024-pcie_ep_range-v4-0-08f8dcd4e481@nxp.com>
 
-hello
-
-On 10/23/24 17:32, Mathieu Poirier wrote:
-> Hello Daniel,
+On Thu, Oct 24, 2024 at 04:41:42PM -0400, Frank Li wrote:
+> Endpoint          Root complex
+>                              ┌───────┐        ┌─────────┐
+>                ┌─────┐       │ EP    │        │         │      ┌─────┐
+>                │     │       │ Ctrl  │        │         │      │ CPU │
+>                │ DDR │       │       │        │ ┌────┐  │      └──┬──┘
+>                │     │◄──────┼─ATU ◄─┼────────┼─┤BarN│◄─┼─────────┘
+>                │     │       │       │        │ └────┘  │ Outbound Transfer
+>                └─────┘       │       │        │         │
+>                              │       │        │         │
+>                              │       │        │         │
+>                              │       │        │         │ Inbound Transfer
+>                              │       │        │         │      ┌──▼──┐
+>               ┌───────┐      │       │        │ ┌───────┼─────►│DDR  │
+>               │       │ outbound Transfer*    │ │       │      └─────┘
+>    ┌─────┐    │ Bus   ┼─────►│ ATU  ─┬────────┼─┘       │
+>    │     │    │ Fabric│Bus   │       │ PCI Addr         │
+>    │ CPU ├───►│       │Addr  │       │ 0xA000_0000      │
+>    │     │CPU │       │0x8000_0000   │        │         │
+>    └─────┘Addr└───────┘      │       │        │         │
+>           0x7000_0000        └───────┘        └─────────┘
 > 
-> On Fri, Oct 18, 2024 at 02:09:29PM +0300, Daniel Baluta wrote:
->> Currently we generate notifyids in the linux kernel and override
->> those found in rsc_table.
->>
->> This doesn't play well with users expecting to use the exact ids
->> from rsc_table.
->>
->> So, use predefined notifyids found in rsc_table if any. Otherwise,
->> let Linux generate the ids as before.
->>
->> Keypoint is we also define an invalid notifid as 0xFFFFFFFFU. This
->> should be placed as notifids if users want Linux to generate the ids.
->>
->> Signed-off-by: Alexandru Lastur <alexandru.lastur@nxp.com>
->> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
->> ---
->>  drivers/remoteproc/remoteproc_core.c | 14 ++++++++++++--
->>  include/linux/remoteproc.h           |  1 +
->>  2 files changed, 13 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
->> index f276956f2c5c..9f00fe16da38 100644
->> --- a/drivers/remoteproc/remoteproc_core.c
->> +++ b/drivers/remoteproc/remoteproc_core.c
->> @@ -332,6 +332,7 @@ int rproc_alloc_vring(struct rproc_vdev *rvdev, int i)
->>  	int ret, notifyid;
->>  	struct rproc_mem_entry *mem;
->>  	size_t size;
->> +	int start, end;
->>  
->>  	/* actual size of vring (in bytes) */
->>  	size = PAGE_ALIGN(vring_size(rvring->num, rvring->align));
->> @@ -363,9 +364,18 @@ int rproc_alloc_vring(struct rproc_vdev *rvdev, int i)
->>  	/*
->>  	 * Assign an rproc-wide unique index for this vring
->>  	 * TODO: assign a notifyid for rvdev updates as well
->> -	 * TODO: support predefined notifyids (via resource table)
->>  	 */
->> -	ret = idr_alloc(&rproc->notifyids, rvring, 0, 0, GFP_KERNEL);
->> +
->> +	start = 0;
->> +	end = 0;
->> +
->> +	/* use id if specified in rsc table */
->> +	if (rsc->vring[i].notifyid != RSC_INVALID_NOTIFYID) {
->> +		start = rsc->vring[i].notifyid;
->> +		end = start + 1;
->> +	}
+> Add `bus_addr_base` to configure the outbound window address for CPU write.
+> The BUS fabric generally passes the same address to the PCIe EP controller,
+> but some BUS fabrics convert the address before sending it to the PCIe EP
+> controller.
 > 
-> This will likely introduce a backward compatibility issue where anyone that
-> has more than one vring and set their notifyids to anything else than 0xFFFFFFFF
-> in the resource table will see a boot failure.
+> Above diagram, CPU write data to outbound windows address 0x7000_0000,
+> Bus fabric convert it to 0x8000_0000. ATU should use BUS address
+> 0x8000_0000 as input address and convert to PCI address 0xA000_0000.
+
+The above doesn't match what's in patch 1/4, and I think the version
+in 1/4 is better, so I'll comment there.
+
+To avoid confusion, it might be better not to duplicate it in 0/4 and
+1/4.
+
+> Previously, `cpu_addr_fixup()` was used to handle address conversion. Now,
+> the device tree provides this information, preferring a common method.
 > 
-> A while back the openAMP group started discussions on using the configuration
-> space of a virtio device to enhance device discovery, with exactly this kind of
-> use case in mind.  I think it is the only way to move forward with this
-> feature, though it is a big job that requires a lot of community interactions.
+> bus@5f000000 {
+> 	compatible = "simple-bus";
+> 	ranges = <0x80000000 0x0 0x70000000 0x10000000>;
 > 
-FYI a PR exists in OpenAMP to use this configuration space to customize the
-size of the buffers [2].
-
-This probably means we need something scalable for the configuration space.
-
-I guess your objective is to match the vring ID with the mailbox channel ID, right?
-We have a similar issue with the STM32MP1/2. It is hard-coded in the stm32_rproc
-driver[1], which is far from perfect because it is not simple to add a new vdev
-instance.
-
-I would have two other alternatives to highlight
-
-- An alternative could be to have a vendor resource in the resource table and
-use rproc_handle_rsc operations. This resource would define the match between the
-vrings IDs and the mailbox IDs.
-However, if several vendors are facing the same issue, perhaps better to find a
-generic solution.
-
-- another alternative already discussed several times in openAMP group would be
-to define a new version of the resource table.
-
-[1]https://elixir.bootlin.com/linux/v6.11/source/drivers/remoteproc/stm32_rproc.c#L328
-[2] https://github.com/OpenAMP/open-amp/pull/155
-
-Regards
-Arnaud
-
-> Regards,
-> Mathieu
+> 	pcie-ep@5f010000 {
+> 		reg = <0x5f010000 0x00010000>,
+> 		      <0x80000000 0x10000000>;
+> 		reg-names = "dbi", "addr_space";
+> 		...
+> 	};
+> 	...
+> };
 > 
->> +
->> +	ret = idr_alloc(&rproc->notifyids, rvring, start, end, GFP_KERNEL);
->>  	if (ret < 0) {
->>  		dev_err(dev, "idr_alloc failed: %d\n", ret);
->>  		return ret;
->> diff --git a/include/linux/remoteproc.h b/include/linux/remoteproc.h
->> index b4795698d8c2..98c3e181086e 100644
->> --- a/include/linux/remoteproc.h
->> +++ b/include/linux/remoteproc.h
->> @@ -238,6 +238,7 @@ struct fw_rsc_trace {
->>  	u8 name[32];
->>  } __packed;
->>  
->> +#define RSC_INVALID_NOTIFYID 0xFFFFFFFFU
->>  /**
->>   * struct fw_rsc_vdev_vring - vring descriptor entry
->>   * @da: device address
->> -- 
->> 2.43.0
->>
+> 'ranges' in bus@5f000000 descript how address convert from CPU address
+> to BUS address.
+> 
+> Use `of_property_read_reg()` to obtain the BUS address and set it to the
+> ATU correctly, eliminating the need for vendor-specific cpu_addr_fixup().
+> 
+> The 1st patch implement above method in dwc common driver.
+> The 2nd patch update imx6's binding doc to add fsl,imx8q-pcie-ep.
+> The 3rd patch fix a pci-mx6's a bug
+> The 4th patch enable pci ep function.
+> 
+> The imx8q's dts is usptreaming, the pcie-ep part is below.
+> 
+> hsio_subsys: bus@5f000000 {
+>         compatible = "simple-bus";
+>         #address-cells = <1>;
+>         #size-cells = <1>;
+>         /* Only supports up to 32bits DMA, map all possible DDR as inbound ranges */
+>         dma-ranges = <0x80000000 0 0x80000000 0x80000000>;
+>         ranges = <0x5f000000 0x0 0x5f000000 0x01000000>,
+>                  <0x80000000 0x0 0x70000000 0x10000000>;
+> 
+> 	pcieb_ep: pcie-ep@5f010000 {
+>                 compatible = "fsl,imx8q-pcie-ep";
+>                 reg = <0x5f010000 0x00010000>,
+>                       <0x80000000 0x10000000>;
+>                 reg-names = "dbi", "addr_space";
+>                 num-lanes = <1>;
+>                 interrupts = <GIC_SPI 104 IRQ_TYPE_LEVEL_HIGH>;
+>                 interrupt-names = "dma";
+>                 clocks = <&pcieb_lpcg IMX_LPCG_CLK_6>,
+>                          <&pcieb_lpcg IMX_LPCG_CLK_4>,
+>                          <&pcieb_lpcg IMX_LPCG_CLK_5>;
+>                 clock-names = "dbi", "mstr", "slv";
+>                 power-domains = <&pd IMX_SC_R_PCIE_B>;
+>                 fsl,max-link-speed = <3>;
+>                 num-ib-windows = <6>;
+>                 num-ob-windows = <6>;
+>         };
+> };
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Changes in v4:
+> - Fix 32bit build error
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202410230328.BTHareG1-lkp@intel.com/
+> - Link to v3: https://lore.kernel.org/r/20241021-pcie_ep_range-v3-0-b13526eb0089@nxp.com
+> 
+> Changes in v3:
+> - Add mani' review tag for patch 3,4
+> - Add varible using_dtbus_info to control use bus range information instead
+> cpu_address_fixup().
+> - Link to v2: https://lore.kernel.org/r/20240923-pcie_ep_range-v2-0-78d2ea434d9f@nxp.com
+> 
+> Changes in v2:
+> - Totally rewrite with difference method. 'range' should in bus node
+> instead pcie-ep node because address convert happen at bus fabric. Needn't
+> add 'range' property at pci-ep node.
+> - Link to v1: https://lore.kernel.org/r/20240919-pcie_ep_range-v1-0-b3e9d62780b7@nxp.com
+> 
+> ---
+> Frank Li (4):
+>       PCI: dwc: ep: Add bus_addr_base for outbound window
+>       dt-bindings: PCI: fsl,imx6q-pcie-ep: Add compatible string fsl,imx8q-pcie-ep
+>       PCI: imx6: Pass correct sub mode when calling phy_set_mode_ext()
+>       PCI: imx6: Add i.MX8Q PCIe Endpoint (EP) support
+> 
+>  .../devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml | 38 +++++++++++++++++++++-
+>  drivers/pci/controller/dwc/pci-imx6.c              | 26 ++++++++++++++-
+>  drivers/pci/controller/dwc/pcie-designware-ep.c    | 14 +++++++-
+>  drivers/pci/controller/dwc/pcie-designware.h       |  9 +++++
+>  4 files changed, 84 insertions(+), 3 deletions(-)
+> ---
+> base-commit: afb15ca28055352101286046c1f9f01fdaa1ace1
+> change-id: 20240918-pcie_ep_range-4c5c5e300e19
+> 
+> Best regards,
+> ---
+> Frank Li <Frank.Li@nxp.com>
 > 
