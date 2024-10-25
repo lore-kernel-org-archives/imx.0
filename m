@@ -1,123 +1,186 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011063.outbound.protection.outlook.com [52.101.65.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40061D1E75;
-	Fri, 25 Oct 2024 21:36:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729892189; cv=none; b=KgjzEVw/4w4ZycajHmBj0lm4w75cVJFfLDxj3UQgYzkIgGUO4zlANpq1Dn5WnBL4ngsmalg5Tn9P35p8BrO96NIWZTfS39enjn3jnYa5dBQn4q2pX76LUxbzzG+Hnxv1lXkwNN/6dIyl+J/+A73w/BfVpdlZ8nOHj+OGBOdlW+Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729892189; c=relaxed/simple;
-	bh=0VXLkxh/2Ecsv6rIIKWkGlW2EIFOBXyj7cfyt2r+xLM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=etGObcW1sK9rL6v9aBeOVShVHjDTCFg4t2ZbQxKTIhvYeeJyyTV+R3BUZIH0D3v206hXvzB7AYrg/Ho5of2xjOaBA782pKAD4ufnpWYXRzeqz779wuReMm3yAGYJllhPVlmb9hYIwSdWWSei9EtiWI9kQ8Yl8eSwQjd/k/ciIzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lyf/v0GP; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A6E217F56
+	for <imx@lists.linux.dev>; Fri, 25 Oct 2024 22:08:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729894112; cv=fail; b=g/grBYejT9t6MKPYX4HUjRgRcq606AB4KMHfll9XBm8CTFWqaDhBi7Bp4/oq/Ejui2bmM2SyixSymdOJMWQAoZ7ZNN9UCJXMJdPs36Vj2mQb/t+yZl0nOFkM2dMEQTu4Py+ptd4xjUcO1n25Tu9yAVS97JSE/Q9D1ER+Ssp85fg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729894112; c=relaxed/simple;
+	bh=5p2XFoQB4HXuP/KyQ9IhHnOk3vRwROhi3BCUtXDvS+I=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=I01GajK8Z26Znk3+kLRXNLZqU9ff64iU9fBKgOkEAh6UOwyAvon24g7sonM4I5nK9mLIF+A1147TeKkTTmu081vUiq7OiZx6wXjIRIj+agTPbAQiSLZz65oYEwt0jOKGHGbC8WuR7RWNegOisF871SxCVfNrBHBWPyLGGzeAZmI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=PuyW3Wor; arc=fail smtp.client-ip=52.101.65.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lyf/v0GP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41AF3C4CECC;
-	Fri, 25 Oct 2024 21:36:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729892188;
-	bh=0VXLkxh/2Ecsv6rIIKWkGlW2EIFOBXyj7cfyt2r+xLM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=Lyf/v0GP/E2zd0MG4qbYJMsm3GH3QEQ2KMOyNh3zfnsWD+lCIlZyurAiQTgGyODMq
-	 gpjNp9BULeC1T38Gc+WKexKxJWC0h3XMps1GjZp6U7BJ3JQOqfruzmZ/mtWrEsRJaA
-	 /rGTwHlhfo6Div0SvSBfMLULLsudg0gEZf//trY6n13+0FAkwwT2oIWxZNoyE/S5HS
-	 imKkGLdyMSS+KgpkS2UuHJNPNzUKE0hrQ/wJGAmHUP8AbFcJBHI1s+LArEiUOQNpxz
-	 ZEHXNYhKRCTZVXiAv5XmZzehJkVwV2ZjJj3OlvX4saCmtTiR26pWiPXTaPSOghHnxV
-	 BeSsAkGJsW/8w==
-Date: Fri, 25 Oct 2024 16:36:26 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="PuyW3Wor"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RV6zguqB/YzWLjrMNwrun1A55bWreQHBhHBHe3vBPTPqAK6vTW/+3rRaWTR125bA6u465CCB4W0Ovg96XkbpNKe2EsCXNPxI0JPiwdIubGM39n38v2s3SOeyHXlGKYfrXReyd8uLtUmV+mm2dpAjAHmQL9cXqW+PA1aLTQPbkvsSy7j1fXwhPXe74LgcN+8TB+7Yki2NDe8GwgH4AcMZ7t5upheAy8ob2fLWCQ59yAYvj1Z6P7ShkyCD1edML3ghrwJPtgA04SHOLmn6nGKyRuNthJn3yBp3BIBLcqxigJxevJtu20AENTVho/6GCex1m+9RVrjNkHdNwoyzHu7RPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xZnWVvuX1G03O2mqZStWp+nvKszw0pdshCRaDxa0Jvc=;
+ b=bmLg3HamyDje0hQrqfUPk3qmod7RG17S5pFQdhNebwe4+7xL3oMxNc6eQKa2V+VAhE4UJokDJdDX4HXlpD+dM2gK+qpVpSvLlr6Nw9580yKKY6ONWKyuf/Fn+QepWyBwL71gx5d+yBdPvm+oMe6isO5xHiSU4yRHINd/ipqoWBSo10WNlXUZVTgplH6FgGENrRc1JnauOqZm7KzJqaQ+wbINW56pnlm9j/tmOIlhammHsrVqK6NhL1jFiQC9Q4JuM7vA7CwkFmnWG6Lju4x9UdJZQ30NIvE0qHFjgzZfJ/cKhUOnjMsSrkmD1Y/lltazHb9Ku9SCbW7V8zngTfralw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xZnWVvuX1G03O2mqZStWp+nvKszw0pdshCRaDxa0Jvc=;
+ b=PuyW3WorcV/DqmkST+6TM+K4/X+NMqwf49gqzde57U9sHw3ZCuiQF7NDHaVHNcjjb0v15d+GLwXzDfz+T6QFSllkdP9Rh7LdpEuTzU9RV9o2f6ZlSsZlu+L4fi8NQP1UJvWFYR4lrO7cNVlLOV8gFJ4XnoeQ3vGWtkgIPx5Vw+8hGx6RD7TXGaK8KHOi3tnLz+KT7eMVzYfKGs8dH24Sn+gmllnSIeoQCcoK2C4b1Bky7X5K2Jj0oi1SnOnxJgmo9VM5DKI8DNWvm6g8Qz9TXpocGc3X0d3deTVpoWcC+sZFFSZiD277A71elP+9RoY4t/OcWFgYR/AhAJxY66KTbQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PAWPR04MB9987.eurprd04.prod.outlook.com (2603:10a6:102:387::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.27; Fri, 25 Oct
+ 2024 22:08:26 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8069.024; Fri, 25 Oct 2024
+ 22:08:26 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Abraham I <kishon@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-	Jesper Nilsson <jesper.nilsson@axis.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-pci@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v4 0/4] PCI: ep: dwc/imx6: Add bus address support for
- PCI endpoint devices
-Message-ID: <20241025213626.GA1030542@bhelgaas>
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/3] arm64: dts: imx8qxp-mek: replace hardcode 0 with IMX_LPCG_CLK_0
+Date: Fri, 25 Oct 2024 18:08:08 -0400
+Message-Id: <20241025220810.1833819-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR05CA0098.namprd05.prod.outlook.com
+ (2603:10b6:a03:334::13) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZxwH//clayRL2emF@lizhi-Precision-Tower-5810>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAWPR04MB9987:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5fae2ce0-b66c-4862-9cbf-08dcf5418cff
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|7416014|376014|1800799024|366016|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?d7x8Xj4Yn6aGneTwEG18WccBk2+yAtyl//A0LPBWkQyCRU0G9TWYQsTQBMwY?=
+ =?us-ascii?Q?l2Izi/y4T8WTal0di+o80tlPm/QE4JFv30/7hGr4IO4s9De1riL56/lnsEUy?=
+ =?us-ascii?Q?29QyyIgccbAnG3ygYhk5vbjL80gtaDHn9f9+PbTkw0D9NtvAIJm2c0AIJwzc?=
+ =?us-ascii?Q?nfg5ZUhabwLfZlZgv/0cTWVimB8zjMmKb06mvh4l3HoAz+H2aOqdTIVEipzV?=
+ =?us-ascii?Q?FMEwzZ2HGdi69Uw02cAa1H9JF6oNQIlsxEObVbsBG0+XY6DbiEKGgcapfNay?=
+ =?us-ascii?Q?LEAMGAzXOrU4jIOAaWsTEKsbIWn3yAdIFMbru3OGJxu0fA3YzL1zgq9OT7XM?=
+ =?us-ascii?Q?tFAKtixcMadBXiFf1u+lY/7Nc1fqdPNQxC87fjQzRdkjTFtbTQ0/jH42Ue/g?=
+ =?us-ascii?Q?c1UWVpKh0zxB4dbWX/8VLi34X8Idix9HmY4OMGzs8xlIOIApqF3qZtwI/Vjx?=
+ =?us-ascii?Q?2WKecpRSE7FhtnMO8xUIWKHj55B2JrW4NkRQ5c8+YKilrpslAS5D8J41TECZ?=
+ =?us-ascii?Q?OBIBmznhlGrjJcih5vIsdmXgpiWpP3+J/QfYMyI9ujRABFUS7bKfl31np19j?=
+ =?us-ascii?Q?hKNFiu0h+ym56TcG7W7uuH7HtYykJDrtrtabvf1hWCfogBp/Ym4sLN2jK0T6?=
+ =?us-ascii?Q?ly7gXT2xc+imZ+Ev60Y6xcrLSneVnFaXqLZtAxBxWO4HTVXMtoHj/CoHvayW?=
+ =?us-ascii?Q?xp7a0Iv2pStbK0lMbEn+JDoIvsWhbaAyMiPnsdJxmXS3AwHD78jdvlM7jaiq?=
+ =?us-ascii?Q?1EQWcKeWRssCLYQT8kwg3jKzYUsNKRPh0S+LwMIqfb0IXdNRymFBNs3Hnj3z?=
+ =?us-ascii?Q?vnsAb7l20isyNRKUid3624NN0a0EzIHPK2Rk4EeBUEQ1QR+ZGEOrTV1UyeKM?=
+ =?us-ascii?Q?oeURoCFEz+OnkzxoOEIK0db9oz1DKvRiOeJ50wIR7ccH7mKqfTLwJzUwVUX3?=
+ =?us-ascii?Q?n3lo4sRQwaTsRBaQNcMpKCa8daOu9kJIionh7Ni5bHtVcSn/nwfRxwQ9oWqM?=
+ =?us-ascii?Q?EkbJ/Q6S/QKZGx9jUqD5C+fuFIiWFYfkudchVhIgo+MO3myZ/jB1Erb5tojK?=
+ =?us-ascii?Q?z9QtR22PnSTu751yfIJvWOrDuNTo4Fs/Ab1IaOy7vLPBTlgpB7wVbO29r95D?=
+ =?us-ascii?Q?H8c5fvUO9iguS3KTTfZMxTl3KOYazUpAO0RjYffJ+4YEn3nJt2/2J+DmkJXX?=
+ =?us-ascii?Q?NMKJgwP72sdxBl6zKakUUDYQDZESBw/XVl2gaG2QSEaWqLRUcWV1s2pjNz1r?=
+ =?us-ascii?Q?Pi0lwM8l5o09e2N8gyUya2DKskRSCZVmyDijjnU4H0QLnjJzLUH8zVDQGvCA?=
+ =?us-ascii?Q?GQTnpsJql23efIUAFb3otxcTPlyjfhbe8IKyipGNJ3DpIVFHd4KK4+2skdEt?=
+ =?us-ascii?Q?D2emyZkmmtlWNKekxshCVLruCZCT?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(1800799024)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?jQb/ghhQOA/kp8xrTqgKxL2GuFS6m/2Pg1a8BWpwHYHytP/OXqK6EOFY0wI+?=
+ =?us-ascii?Q?WM/tbuNBQ8wWnDx5aqanW0T2XVearxX/NagDiDraXwYlE4kxeDyG4yN8KY9Q?=
+ =?us-ascii?Q?rNtSy+f2G5qcWuJcpET5HDnHO8JEa4ynt+XV2GBvfLrY9Fn3aE1AQ0w9NvUm?=
+ =?us-ascii?Q?wEUdCk1uhY8XL9IpRXC++m3OYaW5uGSE3w8wJaGZ7tZfACg5muJbJ0tHI5LT?=
+ =?us-ascii?Q?zh6izyte8mr/BHL21/P2cRhvYTEpHfXynwI53017uSJJkpk7EiUUaJ+ZMUI4?=
+ =?us-ascii?Q?BnrBhLs3oQIG949CUn6Bg6gCRevI/NzdQA9pes19UV73qitxRo4oWWjXqxFI?=
+ =?us-ascii?Q?h/KK8GwuvqZ612GofLhReMyCgHXDNtqarHZVepx/QG8bvtK2GVgNVALJYeJp?=
+ =?us-ascii?Q?ooPRjPg6FY/aGOgatcWRrlPwPEzFmZw+V5OGnlBjg4RQR6+cSsdHP5pcXQwX?=
+ =?us-ascii?Q?9+wKXOvKex5zVo7JQheRbj7CeCPrFKTzGDUo1L85TnFqEEZUrZIpXluTXiCy?=
+ =?us-ascii?Q?3c9RrGfwv5G5gm0eMDlttAtbvQjry4N/4vxDCayKaNWgmy7a07WtNz5GgGA9?=
+ =?us-ascii?Q?0tPqIA8UC4ntzKonDPy4I7XWuavB00Kkri4cdBZQkmCkG5wuHSWOCGGpFvDw?=
+ =?us-ascii?Q?HWDzdAOgFJXNWWmX8veF6qI0fHTqAwKedNOxsM8D0Yd8NFVO65EXk7/4DofO?=
+ =?us-ascii?Q?aMYvIKa+to2t2pRwDefTP86NknfoNRf5NQcK9VESi5/3Ym3hfXkmrBeUUC/b?=
+ =?us-ascii?Q?c2QRUOpL9Qybt7/eeMCoLjjNGBBQ9HGS2c44MXysIAj/tT8y4wLZNP8/vaER?=
+ =?us-ascii?Q?7kQEO1Osp924Y2s+bWcGV2a6Ij0hLfg8M7PXCLo/PQDE+pxzKnOXDNsI0kHQ?=
+ =?us-ascii?Q?4jox+FzqRgyxMLm3pyNiypxl73jhxuOXFFTkTuJ+r8vKDvDXjXXLP8/egcND?=
+ =?us-ascii?Q?4t4c0TXQU/yEu97oDnrKuLfdXZu6HY5H6v3Lv92OC1eBU48V6zp/19UkNBog?=
+ =?us-ascii?Q?tMfa+AY5cQmT907LW0bfT9pmp0kRsGGOXgqgmPp3T7yMtYdY5kf0mCiJs9pw?=
+ =?us-ascii?Q?6AYLXKj7LO5ooIA+pSyfi6/5L9EuvmDd9/2YmDXTGAqSADDlxUyOCRlP1Upc?=
+ =?us-ascii?Q?qrcOk9JvfvZuonCe3IyCaHRR9PafERPFQy0XjBRdTv3yv0hSWqG2G/Y9ALAm?=
+ =?us-ascii?Q?QFmTPN+ZHPELjRgNUt2bYKGj7yiQdv47IdWZdhkellpAjnJsB7Vh3kLqMlQ5?=
+ =?us-ascii?Q?ouvx7M/LvBfk95qJj5r08oVx1kdExSfy+IEEYO4nqje4gew9UHwVXxb/yMTZ?=
+ =?us-ascii?Q?608tjruP8Tid0phH7eh2rLmA48bQ489L9SHY9Si/pRiBTuNE4RC6dopkTuol?=
+ =?us-ascii?Q?yrJnh9EHjXdXXZGlnaPjDfyrMBSM5POmF5o8SVcvdg2zpsg508tVXcXCbHOO?=
+ =?us-ascii?Q?AGzKgRuIdNnD9R10zAj8SiOhl6hSsQTX5MxmDcOi/SAJn1ujLWWdSariU1J8?=
+ =?us-ascii?Q?r3MqBLhpTyIed6E3DNpgfF4Sq2FhPITR5eWgcW7FV8v+k8TDu1hgyGhMznmh?=
+ =?us-ascii?Q?COyS/ImhLneSfnQZW+xcNE5WYvF4KWD8gOVwFbB5?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5fae2ce0-b66c-4862-9cbf-08dcf5418cff
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2024 22:08:26.8619
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XI/HVuEQhDdGts2GeeJjS2OKQi7KYYSj5y+E/nz11BZUpCwSvNosBfparJ62TI0qovIVSQGU5YpW0ghDKbhV3A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB9987
 
-On Fri, Oct 25, 2024 at 05:05:03PM -0400, Frank Li wrote:
-> On Fri, Oct 25, 2024 at 03:48:18PM -0500, Bjorn Helgaas wrote:
-> > On Thu, Oct 24, 2024 at 04:41:42PM -0400, Frank Li wrote:
-> > > Endpoint          Root complex
-> > >                              ┌───────┐        ┌─────────┐
-> > >                ┌─────┐       │ EP    │        │         │      ┌─────┐
-> > >                │     │       │ Ctrl  │        │         │      │ CPU │
-> > >                │ DDR │       │       │        │ ┌────┐  │      └──┬──┘
-> > >                │     │◄──────┼─ATU ◄─┼────────┼─┤BarN│◄─┼─────────┘
-> > >                │     │       │       │        │ └────┘  │ Outbound Transfer
-> > >                └─────┘       │       │        │         │
-> > >                              │       │        │         │
-> > >                              │       │        │         │
-> > >                              │       │        │         │ Inbound Transfer
-> > >                              │       │        │         │      ┌──▼──┐
-> > >               ┌───────┐      │       │        │ ┌───────┼─────►│DDR  │
-> > >               │       │ outbound Transfer*    │ │       │      └─────┘
-> > >    ┌─────┐    │ Bus   ┼─────►│ ATU  ─┬────────┼─┘       │
-> > >    │     │    │ Fabric│Bus   │       │ PCI Addr         │
-> > >    │ CPU ├───►│       │Addr  │       │ 0xA000_0000      │
-> > >    │     │CPU │       │0x8000_0000   │        │         │
-> > >    └─────┘Addr└───────┘      │       │        │         │
-> > >           0x7000_0000        └───────┘        └─────────┘
-> > >
-> > > Add `bus_addr_base` to configure the outbound window address for CPU write.
-> > > The BUS fabric generally passes the same address to the PCIe EP controller,
-> > > but some BUS fabrics convert the address before sending it to the PCIe EP
-> > > controller.
-> > >
-> > > Above diagram, CPU write data to outbound windows address 0x7000_0000,
-> > > Bus fabric convert it to 0x8000_0000. ATU should use BUS address
-> > > 0x8000_0000 as input address and convert to PCI address 0xA000_0000.
-> >
-> > The above doesn't match what's in patch 1/4, and I think the version
-> > in 1/4 is better, so I'll comment there.
-> >
-> > To avoid confusion, it might be better not to duplicate it in 0/4 and
-> > 1/4.
-> 
-> Yes, cover letter don't come into git tree. This part is common and
-> important, It is not good just said ref to patch1 commit message.
-> 
-> Add do you have addition comment about this and
-> https://lore.kernel.org/imx/20241015-pci_fixup_addr-v5-0-ced556c85270@nxp.com/T/#t
-> 
-> The both are the pave the road to clean up pci_fixup_addr().
+Update clock settings to use the macro IMX_LPCG_CLK_0 instead of the
+hardcoded value 0. The first argument of lpcg is indices, not index.
 
-I think it would be helpful to combine the "PCI: dwc: optimize RC host
-pci_fixup_addr()" series and the "bus_addr_base" parts of this series
-together into a single series because they are doing very similar
-things, and it's easier to review them together.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ arch/arm64/boot/dts/freescale/imx8qxp-mek.dts | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-And split the dt-bindings, PHY sub mode, and new endpoint support
-parts to their own series because they're not related to the address
-translation changes.
+diff --git a/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts b/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts
+index 2afebe523fa9d..531236d83caa4 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts
++++ b/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts
+@@ -230,8 +230,8 @@ &esai0 {
+ 			<&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
+ 			<&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
+ 			<&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
+-			<&esai0_lpcg 0>;
+-	assigned-clock-parents = <&aud_pll_div0_lpcg 0>;
++			<&esai0_lpcg IMX_LPCG_CLK_0>;
++	assigned-clock-parents = <&aud_pll_div0_lpcg IMX_LPCG_CLK_0>;
+ 	assigned-clock-rates = <0>, <786432000>, <49152000>, <12288000>, <49152000>;
+ 	pinctrl-0 = <&pinctrl_esai0>;
+ 	pinctrl-names = "default";
+@@ -411,12 +411,12 @@ pca6416: gpio@20 {
+ 	cs42888: audio-codec@48 {
+ 		compatible = "cirrus,cs42888";
+ 		reg = <0x48>;
+-		clocks = <&mclkout0_lpcg 0>;
++		clocks = <&mclkout0_lpcg IMX_LPCG_CLK_0>;
+ 		clock-names = "mclk";
+ 		assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
+ 				<&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
+ 				<&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
+-				<&mclkout0_lpcg 0>;
++				<&mclkout0_lpcg IMX_LPCG_CLK_0>;
+ 		assigned-clock-rates = <786432000>, <49152000>, <12288000>, <12288000>;
+ 		reset-gpios = <&pca9557_b 1 GPIO_ACTIVE_LOW>;
+ 		VA-supply = <&reg_audio>;
+-- 
+2.34.1
 
-Bjorn
