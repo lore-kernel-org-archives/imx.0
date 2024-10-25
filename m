@@ -1,142 +1,125 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA44F1DACA6
-	for <imx@lists.linux.dev>; Fri, 25 Oct 2024 10:19:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26DEA1C9B62;
+	Fri, 25 Oct 2024 11:40:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729851557; cv=none; b=HLmqOOLViuUnFJc4AOpvrHevhE8eUGHtUNhrOJacsyfIEppcQ3f/fMy0G1SVM5oUk9xNfRzx/NGcucaknLrNvJOKsEtqI5jD3P4LR4MvtZeLYKAUVlqL3LfNEeCl+8KUpDDuziRhD4apeZUfk8biv9iySUeeIbpxboJTA1pQZgQ=
+	t=1729856421; cv=none; b=GpR4I7v83z/JwwSAN4iAIGVDPKdpEd+/hv7yDxBJhLom2XCO7Cu6Ub+XEX3p1z4zP7IJUfXUG81qSydzGezDTVItrAoPZkml/sL3XE0DM8fuptTlnewWYGiFtX3ljdrOXKnmieY8NGENPeSaR03vU0XOot72tauWzZPpjq2lT0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729851557; c=relaxed/simple;
-	bh=wztGz+7mTnjQfQckDlenureqkG6+xK61b49dTcDj3sY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rHjLFSXPmV+Df1Ltc5/vGybYFyCR7dai36xA/zLbYcnNApC0O0WY4agZtp+dw556MxExzPu7i3XMl+qlXASHn73Y4uRe3ddTD8bZGPXl1ebws4R1YJilZfugH6y/gB93IBSvxQhq2NUWMztvOz7C4vy7KSLo86iXlh0f/YfGBJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=EAOM7n7W; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=HsLLxgTy reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1729856421; c=relaxed/simple;
+	bh=ofSPYgFrnu8JAd+kBqIWgAgIW4Xr/a4YZqs3eSHQFog=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=TsAXkIxb0tmXC8YZ2pgyjRQr5L2zSH+aZUQ+VauOchR7znaavNwXL5XYQQkdLBrn4Y70HU1nsha86ZEw9SwZayeCKxWiD7C7FGHWN2umuLu/r/vO2T94H8CezEh93iuIqHOuRq2VqgwxGv7ovnRosAYXycsPD6MJt1dgO9C1su0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sl3O2XqW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="EAOM7n7W";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="HsLLxgTy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1729851554; x=1761387554;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=1itM/kyCdE0gs81rWSjrF3aXRgyfQNm1Tl9jiHBKESM=;
-  b=EAOM7n7W/ElkuQv9nl8vZ/g2cP/H8wk3bSa+E4aWdnxIX/hFlcI493wt
-   ekFEkVzphLaXoihW9VTybU19avU5yu4RMzixC2AnhWpMlDMBWfzisn/1B
-   werEmF1kGdKbbqa4s2F9G83zNdElHxlUzdE9tgn51MfllqKoyRmGzHONp
-   isFsVnMK9vX38fnszppl8U7zy2hQOmGAhcfK5xgl8OKyXr3WFaOO9IYzz
-   ZW5L9qhTmU7ZvkcQKTkz4C9fKyTWafTmWpl7SBAFcHfDO9pHCxGCF9Nyk
-   HgKaRisQQKNf/zuDf287EQaEMd5AEXnPU0iPRy9BlPccs/fxtWspa2ABX
-   g==;
-X-CSE-ConnectionGUID: 2eIj9DeVQVqdqX0utdSxuQ==
-X-CSE-MsgGUID: dwE/WrBaSKeaQH2e20x1LQ==
-X-IronPort-AV: E=Sophos;i="6.11,231,1725314400"; 
-   d="scan'208";a="39672877"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 25 Oct 2024 12:19:12 +0200
-X-CheckPoint: {671B70A0-21-69FF9A8E-EE9CEDAF}
-X-MAIL-CPID: F2B36C0168125F39CE454E81CF2DD6CA_0
-X-Control-Analysis: str=0001.0A682F24.671B70A0.00C9,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CA7441643AB;
-	Fri, 25 Oct 2024 12:19:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1729851548;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=1itM/kyCdE0gs81rWSjrF3aXRgyfQNm1Tl9jiHBKESM=;
-	b=HsLLxgTy3ki3jI0JfhPZ/z4sFsoX7ufdNg5Q2Cns+eqf1SF0M8emb6jQ5sfc7GNoQT8YKL
-	lHKMWYdXqsHMPKMvrNu9zzfvMojX7THjWUGZBSLLX/WasP0rIyGCaaQJC0iyGDUXe6e/rQ
-	3VHBGzY4dBOL2XOo/OkS5pyP4ERUIJI0qtpc57QJCyYpaEQssP39/OaYtf3gYBw3jhO8X9
-	fa0GWxo264PZxVut2WnsFGKW/sFLPFQH2PChRrM7kUKMnoB/HzFpKxiX33bnIeZy1WbJfz
-	IKMRJOU9YNFsqMK3tJUSV1DmzZl5mMEjpjbwPcYj71FA4+nbwk2h1wlIFwLzSQ==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: shawnguo@kernel.org, linux-arm-kernel@lists.infradead.org
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, Fabio Estevam <festevam@denx.de>, Fabio Estevam <festevam@gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: soc: imx: fsl, imx-anatop: Fix the i.MX7 irq number
-Date: Fri, 25 Oct 2024 12:19:07 +0200
-Message-ID: <5991537.MhkbZ0Pkbq@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20241025004159.1571782-1-festevam@gmail.com>
-References: <20241025004159.1571782-1-festevam@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sl3O2XqW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EDEAC4CEC3;
+	Fri, 25 Oct 2024 11:40:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729856420;
+	bh=ofSPYgFrnu8JAd+kBqIWgAgIW4Xr/a4YZqs3eSHQFog=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=Sl3O2XqWZDBw8pmzVtZwnlZBqE8CmJK8JRlxrWtudGBdlvwZ2sKJdvVQ2aKboogSe
+	 yzL8RDCiLjk4k07dUK2ntF7ERHNQs6v7JH9pHtSJTFErM5c8MjEF3Q5JCHO11aK8kV
+	 wFS4Gwl6gGiYYQHLhMjofLamNC8b7GmI0lOA+sCPIwGescFrXHx+ve206nboo60rHU
+	 BNtG2cCOsU+4OnMj1mVRlPIPVGLqmPlpT6fyLyNzG+WY+E+UHat7sMtHMZcMuPqaMi
+	 TETDLEGyZJz6B/HWqeXcr+E6yOiE5PUtNF3VFkIgKHy+v+1TaicWSqH41kLT/xEt7T
+	 sTWGRMmbuWXQw==
+From: Mark Brown <broonie@kernel.org>
+To: Vladimir Oltean <olteanv@gmail.com>, 
+ William Zhang <william.zhang@broadcom.com>, 
+ Heiko Stuebner <heiko@sntech.de>, 
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+ Dhruva Gole <d-gole@ti.com>, 
+ Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>, 
+ linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
+Cc: imx@lists.linux.dev
+In-Reply-To: <20241023203032.1388491-1-Frank.Li@nxp.com>
+References: <20241023203032.1388491-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH 1/1] spi: spi-fsl-dspi: Fix crash when not using GPIO
+ chip select
+Message-Id: <172985641837.7496.8327028410387327926.b4-ty@kernel.org>
+Date: Fri, 25 Oct 2024 12:40:18 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-9b746
 
-Hi Fabio,
+On Wed, 23 Oct 2024 16:30:32 -0400, Frank Li wrote:
+> Add check for the return value of spi_get_csgpiod() to avoid passing a NULL
+> pointer to gpiod_direction_output(), preventing a crash when GPIO chip
+> select is not used.
+> 
+> Fix below crash:
+> [    4.251960] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+> [    4.260762] Mem abort info:
+> [    4.263556]   ESR = 0x0000000096000004
+> [    4.267308]   EC = 0x25: DABT (current EL), IL = 32 bits
+> [    4.272624]   SET = 0, FnV = 0
+> [    4.275681]   EA = 0, S1PTW = 0
+> [    4.278822]   FSC = 0x04: level 0 translation fault
+> [    4.283704] Data abort info:
+> [    4.286583]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+> [    4.292074]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+> [    4.297130]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+> [    4.302445] [0000000000000000] user address but active_mm is swapper
+> [    4.308805] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+> [    4.315072] Modules linked in:
+> [    4.318124] CPU: 2 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-rc4-next-20241023-00008-ga20ec42c5fc1 #359
+> [    4.328130] Hardware name: LS1046A QDS Board (DT)
+> [    4.332832] pstate: 40000005 (nZcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> [    4.339794] pc : gpiod_direction_output+0x34/0x5c
+> [    4.344505] lr : gpiod_direction_output+0x18/0x5c
+> [    4.349208] sp : ffff80008003b8f0
+> [    4.352517] x29: ffff80008003b8f0 x28: 0000000000000000 x27: ffffc96bcc7e9068
+> [    4.359659] x26: ffffc96bcc6e00b0 x25: ffffc96bcc598398 x24: ffff447400132810
+> [    4.366800] x23: 0000000000000000 x22: 0000000011e1a300 x21: 0000000000020002
+> [    4.373940] x20: 0000000000000000 x19: 0000000000000000 x18: ffffffffffffffff
+> [    4.381081] x17: ffff44740016e600 x16: 0000000500000003 x15: 0000000000000007
+> [    4.388221] x14: 0000000000989680 x13: 0000000000020000 x12: 000000000000001e
+> [    4.395362] x11: 0044b82fa09b5a53 x10: 0000000000000019 x9 : 0000000000000008
+> [    4.402502] x8 : 0000000000000002 x7 : 0000000000000007 x6 : 0000000000000000
+> [    4.409641] x5 : 0000000000000200 x4 : 0000000002000000 x3 : 0000000000000000
+> [    4.416781] x2 : 0000000000022202 x1 : 0000000000000000 x0 : 0000000000000000
+> [    4.423921] Call trace:
+> [    4.426362]  gpiod_direction_output+0x34/0x5c (P)
+> [    4.431067]  gpiod_direction_output+0x18/0x5c (L)
+> [    4.435771]  dspi_setup+0x220/0x334
+> 
+> [...]
 
-thanks for the patch.
+Applied to
 
-Am Freitag, 25. Oktober 2024, 02:41:58 CEST schrieb Fabio Estevam:
-> From: Fabio Estevam <festevam@denx.de>
->=20
-> Unlike the other i.MX devices, i.MX7 has only two anatop interrupts.
->=20
-> Add logic that contemplates such case to fix the following
-> dt-schema warning:
->=20
-> anatop@30360000: interrupts: [[0, 49, 4], [0, 51, 4]] is too short
->=20
-> Signed-off-by: Fabio Estevam <festevam@denx.de>
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Thanks!
 
-> ---
->  .../bindings/soc/imx/fsl,imx-anatop.yaml       | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx-anatop.yam=
-l b/Documentation/devicetree/bindings/soc/imx/fsl,imx-anatop.yaml
-> index c4ae4f28422b..ae708a658d52 100644
-> --- a/Documentation/devicetree/bindings/soc/imx/fsl,imx-anatop.yaml
-> +++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx-anatop.yaml
-> @@ -36,6 +36,7 @@ properties:
->        - description: Temperature sensor event
->        - description: Brown-out event on either of the support regulators
->        - description: Brown-out event on either the core, gpu or soc regu=
-lators
-> +    minItems: 2
-> =20
->    tempmon:
->      type: object
-> @@ -52,6 +53,23 @@ required:
->    - compatible
->    - reg
-> =20
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - fsl,imx7d-anatop
-> +    then:
-> +      properties:
-> +        interrupts:
-> +          maxItems: 2
-> +    else:
-> +      properties:
-> +        interrupts:
-> +          minItems: 3
-> +          maxItems: 3
-> +
->  additionalProperties: false
-> =20
->  examples:
->=20
+[1/1] spi: spi-fsl-dspi: Fix crash when not using GPIO chip select
+      commit: 25f00a13dccf8e45441265768de46c8bf58e08f6
 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
