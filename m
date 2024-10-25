@@ -1,59 +1,54 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx08-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C8420EA51
-	for <imx@lists.linux.dev>; Fri, 25 Oct 2024 19:43:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62583215C77
+	for <imx@lists.linux.dev>; Fri, 25 Oct 2024 20:41:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729885423; cv=none; b=BXt+x7DPiYrF/JvBw4FX2G5dJJE4aYym3AdYjz4JRZEd7K1FmS6CTAvnkzl13SPF1cVmz/KC27G71Mh4JrJSK/L4364dH+7pxD0QXWoEdOzzD13zBoqkUYR7cUfS4fo6qiD/cCEsZf9WCffgTbLISnJGPLB56Sm6cUlQ0po7p0M=
+	t=1729888868; cv=none; b=YBakc4cjKVCsbnpXI+9fxVEBLXG8GQZbcn+BQNj6X0JIxI26iNm38lT6oZ2OSr4x2KrUeF0i3P+4WdIQ3UPHJUHEQU2nfLLDayqUK7JR5x/vSFP5/Ri/GNYjbrbQE1fUWIDt9+BTk0HNCm8auJoIv49TjTiGBPtMOsJqUJYAwgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729885423; c=relaxed/simple;
-	bh=lSsZDvEhOeZyn9VaJIiTtvyjKgumKCFxoFXoQeta2sM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lXq/HLak/mr05HZ5uNO4x5cBocCro2wR2GYjh7Lm8B4SEFI3AbMrZ4HBVxzzwyL4cBq1PhmJwY1v5K76TGoeGrdMzmtoizFJYot0qWwAHrmQScy1Na7Vz/vPXOpG26veJFtH+9KP/nVbRFuN9XsZzQNwGtwjd3GmskSsiBvrlq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pFTqVIrM; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1729888868; c=relaxed/simple;
+	bh=37pHMme/eA+cwWgStWjnLTJBrA/6jf8f3LxJCLG/Z9I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=cyoLySFTcAsBhSjudMUbHsGICAJpTUxhMYT1IcCd+vNh1VVQ+YR9bvAlCV0LMKjjlgBkzgF9oAleZq1Nc7FNRGNZvPzGQk1MvEKnzZf4wQH1JLFP8RLHDjYgKihG7zwIJ3YVx4N8Jtk3q3WH6JR2E7zg3/v1jLBSPCinovWEic0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=m8Hgo1Sp; arc=none smtp.client-ip=91.207.212.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pFTqVIrM"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4314fa33a35so22884095e9.1
-        for <imx@lists.linux.dev>; Fri, 25 Oct 2024 12:43:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729885420; x=1730490220; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lSsZDvEhOeZyn9VaJIiTtvyjKgumKCFxoFXoQeta2sM=;
-        b=pFTqVIrMS3U7if6M/1++/ZT6yt71SdY398Ex+j4LytNobr4fReE6MHbOqgbrBsYxTT
-         doOg7oHESWK7DTWfJO8SBPGt8wO0dwZwCdQWRZKElg11aYnV8LJH+CgWST85uhmGDNx1
-         vEHL6L/dmmSAEqw7l9ItopmXyKys3f5tuhTKO0v/wQJB7Ve+oaMpAoo+bKaM821TxWzC
-         P+jgo7Zb2ZMEmt+1FPRfzX35QshuOt/6QI8NWv87bu9SLA6FzVUUvog6j24psrNHFVhc
-         iTUPge4OCFhoZRpyu5FnfAr3X0tKwWDOmh3DDlKcnzA8a1CEWlP3wijjMzusxC+gNzus
-         dAJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729885420; x=1730490220;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lSsZDvEhOeZyn9VaJIiTtvyjKgumKCFxoFXoQeta2sM=;
-        b=kRW+oqMnTdino2A8Uo1Fx6NTMVEigidjGm/2iMHQAbsvhjBocDstvv0EthsTWkVzvG
-         Eiul6idpZN2lyIUxZ0cBviMxBj5CiGyWx7dRx1QXFpmHKe5z8vG8gfMwZkJwT1diT6Yw
-         b4LgAo5vY9XXlax25cIWkSEypFoxIfD5EzgrZsbC6jD8ABL4otxmRWrX1tmlP9zjatNG
-         yjJ5lx6F9uLmClMG1K8vOWzYd6qe5Lq7LhwdqPCTCyXdhCf/Q0EQACv+2pi0XoS00HdI
-         nBUdmANJDbFFZDQuyIc9RncK6p/xZ864y0F3GQDf9iKqpH4HCWkDHawn/buTaSETO9Rr
-         1/nQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUOKC05IrRMroEeUIdl4RxWLgrClkTn3++GM4GVoR1Kda5jaRYLTe2EgT+yLH3pQvRT9+I=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw7WQiWib3VCrcTkDbslN4V90KEbnLgXCn8vdqYIq0Ot0cbRm/j
-	5q3OvoH+ZeZgLV8jlmgomMl1mYEaEcEC1mQGhlSzREALvEtJ6Gm0T8nu199IrcY=
-X-Google-Smtp-Source: AGHT+IEzPuLj09sW3XJSXTYzYRkCzcdUHuV5hctMILxMB/GePRDvwaT9iOwJTJZ47PpX92GjYN8nCA==
-X-Received: by 2002:a05:600c:4f51:b0:431:59b2:f0d1 with SMTP id 5b1f17b1804b1-4319ac6fd9dmr2332175e9.4.1729885420036;
-        Fri, 25 Oct 2024 12:43:40 -0700 (PDT)
-Received: from [192.168.0.40] ([176.61.106.227])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4318b5430absm56939735e9.6.2024.10.25.12.43.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Oct 2024 12:43:39 -0700 (PDT)
-Message-ID: <94eca595-6ac2-40cf-9437-cb6695c45344@linaro.org>
-Date: Fri, 25 Oct 2024 20:43:38 +0100
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="m8Hgo1Sp"
+Received: from pps.filterd (m0369457.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49PJKt0c032047;
+	Fri, 25 Oct 2024 22:40:46 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	cBn+C5y6NRQQzDtpDKzFDt3ls8RVqF24UE75aofdF90=; b=m8Hgo1Sp45KcQsF3
+	cHgqhTKRwIawoV4ibOYYThQ/fTIO1+qk3rH7YgFcG0tvBgX2WVlZrPxbPZbIb4CJ
+	2p5hBQz4iE3RMrWkUcywbeT5fMRJmZzR59cSgir37+q56JcXRAiBiltjN1mdEcJ1
+	rBnmGBEDvSQt1e48fLoe5nA6XwqRAiQ6SDSgnTiw9S9zF+gjWK/1OgK93KUZW2oD
+	04oxtCA64jqExDQI4Mj9wMQPi49hAsLcgi0teyAagKOr1O23BPIxC4SB1VXpdpHx
+	J7eOhYJBh4Ha8Nz40WIDGBEOctZy+6QtsKHN2HAyCCCdfD7PzG6dm1Jw0PWA2dwQ
+	jinizg==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 42em4dyj02-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 25 Oct 2024 22:40:46 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 785A64002D;
+	Fri, 25 Oct 2024 22:39:32 +0200 (CEST)
+Received: from Webmail-eu.st.com (eqndag1node6.st.com [10.75.129.135])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id C163A229A72;
+	Fri, 25 Oct 2024 22:38:54 +0200 (CEST)
+Received: from SAFDAG1NODE1.st.com (10.75.90.17) by EQNDAG1NODE6.st.com
+ (10.75.129.135) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Fri, 25 Oct
+ 2024 22:38:54 +0200
+Received: from [10.252.3.121] (10.252.3.121) by SAFDAG1NODE1.st.com
+ (10.75.90.17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Fri, 25 Oct
+ 2024 22:38:53 +0200
+Message-ID: <75427b09-6823-426e-b0dc-66caf97abbea@foss.st.com>
+Date: Fri, 25 Oct 2024 22:38:51 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -61,56 +56,141 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] media: dt-bindings: Remove assigned-clock-* from
- various schema
-To: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Dave Stevenson <dave.stevenson@raspberrypi.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Martin Kepplinger <martink@posteo.de>,
- Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
- "Paul J. Murphy" <paul.j.murphy@intel.com>,
- Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
- Tommaso Merciai <tomm.merciai@gmail.com>,
- Martin Hecht <martin.hecht@avnet.eu>, Zhi Mao <zhi.mao@mediatek.com>,
- Alain Volmat <alain.volmat@foss.st.com>,
- Mikhail Rudenko <mike.rudenko@gmail.com>,
- Ricardo Ribalda <ribalda@kernel.org>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>,
- Umang Jain <umang.jain@ideasonboard.com>,
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Dongchun Zhu <dongchun.zhu@mediatek.com>,
- Quentin Schulz <quentin.schulz@theobroma-systems.com>,
- Todor Tomov <todor.too@gmail.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, linux-media@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-References: <20241025-b4-linux-next-202041004-i2c-media-yaml-fixes-v2-1-1b4535174a5a@linaro.org>
+Subject: Re: [RFC PATCH] remoteproc: core: Add support for predefined
+ notifyids
+To: Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Daniel Baluta
+	<daniel.baluta@nxp.com>
+CC: <andersson@kernel.org>, <linux-remoteproc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <imx@lists.linux.dev>,
+        <iuliana.prodan@nxp.com>, <peng.fan@nxp.com>,
+        Alexandru Lastur
+	<alexandru.lastur@nxp.com>
+References: <20241018110929.1646410-1-daniel.baluta@nxp.com>
+ <ZxkW9SUr91PyH9c/@p14s>
 Content-Language: en-US
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20241025-b4-linux-next-202041004-i2c-media-yaml-fixes-v2-1-1b4535174a5a@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
+Organization: STMicroelectronics
+In-Reply-To: <ZxkW9SUr91PyH9c/@p14s>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SAFDAG1NODE1.st.com
+ (10.75.90.17)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
 
-On 25/10/2024 17:21, Bryan O'Donoghue wrote:
-> Remove extraneous assigned-clock* from media/i2c/* schemas, retain in the
-> relevant examples.
+hello
 
-Ah, pardon me.
+On 10/23/24 17:32, Mathieu Poirier wrote:
+> Hello Daniel,
+> 
+> On Fri, Oct 18, 2024 at 02:09:29PM +0300, Daniel Baluta wrote:
+>> Currently we generate notifyids in the linux kernel and override
+>> those found in rsc_table.
+>>
+>> This doesn't play well with users expecting to use the exact ids
+>> from rsc_table.
+>>
+>> So, use predefined notifyids found in rsc_table if any. Otherwise,
+>> let Linux generate the ids as before.
+>>
+>> Keypoint is we also define an invalid notifid as 0xFFFFFFFFU. This
+>> should be placed as notifids if users want Linux to generate the ids.
+>>
+>> Signed-off-by: Alexandru Lastur <alexandru.lastur@nxp.com>
+>> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+>> ---
+>>  drivers/remoteproc/remoteproc_core.c | 14 ++++++++++++--
+>>  include/linux/remoteproc.h           |  1 +
+>>  2 files changed, 13 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
+>> index f276956f2c5c..9f00fe16da38 100644
+>> --- a/drivers/remoteproc/remoteproc_core.c
+>> +++ b/drivers/remoteproc/remoteproc_core.c
+>> @@ -332,6 +332,7 @@ int rproc_alloc_vring(struct rproc_vdev *rvdev, int i)
+>>  	int ret, notifyid;
+>>  	struct rproc_mem_entry *mem;
+>>  	size_t size;
+>> +	int start, end;
+>>  
+>>  	/* actual size of vring (in bytes) */
+>>  	size = PAGE_ALIGN(vring_size(rvring->num, rvring->align));
+>> @@ -363,9 +364,18 @@ int rproc_alloc_vring(struct rproc_vdev *rvdev, int i)
+>>  	/*
+>>  	 * Assign an rproc-wide unique index for this vring
+>>  	 * TODO: assign a notifyid for rvdev updates as well
+>> -	 * TODO: support predefined notifyids (via resource table)
+>>  	 */
+>> -	ret = idr_alloc(&rproc->notifyids, rvring, 0, 0, GFP_KERNEL);
+>> +
+>> +	start = 0;
+>> +	end = 0;
+>> +
+>> +	/* use id if specified in rsc table */
+>> +	if (rsc->vring[i].notifyid != RSC_INVALID_NOTIFYID) {
+>> +		start = rsc->vring[i].notifyid;
+>> +		end = start + 1;
+>> +	}
+> 
+> This will likely introduce a backward compatibility issue where anyone that
+> has more than one vring and set their notifyids to anything else than 0xFFFFFFFF
+> in the resource table will see a boot failure.
+> 
+> A while back the openAMP group started discussions on using the configuration
+> space of a virtio device to enhance device discovery, with exactly this kind of
+> use case in mind.  I think it is the only way to move forward with this
+> feature, though it is a big job that requires a lot of community interactions.
+> 
+FYI a PR exists in OpenAMP to use this configuration space to customize the
+size of the buffers [2].
 
-I've neglected to update the commit log.
+This probably means we need something scalable for the configuration space.
 
-https://lore.kernel.org/all/20241012172430.GB5212@pendragon.ideasonboard.com/
+I guess your objective is to match the vring ID with the mailbox channel ID, right?
+We have a similar issue with the STM32MP1/2. It is hard-coded in the stm32_rproc
+driver[1], which is far from perfect because it is not simple to add a new vdev
+instance.
 
-I will send a V3 to make it so.
+I would have two other alternatives to highlight
 
----
-bod
+- An alternative could be to have a vendor resource in the resource table and
+use rproc_handle_rsc operations. This resource would define the match between the
+vrings IDs and the mailbox IDs.
+However, if several vendors are facing the same issue, perhaps better to find a
+generic solution.
 
+- another alternative already discussed several times in openAMP group would be
+to define a new version of the resource table.
 
+[1]https://elixir.bootlin.com/linux/v6.11/source/drivers/remoteproc/stm32_rproc.c#L328
+[2] https://github.com/OpenAMP/open-amp/pull/155
+
+Regards
+Arnaud
+
+> Regards,
+> Mathieu
+> 
+>> +
+>> +	ret = idr_alloc(&rproc->notifyids, rvring, start, end, GFP_KERNEL);
+>>  	if (ret < 0) {
+>>  		dev_err(dev, "idr_alloc failed: %d\n", ret);
+>>  		return ret;
+>> diff --git a/include/linux/remoteproc.h b/include/linux/remoteproc.h
+>> index b4795698d8c2..98c3e181086e 100644
+>> --- a/include/linux/remoteproc.h
+>> +++ b/include/linux/remoteproc.h
+>> @@ -238,6 +238,7 @@ struct fw_rsc_trace {
+>>  	u8 name[32];
+>>  } __packed;
+>>  
+>> +#define RSC_INVALID_NOTIFYID 0xFFFFFFFFU
+>>  /**
+>>   * struct fw_rsc_vdev_vring - vring descriptor entry
+>>   * @da: device address
+>> -- 
+>> 2.43.0
+>>
+> 
