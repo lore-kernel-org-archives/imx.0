@@ -1,175 +1,178 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2074.outbound.protection.outlook.com [40.107.20.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9231173F
-	for <imx@lists.linux.dev>; Fri, 25 Oct 2024 14:00:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729864846; cv=none; b=F1xOV3x5G+V4VdWqiXWJrBxzkSzlbbLowsmo+GxEzj0HCQd5WUbdVu1ApepVQJb34MjntKGlaGBuH4mr783Lqg8h7S3CMyvywKrXfz4bD4y4C/1fAPSr1wCG9yE5/Ulmj37CRbuqJyHEFeDeV8w+rqfE42GO0bs8y+/y45gVy9Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729864846; c=relaxed/simple;
-	bh=+EPu0ng0mX46bmmhsOflGiTyDoqp0PK+j6PCVyQQKFs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ngRVZaAtyP6i5WXZ6sJtnNwlQ6jZmlC/iWpLuU/sxeRAOP/xftSmwwkJPQTVNq3Rt4J0aNWAnZQOnPLPm0sNlhCTrwjVIlEQb10Rc76msUXiKBhtz5OcPPBMGivLo76kZTurSRGU+pnHqn8ZzF5qsC8PQOtKYr16WnL9K1hXSkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=Bwi4vhIQ; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Uui/qTuk reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF5223774
+	for <imx@lists.linux.dev>; Fri, 25 Oct 2024 14:01:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.74
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729864863; cv=fail; b=eqwMQy9qAvQ8rhGPd1Kze8XC2KPyESqfg0ZY8ZosuFxHep/JW7ymce/p8tlinDfjQWAhrFvJOUL2W61JT2OazItXebfndGFKZpFkn98UswzQA0XTpX4F22IYWYxJYVISSYJS5Z0OjcUceElFdrmpElET1mRhOytiN51NJudMNS4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729864863; c=relaxed/simple;
+	bh=qmszAXC8FNWC90UnpmZnjl6bm9UN4HkQXdHSebM9uV0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=mCjSdoaChZrp6CiP9v+tMfTRM/+2R9uKQb9Z7b5Wl1hg1HaSmzWi4LLxQM02vwQ1F1gLOzVwEGpKzn9X8bAbYJLu2s8MAwFnE2RGfBgLlBySxEGW10zsaJpCoizrFwUiJ0LdewCC1LSlT0X9hRt6EeyKHa1QaEIYkULYxXyZcAw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Lkps5akr reason="signature verification failed"; arc=fail smtp.client-ip=40.107.20.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="Bwi4vhIQ";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Uui/qTuk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1729864842; x=1761400842;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=D34ZQYAA4Xy1RlM6CHhSVEaUwrAOhpkBAO+draaH9ns=;
-  b=Bwi4vhIQdMoBcZFh36J00Y3w8R+cSnw6cwGSnsUyALrKhKZULQygBVm4
-   4FqPi/8ihLFNjm6UrDXQrdCUpWD6j3wqtJVlXlz6Jn9F/VVAKutQjZZ6y
-   zmQFTbVDK1IN7fUQ9W+v41zXrH8rF9Gtge5Rz+Yqd+YfMeq8GIbhhA1Qp
-   Zx1R3SmL4NTfNugEn+lJh4ZP4mKLk82rNaKm1lijH8OFwjvOB5UjnApd7
-   c4AE1FfNOnoR03CW7G4JiolZ4+kpq+xk01eUvJSTioCRcjJBPFycHI1Bo
-   KTianVNnJUm7U8R5bXbJ4HIn/N0BhpVnEd23d97/G34QNLmHBr12byxSd
-   A==;
-X-CSE-ConnectionGUID: RJyKPL4TQG2I7atbNc+ajg==
-X-CSE-MsgGUID: TkxXlj06TlWhC036/duQ9Q==
-X-IronPort-AV: E=Sophos;i="6.11,231,1725314400"; 
-   d="scan'208";a="39677654"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 25 Oct 2024 16:00:40 +0200
-X-CheckPoint: {671BA488-1-21611FC3-DAD22B0C}
-X-MAIL-CPID: 4622FD0EE2930BE343E156A47A186DF3_4
-X-Control-Analysis: str=0001.0A682F1A.671BA487.0021,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6297B1644A4;
-	Fri, 25 Oct 2024 16:00:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1729864835;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=D34ZQYAA4Xy1RlM6CHhSVEaUwrAOhpkBAO+draaH9ns=;
-	b=Uui/qTukAHJ7VFZhUcAlQ+OVdccdApCQQcklWBFNMNz1WGm7oXncKjOxbu7Baidju+3IqA
-	53U8ocywj33gbEYU3/JQsNkduuC5UBPIM0ZrkXDFsb7r/rKT32rpt+iBkk0HEBwJG3fXMv
-	MK6xfnWgo6wUGHhRTKkG21FIvzsH76vQfdp0ckeQyxQSU9EPGAlWtChUw7tsp738Mxm6pX
-	+98C+aJJ67rL6U2G7Nsf1nEPL8CFYWx1XRf5YmZ+JiA4DuM6ld3uhoWcv51PN/fh8D+nAM
-	fNdDhwwJBFAwZzhvGiIYYof375B5oisxCpL4y/fQ8oK3drHPa7cV+de9//SVlQ==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Frank Li <Frank.Li@nxp.com>, Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, "open list:TQ SYSTEMS BOARD & DRIVER SUPPORT" <linux@ew.tq-group.com>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/1] arm64: dts: imx8mn-tqma8mqnl-mba8mx-usbot: fix coexistence of output-low and output-high in GPIO
-Date: Fri, 25 Oct 2024 16:00:33 +0200
-Message-ID: <2005735.usQuhbGJ8B@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <CAMuHMdW-tXFYSfTerb-eYmmbJHYN9xNyiGMPoeGArmDnAajUmg@mail.gmail.com>
-References: <20241023210313.1390767-1-Frank.Li@nxp.com> <CAMuHMdW-tXFYSfTerb-eYmmbJHYN9xNyiGMPoeGArmDnAajUmg@mail.gmail.com>
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Lkps5akr"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=t9FVE636wVYZewmqPX6Ee37m4wGLdbJ49B40C9NSTS/lOoN/MnegzzSLa6MLxbege0BZYl2N4ifBxhP41gVriGrYWusU+TzmMq6ZtiKhPYbtEbS7vvR098Jdv1mwESZhlSrTkWF5Ho3yNbo5r5wrqjBUe6dQ9xmPU9L4ho+h/aEPUvpFxmN5x34x14aa80eYGP5m/7X3QliEE/LlQDy5lqw/yZu1avyS8hX0QMCReMCtwKWqHQBDwcsX7wErR8kuGWT5EnTfwjO+LS+BWCOniigga824yfYfKEvrmL5Zo50JiTafD3pFn1sL5vKhNinUOreoqdRQ/Mye0T70cnK6iA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/6E8d2hgMi51EmBgusxPX3Gfkw5oR3Jn0SRlovGnEZ0=;
+ b=Be5ydynxJE7NrqFCBS90+Gvz8jZ4GEipJGVSzkJ4PitZZ+UdZcaEQXwhOR/LwgQ1lrUXvOkr/6Sbxy/PL79ZMtG4WiDdQ9J7sUi6FIeiqp+454tHeNeHHSPgUR4giJZMhP1fqdtDKgrKL0+ifNZF5PPqfXvwoEE/qE6+8bdrSh+dTCrkcA5s8q3o11QRwBC9kuI4LW4FDNQWe+hF5OVKTBaBo7Ze5duqLAjXeDpmJuafUvMzWcU1FdkO8jxVp9tDsjJJ19epS1DNj5ny3kMeGcao2upEgeZ/EkUfcFSmPJsLBrJ9lWNYbnhorJHPWBcRlAkqFFigB+E4uz8qXQereA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/6E8d2hgMi51EmBgusxPX3Gfkw5oR3Jn0SRlovGnEZ0=;
+ b=Lkps5akr8pweOWpZUBJTlDBbV64VXEiX/8NMKRIyimmQSOwb1dzLo5eOfH/2HatfRKQqmlD8R1iYiIWVvO1O2e5YUAyqtadWwHmS4HcxNh0DSAv8BktmSXWRR/Y5VSyWIUQYz86NEjER/wAXyEEdA43Ih139ccGjdiXtj10oqqtxL8x7aoFE6Qy0vK4M0JsFGWGksngcjbVAA2BHfib+fi/DV2lKSGtRSAJNrB+IIOztGuJAi7DIbT5UkkRkjo6tIZqrUrVUab3ZdtrZSy7UB4GAgjJ80vaPSEVjklyFusZq6H53G9bmIMffHuaOHJosA2HY2laAaZnWUqWKb4ZgYA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
+ by DBAPR04MB7239.eurprd04.prod.outlook.com (2603:10a6:10:1a8::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.21; Fri, 25 Oct
+ 2024 14:00:58 +0000
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d]) by DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d%3]) with mapi id 15.20.8069.018; Fri, 25 Oct 2024
+ 14:00:57 +0000
+Date: Fri, 25 Oct 2024 10:00:50 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Conor Culhane <conor.culhane@silvaco.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"moderated list:SILVACO I3C DUAL-ROLE MASTER" <linux-i3c@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] i3c: master: svc: Modify enabled_events bit 7:0 to
+ act as IBI enable counter
+Message-ID: <ZxukksXwyWN2HQ3I@lizhi-Precision-Tower-5810>
+References: <20241024203855.1584416-1-Frank.Li@nxp.com>
+ <20241025095318.4785df2c@xps-13>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241025095318.4785df2c@xps-13>
+X-ClientProxiedBy: BYAPR02CA0054.namprd02.prod.outlook.com
+ (2603:10b6:a03:54::31) To DB9PR04MB9626.eurprd04.prod.outlook.com
+ (2603:10a6:10:309::18)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|DBAPR04MB7239:EE_
+X-MS-Office365-Filtering-Correlation-Id: a42442a6-2980-49ae-1a9f-08dcf4fd7325
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|52116014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?iso-8859-1?Q?VOQ1a39unZWCmG/VQvKUA40qEqkbwwMFZOgg98EZh8VU3UM28w0haabKib?=
+ =?iso-8859-1?Q?g56yGvX2WWo5ve3Gqxgblg5Reh4hd58wg1YppepOuZCqihGjb6aedA5Q+h?=
+ =?iso-8859-1?Q?LG52+La4JIeVovOIY/fyrDSSzWv9GujgwmCCheqwSNuMVimQPnfaGVWsbr?=
+ =?iso-8859-1?Q?JpqfJ20C7BgkVJ4KdnDJ6l4HtK2wBJUOEMhT7lztOknGQ/M/87giP3MM+c?=
+ =?iso-8859-1?Q?zemIREqBQWunuWuGGa/rnQWG3KKJldkHhl7Yfduarna/9ooB7tJzx/13Ro?=
+ =?iso-8859-1?Q?1Zxd3tN7GM22UOSBecjW1NebJoHrNlGr3R5uSHu+BVO9VqBbu7JC5zamiQ?=
+ =?iso-8859-1?Q?Kx1m/ZnUnRMUHt3ohSJLsUxixWgyI/1QjOJW7LUxePShz1OROVGcohppC4?=
+ =?iso-8859-1?Q?GDuYmXb4OEMlvemCDw53Zx+VBqR28ARw/X4+96iTCEFD7Iu0SgIc2zuXwn?=
+ =?iso-8859-1?Q?wm0eM8z9AuCGebs8dmaye1EHpUM9J0ryH1AbC4MXslA7jXPwPF3cY06tnt?=
+ =?iso-8859-1?Q?nod1esdFQM/W9jlmSYfEgdjkEpitg2mOup5I2hsAg5OwIwH+J/JUSlkxaw?=
+ =?iso-8859-1?Q?hjTzXNohtNOJZ63RVmgKi/4lUIy6S+Bg+nqGi+DMc9bRvVVzvSZWg9XIFq?=
+ =?iso-8859-1?Q?VqLGx7GLUEEXK3qF5tle87i4OtWypudUB9hd39u1asHQUykOQ/bdW9y2yx?=
+ =?iso-8859-1?Q?TwnDcx/xCcYxToWpjlO0AY0Cos7Lv5yULNo3NZuqNLAqAVvQVpKmUiQb4B?=
+ =?iso-8859-1?Q?nf4oca8JaXiDujeXD1nBTnxzNxzXQt+xDUJJfILM8DhzgXIBLxGGCCKin/?=
+ =?iso-8859-1?Q?VieQpJfBxjTTRBtLsQDMkFialmSXjHB4znPRHayDGE+pTd/4TYyQfPa8Aw?=
+ =?iso-8859-1?Q?IYf3pTjr5wfHqglsop44x4V5PenrXhsZ8J0Br247yEw26JJs/UEr0MLs8V?=
+ =?iso-8859-1?Q?9lbedQNIkxCebQClUpshM3p3OQ6X32wHPpkpvVfYPefMA9mR4QiTuIufvO?=
+ =?iso-8859-1?Q?hTuIJM1ZYTOXQTd/GfuM1wFMRcAjTNMTJOTYBVGwsPMEYYZXngzbziNxrX?=
+ =?iso-8859-1?Q?AFr11eBVByvDdv9yzyuYx/wahZQCpEQO/MSdJ1OrHcu/63oko6aVehvXLz?=
+ =?iso-8859-1?Q?izIAzDX+/d661dx7M4UDx3tjxiQCvq7LSAOv/ZdR9X5xhgkI2mXCu8XtOS?=
+ =?iso-8859-1?Q?FjVsD8bCJR7EjrR6QlyqwPYM3F/eYkQLG2cP2nm50JOCp8kp7YAnrGrx8b?=
+ =?iso-8859-1?Q?d/5X65T5MgoEt10Y0yjTfHNosQLZPscArdcw6DrjRyxZGhW/7tMew9DWfY?=
+ =?iso-8859-1?Q?N7TJJTsLdKeodGTcYjUy2sie4k2+Xg7harX+usSE9wzVgx8KB05cyfRYsN?=
+ =?iso-8859-1?Q?N6hJmSIJIj/WIDBlgo5vs2vYBHE5atTZZmeOzR95tRIsEhr6fIfAs=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?QkxOyAo+6/6F7AxJ8NGlN0f2+AsjKoiIJEvokzRsBVKOOrdPJuVE2MolEo?=
+ =?iso-8859-1?Q?kZSnHa6EO21W9Ymc8RKt8vhIU1z423qMg7X5FXzxWlzRkziW/nTS8Mf/YC?=
+ =?iso-8859-1?Q?mvgf7b7wNmVz936N0jVWOHaLenI08bNp3Q5bdigBi5xbMC8hfy6CnojJU0?=
+ =?iso-8859-1?Q?IJdyDZDSuyfFT0M+HhrHtlEqEj+jcpOXhy+HUjvmTKU5VbwSX6w0N4GUFF?=
+ =?iso-8859-1?Q?aVCEZ9cD80My9VmyF2RavdsiefvL7phlhpoRKSZNBIsqJ3t161mZyEWqg/?=
+ =?iso-8859-1?Q?MiU+in1c0eMXfJ0HKpxCqSAnRtE4fAwV0qiBdqGX7O9pCmn+D08oKHBApf?=
+ =?iso-8859-1?Q?Xfi4RfmYh/diC5+ni9KGgXpqZf0kEp4G+mIw4rE6fqR0rhKO+g3ZeVGarG?=
+ =?iso-8859-1?Q?7qF/H9TH8fu73VL9S8M1e+gqclvdr6B4g4oL4zQbSk8qF7nycbIQnULzAX?=
+ =?iso-8859-1?Q?aVHgdJX2JB1VfJXOTCxcJDKyCiXjEQ/SfNLS526cXwh1Njf4ChPCYdlQF+?=
+ =?iso-8859-1?Q?5YSCPwQKtNMqrjPYvuSPx5otcysE3Q8Zn64OdrOFF7w/6bPHQB56yc30/Q?=
+ =?iso-8859-1?Q?6om0iSy0RaGcIRIgx2gZPn8JCFhSxbz9siXcM40ydmRgDM+yyQyr96lI7W?=
+ =?iso-8859-1?Q?kDGIrrAS6vOzZRjpPFSyqVUaefcThgXls3Cfuq3lcZ92+mjWPTbldFrKCi?=
+ =?iso-8859-1?Q?AMID1ujx404vmJ3mPM//VYqzoWi6P5XMZhQyCEC8SD6HMJS152PawYPs+h?=
+ =?iso-8859-1?Q?iT6clNdJWU0NbWcstEzCkNvDMi9ToMiUeeQOZO+uEEN8XJS0P68ufgLI7+?=
+ =?iso-8859-1?Q?/1sjDRH+ODwF9zRsiMqTb7ofULLWiy2z/EduPhXTlbkFrqooljczczJBua?=
+ =?iso-8859-1?Q?OIxBH/cULFUrOG8pA3k9Pj5c4BTMW+LdsDvw64Jkj+uFcIpJYDM5WBwvWg?=
+ =?iso-8859-1?Q?D5r2RADpO1+n3NFr191zyzw/+i1fxsdWlKurR2ye5bZ6oTXIHaUf5DScL2?=
+ =?iso-8859-1?Q?3WpmDUC5sMdYjNlLhyPtnwuMIWRxZerM7ilDu4ltHHRbK1lRkCidGo0Rox?=
+ =?iso-8859-1?Q?ga8kwmW8zaO+2sL788guyz1m9zq51b2mD16w0+w1vMf5rWchPTwTY+gh3k?=
+ =?iso-8859-1?Q?/qPBCqL7zFBUDSiUYL/bIFyPuhSw1CxcWYMKzvdI18SmGu8TL5mJgT6M7p?=
+ =?iso-8859-1?Q?E4twyZpZjVmIDfWOl7O0dr6mbiYp7QPj5UnF7yEGZ3/y5ec4BrWr0WEi2l?=
+ =?iso-8859-1?Q?EDSvEhzzb8FM0a9gf4o4O4F6WhH+qyVcthu8zOZ/N60S9nYCQyP2LaaQPP?=
+ =?iso-8859-1?Q?hIZmGIITC+aPcnxX6fiSBVzh7j+s3tXCTrlM6+88JXwr+IM+6bUBEudRYa?=
+ =?iso-8859-1?Q?nRY2LLwSDC9D+0xSV2OYxcyZiTcyDhzW9PMCH6SmQ/9/hKNgdJqTYDZqVG?=
+ =?iso-8859-1?Q?/8cOmDc0+mmviY61wjn/6EaNgM5qJdk5vbvhtLOjj0oWhmTyBGzjvzuQJB?=
+ =?iso-8859-1?Q?yteTpONSDIJiuFb5DyPy82SlF2Z3KykfOnrpRMbTGRhOK7LO08zLCmDcE3?=
+ =?iso-8859-1?Q?4I+IiMWoI5oOhc7wPYwnzPKMDkm+DLAFLKKGCT1UQZo8T5YHP7pRNoHCSB?=
+ =?iso-8859-1?Q?R4AhGzHpIjs/R+g9CgY4Tllc30rOhAMnhB?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a42442a6-2980-49ae-1a9f-08dcf4fd7325
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2024 14:00:57.6728
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: d3HGtYrpOcgmeYtbZLWHDshZuZ+jy3iiuUZ0TKNC7peMbRES2mOugJbMaCw4qdKYGFRq+6uXJAs5qVavzdQWsw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7239
 
-Hi Geert,
-
-Am Freitag, 25. Oktober 2024, 15:52:58 CEST schrieb Geert Uytterhoeven:
+On Fri, Oct 25, 2024 at 09:53:18AM +0200, Miquel Raynal wrote:
 > Hi Frank,
->=20
-> On Wed, Oct 23, 2024 at 11:07=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrot=
-e:
-> > Fix the issue where both 'output-low' and 'output-high' exist under GPIO
-> > hog nodes  (rst_usb_hub_hog and sel_usb_hub_hog) when applying device
-> > tree overlays. Since /delete-property/ is not supported in the overlays,
-> > setting 'output-low' results in both properties being present. The
-> > workaround is to disable these hogs and create new ones with 'output-lo=
-w'
-> > as needed.
+>
+> Frank.Li@nxp.com wrote on Thu, 24 Oct 2024 16:38:55 -0400:
+>
+> > Fix issue where disabling IBI on one device disables the entire IBI
+> > interrupt. Modify bit 7:0 of enabled_events to serve as an IBI enable
+>
+> Is this bitfield arbitrary?
+>
+> Is there a rationale behind it?
+
+Max devices number under a I3C bus is 128 because dynamic address is 7 bit.
+So 8 bits for it should be enough.
+
+Bit31 as hotjoin, Bit30 reserved as control switch request.
+
+Frank
+
+>
+> > counter, ensuring that the system IBI interrupt is disabled only when all
+> > I3C devices have IBI disabled.
 > >
-> > Fix below CHECK_DTBS warning:
-> > arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-usbotg.dtb: sel-u=
-sb-hub-hog:
-> >    {'output-low': True, 'gpio-hog': True, 'gpios': [[1, 0]], 'output-hi=
-gh': True, 'phandle': 108, '$nodename': ['sel-usb-hub-hog']}
-> >        is valid under each of {'required': ['output-low']}, {'required'=
-: ['output-high']
-> >
-> > Fixes: 3f6fc30abebc ("arm64: dts: imx8mn: tqma8mqnl-mba8mx: Add USB DR =
-overlay")
+> > Cc: stable@kernel.org
+> > Fixes: 7ff730ca458e ("i3c: master: svc: enable the interrupt in the enable ibi function")
 > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> > Alex:
-> >         I have not hardware to run it. I check dtb output is correct.
-> > ---
-> >  .../imx8mn-tqma8mqnl-mba8mx-usbotg.dtso       | 29 +++++++++++++++++--
-> >  1 file changed, 27 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-usbo=
-tg.dtso b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-usbotg.dtso
-> > index 96db07fc9bece..1f2a0fe70a0a2 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-usbotg.dtso
-> > +++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-usbotg.dtso
-> > @@ -29,12 +29,37 @@ usb_dr_connector: endpoint {
-> >         };
-> >  };
-> >
-> > +/*
-> > + * rst_usb_hub_hog and sel_usb_hub_hog have property 'output-high',
-> > + * dt overlay don't support /delete-property/. Both 'output-low' and
-> > + * 'output-high' will be exist under hog nodes if overlay file set
-> > + * 'output-low'. Workaround is disable these hog and create new hog wi=
-th
-> > + * 'output-low'.
-> > + */
-> > +
-> >  &rst_usb_hub_hog {
-> > -       output-low;
-> > +       status =3D "disabled";
-> > +};
-> > +
-> > +&expander0 {
-> > +       rst-usb-low-hub-hog {
-> > +               gpio-hog;
-> > +               gpios =3D <13 0>;
-> > +               output-low;
-> > +               line-name =3D "RST_USB_HUB#";
-> > +       };
-> >  };
-> >
-> >  &sel_usb_hub_hog {
-> > -       output-low;
-> > +       status =3D "disabled";
-> > +};
-> > +
-> > +&gpio2 {
-> > +       sel-usb-low-hub-hog {
-> > +               gpio-hog;
-> > +               gpios =3D <1 GPIO_ACTIVE_HIGH>;
-> > +               output-low;
-> > +       };
-> >  };
-> >
-> >  &usbotg1 {
->=20
-> Note that after this, there is still
->=20
->     /delete-property/ disable-over-current;
->=20
-> left, which does not actually remove the property.
-
-This is true, I noticed myself. As this patch does not concern about
-disable-over-current, it still is an improvement.
-
-Unfortunately there is currently no way to fix this right now. This is a
-boolean property, which is impossible to remove in overlays.
-
-Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
-any
-Amtsgericht M=C3=BCnchen, HRB 105018
-Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
-neider
-http://www.tq-group.com/
-
-
+>
+> Anyway,
+>
+> Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+>
+> Thanks,
+> Miquèl
