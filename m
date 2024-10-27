@@ -1,41 +1,41 @@
 Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6661678C9D;
-	Sun, 27 Oct 2024 15:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D35F2570;
+	Sun, 27 Oct 2024 16:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730044612; cv=none; b=PPRHXgL9J6iL8NHRy7Q0bLNgGJZudfqF9hb/HTe1o0d60r2VWx3yXdc2xdro+dp21vlaCo2CgW2sHyXlBzLt2Olc+9CHyZDzVMWEHe+WSpTS9pfFatkHEALcmv1jxvwrW6Id6sKcWt/hMsASFiKOkRrkT/AH3yoUznFKJ+dFr6g=
+	t=1730045385; cv=none; b=DCLsjPCG1BsXQSTMLn+4XfYET1d9IID8qu1FSRBkPWNvXae1POZtAPl4fYGScsseFp1JklN6NvFARKDiL7i4AoQs3+WsIjc6eKQTS2iT0T0Y2H/T05gzAO2IgCZohUL3pKLY3iskfBpch++c/ySyR2Db+Vx3xzGT+9GwXKyJqZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730044612; c=relaxed/simple;
-	bh=L0qDBAArgMaITShLaQbn3eqNAsZRpwfqjIR/eK3UYyM=;
+	s=arc-20240116; t=1730045385; c=relaxed/simple;
+	bh=AaPU9tcS+fBbu8IfyYbDwrKXzQUMCDGYYgyCYWt7ZRE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a9nThc9lA1+wjkyNvAo3vZzg7MEMyCGxci+x1NggJf3c6VYBfpzJnOg+IsxHcpYMWW/092ge8qMTN6w/kKbOhDgz6dPTNAdSjdmY9cZ8JGl84It08rpJgkwiSrVChkr936FLOPYzgaZaoTPxw9PbAyhwaz7k6zVOGp9IJDTDRl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=bzVK4fTD; arc=none smtp.client-ip=212.227.15.15
+	 In-Reply-To:Content-Type; b=gC2lpKHdRDLM5wTVCyVNBH6lFx7nFIvilPqzwaD4e+FtJy5G7a4ORd0bebNTO/DSWr0aWg/sQt0TOl+1R+Hq3h1pKQdaT0zfoPeLx8IHAY+sW44HRMqzIhjoABDvBam2GPHdoFjKTB8Z93NO9I5OL1YRfUeFlIXriO/Pms+8zeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=KTXw6Vqo; arc=none smtp.client-ip=212.227.15.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="bzVK4fTD"
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="KTXw6Vqo"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1730044584; x=1730649384; i=wahrenst@gmx.net;
-	bh=L0qDBAArgMaITShLaQbn3eqNAsZRpwfqjIR/eK3UYyM=;
+	s=s31663417; t=1730045366; x=1730650166; i=wahrenst@gmx.net;
+	bh=P4sc1ZKQ0Pwmu3U7pr1eqvwAGQj//URq6GmindE1cA0=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=bzVK4fTD6NyNxrrIn+R4OHJakvYwE2xHyFRgYlLqFObW2PibCXidP5B8DsCDbF14
-	 O/xho/EjI4QQROQPSokhJA0t2OM4hyrXCl8foj8nBlxOlFslRSB/HxNsRrvZbsNUZ
-	 nDK7xgIoVNMzpYJjAIfhMCgQzioZMojZUo3NEtyFdjuHHPm/ghWoSFCk88LbzLEjT
-	 tYN5hKHJ+5ekrYvXCXOi4kL5GeLYBKwFlhgHzcC1dVGzifTHrd1FESVzZXgDAID2r
-	 qFxZlDXjlUQepvtsGQS1sAjewX0BqwR4cM0KvoOBPWEX+0++VqsL7B0UJNcNgqMEs
-	 P8/9QUDPf3zGuvajdw==
+	b=KTXw6Vqoml5RYS1IDDO9sUQlSbtD2O2UcBj4f+v3w/9IoNWvJY+FwSbLCc5Vd3X+
+	 zk/xHxZD16rnEGIh7IcHBBz/28gmdkApv7CtaXupKozzngUKZiga2R/M0wqLxDSVB
+	 UZFMrdWOA5VikFlzsJ83ZVOSdla54+Sg8gpDKnoFrTJb6eUIey7SJZCZm0TvdzssE
+	 uszFJdyn4OOL2JofmQsHOkDOmQ5Euz6PN3EVnxZK83t93TiiT6JEC79wDJFZZuUKM
+	 5Qo7N28wGV/z0O1NnZd7YU+WLfWygvguToGfzs4ZOntPbsLzLUqzloo/my9xNBKRY
+	 3M80fDP/lQaRXPQv1A==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [192.168.1.105] ([37.4.248.43]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mlf4S-1tmdZV3YLS-00qKPr; Sun, 27
- Oct 2024 16:56:23 +0100
-Message-ID: <711294ea-9bed-44a1-9b1a-38e63c76be01@gmx.net>
-Date: Sun, 27 Oct 2024 16:56:23 +0100
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N9Mta-1tzEhu12Oa-011pHo; Sun, 27
+ Oct 2024 17:09:26 +0100
+Message-ID: <492d5691-661d-4dc7-891c-b515ecdd35da@gmx.net>
+Date: Sun, 27 Oct 2024 17:09:25 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -43,174 +43,181 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] watchdog: imx7ulp_wdt: Clarify timing units
-To: Guenter Roeck <linux@roeck-us.net>, Alice Guo <alice.guo@nxp.com>,
- Wim Van Sebroeck <wim@linux-watchdog.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
- linux-watchdog@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-References: <20241027105323.93699-1-wahrenst@gmx.net>
- <20241027105323.93699-2-wahrenst@gmx.net>
- <fb93ba0f-d414-4f7f-aff9-cd958c715e23@roeck-us.net>
+Subject: Re: [PATCH v1] soc: imx: Add SoC device register for i.MX9
+To: alice.guo@oss.nxp.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, "alice.guo" <alice.guo@nxp.com>
+References: <20241027112557.3866257-1-alice.guo@oss.nxp.com>
 Content-Language: en-US
 From: Stefan Wahren <wahrenst@gmx.net>
-In-Reply-To: <fb93ba0f-d414-4f7f-aff9-cd958c715e23@roeck-us.net>
+In-Reply-To: <20241027112557.3866257-1-alice.guo@oss.nxp.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Q3BIhw96rpvrmXPmv/Ty+pdzXp8z9vyV6KRFkdRhyMqiDG+HEYN
- 9ff2yOsP8AGxJR4GNXQbtFLwD7j3u5big1RRyzuHiHdzzMxcnHt1xztJEs6kZaEETrV/Xbf
- N5D/MIh4bfJqG20hw89GfgsbI17p7SumThynNeurmoTbKWtUUFXT6oxRlA9AAihOeKWzfzf
- xLnwR6rpJI//M9EVnpxxQ==
+X-Provags-ID: V03:K1:MD+CMwNShX6wVY/fNeDX7wyp+/clf3CDQ6bfYt7gLl6AMMg2E8r
+ C9Id/du/M99gWadJ0P97HZGnP87MiUttXqLTIkJWX4Wd0A8WBAHqoWJP6Uyn8jJEJ5OnRTJ
+ Qsp6oIxKe9TfZzNbXtaVR7fep63RbJjnGKnuoKamPksKVaAwpoXrQjK1OBi4jhBCW5La4Lx
+ F9G3YPB+/cowL+7fHg49w==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:iZCAP0iGeQM=;O1Mpjpr657CpvZER8GJiey98Wgp
- C6gqKDJxJitZZ6zDjIBO+HTcJifeS0usODjuH20CRlZL0EcjfS8O61pVSB79QgjWDo5Xkuv9k
- YN/co8T6LvzQuIAol4TItISt0X5VZ/ydZCYNiowdR45VuOMrp0eybqRidRfTUhlZ5lUj5KvyV
- 2vSB+ix3AtQK8N9nskkJ5fAEga6KsXnCCoGe0ro1GbUDPGD/EGwIRRwjfw812BUehGGtoMskk
- dYAMK0VKXUQmcB5z3XZ8dlbKOpuUmFSNhySLlnOpb6bcFAhvoGkk5RFBf4nyVVSWLKk0he3lK
- 5eW4/pB5fryvsnirVwbvOMDfK/TLQXF01L8dA3SD1AMt+ErgdhynwATqVKmQEN+qTxgvUBkVY
- jyyfYHVc6EgmCv9+bKQzRY9Jyj6Lb351tnMVPFvw6WKQkEmIlqfiD2kBHjLt4VOxARWudW8l+
- SkF4K9TEL8VhyLID7/bhh1vx+ddMLM6rivHFdni3cvVXCfJsYeK12i2xoTV9V9hZQfz9IEjaJ
- o6hceWzOFoRDWR1FEBkFos7vD33MuxbKGEkmnaiaqj3qDQnQGj3L2QJlqbqlE7oxiXcBCxm4L
- GnNnWXlIULLMpP4vPN6f4NB/RyVFx2KFFS1CChmEj5svtfBBctm0t4V0U1MQavLd5jyZ9OToB
- oDUrHjVgphDYUk3VoTR6JVmTD5UVv9zpPiB0CsoWCaVCyKUAqdiiiRVk6ThX+5X/BkljvHTFt
- Hq0ZMJSgbR7Jx1UOL0YggKP7xKqTDqIsm3kRINbvK0t0xuVnCQf1KjEm22qWFzhMd1P6Mzeyh
- ksYIob/0MsAgok1KXlhrjBFw==
+UI-OutboundReport: notjunk:1;M01:P0:+aIhF67vFyk=;8xUBFUp4Ykxl5GRrk9Ms2WiFYpT
+ ApsEwg+iWw8mjvyOglb5laNvVQFD0jWbTYvyJ9AmkGcXyFVWXf3Sxva+ZV0bWSQNyhIXNVAbT
+ 7vhHID2Srr5LA7LvBqcxtusByptIMfV3fwQkHqXdrkQ7E+uLj3K7/T4yYCRzABZDqa2Vc6+La
+ NCBbhiaw1nE3otPruVnBZDeDwfzF3FXO1JXHujcm5kz3gJ9gqNtQSqqDY1yTXPPrM283PCsRS
+ E6xf8kK6Vjr/iHsMWtN0xZl1TMp4PF1+Nj77HmHbbE1A2TbYnPABBmpEYKrR4Meojuw1vbOvM
+ 2Sq1IgjUHG0dghIKDX8zHXNbuWMoDOAqXcLDLqMZEbj4Vz/990w6wvpjavcyXcHXCMqaFWayp
+ o9utVKKF5d9Y3d+2HD52tsnXmK1R8aF8Dvg4bM8rn/VeZDojoFxhAazGnd6MCLjFvJOj5iz2u
+ 2hlwGiN2NiUjURpA2uyfy4yYafGvC4T2vzHkAhVW9UKxDGN5slcQ6HZBH2MLcKgeNbmY0KnuA
+ NVW5uDRsFTPDtrFD6nJhqSSMNZ59lAv0lzW1ASk0b+3hE+moARLGpo4q3Xm8bfgGZMVeeYRyj
+ o/TYJJG3n/Hpq2q0er3AfeGdFU5HidrVWnaAZEwel4Dq25/D4G6HYYUiNZUiWWZ9H7C4dTh4J
+ xIkw7QhIfrhrtL2VA5ll6cOPlkdCTXfVaHZDo+wqPUBxRpP8jTn3cs+h5FDhNW3jag3nzQeq+
+ vOJxG3o2dXpjldfGjJLPKvtREucnCMe/taX04THiZGD74NsEucAGmA+Kn3/6bQdO50CuQfnkk
+ GxPvmFM0BfJ8hpSjDziIoVWA==
 
-Am 27.10.24 um 15:28 schrieb Guenter Roeck:
-> On 10/27/24 03:53, Stefan Wahren wrote:
->> imx7ulp_wdt mixes a lot of timing units (frequency, clocks, seconds)
->> in a not obvious way. So improve readability of imx7ulp_wdt by
->> clarifying the relevant units.
->>
->> Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
->> ---
->> =C2=A0 drivers/watchdog/imx7ulp_wdt.c | 18 ++++++++++--------
->> =C2=A0 1 file changed, 10 insertions(+), 8 deletions(-)
->>
->> diff --git a/drivers/watchdog/imx7ulp_wdt.c
->> b/drivers/watchdog/imx7ulp_wdt.c
->> index 0f13a3053357..0f92d2217088 100644
->> --- a/drivers/watchdog/imx7ulp_wdt.c
->> +++ b/drivers/watchdog/imx7ulp_wdt.c
->> @@ -19,7 +19,7 @@
->> =C2=A0 #define WDOG_CS_PRES=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 B=
-IT(12)
->> =C2=A0 #define WDOG_CS_ULK=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 BI=
-T(11)
->> =C2=A0 #define WDOG_CS_RCS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 BI=
-T(10)
->> -#define LPO_CLK=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 0x1
->> +#define LPO_CLK=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 0x1=C2=A0=C2=A0=C2=A0 /* 32 kHz */
+Hi Alice,
+
+Am 27.10.24 um 12:25 schrieb alice.guo@oss.nxp.com:
+> From: "alice.guo" <alice.guo@nxp.com>
 >
-> This configures the clock source to be the LPO clock, which according
-> to the
-> chip datasheets is a 1kHz clock for all chips except IMX93. It is only
-> 32kHz
-> for IMX93, and the prescaler is enabled for that chip.
+> i.MX9 SoCs have SoC ID, SoC revision number and chip unique identifier
+> which are provided by the corresponding ARM trusted firmware API. This
+> patch intends to use SMC call to obtain these information and then
+> register i.MX9 SoC as a device.
 >
-> The comment is not only misleading because it selects the clock source,
-> not the rate, but wrong, because it only selects a 32kHz clock for IMX93=
-,
-> and that value is then prescaled.
-Okay, I will drop it
+> Signed-off-by: alice.guo <alice.guo@nxp.com>
+> ---
+>   drivers/soc/imx/Makefile   |   2 +-
+>   drivers/soc/imx/soc-imx9.c | 102 +++++++++++++++++++++++++++++++++++++
+>   2 files changed, 103 insertions(+), 1 deletion(-)
+>   create mode 100644 drivers/soc/imx/soc-imx9.c
 >
->> =C2=A0 #define LPO_CLK_SHIFT=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
-8
->> =C2=A0 #define WDOG_CS_CLK=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (L=
-PO_CLK << LPO_CLK_SHIFT)
->> =C2=A0 #define WDOG_CS_EN=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 BIT=
-(7)
->> @@ -39,8 +39,8 @@
->> =C2=A0 #define UNLOCK_SEQ1=C2=A0=C2=A0=C2=A0 0xD928
->> =C2=A0 #define UNLOCK=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ((UNLOC=
-K_SEQ1 << 16) | UNLOCK_SEQ0)
->>
->> -#define DEFAULT_TIMEOUT=C2=A0=C2=A0=C2=A0 60
->> -#define MAX_TIMEOUT=C2=A0=C2=A0=C2=A0 128
->> +#define DEFAULT_TIMEOUT=C2=A0=C2=A0=C2=A0 60=C2=A0=C2=A0=C2=A0 /* seco=
-nds */
->> +#define MAX_TIMEOUT=C2=A0=C2=A0=C2=A0 128=C2=A0=C2=A0=C2=A0 /* seconds=
- */
->> =C2=A0 #define WDOG_CLOCK_RATE=C2=A0=C2=A0=C2=A0 1000
->> =C2=A0 #define WDOG_ULK_WAIT_TIMEOUT=C2=A0=C2=A0=C2=A0 1000
->> =C2=A0 #define WDOG_RCS_WAIT_TIMEOUT=C2=A0=C2=A0=C2=A0 10000
->> @@ -240,7 +240,8 @@ static const struct watchdog_info
->> imx7ulp_wdt_info =3D {
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 WDIOF_MAGICCLOSE,
->> =C2=A0 };
->>
->> -static int _imx7ulp_wdt_init(struct imx7ulp_wdt_device *wdt,
->> unsigned int timeout, unsigned int cs)
->> +static int _imx7ulp_wdt_init(struct imx7ulp_wdt_device *wdt,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned int timeout_clks, unsigned int cs)
->
-> I don't think "_clks" adds any clarity because the value doesn't set a
-> "clock".
-> "_ticks", maybe.
-I'm fine with _ticks
+> diff --git a/drivers/soc/imx/Makefile b/drivers/soc/imx/Makefile
+> index 3ad321ca608a..ca6a5fa1618f 100644
+> --- a/drivers/soc/imx/Makefile
+> +++ b/drivers/soc/imx/Makefile
+> @@ -3,4 +3,4 @@ ifeq ($(CONFIG_ARM),y)
+>   obj-$(CONFIG_ARCH_MXC) +=3D soc-imx.o
+>   endif
+>   obj-$(CONFIG_SOC_IMX8M) +=3D soc-imx8m.o
+> -obj-$(CONFIG_SOC_IMX9) +=3D imx93-src.o
+> +obj-$(CONFIG_SOC_IMX9) +=3D imx93-src.o soc-imx9.o
+> diff --git a/drivers/soc/imx/soc-imx9.c b/drivers/soc/imx/soc-imx9.c
+> new file mode 100644
+> index 000000000000..7e8a8b2efa61
+> --- /dev/null
+> +++ b/drivers/soc/imx/soc-imx9.c
+> @@ -0,0 +1,102 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Copyright 2024 NXP
+> + */
+> +
+> +#include <linux/arm-smccc.h>
+> +#include <linux/init.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/slab.h>
+> +#include <linux/sys_soc.h>
+> +
+> +#define IMX_SIP_GET_SOC_INFO	0xc2000006
+> +#define SOC_ID(x)		(((x) & 0xFFFF) >> 8)
+> +#define SOC_REV_MAJOR(x)	((((x) >> 28) & 0xF) - 0x9)
+> +#define SOC_REV_MINOR(x)	(((x) >> 24) & 0xF)
+> +
+> +static int imx9_soc_device_register(void)
+> +{
+> +	struct soc_device_attribute *attr;
+> +	struct arm_smccc_res res;
+> +	struct soc_device *sdev;
+> +	u32 soc_id, rev_major, rev_minor;
+> +	u64 uid127_64, uid63_0;
+> +	int err;
+> +
+> +	attr =3D kzalloc(sizeof(*attr), GFP_KERNEL);
+> +	if (!attr)
+> +		return -ENOMEM;
+> +
+> +	err =3D of_property_read_string(of_root, "model", &attr->machine);
+> +	if (err) {
+> +		err =3D -EINVAL;
+> +		goto attr;
+> +	}
+> +
+> +	attr->family =3D kasprintf(GFP_KERNEL, "Freescale i.MX");
+> +
+> +	/*
+> +	 * Retrieve the soc id, rev & uid info:
+> +	 * res.a1[31:16]: soc revision;
+> +	 * res.a1[15:0]: soc id;
+> +	 * res.a2: uid[127:64];
+> +	 * res.a3: uid[63:0];
+> +	 */
+> +	arm_smccc_smc(IMX_SIP_GET_SOC_INFO, 0, 0, 0, 0, 0, 0, 0, &res);
+> +	if (res.a0 !=3D SMCCC_RET_SUCCESS) {
+> +		err =3D -EINVAL;
+> +		goto family;
+Please see my comment below. Does it make sense to print the value of
+res.a0?
+
+I stumbled above this recently on a i.MX93 board with a vendor kernel
+6.6.23 and the firmware hadn't it implemented.
+> +	}
+> +
+> +	soc_id =3D SOC_ID(res.a1);
+> +	rev_major =3D SOC_REV_MAJOR(res.a1);
+> +	rev_minor =3D SOC_REV_MINOR(res.a1);
+> +
+> +	attr->soc_id =3D kasprintf(GFP_KERNEL, "i.MX%2x", soc_id);
+> +	attr->revision =3D kasprintf(GFP_KERNEL, "%d.%d", rev_major, rev_minor=
+);
+> +
+> +	uid127_64 =3D res.a2;
+> +	uid63_0 =3D res.a3;
+> +	attr->serial_number =3D kasprintf(GFP_KERNEL, "%016llx%016llx", uid127=
+_64, uid63_0);
+> +
+> +	sdev =3D soc_device_register(attr);
+> +	if (IS_ERR(sdev)) {
+> +		err =3D -ENODEV;
+> +		goto soc_id;
+> +	}
+> +
+> +	return 0;
+> +
+> +soc_id:
+> +	kfree(attr->soc_id);
+> +	kfree(attr->serial_number);
+> +	kfree(attr->revision);
+> +family:
+> +	kfree(attr->family);
+> +attr:
+> +	kfree(attr);
+> +	return err;
+> +}
+> +
+> +static int __init imx9_soc_init(void)
+> +{
+> +	int ret =3D 0;
+> +
+> +	if (of_machine_is_compatible("fsl,imx91") ||
+> +		of_machine_is_compatible("fsl,imx93") ||
+> +		of_machine_is_compatible("fsl,imx95")) {
+> +		ret =3D imx9_soc_device_register();
+> +		if (ret) {
+> +			pr_err("%s: imx9_soc_device_register returned %d\n", __func__, ret);
+Can we please have these kernel logs within imx9_soc_device_register()?
+
+Btw we could print the real return code of the function which failed.
 
 Thanks
->
->> =C2=A0 {
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u32 val;
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int ret;
->> @@ -263,7 +264,7 @@ static int _imx7ulp_wdt_init(struct
->> imx7ulp_wdt_device *wdt, unsigned int timeou
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto init_out;
->>
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* set an initial timeout value in TOVAL=
- */
->> -=C2=A0=C2=A0=C2=A0 writel(timeout, wdt->base + WDOG_TOVAL);
->> +=C2=A0=C2=A0=C2=A0 writel(timeout_clks, wdt->base + WDOG_TOVAL);
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 writel(cs, wdt->base + WDOG_CS);
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 local_irq_enable();
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret =3D imx7ulp_wdt_wait_rcs(wdt);
->> @@ -275,7 +276,8 @@ static int _imx7ulp_wdt_init(struct
->> imx7ulp_wdt_device *wdt, unsigned int timeou
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return ret;
->> =C2=A0 }
->>
->> -static int imx7ulp_wdt_init(struct imx7ulp_wdt_device *wdt, unsigned
->> int timeout)
->> +static int imx7ulp_wdt_init(struct imx7ulp_wdt_device *wdt,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 unsigned int timeout_clks)
->> =C2=A0 {
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* enable 32bit command sequence and rec=
-onfigure */
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u32 val =3D WDOG_CS_CMD32EN | WDOG_CS_CL=
-K | WDOG_CS_UPDATE |
->> @@ -296,11 +298,11 @@ static int imx7ulp_wdt_init(struct
->> imx7ulp_wdt_device *wdt, unsigned int timeout
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 do {
->> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret =3D _imx7ulp_wdt_init(w=
-dt, timeout, val);
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret =3D _imx7ulp_wdt_init(w=
-dt, timeout_clks, val);
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 toval =3D readl(=
-wdt->base + WDOG_TOVAL);
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cs =3D readl(wdt=
-->base + WDOG_CS);
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cs &=3D ~(WDOG_C=
-S_FLG | WDOG_CS_ULK | WDOG_CS_RCS);
->> -=C2=A0=C2=A0=C2=A0 } while (--loop > 0 && (cs !=3D val || toval !=3D t=
-imeout || ret));
->> +=C2=A0=C2=A0=C2=A0 } while (--loop > 0 && (cs !=3D val || toval !=3D t=
-imeout_clks ||
->> ret));
->>
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (loop =3D=3D 0)
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EBUSY;
->> --
->> 2.34.1
->>
->
->
+> +			return ret;
+> +		}
+> +	}
+> +
+> +	return ret;
+> +}
+> +device_initcall(imx9_soc_init);
+> +
+> +MODULE_AUTHOR("NXP");
+> +MODULE_DESCRIPTION("NXP i.MX9 SoC");
+> +MODULE_LICENSE("GPL");
 
