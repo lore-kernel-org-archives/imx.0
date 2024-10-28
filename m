@@ -1,149 +1,443 @@
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE8A1D3648
-	for <imx@lists.linux.dev>; Mon, 28 Oct 2024 10:20:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6720018C939;
+	Mon, 28 Oct 2024 10:24:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730110830; cv=none; b=gmES2SpzhKhOf9EJt24LooFh+6Prm8vyuopzHgNwCGDCjMlj85TXzZgnlQrwM/C1pXE+V1GqOYlrn/+KbXbJXAeUAaj8VN8kE35DjGgMqQaI84tTOfRMBqCTXYcgOvDzXcB4lkiHMK3a/r5t38M2ayP5bANYg8n+f3TD2zp4rlM=
+	t=1730111062; cv=none; b=RGgi1g1m/8ZYT1IineR2FIij965QfDtxEScEP0K2j+b3AFzymkdQONp2SY81tV32tXcPRjyDlLftQUczCCiueHws/IznREnr99JcekyIjCw+/BPCORqpA6Hgi06f2bUm2Q/3gDPleHu32+sAEue5UDz7mLjx52eAWNpXO3uOQTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730110830; c=relaxed/simple;
-	bh=+AkYyoEAKkcOYov4gBkoQW10ALBeuyvqIJK5nNUYO8s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mB5SigKYwLikJ9mZOHdP7psw1+E02vPCAovm+FGoWhCWfJsWN9NOOqGdow93QZied8hDCqirzNsfQoFGvIKFPGVR8nLBsK/s1/+ol9WJcb7U/r5CVbg8wP+hsNpzMTt30tJwIYnWdcz7qXjX2xOgC9sO90lxM0zzoa3Em0eWbSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wupTvVoj; arc=none smtp.client-ip=209.85.128.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1730111062; c=relaxed/simple;
+	bh=NZY1+Ssx85kUHoilLgO+B6qDtQ06eiMsdics2ydE8Vc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F6YdjhjDv42qgwoGCcr2UiKOPoJyWXtF1AahNxQgzbE/T3ZC+y7xVLpxZV5m8S8ml1++QRZua+MLoq61qmfrsPNXzSvHaxR9t3PsrgjlArsIMsVgA32i9HrMb6dSY9tkDTNiLyS2mfxWmoYxcJRJMXTmLn5XCZ7D7oS2w9beLYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dMmK/HCO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wupTvVoj"
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-6e35bf59cf6so48486727b3.0
-        for <imx@lists.linux.dev>; Mon, 28 Oct 2024 03:20:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730110826; x=1730715626; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=TU2sdGJHKvD0taxHYBsyanzPD/VqU1wUV5/5j1d0+s8=;
-        b=wupTvVojep7AL5TRVaJxG1kV+6MHMHdlMYklxyx1e9xqRVTxDIew4uD0EYp8IjNxhC
-         kC88XbFPTr1MkX/AAbIrB6t6AqLNMhIFmt2TpUkVfSH8X/hxIA+xXgFZDl7pq5LSyM+r
-         vr+YMAXUpidpl24hZ92U1nYoczC1pyTjaW5bI8nrgoNN0FS3z0b+ULzAXNNP3Gs9SVPC
-         YAND0AH+kKAcd2ldz8M1KudHhGzoX6G3JD7rWSei1CZPXjRK/9x8JncZje0rHxb8w6GN
-         RCZ0SI87QBwU8dIejp7h6kupT7PkEYOwFIOwYpqXGS/DAmCu8AHZPZ4mH67OuzJqaF8M
-         02bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730110826; x=1730715626;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TU2sdGJHKvD0taxHYBsyanzPD/VqU1wUV5/5j1d0+s8=;
-        b=JoquvbdagPfsLsrpfXJj2wBC+amOjesl/wFd6nHG+PhM2CVQltLz99PVy+/Gvwlbdw
-         uEen8RLd3zQ/qovH78NegZo1sx71+w4vOvEyrTk3UKOQsqoaXSx7gRvvoEvzSv0a8A4X
-         jWzP5S84XllCojVeaQre79+BXOOhI90w1sFAiKV69d9P4Wb6fvZSSEnVR0pzsfd1ZKPf
-         82ISaOFZNaglIpYNn7JtiQa4kvzl5Qwz3XNjSSguWzxjZR+GKIJHuWujIAJGANgxt7AO
-         6oWvm9K9kVxH8uWFuxU7yH2GMVdBcL32Uwc6LjciGQZdQCIL1mvtsU4x/fmjaFenWjHJ
-         bF4w==
-X-Forwarded-Encrypted: i=1; AJvYcCWkQpGlCvhqTyY5qbtPm/HaKL1BV4nOLoPNSV886OGUk4Dr85RRWMQ0wjMJbsJQZtsX7zg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyQR57fIg5sImepHhuPPaTX19awhaMYDY/C0axqWKA44H599lLr
-	+Z7ykBQ3sPK8q7hU1CxwKGAyq8u1O80nwnR8xNPLW2F2//mH1u0mRNsijctV2XJEpaa6VL9wY3M
-	flX3OOic8OgN4/OwCAR8Qp7SENLngNwSN2Simiw==
-X-Google-Smtp-Source: AGHT+IHKdCACUXqx7Rdwg/Prh7fz9WsgaRfTmIR4UCFC4hi7xMX8hmTZVx47XtOQhuApr5txecXLMxKkQJeYoI3DfdM=
-X-Received: by 2002:a05:690c:6303:b0:6e3:c92c:1d57 with SMTP id
- 00721157ae682-6e842f91cf4mr107258157b3.2.1730110826498; Mon, 28 Oct 2024
- 03:20:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dMmK/HCO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F8FC4CEC3;
+	Mon, 28 Oct 2024 10:24:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730111062;
+	bh=NZY1+Ssx85kUHoilLgO+B6qDtQ06eiMsdics2ydE8Vc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dMmK/HCOFVtg0ZaN1e6xteqSlyVPkqHRzdFiUs2HD0yLwpupAlCDl1egOXGSa8pg6
+	 ScyzSYbCrCY21KCXms5jKNB0ZJ8mJLjDNJad7mlk264FT7jl++vDGCeTsgOqt6N5ql
+	 y25+JCxRm9brgj+lxxQINp8MtoM0+fCkp0YMg7LItKYUJPzAq8wvswgJG2JYlmfqeG
+	 n0L6ID8e/hQnZJXT1K6duZuSNQc8Jk4zbqx1NXR4y1JNAm5nzrXER06Jmvk5tplaPp
+	 90+g2EBiuTipVKsonS24X4CLBWXwCBRxxe4Uv3CXHBGzBF2G6Gq5jt/0CPw2kQ6hah
+	 la0m9W1zXztdw==
+Message-ID: <f4150aa3-4c0e-45fa-9c9c-879ac04c4364@kernel.org>
+Date: Mon, 28 Oct 2024 11:24:14 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241028023740.19732-1-victor.liu@nxp.com>
-In-Reply-To: <20241028023740.19732-1-victor.liu@nxp.com>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Mon, 28 Oct 2024 12:19:50 +0200
-Message-ID: <CAA8EJprFBbC_=kBHi86j-nE_K68QeG+c2OBzJCbUyNWs5zQK0Q@mail.gmail.com>
-Subject: Re: [PATCH v4 00/13] Add ITE IT6263 LVDS to HDMI converter support
-To: Liu Ying <victor.liu@nxp.com>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org, 
-	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com, 
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, 
-	airlied@gmail.com, simona@ffwll.ch, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, quic_jesszhan@quicinc.com, mchehab@kernel.org, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, catalin.marinas@arm.com, will@kernel.org, 
-	sakari.ailus@linux.intel.com, hverkuil@xs4all.nl, 
-	tomi.valkeinen@ideasonboard.com, quic_bjorande@quicinc.com, 
-	geert+renesas@glider.be, arnd@arndb.de, nfraprado@collabora.com, 
-	thierry.reding@gmail.com, prabhakar.mahadev-lad.rj@bp.renesas.com, 
-	sam@ravnborg.org, marex@denx.de, biju.das.jz@bp.renesas.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/2] arm64: dts: imx8mp: add aristainetos3 board
+ support
+To: Heiko Schocher <hs@denx.de>, linux-kernel@vger.kernel.org
+Cc: Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20241028082332.21672-1-hs@denx.de>
+ <20241028082332.21672-3-hs@denx.de>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20241028082332.21672-3-hs@denx.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On 28/10/2024 09:23, Heiko Schocher wrote:
+> Add support for the i.MX8MP based aristainetos3 boards from ABB.
+> 
+> The board uses a ABB specific SoM from ADLink, based on NXP
+> i.MX8MP SoC. The SoM is used on 3 different carrier boards,
+> with small differences, which are all catched up in
+> devicetree overlays. The kernel image, the basic dtb
+> and all dtbos are collected in a fitimage. As bootloader
+> is used U-Boot which detects in his SPL stage the carrier
+> board by probing some i2c devices. When the correct
+> carrier is probed, the SPL applies all needed dtbos to
+> the dtb with which U-Boot gets loaded. Same principle
+> later before linux image boot, U-Boot applies the dtbos
+> needed for the carrier board before booting Linux.
+> 
+> Signed-off-by: Heiko Schocher <hs@denx.de>
+> ---
+> checkpatch dropped the following warnings:
+> arch/arm64/boot/dts/freescale/imx8mp-aristainetos3a-som-v1.dtsi:248: warning: DT compatible string "ethernet-phy-id2000.a231" appears un-documented -- check ./Documentation/devicetree/bindings/
+> 
+> ignored, as this compatible string is usedin other dts too, for example in
+> 
+> arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
+> 
+>  arch/arm64/boot/dts/freescale/Makefile        |    5 +
+>  .../imx8mp-aristainetos3-adpismarc.dtsi       |   64 +
+>  .../imx8mp-aristainetos3-adpismarc.dtso       |   14 +
+>  .../imx8mp-aristainetos3-helios-lvds.dtsi     |   89 ++
+>  .../imx8mp-aristainetos3-helios-lvds.dtso     |   13 +
+>  .../imx8mp-aristainetos3-helios.dtsi          |  103 ++
+>  .../imx8mp-aristainetos3-helios.dtso          |   13 +
+>  .../imx8mp-aristainetos3-proton2s.dtsi        |  176 +++
+>  .../imx8mp-aristainetos3-proton2s.dtso        |   13 +
+>  .../imx8mp-aristainetos3a-som-v1.dts          |   18 +
+>  .../imx8mp-aristainetos3a-som-v1.dtsi         | 1210 +++++++++++++++++
+>  11 files changed, 1718 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-adpismarc.dtsi
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-adpismarc.dtso
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-helios-lvds.dtsi
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-helios-lvds.dtso
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-helios.dtsi
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-helios.dtso
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-proton2s.dtsi
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-proton2s.dtso
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3a-som-v1.dts
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3a-som-v1.dtsi
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+> index 9d3df8b218a2..7c3586509b8b 100644
+> --- a/arch/arm64/boot/dts/freescale/Makefile
+> +++ b/arch/arm64/boot/dts/freescale/Makefile
+> @@ -163,6 +163,11 @@ imx8mn-tqma8mqnl-mba8mx-usbotg-dtbs += imx8mn-tqma8mqnl-mba8mx.dtb imx8mn-tqma8m
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mn-tqma8mqnl-mba8mx-lvds-tm070jvhg33.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mn-tqma8mqnl-mba8mx-usbotg.dtb
+>  
+> +dtb-$(CONFIG_ARCH_MXC) += imx8mp-aristainetos3a-som-v1.dtb \
+> +			  imx8mp-aristainetos3-adpismarc.dtbo \
+> +			  imx8mp-aristainetos3-proton2s.dtbo \
+> +			  imx8mp-aristainetos3-helios.dtbo \
+> +			  imx8mp-aristainetos3-helios-lvds.dtbo
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-beacon-kit.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-data-modul-edm-sbc.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-debix-model-a.dtb
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-adpismarc.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-adpismarc.dtsi
+> new file mode 100644
+> index 000000000000..cc0cddaa33ea
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-adpismarc.dtsi
+> @@ -0,0 +1,64 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright (C) 2024 Heiko Schocher <hs@denx.de>
+> + */
+> +
+> +#include <dt-bindings/gpio/gpio.h>
+> +#include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +&ecspi1 {
+> +	spidev0: spi@0 {
+> +		reg = <0>;
+> +		compatible = "rohm,dh2228fv";
 
-On Mon, 28 Oct 2024 at 04:37, Liu Ying <victor.liu@nxp.com> wrote:
->
-> Hi,
->
-> This patch series aims to add ITE IT6263 LVDS to HDMI converter on
-> i.MX8MP EVK.  Combined with LVDS receiver and HDMI 1.4a transmitter,
-> the IT6263 supports LVDS input and HDMI 1.4 output by conversion
-> function.  IT6263 product link can be found at [1].
->
-> Patch 1 is a preparation patch to allow display mode of an existing
-> panel to pass the added mode validation logic in patch 3.
->
-> Patch 2 allows i.MX8MP LVDS Display Bridge(LDB) bridge driver to find
-> the next non-panel bridge, that is the IT6263 in this case.
->
-> Patch 3 adds mode validation logic to i.MX8MP LDB bridge driver against
-> "ldb" clock so that it can filter out unsupported display modes read
-> from EDID.
->
-> Patch 4 adds MEDIA_BUS_FMT_RGB101010_1X7X5_{SPWG,JEIDA} support, as they
-> are supported by IT6263(with LVDS data bit reversed order).
->
-> Patch 5 makes drm_of.c use MEDIA_BUS_FMT_RGB101010_1X7X5_{JEIDA,SPWG}.
->
-> Patch 6 supports getting dual-link LVDS pixel order for the sink side as
-> needed by IT6263 driver.
->
-> Patch 7 documents jeida-30 and vesa-30 data mappings in lvds-data-mapping.yaml,
-> as needed by IT6263 DT binding.
->
-> Patch 8 extracts common dual-link LVDS display properties into new
-> lvds-dual-ports.yaml so that IT6263 DT binding can reference it.
->
-> Patch 9 adds DT binding for IT6263.
->
-> Patch 10 adds IT6263 bridge driver.  Only video output is supported.
->
-> Patch 11 adds DT overlays to support NXP adapter cards[2][3] with IT6263
-> populated.
->
-> Patch 12 enables the IT6263 bridge driver in defconfig.
->
-> Patch 13 updates MAINTAINERS to add maintainer for IT6263 driver.
+Hm? I have some doubts, what device is here?
 
-This has pretty complicated structure from the merging point of view.
+> +		spi-max-frequency = <500000>;
+> +	};
+> +};
+> +
+> +&ecspi2 {
+> +	spidev1: spi@0 {
+> +		reg = <0>;
+> +		compatible = "rohm,dh2228fv";
+> +		spi-max-frequency = <500000>;
+> +	};
+> +};
+> +
+> +&i2c2 {
+> +	/* SX1509(2) U1001@IPi SMARC Plus */
+> +	gpio8: i2c2_gpioext0@3e {
 
-I propose we take patches 6, 8, 9 (without 30-bit formats, they can be
-dropped while applying), 11, 12 (?) and 13 through drm-misc in one
-batch (once DT maintainers review the binding parts). This looks like
-a minimal set, having no extra dependencies.
+Uh, no, please never send us downstream code.
 
-The second set might be 4, 5 + new patch, re-adding 30-bit formats to
-IT6263 binding (no driver changes are necessary). This can go in
-separately, after an Ack from media maintainers.
+Please follow DTS coding style in all upstream submissions.
 
-Of course both sets can go together if linux-media maintainers reacts
-quickly and ack merging media-formats patch through drm-misc tree.
+Also:
+Node names should be generic. See also an explanation and list of
+examples (not exhaustive) in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
 
-The rest of the patches don't have such strong dependencies and go in
-once ready / reviewed.
 
-WDYT?
+> +		/* GPIO Expander 2 Mapping :
+> +		 * - 0: E_GPIO1_0	<=>	IPi SMARC Plus CN101_PIN29: E_GPIO1_0
+> +		 * - 1: E_GPIO1_1	<=>	IPi SMARC Plus CN101_PIN31: E_GPIO1_1
+> +		 * - 2: E_GPIO1_2	<=>	IPi SMARC Plus CN101_PIN32: E_GPIO1_2
+> +		 * - 3: E_GPIO1_3	<=>	IPi SMARC Plus CN101_PIN33: E_GPIO1_3
+> +		 * - 4: E_GPIO1_4	<=>	IPi SMARC Plus CN101_PIN35: E_GPIO1_4
+> +		 * - 5: E_GPIO1_5	<=>	IPi SMARC Plus CN101_PIN36: E_GPIO1_5
+> +		 * - 6: E_GPIO1_6	<=>	IPi SMARC Plus CN101_PIN37: E_GPIO1_6
+> +		 * - 7: E_GPIO1_7	<=>	IPi SMARC Plus CN101_PIN38: E_GPIO1_7
+> +		 * - 8: E_GPIO2_8	<=>	IPi SMARC Plus CN101_PIN40: E_GPIO2_8
+> +		 * - 9: TP1002		<=>	IPi SMARC Plus TP1002 (won't use)
+> +		 * - 10: TP1003		<=>	IPi SMARC Plus TP1003 (won't use)
+> +		 * - 11: TP1004		<=>	IPi SMARC Plus TP1004 (won't use)
+> +		 * - 12: TP1005		<=>	IPi SMARC Plus TP1005 (won't use)
+> +		 * - 13: TP1006		<=>	IPi SMARC Plus TP1006 (won't use)
+> +		 * - 14: TP1007		<=>	IPi SMARC Plus TP1007 (won't use)
+> +		 * - 15: TP1008		<=>	IPi SMARC Plus TP1008 (won't use)
+> +		 * - 16: OSCIO		<=>	IPi SMARC Plus TP1001 (won't use)
+> +		 */
+> +		#gpio-cells = <2>;
+> +		#interrupt-cells = <2>;
+> +		compatible = "semtech,sx1509q";
+> +		reg = <0x3e>;
+> +
+> +		semtech,probe-reset;
+> +		gpio-controller;
+> +		interrupt-controller;
+> +
+> +		interrupt-parent = <&gpio6>;
+> +		interrupts = <1 IRQ_TYPE_EDGE_FALLING>;
+> +	};
+> +
 
--- 
-With best wishes
-Dmitry
+Drop
+
+> +};
+> +
+> +&flexcan1 {
+> +	status = "okay";
+> +};
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-adpismarc.dtso b/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-adpismarc.dtso
+> new file mode 100644
+> index 000000000000..5a9adccbf7cf
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-adpismarc.dtso
+> @@ -0,0 +1,14 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright (C) 2024 Heiko Schocher <hs@denx.de>
+> + */
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +#include "imx8mp-aristainetos3-adpismarc.dtsi"
+> +
+> +&{/} {
+> +	model = "Aristainetos3 ADLink PI SMARC carrier";
+> +	compatible = "abb,aristainetos3-adpismarc", "imx8mp-aristianetos3",
+> +		     "abb,aristianetos3-som", "fsl,imx8mp";
+
+It does not look like you tested the DTS against bindings. Please run
+`make dtbs_check W=1` (see
+Documentation/devicetree/bindings/writing-schema.rst or
+https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
+for instructions).
+
+And why this is DTSO, I have no clue...
+
+> +};
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-helios-lvds.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-helios-lvds.dtsi
+> new file mode 100644
+> index 000000000000..55aabd6fc1f7
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-helios-lvds.dtsi
+> @@ -0,0 +1,89 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright (C) 2024 Heiko Schocher <hs@denx.de>
+> + */
+> +
+> +#include <dt-bindings/gpio/gpio.h>
+> +#include <dt-bindings/input/input.h>
+> +#include <dt-bindings/interrupt-controller/arm-gic.h>
+> +#include <dt-bindings/pwm/pwm.h>
+> +
+> +&{/} {
+> +	panel: panel {
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_lcd0_vdd_en>;
+> +		compatible = "lg,lb070wv8";
+> +		backlight = <&lvds_backlight>;
+> +		enable-gpios = <&gpio1 13 GPIO_ACTIVE_HIGH>;
+> +
+> +		port {
+> +			panel_in: endpoint {
+> +				remote-endpoint = <&ldb_lvds_ch0>;
+> +			};
+> +		};
+> +	};
+> +};
+> +
+> +&gpio3 {
+> +	mipi_lvds_select {
+
+No, read coding style.
+
+
+> +		gpio-hog;
+> +		gpios = <23 GPIO_ACTIVE_HIGH>;
+> +		output-low;
+> +		line-name = "mipi_lvds_select";
+> +	};
+> +};
+> +
+> +&hdmi_blk_ctrl {
+> +	status = "disabled";
+> +};
+> +
+> +&hdmi_pvi {
+> +	status = "disabled";
+> +};
+> +
+> +&hdmi_tx {
+> +	status = "disabled";
+> +};
+> +
+> +&hdmi_tx_phy {
+> +	status = "disabled";
+> +};
+> +
+> +&irqsteer_hdmi {
+> +	status = "disabled";
+> +};
+> +
+> +&ldb_lvds_ch0 {
+> +	fsl,data-mapping = "jeida";
+> +	fsl,data-width = <24>;
+> +	remote-endpoint = <&panel_in>;
+> +};
+> +
+> +&lcdif1 {
+> +	status = "disabled";
+> +};
+> +
+> +&lcdif2 {
+> +	status = "okay";
+> +};
+> +
+> +&lcdif3 {
+> +	status = "disabled";
+> +};
+> +
+> +&lvds_backlight {
+> +	status = "okay";
+> +};
+> +
+> +&lvds_bridge {
+> +	status = "okay";
+> +};
+> +
+> +&media_blk_ctrl {
+> +	/*
+> +	 * The internal divider will always divide the output LVDS clock by 7
+> +	 * so our display needs 33246000 Hz, so set VIDEO_PLL1 to
+> +	 * 33246000 * 7 = 232722000 Hz
+> +	 */
+> +	assigned-clock-rates = <500000000>, <200000000>, <0>, <0>, <232722000>;
+> +};
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-helios-lvds.dtso b/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-helios-lvds.dtso
+> new file mode 100644
+> index 000000000000..06d1883b962a
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-helios-lvds.dtso
+> @@ -0,0 +1,13 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright (C) 2024 Heiko Schocher <hs@denx.de>
+> + */
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +#include "imx8mp-aristainetos3-helios-lvds.dtsi"
+> +
+> +&{/} {
+> +	model = "Aristainetos3 helios LVDS carrier";
+> +	compatible = "abb,aristainetos3-helios-lvds", "abb,aristainetos3-helios", "abb,aristianetos3-som", "fsl,imx8mp";
+
+Read not only DTS coding style, but also kernel coding style. Lines are
+supposed to be wrapped according to kernel coding style.
+
+
+> +};
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-helios.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-helios.dtsi
+> new file mode 100644
+> index 000000000000..b4b1cb3b0cb3
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-helios.dtsi
+> @@ -0,0 +1,103 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright (C) 2024 Heiko Schocher <hs@denx.de>
+> + */
+> +
+> +#include <dt-bindings/gpio/gpio.h>
+> +
+> +&{/} {
+> +	helios_gpio_leds {
+
+Node names should be generic. See also an explanation and list of
+examples (not exhaustive) in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+
+
+> +		compatible = "gpio-leds";
+> +
+> +		helios_blue {
+
+So this was absolutely never tested.
+
+It does not look like you tested the DTS against bindings. Please run
+`make dtbs_check W=1` (see
+Documentation/devicetree/bindings/writing-schema.rst or
+https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
+for instructions).
+
+> +			label = "helios:blue";
+
+Use function and color instead.
+
+I finished review here. Rest of the code does not look good, really. You
+have so many, really so many, trivial issues which tools point out, that
+using humans for such review is just waste of our time.
+
+Best regards,
+Krzysztof
+
