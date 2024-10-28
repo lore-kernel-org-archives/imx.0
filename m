@@ -1,149 +1,115 @@
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303951DFD83
-	for <imx@lists.linux.dev>; Mon, 28 Oct 2024 20:22:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063511DEFCF;
+	Mon, 28 Oct 2024 20:25:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730146932; cv=none; b=Oneos4LrzBOYrz5f6CnDtboCst2VDOULo5S6jd+7GmrnYRucgTVnxjRyMKwwLWQa6Xdm9dJlCr7pjI8zsHPWk+d5rkyz7bP4n+mpXOkiYTjre2GUJvxec143Jp8UDksBYVB4h7zaQ+H17aX3hOENLg6pKZDoH389vm8vDLXiUpU=
+	t=1730147128; cv=none; b=oylZ/dXYShwT8/bh0XLjR7czUZ8/y6dssAZpD68PSL/Jl939VFKYAus/pE17kDNE1VxgaOcaBBmIcy9kuMVtA4rFF365/lVow0AN+pEttow6LRlY6ELY93W+hU73lTg/Wem1CKBjh2auIYmCd4x1I7oHKfy6B1ozvfj3ajjarqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730146932; c=relaxed/simple;
-	bh=CHCbmADrldFg8+CkaQwy/6aOCUZ1BikaPLszOv7Ix0g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CMjSLL5yM/q0jLceDpvGv+9Um3cQyp3M119Ktd6rZBDBnlzEMrIqJbE7mfZX0U8+ucWZLgPXTJlNBqfWHw7E3b9aRTHilg/y9V5QTKcn7+ZmM3w354G8vRtoCYCcBSQMOodY+pua6JXIG8cIHlGl8hc+NiEHQnlImnMLnysgC9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 2726D1A02CA;
-	Mon, 28 Oct 2024 21:12:33 +0100 (CET)
-Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 0F99D1A12AE;
-	Mon, 28 Oct 2024 21:12:33 +0100 (CET)
-Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 498682039A;
-	Mon, 28 Oct 2024 21:12:32 +0100 (CET)
-Date: Mon, 28 Oct 2024 21:12:32 +0100
-From: Jan Petrous <jan.petrous@oss.nxp.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Minda Chen <minda.chen@starfivetech.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-	Keyur Chudgar <keyur@os.amperecomputing.com>,
-	Quan Nguyen <quan@os.amperecomputing.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Subject: Re: [PATCH v3 04/16] net: phy: Add helper for mapping RGMII link
- speed to clock rate
-Message-ID: <Zx/wMO0YjJ+QK7qT@lsv051416.swis.nl-cdc01.nxp.com>
-References: <20241013-upstream_s32cc_gmac-v3-0-d84b5a67b930@oss.nxp.com>
- <20241013-upstream_s32cc_gmac-v3-4-d84b5a67b930@oss.nxp.com>
- <4686019c-f6f1-4248-9555-c736813417b7@lunn.ch>
+	s=arc-20240116; t=1730147128; c=relaxed/simple;
+	bh=IpWxsYIfuuTJONyY6RJYpXgwIN5saxNVQGws4EoHP+4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=G0GCIOBkn1BfmE0jQ6XNA5dJQDOSNa1zVr5lsVLKpuiM+YeIU6iiRWVDJVvrXDKLpnaIs8ba3yE+d6I1WtigjA2ggy92vJ+WdAUGnSRkEWaxyMQP5OdFaJf6fSIWixkzpV8oKOye9KY7K0dQ2wFvg+JzL32IRy/qL0kTkxLuTyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HGbf39fZ; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HGbf39fZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 40548C4CEE4;
+	Mon, 28 Oct 2024 20:25:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730147127;
+	bh=IpWxsYIfuuTJONyY6RJYpXgwIN5saxNVQGws4EoHP+4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=HGbf39fZcUR5w52xcBPt5CiRR5TRL6rVTEWozmT0bffEKwL3/RgENSxi+cg+PIw5K
+	 2HLwexEaa6A/OVsST91Pz8FPxvkluSWtUa0/HsUdf3vt68RJR329SWkDR6WGucRwau
+	 fXwRvn480kuJUmXZRk7bQn876V7SOPKlPO8Grg7BLdcyPggvDw81ummZgkOIKZBY74
+	 vCMOZDG26w2aJcT3zUOeyquaG7s3lBhOO8hO1qqowcG3ZgdxGPJgFBw/tHFwejhxCJ
+	 mgqkPvSgjiAYHN4RKcNc9G23YYZ4nH/4++UQvY5ahNj0FsFiuCWyv6Hyz3h+a41y3m
+	 vXckUiDjYln3Q==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 221B2D5B148;
+	Mon, 28 Oct 2024 20:25:27 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Date: Mon, 28 Oct 2024 21:24:43 +0100
+Subject: [PATCH v4 01/16] net: driver: stmmac: Fix CSR divider comment
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4686019c-f6f1-4248-9555-c736813417b7@lunn.ch>
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241028-upstream_s32cc_gmac-v4-1-03618f10e3e2@oss.nxp.com>
+References: <20241028-upstream_s32cc_gmac-v4-0-03618f10e3e2@oss.nxp.com>
+In-Reply-To: <20241028-upstream_s32cc_gmac-v4-0-03618f10e3e2@oss.nxp.com>
+To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Jose Abreu <joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
+ Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Emil Renner Berthing <kernel@esmil.dk>, 
+ Minda Chen <minda.chen@starfivetech.com>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Iyappan Subramanian <iyappan@os.amperecomputing.com>, 
+ Keyur Chudgar <keyur@os.amperecomputing.com>, 
+ Quan Nguyen <quan@os.amperecomputing.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>
+Cc: linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, 
+ devicetree@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>, 
+ Jacob Keller <jacob.e.keller@intel.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1730147124; l=958;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=YCKaeA/xV5exOeaV42TsvtvrFwKq5QOyi/twLXcBhk0=;
+ b=ly73UvyKBxNkbGRXT/qdaY3nCOHU7De4UENA/7q8MZSZVdSurII2+gCsPJ1K1eSuNRTS08I8H
+ kG3WG7uEmLBC3LXms0bijaX87ZVNyhEgu2KkS8tR8XpIif86lnim32n
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
-On Mon, Oct 14, 2024 at 03:40:51PM +0200, Andrew Lunn wrote:
-> On Sun, Oct 13, 2024 at 11:27:39PM +0200, Jan Petrous via B4 Relay wrote:
-> > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-> > 
-> > The helper rgmii_clock() implemented Russel's hint during stmmac
-> > glue driver review:
-> > 
-> >   > We seem to have multiple cases of very similar logic in lots of stmmac
-> >   > platform drivers, and I think it's about time we said no more to this.
-> >   > So, what I think we should do is as follows:
-> >   >
-> >   > add the following helper - either in stmmac, or more generically
-> >   > (phylib? - in which case its name will need changing.)
-> >   >
-> >   > static long stmmac_get_rgmii_clock(int speed)
-> >   > {
-> >   >        switch (speed) {
-> >   >        case SPEED_10:
-> >   >                return 2500000;
-> >   >
-> >   >        case SPEED_100:
-> >   >                return 25000000;
-> >   >
-> >   >        case SPEED_1000:
-> >   >                return 125000000;
-> >   >
-> >   >        default:
-> >   >                return -ENVAL;
-> >   >        }
-> >   > }
-> >   >
-> >   > Then, this can become:
-> >   >
-> >   >        long tx_clk_rate;
-> >   >
-> >   >        ...
-> >   >
-> >   >        tx_clk_rate = stmmac_get_rgmii_clock(speed);
-> >   >        if (tx_clk_rate < 0) {
-> >   >                dev_err(gmac->dev, "Unsupported/Invalid speed: %d\n", speed);
-> >   >                return;
-> >   >        }
-> >   >
-> >   >        ret = clk_set_rate(gmac->tx_clk, tx_clk_rate);
-> > 
-> > Suggested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
-> 
-> But of an unusual commit message, but it does explain the "Why?".
+From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-I will reformulate description in v4.
+The comment in declaration of STMMAC_CSR_250_300M
+incorrectly describes the constant as '/* MDC = clk_scr_i/122 */'
+but the DWC Ether QOS Handbook version 5.20a says it is
+CSR clock/124.
 
-> 
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> 
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+---
+ include/linux/stmmac.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks.
+diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
+index d79ff252cfdc..75cbfb576358 100644
+--- a/include/linux/stmmac.h
++++ b/include/linux/stmmac.h
+@@ -33,7 +33,7 @@
+ #define	STMMAC_CSR_20_35M	0x2	/* MDC = clk_scr_i/16 */
+ #define	STMMAC_CSR_35_60M	0x3	/* MDC = clk_scr_i/26 */
+ #define	STMMAC_CSR_150_250M	0x4	/* MDC = clk_scr_i/102 */
+-#define	STMMAC_CSR_250_300M	0x5	/* MDC = clk_scr_i/122 */
++#define	STMMAC_CSR_250_300M	0x5	/* MDC = clk_scr_i/124 */
+ 
+ /* MTL algorithms identifiers */
+ #define MTL_TX_ALGORITHM_WRR	0x0
 
-> >  
-> > +/**
-> > + * rgmii_clock - map link speed to the clock rate
-> > + * @speed: link speed value
-> > + *
-> > + * Description: maps RGMII supported link speeds
-> > + * into the clock rates.
-> > + */
-> 
-> A Returns: line would be nice. 
+-- 
+2.46.0
 
- will add it in v4.
 
-Thanks
-/Jan
