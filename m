@@ -1,226 +1,164 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2081.outbound.protection.outlook.com [40.107.247.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B110194080
-	for <imx@lists.linux.dev>; Mon, 28 Oct 2024 11:23:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730114610; cv=none; b=WU5roN202L57QwiZDPfo+c5STlegFKQWaUZDUgZjzsjySp0jaqw9PZjAgL/fw4F1ZV9EPpbDb/pKKbRLQ3c2hOJXapbFk9b2c35G+5Gwcw22vNsppP9AK7xqQ7gkOukLQnV2CVCLB1hIveHg/EuIUi/PCSSJdx+ovCGgjucfn24=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730114610; c=relaxed/simple;
-	bh=SuyxiTYdCbpA1kfJXBppdzGESsoDHyulqBof6kweIk4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j7OXf34gTzilrk5og7ux7kVb8qZ97kNd5kyT2FiAuc6jKFkXBizk0h44ap6qnIo+xel7sEHzkHednorHnsTowBye2qjVJ5ba21ppfKjoLEwIpa6jY9obary87v765wmr4LmPH5FTCNiLCjKFq+uLDJbOqS84T/kqXAYTOUp5SOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=x6lwJa0H; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0429F1D47CD
+	for <imx@lists.linux.dev>; Mon, 28 Oct 2024 11:51:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.81
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730116278; cv=fail; b=jyXgzDYPh2vaQUcyE1QnL2wIA704NYR9HLhQLoPVrZbVMRyZybDVc1yJwhlEy+vgft+/TZM5VDy4Xo6gZLWjil1FKuWew3ZwzrbybHEpXBn0zV3pn0v/YXW/Tc6ThjsiKl6aaZtNE5dbGJCoF4wSSlouTNosQ0TTWA3EzRhBHtc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730116278; c=relaxed/simple;
+	bh=B4lqmFvewEe0COhxHk1Sg5C4GiH9Ge0lSnejzwkMlhA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=LvZ7rk+tc96dBH19Uro3QWCDL1roXikoLv4W2uZ8TnUTwjb92J1ZhYtvUjRLogMKGoqTt7kgYIrABYrc9Oc6TCP6U9mSXE2xGWHS1iA8S0IG9AVQLrWW/pFGb4IutbCm95gFiSEhoC28uqqSTFTdyDuR4Zr3AIA6dOcpRlJJdjw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=H0/5+iD1; arc=fail smtp.client-ip=40.107.247.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="x6lwJa0H"
-Received: from [192.168.1.107] (89-186-114-4.pool.digikabel.hu [89.186.114.4])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: hs@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 3DCE68907B;
-	Mon, 28 Oct 2024 12:23:19 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1730114605;
-	bh=9WOt/O2aSaelze2ima45p34Z2cNV949LPG7fDV305A4=;
-	h=Date:Subject:To:Cc:References:From:Reply-To:In-Reply-To:From;
-	b=x6lwJa0HNf64WxDoZRE8mWtAZxSY24eLdRYmNHfIr35c8gEmSuqXeQ+2NMy1YMar1
-	 wdGZ4WjDvl1PNM9tfNAxR2bvI2u/BOapPb0pDhnjeSUVBjEbN2ev/9bTKrxJv23qQ+
-	 1zipO6PpA2HYe5qGCDh6/HLnwrm94h6EPq7pmsaDKmx+B4aHh+JnglnMj6ikWdL0cM
-	 y2Vv+AmM9+MUlpc/RxZLCDPU4btLbFWla0bcp7Bh8H+U5rdjfM/Udt8ygVoqgxzGv6
-	 p2TKr+sgDMoHsTum0lWYqUBnLhh+XmaXpP7uNu7XyQJ9B0J0VfOFvN7/2E6C4al/8u
-	 UdwSldeQRW/hw==
-Message-ID: <1c21a636-5778-03c0-85b0-a4b3710b8f3d@denx.de>
-Date: Mon, 28 Oct 2024 12:21:01 +0100
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="H0/5+iD1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WLjO4v5e1VoWVNXEqyTIhLozw3JC+UuNZLUXtaA8D+rwaBf9TVg5f9gT7R6A0iDLRiHtUAI2NyQ7pNvUmTy8XhhbqPyEhyyj2Zo09KS0gZye2xMfKlmyA963yE9na3KpBOZRqeh5Yr20vPBiOH4C3qhoJRTXJx3wO9IYlfykDAE0afmDofxreBYNShI+46nWHg8qo2O2KJhe6ek0eaztJrp9TJ9aJUe9niUl7wSjYr4QH5/F1YzhynK+SiX9CG9RXYAD0WWwfq1SID1Q7S/If9IWudT+JConidlllAQrdqyoo6PXV36V8EfvMudOWszxee3Wkqk6xfYbkUtEgI2fPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RwhaiktcemK24ZksOWKKCOz2aM1eU1UhFxIt4l3dijE=;
+ b=Ut75/SdlUYW0FrUm1xOKPfk6ltubjj0lF487ikdk9LDsaMjUgYlWgoJxQ3lVW1htZqRF+8E29YqMT4+5L2xl/AHxT8b3cbukOyJHWjfvTJT4EHKpnGSvTzU3Hfizy09B1pkNdsphMhVcJMdAlBFP/cP2dwOcTrQaY+kDYPtAG83FXSooAEVwVkwlkgcbqzAtWCnHPaF7B67zurebiHxsUAN2739P5kDZVVa2Y8iJSNioPR/zTdY9qMUGQ/HdenfmDMi1uwmcPURQItdoclNFY3rVvDWUUv0hEpqF4ew/ElByN4k+o38KSLImGm8XYBJJwo0hhE5w4vUHN7v5ibPtmw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RwhaiktcemK24ZksOWKKCOz2aM1eU1UhFxIt4l3dijE=;
+ b=H0/5+iD1MyzQD/yX1wUpZOqJXgi0cnly53wqDfEJ0/tphRISp1rNg1xZN3jXOxRN4a1gkIE4UE4GqjjYE2RL9SbAt+/ePOXX6ibBObek0JCoDfWvYNPqfdfyAhIsej6npgfRqTQfxZTH+XKt8+lTIzQzQpSar742YhIAlUhV8/f0Vud4SJKf56+uPz/qrnbnr8PkvQmx5+b3GRjUQOPKhhthgL97jMr9RzLlSTf9yGlBa+csp371e7F/rhE07+ziabGvGxrTEhoG3IOPPsmzqXI0FoZz3vr4w/XmexsVwCGlpQKN4kUxiomlwcN6PZhHWkRaefsyxX1sTIJbvM2sCg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
+ by DBAPR04MB7238.eurprd04.prod.outlook.com (2603:10a6:10:1aa::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.25; Mon, 28 Oct
+ 2024 11:51:12 +0000
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2%3]) with mapi id 15.20.8093.024; Mon, 28 Oct 2024
+ 11:51:12 +0000
+Date: Mon, 28 Oct 2024 13:51:08 +0200
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, claudiu.manoil@nxp.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH net] net: enetc: set MAC address to the VF net_device
+Message-ID: <20241028115108.b4wzjsdxketvfehl@skbuf>
+References: <20241028085242.710250-1-wei.fang@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241028085242.710250-1-wei.fang@nxp.com>
+X-ClientProxiedBy: VI1PR07CA0222.eurprd07.prod.outlook.com
+ (2603:10a6:802:58::25) To AM8PR04MB7779.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24b::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH v1 2/2] arm64: dts: imx8mp: add aristainetos3 board
- support
-Content-Language: en-US
-To: Krzysztof Kozlowski <krzk@kernel.org>, linux-kernel@vger.kernel.org
-Cc: Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <20241028082332.21672-1-hs@denx.de>
- <20241028082332.21672-3-hs@denx.de>
- <f4150aa3-4c0e-45fa-9c9c-879ac04c4364@kernel.org>
- <bf2c81e1-4e97-cfa2-326f-0a6125b2cff9@denx.de>
- <fd4fffb3-44d3-4efb-8c74-4d94e1f26298@kernel.org>
-From: Heiko Schocher <hs@denx.de>
-Reply-To: hs@denx.de
-In-Reply-To: <fd4fffb3-44d3-4efb-8c74-4d94e1f26298@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|DBAPR04MB7238:EE_
+X-MS-Office365-Filtering-Correlation-Id: 22c71427-988e-47fe-c56a-08dcf746d211
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?YPT5iKmV2y6Ur8LCuG7zZBC/xKS446g7jvNtlOAxLAze+AOg4yg3gzbhfqDV?=
+ =?us-ascii?Q?bzTq/HtYdxYp/9ifS2UwXjSUx4OqoVi4UdZ1U+I84KgYOYmxdPB+c4l0ojja?=
+ =?us-ascii?Q?wSV63BP+JAM5K2xpNUp16Wu3GOrgpsR1xLYR0ZxXBt7UoxYJh4sP28HV2Pw+?=
+ =?us-ascii?Q?Xg+mSCupqo87c8kMjpzkb+5khdl5gzoFOi8atPerIP/9Q+sOOFHN0CYPdLFq?=
+ =?us-ascii?Q?Ju+73J30HTavyw3dyhKDYU9jFDRFQuFVMZM7szR/VGOCCCLeQ92D3sD7rByx?=
+ =?us-ascii?Q?GXtmrQmbR5FmHM35UyJob8Eqh9ehr0xYnOE9hN+VSBAQplB5EliC7RSqbv3h?=
+ =?us-ascii?Q?wo8G075tg+WXC7V8r5b42Nu4YtVqvrYhFuqG3wC1ks7utDbK5aV3cF3wxBJb?=
+ =?us-ascii?Q?s094orphpTjEjMq6ZIrUhQgJnQjc2VgCQg8V1XLILKgtRo17wDOvOTV28Xvo?=
+ =?us-ascii?Q?XphCkDgLY5ux36yId8e8wZIlKz7DJFey9xZY6YVKPeXc/auuxTbb4fduSbZx?=
+ =?us-ascii?Q?FJ5s1BxNAHqZ6jGPVL7Vyuims7i0gC322T50GmBj+IQi+Z1i3pCpj2ZprkPD?=
+ =?us-ascii?Q?l6qQyKWGvuNxg63yhkKZ7IicUMb10yRt7G59FDvSPaeMt8t4Fv0IhrRvG8wB?=
+ =?us-ascii?Q?egcmF6MmwpxEn0V/7v6SCXyQIUpjKP/SEjALwrz4WvVskmCdvIzvUtEFmjms?=
+ =?us-ascii?Q?TtPH+JNrdXjRIwwaNlJrxo2tad1mKI8iS8eXz8gbMCZ+ERqtTgEMITEGeOVD?=
+ =?us-ascii?Q?b/1fDhF0M5YVV+CdwClatSQVE4JV5XTxaVB74AbjxlakgOJd5p2EDN3IeQ4a?=
+ =?us-ascii?Q?9vVL9BgitPh/Mw/PXTsCl78D0AYPIqMxxFjLuEuP393XEZg3ovznc1Xdv75U?=
+ =?us-ascii?Q?OUYAKvFXGaHPnP4YEFuayP6EOlSViDZ82nblshIoNe1EFAKru/NVxV5BfyAw?=
+ =?us-ascii?Q?a+T0fmbBJ4/LlO1uQGfvC/WqQEDUJ55iunPoClJJUvadx7z+56/myUEmMoB4?=
+ =?us-ascii?Q?bIKJCV8OXs7Ph6s/Fu8Wj8m2nRY0Z+POhUFdIlbrTFOuCP8ujTteBVtc0/F+?=
+ =?us-ascii?Q?BTS2Tf6EUCFCtA8xccrOh+K24gwqyUExzOKHWy0J617qSW8HrLl67REmfmQn?=
+ =?us-ascii?Q?fPkUlC2BfZeFp2i4L/i0YDytYDKm8VfZZzDKb6gClqMksAcWZ77pdw0F93my?=
+ =?us-ascii?Q?anUYhhqUJAFvRl/ec0hZdCZ8HX36ppQ5OK3zkd5khjSphPgrjhM/yeLTOgZK?=
+ =?us-ascii?Q?ch60sKJKpd6oOTuqotGyU9+mVBYIxrAKk1u0kt6qCRz84N4smXRCHS30pDa4?=
+ =?us-ascii?Q?9jHStVgoXnSeRXCKMADDVBNP?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?rBHsoKOeU25nGHqxzMHORyjWQT0vaJ+AgiBBwXRBOHOoZHPHaMuiJczMGXFC?=
+ =?us-ascii?Q?ptj7J+AAWQVavv5Le3e4xsjxbvPSQcdQVMz9emuDuaK0Krzt+ZmWmSloWrZW?=
+ =?us-ascii?Q?qRm2LXp8cSpfHmZUcT/ThObtBQlf6OIFf3A8ifSQ+PtBzLa6taFQQlA23Dkc?=
+ =?us-ascii?Q?yD54QKarb0vgFhtfTgioxzsAo0VmBSLv2wHdAMrn6V0yBtkty9LHeDF80FUy?=
+ =?us-ascii?Q?2x1AmqUzOry6q/wYsFQ9KO4UxGcuFb81ZMWx3epCHyGroQE1GEk3Wuxb6XoZ?=
+ =?us-ascii?Q?gjkzd7Ab9cCKHmtWvaZTF7PmN5HdWXEezet1NG8d0kZ7ruvg1XF7Jk3uL4dM?=
+ =?us-ascii?Q?OCs0FCRWe8xHFPzpjRRgMetwEQ6o3DP/SfNPV57/DVz86A1QY345XB0zA5T1?=
+ =?us-ascii?Q?SSCqY7pV+Tw7sTHkoca3/sT5rvVtdkeF4fENGyp8uZ8RUgKVQ25EFpK45Fom?=
+ =?us-ascii?Q?RjGcehDiYRI7ACW9w10W6yIg9/2wK+QMTOPej2fcEc/x5dVpgHcNGcrlWWfA?=
+ =?us-ascii?Q?PAQaRilTH+bGUJUEqdpC7565yC3wy4Zbgh0xWMFLiidFtEtd3TH9xa/rd37I?=
+ =?us-ascii?Q?SySVfP/dKCmPCXyP/LDDiDMIhPy7aHLNoUkkOEPU1gv/14W2Ga6MuYDBBTGg?=
+ =?us-ascii?Q?giVpWduxKRkTyLG1RhWanHytV8rNszDHPHiH2h5f2P48oXIVF7f67fG5EkEr?=
+ =?us-ascii?Q?WRWwQK/DajCYqvyk+KX3XBngwYmOo1p1MO9OVJ0QD3sM0T7XMaMWgYFs6+sP?=
+ =?us-ascii?Q?nshtGfR3fji0NuRFOip+eN7mRwH/Q06bjL4n4V8X+NTvqhnZece8h3qRXk/U?=
+ =?us-ascii?Q?2smlcc/VmiVife4S0qV8A4vB+npvyMUX363XLRw5pel27r41CJf3QJDEvzkn?=
+ =?us-ascii?Q?XV5ANplk2eXTqldQk2u0xjvtjikxX2XQJT97NJRQmWYnQU/Ltjl0CS6WkZy8?=
+ =?us-ascii?Q?Bjv3Wc+9wZOJZK4yYb5NgX63oMty5wf0TvJyVXLCDGDh/MdxgLBIouEhywXe?=
+ =?us-ascii?Q?/psRe/+v3F90+Zx2Pr6AnEhnq93VrCoKiFDKi1K+IYJ8zxnhXSju3XlcWj5y?=
+ =?us-ascii?Q?SgpQ7u4zQg6yMU1ClXVuhTP2iv26RsXGLwfVNZe8SUBSWbXKL777yUs3TApS?=
+ =?us-ascii?Q?2bvw7NtF0w3qtMZaj2JVoYdhgMPpACBvMC0cr6SddtlnLn3fwfzl5Bg9Fq47?=
+ =?us-ascii?Q?HSHd+MvY7bvMVcZlIo1TPvgeB9yjV9XgHdoaJLGpGhTdOxLrEXJRWRGk93AG?=
+ =?us-ascii?Q?HxTdfr/4ptZf+t0KDpS7nMmyQtQUKm1lofEPh7Y9lpFmMmDogtZIk6iN9mIW?=
+ =?us-ascii?Q?RXb5RdJaygKOFWT/QZ6+KSvQpibk4xfIPrQdY4NWjmKpILhro/cptTPLLKb2?=
+ =?us-ascii?Q?iOtToPgnvNjHe23qjHfvZM3vB+zHyhkOcaPd/JhXoGkd7bQHqcC7MCFEquw/?=
+ =?us-ascii?Q?VyA7cNKwgNz/fVncFt0lCd83QfJlgIcCs0jFfbhcT15fGBCfv5dEC7M+wsRo?=
+ =?us-ascii?Q?4u5vxONX1904MRHuhzDgn5Qqs/AoVvk8lu4qH0hhy2UC1OFr6uodcde8rsAW?=
+ =?us-ascii?Q?lhT2BicpLwhb0wPWCa/i8Zz+7BWsxzlfGA0A6Cf5ocas7L8DXYRosE2S59tv?=
+ =?us-ascii?Q?CA=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 22c71427-988e-47fe-c56a-08dcf746d211
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2024 11:51:12.5677
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3TlbDr8/rox4dNeMxh2dRYsEARnAsQVKIBDSlntC7o1CtUXXlg24bVii3V4EwmGZNYzIE0cxXC2DbszIDEU6EA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7238
 
-Hello Krzysztof,
-
-On 28.10.24 11:49, Krzysztof Kozlowski wrote:
-> On 28/10/2024 11:41, Heiko Schocher wrote:
->> Hello Krzysztof,
->>
->> On 28.10.24 11:24, Krzysztof Kozlowski wrote:
->>> On 28/10/2024 09:23, Heiko Schocher wrote:
->>>> Add support for the i.MX8MP based aristainetos3 boards from ABB.
->>>>
->>>> The board uses a ABB specific SoM from ADLink, based on NXP
->>>> i.MX8MP SoC. The SoM is used on 3 different carrier boards,
->>>> with small differences, which are all catched up in
->>>> devicetree overlays. The kernel image, the basic dtb
->>>> and all dtbos are collected in a fitimage. As bootloader
->>>> is used U-Boot which detects in his SPL stage the carrier
->>>> board by probing some i2c devices. When the correct
->>>> carrier is probed, the SPL applies all needed dtbos to
->>>> the dtb with which U-Boot gets loaded. Same principle
->>>> later before linux image boot, U-Boot applies the dtbos
->>>> needed for the carrier board before booting Linux.
->>>>
->>>> Signed-off-by: Heiko Schocher <hs@denx.de>
->>>> ---
->>>> checkpatch dropped the following warnings:
->>>> arch/arm64/boot/dts/freescale/imx8mp-aristainetos3a-som-v1.dtsi:248: warning: DT compatible string "ethernet-phy-id2000.a231" appears un-documented -- check ./Documentation/devicetree/bindings/
->>>>
->>>> ignored, as this compatible string is usedin other dts too, for example in
->>>>
->>>> arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
->>>>
->>>>    arch/arm64/boot/dts/freescale/Makefile        |    5 +
->>>>    .../imx8mp-aristainetos3-adpismarc.dtsi       |   64 +
->>>>    .../imx8mp-aristainetos3-adpismarc.dtso       |   14 +
->>>>    .../imx8mp-aristainetos3-helios-lvds.dtsi     |   89 ++
->>>>    .../imx8mp-aristainetos3-helios-lvds.dtso     |   13 +
->>>>    .../imx8mp-aristainetos3-helios.dtsi          |  103 ++
->>>>    .../imx8mp-aristainetos3-helios.dtso          |   13 +
->>>>    .../imx8mp-aristainetos3-proton2s.dtsi        |  176 +++
->>>>    .../imx8mp-aristainetos3-proton2s.dtso        |   13 +
->>>>    .../imx8mp-aristainetos3a-som-v1.dts          |   18 +
->>>>    .../imx8mp-aristainetos3a-som-v1.dtsi         | 1210 +++++++++++++++++
->>>>    11 files changed, 1718 insertions(+)
->>>>    create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-adpismarc.dtsi
->>>>    create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-adpismarc.dtso
->>>>    create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-helios-lvds.dtsi
->>>>    create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-helios-lvds.dtso
->>>>    create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-helios.dtsi
->>>>    create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-helios.dtso
->>>>    create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-proton2s.dtsi
->>>>    create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-proton2s.dtso
->>>>    create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3a-som-v1.dts
->>>>    create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3a-som-v1.dtsi
->>>>
->>>> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
->>>> index 9d3df8b218a2..7c3586509b8b 100644
->>>> --- a/arch/arm64/boot/dts/freescale/Makefile
->>>> +++ b/arch/arm64/boot/dts/freescale/Makefile
->>>> @@ -163,6 +163,11 @@ imx8mn-tqma8mqnl-mba8mx-usbotg-dtbs += imx8mn-tqma8mqnl-mba8mx.dtb imx8mn-tqma8m
->>>>    dtb-$(CONFIG_ARCH_MXC) += imx8mn-tqma8mqnl-mba8mx-lvds-tm070jvhg33.dtb
->>>>    dtb-$(CONFIG_ARCH_MXC) += imx8mn-tqma8mqnl-mba8mx-usbotg.dtb
->>>>    
->>>> +dtb-$(CONFIG_ARCH_MXC) += imx8mp-aristainetos3a-som-v1.dtb \
->>>> +			  imx8mp-aristainetos3-adpismarc.dtbo \
->>>> +			  imx8mp-aristainetos3-proton2s.dtbo \
->>>> +			  imx8mp-aristainetos3-helios.dtbo \
->>>> +			  imx8mp-aristainetos3-helios-lvds.dtbo
->>>>    dtb-$(CONFIG_ARCH_MXC) += imx8mp-beacon-kit.dtb
->>>>    dtb-$(CONFIG_ARCH_MXC) += imx8mp-data-modul-edm-sbc.dtb
->>>>    dtb-$(CONFIG_ARCH_MXC) += imx8mp-debix-model-a.dtb
->>>> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-adpismarc.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-adpismarc.dtsi
->>>> new file mode 100644
->>>> index 000000000000..cc0cddaa33ea
->>>> --- /dev/null
->>>> +++ b/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-adpismarc.dtsi
->>>> @@ -0,0 +1,64 @@
->>>> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
->>>> +/*
->>>> + * Copyright (C) 2024 Heiko Schocher <hs@denx.de>
->>>> + */
->>>> +
->>>> +#include <dt-bindings/gpio/gpio.h>
->>>> +#include <dt-bindings/interrupt-controller/irq.h>
->>>> +
->>>> +&ecspi1 {
->>>> +	spidev0: spi@0 {
->>>> +		reg = <0>;
->>>> +		compatible = "rohm,dh2228fv";
->>>
->>> Hm? I have some doubts, what device is here?
->>
->> $ grep -lr dh2228fv drivers/
->> drivers/spi/spidev.c
->>
->> Customer uses an userspace implementation...
+On Mon, Oct 28, 2024 at 04:52:42PM +0800, Wei Fang wrote:
+> The MAC address of VF can be configured through the mailbox mechanism of
+> ENETC, but the previous implementation forgot to set the MAC address in
+> net_device, resulting in the SMAC of the sent frames still being the old
+> MAC address. Since the MAC address in the hardware has been changed, Rx
+> cannot receive frames with the DMAC address as the new MAC address. The
+> most obvious phenomenon is that after changing the MAC address, we can
+> see that the MAC address of eno0vf0 has not changed through the "ifconfig
+> eno0vf0" commandand the IP address cannot be obtained .
 > 
-> That's not the question. I asked what device is here.
-
-I do not know, as on carrier boards there are only connectors,
-to which a spi device can be attached. So may I need to use here
-a more generic entry?
-
->>
->>>
->>>> +		spi-max-frequency = <500000>;
->>>> +	};
->>>> +};
->>>> +
->>>> +&ecspi2 {
->>>> +	spidev1: spi@0 {
->>>> +		reg = <0>;
->>>> +		compatible = "rohm,dh2228fv";
->>>> +		spi-max-frequency = <500000>;
->>>> +	};
->>>> +};
->>>> +
->>>> +&i2c2 {
->>>> +	/* SX1509(2) U1001@IPi SMARC Plus */
->>>> +	gpio8: i2c2_gpioext0@3e {
->>>
->>> Uh, no, please never send us downstream code.
->>>
->>> Please follow DTS coding style in all upstream submissions.
->>
->> driver is in here:
->>
->> $ grep -lr probe-reset drivers/pinctrl/
->> drivers/pinctrl/pinctrl-sx150x.c
+> root@ls1028ardb:~# ifconfig eno0vf0 down
+> root@ls1028ardb:~# ifconfig eno0vf0 hw ether 00:04:9f:3a:4d:56 up
+> root@ls1028ardb:~# ifconfig eno0vf0
+> eno0vf0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+>         ether 66:36:2c:3b:87:76  txqueuelen 1000  (Ethernet)
+>         RX packets 794  bytes 69239 (69.2 KB)
+>         RX errors 0  dropped 0  overruns 0  frame 0
+>         TX packets 11  bytes 2226 (2.2 KB)
+>         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 > 
-> This so not related... Your driver does not matter. You send us poor
-> quality downstream code.
+> Fixes: beb74ac878c8 ("enetc: Add vf to pf messaging support")
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> ---
 
-The driver is upstream... see:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pinctrl/pinctrl-sx150x.c
-
-or may I misunderstood you here too?
-
-Poor is my dts, checks are running and I fix them.
-
-> ...
-> 
->>
->>> And why this is DTSO, I have no clue...
-> 
-> Why is this a DTSO, not a DTS?
-
-Hmm... the idea is, that the bootloader applies the dtbo on runtime,
-when it has detected the carrier board it runs on, I tried to explain
-in cover letter.
-
-And again... sorry...
-
-bye,
-Heiko
--- 
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: +49-8142-66989-52   Fax: +49-8142-66989-80   Email: hs@denx.de
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
