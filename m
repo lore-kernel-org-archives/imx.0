@@ -1,73 +1,75 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D63B1D6194
-	for <imx@lists.linux.dev>; Mon, 28 Oct 2024 10:26:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798C31D47A6
+	for <imx@lists.linux.dev>; Mon, 28 Oct 2024 10:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730111182; cv=none; b=jJHoLZ7XU+oHOv0G9I54WW6g9vRAljs7SzZ/ec9o+tupszd+NkNVAuvRS5d7NuPLKguVAMCtquztUgIwWFQSC+btwu/mCMeL/Byz3PDuAlOI7/Xcj9cfVxYuyHQfWbjNQAx5sRkVuqpA+lkvITTsjmihZeEQo8AvyTR3nj1HOS4=
+	t=1730111189; cv=none; b=k6NbvY+VHpdA3BlXKWCodEPwibqDTEAF1LyMzM95Y7Nd1AHIR1v+dEClYO6pkwCDfflug+t8ou1o3sBzKYzcTM5EHtqOiT8BE1odlLG6byBhvbNep3MhT4+18VpKzoQVG1EWT/uJN39cQWMILv4FysadHSKAYa6tYm7CGtAlsxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730111182; c=relaxed/simple;
-	bh=js8gtoeOZlGeLq8295+lq+IHMiMRiPiXT/e6W18eRR8=;
+	s=arc-20240116; t=1730111189; c=relaxed/simple;
+	bh=SGAmR4rTXOAGzH5qe9m5L7xwcpV493faJv+dbyO/XxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qqIU6cRE1cFj/6CfnGLmC/G1oEfQZmK8QDJZiUpHk52G+L7RCrw5cevEaUZRoSl7mseqgG270bSkMx9w+5E8bmnpuzSXT7NdTIrPpSLjzRr8a2mmXMKbgwxXO6/SXSwl6COy5eBo+9abv3NWKlF2nGOtzjKC/2NqxY+87EfitIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=nhXk9vEx; arc=none smtp.client-ip=209.85.208.44
+	 MIME-Version; b=lYTAWrADl2sYMKxVCIOG34BRaSKh4U+nFe+3WXR7Xy2DY+MQ8bQQ2bDkaNdq0UxgI06QMGhAEBSE7mftpLWbZp2WAwGx25jxF/DYQSyrMt5gEQygbcRMeF2s7UaYxKGBFtcVsrUJyuZYXAnJ3aZ+m5BNJKuWYlkXvikUY2TgImA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=Qcei7ty6; arc=none smtp.client-ip=209.85.208.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="nhXk9vEx"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5c96b2a10e1so6471920a12.2
-        for <imx@lists.linux.dev>; Mon, 28 Oct 2024 03:26:17 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="Qcei7ty6"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5cb6b2b7127so4792818a12.1
+        for <imx@lists.linux.dev>; Mon, 28 Oct 2024 03:26:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1730111176; x=1730715976; darn=lists.linux.dev;
+        d=amarulasolutions.com; s=google; t=1730111186; x=1730715986; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3tF2Wj+vRMtC983z9w7XL42BV51oFEPPNHEhybEVd+Q=;
-        b=nhXk9vExE5Bd4kqp8KgLjQ4kTd8FKv5YvF4DXMHVw8Q0gUZvXIMRef4HhLXYdHBVV7
-         Ymk3W0X/Pj+707myzw6Yn+VWgdYgATGzDYLAbMCUdNjiijl2sgIlcFq2d6bHwMwNQEGw
-         3Z3lNMMp/D/PElSp8MY1w2YM6DaMxCOI6DSEA=
+        bh=aIDm7KBT1s0AbOc3yV3TQ9ohvs8sUqIvua5HhBI5V8A=;
+        b=Qcei7ty6vkXVn/YfZ5w2dutRiaqnouGtFzOyk7rFO+MV81mocL2qe8L4T/srxAuRam
+         tjW19vFx7OknJ98kkHG/liWkj65yaM50J2xzIBzhoVopCLMpHinGi8H4ioAgiO3NX3kv
+         3SZTeICp6wuo7I742KcMrFlF5NcfO0fneMFRA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730111176; x=1730715976;
+        d=1e100.net; s=20230601; t=1730111186; x=1730715986;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3tF2Wj+vRMtC983z9w7XL42BV51oFEPPNHEhybEVd+Q=;
-        b=PUFrB3MjXRLwPWmVULLDFvV86JD8CO9HZFOMzEFr35eCzSrFIut/nAF9Csr3EaTUdJ
-         BeTN4IcyI39x4fDTkxGQr8FeAZCqLBoWjcGsSR0HCdkmABj40gbbm4WV1MVIQraDh+HV
-         QFfwMFgtnlVNH55LfKzYpgvAUU+HC2DIsjP4d0WKjnw0lCn0vcR0O07kE70KBrEbk4FW
-         dBl72TVZ/itPIjeIajqMRqo0wOQ6xXiMU1Youqen6xOXiv4gB76vTNVBbIHw0JLAe0Ya
-         qiKMeYCmWHgK5FYe3Bj8q4ZCIAibPncjsy+sKSqyzm9jemkC9kNntMqH180jhl5fn2Tg
-         2rCw==
-X-Forwarded-Encrypted: i=1; AJvYcCUxKPeJtMn3UJOFOK5z5CPR/iumbua5OhEiLeWAad4HavSH0PRslkFGV9D+CB6wQBbMabU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwJuRJ7BMJO5H2DLuTsbPVKvCgpokZwmmplphzROiITE1gDRN+q
-	FdxRfeSzp+hjrw6B7hSo4tB1RTu5P2OLRX4Bg/JH2uzGXqkKFgWag+QVcYNT8GM=
-X-Google-Smtp-Source: AGHT+IFdXb6XtLDCZdRMrvkyA0aKsne7r7Yx41P1F2c1jET9YdgAPGWx1KeM7QlZRwkreW9voNIysQ==
-X-Received: by 2002:a17:907:1c22:b0:a99:f1aa:a71f with SMTP id a640c23a62f3a-a9de5c90d49mr793546866b.11.1730111175841;
-        Mon, 28 Oct 2024 03:26:15 -0700 (PDT)
+        bh=aIDm7KBT1s0AbOc3yV3TQ9ohvs8sUqIvua5HhBI5V8A=;
+        b=b7XR33szOhiE6u+VpdCrWEZvQBsZO8hSKixUy6nVrmQ0nN0l2waa+W4MZxFhplYF+2
+         wzECWRXjFRCkYeO+u0SPB4VOIm48pgC4SbB/tuv+Wd3jD4djlUkHcKm9Ngv1jtv+Y+Up
+         YPtpn98Qlyalv68bH3BIk1AcUkpWT4jNWSuLDvPlGO8KRUdceJ+mlODsdc4MhIkkgs8y
+         6BwRBHoSPAGCKn2PmohA9pI7lHysFaH8L4f/jS0p6tv0i3MYQKK6Rd6WeaVO+bDnNVZl
+         HdJ1tcGsoNSZ1XKOhN9wPioiTd7GXffuO7t34MwZKwGURBf0TVqCcii9+crygIsbyNse
+         PMNg==
+X-Forwarded-Encrypted: i=1; AJvYcCW7U0m95YjBwC90B0mLwsluJlULH6uGfVnvN6qOSbs6hhc0MMq7HVqv4xOCeta7IKU5JtU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwUza/6IRHZ3uAhXT5aG9wwoXOHc49e1lQ9XrHyW8KHUFwdtW1x
+	NcEA2jhVzODmdluSAajyWQa1/HBt5H4hbk/m0OvBWQl8cVIOjBEb7U2YryubmS0=
+X-Google-Smtp-Source: AGHT+IEA5nCg2j7DVomJoAqNLW+z2Nbv9V6XM3cl17RychbK0FRUPkeqVCDGC4TH9y5e5TfNamZx8g==
+X-Received: by 2002:a17:906:da8a:b0:a99:425c:c653 with SMTP id a640c23a62f3a-a9de5ce24f6mr866426966b.22.1730111185881;
+        Mon, 28 Oct 2024 03:26:25 -0700 (PDT)
 Received: from dario-ThinkPad-T14s-Gen-2i.amarulasolutions.com ([2.196.41.121])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9b1f297b04sm363613966b.134.2024.10.28.03.26.14
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9b1f297b04sm363613966b.134.2024.10.28.03.26.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Oct 2024 03:26:15 -0700 (PDT)
+        Mon, 28 Oct 2024 03:26:25 -0700 (PDT)
 From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-amarula@amarulasolutions.com,
 	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Michael Trimarchi <michael@amarulasolutions.com>,
+	David Airlie <airlied@gmail.com>,
 	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Marek Vasut <marex@denx.de>,
+	Maxime Ripard <mripard@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Shawn Guo <shawnguo@kernel.org>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Simona Vetter <simona@ffwll.ch>,
+	Stefan Agner <stefan@agner.ch>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	dri-devel@lists.freedesktop.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-pm@vger.kernel.org
-Subject: [RFC PATCH 04/10] pmdomain: imx: gpcv2: don't turn on a power domain already on
-Date: Mon, 28 Oct 2024 11:25:27 +0100
-Message-ID: <20241028102559.1451383-5-dario.binacchi@amarulasolutions.com>
+	linux-arm-kernel@lists.infradead.org
+Subject: [RFC PATCH 10/10] drm/mxsfb: stop controller and drain FIFOs if already initialized
+Date: Mon, 28 Oct 2024 11:25:33 +0100
+Message-ID: <20241028102559.1451383-11-dario.binacchi@amarulasolutions.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241028102559.1451383-1-dario.binacchi@amarulasolutions.com>
 References: <20241028102559.1451383-1-dario.binacchi@amarulasolutions.com>
@@ -79,86 +81,95 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The patch, by informing pm_genpd_init() with the "is_off" parameter that
-the power domain is already on, prevents the power_on() callback from being
-called, thus avoiding the unnecessary repetition of the hardware power-on
-procedure. This feature is crucial when supporting the simple framebuffer,
-as the power domains have already been initialized by the bootloader.
+You can't re-program the controller if it is still running. This may
+lead to shifted pictures, so stop the controller and drain its FIFOs
+in case it's already properly setup.
+This patch is crucial when supporting the simple framebuffer, as the
+controller has already been initialized by the bootloader.
 
-Co-developed-by: Michael Trimarchi <michael@amarulasolutions.com>
-Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
 Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+
 ---
 
- drivers/pmdomain/imx/gpcv2.c | 32 ++++++++++++++++++++++++++++++--
- 1 file changed, 30 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/mxsfb/mxsfb_drv.c |  3 +++
+ drivers/gpu/drm/mxsfb/mxsfb_drv.h |  1 +
+ drivers/gpu/drm/mxsfb/mxsfb_kms.c | 14 +++++++++++++-
+ 3 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pmdomain/imx/gpcv2.c b/drivers/pmdomain/imx/gpcv2.c
-index 963d61c5af6d..bf9fe4af03c5 100644
---- a/drivers/pmdomain/imx/gpcv2.c
-+++ b/drivers/pmdomain/imx/gpcv2.c
-@@ -1324,6 +1324,7 @@ static const struct imx_pgc_domain_data imx8mn_pgc_domain_data = {
- static int imx_pgc_domain_probe(struct platform_device *pdev)
+diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.c b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+index cb5ce4e81fc7..38c94cdc8f6c 100644
+--- a/drivers/gpu/drm/mxsfb/mxsfb_drv.c
++++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+@@ -10,6 +10,7 @@
+ 
+ #include <linux/clk.h>
+ #include <linux/dma-mapping.h>
++#include <linux/of.h>
+ #include <linux/io.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+@@ -221,6 +222,8 @@ static int mxsfb_load(struct drm_device *drm,
+ 	if (!mxsfb)
+ 		return -ENOMEM;
+ 
++	mxsfb->enabled =
++		of_property_read_bool(drm->dev->of_node, "fsl,boot-on");
+ 	mxsfb->drm = drm;
+ 	drm->dev_private = mxsfb;
+ 	mxsfb->devdata = devdata;
+diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.h b/drivers/gpu/drm/mxsfb/mxsfb_drv.h
+index d160d921b25f..0f9ae4ce450c 100644
+--- a/drivers/gpu/drm/mxsfb/mxsfb_drv.h
++++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.h
+@@ -47,6 +47,7 @@ struct mxsfb_drm_private {
+ 	struct drm_bridge		*bridge;
+ 
+ 	bool				crc_active;
++	bool                            enabled;
+ };
+ 
+ static inline struct mxsfb_drm_private *
+diff --git a/drivers/gpu/drm/mxsfb/mxsfb_kms.c b/drivers/gpu/drm/mxsfb/mxsfb_kms.c
+index 7ed2516b6de0..d064a2bb65df 100644
+--- a/drivers/gpu/drm/mxsfb/mxsfb_kms.c
++++ b/drivers/gpu/drm/mxsfb/mxsfb_kms.c
+@@ -202,9 +202,11 @@ static void mxsfb_enable_controller(struct mxsfb_drm_private *mxsfb)
+ 	writel(reg, mxsfb->base + LCDC_CTRL1);
+ 
+ 	writel(CTRL_RUN, mxsfb->base + LCDC_CTRL + REG_SET);
++
++	mxsfb->enabled = true;
+ }
+ 
+-static void mxsfb_disable_controller(struct mxsfb_drm_private *mxsfb)
++static void _mxsfb_disable_controller(struct mxsfb_drm_private *mxsfb)
  {
- 	struct imx_pgc_domain *domain = pdev->dev.platform_data;
-+	bool init_off;
- 	int ret;
+ 	u32 reg;
  
- 	domain->dev = &pdev->dev;
-@@ -1354,12 +1355,33 @@ static int imx_pgc_domain_probe(struct platform_device *pdev)
- 		regmap_update_bits(domain->regmap, domain->regs->map,
- 				   domain->bits.map, domain->bits.map);
+@@ -221,6 +223,13 @@ static void mxsfb_disable_controller(struct mxsfb_drm_private *mxsfb)
+ 	reg &= ~VDCTRL4_SYNC_SIGNALS_ON;
+ 	writel(reg, mxsfb->base + LCDC_VDCTRL4);
  
--	ret = pm_genpd_init(&domain->genpd, NULL, true);
-+	init_off = !of_property_read_bool(domain->dev->of_node,
-+					  "fsl,boot-on");
-+	ret = pm_genpd_init(&domain->genpd, NULL, init_off);
- 	if (ret) {
- 		dev_err(domain->dev, "Failed to init power domain\n");
- 		goto out_domain_unmap;
- 	}
- 
-+	if (!init_off) {
-+		ret = pm_runtime_get_sync(domain->dev);
-+		if (ret < 0) {
-+			pm_runtime_put_noidle(domain->dev);
-+			dev_err_probe(domain->dev, ret, "failed to power up bus domain\n");
-+			goto out_genpd_remove;
-+		}
++	mxsfb->enabled = false;
++}
 +
-+		if (domain->keep_clocks) {
-+			ret = clk_bulk_prepare_enable(domain->num_clks, domain->clks);
-+			if (ret) {
-+				dev_err_probe(domain->dev, ret,
-+					      "failed to enable clocks for domain: %s\n",
-+					      domain->genpd.name);
-+				goto out_pm_put;
-+			}
-+		}
-+	}
++static void mxsfb_disable_controller(struct mxsfb_drm_private *mxsfb)
++{
++	_mxsfb_disable_controller(mxsfb);
 +
- 	if (IS_ENABLED(CONFIG_LOCKDEP) &&
- 	    of_property_read_bool(domain->dev->of_node, "power-domains"))
- 		lockdep_set_subclass(&domain->genpd.mlock, 1);
-@@ -1368,11 +1390,17 @@ static int imx_pgc_domain_probe(struct platform_device *pdev)
- 					   &domain->genpd);
- 	if (ret) {
- 		dev_err(domain->dev, "Failed to add genpd provider\n");
--		goto out_genpd_remove;
-+		goto out_clk_unprepare;
- 	}
+ 	clk_disable_unprepare(mxsfb->clk);
+ 	if (mxsfb->clk_disp_axi)
+ 		clk_disable_unprepare(mxsfb->clk_disp_axi);
+@@ -354,6 +363,9 @@ static void mxsfb_crtc_atomic_enable(struct drm_crtc *crtc,
+ 	u32 bus_format = 0;
+ 	dma_addr_t dma_addr;
  
- 	return 0;
++	if (mxsfb->enabled)
++		_mxsfb_disable_controller(mxsfb);
++
+ 	pm_runtime_get_sync(drm->dev);
+ 	mxsfb_enable_axi_clk(mxsfb);
  
-+out_clk_unprepare:
-+	if (!init_off && domain->keep_clocks)
-+		clk_bulk_disable_unprepare(domain->num_clks, domain->clks);
-+out_pm_put:
-+	if (!init_off)
-+		pm_runtime_put(domain->dev);
- out_genpd_remove:
- 	pm_genpd_remove(&domain->genpd);
- out_domain_unmap:
 -- 
 2.43.0
 
