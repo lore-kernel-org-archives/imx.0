@@ -1,57 +1,58 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F0C15E8B
-	for <imx@lists.linux.dev>; Mon, 28 Oct 2024 09:20:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C965199FB0
+	for <imx@lists.linux.dev>; Mon, 28 Oct 2024 09:21:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730107253; cv=none; b=YwIH1Qa/RRVCLScjwrKzL2Rw5vp6I44u1kh40t2J9iFGqq/s8+b10TrTGFBI7HPsE2RqspO6yXYX7MRiG/hXHnC8jtKIdJvfDGDeiidobnQbfHNJO+pLBm/0CNUhNuuZ2f3N7wrQAgEqBqHD9T6tlJYvxfLPiZYiV1OgjwdfdF0=
+	t=1730107289; cv=none; b=RGKJFiM5dHD1wo9xyxquA0n8NgO0+BAqj0jBHA171iICdstwf3axj7hwMPvhOib9XqRrT6Ueu3828Vv74Bttshr/eFsbhcAn0a9AY5aqWS01OFtehn9QdkH4JyvyUWdrvXUtroitvCvr542rR3umRAWvT98FJjvrNeeCzA6iBNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730107253; c=relaxed/simple;
-	bh=j9Yh3zrZUalX47mvMkgSXxAy2RuDtztZjtjGaLcmm+w=;
+	s=arc-20240116; t=1730107289; c=relaxed/simple;
+	bh=0jA2nKhDLnxRGiEvYnV+NPzqXUb511R/IyOADJWqmrw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bL+QJTS7aRn/4xmHAesC5S/pLVmXLiamg7+xg6Cn/sOC1tLWUOJOlgjYgOoY5ncsLYNv08GNc5qo+l/+mNXVcCC5MNw0KM9sgiAP5Hvms3Eb8qTPfd36bsQFKo/eo4fu8QAu3aRcTtIxxsQrxr2msoAQhTEO96VK1ELEPKOaApY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZmT2dZ3X; arc=none smtp.client-ip=209.85.208.169
+	 Content-Type:Content-Disposition:In-Reply-To; b=U6y0RUZRuaqilZPI+ahhbEK79H4PCechoaxAw5YM8zR1EGpFpxUu5Gtvh5S1HK7zKwaIB9YB8US4Elc3SNbHFvDgzYot1TO6iA/fLvi8tJnwYDkQAccmcaLFQ5UZ+vw6OTOmsBTScHC+xeyhSwrhDOm2t/7yzz/t/JrO/WL4DJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HVuWp1mN; arc=none smtp.client-ip=209.85.167.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZmT2dZ3X"
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2fb57f97d75so33548271fa.2
-        for <imx@lists.linux.dev>; Mon, 28 Oct 2024 02:20:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HVuWp1mN"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-539d9fffea1so3769833e87.2
+        for <imx@lists.linux.dev>; Mon, 28 Oct 2024 02:21:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730107249; x=1730712049; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1730107286; x=1730712086; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VPBuezFB3CXtTW5/lJNTKguPGRqG+lEFtQVwqgqjd4Q=;
-        b=ZmT2dZ3X1VFE5Ilk747DHqTvFcwUl7q2ObAJI7Q1nsE3SigUaoutm9Q+K8oZdnV8Iw
-         KFPvAh0BMVTm9J/gC8/BcFuNvnOFRO1/xKmi8vLfaBB6979zVFXrycyR5T4morGVgFjN
-         x+YFwVb349VLUvsWhV/qfDIi8cSHfsF7+f/eVXDLIpxmvZoZ2cLUWvwQtLbSaZ4K8AA3
-         IGlKl3n6uy1u4Nyw/NBIV5rGNo/qcsz3TNrvATrO/nEIsbcJ75TyeaGj0FCHGjQ84qR3
-         wd2j0N9Nsv0jnl8Ksqk3UFEb84CbOFyPEDSIKJ3sNXMjhvoiCBTL5hT+cfF0QSMa59Ba
-         uS8g==
+        bh=NMxl3S3T78M4ZDclpZfWNpG18/6HovRsXKrq1tEEQMc=;
+        b=HVuWp1mNv0bkugTc2x0OSO0RozgdRkSX3Hzoe7lzhToplpizx8upS3IQJz7xudbwco
+         YPSqbiuF7CC0DUGGQkiQ2b3th6xK6Y5s2EhtQS9E/WpwnWoVvkrFVYIgC0+Iltdl6Ojd
+         8Qx364gXUsxyOSICNhrDFvAkAFMp3xXXA0663DYOtT4DxvvbxwovN7vxUVX8ojK3tnaB
+         6R3IDNEpZKQkD+4ady+2p0YkcBarvc+hagzp9pyBF3i4UowlerN0mvhgvI3uHzBGSc+d
+         HqXpfh8ooJ4SM1u0rIT3b7jggMO7Zwab5xwa+cply8iggx4NKjLJDeyVo33eTjOoaPG3
+         0RxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730107249; x=1730712049;
+        d=1e100.net; s=20230601; t=1730107286; x=1730712086;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VPBuezFB3CXtTW5/lJNTKguPGRqG+lEFtQVwqgqjd4Q=;
-        b=TprEawJkppxqQ59JW2dGCSz5q1eZMLpidoAzmLSGWAVmlrUBdskJVdEw603ohVn57T
-         fTRtNq1XHrMQmFCvbvjC2VpbfW9F49veNu2du4c/L1Hd3E4tbiTUMPA8mi27NjTclDmk
-         lPaFcxCDU1pB5T/EglPfv5UFCrm0N10/nUxnUhNgzGTuAm8Zf9FTCwX2zBJRBwox4i7s
-         bikVUrqdQlNxH9E/+QVfalq+0O4yrrE7K8tFuP6sCRTGwBOSfnYeSDvDij9gFJdeE1KA
-         d7Myu0++tSsJqFhgEd7IXZxhIGELHnE8FPswsHr5CHGzUk6nZZYy9KvQfbeaBPa8Y1Cn
-         eyKg==
-X-Forwarded-Encrypted: i=1; AJvYcCWSa3bQZLPJk0soEchoIT8S0CSKIj2dp1I1D/dg4aYMwQ0w7Z7VAWnquJscG86UyqwN1JE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyp/b3Pt6yTbTr/E+jMh3v4Fc9cvfiJuRszF/vgqcSktqY1WIyx
-	u9e7zRsL+nB0H3CT4MyadLU/txOe7n3ZmV3RadbnEm9Tul5PrXIE+YQ1yGyMg6M=
-X-Google-Smtp-Source: AGHT+IHMzC2RrBK1gDyjb7BDtN9UQMSMyOUaimH3SDT8yHY0Jieo0+u5sTv3iUOAiXJhLKZA5AAPKQ==
-X-Received: by 2002:a2e:bea0:0:b0:2fb:5014:c941 with SMTP id 38308e7fff4ca-2fcbdf71340mr25188781fa.14.1730107249435;
-        Mon, 28 Oct 2024 02:20:49 -0700 (PDT)
+        bh=NMxl3S3T78M4ZDclpZfWNpG18/6HovRsXKrq1tEEQMc=;
+        b=SWISkLDmy0XbFuMdoDZKveG4ygY7++xoY/Aqr2Cc2DjFcUT1+XC5IrhztmJSMB3Zgh
+         Ci261OZuBUvz8PS+2GkT0KQVAU5JeU9bgUnNETIdbItjblbNspWxqdTdsKmowoKDOctQ
+         9TSZLOZ/rRPs5E5+Snng+i6EQWAzH142iOTZrYvQZXS5IIdQobuQ+Pi2nfcFu1aWYLht
+         vatu/fVqEDFnA2AOe99riQM0OuLbfMoY2ZRnPmIYZl8zrkuxRALs9DeH5x4n2YKfJA4A
+         oULE+9TwPF/+2SsDr1RtmV2Ii0Fs0/zvwMGZN7+yhvEqzFAV/HQ1+5Rsv86v+WUZYPE2
+         tg0A==
+X-Forwarded-Encrypted: i=1; AJvYcCXP4Bqo3Qw3iTq36k0EwVWBJsGSaBaIV6GymF93gDGO2m7FquJrfIamhzki5KOK749QEN4=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz3zXhjGJ1nROSM/GU9WcmH4hWQPvGweIVFJkbuvMxdjet36gYy
+	Soh53dKkEOJhnIYmKuC42DXtY75Bmm3h/SCW9GHNbJrcE8U/Lq2lVz9/1CV384RqQtDN+0ztYvt
+	T
+X-Google-Smtp-Source: AGHT+IFLri/jKsB1rbBwLcG+4d/hkJZCTM08WJqeMH6Xd736MsKNNG7MWeqbuGnrpaHJPvqDTjFhqw==
+X-Received: by 2002:a05:6512:2256:b0:539:edea:9ed9 with SMTP id 2adb3069b0e04-53b348ec028mr2877777e87.1.1730107285683;
+        Mon, 28 Oct 2024 02:21:25 -0700 (PDT)
 Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2fcb4507c44sm11199391fa.19.2024.10.28.02.20.46
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53b2e1c9ecasm1026060e87.218.2024.10.28.02.21.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Oct 2024 02:20:47 -0700 (PDT)
-Date: Mon, 28 Oct 2024 11:20:45 +0200
+        Mon, 28 Oct 2024 02:21:25 -0700 (PDT)
+Date: Mon, 28 Oct 2024 11:21:22 +0200
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 To: Liu Ying <victor.liu@nxp.com>
 Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
@@ -67,11 +68,11 @@ Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
 	quic_bjorande@quicinc.com, geert+renesas@glider.be, arnd@arndb.de, nfraprado@collabora.com, 
 	thierry.reding@gmail.com, prabhakar.mahadev-lad.rj@bp.renesas.com, sam@ravnborg.org, 
 	marex@denx.de, biju.das.jz@bp.renesas.com
-Subject: Re: [PATCH v4 10/13] drm/bridge: Add ITE IT6263 LVDS to HDMI
- converter
-Message-ID: <tjtbvn5ewlzs6wqkp2ffquiiebakhv2eg3vt4mzooeb6nibx4u@qhwx4hxvj6ou>
+Subject: Re: [PATCH v4 13/13] MAINTAINERS: Add maintainer for ITE IT6263
+ driver
+Message-ID: <izlahf3rnobapkvaxvq2lpyz6vsurdhkhnigzogstljpupn37x@3a7ziz63n2zt>
 References: <20241028023740.19732-1-victor.liu@nxp.com>
- <20241028023740.19732-11-victor.liu@nxp.com>
+ <20241028023740.19732-14-victor.liu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -80,22 +81,26 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241028023740.19732-11-victor.liu@nxp.com>
+In-Reply-To: <20241028023740.19732-14-victor.liu@nxp.com>
 
-On Mon, Oct 28, 2024 at 10:37:37AM +0800, Liu Ying wrote:
-> Add basic HDMI video output support. Currently, only RGB888 output
-> pixel format is supported.  At the LVDS input side, the driver
-> supports single LVDS link and dual LVDS links with "jeida-24" LVDS
-> mapping.
-> 
-> Product link:
-> https://www.ite.com.tw/en/product/cate1/IT6263
+On Mon, Oct 28, 2024 at 10:37:40AM +0800, Liu Ying wrote:
+> Add myself as the maintainer of ITE IT6263 LVDS TO HDMI BRIDGE DRIVER.
 > 
 > Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-> Acked-by: Maxime Ripard <mripard@kernel.org>
+> ---
+> v4:
+> * No change.
+> 
+> v3:
+> * No change.
+> 
+> v2:
+> * New patch.  (Maxime)
+> 
+>  MAINTAINERS | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Acked-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
 -- 
 With best wishes
