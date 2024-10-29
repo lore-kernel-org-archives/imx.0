@@ -1,224 +1,417 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11010048.outbound.protection.outlook.com [52.101.228.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4594020127A;
-	Tue, 29 Oct 2024 07:18:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730186334; cv=none; b=ju9sH7z4koO/yk+K5pt28NkZcGbq/WU07vZYpp1JWc4+LDzv6W8kYLnIPS5QnfFtlaXoB38151LTFOW/bY/qw/0eixY147hw72rzFU1WZMoiK0L/prblnIYfP0ykQtSJ8Uc8Pv3DJ9diLZ8qp+l9M/L+8mLYXIaA2BijntJsp0Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730186334; c=relaxed/simple;
-	bh=BdYcTmAXb1SfXEeowtRZE7Rf2n06MdmrBquWG32nqao=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g1VI5BbmVJ3cKnNgv1IfjGzpoV6+MSe7eWWeY2Qoq7rejoiVa8mUPzS1fUUcmqSNp+sFhd/eQrq9UjPIRzHSIPgkQ6MRbombzUyo+R01zx6zI+80aWEbP5zFisO3yaMpzy31o0+PF8/FOzQy6K1G6RKfvePVXZ/tHOB+DMLK7rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XDD2zK2y; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D7B202626
+	for <imx@lists.linux.dev>; Tue, 29 Oct 2024 07:33:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730187188; cv=fail; b=SyUb/TeihURsPRvfXIDQ2WyccwuMwSMlv9CVh+54R/Mue1A9C6EGH+viMlYCbBd8le+YtF7XqIBXyImNKw5t80piPQxNkzUO2iSqxCWUhFT5Me7eQUpF8drqCJnPHu/63Xfjcp1BTulNLBC+K/e06TKop5x/rHnkf1cGqrADsOc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730187188; c=relaxed/simple;
+	bh=1domprBwpRncW+ScDhrPBBrAcv3zjioGJqUatJrCHZI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=oFgLHLhCB6lnKZL0zvXEBLy3n+peJZ2Bo8NOLsbSXE0PVugusFbW5Psco6vszt35W+TMWsWke+eP6TiSNDUZayHTnr1WE6fb1X8u36QvfOJyQfTeFrjTgvFMW+7mj3AVCOZccVg1kBvg0JSGrRGy5te6KhQY08FPTmQZEKgV2pQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b=djnurheo; arc=fail smtp.client-ip=52.101.228.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XDD2zK2y"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730186333; x=1761722333;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=BdYcTmAXb1SfXEeowtRZE7Rf2n06MdmrBquWG32nqao=;
-  b=XDD2zK2y3X8oWGvs67rmpMvz0e4WxNU0+5inf4mNT79cFRA96fOsgmZa
-   M4e6ICC8m8Y/aj2VYR3FmDqTGGCBFFmwLPHlx5KPOFMq4w6s/QPw9tGQ0
-   Gss58xxPFYqg4qas2Cy1Z5td+CTKxrtsWAQ/xAeUDaShnBuubDfdJyuG/
-   0k45CQe7mQ4kNVh73YJTxdSGBqYEya0HmD6qgN6n2TTg0cOzDq7SbasPM
-   4rAOnyJYJOMSpAOx6ZQnZkbC80fQ7iGFJmKJ2tJ5EhdhYfhL2Yeo9QbKl
-   9ZuLan8m20vrLpexLGL3qy0qtcdB4g/yRdk7DdGs4k2zsGPZb4T3C4ZvR
-   g==;
-X-CSE-ConnectionGUID: HuqXKB67SoeXukozAa/0tQ==
-X-CSE-MsgGUID: TTdZNgNPRHifmpBX6d1CrA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29774261"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="29774261"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2024 00:18:52 -0700
-X-CSE-ConnectionGUID: ifNbUCZ6QHay4UdqM/kgoQ==
-X-CSE-MsgGUID: qNn49BT5RyqWAcTYDzsScw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; 
-   d="scan'208";a="81430699"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 29 Oct 2024 00:18:46 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t5gV2-000dN8-1u;
-	Tue, 29 Oct 2024 07:18:44 +0000
-Date: Tue, 29 Oct 2024 15:18:37 +0800
-From: kernel test robot <lkp@intel.com>
-To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v6 2/7] PCI: dwc: Using parent_bus_addr in of_range to
- eliminate cpu_addr_fixup()
-Message-ID: <202410291546.kvgEWJv7-lkp@intel.com>
-References: <20241028-pci_fixup_addr-v6-2-ebebcd8fd4ff@nxp.com>
+	dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b="djnurheo"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qrGYYCHn5HCLLVHzVLlPUTSXPc3Ksp9fdryV6UXwLd1P34d6Lb7rDd4KQhh1Q+I5BEqnoprdq6gVbQtYIF2S/XqHNLMP2qcNNh0C7BtNHvgVhajHjqxMf0K7YBKb3zrlKFxLLIwtCXPyY5nnl8aFEHmcMfZSP8AczuxJccjyiUPYduBaKH6IEkAYS33qG/HHLUeKO7YWL19gt0pvHNVo4T7k20k57bzdc/C53pzdmdpVIqcwPwOKpmxsuMJEQnat5cz8hFEtJjJmBXr68mgywkkxpawSZQL8RnbSDyDOTUH8nHSNs0MQ5s7eK3bHe+XiSFwaL6mI9v1GFHwHY5YlMA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vP/25vMSS/FqBQhOL7sM6GKLRD7KcunjE0SeZkjjgEY=;
+ b=Ml8vkQbp9i9zBi0KViSPVtttmQQgGePeWQDpXNm/azHDUecJczdkSkYMcgrchsX9l86JTZe4j7MDp7cm9CR6BR2d6svLxDZeTM0hBC9FQ5IlLEKs/54iaKP24Jv/FGZongGl/ibhsmkztRiYMKRMZ2F/t9OyIVfEREVvjQEuxolP5X9Wmb+qTOGSqN2+FcSa1sba4+Ckoe5xS+xNczEzbq//isO8L+SSuySeSLM6DCYLw0+n2Br+jcUs7Qa0iYdtnmnSbjeoiGwbp6HQcria9W3UqE9AHGJ6kI0mvXJLsgbaKCs01zcHCtOCDwHQI06istJDTzE3/LYlroYiCOtnDw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
+ header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vP/25vMSS/FqBQhOL7sM6GKLRD7KcunjE0SeZkjjgEY=;
+ b=djnurheoNtnj7peo8HTOTEfPieEyEsGcnWZEnvThb+/wlRRWKBSh9Svbdt1IY+o6ivxCCxvsqE/nbkKZq00eLXrl5AIzzHzVnTV4+k40C30HcjV0gm4XNjY+9JIjAj5UAYo8Zpv8/DlKMSfb1+fN8w9nCHfg34JOAYZeOFb3SGs=
+Received: from TY3PR01MB11346.jpnprd01.prod.outlook.com (2603:1096:400:3d0::7)
+ by TYWPR01MB12060.jpnprd01.prod.outlook.com (2603:1096:400:443::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.25; Tue, 29 Oct
+ 2024 07:33:00 +0000
+Received: from TY3PR01MB11346.jpnprd01.prod.outlook.com
+ ([fe80::86ef:ca98:234d:60e1]) by TY3PR01MB11346.jpnprd01.prod.outlook.com
+ ([fe80::86ef:ca98:234d:60e1%3]) with mapi id 15.20.8093.025; Tue, 29 Oct 2024
+ 07:33:00 +0000
+From: Biju Das <biju.das.jz@bp.renesas.com>
+To: Liu Ying <victor.liu@nxp.com>, "dri-devel@lists.freedesktop.org"
+	<dri-devel@lists.freedesktop.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-media@vger.kernel.org"
+	<linux-media@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+CC: "andrzej.hajda@intel.com" <andrzej.hajda@intel.com>,
+	"neil.armstrong@linaro.org" <neil.armstrong@linaro.org>, "rfoss@kernel.org"
+	<rfoss@kernel.org>, laurent.pinchart <laurent.pinchart@ideasonboard.com>,
+	"jonas@kwiboo.se" <jonas@kwiboo.se>, "jernej.skrabec@gmail.com"
+	<jernej.skrabec@gmail.com>, "maarten.lankhorst@linux.intel.com"
+	<maarten.lankhorst@linux.intel.com>, "mripard@kernel.org"
+	<mripard@kernel.org>, "tzimmermann@suse.de" <tzimmermann@suse.de>,
+	"airlied@gmail.com" <airlied@gmail.com>, "simona@ffwll.ch" <simona@ffwll.ch>,
+	"robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"quic_jesszhan@quicinc.com" <quic_jesszhan@quicinc.com>, "mchehab@kernel.org"
+	<mchehab@kernel.org>, "shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de"
+	<kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>,
+	"catalin.marinas@arm.com" <catalin.marinas@arm.com>, "will@kernel.org"
+	<will@kernel.org>, "sakari.ailus@linux.intel.com"
+	<sakari.ailus@linux.intel.com>, "hverkuil@xs4all.nl" <hverkuil@xs4all.nl>,
+	"tomi.valkeinen@ideasonboard.com" <tomi.valkeinen@ideasonboard.com>,
+	"quic_bjorande@quicinc.com" <quic_bjorande@quicinc.com>,
+	"geert+renesas@glider.be" <geert+renesas@glider.be>,
+	"dmitry.baryshkov@linaro.org" <dmitry.baryshkov@linaro.org>, "arnd@arndb.de"
+	<arnd@arndb.de>, "nfraprado@collabora.com" <nfraprado@collabora.com>,
+	"thierry.reding@gmail.com" <thierry.reding@gmail.com>, Prabhakar Mahadev Lad
+	<prabhakar.mahadev-lad.rj@bp.renesas.com>, "sam@ravnborg.org"
+	<sam@ravnborg.org>, "marex@denx.de" <marex@denx.de>
+Subject: RE: [PATCH v4 08/13] dt-bindings: display: Document dual-link LVDS
+ display common properties
+Thread-Topic: [PATCH v4 08/13] dt-bindings: display: Document dual-link LVDS
+ display common properties
+Thread-Index: AQHbKOKZPN4b66+xp0G7h8Y65TjgzbKdVYDg
+Date: Tue, 29 Oct 2024 07:33:00 +0000
+Message-ID:
+ <TY3PR01MB11346FDF74840ADF7273A218D864B2@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+References: <20241028023740.19732-1-victor.liu@nxp.com>
+ <20241028023740.19732-9-victor.liu@nxp.com>
+In-Reply-To: <20241028023740.19732-9-victor.liu@nxp.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=bp.renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TY3PR01MB11346:EE_|TYWPR01MB12060:EE_
+x-ms-office365-filtering-correlation-id: be011ab7-5f73-4b05-d9e8-08dcf7ebeab4
+x-ld-processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|376014|7416014|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?93ZngSJnTI3GGMJnPa5vitW/yg8Q3OJQVhYZayT+0PDf/+ToFfPyXxa2PZ+l?=
+ =?us-ascii?Q?j5HgZoyVBO22nEKgG80n+6gTWfe3iiuMAZYxH6ZkWNG5FfQbhaMChL9jqVsq?=
+ =?us-ascii?Q?LLxlKFlGO/SKb2ZXVHCj/TRCVAnRclcSLwUe9V6fphjIy+rNrFXkAvbIBZ07?=
+ =?us-ascii?Q?Vv57YahCkCV0TrBWWAtEjOqXEpxw5/cvpQ3Em/w+b1ZlGTrz882qUUDBXH2X?=
+ =?us-ascii?Q?k9jH3OyHYihM1o4tqdaVd9Y7BNQJ9VYogkOxB8DpiPHbrbA127LZFarmXv3j?=
+ =?us-ascii?Q?QX3g7FV+CYwGz4oye9X0af5usmIV9kUD6pD8huAhJGoiFOVZxuZaBjnMA5+Z?=
+ =?us-ascii?Q?+wqgTVio9LKP7sNOTjejvH2WUW/eQx8KMIXHBgU9tkwepw5vS8qJ6YMymEHq?=
+ =?us-ascii?Q?Tjbh0LEVOCPZi3dmtCO6HqlOTol9r2yDo3K2E/fNf82kXx28nm6brnGnKLjG?=
+ =?us-ascii?Q?fSsgEG8cmjdtJw8Qj5VCu06tChS4YZSNMUoxAAyhhZHFcePNU+YLx1noyU1o?=
+ =?us-ascii?Q?+ohna2AnPGJW47cSzTYh9GCzCPk6KQAL4lyOpddhC+6944oNj6QGsuwd8Bzk?=
+ =?us-ascii?Q?nf4iefnWIF91jISDDrhAGRakjNnHfWtl/nPZwx5In0hsgqE9rLKE+43FTLRr?=
+ =?us-ascii?Q?yxpSQ4tnqmmBAbe/GOseAJVZUuQ+A23xxiXv3XayVdYYLUv7f15J0OklSD/n?=
+ =?us-ascii?Q?M4MTYfpqEK8iBhjzY7JFjvf5P0wXDgJh9q++LYqOcE5G6n4ZRpelezsUw0rj?=
+ =?us-ascii?Q?48RhO0G8RF5FcsaK7IoKG1IOp4CNoZrOb8IY1oG3HgstZxd8ztgapc9l4uga?=
+ =?us-ascii?Q?k0FNMdTW+B/rTfDsERIiMintslhpFx6bKe3Jqyh6ievW1DGWyZUPEcaMvCYo?=
+ =?us-ascii?Q?lnnapwqQ/PRF71rV3NaBjcdYdYx4lnAp9i6haKZ6ZYHtW+W69gGNlg5o37AY?=
+ =?us-ascii?Q?AZ4dsqBgD2vrXRCO1V0irzipg3F9I6HjaewaoXi4bLDS/0h2o0xbQDFGvfPA?=
+ =?us-ascii?Q?abnzfdTpnAwnBLmRqIn5XYb4KmOEWEVt+zpX5P45txxbM7eGkyhw//OOWD4Q?=
+ =?us-ascii?Q?jbnV/mSobLVma0EFP8hOQIPyjUr/x91oDqrx+xHgopF3+bBcCawl72cKrw2g?=
+ =?us-ascii?Q?jiIZeFERQfDLJ8WBSnwPVdfjbl0xTQ0pXvcvPRCnnZCnX66ZiHPgXy7A4fJ7?=
+ =?us-ascii?Q?OQeb/WfhTSE8lBT6wb59elaOzmIMCZopAcJyhmBaykikgo8qL+xpdJmV5DqI?=
+ =?us-ascii?Q?6a2pKHwI0L08P5E83qGc1fjbY7D1wa0D3jXOgZ2dlaLqfiaIQdNq63Rw0KGA?=
+ =?us-ascii?Q?4axkpTIwDwrbYBlaf7plW0bp?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY3PR01MB11346.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?ZDUphBYafA0lEmcJz//DdKxGo2PrkXwrYhyvkISleIGocAbXp2eSTA3aUPy/?=
+ =?us-ascii?Q?39gTsFh79AI29WZKWxvWEJQd7ALuCmN+tlDNxHjBZZwW/E6kbRgMiFXWNZP3?=
+ =?us-ascii?Q?4LCdfGlW9rbc5JCfJMhPiYY9kmCptr4h2FAFCdJOA98AiClY9ORr9XO2tHZ7?=
+ =?us-ascii?Q?Nx+Cz2lf98FpzAN5FZr/7coiicijkrx6EyZTTrZVgH4gyPqCGeToLc6EGKWV?=
+ =?us-ascii?Q?rpBBOpUbz6jB6Zm/zA9txDUVEcEMZxJIE3diNUXdZnsRYbunyMe2qCFYWdiQ?=
+ =?us-ascii?Q?jYlBjDc5LnMw14N3FtbF117UZx5n95fWVigzGUYJ6+N4BDD2THOVgbz48/FR?=
+ =?us-ascii?Q?as8QqwE1PZ0A/R4aBBY9wghIKGrAKwhXQR2cwUelkrxUUu84zZggAKAmmCV7?=
+ =?us-ascii?Q?kYitJm1N3DBO/CL5J9MwH7AXAUTG6JRgA/GIzpE/XSLSbK76dAht/0qNB66s?=
+ =?us-ascii?Q?gLxlviPcPHTS1DJitg+WbY7Kqtft5KepVwj4kLF1PM0ArBWxSUewV5fkq+bn?=
+ =?us-ascii?Q?mYZ2Wmu9pPqPHHH6BqfGJJ4rO8rpBvyhpbPbyf454htTlLdqeOxe6sxSHt8z?=
+ =?us-ascii?Q?h7fQQ7XsjJ/PyzfTJGAYTByZmHaPqGmZ3VI2VtnOX1d95BJip+5JQO1DfSn5?=
+ =?us-ascii?Q?2EU291LPKGnc0KLNlHtygYj8ilgZreZlZk2+o6E6r7Bo00vXBXqJz+jTs/a4?=
+ =?us-ascii?Q?QOerwpvyW3zhz41rM7RBfwXENqt8v+6jDPewQ2iWyTSX5unbsug8uhGVDpEa?=
+ =?us-ascii?Q?ctw0EZHQ9KEcfngHKHmHSXerTnSvJNcFiHrTPaSL+i8+cx8Dw/oqb7p7sixh?=
+ =?us-ascii?Q?tsoJMSHH8iVXbAs0vytc2Qb5lWME+ji7lpLRA/11T+Wv1fJGVMUsa9/APlkO?=
+ =?us-ascii?Q?2ZtfCWu8K1MDC3gVz185ac5A4SptjC2BZ+WkyDDDtYKzESNrKhWtwmxT5msc?=
+ =?us-ascii?Q?k1GQ24XdZLmghmfCy5u4jJ/0VmgoRpBNmVUvK2rq27p1rntZRwzBlTf9OK3n?=
+ =?us-ascii?Q?znLQvtmpn/iUOYdZgTYX6yNfuiQeCoYF/7Xt4OQEExN4RxJT9XDWtQnkhVLq?=
+ =?us-ascii?Q?omxZEaJAcUpBedADGTkGdY3Wmdx3vUhT/80zc6F32+HIRc5Rv2v0Cg3wheOB?=
+ =?us-ascii?Q?nXkpilrW+FIGsMTQhYfvySIXiQiYzmBjXWj/f5X2fRsT+waCsmLqnq8tdGwT?=
+ =?us-ascii?Q?wC2CxJNNdx44Wdy25DwXeeiXmOAzKb+mvwHrzvJdUGzkG5dcgmMGg6K2PxMO?=
+ =?us-ascii?Q?PQNOwt0y6u7tlunR0P7mhchmQoR8BAatxki5MMI42CQIwm3PbNssJc81DhKc?=
+ =?us-ascii?Q?r83GgQy9S9vUq1EZUBQzE0/RySeNckIehhXG/6ipelBmGad/cLoN4iD4Cd7B?=
+ =?us-ascii?Q?MZoH5cdFQ/J4XJO7eIdMqDJq6rMX4to2gAVl1CbpUh4NzPP81V3gwqag7gIC?=
+ =?us-ascii?Q?zxFauOJOJ9BTpjTFjuImmfoljPQX92Tq/2AlBsOtqzDwN1xX1WX4L0HAXi8X?=
+ =?us-ascii?Q?ftzHQ3Qnr50qOR8O1v9nSG+xdR9YKH1QWusVsEnmw4plYvHKI59RJvfbUrLH?=
+ =?us-ascii?Q?0iM2eJtXUNuCXKhoCF6etpZBKAzCKMmWZdu8iuwE?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241028-pci_fixup_addr-v6-2-ebebcd8fd4ff@nxp.com>
+X-OriginatorOrg: bp.renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TY3PR01MB11346.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: be011ab7-5f73-4b05-d9e8-08dcf7ebeab4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Oct 2024 07:33:00.6270
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: P74OpCIt8IXLsQv6ONK+34n9ggA/tBppeGouBSJBu1upee0aKUXh9TVvqUj6rCSpVncIHwXeY0lVj/Ah3xwDpx2Fem+1xKSXc8+mpcQpu7I=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYWPR01MB12060
 
-Hi Frank,
+Hi Liu Ying,
 
-kernel test robot noticed the following build errors:
+> -----Original Message-----
+> From: Liu Ying <victor.liu@nxp.com>
+> Sent: 28 October 2024 02:38
+> Subject: [PATCH v4 08/13] dt-bindings: display: Document dual-link LVDS d=
+isplay common properties
+>=20
+> Dual-link LVDS displays receive odd pixels and even pixels separately fro=
+m dual LVDS links.  One link
+> receives odd pixels and the other receives even pixels.  Some of those di=
+splays may also use only one
+> LVDS link to receive all pixels, being odd and even agnostic.  Document c=
+ommon properties for those
+> displays by extending LVDS display common properties defined in lvds.yaml=
+.
+>=20
+> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> ---
+> v4:
+> * Squash change for advantech,idk-2121wr.yaml and
+>   panel-simple-lvds-dual-ports.yaml with lvds-dual-ports.yaml.  (Rob)
+> * Improve description in lvds-dual-ports.yaml.  (Krzysztof)
+>=20
+> v3:
+> * New patch.  (Dmitry)
+>=20
+>  .../bindings/display/lvds-dual-ports.yaml     | 76 +++++++++++++++++++
+>  .../display/panel/advantech,idk-2121wr.yaml   | 14 +---
+>  .../panel/panel-simple-lvds-dual-ports.yaml   | 20 +----
+>  3 files changed, 78 insertions(+), 32 deletions(-)  create mode 100644
+> Documentation/devicetree/bindings/display/lvds-dual-ports.yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/display/lvds-dual-ports.ya=
+ml
+> b/Documentation/devicetree/bindings/display/lvds-dual-ports.yaml
+> new file mode 100644
+> index 000000000000..5f7a30640404
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/display/lvds-dual-ports.yaml
+> @@ -0,0 +1,76 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) %YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/display/lvds-dual-ports.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Dual-link LVDS Display Common Properties
+> +
+> +maintainers:
+> +  - Liu Ying <victor.liu@nxp.com>
+> +
+> +description: |
+> +  Common properties for LVDS displays with dual LVDS links. Extend LVDS
+> +display
+> +  common properties defined in lvds.yaml.
+> +
+> +  Dual-link LVDS displays receive odd pixels and even pixels separately
+> + from  the dual LVDS links. One link receives odd pixels and the other
+> + receives  even pixels. Some of those displays may also use only one
+> + LVDS link to  receive all pixels, being odd and even agnostic.
+> +
+> +allOf:
+> +  - $ref: lvds.yaml#
+> +
+> +properties:
+> +  ports:
+> +    $ref: /schemas/graph.yaml#/properties/ports
+> +
+> +    properties:
+> +      port@0:
+> +        $ref: /schemas/graph.yaml#/$defs/port-base
+> +        unevaluatedProperties: false
+> +        description: the first LVDS input link
+> +
+> +        properties:
+> +          dual-lvds-odd-pixels:
+> +            type: boolean
+> +            description: the first LVDS input link for odd pixels
+> +
+> +          dual-lvds-even-pixels:
+> +            type: boolean
+> +            description: the first LVDS input link for even pixels
 
-[auto build test ERROR on 9852d85ec9d492ebef56dc5f229416c925758edc]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/of-address-Add-parent_bus_addr-to-struct-of_pci_range/20241029-030935
-base:   9852d85ec9d492ebef56dc5f229416c925758edc
-patch link:    https://lore.kernel.org/r/20241028-pci_fixup_addr-v6-2-ebebcd8fd4ff%40nxp.com
-patch subject: [PATCH v6 2/7] PCI: dwc: Using parent_bus_addr in of_range to eliminate cpu_addr_fixup()
-config: arm-defconfig (https://download.01.org/0day-ci/archive/20241029/202410291546.kvgEWJv7-lkp@intel.com/config)
-compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project f28c006a5895fc0e329fe15fead81e37457cb1d1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241029/202410291546.kvgEWJv7-lkp@intel.com/reproduce)
+port@0 we know it is first link
+port@1 we know it is second link.
+dual-lvds-odd-pixels: We know it is for odd pixels.
+dual-lvds-even-pixels: We know it is for odd pixels.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410291546.kvgEWJv7-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/pci/controller/dwc/pcie-designware-host.c:782:55: error: incompatible pointer types passing 'u64 *' (aka 'unsigned long long *') to parameter of type 'resource_size_t *' (aka 'unsigned int *') [-Werror,-Wincompatible-pointer-types]
-                   if (dw_pcie_get_untranslate_addr(pci, atu.pci_addr, &atu.cpu_addr))
-                                                                       ^~~~~~~~~~~~~
-   drivers/pci/controller/dwc/pcie-designware-host.c:422:23: note: passing argument to parameter 'i_addr' here
-                                           resource_size_t *i_addr)
-                                                            ^
-   1 error generated.
+Not sure, whether we can give common description and avoid the duplicate
+from port@1 ??
 
 
-vim +782 drivers/pci/controller/dwc/pcie-designware-host.c
+> +
+> +        oneOf:
+> +          - required: [dual-lvds-odd-pixels]
+> +          - required: [dual-lvds-even-pixels]
+> +          - properties:
+> +              dual-lvds-odd-pixels: false
+> +              dual-lvds-even-pixels: false
 
-   745	
-   746	static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
-   747	{
-   748		struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-   749		struct dw_pcie_ob_atu_cfg atu = { 0 };
-   750		struct resource_entry *entry;
-   751		int i, ret;
-   752	
-   753		/* Note the very first outbound ATU is used for CFG IOs */
-   754		if (!pci->num_ob_windows) {
-   755			dev_err(pci->dev, "No outbound iATU found\n");
-   756			return -EINVAL;
-   757		}
-   758	
-   759		/*
-   760		 * Ensure all out/inbound windows are disabled before proceeding with
-   761		 * the MEM/IO (dma-)ranges setups.
-   762		 */
-   763		for (i = 0; i < pci->num_ob_windows; i++)
-   764			dw_pcie_disable_atu(pci, PCIE_ATU_REGION_DIR_OB, i);
-   765	
-   766		for (i = 0; i < pci->num_ib_windows; i++)
-   767			dw_pcie_disable_atu(pci, PCIE_ATU_REGION_DIR_IB, i);
-   768	
-   769		i = 0;
-   770		resource_list_for_each_entry(entry, &pp->bridge->windows) {
-   771			if (resource_type(entry->res) != IORESOURCE_MEM)
-   772				continue;
-   773	
-   774			if (pci->num_ob_windows <= ++i)
-   775				break;
-   776	
-   777			atu.index = i;
-   778			atu.type = PCIE_ATU_TYPE_MEM;
-   779			atu.cpu_addr = entry->res->start;
-   780			atu.pci_addr = entry->res->start - entry->offset;
-   781	
- > 782			if (dw_pcie_get_untranslate_addr(pci, atu.pci_addr, &atu.cpu_addr))
-   783				return -EINVAL;
-   784	
-   785			/* Adjust iATU size if MSG TLP region was allocated before */
-   786			if (pp->msg_res && pp->msg_res->parent == entry->res)
-   787				atu.size = resource_size(entry->res) -
-   788						resource_size(pp->msg_res);
-   789			else
-   790				atu.size = resource_size(entry->res);
-   791	
-   792			ret = dw_pcie_prog_outbound_atu(pci, &atu);
-   793			if (ret) {
-   794				dev_err(pci->dev, "Failed to set MEM range %pr\n",
-   795					entry->res);
-   796				return ret;
-   797			}
-   798		}
-   799	
-   800		if (pp->io_size) {
-   801			if (pci->num_ob_windows > ++i) {
-   802				atu.index = i;
-   803				atu.type = PCIE_ATU_TYPE_IO;
-   804				atu.cpu_addr = pp->io_base;
-   805				atu.pci_addr = pp->io_bus_addr;
-   806				atu.size = pp->io_size;
-   807	
-   808				ret = dw_pcie_prog_outbound_atu(pci, &atu);
-   809				if (ret) {
-   810					dev_err(pci->dev, "Failed to set IO range %pr\n",
-   811						entry->res);
-   812					return ret;
-   813				}
-   814			} else {
-   815				pp->cfg0_io_shared = true;
-   816			}
-   817		}
-   818	
-   819		if (pci->num_ob_windows <= i)
-   820			dev_warn(pci->dev, "Ranges exceed outbound iATU size (%d)\n",
-   821				 pci->num_ob_windows);
-   822	
-   823		pp->msg_atu_index = i;
-   824	
-   825		i = 0;
-   826		resource_list_for_each_entry(entry, &pp->bridge->dma_ranges) {
-   827			if (resource_type(entry->res) != IORESOURCE_MEM)
-   828				continue;
-   829	
-   830			if (pci->num_ib_windows <= i)
-   831				break;
-   832	
-   833			ret = dw_pcie_prog_inbound_atu(pci, i++, PCIE_ATU_TYPE_MEM,
-   834						       entry->res->start,
-   835						       entry->res->start - entry->offset,
-   836						       resource_size(entry->res));
-   837			if (ret) {
-   838				dev_err(pci->dev, "Failed to set DMA range %pr\n",
-   839					entry->res);
-   840				return ret;
-   841			}
-   842		}
-   843	
-   844		if (pci->num_ib_windows <= i)
-   845			dev_warn(pci->dev, "Dma-ranges exceed inbound iATU size (%u)\n",
-   846				 pci->num_ib_windows);
-   847	
-   848		return 0;
-   849	}
-   850	
+Why this is false here? oneOf is not sufficient?
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> +
+> +      port@1:
+> +        $ref: /schemas/graph.yaml#/$defs/port-base
+> +        unevaluatedProperties: false
+> +        description: the second LVDS input link
+> +
+> +        properties:
+> +          dual-lvds-odd-pixels:
+> +            type: boolean
+> +            description: the second LVDS input link for odd pixels
+> +
+> +          dual-lvds-even-pixels:
+> +            type: boolean
+> +            description: the second LVDS input link for even pixels
+> +
+> +        oneOf:
+> +          - required: [dual-lvds-odd-pixels]
+> +          - required: [dual-lvds-even-pixels]
+> +          - properties:
+> +              dual-lvds-odd-pixels: false
+> +              dual-lvds-even-pixels: false
+
+Same as above??
+
+Cheers,
+Biju
+
+> +
+> +required:
+> +  - ports
+> +
+> +additionalProperties: true
+> +
+> +...
+> diff --git a/Documentation/devicetree/bindings/display/panel/advantech,id=
+k-2121wr.yaml
+> b/Documentation/devicetree/bindings/display/panel/advantech,idk-2121wr.ya=
+ml
+> index 2e8dbdb5a3d5..05ca3b2385f8 100644
+> --- a/Documentation/devicetree/bindings/display/panel/advantech,idk-2121w=
+r.yaml
+> +++ b/Documentation/devicetree/bindings/display/panel/advantech,idk-2121
+> +++ wr.yaml
+> @@ -20,6 +20,7 @@ description: |
+>    dual-lvds-odd-pixels or dual-lvds-even-pixels).
+>=20
+>  allOf:
+> +  - $ref: /schemas/display/lvds-dual-ports.yaml#
+>    - $ref: panel-common.yaml#
+>=20
+>  properties:
+> @@ -44,22 +45,10 @@ properties:
+>=20
+>      properties:
+>        port@0:
+> -        $ref: /schemas/graph.yaml#/$defs/port-base
+> -        unevaluatedProperties: false
+> -        description: The sink for odd pixels.
+> -        properties:
+> -          dual-lvds-odd-pixels: true
+> -
+>          required:
+>            - dual-lvds-odd-pixels
+>=20
+>        port@1:
+> -        $ref: /schemas/graph.yaml#/$defs/port-base
+> -        unevaluatedProperties: false
+> -        description: The sink for even pixels.
+> -        properties:
+> -          dual-lvds-even-pixels: true
+> -
+>          required:
+>            - dual-lvds-even-pixels
+>=20
+> @@ -75,7 +64,6 @@ required:
+>    - height-mm
+>    - data-mapping
+>    - panel-timing
+> -  - ports
+>=20
+>  examples:
+>    - |+
+> diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple=
+-lvds-dual-ports.yaml
+> b/Documentation/devicetree/bindings/display/panel/panel-simple-lvds-dual-=
+ports.yaml
+> index 10ed4b57232b..e80fc7006984 100644
+> --- a/Documentation/devicetree/bindings/display/panel/panel-simple-lvds-d=
+ual-ports.yaml
+> +++ b/Documentation/devicetree/bindings/display/panel/panel-simple-lvds-
+> +++ dual-ports.yaml
+> @@ -22,6 +22,7 @@ description: |
+>    If the panel is more advanced a dedicated binding file is required.
+>=20
+>  allOf:
+> +  - $ref: /schemas/display/lvds-dual-ports.yaml#
+>    - $ref: panel-common.yaml#
+>=20
+>  properties:
+> @@ -55,28 +56,10 @@ properties:
+>=20
+>      properties:
+>        port@0:
+> -        $ref: /schemas/graph.yaml#/$defs/port-base
+> -        unevaluatedProperties: false
+> -        description: The first sink port.
+> -
+> -        properties:
+> -          dual-lvds-odd-pixels:
+> -            type: boolean
+> -            description: The first sink port for odd pixels.
+> -
+>          required:
+>            - dual-lvds-odd-pixels
+>=20
+>        port@1:
+> -        $ref: /schemas/graph.yaml#/$defs/port-base
+> -        unevaluatedProperties: false
+> -        description: The second sink port.
+> -
+> -        properties:
+> -          dual-lvds-even-pixels:
+> -            type: boolean
+> -            description: The second sink port for even pixels.
+> -
+>          required:
+>            - dual-lvds-even-pixels
+>=20
+> @@ -88,7 +71,6 @@ unevaluatedProperties: false
+>=20
+>  required:
+>    - compatible
+> -  - ports
+>    - power-supply
+>=20
+>  examples:
+> --
+> 2.34.1
+
