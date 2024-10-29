@@ -1,86 +1,97 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB7C1DEFE2
-	for <imx@lists.linux.dev>; Tue, 29 Oct 2024 11:17:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1DC2010E0;
+	Tue, 29 Oct 2024 12:02:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730200647; cv=none; b=Zrh1Fwfw1k600EPAoytyXo+fkdMgT81eLbgDF2bo9Qs7sRSFj7PZUYcXowTTlpGESEMRXYzQmXYhOdKNv8qmAXgvGAHoQ0JENKm/WktvF0wYWrYFV3G6J4qJVjamVsYOmLUzFioNDRNRzYDQzAwnNZ7GaiIcPU7XtECQAew4Uvg=
+	t=1730203371; cv=none; b=sG69uhXeU6yrmMtmBZjKCnkFXpjJiRoQCJB4nr28ecABlLWuDZIRUXJT5xtmxuwaWj4h2PeqQsy3Cl9PL7P02G8j2KsCcO9dx0H4ttZ40USjonkDso38dAC5L0V0gq+1ZOWQqOGD80eI3q9VxqqrRvyRv1Jb/udMgMn0FC3vuPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730200647; c=relaxed/simple;
-	bh=0Y3lWwBLaNSuSrYHVXg8RSL1GdlpeH3OKXRkXftMX10=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P0npFigs5M6w498p5TF9C5TdZtJvFaJ3DEXsyWwi1PnmU0Q2REiXbH5IIl91NwE3EWHTjyDUervSjv+w3N4dC+XDvRBlv6Eg8FOtt7FkS/ANyfVzKJ84MpItJP3vyG0njMUGpfK3N378ca0pxhH52k0dlH8+yK6EKlXXuXrFCW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z/GPS/q6; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1730203371; c=relaxed/simple;
+	bh=mkUNkwZOKzf/L7j4+ozdug6HRLKHrIEWQmmLtR0CwjA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AWBzMKzqmlNsm7PGHb3Bkbaikme8SuurzYx5/JpoRG+coTX57FGp3fmuS1ZUw+ZMCpapPrk2VKbCHFVNEAY5FVmARV8tOfu3/lW+TWRwz+Mv+M7uNvhJWoZeQQ8wuJwP6bpXHjfAk080jPhn/0dF2Xo5oMT8rkrTeiwvv7ahfEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=vs8YLYaT; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z/GPS/q6"
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2fb518014b9so42977011fa.3
-        for <imx@lists.linux.dev>; Tue, 29 Oct 2024 04:17:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730200644; x=1730805444; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0Y3lWwBLaNSuSrYHVXg8RSL1GdlpeH3OKXRkXftMX10=;
-        b=Z/GPS/q6LwGyRqM9xUx+8iFMl1kFNBxN8xX55O8cGVlE4RDcz2s3+C7zDeqkrsTdBK
-         LIKfLjwU4dqpA1je2ooByYx/2T48fIaccQMlVvhD8a76NXXY6uX1s6yylDtFWwdd50rp
-         C21J0lHsncxDB2Y9lqoC+WdwV44IxrqTpc5pJWgOXWcDHSV42+M3Y2+3U8DwjOSQdMKg
-         GiEI1jDfRWJ3d96ncM7oHNuyX5msSSRJTEyyxU56tVZ+RZnnPvRU0QrbfQbsPXggWDde
-         +PmebEDxFbpzk+a/J6vxBd29Ce+SSGnPLt8DYfQbrXQFSm04AJ+LQeRIWKrukqIQ1AOv
-         VcLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730200644; x=1730805444;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0Y3lWwBLaNSuSrYHVXg8RSL1GdlpeH3OKXRkXftMX10=;
-        b=fBmOQRYTEgkik22jnoMwDauUxKU83zgoYVjuIZm90mkeSPW5be31XLXh0znrMcsRMG
-         2vkOBq5WArBv6utU5zkaRepPoVFBi4U+WgcdBYwOSVcKfohfM/KWLGgVbAqGmCKur13f
-         j8gmw62WWtbNFjaOB1J/RZO+hD/9zeYkXY49vOcuGpWJqE3re6rQmVO6gAEndlT38NM9
-         suNz+qjku8I7i/6CnoIjHEGiXEn3QOWb+1ZIxV3VoRWwegL+DN0/D+fvOty+mfRrZVDt
-         tfu/E7NANxcGR7gfoYiyeF8+lCiUfGLy5JxSmUUEn6aF8g1wfjgl8Dfrx5unMoDofDG3
-         pyTw==
-X-Forwarded-Encrypted: i=1; AJvYcCUCH6tXDLpSe+yfW0PraGr+4AeYh2hyYC9V+inb4i799lVA7csOLFfrPRCFlUWsue5lI6s=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw+PzJQEmm7xLwfq/wKacyA5Zp/fZtXUQ1tmks6jE6fanOVMNAS
-	2nG8XrK+2fIdlU2cYDQqYrs200BucS86GlAIG8qTQa35KjtdI4u9eqHc6vOyDSLsQ8PsPnyDSLb
-	LKrjUXptS8zNAp0pjkI3Ydm+KTO0=
-X-Google-Smtp-Source: AGHT+IGsU6uHMBv+O6e4BbQ7UJDSfYHHZAkZqCwn67mMrBXMiocwqn/285jyQOio3gIiF1T/G3/0V4DT4isdy5AAHHY=
-X-Received: by 2002:a2e:f12:0:b0:2fa:dc24:a346 with SMTP id
- 38308e7fff4ca-2fcbdfbab66mr39852531fa.21.1730200643976; Tue, 29 Oct 2024
- 04:17:23 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="vs8YLYaT"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=MSSENdvMyuzo91ZSJkXGlvut0qguBDSstRfo6W1iEF0=; b=vs8YLYaTD7EC7DDmaI+9D04Lry
+	WDkFRZQrLIEyJjIyx5G9C8b09fOunqRWJxscl30npec/cQWx10fqwvAssc7Lreg/wOCs5p2xRFPUn
+	jfES/jYg44wJP1yZMqcQMs3UZiY6JKNr4NPLzw3bBBJeSOilfPa+pCyc99OTft5ALLG8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1t5kvL-00BZ9M-Rt; Tue, 29 Oct 2024 13:02:11 +0100
+Date: Tue, 29 Oct 2024 13:02:11 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: jan.petrous@oss.nxp.com
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Minda Chen <minda.chen@starfivetech.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+	Keyur Chudgar <keyur@os.amperecomputing.com>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	NXP S32 Linux Team <s32@nxp.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Subject: Re: [PATCH v4 04/16] net: phy: Add helper for mapping RGMII link
+ speed to clock rate
+Message-ID: <cf51e433-4622-498a-8754-60b220cb6aab@lunn.ch>
+References: <20241028-upstream_s32cc_gmac-v4-0-03618f10e3e2@oss.nxp.com>
+ <20241028-upstream_s32cc_gmac-v4-4-03618f10e3e2@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241028180844.154349-1-festevam@gmail.com> <20241028180844.154349-2-festevam@gmail.com>
- <20241028194728.0655edd3@akair> <CAOMZO5APJM57_ixBiRFZSZex3AiawA=mtqMszdGezVoajaXYhA@mail.gmail.com>
- <4addc413-dd13-4867-8c49-45539af7b45b@pengutronix.de>
-In-Reply-To: <4addc413-dd13-4867-8c49-45539af7b45b@pengutronix.de>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Tue, 29 Oct 2024 08:17:11 -0300
-Message-ID: <CAOMZO5Bu5U=MGq3gzOjaeWuhnowJ-TN=ktCtw_eXDO2Q6Kxbmw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] ARM: dts: imx6sx: Remove fsl,imx6sx-lcdif fallback
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Andreas Kemnade <andreas@kemnade.info>, shawnguo@kernel.org, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	Fabio Estevam <festevam@denx.de>, Marek Vasut <marex@denx.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241028-upstream_s32cc_gmac-v4-4-03618f10e3e2@oss.nxp.com>
 
-Hi Ahmad,
+On Mon, Oct 28, 2024 at 09:24:46PM +0100, Jan Petrous via B4 Relay wrote:
+> From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> 
+> The RGMII interface supports three data rates: 10/100 Mbps
+> and 1 Gbps. These speeds correspond to clock frequencies
+> of 2.5/25 MHz and 125 MHz, respectively.
+> 
+> Many Ethernet drivers, including glues in stmmac, follow
+> a similar pattern of converting RGMII speed to clock frequency.
+> 
+> To simplify code, define the helper rgmii_clock(speed)
+> to convert connection speed to clock frequency.
+> 
+> Suggested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 
-On Tue, Oct 29, 2024 at 6:50=E2=80=AFAM Ahmad Fatoum <a.fatoum@pengutronix.=
-de> wrote:
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-> With an eye towards improving device tree stability, I think it's more
-> appropriate to adjust the binding to have three compatibles instead.
-
-Yes, this makes sense. I will adjust the bindings accordingly.
-
-Thanks
+    Andrew
