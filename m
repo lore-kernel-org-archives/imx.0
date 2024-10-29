@@ -1,232 +1,294 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2070.outbound.protection.outlook.com [40.107.20.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA0B14900E;
-	Tue, 29 Oct 2024 05:04:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730178289; cv=none; b=f4P0z3qFF+U4v8WvwQLWKK2kqEUbpg/Pju+SW0J5q40FCQ0YcatX0iVY4gCzoweVgyzgah3V+QnY/0rUZ6QKTG2FTyVto/WojOd1n4DdfZndXsTqkqSsqzcLiBpTJc07jD8QFArpuyNEhaSBRwEWeeIDJt521ctyZjYlBLUbSkU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730178289; c=relaxed/simple;
-	bh=eGsFmqlXjXC4FsEHXAfrFjTNhT0vyVCmz3/UORuqf6U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JitLef0ST+1WY+f2bvy1CywTf5Pw2C6ougoP2xAmXa45jbUWCYrz0aFdlnXJoyypSE/D4rOiZfp7XIUB0Yw1XAnsh2IwFcAX+jb20tXt92Gyx+SDRvY2zSJYwNY7UMO5Elx75PJicXgEv3uRBY7OT+cIQdBk9QnPAMMBKfCG9yM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VRAHbiXc; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C5F1FCF73
+	for <imx@lists.linux.dev>; Tue, 29 Oct 2024 06:16:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.70
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730182606; cv=fail; b=TL208NAstpNAaVxdPTiYK6T19mzxbkBSbUnZ5SSxmMgyihlFedOfkg++j5rUNMrTd94W3OV3ZfZyp7e5Clf9ohfDyGFZCvYKb8TJ6lgcFK/y7a+u/3ylC4/hVFt2pNUSAg1kdk11wSN67g2TzvuCgpaASgwq3Cw8dEJGuwuITqY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730182606; c=relaxed/simple;
+	bh=CThIi9Rw7WS0gHvOKSv6PVg94WY+gHKCgxrHMoqryho=;
+	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=fdZuZ1J/nGGkIgYSdzYh/EtbjV4NGO4Oz/vnyxUCmMM/sdHqcYTHxdPHkNLL4gYudXLr337rTy+fmZ4CAN6XgdQBx0i37h29a2B1bp/R1vi8p+uUQpRSzlogDw++Vqm/l0kR/fNh1BeJ5qAS4/BvRqJUIFyEl55pIyj78/G2ddQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ln3Mmjjt; arc=fail smtp.client-ip=40.107.20.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VRAHbiXc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730178287; x=1761714287;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=eGsFmqlXjXC4FsEHXAfrFjTNhT0vyVCmz3/UORuqf6U=;
-  b=VRAHbiXcvt6F1OXvjgROtvOUlzSWaCVxrA509a5WoRZSRpl5zE9mWpzU
-   R567pfl4qppW/bvj9D4TBN0Hc5mUVeUbC6TVm+1tj5Qyd55fWNAHr4K0e
-   hcxrY/vD4AuMe9//lj6sP2ssZNQ/LIrf+AL1qf9eTLUSkc3Mi2umB42p3
-   ru58yHo7qXlToWJgmke/i2jTxf66PVDuf2O83Jn4s3uias5M+4cysbJBj
-   uzulxD6vkcirbV0LKVZB56l1+fmu5eH2v9XwDVDxQ/Lc+/DGlt8diKpId
-   SK9D/OmsFnwAtSoS/RFNdC6aRVTEqB98YfWc9JReW7wkDeAZ5Py1lWxWX
-   w==;
-X-CSE-ConnectionGUID: aBMvyYf9QOSHtnj3IzcrOA==
-X-CSE-MsgGUID: HckYgevASt+VlrW9KF7s0Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="40336865"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="40336865"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 22:04:47 -0700
-X-CSE-ConnectionGUID: sfkKswGJSqOzH3FBCbYCjQ==
-X-CSE-MsgGUID: e9zpuIaGT2elSMJfzcABGw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; 
-   d="scan'208";a="81926546"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 28 Oct 2024 22:04:42 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t5ePH-000dGk-2w;
-	Tue, 29 Oct 2024 05:04:39 +0000
-Date: Tue, 29 Oct 2024 13:03:41 +0800
-From: kernel test robot <lkp@intel.com>
-To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v6 2/7] PCI: dwc: Using parent_bus_addr in of_range to
- eliminate cpu_addr_fixup()
-Message-ID: <202410291248.Qc61mosK-lkp@intel.com>
-References: <20241028-pci_fixup_addr-v6-2-ebebcd8fd4ff@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ln3Mmjjt"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=R8/01jds+l3CSTKQChNj+WpFfqoLZ4twDugQl21CfqD/xsLYH1omqgcuc5h+taPsebskj5GhXutpTLyGGFqAXEm/geghuSXarrZByb45jqeUJ96Uv9Pj/L4MuzvP7IHG74cvoz7Ao6lj6fJoCxsqnWDeGHm2dpyBeOMuOL9Q83lVhI8A6k60ZTcRx8xJCOnIsrF0LXfwFZs3a52VCKmKY0Ig4glz1X18vUsOu/DwBkTrD1xKb8QKBusokDvtVjj1vn8q/tjLsAu94pxB5x0Q41SQx3Ajw3PLAOLeeBr4Cq2qgn9Nb71BsrQ+ixOYiteeTstmm0oxCo19D5d8nmpQoQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CJALp2IH9MXgiw37AzRb6d6KlU6QoXVtqwy4yj7dvIc=;
+ b=kh4Piy0aHWJCRA47cA1ac9qvxhwkt4/74pno8RxQKwvQzATSh5Plda3l/ZBWZltFtaixi8VxnYuFXtxSkeheG6J1DbZvbDgM8+UP3XO/Ng8BQWj8nYur9OiKJZUW3NXV4JUTi8dZ4JPTV/V5SQC1AyFhzEU2TIJr8jaMPQA9Fgmsn4bqHs7fx9p3lO+vLvHZBRx8DywoGdS1O2EM1kiCRxdI8Bj7/xIhl8LMksWwPl6pZpfAZHNofirgM4sRUmuy9tlG+rcoGQ2sChT5Lmjmsci662HOaw67DW3Bbu3Bb23n6dAW/vwLL84R5pFZYFNuezmQrZn7EgtZ+gBvWDgyiQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CJALp2IH9MXgiw37AzRb6d6KlU6QoXVtqwy4yj7dvIc=;
+ b=Ln3MmjjtL4xomH1opGjef5BpZ53MIf9UO3n7rotuxj4b6WU11kZbbqgDbg58t3I16W2ot23B6HA6oRmilZJOODyjwT5jsHVsXPJplU9gawhQl3Ti+i5nDQ4cwKb9JSmWWT/eWGE4ReKOr6RDTVNMJ0WRT+X2kAVDf2fbjdPYeSvIo8YVUY+WT4A2Rs9ANmhATNW3yTEO4yAj4Myix4Ln/bnq2xly0CZ/IOOKGkyGXOWvpCMyYebbMA/2yA3udqH7cjo/Xoh+zUy+XT6joIGwqhkpZNkHAH3UeBdua4XkiLZqL/RYu4JarETTpfhFQZoAfc4RCpVnoeJQ9iPh3Daxrw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by VI0PR04MB10437.eurprd04.prod.outlook.com (2603:10a6:800:216::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.25; Tue, 29 Oct
+ 2024 06:16:39 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90%4]) with mapi id 15.20.8093.023; Tue, 29 Oct 2024
+ 06:16:39 +0000
+Message-ID: <01c1c4f3-1652-4b08-bd35-08b4e1c04c79@nxp.com>
+Date: Tue, 29 Oct 2024 14:16:59 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 08/13] dt-bindings: display: Document dual-link LVDS
+ display common properties
+From: Liu Ying <victor.liu@nxp.com>
+To: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
+ Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+ jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ quic_jesszhan@quicinc.com, mchehab@kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ catalin.marinas@arm.com, will@kernel.org, sakari.ailus@linux.intel.com,
+ hverkuil@xs4all.nl, tomi.valkeinen@ideasonboard.com,
+ quic_bjorande@quicinc.com, geert+renesas@glider.be,
+ dmitry.baryshkov@linaro.org, arnd@arndb.de, nfraprado@collabora.com,
+ thierry.reding@gmail.com, prabhakar.mahadev-lad.rj@bp.renesas.com,
+ sam@ravnborg.org, marex@denx.de, biju.das.jz@bp.renesas.com
+References: <20241028023740.19732-1-victor.liu@nxp.com>
+ <20241028023740.19732-9-victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <20241028023740.19732-9-victor.liu@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SG2PR06CA0189.apcprd06.prod.outlook.com (2603:1096:4:1::21)
+ To AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241028-pci_fixup_addr-v6-2-ebebcd8fd4ff@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|VI0PR04MB10437:EE_
+X-MS-Office365-Filtering-Correlation-Id: 21c18a5a-110b-4679-6648-08dcf7e14000
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+ =?utf-8?B?NlFOcS83UWlXejJVNXJnd2hqSDdTWSttaDBieGZtTHdtQjMvakVaVGRPb29P?=
+ =?utf-8?B?czdZYklGeCt0ekxERDhpbFFBRUJMa3hoeHNjS3lidjUvUWtUMFhJeG9HK1BR?=
+ =?utf-8?B?NVhwekFBWCsrZWVScWdZYmE5VFFodDN6dnFQNG95TFVBR09zTXl2LzNqMW1l?=
+ =?utf-8?B?YUdueXdMU0xqRUhid3hURFNDYXptZjNNNjZwUHhNR3FnL1o2YlpVNFdSU1Vv?=
+ =?utf-8?B?YkYxZWMvK2VSOTN1OWNvZTlHK3VSUzVJcEhNbUpTQm9EeE40K3VkZU5kamVF?=
+ =?utf-8?B?aFRxZDlpeTR3SUl2bnJTYWtnQjFyZnlhVXZRaGhWNDg0NmpVWE0xZElDK0k3?=
+ =?utf-8?B?NEdyVVFQQmJXK1U4eElmV1huQmRmaGN3TFhTeEJaeTc3RHRWLzlXMExqempw?=
+ =?utf-8?B?NktFY0EvRFM4WmhUVDZ2MUNBUUNhaEdhenJ4U1UxZDVXQlNDM09BTnF5YStQ?=
+ =?utf-8?B?OWpad0dPWGV4c1ExNzl6Tzg0d2Z1bkpXaEYwZ3hvWFV6Z095WUVoZXRqMy9q?=
+ =?utf-8?B?L3VMUjhQS3BFR0xPaGgzUTlZQkpLTDExTUNFejhaV09pOXNieExYRUJLS3RV?=
+ =?utf-8?B?anNWa1dwa21lWUJpNUhqc1AxM2QvaHRpb1RRVERuMzhYN0tSUTNaVldXZ2s5?=
+ =?utf-8?B?MThVOGdRWUgxcTVXbzlXUkxXM2JKOHU2MW1LVjBqMXlYM1M5MXdpRFJXa2hw?=
+ =?utf-8?B?cUFoYzZXNHhjY3ZkVndHSnR3Umc1NHlIS3NEL3ZQNzRiOVZqMk5FOWhBcVlI?=
+ =?utf-8?B?Tk45VEtjUG14b3paVzh2bG5IY2pZRXpxNThjWXJGcGNzZmcwYmhtOE4wWVBG?=
+ =?utf-8?B?Y3owMjhRTVlmeEY3U0ZKYWpiWEVlMTNxS29qMVRleHFqOXF6TmRkOGkxL3Vn?=
+ =?utf-8?B?YXp1SENjOVlZYTNsM3g5cnkyZVNOV0N0V1pBTzdEdFlWcVJ0V1R1ZU5jMENW?=
+ =?utf-8?B?VWVsMHdhTDJ6Tkdia0svblFYS2t1Ym5YMUIweGh6WGdUUmEvVlFjYjEzYmdq?=
+ =?utf-8?B?Q1FjSDRlT0p4VnkxcExiTEpKeVlOSVhVUEhoWE5PZlI0V2kwZjY5dFBsdEh4?=
+ =?utf-8?B?d1Ftd083R25hci95RFVCMzVNdy8zUEJRVU9VNlBPek82bjZabFRoZ2NwenJU?=
+ =?utf-8?B?NDBLT0EzU1RuSzBadkJETjZyU1o5aHhtOU9ZakhXUnc1T2dQTkE0REJsVUZG?=
+ =?utf-8?B?SElxRFlJSkZlSmdMN2ZSY1doakNNaW5FTmovY3dUSDRmeXRSenNVZG5kSXEw?=
+ =?utf-8?B?TUtITFcyMEQ4dWV6eU5lTUVyRkppRHAzcHJpbWxhQzdKcEwvYjJnVjJueFhM?=
+ =?utf-8?B?VWNYWjdITkRLS1oyWGlSVXJPZGY3VzJ2YWd5L04wNTFVb3BSampyWm5kWEp2?=
+ =?utf-8?B?eWNQSG9YRk8yWit0OXpYOGJzYnV3d1JuZFRUZVFJN0kwcHpaMTZ6VXNGWXE1?=
+ =?utf-8?B?QXRqTnZZVG9FUCtaVnRDeGt0MWg3Rm1UZG16TWlLRy9OcXZ2K0N0RjdOQmRn?=
+ =?utf-8?B?K0FGS3ptTnkxekI3N1N4M2RqUVRLMWlHeC9KTStlQkpLZWJPa0tBdUFRcHhy?=
+ =?utf-8?B?akhwSjFDVk1nSDdSYkZjU29JeE9vRnpIRFdqRGt0UUFxS256cXhnOHpHOThn?=
+ =?utf-8?B?UHlESlJrbWdqeTAxYlVOWmlxK0crSUc4dE50dVBmVVJRcGJ6L1A2b1BtZ0lH?=
+ =?utf-8?Q?bySkWqx6vo9oeyLq4yEz?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?dkhCZzRHR0doQkZ3dTd1ckNJdTd6N21aTUxYWnQ1QVVzZG1QeW13S0RCajNO?=
+ =?utf-8?B?YzdsUXRkMDJTdGovZUlWOWVoWjBqZnQ0ckxabnNGNjlHWHdXRGl0eFpJMyty?=
+ =?utf-8?B?TTRRRmtrVG9lSFQ3Y2Ira01vM0lhYkFKWm40V1hZeDFaRWVERUxIRldid0tH?=
+ =?utf-8?B?Ym1yRDJ5aGpPMDJuQUVuMHIyMlRSd3dyUkZHTENqSHYrWitxNmkxMWpPWlh4?=
+ =?utf-8?B?Y0IxeEwzT1VhRUN1TVQ0ZytjZjBHbHVjRHdPaHAxWmF4eVdmbjA4VU9haGI1?=
+ =?utf-8?B?dHczNURXWlB3ZHI5ZzR1YlI1WGtRR05iTFZ0LzQyQUhydDJQRk9BWmk4V2N3?=
+ =?utf-8?B?bWh4NmNoSkJEc3RIa0Qvd05PTitMU2Z5T3lQQmJRUEg4WE9VMXBHWE05YXZM?=
+ =?utf-8?B?bDRjdjVMUWRIYi9udE12MnVJd0FYbm9yWm41c3FtUlVhZVlPTWllcGI3VHVS?=
+ =?utf-8?B?TUtYMGZpcEZ1bDFxZTRGQUFJa04vMjEydHVGWTluUnlDSmhuV2kxc0Y5MGNz?=
+ =?utf-8?B?NTdBNFRMMFRHQzN3Zkh0WjMzeDZNZWt5RVlkR05jL0FIL05RSnFMdTFnbE5K?=
+ =?utf-8?B?UWtpbndvZnNEUHZwUnpNdFlDVy8xSjJjSktLRDQ3NUE3Z0xCNzhScWVEVXpz?=
+ =?utf-8?B?N0lmakZUVWhTaDNQN1lOOHQwdkk2TjNMcmJmak5aSjdSUGEvWnJKbmo2NExL?=
+ =?utf-8?B?UHg1ZjMvaDR4eFBWSFFjdkxSNERFbW5Gb3krWGw5dGhUWDJNYjlhMk14cDB0?=
+ =?utf-8?B?UFpzZitRK2l1VWs1N00wWGloNlRPWjRueVgxT0FJM1o0bHdhaWtFaEhsa3hM?=
+ =?utf-8?B?VkhiN1B6TWFxbzFJZk13eWdYMmtISFBHOWxUclV5NUR0VUp6bU01OGZEcy92?=
+ =?utf-8?B?V2VGNzc3MVJxMEJOQXBLazU1T29sell0MUFmZjlpanJ5OTFNOWFpRmNJY0sz?=
+ =?utf-8?B?Vi9qOXNycEloMVVNdzNncWdIVWwySi9Da0R2RnBjUEdqalZWSzNlNElLNi9V?=
+ =?utf-8?B?cWZkZWhmWFdKYk5keTJYcm1hRWdKWXAyT1JIOUN2TmZKV0QwZkFoRi9RWSsx?=
+ =?utf-8?B?Zm5BcXJZbWZoNktyeEhva0FMak9pMmF3M0czRU9wRVg2OU5NTUQwSTZjRHBO?=
+ =?utf-8?B?ZUFDMXdQOFRlRTkxTzZmQnVlM2VHQzZqN2hTSGF6WVZYUXN1Um52QllRSG1a?=
+ =?utf-8?B?THlyZ3ZWb2RsaTNCazh5MXY4QzlpZWRUY1F4eVVCM1RvZEt3QWs4UE9XWENa?=
+ =?utf-8?B?M3ozVnFKMmh0NGt3ZkJZME5aa09FSWdTSGZGd3dCSU9iUmV1TzBWQ0xyUmNJ?=
+ =?utf-8?B?YTQ3UlArRGYxc1kzRUJxM3k1V21WSy8zcWhzMUZMdjYzT1Q2bFdHckpnK0tw?=
+ =?utf-8?B?U3FBcVRSVUwrRVY4MDdMZitKWWRaZE5WUnlzL0pWZVhYY2gyZUlzOVM3cStI?=
+ =?utf-8?B?bjU0aWpJOVBkZXkxMmRZNHJoUWNOTlJuRzFvSXFxODc2T0lqVVJNeDcrbVFC?=
+ =?utf-8?B?NSs4bzlpOFdsUVl5eGlnZ3JvNjBuT3pNS2xmRTBSMjJNd0lodnY3anhIWTM1?=
+ =?utf-8?B?Y2xSWC93Z3NuTGxGRCt3RXZ0TTNmT0RpQnNuSHgvWFNIcGphRDhyMDRYZ2ZE?=
+ =?utf-8?B?T3VQcVhVLzZPS2s0Q3ZNOVFmbjc0T3o4MWdmRmFzbTBsWTF6K1NmNFdWbVBE?=
+ =?utf-8?B?V0FFRldDK1pRaTgvc2dBZjdaYnNMMHV5K05GODZ3Vmg4djdjcWhEZ2NIVmZK?=
+ =?utf-8?B?RXlFOEV0T2xucE1xd0pQZm5WcWdibHg2Q25NWVUyM0M2MTAzR1Y3N2tNdldQ?=
+ =?utf-8?B?YnRoNGJtQmhRR2RTVGZxVEpNM2FyQ2VsOUxGTlNmSm5uV0xoZ0xUZXhJYmM2?=
+ =?utf-8?B?enRGRHlmeVZWeGc3N3BPNjRZakZZVEgvTzZteEJwK2k0QzBxZ1VhcU9JeFdH?=
+ =?utf-8?B?MzR5OW1panJld0k1eG9Hek1pTlYrcXNEZWUxMGFSOVZ2blZuSEVjeWs0cFRQ?=
+ =?utf-8?B?TktTTjRvZ1FzMmk1T0UzTXA5ZjBTOFNiWjNYejY4VmI5cEFHTTM0UkJvbkJh?=
+ =?utf-8?B?UGV2QzFqS1VBdVVNejFiM2xHT2N4bGlkc1RGeFpWcS9Jc1ArTk5CakdqUnFr?=
+ =?utf-8?Q?P8r4fRnawXr50kHM1Fl4YFFNY?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21c18a5a-110b-4679-6648-08dcf7e14000
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2024 06:16:39.7225
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4vqxNVEzrApY8rYbSVhdv/K0SNKZB/yn7ENYGFr3UCzOWAy8eXnZL2Xcw1rNtbKonwevGi3fjO9vVoEgOMaygw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10437
 
-Hi Frank,
+On 10/28/2024, Liu Ying wrote:
+> Dual-link LVDS displays receive odd pixels and even pixels separately from
+> dual LVDS links.  One link receives odd pixels and the other receives even
+> pixels.  Some of those displays may also use only one LVDS link to receive
+> all pixels, being odd and even agnostic.  Document common properties for
+> those displays by extending LVDS display common properties defined in
+> lvds.yaml.
+> 
+> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> ---
+> v4:
+> * Squash change for advantech,idk-2121wr.yaml and
+>   panel-simple-lvds-dual-ports.yaml with lvds-dual-ports.yaml.  (Rob)
+> * Improve description in lvds-dual-ports.yaml.  (Krzysztof)
+> 
+> v3:
+> * New patch.  (Dmitry)
+> 
+>  .../bindings/display/lvds-dual-ports.yaml     | 76 +++++++++++++++++++
+>  .../display/panel/advantech,idk-2121wr.yaml   | 14 +---
+>  .../panel/panel-simple-lvds-dual-ports.yaml   | 20 +----
+>  3 files changed, 78 insertions(+), 32 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/display/lvds-dual-ports.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/display/lvds-dual-ports.yaml b/Documentation/devicetree/bindings/display/lvds-dual-ports.yaml
+> new file mode 100644
+> index 000000000000..5f7a30640404
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/display/lvds-dual-ports.yaml
+> @@ -0,0 +1,76 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/display/lvds-dual-ports.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Dual-link LVDS Display Common Properties
+> +
+> +maintainers:
+> +  - Liu Ying <victor.liu@nxp.com>
+> +
+> +description: |
+> +  Common properties for LVDS displays with dual LVDS links. Extend LVDS display
+> +  common properties defined in lvds.yaml.
+> +
+> +  Dual-link LVDS displays receive odd pixels and even pixels separately from
+> +  the dual LVDS links. One link receives odd pixels and the other receives
+> +  even pixels. Some of those displays may also use only one LVDS link to
+> +  receive all pixels, being odd and even agnostic.
+> +
+> +allOf:
+> +  - $ref: lvds.yaml#
+> +
+> +properties:
+> +  ports:
+> +    $ref: /schemas/graph.yaml#/properties/ports
+> +
+> +    properties:
+> +      port@0:
+> +        $ref: /schemas/graph.yaml#/$defs/port-base
+> +        unevaluatedProperties: false
+> +        description: the first LVDS input link
+> +
+> +        properties:
+> +          dual-lvds-odd-pixels:
+> +            type: boolean
+> +            description: the first LVDS input link for odd pixels
+> +
+> +          dual-lvds-even-pixels:
+> +            type: boolean
+> +            description: the first LVDS input link for even pixels
+> +
+> +        oneOf:
+> +          - required: [dual-lvds-odd-pixels]
+> +          - required: [dual-lvds-even-pixels]
+> +          - properties:
+> +              dual-lvds-odd-pixels: false
+> +              dual-lvds-even-pixels: false
+> +
+> +      port@1:
+> +        $ref: /schemas/graph.yaml#/$defs/port-base
+> +        unevaluatedProperties: false
+> +        description: the second LVDS input link
+> +
+> +        properties:
+> +          dual-lvds-odd-pixels:
+> +            type: boolean
+> +            description: the second LVDS input link for odd pixels
+> +
+> +          dual-lvds-even-pixels:
+> +            type: boolean
+> +            description: the second LVDS input link for even pixels
+> +
+> +        oneOf:
+> +          - required: [dual-lvds-odd-pixels]
+> +          - required: [dual-lvds-even-pixels]
+> +          - properties:
+> +              dual-lvds-odd-pixels: false
+> +              dual-lvds-even-pixels: false
 
-kernel test robot noticed the following build errors:
+Hmm, I should require port@0 or port@1.
+Will wait a while for comments and add this in next version.
 
-[auto build test ERROR on 9852d85ec9d492ebef56dc5f229416c925758edc]
+--8<--
+    anyOf:                                                                      
+      - required:                                                               
+          - port@0                                                              
+      - required:                                                               
+          - port@1
+--8<--
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/of-address-Add-parent_bus_addr-to-struct-of_pci_range/20241029-030935
-base:   9852d85ec9d492ebef56dc5f229416c925758edc
-patch link:    https://lore.kernel.org/r/20241028-pci_fixup_addr-v6-2-ebebcd8fd4ff%40nxp.com
-patch subject: [PATCH v6 2/7] PCI: dwc: Using parent_bus_addr in of_range to eliminate cpu_addr_fixup()
-config: openrisc-allyesconfig (https://download.01.org/0day-ci/archive/20241029/202410291248.Qc61mosK-lkp@intel.com/config)
-compiler: or1k-linux-gcc (GCC) 14.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241029/202410291248.Qc61mosK-lkp@intel.com/reproduce)
+> +
+> +required:
+> +  - ports
+> +
+> +additionalProperties: true
+> +
+> +...
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410291248.Qc61mosK-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/pci/controller/dwc/pcie-designware-host.c: In function 'dw_pcie_iatu_setup':
->> drivers/pci/controller/dwc/pcie-designware-host.c:782:69: error: passing argument 3 of 'dw_pcie_get_untranslate_addr' from incompatible pointer type [-Wincompatible-pointer-types]
-     782 |                 if (dw_pcie_get_untranslate_addr(pci, atu.pci_addr, &atu.cpu_addr))
-         |                                                                     ^~~~~~~~~~~~~
-         |                                                                     |
-         |                                                                     u64 * {aka long long unsigned int *}
-   drivers/pci/controller/dwc/pcie-designware-host.c:422:58: note: expected 'resource_size_t *' {aka 'unsigned int *'} but argument is of type 'u64 *' {aka 'long long unsigned int *'}
-     422 |                                         resource_size_t *i_addr)
-         |                                         ~~~~~~~~~~~~~~~~~^~~~~~
-
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for GET_FREE_REGION
-   Depends on [n]: SPARSEMEM [=n]
-   Selected by [y]:
-   - RESOURCE_KUNIT_TEST [=y] && RUNTIME_TESTING_MENU [=y] && KUNIT [=y]
-
-
-vim +/dw_pcie_get_untranslate_addr +782 drivers/pci/controller/dwc/pcie-designware-host.c
-
-   745	
-   746	static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
-   747	{
-   748		struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-   749		struct dw_pcie_ob_atu_cfg atu = { 0 };
-   750		struct resource_entry *entry;
-   751		int i, ret;
-   752	
-   753		/* Note the very first outbound ATU is used for CFG IOs */
-   754		if (!pci->num_ob_windows) {
-   755			dev_err(pci->dev, "No outbound iATU found\n");
-   756			return -EINVAL;
-   757		}
-   758	
-   759		/*
-   760		 * Ensure all out/inbound windows are disabled before proceeding with
-   761		 * the MEM/IO (dma-)ranges setups.
-   762		 */
-   763		for (i = 0; i < pci->num_ob_windows; i++)
-   764			dw_pcie_disable_atu(pci, PCIE_ATU_REGION_DIR_OB, i);
-   765	
-   766		for (i = 0; i < pci->num_ib_windows; i++)
-   767			dw_pcie_disable_atu(pci, PCIE_ATU_REGION_DIR_IB, i);
-   768	
-   769		i = 0;
-   770		resource_list_for_each_entry(entry, &pp->bridge->windows) {
-   771			if (resource_type(entry->res) != IORESOURCE_MEM)
-   772				continue;
-   773	
-   774			if (pci->num_ob_windows <= ++i)
-   775				break;
-   776	
-   777			atu.index = i;
-   778			atu.type = PCIE_ATU_TYPE_MEM;
-   779			atu.cpu_addr = entry->res->start;
-   780			atu.pci_addr = entry->res->start - entry->offset;
-   781	
- > 782			if (dw_pcie_get_untranslate_addr(pci, atu.pci_addr, &atu.cpu_addr))
-   783				return -EINVAL;
-   784	
-   785			/* Adjust iATU size if MSG TLP region was allocated before */
-   786			if (pp->msg_res && pp->msg_res->parent == entry->res)
-   787				atu.size = resource_size(entry->res) -
-   788						resource_size(pp->msg_res);
-   789			else
-   790				atu.size = resource_size(entry->res);
-   791	
-   792			ret = dw_pcie_prog_outbound_atu(pci, &atu);
-   793			if (ret) {
-   794				dev_err(pci->dev, "Failed to set MEM range %pr\n",
-   795					entry->res);
-   796				return ret;
-   797			}
-   798		}
-   799	
-   800		if (pp->io_size) {
-   801			if (pci->num_ob_windows > ++i) {
-   802				atu.index = i;
-   803				atu.type = PCIE_ATU_TYPE_IO;
-   804				atu.cpu_addr = pp->io_base;
-   805				atu.pci_addr = pp->io_bus_addr;
-   806				atu.size = pp->io_size;
-   807	
-   808				ret = dw_pcie_prog_outbound_atu(pci, &atu);
-   809				if (ret) {
-   810					dev_err(pci->dev, "Failed to set IO range %pr\n",
-   811						entry->res);
-   812					return ret;
-   813				}
-   814			} else {
-   815				pp->cfg0_io_shared = true;
-   816			}
-   817		}
-   818	
-   819		if (pci->num_ob_windows <= i)
-   820			dev_warn(pci->dev, "Ranges exceed outbound iATU size (%d)\n",
-   821				 pci->num_ob_windows);
-   822	
-   823		pp->msg_atu_index = i;
-   824	
-   825		i = 0;
-   826		resource_list_for_each_entry(entry, &pp->bridge->dma_ranges) {
-   827			if (resource_type(entry->res) != IORESOURCE_MEM)
-   828				continue;
-   829	
-   830			if (pci->num_ib_windows <= i)
-   831				break;
-   832	
-   833			ret = dw_pcie_prog_inbound_atu(pci, i++, PCIE_ATU_TYPE_MEM,
-   834						       entry->res->start,
-   835						       entry->res->start - entry->offset,
-   836						       resource_size(entry->res));
-   837			if (ret) {
-   838				dev_err(pci->dev, "Failed to set DMA range %pr\n",
-   839					entry->res);
-   840				return ret;
-   841			}
-   842		}
-   843	
-   844		if (pci->num_ib_windows <= i)
-   845			dev_warn(pci->dev, "Dma-ranges exceed inbound iATU size (%u)\n",
-   846				 pci->num_ib_windows);
-   847	
-   848		return 0;
-   849	}
-   850	
+[...]
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards,
+Liu Ying
+
