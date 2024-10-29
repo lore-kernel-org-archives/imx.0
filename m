@@ -1,123 +1,66 @@
-Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A951DD53C
-	for <imx@lists.linux.dev>; Tue, 29 Oct 2024 18:09:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB46F201003;
+	Tue, 29 Oct 2024 18:29:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730225370; cv=none; b=N1QFrvkAJjabiefcyna/PPfZ4KIT+7MggpSGpTa0bSKcNGqCjJ+66kVu1H2gYoeLGKid3RaCHd3pLOwPTsYsK5QM0O4Dop1avY+BZSwzOvpUzbgkOESNVpHBUNr9H0Dz1aVtbjC1eTQ9ivWMNiPO4itMicZWeFQ5rffcLwDgcvs=
+	t=1730226586; cv=none; b=f9IfrRcQaC1IGEeJNb/2m9/qY/nARzEe6aZ/Mu89wReYxBqd2a5bFeuMCLNw+oSz87SnwbQWl4CA+LZTWlnWsVG0+DTBeslMXRpc3edf9JOkk41R8V57KQ6LQ4uPfov1I0oBou+3XFR+UCEseRw99n8yiKOL6gfn5nq3iCqKl7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730225370; c=relaxed/simple;
-	bh=vw0Pt+medcj+GLfv1om7aoP7ESB7kx3zfNjJJ7hN2zo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zp7Jjnvd1KeruYXiivGRh6MHFi3DVEUtTS/iWK5XmvPEg/2qrzNmDu2V+3HfvhMbmILNKQrfhl9ShW825rLisPH7YXOJoYEBuDQ6W9hNw4ZtAoF0eNzBSu5mwYPY2SBtIAUJ+g6f/GIj/arQdo8G9HRzPsvbGKMONfbstpT2ZO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=OtcjIpzE; arc=none smtp.client-ip=161.97.139.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+	s=arc-20240116; t=1730226586; c=relaxed/simple;
+	bh=UCgYXyHDHZOpF0R5/uphJySyNxle9b54Ia2xXewkD34=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QQ/klnUNMKRFBfW6reWATVNRVqv1czc3Aowucc9MnvO+3HjiqUq5gv5Wz+OFHss5y6aO/Zt2XWYmJ77geFKBjLJ+ZuLmNiE/Emfv9YCgB3jmYkxFR/Exs53UBiaV26OS0bhQD2PdHEEq9p8bCBOWLiFvXsd9Ve+P2fXop8QDGUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jp4sGmz1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="OtcjIpzE"
-Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
-	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <andreas@kemnade.info>)
-	id 1t5qej-00AK1b-32
-	for imx@lists.linux.dev;
-	Tue, 29 Oct 2024 19:09:25 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=iT1KZstrKnsyqYo4dg3x0+KOMpIG9DHct4TKVU+Hs3Y=; b=OtcjIpzEOO5bIe4gAfLT5afCNt
-	8vvMDAm8BhZplOlA4E5itIHKdRjAhF95wte24BJT6A97atK3LXtUcgH+h7egt+YrexjOfKhEh+PbL
-	wDFJLiAo7RJKAIKUm32mfdkLNpKQmqee2ckHjJNcrQ946OZqMvgiOcLkGYY7zIAfu3yygi9+lRGt2
-	YEpMFibNW6QuQzMXWMwK0bejU1V/EG0rKbXmhruHQHDEu8lRDafJLVAxq+rbXE8jZMzcN9X88ti9J
-	RuhSK2FwjrnhDctFLQb9JaCFeEara1/zXkwqUsUT4O+rHwFm1UuFCK6B/89W6Lg41/M6kvsADya+H
-	KuqqEptw==;
-Date: Tue, 29 Oct 2024 19:09:19 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: shawnguo@kernel.org, marex@denx.de, a.fatoum@pengutronix.de,
- kernel@pengutronix.de, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, dri-devel@lists.freedesktop.org,
- Fabio Estevam <festevam@denx.de>
-Subject: Re: [PATCH v2 2/3] dt-bindings: lcdif: Expand the imx6sl/imx6sll
- fallbacks
-Message-ID: <20241029190919.4c615621@akair>
-In-Reply-To: <20241029120236.299040-2-festevam@gmail.com>
-References: <20241029120236.299040-1-festevam@gmail.com>
-	<20241029120236.299040-2-festevam@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jp4sGmz1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA5FC4CEE4;
+	Tue, 29 Oct 2024 18:29:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730226586;
+	bh=UCgYXyHDHZOpF0R5/uphJySyNxle9b54Ia2xXewkD34=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jp4sGmz1SNrfNmEKtpfI9Cw7nHUPYRkTBfI7Y6yZBLmKKwu0R5zPND37+UYPqRgPc
+	 fFMOZQ4+lBYw2LyvxPefLMkQmEvnQN9UUD2yaKjx6IeaQF2KN2dhOraV0yGDR1miXl
+	 YYdH7sCgOYHJXOFJCChfDzqqylJ7FCUcIuqRDXFCgrh3TwaCOGH2vknQiL1VhsnFNx
+	 wTp51+SLiymnnpNAnOes/1NtsoIgEyzThK75Nl+n/pBpQqyXA5lztLHBFCLnI/sQDj
+	 D82yT13hTG1vZvXtEqiKQXC31Hu/ecS8QLiiAPAs/zNtHcZ4Ku/5MxjykRc96wMRFs
+	 8vDUo8HlRszCQ==
+Date: Tue, 29 Oct 2024 11:29:44 -0700
+From: Namhyung Kim <namhyung@kernel.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: Frank.li@nxp.com, will@kernel.org, mark.rutland@arm.com,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, john.g.garry@oracle.com, james.clark@linaro.org,
+	mike.leach@linaro.org, leo.yan@linux.dev, peterz@infradead.org,
+	mingo@redhat.com, acme@kernel.org,
+	alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+	irogers@google.com, adrian.hunter@intel.com,
+	kan.liang@linux.intel.com, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-perf-users@vger.kernel.org
+Subject: Re: [PATCH 3/3] perf vendor events arm64: Add i.MX91 DDR Performance
+ Monitor metrics
+Message-ID: <ZyEpmC5yKBXR0JfN@google.com>
+References: <20240924061251.3387850-1-xu.yang_2@nxp.com>
+ <20240924061251.3387850-3-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240924061251.3387850-3-xu.yang_2@nxp.com>
 
-Am Tue, 29 Oct 2024 09:02:35 -0300
-schrieb Fabio Estevam <festevam@gmail.com>:
+On Tue, Sep 24, 2024 at 02:12:51PM +0800, Xu Yang wrote:
+> Add JSON metrics for i.MX91 DDR Performance Monitor.
+> 
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
-> From: Fabio Estevam <festevam@denx.de>
-> 
-> imx6sl.dtsi and imx6sll.dtsi have the following lcdif entries:
-> 
-> compatible = "fsl,imx6sl-lcdif", "fsl,imx28-lcdif";
-> 
-> This causes dt-schema warnings as the current binding only
-> allow 'fsl,imx6sx-lcdif' as fallback.
-> 
-> ['fsl,imx6sl-lcdif', 'fsl,imx28-lcdif'] is too long
-> ['fsl,imx6sll-lcdif', 'fsl,imx28-lcdif'] is too long
-> 
-> The imx6sx-lcdif programming model has more advanced features, such
-> as overlay plane and the CRC32 support than the imx28-lcdif IP.
-> 
-> Expand the imx6sl/imx6sll lcdif fallbacks to accept a less specific
-> fsl,imx28-lcdif fallback:
-> 
-> compatible = "fsl,imx6sl-lcdif", "fsl,imx6sx-lcdif",
-> "fsl,imx28-lcdif";
-> 
-> This helps keeping DT compatibility as well as using the more advanced
-> lcdif features found on imx6sl and imx6sll. 
-> 
-> Signed-off-by: Fabio Estevam <festevam@denx.de>
-> ---
-> Changes since v1:
-> - Newly introduced.
-> 
->  .../devicetree/bindings/display/fsl,lcdif.yaml     | 14
-> +++++++++++++- 1 file changed, 13 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml index
-> 836955de3bc9..08ce19638fbd 100644 ---
-> a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml +++
-> b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml @@ -32,11
-> +32,23 @@ properties:
->                - fsl,imx8mn-lcdif
->                - fsl,imx8mq-lcdif
->            - const: fsl,imx6sx-lcdif
-> +      - items:
-> +          - const: fsl,imx6sl-lcdif
-> +          - const: fsl,imx6sx-lcdif
-> +          - const: fsl,imx28-lcdif
-> +      - items:
-> +          - const: fsl,imx6sll-lcdif
-> +          - const: fsl,imx6sx-lcdif
-> +          - const: fsl,imx28-lcdif
-> +      - items:
-> +          - enum:
-> +              - fsl,imx6sl-lcdif
-> +              - fsl,imx6sll-lcdif
-> +          - const: fsl,imx28-lcdif
+Applied to perf-tools-next, thanks!
 
-What do we need this for? Either imx6sx-lcdif is a useful fallback
-compatible or not.  But not sometimes. Looking at the kernel driver: It
-is. So IMHO only the three element variants should be allowed.
-
-Regards,
-Andreas
+Best regards,
+Namhyung
