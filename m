@@ -1,16 +1,16 @@
 Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCE6204021
-	for <imx@lists.linux.dev>; Tue, 29 Oct 2024 08:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD9C20402B
+	for <imx@lists.linux.dev>; Tue, 29 Oct 2024 08:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730191317; cv=none; b=ParvWiOJNAjT7kiXV9V6QpOWAymY+XR//tBjFgoTsYPxSyOIaLCIUN2uFtiAr5iV0E9V6HHc+c7E/rQkCtR7/TEy48aBaw+d9ik/LQB1/H4sdDIGQuDmtO56vaOro8avFZr2HEFQs5H068alImf+5L/VPnyRVcnSZ1Gby42GRGI=
+	t=1730191452; cv=none; b=cHBkvXstbtHEEz+yfuDJBvXehjvV+hbiCAiqsBkZ+vfoJFm1RLdThVvop4kbsH4tXadx4pQnaFcwQ9pvqXl1KknqmyBwsnaTuOgnJrWdG41fhrHGrEZGHSeKN9jsvemyof1B9Euo1hUGw4xCqxkBS1XVkqabGm/hbxI3jqPBpDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730191317; c=relaxed/simple;
+	s=arc-20240116; t=1730191452; c=relaxed/simple;
 	bh=29GtuOb78Tq1qYNR/nE/cnVHgRQpd26VnE8XbAtvsAY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L5n9b2SVpnumXEeCQvqweNbx1Zj2HkWfoQJegAGVmXG0vUlE/t06PI3gGRPPbjniAbMIC9q4kzRE6oisUPS6MWCZW4K4nI+bnrWy8MvEmXLldBDz/Xi4XdUgvxsqH9nDWnmA0L4NYFZlS34p/+SkvZv/PQKlCVWXFxIYojYlN7Y=
+	 MIME-Version:Content-Type; b=gqD98pHu+bWM0t6bERaynPCRNMMReujCH3CoAdSydB7Y8B1JcMTvqsMDLg8uCoKHsTk2crHqVzOGj/5/oT9botZndS5EC2DB1I7kIEonjCFp9hI7R3Wg4uJJAh48kpBei8m9oCGqAVw77MCvdyUbNEKcJ2UcopWH5EH4BPrLDrI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=C8PH7V93; arc=none smtp.client-ip=161.97.139.27
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
@@ -20,9 +20,9 @@ Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
 	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <andreas@kemnade.info>)
-	id 1t5hnU-00AJKM-2e
+	id 1t5hpg-00AJKV-0H
 	for imx@lists.linux.dev;
-	Tue, 29 Oct 2024 09:41:52 +0100
+	Tue, 29 Oct 2024 09:44:08 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
@@ -33,7 +33,7 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	9UGEXv8I8JgXoDP8Bf/Zrom5MoisZ/iRJSIfZoFwauhEu2WhjwMcdPpDRhJu/D0pWBQAcH+Kqw8RX
 	8FaYwoKRFjv4uv4cIaJd4NoZ2rZD6+W6BKaJdpB5qf6LUGoYxilHQ2YT+yj+/Ga7ZYy4IJ77fJWEx
 	lRU3k4KQ==;
-Date: Tue, 29 Oct 2024 09:41:41 +0100
+Date: Tue, 29 Oct 2024 09:44:02 +0100
 From: Andreas Kemnade <andreas@kemnade.info>
 To: Matti Vaittinen <mazziesaccount@gmail.com>
 Cc: Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -44,11 +44,11 @@ Cc: Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
  <s.hauer@pengutronix.de>, Alexander Stein
  <alexander.stein@ew.tq-group.com>, imx@lists.linux.dev, sre@kernel.org
 Subject: Re: [PATCH v2 2/3] ARM: dts: imx: Add devicetree for Kobo Clara 2E
-Message-ID: <20241029094141.04540d91@akair>
+Message-ID: <20241029094402.382594c5@akair>
 In-Reply-To: <f2bb661d-8ef5-43d4-aece-c7fec01ff9fe@gmail.com>
 References: <20241024142206.411336-1-andreas@kemnade.info>
-	<20241024142206.411336-3-andreas@kemnade.info>
-	<f2bb661d-8ef5-43d4-aece-c7fec01ff9fe@gmail.com>
+ <20241024142206.411336-3-andreas@kemnade.info>
+ <f2bb661d-8ef5-43d4-aece-c7fec01ff9fe@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
