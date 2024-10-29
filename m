@@ -1,102 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680AB192D9E;
-	Tue, 29 Oct 2024 20:27:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29DC199FBB
+	for <imx@lists.linux.dev>; Tue, 29 Oct 2024 21:46:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730233649; cv=none; b=iOOf0psM/elaFE7XqCJmUjFhuvMEW+N8tKpiLNaUVe9/+jq3eYojMM++P8FoGOrl0uWH6cwRTQtu7yJrxXSfLrE2RnTo+5/8zX8PLLsYJEdXWNkzXXeRodPy8QK0iDDxgu8PHdok9UAUVSod9ZQdZzyGZ8SYLEzZJZWPDF/BC1Q=
+	t=1730238375; cv=none; b=sAPO3Y8XYOFjWsp7nSV2YhnhQmEDWfjKounlJ3kWj/JI58wBu0fC4xLfebLDlrj/gu7MtlGBiUbVedIHwRGVWFioZ/zKJ5uxT22WutpqitT1CcTAm0cBjCmiNGHzBXonstrNjLekysAirJOqoVqisQT+wzRRMUv4JH4or8IWy5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730233649; c=relaxed/simple;
-	bh=U4SnKlnxNPeXXDgnYqCkV6Hwn50RacK0HlNJIo7xwTg=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=ig5uSWcCIr94d70ESXJRivKA/J1NUQH0F8bpnTQM+1+kIqBzd03kSPOvQ9haqSG/04ydkk9wrDdeTlGupb0qGTuS/6qSDDIGYkVp1ygH9wggKBVS4effk9RYKA5zJD6j102xtxnWbcoHHrpCqoxW+IvSsp0rgLeR5V/467utHOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OZZrvhWt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730238375; c=relaxed/simple;
+	bh=2JblyV7WTsTnc5tXzfZ94G3EE4PGcp0Te58mEyBSswg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nQ6Sbgi37OLiyCIKho6/wlci8/ErRtxw7aeJMJ6SJnZfIfX0/zp+b3GZvrEk/f44FvFz8TQklt1ogyJpHKytexIoutbReCaaIo6adsBmOhzcbToP7TgeRRZxin1OoFKtOGA08hjw42WAcTqgPo7HdB6G79dLWYXwX9WbOXcAq0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EHqPyVh6; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OZZrvhWt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5940C4CEE4;
-	Tue, 29 Oct 2024 20:27:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730233649;
-	bh=U4SnKlnxNPeXXDgnYqCkV6Hwn50RacK0HlNJIo7xwTg=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=OZZrvhWt/ldqTuIpEVGFPwXGiKshjCdRgSAoP0HCu+0bcVhs5/D9la1N6VGCAFxDO
-	 54rc81Hot7Fqcro3JTALFNsKUWHqqnc+bUxoMXHYq+i6A12muILYbOKxaBXhSyNpC+
-	 Nodip9bi7BFYn2o2+nldWlmJ9cWz1re2A00Ia+44SlTRyFTcGBfEVMAkGKsuM3L+5j
-	 LuNr+eoE2vTDcAbOac4h8g1jSgbVc98o+jies1SFbNlLl/j4R79+erUdfe+/AQPJd2
-	 gJwoyFy1tyDMZ4uj5F64BSrZNxE2owyYa+kMtua55/csWatHZc8KdckzMLo6y4Qo8V
-	 YNitSfncSg29A==
-Date: Tue, 29 Oct 2024 15:27:27 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EHqPyVh6"
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2fb388e64b0so59072901fa.0
+        for <imx@lists.linux.dev>; Tue, 29 Oct 2024 14:46:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730238372; x=1730843172; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2JblyV7WTsTnc5tXzfZ94G3EE4PGcp0Te58mEyBSswg=;
+        b=EHqPyVh6JWZrbo6fgxeHUQ0RN7ms3onpwg5DuOKJ7Zj/XjuyMyHy/LCGxaShXqV1QK
+         2lNeArORhLANFfMcq+HTgNcvOioSk7z3dAI02oniK/aZuUhvlskfGCRj8SEk9QosAJl+
+         Gt88baWTy1btSOGzHLfim5wkzO7AKKl8FOUxy654qOI6eP5Eaua9hdINW8Z92xqB1mED
+         c7FewSZRfEsXtESpkU45Xdiv5/G47jztvZ4WSIOe5EqA67luYyhZChhI6HRCS/8PAB5r
+         ahKHFYeWU63V0d4ej8DscvdMErUVHMS+z0AdOo6RlcK/HwIy6LszUI3bnxX24I6cSqKr
+         rEjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730238372; x=1730843172;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2JblyV7WTsTnc5tXzfZ94G3EE4PGcp0Te58mEyBSswg=;
+        b=w94kF/IsYkWtdAeqHek3yn76q1M6x6EL6K1IOvKFUKq6xczahelKUvxyOokLl2poh5
+         n7NKJOOpVtAG4T2G8BvQrD8/u4pauYPliAySdRX9NObIuCY5YpYNa4DVuYwCL/dwv8km
+         HIkV79cDHLw4QoaalvThulfQ9cBPRxHCZuH1D54bLMyUl6QdZ7GpxzZwvkEDsm40cDpy
+         9Npzaq6c0NcZSvfnqb68iYFd31dQWZtbb4aP4SKbbGS0oS7luMEGcy6kmeSQeYwBUpB+
+         kQB1Ac8RdL+vkP3rqdVWXwaOl3ih83zPOKUqiiOswXW1xVGoi46MZJ+t+XZkH/3gJ8a/
+         6zbg==
+X-Forwarded-Encrypted: i=1; AJvYcCVcFbyEp8xECJR6qG2ZWhz4xHYu73/rXcARrU0waG3kCn1e8c7EEl92VpsN4lgW1plHk2I=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyyzv5T69lj5rOUK6w8opjZmE9GeXoo6XKRpjqHw92ejm7Og3TB
+	Qa9xR48wNxe9H684Q3CYihITAPb3IHWy61jYKjNBIPLIYQF7FW4R3PQ1pgsh90ZFZUA+Md52d6l
+	oqOlRmVPwhH1yxhpVCwvZqBlUuxI=
+X-Google-Smtp-Source: AGHT+IHi88pfTT/7FGL5cee/QnViHlH7hwmFEHz8ie9yk7UIpmVR+ZWO36ke5t/IiJD3HDIGyxxtDXcGFtsxJ7egax8=
+X-Received: by 2002:a2e:b8d1:0:b0:2fb:5786:251f with SMTP id
+ 38308e7fff4ca-2fd059e9c3amr6259081fa.37.1730238371622; Tue, 29 Oct 2024
+ 14:46:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: conor+dt@kernel.org, a.fatoum@pengutronix.de, andreas@kemnade.info, 
- imx@lists.linux.dev, Fabio Estevam <festevam@denx.de>, marex@denx.de, 
- linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
- kernel@pengutronix.de, shawnguo@kernel.org, dri-devel@lists.freedesktop.org, 
- krzk+dt@kernel.org
-In-Reply-To: <20241029191640.379315-1-festevam@gmail.com>
-References: <20241029191640.379315-1-festevam@gmail.com>
-Message-Id: <173023364718.1604322.9871635763168871763.robh@kernel.org>
-Subject: Re: [PATCH v3 1/3] dt-bindings: lcdif: Document a imx6sx-lcdif
- fallback
+References: <20241029191640.379315-1-festevam@gmail.com> <20241029191640.379315-2-festevam@gmail.com>
+ <94745526-055c-486e-aff1-ae178ae0f2a9@denx.de>
+In-Reply-To: <94745526-055c-486e-aff1-ae178ae0f2a9@denx.de>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Tue, 29 Oct 2024 18:45:59 -0300
+Message-ID: <CAOMZO5AVPCLsoWbtKDzN2j8rUvvZUQQG_RkuLoF4BnKQDD-QhQ@mail.gmail.com>
+Subject: Re: [PATCH v3 2/3] dt-bindings: lcdif: Expand the imx6sl/imx6sll fallbacks
+To: Marek Vasut <marex@denx.de>
+Cc: shawnguo@kernel.org, a.fatoum@pengutronix.de, andreas@kemnade.info, 
+	kernel@pengutronix.de, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, dri-devel@lists.freedesktop.org, 
+	Fabio Estevam <festevam@denx.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi Marek,
 
-On Tue, 29 Oct 2024 16:16:38 -0300, Fabio Estevam wrote:
-> From: Fabio Estevam <festevam@denx.de>
-> 
-> imx6sx.dtsi has the following lcdif entries:
-> 
-> compatible = "fsl,imx6sx-lcdif", "fsl,imx28-lcdif";
-> 
-> This causes the following dt-schema warning:
-> 
-> ['fsl,imx6sx-lcdif', 'fsl,imx28-lcdif'] is too long
-> 
-> To keep DT compatibility, document 'fsl,imx28-lcdif' as a possible
-> 'fsl,imx6sx-lcdif' fallback.
-> 
-> Signed-off-by: Fabio Estevam <festevam@denx.de>
-> ---
-> Changes since v2:
-> - Only document fsl,imx6sx-lcdif with a fallback.
-> 
->  Documentation/devicetree/bindings/display/fsl,lcdif.yaml | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
+On Tue, Oct 29, 2024 at 5:16=E2=80=AFPM Marek Vasut <marex@denx.de> wrote:
 
-My bot found errors running 'make dt_binding_check' on your patch:
+> So you wouldn't have to write three compatible strings for the 6sl/sll ,
+> but only two ? I.e. this:
+>
+> compatible =3D "fsl,imx6sl-lcdif", "fsl,imx28-lcdif";
+> compatible =3D "fsl,imx6sll-lcdif", "fsl,imx28-lcdif";
 
-yamllint warnings/errors:
+i.MX6SL and i.MX6SLL have a more advanced LCDIF version than the one on i.M=
+X28.
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/fsl,lcdif.example.dtb: display-controller@2220000: compatible: 'oneOf' conditional failed, one must be fixed:
-	['fsl,imx6sx-lcdif'] is too short
-	'fsl,imx6sx-lcdif' is not one of ['fsl,imx23-lcdif', 'fsl,imx28-lcdif', 'fsl,imx8mp-lcdif', 'fsl,imx93-lcdif']
-	'fsl,imx6sx-lcdif' is not one of ['fsl,imx6sl-lcdif', 'fsl,imx6sll-lcdif', 'fsl,imx6ul-lcdif', 'fsl,imx7d-lcdif', 'fsl,imx8mm-lcdif', 'fsl,imx8mn-lcdif', 'fsl,imx8mq-lcdif']
-	from schema $id: http://devicetree.org/schemas/display/fsl,lcdif.yaml#
+The LCDIF block on i.MX6SL/i.MX6SLL has both overlay and CRC support,
+corresponding to the MXSFB_V6 of the mxsfb_drv driver.
 
-doc reference errors (make refcheckdocs):
+That's why it is better to have the compatibles as:
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20241029191640.379315-1-festevam@gmail.com
+ compatible =3D "fsl,imx6sl-lcdif", "fsl,imx6sx-lcdif", "fsl,imx28-lcdif";
+ compatible =3D "fsl,imx6sll-lcdif", "fsl,imx6sx-lcdif", "fsl,imx28-lcdif";
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
+This way they can match with a more specific fsl,imx6sx-lcdif entry.
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
+If an OS does not implement the fsl,imx6sx-lcdif match, it can still
+match with fsl,imx28-lcdif as a fallback, keeping the DT
+compatibility.
 
-pip3 install dtschema --upgrade
+I missed updating the binding example. I will wait for more feedback
+before sending a v4.
 
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+Thanks
