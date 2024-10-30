@@ -1,253 +1,94 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A251E3DCB
-	for <imx@lists.linux.dev>; Wed, 30 Oct 2024 11:05:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859711E572F
+	for <imx@lists.linux.dev>; Wed, 30 Oct 2024 11:53:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730286318; cv=none; b=LiFDS0jBK9ALK2qx/yK8zRFrODBEatsWxudIpm1cZvAOQwZRup3ndjoEOaZd0v3ZyGMhM7tP3vH9KgJbwuRMlvIZmCDN4He9EWKlR5NcESulWlZkWF31UT/wnyKFu1Q6Hs9MbiYAuESJR1T6Sq26gDNPd4IiI3mFTSGfCEPRUU0=
+	t=1730289229; cv=none; b=Ct+DgAssog5DSim3QBJy4Io0YTCZmKSmCn/fqpmxegiS04fYy6voKKOGFXGMAvtF+Ub3kgPiIJcP2qZpTYCz3oesM5/D3xRdJOO0mAa4t27qeaTXQW8s8rabZT5qKpe761slmBqJyhkBefBmVIt8AFjS3PyAM1ezEKIj01n8Wh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730286318; c=relaxed/simple;
-	bh=HmwbZv87fwP6B/AtqGYTaZXvxMZBtQZ2EyfJ/RUu7uo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MLol5jiRgKJYB17olLW8hRf7FPs5QA0JzLT0ZIlGpHQW/l1Vwv1csMEdXXffvOnIsP26mTicASO9gRKhueaqRVPgjGEPNJpdOLKCEbKurY5kiIYdQodSh6+m0sSgloNTg+dWsGC14h/lqqN9yEwE2cMto97QRy+DS3gFS9di1Lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=cx6upxl2; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=pZF8oJmY reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1730289229; c=relaxed/simple;
+	bh=mVDCoFWka0cDCNzavVR/DBPbCdODScXLc1aExcFNkvA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ps91u4ehIZ47OUcS4vYZcgxFFrfn7FyJwsm2Yw6T47l9mEqDPxT+g8ITqKx3USG1EbfLy432SnPQjiItgB3NLar03I1WhZrRqmVfmFJgudk7iNIUOiANQUOWhDlyzUeo6+dChb78WKu/ebEq73dS/6CgMHVl0tsqqf2j3cdYUsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=QKgiv0fm; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="cx6upxl2";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="pZF8oJmY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1730286314; x=1761822314;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=W0Q0NHRej2coWnmexPznhuNwYovVzP2Rt/Szk2eDAPg=;
-  b=cx6upxl2sM56FW65tLbhvDyh1zX0Yxh2tNNUEhLzm3XISAQcCOZ5ukzj
-   w+YBSawDu/alNDdcWBgd6XsmzO2ZN33Y91hHfkY9rspFlLEoxd+tKmOVC
-   lkpiaH3QcI6tBSGNBMRRdjeaGrL2kvfGxJ6aFLiiX9lmHAB5ttPPZ8XbO
-   Rhnj/AK7Qh7SJnM4dqZVuKa/OhqlWqmOF1b/7Z+QXYfq3z7MwR46ap067
-   4euQ42xGZnjBew1/6rQWcICIqNwJ5FdYAV4qV53daaCxRJR4eAch79JNt
-   YKpPxL/ilqcMpQKiIjB5cc+cXkmrbXzO9vb4y1/Ln4f8cTY7dTM7TugGn
-   Q==;
-X-CSE-ConnectionGUID: LpTo4fn5RuqVpbEi9f2Gfg==
-X-CSE-MsgGUID: WcNd3tbQQCGYpjlYkklPDw==
-X-IronPort-AV: E=Sophos;i="6.11,245,1725314400"; 
-   d="scan'208";a="39761269"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 30 Oct 2024 12:05:12 +0100
-X-CheckPoint: {672212E8-E-86C05612-CA75E1CA}
-X-MAIL-CPID: 7D52A97F582B8EE47DF0C31390848B71_1
-X-Control-Analysis: str=0001.0A682F1E.672212E8.007C,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D24E8169682;
-	Wed, 30 Oct 2024 12:05:04 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1730286307;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=W0Q0NHRej2coWnmexPznhuNwYovVzP2Rt/Szk2eDAPg=;
-	b=pZF8oJmYsgoYihk9OobiizHKp5cvTF5FYVU9STIJjs14/bk/4KRTuXYWQSwZ0kHzNGSlZP
-	7GZSX0ZPvYFsv7TkrF2IH58VOkvEfwZWfvpG9ACqdY2jH7PYhN6ZY62X70NaN9GAGQwZ6J
-	lm2Oke6KjYJz6wBomtbo/sXAH9DecuVvaF2SXk3wYhbemwDxdG/XqT2g9EMfxTRNq39wHE
-	tHtdK04zEUx5U/R2xZJcS070U9AWHY4zHH0r6y/f1IAB0m27luiDaX+QianowEiybXxk6e
-	8pwNVfgdxu8aso8Y+jSLGGy1WhKXz3FaQgDO1PaLKIWgSrOUuF54OhA6f0OhMw==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: wahrenst@gmx.net, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, alice.guo@oss.nxp.com
-Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, "alice.guo" <alice.guo@nxp.com>
-Subject: Re: [PATCH v3] soc: imx: Add SoC device register for i.MX9
-Date: Wed, 30 Oct 2024 12:05:04 +0100
-Message-ID: <2964906.e9J7NaK4W3@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20241030091336.3901440-1-alice.guo@oss.nxp.com>
-References: <20241030091336.3901440-1-alice.guo@oss.nxp.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="QKgiv0fm"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 59EE940E0208;
+	Wed, 30 Oct 2024 11:53:45 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id dcQiH4xAIOwM; Wed, 30 Oct 2024 11:53:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1730289219; bh=nyIL7XvIq62okOAaDeM08lcSaEjVO1a3J5nnJHbF0Y4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QKgiv0fmSCIbUe4yE0/0g/qnL0gZE80cQUYWz9p6g26bzNaES0jOowIKXsWMBoo4E
+	 MgH0ZmWT6Ybcp114Cq6Y8KRrApMweqo5FLJ1izO0xznQY9WGMv3o7xmt4aKGQbI3n/
+	 IK9p4+keQPFwNZc6UmI5bgWmpxWXWspwHA0uYhCSTLR4CTEQx+YGex0G7pN14tH8lV
+	 QnQpqRfkmZVn/MgXJJczr2UvvAl0CeuL4FXX4lb3D3lnYGnYG8sp3dwsYs/Lrxk4qi
+	 yWOd1mC39xxWPrKiqsE4zxhVljsE2401dsOH01dT9BIdUa1KBuWflumVuu/vZpW9QP
+	 iQHpM7vKre5aTgi0AFIustFsud/neJKoi5lRlO4fhDIpPQBUPYc+F1amw7D2DBU14K
+	 RvfTk4J9RfD2xKJXBciVjRLRGmt3MPA2hPOudyYzrzBlZyoy5BjVUj/4aM6oBNQsuB
+	 osXvx0Gen/wMHvPvd4MfIT8Er1ZEp53kClJU1KtMGEpB8GqbliS0KPKVQmuHtLhcar
+	 DVpXt2dn/v7UNenNj0n8rXB1Z1US15Wvu7V3vGCkvlG76gSgXtPfnTrGLPDgTkQzty
+	 HqPCrEGN2vU4EW42TLy7odCismejrOitF5zgzNPru3q2naZmXzSyflF18MY8PhJBje
+	 SInFGyTJUFape6xG3MILzVXA=
+Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id AA81A40E0191;
+	Wed, 30 Oct 2024 11:53:29 +0000 (UTC)
+Date: Wed, 30 Oct 2024 12:53:28 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Tony Luck <tony.luck@intel.com>, James Morse <james.morse@arm.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Robert Richter <rric@kernel.org>, linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>,
+	imx@lists.linux.dev, York Sun <york.sun@nxp.com>
+Subject: Re: [PATCH v2] EDAC: MAINTAINERS: change FSL DDR EDAC maintainer to
+ Frank Li
+Message-ID: <20241030115328.GDZyIeOEwKGi586acR@fat_crate.local>
+References: <20241003193348.102234-1-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241003193348.102234-1-krzysztof.kozlowski@linaro.org>
 
-Am Mittwoch, 30. Oktober 2024, 10:13:36 CET schrieb alice.guo@oss.nxp.com:
-> From: "alice.guo" <alice.guo@nxp.com>
->=20
-> i.MX9 SoCs have SoC ID, SoC revision number and chip unique identifier
-> which are provided by the corresponding ARM trusted firmware API. This
-> patch intends to use SMC call to obtain these information and then
-> register i.MX9 SoC as a device.
->=20
-> Signed-off-by: alice.guo <alice.guo@nxp.com>
-
-I was able to successfully this on two boards:
-
-$ grep . /sys/bus/soc/devices/soc0/* 2> /dev/null=20
-/sys/bus/soc/devices/soc0/family:Freescale i.MX
-/sys/bus/soc/devices/soc0/machine:TQ-Systems i.MX93 TQMa93xxLA/TQMa93xxCA o=
-n MBa93xxCA starter kit
-/sys/bus/soc/devices/soc0/revision:1.1
-/sys/bus/soc/devices/soc0/serial_number:3d0f41f05242fc17baca88b84febf6de
-/sys/bus/soc/devices/soc0/soc_id:i.MX93
-
-$ grep . /sys/bus/soc/devices/soc0/* 2> /dev/null=20
-/sys/bus/soc/devices/soc0/family:Freescale i.MX
-/sys/bus/soc/devices/soc0/machine:TQ-Systems i.MX95 TQMa95xxSA on MB-SMARC-2
-/sys/bus/soc/devices/soc0/revision:1.1
-/sys/bus/soc/devices/soc0/serial_number:64955bc2d946b9c3f11984a9522b2822
-/sys/bus/soc/devices/soc0/soc_id:i.MX95
-
-Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-
-Thanks
-Alexander
+On Thu, Oct 03, 2024 at 09:33:48PM +0200, Krzysztof Kozlowski wrote:
+> Last email from York Sun is from 2019, so move him to Credits.  Frank Li
+> volounteered to keep maintaining the driver.
+> 
+> Suggested-by: Borislav Petkov <bp@alien8.de>
+> Cc: Frank Li <Frank.li@nxp.com>
+> Cc: York Sun <york.sun@nxp.com>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> 
 > ---
->=20
-> Changes for v2:
->  - refine error log print
-> Changes for v3:
->  - return -EINVAL when arm_smccc_smc failed
->  - fix the build warning caused by pr_err("%s: SMC failed: %d\n", __func_=
-_, res.a0);
->  - drop the pr_err in imx9_soc_init
->  - free the memory in the reverse order of allocation
->  - use of_match_node instead of of_machine_is_compatible
->=20
->  drivers/soc/imx/Makefile   |   2 +-
->  drivers/soc/imx/soc-imx9.c | 106 +++++++++++++++++++++++++++++++++++++
->  2 files changed, 107 insertions(+), 1 deletion(-)
->  create mode 100644 drivers/soc/imx/soc-imx9.c
->=20
-> diff --git a/drivers/soc/imx/Makefile b/drivers/soc/imx/Makefile
-> index 3ad321ca608a..ca6a5fa1618f 100644
-> --- a/drivers/soc/imx/Makefile
-> +++ b/drivers/soc/imx/Makefile
-> @@ -3,4 +3,4 @@ ifeq ($(CONFIG_ARM),y)
->  obj-$(CONFIG_ARCH_MXC) +=3D soc-imx.o
->  endif
->  obj-$(CONFIG_SOC_IMX8M) +=3D soc-imx8m.o
-> -obj-$(CONFIG_SOC_IMX9) +=3D imx93-src.o
-> +obj-$(CONFIG_SOC_IMX9) +=3D imx93-src.o soc-imx9.o
-> diff --git a/drivers/soc/imx/soc-imx9.c b/drivers/soc/imx/soc-imx9.c
-> new file mode 100644
-> index 000000000000..823395584533
-> --- /dev/null
-> +++ b/drivers/soc/imx/soc-imx9.c
-> @@ -0,0 +1,106 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Copyright 2024 NXP
-> + */
-> +
-> +#include <linux/arm-smccc.h>
-> +#include <linux/init.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +#include <linux/slab.h>
-> +#include <linux/sys_soc.h>
-> +
-> +#define IMX_SIP_GET_SOC_INFO	0xc2000006
-> +#define SOC_ID(x)		(((x) & 0xFFFF) >> 8)
-> +#define SOC_REV_MAJOR(x)	((((x) >> 28) & 0xF) - 0x9)
-> +#define SOC_REV_MINOR(x)	(((x) >> 24) & 0xF)
-> +
-> +static int imx9_soc_device_register(void)
-> +{
-> +	struct soc_device_attribute *attr;
-> +	struct arm_smccc_res res;
-> +	struct soc_device *sdev;
-> +	u32 soc_id, rev_major, rev_minor;
-> +	u64 uid127_64, uid63_0;
-> +	int err;
-> +
-> +	attr =3D kzalloc(sizeof(*attr), GFP_KERNEL);
-> +	if (!attr)
-> +		return -ENOMEM;
-> +
-> +	err =3D of_property_read_string(of_root, "model", &attr->machine);
-> +	if (err) {
-> +		pr_err("%s: missing model property: %d\n", __func__, err);
-> +		goto attr;
-> +	}
-> +
-> +	attr->family =3D kasprintf(GFP_KERNEL, "Freescale i.MX");
-> +
-> +	/*
-> +	 * Retrieve the soc id, rev & uid info:
-> +	 * res.a1[31:16]: soc revision;
-> +	 * res.a1[15:0]: soc id;
-> +	 * res.a2: uid[127:64];
-> +	 * res.a3: uid[63:0];
-> +	 */
-> +	arm_smccc_smc(IMX_SIP_GET_SOC_INFO, 0, 0, 0, 0, 0, 0, 0, &res);
-> +	if (res.a0 !=3D SMCCC_RET_SUCCESS) {
-> +		pr_err("%s: SMC failed: 0x%lx\n", __func__, res.a0);
-> +		err =3D -EINVAL;
-> +		goto family;
-> +	}
-> +
-> +	soc_id =3D SOC_ID(res.a1);
-> +	rev_major =3D SOC_REV_MAJOR(res.a1);
-> +	rev_minor =3D SOC_REV_MINOR(res.a1);
-> +
-> +	attr->soc_id =3D kasprintf(GFP_KERNEL, "i.MX%2x", soc_id);
-> +	attr->revision =3D kasprintf(GFP_KERNEL, "%d.%d", rev_major, rev_minor);
-> +
-> +	uid127_64 =3D res.a2;
-> +	uid63_0 =3D res.a3;
-> +	attr->serial_number =3D kasprintf(GFP_KERNEL, "%016llx%016llx", uid127_=
-64, uid63_0);
-> +
-> +	sdev =3D soc_device_register(attr);
-> +	if (IS_ERR(sdev)) {
-> +		err =3D PTR_ERR(sdev);
-> +		pr_err("%s failed to register SoC as a device: %d\n", __func__, err);
-> +		goto serial_number;
-> +	}
-> +
-> +	return 0;
-> +
-> +serial_number:
-> +	kfree(attr->serial_number);
-> +	kfree(attr->revision);
-> +	kfree(attr->soc_id);
-> +family:
-> +	kfree(attr->family);
-> +attr:
-> +	kfree(attr);
-> +	return err;
-> +}
-> +
-> +static const struct of_device_id imx9_soc_match[] =3D {
-> +	{ .compatible =3D "fsl,imx93", },
-> +	{ .compatible =3D "fsl,imx95", },
-> +	{ }
-> +};
-> +
-> +static int __init imx9_soc_init(void)
-> +{
-> +	int ret;
-> +
-> +	/* No match means it is not an i.MX 9 series SoC, do nothing. */
-> +	if (!of_match_node(imx9_soc_match, of_root))
-> +		return 0;
-> +
-> +	ret =3D imx9_soc_device_register();
-> +
-> +	return ret;
-> +}
-> +device_initcall(imx9_soc_init);
-> +
-> +MODULE_AUTHOR("NXP");
-> +MODULE_DESCRIPTION("NXP i.MX9 SoC");
-> +MODULE_LICENSE("GPL");
->=20
+> 
+> Changesi in v2:
+> 1. Switch to Frank Li, do not orphan the driver.
+> ---
+>  CREDITS     | 4 ++++
+>  MAINTAINERS | 3 ++-
+>  2 files changed, 6 insertions(+), 1 deletion(-)
 
+Applied, thanks.
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+-- 
+Regards/Gruss,
+    Boris.
 
-
+https://people.kernel.org/tglx/notes-about-netiquette
