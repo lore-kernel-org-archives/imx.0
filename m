@@ -1,38 +1,38 @@
 Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87EBE21832A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E65218329
 	for <imx@lists.linux.dev>; Wed, 30 Oct 2024 23:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730330905; cv=none; b=uDztbyAWCxukadwEt0NjeFI/QPPNdUS3DpaNq8N8blfVSRwHloUx4nezQB/m1obIf9wm3v6SB6L22hm4BowbesPJtLlZ0SsAiHgpThMKL9SfYNAW2uoTOx0sTZz6ci/dIpxwTAWBs1dU+MOxOR+vpIupcfmpqRI6nqxpAWKi/CY=
+	t=1730330905; cv=none; b=np/yiQwC6rifks36wRPdbDM9o9a9NslC6lu5OZ1Cp9YazfVg+e4gHxf7l+s6v9i1HdXNL2u6EO+qzN5HAHjO3IGrSbBFXpx5mqDtF273gsrwxUgadPxAQaEqHCwJT19I/5+h+QXpNGluSeFqsgeYVV8dAVCuUtBtAxxB395rfLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1730330905; c=relaxed/simple;
-	bh=j2WxG1gi9sX9Q9XHaunLYPDXuZFPxo2eTPeWaKuZNcw=;
+	bh=lSSkp5xhn1ep7DpC4QCQhnlkJVwxLQXovx0RxkamEbY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=c1ldKQjDqV6fIq/vuewNHisGeh0F83uI24IHlLXSMerXefhTZbhFPg6gC1ppzBTJ3elfHm5sRCzXKRSuyxsW/dXlH1y1xYEW+dK1SsO9R18dMU3CCoZ1CEy+0jtfmKWq8g/2Z7isjy+Q0yhp32vFWxEXO8yTjlXqWJInztZ2/ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=MFOqAO6X; arc=none smtp.client-ip=161.97.139.27
+	 MIME-Version; b=HRfJPI0Zc9tLR7Kyh1fHq+baoc/asFPWQ6CyECqNXC1Tb5g0teMn4BJdUghr0Gfo2tcY0ytDTMipkvvK5XNL1+F1fhDNOGQOO/hombtTuOa9X0VaJCKO7dudhOQfnqZPodzshIemL4aQqDIO4pPWU4vHOxnDcGT5/yVq3YIMEaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=MKmUtxoe; arc=none smtp.client-ip=161.97.139.27
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="MFOqAO6X"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="MKmUtxoe"
 Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
 	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <andreas@kemnade.info>)
-	id 1t6I6p-00AMKw-2a
+	id 1t6I6p-00AMKv-2U
 	for imx@lists.linux.dev;
 	Thu, 31 Oct 2024 00:28:15 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=A1dLRRt6Gpz+f3YNGF2cRhz0EDeBb4t+Te4s+RjcUeE=; b=MFOqAO6XqjGyvEm7AbuJN82usY
-	sWvcCd1Q6neva+KTQ1AiEfgOtBadaU+TllYnrDqwmsK/nhylFD2DzvtTq1r2ImPIMKs3KOQshyNIh
-	28ixTccW9GNKQ9PN5/Imb+fwC6Ct8mxF2136WwQtkRwR2hqOuUXsZ3gsFVibPO+xGcQpH2rte8AK5
-	wLPf2UYlPvpI0RqQ94DeuSV6nh5V+M8GxZZ3z8mCykGcHwwpxTtolbCJ0coBHnjlz2NJmWRSPKf8s
-	BfS32TcZKku51OVq4cpkYSd3zCi8kRSv1P46WHxKejRqlOnK1shgWMwu5bBRAzP+j0y1LchZFKouF
-	6d1xJcvQ==;
+	bh=FXyL3DypPFSd8TW3PTO+e+7t9NOqRV3fsU3dmjBNp60=; b=MKmUtxoe5Z2q52+0mEeOw3eGF5
+	6QCc1rW8UPEIamWzpuROmb3mf6Q3sZYoUo3kaC6UBLnI8BVkjuff5oIrMIsCuLFqa/+GxLg00L4mL
+	yBxltGbL7c2uHihNu4QiH9MXTD76hglYTAaPwooqe3BI2QwxYLk27NnlVnJ02jWtXg8NxwTQAa9B4
+	cXEPqRLgDnvD95BwnSH+CfDjyNuF7D5oP74hoon7V8HGkbvj8DWm5+rbJsqlLapyvwIE0KPFYIQiS
+	cM7WFjfQPlt6mhhhlFlqQqGA7wQ+lLjN7CpyLXx7jzCzRXMesk9acc8jVkAQab0RbE0/AjbNW9LLz
+	JEH3A0Ug==;
 From: Andreas Kemnade <andreas@kemnade.info>
 To: Conor Dooley <conor+dt@kernel.org>,
 	imx@lists.linux.dev,
@@ -47,10 +47,11 @@ To: Conor Dooley <conor+dt@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Alexander Stein <alexander.stein@ew.tq-group.com>,
 	Shawn Guo <shawnguo@kernel.org>
-Cc: Andreas Kemnade <andreas@kemnade.info>
-Subject: [PATCH v3 3/3] ARM: imx_v6_v7_defconfig: Enable drivers for Kobo Clara 2E
-Date: Thu, 31 Oct 2024 00:27:46 +0100
-Message-Id: <20241030232746.2644502-4-andreas@kemnade.info>
+Cc: Andreas Kemnade <andreas@kemnade.info>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH v3 1/3] dt-bindings: arm: fsl: add compatible strings for Kobo Clara 2E
+Date: Thu, 31 Oct 2024 00:27:44 +0100
+Message-Id: <20241030232746.2644502-2-andreas@kemnade.info>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241030232746.2644502-1-andreas@kemnade.info>
 References: <20241030232746.2644502-1-andreas@kemnade.info>
@@ -62,33 +63,34 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Enable drivers used on Kobo Clara 2E
+Adds compatible strings for the Kobo Clara 2E eBook reader.
+There are two variants differing in the EPD PMIC used.
 
 Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 ---
- arch/arm/configs/imx_v6_v7_defconfig | 2 ++
- 1 file changed, 2 insertions(+)
+ Documentation/devicetree/bindings/arm/fsl.yaml | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/arm/configs/imx_v6_v7_defconfig b/arch/arm/configs/imx_v6_v7_defconfig
-index 333ef55476a30..0beecdde55f58 100644
---- a/arch/arm/configs/imx_v6_v7_defconfig
-+++ b/arch/arm/configs/imx_v6_v7_defconfig
-@@ -68,6 +68,7 @@ CONFIG_BT=y
- CONFIG_BT_BNEP=m
- CONFIG_BT_HCIUART=y
- CONFIG_BT_HCIUART_LL=y
-+CONFIG_BT_NXPUART=m
- CONFIG_CFG80211=y
- CONFIG_CFG80211_WEXT=y
- CONFIG_MAC80211=y
-@@ -253,6 +254,7 @@ CONFIG_MFD_ROHM_BD71828=y
- CONFIG_REGULATOR_FIXED_VOLTAGE=y
- CONFIG_REGULATOR_ANATOP=y
- CONFIG_REGULATOR_BD71815=y
-+CONFIG_REGULATOR_BD71828=y
- CONFIG_REGULATOR_DA9052=y
- CONFIG_REGULATOR_DA9062=y
- CONFIG_REGULATOR_DA9063=y
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index b39a7e031177e..a78903076269b 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -620,6 +620,14 @@ properties:
+               - kobo,librah2o
+           - const: fsl,imx6sll
+ 
++      - description: i.MX6SLL Kobo Clara 2e Rev. A/B
++        items:
++          - enum:
++              - kobo,clara2e-a
++              - kobo,clara2e-b
++          - const: kobo,clara2e
++          - const: fsl,imx6sll
++
+       - description: i.MX6SX based Boards
+         items:
+           - enum:
 -- 
 2.39.5
 
