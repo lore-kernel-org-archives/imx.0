@@ -1,689 +1,184 @@
-Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11011047.outbound.protection.outlook.com [40.107.74.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD31F218335
-	for <imx@lists.linux.dev>; Wed, 30 Oct 2024 23:28:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730330906; cv=none; b=teIu1Bqtyty7wJBF0y0l3avLZi1WSbaK5Mj4rZh+23kgJwagXE91WE+1cODM2UyuBv1scNjp8wW3LjKsSsXUhHaHr3kBt9LkX+V7ec5R2QLCZdXH2DerPPlvUYvs26kZV6qmkNvp0p/3+31ZFnHBMrHCBBo35TcLvXuFv8MXDko=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730330906; c=relaxed/simple;
-	bh=1EFPN0h0RYWagxWmIAMurwmO0d3DAI4C5nIx85EP/18=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=H5zzE0Gb9BEGMoiJn433hVh38Bc+976AWXTGYZEx++UbFwzi8FLYPfdxzE/rmR5XeNhU2xNrBC1sI234e4us8ADKWQz4bnVy6N5jFMTSjgfHIYSRwOtu6N7LCTQtrwdbhC/bKHPevYSifTnNyycDaVA481qoz7OVWF4U1lhne2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=N2fZV3Jt; arc=none smtp.client-ip=161.97.139.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9082E1E2835
+	for <imx@lists.linux.dev>; Wed, 30 Oct 2024 23:57:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730332643; cv=fail; b=qvsKaLsw+6ftQPBTtEs9uYECzkwA7ec8rO3kUzswqLqcFNVj5jLElUoLiyjsvjC+/4h4c4Gh72B1KejpfvNPfFzEWaCs3QqyGb80xi87JkIdGxVu121JSYYzdhL8yxATD4AqJTvrNSYsY4sbrndbgFbI/+QjPwujYmdvwPPepOY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730332643; c=relaxed/simple;
+	bh=tRAqIlmnqopPfN9MoXpK709PloSDAAo7niYRySdRAbc=;
+	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=amZB7XpSk5pi7MySXbfXSgNepN4ppYg5qF7RGTqjl4Z1JeaY/jj0nj2Op07VCJXT0DMt1XiqnSHl8zI8w1T4Ad/keklw+EWDlt2zapNitarkCkU5sbvz6OpZlBw3bNb8Y/aIcHP+Wi81stmE073P2PoglzUrKaq2qrV0hOtjgsw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=n2sxbZUp; arc=fail smtp.client-ip=40.107.74.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="N2fZV3Jt"
-Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
-	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <andreas@kemnade.info>)
-	id 1t6I6p-00AMKx-2T
-	for imx@lists.linux.dev;
-	Thu, 31 Oct 2024 00:28:15 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=SQoy8Fllcs7SdUYNd0Zvdn0Epo+q7ZejwtPQm9QAd8o=; b=N2fZV3JtBc2KT+pblFYcyLJc9v
-	MnRNYDb0tH9I8PdO0TAodYUkqUfA2uGJs/p+5Hznrmrmhf/WdQra4qyE2v1Q+Oa2YkFw1yqICpYBo
-	gOZtQeDX3xwuON06/byMJjPNu7kjkU7DZT8KUGmMYlPq3JZx3HLdtMVw2droe5kQwa4tM+0F67FrN
-	2s7e4Sek3rMLMFUWZDG9hfrB2kds1TRhKeApAcmqZ6R4qChJzI7lT4Hu0hyq+IwZuFeG/HW7kSvVS
-	80Gqj6R0/ZtnGVl+olJiinTkYhmjYOq57KU5sFF7KDX6+eNdYuX2ddwr8ZeNkC2xrIp/Ceqreh6EZ
-	f7dS0G5g==;
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Conor Dooley <conor+dt@kernel.org>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	linux-kernel@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="n2sxbZUp"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sRbMl9rF52eCAzSVdwwPZak0mBBx/p4MhKjfc7Mnu7MbW8W8O+CoHXmiGa/5c9gT0PBTNriqk5YUjenU1KmAPWHhNvJFUkS+I54B+RAuIWOIDDIe8WmdpTzjoMMTSvom6BrXL8ZZUaLzscBrZqbeF+0HXkJuiKIxCfh2TV6bQzu+DZBDBsWymu2PvIpFZjOac8E9jR7QFhn8878aV/5p/QH84sFrVO0mNlIr4DupfB5SSzeZ8zCSsKJeC6N2ryOGkWIG+KHF8ZpsSqlf0D9FIei5P81mNvyx6qcvEllP7CRP2X05JNGyWS4husua/AOWQoZXgdG7Kw9O/x2x7CNQ7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tRAqIlmnqopPfN9MoXpK709PloSDAAo7niYRySdRAbc=;
+ b=r2yEOst7/kg8/Xaklo44GoaON9axEeLdy89zQN4K7v5xw2OPyrWIfCqH6ueFCiSXyvaXYNpMukmLX5Q4apbIWSVjsvSUxtJMPeWS2D1dlkRqlu9/vyxiNSNDTCJKZzePKbfjT+WySni04wKmWHpYmpWugpg5j77BNDrNv5O0rlzaek7BaS9BPNMyY4O5wwCAEdsjaxwwVZQ5qxEvi0xtA7HyP101He6BuIwaoZ4iDZpf33TYXoLFlW7FhQwN/3pbnzTkDyB6QPnEorqI97938B7/GyPb8ulRY4lDuG4RE24d4ckZnGNnhP7L0w261xYQKrIAuGMwHqZYcrx3Jxxxxg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tRAqIlmnqopPfN9MoXpK709PloSDAAo7niYRySdRAbc=;
+ b=n2sxbZUp6RTJdMTTf+7AS+hMR963jB2wWRdHoSVJWA+1vfx65tT5sn9A3vEO4ii+texSJLLYipqzMcm547Yxiny/PSZ36te5SvvsW2BUOaU/PV5bh+q35WuUDyRiCPSPxaYc/Y9Loi6DUIBcYmiqwZjWq4kxSv92cZFN3BbdO9Q=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11) by TY3PR01MB10156.jpnprd01.prod.outlook.com
+ (2603:1096:400:1db::7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.20; Wed, 30 Oct
+ 2024 23:57:17 +0000
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::c568:1028:2fd1:6e11]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::c568:1028:2fd1:6e11%6]) with mapi id 15.20.8114.015; Wed, 30 Oct 2024
+ 23:57:17 +0000
+Message-ID: <87ttct2lgt.wl-kuninori.morimoto.gx@renesas.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+To: Jerome Brunet <jbrunet@baylibre.com>
+Cc: Jaroslav Kysela <perex@perex.cz>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Liam Girdwood
+ <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Neil Armstrong
+ <neil.armstrong@linaro.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	devicetree@vger.kernel.org,
-	Rob Herring <robh@kernel.org>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Cc: Andreas Kemnade <andreas@kemnade.info>
-Subject: [PATCH v3 2/3] ARM: dts: imx: Add devicetree for Kobo Clara 2E
-Date: Thu, 31 Oct 2024 00:27:45 +0100
-Message-Id: <20241030232746.2644502-3-andreas@kemnade.info>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241030232746.2644502-1-andreas@kemnade.info>
-References: <20241030232746.2644502-1-andreas@kemnade.info>
+	Shawn Guo <shawnguo@kernel.org>,
+	Shengjiu Wang
+ <shengjiu.wang@gmail.com>,
+	Takashi Iwai <tiwai@suse.com>,
+	Vinod Koul
+ <vkoul@kernel.org>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	alsa-devel@alsa-project.org,
+	imx@lists.linux.dev,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-sound@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	patches@opensource.cirrus.com
+Subject: Re: [PATCH 3/8] ASoC: meson: switch to use rtd->id from rtd->num
+In-Reply-To: <1ja5eudix4.fsf@starbuckisacylon.baylibre.com>
+References: <871q06cmsl.wl-kuninori.morimoto.gx@renesas.com>
+	<87wmhyb85l.wl-kuninori.morimoto.gx@renesas.com>
+	<1ja5eudix4.fsf@starbuckisacylon.baylibre.com>
+User-Agent: Wanderlust/2.15.9 Emacs/29.3 Mule/6.0
+Content-Type: text/plain; charset=US-ASCII
+Date: Wed, 30 Oct 2024 23:57:16 +0000
+X-ClientProxiedBy: TYWPR01CA0034.jpnprd01.prod.outlook.com
+ (2603:1096:400:aa::21) To TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|TY3PR01MB10156:EE_
+X-MS-Office365-Filtering-Correlation-Id: 21cf39fe-27bc-460a-62e2-08dcf93e9576
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|52116014|366016|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?XSEXtiBxC99FU9bP9dDDw3u1bn+AMg5ibxvIsZKvM0U2rpDr3ifmwA5RRqOZ?=
+ =?us-ascii?Q?KeCfg4ZGHQhlDzgPqGX8MtPb87bWoVMvOXlX5Onifl1VgoSNJTeAyR7R1KWz?=
+ =?us-ascii?Q?Fw8q3by5JGvPvQ3pk2zZLMNsHxPhi4jzhXHCRHbN0EkiuTe129iUD1UcQKOQ?=
+ =?us-ascii?Q?TqpwYTHsR51ouCBQNB5JNGN9FhZR5VShzRxjGVGeVABuxXET2mPZebqxQG3Z?=
+ =?us-ascii?Q?vySs0AnLMaRmZnqMIxzNcoDLkZDmm3kO/8BLQD8cdZU5IuyLjEKpBN2naQEK?=
+ =?us-ascii?Q?o0BCFCTMZDtvgUx1kpPu4LG1wP3V2zg1mYlcOOT4SCPRHnDHLpkqfVpjdsQv?=
+ =?us-ascii?Q?klP6waV6qB3SWR/E7a0GttVYSixxSVhSp+KDEJSIf1FkajyubX5APyeOdsxq?=
+ =?us-ascii?Q?8uGjWwXrIWhyK+HLSMhEjP4TO7kEPSevCkmyP+FT3PTPkHjuFputz2oiHJaw?=
+ =?us-ascii?Q?NnD9rb6jGYi8l07oyoVSjCt1stRjjMlD4F04XdnqKTAM6NeRXnPS9Pkq1cuU?=
+ =?us-ascii?Q?sPSmXJ/UVxmOlNm2Ky0X3z50wiaUzBkeq/Stds3//CMj5z83/A1IvhMsVAok?=
+ =?us-ascii?Q?MpMA1Wmd7liJOANTVr9Hd3jABY+OnR91M0WdJ2yyQCXsU906vIY6Occm1y7m?=
+ =?us-ascii?Q?R74D/qXyYuk72J7htTC8+w4Q9WDVht+rbiFjKLvbz6vUVshzzYlPpM4HinEI?=
+ =?us-ascii?Q?poaCn8vcx7+t92Xk4yt20kBUKTYNPvg3QLh8HQEhvdpVvucckaJT9xvB18bP?=
+ =?us-ascii?Q?PgKaEWRwkcfkLB3ckl16F4lvkhPJB1bxpiWZxW9RN7xWdj4UqVT098kwZAO0?=
+ =?us-ascii?Q?+E8QXMns8MJsqlknl4RQjCLsF84pstt34wZvGb/lSXqJEa0b0KkZH4QBCWN4?=
+ =?us-ascii?Q?fL44bt37Z8V6lnZ7QtXvvLnBeM7tA22D+x8vpQ6uRf1GzIdbI5Ss+MEm3NBG?=
+ =?us-ascii?Q?bIFth+dmwVZF6KX9bFc2LwiZSYczH4lBG3ZdJWwWYPjdTA+lsGkGKqQPM3vV?=
+ =?us-ascii?Q?zhQLnCLiPsyUrvmUZqAFQGFKZDZRJXPmcL4swl7mF3Lc+ZxUJNmvJcsEZhel?=
+ =?us-ascii?Q?DNCb+sXYECDiPjCURbcgv9Jnieqjl+rS1c2xkTrlF9wuKl6geeDFiW+qu95R?=
+ =?us-ascii?Q?t5UjvIWWmqKYkfVJj+7M0fa2o5Wv4EjyhupQ6yTjq4gQ9B1edWT829t54dN1?=
+ =?us-ascii?Q?PGRCIWS8EiD7zrdTEPOPTpDcxXr8c2lPgPTIdY+SbKSbUobeHZ5o4kJaONL5?=
+ =?us-ascii?Q?0w4AAt2EhR84l9+OZ7qI2037ilrswdy4wAEAZDw5w28nlfDeyNPOwbxmBCDS?=
+ =?us-ascii?Q?BcjyZN+oeFSAD/xgb/Pxuiw6g5X4/Dxu4aYEquSwScXHi7gV/uDGGXtV7cnI?=
+ =?us-ascii?Q?tR3hBgE=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?2BTfJN2F7n1JgexQwidyeQYy1UODCIHvqNP6HnJji0OeUw412NabEuNvVx9+?=
+ =?us-ascii?Q?xOb8H6C/Qcu75J9tL9T9k4qB9zNuBE5tN8luxlOGekRpvFvAHzPzrMRzt1+I?=
+ =?us-ascii?Q?BbNuPyH9jPbZkfxqrEKVglHf0Lkm/rSEu7V0jNcuUFMkvpGFy/ZoLNBf232X?=
+ =?us-ascii?Q?7BtBu0aXQIyM1H+I7koc4gZ6iREwaMd2rKwKIxEGAsGfgOmQxImg1/An6ocK?=
+ =?us-ascii?Q?z13pPKCSB1ury/0k/vcqkTH5eznff/XipbWzHued260gBNB4t1lXTTe4sCMs?=
+ =?us-ascii?Q?i4LX86fzc7eSsyBT6jOzBTgk4XG1t+uDgSRK+iEj+IH7Fink8dMd4ySrDrV6?=
+ =?us-ascii?Q?s2pJAkmyQTT49SnJefhQyez/vmeBoZkwZ5DIvWSgWaV9WEIlOgvBVyeb8OvX?=
+ =?us-ascii?Q?2tCxeAq7DSHGxDTD5Lrj5ZjEZ2HVMWRkdPUWVx4/VRvNyymCb+xIMI9o/yCb?=
+ =?us-ascii?Q?SI6Aemn4tSWQQdpwe9QScgm9snCo2dHGnB+OwpT/CSUsNhn1TDONBsJrzsBl?=
+ =?us-ascii?Q?KDptrYGe9lHv5yuXLwtHWw27PZqmFji+oXVNr+rv6eC0qhXzzU9qj+gM+Rel?=
+ =?us-ascii?Q?19gNzkyO0/4QDBR1Qvl+xLJyESYNIX8YUSgRfzl8StKn+EGN3jxyJU/ZxGSQ?=
+ =?us-ascii?Q?4BwvY5S8B+fm6oDtioIntf84q529Zl+iJGmlRI3yjy/E9TUQ3eOxN6VPUhVd?=
+ =?us-ascii?Q?05u2rk4V2J5nktP8BmnbCGmL7qqp3JKeui1TDBK6Dqi8OxdyCvAjnemMOn+P?=
+ =?us-ascii?Q?XyDEeJF7e4mzltmIRKsIyWDyii3FKkGHh2k7GmCoVmlKhT9meCCuoyq7AbYu?=
+ =?us-ascii?Q?tiwN3Jgwli5wz54pAwZVX1oy/V/ecJlmY2yZ2csZsnyDFJxiIcnlc+EAHB+f?=
+ =?us-ascii?Q?PkPebCZxBlbZBZ36BuKkpEop4wXb4/3nsag3SEuImYKc660bc7kxI6pzFT26?=
+ =?us-ascii?Q?Zm/8zz2Esx8RXOZ8JtSRR/NC5wCKW+eiScINmFJDC/YHX6nykiPnVGLX9VGo?=
+ =?us-ascii?Q?gDAUJjanNAQe770bCUcmSIL0Y2Q+QFjfuUFBEsT6NeblxFipISF0hqkoEvPv?=
+ =?us-ascii?Q?J4U2d5X6O0PyFlcPe7uZ2fM2jK3o8rQPQHHNqqbLg7daJeECTX1Zgg3KjrjE?=
+ =?us-ascii?Q?hsBwGyf+liBzw+6o3RvTJi24z40XBX1jjRbYfDBNXXhb++D1RRkpnkVcb54x?=
+ =?us-ascii?Q?395UejlJKNwfP6sXwHksin8udSgm3RtODTqI0ihIzsQmG5n+AOzSfgDObsxQ?=
+ =?us-ascii?Q?xkyHCLT3zCfbfVBc5sk+jpwOxaGmkwYybtP0y5dCPgYdZ7p0+ezvRdDIOe1Z?=
+ =?us-ascii?Q?cRynyS2h8jk5pzCkJh3cYu1Qd3dAFoT0xVzHKfP7uA1zMf7RjpS4S4kNWP6O?=
+ =?us-ascii?Q?AqLBUZlAR0zXy8si/vCEqcopA3HBmV6vblEmr4NI84cCqzGzckXdnW5QBWxx?=
+ =?us-ascii?Q?7wDC39ByC5u6/FVXPZPsnUZLzWtLPtC2co/vBgnyIvyYl1+hocx50Dnf5ZMG?=
+ =?us-ascii?Q?KcJkbJDZubWUmb+2ohNiq7YQ4M665i2a7SmbfkLbfXpbnl8JnXIbdG43o/XS?=
+ =?us-ascii?Q?FfJxSTy0jDp8c72tH4KQjnHX2XLQa7TErkgGHFBQ37yuunQ5HKJzkG4fHJHE?=
+ =?us-ascii?Q?dFmKCD4S8I9dDzsUp0VIwzY=3D?=
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21cf39fe-27bc-460a-62e2-08dcf93e9576
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2024 23:57:17.2397
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LyzMdoc1d6d1UOIMAfj0Ta1hI32YZZgzLRUQ1DpjJAHN0sMPgTptbiN3aBEF9sLIylmL2NYNkmWO6RzgXXhg/z3n3rkSKaWZ140pY+vON566K0Oc0JpGnbrzkW9Nb4Nj
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY3PR01MB10156
 
-Adds a devicetree for the Kobo Clara 2E Ebook reader. It is based
-on boards marked with "37NB-E60K2M+4A2" or "37NB-E60K2M+4B0". It is
-equipped with an i.MX6SLL SoC.
 
-Expected to work:
-  - Buttons
-  - Wifi
-  - Bluetooth
-    (if Wifi is initialized first, driver does not handle regulators
-     yet)
-  - LED
-  - uSD
-  - USB
-  - RTC
-  - Touchscreen
+Hi Jerome
 
-Add human-readable comments for devices without mainlined driver and
-binding. Such comments can e.g. be help to find testers if someone
-starts to work on the missing drivers.
+Sorry for my late responce
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> Just one comment: I understand why you have split this into multiple
+> patches, I suppose it will help with the review but I wonder if it
+> wouldn't be better to squash it all into a single change before
+> applying ? To avoid exposing the intermediate state. It might be
+> confusing too. The change would not be that big actually.
+
+Thank you for suggesting, but I don't want to squash them,
+because it makes backport difficult for LTS and/or BSP people.
+I'm always trying to create patch as much as small piece which can
+easy to backport.
+
+
+Thank you for your help !!
+
+Best regards
 ---
- arch/arm/boot/dts/nxp/imx/Makefile            |   2 +
- .../dts/nxp/imx/imx6sll-kobo-clara2e-a.dts    |  23 +
- .../dts/nxp/imx/imx6sll-kobo-clara2e-b.dts    |  23 +
- .../nxp/imx/imx6sll-kobo-clara2e-common.dtsi  | 514 ++++++++++++++++++
- 4 files changed, 562 insertions(+)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-common.dtsi
-
-diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-index 92e291603ea13..58db45352b666 100644
---- a/arch/arm/boot/dts/nxp/imx/Makefile
-+++ b/arch/arm/boot/dts/nxp/imx/Makefile
-@@ -290,6 +290,8 @@ dtb-$(CONFIG_SOC_IMX6SL) += \
- dtb-$(CONFIG_SOC_IMX6SLL) += \
- 	imx6sll-evk.dtb \
- 	imx6sll-kobo-clarahd.dtb \
-+	imx6sll-kobo-clara2e-a.dtb \
-+	imx6sll-kobo-clara2e-b.dtb \
- 	imx6sll-kobo-librah2o.dtb
- dtb-$(CONFIG_SOC_IMX6SX) += \
- 	imx6sx-nitrogen6sx.dtb \
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts
-new file mode 100644
-index 0000000000000..33756d6de7aa0
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts
-@@ -0,0 +1,23 @@
-+// SPDX-License-Identifier: (GPL-2.0)
-+/*
-+ * Device tree for the Kobo Clara 2E rev A ebook reader
-+ *
-+ * Name on mainboard is: 37NB-E60K2M+4A2
-+ * Serials start with: E60K2M (a number also seen in
-+ * vendor kernel sources)
-+ *
-+ * Copyright 2024 Andreas Kemnade
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx6sll-kobo-clara2e-common.dtsi"
-+
-+/ {
-+	model = "Kobo Clara 2E";
-+	compatible = "kobo,clara2e-b", "kobo,clara2e", "fsl,imx6sll";
-+};
-+
-+&i2c2 {
-+	/* EPD PMIC SY7636 at 0x62 */
-+};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dts b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dts
-new file mode 100644
-index 0000000000000..f81aeacf51420
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dts
-@@ -0,0 +1,23 @@
-+// SPDX-License-Identifier: (GPL-2.0)
-+/*
-+ * Device tree for the Kobo Clara 2E rev B ebook reader
-+ *
-+ * Name on mainboard is: 37NB-E60K2M+4B0
-+ * Serials start with: E60K2M (a number also seen in
-+ * vendor kernel sources)
-+ *
-+ * Copyright 2024 Andreas Kemnade
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx6sll-kobo-clara2e-common.dtsi"
-+
-+/ {
-+	model = "Kobo Clara 2E";
-+	compatible = "kobo,clara2e-b", "kobo,clara2e", "fsl,imx6sll";
-+};
-+
-+&i2c2 {
-+	/* EPD PMIC JD9930 at 0x18 */
-+};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-common.dtsi
-new file mode 100644
-index 0000000000000..c344cd8c2b839
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-common.dtsi
-@@ -0,0 +1,514 @@
-+// SPDX-License-Identifier: (GPL-2.0)
-+/*
-+ * Common part for Kobo Clara 2e device tree
-+ * Copyright 2024 Andreas Kemnade
-+ */
-+
-+/dts-v1/;
-+
-+#include <dt-bindings/input/input.h>
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/leds/common.h>
-+#include "imx6sll.dtsi"
-+
-+/ {
-+	aliases {
-+		mmc0 = &usdhc2;
-+		mmc1 = &usdhc3;
-+	};
-+
-+	chosen {
-+		stdout-path = &uart1;
-+	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_gpio_keys>;
-+
-+		key-cover {
-+			label = "Cover";
-+			gpios = <&gpio4 23 GPIO_ACTIVE_LOW>;
-+			linux,code = <SW_LID>;
-+			linux,input-type = <EV_SW>;
-+			wakeup-source;
-+		};
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_led>;
-+
-+		led {
-+			color = <LED_COLOR_ID_WHITE>;
-+			function = LED_FUNCTION_POWER;
-+			gpios = <&gpio4 17 GPIO_ACTIVE_LOW>;
-+			linux,default-trigger = "timer";
-+		};
-+	};
-+
-+	memory@80000000 {
-+		device_type = "memory";
-+		reg = <0x80000000 0x20000000>;
-+	};
-+
-+	reg_wifi: regulator-wifi {
-+		compatible = "regulator-fixed";
-+		regulator-name = "SD3_SPWR";
-+		regulator-min-microvolt = <3000000>;
-+		regulator-max-microvolt = <3000000>;
-+		gpio = <&gpio4 29 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+	};
-+};
-+
-+&clks {
-+	assigned-clocks = <&clks IMX6SLL_CLK_PLL4_AUDIO_DIV>;
-+	assigned-clock-rates = <393216000>;
-+};
-+
-+&cpu0 {
-+	arm-supply = <&buck1>;
-+	soc-supply = <&buck2>;
-+};
-+
-+&i2c1 {
-+	pinctrl-names = "default","sleep";
-+	pinctrl-0 = <&pinctrl_i2c1>;
-+	pinctrl-1 = <&pinctrl_i2c1_sleep>;
-+	clock-frequency = <100000>;
-+	status = "okay";
-+
-+	/* backlight aw99703 at 0x36 */
-+};
-+
-+&i2c2 {
-+	pinctrl-names = "default","sleep";
-+	pinctrl-0 = <&pinctrl_i2c2>;
-+	pinctrl-1 = <&pinctrl_i2c2_sleep>;
-+	clock-frequency = <100000>;
-+	status = "okay";
-+
-+	/* backlight aw99703 at 0x36 */
-+
-+	touchscreen@38 {
-+		compatible = "focaltech,ft5426";
-+		reg = <0x38>;
-+		pinctrl-names = "default", "suspend";
-+		pinctrl-0 = <&pinctrl_touch_gpio>;
-+		pinctrl-1 = <&pinctrl_touch_gpio_sleep>;
-+		interrupt-parent = <&gpio4>;
-+		interrupts = <24 IRQ_TYPE_EDGE_FALLING>;
-+		reset-gpios = <&gpio4 18 GPIO_ACTIVE_LOW>;
-+		touchscreen-size-x = <1072>;
-+		touchscreen-size-y = <1448>;
-+		touchscreen-swapped-x-y;
-+	};
-+};
-+
-+&i2c3 {
-+	/* Bus seems to be in bad state after boot, allow full recovery */
-+	pinctrl-names = "default", "gpio";
-+	pinctrl-0 = <&pinctrl_i2c3>;
-+	pinctrl-1 = <&pinctrl_i2c3_gpio>;
-+	sda-gpios = <&gpio3 22 GPIO_ACTIVE_HIGH>;
-+	scl-gpios = <&gpio3 21 GPIO_ACTIVE_HIGH>;
-+	clock-frequency = <100000>;
-+	status = "okay";
-+
-+	pmic@4b {
-+		compatible = "rohm,bd71879", "rohm,bd71828";
-+		reg = <0x4b>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_bd71828>;
-+
-+		interrupt-parent = <&gpio4>;
-+		interrupts = <19 IRQ_TYPE_LEVEL_LOW>;
-+		system-power-controller;
-+
-+		clocks = <&clks 0>;
-+		#clock-cells = <0>;
-+		clock-output-names = "bd71828-32k-out";
-+
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+		gpio-reserved-ranges = <0 1>, <2 1>;
-+
-+		/* charge sense resistor is 30 milli-ohm */
-+
-+		regulators {
-+			LDO1 {
-+				name = "LDO1";
-+				regulator-name = "ldo1";
-+				regulator-min-microvolt = <800000>;
-+				regulator-max-microvolt = <3300000>;
-+			};
-+
-+			LDO2 {
-+				name = "LDO2";
-+				regulator-name = "ldo2";
-+				regulator-min-microvolt = <800000>;
-+				regulator-max-microvolt = <3300000>;
-+			};
-+
-+			LDO3 {
-+				name = "LDO3";
-+				regulator-name = "ldo3";
-+				regulator-min-microvolt = <800000>;
-+				regulator-max-microvolt = <3300000>;
-+			};
-+
-+			ldo4: LDO4 {
-+				name = "LDO4";
-+				regulator-name = "ldo4";
-+				regulator-always-on;
-+				regulator-min-microvolt = <1100000>;
-+				regulator-max-microvolt = <1100000>;
-+			};
-+
-+			LDO5 {
-+				name = "LDO5";
-+				regulator-name = "ldo5";
-+				regulator-always-on;
-+				regulator-min-microvolt = <800000>;
-+				regulator-max-microvolt = <3300000>;
-+			};
-+
-+			LDO6 {
-+				name = "LDO6";
-+				regulator-name = "ldo6";
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <1800000>;
-+			};
-+
-+			LDO7 {
-+				name = "LDO7";
-+				regulator-name = "ldo7";
-+				regulator-always-on;
-+				regulator-min-microvolt = <800000>;
-+				regulator-max-microvolt = <3300000>;
-+				regulator-boot-on;
-+			};
-+
-+			buck1: BUCK1 {
-+				name = "BUCK1";
-+				regulator-name = "buck1";
-+				regulator-always-on;
-+				regulator-min-microvolt = <500000>;
-+				regulator-max-microvolt = <1400000>;
-+				regulator-boot-on;
-+			};
-+
-+			buck2: BUCK2 {
-+				name = "BUCK2";
-+				regulator-name = "buck2";
-+				regulator-always-on;
-+				regulator-min-microvolt = <500000>;
-+				regulator-max-microvolt = <2000000>;
-+				regulator-boot-on;
-+			};
-+
-+			BUCK3 {
-+				name = "BUCK3";
-+				regulator-name = "buck3";
-+				regulator-always-on;
-+				regulator-min-microvolt = <1200000>;
-+				regulator-max-microvolt = <1800000>;
-+				regulator-boot-on;
-+			};
-+
-+			BUCK4 {
-+				name = "BUCK4";
-+				regulator-name = "buck4";
-+				regulator-always-on;
-+				regulator-min-microvolt = <1000000>;
-+				regulator-max-microvolt = <1200000>;
-+				regulator-boot-on;
-+			};
-+
-+			BUCK5 {
-+				name = "BUCK5";
-+				regulator-name = "buck5";
-+				regulator-always-on;
-+				regulator-min-microvolt = <2500000>;
-+				regulator-max-microvolt = <3300000>;
-+				regulator-boot-on;
-+			};
-+
-+			BUCK6 {
-+				name = "BUCK6";
-+				regulator-name = "buck6";
-+				regulator-min-microvolt = <500000>;
-+				regulator-max-microvolt = <2000000>;
-+			};
-+
-+			BUCK7 {
-+				name = "BUCK7";
-+				regulator-name = "buck7";
-+				regulator-min-microvolt = <500000>;
-+				regulator-max-microvolt = <2000000>;
-+			};
-+		};
-+	};
-+};
-+
-+&iomuxc {
-+	pinctrl_touch_gpio: touch-gpiogrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_GPIO4_IO24__GPIO4_IO24	0x17059 /* TP_INT */
-+			MX6SLL_PAD_GPIO4_IO18__GPIO4_IO18	0x10059 /* TP_RST */
-+		>;
-+	};
-+
-+	pinctrl_touch_gpio_sleep: touch-gpio-sleepgrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_GPIO4_IO24__GPIO4_IO24	0x10059 /* TP_INT */
-+			MX6SLL_PAD_GPIO4_IO18__GPIO4_IO18	0x10059 /* TP_RST */
-+		>;
-+	};
-+
-+	pinctrl_gpio_keys: gpio-keysgrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_GPIO4_IO25__GPIO4_IO25	0x17059	/* PWR_SW */
-+			MX6SLL_PAD_GPIO4_IO23__GPIO4_IO23	0x17059	/* HALL_EN */
-+		>;
-+	};
-+
-+	pinctrl_i2c1: i2c1grp {
-+		fsl,pins = <
-+			MX6SLL_PAD_I2C1_SCL__I2C1_SCL	0x4001f8b1
-+			MX6SLL_PAD_I2C1_SDA__I2C1_SDA	0x4001f8b1
-+		>;
-+	};
-+
-+	pinctrl_i2c1_sleep: i2c1-sleepgrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_I2C1_SCL__I2C1_SCL	0x400108b1
-+			MX6SLL_PAD_I2C1_SDA__I2C1_SDA	0x400108b1
-+		>;
-+	};
-+
-+	pinctrl_i2c2: i2c2grp {
-+		fsl,pins = <
-+			MX6SLL_PAD_I2C2_SCL__I2C2_SCL	0x4001f8b1
-+			MX6SLL_PAD_I2C2_SDA__I2C2_SDA	0x4001f8b1
-+		>;
-+	};
-+
-+	pinctrl_i2c2_sleep: i2c2-sleepgrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_I2C2_SCL__I2C2_SCL	0x400108b1
-+			MX6SLL_PAD_I2C2_SDA__I2C2_SDA	0x400108b1
-+		>;
-+	};
-+
-+	pinctrl_i2c3: i2c3grp {
-+		fsl,pins = <
-+			MX6SLL_PAD_REF_CLK_24M__I2C3_SCL 0x4001f8b1
-+			MX6SLL_PAD_REF_CLK_32K__I2C3_SDA 0x4001f8b1
-+		>;
-+	};
-+
-+	pinctrl_i2c3_gpio: i2c3-gpiogrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_REF_CLK_24M__GPIO3_IO21 0x4001f8b1
-+			MX6SLL_PAD_REF_CLK_32K__GPIO3_IO22 0x4001f8b1
-+		>;
-+	};
-+
-+	pinctrl_led: ledgrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_GPIO4_IO17__GPIO4_IO17 0x10059
-+		>;
-+	};
-+
-+	pinctrl_uart1: uart1grp {
-+		fsl,pins = <
-+			MX6SLL_PAD_UART1_TXD__UART1_DCE_TX 0x1b0b1
-+			MX6SLL_PAD_UART1_RXD__UART1_DCE_RX 0x1b0b1
-+		>;
-+	};
-+
-+	pinctrl_uart2: uart2grp {
-+		fsl,pins = <
-+			MX6SLL_PAD_LCD_ENABLE__UART2_DCE_RX	0x41b0b1
-+			MX6SLL_PAD_LCD_HSYNC__UART2_DCE_TX	0x41b0b1
-+			MX6SLL_PAD_LCD_VSYNC__UART2_DCE_RTS	0x41b0b1
-+			MX6SLL_PAD_LCD_RESET__UART2_DCE_CTS	0x41b0b1
-+		>;
-+	};
-+
-+	pinctrl_uart2_sleep: uart2grp-sleep {
-+		fsl,pins = <
-+			MX6SLL_PAD_LCD_ENABLE__GPIO2_IO16	0x10059
-+			MX6SLL_PAD_LCD_HSYNC__GPIO2_IO17	0x10059
-+			MX6SLL_PAD_LCD_VSYNC__GPIO2_IO18	0x10059
-+			MX6SLL_PAD_LCD_RESET__GPIO2_IO19	0x10059
-+		>;
-+	};
-+
-+	pinctrl_usbotg1: usbotg1grp {
-+		fsl,pins = <
-+			MX6SLL_PAD_EPDC_PWR_COM__USB_OTG1_ID 0x17059
-+		>;
-+	};
-+
-+	pinctrl_usdhc2: usdhc2grp {
-+		fsl,pins = <
-+			MX6SLL_PAD_SD2_CMD__SD2_CMD		0x17059
-+			MX6SLL_PAD_SD2_CLK__SD2_CLK		0x13059
-+			MX6SLL_PAD_SD2_DATA0__SD2_DATA0		0x17059
-+			MX6SLL_PAD_SD2_DATA1__SD2_DATA1		0x17059
-+			MX6SLL_PAD_SD2_DATA2__SD2_DATA2		0x17059
-+			MX6SLL_PAD_SD2_DATA3__SD2_DATA3		0x17059
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_SD2_CMD__SD2_CMD		0x170b9
-+			MX6SLL_PAD_SD2_CLK__SD2_CLK		0x130b9
-+			MX6SLL_PAD_SD2_DATA0__SD2_DATA0		0x170b9
-+			MX6SLL_PAD_SD2_DATA1__SD2_DATA1		0x170b9
-+			MX6SLL_PAD_SD2_DATA2__SD2_DATA2		0x170b9
-+			MX6SLL_PAD_SD2_DATA3__SD2_DATA3		0x170b9
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_SD2_CMD__SD2_CMD		0x170f9
-+			MX6SLL_PAD_SD2_CLK__SD2_CLK		0x130f9
-+			MX6SLL_PAD_SD2_DATA0__SD2_DATA0		0x170f9
-+			MX6SLL_PAD_SD2_DATA1__SD2_DATA1		0x170f9
-+			MX6SLL_PAD_SD2_DATA2__SD2_DATA2		0x170f9
-+			MX6SLL_PAD_SD2_DATA3__SD2_DATA3		0x170f9
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_sleep: usdhc2-sleepgrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_SD2_CMD__GPIO5_IO04		0x100f9
-+			MX6SLL_PAD_SD2_CLK__GPIO5_IO05		0x100f9
-+			MX6SLL_PAD_SD2_DATA0__GPIO5_IO01	0x100f9
-+			MX6SLL_PAD_SD2_DATA1__GPIO4_IO30	0x100f9
-+			MX6SLL_PAD_SD2_DATA2__GPIO5_IO03	0x100f9
-+			MX6SLL_PAD_SD2_DATA3__GPIO4_IO28	0x100f9
-+		>;
-+	};
-+
-+	pinctrl_usdhc3: usdhc3grp {
-+		fsl,pins = <
-+			MX6SLL_PAD_SD3_CMD__SD3_CMD	0x11059
-+			MX6SLL_PAD_SD3_CLK__SD3_CLK	0x11059
-+			MX6SLL_PAD_SD3_DATA0__SD3_DATA0	0x11059
-+			MX6SLL_PAD_SD3_DATA1__SD3_DATA1	0x11059
-+			MX6SLL_PAD_SD3_DATA2__SD3_DATA2	0x11059
-+			MX6SLL_PAD_SD3_DATA3__SD3_DATA3	0x11059
-+		>;
-+	};
-+
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhzgrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_SD3_CMD__SD3_CMD	0x170b9
-+			MX6SLL_PAD_SD3_CLK__SD3_CLK	0x170b9
-+			MX6SLL_PAD_SD3_DATA0__SD3_DATA0	0x170b9
-+			MX6SLL_PAD_SD3_DATA1__SD3_DATA1	0x170b9
-+			MX6SLL_PAD_SD3_DATA2__SD3_DATA2	0x170b9
-+			MX6SLL_PAD_SD3_DATA3__SD3_DATA3	0x170b9
-+		>;
-+	};
-+
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhzgrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_SD3_CMD__SD3_CMD	0x170f9
-+			MX6SLL_PAD_SD3_CLK__SD3_CLK	0x170f9
-+			MX6SLL_PAD_SD3_DATA0__SD3_DATA0	0x170f9
-+			MX6SLL_PAD_SD3_DATA1__SD3_DATA1	0x170f9
-+			MX6SLL_PAD_SD3_DATA2__SD3_DATA2	0x170f9
-+			MX6SLL_PAD_SD3_DATA3__SD3_DATA3	0x170f9
-+		>;
-+	};
-+
-+	pinctrl_usdhc3_sleep: usdhc3-sleepgrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_SD3_CMD__GPIO5_IO21	0x100c1
-+			MX6SLL_PAD_SD3_CLK__GPIO5_IO18	0x100c1
-+			MX6SLL_PAD_SD3_DATA0__GPIO5_IO19	0x100c1
-+			MX6SLL_PAD_SD3_DATA1__GPIO5_IO20	0x100c1
-+			MX6SLL_PAD_SD3_DATA2__GPIO5_IO16	0x100c1
-+			MX6SLL_PAD_SD3_DATA3__GPIO5_IO17	0x100c1
-+		>;
-+	};
-+
-+	pinctrl_wifi_power: wifi-powergrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_SD2_DATA6__GPIO4_IO29	0x10059
-+		>;
-+	};
-+
-+	pinctrl_bd71828: bd71828-gpiogrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_KEY_COL0__GPIO3_IO24		0x1b8b1
-+			MX6SLL_PAD_GPIO4_IO19__GPIO4_IO19	0x1b8b1
-+		>;
-+	};
-+};
-+
-+&snvs_rtc {
-+	/* we are using the rtc in the pmic, not disabled in imx6sll.dtsi */
-+	status = "disabled";
-+};
-+
-+&uart1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart1>;
-+	status = "okay";
-+};
-+
-+&uart2 {
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-0 = <&pinctrl_uart2>;
-+	pinctrl-1 = <&pinctrl_uart2_sleep>;
-+	status = "okay";
-+
-+	/* requires LDO4 + power enable gpio */
-+	bluetooth {
-+		compatible = "nxp,88w8987-bt";
-+		fw-init-baudrate = <1500000>;
-+	};
-+};
-+
-+&usbotg1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_usbotg1>;
-+	disable-over-current;
-+	srp-disable;
-+	hnp-disable;
-+	adp-disable;
-+	status = "okay";
-+};
-+
-+&usdhc2 {
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz","sleep";
-+	pinctrl-0 = <&pinctrl_usdhc2>;
-+	pinctrl-1 = <&pinctrl_usdhc2_100mhz>;
-+	pinctrl-2 = <&pinctrl_usdhc2_200mhz>;
-+	pinctrl-3 = <&pinctrl_usdhc2_sleep>;
-+	non-removable;
-+	status = "okay";
-+};
-+
-+&usdhc3 {
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz","sleep";
-+	pinctrl-0 = <&pinctrl_usdhc3>;
-+	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
-+	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
-+	pinctrl-3 = <&pinctrl_usdhc3_sleep>;
-+	/* card requires also ldo4 */
-+	vmmc-supply = <&reg_wifi>;
-+	cap-power-off-card;
-+	non-removable;
-+	status = "okay";
-+};
--- 
-2.39.5
-
+Kuninori Morimoto
