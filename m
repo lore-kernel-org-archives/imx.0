@@ -1,217 +1,253 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3DA1E32A4
-	for <imx@lists.linux.dev>; Wed, 30 Oct 2024 10:33:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A251E3DCB
+	for <imx@lists.linux.dev>; Wed, 30 Oct 2024 11:05:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730284383; cv=none; b=pfBJAB07EYpyeymzbsqHSzmTwsgnJv947V7LbwdZQ8j2zh5UezBpy5HaIdB80oIAher+e/mlyyu6QMG9e15s71rWKQnazhGcFAwntvr/nUVkTNNLVzS2pspYv1PA2XVRZ1/lVN8r9GhPkW3LhFYJYvnFWlwNEMFZ18rP8InRQLY=
+	t=1730286318; cv=none; b=LiFDS0jBK9ALK2qx/yK8zRFrODBEatsWxudIpm1cZvAOQwZRup3ndjoEOaZd0v3ZyGMhM7tP3vH9KgJbwuRMlvIZmCDN4He9EWKlR5NcESulWlZkWF31UT/wnyKFu1Q6Hs9MbiYAuESJR1T6Sq26gDNPd4IiI3mFTSGfCEPRUU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730284383; c=relaxed/simple;
-	bh=lD2G8vLB+s4Fdwlswb1NADkCClyIt175699FyF+UkD8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Os7sBhhR1Z4nOxKae6WxHvkQMM4j9devkLBMq7r008RfCn+oTMlA76fWjynmBKLA+jtFTAPT2DaIWpjekysRKviKA6z9N2XXNCJxssTgS9B1J1evv7gKWh6LBwVRdwezdYq1tVBZxu98qnd06ncxS2t6Dw0i5qtfKLnMQkosB1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gVQUUG8F; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1730286318; c=relaxed/simple;
+	bh=HmwbZv87fwP6B/AtqGYTaZXvxMZBtQZ2EyfJ/RUu7uo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MLol5jiRgKJYB17olLW8hRf7FPs5QA0JzLT0ZIlGpHQW/l1Vwv1csMEdXXffvOnIsP26mTicASO9gRKhueaqRVPgjGEPNJpdOLKCEbKurY5kiIYdQodSh6+m0sSgloNTg+dWsGC14h/lqqN9yEwE2cMto97QRy+DS3gFS9di1Lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=cx6upxl2; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=pZF8oJmY reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gVQUUG8F"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a9a2209bd7fso975050966b.2
-        for <imx@lists.linux.dev>; Wed, 30 Oct 2024 03:33:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="cx6upxl2";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="pZF8oJmY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730284379; x=1730889179; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=sqXpApSaq9z4kEfno9SWP+axiJEGg7lOjQcw9jShE5k=;
-        b=gVQUUG8FXXXT2VQO7i3q9QMcO8b7Ke1F6XXizmUXJzhugZW6NN1xVbGMI8tqSkC7dz
-         da85uD9pW2wv9Dtap37QaAVuRaTBj4IRmYNY8hW9KlamA6ODMhEJL7wyhGUJHjdjKZIJ
-         5euc5uHCEEyWx/poA2VYPxICCkKlxfikBL55lyTarZ4l/VgUaWTnxP3v3VhcTnCko3XC
-         h5pCjqcSU8HVFpQHfL/wvWdk/HtL98gQD/znQ6wSm8KRGcV0FQFOIugE+kUcBiRq5GaP
-         YIEFBo+aFVaKEybNC9nwQnhxZEea5w1xtEAOUz0d116Z99tjjWozSW7I2Km5Uv+6bKi0
-         ZC1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730284379; x=1730889179;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sqXpApSaq9z4kEfno9SWP+axiJEGg7lOjQcw9jShE5k=;
-        b=Bbybgb3eo+1bzQqG2EbWumb9xb0uaph7/1rj+C67rc5FzRjVM9NHhohGnJ3FCwPC/t
-         fWXQgR6pFVbCBRRv4+CYI/CdixhcRSbbNR6Sk6Wv0OYEDtLLuXhtnxqraQJCF+IepiNS
-         bsIx+m31FjT8qysVjA+ES5L54938xBACCS7Hdqb0Xgt6TftELrDXuikBhT0qpSn4HQCx
-         O+a4ISoBqS/uimM4q9DFJBD11tLZa1TQ9/ByKkP6FlSTV0TmA2kQ8W+hfWMa+CVwfc98
-         cc54SywjG596i4A+FGdjbE54OC0SCUBwd1ngGpUWpaVFNLW4KSqXMGXXO2iFN3T6R21O
-         Wr/w==
-X-Forwarded-Encrypted: i=1; AJvYcCUgz9A4ZGePgli7zILCYRDfPX/9ZzeeP69OThtkpYe+YzNAHcscAG/g9ixrYSrTITd2wck=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyPK8KF1TbODDVghPJOgGoFNoVu63PiuCDIY7V/OEr+uaxU/Y91
-	OBanCHlyvQPfCjDfIhsqgbtSE3d4dRKN/iLOYOfJd6vaejfLKyM0
-X-Google-Smtp-Source: AGHT+IGLvSmLJ/TmkoRPP82DnWy5nxXzkBa8lz5d0ru2At6NU0LtMQ8rQCXEQsjp4PkOyzFW9D7irw==
-X-Received: by 2002:a17:907:2daa:b0:a9a:33c:f6e4 with SMTP id a640c23a62f3a-a9de61669b5mr1458266766b.40.1730284378989;
-        Wed, 30 Oct 2024 03:32:58 -0700 (PDT)
-Received: from eichest-laptop.corp.toradex.com (31-10-206-125.static.upc.ch. [31.10.206.125])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9b1e1a6b81sm558178466b.43.2024.10.30.03.32.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Oct 2024 03:32:58 -0700 (PDT)
-From: Stefan Eichenberger <eichest@gmail.com>
-To: hongxing.zhu@nxp.com,
-	l.stach@pengutronix.de,
-	lpieralisi@kernel.org,
-	kw@linux.com,
-	manivannan.sadhasivam@linaro.org,
-	robh@kernel.org,
-	bhelgaas@google.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	francesco.dolcini@toradex.com,
-	Frank.li@nxp.com
-Cc: linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: [PATCH v4] PCI: imx6: Add suspend/resume support for i.MX6QDL
-Date: Wed, 30 Oct 2024 11:32:45 +0100
-Message-ID: <20241030103250.83640-1-eichest@gmail.com>
-X-Mailer: git-send-email 2.43.0
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1730286314; x=1761822314;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=W0Q0NHRej2coWnmexPznhuNwYovVzP2Rt/Szk2eDAPg=;
+  b=cx6upxl2sM56FW65tLbhvDyh1zX0Yxh2tNNUEhLzm3XISAQcCOZ5ukzj
+   w+YBSawDu/alNDdcWBgd6XsmzO2ZN33Y91hHfkY9rspFlLEoxd+tKmOVC
+   lkpiaH3QcI6tBSGNBMRRdjeaGrL2kvfGxJ6aFLiiX9lmHAB5ttPPZ8XbO
+   Rhnj/AK7Qh7SJnM4dqZVuKa/OhqlWqmOF1b/7Z+QXYfq3z7MwR46ap067
+   4euQ42xGZnjBew1/6rQWcICIqNwJ5FdYAV4qV53daaCxRJR4eAch79JNt
+   YKpPxL/ilqcMpQKiIjB5cc+cXkmrbXzO9vb4y1/Ln4f8cTY7dTM7TugGn
+   Q==;
+X-CSE-ConnectionGUID: LpTo4fn5RuqVpbEi9f2Gfg==
+X-CSE-MsgGUID: WcNd3tbQQCGYpjlYkklPDw==
+X-IronPort-AV: E=Sophos;i="6.11,245,1725314400"; 
+   d="scan'208";a="39761269"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 30 Oct 2024 12:05:12 +0100
+X-CheckPoint: {672212E8-E-86C05612-CA75E1CA}
+X-MAIL-CPID: 7D52A97F582B8EE47DF0C31390848B71_1
+X-Control-Analysis: str=0001.0A682F1E.672212E8.007C,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D24E8169682;
+	Wed, 30 Oct 2024 12:05:04 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1730286307;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=W0Q0NHRej2coWnmexPznhuNwYovVzP2Rt/Szk2eDAPg=;
+	b=pZF8oJmYsgoYihk9OobiizHKp5cvTF5FYVU9STIJjs14/bk/4KRTuXYWQSwZ0kHzNGSlZP
+	7GZSX0ZPvYFsv7TkrF2IH58VOkvEfwZWfvpG9ACqdY2jH7PYhN6ZY62X70NaN9GAGQwZ6J
+	lm2Oke6KjYJz6wBomtbo/sXAH9DecuVvaF2SXk3wYhbemwDxdG/XqT2g9EMfxTRNq39wHE
+	tHtdK04zEUx5U/R2xZJcS070U9AWHY4zHH0r6y/f1IAB0m27luiDaX+QianowEiybXxk6e
+	8pwNVfgdxu8aso8Y+jSLGGy1WhKXz3FaQgDO1PaLKIWgSrOUuF54OhA6f0OhMw==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: wahrenst@gmx.net, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, alice.guo@oss.nxp.com
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, "alice.guo" <alice.guo@nxp.com>
+Subject: Re: [PATCH v3] soc: imx: Add SoC device register for i.MX9
+Date: Wed, 30 Oct 2024 12:05:04 +0100
+Message-ID: <2964906.e9J7NaK4W3@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20241030091336.3901440-1-alice.guo@oss.nxp.com>
+References: <20241030091336.3901440-1-alice.guo@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Am Mittwoch, 30. Oktober 2024, 10:13:36 CET schrieb alice.guo@oss.nxp.com:
+> From: "alice.guo" <alice.guo@nxp.com>
+>=20
+> i.MX9 SoCs have SoC ID, SoC revision number and chip unique identifier
+> which are provided by the corresponding ARM trusted firmware API. This
+> patch intends to use SMC call to obtain these information and then
+> register i.MX9 SoC as a device.
+>=20
+> Signed-off-by: alice.guo <alice.guo@nxp.com>
 
-The suspend/resume functionality is currently broken on the i.MX6QDL
-platform, as documented in the NXP errata (ERR005723):
-https://www.nxp.com/docs/en/errata/IMX6DQCE.pdf
+I was able to successfully this on two boards:
 
-This patch addresses the issue by sharing most of the suspend/resume
-sequences used by other i.MX devices, while avoiding modifications to
-critical registers that disrupt the PCIe functionality. It targets the
-same problem as the following downstream commit:
-https://github.com/nxp-imx/linux-imx/commit/4e92355e1f79d225ea842511fcfd42b343b32995
+$ grep . /sys/bus/soc/devices/soc0/* 2> /dev/null=20
+/sys/bus/soc/devices/soc0/family:Freescale i.MX
+/sys/bus/soc/devices/soc0/machine:TQ-Systems i.MX93 TQMa93xxLA/TQMa93xxCA o=
+n MBa93xxCA starter kit
+/sys/bus/soc/devices/soc0/revision:1.1
+/sys/bus/soc/devices/soc0/serial_number:3d0f41f05242fc17baca88b84febf6de
+/sys/bus/soc/devices/soc0/soc_id:i.MX93
 
-Unlike the downstream commit, this patch also resets the connected PCIe
-device if possible. Without this reset, certain drivers, such as ath10k
-or iwlwifi, will crash on resume. The device reset is also done by the
-driver on other i.MX platforms, making this patch consistent with
-existing practices.
+$ grep . /sys/bus/soc/devices/soc0/* 2> /dev/null=20
+/sys/bus/soc/devices/soc0/family:Freescale i.MX
+/sys/bus/soc/devices/soc0/machine:TQ-Systems i.MX95 TQMa95xxSA on MB-SMARC-2
+/sys/bus/soc/devices/soc0/revision:1.1
+/sys/bus/soc/devices/soc0/serial_number:64955bc2d946b9c3f11984a9522b2822
+/sys/bus/soc/devices/soc0/soc_id:i.MX95
 
-Without this patch, suspend/resume will fail on i.MX6QDL devices if a
-PCIe device is connected. Upon resuming, the kernel will hang and
-display an error. Here's an example of the error encountered with the
-ath10k driver:
-ath10k_pci 0000:01:00.0: Unable to change power state from D3hot to D0, device inaccessible
-Unhandled fault: imprecise external abort (0x1406) at 0x0106f944
+Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
----
-Changes in v4:
-- Improve commit message (Bjorn)
-- Fix style issue on comments (Bjorn)
-- s/msi/MSI (Bjorn)
+Thanks
+Alexander
+> ---
+>=20
+> Changes for v2:
+>  - refine error log print
+> Changes for v3:
+>  - return -EINVAL when arm_smccc_smc failed
+>  - fix the build warning caused by pr_err("%s: SMC failed: %d\n", __func_=
+_, res.a0);
+>  - drop the pr_err in imx9_soc_init
+>  - free the memory in the reverse order of allocation
+>  - use of_match_node instead of of_machine_is_compatible
+>=20
+>  drivers/soc/imx/Makefile   |   2 +-
+>  drivers/soc/imx/soc-imx9.c | 106 +++++++++++++++++++++++++++++++++++++
+>  2 files changed, 107 insertions(+), 1 deletion(-)
+>  create mode 100644 drivers/soc/imx/soc-imx9.c
+>=20
+> diff --git a/drivers/soc/imx/Makefile b/drivers/soc/imx/Makefile
+> index 3ad321ca608a..ca6a5fa1618f 100644
+> --- a/drivers/soc/imx/Makefile
+> +++ b/drivers/soc/imx/Makefile
+> @@ -3,4 +3,4 @@ ifeq ($(CONFIG_ARM),y)
+>  obj-$(CONFIG_ARCH_MXC) +=3D soc-imx.o
+>  endif
+>  obj-$(CONFIG_SOC_IMX8M) +=3D soc-imx8m.o
+> -obj-$(CONFIG_SOC_IMX9) +=3D imx93-src.o
+> +obj-$(CONFIG_SOC_IMX9) +=3D imx93-src.o soc-imx9.o
+> diff --git a/drivers/soc/imx/soc-imx9.c b/drivers/soc/imx/soc-imx9.c
+> new file mode 100644
+> index 000000000000..823395584533
+> --- /dev/null
+> +++ b/drivers/soc/imx/soc-imx9.c
+> @@ -0,0 +1,106 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Copyright 2024 NXP
+> + */
+> +
+> +#include <linux/arm-smccc.h>
+> +#include <linux/init.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/slab.h>
+> +#include <linux/sys_soc.h>
+> +
+> +#define IMX_SIP_GET_SOC_INFO	0xc2000006
+> +#define SOC_ID(x)		(((x) & 0xFFFF) >> 8)
+> +#define SOC_REV_MAJOR(x)	((((x) >> 28) & 0xF) - 0x9)
+> +#define SOC_REV_MINOR(x)	(((x) >> 24) & 0xF)
+> +
+> +static int imx9_soc_device_register(void)
+> +{
+> +	struct soc_device_attribute *attr;
+> +	struct arm_smccc_res res;
+> +	struct soc_device *sdev;
+> +	u32 soc_id, rev_major, rev_minor;
+> +	u64 uid127_64, uid63_0;
+> +	int err;
+> +
+> +	attr =3D kzalloc(sizeof(*attr), GFP_KERNEL);
+> +	if (!attr)
+> +		return -ENOMEM;
+> +
+> +	err =3D of_property_read_string(of_root, "model", &attr->machine);
+> +	if (err) {
+> +		pr_err("%s: missing model property: %d\n", __func__, err);
+> +		goto attr;
+> +	}
+> +
+> +	attr->family =3D kasprintf(GFP_KERNEL, "Freescale i.MX");
+> +
+> +	/*
+> +	 * Retrieve the soc id, rev & uid info:
+> +	 * res.a1[31:16]: soc revision;
+> +	 * res.a1[15:0]: soc id;
+> +	 * res.a2: uid[127:64];
+> +	 * res.a3: uid[63:0];
+> +	 */
+> +	arm_smccc_smc(IMX_SIP_GET_SOC_INFO, 0, 0, 0, 0, 0, 0, 0, &res);
+> +	if (res.a0 !=3D SMCCC_RET_SUCCESS) {
+> +		pr_err("%s: SMC failed: 0x%lx\n", __func__, res.a0);
+> +		err =3D -EINVAL;
+> +		goto family;
+> +	}
+> +
+> +	soc_id =3D SOC_ID(res.a1);
+> +	rev_major =3D SOC_REV_MAJOR(res.a1);
+> +	rev_minor =3D SOC_REV_MINOR(res.a1);
+> +
+> +	attr->soc_id =3D kasprintf(GFP_KERNEL, "i.MX%2x", soc_id);
+> +	attr->revision =3D kasprintf(GFP_KERNEL, "%d.%d", rev_major, rev_minor);
+> +
+> +	uid127_64 =3D res.a2;
+> +	uid63_0 =3D res.a3;
+> +	attr->serial_number =3D kasprintf(GFP_KERNEL, "%016llx%016llx", uid127_=
+64, uid63_0);
+> +
+> +	sdev =3D soc_device_register(attr);
+> +	if (IS_ERR(sdev)) {
+> +		err =3D PTR_ERR(sdev);
+> +		pr_err("%s failed to register SoC as a device: %d\n", __func__, err);
+> +		goto serial_number;
+> +	}
+> +
+> +	return 0;
+> +
+> +serial_number:
+> +	kfree(attr->serial_number);
+> +	kfree(attr->revision);
+> +	kfree(attr->soc_id);
+> +family:
+> +	kfree(attr->family);
+> +attr:
+> +	kfree(attr);
+> +	return err;
+> +}
+> +
+> +static const struct of_device_id imx9_soc_match[] =3D {
+> +	{ .compatible =3D "fsl,imx93", },
+> +	{ .compatible =3D "fsl,imx95", },
+> +	{ }
+> +};
+> +
+> +static int __init imx9_soc_init(void)
+> +{
+> +	int ret;
+> +
+> +	/* No match means it is not an i.MX 9 series SoC, do nothing. */
+> +	if (!of_match_node(imx9_soc_match, of_root))
+> +		return 0;
+> +
+> +	ret =3D imx9_soc_device_register();
+> +
+> +	return ret;
+> +}
+> +device_initcall(imx9_soc_init);
+> +
+> +MODULE_AUTHOR("NXP");
+> +MODULE_DESCRIPTION("NXP i.MX9 SoC");
+> +MODULE_LICENSE("GPL");
+>=20
 
-Changes in v3:
-- Added a new flag to the driver data to indicate that the suspend/resume
-  is broken on the i.MX6QDL platform. (Frank)
-- Fix comments to be more relevant (Mani)
-- Use imx_pcie_assert_core_reset in suspend (Mani)
 
- drivers/pci/controller/dwc/pci-imx6.c | 57 +++++++++++++++++++++------
- 1 file changed, 46 insertions(+), 11 deletions(-)
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 808d1f1054173..c8d5c90aa4d45 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -82,6 +82,11 @@ enum imx_pcie_variants {
- #define IMX_PCIE_FLAG_HAS_SERDES		BIT(6)
- #define IMX_PCIE_FLAG_SUPPORT_64BIT		BIT(7)
- #define IMX_PCIE_FLAG_CPU_ADDR_FIXUP		BIT(8)
-+/*
-+ * Because of ERR005723 (PCIe does not support L2 power down) we need to
-+ * workaround suspend resume on some devices which are affected by this errata.
-+ */
-+#define IMX_PCIE_FLAG_BROKEN_SUSPEND		BIT(9)
- 
- #define imx_check_flag(pci, val)	(pci->drvdata->flags & val)
- 
-@@ -1237,9 +1242,19 @@ static int imx_pcie_suspend_noirq(struct device *dev)
- 		return 0;
- 
- 	imx_pcie_msi_save_restore(imx_pcie, true);
--	imx_pcie_pm_turnoff(imx_pcie);
--	imx_pcie_stop_link(imx_pcie->pci);
--	imx_pcie_host_exit(pp);
-+	if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_BROKEN_SUSPEND)) {
-+		/*
-+		 * The minimum for a workaround would be to set PERST# and to
-+		 * set the PCIE_TEST_PD flag. However, we can also disable the
-+		 * clock which saves some power.
-+		 */
-+		imx_pcie_assert_core_reset(imx_pcie);
-+		imx_pcie->drvdata->enable_ref_clk(imx_pcie, false);
-+	} else {
-+		imx_pcie_pm_turnoff(imx_pcie);
-+		imx_pcie_stop_link(imx_pcie->pci);
-+		imx_pcie_host_exit(pp);
-+	}
- 
- 	return 0;
- }
-@@ -1253,14 +1268,32 @@ static int imx_pcie_resume_noirq(struct device *dev)
- 	if (!(imx_pcie->drvdata->flags & IMX_PCIE_FLAG_SUPPORTS_SUSPEND))
- 		return 0;
- 
--	ret = imx_pcie_host_init(pp);
--	if (ret)
--		return ret;
--	imx_pcie_msi_save_restore(imx_pcie, false);
--	dw_pcie_setup_rc(pp);
-+	if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_BROKEN_SUSPEND)) {
-+		ret = imx_pcie->drvdata->enable_ref_clk(imx_pcie, true);
-+		if (ret)
-+			return ret;
-+		ret = imx_pcie_deassert_core_reset(imx_pcie);
-+		if (ret)
-+			return ret;
-+		/*
-+		 * Using PCIE_TEST_PD seems to disable MSI and powers down the
-+		 * root complex. This is why we have to setup the rc again and
-+		 * why we have to restore the MSI register.
-+		 */
-+		ret = dw_pcie_setup_rc(&imx_pcie->pci->pp);
-+		if (ret)
-+			return ret;
-+		imx_pcie_msi_save_restore(imx_pcie, false);
-+	} else {
-+		ret = imx_pcie_host_init(pp);
-+		if (ret)
-+			return ret;
-+		imx_pcie_msi_save_restore(imx_pcie, false);
-+		dw_pcie_setup_rc(pp);
- 
--	if (imx_pcie->link_is_up)
--		imx_pcie_start_link(imx_pcie->pci);
-+		if (imx_pcie->link_is_up)
-+			imx_pcie_start_link(imx_pcie->pci);
-+	}
- 
- 	return 0;
- }
-@@ -1485,7 +1518,9 @@ static const struct imx_pcie_drvdata drvdata[] = {
- 	[IMX6Q] = {
- 		.variant = IMX6Q,
- 		.flags = IMX_PCIE_FLAG_IMX_PHY |
--			 IMX_PCIE_FLAG_IMX_SPEED_CHANGE,
-+			 IMX_PCIE_FLAG_IMX_SPEED_CHANGE |
-+			 IMX_PCIE_FLAG_BROKEN_SUSPEND |
-+			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
- 		.dbi_length = 0x200,
- 		.gpr = "fsl,imx6q-iomuxc-gpr",
- 		.clk_names = imx6q_clks,
--- 
-2.43.0
 
