@@ -1,122 +1,108 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A871EF0B8
-	for <imx@lists.linux.dev>; Wed, 30 Oct 2024 09:56:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0784C4DA03;
+	Wed, 30 Oct 2024 10:30:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730282173; cv=none; b=uZbzhTBj6Jp9kS3oNFcKwirNySS4hPup/7i2TGpXWKo4BCCFru83eka0uqsWcosaBaJZSFlUM1lERzv+Jd72Ozsi+DL6bkjX3vrCJTMSzLRXRIczRdMSCSKJKYyAuYF0LKgjz9RdgGJl5Fs+rQVsLlT7xlVgrI5v/oJb0CTQqBE=
+	t=1730284212; cv=none; b=LUnjbOlc4ruK4pV06tL1FbUI70LJMuEC/wEt1Nr6NWqkdWYo4wYHqeXke+uPOupKOOvDb2lISay2IrOAYCR2LlQbSSd5QkAc/aZGqqj9JeqRMPiGDvYZSbfUnQvW3x80K/EWnDYp2uwsntfoO1fXWFcr510gDEge2+cXEupcN3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730282173; c=relaxed/simple;
-	bh=4K/WP62uPq6V560IiCzhbH2c1uA7hP9SMx44NCKtD0M=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RQcu8gzEZHjnh9avFQ5QYW/rGg6l92M1F3texF39bBH/jUEuJxadS9EbOmS31vDF1bWIrrZA2L0QPe/DPMJzH2Ix1ZR2Y0EgxXtEBHBsg1Y8tlWQ326j1cjsTqGi7+bq/8vwYb9CLCYaAk9NqZwuZbj0qI27vyfUwyUwPvT+J4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=NVdst0Fn; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=J55rPhOX reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1730284212; c=relaxed/simple;
+	bh=fEyGQG5p+/Axzk94LPtg9MyYLs8WiA+7sDPOBdC8nuY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mP1wFkJoo8C+Ogn3rNbzuzLxQIH8CWPYRnP2Zs7GBqChLpWMXC8Z31Kl1HbFrNXwIt3t6aITP3RjaskMYyzQVSIsjH00DmC/HryirGqlEhgzpEAuWXyJVMW+R7RpXdE5SguUQrgvI/0eTUgP7dMgloKlfVHg6JEiClW+lRXc0gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iPBom++I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="NVdst0Fn";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="J55rPhOX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1730282171; x=1761818171;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=kv28fZyUnvSoy7xLNeLLk5bmzedyTwjko9yL0PpBFlA=;
-  b=NVdst0FnlIPte3Iimx5Bge7LXv38ZH+be9RyPkpnEr024FRSrM0vSkVA
-   vk3mzpf3gSkTHvWohMqpHOU8H9Qkj0FK8SBkjTvbiMyoEhglnP4raddS/
-   qJbyU9YT5+fEgqn9IGJgLaq6rZgBcmiPPlSh6KU6rtRJmXt1aRpzlaTkV
-   +k9DckdW37sahKKV/keIdVWlKOByxX2GC0qW/WKicMG8LR1c0b88j8YQG
-   tG8+saQlL8D76dJNMh7sOa1a1rtFrpxiLHfAd5Y+6HKAu0Z/60a9iCQ1s
-   iyHNSz91K0cKSiKZ6rpwtKj/l6YFKqPfXAQO1cuauZblD/kWkjcjxPLmh
-   A==;
-X-CSE-ConnectionGUID: uoyDv6P9SzW+ZF9EaeyEdQ==
-X-CSE-MsgGUID: bcvcl0nPSXmb59G7BIj7vw==
-X-IronPort-AV: E=Sophos;i="6.11,244,1725314400"; 
-   d="scan'208";a="39758794"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 30 Oct 2024 10:56:10 +0100
-X-CheckPoint: {672202BA-36-D31EDE1A-D52D6119}
-X-MAIL-CPID: 3CCE9A5DE1379AF4B1F2317D6AAD2271_5
-X-Control-Analysis: str=0001.0A682F1B.672202BA.00B5,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D3406169508;
-	Wed, 30 Oct 2024 10:56:05 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1730282166; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=kv28fZyUnvSoy7xLNeLLk5bmzedyTwjko9yL0PpBFlA=;
-	b=J55rPhOXKhQMM8TciVzawOjJmY94RiQVyPZgRS9vPBcRZGfz1ymnYFzj7NbLcqud9DZLte
-	CarOq5O8wpnaRHMTa4at33+QVqyx+ZkXQwZ5Dfbk+0hZQcU3byesuhG9QJW4e8h1oVvhEB
-	OtqhhPb492uHpkF0sbZEflgujTgzYs7JSAF8qOG6F24/NmDf+Yo1eVc5y8tDj1O3AiYuFq
-	ZLKXnyfVPji063IgbQWE3EzszulYed3+cwXP76mUz+aXc6BqB6d8S+ERHzoYLyuoRzY/3Q
-	D/ni0k7oZSlr/aI+79/Kvku3tlUzNO2oB1kZTnzFRQyOyLieqc1400+fAC+hMg==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2 resend] dt-bindings: firmware: imx95-scmi: Allow linux,code for protocol@81
-Date: Wed, 30 Oct 2024 10:55:52 +0100
-Message-Id: <20241030095555.222143-2-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241030095555.222143-1-alexander.stein@ew.tq-group.com>
-References: <20241030095555.222143-1-alexander.stein@ew.tq-group.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iPBom++I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E7CC4CEE3;
+	Wed, 30 Oct 2024 10:30:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730284211;
+	bh=fEyGQG5p+/Axzk94LPtg9MyYLs8WiA+7sDPOBdC8nuY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iPBom++Ip3zXbNr4S9qX5JpImsDxqHoTocohiCaoOx5wNTJbiARb4bC/qMG+xkcKl
+	 4bo9Z5yrvUKpiXeTjblCmlZFumY+okw/Vt7mCFA55EdghPH5Za2gM3Pd4VOqUoihoM
+	 RC1xYCQrttOvZlsb/YnO8yx8rwmJMkz4dkArPco2y1Naytv1uKPyxf+rLmFiNnWqL4
+	 hLvcUJg2ZZj271QMiXn3eMmS3Gk3eUI74tYuVqsgFHmT1D26eR4bwwRZoXeSi29m2C
+	 o24VUlOK0cedEcwP3X/B28lsMehPiZZsJvfrGYvPA5SwkdJ/67vIoYA0QMo/YjPKne
+	 u3uClG+jbjG3A==
+Date: Wed, 30 Oct 2024 11:30:09 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, andrzej.hajda@intel.com, neil.armstrong@linaro.org, 
+	rfoss@kernel.org, Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, 
+	jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com, tzimmermann@suse.de, 
+	airlied@gmail.com, simona@ffwll.ch, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, quic_jesszhan@quicinc.com, mchehab@kernel.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, catalin.marinas@arm.com, will@kernel.org, 
+	sakari.ailus@linux.intel.com, hverkuil@xs4all.nl, tomi.valkeinen@ideasonboard.com, 
+	quic_bjorande@quicinc.com, geert+renesas@glider.be, dmitry.baryshkov@linaro.org, 
+	arnd@arndb.de, nfraprado@collabora.com, thierry.reding@gmail.com, 
+	prabhakar.mahadev-lad.rj@bp.renesas.com, sam@ravnborg.org, marex@denx.de, biju.das.jz@bp.renesas.com
+Subject: Re: [PATCH v4 03/13] drm/bridge: fsl-ldb: Use clk_round_rate() to
+ validate "ldb" clock rate
+Message-ID: <20241030-hypersonic-tremendous-tuatara-2bbeb0@houat>
+References: <20241028023740.19732-1-victor.liu@nxp.com>
+ <20241028023740.19732-4-victor.liu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="jdfa4z4pqzuvoooj"
+Content-Disposition: inline
+In-Reply-To: <20241028023740.19732-4-victor.liu@nxp.com>
 
-BBM protocol supports a single power button, supported by driver
-imx-sm-bbm-key.c. By default this is KEY_POWER, but can also be overwritten
-using linux,code. Add a reference to this schema and add linux,code as a
-supported property.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
-Admittedly, I'm not sure if this is the correct way of referencing the
-linux,code from input.yaml.
+--jdfa4z4pqzuvoooj
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v4 03/13] drm/bridge: fsl-ldb: Use clk_round_rate() to
+ validate "ldb" clock rate
+MIME-Version: 1.0
 
- .../devicetree/bindings/firmware/nxp,imx95-scmi.yaml     | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+On Mon, Oct 28, 2024 at 10:37:30AM +0800, Liu Ying wrote:
+> Multiple display modes could be read from a display device's EDID.
+> Use clk_round_rate() to validate the "ldb" clock rate for each mode
+> in drm_bridge_funcs::mode_valid() to filter unsupported modes out.
+>=20
+> Also, since this driver doesn't directly reference pixel clock, use
+> clk_round_rate() to validate the pixel clock rate against the "ldb"
+> clock if the "ldb" clock and the pixel clock are sibling in clock
+> tree.  This is not done in display controller driver because
+> drm_crtc_helper_funcs::mode_valid() may not decide to do the
+> validation or not if multiple encoders are connected to the CRTC,
+> e.g., i.MX93 LCDIF may connect with MIPI DSI controller, LDB and
+> parallel display output simultaneously.
+>=20
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> ---
+> Note that this patch depends on a patch in shawnguo/imx/fixes:
+> https://patchwork.kernel.org/project/linux-arm-kernel/patch/2024101703114=
+6.157996-1-marex@denx.de/
 
-diff --git a/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.yaml b/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.yaml
-index 1a95010a546b1..112c3a3eb1980 100644
---- a/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.yaml
-+++ b/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.yaml
-@@ -12,13 +12,18 @@ maintainers:
- 
- properties:
-   protocol@81:
--    $ref: '/schemas/firmware/arm,scmi.yaml#/$defs/protocol-node'
--    unevaluatedProperties: false
-+    type: object
-+    allOf:
-+      - $ref: '/schemas/firmware/arm,scmi.yaml#/$defs/protocol-node'
-+      - $ref: /schemas/input/input.yaml#
-+    additionalProperties: false
- 
-     properties:
-       reg:
-         const: 0x81
- 
-+      linux,code: true
-+
-   protocol@84:
-     $ref: '/schemas/firmware/arm,scmi.yaml#/$defs/protocol-node'
-     unevaluatedProperties: false
--- 
-2.34.1
+I still believe that the root cause of this issue is your clock tree and
+driver setup, and since I've asked for explanations and didn't get any,
+I don't really see how we can move forward here.
 
+Maxime
+
+--jdfa4z4pqzuvoooj
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZyIKrAAKCRAnX84Zoj2+
+dk5eAYDDyKjKmenLlLXrE7PF5+02MCRjxjyPZUPeFcxn9WqZwrqLx6hAeRNfTD1I
+fBz39NEBgPedANzTVocrGaKTqjaLuKN1UWpfFGVqf9OjORjTtsRTq+Rg7VBMH8ER
+7Vm4WtqjxQ==
+=QcTM
+-----END PGP SIGNATURE-----
+
+--jdfa4z4pqzuvoooj--
