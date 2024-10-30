@@ -1,208 +1,103 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A65C53370;
-	Wed, 30 Oct 2024 11:53:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CCD1E8859
+	for <imx@lists.linux.dev>; Wed, 30 Oct 2024 12:21:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730289242; cv=none; b=KlfO5Q1N4FxQXMX/w6xd1LSCVhO+zxamKB+ozT5gI/0kewldDyFVZ+YeJtuFUYqsKtdJuEdfDrrGXgP0KFTUPiU73Yoys01NpCFDTPQoclbSOOXr51er10gzoPMDTgufounUi73LalLVo2teTcltupyjZePAEfahy3WWlVpL2+0=
+	t=1730290902; cv=none; b=Bx8yQ8UMNnH8dOgi9KEe+bPwuHavVtZGI/AkXix2oj0xC8hUAbdUOetw4mGIfUWUjWMbgP1RbZP+Zxgz2EFZqOk0prD68EIBPUDP19Z9bYAiykdzN7b7VPeNhbTVYSn1sq8zSqYebkuGYf6POy6BNG5QP6KurOaGCaIPkpeMhXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730289242; c=relaxed/simple;
-	bh=ILLcoEoTLUm3cTHoGIXKplpQxL+l5de/PTN9J5SNpWQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TVc2o3xb8AhYr2/agydnJjaoRpuLhv3tQfjR7vvF9bEeQoglmB4TSvPotcXafIDW5yq8lR1QJ2Ym7ml5jfyFJKpjV8vIkbZW1w4OO+60UOW+xLkOleo+KEcCxiPmjbezdXEDl/c8e1w/ARwHG3ehWZKi/M9LMUB5S8bPsOBQFAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=cSmHCIOU; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	s=arc-20240116; t=1730290902; c=relaxed/simple;
+	bh=3xH3qWof9iskT+svJ3Ofkpc3VWG5qZ2V+ON244P64yo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UNSJuR9sOrkRdZCPxrAL81kQIvGa+CAcMVBbEscWRG37gK/u0EJovXV8GIpn/038w153ytOUgbRHRwE2MRI57K/+rCyj/d/VxoysLKcaz1kt1+zRJ2SRweHozwzyx8AHEBOV2st79haRVgxVvW9SaOTDYP3EduaDhQDHJ2bRZhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a2bCwWeP; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="cSmHCIOU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1730289219; x=1730894019; i=wahrenst@gmx.net;
-	bh=MWgQKaEJsBWQZzZRi7igT98SmnXpUOoVlYgKJAFqdSY=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=cSmHCIOUCj++5LC7QhLejuOpztGP6jWT/gxtBDFUumvabHlm/Y2gG+Hd2jd4/Q62
-	 qxVsIyOj3++GVRcY9V2sDz6ym16Vr9wgLUt/QTvuIEuTGXSVjs6LzAJSQjxBElRKI
-	 THUuTv4B5ZPER87my1uGE9U8vuCc1y3LEY3HrMG/iMCE4tFFSuoZS24pwJfZNfguI
-	 AYyh2af6sgy+LhKtkxZI9WwTFRYs1HWwURffRMUbLiRbrSAkdXvG8IOTk0XMKmnIZ
-	 rFEyTcxBiAFWFSzndp9KfqIc76gvSNPo1BegWudSLbGTNxeLK3Pv5+vPnD55Ezzg1
-	 gMf285AT9i4RsM8kGg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.105] ([37.4.248.43]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MLi8m-1tNmdv1jhg-00RLek; Wed, 30
- Oct 2024 12:53:39 +0100
-Message-ID: <9e239176-b1f2-45ef-a731-636f5a78aaa2@gmx.net>
-Date: Wed, 30 Oct 2024 12:53:38 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a2bCwWeP"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5cacb76e924so8527034a12.0
+        for <imx@lists.linux.dev>; Wed, 30 Oct 2024 05:21:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730290899; x=1730895699; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mU7t2F60MLsG2LmsYh482PvDcQpTzay71lGqfQCsp9Q=;
+        b=a2bCwWePJfWwgDa8Et2XGZFaN+ncwiSG0bNAhiIBP1yKu88vBtgs8cd92m7mtcbVsQ
+         8FJZph5CIM3p4dttCC283FmvflMTgClpUdc6lFkqRmXUNI2d6JXSDRdjZDtNXCCvOYH/
+         ByC6y5QzTDULNCdlUBj01+/zV1x8qYu2WIie00ZVE35Msyq8lntAsKk8/LMXSP4RNIZr
+         J02e0qqROJIMDs8COH1tMrzKSIc8n7N+aFpyLTTvoCj3ArqbYIp8JUVTUnzkqcMikzm2
+         Qcq4vRxebbgyIhMkU32F3PBfFTx/WnNl4Bj6J95l1Xixl6T+12wQ56euvV6TBt1OX8Rj
+         K/wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730290899; x=1730895699;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mU7t2F60MLsG2LmsYh482PvDcQpTzay71lGqfQCsp9Q=;
+        b=r2PzMKMtzlq7DjCDBXDLt51sSRAXzjjmhX+ALZ5RTw0V7DePJf82/rxXhWPui+7o5a
+         XNrpLk0dIQeNZ9897hxGe0xq5qC16YXZCsy+t1dFkXDtnIPNmKv03qyNAXCoP02pHWVD
+         V+gRLqNKG8lvBFigPpUS9FqsaeBockrkxrc1tbWWFgikh/CGpBXdbexNrc4k/JlxNm8T
+         kms0AcPi/dle5MP+9Jyoj0C929B1MnXFnCQwyM3EJnqhxq30w3TSCcq8A7aME1lxuCeN
+         bYbBP2R4TJe+CTvOLFOsdA+wVPcKAbIS0SDJ7hziLkBiF/EzjV47KUu3fNZqEDPT7Y4m
+         K8mw==
+X-Forwarded-Encrypted: i=1; AJvYcCWcHDx/i38lZBBQ6dLdGqFyy7NXfSLwFHgxMgbeqvWemApiRrcBqpOJ31s5fOwDzXMN3n0=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx05LzrPmX8RDHyVrFzGCO0UNFDA4K00qTmwAMdGYkYKf9vlBaj
+	jXHIFsw6r+Zbb0ctlw8ShgaTgfcuSN29NjZBUI8UGB464S7hFT1D
+X-Google-Smtp-Source: AGHT+IFLs++qvOnrQcBcH8hYdDdVxrrVuWucZjSjakPaFv4ezw0P51xiY+UuomQqQpb3qzlI8z2wIg==
+X-Received: by 2002:a17:907:9487:b0:a99:c0be:a8ac with SMTP id a640c23a62f3a-a9de5ee477dmr1552093866b.37.1730290898593;
+        Wed, 30 Oct 2024 05:21:38 -0700 (PDT)
+Received: from eichest-laptop.corp.toradex.com (31-10-206-125.static.upc.ch. [31.10.206.125])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9b1f029890sm564494466b.56.2024.10.30.05.21.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Oct 2024 05:21:38 -0700 (PDT)
+From: Stefan Eichenberger <eichest@gmail.com>
+To: linux@armlinux.org.uk,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	elinor.montmasson@savoirfairelinux.com
+Cc: linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: [PATCH v1] ARM: imx_v6_v7_defconfig: enable SND_SOC_SPDIF
+Date: Wed, 30 Oct 2024 13:21:12 +0100
+Message-ID: <20241030122128.115000-1-eichest@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] soc: imx: Add SoC device register for i.MX9
-To: alice.guo@oss.nxp.com, alexander.stein@ew.tq-group.com,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com
-Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, "alice.guo" <alice.guo@nxp.com>
-References: <20241030091336.3901440-1-alice.guo@oss.nxp.com>
-Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-In-Reply-To: <20241030091336.3901440-1-alice.guo@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:nAU/v9tnjeYaZL9gXJfznUoO/fGQeGzQLDk/lF7wlo2mLonJGd8
- t3ckT9k1biAyNLgNra5/5wtPNnTm8gyTPWUlP7Ch7cDp8P8SqYKy8/yDlque1t9yHCjuimA
- mDINeeHSDyJB/T+4wYW0W1jwaILpOEXXwa9oe2rFXysQ6er7tNs081a3dq4Dyn4ZpdhX6O0
- kMbDQz2zLUXbM9lel5hHQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:BkUbYhaiXek=;btPbuJ7l9uQvmb9M0f39zfxZrgj
- DEofWF3td4ONEWcaus8DgpUWv9xtX+VFnPbjEWUIpyfHrPfG6GBLM7SFgVsUzikqpNmmpvWIx
- 6phsJqVAU7VL1kvP+XwW4eIczmx7PDLRBcEv7bHAzgDZktQGcWMQWf66fZqbFJKnDT5RN46hV
- 9MyJ6vbd1GV3LOZJDTqhyq4j1SCYJZn9FnBa9AhJ3f+eDBEDNxnx3wnLuttf2aiRaDoam0/Vy
- jT4YEgb9TkFfdgNPM6NA2sEirS/czPjXWzV6Rk+G4n/KuUkfbpMGKp47w/KYc9nmQ8UTpD1Ma
- SJyQ8VjFdwiWYX0KvDt0QFKent+De1GoP3fLZE0ttEAd2/d/ztamJqe5FSFnK69zXQCpFMeam
- Ezv4tzeFTQfhSmDXf52Ybtshl9grM31NURhHGDkVe2AyxKLAfvzE9mGmiSNLmw26Q99/FphPx
- pJGS+AXQYeDyG4I5nKPTFfWoEwwaa/PYi7kiizBKKvgc3wFD1YgZyJl82PCoSO7U36UrO5dyU
- DplX1exVT/pmjh3KnyTRnopz57985EMzO/5AmHkoApLIthcQtJpsNvi1vww8qvisOwmMq0JMB
- 8wkPAQ3cWqGbjWqhzqX0GUgXW7O9lxhPKytMg07x1Jj0NVn3WrGK8l6hMZ9n+F3VaDPHxdSXB
- aao65i4aR/ftTarXObooCyodMK6XK8/TEEmGGbvbpTQElzjRO4ScRZRZKzda3fFlXUYLLBdc8
- SbyEvINex49v3VS5LEo7zHeNLRwYvhwx6TG1TGX3kvxHSTY3R7GAS2EH9iYHqecxOSQMp6AF4
- tPp2NFpcJ/SMHzKq4Hq//Vsg==
+Content-Transfer-Encoding: 8bit
 
-Hi Alice,
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-Am 30.10.24 um 10:13 schrieb alice.guo@oss.nxp.com:
-> From: "alice.guo" <alice.guo@nxp.com>
->
-> i.MX9 SoCs have SoC ID, SoC revision number and chip unique identifier
-> which are provided by the corresponding ARM trusted firmware API. This
-> patch intends to use SMC call to obtain these information and then
-> register i.MX9 SoC as a device.
->
-> Signed-off-by: alice.guo <alice.guo@nxp.com>
-> ---
->
-> Changes for v2:
->   - refine error log print
-> Changes for v3:
->   - return -EINVAL when arm_smccc_smc failed
->   - fix the build warning caused by pr_err("%s: SMC failed: %d\n", __func__, res.a0);
->   - drop the pr_err in imx9_soc_init
->   - free the memory in the reverse order of allocation
->   - use of_match_node instead of of_machine_is_compatible
->
->   drivers/soc/imx/Makefile   |   2 +-
->   drivers/soc/imx/soc-imx9.c | 106 +++++++++++++++++++++++++++++++++++++
->   2 files changed, 107 insertions(+), 1 deletion(-)
->   create mode 100644 drivers/soc/imx/soc-imx9.c
->
-> diff --git a/drivers/soc/imx/Makefile b/drivers/soc/imx/Makefile
-> index 3ad321ca608a..ca6a5fa1618f 100644
-> --- a/drivers/soc/imx/Makefile
-> +++ b/drivers/soc/imx/Makefile
-> @@ -3,4 +3,4 @@ ifeq ($(CONFIG_ARM),y)
->   obj-$(CONFIG_ARCH_MXC) += soc-imx.o
->   endif
->   obj-$(CONFIG_SOC_IMX8M) += soc-imx8m.o
-> -obj-$(CONFIG_SOC_IMX9) += imx93-src.o
-> +obj-$(CONFIG_SOC_IMX9) += imx93-src.o soc-imx9.o
-> diff --git a/drivers/soc/imx/soc-imx9.c b/drivers/soc/imx/soc-imx9.c
-> new file mode 100644
-> index 000000000000..823395584533
-> --- /dev/null
-> +++ b/drivers/soc/imx/soc-imx9.c
-> @@ -0,0 +1,106 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Copyright 2024 NXP
-> + */
-> +
-> +#include <linux/arm-smccc.h>
-> +#include <linux/init.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +#include <linux/slab.h>
-> +#include <linux/sys_soc.h>
-> +
-> +#define IMX_SIP_GET_SOC_INFO	0xc2000006
-> +#define SOC_ID(x)		(((x) & 0xFFFF) >> 8)
-> +#define SOC_REV_MAJOR(x)	((((x) >> 28) & 0xF) - 0x9)
-> +#define SOC_REV_MINOR(x)	(((x) >> 24) & 0xF)
-> +
-> +static int imx9_soc_device_register(void)
-> +{
-> +	struct soc_device_attribute *attr;
-> +	struct arm_smccc_res res;
-> +	struct soc_device *sdev;
-> +	u32 soc_id, rev_major, rev_minor;
-> +	u64 uid127_64, uid63_0;
-> +	int err;
-> +
-> +	attr = kzalloc(sizeof(*attr), GFP_KERNEL);
-> +	if (!attr)
-> +		return -ENOMEM;
-> +
-> +	err = of_property_read_string(of_root, "model", &attr->machine);
-> +	if (err) {
-> +		pr_err("%s: missing model property: %d\n", __func__, err);
-> +		goto attr;
-> +	}
-> +
-> +	attr->family = kasprintf(GFP_KERNEL, "Freescale i.MX");
-> +
-> +	/*
-> +	 * Retrieve the soc id, rev & uid info:
-> +	 * res.a1[31:16]: soc revision;
-> +	 * res.a1[15:0]: soc id;
-> +	 * res.a2: uid[127:64];
-> +	 * res.a3: uid[63:0];
-> +	 */
-> +	arm_smccc_smc(IMX_SIP_GET_SOC_INFO, 0, 0, 0, 0, 0, 0, 0, &res);
-> +	if (res.a0 != SMCCC_RET_SUCCESS) {
-> +		pr_err("%s: SMC failed: 0x%lx\n", __func__, res.a0);
-> +		err = -EINVAL;
-> +		goto family;
-> +	}
-> +
-> +	soc_id = SOC_ID(res.a1);
-> +	rev_major = SOC_REV_MAJOR(res.a1);
-> +	rev_minor = SOC_REV_MINOR(res.a1);
-> +
-> +	attr->soc_id = kasprintf(GFP_KERNEL, "i.MX%2x", soc_id);
-> +	attr->revision = kasprintf(GFP_KERNEL, "%d.%d", rev_major, rev_minor);
-> +
-> +	uid127_64 = res.a2;
-> +	uid63_0 = res.a3;
-> +	attr->serial_number = kasprintf(GFP_KERNEL, "%016llx%016llx", uid127_64, uid63_0);
-> +
-> +	sdev = soc_device_register(attr);
-> +	if (IS_ERR(sdev)) {
-> +		err = PTR_ERR(sdev);
-> +		pr_err("%s failed to register SoC as a device: %d\n", __func__, err);
-> +		goto serial_number;
-> +	}
-> +
-> +	return 0;
-> +
-> +serial_number:
-> +	kfree(attr->serial_number);
-> +	kfree(attr->revision);
-> +	kfree(attr->soc_id);
-> +family:
-> +	kfree(attr->family);
-> +attr:
-> +	kfree(attr);
-> +	return err;
-> +}
-> +
-> +static const struct of_device_id imx9_soc_match[] = {
-> +	{ .compatible = "fsl,imx93", },
-> +	{ .compatible = "fsl,imx95", },
-What happend to fsl,imx91 ?
+Enable SND_SOC_SPDIF in imx_v6_v7_defconfig to support SPDIF audio. This
+change will fix commit d469b771afe1 ("ARM: dts: imx6: update spdif sound
+card node properties") which moves away from the old "spdif-controller"
+property to the new "audio-codec" property.
 
-Best regards
+Fixes: d469b771afe1 ("ARM: dts: imx6: update spdif sound card node properties")
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+---
+ arch/arm/configs/imx_v6_v7_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/configs/imx_v6_v7_defconfig b/arch/arm/configs/imx_v6_v7_defconfig
+index 333ef55476a30..c771d7dbcadcd 100644
+--- a/arch/arm/configs/imx_v6_v7_defconfig
++++ b/arch/arm/configs/imx_v6_v7_defconfig
+@@ -321,6 +321,7 @@ CONFIG_SND_SOC_IMX_SGTL5000=y
+ CONFIG_SND_SOC_FSL_ASOC_CARD=y
+ CONFIG_SND_SOC_AC97_CODEC=y
+ CONFIG_SND_SOC_CS42XX8_I2C=y
++CONFIG_SND_SOC_SPDIF=y
+ CONFIG_SND_SOC_TLV320AIC3X_I2C=y
+ CONFIG_SND_SOC_WM8960=y
+ CONFIG_SND_SOC_WM8962=y
+-- 
+2.43.0
+
