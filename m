@@ -1,108 +1,217 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0784C4DA03;
-	Wed, 30 Oct 2024 10:30:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3DA1E32A4
+	for <imx@lists.linux.dev>; Wed, 30 Oct 2024 10:33:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730284212; cv=none; b=LUnjbOlc4ruK4pV06tL1FbUI70LJMuEC/wEt1Nr6NWqkdWYo4wYHqeXke+uPOupKOOvDb2lISay2IrOAYCR2LlQbSSd5QkAc/aZGqqj9JeqRMPiGDvYZSbfUnQvW3x80K/EWnDYp2uwsntfoO1fXWFcr510gDEge2+cXEupcN3E=
+	t=1730284383; cv=none; b=pfBJAB07EYpyeymzbsqHSzmTwsgnJv947V7LbwdZQ8j2zh5UezBpy5HaIdB80oIAher+e/mlyyu6QMG9e15s71rWKQnazhGcFAwntvr/nUVkTNNLVzS2pspYv1PA2XVRZ1/lVN8r9GhPkW3LhFYJYvnFWlwNEMFZ18rP8InRQLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730284212; c=relaxed/simple;
-	bh=fEyGQG5p+/Axzk94LPtg9MyYLs8WiA+7sDPOBdC8nuY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mP1wFkJoo8C+Ogn3rNbzuzLxQIH8CWPYRnP2Zs7GBqChLpWMXC8Z31Kl1HbFrNXwIt3t6aITP3RjaskMYyzQVSIsjH00DmC/HryirGqlEhgzpEAuWXyJVMW+R7RpXdE5SguUQrgvI/0eTUgP7dMgloKlfVHg6JEiClW+lRXc0gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iPBom++I; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730284383; c=relaxed/simple;
+	bh=lD2G8vLB+s4Fdwlswb1NADkCClyIt175699FyF+UkD8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Os7sBhhR1Z4nOxKae6WxHvkQMM4j9devkLBMq7r008RfCn+oTMlA76fWjynmBKLA+jtFTAPT2DaIWpjekysRKviKA6z9N2XXNCJxssTgS9B1J1evv7gKWh6LBwVRdwezdYq1tVBZxu98qnd06ncxS2t6Dw0i5qtfKLnMQkosB1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gVQUUG8F; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iPBom++I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E7CC4CEE3;
-	Wed, 30 Oct 2024 10:30:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730284211;
-	bh=fEyGQG5p+/Axzk94LPtg9MyYLs8WiA+7sDPOBdC8nuY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iPBom++Ip3zXbNr4S9qX5JpImsDxqHoTocohiCaoOx5wNTJbiARb4bC/qMG+xkcKl
-	 4bo9Z5yrvUKpiXeTjblCmlZFumY+okw/Vt7mCFA55EdghPH5Za2gM3Pd4VOqUoihoM
-	 RC1xYCQrttOvZlsb/YnO8yx8rwmJMkz4dkArPco2y1Naytv1uKPyxf+rLmFiNnWqL4
-	 hLvcUJg2ZZj271QMiXn3eMmS3Gk3eUI74tYuVqsgFHmT1D26eR4bwwRZoXeSi29m2C
-	 o24VUlOK0cedEcwP3X/B28lsMehPiZZsJvfrGYvPA5SwkdJ/67vIoYA0QMo/YjPKne
-	 u3uClG+jbjG3A==
-Date: Wed, 30 Oct 2024 11:30:09 +0100
-From: Maxime Ripard <mripard@kernel.org>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, andrzej.hajda@intel.com, neil.armstrong@linaro.org, 
-	rfoss@kernel.org, Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, 
-	jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com, tzimmermann@suse.de, 
-	airlied@gmail.com, simona@ffwll.ch, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, quic_jesszhan@quicinc.com, mchehab@kernel.org, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, catalin.marinas@arm.com, will@kernel.org, 
-	sakari.ailus@linux.intel.com, hverkuil@xs4all.nl, tomi.valkeinen@ideasonboard.com, 
-	quic_bjorande@quicinc.com, geert+renesas@glider.be, dmitry.baryshkov@linaro.org, 
-	arnd@arndb.de, nfraprado@collabora.com, thierry.reding@gmail.com, 
-	prabhakar.mahadev-lad.rj@bp.renesas.com, sam@ravnborg.org, marex@denx.de, biju.das.jz@bp.renesas.com
-Subject: Re: [PATCH v4 03/13] drm/bridge: fsl-ldb: Use clk_round_rate() to
- validate "ldb" clock rate
-Message-ID: <20241030-hypersonic-tremendous-tuatara-2bbeb0@houat>
-References: <20241028023740.19732-1-victor.liu@nxp.com>
- <20241028023740.19732-4-victor.liu@nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gVQUUG8F"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a9a2209bd7fso975050966b.2
+        for <imx@lists.linux.dev>; Wed, 30 Oct 2024 03:33:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730284379; x=1730889179; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sqXpApSaq9z4kEfno9SWP+axiJEGg7lOjQcw9jShE5k=;
+        b=gVQUUG8FXXXT2VQO7i3q9QMcO8b7Ke1F6XXizmUXJzhugZW6NN1xVbGMI8tqSkC7dz
+         da85uD9pW2wv9Dtap37QaAVuRaTBj4IRmYNY8hW9KlamA6ODMhEJL7wyhGUJHjdjKZIJ
+         5euc5uHCEEyWx/poA2VYPxICCkKlxfikBL55lyTarZ4l/VgUaWTnxP3v3VhcTnCko3XC
+         h5pCjqcSU8HVFpQHfL/wvWdk/HtL98gQD/znQ6wSm8KRGcV0FQFOIugE+kUcBiRq5GaP
+         YIEFBo+aFVaKEybNC9nwQnhxZEea5w1xtEAOUz0d116Z99tjjWozSW7I2Km5Uv+6bKi0
+         ZC1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730284379; x=1730889179;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sqXpApSaq9z4kEfno9SWP+axiJEGg7lOjQcw9jShE5k=;
+        b=Bbybgb3eo+1bzQqG2EbWumb9xb0uaph7/1rj+C67rc5FzRjVM9NHhohGnJ3FCwPC/t
+         fWXQgR6pFVbCBRRv4+CYI/CdixhcRSbbNR6Sk6Wv0OYEDtLLuXhtnxqraQJCF+IepiNS
+         bsIx+m31FjT8qysVjA+ES5L54938xBACCS7Hdqb0Xgt6TftELrDXuikBhT0qpSn4HQCx
+         O+a4ISoBqS/uimM4q9DFJBD11tLZa1TQ9/ByKkP6FlSTV0TmA2kQ8W+hfWMa+CVwfc98
+         cc54SywjG596i4A+FGdjbE54OC0SCUBwd1ngGpUWpaVFNLW4KSqXMGXXO2iFN3T6R21O
+         Wr/w==
+X-Forwarded-Encrypted: i=1; AJvYcCUgz9A4ZGePgli7zILCYRDfPX/9ZzeeP69OThtkpYe+YzNAHcscAG/g9ixrYSrTITd2wck=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyPK8KF1TbODDVghPJOgGoFNoVu63PiuCDIY7V/OEr+uaxU/Y91
+	OBanCHlyvQPfCjDfIhsqgbtSE3d4dRKN/iLOYOfJd6vaejfLKyM0
+X-Google-Smtp-Source: AGHT+IGLvSmLJ/TmkoRPP82DnWy5nxXzkBa8lz5d0ru2At6NU0LtMQ8rQCXEQsjp4PkOyzFW9D7irw==
+X-Received: by 2002:a17:907:2daa:b0:a9a:33c:f6e4 with SMTP id a640c23a62f3a-a9de61669b5mr1458266766b.40.1730284378989;
+        Wed, 30 Oct 2024 03:32:58 -0700 (PDT)
+Received: from eichest-laptop.corp.toradex.com (31-10-206-125.static.upc.ch. [31.10.206.125])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9b1e1a6b81sm558178466b.43.2024.10.30.03.32.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Oct 2024 03:32:58 -0700 (PDT)
+From: Stefan Eichenberger <eichest@gmail.com>
+To: hongxing.zhu@nxp.com,
+	l.stach@pengutronix.de,
+	lpieralisi@kernel.org,
+	kw@linux.com,
+	manivannan.sadhasivam@linaro.org,
+	robh@kernel.org,
+	bhelgaas@google.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	francesco.dolcini@toradex.com,
+	Frank.li@nxp.com
+Cc: linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: [PATCH v4] PCI: imx6: Add suspend/resume support for i.MX6QDL
+Date: Wed, 30 Oct 2024 11:32:45 +0100
+Message-ID: <20241030103250.83640-1-eichest@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="jdfa4z4pqzuvoooj"
-Content-Disposition: inline
-In-Reply-To: <20241028023740.19732-4-victor.liu@nxp.com>
+Content-Transfer-Encoding: 8bit
 
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
---jdfa4z4pqzuvoooj
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v4 03/13] drm/bridge: fsl-ldb: Use clk_round_rate() to
- validate "ldb" clock rate
-MIME-Version: 1.0
+The suspend/resume functionality is currently broken on the i.MX6QDL
+platform, as documented in the NXP errata (ERR005723):
+https://www.nxp.com/docs/en/errata/IMX6DQCE.pdf
 
-On Mon, Oct 28, 2024 at 10:37:30AM +0800, Liu Ying wrote:
-> Multiple display modes could be read from a display device's EDID.
-> Use clk_round_rate() to validate the "ldb" clock rate for each mode
-> in drm_bridge_funcs::mode_valid() to filter unsupported modes out.
->=20
-> Also, since this driver doesn't directly reference pixel clock, use
-> clk_round_rate() to validate the pixel clock rate against the "ldb"
-> clock if the "ldb" clock and the pixel clock are sibling in clock
-> tree.  This is not done in display controller driver because
-> drm_crtc_helper_funcs::mode_valid() may not decide to do the
-> validation or not if multiple encoders are connected to the CRTC,
-> e.g., i.MX93 LCDIF may connect with MIPI DSI controller, LDB and
-> parallel display output simultaneously.
->=20
-> Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> ---
-> Note that this patch depends on a patch in shawnguo/imx/fixes:
-> https://patchwork.kernel.org/project/linux-arm-kernel/patch/2024101703114=
-6.157996-1-marex@denx.de/
+This patch addresses the issue by sharing most of the suspend/resume
+sequences used by other i.MX devices, while avoiding modifications to
+critical registers that disrupt the PCIe functionality. It targets the
+same problem as the following downstream commit:
+https://github.com/nxp-imx/linux-imx/commit/4e92355e1f79d225ea842511fcfd42b343b32995
 
-I still believe that the root cause of this issue is your clock tree and
-driver setup, and since I've asked for explanations and didn't get any,
-I don't really see how we can move forward here.
+Unlike the downstream commit, this patch also resets the connected PCIe
+device if possible. Without this reset, certain drivers, such as ath10k
+or iwlwifi, will crash on resume. The device reset is also done by the
+driver on other i.MX platforms, making this patch consistent with
+existing practices.
 
-Maxime
+Without this patch, suspend/resume will fail on i.MX6QDL devices if a
+PCIe device is connected. Upon resuming, the kernel will hang and
+display an error. Here's an example of the error encountered with the
+ath10k driver:
+ath10k_pci 0000:01:00.0: Unable to change power state from D3hot to D0, device inaccessible
+Unhandled fault: imprecise external abort (0x1406) at 0x0106f944
 
---jdfa4z4pqzuvoooj
-Content-Type: application/pgp-signature; name="signature.asc"
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+---
+Changes in v4:
+- Improve commit message (Bjorn)
+- Fix style issue on comments (Bjorn)
+- s/msi/MSI (Bjorn)
 
------BEGIN PGP SIGNATURE-----
+Changes in v3:
+- Added a new flag to the driver data to indicate that the suspend/resume
+  is broken on the i.MX6QDL platform. (Frank)
+- Fix comments to be more relevant (Mani)
+- Use imx_pcie_assert_core_reset in suspend (Mani)
 
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZyIKrAAKCRAnX84Zoj2+
-dk5eAYDDyKjKmenLlLXrE7PF5+02MCRjxjyPZUPeFcxn9WqZwrqLx6hAeRNfTD1I
-fBz39NEBgPedANzTVocrGaKTqjaLuKN1UWpfFGVqf9OjORjTtsRTq+Rg7VBMH8ER
-7Vm4WtqjxQ==
-=QcTM
------END PGP SIGNATURE-----
+ drivers/pci/controller/dwc/pci-imx6.c | 57 +++++++++++++++++++++------
+ 1 file changed, 46 insertions(+), 11 deletions(-)
 
---jdfa4z4pqzuvoooj--
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 808d1f1054173..c8d5c90aa4d45 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -82,6 +82,11 @@ enum imx_pcie_variants {
+ #define IMX_PCIE_FLAG_HAS_SERDES		BIT(6)
+ #define IMX_PCIE_FLAG_SUPPORT_64BIT		BIT(7)
+ #define IMX_PCIE_FLAG_CPU_ADDR_FIXUP		BIT(8)
++/*
++ * Because of ERR005723 (PCIe does not support L2 power down) we need to
++ * workaround suspend resume on some devices which are affected by this errata.
++ */
++#define IMX_PCIE_FLAG_BROKEN_SUSPEND		BIT(9)
+ 
+ #define imx_check_flag(pci, val)	(pci->drvdata->flags & val)
+ 
+@@ -1237,9 +1242,19 @@ static int imx_pcie_suspend_noirq(struct device *dev)
+ 		return 0;
+ 
+ 	imx_pcie_msi_save_restore(imx_pcie, true);
+-	imx_pcie_pm_turnoff(imx_pcie);
+-	imx_pcie_stop_link(imx_pcie->pci);
+-	imx_pcie_host_exit(pp);
++	if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_BROKEN_SUSPEND)) {
++		/*
++		 * The minimum for a workaround would be to set PERST# and to
++		 * set the PCIE_TEST_PD flag. However, we can also disable the
++		 * clock which saves some power.
++		 */
++		imx_pcie_assert_core_reset(imx_pcie);
++		imx_pcie->drvdata->enable_ref_clk(imx_pcie, false);
++	} else {
++		imx_pcie_pm_turnoff(imx_pcie);
++		imx_pcie_stop_link(imx_pcie->pci);
++		imx_pcie_host_exit(pp);
++	}
+ 
+ 	return 0;
+ }
+@@ -1253,14 +1268,32 @@ static int imx_pcie_resume_noirq(struct device *dev)
+ 	if (!(imx_pcie->drvdata->flags & IMX_PCIE_FLAG_SUPPORTS_SUSPEND))
+ 		return 0;
+ 
+-	ret = imx_pcie_host_init(pp);
+-	if (ret)
+-		return ret;
+-	imx_pcie_msi_save_restore(imx_pcie, false);
+-	dw_pcie_setup_rc(pp);
++	if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_BROKEN_SUSPEND)) {
++		ret = imx_pcie->drvdata->enable_ref_clk(imx_pcie, true);
++		if (ret)
++			return ret;
++		ret = imx_pcie_deassert_core_reset(imx_pcie);
++		if (ret)
++			return ret;
++		/*
++		 * Using PCIE_TEST_PD seems to disable MSI and powers down the
++		 * root complex. This is why we have to setup the rc again and
++		 * why we have to restore the MSI register.
++		 */
++		ret = dw_pcie_setup_rc(&imx_pcie->pci->pp);
++		if (ret)
++			return ret;
++		imx_pcie_msi_save_restore(imx_pcie, false);
++	} else {
++		ret = imx_pcie_host_init(pp);
++		if (ret)
++			return ret;
++		imx_pcie_msi_save_restore(imx_pcie, false);
++		dw_pcie_setup_rc(pp);
+ 
+-	if (imx_pcie->link_is_up)
+-		imx_pcie_start_link(imx_pcie->pci);
++		if (imx_pcie->link_is_up)
++			imx_pcie_start_link(imx_pcie->pci);
++	}
+ 
+ 	return 0;
+ }
+@@ -1485,7 +1518,9 @@ static const struct imx_pcie_drvdata drvdata[] = {
+ 	[IMX6Q] = {
+ 		.variant = IMX6Q,
+ 		.flags = IMX_PCIE_FLAG_IMX_PHY |
+-			 IMX_PCIE_FLAG_IMX_SPEED_CHANGE,
++			 IMX_PCIE_FLAG_IMX_SPEED_CHANGE |
++			 IMX_PCIE_FLAG_BROKEN_SUSPEND |
++			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
+ 		.dbi_length = 0x200,
+ 		.gpr = "fsl,imx6q-iomuxc-gpr",
+ 		.clk_names = imx6q_clks,
+-- 
+2.43.0
+
