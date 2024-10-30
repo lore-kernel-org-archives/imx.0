@@ -1,295 +1,242 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2080.outbound.protection.outlook.com [40.107.21.80])
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2051.outbound.protection.outlook.com [40.107.247.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5781E1C2B
-	for <imx@lists.linux.dev>; Wed, 30 Oct 2024 09:14:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468B21E25EA
+	for <imx@lists.linux.dev>; Wed, 30 Oct 2024 09:54:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.51
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730279696; cv=fail; b=aQF8SLPOOmH1aLqncH2dh3rqTQZcGTLrasA38vwiGGwOOkvujQQCYNfhe4doqMLoOlbk5PPWkz5BLqNi2RCccMc44O2Q+/PoJO4YlWNcsa84MfpM1PLPz/5E43U7iqzoFwzEE9XpFbRztbMc3s73EwGVM99RXm/uZHIY0MPmAqA=
+	t=1730282088; cv=fail; b=E60FKxSIKzDKxziK6uH1r6TiCngwG4puB2kLMZfFPT/ZzMxsHC/1orMs43TkL3IP2FW+JC0qwwpc9ZrGYvJcMmz6tb60T44mUX0svgqFWfjr2fHcSUuTeffK8ZkcxTDe7oC0K5DnP8KpMnLHRKwXEjfZz6E+lT1MleqGn+MRZXQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730279696; c=relaxed/simple;
-	bh=t4Mt03BX4UyT1Fc1DV1hOe9jPQxmPY/RsZXnyRa45h8=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=V+DTcu6F5hi7ZjlmYBCsY411UykHqSGlZQezcRpaClXvBr7eiQ+ps2MnvvCc5u9OIfGdLVXiLHLhEwE4jhnWtLiwRuu3tLIrNnOZmK2tYa4kZmygJqRo/AMIhaG0Zmpz+8XKV4nG55vhKyOelDPVV2DG5tI1IuxKdeiF0pB21S4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=LmE0fSpe; arc=fail smtp.client-ip=40.107.21.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1730282088; c=relaxed/simple;
+	bh=i7F1I+7wb6aKUfGKNSQzoLFc8tG35sqo/MGtSMeZeXY=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=LIdgZkDDw5fKc2vLY3Jp/OPxvwWCqfbMyYfLdJhQ8WmiAOdcp5peiZskRVovn0IdT4zUzUR7NcJpyg7heXxliWIqMPX6PkUSOBlbp3Cl4eLTN/JhFWhRmeEUMBLokz/MG/dMfCo0d497/egP8OHfi57ok0b5FHpKVQRNS5Ltvoo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=HBiwBNMF; arc=fail smtp.client-ip=40.107.247.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="LmE0fSpe"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="HBiwBNMF"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=q5MawZ1qO1+8+pj9Mynzlx5cuJYDsjA9TGgftM/m4UWnPkg6fCRSWK3klD9q+m35MW5+U2wJoPKIp6RZJrnDjQe87WM1Nnw3i8zLcvwTy7H0HsdSvZ2iPVy+Kg7HNvCVBoWJJds7JlIxOxWzxYHLteIVMsoPJEwQ0Sj5sOqXdCtE5AHRuC6QD2t/baLobQp6LvOtNv0DhpJoUVWRzKf8wwy56ZFyt7EztFxfCQhcU78mqXXwpTZq+BaNHTSuc+1f42+rdqQenat7TgbgiWeHi/wNl27xw/MaR/HrKi215BynVRLUuE8FnFIiXDNA4anLjrtBVjEVT8r4s3g61t/BrA==
+ b=iB/oCf6gr/eACeR+joOMLFtv8gXWaTeKLztRRiJ1KmzuTCxTok8wL1O30ezLonmMQQALt7JbMW7vo9ENWHAZvhOo/BZndxDmMVKcR2j6O4WSjQQAiiKTOT1PaYuMS6TLkSCvJk6gWZ7QPjbNdWHc+M/0JpWhIUVPMfFcEKUZ3B16lDLfkrbkeDyESTOvrLAzZrzkhNnFNneGJRcJ0flLWFBx5qobp+oZ/SlC0c2oT1rbiPFYuVPCnJ9zG5VDYQVRpwd2swkO/Phn7tPQ+XZoYmLoOIXdRH9DVGKohdnfh/Mq0Fen9YsMPwXgSx6B9U5khihylTtdC+hevstRXUO5yA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XV72DHgs8T/L6w8FCEEKiJy9I1sRnA8ztHbCci/nsvg=;
- b=M16kmMJJurhsJU5qamdq+vWwGBDdro2V8Elk9Vr0B7Srnl/5v5XbzRhCQS97iqPNnFyNj+L9jZkmYjJl8wmzQqeHpvy5yeE57GZD2ddL58tmVm2/MRaHnnUkdjZDz449CvpvbUK39UoTnYO39/crqy50F09uD1lM8Bj9eOTcRuju6NeiRNPVYSrkH+uloO9/ULHCVxfW2w1vf2Xy2CYglbYoQRrsnCBFwFF8JYZBzVZiVHzlZI3GiK/4OCfudWxN7p8jif3rl+AYmrPRF/uToTtxyO9hjUXFS0Z/vkdNTCu/HE1bhyVOF+ifbXz0o1WgEv9bLvuSCnkwE7wKePT6mQ==
+ bh=WRQrisq1/OSLlrFrxX8ZURIIcd074L/H9pcciKaz5Xg=;
+ b=h2BZuLPU4/owwAdbudWDohwMgxwBLAZQR02DFE2FyOrjFwjx/PfzMb5WtSlcqmf5RMP4SkdfB1z5oB7MnaA5GDGhOIZNDN9cQrlNqdsmjVn4CnTtVUqbuPTtWNWSFhZXk4nPY8MSh+PnBRy2cLcau4yjdNdItpeoLXDG0aX5z2b6xwiyOhbZnNkDfbJfTXUctOeVyu6fA1Am93SHwLcJie7si9QF7oxqg9NEy/8mP7YzBp1L1PXoMBM2c87d79emHycGkl3NNK7GGiXVD+lL9tvACztF9X9Bada3TNGvbjvhSKh5idTRhuDBdEtlIr65BgPmwAPs8iBadLe2OqEH0g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XV72DHgs8T/L6w8FCEEKiJy9I1sRnA8ztHbCci/nsvg=;
- b=LmE0fSpepImb+vo/EAxQFcu/SeQWGtg75pfy4AuBE4RDEXhbOu3OhunXiyl9EBHnrY+ZslzG8qQhuCjmyJp0Vk6RnAZEe12k1ZBYup3x06i+kDwwICymh+rAUWohw7Ijz8of3uYZ8Xlf2/abnYKqhIHX13HtQDjO86SmdXBdmru0/jJVThZDQk0B6iNf+OsUzWcFEjzAB/ysD0+P+zkGat5va6q/MRiutYyu8fGYfXrxJpaoklwWtnaeNR3otwxYXLTysImpbQU7aw6ePyHEnI16cQvYANWUkIjSUJysllkF7Qy6ZRIohrHhkXFMYINuRu7m2ro4DFoqT79qOemJ3Q==
+ bh=WRQrisq1/OSLlrFrxX8ZURIIcd074L/H9pcciKaz5Xg=;
+ b=HBiwBNMFd8s+yz4Zbr3+QM/hoNNBujes8x5UAxEtL2SduoY19UtUMePL7CBYAP8fCzvA1Ze0J9J4+n/ke+XEdH/BpNDqcsb6axUkGjM+4cXt7fWgg9Qy8Cr54m0v/r2GIbVeK6h0kVUc0qYoHy7jgMDvMIOcy8H1B/TOBHOTeimqTKkD3/pMQC6z0tFYGytAWPGko7Lgy+2oXHa7giy5pXqy9ETuqid6fmfY2A/nZ1/Ak36X99SqaS0QHveh58vFLmg2srf7PjROXPoH/KuLplHeyXf5sGHzxhXmX1Yo8QIr1h3BS7g97TCRoTZfexbnpKnAookJSBwUwbOPlRgwvA==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB9644.eurprd04.prod.outlook.com (2603:10a6:102:242::11)
- by AS5PR04MB9854.eurprd04.prod.outlook.com (2603:10a6:20b:673::11) with
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by PA2PR04MB10347.eurprd04.prod.outlook.com (2603:10a6:102:424::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.32; Wed, 30 Oct
- 2024 09:14:47 +0000
-Received: from PAXPR04MB9644.eurprd04.prod.outlook.com
- ([fe80::6979:311a:bf0c:1a49]) by PAXPR04MB9644.eurprd04.prod.outlook.com
- ([fe80::6979:311a:bf0c:1a49%5]) with mapi id 15.20.8093.027; Wed, 30 Oct 2024
- 09:14:47 +0000
-From: alice.guo@oss.nxp.com
-To: alexander.stein@ew.tq-group.com,
-	wahrenst@gmx.net,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
+ 2024 09:54:41 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%7]) with mapi id 15.20.8093.027; Wed, 30 Oct 2024
+ 09:54:41 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	vladimir.oltean@nxp.com,
+	claudiu.manoil@nxp.com,
+	xiaoning.wang@nxp.com,
+	Frank.Li@nxp.com,
+	christophe.leroy@csgroup.eu,
+	linux@armlinux.org.uk,
+	horms@kernel.org
 Cc: imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	"alice.guo" <alice.guo@nxp.com>
-Subject: [PATCH v3] soc: imx: Add SoC device register for i.MX9
-Date: Wed, 30 Oct 2024 17:13:36 +0800
-Message-Id: <20241030091336.3901440-1-alice.guo@oss.nxp.com>
+	linux-pci@vger.kernel.org,
+	alexander.stein@ew.tq-group.com
+Subject: [PATCH v6 net-next 00/12] add basic support for i.MX95 NETC
+Date: Wed, 30 Oct 2024 17:39:11 +0800
+Message-Id: <20241030093924.1251343-1-wei.fang@nxp.com>
 X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SI2PR01CA0019.apcprd01.prod.exchangelabs.com
- (2603:1096:4:192::12) To PAXPR04MB9644.eurprd04.prod.outlook.com
- (2603:10a6:102:242::11)
+X-ClientProxiedBy: SG3P274CA0009.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::21)
+ To PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9644:EE_|AS5PR04MB9854:EE_
-X-MS-Office365-Filtering-Correlation-Id: 99228ab5-1e50-4135-aad1-08dcf8c34ce6
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|PA2PR04MB10347:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2707c906-1cd1-4a3d-a776-08dcf8c8dfb8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|366016|1800799024|38350700014;
+	BCL:0;ARA:13230040|366016|376014|52116014|7416014|1800799024|38350700014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?WmppfJxU16UG9aqCbRl99CuOOgsIAIGw1ohYjQFrjXZNINN2OKhlsT8v6LLV?=
- =?us-ascii?Q?qfrphvH2FrEQHIb9j0z7O4wUogsCKf7Tjchi8KR2XBKnjWZXBR7OTnYqXSKi?=
- =?us-ascii?Q?5SAocldvXWIG4AwUKO7Zpt7Wi1g6MJN6A5C8kSpoiLEfjaa+0ekwGgAOQ8Lm?=
- =?us-ascii?Q?53fjJ+c+seksSDz8BM9aPDhW/LIVRFCT3Axu7pS52rsaCp3b9j/ya40utZhA?=
- =?us-ascii?Q?7hswifLEOhoxE5CRGXQe/cN55yAcVENB5AlG+kn+m1djOYa6DQZBGg0EYlJe?=
- =?us-ascii?Q?tgIhGBsHI8V1R4UsPHncUrfmvBuMKzu1EXfkDusGxjd+Rd3jKk65sfc5YEed?=
- =?us-ascii?Q?JoMi3NweTS7ViiJo6wUGODVl97TkCtDyCkvLTvkEvk0Ip1bj9vUtVrtIqUqW?=
- =?us-ascii?Q?hLRvlWN3bR3yWt4BD9wbMzgdr4KPSy10SlG9L8VGwHLu9OtLyod2dMOcTVCi?=
- =?us-ascii?Q?a3fcJio05R57aBw6OjnLjrpLqFlzOr4yF8/SSZ4HyGXLdEUy55QxyiFONwxR?=
- =?us-ascii?Q?kJ++yciQNWD/kkgsgCwn+mO9xgfXgFVxh1Xp1WORV6Qy5jzNKC2Kc3yfwdWT?=
- =?us-ascii?Q?OzRNgNtDiDBXs//yrDbsTHW4rjDqEbCFvuaikEQBHwPZ/l981a3WNqskbCxY?=
- =?us-ascii?Q?sVMqYSIphDKCvBtADFIlffEHkMg4FzQ+DeU1DnkeOkN3ik/QHUIYsb+fe6nK?=
- =?us-ascii?Q?WbzQBcs3jekafOexo5JgxjzHXwP+B89DATZwx2aXT1iuQBa60wRHuj9iBIHV?=
- =?us-ascii?Q?6KVJeRApfmTnp/C6kodRVvv6zRUgG4y61tJzWDx8vt+NidcYikjdyxZbmzBC?=
- =?us-ascii?Q?KXXhwOLmqe4NDKp6YY8dKLkglQgVLP6LeKA9430bRcgUuGv/DWMLVnQOQfr5?=
- =?us-ascii?Q?JkzCr/xK8NtVI7CXITYna05iZWovb8prGEfthp6gz/seZmSwOsuU6C1H3dZX?=
- =?us-ascii?Q?ek/IzqbIxDEeGOTvL+zb2wsGP5RMCpFf9HZ9oYFT6bGtYrXnjRd2Hz7AL7C6?=
- =?us-ascii?Q?64K3VOD12ZF6SWsm1y/ff0Vq0plToGAaLNVB9GY4Fca5ay+9fYZoMUZuJa6X?=
- =?us-ascii?Q?WkNU4GTo4THm/C1nmCMGuQKVoD2IJE7ad5Y88+eS6ZuldfME5Po8vkLaoBm5?=
- =?us-ascii?Q?1HbVMUF/DiPe0WLs0SaX6WWgdCqJa6tfFk4/z9jc7DA/pJMtD8dbH2ol9760?=
- =?us-ascii?Q?5YxeQpIKyqe7hqK2abuY/qRKWaktt57GYEVhewsCDBMS9RZgsEPDzA8PBqzs?=
- =?us-ascii?Q?+QzrFdX8H+KRuX6U2kBAM6s0bU/VUAgj8XHoPeHXpGFhk3qtmPtJFxZB8Vq9?=
- =?us-ascii?Q?D+0BL+VVBSD7mhiSnrSsYxR5ptC1MYkbIp8xrDWVcWjqUYbbtYF/aI3RILL8?=
- =?us-ascii?Q?NTHalQk=3D?=
+	=?us-ascii?Q?CZ7VVDX7G4ElUqmTcmvJKQt7afKWaUp1ZaKhiTdN1ICkSgC65KBbHTderymX?=
+ =?us-ascii?Q?rxPzOyRQQTs9TKoXmgeYlM3CNsKgNuLZM7S3aDNTOanIfDKNqXe3jjcqedEt?=
+ =?us-ascii?Q?BQc+0UYAHLbmvw8Jgm7udGk353yg2zzgNIk66uRTj3tSpTe4XpA9rTh1/wty?=
+ =?us-ascii?Q?5ZlZCKDnJdYAnwGHzl/wyiE2iIuV32KuwrbdV/flapVCx+qeAmG/En4i61BP?=
+ =?us-ascii?Q?SEUvx4zTbGgEr8B93Ko9Dghr4zotDf0T6zcvphfPvqbyaB2SJTOfdgONUCFm?=
+ =?us-ascii?Q?Cjpz9XgqRTYrP1vTFoBkCAW/NmgIPxucUxm44MoWeKT+jQZRiN0u56viQ6Br?=
+ =?us-ascii?Q?AZG4FsK1izKf4fPYpGOZyhk0djlLFEuNU4mguE8PSKCY+sGD6t7n2BDUTasQ?=
+ =?us-ascii?Q?FZqwBJg8oi21wMqS3264exv3F8QkPsGkWFkZbs8kTHPu1hsaXguFXSgjDnQb?=
+ =?us-ascii?Q?zGBCA65RnSqTNo+hh5gylF6BPji+bK5yLPPzhzDpc9X8qu6IOusBptplPkZ8?=
+ =?us-ascii?Q?vTF8IfGV2SJn3649d2H3yY+KbDLMa0W5mfKQnIqMeyL0b3vNA4VmVgNAi4EX?=
+ =?us-ascii?Q?JEruJ1IxWUPI2MfxHy9AcZ5nvI8QW9YahrsNgpUdH+pB5jN4wHUDzxoaa5Zu?=
+ =?us-ascii?Q?aXzVblqRogpaovHlGKtz8G+HnYnMoBoOnI79UU9edmDCm6lfkMbyj31gR5UX?=
+ =?us-ascii?Q?ZzZMnbX9qqcRkwvgAzh4rrXxCTBFMdYyGWL3eshWV7VTUATudOxtZKIEKet7?=
+ =?us-ascii?Q?V1sH9wYMbKy21ORAHAmcqzbNh5jbSx0JcxHNkGkSvhywPTLA3rimlLkERhhh?=
+ =?us-ascii?Q?Be45Xo6sVz7QLRrQKFgDaAgNcxAVEiEgOSNGhN3v0gT5sSh5Q/kvy3jLGIPi?=
+ =?us-ascii?Q?F8ja4rE0RYJereCzGTUmWYGmT28fCvCGGxR0lyliDYwzORYYoCXDH3p0a+zT?=
+ =?us-ascii?Q?uPkQBcnjHa6WHO8K2Q3ntJ2Lfaj0h8DSh+yVYLRp76DyTIrhpAA8KD9o+VuB?=
+ =?us-ascii?Q?7GUXxu3wlIM/krsyCIL7R7amb3zQpg7nfTqVsdK4mn3TCqhjB9Y3oLRKeJv7?=
+ =?us-ascii?Q?L0UIFow4GIj0re/oXifapCxibs3xJspkw3TAqdHGF4QFANC2KQjBuhnxZ+f5?=
+ =?us-ascii?Q?MPKQqlVCvZBH8pgxrhoCKjXZ5hPnBnPp1RzmfsXL8nU8CDACbU1iGUL1zzI4?=
+ =?us-ascii?Q?MMoeWEDCT4Vq2t1kezvQkY8UOPhzNZBxGPD9llZhkKRdcK1zFmuUnz12E7yC?=
+ =?us-ascii?Q?sXYIbDDvBvCB5/wVfRujdcPyLBQ8YyNsTQ7QMlOvyubFRnJ6RCym4QW8A99n?=
+ =?us-ascii?Q?nZzwFN/J2W//YHNV2D+RwUpfGnOU9sP87bFdE0/TouwGFqL+ZowM0NHZu4NT?=
+ =?us-ascii?Q?vsz5BJ5vnY3ImlNm9Gg7B5RYUtGJ?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9644.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(52116014)(7416014)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?mpR1oTFXLqBwcjOyQYgI/rob8dreTpHXoagTLVl67ZoNXs+em1rtjZNYTtr2?=
- =?us-ascii?Q?FiEg1l6lg15X/J5kq01Fbjxu67l/oqnXuUo3KdSgsNo/ZMUJt48VnABDcXWs?=
- =?us-ascii?Q?3Ycqg61AB6kxqqCoWoNOEZ6sx0anBGtxmlaRo7KKW1+K8ZubPJJM4048dPMz?=
- =?us-ascii?Q?fdAyYYzSRJ6vfi3wt51/4Yv81Dp3LELP1m0c+ZvqtL5sMLZ93AUItMbR1BQL?=
- =?us-ascii?Q?vBspsLc7KFS0p2/tTCmrQr/GDGFpAWN6pFzOdedqdxM4PBNVuEld2t1P7d0u?=
- =?us-ascii?Q?0XQS8rC4bHTxul4CnFDWp8N1RQ1RysebRnc6bgZ7PFEgOGeC3GqyCmW5txvV?=
- =?us-ascii?Q?fUO6MNjgqla8Oxyw98awf6R4lD06D2jWAWkIVdz5cthXdeH/REbCx4PiA6YV?=
- =?us-ascii?Q?2+so5RxNGYiAAS8hPlXOqUgtj1S/pwPi+dU0PDPNMBXEGutR/Jt6pIe+30+r?=
- =?us-ascii?Q?vrX+hS1jkAFUwPJA9ynRQZkvjy6F+XPR02tWJVeEDaPW0nKbmTD3FKj0eP4h?=
- =?us-ascii?Q?VbaIyK8lDNoWYk0Sw1eC5vTBpKVw05vlLjAx74Wh+2yEKXuSl2KK6NBfwRNW?=
- =?us-ascii?Q?O7qWYQzHWpOd1kueobTyeixfI92QtoMwb1hJ54yK96tBGaquHT6eyU/xrTnm?=
- =?us-ascii?Q?bIunNOSTRWJp52JrVIbgqKbslO4VNMH5tG1U/O6VCiIHM2GTc5Db3Q4WsGCR?=
- =?us-ascii?Q?SS6KO0fAsDdgunDW5U2z3iGnxhpqK0op3tkSXcx5nlEivJF3I9QP3jTF4U47?=
- =?us-ascii?Q?IP1s3x15+pPMSUsaio8Nk83AmuxweBzTHqJDVHcc1SiPsqczfcd08hnzq+ge?=
- =?us-ascii?Q?QrQr5G/cyBUxemtvqOm20/pvWOqFycetHTVSkRfnDxDhZvGDusLAZjf31LVK?=
- =?us-ascii?Q?CLAFBek3ea7R0MiJyzuCXbpuqLl0JCzENXENxfmozGb/wz8irJrpSnBSg9cZ?=
- =?us-ascii?Q?7m3e3kDAyAmMVmm1qugFLJ0qq+5SQuySMRIm/xz9wHW2Msv7Oxrjs2geG0+f?=
- =?us-ascii?Q?i6LDD5iXnckmYkB/FegRP+2hfuRtV9Kxk6VfM3P1wtcX0VywcZVZ0C5sHjLa?=
- =?us-ascii?Q?R+yhPsYigUIepqAPJGPOlzB9o/5meKmp0CATbANzbrwzFaKnu1+t6cKBC6y9?=
- =?us-ascii?Q?t5Vzm8UskuHbiTTJtbbOVGXtU3gD5nndUoe2kB17aopmmsYf4o0DRLs32grv?=
- =?us-ascii?Q?wi79IGG2jZTBHAmFbZInFmSBukfMf8LsUFAA97kkcXCdbClFUuFDrOA2nYNh?=
- =?us-ascii?Q?jFOYglitABYiyaxtzcxRRMntB0E16cuiTRKM+PWcWth8BX4s3gaJVFKSlPWO?=
- =?us-ascii?Q?ugkT+eYenXvbL5KhTQ26J/p0pn2AiqBNlHnfXAV2ON1+kvq6HaIOmTidizyV?=
- =?us-ascii?Q?ghGAPl6h7ugPcbKXlSnuqgA0E01+D9ATQX4qKle5oPaANtlwLaTjE4PGjqMI?=
- =?us-ascii?Q?WIayOV/Rw3E3gwx+siWzBtfVBpt+LM2BNI798T+OI5O3kZ2LqKdvijn9PhYO?=
- =?us-ascii?Q?lLfU/wsZiLipJrgPz5v0a/ytEchRuHDO7yT0WIUKKM+jRmx+p6L+zoSWnj4w?=
- =?us-ascii?Q?Z3I3q7HIVjD8amU0e9h2A7maQmLMnN46ZBqchEZL?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 99228ab5-1e50-4135-aad1-08dcf8c34ce6
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9644.eurprd04.prod.outlook.com
+	=?us-ascii?Q?SdJvDnsND1KROTXczQwyXTDrCAUgor9g7PbQlrm+oBUNzvZ/SkNXyQpqRE7B?=
+ =?us-ascii?Q?wiMM5XGWn2qfMELCLScLtxCy6TNR8qA1N1vWpCmFmgQuw2jpZbyOgaNUlj8j?=
+ =?us-ascii?Q?ciWgb81hu7a+c2V0SxUInlNpaaNAGnKikAtlliQr4+8q/oEFhV0z4PmzH0ig?=
+ =?us-ascii?Q?btbzAIRrst33l5hReUtN40FLs/VrEExMj3RrdFNZPGOcLC0PmtFNMns2GJXh?=
+ =?us-ascii?Q?KMRJcPXE9eIno8qUgkkxDdWNMJCr+2Z3384h5EqYIYDavpb0AsdRoavoO7Io?=
+ =?us-ascii?Q?J4nMp0T73KYSPWDyRuXhBy+YOFeU988weDGryPvlm9yovZsra6tX/pP26Fq3?=
+ =?us-ascii?Q?mrLy2Q5AtrespUdj4qr52zr6UexAK6AQMrmztYYcPWRMa2AjeQNi9xXeXQWF?=
+ =?us-ascii?Q?+O19kmx8VneGEJLVLnykqxkMFo4U7faYn5ZHtU2cMlgExzCnC+M6slwArzqR?=
+ =?us-ascii?Q?0uVAkAOdiaUu7FinFf4Eo956Mix+kU3Acd36lfVF99I0yo9C8lGppdKIUQFG?=
+ =?us-ascii?Q?4zz2qiCAS8uCp1X3AqCzdimfwtQqFx7nPGYgMMHSJ1oFLGWya8/N+CIANYiF?=
+ =?us-ascii?Q?Uvx5R4L06jREhwEoF31ncixC4V68jGbrhJD5htW7HJFvX4d0efypdmdwdFpM?=
+ =?us-ascii?Q?04I7GBYlLf5MTsUHjxGW2HdOC9ATFOgpQYAA00akrPeMjc3uQ4nybHa8PhEZ?=
+ =?us-ascii?Q?tA/qMb2xDao/tc2DXfilOqWZzO6tsEgWGPZ8isQgHOVkFtQR68zezW8RGhqv?=
+ =?us-ascii?Q?7+bsu4ySb1ftIdJYVVgjWEiOgdbk3xFpGTtqBnLt2Q7d1U4NrMpdMA1YOm+K?=
+ =?us-ascii?Q?KBUg0MdkNq2URZjNwGmdl/j+j3lL6bbrZs8YfAnvvQRGBEmQ9LbLioG6XiWT?=
+ =?us-ascii?Q?v58XhzO25uSLfN0StHf+8PYqwkw6kx9qL+B/d0INqKHiQJBlqkz9HN4IZxrv?=
+ =?us-ascii?Q?7J5PCAyJ2gcMOayzLmI6ZaBZgfkGt3qgbj85wDf04lYDi/NCOD49/+Z6XYJI?=
+ =?us-ascii?Q?P8+9DOeXw2rSwjJJDKXxRMolrHuPIl1/fQjApFJzSqD1/AfhQg9l33o3jysc?=
+ =?us-ascii?Q?6jQ9V0U4g4sMW5WMynO3c3yOF+FLuJiz56G3VbbiuCjs6iBYmz8tJOfoukpf?=
+ =?us-ascii?Q?/TiApj/nN0YrsLPtvPoyQksYAWKfR33ynclGhAHC4F4ue3JiiNXVnpUGW0o4?=
+ =?us-ascii?Q?6aZ2Q/BritjjuQDai5wvSOMwk7BHey6prba43qAB2Ihg1NXfZ7/P/swOrmYy?=
+ =?us-ascii?Q?OTu4KM5coUbuMn/gK6Xe27Oe7Jngdv00B/qf0d6Ii3N1lZc4EXn7MOvhaKdc?=
+ =?us-ascii?Q?T4wotRPmaJB/wqgPqwCkBekq1wsfC6n1ZRIOIicH9nNknTHQAHUeJQSaU9Mi?=
+ =?us-ascii?Q?ArMX4vzCTeQfphukJfSEL40a9aPbj7s/Ue7zIrZmOvnDg6ria/+NnbCvxx9f?=
+ =?us-ascii?Q?r6Q/31bKdO3TLIoGBKiOVOxUhoJGqBI0rN1uK7naTZ9R4JjPQSARzbq1Ap1r?=
+ =?us-ascii?Q?av7Kg93VB8NAxj8FdkaLVQRjTaVK0ByWHLhXKgV0cZCye2xxCU4JOzm2XQlK?=
+ =?us-ascii?Q?ktepJJCvtBQ6gzziP3mxRBQ2K4UeM0UxXqjzP3kt?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2707c906-1cd1-4a3d-a776-08dcf8c8dfb8
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2024 09:14:47.6316
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2024 09:54:41.3044
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XfVPUf2to0LvMXhHwqBFf9tCfBV1Tn6VDPe5bNlMr6mLdpE7NZFL+NwJUC5zXl3kWENbL4ThgN9LnqqscL2s9w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9854
+X-MS-Exchange-CrossTenant-UserPrincipalName: HQ/t+1pWoqfMshdhoNzAO5lAGZSJQBElC+b5xt7zymIxjCPWIAKBBGZwQqqya4xMN7o7mSr1u/x9Ud/XdneMwA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10347
 
-From: "alice.guo" <alice.guo@nxp.com>
+This is first time that the NETC IP is applied on i.MX MPU platform.
+Its revision has been upgraded to 4.1, which is very different from
+the NETC of LS1028A (its revision is 1.0). Therefore, some existing
+drivers of NETC devices in the Linux kernel are not compatible with
+the current hardware. For example, the fsl-enetc driver is used to
+drive the ENETC PF of LS1028A, but for i.MX95 ENETC PF, its registers
+and tables configuration are very different from those of LS1028A,
+and only the station interface (SI) part remains basically the same.
+For the SI part, Vladimir has separated the fsl-enetc-core driver, so
+we can reuse this driver on i.MX95. However, for other parts of PF,
+the fsl-enetc driver cannot be reused, so the nxp-enetc4 driver is
+added to support revision 4.1 and later.
 
-i.MX9 SoCs have SoC ID, SoC revision number and chip unique identifier
-which are provided by the corresponding ARM trusted firmware API. This
-patch intends to use SMC call to obtain these information and then
-register i.MX9 SoC as a device.
+During the development process, we found that the two PF drivers have
+some interfaces with basically the same logic, and the only difference
+is the hardware configuration. So in order to reuse these interfaces
+and reduce code redundancy, we extracted these interfaces and compiled
+them into a separate nxp-enetc-pf-common driver for use by the two PF
+drivers.
 
-Signed-off-by: alice.guo <alice.guo@nxp.com>
+In addition, we have developed the nxp-netc-blk-ctrl driver, which
+is used to control three blocks, namely Integrated Endpoint Register
+Block (IERB), Privileged Register Block (PRB) and NETCMIX block. The
+IERB contains registers that are used for pre-boot initialization,
+debug, and non-customer configuration. The PRB controls global reset
+and global error handling for NETC. The NETCMIX block is mainly used
+to set MII protocol and PCS protocol of the links, it also contains
+settings for some other functions.
+
+---
+v1 Link: https://lore.kernel.org/imx/20241009095116.147412-1-wei.fang@nxp.com/
+v2 Link: https://lore.kernel.org/imx/20241015125841.1075560-1-wei.fang@nxp.com/
+v3 Link: https://lore.kernel.org/imx/20241017074637.1265584-1-wei.fang@nxp.com/
+v4 Link: https://lore.kernel.org/imx/20241022055223.382277-1-wei.fang@nxp.com/
+v5 Link: https://lore.kernel.org/imx/20241024065328.521518-1-wei.fang@nxp.com/
 ---
 
-Changes for v2:
- - refine error log print
-Changes for v3:
- - return -EINVAL when arm_smccc_smc failed
- - fix the build warning caused by pr_err("%s: SMC failed: %d\n", __func__, res.a0);
- - drop the pr_err in imx9_soc_init
- - free the memory in the reverse order of allocation
- - use of_match_node instead of of_machine_is_compatible
+Clark Wang (2):
+  net: enetc: extract enetc_int_vector_init/destroy() from
+    enetc_alloc_msix()
+  net: enetc: optimize the allocation of tx_bdr
 
- drivers/soc/imx/Makefile   |   2 +-
- drivers/soc/imx/soc-imx9.c | 106 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 107 insertions(+), 1 deletion(-)
- create mode 100644 drivers/soc/imx/soc-imx9.c
+Vladimir Oltean (1):
+  net: enetc: remove ERR050089 workaround for i.MX95
 
-diff --git a/drivers/soc/imx/Makefile b/drivers/soc/imx/Makefile
-index 3ad321ca608a..ca6a5fa1618f 100644
---- a/drivers/soc/imx/Makefile
-+++ b/drivers/soc/imx/Makefile
-@@ -3,4 +3,4 @@ ifeq ($(CONFIG_ARM),y)
- obj-$(CONFIG_ARCH_MXC) += soc-imx.o
- endif
- obj-$(CONFIG_SOC_IMX8M) += soc-imx8m.o
--obj-$(CONFIG_SOC_IMX9) += imx93-src.o
-+obj-$(CONFIG_SOC_IMX9) += imx93-src.o soc-imx9.o
-diff --git a/drivers/soc/imx/soc-imx9.c b/drivers/soc/imx/soc-imx9.c
-new file mode 100644
-index 000000000000..823395584533
---- /dev/null
-+++ b/drivers/soc/imx/soc-imx9.c
-@@ -0,0 +1,106 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Copyright 2024 NXP
-+ */
-+
-+#include <linux/arm-smccc.h>
-+#include <linux/init.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/slab.h>
-+#include <linux/sys_soc.h>
-+
-+#define IMX_SIP_GET_SOC_INFO	0xc2000006
-+#define SOC_ID(x)		(((x) & 0xFFFF) >> 8)
-+#define SOC_REV_MAJOR(x)	((((x) >> 28) & 0xF) - 0x9)
-+#define SOC_REV_MINOR(x)	(((x) >> 24) & 0xF)
-+
-+static int imx9_soc_device_register(void)
-+{
-+	struct soc_device_attribute *attr;
-+	struct arm_smccc_res res;
-+	struct soc_device *sdev;
-+	u32 soc_id, rev_major, rev_minor;
-+	u64 uid127_64, uid63_0;
-+	int err;
-+
-+	attr = kzalloc(sizeof(*attr), GFP_KERNEL);
-+	if (!attr)
-+		return -ENOMEM;
-+
-+	err = of_property_read_string(of_root, "model", &attr->machine);
-+	if (err) {
-+		pr_err("%s: missing model property: %d\n", __func__, err);
-+		goto attr;
-+	}
-+
-+	attr->family = kasprintf(GFP_KERNEL, "Freescale i.MX");
-+
-+	/*
-+	 * Retrieve the soc id, rev & uid info:
-+	 * res.a1[31:16]: soc revision;
-+	 * res.a1[15:0]: soc id;
-+	 * res.a2: uid[127:64];
-+	 * res.a3: uid[63:0];
-+	 */
-+	arm_smccc_smc(IMX_SIP_GET_SOC_INFO, 0, 0, 0, 0, 0, 0, 0, &res);
-+	if (res.a0 != SMCCC_RET_SUCCESS) {
-+		pr_err("%s: SMC failed: 0x%lx\n", __func__, res.a0);
-+		err = -EINVAL;
-+		goto family;
-+	}
-+
-+	soc_id = SOC_ID(res.a1);
-+	rev_major = SOC_REV_MAJOR(res.a1);
-+	rev_minor = SOC_REV_MINOR(res.a1);
-+
-+	attr->soc_id = kasprintf(GFP_KERNEL, "i.MX%2x", soc_id);
-+	attr->revision = kasprintf(GFP_KERNEL, "%d.%d", rev_major, rev_minor);
-+
-+	uid127_64 = res.a2;
-+	uid63_0 = res.a3;
-+	attr->serial_number = kasprintf(GFP_KERNEL, "%016llx%016llx", uid127_64, uid63_0);
-+
-+	sdev = soc_device_register(attr);
-+	if (IS_ERR(sdev)) {
-+		err = PTR_ERR(sdev);
-+		pr_err("%s failed to register SoC as a device: %d\n", __func__, err);
-+		goto serial_number;
-+	}
-+
-+	return 0;
-+
-+serial_number:
-+	kfree(attr->serial_number);
-+	kfree(attr->revision);
-+	kfree(attr->soc_id);
-+family:
-+	kfree(attr->family);
-+attr:
-+	kfree(attr);
-+	return err;
-+}
-+
-+static const struct of_device_id imx9_soc_match[] = {
-+	{ .compatible = "fsl,imx93", },
-+	{ .compatible = "fsl,imx95", },
-+	{ }
-+};
-+
-+static int __init imx9_soc_init(void)
-+{
-+	int ret;
-+
-+	/* No match means it is not an i.MX 9 series SoC, do nothing. */
-+	if (!of_match_node(imx9_soc_match, of_root))
-+		return 0;
-+
-+	ret = imx9_soc_device_register();
-+
-+	return ret;
-+}
-+device_initcall(imx9_soc_init);
-+
-+MODULE_AUTHOR("NXP");
-+MODULE_DESCRIPTION("NXP i.MX9 SoC");
-+MODULE_LICENSE("GPL");
+Wei Fang (9):
+  dt-bindings: net: add compatible string for i.MX95 EMDIO
+  dt-bindings: net: add i.MX95 ENETC support
+  dt-bindings: net: add bindings for NETC blocks control
+  net: enetc: add initial netc-blk-ctrl driver support
+  net: enetc: extract common ENETC PF parts for LS1028A and i.MX95
+    platforms
+  net: enetc: build enetc_pf_common.c as a separate module
+  net: enetc: add i.MX95 EMDIO support
+  net: enetc: add preliminary support for i.MX95 ENETC PF
+  MAINTAINERS: update ENETC driver files and maintainers
+
+ .../bindings/net/fsl,enetc-mdio.yaml          |  11 +-
+ .../devicetree/bindings/net/fsl,enetc.yaml    |  28 +-
+ .../bindings/net/nxp,netc-blk-ctrl.yaml       | 104 +++
+ MAINTAINERS                                   |   7 +
+ drivers/net/ethernet/freescale/enetc/Kconfig  |  40 +
+ drivers/net/ethernet/freescale/enetc/Makefile |   9 +
+ drivers/net/ethernet/freescale/enetc/enetc.c  | 269 ++++---
+ drivers/net/ethernet/freescale/enetc/enetc.h  |  30 +-
+ .../net/ethernet/freescale/enetc/enetc4_hw.h  | 155 ++++
+ .../net/ethernet/freescale/enetc/enetc4_pf.c  | 756 ++++++++++++++++++
+ .../ethernet/freescale/enetc/enetc_ethtool.c  |  35 +-
+ .../net/ethernet/freescale/enetc/enetc_hw.h   |  53 +-
+ .../ethernet/freescale/enetc/enetc_pci_mdio.c |  31 +
+ .../net/ethernet/freescale/enetc/enetc_pf.c   | 313 +-------
+ .../net/ethernet/freescale/enetc/enetc_pf.h   |  21 +
+ .../freescale/enetc/enetc_pf_common.c         | 336 ++++++++
+ .../freescale/enetc/enetc_pf_common.h         |  19 +
+ .../net/ethernet/freescale/enetc/enetc_qos.c  |   2 +-
+ .../net/ethernet/freescale/enetc/enetc_vf.c   |   6 +
+ .../ethernet/freescale/enetc/netc_blk_ctrl.c  | 445 +++++++++++
+ include/linux/fsl/netc_global.h               |  19 +
+ 21 files changed, 2273 insertions(+), 416 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/nxp,netc-blk-ctrl.yaml
+ create mode 100644 drivers/net/ethernet/freescale/enetc/enetc4_hw.h
+ create mode 100644 drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+ create mode 100644 drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
+ create mode 100644 drivers/net/ethernet/freescale/enetc/enetc_pf_common.h
+ create mode 100644 drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
+ create mode 100644 include/linux/fsl/netc_global.h
+
 -- 
 2.34.1
 
