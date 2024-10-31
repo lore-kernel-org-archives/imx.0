@@ -1,65 +1,74 @@
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2055.outbound.protection.outlook.com [40.107.249.55])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2051.outbound.protection.outlook.com [40.107.21.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D841B5ED8
-	for <imx@lists.linux.dev>; Thu, 31 Oct 2024 16:21:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB991BBBE0
+	for <imx@lists.linux.dev>; Thu, 31 Oct 2024 16:27:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.51
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730391710; cv=fail; b=FLa70xH1REu+d9mNEAfR7DFRquZwbLmcgCTgZxCYgHoT/gYkLszse2B40Wvm3E3k01pjvERF2qEZlelgosP3jQHlMUwdG7/2MgodQRMt/+/kAjNbI3IY6h3hh3YZs68AdPt2kaWDc18q5VEAGn5AwJC0xDowpsOO0S7sfK7Yihc=
+	t=1730392043; cv=fail; b=Vv2uU53X1OH4T7XCr1jGk4/yUVpX3cm/HunQdDp7bGE5r0owJyJLaogpIJGutAwMGtFYhs+rsSzbDMM6it848HK5CI3QJNVULJoo89I/2cbBJ6k/6R/CO4CePEEMa/dG19eLCvnndBQM5+/eg8XVPIb+45HU4JWaMJfEJkndHVk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730391710; c=relaxed/simple;
-	bh=oHfydt51swGJbIoDKjprSbMlz9lZ5h3R4MeimwFMkyA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=B7u2/xu1A00DpGW5ZQoo3d0FRxLZi6lHus01OdNkc+7TCB5YbDiP1d+Z+4Fr5vq/DQ0ThXnwCxKHaShiiy6mujgOwnpdGvCoB1FVW1tIOHyEYTq8OhaZnhJPChAmghLE3iNFdWpewMibCNl1wLy81/837thlOudnBdsV6eR66d0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=HI7OVqUq; arc=fail smtp.client-ip=40.107.249.55
+	s=arc-20240116; t=1730392043; c=relaxed/simple;
+	bh=WztdJXCK+bOn8jeGvfQAh0AF4COBEh+c0a1xNE6MdUc=;
+	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
+	 To:Cc:MIME-Version; b=O222GVxHvhCZCLSP4gL1h5eYJgIABOnto1AMmZnGCua8CQ03p5FbPwUv+H3XmzaaYvDDvMtJrNM4UYomsLmk8i5TCfflKuA0z/UMTeKOkPSEMW/6aS5VrufrdKav8LBi7XFSmT7m8RppEsN0XrFZGflIdQ/g3gZuAes9ruOywS8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Bz+Q8Wdi; arc=fail smtp.client-ip=40.107.21.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="HI7OVqUq"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Bz+Q8Wdi"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=If4RTAvExUzLE1rF7BNAiAfK/1eFgtvb7nAUUrOx91HpfWy+wfQTOH9/FZ+AAkn9O8a7+5FEQREulAHrNG93oQmFXs0uoaONbUDuiFDqEwm/Y46y7da9jcp+jbZwl9YOC0+T6T+2YASYrfC9hjwTUkMbArin5DPKSadaGkkLlXl2Up/N1/a0Q+7VwmtfIqrXtOCrA0OPJ7E1R8rfz2zo6Kjyoj+DYPmdu6ZOl3/u74ZkLDo2Na2Z/YjFXoBujdHxcImzolqJgCRbszeOTyWkx8FMBbR90fgmCg7EIFSpMEHYo15Vs6lkCGHAEFNPnM+wLqA2pMD48YWhx/gJqSmxag==
+ b=OUZIFn7/A2V2TsW3x3N3GGhrbAD1xOCpEfiCUuKW77KckS0+SjK/YdH+du9TLwZiUKCKUI5ff5O5xUiesTE4FfLTOsMkCjni6oQbrlwE167rdhBlhLjKOa2y077LNl37aqstITiZkOsN3eWI+Dxk2WMA4ryFwUDgQ3ghBIIOc6PkEazsRE6tBNhp77Msp4gIeLCvUX9UmY5TGzX+uqCKteFHexGs+PqHiNwtWJIyH8IkaqI5uZziSvFTqeYNtd0mW7aAzX/+sIt39QtKCngzvRTWCaHs/c30qiT93yMS1WbqvgWPUrdPfL3tQstQPfiP9BmXQt9dmC6uM5fBxsTjhQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oeKBCN/45BxnysnhokossFSswfD/fEosSM0dVwovrYQ=;
- b=QcGYAkaMyGNPliyi9u5Rh1w2lB3OWBqMvPDgfkxC9rwC3bspbcFkE5wTsO2CJS4dhor6OOUGbQdW8ZMBAeoFn25Rq9WBE6aA9itnNLNKIsXFWk7NehmuPt/dkoQaCmRFyZaQUo1LVDTXHazwZISEr2amrEdLHOKUojCdVv6cT15pbBnhjvzXbn/qGUuHa6Dieaz+7UkpGz8bHhHgmBdIaAlAr4vgEPpP3yJCwPyrZ273qi7hYCI9XHaRShfxh34/ukkFLQCdgfSCOaZtkyhGCt+DUan6hp1YTkn88S+J/nxcngH27TplY3JvhUpnw/C7kMhVz9M00DGXnz/RpDfAEw==
+ bh=Oan0nT460bnBSfdOKCXlsarwBLEOZ6HSByQIFZo5Sn4=;
+ b=rN/wty1IPczsVy4Z+8AGBwTW+oUQs/hvWhoBL7XBY6JLSngz/GLrN1qEsghctkdU9I1BAeMHVouQjC9CaQBRyeg900pptNo9BB41thQWsYHaVRryVhkvhFGFRals8xWloAQE3gXvjJ1gnjDCIK52D+/Tk2C2/H1gzG9KlGKbKIGGzX0mn0nhNDbp+/eDVmWcIgyIsObPKnXCInCvnipD9kWy/Eb8Fwv4VxWdlth70hpacaHhpp0uGV0tkIfW14+WCoQ0zipnQrFJg47MfZcm/hKF1D07h0nv6rZcvX2T6y4qHHrt2KKGcUE7Bc1nqxwQB5ADxxlhNFEiYIdIHxCozQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oeKBCN/45BxnysnhokossFSswfD/fEosSM0dVwovrYQ=;
- b=HI7OVqUqDoLywAO4Tq7k9wtz1x15bwmx7a+swOysZdc0HP3Cwb3k0KcLbsx00OBez4iDwMa9lfKBpXtYxbe9dhRBKHSEsrTugxout77w3kvcnECkP6P86DX7xct3ohpHu/bgh0HjpMCYh6itQU/GkXbgFICirksycgWCR6UwzCIpWT3ikxGGZUHAjR9Ut0V0ErZTZnxti/ROlPEwH1XrHjTtRThrrOEudJj3WOr/X0ea1bINId++kgAcaB3wd+zvyjkSNpZs14NvJNe1TrfYM43i/AG+uGQsfn58SFTYED5K0zG/AzPpFe5tFR+betXPdm8jbD/ymVwZL84gLMigng==
+ bh=Oan0nT460bnBSfdOKCXlsarwBLEOZ6HSByQIFZo5Sn4=;
+ b=Bz+Q8Wdif90oVm6wCofNWsvzKqPytHIH7O7fij6LknfwV+XPrLCc6RImiqorCUal+bD2w2ySRwRJ5msUz2AlE/GLU50NY6OtsvRKrZvdVMGh7n9fAPIm2P2lD2mf+xGjf1zIB5CCaCnVERkiAMzW/Klx9msoRl225jqmPkEK4+lYIoFpPV2R5fvy4nNgYqRpz+ce1J+coam/cw6+zzQW/jmQKlZjjdKfSoNlfYMk62B9hg6WsKueoHnFu+gdpE3g8QjhvCh6e2JLXuW9xyBR93+BGaMM6Xa7Kxp46rxiypsWPBKpSYxCyu9XaziK1TRVix6Jv7xGC9jHYwcOQ5yzyQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PA1PR04MB10321.eurprd04.prod.outlook.com (2603:10a6:102:44f::9) with
+ by PA1PR04MB11081.eurprd04.prod.outlook.com (2603:10a6:102:485::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.25; Thu, 31 Oct
- 2024 16:21:44 +0000
+ 2024 16:27:17 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8093.027; Thu, 31 Oct 2024
- 16:21:43 +0000
-Date: Thu, 31 Oct 2024 12:21:34 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: l.stach@pengutronix.de, bhelgaas@google.com, lpieralisi@kernel.org,
-	kw@linux.com, manivannan.sadhasivam@linaro.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev,
-	kernel@pengutronix.de, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 08/10] PCI: imx6: Use dwc common suspend resume method
-Message-ID: <ZyOujhheoeMxKxSv@lizhi-Precision-Tower-5810>
-References: <20241031080655.3879139-1-hongxing.zhu@nxp.com>
- <20241031080655.3879139-9-hongxing.zhu@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241031080655.3879139-9-hongxing.zhu@nxp.com>
-X-ClientProxiedBy: SJ0PR03CA0294.namprd03.prod.outlook.com
- (2603:10b6:a03:39e::29) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ 16:27:16 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Date: Thu, 31 Oct 2024 12:27:00 -0400
+Subject: [PATCH v4 1/5] PCI: endpoint: Add pci_epc_get_fn() API for
+ customizable filtering
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241031-ep-msi-v4-1-717da2d99b28@nxp.com>
+References: <20241031-ep-msi-v4-0-717da2d99b28@nxp.com>
+In-Reply-To: <20241031-ep-msi-v4-0-717da2d99b28@nxp.com>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+ imx@lists.linux.dev, Niklas Cassel <cassel@kernel.org>, dlemoal@kernel.org, 
+ maz@kernel.org, tglx@linutronix.de, jdmason@kudzu.us, 
+ Frank Li <Frank.Li@nxp.com>
+X-Mailer: b4 0.13-dev-e586c
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1730392028; l=3101;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=WztdJXCK+bOn8jeGvfQAh0AF4COBEh+c0a1xNE6MdUc=;
+ b=5R7ouNHd90vplufWGmVJaXnpYoRGO/hg16Xps5b38myeJ5Rvm7rUk9iQDjrnayCIReb1GHWsh
+ I7Qu7uZx4FfBE8DwSjryyLQy5AqsqdkTvNlxPbHByxwA2nccdUyPCrd
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: BYAPR08CA0056.namprd08.prod.outlook.com
+ (2603:10b6:a03:117::33) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -68,345 +77,182 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA1PR04MB10321:EE_
-X-MS-Office365-Filtering-Correlation-Id: 86947187-a4e5-4d37-cfc6-08dcf9c81bcc
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA1PR04MB11081:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1af4b9e5-ba50-4a91-2294-08dcf9c8e20f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|52116014|7416014|376014|38350700014;
+	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|7416014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?l0rg79vI1T2jNq5h7Gb64JH71cF0g4mr8K5RxzsaxaVvKxXir6eu/q7TCpTw?=
- =?us-ascii?Q?jtdxTg7ThnEZ0uINLZyVw8/9OPNJDe0OkkyymorcelgUJMny6tsx0rjlnv9g?=
- =?us-ascii?Q?rE8ZfxKd/xegjq3nrRC7+I90ukjyTspvOg+MlB54xhequGAvoaRDX6wyzzzA?=
- =?us-ascii?Q?ATRFjUdguov0G7sSUgkjqcAcMVkfA6qdIjgXxAgSSc1a/+HyHtePur/zNadp?=
- =?us-ascii?Q?QzwMXWfdj/rW83S+5r9ZsTBmauvSQsLeBJMINzBcCT4RKnD3uNRfmeSqhETA?=
- =?us-ascii?Q?Y+REzlqDOmmbTffWqb0iNvDSf33p9T5lzrueckCzr6wOQddhL2QlQkfMSOkU?=
- =?us-ascii?Q?dwAIm5QsGtjiE/I1iNbf6LkuXP23+4RVkhi54YW74Ktul4nD8nm7gG0a8qE2?=
- =?us-ascii?Q?2GiEhDx/X7Dm+dyAI9DbAMMrn7HFGCD1USteaIQQ/2UaJbp48zdhf2gNVklF?=
- =?us-ascii?Q?5H9cTy2+foWnxRO07x9tePLtLpiVZBU0CNO3PY5hMMd+xmhTLOOeUIuB4NO4?=
- =?us-ascii?Q?tti0kjXo8gsNJBAXRPCYlfyxdx/f6tWY3YuwCt0tJ2CxO/W4PrpPVLwOobdh?=
- =?us-ascii?Q?3AEeBuQ7k0EUUEjY0ThZfbyKwW7ES9qYNzcBT+0DJtjC+vqP6ZM/+nTvHArZ?=
- =?us-ascii?Q?xJbYrh+K3IIrGleAYdqJvMAgr+rJnQ3TgZFlNCC4kgCXfnhxGfANBJ8UZ7De?=
- =?us-ascii?Q?aKnTgPXi2RV8s/SCvLDm3kPa26FD/MgbhUmja8FGumqhE/muZ9hIBDYFh8YI?=
- =?us-ascii?Q?0/DrbVXjPpfspZw7D/44I8yE7PMsqiOnb0rpAKL3cCy0MRbw0vSQoqIm89w6?=
- =?us-ascii?Q?zOj4mdTN2/TbqUAnpVjlKuKmCoKtgi1YU44m7KYyjY2m4sECmcAxGT4eaz1f?=
- =?us-ascii?Q?ZYP3tyiqRaLdFr24nmaI+hKXQzQdLyFsHqhjGbcxFMmpybIExYUpdYLm06QC?=
- =?us-ascii?Q?i0cHZwy4/fwghQvFQ8ZPg4EeWqYfeTcYTLTBcuhCURwZjRJXcwf8nknaKkiy?=
- =?us-ascii?Q?cUjT+RuePltK2vFAK53MZVNGFfIDUTsdpObAc06Oy17sbuBj+i6UcY4AryIc?=
- =?us-ascii?Q?cvqJkEtjI5WIaWv0lVJYWw1gqEkSBHlJ9Kp3J2WS6WlDiE6UsfIbtpshrOIt?=
- =?us-ascii?Q?n55KFQyOgYn0a560ATarW+604Bzy+RYJH7rJqXdNez4ZTMU828/cnLgYeRA6?=
- =?us-ascii?Q?XorzoxlvN/hngPv3DNH0bEsAWsNMao1T7b2BIu7jP1cCz6hVqURVBJ+1gb6u?=
- =?us-ascii?Q?Z4rttr9cpZlDD/XCi5XPUEtZ6aoB9q1BWg3iTOivEdbck2MMW0lo5tyg4OVH?=
- =?us-ascii?Q?bjE5+wAXWz/rXDXOHl5eIF/B8Aub2ORZgt21X7iGNI6HlJeJLmcRMFCncNep?=
- =?us-ascii?Q?S1eevxs=3D?=
+	=?utf-8?B?czV4QVZMM0N2QkgwMFYvVWVVSk9DdkFTT01Td0tNTFV2OTlpbmlpWTErU2Za?=
+ =?utf-8?B?Tkd6T0hMdHJoNWxZK0E2SDBvekpiV3ZXSmdTUnpycndXNm9BZnlNUEZQejYz?=
+ =?utf-8?B?VXZoZFZ0Skw5MGlsd0p1N3h1NncxcTk3enpRVkxTWXFQSzBwUDk5YTY4VGd0?=
+ =?utf-8?B?ZFBFZkVUSGpBVU9PR0d3bTh5VWczU2VNOUpmdHJ0ZGtUUzJuWExJZXpNWGNr?=
+ =?utf-8?B?Ykw0MmY2MEllS2pROTRVNVhINm00Vzd0L2tXOGtBdGZrc0NuQjg3SzhMWHMz?=
+ =?utf-8?B?WUYrSFJ6RHF1emFOQ1JocFV3dTcxdDE4N0xkTVJKUDVyMktTanorMEtucUo4?=
+ =?utf-8?B?L3VNd3hqdU50eHN0akNDUEtjMSt2UU1pRGlxZnY4eVZhblY2WUtmM1c1TEdC?=
+ =?utf-8?B?c3dYZzg4ZzIzZGpRN3VIODk1V0VUSWF3cnE2WFh2S3JvZzBQMkxLZkgwTGJm?=
+ =?utf-8?B?UnFBNjVUeDdtZUljbCtaWUx6MWQ5a3JJalN3MGhHWEIzSng4eVpER2xFRXFF?=
+ =?utf-8?B?dXhIc084a2hwNk9LczFMajhxWG1mT0RlcFdYb1ZZUEJsdC9EaDlaQVNIcVB5?=
+ =?utf-8?B?YjNLbnA5OHVoZko1TTIzTXpCQzMycmpvNFQ4bGlPRzJiMk9KaC9SbGcwVTdp?=
+ =?utf-8?B?RGV1dzlQVkdsTFBFVGtvaU1LeEF0THZqR2dIS3o4NkRTL204S3dXcy9YRVRJ?=
+ =?utf-8?B?TlE2TFBsV1o4cGZHV2owNkQwcmh4anZ3bCtmcG5NTmlWT3BsbmtNRmUzVWRM?=
+ =?utf-8?B?Z3Y3VE43MENHbXJXNTVjSjZhNjFRbGg3dTZPRmpqNGk1dHlhYXk3Sis2ZkNq?=
+ =?utf-8?B?dTFZenZnZXFVbldWRGMwSWhRUklHK2xubGZTTVllSFF3WVhNWVJ4Q1F5cW9Q?=
+ =?utf-8?B?OE9remd4MWV0Vi9hOURYaGc4a0NPRjIrV3JoR3E5OUhRQlFQaGR1SGxzQUUy?=
+ =?utf-8?B?NXA3Mi91VU9JM040eDBlR0tDb2lBbW5Sd2xqOGJCa0ZBVFFCZUZKMGFnY3dP?=
+ =?utf-8?B?YlE2ckE1TDhzTmFaY2pMR2NrUWxLZmFjMnhqaktmejk2VGVmWlJ1VGVicHJQ?=
+ =?utf-8?B?MW91Qzl4bnNubkxoWDVsWkEyWHE3ZVpIRm96OC95VWFCWWljWWwveFNJQ2R3?=
+ =?utf-8?B?QzExYlA5RVgycjNFc0taajlDUTEyYkNIY3dBRkdqenVZcmZkT0tmOHlMWHVM?=
+ =?utf-8?B?QnRMMXorTUZrU2pTVHQ3ZTBYbU42UXZGVGlBODM4eDFLc2Y1OWV0aWdrRWlS?=
+ =?utf-8?B?bjNYS242N3p6bnU2aG9kQ0xNemtKU0hDd3NZVnFPNW9ZRVRWaWRPaGg3WEJn?=
+ =?utf-8?B?WmVjL0RGU1dvWE43U25iRWNuNC9wRDdFYjRERVdxc1hDb1hlOGJQSlE3TzA2?=
+ =?utf-8?B?NGMxT0E4WlJQNldoeXFON0xDV2dGTXJBSU0vZ0w5Q1VvdmNHdWtsRStpRWM4?=
+ =?utf-8?B?SGljbEttdWtHYUd0aW5PUFVLM1ZicVZHR1dpU0MxVDZjNkZjdU5vNXRqaXp0?=
+ =?utf-8?B?Ymd5K2dzNFpuUDVmT0tEdTNVbkhjSE9CNXcrUFJyaDkvWSsrM01nb1BxRlBv?=
+ =?utf-8?B?UVRxRWFBV05sOFEvbWw5dTFLeFpSc283Sk9JNi9ZdFBwSzVWRHpvYitIQm5Z?=
+ =?utf-8?B?VEFJeU4zSElaMXg5akFJMnIzdno4Ym9RdkVUajlSNlRPbndxRjJueWdmMlZL?=
+ =?utf-8?B?MituU2NvZTUxdUZza1N2ZmMxbWoxRVpiejdjb2JnaWJTYWMzNjBvUUtDUjE4?=
+ =?utf-8?B?NEY4cm9GYzcvaEJSU3lOTmtZRWlBdmhGbzB2NUV3NkFVTk5uTlJua1FFdExZ?=
+ =?utf-8?Q?Zh5c+5rBeI+vVK6vsn262O7PWhYMVb7ECZVMc=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(7416014)(376014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(7416014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?sy8AY2vem2voC5fuzUxuzftUvSzJ2bJSFdauTHGY3e/l5QATa4rcBfhjnLKS?=
- =?us-ascii?Q?ykH23xtskOKTyTjzZV/vtDwghOoldycJb6PjgfrrS6TNT/0cUTK2QuRZmKW0?=
- =?us-ascii?Q?Qjoz60YItvs13l+YHwGWz7FYfBX00yddXoPe/JOnogUyQBGgxmjkgi89VQ6m?=
- =?us-ascii?Q?x9c5RNYsFNsGz++jic+d2FpLJNa3njJWvn0A3+cswBZz29vqUQmyCAYNuLd3?=
- =?us-ascii?Q?BGEXK80ib7yfTqOyCUxxj6qwQHBSpWCUUL6no2FzhRGBBoyxhu392GMAnz4s?=
- =?us-ascii?Q?ku6A5xn/d1Ttf7dOdKahoFg1UK/29Xo/bT/WXZ7YsQKBGq27KNoTSewQrMD5?=
- =?us-ascii?Q?1TPdUfNX9mm8BZ543aAU+OF4XaxHLzjBy5z3WKiC5lZSXhHApZ0xhXBlk2CZ?=
- =?us-ascii?Q?P0hPCJoiabswC5nKvN7hMZ2mIaI866o08LjAlCXYj8BsXE5Eh1XSx+7QaSLt?=
- =?us-ascii?Q?Er+DFCUdnLpwU9L4EExo7Xvsx2HH0ZzOBGkJX71OTgSys11pG7R8gN9stWin?=
- =?us-ascii?Q?BOA2VDO1Sq6HrkR96lA0XmYumwttVPXidXq8LqxNOIJLs/ABeWKu3La1fCUw?=
- =?us-ascii?Q?hI5EmLHaO0FzNfwMdxvD+8v97o22QMCg3xPDIyU6fmAn9rhNLROOPmhv4UeJ?=
- =?us-ascii?Q?xEjazz+AOKmVc4KY7hnw94xxkwKPRgHsBH8YgXBnY4teiGVCIsforvWUVxR9?=
- =?us-ascii?Q?/CQrqQXv0kMDp2OeTBeAb2SvnpDRWkGjS9SSyFjMnvkhFbR1wJNrapAqOymh?=
- =?us-ascii?Q?sbcpvgVvOd4CQsPDc2k0gasumSVInV1KtHWMEHruMk3/ts8CGmjWRpAMZ3nX?=
- =?us-ascii?Q?2eXyl0wTCLdJirJ92uI4DiHR4BcNI65ZAkd1qB2wwreJJrlt+C0Ia2zDgSKe?=
- =?us-ascii?Q?F2oueV1MJKlSDWu1lYo123i0c2KcP8xRCnHQDhGJQY9nFoAwQxeMkDpdZacK?=
- =?us-ascii?Q?kgc8cTduTV1GxucBWeDpy0QO37nVy7jlIBP1CgzznkM76TluCaLw5qcJvU3v?=
- =?us-ascii?Q?COX4FMuZRwUzwo3u14nZvboit+vw6e4oHwuBZe8gK0D30utIy1OTVMWfCx7n?=
- =?us-ascii?Q?3fBuj6Kn3jW95DYxllazbP+N0tvZoxYqJk3h+c06Fh0BOFaHX4ZXLA/NUrjJ?=
- =?us-ascii?Q?RdNKsWdikO+UOPfmV0AeSt08IlXGVYZpGaDsL6YuNhD6pcy5akVmAgM9NyR9?=
- =?us-ascii?Q?O3bec0FcPSu3XPsRqBYTSgFk5tGRxQDZ/jRbVzLGawuRH8ugQGM64V5VxjXq?=
- =?us-ascii?Q?nDu6c//hTosOM96uxgTxUU+PaXBdDEeyUS94bVKDlbbw/+1A6Pg7I1iOcrWB?=
- =?us-ascii?Q?gfC3nubfS0u363hZDyUcYTkTv6fzWQiXB5vTt+lnF3733gd7X1lC+otoJOvv?=
- =?us-ascii?Q?z+Q3fhMeHxGm8euuZCIMlspFcomPp893rEveLnORdW2MWYeUcWsS3Ufz+NKZ?=
- =?us-ascii?Q?8GWN8rnK6lLA0Rq1XJ/PyZbuXaXcvwN1t9tamiqTWlg6G1aI5tUWx7iU3CNP?=
- =?us-ascii?Q?eWZqjPLr3v34/3xe0Iw0O1RitOvOYo03GyOwbo83E8HLRDw0KEjO3oASdw9K?=
- =?us-ascii?Q?ycoaNwS1o6GGSs5nZFz3qWI2QhAnqUHzN6OZkua/?=
+	=?utf-8?B?cnBnVXRTSE9DVENBYTFxREF1a0JFdERKUWhESnhXMFJuZGd4Z2dpMkxtMDNN?=
+ =?utf-8?B?djFQbmI2Q3VQK3E5elZrWG8wcUdTdUVHeUNBN3VOUFBZYUNPYXQvOXJiQnR0?=
+ =?utf-8?B?REhKbmJQS2UzNnVjTU5Wd0M0YldmN09HYm5zdG9vazROMUE5MytWcFhmS25x?=
+ =?utf-8?B?Rzl3R3B0bjMyZk1idGo5ZDRGUm8raDF6cTNUaGNhY3Zjb2ZTdGJKYmlxc3Rm?=
+ =?utf-8?B?L1EzcEo4a3o3UzZ1UmZUZkdDSlBIblZMeEV4RjRJYVRPdmhsQVpIWmM0clZo?=
+ =?utf-8?B?aHBrVEFuU0RsZkhsSW02TkZSRnhKYmVQRHRpNU83dWZiZVVVWWljNG5ycnRw?=
+ =?utf-8?B?OXdQRkRUQnM2cjdEa0JIdE1ZNkFESVAzcGRZdkN2UFgwdDF6K29jU0FzbG5P?=
+ =?utf-8?B?a2puaDNPZEVYMnd2Q0haMVBBN1RNM3ZGQkVGVC9mTVhvT0dYY24yaCtHMW5Z?=
+ =?utf-8?B?UVdDdTB5bWN3SDFZRnp4ZXJUQlNGeCs0a1p3U0FqMDVNR0o2aGFmYXdhUFhJ?=
+ =?utf-8?B?SktIcXFqWXNtRzhZekhaU0RXL2RNWUxMMWloWUw5UXBPRlNsNzR3bk9uS2pR?=
+ =?utf-8?B?Q3ViNDBuUGhBa3haL0xaWm02Vld5U2FEYjBnby85MVZGOFFLVWhadmVpS1Bq?=
+ =?utf-8?B?NzBLREgvMnlSckZ6WFVGOVV3UVp3U05yemlUemZZaTJIRTBQTTFQc3pyNmpS?=
+ =?utf-8?B?UGczallSTjNxYmdOZklkdjZORzF4a3FKcjFUTG1aT1lUanJOT2k1UERsR3Ax?=
+ =?utf-8?B?UGcyYkJ4RDY5WmdPNEFjYi9MZWZuTEZCallNM1VmZGVZR3NLOC95RHFPeTdY?=
+ =?utf-8?B?ZnA2L2RMcjVtVkdMd3ltdVhTQ0U3aHhwcHAzOXBjQ3N6elEreWxyZ1BWSzNl?=
+ =?utf-8?B?N0dWMWxjeStDMzU5V21ZVU1GSHYrK3U0QlplVE5TSU1lekVXT1k4TlJYeUUv?=
+ =?utf-8?B?NmxqY2JkSUgwaDN5S25vRnRUQW5SdGxUQUJsa3Q1L1hRVnNVUGxkU1UveGdD?=
+ =?utf-8?B?YVVhZ3V3M3N0bjlHK0hTbzhONkNhUzZjbi9wdGwzaE9CdjBhWmpad3JBNjhG?=
+ =?utf-8?B?K2xoR1lTc1FkY2xJbUJoOUdGU0FpeVpoaUV4eDMyelFTeFMxWDFrUVIxa3pP?=
+ =?utf-8?B?S3VWZzNSTFF4Uks2MVJUeUtVQWEyZnFLSmJMRnpGWDlyaEx4dFpzWSs3c3Fu?=
+ =?utf-8?B?bnhrWkJqRURJVXlHWmdtdlE3emIzTE9ieE5kR0M4WktTVkl2d0FOb0ZpcmtZ?=
+ =?utf-8?B?Vy84QjJvdXRJY3U1K3Bndy9tY25vOVk1MWs4eDJhNWI4TXpQK3I3NWtLZTdv?=
+ =?utf-8?B?SGJ2OHpYbTB1R3dwSlNKcWMvUlMzdDl2cWRweGNsTVlGaEt6OEdGN3lrN0py?=
+ =?utf-8?B?QS9xaEJPRVdtR1FxVXRjdnhDWWJDOUhWMkViOElmaUFCNStITFZhWVo3Ymx2?=
+ =?utf-8?B?WTlTMHZQaWxoZ3hEQlNRQk84aVZEODVkaGxJUTJ2N1NvUVFNczRTSXlkKzlv?=
+ =?utf-8?B?d29JeWNvaW5ZZEsyalBDUUFYWXFhNnByaW9SRTNqTEtIVEtoMEI0WlhuSGV3?=
+ =?utf-8?B?aXFPditGcU91RjA0Nmk4c3cveHU2KzRjOUgwTkIrT1hMNi9HdHZKZDZPMVdx?=
+ =?utf-8?B?VVFnUGYwMXNpbE1OcWUxcmtYVVQrQS9kN2pMUUlHVGY4ZFRsejlWTzBPRVpv?=
+ =?utf-8?B?QmNURzZKMzdmWEw3OEw1RUhLVWNZVUpqTTJYUWlscGhnUU03emZzK0ZXenVO?=
+ =?utf-8?B?ZWdJa3lNYWMvU05xMzlKWm4rOXZHRndINkJNK09jNkR1RFFmYXVOeWdRZEV5?=
+ =?utf-8?B?OWdCeDA4ZHVITUFJSW5uamY3VDhVTys3MDNyTjl0SklCQU1zYWRYLzRZUW8r?=
+ =?utf-8?B?enBsNlJXdkNEV3lGYkxCU0NxUmVjQTdJTXhnQXhCbTdFcHhUOWVvWjdyVi9r?=
+ =?utf-8?B?eVdkUTg1ZVN6QWJabythWkFMRmt0OE5jamxvdXVKK1picEFhUnRmMTFPY1pF?=
+ =?utf-8?B?SGRUOHk4RWNtb3NuUWVvcjJ3aEVHN1RYbG9zK29kSjVFZUZXTWR2OFNmYmha?=
+ =?utf-8?B?UlVxbURrTHBoTmlQSWF3bnhjbjRock56amF6czNDcHNrbjlpODQyczl0MHBz?=
+ =?utf-8?Q?Pbn8=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 86947187-a4e5-4d37-cfc6-08dcf9c81bcc
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1af4b9e5-ba50-4a91-2294-08dcf9c8e20f
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Oct 2024 16:21:43.7642
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Oct 2024 16:27:16.2338
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2qWnO68KzysLRRg5eUp7XgsplOEcMvIz29j/1xLiItLiJGNBW+IafGA8J9a5rIAclnYLawi4N/VO9cC+OO9YhQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10321
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8gtkQKvmiGvI98OyIatVYcmvRcEYlgXl3v6i6O2ByG0jjg49qgoajaEGNbPFX7JKg5nJvj9/3gAVT1wDlflBzg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB11081
 
-On Thu, Oct 31, 2024 at 04:06:53PM +0800, Richard Zhu wrote:
-> From: Frank Li <Frank.Li@nxp.com>
->
-> Call common dwc suspend/resume function. Use dwc common iATU method to
-> send out PME_TURN_OFF message. In Old DWC implementations,
-> PCIE_ATU_INHIBIT_PAYLOAD bit in iATU Ctrl2 register is reserved. So the
-> generic DWC implementation of sending the PME_Turn_Off message using a
-> dummy MMIO write cannot be used. Use previouse method to kick off
-> PME_TURN_OFF MSG for these platforms.
->
-> Replace the imx_pcie_stop_link() and imx_pcie_host_exit() by
-> dw_pcie_suspend_noirq() in imx_pcie_suspend_noirq().
+Introduce the pci_epc_get_fn() API, allowing a custom filter callback
+function to be passed. Reimplement pci_epc_get() using pci_epc_get_fn()
+with a match name callback. Prepare the codebase for adding RC-to-EP
+doorbell support.
 
-because dw_pcie_suspend_noirq() already do these, see below call stack:
->
-> dw_pcie_suspend_noirq()
->   dw_pcie_stop_link();
->   pci->pp.ops->deinit();
->     imx_pcie_host_exit();
->
-> Replace the imx_pcie_host_init(), dw_pcie_setup_rc() and
-> imx_pcie_start_link() by dw_pcie_resume_noirq() in
-> imx_pcie_resume_noirq().
+Add DEFINE_FREE(pci_epc_put) to implement scope based auto cleanup.
 
-because it dw_pcie_resume_noirq() already do these, see below call stack:
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+change from v3 to v4
+- none
+---
+ drivers/pci/endpoint/pci-epc-core.c | 23 +++++++++++++++++++++--
+ include/linux/pci-epc.h             |  2 ++
+ 2 files changed, 23 insertions(+), 2 deletions(-)
 
->
-> dw_pcie_resume_noirq()
->   pci->pp.ops->init();
->     imx_pcie_host_init();
->   dw_pcie_setup_rc();
->   dw_pcie_start_link();
->     imx_pcie_start_link();
->
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c | 96 ++++++++++-----------------
->  1 file changed, 35 insertions(+), 61 deletions(-)
->
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index dbcf22e440e2..410a31e5f82a 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -33,6 +33,7 @@
->  #include <linux/pm_domain.h>
->  #include <linux/pm_runtime.h>
->
-> +#include "../../pci.h"
->  #include "pcie-designware.h"
->
->  #define IMX8MQ_GPR_PCIE_REF_USE_PAD		BIT(9)
-> @@ -83,6 +84,7 @@ enum imx_pcie_variants {
->  #define IMX_PCIE_FLAG_SUPPORT_64BIT		BIT(7)
->  #define IMX_PCIE_FLAG_CPU_ADDR_FIXUP		BIT(8)
->  #define IMX_PCIE_FLAG_CLOCKS_OPTIONAL		BIT(9)
-> +#define IMX_PCIE_FLAG_CUSTOM_PME_TURNOFF	BIT(10)
->
->  #define imx_check_flag(pci, val)	(pci->drvdata->flags & val)
->
-> @@ -107,19 +109,18 @@ struct imx_pcie_drvdata {
->  	int (*init_phy)(struct imx_pcie *pcie);
->  	int (*enable_ref_clk)(struct imx_pcie *pcie, bool enable);
->  	int (*core_reset)(struct imx_pcie *pcie, bool assert);
-> +	const struct dw_pcie_host_ops *ops;
->  };
->
->  struct imx_pcie {
->  	struct dw_pcie		*pci;
->  	struct gpio_desc	*reset_gpiod;
-> -	bool			link_is_up;
->  	struct clk_bulk_data	clks[IMX_PCIE_MAX_CLKS];
->  	struct regmap		*iomuxc_gpr;
->  	u16			msi_ctrl;
->  	u32			controller_id;
->  	struct reset_control	*pciephy_reset;
->  	struct reset_control	*apps_reset;
-> -	struct reset_control	*turnoff_reset;
->  	u32			tx_deemph_gen1;
->  	u32			tx_deemph_gen2_3p5db;
->  	u32			tx_deemph_gen2_6db;
-> @@ -898,13 +899,11 @@ static int imx_pcie_start_link(struct dw_pcie *pci)
->  		dev_info(dev, "Link: Only Gen1 is enabled\n");
->  	}
->
-> -	imx_pcie->link_is_up = true;
->  	tmp = dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKSTA);
->  	dev_info(dev, "Link up, Gen%i\n", tmp & PCI_EXP_LNKSTA_CLS);
->  	return 0;
->
->  err_reset_phy:
-> -	imx_pcie->link_is_up = false;
->  	dev_dbg(dev, "PHY DEBUG_R0=0x%08x DEBUG_R1=0x%08x\n",
->  		dw_pcie_readl_dbi(pci, PCIE_PORT_DEBUG0),
->  		dw_pcie_readl_dbi(pci, PCIE_PORT_DEBUG1));
-> @@ -1023,9 +1022,32 @@ static u64 imx_pcie_cpu_addr_fixup(struct dw_pcie *pcie, u64 cpu_addr)
->  	return cpu_addr - entry->offset;
->  }
->
-> +/*
-> + * In Old DWC implementations, PCIE_ATU_INHIBIT_PAYLOAD bit in iATU Ctrl2
-> + * register is reserved. So the generic DWC implementation of sending the
-> + * PME_Turn_Off message using a dummy MMIO write cannot be used.
-> + */
-> +static void imx_pcie_pme_turn_off(struct dw_pcie_rp *pp)
-> +{
-> +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> +	struct imx_pcie *imx_pcie = to_imx_pcie(pci);
-> +
-> +	regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12, IMX6SX_GPR12_PCIE_PM_TURN_OFF);
-> +	regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12, IMX6SX_GPR12_PCIE_PM_TURN_OFF);
-> +
-> +	usleep_range(PCIE_PME_TO_L2_TIMEOUT_US/10, PCIE_PME_TO_L2_TIMEOUT_US);
-> +}
-> +
-> +
->  static const struct dw_pcie_host_ops imx_pcie_host_ops = {
->  	.init = imx_pcie_host_init,
->  	.deinit = imx_pcie_host_exit,
-> +	.pme_turn_off = imx_pcie_pme_turn_off,
-> +};
-> +
-> +static const struct dw_pcie_host_ops imx_pcie_host_dw_pme_ops = {
-> +	.init = imx_pcie_host_init,
-> +	.deinit = imx_pcie_host_exit,
->  };
->
->  static const struct dw_pcie_ops dw_pcie_ops = {
-> @@ -1146,43 +1168,6 @@ static int imx_add_pcie_ep(struct imx_pcie *imx_pcie,
->  	return 0;
->  }
->
-> -static void imx_pcie_pm_turnoff(struct imx_pcie *imx_pcie)
-> -{
-> -	struct device *dev = imx_pcie->pci->dev;
-> -
-> -	/* Some variants have a turnoff reset in DT */
-> -	if (imx_pcie->turnoff_reset) {
-> -		reset_control_assert(imx_pcie->turnoff_reset);
-> -		reset_control_deassert(imx_pcie->turnoff_reset);
-> -		goto pm_turnoff_sleep;
-> -	}
-> -
-> -	/* Others poke directly at IOMUXC registers */
-> -	switch (imx_pcie->drvdata->variant) {
-> -	case IMX6SX:
-> -	case IMX6QP:
-> -		regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
-> -				IMX6SX_GPR12_PCIE_PM_TURN_OFF,
-> -				IMX6SX_GPR12_PCIE_PM_TURN_OFF);
-> -		regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
-> -				IMX6SX_GPR12_PCIE_PM_TURN_OFF, 0);
-> -		break;
-> -	default:
-> -		dev_err(dev, "PME_Turn_Off not implemented\n");
-> -		return;
-> -	}
-> -
-> -	/*
-> -	 * Components with an upstream port must respond to
-> -	 * PME_Turn_Off with PME_TO_Ack but we can't check.
-> -	 *
-> -	 * The standard recommends a 1-10ms timeout after which to
-> -	 * proceed anyway as if acks were received.
-> -	 */
-> -pm_turnoff_sleep:
-> -	usleep_range(1000, 10000);
-> -}
-> -
->  static void imx_pcie_msi_save_restore(struct imx_pcie *imx_pcie, bool save)
->  {
->  	u8 offset;
-> @@ -1206,36 +1191,26 @@ static void imx_pcie_msi_save_restore(struct imx_pcie *imx_pcie, bool save)
->  static int imx_pcie_suspend_noirq(struct device *dev)
->  {
->  	struct imx_pcie *imx_pcie = dev_get_drvdata(dev);
-> -	struct dw_pcie_rp *pp = &imx_pcie->pci->pp;
->
->  	if (!(imx_pcie->drvdata->flags & IMX_PCIE_FLAG_SUPPORTS_SUSPEND))
->  		return 0;
->
->  	imx_pcie_msi_save_restore(imx_pcie, true);
-> -	imx_pcie_pm_turnoff(imx_pcie);
-> -	imx_pcie_stop_link(imx_pcie->pci);
-> -	imx_pcie_host_exit(pp);
-> -
-> -	return 0;
-> +	return dw_pcie_suspend_noirq(imx_pcie->pci);
->  }
->
->  static int imx_pcie_resume_noirq(struct device *dev)
->  {
->  	int ret;
->  	struct imx_pcie *imx_pcie = dev_get_drvdata(dev);
-> -	struct dw_pcie_rp *pp = &imx_pcie->pci->pp;
->
->  	if (!(imx_pcie->drvdata->flags & IMX_PCIE_FLAG_SUPPORTS_SUSPEND))
->  		return 0;
->
-> -	ret = imx_pcie_host_init(pp);
-> +	ret = dw_pcie_resume_noirq(imx_pcie->pci);
->  	if (ret)
->  		return ret;
->  	imx_pcie_msi_save_restore(imx_pcie, false);
-> -	dw_pcie_setup_rc(pp);
-> -
-> -	if (imx_pcie->link_is_up)
-> -		imx_pcie_start_link(imx_pcie->pci);
->
->  	return 0;
->  }
-> @@ -1267,11 +1242,14 @@ static int imx_pcie_probe(struct platform_device *pdev)
->
->  	pci->dev = dev;
->  	pci->ops = &dw_pcie_ops;
-> -	pci->pp.ops = &imx_pcie_host_ops;
->
->  	imx_pcie->pci = pci;
->  	imx_pcie->drvdata = of_device_get_match_data(dev);
->
-> +	pci->pp.ops = &imx_pcie_host_dw_pme_ops;
-> +	if (imx_pcie->drvdata->ops)
-> +		pci->pp.ops = imx_pcie->drvdata->ops;
-> +
->  	/* Find the PHY if one is defined, only imx7d uses it */
->  	np = of_parse_phandle(node, "fsl,imx7d-pcie-phy", 0);
->  	if (np) {
-> @@ -1345,13 +1323,6 @@ static int imx_pcie_probe(struct platform_device *pdev)
->  		break;
->  	}
->
-> -	/* Grab turnoff reset */
-> -	imx_pcie->turnoff_reset = devm_reset_control_get_optional_exclusive(dev, "turnoff");
-> -	if (IS_ERR(imx_pcie->turnoff_reset)) {
-> -		dev_err(dev, "Failed to get TURNOFF reset control\n");
-> -		return PTR_ERR(imx_pcie->turnoff_reset);
-> -	}
-> -
->  	if (imx_pcie->drvdata->gpr) {
->  	/* Grab GPR config register range */
->  		imx_pcie->iomuxc_gpr =
-> @@ -1430,6 +1401,7 @@ static int imx_pcie_probe(struct platform_device *pdev)
->  		if (ret < 0)
->  			return ret;
->  	} else {
-> +		pci->pp.use_atu_msg = true;
->  		ret = dw_pcie_host_init(&pci->pp);
->  		if (ret < 0)
->  			return ret;
-> @@ -1494,6 +1466,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
->  		.init_phy = imx6sx_pcie_init_phy,
->  		.enable_ref_clk = imx6sx_pcie_enable_ref_clk,
->  		.core_reset = imx6sx_pcie_core_reset,
-> +		.ops = &imx_pcie_host_ops,
->  	},
->  	[IMX6QP] = {
->  		.variant = IMX6QP,
-> @@ -1511,6 +1484,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
->  		.init_phy = imx_pcie_init_phy,
->  		.enable_ref_clk = imx6q_pcie_enable_ref_clk,
->  		.core_reset = imx6qp_pcie_core_reset,
-> +		.ops = &imx_pcie_host_ops,
->  	},
->  	[IMX7D] = {
->  		.variant = IMX7D,
-> --
-> 2.37.1
->
+diff --git a/drivers/pci/endpoint/pci-epc-core.c b/drivers/pci/endpoint/pci-epc-core.c
+index 17f0071092550..14e6011df4b2c 100644
+--- a/drivers/pci/endpoint/pci-epc-core.c
++++ b/drivers/pci/endpoint/pci-epc-core.c
+@@ -48,6 +48,11 @@ void pci_epc_put(struct pci_epc *epc)
+ }
+ EXPORT_SYMBOL_GPL(pci_epc_put);
+ 
++static bool pci_epc_match_name(struct device *dev, void *name)
++{
++	return strcmp(dev_name(dev), name) == 0;
++}
++
+ /**
+  * pci_epc_get() - get the PCI endpoint controller
+  * @epc_name: device name of the endpoint controller
+@@ -56,6 +61,20 @@ EXPORT_SYMBOL_GPL(pci_epc_put);
+  * endpoint controller
+  */
+ struct pci_epc *pci_epc_get(const char *epc_name)
++{
++	return pci_epc_get_fn(pci_epc_match_name, (void *)epc_name);
++}
++EXPORT_SYMBOL_GPL(pci_epc_get);
++
++/**
++ * pci_epc_get_fn() - get the PCI endpoint controller
++ * @fn: callback match filter function, return true when matched
++ * @param: parameter for callback function fn
++ *
++ * Invoke to get struct pci_epc * corresponding to the device name of the
++ * endpoint controller
++ */
++struct pci_epc *pci_epc_get_fn(bool (*fn)(struct device *dev, void *param), void *param)
+ {
+ 	int ret = -EINVAL;
+ 	struct pci_epc *epc;
+@@ -64,7 +83,7 @@ struct pci_epc *pci_epc_get(const char *epc_name)
+ 
+ 	class_dev_iter_init(&iter, &pci_epc_class, NULL, NULL);
+ 	while ((dev = class_dev_iter_next(&iter))) {
+-		if (strcmp(epc_name, dev_name(dev)))
++		if (!fn(dev, param))
+ 			continue;
+ 
+ 		epc = to_pci_epc(dev);
+@@ -82,7 +101,7 @@ struct pci_epc *pci_epc_get(const char *epc_name)
+ 	class_dev_iter_exit(&iter);
+ 	return ERR_PTR(ret);
+ }
+-EXPORT_SYMBOL_GPL(pci_epc_get);
++EXPORT_SYMBOL_GPL(pci_epc_get_fn);
+ 
+ /**
+  * pci_epc_get_first_free_bar() - helper to get first unreserved BAR
+diff --git a/include/linux/pci-epc.h b/include/linux/pci-epc.h
+index 42ef06136bd1a..682808f4510be 100644
+--- a/include/linux/pci-epc.h
++++ b/include/linux/pci-epc.h
+@@ -266,7 +266,9 @@ pci_epc_get_first_free_bar(const struct pci_epc_features *epc_features);
+ enum pci_barno pci_epc_get_next_free_bar(const struct pci_epc_features
+ 					 *epc_features, enum pci_barno bar);
+ struct pci_epc *pci_epc_get(const char *epc_name);
++struct pci_epc *pci_epc_get_fn(bool (*fn)(struct device *dev, void *param), void *param);
+ void pci_epc_put(struct pci_epc *epc);
++DEFINE_FREE(pci_epc_put, void *, if (!(_T)) pci_epc_put(_T))
+ 
+ int pci_epc_mem_init(struct pci_epc *epc, phys_addr_t base,
+ 		     size_t size, size_t page_size);
+
+-- 
+2.34.1
+
