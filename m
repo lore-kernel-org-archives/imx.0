@@ -1,208 +1,322 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2089.outbound.protection.outlook.com [40.107.20.89])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010053.outbound.protection.outlook.com [52.101.69.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B4ADDC1
-	for <imx@lists.linux.dev>; Thu, 31 Oct 2024 02:40:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C7743173
+	for <imx@lists.linux.dev>; Thu, 31 Oct 2024 03:46:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730342443; cv=fail; b=fF4x4RR7MYQAYQhlxXLAvDvJdJfrvh0vLwdtZDxZjZB/jMw/zN3zVe/6MAL7j44tXTWRCC/ZpuNQ6s5Yk1tDDfVc1xI3MfBqQKkHI77qzcSHYQZyEA66X3/CSn4VsZU0UJqsdtfhbhhfZfuiR4QUb5YVVxxq6udbN5l4FrPw99w=
+	t=1730346414; cv=fail; b=eOoIkmvzKzYxFzehiO46cIWCfrvi1hbg0v0eQOUOyqT9HSqom6Ir/aGjo7jRhwoaZSAeHuxuq1+TgOmdYYra0tPrIaXBVM196fG+KVZTm70PtXawZHuVLJ3TySpQpa82NTP3ZElvKzZk2EXVtHyfrwIFYONLbIk1w/y7ZzLt8Cw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730342443; c=relaxed/simple;
-	bh=Qw/49uKxKVsH7hBl3lGxaNME1Gdwzs4NP5yHTYi4muA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Mx8ytHWknL7wgzQJsKtAyfsUiCtFLrWJk6CJK43SHHrqk4V9F7lskHCAWv6yFH8H3gEY1h/s9XhQULw3amkCMjHEUjo04TXWma9K5viGN06pOBO8rLeHhhXVnZTxfqBrOHI2WABViJioOnwatG6M6I3Yb2ET+1tidUtPGV/P71M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=klxOd0xt; arc=fail smtp.client-ip=40.107.20.89
+	s=arc-20240116; t=1730346414; c=relaxed/simple;
+	bh=DeJvsWUVH4KWi2gBAho4B61R9P7osvUmeS+AHSYH3DU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=na3IGNJBn9nzJr4V7+6WInvdjkKPyF6jnJDNyqGSB/9QpOrdmy5PMG4fw7IFcoX2P20wxomu/Spm9h90F8+LFeg+as7tbL8QtwrJMvj6PzTzm46t80//D3bADVuyKzMI7w2HplB3dr8vX0qUV1v3rP12FGTD1SFwU+amGGsrUDU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=NQtAJZyr; arc=fail smtp.client-ip=52.101.69.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="klxOd0xt"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="NQtAJZyr"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uUpmfia7Hgs5hB09/GIVq/1aloUXGXOqgbXfJh/Lf9MVttogAWuI6lGhMW/3i9K6VoSojiqWnIzFJVXmTFQ7spzUDqOx7wdG1rueVPExyulSat4rB5gVNeCuWeajv802aQ2jwU1fb2LEb+98C5HArU0eVPUTryryzlv3YabBxWo5HMnH1nPKqNRNFcP4486cWfPF/Rt77REN50PIw8lce0WcmkByi1LX2oUL5vIPMk1VAk50UZI9FNUg14KGwH1sH/P+TAnrgs3kJhXcgKZ75ePskogQVErXCz42whQz0ALMN/1K6LXQ71nvINHP5T0jwq2iiGnWFyhO6z0FDWcUAg==
+ b=RlGyeUW/WTlerlXSekmVH9copdvnTDHF2/J8kalFDZX5gl3ODUWtZzlJfR2vPolJRuShwdA7XtC5VoUBhKoXXtrX3MBSdXg5u4HDjrDFYOTKFcIS5rs1V//E51tGZzojWTdC95YYyO0eUU0FNESFSFnXLIEZ5LvgazLccpERwKSAFbLfwwfN1nhGF1CVlNveFzzTAycjOdtAwYAeVD+ktZjoO6Gc9DqZnEHmNVbPBv/r4wNoib0K9gHFZ0aNmiJ2dT9ScEZlhvYmcPiVJ2kx/Uj1NyiV/LuaUmQaCjBCqO8kc7pp/SjQBdGzD9SNybMHPRmmfV/TDfPT773t+NtJXA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kZjtl/8s8GfeQGvuo/Pnjpdys6FfixXhPlE6XSuEKn8=;
- b=eYX32wxigGS0V3tKi3a0+K+IjdQI1kMqj9/+0EoPgAaMmfCUPz4xPB28ZqgkjgimisyO3Ga/eA0UTLV2y7aUDYCyRrhGidZiiWgrHz1yeXtZJwfrKoMjiyreeeWiCwQZKx9ZnpoSgF7Qz5M1if3O9XabaACA/WDZ1XkSggBdT5qyIgGibgEdcQi7Njb3TiZY+BsFw8Mgfhj6O8hjerzOd346zS10wvdExESpGq4EdopRUo+IooWSqliIOyNzfTq7Jc9IKAW38yoLX100to9CUvy9hlt2R6SrzJy1LJgZK4HHFKcLRwAONzFxvfmv4Yrrts8MpwGQNUvl2Jo+zN+47A==
+ bh=r21tg5zrAKd1f/lUNPou16KYwTnrdpMpqI0kzKbo0xI=;
+ b=VNSueiCl3hX7csOuGyiDNwJV7Qor5XzspG/VIWeDVh2DMaxaJO35VfgixYE08+B6nkrFN0X2/Q6uJkzginmPnDC71i6n85f0/kb4KusfWh57mw5r2DU33q2gD88kD91g2EcenA/D0km/SV9MJx9vUVtEtKaSbRfcNfyWqWzQvOLJqlqI+WH3eH/VV/HCfxmkifw39TzcJYPTJZsWEOWuj/aLPnkwoPIoxfL0fOqFgNYl8X45eOMdw8U7oKQfXg7KKtlwqJEzU0bAGZqLq63YioDVd+PgxXB9KFeO/uoxXXV1vryCqLZ//kG24iv1C8j1s+iz5jWCMAtIjRNfDQ/fww==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kZjtl/8s8GfeQGvuo/Pnjpdys6FfixXhPlE6XSuEKn8=;
- b=klxOd0xtOnXxMsXMPQGJbhxVcdj2eurF/bV2fhNpbHjInRw3eWvVAZpinG2qEtf+4zHQATvR4A9y1dcPoER+Z7XV7f+PKMJcj7ZHD8A0zrgMWpSRYVVMkwWOPApG4R458s8O8UYfOLFdg6zDde1rzROnJTfM07S15sjy9g83SQAtMj7oowYmXlo23oge+XQfMFA1zxkjVIuBCGhuQsGTVnpzEsXgCwAR5JTRKUaGCRB54Rc2vZ8ROSNvtreBBKb4slmCuAMEONRXJt5Mg82BA+DYpRUyE9pAJLi4zK8uvWnNzlVLL8Apvga8fF6Lg+Ca89CVtPwXP8LKSO8xfEEsVw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by DU4PR04MB10459.eurprd04.prod.outlook.com (2603:10a6:10:56b::14) with
+ bh=r21tg5zrAKd1f/lUNPou16KYwTnrdpMpqI0kzKbo0xI=;
+ b=NQtAJZyrGL4T5UGJh9DCIK94hU07FL0y4c/8jHAAww9H6SGFgFi+NLDuJpcRo6NHQUwIjeLcuXa39Lzg6HydS3D7bhMrBnUiUrKMBTF6tAFGfj3MHP7746a21/OyQIdRTUbYWwfo5EGdlKW+yjs+X8gxt863v5O2+VlZ9bsXt2KiFVI8npUMciph2f9wwo+BRurbCQEi3KZBikktOR7815HjmBFliUKNhjnsmSP3y9Di+eTV/My0dvvzft3Iz8+kqBC51ONUXHHLJSlfLocPbEYVIISOhRBMVEalmohj76MBBmlsFUukEWsHromf4tgcD1gLQcize8R13Cuk4KRyCA==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by PAWPR04MB10005.eurprd04.prod.outlook.com (2603:10a6:102:385::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.32; Thu, 31 Oct
- 2024 02:40:37 +0000
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90%4]) with mapi id 15.20.8093.023; Thu, 31 Oct 2024
- 02:40:37 +0000
-Message-ID: <9a438c25-5d37-444b-b3aa-9a081eaf30df@nxp.com>
-Date: Thu, 31 Oct 2024 10:40:58 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 03/13] drm/bridge: fsl-ldb: Use clk_round_rate() to
- validate "ldb" clock rate
-To: Maxime Ripard <mripard@kernel.org>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
- Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
- tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, quic_jesszhan@quicinc.com,
- mchehab@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, catalin.marinas@arm.com,
- will@kernel.org, sakari.ailus@linux.intel.com, hverkuil@xs4all.nl,
- tomi.valkeinen@ideasonboard.com, quic_bjorande@quicinc.com,
- geert+renesas@glider.be, dmitry.baryshkov@linaro.org, arnd@arndb.de,
- nfraprado@collabora.com, thierry.reding@gmail.com,
- prabhakar.mahadev-lad.rj@bp.renesas.com, sam@ravnborg.org, marex@denx.de,
- biju.das.jz@bp.renesas.com
-References: <20241028023740.19732-1-victor.liu@nxp.com>
- <20241028023740.19732-4-victor.liu@nxp.com>
- <20241030-hypersonic-tremendous-tuatara-2bbeb0@houat>
-From: Liu Ying <victor.liu@nxp.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.21; Thu, 31 Oct
+ 2024 03:46:47 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%7]) with mapi id 15.20.8093.027; Thu, 31 Oct 2024
+ 03:46:47 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+CC: "davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, Claudiu Manoil <claudiu.manoil@nxp.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: RE: [PATCH net] net: enetc: prevent VF from configuring preemptiable
+ TCs
+Thread-Topic: [PATCH net] net: enetc: prevent VF from configuring preemptiable
+ TCs
+Thread-Index: AQHbKqbVP6taxDbDNEuEvy4Pi75TqLKfZ+OAgACrTbCAACUYsA==
+Date: Thu, 31 Oct 2024 03:46:47 +0000
+Message-ID:
+ <PAXPR04MB85104B9FCD3D74743E9B261488552@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20241030082117.1172634-1-wei.fang@nxp.com>
+ <20241030151547.5t5f55hxwd33qysw@skbuf>
+ <PAXPR04MB8510F0A3B49E05554D5BD71188552@PAXPR04MB8510.eurprd04.prod.outlook.com>
+In-Reply-To:
+ <PAXPR04MB8510F0A3B49E05554D5BD71188552@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Accept-Language: en-US
 Content-Language: en-US
-In-Reply-To: <20241030-hypersonic-tremendous-tuatara-2bbeb0@houat>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SG3P274CA0015.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::27)
- To AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|PAWPR04MB10005:EE_
+x-ms-office365-filtering-correlation-id: 66827cd4-feca-4e36-2a5e-08dcf95ea511
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?uNYR88dOgziBQEdMpf5tR0lX7cewHV1qPykdkq6mtGHls9J8ct4t2a2Gu9i8?=
+ =?us-ascii?Q?g1MdNK3Z6YPXJjqNi5w/4PRwDKkhbHPW0tx9q+Bs4JwYm3q2WFdWgnDwCWaZ?=
+ =?us-ascii?Q?p/dHROJba4kp5dQbTfFQfNXfgLlEV/HRj1HqW2r2bSrnbz5ikqH6j0+ARCLh?=
+ =?us-ascii?Q?gdBIhxOX28wEMfSrrEC5nkQWxSrggh+tRpHzCQbYVQ6QkxH9fAHHlCT+kuQv?=
+ =?us-ascii?Q?zrW2iAGRTQUPssZkrV7oXIRUirIr/IyVUs4bZbozwH/ruc8a0ahI2u7xQeeO?=
+ =?us-ascii?Q?hY4wGHIcyvohAuow4qyuQZZcz7ymTDL8B50fzYb2D8ESTCqcQ53AY25G9Ztq?=
+ =?us-ascii?Q?kInbggA+7aihY4BiuTBgunGEIGBF+sD9hxVv8rIZ09ncYiJQPiYnzEjfo3yI?=
+ =?us-ascii?Q?ylbxOu2V7NPwa6yTmNcDVG2Sal83NkIOCzwrjjLPFEUclWEA4q6+jHj4TfU9?=
+ =?us-ascii?Q?0jS6bbIP4SjET7VnAzph1JGINpTKLs/qrdUcXetUHL6SlR5VyT5/Xxi30zBh?=
+ =?us-ascii?Q?ppOc/98nXEXjL2CQXnfnLL1HPRc9G6f/3yx6o+GN/4liSChTwiKl3d9ee2xg?=
+ =?us-ascii?Q?g4q415CGbChsFZ+gxVHCoMLCRM4t1qcPa0DntTB5OV+5/N4kOIRpTs6V4MUj?=
+ =?us-ascii?Q?z1sBH4+Gm6aQspNrpgfBMXRhQPqDyodWy5YX4CoW6MXe1TtSP3J3LcUGA/9q?=
+ =?us-ascii?Q?OTmQL8RzzJG7vyAbHWcmotfPypO10m1+nMxRHqDgNUqbS1oxJd4FYVCOlCAW?=
+ =?us-ascii?Q?aPLzN4iPngZcoFsRcngL2gBMBvE/qxIHKgy8X8Gi6ptfYlLS+BVSpwHklgL2?=
+ =?us-ascii?Q?sflznUK1xgQrusreZk6qxt3kp5pLrjyRzRpMGUfiMImsN5bHsr9YeEl10p1j?=
+ =?us-ascii?Q?1e+D3sj5oVTCiS6ourydfw156EdnHRktyg9gxFeDFQHTKRwaycAPPgm7rpFy?=
+ =?us-ascii?Q?bHCU564cfmTj8L/DIq7XeZgdqN+HiJWmFEzGwVVMV3+DKXIB2mA6JGQK7+W4?=
+ =?us-ascii?Q?7JH7bQDPWkF58pgx3S0eo4fTo4H8+h1uJsLgIHrw+iQG1Y/jckWgsTPtnzmH?=
+ =?us-ascii?Q?JZg3YyOJJhkgI+JSzrLoGkfhy+km+LgAZCXWbPV7PootZXVYry8NaFnkBKX7?=
+ =?us-ascii?Q?q2DQCFSwmax9PE0T/dAe8aa0cRs0/zLz4sVfqhNov2nhrroGIzuX/VtAn7iG?=
+ =?us-ascii?Q?oHK0a5RZPA8S/CdhBiWionWeGwpWDibBTBz5jmkzKh8hK9zGafgkGvZT7c5B?=
+ =?us-ascii?Q?5GOCmVU3ZN+GtyFyRZPQ3g8t5myK4s+kSIjClhIsGjl1yLurYn+bBM8D/tmq?=
+ =?us-ascii?Q?v9E3YBagflikEEORhNT3CDT7MGUWQ2kTlD+TUh8PQX/ObXXXlTy7nsdxAZzS?=
+ =?us-ascii?Q?LfYpdOA=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?Cvs6dq7HXmkdD2RdrXBSITMxQX553Zr1IhCdk8NlKMqX9nwuSSuhFnLDBE0O?=
+ =?us-ascii?Q?7zWqQ8//XH+FGOYBgSWJkqafZ84LoHG8cMEgx8zRC2zmmkkCnKqOvhRbZzRY?=
+ =?us-ascii?Q?BVG4nbrgFpMT+s0f8wrXzxwTVV2tp4D/U+fC8o1gbwJeIVb58raSq4puKrK2?=
+ =?us-ascii?Q?O31PoDC9hv441Xixb6b9Xdt+9Ob2TERWSvCms+2qk2IwT99V1ZEYLroZ4WEn?=
+ =?us-ascii?Q?LI/cQ0jNrIRUr3Tp5atlZs09OSWZxRl3gGtp/rZgh6N350pMpQMuDE2LDc3l?=
+ =?us-ascii?Q?FBoBaAEoG/rkEnhYw5GW3i0CVYwB915mTG2/wlhq3Fi8rTBsqKvzjav4e0S/?=
+ =?us-ascii?Q?pWUWaREyeyy9/Qjg1SQbZYtXPw5yhvYYFH4y/k6V3I9dUEhrdUiYpRhcuRgB?=
+ =?us-ascii?Q?iq1XEHAtSRDkvwMRpXbbnZ2QSZBoB8CM8CIHcE6gd6XuvRBPHNFXDHMXT6u2?=
+ =?us-ascii?Q?V7K2czDCnkKe405oxTsdVrY/lHOVt2D0ZAe0LI68y5tVwQkcmXiRk3FOw/Td?=
+ =?us-ascii?Q?YI1NwIq2ec/9IMr3aCYmV4QR/9pueUwlKc3BNBx7wWHj/yrfPTRxCOzp7b1K?=
+ =?us-ascii?Q?5QKwddSrK4EdHw3Ws3r1yUYmsTy03PRUsC3TKyPrnQMClp6fhkZZAMlnahlb?=
+ =?us-ascii?Q?ulq+ZfJ/lrfUyMDHC8bLbl02+/kYmva3He1kikGcdAYj6FCNMprnqxXaoYZB?=
+ =?us-ascii?Q?qwvgUyIkaP1+Onzth73Yp++ECCqA5yLNjOpWcPXQQN1+IPvr/QnUBKkNRylT?=
+ =?us-ascii?Q?QpA2UkFPraX9+RFCOJgnPXtEwGDQ9smsaVWSFfiOWeoZat1qkGlY5UwmUyxU?=
+ =?us-ascii?Q?Fdu+I0hBtyXl8PVTwlcPM1U9vuZFnBd9jFmuUh4gCPe1YBj8L34UijFpA0hS?=
+ =?us-ascii?Q?BwLK2/y/f3GVvS74GpaOFYunoYCXSa/hN/5FBJl5dR5NF0rFRmID5lMegJ18?=
+ =?us-ascii?Q?rIN0WCIanx8kTXP+dciF41KSH5AIZFoU1nk50dO2hkIWKozzcAI+YmdHDerM?=
+ =?us-ascii?Q?LPMfluPuzO786uDVS0Y1Zkvc+mn+aVCr+E53MblFCKkZygmjrgH48yTw2CmB?=
+ =?us-ascii?Q?hispCAnEMGyK+HYyXRWBdTsCMvzAuHLjABbwpbVq9WJYI4/AHScLTNgnOZZI?=
+ =?us-ascii?Q?f+Vvd4W39lihFoZIx+575z1KizJeAYrVIgxl5NVF3z8Z5xueLIIw/JTV+YgW?=
+ =?us-ascii?Q?1NSNZwg4ngNl2YrqL9O7rzjxLCv/3MD8ZKheyMDOBvcNj6uenS0V1fO/E+/N?=
+ =?us-ascii?Q?pL6+UJV2glkfur2mb4MzO0ygB3B0Dlk7iEiClYARBKLk05Ch6wgSzz7lUiUC?=
+ =?us-ascii?Q?fXrxI9T7gvODP+V1Om8EJ+DjsuLfqkdXMh+rGjlat9AvczDsQ8y3jc368OSJ?=
+ =?us-ascii?Q?kng9V6Afyx/QmUQRV3A01O4aUxwkEhv/GmaWbcP9whMn81cX+ylZAbm6de5G?=
+ =?us-ascii?Q?UToxS2mi6ads5JG4G0vZ14q1+JYZYhoE/Rm4N4vxI6x2hTthjzLgS71etuuI?=
+ =?us-ascii?Q?y8wzFFV4DCQNkw5tFoTVdnq7+3//wcvSnVj+ga/AVPBhyoNlyljGNsNPcDx4?=
+ =?us-ascii?Q?Yrn7hxVZimrkCexJ6as=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|DU4PR04MB10459:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2c9eb4bc-e245-4c17-ed05-08dcf95566e4
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7416014;
-X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?VG9KYVRYK2lyb3VobXlpaU1BbGcwNVdyQWd2MnMyQnZwb2VvZUI1dFNCZ29D?=
- =?utf-8?B?RktZRndmaHRrZW1zWW9MYlhSelp0Ulk5Z3RFd0syWW9RYWl4bm1tMUdwY2wz?=
- =?utf-8?B?ZWZZcjNkVWlTcU9EZ2ZZcS8rampFQXRzUHc2ZGlKZDRLSFlHb2l6b1VHVGRT?=
- =?utf-8?B?QmdpbnJXd0dxZWlvajQ3MGl5TnhIQUtpTzMzdHJJTmFmU3ZCZHZ4cWVyZGVn?=
- =?utf-8?B?dFNaYlBKTXE1TVFFdW13S0FrT1JyQ3NHZVQ2aitEdE83TmsweVpCM1JVZzFo?=
- =?utf-8?B?aEdkeFhPQy9WT0o2ZHpGYW5KRUNDK0Q0MGppTkI5WnZDWXZ0NktXWHRWVVpI?=
- =?utf-8?B?dnRZRGhSRWJ0aC84OFJHTkdwVXBqWlNPYndES1BmUTdvRWxWb3RBTUo4TSsv?=
- =?utf-8?B?TEZCWklxem45RHNhMndYN2JyVUFSbkdoSWVadDJmMmFCR2tkMEJ2TmU5Rzdq?=
- =?utf-8?B?eEJBWmRjdGUwOWVyM0c1eG81Z3ZkbVc2QzQxaUVtdjRDWDhFdk11eW5HRU1u?=
- =?utf-8?B?U3RRdFVHT05mWjZ1OFVYV3RLZlFSYURNTkR5RHYvZkhsZVZYQ2NacnROTG1i?=
- =?utf-8?B?aWlublFEWTBEVXpwWXZzd0grcmtJV0svQUpwMXgvbWx3Q3FrQkJwRzc4aVFZ?=
- =?utf-8?B?TmR3UE1UcWYyRitFRFEraHpiVURtVzZVbExwYWxaRXZWckZwaDdWNlJleGh2?=
- =?utf-8?B?c1F6YXJYQmFZUVJRdTRkZWVwbzlaZkpSKzlURkdkcFhrT3hNcjV0UXFtQWVr?=
- =?utf-8?B?SHlNS3dsK21TZVVmUW5NdVRsZXByRUJkeEhuS0xSaWtWMjgyUXUzb1doL3hx?=
- =?utf-8?B?czUrM0ozMEIvNWFIcVNwNzFBY0ZwT3cyQ0FBNWxHM1dEbHpQMm1xWjFoWVdY?=
- =?utf-8?B?Z0JEVEUvRVpoWTFwcXM2RG1rYTZKU2VNS3VzZkt3QnZMY1VwMy85dXFUYkp0?=
- =?utf-8?B?Z0E3eWdTb1hNTE1CUExQd1ovRDcxODBWYzhwRXc2L25GVWcrTm9yK01qdUhz?=
- =?utf-8?B?TlY0T3dObk9icEdoVlF5WE82Y0p0Y1NydWdyT2wyaW82YlZFVHlkWWZwSWlI?=
- =?utf-8?B?QU54bjlWaFk4SFA3KzdFemJxM1UvVjgwQUV5dWtqZlh4NytmbisxZkk5YTBv?=
- =?utf-8?B?K0p4YklqZklRODBrZ2hvaW1mcG95L3lZQnV5b1RzVk5mMUVMUmlPY2hpcEpu?=
- =?utf-8?B?WHhobm0xWk95YlZpL2I3SXdBZ3RyZnUyTXYxbDBrM3JTYkFrdXBmd1BUSjRp?=
- =?utf-8?B?cXA4WThuMGFSOWExV2syWVRpWEJCQUlpbEdsWkJ0TFc2VzJDbjhlKysyZm80?=
- =?utf-8?B?bUlzdWdPNlpMYmx2N3h3bEZ6cm1MeWpydGFRd3IyakxwejJjc3JrbXkydlBi?=
- =?utf-8?B?L0FjQUJCNEJFRXFDVVdJSFBZeW1OOUpvS2xVK3h3M0RYZCtoV2J3eGhiSXd6?=
- =?utf-8?B?OWl4U2thYXBiRjBKejhKU0lPTlZiZVhxSXZid21URk9WRUhwRCtycUgwTTdn?=
- =?utf-8?B?QnJ5MjhVUkpRZW91YVZ5ZDdWSTEzM01pRWNPMHB6Mm9XMC9mQW1OZTNSRXF5?=
- =?utf-8?B?WklFV0xVbUQ5UVhJZndNSkJsbHFiUEh5cnkzZ2gwTEVqQnVTK2JZclV5dnhE?=
- =?utf-8?B?OXFZRFVYZ2JJcUh3OE4vZHArM09KOUF3WnVaUFNianNPSzkzNW1FSUtJNDlQ?=
- =?utf-8?B?WFdMZXQ3bXp1QlJWS3pzNHR1SFdhYVluZFNGSGFVdjV4cjlqSTlrTnkrUTRC?=
- =?utf-8?Q?qyZ6q68werXxEI81whmymhECESLOIv5NFEjs86K?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?SjJpR2NDb054UlhwdWovblRyRVk1NzF3czRWeE5IeWY2cnpNOGJIRzY3UnNz?=
- =?utf-8?B?Yk1QcFZoUkU2QVR2WitxZ0oyNzUxZ2lwaWZxZ2JScDdrUndDVWcyQXVoYzUv?=
- =?utf-8?B?Vm04d3VmQlBEUE82TWpLYzV0UWhCTnJ1YWVpbGJNaEdTcmovM3dlMnR1U09u?=
- =?utf-8?B?bWlkVGtoN29MaFNEOEE1RldXeWVIYW96bVAvTXpCNTZHcklwZFZ2QXI1SE84?=
- =?utf-8?B?UVVINEs2ZmViM2k4dlFUVHQ4RHJrYS9nSXU2ZWRHaDBNUEloQ3ZDMThvRUZF?=
- =?utf-8?B?YXpRTEFvaXRXVW5rNFh4WDVhbkY1YjhJOW8rMWRrSUF3ejE1UFlGT0tSMGRy?=
- =?utf-8?B?aG5XZWpNU0diZFo0MDZ6Y1Z5S01kWEhwM1JWODQ3eXo2S1VmdXc5YVQ4Z2Jm?=
- =?utf-8?B?R0s4R2l3TGliTVZQZC9uRDNGOVhnbXVrZlZUTXh2bDl3U1JuZzFsWW1BakhX?=
- =?utf-8?B?WTRtd2ZxbGpoUGxPRk9reUJ2U3lQRnlmNE5hcUU2aEttbzluWWZ2MVdOME85?=
- =?utf-8?B?cFJsdi9VSFpIR1FsQUxIRnoydFA0SmhqZEZhZG9ra0ZnNzlUQ3ZnbndiNEI2?=
- =?utf-8?B?N0lqTHdtTTlyK2x4QWdoc0Nxb0ZuZHBnTHJ5RGlLamU0V3oyTmNUU0d1MXpZ?=
- =?utf-8?B?MERmMDBBRkdqTUtwdHc1cVNiVWpIRWtrWlR3U01jZ0g1K1dUdkFiaWRncit0?=
- =?utf-8?B?WU9zQWJmSUJSbURJWCsvZXRGTXN0a3pjemNTRVE2S0h1N2J1TnErMmVYdUY4?=
- =?utf-8?B?VFRXUDArU0JjQktRUzYvaDhSeXoxVFh3MEpUNzRSWkdrQXcrQlhJTUJORko3?=
- =?utf-8?B?d3ppWERpODVlN0R4bUJITEE0bVUvWHZCWkpRU3FYSkRTS1h2YzF2NEJBMHA2?=
- =?utf-8?B?NWZ0a0k3V0h4SWpZZDMvWDNkNkphazY5ZGpLSklUd0h1cEhHU3NtVjYrbmtk?=
- =?utf-8?B?NW42Y3lLSmlwUVNrWWE2cmJ2Q2g2MHp6VFhyMDZONFZ3UkhUUjZLYUtPMXpR?=
- =?utf-8?B?d2FESjRQLy85dlpwU3NVbWIvZEVuWDVwUkRJaTBZN2xzUUpKdlFHNU01ZFpk?=
- =?utf-8?B?WEgyVllpK05LcHZjblpVNWZkdkhKMlBjMEUvNmNwc201WGlVc2FEL0V2Tzky?=
- =?utf-8?B?NWNpa1E3Ykd3aGhUeDVwQkF0dUNnY05Ibi84bFB4Ymp0eHg1ZS9rd3ZwbjJh?=
- =?utf-8?B?dHlQVXA0U2dYRHc2bFBLN2tBa2pyaThMTGVkemFickJsTk9rd0ZHTUdWK0xR?=
- =?utf-8?B?UjBQSVJWNFYvajc4V3NLMldSTVdWSlZMN09PUi9Hb1F5aitXWEpUajA5Y29P?=
- =?utf-8?B?MlBwWDFIbGJ5L1pUUzl6Uzd2dzNUcll0MzVBcVdVR3BKQXF5WUxJYVpBSUFz?=
- =?utf-8?B?RnJoWGxVaDRBcVNzNnIzVGUvUGEwa1lqSU1naTRNN3F3Ymk1ZTBSVU15RDFK?=
- =?utf-8?B?d3Q0djUyWU5IT0FKYXZpMUtvNU1hcVZCcm9Pc2daUG5OWVA3RFNRSmhyeGJj?=
- =?utf-8?B?YXBQemppR0RVcGkzeGJhcitZNExjY2lrNUZ0K1hvbVl0OFF5VjJYWDd5ZURa?=
- =?utf-8?B?R2c3UEtQYzljeGdxS1NFM1F4c3duZTM5QWdROFZNQVl6NE1IQkdLbkdJcHQr?=
- =?utf-8?B?bWRLWjlFR0dVdis3WEF5U3d6Y0xVVXdjOEZYV0FHS2hONjNndlQwN0kwWXNh?=
- =?utf-8?B?VHUzN0tNSCtYRHk5UmtDay9DTXViU3prT0R4VjNwejBrOEFOUEpTeTJPYnl0?=
- =?utf-8?B?MW1RTnlBNnVoZzBaSVoxZkltNG94MUphYXJGZFBOWnhWd0NpelRTMHRFWU95?=
- =?utf-8?B?YmNrUE9sSDIxQXJCOTJ6U3hXbTc5RG50N1pZbXhBWGJXTjB5OXRhN0pMSW1W?=
- =?utf-8?B?MnV4cDBuV1IxcEFhQ3RROEZZdVVGaFJ3VW94S3pyTHl3cnAxR3lIRVhZL3A3?=
- =?utf-8?B?M0F0Y2xRQkRDN016TThQMmwvZ2V6bnlTNFNCOE0rSXgxTVU1aVFpSitMNzgr?=
- =?utf-8?B?ek5rNWM5SndRekowcDBodTd1eWRCZU0zLzhYUDJTMDRCVC9UdDRBSU13K0wv?=
- =?utf-8?B?dDh0bjdidnBKK2tKd1A2dEZnL1RneXNQZDhvQWlncTNzdGJFQisvNjZVT01q?=
- =?utf-8?Q?olnYe0WWG8VVoZKlp3DCcW8Qk?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2c9eb4bc-e245-4c17-ed05-08dcf95566e4
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Oct 2024 02:40:37.5328
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 66827cd4-feca-4e36-2a5e-08dcf95ea511
+X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Oct 2024 03:46:47.1200
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: F7YtU9/APqoxHDlg4Gq574kaFJExaxDDidmpLZwKHiBsVdmqK6nBV7mtnZRuZWx2MmnEqGOnu8DVKsMMAD3XNw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10459
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 8SiyK6UB4AXGYtA60WhcI/qsYbbdiqRX9fllbkQyw0xq0bdsSXwKmfLjz1tlwiKrzX7VlYBNH47p39WHw6fo+g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB10005
 
-Hi Maxime,
+> > 802.1Q spells 'preemptible' using 'i', 802.3 spells it using 'a', you
+> > decided to spell it using both :)
+> >
+>=20
+> My bad, I'll fix the typo
+>=20
+> > FWIW, the kernel uses 'preemptible' because 802.1Q is the
+> > authoritative standard for this feature, 802.3 just references it.
+> >
+> > On Wed, Oct 30, 2024 at 04:21:17PM +0800, Wei Fang wrote:
+> > > Both ENETC PF and VF drivers share enetc_setup_tc_mqprio() to
+> > > configure MQPRIO. And enetc_setup_tc_mqprio() calls
+> > enetc_change_preemptible_tcs()
+> > > to configure preemptible TCs. However, only PF is able to configure
+> > > preemptible TCs. Because only PF has related registers, while VF
+> > > does not have these registers. So for VF, its hw->port pointer is
+> > > NULL. Therefore, VF will access an invalid pointer when accessing a
+> > > non-existent register, which will cause a call trace issue. The call =
+trace log is
+> shown below.
+> > >
+> > > root@ls1028ardb:~# tc qdisc add dev eno0vf0 parent root handle 100:
+> > > \ mqprio num_tc 4 map 0 0 1 1 2 2 3 3 queues 1@0 1@1 1@2 1@3 hw 1 [
+> > > 187.290775] Unable to handle kernel paging request at virtual
+> > > address
+> > 0000000000001f00
+> > > [  187.298760] Mem abort info:
+> > > [  187.301607]   ESR =3D 0x0000000096000004
+> > > [  187.305373]   EC =3D 0x25: DABT (current EL), IL =3D 32 bits
+> > > [  187.310714]   SET =3D 0, FnV =3D 0
+> > > [  187.313778]   EA =3D 0, S1PTW =3D 0
+> > > [  187.316923]   FSC =3D 0x04: level 0 translation fault
+> > > [  187.321818] Data abort info:
+> > > [  187.324701]   ISV =3D 0, ISS =3D 0x00000004, ISS2 =3D 0x00000000
+> > > [  187.330207]   CM =3D 0, WnR =3D 0, TnD =3D 0, TagAccess =3D 0
+> > > [  187.335278]   GCS =3D 0, Overlay =3D 0, DirtyBit =3D 0, Xs =3D 0
+> > > [  187.340610] user pgtable: 4k pages, 48-bit VAs,
+> > pgdp=3D0000002084b71000
+> > > [  187.347076] [0000000000001f00] pgd=3D0000000000000000,
+> > p4d=3D0000000000000000
+> > > [  187.353900] Internal error: Oops: 0000000096000004 [#1] PREEMPT
+> > SMP
+> > > [  187.360188] Modules linked in: xt_conntrack xt_addrtype cfg80211
+> > > rfkill
+> > snd_soc_hdmi_codec fsl_jr_uio caam_jr caamkeyblob_desc caamhash_desc
+> > caamalg_descp
+> > > [  187.406320] CPU: 0 PID: 1117 Comm: tc Not tainted
+> > 6.6.52-gfbb48d8e2ddb #1
+> > > [  187.413131] Hardware name: LS1028A RDB Board (DT) [  187.417846]
+> > > pstate: 40000005 (nZcv daif -PAN -UAO -TCO -DIT -SSBS
+> > BTYPE=3D--)
+> > > [  187.424831] pc : enetc_mm_commit_preemptible_tcs+0x1c4/0x400
+> > > [  187.430518] lr : enetc_mm_commit_preemptible_tcs+0x30c/0x400
+> > > [  187.436195] sp : ffff800084a4b400 [  187.439515] x29:
+> > > ffff800084a4b400 x28: 0000000000000004 x27:
+> > ffff6a58c5229808
+> > > [  187.446679] x26: 0000000080000203 x25: ffff800085218600 x24:
+> > 0000000000000004
+> > > [  187.453842] x23: ffff6a58c42e4a00 x22: ffff6a58c5229808 x21:
+> > ffff6a58c42e4980
+> > > [  187.461004] x20: ffff6a58c5229800 x19: 0000000000001f00 x18:
+> > 0000000000000001
+> > > [  187.468167] x17: 0000000000000000 x16: 0000000000000000 x15:
+> > 0000000000000000
+> > > [  187.475328] x14: 00000000000003f8 x13: 0000000000000400 x12:
+> > 0000000000065feb
+> > > [  187.482491] x11: 0000000000000000 x10: ffff6a593f6f9918 x9 :
+> > 0000000000000000
+> > > [  187.489653] x8 : ffff800084a4b668 x7 : 0000000000000003 x6 :
+> > 0000000000000001
+> > > [  187.496815] x5 : 0000000000001f00 x4 : 0000000000000000 x3 :
+> > 0000000000000000
+> > > [  187.503977] x2 : 0000000000000000 x1 : 0000000000000200 x0 :
+> > ffffd2fbd8497460
+> > > [  187.511140] Call trace:
+> > > [  187.513588]  enetc_mm_commit_preemptible_tcs+0x1c4/0x400
+> > > [  187.518918]  enetc_setup_tc_mqprio+0x180/0x214 [  187.523374]
+> > > enetc_vf_setup_tc+0x1c/0x30 [  187.527306]
+> > > mqprio_enable_offload+0x144/0x178 [  187.531766]
+> > > mqprio_init+0x3ec/0x668 [  187.535351]  qdisc_create+0x15c/0x488 [
+> > > 187.539023]  tc_modify_qdisc+0x398/0x73c [  187.542958]
+> > > rtnetlink_rcv_msg+0x128/0x378 [  187.547064]
+> > > netlink_rcv_skb+0x60/0x130 [  187.550910]  rtnetlink_rcv+0x18/0x24 [
+> > > 187.554492]  netlink_unicast+0x300/0x36c [  187.558425]
+> > > netlink_sendmsg+0x1a8/0x420 [  187.562358]
+> > > ____sys_sendmsg+0x214/0x26c [  187.566292]
+> > > ___sys_sendmsg+0xb0/0x108 [  187.570050]  __sys_sendmsg+0x88/0xe8
+> [
+> > > 187.573634]  __arm64_sys_sendmsg+0x24/0x30 [  187.577742]
+> > > invoke_syscall+0x48/0x114 [  187.581503]
+> > > el0_svc_common.constprop.0+0x40/0xe0
+> > > [  187.586222]  do_el0_svc+0x1c/0x28 [  187.589544]
+> > > el0_svc+0x40/0xe4 [  187.592607]  el0t_64_sync_handler+0x120/0x12c [
+> > > 187.596976]  el0t_64_sync+0x190/0x194 [  187.600648] Code: d65f03c0
+> > > d283e005 8b050273 14000050
+> > (b9400273)
+> > > [  187.606759] ---[ end trace 0000000000000000 ]---
+> >
+> > Please be more succint with the stack trace. Nobody cares about more
+> > than this:
+>=20
+> Okay, thanks
+>=20
+> >
+> > Unable to handle kernel paging request at virtual address
+> > 0000000000001f00 Internal error: Oops: 0000000096000004 [#1] PREEMPT
+> > SMP Hardware name: LS1028A RDB Board (DT) pc :
+> > enetc_mm_commit_preemptible_tcs+0x1c4/0x400
+> > lr : enetc_mm_commit_preemptible_tcs+0x30c/0x400
+> > Call trace:
+> >  enetc_mm_commit_preemptible_tcs+0x1c4/0x400
+> >  enetc_setup_tc_mqprio+0x180/0x214
+> >  enetc_vf_setup_tc+0x1c/0x30
+> >  mqprio_enable_offload+0x144/0x178
+> >  mqprio_init+0x3ec/0x668
+> >  qdisc_create+0x15c/0x488
+> >  tc_modify_qdisc+0x398/0x73c
+> >  rtnetlink_rcv_msg+0x128/0x378
+> >  netlink_rcv_skb+0x60/0x130
+> >
+> > >
+> > > Fixes: 827145392a4a ("net: enetc: only commit preemptible TCs to
+> > hardware when MM TX is active")
+> > > Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> > > ---
+> > >  drivers/net/ethernet/freescale/enetc/enetc.c | 3 +++
+> > >  1 file changed, 3 insertions(+)
+> > >
+> > > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c
+> > b/drivers/net/ethernet/freescale/enetc/enetc.c
+> > > index c09370eab319..c9f7b7b4445f 100644
+> > > --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> > > +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+> > > @@ -28,6 +28,9 @@ EXPORT_SYMBOL_GPL(enetc_port_mac_wr);
+> > >  static void enetc_change_preemptible_tcs(struct enetc_ndev_priv *pri=
+v,
+> > >  					 u8 preemptible_tcs)
+> > >  {
+> > > +	if (!enetc_si_is_pf(priv->si))
+> > > +		return;
+> > > +
+> >
+> > Actually please do this instead:
+> >
+> > 	if (!(si->hw_features & ENETC_SI_F_QBU))
+> >
 
-On 10/30/2024, Maxime Ripard wrote:
-> On Mon, Oct 28, 2024 at 10:37:30AM +0800, Liu Ying wrote:
->> Multiple display modes could be read from a display device's EDID.
->> Use clk_round_rate() to validate the "ldb" clock rate for each mode
->> in drm_bridge_funcs::mode_valid() to filter unsupported modes out.
->>
->> Also, since this driver doesn't directly reference pixel clock, use
->> clk_round_rate() to validate the pixel clock rate against the "ldb"
->> clock if the "ldb" clock and the pixel clock are sibling in clock
->> tree.  This is not done in display controller driver because
->> drm_crtc_helper_funcs::mode_valid() may not decide to do the
->> validation or not if multiple encoders are connected to the CRTC,
->> e.g., i.MX93 LCDIF may connect with MIPI DSI controller, LDB and
->> parallel display output simultaneously.
->>
->> Signed-off-by: Liu Ying <victor.liu@nxp.com>
->> ---
->> Note that this patch depends on a patch in shawnguo/imx/fixes:
->> https://patchwork.kernel.org/project/linux-arm-kernel/patch/20241017031146.157996-1-marex@denx.de/
-> 
-> I still believe that the root cause of this issue is your clock tree and
-> driver setup, and since I've asked for explanations and didn't get any,
-> I don't really see how we can move forward here.
+Actually, VFs of eno0 have ENETC_SI_F_QBU bit set. So we should use the
+following check instead.
 
-Since you asked for a description at *somewhere* in another thread[1],
-can you please suggest a place where this could happen?
+if (!enetc_si_is_pf(si) || !(si->hw_features & ENETC_SI_F_QBU))
 
-[1] https://lore.kernel.org/imx/47d92ae0-c71a-4c18-9ad7-432c0f70a31f@nxp.com/T/#m587e6a25bdab542d5d99abbf01caaca89495b1d5
+Or we only set ENETC_SI_F_QBU bit for PF in enetc_get_si_caps() if the PF
+supports 802.1 Qbu.
 
-> 
-> Maxime
-
--- 
-Regards,
-Liu Ying
+> > We also shouldn't do anything here for those PFs which do not support
+> > frame preemption (eno1, eno3 on LS1028A). It won't crash like it does
+> > for VFs, but we should still avoid accessing registers which aren't imp=
+lemented.
+> > The ethtool mm ops are protected using this test, but I didn't realize
+> > that tc has its own separate entry point which needs it too.
+> >
+>=20
+> Yeah, I agree with you, I will use your solution, thanks.
+>=20
+> > >  	priv->preemptible_tcs =3D preemptible_tcs;
+> > >  	enetc_mm_commit_preemptible_tcs(priv);
+> > >  }
+> > > --
+> > > 2.34.1
+> > >
