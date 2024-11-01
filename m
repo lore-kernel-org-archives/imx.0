@@ -1,33 +1,40 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.web.de (mout.web.de [212.227.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB2D25634;
-	Fri,  1 Nov 2024 15:41:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B8F15B0E2;
+	Fri,  1 Nov 2024 15:46:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730475663; cv=none; b=kO4W2oMvwe2FflRHPrCtbrOrixNSWQV+fFMoaYPT8k3RTi5wVUj7jJwKJXLIgBOieb5fAjRNHlgvx+5NpDgU3MHgZiS+PjxYxyVjPvqs97PCJ9BVJhLFle9ZL7Bq3B68I8DTGkbOT+rrYbK3FltHJNSVBUov52D4KyYePW0ceJw=
+	t=1730475979; cv=none; b=us+fQbxXTO9+OluWHUgacUg8G9I67tRsPv3aA4IDfgv7t3blsa7HTUwoOGqcurPJdNzN1C7gIwQNgB8SOfzgs1qAqaTO4E42uU6Xx0S0q8nDf3ckQhlgxcrwzE2CsVwq/3iixu89GpP1McEwxRh4e8/nO0qYQn+QCjMLrypEyac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730475663; c=relaxed/simple;
-	bh=zla9w9yuxenlwXZM9FMEzg1b87SODZSVTWyPtyv2tJQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LmOGWYS3i2mW28M11cnaGZu0Eub7wPvLGXVtAzqp5DE9JJu3hseGPVJB6z0ubCRYYa2mD3BCnTzhTIeJxtpgbuBwauKhJ/Cu6lKNVfK+DexcDiiF+9o8lXWriMF0eO4NMzliSlAMqMDBv3EaXDALaVUPmVJvWf0sDWKbj/ikY18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GaFb1+V/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730475979; c=relaxed/simple;
+	bh=OpvRx1WWE+WS+DgWenvK+IRNQ2xdgICCz6OcvfsAeVw=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=capuxWShof+vRqe9fGLvTnOP2EbgPNimUmvYt93bblFMYeTxy2sXt9b/OiFesVPCXjSzA9FkA1DVqwthBX9rnw+Ov63GxVcT3VNj6KVc3o6J7fYO0eLUI+lOv3OotCY3mVs/pHkxCa+5y0JNh8ua8rqQDg9B6lDRfBWQoqIjUCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=Jj7AcoFU; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GaFb1+V/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B599C4CECD;
-	Fri,  1 Nov 2024 15:40:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730475662;
-	bh=zla9w9yuxenlwXZM9FMEzg1b87SODZSVTWyPtyv2tJQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GaFb1+V/oKwjeRtAHrj7Jz11JXecNJLRIxuWfVub7Y/7Lx1tCRuv9YZsZfDwODgr6
-	 BSprj8QPULTkHLHEgonlW4Gy1seNjtx4EfG1G6itCT6BY8QK4w5FoACp8oRJuIgZhm
-	 wdgNcbDGP+7BU/3OnqSJW24QbXtj+zB7QxspAINC7HjI9cxQ4qCBRxs2356JfRf6V6
-	 59qi3Cnc9KVjX9bQP3PMBwvFd4y/xdtl8ZIedU9eq4E3Yj2UAXRsZ1hOi61xF3cPcm
-	 h3NowUVMf7oO0Q96O+6I+d+9ZKn1w8up6DME6Wx3vyDjG/K7VZ4EDPc4LtvLQ0BRDR
-	 IH620WjfPLkUA==
-Message-ID: <9e876379-c555-45e6-8a8a-752d90fdc8ed@kernel.org>
-Date: Fri, 1 Nov 2024 16:40:50 +0100
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="Jj7AcoFU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1730475951; x=1731080751; i=markus.elfring@web.de;
+	bh=7UB3ac7LBmeqyiSNaZiojKaC72aMNlvAd36yyxNrsRA=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=Jj7AcoFUcvb5OAlwS4Q6kVYWcKmEuY8+5zpeJ5WTD0pcI7n7grUNKyWlocW9GQra
+	 dDwRH3FUXlYsG5Uj85tI3OfDYJZclmbk6kdetDpayUb25hwaXFWbJp5Cqccls30yq
+	 4Bow5fsTgQGxApmTaWuC3/FFN8SF+LlPt/kTwzR2tgGWorSev9MEPyRQwVWETEH3/
+	 GtpoZuEbKYY6InQcl1dUIGM2lruXn43IX+I0PZJiWlY2Ad18OZQqEAUvwMH3+XdE1
+	 x40pyyr5brAHCXQGc9wBmsDNpAetIDAek2pYN9VycXLswWY0AUtMaqBvkbKWMKoEJ
+	 2z8PuOlENTEo1CMU0Q==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.83.95]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1M6pUK-1tCvzN1kh4-00BxAE; Fri, 01
+ Nov 2024 16:45:51 +0100
+Message-ID: <fdf5702a-b739-4643-8288-86e6cfb8403d@web.de>
+Date: Fri, 1 Nov 2024 16:45:47 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,156 +42,68 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 14/16] net: stmmac: dwmac-s32: add basic NXP S32G/S32R
- glue driver
-To: Jan Petrous <jan.petrous@oss.nxp.com>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Jose Abreu <joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>,
- Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
- Heiner Kallweit <hkallweit1@gmail.com>, Russell King
- <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Emil Renner Berthing <kernel@esmil.dk>,
- Minda Chen <minda.chen@starfivetech.com>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Iyappan Subramanian <iyappan@os.amperecomputing.com>,
- Keyur Chudgar <keyur@os.amperecomputing.com>,
- Quan Nguyen <quan@os.amperecomputing.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Giuseppe Cavallaro <peppe.cavallaro@st.com>,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, imx@lists.linux.dev,
- devicetree@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>
-References: <20241028-upstream_s32cc_gmac-v4-0-03618f10e3e2@oss.nxp.com>
- <20241028-upstream_s32cc_gmac-v4-14-03618f10e3e2@oss.nxp.com>
- <xanb4j56u2rjwpkyj5gwh6y6t36gpvawph62jw72ksh7jximhr@cjwlp7wsxgp6>
- <ZyOXgdqUgg2qlCah@lsv051416.swis.nl-cdc01.nxp.com>
- <b9aefcf2-8f0d-431c-865b-34c9b8e69c4d@kernel.org>
- <ZyO7fn3NWULA9bGG@lsv051416.swis.nl-cdc01.nxp.com>
- <ZyO9Mfq+znZdJJrJ@lsv051416.swis.nl-cdc01.nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <ZyO9Mfq+znZdJJrJ@lsv051416.swis.nl-cdc01.nxp.com>
+To: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>,
+ linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, s32@nxp.com,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Chester Lin <chester62515@gmail.com>,
+ Conor Dooley <conor+dt@kernel.org>, Dong Aisheng <aisheng.dong@nxp.com>,
+ Fabio Estevam <festevam@gmail.com>,
+ Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jacky Bai
+ <ping.bai@nxp.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Larisa Grigore <larisa.grigore@nxp.com>, Lee Jones <lee@kernel.org>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Matthias Brugger <mbrugger@suse.com>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Rob Herring <robh@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de,
+ Alberto Ruiz <aruizrui@redhat.com>, Christophe Lizzi <clizzi@redhat.com>,
+ Enric Balletbo <eballetb@redhat.com>
+References: <20241101080614.1070819-7-andrei.stefanescu@oss.nxp.com>
+Subject: Re: [PATCH v5 6/7] pinctrl: s32cc: add driver for GPIO functionality
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20241101080614.1070819-7-andrei.stefanescu@oss.nxp.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:jj8tV1/5lvgDluPBwBwySefJgimRcKB6UJMv3JG+Rfhob34M4SF
+ zpfZMhDKktYmP84RHCvTGMRiSo8eD0NXIcKYi0iJuMLPMKMkNEDgbDQ00Tu3zLt3yIR5swC
+ e48XqFieUY4xPJkF6ksXNHRlO8FG5Rj1fT66cz39pU/OTQDchlM7fOVh76RvLj2jwuEjjfl
+ jRgl7k75s3JcQFOrs36LA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:7o16wLigwNM=;QX09HEZ8+jEi7umwCR8bn+fcqGK
+ iwIJYJcfDDaFsY8IuY+91YTn1TGo54jj9+n48mICBQcofmxdKYke0JIQqJZ5RTaT0m1TOIYVs
+ 0WYcQY13IvGmPayFCgdk9f98I4hbgbbzdVm60fmcjajvWqCELsqFzIisOKey4dj5AInvLdnPm
+ JPnk0whD1ihkVamcU8WuO7BleTB1K2bLnpOJX+rhxeSCy0/hxb0lpZRF0S1DENcbi2czN+vgf
+ kMYO0d1heXCAZDam18SRyaGX8UN5b1vxAxvdBZEXRl4IafyjddgXOWU6NSRvarmQul/bmK2E0
+ pjv+09sdadnPZSU1M7MxBKDdgxmj0hWRzbSuRsPvY/e4RO8RrvrfEZAyM1DM9/qsuMc6uBl9a
+ t9yWvQyXO7qrXhlZSDJ4a6VE8NzakgBTN0Wk2Ob3kKo2DbfvbssS9NaJKjFgNzNkF/u7EiiYt
+ VCvtOzcxM0bIERiOFQdAlJESvtnyzqM4fxSq5dFgFrwqPDrmWB3C6z06xziKlr/grIk5r1Jvq
+ +3IUGIqsr/+rU04AkX/bBebF/prO1QCGUBZWcBFVMTguLeqRTsBfBvrEAoXBXMByRysar3VxC
+ H34HcNDvP0KJ4/AL3Honk9AjXEvhd3wCjnMmY6uc3ExX1zIhmd6WMKX1iy9bNRgBf6khllb/h
+ ozXTFFObKmhIzHTnZbMOcqCOjxYGUkOhIZy0hdbhdcD85kEj+KfgoZRcNNDl/uvUf7Kl6zdu/
+ BD1t2+GFK9EYQH1oIoBlBxahx2DbN5Rf+K4777Aceclv50hSGqbYrTyBV0TkB4xg57/HQ0QMz
+ Ig2svqAtWJFQZJUAp40Pab1A==
 
-On 31/10/2024 18:24, Jan Petrous wrote:
-> On Thu, Oct 31, 2024 at 06:16:46PM +0100, Jan Petrous wrote:
->> On Thu, Oct 31, 2024 at 04:44:45PM +0100, Krzysztof Kozlowski wrote:
->>> On 31/10/2024 15:43, Jan Petrous wrote:
->>>> On Tue, Oct 29, 2024 at 08:13:40AM +0100, Krzysztof Kozlowski wrote:
->>>>> On Mon, Oct 28, 2024 at 09:24:56PM +0100, Jan Petrous (OSS) wrote:
->>>>>> +	plat->init = s32_gmac_init;
->>>>>> +	plat->exit = s32_gmac_exit;
->>>>>> +	plat->fix_mac_speed = s32_fix_mac_speed;
->>>>>> +
->>>>>> +	plat->bsp_priv = gmac;
->>>>>> +
->>>>>> +	return stmmac_pltfr_probe(pdev, plat, &res);
->>>>>> +}
->>>>>> +
->>>>>> +static const struct of_device_id s32_dwmac_match[] = {
->>>>>> +	{ .compatible = "nxp,s32g2-dwmac" },
->>>>>> +	{ .compatible = "nxp,s32g3-dwmac" },
->>>>>> +	{ .compatible = "nxp,s32r-dwmac" },
->>>>>
->>>>> Why do you need three same entries?
->>>>>
->>>>
->>>> We have three different SoCs and in v3 review you told me
->>>> to return all back:
->>>> https://patchwork.kernel.org/comment/26067257/
->>>
->>> It was about binding, not driver.
->>>
->>> I also asked there: use proper fallback and compatibility. Both comments
->>> of course affect your driver, but why choosing only first part?
->>>
->>
->> Does it mean I should remove first two (G2/G3) members from match array
->> and use "nxp,s32r-dwmac" as fallback for G2/G3? And similarly change
->> the bindings to:
->>
->>   compatible:
->>     oneOf:
->>       - const: nxp,s32r-dwmac
->>       - items:
->> 	  - enum:
->> 	      - nxp,s32g2-dwmac
->> 	      - nxp,s32g3-dwmac
->>           - const: nxp,s32r-dwmac
->>
->> And add here, into the driver, those members back when some device
->> specific feature will be needed? Am I understand your hints right?
->>
-> 
-> Sorry, it's not correct. This way I'm not able to detect S32R which is
-> the only one with higher speed.
-> 
-> Then I could use the G2 as fallback I think, Ie.:
-> 
->   compatible:
->     oneOf:
->       - const: nxp,s32g2-dwmac
->       - items:
-> 	  - enum:
->               - nxp,s32g3-dwmac
->               - nxp,s32r-dwmac
->            - const: nxp,s32g2-dwmac
+> Add basic GPIO functionality (request, free, get, set) for the existing
+> pinctrl SIUL2 driver since the hardware for pinctrl&GPIO is tightly
+> coupled.
+=E2=80=A6
+> +++ b/drivers/pinctrl/nxp/pinctrl-s32cc.c
+=E2=80=A6
+> +static int s32_gpio_request(struct gpio_chip *gc, unsigned int gpio)
+> +{
+=E2=80=A6
+> +	spin_lock_irqsave(&ipctl->gpio_configs_lock, flags);
+> +	list_add(&gpio_pin->list, &ipctl->gpio_configs);
+> +	spin_unlock_irqrestore(&ipctl->gpio_configs_lock, flags);
+=E2=80=A6
 
-I don't understand. In both cases you can 'detect r', if by this you
-meant match and bind. I don't care which one is the fallback, but if one
-does not work it points to different issues with your code.
+Under which circumstances would you become interested to apply a statement
+like =E2=80=9Cguard(spinlock_irqsave)(&ipctl->gpio_configs_lock);=E2=80=9D=
+?
+https://elixir.bootlin.com/linux/v6.12-rc5/source/include/linux/spinlock.h=
+#L551
 
-Best regards,
-Krzysztof
-
+Regards,
+Markus
