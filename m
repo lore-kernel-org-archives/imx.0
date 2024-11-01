@@ -1,102 +1,109 @@
-Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2FD1CACE0
-	for <imx@lists.linux.dev>; Fri,  1 Nov 2024 16:57:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3650F1CDA27;
+	Fri,  1 Nov 2024 16:58:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730480242; cv=none; b=aAjZb/8GAcd9R0vlCcQ8Txud77G8p5oSbFc1guyvO6TZhRoFD7VEuQW/DT88ja2v7rKVNyrjF/dCNcXQWVX9Pl32aJK715nSwydLd5h+ACDvoeNSC4NpL/9k5Fex60NCmynthFYf5KkEcFJS4tOc17SkCR8mfa4pQdpdM6FSB1c=
+	t=1730480309; cv=none; b=Rw0a2z+qtg1CIRawBejPDr8dnBoNVF0KF/RpuLOLs3xtpI0by3Y7WCPevkEOJAdvg5gWab0l540MjB+bka92tN1nZ14qCWH1sR4e/+++NUG8+26tYpr+Vl+aQ4zGxSVzfwYsAKCXhINhRESLHxdr8L3/kouKvtrorG9HQ06kymI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730480242; c=relaxed/simple;
-	bh=2rKsatq5LG+9IKHuStVw7bDmC0tFVIV2dLq/aDxa/bM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uclW9wo19Zi3u65F6Zo73exk5aMAjwGZuH5Q1VzJLO597rk6RYTSPPG6UZ814EQrEHQB1lZwgJaUCvNfXsT74kxB2xtFPM3zszWQZ4ppFDnSuOOZv3tdNqepOmZbq6iI5NY9EMOL0wjoecgV+h1DjkQfmIXDTvo5kueTm9bV4ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=dHtuGpsh; arc=none smtp.client-ip=161.97.139.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+	s=arc-20240116; t=1730480309; c=relaxed/simple;
+	bh=GVPNqWb/dknPmd6p+uZIGZMEUGgcHP7E/AKSLlgyl/E=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=plN5s63EiTerjhrAB312h4WoPZyF1pRa0GFV/Ih/Em+4IJ36Eo0T0hOfKMqiA6tfWAnjUiZopYGVvj2rv9YcAgrJKtLh4Jo7TesQPhbiXzSKo3rCYgmTYyv+xKsOrcwXTsnZxNy1uV/Wwb7/u5ZSewCguWIKvbgK6Xkx/mPM73Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K9Ar2Dcf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="dHtuGpsh"
-Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
-	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <andreas@kemnade.info>)
-	id 1t6uxT-00APgq-0K
-	for imx@lists.linux.dev;
-	Fri, 01 Nov 2024 17:57:11 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=rz0ryjT9mPDcej02Hk6SsCveNSUKvfeMX0qnfVx6BcQ=; b=dHtuGpshL5PlID52fzj6TToJtB
-	voL1NnNpNpigoGyWGbG1JIHgxlYkjHE07feIqQSWiFQ4TLqEjZANCHWP7+drN0m0hFsEj+uZDgYjG
-	oEKIs4ZbmTlp6UGJkxopWOmAlJR7HcQHCVGUUi9/udSAE4H9vrcyFzgIRN6I1myLXajOjJ2erqw86
-	2XOLj1Ua1l1Qrdm8sYu3Psp++nGNAY50w2oazW6cAkZvI7qLzhvWIGN+yhhZ7BVwzATWnRroG7Pqs
-	k6MQJhLIEI3s0CWqFb+j+LLCAC4FAJU4Ih2eFUZVtKoMCWrg5nb47Kun60Q4qidMPojx16jEebAr+
-	GtKgcKAA==;
-Date: Fri, 1 Nov 2024 17:57:04 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Alexander Stein <alexander.stein@ew.tq-group.com>,
- linux-arm-kernel@lists.infradead.org, Shawn Guo <shawnguo@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, imx@lists.linux.dev, Conor Dooley
- <conor+dt@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] ARM: dts: add Kobo Clara 2E
-Message-ID: <20241101175604.20bc5427@akphone>
-In-Reply-To: <172986441097.1907834.7871985467741599221.robh@kernel.org>
-References: <20241024142206.411336-1-andreas@kemnade.info>
-	<172986441097.1907834.7871985467741599221.robh@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; aarch64-alpine-linux-musl)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K9Ar2Dcf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B7C1C4CED5;
+	Fri,  1 Nov 2024 16:58:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730480308;
+	bh=GVPNqWb/dknPmd6p+uZIGZMEUGgcHP7E/AKSLlgyl/E=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=K9Ar2Dcf0WfbH4pBzF8hWpplM6RzTAXWgzy0ylB018g4CzZFpaSNTJk6EOzZdDyaN
+	 d998mKDc3DDzrOEviXB6UF5p2ucgmSxnz21UpVMy9By7DaASKlvs/zG0TDiY4gJZXu
+	 T7LMparyz0S+6yfu3VWIGfZFB1OgXldJejdaWUyAzqEzk5o7YuhrxRtGdIlWrLHjGE
+	 yWWCMZKzibotcjJf628ub5i8+Y9yFCiGG2RLsgkkUBGuT+JAOc6d26S86yLdu8tev4
+	 2giPsnN1WcTxGWLTsSULAGYLInqh29lYHyJ5qVoKTVLHSnwv5JkuZwuKtzDoWFIwVr
+	 LTZPKmhyfRDVw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1t6uyg-008vzw-Fr;
+	Fri, 01 Nov 2024 16:58:26 +0000
+Date: Fri, 01 Nov 2024 16:58:26 +0000
+Message-ID: <86ldy228nh.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>,	Bjorn Helgaas <bhelgaas@google.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,	Krzysztof =?UTF-8?B?V2lsY3p5?=
+ =?UTF-8?B?xYRza2k=?= <kw@linux.com>,	Manivannan Sadhasivam
+ <manivannan.sadhasivam@linaro.org>,	Rob Herring <robh@kernel.org>,	Shawn
+ Guo <shawnguo@kernel.org>,	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,	Fabio Estevam
+ <festevam@gmail.com>,	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,	alyssa@rosenzweig.io,	bpf@vger.kernel.org,
+	broonie@kernel.org,	jgg@ziepe.ca,	joro@8bytes.org,	lgirdwood@gmail.com,
+	p.zabel@pengutronix.de,	robin.murphy@arm.com,	will@kernel.org
+Subject: Re: [PATCH v3 1/2] PCI: Add enable_device() and disable_device() callbacks for bridges
+In-Reply-To: <20241030210043.GA1219525@bhelgaas>
+References: <20241024-imx95_lut-v3-1-7509c9bbab86@nxp.com>
+	<20241030210043.GA1219525@bhelgaas>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: helgaas@kernel.org, Frank.Li@nxp.com, bhelgaas@google.com, hongxing.zhu@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, kw@linux.com, manivannan.sadhasivam@linaro.org, robh@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, alyssa@rosenzweig.io, bpf@vger.kernel.org, broonie@kernel.org, jgg@ziepe.ca, joro@8bytes.org, lgirdwood@gmail.com, p.zabel@pengutronix.de, robin.murphy@arm.com, will@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Fri, 25 Oct 2024 08:55:18 -0500
-"Rob Herring (Arm)" <robh@kernel.org> wrote:
+On Wed, 30 Oct 2024 21:00:43 +0000,
+Bjorn Helgaas <helgaas@kernel.org> wrote:
+> 
+> On Thu, Oct 24, 2024 at 06:34:44PM -0400, Frank Li wrote:
+> > Some PCIe host bridges require special handling when enabling or disabling
+> > PCIe Endpoints. For example, the i.MX95 platform has a lookup table to map
+> > Requester IDs to StreamIDs, which are used by the SMMU and MSI controller
+> > to identify the source of DMA accesses.
+> > 
+> > Without this mapping, DMA accesses may target unintended memory, which
+> > would corrupt memory or read the wrong data.
+> > 
+> > Add a host bridge .enable_device() hook the imx6 driver can use to
+> > configure the Requester ID to StreamID mapping. The hardware table isn't
+> > big enough to map all possible Requester IDs, so this hook may fail if no
+> > table space is available. In that case, return failure from
+> > pci_enable_device().
+> > 
+> > It might make more sense to make pci_set_master() decline to enable bus
+> > mastering and return failure, but it currently doesn't have a way to return
+> > failure.
+> > 
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> 
+> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> 
+> Merge along with the imx6 change.
 
-> On Thu, 24 Oct 2024 16:22:03 +0200, Andreas Kemnade wrote:
-> > Add a basic device tree for the Kobo Clara 2E Ebook reader.
-> > It is equipped with an i.MX6SLL SoC. EPDC PMIC drivers
-> > are not ready for mainline yet.
-> > 
-> > Changes in V2:
-> > - improved commit message about devices without binding
-> > 
-> > Andreas Kemnade (3):
-> >   dt-bindings: arm: fsl: add compatible strings for Kobo Clara 2E
-> >   ARM: dts: imx: Add devicetree for Kobo Clara 2E
-> >   ARM: imx_v6_v7_defconfig: Enable drivers for Kobo Clara 2E
-> > 
-> >  .../devicetree/bindings/arm/fsl.yaml          |   8 +
-> >  arch/arm/boot/dts/nxp/imx/Makefile            |   2 +
-> >  .../dts/nxp/imx/imx6sll-kobo-clara2e-a.dts    |  23 +
-> >  .../dts/nxp/imx/imx6sll-kobo-clara2e-b.dts    |  23 +
-> >  .../nxp/imx/imx6sll-kobo-clara2e-common.dtsi  | 514
-> > ++++++++++++++++++ arch/arm/configs/imx_v6_v7_defconfig          |
-> >  2 + 6 files changed, 572 insertions(+)
-> >  create mode 100644
-> > arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts create mode
-> > 100644 arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dts create
-> > mode 100644
-> > arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-common.dtsi
-> > 
-> > --
-> > 2.39.5
-> > 
-> > 
-> >   
-> 
-> 
-> My bot found new DTB warnings on the .dts files added or changed in
-> this series.
-> 
-I think they all come from existing dtsi.
+It'd be good to have this on a stable branch somewhere so that I can
+refer to it when posting the conversion for the Apple driver to that
+infrastructure, removing the need for a bus notifier.
 
-Regards,
-Andreas
+Otherwise, I'll just cherry-pick that patch and post the whole thing.
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
