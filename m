@@ -1,49 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDBA5D8F0;
-	Fri,  1 Nov 2024 19:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4AD71D0F49;
+	Fri,  1 Nov 2024 19:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730490455; cv=none; b=ALAAIhWFbRKjIAAKA675X0PvJiAJ3EhHYn9qXJUzsuZC2VRN+CuO+FEm4373qPUR14czCcoukdkhRhVXGxMRwYPgw2XwAcuS9XXE+IWMteurOIZI0bwyWDaaJ/JhJ/+xrpuyHnAFpccHPxUeTTwCwWKCYjCjEwwtZFjkJz9V6Nc=
+	t=1730490511; cv=none; b=Xj9zNz8ETLOHdBgmVWL/EAoH5+WJGhzJeSpmZ7DJl9Iv7RywhwIaHOs7sv+9UFPzuVpHHGZwupx9+fxPlDuu4P538EYPjbstx3pbXJaiEwd4uyWlhQlkW7a+9pxRtdaCdNz+5FekuyBUd6lAmrJBBSKMuUqadyCd8UNL+xBey8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730490455; c=relaxed/simple;
-	bh=B+lUXNUnGKnkUkqXfymc/e9SpMpB4y1++c6mOoxHc8I=;
+	s=arc-20240116; t=1730490511; c=relaxed/simple;
+	bh=qY0CZeZ9z/CEZe07PqyC8aHboYZg44UmgcubBVWYXDs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AGdvVvtV/ebhvIoU/ftP2OhewJXQbn1yhH/1UWNP4FGzunT9K37j9qSFJfFMA6gwmVyc+PDR6EKSnWrQ3XOn/KBF4CAbfyjmwDs5R9y01YQFgr12AayC7Ye7G+mcnTQVa8/snakJJe0cMOIZMaVz6XOERHQuaFa6w/ILWTH+8IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z6AqLWWW; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=ISf0bavVsOO7o+6TfaGgWMBhBYQeDWkPlk0dp/t6+4ewOfUcLOoMY/kCi3qt+TorOOthx2gkawErmAzsUWgctkrgCId4SMiygc5Ww+6xKpk3b1FcOjDnOLCbejQgiBfea8/eVn2xx0h/ApgWBvfIUjTRlNMb0qQFES/GkOLZjcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E4zytgZa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z6AqLWWW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0571C4CECD;
-	Fri,  1 Nov 2024 19:47:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E4zytgZa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82579C4CECD;
+	Fri,  1 Nov 2024 19:48:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730490454;
-	bh=B+lUXNUnGKnkUkqXfymc/e9SpMpB4y1++c6mOoxHc8I=;
+	s=k20201202; t=1730490511;
+	bh=qY0CZeZ9z/CEZe07PqyC8aHboYZg44UmgcubBVWYXDs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z6AqLWWWGWwkE6bYBR7023sarjXeRnXyjJwR+sQ3ZR0nLHXlhrEDaN+DxTV2BgPPB
-	 LhwBtrFV84d/SvuHpp5NlZOTc88jQVYTW1nYgjdKdCPnnA6FjZUCMh1ZJ2L3Ct/VFu
-	 jcxmC2gy9bRwjgjppVxnkd/61YMKDwHA5r3HwD2pQ9tMoDKx/l3NzUcypt2SPqYK81
-	 c6qwSPk30U+nBHtOkJCk47eYR5h8IzaGdYaBQR8u8Ka+rOF/mkZZEVEwzLZDotTddn
-	 rJ8D6CEukxNJYjjYBFt/cPGCNIPJf8Pt28xWnX5ZjTjhZbLR7lFak3mj/qHAWmn2Q1
-	 vz4/gBYYasoIg==
-Date: Fri, 1 Nov 2024 14:47:32 -0500
-From: Rob Herring <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/2] ASoC: dt-bindings: fsl-esai: allow fsl,imx8qm-esai
- fallback to fsl,imx6ull-esai
-Message-ID: <20241101194732.GA4088016-robh@kernel.org>
-References: <20241028-esai_fix-v1-0-3c1432a5613c@nxp.com>
- <20241028-esai_fix-v1-1-3c1432a5613c@nxp.com>
+	b=E4zytgZanmwWJ9XbR75BkJw6eSX10HPg1Jy4x9Fw3iuKO25JFJeWCvCBS3IK/x4Zs
+	 c/f6R2EBqPpfVTtqXdwKV5pYiD+vK0a60vj6ZdtY0xuwXdgG55crQqAFcdQOozowuZ
+	 JxSEzQwz3J+FXbi2ynikR4ofc6o8qs9iRZb9Isq/47yXM4GxGn3vEU2y26K/CF9r0v
+	 RV/hLM1oKmDr/W0vQGcn7YRBb9kcjfQpCyymbCekVV2uJt9AfRn2wO0k/BZTzvRggj
+	 NKRsp/T8YbazQSOKRsvTSSmtLt6v+6/9VyD6Hh6q2BiesEnOlHXQpRiMa2E1GmPiMC
+	 YnltZz5BGFVCQ==
+Date: Fri, 1 Nov 2024 14:48:29 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: netdev@vger.kernel.org, linux-pci@vger.kernel.org, horms@kernel.org,
+	linux-kernel@vger.kernel.org, pabeni@redhat.com,
+	xiaoning.wang@nxp.com, edumazet@google.com, linux@armlinux.org.uk,
+	devicetree@vger.kernel.org, conor+dt@kernel.org,
+	claudiu.manoil@nxp.com, krzk+dt@kernel.org,
+	christophe.leroy@csgroup.eu, alexander.stein@ew.tq-group.com,
+	Frank.Li@nxp.com, kuba@kernel.org, vladimir.oltean@nxp.com,
+	imx@lists.linux.dev, davem@davemloft.net
+Subject: Re: [PATCH v6 net-next 02/12] dt-bindings: net: add i.MX95 ENETC
+ support
+Message-ID: <173049050923.4090067.16955532766209341437.robh@kernel.org>
+References: <20241030093924.1251343-1-wei.fang@nxp.com>
+ <20241030093924.1251343-3-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,15 +50,30 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241028-esai_fix-v1-1-3c1432a5613c@nxp.com>
+In-Reply-To: <20241030093924.1251343-3-wei.fang@nxp.com>
 
-On Mon, Oct 28, 2024 at 03:49:31PM -0400, Frank Li wrote:
-> The ESAI of i.MX8QM is the same as i.MX6ULL. So allow fsl,imx8qm-esai
-> fallback to fsl,imx6ull-esai.
+
+On Wed, 30 Oct 2024 17:39:13 +0800, Wei Fang wrote:
+> The ENETC of i.MX95 has been upgraded to revision 4.1, and the vendor
+> ID and device ID have also changed, so add the new compatible strings
+> for i.MX95 ENETC. In addition, i.MX95 supports configuration of RGMII
+> or RMII reference clock.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
 > ---
->  Documentation/devicetree/bindings/sound/fsl,esai.yaml | 14 +++++++++-----
->  1 file changed, 9 insertions(+), 5 deletions(-)
+> v2: Remove "nxp,imx95-enetc" compatible string.
+> v3:
+> 1. Add restriction to "clcoks" and "clock-names" properties and rename
+> the clock, also remove the items from these two properties.
+> 2. Remove unnecessary items for "pci1131,e101" compatible string.
+> v4: Move clocks and clock-names to top level.
+> v5: Add items to clocks and clock-names
+> v6:
+> 1. use negate the 'if' schema (not: contains: ...)
+> ---
+>  .../devicetree/bindings/net/fsl,enetc.yaml    | 28 +++++++++++++++++--
+>  1 file changed, 25 insertions(+), 3 deletions(-)
+> 
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+
