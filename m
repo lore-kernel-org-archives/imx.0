@@ -1,40 +1,44 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E30156649
-	for <imx@lists.linux.dev>; Fri,  1 Nov 2024 08:26:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.16])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D26294087C
+	for <imx@lists.linux.dev>; Fri,  1 Nov 2024 08:58:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730449614; cv=none; b=bdKE3/phB83otqRM2ALz304c2oFURBQZJwvw/4a+rIRFfmZxcpA8yhC/q4HJJ9YF4Y5WOt6UTwnOXmAJ4oN/A6ugtSdORgqIEDZSE8wOJFGNHH7kCEtlBCAuynaplTnGXWAu8TGLRIJawklksvBFEQS6Utq1fNH0CzrOc+DcyO4=
+	t=1730451536; cv=none; b=lTEn4nEcMe/W4U5oXFi4IdwNGiSCOeaJ/PeYLcN6Cb28ksnuOcZgSFqTkOcFJu+Ilkg3ZAgw3EnI4sw4iDplMO4FuG/MDgXLeLlauGY5J7nSv8a27QJJb6vHbe/zION/WUaqqosX8Qf5Ur7VBgZUghxdbCkVaamRU8y/6jQCvEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730449614; c=relaxed/simple;
-	bh=qz+sStLf3csnHSVervtbuwoNFwpbuAjWD3eBqYi2Rrc=;
+	s=arc-20240116; t=1730451536; c=relaxed/simple;
+	bh=T0Hx7Xag3FRTXmP6XGYR2vtat49C3n0alPW8ATG7aUQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iQ1PvGWh7waKEM1wGhoUbSCcWiiBf1ksP+ba9IQPV13ww6WeLXrZNZlBBfoFwwRmHi9sKjcS5gUXA2mzx5x3JkyExbH0lFPGVO1fssk+YSH7U8NUPK2dY5ge6W69Gz125wjGqZ3dx5GrP0ZY5DnurNMgrGOxF4FJdsTE7uBmTis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=b1KqIXuO; arc=none smtp.client-ip=220.197.32.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=ODYeDHyuLyShS8o4r7nS1J/mLyvA4BJY5/5Ni/tUBkmhITuy+viy41wzSf6zp/IBZ1oc+g82t7tFlt8MC7n7zMUE9O+EXbVqbyZ14FV2RaFlyscAtJ82532Af//4V+TvJduYdFB3mzwizmmdChY/eZlbuA/5E178+dCB8rPmaS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=aPmnC14z; arc=none smtp.client-ip=220.197.32.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="b1KqIXuO"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="aPmnC14z"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=pIZ4297mYks9TlNfZB/eCFyx2Nv7liMlVOj3Uim+dgg=;
-	b=b1KqIXuO36LLkH4jukpFtZ/rIBd49x54x//dPgK8gHofkebhw4UwICLC6q5WgX
-	YmZI9DjdyVt+iezP72zjkg7z6TmUT21jj/n+0QPct7A+quZGWK+5goZG4gut+bq2
-	UnnJ70z01kWqBGST65ni7unB6dOIL5o1HIlboqbV7HSfY=
+	Content-Type; bh=IeaVJHhC0vZY63A4QtQYExEgCz/IQApw8RhqgXRhQ5A=;
+	b=aPmnC14zcu7eUaNpshEHexKf8C8or9kGiWOh6N82pnkymJELLGh+LVNYWq+P0x
+	lOcTL39BG6IH9r2tVtoOZ3kXhnxe19/KuaKkg9ITumylG7q0vcyhGiqAiQy1PNTF
+	sulrv32U3bIpJ79x58DqJ9jtHBMRwXzIpWpHSMTYQl8/g=
 Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgCnxfgMjiRnKmJfAQ--.13668S3;
-	Fri, 01 Nov 2024 16:15:10 +0800 (CST)
-Date: Fri, 1 Nov 2024 16:15:07 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgC3P0uVlSRn0vRiAQ--.13641S3;
+	Fri, 01 Nov 2024 16:47:19 +0800 (CST)
+Date: Fri, 1 Nov 2024 16:47:17 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: carlos.song@nxp.com
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	haibo.chen@nxp.com, frank.li@nxp.com
-Subject: Re: [PATCH 0/5] arm64: dts: imx: Add LPSPI alias for
- I.MX8ULP/8QXP/8QM/8DXL/93
-Message-ID: <ZySOC+STuelEZykQ@dragon>
-References: <20241018034532.2552325-1-carlos.song@nxp.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] arm64: dts: imx8mq-zii-ultra: remove #address-cells
+ of eeprom@a4
+Message-ID: <ZySVlU2gPSN3KKSl@dragon>
+References: <20241018183117.740439-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -43,47 +47,43 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241018034532.2552325-1-carlos.song@nxp.com>
-X-CM-TRANSID:M88vCgCnxfgMjiRnKmJfAQ--.13668S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWrZFWxtF1xJr1DGFWkZw47Jwb_yoW8JF17pF
-	W7XFyxKw1qkr4xur4kZFW8Awn3JaykWF1fXr4rt3yYkwn5ur98trW5Kry5KFy7XFW5ZFyY
-	yayUJ3yxCwn0vaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jb5rcUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBBWKZWckjIUEMAABsB
+In-Reply-To: <20241018183117.740439-1-Frank.Li@nxp.com>
+X-CM-TRANSID:Mc8vCgC3P0uVlSRn0vRiAQ--.13641S3
+X-Coremail-Antispam: 1Uf129KBjvdXoW7JrWfXFy3tw13Ar47JrWrKrg_yoWftrXEyw
+	1fuw4UG395ArW7C3s8Zw40qwnFk34UA34fJw1fXr4DKayav3y3K397J3yrJr9xGF43Krs5
+	AFn8tF1kJ345KjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8qYLPUUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCxyKZWckPo77kgABsj
 
-On Fri, Oct 18, 2024 at 11:45:27AM +0800, carlos.song@nxp.com wrote:
-> From: Carlos Song <carlos.song@nxp.com>
-> 
-> Now there is no alias for LPSPI on I.MX8ULP/8QXP/8QM/8DXL/93.
-> So spidevB.C index B will be automatically allocated by kernel
-> incrementally from zero according to the order of registering
-> spi controller. In this case, it is hard to determine spidevB.C
-> is spi interface of device C on which LPSPI bus. It will cause
-> confusion when operate spi devices in userspace.
-> 
-> For example, in I.MX93, When LPSPI3 and LPSPI5 are enabled
-> without alais:
-> 
-> :~# ls /dev/spidev*
-> /dev/spidev0.0  /dev/spidev1.0
-> 
-> After LPSPI alais is applied, fixedly B is the LPSPI index and
-> C is the spi device index in spidevB.C. They are the pleasant
-> spidev names. Directly spidev2.0 is the device0 at LPSPI3 bus
-> and spidev4.0 is the device0 at LPSPI5 bus:
-> 
-> :~# ls /dev/spidev*
-> /dev/spidev2.0  /dev/spidev4.0
-> 
-> Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-> 
-> Carlos Song (5):
->   arm64: dts: imx8qxp: Add LPSPI alias
->   arm64: dts: imx8qm: Add LPSPI alias
->   arm64: dts: imx8dxl: Add LPSPI alias
->   arm64: dts: imx8ulp: Add LPSPI alias
->   arm64: dts: imx93: Add LPSPI alias
+On Fri, Oct 18, 2024 at 02:31:16PM -0400, Frank Li wrote:
+> Remove #address-cells and #size-cells of eeprom@a4 because no children
+> nodes under eeprom@a4.
 
-Applied all, thanks!
+Hmm, bindings/nvmem/zii,rave-sp-eeprom.txt suggests there could be child
+nodes?
+
+Shawn
+
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mq-zii-ultra.dtsi | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mq-zii-ultra.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-zii-ultra.dtsi
+> index 0c960efd9b3d5..c7bbba45f3685 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mq-zii-ultra.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mq-zii-ultra.dtsi
+> @@ -517,8 +517,6 @@ eeprom@a3 {
+>  		eeprom@a4 {
+>  			compatible = "zii,rave-sp-eeprom";
+>  			reg = <0xa4 0x4000>;
+> -			#address-cells = <1>;
+> -			#size-cells = <1>;
+>  			zii,eeprom-name = "main-eeprom";
+>  		};
+>  	};
+> -- 
+> 2.34.1
+> 
 
