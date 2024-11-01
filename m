@@ -1,115 +1,113 @@
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E8819D8A8
-	for <imx@lists.linux.dev>; Fri,  1 Nov 2024 11:57:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F188F86252
+	for <imx@lists.linux.dev>; Fri,  1 Nov 2024 12:01:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730462234; cv=none; b=a048uhlK/oIoz57KWYCpffTf1n8WM1Ew723oa1863khuZM+1z4n+vSzhw4XHsJLjg9SlegLVDCGEN88+MauzikYEU1eouLXTZdiJOa3EGxlJmPFvJjKmTP1+xKl/+xVuyfovqtowtZ4tigNySyHu6M60RtGciXAC7R8DmhzrptM=
+	t=1730462491; cv=none; b=es8Hol2XeacK5t1nxuAGBRXQf+L9oSQn7QWO8VPe2YiuCZ0I6ttdcJG2ZEo4b1khnO/onC/Cg+xvaSXkhb97XqDtFCzsmOxsipS0bMofKLiaagXzm0n6CKTTK6UZ4hgX9GAntOudRiIw4TcfE39IiMeI9KnE+2z+nl3h8If0BgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730462234; c=relaxed/simple;
-	bh=jcU/orumlgsJbKSrF/Nm/W+DgTU2zdH6jx1nkml6CZE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GYFHOD1DrENUAChDOcIbv4iosSqoWDRbXDuKVPegoJe1LJ+mbMEZcS3DgtmOeRnk9ty3xvbYV/kBKzRQSaY2OdRwSdd6dABJZUc6mBHmu6oVq0Y1IzTSdNSaA/6r84Qir6xsRDMkj8Wa8CgrzrmVmDT7npGB9sq+SZpYPmN1ItE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cgba/uvx; arc=none smtp.client-ip=209.85.128.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1730462491; c=relaxed/simple;
+	bh=hXv3pueBj4R6PbE6PtWL344ONvBBrcJP+3HLnRmTSSI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dd7aitkPEhKGhZD3ofbkckHC1aYI2Oypilz+Lt8Mc89iDzzB0yYdFBp2u0UXS5z/I69ybxfWOAefn/Tsq49o+XVG0BAflPV/p02Uv0M3fYRCBsvvHtQ+eI6cQ0w5ccf9m8Be0JaHpEsjcBLaIMfcYJ/3wmNUXMVqj/53TMM87aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=VAqWeGe6; arc=none smtp.client-ip=220.197.32.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cgba/uvx"
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6e330b7752cso20595897b3.1
-        for <imx@lists.linux.dev>; Fri, 01 Nov 2024 04:57:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730462232; x=1731067032; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=AyPmo8da7gVQeFsoekZ63qpPCKXE92H2RSDUtfff7nM=;
-        b=cgba/uvxhgP6wnuLu8zXQr61jU+CXI/FV6f4ZCN3uXPZJ1uV+r37OZ4/EMc0wN8p/N
-         8Ql81ly4JZ4QyauJelE584uHx+o+wUp9vdzqBSHu7kw4IJgZBOJjvRwvMu9G7OvQKZLD
-         ek78+TPe8YcHJdwpDhti2jHzDJH5UQvGk35cU8RrHVEw2GUY/xktEm/gInGgv8mRfs9v
-         SVphM0u1t6SeYGiTTYymQ73ct3Jgi/Eujh+fHp+t44lCiaHyVWIYvRloX/83zsjPbheM
-         pIFwK+ed15O/oEnafM19JiKA43ofJl/TtuptztN38k1rRxUSsmxcb2laV/kl2zE5UPbM
-         UVag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730462232; x=1731067032;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AyPmo8da7gVQeFsoekZ63qpPCKXE92H2RSDUtfff7nM=;
-        b=QOcvnFSBcIHg/gvxbnvKHCOB6UlSbheBlm4I4nW8jV4TvHoQdMOSx9CkHFccRX5Syw
-         WeiVUjKM1PEu+sJEmSffbypvruxQskSlpjROzwgouBpcOdCEzN6pMg8HHjhO9VrMuX4b
-         yzeDEcdgKBWE3SVonKOk1fotPgTHzYtyP32rGEdWVGsnDaGeYEsCCEHXX75L/6PDEBW/
-         PzfiBazbIoF1xNqBXIbftTqU9mmYeML7PYo0Q0lge2mdxp9BrQVeJQza25gijhfxPdKr
-         ZMQFC17OwhH8f6HWJ2BPzK007FMo7bSEkXEdJ5rVn5vfrMrkCO2lIDYB/SJbWm9Cd3JV
-         yoJw==
-X-Forwarded-Encrypted: i=1; AJvYcCXULINu9UArbdxJqqzfDH9TdCn+Qof5w0l1o9LRItI3fkfFUchNml0tpwEBzaKclQDIoFk=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yywqkkm/lFnBGxN7k+WvaUsvF/sxP4CV6T4gP0Ae5InUz34I772
-	esSHIEMk4yI8FOq+ZrSl+dTBWXu0QiaxmUCbzOliJmDnz7v3OdGFcy65zi0W/L5yBcbrMAk1fux
-	D1bCmJP910Vcz8UaJ7vla0JcTPDJ58ParC8C/lg==
-X-Google-Smtp-Source: AGHT+IGjFViHhhsIEjWSeBRVVF02vu14Au/x1uufAjiQ0eyy+Lk2WKoLfjrFanaJSgIrSL/w8V1/5Fi83AtDrIju8t8=
-X-Received: by 2002:a05:690c:d18:b0:6db:d02f:b2c4 with SMTP id
- 00721157ae682-6ea64308628mr27197277b3.7.1730462231906; Fri, 01 Nov 2024
- 04:57:11 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="VAqWeGe6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=atkj4kmXGUrUUV2EHgMjf22ONdCtUS/VSDuo68tESV0=;
+	b=VAqWeGe6wWCfF6zc7L4vTs3lxIzieh4GsT6ndyXBLs4JrKifUByOQly0yQxibI
+	Tg7S581mnpW5OXqGeFuIxeFsOeFNghJXr70INFJ1Kl86yByeKt+NTSDHGo17K1HO
+	Tc2RZ0DFDF+AGSlMjGp+LCrNw9+5J3tLZUgE7hHgDkmSM=
+Received: from dragon (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id M88vCgC3e7AFwyRnKxVjAQ--.13699S3;
+	Fri, 01 Nov 2024 20:01:11 +0800 (CST)
+Date: Fri, 1 Nov 2024 20:01:09 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com,
+	Michael Trimarchi <michael@amarulasolutions.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] arm64: dts: imx8mn-bsh-smm-s2/pro: add simple-framebuffer
+Message-ID: <ZyTDBTxMl9oDkem7@dragon>
+References: <20241024102800.3481574-1-dario.binacchi@amarulasolutions.com>
+ <ZyTA3WLJ36ZAQyDN@dragon>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241101101252.1448466-1-peng.fan@oss.nxp.com>
-In-Reply-To: <20241101101252.1448466-1-peng.fan@oss.nxp.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Fri, 1 Nov 2024 12:56:36 +0100
-Message-ID: <CAPDyKFqmeCCkv5Yr0K9P9eToYTYsQmQUYmbbJvoOJ0O5t5tsjQ@mail.gmail.com>
-Subject: Re: [PATCH] pmdomain: imx93-blk-ctrl: correct remove path
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
-	"open list:GENERIC PM DOMAINS" <linux-pm@vger.kernel.org>, 
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, 
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZyTA3WLJ36ZAQyDN@dragon>
+X-CM-TRANSID:M88vCgC3e7AFwyRnKxVjAQ--.13699S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Cw4rZr48KF13KrW8WFyDKFg_yoW5JFW3pF
+	yUCF18XrsYya10k3sIvFWxJr98t39rXr4xuFWxW347tw4fAFyjgw1xGrs7Wr10vr48Xw4I
+	kF13Wr1fKryYqaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jzc_fUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBB6KZWckrmUzrgAAsg
 
-On Fri, 1 Nov 2024 at 11:02, Peng Fan (OSS) <peng.fan@oss.nxp.com> wrote:
->
-> From: Peng Fan <peng.fan@nxp.com>
->
-> The check condition should be 'i < bc->onecell_data.num_domains', not
-> 'bc->onecell_data.num_domains' which will make the look never finish
-> and cause kernel panic.
->
-> Also disable runtime to address
-> "imx93-blk-ctrl 4ac10000.system-controller: Unbalanced pm_runtime_enable!"
->
-> Fixes: e9aa77d413c9 ("soc: imx: add i.MX93 media blk ctrl driver")
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+On Fri, Nov 01, 2024 at 07:51:57PM +0800, Shawn Guo wrote:
+> On Thu, Oct 24, 2024 at 12:27:56PM +0200, Dario Binacchi wrote:
+> > Add a simple-framebuffer node for U-Boot to further fill and activate.
+> > 
+> > Co-developed-by: Michael Trimarchi <michael@amarulasolutions.com>
+> > Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+> > Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+> > 
+> > ---
+> > 
+> >  .../freescale/imx8mn-bsh-smm-s2-display.dtsi  | 28 +++++++++++++++++++
+> >  1 file changed, 28 insertions(+)
+> > 
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi
+> > index 7675583a6b67..3d670534a714 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi
+> > @@ -4,6 +4,34 @@
+> >   */
+> >  
+> >  / {
+> > +	chosen {
+> > +		#address-cells = <1>;
+> > +		#size-cells = <1>;
+> > +		ranges;
+> > +
+> > +		framebuffer-panel0 {
+> > +			compatible = "simple-framebuffer";
+> > +			clocks = <&clk IMX8MN_CLK_DISP_PIXEL_ROOT>, /* lcdif */
+> > +				 <&clk IMX8MN_CLK_DISP_APB_ROOT>,
+> > +				 <&clk IMX8MN_CLK_DISP_AXI_ROOT>,
+> > +				 <&clk IMX8MN_VIDEO_PLL1>,
+> > +				 <&clk IMX8MN_CLK_DISP_AXI_ROOT>, /* pgc_dispmix */
+> > +				 <&clk IMX8MN_CLK_DISP_APB_ROOT>,
+> > +				 <&clk IMX8MN_CLK_DISP_AXI>,
+> > +				 <&clk IMX8MN_CLK_DISP_APB>,
+> > +				 <&clk IMX8MN_SYS_PLL2_1000M>,
+> > +				 <&clk IMX8MN_SYS_PLL1_800M>,
+> > +				 <&clk IMX8MN_CLK_DSI_CORE>, /* mipi_disi */
+> > +				 <&clk IMX8MN_CLK_DSI_PHY_REF>;
+> > +
+> 
+> Unneeded newline.
+> 
+> I dropped it and applied the patch.
 
-Applied for fixes and by adding a stable tag, thanks!
+I replied too quick.
 
-Kind regards
-Uffe
+arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi:10.3-10: Warning (ranges_format): /chosen:ranges: empty "ranges" property but its #address-cells (1) differs from / (2)
+arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi:10.3-10: Warning (ranges_format): /chosen:ranges: empty "ranges" property but its #size-cells (1) differs from / (2)
+arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi:10.3-10: Warning (ranges_format): /chosen:ranges: empty "ranges" property but its #address-cells (1) differs from / (2)
+arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi:10.3-10: Warning (ranges_format): /chosen:ranges: empty "ranges" property but its #size-cells (1) differs from / (2)
 
+Shawn
 
-> ---
->  drivers/pmdomain/imx/imx93-blk-ctrl.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/pmdomain/imx/imx93-blk-ctrl.c b/drivers/pmdomain/imx/imx93-blk-ctrl.c
-> index 904ffa55b8f4..b10348ac10f0 100644
-> --- a/drivers/pmdomain/imx/imx93-blk-ctrl.c
-> +++ b/drivers/pmdomain/imx/imx93-blk-ctrl.c
-> @@ -313,7 +313,9 @@ static void imx93_blk_ctrl_remove(struct platform_device *pdev)
->
->         of_genpd_del_provider(pdev->dev.of_node);
->
-> -       for (i = 0; bc->onecell_data.num_domains; i++) {
-> +       pm_runtime_disable(&pdev->dev);
-> +
-> +       for (i = 0; i < bc->onecell_data.num_domains; i++) {
->                 struct imx93_blk_ctrl_domain *domain = &bc->domains[i];
->
->                 pm_genpd_remove(&domain->genpd);
-> --
-> 2.37.1
->
