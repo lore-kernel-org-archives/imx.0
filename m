@@ -1,44 +1,39 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD9E1586FE
-	for <imx@lists.linux.dev>; Fri,  1 Nov 2024 09:26:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C6EE145323
+	for <imx@lists.linux.dev>; Fri,  1 Nov 2024 09:28:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730453212; cv=none; b=OCOb3twHf9ho3XbBKGs2xnSezLnDVXjhNnqbR67qmgfFb+8Wq/RraTF9o8eeCOR8EEdOqTa9XzRUQvadfYZ/N47CtyHjjY6XvXsimvRxQIxl5LExWpBqtEUfxOQ8D9MmXhrIqByrHOmZPh0QiM+0s/esAI3mPRUzZztHuv1QDXE=
+	t=1730453341; cv=none; b=BYvGeGPYSnXKzJ7EHgwjLZmb3BSLN4ld8z0Od2fvM6Y3N2FZpgg/DhUS7bycFpWORr5z5+G5g6YHmnCqnQZk5GNKl8r6FEN92ktuchaTnw0u1X8mmifCZXejJgCy2zHIKCJo/OwuzU4q+cNC3HolE7bXcguI7vOc3M2INDavhBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730453212; c=relaxed/simple;
-	bh=xVGTDR81S5oI6LQ8b63VxeN1Pb/IAxdK+PQ+RABmHuI=;
+	s=arc-20240116; t=1730453341; c=relaxed/simple;
+	bh=f6BIz+ojUJWTypTM8zGtuhsZ1lVFeNYt74FygA8sQ4s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q+LVWH0w5JipdefXoqdxmgN45h1GXjuAeW26DnzJfRfSe73NmgAdxwrRar7jB26uetj8dCznUouQ7QWdDXLPjf5wAp1srNWoEMNUwueRoMNRTod4jph8KlGSVSJaBT6ErwASFQ/XAen4xrRq612dBHNwg6CVBBlgbPbsmMME+Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=ZhcAsuWK; arc=none smtp.client-ip=1.95.21.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=grayrm2CC9dUx21VSAIDNFdSHVUZZhryD01ziWiSSZ+UnsCm4oWl9EnxcobpVW6fpUy50uvJttHX7kBzEF6fFyTuiGwRz5r6L3es8hw5HAsCs/w7wk8tZycQUzViDYanM07d7UYYSPUBmhi1qbgUDabvMke6pKO1U3GETZvhRAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=GBkr7Vc4; arc=none smtp.client-ip=220.197.32.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="ZhcAsuWK"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="GBkr7Vc4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=UJfVlkISB8Y0Nj6NK+4jzx1o7Knv8GKqMIobgZ5NNIQ=;
-	b=ZhcAsuWKA6FfQJOMViqHZ2fL/p4u9bmQkMbppds0z/gZEFCONRwhHAHT81bJ4h
-	tgBwI82/G9xDRMU70X0YzrfRLWtKBc2WI+QLfzbSELV7RFAv2wBc1rLHc25LH2Th
-	pmJ6N8CBiucFC+RUp/OiIMn1mUil21YCU3qzTwUR1nfEc=
+	Content-Type; bh=Z2TwBYfpElSm/MhOCL9/cehfvLVKgyMFtIi/m3/gOgU=;
+	b=GBkr7Vc41c4uZsN7uGdzBSK5PTxR8rNYIUVi48x0UG1KRLZiRwH8X1LX9LrnKR
+	XlGZgzpCuj12tyOrfEy45sgOK9k3ma+KzQLqkCbJwBGR0JdFqwjAk4JW+QEUvf9Q
+	H8jucQXf5cBqf3stjvlMAP0xS+YLBN6K5zHFhP/XnRi/Q=
 Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgDHrruSniRn7n1gAQ--.13488S3;
-	Fri, 01 Nov 2024 17:25:40 +0800 (CST)
-Date: Fri, 1 Nov 2024 17:25:37 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgB3lMpFnyRndp5jAQ--.13947S3;
+	Fri, 01 Nov 2024 17:28:38 +0800 (CST)
+Date: Fri, 1 Nov 2024 17:28:36 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	Tushar Khandelwal <Tushar.Khandelwal@arm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>, Frank Li <Frank.li@nxp.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v4 0/6] configure imx8 dsp DT node for rproc usage
-Message-ID: <ZySekZeAgD/GEh2Q@dragon>
-References: <20241021155221.112073-1-laurentiumihalcea111@gmail.com>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	shengjiu.wang@gmail.com
+Subject: Re: [PATCH v2 0/3] arm64: dts: imx8ulp-evk: add sound card support
+Message-ID: <ZySfRAjsPSsgbhk0@dragon>
+References: <20241022052919.1946074-1-shengjiu.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,20 +42,22 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241021155221.112073-1-laurentiumihalcea111@gmail.com>
-X-CM-TRANSID:M88vCgDHrruSniRn7n1gAQ--.13488S3
+In-Reply-To: <20241022052919.1946074-1-shengjiu.wang@nxp.com>
+X-CM-TRANSID:Mc8vCgB3lMpFnyRndp5jAQ--.13947S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUV73kDUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEgyKZWckdPt-HAAAse
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVcTmUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCR6KZWckjmUy0gAAsw
 
-On Mon, Oct 21, 2024 at 11:52:15AM -0400, Laurentiu Mihalcea wrote:
-> Laurentiu Mihalcea (6):
->   dt-bindings: dsp: fsl,dsp: fix power domain count
->   arm64: dts: imx8-ss-audio: configure dsp node for rproc usage
->   arm64: dts: imx8qxp-mek: add dsp rproc-related mem regions
->   arm64: dts: imx8qm: drop dsp node from audio_subsys bus
->   arm64: dts: imx8qm: add node for VPU dsp
->   arm64: dts: imx8qm-mek: enable dsp node for rproc usage
+On Tue, Oct 22, 2024 at 01:29:16PM +0800, Shengjiu Wang wrote:
+> add bt-sco and spdif sound card support.
+> 
+> changes in v2:
+> - remove 'status' in edma nodes
+> 
+> Shengjiu Wang (3):
+>   arm64: dts: imx8ulp: Add audio device nodes
+>   arm64: dts: imx8ulp-evk: Add bt-sco sound card support
+>   arm64: dts: imx8ulp-evk: Add spdif sound card support
 
 Applied all, thanks!
 
