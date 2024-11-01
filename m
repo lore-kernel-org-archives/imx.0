@@ -1,119 +1,94 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A898166F16
-	for <imx@lists.linux.dev>; Fri,  1 Nov 2024 11:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCAF819C546
+	for <imx@lists.linux.dev>; Fri,  1 Nov 2024 11:53:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730461974; cv=none; b=QClpuWYLsKnKOgPauDkTn29tDzdu9McuAJ7y6v1kJAOAna1Dw6NOX49/ksT1ZsXKWubh50PGGSMqin3OvI+Gd9mBWBT/dDFb+8WJNzCX35orivGWBh3eiRj81iDA6I9UA7TI5Evc0QVAmNqXsuz2QUePHPDXayjBAtL71ij7mvY=
+	t=1730462022; cv=none; b=mKRD0RGajol4YT/WWW2NYqsVmPU0CfCtpdOjunfSLOlIVEapVRIW9cpGeuz+78A6bzW7ILn9y5FOscWe2DgHMVXfgDGtSQhdWEYnrU/5it7TPndwddwth7NBbn5QFb0nZwHCNEbwYrdAevO2/WLKXDCsPwP1pqvvF63aKh0tthU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730461974; c=relaxed/simple;
-	bh=s9zEschFheqpl3MVHG7AX/iz6sgGYdQcunUDorltRvE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QO2UG3fWS9TdGdWJEk+U6z4extzpc3ynkoQCv5q3dhqwAS/k4URA0IBzPMImHh31UhXd703amBySYoOvxM27bh6/GqLsL1h0jHGQqVSOW1h7IroD5KlAL1eZWk6coxOJX80RrMB/sglsnW4I6vQKD+AXK81DCrK3zD8HNZgslnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=Khd5Svqz; arc=none smtp.client-ip=220.197.32.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1730462022; c=relaxed/simple;
+	bh=Bxzb7SedPrl5l7ZKQkhztkTNV+iyjd0TpmJ2sRm3VZY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KbVLuBNav/M316SxNIAE52aoCIZqVSHGMLPj4K307Wsfjk9ABMJae4g5P+Lcg7supyFPYOEqbbKKDsvyxVl++Li0E9HJIOn+LiRIdFbP/MW/DkVZnQeIEJ2fl/BuK6UX3MsL/1cScTruFOvt9d68SwM3zTVNChdrRahyHBg9SqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZVmQOu2T; arc=none smtp.client-ip=209.85.208.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="Khd5Svqz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=YmSTqBtY8i0PV0/oOuK2+7GAOUhp/cEFMitg8aJfC1I=;
-	b=Khd5SvqzK4rtnwdSVspx1OZJIDfgoHn0uXLi2VrZvWn1NQHe+VltzzSGFdGFwX
-	KMTs+S9syWRr9k9cmpgf0VHlQQgQf9QmPe3t1VbtD7G0ejwSS2jQ5Tl50BhBYl5M
-	5qIGCZx2vvT8H6OO4nQ/NEZknXoT9AT0Olnn0eMgU/MWo=
-Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDHn4XewCRn1RZrAQ--.14133S3;
-	Fri, 01 Nov 2024 19:51:59 +0800 (CST)
-Date: Fri, 1 Nov 2024 19:51:57 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com,
-	Michael Trimarchi <michael@amarulasolutions.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] arm64: dts: imx8mn-bsh-smm-s2/pro: add simple-framebuffer
-Message-ID: <ZyTA3WLJ36ZAQyDN@dragon>
-References: <20241024102800.3481574-1-dario.binacchi@amarulasolutions.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZVmQOu2T"
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2fb3ce15172so28402801fa.0
+        for <imx@lists.linux.dev>; Fri, 01 Nov 2024 04:53:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1730462018; x=1731066818; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Bxzb7SedPrl5l7ZKQkhztkTNV+iyjd0TpmJ2sRm3VZY=;
+        b=ZVmQOu2TvHcjohVY+UsA7i2F92hfQjZ9Ng35UpBJYRgf+wZYYA5FHEY3yDxkr3dwqx
+         GPQRZ0Squ8suLINrhfzBPYjmjmOsyKr2x06Ju0eZJbX6odAY0C2CGFjw02TDMSEX4aoC
+         VTzjfnXE4BEvtuXqlHaSTcDE9ohXuBNrPd0VnrqZuIiQuxhOrchXJw+qdd6PFjWvEkzq
+         sJZrWSCysokJtbdFt2nr5pgGdGCOa+VmWBCk+eEXBHNz0iZHFWsAHvYWkAGK8m5vJMdp
+         j4n7+sYyLHT6sNyR5cq6J98kiHWilYxfZTeCo/vbJzYvI9VdHguwHrQ4ymMEA9q2SZFG
+         QT6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730462018; x=1731066818;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Bxzb7SedPrl5l7ZKQkhztkTNV+iyjd0TpmJ2sRm3VZY=;
+        b=qZaTYt4omgMQqPJEOieOE50qm3F7ZHtx6tSGuymZSu3tCRk9TIfc6B54iLexF6RCwD
+         1lk1WYXNa9VO/0iZf6Oj8rzrNdId36vd+DMm9wzGzHb9GCi5DAwZThQUb06XB0dVivop
+         cCLJ92QmIhH662qKibRI+auIQhF+fYl9aXHhjQwIz9SIDvhzg/VBeEaPGA5kKoCRuKRI
+         BuQpuT2RXJHh/pcEY5Q13R0O3SKSMTYivCzZJ25FhP06WgJGu9skzJMMZfH0IxYkaMAe
+         CAR35MGRN/c++7Uh1q/cT4a3VMyZrebycWeNhHRnPjsnLNQUY6MrnFnqA72g3DhmOwaG
+         lXrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV+iRhBavdPb1oPPbfYgHnZTFaRhQCdqa0wNfzjR0Tg7x51ICSE3GU1ttVGuP48lQl22z0=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz9FzrWc5jYtHMx+//vq+rKglP5IxXEBJno3MBtdYJVw0MGel97
+	8cevEdhmekY+VuWl/xK6N65V8FmZPxkp80CGm6xjhgGVTa16PTCSXiXn6K4nxKregSSBdBv6zAu
+	/U4L2JLjIGB/rWJGaVFMpCu/Y06eVqO1rt+BO6w==
+X-Google-Smtp-Source: AGHT+IGIi5ao43k/vIAO/lA0KVUBT2iz7DHq1Gqz+0/lE6XQd/R5X3Fft6qTZ9ZmTNYTYQonru0QZ16ntriXjkPbnU0=
+X-Received: by 2002:a2e:a595:0:b0:2fb:4fd4:668a with SMTP id
+ 38308e7fff4ca-2fedb49929amr11134431fa.22.1730462017840; Fri, 01 Nov 2024
+ 04:53:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241024102800.3481574-1-dario.binacchi@amarulasolutions.com>
-X-CM-TRANSID:Ms8vCgDHn4XewCRn1RZrAQ--.14133S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7urWxGFW7JF4rCrWrZw4rAFb_yoW8Zr15pa
-	4DGF1rWrs2vw40k3s0vF4Iqrn5t3yDXF129FWfW342kwsayFySgw1xKrsrW3Z0vr4kXw4I
-	kF13Wr1fKrWYqaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jYc_fUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCweKZWcks1IjcgAAsQ
+References: <20241101080614.1070819-1-andrei.stefanescu@oss.nxp.com> <20241101080614.1070819-5-andrei.stefanescu@oss.nxp.com>
+In-Reply-To: <20241101080614.1070819-5-andrei.stefanescu@oss.nxp.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Fri, 1 Nov 2024 12:53:26 +0100
+Message-ID: <CACRpkdaFqtMxE26jA6gWDAps6L58zL3KD6CisxTcVJj-DAR+pw@mail.gmail.com>
+Subject: Re: [PATCH v5 4/7] pinctrl: s32: convert the driver into an mfd cell
+To: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+	Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>, Larisa Grigore <larisa.grigore@nxp.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Lee Jones <lee@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>, linux-gpio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, NXP S32 Linux Team <s32@nxp.com>, 
+	Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>, 
+	Enric Balletbo <eballetb@redhat.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 24, 2024 at 12:27:56PM +0200, Dario Binacchi wrote:
-> Add a simple-framebuffer node for U-Boot to further fill and activate.
-> 
-> Co-developed-by: Michael Trimarchi <michael@amarulasolutions.com>
-> Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
-> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-> 
-> ---
-> 
->  .../freescale/imx8mn-bsh-smm-s2-display.dtsi  | 28 +++++++++++++++++++
->  1 file changed, 28 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi
-> index 7675583a6b67..3d670534a714 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi
-> @@ -4,6 +4,34 @@
->   */
->  
->  / {
-> +	chosen {
-> +		#address-cells = <1>;
-> +		#size-cells = <1>;
-> +		ranges;
-> +
-> +		framebuffer-panel0 {
-> +			compatible = "simple-framebuffer";
-> +			clocks = <&clk IMX8MN_CLK_DISP_PIXEL_ROOT>, /* lcdif */
-> +				 <&clk IMX8MN_CLK_DISP_APB_ROOT>,
-> +				 <&clk IMX8MN_CLK_DISP_AXI_ROOT>,
-> +				 <&clk IMX8MN_VIDEO_PLL1>,
-> +				 <&clk IMX8MN_CLK_DISP_AXI_ROOT>, /* pgc_dispmix */
-> +				 <&clk IMX8MN_CLK_DISP_APB_ROOT>,
-> +				 <&clk IMX8MN_CLK_DISP_AXI>,
-> +				 <&clk IMX8MN_CLK_DISP_APB>,
-> +				 <&clk IMX8MN_SYS_PLL2_1000M>,
-> +				 <&clk IMX8MN_SYS_PLL1_800M>,
-> +				 <&clk IMX8MN_CLK_DSI_CORE>, /* mipi_disi */
-> +				 <&clk IMX8MN_CLK_DSI_PHY_REF>;
-> +
+On Fri, Nov 1, 2024 at 9:06=E2=80=AFAM Andrei Stefanescu
+<andrei.stefanescu@oss.nxp.com> wrote:
 
-Unneeded newline.
+> The SIUL2 module is now represented as an mfd device. The pinctrl driver
+> is now an mfd_cell. Therefore, remove its compatible and adjust its
+> probing in order to get the necessary information from its mfd parent.
+>
+> Signed-off-by: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
 
-I dropped it and applied the patch.
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+I assume this needs to go in with the rest of the patches.
 
-Shawn
-
-> +			power-domains = <&disp_blk_ctrl IMX8MN_DISPBLK_PD_LCDIF>,
-> +					<&disp_blk_ctrl IMX8MN_DISPBLK_PD_MIPI_DSI>;
-> +			dvdd-supply = <&reg_3v3_dvdd>;
-> +			avdd-supply = <&reg_v3v3_avdd>;
-> +			status = "disabled";
-> +		};
-> +	};
-> +
->  	backlight: backlight {
->  		compatible = "pwm-backlight";
->  		pwms = <&pwm1 0 700000 0>;	/* 700000 ns = 1337Hz */
-> -- 
-> 2.43.0
-> 
-
+Yours,
+Linus Walleij
