@@ -1,49 +1,40 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349F61D555
-	for <imx@lists.linux.dev>; Fri,  1 Nov 2024 08:25:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E30156649
+	for <imx@lists.linux.dev>; Fri,  1 Nov 2024 08:26:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730449549; cv=none; b=jSS65HpIS+fv+1oCnv66amd5TnVRXGFDSdXqgIAuq4ZTKWal5y5WceuUSgv9n9zRdr76303kFG6+U065eN6UMa2dYH1SrDmzEonjknSyKQFP+BPqei4+Gead2qQv4knMTplzV6crnfKnpcWWsNLMOkBSse2hoPBvEo8zo8oDYzU=
+	t=1730449614; cv=none; b=bdKE3/phB83otqRM2ALz304c2oFURBQZJwvw/4a+rIRFfmZxcpA8yhC/q4HJJ9YF4Y5WOt6UTwnOXmAJ4oN/A6ugtSdORgqIEDZSE8wOJFGNHH7kCEtlBCAuynaplTnGXWAu8TGLRIJawklksvBFEQS6Utq1fNH0CzrOc+DcyO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730449549; c=relaxed/simple;
-	bh=Pg1bDa1VqMZxjfg4dsHifi+vJu/fSVqVb7HHC7zr2dI=;
+	s=arc-20240116; t=1730449614; c=relaxed/simple;
+	bh=qz+sStLf3csnHSVervtbuwoNFwpbuAjWD3eBqYi2Rrc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oI31aUGgFo/UVN/3jvRI4xImspMQ+prDFPC3avK/L9DIuAj2aHnGbQYWBZh9RbzcGLQ2SA4ZUHFjg1dZxbrIPRmZ9Dp5zAYmQ831K9bZnl4Zb1eEX4gOCmkAOQXm5YaPka6IQ4d4ahGWSfZ+1OSTQHMFunPVev3S42ZYb+xl4MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=f5u/4noK; arc=none smtp.client-ip=220.197.32.19
+	 Content-Type:Content-Disposition:In-Reply-To; b=iQ1PvGWh7waKEM1wGhoUbSCcWiiBf1ksP+ba9IQPV13ww6WeLXrZNZlBBfoFwwRmHi9sKjcS5gUXA2mzx5x3JkyExbH0lFPGVO1fssk+YSH7U8NUPK2dY5ge6W69Gz125wjGqZ3dx5GrP0ZY5DnurNMgrGOxF4FJdsTE7uBmTis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=b1KqIXuO; arc=none smtp.client-ip=220.197.32.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="f5u/4noK"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="b1KqIXuO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=Hg2TJ/Baji1tRW8RpbjYn7MFzFn5+qm7pKjjEWt0Flg=;
-	b=f5u/4noKj9KilTbCNFgWVQt0bGoeXfnwxuWKmDWbSN/n13pk1aLAXJgkovhzLU
-	6q4JEnRL7IDFaszpuM7Q9Z7G685BnYPLkMeYTe6j6vmF0DpnMU9xY2PcFo0KXj/Q
-	A4FTuluYuFo/tmOKvgqc1K5nm7Xr1KyXOwlajU7dk4bzc=
+	Content-Type; bh=pIZ4297mYks9TlNfZB/eCFyx2Nv7liMlVOj3Uim+dgg=;
+	b=b1KqIXuO36LLkH4jukpFtZ/rIBd49x54x//dPgK8gHofkebhw4UwICLC6q5WgX
+	YmZI9DjdyVt+iezP72zjkg7z6TmUT21jj/n+0QPct7A+quZGWK+5goZG4gut+bq2
+	UnnJ70z01kWqBGST65ni7unB6dOIL5o1HIlboqbV7HSfY=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD3tv6xjSRn72xnAQ--.13820S3;
-	Fri, 01 Nov 2024 16:13:39 +0800 (CST)
-Date: Fri, 1 Nov 2024 16:13:37 +0800
+	by gzsmtp3 (Coremail) with SMTP id M88vCgCnxfgMjiRnKmJfAQ--.13668S3;
+	Fri, 01 Nov 2024 16:15:10 +0800 (CST)
+Date: Fri, 1 Nov 2024 16:15:07 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Marek Vasut <marex@denx.de>
-Cc: linux-arm-kernel@lists.infradead.org,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Jacky Bai <ping.bai@nxp.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, Stefan Wahren <wahrenst@gmx.net>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	kernel@dh-electronics.com, linux-gpio@vger.kernel.org
-Subject: Re: [PATCH v3 02/12] ARM: dts: imx35: Align pin config nodes with
- bindings
-Message-ID: <ZySNsQVp5+JmRohH@dragon>
-References: <20241017211241.170861-1-marex@denx.de>
- <20241017211241.170861-2-marex@denx.de>
+To: carlos.song@nxp.com
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	haibo.chen@nxp.com, frank.li@nxp.com
+Subject: Re: [PATCH 0/5] arm64: dts: imx: Add LPSPI alias for
+ I.MX8ULP/8QXP/8QM/8DXL/93
+Message-ID: <ZySOC+STuelEZykQ@dragon>
+References: <20241018034532.2552325-1-carlos.song@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,23 +43,47 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241017211241.170861-2-marex@denx.de>
-X-CM-TRANSID:Ms8vCgD3tv6xjSRn72xnAQ--.13820S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUa-eODUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBBWKZWckjIUEMAAAsA
+In-Reply-To: <20241018034532.2552325-1-carlos.song@nxp.com>
+X-CM-TRANSID:M88vCgCnxfgMjiRnKmJfAQ--.13668S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWrZFWxtF1xJr1DGFWkZw47Jwb_yoW8JF17pF
+	W7XFyxKw1qkr4xur4kZFW8Awn3JaykWF1fXr4rt3yYkwn5ur98trW5Kry5KFy7XFW5ZFyY
+	yayUJ3yxCwn0vaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jb5rcUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBBWKZWckjIUEMAABsB
 
-On Thu, Oct 17, 2024 at 11:11:19PM +0200, Marek Vasut wrote:
-> Bindings expect pin configuration nodes in pinctrl to match certain
-> naming and not be part of another fake node:
+On Fri, Oct 18, 2024 at 11:45:27AM +0800, carlos.song@nxp.com wrote:
+> From: Carlos Song <carlos.song@nxp.com>
 > 
-> pinctrl@30330000: '...' does not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
+> Now there is no alias for LPSPI on I.MX8ULP/8QXP/8QM/8DXL/93.
+> So spidevB.C index B will be automatically allocated by kernel
+> incrementally from zero according to the order of registering
+> spi controller. In this case, it is hard to determine spidevB.C
+> is spi interface of device C on which LPSPI bus. It will cause
+> confusion when operate spi devices in userspace.
 > 
-> Drop the wrapping node and adjust the names to have "grp" prefix.
-> Diff looks big but this should have no functional impact, use e.g.
-> git show -w to view the diff.
+> For example, in I.MX93, When LPSPI3 and LPSPI5 are enabled
+> without alais:
 > 
-> Signed-off-by: Marek Vasut <marex@denx.de>
+> :~# ls /dev/spidev*
+> /dev/spidev0.0  /dev/spidev1.0
+> 
+> After LPSPI alais is applied, fixedly B is the LPSPI index and
+> C is the spi device index in spidevB.C. They are the pleasant
+> spidev names. Directly spidev2.0 is the device0 at LPSPI3 bus
+> and spidev4.0 is the device0 at LPSPI5 bus:
+> 
+> :~# ls /dev/spidev*
+> /dev/spidev2.0  /dev/spidev4.0
+> 
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> 
+> Carlos Song (5):
+>   arm64: dts: imx8qxp: Add LPSPI alias
+>   arm64: dts: imx8qm: Add LPSPI alias
+>   arm64: dts: imx8dxl: Add LPSPI alias
+>   arm64: dts: imx8ulp: Add LPSPI alias
+>   arm64: dts: imx93: Add LPSPI alias
 
-Applied all DTS patches, thanks!
+Applied all, thanks!
 
