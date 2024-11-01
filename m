@@ -1,109 +1,203 @@
-Received: from mout.web.de (mout.web.de [212.227.17.11])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2087.outbound.protection.outlook.com [40.107.21.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B8F15B0E2;
-	Fri,  1 Nov 2024 15:46:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730475979; cv=none; b=us+fQbxXTO9+OluWHUgacUg8G9I67tRsPv3aA4IDfgv7t3blsa7HTUwoOGqcurPJdNzN1C7gIwQNgB8SOfzgs1qAqaTO4E42uU6Xx0S0q8nDf3ckQhlgxcrwzE2CsVwq/3iixu89GpP1McEwxRh4e8/nO0qYQn+QCjMLrypEyac=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730475979; c=relaxed/simple;
-	bh=OpvRx1WWE+WS+DgWenvK+IRNQ2xdgICCz6OcvfsAeVw=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=capuxWShof+vRqe9fGLvTnOP2EbgPNimUmvYt93bblFMYeTxy2sXt9b/OiFesVPCXjSzA9FkA1DVqwthBX9rnw+Ov63GxVcT3VNj6KVc3o6J7fYO0eLUI+lOv3OotCY3mVs/pHkxCa+5y0JNh8ua8rqQDg9B6lDRfBWQoqIjUCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=Jj7AcoFU; arc=none smtp.client-ip=212.227.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09C819D089
+	for <imx@lists.linux.dev>; Fri,  1 Nov 2024 16:50:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.87
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730479828; cv=fail; b=e/GbPrWBWtoq0Ak9xwmi8VLtHBeQ1c4n7lZAEF7X0mQJpfzsFH4m301Al7xdQl815C1OKQ5FEF7ErJId4/hXlferLSaX3GgQwHokz1dKq10HQIQ9Yy+Y1rUonO64saEgQOiwlPAzWsc2+r2y2ST6bvuWyB10CXmgdWd3PXiGZow=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730479828; c=relaxed/simple;
+	bh=MYVWkobQ46xnf1oTLC4Zx59IeCfJbBMF8dvp2yQlUco=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=FJgq40KlBfGHY9SZNAXybzjOfXJiNB2FF6QBZ/VLHlTve7H8p81/LjId86op5wxsVEb1PvgENfiZOjV63qXXH6DwvSpvXP+jZySztvdD3gaxOwm4OdplxP5BiLdzwE1STGsKdoPCr3mxCVbacBHOEBhQPiyxVvo/O2KpjhTiVEY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=cUbBQG63; arc=fail smtp.client-ip=40.107.21.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="Jj7AcoFU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1730475951; x=1731080751; i=markus.elfring@web.de;
-	bh=7UB3ac7LBmeqyiSNaZiojKaC72aMNlvAd36yyxNrsRA=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=Jj7AcoFUcvb5OAlwS4Q6kVYWcKmEuY8+5zpeJ5WTD0pcI7n7grUNKyWlocW9GQra
-	 dDwRH3FUXlYsG5Uj85tI3OfDYJZclmbk6kdetDpayUb25hwaXFWbJp5Cqccls30yq
-	 4Bow5fsTgQGxApmTaWuC3/FFN8SF+LlPt/kTwzR2tgGWorSev9MEPyRQwVWETEH3/
-	 GtpoZuEbKYY6InQcl1dUIGM2lruXn43IX+I0PZJiWlY2Ad18OZQqEAUvwMH3+XdE1
-	 x40pyyr5brAHCXQGc9wBmsDNpAetIDAek2pYN9VycXLswWY0AUtMaqBvkbKWMKoEJ
-	 2z8PuOlENTEo1CMU0Q==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.83.95]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1M6pUK-1tCvzN1kh4-00BxAE; Fri, 01
- Nov 2024 16:45:51 +0100
-Message-ID: <fdf5702a-b739-4643-8288-86e6cfb8403d@web.de>
-Date: Fri, 1 Nov 2024 16:45:47 +0100
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="cUbBQG63"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=d1kM7Vj+fyOyC7KY1dgCJuXcrmSP9xyupoEA0/J9Hl/4KfgMlvpElj/uK5xsKiLyGlrDXH45aEsuw5vuK71uwc9ZmSIOUzof8YLOTO9OjBUGNQ3ydfdDC/ANK8Uhe1/D7tHGt5BdTMKSB4/klexI1gPTEfvJz35AivND+S/w8P0WWzhqvsHzk7nMXMxLG+3OAkdq7Qs0PCfyc/I+MZ6DJv/8Pi948bVWTqqr9nU90adFh/Fd8zP4dOLVVNIaFyk5gpDSP2sfRcBKUJW5/4/ti8+R3s0GS9SYYC1EAVeA5VGV2x4EJnB/3Y7NTPWwr9AkmYnTHioUujn3qG7g1i4uIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5KBgxRO4NBY42OTzZaW0c4I8dLq1r+LVI+ujJGeJmig=;
+ b=X/qYUakqL460XA0FjZL6H4d1vtJPrJLlIo9zHKJK6nLMPIU8S5XFtmZ9G0ApYVuZJC1KNcQoSMVZizVIM2PWewnsTF4xtjK5k6eC/VRFtBnYTnatJo6VWwxHN4TMv5PF9DFgTH2FKO+03rio3TDy4GwHyV9uNclgonKnv6H+d2DlQfy3J+OPRYICmR0TrBaw1v+tgLt3ZTbc0hgBqZE8HFVeTCaRcT2AfZA1gId8KE1vuU7/9rcjgV8Vy9GT6UZcehiBLD2z9F6tTQa2XzubRvMJYoEK6+VwEak/WBnzVUaZOnZjWTsf3iOVwmdJTU+YVZXBlj1jUDc9D5HRLOg2kg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5KBgxRO4NBY42OTzZaW0c4I8dLq1r+LVI+ujJGeJmig=;
+ b=cUbBQG63uxyNEnFOrebilpuN5JPuYisppfEjtayip3rAtMRQ7pg7VCJCEjhSNBIHGVOgPHLfocujmYB42FPX5sYZmwl69Pm/iWCEYmeutrG9jAtHhujrkQ57BxgkI2iAm9c+Pwz5m+VxiKAjO5x7oZGMTBUJ0WW8mZcDsIfAiDFv/oIyzX827+dom3W6BwYiT0qc23EEq6JwnWN99C3dQid8dKFB5GyJP+BSXMef72252Sdj6YwATFN3MGRRb3EAGqyEnznTrRUe3oUqKUxYEpwmwqPIYowl9Y2GFLikXbYLXI9UPVORKmHh3QtSgsAClVINYPl3vBQ4lsOaE3xc0Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DBBPR04MB7930.eurprd04.prod.outlook.com (2603:10a6:10:1ea::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.32; Fri, 1 Nov
+ 2024 16:50:22 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8093.027; Fri, 1 Nov 2024
+ 16:50:21 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: alexandre.belloni@bootlin.com
+Cc: Frank.Li@nxp.com,
+	conor.culhane@silvaco.com,
+	imx@lists.linux.dev,
+	linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	miquel.raynal@bootlin.com,
+	xiaoning.wang@nxp.com
+Subject: [PATCH v2 1/1] i3c: master: svc: Modify enabled_events bit 7:0 to act as IBI enable counter
+Date: Fri,  1 Nov 2024 12:50:02 -0400
+Message-Id: <20241101165002.2479794-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0383.namprd03.prod.outlook.com
+ (2603:10b6:a03:3a1::28) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>,
- linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, s32@nxp.com,
- Bartosz Golaszewski <brgl@bgdev.pl>, Chester Lin <chester62515@gmail.com>,
- Conor Dooley <conor+dt@kernel.org>, Dong Aisheng <aisheng.dong@nxp.com>,
- Fabio Estevam <festevam@gmail.com>,
- Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jacky Bai
- <ping.bai@nxp.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Larisa Grigore <larisa.grigore@nxp.com>, Lee Jones <lee@kernel.org>,
- Linus Walleij <linus.walleij@linaro.org>,
- Matthias Brugger <mbrugger@suse.com>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Rob Herring <robh@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de,
- Alberto Ruiz <aruizrui@redhat.com>, Christophe Lizzi <clizzi@redhat.com>,
- Enric Balletbo <eballetb@redhat.com>
-References: <20241101080614.1070819-7-andrei.stefanescu@oss.nxp.com>
-Subject: Re: [PATCH v5 6/7] pinctrl: s32cc: add driver for GPIO functionality
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20241101080614.1070819-7-andrei.stefanescu@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:jj8tV1/5lvgDluPBwBwySefJgimRcKB6UJMv3JG+Rfhob34M4SF
- zpfZMhDKktYmP84RHCvTGMRiSo8eD0NXIcKYi0iJuMLPMKMkNEDgbDQ00Tu3zLt3yIR5swC
- e48XqFieUY4xPJkF6ksXNHRlO8FG5Rj1fT66cz39pU/OTQDchlM7fOVh76RvLj2jwuEjjfl
- jRgl7k75s3JcQFOrs36LA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:7o16wLigwNM=;QX09HEZ8+jEi7umwCR8bn+fcqGK
- iwIJYJcfDDaFsY8IuY+91YTn1TGo54jj9+n48mICBQcofmxdKYke0JIQqJZ5RTaT0m1TOIYVs
- 0WYcQY13IvGmPayFCgdk9f98I4hbgbbzdVm60fmcjajvWqCELsqFzIisOKey4dj5AInvLdnPm
- JPnk0whD1ihkVamcU8WuO7BleTB1K2bLnpOJX+rhxeSCy0/hxb0lpZRF0S1DENcbi2czN+vgf
- kMYO0d1heXCAZDam18SRyaGX8UN5b1vxAxvdBZEXRl4IafyjddgXOWU6NSRvarmQul/bmK2E0
- pjv+09sdadnPZSU1M7MxBKDdgxmj0hWRzbSuRsPvY/e4RO8RrvrfEZAyM1DM9/qsuMc6uBl9a
- t9yWvQyXO7qrXhlZSDJ4a6VE8NzakgBTN0Wk2Ob3kKo2DbfvbssS9NaJKjFgNzNkF/u7EiiYt
- VCvtOzcxM0bIERiOFQdAlJESvtnyzqM4fxSq5dFgFrwqPDrmWB3C6z06xziKlr/grIk5r1Jvq
- +3IUGIqsr/+rU04AkX/bBebF/prO1QCGUBZWcBFVMTguLeqRTsBfBvrEAoXBXMByRysar3VxC
- H34HcNDvP0KJ4/AL3Honk9AjXEvhd3wCjnMmY6uc3ExX1zIhmd6WMKX1iy9bNRgBf6khllb/h
- ozXTFFObKmhIzHTnZbMOcqCOjxYGUkOhIZy0hdbhdcD85kEj+KfgoZRcNNDl/uvUf7Kl6zdu/
- BD1t2+GFK9EYQH1oIoBlBxahx2DbN5Rf+K4777Aceclv50hSGqbYrTyBV0TkB4xg57/HQ0QMz
- Ig2svqAtWJFQZJUAp40Pab1A==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DBBPR04MB7930:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2a7232af-7137-4310-8631-08dcfa95464f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|52116014|376014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?uwGUGizq+wC+fNGauxD7AIla2ImpqnRz0KVJlJOKinzbKrZyz3CMb3x+VAsn?=
+ =?us-ascii?Q?TgqUPsgZ8/wrJxCB2meMZ/GpTRG5+tNEhoCnAse793vAzIll509hxFLADFvf?=
+ =?us-ascii?Q?HcM+3FPv5sF8Y20MNhfKLfLQ2hPdpjzpPdrzUsY4HoEYltv9/SM8dSM+awr2?=
+ =?us-ascii?Q?5bYv1GmsBcD4QDtBXYYGglIM/v4ekpUt89SBcRiZ2IbcGe5o7ax/qeF/+dme?=
+ =?us-ascii?Q?K0JSiSmNtOh3wYlCHzXeTS+n0A0AVdk5xMPX3ZEN4ANrzLc8WeYUzpnKcWP5?=
+ =?us-ascii?Q?sssmcXb2F7RzwUkCMkEvGBEaDjDOqZzNECaAotMrAR5fc55qz03Rr8Gd01+x?=
+ =?us-ascii?Q?KrYKWUEKwPOsWQiMeEM3Cist2bPBHHSTFBQB89X5mDNjsktRKRafozzNXKPd?=
+ =?us-ascii?Q?hFkgD/IEEmeQDhg8zGos8sqwU9lV1pzWRPQntQI/KjnNBsGYszAE+iWikToW?=
+ =?us-ascii?Q?55sie0WNymwf68mUAbQ2gk4YcyWMhHf42EQocS3ohAOFP8KNXRuWptoibk4F?=
+ =?us-ascii?Q?o0YyMK+oZg6wszD72sE8fqalRhKeFOr1tXOfbBsO4BJAo5+o4Gh3b/o9raun?=
+ =?us-ascii?Q?2xyE1AHd9HtRRX58azLzFmml7o/wq/ASwiDRcduDzV7ESXoATng2XRuhZi+g?=
+ =?us-ascii?Q?YOwXb9bh1Hwt4INfB0m801cr+G7exm3UYmKBZrQAng7nLMrYmlicIIRAJmhC?=
+ =?us-ascii?Q?0uD8U+izes2BrJf42EZBXXuYoiafWg8khtBrx/SnNnoFj64e5VGwa+A35yzu?=
+ =?us-ascii?Q?pkX7rnzDMAclrS6pfjSB+2+gIrwk8rI60tLhjhym7y9AXiupSZVZRG9yhQzC?=
+ =?us-ascii?Q?3a9syrAzIORj2pkARCU7JJxo6IDtEbpy/eCR+WdyCcdDzubY6HP3udsDbaij?=
+ =?us-ascii?Q?1OYiW8Xl91WLSDhd2jjNhxVFEsQywfL3dLwEb+AOyniQUjjo2KCv2/w175N9?=
+ =?us-ascii?Q?9Ae0hCk5m8y5ZUCCAIpmaCNapz79Hj4/0QF/FSVj/LRNId2nRd3VfV6rP0fv?=
+ =?us-ascii?Q?YFP+5/Hq7AMph3agRkhGZ2h9lXGNbhjwP6qbQG4Nmg24eznlX4j+Nw//Yn8h?=
+ =?us-ascii?Q?peuEaRkOn14dUgQ0vWThQ4WN7cIu3Hzf2lh/nPXECYVnZWnmsMZZZRI5Qzre?=
+ =?us-ascii?Q?lVmiDOaqmmglpWxE6gWHqi9Gee1dprFYpEnIfUa1DyFWab+B/cAqdbtl6TD2?=
+ =?us-ascii?Q?mwxh8M6Jx0lK6Prmgtuvq2QQILnZ1DKoaZIDvMdfyZKxhrBBcuB5R+Y1c9kY?=
+ =?us-ascii?Q?ImcMvqJ6VN0HjrUYz/5twzJOkQyzU94Ln6UThv2Lq0WIvD5sOEhRQ8qnqk5s?=
+ =?us-ascii?Q?8QPc/Ggy0QNyQPijl3mI2WYGWCJZOoxosNxGF0I2gmOuT9W2oEYHgZoNpvKz?=
+ =?us-ascii?Q?/GIkXM8=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?k29K+BAsig55LhlJag4yHjSdFkyujsK0abJhiX9cqYzZD0ggRcrrCGxu13b8?=
+ =?us-ascii?Q?BJAu8ih4DoCbADuJI8DaITNmdcgqQDyuWBQgzowxQ6dTtldZQmw1Q/16OC9y?=
+ =?us-ascii?Q?2QTEWLg2C4OrvkarAduXMWHfQJhBWZbe+W3IH97IyBxF2g3EDfbPRLyOxcwv?=
+ =?us-ascii?Q?FLjc+sGssXpO/a/rn273TiFN0jJ+JfSYrngqCe+S4PEb7Ztv8p9aiznAj0xG?=
+ =?us-ascii?Q?LsGtIK3g+5zspzJNuqB/TfsE/taNm3JKGW8H20YZ5Ao7a7YiaDVmNJar4RGS?=
+ =?us-ascii?Q?iT9nzAno9rAMMsk/WqzD2dZWWjX4kKhiQKFzc/szY1D7uUMSlM3rlan8Cro4?=
+ =?us-ascii?Q?+/3nQiNOGWqc4IMwr/rSvKnLzPLjLqGsQnLvFHJ4dQRe0egCb18eKiV0GMQQ?=
+ =?us-ascii?Q?R+WNFMphVd8/pkw7O/xOpU+Qy/7CLxxfj1xH1VoNQuPT3CHTouErIfvpLxIt?=
+ =?us-ascii?Q?+zERSVgffZM+obTeMsA/ngMHVb9wtgbEAjjR+qxl/Jb1K9ZYYkQia0hhWi+a?=
+ =?us-ascii?Q?dPG0rL5NGg5Gt+wfg2CVo4WfO9qqnkd1/KjkK062UbXtzrnBvry2Xl8Xog69?=
+ =?us-ascii?Q?PGIQk/Gw/k61+cUu3psbTARw0l7DYtmDZhD2xNaaZ2USVqPGZQWy+jCynz8P?=
+ =?us-ascii?Q?lFVgnop8+N+b5m7m6FSdwfUGWik3JR8v80Td/t4vkL/ziWTwJsirzOXvAdZZ?=
+ =?us-ascii?Q?pizdD6VJT4UhIGXrROS8zwgZtX/v8yyQU5sB8uEsivPC+AgkorYzQHUxZ+fp?=
+ =?us-ascii?Q?Cow/BEqYvaASIIHlRTjkfz8zIA+04RKh4d0HkrawHwvVkEi43EDnlFqjwH+n?=
+ =?us-ascii?Q?sBhLvDujw+tjYIpgE9J5mCGZAoe4RY8LwwUahtWlH14vOoTrqYuAZWPo2DM3?=
+ =?us-ascii?Q?iUnvFup9/fUJzTKArst1u0h2jp8T4GWo6MrcRR5FrerxLmh7TfFSs/myEuXv?=
+ =?us-ascii?Q?6Mxnt8P+gvAnEhhgN2mPlkJeA2kJ7kG6Kzyi8uVhT4IzhFOaZyssjwS4V6LG?=
+ =?us-ascii?Q?xRUI63i5T3LlNxr8acVUnu9+V03mNlnLdZn6qHXS/v9HJpBMyGubfOCoWdCf?=
+ =?us-ascii?Q?OpHc2g8l8SOW93q1zFIz5j7EQtFJ+otnruGyyGSox+XBlyQxARzfvhKc13Sw?=
+ =?us-ascii?Q?Pqwa4nPZf0YstOw8exTIm3o/P9hSirouu0JMjG/Outb5MlZkk6YA1moaoKF9?=
+ =?us-ascii?Q?895jtKclK9Lx56c4wFRmqSYQ3FyF9x1egq3wTFktsCIKkaACJlkz7hzihQad?=
+ =?us-ascii?Q?NqL0+QEA88f6744+inTY/sWWyvcUbAm5iUGVRBfcCj6lyST4ny1HS4+4UzXI?=
+ =?us-ascii?Q?34x9vBiOnYAZ+wPXpz7uklusOZJrpQRceeRyozGNaXLT7r70BYjc1lqurtUi?=
+ =?us-ascii?Q?OZ2l/uBQEXvZr1pGvOHQ46ngVGxnEUHvloeJxHm1+11FW7xxT5wsMkghS4gJ?=
+ =?us-ascii?Q?AWeVtELhQQBzaj2u/kNNzsUH1FmgKzrjhtA47b+Zo/TlLIhm/RhwI73WL+7l?=
+ =?us-ascii?Q?55ZgNYxSdh7foTkthUt9HFewyr5sIlxcnHoqGKvnmoQtRUeBIWAOzVS0s4kY?=
+ =?us-ascii?Q?a0K6uzQO/vvrEZ+uq+I=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2a7232af-7137-4310-8631-08dcfa95464f
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Nov 2024 16:50:21.8255
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FJEdiCtWIVEeQF4tcDRFpyk/cprw0XJj+YtiSsviHwU9FQycaX8wfnY2EcPFJUQu4+hzVDRsQagmqq9Rv8cu4Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7930
 
-> Add basic GPIO functionality (request, free, get, set) for the existing
-> pinctrl SIUL2 driver since the hardware for pinctrl&GPIO is tightly
-> coupled.
-=E2=80=A6
-> +++ b/drivers/pinctrl/nxp/pinctrl-s32cc.c
-=E2=80=A6
-> +static int s32_gpio_request(struct gpio_chip *gc, unsigned int gpio)
-> +{
-=E2=80=A6
-> +	spin_lock_irqsave(&ipctl->gpio_configs_lock, flags);
-> +	list_add(&gpio_pin->list, &ipctl->gpio_configs);
-> +	spin_unlock_irqrestore(&ipctl->gpio_configs_lock, flags);
-=E2=80=A6
+Fix issue where disabling IBI on one device disables the entire IBI
+interrupt. Modify bit 7:0 of enabled_events to serve as an IBI enable
+counter, ensuring that the system IBI interrupt is disabled only when all
+I3C devices have IBI disabled.
 
-Under which circumstances would you become interested to apply a statement
-like =E2=80=9Cguard(spinlock_irqsave)(&ipctl->gpio_configs_lock);=E2=80=9D=
-?
-https://elixir.bootlin.com/linux/v6.12-rc5/source/include/linux/spinlock.h=
-#L551
+Cc: stable@kernel.org
+Fixes: 7ff730ca458e ("i3c: master: svc: enable the interrupt in the enable ibi function")
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Change from v1 to v2
+- rebase to i3c/next branch
+- add Reviewed tag of Miquel Raynal
+---
+ drivers/i3c/master/svc-i3c-master.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-Regards,
-Markus
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index c53f2b27662f4..c1ee3828e7eec 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -130,8 +130,8 @@
+ #define SVC_I3C_PPBAUD_MAX 15
+ #define SVC_I3C_QUICK_I2C_CLK 4170000
+ 
+-#define SVC_I3C_EVENT_IBI	BIT(0)
+-#define SVC_I3C_EVENT_HOTJOIN	BIT(1)
++#define SVC_I3C_EVENT_IBI	GENMASK(7, 0)
++#define SVC_I3C_EVENT_HOTJOIN	BIT(31)
+ 
+ struct svc_i3c_cmd {
+ 	u8 addr;
+@@ -214,7 +214,7 @@ struct svc_i3c_master {
+ 		spinlock_t lock;
+ 	} ibi;
+ 	struct mutex lock;
+-	int enabled_events;
++	u32 enabled_events;
+ 	u32 mctrl_config;
+ };
+ 
+@@ -1688,7 +1688,7 @@ static int svc_i3c_master_enable_ibi(struct i3c_dev_desc *dev)
+ 		return ret;
+ 	}
+ 
+-	master->enabled_events |= SVC_I3C_EVENT_IBI;
++	master->enabled_events++;
+ 	svc_i3c_master_enable_interrupts(master, SVC_I3C_MINT_SLVSTART);
+ 
+ 	return i3c_master_enec_locked(m, dev->info.dyn_addr, I3C_CCC_EVENT_SIR);
+@@ -1700,7 +1700,7 @@ static int svc_i3c_master_disable_ibi(struct i3c_dev_desc *dev)
+ 	struct svc_i3c_master *master = to_svc_i3c_master(m);
+ 	int ret;
+ 
+-	master->enabled_events &= ~SVC_I3C_EVENT_IBI;
++	master->enabled_events--;
+ 	if (!master->enabled_events)
+ 		svc_i3c_master_disable_interrupts(master);
+ 
+-- 
+2.34.1
+
