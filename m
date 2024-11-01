@@ -1,81 +1,57 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5641A2632;
-	Fri,  1 Nov 2024 17:19:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49741BD9DC;
+	Fri,  1 Nov 2024 17:21:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730481546; cv=none; b=VysTSknwX5SF+QuhOZhbWEcXoAEjFw4/q4lyPC6j5mu7kNFXObIjEhC82J5S00y5/PeHSZfuF8m1uTcMpsLkXEOhc/gYTrP7OnhmpGPNLH9cVGcX7UQfa953kpzMg/I7C0Gya349YvjcILqSfhqpLstMDwHjkQDaLVrPAxAuyMI=
+	t=1730481713; cv=none; b=pfuBpFeeOv9c1luok3VE01pBV6YgAk7zcWt191FkHGfMb1Hl8br9jQIRNWszb5L1QEmi4Y/jz2/WlkR6JO9XeoAv5xsU9GuNM6y9UwFfUVfCZ28bbkXFHyZWm54DmlXFAudDMblZygcqqWQNkBxsA/Ms5lsxGnXiYmprG4S8kR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730481546; c=relaxed/simple;
-	bh=lxq998gJqdX9fpNp1aT7xjSU+QrdgsX0MPC9PiPtROo=;
+	s=arc-20240116; t=1730481713; c=relaxed/simple;
+	bh=3A2/E11RnZgbKpQM60gPR6/16KeHF4eQh342j9UDESM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gDXAFzq6VFWJvR0+TUowhbAnTLr0MNUgrptZuL8pDe/D8yFQHdkMcG6f5hssPYxY9/vyCl2JB5iLiK5adYGIQupVa3JJlDDGoZBRxJJ1xnG0QrNigI6sP9nHSubV4Ni8eRGiqCvHi5sfSCwhYZVCqHjua5wT1QRxfdW6vu1tJ5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OAHIHOH+; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=MkrLzUD70IVL13e40WOPWG4fOWgyvqIkh7XEltswcB7iR4Rpx7hUdhZVuRVhlLBg9rx6JMLizTYHf4SpZPgTNrU4fEFvxqotS8mg79wSHhlDYuOkH3efZdtHIFc+BV8BUF8fI95ljQ0e0z7aVez3m6z/SpAcX+/oxcVuSrgGrJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oltbq8yl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OAHIHOH+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730481544; x=1762017544;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=lxq998gJqdX9fpNp1aT7xjSU+QrdgsX0MPC9PiPtROo=;
-  b=OAHIHOH+ksPwLqalkHhPyB2Aans8ro7VIiG/0Wr81+J4v7YwDYYly+Hw
-   yXSXHySb4hCK/sB/ZX10mviQg5uvVFqE2Vqdw2xV7KWoJoT3Q5xcBorWD
-   xl81173vgi6M+hTMZWsLU3Trj8yMRYzHK9lkiizTTLBDFl4XFBquYGM6z
-   vo3SzPxI8itAoziyGHUnkeo+Zm2c9dHPwyCFGt7ehjNl5VIhpzVp2WuYY
-   sGGr20djtu0m9E3WAppN763k8bf2daJd06+qNtXzs5QF5F2Dt27byLAe0
-   ZzI4m7pYcuQ3O9HwdIhUatRyLKpQbMG0XoQf9E3H+FWYknn1/iFXziYzO
-   Q==;
-X-CSE-ConnectionGUID: RCl5SiacSxOuVoDVP1HUaQ==
-X-CSE-MsgGUID: 3DXCZ3MTTMG7sF3DZdEXIA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11243"; a="29671140"
-X-IronPort-AV: E=Sophos;i="6.11,250,1725346800"; 
-   d="scan'208";a="29671140"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2024 10:19:00 -0700
-X-CSE-ConnectionGUID: erxjZ4CzSSuCmgrK+9hJFA==
-X-CSE-MsgGUID: 4aOi8Hy6Tz+4ZlBe8q8cHw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,250,1725346800"; 
-   d="scan'208";a="88147807"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 01 Nov 2024 10:18:53 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t6vIO-000hnX-0z;
-	Fri, 01 Nov 2024 17:18:48 +0000
-Date: Sat, 2 Nov 2024 01:18:28 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>, Lee Jones <lee@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-gpio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	NXP S32 Linux Team <s32@nxp.com>,
-	Christophe Lizzi <clizzi@redhat.com>,
-	Alberto Ruiz <aruizrui@redhat.com>,
-	Enric Balletbo <eballetb@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v5 2/7] mfd: nxp-siul2: add support for NXP SIUL2
-Message-ID: <202411020003.C5suQQDX-lkp@intel.com>
-References: <20241101080614.1070819-3-andrei.stefanescu@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oltbq8yl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB98C4CECD;
+	Fri,  1 Nov 2024 17:21:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730481712;
+	bh=3A2/E11RnZgbKpQM60gPR6/16KeHF4eQh342j9UDESM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Oltbq8yl/+NgUCRoK5gDXZ6TqGHRBXXNP0l8DZunO8JLxAsOlx04a2jPRDnpDwNaz
+	 Uij8n+ekZoW3LkB/iapCqXKieuqN3HpmXQaR54bKDfs8yhZ7v9aEsNYAxPVmTRO0nb
+	 1zWngrKGYJ+7tvVXm6145d4H13gbQWqbvYk20ZJ/eXjK/koeWE8gStyXHWNlWZZzRY
+	 vKdWq+p01gxF+1j0ruIM74qz7+e+THH9S2zLTzdYwEJ1Ct7ScITRPJKyzgw3WHNikK
+	 mjQyfL6nBYAuXO4iwFYRC2ip56c1drrEEKtD3ihVOhBj3Sqq0xpjNQQibLKTaLeTgE
+	 i5GJwlmmFCynQ==
+Date: Fri, 1 Nov 2024 12:21:50 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: devicetree@vger.kernel.org, tzimmermann@suse.de,
+	jernej.skrabec@gmail.com, imx@lists.linux.dev,
+	tomi.valkeinen@ideasonboard.com, airlied@gmail.com, jonas@kwiboo.se,
+	catalin.marinas@arm.com, will@kernel.org, mripard@kernel.org,
+	shawnguo@kernel.org, hverkuil@xs4all.nl,
+	maarten.lankhorst@linux.intel.com, festevam@gmail.com,
+	quic_bjorande@quicinc.com, sakari.ailus@linux.intel.com,
+	linux-arm-kernel@lists.infradead.org, biju.das.jz@bp.renesas.com,
+	s.hauer@pengutronix.de, geert+renesas@glider.be,
+	thierry.reding@gmail.com, neil.armstrong@linaro.org, marex@denx.de,
+	mchehab@kernel.org, simona@ffwll.ch, linux-media@vger.kernel.org,
+	conor+dt@kernel.org, kernel@pengutronix.de,
+	prabhakar.mahadev-lad.rj@bp.renesas.com, krzk+dt@kernel.org,
+	Laurent.pinchart@ideasonboard.com, arnd@arndb.de, sam@ravnborg.org,
+	andrzej.hajda@intel.com, rfoss@kernel.org,
+	dmitry.baryshkov@linaro.org, quic_jesszhan@quicinc.com,
+	nfraprado@collabora.com, linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v4 09/13] dt-bindings: display: bridge: Add ITE IT6263
+ LVDS to HDMI converter
+Message-ID: <173048170995.3772353.5460654511674582491.robh@kernel.org>
+References: <20241028023740.19732-1-victor.liu@nxp.com>
+ <20241028023740.19732-10-victor.liu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -84,104 +60,36 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241101080614.1070819-3-andrei.stefanescu@oss.nxp.com>
-
-Hi Andrei,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on linusw-pinctrl/devel]
-[also build test WARNING on linusw-pinctrl/for-next lee-mfd/for-mfd-next shawnguo/for-next linus/master lee-mfd/for-mfd-fixes v6.12-rc5 next-20241101]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Andrei-Stefanescu/dt-bindings-mfd-add-support-for-the-NXP-SIUL2-module/20241101-160940
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-pinctrl.git devel
-patch link:    https://lore.kernel.org/r/20241101080614.1070819-3-andrei.stefanescu%40oss.nxp.com
-patch subject: [PATCH v5 2/7] mfd: nxp-siul2: add support for NXP SIUL2
-config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20241102/202411020003.C5suQQDX-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 14.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241102/202411020003.C5suQQDX-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202411020003.C5suQQDX-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   drivers/mfd/nxp-siul2.c: In function 'nxp_siul2_init_regmap':
->> drivers/mfd/nxp-siul2.c:318:1: warning: the frame size of 1116 bytes is larger than 1024 bytes [-Wframe-larger-than=]
-     318 | }
-         | ^
---
->> drivers/mfd/nxp-siul2.c:50: warning: Function parameter or struct member 'reg_name' not described in 'nxp_siul2_reg_range_info'
-
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for GET_FREE_REGION
-   Depends on [n]: SPARSEMEM [=n]
-   Selected by [m]:
-   - RESOURCE_KUNIT_TEST [=m] && RUNTIME_TESTING_MENU [=y] && KUNIT [=m]
+In-Reply-To: <20241028023740.19732-10-victor.liu@nxp.com>
 
 
-vim +318 drivers/mfd/nxp-siul2.c
+On Mon, 28 Oct 2024 10:37:36 +0800, Liu Ying wrote:
+> Document ITE IT6263 LVDS to HDMI converter.
+> 
+> Product link:
+> https://www.ite.com.tw/en/product/cate1/IT6263
+> 
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> ---
+> v4:
+> * Require dual-lvds-odd-pixels or dual-lvds-even-pixels DT properties for
+>   port@1.
+> * Drop "data-mirror: true"(30-bit LVDS data bit order is not reversed).
+> 
+> v3:
+> * Reference lvds-dual-ports.yaml.  (Dmitry)
+> * Add data-mapping DT property.  (Dmitry, Biju)
+> * Allow data-mirror.
+> * Drop ite,lvds-link-num-data-lanes DT property.  (Dmitry, Biju)
+> 
+> v2:
+> * Document number of LVDS link data lanes.  (Biju)
+> * Simplify ports property by dropping "oneOf".  (Rob)
+> 
+>  .../bindings/display/bridge/ite,it6263.yaml   | 250 ++++++++++++++++++
+>  1 file changed, 250 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/display/bridge/ite,it6263.yaml
+> 
 
-   266	
-   267	static int nxp_siul2_init_regmap(struct platform_device *pdev,
-   268					 void __iomem *base, int siul)
-   269	{
-   270		struct regmap_config regmap_configs[SIUL2_NUM_REG_TYPES] = {
-   271			[SIUL2_MPIDR]	= nxp_siul2_regmap_generic_conf,
-   272			[SIUL2_IRQ]	= nxp_siul2_regmap_irq_conf,
-   273			[SIUL2_MSCR]	= nxp_siul2_regmap_generic_conf,
-   274			[SIUL2_IMCR]	= nxp_siul2_regmap_generic_conf,
-   275			[SIUL2_PGPDO]	= nxp_siul2_regmap_pgpdo_conf,
-   276			[SIUL2_PGPDI]	= nxp_siul2_regmap_pgpdi_conf,
-   277		};
-   278		const struct nxp_siul2_reg_range_info *tmp_range;
-   279		struct regmap_config *tmp_conf;
-   280		struct nxp_siul2_info *info;
-   281		struct nxp_siul2_mfd *priv;
-   282		void __iomem *reg_start;
-   283		int i, ret;
-   284	
-   285		priv = platform_get_drvdata(pdev);
-   286		info = &priv->siul2[siul];
-   287	
-   288		for (i = 0; i < SIUL2_NUM_REG_TYPES; i++) {
-   289			if (!s32g2_reg_ranges[siul][i].valid)
-   290				continue;
-   291	
-   292			tmp_range = &s32g2_reg_ranges[siul][i];
-   293			tmp_conf = &regmap_configs[i];
-   294			tmp_conf->name = tmp_range->reg_name;
-   295			tmp_conf->max_register =
-   296				tmp_range->reg_end_offset - tmp_range->reg_start_offset;
-   297	
-   298			if (tmp_conf->cache_type != REGCACHE_NONE)
-   299				tmp_conf->num_reg_defaults_raw =
-   300					tmp_conf->max_register / tmp_conf->reg_stride;
-   301	
-   302			if (tmp_range->reg_access) {
-   303				tmp_conf->wr_table = tmp_range->reg_access;
-   304				tmp_conf->rd_table = tmp_range->reg_access;
-   305			}
-   306	
-   307			reg_start = base + tmp_range->reg_start_offset;
-   308			info->regmaps[i] = devm_regmap_init_mmio(&pdev->dev, reg_start,
-   309								 tmp_conf);
-   310			if (IS_ERR(info->regmaps[i])) {
-   311				dev_err(&pdev->dev, "regmap %d init failed: %d\n", i,
-   312					ret);
-   313				return PTR_ERR(info->regmaps[i]);
-   314			}
-   315		}
-   316	
-   317		return 0;
- > 318	}
-   319	
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
