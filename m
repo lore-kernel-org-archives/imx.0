@@ -1,44 +1,49 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF3915531A
-	for <imx@lists.linux.dev>; Fri,  1 Nov 2024 08:18:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349F61D555
+	for <imx@lists.linux.dev>; Fri,  1 Nov 2024 08:25:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730449099; cv=none; b=oadliTrclgLHdY5dBkTaLmq7dGFOFpk1exF7X0hEJgb9hkHKSQaKyHV1vRkOYAt6dhRKr7QHDfWWGFAmgsUTCUgYrVzrJHXvWE2ehpjMZoLH1YSJECnduQAYqHgo9bFmx5d/YFHXzmDx+Q98lsYfn8LlIrqMLTtO+ZMVGwdwub4=
+	t=1730449549; cv=none; b=jSS65HpIS+fv+1oCnv66amd5TnVRXGFDSdXqgIAuq4ZTKWal5y5WceuUSgv9n9zRdr76303kFG6+U065eN6UMa2dYH1SrDmzEonjknSyKQFP+BPqei4+Gead2qQv4knMTplzV6crnfKnpcWWsNLMOkBSse2hoPBvEo8zo8oDYzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730449099; c=relaxed/simple;
-	bh=5RcrjjO7qeoHBIrv/8qBQTZB/q9clujvw1CFFoAQEC8=;
+	s=arc-20240116; t=1730449549; c=relaxed/simple;
+	bh=Pg1bDa1VqMZxjfg4dsHifi+vJu/fSVqVb7HHC7zr2dI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E621mPvICkB7Rqf/3tVpz2vzrVuPFf+vKDHDJNGxKx7REB0YA2in/Oi3yF8KIvLrNlS6C5Vava04jEp/CLwSeIBjE99O45P+Qq1EYPd6lxg2xnS0sle1g6VunWLKtHTecCNj5MEP1/UH7MlTB0VPS1CWPZQXcb6WmGuZCxM09QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=F3kdZrwR; arc=none smtp.client-ip=1.95.21.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=oI31aUGgFo/UVN/3jvRI4xImspMQ+prDFPC3avK/L9DIuAj2aHnGbQYWBZh9RbzcGLQ2SA4ZUHFjg1dZxbrIPRmZ9Dp5zAYmQ831K9bZnl4Zb1eEX4gOCmkAOQXm5YaPka6IQ4d4ahGWSfZ+1OSTQHMFunPVev3S42ZYb+xl4MI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=f5u/4noK; arc=none smtp.client-ip=220.197.32.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="F3kdZrwR"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="f5u/4noK"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=W//kf/xYk90pfIs56Ch6ErGwbP2X2r0D6G2dOa75D2A=;
-	b=F3kdZrwRbH5+cXqtnibhtwd//eQBKihnrDo6se+FoTwKJNQIs0t3AynIjszhNQ
-	Fa3oqazt6r2iuWNm+p9U63uTu80vSchr/rK9arzpD6anjLD4xARQRwU/njzpjl0G
-	GDJgQ3JRC0rvJ2GJym6Xc9U9LR3F04sldt9lxRRdE+UKs=
+	Content-Type; bh=Hg2TJ/Baji1tRW8RpbjYn7MFzFn5+qm7pKjjEWt0Flg=;
+	b=f5u/4noKj9KilTbCNFgWVQt0bGoeXfnwxuWKmDWbSN/n13pk1aLAXJgkovhzLU
+	6q4JEnRL7IDFaszpuM7Q9Z7G685BnYPLkMeYTe6j6vmF0DpnMU9xY2PcFo0KXj/Q
+	A4FTuluYuFo/tmOKvgqc1K5nm7Xr1KyXOwlajU7dk4bzc=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgBXXhO2jiRnB35nAQ--.13924S3;
-	Fri, 01 Nov 2024 16:17:59 +0800 (CST)
-Date: Fri, 1 Nov 2024 16:17:57 +0800
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD3tv6xjSRn72xnAQ--.13820S3;
+	Fri, 01 Nov 2024 16:13:39 +0800 (CST)
+Date: Fri, 1 Nov 2024 16:13:37 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+To: Marek Vasut <marex@denx.de>
+Cc: linux-arm-kernel@lists.infradead.org,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Jacky Bai <ping.bai@nxp.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/1] arm64: dts: imx8mm-venice-gw73xx: remove compatible
- in overlay file
-Message-ID: <ZySOtUd9jExZdFt6@dragon>
-References: <20241018182824.740133-1-Frank.Li@nxp.com>
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, Stefan Wahren <wahrenst@gmx.net>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	kernel@dh-electronics.com, linux-gpio@vger.kernel.org
+Subject: Re: [PATCH v3 02/12] ARM: dts: imx35: Align pin config nodes with
+ bindings
+Message-ID: <ZySNsQVp5+JmRohH@dragon>
+References: <20241017211241.170861-1-marex@denx.de>
+ <20241017211241.170861-2-marex@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,17 +52,23 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241018182824.740133-1-Frank.Li@nxp.com>
-X-CM-TRANSID:Ms8vCgBXXhO2jiRnB35nAQ--.13924S3
+In-Reply-To: <20241017211241.170861-2-marex@denx.de>
+X-CM-TRANSID:Ms8vCgD3tv6xjSRn72xnAQ--.13820S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUIXTmUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCxyKZWckPo77kgAAsi
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUa-eODUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBBWKZWckjIUEMAAAsA
 
-On Fri, Oct 18, 2024 at 02:28:23PM -0400, Frank Li wrote:
-> Remove compatible string in overlay file to fix below warning:
-> 'gw,imx8mm-gw73xx-0x' is not one of ['fsl,ls1043a-rdb', 'fsl,ls1043a-qds']
+On Thu, Oct 17, 2024 at 11:11:19PM +0200, Marek Vasut wrote:
+> Bindings expect pin configuration nodes in pinctrl to match certain
+> naming and not be part of another fake node:
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> pinctrl@30330000: '...' does not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
+> 
+> Drop the wrapping node and adjust the names to have "grp" prefix.
+> Diff looks big but this should have no functional impact, use e.g.
+> git show -w to view the diff.
+> 
+> Signed-off-by: Marek Vasut <marex@denx.de>
 
-Applied, thanks!
+Applied all DTS patches, thanks!
 
