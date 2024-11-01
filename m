@@ -1,437 +1,153 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2081.outbound.protection.outlook.com [40.107.22.81])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDE71E766A
-	for <imx@lists.linux.dev>; Fri,  1 Nov 2024 21:05:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.81
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730495115; cv=fail; b=P+5nTCDhwutx7ogh8cn/i5gdZjKX2qw4NMzoAt2QBtAigsri1UsXDoHn6gSo4bmYs/sa3wDxp+Zl7hgVlchrLM2JnXQO8zzTK6sLRCDMo8v+ORwwc6Fw66qF0Bf0KygQy7VqF8XVvLASkeEg9ZkxQjECg3xx3N/6nOgGMzubUoE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730495115; c=relaxed/simple;
-	bh=H923IcuEQyzA+uPEcS1JQpTm0nIuQQUxCktmluZQinU=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=pGreuzLHC0SppAYUMDPvxXEsUT4K+qSm5rCp9+hTh3UUBlje23OtkYH/yE/WrmbWRj/Hp7YqgP8n3UAaGy9P7Kd1rtNRJSzMW5e5JPWEnHApAbCRcIfGznkSinJZLWD3bbmvynD94Qzc8o/hVIZXXK6zpIHHQXfoP6n8O5OfuRs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=azwOSOB1; arc=fail smtp.client-ip=40.107.22.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE1F19B3E3;
+	Fri,  1 Nov 2024 21:48:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730497689; cv=none; b=bgZZ9JUX9topRuHNGyPDTOi57Yw/IqFKVHJBCFikUWg+f8dVcXv/7/kJeUkxeRKDf23yQVy43pSNwAv4lEDqJkt6ebmLRPaRGwONFuPpbsZW7+sfCdaToCAbYhmy5ahK3/AFWa42M3H64wusVm9XQps0gCoeRCHrivz1fo1u6h0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730497689; c=relaxed/simple;
+	bh=Dwdq9rHIpOh+78kD6lWNmELuBrWSfYZSR/MPnUOKJUA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NFDhQAfnembHhzhqhBFdWJdnj5cE6C2Y76VybbrHogko2NPd/kIrv2rLNl2dq89MWPtLCcW+bR6q9pztsD8v5VwG3zAoQzTu0ot+kSkumSwdElXXMDjuiJDSJtn11JhkB5FcKdmPbLEY1NFDHrzjV12lV4wj/SWObV8yxNmw8JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YVjOECtG; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="azwOSOB1"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rFV1iEgUtWoA935gI3ADJ67yimkDu/mDwA3BmVy1zETw3e7LD1j4mIxszHXI28hij3UCnrdPSleR6MhetRmGyo6wj2XC7J05Rnf/TMXf4P6kpnkb7c6lnpWXUcq/2Nrmsvi1RarEmTArDT5XZ7I27Z866qnXRWcdxwVWIXDIzfQap03YgimsSMkXtIMD8hvw+e/cFCERri6JnJGJr7tZzKhRLxhinqabvmT+ifGpyy1lJJFQ55pKy2jqQRWNDlHRG4MmVHbqI6ACyWdZGm9EDWfJfS2ZNkfRhCPgAHYjsqfT3IqCRNMAOPt34Cm+iHelZ4Cax/XNcOW34ZsOaZf3SA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2EWh9k/P12ZthR32RK14tFtWh5Qe4e/lMVaslXghNsg=;
- b=atbD1ytmVJKQuNb41KyYmi9SI/nV2Vt5zTaZizmDurcM1Jr9LlAeJgwmCns7ROS5EW+dGXaWpUZ7JYbGKhxKoar2+Z6TkGU57Ldhogy0ub7du+Hw5NaAOInTCu3UkECY7aB80r9v3fkcQNWoDG0HnprNsKWHBVvY+TEib3AoPWvGNtyeooF49ZvpMjPe4hnHBU0w+QXZ+9TaYHvdFdFXiHYRYYx3ojVriDA5Qi4GcOzt6XkSY9UTjbldAAqBZvzHV92tHF5CVDXdTOisGLL/YhB8ld7neZHDH+lyKsMD2XPjLdNTszAIoH5AUAUYknvpp4I328VLA56FlMpIySvtHA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2EWh9k/P12ZthR32RK14tFtWh5Qe4e/lMVaslXghNsg=;
- b=azwOSOB1I3n/Uc4RoGJZFON9NUw/hL8RFCgTAUa7W4vylp2sR4tgL8hRx1Bcn2InmTy8kXNpv31+LCk3Iwr00JzFAVbW/bxY546lY0kXTPVKCY0Q9PT0R9gs/qpNUOZA2n1BE4kBRzefvU9BxIJ4CtpT9U0k3D5ubvhqlXmi+ic54iZhap4Kt7E4/eHTnwnG1THgdTiOtQvup4gSoldihXvirOVvOH2W1lRdktphn9HCZl31i6mQJYNFsbUmKwUTi28ifx7UOKhWrTyASociMLgm96W9DI0jrrJwmoN6gsVtRM+AxPyqLOfpS56hN3vWlP8Xg5S0Ns+cL3Rm8ZJ9PA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PA1PR04MB10502.eurprd04.prod.outlook.com (2603:10a6:102:44f::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.24; Fri, 1 Nov
- 2024 21:05:08 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8093.027; Fri, 1 Nov 2024
- 21:05:08 +0000
-From: Frank Li <Frank.Li@nxp.com>
-Date: Fri, 01 Nov 2024 17:04:40 -0400
-Subject: [PATCH v4 2/2] PCI: imx6: Add IOMMU and ITS MSI support for i.MX95
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241101-imx95_lut-v4-2-0fdf9a2fe754@nxp.com>
-References: <20241101-imx95_lut-v4-0-0fdf9a2fe754@nxp.com>
-In-Reply-To: <20241101-imx95_lut-v4-0-0fdf9a2fe754@nxp.com>
-To: Bjorn Helgaas <bhelgaas@google.com>, Richard Zhu <hongxing.zhu@nxp.com>, 
- Lucas Stach <l.stach@pengutronix.de>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, Frank.li@nxp.com, 
- alyssa@rosenzweig.io, bpf@vger.kernel.org, broonie@kernel.org, jgg@ziepe.ca, 
- joro@8bytes.org, l.stach@pengutronix.de, lgirdwood@gmail.com, 
- maz@kernel.org, p.zabel@pengutronix.de, robin.murphy@arm.com, 
- will@kernel.org, Robin Murphy <robin.murphy@arm.com>, 
- Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.13-dev-e586c
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1730495090; l=8217;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=H923IcuEQyzA+uPEcS1JQpTm0nIuQQUxCktmluZQinU=;
- b=VhHg1V9aDJY4/4HeIhOY1LLz+9EdLyfXH/tZZSFcvLks1BXQ5R22huumGE2Vm0ysDJFQClBfO
- hmGNUsOrh1IC2LCoJqkb2DRGrocVtrqFQfiV1ejjmYikiPlaNLecVNl
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: SJ0PR13CA0092.namprd13.prod.outlook.com
- (2603:10b6:a03:2c5::7) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YVjOECtG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730497688; x=1762033688;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Dwdq9rHIpOh+78kD6lWNmELuBrWSfYZSR/MPnUOKJUA=;
+  b=YVjOECtGaaiXmxZJkkCRA2bKy++UCudc4u1YiEjD7dA49LdPRKLrGP5c
+   KQKw+c/dgTeVjqh9Ynhc6GPJdqMHEvObgiEF/xgGyml1X90vtEwQTk4nj
+   Mpln/hXGU1q0NZIWRBiOrhRSOVddRnm5JS4pIiJpC599fWJvhy9Uk9VHw
+   3ZdephmLCoivghRBrhRKzC/xkus3lX8yThGzAWF/lz/a9DaQV9lv0/SVk
+   4Ayz1f6kBMx3A/tCR30gefTH6KH0vP8ju7ZlfeArxLF2UFAYJBfq3Py08
+   V8mqhth1X3Uy6n8aKv3GpNw9bEIOoGigItJDa5gnFVDJuZPSu2v5wX/W1
+   Q==;
+X-CSE-ConnectionGUID: xsDz7OaWQr6KqxRkWblufw==
+X-CSE-MsgGUID: rIFTu9KPQk2PQhIDN/rr0Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30229826"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="30229826"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2024 14:48:07 -0700
+X-CSE-ConnectionGUID: 9w/56nX/RnCHrAdIl5pDBA==
+X-CSE-MsgGUID: yEtcosP4Tc+1RCMNMWkXcA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,251,1725346800"; 
+   d="scan'208";a="82613540"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 01 Nov 2024 14:48:01 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t6zUt-000i55-08;
+	Fri, 01 Nov 2024 21:47:59 +0000
+Date: Sat, 2 Nov 2024 05:47:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>,
+	Larisa Grigore <larisa.grigore@nxp.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>, Lee Jones <lee@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	NXP S32 Linux Team <s32@nxp.com>,
+	Christophe Lizzi <clizzi@redhat.com>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Enric Balletbo <eballetb@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v5 4/7] pinctrl: s32: convert the driver into an mfd cell
+Message-ID: <202411020514.qOUrieWa-lkp@intel.com>
+References: <20241101080614.1070819-5-andrei.stefanescu@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA1PR04MB10502:EE_
-X-MS-Office365-Filtering-Correlation-Id: 046d74c5-dff2-4cef-a043-08dcfab8de10
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|366016|376014|1800799024|7416014|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZmNLVHhaZEhmd2Q2OVM2bmlKUlN6aCtFNmdsTEtOR2xCL0pRcnpPRWkvMWVl?=
- =?utf-8?B?SXZtQ01zZGdkWmEva1oyV0NXeDN4MDhjRlhCMVBGMTA5NmljVjE4VEtPTWxC?=
- =?utf-8?B?aUNnOGJMT3R0aFAwYU5nZHdMZDhackRkTlNFK2VNbVo5OHVmRnhqZ2I4QTJm?=
- =?utf-8?B?UHJXTm9wMUhDK0R1d1k2OUpndlFuS2oyZ0J1cTBYNEhZbFgrWGcrTTdFdHFX?=
- =?utf-8?B?WUlkL2F1MWNST0pUeVJJczA0VWxLdUp6MkRNT0dWV29UazNIMTNoUG5pZ2dQ?=
- =?utf-8?B?VCtzQmVOMGFkdDFkcXlBdlAwNVhDTWlLb0sxUms4NVJpZ0lCcGdoM05aYncr?=
- =?utf-8?B?WnN1Y2pkSjh5SG9VYy9TQVYrWDFwOGh3NUxNaGhWSXA2SHp0R2dhUDQ0bWpP?=
- =?utf-8?B?Qi9pbUxUcDRjc3FVa29oZ3k2cjdLYlpacEZjd3UwbVVTdHBHcW82Vis1TERM?=
- =?utf-8?B?N1pFbmZDRUJrd0dJa1BxN3ROQTczTXFrRHVLWlFqK1BEeHRIaHdOTkJxOWtG?=
- =?utf-8?B?RWNSMEdSOEZaeGJFd29WZmNnTkRMd2h5VFRnWUFSMi91bFQ1VTVrOEtQb0I5?=
- =?utf-8?B?Y1p4eWpXNVcxZnc5bU9CK0tOS1VCUXRoT3NySTVDZ0I3MUhvQytVN2VaL3R2?=
- =?utf-8?B?cERLM2Y2UHpEaVY1SXZ5dGIvK3FFaTdGVHM2SmRUVlVQa0RaNGJnYTM4a2NU?=
- =?utf-8?B?bzBUV2lNaFBxRkZMdUhpTXQ5UzZDbTNpM0NNZDNVV0w4by9qTi9LVm45aGlU?=
- =?utf-8?B?UituMWNEY2hyUk5yNjhKNnp0UmdaRlVVd2YvNjNBQWk4V2g3a2VzMm1HNGdq?=
- =?utf-8?B?T3RMRlBGRms2a2lHYUFBckc1bkF4WUIzeE9rdW52UDNmMnpIOENTY2xUamxr?=
- =?utf-8?B?MjhNYTVCTStrdEVGY1pwUk9mWjFOVHZ2VUE1dDBTVFJVYVJVK2M0d2JhMEg2?=
- =?utf-8?B?RTJ1U25GN2dvT2NrdkJmem1Lc3k3dUhYSFVuL3VES3dQZ0cxYThsQmZWRTdX?=
- =?utf-8?B?YjVvdExGOTgzYlo3N2ZhbHRISDlVZ3AzaE56N1FCZ2xkaE81b1ZJb2o4WS9V?=
- =?utf-8?B?MXlmdFErbHgwMXRkY21CeVJaU0hHd2dVT2tvQno1MDBReE9tYml0VnRQdG5o?=
- =?utf-8?B?VTgrcXMwT0JLeTV3dW5GdHMxbTEvRE5CMzhjWUZoanBwcWRmWjRyZDRYQ29Y?=
- =?utf-8?B?Q0hBNStSbEdldEt6SFdkZkYwSGhETFpXT291SUtFMnk0TjdjSm9rY25FRUMz?=
- =?utf-8?B?WkhoWWdhM1o2NlRTM2xUZ1YyRHV5b2lGL1poSEs0L2V5SWRJbDlzOE9veTRE?=
- =?utf-8?B?RnQxYUtaZjNTMW94L3JpREJMM1gxTnhud1JVQ2lCQW5mNnphUnE0TkFLS1hP?=
- =?utf-8?B?Q01OaXBzUzQ3aWJzS09qSlFtUTRpbGxPQXdhTnFpazlvVUVNNUY0dkF6SnZM?=
- =?utf-8?B?UG5CTEYxMkVMNlRqSTRTc3RSWFQrQkg2WWZxbFlOUjltcy9nRG1GTW5tODFn?=
- =?utf-8?B?b3lWdkZFQ3JndWFlbXI2WUlaOG53VEdJT05SSUNLTng5T0xIaXBIT25Od1dk?=
- =?utf-8?B?VjdPNC9ENHRYUitGMC84aTFFRW5XdmcydjRKV0xLa1NNUTBQVnhkWGl4UHln?=
- =?utf-8?B?R3pReWR0alI2U0Z4aW5wQnRZZTg2cDRQMTVDZlV6N2k0M3FYeW1vUEVGZXJa?=
- =?utf-8?B?RWsxTlM2dk5UR2Q1aHFPeCs5NG5mcFJmR2FVdDhvbzA2WDhuUlJLS042M00w?=
- =?utf-8?B?UEl3VTdRSmFUQVd6em0zT3VqTDJVNEZmcmtDcHRPRWpiNE11cnZ4UjRVSGlO?=
- =?utf-8?B?TUFFU1BiT0NxblFEY3phZXArYnBrelkxTEliNldhVTM0eGRPcGpRNWhRODZ2?=
- =?utf-8?Q?xVdQ9NjLhM1rZ?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(376014)(1800799024)(7416014)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eCtxNVRNaVNVbTU3UndiKzZMRC9MVG5hVDVxWm5qMVp1czQvbnVDRVZzYmh3?=
- =?utf-8?B?RWZmTmpmckpTMEJUblVxdEg0allqL3VjU09nL3FqNFI4dmlrRis1QnpWc0FR?=
- =?utf-8?B?dkxDemJOeUNwSWE5TmRKb3QvTDlmYVpBalVDQ0F2R0NsUGJCNEdramROekZx?=
- =?utf-8?B?TGR1Ukdldi91NHlHbVhpT1lkN2FZQXJYVkRPTlZjbk4vT3lETzlwYlB2T1Vy?=
- =?utf-8?B?UElHclU4ZEl3QnIzd3h5c1Jya3phRHV2eUYrWW0zTXRUSFRWQytycmlYcW02?=
- =?utf-8?B?UmIya1NlVFZ1Ui9TK0V0M0gvNjhQTm9hQTl0T3FQNEhWU1V0VFdGcllqWlJQ?=
- =?utf-8?B?TFhxc1MrTGl1MUExOXlibFlIRmZ3empIbXR2RnhzOEc3M1JzdVhualdoK01w?=
- =?utf-8?B?cC9Fb0hobWxySmU1dktsMEl6WDNLVzZub0ZjNnpVc0xFMmd6Z2NkcXBnWDJy?=
- =?utf-8?B?eWh6Y1h6a29NNDNaOFhOL2wrc3FBTnQ0Zlg5T3R5OXN3SHRIbXZjS29ZdjV2?=
- =?utf-8?B?eGxVdldUSmFKd3pISDZ3d3lHSTUzUzl6ZSsvbnY5elQ4c29zcFJxZ1grYmZm?=
- =?utf-8?B?Vk9iOW1kbFAyRnl1dUZYUy8rTm5MR3dzdklyWmN3SEhjemh1SWRET3JjNHNY?=
- =?utf-8?B?KzR6U21PTVJNazd1eDN6Z3J4aFBBbkE0bUlHK0t0ekQ0bUgwQ0ZDVHRUellk?=
- =?utf-8?B?L1Rydm92V29Vd2dxVk9hdFBPcWZQWGhON0dLL21GdjdZN1hTY0QzNTJhZmZh?=
- =?utf-8?B?OWFvN1pmWVBvNW9TVCs1UXBtQVJlYjkyWHhESmE4M1Z2S0xFK3oycG03RUxl?=
- =?utf-8?B?aDhWQUVNbzU1emR4WnhVd0xkVVBueDNtR0VyZG11UHBpcnQ4aWVvUVJzekp5?=
- =?utf-8?B?QUFDSDZzcnJxaGFlUjdNQTBOVjBXVitKbWZmL1IrZFB4WXpDSklmR3FIZG9w?=
- =?utf-8?B?MHpFQmdaZG15S1ZEcTRaWGE1YnFRVzlMQWE0eEEyOXkzRTFxam9nWm9pU0N5?=
- =?utf-8?B?SHQ4eFpCd2psNVpnUEFHUzBrN1F6aHp2TWFVUzd4aTVsLzJhZWtTQW05Nmx4?=
- =?utf-8?B?TW9xeEJpT3VYdjhWRUdYTHBnNHhwc3BlWGZPY2wrU09wdHpKWlZ4RzE5aGt2?=
- =?utf-8?B?b3I2cWlMQkdWQ3J2U1R2Z2NvdlUzZmMwVTRRRzc0Y0VWbWRDVjdYUHJPNXVX?=
- =?utf-8?B?NVBkRE5ucE5ZS1lXZjRwbWVXMnlCOFdBN1MzYUFSZEsxVlJnc1UrZFdTc1Zu?=
- =?utf-8?B?Sldqb25pVmxCNkRKa2dZQjR3Nys4TWttK0VJNEZ1Nk02YVdNa0V2L3FFcEN4?=
- =?utf-8?B?NW5RYk1sejJHN2F4cDVpNzRHV2xmazZ0ZmF2NWJwd3E5WURJSWJHMVp6aGdM?=
- =?utf-8?B?M2RNUUlBL09tZmlTbFVQWm82YXdFZUhURkpEbjZVK2JHV3FTQXIzcGNpNW1o?=
- =?utf-8?B?ZUZwdWpod3BodHVLR2oxTUdwVkZockxyUDFXV084cHNCRWFqb2QyS3pRM1Zy?=
- =?utf-8?B?cE14bjFaUm5KWnZGdFBLVmFldWd4NXM3RktGV3ViRjhlUVc1N0w0a20zbk5p?=
- =?utf-8?B?NzI1R3h6L1krbGEwOW1BdjlkenJTdDZjeWNoMy8wTFRjR0psY0haNDcrcE5U?=
- =?utf-8?B?M1pnV1JWbVB1Y0x0QWo5QmVUeVVzbm5tS0VXWUVRaDQwRTNFclo0VFFHeEJy?=
- =?utf-8?B?QkFVM1pvZHFiMkpHdE1venFSZHVYOHNSOGwyK1FPbkgxVnZ4Mi9sWEFNU0RD?=
- =?utf-8?B?eXJ1eDBjWEJRdDFQNzFZdmlnRGdmMkFpM3dValBjL0I4SFBjUERtTFVCWnh6?=
- =?utf-8?B?MHI5bEhtYzlPWE5reXhoeUdnMUtVclBhUGsxbXkxTXhpcU5rV2lpc0tmY0My?=
- =?utf-8?B?VFdhUTF5QklrYkxoLzU0bmFrenlSaGhZQ3VMOVl3TEhMR3dyeHc5OWhhUEs3?=
- =?utf-8?B?M0hDc0NybHo2NS85QjhPMXViZTdQb0xPSS8yb1RobWhOQzRBNm5Ud01aSnZH?=
- =?utf-8?B?MVVLOGZiZHBIdWFBemgrYVFHbGx1eSt5YXQwM2Q0LzBuVytVRTlpMHNiRzNt?=
- =?utf-8?B?NnhpV3k0RytsNUlhQWpOSzZGOEJxa3huRnU0TXMrRnVEMGxtZWwxNTR6VzVv?=
- =?utf-8?Q?kW74=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 046d74c5-dff2-4cef-a043-08dcfab8de10
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Nov 2024 21:05:08.7214
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mlT5jYTeV9wNh7HYtxZ/nlVedKSn8gVaW9HWKNkgex/IjGqC2QMmKBli8wuPbxZurbbaqznYbNl/lM5+gc0AdQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10502
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241101080614.1070819-5-andrei.stefanescu@oss.nxp.com>
 
-For the i.MX95, configuration of a LUT is necessary to convert Bus Device
-Function (BDF) to stream IDs, which are utilized by both IOMMU and ITS.
-This involves examining the msi-map and smmu-map to ensure consistent
-mapping of PCI BDF to the same stream IDs. Subsequently, LUT-related
-registers are configured. In the absence of an msi-map, the built-in MSI
-controller is utilized as a fallback.
+Hi Andrei,
 
-Additionally, register a PCI bus callback function enable_device() and
-disable_device() to config LUT when enable a new PCI device.
+kernel test robot noticed the following build warnings:
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-Change from v3 to v4
-- Check target value at of_map_id().
-- of_node_put() for target.
-- add case for msi-map exist, but rid entry is not exist.
+[auto build test WARNING on linusw-pinctrl/devel]
+[also build test WARNING on linusw-pinctrl/for-next lee-mfd/for-mfd-next shawnguo/for-next linus/master v6.12-rc5 next-20241101]
+[cannot apply to lee-mfd/for-mfd-fixes]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Change from v2 to v3
-- Use the "target" argument of of_map_id()
-- Check if rid already in lut table when enable device
+url:    https://github.com/intel-lab-lkp/linux/commits/Andrei-Stefanescu/dt-bindings-mfd-add-support-for-the-NXP-SIUL2-module/20241101-160940
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-pinctrl.git devel
+patch link:    https://lore.kernel.org/r/20241101080614.1070819-5-andrei.stefanescu%40oss.nxp.com
+patch subject: [PATCH v5 4/7] pinctrl: s32: convert the driver into an mfd cell
+config: arm64-allmodconfig (https://download.01.org/0day-ci/archive/20241102/202411020514.qOUrieWa-lkp@intel.com/config)
+compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 639a7ac648f1e50ccd2556e17d401c04f9cce625)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241102/202411020514.qOUrieWa-lkp@intel.com/reproduce)
 
-change from v1 to v2
-- set callback to pci_host_bridge instead pci->ops.
----
- drivers/pci/controller/dwc/pci-imx6.c | 177 +++++++++++++++++++++++++++++++++-
- 1 file changed, 176 insertions(+), 1 deletion(-)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202411020514.qOUrieWa-lkp@intel.com/
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 94f3411352bf0..1be17bc39ce54 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -55,6 +55,22 @@
- #define IMX95_PE0_GEN_CTRL_3			0x1058
- #define IMX95_PCIE_LTSSM_EN			BIT(0)
- 
-+#define IMX95_PE0_LUT_ACSCTRL			0x1008
-+#define IMX95_PEO_LUT_RWA			BIT(16)
-+#define IMX95_PE0_LUT_ENLOC			GENMASK(4, 0)
-+
-+#define IMX95_PE0_LUT_DATA1			0x100c
-+#define IMX95_PE0_LUT_VLD			BIT(31)
-+#define IMX95_PE0_LUT_DAC_ID			GENMASK(10, 8)
-+#define IMX95_PE0_LUT_STREAM_ID			GENMASK(5, 0)
-+
-+#define IMX95_PE0_LUT_DATA2			0x1010
-+#define IMX95_PE0_LUT_REQID			GENMASK(31, 16)
-+#define IMX95_PE0_LUT_MASK			GENMASK(15, 0)
-+
-+#define IMX95_SID_MASK				GENMASK(5, 0)
-+#define IMX95_MAX_LUT				32
-+
- #define to_imx_pcie(x)	dev_get_drvdata((x)->dev)
- 
- enum imx_pcie_variants {
-@@ -82,6 +98,7 @@ enum imx_pcie_variants {
- #define IMX_PCIE_FLAG_HAS_PHY_RESET		BIT(5)
- #define IMX_PCIE_FLAG_HAS_SERDES		BIT(6)
- #define IMX_PCIE_FLAG_SUPPORT_64BIT		BIT(7)
-+#define IMX_PCIE_FLAG_HAS_LUT			BIT(8)
- 
- #define imx_check_flag(pci, val)	(pci->drvdata->flags & val)
- 
-@@ -134,6 +151,7 @@ struct imx_pcie {
- 	struct device		*pd_pcie_phy;
- 	struct phy		*phy;
- 	const struct imx_pcie_drvdata *drvdata;
-+	struct mutex		lock;
- };
- 
- /* Parameters for the waiting for PCIe PHY PLL to lock on i.MX7 */
-@@ -925,6 +943,155 @@ static void imx_pcie_stop_link(struct dw_pcie *pci)
- 	imx_pcie_ltssm_disable(dev);
- }
- 
-+static int imx_pcie_add_lut(struct imx_pcie *imx_pcie, u16 reqid, u8 sid)
-+{
-+	struct dw_pcie *pci = imx_pcie->pci;
-+	struct device *dev = pci->dev;
-+	u32 data1, data2;
-+	int i;
-+
-+	if (sid >= 64) {
-+		dev_err(dev, "Invalid SID for index %d\n", sid);
-+		return -EINVAL;
-+	}
-+
-+	guard(mutex)(&imx_pcie->lock);
-+
-+	for (i = 0; i < IMX95_MAX_LUT; i++) {
-+		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, IMX95_PEO_LUT_RWA | i);
-+		regmap_read(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA1, &data1);
-+
-+		if (!(data1 & IMX95_PE0_LUT_VLD))
-+			continue;
-+
-+		regmap_read(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA2, &data2);
-+
-+		/* Needn't add duplicated Request ID */
-+		if (reqid == FIELD_GET(IMX95_PE0_LUT_REQID, data2))
-+			return 0;
-+	}
-+
-+	for (i = 0; i < IMX95_MAX_LUT; i++) {
-+		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, IMX95_PEO_LUT_RWA | i);
-+
-+		regmap_read(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA1, &data1);
-+		if (data1 & IMX95_PE0_LUT_VLD)
-+			continue;
-+
-+		data1 = FIELD_PREP(IMX95_PE0_LUT_DAC_ID, 0);
-+		data1 |= FIELD_PREP(IMX95_PE0_LUT_STREAM_ID, sid);
-+		data1 |= IMX95_PE0_LUT_VLD;
-+
-+		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA1, data1);
-+
-+		data2 = 0xffff;
-+		data2 |= FIELD_PREP(IMX95_PE0_LUT_REQID, reqid);
-+
-+		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA2, data2);
-+
-+		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, i);
-+
-+		return 0;
-+	}
-+
-+	dev_err(dev, "All lut already used\n");
-+	return -EINVAL;
-+}
-+
-+static void imx_pcie_remove_lut(struct imx_pcie *imx_pcie, u16 reqid)
-+{
-+	u32 data2 = 0;
-+	int i;
-+
-+	guard(mutex)(&imx_pcie->lock);
-+
-+	for (i = 0; i < IMX95_MAX_LUT; i++) {
-+		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, IMX95_PEO_LUT_RWA | i);
-+
-+		regmap_read(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA2, &data2);
-+		if (FIELD_GET(IMX95_PE0_LUT_REQID, data2) == reqid) {
-+			regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA1, 0);
-+			regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA2, 0);
-+			regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, i);
-+
-+			break;
-+		}
-+	}
-+}
-+
-+static int imx_pcie_enable_device(struct pci_host_bridge *bridge, struct pci_dev *pdev)
-+{
-+	u32 sid_i = 0, sid_m = 0, rid = pci_dev_id(pdev);
-+	struct device_node *target;
-+	struct imx_pcie *imx_pcie;
-+	struct device *dev;
-+	int err_i, err_m;
-+
-+	imx_pcie = to_imx_pcie(to_dw_pcie_from_pp(bridge->sysdata));
-+	dev = imx_pcie->pci->dev;
-+
-+	target = NULL;
-+	err_i = of_map_id(dev->of_node, rid, "iommu-map", "iommu-map-mask", &target, &sid_i);
-+	if (target)
-+		of_node_put(target);
-+	else
-+		err_i = -EINVAL;
-+
-+	target = NULL;
-+	err_m = of_map_id(dev->of_node, rid, "msi-map", "msi-map-mask", &target, &sid_m);
-+
-+	/*
-+	 * Return failure if msi-map exist and no entry for rid because dwc common
-+	 * driver will skip setting up built-in MSI controller if msi-map existed.
-+	 *
-+	 *   err_m      target
-+	 *	0	NULL		Return failure, function not work.
-+	 *      !0      NULL		msi-map not exist, use built-in MSI.
-+	 *	0	!NULL		Find one entry.
-+	 *	!0	!NULL		Invalidate case.
-+	 */
-+	if (!err_m && !target)
-+		return -EINVAL;
-+	else if (target)
-+		of_node_put(target); /* Find entry for rid in msi-map */
-+
-+	/*
-+	 * msi-map        iommu-map
-+	 *   Y                Y            ITS + SMMU, require the same sid
-+	 *   Y                N            ITS
-+	 *   N                Y            DWC MSI Ctrl + SMMU
-+	 *   N                N            DWC MSI Ctrl
-+	 */
-+	if (!err_i && !err_m)
-+		if ((sid_i & IMX95_SID_MASK) != (sid_m & IMX95_SID_MASK)) {
-+			dev_err(dev, "its and iommu stream id miss match, please check dts file\n");
-+			return -EINVAL;
-+		}
-+
-+	/*
-+	 * Both iommu-map and msi-map not exist, use dwc built-in MSI
-+	 * controller, do nothing here.
-+	 */
-+	if (err_i && err_m)
-+		return 0;
-+
-+	if (!err_i)
-+		return imx_pcie_add_lut(imx_pcie, rid, sid_i);
-+	else if (!err_m)
-+		/* Hardware auto add 2 bit controller id ahead of stream ID */
-+		return imx_pcie_add_lut(imx_pcie, rid, sid_m & IMX95_SID_MASK);
-+
-+	return 0;
-+}
-+
-+static void imx_pcie_disable_device(struct pci_host_bridge *bridge, struct pci_dev *pdev)
-+{
-+	struct imx_pcie *imx_pcie;
-+
-+	imx_pcie = to_imx_pcie(to_dw_pcie_from_pp(bridge->sysdata));
-+	imx_pcie_remove_lut(imx_pcie, pci_dev_id(pdev));
-+}
-+
- static int imx_pcie_host_init(struct dw_pcie_rp *pp)
- {
- 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-@@ -941,6 +1108,11 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
- 		}
- 	}
- 
-+	if (pp->bridge && imx_check_flag(imx_pcie, IMX_PCIE_FLAG_HAS_LUT)) {
-+		pp->bridge->enable_device = imx_pcie_enable_device;
-+		pp->bridge->disable_device = imx_pcie_disable_device;
-+	}
-+
- 	imx_pcie_assert_core_reset(imx_pcie);
- 
- 	if (imx_pcie->drvdata->init_phy)
-@@ -1292,6 +1464,8 @@ static int imx_pcie_probe(struct platform_device *pdev)
- 	imx_pcie->pci = pci;
- 	imx_pcie->drvdata = of_device_get_match_data(dev);
- 
-+	mutex_init(&imx_pcie->lock);
-+
- 	/* Find the PHY if one is defined, only imx7d uses it */
- 	np = of_parse_phandle(node, "fsl,imx7d-pcie-phy", 0);
- 	if (np) {
-@@ -1587,7 +1761,8 @@ static const struct imx_pcie_drvdata drvdata[] = {
- 	},
- 	[IMX95] = {
- 		.variant = IMX95,
--		.flags = IMX_PCIE_FLAG_HAS_SERDES,
-+		.flags = IMX_PCIE_FLAG_HAS_SERDES |
-+			 IMX_PCIE_FLAG_HAS_LUT,
- 		.clk_names = imx8mq_clks,
- 		.clks_cnt = ARRAY_SIZE(imx8mq_clks),
- 		.ltssm_off = IMX95_PE0_GEN_CTRL_3,
+All warnings (new ones prefixed by >>):
+
+>> drivers/pinctrl/nxp/pinctrl-s32cc.c:103: warning: Function parameter or struct member 'gpio_configs_lock' not described in 's32_pinctrl'
+>> drivers/pinctrl/nxp/pinctrl-s32cc.c:103: warning: Excess struct member 'gpiop_configs_lock' description in 's32_pinctrl'
+
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for MODVERSIONS
+   Depends on [n]: MODULES [=y] && !COMPILE_TEST [=y]
+   Selected by [y]:
+   - RANDSTRUCT_FULL [=y] && (CC_HAS_RANDSTRUCT [=y] || GCC_PLUGINS [=n]) && MODULES [=y]
+
+
+vim +103 drivers/pinctrl/nxp/pinctrl-s32cc.c
+
+fd84aaa8173d3f Chester Lin       2023-02-20   82  
+157a51f7e5e81e Andrei Stefanescu 2024-11-01   83  /**
+157a51f7e5e81e Andrei Stefanescu 2024-11-01   84   * struct s32_pinctrl - private driver data
+fd84aaa8173d3f Chester Lin       2023-02-20   85   * @dev: a pointer back to containing device
+fd84aaa8173d3f Chester Lin       2023-02-20   86   * @pctl: a pointer to the pinctrl device structure
+fd84aaa8173d3f Chester Lin       2023-02-20   87   * @regions: reserved memory regions with start/end pin
+fd84aaa8173d3f Chester Lin       2023-02-20   88   * @info: structure containing information about the pin
+fd84aaa8173d3f Chester Lin       2023-02-20   89   * @gpio_configs: Saved configurations for GPIO pins
+fd84aaa8173d3f Chester Lin       2023-02-20   90   * @gpiop_configs_lock: lock for the `gpio_configs` list
+157a51f7e5e81e Andrei Stefanescu 2024-11-01   91   * @saved_context: Configuration saved over system sleep
+fd84aaa8173d3f Chester Lin       2023-02-20   92   */
+fd84aaa8173d3f Chester Lin       2023-02-20   93  struct s32_pinctrl {
+fd84aaa8173d3f Chester Lin       2023-02-20   94  	struct device *dev;
+fd84aaa8173d3f Chester Lin       2023-02-20   95  	struct pinctrl_dev *pctl;
+fd84aaa8173d3f Chester Lin       2023-02-20   96  	struct s32_pinctrl_mem_region *regions;
+fd84aaa8173d3f Chester Lin       2023-02-20   97  	struct s32_pinctrl_soc_info *info;
+fd84aaa8173d3f Chester Lin       2023-02-20   98  	struct list_head gpio_configs;
+fd84aaa8173d3f Chester Lin       2023-02-20   99  	spinlock_t gpio_configs_lock;
+fd84aaa8173d3f Chester Lin       2023-02-20  100  #ifdef CONFIG_PM_SLEEP
+fd84aaa8173d3f Chester Lin       2023-02-20  101  	struct s32_pinctrl_context saved_context;
+fd84aaa8173d3f Chester Lin       2023-02-20  102  #endif
+fd84aaa8173d3f Chester Lin       2023-02-20 @103  };
+fd84aaa8173d3f Chester Lin       2023-02-20  104  
 
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
