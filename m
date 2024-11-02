@@ -1,71 +1,283 @@
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89407149C42
-	for <imx@lists.linux.dev>; Sat,  2 Nov 2024 21:57:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078C44120B;
+	Sat,  2 Nov 2024 22:18:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730584669; cv=none; b=pVPF8KGhjUztsW9GLsizJagBdHvvhTR5if8WwW2vTstnZ9joDqJ/ERUvWZ/l7o+EB/GBD0oYGutwXeKMhUVZSYqF1uW/8sxZHTlJrsCCwb+cN3b+5Bt491C1G8bgiP6yo42WuMZT7R30zzEMSFSfHGMJAAPIdk/AuH+Y+1UFMVQ=
+	t=1730585886; cv=none; b=Vdsa2VnOmGqzUii+Ia089ale8FH9va3pwgZybM1CYY44LnqqMIe+p7ZD2mcIUlEhdTee/z06ziu45dUckQqCXCFLR6ydkPsR5F5kud8pj1eLc+efWHKCAvSJQ9AwjGAunxdf2PS+K9FppZDn1T0nNzjyXPA4Qq8PrhqXWq2w2Fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730584669; c=relaxed/simple;
-	bh=T1KWqA2mQphX03EbLrEOx56VxIhK3se8lNKZYT+3gDo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HGG9J4CG6gSZu1Dmn5BHJwTVcAh7Vl8UCHVHw1aYf9SyaQjwwjGTSshkeLKQJZ5andt+jOyGxQGg+Gdx7Z6ppReBUYSCbr/sJDpxVaybV5hmCzf0HIPYO3zul/OHEXZ8EhlFFLHWO5vROt6W03TdTgA3DJ+VmIwjCs4E4FwSFSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dUbpU3Oq; arc=none smtp.client-ip=217.70.183.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1730585886; c=relaxed/simple;
+	bh=BTPt+f1PajjGJm0q6RzrJDUq7DsYtLeh7o6lYROUGSI=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jEBkBtoyLklRm7XBFI7Pp2lDdrGJVAQsvuLoScEPUVR6pb0c3uNOdghoOt3oxbtI+ZzWoGvLlivAfCxr4rIUiU9wPcMMIEGeOGnD+fuVMAIb4/1h8oYrhK72S4Ko66/H1Jo3ri4aWKZQp+pqdHeltcTZZLKC5WNSYJst7pcmpL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oDraMOVD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dUbpU3Oq"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 654DB240002;
-	Sat,  2 Nov 2024 21:57:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1730584657;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hXexRIqonxXbwwjZfWS8TncvThZ06Lgb4mpHYQaEmuo=;
-	b=dUbpU3Oq0gFXPE0fErNip2xqgc8AZUmJauISfT7RXm8IX4u5e8TuTm1QDi968KnLPtt4PB
-	TEK/o1bYCaE/3O/Mb+rS+6GJdGBfIEByt5XlNrhX65H/l7PTYg3w06G5pblBoUzV88NO3F
-	3Fgru1H56+XKHI7Fy7MLtXrCkFPcQp/QuOqa8IEsWOnXUcNYcs2EgXiB4vVlUkzaA7FOMK
-	z4NQdD6Bg7E+zaEWsakUUYEvsvD9rCedySmm2BCXbxYfePeLj0XMyu7jc4R0/xpaHp7dlu
-	8etAPkFRAfsuBpnlFoul3m+rLdRVLNTxAcqyuyH7JJYGSf5ypR9D5zjfgeVKCA==
-Date: Sat, 2 Nov 2024 22:57:35 +0100
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: conor.culhane@silvaco.com, imx@lists.linux.dev,
-	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
-	miquel.raynal@bootlin.com, xiaoning.wang@nxp.com
-Subject: Re: [PATCH v2 1/1] i3c: master: svc: Modify enabled_events bit 7:0
- to act as IBI enable counter
-Message-ID: <173058462779.2458498.8277709682001410265.b4-ty@bootlin.com>
-References: <20241101165002.2479794-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oDraMOVD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5702BC4CEC3;
+	Sat,  2 Nov 2024 22:18:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730585885;
+	bh=BTPt+f1PajjGJm0q6RzrJDUq7DsYtLeh7o6lYROUGSI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=oDraMOVDSuVH5F9bhBtLdRg8QhhnS+O6p75UuJNRBjR1KOLwxlLD5mA0/d6VcmKdz
+	 Xi8/UU1eupjLgbyrovBrA2YT+86oe17J3+wicty46kFEXEx3iQf8HLOjszngzUof3n
+	 ouWjOZ/i0FmOmpO9C7N1Hi1dZVmYR73eU9m2ZKiFn2Ye0wxiYduhPGgoYbVPZ4X6ZJ
+	 04cQ34Sw9k5dmq5uDyxNPTeP+htvknEnXSiUU+sCrvqMlqSNqEJBRyDXWJXsWJPdTi
+	 mngZQ4K+2LMXDmRVlH8g18jP/fbDIfm/oX0EhZ7txlcYsGY2+s1gumFs+k4DA87Yvg
+	 1rssVhmxzSPYw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=wait-a-minute.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1t7MRW-009CF2-60;
+	Sat, 02 Nov 2024 22:18:02 +0000
+Date: Sat, 02 Nov 2024 22:18:02 +0000
+Message-ID: <87fro9th45.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,	Bjorn Helgaas
+ <bhelgaas@google.com>,	Richard Zhu <hongxing.zhu@nxp.com>,	Lucas Stach
+ <l.stach@pengutronix.de>,	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?UTF-8?B?V2lsY3p5xYRza2k=?= <kw@linux.com>,	Rob Herring
+ <robh@kernel.org>,	Shawn Guo <shawnguo@kernel.org>,	Sascha Hauer
+ <s.hauer@pengutronix.de>,	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,	alyssa@rosenzweig.io,	bpf@vger.kernel.org,
+	broonie@kernel.org,	jgg@ziepe.ca,	joro@8bytes.org,	lgirdwood@gmail.com,
+	p.zabel@pengutronix.de,	robin.murphy@arm.com,	will@kernel.org
+Subject: Re: [PATCH v3 2/2] PCI: imx6: Add IOMMU and ITS MSI support for i.MX95
+In-Reply-To: <ZyZg1nlSPf5rvm8q@lizhi-Precision-Tower-5810>
+References: <20241024-imx95_lut-v3-0-7509c9bbab86@nxp.com>
+	<20241024-imx95_lut-v3-2-7509c9bbab86@nxp.com>
+	<20241102114937.w7jt7n7zr3ext5jo@thinkpad>
+	<ZyZg1nlSPf5rvm8q@lizhi-Precision-Tower-5810>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241101165002.2479794-1-Frank.Li@nxp.com>
-X-GND-Sasl: alexandre.belloni@bootlin.com
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: Frank.li@nxp.com, manivannan.sadhasivam@linaro.org, bhelgaas@google.com, hongxing.zhu@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, kw@linux.com, robh@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, alyssa@rosenzweig.io, bpf@vger.kernel.org, broonie@kernel.org, jgg@ziepe.ca, joro@8bytes.org, lgirdwood@gmail.com, p.zabel@pengutronix.de, robin.murphy@arm.com, will@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Fri, 01 Nov 2024 12:50:02 -0400, Frank Li wrote:
-> Fix issue where disabling IBI on one device disables the entire IBI
-> interrupt. Modify bit 7:0 of enabled_events to serve as an IBI enable
-> counter, ensuring that the system IBI interrupt is disabled only when all
-> I3C devices have IBI disabled.
+On Sat, 02 Nov 2024 17:26:46 +0000,
+Frank Li <Frank.li@nxp.com> wrote:
 > 
+> On Sat, Nov 02, 2024 at 05:19:37PM +0530, Manivannan Sadhasivam wrote:
+> > On Thu, Oct 24, 2024 at 06:34:45PM -0400, Frank Li wrote:
+> > > For the i.MX95, configuration of a LUT is necessary to convert Bus Device
+> > > Function (BDF) to stream IDs, which are utilized by both IOMMU and ITS.
+> > > This involves examining the msi-map and smmu-map to ensure consistent
+> > > mapping of PCI BDF to the same stream IDs. Subsequently, LUT-related
+> > > registers are configured. In the absence of an msi-map, the built-in MSI
+> > > controller is utilized as a fallback.
+> > >
+> > > Additionally, register a PCI bus callback function enable_device() and
+> > > disable_device() to config LUT when enable a new PCI device.
+> > >
+> >
+> > Callbacks are not *addition*, but it is how you are implementing the LUT
+> > configuration. Please reword it so.
+> >
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > > Change from v2 to v3
+> > > - Use the "target" argument of of_map_id()
+> > > - Check if rid already in lut table when enable device
+> > >
+> > > change from v1 to v2
+> > > - set callback to pci_host_bridge instead pci->ops.
+> > > ---
+> > >  drivers/pci/controller/dwc/pci-imx6.c | 159 +++++++++++++++++++++++++++++++++-
+> > >  1 file changed, 158 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> > > index 94f3411352bf0..95f06bfb9fc5e 100644
+> > > --- a/drivers/pci/controller/dwc/pci-imx6.c
+> > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> > > @@ -55,6 +55,22 @@
+> > >  #define IMX95_PE0_GEN_CTRL_3			0x1058
+> > >  #define IMX95_PCIE_LTSSM_EN			BIT(0)
+> > >
+> > > +#define IMX95_PE0_LUT_ACSCTRL			0x1008
+> > > +#define IMX95_PEO_LUT_RWA			BIT(16)
+> > > +#define IMX95_PE0_LUT_ENLOC			GENMASK(4, 0)
+> > > +
+> > > +#define IMX95_PE0_LUT_DATA1			0x100c
+> > > +#define IMX95_PE0_LUT_VLD			BIT(31)
+> > > +#define IMX95_PE0_LUT_DAC_ID			GENMASK(10, 8)
+> > > +#define IMX95_PE0_LUT_STREAM_ID			GENMASK(5, 0)
+> > > +
+> > > +#define IMX95_PE0_LUT_DATA2			0x1010
+> > > +#define IMX95_PE0_LUT_REQID			GENMASK(31, 16)
+> > > +#define IMX95_PE0_LUT_MASK			GENMASK(15, 0)
+> > > +
+> > > +#define IMX95_SID_MASK				GENMASK(5, 0)
+> > > +#define IMX95_MAX_LUT				32
+> > > +
+> > >  #define to_imx_pcie(x)	dev_get_drvdata((x)->dev)
+> > >
+> > >  enum imx_pcie_variants {
+> > > @@ -82,6 +98,7 @@ enum imx_pcie_variants {
+> > >  #define IMX_PCIE_FLAG_HAS_PHY_RESET		BIT(5)
+> > >  #define IMX_PCIE_FLAG_HAS_SERDES		BIT(6)
+> > >  #define IMX_PCIE_FLAG_SUPPORT_64BIT		BIT(7)
+> > > +#define IMX_PCIE_FLAG_HAS_LUT			BIT(8)
+> > >
+> > >  #define imx_check_flag(pci, val)	(pci->drvdata->flags & val)
+> > >
+> > > @@ -134,6 +151,7 @@ struct imx_pcie {
+> > >  	struct device		*pd_pcie_phy;
+> > >  	struct phy		*phy;
+> > >  	const struct imx_pcie_drvdata *drvdata;
+> > > +	struct mutex		lock;
+> >
+> > Please add a comment on what the lock is guarding.
+> >
+> > >  };
+> > >
+> > >  /* Parameters for the waiting for PCIe PHY PLL to lock on i.MX7 */
+> > > @@ -925,6 +943,137 @@ static void imx_pcie_stop_link(struct dw_pcie *pci)
+> > >  	imx_pcie_ltssm_disable(dev);
+> > >  }
+> > >
+> > > +static int imx_pcie_add_lut(struct imx_pcie *imx_pcie, u16 reqid, u8 sid)
+> >
+> > s/reqid/rid
+> >
+> > > +{
+> > > +	struct dw_pcie *pci = imx_pcie->pci;
+> > > +	struct device *dev = pci->dev;
+> > > +	u32 data1, data2;
+> > > +	int i;
+> > > +
+> > > +	if (sid >= 64) {
+> > > +		dev_err(dev, "Invalid SID for index %d\n", sid);
+> > > +		return -EINVAL;
+> > > +	}
+> > > +
+> > > +	guard(mutex)(&imx_pcie->lock);
+> > > +
+> > > +	for (i = 0; i < IMX95_MAX_LUT; i++) {
+> > > +		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, IMX95_PEO_LUT_RWA | i);
+> > > +		regmap_read(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA1, &data1);
+> > > +
+> > > +		if (!(data1 & IMX95_PE0_LUT_VLD))
+> > > +			continue;
+> > > +
+> > > +		regmap_read(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA2, &data2);
+> > > +
+> > > +		/* Needn't add duplicated Request ID */
+> > > +		if (reqid == FIELD_GET(IMX95_PE0_LUT_REQID, data2))
+> >
+> > So this means LUT entry is already present for the given RID (a buggy DT maybe).
+> > Don't you need to emit a warning here?
+> >
+> > > +			return 0;
+> > > +	}
+> > > +
+> >
+> > You need to bail out here if no free LUT entry is available. But I'd recommend
+> > to combine two loops to avoid having duplicated IMX95_PE0_LUT_VLD checks and
+> > program LUT only if there is any free entry available.
+> >
+> > > +	for (i = 0; i < IMX95_MAX_LUT; i++) {
+> > > +		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, IMX95_PEO_LUT_RWA | i);
+> > > +
+> > > +		regmap_read(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA1, &data1);
+> > > +		if (data1 & IMX95_PE0_LUT_VLD)
+> > > +			continue;
+> > > +
+> > > +		data1 = FIELD_PREP(IMX95_PE0_LUT_DAC_ID, 0);
+> > > +		data1 |= FIELD_PREP(IMX95_PE0_LUT_STREAM_ID, sid);
+> > > +		data1 |= IMX95_PE0_LUT_VLD;
+> > > +
+> > > +		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA1, data1);
+> > > +
+> > > +		data2 = 0xffff;
+> >
+> > data2 = IMX95_PE0_LUT_MASK;
+> >
+> > Also add a comment on why the mask is added along with the RID.
+> >
+> > > +		data2 |= FIELD_PREP(IMX95_PE0_LUT_REQID, reqid);
+> > > +
+> > > +		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA2, data2);
+> > > +
+> > > +		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, i);
+> > > +
+> > > +		return 0;
+> > > +	}
+> > > +
+> > > +	dev_err(dev, "All lut already used\n");
+> >
+> > "LUT entry is not available"
+> >
+> > > +	return -EINVAL;
+> > > +}
+> > > +
+> > > +static void imx_pcie_remove_lut(struct imx_pcie *imx_pcie, u16 reqid)
+> >
+> > s/reqid/rid
+> >
+> > > +{
+> > > +	u32 data2 = 0;
+> >
+> > No need to initialize.
+> >
+> > > +	int i;
+> > > +
+> > > +	guard(mutex)(&imx_pcie->lock);
+> > > +
+> > > +	for (i = 0; i < IMX95_MAX_LUT; i++) {
+> > > +		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, IMX95_PEO_LUT_RWA | i);
+> > > +
+> > > +		regmap_read(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA2, &data2);
+> > > +		if (FIELD_GET(IMX95_PE0_LUT_REQID, data2) == reqid) {
+> > > +			regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA1, 0);
+> > > +			regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA2, 0);
+> > > +			regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, i);
+> > > +
+> > > +			break;
+> > > +		}
+> > > +	}
+> > > +}
+> > > +
+> > > +static int imx_pcie_enable_device(struct pci_host_bridge *bridge, struct pci_dev *pdev)
+> > > +{
+> > > +	u32 sid_i = 0, sid_m = 0, rid = pci_dev_id(pdev);
+> > > +	struct device_node *target;
+> > > +	struct imx_pcie *imx_pcie;
+> > > +	struct device *dev;
+> > > +	int err_i, err_m;
+> > > +
+> > > +	imx_pcie = to_imx_pcie(to_dw_pcie_from_pp(bridge->sysdata));
+> > > +	dev = imx_pcie->pci->dev;
+> >
+> > You can assign these at initialization time.
+> >
+> > > +
+> > > +	target = NULL;
+> > > +	err_i = of_map_id(dev->of_node, rid, "iommu-map", "iommu-map-mask", &target, &sid_i);
+> > > +	target = NULL;
+> >
+> > What is the point in passing 'target' here?
 > 
+> See https://lore.kernel.org/imx/b479cad6-e0c5-48fb-bb8f-a70f7582cfd5@arm.com/
+> Marc Zyngier's comments:
 
-Applied, thanks!
+Not quite. That's Robin's email (I never commented on that particular
+patch). Nevertheless, "I approve this message".
 
-[1/1] i3c: master: svc: Modify enabled_events bit 7:0 to act as IBI enable counter
-      https://git.kernel.org/abelloni/c/25bc99be5fe5
-
-Best regards,
+	M.
 
 -- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Without deviation from the norm, progress is not possible.
