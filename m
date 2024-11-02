@@ -1,43 +1,38 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8538A3D69
-	for <imx@lists.linux.dev>; Sat,  2 Nov 2024 03:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1D8B2AD00
+	for <imx@lists.linux.dev>; Sat,  2 Nov 2024 03:05:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730516658; cv=none; b=u0XrPjgnpu2HXZY9uKEiQVNVGWbXoalEbXz4IMUeWlAtp1Je50REwIolBOG8VGEWOIkoISClUI6+wI4FRmxH6NAB1EZlJ3qkJ83K2fV9w1HsCkPVtrASoJFHPcVEqB6qx95lV6a/fnIPTX9iL+CjcxK/zEoblnDpNBAXni6qdzs=
+	t=1730516755; cv=none; b=uXqaIFPDH98B6HzrX9SGqCsMZXcxx9KdZ9rhncyB67WaJ2n3cw5jjD+PJyqNUIs4cGczHyp11eAQXkvcu1DdiXrZvbFyyhdPxaObDG12KMLppK/E4J1fODJ5k2NdfQe4jehCezTdrCcetqhWvKrd6J4P4R7KjjYntdqC7ACg+Zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730516658; c=relaxed/simple;
-	bh=EEt0MEjE4FFmpHsXng0O/SiotnzKihY6I6Ua5Ya3cRI=;
+	s=arc-20240116; t=1730516755; c=relaxed/simple;
+	bh=CrBW7gcFJPzHjeH5/TI3/rKBzVxK4Zjcgf6BIWAcJns=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ALGJvTjEaJ4AD3oNfhEvU8hCXK/e/Nn6dOP1pIoUpHgmwBEOodOKKLkX18rUAykznVXSr+Yg4hOjE/SNyz3iGMoh1BBfIKNoEwL5PwmEpAIsA8ZZ5z5GYQp/Rb9PWd2q4jWOP0SidVUZNoy7hsH8GlUejztP5uRiIDngfXGV06E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=cEGfSccs; arc=none smtp.client-ip=1.95.21.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=LOjE7Mk3zeg4/izXy3lEbUMy5/kJxcxx6sTQazCTHpBS45WU1Fg3Kd1j5t0CLmpDZD4bd+efinSXuBjuWKVxzLUrFmiml6TGjRosPebM1J95sj1OwDKHokVyF/DE6aPlIEa3pgroHqK0OafC2hRRtiWeZPsnsTfsXAUpqb+K4QQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=Bg8QAQuu; arc=none smtp.client-ip=1.95.21.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="cEGfSccs"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="Bg8QAQuu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=ANBeQg3BIZC2MxnhvEH4gAK8e61+0m9Yr8bFK4R/WhA=;
-	b=cEGfSccsODcmEk9CfsTGs+7qzKJsdowUgKk3yHE6TbswYJQK+LWTLl2bjaUEWC
-	HRuvDiNhmmhNcN8H7Jdt5eiOPS+lPw59MapV+SMuxuJj/0+X4tDG3voUt48AvXFU
-	xh3iGWkf6Rptzsbsm8Z2tlsU8xHQ/EBS7ApOYWbqIublk=
+	Content-Type; bh=p8eD/9xKOfuW1a5aPO+P+oTlB82ZVFjGxpbnAcOwcBM=;
+	b=Bg8QAQuulN5NSlNJTqdEjQzv8SKn88C1nZQLOFMQBu/oE238yGdnjssZJraoIR
+	IgogDHuOJH0H3s41FKACyXiJ7AiZRa6JByrSKq3cbzIdLSJsbVBFzAELVNEP4CuX
+	Rb97m8219Hzl3lsanR20qFgw9YZ70vnQmqVO/PZT5grDA=
 Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgBHk_2VliVn_Lh1AQ--.14550S3;
-	Sat, 02 Nov 2024 11:03:51 +0800 (CST)
-Date: Sat, 2 Nov 2024 11:03:48 +0800
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDXfyz7liVnl_l6AQ--.14941S3;
+	Sat, 02 Nov 2024 11:05:33 +0800 (CST)
+Date: Sat, 2 Nov 2024 11:05:31 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 0/2] arm64: dts: freescale: imx8m[mp]-verdin: Fix SD
- regulator startup delay
-Message-ID: <ZyWWlA7sGuhg0rJw@dragon>
-References: <20241024130651.49718-1-francesco@dolcini.it>
+To: Fabio Estevam <festevam@gmail.com>
+Cc: shawnguo@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	shengjiu.wang@nxp.com, Fabio Estevam <festevam@denx.de>
+Subject: Re: [PATCH] ARM: dts: imx6sll: Fix the last SPDIF clock name
+Message-ID: <ZyWW+3NsvR3poTTY@dragon>
+References: <20241024181409.1461997-1-festevam@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,22 +41,23 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241024130651.49718-1-francesco@dolcini.it>
-X-CM-TRANSID:Mc8vCgBHk_2VliVn_Lh1AQ--.14550S3
+In-Reply-To: <20241024181409.1461997-1-festevam@gmail.com>
+X-CM-TRANSID:Ms8vCgDXfyz7liVnl_l6AQ--.14941S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUxtxhDUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAh2KZWck2JnQywABso
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUxCJmUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEg6LZWclifsbEgAAsL
 
-On Thu, Oct 24, 2024 at 03:06:49PM +0200, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+On Thu, Oct 24, 2024 at 03:14:09PM -0300, Fabio Estevam wrote:
+> From: Fabio Estevam <festevam@denx.de>
 > 
-> The power switch used to power the SD card interface might have
-> more than 2ms turn-on time, increase the startup delay to 20ms to
-> prevent failures.
+> The last SPDIF clock is IMX6SLL_CLK_SPBA, so change the last
+> clock-name entry to 'spba' as expected by fsl,spdif.yaml.
 > 
-> Francesco Dolcini (2):
->   arm64: dts: freescale: imx8mm-verdin: Fix SD regulator startup delay
->   arm64: dts: freescale: imx8mp-verdin: Fix SD regulator startup delay
+> This fixes the following dt-schema warning:
+> 
+> spdif@2004000: clock-names:9: 'spba' was expected
+> 
+> Signed-off-by: Fabio Estevam <festevam@denx.de>
 
-Applied both, thanks!
+Applied, thanks!
 
