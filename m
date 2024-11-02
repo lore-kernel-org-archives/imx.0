@@ -1,103 +1,124 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50658175D47
-	for <imx@lists.linux.dev>; Sat,  2 Nov 2024 14:36:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC69433B9;
+	Sat,  2 Nov 2024 15:35:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730558171; cv=none; b=dM1X+a6P8j7a/qKOSPHp3AMU8Otlcb0dXpjdTYQr/Bv1gi3oqvbZVJyEX4vGsELjdRtdT0yZxQbxHzmsmsU+GOm+K+LV2Jkh4Lw/YGIdGBSIzXT/ErIDWholGU4CYCHYQ2xaFu68rGPrurpAG6sXJE1VXhvLuvuVgaDlzzpwGco=
+	t=1730561757; cv=none; b=GQQ1RpGsMvri/VNi1VY16iIm52+FRTo+ZLvOeelok9J1gQY0d5pfoQXzY3y9RmjSrTMhg0D0rX4RVEml+3gV5gYlrOpuduIISrJBoOOwDV5fT7TX/KA1WITdMqGltVrrkNyl9cOippfeDQBzwdww2FHWJ6lumzvgDdeOO6yvWtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730558171; c=relaxed/simple;
-	bh=jen3Fr+N40Cko1laLEWb06nyy02f9b1SKWGey5w+uQ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iLendk6IpZieeszz+27ONAnftrKLiWBCs20YqdN9X1nv5pBLXn8AUCgKApcv7h8Ggk8AMNwkpwS3J7iooduas1d5Nsk2Z8nidutpL6pZJhIICqE8gcdcgnh6qteRJaWmqSmL4sswVRZLjDSfhV9wj9SQzqcfsfDOROk5zkUjhSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LNWu/zWw; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1730561757; c=relaxed/simple;
+	bh=cYaEKL8jFowwNf+MqbW6XeaifeX92oLshQIv7CaBRbI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tpDIdj56LinHVHN0g9Q7SrKlZXFT2jFL29HGqbCPDK7NFcBnBq33aIlmpCYIAfbz3IdoQA2HXLdwW7DElefojWlbeOm/CeHvxv8gpoSpBAvb4oAJYafqDQGADmQv3q7pRslDBit7Cw/d8fZ6PXm9iqyZiUdv01wGHRyE0IbQmYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=C9sNYvq2; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LNWu/zWw"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4319399a411so24040805e9.2
-        for <imx@lists.linux.dev>; Sat, 02 Nov 2024 07:36:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730558168; x=1731162968; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=r2f8PcOKU/FF7Pc238+N7r6RVxJuBnH+dra36GzbN3Q=;
-        b=LNWu/zWw2hQeuYAP0XoaSNc6sww4FJrTt+CspA054KFGJ1XJb8h03mXcEiVgL5jSLM
-         BYNhaR3g4C+SjUEG1fSxImGaTuJS5tQjIG4QlgLBCwN7Wz44i5HP52QgY9WO3Pq2KmQD
-         F09V9Cf7U92T0i2uSAP+EvGYVZFs375Z3ePODg6zEUtoyTjMLqMvfwyyS39n/x8HiQDX
-         rZHw0KNbm8VgrkKgc2nXFBGnzTYQDZQmCyH7b1pAWQn0tuxGMAC0mZ979aKWzmJyK1uz
-         Mwr1I8IMB892D5letVRdvhePJR1YfEF/BY7REUGAf5VCVY/0g0u0dH/915yYwlKpUt4p
-         jNkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730558168; x=1731162968;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r2f8PcOKU/FF7Pc238+N7r6RVxJuBnH+dra36GzbN3Q=;
-        b=ev0YlyZb5vYhXAXOrhqAaOuMZluzXlSieyFjt0zzFQ/Puj8HLHSwRJaKCOiKV4KuE+
-         cYi1Np7+mDLbp2mLuQiRCF4HSPHZ3GZtxLQXuFoGRHhCOIPZC1Hzr3YoujPxOUVaRNid
-         aszQQfg5Sbk4EPhk9/zyCkFavcMkz2dcYChUiq5g0zyGwcTqrIuypVAmr7bmBpZnRjSb
-         znWmHglMqnkea9Ud94MbjMsqJM7ZhYthu23gc5sTTqXw06oTN+TQDfEzsVEowgnWthu0
-         nzgk8juJpofAhn+wpbu5gjoE7sMv1qEGxNzYwUWez1fv0tn/n7hzGGXpK8zZ98XVFsNx
-         fnWw==
-X-Forwarded-Encrypted: i=1; AJvYcCXgmdSIJp3zdtZq4qsqaaayX7WgwShJVFbRIJBucjoNFRU3zB/jqS5uN73zAwx+DSekQL8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzFNDDzCMNEIwQ1YDdv46V55sGSuBu/dtworvQzM2+aPdhr/bTp
-	RPqeAqXLstxzyVn9SicRNL1suzCH4EhENJUkwbaeMWqyut6fcYQQ
-X-Google-Smtp-Source: AGHT+IG2ZwFxftz+i126vYwTLkOIpd6nzrVgPGTfjFmQz2ucEFkNbpKfCCu2yMagL13buIP7HKDmjA==
-X-Received: by 2002:adf:e28a:0:b0:37d:45f0:dd0a with SMTP id ffacd0b85a97d-380610f2a9emr19284579f8f.1.1730558168360;
-        Sat, 02 Nov 2024 07:36:08 -0700 (PDT)
-Received: from eichest-laptop ([2a02:168:af72:0:492c:2677:72f4:9f57])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c116abb5sm8202298f8f.100.2024.11.02.07.36.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 Nov 2024 07:36:07 -0700 (PDT)
-Date: Sat, 2 Nov 2024 15:36:06 +0100
-From: Stefan Eichenberger <eichest@gmail.com>
-To: Shawn Guo <shawnguo2@yeah.net>
-Cc: linux@armlinux.org.uk, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	elinor.montmasson@savoirfairelinux.com,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: Re: [PATCH v1] ARM: imx_v6_v7_defconfig: enable SND_SOC_SPDIF
-Message-ID: <ZyY41nJY9ghwe-Y4@eichest-laptop>
-References: <20241030122128.115000-1-eichest@gmail.com>
- <ZyXTFhEm9UCBii2c@dragon>
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="C9sNYvq2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1730561723; x=1731166523; i=wahrenst@gmx.net;
+	bh=RusafcclKl2RfSXhQjv0aPX9JFTNQs1CwGZazPC8Lz4=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=C9sNYvq2xrGUC1XlLvQGMAcPyvEEUzBCByIebj0ukDQP2J2weoKYfCvrwSzNcN0D
+	 FJCvjVH53dIIc7N/99mn8ztCfLWi60LdB/xdx86WA8HzNuqhtWiRgPjvozAlTzQc3
+	 e0rDNliJV7mHGYg5qgOrl2KH3JwiE4Q039QYREaYe/WUVAOU6ccq72Jv7PuhUdQ00
+	 GuJkNszVLxhlw7DkkMX3lp8O5YSM7+7Mmkz79ZP/nMOWYBut1ARt/vOonkNM9RrSo
+	 +aQcuK72QI0ViU8Io8tt7jM40zlLxU8N5F9qpEwKarkr7nhNCxpW3nFozWwns6m8H
+	 EdHwesLv24E1t9DSew==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.105] ([37.4.248.43]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mk0NU-1ta2OB2djs-00gJvn; Sat, 02
+ Nov 2024 16:35:23 +0100
+Message-ID: <065268d6-84eb-4247-b834-40a9ff32c1f4@gmx.net>
+Date: Sat, 2 Nov 2024 16:35:19 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZyXTFhEm9UCBii2c@dragon>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] ARM: imx_v6_v7_defconfig: enable SND_SOC_SPDIF
+To: Stefan Eichenberger <eichest@gmail.com>, Shawn Guo <shawnguo2@yeah.net>
+Cc: linux@armlinux.org.uk, shawnguo@kernel.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com,
+ elinor.montmasson@savoirfairelinux.com,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ linux-kernel@vger.kernel.org,
+ Stefan Eichenberger <stefan.eichenberger@toradex.com>
+References: <20241030122128.115000-1-eichest@gmail.com>
+ <ZyXTFhEm9UCBii2c@dragon> <ZyY41nJY9ghwe-Y4@eichest-laptop>
+Content-Language: en-US
+From: Stefan Wahren <wahrenst@gmx.net>
+In-Reply-To: <ZyY41nJY9ghwe-Y4@eichest-laptop>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:6Qb1kpG3hdxqRE5loRuAnM11ljAjYHICynec0g85WT++0Up49vf
+ Sm++8OAke6qdyByODguM4Uj/mNR1qv/FlO9C/rwLM4ZkH5EJpefK+oDQwkQDEDwRz9feXUi
+ uMlSPswKmvXPU6SjMbLZURoSW1u3v7zZnCCdgBsWEGYX0oIsvKbHz74hJ7Ybjz/XJzmrU8I
+ R3K9TbgTxI4vOWg/D8iiQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Y/8Yk56S+Ro=;Lw3WHEGlPnaA5VXhUppkFZIUAeT
+ M6Y8O48Wk8KftJnOWjKuOtnZWUH/3v3+W9NH4bRlEpZnfFwX+LbbrHfVuKjLK/xp8M3aeN1hx
+ grtnYC3BOaphN6FRLDkKGgkuywaKMXJEOmZrfld+XnmnA17BGqDlHZcggxV1DDW2SS9lA/OPh
+ QSDP5AxAvkMjl6PtBefW8+KJrfAlDuHtE22yaOE3Q5EIRZhAJKIzEZmimhi/UxtUVftcw6hxo
+ svTAN90/miodusPK98g13FX91OFJLVUqM+8v1/rlW18OKqEb5sRPBSXipnjdtPtBu1yRR7FeZ
+ PFk+l8RVpCsgXwBkXgGN+JGq2GehlnM5WgYxLDz1QsPLtLXHUgwCu+mB2E1Ot9/7PqXuYGGQ1
+ 8G4a1KWFSehEUto9xafil78hJo/WKur6f60XsYm+2L/0WLi7p/zSeLIKm+QHoRBbRw00RKxpO
+ TgeV7Ulx6b3VC72Nh0z7Xrmsa3bzVU89LhFQKIxA/XIG/rM0aGq0ih8OrCxjpQVb+RORs0Nrp
+ hcURzc1JfMQ5+0VXjBbFWvgnCeiRmwYVH8Ae/LbexQ/dALlLaIAU4+f5EHu8ELIid+2ZPsFuO
+ 5Z8CNtXXF2B8OekVgqsxWEXcOrpPmZjLYxcdXSpqXgA+sL+96M67rXqhc4FdrthxeZ6v8My8c
+ SU2X9BiY8ysNXa+KoHMwccqnaQROqgCzu2hNZ9PMoWnBD8S6qriSrwjAUITpnvtRPCuriVkoX
+ pJbFm6m/92q5qDzJ3mA9W5CqT/beB0h9ycwXp30IjRTVCllJkSzP0LwWvxh7pJdm/PH6+k33K
+ jEuFTK+amGVlHTWjKQXz7nXQ==
 
-Hi Shawn,
+Hi Stefan,
 
-On Sat, Nov 02, 2024 at 03:21:58PM +0800, Shawn Guo wrote:
-> On Wed, Oct 30, 2024 at 01:21:12PM +0100, Stefan Eichenberger wrote:
-> > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> > 
-> > Enable SND_SOC_SPDIF in imx_v6_v7_defconfig to support SPDIF audio. This
-> > change will fix commit d469b771afe1 ("ARM: dts: imx6: update spdif sound
-> > card node properties") which moves away from the old "spdif-controller"
-> > property to the new "audio-codec" property.
-> > 
-> > Fixes: d469b771afe1 ("ARM: dts: imx6: update spdif sound card node properties")
-> 
-> It doesn't look a fix to me.
+Am 02.11.24 um 15:36 schrieb Stefan Eichenberger:
+> Hi Shawn,
+>
+> On Sat, Nov 02, 2024 at 03:21:58PM +0800, Shawn Guo wrote:
+>> On Wed, Oct 30, 2024 at 01:21:12PM +0100, Stefan Eichenberger wrote:
+>>> From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+>>>
+>>> Enable SND_SOC_SPDIF in imx_v6_v7_defconfig to support SPDIF audio. Th=
+is
+>>> change will fix commit d469b771afe1 ("ARM: dts: imx6: update spdif sou=
+nd
+>>> card node properties") which moves away from the old "spdif-controller=
+"
+>>> property to the new "audio-codec" property.
+>>>
+>>> Fixes: d469b771afe1 ("ARM: dts: imx6: update spdif sound card node pro=
+perties")
+>> It doesn't look a fix to me.
+> I agree somehow, it was just that before the referenced commit our test
+> succeeds with the imx_v6_v7_defconfig and after that we get the
+> following error:
+> [   24.165534] platform sound-spdif: deferred probe pending: fsl-asoc-ca=
+rd: snd_soc_register_card failed
+this error should have been in the commit message including the
+information which platform/board is affected.
 
-I agree somehow, it was just that before the referenced commit our test
-succeeds with the imx_v6_v7_defconfig and after that we get the
-following error:
-[   24.165534] platform sound-spdif: deferred probe pending: fsl-asoc-card: snd_soc_register_card failed
+> So maybe it is not a fix in the sense of a bug, but it fixes the error
+> message. However, I'm also fine with removing the Fixes tag.
+But this patch doesn't look like the real approach.
 
-So maybe it is not a fix in the sense of a bug, but it fixes the error
-message. However, I'm also fine with removing the Fixes tag.
+Could you please clarify the impact of the regression?
 
-Regards,
-Stefan
+Is it just this error message and audio works fine or is audio also broken=
+?
 
+Regards
+>
+> Regards,
+> Stefan
+>
+>
+>
 
