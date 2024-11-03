@@ -1,68 +1,68 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A5283CD3;
-	Sun,  3 Nov 2024 20:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2742C83CD3;
+	Sun,  3 Nov 2024 20:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730667036; cv=none; b=FdpAev7162OqkDtVdEiAIsCyALQ91CZt3Ldcufon+JQcTiYrw+MKbQ0LkQ85jRDASKLnicRclIjONW2Io6hpKedi+aY8XCOEZTWlhgNCP3nVIrND5jjtWgvFyyh5m1uMCCz2qwtaLb3uv62MNy4YIjskuP09ZDY15nq6ICC49Wc=
+	t=1730667422; cv=none; b=h6vRejudbRgzhiQQNvR43jghmnHwsDT/LkdBbh3YCwgkoIw5K+BJWLrltaxvsrhg51jSeBggaq6EV31qwbNmyNwnS/t/ZpCh7hrE0KW/UiKHUV4nTI5Ss+S/efFrjsefsEE+E5PI2BgISAgzo6diSMNsDUPlEBJwVquoyinISGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730667036; c=relaxed/simple;
-	bh=0XUV0VbcIRK0revMTo8r7QUXU3/XHGnvm9TNClNnFVg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qXdtP6Bqzcrny8/2ocNtgO2hsPZhOhGSo7Gj5ZoBUyYlRORbzKNOclDckI50Tstnkwl6loeRK4VOfP4nRoElx7+oZ9rNc/s8Cgkyb/6NUhaT0rKtFm+iUwYb+McYWCwyEXPddFKx1HQdgTv+kcIFGO+m7poa+aEHMBLj6uAx5Rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QmqL4GR+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730667422; c=relaxed/simple;
+	bh=kQwXeMRLlAue8MzM7s00R8H53UF6cT2XhjoFMQqxCkw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TxdMdkuw3Jwq5BCzoZDuNjb+Pb2HJw9BjaisKtlxSZFYiJWIQtLzD8vLjYYYE/RjBFYPFBstSOMAk5G70dOIX5pm9Muv+QD4whjTqY3tLZx/zEpmXuh7EKGNAHOqD+KrDhMG5SojdqXceVngkyYvw16p2i6mgojpG3puR1gME5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fZfCcs/t; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QmqL4GR+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B821EC4CECD;
-	Sun,  3 Nov 2024 20:50:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fZfCcs/t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 569F0C4CECD;
+	Sun,  3 Nov 2024 20:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730667036;
-	bh=0XUV0VbcIRK0revMTo8r7QUXU3/XHGnvm9TNClNnFVg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QmqL4GR+ldvCw/9MNJqu6/DT/SoZWrP8wJtwZKrQNZPeadrGkpWCjdZvBRDEmh+m4
-	 GjdCEmjtqQD64NuswLMN+UzIxO+1H8iz6k4CjEXZEmEArR4cox+9ykhra4hIzkAUe8
-	 AUEbmq35eMBGKuGtz4k0RKw2+r+6AraeolDcHWD+4X8LL0zmilX9C6nuZK+5ceMKQ6
-	 VLR+PKogOtin4UdjnDHWFWmPKhSNrL8fooG4pI3QO1bB3vz6LheKN1g/ATTW5teqwC
-	 MafoEnhLYDxhIpP/qEIiDFnw6CqDbBtlMy2fU05MPcaQ7QpEL0x0ufaew1de9EJ/e5
-	 IruML2peqXoTA==
-Date: Sun, 3 Nov 2024 12:50:34 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, claudiu.manoil@nxp.com, vladimir.oltean@nxp.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH net 0/2] Fix issues when PF sets MAC address for VF
-Message-ID: <20241103125034.27c43c51@kernel.org>
-In-Reply-To: <20241031060247.1290941-1-wei.fang@nxp.com>
-References: <20241031060247.1290941-1-wei.fang@nxp.com>
+	s=k20201202; t=1730667421;
+	bh=kQwXeMRLlAue8MzM7s00R8H53UF6cT2XhjoFMQqxCkw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fZfCcs/tF9z6dJVI8kCfdAWIbtmZ93sOavb56I2SXMKj9D34RPhWU6lJGXLkoi9s1
+	 hnWUWDui/i83Z5muJ32UcOA3ToCCVPl7KEVkWMEZe682ZFbKXw8uFwjOKH9lg7p57E
+	 3gPbhhfdE7hhxIkQFoWz7qBcPWSsuonYzWvCsEK2qTQzI3lC5wRbdt1CHKNeAQks4I
+	 u/nJcrwJzBraYbrUAqqhy/XpolIHbvkfjliSzhFnJjqcBpxoD1EhYoq/fIdXXiJbdy
+	 BipbuemJxJzsGpkaTD3e50ny4WQVtH1fxWdZooPNsWmM1mI6PFsTo1fw3/PTewR49E
+	 D8x4C9H2XQvFw==
+Date: Mon, 4 Nov 2024 05:56:59 +0900
+From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: bhelgaas@google.com, lorenzo.pieralisi@arm.com, frank.li@nxp.com,
+	mani@kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kernel@pengutronix.de, imx@lists.linux.dev
+Subject: Re: [PATCH v2] PCI: dwc: Fix resume failure if no EP is connected at
+ some platforms
+Message-ID: <20241103205659.GI237624@rocinante>
+References: <1721628913-1449-1-git-send-email-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1721628913-1449-1-git-send-email-hongxing.zhu@nxp.com>
 
-On Thu, 31 Oct 2024 14:02:45 +0800 Wei Fang wrote:
->   net: enetc: allocate vf_state during PF probes
->   net: enetc: prevent PF from configuring MAC address for an enabled VF
+Hello,
 
-This combination of changes would imply that nobody sets the MAC
-address on VFs via this driver, correct? Patch 1 fixes a crash
-if address is set before VFs are enabled, patch 2 forces setting
-the MAC before VFs are enabled (which would previously crash).
-Which leads me to believe this will cause regressions to all users,
-if such users exist.
+> The dw_pcie_suspend_noirq() function currently returns success directly
+> if no endpoint (EP) device is connected. However, on some platforms, power
+> loss occurs during suspend, causing dw_resume() to do nothing in this case.
+> This results in a system halt because the DWC controller is not initialized
+> after power-on during resume.
+> 
+> Change call to deinit() in suspend and init() at resume regardless of
+> whether there are EP device connections or not. It is not harmful to
+> perform deinit() and init() again for the no power-off case, and it keeps
+> the code simple and consistent in logic.
 
-The fact that the MAC address is not picked up by a running VM is
-normal, I'd say even maybe expected. IIUC hypervisor will enable 
-SRIOV at the start of day, then allocate, configure and assign VFs
-to VMs. It will FLR the VF after configuration.
+Applied to controller/dwc, thank you!
 
-Your change will make it impossible to reconfigure VF with a MAC
-of a new VM, if any other VF is in use.
+[01/01] PCI: dwc: Fix resume failure if no EP is connected at some platforms
+        https://git.kernel.org/pci/pci/c/ec008c493c25
 
-Long story short, I don't believe the patch 2 is necessary at all,
-maybe you can print a warning to the logs, if you really want.
+	Krzysztof
