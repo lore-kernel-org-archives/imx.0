@@ -1,98 +1,150 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E09189F45
-	for <imx@lists.linux.dev>; Mon,  4 Nov 2024 07:57:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E2C1A7AF6
+	for <imx@lists.linux.dev>; Mon,  4 Nov 2024 08:05:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730707028; cv=none; b=gRjWXOM0cpy+PQnXfXPbWpmXPgfSuw8l5Qw4N3qePXtTMyp0qU1ctKtLDCMS0KpDqFWBkdWsuApHomICvdyV2Koec3VK/XLNZlgRZ6EVAi5+sSZftmWHBwFnCdrm/3JSrIGobOikFSvwp0nJYvfYVEG8osgn+BmdC+b49I0eQOY=
+	t=1730707512; cv=none; b=Jt3ZJ+ZwEBLl93Jp2+auLmLxfXTgsesj+KwhF5BkUfVdr40b71L/pFLdskKErVMN3I9OARnb1LPQJz8qkcqXphBZDAeoIofD1EKh7Pc+EwS2Hf+h1JhImoQ98j8JWVwTbSYf7B2eT9IikCmoHT/4znfrAEzPDc4SkJ7Mxr5zD4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730707028; c=relaxed/simple;
-	bh=X/dRJ1Gkhm6/NRFvQ+4mJB+CftfVKw4BMgBeKwyvhAs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WN344hw/mQi+mWTCP/U++xuMlHcZcbLsy9cMDtAhU4+485sv1HrqBdtIi8GtaS6/VXb6Psm+5cUVtwoGUXxm72qReXDtgLj61rwb4Uj+zpcMUeCnEwsOPPb0G3ap6uLmtnraCqFmi10W84QMmjIhulC5xgq4uaNm7IODYV6glnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=oC4uW4rK; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1730707512; c=relaxed/simple;
+	bh=wIth8q+oiY1s7f4175bP4VdisldBLxMivwg/wJA5TVY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ErQmeXeQ7HnFOlWNKEheUfmJBPIvuGG/sVqHKC2iWq3yOXBkJhhZvC87T81l4eI2Lk39InjZmsFUSON0OCrEtOaE09dNzBR7UbYA8r2xdDOUf2AsoWj8PbE1WBwnOwKR+PszllqhylBHqgq8hGerWVtMsP//QQgXGbCQ0Oa6OE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dFo+ZDIl; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="oC4uW4rK"
-Received: from [192.168.1.107] (87-97-112-21.pool.digikabel.hu [87.97.112.21])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: hs@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 78E05888D5;
-	Mon,  4 Nov 2024 08:57:03 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1730707024;
-	bh=2lhytOz/pMLw6cwoN72tfr5dCndGkwWb50ggJNngL6Q=;
-	h=Date:Subject:To:Cc:References:Reply-To:From:In-Reply-To:From;
-	b=oC4uW4rKzPa98MJMV3tddMN7nd3UbXkHVvUeAEYPtrnwaGOe1ezUvowN8GKP0IDvT
-	 Qhc2aumIuJiwxzOc3br2cNL8YDgkQYjmoDMh+ZqNo08iSjr3lYWDmXWwhYzk2bbv/K
-	 Uu6bgFK+aUskJ/PfxusWxP39mIlu4fISR9bNAqi4nE48xK6fpAeQcOTBncC3R5t0Rt
-	 I9qLWEYUKkaH8AILQ4OXa6LjSbMXIZ4Di37hVApg8MVXv1n62wCPbhcJUHg6r8yTlW
-	 AXf07mzwkqZswRY6m7kAayldZbRyuxbBn8G2scrFM01VVP099iA7gFR6hlYJ/SkC4X
-	 sGfXoKH2kRvnA==
-Message-ID: <4e5a3f32-f959-8106-ac32-f802353dbcf6@denx.de>
-Date: Mon, 4 Nov 2024 08:54:38 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dFo+ZDIl"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-37d3e8d923fso2684523f8f.0
+        for <imx@lists.linux.dev>; Mon, 04 Nov 2024 00:05:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730707509; x=1731312309; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rmjx6zA4K8y+qr1LBwquRLGW8I8RIiLSEH4MjF5V3eU=;
+        b=dFo+ZDIlC0akg+h+j4GNcnZKn82WM9dXBRpEpl+ieM4no9MvluOrC6rd1mSa4+f+LV
+         p+Zk/QtiJxMxb91vDRYRQFcukOaclgvTzgemoBDTkfxyilPsw8wZYURaYH1+3mBNaoF0
+         oZYMvNF+zPpdc6+1IEY2+MB9gT/pVkL602Nu+PRFhT4G/X8dghRVsRWWjEysA7nXFHUj
+         F2ukqWinaVNrFYDuQnmgpQCr9yDcCVZTgPSgYQxScZ0gYSpy+lGII9KTQOBGTPSGrouw
+         AkuOu937MRX7lCUvtVo2UomUBPKIogRunnztbb7bVl2oBiHXtj0F+KrfjLAMijPuzaTy
+         lUPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730707509; x=1731312309;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rmjx6zA4K8y+qr1LBwquRLGW8I8RIiLSEH4MjF5V3eU=;
+        b=wKXtd2L/+cMX9RnXqOxYPm3IEtbxrZmIPyK//Z5zq+/AgmTWOEBZCwt02fNq6z4a15
+         GM11cOUPsxjOe7zjDsbKvX/IZncxZpjPLkXKvFxO+K1fdc6P4tqnxaylBHrjDFr3HJE7
+         OyPRqGFkrG9/EXDEmO/uFrC+1mEeIiJBvB+femxQmIaiFCsm0Y7SrKWfMpQUw1QYDnuc
+         Rr444pobKig86AtRvP6+5SEUHH696pWZQOfXiAbe25wkJ8kvx+KuhlEISLzMi5iauO+R
+         BSAZgtFU/pzYThbwomhk1SdQfa8sDCbWAa/Zs/b49WsBzjDPsrS8pUOTt9x+GzTh1KY/
+         diQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU4jZOPpVcyJso4759BaAmtj6a5qJ/MWwyzXMiRyyb0KUrscbC2e6WTxb6u9/51YMwNxT0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzMW3gMEF0wmqWCVMPX77mTMYlhCoXOK4znbsnwCJwiuh+4WmZl
+	rIAwdU2oDnrHe/dBBFmLRmByRRFdMGpDtWB3OGpibTJQJJEiWoHK
+X-Google-Smtp-Source: AGHT+IGJZ1N0iKEAhj3LObQcIfZjoje2HIVVrTvS8omAzjtiJyXmwbcvyD/6ltNJYT44sT96drjLmQ==
+X-Received: by 2002:a5d:4d48:0:b0:37d:49d1:1e89 with SMTP id ffacd0b85a97d-3806115ab56mr23099545f8f.27.1730707508506;
+        Mon, 04 Nov 2024 00:05:08 -0800 (PST)
+Received: from eichest-laptop ([2a02:168:af72:0:58c3:98c7:13bb:aad2])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c10d414csm12396504f8f.26.2024.11.04.00.05.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Nov 2024 00:05:07 -0800 (PST)
+Date: Mon, 4 Nov 2024 09:05:06 +0100
+From: Stefan Eichenberger <eichest@gmail.com>
+To: Stefan Wahren <wahrenst@gmx.net>
+Cc: Shawn Guo <shawnguo2@yeah.net>, linux@armlinux.org.uk,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, elinor.montmasson@savoirfairelinux.com,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: Re: [PATCH v1] ARM: imx_v6_v7_defconfig: enable SND_SOC_SPDIF
+Message-ID: <ZyiAMpjmXuVMi5FX@eichest-laptop>
+References: <20241030122128.115000-1-eichest@gmail.com>
+ <ZyXTFhEm9UCBii2c@dragon>
+ <ZyY41nJY9ghwe-Y4@eichest-laptop>
+ <065268d6-84eb-4247-b834-40a9ff32c1f4@gmx.net>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH v2 3/3] arm64: dts: imx8mp: add aristainetos3 board
- support
-Content-Language: en-US
-To: Shawn Guo <shawnguo2@yeah.net>
-Cc: linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <20241031151238.67753-1-hs@denx.de>
- <20241031151238.67753-4-hs@denx.de> <ZydFO6b6oe9widaa@dragon>
- <5340fb82-bda0-d22f-23df-de620c8d61c3@denx.de> <Zyh0AgJZh1//17Te@dragon>
-Reply-To: hs@denx.de
-From: Heiko Schocher <hs@denx.de>
-In-Reply-To: <Zyh0AgJZh1//17Te@dragon>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <065268d6-84eb-4247-b834-40a9ff32c1f4@gmx.net>
 
-Hello Shawn,
+Hi Stefan,
 
-On 04.11.24 08:13, Shawn Guo wrote:
-> On Mon, Nov 04, 2024 at 06:33:55AM +0100, Heiko Schocher wrote:
->>>> +
->>>> +		semtech,probe-reset;
->>>> +		gpio-controller;
->>>> +		interrupt-controller;
->>>> +
->>>> +		interrupt-parent = <&gpio1>;
->>>> +		interrupts = <12 IRQ_TYPE_EDGE_FALLING>;
->>>> +	};
->>
->> Should I remove newlines here too?... but looking into the example from
->>
->> Documentation/devicetree/bindings/pinctrl/semtech,sx1501q.yaml
->>
->> there are this newlines ... so I let this lines in... or?
+On Sat, Nov 02, 2024 at 04:35:19PM +0100, Stefan Wahren wrote:
+> Hi Stefan,
 > 
-> Not having newlines in middle of property list is just a style that
-> I prefer for IMX device trees.
+> Am 02.11.24 um 15:36 schrieb Stefan Eichenberger:
+> > Hi Shawn,
+> > 
+> > On Sat, Nov 02, 2024 at 03:21:58PM +0800, Shawn Guo wrote:
+> > > On Wed, Oct 30, 2024 at 01:21:12PM +0100, Stefan Eichenberger wrote:
+> > > > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> > > > 
+> > > > Enable SND_SOC_SPDIF in imx_v6_v7_defconfig to support SPDIF audio. This
+> > > > change will fix commit d469b771afe1 ("ARM: dts: imx6: update spdif sound
+> > > > card node properties") which moves away from the old "spdif-controller"
+> > > > property to the new "audio-codec" property.
+> > > > 
+> > > > Fixes: d469b771afe1 ("ARM: dts: imx6: update spdif sound card node properties")
+> > > It doesn't look a fix to me.
+> > I agree somehow, it was just that before the referenced commit our test
+> > succeeds with the imx_v6_v7_defconfig and after that we get the
+> > following error:
+> > [   24.165534] platform sound-spdif: deferred probe pending: fsl-asoc-card: snd_soc_register_card failed
+> this error should have been in the commit message including the
+> information which platform/board is affected.
 
-I remove them too than!
+Okay, I will add this information to the next version. We see this error
+on an Apalis iMX6 which has in my variant an NXP i.MX6Q SoC.
 
-Thanks!
+> > So maybe it is not a fix in the sense of a bug, but it fixes the error
+> > message. However, I'm also fine with removing the Fixes tag.
+> But this patch doesn't look like the real approach.
+> 
+> Could you please clarify the impact of the regression?
 
-bye,
-Heiko
--- 
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: +49-8142-66989-52   Fax: +49-8142-66989-80   Email: hs@denx.de
+So the problem is that before commit d469b771afe1 ("ARM: dts: imx6:
+update spdif sound card node properties") the audio driver was
+using an implementation of linux,spdif-dit and linux,spdif-dir which was
+directly inside the fsl,imx-audio-spdif compatible driver. Now with the
+referenced commit the idea is to use the more generic linux,spdif-dir
+and linux,spdif-dit compatible drivers. That's why this driver must be
+enabled in the kernel configuration.
+
+> Is it just this error message and audio works fine or is audio also broken?
+
+It is not just the error message, audio is not working because the
+driver deferes and because it is not enabled it will never succeed to
+load. I don't know if this is called a regression, because the driver is
+there it is just not enabled in the imx6_v7_defconfig. I thought because
+a lot of the i.MX6 based board use the generic driver, it makes sense to
+enable it in the imx_v6_v7_defconfig.
+
+Here the output of git stat to show which boards are most likely showing
+the same behavior as the Apalis iMX6 with the current
+imx_v6_v7_defconfig:
+git show d469b771afe1 --stat
+....
+ arch/arm/boot/dts/nxp/imx/imx6q-cm-fx6.dts          | 15 ++++++++++++---
+ arch/arm/boot/dts/nxp/imx/imx6q-prti6q.dts          | 15 ++++++++++++---
+ arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts         |  9 +++++++--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi       | 15 ++++++++++++---
+ arch/arm/boot/dts/nxp/imx/imx6qdl-apf6dev.dtsi      |  9 +++++++--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi      | 15 ++++++++++++---
+ arch/arm/boot/dts/nxp/imx/imx6qdl-cubox-i.dtsi      |  9 +++++++--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-hummingboard.dtsi |  9 +++++++--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi    |  9 +++++++--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-wandboard.dtsi    |  9 +++++++--
+ arch/arm/boot/dts/nxp/imx/imx6sx-sabreauto.dts      |  9 +++++++--
+ arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi           |  9 +++++++--
+
+Regards,
+Stefan
