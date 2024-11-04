@@ -1,226 +1,356 @@
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2044.outbound.protection.outlook.com [40.107.247.44])
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2041.outbound.protection.outlook.com [40.107.104.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C9215D5A1
-	for <imx@lists.linux.dev>; Mon,  4 Nov 2024 03:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E261F949
+	for <imx@lists.linux.dev>; Mon,  4 Nov 2024 03:28:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730689990; cv=fail; b=aDfIfBKY4z6tFqYvI06SHAhrEfmChHa/2uAcnuurVmxQ+idUym13YBAXBB71NH9juhDQphf3MXj1jhQOZGVkw6mmSe4CEd9XFbNQelyeS0VBHsbbiHLMOZcLp270D7m1xpVK7chGBzmctkkti/H3dU30nIoDrGUWEQrksH4HFbE=
+	t=1730690910; cv=fail; b=D5HotuoIaHFX3ES/5QSC7IO8EseY30G3SM4Fh5UqPUrx3xR5T8byhVk7/bH/BJbYhXwf0hrz6kuKu6kHoCYqcoTEe/4VZmLoYpW/0QPMAbD6WemKO5u3H+BNsRE2ZxYKc5nUQWFRO7l12oamYHQ09TmENyQXy0R3kPoO5KOCa5c=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730689990; c=relaxed/simple;
-	bh=pR8ilTuJjBtVtffMqExGjtSz+Bwbf2v5/U3r+kqYQz0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=WmH1ySJtWnkQ6sO3uc1bo/bPqnzj5qWCTjm8MtaZ0UHsJf55D/H9/iQH9wP9ImnlbpkLCOtVXB29oZbP285OSBfjO/DD//AkiAvOvSQ2G7+qdj4Gu2umoX+bd3ocDtxLsmwF/NVT6/pX6Z1DqRzQWRIJcscTM9sNBbSvXRxGouk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ra2TlE4Z; arc=fail smtp.client-ip=40.107.247.44
+	s=arc-20240116; t=1730690910; c=relaxed/simple;
+	bh=E3jkLTPEzb1/PVS4YfZONVA3X8UN/Lsh1J1wAalWHLc=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=NcbEChmdKGfgHn5M+BFZS3nx5fjYnyRimziMXFSvbS4i3k6F1o6Bh7a4VLs2NNpBJFND8OKvVK9HHWAnVO4Sbiv30JmRCYRhcW3CDXpTUgXnMYcKZDIZAnBezJhqDRj7jIGLv/PqAWGODlzSssUO0ZYw8l4O4pmQLA5VdbCY0Xc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=miz2Nq6f; arc=fail smtp.client-ip=40.107.104.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ra2TlE4Z"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="miz2Nq6f"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=snrQm35xNdEDtymxywVZ0iUu3bZD47wiIm8QycGwQlTaKIRnHBvlKYF3q6Kewu/FhzbpODTbl6ughP2i/5dboS7OkTezq0jZ8VHjb82ReGpcP22RztwrxYgZgZ8mRsrYu1uf1j8NbWgbs9x5zDQGgaLhCI9AVtLcKRMWeiZvduNpR061XtGi7caWPis2Q9Q7WOXwyP39yqIOLhlM/9xGjA0bmgqDNXn4jEjGOj+jfW7XU2neqDQAkg/QiYvZO6J87yot1c53Oz3eyvAQtIM64a/iFUcns/yTyLFNTJOZCdyGZZOynVbTyYrSHpRo27P5cXSLMhlqVFwZKNLlxAAgFQ==
+ b=mux00vnXQVzX4rPmtkP/qhJUQGeDTIyQS1FdYuEIC5nWyIZqO36myyGJd7HBSWbkdKJYblpI37ndEXj2WtJPVH4gklx+4Uj589cxdI2MOuAauFATqUpmdRXTpLNwS/TLYi73r02Bnn8Uwqsg8UX5Hf3S601zKARfsb6bMGFMgoj1eml0oIJKCmTu94EcwYApQmNQaoY4Y2KvwmFyGWMWKi3cBmX53ij+7SJDQssrr1XbAL71DF3fsv8BQXSsrsFYnem9+B5ZH6VIy4T/7Ygmytf8oxzKgWi1d7tM5C0RW48sWzlchB+L4mxiOgkDSwhgbWdlWHW7YNClV39EFslBsg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iWsYuoTjBxz6bPzzFq3WpE86OIXCi5ozg20UdkVFz4Y=;
- b=couPg8OTrIcE+eDT39lzzsgltiibsbG26QbBa3xDGAIBB965FWJduXdy+/TFF+iWgxbUnmQFlFut6EcHwW7RxkzxoAy5f6ZVEqBCK91+PmOKb2meXQ3dSYeTAUHpyyveeq/y4NUoMa0VQMww9mn5WuhKGy0AYXC+ybd0F0eSJrzEixfbUQjOtVuH5F5FSYONMb/ERUywGPhCktvu9fIakgwkyQ172ZK9zF1PcMWBkzzaO3hXqIOYK0NKxnF2MEY88AaJjQgSTl/AiNNLi6BeT0A2B8Kdjb8jzkpvJY1b8yX3yfsPd2fjrg9FM+hyI5ZPdOfXRceXQ4ve7Nfx/UEGaw==
+ bh=1KFZ7gfPci27VMeiVXgC6lAJFf3NowklCctn7LuqAgs=;
+ b=bpHVm4hU3f1AJpAn0FqxUZxQT2rpc+xdxbpvWncV/iOhZKCR4J8CoXRaVuLMXDu1ZthfaBxTQ5ZSAsgjxWSyt6FuL2ZHWdKXnoUbR3nDFc/YqQ2QjcPSmDL0E7Yx1ZwQHn9PlRsyd4FVNaXTnaXxZsNQ6LbPTLtW9RaSzk9dHrw3otWlALPFAqHw24D7S8SauokP5rP3ZKq1NpEk71SJTubZxcX0foBvEoXwDB75F98/uP9bJi1dN/UmgbAfn72dlf74We46cLbYtJN62n7Hruv0MC6ipbt+Cgl8Gnjg3BzS30u3NrC5iOwnS4LVzPLKX0x0l29xUxTgoHUumrnywA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iWsYuoTjBxz6bPzzFq3WpE86OIXCi5ozg20UdkVFz4Y=;
- b=Ra2TlE4ZK7FmKpCL6fIGp6O86gIZ4nDh9BtSwxfRUFUYlFnBcjEN7tsAOlUFps5mq51Mw9FnS9Q8nA01Ttz1pbYO6KCaupj2+0ktYMLoEU6JIzuORwWM6NfLfLKcciV5OMyYjrKO4YBu9RUP0mU7xHpcBSg/uXhvr/fMOztpUQC99ji2ykqSo6Ry+3tR2kThRidknhRjP2Wa9H2Sxh2gGETTnwO8mJwZp++EOrvHiGfaROA5OWIDzKr690zbynXtVOtd6Gf1qJs5t7qdqTePRfQLtCKxIn5pJU5SaMsQ9CvPAxf2hVm+jGGiCRSgdGNY5U9rcgvz39Y9rbdBnnwTuw==
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by PAXPR04MB8206.eurprd04.prod.outlook.com (2603:10a6:102:1cb::12) with
+ bh=1KFZ7gfPci27VMeiVXgC6lAJFf3NowklCctn7LuqAgs=;
+ b=miz2Nq6f2+YdOXHekP4oL0RPTgCTJuqmUUyyoKb1bE2x6kJ7BGAkQ5dKMPsfbgKiVi6NRBy9M7Ti2iJmExP5u3NGtmfM4OlqqRmcTvJGvzWcK6KHv0bPnRoI9Na9P6OI5nLDGPQja7EFCCesKtNlHCWrr0iGYxg9gz3bXjnjHzFabPamvKFNi/0tCph2jEE9nfc0/KJIvotQZoyh8S65MZT0saV+utG5nAIMMxhRS7q9p9bmdtqxSs3XLzpu77s7Ufd11VIDveKKzQwRAOKW/PUCLE6LvHyF0RlxFncfj9q43b6jGuSucxYYRTSt6/afXx4T5AJng/XhnjOJcuTeMA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by PA1PR04MB10602.eurprd04.prod.outlook.com (2603:10a6:102:490::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.30; Mon, 4 Nov
- 2024 03:13:04 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%5]) with mapi id 15.20.8114.028; Mon, 4 Nov 2024
- 03:13:04 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: Frank Li <frank.li@nxp.com>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-CC: Vinod Koul <vkoul@kernel.org>, "open list:FREESCALE eDMA DRIVER"
-	<imx@lists.linux.dev>, "open list:FREESCALE eDMA DRIVER"
-	<dmaengine@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH 2/2] dmaengine: fsl-edma: free irq correctly in remove
- pathy
-Thread-Topic: [PATCH 2/2] dmaengine: fsl-edma: free irq correctly in remove
- pathy
-Thread-Index: AQHbLIv9TqS74KtC1UGQOEW0zuAyMbKmdbYQ
-Date: Mon, 4 Nov 2024 03:13:04 +0000
-Message-ID:
- <PAXPR04MB8459CF8A7632A0164994E1D788512@PAXPR04MB8459.eurprd04.prod.outlook.com>
-References: <20241101101410.1449891-1-peng.fan@oss.nxp.com>
- <20241101101410.1449891-2-peng.fan@oss.nxp.com>
- <ZyUeAc6rNbGDLKfO@lizhi-Precision-Tower-5810>
-In-Reply-To: <ZyUeAc6rNbGDLKfO@lizhi-Precision-Tower-5810>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8459:EE_|PAXPR04MB8206:EE_
-x-ms-office365-filtering-correlation-id: f370227f-29c5-45e5-cd4c-08dcfc7e995f
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?wAWeCPKNhZdwjgkWhcdTXbGgO4K9CBKOgFwU+knWX4ReZ7JyiP65buSQ7BRy?=
- =?us-ascii?Q?xo8WIunojT5uj7gQZUfBZf4Uhw1harXkRBxtPYYr7zAXyF1AwPJlrLclCDJb?=
- =?us-ascii?Q?CTZ4sM5pO9kDPbvULeVHBLazz/nk+7+0m9JiiL5MYvJa+fl2uV+RHWuM79Oe?=
- =?us-ascii?Q?emw6gYSKlyAdoHqSAogcryO5Zp/SxBFUB65gIXjd2MdUU9XhK+nkq2hx8lc8?=
- =?us-ascii?Q?RfDH5miTlgSXz9H6BijXlRwnWh0rdhqERe7h7nrZdwaTjyZYRNaLIMn6QS+D?=
- =?us-ascii?Q?H1UAPDhjxGZSvw5tyY4apY5JLlRxCwNdKp2g0nSDepXvfhbl8fkldPglnAWd?=
- =?us-ascii?Q?1293dlF+nfE0ODTTGaOr+XOdaxCHbsTo9VhZTUa1rWOa9llkENZngIFwIViP?=
- =?us-ascii?Q?lbk23TxYCfV2/elihbiymqJtE3YxtZ7hluCM86Qf+Od0lPpEszcn9/GIlt+T?=
- =?us-ascii?Q?oEXueglSPs609Gfa2SNCKPOevUwbZb4KvlJAvGpKT7DOW2m4QsC1nRCdGV0c?=
- =?us-ascii?Q?UcUxWq7hFGnythfhn+seqqnIv0t2BCLbqEebDJ0+w0mxkYKmLwdTdvIR3+M6?=
- =?us-ascii?Q?gQVt+Q7lVsQC9/i5EqWekMxlgGN1bcBtcfVV2+EsQqdqqGjMf3/L6MPIKSET?=
- =?us-ascii?Q?/OcT1yHbqSQY2CEcUI4G54UMpoRprM3xyTMLkuVEa74nAUzh6KlI+y7cMWts?=
- =?us-ascii?Q?4iSczPShiyIrj21ZF8zzGt6cCq6Act9Ruyc8Z9wXpQAk/WsaNtCm/og6Ku/7?=
- =?us-ascii?Q?IWdL43u2nh7DzHi2Vo43Ov9I+te1aZZzsBWmP2++9+vgfETO8JLZjCQQr14R?=
- =?us-ascii?Q?qsyNhBvaXfc2Wj6NiftpUjGzvqB+aFPoQmYW2v5tKDHu69sdPsdaz6emMpeL?=
- =?us-ascii?Q?bvIVDIcNR4ngEzyHh90bqGObPy8BD7HoYnp1qzcXvQrSz/zMDqRLowHrX1l4?=
- =?us-ascii?Q?uKDXhKFYHHZaae9QYXKrm8ESVqexfbSJFpaEJcmPnOJoR/k6N+D9pOUkPQIO?=
- =?us-ascii?Q?1lvS9vake0WXmsdfQU7bDG8XhMgaZCJIVOb/iRels8LHC2joOnRyurs6qMuH?=
- =?us-ascii?Q?1cum6wZwTZdAhutmANU79PynsXgwa8UlcWfXpg6Fxv2IpwJm5dYvaN5bIXBP?=
- =?us-ascii?Q?g6F3bitkCsuqwLenSuK3HpgsswVa8DelIMqCvwhzdL2QpFAULrIDWI7t+GcK?=
- =?us-ascii?Q?tDg/qVX3DOyJyhKLZ2ce24R3em0vSUmjdQdlS2DO+FAUvg85XvA6zmOPrt3p?=
- =?us-ascii?Q?/oREsM2IIT7Dph3RCxKdMiMAJrmyKlfNeOHJIBQDASwWEW0idOWvOX2gw511?=
- =?us-ascii?Q?sT72j/Zcsw8BnTP2Gfw7EgHneXCOwTxKAl0Uqzd/77ffRZOLPW+8a3khJggo?=
- =?us-ascii?Q?JLT6/9I=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?Z+lYkVHyRf57n9P9E3kH2C4QoMuUDDeu9sR4pN//iotHMBR1Y4AKPR3xeEN5?=
- =?us-ascii?Q?Iw2ykhhP4Sgaay0tcAReFkQNUwQlFTSIDT78a1jnumrVrxaVuU38F2P0W5cj?=
- =?us-ascii?Q?nDq+6dpNKr2Gq5bElZ51J2KaS2ygQiUF4UDC6MYtbSqvjPYROADpYpylTPuJ?=
- =?us-ascii?Q?tVeHJPSMh3wW+2L/26canVcR37QOplMKCc8e/qqePN74J9od3vrlojthCgZk?=
- =?us-ascii?Q?zyjkdhQUOEWe0sNjZ9VVgbmpuIClRnMDUBen+5hKFv0ZNSDtdVpHykvvKDY8?=
- =?us-ascii?Q?J0qiiA1AlDQWlO2wAe0u6+Ae3WzQ4mlayzgwcHIwwzxguWHFZOAc0KV0o5a4?=
- =?us-ascii?Q?kv6fJ13h0lV7sGCgjbfnsfargHEW2uRZlTewW/hqzHB1OsG3AndIjHyGMYIW?=
- =?us-ascii?Q?LoloOJpkp+qSuIXyQzMDFfR23AtsaghfSMlTKfhnxNwm+tYsXqhYa5Eu34il?=
- =?us-ascii?Q?JCF6ITdM/gkWrGorSj2HhJH/Okw8EEZGU8vk+zSKncUd+Y0JePLPFLWnMorF?=
- =?us-ascii?Q?d56c1rSjT8dbCsJ8mhivkFTmXHPjDvvitldXJ8mLb9+Fj+9bshRcc71qkv8p?=
- =?us-ascii?Q?Nob5AdSSa6YfelCM/9hbfV4j33UcwxYmvge+/+t1SReSJGIJr3O8RBlUTx6N?=
- =?us-ascii?Q?P+YT7CQII0Z8n7GUlB6hYi6hbZjrDk6gMqCBtLmElDgUm90ccX6l2I56tzxC?=
- =?us-ascii?Q?jjOQndSRtDr0sw0ZZqGNEhFopVzenjVfgDMPeL0f2fCosXLadBO9RBSF5JXC?=
- =?us-ascii?Q?0oywQzS2dAmEZ/StDwvk29fkxCdyjme3f8dvbg/tEXWZfDTFJsNwBuXfTOfs?=
- =?us-ascii?Q?meu2xtFFUNaMWcaCZ2dkm5QwF25uYd8GGiX8ZR3TIfv9yS1K6HgUrXPILiOW?=
- =?us-ascii?Q?lUx/dR0wdQ544Qc7/DRoHJjLSEJhLgAHw3hZdwvVpwRFPAwqEB93TA2noOnn?=
- =?us-ascii?Q?iUQtOCyWOw3/sn6utHNcbed26FMMc+yxOWbSXEBhN+tdkacoKusICZzHRzDi?=
- =?us-ascii?Q?spHuvHhwi0ZTAGJJAZjWsr/zEQbuM9Akp/SEi8upL+hRYp5e53LvPQpinzaY?=
- =?us-ascii?Q?HDkRQR8CeT+jMNU36HgceQjFJ0rdMbBOBd6d+LjNn8M7QO3f8AAFs2uFsFRC?=
- =?us-ascii?Q?A4kPb2fep+sihc5rgb/ii/ojoTJ5mPzIghYhlDyJBfZ5BacydVfU9d27FgtR?=
- =?us-ascii?Q?de36zKWA+GpC1voZ2UPF3JNXKOVk2HSi0KdZAcV/V2MuNZsJPjZwynWnnMAk?=
- =?us-ascii?Q?T0G2FK4syznbTem/EBByUq6+SC7Lo7SfZ3nzrbUSYJ6uBaIT6gr+t+zacSIq?=
- =?us-ascii?Q?9H3YWJKN0XikQ3j7w3inOyyksjEVEfZiM8dO73KIrnOi3y6sqr/M1vz/qciS?=
- =?us-ascii?Q?+cfqObgmiqFFGA39uhRKB5DADHZUbdg6+Iv6XMO8eRsK9UKgcpu4c++y5pKt?=
- =?us-ascii?Q?xE1JRvKc9arsVVptkqdp7J3DQ1rruezo9qyOAUDNBV/Oo2LpUv08db9HFqRv?=
- =?us-ascii?Q?GYIzrREMLXBeBT5cgH7/U1A+ri2/N0Lk3C6ifAyCRgLK77/9xuhzZD4QgZ+a?=
- =?us-ascii?Q?Pqeqv8nQ0BSsWTRkoHo=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ 2024 03:28:23 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90%4]) with mapi id 15.20.8114.028; Mon, 4 Nov 2024
+ 03:28:23 +0000
+From: Liu Ying <victor.liu@nxp.com>
+To: dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org,
+	rfoss@kernel.org,
+	Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se,
+	jernej.skrabec@gmail.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	quic_jesszhan@quicinc.com,
+	mchehab@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	sakari.ailus@linux.intel.com,
+	hverkuil@xs4all.nl,
+	tomi.valkeinen@ideasonboard.com,
+	quic_bjorande@quicinc.com,
+	geert+renesas@glider.be,
+	dmitry.baryshkov@linaro.org,
+	arnd@arndb.de,
+	nfraprado@collabora.com,
+	thierry.reding@gmail.com,
+	prabhakar.mahadev-lad.rj@bp.renesas.com,
+	sam@ravnborg.org,
+	marex@denx.de,
+	biju.das.jz@bp.renesas.com
+Subject: [PATCH v5 00/13] Add ITE IT6263 LVDS to HDMI converter support
+Date: Mon,  4 Nov 2024 11:27:53 +0800
+Message-Id: <20241104032806.611890-1-victor.liu@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SGXP274CA0016.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b8::28)
+ To AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|PA1PR04MB10602:EE_
+X-MS-Office365-Filtering-Correlation-Id: e36e87b0-90ec-482c-0794-08dcfc80bc8b
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|7416014|376014|52116014|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ =?us-ascii?Q?M1ff186rKQ7/PhqilJ6pzfrQYy44YEugJiMtmeOyn8xJ2zeCeETMcvvJhLmk?=
+ =?us-ascii?Q?xV1R4jDCwTAbK/bNTOsArBhrZ1oQoFrfhDDbX7RJjQf/8IgybmVBL4zEoWUU?=
+ =?us-ascii?Q?Gl6FOynDfkbbpUX4MEp6e4Udfz5RbIt5qnqQcPQA+RcU5Z0oRgyzi/q/BaqN?=
+ =?us-ascii?Q?9tPJq6ciwXTek6stpotP0QPP6Ksh6yMkYy5hiaMtU4WhVPgI1o7Ob4Hsbu/X?=
+ =?us-ascii?Q?gA4IGGMiZa1Ibv4XJPEQjH0uqHqq+dWkeqeiYV1pQjT9JxbSCwCjSXA2WBdJ?=
+ =?us-ascii?Q?S0N6xZrLlY0LD8sZX+lt3v4v1Q8brlYrpznrMDHgvI/2Ws03bU8L+el3RCoV?=
+ =?us-ascii?Q?x2WyUQW8NlcliqjyzIaSuuC/JjZeOJrxnA2y15trVOOznWWDu/eY1TOGxSuX?=
+ =?us-ascii?Q?udMdFPzasolsQzDqn2RMOvpOlnUolbIeqnLC5QXkUBOcNdT22ZDqkcfnUdJ1?=
+ =?us-ascii?Q?GgkTeafPZDXB1XEtOmX7p9l4+H0bcvDa4Xkw2TT5fudnN5/48ecFtiHOp6nA?=
+ =?us-ascii?Q?VjjZzK39gn7RpmEfwmYCGhaObC7ckdxWGfqIVBRyS9yUO1yFTPQ8m3kr8p9k?=
+ =?us-ascii?Q?w/NMP7iypv0LKG2jPeIhWgrbYHssd0pjBVEY0bUPicXDVCnqt8M6ffYcncjI?=
+ =?us-ascii?Q?2trlRbF0NxDq7Q4gD0/5f9MWtF58k4Kpncksf8FcgW0iA27YMdqqQdzw+/Co?=
+ =?us-ascii?Q?Lwyuqw/2BazdKH/kPStOfwfli4Tm7auSUu1WupEnhuUekMs1EmCTGeYYOMnA?=
+ =?us-ascii?Q?NFxrJtBN2k/sP6o8ZZNQoeczqFF219b2dbVgxnb5Ks0GFoR1NvpaYRHPbv0s?=
+ =?us-ascii?Q?cz7sifhHaGf3fIYD6lNvW9FHLCLtR5elcl5wxwy5oMZH/N+b0Q6Uef6TQdHT?=
+ =?us-ascii?Q?lpgRKNH29ircVyYJwHXYWprS7UXeg7giTg+1pUw7pDOVdJdWAn+rVxON96o3?=
+ =?us-ascii?Q?I3E+p8vJfUPwZfowP9m/GxeLKHC+QLSoqO4et5QiCvOekraILQ9jXypwPVUe?=
+ =?us-ascii?Q?lAF8dwgrvQ5IU8oji/fm6ZFT6buDAofbLXV/6lOUCSnugCOLkLejDWuAPCqA?=
+ =?us-ascii?Q?/HpjUpTSDVuCHimDh3LcxaiNW6LuqhAAZTbLwZ9BVhQLyn1SOIEPnyiBN/Dx?=
+ =?us-ascii?Q?MRL4ng91YUisI2wCqrgs7wnGXv4vrh+ux5lOtOhHRMWBCVruLni3UiJw6PpX?=
+ =?us-ascii?Q?Cc76vmmA4jeiGt4FEK0oZ+Go3mqGHKqUePU0OsvxPvX+f9hzTiTc+E87ikXh?=
+ =?us-ascii?Q?DgUSlqvgA3Ydfd/YaO3jKA4s8kiu558szr5RXxdRvsZKpzEqsONuLx/p6f9i?=
+ =?us-ascii?Q?LZ01sBkt4qt73uBaD4wz2oxdKJj/nLthg7MAPqtYrf9iSPYgtdbGaZGC4jYq?=
+ =?us-ascii?Q?OQQGroUNqkUAZWJPwmymtpijY4wG?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?AO0bMu3oUUfZftemyEYLlEOSVCdONQFlxm2VY4h8hy62pJid8yAYIv98iO+P?=
+ =?us-ascii?Q?6zDl8GlErcVR4fD8Db7WsCKYtxiD/GF1gHLiDSXf/udGJgrDDOnVukOfGI77?=
+ =?us-ascii?Q?gaQm5h9U1j0zIT0MRDYiDk7qUspTMbrZYqt2jGrxiLVx/i/GzxGtBKzTFa8v?=
+ =?us-ascii?Q?VmcbeM9k6qRNjpkU6L2D+gVTx5Voe9X5Ag5Q4gGsm/1K041p703o16Kz26Kt?=
+ =?us-ascii?Q?51jRzA6buu69rL95QYTw37Ld5O8AO5muFaDbcHkvyuQuyHrquHJ8dTyqPs6R?=
+ =?us-ascii?Q?+/Iu80zp3MimnNTFbopAcD7LuhaHB0sd3H0y8HTdYMhg1fNT37kTXvOrMntN?=
+ =?us-ascii?Q?rzozi8oNT8LbN0uZRK2TYsTBg1llDI2mHHclH4C2hJUWHnN8Rscas/eVrVuy?=
+ =?us-ascii?Q?a10Fs4O3an0vyKmFqy+eP5l3Q+ddackaYDW4jQ3kGm+wVeSKh4+oxzNd4Hn9?=
+ =?us-ascii?Q?D44A4153F9D/c47bPDzEPLlGPOE9UN6jafY1ZT3+gJpc3csHvFARXLj+EcAr?=
+ =?us-ascii?Q?Wto5PHujyyrYhN7tCNirihv30pAx/ZoN+fqA1uAHk++R9OyRl6y8ec9XCV/c?=
+ =?us-ascii?Q?KBCrhUbQsmaU40qSfsFxtWOwb+IwZYlXCfHXzeqUR8b0rSh2Ab4LXN50hkPK?=
+ =?us-ascii?Q?uAE4gCw9n19vcQMcPRnN9k19uKBm+9ResW/9wiqhQjFLCzm4VWhZ9N1Nu8B6?=
+ =?us-ascii?Q?Vi+Svqs0xJtBcV8xJRH7o6gQ1yo+EPN3VdQE42XUYekSszsLiu2iApecBWKF?=
+ =?us-ascii?Q?k+aU8PouNBh+zrktPZuptizpxSScUUo+LxW4IeKe7+/n9VVwMUl4f5S/J1hL?=
+ =?us-ascii?Q?Q71cmZJ8fGrkje0j7tCE/lx3hCG8zvbTCuRzU4Fqw3dWGYYLWTCfXb7mJxpq?=
+ =?us-ascii?Q?aKo5xKT/rTGO/73KOGVh0HNefDHWwQ2e7PivKq4N0T//Zqu1x/dCTUuPiB65?=
+ =?us-ascii?Q?WEwFqKM1j76NFhnU1r4wzvscGQ3LPTmoMDGBbfmhHEyetLnbyJ++lKNYqmU3?=
+ =?us-ascii?Q?gd/WxgMvOhOrcrJEOuyhro6Y17+RKZL2Nw4Hkj/gdViITtCUu1d71q/MnOJy?=
+ =?us-ascii?Q?Uu9rn8PCbPvF1qMi+dym+3RcpsOYk8ZooQI6WfFirA7pGKvyvSwSaFGT9y+P?=
+ =?us-ascii?Q?WjSjIA7KJoxW7tWl8sR5L/4vnoN0V7YjPz0mCF9m4DhtuXy6xR0OG67Zz7Qb?=
+ =?us-ascii?Q?0IBOWNdzjqYAqEPHZuBhk3qdeSPjDzpDJQIlK0/wDqzIeGmxuFg0Y0yJ+49t?=
+ =?us-ascii?Q?KpWGg0HN+imHsr9qD63//Fc9xG37Ex/Vyc3noHEYfLnzvpjAC3PBzH3mcoex?=
+ =?us-ascii?Q?e4kvTomLpS+c94TCxvRTNIgaJPiucoHz9PpLGJxCxo4PZoMW5+QoSA2gPX5n?=
+ =?us-ascii?Q?eBCgannZiu1DiIF1XkxqNyjqYeoTWtETBL9V6cAJAF2m4VLeJ+RoJ2ns/ZyG?=
+ =?us-ascii?Q?3mH2bFA1FBW8074Ye41bnEJs1uFf2MdfxUI9zmPBQUCkSgDhxrXhKYxVszna?=
+ =?us-ascii?Q?l7TpOt7Lx//lM1twdpjF3uY+8srZSwQDKUvRVjQw/DLsuDJXd6mHxsXPNVIf?=
+ =?us-ascii?Q?/Z5mphEPlGNIUwFq888bFjU2wN74BmddI5/I2GP9?=
 X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e36e87b0-90ec-482c-0794-08dcfc80bc8b
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f370227f-29c5-45e5-cd4c-08dcfc7e995f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Nov 2024 03:13:04.8917
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2024 03:28:23.1054
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: bIHzvrhypB2WufzEhFqVltXEpD6qNFkMdWnM07HqC3Be9CfHIpOdxN5WfDwSbUtVnAKizmZPRXmcRy+Qb4fMoQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8206
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LpBYzPJQXUf6/sVQwvzx76rrnG0arOea4ggPYEJ8i+OaIyyUj2uG17ZsVqLw8XXAgpZL1/qfRHgJeQVVyi7xFw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10602
 
-> Subject: Re: [PATCH 2/2] dmaengine: fsl-edma: free irq correctly in
-> remove pathy
->=20
-> On Fri, Nov 01, 2024 at 06:14:10PM +0800, Peng Fan (OSS) wrote:
-> > From: Peng Fan <peng.fan@nxp.com>
-> >
-> > To i.MX9, there is no valid fsl_edma->txirq/errirq, so add a check in
-> > fsl_edma_irq_exit to avoid issues.
-> >
-> > Fixes: 44eb827264de ("dmaengine: fsl-edma: request per-channel
-> IRQ
-> > only when channel is allocated")
-> > Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> > ---
-> >  drivers/dma/fsl-edma-main.c | 12 +++++++++---
-> >  1 file changed, 9 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-
-> main.c
-> > index 01bd5cb24a49..89c54eeb4925 100644
-> > --- a/drivers/dma/fsl-edma-main.c
-> > +++ b/drivers/dma/fsl-edma-main.c
-> > @@ -303,6 +303,7 @@ fsl_edma2_irq_init(struct platform_device
-> *pdev,
-> >
-> >  		/* The last IRQ is for eDMA err */
-> >  		if (i =3D=3D count - 1) {
-> > +			fsl_edma->errirq =3D irq;
-> >  			ret =3D devm_request_irq(&pdev->dev, irq,
-> >
-> 	fsl_edma_err_handler,
-> >  						0, "eDMA2-ERR",
-> fsl_edma);
-> > @@ -322,10 +323,13 @@ static void fsl_edma_irq_exit(
-> >  		struct platform_device *pdev, struct fsl_edma_engine
-> *fsl_edma)  {
-> >  	if (fsl_edma->txirq =3D=3D fsl_edma->errirq) {
-> > -		devm_free_irq(&pdev->dev, fsl_edma->txirq,
-> fsl_edma);
-> > +		if (fsl_edma->txirq >=3D 0)
-> > +			devm_free_irq(&pdev->dev, fsl_edma->txirq,
-> fsl_edma);
-> >  	} else {
-> > -		devm_free_irq(&pdev->dev, fsl_edma->txirq,
-> fsl_edma);
-> > -		devm_free_irq(&pdev->dev, fsl_edma->errirq,
-> fsl_edma);
-> > +		if (fsl_edma->txirq >=3D 0)
-> > +			devm_free_irq(&pdev->dev, fsl_edma->txirq,
-> fsl_edma);
-> > +		if (fsl_edma->errirq >=3D 0)
-> > +			devm_free_irq(&pdev->dev, fsl_edma->errirq,
-> fsl_edma);
-> >  	}
-> >  }
-> >
-> > @@ -485,6 +489,8 @@ static int fsl_edma_probe(struct
-> platform_device *pdev)
-> >  	if (!fsl_edma)
-> >  		return -ENOMEM;
-> >
-> > +	fsl_edma->errirq =3D -EINVAL;
-> > +	fsl_edma->txirq =3D -EINVAL;
->=20
-> why not use 0 as invalidate?
+Hi,
 
-I think 0 might be a valid value. So use -EINVAL here.
+This patch series aims to add ITE IT6263 LVDS to HDMI converter on
+i.MX8MP EVK.  Combined with LVDS receiver and HDMI 1.4a transmitter,
+the IT6263 supports LVDS input and HDMI 1.4 output by conversion
+function.  IT6263 product link can be found at [1].
 
-Thanks,
-Peng.
+Patch 1 is a preparation patch to allow display mode of an existing
+panel to pass the added mode validation logic in patch 3.
 
->=20
-> Frank
->=20
-> >  	fsl_edma->drvdata =3D drvdata;
-> >  	fsl_edma->n_chans =3D chans;
-> >  	mutex_init(&fsl_edma->fsl_edma_mutex);
-> > --
-> > 2.37.1
-> >
+Patch 2 allows i.MX8MP LVDS Display Bridge(LDB) bridge driver to find
+the next non-panel bridge, that is the IT6263 in this case.
+
+Patch 3 adds mode validation logic to i.MX8MP LDB bridge driver against
+"ldb" clock so that it can filter out unsupported display modes read
+from EDID.
+
+Patch 4 adds MEDIA_BUS_FMT_RGB101010_1X7X5_{SPWG,JEIDA} support, as they
+are supported by IT6263.
+
+Patch 5 makes drm_of.c use MEDIA_BUS_FMT_RGB101010_1X7X5_{JEIDA,SPWG}.
+
+Patch 6 supports getting dual-link LVDS pixel order for the sink side as
+needed by IT6263 driver.
+
+Patch 7 documents jeida-30 and vesa-30 data mappings in lvds-data-mapping.yaml,
+as needed by IT6263 DT binding.
+
+Patch 8 extracts common dual-link LVDS display properties into new
+lvds-dual-ports.yaml so that IT6263 DT binding can reference it.
+
+Patch 9 adds DT binding for IT6263.
+
+Patch 10 adds IT6263 bridge driver.  Only video output is supported.
+
+Patch 11 adds DT overlays to support NXP adapter cards[2][3] with IT6263
+populated.
+
+Patch 12 enables the IT6263 bridge driver in defconfig.
+
+Patch 13 updates MAINTAINERS to add maintainer for IT6263 driver.
+
+Note that patch 3 depends on patch[4] in shawnguo/imx/fixes.
+
+[1] https://www.ite.com.tw/en/product/cate1/IT6263
+[2] https://www.nxp.com/part/IMX-LVDS-HDMI
+[3] https://www.nxp.com/part/IMX-DLVDS-HDMI
+[4] https://patchwork.kernel.org/project/linux-arm-kernel/patch/20241017031146.157996-1-marex@denx.de/
+
+v5:
+* Use patternProperties to define port@0 and port@1 in lvds-dual-ports.yaml
+  in patch 8.  (Biju)
+* Require port@0 or port@1 in lvds-dual-ports.yaml in patch 8.
+* Collect R-b tags.
+
+v4:
+* Squash change for advantech,idk-2121wr.yaml and
+  panel-simple-lvds-dual-ports.yaml with lvds-dual-ports.yaml in patch 8.  (Rob)
+* Improve description in lvds-dual-ports.yaml in patch 8.  (Krzysztof)
+* Require dual-lvds-odd-pixels or dual-lvds-even-pixels DT properties for port@1
+  in ite,it6263.yaml in patch 9.
+* Drop "data-mirror: true" from ite,it6263.yaml in patch 9.
+* Use local variable reset_gpio in IT6263 driver's probe() in patch 10.  (Biju)
+* Move pixel clock rate validation from mode_valid callback to
+  hdmi_tmds_char_rate_valid callback in IT6263 driver in patch 10.  (Maxime)
+* Document IT6263 video processing throughput constraints by adding comments
+  in IT6263 driver in patch 10.  (Maxime)
+* Fix IT6263 LVDS 8-bit color depth macro BIT8 in IT6263 driver in patch 10.
+* Drop 30-bit LVDS data bit order validation in IT6263 driver in patch 10.
+* Rebase patch 11 upon next-20241025 to resolve conflicts when apply.
+* Collect R-b and A-b tags.
+
+v3:
+* Use assigned-clock-rates DT property to set pixel clock rate for
+  "multi-inno,mi1010ait-1cp" LVDS panel in patch 1 instead of using
+  panel-timing node.  (Marek)
+* Drop the patch for fixing pixel clock rate for "edt,etml1010g3dra"
+  LVDS panel because there is already another better patch[4].
+* Collect Dmitry's R-b tag for patch 2.
+* Define MEDIA_BUS_FMT_RGB101010_1X7X5_{SPWG,JEIDA} in patch 4.
+* Use MEDIA_BUS_FMT_RGB101010_1X7X5_{JEIDA,SPWG} in drm_of.c in patch 5.
+* Add drm_of_lvds_get_dual_link_pixel_order_sink() in patch 6.  (Dmitry)
+* Document jeida-30 and vesa-30 in lvds-data-mapping.yaml in patch 7.
+* Extract dual-link LVDS display common properties(patch 8-10).  (Dmitry)
+* Reference lvds-dual-ports.yaml in ite,it6263.yaml in patch 11.  (Dmitry)
+* Add data-mapping DT property in ite,it6263.yaml in patch 11.  (Dmitry, Biju)
+* Allow data-mirror in ite,it6263.yaml in patch 11.
+* Drop ite,lvds-link-num-data-lanes DT property from ite,it6263.yaml
+  in patch 11.  (Dmitry, Biju)
+* Use HDMI connector framework in IT6263 driver in patch 12.  (Maxime)
+* Control the missing HDMI_REG_AVI_INFOFRM_CTRL register in IT6263 driver
+  in patch 12.
+* Validate the maximal HDMI TMDS character rate in IT6263 driver in patch 12.
+  (Dmitry)
+* Get LVDS data mapping from data-mapping DT property in IT6263 driver
+  in patch 12.  (Dmitry, Biju)
+* Validate 30bit LVDS data bit order by checking data-mirror DT property
+  in IT6263 driver in patch 12.
+* Use drm_of_lvds_get_dual_link_pixel_order_sink() in IT6263 driver
+  in patch 12.  (Dmitry)
+* Initialize a bridge connector instead of open coding in IT6263 driver
+  in patch 12.  (Dmitry)
+* Add a comment that IT6263 chip has no HPD IRQ support in IT6263 driver
+  in patch 12.  (Dmitry)
+* Use devm_drm_bridge_add() instead of drm_bridge_add() in IT6263 driver
+  in patch 12.  (Dmitry)
+* Fix a minor build warning reported by kernel test robot in IT6263 driver
+  in patch 12.
+* Use data-mapping DT property instead of ite,lvds-link-num-data-lanes
+  in i.MX8MP evk DT files in patch 13.  (Dmitry, Biju)
+
+v2:
+* Add more comments in fsl-ldb.c and commit message about pixel clock
+  rate validation for patch 4.  (Maxime)
+* Document number of LVDS link data lanes in patch 5.  (Biju)
+* Simplify ports property by dropping "oneOf" in patch 5.  (Rob)
+* Add AVI inforframe support in patch 6.  (Maxime)
+* Add DRM_MODE_CONNECTOR_HDMIA in patch 6.  (Biju)
+* Rename it6263_reset() to it6263_hw_reset() in patch 6.  (Biju)
+* Check number of LVDS link data lanes in patch 6.  (Biju)
+* Add ite,lvds-link-num-data-lanes properties in patch 7.
+* Update MAINTAINERS.  (Maxime)
+
+Liu Ying (13):
+  arm64: dts: imx8mp-skov-revb-mi1010ait-1cp1: Set "media_disp2_pix"
+    clock rate to 70MHz
+  drm/bridge: fsl-ldb: Get the next non-panel bridge
+  drm/bridge: fsl-ldb: Use clk_round_rate() to validate "ldb" clock rate
+  media: uapi: Add MEDIA_BUS_FMT_RGB101010_1X7X5_{SPWG, JEIDA}
+  drm: of: Get MEDIA_BUS_FMT_RGB101010_1X7X5_{JEIDA, SPWG} LVDS data
+    mappings
+  drm: of: Add drm_of_lvds_get_dual_link_pixel_order_sink()
+  dt-bindings: display: lvds-data-mapping: Add 30-bit RGB pixel data
+    mappings
+  dt-bindings: display: Document dual-link LVDS display common
+    properties
+  dt-bindings: display: bridge: Add ITE IT6263 LVDS to HDMI converter
+  drm/bridge: Add ITE IT6263 LVDS to HDMI converter
+  arm64: dts: imx8mp-evk: Add NXP LVDS to HDMI adapter cards
+  arm64: defconfig: Enable ITE IT6263 driver
+  MAINTAINERS: Add maintainer for ITE IT6263 driver
+
+ .../bindings/display/bridge/ite,it6263.yaml   | 250 +++++
+ .../bindings/display/lvds-data-mapping.yaml   |  31 +
+ .../bindings/display/lvds-dual-ports.yaml     |  63 ++
+ .../display/panel/advantech,idk-2121wr.yaml   |  14 +-
+ .../panel/panel-simple-lvds-dual-ports.yaml   |  20 +-
+ .../media/v4l/subdev-formats.rst              | 156 ++-
+ MAINTAINERS                                   |   8 +
+ arch/arm64/boot/dts/freescale/Makefile        |   8 +
+ .../imx8mp-evk-imx-lvds-hdmi-common.dtsi      |  29 +
+ ...8mp-evk-lvds0-imx-dlvds-hdmi-channel0.dtso |  44 +
+ ...imx8mp-evk-lvds0-imx-lvds-hdmi-common.dtsi |  43 +
+ .../imx8mp-evk-lvds0-imx-lvds-hdmi.dtso       |  28 +
+ ...8mp-evk-lvds1-imx-dlvds-hdmi-channel0.dtso |  44 +
+ ...imx8mp-evk-lvds1-imx-lvds-hdmi-common.dtsi |  43 +
+ .../imx8mp-evk-lvds1-imx-lvds-hdmi.dtso       |  28 +
+ arch/arm64/boot/dts/freescale/imx8mp-evk.dts  |   6 +
+ .../imx8mp-skov-revb-mi1010ait-1cp1.dts       |   8 +-
+ arch/arm64/configs/defconfig                  |   1 +
+ drivers/gpu/drm/bridge/Kconfig                |  11 +
+ drivers/gpu/drm/bridge/Makefile               |   1 +
+ drivers/gpu/drm/bridge/fsl-ldb.c              |  55 +-
+ drivers/gpu/drm/bridge/ite-it6263.c           | 898 ++++++++++++++++++
+ drivers/gpu/drm/drm_of.c                      |  82 +-
+ include/drm/drm_of.h                          |   9 +
+ include/uapi/linux/media-bus-format.h         |   4 +-
+ 25 files changed, 1814 insertions(+), 70 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/display/bridge/ite,it6263.yaml
+ create mode 100644 Documentation/devicetree/bindings/display/lvds-dual-ports.yaml
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-evk-imx-lvds-hdmi-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-evk-lvds0-imx-dlvds-hdmi-channel0.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-evk-lvds0-imx-lvds-hdmi-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-evk-lvds0-imx-lvds-hdmi.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-evk-lvds1-imx-dlvds-hdmi-channel0.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-evk-lvds1-imx-lvds-hdmi-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-evk-lvds1-imx-lvds-hdmi.dtso
+ create mode 100644 drivers/gpu/drm/bridge/ite-it6263.c
+
+-- 
+2.34.1
+
