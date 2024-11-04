@@ -1,47 +1,44 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E7616190C
-	for <imx@lists.linux.dev>; Mon,  4 Nov 2024 07:13:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16B9323AB
+	for <imx@lists.linux.dev>; Mon,  4 Nov 2024 07:18:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730704433; cv=none; b=QvEF9Ytl4nvihbOAuZwShbNwUQ2ojV0Nz9tYgK3eF4tu4Q9Ms8WFLUNi+KdBsXfPVLvl+EACmnYDjG9/9G23X55exEO3Qmqok1vgt8GDFWvie+DCRUeBEdl2wGJRbTx4P8iQDJBV8DeF24q/GJ/xQ7EpyyQhvC+o4ZQKpHH5oR0=
+	t=1730704697; cv=none; b=O0pjiclM2vNHWBBesJFoJ8JpRCDv2ZpP90YcRQWHpUJ1jGlOTVLBPGbCxmIeCqk3FrKVRqOEDDATApsorDE7IBw7UlJDlfJjrqKlJhGzWaFALaHnBEFs6jAv0jXNVoyFYpGJxzp2JsUGkF3UQfGXUevc/scE51lDISz821X3lhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730704433; c=relaxed/simple;
-	bh=Hd5MJEoVYGIKCtNh88punDf+sxA5yRWSbiMnnBIi/Yo=;
+	s=arc-20240116; t=1730704697; c=relaxed/simple;
+	bh=frXb0Lok2+S7AxxRyLcA2tyzYP6Pe4kdGhMvdbZs68U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gr8XLcj/dEfyZj1AKBnXpv0Oloou8Iw0hoi03mptIWkzrimTabZxKqxYd1YCJiYjny5U8NqHmgjUYX8w+ZSaH8URuP6+nUBhqT9uZwIDJWL8Ko7ET8II53djOr1rf99s1b6QpZwoSLKW/8ZJnNcyIS+jOuoN+NKoERA13+hnPWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=XvRRJCLJ; arc=none smtp.client-ip=220.197.32.19
+	 Content-Type:Content-Disposition:In-Reply-To; b=eSLJyK4nchmCEDAaF2J/w+d/jYBkDBj5Y4JzyH3CYhDZ/Z9ldtL0dkPdHLvvvl3jYrICMkl+VfawGPXaKnYakq0UctZuy6OcGOEE44kzxjUQKraNkIi7BYmXIKYHZbwg2+d4Jqo4rLHCMOYL38QTRxa02lx0wufIu+BjipwV1Ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=a6eLp7oC; arc=none smtp.client-ip=1.95.21.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="XvRRJCLJ"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="a6eLp7oC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=N38imsf5cp7S0lOP1h1HxtPzgaChkTFKnOWU1LwG/Rs=;
-	b=XvRRJCLJT1VocPWDAzaWvfoBMjG1x9on01zL9kQTaoVWwzGsWLafs9dbh4QiYQ
-	Li46IFRSLI1DJ10+ktYsSiU+1lR6xgAE6wCnjl6WiEGgpokbAbHmDI+YFSmgqHhT
-	ECC2K9DDyQemrK/Gs7MuccKaS72iLXGCbr5q8je04Onik=
+	Content-Type; bh=u0JY0l9KILWtgurR5lkp/s4CjaE73Dq2Pe4jWzYkjNc=;
+	b=a6eLp7oCTvtMLCXR6x0IO4FMP8fHujOklnFcuT4b4ukhJp1m3fyVygHDpbPAJ1
+	EcCK/gja+Y3oBj9oJcNInT08fPEvnT/h1qv2BxABaOohvsTvvgoVeRUnS1hP+k0s
+	T2KDbPY78ReV5iwzgvHlHtNmEYVmKYvtQ8youZKYCaXgs=
 Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgDHCagCdChnUC2mAQ--.16752S3;
-	Mon, 04 Nov 2024 15:13:08 +0800 (CST)
-Date: Mon, 4 Nov 2024 15:13:06 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgDHDu8ZdShnBECmAQ--.16720S3;
+	Mon, 04 Nov 2024 15:17:46 +0800 (CST)
+Date: Mon, 4 Nov 2024 15:17:44 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Heiko Schocher <hs@denx.de>
-Cc: linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
 	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 3/3] arm64: dts: imx8mp: add aristainetos3 board
- support
-Message-ID: <Zyh0AgJZh1//17Te@dragon>
-References: <20241031151238.67753-1-hs@denx.de>
- <20241031151238.67753-4-hs@denx.de>
- <ZydFO6b6oe9widaa@dragon>
- <5340fb82-bda0-d22f-23df-de620c8d61c3@denx.de>
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>
+Subject: Re: [PATCH v4 0/3] ARM: dts: add Kobo Clara 2E
+Message-ID: <Zyh1GKFk9fksLCQo@dragon>
+References: <20241103135201.25615-1-andreas@kemnade.info>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,30 +47,33 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5340fb82-bda0-d22f-23df-de620c8d61c3@denx.de>
-X-CM-TRANSID:Mc8vCgDHCagCdChnUC2mAQ--.16752S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUc89NDUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBBCNZWcoXw4+BAAAsY
+In-Reply-To: <20241103135201.25615-1-andreas@kemnade.info>
+X-CM-TRANSID:Mc8vCgDHDu8ZdShnBECmAQ--.16720S3
+X-Coremail-Antispam: 1Uf129KBjvdXoWrZry7AFy8uw1UZr43ZrWfAFb_yoWxArX_uw
+	4kZ34UCa15CFs7Kwnxtr1q9r4rKr1jyrZ3ur1kKa4SyF93ZF98uFWkX34xu34UZan0qwnF
+	vF17W34kC3Wa9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8DDG5UUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAgmNZWcocJkPOwAAsx
 
-On Mon, Nov 04, 2024 at 06:33:55AM +0100, Heiko Schocher wrote:
-> > > +
-> > > +		semtech,probe-reset;
-> > > +		gpio-controller;
-> > > +		interrupt-controller;
-> > > +
-> > > +		interrupt-parent = <&gpio1>;
-> > > +		interrupts = <12 IRQ_TYPE_EDGE_FALLING>;
-> > > +	};
+On Sun, Nov 03, 2024 at 02:51:58PM +0100, Andreas Kemnade wrote:
+> Add a basic device tree for the Kobo Clara 2E Ebook reader.
+> It is equipped with an i.MX6SLL SoC. EPDC PMIC drivers
+> are not ready for mainline yet.
 > 
-> Should I remove newlines here too?... but looking into the example from
+> Changes in V4:
+> - fix order of pinmux nodes
+> - remove some blank lines
 > 
-> Documentation/devicetree/bindings/pinctrl/semtech,sx1501q.yaml
+> Changes in V3:
+> - removed 30MegaOhm current sense resistor nonsense
 > 
-> there are this newlines ... so I let this lines in... or?
+> Changes in V2:
+> - improved commit message about devices without binding
+> 
+> Andreas Kemnade (3):
+>   dt-bindings: arm: fsl: add compatible strings for Kobo Clara 2E
+>   ARM: dts: imx: Add devicetree for Kobo Clara 2E
+>   ARM: imx_v6_v7_defconfig: Enable drivers for Kobo Clara 2E
 
-Not having newlines in middle of property list is just a style that
-I prefer for IMX device trees.
-
-Shawn
+Applied all, thanks!
 
