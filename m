@@ -1,108 +1,277 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2086.outbound.protection.outlook.com [40.107.22.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749A51AF0DC;
-	Mon,  4 Nov 2024 10:10:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730715021; cv=none; b=ZKRIC2uIUivd8c4DnvvkCE90lUYOG/DqIxSnRaKzZ+8rfBOd8pJwU6qWwhoSdh+ccNEkybrmNYS/VHRekicExhTjkdZFsPvtnXlMXFOb3C4nEKwcC7e72fwhlXmlGP+6XMPJWRhjERyBpWr3trl7wscLZIIo67KAVer2QQhiGcY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730715021; c=relaxed/simple;
-	bh=6ml2BT2raqF8G8x+buM0eWiADTiQBARWLyqnb/h1l28=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=EuwFiSOnN85sye116QaX0287SVGFNSW72ry4WqvYCJ1J35Mnt8zuuxMMXGrLovS9qY34pGpq8b7gHGuxqwzEljLyPmS4sE0N18XY4Oleg46GYFCIvnw6yO/Lai2Xurov1hNo1bv9x1KW7+BgimpzJaaK6rm4fHxiB5wVSiU4i+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jnyjXEyt; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB9E1C3306
+	for <imx@lists.linux.dev>; Mon,  4 Nov 2024 11:11:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.86
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730718679; cv=fail; b=oIL3SZrMPqEhFiRm03HC4ml/lyYLvm/De8wEKbcMHbVKoUwEO2+hEgaNbsQe8XOhwpoL377FbIHij+bJXQQHiVNaYtAsgJ0KiaZHf23yp9pO6GkImJEVQYiIHbN2LndDELXV0djf7cfPOooISoupyc5/G0zD7h4XO6218m+ux6s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730718679; c=relaxed/simple;
+	bh=aqu/bWBK5tkp5t9hLAz9+Tm89M6OsoE/4Zr+Q0sLuGg=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=hbxht8MHp1NkKzTWtLqV7HTe3VhwbhECw7F21Rz7pbPeTcotvVj3M5qkScr/LElmUkAxGcRtLod6L8VyFVUM+8dwLTxdKxdnaXAkuyh0DVNjQkq40XyrTW4QzxAZ1blD5eypsxRPkqrj9HhXGKRIIa//gmR2Be3wFeqrvqkxeO8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=uzUD7f4H; arc=fail smtp.client-ip=40.107.22.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jnyjXEyt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E603FC4CECE;
-	Mon,  4 Nov 2024 10:10:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730715021;
-	bh=6ml2BT2raqF8G8x+buM0eWiADTiQBARWLyqnb/h1l28=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=jnyjXEytSg4Dm0xzK4vuTLgkBxwZ/GX7mBQWaqRAntPAIU1v59qxD3oNhcM18YxMX
-	 r546u+w39gMnchf3pd1bD9X3zBzJKFO6DJnRj2Cx2KF7afLAlpWhGXhJjQ6ZevXFQ7
-	 q/h6iJTvDEcTw7VqawGHV4R5zuTQ9XoHe3TU5Kk2OAToHLmkLGpAHM8lQZdthSO6Gy
-	 ZEVU61Xgq1630a9a1eFAaG/3Y5ASwCNWo9rnrzL9QsKiYWByPwoXLFqBQOMi/EXnCP
-	 viQ3Ar0siICl5XbP7Y/S+GmsLhT0cZHUbz0gdoiphvkwAGRAgrTvMLaOA05AxcCeni
-	 Oh3+bqznOu8nA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADF403805CC0;
-	Mon,  4 Nov 2024 10:10:30 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="uzUD7f4H"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=R7nB1i/eC1UndFxbjvXTGnfloHvMsf5Etb+e5F8wvPo3eay48ytmDAtOSMZFV52KvujUVkRJ+ZmStjcdDia3eu05ELJN/08xcqeNzxmVBxBY61qRK5GLKZ8M51PJ+q34L0OOH8Mkp3LWa8gsPp5B+rCpBwFwq9zrK70aPs48dJ9V2HbIxUmFuYhGN7PsWPn3l8mrK8wUlawoqPJNpdQDnFFSEkOJwOsiF+25c1QDLhR6GHMdEwb1d/OwV8+4jlal6vnoajLk2/Z1bR8khukYY53oKE03Ht6vyhEGldvbmWIdpoRv5KfxWmJ9osi8oWKKv6Hkk/DjU8r1b/QlyhG1ZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fyDEO+ZUa+ip9nk3JqDH+/PO7PqQu2CWLj6WvIoqHcw=;
+ b=bPwCaj9XqfytDG22KqLreqQMWCbzdfX857Fiw5/LoEz23FGd9fiDRzfrhW0Ur1ioR5pF3rHnpKisc/y/c80eDNyIEb19FDAveFIaCmX4k6KVXXuJcDZjd1I5nHUA7zeDxphGrS3qHkzu6Mqn/dGYEdrkGaNN2qlEycuWOZYCFxPHeB8rfXl/R2ye27E7ZLoW3fkENaAdRyrjnk5P2vfZuAjMiML4CwMdvp0IYBNDI0NGd8m+gYXx9SPIB3mV+mN4dCBL0Cy8iXKwb+rsVTyHhS5Vwrw5lH7XVtE4bDMpxP4Ej0vtJvmoDuIWmcF1MJhp9XsNY/zCs5KzXHwBxkvniA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fyDEO+ZUa+ip9nk3JqDH+/PO7PqQu2CWLj6WvIoqHcw=;
+ b=uzUD7f4H+cWgMAxqKptejBPSbUAv0oGcPiMbsIsyVkM1TnwcPkn4vioqKfUUApWJDktLkjVNLHBsmIHx+DrMcGpb0XQyyQR4rFs26sSH46i5tpuzNRTOuWV336TFDsSY0goNLdJJq3B4cUnBtNk1ltV0Qr6k+FVTucaE6sCKOqY8YKnQWJVjTcztb4/RcHNqizVGklzsv3CciH1qhoJee7WpK+NqtFPwT5GXMCIEGymKTiyFlfIbqqbisnAuZ+dx4AXRR2HqhdK9f47UmJehYeGYkQ5jLr6dG7/5rTqht/Y1eb1p48a2CQ48KITpdHZzFDtdhldNeGpEy//Lo8IqvQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM9PR04MB8487.eurprd04.prod.outlook.com (2603:10a6:20b:41a::6)
+ by VI0PR04MB11046.eurprd04.prod.outlook.com (2603:10a6:800:269::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.29; Mon, 4 Nov
+ 2024 11:11:13 +0000
+Received: from AM9PR04MB8487.eurprd04.prod.outlook.com
+ ([fe80::6d7a:8d2:f020:455]) by AM9PR04MB8487.eurprd04.prod.outlook.com
+ ([fe80::6d7a:8d2:f020:455%5]) with mapi id 15.20.8114.028; Mon, 4 Nov 2024
+ 11:11:13 +0000
+Message-ID: <ef10bfee-dfa1-4968-a99d-d7eaf958353c@oss.nxp.com>
+Date: Mon, 4 Nov 2024 13:11:00 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/7] dt-bindings: mfd: add support for the NXP SIUL2
+ module
+To: Frank Li <Frank.li@nxp.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Chester Lin <chester62515@gmail.com>,
+ Matthias Brugger <mbrugger@suse.com>,
+ Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>,
+ Larisa Grigore <larisa.grigore@nxp.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Lee Jones <lee@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+ Jacky Bai <ping.bai@nxp.com>, linux-gpio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, NXP S32 Linux Team <s32@nxp.com>,
+ Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
+ Enric Balletbo <eballetb@redhat.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev
+References: <20241101080614.1070819-1-andrei.stefanescu@oss.nxp.com>
+ <20241101080614.1070819-2-andrei.stefanescu@oss.nxp.com>
+ <ZyUZzGqYIabgCFZ/@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+In-Reply-To: <ZyUZzGqYIabgCFZ/@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AM0PR10CA0002.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:208:17c::12) To AM9PR04MB8487.eurprd04.prod.outlook.com
+ (2603:10a6:20b:41a::6)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v6 net-next 00/12] add basic support for i.MX95 NETC
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173071502951.4013812.6348392511340491502.git-patchwork-notify@kernel.org>
-Date: Mon, 04 Nov 2024 10:10:29 +0000
-References: <20241030093924.1251343-1-wei.fang@nxp.com>
-In-Reply-To: <20241030093924.1251343-1-wei.fang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- vladimir.oltean@nxp.com, claudiu.manoil@nxp.com, xiaoning.wang@nxp.com,
- Frank.Li@nxp.com, christophe.leroy@csgroup.eu, linux@armlinux.org.uk,
- horms@kernel.org, imx@lists.linux.dev, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pci@vger.kernel.org, alexander.stein@ew.tq-group.com
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8487:EE_|VI0PR04MB11046:EE_
+X-MS-Office365-Filtering-Correlation-Id: ae9448b4-937c-4aa6-9833-08dcfcc16411
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ams1eHZkYTdPNWNYZ3l2dzA4dDhiMnlBcXpuWHFJZXhOMUxOTlU2WnNBZVE4?=
+ =?utf-8?B?SnRwaHVpR1VYd2lzYWRsR1pvdHFLV3IxcWlVUnk2RUh5N1k4R3hDT0cva044?=
+ =?utf-8?B?anJqV2lPWVVWZ1ZsRE5SeVhzR21SQnVKb0Z1NmhZSDdSM3FnYnY4K1k1NEdD?=
+ =?utf-8?B?SlUyc1hZZkJQTVduNnN3VktIZjVDSnBkK1B1YTRuQlFyOHNzbnZRSUd5TjBF?=
+ =?utf-8?B?UlFFWVQ5ZnRxaDIzbk5OeWZZRWtBOEJGUWZnWGU4bHk1Y0pEeHlzVzdLbWdw?=
+ =?utf-8?B?V0NwMjJvR21nOE9PR0xJOU1UUXVabGo2ajRKbkp4ek9KdEdKbFFOdWZvejZ0?=
+ =?utf-8?B?K2Y4dEdMcnJ4VXUya2hwVU50ZUdQV3lkQU4vRGNCSjZWRmFWNk5IeGM3L3RD?=
+ =?utf-8?B?cVE0TnRpVkdkWVh5ZjNGeEFGaVNWUzBLQUdYcjNRandyV1dURjVQMjNkU2Rp?=
+ =?utf-8?B?RnVyQzFSWEo1cDh4R3puSHRyUXZNa29FZzFsOGJkY0Z6dFpIY09MV2R0UFpz?=
+ =?utf-8?B?REdrZUtnZ2tCNDZrKytPNmdXRW1NMXVkZjJDWW10UyttNS9hSkMrenV4czFN?=
+ =?utf-8?B?a09pMWxZNTBhR1liOGc1Tm43Q3lYaktNK0dKR2k5blZraG9mVjdUTmRqU2JC?=
+ =?utf-8?B?bWhNNnphVlh2MDBROXpOSEhrbEt3akVvMFpRYUdIY2lrWnlGWFpLSzMvRFE3?=
+ =?utf-8?B?UkhpSUN6TmJsQ24rUFQzQUgrSWdMWndzKzIzSTl6QXVoRGtGQkorYU5raFpy?=
+ =?utf-8?B?NFg3NXlPZG5GUUJjdmIvTzFwMGsyNWtwRTkyeTR0U00yUWdTczlqdDhNSmg4?=
+ =?utf-8?B?RjZWYi9yMDRGU0JzbHRnU2RlVVNkYjVCemZHQ3FCeTNBQjZNSHgyTGRGUDlS?=
+ =?utf-8?B?QWpsbHpsNzluSTVmaGdSYVBNSG9TVjkwNE1lbThhTUxHSzhNZHJMOExLMW9D?=
+ =?utf-8?B?TmxpTFhvOFJoeHhiazVJc251ZlpUYkRLSi9Db0dvUGZUQzVhRktQVWVPMzBt?=
+ =?utf-8?B?bVd1a1BENWxZOWQwWFRkR0NGZ0ViQXR3RzZCV29ObkNGOTd2THFMVURrNUpy?=
+ =?utf-8?B?U1ArVmtIbDE1dktYVDI3RDZYZUpiYVJoQjFjTTlEdnRXZEN6N211U3VFYkFw?=
+ =?utf-8?B?WW5wMzNpZ0w2Nzg3R2lMSSs3NmZBTHgxMkpQUkFFbDV2Rm5yenBJaGdkUnRl?=
+ =?utf-8?B?NmV0aFRVb0pkU0xSZmxvTDh4T0E2YUdMSldSV2RCWUNuNlg3cEhwVlF5Q3Bi?=
+ =?utf-8?B?emdLWnJMb0E1cHpWVXlhbXdydlR2WjJxdDd6V0U5MWg1UnVQbjVUNkJuLzVN?=
+ =?utf-8?B?cE5qQ20rOFhMaE5BTmZXcmVrWUQ2Sk50c1k5TjA4NzZyTHRWVk5ZMGYwNVA2?=
+ =?utf-8?B?bVVXaTNpNERTN1UzQ0ZSeGNRYkNHVWtlK0I4VytYRU9TREdUUzJDUjBPb1M0?=
+ =?utf-8?B?c0FURmx5YVgyRDJlYllNcGRYZmZ3cUY5R1VJV21BaFRJNUM1ZktQSlZoUkVp?=
+ =?utf-8?B?ZmY1SkZyNnJ6STR1OFlYcEdrVCt2dXlNSjNXNVQ5SU9BWlJrZ1BTYmxUa1BU?=
+ =?utf-8?B?Q1hXZDloZEphbytGV0ljeHMrTW4vcFZ4cG5OODl2YU9nVnV5Ukd4dGU1Q090?=
+ =?utf-8?B?cDJ5MG1pbDVabFYvWVNma0Z2SUcrQWdyR2cwUHlVNHczaWpRcTFNbGlnZjh6?=
+ =?utf-8?B?clFBcGg3bnZtbVdycTUrcjZCbVdtYW94VzE3RERWU0RMNEV5bVhOMnExMmh5?=
+ =?utf-8?Q?KvUaU0Oj6nDFuY1T6A1EhnUjwlp01hlQWqXtS73?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8487.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZGRlTmdIdGJzaXRGWktoNGFZalpMVVNiZEMyZzlkL0ZvQlVRZVNPeWJOWmVX?=
+ =?utf-8?B?L1AraXFVd3kzUkJyTWN6WG5qZFVETXZjMkxhVXcrdTVlcmtiMkhPNElOQXZX?=
+ =?utf-8?B?L093U3RPYW14TGxaakRTZERWaEJyaVVxY1hQclpGQ05SVVAydkxIVkVwUEFT?=
+ =?utf-8?B?cWYwN3ZhcE5EeThKa3M4dDJ0T0NYUDUwNDg2QzBySHlXOFpmTFRjSno3YWd1?=
+ =?utf-8?B?Q3k1NE4wRUtzYWxGNUlOZjgxL3VwTkVHNWFSbTAxMlQyY0ZHb2o3ZzRDZjBp?=
+ =?utf-8?B?M0VFNytPb1ZxeW1ZdEFwRkxXalY4RDA5ZWFKb1ZZWVVVVHBBMjczcjR2T1pK?=
+ =?utf-8?B?OE02aEFZZ1lSVkU3bk1iNkVieDFWRzhlOUhiU0RKL2w0K3VMSDNrbGJUbVpk?=
+ =?utf-8?B?NlVIUVJvOUh1M1BCR2hkNEpOZFpOYXczM25OTmozQ3VHTDNIU24zK2loakNL?=
+ =?utf-8?B?cDFkMmhEU1ZkdGxnSjVldE9wcncwcTd1WU9VUmVWL0NZVGs1TkI1S2ZnalNW?=
+ =?utf-8?B?eC9TOGx1c2FVYkVhM04wZm8xUXV4ZzRiUkhRdDRjeksxelgwdzMvZHNDZWd6?=
+ =?utf-8?B?UVRGMHljQkNJKzE5aFhqK0RGVGxSK2t4UGJYOWpFWWIrK1FUYnJVNmNUem11?=
+ =?utf-8?B?NWVXS0dINzNOd2lJTlVoSDRYQXhyREdXY0I4VUpZaENOMkZIbXA3K0g5OWYv?=
+ =?utf-8?B?T21RcE9wbjRCT05NZC9qdDUvUTJCakxoM1g2RUlQRHR0aGxDdittbFI5bjV6?=
+ =?utf-8?B?dy84UnI4cXJ4cXpINTN6NDIwdDg4Z04rUGNxYkN2d3dKUXg1aXBTSTljV2VK?=
+ =?utf-8?B?NDNJY0ZaQ1J1VndtNWdoTWJlUU1VaG9lU1JLVFI2L3pFSjc2SFZrYUNUT2p6?=
+ =?utf-8?B?OGduKzczbGFVR0Z4OVZySUQyK3pBbXNLZ2paN0ZLbE9NNHBETXR4eFZFLytZ?=
+ =?utf-8?B?bHowdXp3V29QM1ZHeTNRbVVHWTV1b2o4dTNXYmNVOXpYQWV0TVVRaWdtVFVO?=
+ =?utf-8?B?bjUyNTFlRElweGJzY3dWRnVzR254WHIvNHBRZDl1SmZFT0drYm83WHVZUTZo?=
+ =?utf-8?B?blpoUE9XSWgyM0RvS3YvdExnaU1ZMVp0TDlMR2ZDUFgxeEdRdlRxNTFIR2R3?=
+ =?utf-8?B?RThUb0JtVEZLTW1xbXEwMGtuNnJUR0dCTFpiOXNTRW1yYjBZYVBIQnI1eXFQ?=
+ =?utf-8?B?SHkxbkdRRnRUcGUrZUJRZzhXT0xtNVVGdmRMeXpKT3FEY1JITnBMamJGRGdZ?=
+ =?utf-8?B?M0FSTlN6TGlWN0VQSHF1T2RHOUtnUld4YTEzNE41UHBualFveW45VlgyaWc4?=
+ =?utf-8?B?YzJueXVySjR2L05UTlBZK1pDVGZPQWRwMXFEYnJQYWJWYkVkWldVeW5rU2kz?=
+ =?utf-8?B?MVpZWGNMamlpNWd1RlE0ZVg5b2tlQ3FBN0V0MWhXallYUlBpTjdpMEE3NHlh?=
+ =?utf-8?B?dkFuNjdPZUtWK2dXV3B0Q2t6ODUyQ3FnQlR5OFRhdXllTkNOWUNiZXp0dVhz?=
+ =?utf-8?B?MWZPSmJWUVovbWZzUkRFZzFJZmZEMmg0d05nY3IvZGxFdXY0bVA1RDhkcUN5?=
+ =?utf-8?B?TUtqVVBQZHhVU0ZuVGtraGtYWUhVQ0t1b3kxRVl6WXljL0J2R0NLMDBmZ0xr?=
+ =?utf-8?B?czBNaVd2MEE1Z2ZkUnlBL3VHUXpoeHRib25oRFJlUzZoQjIybEl0YU5CTW5I?=
+ =?utf-8?B?YmN0MHZaQTNJa2EzT3BjT2VqZ1BtNXZmd1p5djFoWG9iaXp5UDZ3REhJaUo1?=
+ =?utf-8?B?VzRSRmF4WDZWSEhYOHowZ1hiZVlSQVVrdWlYTG9aUm9PR2NmdWVvM2dRUHhN?=
+ =?utf-8?B?Mk1JUEpKVHNMbUFidElNZTREZndyUXp2NXNDSzZacy96cy9EN3VyanZzbWcz?=
+ =?utf-8?B?TCttbkVhakhYOVpUc1hIbTgydWV1aVg0ZlBIdFNXUGR2cEg2YUdKYzlGN00v?=
+ =?utf-8?B?OFVmOFhya05oWlM4NnVkVkZPQ1lRRnZqUVNGWUkwTGloOGg2aEdOMk5rK01X?=
+ =?utf-8?B?RC9KeU9JNS85MWZDV3hGakJFdWdIQ1F1Y2J2TzhaWkZCcXYzOWozV1NWVndH?=
+ =?utf-8?B?YUpzNU9OdXdHN05Wd0xjWklWdy9GdEVEZkpNTHc3a1FzQlNZRWM3NTEvL0la?=
+ =?utf-8?B?RkM0bHdHTk8zYVd2QXNhSUNLREx2aVNQSTZpK3FaVmtKU3orUUprcWFaZVA3?=
+ =?utf-8?B?UkE9PQ==?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ae9448b4-937c-4aa6-9833-08dcfcc16411
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8487.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2024 11:11:13.3405
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yy+eimTiSE+ihNQISvrOJW2GfpbWPNjAjtM4t8h5OpP5T5ftm4B/AeM7aZx0Qh2k58sNjMQUklytuVN616Njyvupq9N/MJhlG+9a2MabfZs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11046
 
-Hello:
+Hi Frank,
 
-This series was applied to netdev/net-next.git (main)
-by David S. Miller <davem@davemloft.net>:
+Thank you for your review!
 
-On Wed, 30 Oct 2024 17:39:11 +0800 you wrote:
-> This is first time that the NETC IP is applied on i.MX MPU platform.
-> Its revision has been upgraded to 4.1, which is very different from
-> the NETC of LS1028A (its revision is 1.0). Therefore, some existing
-> drivers of NETC devices in the Linux kernel are not compatible with
-> the current hardware. For example, the fsl-enetc driver is used to
-> drive the ENETC PF of LS1028A, but for i.MX95 ENETC PF, its registers
-> and tables configuration are very different from those of LS1028A,
-> and only the station interface (SI) part remains basically the same.
-> For the SI part, Vladimir has separated the fsl-enetc-core driver, so
-> we can reuse this driver on i.MX95. However, for other parts of PF,
-> the fsl-enetc driver cannot be reused, so the nxp-enetc4 driver is
-> added to support revision 4.1 and later.
+>> +      - description: SIUL2_1 module memory
 > 
-> [...]
+> description have not provide more informaiton.
+> maxItems: 2 should be enough here.
+>
 
-Here is the summary with links:
-  - [v6,net-next,01/12] dt-bindings: net: add compatible string for i.MX95 EMDIO
-    https://git.kernel.org/netdev/net-next/c/da98dbbc2c74
-  - [v6,net-next,02/12] dt-bindings: net: add i.MX95 ENETC support
-    https://git.kernel.org/netdev/net-next/c/db2fb74c8560
-  - [v6,net-next,03/12] dt-bindings: net: add bindings for NETC blocks control
-    https://git.kernel.org/netdev/net-next/c/f70384e53b09
-  - [v6,net-next,04/12] net: enetc: add initial netc-blk-ctrl driver support
-    https://git.kernel.org/netdev/net-next/c/fe5ba6bf91b3
-  - [v6,net-next,05/12] net: enetc: extract common ENETC PF parts for LS1028A and i.MX95 platforms
-    https://git.kernel.org/netdev/net-next/c/80c8c852615e
-  - [v6,net-next,06/12] net: enetc: build enetc_pf_common.c as a separate module
-    https://git.kernel.org/netdev/net-next/c/3774409fd4c6
-  - [v6,net-next,07/12] net: enetc: remove ERR050089 workaround for i.MX95
-    https://git.kernel.org/netdev/net-next/c/86831a3f4cd4
-  - [v6,net-next,08/12] net: enetc: add i.MX95 EMDIO support
-    https://git.kernel.org/netdev/net-next/c/a52201fb9caa
-  - [v6,net-next,09/12] net: enetc: extract enetc_int_vector_init/destroy() from enetc_alloc_msix()
-    https://git.kernel.org/netdev/net-next/c/b4bfd0a904e9
-  - [v6,net-next,10/12] net: enetc: optimize the allocation of tx_bdr
-    https://git.kernel.org/netdev/net-next/c/9e7f2116199d
-  - [v6,net-next,11/12] net: enetc: add preliminary support for i.MX95 ENETC PF
-    https://git.kernel.org/netdev/net-next/c/99100d0d9922
-  - [v6,net-next,12/12] MAINTAINERS: update ENETC driver files and maintainers
-    https://git.kernel.org/netdev/net-next/c/f488649e40f8
+I will fix in v6.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+>> +
+>> +patternProperties:
+>> +  '-hog(-[0-9]+)?$':
+>> +    required:
+>> +      - gpio-hog
+>> +
+>> +  '-pins$':
+>> +    type: object
+>> +    additionalProperties: false
+>> +
+>> +    patternProperties:
+>> +      '-grp[0-9]$':
+>> +        type: object
+>> +        allOf:
+>> +          - $ref: /schemas/pinctrl/pinmux-node.yaml#
+>> +          - $ref: /schemas/pinctrl/pincfg-node.yaml#
+>> +        description:
+>> +          Pinctrl node's client devices specify pin muxes using subnodes,
+>> +          which in turn use the standard properties below.
+>> +
+>> +        properties:
+>> +          bias-disable: true
+>> +          bias-high-impedance: true
+>> +          bias-pull-up: true
+>> +          bias-pull-down: true
+>> +          drive-open-drain: true
+>> +          input-enable: true
+>> +          output-enable: true
+> 
+> suppose needn't such common property, if use
+> 	unevaluatedProperties: false
+
+This part was taken from pinctrl/nxp,s32g2-siul2-pinctrl.yaml and, if I remember
+correctly, feedback from that patch's review was to explicitly specify which
+properties are supported by this binding. Would it be ok to keep this section
+as-is(with all of the supported properties and the additionalProperties: false)?
+
+>> +
+>> +          pinmux:
+>> +            description: |
+> 
+> needn't "|" here
+> 
+>> +              An integer array for representing pinmux configurations of
+>> +              a device. Each integer consists of a PIN_ID and a 4-bit
+>> +              selected signal source(SSS) as IOMUX setting, which is
+>> +              calculated as: pinmux = (PIN_ID << 4 | SSS)
+
+I need it here because of the "pinmux = (PIN_ID << 4 | SSS)" part. 
+
+>> +
+>> +          slew-rate:
+>> +            description: Supported slew rate based on Fmax values (MHz)
+>> +            enum: [83, 133, 150, 166, 208]
+>> +
+>> +        additionalProperties: false
+> 
+> It should be unevaluatedProperties: false because there $ref.
+
+Do you mean to change "additionalProperties:false" to "unevaluatedProperties:false"?
+If I understand correctly "additionalProperties:false" only allows the explicitly mentioned
+subset of properties from other schemas whereas "unevaluatedProperties:false" allows all
+properties from other schemas. I would like to permit only the mentioned properties. Would
+that be ok?
 
 
+>> +  - |
+>> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+>> +    #include <dt-bindings/interrupt-controller/irq.h>
+>> +
+>> +    siul2: siul2@4009c000 {
+> 
+> needn't label siul2.
+
+I will fix in v6.
+
+>> +
+>> +        jtag-grp1 {
+>> +          pinmux = <0x11>;
+>> +          slew-rate = <166>;
+>> +        };
+> 
+> one example should be enough.
+
+I will fix in v6.
+
+
+Best regards,
+Andrei
