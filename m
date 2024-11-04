@@ -1,122 +1,148 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E7617B428;
-	Mon,  4 Nov 2024 14:25:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA2025776;
+	Mon,  4 Nov 2024 14:39:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730730323; cv=none; b=LAUwTwPkuPrzRy2t5UOSXDb8+vSZ03hIdlsaZgBasWZZSEA7HyLwoclanXSi3GL8xbE7ElPiXZ+fvWKO5CjMnLxPqA1h7AjScT0POEjhCtTiA9UGxj8jmHdWI6Tfz35JzRvcHXIVYT1nrHGgHa9LHrC4WxXASFuLn1Rs7lxyMoc=
+	t=1730731161; cv=none; b=gpNmEwua5RbWWR7WLbxnyH9etrCp9KiSpIJeiI/B0A8Al/nQT8QFGJ+USGIbgH2Ya20ps7Rwb294gKejkReXt4HhRJ1eBgri+ZrHXoxoh0YOyZevLBnRWwQ/yAAB9SqtvWaSGxxI4TGqXYYwebWqZlvYUlZmBX3PeY2LH8emIoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730730323; c=relaxed/simple;
-	bh=CT7brXbn9NKpu0p4b2oRMcjvrtTgl29owzk4cIVFwAQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TCj4oqkixx2A6VBxGkK9fSGvOtdUQQ6ColSCjKZ4jV3Xgb3CyM4bU1SnuAJvDjiCfPo3kzJmPvuhCnSzecLLAv3kcIiZAh7XkilVXG0y18hsl8Rp570lknc36AppxLVYk1575StfR35vwA/Nvh6wTLPPMtmD13zDv90FbPRH+B0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mTWkeaOo; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1730731161; c=relaxed/simple;
+	bh=IWJCgzjBH23P5Psxa93HOglaeX1YK0YOQlMjkv2M/x0=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=dzLj+4IOHb3oHMc0CnisLqk/ICi/1ClaLCd4dxP0syDrUIS5qwzpw8X5gJNjn4p5623o6F8wNE+4EbUcul461uzw7LTbYq3XU3u8KSm8S4Xyuf6SqI/VKxZUCIcRxDwtEvhW9XQjS0lB/L4TJC+h4Ifopi0M4ieOPK8EvA/jnvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CHXv0EiG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mTWkeaOo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730730321; x=1762266321;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=CT7brXbn9NKpu0p4b2oRMcjvrtTgl29owzk4cIVFwAQ=;
-  b=mTWkeaOoEDfICAh8y96W4/9VIcP3C80s3TUPEeMnKVbrf+KkXqBFWn0G
-   uadpd+NPZCtv7eL6/tt0ghEV85ahD2W96/lEDdAoS2QOVlDjcEsjQs8/t
-   KCcMEsyIXdpzvgB2OJSI7uhZP4J2ZUv1TvmZwRzQZEQMeMXbsGqxrKfGU
-   9wdvZ2+j+jlVtLUA5bVFV1RE9yLQsFJ2ymF/NW/ahomu1My4jGvcOvNFa
-   4/vC1kxD6AMV7NhdC+FW4w9jHgF4uHGmJBjhngwxROtZRn3JAGxL7oekY
-   shpsA5xehY1mtci3J2R5nYZh9/7JeP8B/UUa5fmRX0cJUt3Ix+auKel4N
-   Q==;
-X-CSE-ConnectionGUID: DsvFx81/QOiTTX0ApDr1wg==
-X-CSE-MsgGUID: movaRnDgRtu8KhqQ5DUAxQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11246"; a="33265761"
-X-IronPort-AV: E=Sophos;i="6.11,257,1725346800"; 
-   d="scan'208";a="33265761"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2024 06:25:20 -0800
-X-CSE-ConnectionGUID: vKIxw/FaRaSqqupeNOnP6A==
-X-CSE-MsgGUID: hGrie7GzTXCqRPAazkBXmw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,257,1725346800"; 
-   d="scan'208";a="83778622"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 04 Nov 2024 06:25:15 -0800
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t7y13-000ktz-1V;
-	Mon, 04 Nov 2024 14:25:13 +0000
-Date: Mon, 4 Nov 2024 22:24:32 +0800
-From: kernel test robot <lkp@intel.com>
-To: Richard Zhu <hongxing.zhu@nxp.com>, l.stach@pengutronix.de,
-	bhelgaas@google.com, lpieralisi@kernel.org, kw@linux.com,
-	manivannan.sadhasivam@linaro.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
-	frank.li@nxp.com, s.hauer@pengutronix.de, festevam@gmail.com
-Cc: oe-kbuild-all@lists.linux.dev, imx@lists.linux.dev,
-	kernel@pengutronix.de, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>
-Subject: Re: [PATCH v6 08/10] PCI: imx6: Use dwc common suspend resume method
-Message-ID: <202411042110.bIIyBWlv-lkp@intel.com>
-References: <20241101070610.1267391-9-hongxing.zhu@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CHXv0EiG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DEC4C4CECE;
+	Mon,  4 Nov 2024 14:39:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730731161;
+	bh=IWJCgzjBH23P5Psxa93HOglaeX1YK0YOQlMjkv2M/x0=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=CHXv0EiGnNVlkuA/QqXxebK8auG+BqiB2WVRV94E/KAuhK1fvY5pvxZty20dG/Ami
+	 5+N/Ygn0X316h3netU8vz1U/5d+aiufih8aIUoz7wy6RGhq3FTKzbkwZjICffL0m+z
+	 SVCUGvj71Q4Jd2SPXvRAGfzn+cpIP+Pv5xsd2vdzyAtz4fqJLlY29bvWql6ltOqT+O
+	 aucsI2zh6k37jRJFflSzJvuP/8XcJOAazUwG3IsjNMTDy46qfRlXdMr4ErJ9indNZL
+	 qo4BUyuX0iulZutlx7K7XRvN/6uZmfdipjtkQ3Esw6SXYbwniiC+kokpgMMIIv17Nt
+	 Zr5IZ0IGo2ABw==
+Date: Mon, 04 Nov 2024 08:39:19 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241101070610.1267391-9-hongxing.zhu@nxp.com>
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
+ Alexander Stein <alexander.stein@ew.tq-group.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Matti Vaittinen <mazziesaccount@gmail.com>, imx@lists.linux.dev, 
+ Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, linux-arm-kernel@lists.infradead.org, 
+ devicetree@vger.kernel.org
+In-Reply-To: <20241103135201.25615-1-andreas@kemnade.info>
+References: <20241103135201.25615-1-andreas@kemnade.info>
+Message-Id: <173072771051.3690676.244560971344290580.robh@kernel.org>
+Subject: Re: [PATCH v4 0/3] ARM: dts: add Kobo Clara 2E
 
-Hi Richard,
 
-kernel test robot noticed the following build errors:
+On Sun, 03 Nov 2024 14:51:58 +0100, Andreas Kemnade wrote:
+> Add a basic device tree for the Kobo Clara 2E Ebook reader.
+> It is equipped with an i.MX6SLL SoC. EPDC PMIC drivers
+> are not ready for mainline yet.
+> 
+> Changes in V4:
+> - fix order of pinmux nodes
+> - remove some blank lines
+> 
+> Changes in V3:
+> - removed 30MegaOhm current sense resistor nonsense
+> 
+> Changes in V2:
+> - improved commit message about devices without binding
+> 
+> Andreas Kemnade (3):
+>   dt-bindings: arm: fsl: add compatible strings for Kobo Clara 2E
+>   ARM: dts: imx: Add devicetree for Kobo Clara 2E
+>   ARM: imx_v6_v7_defconfig: Enable drivers for Kobo Clara 2E
+> 
+>  .../devicetree/bindings/arm/fsl.yaml          |   8 +
+>  arch/arm/boot/dts/nxp/imx/Makefile            |   2 +
+>  .../dts/nxp/imx/imx6sll-kobo-clara2e-a.dts    |  23 +
+>  .../dts/nxp/imx/imx6sll-kobo-clara2e-b.dts    |  23 +
+>  .../nxp/imx/imx6sll-kobo-clara2e-common.dtsi  | 511 ++++++++++++++++++
+>  arch/arm/configs/imx_v6_v7_defconfig          |   2 +
+>  6 files changed, 569 insertions(+)
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dts
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-common.dtsi
+> 
+> --
+> 2.39.5
+> 
+> 
+> 
 
-[auto build test ERROR on pci/next]
-[also build test ERROR on pci/for-linus shawnguo/for-next mani-mhi/mhi-next linus/master v6.12-rc6 next-20241104]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Richard-Zhu/dt-bindings-imx6q-pcie-Add-ref-clock-for-i-MX95-PCIe-RC/20241101-150006
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
-patch link:    https://lore.kernel.org/r/20241101070610.1267391-9-hongxing.zhu%40nxp.com
-patch subject: [PATCH v6 08/10] PCI: imx6: Use dwc common suspend resume method
-config: i386-buildonly-randconfig-004-20241104 (https://download.01.org/0day-ci/archive/20241104/202411042110.bIIyBWlv-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241104/202411042110.bIIyBWlv-lkp@intel.com/reproduce)
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202411042110.bIIyBWlv-lkp@intel.com/
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
 
-All errors (new ones prefixed by >>):
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
 
-   ld: drivers/pci/controller/dwc/pci-imx6.o: in function `imx_pcie_resume_noirq':
->> pci-imx6.c:(.text+0x88): undefined reference to `dw_pcie_resume_noirq'
-   ld: drivers/pci/controller/dwc/pci-imx6.o: in function `imx_pcie_suspend_noirq':
->> pci-imx6.c:(.text+0x111): undefined reference to `dw_pcie_suspend_noirq'
-   ld: drivers/usb/misc/onboard_usb_dev.o: in function `onboard_dev_probe':
-   onboard_usb_dev.c:(.text+0x6ae): undefined reference to `i2c_find_device_by_fwnode'
-   ld: onboard_usb_dev.c:(.text+0x711): undefined reference to `i2c_smbus_write_block_data'
-   ld: onboard_usb_dev.c:(.text+0x72f): undefined reference to `i2c_smbus_write_word_data'
-   ld: onboard_usb_dev.c:(.text+0x74c): undefined reference to `i2c_smbus_write_word_data'
+  pip3 install dtschema --upgrade
 
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for MODVERSIONS
-   Depends on [n]: MODULES [=y] && !COMPILE_TEST [=y]
-   Selected by [y]:
-   - RANDSTRUCT_PERFORMANCE [=y] && GCC_PLUGINS [=y] && MODULES [=y]
-   WARNING: unmet direct dependencies detected for FB_IOMEM_HELPERS
-   Depends on [n]: HAS_IOMEM [=y] && FB_CORE [=n]
-   Selected by [m]:
-   - DRM_XE_DISPLAY [=y] && HAS_IOMEM [=y] && DRM [=m] && DRM_XE [=m] && DRM_XE [=m]=m [=m]
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+New warnings running 'make CHECK_DTBS=y nxp/imx/imx6sll-kobo-clara2e-a.dtb nxp/imx/imx6sll-kobo-clara2e-b.dtb' for 20241103135201.25615-1-andreas@kemnade.info:
+
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dtb: spdif@2004000: compatible:0: 'fsl,imx6sl-spdif' is not one of ['fsl,imx35-spdif', 'fsl,vf610-spdif', 'fsl,imx6sx-spdif', 'fsl,imx8qm-spdif', 'fsl,imx8qxp-spdif', 'fsl,imx8mq-spdif', 'fsl,imx8mm-spdif', 'fsl,imx8mn-spdif', 'fsl,imx8ulp-spdif']
+	from schema $id: http://devicetree.org/schemas/sound/fsl,spdif.yaml#
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dtb: spdif@2004000: compatible: ['fsl,imx6sl-spdif', 'fsl,imx35-spdif'] is too long
+	from schema $id: http://devicetree.org/schemas/sound/fsl,spdif.yaml#
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dtb: spdif@2004000: compatible:0: 'fsl,imx6sl-spdif' is not one of ['fsl,imx35-spdif', 'fsl,vf610-spdif', 'fsl,imx6sx-spdif', 'fsl,imx8qm-spdif', 'fsl,imx8qxp-spdif', 'fsl,imx8mq-spdif', 'fsl,imx8mm-spdif', 'fsl,imx8mn-spdif', 'fsl,imx8ulp-spdif']
+	from schema $id: http://devicetree.org/schemas/sound/fsl,spdif.yaml#
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dtb: spdif@2004000: compatible: ['fsl,imx6sl-spdif', 'fsl,imx35-spdif'] is too long
+	from schema $id: http://devicetree.org/schemas/sound/fsl,spdif.yaml#
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dtb: /soc/bus@2000000/spba-bus@2000000/spdif@2004000: failed to match any schema with compatible: ['fsl,imx6sl-spdif', 'fsl,imx35-spdif']
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dtb: /soc/bus@2000000/spba-bus@2000000/spdif@2004000: failed to match any schema with compatible: ['fsl,imx6sl-spdif', 'fsl,imx35-spdif']
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dtb: serial@2034000: dma-name: b'rx\x00tx\x00' is not of type 'object', 'integer', 'array', 'boolean', 'null'
+	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dtb: serial@2034000: dma-name: b'rx\x00tx\x00' is not of type 'object', 'integer', 'array', 'boolean', 'null'
+	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dtb: /soc/bus@2000000/csi@20e8000: failed to match any schema with compatible: ['fsl,imx6sll-csi', 'fsl,imx6s-csi']
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dtb: /soc/bus@2000000/csi@20e8000: failed to match any schema with compatible: ['fsl,imx6sll-csi', 'fsl,imx6s-csi']
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dtb: /soc/bus@2000000/csi@20e8000: failed to match any schema with compatible: ['fsl,imx6sll-csi', 'fsl,imx6s-csi']
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dtb: /soc/bus@2000000/csi@20e8000: failed to match any schema with compatible: ['fsl,imx6sll-csi', 'fsl,imx6s-csi']
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dtb: lcd-controller@20f8000: compatible: 'oneOf' conditional failed, one must be fixed:
+	['fsl,imx6sll-lcdif', 'fsl,imx28-lcdif'] is too long
+	'fsl,imx6sll-lcdif' is not one of ['fsl,imx23-lcdif', 'fsl,imx28-lcdif', 'fsl,imx6sx-lcdif', 'fsl,imx8mp-lcdif', 'fsl,imx93-lcdif']
+	'fsl,imx6sx-lcdif' was expected
+	from schema $id: http://devicetree.org/schemas/display/fsl,lcdif.yaml#
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dtb: lcd-controller@20f8000: clocks: [[2, 129], [2, 123], [2, 0]] is too long
+	from schema $id: http://devicetree.org/schemas/display/fsl,lcdif.yaml#
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dtb: lcd-controller@20f8000: clock-names: ['pix', 'axi', 'disp_axi'] is too long
+	from schema $id: http://devicetree.org/schemas/display/fsl,lcdif.yaml#
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dtb: lcd-controller@20f8000: compatible: 'oneOf' conditional failed, one must be fixed:
+	['fsl,imx6sll-lcdif', 'fsl,imx28-lcdif'] is too long
+	'fsl,imx6sll-lcdif' is not one of ['fsl,imx23-lcdif', 'fsl,imx28-lcdif', 'fsl,imx6sx-lcdif', 'fsl,imx8mp-lcdif', 'fsl,imx93-lcdif']
+	'fsl,imx6sx-lcdif' was expected
+	from schema $id: http://devicetree.org/schemas/display/fsl,lcdif.yaml#
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dtb: lcd-controller@20f8000: clocks: [[2, 129], [2, 123], [2, 0]] is too long
+	from schema $id: http://devicetree.org/schemas/display/fsl,lcdif.yaml#
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dtb: lcd-controller@20f8000: clock-names: ['pix', 'axi', 'disp_axi'] is too long
+	from schema $id: http://devicetree.org/schemas/display/fsl,lcdif.yaml#
+
+
+
+
+
