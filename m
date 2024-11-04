@@ -1,148 +1,221 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA2025776;
-	Mon,  4 Nov 2024 14:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC811C07CE
+	for <imx@lists.linux.dev>; Mon,  4 Nov 2024 15:12:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730731161; cv=none; b=gpNmEwua5RbWWR7WLbxnyH9etrCp9KiSpIJeiI/B0A8Al/nQT8QFGJ+USGIbgH2Ya20ps7Rwb294gKejkReXt4HhRJ1eBgri+ZrHXoxoh0YOyZevLBnRWwQ/yAAB9SqtvWaSGxxI4TGqXYYwebWqZlvYUlZmBX3PeY2LH8emIoY=
+	t=1730733133; cv=none; b=RxSH7uK0gToWI3VblbCBpmFVQpKmY3SCn8gMFGubZeIau2IrbtePQx37r581v/x8kdnNtSSLsgvMSgzxnmnIESonziMvYGpcYyJJs8FL2dXSBDNqXcz6WJzGybtohgmMglddsMoO9vuGhjs1XLUSMO6w25z9dXwifEZ2cDlkUv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730731161; c=relaxed/simple;
-	bh=IWJCgzjBH23P5Psxa93HOglaeX1YK0YOQlMjkv2M/x0=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=dzLj+4IOHb3oHMc0CnisLqk/ICi/1ClaLCd4dxP0syDrUIS5qwzpw8X5gJNjn4p5623o6F8wNE+4EbUcul461uzw7LTbYq3XU3u8KSm8S4Xyuf6SqI/VKxZUCIcRxDwtEvhW9XQjS0lB/L4TJC+h4Ifopi0M4ieOPK8EvA/jnvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CHXv0EiG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730733133; c=relaxed/simple;
+	bh=TjGtaE+LQxifGKsMsXRpdf+jrPSEjvUZi5NAZ2+Y6dw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jPLaLYhrMP05/9tkW05Lb98CmabxoIJNOSZZCGNlO++HyfzzY8ga7bz5jLQfAUOpTH9YY+M62X1Guq7hLV31cp6EJbB5qY9qc913MQV7jie8EsdxwQKzXL8MpZXjWRK8jYHz9uDyq3nBeNUnY4GodhlUcLH1wdwmLxqNflV2IKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZtnpRiz7; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CHXv0EiG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DEC4C4CECE;
-	Mon,  4 Nov 2024 14:39:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730731161;
-	bh=IWJCgzjBH23P5Psxa93HOglaeX1YK0YOQlMjkv2M/x0=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=CHXv0EiGnNVlkuA/QqXxebK8auG+BqiB2WVRV94E/KAuhK1fvY5pvxZty20dG/Ami
-	 5+N/Ygn0X316h3netU8vz1U/5d+aiufih8aIUoz7wy6RGhq3FTKzbkwZjICffL0m+z
-	 SVCUGvj71Q4Jd2SPXvRAGfzn+cpIP+Pv5xsd2vdzyAtz4fqJLlY29bvWql6ltOqT+O
-	 aucsI2zh6k37jRJFflSzJvuP/8XcJOAazUwG3IsjNMTDy46qfRlXdMr4ErJ9indNZL
-	 qo4BUyuX0iulZutlx7K7XRvN/6uZmfdipjtkQ3Esw6SXYbwniiC+kokpgMMIIv17Nt
-	 Zr5IZ0IGo2ABw==
-Date: Mon, 04 Nov 2024 08:39:19 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZtnpRiz7"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-20c803787abso33453205ad.0
+        for <imx@lists.linux.dev>; Mon, 04 Nov 2024 07:12:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1730733131; x=1731337931; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=IWAz5TdjV0s3G3j5HR50h22mQFRBfFcqS1CejLxUMh4=;
+        b=ZtnpRiz7UHI99Ps72b7KoZwCHOazlRS3++hvOy9n9q4LVghcGQeXpZ7SHBAj4ENpEM
+         QLsGNKgaHRfXU2LUFDh5Pr6IPSux7m5jOGr5aQnBqf9Tzqgd2ayRcmVODHQFgEcenUeB
+         xPZm1LYivvaU60pmn6LcVoX1hHMoGW25ICSMgFO5b/hyWeB9HiSve5GWE9B9CaW2xgjw
+         0KXImnZPCw7vhl221j7HaaUwDff0VVcEz4gmqSwxdMb+EpMOPn46YXHzCKtzhEFrRgur
+         3s/TKPe09ZmxSZChTAyWddOJbpKqOOeKj2hJhIP2napwvctoNeHTYuYPPfecJ7OST+Y9
+         /awA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730733131; x=1731337931;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IWAz5TdjV0s3G3j5HR50h22mQFRBfFcqS1CejLxUMh4=;
+        b=YKrYwxz/bQHCebW9p6hHuUrbK5/1cn5i9w/WELPvvM3AFEFI/bCi6N8R/YJnkZZ2HV
+         XCOUbQplp+L/ZkriZ6AzQXivl0R2fkAqNFSnmlHtb5P4m03vx7glj1Q3GjjvaaSLoA1y
+         a4oOUzad/FV3U6cKm2lee3PR9d8xghMb0Auc1I65Xc6TFyw6FC5uGMj3GLX1bAlhNW1u
+         mwHfSLx44fZNMC722O/OOA55QyAX1S/unRBBOQXzSz8Iq83YH/Cp0SBTeAIqKoFLpe2q
+         wPLCa8NimuFUe6uq6BRZQCymFSel5dHFmPn5MSFMZ17+5cjNxNkDqpLAVFwpxoRJmdx0
+         G2+g==
+X-Forwarded-Encrypted: i=1; AJvYcCWcmmh2gx7NgKnOE76i2UVuZtYP53u1nAzy7Jutt6O6PFODGy3zIt06ujZP0bvup6X96bQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxOu3E0RKaYFMBPbIJg30r8yr6oFBH9tSL69Qaw5cWkag84Lziq
+	Sod4wfMVpBp7PRnZPepqcewUIrVCmbgsQSDY7IRpBVrKOBn0mFTAl2aAJO0B4A==
+X-Google-Smtp-Source: AGHT+IF/DA7LNyMgu1pnTQkftl5jvkj6Flffim544TjwWV+oZb0jj3oRtdO+6se3chWJxM92S10XOw==
+X-Received: by 2002:a17:902:ccd2:b0:20c:9026:93a with SMTP id d9443c01a7336-2111946831emr213769535ad.19.1730733130510;
+        Mon, 04 Nov 2024 07:12:10 -0800 (PST)
+Received: from thinkpad ([2409:40f4:3049:1cc7:217b:63a:40ce:2e01])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21105707e12sm62411805ad.82.2024.11.04.07.12.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Nov 2024 07:12:09 -0800 (PST)
+Date: Mon, 4 Nov 2024 20:42:02 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Stefan Eichenberger <eichest@gmail.com>
+Cc: hongxing.zhu@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
+	kw@linux.com, robh@kernel.org, bhelgaas@google.com,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, francesco.dolcini@toradex.com, Frank.li@nxp.com,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: Re: [PATCH v4] PCI: imx6: Add suspend/resume support for i.MX6QDL
+Message-ID: <20241104151202.k6v6fxwyb44n7qw6@thinkpad>
+References: <20241030103250.83640-1-eichest@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
- Alexander Stein <alexander.stein@ew.tq-group.com>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Matti Vaittinen <mazziesaccount@gmail.com>, imx@lists.linux.dev, 
- Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, linux-arm-kernel@lists.infradead.org, 
- devicetree@vger.kernel.org
-In-Reply-To: <20241103135201.25615-1-andreas@kemnade.info>
-References: <20241103135201.25615-1-andreas@kemnade.info>
-Message-Id: <173072771051.3690676.244560971344290580.robh@kernel.org>
-Subject: Re: [PATCH v4 0/3] ARM: dts: add Kobo Clara 2E
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241030103250.83640-1-eichest@gmail.com>
 
-
-On Sun, 03 Nov 2024 14:51:58 +0100, Andreas Kemnade wrote:
-> Add a basic device tree for the Kobo Clara 2E Ebook reader.
-> It is equipped with an i.MX6SLL SoC. EPDC PMIC drivers
-> are not ready for mainline yet.
+On Wed, Oct 30, 2024 at 11:32:45AM +0100, Stefan Eichenberger wrote:
+> From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 > 
-> Changes in V4:
-> - fix order of pinmux nodes
-> - remove some blank lines
+> The suspend/resume functionality is currently broken on the i.MX6QDL
+> platform, as documented in the NXP errata (ERR005723):
+> https://www.nxp.com/docs/en/errata/IMX6DQCE.pdf
 > 
-> Changes in V3:
-> - removed 30MegaOhm current sense resistor nonsense
+> This patch addresses the issue by sharing most of the suspend/resume
+> sequences used by other i.MX devices, while avoiding modifications to
+> critical registers that disrupt the PCIe functionality. It targets the
+> same problem as the following downstream commit:
+> https://github.com/nxp-imx/linux-imx/commit/4e92355e1f79d225ea842511fcfd42b343b32995
 > 
-> Changes in V2:
-> - improved commit message about devices without binding
+> Unlike the downstream commit, this patch also resets the connected PCIe
+> device if possible. Without this reset, certain drivers, such as ath10k
+> or iwlwifi, will crash on resume. The device reset is also done by the
+> driver on other i.MX platforms, making this patch consistent with
+> existing practices.
 > 
-> Andreas Kemnade (3):
->   dt-bindings: arm: fsl: add compatible strings for Kobo Clara 2E
->   ARM: dts: imx: Add devicetree for Kobo Clara 2E
->   ARM: imx_v6_v7_defconfig: Enable drivers for Kobo Clara 2E
+> Without this patch, suspend/resume will fail on i.MX6QDL devices if a
+> PCIe device is connected. Upon resuming, the kernel will hang and
+> display an error. Here's an example of the error encountered with the
+> ath10k driver:
+> ath10k_pci 0000:01:00.0: Unable to change power state from D3hot to D0, device inaccessible
+> Unhandled fault: imprecise external abort (0x1406) at 0x0106f944
 > 
->  .../devicetree/bindings/arm/fsl.yaml          |   8 +
->  arch/arm/boot/dts/nxp/imx/Makefile            |   2 +
->  .../dts/nxp/imx/imx6sll-kobo-clara2e-a.dts    |  23 +
->  .../dts/nxp/imx/imx6sll-kobo-clara2e-b.dts    |  23 +
->  .../nxp/imx/imx6sll-kobo-clara2e-common.dtsi  | 511 ++++++++++++++++++
->  arch/arm/configs/imx_v6_v7_defconfig          |   2 +
->  6 files changed, 569 insertions(+)
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dts
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dts
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-common.dtsi
+> Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+
+- Mani
+
+> ---
+> Changes in v4:
+> - Improve commit message (Bjorn)
+> - Fix style issue on comments (Bjorn)
+> - s/msi/MSI (Bjorn)
 > 
-> --
-> 2.39.5
+> Changes in v3:
+> - Added a new flag to the driver data to indicate that the suspend/resume
+>   is broken on the i.MX6QDL platform. (Frank)
+> - Fix comments to be more relevant (Mani)
+> - Use imx_pcie_assert_core_reset in suspend (Mani)
 > 
+>  drivers/pci/controller/dwc/pci-imx6.c | 57 +++++++++++++++++++++------
+>  1 file changed, 46 insertions(+), 11 deletions(-)
 > 
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 808d1f1054173..c8d5c90aa4d45 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -82,6 +82,11 @@ enum imx_pcie_variants {
+>  #define IMX_PCIE_FLAG_HAS_SERDES		BIT(6)
+>  #define IMX_PCIE_FLAG_SUPPORT_64BIT		BIT(7)
+>  #define IMX_PCIE_FLAG_CPU_ADDR_FIXUP		BIT(8)
+> +/*
+> + * Because of ERR005723 (PCIe does not support L2 power down) we need to
+> + * workaround suspend resume on some devices which are affected by this errata.
+> + */
+> +#define IMX_PCIE_FLAG_BROKEN_SUSPEND		BIT(9)
+>  
+>  #define imx_check_flag(pci, val)	(pci->drvdata->flags & val)
+>  
+> @@ -1237,9 +1242,19 @@ static int imx_pcie_suspend_noirq(struct device *dev)
+>  		return 0;
+>  
+>  	imx_pcie_msi_save_restore(imx_pcie, true);
+> -	imx_pcie_pm_turnoff(imx_pcie);
+> -	imx_pcie_stop_link(imx_pcie->pci);
+> -	imx_pcie_host_exit(pp);
+> +	if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_BROKEN_SUSPEND)) {
+> +		/*
+> +		 * The minimum for a workaround would be to set PERST# and to
+> +		 * set the PCIE_TEST_PD flag. However, we can also disable the
+> +		 * clock which saves some power.
+> +		 */
+> +		imx_pcie_assert_core_reset(imx_pcie);
+> +		imx_pcie->drvdata->enable_ref_clk(imx_pcie, false);
+> +	} else {
+> +		imx_pcie_pm_turnoff(imx_pcie);
+> +		imx_pcie_stop_link(imx_pcie->pci);
+> +		imx_pcie_host_exit(pp);
+> +	}
+>  
+>  	return 0;
+>  }
+> @@ -1253,14 +1268,32 @@ static int imx_pcie_resume_noirq(struct device *dev)
+>  	if (!(imx_pcie->drvdata->flags & IMX_PCIE_FLAG_SUPPORTS_SUSPEND))
+>  		return 0;
+>  
+> -	ret = imx_pcie_host_init(pp);
+> -	if (ret)
+> -		return ret;
+> -	imx_pcie_msi_save_restore(imx_pcie, false);
+> -	dw_pcie_setup_rc(pp);
+> +	if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_BROKEN_SUSPEND)) {
+> +		ret = imx_pcie->drvdata->enable_ref_clk(imx_pcie, true);
+> +		if (ret)
+> +			return ret;
+> +		ret = imx_pcie_deassert_core_reset(imx_pcie);
+> +		if (ret)
+> +			return ret;
+> +		/*
+> +		 * Using PCIE_TEST_PD seems to disable MSI and powers down the
+> +		 * root complex. This is why we have to setup the rc again and
+> +		 * why we have to restore the MSI register.
+> +		 */
+> +		ret = dw_pcie_setup_rc(&imx_pcie->pci->pp);
+> +		if (ret)
+> +			return ret;
+> +		imx_pcie_msi_save_restore(imx_pcie, false);
+> +	} else {
+> +		ret = imx_pcie_host_init(pp);
+> +		if (ret)
+> +			return ret;
+> +		imx_pcie_msi_save_restore(imx_pcie, false);
+> +		dw_pcie_setup_rc(pp);
+>  
+> -	if (imx_pcie->link_is_up)
+> -		imx_pcie_start_link(imx_pcie->pci);
+> +		if (imx_pcie->link_is_up)
+> +			imx_pcie_start_link(imx_pcie->pci);
+> +	}
+>  
+>  	return 0;
+>  }
+> @@ -1485,7 +1518,9 @@ static const struct imx_pcie_drvdata drvdata[] = {
+>  	[IMX6Q] = {
+>  		.variant = IMX6Q,
+>  		.flags = IMX_PCIE_FLAG_IMX_PHY |
+> -			 IMX_PCIE_FLAG_IMX_SPEED_CHANGE,
+> +			 IMX_PCIE_FLAG_IMX_SPEED_CHANGE |
+> +			 IMX_PCIE_FLAG_BROKEN_SUSPEND |
+> +			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
+>  		.dbi_length = 0x200,
+>  		.gpr = "fsl,imx6q-iomuxc-gpr",
+>  		.clk_names = imx6q_clks,
+> -- 
+> 2.43.0
 > 
 
-
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
-
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-New warnings running 'make CHECK_DTBS=y nxp/imx/imx6sll-kobo-clara2e-a.dtb nxp/imx/imx6sll-kobo-clara2e-b.dtb' for 20241103135201.25615-1-andreas@kemnade.info:
-
-arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dtb: spdif@2004000: compatible:0: 'fsl,imx6sl-spdif' is not one of ['fsl,imx35-spdif', 'fsl,vf610-spdif', 'fsl,imx6sx-spdif', 'fsl,imx8qm-spdif', 'fsl,imx8qxp-spdif', 'fsl,imx8mq-spdif', 'fsl,imx8mm-spdif', 'fsl,imx8mn-spdif', 'fsl,imx8ulp-spdif']
-	from schema $id: http://devicetree.org/schemas/sound/fsl,spdif.yaml#
-arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dtb: spdif@2004000: compatible: ['fsl,imx6sl-spdif', 'fsl,imx35-spdif'] is too long
-	from schema $id: http://devicetree.org/schemas/sound/fsl,spdif.yaml#
-arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dtb: spdif@2004000: compatible:0: 'fsl,imx6sl-spdif' is not one of ['fsl,imx35-spdif', 'fsl,vf610-spdif', 'fsl,imx6sx-spdif', 'fsl,imx8qm-spdif', 'fsl,imx8qxp-spdif', 'fsl,imx8mq-spdif', 'fsl,imx8mm-spdif', 'fsl,imx8mn-spdif', 'fsl,imx8ulp-spdif']
-	from schema $id: http://devicetree.org/schemas/sound/fsl,spdif.yaml#
-arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dtb: spdif@2004000: compatible: ['fsl,imx6sl-spdif', 'fsl,imx35-spdif'] is too long
-	from schema $id: http://devicetree.org/schemas/sound/fsl,spdif.yaml#
-arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dtb: /soc/bus@2000000/spba-bus@2000000/spdif@2004000: failed to match any schema with compatible: ['fsl,imx6sl-spdif', 'fsl,imx35-spdif']
-arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dtb: /soc/bus@2000000/spba-bus@2000000/spdif@2004000: failed to match any schema with compatible: ['fsl,imx6sl-spdif', 'fsl,imx35-spdif']
-arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dtb: serial@2034000: dma-name: b'rx\x00tx\x00' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dtb: serial@2034000: dma-name: b'rx\x00tx\x00' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dtb: /soc/bus@2000000/csi@20e8000: failed to match any schema with compatible: ['fsl,imx6sll-csi', 'fsl,imx6s-csi']
-arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dtb: /soc/bus@2000000/csi@20e8000: failed to match any schema with compatible: ['fsl,imx6sll-csi', 'fsl,imx6s-csi']
-arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dtb: /soc/bus@2000000/csi@20e8000: failed to match any schema with compatible: ['fsl,imx6sll-csi', 'fsl,imx6s-csi']
-arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dtb: /soc/bus@2000000/csi@20e8000: failed to match any schema with compatible: ['fsl,imx6sll-csi', 'fsl,imx6s-csi']
-arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dtb: lcd-controller@20f8000: compatible: 'oneOf' conditional failed, one must be fixed:
-	['fsl,imx6sll-lcdif', 'fsl,imx28-lcdif'] is too long
-	'fsl,imx6sll-lcdif' is not one of ['fsl,imx23-lcdif', 'fsl,imx28-lcdif', 'fsl,imx6sx-lcdif', 'fsl,imx8mp-lcdif', 'fsl,imx93-lcdif']
-	'fsl,imx6sx-lcdif' was expected
-	from schema $id: http://devicetree.org/schemas/display/fsl,lcdif.yaml#
-arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dtb: lcd-controller@20f8000: clocks: [[2, 129], [2, 123], [2, 0]] is too long
-	from schema $id: http://devicetree.org/schemas/display/fsl,lcdif.yaml#
-arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-a.dtb: lcd-controller@20f8000: clock-names: ['pix', 'axi', 'disp_axi'] is too long
-	from schema $id: http://devicetree.org/schemas/display/fsl,lcdif.yaml#
-arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dtb: lcd-controller@20f8000: compatible: 'oneOf' conditional failed, one must be fixed:
-	['fsl,imx6sll-lcdif', 'fsl,imx28-lcdif'] is too long
-	'fsl,imx6sll-lcdif' is not one of ['fsl,imx23-lcdif', 'fsl,imx28-lcdif', 'fsl,imx6sx-lcdif', 'fsl,imx8mp-lcdif', 'fsl,imx93-lcdif']
-	'fsl,imx6sx-lcdif' was expected
-	from schema $id: http://devicetree.org/schemas/display/fsl,lcdif.yaml#
-arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dtb: lcd-controller@20f8000: clocks: [[2, 129], [2, 123], [2, 0]] is too long
-	from schema $id: http://devicetree.org/schemas/display/fsl,lcdif.yaml#
-arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clara2e-b.dtb: lcd-controller@20f8000: clock-names: ['pix', 'axi', 'disp_axi'] is too long
-	from schema $id: http://devicetree.org/schemas/display/fsl,lcdif.yaml#
-
-
-
-
-
+-- 
+மணிவண்ணன் சதாசிவம்
