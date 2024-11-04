@@ -1,70 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F194A08;
-	Mon,  4 Nov 2024 16:26:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA651C07D3
+	for <imx@lists.linux.dev>; Mon,  4 Nov 2024 16:32:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730737567; cv=none; b=N0SK7+HF5XVwT2da27cBOL1M6uvDVSXigtmTYs4CAHN1bBxos1TdPU2+QEnK5wQG7mUAppY+ysNW4VhGdbXGrukp7LKYW3x1jzFSEX0S51DsZCdmKaLv6NJFQL1amdizsmmeGEFvNKsc6Nov959QgOr6YvEZtdSmTCXx/8Cf9QA=
+	t=1730737936; cv=none; b=nPik6pOyciqkcvFMeAeYpemKuJhinsrge92Wsj0WOxyaE3PMPcTHqtzT3CV/Y3zDAabuI3pip3Ajh2LRqdtRj4ELMdpbPY5Su8ROxz3v69Gz1ViLoIM4cY7M/WNhWvgqdtrCeGfwhFIMVgzDCRumHQv0sawrGTh/Lliy0g+Ps3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730737567; c=relaxed/simple;
-	bh=f5iSCQILu6jeNnRD4Vf1L+vnN1Nn64JnpecDqJWxg3k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cp4s7xAoS3fWU5iuyo8aaXdBwRpuZ1IDZguVk7pgj7kEHRYRZYZjrryC1VnzlNgA8AXKVWOhrnhhxQhV+D6ysXLxs2wIknwXCkEHMg/y+zwNLdO2TuOVgY6S0s4/8PwmBeUrjN/KdRvr2dEzFtYYnDl1VZhtVEtIKu0qVPyU3OE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TBttzQuh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730737936; c=relaxed/simple;
+	bh=sGi3fK0LjnVxIOV1LLmeuJSH/YuBzL60e0cJVML6LeM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=L3giPPD2DpUjClpGAmM35V6IDnMv1bDXmWymdfmDY+yz4LbdspTSUvuw9bBb+PUe9SWVRqMgu4cLhlO/iRw5W83nr15Ao6s1SREZw8zcmrAvautAy/KNlVR0Hb1gBB1J5ggN0y+hINVaVw6EsmBvTI3zDHRUpRTMO48hG80nLfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=E9VTtnGQ; arc=none smtp.client-ip=209.85.219.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TBttzQuh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64791C4CECE;
-	Mon,  4 Nov 2024 16:26:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730737566;
-	bh=f5iSCQILu6jeNnRD4Vf1L+vnN1Nn64JnpecDqJWxg3k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TBttzQuhAUy4ws+HjxZVRBoFj/eTKphy4uy3qkLJPMlcWv75k+hTnlm4XSApl81SU
-	 5zVQgL/c5CkwgeBxkrG1N4SJ/DyP7UL/6PDLozAnh7/KGcKf2X/bFJMuAQ9myll1kn
-	 ZkrJpPgJjzGXhtXWEM13vPQjC6zNrtYFbGnNwMpXial/J8QKW42HSjT42tWiF50UNO
-	 uV5eBbBSWPfbPOIz763lRZLdGtXc5niJov4gyiwJEFBC74ftQ3RUwKyELoLYz+UWti
-	 sxcDoNUGI3hK9+kEv1D7CxgM2Nw7j/3FoYi2muYs12nCaULWSp3ksUsM4HRcMldjLi
-	 GhO9D9/39zeIw==
-Date: Mon, 4 Nov 2024 10:26:04 -0600
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, imx@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: Re: [PATCH v2 1/1] dt-bindings: firmware: imx95-scmi: Allow
- linux,code for protocol@81
-Message-ID: <173073756401.397912.9689901882829044689.robh@kernel.org>
-References: <20241104085622.177781-1-alexander.stein@ew.tq-group.com>
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="E9VTtnGQ"
+Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e2bdbdee559so4041829276.1
+        for <imx@lists.linux.dev>; Mon, 04 Nov 2024 08:32:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google; t=1730737934; x=1731342734; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9NvqcwznYJEbOfJTrxk1An08MpWkBKh12Fm23xyda6E=;
+        b=E9VTtnGQc7gMIgvhncso1mDR9vsnobpnVxeZnyOMaL5+oMQQKTbSYgdwJGVDFqsAdp
+         tyJNvo8lzSBNB5SmAX0eRLeNVrsw6pNDh7bIt4AXj7UDfdEhL1erJtGh4gQ1yq2ucGxr
+         pWDwl7G+8S7Tp0iPWs+1YMKdqX8xO0Zj+wMVM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730737934; x=1731342734;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9NvqcwznYJEbOfJTrxk1An08MpWkBKh12Fm23xyda6E=;
+        b=lv0ZySBJZ/P2xouu0XZtSV174HDpFZvzDTYHQg4cVeblwTxxv6IMuJuJQTVvwZ3GgC
+         +Mxh2RalOHpaMem1POeXllUe7gIY6vl/DkCeZOV1uTDeNxp0bISVIUjaM/5GbZCKM3Bz
+         FJ8pKwctWjKb2gG+aVCIuCNdY2AJxZz6xV8nXWI46WWjJsEYntknfoOd7SYNXcHKYat+
+         mvUnyodZACEMTm1eW/1UAZ3dUrICqi6LYayyql3giNYvCkFYmB/OUvHnjHUcxz3LCvnS
+         Mp9RPf51pQ9DaW/6ITeNZPPW96YQzLdSlfkriZo76HfRSTrL5/g9Aw2K9b5fW18zXBEi
+         Zwww==
+X-Forwarded-Encrypted: i=1; AJvYcCUFQ5Q/ohW0kqcr8sowvcT4qKVv/uEeLULYrFnRE5JRxUncfOeoWkDtr24TuXIFdG/ov7c=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyT4V3EIc9cvomaFgzdtG/u3wdFuNbcwJMKDzEi4YkEbJtFbrjS
+	fcOfV8CVNdovLSZWEUtnzK/ttLOtpW8anFBZDC+JQykE6fmmPqInUjn62DPl7NUnq131MfhnwkC
+	3hCiriHC0W89s6TNXscRSnuarv8BOAMP/socHEw==
+X-Google-Smtp-Source: AGHT+IELYvUmczkoinr/h7h4D5wovUbn46OmYDOIs9EuWMuur0hSgIUPkzT189bHxP5gqhspJGZhWZ+bvDCtj3+rRX0=
+X-Received: by 2002:a05:6902:10c3:b0:e2b:d610:9d67 with SMTP id
+ 3f1490d57ef6-e330254f5ebmr11392789276.9.1730737933890; Mon, 04 Nov 2024
+ 08:32:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241104085622.177781-1-alexander.stein@ew.tq-group.com>
+References: <20241028102559.1451383-1-dario.binacchi@amarulasolutions.com>
+ <20241028102559.1451383-2-dario.binacchi@amarulasolutions.com> <20241101173914.GA3786619-robh@kernel.org>
+In-Reply-To: <20241101173914.GA3786619-robh@kernel.org>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Date: Mon, 4 Nov 2024 17:32:03 +0100
+Message-ID: <CABGWkvrC6N4ujWfJSVyktyyAODUM5TTucFneqsX1H4PQK+nbvg@mail.gmail.com>
+Subject: Re: [RFC PATCH 01/10] dt-bindings: soc: imx-blk-ctrl: add
+ 'fsl,power-domains-boot-on' property
+To: Rob Herring <robh@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com, 
+	Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Lucas Stach <l.stach@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hello Rob,
+
+On Fri, Nov 1, 2024 at 6:39=E2=80=AFPM Rob Herring <robh@kernel.org> wrote:
+>
+> On Mon, Oct 28, 2024 at 11:25:24AM +0100, Dario Binacchi wrote:
+> > This property lists the state of the power domains, indicating whether
+> > they have been left on or off by the bootloader/firmware.
+> > This information becomes relevant, for example, in the case of supporti=
+ng
+> > the simple framebuffer.
+> >
+> > Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+> > ---
+> >
+> >  .../bindings/soc/imx/fsl,imx8mn-disp-blk-ctrl.yaml       | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> >
+> > diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx8mn-disp-=
+blk-ctrl.yaml b/Documentation/devicetree/bindings/soc/imx/fsl,imx8mn-disp-b=
+lk-ctrl.yaml
+> > index eeec9965b091..00aa0b8d8ea9 100644
+> > --- a/Documentation/devicetree/bindings/soc/imx/fsl,imx8mn-disp-blk-ctr=
+l.yaml
+> > +++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx8mn-disp-blk-ctr=
+l.yaml
+> > @@ -56,6 +56,15 @@ properties:
+> >        - const: csi-aclk
+> >        - const: csi-pclk
+> >
+> > +  fsl,power-domains-boot-on:
+> > +    description: |
+> > +      Provide the on/off (1/0) status of the power domains. It allows
+> > +      specifying whether one or more power domains have already been
+> > +      initialized and left powered on by the bootloader.
+>
+> Sounds like a common problem *if* we wanted to fix it in DT.
+>
+> Why can't you just read the h/w registers to see which domains are
+> powered on? Perhaps because some are on, but you want to turn them off.
+
+I checked, but there is no register on this platform that indicates
+the on/off status
+of the power domain. So, I cannot readout the power domain state.
+
+>
+> Also, for simple-framebuffer, I think you can list the power-domains to
+> keep on.
+
+I did it; I added the power domains in the simple-framebuffer node, but thi=
+s
+doesn=E2=80=99t prevent the genpd.power_on() callback from being called. An=
+d when
+this callback is called, the power domain is re-initialized, which does not
+maintain the persistence of the image on the display. Adding this DTS prope=
+rty
+prevents re-initialization that has already been performed by the bootloade=
+r.
+
+Thanks and regards,
+Dario
+
+>
+> Rob
+>
+>
 
 
-On Mon, 04 Nov 2024 09:56:21 +0100, Alexander Stein wrote:
-> BBM protocol supports a single power button, supported by driver
-> imx-sm-bbm-key.c. By default this is KEY_POWER, but can also be overwritten
-> using linux,code. Add a reference to this schema and add linux,code as a
-> supported property.
-> 
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> ---
-> Changes in v2:
-> * Added default value
-> 
->  .../devicetree/bindings/firmware/nxp,imx95-scmi.yaml   | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
-> 
+--=20
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Dario Binacchi
 
+Senior Embedded Linux Developer
+
+dario.binacchi@amarulasolutions.com
+
+__________________________________
+
+
+Amarula Solutions SRL
+
+Via Le Canevare 30, 31100 Treviso, Veneto, IT
+
+T. +39 042 243 5310
+info@amarulasolutions.com
+
+www.amarulasolutions.com
