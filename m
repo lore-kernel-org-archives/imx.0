@@ -1,70 +1,38 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD141AB526
-	for <imx@lists.linux.dev>; Mon,  4 Nov 2024 08:56:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.16])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 419174C81
+	for <imx@lists.linux.dev>; Mon,  4 Nov 2024 09:01:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730710604; cv=none; b=goGJNXe4EbgjvQxb3YySjmh/Oo6MvmCHvBpcNiQjS9ecDk9HN6Ase/DHF2Px8alRXocSSmeaMRNBVChb3WwQMv2gr0rF3T1t9iTpx7La9byQUK7EUVeZ2R8I0hclb1biV7vJAwtDGs2f6gt4yh6MRoagO5Famni0iyLsmY1Zd9Y=
+	t=1730710882; cv=none; b=p43acEbWboZTCQ4tIa28d3POmCuy2RvuEeACL3pSN8qvLPNPyL+yWYcIiDXR5v5eWrLb5DOLV1xekao7PdkiDAs8yOFZjFbJnraj6eWGFmRSSClBrtjWiQFWlUq9gk+l81TkB3yPVIVwrI3gdqOgL0UdTfr6fT2LpYy3cUV+H34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730710604; c=relaxed/simple;
-	bh=Vz20v+1mMjGBXMV3/Ud1+fs+2WLaeyAEPGs1X8XeUgA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jUkdTTpXAg6jJrnzLBqLQBGY9e0LVC4ihuXrB+3+jfedsdGQVNrle3GTJDOkC7cmQkocxBmbgns53BjNOqXdU02JNyZvS9Wgz8MCnkQeMttBW+e+A/d3/kUruNLbin0sJzMHhW4I3GC9Aq6AM1kFBphb6TZLs2aKi7DhccoyDhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=lMorisUp; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=eSuOISPK reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1730710882; c=relaxed/simple;
+	bh=TIwaCV90E0dYwJQtuESnJH+EQuk3RGMc4yJGVe0mNOo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IgzHIj3tM/ZNLqL+B6Si8bZEEHEi/sBIPQxeJp+EorO+NEgC1Dl8L0jmcNNbNsnC77yODlhpP8mfTKRlJoVtDxzgbVFoEl2kXe4XmiJgJ4bNBPT9sp/61RlX2RpTvdNnJkROqCpiFEtitXIo7RTE4baZUjtPskjShBnSpjRXv+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=eLM8If5E; arc=none smtp.client-ip=220.197.32.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="lMorisUp";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="eSuOISPK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1730710600; x=1762246600;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=bZVznDietMqc8CDisChXL1GqxDSxeGo8m3Z1J4jxM2Y=;
-  b=lMorisUpN+AQUmwWYZhPvRvHnHpgqFo2nMD+p0/zVQQDyWV6/9UL1oKr
-   KfUKRi18WlA1j7PBVETDffMcMI+WwkA4P4q1nWJw8DjcjySsJ4qpQYGJC
-   RJkQxrSIhIXsRDhcGAbcAXKXeaOqdu+CsC4omZdAiSdWj4kuAffw8o1gj
-   jIgbmrjjGZ73RGBYYPczF+gthKFWfskdm0GPEP620HtHOHLtkS6MqIjrG
-   5X15IX8NYd4DkpvHYuVDydyVMmu58YZi6V/l9YkK16h+SWjJPOHZy0cqe
-   WwF/cpl2xWxRpMM7ZesozP6skSaW35T+oQlhhiisZu8igqZllQR/AvyHo
-   g==;
-X-CSE-ConnectionGUID: M8Pqh8T1SQubNcH7SyS38A==
-X-CSE-MsgGUID: NH7lcu2QSreFwOgS1H6gcA==
-X-IronPort-AV: E=Sophos;i="6.11,256,1725314400"; 
-   d="scan'208";a="39825187"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 04 Nov 2024 09:56:32 +0100
-X-CheckPoint: {67288C40-C-90CD5875-E0265C0B}
-X-MAIL-CPID: 0A056B4CA4F8B68938265580AB1C91AE_3
-X-Control-Analysis: str=0001.0A682F17.67288C40.0091,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 788D8160A4B;
-	Mon,  4 Nov 2024 09:56:26 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1730710587; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=bZVznDietMqc8CDisChXL1GqxDSxeGo8m3Z1J4jxM2Y=;
-	b=eSuOISPKfPImLq0eXXN5Lwhyv503U1T0BcpmaKEIt/m3tpbtQ1gaweKcvynPFBkRcVvBCl
-	ZGJps3JG6ZdK+kOz6F0mFQgxjass7YbMLdf0kAPzhq/cFriJL7weQK5S5DkZl8nOuCg1K2
-	aEGVcKqsHUoe1LqOWgEOYV7pmsxtlMRt5eJ1AAYXdcKX4abFWns5h61FteR4//7+7CA2xX
-	qZRLoKEBPp/42gh6GY+0fA0E29eN5ABwAlsPpBtQQoRXA1InzslxdhPUYspnKyTyIbtPlU
-	SgG3Yh7G731Si5uDbqPhZ75eEF8s9Cb0XuqXiXbscyA9TWUzZnlQgYz8iKtZXw==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="eLM8If5E"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=XcJwa
+	whZqRXPK0DRxITSYDPbNUWw2cWbdM0jDz0Es4I=; b=eLM8If5EJ/YNb5Puu9fgB
+	kTFUC1l9Wys78gSJaByD8OUdPVrTO/9gkGSUaLdYHXB2TllLif78zRsCGp25A3m4
+	fFW3YE+8PqAd1s3rm8ztUYm7Uh0m2EUcj/ySXNiLxcV1syN80y1+eWXIdlsuavqP
+	IuqGtBtBOTlEur+yx9wwHU=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id M88vCgBXD75LjShnSBmkAQ--.16437S2;
+	Mon, 04 Nov 2024 17:01:00 +0800 (CST)
+From: Shawn Guo <shawnguo2@yeah.net>
+To: soc@kernel.org,
+	arm@kernel.org
+Cc: Shawn Guo <shawnguo@kernel.org>,
 	Fabio Estevam <festevam@gmail.com>,
-	Peng Fan <peng.fan@nxp.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	devicetree@vger.kernel.org,
+	kernel@pengutronix.de,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/1] dt-bindings: firmware: imx95-scmi: Allow linux,code for protocol@81
-Date: Mon,  4 Nov 2024 09:56:21 +0100
-Message-Id: <20241104085622.177781-1-alexander.stein@ew.tq-group.com>
+	linux-arm-kernel@lists.infradead.org
+Subject: [GIT PULL 1/6] i.MX drivers changes for 6.13
+Date: Mon,  4 Nov 2024 17:00:50 +0800
+Message-Id: <20241104090055.1881860-1-shawnguo2@yeah.net>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -73,47 +41,39 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-CM-TRANSID:M88vCgBXD75LjShnSBmkAQ--.16437S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrZry5ury8Zr1xJr4DGw43Awb_yoWkXFb_Ca
+	y7Xa48Gw4UGF15Ja4UGFyxZr9rKr4xGr18X3WUtrW5Jr47Ar1UJF1Yqr48Xr1DXF1rGF1D
+	Cr1UJr18AryUGjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8x-PUUUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBAyNZWcoXw6YrQAAsL
 
-BBM protocol supports a single power button, supported by driver
-imx-sm-bbm-key.c. By default this is KEY_POWER, but can also be overwritten
-using linux,code. Add a reference to this schema and add linux,code as a
-supported property.
+From: Shawn Guo <shawnguo@kernel.org>
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
-Changes in v2:
-* Added default value
+The following changes since commit 9852d85ec9d492ebef56dc5f229416c925758edc:
 
- .../devicetree/bindings/firmware/nxp,imx95-scmi.yaml   | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+  Linux 6.12-rc1 (2024-09-29 15:06:19 -0700)
 
-diff --git a/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.yaml b/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.yaml
-index 1a95010a546b1..c1b7140ee0098 100644
---- a/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.yaml
-+++ b/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.yaml
-@@ -12,13 +12,19 @@ maintainers:
- 
- properties:
-   protocol@81:
--    $ref: '/schemas/firmware/arm,scmi.yaml#/$defs/protocol-node'
--    unevaluatedProperties: false
-+    type: object
-+    allOf:
-+      - $ref: '/schemas/firmware/arm,scmi.yaml#/$defs/protocol-node'
-+      - $ref: /schemas/input/input.yaml#
-+    additionalProperties: false
- 
-     properties:
-       reg:
-         const: 0x81
- 
-+      linux,code:
-+        default: 116  # KEY_POWER
-+
-   protocol@84:
-     $ref: '/schemas/firmware/arm,scmi.yaml#/$defs/protocol-node'
-     unevaluatedProperties: false
--- 
-2.34.1
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-drivers-6.13
+
+for you to fetch changes up to 22b03a4e957e462b380a982759ccf0f6554735d3:
+
+  soc: imx8m: Use devm_* to simplify probe failure handling (2024-10-18 11:13:53 +0800)
+
+----------------------------------------------------------------
+i.MX drivers changes for 6.13:
+
+- A series from Marek Vasut to probe soc-imx8m as platform driver,
+  so that it works properly with 'driver_async_probe' kernel parameter.
+
+----------------------------------------------------------------
+Marek Vasut (3):
+      soc: imx8m: Probe the SoC driver as platform driver
+      soc: imx8m: Remove global soc_uid
+      soc: imx8m: Use devm_* to simplify probe failure handling
+
+ drivers/soc/imx/soc-imx8m.c | 174 +++++++++++++++++++++++++-------------------
+ 1 file changed, 101 insertions(+), 73 deletions(-)
 
