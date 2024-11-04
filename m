@@ -1,108 +1,135 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75CB2B9A2
-	for <imx@lists.linux.dev>; Mon,  4 Nov 2024 15:12:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3464922075
+	for <imx@lists.linux.dev>; Mon,  4 Nov 2024 15:15:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730733161; cv=none; b=W38M9sXJl3QB8GKxaov4vDpAsKHfSxFc7JhPPsspVPZ3COzN3sNEZvjgGQ1deN1OAguS2cunOmDrBMHLsJanJr7PJ6hHXfjfCxUs8UF3VleQF+pQxuyBam5zRJ39MklWoqSGjihdhZFbMfGdRMjRxdRktmfVHhAFkocqVWnmKpw=
+	t=1730733346; cv=none; b=bL/WaoTBnLzlbRvbb7hhHcpsQoqIDDfeS2r4LH0cP+LbIqLZDI0WiBq86fD6t498Hz3vqua6Ns8Q/O7XPemc5fu6CDn/X+MeyPuL5TERWcDeMZktmROVAdFeP0IexWtZdvw5kMBLaPmTrGXh19WbVBCQLdKy3E+w7S63kxFscdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730733161; c=relaxed/simple;
-	bh=qkGrV1uyjS9Cqhj5IWzafZBjQzq/m8MRer83C1OFZLs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mZCb+zd0Qg1JaojLUzVP+thcd6Ic/9n+/7+AX0kcZTAWyuveTmhpOAmrzHoglACPjH2A57YpgTCtrL3Fmkmq24Qsf4Fm7kGmzY0oSN0nknjYj/N/x3TVO3drm05l2PjfMvppclXwtFWvLur15lXdIYIAf1utI30PnM1zZ/f+VAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Zf7gu1In; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1730733346; c=relaxed/simple;
+	bh=yC5x0Kr3GQ+y52MwCBTCIIJOZYvx1zk4EFtR7xU0I1M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D41nu//WbFlr2C/JaCw/O+4/XXwQtmFKhsSMTtoYDrteJVR1dybsiyYFAkcBrX2SdoSnzFrdxy5y9RzDQccIedSuXvSywI1xf+B2s3ozM2HmDr0lpivbAwzU5qt4NS9jDwjC8tX5DQ66H+r+xdDE3/x0DR+tQ3AC8OftHzPwzKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=USz6yJbY; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Zf7gu1In"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-71e8235f0b6so3826460b3a.3
-        for <imx@lists.linux.dev>; Mon, 04 Nov 2024 07:12:39 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="USz6yJbY"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-53b13ea6b78so6653703e87.2
+        for <imx@lists.linux.dev>; Mon, 04 Nov 2024 07:15:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730733159; x=1731337959; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=8JKuo9CTAykduP5fMt3ym5ibpLBBhoEvoUSqeN+sce8=;
-        b=Zf7gu1InvH5FKCDCoxs6z+CLYxR4gZmFEfI/nFFTsKoqm5IOARi/7TZhtEj2TVduwf
-         9isR/7HS7OqQucq/T6PuXuS7kYA7OjI+Ctn8ilInLr9HMe5qxEGnsh0Z4GyoDI2hDb9B
-         0qcBj260CwB6XMKQq2yGieA14Dm04uTMGfkT8DX8lrsGa7rYx4i4cqMXeZ4RMhpok5vE
-         1CG99QsNRaYMUpM2KmxhjZ0J2+XwSWs38CtMhM8shjA9oML/k49wd2R2CoW3/4JrWP5y
-         S4/9AHRPD/uTS5REPHz47N2rCGhiC26/5OyrwKDzmnWOIPMI0AlDXf0K8XigyxcjKb+O
-         Zuiw==
+        d=amarulasolutions.com; s=google; t=1730733343; x=1731338143; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JCLk/wc3MKwAF912ySsq2eZpu6hxxtGQsnffSicJSqo=;
+        b=USz6yJbYq73H1w59z9yn+mF3td9cTjVbqibg1LneOyPU7qE/qmyImfzX1IGSR7n7sD
+         owOtYIbK/LBO93SsIFbgJ9AA94tEIT8su4ZpZ/G3nJuqDkYccKK9HjGBLfwNS54Q7wF0
+         uAoVCHT1M0+gdOFjo1UPBK67vwpGygdHw+/hg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730733159; x=1731337959;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8JKuo9CTAykduP5fMt3ym5ibpLBBhoEvoUSqeN+sce8=;
-        b=QrcyUiuzIxORUT/VHhWgSrf7L2lEVmVR7xEU+85BuU0q2vHmGZQXoFQJg5soi1W6uH
-         1mq+DtWyhoYeo2h8vHhSwB2NNKvNs5zK8JwyAn4WzZk8LJlRwGqveyLYlPVBNQX3gj7s
-         XAxpC0zDKwZWoxGoaYXuDOhTN4LDBGuHJUFJBIUDtTK/uL17zlGRgk8VfxZK53jEr6hX
-         Mzqgxdo/rek9kwwR1gfc6gfPCSZzo2srCTMv5uYDko9beMTk0i7kqLojrbf3DJw8bScl
-         DWkz4QkWdVjAaCDfdRgAJGR84954PBvnLcI5654/ISFt8tsH3VXVN/r5HFQQRjNSWEO+
-         oAQg==
-X-Forwarded-Encrypted: i=1; AJvYcCUCAogRTcwb0jqC6WO4UpkgkM53tdgkWIlHVa2MAULLu1QINJS/7SvRZANBWoJ4/wARzeQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzFFI6uK5CX+aczN7hSitWzSezshkNZw/ERmo4QaoB9uJ0yH3zI
-	20UgE8l98LeJryj0eCaGmAiLX+x0rMvo0ATSu3bgV6AicL2XPohRYIXNAmqD0A==
-X-Google-Smtp-Source: AGHT+IEGoyeuH2l+G925Avh2F986QTf6nNmEZxSYqlhaBxmXN61/88Q3SSZ9ynilZvc+TeUuYfyKeQ==
-X-Received: by 2002:a05:6a20:7f81:b0:1db:dfc8:9d8f with SMTP id adf61e73a8af0-1dbdfc89d96mr3916387637.44.1730733158828;
-        Mon, 04 Nov 2024 07:12:38 -0800 (PST)
-Received: from thinkpad ([2409:40f4:3049:1cc7:217b:63a:40ce:2e01])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7ee452991f0sm7076953a12.13.2024.11.04.07.12.32
+        d=1e100.net; s=20230601; t=1730733343; x=1731338143;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JCLk/wc3MKwAF912ySsq2eZpu6hxxtGQsnffSicJSqo=;
+        b=qye93PTCdEFAEBHnsy5tWWqgsNF6jRUFBtHMwQqwldkpskvN5EJ20F8eWa4uNu2xG2
+         sNzGvymEjBhbzYGdzXNeMKiD4YJainxfmC2oHih+N2KNnl8O+gKgKJP9gkDnk3RFDwm5
+         hW8yzv2EsAuWzKOtfCx5O3L4CWQmrR/cufqJCUvNypzT/C9iuymVGUg/uK4MF1HSgbwB
+         8xH9KZUgMaqDbqZwJHJcibJ8actSOlvw5+/fnYa5wWWRHxTuvEQ+JVj1urXpsyst/wMm
+         jpVU26wLDcL9JqE5daDCatq3lTfDTK4xGHC+8958B/X+9z6jjXGUujgTf0TR5CetnhDc
+         q1Wg==
+X-Forwarded-Encrypted: i=1; AJvYcCX0W99/kJth1ftTUBOynK915GMMwzbnJ0svaxqnrt9H4A5r382tyEM4nfXDliK3vVFg5ZI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyZZSHRZ12usBIae7N8ILpCnNnQdipqJRRuKVmrxSYSNBs0Muqc
+	FfO1cA133wUIN1KvPnsEl6/e9VgD7MOocJrFE4nmijxldbgF/nSA/PDKk1p+9VU=
+X-Google-Smtp-Source: AGHT+IHZ+MhzY+cG10/XeJWXQh7+JhLBbhGrXh2ptOIna5FlTvipU/iFvh7dLTIkTlqmlf8NGjimig==
+X-Received: by 2002:a05:6512:1087:b0:539:936c:9845 with SMTP id 2adb3069b0e04-53d65e0b4afmr9070518e87.37.1730733343135;
+        Mon, 04 Nov 2024 07:15:43 -0800 (PST)
+Received: from dario-ThinkPad-T14s-Gen-2i.amarulasolutions.com ([2.196.40.195])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9e564c4fafsm561885666b.47.2024.11.04.07.15.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Nov 2024 07:12:38 -0800 (PST)
-Date: Mon, 4 Nov 2024 20:42:30 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>,
-	Stefan Eichenberger <eichest@gmail.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>, lpieralisi@kernel.org,
-	robh@kernel.org, bhelgaas@google.com, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	francesco.dolcini@toradex.com, Frank.li@nxp.com,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: Re: [PATCH v4] PCI: imx6: Add suspend/resume support for i.MX6QDL
-Message-ID: <20241104151230.bxsdu4fcf6fssx4e@thinkpad>
-References: <20241030103250.83640-1-eichest@gmail.com>
- <20241101193412.GA1317741@bhelgaas>
- <20241102120403.GF2260768@rocinante>
+        Mon, 04 Nov 2024 07:15:42 -0800 (PST)
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-amarula@amarulasolutions.com,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Michael Trimarchi <michael@amarulasolutions.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v2] arm64: dts: imx8mn-bsh-smm-s2/pro: add simple-framebuffer
+Date: Mon,  4 Nov 2024 16:15:20 +0100
+Message-ID: <20241104151539.1678388-1-dario.binacchi@amarulasolutions.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241102120403.GF2260768@rocinante>
 
-On Sat, Nov 02, 2024 at 09:04:03PM +0900, Krzysztof Wilczyński wrote:
-> Hello,
-> 
-> [...]
-> > > Without this patch, suspend/resume will fail on i.MX6QDL devices if a
-> > > PCIe device is connected. Upon resuming, the kernel will hang and
-> > > display an error. Here's an example of the error encountered with the
-> > > ath10k driver:
-> > > ath10k_pci 0000:01:00.0: Unable to change power state from D3hot to D0, device inaccessible
-> > > Unhandled fault: imprecise external abort (0x1406) at 0x0106f944
-> > [...]
-> > 
-> > Richard and Lucas, does this look OK to you?  Since you're listed as
-> > maintainers of pci-imx6.c, I'd like to have your ack before merging
-> > this.
-> 
-> If things look fine here, then I would like to pick it up.
-> 
+Add a simple-framebuffer node for U-Boot to further fill and activate.
 
-LGTM, feel free to pick it up.
+Co-developed-by: Michael Trimarchi <michael@amarulasolutions.com>
+Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-- Mani
+---
 
+Changes in v2:
+- Fix the warnings:
+  (ranges_format): /chosen:ranges: empty "ranges" property but its #address-cells (1) differs from / (2)
+  (ranges_format): /chosen:ranges: empty "ranges" property but its #size-cells (1) differs from / (2)
+  by setting both #address-cells and #size-cells to 2.
+
+ .../freescale/imx8mn-bsh-smm-s2-display.dtsi  | 28 +++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi
+index 7675583a6b67..98dec3c42060 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi
+@@ -4,6 +4,34 @@
+  */
+ 
+ / {
++	chosen {
++		#address-cells = <2>;
++		#size-cells = <2>;
++		ranges;
++
++		framebuffer-panel0 {
++			compatible = "simple-framebuffer";
++			clocks = <&clk IMX8MN_CLK_DISP_PIXEL_ROOT>, /* lcdif */
++				 <&clk IMX8MN_CLK_DISP_APB_ROOT>,
++				 <&clk IMX8MN_CLK_DISP_AXI_ROOT>,
++				 <&clk IMX8MN_VIDEO_PLL1>,
++				 <&clk IMX8MN_CLK_DISP_AXI_ROOT>, /* pgc_dispmix */
++				 <&clk IMX8MN_CLK_DISP_APB_ROOT>,
++				 <&clk IMX8MN_CLK_DISP_AXI>,
++				 <&clk IMX8MN_CLK_DISP_APB>,
++				 <&clk IMX8MN_SYS_PLL2_1000M>,
++				 <&clk IMX8MN_SYS_PLL1_800M>,
++				 <&clk IMX8MN_CLK_DSI_CORE>, /* mipi_disi */
++				 <&clk IMX8MN_CLK_DSI_PHY_REF>;
++
++			power-domains = <&disp_blk_ctrl IMX8MN_DISPBLK_PD_LCDIF>,
++					<&disp_blk_ctrl IMX8MN_DISPBLK_PD_MIPI_DSI>;
++			dvdd-supply = <&reg_3v3_dvdd>;
++			avdd-supply = <&reg_v3v3_avdd>;
++			status = "disabled";
++		};
++	};
++
+ 	backlight: backlight {
+ 		compatible = "pwm-backlight";
+ 		pwms = <&pwm1 0 700000 0>;	/* 700000 ns = 1337Hz */
 -- 
-மணிவண்ணன் சதாசிவம்
+2.43.0
+
