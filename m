@@ -1,150 +1,349 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2051.outbound.protection.outlook.com [40.107.22.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E2C1A7AF6
-	for <imx@lists.linux.dev>; Mon,  4 Nov 2024 08:05:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730707512; cv=none; b=Jt3ZJ+ZwEBLl93Jp2+auLmLxfXTgsesj+KwhF5BkUfVdr40b71L/pFLdskKErVMN3I9OARnb1LPQJz8qkcqXphBZDAeoIofD1EKh7Pc+EwS2Hf+h1JhImoQ98j8JWVwTbSYf7B2eT9IikCmoHT/4znfrAEzPDc4SkJ7Mxr5zD4w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730707512; c=relaxed/simple;
-	bh=wIth8q+oiY1s7f4175bP4VdisldBLxMivwg/wJA5TVY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ErQmeXeQ7HnFOlWNKEheUfmJBPIvuGG/sVqHKC2iWq3yOXBkJhhZvC87T81l4eI2Lk39InjZmsFUSON0OCrEtOaE09dNzBR7UbYA8r2xdDOUf2AsoWj8PbE1WBwnOwKR+PszllqhylBHqgq8hGerWVtMsP//QQgXGbCQ0Oa6OE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dFo+ZDIl; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B03D18A6C8
+	for <imx@lists.linux.dev>; Mon,  4 Nov 2024 08:22:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730708538; cv=fail; b=aOopBwEoiROWdwKC9MqY1aPUkGNsfSPHy+2tT33FFQ/lcIUE7EMjnE3rzlQB3Yg016e3XuVDYsRxucYJQP3JOa63Ggb9wEoSX7qCChffPx0UqAtSH+g+nTuyxhu9cF58BtUZS8Kd+7LUDdh3uXGQBKymlF6v/mEgg/YCPjazkJU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730708538; c=relaxed/simple;
+	bh=KLa9TJ6/eQ0Z4wimt6I4+CZIUUBa41Z081DsJygW8Bw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=hInIOhcAcKTzuVuo/yil3DAs4V6d9GoTeaRkoVCJWA1DEL0IIGhyvqPUORduBO5NeUGq6H4m2e/nEhGESXbtE8J3ZGJkChy5VquyLlP+N+xamGL4QR948BuHARAe2GVt6Dh/WgxNoCqWRHbJF2GMRNTO0O4pWhdzOk+ZpLYD9VE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=DF/na4Xn; arc=fail smtp.client-ip=40.107.22.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dFo+ZDIl"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-37d3e8d923fso2684523f8f.0
-        for <imx@lists.linux.dev>; Mon, 04 Nov 2024 00:05:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730707509; x=1731312309; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rmjx6zA4K8y+qr1LBwquRLGW8I8RIiLSEH4MjF5V3eU=;
-        b=dFo+ZDIlC0akg+h+j4GNcnZKn82WM9dXBRpEpl+ieM4no9MvluOrC6rd1mSa4+f+LV
-         p+Zk/QtiJxMxb91vDRYRQFcukOaclgvTzgemoBDTkfxyilPsw8wZYURaYH1+3mBNaoF0
-         oZYMvNF+zPpdc6+1IEY2+MB9gT/pVkL602Nu+PRFhT4G/X8dghRVsRWWjEysA7nXFHUj
-         F2ukqWinaVNrFYDuQnmgpQCr9yDcCVZTgPSgYQxScZ0gYSpy+lGII9KTQOBGTPSGrouw
-         AkuOu937MRX7lCUvtVo2UomUBPKIogRunnztbb7bVl2oBiHXtj0F+KrfjLAMijPuzaTy
-         lUPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730707509; x=1731312309;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rmjx6zA4K8y+qr1LBwquRLGW8I8RIiLSEH4MjF5V3eU=;
-        b=wKXtd2L/+cMX9RnXqOxYPm3IEtbxrZmIPyK//Z5zq+/AgmTWOEBZCwt02fNq6z4a15
-         GM11cOUPsxjOe7zjDsbKvX/IZncxZpjPLkXKvFxO+K1fdc6P4tqnxaylBHrjDFr3HJE7
-         OyPRqGFkrG9/EXDEmO/uFrC+1mEeIiJBvB+femxQmIaiFCsm0Y7SrKWfMpQUw1QYDnuc
-         Rr444pobKig86AtRvP6+5SEUHH696pWZQOfXiAbe25wkJ8kvx+KuhlEISLzMi5iauO+R
-         BSAZgtFU/pzYThbwomhk1SdQfa8sDCbWAa/Zs/b49WsBzjDPsrS8pUOTt9x+GzTh1KY/
-         diQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU4jZOPpVcyJso4759BaAmtj6a5qJ/MWwyzXMiRyyb0KUrscbC2e6WTxb6u9/51YMwNxT0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzMW3gMEF0wmqWCVMPX77mTMYlhCoXOK4znbsnwCJwiuh+4WmZl
-	rIAwdU2oDnrHe/dBBFmLRmByRRFdMGpDtWB3OGpibTJQJJEiWoHK
-X-Google-Smtp-Source: AGHT+IGJZ1N0iKEAhj3LObQcIfZjoje2HIVVrTvS8omAzjtiJyXmwbcvyD/6ltNJYT44sT96drjLmQ==
-X-Received: by 2002:a5d:4d48:0:b0:37d:49d1:1e89 with SMTP id ffacd0b85a97d-3806115ab56mr23099545f8f.27.1730707508506;
-        Mon, 04 Nov 2024 00:05:08 -0800 (PST)
-Received: from eichest-laptop ([2a02:168:af72:0:58c3:98c7:13bb:aad2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c10d414csm12396504f8f.26.2024.11.04.00.05.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Nov 2024 00:05:07 -0800 (PST)
-Date: Mon, 4 Nov 2024 09:05:06 +0100
-From: Stefan Eichenberger <eichest@gmail.com>
-To: Stefan Wahren <wahrenst@gmx.net>
-Cc: Shawn Guo <shawnguo2@yeah.net>, linux@armlinux.org.uk,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, elinor.montmasson@savoirfairelinux.com,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: Re: [PATCH v1] ARM: imx_v6_v7_defconfig: enable SND_SOC_SPDIF
-Message-ID: <ZyiAMpjmXuVMi5FX@eichest-laptop>
-References: <20241030122128.115000-1-eichest@gmail.com>
- <ZyXTFhEm9UCBii2c@dragon>
- <ZyY41nJY9ghwe-Y4@eichest-laptop>
- <065268d6-84eb-4247-b834-40a9ff32c1f4@gmx.net>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="DF/na4Xn"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=e027amxHJHXKm6WG3Ncd0NkeA3lcIkN7TXpGyFZ4flp2L6ogWVZyRUBi9gSjQdapncmdQrrYKZMSL3P20dx0OZcs0/74MhIdLPE8nH2ZBaSkwLeFgttWZ+1nErFOPdPKPVefHWv/sXL1fUddkHhsqM568aAF67lnkvpm/wWz2W/v135Fb/yT5raPC+jfGrOPCt2VYBJrsW3VBzcreZ6Gx7RftnTx9QEMNEXQTUSXcaJC6DK46E8O3zJ4sj/1hMwSBphBuqcCuLpfmJnPrwZjh/hICgazQo6HgW2+TfyEzjntCBjyc+KCrN2ZxMEvLl+E5RDsVjQguz3OklA4kzd1zw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cZdCNBd+0Z1WAhEoqzPLBq1pHpizyJ4yWYnCNDGSkvc=;
+ b=ttPQ4R6VLFDTRxw1iiWLIgUEHd+2v5NwlKFN0Z9KzL/hC/0+gn2agnPKrs2A0OpFTz7+VWR7n3z3hTpIpsO5U4yC27PhNnxYtoh35OgzrTSnWRxKMhv8rRKf+q7A9p739A6FGVRIwsTEgAK1bJnT0ouPAB4WRylht/bkVGt6gVrALJhijfS1R5zm0Tkb1ZIjr+kK3yQKqSaqVm69TaqYlmUjh8Y4wUn/5uH1LyTFDBmmumHwyNXh2EqCqf7OUmlKPBZLXKZ90tOL//4biHqtag2yKfpGUuSX7z2506JbdWacjTZpaU2EFDh2lJUqu70jWpJv9xgiutDHu5ErKWfiig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cZdCNBd+0Z1WAhEoqzPLBq1pHpizyJ4yWYnCNDGSkvc=;
+ b=DF/na4XnRyaA0FCGfltVxD/1iyHApxh/MeFV4tt4Q/r/ckOj8oBAE2JQK4oK57y87Ri5oTvyqv1td9WHZYVpQ+hU5E0nQWxZRcSmaEMr/aCvC4PmeTbGOSvkK+ebGwkRR0QO4n8m4rnAZWEKYtrlcuORVYqtLsmVaJLztAwHIkiVnZZRsreku+NysxnKZYM4A8huelv6TuYzo7xh3loEkraJSTpbZclY0umLeu7PSLu2hRi++f+vWic29fTuKUIOIYGfgOQUS+YHvLNt6fsOuG9tD5+3YoVkCv/35FWSAxV4L1eTmE/bFCjOjmVWlkKWfo0YRIZ+fYucqRWA3irAOA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU0PR04MB9251.eurprd04.prod.outlook.com (2603:10a6:10:352::15)
+ by DB8PR04MB6892.eurprd04.prod.outlook.com (2603:10a6:10:113::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.30; Mon, 4 Nov
+ 2024 08:22:11 +0000
+Received: from DU0PR04MB9251.eurprd04.prod.outlook.com
+ ([fe80::708f:69ee:15df:6ebd]) by DU0PR04MB9251.eurprd04.prod.outlook.com
+ ([fe80::708f:69ee:15df:6ebd%6]) with mapi id 15.20.8114.028; Mon, 4 Nov 2024
+ 08:22:10 +0000
+Message-ID: <0e3edc61-02c0-40cf-883f-9b8cd6019c49@oss.nxp.com>
+Date: Mon, 4 Nov 2024 10:22:05 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/4] dt-bindings: rtc: add schema for NXP S32G2/S32G3
+ SoCs
+To: Frank Li <Frank.li@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ linux-rtc@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ NXP S32 Linux Team <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>,
+ Alberto Ruiz <aruizrui@redhat.com>, Enric Balletbo <eballetb@redhat.com>,
+ Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>,
+ Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
+ IMX Review List <imx@lists.linux.dev>
+References: <20241031083557.2156751-1-ciprianmarian.costea@oss.nxp.com>
+ <20241031083557.2156751-2-ciprianmarian.costea@oss.nxp.com>
+ <ZyOyvgw0qZ4YKwTi@lizhi-Precision-Tower-5810>
+ <4b82e393-093f-4477-bf0f-ee559a3b97c1@oss.nxp.com>
+ <ZyUWhLdODsNk7KTe@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+In-Reply-To: <ZyUWhLdODsNk7KTe@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AS4PR10CA0005.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5dc::13) To DU0PR04MB9251.eurprd04.prod.outlook.com
+ (2603:10a6:10:352::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <065268d6-84eb-4247-b834-40a9ff32c1f4@gmx.net>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9251:EE_|DB8PR04MB6892:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2c8cb3f0-b6a4-4b64-1668-08dcfca9c708
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?amM5aTA1M1VTdjF1RnB5MHFWeWt4eDY4T0lUZDFHcDZ5QzlHMHdHU1hKVWR3?=
+ =?utf-8?B?NmxuYUw3ZXhLWkFFNmFZRmlKSExMUW5lYm41Y2JRYnZjMHdQa2ExWU11bzVP?=
+ =?utf-8?B?MTZyeDYwUUdTalJ1VGVuZFF2TGJuT0szR09kZXkrRDJraXcvTVR4bzh4dG8v?=
+ =?utf-8?B?UzJjV3krUjhkT0ZCZXM0dXNGT1RtMU9IZWw4QXc3Q1B0WG93eTlFNnFsRjZC?=
+ =?utf-8?B?WFo4dDNseERTQTd6NW12U3Z5amlLWk9ZdjVPS2doaFlvTjBvWjkxTmlvR3Vz?=
+ =?utf-8?B?ejRKaTZsTUNabjZYZHVFdjhGWHc5ckxNQ2FiZ292STRvWlZjQmJhUHlscFEv?=
+ =?utf-8?B?K0NqT0V5ekdDR0gyVHFIakZIYXpEcnRtMjRHNU55YzRYNDRMNGhaOHMvQ2hy?=
+ =?utf-8?B?djIyR2RGeEtYQkU3cU9seUh6VUlrbGcyelpVUXFTTTZrS3Z5cm5VSGhXMzll?=
+ =?utf-8?B?WEVlK0VUbXR2Q3R5dWs0cWxFQ1Q2SjlObVI1YVlJTmk4UXlZZTRyZC9qYzln?=
+ =?utf-8?B?bzl1R2h0ZG1CcXdZWElYTTJSQUdUYzRBTE8vZklGZWY5N24rOEpweS9Pd2FL?=
+ =?utf-8?B?M25vL0hhenYzcmhDQU55Z1lCbjZsNWd6Z3N4WnUyNWRJZGh3RW5sSllHdHZl?=
+ =?utf-8?B?VitpdURoWHB6SVZlK2FEdzdHeHY0S3hlRlJDNzRZRVI5eG5uM2Y2Vy9ac2JG?=
+ =?utf-8?B?OXJlcnpQT1hBOW1ua04yNjZIbkZ4NUgxK3lqSnZJV21GZHFEUWtCalptTzRu?=
+ =?utf-8?B?STdPbnhrT1VXNU9MYnFXd2JnWGc4cUo0QlRlbWlSYUpxM0p3d3lnRkdNR25C?=
+ =?utf-8?B?RnZqL3A1bnd3bjg5WEpUYjgycERyWEduWTZRK3h6Y0VXeDRnMFhqQncvZmdw?=
+ =?utf-8?B?cWJ1TUd0czBMcDhRVGNNWk85bXplS3l4T21BNUZvTFZ1dlFoVGUxc0phblZ5?=
+ =?utf-8?B?eGFBU1Bwd0JPM2VNZWljU2pOYVZFZ0hSRFFFdmlhWGlST1RUN0sxOG5yMGJr?=
+ =?utf-8?B?NWFTblVmM1c3MFVBdXFoRXNCSjJ5K2szS0RnY05tdDQ3YVBSRUNtNFc3TklH?=
+ =?utf-8?B?QnpWcmhmVTVnTmw3amdEL1ErU3lnTFNlbi9sYmloMXBwV05oRm5hUjZmcDFW?=
+ =?utf-8?B?VWlyUE9GTGhoUktNS2hvQS9FMWEyUmpET1cvWUhvUWpQc3pGdGJWWEk4Z3dx?=
+ =?utf-8?B?M2IzT1VKeVZpUXR0cHd0aDh0dGdSeUEzczhUbCtYYWhNaVVnZG5QQmVYTHhy?=
+ =?utf-8?B?anBFOGQzam1BR3QwVllzNnFzU2lSTWwvSUllSzhMSVNTS240dE9qVlNGUHNi?=
+ =?utf-8?B?cm42aGtIbkhtNk5PUnZwYlZzU29RVHZ5cm9Tb0dQL2pnL09Nc21ycjlUc1dL?=
+ =?utf-8?B?K2twN0VTWGljamFEMDNxQWNHRlprS0tiajVCdi8rWGh6Umx5dGthSjRTcEhP?=
+ =?utf-8?B?bmdpZVB5SHNEeWlId3hWeEp6Y0tWb3NWamcvbFhjRy8xbHcyenl1NU9tOWR1?=
+ =?utf-8?B?aUM2QW5WM3VnTFNLaHZodWgyZkZ1UVA5NnU0QThjK0pEVWtwbDlPL0ZmcnYw?=
+ =?utf-8?B?ZWlrTGNSN1kwU2trMDZLZXFxZjZHWkJQZy9TN3R5WTNINkxkM3FVRXVWU2lR?=
+ =?utf-8?B?UzJPWnJlallCZ1Z1TzVFRk1taHU2TDJrbVlkTTltMWZqTDQzZkwxWVFJdDRr?=
+ =?utf-8?B?dDRtM2g4MVZqTG5NT3g0TjRnMUt4Z1lPM2dNdDZHempoU0NKUU42YXZnPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9251.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NHo1SHhUU0E4T0xSNzVrRm5weGVSMUhDOXJWVklWMzd2Q1A0bkpSV1drL2hZ?=
+ =?utf-8?B?eXlkcy9sTmc5VnQrSks5UnFXaytXWnNBaUFQVnVVTHQxZ0k5djVzSXRYUGZB?=
+ =?utf-8?B?em5uMnBWMHVjcHFHREYyUDlidk85bHhUU1JuZHZhWmdYTFFTVkh0N1JEY3N3?=
+ =?utf-8?B?cXNOaWNsVFQwQzRlOFFzeWdXYkRkMWNIY0lUT01PT0FYM3pDNTNoRjJ2QlFP?=
+ =?utf-8?B?aDFWaDJ1Nk1xQUtJcGZVdEkwYVBDODFqcnFqRUFPY090dVd4VFNwRHZaUU1W?=
+ =?utf-8?B?aklGQmxQVko4UWttRHNMWlRmSDRnNzRONnhWN09FRk0yVFR6bVlkUHB4K0J2?=
+ =?utf-8?B?amxobzVyaFkwYmdoTERjTGQ4eDl1a3JZdzR3eEFpUmp4bnZEcmxnTnQ3aWp2?=
+ =?utf-8?B?cE0wZVZ5ZmhjTExsdEx2aU92dzUxK0tkWVY4VnE2QURGNlU1ejBHN0xibkxt?=
+ =?utf-8?B?QW1UWUJJS3k2b3h4SDNQNkxBTEZwZlAzdUUrNC8wMktBblRlSkpHZlpzTkh3?=
+ =?utf-8?B?VGg1NVF1amx4Y2l0K1NlUmNOWFllRnVzLzIxMFBXQWVsQjlNNjRtLzEvaTZl?=
+ =?utf-8?B?Q3h6WnFPNjg3anA0VnZVZHlTZUJjZk50NzZzODluWVRuejdaRXhsbmVqVGNC?=
+ =?utf-8?B?aTRzRFdOZzIwWkZ2cHdkRGNOVktxSHpaRmZjSGp3YXYwN01La09mbG5GVlBm?=
+ =?utf-8?B?Z2JkSkliaFNPL2YzTVJrVFRMazBuTGZGUENyS2NMeks2L2Z6ZTBlb1pCREFE?=
+ =?utf-8?B?WmdwUkYrQjV1Q3VaeGhWYTV3MytOMFZPRVYyenJtZ2o5dVdpZzNkM0ZURlhP?=
+ =?utf-8?B?MjRTbVdqUW5pb0N2ZHZrVHRCckkvSDZibW92N09EcTVlOEhLcnBRdkFzV1dt?=
+ =?utf-8?B?eFg3ZVJPSE9yM2xJRzlRNkM4ZUpWd1k4eUJ4WXNXODFMcFNIcEIvbFlrSWxW?=
+ =?utf-8?B?b0IzeDVIRWtNcmI1bHBsUDgvQjdXSm92d3pRdXNiWHQ1cEdNRCtiNmEzUmto?=
+ =?utf-8?B?WDhHcW55aWR4aWR6TENaMUdzOEUxeFNKV3g2OVNQMTlTU1NCRG9GYU1weEVy?=
+ =?utf-8?B?Y1VxRUJHMTRCYS9qYmgza1lQMlJFZVN3cWhIbkVxcjFOTnpVZDVBdUdVejZZ?=
+ =?utf-8?B?UjJSb3F2UVJ1ZU5uSU5EeUt6MmtzaDRZVVkrcHZtWFlzNW9PR0ZreHF3Wity?=
+ =?utf-8?B?RTBVYmhDeG1OdCs3NkRZSCsxakIvbitRbW15ZS9WdUtobHlCWDRiZENNaFFu?=
+ =?utf-8?B?RXBka1JGai9yc2FVckpKRnJZTmR3cnRUeGEwdU16ZVZweitOY04wYlJxYU1i?=
+ =?utf-8?B?ZTV5SW5oSzdLbkY0U2p4ZkRtOSs5QWcrZUR0SGdVN3dZSjN4T2hubzJSdHRX?=
+ =?utf-8?B?K1dOVStmcHBTTUhYQmpZRHl3QTVoWU1RekorcXZBdGNwTnZZK08xakEwd1JI?=
+ =?utf-8?B?aTA2ZnVweUMxa3lIWEVUQmtXRTRYQ1BUbUJiQVNNRlluNW9WdXZXUUdCd1Fk?=
+ =?utf-8?B?cjBicGhYSnNuek15MThpTzk0NVkwSTArTWFaQ2hpK2lscjNkb2hNWjFmNjV3?=
+ =?utf-8?B?OXgyV0xFZWNuY2VEVFltZXdtN1VBSndJdm5CQy9MTndiQzhpTE5nNGlxSUNu?=
+ =?utf-8?B?Q3loTjQ4c2JORVFSUnlSOExkKzJtM1gwaW1aMjVSU2hrSW04TW1MTGtLRU1j?=
+ =?utf-8?B?Y09FNDZ5QjNCVGk0N2M2dnRwSDE3Y3p5UnNteEtkMUdWYXNWYUZSRXdHdk1O?=
+ =?utf-8?B?d2xlRWNRQ0t0Zm0vZCtJTnUxUThqZGNiaWdsbnZzWko3Wkx4MmZWQXVBVHVK?=
+ =?utf-8?B?aUpaazB6Q0FabnhkckFnOEhlZ1diWU5Sa0pGTHoySGNFeGx4SDkxeEFDMjkz?=
+ =?utf-8?B?ZE1NUGJpcHZ0NHhWYzhveFRGOFF1UjRzSGRBNTAyVTVBRGs2THN0WVY4SlFm?=
+ =?utf-8?B?RXZ1R2JIcitFc0psb1ZPYTlQNTNRUzJPTXNPenFiY3ZwbWZRZmx6RG5YdDlU?=
+ =?utf-8?B?dFgwVFlIN3JPSHZ5WHBBd250eW9GT2RMa3NLaWhKYUJGSXVCSnFmSWcvWDY1?=
+ =?utf-8?B?N2tpZ290K0EzMmEzYTZlT21EdGRZbEhpUFN2Y0ZjTzc4OWlZUEpQUFlwL1pv?=
+ =?utf-8?B?NDZxeTRHUllsdllLSlZnY0tKNmp4YTVXdml5b2huKzB0bVgyZDZVb2RPY0hE?=
+ =?utf-8?Q?43XB89O6tKh6c808d3nC4q8=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c8cb3f0-b6a4-4b64-1668-08dcfca9c708
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9251.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2024 08:22:10.3062
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FXeIs5WuzKPBmXJDk4EWQUDT7K23PXXZrcst8rUKq0goUV2+Lmz4dthR+4MB9zHu6IKxQBKHlFROpkHBJymWLzB/86RlyOuvnAGvQ/V2tKY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6892
 
-Hi Stefan,
-
-On Sat, Nov 02, 2024 at 04:35:19PM +0100, Stefan Wahren wrote:
-> Hi Stefan,
+On 11/1/2024 7:57 PM, Frank Li wrote:
+> On Fri, Nov 01, 2024 at 11:29:24AM +0200, Ciprian Marian Costea wrote:
+>> On 10/31/2024 6:39 PM, Frank Li wrote:
+>>
+>> Hello Frank,
+>>
+>> Thank you for your review!
+>>
+>>> On Thu, Oct 31, 2024 at 10:35:54AM +0200, Ciprian Costea wrote:
+>>>> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+>>>>
+>>>> This patch adds the dt-bindings for NXP S32G2/S32G3 SoCs RTC driver.
+>>>>
+>>>> Co-developed-by: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
+>>>> Signed-off-by: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
+>>>> Co-developed-by: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
+>>>> Signed-off-by: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
+>>>> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+>>>> ---
+>>>
+>>> next time you can cc imx@lists.linux.dev
+>>
+>> Thanks for your suggestion, I will start adding this list.
+>>
+>>>
+>>>>    .../devicetree/bindings/rtc/nxp,s32g-rtc.yaml | 99 +++++++++++++++++++
+>>>>    1 file changed, 99 insertions(+)
+>>>>    create mode 100644 Documentation/devicetree/bindings/rtc/nxp,s32g-rtc.yaml
+>>>>
+>>>> diff --git a/Documentation/devicetree/bindings/rtc/nxp,s32g-rtc.yaml b/Documentation/devicetree/bindings/rtc/nxp,s32g-rtc.yaml
+>>>> new file mode 100644
+>>>> index 000000000000..3694af883dc7
+>>>> --- /dev/null
+>>>> +++ b/Documentation/devicetree/bindings/rtc/nxp,s32g-rtc.yaml
+>>>> @@ -0,0 +1,99 @@
+>>>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+>>>> +%YAML 1.2
+>>>> +---
+>>>> +$id: http://devicetree.org/schemas/rtc/nxp,s32g-rtc.yaml#
+>>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>>> +
+>>>> +title: NXP S32G2/S32G3 Real Time Clock (RTC)
+>>>> +
+>>>> +maintainers:
+>>>> +  - Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
+>>>> +  - Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
+>>>> +
+>>>> +properties:
+>>>> +  compatible:
+>>>> +    oneOf:
+>>>> +      - enum:
+>>>> +          - nxp,s32g2-rtc
+>>>> +      - items:
+>>>> +          - const: nxp,s32g3-rtc
+>>>> +          - const: nxp,s32g2-rtc
+>>>> +
+>>>> +  reg:
+>>>> +    maxItems: 1
+>>>> +
+>>>> +  interrupts:
+>>>> +    maxItems: 1
+>>>> +
+>>>> +  "#clock-cells":
+>>>> +    const: 1
+>>>
+>>> Does your RTC is clock provider? why need #clock-cells
+>>>
+>>
+>> RTC clocking on S32G2/S32G3 has a clock mux for selecting between up to 4
+>> different clock sources (parents).
+>> Now, as suggested in previous reviews, I've switched to using the CCF in
+>> order to implement this hardware particularity. In the end I've resorted to
+>> implementing 'assigned-*' approach which while not mandatory as per proposed
+>> bindings I find it quite scalable in selecting clock sources for the RTC
+>> module compared to the first iteration (V1) of this patchset.
 > 
-> Am 02.11.24 um 15:36 schrieb Stefan Eichenberger:
-> > Hi Shawn,
-> > 
-> > On Sat, Nov 02, 2024 at 03:21:58PM +0800, Shawn Guo wrote:
-> > > On Wed, Oct 30, 2024 at 01:21:12PM +0100, Stefan Eichenberger wrote:
-> > > > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> > > > 
-> > > > Enable SND_SOC_SPDIF in imx_v6_v7_defconfig to support SPDIF audio. This
-> > > > change will fix commit d469b771afe1 ("ARM: dts: imx6: update spdif sound
-> > > > card node properties") which moves away from the old "spdif-controller"
-> > > > property to the new "audio-codec" property.
-> > > > 
-> > > > Fixes: d469b771afe1 ("ARM: dts: imx6: update spdif sound card node properties")
-> > > It doesn't look a fix to me.
-> > I agree somehow, it was just that before the referenced commit our test
-> > succeeds with the imx_v6_v7_defconfig and after that we get the
-> > following error:
-> > [   24.165534] platform sound-spdif: deferred probe pending: fsl-asoc-card: snd_soc_register_card failed
-> this error should have been in the commit message including the
-> information which platform/board is affected.
-
-Okay, I will add this information to the next version. We see this error
-on an Apalis iMX6 which has in my variant an NXP i.MX6Q SoC.
-
-> > So maybe it is not a fix in the sense of a bug, but it fixes the error
-> > message. However, I'm also fine with removing the Fixes tag.
-> But this patch doesn't look like the real approach.
+> Any link of previous review?
 > 
-> Could you please clarify the impact of the regression?
+> Frank
+>
 
-So the problem is that before commit d469b771afe1 ("ARM: dts: imx6:
-update spdif sound card node properties") the audio driver was
-using an implementation of linux,spdif-dit and linux,spdif-dir which was
-directly inside the fsl,imx-audio-spdif compatible driver. Now with the
-referenced commit the idea is to use the more generic linux,spdif-dir
-and linux,spdif-dit compatible drivers. That's why this driver must be
-enabled in the kernel configuration.
+Please consider the following related reviews:
 
-> Is it just this error message and audio works fine or is audio also broken?
+[1] https://lore.kernel.org/all/202409121403232ab1295b@mail.local/
+[2] 
+https://lore.kernel.org/all/6659aa90-53c5-4a91-a9f9-01120c88f107@oss.nxp.com/
+[3] https://lore.kernel.org/all/20241016160823c22ccb22@mail.local/
 
-It is not just the error message, audio is not working because the
-driver deferes and because it is not enabled it will never succeed to
-load. I don't know if this is called a regression, because the driver is
-there it is just not enabled in the imx6_v7_defconfig. I thought because
-a lot of the i.MX6 based board use the generic driver, it makes sense to
-enable it in the imx_v6_v7_defconfig.
+>>
+>>>> +
+>>>> +  clocks:
+>>>> +    items:
+>>>> +      - description: ipg clock drives the access to the
+>>>> +          RTC iomapped registers
+>>>> +
+>>>> +  clock-names:
+>>>> +    items:
+>>>> +      - const: ipg
+>>>> +
+>>>> +  assigned-clocks:
+>>>> +    minItems: 1
+>>>> +    items:
+>>>> +      - description: Runtime clock source. It must be a clock
+>>>> +            source for the RTC module. It will be disabled by hardware
+>>>> +            during Standby/Suspend.
+>>>> +      - description: Standby/Suspend clock source. It is optional
+>>>> +            and can be used in case the RTC will continue ticking during
+>>>> +            platform/system suspend. RTC hardware module contains a
+>>>> +            hardware mux for clock source selection.
+>>>> +
+>>>> +  assigned-clock-parents:
+>>>> +    description: List of phandles to each parent clock.
+>>>> +
+>>>> +  assigned-clock-rates:
+>>>> +    description: List of frequencies for RTC clock sources.
+>>>> +            RTC module contains 2 hardware divisors which can be
+>>>> +            enabled or not. Hence, available frequencies are the following
+>>>> +            parent_freq, parent_freq / 512, parent_freq / 32 or
+>>>> +            parent_freq / (512 * 32)
+>>>
+>>> Needn't assigned-*
+>>>
+>>
+>> 'assigned-*' entries are not required, but based on my previous answer I
+>> would prefer to document them in order to instruct further S32 SoC based
+>> boards which may use this driver.
+>>
+>>>> +
+>>>> +required:
+>>>> +  - compatible
+>>>> +  - reg
+>>>> +  - interrupts
+>>>> +  - "#clock-cells"
+>>>> +  - clocks
+>>>> +  - clock-names
+>>>> +
+>>>> +additionalProperties: false
+>>>> +
+>>>> +examples:
+>>>> +  - |
+>>>> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+>>>> +    #include <dt-bindings/interrupt-controller/irq.h>
+>>>> +
+>>>> +    rtc0: rtc@40060000 {
+>>>
+>>> needn't label
+>>
+>> Thanks. I will remove the label in V4.
+>>
+>>>
+>>>> +        compatible = "nxp,s32g3-rtc",
+>>>> +                   "nxp,s32g2-rtc";
+>>>> +        reg = <0x40060000 0x1000>;
+>>>> +        interrupts = <GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>;
+>>>> +        #clock-cells = <1>;
+>>>> +        clocks = <&clks 54>;
+>>>> +        clock-names = "ipg";
+>>>> +        /*
+>>>> +         * Configuration of default parent clocks.
+>>>> +         * 'assigned-clocks' 0-3 IDs are Runtime clock sources
+>>>> +         * 4-7 IDs are Suspend/Standby clock sources.
+>>>> +         */
+>>>> +        assigned-clocks = <&rtc0 2>, <&rtc0 4>;
+>>>> +        assigned-clock-parents = <&clks 56>, <&clks 55>;
+>>>> +        /*
+>>>> +         * Clock frequency can be divided by value
+>>>> +         * 512 or 32 (or both) via hardware divisors.
+>>>> +         * Below configuration:
+>>>> +         * Runtime clock source: FIRC (51 MHz) / 512 (DIV512)
+>>>> +         * Suspend/Standby clock source: SIRC (32 KHz)
+>>>> +         */
+>>>> +        assigned-clock-rates = <99609>, <32000>;
+>>>> +    };
+>>>> --
+>>>> 2.45.2
+>>>>
+>>
 
-Here the output of git stat to show which boards are most likely showing
-the same behavior as the Apalis iMX6 with the current
-imx_v6_v7_defconfig:
-git show d469b771afe1 --stat
-....
- arch/arm/boot/dts/nxp/imx/imx6q-cm-fx6.dts          | 15 ++++++++++++---
- arch/arm/boot/dts/nxp/imx/imx6q-prti6q.dts          | 15 ++++++++++++---
- arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts         |  9 +++++++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi       | 15 ++++++++++++---
- arch/arm/boot/dts/nxp/imx/imx6qdl-apf6dev.dtsi      |  9 +++++++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi      | 15 ++++++++++++---
- arch/arm/boot/dts/nxp/imx/imx6qdl-cubox-i.dtsi      |  9 +++++++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-hummingboard.dtsi |  9 +++++++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi    |  9 +++++++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-wandboard.dtsi    |  9 +++++++--
- arch/arm/boot/dts/nxp/imx/imx6sx-sabreauto.dts      |  9 +++++++--
- arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi           |  9 +++++++--
-
-Regards,
-Stefan
