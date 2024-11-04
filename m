@@ -1,56 +1,53 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2931BF804;
-	Mon,  4 Nov 2024 15:43:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78935433A4
+	for <imx@lists.linux.dev>; Mon,  4 Nov 2024 15:45:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730735026; cv=none; b=V5sVUpi9ft6YsdZW3VNFoa1jVZ55kyI0fyMrj68kC//rqgaGCZH5Ahp8MDUQtBOgDLcwKIJYKvF7DqUnh44N0MROhxzYccbHXeqRHnEKyyl3ewY8rmP3Amv4zdd/xYfd0vm3U5eVDkgX+0yQaqlbYK+pDqqNiPb7bKUPOq8Qqto=
+	t=1730735143; cv=none; b=BJEkz6zvSMcUzBFM8pR3/c8UaCz6lJpIBWycPP804UGwAQl/EHLdBlUQeYSA79tk38X2cBgQud9i+o7cYgdGRRt5OOANuSr+D8s89ZW2JEGjmrY/OQ0lr1lpiEolmnTtIyNzOcMacDEjgPUQYM3QyxBYMKE1ZltSup7ZoQ5H1xI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730735026; c=relaxed/simple;
-	bh=7Q2U9oss2EM4iM3PMEeL4JsDBihXmtIIsux04111JkY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SxXP3TgUIRFn/STa2+fZ6QK1Jj9rehPG5DmV4HuNi8ZTQ57W1SFFkKrBleU0nhBGJGVJlkdgCl3Em5YRpOZYnVXDM07hFHVprhl86pB6Tja3rY49Yj8xdI1dymg1IqSdM0UduZFPFtAoGKyU0nVzYqZ73rqp5YHzgblXj0WAR8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ic9jv7Dm; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ic9jv7Dm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80928C4CECE;
-	Mon,  4 Nov 2024 15:43:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730735025;
-	bh=7Q2U9oss2EM4iM3PMEeL4JsDBihXmtIIsux04111JkY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ic9jv7DmA9iiQEJ/OSVpnEdHDhlMOqfFU2nHWthRPkYDGX5yCQYB3iTbneJjq+Og5
-	 rHEvIm0lzo/2tcuA0TQtO0arblv7UMeSIfL/FjM/X/ruKQ/9YgWV1p9lgTY2zn2bld
-	 kbt+awZpSfPJ4NXKc6opPsuArC4xfQEi6uAPYLJPFb9eN5nZXtl+voH1rvYfqQ2MSs
-	 0vQKjppQknbrmDpG2X/z+MgOfuyCF0ou63aFt9KKk9xkkhHjaduPvXuf6vh51SvrpH
-	 vEMTKUFxn1smD8qPS+KkffHKfoGta2/aBhSgz7UnV3BnGF7hH+v1Q+TCkvmcN9iYQC
-	 kdT1vOO0izLdg==
-Date: Mon, 4 Nov 2024 09:43:43 -0600
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Fabio Estevam <festevam@denx.de>, linux-arm-kernel@lists.infradead.org,
-	marex@denx.de, shawnguo@kernel.org, devicetree@vger.kernel.org,
-	conor+dt@kernel.org, dri-devel@lists.freedesktop.org,
-	a.fatoum@pengutronix.de, imx@lists.linux.dev, kernel@pengutronix.de,
-	krzk+dt@kernel.org, andreas@kemnade.info
-Subject: Re: [PATCH v4 2/3] dt-bindings: lcdif: Expand the imx6sl/imx6sll
- fallbacks
-Message-ID: <173073502322.211813.8204501104230548664.robh@kernel.org>
-References: <20241101135406.47836-1-festevam@gmail.com>
- <20241101135406.47836-2-festevam@gmail.com>
+	s=arc-20240116; t=1730735143; c=relaxed/simple;
+	bh=S/7jxmz1G/yQkantDv/F34ffW+JdWQ26ICdy3jg99zM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lEkSNi2lMNNUH9g+27le6osfMO3nJZ9k8vCIKouTgAyzrb5vDcl5FHMndaxK6b7PSaz6I9pSJ0rWGqJ4fqCfQveStEQElxqso4xts5kxWjQmTF2GRxhtVY95gRZbN3tcCk96T1ko8BSL45MuJfCCsuJnkOJQdjLjTRMlW9DJp+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1t7zGg-0007oc-VO; Mon, 04 Nov 2024 16:45:27 +0100
+Message-ID: <4feae7cc-273a-40a3-a075-ad82b4ae542c@pengutronix.de>
+Date: Mon, 4 Nov 2024 16:45:26 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/3] dt-bindings: lcdif: Expand the imx6sl/imx6sll
+ fallbacks
+To: Fabio Estevam <festevam@gmail.com>, shawnguo@kernel.org
+Cc: marex@denx.de, andreas@kemnade.info, kernel@pengutronix.de,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, dri-devel@lists.freedesktop.org,
+ Fabio Estevam <festevam@denx.de>
+References: <20241101135406.47836-1-festevam@gmail.com>
+ <20241101135406.47836-2-festevam@gmail.com>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 In-Reply-To: <20241101135406.47836-2-festevam@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-
-On Fri, 01 Nov 2024 10:54:05 -0300, Fabio Estevam wrote:
+On 01.11.24 14:54, Fabio Estevam wrote:
 > From: Fabio Estevam <festevam@denx.de>
 > 
 > mx6sl.dtsi and imx6sll.dtsi have the following lcdif entries:
@@ -75,6 +72,9 @@ On Fri, 01 Nov 2024 10:54:05 -0300, Fabio Estevam wrote:
 > lcdif features found on imx6sl and imx6sll.
 > 
 > Signed-off-by: Fabio Estevam <festevam@denx.de>
+
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
 > ---
 > Changes since v3:
 > - None.
@@ -82,6 +82,35 @@ On Fri, 01 Nov 2024 10:54:05 -0300, Fabio Estevam wrote:
 >  Documentation/devicetree/bindings/display/fsl,lcdif.yaml | 8 ++++++--
 >  1 file changed, 6 insertions(+), 2 deletions(-)
 > 
+> diff --git a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
+> index ad0cca562463..72e509bc975b 100644
+> --- a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
+> +++ b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
+> @@ -23,14 +23,18 @@ properties:
+>            - fsl,imx93-lcdif
+>        - items:
+>            - enum:
+> -              - fsl,imx6sl-lcdif
+> -              - fsl,imx6sll-lcdif
+>                - fsl,imx6ul-lcdif
+>                - fsl,imx7d-lcdif
+>                - fsl,imx8mm-lcdif
+>                - fsl,imx8mn-lcdif
+>                - fsl,imx8mq-lcdif
+>            - const: fsl,imx6sx-lcdif
+> +      - items:
+> +          - enum:
+> +              - fsl,imx6sl-lcdif
+> +              - fsl,imx6sll-lcdif
+> +          - const: fsl,imx6sx-lcdif
+> +          - const: fsl,imx28-lcdif
+>        - items:
+>            - enum:
+>                - fsl,imx6sx-lcdif
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
