@@ -1,99 +1,193 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2084.outbound.protection.outlook.com [40.107.247.84])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8111B7C0BE
-	for <imx@lists.linux.dev>; Mon,  4 Nov 2024 12:04:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730721853; cv=none; b=Dt0Y7mUE99lOsfj3UfoBuTt5DBRcEKljlDL7ab9FCgX82S0A9edYIEuLBV+LhxU0vvE633Z1aCmuanhd361VN0Ozt8XhIYp0dBgM76jhEnb6sAY+NuEaqmZZEE8hVgkdhR4W8bBI+jFg9BIOglr+Tya3vLBuf8rSomewtRFaSZM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730721853; c=relaxed/simple;
-	bh=5V3k7t/BD3t++beRovDo9rbK7RVpmurTwzAlsqQ9dCA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BVyYTxyoHrrjIXT1TrP4o17szTmYIu0Fk84HoKcEV7IF9ek+1xvOZ8I5ZdQnqXe3ODy4gp6l1AycF+fBoopn32NPnwb5sSaJFZIOqT6ffzfd0yI68YotQ7aXk2wI2xCYaCR3hKfgWdGM4leJS1bIM9FIJnusQsEGlueBD4tIcKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=Iaj/wtND; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4517C0BE
+	for <imx@lists.linux.dev>; Mon,  4 Nov 2024 12:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.84
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730722267; cv=fail; b=D4SAd3EDX2YascsH0QBj+rNB0VsQNY5GHS4F9GCnoHoLmggqsq2Cq+yavK74T1ys+84xOf5Pq2qJHCg79TdjJiC6U0pOwqXueP1TtFWZ6Rc9zbqSlmTTkk2FOKUqMufcml8lb9Jr+jLzQl/snOxYu0vIv8XQ0TBjD0i1AOL+ngA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730722267; c=relaxed/simple;
+	bh=7zapCca8bVRrq+E0Y63rpeJZlZW41ireGSigvvaUHMk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=BnerxH0UTzXw11oy191iS0v9Q/feQzvE9RzmWN3EPbaTADCw55WiqPSmKQ1ATcpqxggVzvuTfUgtWNCv7eWgDklSjhBpx+Mn6XN2ugu/wnTD4UWssVZWz9f8ubyOPRWf+M5gmd40PAYldg6AJRtOS3I2XeKcsLqEsaSLn+oX97Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=tqW7UsaQ; arc=fail smtp.client-ip=40.107.247.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="Iaj/wtND"
-Received: from [192.168.1.107] (87-97-112-21.pool.digikabel.hu [87.97.112.21])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: hs@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 48E0088113;
-	Mon,  4 Nov 2024 13:04:08 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1730721849;
-	bh=wF15CK3q+ocViJhOms9ADFB9q0mQckeGq5fArBdv+lo=;
-	h=Date:Subject:To:Cc:References:Reply-To:From:In-Reply-To:From;
-	b=Iaj/wtNDV1SD0/BijQwuDtssB1toG2nFV66NzthHlMHhmYB25iVlCF1meuY18lgET
-	 uvP963YFf7wAYnCpvZeUx8iDCC3wT5rPBV1jdavV2u9t3tibTM8gCUJNyv/7HOFL5o
-	 BkT7nY+s5GznUpkJwD6+VrV4ih1cP/2b5jaMma7ksv7+fmR1odoEBI6q9KHa7qg0tE
-	 kX7Ub9zA7jVmA4gJIV6omTECtT6isvAouDxrNKTA3V0irX7WoYpriScMRsu1RG3csC
-	 ompLI0tA9KsXNZRaSxzMiJsBbTNFDOlQhBs/tQTKU0h+GlcE9m9vCFulAnh6l+AOok
-	 25Bx6jlNbBH9A==
-Message-ID: <3214def1-4669-79ed-36c2-e19a119aabeb@denx.de>
-Date: Mon, 4 Nov 2024 13:01:43 +0100
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="tqW7UsaQ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jS3pXBtKD6RqZMTv/ObS5toNgnVXtsu9EnjTts6Lt/oSAsGPVIHFlN2Hbs+UwGgvrGBFxE9+ADRLWEYONV+1swxemDeDY/aIc/MaUZ2nrUiNcTBbRpZPRtCZ6wKBX+xYvTi5XS7WhnIEcr1gOV+Dkrds3zbyxCoM92NJTkC5CB2xd6aMluOxCSZxdiv9yWwZQkoiEvg+ih9wR5vNGXJBVI2/tD6UFSwSznbt/2WchW9ZQE8aDMLdkG/yXfEaccqGAMMOPiBeBEprlEvJaUtI5yPtsBT8dtfdKuWTfV/F2wY+ttDkdxCpvpDNNwq0gNFAug1QJ42yUvyGoHbRPi+4qg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HBoSFTFHbq+PPwnoQaPppvukuVM/x02WLtcD7n9GH1A=;
+ b=FWiF8Tw0Y6nH5NV5hRm0RpJ91xhNar4AxNyvn3YSkl8+q53jLJ4ghrqyn/uja2BVeRvjky8BPlg/ErX3BfJiqstrUZt89DbyyFtMKljYqAv3YpMad1l2h57WYk5Ijh/q1Vj7vCGkwhUP1ZfdONv2xbXfVaZ1qjurWzWHx3vP0IIot7ea1qzZeW6PgApYm79qTvDzxxfU9ctX8e5nxJFEwqb57111lKGZqWh7E/7vm5Vy04RouzTj8yC4X2uqvipEw0172Uf1EAdXnWwxiyqgHyC0zu72k5XooMWzfYNWLnRVwnlrLZ/B+wG2490y4boruknfc6dTV7Z8FCe0VcsLbQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HBoSFTFHbq+PPwnoQaPppvukuVM/x02WLtcD7n9GH1A=;
+ b=tqW7UsaQ0NsWV1rLIIlZ2D47iNp1/Qa7fsIZFpBEbBc+j3IY67Y4URT1gyqGrNev2SJijvOERwptUL2Y7R2WPkMCrf1AqgshY3tNmp0E56fOpwlFTIpdFJnUBz++x0c5EBw8fKd+FTsuQsbeUTG799cP1i6+8GKgu7kPRo3bAPjbKWSM45/UYLUs1Q6JXzftaU5XBr/qOrBgvZMHRG0ZD8YUWOMq7hGzNAe6Afhmf4zoeQ8f+jk9JpjR6iNNv42IATsUlt4d/ZLYhA5hXv5Yz9F2AMNB6JykLsRxgDPUa4jOgraoSkMTT07iiRNKZTuvu8NRLG6Xx7FMwLRHXO7UqQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AS4PR04MB9576.eurprd04.prod.outlook.com (2603:10a6:20b:4fe::12)
+ by AM7PR04MB7029.eurprd04.prod.outlook.com (2603:10a6:20b:118::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.30; Mon, 4 Nov
+ 2024 12:10:59 +0000
+Received: from AS4PR04MB9576.eurprd04.prod.outlook.com
+ ([fe80::9cf2:8eae:c3d1:2f30]) by AS4PR04MB9576.eurprd04.prod.outlook.com
+ ([fe80::9cf2:8eae:c3d1:2f30%4]) with mapi id 15.20.8114.028; Mon, 4 Nov 2024
+ 12:10:59 +0000
+Date: Mon, 4 Nov 2024 14:10:54 +0200
+From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Lucas Stach <l.stach@pengutronix.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Javier Martinez Canillas <javierm@redhat.com>, 
+	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drm/imx/dcss: include drm/drm_bridge.h header
+Message-ID: <2byo7263izup45hcdyoxr57sh2dzdasnwotpfqnayqe6znvzjt@adou6qmyhq6y>
+References: <20241028163527.2425783-1-arnd@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241028163527.2425783-1-arnd@kernel.org>
+X-ClientProxiedBy: AS4PR09CA0007.eurprd09.prod.outlook.com
+ (2603:10a6:20b:5e0::8) To AS4PR04MB9576.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4fe::12)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH v2 3/3] arm64: dts: imx8mp: add aristainetos3 board
- support
-Content-Language: en-US
-To: Fabio Estevam <festevam@gmail.com>
-Cc: linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <20241031151238.67753-1-hs@denx.de>
- <20241031151238.67753-4-hs@denx.de>
- <CAOMZO5ACMGbhySUbR8r1UUimc53YDaRbfEObyUrf0GLYZcQfjg@mail.gmail.com>
-Reply-To: hs@denx.de
-From: Heiko Schocher <hs@denx.de>
-In-Reply-To: <CAOMZO5ACMGbhySUbR8r1UUimc53YDaRbfEObyUrf0GLYZcQfjg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS4PR04MB9576:EE_|AM7PR04MB7029:EE_
+X-MS-Office365-Filtering-Correlation-Id: 37fc6a74-d73d-4986-2c7a-08dcfcc9be55
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ZbBm/yMoxZbW617hCPxsYl/O/VmwVVYtsuox5Qg+I09FmNpIHLCIoZtC2tt4?=
+ =?us-ascii?Q?TWyWhKAiS42dKgPFe9jH02y3dLjtG0VFxmHPCsLt7Qs97GCzYZ97083zQ+vy?=
+ =?us-ascii?Q?0gpBD8XZIgJkwEQrFMoC78pI4lGzUaISKTP/I9ksmJHvb/aEfsXnmK+kVNR8?=
+ =?us-ascii?Q?x/mI4PxqrHBdLkV/3tXaSqMntkxXL7rZRsYSBJgaQLN5m20yLAtJmllU6rqW?=
+ =?us-ascii?Q?XB++kyYK3qtVxZjta/Brv3Of8bATy0ma4p39+it03HRM5PHIX0IBSYBXpUYu?=
+ =?us-ascii?Q?AhoecwiWfaJeLWZKrVAzwzWjaTBoaxj2p5nc3MYIB+kzqvk5oxGFH3xMFMFR?=
+ =?us-ascii?Q?UgAc55QDOMQFu+WKE9Lh9OrHPXuNhY3hkaPoT7MnsOKEuQwh9SgzTBlvjRbi?=
+ =?us-ascii?Q?M9CC2dCNkK8eEBuLN6DBNHedCKo241TQQMslcH0gA/LXlnhG9tp+g1+tYoao?=
+ =?us-ascii?Q?gquU7HgWgzL6w1hAiCmjxfx1/zkv3kUmicw6Zfm/4ppVDLMs3xpx1EHZiKiQ?=
+ =?us-ascii?Q?I2YgXLLW/4u6QpRvce9H0BPyjUCzuO9jOAfFzD22xhwcfoDPsUtxqtG9HnDV?=
+ =?us-ascii?Q?NZtLkLi9uGB/nBSNGOhLoDr9dpkHwqQFP8Xf4vALZ/ri2jalNVTLhqmhC9WW?=
+ =?us-ascii?Q?9vOn+GRTHtFe/zBtodtW7E4iltz8bBvNSN7zNPa7Pg0jHnMonnSONBX2319T?=
+ =?us-ascii?Q?+mhjIzEjUGY9gKv3AwIBAMtyz8C7Ct1HaAkxLZZhA4NaFellBFcS5HuRU/9W?=
+ =?us-ascii?Q?V889Nza53dQcwifuRhhavncLYjxd1h6ZOoAObEeNRybXuab1gnqmJLAbyDOF?=
+ =?us-ascii?Q?ptBL3cwbc447V4NS5B4Lwl1r/8DAE8McTzMoY0Hr9en3gv/aT3jMwZx5UUax?=
+ =?us-ascii?Q?/dukOQEaOD59EpBT2TXn348o5S68loylWAHr0zmYwaRSH2XfKpZA2S6QAIw7?=
+ =?us-ascii?Q?azc8PXncPaHvXghQCYtlbp6U85CgSKNNAvpEp2eADci9IH+TvqFJ/C146x/3?=
+ =?us-ascii?Q?NKVMRfcL4Z4AzVlL+wlG2avkswQCU4UEP8oJNUVyyqOoKEXVWUTJHkGrol22?=
+ =?us-ascii?Q?WUcceFEgsQlFAx1wyGznLHq3ubSswlwnW2JzgcvsgMVpEc5i7B4rgW5YOBLn?=
+ =?us-ascii?Q?0D8GXArJu05JQEEEuPSO05uiA2HElRCBb2Fh9GQFQtsSKuw0MezPsJwon1OA?=
+ =?us-ascii?Q?UCamuxRdTL4EF0w49IQQ+a99DpfHniPv+xEVZ7k0uZfSfADPcYsOk1tfN2Gi?=
+ =?us-ascii?Q?UKjnYIRp8YnY9YX87AfhTONixPzRVN+OFDhQ/XoYxtUT24fr5mZCn6/LLU2a?=
+ =?us-ascii?Q?OnWnVvharJB82mSLs5yGs9f2?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9576.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?jjKNkcTRLnXTF/dC31WrImMur7KEB/yNJ8x9sPma42RecmVNwoR1DcFHY3GP?=
+ =?us-ascii?Q?UPRo8lmyFDiDzqSF8jazUK4SiE2tVOtB27vIRiKUCcRurwZVIx3ngWLGii5o?=
+ =?us-ascii?Q?iq+UiAX46e5D7rcMPp5H1a0Q/77pzVzYrSg26usGFCS7qz/VqtVZrrzCoKIh?=
+ =?us-ascii?Q?bJRRqBy9Gg2ZnvS+J9qRMOO7T+QklHnA2tmbypGDW0ugZSwr1Ux1R1iuUps3?=
+ =?us-ascii?Q?3PxsvmCgxHrR5ICm7DBAXSfI6JtseT0DvSW+iJufeUV1aVVmxvJxlHv3xH47?=
+ =?us-ascii?Q?KGBgOjNXFovnBrFAEwdqo9Dgog884mit+cSlQMBofGmukB+c4nnbmzglfM7X?=
+ =?us-ascii?Q?YKqIlwQNDhnrHWLpd3+RW6eV86PtGBytMRQ7lEc20fDG/eGauDzAz6cCE3/a?=
+ =?us-ascii?Q?tTI7ib4VedoCdDiWjGtbsa5LowYnp/MPJUAXRbeWWv7jt59v/rnuzdue+5kj?=
+ =?us-ascii?Q?YZ4cpkNiXHrmsBx4BONvZQ7ac+4EysimWssKat6ad3kZigMBqP09v5KAvZwM?=
+ =?us-ascii?Q?Vo523G5LDK2WqBuyWfVTE6p4Ul7i2hx62/boagyJxbpAxKr+aGtcQbUWlBZi?=
+ =?us-ascii?Q?X6+F6XR1APMuu4aLjTNUVxfDaSATO872fm0tW5DS4hkp3s50Ln/3ylxiZzTC?=
+ =?us-ascii?Q?YtDvdRX12/ewI0yrceXJa0qqxXvxC65gM3lFgl6cYSluTZbnQ/x0CDK0D5vH?=
+ =?us-ascii?Q?hvtgu2AVxFDZq/Hw90pCm8tX5TYrDN7yRNaUDLyitqcKaucp+4hJuKyEvfNg?=
+ =?us-ascii?Q?Xi2FTRjVff2Jao+uXSyqXFkZ5JpeKolZhvVJpC9dWZh2SgB5OLwJKpjh9fYx?=
+ =?us-ascii?Q?BnO7WdQ2argUkpm0zc+fswP2Feirr8mZARwpe8JbXcCS7x7iYqRpM2whU3NH?=
+ =?us-ascii?Q?EQeTSgC+SmS7dtsIp03lVDnHFOnHiWYYeIGt8HKmh29cDguzfBSIOvmekVsw?=
+ =?us-ascii?Q?2kjo9E1vOqKZucgtgb4sl51Zjo3TrzyrVdKBwHA7xNNEqQGyKuEZa6F7iwsE?=
+ =?us-ascii?Q?cuEQeLticKU+S5gtUIph/5x6ar95b8YEXAa/3mN1lCwgkV/+dkLALrSEQ6Pt?=
+ =?us-ascii?Q?ar2aJ5rJoxkRtsyddc4KmBFAyNFSyU6ipQWjVuWc3inmKR8ozebx6K/BGqyo?=
+ =?us-ascii?Q?ENhRZG17sm/+QIi2bMYd9t50tzNCDDoLzU1rYzxpoiX3T2697CYDDO3ZW6mL?=
+ =?us-ascii?Q?ONAFgXjhO5tb2g+Pgyt+PLau2MyjQbpEkyOjsqUH0Tl6rXjX1sRCNRYaMwAP?=
+ =?us-ascii?Q?31LpKV1zT/oypSnVk19JiDEWV/ntR8VzyqUd4V3T5+k+iF74pqn6/OGsADov?=
+ =?us-ascii?Q?aiStTcatn2IRo/xVZnnIzXZWC4r0Eqs7W+xJ4KM0vaBXvsw9oy7gWcmRkKBo?=
+ =?us-ascii?Q?G58uYq9gfomFEvRm4vvu1fkYupXKbyEFjIn8ZGt6kje+AhA0xzwipdFHm270?=
+ =?us-ascii?Q?lEe769Do34F6MRpPsGq1s782ZSqZQ9x20cWa6yB8zqltYJTAPlmQVQZPLRMt?=
+ =?us-ascii?Q?blCwAPyRTvN8ir/8TUJGOLA6vNbWkdSVcm19ofj8ByeTOhw9KHC0Lnv8kfN2?=
+ =?us-ascii?Q?hYyWpEViXDkoKAh363tsHr+OM6qymJS6XyqE0FuIj4cQT1cZ0R/95H6V1YI6?=
+ =?us-ascii?Q?cw=3D=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 37fc6a74-d73d-4986-2c7a-08dcfcc9be55
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9576.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2024 12:10:59.6936
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dQyLp+qwyfNs04b+kd/RvDtLiNv46bOVam3Q+LjJEOz81LkNeeEFCbMwBJc47xs2ihxIfTJWXI6zczmt1mA7Cw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB7029
 
-Hello Fabio,
+Hi Arnd,
 
-On 04.11.24 12:15, Fabio Estevam wrote:
-> Hi Heiko,
+On Mon, Oct 28, 2024 at 04:35:07PM +0000, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> On Thu, Oct 31, 2024 at 12:12 PM Heiko Schocher <hs@denx.de> wrote:
+> Compile-testing random configurations leads to failures in
+> dcss-kms.c from a missing declaration:
 > 
->> +               brightness-levels = < 0  1  2  3  4  5  6  7  8  9
->> +                                    10 11 12 13 14 15 16 17 18 19
->> +                                    20 21 22 23 24 25 26 27 28 29
->> +                                    30 31 32 33 34 35 36 37 38 39
->> +                                    40 41 42 43 44 45 46 47 48 49
->> +                                    50 51 52 53 54 55 56 57 58 59
->> +                                    60 61 62 63 64 65 66 67 68 69
->> +                                    70 71 72 73 74 75 76 77 78 79
->> +                                    80 81 82 83 84 85 86 87 88 89
->> +                                    90 91 92 93 94 95 96 97 98 99
->> +                                   100>;
->> +               default-brightness-level = <80>;
+> drivers/gpu/drm/imx/dcss/dcss-kms.c:95:8: error: use of undeclared identifier 'drm_bridge_attach'
+>    95 |         ret = drm_bridge_attach(encoder, bridge, NULL,
+>       |               ^
+> drivers/gpu/drm/imx/dcss/dcss-kms.c:96:5: error: use of undeclared identifier 'DRM_BRIDGE_ATTACH_NO_CONNECTOR'
+>    96 |                                 DRM_BRIDGE_ATTACH_NO_CONNECTOR);
+>       |                                 ^
 > 
-> One suggestion: a more succinct way to represent this would be:
+> Include the header directly.
 > 
-> brightness-levels = <0 100>;
-> num-interpolated-steps = <100>;
+> Fixes: 004555a18d57 ("drm/imx/dcss: Allow build with COMPILE_TEST=y")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
 
-Thanks for the suggestion!
+Unfortunately, it appears I lost drm-misc push rights. Maxime, Thomas or
+Ville, can you help push this?
 
-bye,
-Heiko
--- 
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: +49-8142-66989-52   Fax: +49-8142-66989-80   Email: hs@denx.de
+Thanks,
+Laurentiu
+
+> ---
+>  drivers/gpu/drm/imx/dcss/dcss-kms.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/gpu/drm/imx/dcss/dcss-kms.c b/drivers/gpu/drm/imx/dcss/dcss-kms.c
+> index 3ec721afc30c..63a335c62296 100644
+> --- a/drivers/gpu/drm/imx/dcss/dcss-kms.c
+> +++ b/drivers/gpu/drm/imx/dcss/dcss-kms.c
+> @@ -5,6 +5,7 @@
+>  
+>  #include <drm/drm_atomic.h>
+>  #include <drm/drm_atomic_helper.h>
+> +#include <drm/drm_bridge.h>
+>  #include <drm/drm_bridge_connector.h>
+>  #include <drm/drm_client_setup.h>
+>  #include <drm/drm_drv.h>
+> -- 
+> 2.39.5
+> 
