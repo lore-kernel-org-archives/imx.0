@@ -1,107 +1,97 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8C970816
-	for <imx@lists.linux.dev>; Mon,  4 Nov 2024 15:46:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B232AF12;
+	Mon,  4 Nov 2024 16:12:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730735205; cv=none; b=dinUPT4hYLRTleTmHGaGJt3kVoEjxhkWFPaaTD928CcRDcjWz8VkFkGBiTi2hoqb6brGhF1ffNK4rMMt/Xcgd3jPnTMKPCg14rlkNQShIvWrdDvdz+ZhNi+dFkU00tCboVEryEkoXnwlIoum5F5nuJDXJZKgQtooz5+Z6EL40Kc=
+	t=1730736762; cv=none; b=FMRbxXm9KiYSHBs8BZlXhPLqdBOfYc7aJXM9nUWekZcNh/ez7e6VTFtMIHw7EearhZ6q9TcjJuk3s46Tfo67eTKdYu7ee3KRfNnvB1pqwL/ee8vEA/ZsWaPQZncWOO/ZLUYFRiw7zKRmoOLKApsKzn3aA4xVAKlAzNuf4wgZq8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730735205; c=relaxed/simple;
-	bh=RRYhob/Ht0A51BwBbphpEbr1yiD1sVmJt994Zu5V1vY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BSzcqf1hE7vR03rP0DtOET8i1q6yclURtxqydhEVSpSk3gUs67/SY+uDY+bwVcAwh9mqny5LoXGdXkwy9QpQOZi+zfYY8duc6pobCgvHiQc/28O0KtoxqVMo/Rw44f5VkG+ldL5ZMGrdWjrOc1QKdnjIvTY3fG9fPOLFhDVP+3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1t7zHm-00081r-Qh; Mon, 04 Nov 2024 16:46:34 +0100
-Message-ID: <97aacb17-675f-451d-9908-dfac409c015c@pengutronix.de>
-Date: Mon, 4 Nov 2024 16:46:34 +0100
+	s=arc-20240116; t=1730736762; c=relaxed/simple;
+	bh=CSI8nmFVeCBUZm3j23aCaLtGEVXGHX7F+EO7hopFI+Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TqMQAfuMxzXqitz/FM5fD3pE29f2W1C5eQswkUymYVfwAwjPXr3NCHwAkQ22sM94sb7Jj7u0x8GU85Yji5shtuZaLGaxoODGNHunxvcQtBKCF87e0ELuqfc2BcnZxE4xw5bIjd3Ui2qGi8UKlkEbdCdp349e8lu21VUVWCd2KZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bdwUCbNm; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bdwUCbNm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D564C4CECE;
+	Mon,  4 Nov 2024 16:12:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730736759;
+	bh=CSI8nmFVeCBUZm3j23aCaLtGEVXGHX7F+EO7hopFI+Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bdwUCbNmHML9PrNRdfy29kUrRCJ+UtUsiVXu0fQDqOvjEDs1MiwEtWWsiE4TNtwCr
+	 15ttqIq17BRC9+3YTw8CQf1lIqQSb8DpE8Aqd6NFQjCvWdh6tnVjypmIbECUbk5EqU
+	 Rs+HYZR/snvujBQGJylaQ71jiUH+YmzyUYqQsTU8tzG/jq3jInKe5RrOyUeoI0BRrr
+	 X+OVVN4KzoshoecdzH9MWUr0wVrs2UhQpRNybBQbQKg6EFVcIJQG0KZrZgsd859jzN
+	 WQwHpxAZZwXAIcnelk0ZpR10LFHinC8ACu2kJ9+5k8K3burokUgzCmfAdxnBjizLpx
+	 gTsgy9KArpFbQ==
+Date: Mon, 4 Nov 2024 10:12:37 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: thierry.reding@gmail.com, linux-kernel@vger.kernel.org,
+	krzk+dt@kernel.org, tzimmermann@suse.de, mchehab@kernel.org,
+	mripard@kernel.org, geert+renesas@glider.be, jonas@kwiboo.se,
+	nfraprado@collabora.com, jernej.skrabec@gmail.com,
+	kernel@pengutronix.de, prabhakar.mahadev-lad.rj@bp.renesas.com,
+	quic_jesszhan@quicinc.com, Laurent.pinchart@ideasonboard.com,
+	sam@ravnborg.org, arnd@arndb.de, neil.armstrong@linaro.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	dmitry.baryshkov@linaro.org, s.hauer@pengutronix.de,
+	tomi.valkeinen@ideasonboard.com, shawnguo@kernel.org,
+	simona@ffwll.ch, will@kernel.org, conor+dt@kernel.org,
+	marex@denx.de, quic_bjorande@quicinc.com, andrzej.hajda@intel.com,
+	catalin.marinas@arm.com, rfoss@kernel.org,
+	sakari.ailus@linux.intel.com, airlied@gmail.com,
+	maarten.lankhorst@linux.intel.com, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org, hverkuil@xs4all.nl,
+	biju.das.jz@bp.renesas.com, festevam@gmail.com
+Subject: Re: [PATCH v5 08/13] dt-bindings: display: Document dual-link LVDS
+ display common properties
+Message-ID: <173073675713.309604.179338628102616229.robh@kernel.org>
+References: <20241104032806.611890-1-victor.liu@nxp.com>
+ <20241104032806.611890-9-victor.liu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/3] ARM: dts: imx6sl: Provide a more specific lcdif
- compatible
-To: Fabio Estevam <festevam@gmail.com>, shawnguo@kernel.org
-Cc: marex@denx.de, andreas@kemnade.info, kernel@pengutronix.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, dri-devel@lists.freedesktop.org,
- Fabio Estevam <festevam@denx.de>
-References: <20241101135406.47836-1-festevam@gmail.com>
- <20241101135406.47836-3-festevam@gmail.com>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20241101135406.47836-3-festevam@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241104032806.611890-9-victor.liu@nxp.com>
 
-On 01.11.24 14:54, Fabio Estevam wrote:
-> From: Fabio Estevam <festevam@denx.de>
+
+On Mon, 04 Nov 2024 11:28:01 +0800, Liu Ying wrote:
+> Dual-link LVDS displays receive odd pixels and even pixels separately from
+> dual LVDS links.  One link receives odd pixels and the other receives even
+> pixels.  Some of those displays may also use only one LVDS link to receive
+> all pixels, being odd and even agnostic.  Document common properties for
+> those displays by extending LVDS display common properties defined in
+> lvds.yaml.
 > 
-> The LCDIF IP on i.MX6SL and i.MX6SLL is compatible with i.MX6SX.
-> 
-> Provide a more specific "fsl,imx6sx-lcdif" compatible and still keep
-> "fsl,imx28-lcdif" for DT compatibility.
-> 
-> Signed-off-by: Fabio Estevam <festevam@denx.de>
-
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-Thank you,
-Ahmad
-
+> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
 > ---
-> Changes since v3:
-> - None.
+> v5:
+> * Use patternProperties to define port@0 and port@1.  (Biju)
+> * Require port@0 or port@1.
 > 
->  arch/arm/boot/dts/nxp/imx/imx6sl.dtsi  | 3 ++-
->  arch/arm/boot/dts/nxp/imx/imx6sll.dtsi | 3 ++-
->  2 files changed, 4 insertions(+), 2 deletions(-)
+> v4:
+> * Squash change for advantech,idk-2121wr.yaml and
+>   panel-simple-lvds-dual-ports.yaml with lvds-dual-ports.yaml.  (Rob)
+> * Improve description in lvds-dual-ports.yaml.  (Krzysztof)
 > 
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6sl.dtsi b/arch/arm/boot/dts/nxp/imx/imx6sl.dtsi
-> index 6aa61235e39e..840e19b2ca0f 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx6sl.dtsi
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6sl.dtsi
-> @@ -773,7 +773,8 @@ epdc: epdc@20f4000 {
->  			};
->  
->  			lcdif: lcdif@20f8000 {
-> -				compatible = "fsl,imx6sl-lcdif", "fsl,imx28-lcdif";
-> +				compatible = "fsl,imx6sl-lcdif", "fsl,imx6sx-lcdif",
-> +					     "fsl,imx28-lcdif";
->  				reg = <0x020f8000 0x4000>;
->  				interrupts = <0 39 IRQ_TYPE_LEVEL_HIGH>;
->  				clocks = <&clks IMX6SL_CLK_LCDIF_PIX>,
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6sll.dtsi b/arch/arm/boot/dts/nxp/imx/imx6sll.dtsi
-> index 85fe2a4ab97a..eff83f5e5535 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx6sll.dtsi
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6sll.dtsi
-> @@ -648,7 +648,8 @@ pxp: pxp@20f0000 {
->  			};
->  
->  			lcdif: lcd-controller@20f8000 {
-> -				compatible = "fsl,imx6sll-lcdif", "fsl,imx28-lcdif";
-> +				compatible = "fsl,imx6sll-lcdif", "fsl,imx6sx-lcdif",
-> +					     "fsl,imx28-lcdif";
->  				reg = <0x020f8000 0x4000>;
->  				interrupts = <GIC_SPI 39 IRQ_TYPE_LEVEL_HIGH>;
->  				clocks = <&clks IMX6SLL_CLK_LCDIF_PIX>,
+> v3:
+> * New patch.  (Dmitry)
+> 
+>  .../bindings/display/lvds-dual-ports.yaml     | 63 +++++++++++++++++++
+>  .../display/panel/advantech,idk-2121wr.yaml   | 14 +----
+>  .../panel/panel-simple-lvds-dual-ports.yaml   | 20 +-----
+>  3 files changed, 65 insertions(+), 32 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/display/lvds-dual-ports.yaml
+> 
 
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
