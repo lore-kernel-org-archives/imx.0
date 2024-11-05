@@ -1,115 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2B0B1E282C;
-	Tue,  5 Nov 2024 17:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B791EBFE3;
+	Tue,  5 Nov 2024 19:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730828383; cv=none; b=rlK7FZ3xJt9Dwyj8pjGMZLOg0ozwA55ArDIbf8HrA1/koAowNLDRkdGqyzrd+aK8WEKNTwMHueGIbuf+5UiFT7EHPC0Aaij1qfYCRQCiUbauMpjhdgSosF9Lvaz/7X409EVtnhtXF5O0ye6pzIPmi71lCFA3O3XnxLDmPb5RVxM=
+	t=1730833648; cv=none; b=jbhbmd/AeahpCvuRcM8c3iWJ1PJgOR7JHaSjjiABDSc9FnH4TX3aoh8dznMd3Cvjq4gGr/Pfxp+VCLkxC323TeebB1TlThCjEOFztr5xjb5JRMYxgLeGr1TLF1Eu3iPIc27ifSH8QWnmu8XyDq3JA2iMQYbcB0t2+UBz9C2trf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730828383; c=relaxed/simple;
-	bh=QZbld1TF8KsohUr4pPq9BpKFDSwxyE2URVgltsDBIDk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CY3KgCDZ1jSFafIzXD6iO5jJ17f/Op+THTiufh3Sc4Dj80yLHqCT1bN2Tdfm2mQRb1bhURKNMRBMbWaU6muuFIQfi46lR40yx0cKppZd/hCKq8y6VMIl3zbAhbpGrvcfkQjUES4mu8e9uzx7CnzabJ2kHQEakPBY8RaitIEitXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g9lKUavl; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730833648; c=relaxed/simple;
+	bh=bJBfX6qg8hW2kBjNewIsOi+0CyauUekBnlmZQZpbsPM=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=XY8pPh1tS8tHchpk7c1XUAzZl5DI1slAoAX2TzdvSLqGbFiC1rHgxBReti/KgOHB4F37T++6si8Q84AgxTSeBZxw9J6UorlussXkAaP4l4dE32GV3qbXFaKGQ/ownY1uI9JKiKZlORlgcXpHvXekiYV4s2l+6S+yYHrlCfVGl78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ws5ZPOhU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g9lKUavl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9800EC4CED1;
-	Tue,  5 Nov 2024 17:39:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ws5ZPOhU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96663C4CED1;
+	Tue,  5 Nov 2024 19:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730828383;
-	bh=QZbld1TF8KsohUr4pPq9BpKFDSwxyE2URVgltsDBIDk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=g9lKUavltsMy/YgW1mRbOREkoLHT6SzFY/ltRciRGIXWeU02o3fUYrVXpC4THnNEU
-	 j7CRaD86REpFzqxNAdJng+OPBJlIFv8GWy2JPT0v6DIfnAmoRsnFcBMbjtwBfxcjsA
-	 8h3IycPpR6OxDQfSm4/f7HNDy8qdVZvDw7AAS+zb6IfbfVwpTN3qO0x6ms25HfbaOq
-	 jUrNreINqb4mmREz3gmVLvFYPMp1qJIYKQnjwiqr6FWRYKHBpPY5ebPa3FEQiiQWPy
-	 bdfRmnZWJYR2Cmu8Yg4Xm1t447d6k8aQYaGzrabZsPey/BMbtvePXCilClscDGKPU0
-	 KYmhjE1Um9yZw==
-Date: Tue, 5 Nov 2024 18:39:40 +0100
-From: Maxime Ripard <mripard@kernel.org>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, Liu Ying <victor.liu@nxp.com>, andrzej.hajda@intel.com, 
-	neil.armstrong@linaro.org, rfoss@kernel.org, Laurent.pinchart@ideasonboard.com, 
-	jonas@kwiboo.se, jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com, 
-	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, quic_jesszhan@quicinc.com, 
-	mchehab@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, catalin.marinas@arm.com, will@kernel.org, 
-	sakari.ailus@linux.intel.com, hverkuil@xs4all.nl, tomi.valkeinen@ideasonboard.com, 
-	quic_bjorande@quicinc.com, geert+renesas@glider.be, arnd@arndb.de, nfraprado@collabora.com, 
-	thierry.reding@gmail.com, prabhakar.mahadev-lad.rj@bp.renesas.com, sam@ravnborg.org, 
-	marex@denx.de, biju.das.jz@bp.renesas.com
-Subject: Re: (subset) [PATCH v5 00/13] Add ITE IT6263 LVDS to HDMI converter
- support
-Message-ID: <20241105-succinct-pygmy-dingo-4db79c@houat>
-References: <20241104032806.611890-1-victor.liu@nxp.com>
- <173080602214.231309.12977765173766280536.b4-ty@linaro.org>
- <20241105-secret-seriema-of-anger-7acfdf@houat>
- <CD810D31-F9C5-499D-86CF-B94BEF82449A@linaro.org>
+	s=k20201202; t=1730833648;
+	bh=bJBfX6qg8hW2kBjNewIsOi+0CyauUekBnlmZQZpbsPM=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=Ws5ZPOhUGS4BGBhjO58bXkSAOXZlJVSOeX1WL46YI1g7J7+uu0SjVJCcOPQXlZCzJ
+	 0HIHMEf3qI/TWOANCPJDa48EtIsYCWbGMV8ziP1C9N2vuTwgV3IRBCOPhTtPThjzTr
+	 PCE3I+wiIQipirKQ01UEni4wshs1YoeyCDYH0Hkg0fXBPQvZukoZuE4OsvFjoqKfdT
+	 AZITUrcU1TglWZUMHI8LR0Tn3GLs49h2ZQpaanmBKdspvAhhxMMeL8Jq0iQJncDgZf
+	 Jqlsol00dy+q11CuOVcc7dg03m1ZL4P9h5qmFlxzIbgk8Lk3/o+CdteMFPwB2nQyuH
+	 6IFhmanLMkR+g==
+From: Mark Brown <broonie@kernel.org>
+To: Jaroslav Kysela <perex@perex.cz>, Jerome Brunet <jbrunet@baylibre.com>, 
+ Kevin Hilman <khilman@baylibre.com>, 
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+ Shengjiu Wang <shengjiu.wang@gmail.com>, Takashi Iwai <tiwai@suse.com>, 
+ Vinod Koul <vkoul@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>, 
+ alsa-devel@alsa-project.org, imx@lists.linux.dev, 
+ linux-rpi-kernel@lists.infradead.org, linux-sound@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, patches@opensource.cirrus.com, 
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+In-Reply-To: <871q06cmsl.wl-kuninori.morimoto.gx@renesas.com>
+References: <871q06cmsl.wl-kuninori.morimoto.gx@renesas.com>
+Subject: Re: [PATCH 0/8] ASoC: cleasnup rtd and its ID
+Message-Id: <173083364434.105724.3803415580036211483.b4-ty@kernel.org>
+Date: Tue, 05 Nov 2024 19:07:24 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="lpikbxgr4ajy2ceg"
-Content-Disposition: inline
-In-Reply-To: <CD810D31-F9C5-499D-86CF-B94BEF82449A@linaro.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-9b746
 
+On Thu, 24 Oct 2024 01:28:10 +0000, Kuninori Morimoto wrote:
+> rtd has own ID, but it is naming "num" for it. The naming is confusable.
+> This patch rename it to "id".
+> And many functions request both "rtd" and its "id" as function parameter,
+> but rtd itself has rtd->id. This patch cleanup it.
+> 
+> And, Qcom driver want to use irregular rtd ID because of its topology,
+> and thus, soc-core need irregular calculation. I'm not sure why only Qcom
+> needs such calculation, but this patch also cleanup it.
+> But I guess we want to cleanup is not soc-core but Qcom side (?)
+> 
+> [...]
 
---lpikbxgr4ajy2ceg
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: (subset) [PATCH v5 00/13] Add ITE IT6263 LVDS to HDMI converter
- support
-MIME-Version: 1.0
+Applied to
 
-On Tue, Nov 05, 2024 at 05:33:21PM +0000, Dmitry Baryshkov wrote:
-> On 5 November 2024 16:13:26 GMT, Maxime Ripard <mripard@kernel.org> wrote:
-> >On Tue, Nov 05, 2024 at 01:28:48PM +0200, Dmitry Baryshkov wrote:
-> >> On Mon, 04 Nov 2024 11:27:53 +0800, Liu Ying wrote:
-> >> > This patch series aims to add ITE IT6263 LVDS to HDMI converter on
-> >> > i.MX8MP EVK.  Combined with LVDS receiver and HDMI 1.4a transmitter,
-> >> > the IT6263 supports LVDS input and HDMI 1.4 output by conversion
-> >> > function.  IT6263 product link can be found at [1].
-> >> >=20
-> >> > Patch 1 is a preparation patch to allow display mode of an existing
-> >> > panel to pass the added mode validation logic in patch 3.
-> >> >=20
-> >> > [...]
-> >>=20
-> >> Applied to drm-misc-next, thanks!
-> >>=20
-> >> [04/13] media: uapi: Add MEDIA_BUS_FMT_RGB101010_1X7X5_{SPWG, JEIDA}
-> >>         commit: 5205b63099507a84458075c3ca7e648407e6c8cc
-> >
-> >Where's the immutable branch Laurent asked for?
->=20
-> The patch set has been picked up after getting an Ack from Sakari,
-> before Laurent's email. I am sorry if I rushed it in.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-I mean, this was less than a day after you've asked that question
-yourself. Waiting less than a day for a mail to be answered seems a bit
-short, especially when there's no rush to merge these patches in the
-first place.
+Thanks!
 
-Maxime
+[1/8] ASoC: rename rtd->num to rtd->id
+      commit: 40e47e2db6864aa053a62477bd71a16be9dd4066
+[2/8] ASoC: fsl: switch to use rtd->id from rtd->num
+      commit: eae33f737c7a929d92b559fe1a1002d597b7b903
+[3/8] ASoC: meson: switch to use rtd->id from rtd->num
+      commit: b19f75df8fa9f8d4aa8b5886dca0f2d832a76baa
+[4/8] ASoC: sh: switch to use rtd->id from rtd->num
+      commit: 970a874b76d09d6a5880e8832e572850cfcb4008
+[5/8] ASoC: generic: switch to use rtd->id from rtd->num
+      commit: 742e622db67efc32affb5893fdcc0149f374533e
+[6/8] ASoC: remove rtd->num
+      commit: c59db5ed233a19f6aadd086fb89149ec5f6fa855
+[7/8] ASoC: soc-core: do rtd->id trick at snd_soc_add_pcm_runtime()
+      commit: cb18cd26039f5cdecb0ac53fb447b6f0859f3d1c
+[8/8] ASoC: cleanup function parameter for rtd and its id
+      commit: 8b12da9a18f4dd53e4b3a7393829a555e84f073c
 
---lpikbxgr4ajy2ceg
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZypYWAAKCRAnX84Zoj2+
-dqB2AX9GZdjTPnmcByvgBSDmocLc9jx/UxPVwoxcockjnXv6ZTkFXoDJPi/fdgYU
-ZVhEdvwBgMatI1KVXAWu/endQAK5PMRNxHeFsbekB5ouNQnFLuCJ1Hnf5FHt+whO
-wHHi4EMLFA==
-=rM90
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---lpikbxgr4ajy2ceg--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
