@@ -1,103 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD97225D7;
-	Tue,  5 Nov 2024 16:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352991D9A4B;
+	Tue,  5 Nov 2024 16:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730823210; cv=none; b=GWEYFWevuO7YRNEAtoPKAC0VcMylOpwWxHUiJ6T2vr/2rEbzsSJKFVy22JW1uXhXcMmciSJwk4bTWu5G4CDGocxzO4YKrL6+CBoSlNeQfvmERRElTfPbFOFTzbJ0kJSL4os3/5fPvK13eUOW1qaMEiQmSSRP9yR0VOCv341kyWU=
+	t=1730824711; cv=none; b=o3m2a/VJpTni59GY4G22xZfmYzi47ck8ujbp99DFyYD8H+tPYPSL2H3Y/6V228Qd5B/mW9TWjqttkI9TmtNx+Lz705MR+vfeHMRM+CXZoU60tNq/CBX2j8dFhvnnK0BCuVodmUeS/d2tSNf4I6M1vAVtk/RCiCAJlrJkUNT4OJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730823210; c=relaxed/simple;
-	bh=eSDIHL9Lx3jVJUWMPjnlix71KpWYWYL873yuyuGqT0w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QUDKl9D2f3MKciOecpvWrNhrmrcPO3W+YiL+YU5bgORA8yu3B6A69r24k9lf764oNgE4oqAkfwHSIi4ObKZtE5zYQhki5xg+C3tJBL1wPoIBQsJ0qHPcSaIcfJ3diHfuixDDnVt9ALT65i3m1f2dYYFkfL9W/9vQEPeMXeOHH4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cmUmzpkQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730824711; c=relaxed/simple;
+	bh=X3QevZg0rzrXDfQFtVrzDiR/bMaGBDN1CpqsOH1Ja48=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=EUDlFB7UD+RM6uqom20gkW3M9rXAQOsCoREqMHc3lILubQmfRLH7yqj03GyGS1Urf77NaZgHJnhIwhHcGD/nqo1gCyDTfvRuaaatVpHe79yda2JCIGjt+y4EpUZwkS93tg/cye8wh8sR7sK+Xyn2vGf4lYvBFXmdIUvnNHWPRlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aLwZYMYU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cmUmzpkQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E07BEC4CECF;
-	Tue,  5 Nov 2024 16:13:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aLwZYMYU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ED5DC4CED2;
+	Tue,  5 Nov 2024 16:38:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730823209;
-	bh=eSDIHL9Lx3jVJUWMPjnlix71KpWYWYL873yuyuGqT0w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cmUmzpkQx1/Q9DXUjX6qBSgVLuVoYrjwF7maZOnNTP8rntuCaih5cVAODKLgP9Xbx
-	 Id6wrA4M1+sJJ2WctqX/t7/5OCTjNwoMHWGoIn1QxU6eeJYjMN4XVSEMLtiLq2o6nB
-	 X6CKGQFei6HirQn0NHS0yRf2FTbNpy2rCxLVYnM3Pk+ukAYZnsaUruILjxVCMOxmHL
-	 omX9drWCXTUEdVuzq8Zgft3AJdTsXqIguxqAilbQYBkfaIZxF0ZchCJdBGl2814h1Y
-	 F+uZ6xxrw3ycJNUY5agKm0WxD883qreG94QfZBKxl7MDtdfTCRSRscfP/QrywxmrOm
-	 zr78CgKSUV1Lw==
-Date: Tue, 5 Nov 2024 17:13:26 +0100
-From: Maxime Ripard <mripard@kernel.org>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, Liu Ying <victor.liu@nxp.com>, andrzej.hajda@intel.com, 
-	neil.armstrong@linaro.org, rfoss@kernel.org, Laurent.pinchart@ideasonboard.com, 
-	jonas@kwiboo.se, jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com, 
-	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, quic_jesszhan@quicinc.com, 
-	mchehab@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, catalin.marinas@arm.com, will@kernel.org, 
-	sakari.ailus@linux.intel.com, hverkuil@xs4all.nl, tomi.valkeinen@ideasonboard.com, 
-	quic_bjorande@quicinc.com, geert+renesas@glider.be, arnd@arndb.de, nfraprado@collabora.com, 
-	thierry.reding@gmail.com, prabhakar.mahadev-lad.rj@bp.renesas.com, sam@ravnborg.org, 
-	marex@denx.de, biju.das.jz@bp.renesas.com
-Subject: Re: (subset) [PATCH v5 00/13] Add ITE IT6263 LVDS to HDMI converter
- support
-Message-ID: <20241105-secret-seriema-of-anger-7acfdf@houat>
-References: <20241104032806.611890-1-victor.liu@nxp.com>
- <173080602214.231309.12977765173766280536.b4-ty@linaro.org>
+	s=k20201202; t=1730824710;
+	bh=X3QevZg0rzrXDfQFtVrzDiR/bMaGBDN1CpqsOH1Ja48=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=aLwZYMYUdbc96SDQl4CZJP7laKG276AROeHoNAb/mbq0JLX8pGH2ErNkqqR3CVg8N
+	 wzFnZjVoe4to+XZpY9sJNCkq2NuZWXe7RB+L/RIxQawDz4LpKAaTkQ0Snkp/RocZ92
+	 V/JonNjeP1FzhAKY/9P7HCpDQh/8+WkvyZ35K1zzJmsMNtdNDlcPuf0LP39CUwV+Bu
+	 vb09gWYSP1T8UGfcjd3qkimmpy3Nfm8anUXei95OTdaq+ceTA+2hAypAq1K2R+2Z90
+	 E6USeKTASzsIsUwBQ1cB6RpFrTf+W4JEKSFJS07aA0pLz6ygCAEBzhLvmJHUNIMawB
+	 POu5V5s8j3nkg==
+From: Mark Brown <broonie@kernel.org>
+To: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shengjiu Wang <shengjiu.wang@nxp.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>
+Cc: linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org
+In-Reply-To: <20241028-esai_fix-v1-0-3c1432a5613c@nxp.com>
+References: <20241028-esai_fix-v1-0-3c1432a5613c@nxp.com>
+Subject: Re: (subset) [PATCH 0/2] ASoC: fsl-esai: allow fsl,imx8qm-esai
+ fallback to fsl,imx6ull-esai
+Message-Id: <173082470778.77847.10489834906356614772.b4-ty@kernel.org>
+Date: Tue, 05 Nov 2024 16:38:27 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="ttos2pb3wymv4mp7"
-Content-Disposition: inline
-In-Reply-To: <173080602214.231309.12977765173766280536.b4-ty@linaro.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-9b746
 
+On Mon, 28 Oct 2024 15:49:30 -0400, Frank Li wrote:
+> Update binding doc to allow fsl,imx8qm-esai fallback to fsl,imx6ull-esai.
+> Update dts add fsl,imx6ull-esai fallback.
+> 
+> 
 
---ttos2pb3wymv4mp7
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: (subset) [PATCH v5 00/13] Add ITE IT6263 LVDS to HDMI converter
- support
-MIME-Version: 1.0
+Applied to
 
-On Tue, Nov 05, 2024 at 01:28:48PM +0200, Dmitry Baryshkov wrote:
-> On Mon, 04 Nov 2024 11:27:53 +0800, Liu Ying wrote:
-> > This patch series aims to add ITE IT6263 LVDS to HDMI converter on
-> > i.MX8MP EVK.  Combined with LVDS receiver and HDMI 1.4a transmitter,
-> > the IT6263 supports LVDS input and HDMI 1.4 output by conversion
-> > function.  IT6263 product link can be found at [1].
-> >=20
-> > Patch 1 is a preparation patch to allow display mode of an existing
-> > panel to pass the added mode validation logic in patch 3.
-> >=20
-> > [...]
->=20
-> Applied to drm-misc-next, thanks!
->=20
-> [04/13] media: uapi: Add MEDIA_BUS_FMT_RGB101010_1X7X5_{SPWG, JEIDA}
->         commit: 5205b63099507a84458075c3ca7e648407e6c8cc
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Where's the immutable branch Laurent asked for?
+Thanks!
 
-Maxime
+[1/2] ASoC: dt-bindings: fsl-esai: allow fsl,imx8qm-esai fallback to fsl,imx6ull-esai
+      commit: adf7ea48ce05a6c5c44f0f9d3f81e83e5cb70c3e
 
---ttos2pb3wymv4mp7
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZypEJgAKCRAnX84Zoj2+
-dpfjAYCXCR61pzRZkuGkWB3Yv+7EqMH0dEZY3hO4ujeNE9k4Yn3LG2W7QlAouHUq
-cGDO9t4BgPfRY/sKNRxOUREUKrW7wHa0QyC5uc8aFlYphEWapGbIqlEboX1Y6kAW
-ANhpVKTYMw==
-=83wB
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---ttos2pb3wymv4mp7--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
