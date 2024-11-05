@@ -1,110 +1,122 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4F31D1738;
-	Tue,  5 Nov 2024 13:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316A01D45FD;
+	Tue,  5 Nov 2024 13:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730814135; cv=none; b=Ot9BM7m4H0PpuVSxkIGe4UwCOyBAWbCV/3fjrwFrXJ+U0gn6PP5VqnbRPjPMX4Wgz0LUKunAEhE1269Hcijp6Cva8lzyKc1IP0jki9g92AHSWNQeE4tWCxvUFZS9Nw5VeXItBxHRkhAsuihKVhXFaZCPy+irbkQ801feEWi4MtY=
+	t=1730814965; cv=none; b=cxNB/petlLtBsGJcM4wqMeXq5kJTn9OrYmTVaZTBAPP8hBzzuaMr9HfaPR3cl3oUCEvYZgoxhWbWAabMmEeitySRoItetO+ssrsxx5hZl/G06W6D/36hyZk5UMfD+qI00Jsxd84NBLe3l0LwmRN07DIDn+I9iOoM22bilhB7cuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730814135; c=relaxed/simple;
-	bh=uBjQq4vty/Kv54JBAzOzZbTnfWxAOZe08zjGZl2RRng=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qGTdcgecMqb4CgSLihzCyQbL4SQOWH8hk5LD3fxusIgqmrFHe6qMtTe6kyzschKFFkB82P7t5wRbDQYlsajdPb5jjMV4tGsekzYLXG2Zy3kYC2xlNwJTbs5yOWjG7bbjCuZYyUpkHa/00LM9pzvHX9LtiNvC1vpwYM0YTF+02fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bWpB+y9G; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730814965; c=relaxed/simple;
+	bh=B8zdbQ6cPYCK+6r67NeVRs7ZNcjG8oNdvJnXDQkqORM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p4h4gmQTTI9KjYAfBLRSsGpPWemDrNfNb4clsBucOqhhBieVckdfnlIzdMTWdCZ6W0OZIFiqDuOO9CeLUD/vyoaks1tzNT68vqIcAVG7kAgYy+L+EkyJ8kmaZvW191Q4TIxQJe+R1FPZUciBHnD8GmY4ugexSqctPr896A6aXfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QOSZ5PfX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bWpB+y9G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388F7C4CED0;
-	Tue,  5 Nov 2024 13:42:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QOSZ5PfX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404F4C4CECF;
+	Tue,  5 Nov 2024 13:56:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730814134;
-	bh=uBjQq4vty/Kv54JBAzOzZbTnfWxAOZe08zjGZl2RRng=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bWpB+y9GcHXvT6oCWVyQ/KVxxHgXagZzJhtB/rfYNtMNty1iyCdFcWBawsmHe2GHs
-	 /oTty3u03wYvChtzTrj7ABQRgGmKSeSEsg6PKeVxsM63iUvWYSVjrSRx7oPzvLWrE4
-	 3R2OTW65d/wL7l3BXcIsIbnD4Ct6ssJICt7sm86tunxRKeLQeDP5WBxMpuvOGSwm1k
-	 IhdX4TOeybsLfPve1laLWr9W7bkOTJQOtdVBiQZSdidZtjMdUySDM4TmnGtJumra6/
-	 pMWHB1C7E4ZJCpuCmZKBJ3X8UvXUyG1o7TgGQxrl5n0halO9aMvptdfoXz9azqoEx0
-	 H7ztw+sM68i3Q==
-Date: Tue, 5 Nov 2024 13:42:06 +0000
-From: Simon Horman <horms@kernel.org>
-To: jan.petrous@oss.nxp.com
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Minda Chen <minda.chen@starfivetech.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-	Keyur Chudgar <keyur@os.amperecomputing.com>,
-	Quan Nguyen <quan@os.amperecomputing.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>
-Subject: Re: [PATCH v4 05/16] net: dwmac-dwc-qos-eth: Use helper rgmii_clock
-Message-ID: <20241105134206.GE4507@kernel.org>
-References: <20241028-upstream_s32cc_gmac-v4-0-03618f10e3e2@oss.nxp.com>
- <20241028-upstream_s32cc_gmac-v4-5-03618f10e3e2@oss.nxp.com>
+	s=k20201202; t=1730814964;
+	bh=B8zdbQ6cPYCK+6r67NeVRs7ZNcjG8oNdvJnXDQkqORM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=QOSZ5PfX5FLwW7vq+wN1jcMkHF3MzZIz6LSHNpHdsXrR1X0fCcNvXVfZ2/ycW8ZvP
+	 w+PL72WiMFxFI3Z6dlgoT6Aeq7B8RGAWQTAZv5GyVL2ksui36tnytAEbkZbumtUPaD
+	 GQsrXULOmAWespxKLsJVQGvM4q8aHn+3gdTubjDkVQaEl4RFepDBrAfFHiiQ58JLAL
+	 9fAIqGs0D76c1jKDx6HBbzOLT3SwhhX0LF2JhHqVuADAKfYzHVc/Prru+0xlG5jR89
+	 /qBEbk46oC4cZzMPa0sk6PL53agPVeNjyELsqN4hhBEs/KBJrm2V/gkNnt8iR4+HQQ
+	 fL4E/WhbkroDw==
+Message-ID: <48a687c7-24e2-4815-8cc1-d223b38e0e55@kernel.org>
+Date: Tue, 5 Nov 2024 15:56:00 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241028-upstream_s32cc_gmac-v4-5-03618f10e3e2@oss.nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] usb: dwc3: core: avoid reading register after bus clk is
+ disabled
+To: Xu Yang <xu.yang_2@nxp.com>, Thinh.Nguyen@synopsys.com,
+ gregkh@linuxfoundation.org, d-gole@ti.com
+Cc: linux-usb@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
+References: <20241105071426.2411166-1-xu.yang_2@nxp.com>
+Content-Language: en-US
+From: Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <20241105071426.2411166-1-xu.yang_2@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 28, 2024 at 09:24:47PM +0100, Jan Petrous via B4 Relay wrote:
-> From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Hello Xu,
+
+On 05/11/2024 09:14, Xu Yang wrote:
+> The driver may go through below sequence when works as device mode:
 > 
-> Utilize a new helper function rgmii_clock().
+> dwc3_suspend()
+>   dwc3_suspend_common()
+>     dwc3_core_exit()
+>       dwc3_clk_disable()
+> 	clk_disable_unprepare(dwc->bus_clk);
+>     dwc3_enable_susphy()
+>       dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(i));
 > 
-> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> Then the driver will read dwc3 register after bus clk is disabled. If this
+> happens, the kernel will hang there. This will move dwc3_enable_susphy()
+> ahead to avoid such issue.
+> 
+> Fixes: 705e3ce37bcc ("usb: dwc3: core: Fix system suspend on TI AM62 platforms")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+
+Thank you for the patch. But this was already addressed yesterday.
+
+https://lore.kernel.org/all/20241104-am62-lpm-usb-fix-v1-1-e93df73a4f0d@kernel.org/
+
 > ---
->  drivers/net/ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c | 11 +++--------
->  1 file changed, 3 insertions(+), 8 deletions(-)
+>  drivers/usb/dwc3/core.c | 18 +++++++++---------
+>  1 file changed, 9 insertions(+), 9 deletions(-)
 > 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c
-> index ec924c6c76c6..5080891c33e0 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c
-> @@ -181,24 +181,19 @@ static void dwc_qos_remove(struct platform_device *pdev)
->  static void tegra_eqos_fix_speed(void *priv, unsigned int speed, unsigned int mode)
->  {
->  	struct tegra_eqos *eqos = priv;
-> -	unsigned long rate = 125000000;
-> +	long rate = 125000000;
->  	bool needs_calibration = false;
->  	u32 value;
->  	int err;
+> diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+> index de434f78c560..b0f1e32d426f 100644
+> --- a/drivers/usb/dwc3/core.c
+> +++ b/drivers/usb/dwc3/core.c
+> @@ -2347,6 +2347,15 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+>  			    (dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0)) &
+>  			    DWC3_GUSB3PIPECTL_SUSPHY);
+>  
+> +	if (!PMSG_IS_AUTO(msg)) {
 
-Hi Jan,
+This alone is not enough as device might have been runtime suspended before
+system suspend and we will still try to access the registers below causing a fault.
 
-As it seems that there will be another revision anyway,
-please update the above so that the local variable declarations
-are in reverse xmas tree order - longest line to shortest.
+> +		/*
+> +		 * TI AM62 platform requires SUSPHY to be
+> +		 * enabled for system suspend to work.
+> +		 */
+> +		if (!dwc->susphy_state)
+> +			dwc3_enable_susphy(dwc, true);
+> +	}
+> +
+>  	switch (dwc->current_dr_role) {
+>  	case DWC3_GCTL_PRTCAP_DEVICE:
+>  		if (pm_runtime_suspended(dwc->dev))
+> @@ -2398,15 +2407,6 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+>  		break;
+>  	}
+>  
+> -	if (!PMSG_IS_AUTO(msg)) {
+> -		/*
+> -		 * TI AM62 platform requires SUSPHY to be
+> -		 * enabled for system suspend to work.
+> -		 */
+> -		if (!dwc->susphy_state)
+> -			dwc3_enable_susphy(dwc, true);
+> -	}
+> -
+>  	return 0;
+>  }
+>  
 
-Likewise in s32_dwmac_probe() in the patch
-"net: stmmac: dwmac-s32: add basic NXP S32G/S32R glue driver".
-
-...
+-- 
+cheers,
+-roger
