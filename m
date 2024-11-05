@@ -1,458 +1,103 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C372D2EB1F
-	for <imx@lists.linux.dev>; Tue,  5 Nov 2024 11:42:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653DF1D5AA5
+	for <imx@lists.linux.dev>; Tue,  5 Nov 2024 13:02:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730806962; cv=none; b=FTqkoiZ/Wapy8wc3E/AfQRXe3lAroLXAdy+wvOadfEh06tYpX3R9RNB2K5UcANDSBlQ7XInVL264nnTx0SEyT+k5gQpE2T+KDlXBc3hHl6hrdTfkPMcD0cniVnNeRT/Yz3uSdHF0jGW6p3DqfZoNcRVAZZnzGolx9V7CZDIInt0=
+	t=1730811736; cv=none; b=gysKpyjub4WUoJXCNLZxsUApW8FEO34+zcoHYi6DQrCtkKQXnPkeQo2x4NNZgMrWACOwLF2Acj8MTErS6qgRL7XMXYaz9XVDOpAxhZD/0JlPOjjQC1OG+p7YwSoe9nLySZNYdJiYDKepZHB+o0Ew26YNkMdcuOXC8tjxh0IqphU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730806962; c=relaxed/simple;
-	bh=soLQYbCpLZIaLFegrpwrQUNBdV9uOBFxjT17f4CUFPM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BCnIXYeukpQTbwVMUnwB3FTyac9gRopU/MCStpcNAZHmV8wNoP8Eco6KKJfHlMmsU9NmEI650cIN6mJJlv8UZDd8qSgtaluAPWCayoWUJmTh5Q2QRphhBUAHT1AwDr8IMlmU3qz64Z4iY48ZR4W1LW1o/BZpsffIp07qyXXInN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=mX/Kqtzs; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1730811736; c=relaxed/simple;
+	bh=LJBE4I0IMy7jf525lG/+ykCGvei5KrQcg6hhR4qOr3E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sGDlmD7hHdLdLz22/7KCBWA26X4rDLfcUBM4hy0Obht7ar/hWtsrquWk2pZow3B9lx2GmN7oKn0AFKCmFYkEuKMrYRnTu+aOw5mJQ/fKf0xJpVv4wR/qkoKepvheqt1GRHrygnkG44t9ma7LK3OmdN8Uq5bFtgGKxTYFcLvR9VI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TpG0MeX1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="mX/Kqtzs"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 740B122E;
-	Tue,  5 Nov 2024 12:42:29 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1730806949;
-	bh=soLQYbCpLZIaLFegrpwrQUNBdV9uOBFxjT17f4CUFPM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mX/KqtzsUGkkvGouOFOgJwVM6iriVdICrtOToTY6ko1kjUmQrqc8Ch+7eqTps3bcP
-	 OIYbukYWrHB8MLT1i354Td7nyKWeQsvohWhldAirLVSQ/ybOLZKf5X4ekQtYMjCj3Z
-	 H6x9fzoK+OD0ttwdFghiqEryJB1fFAATsEm5gqdc=
-Date: Tue, 5 Nov 2024 13:42:29 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Liu Ying <victor.liu@nxp.com>, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	andrzej.hajda@intel.com, neil.armstrong@linaro.org,
-	rfoss@kernel.org, jonas@kwiboo.se, jernej.skrabec@gmail.com,
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	quic_jesszhan@quicinc.com, mchehab@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	catalin.marinas@arm.com, will@kernel.org,
-	sakari.ailus@linux.intel.com, hverkuil@xs4all.nl,
-	tomi.valkeinen@ideasonboard.com, quic_bjorande@quicinc.com,
-	geert+renesas@glider.be, arnd@arndb.de, nfraprado@collabora.com,
-	thierry.reding@gmail.com, prabhakar.mahadev-lad.rj@bp.renesas.com,
-	sam@ravnborg.org, marex@denx.de, biju.das.jz@bp.renesas.com
-Subject: Re: [PATCH v5 04/13] media: uapi: Add
- MEDIA_BUS_FMT_RGB101010_1X7X5_{SPWG, JEIDA}
-Message-ID: <20241105114229.GO27775@pendragon.ideasonboard.com>
-References: <20241104032806.611890-1-victor.liu@nxp.com>
- <20241104032806.611890-5-victor.liu@nxp.com>
- <ixckmdku6yriieo4ezzsepg5nflltzkvqbt7ylref4mu6a4t26@crooexpf3v57>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TpG0MeX1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 436ABC4CECF
+	for <imx@lists.linux.dev>; Tue,  5 Nov 2024 13:02:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730811736;
+	bh=LJBE4I0IMy7jf525lG/+ykCGvei5KrQcg6hhR4qOr3E=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=TpG0MeX11BO462clx65JUfLsvq7mhYbF/8TSUt0yOb/+sflQ3T/k8A9Tp9FG63RuD
+	 0636srl1MjyFyrhJc81qno/7J1qL+Mw5zrOHiBi72fuBiRN1KQ2iM+bo0HolczBHba
+	 c7Uk7UP6R729XBO1at5dQ7HRh6W40mffJRYDbnJLBHQpGPQoVPKVKqf3qQ0AJguVXF
+	 c+1bCIH1yj8fuZIYA/kHZ4fJ37aL3wZbWpVUbqicrQzs+vKZA8Z40vnynqYcP89Gbr
+	 E6FhESgpjnUQE1vUIyasS2+0nzjEvzjuarJGYp2ekKOTE1Qe1hBKH20jbM4y/8iJHi
+	 jAXlB6S3LBiqQ==
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-6ea5b97e31cso43487457b3.1
+        for <imx@lists.linux.dev>; Tue, 05 Nov 2024 05:02:16 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVTuTJYt/IqJ5C3S5o8F+6Y1GLW4oAxh4t/wdm5nyPcSD0V+uQbjW0BttEBVJ8SNVmRYBg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwkH69XM0N2lhmf9Jf2FE4SXRPu+NMst/5Ub7CtS9SogbZ9TGk4
+	U04XNKCXSD/jnfBgl0VdEWkWPULwj0rB1yX7GTC9LuB7C8zMvj9nVkvjTF6tnYsbvDBaKWlDPMh
+	oTkLNLXPjSWRPQkvG5i29p5HzNQ==
+X-Google-Smtp-Source: AGHT+IFFLLbvPgCz9E48Dc4uvqtjg8zV3O4+z1GmI3+QqVk1B5G6UocOVyAeLNkYeXQF7e9enyX5at0Z8dFOlsu37pM=
+X-Received: by 2002:a05:690c:9b04:b0:664:74cd:5548 with SMTP id
+ 00721157ae682-6ea642e5c1bmr128709737b3.1.1730811735520; Tue, 05 Nov 2024
+ 05:02:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ixckmdku6yriieo4ezzsepg5nflltzkvqbt7ylref4mu6a4t26@crooexpf3v57>
+References: <20241007212434.895521-1-Frank.Li@nxp.com> <ZyPUWaINgupm7dZ3@lizhi-Precision-Tower-5810>
+ <20241105083255.GA24194@www.linux-watchdog.org>
+In-Reply-To: <20241105083255.GA24194@www.linux-watchdog.org>
+From: Rob Herring <robh@kernel.org>
+Date: Tue, 5 Nov 2024 07:02:04 -0600
+X-Gmail-Original-Message-ID: <CAL_Jsq+taEhxJVhzRpZwZnrDDrjpCPXk1vgkAvqWscjH7QPXCA@mail.gmail.com>
+Message-ID: <CAL_Jsq+taEhxJVhzRpZwZnrDDrjpCPXk1vgkAvqWscjH7QPXCA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] dt-bindings: watchdog: fsl-imx-wdt: Add missing
+ 'big-endian' property
+To: Wim Van Sebroeck <wim@linux-watchdog.org>
+Cc: Frank Li <Frank.li@nxp.com>, Guenter Roeck <linux@roeck-us.net>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	"open list:WATCHDOG DEVICE DRIVERS" <linux-watchdog@vger.kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, 
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
+	open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 04, 2024 at 02:00:56PM +0200, Dmitry Baryshkov wrote:
-> On Mon, Nov 04, 2024 at 11:27:57AM +0800, Liu Ying wrote:
-> > Add two media bus formats that identify 30-bit RGB pixels transmitted
-> > by a LVDS link with five differential data pairs, serialized into 7
-> > time slots, using standard SPWG/VESA or JEIDA data mapping.
-> > 
-> > Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> > ---
-> > v5:
-> > * No change.
-> > 
-> > v4:
-> > * No change.
-> > 
-> > v3:
-> > * New patch.
-> > 
-> >  .../media/v4l/subdev-formats.rst              | 156 +++++++++++++++++-
-> >  include/uapi/linux/media-bus-format.h         |   4 +-
-> >  2 files changed, 157 insertions(+), 3 deletions(-)
-> 
-> Laurent, Hans, can we please hear your opinion on this patch?
-> 
-> Ideally we'd like to merge it together with the rest of the series
-> through drm-misc (or via an immutable tag/branch from your side).
+On Tue, Nov 5, 2024 at 3:00=E2=80=AFAM Wim Van Sebroeck <wim@linux-watchdog=
+.org> wrote:
+>
+> Hi Frank,
+>
+> > On Mon, Oct 07, 2024 at 05:24:33PM -0400, Frank Li wrote:
+> > > From: Animesh Agarwal <animeshagarwal28@gmail.com>
+> > >
+> > > Add missing big-endian property in watchdog/fsl-imx-wdt.yaml schema. =
+Only
+> > > allow big-endian property for ls1012a and ls1043a.
+> > >
+> > > Fix dtbs_check errors.
+> > > arch/arm64/boot/dts/freescale/fsl-ls1012a-frwy.dtb: watchdog@2ad0000:
+> > >     Unevaluated properties are not allowed ('big-endian' was unexpect=
+ed)
+> > >
+> > > Cc: Daniel Baluta <daniel.baluta@nxp.com>
+> > > Signed-off-by: Animesh Agarwal <animeshagarwal28@gmail.com>
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> >
+> > Wim Van Sebroeck:
+> >
+> >       Any update this patch? Kyzy already acked.
+> >
+>
+> Acked-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+>
+> Via which tree will this go upsteam?
 
-I'm fine merging it through drm-misc, but creating an immutable branch
-on the DRM side would be nice, just to make sure we can pull it in
-linux-media in the unlikely case where we would have a conflicting patch
-for the next kernel version.
+Your tree.
 
-> > diff --git a/Documentation/userspace-api/media/v4l/subdev-formats.rst b/Documentation/userspace-api/media/v4l/subdev-formats.rst
-> > index d2a6cd2e1eb2..2a94371448dc 100644
-> > --- a/Documentation/userspace-api/media/v4l/subdev-formats.rst
-> > +++ b/Documentation/userspace-api/media/v4l/subdev-formats.rst
-> > @@ -2225,7 +2225,7 @@ The following table list existing packed 48bit wide RGB formats.
-> >      \endgroup
-> >  
-> >  On LVDS buses, usually each sample is transferred serialized in seven
-> > -time slots per pixel clock, on three (18-bit) or four (24-bit)
-> > +time slots per pixel clock, on three (18-bit) or four (24-bit) or five (30-bit)
+DT bindings go in via $subsystem tree. I only take DT bindings if they
+don't get picked up by the subsystem maintainer.
 
-s/ or four/, four/
-
-with that,
-
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-
-> >  differential data pairs at the same time. The remaining bits are used
-> >  for control signals as defined by SPWG/PSWG/VESA or JEIDA standards. The
-> >  24-bit RGB format serialized in seven time slots on four lanes using
-> > @@ -2246,11 +2246,12 @@ JEIDA defined bit mapping will be named
-> >        - Code
-> >        -
-> >        -
-> > -      - :cspan:`3` Data organization
-> > +      - :cspan:`4` Data organization
-> >      * -
-> >        -
-> >        - Timeslot
-> >        - Lane
-> > +      - 4
-> >        - 3
-> >        - 2
-> >        - 1
-> > @@ -2262,6 +2263,7 @@ JEIDA defined bit mapping will be named
-> >        - 0
-> >        -
-> >        -
-> > +      -
-> >        - d
-> >        - b\ :sub:`1`
-> >        - g\ :sub:`0`
-> > @@ -2270,6 +2272,7 @@ JEIDA defined bit mapping will be named
-> >        - 1
-> >        -
-> >        -
-> > +      -
-> >        - d
-> >        - b\ :sub:`0`
-> >        - r\ :sub:`5`
-> > @@ -2278,6 +2281,7 @@ JEIDA defined bit mapping will be named
-> >        - 2
-> >        -
-> >        -
-> > +      -
-> >        - d
-> >        - g\ :sub:`5`
-> >        - r\ :sub:`4`
-> > @@ -2286,6 +2290,7 @@ JEIDA defined bit mapping will be named
-> >        - 3
-> >        -
-> >        -
-> > +      -
-> >        - b\ :sub:`5`
-> >        - g\ :sub:`4`
-> >        - r\ :sub:`3`
-> > @@ -2294,6 +2299,7 @@ JEIDA defined bit mapping will be named
-> >        - 4
-> >        -
-> >        -
-> > +      -
-> >        - b\ :sub:`4`
-> >        - g\ :sub:`3`
-> >        - r\ :sub:`2`
-> > @@ -2302,6 +2308,7 @@ JEIDA defined bit mapping will be named
-> >        - 5
-> >        -
-> >        -
-> > +      -
-> >        - b\ :sub:`3`
-> >        - g\ :sub:`2`
-> >        - r\ :sub:`1`
-> > @@ -2310,6 +2317,7 @@ JEIDA defined bit mapping will be named
-> >        - 6
-> >        -
-> >        -
-> > +      -
-> >        - b\ :sub:`2`
-> >        - g\ :sub:`1`
-> >        - r\ :sub:`0`
-> > @@ -2319,6 +2327,7 @@ JEIDA defined bit mapping will be named
-> >        - 0x1011
-> >        - 0
-> >        -
-> > +      -
-> >        - d
-> >        - d
-> >        - b\ :sub:`1`
-> > @@ -2327,6 +2336,7 @@ JEIDA defined bit mapping will be named
-> >        -
-> >        - 1
-> >        -
-> > +      -
-> >        - b\ :sub:`7`
-> >        - d
-> >        - b\ :sub:`0`
-> > @@ -2335,6 +2345,7 @@ JEIDA defined bit mapping will be named
-> >        -
-> >        - 2
-> >        -
-> > +      -
-> >        - b\ :sub:`6`
-> >        - d
-> >        - g\ :sub:`5`
-> > @@ -2343,6 +2354,7 @@ JEIDA defined bit mapping will be named
-> >        -
-> >        - 3
-> >        -
-> > +      -
-> >        - g\ :sub:`7`
-> >        - b\ :sub:`5`
-> >        - g\ :sub:`4`
-> > @@ -2351,6 +2363,7 @@ JEIDA defined bit mapping will be named
-> >        -
-> >        - 4
-> >        -
-> > +      -
-> >        - g\ :sub:`6`
-> >        - b\ :sub:`4`
-> >        - g\ :sub:`3`
-> > @@ -2359,6 +2372,7 @@ JEIDA defined bit mapping will be named
-> >        -
-> >        - 5
-> >        -
-> > +      -
-> >        - r\ :sub:`7`
-> >        - b\ :sub:`3`
-> >        - g\ :sub:`2`
-> > @@ -2367,6 +2381,7 @@ JEIDA defined bit mapping will be named
-> >        -
-> >        - 6
-> >        -
-> > +      -
-> >        - r\ :sub:`6`
-> >        - b\ :sub:`2`
-> >        - g\ :sub:`1`
-> > @@ -2377,6 +2392,7 @@ JEIDA defined bit mapping will be named
-> >        - 0x1012
-> >        - 0
-> >        -
-> > +      -
-> >        - d
-> >        - d
-> >        - b\ :sub:`3`
-> > @@ -2385,6 +2401,7 @@ JEIDA defined bit mapping will be named
-> >        -
-> >        - 1
-> >        -
-> > +      -
-> >        - b\ :sub:`1`
-> >        - d
-> >        - b\ :sub:`2`
-> > @@ -2393,6 +2410,7 @@ JEIDA defined bit mapping will be named
-> >        -
-> >        - 2
-> >        -
-> > +      -
-> >        - b\ :sub:`0`
-> >        - d
-> >        - g\ :sub:`7`
-> > @@ -2401,6 +2419,7 @@ JEIDA defined bit mapping will be named
-> >        -
-> >        - 3
-> >        -
-> > +      -
-> >        - g\ :sub:`1`
-> >        - b\ :sub:`7`
-> >        - g\ :sub:`6`
-> > @@ -2409,6 +2428,7 @@ JEIDA defined bit mapping will be named
-> >        -
-> >        - 4
-> >        -
-> > +      -
-> >        - g\ :sub:`0`
-> >        - b\ :sub:`6`
-> >        - g\ :sub:`5`
-> > @@ -2417,6 +2437,7 @@ JEIDA defined bit mapping will be named
-> >        -
-> >        - 5
-> >        -
-> > +      -
-> >        - r\ :sub:`1`
-> >        - b\ :sub:`5`
-> >        - g\ :sub:`4`
-> > @@ -2425,10 +2446,141 @@ JEIDA defined bit mapping will be named
-> >        -
-> >        - 6
-> >        -
-> > +      -
-> > +      - r\ :sub:`0`
-> > +      - b\ :sub:`4`
-> > +      - g\ :sub:`3`
-> > +      - r\ :sub:`2`
-> > +    * .. _MEDIA-BUS-FMT-RGB101010-1X7X5-SPWG:
-> > +
-> > +      - MEDIA_BUS_FMT_RGB101010_1X7X5_SPWG
-> > +      - 0x1026
-> > +      - 0
-> > +      -
-> > +      - d
-> > +      - d
-> > +      - d
-> > +      - b\ :sub:`1`
-> > +      - g\ :sub:`0`
-> > +    * -
-> > +      -
-> > +      - 1
-> > +      -
-> > +      - b\ :sub:`9`
-> > +      - b\ :sub:`7`
-> > +      - d
-> > +      - b\ :sub:`0`
-> > +      - r\ :sub:`5`
-> > +    * -
-> > +      -
-> > +      - 2
-> > +      -
-> > +      - b\ :sub:`8`
-> > +      - b\ :sub:`6`
-> > +      - d
-> > +      - g\ :sub:`5`
-> > +      - r\ :sub:`4`
-> > +    * -
-> > +      -
-> > +      - 3
-> > +      -
-> > +      - g\ :sub:`9`
-> > +      - g\ :sub:`7`
-> > +      - b\ :sub:`5`
-> > +      - g\ :sub:`4`
-> > +      - r\ :sub:`3`
-> > +    * -
-> > +      -
-> > +      - 4
-> > +      -
-> > +      - g\ :sub:`8`
-> > +      - g\ :sub:`6`
-> > +      - b\ :sub:`4`
-> > +      - g\ :sub:`3`
-> > +      - r\ :sub:`2`
-> > +    * -
-> > +      -
-> > +      - 5
-> > +      -
-> > +      - r\ :sub:`9`
-> > +      - r\ :sub:`7`
-> > +      - b\ :sub:`3`
-> > +      - g\ :sub:`2`
-> > +      - r\ :sub:`1`
-> > +    * -
-> > +      -
-> > +      - 6
-> > +      -
-> > +      - r\ :sub:`8`
-> > +      - r\ :sub:`6`
-> > +      - b\ :sub:`2`
-> > +      - g\ :sub:`1`
-> >        - r\ :sub:`0`
-> > +    * .. _MEDIA-BUS-FMT-RGB101010-1X7X5-JEIDA:
-> > +
-> > +      - MEDIA_BUS_FMT_RGB101010_1X7X5_JEIDA
-> > +      - 0x1027
-> > +      - 0
-> > +      -
-> > +      - d
-> > +      - d
-> > +      - d
-> > +      - b\ :sub:`5`
-> > +      - g\ :sub:`4`
-> > +    * -
-> > +      -
-> > +      - 1
-> > +      -
-> > +      - b\ :sub:`1`
-> > +      - b\ :sub:`3`
-> > +      - d
-> >        - b\ :sub:`4`
-> > +      - r\ :sub:`9`
-> > +    * -
-> > +      -
-> > +      - 2
-> > +      -
-> > +      - b\ :sub:`0`
-> > +      - b\ :sub:`2`
-> > +      - d
-> > +      - g\ :sub:`9`
-> > +      - r\ :sub:`8`
-> > +    * -
-> > +      -
-> > +      - 3
-> > +      -
-> > +      - g\ :sub:`1`
-> >        - g\ :sub:`3`
-> > +      - b\ :sub:`9`
-> > +      - g\ :sub:`8`
-> > +      - r\ :sub:`7`
-> > +    * -
-> > +      -
-> > +      - 4
-> > +      -
-> > +      - g\ :sub:`0`
-> > +      - g\ :sub:`2`
-> > +      - b\ :sub:`8`
-> > +      - g\ :sub:`7`
-> > +      - r\ :sub:`6`
-> > +    * -
-> > +      -
-> > +      - 5
-> > +      -
-> > +      - r\ :sub:`1`
-> > +      - r\ :sub:`3`
-> > +      - b\ :sub:`7`
-> > +      - g\ :sub:`6`
-> > +      - r\ :sub:`5`
-> > +    * -
-> > +      -
-> > +      - 6
-> > +      -
-> > +      - r\ :sub:`0`
-> >        - r\ :sub:`2`
-> > +      - b\ :sub:`6`
-> > +      - g\ :sub:`5`
-> > +      - r\ :sub:`4`
-> >  
-> >  .. raw:: latex
-> >  
-> > diff --git a/include/uapi/linux/media-bus-format.h b/include/uapi/linux/media-bus-format.h
-> > index d4c1d991014b..ff62056feed5 100644
-> > --- a/include/uapi/linux/media-bus-format.h
-> > +++ b/include/uapi/linux/media-bus-format.h
-> > @@ -34,7 +34,7 @@
-> >  
-> >  #define MEDIA_BUS_FMT_FIXED			0x0001
-> >  
-> > -/* RGB - next is	0x1026 */
-> > +/* RGB - next is	0x1028 */
-> >  #define MEDIA_BUS_FMT_RGB444_1X12		0x1016
-> >  #define MEDIA_BUS_FMT_RGB444_2X8_PADHI_BE	0x1001
-> >  #define MEDIA_BUS_FMT_RGB444_2X8_PADHI_LE	0x1002
-> > @@ -68,6 +68,8 @@
-> >  #define MEDIA_BUS_FMT_ARGB8888_1X32		0x100d
-> >  #define MEDIA_BUS_FMT_RGB888_1X32_PADHI		0x100f
-> >  #define MEDIA_BUS_FMT_RGB101010_1X30		0x1018
-> > +#define MEDIA_BUS_FMT_RGB101010_1X7X5_SPWG	0x1026
-> > +#define MEDIA_BUS_FMT_RGB101010_1X7X5_JEIDA	0x1027
-> >  #define MEDIA_BUS_FMT_RGB666_1X36_CPADLO	0x1020
-> >  #define MEDIA_BUS_FMT_RGB888_1X36_CPADLO	0x1021
-> >  #define MEDIA_BUS_FMT_RGB121212_1X36		0x1019
-
--- 
-Regards,
-
-Laurent Pinchart
+Rob
