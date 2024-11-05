@@ -1,220 +1,110 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C431D6DB5
-	for <imx@lists.linux.dev>; Tue,  5 Nov 2024 13:34:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4F31D1738;
+	Tue,  5 Nov 2024 13:42:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730813693; cv=none; b=mNCvG2fsi+IcDPmvzHVLYPeKrnTlMMXJSEECVIxKB/urrpL7zzGNNHaU2jpAwGHdTTJLcwlCZHj2ng4RAlQaHeaGUzGSJ4TaiphxowEbFg9qYwIsw0k6n9rnG2PUmJswGM6uzGclzHWHtkV9xPZwF1nGN7IVGLwtvWKrmmXO2D8=
+	t=1730814135; cv=none; b=Ot9BM7m4H0PpuVSxkIGe4UwCOyBAWbCV/3fjrwFrXJ+U0gn6PP5VqnbRPjPMX4Wgz0LUKunAEhE1269Hcijp6Cva8lzyKc1IP0jki9g92AHSWNQeE4tWCxvUFZS9Nw5VeXItBxHRkhAsuihKVhXFaZCPy+irbkQ801feEWi4MtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730813693; c=relaxed/simple;
-	bh=3wjFrl9fs9cJnx1W+rEd1Kdu1dvILXiWPVoP33XIYb8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LMp2DwaN5JVlZFy2hfx7oLXbRAGOSININPRKl+wJOIHzrbJzMa7kLUKvUT3DzmeJ6e0GfYB6H81ye/upnDnzxLjJewyQaBsH2UlLJkxd7jv6V70meSnar04wnoB+xoRLO/uLyvSWfro4fNTH7+zDvyt35hm/RYioHTX+QeCFTyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=H2x8aTqt; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1730814135; c=relaxed/simple;
+	bh=uBjQq4vty/Kv54JBAzOzZbTnfWxAOZe08zjGZl2RRng=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qGTdcgecMqb4CgSLihzCyQbL4SQOWH8hk5LD3fxusIgqmrFHe6qMtTe6kyzschKFFkB82P7t5wRbDQYlsajdPb5jjMV4tGsekzYLXG2Zy3kYC2xlNwJTbs5yOWjG7bbjCuZYyUpkHa/00LM9pzvHX9LtiNvC1vpwYM0YTF+02fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bWpB+y9G; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="H2x8aTqt"
-Received: from [192.168.1.107] (87-97-112-21.pool.digikabel.hu [87.97.112.21])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: hs@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 5372D88CEC;
-	Tue,  5 Nov 2024 14:34:45 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1730813688;
-	bh=mFlJcbl3DlbfwuDN87mdbDM9flef9BgUD38InRXLEwQ=;
-	h=Date:Subject:To:Cc:References:Reply-To:From:In-Reply-To:From;
-	b=H2x8aTqtlPBSwXW4aaq1VQwaAQgR7Z+au0bqVyCYgRJiwEo33knSb3Dq2BAf1eTA+
-	 Qp4Gr63fZTuX4Sjfae9+D9aR7hW3pSH6VyynQ0C1tqF/B+GfQtx6BXO7RZmoiTKffD
-	 7CBsm2ovA0Bu+0GfQxTpB3w/h8YY1UYEeNhJZKzqqvq19lFFiJm/UwuJpJr2ch3YYN
-	 AgUMIbPt6fhzC7DxIbnp0cwr9R++G15V5ItS3yzuSJt7buTaj23O++4ZNp/mFlbnXH
-	 rTqBS1Oqq5w5uZoW0XRZBo79pzZyT2qmnjc0v5OG8SO59YjcNzjgeIpLCbuCudyXwQ
-	 8JYkuP2X1eVwg==
-Message-ID: <c8ebdc70-759e-d51a-d63e-00898ef59d1e@denx.de>
-Date: Tue, 5 Nov 2024 14:32:19 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bWpB+y9G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388F7C4CED0;
+	Tue,  5 Nov 2024 13:42:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730814134;
+	bh=uBjQq4vty/Kv54JBAzOzZbTnfWxAOZe08zjGZl2RRng=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bWpB+y9GcHXvT6oCWVyQ/KVxxHgXagZzJhtB/rfYNtMNty1iyCdFcWBawsmHe2GHs
+	 /oTty3u03wYvChtzTrj7ABQRgGmKSeSEsg6PKeVxsM63iUvWYSVjrSRx7oPzvLWrE4
+	 3R2OTW65d/wL7l3BXcIsIbnD4Ct6ssJICt7sm86tunxRKeLQeDP5WBxMpuvOGSwm1k
+	 IhdX4TOeybsLfPve1laLWr9W7bkOTJQOtdVBiQZSdidZtjMdUySDM4TmnGtJumra6/
+	 pMWHB1C7E4ZJCpuCmZKBJ3X8UvXUyG1o7TgGQxrl5n0halO9aMvptdfoXz9azqoEx0
+	 H7ztw+sM68i3Q==
+Date: Tue, 5 Nov 2024 13:42:06 +0000
+From: Simon Horman <horms@kernel.org>
+To: jan.petrous@oss.nxp.com
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Minda Chen <minda.chen@starfivetech.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+	Keyur Chudgar <keyur@os.amperecomputing.com>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	NXP S32 Linux Team <s32@nxp.com>
+Subject: Re: [PATCH v4 05/16] net: dwmac-dwc-qos-eth: Use helper rgmii_clock
+Message-ID: <20241105134206.GE4507@kernel.org>
+References: <20241028-upstream_s32cc_gmac-v4-0-03618f10e3e2@oss.nxp.com>
+ <20241028-upstream_s32cc_gmac-v4-5-03618f10e3e2@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH v3 0/3] arm64: dts: imx8mp: add support for the ABB SoM
- and carrier
-Content-Language: en-US
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
- Mathieu Othacehe <m.othacehe@gmail.com>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Hiago De Franco <hiago.franco@toradex.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Frieder Schrempf <frieder.schrempf@kontron.de>,
- Joao Paulo Goncalves <joao.goncalves@toradex.com>,
- Shawn Guo <shawnguo2@yeah.net>, Krzysztof Kozlowski <krzk@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>,
- Gregor Herburger <gregor.herburger@ew.tq-group.com>,
- Max Merchel <Max.Merchel@ew.tq-group.com>, imx@lists.linux.dev,
- Fabio Estevam <festevam@gmail.com>, linux-gpio@vger.kernel.org,
- Michael Walle <mwalle@kernel.org>, linux-arm-kernel@lists.infradead.org,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-kernel@vger.kernel.org,
- Peng Fan <peng.fan@nxp.com>, Linus Walleij <linus.walleij@linaro.org>,
- Tim Harvey <tharvey@gateworks.com>, devicetree@vger.kernel.org
-References: <20241105064206.43626-1-hs@denx.de>
- <173081219627.3053080.8796298549026571114.robh@kernel.org>
-Reply-To: hs@denx.de
-From: Heiko Schocher <hs@denx.de>
-In-Reply-To: <173081219627.3053080.8796298549026571114.robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241028-upstream_s32cc_gmac-v4-5-03618f10e3e2@oss.nxp.com>
 
-Hello Rob,
+On Mon, Oct 28, 2024 at 09:24:47PM +0100, Jan Petrous via B4 Relay wrote:
+> From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> 
+> Utilize a new helper function rgmii_clock().
+> 
+> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c | 11 +++--------
+>  1 file changed, 3 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c
+> index ec924c6c76c6..5080891c33e0 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c
+> @@ -181,24 +181,19 @@ static void dwc_qos_remove(struct platform_device *pdev)
+>  static void tegra_eqos_fix_speed(void *priv, unsigned int speed, unsigned int mode)
+>  {
+>  	struct tegra_eqos *eqos = priv;
+> -	unsigned long rate = 125000000;
+> +	long rate = 125000000;
+>  	bool needs_calibration = false;
+>  	u32 value;
+>  	int err;
 
-On 05.11.24 14:11, Rob Herring (Arm) wrote:
-> 
-> On Tue, 05 Nov 2024 07:42:03 +0100, Heiko Schocher wrote:
->> The board uses an ABB specific SoM from ADLink, based on NXP
->> i.MX8MP SoC. The SoM is used on 3 different carrier boards,
->> with small differences.
->>
->> series is based on:
->> 819837584309 - (tag: v6.12-rc5, origin/master, origin/HEAD) Linux 6.12-rc5
->>
->> patches are now checked with
->>
->> make W=1 dt_binding_check
->> make W=1 dtbs_check
->> make W=1 CHECK_DTBS=y {for each dtb introduced in this series)
->>
->> as Krzysztof suggested.
->>
->> Changes in v3:
->> added Reviewed-by from Krzysztof
->> - worked in comments from Krzysztof
->>    gpio-line-names should match the actual number of
->>    gpios of the device.
->> - added comments from Shawn Guo
->>    removed unneeded new lines
->>    sort nodes, properties alphabetical
->>    rename pcie0-refclk -> clock-xxx
->>    used GPIO_ACTIVE_HIGH instead of 0
->> - added comments from Fabio Estevam
->>    instead of settting each brightness-level in
->>    brightness-levels add num-interpolated-steps
->> - changes from me
->>    fix gpio-line-names for semtech gpio controller
->>    in imx8mp-aristainetos3-proton2s.dts as patch
->>    "dt-bindings: pinctrl: sx150xq: allow gpio line naming"
->>    of this series adds the dtb checks for them and 17 entries
->>    needed now.
->>
->> Changes in v2:
->> reworked the compatible strings for ABB imx8mp based boards
->> called dtb checks, no errors for this patch
->> patch dt-bindings: pinctrl: sx150xq: allow gpio line naming new in v2
->> - worked in comments from Krzysztof
->>    - removed unneeded dtbos and build now dtbs for each
->>      carrierboard.
->>    - removed user spidev entries, as I do not know the
->>      real spi devices connected to...
->>    - call dtb check targets as described in cover letter
->>      and fixed warnings except warnings see below:
->> not fixed dtb check warnings
->> - pci (warning pops up for each new dtb from this patch, but
->>    also for a lot of other boards, which are already in tree)
->> imx8mp-aristainetos3-adpismarc.dtb: pcie-ep@33800000: reg: [[864026624, 4194304], [402653184, 134217728]] is too short
->>          from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie-ep.yaml#
->> imx8mp-aristainetos3-adpismarc.dtb: pcie-ep@33800000: reg-names: ['dbi', 'addr_space'] is too short
->>          from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie-ep.yaml#
->> - proton2s dtb specific:
->>    - rs485
->>      imx8mp-aristainetos3-proton2s.dtb: serial@30a60000: rs485-rts-delay:0: 0 is not of type 'array'
->>          from schema $id: http://devicetree.org/schemas/serial/fsl-imx-uart.yaml#
->>      imx8mp-aristainetos3-proton2s.dtb: serial@30a60000: rs485-rts-delay:1: 0 is not of type 'array'
->>          from schema $id: http://devicetree.org/schemas/serial/fsl-imx-uart.yaml#
->>      imx8mp-aristainetos3-proton2s.dtb: serial@30a60000: Unevaluated properties are not allowed ('linux,rs485-enabled-at-boot-time', 'rs485-rts-active-low', 'rs485-rts-delay' were unexpected)
->>          from schema $id: http://devicetree.org/schemas/serial/fsl-imx-uart.yaml#
->>      do not see, what I am doing wrong, also rs485 works fine
->>    - led driver
->>      imx8mp-aristainetos3-proton2s.dtb: /soc@0/bus@30800000/i2c@30a30000/tlc59108@40: failed to match any schema with compatible: ['ti,tlc59108']
->>      I use the comaptible entry used in drivers/leds/leds-tlc591xx.c
->>      Ah, may because file
->>      Documentation/devicetree/bindings/leds/leds-tlc591xx.txt
->>      is not converted to yaml?
->>    - pinctrl driver
->>      adding 'gpio-line-names' leads in a warning as this property
->>      is not checked yet (and so a warning is dropped).
->>      add this check in new patch
->>      dt-bindings: pinctrl: sx150xq: allow gpio line naming
->>      in v2
->>
->> Heiko Schocher (3):
->>    dt-bindings: arm: fsl: Add ABB SoM and carrier
->>    dt-bindings: pinctrl: sx150xq: allow gpio line naming
->>    arm64: dts: imx8mp: add aristainetos3 board support
->>
->>   .../devicetree/bindings/arm/fsl.yaml          |    9 +
->>   .../bindings/pinctrl/semtech,sx1501q.yaml     |   43 +
->>   arch/arm64/boot/dts/freescale/Makefile        |    5 +
->>   .../imx8mp-aristainetos3-adpismarc.dts        |   37 +
->>   .../imx8mp-aristainetos3-helios-lvds.dtso     |  113 ++
->>   .../freescale/imx8mp-aristainetos3-helios.dts |   98 ++
->>   .../imx8mp-aristainetos3-proton2s.dts         |  161 +++
->>   .../imx8mp-aristainetos3a-som-v1.dtsi         | 1107 +++++++++++++++++
->>   8 files changed, 1573 insertions(+)
->>   create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-adpismarc.dts
->>   create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-helios-lvds.dtso
->>   create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-helios.dts
->>   create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-proton2s.dts
->>   create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3a-som-v1.dtsi
->>
->> --
->> 2.20.1
->>
->>
->>
-> 
-> 
-> My bot found new DTB warnings on the .dts files added or changed in this
-> series.
-> 
-> Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-> are fixed by another series. Ultimately, it is up to the platform
-> maintainer whether these warnings are acceptable or not. No need to reply
-> unless the platform maintainer has comments.
-> 
-> If you already ran DT checks and didn't see these error(s), then
-> make sure dt-schema is up to date:
-> 
->    pip3 install dtschema --upgrade
-> 
-> 
-> New warnings running 'make CHECK_DTBS=y freescale/imx8mp-aristainetos3-adpismarc.dtb freescale/imx8mp-aristainetos3-helios.dtb freescale/imx8mp-aristainetos3-proton2s.dtb' for 20241105064206.43626-1-hs@denx.de:
-> 
-> arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-proton2s.dtb: /soc@0/bus@30800000/i2c@30a30000/tlc59108@40: failed to match any schema with compatible: ['ti,tlc59108']
+Hi Jan,
 
-Yep, reason I explained above in commit comment:
+As it seems that there will be another revision anyway,
+please update the above so that the local variable declarations
+are in reverse xmas tree order - longest line to shortest.
 
- >>    - led driver
- >>      imx8mp-aristainetos3-proton2s.dtb: /soc@0/bus@30800000/i2c@30a30000/tlc59108@40: failed to 
-match any schema with compatible: ['ti,tlc59108']
- >>      I use the comaptible entry used in drivers/leds/leds-tlc591xx.c
- >>      Ah, may because file
- >>      Documentation/devicetree/bindings/leds/leds-tlc591xx.txt
- >>      is not converted to yaml?
+Likewise in s32_dwmac_probe() in the patch
+"net: stmmac: dwmac-s32: add basic NXP S32G/S32R glue driver".
 
-So the compatible entry is fully okay, just the check is poping up,
-as yaml file is missing...
-
-bye,
-Heiko
--- 
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: +49-8142-66989-52   Fax: +49-8142-66989-80   Email: hs@denx.de
+...
