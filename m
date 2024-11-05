@@ -1,67 +1,105 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F291D172E
-	for <imx@lists.linux.dev>; Tue,  5 Nov 2024 10:17:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40CC1D1F76
+	for <imx@lists.linux.dev>; Tue,  5 Nov 2024 10:20:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730801827; cv=none; b=ta6W1otXfPqpj7zrsEMpoB4Moiyq8ZfoWe9SZeK+zRhRvLD8OZ/CfcWoFJimcR2Hhkd3sjhkfa56g5FwqgryK5fCMzYiMXUqcZronm3OLOvJHBVvLs3hngFkKJ5i8uP6UeY2WtRE6e9uljTu0q7vdxkDJXNk4V3BPuNzXrdO1XQ=
+	t=1730802050; cv=none; b=nvb0QRhAuiOUr1JSUKU0KZeuaxWqJYFWDy8f1AePqrAXhfHZ/vpbYhhDvoOXsTuC8Ep/2bjYD+6iE0sbSCvu0jKnponTO+If0Qy9r1hjhBHULhy3ljwHr1hLVeolEcEl16GPScdlaxjzByXqxrhe7fP1GFeDrnWPwXEOVm80xYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730801827; c=relaxed/simple;
-	bh=uYFu5hk9RPg1nhk2wUqnvBIEwCZTXT9exQ8u7c3OuBA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Z1JFM9EDDy8KY78RHdb2veXFNrB/YMXtaYqLzz1ynwXj9NqdbNkEmMyCterEQTJadfEEteM2a7W142SOcyE/XpRrR+sTPl59GDDjZeejRhlJLvKFtgF/n7g7HsiX9CSZi1K0eZ1V+0fO/VJsW1mtfhTXN5SA1EBIRsgnVJa4+zE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.felsch@pengutronix.de>)
-	id 1t8GcS-0002D7-FX; Tue, 05 Nov 2024 11:17:04 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: "robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, Sascha Hauer" <s.hauer@pengutronix.de>
-Cc: kernel@pengutronix.de,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] arm64: dts: imx8mp: add interconnect for lcdif-hdmi
-Date: Tue,  5 Nov 2024 11:16:44 +0100
-Message-Id: <20241105101645.231608-1-m.felsch@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1730802050; c=relaxed/simple;
+	bh=n1xZDNUqhbesFuiMzQ2YOyPMXWGrOPosEm+4pCyIEIg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=mHcUcHNVfaw3flkeuxi43b+5VNJBUx8qydT43cSAJ/z7CPK6cKEkMpJ0FtoImB+KDf75UufFwbESUtK+CY0OGtrwNOaK5N6wh2RpnQXIxj2+S9pgCr7L/MhVic5+OOoDBy40oUF3URNu04sdA9Us13VDGHq3ornPmW2CfewyHV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=a6r2kEmu; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="a6r2kEmu"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-431548bd1b4so44427935e9.3
+        for <imx@lists.linux.dev>; Tue, 05 Nov 2024 02:20:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1730802047; x=1731406847; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=V6HBjokQWj4T4+WepKSLqPJvgW6DqwGUQ8oY/ZOD6S8=;
+        b=a6r2kEmuliWr5IBEXcts2sDtFhpwtupkZ4azYZLRwTCtcvMSgfP7aLDuxKcjkbev9g
+         Dboehszr7Uudim9UkzElmjvZYMoO3iXYcJQZwNfgMsW1FGp5Y5tkz+I3Lr4no1PRu+DO
+         ybaVQPvzZwDx5DozK07h75M9L1v/8VHUOikWMqzPKTuD5g7f1WEyAjF5zGNjV/hTrg95
+         v4FbeeGTrudhjJOTjvkbiD4EbnShIZp5We3XmmKrKPolFitAxyoaMsW9bemmwAD1ZD7Z
+         x+PftvWBpt0IW5tmmB9NRfRV3X1l6eCEpN4dwr2oOZBaVS18ryIGZN3ecXETYA3n9uh9
+         sr1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730802047; x=1731406847;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=V6HBjokQWj4T4+WepKSLqPJvgW6DqwGUQ8oY/ZOD6S8=;
+        b=A63SoYYrTLJggHFYLO5BGOMD5dQvimrIOM0IOkS73iDDttCLRwYlG3awlq1qmP23i9
+         XXSuQRip2eHCCZkB6leMqb/xvwaUGxxTvVN0tSb0Eu5JjFwP2/BLnYHCszn/ogBG66yq
+         dAA+1V0wFUEo9GT7vpukMkvkGGE8ruZot+evdcPLuIBDQLxW2/Sm6Zx+jXfJa5bau3H7
+         CjVhnbdCWil4JFIYFEEXBtb98cAa4BsSs4p0VGcE2IngfQhkbpLyRWKhOWcX97zSGqUM
+         3XqY5q40c4aeANnEid9oT1Xr2/Ayoatc0Cmby8NhM69t/9MxITZXL8nLtEH90fXeyn6f
+         i1cw==
+X-Forwarded-Encrypted: i=1; AJvYcCUjmV/z5chTz+67Gn4DzJIjqmy6VlmIPPHbIUqWZs7e6zV+OIfljLo/wRDzbs5mCJjgnE0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzS8fHOebotk/umjbnY1O61xFIDGIWq1Tk98GDr7C44sawDYziO
+	Q4kMY0I+izqYcFmCfyspYpV9E6PewX8LPdAYkdUIzHzjxdyrWl0voOQ5m4U5cGg=
+X-Google-Smtp-Source: AGHT+IGiCKZMB9E+p4Rzra+IUjFqsLZgXkfliq+gY4mk8e94l3nXR/6qBBzd8yl42Q8JhaJlQ14rrw==
+X-Received: by 2002:a05:600c:6046:b0:431:54f3:11b1 with SMTP id 5b1f17b1804b1-43283297a21mr128723995e9.34.1730802047103;
+        Tue, 05 Nov 2024 02:20:47 -0800 (PST)
+Received: from [127.0.1.1] ([82.76.168.176])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431bd9ca7ebsm213412005e9.42.2024.11.05.02.20.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Nov 2024 02:20:46 -0800 (PST)
+From: Abel Vesa <abel.vesa@linaro.org>
+To: krzk+dt@kernel.org, robh@kernel.org, abelvesa@kernel.org, 
+ mturquette@baylibre.com, sboyd@kernel.org, conor+dt@kernel.org, 
+ shawnguo@kernel.org, s.hauer@pengutronix.de, ping.bai@nxp.com, 
+ ye.li@nxp.com, peng.fan@nxp.com, aisheng.dong@nxp.com, frank.li@nxp.com, 
+ Pengfei Li <pengfei.li_1@nxp.com>
+Cc: kernel@pengutronix.de, festevam@gmail.com, linux-clk@vger.kernel.org, 
+ imx@lists.linux.dev, devicetree@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20241023184651.381265-1-pengfei.li_1@nxp.com>
+References: <20241023184651.381265-1-pengfei.li_1@nxp.com>
+Subject: Re: [PATCH v6 0/4] Add iMX91 clock driver support
+Message-Id: <173080204542.1890849.11473057431035200273.b4-ty@linaro.org>
+Date: Tue, 05 Nov 2024 12:20:45 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::28
-X-SA-Exim-Mail-From: m.felsch@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-dedf8
 
-Add the missing interconnect for the lcdif-hdmi.
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
----
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+On Wed, 23 Oct 2024 11:46:46 -0700, Pengfei Li wrote:
+> This patch set is to add some new clocks to binding header and driver.
+> 
+> IMX93_CLK_END was previously defined in imx93-clock.h to indicate
+> the number of clocks. However, it is not part of the ABI. For starters
+> it does no really appear in DTS. But what's more important - new clocks
+> are described later, which contradicts this define in binding header.
+> So move this macro to clock driver.
+> 
+> [...]
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index f3531cfb0d79..09b0b63a7b88 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -2023,6 +2023,10 @@ hdmi_blk_ctrl: blk-ctrl@32fc0000 {
- 						     "pai", "pvi", "trng",
- 						     "hdmi-tx", "hdmi-tx-phy",
- 						     "hdcp", "hrv";
-+				interconnects = <&noc IMX8MP_ICM_LCDIF_HDMI &noc IMX8MP_ICN_HDMI>,
-+						<&noc IMX8MP_ICM_HRV &noc IMX8MP_ICN_HDMI>,
-+						<&noc IMX8MP_ICM_HDCP &noc IMX8MP_ICN_HDMI>;
-+				interconnect-names = "lcdif-hdmi", "hrv", "hdcp";
- 				#power-domain-cells = <1>;
- 			};
- 
+Applied, thanks!
+
+[1/4] clk: imx93: Move IMX93_CLK_END macro to clk driver
+      (no commit info)
+[2/4] dt-bindings: clock: imx93: Drop IMX93_CLK_END macro definition
+      (no commit info)
+[3/4] dt-bindings: clock: Add i.MX91 clock support
+      (no commit info)
+[4/4] clk: imx: add i.MX91 clk
+      (no commit info)
+
+Best regards,
 -- 
-2.39.5
+Abel Vesa <abel.vesa@linaro.org>
 
