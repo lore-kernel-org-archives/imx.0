@@ -1,169 +1,112 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2056.outbound.protection.outlook.com [40.107.21.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09CD18BC06
-	for <imx@lists.linux.dev>; Tue,  5 Nov 2024 06:01:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730786499; cv=fail; b=prIm0M6ZLmK5m6YZqo4V9CFe9dci/MsjL/pjGu8RRhRDdUlxef8TMaAOTQ3pduQFJh24V5x3iTQbvQknSDBP4CVncbn4aCHWB2rqi5BxJ6KW3HKCjkfDE+brSJoym3QAIDBsbsGKIFQjL7DG1ixGCMILPEUQVPz9gZALH0H4ZUY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730786499; c=relaxed/simple;
-	bh=PbTZWat9Nz2/mQCS/Rc1uasM0prccUKTZMNcApLS7KI=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=alCbZ0FnHtxjppB2wvW8yVY/AQcI7xQ6xoRKbBUGyRYnwX3IamW54KL70YZDGdaYZIpsB9e98urErpmO/Kz637vMrNOfa+B5r0d/9riUCrnIaYCC0bqRVLv1+PHEySExXmJNaAC2RD3Ds287cxjzsTL4SlrvjjFlA6Lip3PmIh0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=bHBnXVgh; arc=fail smtp.client-ip=40.107.21.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD2B1B6D04
+	for <imx@lists.linux.dev>; Tue,  5 Nov 2024 06:29:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730788194; cv=none; b=buHD5Y6Xh5DqNBTRP/C5tX5Nau3klFqJSZ2Oqm/e2grD3EpOQWczAlLtkVMhUTh7tLBg/IGto/aA7zKzDCaFgGdncAut6KkYsk8DNW49hSSizZz0pF5Kds/o2u7x6wUHjXOYwq03TTz9cdI10radFi78nVgN718FjvFAMiczFUs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730788194; c=relaxed/simple;
+	bh=6DEYIIrf9rnJY37cFJ6bjpvI+y1KGnq1lzv188Z3PrQ=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=KuJf3jFYhWY0zgh/RJS3w6Z10zv1ULcUTWO4pC7/PXDu7wFNZrCqSwnzWNXFxx8mufzqGGmEv4Z4GWLpmYve0xT3r8kyu5TktmAbWboA1pCuJkfy02GradHO0S7q3Uepzn9hWsRgWxY0ciqO/Fe9MRNb1a5xVD93JwUDhkUA7y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=pxeH1phe; arc=none smtp.client-ip=116.203.91.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="bHBnXVgh"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IkaTFiSR7w3TfJ9bnLlEpF0g29dmrq2zw375LrFrbY4pc/DJ/1m1aE1m1MqhRHwx7qcoZiGGVBAiNQUJ/HwcUeZtI+VjGmW4D+I2C2RT+oJNDsyk2yamR8LJ7y8Hb9Ik/2GQay9MINIl760E3VPIG075lLigvPmAkwD6fcACeTAdhvY0EOBa/bR6HgNbOhsmMFhJmeUdyAKBzPLyiUotTMi//AqA5/ZBrJlt6Vbecf3iP8EPQdqAb/20my4WRO/qAN/+ibm5iN8o19yUlC82+ifXBxHlaTAS1BxzYYMEq4fnT8a2p05NHKwH4Cv/T36Bbor2P6HSgJ5K0j78pvlxXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dOpCbIfJf4G3UaKhanNSH98fpbcQb6XosEQOUA3kUXg=;
- b=aBQFcs7NEvDg+w+kX/89jVVvoj2say3pTJh4m5p2GERaoeaCs1xZw0a6EYyyjdw1hp1nHtk+F9jmXrYMGJ4if0eMOAwrWZ0V1IKTXx+JPnH0KclkS2KZLuel48IgKIIZ1++yfPa3mlLyKBlmBpbmlTthP8VjyFcarCBSCa5nfTzL5QlLbEsuLvoMnal1k+96PQ2YUdiT3V7a7Ozi9C/y6kGa62hJ/dO4sPQOdBnLJZj5uQXVt1DL0memmDToHcHQENi5EH1YG04spnmX6SxowfhfJmM89Gi2KfSFCIw5CVElH1N1m9LBUcph1+HYAYrd9HLultfURgdxkqbZAd0/rA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dOpCbIfJf4G3UaKhanNSH98fpbcQb6XosEQOUA3kUXg=;
- b=bHBnXVghwaLuFN9nNfV6B3elLPkvzGqMfhJKQtTXc1kxnqMJXU46GMo/p6cQYVsQwOj7XMUxdYXq0NmJDCV7o8p+zWhZ0lPWdyf18S3fr4znybn2M9ziJK5ATSR1SXnUzd4bvA3UF1DZvLrobnr1gyO34I6G2C26aDCbyH/7fT9EjguPX5QCub5E/ijUVCOqGouJTenQMzKFsIXX5htKKRFTszHjvhgJBt8ysnVuSnX4JXERm1ZU8aaiV8eHSWpe6+o07Mv9AYdNGiWL71T2xPhagjHwCKNC6vD/q0RPrphwI+XMHTdFPLpTUMPq2scy4RZXBm4nsHOdEoWsutyxKw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by GV1PR04MB10895.eurprd04.prod.outlook.com (2603:10a6:150:20b::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.31; Tue, 5 Nov
- 2024 06:01:32 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%7]) with mapi id 15.20.8114.031; Tue, 5 Nov 2024
- 06:01:32 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] arm64: dts: imx95: correct the address length of netcmix_blk_ctrl
-Date: Tue,  5 Nov 2024 13:46:02 +0800
-Message-Id: <20241105054603.1470260-1-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2P153CA0014.APCP153.PROD.OUTLOOK.COM (2603:1096:4:140::6)
- To PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="pxeH1phe"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|GV1PR04MB10895:EE_
-X-MS-Office365-Filtering-Correlation-Id: c7ec75cd-be43-449e-b1f5-08dcfd5f4c51
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|52116014|366016|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?QdlXgnRvbVhF4NoQihS4fMa6cwlL8WuTRGhXElbvsU2GBjebnRDu9JQ2X/pA?=
- =?us-ascii?Q?w6Z7ir/VhR16VnqqvBCLmav/U1+lxOoaLHf26f36as+BufE45YlrOmPO70pA?=
- =?us-ascii?Q?Vzezfq3TFKu/nVehzd0u+GVefcnuG4FUGHt6oqGW3dvzsBCngSe2s7wxpUrb?=
- =?us-ascii?Q?4GVYaVd2eICtOOYKr0gVkgUTyzOYDBIP7n2SPk5IDUWIvZOS3bYp+e0xoVaT?=
- =?us-ascii?Q?3yKBEfrJmheHWs3r/rEO7xFB5vas0vqx/X9hnerqDAjMVqhO6ylgZ0+eEhiI?=
- =?us-ascii?Q?Xzh1l0Bzdj9OkYAm4tNxlGE5rcdU/smPfCb34ZUdEeLNTEMIxD3LPz9QaDgT?=
- =?us-ascii?Q?N+y8jeEmU8+pnIQ6Nr4ywWerkSFusVjxp4G8B0p1XwTHzieGDhKTyP0yfQ+y?=
- =?us-ascii?Q?rSR3mQoQ2JLkGf2fnLHE786IcFsXCBbcp20LYhVIKaxgZCJmwHWVK6Kltt70?=
- =?us-ascii?Q?yKVKEffo2QSkyiN1QV++LV3RlbzLOffTxSlYlwEhwGSRF04RJcxAa+YPHKq3?=
- =?us-ascii?Q?y/UGKNwVhazvqbGj1Yz1e2NKH85zVtKlDqqIA0nI6KyfCyPVjOW8u7V5LPuG?=
- =?us-ascii?Q?fOwD/4+Z6fim7fbAyPV5w2L85mrfxzGm0/ixn5FW1ALY5qChxWStdRh8Pz9/?=
- =?us-ascii?Q?ytpuTKyqKSca72nDOAIbikZDhXAxrZxkirc3QdIbEYIXLHCJpA1jTTyaGG0W?=
- =?us-ascii?Q?ftbRCvRPV5uvQD1c/pEWdOHeTfp5tEIUhf1IQbrVoUEOTn7CuT4hHd+iGYkR?=
- =?us-ascii?Q?auvvFOOWRTerdT4L19EZ9ncRhBgQPfOqq6tbVDRk2HA8paESjqQGjOVhDXwC?=
- =?us-ascii?Q?guwp6zURaZk5tlUZz6cjzfAiApG2D4XxHb2DHwb2MzshDukp/yysZ+RUgJ+d?=
- =?us-ascii?Q?lrU75gadWyjEWcCMaf070x9vbWUWH4tGwj0WPK9uT7/ZElmmG8wxG6AZNdX/?=
- =?us-ascii?Q?E0BMjZJzzVCXxkNlNQjaxDiI1e3A8+N4nxaEIrQjbq3yW+H14g4Db5EDGd9Z?=
- =?us-ascii?Q?7z8Ar+3W9fGM9H2t/VBxjerrHcpgk8yafKNdj5nXCEfF0hjkHFil4oxN5P8c?=
- =?us-ascii?Q?Jhlf3s/SK0BWWBBAyzU9dAl/Mh0SaJxEA9LGm+ymWkhRGEww1m1E6N+wDebv?=
- =?us-ascii?Q?6NSRdYNJVxwj1ZcneGRLW0Rm5ZaCASGDdnXtJzO+71Ibqi5bczD5pEcYAs/y?=
- =?us-ascii?Q?jBO+TQaDuoZuKZcocrPvJeUJKi/q9D/dPjnxUeY32veg79daOIcKmcsdM9PR?=
- =?us-ascii?Q?YJLNJtfK4V6ZrlJjp2w6KEhmGjg2p6whDYAJwOQcEu3CMnOKDpptQk+y2K5I?=
- =?us-ascii?Q?fddD2chz8cQEFH98iuPT0lkSL+ao3O+EY/gHD8xJkpCn0DnQbPSUtA89hRiM?=
- =?us-ascii?Q?3pM5ihg=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?gwL7XhjIV7txYpyKFhxhOoM/fihuqkWczp2Mg9PEx1tJcqGNO5mZxRwdJKfA?=
- =?us-ascii?Q?JA3noju3rsja5UAfJP1AH5IwU2YdIcthu57ilo8z3xLUDRM6aHySA35jYZQY?=
- =?us-ascii?Q?6ZQxnbNAAyyDWY0PIOQw4vY3LJhGQwhkp8xP+P5a2iz1/mqiZ3Tq/tmnA2Gh?=
- =?us-ascii?Q?wa42p5RrigeM2Tw66NDthTSZhF+1jD1PFIOlbmKWWeFd673JBdAsSBB60LjQ?=
- =?us-ascii?Q?N+gCyWFOyfOGb8P0jJ7G+F8VDwBqVLZzgsx6LHOrNZemX7+S3AvXr6HWX/I+?=
- =?us-ascii?Q?w5NaFm6G/nh6i7fzue8ezfesLvlnotlw8OrvOX7mgm42hCc+HY5rpcbvvkS9?=
- =?us-ascii?Q?VugMy/0Dh2mzwMkCzZs/nlgkc8rMs4a+8RUkhTxz/u3X7nEhPG9AR+uBlCK2?=
- =?us-ascii?Q?+BuJ1MKMaA+Xj0/yjPRdObnnuUkUhIaHMphs7DYqPPLzMZc/hpqSiEZVfTqL?=
- =?us-ascii?Q?olfYSN438JujqL5TQ+M/aUX070fbpNBjvNHWwcAxhu4SqlWfyaw/rvOvj2Iq?=
- =?us-ascii?Q?sWQweQBMsO8UgPtidvK0CVWQtoq6RopWEVlsU4Vd0KsL5yTNfHBNOEDvR98W?=
- =?us-ascii?Q?Of6VTbA+/RcEfP3kh1gqghlD7p+3W4jOMAG7JWyxdUSV4qYoRMbCdbGyDElk?=
- =?us-ascii?Q?1sQ0LGOWvsbxIs7A4PaHsHEbSwDt3RAnBwF0Y9dplhYUJKV1/vu8LlFpqPH3?=
- =?us-ascii?Q?+xfFWZ2U/F9FxDqQIdW8bX9Q+R6y4QTcQoJgnSSbVURQz7bI/G8B8/f0fNUB?=
- =?us-ascii?Q?3aqwGqubu6WW4yaQxRAS98497IrEyNDSCsr2djx3dJPYf+t5tV6haNxmoNtc?=
- =?us-ascii?Q?+/LmCOnVjLr7HReu7VVs9txQ5eAOP0awxqROyKziOlb1/iWu19pqf4xfhcwR?=
- =?us-ascii?Q?zBTpGMDPwTC+tUube1K5ZjAoFb9iWj7m9VLZBCFQuuqqIY8ZBLPDxWkLRV53?=
- =?us-ascii?Q?8mAg/nHzZN6OLPOgl/qY2P9LdHVsjprxBNNA/qTkDDLY5v48vtVxh76bTTwY?=
- =?us-ascii?Q?3OHQpHTIDYqarhjTx0kcc2xp7ljC+0rBJtbtCQzX8HtN6Pj3OBsuABYjT//7?=
- =?us-ascii?Q?PAddDc3P8VcXUBcL0FiGxcCmxBTOk9hsVARakRe+vhYJizr0i10s8U9Hzq0B?=
- =?us-ascii?Q?Hr+slWPPyMEdcCc1/8szjC88KfMGoy2QCJPKYRGhQ9X/xxtFKKASJzaPCOQ5?=
- =?us-ascii?Q?nLS5l8Xhc58eZXsVBWTsXkfNHG0xz+Y+xKxqCICrhlcrRPyP9xHWd2W+4miE?=
- =?us-ascii?Q?LH9fnt7GsOA1bo+lcL7IeV2X5dMMpByGSt+WdN9jtGPoyM22V67+NRFaPT2J?=
- =?us-ascii?Q?kGCv+R64xCrapIk7AAQHcqsWNAfcQcwnKlbrAHj5q1F5djIvNRJqkABPTWnJ?=
- =?us-ascii?Q?Kqaxj7fMh9IboOc2ccOvgCCcXbb6kY5SY/ZCdmZqF0qk5yhXLwsab3Y5fI0Y?=
- =?us-ascii?Q?kFI7pppYzzrwtH/E3uelJE6W9f0zxi8VwiJF0jUR6xbQR3PFJClcqF8LJXop?=
- =?us-ascii?Q?mrfheDiw+SqP51M+dXfPQIyqszcyhae46eSGcEW3YN9s2ZlhkAFgCU5KOkCw?=
- =?us-ascii?Q?DHZ1dYJihHlwTEf28oopowoVCjLVU1gndGDeQX1y?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c7ec75cd-be43-449e-b1f5-08dcfd5f4c51
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2024 06:01:32.7187
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ewaAlFcN47i4asxrkHwvCIa6OlQpYfY4CzvS8aMW/mSDEX+VN019N8CHViwhNrM9hyehK5VsjdqrO0FvTs93sQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10895
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
+	t=1730788190;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RSfZmloa5ktLj5m2satJeJFjZZCI/khmEGOs0heit4E=;
+	b=pxeH1pheOQFO9IM4gwFWvB08/Pm/bh3299YWAbgeriWmT03jXKkL0l6UoF4H0KJNDGqcEt
+	2qFSavAgbdfOySL1PlPtKAny1u2Kx30iZpS1rM6FXytqu0r6we/O/Ncjec7nosgzTDKaqe
+	lxl09XU2iE+EQES14V7CPqY+Q4mi4u5x6wlqBkxCUtK43/j9bbxE4syPt5Y33F/Z0Tz+na
+	HvIG7GPMFiZ5ouSwo/Iiv5gEEFU9dPBgV1rkWi1ZC1XU8vpMYAPEHLSYUVTfDfsqYjXpgM
+	6EH4BnoOSCKm1Up5urHE9/X3F2Toxe7dDsycOe5Em9y12azIm6gGuwXvRCZUsA==
+Date: Tue, 05 Nov 2024 07:29:50 +0100
+From: Dragan Simic <dsimic@manjaro.org>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, Adrian Hunter
+ <adrian.hunter@intel.com>, Haibo Chen <haibo.chen@nxp.com>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, s32@nxp.com, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] mmc: Use of_property_present() for non-boolean properties
+In-Reply-To: <20241104190707.275758-1-robh@kernel.org>
+References: <20241104190707.275758-1-robh@kernel.org>
+Message-ID: <e737fdb7766495ec95fdf42d23c68736@manjaro.org>
+X-Sender: dsimic@manjaro.org
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
 
-The netc_blk_ctrl is controlled by the imx95-blk-ctl clock driver and
-provides relevant clock configurations for NETC, SAI and MQS. Its address
-length should be 8 bytes instead of 0x1000.
+Hello Rob,
 
-Fixes: 7764fef26ea9 ("arm64: dts: imx95: Add NETCMIX block control support")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx95.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 2024-11-04 20:07, Rob Herring (Arm) wrote:
+> The use of of_property_read_bool() for non-boolean properties is
+> deprecated in favor of of_property_present() when testing for property
+> presence.
+> 
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
-index d10f62eacfe0..e9c7a8265d71 100644
---- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
-@@ -1673,7 +1673,7 @@ pcie1_ep: pcie-ep@4c380000 {
- 
- 		netcmix_blk_ctrl: syscon@4c810000 {
- 			compatible = "nxp,imx95-netcmix-blk-ctrl", "syscon";
--			reg = <0x0 0x4c810000 0x0 0x10000>;
-+			reg = <0x0 0x4c810000 0x0 0x8>;
- 			#clock-cells = <1>;
- 			clocks = <&scmi_clk IMX95_CLK_BUSNETCMIX>;
- 			assigned-clocks = <&scmi_clk IMX95_CLK_BUSNETCMIX>;
--- 
-2.34.1
+Looking good to me, thanks for the patch!  See also a small nitpick 
+below.
 
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+
+> ---
+>  drivers/mmc/host/mxcmmc.c          | 6 +++---
+>  drivers/mmc/host/sdhci-esdhc-imx.c | 2 +-
+>  2 files changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/mxcmmc.c b/drivers/mmc/host/mxcmmc.c
+> index 1edf65291354..dcb1a7336029 100644
+> --- a/drivers/mmc/host/mxcmmc.c
+> +++ b/drivers/mmc/host/mxcmmc.c
+> @@ -1048,9 +1048,9 @@ static int mxcmci_probe(struct platform_device 
+> *pdev)
+> 
+>  	if (pdata)
+>  		dat3_card_detect = pdata->dat3_card_detect;
+> -	else if (mmc_card_is_removable(mmc)
+> -			&& !of_property_read_bool(pdev->dev.of_node, "cd-gpios"))
+> -		dat3_card_detect = true;
+> +	else
+> +		dat3_card_detect = mmc_card_is_removable(mmc) &&
+> +			!of_property_present(pdev->dev.of_node, "cd-gpios");
+
+There's enough space in the allowed 100 columns to align "mmc_card_..."
+and "!of_property_..." by indenting the latter further a bit.
+
+> 
+>  	ret = mmc_regulator_get_supply(mmc);
+>  	if (ret)
+> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c
+> b/drivers/mmc/host/sdhci-esdhc-imx.c
+> index 8f0bc6dca2b0..cda1872769e0 100644
+> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> @@ -1629,7 +1629,7 @@ sdhci_esdhc_imx_probe_dt(struct platform_device 
+> *pdev,
+>  	 * Retrieveing and requesting the actual WP GPIO will happen
+>  	 * in the call to mmc_of_parse().
+>  	 */
+> -	if (of_property_read_bool(np, "wp-gpios"))
+> +	if (of_property_present(np, "wp-gpios"))
+>  		boarddata->wp_type = ESDHC_WP_GPIO;
+> 
+>  	of_property_read_u32(np, "fsl,tuning-step", &boarddata->tuning_step);
