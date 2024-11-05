@@ -1,122 +1,165 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [208.88.110.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316A01D45FD;
-	Tue,  5 Nov 2024 13:56:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA941D5162
+	for <imx@lists.linux.dev>; Tue,  5 Nov 2024 14:03:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=208.88.110.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730814965; cv=none; b=cxNB/petlLtBsGJcM4wqMeXq5kJTn9OrYmTVaZTBAPP8hBzzuaMr9HfaPR3cl3oUCEvYZgoxhWbWAabMmEeitySRoItetO+ssrsxx5hZl/G06W6D/36hyZk5UMfD+qI00Jsxd84NBLe3l0LwmRN07DIDn+I9iOoM22bilhB7cuo=
+	t=1730815438; cv=none; b=ph3KHY82ufdc2oX0WaD7Spqo5Ny73aCF59w5Sy6zGMTpzUNpz+LM4dZUXm/aqeVkOeC/DZvyDon7CD37oTOhnJDe8j4ZleMAip2wm6tZWzxIUuNgv0G5eMorvD5ahYpm0RoslUqrZwImJLNa66k2NqckL7EQ5QC6KTNy/G5Q0HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730814965; c=relaxed/simple;
-	bh=B8zdbQ6cPYCK+6r67NeVRs7ZNcjG8oNdvJnXDQkqORM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p4h4gmQTTI9KjYAfBLRSsGpPWemDrNfNb4clsBucOqhhBieVckdfnlIzdMTWdCZ6W0OZIFiqDuOO9CeLUD/vyoaks1tzNT68vqIcAVG7kAgYy+L+EkyJ8kmaZvW191Q4TIxQJe+R1FPZUciBHnD8GmY4ugexSqctPr896A6aXfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QOSZ5PfX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730815438; c=relaxed/simple;
+	bh=bTWTSNiAotUnHnllbcY0LdMXkwpE2P3sBMcLOhKkx5I=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=CJfUDbrGgrPDi/rejdng5mXfVBqwa2gdy65/0NA1gI59gjCPIlY+tup/G9SPGLKCDs0W6SUvdxIO1PcbEPRizsZp5j132wNcJNs0/Qw2NlbMXU+G9cgOrNh9tPKmnUyn0dLg+0HZxGdKfV+v/JxSyXf8hGPz+FmrYHN++zbsq8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com; spf=pass smtp.mailfrom=savoirfairelinux.com; dkim=pass (2048-bit key) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.b=vvEjIjNZ; arc=none smtp.client-ip=208.88.110.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=savoirfairelinux.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QOSZ5PfX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404F4C4CECF;
-	Tue,  5 Nov 2024 13:56:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730814964;
-	bh=B8zdbQ6cPYCK+6r67NeVRs7ZNcjG8oNdvJnXDQkqORM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QOSZ5PfX5FLwW7vq+wN1jcMkHF3MzZIz6LSHNpHdsXrR1X0fCcNvXVfZ2/ycW8ZvP
-	 w+PL72WiMFxFI3Z6dlgoT6Aeq7B8RGAWQTAZv5GyVL2ksui36tnytAEbkZbumtUPaD
-	 GQsrXULOmAWespxKLsJVQGvM4q8aHn+3gdTubjDkVQaEl4RFepDBrAfFHiiQ58JLAL
-	 9fAIqGs0D76c1jKDx6HBbzOLT3SwhhX0LF2JhHqVuADAKfYzHVc/Prru+0xlG5jR89
-	 /qBEbk46oC4cZzMPa0sk6PL53agPVeNjyELsqN4hhBEs/KBJrm2V/gkNnt8iR4+HQQ
-	 fL4E/WhbkroDw==
-Message-ID: <48a687c7-24e2-4815-8cc1-d223b38e0e55@kernel.org>
-Date: Tue, 5 Nov 2024 15:56:00 +0200
+	dkim=pass (2048-bit key) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.b="vvEjIjNZ"
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id 74F009C5794;
+	Tue,  5 Nov 2024 08:58:19 -0500 (EST)
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10032)
+ with ESMTP id VBzwaD1mWAko; Tue,  5 Nov 2024 08:58:18 -0500 (EST)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id AF3679C63E4;
+	Tue,  5 Nov 2024 08:58:18 -0500 (EST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com AF3679C63E4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=savoirfairelinux.com; s=DFC430D2-D198-11EC-948E-34200CB392D2;
+	t=1730815098; bh=SBKGTrlLTDQIGERPKwoCpnmjiyE6/uKRwA3Oxcr3bRg=;
+	h=Date:From:To:Message-ID:MIME-Version;
+	b=vvEjIjNZBE+9/GzVkprdX13JfbvyhVjnJCzZZHS3fU3uJQu1pU0KybGYrg2m6z6co
+	 uMwJY9KT7NrXacgCmFv1V6myU7JtG4Y/TMiNRX6bB7wobei8Cvy88/0nCGTg3qhiZC
+	 sR2j3RsfVHtUwlkM5Qi+GPyvHez+nIllMlBgM3BlLcv1Gnot+M8G2jSmZJZ2+Nr5gw
+	 cgbRtOyqTUJ3CT6Xq8waGPGWX5MOCz6UwOrP1KekXYe2YTsY9a4mmeQEQOORUcoqmH
+	 qptzEcWOlWAqpYzeMJ9+mFcPYryr/HqZaF/ADF783b2T5GUJ6lkxNsWliGA6RX6Rwe
+	 JS/0pT5GRBwfA==
+X-Virus-Scanned: amavis at mail.savoirfairelinux.com
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id xvHjvFmXB96q; Tue,  5 Nov 2024 08:58:18 -0500 (EST)
+Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [192.168.48.237])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id 762169C5794;
+	Tue,  5 Nov 2024 08:58:18 -0500 (EST)
+Date: Tue, 5 Nov 2024 08:58:18 -0500 (EST)
+From: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+To: Stefan Eichenberger <eichest@gmail.com>
+Cc: Stefan Wahren <wahrenst@gmx.net>, Shawn Guo <shawnguo2@yeah.net>, 
+	Russell King <linux@armlinux.org.uk>, 
+	Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
+	imx <imx@lists.linux.dev>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Message-ID: <1044800423.57572.1730815098440.JavaMail.zimbra@savoirfairelinux.com>
+In-Reply-To: <Zyj0VsTJ2qDHiss2@eichest-laptop>
+References: <20241030122128.115000-1-eichest@gmail.com> <ZyXTFhEm9UCBii2c@dragon> <ZyY41nJY9ghwe-Y4@eichest-laptop> <065268d6-84eb-4247-b834-40a9ff32c1f4@gmx.net> <ZyiAMpjmXuVMi5FX@eichest-laptop> <787b45a1-9f8d-493d-8930-e1c8d396c818@gmx.net> <Zyj0VsTJ2qDHiss2@eichest-laptop>
+Subject: Re: [PATCH v1] ARM: imx_v6_v7_defconfig: enable SND_SOC_SPDIF
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] usb: dwc3: core: avoid reading register after bus clk is
- disabled
-To: Xu Yang <xu.yang_2@nxp.com>, Thinh.Nguyen@synopsys.com,
- gregkh@linuxfoundation.org, d-gole@ti.com
-Cc: linux-usb@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
-References: <20241105071426.2411166-1-xu.yang_2@nxp.com>
-Content-Language: en-US
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20241105071426.2411166-1-xu.yang_2@nxp.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
+X-Mailer: Zimbra 8.8.15_GA_4581 (ZimbraWebClient - GC112 (Linux)/8.8.15_GA_4581)
+Thread-Topic: imx_v6_v7_defconfig: enable SND_SOC_SPDIF
+Thread-Index: du0Xtk0rWav2/sd22e8hfQbQ+0Eh0A==
 
-Hello Xu,
+Hi Stefan,
 
-On 05/11/2024 09:14, Xu Yang wrote:
-> The driver may go through below sequence when works as device mode:
+On Monday, 4 November, 2024 17:20:38, Stefan Eichenberger wrote:
+> Hi Stefan,
 > 
-> dwc3_suspend()
->   dwc3_suspend_common()
->     dwc3_core_exit()
->       dwc3_clk_disable()
-> 	clk_disable_unprepare(dwc->bus_clk);
->     dwc3_enable_susphy()
->       dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(i));
+> On Mon, Nov 04, 2024 at 12:39:40PM +0100, Stefan Wahren wrote:
+>> Hi Stefan,
+>> 
+>> Am 04.11.24 um 09:05 schrieb Stefan Eichenberger:
+>> > Hi Stefan,
+>> > 
+>> > On Sat, Nov 02, 2024 at 04:35:19PM +0100, Stefan Wahren wrote:
+>> > > Hi Stefan,
+>> > > 
+>> > > Am 02.11.24 um 15:36 schrieb Stefan Eichenberger:
+>> > > > Hi Shawn,
+>> > > > 
+>> > > > On Sat, Nov 02, 2024 at 03:21:58PM +0800, Shawn Guo wrote:
+>> > > > > On Wed, Oct 30, 2024 at 01:21:12PM +0100, Stefan Eichenberger wrote:
+>> > > > > > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+>> > > > > > 
+>> > > > > > Enable SND_SOC_SPDIF in imx_v6_v7_defconfig to support SPDIF audio. This
+>> > > > > > change will fix commit d469b771afe1 ("ARM: dts: imx6: update spdif sound
+>> > > > > > card node properties") which moves away from the old "spdif-controller"
+>> > > > > > property to the new "audio-codec" property.
+>> > > > > > 
+>> > > > > > Fixes: d469b771afe1 ("ARM: dts: imx6: update spdif sound card node properties")
+>> > > > > It doesn't look a fix to me.
+>> > > > I agree somehow, it was just that before the referenced commit our test
+>> > > > succeeds with the imx_v6_v7_defconfig and after that we get the
+>> > > > following error:
+>> > > > [   24.165534] platform sound-spdif: deferred probe pending: fsl-asoc-card:
+>> > > > snd_soc_register_card failed
+>> > > this error should have been in the commit message including the
+>> > > information which platform/board is affected.
+>> > Okay, I will add this information to the next version. We see this error
+>> > on an Apalis iMX6 which has in my variant an NXP i.MX6Q SoC.
+>> > 
+>> > > > So maybe it is not a fix in the sense of a bug, but it fixes the error
+>> > > > message. However, I'm also fine with removing the Fixes tag.
+>> > > But this patch doesn't look like the real approach.
+>> > > 
+>> > > Could you please clarify the impact of the regression?
+>> > So the problem is that before commit d469b771afe1 ("ARM: dts: imx6:
+>> > update spdif sound card node properties") the audio driver was
+>> > using an implementation of linux,spdif-dit and linux,spdif-dir which was
+>> > directly inside the fsl,imx-audio-spdif compatible driver. Now with the
+>> > referenced commit the idea is to use the more generic linux,spdif-dir
+>> > and linux,spdif-dit compatible drivers. That's why this driver must be
+>> > enabled in the kernel configuration.
+>> > 
+>> > > Is it just this error message and audio works fine or is audio also broken?
+>> > It is not just the error message, audio is not working because the
+>> > driver deferes and because it is not enabled it will never succeed to
+>> > load. I don't know if this is called a regression, because the driver is
+>> > there it is just not enabled in the imx6_v7_defconfig. I thought because
+>> > a lot of the i.MX6 based board use the generic driver, it makes sense to
+>> > enable it in the imx_v6_v7_defconfig.
+>> okay, thanks for the clarification. From my understanding
+>> imx6_v7_defconfig is just an example config for testing. All possible
+>> users of these boards might have their own configs and stumble across
+>> the same issue. So I thought it would be better to add the dependency in
+>> the Kconfig of the FSL audio driver.
+>> 
+>> I'm not that audio driver expert and don't know how the dependency
+>> handling between the FSL audio driver and the required codecs like
+>> SND_SOC_SPDIF. So it's possible that I'm completely wrong here and your
+>> approach is the best we can do.
 > 
-> Then the driver will read dwc3 register after bus clk is disabled. If this
-> happens, the kernel will hang there. This will move dwc3_enable_susphy()
-> ahead to avoid such issue.
-> 
-> Fixes: 705e3ce37bcc ("usb: dwc3: core: Fix system suspend on TI AM62 platforms")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> That might be a good point. I don't know how this is usually handled.
+> @Shawn and @Elinor, do you think this could be an approach to make
+> SND_SOC_FSL_ASOC_CARD select SND_SOC_SPDIF? It already seems to do this
+> for SND_SOC_WM8994 and SND_SOC_FSL_SPDIF.
 
-Thank you for the patch. But this was already addressed yesterday.
+SND_SOC_FSL_ASOC_CARD will compile the machine driver fsl-asoc-card,
+SND_SOC_FSL_SPDIF the CPU DAI driver fsl_spdif for the SPDIF
+and SND_SOC_SPDIF the codec drivers spdif-rx and spdif-tx.
 
-https://lore.kernel.org/all/20241104-am62-lpm-usb-fix-v1-1-e93df73a4f0d@kernel.org/
+In my commit series I made SND_SOC_FSL_ASOC_CARD select SND_SOC_FSL_SPDIF
+because the old machine driver previously compiled with SND_SOC_IMX_SPDIF
+selected SND_SOC_FSL_SPDIF.
+But because fsl-asoc-card is a generic driver, it could be used on a system
+that doesn't have an SPDIF device, and therefore should not require
+SND_SOC_SPDIF nor SND_SOC_FSL_SPDIF.
+So maybe it is not a good idea to automatically select SND_SOC_FSL_SPDIF or SND_SOC_SPDIF.
 
-> ---
->  drivers/usb/dwc3/core.c | 18 +++++++++---------
->  1 file changed, 9 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-> index de434f78c560..b0f1e32d426f 100644
-> --- a/drivers/usb/dwc3/core.c
-> +++ b/drivers/usb/dwc3/core.c
-> @@ -2347,6 +2347,15 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
->  			    (dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0)) &
->  			    DWC3_GUSB3PIPECTL_SUSPHY);
->  
-> +	if (!PMSG_IS_AUTO(msg)) {
+On the other hand, if every imx6 or imx7 boards have an SPDIF device, then
+I suppose SND_SOC_SPDIF can be put in imx_v6_v7_defconfig.
 
-This alone is not enough as device might have been runtime suspended before
-system suspend and we will still try to access the registers below causing a fault.
-
-> +		/*
-> +		 * TI AM62 platform requires SUSPHY to be
-> +		 * enabled for system suspend to work.
-> +		 */
-> +		if (!dwc->susphy_state)
-> +			dwc3_enable_susphy(dwc, true);
-> +	}
-> +
->  	switch (dwc->current_dr_role) {
->  	case DWC3_GCTL_PRTCAP_DEVICE:
->  		if (pm_runtime_suspended(dwc->dev))
-> @@ -2398,15 +2407,6 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
->  		break;
->  	}
->  
-> -	if (!PMSG_IS_AUTO(msg)) {
-> -		/*
-> -		 * TI AM62 platform requires SUSPHY to be
-> -		 * enabled for system suspend to work.
-> -		 */
-> -		if (!dwc->susphy_state)
-> -			dwc3_enable_susphy(dwc, true);
-> -	}
-> -
->  	return 0;
->  }
->  
-
--- 
-cheers,
--roger
+Regards,
+Elinor
