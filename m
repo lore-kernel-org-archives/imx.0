@@ -1,111 +1,123 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B791EBFE3;
-	Tue,  5 Nov 2024 19:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33DE1D415B;
+	Tue,  5 Nov 2024 23:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730833648; cv=none; b=jbhbmd/AeahpCvuRcM8c3iWJ1PJgOR7JHaSjjiABDSc9FnH4TX3aoh8dznMd3Cvjq4gGr/Pfxp+VCLkxC323TeebB1TlThCjEOFztr5xjb5JRMYxgLeGr1TLF1Eu3iPIc27ifSH8QWnmu8XyDq3JA2iMQYbcB0t2+UBz9C2trf4=
+	t=1730849223; cv=none; b=ogu/DaJJHgOR4I4qn13Q7KwWHbgA7ECyKbtoIstlewQD4ac3IG/hqo9P/XkiTDTMEx9TyU+ts0FK0mZwac1AOP2WJ7zexq3hh03Cze9qQ5eRHWNh8sZgP2xRhXIoQjAqGaS0+JYNSOsth0ugiyuQ5JKEKO4y+GoFfT1kqLYDQ2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730833648; c=relaxed/simple;
-	bh=bJBfX6qg8hW2kBjNewIsOi+0CyauUekBnlmZQZpbsPM=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=XY8pPh1tS8tHchpk7c1XUAzZl5DI1slAoAX2TzdvSLqGbFiC1rHgxBReti/KgOHB4F37T++6si8Q84AgxTSeBZxw9J6UorlussXkAaP4l4dE32GV3qbXFaKGQ/ownY1uI9JKiKZlORlgcXpHvXekiYV4s2l+6S+yYHrlCfVGl78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ws5ZPOhU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730849223; c=relaxed/simple;
+	bh=UkvquMl7XDzAUrgt8bEdxCreNSRkuPZxntXUk0Q5qT4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=klHP8CB5No80jxZvBQSur4PH9427xiE6F+LIBRd4PmlnV7k9hWvRs+qeES5FbkN/DkNmdZMY7lOvn4VipNDKAWTtVeFYQO6raxG86hbYh7JXlV1cpVqbntp2n0TOt/Zpjpohm+jH6sxfPVYi+E3O2/HZy6A9adQKtdyoLFqi6mU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ItX1lqbd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ws5ZPOhU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96663C4CED1;
-	Tue,  5 Nov 2024 19:07:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ItX1lqbd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 219AFC4CECF;
+	Tue,  5 Nov 2024 23:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730833648;
-	bh=bJBfX6qg8hW2kBjNewIsOi+0CyauUekBnlmZQZpbsPM=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=Ws5ZPOhUGS4BGBhjO58bXkSAOXZlJVSOeX1WL46YI1g7J7+uu0SjVJCcOPQXlZCzJ
-	 0HIHMEf3qI/TWOANCPJDa48EtIsYCWbGMV8ziP1C9N2vuTwgV3IRBCOPhTtPThjzTr
-	 PCE3I+wiIQipirKQ01UEni4wshs1YoeyCDYH0Hkg0fXBPQvZukoZuE4OsvFjoqKfdT
-	 AZITUrcU1TglWZUMHI8LR0Tn3GLs49h2ZQpaanmBKdspvAhhxMMeL8Jq0iQJncDgZf
-	 Jqlsol00dy+q11CuOVcc7dg03m1ZL4P9h5qmFlxzIbgk8Lk3/o+CdteMFPwB2nQyuH
-	 6IFhmanLMkR+g==
-From: Mark Brown <broonie@kernel.org>
-To: Jaroslav Kysela <perex@perex.cz>, Jerome Brunet <jbrunet@baylibre.com>, 
- Kevin Hilman <khilman@baylibre.com>, 
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
- Shengjiu Wang <shengjiu.wang@gmail.com>, Takashi Iwai <tiwai@suse.com>, 
- Vinod Koul <vkoul@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>, 
- alsa-devel@alsa-project.org, imx@lists.linux.dev, 
- linux-rpi-kernel@lists.infradead.org, linux-sound@vger.kernel.org, 
- linux-stm32@st-md-mailman.stormreply.com, patches@opensource.cirrus.com, 
- Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-In-Reply-To: <871q06cmsl.wl-kuninori.morimoto.gx@renesas.com>
-References: <871q06cmsl.wl-kuninori.morimoto.gx@renesas.com>
-Subject: Re: [PATCH 0/8] ASoC: cleasnup rtd and its ID
-Message-Id: <173083364434.105724.3803415580036211483.b4-ty@kernel.org>
-Date: Tue, 05 Nov 2024 19:07:24 +0000
+	s=k20201202; t=1730849223;
+	bh=UkvquMl7XDzAUrgt8bEdxCreNSRkuPZxntXUk0Q5qT4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=ItX1lqbddjjJBLKfroS5uE/8N6rGlilUk0vqQmKsqt3ZQFip037N+gV6rUt8GbS4N
+	 NG+xvj5Eybh67ymoaYzjRVS/MmEHcPM/56mGv7R9MkER8wwp6kruNsw7+4Ro23/iZk
+	 Vl6XA1c9so009WImSIdyDnlRZTID2yj9VV9wXnT0qKTn7f2mp+Nda8rnoB/vjLLHqi
+	 zJAXSQD0FQYvlHlaooc4+Cyno+w+c7XIfXStgzFov96do97p46huWe0p/YBDeJjSNr
+	 cMRRthfXWLe+ZinbqnM4BIMfsY8iRHVtU5UEuewz4MvFQkxE+09zYv5yomE93b1pk/
+	 EJYktAZBv6o1g==
+Date: Tue, 5 Nov 2024 17:27:01 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: kwilczynski@kernel.org, bhelgaas@google.com, lorenzo.pieralisi@arm.com,
+	frank.li@nxp.com, mani@kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kernel@pengutronix.de, imx@lists.linux.dev
+Subject: Re: [PATCH v2] PCI: dwc: Fix resume failure if no EP is connected at
+ some platforms
+Message-ID: <20241105232701.GA1495103@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-9b746
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1721628913-1449-1-git-send-email-hongxing.zhu@nxp.com>
 
-On Thu, 24 Oct 2024 01:28:10 +0000, Kuninori Morimoto wrote:
-> rtd has own ID, but it is naming "num" for it. The naming is confusable.
-> This patch rename it to "id".
-> And many functions request both "rtd" and its "id" as function parameter,
-> but rtd itself has rtd->id. This patch cleanup it.
+On Mon, Jul 22, 2024 at 02:15:13PM +0800, Richard Zhu wrote:
+> The dw_pcie_suspend_noirq() function currently returns success directly
+> if no endpoint (EP) device is connected. However, on some platforms, power
+> loss occurs during suspend, causing dw_resume() to do nothing in this case.
+> This results in a system halt because the DWC controller is not initialized
+> after power-on during resume.
+
+dw_resume() doesn't exist.  What function did you mean?
+
+System halt?  In dw_pcie_resume_noirq()?  What causes the halt?  A
+NULL pointer dereference?  A CPU hang because a read of some
+controller register never completes?  Feels a little hand-wavy.
+
+Another comment below.
+
+> Change call to deinit() in suspend and init() at resume regardless of
+> whether there are EP device connections or not. It is not harmful to
+> perform deinit() and init() again for the no power-off case, and it keeps
+> the code simple and consistent in logic.
 > 
-> And, Qcom driver want to use irregular rtd ID because of its topology,
-> and thus, soc-core need irregular calculation. I'm not sure why only Qcom
-> needs such calculation, but this patch also cleanup it.
-> But I guess we want to cleanup is not soc-core but Qcom side (?)
+> Fixes: 4774faf854f5 ("PCI: dwc: Implement generic suspend/resume functionality")
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../pci/controller/dwc/pcie-designware-host.c | 30 +++++++++----------
+>  1 file changed, 15 insertions(+), 15 deletions(-)
 > 
-> [...]
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+> index a0822d5371bc5..cb8c3c2bcc790 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> @@ -933,23 +933,23 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+>  	if (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) & PCI_EXP_LNKCTL_ASPM_L1)
+>  		return 0;
+>  
+> -	if (dw_pcie_get_ltssm(pci) <= DW_PCIE_LTSSM_DETECT_ACT)
+> -		return 0;
+> -
+> -	if (pci->pp.ops->pme_turn_off)
+> -		pci->pp.ops->pme_turn_off(&pci->pp);
+> -	else
+> -		ret = dw_pcie_pme_turn_off(pci);
+> +	if (dw_pcie_get_ltssm(pci) > DW_PCIE_LTSSM_DETECT_ACT) {
+> +		/* Only send out PME_TURN_OFF when PCIE link is up */
+> +		if (pci->pp.ops->pme_turn_off)
+> +			pci->pp.ops->pme_turn_off(&pci->pp);
+> +		else
+> +			ret = dw_pcie_pme_turn_off(pci);
 
-Applied to
+This looks possibly racy since the link can go down at any point.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/8] ASoC: rename rtd->num to rtd->id
-      commit: 40e47e2db6864aa053a62477bd71a16be9dd4066
-[2/8] ASoC: fsl: switch to use rtd->id from rtd->num
-      commit: eae33f737c7a929d92b559fe1a1002d597b7b903
-[3/8] ASoC: meson: switch to use rtd->id from rtd->num
-      commit: b19f75df8fa9f8d4aa8b5886dca0f2d832a76baa
-[4/8] ASoC: sh: switch to use rtd->id from rtd->num
-      commit: 970a874b76d09d6a5880e8832e572850cfcb4008
-[5/8] ASoC: generic: switch to use rtd->id from rtd->num
-      commit: 742e622db67efc32affb5893fdcc0149f374533e
-[6/8] ASoC: remove rtd->num
-      commit: c59db5ed233a19f6aadd086fb89149ec5f6fa855
-[7/8] ASoC: soc-core: do rtd->id trick at snd_soc_add_pcm_runtime()
-      commit: cb18cd26039f5cdecb0ac53fb447b6f0859f3d1c
-[8/8] ASoC: cleanup function parameter for rtd and its id
-      commit: 8b12da9a18f4dd53e4b3a7393829a555e84f073c
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+> -	if (ret)
+> -		return ret;
+> +		if (ret)
+> +			return ret;
+>  
+> -	ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
+> -				PCIE_PME_TO_L2_TIMEOUT_US/10,
+> -				PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
+> -	if (ret) {
+> -		dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n", val);
+> -		return ret;
+> +		ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
+> +					PCIE_PME_TO_L2_TIMEOUT_US/10,
+> +					PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
+> +		if (ret) {
+> +			dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n", val);
+> +			return ret;
+> +		}
+>  	}
+>  
+>  	if (pci->pp.ops->deinit)
+> -- 
+> 2.37.1
+> 
