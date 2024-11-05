@@ -1,179 +1,277 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2057.outbound.protection.outlook.com [40.107.241.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43C3824BD;
-	Tue,  5 Nov 2024 15:52:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730821958; cv=none; b=UB8X/XZZqfzQ9W8KVWDMngL6K8Wc7jWwaPIHeKSp2MuFm8PhqfGtXvPRo+PGzedRNlBVAKHen1XuLApmzD9v/p70hSoU98JmFFh5vyrezJr84YvUZVd9oo5kBsgpC7kcTANFJylx8vwGOS8I6ymkKF/lV9MUSvUrlFUmsgvRyPQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730821958; c=relaxed/simple;
-	bh=A5wkn2g7ewXyxsGccABxzYa/pZrTsi476qh1bxTr+0Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YXTsNrkhkmCr7Ow2MZwFyXJdCGd8NyAu7rISH2Td81V8bfbnXDZSbHeGdR/octQz2iAjIkKn2Zl7eSncdreFPw7AnVwIGawAbjWdTdlcwko1r6Bu03M2eCmW6y0WJV0u4HwqA1pkTzhWkbaubFv85MUrR5LN9h4iozI0L/TBLlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=YpneG5bJ; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A131C13E04B
+	for <imx@lists.linux.dev>; Tue,  5 Nov 2024 16:08:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730822925; cv=fail; b=W98RefORAhWEO33BnnFotuZwvk122l3uwVD6w/j1cNWkGCoHjzV5/UH99w0im/assn6d4rRQTMBtk80g3QOiQz3s2X4rsXoe7P60TBLDMI6tNuBxuncwWFBq3+ZtZqXwWTyNM0V9NLDSfsK0zoECysHZbDlS5FRrJpHiTsumPG8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730822925; c=relaxed/simple;
+	bh=TUnlzLcF3+E0x5Mlv1/DCEfdNYA/D2t/mCPILwul+3Y=;
+	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=exAg83ZQC38Z3BxlW1dC4nn02eUKvYNA45DGgMds8HrBeSLJDiMkEAE0L++lJKeQYcsFxX5nboOfMzotBVQCAgcAWVBJTk6dGcxiAGoMmVr9txHE+dc/wWrco/G2bwznaq42K4N9va94m2MCglWLR9ubqfde1V6ggM1+ItCf1is=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=HNR3RftU; arc=fail smtp.client-ip=40.107.241.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="YpneG5bJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1730821928; x=1731426728; i=wahrenst@gmx.net;
-	bh=w6BRqx3A6quV1vsoZcGcoTn++xiCKrR1U7u2eV5qVyc=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=YpneG5bJGnvLKmGToYXDgbt38gkeGGpnqWqhwoKiW1BeNfoCbt8f+6JG6M91H4h8
-	 25XIcg1MkxEbSvLsy0cGPwbcz2Lz4gqT2iM9RwmVwU7gG+yC7rVCVM6zcd3Tjt2CY
-	 wai51zIy6iMvP28wVyEOv1klz1PQe1lkb5MVo+8Pu/09HoEC7Cg1svAFakJzuJnAq
-	 BYEJwE6kbxuBsHMBMAE7cIVuvSPa9KOO+74tSyg5+MYxnMNpeWf8ufKMTKZieSbLs
-	 8Cp5sClw5qPUqvVkWoNJGgUEPaELVXemxDVUWCZPLkhe7HBurLCTQeLhgDv0qlson
-	 utqYcKbAIfieZjqCeg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.105] ([37.4.248.43]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MN5eX-1tROAf0k6P-00VvAM; Tue, 05
- Nov 2024 16:52:08 +0100
-Message-ID: <283bbd2c-0997-43d6-bc24-08bf2cb2412b@gmx.net>
-Date: Tue, 5 Nov 2024 16:52:04 +0100
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="HNR3RftU"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DdxVO3P7b4Bl82oXbJovhQEd8gcB1JrP+8+bDPxcvuUIRhWUDxOPAkfu421vnZAgkorJFeHf5cW2y0HY9PoFiF8QFyKmqnfgt7CMwz+G4i24oTeFLERid4pIrVAsgFE416PPjpvIASRuNhFmwFonxlC91M8gaUJE9+sz/cM9yDIRl9VhMYXvT2B+G4bmPiItMfAPGb2V5K/vGPcNdyGcxwG+D8RUR/H2ixg424kAQg2Jkqz1FSmF7JhV7oPYCPt5G/zVqmQZFXwH7FMfIkrugQ+bjJf2Egp9mQMT+QQiP0wDCbmRpPysf+gWv5kRcAIXGm4qxgrhiZxBiEgu3CxK3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=14ldxjT79Z9TNU3HWaDozpz+gayBH2SKctJI+DuiX1Q=;
+ b=SP/hrPEoOOmBL+r7HJILMKcacBwXgLT3vbe8tRl5p6/r9J/0+UDWh4GrDEtGiCtQPF7o5yr5u4bNmhISjwsvvsvTIJt2V4cvf0GbaID7tKbq4zIxkJTEV+fOrlJNcPkinlps4kzRVgHVhEefC85C2my5STL74Sy9Dqed7nQeSNZzlbxkY669Vg97I5Bts/gf8S9gczhrkZE7BSNv8pfs4Znuh6ubbGJEtERAhlaiMMt/dis6X3aeMC5gdplIchYfbOVrSQTGNYL7okv8wqxOG3sHtyqIo1Pzs+DS7kBA3Zu6dyLvVBGNYe/tri7p99/sLcjQt1ZYjMck4tpaWWGs2Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=14ldxjT79Z9TNU3HWaDozpz+gayBH2SKctJI+DuiX1Q=;
+ b=HNR3RftUc23UDQvQCn7s/+QijwxDYoJZjX+s/8NBdbVvVKXhnwYKzwx9efjpmq4l8IO9FeTqpKwql0Fw8AUnRVTL/X8qMNCA0taOQ45wBLa79GWLwotjSpy0xw7UKRV/IYwSiLNSlRiitcrE3xUvav+S9BPlRQcOA9/KK1XSDg3JwCSae4woIL6a2jsx6+qc72FL9/kGWOqmgxHw2U2fU7i2thDbsLfaIl49UOVo3MVfM0I1yek2gNiS/kSXprZIeqfAd3dira+QUhZqprSHJAvkVCx6J6bsi/jJzzNHx+V9OAGiDMRGNt2wLLSYRun6zRP+nqSwFo3CAGgu+1diNQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DU2PR04MB8501.eurprd04.prod.outlook.com (2603:10a6:10:2d0::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.31; Tue, 5 Nov
+ 2024 16:08:38 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8137.018; Tue, 5 Nov 2024
+ 16:08:38 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Haibo Chen <haibo.chen@nxp.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	linux-iio@vger.kernel.org (open list:NXP i.MX 7D/6SX/6UL/93 AND VF610 ADC DRIVER),
+	imx@lists.linux.dev (open list:NXP i.MX 7D/6SX/6UL/93 AND VF610 ADC DRIVER),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v2 1/2] iio: adc: vf610_adc: use devm_* and dev_err_probe() to simple code
+Date: Tue,  5 Nov 2024 11:08:21 -0500
+Message-Id: <20241105160822.2761261-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR02CA0025.namprd02.prod.outlook.com
+ (2603:10b6:a02:ee::38) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] ARM: imx_v6_v7_defconfig: enable SND_SOC_SPDIF
-To: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>,
- Stefan Eichenberger <eichest@gmail.com>
-Cc: Shawn Guo <shawnguo2@yeah.net>, Russell King <linux@armlinux.org.uk>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- imx <imx@lists.linux.dev>, linux-kernel <linux-kernel@vger.kernel.org>,
- Stefan Eichenberger <stefan.eichenberger@toradex.com>
-References: <20241030122128.115000-1-eichest@gmail.com>
- <ZyXTFhEm9UCBii2c@dragon> <ZyY41nJY9ghwe-Y4@eichest-laptop>
- <065268d6-84eb-4247-b834-40a9ff32c1f4@gmx.net>
- <ZyiAMpjmXuVMi5FX@eichest-laptop>
- <787b45a1-9f8d-493d-8930-e1c8d396c818@gmx.net>
- <Zyj0VsTJ2qDHiss2@eichest-laptop>
- <1044800423.57572.1730815098440.JavaMail.zimbra@savoirfairelinux.com>
-Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-In-Reply-To: <1044800423.57572.1730815098440.JavaMail.zimbra@savoirfairelinux.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:0e9SmOcFNlaLT3rD7fmlk1piqiI0xf9twOaT6BfM28EqKj0nVcR
- o4F+e9wg1F9KMTPgwieP7dUOCU4Afe313a882FpkfRtSLwwH97GTo6nJ7e+XCUMOcAuwPBa
- o97vj3JRErBEF9dJMLCTGatCaOU/5oF/PKr2QJBh5HWfnQ0/iYxakx/Z12r8PHFlkZ6ilPs
- xBLxMJ2xlnMEMtCNfm02g==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:5y+4KYOBIe0=;7F6uroMgDxRYDS9DjneTwuHj82n
- 6LD5t5muKL4oKm6lGgRVa+fz4MtGFqeZFq4B7cXclDheY6Pvd6yF70NB6PQXN8jcJo1IFMWDz
- dED7W7xAE3/xAjck8Osso+Xdd1Cgwk4D7ndkPPM0sQPGwRMYKhvNfYFc4Z7HQ08ixeFakYBJy
- hhEZfU0yo55E9cBkPz3xGV2FyUXfpTpUYmtHjrGZWOZN7KiB+mNkqIiGeIbMK+5TXk6GnRuzj
- 8s1y+etj/xCoSTV0Q1sVOUdbT7Rz7jcw1AOCV1pndH+xfDsqWC2k297J5MI3awV36zb2Y1hd0
- 5pLIffIyB0xyQkU/Qt+XRitQWNVyr0cqRWg07xb7W/YYH4u1ctjSkSJ1H6c+HBvrj5zTiOlkP
- OMnpQhcfBbJGwqBS9jMJAcWip2OjCFe0tV5Mr1eksMsFjOe4eqA11GKocDObm11kWkDdY0jyI
- io8qELe8gpKroPEzx0e37QilYl43nBsmTIvhdTRySRRCSaTXPXAuj2fAak1gKkciRXrl3p5UT
- TdDoPGpDiA45KrGkE6Tl/qHhxQfx+zJ09rCMp59+RC/C01kEbt1qJ26gcjd5jcHYLh1fIE8gs
- vdVbuemIOp16XsX9YvzurNKM9bDKmjdsU9Ekwbf5HOly5QnQTat6dPIsaAD9bMBHJAG9FTLmG
- kqjQpF1LQ86mCx7/14NggNKP9N+evecjFk183kBgBUvcjpusL2hyFp83Y2Kf4CtqV0Mt1V38/
- 7W+buQ6a4qTmx5Ce9Zg+xovDJHwhTkAuKccIw/Y1kikbsmpYnbGoHkBiWV6TCcnfDybegMM/R
- VFqY+owNYAk+d8AO8QzpW8ug==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU2PR04MB8501:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5b5bbc5b-e98b-4526-dda7-08dcfdb41bd5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|366016|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Tdch5rM3qNVGX9wXfvNU1S4rj5L2OKPuSDPasiqaDWOj9KkSNpHGyJDwXm0I?=
+ =?us-ascii?Q?eYurvFIezJxV30W+Rqd6cM1uQ0kD9iPNDooGc4ZUS/kTrc93qaQ1f3lfvIzn?=
+ =?us-ascii?Q?NjHC8onCM+oDuyPHqPhATRiEM0acPUA4Iol8bTvJAJqipeMIDOuMBI0euj2H?=
+ =?us-ascii?Q?eniacYCk7RmOIWLS8DXSmZ2xUwWwlU72cS0aUI1vD8v7f+BU8titI9/TK4tS?=
+ =?us-ascii?Q?VXjbrLame1W4o6MuHZLgcPNo8xxV1GXS3xOyldcGYkE03gZN5JE7YlVIVpU6?=
+ =?us-ascii?Q?hfLHRSIfaWuUyofEg1IDJ3peZyUXCww2JQGKj13GXWMFBdtRFIkJ9/TdpWZX?=
+ =?us-ascii?Q?pkg6pd6/y6MelwH8svoq/Chz2BWR+0P4/xsaciffeNFwwvM6CR2atSVjPTV1?=
+ =?us-ascii?Q?ZknYGEhs6MIUkdS53Z/h9kv7hBEk6j8ecvJhZZ39pPDWH2HMHVfISChPbkEN?=
+ =?us-ascii?Q?OUzotHR16XOUzHayEnRfnqkmY2G2ROR0bkAP32qVLVpF/57xwH4V40AyviFH?=
+ =?us-ascii?Q?Howyu0nj1aBVAfjzKOXfvQt7d0tJbt9CSnbw42s1/4Hj+ffl0rAYfvbsiJPh?=
+ =?us-ascii?Q?oOdRuzvyV1D270cY+k2Y5X20Wm0eVMmx1Sb1vfcPz/YI6+W25eMziMkKFxw5?=
+ =?us-ascii?Q?wcrYn9ILxa4kPybtFnXww2HPQmRpnMXNrthbGbqF4DqQiBgcNkLMUqtI6vKQ?=
+ =?us-ascii?Q?HZe/mpSrJUUSpuHz0nMdfi/5NB5aKCVFdbrJl67/UkYq8nAs9pe3mWh04b4j?=
+ =?us-ascii?Q?UQFgFpv4qzlCJON2jy2O7cfoqQ/O2ljZANAARht+WjiuZsLfhPqFlid7nQIX?=
+ =?us-ascii?Q?IPZ44gIq/cFR1Dm/8il+yMTjausMAd4qoW8xXw1aECw3EouFZt7zGAnoBFZk?=
+ =?us-ascii?Q?oPlCIJVqMSrwStaumaS5mO4moFovb061osw+Y9UdYMCG3kcND2UmyzcyEuAT?=
+ =?us-ascii?Q?jBr9dySGPLxDmhgM5sDRHq6xmk8K0clX+QLK6oJMyZpEV6B6zCmb5oeXpBJL?=
+ =?us-ascii?Q?GVbUxfEx77mqUmA5/niYGUmHoBZShnbNR6NQZ/XIsQLxLleTpc2QV21X+xw/?=
+ =?us-ascii?Q?UkMBc3mvLbRcHZRCBgm+cRZFOy+VwIRysZcldj8RhphqFGc9CoafUNodFg69?=
+ =?us-ascii?Q?hA0HTMN3IKU6pj9Gj3j1UsIezLkG7tWBd3b5JayKSDHzP2HqqmS1r49Wjpo1?=
+ =?us-ascii?Q?q8vpO+oAly8linNwLy6O3AfyAw15D7R7HFAFJhdS1rANNfgKmtIScxcTLAV5?=
+ =?us-ascii?Q?r97her0OgZFGetEqdUqt4t0q8q8AxaYZqrv14VieXVVvHAYUsByTgP/g56u3?=
+ =?us-ascii?Q?VtLNZ+M9/TPUczsTn3oi3hGk/eNa8NIDocL/kCuc3zbx/p5YtNjjTV7REmrM?=
+ =?us-ascii?Q?mofGiss=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?rjISbaO81fi3iIJifMWWDzUqsE+Y22TWhJHmbna+ecILHl8OBL8ozpZ6RJUd?=
+ =?us-ascii?Q?vSt3iqM5WNN36ZqSrWV+GCDyGJYT9fHSuQNKqhcxf2/Svgy7Z8I+kG7IlfTC?=
+ =?us-ascii?Q?YRZ9vU/30T3n7D/wOhf2iDUh+q6deDAbGmmGeyXx4DQn+cJQooTV5KnI6TaP?=
+ =?us-ascii?Q?XGRN7trnOCdRWjh6yL3W/ITP4OSSOzSX0r1PJYyMjKWEVHW823RuWhBXuWJk?=
+ =?us-ascii?Q?YqlW2+4qGbiuvyyLuy1OEOl7B4fAdDLmwh21I9N73rcVKvyfIDRFKbnwVKim?=
+ =?us-ascii?Q?gUrUWoGZ6Ic8x4WdgMWOA+DDw27mm4HbiRJPuWYYBeycMhcU2i6kvZ65yO9U?=
+ =?us-ascii?Q?0AxG79qFEY8/yJC79AMtWFCSN6piqlnTjHO+EWRuEfeA4oZAxOnteOv90epG?=
+ =?us-ascii?Q?OqXuFnf8QtJYGOkr+xed65DHmlLHy+eJevEdRvHjmSgYfeq6nbM1JZyvzI7Q?=
+ =?us-ascii?Q?Wie+cHtQFraUeOeSeFNZyvq/CdZtRmjQWA8xIas3SuUZ6YUNs/c2tAcpd74m?=
+ =?us-ascii?Q?Rd7eArvj7mmOotyG8kJDGEe9UN6UR86nh7qJfD6qHC4aPmKQQRel3Iir5ZJX?=
+ =?us-ascii?Q?+GPnnLAOBlq09vcnF2/39CQrM9aTSmdJgP2eroilE7Vky7sswgAhkO+szSr9?=
+ =?us-ascii?Q?H4nwlemsL7bowyUzIfSX6zPwVs8JP3zCn1V9QGL7I7Q9D7EpzNpFLuZa2WFg?=
+ =?us-ascii?Q?Z5Jd+LCu4KDMbCvZiFr/dUoIxZv19Jxzq5uLr91vj8ocT0FUFeKnhHUKPbzJ?=
+ =?us-ascii?Q?ATwVh0zcrtFUAYp8TI8cRSXxWCmLSmP9GDoyDwmpNRYMS457DQBRi5SV54Ra?=
+ =?us-ascii?Q?AWVurvGSFKIeDteV9bLrNzVPZz3gue8ksb46M5t+W1AILuQHP0sNUG7VeNOH?=
+ =?us-ascii?Q?e99NliBnl5VMqhTpEYMIGPMwBbpZx71Dxrc8OIIQuxIkkCwLxwW8YIL7wfwV?=
+ =?us-ascii?Q?1B5uaeMNJAvoGJdWfbvXgLX2tS/GamDsutyX6ffL7pNOvxd2p0zjg3jMWEFW?=
+ =?us-ascii?Q?ol5oKvyFxUmNJsgGXZOYFki8HgLaqZgkhnxniQp+5LqCtDC+fZu/Im8ooXbu?=
+ =?us-ascii?Q?UXTJ3D+fPaUGdU8ZeoDhqMAbhHfL3tGk/qiR1wFnM30tabFg6cmbu0uyYy/i?=
+ =?us-ascii?Q?0Ibpl+UrXrog5tygIxVY0c8yvhEpSqwZyGZ2tTjFEIcfg8biS9f5aWphwzfS?=
+ =?us-ascii?Q?yidNaDwPTQTCvQ4A3zPj2Vva/CBQHNO1JYJXJYLsPCbEpE5tD7TZbFZqTO3a?=
+ =?us-ascii?Q?vFPQIJf5/lE9B0FwgKYIp94BaEFFJDJHkJ9WCivAlhkEzFuGflTl8K/JxtEG?=
+ =?us-ascii?Q?Pytx1wqklGkwIkExgTVxeVU/AxRclFCq8qP5aLlo3jxKTNmHv4HYHW2rsx1q?=
+ =?us-ascii?Q?9xZ71YgV6YETt+auwItIMH1PCRfBsJpa3dNBYAUExVtYeC2EpB7Pc1zSi0+v?=
+ =?us-ascii?Q?4OzNXkqyTb7ny35zuPRK4jlIVMp7SO1zwfTDskv6sZuPfqih+NiFhBU9t9Qn?=
+ =?us-ascii?Q?tXGu5aR4ZokOLTlZ2NaZtHrlaTWTmN5R7Da2Zv+AsLL5vlrcdcSnkIKl0c/K?=
+ =?us-ascii?Q?BGiqwNXK3/k94shpRZ+DLSeNAy3mw5tzCxh4Fhlo?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5b5bbc5b-e98b-4526-dda7-08dcfdb41bd5
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2024 16:08:38.4687
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: B/U1gZMKjRB5Tc3h4hwp/xE2uKDndHGW11mX17v39IKkWUfnPFSWJ4rC80iZ/dfcP0B7w+J91/6UB626vU6AZQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8501
 
-Am 05.11.24 um 14:58 schrieb Elinor Montmasson:
-> Hi Stefan,
->
-> On Monday, 4 November, 2024 17:20:38, Stefan Eichenberger wrote:
->> Hi Stefan,
->>
->> On Mon, Nov 04, 2024 at 12:39:40PM +0100, Stefan Wahren wrote:
->>> Hi Stefan,
->>>
->>> Am 04.11.24 um 09:05 schrieb Stefan Eichenberger:
->>>> Hi Stefan,
->>>>
->>>> On Sat, Nov 02, 2024 at 04:35:19PM +0100, Stefan Wahren wrote:
->>>>> Hi Stefan,
->>>>>
->>>>> Am 02.11.24 um 15:36 schrieb Stefan Eichenberger:
->>>>>> Hi Shawn,
->>>>>>
->>>>>> On Sat, Nov 02, 2024 at 03:21:58PM +0800, Shawn Guo wrote:
->>>>>>> On Wed, Oct 30, 2024 at 01:21:12PM +0100, Stefan Eichenberger wrote:
->>>>>>>> From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
->>>>>>>>
->>>>>>>> Enable SND_SOC_SPDIF in imx_v6_v7_defconfig to support SPDIF audio. This
->>>>>>>> change will fix commit d469b771afe1 ("ARM: dts: imx6: update spdif sound
->>>>>>>> card node properties") which moves away from the old "spdif-controller"
->>>>>>>> property to the new "audio-codec" property.
->>>>>>>>
->>>>>>>> Fixes: d469b771afe1 ("ARM: dts: imx6: update spdif sound card node properties")
->>>>>>> It doesn't look a fix to me.
->>>>>> I agree somehow, it was just that before the referenced commit our test
->>>>>> succeeds with the imx_v6_v7_defconfig and after that we get the
->>>>>> following error:
->>>>>> [   24.165534] platform sound-spdif: deferred probe pending: fsl-asoc-card:
->>>>>> snd_soc_register_card failed
->>>>> this error should have been in the commit message including the
->>>>> information which platform/board is affected.
->>>> Okay, I will add this information to the next version. We see this error
->>>> on an Apalis iMX6 which has in my variant an NXP i.MX6Q SoC.
->>>>
->>>>>> So maybe it is not a fix in the sense of a bug, but it fixes the error
->>>>>> message. However, I'm also fine with removing the Fixes tag.
->>>>> But this patch doesn't look like the real approach.
->>>>>
->>>>> Could you please clarify the impact of the regression?
->>>> So the problem is that before commit d469b771afe1 ("ARM: dts: imx6:
->>>> update spdif sound card node properties") the audio driver was
->>>> using an implementation of linux,spdif-dit and linux,spdif-dir which was
->>>> directly inside the fsl,imx-audio-spdif compatible driver. Now with the
->>>> referenced commit the idea is to use the more generic linux,spdif-dir
->>>> and linux,spdif-dit compatible drivers. That's why this driver must be
->>>> enabled in the kernel configuration.
->>>>
->>>>> Is it just this error message and audio works fine or is audio also broken?
->>>> It is not just the error message, audio is not working because the
->>>> driver deferes and because it is not enabled it will never succeed to
->>>> load. I don't know if this is called a regression, because the driver is
->>>> there it is just not enabled in the imx6_v7_defconfig. I thought because
->>>> a lot of the i.MX6 based board use the generic driver, it makes sense to
->>>> enable it in the imx_v6_v7_defconfig.
->>> okay, thanks for the clarification. From my understanding
->>> imx6_v7_defconfig is just an example config for testing. All possible
->>> users of these boards might have their own configs and stumble across
->>> the same issue. So I thought it would be better to add the dependency in
->>> the Kconfig of the FSL audio driver.
->>>
->>> I'm not that audio driver expert and don't know how the dependency
->>> handling between the FSL audio driver and the required codecs like
->>> SND_SOC_SPDIF. So it's possible that I'm completely wrong here and your
->>> approach is the best we can do.
->> That might be a good point. I don't know how this is usually handled.
->> @Shawn and @Elinor, do you think this could be an approach to make
->> SND_SOC_FSL_ASOC_CARD select SND_SOC_SPDIF? It already seems to do this
->> for SND_SOC_WM8994 and SND_SOC_FSL_SPDIF.
-> SND_SOC_FSL_ASOC_CARD will compile the machine driver fsl-asoc-card,
-> SND_SOC_FSL_SPDIF the CPU DAI driver fsl_spdif for the SPDIF
-> and SND_SOC_SPDIF the codec drivers spdif-rx and spdif-tx.
->
-> In my commit series I made SND_SOC_FSL_ASOC_CARD select SND_SOC_FSL_SPDIF
-> because the old machine driver previously compiled with SND_SOC_IMX_SPDIF
-> selected SND_SOC_FSL_SPDIF.
-> But because fsl-asoc-card is a generic driver, it could be used on a system
-> that doesn't have an SPDIF device, and therefore should not require
-> SND_SOC_SPDIF nor SND_SOC_FSL_SPDIF.
-> So maybe it is not a good idea to automatically select SND_SOC_FSL_SPDIF or SND_SOC_SPDIF.
->
-> On the other hand, if every imx6 or imx7 boards have an SPDIF device, then
-> I suppose SND_SOC_SPDIF can be put in imx_v6_v7_defconfig.
-Okay, I'm fine with the original approach.
->
-> Regards,
-> Elinor
->
+Use devm_* and dev_err_probe() simplify probe function and remove
+vf610_adc_remove().
+
+Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Change from v1 to v2
+- add Haibo's review tag
+---
+ drivers/iio/adc/vf610_adc.c | 77 +++++++++----------------------------
+ 1 file changed, 19 insertions(+), 58 deletions(-)
+
+diff --git a/drivers/iio/adc/vf610_adc.c b/drivers/iio/adc/vf610_adc.c
+index 4d83c12975c53..4e737b193c012 100644
+--- a/drivers/iio/adc/vf610_adc.c
++++ b/drivers/iio/adc/vf610_adc.c
+@@ -823,10 +823,8 @@ static int vf610_adc_probe(struct platform_device *pdev)
+ 	int ret;
+ 
+ 	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(struct vf610_adc));
+-	if (!indio_dev) {
+-		dev_err(&pdev->dev, "Failed allocating iio device\n");
+-		return -ENOMEM;
+-	}
++	if (!indio_dev)
++		return dev_err_probe(&pdev->dev, -ENOMEM, "Failed allocating iio device\n");
+ 
+ 	info = iio_priv(indio_dev);
+ 	info->dev = &pdev->dev;
+@@ -842,27 +840,22 @@ static int vf610_adc_probe(struct platform_device *pdev)
+ 	ret = devm_request_irq(info->dev, irq,
+ 				vf610_adc_isr, 0,
+ 				dev_name(&pdev->dev), indio_dev);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "failed requesting irq, irq = %d\n", irq);
+-		return ret;
+-	}
++	if (ret < 0)
++		dev_err_probe(&pdev->dev, ret, "failed requesting irq, irq = %d\n", irq);
+ 
+-	info->clk = devm_clk_get(&pdev->dev, "adc");
+-	if (IS_ERR(info->clk)) {
+-		dev_err(&pdev->dev, "failed getting clock, err = %ld\n",
+-						PTR_ERR(info->clk));
+-		return PTR_ERR(info->clk);
+-	}
++	info->clk = devm_clk_get_enabled(&pdev->dev, "adc");
++	if (IS_ERR(info->clk))
++		return dev_err_probe(&pdev->dev, PTR_ERR(info->clk),
++				     "failed getting clock, err = %ld\n",
++				     PTR_ERR(info->clk));
+ 
+ 	info->vref = devm_regulator_get(&pdev->dev, "vref");
+ 	if (IS_ERR(info->vref))
+ 		return PTR_ERR(info->vref);
+ 
+-	ret = regulator_enable(info->vref);
+-	if (ret)
+-		return ret;
+-
+-	info->vref_uv = regulator_get_voltage(info->vref);
++	info->vref_uv = devm_regulator_get_enable_read_voltage(&pdev->dev, "vref");
++	if (info->vref_uv < 0)
++		return info->vref_uv;
+ 
+ 	device_property_read_u32_array(dev, "fsl,adck-max-frequency", info->max_adck_rate, 3);
+ 
+@@ -879,52 +872,21 @@ static int vf610_adc_probe(struct platform_device *pdev)
+ 	indio_dev->channels = vf610_adc_iio_channels;
+ 	indio_dev->num_channels = ARRAY_SIZE(vf610_adc_iio_channels);
+ 
+-	ret = clk_prepare_enable(info->clk);
+-	if (ret) {
+-		dev_err(&pdev->dev,
+-			"Could not prepare or enable the clock.\n");
+-		goto error_adc_clk_enable;
+-	}
+-
+ 	vf610_adc_cfg_init(info);
+ 	vf610_adc_hw_init(info);
+ 
+-	ret = iio_triggered_buffer_setup(indio_dev, &iio_pollfunc_store_time,
+-					NULL, &iio_triggered_buffer_setup_ops);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "Couldn't initialise the buffer\n");
+-		goto error_iio_device_register;
+-	}
++	ret = devm_iio_triggered_buffer_setup(&pdev->dev, indio_dev, &iio_pollfunc_store_time,
++					      NULL, &iio_triggered_buffer_setup_ops);
++	if (ret < 0)
++		return dev_err_probe(&pdev->dev, ret, "Couldn't initialise the buffer\n");
+ 
+ 	mutex_init(&info->lock);
+ 
+-	ret = iio_device_register(indio_dev);
+-	if (ret) {
+-		dev_err(&pdev->dev, "Couldn't register the device.\n");
+-		goto error_adc_buffer_init;
+-	}
++	ret = devm_iio_device_register(&pdev->dev, indio_dev);
++	if (ret)
++		return dev_err_probe(&pdev->dev, ret, "Couldn't register the device.\n");
+ 
+ 	return 0;
+-
+-error_adc_buffer_init:
+-	iio_triggered_buffer_cleanup(indio_dev);
+-error_iio_device_register:
+-	clk_disable_unprepare(info->clk);
+-error_adc_clk_enable:
+-	regulator_disable(info->vref);
+-
+-	return ret;
+-}
+-
+-static void vf610_adc_remove(struct platform_device *pdev)
+-{
+-	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
+-	struct vf610_adc *info = iio_priv(indio_dev);
+-
+-	iio_device_unregister(indio_dev);
+-	iio_triggered_buffer_cleanup(indio_dev);
+-	regulator_disable(info->vref);
+-	clk_disable_unprepare(info->clk);
+ }
+ 
+ static int vf610_adc_suspend(struct device *dev)
+@@ -972,7 +934,6 @@ static DEFINE_SIMPLE_DEV_PM_OPS(vf610_adc_pm_ops, vf610_adc_suspend,
+ 
+ static struct platform_driver vf610_adc_driver = {
+ 	.probe          = vf610_adc_probe,
+-	.remove         = vf610_adc_remove,
+ 	.driver         = {
+ 		.name   = DRIVER_NAME,
+ 		.of_match_table = vf610_adc_match,
+-- 
+2.34.1
 
