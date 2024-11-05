@@ -1,146 +1,458 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDF41D5154
-	for <imx@lists.linux.dev>; Tue,  5 Nov 2024 11:28:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C372D2EB1F
+	for <imx@lists.linux.dev>; Tue,  5 Nov 2024 11:42:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730806137; cv=none; b=sgsbELYIqHtZxG3O8Kyzrf+a3imYxU7wx5UJ0o4TNFHqDhbC+Kp08gUR76D7p3a752PCzbC2PtGD8E9+GzuYjYxqg9R6bCmQUnydMtEIohGHAhm4FsvscH6dO31uhrHmPiYXxHxHX4D/mUKaB4ofigpKKUZxRsqMn8VMJ6Eq+Ss=
+	t=1730806962; cv=none; b=FTqkoiZ/Wapy8wc3E/AfQRXe3lAroLXAdy+wvOadfEh06tYpX3R9RNB2K5UcANDSBlQ7XInVL264nnTx0SEyT+k5gQpE2T+KDlXBc3hHl6hrdTfkPMcD0cniVnNeRT/Yz3uSdHF0jGW6p3DqfZoNcRVAZZnzGolx9V7CZDIInt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730806137; c=relaxed/simple;
-	bh=A1gEWSRfef7Z5iAxxFSzk6fEnhZztWmluE1Pr5DuBrE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hXyV2nLPmh2XBNbpWAlr5tAv+5rhTAT9kDPQIS3fk5FwiGh9FQGFjne2hKIuQnvnOlMGcrV4PQOEnf/rScOOYAqWU1rNFXuTX/VUDKQWYmQ6k1fxjW2AC1rnpnLww+ULEa45js6qLuPAqeXgMoqp4rxPiq/wJgVeO9kfZjwaOqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DFADePci; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1730806962; c=relaxed/simple;
+	bh=soLQYbCpLZIaLFegrpwrQUNBdV9uOBFxjT17f4CUFPM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BCnIXYeukpQTbwVMUnwB3FTyac9gRopU/MCStpcNAZHmV8wNoP8Eco6KKJfHlMmsU9NmEI650cIN6mJJlv8UZDd8qSgtaluAPWCayoWUJmTh5Q2QRphhBUAHT1AwDr8IMlmU3qz64Z4iY48ZR4W1LW1o/BZpsffIp07qyXXInN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=mX/Kqtzs; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DFADePci"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-539fe76e802so6133342e87.1
-        for <imx@lists.linux.dev>; Tue, 05 Nov 2024 03:28:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730806134; x=1731410934; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Lqc3fxtDc2RwHuGGy/EVNQGz4UxO/NG1km2hGQDTiaU=;
-        b=DFADePciWJLCP+NuwBACdOTPEhB3KmCN3DJkNjEE2+W5GEsQCGzWx2pFEaIg5DJGY8
-         5+axnIBzdUGCwn1xLouXEDMUAF7XKSFJHU4kp7Lw803OY+vv1Sym8Fz6SVXBRK+gpzt8
-         1Y3MVcXRnp7P8D9V68B4QYbkO+UK8orIPLvzKPrXamXhmIN7RtJixvpc5cs7csXk0bP/
-         toi0Es9AmnohGtdPsFfqAzFw1GpV42YgjESqJ3AMx8vs1PUeHZG/97jKlo9BDlmf1ELz
-         BB3Ly9ftTLH3bYlfNoHFGy5il9RRXifNgfMEPrT/fKUTmvLhOu6nITuzvnSrn2r+ukUq
-         kvEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730806134; x=1731410934;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Lqc3fxtDc2RwHuGGy/EVNQGz4UxO/NG1km2hGQDTiaU=;
-        b=tc9lLnsBh8XWhNJtsRGczQsdK4ILUPmwJPYwGpJAOGHq6l17UcYIL88ErZAZpXGlSz
-         xHDvrYuru6Mt301JcAQQrLfAfrEXemw3PtqxpPiYQPvrK0K5rn3169luqTJev/NxqUJI
-         bx6RoQicWjNcJKpAuZrg1XRdRZ0Tc+7rE/NQjUvwaPswHuSd1kk264/kqlV2toYxVcPZ
-         9v2YsPa8gsvghH1vVfkKGfk8AyKtkxJX4hPyX86N+sZCP2NHDa7q7ZXnly0tGaIXe5VW
-         7rB/ds+Qbe5ijQCjVo5IKhKU9oaJv0h6T5Kv4PEfFzdq4DQrrvff4jgjPsy/2pPtBkwk
-         sh5A==
-X-Forwarded-Encrypted: i=1; AJvYcCUFdnJ1gL+8wfsRfXPg60zbob7EgEyQ5ygnpWXJUtOgcR4nUip3kT5seP6a34sC2e3cIOg=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw+oDU1O4yVoPFlBjuGbLcJDsuXslQatO0Ya5G7JvGES+MkKzfK
-	Z37qeNv8diC49HofULG2I6MGnHKkAzN+nJPR0mrJ8lE7EBf1JscAvin0q5TbzJA=
-X-Google-Smtp-Source: AGHT+IGazolcFL8rsDXTC+coJxYFbQY28nmJAc6aKVJwz0sBWevsWrSg6NX0J5MzQM2/Ky5L0ke0DA==
-X-Received: by 2002:a05:6512:3e24:b0:539:918c:5124 with SMTP id 2adb3069b0e04-53d65df3203mr7408960e87.31.1730806134153;
-        Tue, 05 Nov 2024 03:28:54 -0800 (PST)
-Received: from eriador.lan (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53c7bc95957sm2098533e87.55.2024.11.05.03.28.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Nov 2024 03:28:52 -0800 (PST)
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Liu Ying <victor.liu@nxp.com>
-Cc: andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org,
-	rfoss@kernel.org,
-	Laurent.pinchart@ideasonboard.com,
-	jonas@kwiboo.se,
-	jernej.skrabec@gmail.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	quic_jesszhan@quicinc.com,
-	mchehab@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	sakari.ailus@linux.intel.com,
-	hverkuil@xs4all.nl,
-	tomi.valkeinen@ideasonboard.com,
-	quic_bjorande@quicinc.com,
-	geert+renesas@glider.be,
-	arnd@arndb.de,
-	nfraprado@collabora.com,
-	thierry.reding@gmail.com,
-	prabhakar.mahadev-lad.rj@bp.renesas.com,
-	sam@ravnborg.org,
-	marex@denx.de,
-	biju.das.jz@bp.renesas.com
-Subject: Re: (subset) [PATCH v5 00/13] Add ITE IT6263 LVDS to HDMI converter support
-Date: Tue,  5 Nov 2024 13:28:48 +0200
-Message-ID: <173080602214.231309.12977765173766280536.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241104032806.611890-1-victor.liu@nxp.com>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="mX/Kqtzs"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 740B122E;
+	Tue,  5 Nov 2024 12:42:29 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1730806949;
+	bh=soLQYbCpLZIaLFegrpwrQUNBdV9uOBFxjT17f4CUFPM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mX/KqtzsUGkkvGouOFOgJwVM6iriVdICrtOToTY6ko1kjUmQrqc8Ch+7eqTps3bcP
+	 OIYbukYWrHB8MLT1i354Td7nyKWeQsvohWhldAirLVSQ/ybOLZKf5X4ekQtYMjCj3Z
+	 H6x9fzoK+OD0ttwdFghiqEryJB1fFAATsEm5gqdc=
+Date: Tue, 5 Nov 2024 13:42:29 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Liu Ying <victor.liu@nxp.com>, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	andrzej.hajda@intel.com, neil.armstrong@linaro.org,
+	rfoss@kernel.org, jonas@kwiboo.se, jernej.skrabec@gmail.com,
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	quic_jesszhan@quicinc.com, mchehab@kernel.org, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	catalin.marinas@arm.com, will@kernel.org,
+	sakari.ailus@linux.intel.com, hverkuil@xs4all.nl,
+	tomi.valkeinen@ideasonboard.com, quic_bjorande@quicinc.com,
+	geert+renesas@glider.be, arnd@arndb.de, nfraprado@collabora.com,
+	thierry.reding@gmail.com, prabhakar.mahadev-lad.rj@bp.renesas.com,
+	sam@ravnborg.org, marex@denx.de, biju.das.jz@bp.renesas.com
+Subject: Re: [PATCH v5 04/13] media: uapi: Add
+ MEDIA_BUS_FMT_RGB101010_1X7X5_{SPWG, JEIDA}
+Message-ID: <20241105114229.GO27775@pendragon.ideasonboard.com>
 References: <20241104032806.611890-1-victor.liu@nxp.com>
+ <20241104032806.611890-5-victor.liu@nxp.com>
+ <ixckmdku6yriieo4ezzsepg5nflltzkvqbt7ylref4mu6a4t26@crooexpf3v57>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ixckmdku6yriieo4ezzsepg5nflltzkvqbt7ylref4mu6a4t26@crooexpf3v57>
 
-On Mon, 04 Nov 2024 11:27:53 +0800, Liu Ying wrote:
-> This patch series aims to add ITE IT6263 LVDS to HDMI converter on
-> i.MX8MP EVK.  Combined with LVDS receiver and HDMI 1.4a transmitter,
-> the IT6263 supports LVDS input and HDMI 1.4 output by conversion
-> function.  IT6263 product link can be found at [1].
+On Mon, Nov 04, 2024 at 02:00:56PM +0200, Dmitry Baryshkov wrote:
+> On Mon, Nov 04, 2024 at 11:27:57AM +0800, Liu Ying wrote:
+> > Add two media bus formats that identify 30-bit RGB pixels transmitted
+> > by a LVDS link with five differential data pairs, serialized into 7
+> > time slots, using standard SPWG/VESA or JEIDA data mapping.
+> > 
+> > Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> > ---
+> > v5:
+> > * No change.
+> > 
+> > v4:
+> > * No change.
+> > 
+> > v3:
+> > * New patch.
+> > 
+> >  .../media/v4l/subdev-formats.rst              | 156 +++++++++++++++++-
+> >  include/uapi/linux/media-bus-format.h         |   4 +-
+> >  2 files changed, 157 insertions(+), 3 deletions(-)
 > 
-> Patch 1 is a preparation patch to allow display mode of an existing
-> panel to pass the added mode validation logic in patch 3.
+> Laurent, Hans, can we please hear your opinion on this patch?
 > 
-> [...]
+> Ideally we'd like to merge it together with the rest of the series
+> through drm-misc (or via an immutable tag/branch from your side).
 
-Applied to drm-misc-next, thanks!
+I'm fine merging it through drm-misc, but creating an immutable branch
+on the DRM side would be nice, just to make sure we can pull it in
+linux-media in the unlikely case where we would have a conflicting patch
+for the next kernel version.
 
-[04/13] media: uapi: Add MEDIA_BUS_FMT_RGB101010_1X7X5_{SPWG, JEIDA}
-        commit: 5205b63099507a84458075c3ca7e648407e6c8cc
-[05/13] drm: of: Get MEDIA_BUS_FMT_RGB101010_1X7X5_{JEIDA, SPWG} LVDS data mappings
-        commit: 34902c2d022f9d36b739189efae3f5fd569983fd
-[06/13] drm: of: Add drm_of_lvds_get_dual_link_pixel_order_sink()
-        commit: 606410292f54ef08632bdfd5c58974cf4ebc3cc9
-[07/13] dt-bindings: display: lvds-data-mapping: Add 30-bit RGB pixel data mappings
-        commit: e3160748780c66f32ae5e7c17373c36a4a802bc3
-[08/13] dt-bindings: display: Document dual-link LVDS display common properties
-        commit: 8cd4937ebfeae03a094e9115ab3286bf01498a5f
-[09/13] dt-bindings: display: bridge: Add ITE IT6263 LVDS to HDMI converter
-        commit: 0a86a4d1a09185cebe071136599b7da619388f7a
-[10/13] drm/bridge: Add ITE IT6263 LVDS to HDMI converter
-        commit: 049723628716c7286d6265812567ef1b1ff4827e
-[13/13] MAINTAINERS: Add maintainer for ITE IT6263 driver
-        commit: 946f2b6a1c1383fb3a16780b425e0ddf40b3a2dd
+> > diff --git a/Documentation/userspace-api/media/v4l/subdev-formats.rst b/Documentation/userspace-api/media/v4l/subdev-formats.rst
+> > index d2a6cd2e1eb2..2a94371448dc 100644
+> > --- a/Documentation/userspace-api/media/v4l/subdev-formats.rst
+> > +++ b/Documentation/userspace-api/media/v4l/subdev-formats.rst
+> > @@ -2225,7 +2225,7 @@ The following table list existing packed 48bit wide RGB formats.
+> >      \endgroup
+> >  
+> >  On LVDS buses, usually each sample is transferred serialized in seven
+> > -time slots per pixel clock, on three (18-bit) or four (24-bit)
+> > +time slots per pixel clock, on three (18-bit) or four (24-bit) or five (30-bit)
 
-Best regards,
+s/ or four/, four/
+
+with that,
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+
+> >  differential data pairs at the same time. The remaining bits are used
+> >  for control signals as defined by SPWG/PSWG/VESA or JEIDA standards. The
+> >  24-bit RGB format serialized in seven time slots on four lanes using
+> > @@ -2246,11 +2246,12 @@ JEIDA defined bit mapping will be named
+> >        - Code
+> >        -
+> >        -
+> > -      - :cspan:`3` Data organization
+> > +      - :cspan:`4` Data organization
+> >      * -
+> >        -
+> >        - Timeslot
+> >        - Lane
+> > +      - 4
+> >        - 3
+> >        - 2
+> >        - 1
+> > @@ -2262,6 +2263,7 @@ JEIDA defined bit mapping will be named
+> >        - 0
+> >        -
+> >        -
+> > +      -
+> >        - d
+> >        - b\ :sub:`1`
+> >        - g\ :sub:`0`
+> > @@ -2270,6 +2272,7 @@ JEIDA defined bit mapping will be named
+> >        - 1
+> >        -
+> >        -
+> > +      -
+> >        - d
+> >        - b\ :sub:`0`
+> >        - r\ :sub:`5`
+> > @@ -2278,6 +2281,7 @@ JEIDA defined bit mapping will be named
+> >        - 2
+> >        -
+> >        -
+> > +      -
+> >        - d
+> >        - g\ :sub:`5`
+> >        - r\ :sub:`4`
+> > @@ -2286,6 +2290,7 @@ JEIDA defined bit mapping will be named
+> >        - 3
+> >        -
+> >        -
+> > +      -
+> >        - b\ :sub:`5`
+> >        - g\ :sub:`4`
+> >        - r\ :sub:`3`
+> > @@ -2294,6 +2299,7 @@ JEIDA defined bit mapping will be named
+> >        - 4
+> >        -
+> >        -
+> > +      -
+> >        - b\ :sub:`4`
+> >        - g\ :sub:`3`
+> >        - r\ :sub:`2`
+> > @@ -2302,6 +2308,7 @@ JEIDA defined bit mapping will be named
+> >        - 5
+> >        -
+> >        -
+> > +      -
+> >        - b\ :sub:`3`
+> >        - g\ :sub:`2`
+> >        - r\ :sub:`1`
+> > @@ -2310,6 +2317,7 @@ JEIDA defined bit mapping will be named
+> >        - 6
+> >        -
+> >        -
+> > +      -
+> >        - b\ :sub:`2`
+> >        - g\ :sub:`1`
+> >        - r\ :sub:`0`
+> > @@ -2319,6 +2327,7 @@ JEIDA defined bit mapping will be named
+> >        - 0x1011
+> >        - 0
+> >        -
+> > +      -
+> >        - d
+> >        - d
+> >        - b\ :sub:`1`
+> > @@ -2327,6 +2336,7 @@ JEIDA defined bit mapping will be named
+> >        -
+> >        - 1
+> >        -
+> > +      -
+> >        - b\ :sub:`7`
+> >        - d
+> >        - b\ :sub:`0`
+> > @@ -2335,6 +2345,7 @@ JEIDA defined bit mapping will be named
+> >        -
+> >        - 2
+> >        -
+> > +      -
+> >        - b\ :sub:`6`
+> >        - d
+> >        - g\ :sub:`5`
+> > @@ -2343,6 +2354,7 @@ JEIDA defined bit mapping will be named
+> >        -
+> >        - 3
+> >        -
+> > +      -
+> >        - g\ :sub:`7`
+> >        - b\ :sub:`5`
+> >        - g\ :sub:`4`
+> > @@ -2351,6 +2363,7 @@ JEIDA defined bit mapping will be named
+> >        -
+> >        - 4
+> >        -
+> > +      -
+> >        - g\ :sub:`6`
+> >        - b\ :sub:`4`
+> >        - g\ :sub:`3`
+> > @@ -2359,6 +2372,7 @@ JEIDA defined bit mapping will be named
+> >        -
+> >        - 5
+> >        -
+> > +      -
+> >        - r\ :sub:`7`
+> >        - b\ :sub:`3`
+> >        - g\ :sub:`2`
+> > @@ -2367,6 +2381,7 @@ JEIDA defined bit mapping will be named
+> >        -
+> >        - 6
+> >        -
+> > +      -
+> >        - r\ :sub:`6`
+> >        - b\ :sub:`2`
+> >        - g\ :sub:`1`
+> > @@ -2377,6 +2392,7 @@ JEIDA defined bit mapping will be named
+> >        - 0x1012
+> >        - 0
+> >        -
+> > +      -
+> >        - d
+> >        - d
+> >        - b\ :sub:`3`
+> > @@ -2385,6 +2401,7 @@ JEIDA defined bit mapping will be named
+> >        -
+> >        - 1
+> >        -
+> > +      -
+> >        - b\ :sub:`1`
+> >        - d
+> >        - b\ :sub:`2`
+> > @@ -2393,6 +2410,7 @@ JEIDA defined bit mapping will be named
+> >        -
+> >        - 2
+> >        -
+> > +      -
+> >        - b\ :sub:`0`
+> >        - d
+> >        - g\ :sub:`7`
+> > @@ -2401,6 +2419,7 @@ JEIDA defined bit mapping will be named
+> >        -
+> >        - 3
+> >        -
+> > +      -
+> >        - g\ :sub:`1`
+> >        - b\ :sub:`7`
+> >        - g\ :sub:`6`
+> > @@ -2409,6 +2428,7 @@ JEIDA defined bit mapping will be named
+> >        -
+> >        - 4
+> >        -
+> > +      -
+> >        - g\ :sub:`0`
+> >        - b\ :sub:`6`
+> >        - g\ :sub:`5`
+> > @@ -2417,6 +2437,7 @@ JEIDA defined bit mapping will be named
+> >        -
+> >        - 5
+> >        -
+> > +      -
+> >        - r\ :sub:`1`
+> >        - b\ :sub:`5`
+> >        - g\ :sub:`4`
+> > @@ -2425,10 +2446,141 @@ JEIDA defined bit mapping will be named
+> >        -
+> >        - 6
+> >        -
+> > +      -
+> > +      - r\ :sub:`0`
+> > +      - b\ :sub:`4`
+> > +      - g\ :sub:`3`
+> > +      - r\ :sub:`2`
+> > +    * .. _MEDIA-BUS-FMT-RGB101010-1X7X5-SPWG:
+> > +
+> > +      - MEDIA_BUS_FMT_RGB101010_1X7X5_SPWG
+> > +      - 0x1026
+> > +      - 0
+> > +      -
+> > +      - d
+> > +      - d
+> > +      - d
+> > +      - b\ :sub:`1`
+> > +      - g\ :sub:`0`
+> > +    * -
+> > +      -
+> > +      - 1
+> > +      -
+> > +      - b\ :sub:`9`
+> > +      - b\ :sub:`7`
+> > +      - d
+> > +      - b\ :sub:`0`
+> > +      - r\ :sub:`5`
+> > +    * -
+> > +      -
+> > +      - 2
+> > +      -
+> > +      - b\ :sub:`8`
+> > +      - b\ :sub:`6`
+> > +      - d
+> > +      - g\ :sub:`5`
+> > +      - r\ :sub:`4`
+> > +    * -
+> > +      -
+> > +      - 3
+> > +      -
+> > +      - g\ :sub:`9`
+> > +      - g\ :sub:`7`
+> > +      - b\ :sub:`5`
+> > +      - g\ :sub:`4`
+> > +      - r\ :sub:`3`
+> > +    * -
+> > +      -
+> > +      - 4
+> > +      -
+> > +      - g\ :sub:`8`
+> > +      - g\ :sub:`6`
+> > +      - b\ :sub:`4`
+> > +      - g\ :sub:`3`
+> > +      - r\ :sub:`2`
+> > +    * -
+> > +      -
+> > +      - 5
+> > +      -
+> > +      - r\ :sub:`9`
+> > +      - r\ :sub:`7`
+> > +      - b\ :sub:`3`
+> > +      - g\ :sub:`2`
+> > +      - r\ :sub:`1`
+> > +    * -
+> > +      -
+> > +      - 6
+> > +      -
+> > +      - r\ :sub:`8`
+> > +      - r\ :sub:`6`
+> > +      - b\ :sub:`2`
+> > +      - g\ :sub:`1`
+> >        - r\ :sub:`0`
+> > +    * .. _MEDIA-BUS-FMT-RGB101010-1X7X5-JEIDA:
+> > +
+> > +      - MEDIA_BUS_FMT_RGB101010_1X7X5_JEIDA
+> > +      - 0x1027
+> > +      - 0
+> > +      -
+> > +      - d
+> > +      - d
+> > +      - d
+> > +      - b\ :sub:`5`
+> > +      - g\ :sub:`4`
+> > +    * -
+> > +      -
+> > +      - 1
+> > +      -
+> > +      - b\ :sub:`1`
+> > +      - b\ :sub:`3`
+> > +      - d
+> >        - b\ :sub:`4`
+> > +      - r\ :sub:`9`
+> > +    * -
+> > +      -
+> > +      - 2
+> > +      -
+> > +      - b\ :sub:`0`
+> > +      - b\ :sub:`2`
+> > +      - d
+> > +      - g\ :sub:`9`
+> > +      - r\ :sub:`8`
+> > +    * -
+> > +      -
+> > +      - 3
+> > +      -
+> > +      - g\ :sub:`1`
+> >        - g\ :sub:`3`
+> > +      - b\ :sub:`9`
+> > +      - g\ :sub:`8`
+> > +      - r\ :sub:`7`
+> > +    * -
+> > +      -
+> > +      - 4
+> > +      -
+> > +      - g\ :sub:`0`
+> > +      - g\ :sub:`2`
+> > +      - b\ :sub:`8`
+> > +      - g\ :sub:`7`
+> > +      - r\ :sub:`6`
+> > +    * -
+> > +      -
+> > +      - 5
+> > +      -
+> > +      - r\ :sub:`1`
+> > +      - r\ :sub:`3`
+> > +      - b\ :sub:`7`
+> > +      - g\ :sub:`6`
+> > +      - r\ :sub:`5`
+> > +    * -
+> > +      -
+> > +      - 6
+> > +      -
+> > +      - r\ :sub:`0`
+> >        - r\ :sub:`2`
+> > +      - b\ :sub:`6`
+> > +      - g\ :sub:`5`
+> > +      - r\ :sub:`4`
+> >  
+> >  .. raw:: latex
+> >  
+> > diff --git a/include/uapi/linux/media-bus-format.h b/include/uapi/linux/media-bus-format.h
+> > index d4c1d991014b..ff62056feed5 100644
+> > --- a/include/uapi/linux/media-bus-format.h
+> > +++ b/include/uapi/linux/media-bus-format.h
+> > @@ -34,7 +34,7 @@
+> >  
+> >  #define MEDIA_BUS_FMT_FIXED			0x0001
+> >  
+> > -/* RGB - next is	0x1026 */
+> > +/* RGB - next is	0x1028 */
+> >  #define MEDIA_BUS_FMT_RGB444_1X12		0x1016
+> >  #define MEDIA_BUS_FMT_RGB444_2X8_PADHI_BE	0x1001
+> >  #define MEDIA_BUS_FMT_RGB444_2X8_PADHI_LE	0x1002
+> > @@ -68,6 +68,8 @@
+> >  #define MEDIA_BUS_FMT_ARGB8888_1X32		0x100d
+> >  #define MEDIA_BUS_FMT_RGB888_1X32_PADHI		0x100f
+> >  #define MEDIA_BUS_FMT_RGB101010_1X30		0x1018
+> > +#define MEDIA_BUS_FMT_RGB101010_1X7X5_SPWG	0x1026
+> > +#define MEDIA_BUS_FMT_RGB101010_1X7X5_JEIDA	0x1027
+> >  #define MEDIA_BUS_FMT_RGB666_1X36_CPADLO	0x1020
+> >  #define MEDIA_BUS_FMT_RGB888_1X36_CPADLO	0x1021
+> >  #define MEDIA_BUS_FMT_RGB121212_1X36		0x1019
+
 -- 
-With best wishes
-Dmitry
+Regards,
 
+Laurent Pinchart
