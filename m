@@ -1,83 +1,134 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBFD1D359E
-	for <imx@lists.linux.dev>; Wed,  6 Nov 2024 09:43:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730886208; cv=pass; b=AeN2V0IXky++jZVcp0Wa2RnWGabpi4CbhQHbgwpqWj69nNxftWPjuEjj3S5h78JheMd/kSlDh7BOF1sB9LgUdAYq5KOz7iHy6eYgLQ1do6mE/zdLbFBJ38lg8uqa0yeQxZ2q2QFUClPgvcOWfuh/kgiQnbjQbSPuFF/VuFxFhT0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730886208; c=relaxed/simple;
-	bh=u2jso3BoE1iVGK+i8zsaacSXmeFJ9VXoh6m+++g4Vxs=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=K0yi5bzoptK6Czky72wV0ADpUltrWey+alA4OV9FLTk8QFo/GA6jPlrboFglvWiCOYFaUQLqkVB0k8I+DD68X0yptz3ukxDrta9rGYO7k93+7Wb18DN5/ZkvDXtJDkiMyt1gD+k1r9qW0vsUE/1FbLULZYsht8DV0GuhnlhKkro=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=benjamin.gaignard@collabora.com header.b=dJJ1Xp6t; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174911D5CF5
+	for <imx@lists.linux.dev>; Wed,  6 Nov 2024 09:46:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730886383; cv=none; b=F06z9uKMwvVKTP9aNuDwmEG5RAeepTpbBgGloq8GqeSRfbhTStZ22ezsyFvcqiAln2Br6i5Pg93v3XO6PqVeSVmi1cxbgEKC33q6ONCfnWFIgrc6FmrhTHD8C05LZkhg1lVqNZ1rJyRH+hzqf/psoRwuTFQdmkySlvmx/IWso8o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730886383; c=relaxed/simple;
+	bh=FCzq19ZQriPVyzh0sTZo3Dh2ni0fniF4xDpwOt2piiA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TtqFnDDRhn7dtrdDS26M792AMNhbEixEYFuGx8YBp2U8JVtXGjltbIIU9TvlTiOb7/c6NB3Inm6yZwyi+P0+gJOqwplcODQu61Njrio5MDi+2dRNjVCWofsTwV4D5F5C/vMJ81XyjAjkCIEbQzLaN5/HJRkaNscFAsyUtlLM+mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UeGid5t2; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=benjamin.gaignard@collabora.com header.b="dJJ1Xp6t"
-ARC-Seal: i=1; a=rsa-sha256; t=1730886205; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Cf0amWWIstvFR5QgZScGuFWSe/ptlLRmdNgB0XRtJ5Ld0F5cb0s5WDBEc1E/ddl0qRKID9o1cjzllsML2ukNFI2qBbl+EvaXx+9KaHcRG1PLIdpKLRlMTobXzdqgZ5uorTJLdG7BrTAtWbxeRoGu/Nr7IQL/vWtZTmzKDTc3APE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1730886205; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=19QztSNR39Yv8poxA+mfIzYPMb9oWEv+tHdPnrrM4pM=; 
-	b=QsFmLpCBZ+fXU3SwIe4DymZPOpmmFevvc6cys5DX92jCJkzRfmdhhFBn21gHz967IpDKexylrzrzi9Wg2b129wCWDesA37bRLn/3AqODgExC6320832SeyarJ0uuyrFuQMB+DZgkJBAbNFk4FcX9sK1L7QTJdGiI6H0mLWuaxhY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=benjamin.gaignard@collabora.com;
-	dmarc=pass header.from=<benjamin.gaignard@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1730886205;
-	s=zohomail; d=collabora.com; i=benjamin.gaignard@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:From:From:Subject:Subject:To:To:Cc:Cc:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=19QztSNR39Yv8poxA+mfIzYPMb9oWEv+tHdPnrrM4pM=;
-	b=dJJ1Xp6tPrD0aW1Sfldn8aFMJueS3VBTcEhlG/QPeKwKshxQRYrKnVcKRa7SpAb8
-	DUnr3Hp+zFibfeSPwCIif/mMgjSZChb3jW58V19BYaxrRbW3vrsyilmIVjRcGuxBNG8
-	u5KyxAJ8VMwFpifQFhuMiHjLPVr4W7XH3KlPHbNU=
-Received: by mx.zohomail.com with SMTPS id 1730886202930134.79232865862105;
-	Wed, 6 Nov 2024 01:43:22 -0800 (PST)
-Message-ID: <83aac8b2-f80a-46b5-93fc-3369b30cbfc7@collabora.com>
-Date: Wed, 6 Nov 2024 10:43:19 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UeGid5t2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730886382; x=1762422382;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=FCzq19ZQriPVyzh0sTZo3Dh2ni0fniF4xDpwOt2piiA=;
+  b=UeGid5t2lEYvgCmPFJBrYwPH6cLjkNv2Zy4sCwRlihZ4fuGCDdGqu/us
+   MZnxqDLV7J0GHfskmI/1Va7x/4ElkuNaIzqB+96B0waR6yVg24vrYE5hu
+   0o97VAkv3dtjFT8nK9dfFaGDcgdixRpxFKHbIRp0VZdjEg4t8+Tthbdhx
+   wub0lLARQB+nNoOItiudYoB+rZPH+8dyGCVEWEu5Zjz+GuAnPCTGycsLw
+   g87Us3yRyURKlPxMmbDvFz0d2ySDthhbvd0P85SNmf4yxR2MtbOGkoaU0
+   Oysl/niVPBKJNSjHBLeYNJT9x+LUFy9vPD+ES0COP+8ejod7F2ZnKJ9uX
+   g==;
+X-CSE-ConnectionGUID: TJEN9wzeSSGrPcYX6UTjYQ==
+X-CSE-MsgGUID: wDQ63SwcSmW2zkQip2Ea1g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11247"; a="30788769"
+X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; 
+   d="scan'208";a="30788769"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 01:46:21 -0800
+X-CSE-ConnectionGUID: k2/7LShbSDaGOr4szaPsBw==
+X-CSE-MsgGUID: pcvQjkT9RbWo30mUfZPUFA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; 
+   d="scan'208";a="84847233"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 01:46:07 -0800
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 2169A11F9C3;
+	Wed,  6 Nov 2024 11:46:05 +0200 (EET)
+Date: Wed, 6 Nov 2024 09:46:05 +0000
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Maxime Ripard <mripard@kernel.org>, dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, Liu Ying <victor.liu@nxp.com>,
+	andrzej.hajda@intel.com, neil.armstrong@linaro.org,
+	rfoss@kernel.org, Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se, jernej.skrabec@gmail.com,
+	maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
+	airlied@gmail.com, simona@ffwll.ch, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, quic_jesszhan@quicinc.com,
+	mchehab@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, catalin.marinas@arm.com,
+	will@kernel.org, hverkuil@xs4all.nl,
+	tomi.valkeinen@ideasonboard.com, quic_bjorande@quicinc.com,
+	geert+renesas@glider.be, arnd@arndb.de, nfraprado@collabora.com,
+	thierry.reding@gmail.com, prabhakar.mahadev-lad.rj@bp.renesas.com,
+	sam@ravnborg.org, marex@denx.de, biju.das.jz@bp.renesas.com
+Subject: Re: (subset) [PATCH v5 00/13] Add ITE IT6263 LVDS to HDMI converter
+ support
+Message-ID: <Zys63S2xy-wdwQ8P@kekkonen.localdomain>
+References: <20241104032806.611890-1-victor.liu@nxp.com>
+ <173080602214.231309.12977765173766280536.b4-ty@linaro.org>
+ <20241105-secret-seriema-of-anger-7acfdf@houat>
+ <CD810D31-F9C5-499D-86CF-B94BEF82449A@linaro.org>
+ <20241105-succinct-pygmy-dingo-4db79c@houat>
+ <7C2A2BDC-07E8-4ED7-B65B-BD7E4E5DC53F@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Subject: IMX8MQ EVK board not booting anymore with v6.12-rc
-To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Arnd Bergmann <arnd@arndb.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7C2A2BDC-07E8-4ED7-B65B-BD7E4E5DC53F@linaro.org>
 
-Hello,
+Hi Dmitry, others,
 
-I notice that my IMX8MQ evk board doesn't boot with the latest v6.12-rc*.
-After bisect I found the suspect commit:
-   commit b8979c6b4d0d1b36e94f5bc483fd86e38107e554
-   Merge: 7b17f5ebd5fc b62800736f61
-   Author: Linus Torvalds <torvalds@linux-foundation.org>
-   Date:   Tue Sep 17 10:48:09 2024 +0200
+On Wed, Nov 06, 2024 at 09:20:12AM +0000, Dmitry Baryshkov wrote:
+> On 5 November 2024 17:39:40 GMT, Maxime Ripard <mripard@kernel.org> wrote:
+> >On Tue, Nov 05, 2024 at 05:33:21PM +0000, Dmitry Baryshkov wrote:
+> >> On 5 November 2024 16:13:26 GMT, Maxime Ripard <mripard@kernel.org> wrote:
+> >> >On Tue, Nov 05, 2024 at 01:28:48PM +0200, Dmitry Baryshkov wrote:
+> >> >> On Mon, 04 Nov 2024 11:27:53 +0800, Liu Ying wrote:
+> >> >> > This patch series aims to add ITE IT6263 LVDS to HDMI converter on
+> >> >> > i.MX8MP EVK.  Combined with LVDS receiver and HDMI 1.4a transmitter,
+> >> >> > the IT6263 supports LVDS input and HDMI 1.4 output by conversion
+> >> >> > function.  IT6263 product link can be found at [1].
+> >> >> > 
+> >> >> > Patch 1 is a preparation patch to allow display mode of an existing
+> >> >> > panel to pass the added mode validation logic in patch 3.
+> >> >> > 
+> >> >> > [...]
+> >> >> 
+> >> >> Applied to drm-misc-next, thanks!
+> >> >> 
+> >> >> [04/13] media: uapi: Add MEDIA_BUS_FMT_RGB101010_1X7X5_{SPWG, JEIDA}
+> >> >>         commit: 5205b63099507a84458075c3ca7e648407e6c8cc
+> >> >
+> >> >Where's the immutable branch Laurent asked for?
+> >> 
+> >> The patch set has been picked up after getting an Ack from Sakari,
+> >> before Laurent's email. I am sorry if I rushed it in.
+> >
+> >I mean, this was less than a day after you've asked that question
+> >yourself. Waiting less than a day for a mail to be answered seems a bit
+> >short, especially when there's no rush to merge these patches in the
+> >first place.
+> 
+> Point noted. I should have been more patient. As a lame excuse I could point out that the patch has been up for review / comments for quite a while, etc, etc, but this is really lame. 
 
-       Merge tag 'soc-drivers-6.12' of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc
+The patch had been around for a few weeks already, I don't see this having
+been rushed in. It's a bit a matter of taste whether an immutable branch is
+necessary here, I thought it wouldn't be. I can also ask for one in the
+future in cases where there's even slightly more than an improbable
+possibility of a merge conflict going forward: it won't hurt in any case to
+have one.
 
-I haven't been able to identify why the kernel isn't booting anymore.
-I have udpated u-boot (v2024.10) and firmware-imx (8.25-27879f8) on my board.
-When using the commit before or the tag 'soc-drivers-6.12' of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc
-the kernel boot.
+-- 
+Kind regards,
 
-I use the following command to cross-compile the kernel
-ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- make defconfig
-ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- make
-
-Have you been able to boot IMX8MQ evk board with a kernel version since v6.12-rc* ?
-I don't have any log since kernel just don't start.
-
-Regards,
-Benjamin
-
+Sakari Ailus
