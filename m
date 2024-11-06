@@ -1,80 +1,104 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7B31F582D
-	for <imx@lists.linux.dev>; Wed,  6 Nov 2024 12:56:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897800; cv=pass; b=r/FwI4Rwet8j5BGhKcEriRBm4QfI75FPwCSrbol+5Ibhk2qq0H7c9R9fps+JZyfLfz3aQv+xXRhMrNHcNthwRgUtle4kbAEPFf730hddev2tiFcOMc0pV5eZzPc4MLC1gPPnaCHqcWIX0WSizjWOxa3cCOmYOAf70GMwFWEOBh8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897800; c=relaxed/simple;
-	bh=J+0ET3+741mDa43G0HbwmzjwqQmYyHm7Vok+NKjfzFQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z1c7w2bhleHMr65eFlIZQvEN3MerUdOdVD2t0odJ2Obw1NcoPNl6T9raJuACrJ77WROX3nFMu4EhCNmpUW42g+cbopP0wAa5qNsrei+nyff5ZO8l7VFRTX+IDW/nmMYITisT/Rg5wowLsrBlhhkQ9LDp7TfRfMcjrNmYP18RL/U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=benjamin.gaignard@collabora.com header.b=lJsrc0lu; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2554A17DFF2;
+	Wed,  6 Nov 2024 14:10:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730902242; cv=none; b=MfLIqMAKFeR22t0J/U/8xEHCtM0n6iLxVL+R009dOBUyRukJItNQBXLngVus+ThvhV+JL9mOP9nAWiNX/0JYmGBljRfhhiK/71RYvzJ1ozUzDpVLxlEo23Po79bAriq/y3rfBhcdTLlO9b0wKp28e0me0w5nHnSBYqwv+K45g/g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730902242; c=relaxed/simple;
+	bh=hR+M/12mz686XDw6qw79yyMcaey3EbYKRvazPCDOwQg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JioNShFreW5TRsjSGnxYBvAbVYKH6RDwhLUsdqy/vAtQ/brygcO12CxiSkeveJ5Ez3i8OEhPsFdlc3fvWZyscaNoNEoU8F0LWTgdXxGFZA7umLvIFPebBzd6zHhzXQm/2HaDw0/kT6UqIidBaYnPWOoQQKywKpzBpwudexb6wzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oxK/9pf0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=benjamin.gaignard@collabora.com header.b="lJsrc0lu"
-ARC-Seal: i=1; a=rsa-sha256; t=1730897795; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=WRp/7Hu+GZ5KYKNjcI0S36YGbzuDlAFdnfopa1xr5Qissc8C+gRGCBpHor70uBaTTxQ3BIPtM1cgEp+gzHwnob5QCBo4SOOXG54ymwoab20T89uq6crC8lDExXCozHN3ABfQdrbWWBV6M+9Zn2fw60SdIMhJGU/47pEUj1I61pc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1730897795; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=J+0ET3+741mDa43G0HbwmzjwqQmYyHm7Vok+NKjfzFQ=; 
-	b=kQWeXfW4U5uw5S92h02C2UmratF8d3jrS0EgboCUvVm7VhagrreDkGt6i3RomVgAzs36y/h7peOeFbmIjjL9j5cZoLP5ft8x/hT603q38voayOYFcdYGpjsP7h/uzTa0vA/irhm3E6vV6k6Cxfi0I+bahpGfni42/4cs6xT2/j0=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=benjamin.gaignard@collabora.com;
-	dmarc=pass header.from=<benjamin.gaignard@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1730897795;
-	s=zohomail; d=collabora.com; i=benjamin.gaignard@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=J+0ET3+741mDa43G0HbwmzjwqQmYyHm7Vok+NKjfzFQ=;
-	b=lJsrc0luwNqqOBxI8gKUO4UXqPl6yRirEjtDqJfFb0erhz5Wv2/063X5DFZD4ftW
-	aUTJtm5atUrYuPewNPUFPqc8JDttMf1nx9F3XMqQUFuRAn6KDzoNQQMxHsYhlkRGsiz
-	ROrPNjNxafY8wf5xbxMiWhjax/aMfbhXlltX5+9A=
-Received: by mx.zohomail.com with SMTPS id 1730897793985463.4704130607637;
-	Wed, 6 Nov 2024 04:56:33 -0800 (PST)
-Message-ID: <1ecd57a6-6872-4494-9472-0fa904991a39@collabora.com>
-Date: Wed, 6 Nov 2024 13:56:31 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oxK/9pf0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C0AC4CEC6;
+	Wed,  6 Nov 2024 14:10:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730902241;
+	bh=hR+M/12mz686XDw6qw79yyMcaey3EbYKRvazPCDOwQg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oxK/9pf0bxWdLwkJ0XFrOHc/8z9aGFghLqiMYid+PmJ4KUJHrrf9hchG0UZuKR5sS
+	 JTk4Vhwpmmz2AcIrmkWeogxx/hS1lMNYA5JUMklzJnjthm016pojlcdRNdL66S9W4C
+	 WI0+4LoX0k54++97cUt9QpSVWeHEVHV4EsxZ4Cxr8iikxOv326+hzoeNoX8VsJl+nK
+	 uI4Ex2g18XPIbmhCvqt+R7VmC9DB3+Ms07DkgrDg7lIqG3k2bgaY8VLMDWj3/d4S4s
+	 36j9fSScrodXntyF7oIqtADJOkp26IMc2WYrgHaPQKNvbYgA3Z7spI2wV0j0abOVe/
+	 yKJ9lMPNwvqaA==
+Date: Wed, 6 Nov 2024 15:10:38 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com, 
+	Abel Vesa <abelvesa@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Michael Turquette <mturquette@baylibre.com>, Peng Fan <peng.fan@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-clk@vger.kernel.org
+Subject: Re: [PATCH v3 1/8] dt-bindings: clock: imx8m-clock: support spread
+ spectrum clocking
+Message-ID: <4bix7me5vaoyhcuffyp4btajmhy7no6ltczoesopaz2fqupyaw@fensx4nn472u>
+References: <20241106090549.3684963-1-dario.binacchi@amarulasolutions.com>
+ <20241106090549.3684963-2-dario.binacchi@amarulasolutions.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: IMX8MQ EVK board not booting anymore with v6.12-rc
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Arnd Bergmann <arnd@arndb.de>
-References: <83aac8b2-f80a-46b5-93fc-3369b30cbfc7@collabora.com>
- <CAOMZO5A3dtic1CZS4RJ3RoBP_rV0PpK5oin4J8531XRebkb0ag@mail.gmail.com>
-Content-Language: en-US
-From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-In-Reply-To: <CAOMZO5A3dtic1CZS4RJ3RoBP_rV0PpK5oin4J8531XRebkb0ag@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241106090549.3684963-2-dario.binacchi@amarulasolutions.com>
 
+On Wed, Nov 06, 2024 at 09:57:57AM +0100, Dario Binacchi wrote:
+> The patch adds the DT bindings for enabling and tuning spread spectrum
+> clocking generation.
 
-Le 06/11/2024 à 12:12, Fabio Estevam a écrit :
-> On Wed, Nov 6, 2024 at 6:43 AM Benjamin Gaignard
-> <benjamin.gaignard@collabora.com> wrote:
->
->> Have you been able to boot IMX8MQ evk board with a kernel version since v6.12-rc* ?
->> I don't have any log since kernel just don't start.
-> It is booting here for me:
->
-> https://pastebin.com/raw/h95JZgjk
+We had long talks about this but nothing of it got reflected in commit
+msg. Sorry, I don't remember what I was talking in some particular patch
+month ago, so you will get the same questions over and over...
 
-I see the difference, you have compile the kernel to support only IMX SoCs so the
-size of Image is smaller and u-boot can relocate Image from 0x40480000 to 0x40600000
-without overlapping DT area.
-It is working for me now.
+> 
+> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+> 
+> ---
+> 
+> Changes in v3:
+> - Added in v3
+> - The dt-bindings have been moved from fsl,imx8m-anatop.yaml to
+>   imx8m-clock.yaml. The anatop device (fsl,imx8m-anatop.yaml) is
+>   indeed more or less a syscon, so it represents a memory area
+>   accessible by ccm (imx8m-clock.yaml) to setup the PLLs.
+> 
+>  .../bindings/clock/imx8m-clock.yaml           | 46 +++++++++++++++++++
+>  1 file changed, 46 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
+> index c643d4a81478..7920393e518e 100644
+> --- a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
+> +++ b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
+> @@ -43,6 +43,40 @@ properties:
+>        ID in its "clocks" phandle cell. See include/dt-bindings/clock/imx8m-clock.h
+>        for the full list of i.MX8M clock IDs.
+>  
+> +  fsl,ssc-clocks:
+> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> +    description:
+> +      Phandles of the PLL with spread spectrum generation hardware capability.
+> +    minItems: 1
+> +    maxItems: 4
 
-Thanks a lot,
-Benjamin
+1. How is it possible that you change spread spectrum of some clocks from
+main Clock Controller, while this device is not a consumer of them?
+Basically this means that this device does not have these clocks but yet
+you claim that it needs to configure spread for them! It's contradictory
+to me and nohing got explained in commit msg about it. I am pretty sure
+I asked about this alrady.
+
+2. Why is this array flexible in size?
+
+Best regards,
+Krzysztof
 
