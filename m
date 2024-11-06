@@ -1,65 +1,118 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B5D204958;
-	Wed,  6 Nov 2024 21:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FA120C313;
+	Wed,  6 Nov 2024 22:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730929173; cv=none; b=aqZta/AWg7v+chbxdrYbt6XHoq7iNUmuKL0mrDFxw3oq3QokcvE0ype8eNkU4Z61M3QcXgODqYCyaEx9gO7LA6YVGkCVB1yiBFyy+gxkvfzLaF3N/Zg1maXUvmw1zvTDh3mBamsLKn2m3/MfzTZ6KKmNTKzWa+RxlHvPnLQkmb4=
+	t=1730932176; cv=none; b=N4iyeq79SeU26g/MZjModXsbkkjO0Be9fhQgvAAHA0nSLxWu8UaYNrj5QS4jJglCG7C+FSuWpYwDKEvnIUbFbXjuVdFEi/yGQO3fZlKr+taRkUyP1Cf+wrUbYtu6fiKsUKrrd571zh6aXKBlKoo5d9JxcPiu2gRQGsScATmIWew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730929173; c=relaxed/simple;
-	bh=NGW1ecxSoS73bY+vq9NmlmEgNYsxyuIfOZmQbR/lG4s=;
-	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
-	 Subject:From:Cc:To:Date; b=tOS4YkUnCUroNLtewqEp5HDUASCnp9hkKu+bY2v1boS/XBfYiU4pzICm+ws5RjgwrZKPtk2Rl82h1UpmVPCht+fBpBS86Z2xDQdUHXWp2JDc5JNNycO1e9qJAy+15dgNOkl02p+fErNSCzrF/toDIlhLPnHFbDV619wAsDoO3xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WBV/XQBK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730932176; c=relaxed/simple;
+	bh=FHEZ8Db5PTgMmVRyesXrgUdXjQUoWglkt/etn3U6PNE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=eWdni2068q5zQxvNyP2ssIxY2BcrgQFyp0mAxCatkdwKvPY5b/EqfpEA9AR70qTsPdN32rHt56jqap1KJQjN9cwcpd2jNsi83nBeVbgqut3i57nzihmqcuAdS0TUD61aPTI0R87WVjzJR2Fg0VufrGME9jFgwTo7oAflR6nSxYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VwBqoK48; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WBV/XQBK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8407DC4CEC6;
-	Wed,  6 Nov 2024 21:39:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VwBqoK48"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B420EC4CEC6;
+	Wed,  6 Nov 2024 22:29:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730929172;
-	bh=NGW1ecxSoS73bY+vq9NmlmEgNYsxyuIfOZmQbR/lG4s=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=WBV/XQBKHqPkLcfHSdFncPwLoCaoOEyqs1P9R1yWL1KMc2mQfYLxOXIuZ3WxNDA+o
-	 sCFlEytnsfGrFL5X4nqK7830q85JYk1DebjwMvCkmwPLpvpqJUJCKMrWbvTMtgtOub
-	 tHvKU3ktYksUXh/sASBHQU2TUlumR5M1u7J9gvWWslu6nXajYD3uNVgBaG7jCULwWD
-	 WPfbIlEuzeVDlbsrkZ5USTbw9ZRWexlVsO9P96RKTmfW2k5cIizWSOzrpmWGUfObaB
-	 CFo5BKemji1YZ5cyZiOar5lZL+yf8UrpI1lpJKFvIEOIhky2CKTALwkbYx+GX000FH
-	 MWcfNFR78MOFw==
-Message-ID: <d2d2bac3e583872ef80f86621a1e44cc.sboyd@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1730932175;
+	bh=FHEZ8Db5PTgMmVRyesXrgUdXjQUoWglkt/etn3U6PNE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=VwBqoK488rj4i5ZAs5nN/uCeP7h7zth66K1wgO39pGpLfXIiXeWtenBjfJhyvMNe7
+	 mv07rsD6goSN/i0a8VR0F/IyfTPfMRI2Dv8i/Pvw8CLQaASyp4rwG1bScAnkMmqQ61
+	 v60vLFFo0q2VvD6AucpE0Tj5ln7xxE813lpwCzQGU0oJO0flmfj5X8mLi9v7BMW9Sz
+	 xSDL7J8lSfqV8JVK+mJBUZOmu2Je/8o5LQXTVqoEjnqjbMahPp4xtaqDCdfSInx1lT
+	 QPZVvbKUkgWbaDLDo2fR+Yic0+RMp1Gh3L2ncFFu7w90J4AGSqJZPCfpdZ5jMow2Ra
+	 S2rstTiEMhKzw==
+Date: Wed, 6 Nov 2024 16:29:33 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Hongxing Zhu <hongxing.zhu@nxp.com>
+Cc: "kwilczynski@kernel.org" <kwilczynski@kernel.org>,
+	"bhelgaas@google.com" <bhelgaas@google.com>,
+	"lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
+	Frank Li <frank.li@nxp.com>, "mani@kernel.org" <mani@kernel.org>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH v2] PCI: dwc: Fix resume failure if no EP is connected at
+ some platforms
+Message-ID: <20241106222933.GA1543549@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20241106142154.622141-1-abel.vesa@linaro.org>
-References: <20241106142154.622141-1-abel.vesa@linaro.org>
-Subject: Re: [GIT PULL] clk: imx: Updates for v6.13
-From: Stephen Boyd <sboyd@kernel.org>
-Cc: imx@lists.linux.dev, NXP Linux Team <linux-imx@nxp.com>, linux-clk@vger.kernel.org, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-To: Abel Vesa <abel.vesa@linaro.org>, Mike Turquette <mturquette@baylibre.com>
-Date: Wed, 06 Nov 2024 13:39:30 -0800
-User-Agent: alot/0.10
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <AS8PR04MB8676998092241543AEABFAAB8C532@AS8PR04MB8676.eurprd04.prod.outlook.com>
 
-Quoting Abel Vesa (2024-11-06 06:21:54)
-> The following changes since commit 9852d85ec9d492ebef56dc5f229416c925758e=
-dc:
->=20
->   Linux 6.12-rc1 (2024-09-29 15:06:19 -0700)
->=20
-> are available in the Git repository at:
->=20
->   git://git.kernel.org/pub/scm/linux/kernel/git/abelvesa/linux.git/ tags/=
-clk-imx-6.13
->=20
-> for you to fetch changes up to 81a206d736c19139d3863b79e7174f9e98b45499:
->=20
->   clk: imx: imx8-acm: Fix return value check in clk_imx_acm_attach_pm_dom=
-ains() (2024-11-05 12:07:59 +0200)
->=20
-> ----------------------------------------------------------------
+On Wed, Nov 06, 2024 at 01:59:41AM +0000, Hongxing Zhu wrote:
+> > -----Original Message-----
+> > From: Bjorn Helgaas <helgaas@kernel.org>
+> > Sent: 2024年11月6日 7:27
+> > To: Hongxing Zhu <hongxing.zhu@nxp.com>
+> > Cc: kwilczynski@kernel.org; bhelgaas@google.com;
+> > lorenzo.pieralisi@arm.com; Frank Li <frank.li@nxp.com>; mani@kernel.org;
+> > linux-pci@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
+> > linux-kernel@vger.kernel.org; kernel@pengutronix.de; imx@lists.linux.dev
+> > Subject: Re: [PATCH v2] PCI: dwc: Fix resume failure if no EP is connected at
+> > some platforms
+> > 
+> > On Mon, Jul 22, 2024 at 02:15:13PM +0800, Richard Zhu wrote:
+> > > The dw_pcie_suspend_noirq() function currently returns success
+> > > directly if no endpoint (EP) device is connected. However, on some
+> > > platforms, power loss occurs during suspend, causing dw_resume() to do
+> > > nothing in this case.
+> > > This results in a system halt because the DWC controller is not
+> > > initialized after power-on during resume.
 
-Thanks. Pulled into clk-next
+> > > @@ -933,23 +933,23 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+> > >  	if (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) &
+> > PCI_EXP_LNKCTL_ASPM_L1)
+> > >  		return 0;
+> > >
+> > > -	if (dw_pcie_get_ltssm(pci) <= DW_PCIE_LTSSM_DETECT_ACT)
+> > > -		return 0;
+> > > -
+> > > -	if (pci->pp.ops->pme_turn_off)
+> > > -		pci->pp.ops->pme_turn_off(&pci->pp);
+> > > -	else
+> > > -		ret = dw_pcie_pme_turn_off(pci);
+> > > +	if (dw_pcie_get_ltssm(pci) > DW_PCIE_LTSSM_DETECT_ACT) {
+> > > +		/* Only send out PME_TURN_OFF when PCIE link is up */
+> > > +		if (pci->pp.ops->pme_turn_off)
+> > > +			pci->pp.ops->pme_turn_off(&pci->pp);
+> > > +		else
+> > > +			ret = dw_pcie_pme_turn_off(pci);
+> > 
+> > This looks possibly racy since the link can go down at any point.
+>
+> When link is down and without this commit changes,
+> dw_pcie_suspend_noirq() return directly, and the PME_TURN_OFF
+> wouldn't be kicked off.
+
+Right, that's the code change.
+
+> I change the behavior to issue the PME_TURN_OFF when link is up
+> here.
+
+But I don't think you responded to the race question.  What happens
+here?
+
+  if (dw_pcie_get_ltssm(pci) > DW_PCIE_LTSSM_DETECT_ACT) {
+    --> link goes down here <--
+    pci->pp.ops->pme_turn_off(&pci->pp);
+
+You decide the LTSSM is active and the link is up.  Then the link goes
+down.  Then you send PME_Turn_off.  Now what?
+
+If it's safe to try to send PME_Turn_off regardless of whether the
+link is up or down, there would be no need to test the LTSSM state.
+
+Bjorn
