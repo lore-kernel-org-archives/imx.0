@@ -1,185 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4069B1D9329;
-	Wed,  6 Nov 2024 09:15:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850761D7E3E
+	for <imx@lists.linux.dev>; Wed,  6 Nov 2024 09:20:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730884533; cv=none; b=f62hp4xkf7ZWPUxw+016rUtprF5U+WhTrjLqnOytDx53PGefD8AG7msMYkMNxqbBzwCKZx+eGc1YUDXFk4WPQ1xyUnLzLxmUsy9VL+K/3Vyi5BYeAMJAHXPxiLc5NGVB7SKLluZpwyRzZ50Ks+jnneqHOqqSPN7zpHd6hFYvNYc=
+	t=1730884817; cv=none; b=K5YqbZ0owHK8o+HTsGPaYFnc4LfWbP1tt3OlszXKOb5Jv4j0i7lyKlf/luVNc6E2s1bsY30hmbrQrzcUhfvVHjjidOdAu3aTO7O3vdkPcYFjZpSi+ACvjP3RZFlpP5eCEjxejg6obOjLlof1KKhfGQUgVx2GiAVjybmPKv68nLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730884533; c=relaxed/simple;
-	bh=EwAJq0GjySd0IJ1U4/MaQRX0fXrzwNh3orlaf6pjFQE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qXWi2PcGjhEV4cZHArjfpKlrlR17MTw8dYvo0xNOwE9Dj7JedOhnSELxXO++IsHS6R6Sp/XHkP2itCymqimJ8tpNqZE+5n5NZs4BgTEoiBQ0GYaaKrwX4PtFXk5hqR/QMvH6Hwj9QfaAluHXdo552JogBHsEeg7dvDOkdogMsQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e6YU4Ku6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730884817; c=relaxed/simple;
+	bh=NICnhTyDeFjw5xDNNJO75dAzGin9vebw41liMa/LWfQ=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=FNKiG65SHGPfkXJ9R3PAyMO9bLFbytbSsryjx3z83NWrxYgtEcu39dE/SKKPjVhoGYBFDYQ33JULLzF1d+ir7NZitvSqrfLTSAm1J8c2jBXUXMQCytABSfhx+TW1Wt1iTGexX+AyDoLt+DaJr8JpzEFYKO3qNdY9h1zgMP2JaQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fu49QI6/; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e6YU4Ku6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3742C4CECD;
-	Wed,  6 Nov 2024 09:15:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730884532;
-	bh=EwAJq0GjySd0IJ1U4/MaQRX0fXrzwNh3orlaf6pjFQE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=e6YU4Ku6I+ni7xq3vLu1huym1FyGpwUtUsFP63qGYPPMcZSYcOAPNCOAGyE2tnOD+
-	 kFp9NuFnyTUGRaydRbvD6qlYt/52XljzLEIsUrpcqHk+nPE70OuiwTo9TX7Gl3FnqQ
-	 nCgWygWxFML+BPzrzkG/5Ou5wfHWMigdLdOr4szqgDNxLDipbfMtd5yIHquZirXFMh
-	 2e864SNAHbTFdfVNTWpOhIsAHXpd9REuWS66FGdKYT2QIkIj/0cLXkGe20zTwectbe
-	 5HjavNReU71zkSJRIlq0SxnPawGfkgQLd0z1hcltKYl19B2IsLUTWRTWJtf9zMKHbn
-	 9phjPbWRwVi5g==
-Date: Wed, 6 Nov 2024 10:15:27 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	imx@lists.linux.dev, dlemoal@kernel.org, maz@kernel.org,
-	tglx@linutronix.de, jdmason@kudzu.us
-Subject: Re: [PATCH v4 0/5] PCI: EP: Add RC-to-EP doorbell with platform MSI
- controller
-Message-ID: <Zyszr3Cqg8UXlbqw@ryzen>
-References: <20241031-ep-msi-v4-0-717da2d99b28@nxp.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fu49QI6/"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4315f24a6bbso50631155e9.1
+        for <imx@lists.linux.dev>; Wed, 06 Nov 2024 01:20:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1730884814; x=1731489614; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=nFpPn0d2yFLk+e22ei9wc3wv5WH7ZWHa4AxPfroJzYQ=;
+        b=fu49QI6/SspYPQe/+JjP6l2Tz9Dt15VeeI73NPKp0+2Xz3U8gd6YFJO7KfIQqQr8FC
+         aQtit5YZluXBDgNXlVwIPhxIXoxKX9j/bwNMF5K9kPGxcNyuSiUTYMrbD6cIodPnWj9c
+         czURth/4KAa9wLktH8T0VQWQahZY/2+/oKQ36RFjupYarw2f23uwoHmaoFquAflQK3b+
+         I6Q7pMw00NJObn/4tiihRngPUbZpJM9xYhMao1g54JEnnEWoUlPrSHC5smUXQdc7fkry
+         cPrerhOn1ym7ghCLye6Xzm9dHzTnjfA6SKJ/rSLcRTyIz1ZhQGK2kRsXcJfGP3sQZYSq
+         EVtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730884814; x=1731489614;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nFpPn0d2yFLk+e22ei9wc3wv5WH7ZWHa4AxPfroJzYQ=;
+        b=ixlspS8aWbYqY75LI1rX2U2cnkg3EmTt3JvROUXexexI3Q32W0Wnk93sMMrgFbboko
+         nmMlIOE/Vh1bncfNnbgvlWIWyy1/MRaIPLWrW7oJzbC6wRgzJw6+95z7wKCiJuJ4EjCo
+         JHcS7cvx3opQEuUBrNLNpFEENkKaD7K1Q+e66wKXxq9GVLAIGLWJoOZ0++QXo/mm0IRH
+         cupKQuhZjlHZ7+VfNZKziL41w0a11a1uktQarCGZRmDQadI7N5EW94S8WGSeWW6kC4kl
+         mVswc7M1uasYbLwbG44VupZyKXQmuCeLfuwBksecAPppF1vHcc9QFSlfdfXhZUQuN0rw
+         PQAw==
+X-Forwarded-Encrypted: i=1; AJvYcCXM8EawkhLwYs6F7Wy8fLLlYxhoUhxRa3aeKz5e7/WOtlMFPPWZm6b/Bbms7/ByQ+lpXmI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwGazYSrgzUpxOOPOck2z7by/QrPS2+WI93fxLVhnkGmtpSsj5I
+	N5RU6IC1rT9Ep7p8Pdb5/K7Lykh59s1y5a+CZ1mN/4fWYmZOoug1dFDlh4pEU7Y=
+X-Google-Smtp-Source: AGHT+IEYpLtbvoq+DLNXwR3nRAmR6avtTq4h+YsWpETFhBlqaeNqXWJjhte4lroosj4mGd9kd6ILbg==
+X-Received: by 2002:a05:600c:4fd3:b0:431:60d0:9088 with SMTP id 5b1f17b1804b1-4319ac9acedmr359810715e9.13.1730884813855;
+        Wed, 06 Nov 2024 01:20:13 -0800 (PST)
+Received: from [127.0.0.1] ([89.101.134.25])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432aa6da939sm15286495e9.31.2024.11.06.01.20.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 06 Nov 2024 01:20:13 -0800 (PST)
+Date: Wed, 06 Nov 2024 09:20:12 +0000
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Maxime Ripard <mripard@kernel.org>
+CC: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ Liu Ying <victor.liu@nxp.com>, andrzej.hajda@intel.com,
+ neil.armstrong@linaro.org, rfoss@kernel.org,
+ Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com,
+ maarten.lankhorst@linux.intel.com, tzimmermann@suse.de, airlied@gmail.com,
+ simona@ffwll.ch, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ quic_jesszhan@quicinc.com, mchehab@kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ catalin.marinas@arm.com, will@kernel.org, sakari.ailus@linux.intel.com,
+ hverkuil@xs4all.nl, tomi.valkeinen@ideasonboard.com,
+ quic_bjorande@quicinc.com, geert+renesas@glider.be, arnd@arndb.de,
+ nfraprado@collabora.com, thierry.reding@gmail.com,
+ prabhakar.mahadev-lad.rj@bp.renesas.com, sam@ravnborg.org, marex@denx.de,
+ biju.das.jz@bp.renesas.com
+Subject: =?US-ASCII?Q?Re=3A_=28subset=29_=5BPATCH_v5_00/13=5D_Add_ITE?=
+ =?US-ASCII?Q?_IT6263_LVDS_to_HDMI_converter_support?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <20241105-succinct-pygmy-dingo-4db79c@houat>
+References: <20241104032806.611890-1-victor.liu@nxp.com> <173080602214.231309.12977765173766280536.b4-ty@linaro.org> <20241105-secret-seriema-of-anger-7acfdf@houat> <CD810D31-F9C5-499D-86CF-B94BEF82449A@linaro.org> <20241105-succinct-pygmy-dingo-4db79c@houat>
+Message-ID: <7C2A2BDC-07E8-4ED7-B65B-BD7E4E5DC53F@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241031-ep-msi-v4-0-717da2d99b28@nxp.com>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello Frank,
+On 5 November 2024 17:39:40 GMT, Maxime Ripard <mripard@kernel=2Eorg> wrote=
+:
+>On Tue, Nov 05, 2024 at 05:33:21PM +0000, Dmitry Baryshkov wrote:
+>> On 5 November 2024 16:13:26 GMT, Maxime Ripard <mripard@kernel=2Eorg> w=
+rote:
+>> >On Tue, Nov 05, 2024 at 01:28:48PM +0200, Dmitry Baryshkov wrote:
+>> >> On Mon, 04 Nov 2024 11:27:53 +0800, Liu Ying wrote:
+>> >> > This patch series aims to add ITE IT6263 LVDS to HDMI converter on
+>> >> > i=2EMX8MP EVK=2E  Combined with LVDS receiver and HDMI 1=2E4a tran=
+smitter,
+>> >> > the IT6263 supports LVDS input and HDMI 1=2E4 output by conversion
+>> >> > function=2E  IT6263 product link can be found at [1]=2E
+>> >> >=20
+>> >> > Patch 1 is a preparation patch to allow display mode of an existin=
+g
+>> >> > panel to pass the added mode validation logic in patch 3=2E
+>> >> >=20
+>> >> > [=2E=2E=2E]
+>> >>=20
+>> >> Applied to drm-misc-next, thanks!
+>> >>=20
+>> >> [04/13] media: uapi: Add MEDIA_BUS_FMT_RGB101010_1X7X5_{SPWG, JEIDA}
+>> >>         commit: 5205b63099507a84458075c3ca7e648407e6c8cc
+>> >
+>> >Where's the immutable branch Laurent asked for?
+>>=20
+>> The patch set has been picked up after getting an Ack from Sakari,
+>> before Laurent's email=2E I am sorry if I rushed it in=2E
+>
+>I mean, this was less than a day after you've asked that question
+>yourself=2E Waiting less than a day for a mail to be answered seems a bit
+>short, especially when there's no rush to merge these patches in the
+>first place=2E
 
-On Thu, Oct 31, 2024 at 12:26:59PM -0400, Frank Li wrote:
-> ┌────────────┐   ┌───────────────────────────────────┐   ┌────────────────┐
-> │            │   │                                   │   │                │
-> │            │   │ PCI Endpoint                      │   │ PCI Host       │
-> │            │   │                                   │   │                │
-> │            │◄──┤ 1.platform_msi_domain_alloc_irqs()│   │                │
-> │            │   │                                   │   │                │
-> │ MSI        ├──►│ 2.write_msi_msg()                 ├──►├─BAR<n>         │
-> │ Controller │   │   update doorbell register address│   │                │
-> │            │   │   for BAR                         │   │                │
-> │            │   │                                   │   │ 3. Write BAR<n>│
-> │            │◄──┼───────────────────────────────────┼───┤                │
-> │            │   │                                   │   │                │
-> │            ├──►│ 4.Irq Handle                      │   │                │
-> │            │   │                                   │   │                │
-> │            │   │                                   │   │                │
-> └────────────┘   └───────────────────────────────────┘   └────────────────┘
-> 
-> This patches based on old https://lore.kernel.org/imx/20221124055036.1630573-1-Frank.Li@nxp.com/
-> 
-> Original patch only target to vntb driver. But actually it is common
-> method.
-> 
-> This patches add new API to pci-epf-core, so any EP driver can use it.
-> 
-> Previous v2 discussion here.
-> https://lore.kernel.org/imx/20230911220920.1817033-1-Frank.Li@nxp.com/
-> 
-> Changes in v4:
-> - Remove patch genirq/msi: Add cleanup guard define for msi_lock_descs()/msi_unlock_descs()
-> - Use new method to avoid compatible problem.
->   Add new command DOORBELL_ENABLE and DOORBELL_DISABLE.
->   pcitest -B send DOORBELL_ENABLE first, EP test function driver try to
-> remap one of BAR_N (except test register bar) to ITS MSI MMIO space. Old
-> driver don't support new command, so failure return, not side effect.
->   After test, DOORBELL_DISABLE command send out to recover original map, so
-> pcitest bar test can pass as normal.
-> - Other detail change see each patches's change log
-> - Link to v3: https://lore.kernel.org/r/20241015-ep-msi-v3-0-cedc89a16c1a@nxp.com
-> 
-> Change from v2 to v3
-> - Fixed manivannan's comments
-> - Move common part to pci-ep-msi.c and pci-ep-msi.h
-> - rebase to 6.12-rc1
-> - use RevID to distingiush old version
-> 
-> mkdir /sys/kernel/config/pci_ep/functions/pci_epf_test/func1
-> echo 16 > /sys/kernel/config/pci_ep/functions/pci_epf_test/func1/msi_interrupts
-> echo 0x080c > /sys/kernel/config/pci_ep/functions/pci_epf_test/func1/deviceid
-> echo 0x1957 > /sys/kernel/config/pci_ep/functions/pci_epf_test/func1/vendorid
-> echo 1 > /sys/kernel/config/pci_ep/functions/pci_epf_test/func1/revid
-> ^^^^^^ to enable platform msi support.
-> ln -s /sys/kernel/config/pci_ep/functions/pci_epf_test/func1 /sys/kernel/config/pci_ep/controllers/4c380000.pcie-ep
-
-Perhaps drop these steps, to not confuse the reader.
-They are no longer relevant with the latest revision anyway.
-
-> 
-> - use new device ID, which identify support doorbell to avoid broken
-> compatility.
-> 
->     Enable doorbell support only for PCI_DEVICE_ID_IMX8_DB, while other devices
->     keep the same behavior as before.
-> 
->            EP side             RC with old driver      RC with new driver
->     PCI_DEVICE_ID_IMX8_DB          no probe              doorbell enabled
->     Other device ID             doorbell disabled*       doorbell disabled*
-> 
->     * Behavior remains unchanged.
-> 
-> Change from v1 to v2
-> - Add missed patch for endpont/pci-epf-test.c
-> - Move alloc and free to epc driver from epf.
-> - Provide general help function for EPC driver to alloc platform msi irq.
-> - Fixed manivannan's comments.
-
-I wanted to try this series on rk3588, which has a MSI controller as part of the GIC
-using Interrupt Translation Services (ITS), for the Root Complex DT node:
-https://github.com/torvalds/linux/blob/v6.12-rc6/arch/arm64/boot/dts/rockchip/rk3588-extra.dtsi#L164
-https://github.com/torvalds/linux/blob/v6.12-rc6/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi#L1981-L1999
-
-There isn't any reference to a MSI controller in the Endpoint DT node:
-https://github.com/torvalds/linux/blob/v6.12-rc6/arch/arm64/boot/dts/rockchip/rk3588-extra.dtsi#L189
-
-When testing your series, I get an error in
-platform_device_msi_init_and_alloc_irqs(), because no domain is found.
-
-I assume that is it "msi-parent" that we should add here.
-
-However, looking at:
-$ git grep -p msi-parent arch/arm64/boot/dts/freescale/
-
-I do not see any freescale/iMX platform specifying a msi-parent for the EP node.
-
-Is there any additional DTS changes needed for iMX that is not part of this series,
-or what am I missing?
-
-When adding "msi-parent = <&its1 0x0000>;
-to the EP node
-(this is just a guess since RC node has: msi-map = <0x0000 &its1 0x0000 0x1000>;)
-
-I do get a domain, but I do not get any IRQ on the EP side when the RC side is
-writing the doorbell (as part of pcitest -B),
-
-[    7.978984] pci_epc_alloc_doorbell: num_db: 1
-[    7.979545] pci_epf_test_bind: doorbell_addr: 0x40
-[    7.979978] pci_epf_test_bind: doorbell_data: 0x0
-[    7.980397] pci_epf_test_bind: doorbell_bar: 0x1
-[   21.114613] pci_epf_enable_doorbell db_bar: 1
-[   21.115001] pci_epf_enable_doorbell: doorbell_addr: 0xfe650040
-[   21.115512] pci_epf_enable_doorbell: phys_addr: 0xfe650000
-[   21.115994] pci_epf_enable_doorbell: success
-
-# cat /proc/interrupts | grep epc
-117:          0          0          0          0          0          0          0          0  ITS-pMSI-a40000000.pcie-ep   0 Edge      pci-epc-doorbell0
-
-Even if I try to write the doorbell manually from EP side using devmem:
-
-# devmem 0xfe670040 32 1
-
-it still doesn't trigger a IRQ on the EP side:
-# cat /proc/interrupts | grep epc
-117:          0          0          0          0          0          0          0          0  ITS-pMSI-a40000000.pcie-ep   0 Edge      pci-epc-doorbell0
-
-Any ideas?
+Point noted=2E I should have been more patient=2E As a lame excuse I could=
+ point out that the patch has been up for review / comments for quite a whi=
+le, etc, etc, but this is really lame=2E=20
 
 
-Kind regards,
-Niklas
+
+>
+>Maxime
+
