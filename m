@@ -1,133 +1,185 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377EE1DF737
-	for <imx@lists.linux.dev>; Wed,  6 Nov 2024 09:06:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4069B1D9329;
+	Wed,  6 Nov 2024 09:15:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730883983; cv=none; b=BBf9e6DkraN7N5xBJvN3LFArd1XeQjfAbturVLaXMOFRojYz4TETScMM4h8oCPeyeZzObbYrtll92zggA5aLaumqUHc92OgLDqxRN5qnGyhfJwl4p66F+pSjc+3uuB3oiaSRhwG3FJqPQ8U+277HFlG9itqWJnsCKClD0ov926Q=
+	t=1730884533; cv=none; b=f62hp4xkf7ZWPUxw+016rUtprF5U+WhTrjLqnOytDx53PGefD8AG7msMYkMNxqbBzwCKZx+eGc1YUDXFk4WPQ1xyUnLzLxmUsy9VL+K/3Vyi5BYeAMJAHXPxiLc5NGVB7SKLluZpwyRzZ50Ks+jnneqHOqqSPN7zpHd6hFYvNYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730883983; c=relaxed/simple;
-	bh=DLsE8SY6A8anelIybSwas3SRartaiSrHurtOgVeV0YE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/oetl0Gv3EUrHvBtQCk9vkpGDHTfvkVL//sN3wYbqL/3GSv1gdfOX/seoczGc9xYkSBBTEkqcsLK9c7aGwIjHrwwkC8Ktkxxkgf0YbGYPltD1Cil13TbA1/6agVxxKgP0nBrHFqxfmXXlkx9BmfASN7E+j1uEd1x1YgvOro4lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=e2XPLy5R; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	s=arc-20240116; t=1730884533; c=relaxed/simple;
+	bh=EwAJq0GjySd0IJ1U4/MaQRX0fXrzwNh3orlaf6pjFQE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qXWi2PcGjhEV4cZHArjfpKlrlR17MTw8dYvo0xNOwE9Dj7JedOhnSELxXO++IsHS6R6Sp/XHkP2itCymqimJ8tpNqZE+5n5NZs4BgTEoiBQ0GYaaKrwX4PtFXk5hqR/QMvH6Hwj9QfaAluHXdo552JogBHsEeg7dvDOkdogMsQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e6YU4Ku6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="e2XPLy5R"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a9a850270e2so1072577066b.0
-        for <imx@lists.linux.dev>; Wed, 06 Nov 2024 01:06:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1730883979; x=1731488779; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eK2D5YdiBqlMNYfxLWNo7UJDqbeX8vHqHTifMmfFsII=;
-        b=e2XPLy5Rta7swUfEP/cD5foEgrza2EbtHOHqUQrSEgx85niW/JpwqMWsN19mF1PWsW
-         nfdC6FpDKNfkMKG28hVdDjMYkDw28kcb2d/13cgflVasqiwKpm/mIQXHu7Xm1evoTPUK
-         xEz2Mqn3dRrIV33JaHD3LB7kESVhBo5hG0Xmg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730883979; x=1731488779;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eK2D5YdiBqlMNYfxLWNo7UJDqbeX8vHqHTifMmfFsII=;
-        b=VKDt7BzBLGcrF5h4A7Zk7h5LTLdQdBWys0/pwOlcFi+86sFdQwADGvmNWZSu8dmN2d
-         nGYs3c9cqvc92TvZXgodQAoQQAnNu9VVL3Gc/ZzYy7HUJHeSSlkyUXIhhiDMfpeWJSFA
-         svbJZBFeQb9HS0ZqdN/yiYs3qLapj6/YchRuPCg3z4ee6ymYPRycme8Deuk7GXXcEFb0
-         tqaApfc4TiuG/Az5J0eaQh2B8GBdf+gDmP4dciYgP1nv0ZMHH4D1ozzHRR+rEWAU94Qp
-         Ny1uhjdN3RAB0ryprL2947alaH4jf4bORu0Nz4J9kzmSuJmfTCWMaHMHsuIQ2gg+NKAj
-         DCZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXXqJrVegimAONxDgSqqKchABl6Qj0iicllhlmUiPXuzhkj8w5ZEifdl8XL8sTO7kSu9/Q=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywq4jttNsAPLJKzly0VPdm0KHOEKP/jcIhqLL1Gqff5y/bAKfRR
-	2KjXpM2yhEiGkX7BOHNefsrYLXOm9h4AZ1Yc+BOQQQx7VWsQ1QlJympM9atrEmM=
-X-Google-Smtp-Source: AGHT+IFR2ALI2nOMRY3tCPEORGk9Pk1VVUWH4SbHWXlpOCHycjnjv8+CE/MFtM052hJoPRrmQx+ifw==
-X-Received: by 2002:a17:906:b84b:b0:a9e:b68e:909 with SMTP id a640c23a62f3a-a9eb68e0a79mr387359966b.15.1730883979467;
-        Wed, 06 Nov 2024 01:06:19 -0800 (PST)
-Received: from localhost.localdomain ([2001:b07:6474:ebbf:afb5:f524:6416:8e3])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9eb17f9422sm247781366b.139.2024.11.06.01.06.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Nov 2024 01:06:19 -0800 (PST)
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-amarula@amarulasolutions.com,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Abel Vesa <abelvesa@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-clk@vger.kernel.org
-Subject: [PATCH v3 8/8] clk: imx8mp: support spread spectrum clock generation
-Date: Wed,  6 Nov 2024 09:58:04 +0100
-Message-ID: <20241106090549.3684963-9-dario.binacchi@amarulasolutions.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241106090549.3684963-1-dario.binacchi@amarulasolutions.com>
-References: <20241106090549.3684963-1-dario.binacchi@amarulasolutions.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e6YU4Ku6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3742C4CECD;
+	Wed,  6 Nov 2024 09:15:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730884532;
+	bh=EwAJq0GjySd0IJ1U4/MaQRX0fXrzwNh3orlaf6pjFQE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=e6YU4Ku6I+ni7xq3vLu1huym1FyGpwUtUsFP63qGYPPMcZSYcOAPNCOAGyE2tnOD+
+	 kFp9NuFnyTUGRaydRbvD6qlYt/52XljzLEIsUrpcqHk+nPE70OuiwTo9TX7Gl3FnqQ
+	 nCgWygWxFML+BPzrzkG/5Ou5wfHWMigdLdOr4szqgDNxLDipbfMtd5yIHquZirXFMh
+	 2e864SNAHbTFdfVNTWpOhIsAHXpd9REuWS66FGdKYT2QIkIj/0cLXkGe20zTwectbe
+	 5HjavNReU71zkSJRIlq0SxnPawGfkgQLd0z1hcltKYl19B2IsLUTWRTWJtf9zMKHbn
+	 9phjPbWRwVi5g==
+Date: Wed, 6 Nov 2024 10:15:27 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, dlemoal@kernel.org, maz@kernel.org,
+	tglx@linutronix.de, jdmason@kudzu.us
+Subject: Re: [PATCH v4 0/5] PCI: EP: Add RC-to-EP doorbell with platform MSI
+ controller
+Message-ID: <Zyszr3Cqg8UXlbqw@ryzen>
+References: <20241031-ep-msi-v4-0-717da2d99b28@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241031-ep-msi-v4-0-717da2d99b28@nxp.com>
 
-The patch adds support for spread spectrum clock generation for the
-audio, video, and DRAM PLLs.
+Hello Frank,
 
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+On Thu, Oct 31, 2024 at 12:26:59PM -0400, Frank Li wrote:
+> ┌────────────┐   ┌───────────────────────────────────┐   ┌────────────────┐
+> │            │   │                                   │   │                │
+> │            │   │ PCI Endpoint                      │   │ PCI Host       │
+> │            │   │                                   │   │                │
+> │            │◄──┤ 1.platform_msi_domain_alloc_irqs()│   │                │
+> │            │   │                                   │   │                │
+> │ MSI        ├──►│ 2.write_msi_msg()                 ├──►├─BAR<n>         │
+> │ Controller │   │   update doorbell register address│   │                │
+> │            │   │   for BAR                         │   │                │
+> │            │   │                                   │   │ 3. Write BAR<n>│
+> │            │◄──┼───────────────────────────────────┼───┤                │
+> │            │   │                                   │   │                │
+> │            ├──►│ 4.Irq Handle                      │   │                │
+> │            │   │                                   │   │                │
+> │            │   │                                   │   │                │
+> └────────────┘   └───────────────────────────────────┘   └────────────────┘
+> 
+> This patches based on old https://lore.kernel.org/imx/20221124055036.1630573-1-Frank.Li@nxp.com/
+> 
+> Original patch only target to vntb driver. But actually it is common
+> method.
+> 
+> This patches add new API to pci-epf-core, so any EP driver can use it.
+> 
+> Previous v2 discussion here.
+> https://lore.kernel.org/imx/20230911220920.1817033-1-Frank.Li@nxp.com/
+> 
+> Changes in v4:
+> - Remove patch genirq/msi: Add cleanup guard define for msi_lock_descs()/msi_unlock_descs()
+> - Use new method to avoid compatible problem.
+>   Add new command DOORBELL_ENABLE and DOORBELL_DISABLE.
+>   pcitest -B send DOORBELL_ENABLE first, EP test function driver try to
+> remap one of BAR_N (except test register bar) to ITS MSI MMIO space. Old
+> driver don't support new command, so failure return, not side effect.
+>   After test, DOORBELL_DISABLE command send out to recover original map, so
+> pcitest bar test can pass as normal.
+> - Other detail change see each patches's change log
+> - Link to v3: https://lore.kernel.org/r/20241015-ep-msi-v3-0-cedc89a16c1a@nxp.com
+> 
+> Change from v2 to v3
+> - Fixed manivannan's comments
+> - Move common part to pci-ep-msi.c and pci-ep-msi.h
+> - rebase to 6.12-rc1
+> - use RevID to distingiush old version
+> 
+> mkdir /sys/kernel/config/pci_ep/functions/pci_epf_test/func1
+> echo 16 > /sys/kernel/config/pci_ep/functions/pci_epf_test/func1/msi_interrupts
+> echo 0x080c > /sys/kernel/config/pci_ep/functions/pci_epf_test/func1/deviceid
+> echo 0x1957 > /sys/kernel/config/pci_ep/functions/pci_epf_test/func1/vendorid
+> echo 1 > /sys/kernel/config/pci_ep/functions/pci_epf_test/func1/revid
+> ^^^^^^ to enable platform msi support.
+> ln -s /sys/kernel/config/pci_ep/functions/pci_epf_test/func1 /sys/kernel/config/pci_ep/controllers/4c380000.pcie-ep
 
----
+Perhaps drop these steps, to not confuse the reader.
+They are no longer relevant with the latest revision anyway.
 
-Changes in v3:
-- Use ccm node device
+> 
+> - use new device ID, which identify support doorbell to avoid broken
+> compatility.
+> 
+>     Enable doorbell support only for PCI_DEVICE_ID_IMX8_DB, while other devices
+>     keep the same behavior as before.
+> 
+>            EP side             RC with old driver      RC with new driver
+>     PCI_DEVICE_ID_IMX8_DB          no probe              doorbell enabled
+>     Other device ID             doorbell disabled*       doorbell disabled*
+> 
+>     * Behavior remains unchanged.
+> 
+> Change from v1 to v2
+> - Add missed patch for endpont/pci-epf-test.c
+> - Move alloc and free to epc driver from epf.
+> - Provide general help function for EPC driver to alloc platform msi irq.
+> - Fixed manivannan's comments.
 
-Changes in v2:
-- Add "allOf:" and place it after "required:" block, like in the
-  example schema.
-- Move the properties definition to the top-level.
-- Drop unit types as requested by the "make dt_binding_check" command.
+I wanted to try this series on rk3588, which has a MSI controller as part of the GIC
+using Interrupt Translation Services (ITS), for the Root Complex DT node:
+https://github.com/torvalds/linux/blob/v6.12-rc6/arch/arm64/boot/dts/rockchip/rk3588-extra.dtsi#L164
+https://github.com/torvalds/linux/blob/v6.12-rc6/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi#L1981-L1999
 
- drivers/clk/imx/clk-imx8mp.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+There isn't any reference to a MSI controller in the Endpoint DT node:
+https://github.com/torvalds/linux/blob/v6.12-rc6/arch/arm64/boot/dts/rockchip/rk3588-extra.dtsi#L189
 
-diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
-index b2778958a572..e53a688d2cfe 100644
---- a/drivers/clk/imx/clk-imx8mp.c
-+++ b/drivers/clk/imx/clk-imx8mp.c
-@@ -410,6 +410,7 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct device_node *np, *anatop_np;
- 	void __iomem *anatop_base, *ccm_base;
-+	struct imx_pll14xx_ssc pll1443x_ssc;
- 	int err;
- 
- 	anatop_np = of_find_compatible_node(NULL, NULL, "fsl,imx8mp-anatop");
-@@ -449,10 +450,14 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
- 	hws[IMX8MP_SYS_PLL2_REF_SEL] = imx_clk_hw_mux("sys_pll2_ref_sel", anatop_base + 0x104, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
- 	hws[IMX8MP_SYS_PLL3_REF_SEL] = imx_clk_hw_mux("sys_pll3_ref_sel", anatop_base + 0x114, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
- 
--	hws[IMX8MP_AUDIO_PLL1] = imx_clk_hw_pll14xx("audio_pll1", "audio_pll1_ref_sel", anatop_base, &imx_1443x_pll);
--	hws[IMX8MP_AUDIO_PLL2] = imx_clk_hw_pll14xx("audio_pll2", "audio_pll2_ref_sel", anatop_base + 0x14, &imx_1443x_pll);
--	hws[IMX8MP_VIDEO_PLL1] = imx_clk_hw_pll14xx("video_pll1", "video_pll1_ref_sel", anatop_base + 0x28, &imx_1443x_pll);
--	hws[IMX8MP_DRAM_PLL] = imx_clk_hw_pll14xx("dram_pll", "dram_pll_ref_sel", anatop_base + 0x50, &imx_1443x_dram_pll);
-+	imx_clk_pll14xx_get_ssc_conf(np, IMX8MP_AUDIO_PLL1, &pll1443x_ssc);
-+	hws[IMX8MP_AUDIO_PLL1] = imx_clk_hw_pll14xx_ssc("audio_pll1", "audio_pll1_ref_sel", anatop_base, &imx_1443x_pll, &pll1443x_ssc);
-+	imx_clk_pll14xx_get_ssc_conf(np, IMX8MP_AUDIO_PLL2, &pll1443x_ssc);
-+	hws[IMX8MP_AUDIO_PLL2] = imx_clk_hw_pll14xx_ssc("audio_pll2", "audio_pll2_ref_sel", anatop_base + 0x14, &imx_1443x_pll, &pll1443x_ssc);
-+	imx_clk_pll14xx_get_ssc_conf(np, IMX8MP_VIDEO_PLL1, &pll1443x_ssc);
-+	hws[IMX8MP_VIDEO_PLL1] = imx_clk_hw_pll14xx_ssc("video_pll1", "video_pll1_ref_sel", anatop_base + 0x28, &imx_1443x_pll, &pll1443x_ssc);
-+	imx_clk_pll14xx_get_ssc_conf(np, IMX8MP_DRAM_PLL, &pll1443x_ssc);
-+	hws[IMX8MP_DRAM_PLL] = imx_clk_hw_pll14xx_ssc("dram_pll", "dram_pll_ref_sel", anatop_base + 0x50, &imx_1443x_dram_pll, &pll1443x_ssc);
- 	hws[IMX8MP_GPU_PLL] = imx_clk_hw_pll14xx("gpu_pll", "gpu_pll_ref_sel", anatop_base + 0x64, &imx_1416x_pll);
- 	hws[IMX8MP_VPU_PLL] = imx_clk_hw_pll14xx("vpu_pll", "vpu_pll_ref_sel", anatop_base + 0x74, &imx_1416x_pll);
- 	hws[IMX8MP_ARM_PLL] = imx_clk_hw_pll14xx("arm_pll", "arm_pll_ref_sel", anatop_base + 0x84, &imx_1416x_pll);
--- 
-2.43.0
+When testing your series, I get an error in
+platform_device_msi_init_and_alloc_irqs(), because no domain is found.
 
+I assume that is it "msi-parent" that we should add here.
+
+However, looking at:
+$ git grep -p msi-parent arch/arm64/boot/dts/freescale/
+
+I do not see any freescale/iMX platform specifying a msi-parent for the EP node.
+
+Is there any additional DTS changes needed for iMX that is not part of this series,
+or what am I missing?
+
+When adding "msi-parent = <&its1 0x0000>;
+to the EP node
+(this is just a guess since RC node has: msi-map = <0x0000 &its1 0x0000 0x1000>;)
+
+I do get a domain, but I do not get any IRQ on the EP side when the RC side is
+writing the doorbell (as part of pcitest -B),
+
+[    7.978984] pci_epc_alloc_doorbell: num_db: 1
+[    7.979545] pci_epf_test_bind: doorbell_addr: 0x40
+[    7.979978] pci_epf_test_bind: doorbell_data: 0x0
+[    7.980397] pci_epf_test_bind: doorbell_bar: 0x1
+[   21.114613] pci_epf_enable_doorbell db_bar: 1
+[   21.115001] pci_epf_enable_doorbell: doorbell_addr: 0xfe650040
+[   21.115512] pci_epf_enable_doorbell: phys_addr: 0xfe650000
+[   21.115994] pci_epf_enable_doorbell: success
+
+# cat /proc/interrupts | grep epc
+117:          0          0          0          0          0          0          0          0  ITS-pMSI-a40000000.pcie-ep   0 Edge      pci-epc-doorbell0
+
+Even if I try to write the doorbell manually from EP side using devmem:
+
+# devmem 0xfe670040 32 1
+
+it still doesn't trigger a IRQ on the EP side:
+# cat /proc/interrupts | grep epc
+117:          0          0          0          0          0          0          0          0  ITS-pMSI-a40000000.pcie-ep   0 Edge      pci-epc-doorbell0
+
+Any ideas?
+
+
+Kind regards,
+Niklas
