@@ -1,81 +1,81 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174911D5CF5
-	for <imx@lists.linux.dev>; Wed,  6 Nov 2024 09:46:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA821DE3CD
+	for <imx@lists.linux.dev>; Wed,  6 Nov 2024 10:52:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730886383; cv=none; b=F06z9uKMwvVKTP9aNuDwmEG5RAeepTpbBgGloq8GqeSRfbhTStZ22ezsyFvcqiAln2Br6i5Pg93v3XO6PqVeSVmi1cxbgEKC33q6ONCfnWFIgrc6FmrhTHD8C05LZkhg1lVqNZ1rJyRH+hzqf/psoRwuTFQdmkySlvmx/IWso8o=
+	t=1730890330; cv=none; b=T/Gmyj2Gevj0tzQLtb9nVVB7XKVLU8gZXkkUmrcKRr19HwbRKvXX/UWfmV1ToohHBfkB60O7DvwpOxHN+d4AUhPdiOuXBQbR5tRZtFN5jp6rowORpHZcgktRer4G5L1cayo6nPw5ILia9MhuwjpK/aVWYdLDubB+GZ49BHmoQvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730886383; c=relaxed/simple;
-	bh=FCzq19ZQriPVyzh0sTZo3Dh2ni0fniF4xDpwOt2piiA=;
+	s=arc-20240116; t=1730890330; c=relaxed/simple;
+	bh=u7AyQyTK1zEqP2xPv9JHBaVJ0O7ciFV8N45QHJ28EPo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TtqFnDDRhn7dtrdDS26M792AMNhbEixEYFuGx8YBp2U8JVtXGjltbIIU9TvlTiOb7/c6NB3Inm6yZwyi+P0+gJOqwplcODQu61Njrio5MDi+2dRNjVCWofsTwV4D5F5C/vMJ81XyjAjkCIEbQzLaN5/HJRkaNscFAsyUtlLM+mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UeGid5t2; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=S5TqqZxMv5cxlexGz5hv0JUvzHNJk5OKas++yjGwFxgPSFajdb7D5KU+xzAj9IlbCpz6aCQjRqJpUj32T33uyS3FZFsnKWic4cP9vWAt3k+PSp0Wes5cORRDrUGSEvHpiDaDNihfJTUZjqzsUnsbCfiaYnaTZcse2u1dkezP40s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SWYFRALr; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UeGid5t2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730886382; x=1762422382;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FCzq19ZQriPVyzh0sTZo3Dh2ni0fniF4xDpwOt2piiA=;
-  b=UeGid5t2lEYvgCmPFJBrYwPH6cLjkNv2Zy4sCwRlihZ4fuGCDdGqu/us
-   MZnxqDLV7J0GHfskmI/1Va7x/4ElkuNaIzqB+96B0waR6yVg24vrYE5hu
-   0o97VAkv3dtjFT8nK9dfFaGDcgdixRpxFKHbIRp0VZdjEg4t8+Tthbdhx
-   wub0lLARQB+nNoOItiudYoB+rZPH+8dyGCVEWEu5Zjz+GuAnPCTGycsLw
-   g87Us3yRyURKlPxMmbDvFz0d2ySDthhbvd0P85SNmf4yxR2MtbOGkoaU0
-   Oysl/niVPBKJNSjHBLeYNJT9x+LUFy9vPD+ES0COP+8ejod7F2ZnKJ9uX
-   g==;
-X-CSE-ConnectionGUID: TJEN9wzeSSGrPcYX6UTjYQ==
-X-CSE-MsgGUID: wDQ63SwcSmW2zkQip2Ea1g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11247"; a="30788769"
-X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; 
-   d="scan'208";a="30788769"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 01:46:21 -0800
-X-CSE-ConnectionGUID: k2/7LShbSDaGOr4szaPsBw==
-X-CSE-MsgGUID: pcvQjkT9RbWo30mUfZPUFA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; 
-   d="scan'208";a="84847233"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 01:46:07 -0800
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 2169A11F9C3;
-	Wed,  6 Nov 2024 11:46:05 +0200 (EET)
-Date: Wed, 6 Nov 2024 09:46:05 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Maxime Ripard <mripard@kernel.org>, dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, Liu Ying <victor.liu@nxp.com>,
-	andrzej.hajda@intel.com, neil.armstrong@linaro.org,
-	rfoss@kernel.org, Laurent.pinchart@ideasonboard.com,
-	jonas@kwiboo.se, jernej.skrabec@gmail.com,
-	maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
-	airlied@gmail.com, simona@ffwll.ch, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, quic_jesszhan@quicinc.com,
-	mchehab@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, catalin.marinas@arm.com,
-	will@kernel.org, hverkuil@xs4all.nl,
-	tomi.valkeinen@ideasonboard.com, quic_bjorande@quicinc.com,
-	geert+renesas@glider.be, arnd@arndb.de, nfraprado@collabora.com,
-	thierry.reding@gmail.com, prabhakar.mahadev-lad.rj@bp.renesas.com,
-	sam@ravnborg.org, marex@denx.de, biju.das.jz@bp.renesas.com
-Subject: Re: (subset) [PATCH v5 00/13] Add ITE IT6263 LVDS to HDMI converter
- support
-Message-ID: <Zys63S2xy-wdwQ8P@kekkonen.localdomain>
-References: <20241104032806.611890-1-victor.liu@nxp.com>
- <173080602214.231309.12977765173766280536.b4-ty@linaro.org>
- <20241105-secret-seriema-of-anger-7acfdf@houat>
- <CD810D31-F9C5-499D-86CF-B94BEF82449A@linaro.org>
- <20241105-succinct-pygmy-dingo-4db79c@houat>
- <7C2A2BDC-07E8-4ED7-B65B-BD7E4E5DC53F@linaro.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SWYFRALr"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4315baec69eso57559225e9.2
+        for <imx@lists.linux.dev>; Wed, 06 Nov 2024 02:52:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730890327; x=1731495127; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UCxSEzKgL1zH2eyIUhadinz5mEtbswOhMWKsLzQ9Pjw=;
+        b=SWYFRALrIp9WEsxbMilnAfZueBXt1YWFsK1gBtaH9/Usg1tcpwVXM3X+jUNJ1HDx+B
+         1NAVXEcsAnUQqmtq/SeDxoTcQh1e4FcRmjz4wOZyfsFz5WIAHKsgvffYT+SjcckPjFrh
+         ZDSEPn60XefSbpUgnoKE1X/S8ZTH01pUOEK+Th24ZUjVZv8j984iDMMgxyBipaqZbZQw
+         sq4VSiGBaAaiDAOkvTy5kxmKOXV8gQzqIKKXFCxpji1QShPq7D5oJu5mPgXWdqUFTJvu
+         g8cGaPj5AO54HN0eEO1r8Q6tvKnTgCzPqRf/lVk0jwsX5AWHYM7L0Gywy2sYt4w7cABe
+         61/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730890327; x=1731495127;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UCxSEzKgL1zH2eyIUhadinz5mEtbswOhMWKsLzQ9Pjw=;
+        b=v92GQkcrwmqTx7tmHOvRDbfwuMe3Lzzf2SkVNtSAUFeZmaD+8Q6syGR1ihUcGwadsd
+         XsU80LFC7nOXLIbCTtmK/G9WBUNMwUnuobvi+iPbVI/5bSHeKUo+7V2Yxh5GlQTkdCws
+         INjPOj4GSkBdevLeidoolXnR82gdmEQpvf5MbalmYv6ccC/mzXRl8Zh04tIqnZVYMk8g
+         7iQV8CKPLKFbt5vk3IJ756EnUqPnn+4VOT8Qf6Yc9/lYC6v7oeg7NPaJtfwwcbgPLFUd
+         kOpn8dC66FxgYbOLGDpDMuLvS/aDtmlJseiT6ICL++Xv/OOVQ70tzQOq3WzOmDySmw0i
+         lNoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU1wL1+kiUGUO/dxUqmhW00EWVzC2d3QyMsXe6soiZUctSiTl6o7uIY8A+nYfi4UIeldiQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw4rX4MIWEmrkebE8C3rYXkzsGRg5yiTwMt295t3M+E/WNZSzTg
+	GIi4Av8gs2tgzf3Ry8FOtW8reT6lp7dFrCwZ8f/hmUlLhvDp/xtA
+X-Google-Smtp-Source: AGHT+IHg4XTEew3l0kqPf+Gkb9KGrdyLxo/QnI5GgVlIsaFloaF/eSsiXGJtzKZ1/slEJ0FlL44QOw==
+X-Received: by 2002:a05:600c:5493:b0:431:5533:8f0c with SMTP id 5b1f17b1804b1-43285649fe6mr151529565e9.29.1730890326572;
+        Wed, 06 Nov 2024 02:52:06 -0800 (PST)
+Received: from eichest-laptop ([2a02:168:af72:0:e6de:f900:d54a:ec1d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c113e073sm18676391f8f.66.2024.11.06.02.52.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Nov 2024 02:52:06 -0800 (PST)
+Date: Wed, 6 Nov 2024 11:52:04 +0100
+From: Stefan Eichenberger <eichest@gmail.com>
+To: Stefan Wahren <wahrenst@gmx.net>
+Cc: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>,
+	Shawn Guo <shawnguo2@yeah.net>,
+	Russell King <linux@armlinux.org.uk>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+	imx <imx@lists.linux.dev>,
+	linux-kernel <linux-kernel@vger.kernel.org>,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: Re: [PATCH v1] ARM: imx_v6_v7_defconfig: enable SND_SOC_SPDIF
+Message-ID: <ZytKVAQzaMKd3w1o@eichest-laptop>
+References: <20241030122128.115000-1-eichest@gmail.com>
+ <ZyXTFhEm9UCBii2c@dragon>
+ <ZyY41nJY9ghwe-Y4@eichest-laptop>
+ <065268d6-84eb-4247-b834-40a9ff32c1f4@gmx.net>
+ <ZyiAMpjmXuVMi5FX@eichest-laptop>
+ <787b45a1-9f8d-493d-8930-e1c8d396c818@gmx.net>
+ <Zyj0VsTJ2qDHiss2@eichest-laptop>
+ <1044800423.57572.1730815098440.JavaMail.zimbra@savoirfairelinux.com>
+ <283bbd2c-0997-43d6-bc24-08bf2cb2412b@gmx.net>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -84,51 +84,99 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7C2A2BDC-07E8-4ED7-B65B-BD7E4E5DC53F@linaro.org>
+In-Reply-To: <283bbd2c-0997-43d6-bc24-08bf2cb2412b@gmx.net>
 
-Hi Dmitry, others,
+On Tue, Nov 05, 2024 at 04:52:04PM +0100, Stefan Wahren wrote:
+> Am 05.11.24 um 14:58 schrieb Elinor Montmasson:
+> > Hi Stefan,
+> > 
+> > On Monday, 4 November, 2024 17:20:38, Stefan Eichenberger wrote:
+> > > Hi Stefan,
+> > > 
+> > > On Mon, Nov 04, 2024 at 12:39:40PM +0100, Stefan Wahren wrote:
+> > > > Hi Stefan,
+> > > > 
+> > > > Am 04.11.24 um 09:05 schrieb Stefan Eichenberger:
+> > > > > Hi Stefan,
+> > > > > 
+> > > > > On Sat, Nov 02, 2024 at 04:35:19PM +0100, Stefan Wahren wrote:
+> > > > > > Hi Stefan,
+> > > > > > 
+> > > > > > Am 02.11.24 um 15:36 schrieb Stefan Eichenberger:
+> > > > > > > Hi Shawn,
+> > > > > > > 
+> > > > > > > On Sat, Nov 02, 2024 at 03:21:58PM +0800, Shawn Guo wrote:
+> > > > > > > > On Wed, Oct 30, 2024 at 01:21:12PM +0100, Stefan Eichenberger wrote:
+> > > > > > > > > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> > > > > > > > > 
+> > > > > > > > > Enable SND_SOC_SPDIF in imx_v6_v7_defconfig to support SPDIF audio. This
+> > > > > > > > > change will fix commit d469b771afe1 ("ARM: dts: imx6: update spdif sound
+> > > > > > > > > card node properties") which moves away from the old "spdif-controller"
+> > > > > > > > > property to the new "audio-codec" property.
+> > > > > > > > > 
+> > > > > > > > > Fixes: d469b771afe1 ("ARM: dts: imx6: update spdif sound card node properties")
+> > > > > > > > It doesn't look a fix to me.
+> > > > > > > I agree somehow, it was just that before the referenced commit our test
+> > > > > > > succeeds with the imx_v6_v7_defconfig and after that we get the
+> > > > > > > following error:
+> > > > > > > [   24.165534] platform sound-spdif: deferred probe pending: fsl-asoc-card:
+> > > > > > > snd_soc_register_card failed
+> > > > > > this error should have been in the commit message including the
+> > > > > > information which platform/board is affected.
+> > > > > Okay, I will add this information to the next version. We see this error
+> > > > > on an Apalis iMX6 which has in my variant an NXP i.MX6Q SoC.
+> > > > > 
+> > > > > > > So maybe it is not a fix in the sense of a bug, but it fixes the error
+> > > > > > > message. However, I'm also fine with removing the Fixes tag.
+> > > > > > But this patch doesn't look like the real approach.
+> > > > > > 
+> > > > > > Could you please clarify the impact of the regression?
+> > > > > So the problem is that before commit d469b771afe1 ("ARM: dts: imx6:
+> > > > > update spdif sound card node properties") the audio driver was
+> > > > > using an implementation of linux,spdif-dit and linux,spdif-dir which was
+> > > > > directly inside the fsl,imx-audio-spdif compatible driver. Now with the
+> > > > > referenced commit the idea is to use the more generic linux,spdif-dir
+> > > > > and linux,spdif-dit compatible drivers. That's why this driver must be
+> > > > > enabled in the kernel configuration.
+> > > > > 
+> > > > > > Is it just this error message and audio works fine or is audio also broken?
+> > > > > It is not just the error message, audio is not working because the
+> > > > > driver deferes and because it is not enabled it will never succeed to
+> > > > > load. I don't know if this is called a regression, because the driver is
+> > > > > there it is just not enabled in the imx6_v7_defconfig. I thought because
+> > > > > a lot of the i.MX6 based board use the generic driver, it makes sense to
+> > > > > enable it in the imx_v6_v7_defconfig.
+> > > > okay, thanks for the clarification. From my understanding
+> > > > imx6_v7_defconfig is just an example config for testing. All possible
+> > > > users of these boards might have their own configs and stumble across
+> > > > the same issue. So I thought it would be better to add the dependency in
+> > > > the Kconfig of the FSL audio driver.
+> > > > 
+> > > > I'm not that audio driver expert and don't know how the dependency
+> > > > handling between the FSL audio driver and the required codecs like
+> > > > SND_SOC_SPDIF. So it's possible that I'm completely wrong here and your
+> > > > approach is the best we can do.
+> > > That might be a good point. I don't know how this is usually handled.
+> > > @Shawn and @Elinor, do you think this could be an approach to make
+> > > SND_SOC_FSL_ASOC_CARD select SND_SOC_SPDIF? It already seems to do this
+> > > for SND_SOC_WM8994 and SND_SOC_FSL_SPDIF.
+> > SND_SOC_FSL_ASOC_CARD will compile the machine driver fsl-asoc-card,
+> > SND_SOC_FSL_SPDIF the CPU DAI driver fsl_spdif for the SPDIF
+> > and SND_SOC_SPDIF the codec drivers spdif-rx and spdif-tx.
+> > 
+> > In my commit series I made SND_SOC_FSL_ASOC_CARD select SND_SOC_FSL_SPDIF
+> > because the old machine driver previously compiled with SND_SOC_IMX_SPDIF
+> > selected SND_SOC_FSL_SPDIF.
+> > But because fsl-asoc-card is a generic driver, it could be used on a system
+> > that doesn't have an SPDIF device, and therefore should not require
+> > SND_SOC_SPDIF nor SND_SOC_FSL_SPDIF.
+> > So maybe it is not a good idea to automatically select SND_SOC_FSL_SPDIF or SND_SOC_SPDIF.
+> > 
+> > On the other hand, if every imx6 or imx7 boards have an SPDIF device, then
+> > I suppose SND_SOC_SPDIF can be put in imx_v6_v7_defconfig.
+> Okay, I'm fine with the original approach.
 
-On Wed, Nov 06, 2024 at 09:20:12AM +0000, Dmitry Baryshkov wrote:
-> On 5 November 2024 17:39:40 GMT, Maxime Ripard <mripard@kernel.org> wrote:
-> >On Tue, Nov 05, 2024 at 05:33:21PM +0000, Dmitry Baryshkov wrote:
-> >> On 5 November 2024 16:13:26 GMT, Maxime Ripard <mripard@kernel.org> wrote:
-> >> >On Tue, Nov 05, 2024 at 01:28:48PM +0200, Dmitry Baryshkov wrote:
-> >> >> On Mon, 04 Nov 2024 11:27:53 +0800, Liu Ying wrote:
-> >> >> > This patch series aims to add ITE IT6263 LVDS to HDMI converter on
-> >> >> > i.MX8MP EVK.  Combined with LVDS receiver and HDMI 1.4a transmitter,
-> >> >> > the IT6263 supports LVDS input and HDMI 1.4 output by conversion
-> >> >> > function.  IT6263 product link can be found at [1].
-> >> >> > 
-> >> >> > Patch 1 is a preparation patch to allow display mode of an existing
-> >> >> > panel to pass the added mode validation logic in patch 3.
-> >> >> > 
-> >> >> > [...]
-> >> >> 
-> >> >> Applied to drm-misc-next, thanks!
-> >> >> 
-> >> >> [04/13] media: uapi: Add MEDIA_BUS_FMT_RGB101010_1X7X5_{SPWG, JEIDA}
-> >> >>         commit: 5205b63099507a84458075c3ca7e648407e6c8cc
-> >> >
-> >> >Where's the immutable branch Laurent asked for?
-> >> 
-> >> The patch set has been picked up after getting an Ack from Sakari,
-> >> before Laurent's email. I am sorry if I rushed it in.
-> >
-> >I mean, this was less than a day after you've asked that question
-> >yourself. Waiting less than a day for a mail to be answered seems a bit
-> >short, especially when there's no rush to merge these patches in the
-> >first place.
-> 
-> Point noted. I should have been more patient. As a lame excuse I could point out that the patch has been up for review / comments for quite a while, etc, etc, but this is really lame. 
+Perfect thanks, then I will improve the commit message and send a v2.
 
-The patch had been around for a few weeks already, I don't see this having
-been rushed in. It's a bit a matter of taste whether an immutable branch is
-necessary here, I thought it wouldn't be. I can also ask for one in the
-future in cases where there's even slightly more than an improbable
-possibility of a merge conflict going forward: it won't hurt in any case to
-have one.
-
--- 
-Kind regards,
-
-Sakari Ailus
+Regards,
+Stefan
