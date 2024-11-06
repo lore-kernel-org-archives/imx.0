@@ -1,81 +1,80 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB39818C00E
-	for <imx@lists.linux.dev>; Wed,  6 Nov 2024 11:13:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730891583; cv=none; b=SsfYoL1xPHs4xU9hVw9zAFm87Gywuhu/k6qpNg/ayREWRGxCbRqrsuqG+pTGoHbqjD9go96TPz0bL/JBhEBa5k2vdd2kHCnrvyRdyeNsmhdltvI7xYadxM5sS+EKtCPJNA5xQ1bGWBjiSfeCvlIJSHGXKZ3f4TkfurR4Nh1yqao=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730891583; c=relaxed/simple;
-	bh=TWcePYTh3GffUeILuPKuTxypuUWopkhyezSXbvbjQNY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NJMDm19fMexv4c4AZwUHK+yAuKM7uVOI7CuqxE92fjHWlAY/5a1ft36LEbOAQY4YWWjKu4fvYpUKh7MaORK8pouj3yPYk3Zn377PJSpvAG20V3MDbbNAzPHK2FNWDT7KUUtMmantTTTkcAeABhVfUHh/zVSObPrOyQE57usJz+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m1CCdgyN; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7B31F582D
+	for <imx@lists.linux.dev>; Wed,  6 Nov 2024 12:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730897800; cv=pass; b=r/FwI4Rwet8j5BGhKcEriRBm4QfI75FPwCSrbol+5Ibhk2qq0H7c9R9fps+JZyfLfz3aQv+xXRhMrNHcNthwRgUtle4kbAEPFf730hddev2tiFcOMc0pV5eZzPc4MLC1gPPnaCHqcWIX0WSizjWOxa3cCOmYOAf70GMwFWEOBh8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730897800; c=relaxed/simple;
+	bh=J+0ET3+741mDa43G0HbwmzjwqQmYyHm7Vok+NKjfzFQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Z1c7w2bhleHMr65eFlIZQvEN3MerUdOdVD2t0odJ2Obw1NcoPNl6T9raJuACrJ77WROX3nFMu4EhCNmpUW42g+cbopP0wAa5qNsrei+nyff5ZO8l7VFRTX+IDW/nmMYITisT/Rg5wowLsrBlhhkQ9LDp7TfRfMcjrNmYP18RL/U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=benjamin.gaignard@collabora.com header.b=lJsrc0lu; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m1CCdgyN"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2fb58980711so61519811fa.0
-        for <imx@lists.linux.dev>; Wed, 06 Nov 2024 03:13:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730891580; x=1731496380; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TWcePYTh3GffUeILuPKuTxypuUWopkhyezSXbvbjQNY=;
-        b=m1CCdgyNk+0JtAwL16+5uHtg9iRbvfhDHU/0E3eRvQWq7HwtO4SsZMhY4OWd5Wjci9
-         2w6o6TsqGx/HK6qPcVqobP8zT2RTmYJKeMfzHFvbFoawuSM+iq2G9ibLBg6hbt8sjKbT
-         PNghG82ro7FxZCe+DhJbGeQSiqXTt/l6JMDC1fS+/9pdSQfdeYdRUW+xKK3nY61UiTbi
-         06Kkbg4lIT1eom1OId8JM/qnCo0sVOsC9lLE5y5/EAHpYN8mXfaZ4qkePruv4wujDkE+
-         bAFSOV14isJ9Y7nm/OMRcHY0Pdf8oyCIIytbO7HtJs5tboRQrJHyAl7fJot/cprZCuDF
-         RGWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730891580; x=1731496380;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TWcePYTh3GffUeILuPKuTxypuUWopkhyezSXbvbjQNY=;
-        b=j2p7R1Su1iCC0aP5Gmudefk50PTk16SBVLRgrrM8fMpN+Bl2jQCx6YYQ6/F+i1XcZx
-         5O63tHbSX20E+Hx3+21pvXaXsys3xGwIxEmviZY6ko8rn/Uw5qd7AzSkF7nlprp52SCr
-         sj0wrYHJgbUrACgwBs5RucARg0KWLsJDzc4EQkUDlaljCupWVt2V2p1nB5EPSDMBOViB
-         2rxMt+cfSnGEdeho3TWA7tb3EEQ+xS5npFP8ez60+9BqvQESLAAqylQ6iJj9slziHWxa
-         gLhnDYH1D/Z+ga6WXFaD7ALpnVcwAnG8KDMINjZ/5bLSWT1n04ZM9p7+JNNIJZ8dRH/5
-         WdXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXev/6jX+BtDtZQoLN4sw/JKZzJuP5+HBHh3p0KeNmBH+Mtk43ESWce3hINmshKClijKW8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwQf11q+blcrHelAf4n3sMl3j/yY9+He2glsrlvEKk2tZqL0nhC
-	mbhWu/DJRKmW5h3RQ3G8K1pn3/+Nj7mhIgEYw0QWnxw9L5qXnOKPIO9QSbzMmX7PQYeU7adc59o
-	0xU88FzOLpQ3r2YN36E6BnsdsXQk=
-X-Google-Smtp-Source: AGHT+IGBnEOZBQXZRo83WTbMByT2bEvsn+eicYIabhpgI3gMWvYJvIZucMS06EKmA+kpHuporqgCTWChPl6dWRrkimQ=
-X-Received: by 2002:a2e:130a:0:b0:2fb:5cff:fcd8 with SMTP id
- 38308e7fff4ca-2fcbe04f0c7mr148646941fa.34.1730891579522; Wed, 06 Nov 2024
- 03:12:59 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=benjamin.gaignard@collabora.com header.b="lJsrc0lu"
+ARC-Seal: i=1; a=rsa-sha256; t=1730897795; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=WRp/7Hu+GZ5KYKNjcI0S36YGbzuDlAFdnfopa1xr5Qissc8C+gRGCBpHor70uBaTTxQ3BIPtM1cgEp+gzHwnob5QCBo4SOOXG54ymwoab20T89uq6crC8lDExXCozHN3ABfQdrbWWBV6M+9Zn2fw60SdIMhJGU/47pEUj1I61pc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1730897795; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=J+0ET3+741mDa43G0HbwmzjwqQmYyHm7Vok+NKjfzFQ=; 
+	b=kQWeXfW4U5uw5S92h02C2UmratF8d3jrS0EgboCUvVm7VhagrreDkGt6i3RomVgAzs36y/h7peOeFbmIjjL9j5cZoLP5ft8x/hT603q38voayOYFcdYGpjsP7h/uzTa0vA/irhm3E6vV6k6Cxfi0I+bahpGfni42/4cs6xT2/j0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=benjamin.gaignard@collabora.com;
+	dmarc=pass header.from=<benjamin.gaignard@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1730897795;
+	s=zohomail; d=collabora.com; i=benjamin.gaignard@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=J+0ET3+741mDa43G0HbwmzjwqQmYyHm7Vok+NKjfzFQ=;
+	b=lJsrc0luwNqqOBxI8gKUO4UXqPl6yRirEjtDqJfFb0erhz5Wv2/063X5DFZD4ftW
+	aUTJtm5atUrYuPewNPUFPqc8JDttMf1nx9F3XMqQUFuRAn6KDzoNQQMxHsYhlkRGsiz
+	ROrPNjNxafY8wf5xbxMiWhjax/aMfbhXlltX5+9A=
+Received: by mx.zohomail.com with SMTPS id 1730897793985463.4704130607637;
+	Wed, 6 Nov 2024 04:56:33 -0800 (PST)
+Message-ID: <1ecd57a6-6872-4494-9472-0fa904991a39@collabora.com>
+Date: Wed, 6 Nov 2024 13:56:31 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <83aac8b2-f80a-46b5-93fc-3369b30cbfc7@collabora.com>
-In-Reply-To: <83aac8b2-f80a-46b5-93fc-3369b30cbfc7@collabora.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 6 Nov 2024 08:12:47 -0300
-Message-ID: <CAOMZO5A3dtic1CZS4RJ3RoBP_rV0PpK5oin4J8531XRebkb0ag@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: IMX8MQ EVK board not booting anymore with v6.12-rc
-To: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, Arnd Bergmann <arnd@arndb.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Fabio Estevam <festevam@gmail.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ Arnd Bergmann <arnd@arndb.de>
+References: <83aac8b2-f80a-46b5-93fc-3369b30cbfc7@collabora.com>
+ <CAOMZO5A3dtic1CZS4RJ3RoBP_rV0PpK5oin4J8531XRebkb0ag@mail.gmail.com>
+Content-Language: en-US
+From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+In-Reply-To: <CAOMZO5A3dtic1CZS4RJ3RoBP_rV0PpK5oin4J8531XRebkb0ag@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Nov 6, 2024 at 6:43=E2=80=AFAM Benjamin Gaignard
-<benjamin.gaignard@collabora.com> wrote:
 
-> Have you been able to boot IMX8MQ evk board with a kernel version since v=
-6.12-rc* ?
-> I don't have any log since kernel just don't start.
+Le 06/11/2024 à 12:12, Fabio Estevam a écrit :
+> On Wed, Nov 6, 2024 at 6:43 AM Benjamin Gaignard
+> <benjamin.gaignard@collabora.com> wrote:
+>
+>> Have you been able to boot IMX8MQ evk board with a kernel version since v6.12-rc* ?
+>> I don't have any log since kernel just don't start.
+> It is booting here for me:
+>
+> https://pastebin.com/raw/h95JZgjk
 
-It is booting here for me:
+I see the difference, you have compile the kernel to support only IMX SoCs so the
+size of Image is smaller and u-boot can relocate Image from 0x40480000 to 0x40600000
+without overlapping DT area.
+It is working for me now.
 
-https://pastebin.com/raw/h95JZgjk
+Thanks a lot,
+Benjamin
+
