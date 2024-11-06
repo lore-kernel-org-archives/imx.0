@@ -1,91 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690921DDC2C;
-	Wed,  6 Nov 2024 09:36:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730885808; cv=none; b=PR5g6DRiJuFtElEvreoZVNEpcpVo9jnrq17JHEmcrUoN/JcYvw24e4iOrKJ9XOEC6ZGC0VFJ3k0Tl3e9tH13s78N33LJCeW+UXkc63C1fAcdpxwF3z5hV8f1mLWbzz+I/19XDTZnZk5fL20aNoZOj+MCVv45vaO7dMb4SDMBS1g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730885808; c=relaxed/simple;
-	bh=xK3U7kti/fKCKAedO+rH/itcrdtQnCITud0yaoSFbQ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mBbNAZN1qwTqAF+VWFZcF0741HP3jvd0+MqvqATxXCrhKROQAepVGq8taYi8seKPkB/bVVPiuuNVHvUTsprIu2vW0WN3ZY99JnqOk2gtkd2VxZCUByWO6jWYdYSUEzroKLJzSLYQtnOtthzw5e1vDrFxDR/mPZGW1bL6rAZ3O2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pPV6OTg+; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBFD1D359E
+	for <imx@lists.linux.dev>; Wed,  6 Nov 2024 09:43:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730886208; cv=pass; b=AeN2V0IXky++jZVcp0Wa2RnWGabpi4CbhQHbgwpqWj69nNxftWPjuEjj3S5h78JheMd/kSlDh7BOF1sB9LgUdAYq5KOz7iHy6eYgLQ1do6mE/zdLbFBJ38lg8uqa0yeQxZ2q2QFUClPgvcOWfuh/kgiQnbjQbSPuFF/VuFxFhT0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730886208; c=relaxed/simple;
+	bh=u2jso3BoE1iVGK+i8zsaacSXmeFJ9VXoh6m+++g4Vxs=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=K0yi5bzoptK6Czky72wV0ADpUltrWey+alA4OV9FLTk8QFo/GA6jPlrboFglvWiCOYFaUQLqkVB0k8I+DD68X0yptz3ukxDrta9rGYO7k93+7Wb18DN5/ZkvDXtJDkiMyt1gD+k1r9qW0vsUE/1FbLULZYsht8DV0GuhnlhKkro=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=benjamin.gaignard@collabora.com header.b=dJJ1Xp6t; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pPV6OTg+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3171DC4CED4;
-	Wed,  6 Nov 2024 09:36:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730885808;
-	bh=xK3U7kti/fKCKAedO+rH/itcrdtQnCITud0yaoSFbQ8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pPV6OTg+vBv7X5R/WGjvBOheU4bK8G8JhvsUlixPtiLO5rUYV9BDUNdLzI7UOiVYb
-	 Bwv5EbRukCIw0y+09TZyca8I3F8KQvGB/JQ0smVGly+lK8mYlkLLgug6hhuF/3uR/8
-	 NlMxDLgFd7CMDgksnWv5ZT9/fNaXnKIIbt3RMHt14hLIZBfg72SQh+wJm9EcCLqBQ0
-	 VNex18ciWplOcQJBrTI9TIQnnpbHAlQN+Ya213+nNd3XjZia7zuerp5yhqbBNrfGYq
-	 fPJo35+ByDct98NuUUtrl3ErD8pcjZ8O0jZziTLe0Hhf5A20I3rT67VYNgDd8ZYmvX
-	 rqtmaH3t1jehQ==
-Date: Wed, 6 Nov 2024 10:36:42 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	imx@lists.linux.dev, dlemoal@kernel.org, maz@kernel.org,
-	tglx@linutronix.de, jdmason@kudzu.us
-Subject: Re: [PATCH v4 0/5] PCI: EP: Add RC-to-EP doorbell with platform MSI
- controller
-Message-ID: <Zys4qs-uHvISaaPB@ryzen>
-References: <20241031-ep-msi-v4-0-717da2d99b28@nxp.com>
- <Zyszr3Cqg8UXlbqw@ryzen>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=benjamin.gaignard@collabora.com header.b="dJJ1Xp6t"
+ARC-Seal: i=1; a=rsa-sha256; t=1730886205; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Cf0amWWIstvFR5QgZScGuFWSe/ptlLRmdNgB0XRtJ5Ld0F5cb0s5WDBEc1E/ddl0qRKID9o1cjzllsML2ukNFI2qBbl+EvaXx+9KaHcRG1PLIdpKLRlMTobXzdqgZ5uorTJLdG7BrTAtWbxeRoGu/Nr7IQL/vWtZTmzKDTc3APE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1730886205; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=19QztSNR39Yv8poxA+mfIzYPMb9oWEv+tHdPnrrM4pM=; 
+	b=QsFmLpCBZ+fXU3SwIe4DymZPOpmmFevvc6cys5DX92jCJkzRfmdhhFBn21gHz967IpDKexylrzrzi9Wg2b129wCWDesA37bRLn/3AqODgExC6320832SeyarJ0uuyrFuQMB+DZgkJBAbNFk4FcX9sK1L7QTJdGiI6H0mLWuaxhY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=benjamin.gaignard@collabora.com;
+	dmarc=pass header.from=<benjamin.gaignard@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1730886205;
+	s=zohomail; d=collabora.com; i=benjamin.gaignard@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:From:From:Subject:Subject:To:To:Cc:Cc:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=19QztSNR39Yv8poxA+mfIzYPMb9oWEv+tHdPnrrM4pM=;
+	b=dJJ1Xp6tPrD0aW1Sfldn8aFMJueS3VBTcEhlG/QPeKwKshxQRYrKnVcKRa7SpAb8
+	DUnr3Hp+zFibfeSPwCIif/mMgjSZChb3jW58V19BYaxrRbW3vrsyilmIVjRcGuxBNG8
+	u5KyxAJ8VMwFpifQFhuMiHjLPVr4W7XH3KlPHbNU=
+Received: by mx.zohomail.com with SMTPS id 1730886202930134.79232865862105;
+	Wed, 6 Nov 2024 01:43:22 -0800 (PST)
+Message-ID: <83aac8b2-f80a-46b5-93fc-3369b30cbfc7@collabora.com>
+Date: Wed, 6 Nov 2024 10:43:19 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zyszr3Cqg8UXlbqw@ryzen>
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Subject: IMX8MQ EVK board not booting anymore with v6.12-rc
+To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 06, 2024 at 10:15:27AM +0100, Niklas Cassel wrote:
-> 
-> I do get a domain, but I do not get any IRQ on the EP side when the RC side is
-> writing the doorbell (as part of pcitest -B),
-> 
-> [    7.978984] pci_epc_alloc_doorbell: num_db: 1
-> [    7.979545] pci_epf_test_bind: doorbell_addr: 0x40
-> [    7.979978] pci_epf_test_bind: doorbell_data: 0x0
-> [    7.980397] pci_epf_test_bind: doorbell_bar: 0x1
-> [   21.114613] pci_epf_enable_doorbell db_bar: 1
-> [   21.115001] pci_epf_enable_doorbell: doorbell_addr: 0xfe650040
-> [   21.115512] pci_epf_enable_doorbell: phys_addr: 0xfe650000
-> [   21.115994] pci_epf_enable_doorbell: success
-> 
-> # cat /proc/interrupts | grep epc
-> 117:          0          0          0          0          0          0          0          0  ITS-pMSI-a40000000.pcie-ep   0 Edge      pci-epc-doorbell0
-> 
-> Even if I try to write the doorbell manually from EP side using devmem:
-> 
-> # devmem 0xfe670040 32 1
+Hello,
 
-Sorry, this should of course have been:
-# devmem 0xfe650040 32 1
+I notice that my IMX8MQ evk board doesn't boot with the latest v6.12-rc*.
+After bisect I found the suspect commit:
+   commit b8979c6b4d0d1b36e94f5bc483fd86e38107e554
+   Merge: 7b17f5ebd5fc b62800736f61
+   Author: Linus Torvalds <torvalds@linux-foundation.org>
+   Date:   Tue Sep 17 10:48:09 2024 +0200
 
-But the result is the name, no IRQ triggered on the EP side.
+       Merge tag 'soc-drivers-6.12' of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc
 
-(My command above was from testing "msi-parent = <&its0 0x0000>",
-rather than &its1, but that also didn't work when writing the
-corresponding "doorbell_addr" using e.g. devmem.)
+I haven't been able to identify why the kernel isn't booting anymore.
+I have udpated u-boot (v2024.10) and firmware-imx (8.25-27879f8) on my board.
+When using the commit before or the tag 'soc-drivers-6.12' of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc
+the kernel boot.
 
-Considering that the RC node is using &its1, that is probably
-also what should be used in the EP node when running the controller
-in EP mode instead of RC mode.
+I use the following command to cross-compile the kernel
+ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- make defconfig
+ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- make
 
+Have you been able to boot IMX8MQ evk board with a kernel version since v6.12-rc* ?
+I don't have any log since kernel just don't start.
 
-Kind regards,
-Niklas
+Regards,
+Benjamin
+
