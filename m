@@ -1,66 +1,66 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2066.outbound.protection.outlook.com [40.107.22.66])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012009.outbound.protection.outlook.com [52.101.66.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC0F45003
-	for <imx@lists.linux.dev>; Thu,  7 Nov 2024 03:41:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B42A80603
+	for <imx@lists.linux.dev>; Thu,  7 Nov 2024 03:53:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.9
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730950874; cv=fail; b=tLsTX1Fyxo8cCJh8zs4jHeG5K9eyAcKtbnGnPsdbkzPI2/gTYJr/U2MzkDkyFfzpsIWKN3wsQIC86Qe9oO/leQVK7UxAMak+w+T7LXDLTOCufRiVALm7dv1bVUzRm123q+/DiWR7D6XHMrX28B+CJj9eCJOB6evOw0VfpZ5IMEo=
+	t=1730951636; cv=fail; b=hUnWqjIIgTIaQ0LlhEkIbVQlcy5Cpx7BEUAi9ps+jauc9q/L2EkdmNEBgSdU+soGUc9K/yEeHlHQT9bf2ekqZzIBnXr2NkuKw5ncQFi6R5xabeLsN3Q6gptRN1Pvm6fmQVOB19ybOPecZ5nCOriX+bt6oN5dTXp0x9JTsklZEuk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730950874; c=relaxed/simple;
-	bh=5yXT2JTq69Ao1QMgOSCnjvtQ2eduaEiGi+LHxiQhcqE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ltUuV0709FzoxEpeyg9Q5CUH1DqFM6gcd4hMR7NPyXxQKB1qBS9y3uPh3KkBE+vglnIzyKWa//T78nOijAqVO5E/FLkwb7mmS0UJkQEt24J1cIVrWRT5t2QJrAa4Fvq7vwFOG3LDeLC8BwMJmluICUXd72KAMrwpaP0mVTeFLg0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=NBnv3ZNF; arc=fail smtp.client-ip=40.107.22.66
+	s=arc-20240116; t=1730951636; c=relaxed/simple;
+	bh=/J5/MNopf3E2AZ6qz2vnSDXeiqupNdD/WAcIuau6neQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=VqNAFKTXgcgddSIWGulY3Injd9etc40y7K9ipuzHX2NEKi7kzaLKcaA0lxDNHTYGoOOW0QeuxpYEP6sx1DWxQFEg1C3PnfpBquQP/lww0iAfrNomwTs7zEmmR0yiWvpgSUQf4MJj6xe5SBgJQwKZXPsPv9qsFNPuRvEoHhDKxP0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=LZOLiRhA; arc=fail smtp.client-ip=52.101.66.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="NBnv3ZNF"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="LZOLiRhA"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=o7oS+Lv51zdSr5c4/KNAwX2HzOP8Fdb4S6qLb8gRG/5TIXPaHm+cft4OtBwpifF115oJpMMHcS2jb/1hfraRAFLbZzb2QCfcPFCwtqrT6zg6qBtKkWGre8U/Oz0OrsLTVLUMiz4Z22G7rOw6bv6vbr0O8ql3NsLcgXJcWG+CSEJJU/leAiRhuZ2HT8s1e8MsyeUR9Qvxhh50d1WA2tMWS6ikSTzaYoxHx4VmmzvtPnARn35bG68yP9PdNBvvtx5zcDwLe7oNCGwB5bVVE2wgyAC6AOPd+BAyUlXL0fT7EkQfxHTr2OO0y5KEJgirNu1jhj1kgY/ClAgeiUghhFp+YQ==
+ b=GAAvMhZbXl6YNl9PIKJ6NRKBrqZ+o7wsFogGgkhZQbcFeR1sOLetAvUCckEAJlnJLWE502mQ4RQHFUTWfLdXhDxWVFd8HJ/OVI/A7L950LkfG5jRC5HivKuACSVwpfIb6JlFxyd003u2LTMaCAqYEbEVhMd4nIS8KapfztukMU45DB2+lz9S58HxjtUxMSer/bELRW/ee+TkC5LduQsF7OnzxfBt2+ggMFMGWhSvP9jlUVj9HN6D36ssBG9OFVDHhq5Tw/cY/SnEls910oiiYRPdJ+zZJyKmvq8kd/8Vks+qHneSSyV3vKP4TfZ2xgbBfTeCV8xVGFX0W/MIEcckjA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ewHgEtXH5EQDxrhGIfYCz5Ugdx2JCfOjiqkpsnfSNNk=;
- b=gIa/vgVxqnEdNgLiD3jnff0l3dnVRjXgHeeCjsVzG3IVPQ9wCGpvyuGzXDXsq66Cm8iaIhwswx4ponX6lwqgD71bQECyGfNlUnVeaCiAYbghJhMahUoZ8QlOiv/5RauDNy0ZJKsOauzlouQ+N0sGBXzs98oco6ul6ITVzxuiMtFPeGxtbrGE39VIHrbGlq6OPu1dNmYoxD2V/OGHrLUsheMxd++toBd1I/9wW5g4yuJUwDbwKsHGA6bk5C84HljCcJPBhU2Yswc3NenZXjXVyRnQDkTJhYzOSYTfuC9rcbIFDOA6cIMSYjvXWdS2U2i36+oz3kQTDVowAYALlKHGJw==
+ bh=2SAF/wao1tjfOgav6JGbS8bQHXEKbI3ddLCD8NQ9Nbc=;
+ b=hLAuU/oNuNKOKJPTRlr2dyQX/o4Qc5Wny/Lv8y22YEQoeSC5O3U64JkLIDpWliJb9mvXgjj6JpFj9PAjYxsHyvNwOlAwVX6v9k1BIfL+5HIJGS/+5zxtRXX51yvvIMv21/+YRxGnZfsR8yk2oHqDJTmtUTTb+LBtoI/QlPSGcBxvO2mHwMq/y2b3HY0wKeFav7CHI0+M81CAeUZpF8YLHByTGl6PDmCp/OSXFtuiBx6jy/2dY+coBZJyG7EdemMfxjdkaOT2dMnwHKhyhmfByq6Kf9aWtTfQ1gGI6vAJKK2k4PnmeSsm1OodAsWCVy3gU28NQp5wsXp77PdyR3e12A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ewHgEtXH5EQDxrhGIfYCz5Ugdx2JCfOjiqkpsnfSNNk=;
- b=NBnv3ZNFeR0xBZUKfUP4SqprbHAWSAwRZhidDGka9L3TNYrrUWYX51CFZ1JAiHSEed4sMV/NNePdZxfZTD4UbOvKi+4vfE/pC1C9Wg1+iSZMXGSkCQwtQDMFkkfYrMkJ/zCOy6LYfOyarjcravVFIS7VZ/pFWkrYOegOzAJttNbfWrbSpE9j+FAdWtqRvE2lxoQzbaAfwqX67/NwnsIowdaj1HgR8qwh3ff3bT6t4rPm98Rp4AYNERj86e3m3NuBEiLFiJ4SiPxekF5SJCVMsbzUpT52f/uhxRTn03trh13wG2dWpY7zNqsWdGgckAs2H4H7i5wzS+8NTp/jfmMUpQ==
+ bh=2SAF/wao1tjfOgav6JGbS8bQHXEKbI3ddLCD8NQ9Nbc=;
+ b=LZOLiRhADBKTd63t4ePXt3IE4iWDwi1en6kU1/Wmf4zFP2sfM/8JpjrPXiLFMEqXr2kMleM5xMZWcwtcGZJJKOr3IPvA6VSTedhhC12a6p4fZGHG9c8gZIDAyRXzj0CQslP/kcznlu0gFusm31I3lnvARXHTKaHvlg9xMakZlT9o3CoqMHYLi3rvvbAH6z1pZSIwKhZOux9Ekpo2gEpdDmyuexh3UMgBUhFceQRsLemxIKBmIpGQAFqZYEOuhDzkbB8io/LGZssrdrfXNRRDJTcTR7RtFUPYCVqkWNR04ItAoV0zFGjoXvSgqbgmuqOX7RT2ZhwWwU/pMqbbzpK+WQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by DBBPR04MB7593.eurprd04.prod.outlook.com (2603:10a6:10:20c::6) with
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by DBBPR04MB7898.eurprd04.prod.outlook.com (2603:10a6:10:1ed::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.19; Thu, 7 Nov
- 2024 03:41:08 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7%6]) with mapi id 15.20.8137.018; Thu, 7 Nov 2024
- 03:41:08 +0000
-Date: Thu, 7 Nov 2024 11:38:53 +0800
-From: Xu Yang <xu.yang_2@nxp.com>
-To: Ian Rogers <irogers@google.com>
-Cc: john.g.garry@oracle.com, peterz@infradead.org, mingo@redhat.com,
-	acme@kernel.org, namhyung@kernel.org, mark.rutland@arm.com,
-	alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-	adrian.hunter@intel.com, kan.liang@linux.intel.com,
-	sandipan.das@amd.com, bgray@linux.ibm.com,
-	linux-perf-users@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH] perf jevents: fix breakage when do perf stat on system
- metric
-Message-ID: <20241107033853.bd57dmjszw2tqhvk@hippo>
-References: <20241106085441.3945502-1-xu.yang_2@nxp.com>
- <CAP-5=fVN93EJN9FqMmF6h2meiLbU_OWJ2=Vt0EVdZds6nZSKpA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.21; Thu, 7 Nov
+ 2024 03:53:50 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%7]) with mapi id 15.20.8137.018; Thu, 7 Nov 2024
+ 03:53:50 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH net-next 0/5] Add more feautues for ENETC v4 - round 1
+Date: Thu,  7 Nov 2024 11:38:12 +0800
+Message-Id: <20241107033817.1654163-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAP-5=fVN93EJN9FqMmF6h2meiLbU_OWJ2=Vt0EVdZds6nZSKpA@mail.gmail.com>
-X-ClientProxiedBy: SGBP274CA0009.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b0::21)
- To DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR01CA0154.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:8f::34) To PAXPR04MB8510.eurprd04.prod.outlook.com
+ (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -68,262 +68,102 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|DBBPR04MB7593:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2c8d4ab2-104a-40cb-8e06-08dcfede03ae
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|DBBPR04MB7898:EE_
+X-MS-Office365-Filtering-Correlation-Id: 78d23b03-ada9-4006-d6fe-08dcfedfca1d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|376014|7416014|1800799024|38350700014;
+	BCL:0;ARA:13230040|52116014|376014|1800799024|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Um5VaHJtWmVhbi80dHF5Vko5bThDY1dzZ3VQamQ2Rk83ZTJvcUg5QmZhYXBO?=
- =?utf-8?B?NkQ4Z0FEaTNyS2M0bmtid2RUU0lCL0ErUWpnN0h0UjRiamp1cGhBSkZPeHZT?=
- =?utf-8?B?UUQwazZjdkF6WGdxeGlxblJjNGtmdDlpTUpWbkw4NlpEc01LWUYxTG4wMmla?=
- =?utf-8?B?L0s1Z24zTE51RjVTRXo5dVQwakVQMTVpci9xTkwyc0NyOEpsejFnTW4zc3BJ?=
- =?utf-8?B?WnZja3djMVNZWkhqbzFBeDNaOTAyWEluN0YyQlNvdEx6WDZlSklWM2doSFJq?=
- =?utf-8?B?c25OKzVKbWpnRWFVUDBkUzdJVU9vUGNJWDhaZ3RxVkxWTWNTUFRsUlVrU3lI?=
- =?utf-8?B?a2hNUERiSFZJbldDd2E2SExIaW53SHM0c2svVVIyZjR0WVZjMjRjUzRzT3lO?=
- =?utf-8?B?RUVNaGFJQUkvSTdJRlMvZXJxYyt1ZEpSS1V6VTFKWXNyL3V1ajZ6SXp4T1lW?=
- =?utf-8?B?aTgxTnJXbUhHOU1DZ1hQR25YWnQwckRIMU9kelZwaWx3bjJYT0M0TUdMV2ZY?=
- =?utf-8?B?WkYwWkpDQ1JYeExsWnUvV0dmNW1rQndwWkMyM2FvYUd5QWhYMnIxeHk5WGQy?=
- =?utf-8?B?blIzVTgwTmVOV2VTVGhscEdaQldUNy9qS1RDUVpLMGJ4WkFPa0lHbkdRYjRC?=
- =?utf-8?B?SDlTY2t4YlpSTVQwKzFabDFUaDlLcTlVYUxTejd3SHZidGxsZER5OStoemFU?=
- =?utf-8?B?K1NBS2wyOVFJT3QyMlJMUnkzczI4RkxGWGVnb3o2aWJsdUtlaFNudkQ5UFcy?=
- =?utf-8?B?cmtUYmdJVXFyK2xBUVhxZWlwS0RvZWs4VWJBMEt1NjhNQkVPeHJaOUhzS2ZP?=
- =?utf-8?B?QkZ1K1lBNWFzYmY5SmNJY3FEaWtIaWJORk9XRWJ5MUVLYkMvOG1qeG9iK3hh?=
- =?utf-8?B?aEdHU2I1Sm1CSms3VFczZXZVeFBySE5XMkptdjMvTTVHL1oyaWN3Zkw0MjVY?=
- =?utf-8?B?WC8zVSt0VElsbUN5SzFnY2RMSEIrTkhNVldjUGN1L1F2dEU0TXFlbTErT2V4?=
- =?utf-8?B?enB6VFRCcnNzQ2EwWUZSVTdWODJ6UG9DWUlEN1orWUMrRmFqQ2NXKzFzcy9U?=
- =?utf-8?B?dWd3OGZBZUNzNTNyeG52S09DK09malc3S1VZOExaYTZqM0Nwa1Nub3crQ3Rn?=
- =?utf-8?B?WTFhbHlvcDBhdyt1a2hQYXFuWGRTYUtsbWRVaThZdTBYUXYwUk9Yc2ViVVR6?=
- =?utf-8?B?M1RCeExGQkxmemRVU292UUowdm92ZVloMDgzd0hUaTNhNkJvZ05oTWF4V0pJ?=
- =?utf-8?B?QWNYUVpCTGdhSGJBdEE5d1k5bDlVUytLbFFLV2diV0tiVzBDWmFZVk1EVWZ1?=
- =?utf-8?B?dXBVTGRkRElOdExKakVyYk92R1B6R29iU2RTSFJlREU4VTlWZ3hIdmdlWCto?=
- =?utf-8?B?N3NyWDlaVnIxczRYaUhkT2N6cGN5WDg4U3BFamVyeXVqWEhwVzl5NDhQNkEv?=
- =?utf-8?B?SlZXUmt1SFpFQ2VYOERjSlZCcUVuZ3RmcmF0WEVFaW9LZDdNZk9Ta3JMdkFC?=
- =?utf-8?B?bGJmTUFyOXVkMEgvTmRIVE9nZVBMRkV3NEFYQ25mb2llUjNiL25EOXk0WWI0?=
- =?utf-8?B?VFlWcFUyVkVxcGRsaS9MajVuclBBK0hyQlRnc1FYUldCeXZ4Skh2R2laUDNv?=
- =?utf-8?B?TW9pY0NBQ1pNSHlZMW5mdi9GQXN6SUVucXJtc0lPdUV0amFhYTZTdTJ6ektI?=
- =?utf-8?B?bkM5UEJiWU8zaTJYN3JONDhxOW95QVZjYWZyN05iMFY2VWZoWmxHSXl4ak12?=
- =?utf-8?B?QkVvS09EaGV3WmlxQk1CYzJwMUNESy9mZFllMjZlbU9NdVY1dm9FWmF1b3JN?=
- =?utf-8?B?T2FWMXZnTzA5L2JxNVVGV0VheFdONTlhditTcXhsZGhBT0FuUUcrM3dYMDR1?=
- =?utf-8?Q?pVKj9aZWMF838?=
+	=?us-ascii?Q?dFBaQfFNsBS/zoGyjK2yJc1XbNBQqOGq4xMQG6Qa6Ajya3JmoH+ClEsJTjbU?=
+ =?us-ascii?Q?vG0wiyVG18Xj2009A18ZulVzWcMpu/RhdEGbRABxjAItMxraIP9xdIIcgQnP?=
+ =?us-ascii?Q?pidq2p/e62VMEgKP9CaSg9FxPG5waY4UOa7FVBp+44mEYg+gP4kw6KruMIQ3?=
+ =?us-ascii?Q?+JKDmIA0p3U95zRzZNEleW4qokdFOv9S8VberWLo1KLsrP26uicIMC29RFP1?=
+ =?us-ascii?Q?G4HLH0c44IF24BNxQyj+GngQP9CEvkAz7BiyZYyab7U6ESa2czGx+yUg+sOQ?=
+ =?us-ascii?Q?D+Lyd0i6j97vv7Tyd+JyOpf3MMe2cBRckKcOBDfSAC65A34/KMg7lAY9pyqN?=
+ =?us-ascii?Q?OBBjZX6hbH8iB1UEo4GO8WCmYHlxdTESqf95mfW/RTtDxih0ApsTUiVKPaqO?=
+ =?us-ascii?Q?cBYpaOwBeEsFeduu+laZfDA5lWNLHGtmY+t8Xlha9hMRwKM9e6+DviEKKwaz?=
+ =?us-ascii?Q?i2NEAxRkE0qjv71j5Yuov/BKKiUVXxU+ksArP8gRDpxI+NqVIOeROxtxxcJa?=
+ =?us-ascii?Q?J1wswb1aMxNh3ir0uh5H0peklOJYv+NJJ3K8WkseCSKnSnSSpswsKXHJxvCs?=
+ =?us-ascii?Q?3bED8QMyR9Xi253k17j4Ty4FJv8rUOGFHFu44tyiVHSyXq6ZQhJ2BkJw11lj?=
+ =?us-ascii?Q?LZGxGLAOtLxCijyYbyWGsnfiISYwcEB7dwLv/VjsTVxxzgqQ8gjnqDHq5dCZ?=
+ =?us-ascii?Q?WJIRV9er9duGe8fLrtAIhNqx3qj8PfqjLKlSoe1183zMwJ8LxBZfH6RnQTsR?=
+ =?us-ascii?Q?+mD3FnilavnEbD2mvLIG9D5TcgaaiTEnHnOIVV3ZrpaeWKthDrlHL8REPYiC?=
+ =?us-ascii?Q?pLFufUEkBfLgHxNK/Gij7frhlsX9E9mKjL5/b/b/S77IBvf0kjK8NcemzEd0?=
+ =?us-ascii?Q?+OBOm+PkYf/SHzNWYgkFSBruV3WVG1Mx5qBfAdOBCwnOdSHc09Q/FF3Beffi?=
+ =?us-ascii?Q?PB9kneIp8MB12ujRXaCzVhcYkVmbSH3YCi7DHM1VG4kxqVKTt9wl48BkTR3T?=
+ =?us-ascii?Q?SAhfrQNY6SvsuT1B6U6NvsnHw22rWahtrU6Y7vCBknKeISAOrTY32Yeh4OcN?=
+ =?us-ascii?Q?7bJpZSzKsLH4PKA8exPiSozSDchVf7Q3kd5iXfvjUT+hLXbbb7S8D2iTfzG0?=
+ =?us-ascii?Q?SNXB2GIpsJiMJTr+n3dxLxvBqU/VTFJ3W6GNyKH1DrrmLQ+duNR/X1uTb2vS?=
+ =?us-ascii?Q?vIymdPKAshd999Wx0k0l+K2XxjGV/gLXuHzFIHyuGAJly90kSGo6di9kOMCZ?=
+ =?us-ascii?Q?YAXjWIePZy1AprGi62iJFTzOREKksSdi06Ucc48WV6VYfoptQvgJWVdiMlO3?=
+ =?us-ascii?Q?6IselkyhZZlHi6YTVsCZuieivsha3jBomYryFD0LH79/bww/UCfw7aelkO/I?=
+ =?us-ascii?Q?0p2kapQ=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(7416014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NnBuaytIV1RXRHZrc1pHZXRTU2xMWkhKYnZnNEt3dTlKWmhINnhHM3NydDNK?=
- =?utf-8?B?Um03TXhjY1kvZndOMCt2NXFUOWs5UFNIbFVsMXR5VjZGdG1QTjVNeTV6OGFG?=
- =?utf-8?B?enAyU1hkZVFUMjI5eW1HUXAwQWpvWmlFb2R3a1BKOHZBOHphUGQybkhJOHdW?=
- =?utf-8?B?WU9XdWczdUFGSjR0NkEvRDJDalQ4Vys5K0xYaWZmRTdjTHNydzdjSEZHMnN0?=
- =?utf-8?B?RVcrVHVCU2dENlVYVnJDZWx6aUwvblhyLzJjMkFDYXV1M3hMOW9weGwyRUNW?=
- =?utf-8?B?TlJ1N3hmTUdISjJQWHV0UitvWlZOTG8wTDJ2VVh0NVV3UjZQbWR5YWtTa2pJ?=
- =?utf-8?B?RHg0dHBoaWRnWTF0TnpSYlMrdmphbWtPa2pRMEdJWFdnOG1DLzk4eElrQlpa?=
- =?utf-8?B?UUFqbE9PZmgvTlBSZ21aT1gwMSsydzcxeW1rcmJUeWJCRTBwZzRhQll0Y1BX?=
- =?utf-8?B?VXlLZmRzVUFoN0hTSkZDMEZtV1oxTzMvSGJ6ZmpRTG1UUEpiL0V5U3F4clpY?=
- =?utf-8?B?R2tONHN1MU5KeEVFRmJKb0FKemlIdk0yQlR4d1c2WUwvaEtObUw3ZEFLbnBR?=
- =?utf-8?B?RWlpazhyaUVDV1ZWNXZpaXhzNjhhZk9iRkxYN2VnZTUza0pkWTBRY203YUE4?=
- =?utf-8?B?VlRsb2FlOXQ4QXdwNUpiaXN4ZzBsS2VLMnlnYjhxcWZpZVZuanEvU1l4Wmtp?=
- =?utf-8?B?WEFHazVsT0d6S1JXTzMwdEF2Q1hFcmlURzlVVkNFclN0OXBOU0N2UFJHOHpx?=
- =?utf-8?B?WTZwRFk5UEkzaEk0OUxPVHpQTUdLZXdsQnUxY2xZRVVvTHltamZyS0xQM2pF?=
- =?utf-8?B?NFlweHJIQ0QvK0xWdHNndGs1alRiUWdSRU1nNVEyNDlsMWNXSms3V1pqd1M1?=
- =?utf-8?B?Mm1NREt5Z2lRblpSRCtzMXFjSVZCaUZiaTdqUkVZZTBjZWd0cW44Vk82S3RX?=
- =?utf-8?B?azdOMzRuTlhBNUdPa28zcHRlRU5jNCt2ZXZwME5oWEZLMVpvOUpxSk5TSU1m?=
- =?utf-8?B?M0tyZUNwLzR3MlZVbWNOcGh3bDJJcEg3RzZ6L2MzVFhKZmFreWIwbmhiMmFW?=
- =?utf-8?B?UTRnZzdKRUpSaXB0b2YwaW9wRURaMXRBamxER1V6TTM0eXBONHFHZXFSajB4?=
- =?utf-8?B?Y0Via3hSYzdxTXVVS3hIbDc3bERrMlFDajhBcElOOGpBdFdSODJYcmFMRDY0?=
- =?utf-8?B?c1Z2WXYzSXdkSitMWGZUMTRIZXdrNExXTWpkUzZzZEhSN1hHdG9TLzRHaUgw?=
- =?utf-8?B?N2RwVUt1TnBzQTFYcVJCY29takc0UWtpRG9VeWUvSW1SbDM1MkZWKzRKZnRN?=
- =?utf-8?B?bHJsc2ZnUUNzUU9QK1RBWHIySCtYRWJCZ3MyS0QwVWVkcnk0ekxaQzgvT0sz?=
- =?utf-8?B?dDdIdUdMZDJUSWVmZFpHeng0L2JOYzZVaDBDR1JtMkswSEQreEJZSU82UTlV?=
- =?utf-8?B?THZjT244bXhsczBuUEFqbklaK2Z5d0R6TEtyZTM3VXBnQkpnVzN6UExkUThs?=
- =?utf-8?B?THAzU0pSNjhJaGcxV2cvaURsRm40eVREWk00TjdkOGdTSU8rRFdOQnNqSnpB?=
- =?utf-8?B?eUtlYW9kdDZRM2YxNnJzcGFMT2YyMXd5RG1aUml0VlduenpjbFdWcW05bEFt?=
- =?utf-8?B?THZpaUZCSGtZVDdoc2I5R1Q0Z3A1a25ZbWdmV2I2S01zL2NzZkc3VXVGVUht?=
- =?utf-8?B?TTVXdjVVZ2UrMVNNamFHMStES3R0alhKLzQ3SlNQc3prclBVUGYvdjdWUUp0?=
- =?utf-8?B?Zk52VUdHZ2FyUW9qT1ZVeExseEFiYmFZNVcvYk5QMDd6RWVTaDd6SUczcDQ3?=
- =?utf-8?B?SWdHYnU2a2k3SHpRZDVBeW5MYzRlc0FrNjNSTkg4YjJWMUNpTXYyTWVkdXVB?=
- =?utf-8?B?eWlxdzNpSVEwSlcwak5QSVBSaFhJOTBIdFJTazdDNEhVTVJTMkF0R0kyRUFx?=
- =?utf-8?B?TlpBa3dDVGlpZ0hkbUdpYm11UldSM0gzRlduS0NPS3NKZnRmd2xWUWIrU09j?=
- =?utf-8?B?L09Rd0RRQWxoN1h1WFB2MDNQQnFCNFYrbnRtM2o4SlZJUHVsbDFiejk2aDR1?=
- =?utf-8?B?UWFKS3NuMFJWcS9xRjgxNGJIQm9NNEJxOTBkdUd0NW1ST0d4RVRaL1JrYk9h?=
- =?utf-8?Q?hZq5o0pzXw0z9bAR28ljb66Vg?=
+	=?us-ascii?Q?tz9RtEwV9Cv/DVZQU3RK6VE/4eRt4b7SSj+DNGdUeurwginHD4fIcH8j5UHa?=
+ =?us-ascii?Q?4VT+DkOx/b16Q+E2KiieR9wfZFgWlRGRi3XoOyf/HsDipWXVmwXEaYfyMU5m?=
+ =?us-ascii?Q?MQN5Ii2IVI7hOJc3NYk1N6D58wuUF/r0FWYQkSx+P915FsjLnD8btmHd7Ci7?=
+ =?us-ascii?Q?Pw+fhjxEqOOTKsle7lyWmhhtWlSQgP1rdpPzKAAi4YswWGtWx+BA4FwZQOlu?=
+ =?us-ascii?Q?uaw0YZh+AIJ1TtdxLzlcge2ggltjjb5pSSTS2pKdP7qrSiAOL68r8dXfyl5o?=
+ =?us-ascii?Q?rr2LXwjV2k3H/p/7C1poqKM+SVhEBRtRdTjRiSs7XjGuklX9ojj/3u821na0?=
+ =?us-ascii?Q?YiwutBaqFoDPtSGz5v3KzqpJnqM6Pf3VkrltSHqbw1gvjJ+I+pASQ957w9tg?=
+ =?us-ascii?Q?Ohppmc9alHcCGyaFCyn6iRNqeVU7zTNLYSM4uTTgXzpxTDz1n7IMNglncNhf?=
+ =?us-ascii?Q?VMLVBicCQd1M/lvyGCWLahBW/PbLQSkXjHunIkCVP0Hz8arlBaPMGBvSHZM5?=
+ =?us-ascii?Q?heiAeddveUc+Z/3h38VwzpkrKz5nrYT8ENhSXNiLjKgeNuIaGy1hEIR9ItX1?=
+ =?us-ascii?Q?cFPPe8yZGhq1MKiE67byTAPdgUOsod9FiyXZsRsoPuGDWlvDAPJjzsZgDMyI?=
+ =?us-ascii?Q?q3Q28p2Q8TrTNJGExo7/YKUwfAshFp7G/zhDWhkx/H6PIQmqD1K0R6qZTwaD?=
+ =?us-ascii?Q?QSdHQ3cFHeQXCb+y5xz8kqcjUF40C3tOi2C9pH/uKWMHGCjQE5lkPm5uW1GN?=
+ =?us-ascii?Q?o5G9KN53IO9vdwkPXLIxtroVOpRaIKHpOfIstUDVXq26R7ylPdEjdfYFjbq4?=
+ =?us-ascii?Q?FF3Egj80UQqbbxTKjJmxNb+YCFBdvYsV7dDmvUIxaBWTCJXiAxdxbp93XcI3?=
+ =?us-ascii?Q?uI+NPcEybTyjyBXuW8PhL/Sxt0jX6lp6/PSES/Dwgf6bGqzGVbJHiyO9C7FS?=
+ =?us-ascii?Q?tFFglNqO2CIZRa4gBfcZenkPaqiDPuymQRxmec4+mA/YENLd2iFCkGcYonL0?=
+ =?us-ascii?Q?STSn3fYMPL/iMwziumln50ka4wh2jcB/4rD45iUwGmjj7W3zil95D9e0lj3F?=
+ =?us-ascii?Q?LJVzJUnKSnVc3hVvzYtaxdwNHqMaOVPhDiy75m3PClttD930xr9XfTq/rK8b?=
+ =?us-ascii?Q?iJr5VYkMx+phSa0qbuxZ4wWQLQRkux0sb/0cOj9Wb1VkzqczSmoWR2IWRGvb?=
+ =?us-ascii?Q?CDuiC+tRXu0If95eVopj3+cEsJDNU7rXoRzxhcowd6D6MUKz+i/qGM/4sd1p?=
+ =?us-ascii?Q?nWJH0sFrB5h6m/RVRyAgoDx0KVcqzQX8n4zfMQsSa5s0fzTUvNlnv1q9xSAT?=
+ =?us-ascii?Q?PJA8FwHaFfWDPEcU6qE9+X6B2ikyYCZzUC7c8N8YF+fyfvNNU4ofNDjgtQU0?=
+ =?us-ascii?Q?O7De2tCCCR+tJNRCNS7Q8kpHQ9ZfyafssAkfo7Gy4UThcF19jt9wuHIHzG0Y?=
+ =?us-ascii?Q?r/MJLf33v18huZgytRxIOzIi1JeGNtPCinbAPZDpFIPvKKMbypueg0O7RTCu?=
+ =?us-ascii?Q?cjKgCTnkqf+2NW+EwShNq0Qcr0m5B20FlPWMIMT9JCexi1lAu/FfoOjk8szG?=
+ =?us-ascii?Q?65+nJqKg3Flf2+OAZnB5GByDYF+niwYNGVd3AV4X?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2c8d4ab2-104a-40cb-8e06-08dcfede03ae
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 78d23b03-ada9-4006-d6fe-08dcfedfca1d
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 03:41:08.1006
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 03:53:50.5054
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZwLYPHGkElDqM54Q+xcDn/uN5tyOvFZR0U72CMSzIZ5RONGYihV6GDzets1uDgH2khUAF49aYbBQTNvU3bV/Mw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7593
+X-MS-Exchange-CrossTenant-UserPrincipalName: +lXysbtEPn6MVOjtVVsET6OQtwjmuBHL+n2pLugO9fnfDQ1CSZ4n9R2vCV9KDLZlJsIm8pleIrbtCwNIU0SFlg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7898
 
-On Wed, Nov 06, 2024 at 10:06:24AM -0800, Ian Rogers wrote:
-> On Wed, Nov 6, 2024 at 12:55 AM Xu Yang <xu.yang_2@nxp.com> wrote:
-> >
-> > When do perf stat on sys metric, perf tool output nothing now:
-> > $ perf stat -a -M imx95_ddr_read.all -I 1000
-> > $
-> >
-> > This command runs on an arm64 machine and the Soc has one DDR hw pmu
-> > except one armv8_cortex_a55 pmu. Their maps show as follows:
-> >
-> > const struct pmu_events_map pmu_events_map[] = {
-> > {
-> >         .arch = "arm64",
-> >         .cpuid = "0x00000000410fd050",
-> >         .event_table = {
-> >                 .pmus = pmu_events__arm_cortex_a55,
-> >                 .num_pmus = ARRAY_SIZE(pmu_events__arm_cortex_a55)
-> >         },
-> >         .metric_table = {
-> >                 .pmus = NULL,
-> >                 .num_pmus = 0
-> >         }
-> > },
-> >
-> > static const struct pmu_sys_events pmu_sys_event_tables[] = {
-> > {
-> >         .event_table = {
-> >                 .pmus = pmu_events__freescale_imx95_sys,
-> >                 .num_pmus = ARRAY_SIZE(pmu_events__freescale_imx95_sys)
-> >         },
-> >         .metric_table = {
-> >                 .pmus = pmu_metrics__freescale_imx95_sys,
-> >                 .num_pmus = ARRAY_SIZE(pmu_metrics__freescale_imx95_sys)
-> >         },
-> >         .name = "pmu_events__freescale_imx95_sys",
-> > },
-> >
-> > Currently, pmu_metrics_table__find() will return NULL when only do perf
-> > stat on sys metric. Then parse_groups() will never be called to parse
-> > sys metric_name, finally perf tool will exit directly. This should be a
-> > common problem. To fix the issue, this will keep the logic before commit
-> > f20c15d13f01 ("perf pmu-events: Remember the perf_events_map for a PMU")
-> > to return a empty metric table rather than a NULL pointer. This should
-> > be fine since the removed part just check if the table match provided
-> > metric_name. Without these code, the code in parse_groups() will also
-> > check the validity of metrci_name too.
-> 
-> So we carry this code for ARM:
-> https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git/tree/tools/perf/arch/arm64/util/pmu.c?h=perf-tools-next#n21
-> 
-> On x86 and other architectures the PMU is always passed as NULL (the
-> effect of this change):
-> https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git/tree/tools/perf/util/pmu.c?h=perf-tools-next#n843
-> 
-> The blame shows me as the author, but that's because I factored event
-> and metric tables to be separate things. When I did that I brought
-> over ARM's event table logic to the metric table.
-> 
-> Why do we pass a PMU to this code anyway?
-> So on x86 the cpuid will give a different string for
-> heterogeneous/hybrid/BIG.little parts. On ARM you get a different
-> CPUID depending on which logical CPU you ask the question of. The CPUs
-> associated with a PMU are used to look up the CPUID string.
-> 
-> This whole thing is spaghetti code (fwiw, I dislike the whole arch
-> directory plus weak symbols thing that is a by design breakage of at
-> least cross platform work - hopefully the maintainers will review [1]
-> so we can delete a sizeable chunk of it) and the ARM situation looks
+Compared to ENETC v1 (LS1028A), ENETC v4 (i.MX95) adds more features, and
+some features are configured completely differently from v1. In order to
+more fully support ENETC v4, these features will be added through several
+rounds of patch sets. This round adds these features, such as Tx and Rx
+checksum offload, increase maximum chained Tx BD number and Large send
+offload (LSO).
 
-Yes, the logic seems like a little mess when parsing metrics because some
-system metrics don't bind to any core pmu. But I'm not familiar with the
-whole code, so I unable to make big changes on perf tool.
+Wei Fang (5):
+  net: enetc: add Rx checksum offload for i.MX95 ENETC
+  net: enetc: add Tx checksum offload for i.MX95 ENETC
+  net: enetc: update max chained Tx BD number for i.MX95 ENETC
+  net: enetc: add LSO support for i.MX95 ENETC PF
+  net: enetc: add UDP segmentation offload support
 
-> sub-optimal. We really need to scan a plurality of metric tables for
-> the heterogeneous parts on ARM. We're passing a PMU rather than just a
-> CPU, I think passing a CPU would be more intention revealing.
-> 
-> Then there's the pleasure of system metrics, which are only loosely in
-> my mental model of things as John Garry did the heavy lifting for
-> these.
-> 
-> So the problems I see:
-> 1) ARM needs multiple metric tables to be parsed in the metric group
-> logic as the invariant of 1 CPUID 1 table doesn't hold on ARM.
-> 2) The lack of a metric table causes an early exit from the metric parsing code:
-> https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git/tree/tools/perf/util/metricgroup.c?h=perf-tools-next#n1700
-> However, the system metrics pattern conceptually match PMU names and
-> aren't tied to CPUIDs. The iteration logic still uses the metric table
-> though:
-> https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git/tree/tools/perf/util/metricgroup.c?h=perf-tools-next#n1283
-> 3) Crufty spaghetti from the use of arch/weak that means we aren't
-> testing the same code paths leading to divergence and rot.
-> 
-> I'll try to pull something together. But for the sake of expediently
-> addressing your issue:
-> Acked-by: Ian Rogers <irogers@google.com>
+ drivers/net/ethernet/freescale/enetc/enetc.c  | 345 ++++++++++++++++--
+ drivers/net/ethernet/freescale/enetc/enetc.h  |  32 +-
+ .../net/ethernet/freescale/enetc/enetc4_hw.h  |  22 ++
+ .../net/ethernet/freescale/enetc/enetc_hw.h   |  31 +-
+ .../freescale/enetc/enetc_pf_common.c         |  16 +-
+ .../net/ethernet/freescale/enetc/enetc_vf.c   |   7 +-
+ 6 files changed, 419 insertions(+), 34 deletions(-)
 
-Okay, Thanks for your input!
+-- 
+2.34.1
 
-Thanks,
-Xu Yang
-
-> 
-> Thanks,
-> Ian
-> 
-> 
-> [1] https://lore.kernel.org/lkml/20241017002520.59124-1-irogers@google.com/
-> 
-> 
-> 
-> > Fixes: f20c15d13f01 ("perf pmu-events: Remember the perf_events_map for a PMU")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> > ---
-> >  tools/perf/pmu-events/empty-pmu-events.c | 12 +-----------
-> >  tools/perf/pmu-events/jevents.py         | 12 +-----------
-> >  2 files changed, 2 insertions(+), 22 deletions(-)
-> >
-> > diff --git a/tools/perf/pmu-events/empty-pmu-events.c b/tools/perf/pmu-events/empty-pmu-events.c
-> > index 2b7516946ded..b8719dab264d 100644
-> > --- a/tools/perf/pmu-events/empty-pmu-events.c
-> > +++ b/tools/perf/pmu-events/empty-pmu-events.c
-> > @@ -585,17 +585,7 @@ const struct pmu_metrics_table *perf_pmu__find_metrics_table(struct perf_pmu *pm
-> >          if (!map)
-> >                  return NULL;
-> >
-> > -        if (!pmu)
-> > -                return &map->metric_table;
-> > -
-> > -        for (size_t i = 0; i < map->metric_table.num_pmus; i++) {
-> > -                const struct pmu_table_entry *table_pmu = &map->metric_table.pmus[i];
-> > -                const char *pmu_name = &big_c_string[table_pmu->pmu_name.offset];
-> > -
-> > -                if (pmu__name_match(pmu, pmu_name))
-> > -                           return &map->metric_table;
-> > -        }
-> > -        return NULL;
-> > +       return &map->metric_table;
-> >  }
-> >
-> >  const struct pmu_events_table *find_core_events_table(const char *arch, const char *cpuid)
-> > diff --git a/tools/perf/pmu-events/jevents.py b/tools/perf/pmu-events/jevents.py
-> > index 6e71b09dbc2a..70f4fd5395fb 100755
-> > --- a/tools/perf/pmu-events/jevents.py
-> > +++ b/tools/perf/pmu-events/jevents.py
-> > @@ -1101,17 +1101,7 @@ const struct pmu_metrics_table *perf_pmu__find_metrics_table(struct perf_pmu *pm
-> >          if (!map)
-> >                  return NULL;
-> >
-> > -        if (!pmu)
-> > -                return &map->metric_table;
-> > -
-> > -        for (size_t i = 0; i < map->metric_table.num_pmus; i++) {
-> > -                const struct pmu_table_entry *table_pmu = &map->metric_table.pmus[i];
-> > -                const char *pmu_name = &big_c_string[table_pmu->pmu_name.offset];
-> > -
-> > -                if (pmu__name_match(pmu, pmu_name))
-> > -                           return &map->metric_table;
-> > -        }
-> > -        return NULL;
-> > +       return &map->metric_table;
-> >  }
-> >
-> >  const struct pmu_events_table *find_core_events_table(const char *arch, const char *cpuid)
-> > --
-> > 2.34.1
-> >
