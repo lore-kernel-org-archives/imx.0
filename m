@@ -1,176 +1,226 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF882101BE
-	for <imx@lists.linux.dev>; Thu,  7 Nov 2024 13:06:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECEA212181
+	for <imx@lists.linux.dev>; Thu,  7 Nov 2024 14:57:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730984801; cv=none; b=WYKoXApBHZR+WrbpZH9IT57IXUP9U0Qgh49r9lLmOBEQHtowhRL8iq35cupZcqOoTgJ+MjaWJZVa+GSIHUlyMx7oVRgR+BmMZ3Dd2pXIg6e+i/cG8GyMG2/hpOq7q39X8ZJSysdziJvfZLCOCJLWHsKjPtz6rx4tYzv1PzpZMvI=
+	t=1730991455; cv=none; b=EEJOw/vMP8geN5C5Hxn2yoyZEtikOZaP1G+ffdjrrP89vbQ2cHRittRbAWvEDjS+e57w1fzHoyd0cVGDcUD91RiYWXxvb/ywO4RpFInX/y63Gu2MkIdBHHxnOPWCvesq741hKBxRLnXIEUqP2MKHNGnKd63cae9vVBzw6LBorDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730984801; c=relaxed/simple;
-	bh=Jx1nSyDIfhBUi9FQg/o/hfd5mS6yoA8D+2mJPDtz2qM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CCcDT9e3MuNzBegh+ocSBI2wvXK6arF1o8D+UCLMY1D91P1f0N0UKqPDFRpqx13tzvKJN+S1QFlVDKHWz2djp72bTcdJArrFndlYqdNbqRpXBiV0kDTMyC22iEooDhG7+eK5LXfuSTdEBiDYeLD5HaxsHMLMRN4PgZ2LzhoDnzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=qpdNEOMG; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=pRwh6o2k reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1730991455; c=relaxed/simple;
+	bh=qZ8izUSaHahLbAO7uWeGh/Gz8E/GX1hkiRPzbJN9tMY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PUDpdzML701lk1Q5NjBzzGdp8BBVCtFt3e9xhoNa8Gsy9kyjTCcm3YMRK8Xh1L0YWh8U0Z3hVGM74BXMSsNQqevH2GkLu2zTDYNLMFk4acZfWPBPZSSxPi0ysd0ip7vhCUeny1tslS+MDdejvKswrdZbuCNKBVtHz1yKt2WIvVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=HSzg4fKq; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="qpdNEOMG";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="pRwh6o2k"
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="HSzg4fKq"
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-6e5b7cd1ef5so8818837b3.1
+        for <imx@lists.linux.dev>; Thu, 07 Nov 2024 06:57:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1730984796; x=1762520796;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Br6j9tCD7gey4qn/vnRgBNealpC4+9i3aXfalCeYdjY=;
-  b=qpdNEOMGBYqmdQFoqWzsZfnfMQeFx1qrS/V+50y+Htp+k9orp4SsKdQ5
-   /CIN8AGFlZMbWd8mcXUZ3mq1BhtuwR7dmecRvlCF8+N3Tt3DSHMS+ExHq
-   VZCittHDLQXWetRHzzPmq0CmUwr8RXoqes1wxBF1e2sHzOVTAHoj97gcj
-   R0lUwKXeHsHP+IpfdUDnRMk3z7wucOEUZU3G+gV6LeG/JbGcdax0VgfnO
-   cpDArP5ZzZAvBNjdN6kO5AQAdqWXW+mlkwz45QvtmRQyPEhNL/y9VLulq
-   kgbhAv/w+yvRZsMTRaBtomiCzyYLOFrAJqyha8KNX7nRcrZT/vn/bE2zx
-   w==;
-X-CSE-ConnectionGUID: +ng6v8WES5qSaYqsyOTeLw==
-X-CSE-MsgGUID: BSiAM4hKRbeF+0LucP8ebQ==
-X-IronPort-AV: E=Sophos;i="6.12,266,1728943200"; 
-   d="scan'208";a="39912117"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 07 Nov 2024 14:06:34 +0100
-X-CheckPoint: {672CBB5A-B-F5DC7025-F79421CB}
-X-MAIL-CPID: A4A1CF9EA10526AAB45BE20D0F4302DB_0
-X-Control-Analysis: str=0001.0A682F25.672CBB5A.007A,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 98D5B16486F;
-	Thu,  7 Nov 2024 14:06:27 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1730984789;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Br6j9tCD7gey4qn/vnRgBNealpC4+9i3aXfalCeYdjY=;
-	b=pRwh6o2kI6cs3FUXrpAfae/cn1kML4uB1wFP/V33+GJenfaOoEtobo7UGticUQfXOXt6Wh
-	9ZJE7ZJzg+Jc/Z/4B/9eHs+rFsR9PnY6sj2d4A4NBiMF4ce7wK/ceN9fGPWjC/0KOChEVd
-	i45m2u/SkVU4ViBeNvRtNC68sIVG9Xfu8ATyVFdCGLZImpqcrQohirSWRgysbrH8ecbA8f
-	B+Xzsp5K0/qahF3rA2wqxCg2+DkPpnBLKo/86MyfeHWSvpVdodB1tVw2WZIw4Qe3zPPzy3
-	/ZeEHruT+KsdIqmm5AaYo2aFBapIBwCZLNB5lX7X1+RH414Msi5pAhyqYVBgCA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, Pengfei Li <pengfei.li_1@nxp.com>, linux-arm-kernel@lists.infradead.org
-Cc: joao.goncalves@toradex.com, frieder.schrempf@kontron.de, marex@denx.de, hvilleneuve@dimonoff.com, peng.fan@nxp.com, m.othacehe@gmail.com, mwalle@kernel.org, Max.Merchel@ew.tq-group.com, hiago.franco@toradex.com, tharvey@gateworks.com, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, ping.bai@nxp.com, ye.li@nxp.com, aisheng.dong@nxp.com, frank.li@nxp.com, Alexander Stein <alexander.stein@ew.tq-group.com>
-Subject: Re: [PATCH 2/3] arm64: dts: freescale: Add i.MX91 dtsi support
-Date: Thu, 07 Nov 2024 14:06:27 +0100
-Message-ID: <1907807.tdWV9SEqCh@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <2350046.ElGaqSPkdT@steina-w>
-References: <20241108022703.1877171-1-pengfei.li_1@nxp.com> <20241108022703.1877171-3-pengfei.li_1@nxp.com> <2350046.ElGaqSPkdT@steina-w>
+        d=amarulasolutions.com; s=google; t=1730991452; x=1731596252; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aiuuQGCaJR6L9rbp4LJqZfhMxwW+RQ/d7RNS/+rBXDw=;
+        b=HSzg4fKqupxI+TkfVzppFYeSQNny5btt1kqIPxNYCBJ0yi2oe34bs7vvAsUGmAMANu
+         FNj6YKuBn62M1cynavLIm6CSGWMm8A+05lOI04DWNgHNprjbPNckdCyRSl4y8+odkWhr
+         snY3GXfA0pJbV2His8+1aJSXpAaIHV3o+AFuY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730991452; x=1731596252;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aiuuQGCaJR6L9rbp4LJqZfhMxwW+RQ/d7RNS/+rBXDw=;
+        b=QAgqGThWC+BF8r0EWFlWBHxzrC9J1h8CwsQULGYbeaJM3FBN4ydV9PDftFGc4clzul
+         cR7MuNjJhEQDq9C60d19thKRXKPKJGrvmYaa2bwdg4fFQ6Exvk+a8Q8BDRg6X5P0sZ4H
+         dB5iOTyMD+nlL6z6WepyFdAnsKLRcaWGx+CrBImId1VCVjOn6g0W6N98GIGorrClcbnN
+         +58qe7IeOlecD2XxhlvtPXH6W2jeHZ53CtYXLT8qskciafrsp0PIPJmH02HQL9F3FLEd
+         CgpnRh9uSdklxzqospaCibk9GgeNQv65X+ke6Ov12wC5+TJj3fhOkf8nOHh2zn6MCXql
+         5h5g==
+X-Forwarded-Encrypted: i=1; AJvYcCXT3mHMjRhMoVtQ7tAZSyQaaPp5YFuFCMkcC/j8nOvUMzQhMRfGSvhK6TXN18SxlGDC6gg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzLuJTxyJG+2bINYue1NE4St0x0iV6Psw/b/52yl73P7YAdu8h1
+	fUWDf5gEEAKkuqYnJenA40k/fu7jFL5h4jJYDLlmb65NN8uGfJdx9Jw0pbjBmiewDLLgmsjHK8g
+	5eMah6LdNEUZEL6bTqp8SwBww6XFYqB9/ympoxQ==
+X-Google-Smtp-Source: AGHT+IF8agBg7laXxANgHAvwKG8a08ww2rsq+nqLU8LlqFlymOUM9EIrlz0DftKlezAxcI5XDK1DcyZtsOZ0bmNH4oE=
+X-Received: by 2002:a05:690c:4b09:b0:6e3:b6c:d114 with SMTP id
+ 00721157ae682-6e9d8ad309bmr466023927b3.38.1730991452024; Thu, 07 Nov 2024
+ 06:57:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+References: <20241106090549.3684963-1-dario.binacchi@amarulasolutions.com>
+ <20241106090549.3684963-2-dario.binacchi@amarulasolutions.com>
+ <4bix7me5vaoyhcuffyp4btajmhy7no6ltczoesopaz2fqupyaw@fensx4nn472u> <b7c1499b-8337-421c-9734-6e518d678ff8@kernel.org>
+In-Reply-To: <b7c1499b-8337-421c-9734-6e518d678ff8@kernel.org>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Date: Thu, 7 Nov 2024 15:57:21 +0100
+Message-ID: <CABGWkvrYJL9=zrPSFuEAgKO+9gDHD6RmCJM6Br6Le_eh578ETQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/8] dt-bindings: clock: imx8m-clock: support spread
+ spectrum clocking
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com, 
+	Abel Vesa <abelvesa@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Michael Turquette <mturquette@baylibre.com>, Peng Fan <peng.fan@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
 
-Am Donnerstag, 7. November 2024, 13:49:50 CET schrieb Alexander Stein:
-> > diff --git a/arch/arm64/boot/dts/freescale/imx91.dtsi b/arch/arm64/boot=
-/dts/freescale/imx91.dtsi
-> > new file mode 100644
-> > index 000000000000..a9f4c1fe61cc
-> > --- /dev/null
-> > +++ b/arch/arm64/boot/dts/freescale/imx91.dtsi
-> > @@ -0,0 +1,66 @@
-> > +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> > +/*
-> > + * Copyright 2024 NXP
-> > + */
-> > +
-> > +#include "imx91-pinfunc.h"
-> > +#include "imx93.dtsi"
-> > +
-> > +&{/thermal-zones/cpu-thermal/cooling-maps/map0} {
-> > +	cooling-device =3D
-> > +		<&A55_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
-> > +};
-> > +
-> > +&clk {
-> > +	compatible =3D "fsl,imx91-ccm";
-> > +};
-> > +
-> > +&eqos {
-> > +	clocks =3D <&clk IMX91_CLK_ENET1_QOS_TSN_GATE>,
-> > +			<&clk IMX91_CLK_ENET1_QOS_TSN_GATE>,
-> > +			<&clk IMX91_CLK_ENET_TIMER>,
-> > +			<&clk IMX91_CLK_ENET1_QOS_TSN>,
-> > +			<&clk IMX91_CLK_ENET1_QOS_TSN_GATE>;
-> > +	assigned-clocks =3D <&clk IMX91_CLK_ENET_TIMER>,
-> > +				<&clk IMX91_CLK_ENET1_QOS_TSN>;
-> > +	assigned-clock-parents =3D <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>,
-> > +					<&clk IMX93_CLK_SYS_PLL_PFD0_DIV2>;
->=20
-> Is it just me or is the alignment of new lines not matching?
->=20
->=20
-> > +};
-> > +
-> > +&fec {
-> > +	clocks =3D <&clk IMX91_CLK_ENET2_REGULAR_GATE>,
-> > +			<&clk IMX91_CLK_ENET2_REGULAR_GATE>,
-> > +			<&clk IMX91_CLK_ENET_TIMER>,
-> > +			<&clk IMX91_CLK_ENET2_REGULAR>,
-> > +			<&clk IMX93_CLK_DUMMY>;
-> > +	assigned-clocks =3D <&clk IMX91_CLK_ENET_TIMER>,
-> > +				<&clk IMX91_CLK_ENET2_REGULAR>;
-> > +	assigned-clock-parents =3D <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>,
-> > +					<&clk IMX93_CLK_SYS_PLL_PFD0_DIV2>;
->=20
-> Here as well: Is it just me or is the alignment of new lines not matching?
->=20
-> > +	assigned-clock-rates =3D <100000000>, <250000000>;
-> > +};
-> > +
-> > +&i3c1 {
-> > +	clocks =3D <&clk IMX93_CLK_BUS_AON>,
-> > +			<&clk IMX93_CLK_I3C1_GATE>,
-> > +			<&clk IMX93_CLK_DUMMY>;
-> > +};
-> > +
-> > +&i3c2 {
-> > +	clocks =3D <&clk IMX93_CLK_BUS_WAKEUP>,
-> > +			<&clk IMX93_CLK_I3C2_GATE>,
-> > +			<&clk IMX93_CLK_DUMMY>;
-> > +};
-> > +
-> > +&tmu {
-> > +	status =3D "disabled";
->=20
-> Why does the TMU needs to be disabled instead of deleted?
->=20
-> > +};
-> > +
-> > +/* i.MX91 only has one A core */
-> > +/delete-node/ &A55_1;
-> > +
-> > +/* i.MX91 not has cm33 */
-> > +/delete-node/ &cm33;
-> > +
-> > +/* i.MX91 not has power-domain@44461800 */
-> > +/delete-node/ &mlmix;
-> >=20
->=20
-> Shouldn't the following node also be removed?
-> * mipi_csi
-> * dsi
-> * lvds_bridge
-> * lcdif_to_dsi
-> * lcdif_to_ldb
+Hello Krzysztof,
 
-Add mu1 and mu2 to that list.
+On Wed, Nov 6, 2024 at 3:13=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.org=
+> wrote:
+>
+> On 06/11/2024 15:10, Krzysztof Kozlowski wrote:
+> > On Wed, Nov 06, 2024 at 09:57:57AM +0100, Dario Binacchi wrote:
+> >> The patch adds the DT bindings for enabling and tuning spread spectrum
+> >> clocking generation.
+> >
+> > We had long talks about this but nothing of it got reflected in commit
+> > msg. Sorry, I don't remember what I was talking in some particular patc=
+h
+> > month ago, so you will get the same questions over and over...
+> >
+> >>
+> >> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+> >>
+> >> ---
+> >>
+> >> Changes in v3:
+> >> - Added in v3
+> >> - The dt-bindings have been moved from fsl,imx8m-anatop.yaml to
+> >>   imx8m-clock.yaml. The anatop device (fsl,imx8m-anatop.yaml) is
+> >>   indeed more or less a syscon, so it represents a memory area
+> >>   accessible by ccm (imx8m-clock.yaml) to setup the PLLs.
+> >>
+> >>  .../bindings/clock/imx8m-clock.yaml           | 46 ++++++++++++++++++=
++
+> >>  1 file changed, 46 insertions(+)
+> >>
+> >> diff --git a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml =
+b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
+> >> index c643d4a81478..7920393e518e 100644
+> >> --- a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
+> >> +++ b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
+> >> @@ -43,6 +43,40 @@ properties:
+> >>        ID in its "clocks" phandle cell. See include/dt-bindings/clock/=
+imx8m-clock.h
+> >>        for the full list of i.MX8M clock IDs.
+> >>
+> >> +  fsl,ssc-clocks:
+> >> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> >> +    description:
+> >> +      Phandles of the PLL with spread spectrum generation hardware ca=
+pability.
+> >> +    minItems: 1
+> >> +    maxItems: 4
+> >
+> > 1. How is it possible that you change spread spectrum of some clocks fr=
+om
+> > main Clock Controller, while this device is not a consumer of them?
+> > Basically this means that this device does not have these clocks but ye=
+t
+> > you claim that it needs to configure spread for them! It's contradictor=
+y
+> > to me and nohing got explained in commit msg about it. I am pretty sure
+> > I asked about this alrady.
+>
+> I digged my previous answer and it was pretty clear here:
+>
+> 18:44 <krzk> You can, but I still have the same concerns. How this
+> device - which does not take any clock input, has no clocks at all - can
+> depend on spread spectrum of some PLLs? Thsi device does not have clocks.
+> 18:50 <krzk> device has no clocks, I checked now third time
+> 18:50 <krzk> If device has clocks, it must have clocks property
+>
 
-Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+The device where the spread spectrum properties are to be set already
+contains "clocks" properties:
+
+clk: clock-controller@30380000 {
+    compatible =3D "fsl,imx8mn-ccm";
+    reg =3D <0x30380000 0x10000>;
+    interrupts =3D <GIC_SPI 85 IRQ_TYPE_LEVEL_HIGH>,
+                       <GIC_SPI 86 IRQ_TYPE_LEVEL_HIGH>;
+    #clock-cells =3D <1>;
+    clocks =3D <&osc_32k>, <&osc_24m>, <&clk_ext1>, <&clk_ext2>,
+                  <&clk_ext3>, <&clk_ext4>;
+    clock-names =3D "osc_32k", "osc_24m", "clk_ext1", "clk_ext2",
+                             "clk_ext3", "clk_ext4";
+    assigned-clocks =3D <&clk IMX8MN_CLK_A53_SRC>,
+                                  <&clk IMX8MN_CLK_A53_CORE>,
+                                  <&clk IMX8MN_CLK_NOC>,
+                                  <&clk IMX8MN_CLK_AUDIO_AHB>,
+                                  <&clk IMX8MN_CLK_IPG_AUDIO_ROOT>,
+                                  <&clk IMX8MN_SYS_PLL3>,
+                                  <&clk IMX8MN_AUDIO_PLL1>,
+                                  <&clk IMX8MN_AUDIO_PLL2>;
+    assigned-clock-parents =3D <&clk IMX8MN_SYS_PLL1_800M>,
+                                             <&clk IMX8MN_ARM_PLL_OUT>,
+                                             <&clk IMX8MN_SYS_PLL3_OUT>,
+                                             <&clk IMX8MN_SYS_PLL1_800M>;
+    assigned-clock-rates =3D <0>, <0>, <0>,
+                                         <400000000>,
+                                         <400000000>,
+                                         <600000000>,
+                                         <393216000>,
+                                         <361267200>;
+};
+
+The spread spectrum is not configurable on these clocks or, more
+generally, may not be
+configurable (only 4 PLLs have this capability). Therefore, I need the
+"fsl,ssc-clocks"
+property to list the PLLs on which I want to enable and configure
+spread spectrum.
+
+Furthermore, spread spectrum cannot be considered a new device but
+rather a property
+available only for some of the clocks managed by the clock controller
+manager (CCM).
+
+Thanks and regards,
+Dario
+
+> So again, you do not need this property at all. I repeated it multiple
+> times - you are supposed to use clocks property.
+>
+> >
+> > 2. Why is this array flexible in size?
+> >
+> > Best regards,
+> > Krzysztof
+> >
+>
+> Best regards,
+> Krzysztof
+>
 
 
+--
+
+Dario Binacchi
+
+Senior Embedded Linux Developer
+
+dario.binacchi@amarulasolutions.com
+
+__________________________________
+
+
+Amarula Solutions SRL
+
+Via Le Canevare 30, 31100 Treviso, Veneto, IT
+
+T. +39 042 243 5310
+info@amarulasolutions.com
+
+www.amarulasolutions.com
