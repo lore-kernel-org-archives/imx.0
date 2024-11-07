@@ -1,226 +1,186 @@
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2051.outbound.protection.outlook.com [40.107.22.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECEA212181
-	for <imx@lists.linux.dev>; Thu,  7 Nov 2024 14:57:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730991455; cv=none; b=EEJOw/vMP8geN5C5Hxn2yoyZEtikOZaP1G+ffdjrrP89vbQ2cHRittRbAWvEDjS+e57w1fzHoyd0cVGDcUD91RiYWXxvb/ywO4RpFInX/y63Gu2MkIdBHHxnOPWCvesq741hKBxRLnXIEUqP2MKHNGnKd63cae9vVBzw6LBorDA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730991455; c=relaxed/simple;
-	bh=qZ8izUSaHahLbAO7uWeGh/Gz8E/GX1hkiRPzbJN9tMY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PUDpdzML701lk1Q5NjBzzGdp8BBVCtFt3e9xhoNa8Gsy9kyjTCcm3YMRK8Xh1L0YWh8U0Z3hVGM74BXMSsNQqevH2GkLu2zTDYNLMFk4acZfWPBPZSSxPi0ysd0ip7vhCUeny1tslS+MDdejvKswrdZbuCNKBVtHz1yKt2WIvVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=HSzg4fKq; arc=none smtp.client-ip=209.85.128.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E73B1F471A
+	for <imx@lists.linux.dev>; Thu,  7 Nov 2024 15:03:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730991790; cv=fail; b=r+EBiVvSN9NB9STKmtlTzuVr6pKhGmndZeEFntNsR98jVncjlf12/MCrwqo/SAg1qyOVSkMZscqrbAxi7grxa6IT9oI5wymER/sQKYa6PJwu3btLwf64cr19s2ZvAU55LA3eKC2zJbtKSMuQPllc/TzW6u+T+wdR3h+spGVOe1Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730991790; c=relaxed/simple;
+	bh=UikS+OmNvhHW3djpK050dLD1CmeD08dSgvOGnidoLJ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=gaVkkapitNAa1dpeFRR6iz+OfB2l3Yt85RcWkdfobD2qccukBhDIlIdAhcSHOwQLVcE1V5xkw13ITrvfXo+SYfPv8nJMF7+ZiZWLF+KcIgOITLmlle8pN4rWydfcdjXeRr/SHz4uWHGPYN1K05U/kJjCO8TjlTvKxrEuL1N/bAs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Rxsf+1rQ; arc=fail smtp.client-ip=40.107.22.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="HSzg4fKq"
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-6e5b7cd1ef5so8818837b3.1
-        for <imx@lists.linux.dev>; Thu, 07 Nov 2024 06:57:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1730991452; x=1731596252; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aiuuQGCaJR6L9rbp4LJqZfhMxwW+RQ/d7RNS/+rBXDw=;
-        b=HSzg4fKqupxI+TkfVzppFYeSQNny5btt1kqIPxNYCBJ0yi2oe34bs7vvAsUGmAMANu
-         FNj6YKuBn62M1cynavLIm6CSGWMm8A+05lOI04DWNgHNprjbPNckdCyRSl4y8+odkWhr
-         snY3GXfA0pJbV2His8+1aJSXpAaIHV3o+AFuY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730991452; x=1731596252;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aiuuQGCaJR6L9rbp4LJqZfhMxwW+RQ/d7RNS/+rBXDw=;
-        b=QAgqGThWC+BF8r0EWFlWBHxzrC9J1h8CwsQULGYbeaJM3FBN4ydV9PDftFGc4clzul
-         cR7MuNjJhEQDq9C60d19thKRXKPKJGrvmYaa2bwdg4fFQ6Exvk+a8Q8BDRg6X5P0sZ4H
-         dB5iOTyMD+nlL6z6WepyFdAnsKLRcaWGx+CrBImId1VCVjOn6g0W6N98GIGorrClcbnN
-         +58qe7IeOlecD2XxhlvtPXH6W2jeHZ53CtYXLT8qskciafrsp0PIPJmH02HQL9F3FLEd
-         CgpnRh9uSdklxzqospaCibk9GgeNQv65X+ke6Ov12wC5+TJj3fhOkf8nOHh2zn6MCXql
-         5h5g==
-X-Forwarded-Encrypted: i=1; AJvYcCXT3mHMjRhMoVtQ7tAZSyQaaPp5YFuFCMkcC/j8nOvUMzQhMRfGSvhK6TXN18SxlGDC6gg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzLuJTxyJG+2bINYue1NE4St0x0iV6Psw/b/52yl73P7YAdu8h1
-	fUWDf5gEEAKkuqYnJenA40k/fu7jFL5h4jJYDLlmb65NN8uGfJdx9Jw0pbjBmiewDLLgmsjHK8g
-	5eMah6LdNEUZEL6bTqp8SwBww6XFYqB9/ympoxQ==
-X-Google-Smtp-Source: AGHT+IF8agBg7laXxANgHAvwKG8a08ww2rsq+nqLU8LlqFlymOUM9EIrlz0DftKlezAxcI5XDK1DcyZtsOZ0bmNH4oE=
-X-Received: by 2002:a05:690c:4b09:b0:6e3:b6c:d114 with SMTP id
- 00721157ae682-6e9d8ad309bmr466023927b3.38.1730991452024; Thu, 07 Nov 2024
- 06:57:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Rxsf+1rQ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jEHDPtZ02hUmuGFAdPfxxChNX/QWLyu4JVNYjTfssRXMBb6OtIAL07QGJ9KuBl4y9YmJ6pGTervgpZMA4Rw8wFjuhE+WHwlBhkZfFyJBgQ5oi1Ac4CNDrYTEARfd5hBWh+ZEycS5C6phYU7XfEmDwQZRpDpA6jFaQgdF1gQCqwdLsCxYCHxdDWTwzUrGxMjksoPw/2OaN7bFzMvcKK4TXr4mfmbmdwUKROZWim2fijNahF8ZKTvFKQ9JA9+EpKpzWST7wSHYp7Sbp8+U1RkMrSeuYb0s9xtE/hHJJcurn1+a9QTTQRC8xVcz1vAOug8YhEuC/yY1/AqGuQ0Q4Bd3Eg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ChxI+JJz8Xodkt4+L3iUBIBX0LyvBwkYhztGG5S+XVI=;
+ b=wgX9F0GGI/nPzrBqpFge1jYVT8BiHdtThyl8xw/Utrh+qUZ1Mb5N7OgQHoPnw2T/5LVmQ7FmTbVoyVpzZ8KnJlWo6GonEKUk/WLymQUnMPfCfAz2zudwRbmDWOjGY3wXhh2kpSrFWq4fK/8+CdiP1E0DJUaxojfVPIzahk85k/zBf+RUowYr6xWzFlk0Qj1cOAu4kGMxwvWE0yDi0qFWW6JDQgpWkQEnczfk7XVEcsI3Hr4p38aMPr1vQnIZWzg7wWi9t6UZ6ZCPzfpyYRPa4CyYj6oyyn4+6L2wiQjB5pjW9D+lYtjMUO+h/k3XQFz+DxxCSBz3sZo2DOQcBuhtXQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ChxI+JJz8Xodkt4+L3iUBIBX0LyvBwkYhztGG5S+XVI=;
+ b=Rxsf+1rQqUj5TvvKy2DhFIrWEuEzpnL95t0u4ZiKVP4NeP/gFRrAOrc7ovYzNz80B9YsrkEL58xzD9zXHP2v9qOem8jx/T5gxfvicFTTZhVCDbYeLfKP161t4oxLvfa2tXcvLLWPuSfunxKhxy8l+4IOYmX/muAeBQdf7gDmyvoYJoVHXTb88pNkTjQo8NaAYI8mxpD0oNoYP/tjCXYicdOV/nQ8s7MNlJchjolxTDh8uYnwOVHqT7TxnaabKDnd8NdIQrbKZ30LR5lBGq9YcOvV2O3lVt4hu9LE3jZ7D/kMs6p5KV2K5wmHeniG9PfcuM4KQbO62+vN03V48LYsug==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AS4PR04MB9411.eurprd04.prod.outlook.com (2603:10a6:20b:4ea::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.31; Thu, 7 Nov
+ 2024 15:03:04 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8137.018; Thu, 7 Nov 2024
+ 15:03:04 +0000
+Date: Thu, 7 Nov 2024 10:02:52 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Pengfei Li <pengfei.li_1@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, joao.goncalves@toradex.com,
+	frieder.schrempf@kontron.de, marex@denx.de,
+	hvilleneuve@dimonoff.com, peng.fan@nxp.com,
+	alexander.stein@ew.tq-group.com, m.othacehe@gmail.com,
+	mwalle@kernel.org, Max.Merchel@ew.tq-group.com,
+	hiago.franco@toradex.com, tharvey@gateworks.com,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	ping.bai@nxp.com, ye.li@nxp.com, aisheng.dong@nxp.com
+Subject: Re: [PATCH 1/3] dt-bindings: arm: fsl: Add i.MX91 11x11 evk board
+Message-ID: <ZyzWnHmPyjBJZ7/F@lizhi-Precision-Tower-5810>
+References: <20241108022703.1877171-1-pengfei.li_1@nxp.com>
+ <20241108022703.1877171-2-pengfei.li_1@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241108022703.1877171-2-pengfei.li_1@nxp.com>
+X-ClientProxiedBy: SJ0PR03CA0189.namprd03.prod.outlook.com
+ (2603:10b6:a03:2ef::14) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241106090549.3684963-1-dario.binacchi@amarulasolutions.com>
- <20241106090549.3684963-2-dario.binacchi@amarulasolutions.com>
- <4bix7me5vaoyhcuffyp4btajmhy7no6ltczoesopaz2fqupyaw@fensx4nn472u> <b7c1499b-8337-421c-9734-6e518d678ff8@kernel.org>
-In-Reply-To: <b7c1499b-8337-421c-9734-6e518d678ff8@kernel.org>
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Date: Thu, 7 Nov 2024 15:57:21 +0100
-Message-ID: <CABGWkvrYJL9=zrPSFuEAgKO+9gDHD6RmCJM6Br6Le_eh578ETQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/8] dt-bindings: clock: imx8m-clock: support spread
- spectrum clocking
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com, 
-	Abel Vesa <abelvesa@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Michael Turquette <mturquette@baylibre.com>, Peng Fan <peng.fan@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS4PR04MB9411:EE_
+X-MS-Office365-Filtering-Correlation-Id: b759af0c-00f1-40c1-de65-08dcff3d47ba
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|1800799024|366016|376014|7416014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ =?us-ascii?Q?kgUM1oN2/GYjV9fq9a8LvwNbZT65oGmsOpx9QAtjh366qxoCoSmgENCj1cxf?=
+ =?us-ascii?Q?b68U54y2VXX4UfFJ+ueurXX4A9Wl/e9NRDWIy41aGdub8ZxX6x7sTz7IaW2P?=
+ =?us-ascii?Q?0DFOXWbJGltjHWsCl4EFQutraBT45ITXoS0EmHOxwxKBcXPB5uqvKuH6M24b?=
+ =?us-ascii?Q?egJlHSndads+YQQmN8PGYUUSnszFrvJMosGsfsLlI3cx+cbSEcpklhKi6j9/?=
+ =?us-ascii?Q?gHKbB/OS9IYN7BCqvymUP2eS64/NiX3tcy1TMdGMYsHqzD7+IKyzv/TIb5Qb?=
+ =?us-ascii?Q?z/wjTpr01tlo0Eu6z3l4fWjz8fzYa82LhjIWLejplXDFAe7iF0J/lFRm+fOI?=
+ =?us-ascii?Q?TiXCrfIyX4L7rH6jqLwyGNMWey5ThWL6ELPXYBgkzMtDDmk+n/XVgE7WYyA/?=
+ =?us-ascii?Q?6ed0iVfnjP0LBjiB3PfpJ1hwA0So4H839I6Xyzvbfq0Msz1LKGd65WJUCtGy?=
+ =?us-ascii?Q?A9ng0EorBp8phVZ+9+yCGE7D2LRkYo56X3LcsyDz4fqdHFouyuC2++o4vA0r?=
+ =?us-ascii?Q?IeiAZXrw84t6L20yJmyCz6uH9bkL7fzJpJcTvL/lx57J48XpHTpHG3CYqLDz?=
+ =?us-ascii?Q?09acpVCxdCA8E6WjL5WxIZn1JYEc5n9uFBwri3j3XYvjSy8XZUDNBSCEIibv?=
+ =?us-ascii?Q?Q1hj4IsWLP5dR36CHiNAMEPELDuOUs8M/7C/3sAzcHBn9/Mm7sOo6oEXJ466?=
+ =?us-ascii?Q?CmsBTZSPQ2+/isHJTOeXYUiBALOepZBf4ZnTu0Bw/4N+8YsonTEtYryzGL41?=
+ =?us-ascii?Q?aOmmaw0savSUGNwBwGRUUIJmsDgSLfyEhlnp84OxwauAZWS6PkvlM/ABMPaQ?=
+ =?us-ascii?Q?FKKBrIdfzP3LxYOQXTfi6lIH+VuOLc+veeQvl7X9kGEpD2NrpIwEXsEMxVz1?=
+ =?us-ascii?Q?e/jO9FeQ6j7oAp/gbGKsOOxDMFHrhkRg7odaRiWRaXbro+ErlVufnfOXPNj4?=
+ =?us-ascii?Q?/qjNhlxOTzCj98N35Nu8vEwmHtYon108Vu4YsBPulOWnwsnpBRTGkiXgyJ/x?=
+ =?us-ascii?Q?w+FNmNSdZwrpnCKIy/WXOrrkyb2vUsq8krXE6BF3q5OBmQdYGuvk9BlmnccD?=
+ =?us-ascii?Q?GurFs4nLNdV147Zk8fyEg1RaPc5p0ObjweT5yhcDrJ9OP+Q74PWFTuk2zw2i?=
+ =?us-ascii?Q?fCOisADXTEyQYRHDF62+qLFd63MpKdrVt4n2+tCMsJS2NbmX8dO9+kQJmHc6?=
+ =?us-ascii?Q?Rl+Ufk62YJkgL5KgLiJPpY2JAjPmOumwwedHinnEEcvWDOG+wXA5WoCSC4wb?=
+ =?us-ascii?Q?TWsooRJA+qg9I9dxYLhBDp5jw0E4yv4/YAmOy3qtCos7xyNWsG+xOCvY720p?=
+ =?us-ascii?Q?ZT+PEmUV4Gov/2JhS7kioJXTPoDzqAs6d3W7s3aJj0z7BL87P96MHTsQNvN4?=
+ =?us-ascii?Q?L91fnwg=3D?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?0K2+eiFuokzdyg96uv1MQVJ/PuKjik1Qs5eAvgnfNlu7ZCvijnCZatIg645R?=
+ =?us-ascii?Q?FxUUarulLtT/ZzysrFfbacz3rJSgCnak1bmhTNP7jwHl8l6qOUmDg0py36tS?=
+ =?us-ascii?Q?9Bsib50GeKWKd+oQDmeFGboz0L19BTrd2HydUinawS9Oj1B0aZl8OUEcfyC6?=
+ =?us-ascii?Q?cwTfDUFdTbq0gNl9Z+pp2pjtgZERkPiNCDYvGZ8DeHWzeXOoswX+fNy45HYy?=
+ =?us-ascii?Q?4onlNyoVNZv34NEJ9HUcci0fwiSchP9sP7L6bv5tgQIVemJe8mxzsjraadD5?=
+ =?us-ascii?Q?CXk/6xV4zGK1Z/ki75Tqm4oFAisG7i5dlHmFbh3nRW7/OW44FFYWBDXZkyEI?=
+ =?us-ascii?Q?5zSi3+c1qHjAWHXj6FvMl3GoeWTyxvpR4BnpIM+6P0TqKmEzabEga29lcCAs?=
+ =?us-ascii?Q?MUME2KKbO/uKyuq666bsk4IohalequdxtZ8uCBmPcTkfh7DBPEHVZbi0BzJb?=
+ =?us-ascii?Q?e2rrl5OsNIjqqwfQIq3ccRVA9y5gpK96/Ce3vreiXFVZY9oMhMtrVA4PJA2r?=
+ =?us-ascii?Q?Rnz1Y+QwwxTP9SPNICy/gkDUe9i+WwRQOrr50HwV2HlQVNNPbWth5OVpdOzm?=
+ =?us-ascii?Q?h7xUOq3Qwbaa1qF60Gpc7AsteWXr1nH+y4M287t91LvUqkOzIp4UfQWKyAha?=
+ =?us-ascii?Q?4YFim2Zl6EA+ZN0z6LGOxBA9OHXVH0Wz7J6KbTXVbkuC27GsI/FIRH629D8E?=
+ =?us-ascii?Q?02hDrePae6Tc5tAN96chNz5ppRqKli/B9ml+U7nkoM/5Q20C0NlIOOacgZ1u?=
+ =?us-ascii?Q?J8Whpc+8z30T1oWAc+6et/WQDFUVvrmzTZAb9zHTEpvotw2T2ADC2qVNu9XX?=
+ =?us-ascii?Q?E8ZonKhu5mjBl/t/IivWfKy31rGjX8E/wl03SAIJvABhi0wuE0Xdv4gTEXtt?=
+ =?us-ascii?Q?ORSWbYu+x6estxW5JBnB6FwDEXgE93o5kItAMY0PspTeCCXG+L4EoYdE9XDM?=
+ =?us-ascii?Q?hw2x2m743WfYGbMWTNy44WF/m1pQQXjLap9zwrqRofIBs11Le+Y0xtF5zHnD?=
+ =?us-ascii?Q?hZuMdE4iRutVtfTcwh82mUHr/R6Dqz+AUzPG4amjQbuZYugTTZMA5mEM/+JJ?=
+ =?us-ascii?Q?16C/4+YNOnWxTw3kclxL34gtL7yDHPTaFEDHk1TE+aBw6WDJ3qsie3E6XLsL?=
+ =?us-ascii?Q?7bvbbLPH0T4eczpaS8Pc1SaB+yD8gDE+iypEehIJq1af2Yf/LowXo4wQyoeO?=
+ =?us-ascii?Q?14hYaMQVfzuXHgftnkLzE3oLTzYJUkNIcGn01H5PxS+2URkjra/XBRGn/AwS?=
+ =?us-ascii?Q?9ietCZrEodZYPckVh33PC0PHQB7dYqD/Ae9pTan57UXi9kdFxo057dIzQpl6?=
+ =?us-ascii?Q?P+CmsywWGbPsL9EmPkhIJhLR3YZDSuKAFHsuFPuL+0cvOXxyzm8d9ERHEFjB?=
+ =?us-ascii?Q?L6WBc6ubXyZxGobYEdkwvIyjyMDoxiIuhGBmdMKWed/4wBI5aGQGR2awm1f8?=
+ =?us-ascii?Q?2P7wZmiVdQsVNBJNBqUgq6levOHEKySVYpjWy0BqAfp3CZkAnw6elqVfOqqF?=
+ =?us-ascii?Q?CedZNn5tBl7cpwQypPH+7LnDJi/7lsPWxFuX4ZTHN4y/SLUjrxCnxlEx5tA7?=
+ =?us-ascii?Q?SpYHoRM7Z42YbPZvdtg=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b759af0c-00f1-40c1-de65-08dcff3d47ba
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 15:03:04.3014
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +d6Y9dHPHEtgg8UYEgdwLKqavbBi3pv5ep8BdUIrHkwtdhomW5Xy6f1AEQCUB2PV1arWxFU77PhCd3C8BApFoQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9411
 
-Hello Krzysztof,
-
-On Wed, Nov 6, 2024 at 3:13=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.org=
-> wrote:
+On Thu, Nov 07, 2024 at 06:27:01PM -0800, Pengfei Li wrote:
+> Add the board imx91-11x11-evk in the binding docuemnt.
 >
-> On 06/11/2024 15:10, Krzysztof Kozlowski wrote:
-> > On Wed, Nov 06, 2024 at 09:57:57AM +0100, Dario Binacchi wrote:
-> >> The patch adds the DT bindings for enabling and tuning spread spectrum
-> >> clocking generation.
-> >
-> > We had long talks about this but nothing of it got reflected in commit
-> > msg. Sorry, I don't remember what I was talking in some particular patc=
-h
-> > month ago, so you will get the same questions over and over...
-> >
-> >>
-> >> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-> >>
-> >> ---
-> >>
-> >> Changes in v3:
-> >> - Added in v3
-> >> - The dt-bindings have been moved from fsl,imx8m-anatop.yaml to
-> >>   imx8m-clock.yaml. The anatop device (fsl,imx8m-anatop.yaml) is
-> >>   indeed more or less a syscon, so it represents a memory area
-> >>   accessible by ccm (imx8m-clock.yaml) to setup the PLLs.
-> >>
-> >>  .../bindings/clock/imx8m-clock.yaml           | 46 ++++++++++++++++++=
-+
-> >>  1 file changed, 46 insertions(+)
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml =
-b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-> >> index c643d4a81478..7920393e518e 100644
-> >> --- a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-> >> +++ b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-> >> @@ -43,6 +43,40 @@ properties:
-> >>        ID in its "clocks" phandle cell. See include/dt-bindings/clock/=
-imx8m-clock.h
-> >>        for the full list of i.MX8M clock IDs.
-> >>
-> >> +  fsl,ssc-clocks:
-> >> +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> >> +    description:
-> >> +      Phandles of the PLL with spread spectrum generation hardware ca=
-pability.
-> >> +    minItems: 1
-> >> +    maxItems: 4
-> >
-> > 1. How is it possible that you change spread spectrum of some clocks fr=
-om
-> > main Clock Controller, while this device is not a consumer of them?
-> > Basically this means that this device does not have these clocks but ye=
-t
-> > you claim that it needs to configure spread for them! It's contradictor=
-y
-> > to me and nohing got explained in commit msg about it. I am pretty sure
-> > I asked about this alrady.
+> Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+
+Please not include my review tag next time when send out to public list.
+review tag need explicitily sent out.
+
+Anyways, I am fine for this patch.
+
+Frank
+
+>  Documentation/devicetree/bindings/arm/fsl.yaml | 6 ++++++
+>  1 file changed, 6 insertions(+)
 >
-> I digged my previous answer and it was pretty clear here:
+> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+> index 6e0dcf4307f1..5951317ce900 100644
+> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
+> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+> @@ -1332,6 +1332,12 @@ properties:
+>                - fsl,imx8ulp-evk           # i.MX8ULP EVK Board
+>            - const: fsl,imx8ulp
 >
-> 18:44 <krzk> You can, but I still have the same concerns. How this
-> device - which does not take any clock input, has no clocks at all - can
-> depend on spread spectrum of some PLLs? Thsi device does not have clocks.
-> 18:50 <krzk> device has no clocks, I checked now third time
-> 18:50 <krzk> If device has clocks, it must have clocks property
+> +      - description: i.MX91 based Boards
+> +        items:
+> +          - enum:
+> +              - fsl,imx91-11x11-evk       # i.MX91 11x11 EVK Board
+> +          - const: fsl,imx91
+> +
+>        - description: i.MX93 based Boards
+>          items:
+>            - enum:
+> --
+> 2.34.1
 >
-
-The device where the spread spectrum properties are to be set already
-contains "clocks" properties:
-
-clk: clock-controller@30380000 {
-    compatible =3D "fsl,imx8mn-ccm";
-    reg =3D <0x30380000 0x10000>;
-    interrupts =3D <GIC_SPI 85 IRQ_TYPE_LEVEL_HIGH>,
-                       <GIC_SPI 86 IRQ_TYPE_LEVEL_HIGH>;
-    #clock-cells =3D <1>;
-    clocks =3D <&osc_32k>, <&osc_24m>, <&clk_ext1>, <&clk_ext2>,
-                  <&clk_ext3>, <&clk_ext4>;
-    clock-names =3D "osc_32k", "osc_24m", "clk_ext1", "clk_ext2",
-                             "clk_ext3", "clk_ext4";
-    assigned-clocks =3D <&clk IMX8MN_CLK_A53_SRC>,
-                                  <&clk IMX8MN_CLK_A53_CORE>,
-                                  <&clk IMX8MN_CLK_NOC>,
-                                  <&clk IMX8MN_CLK_AUDIO_AHB>,
-                                  <&clk IMX8MN_CLK_IPG_AUDIO_ROOT>,
-                                  <&clk IMX8MN_SYS_PLL3>,
-                                  <&clk IMX8MN_AUDIO_PLL1>,
-                                  <&clk IMX8MN_AUDIO_PLL2>;
-    assigned-clock-parents =3D <&clk IMX8MN_SYS_PLL1_800M>,
-                                             <&clk IMX8MN_ARM_PLL_OUT>,
-                                             <&clk IMX8MN_SYS_PLL3_OUT>,
-                                             <&clk IMX8MN_SYS_PLL1_800M>;
-    assigned-clock-rates =3D <0>, <0>, <0>,
-                                         <400000000>,
-                                         <400000000>,
-                                         <600000000>,
-                                         <393216000>,
-                                         <361267200>;
-};
-
-The spread spectrum is not configurable on these clocks or, more
-generally, may not be
-configurable (only 4 PLLs have this capability). Therefore, I need the
-"fsl,ssc-clocks"
-property to list the PLLs on which I want to enable and configure
-spread spectrum.
-
-Furthermore, spread spectrum cannot be considered a new device but
-rather a property
-available only for some of the clocks managed by the clock controller
-manager (CCM).
-
-Thanks and regards,
-Dario
-
-> So again, you do not need this property at all. I repeated it multiple
-> times - you are supposed to use clocks property.
->
-> >
-> > 2. Why is this array flexible in size?
-> >
-> > Best regards,
-> > Krzysztof
-> >
->
-> Best regards,
-> Krzysztof
->
-
-
---
-
-Dario Binacchi
-
-Senior Embedded Linux Developer
-
-dario.binacchi@amarulasolutions.com
-
-__________________________________
-
-
-Amarula Solutions SRL
-
-Via Le Canevare 30, 31100 Treviso, Veneto, IT
-
-T. +39 042 243 5310
-info@amarulasolutions.com
-
-www.amarulasolutions.com
