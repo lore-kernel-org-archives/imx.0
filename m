@@ -1,212 +1,184 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2084.outbound.protection.outlook.com [40.107.20.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70CE2161EB;
-	Thu,  7 Nov 2024 20:02:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731009769; cv=none; b=ftvPfWc7YSS5gtSlGdHHJv3W4To44aN54JXaIgr46VWWtyLUmJcA+w6wm4hkjzh6GzkT5vJt9GywCgeJsaOOo9yMvMRajjNmJT91gK7zaXz2vn3E7ineo6bvvyy2jxglHalFzkjKxEeKYYtXumfPQi4mzH8skii1F+u+iTcHi5M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731009769; c=relaxed/simple;
-	bh=IOhBT4+s9HKKZijqKV2MQyFUtiotLMC73AtMG4Y6HsI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rXy8f+0rAtQv8MJ2MLYOV3b6RZOstrYnkIv/cB7pFArgtUtoBum1oEQrYpBXLsxVnwUsvm3VjbrZtOTyunOZcREzwvezjzYeeKWMy5qXPLIiRlkhsJv7F8OM4r7ZkgEmE/bOE/HRmZt1aKMIB5/F7LXd5H6glH4WVk2uKS3LeOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B+/ICLsO; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701CF2170C0
+	for <imx@lists.linux.dev>; Thu,  7 Nov 2024 20:08:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.84
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731010101; cv=fail; b=uVpNik9vhdT76vxkfmqU9PyWusJAA4K0GY/KhgjE84ya2eDK8kXLSE4G161r+l7BTeKgDF4wqg2CoMiqewWyX+5QGldCsVBndheRYdQVRz9bPjmIu0nGV40tXBtpGBAy1iRi+tBPfxu/Ov0/farWwkA2Fbkmf7ygDslQ5qaauJ4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731010101; c=relaxed/simple;
+	bh=mehDCDfBiLIfATNkEcoAXjBU7TIC/NN8Ul+qb/wfeYg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=lCVufYwRNfZ+22uZVMHgnVVXTyDhJXctnXYOCCYrhSMam1dvfdrmwpBx3kp2W8KRBIYxKEjfy3U6h49LNwvtoG/FG/t2EyqO7+xLEVDHj6jajC5HpUPjcnjOEoMOkiE/GtMcoMlLhDGBDs7T7gsfdgaRhhFmgEOdWqSJfN1dvXs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=byPbUL+A; arc=fail smtp.client-ip=40.107.20.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B+/ICLsO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731009768; x=1762545768;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IOhBT4+s9HKKZijqKV2MQyFUtiotLMC73AtMG4Y6HsI=;
-  b=B+/ICLsOHDBxNTJIHr98ST1Dal6D/hvlSvM5RuCcED8cPaOHfCufe8u1
-   G/fdNpil1m5vT3237BBkusXSSoOT2cpkHoZz3bHgW2EYJAAXIMMG2jFSl
-   UQ0o7ZeJeEqXVYagdySpkBwknAoS4XjOnDlXu//PqLacXmapsEQdM1k6q
-   50vzCnBWNFqtA3Fjg4M7xZGI0wCi5GPz+IYf/hLSyW/VGNqI1rz0CQ/TR
-   L4BC07GbeOFocFLDpzRwursyfEwC53TrHaPuwHCYk4t/fn9fsq/lO+UQj
-   ajn6gm310s+3T/WiKIVRuy+mEQ31b4U9J9wnz0VNcfF0rVA/rMIcJvzFQ
-   A==;
-X-CSE-ConnectionGUID: EgYp32F3T0uQ8p9smeBbag==
-X-CSE-MsgGUID: oS6tnnHARq2Ak6Q/YGcd4w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="48389752"
-X-IronPort-AV: E=Sophos;i="6.12,136,1728975600"; 
-   d="scan'208";a="48389752"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2024 12:02:33 -0800
-X-CSE-ConnectionGUID: ba7PxB6RT3iz2c17O0RJ7w==
-X-CSE-MsgGUID: 29VcLRgfRSOszxnR9CtQRA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,136,1728975600"; 
-   d="scan'208";a="89860766"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 07 Nov 2024 12:02:30 -0800
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t98i3-000qdG-2M;
-	Thu, 07 Nov 2024 20:02:27 +0000
-Date: Fri, 8 Nov 2024 04:01:42 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jonas Rebmann <jre@pengutronix.de>, Mark Brown <broonie@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-spi@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	Jonas Rebmann <jre@pengutronix.de>
-Subject: Re: [PATCH 2/2] spi: imx: support word delay
-Message-ID: <202411080315.8JXzpAnT-lkp@intel.com>
-References: <20241107-imx-spi-word-delay-v1-2-2a969214d796@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="byPbUL+A"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pQPQbXcA2lIUMzbpbVPG1k/qNF6j1nupZAij/4ieJGu+bMeKqI7v7FNFU0ivfmcrk7Ik7q23qC6X1cpwRYjktDAv/nDWZ16bqIvIt5FNvKBPme+foJQXcTacvpP5ITq5f14Sdf/bF6CikHzXlth01Mu/L8CdVtpy5MtFfrV3AiYDuD/ns+GuJjD/PmRPkslzJGLLhhpYS9aEZDFKqtplkHmhVbFfPfdyeou5EXbaSY9d6CFmCIscAdbxaEkFWd9rtg2EmNHEdqzGBJJvGBvNG7yPJsyy0sGvSlQzwFwezSRhm35R8pil9ZObo6SDToVb+9Y/InXuCgrZOVhxaiFpIA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=34JlCLm8+3yw+7E24QoDRTJjWqnbo/qlmnarrJRO6Cs=;
+ b=Glm74goPoBwkiTJvI37Si3bAUDbUr3NPY3YlFbo18CzODjzXDY3a5xq/okIywar/8xtw9nFiQppeOBRsfhO41Rt3uViE8aT/mt2OXN8ehqV2o5Cmbkfq3CFAna0BJ3M8J4KChsliBG+qc0yLcRD+uwMGQN9stM7UQY87BMN49Vb3SmDKSKBJ6kqAYsUdWNDDk5BYL69aiUpLKcErz29R+40Wbu4T32N2EipP7O88xKxb0wfovW6WZWR80ybt/gBkpRucJNdYIEGoSwp2cQWY1kFsv7ZZCTy1AoF9tlZP0+LXhoV3Q4DOGx9M9ncsk5JpbbCwJVQxz3slGl+qnA0bMg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=34JlCLm8+3yw+7E24QoDRTJjWqnbo/qlmnarrJRO6Cs=;
+ b=byPbUL+AEM8vfAx2YemsSbk3PNdT9iR2rfjFxSow7C3GsGDglKLqQ5d+vAhUsp7jbUREvvc9QdyI2fl/WhkmwnEe/jUHueQvhsUZXIMamZYkuTILe2TAjPwGDmzBtw/rgDN6GskcGcSolq78AQiS7GhxfCIZiEv6vjUsurqq/ByKzLLE3ebWsVke3vpWFSxAViz4X7GhEfNnyLtCumkf1TF2cG7onHRSATCdLPqKx7zVuaHG8cSJlzobCHOQIbY4oBZ7SnqHgfUWQk+8Y68jz86Njy9T4jTLLt8G0eU6RXXiHhAmCN7jIKtiHLJJ7dHhLWUrUVNcKSft2swxqn8j8w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by GV1PR04MB9120.eurprd04.prod.outlook.com (2603:10a6:150:27::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.19; Thu, 7 Nov
+ 2024 20:08:15 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8137.018; Thu, 7 Nov 2024
+ 20:08:15 +0000
+Date: Thu, 7 Nov 2024 15:08:09 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Fabio Estevam <festevam@gmail.com>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	marcel.ziswiler@toradex.com, imx@lists.linux.dev
+Subject: Re: panel-lvds for imx8mm-verdin boards
+Message-ID: <Zy0eKTTiE//LanUg@lizhi-Precision-Tower-5810>
+References: <ZxK1yAZkJOTQN++s@lizhi-Precision-Tower-5810>
+ <CAOMZO5AcyVeq8TN9qK=_54gP6y_rrCLjh22LnA=E6pLnxjbpNw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAOMZO5AcyVeq8TN9qK=_54gP6y_rrCLjh22LnA=E6pLnxjbpNw@mail.gmail.com>
+X-ClientProxiedBy: BY5PR20CA0030.namprd20.prod.outlook.com
+ (2603:10b6:a03:1f4::43) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241107-imx-spi-word-delay-v1-2-2a969214d796@pengutronix.de>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GV1PR04MB9120:EE_
+X-MS-Office365-Filtering-Correlation-Id: c2dd72d8-90ac-4eff-7ee1-08dcff67ea24
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|376014|1800799024|52116014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ =?utf-8?B?ZTF6NjJHTHRpS0tDcnIyYkQvbTJmbk9XVFF2a2ZJNzhEako0U2Q5Rk5Jejk3?=
+ =?utf-8?B?cFFmb2N4MTZYck1KNU41SmJ0UmZIdXJ3UC9DVU1Vc0h1MkF2ZytueEkyTHBY?=
+ =?utf-8?B?bTBKVnRjQmcvVlEzenFqcWx0cDZ3R3pZdjZXQmttTk9HWHlEMzlLbmRXMjZk?=
+ =?utf-8?B?dCtXVDNrNi9rVmxFNFJEOWFYelI3dnZkZVNWRDdMbXpnT2lmTGZDZ1BEdWVh?=
+ =?utf-8?B?SmhoZUJsVlZLTHZ5Q29CMzFwNStLTVRyV1FxSkU0OXhsdjNEcHlBOGt1RGJ0?=
+ =?utf-8?B?bjNqUEV5WDJ2bG5tOUVWYVRLU0psUEpBTWFnTzByWGx4QVJOc0FFMTlBNDRh?=
+ =?utf-8?B?SDFiNWJUTW1idnc4aUVRNlJiMHFsa0haUUphUzlFd3JnK0Y4VndldnBjMTRK?=
+ =?utf-8?B?SmdmT2RnYmR1elJ6Um1kNkUxYTdFM3pjaUlsZzY2bTZSemJOZU5QcCt3R3lZ?=
+ =?utf-8?B?K1d3TFRUd2NqanExMGZNY2tteE9FdU5NM0U0WXhtQ2RUbmxEYjNmR2txQkdm?=
+ =?utf-8?B?MEl1bHpTMEFrOTVFdHNhc1JWbGk0amdrZlBkQzFLU3hBVTFHL2hSRVh5SkJ3?=
+ =?utf-8?B?blhPdUNud1huQzVDWDN0RjY2V2xwWHhNbjZQL1RLVCt0NklpUzhUNnlPejJy?=
+ =?utf-8?B?ZVBWTUFpNEhGTzJBWlFYallsMzltS2loR2c4RkFWWGpmWis1SlFtVXc5eWxu?=
+ =?utf-8?B?eUNVUlJ3ZEpocm4vUXJ0Wm9JTjFpZnFsa2RsZkx3SXBwNHNyRk1rSHB3NW92?=
+ =?utf-8?B?c0xxemNRamszWjJzNGJseUlaeTl6UXd5TWJMRmF6S1c2TG0yOEczcnpzWVJx?=
+ =?utf-8?B?Z1dDQmxHR251YStWQWxCL3VicUYyYXZIdHMrWEVVTUxJQ1NseXB3WHV1cnYz?=
+ =?utf-8?B?UTVnd0pMYS94MkpKRWhzVythQVJJRHNubG8xZ3FmU2Y0Um1OSXVsRlo0WGdx?=
+ =?utf-8?B?NHo3U3lITHlDdlN2eldRV3dNWUZTUkwybjVPOVY4N0xXdDNiMzc2cU1uT3FF?=
+ =?utf-8?B?Ym5idExjeHRJbktrSGFJQlM4YnFvd0Vubk9QRlRSaHJtSE96K0ZSWFl1eTVt?=
+ =?utf-8?B?aDhQbWVva1lidTA4NVF0emRVeFF0VnV4b1luOUdOYWd2aDlFRHV1YzNvOHI4?=
+ =?utf-8?B?ekdCRGZIT2ZIV3YvWTNVOVBobTJMOEJxMGlRSWFtKzZDOVdZVGs4OTVXTHNY?=
+ =?utf-8?B?RVczMWU2c1JoYjBadWZUTmVGUjRtNmVWMjQ2WURsakNoY0dpT0srL1N1Wkk5?=
+ =?utf-8?B?anJwTFBMbkp1RFM4dnVpaThZY0FTUVVxZ002TGZhRGxDSUovR1BCSjBvcEZU?=
+ =?utf-8?B?cWwzaWhKc1VTQ0lXeXNLbGVwMUo2NU5TamFxemR1R2ZueXdLblUrYTJXa0NX?=
+ =?utf-8?B?MGkxQ2lEUlZ6eUE1Vm9UNDNGRmtjbVdWTFFmczNkMjJEOFlKSE13YTFLaDB1?=
+ =?utf-8?B?YWFXN3hpc1JHOEhxb3pkaXNLL0dKM2FsZVh2Mi81R1Q4dHI2eE9qZ2Z5WnRI?=
+ =?utf-8?B?K09BNEVGeGRpL3NqNk4zL1VLSjh3TkFvU2RJY2NTUTcrL3B5bTVrZXllMWxz?=
+ =?utf-8?B?V0lURmxnbkdDUVgyYVZ6WjhoRzdMZHJVMlZORDlUVWtZMUwzZTJtRW9HcFFl?=
+ =?utf-8?B?d3cyL1pkVjZIYklIa3VKQWJKekowb3prdlN1dHVUaUw5NGp3RnVXbDJWMk05?=
+ =?utf-8?B?ekY5OGpTR21IVFdaTzlJeldwWU52V2FYZWtydWpVU3JVOWRIWjdtRnd5MUhx?=
+ =?utf-8?B?RW9IWXdZK0hQOEd0cnQyKzM5d1BMMVZDTG1BbnN5NXJCVW1oSEs2ejZlMDFu?=
+ =?utf-8?Q?eh6eVLz+FWNlep2MP7ImKWF72SLB+i7kkmYB0=3D?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?c0FTVDVGWnI3VTlqRStaRmgrek8xQWVuNWE1THUxN1lqbCtiS2JKajdqamxl?=
+ =?utf-8?B?MGdaVjZlMTJvOG45cVlYQUE0bVNtRHE0dWNOM2JGREVWRThRTkNoWVF2d2o5?=
+ =?utf-8?B?NUZYQ2VhMVpmNXJSSXFjRGUzQzlFS1FBMTRTTjM5c2ZGaDdmODgxVDdTaFNz?=
+ =?utf-8?B?d1VBRVR1aWNlZlIwbThkRmJNTThwbXIySGpHK2pXaGY1VlNQQ0FMNXpaUU5u?=
+ =?utf-8?B?QjBUYkZHZjE3Q1hKWWpjZHNsVjVIeTNONkFhUHoyZ1pXRWJza0V4NDJod0FE?=
+ =?utf-8?B?WGdHa3VWcjdTYWRpQ2ROSVFwMGN5Z0xDNG5aaTFNMEpYbEEvZWp1ZWx5VEdX?=
+ =?utf-8?B?S0hwMHdxV0hVUFlFb0pQNWcxNXZINmpXSW9zQUE0YTdzZ3NVb3pBVXJWOVMy?=
+ =?utf-8?B?ZFJlZTdwakxCaUU4SGdZWCszQzRyeDByRk1GRjlCYTNvbHRoekVRUmtiY0xT?=
+ =?utf-8?B?R3d0OFFic2RkeXNrbXhQdE1EZ3BtYjlrZjUzaUhqeUhCOW9ibXNzVSswWU1L?=
+ =?utf-8?B?Z01MdnllTlB2akJHUVhWb0U5MVhXZ2E3TjJiRU5SV0c4ZkVEUFdHd0lLRmNL?=
+ =?utf-8?B?MHllamFBeWdJd2gvVjBLM3JtSWEvaHA2OVpDdnJqUlBrbENPcmxWOERDS2JL?=
+ =?utf-8?B?QVdSSUEwZ1J3R282bmd5aXc4UUNQaTNmTzY3MytLQTZFcVVEdG4vUXVZa1Ez?=
+ =?utf-8?B?N3RGaVBOT1hkV0I5OW9lVlBBZ202QkdHUk1LYStoTkFHaXcwU3JQRzNwWDRa?=
+ =?utf-8?B?a0xtV0Y5a05MOGptYzQwOHBUWUdEa0xwb0JtWGVDd1lXVUxRaitJeHRhM1RB?=
+ =?utf-8?B?Yi9naEg5KytIdWZSNHV0Y3loWkRyL2crL2p3d2ZkM3dUQWcxWGp2dkhoVlVR?=
+ =?utf-8?B?bGpHQ2FRaGcwL3preDBhTkk4blhRVHk5ZHRTNTgwYnJiRDAvWGlPUFFDSCsr?=
+ =?utf-8?B?Q1JLZzdUV2kzaEJFMkorTHNZVktPZWZ0UkNHUTFUbGFTenlmNTFJNHE1Uzk4?=
+ =?utf-8?B?TEd2MTlrVE5vM0FVRnppblA2cWljc2poNWRvMWlqK0lmVkY0Q0tyMUY0aUJT?=
+ =?utf-8?B?VTMzK3dNU1RTY0JDOGlTampoYWpUZGlaVHIwWGVEWDhpdDdLUXJyck9tc3BZ?=
+ =?utf-8?B?a2lFRVF0YW5rcmRCbjF1VUV2Mld6U0V0ZnQySmZqclN0ZjlobjRwbXVIT203?=
+ =?utf-8?B?Wk5OTW5NTDZmajBpZDlNNnJXWWRMdEk1Vi90eHBWRFR2WlhWeGF1c1BrcnRN?=
+ =?utf-8?B?RGtvSlVDeEZwMGFTRWpTWXA5Q0FncWpGQzYvbHdpeit6ZS9qNlVvYmtQdXlX?=
+ =?utf-8?B?M0pDMkQ1ZGw4OUJmbUx0NkdGc2JZKzQvcVA2VG5VcVRpMEdoa25pYXAyeUVJ?=
+ =?utf-8?B?T0JjVSt2N25tRFR4VFphV2lDY1lzYU5pTFFPN0ZWQXZJazNzV21WNkdmc0pR?=
+ =?utf-8?B?c2tQL2YyMWpNdldxcVdTek9ySnBHbUFaaXhCbDVmeEJiTmQzcytSVHgzcVhT?=
+ =?utf-8?B?THlKWkdDdGRJbHIyWVBXVDNFdUJQQjdKNXF1cm5LVG1yaE91emgzUFN2d0VI?=
+ =?utf-8?B?SmpyRlcxMElWWXhEUVBUYWJUZExacWlJOE83UWlxZTlWbFV5RkVTM0lvemRX?=
+ =?utf-8?B?TXllWU5mOUtFaUpjdUVVYkN5RVhpVGRwd3g5dmJNUGs2eXpORk1QVDVxQnlv?=
+ =?utf-8?B?aHlLOGhySUxURGE3MXpxNG91SitYcjNCa1BZNGR5VExDQVFzZDU0cDVvL2pP?=
+ =?utf-8?B?VHpnWmNEM2xjb2NxS0dPdG9id3BXY08rbU1aZlFQOUtsRTZZM09CYlFQczE0?=
+ =?utf-8?B?N1lLNGxYN3hVQUVUNkxpMzVGUk0xL2xXamFZWk9jejJqTVNCM21TMktRUmhN?=
+ =?utf-8?B?ZkNyUllBZW9vd1VuWUlLNzhLTDlXUVdwZXRVcTEvNlJXODkzN0hlMFRsaUUw?=
+ =?utf-8?B?eXRoQVVqSDRDaXRvYXQyWFppQ2wyZWZoRjI5Q1NEWUh5RGc2ZzNlV1dBVDE1?=
+ =?utf-8?B?UkRST2hMMHdEM29kTnBJaGJXRkM0WW9qaGJQQW5QVDhvU0FQYlFoa1RzTVNK?=
+ =?utf-8?B?SlBVaUlFeVFvZUEzdnRPR0p2RkpDSktPN1VTQ1RLeTNja3cxTXA3R0xzVUt5?=
+ =?utf-8?Q?VDSTL3o1rDbGEtxBg6SjHWdUW?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c2dd72d8-90ac-4eff-7ee1-08dcff67ea24
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 20:08:15.6113
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /knM2CQuKSDlC+7TFOSfxkrDBA+cAJ2TO1GhtZoQbCsvE2eVKeCf/VDC1XzB/KIMM2qBS5f9aNVRd37VnPSGNg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB9120
 
-Hi Jonas,
+On Fri, Oct 18, 2024 at 06:13:07PM -0300, Fabio Estevam wrote:
+> Adding Francesco.
 
-kernel test robot noticed the following build errors:
+Any update from toradex team?
 
-[auto build test ERROR on 9852d85ec9d492ebef56dc5f229416c925758edc]
+Frank
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jonas-Rebmann/spi-imx-pass-struct-spi_transfer-to-prepare_transfer/20241107-233756
-base:   9852d85ec9d492ebef56dc5f229416c925758edc
-patch link:    https://lore.kernel.org/r/20241107-imx-spi-word-delay-v1-2-2a969214d796%40pengutronix.de
-patch subject: [PATCH 2/2] spi: imx: support word delay
-config: arc-randconfig-002-20241108 (https://download.01.org/0day-ci/archive/20241108/202411080315.8JXzpAnT-lkp@intel.com/config)
-compiler: arc-elf-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241108/202411080315.8JXzpAnT-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202411080315.8JXzpAnT-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/spi/spi-imx.c: In function 'mx51_ecspi_prepare_transfer':
->> drivers/spi/spi-imx.c:739:14: error: implicit declaration of function 'FIELD_FIT' [-Werror=implicit-function-declaration]
-     739 |         if (!FIELD_FIT(MX51_ECSPI_PERIOD_MASK, word_delay_sck))
-         |              ^~~~~~~~~
-   In file included from include/linux/byteorder/little_endian.h:5,
-                    from arch/arc/include/uapi/asm/byteorder.h:16,
-                    from include/asm-generic/bitops/le.h:6,
-                    from arch/arc/include/asm/bitops.h:192,
-                    from include/linux/bitops.h:68,
-                    from include/linux/kernel.h:23,
-                    from include/linux/clk.h:13,
-                    from drivers/spi/spi-imx.c:6:
->> drivers/spi/spi-imx.c:742:16: error: implicit declaration of function 'FIELD_PREP' [-Werror=implicit-function-declaration]
-     742 |         writel(FIELD_PREP(MX51_ECSPI_PERIOD_MASK, word_delay_sck),
-         |                ^~~~~~~~~~
-   include/uapi/linux/byteorder/little_endian.h:34:51: note: in definition of macro '__cpu_to_le32'
-      34 | #define __cpu_to_le32(x) ((__force __le32)(__u32)(x))
-         |                                                   ^
-   arch/arc/include/asm/io.h:208:47: note: in expansion of macro 'writel_relaxed'
-     208 | #define writel(v,c)             ({ __iowmb(); writel_relaxed(v,c); })
-         |                                               ^~~~~~~~~~~~~~
-   drivers/spi/spi-imx.c:742:9: note: in expansion of macro 'writel'
-     742 |         writel(FIELD_PREP(MX51_ECSPI_PERIOD_MASK, word_delay_sck),
-         |         ^~~~~~
-   cc1: some warnings being treated as errors
-
-
-vim +/FIELD_FIT +739 drivers/spi/spi-imx.c
-
-   665	
-   666	static int mx51_ecspi_prepare_transfer(struct spi_imx_data *spi_imx,
-   667					       struct spi_device *spi, struct spi_transfer *t)
-   668	{
-   669		u32 ctrl = readl(spi_imx->base + MX51_ECSPI_CTRL);
-   670		u64 word_delay_sck;
-   671		u32 clk;
-   672	
-   673		/* Clear BL field and set the right value */
-   674		ctrl &= ~MX51_ECSPI_CTRL_BL_MASK;
-   675		if (spi_imx->target_mode && is_imx53_ecspi(spi_imx))
-   676			ctrl |= (spi_imx->target_burst * 8 - 1)
-   677				<< MX51_ECSPI_CTRL_BL_OFFSET;
-   678		else {
-   679			ctrl |= (spi_imx->bits_per_word - 1)
-   680				<< MX51_ECSPI_CTRL_BL_OFFSET;
-   681		}
-   682	
-   683		/* set clock speed */
-   684		ctrl &= ~(0xf << MX51_ECSPI_CTRL_POSTDIV_OFFSET |
-   685			  0xf << MX51_ECSPI_CTRL_PREDIV_OFFSET);
-   686		ctrl |= mx51_ecspi_clkdiv(spi_imx, spi_imx->spi_bus_clk, &clk);
-   687		spi_imx->spi_bus_clk = clk;
-   688	
-   689		mx51_configure_cpha(spi_imx, spi);
-   690	
-   691		/*
-   692		 * ERR009165: work in XHC mode instead of SMC as PIO on the chips
-   693		 * before i.mx6ul.
-   694		 */
-   695		if (spi_imx->usedma && spi_imx->devtype_data->tx_glitch_fixed)
-   696			ctrl |= MX51_ECSPI_CTRL_SMC;
-   697		else
-   698			ctrl &= ~MX51_ECSPI_CTRL_SMC;
-   699	
-   700		writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
-   701	
-   702		/* calculate word delay in SPI Clock (SCLK) cycles */
-   703		if (t->word_delay.value == 0) {
-   704			word_delay_sck = 0;
-   705		} else if (t->word_delay.unit == SPI_DELAY_UNIT_SCK) {
-   706			word_delay_sck = t->word_delay.value;
-   707	
-   708			if (word_delay_sck <= MX51_ECSPI_PERIOD_MIN_DELAY_SCK)
-   709				word_delay_sck = 0;
-   710			else if (word_delay_sck <= MX51_ECSPI_PERIOD_MIN_DELAY_SCK + 1)
-   711				word_delay_sck = 1;
-   712			else
-   713				word_delay_sck -= MX51_ECSPI_PERIOD_MIN_DELAY_SCK + 1;
-   714		} else {
-   715			int word_delay_ns;
-   716	
-   717			word_delay_ns = spi_delay_to_ns(&t->word_delay, t);
-   718			if (word_delay_ns < 0)
-   719				return word_delay_ns;
-   720	
-   721			if (word_delay_ns <= mul_u64_u32_div(NSEC_PER_SEC,
-   722							     MX51_ECSPI_PERIOD_MIN_DELAY_SCK,
-   723							     spi_imx->spi_bus_clk)) {
-   724				word_delay_sck = 0;
-   725			} else if (word_delay_ns <= mul_u64_u32_div(NSEC_PER_SEC,
-   726								    MX51_ECSPI_PERIOD_MIN_DELAY_SCK + 1,
-   727								    spi_imx->spi_bus_clk)) {
-   728				word_delay_sck = 1;
-   729			} else {
-   730				word_delay_ns -= mul_u64_u32_div(NSEC_PER_SEC,
-   731								 MX51_ECSPI_PERIOD_MIN_DELAY_SCK + 1,
-   732								 spi_imx->spi_bus_clk);
-   733	
-   734				word_delay_sck = DIV_U64_ROUND_UP((u64)word_delay_ns * spi_imx->spi_bus_clk,
-   735								  NSEC_PER_SEC);
-   736			}
-   737		}
-   738	
- > 739		if (!FIELD_FIT(MX51_ECSPI_PERIOD_MASK, word_delay_sck))
-   740			return -EINVAL;
-   741	
- > 742		writel(FIELD_PREP(MX51_ECSPI_PERIOD_MASK, word_delay_sck),
-   743		       spi_imx->base + MX51_ECSPI_PERIOD);
-   744	
-   745		return 0;
-   746	}
-   747	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>
+> On Fri, Oct 18, 2024 at 4:24 PM Frank Li <Frank.li@nxp.com> wrote:
+> >
+> > There are some dtb check warning
+> >
+> > arch/arm64/boot/dts/freescale/imx8mm-mx8menlo.dtb: panel-lvds: compatible:0: 'panel-lvds' is not one of ['admatec,9904379', 'auo,b101ew05', 'chunghwa,claa070wp03xg', 'edt,etml0700z9ndha', 'hannstar,hsd101pww2', 'hydis,hv070wx2-1e0', 'jenson,bl-jt60050-01a', 'tbs,a711-panel']
+> >
+> > Can you help add actual pannel-lvds compatible string to clean up these
+> > warning?
+> >
+> > Over 50 lines warning related this one.
+> >
+> > next-20241018, all warning under arm64 freescale is 814. My local tree
+> > is about 138 line.
+> >
+> > If you can help fix this warning,  It should reduce to below to 100 line
+> > warnings.
+> >
+> > Frank
+> >
