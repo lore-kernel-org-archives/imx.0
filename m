@@ -1,249 +1,212 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2071.outbound.protection.outlook.com [40.107.20.71])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4197E782
-	for <imx@lists.linux.dev>; Thu,  7 Nov 2024 19:50:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731009004; cv=fail; b=kAo9pHQBCCWVuNx6pEYBF2PP3N5TjTiOFacSvcAHxyH5dFoAYEp5fksJUUQWjr9mZAR61qaJ2LjCoQwYq7Ex8rPBGcfBYG75M9u9yH47h1hp3qnFYI327pFGm5NkpGNTd8rZixoKIW9MSYtAW2isywRriLbhK4yS3E6W2eZoDJU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731009004; c=relaxed/simple;
-	bh=rwfumNMaqh3DhSpMjzwrnzawOVccfDh91izyjZIbnSM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Tc/7bM76pGGw5gTek5rPW0PbHcmzHpFSODgmzdoQhSXn2Xx5yzyQgZE/EUf0xy6bguG/SCxOxWe007Ug77a+EYnWZFa2s+XD5wTVh3eHZPypVCcNKrDar2KFBlC7qkQsrgluCR/CoDe937O1AOEdk2s2oigcRKYPEUP4UV4rlCk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=eyuixVc8 reason="signature verification failed"; arc=fail smtp.client-ip=40.107.20.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70CE2161EB;
+	Thu,  7 Nov 2024 20:02:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731009769; cv=none; b=ftvPfWc7YSS5gtSlGdHHJv3W4To44aN54JXaIgr46VWWtyLUmJcA+w6wm4hkjzh6GzkT5vJt9GywCgeJsaOOo9yMvMRajjNmJT91gK7zaXz2vn3E7ineo6bvvyy2jxglHalFzkjKxEeKYYtXumfPQi4mzH8skii1F+u+iTcHi5M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731009769; c=relaxed/simple;
+	bh=IOhBT4+s9HKKZijqKV2MQyFUtiotLMC73AtMG4Y6HsI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rXy8f+0rAtQv8MJ2MLYOV3b6RZOstrYnkIv/cB7pFArgtUtoBum1oEQrYpBXLsxVnwUsvm3VjbrZtOTyunOZcREzwvezjzYeeKWMy5qXPLIiRlkhsJv7F8OM4r7ZkgEmE/bOE/HRmZt1aKMIB5/F7LXd5H6glH4WVk2uKS3LeOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B+/ICLsO; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="eyuixVc8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bE6JNcQIMbfSx7mynBrx4FniSKAqJQZjcSkEhSckKFPLeZa6iSKx7d/TYsGWXHH5IygnstUq/J3/0/CUiFvkjFvfr6IuRt+JiBbEaY4E3vZ4GK7AoddWmUpPjjRuTQs88NJXEsarPMEr6yMYWY1itnEkqY6hq/TP/pVZwQJ8bN8x0/f7E6piiNkifnOm2CwFntthewfSeEDf8dF4wkGGy3jmlX29ssthA1lG6cJlB6DB9w2e5scwhT0veaWCWyZ7072umZpijQdZ2WX2z3KtnBf5+/mKVc/eCyZNILElU2jIegg7VMsNrsm1JhDA4gkF57G1qW+Zh3pcE83OylA1tA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wapbMYny7AvakybNZI3omHQ6gZD0pMIOGa6AImrzfMM=;
- b=ZPbt/Od5h+EytZzwtmoZNjYKZWn+EkRuUuCEHhhYZyJ9mo886VByzk2H1YCCsS8g9QgSdULDW3elZ2QSIy0Ktn8O75rEUM5W4U0+s4JITutDlHEh14iNelb7umj/Tn3vgqUVvtgBwL/RW6T2xozGLoNwx8KYFglNt8PXC3oQj43Hv1OdE3p3ITr6s2B/X1qHOdfOXWLXF/bF+M0fYq0CxAhi49d8b+m2IZhALvFinE27h8jhS89nKmnLLW+KKnEiXaZN66YFF54jP8rm5fOtDpnD/h645uaxdUmyNpodT7gxHhmz9EYMgprjw+cV0FQLjZcdoqUAiQV4bOZZ5K/r6A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wapbMYny7AvakybNZI3omHQ6gZD0pMIOGa6AImrzfMM=;
- b=eyuixVc85Ixez0Mh1R6CBMkkiTSiwdKFWSC4N5lcYYhQQ5+U9fhL8AOMLif7mLnmN5pE0qM614n93Xd0/LKGsMVNx/RYkG6ikEOnew8vwVvD5/zTseprCry5LNnNKVF1DAuAJh2sTXGc76xVmU4OA7PCpY7FQ9DTAGtBFdg/05TVbLSmaNy1RFOIw+lReGLQjnOIKJkUzoph/apKYQ2cXAoZqSnEZ48gBBeiWKH2OgZjxbO6e1Wrt5Hs6tIs0v4yAaSndTk5/IxISLNyaYUQiYL7KG6rncKtckZFgPTaQRP++ow6z96NMZt/BVszOWqyDihJkZdtHuAV7d4n4eWtHA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PR3PR04MB7324.eurprd04.prod.outlook.com (2603:10a6:102:91::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.19; Thu, 7 Nov
- 2024 19:49:58 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8137.018; Thu, 7 Nov 2024
- 19:49:58 +0000
-Date: Thu, 7 Nov 2024 14:49:51 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Haibo Chen <haibo.chen@nxp.com>, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-	imx@lists.linux.dev,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 1/2] iio: adc: vf610_adc: use devm_* and
- dev_err_probe() to simple code
-Message-ID: <Zy0Z3wIsgX+O4DEw@lizhi-Precision-Tower-5810>
-References: <20241107191842.3002319-1-Frank.Li@nxp.com>
- <4bd12695-075d-474c-b720-d295cc6028ce@wanadoo.fr>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4bd12695-075d-474c-b720-d295cc6028ce@wanadoo.fr>
-X-ClientProxiedBy: BY3PR03CA0013.namprd03.prod.outlook.com
- (2603:10b6:a03:39a::18) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B+/ICLsO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1731009768; x=1762545768;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=IOhBT4+s9HKKZijqKV2MQyFUtiotLMC73AtMG4Y6HsI=;
+  b=B+/ICLsOHDBxNTJIHr98ST1Dal6D/hvlSvM5RuCcED8cPaOHfCufe8u1
+   G/fdNpil1m5vT3237BBkusXSSoOT2cpkHoZz3bHgW2EYJAAXIMMG2jFSl
+   UQ0o7ZeJeEqXVYagdySpkBwknAoS4XjOnDlXu//PqLacXmapsEQdM1k6q
+   50vzCnBWNFqtA3Fjg4M7xZGI0wCi5GPz+IYf/hLSyW/VGNqI1rz0CQ/TR
+   L4BC07GbeOFocFLDpzRwursyfEwC53TrHaPuwHCYk4t/fn9fsq/lO+UQj
+   ajn6gm310s+3T/WiKIVRuy+mEQ31b4U9J9wnz0VNcfF0rVA/rMIcJvzFQ
+   A==;
+X-CSE-ConnectionGUID: EgYp32F3T0uQ8p9smeBbag==
+X-CSE-MsgGUID: oS6tnnHARq2Ak6Q/YGcd4w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="48389752"
+X-IronPort-AV: E=Sophos;i="6.12,136,1728975600"; 
+   d="scan'208";a="48389752"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2024 12:02:33 -0800
+X-CSE-ConnectionGUID: ba7PxB6RT3iz2c17O0RJ7w==
+X-CSE-MsgGUID: 29VcLRgfRSOszxnR9CtQRA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,136,1728975600"; 
+   d="scan'208";a="89860766"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 07 Nov 2024 12:02:30 -0800
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t98i3-000qdG-2M;
+	Thu, 07 Nov 2024 20:02:27 +0000
+Date: Fri, 8 Nov 2024 04:01:42 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jonas Rebmann <jre@pengutronix.de>, Mark Brown <broonie@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, linux-spi@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	Jonas Rebmann <jre@pengutronix.de>
+Subject: Re: [PATCH 2/2] spi: imx: support word delay
+Message-ID: <202411080315.8JXzpAnT-lkp@intel.com>
+References: <20241107-imx-spi-word-delay-v1-2-2a969214d796@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PR3PR04MB7324:EE_
-X-MS-Office365-Filtering-Correlation-Id: b33a2389-0f3f-4d10-b067-08dcff655be0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?qVu2RDZuK1cDdVcJ3PYNfJm4pSrPONcbMF9yHFSiTnJbyCklUmd8ei+5sN?=
- =?iso-8859-1?Q?s3paBc3735CdCw4FicBtDvdDvdo99OcQkVQVN63mPfliqVV4JdfTD+TrK+?=
- =?iso-8859-1?Q?hRBJ9IFLhq/fy7D6zghjZrrsXMAenO718jT3YfGKvwqPtebNqTiUlkRQuq?=
- =?iso-8859-1?Q?hflcWsZe5/GacZ9wUm0bAtqwtCeJdCqAg8C3bnzvv8bY9H2Dfj0fdUeZIc?=
- =?iso-8859-1?Q?w4sXquFbvRqZ7mpn+VCwAzEkTMmsKiTO8cr7H56mO9rTMjVHpOMktUeOEK?=
- =?iso-8859-1?Q?EwoGCEApwraE1g/YvMfS69+VPjpD8BE+GEilgEjdu63swLwC2t9rBwEAw2?=
- =?iso-8859-1?Q?HgvnMIp7++lPhQGtuOAu/P53vpMF/Quvnl3ctqGvrQR0yQ6H6g6orFB91y?=
- =?iso-8859-1?Q?dWYZu07rt9K1DUVwTyfyWTCGX7g+X49GXpmYWw8KYRbQVxioFipJesDw+N?=
- =?iso-8859-1?Q?jtQVOuNoVdaTiCmyp4EhCY2nH3/8uwTSp+b22kHRgyDaFBVW8QFGW7OMQE?=
- =?iso-8859-1?Q?FvUqvazY9CBLsuDYwXmvs0iKbnxhIxmv6Qa5B7+mL55izaWD/PEc4JD6Xj?=
- =?iso-8859-1?Q?VgHmezJm3DTzaU9wy2MjGWT13Anv5cTJ82NCwr3AtD/CrlBfBLxin6CWfW?=
- =?iso-8859-1?Q?TD+pxcMi8YYu+m2u0tsYUBF5QlUpPRUZcqTw3MBhuTlMMwNdQHOJBDalG7?=
- =?iso-8859-1?Q?Vwv0q/ZdghoghP5D2LnLAbmOYsSX+XQuxWPaHKlD19nhDprFN6dVIy1+cm?=
- =?iso-8859-1?Q?PSA2HpN8efUS+jm0KT2nca1YNFP0Lwrnb+AivMER/Y8WmykKCHI8E9DZGm?=
- =?iso-8859-1?Q?PvtqjSpBQ+lmh/WkR17zsAwLodklFTrpLeCoqtaWt/BiSb4cGpVZtSHqSr?=
- =?iso-8859-1?Q?Q21p1oOWnanPa7HVrtEO3n+ADGoGhX4IFONBGGKBDLA+JjfQ0BtBCBez9z?=
- =?iso-8859-1?Q?kpwUihSnBB214KhJ0KnGdD9NnycQWh/lpYznAvnqL1lz0CWuqglMvZHCYl?=
- =?iso-8859-1?Q?JF2XRQP4S2hN7ushpEHICZqeq3nnkZekOrrFu0SgSDNVmq0PJFeWP3jvbg?=
- =?iso-8859-1?Q?KGxPv+UmFe7DIzi9/koFd7AjXdhsy1HAzLrHqRMgE7hX35fEByAjS8bmJJ?=
- =?iso-8859-1?Q?VZDtuEuHAWaPTqGPR/0BDvPr5XrkzhDCmcYE6RX+ZhiJ4dK+TpLzXRe+tu?=
- =?iso-8859-1?Q?P5ED++LFWNjHrX5iFnCzuZyIDcrwYiHrS7VoEYccDmzdsPSZgAVv9z7pwa?=
- =?iso-8859-1?Q?o8NQ8PiUv+3Y8d+v+FKqbDRQFsCOChWJAT+1uOnMyD6ubR/gX2JFWb16GK?=
- =?iso-8859-1?Q?6aHAWQiLi9G56abBkKmdxcxNNk8M9oOos42jJtZIhhha9zAlJ+mPMfs2/M?=
- =?iso-8859-1?Q?c8bxMkN5kgfXJ9I/RaX7f6oWjviJTZwZVqpSE4RzFEfdeY9imYsH6iX3EE?=
- =?iso-8859-1?Q?+VYIn6X0QB7NXYbU?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?LSXGi0b5aJAmMHL3ltnRgZHUtceEhZ9Qem17nu6J/mbF0DfAKCqoACKj6d?=
- =?iso-8859-1?Q?Kabo3Mo4HcNp24ewCoCi9QhHu7rhlqFq9me3CkiCNtYMLeK9cAMbBBgr3/?=
- =?iso-8859-1?Q?ZD6gkrNVd3Uzbqc6Hn52ys3EmxW8r2r0FFl16BvSdN0aKmskPlR01JhQj4?=
- =?iso-8859-1?Q?XAyITxW6uTWfv+ZTgIEyquEFbQOwOV5SUPOW639xJbuIzFmASwtFFkvVVN?=
- =?iso-8859-1?Q?ImzdQWkKhrMCi7pHx4OEZ//sNTQDpN2f5Qe4yzs6LExI/QZpehv9M6lNvv?=
- =?iso-8859-1?Q?S2kDaJqzHPKDkG4lxM5AA0MTMYKVq0Twld0eLDIfNLpS2hwaU+mmxKDApP?=
- =?iso-8859-1?Q?4DFbNh7b54FpRr0mzBS3rulMGYmjDrvffh1PLXxLbmAc/qZOWcnZMv+5eM?=
- =?iso-8859-1?Q?EAN9kokBS5XSccdeiz51uAZJWtZ1P7romx9lhGMLyYarXOmmfyS4HBZaTq?=
- =?iso-8859-1?Q?kcWiqk/AWAAApeTI5z8X2lNOr0oFpv6NrW4nYUe28ktz2KWV8ygqnmSapc?=
- =?iso-8859-1?Q?aMF3zP/YaQxn/fKYdvdoIuRsJpJKq1Ikm7K4WOHA5NKsNOycGPjjKlRe6K?=
- =?iso-8859-1?Q?X5/SpwJEA7PGCG+8C1kzXipzMm2EdZ4Uq3YP/ABpZ2XwK/hbXT5fLoVduh?=
- =?iso-8859-1?Q?pEVXiJqXndJ0L7ojG+TyhLnGSLv/zpQD57lDMQcWu5cvQwtVQViiv32hp3?=
- =?iso-8859-1?Q?OpmDT33br1fhhjNUOVcNrVB8WqPsl81MNky9IRIvJm3879FGAcevZCNgLZ?=
- =?iso-8859-1?Q?2BS5k77bA352CZYeG/vUDAZKCXnwU6uNYaUdKgtKY38UMb4sCHv6IySIfH?=
- =?iso-8859-1?Q?vvhiY0pDCehuCMht4WeNVMtikUFVCqgEOzgS3btWEQJV/li1ZQtTCrYCgI?=
- =?iso-8859-1?Q?HtdVxl4DB5C2sSb2zxTglDoZwOwrqm2/qajE8XifpDMXDWVJh6fyGMztw0?=
- =?iso-8859-1?Q?3v2veBrGY4WSs4rvLajC0OsPhdhU8xrLghZ46GChdWBWPKWmvroFg2gPAH?=
- =?iso-8859-1?Q?p+YHSgN2+QyWMGDKQCN6/+lWbk1Tsvd+qE/FfNplw2iLqDwjRv1oUmCwOH?=
- =?iso-8859-1?Q?uDun3jFxKpPdb89iggWpPgLMsgtERaoX65NjTDL4/v54Ujf7gEgw/WAw0s?=
- =?iso-8859-1?Q?M1XJg31DDjB2G7vyBUtVHbgH5QLzIWwxpZR7n/RvuSpwbAp7ahufqgzgMI?=
- =?iso-8859-1?Q?gS0ECbNpr++EzjkxgGx9k8jZnEt98nMo2dsIwcT/NKdDhp3Ziw62tT+ZKD?=
- =?iso-8859-1?Q?KHpH7n+ayq+uifqYG2O3g07gQmFCc4b6uwUply+EhOFlwsRicBzMnD3rWy?=
- =?iso-8859-1?Q?X19HpMecSK2PZZYGJN7gsBuSjPuLBgNR8+yBb/7NYYOa7fh8X4pkMFzIck?=
- =?iso-8859-1?Q?rMUbz+CvyD2KugmcA7Zumqd5HptZQtwx2lQ2Kt7ImTAgeftJwMDXgdkD58?=
- =?iso-8859-1?Q?24VTz7mEA9cdt/ELJZi+h64mTP4qhWO0ricpdBnUtPTaLr8EETUzAu/vCt?=
- =?iso-8859-1?Q?Zd/fPEbX3d97wmW/7EVxlboK4S7wqeBhTU+/64wIDk+6CilNUsmP6FQkJr?=
- =?iso-8859-1?Q?1cCf5LXqIplv5GyQbaJa2ojJJoot73iUzWejcnG7+w6BEYIgmEZPqYlnCw?=
- =?iso-8859-1?Q?7U0/jUGDIfMV8g8TvXgGFY5LMtEaS3w8G0?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b33a2389-0f3f-4d10-b067-08dcff655be0
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 19:49:57.9895
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KXpSSla+jQos1UPPGC2JbUtChjzN4wR1basn+EagJ8e7Nn+XLlvA7YnNY+m2TrDgwWSGwGNehRK/TXEQjIT01A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7324
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241107-imx-spi-word-delay-v1-2-2a969214d796@pengutronix.de>
 
-On Thu, Nov 07, 2024 at 08:38:20PM +0100, Christophe JAILLET wrote:
-> Le 07/11/2024 à 20:18, Frank Li a écrit :
-> > Use devm_* and dev_err_probe() simplify probe function and remove
-> > vf610_adc_remove(). Change type of 'vref_uv' to int because
-> > regulator_get_voltage() return type is int.
-> >
-> > Reviewed-by: Haibo Chen <haibo.chen-3arQi8VN3Tc@public.gmane.org>
-> > Signed-off-by: Frank Li <Frank.Li-3arQi8VN3Tc@public.gmane.org>
-> > ---
-> > Change from v2 to v3
-> > - change vref_uv to int from u32 to fix below warning
-> > | Reported-by: kernel test robot <lkp-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202411070633.NIrO7Ert-lkp-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org/
-> > smatch warnings:
-> > drivers/iio/adc/vf610_adc.c:857 vf610_adc_probe() warn: unsigned 'info->vref_uv' is never less than zero.
-> >
-> > vim +857 drivers/iio/adc/vf610_adc.c
-> >
-> > Change from v1 to v2
-> > - add Haibo's review tag
-> > ---
-> >   drivers/iio/adc/vf610_adc.c | 79 ++++++++++---------------------------
-> >   1 file changed, 20 insertions(+), 59 deletions(-)
-> >
-> > diff --git a/drivers/iio/adc/vf610_adc.c b/drivers/iio/adc/vf610_adc.c
-> > index 4d83c12975c53..a6a0ada8a102f 100644
-> > --- a/drivers/iio/adc/vf610_adc.c
-> > +++ b/drivers/iio/adc/vf610_adc.c
-> > @@ -160,7 +160,7 @@ struct vf610_adc {
-> >   	/* lock to protect against multiple access to the device */
-> >   	struct mutex lock;
-> > -	u32 vref_uv;
-> > +	int vref_uv;
-> >   	u32 value;
-> >   	struct regulator *vref;
-> > @@ -823,10 +823,8 @@ static int vf610_adc_probe(struct platform_device *pdev)
-> >   	int ret;
-> >   	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(struct vf610_adc));
-> > -	if (!indio_dev) {
-> > -		dev_err(&pdev->dev, "Failed allocating iio device\n");
-> > -		return -ENOMEM;
-> > -	}
-> > +	if (!indio_dev)
-> > +		return dev_err_probe(&pdev->dev, -ENOMEM, "Failed allocating iio device\n");
-> >   	info = iio_priv(indio_dev);
-> >   	info->dev = &pdev->dev;
-> > @@ -842,27 +840,22 @@ static int vf610_adc_probe(struct platform_device *pdev)
-> >   	ret = devm_request_irq(info->dev, irq,
-> >   				vf610_adc_isr, 0,
-> >   				dev_name(&pdev->dev), indio_dev);
-> > -	if (ret < 0) {
-> > -		dev_err(&pdev->dev, "failed requesting irq, irq = %d\n", irq);
-> > -		return ret;
-> > -	}
-> > +	if (ret < 0)
-> > +		dev_err_probe(&pdev->dev, ret, "failed requesting irq, irq = %d\n", irq);
->
-> missing return?
+Hi Jonas,
 
-Yes, thank you find it.
+kernel test robot noticed the following build errors:
 
->
-> > -	info->clk = devm_clk_get(&pdev->dev, "adc");
-> > -	if (IS_ERR(info->clk)) {
-> > -		dev_err(&pdev->dev, "failed getting clock, err = %ld\n",
-> > -						PTR_ERR(info->clk));
-> > -		return PTR_ERR(info->clk);
-> > -	}
-> > +	info->clk = devm_clk_get_enabled(&pdev->dev, "adc");
-> > +	if (IS_ERR(info->clk))
-> > +		return dev_err_probe(&pdev->dev, PTR_ERR(info->clk),
-> > +				     "failed getting clock, err = %ld\n",
-> > +				     PTR_ERR(info->clk));
->
-> No need to add an extra PTR_ERR(info->clk)
+[auto build test ERROR on 9852d85ec9d492ebef56dc5f229416c925758edc]
 
-yes, dev_err_probe() already print error code. So "err= %ld" can be removed
-also.
+url:    https://github.com/intel-lab-lkp/linux/commits/Jonas-Rebmann/spi-imx-pass-struct-spi_transfer-to-prepare_transfer/20241107-233756
+base:   9852d85ec9d492ebef56dc5f229416c925758edc
+patch link:    https://lore.kernel.org/r/20241107-imx-spi-word-delay-v1-2-2a969214d796%40pengutronix.de
+patch subject: [PATCH 2/2] spi: imx: support word delay
+config: arc-randconfig-002-20241108 (https://download.01.org/0day-ci/archive/20241108/202411080315.8JXzpAnT-lkp@intel.com/config)
+compiler: arc-elf-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241108/202411080315.8JXzpAnT-lkp@intel.com/reproduce)
 
->
-> >   	info->vref = devm_regulator_get(&pdev->dev, "vref");
->
-> With the change to devm_regulator_get_enable_read_voltage(), is it still
-> needed?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202411080315.8JXzpAnT-lkp@intel.com/
 
-Suspend function need vref to disable regulator.
+All errors (new ones prefixed by >>):
 
->
-> CJ
->
-> >   	if (IS_ERR(info->vref))
-> >   		return PTR_ERR(info->vref);
-> > -	ret = regulator_enable(info->vref);
-> > -	if (ret)
-> > -		return ret;
-> > -
-> > -	info->vref_uv = regulator_get_voltage(info->vref);
-> > +	info->vref_uv = devm_regulator_get_enable_read_voltage(&pdev->dev, "vref");
-> > +	if (info->vref_uv < 0)
-> > +		return info->vref_uv;
-> >   	device_property_read_u32_array(dev, "fsl,adck-max-frequency", info->max_adck_rate, 3);
->
-> ...
->
+   drivers/spi/spi-imx.c: In function 'mx51_ecspi_prepare_transfer':
+>> drivers/spi/spi-imx.c:739:14: error: implicit declaration of function 'FIELD_FIT' [-Werror=implicit-function-declaration]
+     739 |         if (!FIELD_FIT(MX51_ECSPI_PERIOD_MASK, word_delay_sck))
+         |              ^~~~~~~~~
+   In file included from include/linux/byteorder/little_endian.h:5,
+                    from arch/arc/include/uapi/asm/byteorder.h:16,
+                    from include/asm-generic/bitops/le.h:6,
+                    from arch/arc/include/asm/bitops.h:192,
+                    from include/linux/bitops.h:68,
+                    from include/linux/kernel.h:23,
+                    from include/linux/clk.h:13,
+                    from drivers/spi/spi-imx.c:6:
+>> drivers/spi/spi-imx.c:742:16: error: implicit declaration of function 'FIELD_PREP' [-Werror=implicit-function-declaration]
+     742 |         writel(FIELD_PREP(MX51_ECSPI_PERIOD_MASK, word_delay_sck),
+         |                ^~~~~~~~~~
+   include/uapi/linux/byteorder/little_endian.h:34:51: note: in definition of macro '__cpu_to_le32'
+      34 | #define __cpu_to_le32(x) ((__force __le32)(__u32)(x))
+         |                                                   ^
+   arch/arc/include/asm/io.h:208:47: note: in expansion of macro 'writel_relaxed'
+     208 | #define writel(v,c)             ({ __iowmb(); writel_relaxed(v,c); })
+         |                                               ^~~~~~~~~~~~~~
+   drivers/spi/spi-imx.c:742:9: note: in expansion of macro 'writel'
+     742 |         writel(FIELD_PREP(MX51_ECSPI_PERIOD_MASK, word_delay_sck),
+         |         ^~~~~~
+   cc1: some warnings being treated as errors
+
+
+vim +/FIELD_FIT +739 drivers/spi/spi-imx.c
+
+   665	
+   666	static int mx51_ecspi_prepare_transfer(struct spi_imx_data *spi_imx,
+   667					       struct spi_device *spi, struct spi_transfer *t)
+   668	{
+   669		u32 ctrl = readl(spi_imx->base + MX51_ECSPI_CTRL);
+   670		u64 word_delay_sck;
+   671		u32 clk;
+   672	
+   673		/* Clear BL field and set the right value */
+   674		ctrl &= ~MX51_ECSPI_CTRL_BL_MASK;
+   675		if (spi_imx->target_mode && is_imx53_ecspi(spi_imx))
+   676			ctrl |= (spi_imx->target_burst * 8 - 1)
+   677				<< MX51_ECSPI_CTRL_BL_OFFSET;
+   678		else {
+   679			ctrl |= (spi_imx->bits_per_word - 1)
+   680				<< MX51_ECSPI_CTRL_BL_OFFSET;
+   681		}
+   682	
+   683		/* set clock speed */
+   684		ctrl &= ~(0xf << MX51_ECSPI_CTRL_POSTDIV_OFFSET |
+   685			  0xf << MX51_ECSPI_CTRL_PREDIV_OFFSET);
+   686		ctrl |= mx51_ecspi_clkdiv(spi_imx, spi_imx->spi_bus_clk, &clk);
+   687		spi_imx->spi_bus_clk = clk;
+   688	
+   689		mx51_configure_cpha(spi_imx, spi);
+   690	
+   691		/*
+   692		 * ERR009165: work in XHC mode instead of SMC as PIO on the chips
+   693		 * before i.mx6ul.
+   694		 */
+   695		if (spi_imx->usedma && spi_imx->devtype_data->tx_glitch_fixed)
+   696			ctrl |= MX51_ECSPI_CTRL_SMC;
+   697		else
+   698			ctrl &= ~MX51_ECSPI_CTRL_SMC;
+   699	
+   700		writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
+   701	
+   702		/* calculate word delay in SPI Clock (SCLK) cycles */
+   703		if (t->word_delay.value == 0) {
+   704			word_delay_sck = 0;
+   705		} else if (t->word_delay.unit == SPI_DELAY_UNIT_SCK) {
+   706			word_delay_sck = t->word_delay.value;
+   707	
+   708			if (word_delay_sck <= MX51_ECSPI_PERIOD_MIN_DELAY_SCK)
+   709				word_delay_sck = 0;
+   710			else if (word_delay_sck <= MX51_ECSPI_PERIOD_MIN_DELAY_SCK + 1)
+   711				word_delay_sck = 1;
+   712			else
+   713				word_delay_sck -= MX51_ECSPI_PERIOD_MIN_DELAY_SCK + 1;
+   714		} else {
+   715			int word_delay_ns;
+   716	
+   717			word_delay_ns = spi_delay_to_ns(&t->word_delay, t);
+   718			if (word_delay_ns < 0)
+   719				return word_delay_ns;
+   720	
+   721			if (word_delay_ns <= mul_u64_u32_div(NSEC_PER_SEC,
+   722							     MX51_ECSPI_PERIOD_MIN_DELAY_SCK,
+   723							     spi_imx->spi_bus_clk)) {
+   724				word_delay_sck = 0;
+   725			} else if (word_delay_ns <= mul_u64_u32_div(NSEC_PER_SEC,
+   726								    MX51_ECSPI_PERIOD_MIN_DELAY_SCK + 1,
+   727								    spi_imx->spi_bus_clk)) {
+   728				word_delay_sck = 1;
+   729			} else {
+   730				word_delay_ns -= mul_u64_u32_div(NSEC_PER_SEC,
+   731								 MX51_ECSPI_PERIOD_MIN_DELAY_SCK + 1,
+   732								 spi_imx->spi_bus_clk);
+   733	
+   734				word_delay_sck = DIV_U64_ROUND_UP((u64)word_delay_ns * spi_imx->spi_bus_clk,
+   735								  NSEC_PER_SEC);
+   736			}
+   737		}
+   738	
+ > 739		if (!FIELD_FIT(MX51_ECSPI_PERIOD_MASK, word_delay_sck))
+   740			return -EINVAL;
+   741	
+ > 742		writel(FIELD_PREP(MX51_ECSPI_PERIOD_MASK, word_delay_sck),
+   743		       spi_imx->base + MX51_ECSPI_PERIOD);
+   744	
+   745		return 0;
+   746	}
+   747	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
