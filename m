@@ -1,281 +1,201 @@
-Received: from mail-il1-f173.google.com (mail-il1-f173.google.com [209.85.166.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2069.outbound.protection.outlook.com [40.107.247.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3AB7195FEA
-	for <imx@lists.linux.dev>; Thu,  7 Nov 2024 07:20:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730964035; cv=none; b=RPev+DZoEMXwhScQILLSiEct1VtZwhqtMT/TnUUnBIixoKQb/vcYQUbFm0U6xwXcmoY8IOqig3CHMtoKKdEx4s4p9VpvmYyJYoX4SsEQQty1+u3JVDnoKOgT/hXBqt+eVV4glF8b/YcmMXTmGhhcUWQHb5aI6xcw2Q34YtrqweY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730964035; c=relaxed/simple;
-	bh=wbe1PF0BN4FVlIpqOXW7w8fgR9sZ4Tte6sd0ZdzquXA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lBgH1m6ilZdB1NJou7AojBLM1jnh+jKTbTJRHkKomSQ/fUE98L8VgBY3Wa1MPQrWrYo0s7DivBKqCbVG7SUzapDAByFjfzxvO2DpnBcV4w+EovPTP9DKjYzX6ysN9OHsxpiGjviztqRN7kOMKC8KRzJRb/JmvvuxNYMibnzo+qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s4VNb2qI; arc=none smtp.client-ip=209.85.166.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A20B1DC18B
+	for <imx@lists.linux.dev>; Thu,  7 Nov 2024 08:35:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730968514; cv=fail; b=dpWadQOxCf09Ly6DeYL/btG2OnwNLLQPQquBefGdFVOVsPb07px1UK9amh+B7apCHofAcK+MS90ZCIS8Abk2F2zejVdNlWQiVXcXbNFRGjrAM8Ei3f9bSE1OXNuP36WkFz/CsJKJ3YOmnpD2bi0dpvKKQGEs+RX2+H7tIEzPp6k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730968514; c=relaxed/simple;
+	bh=H7mjlRPdK40FEvdH4bmaeoT9tTh/ZGiZ3SsyeBt18ss=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=iQ0pkCplqdi9Wk1vyM5XFQ5Y2mKsEvW94J7/hsI8MinZF+LVAw1qmEF9GSVlCh+Avq/nKjevuQg9SHVq/XvQcG0JfKAZ8MgM1sJbjd/RmG330mGNCWTTeSRAudCGzQyBvGGJeVZ16VYaoZ/LvobAMGYKGDwHNBmaRzaTfonzAFY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=H/XP61Op; arc=fail smtp.client-ip=40.107.247.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s4VNb2qI"
-Received: by mail-il1-f173.google.com with SMTP id e9e14a558f8ab-3a3b28ac9a1so117125ab.1
-        for <imx@lists.linux.dev>; Wed, 06 Nov 2024 23:20:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730964033; x=1731568833; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Pp6KCmqs67mMr8WmGpbgbBC1WRXaVqkvwQ/Hvpxr73Q=;
-        b=s4VNb2qIsKfZWag71Pey4r+ilBiZjVEL7oNATsThJGdCLVko7qO1E1J/wO4lJoJvmZ
-         6djZyx4OZo4tyoW7yo9QZe5LVmdu5wiu9s1rR2kc20ym+Bnm59U4lvk5iCgZmgSe78cC
-         Jbfym+RC0j8pyDS4iqbf8NDWezmcD2XfgYCbuDytPyjyVx47stCNFgkKiqmeD+OEvzwK
-         SkcTS7bXc2tLV2yzx1s/ZWB3ltaHRY4/fk0Ras2zoL1fCJzNenlC+L7IsGMaakOCKZ5a
-         0EfoAltIlEon/DE8YRjrV82INhipHJOc6xXC2YalhQvUL3jZetIyN/0i50JJ09P5ozIe
-         1/eA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730964033; x=1731568833;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Pp6KCmqs67mMr8WmGpbgbBC1WRXaVqkvwQ/Hvpxr73Q=;
-        b=Q4iRM4eh+OG9Gi29pUrCyIy5km+A0HeoeDJsrYMt6V+wyU/MGnWaItVP4Bbs9ijLVH
-         hEA6GjIUXhWYIZqvfJlTAyIgnY1U+IzyUWYe3E4Od9g4zKsfe5daZvlKsWskrbJFWZ/F
-         UPygYNlDeiGeaxjy8JAJlFIaP6ypGII1pxpr2XesU/LENcrYRzoVteWpuYcHbQaU80c0
-         88c5wvDLCkFPycICdE4STzqhUp+urvsYD9ELtc+2iHW4XlJuq1QkgFkdDKoLncYtgGPu
-         sldaeIO3DM50/1eH0iqek9UKrwfuWJkofHOx5ZUmYETswsVquvITDcAp3jKI/vPAYM22
-         Id0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV24rQjWINn3D4rPM/7v5kJpUgqOPiprU85t9NiIwtK6lXZtfz0e1BZZ88WLRwzeg4I/1g=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzXeiFep5bMqs2fUZnI2vYZxkhx/KTKt8hC3OAcRJuAqhfU/oLU
-	FKdp4FoyQXFoAU6C/YnzuVTNlEzx80OjahxbPSrIGguW3DlaKdW2onwCiPc5CnPbxRgDjninJkl
-	txdfKcCwvvyzCksiImqjOFAHXR0cTcoTJFrVu
-X-Gm-Gg: ASbGncsSc50pfLJ9KDgY32ByTwQiR5Fwl7kriZMwny7lLgCBmq8d9SfUSQfHYt5ZnnT
-	WF/ydFbxUuW1TKxgsBU+TIo+/8tOMGRfz
-X-Google-Smtp-Source: AGHT+IEmnbwUn7FqMxub9oZeXmh8ZASmGcqQ4lXcaSpyo+2BFdeums39PMJ3VYjEqNSEV/VfORdrP+vT1QGSXpK8GTc=
-X-Received: by 2002:a05:6e02:1582:b0:3a6:b318:3b99 with SMTP id
- e9e14a558f8ab-3a6e7a6df90mr3457845ab.27.1730964032587; Wed, 06 Nov 2024
- 23:20:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="H/XP61Op"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MwEwl9QgCw0u24YEPc7o3wlAISdNIh3PknUaXGx+SnN1N8/3EVnrcX5WHXXj4OWJWPpE26EbHMxJurIzIqJzsqub8uOLW1ZnwrdcHm7HaJCWmJ3SfgeGIHM7lP3bcJbKm68Z3HHFaNtKzo098eLuGkcn8Cypui8icF3dW6GfsPXzcj2bm4Ns7S8Ydo86kM9UvZ70esE/2ReUaePPpd7lAMkQcmWTbbCc5MfOlVPO9PtkHlDFs3fjKTdJqYIPkAd0w+UdBxD1EUYjJGvfMaFcXlVzdFkjzpEwmlTiUjeoZln+nIMRleXyvkl8SEDZftsRZSKw6sbbHLxYuwNIfwtnmQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XZvH3gt6g6E4MJzd8KA8i9b51Tvnsmsc0XSRVcwILdo=;
+ b=Y9g6WaKi9vulvG30ZTesooHo2Y6+yEKnXUf5Bre/R6xwg+/9p9THnojYOHh69eYm8lq+JAzpTElyP8VIAfuIak9wgf/ygx5KQ7c2iPIVezFDG+cooDh9NiRr78L8bM9d1XeqfR1i8vYus6xEMpJq6PLuEO+TmyOOwnQCaaf15MMVw3SBZ8cl0FUy6y/qaJoj79ASAAK6aC2rZ4N4Xj4drwjFhjczcavZ9oJpgkBySPnRCrebQjiMp4WFx15V93DGs2iEUyUBjFqvi0OSpEyBhX8723uyZHvfjjo01/cwbT88sfjVWonxKW2Ihy+/3i154XeSfM14X3C50BMHhCFPcg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XZvH3gt6g6E4MJzd8KA8i9b51Tvnsmsc0XSRVcwILdo=;
+ b=H/XP61OpyR3tr8ot7acjtPV9hu9spj0cmyMArF5kzDTvgt/XjIvWhGtHdc8Ero7FJwFkMQ6F7CHot5Va6OjGskOO+4glmpXaK230YUTin6zf5tQeIRq1dsX0rbbXrchEeHCjRqKdTu5IIqIRcbfPfp7CnlXaZHMvrWY0xLc/V9C5gI4I+fGgp2a0xIU5o9z2JswDTai7ut9aJbtd9XyXhb4T/bPs0dOnBeo0XWCa+C4Akxx/LeeexIRagy/MujLG68/ODIa/OF/DTHtRFleoI99KWw28usvXe85gE1gCf6SfYU7iQKKDrL7vvzZx8NIGABapxPCO3aBrTer5e5T5ow==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS8PR04MB8676.eurprd04.prod.outlook.com (2603:10a6:20b:42b::10)
+ by VI1PR04MB6847.eurprd04.prod.outlook.com (2603:10a6:803:134::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.20; Thu, 7 Nov
+ 2024 08:35:07 +0000
+Received: from AS8PR04MB8676.eurprd04.prod.outlook.com
+ ([fe80::28b2:de72:ad25:5d93]) by AS8PR04MB8676.eurprd04.prod.outlook.com
+ ([fe80::28b2:de72:ad25:5d93%7]) with mapi id 15.20.8137.018; Thu, 7 Nov 2024
+ 08:35:07 +0000
+From: Richard Zhu <hongxing.zhu@nxp.com>
+To: jingoohan1@gmail.com,
+	bhelgaas@google.com,
+	lpieralisi@kernel.org,
+	kw@linux.com,
+	manivannan.sadhasivam@linaro.org,
+	robh@kernel.org,
+	frank.li@nxp.com
+Cc: imx@lists.linux.dev,
+	kernel@pengutronix.de,
+	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Richard Zhu <hongxing.zhu@nxp.com>
+Subject: [PATCH v1] PCI: dwc: Clean up some unnecessary codes in dw_pcie_suspend_noirq()
+Date: Thu,  7 Nov 2024 16:44:55 +0800
+Message-Id: <20241107084455.3623576-1-hongxing.zhu@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI1PR02CA0041.apcprd02.prod.outlook.com
+ (2603:1096:4:1f6::18) To AS8PR04MB8676.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42b::10)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241106085441.3945502-1-xu.yang_2@nxp.com> <CAP-5=fVN93EJN9FqMmF6h2meiLbU_OWJ2=Vt0EVdZds6nZSKpA@mail.gmail.com>
- <20241107033853.bd57dmjszw2tqhvk@hippo>
-In-Reply-To: <20241107033853.bd57dmjszw2tqhvk@hippo>
-From: Ian Rogers <irogers@google.com>
-Date: Wed, 6 Nov 2024 23:20:21 -0800
-Message-ID: <CAP-5=fU2JvCduuvpSDzesr88GXac7z1Xmw_zt2eES2R7wWui3A@mail.gmail.com>
-Subject: Re: [PATCH] perf jevents: fix breakage when do perf stat on system metric
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: john.g.garry@oracle.com, peterz@infradead.org, mingo@redhat.com, 
-	acme@kernel.org, namhyung@kernel.org, mark.rutland@arm.com, 
-	alexander.shishkin@linux.intel.com, jolsa@kernel.org, adrian.hunter@intel.com, 
-	kan.liang@linux.intel.com, sandipan.das@amd.com, bgray@linux.ibm.com, 
-	linux-perf-users@vger.kernel.org, imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8676:EE_|VI1PR04MB6847:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1c20da41-b965-42a0-e322-08dcff071535
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|52116014|366016|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?E3PPxVvMdo1yqR/2PrFfmcG6JPcd8muJ7c6VkBso+xy0xEDNZ5EKNzLrv6zF?=
+ =?us-ascii?Q?RpiR9rJf5hX21p3qSjaj/4diAjdJeMkJSK75B5nCOCF7JyQXA5VtrJO+4aag?=
+ =?us-ascii?Q?iq0Fp+Tm2nZbX4MDcx+GTSkjjyGw7SlPavLmCf5M+lXTfNVJxfg18NF2HBaU?=
+ =?us-ascii?Q?ku17iOv10B4Sahj9kpM0qM0TCD3Sa6gXwa2GqONN8WWF2aVb9qHQuuXBR3c1?=
+ =?us-ascii?Q?6v0DLf/fCb+iXIHqqECYras7YJNaajYQd61y2ISH1qi9nYKnLX2ai/KIFYZR?=
+ =?us-ascii?Q?A6Q4k06TZ7HEJxV4Th1wDz7Tt7X8qsprUktlCqUAyyeMOdwDXVkPieA54tli?=
+ =?us-ascii?Q?KCQjZq/ojDlArjHauz5dKR8Oe973aVshmDqoBHtR926siYaaLJh5Tv+XszuD?=
+ =?us-ascii?Q?RdP7fx8/bPHuVpJustTSCjmUiPeYeCBsmUdz7cqyZRPv7WsrJseq/TYwbaC5?=
+ =?us-ascii?Q?hHNXlbfdwGxRU/ZHAuCZO63Ksic20wOb9E1BZ6OsSpS5TO2GUQdoQmeL/MUT?=
+ =?us-ascii?Q?uqSm3fYiPBPvgbSLMy5YEuo3Kxx1FBwgLIYHFqHzJ8t6t+bEjz7N+WLmCbrz?=
+ =?us-ascii?Q?vr4J9TH044lxFPcDyRx1h73KESAeJTL/cUGu6YOC5PwuSLmFrDsj6tOio4Jc?=
+ =?us-ascii?Q?ZTmBnUZzgReWrO2iwjSK/J/JbT0z44uacPX9TXGTuVRqQz9r8eZxkbQkTLe2?=
+ =?us-ascii?Q?fsCkLIAEdPTVIjr33alJezmXy6B5P8qAAUB6wdTGNtJBrfOL1Jf4/7UNGBxa?=
+ =?us-ascii?Q?r7LC57PBG5g6//WB5JrpMgo+A165hhKisIADXI3pMY6KB9SQu8YZ1gC6K6+l?=
+ =?us-ascii?Q?3nMXSxzzdSFg6zoat3oTX1pePW6iZTES7w9xbBipqDpCdlYiP4i67oNKMkVB?=
+ =?us-ascii?Q?qlo/XWQ6xGWgsTFWSpn0WgC1SKBUpkInzpgEOrtfnhnYBR20CDVUT1NCoAbo?=
+ =?us-ascii?Q?0weiBI/V/NUGfm4XfT9Lpd0PzHg4oH7qSZTMz1Gk5fldKdMwK4JHAW4CJOfs?=
+ =?us-ascii?Q?7ynlwvFbum+tNfin0DDsjda0UnLJnP6BByDs7L/PEYJuxRDQnMRfGdu6Y4/s?=
+ =?us-ascii?Q?fsrAIcDlMY0xlPFY8xg81h3quVOOMiFNDsjMeZ8Olwo2EAXMdGceITQnHKM6?=
+ =?us-ascii?Q?OGaMI+cNV/DkR6mHDKyEffYCxmEBsvot4KMqnb0/t1YQtiL1va7XPd98ubUy?=
+ =?us-ascii?Q?rmSmgfHCbYr86HRiG+tqM7RkQcmSeFzz7i4CKr4dbpSYkvfGBQGL3HrsUhmn?=
+ =?us-ascii?Q?42f9OKrXQ8mUpWwd4GzAmq4Rt+l/sbZNoYwcYPKoKMeXw146LEh6XYFJjqbu?=
+ =?us-ascii?Q?SxAJMOnOgG29iEP7rgLl0FDbry4dVdsQjkxuhSl7HnEpeuY+v7NIDwSYuHvQ?=
+ =?us-ascii?Q?sOg4qgk=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8676.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?p70JZ/sNg87hmkBrNRpt1fcixqAgCQ6iJLhNQCXpHkfU8mQycCNrwuqIX2Hk?=
+ =?us-ascii?Q?MZrgUwu3Z1p7SkU2zNntNovY6u14/KFr4KredTaoNijQXsxhqYTL5JFT7iKC?=
+ =?us-ascii?Q?wmnWe94f/J2Vt3Dck0oRCJvKp7n6PNnPWTjkmW9H9/UnSGkWdhjdNbGcWceo?=
+ =?us-ascii?Q?0hgXKpRHylmvP2KfF25rmxpih2+EAJBcQ91bIhPfMkii2PXBDWuMWLFVNmNt?=
+ =?us-ascii?Q?PJdBkJuxcc9I6elT/CNZNSpw323D6li6V/lMqsQpU6SH7BQg80AEARDV7uiI?=
+ =?us-ascii?Q?uiw+6d9v/7cKHmAQrdbFvgbSC0S/ddV6+CCmzdy44qs3up7zRrhcvBdha+90?=
+ =?us-ascii?Q?4RD4TtAHFQjploCHbzm4PEmLRerAsTZFSD2viwi2GJNTKHQ6yljVwgCUwmdE?=
+ =?us-ascii?Q?EDPgDNHB87Joezzfi3Z06p1E0kugp5mp9bDineFTaUawVaBblD1JktfR5YfY?=
+ =?us-ascii?Q?8Iz/iG169xE1aaDduh9qEF1ItwdC7LgbsBBW8HHdUX0z1lpH69slKEYRj/IJ?=
+ =?us-ascii?Q?tpSaCc+dfOATnPQhHesNC/FqDlQ2ypIswclxeBBPGbIuiZ2FSfAhtDe/W96m?=
+ =?us-ascii?Q?nWTXh/MftGbQgAOUvsQl07kDQCSdHCWpe4mdHXQV5noXEXYckDG0GD/I2Hlz?=
+ =?us-ascii?Q?75XR4buDIObh3GjxifCDlIVd0PPEekfLJLalt3yt9ItA66tdvTNoZWjwt1sA?=
+ =?us-ascii?Q?L9LX8hFHhubnPSElbU8/he3NKvGJQBnEbKKjD8kCLG2NabHwfzV5F08iEJOu?=
+ =?us-ascii?Q?+QRyb6BQuUI2/cP1NlOurG/QzXFudX9OmfpR/TyMeKf2v/3+Gm8wNxGo+i5J?=
+ =?us-ascii?Q?+iJG7ilbwAobfEo1t98mQV7XXiOXre9NWttSJDbjS5u/cnwhUbbjNUnabBEv?=
+ =?us-ascii?Q?IZ5yDmoLXDf4uwL9CS6MWJ6oevD1aiVrS1rBl6NRnOWS7Hul41w/8LLZytBm?=
+ =?us-ascii?Q?OrLdUK5VqZfv0vykwC7gW+Sf5aYsI6Gtfzn8Mxp1lJjcK8fL+d/EJL1TYGyo?=
+ =?us-ascii?Q?xT1+hqt64iVx2FHCcldJIJt2pEod+3Bg3zo5THtIivDcVx2RzlM3rf2n4cWH?=
+ =?us-ascii?Q?iteJn7XlJksTEfjj/c2kpRE/0rcN2Y0oYg3pGmh1u/O+7uh50en4piplY0Sd?=
+ =?us-ascii?Q?pC5sWuJY1lAqX56fSZFVoVSP2YiI02RLLNosipnHmgGwOeAScH3nqy3Fwo5M?=
+ =?us-ascii?Q?jiWjQ++iKr2bImXv7XJR9Rj5AOlocACbWaJOr91ycV0HqFttAzA7CEQlyyU4?=
+ =?us-ascii?Q?P0q2M8h4sCnY8UPbRtcmX4QmP9KCy0w7w//bxXqA7UQJ4HvPuU95SnoPE798?=
+ =?us-ascii?Q?LhovvGIITu/AfLcqb86WJstFMe8YFJrlMkM0uq4eJjZMRTQYUJR3/YDOwxU4?=
+ =?us-ascii?Q?jBeyfoePELlfxFM8Y+oZ8lCIGrmACKGv4ci28ZS8s3QeDNIbtbYOXP3KFc+O?=
+ =?us-ascii?Q?P35TNdoCic24CGQOUwOt5aMO2LdoP86UhNdAsiO7JRQk6arNjBFvXjKoS+5B?=
+ =?us-ascii?Q?yz/lqU6nAWlHG5U7cvUjt65uCM/DlQzBRr2lo+x/YcA0l02aaBoC3UluKsnQ?=
+ =?us-ascii?Q?inDrIaI+yxpefad2XflPfWPfeSy4jQX5nvXAn4Ee?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1c20da41-b965-42a0-e322-08dcff071535
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8676.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 08:35:06.8761
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6sNyoIfVsI20iY/Qhs4O8eheTnXX2NLIrEzEElEbejFlkrSOeQLc+X+enXNaoy+Dd/DGgPzugbgOVN8aSXZshA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6847
 
-On Wed, Nov 6, 2024 at 7:41=E2=80=AFPM Xu Yang <xu.yang_2@nxp.com> wrote:
->
-> On Wed, Nov 06, 2024 at 10:06:24AM -0800, Ian Rogers wrote:
-> > On Wed, Nov 6, 2024 at 12:55=E2=80=AFAM Xu Yang <xu.yang_2@nxp.com> wro=
-te:
-> > >
-> > > When do perf stat on sys metric, perf tool output nothing now:
-> > > $ perf stat -a -M imx95_ddr_read.all -I 1000
-> > > $
-> > >
-> > > This command runs on an arm64 machine and the Soc has one DDR hw pmu
-> > > except one armv8_cortex_a55 pmu. Their maps show as follows:
-> > >
-> > > const struct pmu_events_map pmu_events_map[] =3D {
-> > > {
-> > >         .arch =3D "arm64",
-> > >         .cpuid =3D "0x00000000410fd050",
-> > >         .event_table =3D {
-> > >                 .pmus =3D pmu_events__arm_cortex_a55,
-> > >                 .num_pmus =3D ARRAY_SIZE(pmu_events__arm_cortex_a55)
-> > >         },
-> > >         .metric_table =3D {
-> > >                 .pmus =3D NULL,
-> > >                 .num_pmus =3D 0
-> > >         }
-> > > },
-> > >
-> > > static const struct pmu_sys_events pmu_sys_event_tables[] =3D {
-> > > {
-> > >         .event_table =3D {
-> > >                 .pmus =3D pmu_events__freescale_imx95_sys,
-> > >                 .num_pmus =3D ARRAY_SIZE(pmu_events__freescale_imx95_=
-sys)
-> > >         },
-> > >         .metric_table =3D {
-> > >                 .pmus =3D pmu_metrics__freescale_imx95_sys,
-> > >                 .num_pmus =3D ARRAY_SIZE(pmu_metrics__freescale_imx95=
-_sys)
-> > >         },
-> > >         .name =3D "pmu_events__freescale_imx95_sys",
-> > > },
-> > >
-> > > Currently, pmu_metrics_table__find() will return NULL when only do pe=
-rf
-> > > stat on sys metric. Then parse_groups() will never be called to parse
-> > > sys metric_name, finally perf tool will exit directly. This should be=
- a
-> > > common problem. To fix the issue, this will keep the logic before com=
-mit
-> > > f20c15d13f01 ("perf pmu-events: Remember the perf_events_map for a PM=
-U")
-> > > to return a empty metric table rather than a NULL pointer. This shoul=
-d
-> > > be fine since the removed part just check if the table match provided
-> > > metric_name. Without these code, the code in parse_groups() will also
-> > > check the validity of metrci_name too.
-> >
-> > So we carry this code for ARM:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.gi=
-t/tree/tools/perf/arch/arm64/util/pmu.c?h=3Dperf-tools-next#n21
-> >
-> > On x86 and other architectures the PMU is always passed as NULL (the
-> > effect of this change):
-> > https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.gi=
-t/tree/tools/perf/util/pmu.c?h=3Dperf-tools-next#n843
-> >
-> > The blame shows me as the author, but that's because I factored event
-> > and metric tables to be separate things. When I did that I brought
-> > over ARM's event table logic to the metric table.
-> >
-> > Why do we pass a PMU to this code anyway?
-> > So on x86 the cpuid will give a different string for
-> > heterogeneous/hybrid/BIG.little parts. On ARM you get a different
-> > CPUID depending on which logical CPU you ask the question of. The CPUs
-> > associated with a PMU are used to look up the CPUID string.
-> >
-> > This whole thing is spaghetti code (fwiw, I dislike the whole arch
-> > directory plus weak symbols thing that is a by design breakage of at
-> > least cross platform work - hopefully the maintainers will review [1]
-> > so we can delete a sizeable chunk of it) and the ARM situation looks
->
-> Yes, the logic seems like a little mess when parsing metrics because some
-> system metrics don't bind to any core pmu. But I'm not familiar with the
-> whole code, so I unable to make big changes on perf tool.
->
-> > sub-optimal. We really need to scan a plurality of metric tables for
-> > the heterogeneous parts on ARM. We're passing a PMU rather than just a
-> > CPU, I think passing a CPU would be more intention revealing.
-> >
-> > Then there's the pleasure of system metrics, which are only loosely in
-> > my mental model of things as John Garry did the heavy lifting for
-> > these.
-> >
-> > So the problems I see:
-> > 1) ARM needs multiple metric tables to be parsed in the metric group
-> > logic as the invariant of 1 CPUID 1 table doesn't hold on ARM.
-> > 2) The lack of a metric table causes an early exit from the metric pars=
-ing code:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.gi=
-t/tree/tools/perf/util/metricgroup.c?h=3Dperf-tools-next#n1700
-> > However, the system metrics pattern conceptually match PMU names and
-> > aren't tied to CPUIDs. The iteration logic still uses the metric table
-> > though:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.gi=
-t/tree/tools/perf/util/metricgroup.c?h=3Dperf-tools-next#n1283
-> > 3) Crufty spaghetti from the use of arch/weak that means we aren't
-> > testing the same code paths leading to divergence and rot.
-> >
-> > I'll try to pull something together. But for the sake of expediently
-> > addressing your issue:
-> > Acked-by: Ian Rogers <irogers@google.com>
->
-> Okay, Thanks for your input!
+Before sending PME_TURN_OFF, don't test the LTSSM stat. Since it's safe
+to send PME_TURN_OFF message regardless of whether the link is up or
+down. So, there would be no need to test the LTSSM stat before sending
+PME_TURN_OFF message.
 
-I sent:
-https://lore.kernel.org/linux-perf-users/20241107071600.9082-1-irogers@goog=
-le.com/
-but didn't get to my point about ignore the no table case and also the
->1 table case on heterogeneous systems. I didn't try to reproduce your
-situation, if you could test the patches it would be appreciated.
+Remove the L2 poll too, after the PME_TURN_OFF message is sent out.
+Because the re-initialization would be done in dw_pcie_resume_noirq().
 
-Thanks,
-Ian
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+---
+ .../pci/controller/dwc/pcie-designware-host.c | 20 ++++---------------
+ 1 file changed, 4 insertions(+), 16 deletions(-)
 
-> Thanks,
-> Xu Yang
->
-> >
-> > Thanks,
-> > Ian
-> >
-> >
-> > [1] https://lore.kernel.org/lkml/20241017002520.59124-1-irogers@google.=
-com/
-> >
-> >
-> >
-> > > Fixes: f20c15d13f01 ("perf pmu-events: Remember the perf_events_map f=
-or a PMU")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> > > ---
-> > >  tools/perf/pmu-events/empty-pmu-events.c | 12 +-----------
-> > >  tools/perf/pmu-events/jevents.py         | 12 +-----------
-> > >  2 files changed, 2 insertions(+), 22 deletions(-)
-> > >
-> > > diff --git a/tools/perf/pmu-events/empty-pmu-events.c b/tools/perf/pm=
-u-events/empty-pmu-events.c
-> > > index 2b7516946ded..b8719dab264d 100644
-> > > --- a/tools/perf/pmu-events/empty-pmu-events.c
-> > > +++ b/tools/perf/pmu-events/empty-pmu-events.c
-> > > @@ -585,17 +585,7 @@ const struct pmu_metrics_table *perf_pmu__find_m=
-etrics_table(struct perf_pmu *pm
-> > >          if (!map)
-> > >                  return NULL;
-> > >
-> > > -        if (!pmu)
-> > > -                return &map->metric_table;
-> > > -
-> > > -        for (size_t i =3D 0; i < map->metric_table.num_pmus; i++) {
-> > > -                const struct pmu_table_entry *table_pmu =3D &map->me=
-tric_table.pmus[i];
-> > > -                const char *pmu_name =3D &big_c_string[table_pmu->pm=
-u_name.offset];
-> > > -
-> > > -                if (pmu__name_match(pmu, pmu_name))
-> > > -                           return &map->metric_table;
-> > > -        }
-> > > -        return NULL;
-> > > +       return &map->metric_table;
-> > >  }
-> > >
-> > >  const struct pmu_events_table *find_core_events_table(const char *ar=
-ch, const char *cpuid)
-> > > diff --git a/tools/perf/pmu-events/jevents.py b/tools/perf/pmu-events=
-/jevents.py
-> > > index 6e71b09dbc2a..70f4fd5395fb 100755
-> > > --- a/tools/perf/pmu-events/jevents.py
-> > > +++ b/tools/perf/pmu-events/jevents.py
-> > > @@ -1101,17 +1101,7 @@ const struct pmu_metrics_table *perf_pmu__find=
-_metrics_table(struct perf_pmu *pm
-> > >          if (!map)
-> > >                  return NULL;
-> > >
-> > > -        if (!pmu)
-> > > -                return &map->metric_table;
-> > > -
-> > > -        for (size_t i =3D 0; i < map->metric_table.num_pmus; i++) {
-> > > -                const struct pmu_table_entry *table_pmu =3D &map->me=
-tric_table.pmus[i];
-> > > -                const char *pmu_name =3D &big_c_string[table_pmu->pm=
-u_name.offset];
-> > > -
-> > > -                if (pmu__name_match(pmu, pmu_name))
-> > > -                           return &map->metric_table;
-> > > -        }
-> > > -        return NULL;
-> > > +       return &map->metric_table;
-> > >  }
-> > >
-> > >  const struct pmu_events_table *find_core_events_table(const char *ar=
-ch, const char *cpuid)
-> > > --
-> > > 2.34.1
-> > >
+diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+index f86347452026..64c49adf81d2 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-host.c
++++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+@@ -917,7 +917,6 @@ static int dw_pcie_pme_turn_off(struct dw_pcie *pci)
+ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+ {
+ 	u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+-	u32 val;
+ 	int ret = 0;
+ 
+ 	/*
+@@ -927,23 +926,12 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+ 	if (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) & PCI_EXP_LNKCTL_ASPM_L1)
+ 		return 0;
+ 
+-	/* Only send out PME_TURN_OFF when PCIE link is up */
+-	if (dw_pcie_get_ltssm(pci) > DW_PCIE_LTSSM_DETECT_ACT) {
+-		if (pci->pp.ops->pme_turn_off)
+-			pci->pp.ops->pme_turn_off(&pci->pp);
+-		else
+-			ret = dw_pcie_pme_turn_off(pci);
+-
++	if (pci->pp.ops->pme_turn_off) {
++		pci->pp.ops->pme_turn_off(&pci->pp);
++	} else {
++		ret = dw_pcie_pme_turn_off(pci);
+ 		if (ret)
+ 			return ret;
+-
+-		ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
+-					PCIE_PME_TO_L2_TIMEOUT_US/10,
+-					PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
+-		if (ret) {
+-			dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n", val);
+-			return ret;
+-		}
+ 	}
+ 
+ 	dw_pcie_stop_link(pci);
+-- 
+2.37.1
+
