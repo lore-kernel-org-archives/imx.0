@@ -1,35 +1,35 @@
 Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2062.outbound.protection.outlook.com [40.107.241.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B296A192D8C
-	for <imx@lists.linux.dev>; Thu,  7 Nov 2024 05:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCEE5194137
+	for <imx@lists.linux.dev>; Thu,  7 Nov 2024 05:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.62
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730958174; cv=fail; b=st5UuWtFdK9bF7fwVBK+PqoEBtlmcNs33/2xCui7ZytTH6ouy3O+mX9E01dSCVjVuf1N0AeNzqYTH0c3NDAEzWvlfQWG8JUy+h2pWua1x0CxfH4LrO6l1kpjPa4q9uul9JnsgZJNqcYBDfwBllFvQGv60k3r2Hsn3viy9Lzj7k4=
+	t=1730958177; cv=fail; b=l2OO9Lg3NgfWKv3jnNkXe43SRcnS+gnxbV3BBUrx9SO9oXavS3ldci5HvYoarL/9T1SkWeNPRutN7Kf054vjlRivp3KwZOfGoIrpwdFetl7kZKzL4MRlMud3ZoP/CJn19usXEcr9HDQBiqwmhJ8sbfEu1Q4lDkmCcOh3OT8DIrg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730958174; c=relaxed/simple;
-	bh=34FF491ZJSDO129ZCMtrnaGbCyv6wFF+EMeynPpwbFY=;
+	s=arc-20240116; t=1730958177; c=relaxed/simple;
+	bh=un9iXQ5xghbtZREQMJotfWmXPPOY7jR+nhscSRxZpvg=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=p6StFreeA997E+ROGpST0jTXAxszl+O/M6u5uXpPyiQK+2nq+pvgnw0tjq1oEDpuH3kS+A7b7/1tH9FlPGsp8qAdYPnfggFzPpsq/UdsZanr4yF3+e/G2jFE5vqR67XAfyhauOnQBkFOGGcsO2+6lS7LFXpyQFl9CtGNtUFqTRA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=lTAOHMml; arc=fail smtp.client-ip=40.107.241.62
+	 To:Cc:MIME-Version; b=E5VBAJUfU5hVeFOMAakrj2+04Ga3nHiArOvU3TScFevaXMYTzzbchTCyqCKpi+3qQfia8U1DAdKIi+j3fRGG3BAB9Kh1CCKAxDq9yi1xRYdyvarqskNzDYTADICCfP5iwEWXkpb83TGt4xjhIdl6mj8cK/ycsjPqNGGJXsQX8HM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Kby7q8b5; arc=fail smtp.client-ip=40.107.241.62
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="lTAOHMml"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Kby7q8b5"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dCMQirRTfbRsEzeb7GiP9ileXxmsjMzOWJSVDGli0YApL2p9FYNpPY2FCmonQBUfbR+SxwUbWlr+8HyYgx3eDUaMY3lp+FAOTLRp1mF8RF7sYF/THKScdBlJZxOl9qF9Eh8quL2UysESLmDR+v6OI/NIxLOQqjaekfVOnNAD/aOQkuBAWY6oi+rfXgymU5ke9Sg53rhR1qeKirCizmROifG8hAkgqByk+6QhtX9kCY+GT5Yy3ejyHbpBuvb+dXlxLsAvnnzoahFBLYmtUMH7etELJS+Avsyr0zWr0ynBQLfZpK0rlp8kIRMI6UhZCdLDOeJMZx7h4WItEDSBsl5WBg==
+ b=nRZav1oIoAxJtfp5yNkcoOfLUmPMxBkbfq2lJhHWeXJ1f1r//O34o8UJxyeZ0F61utatm/nCs5mpSjTRqCT6DntYYe3Un53l70+mElMeplE1O0shiVDq66RkLFxLzsR6Be2k7G5AjGa0E5mizHhBfEesOpD6jl7mkO/MgsA0fAMQHFiIucA5RY7QmsGar36xtxHa6GrCdIbxhQrkqsQjLYFv5w03sSwAqlt4ZFdxW1i5cBbuDHM01cwBMKTWoU3E4rk/bwW6RkY9sZXAZcg4NpWnWbyBhQeSueSqMoDprPoPAqdTf0xs9Zk8xEL1Brf6oDlM8HgFMmniL8oKA+RGjg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZbLAgjXjhD46oGKQLWhlHSclrDOmmgRZNY+dScF3B/M=;
- b=hO9UNwFkVQYzRTqzIq2AzE0pZmaRhQDvUsySGmJmyAPQyfZ7XQaRLCharqhfTAttqHFdGaVT9fYD0J0fEdQVKNmv0/qyOOcLsUPlwezch2YmrQhXJzd9yiKUVv4zi8ufSw59BUb3Hj7+uKkW9UesSNojK7uh2WAQbWudDOReQCi/O/qK6chhIUXSJ4dgRWF6zrWA71OVyPrud6ebsUvoQ5srqfI/ZqEb7n8HMW32n2D/A6la5vJX5Gq0aubbsYi3zVLO37pXQu9FEy1W2TLrb+1CzvTGsVf5MfAzOsqBoSvhdgkgdayl8eQhEzMJDZ01WU+AxYYyNqLHPH1Eahl8VA==
+ bh=G7veCpghGih4EyT0+UxUfwK10HmZpxhIQyYrVveOB7c=;
+ b=ItaS3tHiwUS3uCndAtMvCzu9wCS5g7gisnGCtMiR8jFw5IB6xziwQARnaF0rpdYUajpdviLfjhn87irxVfI1dRpAtqiGqb46XRDtSpANt7jXMnm/Zj7/v5kQe1lQXI9usSvL9GMq9PHn14r9KmqEz3C+98Roq/fIaGNVPpMxfO5GMIfemPCTif0+aj18+GV0PGTnHLq92Nuch7UWk08kqpkwzIKnjH3svn9azicnGBFaezm/NytjToXhvgIEdS3wrKAgzcf1E1VHPVCjGn8Y1Z867VvUVDk/9BybUkUqVupmVQKXXmJ0xq8E9Hzu9UTHCJWqnLSik6CwcdLEz3L5Cg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZbLAgjXjhD46oGKQLWhlHSclrDOmmgRZNY+dScF3B/M=;
- b=lTAOHMml4QuHTb2wMBxhUm2sn4tHPnkP8NFoFQWF31sap3+3egJ3H7AYF/uDbFNJc0AuNJejTljiZzO89032CFNvZgoDqSIQ1Qfw1lJL58uUWRbyf4z6Tp+Ew73wnQ5UPKi5m137Mzf/cwEBnBySWVRGDvkaM3OHt76M19MHy9j0l8T3Yy1zq4RDthxpLCysoGk9jTj+vLdFZru2CxAwgpu364GPvnsx/hbL4GmR5kgPlKuxxicAmT/GlaYw/ZerRhKM3XXOtpGZCRTPC97I2uTuS4ByTtS08xq0oM6hAQpHBPyjWmHY5SXCTy5bhDirxVtzldVrudZl8/pw2Jxqfw==
+ bh=G7veCpghGih4EyT0+UxUfwK10HmZpxhIQyYrVveOB7c=;
+ b=Kby7q8b5Q/y6R99jjrdo++7rrkf9D7ZbSwPzBfzp4Di8n5WVu6P1GeolX7wu2vf+MzDx21eqGP7KNEvm5463xV8ZUxpizedMrVVuUwOoj7jqcZibxCWq5QYhlq7tce+U19N6E62zEoN6dXApFsUEgY6uKpZQ5ywtkIsafqnyMyyIZEB+VktjvxFJCU1TG+jUIxP0AIw9PJAlR8lfv1NCVSE3Txa4vtOqxZV0Ds51rxLdXegNhrPnO/IaSHlhn1X5/WaI+uaT4btfh8ltBo0w32xYtAhqwzrsNjktyONMNbboJOBwoc1LMSBuiuceseh6ffR+UEbgeanZfnwIGoiVTg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from DB9PR04MB9354.eurprd04.prod.outlook.com (2603:10a6:10:36c::10)
@@ -42,11 +42,12 @@ Received: from DB9PR04MB9354.eurprd04.prod.outlook.com
  ([fe80::3cd3:1ff0:8bae:a7ab%4]) with mapi id 15.20.8114.028; Thu, 7 Nov 2024
  05:42:47 +0000
 From: Vabhav Sharma <vabhav.sharma@nxp.com>
-Date: Thu, 07 Nov 2024 06:42:40 +0100
-Subject: [PATCH v3 2/4] arm64: dts: imx8qxp: add node for nvmem property
+Date: Thu, 07 Nov 2024 06:42:41 +0100
+Subject: [PATCH v3 3/4] firmware: imx: Add SC APIs required for secvio
+ module
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241107-secvio-v3-2-ea27f1e9ced4@nxp.com>
+Message-Id: <20241107-secvio-v3-3-ea27f1e9ced4@nxp.com>
 References: <20241107-secvio-v3-0-ea27f1e9ced4@nxp.com>
 In-Reply-To: <20241107-secvio-v3-0-ea27f1e9ced4@nxp.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -58,7 +59,10 @@ Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, frank.li@nxp.com, 
  pankaj.gupta@nxp.com, daniel.baluta@nxp.com, silvano.dininno@nxp.com, 
  V.Sethi@nxp.com, meenakshi.aggarwal@nxp.com, 
- Vabhav Sharma <vabhav.sharma@nxp.com>
+ Vabhav Sharma <vabhav.sharma@nxp.com>, 
+ Franck LENORMAND <franck.lenormand@nxp.com>, 
+ Iuliana Prodan <iuliana.prodan@nxp.com>, 
+ Horia Geanta <horia.geanta@nxp.com>
 X-Mailer: b4 0.13.0
 X-ClientProxiedBy: AS4P192CA0010.EURP192.PROD.OUTLOOK.COM
  (2603:10a6:20b:5da::17) To DB9PR04MB9354.eurprd04.prod.outlook.com
@@ -71,114 +75,467 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DB9PR04MB9354:EE_|AS8PR04MB8434:EE_
-X-MS-Office365-Filtering-Correlation-Id: 983bc40b-8116-4fad-fb7c-08dcfeef0246
+X-MS-Office365-Filtering-Correlation-Id: 1cb56b9a-b29d-4547-6cac-08dcfeef02b3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|52116014|376014|1800799024|7416014|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?amlhL3pNQythS1krcWNOUExYQkF0NUFUbGRqMlNnZy92MGwwMUR3WkRSZWx6?=
- =?utf-8?B?UE1HN2JSNzFxWHdFL3FiTHJJazdObWhWRDVzMkt6UFBkTGU0VXdnalZSTUwy?=
- =?utf-8?B?YXBOWkFRZmtGcE9YblpUd0NjVW1NUnRoQ0cvTmN0ZjNZT0pucG9UVTFVbkI2?=
- =?utf-8?B?bEhnKzdjMGUxaG85emdyMDVENnFSVThnbTBXTzE3dnpIVTNlRHJrbkVDTHlF?=
- =?utf-8?B?OEhFRnNXTldSZm5OaFJxT2RzeUJhaXQ3VHUrZEdwSkhoL05YZzlVNWswaFVa?=
- =?utf-8?B?d2hjS0NvNnZjTER1S3FIM2sxRkphclMydjQ0VHRDMGxCNUZCSDc5YWVKUS9o?=
- =?utf-8?B?djJDcE1haTFUeUtNR0VRQ3BCd1lEamFpVFBIVDl1SU1sVzVyanRsNjdJNnNX?=
- =?utf-8?B?UVZZNmVWL0NzSkxIUmlHSzhoelZvd29mdVcrYkI0L1BuS2d0S2NLVHBJb2dQ?=
- =?utf-8?B?NnlkMFRjRXkvendlUGRoTC9HaUhoR3BLeC9SQlRyT2VPRm5mcVUwOGZXNllq?=
- =?utf-8?B?akdveUt2L2Z5UnBwS0ROVi9Wa2lGby9rcDJ0ZVJjZGZLdFM0ODFteWxEY1lu?=
- =?utf-8?B?RWJSUzUyMjBWNHliOVRZcmtqVDNqaGRlWVUxUDdyTk9OVnZjR0cyV1JLVDRl?=
- =?utf-8?B?Q0NEVmpvTjdmc3RGUmxwZlhOVXp1SUx0OVdCWWdzT1BlclpyQVp2STdtMlJk?=
- =?utf-8?B?Snd2R0Z5Z2FOV3dwZVl2Z3REUUg4SEpBakFyOWIvVTJEMlVZREUvNVlvMXdE?=
- =?utf-8?B?cDlGR1lWekJhMlBYNG5NR0d6SWhHMk9zN1R5UzVsdU5oR2tRMTRiYlFaYWtI?=
- =?utf-8?B?UWI1RG81dVF1dWY0VGRRdHQ1anpJN3Q3Y1UrdldjbUdlcDBzemx5RjlIVHU2?=
- =?utf-8?B?MHVEVmZFTXMzWkwxSVhTcHBKcHBWbWFVcnJuVGcwKzZsVTk2VlpGeUF0d0Zl?=
- =?utf-8?B?Z2lmZnJrbW1lNEpXMVV6bjRkK3dmc0Y3OFp6cG44NlVUUlI3QXRVbjYxL3dy?=
- =?utf-8?B?RVpmWlU2SDVxU0tmTzRQaXdVYkxBYis5T0pYUSt5TEFyNHlMQnptVllmTjRN?=
- =?utf-8?B?YjNhK1lEcHc3alBDR3c0ZkZvWm1aaWFJYkg2Q29OaEdOc3N2MnhGTlJCRFZi?=
- =?utf-8?B?dXVSa3lYZ1dRQ2JVbkMxdGJ0NDF2MFJ3OWlXNi9uYjEvdE9hL2NZUS9obXg0?=
- =?utf-8?B?N0xoNktCTnAxUXg1NEFQcjVxQkxoenRlVWZSbHBuUUdmTCtidTVVY3Y0Nkpn?=
- =?utf-8?B?V2U1YTN6Zk4wdFNmeVR3M045NGlkRWp6dHNBYkF4K29EL21keUlnbGZBM21z?=
- =?utf-8?B?RDlZUFVzMWVXTndGdVA2ZUt6Zm1EQ251YTZpUWJWemE3Z1BnbW90bEhkNEpn?=
- =?utf-8?B?dk45bEV3dFo4UjFIMDFUZTdlZk5NNUhXbUpPMWx0T0FrVHg1b0trRTlZRXl1?=
- =?utf-8?B?aUozYnYrOXNCa0d0cUpWYmxvR1lCZ3dtUndzUGdRY2w1TEFjcFVSZTBmUEdE?=
- =?utf-8?B?dWpFejZBQUw3T1k5MDhMVnc4MmFtWFR4SnZIMW9qSkFuR1ZuRWpFd1VpeGxm?=
- =?utf-8?B?dmdCMXNlT1ZHR3dpWFdYelhxMXpybEdVeElxSmo5b2xWQWxEQ2hkTk5wb2pE?=
- =?utf-8?B?ZnJxL3ZmbU5vL08vbXV0bFlsaC92L1IyZ3BSYkdUeDhkdWgzaElnK09zVFhY?=
- =?utf-8?B?VFYvdVhNNjNrcXU4YS81UU1ZYmtDdmVRT2Q3dTd6NmorNWNRMGJDZHRXUE5w?=
- =?utf-8?B?ZW94STVxYzMrbGNYSEpnNktyaXJwNjk0bTJZWFgvZkpvRmtlcStDSnhKYnpI?=
- =?utf-8?Q?+GGQ+D0SkTjPFBBklycX9WOQeYbNr5jmW6XKo=3D?=
+	=?utf-8?B?WkIwK0VvdkxKcVZOUERVWDR5MlJYZVpteUY4WXZGd0JWRjQxWGhhcjRCeEhK?=
+ =?utf-8?B?ckJMWVFRbHBMajRIUFJFbzI3V2U1Nnc3d01mU1Q4QitYZTZwZllKei82NTVR?=
+ =?utf-8?B?UnNLekNlZFlTNE5BUzV0R0d4NGo1ZjhaMzd6WDBLSWdJUjI1M3J2Q0ZnYjdp?=
+ =?utf-8?B?c1h4MWtHVlpVa2RZTjVyYWprZUM3dnUrczc5L3FvZ1hFRDdyWUxHZnhkazgx?=
+ =?utf-8?B?UjV6YzRzVnZXek00ZFRYN1VLclVvUDd3cFI5alg5ZkdEejRhSkVQTDJKNTd3?=
+ =?utf-8?B?cGFtZzBFSTJlb2F1M2M5SElidmgwUmtGYmNDRjVWNHdyV2ljaWxEZVdGK1ND?=
+ =?utf-8?B?cnBGYXdVeklabGt1b0tKeTBmcERsT0NBTWdTUnpLQ2hpSkVuampFektpRHV1?=
+ =?utf-8?B?UDZEWWI5VVpLaU91cFNQbXF4dm9CNXNXVzFBbStnbWxVdm02Wnlyc1hlMEQ3?=
+ =?utf-8?B?U3gyREZHVlBjUE9aMFk1UWRCTzBYYXo4R2Y1ekJSN0JVNk1jRHBVNG1PVmxv?=
+ =?utf-8?B?ZGxmVm0vSUhFM0hwekpENFU3aGdyTW93T1hHa2UrTEVJOVJ1cWhFR3ZLUnl1?=
+ =?utf-8?B?bVpmNUw2RkVKK3c2eXZDemNMbWRmTkdiSHdLanlnNjN1VlV2S25UU1lNcHZQ?=
+ =?utf-8?B?KzBHK0Q1aTJlZFRGKzJTQWJLRkJQUFFmZWlVNVB1THZwUVZwRjFqTXBkTG1W?=
+ =?utf-8?B?TUlpbVZNRW5jRFNXSzlSbEU2akRiYkEyblh0Q1UrMk04dithbGZjNStMTmVM?=
+ =?utf-8?B?ak5hS1g2enBFeXgzYzgxU3BieTBDVXVCQnlqdmFKTURySGdzM1NpbURTMzM2?=
+ =?utf-8?B?bTU1NFRrNFVOVVl3OEJxbVVhRm5vZnRIWTBtWEcvVXhJVGZFVm91MGVyaDZP?=
+ =?utf-8?B?RWNDSTRvaXU5THdWWVZSUmtjMi9HSzZCMzVsMS94QmpuZUZvMFF3U3VXWms4?=
+ =?utf-8?B?TG1uWS93SWZwUkhLSnl4cFRwU3JrS1VHRGprWVNpSE9VYzdPVDhPZWZCTGQy?=
+ =?utf-8?B?U1dNUGtFekx2T2kwNjhFbkU1VlZtV2JzVmF2RWhnaDVXbCs0TFk0WFhtVVpY?=
+ =?utf-8?B?UGh3bklFRm1pQkRhNTlvU1kxRTU3by94bE1JektqY2VPOEIrVGhzWFFRWngv?=
+ =?utf-8?B?RVlmY1dMYnBQYUtUTmRHNDAwYk1tZlZLcjJlR3BybzN6Y3E4ZDZMSmFFaGdD?=
+ =?utf-8?B?S0pRV0pIVThzODZJaUcvNzQ2M0ZJSytpTHdRNGthYjJVbTB0S0w0aThtSVlm?=
+ =?utf-8?B?aTNOZHMzZ25Pd1NZbDdsK1pZTzcxb3B4eENuOVoyUitCaTRPL0JZMWVZdGVt?=
+ =?utf-8?B?cVVoS0pyTmtlTDBFRlJxS1RkSW1qblQ5eWZTNlltUWtydjk2amNQbzdjNHVW?=
+ =?utf-8?B?a0xraVgyU3NDN0VUQzd3OW51OEh3b3Z6cGE0S21IdjdnazRmcEsrdGVtTVAz?=
+ =?utf-8?B?RGxlQkt4dzFtNDRValNTVUIwUXdKSlkveWJMY0s4QWdmbFBSd3RENnlsRFJS?=
+ =?utf-8?B?M0tJcG10b2wwVkJoL2NxeTdRRUZYZTVBcXV5cGtJYnE1VjVlMHpmNXhIdzZj?=
+ =?utf-8?B?UVBnTTFWWFVLRnNCNjV5NXNtVVFSOTFWUHIzbnBJRUM2OGk1UjFXQ1AwOG5q?=
+ =?utf-8?B?TmZ6SzYyVjBKckNxdkhETkp3M3p4VU5BYjFpQUtneFN4RnJ5amVaTlZkbXEr?=
+ =?utf-8?B?YXU3ZDNBbHdwUkZJOGNzbHRwYk5JUisrUHUyTW1tREgzc3pnWFJDejFqWkJ6?=
+ =?utf-8?B?cmtzS09BS1VsbVNaQXNuNTk0Z1p6WUoxb21RR29HNktZNmdBZTZjRzJ2Umhn?=
+ =?utf-8?Q?szKUpRorxdNVhxFA7dB/zwb3v4z6qAxNGfx9A=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9354.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(1800799024)(7416014)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Wk5nUDhSZkdNVjJ0c2w0T0cvbXczYUtrZHBsd3JHaGhZNEo4bG1INFBRS2FW?=
- =?utf-8?B?andlZ0w0RW1CaEtDRXUxT0JkTjczMUhGSloreEFyZzY5TFNZUDlEcU9pZzd2?=
- =?utf-8?B?NENxcW9MajJVb1JpRWdmOUZUTysrdEFwM3QrQkIyUjBIbUhtSUZBTHZZSGJz?=
- =?utf-8?B?eklxUFloYVlYRk5BSkU2cjZuMTIxZXhlbENIdHVmSWJ6eHJ0bjBiUFdpdkJZ?=
- =?utf-8?B?ZjBVcWc0RVp2OEExMTNRQ2JpOUd6bVNrN0htelljMXBUM3d0aTRmSXd3WlM1?=
- =?utf-8?B?NDNYYnowQm95ZSt3cndiblovL0d0U0JJYUlmeUc1Mll3Um5VdHpwS1BweUt3?=
- =?utf-8?B?aDB0Y04rNjd3TzFJN0w3ZTJqOVdNY2dzSXRva1RWdWovUERhMm5GbTJTQWJF?=
- =?utf-8?B?MGNEWDcvanljaVlaNkpadlo3UnhkMklEdi94cEZoU1h0L1pvQ2x3NE9LMnhl?=
- =?utf-8?B?bkxHOExudjJGVXdTcVFJdXJQQU83eEFVMzUzVENkUFJxYThiNzV0NE1uK1pi?=
- =?utf-8?B?cG9paE9XbzluVU5hcTFiQUFWVm9JNTFtTDMyUUlvdkJPSWgvbVkxaGRzait2?=
- =?utf-8?B?VFdQVm5yREQwR2g1bmlKTS9qTnVLRllDSmk3bEM0Y1lwZkI2QS9KdkFKUkM5?=
- =?utf-8?B?OWQ0aE9YOVo0TXU0S1dKOTZDU2VZQWdXaEZhSnFkTnVDN1JkSDVYbDk4M3lT?=
- =?utf-8?B?cjdaUXFpa0t6aTF6cGNTQjMvMmJlK1B0Rk5rcTZmUGJzTENsYVg5elpFL3cy?=
- =?utf-8?B?b2dGSUFmRW93dFJsSXhlQnhwUmpMSWI5QlpoMGdnZWNNS0J4OXBBTEQrL0hy?=
- =?utf-8?B?bDc5NEs0Z0VSdHdRdkpFbXVKek5uVnFvZTJ3TWtsSGxXTFlBNjZYYWtnRTBB?=
- =?utf-8?B?YjFHa05SYnJKYXpicFUwRHRzazZ2RGJubzFJVVJPQStzTDhtU3czMmJUNTM5?=
- =?utf-8?B?S1VsOXUvZmVFbkhDM2VlUng2ODlNNTRObThyMDgzUHRpTUdmRmZiWlowMTFa?=
- =?utf-8?B?STBKSllkcUNJUTZDVEkvTlFJaGtiUWUvaXNzQTJNT2p6THR0TzRBSjcwMFpP?=
- =?utf-8?B?RWdKZEV4ZDRKM2xhKzFmSVNWUDZWNmd6R2RuVTVyVFBzQndiSDg5OEhsN3B3?=
- =?utf-8?B?QW1qVzV6QkVLMnlRbXhXWE00em9MQWF3ajhCMXdYeHRodTBmQ2tkc1JJQjlu?=
- =?utf-8?B?b0JiZ2MzcVZrRDdjM0Y5aDVhNE8wWVJQRmtlUk5tQlJsRW8vbWFjVHZxMXUx?=
- =?utf-8?B?TWtTOFRiajU1V2RDN0RrWkVGSTU2WDFSdWloYVhvT3FKZkVITHdEeFFqUWtS?=
- =?utf-8?B?dTVkMm9XYUtBaCtLN0cya2JFNjk3S2lVL3dCcXA3SWJZL1N0NTk4UGprSkJP?=
- =?utf-8?B?bW9wSXQ2NU0vc3NVTWJDRFNaNGg4UkVuTWxsdVV6czdkbFlXSzZlemZQWDIx?=
- =?utf-8?B?VnZtcTRVUW1xaVo5VThESTlTZkN3b2FMZEJuc2ZYUjZyRFZ4TVdtOGNXcklK?=
- =?utf-8?B?WDgrR0trV3J6QVNzbE5lTEtEeEZwVlZGVXhoR0lrMGhUYU14UFR6b0gvRXNV?=
- =?utf-8?B?cTFQdG8rZEJkd2pHaDh0KzNRRVE2MEk3OUNYM0NBOUNIWXR0YUdwaHZDN3FI?=
- =?utf-8?B?U1NNR3kvOVA1UTR4SE11cVBGR1h5dU9icmhxUE85aVVWODdXc0tJdHRXelpn?=
- =?utf-8?B?ZmNWWHhZYzRVblBmMlhxV0tCTkZSV3JVTFM1T0l2bUZJZWt2cWh6SVk2WHh0?=
- =?utf-8?B?YnFyZndHaHg1d01oYXhweG00QzNvcWFiL3FUTEtKMUJ3bHhxZmdnT1puY2Vm?=
- =?utf-8?B?SHNSelV4R0k0cWRDSWRHVUIwenJLYTRhOHdXRVNVREsreFdjMklGVmxSTXJV?=
- =?utf-8?B?ZUVCazk0eHVHMVBGS2NxL3FtYUdYR25sTjJpNGRBR1MzbVRIaGxFQnpKUUxG?=
- =?utf-8?B?YzR0bEdqYTlDYjJmZTMrT3BJR2JLT1FwcGxyMWg0cW1FSVZoYlEwWGVFT1kx?=
- =?utf-8?B?czVVOWFySW83aGJhcXpwOW03eXhIV0ZBeFl3TWw4eFIveFR3TkNIQ2JHeGtq?=
- =?utf-8?B?eDZtL1NpUUw4VEtNWkU2Y0JsaFBmRXZLcm5Obmc1RHh5SmtpYW5MSUF6T0wx?=
- =?utf-8?Q?Y6I4ify7F2OkGFoM9i6lX8Rl2?=
+	=?utf-8?B?M0hWQkJYNzFwNUhtV3RaSVFSNUZHTW15UFFnQ0VLRkJzdnE5WUFmQmVHM2p6?=
+ =?utf-8?B?MlRLeml5b1Uwb3dDNUwrVXZzbWR4cUYxS0tLVVV6amJiQTBldHNpZWxoSTdD?=
+ =?utf-8?B?cHBxUXU5MzFQUFVsVEgzY2UxYmJGTmNIVXkwWG5ITzdhZndPV244bmF2QWlK?=
+ =?utf-8?B?aUdDOEtIbzNOOXBUdStPSThobkoxMmVJUFhIRU4xOE1JM051Y2c1RG1DblFr?=
+ =?utf-8?B?c2dvZ21xQ1cxaEZvTG9aS1VtbllBZHgwb3liT3llNFpCY2xFOUlKa29VUzg4?=
+ =?utf-8?B?eHRtdWxGRXg0U0xWWlJudm5FclBqZ0VKbnRGcXRnNWM0RC9CVkZ3QUpPTjJQ?=
+ =?utf-8?B?MElxRGFYOVFERkR4V3JzbXRpanhVYVNBSVVUM1NQY2g3SjFmSXNRTzZBMy9k?=
+ =?utf-8?B?VkdmRy9wM3VxTDFNeFFBY0hmY0Z4clFWMU9BUTZwWUMrQnh5dldCN3ZHc2N4?=
+ =?utf-8?B?WVVtOEFiWEtoOWRTWlZKZDlSYmpBL3EzdGNBL0hCZXI2bzlycHYybTZBRitU?=
+ =?utf-8?B?TkU2eHJlRVp2ZkhWZVFDZG5LT0h5eXlKTEo5SHdTOTdYTExJaFZsYzZCUWRO?=
+ =?utf-8?B?TjQ0KytpOTFoalZYMHhtSExqU1JMTW5tbXg4V3VIVTdvWmJqUHVxR1QxaS9Y?=
+ =?utf-8?B?SjNGemFmUVBLbDB4TWx2QUhGQzBKQml2VXhNRW1tcVZaV3ZqMUVGN0NabWxB?=
+ =?utf-8?B?UkZ0MG1za3Rxc05sQ0lsQzllLzd6aWpibzdhb082d0VlbitHRUdRbU1Zamhs?=
+ =?utf-8?B?VFNBN214NWpRZklPSXFYai9IVnFpQ1pUc1R4aWZPQmp1VEdYUU9HRXVIQkRX?=
+ =?utf-8?B?MDlvUEJHTmR5ZWpqQ0FmaVJuZEoyTCtZUHFoZlVYNjd3ZkZHVTdHc2hVdkdJ?=
+ =?utf-8?B?Z0tVVklIY0RSVU0zUjRCVUpNTDVnaGJWVDU1YVk4Z0F6VFNnM2pjdUUxdy9P?=
+ =?utf-8?B?ekp1cGxsTk85OC8rQTQ3NGFBRjdrdnAzQ2htOGJYdnlrMWorV2I0b0RhVkdX?=
+ =?utf-8?B?Z210cFNrcDAwSGlBYlo3RlZIaHJrOCthTFlrRnFMYWdGNEF6YStDK3gyOTR1?=
+ =?utf-8?B?VUZsYU5Pa05wSEJPTVhWQkIrRWJtNzNBTEdpOEhvOWgwRmdIa1BKOVp6Nks1?=
+ =?utf-8?B?UkZtREhjNSt3c292SXdyZWltYk5GbXc5aDc4MXNxdXI2RnlSb3FRR2pBdGhn?=
+ =?utf-8?B?V01Qcy9Ccm9hRXlyV1FvRnhldklpKzR5d0hBQjVsbGs5enV3VHU2RVhQbTZi?=
+ =?utf-8?B?SCtnOU9ET2sraUVmOWtWYmtVSFg1ei9hRWhOWE4wclhDUEpaTFk1RWJVeVFO?=
+ =?utf-8?B?Yi9xWkg2bmtJUEx5VU9uUURSc2hpbW5ySXFMY1RWUWl5dTdvekNtN1B0VUJm?=
+ =?utf-8?B?OFZYRWpJV1kzUHJlTUdBbUR4Q3EwSE5xQzQ0UzhtNi9Sd2hUSXB2Wk1tL2RQ?=
+ =?utf-8?B?ZEZUQjY4cnl2SGYwRlhpcGphbDBzMDBvRGZ5c25iOVF5bE5DY2dSdXVNN2Zs?=
+ =?utf-8?B?TDVvWGZiWDBwRmFKaTJjOUJvVW5iRnozdDNhODk3WmVIR1lDRDlIWU5ZQjFv?=
+ =?utf-8?B?eUd2RUJaVlFWSytSbWFVMUEyc0hiUUhPc0h5WHhBNmpRamJaNVRTQThFRjl0?=
+ =?utf-8?B?T3g2VzlSTVVSUStDbnRPMjRWaXAva0ZYdmlzb21VNUZqbjhFV3IweUlmTjNs?=
+ =?utf-8?B?SzlXNVdiVHFieitlbmxzaVNaUXRrNmJjSFAwcm1TaGZaUC9tb2FlS3JLRE9y?=
+ =?utf-8?B?ckZ6TDJPaVEzWmlBaGtSd0psMWxvV25jL1ptdTA2RFRnMXV1N3JuWVRpVVFU?=
+ =?utf-8?B?WnZoSkFYMGYzMGZpZ2x6Y1NGWG5ORmRYV0ZSa0E4M0VGdjhUZUVjOEFvYkp6?=
+ =?utf-8?B?am5qVURBdFhDMW1kLzJNU3VXWlp4a0VZT0pNS2F2T1NKc0hsWVFZWE9BSkFW?=
+ =?utf-8?B?SFFyblpXUTNxRFhpOGlFTXVQUCtYbys1VHRXQ0pSU2RYdXh2Wm8vVE1uRVQy?=
+ =?utf-8?B?ZkdjdzJ4OXhnaGd0VFdnUXNWQW1PWThGbys4U2Z1cW5Fd05IL1ZWT3E5a2VK?=
+ =?utf-8?B?VUNua2pHSmNrYjA0b2xlNkNLMFU2aFJjMkZsL3gyL25mVFRQOVJxKzA2TnpV?=
+ =?utf-8?Q?BaSHBwYJTl3n9K5YvWuBgWcZb?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 983bc40b-8116-4fad-fb7c-08dcfeef0246
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1cb56b9a-b29d-4547-6cac-08dcfeef02b3
 X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9354.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 05:42:47.0516
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 05:42:47.6981
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BrQ6BwpfVYggoXPW+kCyYYHGhAwIWsGMfeOYWpdujNOFywYmZP43UBxNWnxVpqsc2MYBDshs+PGabFiNTw+3pg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 74fvoQnsMgpdZiqGIj6kyzRj6h+mF0odvvhO1dRrD4JIYZWXq6Po387YA8FwTsAoeV4WHvc8dsTgLIw9p/9rmw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8434
 
-Add nvmem property to be used by secvio driver.
+The Security Violation module requires below System Controller
+Security controller API to interact with SNVS block via SCFW
+    - imx_sc_seco_build_info
+    - imx_sc_seco_secvio_enable
+    - imx_sc_seco_secvio_config
+    - imx_sc_seco_secvio_dgo_config
 
+Signed-off-by: Franck LENORMAND <franck.lenormand@nxp.com>
+Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+Reviewed-by: Horia Geanta<horia.geanta@nxp.com>
+Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
 Signed-off-by: Vabhav Sharma <vabhav.sharma@nxp.com>
 ---
- arch/arm64/boot/dts/freescale/imx8qxp.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/firmware/imx/Makefile         |   2 +-
+ drivers/firmware/imx/imx-scu.c        |   4 +-
+ drivers/firmware/imx/seco.c           | 216 ++++++++++++++++++++++++++++++++++
+ include/linux/firmware/imx/ipc.h      |   1 +
+ include/linux/firmware/imx/sci.h      |   4 +
+ include/linux/firmware/imx/svc/seco.h |  69 +++++++++++
+ 6 files changed, 294 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi b/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
-index 0313f295de2e..2b1dd0addb50 100644
---- a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
-@@ -210,6 +210,7 @@ system-controller {
- 		mboxes = <&lsio_mu1 0 0
- 			  &lsio_mu1 1 0
- 			  &lsio_mu1 3 3>;
-+		nvmem = <&ocotp>;
+diff --git a/drivers/firmware/imx/Makefile b/drivers/firmware/imx/Makefile
+index 8d046c341be8..7aaecf570c56 100644
+--- a/drivers/firmware/imx/Makefile
++++ b/drivers/firmware/imx/Makefile
+@@ -1,4 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0
+ obj-$(CONFIG_IMX_DSP)		+= imx-dsp.o
+-obj-$(CONFIG_IMX_SCU)		+= imx-scu.o misc.o imx-scu-irq.o rm.o imx-scu-soc.o
++obj-$(CONFIG_IMX_SCU)		+= imx-scu.o misc.o imx-scu-irq.o rm.o imx-scu-soc.o seco.o
+ obj-${CONFIG_IMX_SCMI_MISC_DRV}	+= sm-misc.o
+diff --git a/drivers/firmware/imx/imx-scu.c b/drivers/firmware/imx/imx-scu.c
+index 1dd4362ef9a3..c96dc73689a8 100644
+--- a/drivers/firmware/imx/imx-scu.c
++++ b/drivers/firmware/imx/imx-scu.c
+@@ -242,9 +242,11 @@ int imx_scu_call_rpc(struct imx_sc_ipc *sc_ipc, void *msg, bool have_resp)
+ 		 * APIs are defined as void function in SCU firmware, so they
+ 		 * should be treated as return success always.
+ 		 */
+-		if ((saved_svc == IMX_SC_RPC_SVC_MISC) &&
++		if (((saved_svc == IMX_SC_RPC_SVC_MISC) &&
+ 			(saved_func == IMX_SC_MISC_FUNC_UNIQUE_ID ||
+ 			 saved_func == IMX_SC_MISC_FUNC_GET_BUTTON_STATUS))
++			 || (saved_svc == IMX_SC_RPC_SVC_SECO &&
++			 saved_func == IMX_SC_SECO_FUNC_BUILD_INFO))
+ 			ret = 0;
+ 	}
  
- 		pd: power-controller {
- 			compatible = "fsl,imx8qxp-scu-pd", "fsl,scu-pd";
+diff --git a/drivers/firmware/imx/seco.c b/drivers/firmware/imx/seco.c
+new file mode 100644
+index 000000000000..2d6bf301ac87
+--- /dev/null
++++ b/drivers/firmware/imx/seco.c
+@@ -0,0 +1,216 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright 2020, 2024 NXP
++ *
++ * File containing client-side RPC functions for the SECO service. These
++ * function are ported to clients that communicate to the SC.
++ */
++
++#include <linux/firmware/imx/sci.h>
++
++struct imx_sc_msg_seco_get_build_id {
++	struct imx_sc_rpc_msg hdr;
++	u32 version;
++	u32 commit;
++} __packed __aligned(4);
++
++int imx_sc_seco_build_info(struct imx_sc_ipc *ipc, uint32_t *version,
++			   uint32_t *commit)
++{
++	struct imx_sc_msg_seco_get_build_id msg;
++	struct imx_sc_rpc_msg *hdr = &msg.hdr;
++	int ret;
++
++	hdr->ver = IMX_SC_RPC_VERSION;
++	hdr->svc = IMX_SC_RPC_SVC_SECO;
++	hdr->func = IMX_SC_SECO_FUNC_BUILD_INFO;
++	hdr->size = 1;
++
++	ret = imx_scu_call_rpc(ipc, &msg, true);
++	if (ret)
++		return ret;
++
++	if (version)
++		*version = msg.version;
++	if (commit)
++		*commit = msg.commit;
++
++	return 0;
++}
++EXPORT_SYMBOL(imx_sc_seco_build_info);
++
++int imx_sc_seco_secvio_enable(struct imx_sc_ipc *ipc)
++{
++	struct imx_sc_rpc_msg msg;
++	struct imx_sc_rpc_msg *hdr = &msg;
++
++	hdr->ver = IMX_SC_RPC_VERSION;
++	hdr->svc = IMX_SC_RPC_SVC_SECO;
++	hdr->func = IMX_SC_SECO_FUNC_SECVIO_ENABLE;
++	hdr->size = 1;
++
++	return imx_scu_call_rpc(ipc, &msg, true);
++}
++EXPORT_SYMBOL(imx_sc_seco_secvio_enable);
++
++struct imx_sc_msg_req_seco_config {
++	struct imx_sc_rpc_msg hdr;
++	u32 data0;
++	u32 data1;
++	u32 data2;
++	u32 data3;
++	u32 data4;
++	u8 id;
++	u8 access;
++	u8 size;
++} __packed __aligned(4);
++
++struct imx_sc_msg_resp_seco_config {
++	struct imx_sc_rpc_msg hdr;
++	u32 data0;
++	u32 data1;
++	u32 data2;
++	u32 data3;
++	u32 data4;
++} __packed __aligned(4);
++
++int imx_sc_seco_secvio_config(struct imx_sc_ipc *ipc, u8 id, u8 access,
++			      u32 *data0, u32 *data1, u32 *data2, u32 *data3,
++			      u32 *data4, u8 size)
++{
++	struct imx_sc_msg_req_seco_config msg;
++	struct imx_sc_msg_resp_seco_config *resp;
++	struct imx_sc_rpc_msg *hdr = &msg.hdr;
++	int ret;
++
++	hdr->ver = IMX_SC_RPC_VERSION;
++	hdr->svc = IMX_SC_RPC_SVC_SECO;
++	hdr->func = IMX_SC_SECO_FUNC_SECVIO_CONFIG;
++	hdr->size = 7;
++
++	/* Check the pointers on data are valid and set it if doing a write */
++	switch (size) {
++	case 5:
++		if (data4) {
++			if (access)
++				msg.data4 = *data4;
++		} else {
++			return -EINVAL;
++		}
++		fallthrough;
++	case 4:
++		if (data3) {
++			if (access)
++				msg.data3 = *data3;
++		} else {
++			return -EINVAL;
++		}
++		fallthrough;
++	case 3:
++		if (data2) {
++			if (access)
++				msg.data2 = *data2;
++		} else {
++			return -EINVAL;
++		}
++		fallthrough;
++	case 2:
++		if (data1) {
++			if (access)
++				msg.data1 = *data1;
++		} else {
++			return -EINVAL;
++		}
++		fallthrough;
++	case 1:
++		if (data0) {
++			if (access)
++				msg.data0 = *data0;
++		} else {
++			return -EINVAL;
++		}
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	msg.id = id;
++	msg.access = access;
++	msg.size = size;
++
++	ret = imx_scu_call_rpc(ipc, &msg, true);
++	if (ret)
++		return ret;
++
++	resp = (struct imx_sc_msg_resp_seco_config *)&msg;
++
++	/* Pointers already checked so we just copy the data if reading */
++	if (!access)
++		switch (size) {
++		case 5:
++			*data4 = resp->data4;
++		fallthrough;
++		case 4:
++			*data3 = resp->data3;
++		fallthrough;
++		case 3:
++			*data2 = resp->data2;
++		fallthrough;
++		case 2:
++			*data1 = resp->data1;
++		fallthrough;
++		case 1:
++			*data0 = resp->data0;
++		}
++
++	return 0;
++}
++EXPORT_SYMBOL(imx_sc_seco_secvio_config);
++
++struct imx_sc_msg_req_seco_dgo_config {
++	struct imx_sc_rpc_msg hdr;
++	u32 data;
++	u8 id;
++	u8 access;
++} __packed __aligned(4);
++
++struct imx_sc_msg_resp_seco_dgo_config {
++	struct imx_sc_rpc_msg hdr;
++	u32 data;
++} __packed __aligned(4);
++
++int imx_sc_seco_secvio_dgo_config(struct imx_sc_ipc *ipc, u8 id, u8 access,
++				  u32 *data)
++{
++	struct imx_sc_msg_req_seco_dgo_config msg;
++	struct imx_sc_msg_resp_seco_dgo_config *resp;
++	struct imx_sc_rpc_msg *hdr = &msg.hdr;
++	int ret;
++
++	hdr->ver = IMX_SC_RPC_VERSION;
++	hdr->svc = IMX_SC_RPC_SVC_SECO;
++	hdr->func = IMX_SC_SECO_FUNC_SECVIO_DGO_CONFIG;
++	hdr->size = 3;
++
++	if (access) {
++		if (data)
++			msg.data = *data;
++		else
++			return -EINVAL;
++	}
++
++	msg.access = access;
++	msg.id = id;
++
++	ret = imx_scu_call_rpc(ipc, &msg, true);
++	if (ret)
++		return ret;
++
++	resp = (struct imx_sc_msg_resp_seco_dgo_config *)&msg;
++
++	if (!access && data)
++		*data = resp->data;
++
++	return 0;
++}
++EXPORT_SYMBOL(imx_sc_seco_secvio_dgo_config);
+diff --git a/include/linux/firmware/imx/ipc.h b/include/linux/firmware/imx/ipc.h
+index 0b4643571625..df38ab8e7e2e 100644
+--- a/include/linux/firmware/imx/ipc.h
++++ b/include/linux/firmware/imx/ipc.h
+@@ -25,6 +25,7 @@ enum imx_sc_rpc_svc {
+ 	IMX_SC_RPC_SVC_PAD = 6,
+ 	IMX_SC_RPC_SVC_MISC = 7,
+ 	IMX_SC_RPC_SVC_IRQ = 8,
++	IMX_SC_RPC_SVC_SECO = 9,
+ };
+ 
+ struct imx_sc_rpc_msg {
+diff --git a/include/linux/firmware/imx/sci.h b/include/linux/firmware/imx/sci.h
+index df17196df5ff..947e49d8bebc 100644
+--- a/include/linux/firmware/imx/sci.h
++++ b/include/linux/firmware/imx/sci.h
+@@ -15,6 +15,10 @@
+ #include <linux/firmware/imx/svc/misc.h>
+ #include <linux/firmware/imx/svc/pm.h>
+ #include <linux/firmware/imx/svc/rm.h>
++#include <linux/firmware/imx/svc/seco.h>
++
++#define IMX_SC_IRQ_SECVIO            BIT(6)    /* Security violation */
++#define IMX_SC_IRQ_GROUP_WAKE           3   /* Wakeup interrupts */
+ 
+ #if IS_ENABLED(CONFIG_IMX_SCU)
+ int imx_scu_enable_general_irq_channel(struct device *dev);
+diff --git a/include/linux/firmware/imx/svc/seco.h b/include/linux/firmware/imx/svc/seco.h
+new file mode 100644
+index 000000000000..508444c02d39
+--- /dev/null
++++ b/include/linux/firmware/imx/svc/seco.h
+@@ -0,0 +1,69 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * Copyright 2020, 2024 NXP
++ *
++ * Header file containing the public API for the System Controller (SC)
++ * Security Controller (SECO) function.
++ *
++ * SECO_SVC (SVC) Security Controller Service
++ *
++ * Module for the Security Controller (SECO) service.
++ */
++
++#ifndef _SC_SECO_API_H
++#define _SC_SECO_API_H
++
++#include <linux/errno.h>
++#include <linux/firmware/imx/sci.h>
++
++/*
++ * This type is used to indicate RPCs/RM/SECO function calls.
++ */
++enum imx_sc_seco_func {
++	IMX_SC_SECO_FUNC_UNKNOWN = 0,
++	IMX_SC_SECO_FUNC_BUILD_INFO = 16,
++	IMX_SC_SECO_FUNC_SECVIO_ENABLE = 25,
++	IMX_SC_SECO_FUNC_SECVIO_CONFIG = 26,
++	IMX_SC_SECO_FUNC_SECVIO_DGO_CONFIG = 27,
++};
++
++#if IS_ENABLED(CONFIG_IMX_SCU)
++int imx_sc_seco_build_info(struct imx_sc_ipc *ipc, uint32_t *version,
++			   uint32_t *commit);
++int imx_sc_seco_secvio_enable(struct imx_sc_ipc *ipc);
++int imx_sc_seco_secvio_config(struct imx_sc_ipc *ipc, u8 id, u8 access,
++			      u32 *data0, u32 *data1, u32 *data2, u32 *data3,
++			      u32 *data4, u8 size);
++int imx_sc_seco_secvio_dgo_config(struct imx_sc_ipc *ipc, u8 id, u8 access,
++				  u32 *data);
++#else /* IS_ENABLED(CONFIG_IMX_SCU) */
++static inline
++int imx_sc_seco_build_info(struct imx_sc_ipc *ipc, uint32_t *version,
++			   uint32_t *commit)
++{
++	return -EOPNOTSUPP;
++}
++
++static inline
++int imx_sc_seco_secvio_enable(struct imx_sc_ipc *ipc)
++{
++	return -EOPNOTSUPP;
++}
++
++static inline
++int imx_sc_seco_secvio_config(struct imx_sc_ipc *ipc, u8 id, u8 access,
++			      u32 *data0, u32 *data1, u32 *data2, u32 *data3,
++			      u32 *data4, u8 size)
++{
++	return -EOPNOTSUPP;
++}
++
++static inline
++int imx_sc_seco_secvio_dgo_config(struct imx_sc_ipc *ipc, u8 id, u8 access,
++				  u32 *data)
++{
++	return -EOPNOTSUPP;
++}
++#endif /* IS_ENABLED(CONFIG_IMX_SCU) */
++
++#endif /* _SC_SECO_API_H */
 
 -- 
 2.25.1
