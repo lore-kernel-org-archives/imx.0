@@ -1,285 +1,202 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2043.outbound.protection.outlook.com [40.107.21.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D5B01DC04A;
-	Thu,  7 Nov 2024 22:48:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731019690; cv=none; b=FzoGl/LG7IOc2IzAes4SqzC8k1vUs42HV/RULghS/9uTOIKGRmGgm93q7j/gKUmqxCrZ2vL0TB9cyH9/auTHYhUZ04we3L1e4iipFsQRP/H5WPyESsz857xMurCZ9eLjh1ScELHkh3TOpr+wYE/umB4lJ3thcbgyI5HYUJ5zFg4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731019690; c=relaxed/simple;
-	bh=1jEWFPslJhyTsHY7jlPrzIrlFV5iRC0ktcnDIL79478=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VbRrsTg4EbG7oljSbflqyK/OYQO+o+vb15drUr1votpjkQ1AAKRmXPY2HUoTvoz6EY45nQvHg9neOXV8M/l3jJxeeVGsNiFgr1HlqqE9d9iAMBhad+sVkc/8XCAqwN88HKAn10I9jW27FYcDztwu1B3Co0SdZikhASWfFnU2Ng4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PhWwPt59; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8251DC04A
+	for <imx@lists.linux.dev>; Thu,  7 Nov 2024 23:03:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731020599; cv=fail; b=q7okSGmkLdUgR760K6ivQFNW+B+29GGh0X+dtIceWTXpD/hEIMy0/gUetciC7Qf+0/s8MM8ksKAhO2cj29ZQ6AAOl/keN2NHfyu+jPlFPWt8NP7dWK46jsubOMPIl6WGM4nbqEEZktBpAUJRRz8Yco/29xafwo3nq3ASPUC5bP0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731020599; c=relaxed/simple;
+	bh=ugUf7LXDuQ1++QqLWN64clcLePqHZHxg5norw9ccZSs=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=R7a65XDGmr4v1EMs3Dj7fuzVQYGx1agj2enQpEHn4EBpgCzGNKr1iwWVNxLFIwSdW4JGltzTmUakQ1R29eLENvO4K+sk054AwvkiKrVwqtmZ79lsSAwQQQcWf27KBEvugOIop253DXXUD7nghqxjtuTl6COfnIEbubbUaIp6x+4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=e/AG9f/l; arc=fail smtp.client-ip=40.107.21.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PhWwPt59"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D56C4CECC;
-	Thu,  7 Nov 2024 22:48:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731019689;
-	bh=1jEWFPslJhyTsHY7jlPrzIrlFV5iRC0ktcnDIL79478=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PhWwPt59s3FIaaR2rNwH9mkcXjr5BILavrpypfFB7tDv6YxN4agd7ipAlFMIpZXS/
-	 tW7+u1PVa/HGBFIi2UJvH1GKHFvwryg6dNXVE7fdM+7IO+GbmoY8JeDKt3/6xQ+fCa
-	 dYm2k3SOy7mkqP1ULpM2560DRNkyFzCPvtZHHcpOKrNlDLGtoZtHYPTO2BfyV1A6Y1
-	 +H80GVrOOHffgZ83L/JqCiQlQEHVjPUxDssDy0bnGP84jsyUveaCMgcXthHmYyrUun
-	 MX1J1rlVhRf2/UtMsX4nXRYfcSONc+4QvPNmPh0fV6D8QW2wLoEqZIFGvknU4ftmlm
-	 zWNr3vD71FEKw==
-Date: Thu, 7 Nov 2024 23:48:04 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	imx@lists.linux.dev, dlemoal@kernel.org, maz@kernel.org,
-	tglx@linutronix.de, jdmason@kudzu.us
-Subject: Re: [PATCH v4 3/5] PCI: endpoint: pci-epf-test: Add doorbell test
- support
-Message-ID: <Zy1DpKQxY7BkoxPP@ryzen>
-References: <20241031-ep-msi-v4-0-717da2d99b28@nxp.com>
- <20241031-ep-msi-v4-3-717da2d99b28@nxp.com>
- <Zy02mPTvaPAFFxGi@ryzen>
- <Zy1CxtKSgRuEPX5A@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="e/AG9f/l"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=np0ujMAvoISQ3Sv0/1LqQ7Th1+jkk01oiwmj0Aslax0nkL6O7B0o8WIFBczaKxwCF+yfClAejQfDptU2LCaY8ZtCFVQXEdBPB5lIEcwHTIyucBFarisfMokEe9s8Ry55FZuZXuGoD9sq2yhs09hyVEui0UujM9O9LLuu9Vj3osvAT0WiWfaQqHJYj3Hb1+HOY+SRmUlrUYr+4iG85IIOvIoDlBNH3+OniMkW/QXwT+mHD3xlvgdv6TwHyhKmEwXksNN4c2KVdqgxW1TRhc5Oy6TZ/XfzvYGUC0OqNkTZHJ+8olxYLTsLc2CJwpkhdi0d4sxOPElFkecNuWJCfUPP3Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+k7ybGQWeQbkRAnZeryM7CGSkMB1SjtatAYTn6jx0kc=;
+ b=Geuoc3eXM7zQz1QF18hUgJQf/qnyCDY7t5VqAxTA630lBeWXmNNnE9Eayr1X3p3Xm+lPERYA61Wc7c+W5SqjvV1vk74tbTof0068pa3skUg9H5fUCj7zlX3yX0LlxPRx6UGPD5QIQ1ymSi+RBEZdy9MMfcI+hSrqNjCEOtc5+9OC4RCPCH5Hd7jjR3GSa+GSJAi0VTsNTu2xDkKbFT+EQBnQQm3pZ/2wMRadlR9QhXkIGYxt2p7TZnDjoD2jz1uebQodkkHvfIMTg5XBygwFrIwp1HH+0yTOo1rP7zHJDRmGPWIYE954NaNCmc0/pckVBKy2z1IyM1NU8awL56pe2g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+k7ybGQWeQbkRAnZeryM7CGSkMB1SjtatAYTn6jx0kc=;
+ b=e/AG9f/l1WAHwkArV/+SpmXwrrs+CcUAHkZWmTfn4LKtmBvntSxb3m4ZdHACCLzOT54b2Q2u8bkUPf6qGFL6X6WBct1AgVeOcwL6sbpKe3al3Uq4mYCeYPepJ8kjzszamMX8AkrNBJgnEoTsavDBDFPVxvpswQ4i1fgeuQLYvEHsKdXHH9CRkwZifk9CHwomQwbtGWIkOGxHSb79u7c6JSMbSLePIMMb01FqWZ9m6peeYnUxW5kDhYnzQtaXT7f5Hc17/HfnXzgUl17QmIgpdVuR4npE3PzBGHIKHt0tSCafmj5QWijz4Sr0lme+y7ENAw3AknHtgN+U37dJYLNimw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM0PR04MB6851.eurprd04.prod.outlook.com (2603:10a6:208:182::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.18; Thu, 7 Nov
+ 2024 23:03:14 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8137.018; Thu, 7 Nov 2024
+ 23:03:14 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 0/3] iio: temperature: Add support for P3T1085
+Date: Thu, 07 Nov 2024 18:02:26 -0500
+Message-Id: <20241107-p3t1085-v1-0-9a76cb85673f@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAJHLWcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxNDQwNz3QLjEkMDC1PdtKQUC3Mjs+SkZINUJaDqgqLUtMwKsEnRsbW1APa
+ zWK5ZAAAA
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-iio@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, Frank Li <Frank.Li@nxp.com>, 
+ Carlos Song <carlos.song@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>
+X-Mailer: b4 0.13-dev-e586c
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1731020589; l=1300;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=ugUf7LXDuQ1++QqLWN64clcLePqHZHxg5norw9ccZSs=;
+ b=bYpj+uWdoW3IuzuwJttEWoaqpm2Ho7rs8LYBlY4Hp5C1SvEiOw7F87OIHzqnN0hDRk2DgIS4O
+ Nzvnb14xv8lDwJ/Dtcq8Ywv90q8TV1UU/vMIP8xOCNUsF38Pcsd3JN3
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: SJ0PR05CA0094.namprd05.prod.outlook.com
+ (2603:10b6:a03:334::9) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zy1CxtKSgRuEPX5A@lizhi-Precision-Tower-5810>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM0PR04MB6851:EE_
+X-MS-Office365-Filtering-Correlation-Id: 295368e6-7026-4d5a-94b6-08dcff805bba
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|52116014|7416014|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?SUVjdEM2dEdETnFKWEhzNUpRNUlGR3RPQzQ4NzFlUitZNjF3NGZxOVlHeGVi?=
+ =?utf-8?B?TitGQng1dkwyT3lnL2FJd2lkOEZaQS9lVzZ6SmlDMzZqQVAycE1nVmplRFQw?=
+ =?utf-8?B?UFpKZEpNallVMVYxSXE4Y0hnVFplb3lQUU5EcmROSzRJQjZYNEVDUWZ1aWxT?=
+ =?utf-8?B?a0hMVDlwZzU3b3laTWFQV1FOd0ZSMXRRRHNNc0crdDB1dXAvVEZoZjZzbEdB?=
+ =?utf-8?B?RVppMURXVUsyM1cwN0hyTENOYVp0cVV4UTZnWXlXTHBhOGpKem55SGxFNzBn?=
+ =?utf-8?B?MGdsa2FsSVpTTmdBY09jQU9CbURQR3VWZXlTMUpsM0Z1ZG5sZzc2Z216TUtq?=
+ =?utf-8?B?U2FzeWNMb01WNFNIanZjU3N6SUcwVFJvYVpRcWZZQXJLMTF6YTZPTVBYQjRN?=
+ =?utf-8?B?SjNZU0hJYUpTcTg2MUxBZkVuVmZzYjNFK1FoWFlFVXhwWU84S2lJSS9PVlps?=
+ =?utf-8?B?Q25PbDdLNXZ5UUJXZ04rSHlIcnFHRHk4bHVZYkNtTmlkcWk1aTZtVFVydXFY?=
+ =?utf-8?B?UE5xdkRKQ3diZU4vTlBBZm1nZHVvbkZ4b3UxU0lCRHRtWXdPbkZPQWR5aFAw?=
+ =?utf-8?B?NzhySkhsankxUVFoWjM3Z1V5SWNMdXB2UmlLbXZ1WDRkTUVMQnJOMnhhV3dY?=
+ =?utf-8?B?b0pESHYvTDZQZHExZzlKV0RFL0U4TFVoYjJyZ2ZJVGxFN1lxMWRhck02cllu?=
+ =?utf-8?B?SmtiMFIyNkw1SUdJQXJVNFVpY0RCNCtVRnRlSHI4M0c5Tm4wcFpoMXZyb2Nw?=
+ =?utf-8?B?am8zZ2dYQVd2eEp2cTR4TnZjTnBUSC9VeUQ4QUttL0xNbzJZK1pGSDIyVnlI?=
+ =?utf-8?B?bCtFOVdjNGZwV3RkRkVuNDVTWEpWb2lVSGM0U3crSUdtdUQvcjY1YlBKZUJs?=
+ =?utf-8?B?WDlOMFhXeEkwLzVFak1Wb2lWVVJiWm9Jci80L1QxUG5UL3BRZ3JrNkl3Zy8w?=
+ =?utf-8?B?TFZXVnNSaEZpVks0WDAvdFNKL2swUWxLb3hjK0hsaG1MektCNGtnYjduK3hm?=
+ =?utf-8?B?a3YvclBrdGVLTUg1UVFScUZNTlI1cytmMDBnY2ZIcGx2Z1hNc0o5T1ovY1lX?=
+ =?utf-8?B?RElDazVjbzlOdlJDRjJOU0VkM0hwanMxWXVpZlBWTXl6VU5GbnV2TElhY00r?=
+ =?utf-8?B?ZVUrS2FERkk3ZGZyWnRQSFQxRk05Tk1GU2xqZkNRWWh3Smp0N0JZS01lM2Jz?=
+ =?utf-8?B?SUZlK2Y2SlZSbzg2cVp5QTg5V3BDRGlzckp2cFJySDFsUVpmSzBESmFXNDB5?=
+ =?utf-8?B?L3MyVlpLRytwMXhVb2JaSzhBTDZQYURIL3FBTUVMVExPL2kybytOTXk2NzZ2?=
+ =?utf-8?B?SFFzblMrWkFIT1A3dGwwaVM2V01SRVQ1dCtRSGpkSmd5Q0pLQyt0RWNrVjFX?=
+ =?utf-8?B?aDYvbUJldVdkU1NkUVdvdTBiMUFjMzRBQ0dBMUJ5S25yRkwxS3ZSY0oySytR?=
+ =?utf-8?B?QTROR0J0bzNWTlU5S3YyWG1tNzlQSncvYS8yTUd6L24vWHllNXZHbldKZWZQ?=
+ =?utf-8?B?TWViRFg1aWxEcGQ0Y0pKOTl2SFFYMDZ6cXJvL0xZQ3pLMzhXakg3OEFwSGRG?=
+ =?utf-8?B?WHhobHk0Qk5VYmlQb0g5elkzQlJ1ZW16TjlZK0hUWTRtSXpFWS9aK0MyWDdj?=
+ =?utf-8?B?TVloMFJKZFhVdmVtRTJJc1BXSy9hMnBFSEZSNEl0MXVOZ3ljV2NpMnByRmVl?=
+ =?utf-8?B?SWZMbEhKQ2VMbmhtL2czamYvTm9RRXVRbHNJR25OYk9nRERwTUw0SUN2QjFl?=
+ =?utf-8?B?Vzk0T0hvVEwrbjNQTVpKUEFCZDUvREJUUHpRMnFSc1RhZW43TjdESCtUcHZF?=
+ =?utf-8?Q?Seo0z6NVB456WlxjYanVNh6AxLWgomIL6iSm0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(7416014)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VlZSQ1J1MWg2RUtiWXdXWkp5VEhtaGRwcXdNVUhXOUI3RWJ4eVNOaEZMZnpZ?=
+ =?utf-8?B?dEs0ejBSWTFKVG81MXM4bm15ZVRoNFZreXBJMnpQcVR4eloxVWVGVXZraElI?=
+ =?utf-8?B?anRmV2dtMmVRN3hYNnlDMnBFNy9CYitwazFVTHFxNC9LcVhFQ011YWdobjRj?=
+ =?utf-8?B?RXJ1ek00ZW04VHhvWmdZOS80UUd4V3VIL2g2bGNYaCtzR0JHVUdSeVZ1TDlK?=
+ =?utf-8?B?S01FRHUrUDFBR2xwVDBmVDhtMUJhVmt0SnAxNXZZQWF5QTBVVUdYdU95MXFF?=
+ =?utf-8?B?cW0zMHhocGw5aTBLMUJwcG9pRG84NlM3SnluZmNhY1NvY090NzJWUGcvSE5S?=
+ =?utf-8?B?Yk9ncUg4MStKS2NvYjRxZTMybk5HNisvMVg4T0VuNUwvWlVIRDZhVWZTT2c4?=
+ =?utf-8?B?Q09Ka29WbFZoZXo5Rm5GY1d1Um4yd1NwUjJYUmR2c1NRcVdQNE9YNFVvTXRQ?=
+ =?utf-8?B?cEFkV1EvVmx1YnE1OEFLT1ArQStVZzhCRkNBTDFoNkRMU3ZjcVlEekk4ejVm?=
+ =?utf-8?B?MW11MG80cUxkbXpzSXFvZWhpNkdRdU1uVkZra0pseUQ4amo4NlJSNEhXN3FP?=
+ =?utf-8?B?TWZ2WkNhZ3R0d3FkN0wrd21Sa2JWNy9mbGl3dVlaVEZuQk5MUHRVaVdOZWQ1?=
+ =?utf-8?B?NXpmZXJoRlpDUWJQb3dPZ2tyaGRNZ3Y1ajFBVDVnaVZCWTkzNDFlVC80a3VB?=
+ =?utf-8?B?UGQxVzVMQkFKRUNGNmVCYU9vclF0Njljd3FQbktCZTlVaU1oa3hYTVdBY3hM?=
+ =?utf-8?B?d1RvN3lvNHFiMmh1bU95azRjQjV6WFVETTgreTJJY0YwQTliNmY4THJBd3lR?=
+ =?utf-8?B?L2ZjUURqclNXYm9lNVdSTU9XcSs4VFB5N3JSb2Z4MmlqaTlvdDNXNTYxcDdI?=
+ =?utf-8?B?TFFiMmxEQm5HendOU0tOSFRsVmVndFdGOUNhSXdhWkdBZkVoeFRENHNZdVNN?=
+ =?utf-8?B?UDZQSGtWVFVQRlpqaFV2VUtITUNVNDcxME10Z3VUNVRxVEJxSW1lQm1WakFw?=
+ =?utf-8?B?ZTlLQ0xoZlpnenRLa2kzZFVOUUJmanpuaGYzS2p6d1hFYnA3eE0zSGVFK3pD?=
+ =?utf-8?B?VWhmSi9lTFRHZlZtL3RZemorbktJR3pFdjBqZXhrTys0bm1Wb2RiaHNCQUlY?=
+ =?utf-8?B?bFRnK0dQVmZDazdCeEkrbzBvN0EyaWZ5YnR3dE9kaWtZWXA4YmFCWkpVb2Na?=
+ =?utf-8?B?WW0yaE9rb05tUjEzcmtzaUt2YUZwUC9DbnNYYmdzdGNMTGVpelNTQ3hUN0dk?=
+ =?utf-8?B?SmhPbXBkS1JFMjVFemNxYTl2R0N4TEl6Y2dHaFNqNHd5OTNyVTF3ZkovYWh0?=
+ =?utf-8?B?V2dKelpuSUR5WUhxWDF2Y1Q3cjBHZ2s0QjBnN1BkajViT1oyWklHZkVIajE5?=
+ =?utf-8?B?NDFDc1pxcWl3azkvSHJmRjA2VFp6aXhGcTJ4RjNhK1RZeTVnVzZkSWJSeThl?=
+ =?utf-8?B?V3dMS0E5OFpqemtKeTVxVG16WGhJS1pkVXNzS0NhSW9VNGtyK3dqS3VRdmJn?=
+ =?utf-8?B?NmloUmV2OHJSNHN0azQxTHNROU5xQjR2L05UMDFXY1RYV0FoNEJJSXVwS25C?=
+ =?utf-8?B?N3lKU2RNSi9PMzhXcU9KU1BIY1dOVXNVQkZieGNScCtYRXQxZ2c0NDJzaytL?=
+ =?utf-8?B?WDN0eDBpN2s1bG9rQWJ6bEd4SXRobi9xU1VNUGNZWVBobmNLSkRneXprdENK?=
+ =?utf-8?B?QUZ0cG5KS2hoTyt6T3pSZ25WNmtHS1pFSElyZy9mSno4MU56SzVsejFZWjk0?=
+ =?utf-8?B?eXAwaWZDcVU5dXNMeUpMaW9pbXNnSWpjQzRVQnBkOEZyYWNrRUZJTWMrRFB1?=
+ =?utf-8?B?eFJyMjRBY1Q2MkI0QkRSV0xaVWUzVFdwb2FzdURaTmxHUENkK1B0WU51Z1pD?=
+ =?utf-8?B?eHFUVGhRWFdzNzhETmgyZnV0eXpHZ3FGQzViVVR2NFhGTG9ZbGxDbkJUc2hW?=
+ =?utf-8?B?ZGxWYllScm5yR2FQOXkrazNrd3AyN1pMczdnZDZkZ251ZHJpS29LSzdkY3hQ?=
+ =?utf-8?B?QnB1bGs0L2g5SzR3WDFlNEJna3hsdVFvZ1V2MTcrS1J3UjZVZ3V4cWpPeFBj?=
+ =?utf-8?B?Y2ZCNklreTM0b1E3MTdnRktjenVwejRxQ1RzUWJ2V09ZYUJIN2RCSGVQVHVz?=
+ =?utf-8?Q?ZwI3ULM+a9RE9jqGg6vSPF84D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 295368e6-7026-4d5a-94b6-08dcff805bba
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 23:03:14.0626
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ud1+7sd0Xd3b/HzDcyV3O9nZofGlxdWV8l9u57AFC+Tn6Q44TR7u5V7VOWoNYt6ZosHhSHsT6+6tpQphSGFMcg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6851
 
-On Thu, Nov 07, 2024 at 05:44:22PM -0500, Frank Li wrote:
-> On Thu, Nov 07, 2024 at 10:52:24PM +0100, Niklas Cassel wrote:
-> > On Thu, Oct 31, 2024 at 12:27:02PM -0400, Frank Li wrote:
-> > > Add three registers: doorbell_bar, doorbell_addr, and doorbell_data,
-> > > along with doorbell_done. Use pci_epf_alloc_doorbell() to allocate a
-> > > doorbell address space.
-> > >
-> > > Enable the Root Complex (RC) side driver to trigger pci-epc-test's doorbell
-> > > callback handler by writing doorbell_data to the mapped doorbell_bar's
-> > > address space.
-> > >
-> > > Set doorbell_done in the doorbell callback to indicate completion.
-> > >
-> > > To avoid broken compatibility, add new command COMMAND_ENABLE_DOORBELL
-> > > and COMMAND_DISABLE_DOORBELL. Host side need send COMMAND_ENABLE_DOORBELL
-> > > to map one bar's inbound address to MSI space. the command
-> > > COMMAND_DISABLE_DOORBELL to recovery original inbound address mapping.
-> > >
-> > > 	 	Host side new driver	Host side old driver
-> > >
-> > > EP: new driver      S				F
-> > > EP: old driver      F				F
-> > >
-> > > S: If EP side support MSI, 'pcitest -B' return success.
-> > >    If EP side doesn't support MSI, the same to 'F'.
-> > >
-> > > F: 'pcitest -B' return failure, other case as usual.
-> > >
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > > change from v3 to v4
-> > > - remove revid requirement
-> > > - Add command COMMAND_ENABLE_DOORBELL and COMMAND_DISABLE_DOORBELL.
-> > > - call pci_epc_set_bar() to map inbound address to MSI space only at
-> > > COMMAND_ENABLE_DOORBELL.
-> > > ---
-> > >  drivers/pci/endpoint/functions/pci-epf-test.c | 104 ++++++++++++++++++++++++++
-> > >  1 file changed, 104 insertions(+)
-> > >
-> > > diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
-> > > index 7c2ed6eae53ad..dcb69921497fd 100644
-> > > --- a/drivers/pci/endpoint/functions/pci-epf-test.c
-> > > +++ b/drivers/pci/endpoint/functions/pci-epf-test.c
-> > > @@ -11,12 +11,14 @@
-> > >  #include <linux/dmaengine.h>
-> > >  #include <linux/io.h>
-> > >  #include <linux/module.h>
-> > > +#include <linux/msi.h>
-> > >  #include <linux/slab.h>
-> > >  #include <linux/pci_ids.h>
-> > >  #include <linux/random.h>
-> > >
-> > >  #include <linux/pci-epc.h>
-> > >  #include <linux/pci-epf.h>
-> > > +#include <linux/pci-ep-msi.h>
-> > >  #include <linux/pci_regs.h>
-> > >
-> > >  #define IRQ_TYPE_INTX			0
-> > > @@ -29,6 +31,8 @@
-> > >  #define COMMAND_READ			BIT(3)
-> > >  #define COMMAND_WRITE			BIT(4)
-> > >  #define COMMAND_COPY			BIT(5)
-> > > +#define COMMAND_ENABLE_DOORBELL		BIT(6)
-> > > +#define COMMAND_DISABLE_DOORBELL	BIT(7)
-> > >
-> > >  #define STATUS_READ_SUCCESS		BIT(0)
-> > >  #define STATUS_READ_FAIL		BIT(1)
-> > > @@ -39,6 +43,11 @@
-> > >  #define STATUS_IRQ_RAISED		BIT(6)
-> > >  #define STATUS_SRC_ADDR_INVALID		BIT(7)
-> > >  #define STATUS_DST_ADDR_INVALID		BIT(8)
-> > > +#define STATUS_DOORBELL_SUCCESS		BIT(9)
-> > > +#define STATUS_DOORBELL_ENABLE_SUCCESS	BIT(10)
-> > > +#define STATUS_DOORBELL_ENABLE_FAIL	BIT(11)
-> > > +#define STATUS_DOORBELL_DISABLE_SUCCESS BIT(12)
-> > > +#define STATUS_DOORBELL_DISABLE_FAIL	BIT(13)
-> > >
-> > >  #define FLAG_USE_DMA			BIT(0)
-> > >
-> > > @@ -74,6 +83,9 @@ struct pci_epf_test_reg {
-> > >  	u32	irq_type;
-> > >  	u32	irq_number;
-> > >  	u32	flags;
-> > > +	u32	doorbell_bar;
-> > > +	u32	doorbell_addr;
-> > > +	u32	doorbell_data;
-> > >  } __packed;
-> > >
-> > >  static struct pci_epf_header test_header = {
-> > > @@ -630,6 +642,60 @@ static void pci_epf_test_raise_irq(struct pci_epf_test *epf_test,
-> > >  	}
-> > >  }
-> > >
-> > > +static void pci_epf_enable_doorbell(struct pci_epf_test *epf_test, struct pci_epf_test_reg *reg)
-> > > +{
-> > > +	enum pci_barno bar = reg->doorbell_bar;
-> > > +	struct pci_epf *epf = epf_test->epf;
-> > > +	struct pci_epc *epc = epf->epc;
-> > > +	struct pci_epf_bar db_bar;
-> > > +	struct msi_msg *msg;
-> > > +	u64 doorbell_addr;
-> > > +	u32 align;
-> > > +	int ret;
-> > > +
-> > > +	align = epf_test->epc_features->align;
-> > > +	align = align ? align : 128;
-> > > +
-> > > +	if (bar < BAR_0 || bar == epf_test->test_reg_bar || !epf->db_msg) {
-> > > +		reg->status |= STATUS_DOORBELL_ENABLE_FAIL;
-> > > +		return;
-> > > +	}
-> > > +
-> > > +	msg = &epf->db_msg[0].msg;
-> > > +	doorbell_addr = msg->address_hi;
-> > > +	doorbell_addr <<= 32;
-> > > +	doorbell_addr |= msg->address_lo;
-> > > +
-> > > +	db_bar.phys_addr = round_down(doorbell_addr, align);
-> > > +	db_bar.barno = bar;
-> > > +	db_bar.size = epf->bar[bar].size;
-> > > +	db_bar.flags = epf->bar[bar].flags;
-> > > +	db_bar.addr = NULL;
-> > > +
-> > > +	ret = pci_epc_set_bar(epc, epf->func_no, epf->vfunc_no, &db_bar);
-> > > +	if (!ret)
-> > > +		reg->status |= STATUS_DOORBELL_ENABLE_SUCCESS;
-> > > +}
-> > > +
-> > > +static void pci_epf_disable_doorbell(struct pci_epf_test *epf_test, struct pci_epf_test_reg *reg)
-> > > +{
-> > > +	enum pci_barno bar = reg->doorbell_bar;
-> > > +	struct pci_epf *epf = epf_test->epf;
-> > > +	struct pci_epc *epc = epf->epc;
-> > > +	int ret;
-> > > +
-> > > +	if (bar < BAR_0 || bar == epf_test->test_reg_bar || !epf->db_msg) {
-> > > +		reg->status |= STATUS_DOORBELL_DISABLE_FAIL;
-> > > +		return;
-> > > +	}
-> > > +
-> > > +	ret = pci_epc_set_bar(epc, epf->func_no, epf->vfunc_no, &epf->bar[bar]);
-> > > +	if (ret)
-> > > +		reg->status |= STATUS_DOORBELL_DISABLE_FAIL;
-> > > +	else
-> > > +		reg->status |= STATUS_DOORBELL_DISABLE_SUCCESS;
-> > > +}
-> > > +
-> > >  static void pci_epf_test_cmd_handler(struct work_struct *work)
-> > >  {
-> > >  	u32 command;
-> > > @@ -676,6 +742,14 @@ static void pci_epf_test_cmd_handler(struct work_struct *work)
-> > >  		pci_epf_test_copy(epf_test, reg);
-> > >  		pci_epf_test_raise_irq(epf_test, reg);
-> > >  		break;
-> > > +	case COMMAND_ENABLE_DOORBELL:
-> > > +		pci_epf_enable_doorbell(epf_test, reg);
-> > > +		pci_epf_test_raise_irq(epf_test, reg);
-> > > +		break;
-> > > +	case COMMAND_DISABLE_DOORBELL:
-> > > +		pci_epf_disable_doorbell(epf_test, reg);
-> > > +		pci_epf_test_raise_irq(epf_test, reg);
-> > > +		break;
-> > >  	default:
-> > >  		dev_err(dev, "Invalid command 0x%x\n", command);
-> > >  		break;
-> > > @@ -810,11 +884,24 @@ static int pci_epf_test_link_down(struct pci_epf *epf)
-> > >  	return 0;
-> > >  }
-> > >
-> > > +static int pci_epf_test_doorbell(struct pci_epf *epf, int index)
-> > > +{
-> > > +	struct pci_epf_test *epf_test = epf_get_drvdata(epf);
-> > > +	enum pci_barno test_reg_bar = epf_test->test_reg_bar;
-> > > +	struct pci_epf_test_reg *reg = epf_test->reg[test_reg_bar];
-> > > +
-> > > +	reg->status |= STATUS_DOORBELL_SUCCESS;
-> > > +	pci_epf_test_raise_irq(epf_test, reg);
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +
-> > >  static const struct pci_epc_event_ops pci_epf_test_event_ops = {
-> > >  	.epc_init = pci_epf_test_epc_init,
-> > >  	.epc_deinit = pci_epf_test_epc_deinit,
-> > >  	.link_up = pci_epf_test_link_up,
-> > >  	.link_down = pci_epf_test_link_down,
-> > > +	.doorbell = pci_epf_test_doorbell,
-> > >  };
-> > >
-> > >  static int pci_epf_test_alloc_space(struct pci_epf *epf)
-> > > @@ -909,6 +996,23 @@ static int pci_epf_test_bind(struct pci_epf *epf)
-> > >  	if (ret)
-> > >  		return ret;
-> > >
-> > > +	ret = pci_epf_alloc_doorbell(epf, 1);
-> >
-> > Calling pci_epf_alloc_doorbell() unconditionally from bind will lead to the
-> > following print for all platforms that have not configured a msi-parent:
-> > [   64.543388] a40000000.pcie-ep: Failed to allocate MSI
-> >
-> > In ealier discussions, I thought that you wanted to call
-> > pci_epf_alloc_doorbell() in pci_epf_enable_doorbell(), and then let
-> > pci_epf_enable_doorbell() return STATUS_DOORBELL_ENABLE_FAIL
-> > if pci_epf_enable_doorbell() failed.
-> >
-> >
-> > Perhaps you could modify pci_epf_enable_doorbell() to also check if
-> > dev->msi.domain is NULL, before calling pci_epc_alloc_doorbell(),
-> > and if dev->msi.domain is NULL, perhaps print a clearer error,
-> > e.g. "no msi domain found, is 'msi-parent' device tree property missing?"
-> > Or put the text in a comment next to the error check, if you think that a
-> > print seems too silly.
-> 
-> I think resource should be allocated in bind. it may be too frequent to
-> allocate and free msi resources when call pci_epf_enable_doorbell()/
-> pci_epf_disable_doorbell().
-> 
-> If you think "a40000000.pcie-ep: Failed to allocate MSI" a noise, I think
-> we can add a msi_domain check in pci_epc_alloc_doorbell() and print a nice
-> message at pci_epc_alloc_doorbell().
-> 
-> It should be similar as eDMA detect. It'd better show captiblity
-> information at beginning instead of defer to when use it.
+Add basic function support for P3T1085 temperature sensor.
+- Add binding doc trivial.yaml
+- Add basic read temperature driver
+- Update imx93-9x9-qsb.dts
 
-Sounds good to me.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Carlos Song (1):
+      iio: temperature: Add support for P3T1085
 
+Frank Li (2):
+      dt-bindings: trivial-devices: Add NXP P3T1085UK I3C/I2C temperature sensor
+      arm64: dts: imx93-9x9-qsb: add temp-sensor nxp,p3t1085
 
-Kind regards,
-Niklas
+ .../devicetree/bindings/trivial-devices.yaml       |  2 +
+ arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dts    |  5 ++
+ drivers/iio/temperature/Kconfig                    |  1 +
+ drivers/iio/temperature/Makefile                   |  2 +
+ drivers/iio/temperature/p3t/Kconfig                | 29 ++++++++
+ drivers/iio/temperature/p3t/Makefile               |  5 ++
+ drivers/iio/temperature/p3t/p3t1085.h              | 31 +++++++++
+ drivers/iio/temperature/p3t/p3t1085_core.c         | 79 ++++++++++++++++++++++
+ drivers/iio/temperature/p3t/p3t1085_i2c.c          | 68 +++++++++++++++++++
+ drivers/iio/temperature/p3t/p3t1085_i3c.c          | 59 ++++++++++++++++
+ 10 files changed, 281 insertions(+)
+---
+base-commit: 74741a050b79d31d8d2eeee12c77736596d0a6b2
+change-id: 20241107-p3t1085-fbd8726cbc0e
+
+Best regards,
+---
+Frank Li <Frank.Li@nxp.com>
+
