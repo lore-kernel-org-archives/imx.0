@@ -1,459 +1,122 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51B21DE4D9
-	for <imx@lists.linux.dev>; Fri,  8 Nov 2024 08:46:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A18194A68
+	for <imx@lists.linux.dev>; Fri,  8 Nov 2024 08:46:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731055592; cv=none; b=gj6e/ov81myPqOyvSGeTprMm08rhhRDEZeDrE7Ii9G2ttQzyQcsAcd4xMibfR+2GtpF8kx5F/pWn6yB3rMxHYwn81yBseQecX16L1AzpzjD+MxQc8mml8S0rYz4ax15dE8B1E+D8/LcB80pyokc0Vj3lnMW3kT/aXOuYEsDVEgU=
+	t=1731055603; cv=none; b=NaFGmoeNXwO9nI6s8PIiQ2xfnYYEsRagics/kbfccFu1/do6xZ6JPg7obOU7RYMScA1IbgGlsjHKG/tdWs9Sv0HxmuGAaFStTMC3XfeKXtLPaRJUk2VfSsobggwFndCGTV/Vrmn7KgUYapVHoh0UhdQ1hkeRsoPXabAC8rmn1kM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731055592; c=relaxed/simple;
-	bh=gMSMyyuLySZqu0TJ5PLu0L32mIEdFSoT85qK8fEWmgA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f4xxaXhixx7LHBhZnnOUCOs17Tc4dAajFF4O8EeFNW+wjZKa0xu8lrLqOmLVrj0g4qFwUDbP5VWYu37cIO6xIYcOTazVfd2g7GaJvTxN6dALvgrO63vTieCbNS/piPBI4vClghJ65JgRW5sS94p2d27vMQO/rS3aKZkJMh2Pyqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1t9KYc-0001FV-RX; Fri, 08 Nov 2024 09:41:30 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1t9KYc-002al1-1U;
-	Fri, 08 Nov 2024 09:41:30 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1t9KYc-0004IE-16;
-	Fri, 08 Nov 2024 09:41:30 +0100
-Date: Fri, 8 Nov 2024 09:41:30 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Carlos Song <carlos.song@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/3] iio: temperature: Add support for P3T1085
-Message-ID: <20241108084130.5y46ot7ajha2oxrj@pengutronix.de>
-References: <20241107-p3t1085-v1-0-9a76cb85673f@nxp.com>
- <20241107-p3t1085-v1-2-9a76cb85673f@nxp.com>
+	s=arc-20240116; t=1731055603; c=relaxed/simple;
+	bh=9yxF5v4ewKOwB1ig1+7/AMlEc1rvebHe5gr3Q238ou0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TSWSXJyfbefe0xeofQJldZoRN5xtp2dGKwCHJ98330Z000WEBq69iQEVGOvX1rgQL+sExdvE8NgiljwVTeCSWICrDhoazd+ttbMiu/EEv+uyUrD+ATbahj3/1qcCltLsdw1xYEJJ7fi+OOsd0W+Uj6R44rC9oWoKSkf+U80MuoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S7mWQSfd; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S7mWQSfd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1731055601; x=1762591601;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=9yxF5v4ewKOwB1ig1+7/AMlEc1rvebHe5gr3Q238ou0=;
+  b=S7mWQSfdPz45uBjT2soqZDtt7g5lbdJgLmXPBfGsOQ77tTs5JFiz4xDQ
+   TvlVg4q0fXRsuJ2v8sFoFjuJMIzamxuWWh+5LSyNoGGrio/ILSfIom2zA
+   ZlHmWTiVgOx8v42gFDTM3ijoKAxBilgKQls7O3MN6FBDL4Fmd9WQywO78
+   P8Dt4sokowp66uYTwW667jPKwPNN1rlIR61GwBhDJhwaygy3ttUEoCNB5
+   +Hu/+R0ZoDd5Nko/h3bBshn5KPCNxGaO1UrI3L2uGORrZr1CZ/B1AVbgI
+   QVFJRFlhu9vhRRFo3ikk3AXd1pBz3rAXSg4vV8tZvamIy/n80e+Ecx6cs
+   w==;
+X-CSE-ConnectionGUID: YCbfGSQ5QHKA25RWcSQE/w==
+X-CSE-MsgGUID: 6wk1kzXyR76jTFdJaBPf0w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="41538918"
+X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; 
+   d="scan'208";a="41538918"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2024 00:46:41 -0800
+X-CSE-ConnectionGUID: Mt7p5NSnSEO0XYpMYf0S0A==
+X-CSE-MsgGUID: 9tna//0bSZChN+ImPOd9Xw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; 
+   d="scan'208";a="84980240"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.246.16.81])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2024 00:46:36 -0800
+Message-ID: <333a5a4c-06d2-4465-af28-3dac607190b1@intel.com>
+Date: Fri, 8 Nov 2024 10:46:32 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241107-p3t1085-v1-2-9a76cb85673f@nxp.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mmc: Use of_property_present() for non-boolean properties
+To: "Rob Herring (Arm)" <robh@kernel.org>,
+ Ulf Hansson <ulf.hansson@linaro.org>, Haibo Chen <haibo.chen@nxp.com>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, s32@nxp.com, linux-arm-kernel@lists.infradead.org
+References: <20241104190707.275758-1-robh@kernel.org>
+Content-Language: en-US
+From: Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <20241104190707.275758-1-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Frank,
+On 4/11/24 21:07, Rob Herring (Arm) wrote:
+> The use of of_property_read_bool() for non-boolean properties is
+> deprecated in favor of of_property_present() when testing for property
+> presence.
+> 
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 
-thanks for the patch, please see my comments inline.
+No longer applies cleanly to mmc next, and one minor comment
+below otherwise:
 
-On 24-11-07, Frank Li wrote:
-> From: Carlos Song <carlos.song@nxp.com>
-> 
-> Add basic function support for P3T1085 temperature sensor.
-> 
-> P3T1085UK is a temperature-to-digital converter with a -40 °C to +125 °C
-> range. The device can be communicated by a controller via the 2-wire serial
-> I3C (up to 12.5 MHz) and I2C (up to 3.4 MHz) interface.
-> 
-> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-> Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+
 > ---
->  drivers/iio/temperature/Kconfig            |  1 +
->  drivers/iio/temperature/Makefile           |  2 +
->  drivers/iio/temperature/p3t/Kconfig        | 29 +++++++++++
->  drivers/iio/temperature/p3t/Makefile       |  5 ++
->  drivers/iio/temperature/p3t/p3t1085.h      | 31 ++++++++++++
->  drivers/iio/temperature/p3t/p3t1085_core.c | 79 ++++++++++++++++++++++++++++++
->  drivers/iio/temperature/p3t/p3t1085_i2c.c  | 68 +++++++++++++++++++++++++
->  drivers/iio/temperature/p3t/p3t1085_i3c.c  | 59 ++++++++++++++++++++++
->  8 files changed, 274 insertions(+)
+>  drivers/mmc/host/mxcmmc.c          | 6 +++---
+>  drivers/mmc/host/sdhci-esdhc-imx.c | 2 +-
+>  2 files changed, 4 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/iio/temperature/Kconfig b/drivers/iio/temperature/Kconfig
-> index 1244d8e17d504..7cdd49279aba2 100644
-> --- a/drivers/iio/temperature/Kconfig
-> +++ b/drivers/iio/temperature/Kconfig
-> @@ -182,4 +182,5 @@ config MCP9600
->  	  This driver can also be built as a module. If so, the module
->  	  will be called mcp9600.
+> diff --git a/drivers/mmc/host/mxcmmc.c b/drivers/mmc/host/mxcmmc.c
+> index 1edf65291354..dcb1a7336029 100644
+> --- a/drivers/mmc/host/mxcmmc.c
+> +++ b/drivers/mmc/host/mxcmmc.c
+> @@ -1048,9 +1048,9 @@ static int mxcmci_probe(struct platform_device *pdev)
 >  
-> +source "drivers/iio/temperature/p3t/Kconfig"
->  endmenu
-> diff --git a/drivers/iio/temperature/Makefile b/drivers/iio/temperature/Makefile
-> index 07d6e65709f7f..d5e89c20d58b6 100644
-> --- a/drivers/iio/temperature/Makefile
-> +++ b/drivers/iio/temperature/Makefile
-> @@ -19,3 +19,5 @@ obj-$(CONFIG_TMP007) += tmp007.o
->  obj-$(CONFIG_TMP117) += tmp117.o
->  obj-$(CONFIG_TSYS01) += tsys01.o
->  obj-$(CONFIG_TSYS02D) += tsys02d.o
-> +
-> +obj-y += p3t/
-> diff --git a/drivers/iio/temperature/p3t/Kconfig b/drivers/iio/temperature/p3t/Kconfig
-> new file mode 100644
-> index 0000000000000..09e925024b66f
-> --- /dev/null
-> +++ b/drivers/iio/temperature/p3t/Kconfig
-> @@ -0,0 +1,29 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +
-> +config IIO_P3T1085
-> +	tristate
-> +	depends on (I2C || I3C)
-> +
-> +config IIO_P3T1085_I2C
-> +	tristate "NXP P3T1085 temperature sensor I2C driver"
-> +	depends on I2C
-> +	select IIO_P3T1085
-> +	select REGMAP_I2C
-> +	help
-> +	  Say yes here to build support for NXP P3T1085 I2C temperature
-> +	  sensor.
-> +
-> +	  To compile this driver as a module, choose M here: the module
-> +	  will be called p3t1085_i2c
-> +
-> +config IIO_P3T1085_I3C
-> +	tristate "NXP P3T1085 temperature sensor I3C driver"
-> +	depends on I3C
-> +	select IIO_P3T1085
-> +	select REGMAP_I3C
-> +	help
-> +	  Say yes here to build support for NXP P3T1085 I3C temperature
-> +	  sensor.
-> +
-> +	  To compile this driver as a module, choose M here: the module
-> +	  will be called p3t1085_i3c
-> diff --git a/drivers/iio/temperature/p3t/Makefile b/drivers/iio/temperature/p3t/Makefile
-> new file mode 100644
-> index 0000000000000..21aaeb51e044d
-> --- /dev/null
-> +++ b/drivers/iio/temperature/p3t/Makefile
-> @@ -0,0 +1,5 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +
-> +obj-$(CONFIG_IIO_P3T1085) += p3t1085_core.o
-> +obj-$(CONFIG_IIO_P3T1085_I2C) += p3t1085_i2c.o
-> +obj-$(CONFIG_IIO_P3T1085_I3C) += p3t1085_i3c.o
-> diff --git a/drivers/iio/temperature/p3t/p3t1085.h b/drivers/iio/temperature/p3t/p3t1085.h
-> new file mode 100644
-> index 0000000000000..b018a04e4aee4
-> --- /dev/null
-> +++ b/drivers/iio/temperature/p3t/p3t1085.h
-> @@ -0,0 +1,31 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * NXP P3T1085 Temperature Sensor Driver
-> + *
-> + * Copyright 2024 NXP
-> + */
-> +#ifndef P3T1085_H
-> +#define P3T1085_H
-> +
-> +#include <linux/device.h>
-> +#include <linux/iio/iio.h>
-> +
-> +#define P3T1085_REG_TEMP		0x0
+>  	if (pdata)
+>  		dat3_card_detect = pdata->dat3_card_detect;
+> -	else if (mmc_card_is_removable(mmc)
+> -			&& !of_property_read_bool(pdev->dev.of_node, "cd-gpios"))
+> -		dat3_card_detect = true;
+> +	else
+> +		dat3_card_detect = mmc_card_is_removable(mmc) &&
+> +			!of_property_present(pdev->dev.of_node, "cd-gpios");
 
-This define can be moved into the core since the _i2c nor the _i3c is
-uses it.
+dat3_card_detect no longer needs to be initialized to false
 
-> +#define P3T1085_REG_CFGR		0x1
-> +#define P3T1085_REG_HIGH_LIM		0x2
-> +#define P3T1085_REG_LOW_LIM		0x3
-> +
-> +#define P3T1085_RESOLUTION_10UC		62500
+>  
+>  	ret = mmc_regulator_get_supply(mmc);
+>  	if (ret)
+> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+> index 8f0bc6dca2b0..cda1872769e0 100644
+> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> @@ -1629,7 +1629,7 @@ sdhci_esdhc_imx_probe_dt(struct platform_device *pdev,
+>  	 * Retrieveing and requesting the actual WP GPIO will happen
+>  	 * in the call to mmc_of_parse().
+>  	 */
+> -	if (of_property_read_bool(np, "wp-gpios"))
+> +	if (of_property_present(np, "wp-gpios"))
+>  		boarddata->wp_type = ESDHC_WP_GPIO;
+>  
+>  	of_property_read_u32(np, "fsl,tuning-step", &boarddata->tuning_step);
 
-All three defines are not used, please remove it.
-
-> +
-> +enum p3t1085_hw_id {
-> +	P3T1085_ID,
-> +};
-
-Is this id really required? We should keep the driver simple for now and
-extend it on demand.
-
-> +struct p3t1085_data {
-> +	struct device *dev;
-> +	struct regmap *regmap;
-> +};
-
-This belongs to the core.c
-
-> +int p3t1085_probe(struct device *dev, int irq, int hw_id, struct regmap *regmap);
-					     ^		^
-					    unsused params
-> +
-> +#endif /* P3T1085_H */
-> diff --git a/drivers/iio/temperature/p3t/p3t1085_core.c b/drivers/iio/temperature/p3t/p3t1085_core.c
-> new file mode 100644
-> index 0000000000000..4b00e606a6d04
-> --- /dev/null
-> +++ b/drivers/iio/temperature/p3t/p3t1085_core.c
-> @@ -0,0 +1,79 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * NXP P3T1085 Temperature Sensor Driver
-> + *
-> + * Copyright 2024 NXP
-> + */
-> +#include <linux/bitops.h>
-> +#include <linux/err.h>
-> +#include <linux/i2c.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
-> +#include <linux/kernel.h>
-> +#include <linux/limits.h>
-> +#include <linux/module.h>
-> +#include <linux/regmap.h>
-> +#include <linux/types.h>
-> +
-> +#include "p3t1085.h"
-> +
-> +static int p3t1085_read_raw(struct iio_dev *indio_dev,
-> +			    struct iio_chan_spec const *channel, int *val,
-> +			    int *val2, long mask)
-> +{
-> +	struct p3t1085_data *data = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		ret = regmap_read(data->regmap, P3T1085_REG_TEMP, val);
-> +		if (ret < 0) {
-> +			dev_err(data->dev, "failed to read temperature register\n");
-> +			return ret;
-> +		}
-> +		*val = *val >> 4;
-> +		return IIO_VAL_INT;
-> +
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static const struct iio_chan_spec p3t1085_channels[] = {
-> +	{
-> +		.type = IIO_TEMP,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-> +	},
-> +};
-> +
-> +static const struct iio_info p3t1085_info = {
-> +	.read_raw = p3t1085_read_raw,
-> +};
-> +
-> +int p3t1085_probe(struct device *dev, int irq, int hw_id, struct regmap *regmap)
-					   ^           ^
-As written abvoe, both params are unused so can you please drop them?
-
-> +{
-> +	struct p3t1085_data *data;
-> +	struct iio_dev *iio_dev;
-> +
-> +	iio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> +	if (!iio_dev)
-> +		return -ENOMEM;
-> +
-> +	data = iio_priv(iio_dev);
-> +	data->dev = dev;
-> +	data->regmap = regmap;
-> +
-> +	iio_dev->name = "p3t1085";
-> +	iio_dev->modes = INDIO_DIRECT_MODE;
-> +	iio_dev->info = &p3t1085_info;
-> +
-> +	iio_dev->channels = p3t1085_channels;
-> +	iio_dev->num_channels = ARRAY_SIZE(p3t1085_channels);
-> +
-> +	return devm_iio_device_register(dev, iio_dev);
-> +}
-> +EXPORT_SYMBOL_NS(p3t1085_probe, IIO_P3T1085);
-> +
-> +MODULE_AUTHOR("Xiaoning Wang <xiaoning.wang@nxp.com>");
-> +MODULE_DESCRIPTION("NXP P3T1085 driver");
-> +MODULE_LICENSE("GPL");
-> diff --git a/drivers/iio/temperature/p3t/p3t1085_i2c.c b/drivers/iio/temperature/p3t/p3t1085_i2c.c
-> new file mode 100644
-> index 0000000000000..20e5f7a68dd9e
-> --- /dev/null
-> +++ b/drivers/iio/temperature/p3t/p3t1085_i2c.c
-> @@ -0,0 +1,68 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * NXP P3T1085 Temperature Sensor Driver
-> + *
-> + * Copyright 2024 NXP
-> + */
-> +
-> +#include <linux/i2c.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/regmap.h>
-> +#include <linux/slab.h>
-> +
-> +#include "p3t1085.h"
-> +
-> +static const struct regmap_config p3t1085_i2c_regmap_config = {
-> +	.reg_bits = 8,
-> +	.val_bits = 16,
-> +};
-> +
-> +static int p3t1085_i2c_probe(struct i2c_client *client)
-> +{
-> +	const struct i2c_device_id *id;
-> +	struct regmap *regmap;
-> +	int ret;
-> +
-> +	id = i2c_client_get_device_id(client);
-> +	if (!id)
-> +		return -EINVAL;
-
-At the moment only one devices is supported therefore I would like drop
-passing the id to the p3t1085_probe function.
-
-> +	regmap = devm_regmap_init_i2c(client, &p3t1085_i2c_regmap_config);
-> +	if (IS_ERR(regmap))
-> +		return dev_err_probe(&client->dev, PTR_ERR(regmap),
-> +				     "Failed to register i2c regmap %ld\n", PTR_ERR(regmap));
-> +
-> +	ret = p3t1085_probe(&client->dev, client->irq, id->driver_data, regmap);
-> +	if (ret)
-> +		return dev_err_probe(&client->dev, ret, "Failed to probe\n");
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct of_device_id p3t1085_i2c_of_match[] = {
-> +	{ .compatible = "nxp,p3t1085", },
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(of, p3t1085_i2c_of_match);
-> +
-> +static const struct i2c_device_id p3t1085_i2c_id_table[] = {
-> +	{ "p3t1085", P3T1085_ID },
-			^
-		This can be dropped
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(i2c, p3t1085_i2c_id_table);
-> +
-> +static struct i2c_driver p3t1085_driver = {
-> +	.driver = {
-> +		.name = "p3t1085_i2c",
-> +		.of_match_table = p3t1085_i2c_of_match,
-> +	},
-> +	.probe = p3t1085_i2c_probe,
-> +	.id_table = p3t1085_i2c_id_table,
-> +};
-> +module_i2c_driver(p3t1085_driver);
-> +
-> +MODULE_AUTHOR("Xiaoning Wang <xiaoning.wang@nxp.com>");
-> +MODULE_DESCRIPTION("NXP P3T1085 i2c driver");
-> +MODULE_LICENSE("GPL");
-> +MODULE_IMPORT_NS(IIO_P3T1085);
-> diff --git a/drivers/iio/temperature/p3t/p3t1085_i3c.c b/drivers/iio/temperature/p3t/p3t1085_i3c.c
-> new file mode 100644
-> index 0000000000000..0007d79aa0a6d
-> --- /dev/null
-> +++ b/drivers/iio/temperature/p3t/p3t1085_i3c.c
-> @@ -0,0 +1,59 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * NXP P3T1085 Temperature Sensor Driver
-> + *
-> + * Copyright 2024 NXP
-> + */
-> +#include <linux/kernel.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-> +#include <linux/i3c/device.h>
-> +#include <linux/i3c/master.h>
-> +#include <linux/slab.h>
-> +#include <linux/regmap.h>
-> +
-> +#include "p3t1085.h"
-> +
-> +static const struct i3c_device_id p3t1085_i3c_ids[] = {
-> +	I3C_DEVICE(0x011B, 0x1529, (void *)P3T1085_ID),
-						^
-					here as well.
-> +	{ /* sentinel */ },
-
-Nit: Can you please align your "sentinel" style. Either with or without
-the comment. Also the of_device_id is missing for the i3c case.
-
-> +};
-> +MODULE_DEVICE_TABLE(i3c, p3t1085_i3c_ids);
-> +
-> +static int p3t1085_i3c_probe(struct i3c_device *i3cdev)
-> +{
-> +	const struct regmap_config p3t1085_i3c_regmap_config = {
-> +		.reg_bits = 8,
-> +		.val_bits = 16,
-> +	};
-
-Please align the style with the i2c module.
-
-> +	int ret;
-> +
-> +	const struct i3c_device_id *id = i3c_device_match_id(i3cdev,
-> +							    p3t1085_i3c_ids);
-
-Same here, we don't need to consider different ids yet.
-
-> +	struct regmap *regmap;
-> +
-> +	regmap = devm_regmap_init_i3c(i3cdev, &p3t1085_i3c_regmap_config);
-> +	if (IS_ERR(regmap))
-> +		return dev_err_probe(&i3cdev->dev, PTR_ERR(regmap),
-> +				     "Failed to register i3c regmap\n");
-> +
-> +	ret = p3t1085_probe(&i3cdev->dev, 0, (uintptr_t)id->data, regmap);
-> +	if (ret)
-> +		return dev_err_probe(&i3cdev->dev, ret, "Failed to probe\n");
-> +
-> +	return 0;
-> +}
-> +
-> +static struct i3c_driver p3t1085_driver = {
-> +	.driver = {
-> +		.name = "p3t1085_i3c",
-> +	},
-> +	.probe = p3t1085_i3c_probe,
-> +	.id_table = p3t1085_i3c_ids,
-> +};
-> +module_i3c_driver(p3t1085_driver);
-> +
-> +MODULE_AUTHOR("Xiaoning Wang <xiaoning.wang@nxp.com>");
-> +MODULE_DESCRIPTION("NXP p3t1085 i3c driver");
-> +MODULE_LICENSE("GPL");
-> +MODULE_IMPORT_NS(IIO_P3T1085);
-> 
-> -- 
-> 2.34.1
-> 
-> 
-> 
