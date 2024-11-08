@@ -1,118 +1,164 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6A321B420
-	for <imx@lists.linux.dev>; Fri,  8 Nov 2024 15:36:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308DC21A718
+	for <imx@lists.linux.dev>; Fri,  8 Nov 2024 15:50:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731080163; cv=none; b=BhRY90seR/DAPe7z8SynD3/FcSihTqjXX+W79KSh3YDqfUekAvuPi6yXFJchCn2cbVeYV45ddYC92qoiohVDw4SQrEV17JGtG0efvIvt29XuRkEM1U/S25HmnemnRy4F/dlSISaiWpW3Jg431qGP4iQUFw2ZZ+ijdbqV4bFZqPE=
+	t=1731081006; cv=none; b=D/f9ASgC7ufBLoDlEA1Coq48PpvExWtFAic0OegDiqD2gBkeze4CYkUOlvrkHFcJjdMzPDUTqnLjhDSvfmiN5YynOMGvOHTlOA5xMyLx+67S3cAUqASkZ5QKomDaQ2hYpkXDqo+RrQt2TbvGGdGX9KLQGlrzt6UOhZdxSa0pnU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731080163; c=relaxed/simple;
-	bh=PQ/aJvm69j4lPhF8o2Xa28OhkWmIoRJK40HEev5Priw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X5MEzLvfLzJILlqTqJS4GhCaPb5n9DjFZn6y+NeKCJ+NwvhhkoK+zLgF52KL/CQqnzxjcpX8r3aWo2gW5il0ueyjPQtSmHe6JRDX4HcDnMIQ/4G7gRzpb0PE+zjAkXN3B5lCRy9ZT7J8YmyI4dMJ/QeETAkUl2RvrIcAZ8fHKbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BVSNipB3; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1731081006; c=relaxed/simple;
+	bh=e7TbtfYWPx/GzFrYLarzKUrUITFf+TcwL9eeIcRMtXk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CWZJT2SyLZ/XNa+o5QcFuljqyIfU4i5mhf8wDrj+1XBLSi5QYzrau4Aas5Yj8a3LHmZnguvsvUo+R5smKm/peqh+NwOVFn+c2p9n3K5s9m6YGfjKWc7H90zlgHlT/mYm8/CUbVg1s+I/aNv/bVcPsSnxEDAAYMhQkfhzwUTlb38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JsrfP69w; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BVSNipB3"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4316a44d1bbso18962605e9.3
-        for <imx@lists.linux.dev>; Fri, 08 Nov 2024 07:36:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JsrfP69w"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2e2e88cb0bbso1817678a91.3
+        for <imx@lists.linux.dev>; Fri, 08 Nov 2024 07:50:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731080160; x=1731684960; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2nVKb2hvRP3zLcKR7jduFefSLqPzAllC+DJORNI8QjA=;
-        b=BVSNipB3zKrLzxeysfynIeSvZS46FdV1BeiolvMY1kokC1ZMWSy2WiJu17of2HLFBO
-         abQr1WoUIqMdxzefcRZ925iGixEfjAdliJYfG3XoMAueruoZ6ztac/RZA/gpvxlf7wHP
-         yJLnljP+hOlVQuMK7X2TKIkAxnYPHGAu9gMocccQMyftPSiLs8kcywjdaJxxa/TQAHIU
-         j5vpi/WfjR+BYDwSCaNx36m2B4nG+0r7F+vVxakbq5W56/4o8aGVEht2lH5jrxGqKtNc
-         pL671LJbZrCxky0UbEJxTRz2f0/BFEIMf0z9W5YToeNGoAs7S9DWcihMsI7YwEfaPUln
-         b9Qw==
+        d=gmail.com; s=20230601; t=1731081004; x=1731685804; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=tZ+J0uCnaT+x0yIPYmMnG9zvQPdwpvJwn2l27mxNTv8=;
+        b=JsrfP69wh77MamB18/HsYpo9zuk8IB8Mo6KHFJAcvItS0RtWtbJrdr6WEY05t+u8vr
+         u736lyTC4KwvMu8IAn1+j9bbqW7D33LN6y26mMwNKkyRFZnRS26OMD0vpxr4mEhfxnyV
+         u7E8V+0FBoe5PJrI0U0/ec6mo3m/G2MSfmULb/a1grZZLeO8pALDsyXpINzLspqP4eru
+         +gg7ugff1jGs401M3zBSfPyj9ZyxceVJBok02bqmuha/bHEhzLo6J8Wdbf7eAXsVaO2P
+         TwfyIr+9UA5IakcLnqQZCSlXHJIDNhboH4QPWF9te0U90ewOzJGnuDfpDt0cfsfui4iX
+         2IaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731080160; x=1731684960;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2nVKb2hvRP3zLcKR7jduFefSLqPzAllC+DJORNI8QjA=;
-        b=LzOK8WwOapgLfmZgvcFqD8XMd4cuioE5jPBuly8Mjh+8+IoX/YsOToc83ZrW5Z3BN2
-         dPeX/lyIRjhSiJw/m+lbODoA4OkEFF8eyOTdZjnOToNW20Ml20jwji9OWwtdxXod8YZe
-         JcWVqde4Pim3pVJbtiGMzHMNPV3WXpbd2pBZO0sJgtF3JvvnBewkMYFXYABO9Jd7eUcz
-         NulFhd09OKiNgis+mpp5r+qk6WKvdbJTgP38ZP8qdkaSUmua4fF/uF4r3ULe2IcRDskM
-         qRfQI96miP4V7KiNFpq8vdBfjGDeKJFCaRh6hlJAfIvpwMC4rThtR4NA2yb4PJZSRy//
-         VAcA==
-X-Forwarded-Encrypted: i=1; AJvYcCWlaY2m/RrARsgLoiFmpiw1XcvVdD8mYarfMGgwNyPJDySUlAK1lVBvNsB2OXMX/XHQrE0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwO0ywA2MLSl+IiO3O/+dOoErC8hKUXlGhU4beX92w7dv+BMFxt
-	1KAxWJA0p3c6K0R6R/hnQd5SGyXYhtQZskh6bOiAwdYc/sS4eoelUyzXQIEU
-X-Google-Smtp-Source: AGHT+IFuTl+S8WzS1KOeDdZG5ICETzGr8yuMTt04P9wVoRLrVQEU567NoDmp9dR1QkFr8R1TeWkRsg==
-X-Received: by 2002:a05:600c:3ca0:b0:42c:b037:5f9d with SMTP id 5b1f17b1804b1-432b74fd71emr27480065e9.3.1731080159667;
-        Fri, 08 Nov 2024 07:35:59 -0800 (PST)
-Received: from eichest-laptop.gad.local ([2a02:168:af72:0:c5c8:af8e:e93d:4656])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432b054b34csm74750545e9.14.2024.11.08.07.35.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Nov 2024 07:35:59 -0800 (PST)
-From: Stefan Eichenberger <eichest@gmail.com>
-To: linux@armlinux.org.uk,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	wahrenst@gmx.net,
-	elinor.montmasson@savoirfairelinux.com
-Cc: linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: [PATCH v2] ARM: imx_v6_v7_defconfig: enable SND_SOC_SPDIF
-Date: Fri,  8 Nov 2024 16:34:34 +0100
-Message-ID: <20241108153546.268695-1-eichest@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1731081004; x=1731685804;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tZ+J0uCnaT+x0yIPYmMnG9zvQPdwpvJwn2l27mxNTv8=;
+        b=N2SI7kNLRdEuSe6iqVm3zZ/xpTFL7hiDwRKEuqwulIfwPx0J4x5we5aWDQK42bAPVA
+         4csc5Dtsc6VKPHQ2D4ZsL654Kw65ibHHPZdHl7v+kxzIVFxV9xgrPORBBM42PNzDoN4T
+         aIpeQVgmK2xENih7ooYA6/y6USWvh5NNuiQdMcP5mBRhybtKZ7h0dt79dAhu/TNu9FcQ
+         9Z1N9pFbSlQtONhwdFtIb9UV0Tg+5eI5Fr8RO+JoESvuMYtJaxu2fdnAry7tIuLqvglX
+         13P8c4dUSEomKIr6SR40/baTxNB3/Hjgp3qlS3c7c34Mb24p2XYT/hbaXVjmWwo8FsDb
+         diGA==
+X-Forwarded-Encrypted: i=1; AJvYcCVRflVcrl8NdLX4gnrVm3WkMCTY8Hiv5Y+17YivKxNp3r9VtIgs2aiPbiVWGk62vRUi40o=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz28P+UnZtLHEjpTbFhJB5DEH8lhU1tKOq1jD0pg8/fYcb74YGx
+	K+SRFWFEQlzF9jvjWaaoHHewqVUlunvwOMe4M8YtjNyuOYqizD9kMbzxow==
+X-Google-Smtp-Source: AGHT+IHRoj1cc4ePvYEsz5DmCSDi2av2jJaP53p6RwfYTf1WJ4aBuGYIc1+XeiJWDJWQDrjRxbKCAA==
+X-Received: by 2002:a17:90b:1e4c:b0:2e2:e545:82c5 with SMTP id 98e67ed59e1d1-2e9b16f0529mr4094709a91.3.1731081004272;
+        Fri, 08 Nov 2024 07:50:04 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e99a62d6acsm5720627a91.53.2024.11.08.07.50.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 08 Nov 2024 07:50:03 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <e566ee56-523c-4cfd-999d-1cd9ca8eb7a6@roeck-us.net>
+Date: Fri, 8 Nov 2024 07:49:54 -0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/3] iio: temperature: Add support for P3T1085
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ Carlos Song <carlos.song@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+ Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org
+References: <20241107-p3t1085-v1-0-9a76cb85673f@nxp.com>
+ <20241108152856.000042ed@huawei.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
+ RYHA7RCEK2dh6dDccykQk3bC90xXMPg+O3R+C/SkwcnUak1UZaeK/SwQbq/t0tkMzYDRxfJ7
+ nyFiKxUehbNF3r9qlJgPqONwX5vJy4/GvDHdddSCxV41P/ejsZ8PykxyJs98UWhF54tGRWFl
+ 7i1xvaDB9lN5WTLRKSO7wICuLiSz5WZHXMkyF4d+/O5ll7yz/o/JxK5vO/sduYDIlFTvBZDh
+ gzaEtNf5tQjsjG4io8E0Yq0ViobLkS2RTNZT8ICq/Jmvl0SpbHRvYwa2DhNsK0YjHFQBB0FX
+ IdhdUEzNefcNcYvqigJpdICoP2e4yJSyflHFO4dr0OrdnGLe1Zi/8Xo/2+M1dSSEt196rXaC
+ kwu2KgIgmkRBb3cp2vIBBIIowU8W3qC1+w+RdMUrZxKGWJ3juwcgveJlzMpMZNyM1jobSXZ0
+ VHGMNJ3MwXlrEFPXaYJgibcg6brM6wGfX/LBvc/haWw4yO24lT5eitm4UBdIy9pKkKmHHh7s
+ jfZJkB5fWKVdoCv/omy6UyH6ykLOPFugl+hVL2Prf8xrXuZe1CMS7ID9Lc8FaL1ROIN/W8Vk
+ BIsJMaWOhks//7d92Uf3EArDlDShwR2+D+AMon8NULuLBHiEUQARAQABzTJHdWVudGVyIFJv
+ ZWNrIChMaW51eCBhY2NvdW50KSA8bGludXhAcm9lY2stdXMubmV0PsLBgQQTAQIAKwIbAwYL
+ CQgHAwIGFQgCCQoLBBYCAwECHgECF4ACGQEFAlVcphcFCRmg06EACgkQyx8mb86fmYFg0RAA
+ nzXJzuPkLJaOmSIzPAqqnutACchT/meCOgMEpS5oLf6xn5ySZkl23OxuhpMZTVX+49c9pvBx
+ hpvl5bCWFu5qC1jC2eWRYU+aZZE4sxMaAGeWenQJsiG9lP8wkfCJP3ockNu0ZXXAXwIbY1O1
+ c+l11zQkZw89zNgWgKobKzrDMBFOYtAh0pAInZ9TSn7oA4Ctejouo5wUugmk8MrDtUVXmEA9
+ 7f9fgKYSwl/H7dfKKsS1bDOpyJlqhEAH94BHJdK/b1tzwJCFAXFhMlmlbYEk8kWjcxQgDWMu
+ GAthQzSuAyhqyZwFcOlMCNbAcTSQawSo3B9yM9mHJne5RrAbVz4TWLnEaX8gA5xK3uCNCeyI
+ sqYuzA4OzcMwnnTASvzsGZoYHTFP3DQwf2nzxD6yBGCfwNGIYfS0i8YN8XcBgEcDFMWpOQhT
+ Pu3HeztMnF3HXrc0t7e5rDW9zCh3k2PA6D2NV4fews9KDFhLlTfCVzf0PS1dRVVWM+4jVl6l
+ HRIAgWp+2/f8dx5vPc4Ycp4IsZN0l1h9uT7qm1KTwz+sSl1zOqKD/BpfGNZfLRRxrXthvvY8
+ BltcuZ4+PGFTcRkMytUbMDFMF9Cjd2W9dXD35PEtvj8wnEyzIos8bbgtLrGTv/SYhmPpahJA
+ l8hPhYvmAvpOmusUUyB30StsHIU2LLccUPPOwU0ETofVZwEQALlLbQeBDTDbwQYrj0gbx3bq
+ 7kpKABxN2MqeuqGr02DpS9883d/t7ontxasXoEz2GTioevvRmllJlPQERVxM8gQoNg22twF7
+ pB/zsrIjxkE9heE4wYfN1AyzT+AxgYN6f8hVQ7Nrc9XgZZe+8IkuW/Nf64KzNJXnSH4u6nJM
+ J2+Dt274YoFcXR1nG76Q259mKwzbCukKbd6piL+VsT/qBrLhZe9Ivbjq5WMdkQKnP7gYKCAi
+ pNVJC4enWfivZsYupMd9qn7Uv/oCZDYoBTdMSBUblaLMwlcjnPpOYK5rfHvC4opxl+P/Vzyz
+ 6WC2TLkPtKvYvXmdsI6rnEI4Uucg0Au/Ulg7aqqKhzGPIbVaL+U0Wk82nz6hz+WP2ggTrY1w
+ ZlPlRt8WM9w6WfLf2j+PuGklj37m+KvaOEfLsF1v464dSpy1tQVHhhp8LFTxh/6RWkRIR2uF
+ I4v3Xu/k5D0LhaZHpQ4C+xKsQxpTGuYh2tnRaRL14YMW1dlI3HfeB2gj7Yc8XdHh9vkpPyuT
+ nY/ZsFbnvBtiw7GchKKri2gDhRb2QNNDyBnQn5mRFw7CyuFclAksOdV/sdpQnYlYcRQWOUGY
+ HhQ5eqTRZjm9z+qQe/T0HQpmiPTqQcIaG/edgKVTUjITfA7AJMKLQHgp04Vylb+G6jocnQQX
+ JqvvP09whbqrABEBAAHCwWUEGAECAA8CGwwFAlVcpi8FCRmg08MACgkQyx8mb86fmYHNRQ/+
+ J0OZsBYP4leJvQF8lx9zif+v4ZY/6C9tTcUv/KNAE5leyrD4IKbnV4PnbrVhjq861it/zRQW
+ cFpWQszZyWRwNPWUUz7ejmm9lAwPbr8xWT4qMSA43VKQ7ZCeTQJ4TC8kjqtcbw41SjkjrcTG
+ wF52zFO4bOWyovVAPncvV9eGA/vtnd3xEZXQiSt91kBSqK28yjxAqK/c3G6i7IX2rg6pzgqh
+ hiH3/1qM2M/LSuqAv0Rwrt/k+pZXE+B4Ud42hwmMr0TfhNxG+X7YKvjKC+SjPjqp0CaztQ0H
+ nsDLSLElVROxCd9m8CAUuHplgmR3seYCOrT4jriMFBtKNPtj2EE4DNV4s7k0Zy+6iRQ8G8ng
+ QjsSqYJx8iAR8JRB7Gm2rQOMv8lSRdjva++GT0VLXtHULdlzg8VjDnFZ3lfz5PWEOeIMk7Rj
+ trjv82EZtrhLuLjHRCaG50OOm0hwPSk1J64R8O3HjSLdertmw7eyAYOo4RuWJguYMg5DRnBk
+ WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
+ HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <20241108152856.000042ed@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+On 11/8/24 07:28, Jonathan Cameron wrote:
+> On Thu, 07 Nov 2024 18:02:26 -0500
+> Frank Li <Frank.Li@nxp.com> wrote:
+> 
+>> Add basic function support for P3T1085 temperature sensor.
+>> - Add binding doc trivial.yaml
+>> - Add basic read temperature driver
+> Hi Frank,
+> 
+> For a simple temperature sensor the usual question is why IIO rather
+> than hwmon?
+> 
 
-Enable SND_SOC_SPDIF in imx_v6_v7_defconfig to support SPDIF audio.
+ From looking into the datasheet, this is a chip which will be typically
+used for hardware monitoring.
 
-With commit d469b771afe1 ("ARM: dts: imx6: update spdif sound card node
-properties"), the more generic audio-codec property is used instead of
-the old spdif-controller property. Since most i.MX6 boards now use the
-audio-codec property together with the linux,spdif-dit and
-linux,spdif-dir compatible driver, it makes sense to enable
-SND_SOC_SPDIF in the imx_v6_v7_defconfig. This will ensure compatibility
-with the updated device tree.
+> Previous reasons have been:
+> - Very high performmance / accuracy part (i.e. expensive)
 
-Without this change, boards that use the audio-codec property will show
-the following error message during boot when using the
-imx_v6_v7_defconfig and spdif audio is not working:
-[   24.165534] platform sound-spdif: deferred probe pending: fsl-asoc-card: snd_soc_register_card failed
+0.25 Hz ... 16 Hz sampling rate. No.
 
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
----
-Changes in v2:
-- Improve the commit message. (Stefan)
-- Removed the fixed tag because it is not fix. It just improves the
-  example configuration. (Stefan)
+> - Remote temperature so not typically hw monitoring.
 
- arch/arm/configs/imx_v6_v7_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+Local only.
 
-diff --git a/arch/arm/configs/imx_v6_v7_defconfig b/arch/arm/configs/imx_v6_v7_defconfig
-index 333ef55476a3..c771d7dbcadc 100644
---- a/arch/arm/configs/imx_v6_v7_defconfig
-+++ b/arch/arm/configs/imx_v6_v7_defconfig
-@@ -321,6 +321,7 @@ CONFIG_SND_SOC_IMX_SGTL5000=y
- CONFIG_SND_SOC_FSL_ASOC_CARD=y
- CONFIG_SND_SOC_AC97_CODEC=y
- CONFIG_SND_SOC_CS42XX8_I2C=y
-+CONFIG_SND_SOC_SPDIF=y
- CONFIG_SND_SOC_TLV320AIC3X_I2C=y
- CONFIG_SND_SOC_WM8960=y
- CONFIG_SND_SOC_WM8962=y
--- 
-2.43.0
+> - Same silicon with a more complex sensor (typically humidity or similar).
+> 
+No.
+
+It looks like the I2C part of the chip is is compatible to TMP108, so
+another question would be why to implement a new driver in the first place.
+
+Guenter
+
 
