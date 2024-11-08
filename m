@@ -1,190 +1,186 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2EF1EBFEB
-	for <imx@lists.linux.dev>; Fri,  8 Nov 2024 14:07:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B081E1C18;
+	Fri,  8 Nov 2024 14:11:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731074880; cv=none; b=E9+Ih5noJ9OXiW8vn3fbHHD9EHZsEGFsHsBVTm4efuGwhdO0M5HNbAabCACpzWa/nLdcXzANgCibYsfOFairvcp5qwF2btiaR6dZYLpSDoAoiudb+OEtncwOUa6x/8i1Cm/+1acPF0xzaMto+FkzsUIKXQF5ruhdHrwWRrAbu8k=
+	t=1731075067; cv=none; b=uWVbbyk6OzlbfGBtcv+FLcMF4ytwNSIt2/decF9YFOlPjzRuVhSxedQ/xpjVNz3Oz1saUBOr80FMovf/prCEVBLy3Ol+CcfmJFn13zwRJkQc6ns5pIa6ZGCFWyLuSQLypV2CoYzKYk3XY3N80GeLa6AsJATCrWNmUH9tLYYTAo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731074880; c=relaxed/simple;
-	bh=IV2jJwwPztBmVdNNo2UAGdXaR2jpn1yjxMdF+kIGC74=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a34+Fqmo8gvdT/r3RS7PVLOb14LztmQ3x2FMQuz/Dnvo3QFKdLrxdQgN6wOMW6b3YnKkEKZbhi1zXrkBQFRFPYSgnb47FAHuGW1bDWZn4sAfUNlKbc1FdGG0iHVhE14hSoUp/BAg4cpDDpBq/0h8BfUKR5LUryrdZ8L0RLmNarY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=ODL1SRim; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Ap9IBUM2 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1731075067; c=relaxed/simple;
+	bh=cn9NWvkG2FmD8kESo4BHxEQQZk2BWVmfGCHOfHfEjEo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ijtRzV1IZ5SP6xSghipp0BdMicfdp0IDquHzoX6rRc3IlYYqbNC/XlIEitG8FeXL5iO9I4o5J0VPq7E665bEEhm3jYccRxs+2rbyC3YLiCLxq0BWeZbRKv+Qs6MV6iKuOKOGxGVdUykcSqqzKyN1C35Lk1g5+vTreLSl0k59AFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CGXrjtMO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="ODL1SRim";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Ap9IBUM2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1731074878; x=1762610878;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=s+Cyc37Aq2SqEqQNiVMSAKYIXK5UFxn2rcs0yp6pEPU=;
-  b=ODL1SRimP0kJrBHDDH2L5AGdO5WPjQ2t0GRxUWdJ0k2n+AldbInZes7V
-   98Sc4TV7aRVCfX3bbfWozK99DhedRIFCVYRdVsuNBo3oKikyr/gS1rU9n
-   YwcS8ziUhbHa2VEMqgf74VBxDZwuBQk5IAObOSj3jw2Huz4pvnnq6QMPT
-   REyprcV1EiQwdIlXPgv/D0n2IBRjQ2iNCH9RU5k17ViM3ojSj/u1Zx0mT
-   C8f843KbeQwuLnqi38vGhMizBtHupytyuKcgOjsE5mtC1nDrCDU1gdddb
-   vEXZJBcUetAiVSAiNJCtQAj/C9gkwAtnpXwPMSr0dCWh9E5ITICwqfDtz
-   g==;
-X-CSE-ConnectionGUID: RDdKthBGQN+7Kl3ZuVXfAA==
-X-CSE-MsgGUID: HKOVV5zSTpy6vXPgHcraYA==
-X-IronPort-AV: E=Sophos;i="6.12,138,1728943200"; 
-   d="scan'208";a="39937306"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 08 Nov 2024 15:07:56 +0100
-X-CheckPoint: {672E1B3C-1D-D31EDE1A-D52D6119}
-X-MAIL-CPID: 055CE465A85CD3B3BFEBFFD4B4365DE4_5
-X-Control-Analysis: str=0001.0A682F22.672E1B3C.00AB,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7A66E160F33;
-	Fri,  8 Nov 2024 15:07:50 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1731074871;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=s+Cyc37Aq2SqEqQNiVMSAKYIXK5UFxn2rcs0yp6pEPU=;
-	b=Ap9IBUM2OYs1Nzp8SCXNQopPY1ICjrAfq0TgeeuSVZXAgavVLvzdd7cguQ5dCRe6GaakbC
-	u0t7Slv2OMHxGfyNU9qDGDmVicgKxICglbFChHZNQw39NmAw3bgVuD5PMDcxnhXIuos9aZ
-	h9fhY9bQbRLYS3fGWeS2JqtWVacTlchFzjyWUl4wX7Va2wTyU4zVuFQdfaKTxuKK/SLUf9
-	N62miwuRchBhkUGii15wUnSPiINg7McU7++RFlOH+BvgG7uXWsb0NMsYUpXKXXN3oJMV5r
-	GfAU0g5ZJVowLSuATTQM6VAqq0LYU8DjmkAGNQwq6iJlL2GdIi4S0na1GwiOaA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Pengfei Li <pengfei.li_1@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, linux-arm-kernel@lists.infradead.org, joao.goncalves@toradex.com, frieder.schrempf@kontron.de, marex@denx.de, hvilleneuve@dimonoff.com, peng.fan@nxp.com, m.othacehe@gmail.com, mwalle@kernel.org, Max.Merchel@ew.tq-group.com, hiago.franco@toradex.com, tharvey@gateworks.com, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, ping.bai@nxp.com, ye.li@nxp.com, aisheng.dong@nxp.com, frank.li@nxp.com
-Subject: Re: [PATCH 2/3] arm64: dts: freescale: Add i.MX91 dtsi support
-Date: Fri, 08 Nov 2024 15:07:50 +0100
-Message-ID: <22489205.EfDdHjke4D@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <Zy3iogT7jOLEvf1S@pengfei-OptiPlex-Tower-Plus-7010>
-References: <20241108022703.1877171-1-pengfei.li_1@nxp.com> <1907807.tdWV9SEqCh@steina-w> <Zy3iogT7jOLEvf1S@pengfei-OptiPlex-Tower-Plus-7010>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CGXrjtMO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D83A8C4CECD;
+	Fri,  8 Nov 2024 14:11:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731075065;
+	bh=cn9NWvkG2FmD8kESo4BHxEQQZk2BWVmfGCHOfHfEjEo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=CGXrjtMOWgqtA0TJAwGpybZurfjTSpW+4Y7zhVTkrcxOi666w38LvT0n0bw5WjLkq
+	 czYMxyfqDVdWVkHlLjRTwGavAIQAKP3mZXLw3t7dhxh5ZvlqBhw0Z1921RwSG1Yjht
+	 96WuRZJkCv6WmSVw9JdeBJXIHO89DN6m1dchli/8d4FaviFfuEjAAiMqo0T+oTsdqy
+	 GqeJtkx+WBXIaI0aHqwW6960y84OIhKpo6r/vpizu8X1Fmd2JeXM43mxU27GgbCBl5
+	 y0TXzXiob/mqHxXJDPGWAj2lf5m1qtSuVHU1W4IhObYb6DqVDr/latoCggXQnWV3/a
+	 JpHU8Tt/Ct9aA==
+Message-ID: <8c310eca-d695-418c-82cb-a89351d83887@kernel.org>
+Date: Fri, 8 Nov 2024 15:10:58 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/8] dt-bindings: clock: imx8m-clock: support spread
+ spectrum clocking
+To: Peng Fan <peng.fan@nxp.com>,
+ Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-amarula@amarulasolutions.com" <linux-amarula@amarulasolutions.com>,
+ Abel Vesa <abelvesa@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Michael Turquette <mturquette@baylibre.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>
+References: <20241106090549.3684963-1-dario.binacchi@amarulasolutions.com>
+ <20241106090549.3684963-2-dario.binacchi@amarulasolutions.com>
+ <4bix7me5vaoyhcuffyp4btajmhy7no6ltczoesopaz2fqupyaw@fensx4nn472u>
+ <b7c1499b-8337-421c-9734-6e518d678ff8@kernel.org>
+ <CABGWkvrYJL9=zrPSFuEAgKO+9gDHD6RmCJM6Br6Le_eh578ETQ@mail.gmail.com>
+ <54dd6ae6-b992-451e-b1c6-8a1968955f4a@kernel.org>
+ <PAXPR04MB8459BE3474EFD4FCC28E0E82885D2@PAXPR04MB8459.eurprd04.prod.outlook.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <PAXPR04MB8459BE3474EFD4FCC28E0E82885D2@PAXPR04MB8459.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On 08/11/2024 13:50, Peng Fan wrote:
+>> Subject: Re: [PATCH v3 1/8] dt-bindings: clock: imx8m-clock: support
+>> spread spectrum clocking
+>>
+>> On 07/11/2024 15:57, Dario Binacchi wrote:
+>>>     clocks = <&osc_32k>, <&osc_24m>, <&clk_ext1>, <&clk_ext2>,
+>>>                   <&clk_ext3>, <&clk_ext4>;
+>>>     clock-names = "osc_32k", "osc_24m", "clk_ext1", "clk_ext2",
+>>>                              "clk_ext3", "clk_ext4";
+>>>     assigned-clocks = <&clk IMX8MN_CLK_A53_SRC>,
+>>>                                   <&clk IMX8MN_CLK_A53_CORE>,
+>>>                                   <&clk IMX8MN_CLK_NOC>,
+>>>                                   <&clk IMX8MN_CLK_AUDIO_AHB>,
+>>>                                   <&clk IMX8MN_CLK_IPG_AUDIO_ROOT>,
+>>>                                   <&clk IMX8MN_SYS_PLL3>,
+>>>                                   <&clk IMX8MN_AUDIO_PLL1>,
+>>>                                   <&clk IMX8MN_AUDIO_PLL2>;
+>>>     assigned-clock-parents = <&clk IMX8MN_SYS_PLL1_800M>,
+>>>                                              <&clk IMX8MN_ARM_PLL_OUT>,
+>>>                                              <&clk IMX8MN_SYS_PLL3_OUT>,
+>>>                                              <&clk IMX8MN_SYS_PLL1_800M>;
+>>>     assigned-clock-rates = <0>, <0>, <0>,
+>>>                                          <400000000>,
+>>>                                          <400000000>,
+>>>                                          <600000000>,
+>>>                                          <393216000>,
+>>>                                          <361267200>; };
+>>>
+>>> The spread spectrum is not configurable on these clocks or, more
+>>> generally, may not be configurable (only 4 PLLs have this capability).
+>>> Therefore, I need the "fsl,ssc-clocks"
+>>
+>> No. That's not true. You do not need it.
+>>
+> 
+> i.MX8M clock hardware is similar as:
+> 
+> OSC->ANATOP->CCM
+> 
+> ANATOP will produce PLLs.
+> CCM use PLLs as input source.
+> 
+> Currently there is no dedicated ANATOP driver in linux.
+> The CCM linux driver will parse the ANATOP node and
+> register clk_hw for the PLLs.
 
-Am Freitag, 8. November 2024, 11:06:26 CET schrieb Pengfei Li:
-> On Thu, Nov 07, 2024 at 02:06:27PM +0100, Alexander Stein wrote:
-> > Am Donnerstag, 7. November 2024, 13:49:50 CET schrieb Alexander Stein:
-> > > > diff --git a/arch/arm64/boot/dts/freescale/imx91.dtsi b/arch/arm64/=
-boot/dts/freescale/imx91.dtsi
-> > > > new file mode 100644
-> > > > index 000000000000..a9f4c1fe61cc
-> > > > --- /dev/null
-> > > > +++ b/arch/arm64/boot/dts/freescale/imx91.dtsi
-> > > > @@ -0,0 +1,66 @@
-> > > > +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> > > > +/*
-> > > > + * Copyright 2024 NXP
-> > > > + */
-> > > > +
-> > > > +#include "imx91-pinfunc.h"
-> > > > +#include "imx93.dtsi"
-> > > > +
-> > > > +&{/thermal-zones/cpu-thermal/cooling-maps/map0} {
-> > > > +	cooling-device =3D
-> > > > +		<&A55_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
-> > > > +};
-> > > > +
-> > > > +&clk {
-> > > > +	compatible =3D "fsl,imx91-ccm";
-> > > > +};
-> > > > +
-> > > > +&eqos {
-> > > > +	clocks =3D <&clk IMX91_CLK_ENET1_QOS_TSN_GATE>,
-> > > > +			<&clk IMX91_CLK_ENET1_QOS_TSN_GATE>,
-> > > > +			<&clk IMX91_CLK_ENET_TIMER>,
-> > > > +			<&clk IMX91_CLK_ENET1_QOS_TSN>,
-> > > > +			<&clk IMX91_CLK_ENET1_QOS_TSN_GATE>;
-> > > > +	assigned-clocks =3D <&clk IMX91_CLK_ENET_TIMER>,
-> > > > +				<&clk IMX91_CLK_ENET1_QOS_TSN>;
-> > > > +	assigned-clock-parents =3D <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>,
-> > > > +					<&clk IMX93_CLK_SYS_PLL_PFD0_DIV2>;
-> > >=20
-> > > Is it just me or is the alignment of new lines not matching?
-> > >=20
-> > >=20
-> > > > +};
-> > > > +
-> > > > +&fec {
-> > > > +	clocks =3D <&clk IMX91_CLK_ENET2_REGULAR_GATE>,
-> > > > +			<&clk IMX91_CLK_ENET2_REGULAR_GATE>,
-> > > > +			<&clk IMX91_CLK_ENET_TIMER>,
-> > > > +			<&clk IMX91_CLK_ENET2_REGULAR>,
-> > > > +			<&clk IMX93_CLK_DUMMY>;
-> > > > +	assigned-clocks =3D <&clk IMX91_CLK_ENET_TIMER>,
-> > > > +				<&clk IMX91_CLK_ENET2_REGULAR>;
-> > > > +	assigned-clock-parents =3D <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>,
-> > > > +					<&clk IMX93_CLK_SYS_PLL_PFD0_DIV2>;
-> > >=20
-> > > Here as well: Is it just me or is the alignment of new lines not matc=
-hing?
-> > >=20
-> > > > +	assigned-clock-rates =3D <100000000>, <250000000>;
-> > > > +};
-> > > > +
-> > > > +&i3c1 {
-> > > > +	clocks =3D <&clk IMX93_CLK_BUS_AON>,
-> > > > +			<&clk IMX93_CLK_I3C1_GATE>,
-> > > > +			<&clk IMX93_CLK_DUMMY>;
-> > > > +};
-> > > > +
-> > > > +&i3c2 {
-> > > > +	clocks =3D <&clk IMX93_CLK_BUS_WAKEUP>,
-> > > > +			<&clk IMX93_CLK_I3C2_GATE>,
-> > > > +			<&clk IMX93_CLK_DUMMY>;
-> > > > +};
-> > > > +
-> > > > +&tmu {
-> > > > +	status =3D "disabled";
-> > >=20
-> > > Why does the TMU needs to be disabled instead of deleted?
-> > >=20
-> > > > +};
-> > > > +
-> > > > +/* i.MX91 only has one A core */
-> > > > +/delete-node/ &A55_1;
-> > > > +
-> > > > +/* i.MX91 not has cm33 */
-> > > > +/delete-node/ &cm33;
-> > > > +
-> > > > +/* i.MX91 not has power-domain@44461800 */
-> > > > +/delete-node/ &mlmix;
-> > > >=20
-> > >=20
-> > > Shouldn't the following node also be removed?
-> > > * mipi_csi
-> > > * dsi
-> > > * lvds_bridge
-> > > * lcdif_to_dsi
-> > > * lcdif_to_ldb
-> >=20
-> > Add mu1 and mu2 to that list.
->=20
-> Hi, i.MX91 also has mu1 and mu2. so there is no need to remove them here.
+I do not know what is CCM and how does it fit here. What's more, I don't
+get driver context here. We talk about bindings.
 
-Maybe you have more recent information. The RM available to me doesn't
-say anything about messaging unit, neither in memory map nor as a separate
-section describing the hardware. Memory area is marked as reserved.
 
-If there are actually mu1 and mu2 available, what is on the B-side? There
-is no Cortex-M33 after all.
+> 
+> 
+>> First, the clock inputs for this device are listed in clocks *only*.
+>> What is no there, is not an input to the device. Including also Linux
+>> aspect (missing devlinks etc). Therefore how can you configure spread
+>> spectrum on clocks which are not connected to this device?
+> 
+> I not understand this well, you mean
+> add clocks = <xx CLK_IMX8MM_VIDEO_PLL> in the ccm dtb node?
+
+Yes. Let me re-iterate and please respond to this exactly comment
+instead of ignoring it.
+
+How a device can care about spread spectrum of a clock which is not
+supplied to this device?
+
+Why would you care about spread spectrum of some clock which is not
+coming to this device?
+
+Please address these precisely because we talk about this for weeks in
+multiple places. I finish with this patchset if you do not provide such
+context.
 
 Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+Krzysztof
 
