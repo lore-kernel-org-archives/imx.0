@@ -1,83 +1,184 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2078.outbound.protection.outlook.com [40.107.22.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5DA91EBA1B;
-	Thu,  7 Nov 2024 10:27:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730975240; cv=none; b=uDmDy1LZWQQKjOuyVWPzTjsGnYu2GKtTINeb7UvdjTNukiiu+htzpa+ViBTnq56GtzlfLxmuCzBfmLAaPrirIVEpLoepivZ97XR871jzc5Thnoy+W4o/2O0XfUEMmMeRdBLbmkqs8Zb0JN/CftK5oRjHTjOvJDR/5uuv5+INrrc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730975240; c=relaxed/simple;
-	bh=En01lEFzgOPGQXLGM59354SFtFYp8jJ+HyqefB6L7B0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oAGtyQ9Yzjp/ti2M1oSsjfvHNazlgSaCYvS+3C7mrsHBi8kbVdrfKQ/Okfq6Okylpm8DD7PeGiWGagNGyuQ3Fz4YXV8EDbT5JL0A9tXtd9BUGt2fBH4hSthc/RWA3VN0ykGL0nDUwIDDqPZ/jsrPR4zYbANolvh6eEIojFnmKn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Depln833; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03661EBFE4
+	for <imx@lists.linux.dev>; Thu,  7 Nov 2024 10:27:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.78
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730975256; cv=fail; b=H5NhJBdL4zOshvmEQZKV23TueY9+sFOg8cn53r4dSXf89ea8jfUJ5KtTYX7qEplF4UETleTc656kK8nSscjsVGjaqxWSaV3HacOxWTiDU/k3KL0Pz+1nqLl4D0ztf7d+Rq7iz1l0k707Wg5b2hs4Snl93R8zP5VsZfc6nsLpTug=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730975256; c=relaxed/simple;
+	bh=ktU68AscG4sV9dcsnDXzuUj7sUVXw5AMNiRjNe3sC1Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=kPb1l4A9g8FTt+3Vy0gbEegsgPRN6CglEQ/a3hSdHNkznafzRKv0yO2vaIXgqxFhJSbgR72ldmbSGU4JHl3w9UZHuJss+6uPBiDrm5LL0x/amo5yH5zV9v1RdIZzyH4LlrvDnEuTHEOiagdKlXRPtf4qaXCCp0j7D9SzUbz2bl8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=T+3YnnSo; arc=fail smtp.client-ip=40.107.22.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Depln833"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA31EC4CECC;
-	Thu,  7 Nov 2024 10:27:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730975239;
-	bh=En01lEFzgOPGQXLGM59354SFtFYp8jJ+HyqefB6L7B0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Depln833HUhQdWj9mbw7EYMsxsRGv2PNoy+lUZeWyuRLxx0wfT8A4KxsOh6/D0pjm
-	 zmfZhbqIZgxZvnnFkc5xsx+gfu8+yLISkeWawf/I6ZOdgiiqI45TWBM6IrB70TcDJx
-	 CIpo9I3A8xm/fEorK2F1kxHvCmBr33eSjqiN+5RvtiEmo2BmdTafi4svI/CV4IjWZS
-	 kNTNomDUQZ8gsebRCoKCgC+j5RXvvQ5aWCjQ44Cs3ELTFBbFg5VvFoWiLZbBuARtuz
-	 FsvFYSWyxDq5PKqDW/ono8JE818OcmG99A6wL+9xEZ+3DtsxmEX60tCRbgEi7oF/88
-	 zlYolXFD+nOHA==
-Date: Thu, 7 Nov 2024 11:27:14 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Vabhav Sharma <vabhav.sharma@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, frank.li@nxp.com, 
-	pankaj.gupta@nxp.com, daniel.baluta@nxp.com, silvano.dininno@nxp.com, V.Sethi@nxp.com, 
-	meenakshi.aggarwal@nxp.com
-Subject: Re: [PATCH v3 1/4] dt-bindings: firmware: imx: add nvmem phandle
-Message-ID: <tot4nynjw7mjvb34jxkjdcdvumhxmkhrjucle3dgcqionbjaqr@mqeo3rcj2b4o>
-References: <20241107-secvio-v3-0-ea27f1e9ced4@nxp.com>
- <20241107-secvio-v3-1-ea27f1e9ced4@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="T+3YnnSo"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Xls/Y6uSwkqGUm7RPZkgCATTtST7KS3XG+40ze+TsPlL5IxcMt0NgJgSiGgi6pnrgWFILs+G1Eo0Aer+IUXzAsjDNY4hHWN1EieeMSbGv7laEnXhAn4DN93kLJehg65MuiAeEDkg9ajPJZ8TMqWIVnmyRURE55nKEwMJuKOH+DlAP1MLMa9G6OloW4sPKgF7kwSogUC+qjawdHXV+l5LPaD7St8B4FK7Wd8Lj6BKGZDSkOjJ0J9wOo28mF7CykXV3kAFYcF2r4w8fLoG4fBNdNxjAywSLKj02xjYsHdLo1NNgnGURo08qn0gvpHOSydmUNJ3N9ede5CqfDXGIPweVQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Yux8Ojly9AL4uLA/CDKx2j/tPk0gBNsCS29BhcoSbss=;
+ b=mQZfU6Sj1xhlX8JJHWiLnMi6R86dnvPCbHxD763TE36KW/NQgNyYG+92PfWQ/XJ/mNOse0PVTRlkmZcXHGs+nl8DCpYXiiOh1S7Ald771o5tmiPgCLQBGBIU6L3HBI+XEGKXLE7pGxQk9mghdHK4AQ28tzQQ+iMX2HShxT/+bK5qIFuCW2n4F9EJbh6qrBSaWCn35kS4MyjJ3aYeEePjVO6PEW/3jR0h3fIBUKnFFvCnnwFazmOGsOUw8NHdql7dljF2quOqOj3jNEjL/FqDjLv9/W7dwj/DFTlRFsdhPNisNekcoHo9sewZTtqFVJ4xkmOUErh6V2pvbXE5vQZkug==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Yux8Ojly9AL4uLA/CDKx2j/tPk0gBNsCS29BhcoSbss=;
+ b=T+3YnnSogl4OMv/YyhYcTIcm4Yam9r3yLn/TefHcRmcmHw817AlLMslkB/qcgc3OlzwbD6uO+w/5rzRoeq4SPc6fQ0eUp0nHEfowj7skQBLvvFY0JrKoz65PYq2MlK93EqIPdwW9cfLOS8IICfV6syfWXqqaIM1MkY7A2ikHG5qe+SnoRaAn5ia9VX0Y2dwAy3uiRAMmhuUCQnyDPuaT1pm7hkpytp6cAD8BQxcj5jvuyJngBfUlzGcM80/RixVWnQvELd3+83+YBjGUSjCWtouz36uLgpTqtbeZmqyfodXusOth9ZQPqiaODUzzD/A9zK76IvUpL5f/dgbsoWiq/w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DB8PR04MB7065.eurprd04.prod.outlook.com (2603:10a6:10:127::9)
+ by AM9PR04MB8290.eurprd04.prod.outlook.com (2603:10a6:20b:3e3::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.19; Thu, 7 Nov
+ 2024 10:27:29 +0000
+Received: from DB8PR04MB7065.eurprd04.prod.outlook.com
+ ([fe80::8af7:8659:9d42:bd84]) by DB8PR04MB7065.eurprd04.prod.outlook.com
+ ([fe80::8af7:8659:9d42:bd84%3]) with mapi id 15.20.8137.018; Thu, 7 Nov 2024
+ 10:27:29 +0000
+From: Pengfei Li <pengfei.li_1@nxp.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com
+Cc: joao.goncalves@toradex.com,
+	frieder.schrempf@kontron.de,
+	marex@denx.de,
+	hvilleneuve@dimonoff.com,
+	peng.fan@nxp.com,
+	alexander.stein@ew.tq-group.com,
+	m.othacehe@gmail.com,
+	mwalle@kernel.org,
+	Max.Merchel@ew.tq-group.com,
+	hiago.franco@toradex.com,
+	tharvey@gateworks.com,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	ping.bai@nxp.com,
+	ye.li@nxp.com,
+	aisheng.dong@nxp.com,
+	frank.li@nxp.com
+Subject: [PATCH 0/3] Add i.MX91 platform support
+Date: Thu,  7 Nov 2024 18:27:00 -0800
+Message-Id: <20241108022703.1877171-1-pengfei.li_1@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SGAP274CA0001.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b6::13)
+ To DB8PR04MB7065.eurprd04.prod.outlook.com (2603:10a6:10:127::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241107-secvio-v3-1-ea27f1e9ced4@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB8PR04MB7065:EE_|AM9PR04MB8290:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1748b183-0583-482e-c731-08dcff16c81e
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|52116014|7416014|376014|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ =?us-ascii?Q?lH4JBeCYQ6wrEYqm+rU23ylq5D0c0fuH2ok1stO0jaH4F+RuwE6arMjT0ghf?=
+ =?us-ascii?Q?T/lFHSRr0VpcSKrau8+TFArIJ95b/+lV73oXCDYjf++Dl5K2E89S9zIY59YA?=
+ =?us-ascii?Q?I5/PBhdNGH/SZjuIH4/b/kpupl2R1MZYJRMMDVjFW65inU3C1qtBm/26nfl2?=
+ =?us-ascii?Q?Uw6VS83fSGXdKOOiD46YX+vvrdNPbNRftUsAGx9TALPZNMg6/pM+uBjW0m6r?=
+ =?us-ascii?Q?gUApYnb7PpLgWMgasiIKE7UMG67PkRA+n0CXcYc0uyFiIKuerI/VirgFds84?=
+ =?us-ascii?Q?fZTEVi8vJD/zLNLAaaA/Um1RBYQMhe5riU0k3WH/r4q6jzbnVtZkqE5c9D7v?=
+ =?us-ascii?Q?V5q2QEQKsiybSHyX8uoDpBhbDJNpbYWWz7zc4mO4ZUolICGWsPy8H6W9icDY?=
+ =?us-ascii?Q?JMI2fyjwXelUckd8aEQpxBqHL1XA2qnCgKr03FF+SGLeqM7lvboytPlX4cdG?=
+ =?us-ascii?Q?dygSlwfhsEqZ5I4j53l1pj4ph+rDChLFN/TtDKvGvT+YuXQ7LGMHho+coakH?=
+ =?us-ascii?Q?fo0RVAEVdE2XcJ/h8k9g701CVe+3RHAvggj96dn+tGhIYo9VpKUoA0hd2Tec?=
+ =?us-ascii?Q?8PcpFkRG8vNpfBjxkjLNMLy0pHpSOmKaV3pHPXGk3jtKS9tNBFSoj8tlzcEP?=
+ =?us-ascii?Q?DLmL6DN3Mpx1/A48T8qCuSH4ud/tg4CFHUnG0xexVH0v9W5tjq7/entMb/ZQ?=
+ =?us-ascii?Q?kT0YqrTYpv2DEZtWto3ngbth2Exjd1gnkoRbz+eRbk/LBFxnkrxjwscZULnk?=
+ =?us-ascii?Q?7C4GjWgXsXH52ZAZCIQsoysfy/Y7qBGXbjeMj80Rt3Qm4xEfkqzCm0YM6DCh?=
+ =?us-ascii?Q?N6QZx0iFT9kzHd0Y6AYIqk5UjWbnr7wg7kdGJRX7HZ1w+PlXcZTdhbRoYb6m?=
+ =?us-ascii?Q?T5c3JPc5YD7hnnTOy0kYCmitKcduGK28iUokan8hdbKDIvAzZygQencVXL22?=
+ =?us-ascii?Q?/IrWbgBtdsDbPxU3LXeWHtSWtM9fSqUizJyO47Mo5s2+zSxfOVQtMAjdrBZ3?=
+ =?us-ascii?Q?PQM7uHsGxdvSqUwzCXh0OiRqJUXd2aQl+VxrevpkBHNfqe4GKXnLp5iOpgC1?=
+ =?us-ascii?Q?VUhr/PE7/peVKCYKLDNgGs9hYhBRQVKFrczGrbdlSUbNvnTMuCGdUUoFQTkh?=
+ =?us-ascii?Q?9MXUlZ+F56JHY/Q9hSQCBWXd6VZBXvg/jafEPkY7eqaqPxf9JBt9kzwKAl/i?=
+ =?us-ascii?Q?NgMnxgMUUazSurapsqjecorI2kRs5bb0pnZyEKchO9ynqIE6uPYvWSAVqIwp?=
+ =?us-ascii?Q?7eIOa2hzy6+o28hRRXrCgCdIypB1yWIsnA9T7Dh5cpCzgMWadS32mtfcnMTQ?=
+ =?us-ascii?Q?ZKLA13IEYRFixRy7H1jUr+mbYo9TfVwqdoKGb7d08ssng3nDpV4I6pIYFS1P?=
+ =?us-ascii?Q?ybriAko=3D?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR04MB7065.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?Y045J9dYz/o1j6Bn4fjctcn2WGmiOkrE/Nks+lrDMR/WtetSriHc9hhXbeQE?=
+ =?us-ascii?Q?lUPSdV3vcbD5Dl0UzQggmD8g7zzLkx+hEgyPk6tNhCnORcRKjfK+NyUzxmOu?=
+ =?us-ascii?Q?0s0brrCe2wooeN357WWa2piilVvvHDg21DN0YTp+WJFC4gHV2/p0p5bB8cFa?=
+ =?us-ascii?Q?zykd+tX+p/+QUH5UZ9RDkhWjKT5ywWPYikExnP6aVXLXNzF4m+Vr4daxe3lh?=
+ =?us-ascii?Q?8UpD5foWmdQdjMftYERhuoJffbkLKyhFyQbm2GKdqQdrYY2uZmikneWaqvVm?=
+ =?us-ascii?Q?gz77CDT24WjiGZBbMPaVWNbll9JYnol5KWCZt3vv1zA/OfqgJrWrz1vgAdT9?=
+ =?us-ascii?Q?Xt0JjmbPARqvvM8nAvSBVcMZmpQiWESzCqQQH45C1hskgqCsbrT8VJdMq/a+?=
+ =?us-ascii?Q?9m31mrDqun8bSfgGZdHRiLI3+Hp3d/Vfa0H/XVqgnC/Hhz/W9IZSKrbDduRA?=
+ =?us-ascii?Q?Ll3zI/Ke4hepGwGPdZMXnJBGDaIVkI1EMwWV9r1F2l3fAULSWQ+awJDm4WJL?=
+ =?us-ascii?Q?VLNRi8G/BwdewU7B/5Um4TuqDyYf63Hn5LbmjbDkzAHVYnciPTIBZ+2/pP0C?=
+ =?us-ascii?Q?tT0x2IrGSdEOlibdCn8rgRmQAw9aIFbe7Z8pMp8M+kgHnz7hNVlU3ulEMF3f?=
+ =?us-ascii?Q?88LH2RDfnii0WyWpNB40KwhjQPEdK8uZPXQKUnFkEPQr1hZo/lLqz+OdEXaj?=
+ =?us-ascii?Q?5sYFwjBuVqpI6De3gES4VO8hB2e1cnCuqJ+RYpP4jkpQonrBtBCKT+AdDtpb?=
+ =?us-ascii?Q?72bv168tSPD7v9xOVxnfot0JC/P4ngqJn2vNAg2wqHZHxU/z8hK1a/2lNxZu?=
+ =?us-ascii?Q?fkRKW4xff8qP4+uFVZiqemXlpugrRu9zcblm9bjBE9MZkuw09ABkXM4kVog6?=
+ =?us-ascii?Q?B7ZQk5v7x0d75E9JOpnBtXZDx6foa5y2T2gVKfcdajY465c7ELyJ7TEhUoXW?=
+ =?us-ascii?Q?GHBELdTRYLldpb3gqtHf5haNkXddVZaojpqd0p0wC6NIAmErom40Eu0703C/?=
+ =?us-ascii?Q?zzgaXvZoCHSNvkCChSvvnmgto8fquRXK3tc36bBx87cWrPYQnOqH3U8VKcxx?=
+ =?us-ascii?Q?MtrK11eEWsjJGPUKRoE/YDTZqFsp8bQjZj8mgXR/xJgDfZOmzyCmzi2OgDGe?=
+ =?us-ascii?Q?N7ONHREvehgTnNm0PYZ5MFJ24P/bpRX1BOM3uB5aSLl3Wbh4kjMq4BU8bZ9V?=
+ =?us-ascii?Q?1iyrM4q4ALQYhcbZlTg+LZ+v0+Lgg+h6C9umbMDQq87rLMvN/6rnJ1gBNjVL?=
+ =?us-ascii?Q?Bo9xYJw3fRoNC1BhovIfuk9J9In+sSCTCMAYH90/XD8pH4hu+UEQFmpAa7VO?=
+ =?us-ascii?Q?LEUchYcPbWzQtgchLxf5svTTlkgJQuAll1W/yx1n7y+BF/Xx57kh3+IOKkZY?=
+ =?us-ascii?Q?aY4AnHUNTkQYM2zLMp7QLJJAlnjusxokSJqWFZBzUWWUzAaf/4dLTUsFuZ33?=
+ =?us-ascii?Q?67i+0T7ocFxyUpwKsUUEaQsPbwc6B2KUG5uXDTaZE0Ms2pOEtix9hoOv6Bfv?=
+ =?us-ascii?Q?GYlkTSID9oOrqcYPQnm63MpEj8zTzWMmditYV1cT34ebYdR37wiLGPpW8nyf?=
+ =?us-ascii?Q?2WfcQAnv2q+MEIbMBzK4HMiU7U3WWe5REGVfLGvV?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1748b183-0583-482e-c731-08dcff16c81e
+X-MS-Exchange-CrossTenant-AuthSource: DB8PR04MB7065.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 10:27:29.5166
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: b1L70/wmzXj2Uq7jndhY0qr+7MtMezmMREYPzqjMeHKUssle3EkiPQQhj+rMl5VgxvngnepxMOjSOqzPuTDpwg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8290
 
-On Thu, Nov 07, 2024 at 06:42:39AM +0100, Vabhav Sharma wrote:
-> nvmem phandle is required by secvio driver to
-> read fuse.
-> 
-> Signed-off-by: Vabhav Sharma <vabhav.sharma@nxp.com>
-> ---
->  Documentation/devicetree/bindings/firmware/fsl,scu.yaml | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/firmware/fsl,scu.yaml b/Documentation/devicetree/bindings/firmware/fsl,scu.yaml
-> index 557e524786c2..1cc86fed6c27 100644
-> --- a/Documentation/devicetree/bindings/firmware/fsl,scu.yaml
-> +++ b/Documentation/devicetree/bindings/firmware/fsl,scu.yaml
-> @@ -112,6 +112,9 @@ properties:
->            - const: rx2
->            - const: rx3
->            - const: gip3
+The design of the i.MX91 platform is very similar to i.MX93.
+The mainly difference between i.MX91 and i.MX93 is as follows:
+- i.MX91 removed some clocks and modified the names of some clocks.
+- i.MX91 only has one A core
 
-Missing blank line
+Therefore, i.MX91 can reuse i.MX93 dtsi.
 
-> +  nvmem:
-> +    description:
-> +      phandle of NVMEM driver provided by the SCU
+Pengfei Li (3):
+  dt-bindings: arm: fsl: Add i.MX91 11x11 evk board
+  arm64: dts: freescale: Add i.MX91 dtsi support
+  arm64: dts: freescale: Add i.MX91 11x11 EVK basic support
 
-driver? Please describe hardware, not driver. I think I gave you such
-comment last time.
+ .../devicetree/bindings/arm/fsl.yaml          |   6 +
+ arch/arm64/boot/dts/freescale/Makefile        |   1 +
+ .../boot/dts/freescale/imx91-11x11-evk.dts    | 820 ++++++++++++++++++
+ arch/arm64/boot/dts/freescale/imx91-pinfunc.h | 770 ++++++++++++++++
+ arch/arm64/boot/dts/freescale/imx91.dtsi      |  66 ++
+ 5 files changed, 1663 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-pinfunc.h
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91.dtsi
 
-Best regards,
-Krzysztof
+-- 
+2.34.1
 
