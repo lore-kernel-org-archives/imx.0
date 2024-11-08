@@ -1,89 +1,109 @@
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45647194A64
-	for <imx@lists.linux.dev>; Fri,  8 Nov 2024 08:02:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E872194A68
+	for <imx@lists.linux.dev>; Fri,  8 Nov 2024 08:45:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731052980; cv=none; b=iplad6DjtPCWIdg4GLVXcAhMcZhA45KsGs5uZIe52JFvdX5jzL9Kxdcva/vYnG88Kl7P2/c+400EBvP7WvVtBz0M5T64NXfqdOGb8CM8LswQrK8MxBWU7TYtH1vJUMm3ATCxmjbveTOy60HzBMBsEGW9gwfiKbScKv9Q8zGmzhk=
+	t=1731055560; cv=none; b=fY8oQC1RiVcypuBkgIuFB13N9sc9b2tXEnFlbZeyM03I6fReNqeKpEhliucuKrCzUZ/eacIA/9R6hfeg+ovc2gDjocXeSBaZmqVHTWduiYCjdmn7xNESIJEP2X0lZD8Qflc3r579BKXPeAAmqc5+aVsxt/mxl7SA/uBNKMFlyqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731052980; c=relaxed/simple;
-	bh=dUTRSMTXrdg5Zyft5yF6+XKivEJnOQQBelPLhQbyq08=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sd8g0HueW3wfUMhwwU0mg38uEUGG02jEP8Kw4XNiiiD6GYrVdNmPnyZ4Qvc/MnZd6tWnYVWCctKi0W9Nc0Hvta4JB15XOESkBYe6I1AbkLk41qe9YY32K53CJbY6YuXdagjVjYUY1yQwz7FuIkdpQw/YkGpaArPRgRi5gmY7Ur0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rN9w70+g; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rN9w70+g"
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2fb51e00c05so27642851fa.0
-        for <imx@lists.linux.dev>; Fri, 08 Nov 2024 00:02:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731052975; x=1731657775; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dUTRSMTXrdg5Zyft5yF6+XKivEJnOQQBelPLhQbyq08=;
-        b=rN9w70+gWAG+CBK5D2ceG+2ouN5wmp7562OYv5BRTM0JTiFtRGfjDhocxgrJULd+MS
-         z0EWzGlMU7WugbzgjO1+LNr966TNoLvpaV6nRN/F7TwVphVd2YaWFpaWyeWvNdERSAsp
-         PDoJSN4BVhzcH9p6ovgNm5NqbL/l64EzYjXl0RD+qhtuj358D7NQv31FK2RihznRZoal
-         ojqC1fD+mKH4ZAtM6X1BdEHZP1UpSSLU+4b8/LZJmpAPZAPiKAA+RkwDTxXJCbM8U9Qj
-         d22Hd89QsC39emIEyTb17GsN+kyMx8GsoL9ci3WH16qANg/WuEmu6IwZZsgsZtc5xV/x
-         6/mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731052975; x=1731657775;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dUTRSMTXrdg5Zyft5yF6+XKivEJnOQQBelPLhQbyq08=;
-        b=RPndqIH92Cb1VJnJzqjW9AC+V7kqCzebo7VY+E1f/IVK9ntkc75XTTooBMZcVn2y7x
-         sHiqonDGmR8btIoilzrN6AP8AqYV0RUqkNV4JCO4ZqIPkXoeckdjgW+3tBcvSPsC5dN5
-         gZcw8RnvUg8KQJAuxP/5PK/E1HZ3sGtD6UGSPFjxRGsYO19GVOFJ7fKJsDhjV2jwVeMr
-         GfC+G+VcZVehjVuCVSfzlt90qzZUAuiZiTxXSYq31P3O1osjPa0OsmPHeZHo/ojUt2qH
-         kt06JrhstMKvW8a3TYd2TJpKVTgMbVkcCO84lAgJu72n5msLaFxgWkK7prdu5PxcyAmz
-         8GlA==
-X-Forwarded-Encrypted: i=1; AJvYcCU3E6+SWPjBc4xTqfPIo6rJvLDE5h4F8JzTHTPzBgV9Cg8mKeJ8F2dcNIO1Tq7s2W1d3qg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxKxycrAW8Zt55xIIA/ihOJmlbK996NUIonb139P9PDUUFHDGYN
-	R2xOx4FdADNodAmZj7RVS2qUBCAW9hccbmqD61QOzO8KHuGyX2CBJIpskSd//DGPIrrPsL8DHFz
-	fbFCeyn/l3p85Kij4E58FxfcjUnO+XwUjBaC9rA==
-X-Google-Smtp-Source: AGHT+IHU/p5ucmbmja2ZUVCS8fngsFc6zkmCp3xSAKppUYK59btpa33qjaOf6+2FVOvM6vBZDak2yrRRRPxlKbfHz7A=
-X-Received: by 2002:a2e:9b96:0:b0:2fb:3881:35d5 with SMTP id
- 38308e7fff4ca-2ff202ac3ebmr11214621fa.35.1731052975268; Fri, 08 Nov 2024
- 00:02:55 -0800 (PST)
+	s=arc-20240116; t=1731055560; c=relaxed/simple;
+	bh=FaOK6/VoquYLDg3s64g2kbmOgn3XY3DLadlvoXBaMXs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IopIrJJ2454VI4FibtMQpb2AZRgtG6DqZwEvcBV0sRYlNNBW3hVgA2kH00E9pVttaaHhu+RPoV/2jMN/Ws+oi3ivYDCcI4iI3TSweL97CPXvUOdCGUHhO1ZVFNSmDE9c1LeUZzGTPJXHvMz5qGl1dboGy64su3dm0NEJ7Flj2kI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1t9Kcm-0001lQ-8f; Fri, 08 Nov 2024 09:45:48 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1t9Kcl-002alM-2d;
+	Fri, 08 Nov 2024 09:45:47 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1t9Kcl-0004JW-2H;
+	Fri, 08 Nov 2024 09:45:47 +0100
+Date: Fri, 8 Nov 2024 09:45:47 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/3] dt-bindings: trivial-devices: Add NXP P3T1085UK
+ I3C/I2C temperature sensor
+Message-ID: <20241108084547.dzmxgdwllwvbiw5n@pengutronix.de>
+References: <20241107-p3t1085-v1-0-9a76cb85673f@nxp.com>
+ <20241107-p3t1085-v1-1-9a76cb85673f@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241104194437.327430-1-robh@kernel.org>
-In-Reply-To: <20241104194437.327430-1-robh@kernel.org>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Fri, 8 Nov 2024 09:02:44 +0100
-Message-ID: <CACRpkdbiAKX-o3GYqVP5bz_o-GhbvgHLkSDM4ZMXgMMteaoKTg@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: Use of_property_present() for non-boolean properties
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Bjorn Andersson <andersson@kernel.org>, 
-	linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241107-p3t1085-v1-1-9a76cb85673f@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Mon, Nov 4, 2024 at 8:44=E2=80=AFPM Rob Herring (Arm) <robh@kernel.org> =
-wrote:
+On 24-11-07, Frank Li wrote:
+> P3T1085UK is a temperature-to-digital converter with a -40 °C to +125 °C
+> range. The device can be communicated by a controller via the 2-wire serial
+> I3C (up to 12.5 MHz) and I2C (up to 3.4 MHz) interface.
+> 
+> Add it to trivial-devices.yaml because only one 'reg' and 'interrupts'
+> needs.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+> index 6ecd6432b021b..361943b3d73bc 100644
+> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
+> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+> @@ -301,6 +301,8 @@ properties:
+>            - national,lm92
+>              # Nuvoton Temperature Sensor
+>            - nuvoton,w83773g
+> +            # NXP I2C/I3C Temperature Sensor (-40 °C to +125 °C)
+> +          - nxp,p3t1085
 
-> The use of of_property_read_bool() for non-boolean properties is
-> deprecated in favor of of_property_present() when testing for property
-> presence.
->
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+The description of this binding says:
 
-Makes perfect sense.
-Patch applied!
+"This is a list of trivial I2C and SPI devices ..."
 
-Yours,
-Linus Walleij
+but you add a I2C and I3C device.
+
+Also I really like to see that you add a "power-supply" property which
+is most the time missing for such simple devices but always required.
+
+Regards,
+  Marco
+
+>              # OKI ML86V7667 video decoder
+>            - oki,ml86v7667
+>              # ON Semiconductor ADT7462 Temperature, Voltage Monitor and Fan Controller
+> 
+> -- 
+> 2.34.1
+> 
+> 
+> 
