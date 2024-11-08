@@ -1,51 +1,35 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2048.outbound.protection.outlook.com [40.107.22.48])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19EB9126BF7
-	for <imx@lists.linux.dev>; Fri,  8 Nov 2024 16:45:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731084328; cv=fail; b=LlVN2B6PZerdh1GBia2ngqArPOHibSdXY8JHt5vkOeb5kktRV/IgzID+zAUzJyT+hHEInWx0tkTFt1HXw3xMyJC+QEyvWp3wEAECYnK2VS/aBM1nh5/bvXhsC5t2/3YSOu7L0QC70aCfPf82++XSXdJbIBv5K0wDcN2H75PmGzI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731084328; c=relaxed/simple;
-	bh=29Q2MRzMBaU4Nz8mfrF+vPARfG8GmT+PRkw5JXJHB/w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=taGvy+DwDK62TkFvad9fUfvVQGEv4rs5Vx0yn3yaIq0DtYQf8bVreyXTSDr2KbzGs+sm8jwsX9FxWBsi5DLSpvTSCc8kI8JwXRGTaQ+NMJlPLVaKvXZAG+KYV0cTOFTNpyKdhbAyz1CKjaxc2DtnCyKLn+dgHvxYrfQ18GJ9mqg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=GSmAPH8i; arc=fail smtp.client-ip=40.107.22.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EEA21CFA7;
+	Fri,  8 Nov 2024 17:48:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731088085; cv=none; b=mXDgKHDMjyUqbtb+zw4CAOG9IHw8NkIy2s7F/nCxdHQNadye+kTDVAw9OE2m2UZjdB9m/doY+ENWB2c+nUVBb5bDzOHeVsr7y4smw9FQRrggohZCYUNdUNbb/dTu9IcZ0EhS6YO4rFvE08iFXF0o7JzfRrnqoJG5nxvUgLooZKc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731088085; c=relaxed/simple;
+	bh=1aUgru2o3+ohxnEw3ic1aU0QZvsJMvqqwbA9o6Tjhco=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fzUlMov7IsfhKnGJiBXxG17QDKRpTNe2FYM5FRuHLm/71k8EXGCm/IItxzZxWOWpraMM+FIwh2Vjoj54aeqVgZ81Z5caSsu47ICjPksfBzyxGTe/wMq8yd+09krCaxYYQUznDERrvF2vwnjpVOZjPPWRKvv0mvHXpVcyolXQqNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oQlw8ioA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="GSmAPH8i"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rXm6qndDotZAF0JyxJWyYHcvuTytKXLWlpgPfXvd76V8q7Kpo0vikM5+hk643EkiQ8BjJb5dvx2zK6DEHdvOq5Q9r7cQ++c4c63j7GyZdlOQX5sRRgp/6BIV97MOTRDKukRtOd5/fNN4RDCOIAE8p8fv3TIuD5w/HEvdLOV1YN1uGEbxMaatoxJuppxD1n5XBJWWCauVnNlpIkAcQ/bL9gqrDRNGhU10yh6+ew2AKejC2y8Q2WM7riTExhGzrWvHrCWNWebYb8TUiiUkiGnqhRddDL4phLRs+QD9dc72CzjeRIDfDOeqevo4DvnjAspmLtEFLZ8YDG8u04FxGiXYlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=29Q2MRzMBaU4Nz8mfrF+vPARfG8GmT+PRkw5JXJHB/w=;
- b=MfPCQAZKoOkXJrB94wwtysLOippAbI53k3/qCOg+jD56ndeKbrRpS19+stGO0JFbY2qKphNLSh2JMuVrIyTr1eGxTfyOGYZGO0Au8CcTwEKQrh7QwB8173YwK5wXybj5B73zlnn5b29mdH6tqr7aeDUGDCsa4mDXTzJhHhyMLRwSKuKeETOk54/vWZ/5z7S1zwlCvrMnH+6HLpdZL0s4wYB5xicfXfvkLjDfqa5XQXzQMU+lYw/xNT7/oLSLsvxnk/uclsk3ThaBeZw0LcZQVyFBuOQ9n0t+MB8EbjRun9RD2ZeVGWANjIfSUu1OL450xgIDLfS4h2ZGonSW7Cmwew==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=29Q2MRzMBaU4Nz8mfrF+vPARfG8GmT+PRkw5JXJHB/w=;
- b=GSmAPH8ikVSo7V36twdrYDiJyXr9tNQ5pg16bXpa2hRUA71cdXZrAqLj4zI7re9O+C4IYdbj4Cy5EPnOdSFbrtkWPB21v2IZcuz97Oq+0/HmATSneftyvQqSGSx6LIicZNcR4o1IfjhhHevdpeZRkLi+zvS0mjvvgw3TlQEFRprr/XyaWFUe3zFVkt8Kx5Qf6l3pIQrwcLz/JQVXleQT32URQGzgEmOERe8MgMzygCawypG8s4piZFkXDmDo/C4foPAjksChOexTOh58vITzRujIjis5q7ppJ6eWLqAF54ya6Tv907INr92hofU7NBAETy6VbMIoW8fjL8h3dMTf3w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS1PR04MB9681.eurprd04.prod.outlook.com (2603:10a6:20b:480::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.19; Fri, 8 Nov
- 2024 16:45:22 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8137.018; Fri, 8 Nov 2024
- 16:45:22 +0000
-Date: Fri, 8 Nov 2024 11:45:11 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oQlw8ioA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47B6BC4CECF;
+	Fri,  8 Nov 2024 17:48:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731088085;
+	bh=1aUgru2o3+ohxnEw3ic1aU0QZvsJMvqqwbA9o6Tjhco=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oQlw8ioAsLCZR6EGz/lj/mKtMcg0xuyBdUiP8Gt2ouPpGWJmc+4eZB3115pN/YO6d
+	 JwZErhkqXOhlI2yZfsMLSWPqXNjdOqA3bBruP7vihKmqQs+Mbt+o3thgLahp/nX4Ay
+	 sxLjzvtwI2jQDrB2TpRwIuy8tkiOrYJTMuerD+DxJQssWlr87HbaqI1FrsrJi+iP8D
+	 CYq2MEpR6qjH+E92NwbJhYcZDcTot/o0Z1Ye1EuZmCBVXmSZPBhOC89D/321DrB/9Q
+	 bbBZ3VkC6+KxlUaeUKL6sXdxRUIvuZwrEKap5gUsAUDzM21g0s/q/NwRKIfIcHnvOn
+	 vpC98j+VSXRmw==
+Date: Fri, 8 Nov 2024 17:47:59 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Jonathan Cameron <jic23@kernel.org>,
@@ -54,139 +38,79 @@ Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Carlos Song <carlos.song@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH 0/3] iio: temperature: Add support for P3T1085
-Message-ID: <Zy5AFxdkxIvB37M/@lizhi-Precision-Tower-5810>
+	imx@lists.linux.dev, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/3] dt-bindings: trivial-devices: Add NXP P3T1085UK
+ I3C/I2C temperature sensor
+Message-ID: <20241108-deuce-skimpily-a1d2149edd64@spud>
 References: <20241107-p3t1085-v1-0-9a76cb85673f@nxp.com>
- <20241108152856.000042ed@huawei.com>
- <e566ee56-523c-4cfd-999d-1cd9ca8eb7a6@roeck-us.net>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e566ee56-523c-4cfd-999d-1cd9ca8eb7a6@roeck-us.net>
-X-ClientProxiedBy: BYAPR01CA0060.prod.exchangelabs.com (2603:10b6:a03:94::37)
- To PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ <20241107-p3t1085-v1-1-9a76cb85673f@nxp.com>
+ <20241108084547.dzmxgdwllwvbiw5n@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS1PR04MB9681:EE_
-X-MS-Office365-Filtering-Correlation-Id: 40df34f8-fafe-4041-611b-08dd0014bc7e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|366016|376014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?VuP4FbkHUYSbAaTy9eMKgIUi/2udooT8wrt5yeXVynYLnFwcb/dpncT+GAaX?=
- =?us-ascii?Q?0mR93UxSXVYqL6MK4JPWti9o72oUFISsAMALhEc/oRajVPZThTv6fyYIzsrh?=
- =?us-ascii?Q?F0l1+Hsr2RcsevFStoogazE6rhNK6lkbEdIfjTxW2jtE32wa9oqSlJYshWBV?=
- =?us-ascii?Q?m2GOVAQnVyCaQoW4h7hVu7HdZ5ZkQKURfNx5ufIsV2KWbAMz8kFPxRutuVQS?=
- =?us-ascii?Q?YZcLfBGoNtagSovCIjnaH93aDUPnuPXPaFiR5PEI24jhLbOksTrV72gMsmoh?=
- =?us-ascii?Q?f4CTZM69YGSSUh9hdGURnZGiNjOh8iPaQ09eFg+FJHhrhDjTAHpKX687n7Ba?=
- =?us-ascii?Q?nzd68/4k9lCuJcjRFY7ywwJwSl7bujshhfg6CV6DEOA79uuRv1MaHFemuu67?=
- =?us-ascii?Q?5TLqZtSe3dZlFsR2OjaD2QCno1WvGBTu4jsWUfixnctfOKe2hCk1es8y2/dW?=
- =?us-ascii?Q?RT8bFdz/tmkC9K7v3Xzqo86OmZGSv3lVSVc1Qy2TOYxfIY661KtNvP3tk2Vj?=
- =?us-ascii?Q?ZyGFvrJCS359z0G2HgF2Ew+j/e5Q+QD7Lg3XluWrJwMfJ/QqrLJPzSReLSth?=
- =?us-ascii?Q?KxeU6KBye5Ykgu7LjD7gwArROGCcJ6qGThGcPOBh/mYwNPjRpUc2qTz/NvL9?=
- =?us-ascii?Q?Zyt/HGbnbuWD8mkHZWvzhlmshFjac011Fda6V7y9Z9z3r6Q4nJRVZiqlKMyb?=
- =?us-ascii?Q?K/5mJIosn2ynCErySFF2rm5Gknj8d/dGRI7b3eTPggGvVlrOlif/+d7x2X7T?=
- =?us-ascii?Q?xdiW73yUkcdKc+e/CAdtLBLHteYQ4l+ssDu6u82ruyKEyDKFuC80WMRS/kd5?=
- =?us-ascii?Q?C0RiGFPU1s0tT6qJcJ9WmsSDq4DHlHTX6XMBL8g7iYo7Esy4pY1LYPSql6lB?=
- =?us-ascii?Q?O8LN9y4mPAHazkicV7rAZLi8nhpG65xhxKN0i4byJ/wjFQbqwRk3OTBhKpxm?=
- =?us-ascii?Q?EqSUmqzeEeSvsEeNGz46ExaZ5RPfUATfvqOVmDDip4dPYFTa6+Y+iyfjbAXM?=
- =?us-ascii?Q?WjNaW27a4d+QYUzgXr0WdoHl0RmPWs67ueZxrFY7BUY0HdvTFQuoRrNRBGIZ?=
- =?us-ascii?Q?4+aBOtckKgY0v7DpeWRWI39zeLlCnwDuOkXLbS1sG2IQ6qp4u2xhRnShPAMm?=
- =?us-ascii?Q?wKQqCa3NkZb/agb/eqYsQpSMBL7qwHww6T2qZq9aN5LDmDuKUdyksKNgKJSa?=
- =?us-ascii?Q?/Or8cmyLzF1dkV5/5Zk5qSasvUlsaVFqvh9gBzeDj6p5UGQETs8sjnj5iJZY?=
- =?us-ascii?Q?2vHWI2nyfSgiQvvXzv6aXu/7B+jQnbVWzQdG8lIHfa1Po7y98eSg5uZVpunu?=
- =?us-ascii?Q?6Vem131wQzD9hzSD4F2Wxpj3CHtHLDBqxIZeyg+HvpXKYt+HHPupCnD2se7+?=
- =?us-ascii?Q?F/+IxPE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DHnp8/PClE6Y7+BZ4coJ2kHf9dFLlsuCcy84th4BIJdnQCjxqchvoP/VwzW+?=
- =?us-ascii?Q?OOZlWwietRFJp9TULKcck1JV8wI5K2HgD4zIpAu3U6VHg5Lc7LFp76wIrIpD?=
- =?us-ascii?Q?LxCzewLxJbiMjDZ07qCk6aSNx4s94xSWKUFk7XZWsxQEY8B3diwRG/XRiN2p?=
- =?us-ascii?Q?7ZjUEsgSDokvmNkBO4bE8JbaTtU55Uc5nnZVmQkSQvRqWhMgNt5cBXqHRsf8?=
- =?us-ascii?Q?tDabtJ9kz5ERS77tuMR8panRx84cwigZb8+X7f+CQxj1OgvwxUabL6dJDm3w?=
- =?us-ascii?Q?vNvbI6PFL2vM+2pvLZF8JNrCPKfcF95k0z9H0ZcV/ENdnXAKxYD6ME5+yoVN?=
- =?us-ascii?Q?4BiQwcHlU5YX8GYJ11Fu1Ly8bF79slAMjgAHqcordPGS89kppIcaUUe0XJBd?=
- =?us-ascii?Q?jOXyZu71h+Bj41CceroA/VTXy5tOsWij0RbdFDFW6ObvmKvSvVmbXMj1AnRB?=
- =?us-ascii?Q?u7+2llMcjfouwhTZxRA7ElBifdWXNayNs2fSTWBc1QJkY7rX7+FeWX3SXSUp?=
- =?us-ascii?Q?udAhgWMN4z3wCVsOieu5r9S8pJ7igo9Tig2cqMfKJ5ooRaDXTzlGhK0A+yp/?=
- =?us-ascii?Q?+dZOIW1o6MSxCqYT5uq4ZSFQxz3d7X6OURJXDdQKj+RvYW9QDoMy7DkOkWSX?=
- =?us-ascii?Q?M8Rq2QnWl7itQ0OPzlVsW/K1SWq95PmaYglP21VRs1oQhQSPUKIcYv/QApek?=
- =?us-ascii?Q?cgLnEYKqAgAOJyTYCzxpvi7tPV6hdKeZLKs37eh1u+WXPHcXN+W9j7IA/UmL?=
- =?us-ascii?Q?DvLmuKn4Vjmbhi+KQ4b6ZRnJeFci1NVie8sdOiW3LcmTEdvio7NWLqAwQXW1?=
- =?us-ascii?Q?3iGcnSbq3afPWWVxZAojpT1RN3hmXElE1RUrTP/71Fgsod8Yv30N8pWIgQZa?=
- =?us-ascii?Q?V8cU75K+SShaIjI3RVZAK/xzFifyFxiFQNgtuXf/elTGvXKzrMzcPTenttYN?=
- =?us-ascii?Q?MpjHtPVLNCWM7/6C5ktHrfKNMiUVch8DYXWEEZqcWCsIeuO+HXV4xBqhhlj7?=
- =?us-ascii?Q?d0YI4iQaaKtk4dDTcU5eF2DEh5vpsqxu6qQAxQWZ4jRaoa3Z2jVSVgnCaXY7?=
- =?us-ascii?Q?9yuqraVhTSfff4nomCjjWBXvobPGQ7C5xCUVLnqzZR+l/cHUaKC/hIg7DKT6?=
- =?us-ascii?Q?kG2bnzGsCp/2halYByNFX2kTEIFn3kvUiTUVLhLkHnTc97KyZxWY5N4+LUMo?=
- =?us-ascii?Q?r0jmHALgo6+dTRm6fjHBt3nVRPPN+PlWSYIX88bH7TcrDj6+OhIdTQIAVRuc?=
- =?us-ascii?Q?IcHxVm8hNAQidGeL+rtdhSOsqo503P1uP+shhe1V5qEsdXqU+dQFLzIb0Pq0?=
- =?us-ascii?Q?PIVO9meDXaCAKpeOsdPPwJVN92btTS0TkGyhyxNIEgEOvU15wudHFmRmRFoR?=
- =?us-ascii?Q?6IDsjYdQ4pThPphjK2P4moqZPjZCkasnZz7QrSc3/bJxnqBSwcSCXDAV9iAC?=
- =?us-ascii?Q?YvZ/BqSBNwn0DLpGo5mCt6hvheCTTz56YezoNSfe2tQnx9e/xp518VjxhU8S?=
- =?us-ascii?Q?UJDh3iw13dYrSyqeH6acqd0Knc6GWxZbqrwkPNHN7Lh5Pb+xx4U+0+a/xfFh?=
- =?us-ascii?Q?E9t/XusWKo53nJ6mcic=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 40df34f8-fafe-4041-611b-08dd0014bc7e
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Nov 2024 16:45:22.6413
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dqIiu3D7IILXGltPiA9cNAor1KBfxjlR7QL2DgK/HnhnqhMl5RGkWPDbk+pd1IzTDGd34/IFyxLvXSCpeGgnrA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9681
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="7nHnTVEESqYlNb9S"
+Content-Disposition: inline
+In-Reply-To: <20241108084547.dzmxgdwllwvbiw5n@pengutronix.de>
 
-On Fri, Nov 08, 2024 at 07:49:54AM -0800, Guenter Roeck wrote:
-> On 11/8/24 07:28, Jonathan Cameron wrote:
-> > On Thu, 07 Nov 2024 18:02:26 -0500
-> > Frank Li <Frank.Li@nxp.com> wrote:
-> >
-> > > Add basic function support for P3T1085 temperature sensor.
-> > > - Add binding doc trivial.yaml
-> > > - Add basic read temperature driver
-> > Hi Frank,
-> >
-> > For a simple temperature sensor the usual question is why IIO rather
-> > than hwmon?
-> >
->
-> From looking into the datasheet, this is a chip which will be typically
-> used for hardware monitoring.
->
-> > Previous reasons have been:
-> > - Very high performmance / accuracy part (i.e. expensive)
->
-> 0.25 Hz ... 16 Hz sampling rate. No.
->
-> > - Remote temperature so not typically hw monitoring.
->
-> Local only.
->
-> > - Same silicon with a more complex sensor (typically humidity or similar).
-> >
-> No.
->
-> It looks like the I2C part of the chip is is compatible to TMP108, so
-> another question would be why to implement a new driver in the first place.
 
-Thanks, let me check TMP108.
+--7nHnTVEESqYlNb9S
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Frank
->
-> Guenter
->
->
+On Fri, Nov 08, 2024 at 09:45:47AM +0100, Marco Felsch wrote:
+> On 24-11-07, Frank Li wrote:
+> > P3T1085UK is a temperature-to-digital converter with a -40 =B0C to +125=
+ =B0C
+> > range. The device can be communicated by a controller via the 2-wire se=
+rial
+> > I3C (up to 12.5 MHz) and I2C (up to 3.4 MHz) interface.
+> >=20
+> > Add it to trivial-devices.yaml because only one 'reg' and 'interrupts'
+> > needs.
+> >=20
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> >  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >=20
+> > diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/D=
+ocumentation/devicetree/bindings/trivial-devices.yaml
+> > index 6ecd6432b021b..361943b3d73bc 100644
+> > --- a/Documentation/devicetree/bindings/trivial-devices.yaml
+> > +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+> > @@ -301,6 +301,8 @@ properties:
+> >            - national,lm92
+> >              # Nuvoton Temperature Sensor
+> >            - nuvoton,w83773g
+> > +            # NXP I2C/I3C Temperature Sensor (-40 =B0C to +125 =B0C)
+> > +          - nxp,p3t1085
+>=20
+> The description of this binding says:
+>=20
+> "This is a list of trivial I2C and SPI devices ..."
+>=20
+> but you add a I2C and I3C device.
+>=20
+> Also I really like to see that you add a "power-supply" property which
+> is most the time missing for such simple devices but always required.
+
+Aye, the done thing in iio land is to make the supplies required too.
+
+--7nHnTVEESqYlNb9S
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZy5OzwAKCRB4tDGHoIJi
+0jokAP9Dkn068XT6Vudin7/GU6TzC36mN4490js3el82D0oMagD+PARCNk+APpU1
+AkdWfs0ES1SrzM+YIhQFAXt20uDgCwQ=
+=3YSF
+-----END PGP SIGNATURE-----
+
+--7nHnTVEESqYlNb9S--
