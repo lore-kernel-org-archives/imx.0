@@ -1,68 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF7C4EB38;
-	Sat,  9 Nov 2024 10:37:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FD413D899
+	for <imx@lists.linux.dev>; Sat,  9 Nov 2024 12:44:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731148678; cv=none; b=GGJF2G9ch2eKirCRKViSHBVkJ9rzSstwQE/87gd3+/nYpo9BKDNvlWi8+mncyxQYUxp2d2hlzHddXQTwHEt16yiDc3rwZZ9v+L4wC2GkBdqtV6MAQsvE/AuAo6D+dFm5UIFubP7zFguEoeJjH2vDdCC62eSw9Ep8SXbto5h8uEA=
+	t=1731156284; cv=none; b=HAJ/nkJdEePwc0GCiqNfMWL7y15xLpc5qP+vgk5PxD6edsu8V1WQsZkMesa2L4+/+zy9raW0lLpFfuHq/XZ4Klao/epMM4aMCdPvyvphl62HddSLwd50mNHCCi7bBlSMZiKU3fBBTOJ1UaXkEwG6937wkKBO9ecrEmbk1KEgHSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731148678; c=relaxed/simple;
-	bh=O8bmZTnkzt/k76wgmpN7lbyrRgnPKEQqG7lovjyj04A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jQCVX4TSaY8STKaJLavdmdnWLrxtZBGxcVxdlANA3epbSD3g93Th3j2jago2d5MsnqZh3hg9fA76nc/WMu41Bgrv8/prCX57ldQ/sgwWn2xCNMMHhktc6uQfJthU/kXcMbsVYkN7mM4b6A3O4w0u7j0Q33NP9qdqDGY9k3yyTno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eJs1L+sh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731156284; c=relaxed/simple;
+	bh=AViyC/+sdOhddIa9xjAO4k6SS339kVhh4BSc9RyXqEo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MGKtUjIQe545oe68W7L8ee5qtyyat6sD5M/9kHu2cm1U/9ycTu/h36AfEtWU56UbRmfCKgQtKPbTAekuaAQk8Le4u7jFa0I5RvfgjsesSIEXjHG8AyAvVs6MyyQuYD7tIev3viKjCb7limONfWO7ZqWjKwqcJBe/LbiRjd71ANc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XDiTcuq2; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eJs1L+sh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA19C4CECE;
-	Sat,  9 Nov 2024 10:37:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731148677;
-	bh=O8bmZTnkzt/k76wgmpN7lbyrRgnPKEQqG7lovjyj04A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eJs1L+shyI6Ycc7P7puwVKIizrQ8AKXI44qJmCsZdX25CZ8C6r4BJCX6HAlzHQNTT
-	 3+e3EkPHdBk/O5KhXq2mJv0oDqcRDbYDIzwKLJZ+9aV7qwRxZqlzpm5dis/cvPkV4d
-	 im2cDcY/4oTH8XslPvkd/Scw7dEM6ycAD5bWfr0a61wuCx/UZUcbLFLwfWAU2oaAPS
-	 IS4gqarNrqaHjBrFondPbRXjyYWqnVh3Zo67BYrViV/1FY3WniF8UMp7ZB71pBdSxi
-	 2Fbbc7u+THZx6tzcJcgkt2iD2rVS9yDtRtoYAaQhsGs2h3FoCRDjWokYtaiNuyMLig
-	 mEJEXnhElHkBw==
-Date: Sat, 9 Nov 2024 11:37:54 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] dt-bindings: hwmon: ti,tmp108: Add nxp,p3t1085
- compatible string
-Message-ID: <vd4xjzsdfdtfybz2njsinvfgbb4vrvcqenegfrl26bahypucxc@2ic3adferu2z>
-References: <20241108-p3t1085-v2-0-6a8990a59efd@nxp.com>
- <20241108-p3t1085-v2-1-6a8990a59efd@nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XDiTcuq2"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5c96b2a10e1so4381861a12.2
+        for <imx@lists.linux.dev>; Sat, 09 Nov 2024 04:44:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731156281; x=1731761081; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZnvmniB3LeK8KeMuMSmkjZysB0f8NngS3V/dJUbHuv8=;
+        b=XDiTcuq2DTS91+EF32z2GyitO68upJaLJRxfvIUIPFfc8GScfdjZh4q9j7nUma1Il5
+         NAcDcShsTooify/NmryTkOXtiR2y6LEkJOMwjD/RAXQ6TgoWqXYhLJn3SjhcUfoQ2LqV
+         HUmlNWHZMiwcs89XKzANtKnfOH33zgk/hRCVV8V5PCJj/z6ES6zHlj6icskS4cyoBpRb
+         y0VyN/bJfX6/hMwYv8WEMcK70hju1qI2E5BHnqYd3a4IDHTgq1ne9bFH8wRZ8tvHr17Q
+         1tPiUuNFtjsGs4MGzFSc7mzq+BVSlCVX6E2M2HjIHa53ZsYJk8rXSHCm6ndtriGCmUj7
+         XRAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731156281; x=1731761081;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZnvmniB3LeK8KeMuMSmkjZysB0f8NngS3V/dJUbHuv8=;
+        b=LsTsyTBwf92Oz66jhjjRjSt20eMSdWH0eEIljiWBLq4/wqU/PT8+Vnn8gniMpxPjmX
+         jX7Kkxi75T6z4DHutDADEEjEOv9exibvHIYXs0NuqfvHRy9tto7/3f1ZmDAPUSjDFGOo
+         /xReNpk5hAQ6mhLrOzwxGwya4hQu5gjAiwLFN6fuTqwLoR2YyTaJCOcWtAzuppQdCGYY
+         9yMWHEyUt93Uvebqxbs5Vs9t4OU8OgESY/eHphCpRAS4FtU0mOWaEGctYsEJYtcvBa8y
+         bM1TQfXRhnIlMp54+saQZrK1RuRK4cGtf7VgJoS8/M+5tTlEQkCKf9TMD5V+AVjXvyHm
+         5XKg==
+X-Forwarded-Encrypted: i=1; AJvYcCWVe1Ub7a0XhUheieywLXkP6QUCbOTvhGTHlHdbnpGwwfAmb/iWPc2G8SuV/ZtMr+hKWME=@lists.linux.dev
+X-Gm-Message-State: AOJu0YykQzHPH77qErll8hqKQkCiBlDCYPQf4pE0WXy0fiinu4tEN09e
+	gdPia+ZvbA55NYUKaM6h2eejDCLK/r+BB+UAjgA/mu9G9deRt0wC
+X-Google-Smtp-Source: AGHT+IEIGCuxXrmbH3JmjmIhypDxiqT7VZZMvZ/3txPu0Ud1UAxyBs1Rg9CLp2YCTFkbDWAYDWeRnw==
+X-Received: by 2002:a05:6402:40ce:b0:5cf:1122:88bc with SMTP id 4fb4d7f45d1cf-5cf11228de0mr4137881a12.20.1731156280475;
+        Sat, 09 Nov 2024 04:44:40 -0800 (PST)
+Received: from [127.0.1.1] (leased-line-46-53-189-50.telecom.by. [46.53.189.50])
+        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-5cf03b5d793sm2940166a12.17.2024.11.09.04.44.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 09 Nov 2024 04:44:39 -0800 (PST)
+From: Dzmitry Sankouski <dsankouski@gmail.com>
+Subject: [PATCH 0/4] power: supply: max17042: cleanup and more features
+Date: Sat, 09 Nov 2024 15:44:32 +0300
+Message-Id: <20241109-b4-max17042-v1-0-9e2b07e54e76@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241108-p3t1085-v2-1-6a8990a59efd@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADBZL2cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxNDQwML3SQT3dzECkNzAxMjXUtjA7O0ZHPTxLTEVCWgjoKi1LTMCrBp0bG
+ 1tQDfK1uyXQAAAA==
+To: Hans de Goede <hdegoede@redhat.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>, 
+ Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>, 
+ Purism Kernel Team <kernel@puri.sm>, Sebastian Reichel <sre@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: linux-pm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-msm@vger.kernel.org, Dzmitry Sankouski <dsankouski@gmail.com>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1731156277; l=1826;
+ i=dsankouski@gmail.com; s=20240619; h=from:subject:message-id;
+ bh=AViyC/+sdOhddIa9xjAO4k6SS339kVhh4BSc9RyXqEo=;
+ b=90pggLnOjDwy8XmUHTXmK3BpQlR4sHc6LVU9DiIpq7VL088R8yBC5A5aftKbu82FSxx1GYGTA
+ X/vuKAzVUFHAIDmfWW6YeaEl/dP8pdBpT3O5BkRrjvSkaf7a3lu1vLO
+X-Developer-Key: i=dsankouski@gmail.com; a=ed25519;
+ pk=YJcXFcN1EWrzBYuiE2yi5Mn6WLn6L1H71J+f7X8fMag=
 
-On Fri, Nov 08, 2024 at 05:26:55PM -0500, Frank Li wrote:
-> The register layout of P3T1085 is the same as ti,tmp108. Add compatible
-> string nxp,p3t1085 for it. The difference of P3T1085 is support I3C.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  Documentation/devicetree/bindings/hwmon/ti,tmp108.yaml | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+Maxim max17042 driver cleanup, and shared-irq feature.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fuelgauge blocks often are incorporated in bigger chip,
+which may use only 1 line for interrupts. Shared-irq
+handles that case by requesting irq as shared.
+
+Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
+---
+Dzmitry Sankouski (4):
+      dt-bindings: power: supply: max17042: add share-irq node
+      power: supply: max17042: implement dts shared-irq
+      power: supply: max17042: use microvolts for voltage comparison
+      power: supply: max17042: rename maxim,rsns-microohm property
+
+ Documentation/devicetree/bindings/power/supply/maxim,max17042.yaml | 13 +++++++++----
+ arch/arm/boot/dts/samsung/exynos4210-i9100.dts                     |  2 +-
+ arch/arm/boot/dts/samsung/exynos4212-tab3.dtsi                     |  2 +-
+ arch/arm/boot/dts/samsung/exynos4412-midas.dtsi                    |  2 +-
+ arch/arm/boot/dts/samsung/exynos4412-p4note.dtsi                   |  4 ++--
+ arch/arm64/boot/dts/freescale/imx8mq-librem5-r4.dts                |  2 +-
+ arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi                  |  4 ++--
+ arch/arm64/boot/dts/qcom/msm8916-motorola-harpia.dts               |  6 +++---
+ arch/arm64/boot/dts/qcom/msm8916-motorola-osprey.dts               |  6 +++---
+ arch/arm64/boot/dts/qcom/msm8916-motorola-surnia.dts               |  6 +++---
+ arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi           |  4 ++--
+ drivers/power/supply/max17042_battery.c                            |  9 +++------
+ include/linux/power/max17042_battery.h                             |  1 +
+ 13 files changed, 32 insertions(+), 29 deletions(-)
+---
+base-commit: 929beafbe7acce3267c06115e13e03ff6e50548a
+change-id: 20241108-b4-max17042-9306fc75afae
 
 Best regards,
-Krzysztof
+-- 
+Dzmitry Sankouski <dsankouski@gmail.com>
 
