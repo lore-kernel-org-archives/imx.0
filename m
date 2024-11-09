@@ -1,239 +1,132 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE5B198822
-	for <imx@lists.linux.dev>; Sat,  9 Nov 2024 12:44:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874951BC3F;
+	Sat,  9 Nov 2024 13:04:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731156295; cv=none; b=qqXoN5PaDD3bZ1F1OgLXwRfdjJZrBrAtmlLP9JeUtjwqh5GmX+PruuA2DA7rTzlWpxp9CgBzvh9sV/ikoxZ0/YzKX433bIhAcG2JmgutdJqmNcsbxUNRvlVEpKBQrPyB8WJz6bb4JHyDHhjeB4GO6kr0eXfAUQ1W6U6sLt9FFZI=
+	t=1731157493; cv=none; b=j5xOUbKrC0hOzh0EHsjZhef7SI2PGoyX5ebjUFfQnbg/+7wy5J5aCunJ+bU4+GEb+V28OlVNkJnOFgHnaEqWB8VMAL70fsV52YGPSWVRPxsZ2Ro+1Bsfa1ApA74J+SXUjgLOPBLc5/xm74O5y8nYklE8bmXLv7ViWFuo3+807NM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731156295; c=relaxed/simple;
-	bh=Ll3+VdQ0C3YJ+cNuw/9xWFDuApiijksTxgD0D7LqbW4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Lgk1VrbakRBVWzitU5vjArRJ1LxKjAXTS5Fh8BXgjZrmwu/97YOQYSSvWUA4ybYbyIOs82GNug7syvAJCM9713fe7FyeX3K6TTvi2U+LWvfTH9Q2ImFBw+REoMBJwCTQMaYYdJUg81RJCSA5mfsNeIVgOxQq+1HpgSNgQG+5YAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FZOfkzaz; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1731157493; c=relaxed/simple;
+	bh=xgxh8ha4d+E+jMCTEqN7OUugPni+lhJgobrkZDBk7E0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jtFxCO9OVfKKNIIaPStPitLz2V9vL2emgbUSBQ3RrXzF+9xjoDRZhaPCNBagrRayJFUfzT4lP+Lau93bfs8el4ooogVmFC2g8qMzsJo4Tvx4ZMkLApl+GuSzAFMwdj/7OCZAtxIZAxS7gOaTa3SNos+p9u37qyFgGTusJEw3tqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VcdNo9/o; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FZOfkzaz"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5c9c28c1e63so3763565a12.0
-        for <imx@lists.linux.dev>; Sat, 09 Nov 2024 04:44:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731156292; x=1731761092; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=59tEYZAbxZv4QLtXinFrkb5WBvn6BEbQem6S6TXlOJw=;
-        b=FZOfkzazOZAewYkPE/+SpVne7XjRvFJLd+wb691AyKCqGxxzJvlmw+HkL7Ofn/3iFK
-         PIOdWaepzEiv3hKUZLWbC7J9br41Gj8flmj6OqNPTXro+f2bmnl2Z8L3mLxq2Mrl4GP8
-         u9tOXIQb04vABLmBoXB1KwNexq0/rwOP5TPp2/jg7F+Ch2CHrylkzQN5ReI8WgDz9iCa
-         ngl7DVPBIqA/pQlDvSaF/tIkhQzlIzziZVvNL/uJPrzP8f6WUJDHCx+CJ1S1hNAkwJYV
-         eiuxYXzLuM6WVwtXGq4RPRDW6hS8owj+AYjdg7EmCh/hTA/8nxcr+3koGjUYzGVfwo5U
-         NYFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731156292; x=1731761092;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=59tEYZAbxZv4QLtXinFrkb5WBvn6BEbQem6S6TXlOJw=;
-        b=DHtTY2om95rKHSBO/kxqySq15tJpER67MBJfmufrYiD5J/xyNZ6fc2zoVQeak/4cke
-         eE/1K4AE5lCVV8gvJ/RJ0o7jioVF42w4BZ0Ky9Pf2FxAlI4gGPuKLkfbgMFZZkL+F9Vz
-         TR9iHPJcXHNyAhBXusKMfp7nAtHoRNDnEkUAScryYLiLmGnWq0zObPNaYoWMxhq+06IN
-         7/ICMVJs8NLIP1J1FuxVa421+C4Q957yA/Z09/h/DEhAaBMPoHFJM26VCUp4HHEHU5pX
-         xeEL45uCNmqG5D7eKgsaMr0+7XWOsj5eNBZnNNYeVHK8fxq5KiWmnpv6X+iGbojsPl/c
-         W0pw==
-X-Forwarded-Encrypted: i=1; AJvYcCXAczKNaZGDq8Y+uDtAyj4CuVVVGSCvVJkv28jVQt8LwDvaCnjivllmpVp1j2JqGvPQXQ0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzdNJDWsd82IBQySIejg6/bOHfD2F556f5C5Rl+d5hcAVBzAR3W
-	PHyMsOZkhr5deEPYCTgHUIU6fWBI2deZe826sL5KEuY7/B0xl/1o
-X-Google-Smtp-Source: AGHT+IHsmH3XqpW0E30HnDtDXqrPkaKiznFfyNU3gMMTiByURLm3AmURnfa20tdQ+1DxMfZF6+oL9w==
-X-Received: by 2002:a05:6402:3507:b0:5ce:d6b0:85c0 with SMTP id 4fb4d7f45d1cf-5cf0a444283mr4838208a12.22.1731156291637;
-        Sat, 09 Nov 2024 04:44:51 -0800 (PST)
-Received: from [127.0.1.1] (leased-line-46-53-189-50.telecom.by. [46.53.189.50])
-        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-5cf03b5d793sm2940166a12.17.2024.11.09.04.44.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 Nov 2024 04:44:50 -0800 (PST)
-From: Dzmitry Sankouski <dsankouski@gmail.com>
-Date: Sat, 09 Nov 2024 15:44:36 +0300
-Subject: [PATCH 4/4] power: supply: max17042: rename maxim,rsns-microohm
- property
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VcdNo9/o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CC1CC4CECE;
+	Sat,  9 Nov 2024 13:04:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731157493;
+	bh=xgxh8ha4d+E+jMCTEqN7OUugPni+lhJgobrkZDBk7E0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=VcdNo9/olGK9RpMagF/ky3OSDETIxSzLpa5NpEX27nGxNjIRwbWJ2PDmk5+cqGhvu
+	 EtwDYVefL64hOJkYl0wWJayEaFhWaOBVN4s+ubvwDu2kC+4wHvzcpeAPt1y5MOBseA
+	 TjQ4P9hXmqtNR7bFDOzYkcDtdiFtKd46wCl0QqA7yfMnnjR88IbrmCuXVF2brtNT3A
+	 c1rIy5dlVVbgSGWj2buas0vX+RjKzwwEOIV8vV9BlM7CFl3RKdLRh8KXtHqVURk+F2
+	 1jCDEX4ob4Xr/peupOZz/4s0m7PApL4OqhizmxvpxJyjRKZi+EDK6sljp9bqaDufM+
+	 IrEjPQl/odCSQ==
+Date: Sat, 9 Nov 2024 13:04:44 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Haibo Chen
+ <haibo.chen@nxp.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ linux-iio@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v3 1/2] iio: adc: vf610_adc: use devm_* and
+ dev_err_probe() to simple code
+Message-ID: <20241109130444.78e4c1ec@jic23-huawei>
+In-Reply-To: <Zy5inVdA4xy1qyrT@lizhi-Precision-Tower-5810>
+References: <20241107191842.3002319-1-Frank.Li@nxp.com>
+	<4bd12695-075d-474c-b720-d295cc6028ce@wanadoo.fr>
+	<Zy0Z3wIsgX+O4DEw@lizhi-Precision-Tower-5810>
+	<8e52cc9a-0da0-4393-af66-6dac092148ef@wanadoo.fr>
+	<Zy5inVdA4xy1qyrT@lizhi-Precision-Tower-5810>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241109-b4-max17042-v1-4-9e2b07e54e76@gmail.com>
-References: <20241109-b4-max17042-v1-0-9e2b07e54e76@gmail.com>
-In-Reply-To: <20241109-b4-max17042-v1-0-9e2b07e54e76@gmail.com>
-To: Hans de Goede <hdegoede@redhat.com>, 
- Krzysztof Kozlowski <krzk@kernel.org>, 
- Marek Szyprowski <m.szyprowski@samsung.com>, 
- Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>, 
- Purism Kernel Team <kernel@puri.sm>, Sebastian Reichel <sre@kernel.org>, 
- Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
- Alim Akhtar <alim.akhtar@samsung.com>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-pm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-msm@vger.kernel.org, Dzmitry Sankouski <dsankouski@gmail.com>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1731156277; l=6311;
- i=dsankouski@gmail.com; s=20240619; h=from:subject:message-id;
- bh=Ll3+VdQ0C3YJ+cNuw/9xWFDuApiijksTxgD0D7LqbW4=;
- b=CgxjsX+bAIDHBkOI0SqP8ZHxW2061yieieg6R6BPSGwA0wkM6muqq3JM+UwOpuN8nMBZE8qH+
- JYXQoELs5oIAJUPqdLaPEzqqmnhBaJeJjCaLjK07S7pPTZRU6D1PucY
-X-Developer-Key: i=dsankouski@gmail.com; a=ed25519;
- pk=YJcXFcN1EWrzBYuiE2yi5Mn6WLn6L1H71J+f7X8fMag=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Rename maxim,rsns-microohm to common shunt-resistor-micro-ohms.
+On Fri, 8 Nov 2024 14:12:29 -0500
+Frank Li <Frank.li@nxp.com> wrote:
 
-Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
----
- Documentation/devicetree/bindings/power/supply/maxim,max17042.yaml | 5 ++---
- arch/arm/boot/dts/samsung/exynos4412-p4note.dtsi                   | 2 +-
- arch/arm64/boot/dts/freescale/imx8mq-librem5-r4.dts                | 2 +-
- arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi                  | 2 +-
- arch/arm64/boot/dts/qcom/msm8916-motorola-harpia.dts               | 2 +-
- arch/arm64/boot/dts/qcom/msm8916-motorola-osprey.dts               | 2 +-
- arch/arm64/boot/dts/qcom/msm8916-motorola-surnia.dts               | 2 +-
- arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi           | 2 +-
- drivers/power/supply/max17042_battery.c                            | 2 +-
- 9 files changed, 10 insertions(+), 11 deletions(-)
+> On Fri, Nov 08, 2024 at 07:13:20AM +0100, Christophe JAILLET wrote:
+> > Le 07/11/2024 =C3=A0 20:49, Frank Li a =C3=A9crit=C2=A0: =20
+> > > On Thu, Nov 07, 2024 at 08:38:20PM +0100, Christophe JAILLET wrote: =
+=20
+> > > > Le 07/11/2024 =C3=A0 20:18, Frank Li a =C3=A9crit=C2=A0: =20
+> > > > > Use devm_* and dev_err_probe() simplify probe function and remove
+> > > > > vf610_adc_remove(). Change type of 'vref_uv' to int because
+> > > > > regulator_get_voltage() return type is int.
+> > > > >
+> > > > > Reviewed-by: Haibo Chen <haibo.chen-3arQi8VN3Tc-XMD5yJDbdMReXY1tM=
+h2IBg@public.gmane.org>
+> > > > > Signed-off-by: Frank Li <Frank.Li-3arQi8VN3Tc-XMD5yJDbdMReXY1tMh2=
+IBg@public.gmane.org>
+> > > > > --- =20
+> >
+> > ...
+> > =20
+> > > > =20
+> > > > >    	info->vref =3D devm_regulator_get(&pdev->dev, "vref"); =20
+> > > >
+> > > > With the change to devm_regulator_get_enable_read_voltage(), is it =
+still
+> > > > needed? =20
+> > >
+> > > Suspend function need vref to disable regulator. =20
+> >
+> > Ok.
+> >
+> > But why switch to devm_regulator_get_enable_read_voltage() then?
+> > Shouldn't keeping regulator_get_voltage() be enough and simpler? =20
+>=20
+> Avoid goto err after devm_regulator_get_enable_read_voltage(), if use
+> regulator_enable(), it needs regulator_disable() in err handle branch aft=
+er
+> it.
 
-diff --git a/Documentation/devicetree/bindings/power/supply/maxim,max17042.yaml b/Documentation/devicetree/bindings/power/supply/maxim,max17042.yaml
-index d1ad597e0837..754d9ad3d94b 100644
---- a/Documentation/devicetree/bindings/power/supply/maxim,max17042.yaml
-+++ b/Documentation/devicetree/bindings/power/supply/maxim,max17042.yaml
-@@ -29,8 +29,7 @@ properties:
-     description: |
-       The ALRT pin, an open-drain interrupt.
- 
--  maxim,rsns-microohm:
--    $ref: /schemas/types.yaml#/definitions/uint32
-+  shunt-resistor-micro-ohms:
-     description: |
-       Resistance of rsns resistor in micro Ohms (datasheet-recommended value is 10000).
-       Defining this property enables current-sense functionality.
-@@ -81,7 +80,7 @@ examples:
-       battery@36 {
-         compatible = "maxim,max17042";
-         reg = <0x36>;
--        maxim,rsns-microohm = <10000>;
-+        shunt-resistor-micro-ohms = <10000>;
-         maxim,over-heat-temp = <600>;
-         maxim,over-volt = <4300000>;
-         shared-irq;
-diff --git a/arch/arm/boot/dts/samsung/exynos4412-p4note.dtsi b/arch/arm/boot/dts/samsung/exynos4412-p4note.dtsi
-index 3d52aa25c83c..0b08d23366d6 100644
---- a/arch/arm/boot/dts/samsung/exynos4412-p4note.dtsi
-+++ b/arch/arm/boot/dts/samsung/exynos4412-p4note.dtsi
-@@ -173,7 +173,7 @@ fuel-gauge@36 {
- 			pinctrl-names = "default";
- 			interrupt-parent = <&gpx2>;
- 			interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
--			maxim,rsns-microohm = <10000>;
-+			shunt-resistor-micro-ohms = <10000>;
- 			maxim,over-heat-temp = <600>;
- 			maxim,over-volt = <4300000>;
- 		};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r4.dts b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r4.dts
-index 33f398b48119..99023f302a05 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r4.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r4.dts
-@@ -11,7 +11,7 @@ / {
- };
- 
- &bat {
--	maxim,rsns-microohm = <1667>;
-+	shunt-resistor-micro-ohms = <1667>;
- };
- 
- &led_backlight {
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-index 90beefaa644f..6f6ce14afbdc 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-@@ -1142,7 +1142,7 @@ bat: fuel-gauge@36 {
- 		power-supplies = <&bq25895>;
- 		maxim,over-heat-temp = <700>;
- 		maxim,over-volt = <4500000>;
--		maxim,rsns-microohm = <5000>;
-+		shunt-resistor-micro-ohms = <5000>;
- 	};
- 
- 	bq25895: charger@6a {
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-motorola-harpia.dts b/arch/arm64/boot/dts/qcom/msm8916-motorola-harpia.dts
-index a02ece82ff5b..f5d636db33c8 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-motorola-harpia.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-motorola-harpia.dts
-@@ -22,7 +22,7 @@ battery@36 {
- 		pinctrl-0 = <&battery_alert_default>;
- 		pinctrl-names = "default";
- 
--		maxim,rsns-microohm = <10000>;
-+		shunt-resistor-micro-ohms = <10000>;
- 		maxim,over-heat-temp = <600>;
- 		maxim,cold-temp = <(-200)>;
- 		maxim,dead-volt = <3200000>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-motorola-osprey.dts b/arch/arm64/boot/dts/qcom/msm8916-motorola-osprey.dts
-index f567b7ffb613..35343b1fd737 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-motorola-osprey.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-motorola-osprey.dts
-@@ -33,7 +33,7 @@ battery@36 {
- 		pinctrl-0 = <&battery_alert_default>;
- 		pinctrl-names = "default";
- 
--		maxim,rsns-microohm = <10000>;
-+		shunt-resistor-micro-ohms = <10000>;
- 		maxim,over-heat-temp = <600>;
- 		maxim,cold-temp = <(-200)>;
- 		maxim,dead-volt = <3200000>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-motorola-surnia.dts b/arch/arm64/boot/dts/qcom/msm8916-motorola-surnia.dts
-index 45ddd17243e7..855f8a554a9b 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-motorola-surnia.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-motorola-surnia.dts
-@@ -22,7 +22,7 @@ battery@36 {
- 		pinctrl-0 = <&battery_alert_default>;
- 		pinctrl-names = "default";
- 
--		maxim,rsns-microohm = <10000>;
-+		shunt-resistor-micro-ohms = <10000>;
- 		maxim,over-heat-temp = <600>;
- 		maxim,cold-temp = <(-200)>;
- 		maxim,dead-volt = <3200000>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi b/arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi
-index 2c387c8b6344..0ab64154dc77 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi
-@@ -103,7 +103,7 @@ fuelgauge@36 {
- 		compatible = "maxim,max77849-battery";
- 		reg = <0x36>;
- 
--		maxim,rsns-microohm = <10000>;
-+		shunt-resistor-micro-ohms = <10000>;
- 		maxim,over-heat-temp = <600>;
- 		maxim,over-volt = <4400000>;
- 
-diff --git a/drivers/power/supply/max17042_battery.c b/drivers/power/supply/max17042_battery.c
-index ea212cb10360..497cb6f14bd9 100644
---- a/drivers/power/supply/max17042_battery.c
-+++ b/drivers/power/supply/max17042_battery.c
-@@ -916,7 +916,7 @@ max17042_get_of_pdata(struct max17042_chip *chip)
- 	 * Require current sense resistor value to be specified for
- 	 * current-sense functionality to be enabled at all.
- 	 */
--	if (of_property_read_u32(np, "maxim,rsns-microohm", &prop) == 0) {
-+	if (of_property_read_u32(np, "shunt-resistor-micro-ohms", &prop) == 0) {
- 		pdata->r_sns = prop;
- 		pdata->enable_current_sense = true;
- 	}
+Don't get the same regulator twice - that works but is likely to be error
+prone in the long run and is a bit too subtle.
 
--- 
-2.39.2
+This isn't an appropriate use of devm_regulator_get_enable_read_voltage()
+Instead just use a local callback and
+devm_add_action_or_reset() to disable the regulator in the devm tear down p=
+ath.
+
+Jonathan
+
+>=20
+> Frank
+>=20
+> >
+> > CJ
+> > =20
+> > > =20
+> > > >
+> > > > CJ
+> > > > =20
+> > > > >    	if (IS_ERR(info->vref))
+> > > > >    		return PTR_ERR(info->vref);
+> > > > > -	ret =3D regulator_enable(info->vref);
+> > > > > -	if (ret)
+> > > > > -		return ret;
+> > > > > -
+> > > > > -	info->vref_uv =3D regulator_get_voltage(info->vref);
+> > > > > +	info->vref_uv =3D devm_regulator_get_enable_read_voltage(&pdev-=
+>dev, "vref");
+> > > > > +	if (info->vref_uv < 0)
+> > > > > +		return info->vref_uv;
+> > > > >    	device_property_read_u32_array(dev, "fsl,adck-max-frequency",=
+ info->max_adck_rate, 3); =20
+> > > >
+> > > > ...
+> > > > =20
+> > >
+> > > =20
+> > =20
 
