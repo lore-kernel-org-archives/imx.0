@@ -1,181 +1,284 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43B0153565
-	for <imx@lists.linux.dev>; Sat,  9 Nov 2024 16:18:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B2219CC11
+	for <imx@lists.linux.dev>; Sat,  9 Nov 2024 17:38:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731169099; cv=none; b=D13AdcFIUujkGWzE2baPl20xKTrsb9Z06N0nQYnCnw0CIRw5lndWOn6HtevqKeVXidC33U5W4RXYTYc05mpQ71yKacrrru1ZX2IOvTtIwegwBntZQDuxMypgB7DOqcZEKPxMMaIB/hq7+pqnl7i+N1TPcKQhf2yxIJpe6Dd3PT8=
+	t=1731173932; cv=none; b=e8FVT1TpTII6CXhobvm5uC3hhJD0FBWNFm9dREK1R7m1L99ERo4K3vgKyo/MsJRKpfcOXXnx42aQLx7cHNzO9ZiW30yP4XuBJjakIqwxpAYcxcfLisvDSe1wkNbgD0JGhvjU8uDpC3mUGcPWYQonblc2SR0CEOPSiQIeeiFbOqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731169099; c=relaxed/simple;
-	bh=hTqUBfFBffJEBj1uzjpY2PAG3eELAsNWrn4sfuIw0NE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iZ07H6qpd0uNYgc+G5X0eYbwbElKRvlQ+XhNdKvzz/6Dz4sqjepzHqiFs0IfQglqCtiVUlcrCN518MRl/zs9mYtMhWG/mupiNFm2syLRNC9O1q7lxgetW4wieNDErescMKwSKagIO09moKDEOhY0aSw2p+ixEOMRaswNjN1IbW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Df3wMusB; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1731173932; c=relaxed/simple;
+	bh=cG6BiYtnIMuGLSWrNCwmKIdIDqnFLnsIXWDiSYA+qS4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rK+7aaF0TCNXdSbUOXKbT5XZC/m5YkyuRC0Vctq8q8XMxeOXBZJeb0iOitkhUVwtoB75GJWCBWGdWToAEIvuYjbL5Qf+q0FxpQPUGAEbInPRI3EEpsix+a9C93ygQEu8dq1Ys5WUoRrl6Rltd0ZBK2/h6h5nZynbLyPBv52CXrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=z1tXf+1i; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Df3wMusB"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7242f559a9fso31655b3a.1
-        for <imx@lists.linux.dev>; Sat, 09 Nov 2024 08:18:17 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="z1tXf+1i"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2feeb1e8edfso40247861fa.1
+        for <imx@lists.linux.dev>; Sat, 09 Nov 2024 09:38:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731169097; x=1731773897; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=AY0eebTXEIishDNyiwRb9ex+msXxW2kwSSAsfJd8Nb8=;
-        b=Df3wMusBaad67gbKPXf/GvtbrJ2+Qg2AyNs2GM0jwdCG/gYCbmPEZBDDCxuowkvoLQ
-         ek8qISydazJY7VMyM6TKyTjCka28mVDW86ZWLQCofuKZdcjVtiSTBH17qvQmSwchFDcy
-         AuiPbG5Zu1waJxxooj57mcZUqCwHVsIn7Zhg4UWDy8QNFgD2u9/P9xE3X4cYj5pqci9a
-         Ga/Wik+ECUz7LXAZio+N3BcMQ4NIXgM/msnT41+9y+5vj41rRL6p8RWju68UGl+y4hJk
-         9QuBLmhEuIa27wFtdwExrIs+lCgDYlK/aIUDPy6acOoJIbCP6PVUTwweQcY+qohYGFuy
-         JXCQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731173926; x=1731778726; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+6rulw/lNtnEo0tBG6bWUBB2/E/vFFZuCKLNN5bGCYY=;
+        b=z1tXf+1iZ970B2WNvbrRW+lmqDjU8IbvuriYDsdykImPjJ/3oVYCgLNa92udH57q6G
+         3M6xJ9lTm+t+qrmmXarhHMs7V9DTbMaIaBuJjtAjtqF4FoSq5nLdpYJGKUDRH0Mklaht
+         EfRWUkFfCOQUi8ffLOZqI9sHZswze3q1ZuBY+7wQVlBZRtW5vYYm77hbQBOiVX9uR7CB
+         jokF/zcCYf3F0tWhjXc7R7ddROK/4aTVhQVyzFGc9H4QhAT6ZQOsPoMb6sW1WJpViF+H
+         EkIjg9Y0lMxpFWlz0af+10ARWCjw21nw+O8xlA0//DwNlDytNEL6QqYUUGYQwaaTco0U
+         qhCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731169097; x=1731773897;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AY0eebTXEIishDNyiwRb9ex+msXxW2kwSSAsfJd8Nb8=;
-        b=iYtzWrrRReQ2nO45MpVXASeb213tc07aTc4WbBoiFNJ3zOqkaGUALDj7Sc3eMLC67O
-         X/MYtBHUbp/LiCWoY+MKbG8sg5NLjD8hn1OzZ7uYJviWRfEV2uIhhILPFFnUZAsTfUTV
-         jMgcFJljTooqlGV2tsoLVBhOWU+hzN/JXHWC6jS/Cl54gFfei8k8I6BbLWWr6Q7WPzbm
-         24mTr3CSZxGKVJ3M7B4If4htxU88HCkxlcwACc+D1wn+Md4g8SAWJ6pSRr/RKYklSVdP
-         rnwBiKduX92fMQndtla8VURJJrTph0oRSADUl0yTGLFWW1L5M2AP6kEB15HTLAEbIUA6
-         JUUA==
-X-Forwarded-Encrypted: i=1; AJvYcCXv4k8soo32B7L3TuZ2ABYKaA/SCilfCvGx7QPSd1ifCI6L8GO94R3+3GGAd+b5emis4jY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzEiD1q7j0ntNdAzQiKY3FG0CAghc16H/cyv2QvH3+LvHxVbIwn
-	K1jI8/t1BLAIeosN+pitrEYXRsQUXl1c0drAHqtj0AtGIFiLhxyo
-X-Google-Smtp-Source: AGHT+IFFEOTc0f7k5Cb6OmO3aw4cDMvRSI8MwQfTSwXzFv9H2IVb799+VMnovE4Cn08Pg7WFgIBy7Q==
-X-Received: by 2002:a17:903:41ca:b0:20c:82ea:41bd with SMTP id d9443c01a7336-21183c92bf3mr94499705ad.18.1731169096895;
-        Sat, 09 Nov 2024 08:18:16 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177e6b9besm48319275ad.248.2024.11.09.08.18.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 09 Nov 2024 08:18:16 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <76b6051e-fed5-4566-83da-9cbd198c237c@roeck-us.net>
-Date: Sat, 9 Nov 2024 08:18:13 -0800
+        d=1e100.net; s=20230601; t=1731173926; x=1731778726;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+6rulw/lNtnEo0tBG6bWUBB2/E/vFFZuCKLNN5bGCYY=;
+        b=o0S+rZKyzcSXcIUy8u7YHZpNSi1AqPrBsfnu97k04uzZFOigTkzsV6Sq6kohicL/Bx
+         b4hybGm5JryCtsmswsK5ixYHHpUVfTZ0b9k2tjwzReZnD8zu1rU8JqvEyrn5WJ2lXQET
+         1BDM4TnImxiQJAdMAGyMwVHlzCa7CVTtpofR5fJX8/Heefx+f59i1l9DI2JUQzIJUoxR
+         oYjp/e0WlPW7C9QKdZGZy+gkQ0yMZMgypGQgws/+2yZlZ6Gk4vS5pyp5jWhpYWbLV1y4
+         PfsBoCaQW5Htqpm87lb7tkrRtWFTbRwLpSJZdKplpXNsjImx9oXc7datJckSk9BR6mvc
+         D4Yw==
+X-Forwarded-Encrypted: i=1; AJvYcCX33Bkf6Kb1rTZkajw7ZkjC+anIcUS2/QrMzYHHCOPqQhBpsCLH9TCkqDieYLqAtcPW4GA=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy5+B9S7ATzsIzl7sP8hgpo5OuMZzw9s88An/flEMD5ei83/4Hn
+	C/W4UcCvwLc6jh4SDddPq3kAS7yKqTbuvz5/RmNUfqSJ3l5zFuVQ+dC6FcHyoiM=
+X-Google-Smtp-Source: AGHT+IGatdJpXrZhMrODleVrBiUrsfVe/fWc6grf12yxYVJRTNJmQO4th+l4Bm+4iX6izejB8/b8WQ==
+X-Received: by 2002:a2e:a995:0:b0:2fb:5206:1675 with SMTP id 38308e7fff4ca-2ff2028a9a5mr51218071fa.27.1731173925582;
+        Sat, 09 Nov 2024 09:38:45 -0800 (PST)
+Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9ee0dc48f7sm383827966b.118.2024.11.09.09.38.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 09 Nov 2024 09:38:45 -0800 (PST)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-sound@vger.kernel.org,
+	patches@opensource.cirrus.com
+Subject: [PATCH] irqchip: Switch back to struct platform_driver::remove()
+Date: Sat,  9 Nov 2024 18:38:27 +0100
+Message-ID: <20241109173828.291172-2-u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] hwmon: tmp108: Add support for I3C device
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Jean Delvare <jdelvare@suse.com>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, Krzysztof Kozlowski <krzk@kernel.org>,
- linux-hwmon@vger.kernel.org
-References: <20241108-p3t1085-v2-0-6a8990a59efd@nxp.com>
- <20241108-p3t1085-v2-3-6a8990a59efd@nxp.com>
- <20241109131604.5d8b701a@jic23-huawei>
- <014410fc-8a4c-440f-a6eb-1fafccc444a6@roeck-us.net>
- <20241109151531.37ac4226@jic23-huawei>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20241109151531.37ac4226@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7905; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=cG6BiYtnIMuGLSWrNCwmKIdIDqnFLnsIXWDiSYA+qS4=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnL54UuShdHMKtznnRY/uU8T9C6uqh4s2Xw6Ogr gE8iTRWzpaJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZy+eFAAKCRCPgPtYfRL+ Tq1qB/0TAMdLwf1xsB/y+fBhD7Fmxay3zicEHr4QUThMuVtJBkFu2Yd9l7iuOeA+yWKZ+8hctBe Pli4gRTBXIQpGUiEdKmefOLSGIT89PjCrkg3RNnUuzZphg+qknMMdFtdz4i/zpsT8DCC5NPg32V yKJWrc2hgRFLDSJmpurJLlR9fgO2/qSjzoV8jiosgsMYI3ocvbc9slQIBQB0QU5nqVtOJHgT9Kd wAyFUJA67lfYbAZ2WjHcYdyQR1hzfTXWofXRK2ptWKg78xWeii7ATGa2hDC1Gd7JKzSGKRbtMwF 22U4mh1wtvYVJgdUhdPYh8Rh1EXipN9kvqxx7RAgxw7qr5wD
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-On 11/9/24 07:15, Jonathan Cameron wrote:
-> On Sat, 9 Nov 2024 06:53:28 -0800
-> Guenter Roeck <linux@roeck-us.net> wrote:
-> 
->> On 11/9/24 05:16, Jonathan Cameron wrote:
->>> On Fri, 08 Nov 2024 17:26:57 -0500
->>> Frank Li <Frank.Li@nxp.com> wrote:
->>>    
->>>> Add support for I3C device in the tmp108 driver to handle the P3T1085
->>>> sensor. Register the I3C device driver to enable I3C functionality for the
->>>> sensor.
->>>>
->>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->>>> ---
->>>>    drivers/hwmon/tmp108.c | 31 +++++++++++++++++++++++++++++++
->>>>    1 file changed, 31 insertions(+)
->>>>
->>>> diff --git a/drivers/hwmon/tmp108.c b/drivers/hwmon/tmp108.c
->>>> index bfbea6349a95f..83d6847cb542c 100644
->>>> --- a/drivers/hwmon/tmp108.c
->>>> +++ b/drivers/hwmon/tmp108.c
->>>> @@ -13,6 +13,8 @@
->>>>    #include <linux/mutex.h>
->>>>    #include <linux/of.h>
->>>>    #include <linux/i2c.h>
->>>> +#include <linux/i3c/device.h>
->>>> +#include <linux/i3c/master.h>
->>>
->>> Seems odd you need master.h in a device driver.
->>> I'll guess that's because you should be using i3cdev_to_device()
->>
->> I assume you mean i3cdev_to_dev() ?
->>
-> Indeed! :(
-> 
->> Good point, but there are not many examples to draw from. The one
->> existing iio driver (st_lsm6dsx) doesn't use it either. I'll send
->> a patch shortly to fix that to prevent others from making the same
->> mistake.
-> Excellent.
+After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
+return void") .remove() is (again) the right callback to implement for
+platform drivers.
 
-In this context, are you by any chance aware of an USB<->I3C adapter
-wit decent price point ? With more I3C devices becoming available, I'd
-like to be able to test at least some of the code with real hardware.
-For I2C I use the Devantech USB-ISS adapter, but I have not yet found
-anything comparable for I3C, at least nothing that is affordable.
+Convert all platform drivers below drivers/irqchipto use .remove(), with
+the eventual goal to drop struct platform_driver::remove_new(). As
+.remove() and .remove_new() have the same prototypes, conversion is done
+by just changing the structure member name in the driver initializer.
 
-Thanks,
-Guenter
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+---
+Hello,
+
+I did a single patch for all of drivers/irqchip. While I usually prefer
+to do one logical change per patch, this seems to be overengineering
+here as the individual changes are really trivial and shouldn't be much
+in the way for stable backports. But I'll happily split the patch if you
+prefer it split. Also if you object the indentation stuff, I can rework
+that.
+
+This is based on yesterday's next, if conflicts arise when you apply it
+at some later time and don't want to resolve them, feel free to just
+drop the changes to the conflicting files. I'll notice and followup at a
+later time then. Or ask me for a fixed resend.
+
+Best regards
+Uwe
+
+ drivers/irqchip/irq-imgpdc.c              | 2 +-
+ drivers/irqchip/irq-imx-intmux.c          | 2 +-
+ drivers/irqchip/irq-imx-irqsteer.c        | 2 +-
+ drivers/irqchip/irq-keystone.c            | 2 +-
+ drivers/irqchip/irq-ls-scfg-msi.c         | 2 +-
+ drivers/irqchip/irq-madera.c              | 2 +-
+ drivers/irqchip/irq-mvebu-pic.c           | 2 +-
+ drivers/irqchip/irq-pruss-intc.c          | 2 +-
+ drivers/irqchip/irq-renesas-intc-irqpin.c | 2 +-
+ drivers/irqchip/irq-renesas-irqc.c        | 2 +-
+ drivers/irqchip/irq-renesas-rza1.c        | 2 +-
+ drivers/irqchip/irq-ts4800.c              | 2 +-
+ 12 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/irqchip/irq-imgpdc.c b/drivers/irqchip/irq-imgpdc.c
+index b42ed68acfa6..85f80bac0961 100644
+--- a/drivers/irqchip/irq-imgpdc.c
++++ b/drivers/irqchip/irq-imgpdc.c
+@@ -479,7 +479,7 @@ static struct platform_driver pdc_intc_driver = {
+ 		.of_match_table	= pdc_intc_match,
+ 	},
+ 	.probe		= pdc_intc_probe,
+-	.remove_new	= pdc_intc_remove,
++	.remove		= pdc_intc_remove,
+ };
+ 
+ static int __init pdc_intc_init(void)
+diff --git a/drivers/irqchip/irq-imx-intmux.c b/drivers/irqchip/irq-imx-intmux.c
+index 511adfaeec82..787543d07565 100644
+--- a/drivers/irqchip/irq-imx-intmux.c
++++ b/drivers/irqchip/irq-imx-intmux.c
+@@ -361,6 +361,6 @@ static struct platform_driver imx_intmux_driver = {
+ 		.pm		= &imx_intmux_pm_ops,
+ 	},
+ 	.probe		= imx_intmux_probe,
+-	.remove_new	= imx_intmux_remove,
++	.remove		= imx_intmux_remove,
+ };
+ builtin_platform_driver(imx_intmux_driver);
+diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
+index 75a0e980ff35..b0e9788c0045 100644
+--- a/drivers/irqchip/irq-imx-irqsteer.c
++++ b/drivers/irqchip/irq-imx-irqsteer.c
+@@ -328,6 +328,6 @@ static struct platform_driver imx_irqsteer_driver = {
+ 		.pm		= &imx_irqsteer_pm_ops,
+ 	},
+ 	.probe		= imx_irqsteer_probe,
+-	.remove_new	= imx_irqsteer_remove,
++	.remove		= imx_irqsteer_remove,
+ };
+ builtin_platform_driver(imx_irqsteer_driver);
+diff --git a/drivers/irqchip/irq-keystone.c b/drivers/irqchip/irq-keystone.c
+index 30f1979fa124..808c781e2548 100644
+--- a/drivers/irqchip/irq-keystone.c
++++ b/drivers/irqchip/irq-keystone.c
+@@ -211,7 +211,7 @@ MODULE_DEVICE_TABLE(of, keystone_irq_dt_ids);
+ 
+ static struct platform_driver keystone_irq_device_driver = {
+ 	.probe		= keystone_irq_probe,
+-	.remove_new	= keystone_irq_remove,
++	.remove		= keystone_irq_remove,
+ 	.driver		= {
+ 		.name	= "keystone_irq",
+ 		.of_match_table	= of_match_ptr(keystone_irq_dt_ids),
+diff --git a/drivers/irqchip/irq-ls-scfg-msi.c b/drivers/irqchip/irq-ls-scfg-msi.c
+index 1aef5c4d27c6..c0e1aafe468c 100644
+--- a/drivers/irqchip/irq-ls-scfg-msi.c
++++ b/drivers/irqchip/irq-ls-scfg-msi.c
+@@ -418,7 +418,7 @@ static struct platform_driver ls_scfg_msi_driver = {
+ 		.of_match_table	= ls_scfg_msi_id,
+ 	},
+ 	.probe		= ls_scfg_msi_probe,
+-	.remove_new	= ls_scfg_msi_remove,
++	.remove		= ls_scfg_msi_remove,
+ };
+ 
+ module_platform_driver(ls_scfg_msi_driver);
+diff --git a/drivers/irqchip/irq-madera.c b/drivers/irqchip/irq-madera.c
+index acceb6e7fa95..b32982c11515 100644
+--- a/drivers/irqchip/irq-madera.c
++++ b/drivers/irqchip/irq-madera.c
+@@ -236,7 +236,7 @@ static void madera_irq_remove(struct platform_device *pdev)
+ 
+ static struct platform_driver madera_irq_driver = {
+ 	.probe		= madera_irq_probe,
+-	.remove_new	= madera_irq_remove,
++	.remove		= madera_irq_remove,
+ 	.driver = {
+ 		.name	= "madera-irq",
+ 		.pm	= &madera_irq_pm_ops,
+diff --git a/drivers/irqchip/irq-mvebu-pic.c b/drivers/irqchip/irq-mvebu-pic.c
+index 08b0cc862adf..bd1e06e05a39 100644
+--- a/drivers/irqchip/irq-mvebu-pic.c
++++ b/drivers/irqchip/irq-mvebu-pic.c
+@@ -183,7 +183,7 @@ MODULE_DEVICE_TABLE(of, mvebu_pic_of_match);
+ 
+ static struct platform_driver mvebu_pic_driver = {
+ 	.probe		= mvebu_pic_probe,
+-	.remove_new	= mvebu_pic_remove,
++	.remove		= mvebu_pic_remove,
+ 	.driver = {
+ 		.name		= "mvebu-pic",
+ 		.of_match_table	= mvebu_pic_of_match,
+diff --git a/drivers/irqchip/irq-pruss-intc.c b/drivers/irqchip/irq-pruss-intc.c
+index 060eb000e9d3..bee01980b463 100644
+--- a/drivers/irqchip/irq-pruss-intc.c
++++ b/drivers/irqchip/irq-pruss-intc.c
+@@ -648,7 +648,7 @@ static struct platform_driver pruss_intc_driver = {
+ 		.suppress_bind_attrs	= true,
+ 	},
+ 	.probe		= pruss_intc_probe,
+-	.remove_new	= pruss_intc_remove,
++	.remove		= pruss_intc_remove,
+ };
+ module_platform_driver(pruss_intc_driver);
+ 
+diff --git a/drivers/irqchip/irq-renesas-intc-irqpin.c b/drivers/irqchip/irq-renesas-intc-irqpin.c
+index 9ad37237ba95..954419f2460d 100644
+--- a/drivers/irqchip/irq-renesas-intc-irqpin.c
++++ b/drivers/irqchip/irq-renesas-intc-irqpin.c
+@@ -584,7 +584,7 @@ static SIMPLE_DEV_PM_OPS(intc_irqpin_pm_ops, intc_irqpin_suspend, NULL);
+ 
+ static struct platform_driver intc_irqpin_device_driver = {
+ 	.probe		= intc_irqpin_probe,
+-	.remove_new	= intc_irqpin_remove,
++	.remove		= intc_irqpin_remove,
+ 	.driver		= {
+ 		.name		= "renesas_intc_irqpin",
+ 		.of_match_table	= intc_irqpin_dt_ids,
+diff --git a/drivers/irqchip/irq-renesas-irqc.c b/drivers/irqchip/irq-renesas-irqc.c
+index 76026e0b8e20..cbce8ffc7de4 100644
+--- a/drivers/irqchip/irq-renesas-irqc.c
++++ b/drivers/irqchip/irq-renesas-irqc.c
+@@ -247,7 +247,7 @@ MODULE_DEVICE_TABLE(of, irqc_dt_ids);
+ 
+ static struct platform_driver irqc_device_driver = {
+ 	.probe		= irqc_probe,
+-	.remove_new	= irqc_remove,
++	.remove		= irqc_remove,
+ 	.driver		= {
+ 		.name		= "renesas_irqc",
+ 		.of_match_table	= irqc_dt_ids,
+diff --git a/drivers/irqchip/irq-renesas-rza1.c b/drivers/irqchip/irq-renesas-rza1.c
+index f05afe82db4d..d4e6a68889ec 100644
+--- a/drivers/irqchip/irq-renesas-rza1.c
++++ b/drivers/irqchip/irq-renesas-rza1.c
+@@ -259,7 +259,7 @@ MODULE_DEVICE_TABLE(of, rza1_irqc_dt_ids);
+ 
+ static struct platform_driver rza1_irqc_device_driver = {
+ 	.probe		= rza1_irqc_probe,
+-	.remove_new	= rza1_irqc_remove,
++	.remove		= rza1_irqc_remove,
+ 	.driver		= {
+ 		.name		= "renesas_rza1_irqc",
+ 		.of_match_table	= rza1_irqc_dt_ids,
+diff --git a/drivers/irqchip/irq-ts4800.c b/drivers/irqchip/irq-ts4800.c
+index b5dddb3c1568..cc219f28d317 100644
+--- a/drivers/irqchip/irq-ts4800.c
++++ b/drivers/irqchip/irq-ts4800.c
+@@ -154,7 +154,7 @@ MODULE_DEVICE_TABLE(of, ts4800_ic_of_match);
+ 
+ static struct platform_driver ts4800_ic_driver = {
+ 	.probe		= ts4800_ic_probe,
+-	.remove_new	= ts4800_ic_remove,
++	.remove		= ts4800_ic_remove,
+ 	.driver = {
+ 		.name		= "ts4800-irqc",
+ 		.of_match_table	= ts4800_ic_of_match,
+
+base-commit: 929beafbe7acce3267c06115e13e03ff6e50548a
+-- 
+2.45.2
 
