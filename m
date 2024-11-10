@@ -1,60 +1,61 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFDD146A7A
-	for <imx@lists.linux.dev>; Sun, 10 Nov 2024 19:24:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74CD154BFE
+	for <imx@lists.linux.dev>; Sun, 10 Nov 2024 19:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731266671; cv=none; b=sPf4lPKmn0eT7aG7qNqxDy4kIpjWHGimW1IONots7blydbYglDECQ11SWk98MF7J2D5gZRJSydF2qe1NyGRJZRljNbhx1FwClFt3oAEaoYTqpv0+ZqjYhXCuAC0BPZFZXDdwkThNU52F6wy6LnORZedfcO1DD0vW1/4pHYGjYkQ=
+	t=1731266674; cv=none; b=onpur9WF8jMK3ifVxdgr6cxzxt20fe2CZJR3WtQtvgsMp369ywjA+ZTKf7CCt9fwQQwjzrkushMcT6CyX8Gyx175oSM+msnf11FUyed1lCE4GN1HU1AIhaO0SuSme/ynJxh5/juE3mvFzJnZX7U1vhxQYPy16iEaLjp8w9+XEEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731266671; c=relaxed/simple;
-	bh=gES/YI8J+uY43qFcYFJFQDdZCjIIvFKdVHt8Cx7j4Ks=;
+	s=arc-20240116; t=1731266674; c=relaxed/simple;
+	bh=U4A1URsY+DSB9fqZhsXbXU4iN6/BssEpg8gHHdYuWhI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=K6R29HxcZn+z5pamznpxDlQlaXZ57nXYCNPYoZvEd/ysGFRapEfFeii7e1/0tBp8GKTrHqxTea6QPUlE+XiMJA0NS9I4ESd1rLjmPJW6cEdgFjVK5goDQUJYOXNkcN9a1gODlhGmxN53AJUM8U4ZBqvrFkUsk91PyRsMO9/i5dY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PzCbvWZS; arc=none smtp.client-ip=209.85.128.47
+	 In-Reply-To:To:Cc; b=FLKgIbDMwqElIM9F+DdU7hg8Ey95jNficMLrl7yBaLTZedAhtdgBhIow3w/X6uIgubFH5OdPFUBc+RGJDJV8PgJ6yXB5Rj5W4E3A75LXPoFXwKAzwgUeMpbJuxNOaR1CnUarUEEpddcVgFxB3aUqQDaHI1/pkG5IgWKE/NQIu8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H/dw8iAv; arc=none smtp.client-ip=209.85.218.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PzCbvWZS"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4314f38d274so48795765e9.1
-        for <imx@lists.linux.dev>; Sun, 10 Nov 2024 11:24:29 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H/dw8iAv"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a99f646ff1bso595165066b.2
+        for <imx@lists.linux.dev>; Sun, 10 Nov 2024 11:24:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731266668; x=1731871468; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1731266671; x=1731871471; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=n7VSA4VpES10XaA8gB1WdvZsXgmDNfsDCe5+S5WIIkA=;
-        b=PzCbvWZS3yNrzGaBeqsFNWg76+ZJP9basHNjtflx+nIv9THDpe8VQVpAP7o5aFDAsz
-         obb1DVlOSQH2j4+aHBj+UUFMy6Li+nMYekmFDT21zB5XwrERC5Jfix084yJH10o9IUMw
-         O0PIqL3btv6x3CbrDpeqpjRUvfL+XzEKhnp8aW/KWLD3iTGXNkh4dK/oDYLeiw7Eft04
-         VQ3vD690gVnFz5nLFwqIakhidgz2RPEjsGV3DA/QhmsR24lwKVR/LWxq3GQ6YutXExZ5
-         pPyNRvPm+DaI1JWQbIJ3F/ypQ3A+Qc5XWBoQVeVsE0A+fx741QxVhqEPousHZbyR5Y18
-         RnQQ==
+        bh=QzjTpF4vcCvC+88m4NTYCvpBKv5iwpeXsY67V7asRZs=;
+        b=H/dw8iAvZyt5s6PW+9WmU3oi/RQ1II58H+/kZYTFXFU1Unhmf4iUB4RnsLnqnDCt0Y
+         4FifSKj8fLmerB0X3mx5euHdoN6/HghkPbgVZArMN5aszyxaSnkwoGAzoyh0qWTSx8wL
+         QEnX+YFk+5eEJi+xszKxwnT5vkAZaBUZaX6s44dCzmmyPv4FG65oC0W7nz1pyT0RC663
+         BeE/3gnhaWP+WoPdE8vrcB8TtlKaW/WxxvxvKBR0pl4XY6jCq7sXUjnPNmhKArOdGiLh
+         TEU8FLcLAUg3K/YHWokmlfH9Erj3b++qFJAF/jYAzq02lCAmNWH9N6vJHvcGCGmeTkzU
+         iwTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731266668; x=1731871468;
+        d=1e100.net; s=20230601; t=1731266671; x=1731871471;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=n7VSA4VpES10XaA8gB1WdvZsXgmDNfsDCe5+S5WIIkA=;
-        b=RinnHzzLeC71ezpsNKKX9wfis7oqz27DG9KojFN3SHgWyOUkqlseuRbaDKaIkgCJ7C
-         vhnnh9p4mxLTUfwOl1OdCGmScBynUSzQg+JVDYMhfAII1rWsqIVFLjMXXU9qVpuKm+mx
-         ekGi1HM2vsVqK4rbH9fvnxzpMWw3dzVpGByh/VmN0KAqf64IZ1Zgp74l+v3fHEfOHXiO
-         BwNOJ0yISXD8KLb/5M/zRStrAXVekEiF+Gjtl+9JMlhUv7gPEYEH6IxCOyFgEVI07iY1
-         hYIiQgaXfpIO7Cu1S+q/IINJNHHznUMKoLJdGKby+SuI3HYT8Nv/imx/CTATpgNH1iVM
-         o3mA==
-X-Forwarded-Encrypted: i=1; AJvYcCXdF3j4QCDLF9UovuKJmIlSX8bNXQYEBtBjgP4+bf05CHou5nzVVrmLmCcT7Op9/PPSyx4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxXiDZXMogvBQ/veo5+Y0qUOyeR3G6wWugJhLx1njUfCCWe3K9h
-	gneBOfBTZq1qdzrXny+wz+6znRH0kgC88OtbuQR95tcmJVJZXo5v
-X-Google-Smtp-Source: AGHT+IGgpSw3jllLpv9qQZg4A+baIMwrCRGNX/rDvc376OiGzFy2u/Lnf48/wvV7+Plv5EMw7gqc9g==
-X-Received: by 2002:a5d:6c66:0:b0:37d:47e0:45fb with SMTP id ffacd0b85a97d-381f186c5f2mr11167988f8f.21.1731266668020;
-        Sun, 10 Nov 2024 11:24:28 -0800 (PST)
+        bh=QzjTpF4vcCvC+88m4NTYCvpBKv5iwpeXsY67V7asRZs=;
+        b=vd3EZJjHv7vvnW5oN27LddXaUk5TifhEXK1mNz4mI9JclIt8FGlY+BYuqEDy72t5sK
+         q9DDom4KuUnuRsVQS7qW8P8veqSG6Z0txUcQDCaqDVSlT2ZovZG8HboiNWOAyWyeW9il
+         +NmTaQ40t2FUaUtxFeZyXZ2ssixsmHyXlsAXRXXJjbZS3K70CfemCrfMc4o4uhOsup6E
+         /yCqHR7GLdX+8RwxYznDD+DpDRmCZ/yMhwn2uDjx5hSVZMeAuhqr7GcxJ+alpaQocnAr
+         xVSfMXdIB8kyouuRg1pkMY7iTjT9zX19QMfENxX1iubpZyeTEfpfhDbrsEs9KIQNej/7
+         wZbw==
+X-Forwarded-Encrypted: i=1; AJvYcCWNJtEZKNJj7hXqPLcH/o+LDgOoTgMLQOGKEIRM5cS8JumRjP6JbZ1+H2WPHuFDTu8DBjg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxI75pwLYCQKn6dgfCKYnRmeD8FoEB8VyFe+h3ATlbfklgEHrxy
+	GyctDVUtp/7/qX5rZNEQpAO06ya9zOi1I3n3PRbpm7zUQCe4bL5z
+X-Google-Smtp-Source: AGHT+IFHsrzKAH1JXGqmrjEG47YYUuWxOy0DeShOLNpqUqSJjuxWTT1PZUGZb3HouVX3vdnd7BOhRw==
+X-Received: by 2002:a17:907:7f28:b0:a9a:5cf8:9e40 with SMTP id a640c23a62f3a-a9eeff10a14mr923178466b.24.1731266670951;
+        Sun, 10 Nov 2024 11:24:30 -0800 (PST)
 Received: from [127.0.1.1] (leased-line-46-53-189-50.telecom.by. [46.53.189.50])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a9ee0e0fabesm502497666b.174.2024.11.10.11.24.25
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a9ee0e0fabesm502497666b.174.2024.11.10.11.24.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Nov 2024 11:24:27 -0800 (PST)
+        Sun, 10 Nov 2024 11:24:29 -0800 (PST)
 From: Dzmitry Sankouski <dsankouski@gmail.com>
-Date: Sun, 10 Nov 2024 22:24:15 +0300
-Subject: [PATCH v2 1/2] power: supply: max17042: make interrupt shared
+Date: Sun, 10 Nov 2024 22:24:16 +0300
+Subject: [PATCH v2 2/2] power: supply: max17042: add platform driver
+ variant
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -63,7 +64,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241108-b4-max17042-v2-1-f058f7a16bab@gmail.com>
+Message-Id: <20241108-b4-max17042-v2-2-f058f7a16bab@gmail.com>
 References: <20241108-b4-max17042-v2-0-f058f7a16bab@gmail.com>
 In-Reply-To: <20241108-b4-max17042-v2-0-f058f7a16bab@gmail.com>
 To: Hans de Goede <hdegoede@redhat.com>, 
@@ -82,43 +83,181 @@ Cc: linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev, 
  linux-arm-msm@vger.kernel.org, Dzmitry Sankouski <dsankouski@gmail.com>
 X-Mailer: b4 0.12.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1731266662; l=1055;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1731266662; l=5546;
  i=dsankouski@gmail.com; s=20240619; h=from:subject:message-id;
- bh=gES/YI8J+uY43qFcYFJFQDdZCjIIvFKdVHt8Cx7j4Ks=;
- b=hkNy7+sERWKdTJVRRUXl6kSD0hutXgVSx9H34Jeil05Y2fuKUhG/CScfxoHg1ESGkG6jYCRBA
- rN9iIrmtHkCCHftg66YAeKHeBlQNA7x7LKlJkd0nxvrukflRvAwcT+L
+ bh=U4A1URsY+DSB9fqZhsXbXU4iN6/BssEpg8gHHdYuWhI=;
+ b=swSnXIKrCHvZ5yseK48cwBu0mSP/TUGzwXb8VhRn0lHC1PwRDPUPLDuPb9x3Y5JunOH2lOS9s
+ 2asjCJJ555aCA3CYUHrWF0g0UhPt+3BUGGw3zNgbvGaWX3mirK5TGs9
 X-Developer-Key: i=dsankouski@gmail.com; a=ed25519;
  pk=YJcXFcN1EWrzBYuiE2yi5Mn6WLn6L1H71J+f7X8fMag=
 
-Fuelgauge blocks often are incorporated in bigger chip,
-which may use only 1 line for interrupts. Make interrupt
-shared.
+Maxim PMICs may include fuel gauge with additional features, which is
+out of single Linux power supply driver scope.
+
+For example, in max77705 PMIC fuelgauge has additional registers,
+like IIN_REG, VSYS_REG, ISYS_REG. Those needed to measure PMIC input
+current, system voltage and current respectively. Those measurements
+cannot be bound to any of fuelgauge properties.
+
+The solution here add and option to use max17042 driver as a MFD
+sub device, thus allowing any additional functionality be implemented as
+another sub device. This will help to reduce code duplication in MFD
+fuel gauge drivers.
 
 Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
 ---
- drivers/power/supply/max17042_battery.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/power/supply/max17042_battery.c | 97 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 83 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/power/supply/max17042_battery.c b/drivers/power/supply/max17042_battery.c
-index 496c3e1f2ee6..99bf6915aa23 100644
+index 99bf6915aa23..e78c177802db 100644
 --- a/drivers/power/supply/max17042_battery.c
 +++ b/drivers/power/supply/max17042_battery.c
-@@ -1103,14 +1103,7 @@ static int max17042_probe(struct i2c_client *client)
- 	}
+@@ -16,6 +16,7 @@
+ #include <linux/i2c.h>
+ #include <linux/delay.h>
+ #include <linux/interrupt.h>
++#include <linux/platform_device.h>
+ #include <linux/pm.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/power_supply.h>
+@@ -1029,13 +1030,12 @@ static const struct power_supply_desc max17042_no_current_sense_psy_desc = {
+ 	.num_properties	= ARRAY_SIZE(max17042_battery_props) - 2,
+ };
  
- 	if (client->irq) {
--		unsigned int flags = IRQF_ONESHOT;
+-static int max17042_probe(struct i2c_client *client)
++static int max17042_probe(struct i2c_client *client, enum max170xx_chip_type chip_type)
+ {
+-	const struct i2c_device_id *id = i2c_client_get_device_id(client);
++	pr_info("do probe!\n");
+ 	struct i2c_adapter *adapter = client->adapter;
+ 	const struct power_supply_desc *max17042_desc = &max17042_psy_desc;
+ 	struct power_supply_config psy_cfg = {};
+-	const struct acpi_device_id *acpi_id = NULL;
+ 	struct device *dev = &client->dev;
+ 	struct max17042_chip *chip;
+ 	int ret;
+@@ -1050,15 +1050,6 @@ static int max17042_probe(struct i2c_client *client)
+ 		return -ENOMEM;
+ 
+ 	chip->client = client;
+-	if (id) {
+-		chip->chip_type = id->driver_data;
+-	} else {
+-		acpi_id = acpi_match_device(dev->driver->acpi_match_table, dev);
+-		if (!acpi_id)
+-			return -ENODEV;
 -
--		/*
--		 * On ACPI systems the IRQ may be handled by ACPI-event code,
--		 * so we need to share (if the ACPI code is willing to share).
--		 */
--		if (acpi_id)
--			flags |= IRQF_SHARED | IRQF_PROBE_SHARED;
-+		unsigned int flags = IRQF_ONESHOT | IRQF_SHARED | IRQF_PROBE_SHARED;
+-		chip->chip_type = acpi_id->driver_data;
+-	}
+ 	chip->regmap = devm_regmap_init_i2c(client, &max17042_regmap_config);
+ 	if (IS_ERR(chip->regmap)) {
+ 		dev_err(&client->dev, "Failed to initialize regmap\n");
+@@ -1139,6 +1130,40 @@ static int max17042_probe(struct i2c_client *client)
+ 	return 0;
+ }
  
- 		ret = devm_request_threaded_irq(&client->dev, client->irq,
- 						NULL,
++static int max17042_i2c_probe(struct i2c_client *client)
++{
++	pr_info("i2c probe!\n");
++	const struct i2c_device_id *id = i2c_client_get_device_id(client);
++	const struct acpi_device_id *acpi_id = NULL;
++	struct device *dev = &client->dev;
++	enum max170xx_chip_type chip_type;
++
++	if (id) {
++		chip_type = id->driver_data;
++	} else {
++		acpi_id = acpi_match_device(dev->driver->acpi_match_table, dev);
++		if (!acpi_id)
++			return -ENODEV;
++
++		chip_type = acpi_id->driver_data;
++	}
++
++	return max17042_probe(client, chip_type);
++}
++
++
++static int max17042_platform_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct i2c_client *i2c = dev_get_platdata(dev);
++	const struct platform_device_id *id = platform_get_device_id(pdev);
++
++	if (!i2c)
++		return -EINVAL;
++
++	return max17042_probe(i2c, id->driver_data);
++}
++
+ #ifdef CONFIG_PM_SLEEP
+ static int max17042_suspend(struct device *dev)
+ {
+@@ -1204,6 +1229,16 @@ static const struct i2c_device_id max17042_id[] = {
+ };
+ MODULE_DEVICE_TABLE(i2c, max17042_id);
+ 
++static const struct platform_device_id max17042_platform_id[] = {
++	{ "max17042", MAXIM_DEVICE_TYPE_MAX17042 },
++	{ "max17047", MAXIM_DEVICE_TYPE_MAX17047 },
++	{ "max17050", MAXIM_DEVICE_TYPE_MAX17050 },
++	{ "max17055", MAXIM_DEVICE_TYPE_MAX17055 },
++	{ "max77849-battery", MAXIM_DEVICE_TYPE_MAX17047 },
++	{ }
++};
++MODULE_DEVICE_TABLE(platform, max17042_platform_id);
++
+ static struct i2c_driver max17042_i2c_driver = {
+ 	.driver	= {
+ 		.name	= "max17042",
+@@ -1211,10 +1246,44 @@ static struct i2c_driver max17042_i2c_driver = {
+ 		.of_match_table = of_match_ptr(max17042_dt_match),
+ 		.pm	= &max17042_pm_ops,
+ 	},
+-	.probe		= max17042_probe,
++	.probe		= max17042_i2c_probe,
+ 	.id_table	= max17042_id,
+ };
+-module_i2c_driver(max17042_i2c_driver);
++
++static struct platform_driver max17042_platform_driver = {
++	.driver	= {
++		.name	= "max17042",
++		.acpi_match_table = ACPI_PTR(max17042_acpi_match),
++		.of_match_table = of_match_ptr(max17042_dt_match),
++		.pm	= &max17042_pm_ops,
++	},
++	.probe		= max17042_platform_probe,
++	.id_table	= max17042_platform_id,
++};
++
++static int __init __driver_max17042_platform_init(void)
++{
++	int ret = 0;
++
++	ret = platform_driver_register(&max17042_platform_driver);
++
++	if (ret) {
++		platform_driver_unregister(&max17042_platform_driver);
++		return ret;
++	}
++
++	ret = i2c_add_driver(&max17042_i2c_driver);
++
++	return ret;
++}
++module_init(__driver_max17042_platform_init);
++
++static void __exit __driver_max17042_platform_exit(void)
++{
++	i2c_del_driver(&max17042_i2c_driver);
++	platform_driver_unregister(&max17042_platform_driver);
++}
++module_exit(__driver_max17042_platform_exit);
+ 
+ MODULE_AUTHOR("MyungJoo Ham <myungjoo.ham@samsung.com>");
+ MODULE_DESCRIPTION("MAX17042 Fuel Gauge");
 
 -- 
 2.39.2
