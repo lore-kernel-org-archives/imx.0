@@ -1,161 +1,135 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7D3A48
-	for <imx@lists.linux.dev>; Sun, 10 Nov 2024 00:15:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C441369AA
+	for <imx@lists.linux.dev>; Sun, 10 Nov 2024 19:24:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731197748; cv=none; b=nE0vdh31HogcWZ2beiDknzIEF1e23Jt/5Ahnp7SUKNMl8kKzCdRRU/GL6hHTzDNlJPjFKlxRbVLlcA/TKHEFaMhfUX1v5SZH2UE8RA6knQEKkPZW6ppUg+WDF08Px07dlQKGqkDRQgJ1T9NXms/RXanqXpW+W26yKOjzIRE0VTE=
+	t=1731266668; cv=none; b=U0QiOp6VKntDIhnp/+TBxwPjxJDH/NQNq02bWnb4vbetgGfviYtAZfMOmHxUW+St4rFvyrN4l8op0nZbKjhM1f4rlmuNrU4TFUZ7YD4ylcZPfbiMc1zZEhy0i0w0KeLf2UEBA5mjEy75TmC1Ox1+WEtBppTIteRflC1IufEWyC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731197748; c=relaxed/simple;
-	bh=Rb8SiGYOX43++2/BqPnrgCCSzHRP+Qz05NJ1JzZ5Ukc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=YyBsmHIFEQz79RO0y9iIJtN1JQ2EaehZggvXc1rfH+z7zTmZjg1LJ+B1De+nSmqh1nfdrHn7iCdVm34fk3ITl55QoLxwoWrnF9BC1TtxJiWcrprnKvzxBERou2rcsfWUAlsi+L76ZN0Q4uX7EIO9kOXaH9uyuJnA8k8yoScHFa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=pHjQfAnI; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1731266668; c=relaxed/simple;
+	bh=H1Syh1UcSJ7M8dVuvV3iuTAa8UOyjg7qSAGjvxwMJ7A=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=WvFOQ8OuTtB7OM7kx3G5d1wL3GzS8F4xrhDVNfbv0nVuUps4VqmuaHMV2JZFnI3aB3OJu5TPh+B7pAcDksXRZuuu9eW5MmKsND2tLClkyM6XRx2D0xrGT+OZ4oVBiavm4kXX4ApQ9XQwwswwvyxSEKKMxr6GoQ0tmhCtha2saiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uvqy7xng; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="pHjQfAnI"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AA00vxk008738;
-	Sun, 10 Nov 2024 00:10:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	0R1LwNN6Jg7sQ4eONRG8zvoQUl0N1Po3ICzKDF5OXQ0=; b=pHjQfAnISj7pMSDN
-	YRQulXbAkn0/XdFn2S/pg1QKQ7IY0MrH/0JEFqmfnZgziydnmec984q1ZRntkgFB
-	snGNzaVtHbXsEDrUemcMuX5tgQwLXtpYlYbODGcpIZctpTGShLpOsKd06Zuxhr8J
-	+Zj8jriiN/Y+e73wPhDNV9dLT3vB7T6GQ/jD0aDXkQxzR+3bXTeit1hFA7VEo4wM
-	0Akz/WMZcVgJa0wU/0F1L2uTrOz22q3bTMOlxNovWR/6dHfzksPyB2VoQq+KGATH
-	ItaZ9t5m5x/My7cZKM5lzGaifW7suVdQOItGhnT67UbYBNyl2EJ19FegTXrd+1IG
-	0Ai+uQ==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42t118188v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 10 Nov 2024 00:10:18 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4AA0AHMr015043
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 10 Nov 2024 00:10:17 GMT
-Received: from [10.216.56.133] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sat, 9 Nov 2024
- 16:10:13 -0800
-Message-ID: <b5f56ec9-9b5f-5369-52ed-bcf0c8012dbb@quicinc.com>
-Date: Sun, 10 Nov 2024 05:40:08 +0530
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uvqy7xng"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a9eb68e0bd1so557878466b.3
+        for <imx@lists.linux.dev>; Sun, 10 Nov 2024 11:24:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731266665; x=1731871465; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bpd/1gDMy+CTi0HB/qw5fPz2wxmUKHefEUhB4gCbWCU=;
+        b=Uvqy7xngt32UkWv77K61SKo85ACpCAEBPsGjsoVzZlkLCFtmiFLwm/0Onb4nUwRlYu
+         tHMn7tEuxlf7WLKWleRHlIf/kufH7Rr4HQCPFySbOkrr9Fo85KLThDGrNhFwL2jNwN+5
+         F8Gcxu6nmOv/EAX8ONIdOkHTfX/2y2ke7r4DHrhcAgHofuV5VctbeC8kdBT3X/DxSkzI
+         tXsaqQUI2cEvutLLb410ABJuU+vhKXZB3Zx0bs+5Ipfk/NltT0wUQHOhLQhYv0DakTdh
+         9ITfmhtIsBpjhfwyhXwEqqeZfx4NBzd90TGETw8+4pDNqdKyIG0RjdS/DskjrOmUzoay
+         CYPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731266665; x=1731871465;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bpd/1gDMy+CTi0HB/qw5fPz2wxmUKHefEUhB4gCbWCU=;
+        b=ewD3QT+JGkwrnvh+cTZiE7ZYNORlCuJuO5BL3H7v8d6gPLh2h7QmfXefguHWdGbS0g
+         tO0AkDaFz4+W+atwEl15C92glp4wtzfVyZ92rs771TsQpuAZvKGFHtuZiQoa2JOt+iK9
+         jn3XwDMp54jsGcDwh3bPRxoFc2H950xlz3w06pZ76iDJy2MJUNWyDBRDWGDJauHGYNsC
+         Mom6DEU8Do/TDS9rTaIYRGbysWQWY2wtWXy0Zl5matLwP8/qzLhgqXuzjcyEvss/AoXI
+         Mtut3lbe+0daNjH+jtMVVD4bgXdbKMrtYgjIK/cu1mFuLOgkZ/NyVIUtq0HNkufSTVbf
+         RFbw==
+X-Forwarded-Encrypted: i=1; AJvYcCWhYtZIDNh+5cxfkSPYsxPbYEHteWlp3xSJB6nlno6/sTTZE7kai82J66f5aFOCHTyKADI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YysWmxQdhbrXLY7/2qwkLtIvBmtuBe4ESxlOa/99ggAGsfz3w1f
+	UcPVXa+ASPe7tsn61PVXi63a3huZGO6bJiAxXgj/H5pmVG4Q/RrI
+X-Google-Smtp-Source: AGHT+IGwg5e/yEHyqFxbzv6x83YEXnH3A7V20G4q4dRQLeeKdzn0HLMK+KtUTjQlb8+OrHuv9q78gg==
+X-Received: by 2002:a17:907:2dab:b0:a99:89bd:d84a with SMTP id a640c23a62f3a-a9eeff3786amr1003564366b.25.1731266665135;
+        Sun, 10 Nov 2024 11:24:25 -0800 (PST)
+Received: from [127.0.1.1] (leased-line-46-53-189-50.telecom.by. [46.53.189.50])
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a9ee0e0fabesm502497666b.174.2024.11.10.11.24.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 10 Nov 2024 11:24:24 -0800 (PST)
+From: Dzmitry Sankouski <dsankouski@gmail.com>
+Subject: [PATCH v2 0/2] power: supply: max17042: cleanup and more features
+Date: Sun, 10 Nov 2024 22:24:14 +0300
+Message-Id: <20241108-b4-max17042-v2-0-f058f7a16bab@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v1] PCI: dwc: Clean up some unnecessary codes in
- dw_pcie_suspend_noirq()
-Content-Language: en-US
-To: Bjorn Helgaas <helgaas@kernel.org>,
-        Manivannan Sadhasivam
-	<manivannan.sadhasivam@linaro.org>
-CC: Richard Zhu <hongxing.zhu@nxp.com>, <jingoohan1@gmail.com>,
-        <bhelgaas@google.com>, <lpieralisi@kernel.org>, <kw@linux.com>,
-        <robh@kernel.org>, <frank.li@nxp.com>, <imx@lists.linux.dev>,
-        <kernel@pengutronix.de>, <linux-pci@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20241108002425.GA1631063@bhelgaas>
-From: Krishna Chaitanya Chundru <quic_krichai@quicinc.com>
-In-Reply-To: <20241108002425.GA1631063@bhelgaas>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: cv0K1P0V45jW6BqOaeNPerbxNVQSxtJ6
-X-Proofpoint-GUID: cv0K1P0V45jW6BqOaeNPerbxNVQSxtJ6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
- bulkscore=0 mlxlogscore=999 lowpriorityscore=0 malwarescore=0
- clxscore=1015 priorityscore=1501 adultscore=0 suspectscore=0 spamscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411090210
+X-B4-Tracking: v=1; b=H4sIAF4IMWcC/1XMQQ7CIBCF4as0sxYDSIt15T1MFxSHdhIpBgypa
+ bi72MSFy/8l79sgYSRMcGk2iJgpUVhqyEMDdjbLhIzutUFyqYTgZzYq5s0qNFeS9SfeOatb4wx
+ CfTwjOlp37TbUnim9QnzveBbf9ef0f04WjLMe5cg1tgp1d528ocfRBg9DKeUDk27vvaYAAAA=
+To: Hans de Goede <hdegoede@redhat.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>, 
+ Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>, 
+ Purism Kernel Team <kernel@puri.sm>, Sebastian Reichel <sre@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: linux-pm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-msm@vger.kernel.org, Dzmitry Sankouski <dsankouski@gmail.com>
+X-Mailer: b4 0.12.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1731266662; l=1653;
+ i=dsankouski@gmail.com; s=20240619; h=from:subject:message-id;
+ bh=H1Syh1UcSJ7M8dVuvV3iuTAa8UOyjg7qSAGjvxwMJ7A=;
+ b=CTvVR/zeK0bf1gPQRzeu+eKHLSmULIxA0my7hMX8imFRf4sEhbEdk/kIXs3kXFl0+9AFP9aSq
+ OzM08qUtk74DuRPugKgYdS6HsD1UZnzsbT5MYqqiaOuBVougzy8Jg65
+X-Developer-Key: i=dsankouski@gmail.com; a=ed25519;
+ pk=YJcXFcN1EWrzBYuiE2yi5Mn6WLn6L1H71J+f7X8fMag=
 
+Fuelgauge blocks often are incorporated in bigger chip,
+which may use only 1 line for interrupts. Shared-irq
+handles that case by requesting irq as shared.
 
+Maxim PMICs may include fuel gauge with additional features, which is
+out of single Linux power supply driver scope.
 
-On 11/8/2024 5:54 AM, Bjorn Helgaas wrote:
-> On Thu, Nov 07, 2024 at 11:13:34AM +0000, Manivannan Sadhasivam wrote:
->> On Thu, Nov 07, 2024 at 04:44:55PM +0800, Richard Zhu wrote:
->>> Before sending PME_TURN_OFF, don't test the LTSSM stat. Since it's
->>> safe to send PME_TURN_OFF message regardless of whether the link
->>> is up or down. So, there would be no need to test the LTSSM stat
->>> before sending PME_TURN_OFF message.
->>
->> What is the incentive to send PME_Turn_Off when link is not up?
-> 
-> There's no need to send PME_Turn_Off when link is not up.
-> 
-> But a link-up check is inherently racy because the link may go down
-> between the check and the PME_Turn_Off.  Since it's impossible for
-> software to guarantee the link is up, the Root Port should be able to
-> tolerate attempts to send PME_Turn_Off when the link is down.
-> 
-> So IMO there's no need to check whether the link is up, and checking
-> gives the misleading impression that "we know the link is up and
-> therefore sending PME_Turn_Off is safe."
-> 
-Hi Bjorn,
+For example, in max77705 PMIC fuelgauge has additional registers,
+like IIN_REG, VSYS_REG, ISYS_REG. Those needed to measure PMIC input
+current, system voltage and current respectively. Those measurements
+cannot be bound to any of fuelgauge properties.
 
-I agree that link-up check is racy but once link is up and link has
-gone down due to some reason the ltssm state will not move detect quiet
-or detect act, it will go to pre detect quiet (i.e value 0f 0x5).
-we can assume if the link is up LTSSM state will greater than detect act
-even if the link was down.
+The solution here add and option to use max17042 driver as a MFD
+sub device, thus allowing any additional functionality be implemented as
+another sub device. This will help to reduce code duplication in MFD
+fuel gauge drivers.
 
-- Krishna Chaitanya.
->>> Remove the L2 poll too, after the PME_TURN_OFF message is sent
->>> out.  Because the re-initialization would be done in
->>> dw_pcie_resume_noirq().
->>
->> As Krishna explained, host needs to wait until the endpoint acks the
->> message (just to give it some time to do cleanups). Then only the
->> host can initiate D3Cold. It matters when the device supports L2.
-> 
-> The important thing here is to be clear about the *reason* to poll for
-> L2 and the *event* that must wait for L2.
-> 
-> I don't have any DesignWare specs, but when dw_pcie_suspend_noirq()
-> waits for DW_PCIE_LTSSM_L2_IDLE, I think what we're doing is waiting
-> for the link to be in the L2/L3 Ready pseudo-state (PCIe r6.0, sec
-> 5.2, fig 5-1).
-> 
-> L2 and L3 are states where main power to the downstream component is
-> off, i.e., the component is in D3cold (r6.0, sec 5.3.2), so there is
-> no link in those states.
-> 
-> The PME_Turn_Off handshake is part of the process to put the
-> downstream component in D3cold.  I think the reason for this handshake
-> is to allow an orderly shutdown of that component before main power is
-> removed.
-> 
-> When the downstream component receives PME_Turn_Off, it will stop
-> scheduling new TLPs, but it may already have TLPs scheduled but not
-> yet sent.  If power were removed immediately, they would be lost.  My
-> understanding is that the link will not enter L2/L3 Ready until the
-> components on both ends have completed whatever needs to be done with
-> those TLPs.  (This is based on the L2/L3 discussion in the Mindshare
-> PCIe book; I haven't found clear spec citations for all of it.)
-> 
-> I think waiting for L2/L3 Ready is to keep us from turning off main
-> power when the components are still trying to dispose of those TLPs.
-> 
-> So I think every controller that turns off main power needs to wait
-> for L2/L3 Ready.
-> 
-> There's also a requirement that software wait at least 100 ns after
-> L2/L3 Ready before turning off refclock and main power (sec
-> 5.3.3.2.1).
-> 
-> Bjorn
-> 
+Make max17042 interrupt shared, and add platform driver
+version.
+
+Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
+---
+Changes in v2:
+- drop NACKed commits
+- make shared interrupts unconditionally
+- rework descriptions
+- add platform driver version
+- Link to v1: https://lore.kernel.org/r/20241109-b4-max17042-v1-0-9e2b07e54e76@gmail.com
+
+---
+Dzmitry Sankouski (2):
+      power: supply: max17042: make interrupt shared
+      power: supply: max17042: add platform driver variant
+
+ drivers/power/supply/max17042_battery.c | 106 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------------
+ 1 file changed, 84 insertions(+), 22 deletions(-)
+---
+base-commit: 929beafbe7acce3267c06115e13e03ff6e50548a
+change-id: 20241108-b4-max17042-9306fc75afae
+
+Best regards,
+-- 
+Dzmitry Sankouski <dsankouski@gmail.com>
+
