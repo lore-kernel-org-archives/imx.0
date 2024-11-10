@@ -1,284 +1,161 @@
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B2219CC11
-	for <imx@lists.linux.dev>; Sat,  9 Nov 2024 17:38:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7D3A48
+	for <imx@lists.linux.dev>; Sun, 10 Nov 2024 00:15:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731173932; cv=none; b=e8FVT1TpTII6CXhobvm5uC3hhJD0FBWNFm9dREK1R7m1L99ERo4K3vgKyo/MsJRKpfcOXXnx42aQLx7cHNzO9ZiW30yP4XuBJjakIqwxpAYcxcfLisvDSe1wkNbgD0JGhvjU8uDpC3mUGcPWYQonblc2SR0CEOPSiQIeeiFbOqw=
+	t=1731197748; cv=none; b=nE0vdh31HogcWZ2beiDknzIEF1e23Jt/5Ahnp7SUKNMl8kKzCdRRU/GL6hHTzDNlJPjFKlxRbVLlcA/TKHEFaMhfUX1v5SZH2UE8RA6knQEKkPZW6ppUg+WDF08Px07dlQKGqkDRQgJ1T9NXms/RXanqXpW+W26yKOjzIRE0VTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731173932; c=relaxed/simple;
-	bh=cG6BiYtnIMuGLSWrNCwmKIdIDqnFLnsIXWDiSYA+qS4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rK+7aaF0TCNXdSbUOXKbT5XZC/m5YkyuRC0Vctq8q8XMxeOXBZJeb0iOitkhUVwtoB75GJWCBWGdWToAEIvuYjbL5Qf+q0FxpQPUGAEbInPRI3EEpsix+a9C93ygQEu8dq1Ys5WUoRrl6Rltd0ZBK2/h6h5nZynbLyPBv52CXrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=z1tXf+1i; arc=none smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1731197748; c=relaxed/simple;
+	bh=Rb8SiGYOX43++2/BqPnrgCCSzHRP+Qz05NJ1JzZ5Ukc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=YyBsmHIFEQz79RO0y9iIJtN1JQ2EaehZggvXc1rfH+z7zTmZjg1LJ+B1De+nSmqh1nfdrHn7iCdVm34fk3ITl55QoLxwoWrnF9BC1TtxJiWcrprnKvzxBERou2rcsfWUAlsi+L76ZN0Q4uX7EIO9kOXaH9uyuJnA8k8yoScHFa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=pHjQfAnI; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="z1tXf+1i"
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2feeb1e8edfso40247861fa.1
-        for <imx@lists.linux.dev>; Sat, 09 Nov 2024 09:38:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731173926; x=1731778726; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+6rulw/lNtnEo0tBG6bWUBB2/E/vFFZuCKLNN5bGCYY=;
-        b=z1tXf+1iZ970B2WNvbrRW+lmqDjU8IbvuriYDsdykImPjJ/3oVYCgLNa92udH57q6G
-         3M6xJ9lTm+t+qrmmXarhHMs7V9DTbMaIaBuJjtAjtqF4FoSq5nLdpYJGKUDRH0Mklaht
-         EfRWUkFfCOQUi8ffLOZqI9sHZswze3q1ZuBY+7wQVlBZRtW5vYYm77hbQBOiVX9uR7CB
-         jokF/zcCYf3F0tWhjXc7R7ddROK/4aTVhQVyzFGc9H4QhAT6ZQOsPoMb6sW1WJpViF+H
-         EkIjg9Y0lMxpFWlz0af+10ARWCjw21nw+O8xlA0//DwNlDytNEL6QqYUUGYQwaaTco0U
-         qhCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731173926; x=1731778726;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+6rulw/lNtnEo0tBG6bWUBB2/E/vFFZuCKLNN5bGCYY=;
-        b=o0S+rZKyzcSXcIUy8u7YHZpNSi1AqPrBsfnu97k04uzZFOigTkzsV6Sq6kohicL/Bx
-         b4hybGm5JryCtsmswsK5ixYHHpUVfTZ0b9k2tjwzReZnD8zu1rU8JqvEyrn5WJ2lXQET
-         1BDM4TnImxiQJAdMAGyMwVHlzCa7CVTtpofR5fJX8/Heefx+f59i1l9DI2JUQzIJUoxR
-         oYjp/e0WlPW7C9QKdZGZy+gkQ0yMZMgypGQgws/+2yZlZ6Gk4vS5pyp5jWhpYWbLV1y4
-         PfsBoCaQW5Htqpm87lb7tkrRtWFTbRwLpSJZdKplpXNsjImx9oXc7datJckSk9BR6mvc
-         D4Yw==
-X-Forwarded-Encrypted: i=1; AJvYcCX33Bkf6Kb1rTZkajw7ZkjC+anIcUS2/QrMzYHHCOPqQhBpsCLH9TCkqDieYLqAtcPW4GA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy5+B9S7ATzsIzl7sP8hgpo5OuMZzw9s88An/flEMD5ei83/4Hn
-	C/W4UcCvwLc6jh4SDddPq3kAS7yKqTbuvz5/RmNUfqSJ3l5zFuVQ+dC6FcHyoiM=
-X-Google-Smtp-Source: AGHT+IGatdJpXrZhMrODleVrBiUrsfVe/fWc6grf12yxYVJRTNJmQO4th+l4Bm+4iX6izejB8/b8WQ==
-X-Received: by 2002:a2e:a995:0:b0:2fb:5206:1675 with SMTP id 38308e7fff4ca-2ff2028a9a5mr51218071fa.27.1731173925582;
-        Sat, 09 Nov 2024 09:38:45 -0800 (PST)
-Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9ee0dc48f7sm383827966b.118.2024.11.09.09.38.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 Nov 2024 09:38:45 -0800 (PST)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gregory Clement <gregory.clement@bootlin.com>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-sound@vger.kernel.org,
-	patches@opensource.cirrus.com
-Subject: [PATCH] irqchip: Switch back to struct platform_driver::remove()
-Date: Sat,  9 Nov 2024 18:38:27 +0100
-Message-ID: <20241109173828.291172-2-u.kleine-koenig@baylibre.com>
-X-Mailer: git-send-email 2.45.2
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="pHjQfAnI"
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AA00vxk008738;
+	Sun, 10 Nov 2024 00:10:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	0R1LwNN6Jg7sQ4eONRG8zvoQUl0N1Po3ICzKDF5OXQ0=; b=pHjQfAnISj7pMSDN
+	YRQulXbAkn0/XdFn2S/pg1QKQ7IY0MrH/0JEFqmfnZgziydnmec984q1ZRntkgFB
+	snGNzaVtHbXsEDrUemcMuX5tgQwLXtpYlYbODGcpIZctpTGShLpOsKd06Zuxhr8J
+	+Zj8jriiN/Y+e73wPhDNV9dLT3vB7T6GQ/jD0aDXkQxzR+3bXTeit1hFA7VEo4wM
+	0Akz/WMZcVgJa0wU/0F1L2uTrOz22q3bTMOlxNovWR/6dHfzksPyB2VoQq+KGATH
+	ItaZ9t5m5x/My7cZKM5lzGaifW7suVdQOItGhnT67UbYBNyl2EJ19FegTXrd+1IG
+	0Ai+uQ==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42t118188v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 10 Nov 2024 00:10:18 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4AA0AHMr015043
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 10 Nov 2024 00:10:17 GMT
+Received: from [10.216.56.133] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sat, 9 Nov 2024
+ 16:10:13 -0800
+Message-ID: <b5f56ec9-9b5f-5369-52ed-bcf0c8012dbb@quicinc.com>
+Date: Sun, 10 Nov 2024 05:40:08 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7905; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=cG6BiYtnIMuGLSWrNCwmKIdIDqnFLnsIXWDiSYA+qS4=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnL54UuShdHMKtznnRY/uU8T9C6uqh4s2Xw6Ogr gE8iTRWzpaJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZy+eFAAKCRCPgPtYfRL+ Tq1qB/0TAMdLwf1xsB/y+fBhD7Fmxay3zicEHr4QUThMuVtJBkFu2Yd9l7iuOeA+yWKZ+8hctBe Pli4gRTBXIQpGUiEdKmefOLSGIT89PjCrkg3RNnUuzZphg+qknMMdFtdz4i/zpsT8DCC5NPg32V yKJWrc2hgRFLDSJmpurJLlR9fgO2/qSjzoV8jiosgsMYI3ocvbc9slQIBQB0QU5nqVtOJHgT9Kd wAyFUJA67lfYbAZ2WjHcYdyQR1hzfTXWofXRK2ptWKg78xWeii7ATGa2hDC1Gd7JKzSGKRbtMwF 22U4mh1wtvYVJgdUhdPYh8Rh1EXipN9kvqxx7RAgxw7qr5wD
-X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v1] PCI: dwc: Clean up some unnecessary codes in
+ dw_pcie_suspend_noirq()
+Content-Language: en-US
+To: Bjorn Helgaas <helgaas@kernel.org>,
+        Manivannan Sadhasivam
+	<manivannan.sadhasivam@linaro.org>
+CC: Richard Zhu <hongxing.zhu@nxp.com>, <jingoohan1@gmail.com>,
+        <bhelgaas@google.com>, <lpieralisi@kernel.org>, <kw@linux.com>,
+        <robh@kernel.org>, <frank.li@nxp.com>, <imx@lists.linux.dev>,
+        <kernel@pengutronix.de>, <linux-pci@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20241108002425.GA1631063@bhelgaas>
+From: Krishna Chaitanya Chundru <quic_krichai@quicinc.com>
+In-Reply-To: <20241108002425.GA1631063@bhelgaas>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: cv0K1P0V45jW6BqOaeNPerbxNVQSxtJ6
+X-Proofpoint-GUID: cv0K1P0V45jW6BqOaeNPerbxNVQSxtJ6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
+ bulkscore=0 mlxlogscore=999 lowpriorityscore=0 malwarescore=0
+ clxscore=1015 priorityscore=1501 adultscore=0 suspectscore=0 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411090210
 
-After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
-return void") .remove() is (again) the right callback to implement for
-platform drivers.
 
-Convert all platform drivers below drivers/irqchipto use .remove(), with
-the eventual goal to drop struct platform_driver::remove_new(). As
-.remove() and .remove_new() have the same prototypes, conversion is done
-by just changing the structure member name in the driver initializer.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
----
-Hello,
+On 11/8/2024 5:54 AM, Bjorn Helgaas wrote:
+> On Thu, Nov 07, 2024 at 11:13:34AM +0000, Manivannan Sadhasivam wrote:
+>> On Thu, Nov 07, 2024 at 04:44:55PM +0800, Richard Zhu wrote:
+>>> Before sending PME_TURN_OFF, don't test the LTSSM stat. Since it's
+>>> safe to send PME_TURN_OFF message regardless of whether the link
+>>> is up or down. So, there would be no need to test the LTSSM stat
+>>> before sending PME_TURN_OFF message.
+>>
+>> What is the incentive to send PME_Turn_Off when link is not up?
+> 
+> There's no need to send PME_Turn_Off when link is not up.
+> 
+> But a link-up check is inherently racy because the link may go down
+> between the check and the PME_Turn_Off.  Since it's impossible for
+> software to guarantee the link is up, the Root Port should be able to
+> tolerate attempts to send PME_Turn_Off when the link is down.
+> 
+> So IMO there's no need to check whether the link is up, and checking
+> gives the misleading impression that "we know the link is up and
+> therefore sending PME_Turn_Off is safe."
+> 
+Hi Bjorn,
 
-I did a single patch for all of drivers/irqchip. While I usually prefer
-to do one logical change per patch, this seems to be overengineering
-here as the individual changes are really trivial and shouldn't be much
-in the way for stable backports. But I'll happily split the patch if you
-prefer it split. Also if you object the indentation stuff, I can rework
-that.
+I agree that link-up check is racy but once link is up and link has
+gone down due to some reason the ltssm state will not move detect quiet
+or detect act, it will go to pre detect quiet (i.e value 0f 0x5).
+we can assume if the link is up LTSSM state will greater than detect act
+even if the link was down.
 
-This is based on yesterday's next, if conflicts arise when you apply it
-at some later time and don't want to resolve them, feel free to just
-drop the changes to the conflicting files. I'll notice and followup at a
-later time then. Or ask me for a fixed resend.
-
-Best regards
-Uwe
-
- drivers/irqchip/irq-imgpdc.c              | 2 +-
- drivers/irqchip/irq-imx-intmux.c          | 2 +-
- drivers/irqchip/irq-imx-irqsteer.c        | 2 +-
- drivers/irqchip/irq-keystone.c            | 2 +-
- drivers/irqchip/irq-ls-scfg-msi.c         | 2 +-
- drivers/irqchip/irq-madera.c              | 2 +-
- drivers/irqchip/irq-mvebu-pic.c           | 2 +-
- drivers/irqchip/irq-pruss-intc.c          | 2 +-
- drivers/irqchip/irq-renesas-intc-irqpin.c | 2 +-
- drivers/irqchip/irq-renesas-irqc.c        | 2 +-
- drivers/irqchip/irq-renesas-rza1.c        | 2 +-
- drivers/irqchip/irq-ts4800.c              | 2 +-
- 12 files changed, 12 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/irqchip/irq-imgpdc.c b/drivers/irqchip/irq-imgpdc.c
-index b42ed68acfa6..85f80bac0961 100644
---- a/drivers/irqchip/irq-imgpdc.c
-+++ b/drivers/irqchip/irq-imgpdc.c
-@@ -479,7 +479,7 @@ static struct platform_driver pdc_intc_driver = {
- 		.of_match_table	= pdc_intc_match,
- 	},
- 	.probe		= pdc_intc_probe,
--	.remove_new	= pdc_intc_remove,
-+	.remove		= pdc_intc_remove,
- };
- 
- static int __init pdc_intc_init(void)
-diff --git a/drivers/irqchip/irq-imx-intmux.c b/drivers/irqchip/irq-imx-intmux.c
-index 511adfaeec82..787543d07565 100644
---- a/drivers/irqchip/irq-imx-intmux.c
-+++ b/drivers/irqchip/irq-imx-intmux.c
-@@ -361,6 +361,6 @@ static struct platform_driver imx_intmux_driver = {
- 		.pm		= &imx_intmux_pm_ops,
- 	},
- 	.probe		= imx_intmux_probe,
--	.remove_new	= imx_intmux_remove,
-+	.remove		= imx_intmux_remove,
- };
- builtin_platform_driver(imx_intmux_driver);
-diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
-index 75a0e980ff35..b0e9788c0045 100644
---- a/drivers/irqchip/irq-imx-irqsteer.c
-+++ b/drivers/irqchip/irq-imx-irqsteer.c
-@@ -328,6 +328,6 @@ static struct platform_driver imx_irqsteer_driver = {
- 		.pm		= &imx_irqsteer_pm_ops,
- 	},
- 	.probe		= imx_irqsteer_probe,
--	.remove_new	= imx_irqsteer_remove,
-+	.remove		= imx_irqsteer_remove,
- };
- builtin_platform_driver(imx_irqsteer_driver);
-diff --git a/drivers/irqchip/irq-keystone.c b/drivers/irqchip/irq-keystone.c
-index 30f1979fa124..808c781e2548 100644
---- a/drivers/irqchip/irq-keystone.c
-+++ b/drivers/irqchip/irq-keystone.c
-@@ -211,7 +211,7 @@ MODULE_DEVICE_TABLE(of, keystone_irq_dt_ids);
- 
- static struct platform_driver keystone_irq_device_driver = {
- 	.probe		= keystone_irq_probe,
--	.remove_new	= keystone_irq_remove,
-+	.remove		= keystone_irq_remove,
- 	.driver		= {
- 		.name	= "keystone_irq",
- 		.of_match_table	= of_match_ptr(keystone_irq_dt_ids),
-diff --git a/drivers/irqchip/irq-ls-scfg-msi.c b/drivers/irqchip/irq-ls-scfg-msi.c
-index 1aef5c4d27c6..c0e1aafe468c 100644
---- a/drivers/irqchip/irq-ls-scfg-msi.c
-+++ b/drivers/irqchip/irq-ls-scfg-msi.c
-@@ -418,7 +418,7 @@ static struct platform_driver ls_scfg_msi_driver = {
- 		.of_match_table	= ls_scfg_msi_id,
- 	},
- 	.probe		= ls_scfg_msi_probe,
--	.remove_new	= ls_scfg_msi_remove,
-+	.remove		= ls_scfg_msi_remove,
- };
- 
- module_platform_driver(ls_scfg_msi_driver);
-diff --git a/drivers/irqchip/irq-madera.c b/drivers/irqchip/irq-madera.c
-index acceb6e7fa95..b32982c11515 100644
---- a/drivers/irqchip/irq-madera.c
-+++ b/drivers/irqchip/irq-madera.c
-@@ -236,7 +236,7 @@ static void madera_irq_remove(struct platform_device *pdev)
- 
- static struct platform_driver madera_irq_driver = {
- 	.probe		= madera_irq_probe,
--	.remove_new	= madera_irq_remove,
-+	.remove		= madera_irq_remove,
- 	.driver = {
- 		.name	= "madera-irq",
- 		.pm	= &madera_irq_pm_ops,
-diff --git a/drivers/irqchip/irq-mvebu-pic.c b/drivers/irqchip/irq-mvebu-pic.c
-index 08b0cc862adf..bd1e06e05a39 100644
---- a/drivers/irqchip/irq-mvebu-pic.c
-+++ b/drivers/irqchip/irq-mvebu-pic.c
-@@ -183,7 +183,7 @@ MODULE_DEVICE_TABLE(of, mvebu_pic_of_match);
- 
- static struct platform_driver mvebu_pic_driver = {
- 	.probe		= mvebu_pic_probe,
--	.remove_new	= mvebu_pic_remove,
-+	.remove		= mvebu_pic_remove,
- 	.driver = {
- 		.name		= "mvebu-pic",
- 		.of_match_table	= mvebu_pic_of_match,
-diff --git a/drivers/irqchip/irq-pruss-intc.c b/drivers/irqchip/irq-pruss-intc.c
-index 060eb000e9d3..bee01980b463 100644
---- a/drivers/irqchip/irq-pruss-intc.c
-+++ b/drivers/irqchip/irq-pruss-intc.c
-@@ -648,7 +648,7 @@ static struct platform_driver pruss_intc_driver = {
- 		.suppress_bind_attrs	= true,
- 	},
- 	.probe		= pruss_intc_probe,
--	.remove_new	= pruss_intc_remove,
-+	.remove		= pruss_intc_remove,
- };
- module_platform_driver(pruss_intc_driver);
- 
-diff --git a/drivers/irqchip/irq-renesas-intc-irqpin.c b/drivers/irqchip/irq-renesas-intc-irqpin.c
-index 9ad37237ba95..954419f2460d 100644
---- a/drivers/irqchip/irq-renesas-intc-irqpin.c
-+++ b/drivers/irqchip/irq-renesas-intc-irqpin.c
-@@ -584,7 +584,7 @@ static SIMPLE_DEV_PM_OPS(intc_irqpin_pm_ops, intc_irqpin_suspend, NULL);
- 
- static struct platform_driver intc_irqpin_device_driver = {
- 	.probe		= intc_irqpin_probe,
--	.remove_new	= intc_irqpin_remove,
-+	.remove		= intc_irqpin_remove,
- 	.driver		= {
- 		.name		= "renesas_intc_irqpin",
- 		.of_match_table	= intc_irqpin_dt_ids,
-diff --git a/drivers/irqchip/irq-renesas-irqc.c b/drivers/irqchip/irq-renesas-irqc.c
-index 76026e0b8e20..cbce8ffc7de4 100644
---- a/drivers/irqchip/irq-renesas-irqc.c
-+++ b/drivers/irqchip/irq-renesas-irqc.c
-@@ -247,7 +247,7 @@ MODULE_DEVICE_TABLE(of, irqc_dt_ids);
- 
- static struct platform_driver irqc_device_driver = {
- 	.probe		= irqc_probe,
--	.remove_new	= irqc_remove,
-+	.remove		= irqc_remove,
- 	.driver		= {
- 		.name		= "renesas_irqc",
- 		.of_match_table	= irqc_dt_ids,
-diff --git a/drivers/irqchip/irq-renesas-rza1.c b/drivers/irqchip/irq-renesas-rza1.c
-index f05afe82db4d..d4e6a68889ec 100644
---- a/drivers/irqchip/irq-renesas-rza1.c
-+++ b/drivers/irqchip/irq-renesas-rza1.c
-@@ -259,7 +259,7 @@ MODULE_DEVICE_TABLE(of, rza1_irqc_dt_ids);
- 
- static struct platform_driver rza1_irqc_device_driver = {
- 	.probe		= rza1_irqc_probe,
--	.remove_new	= rza1_irqc_remove,
-+	.remove		= rza1_irqc_remove,
- 	.driver		= {
- 		.name		= "renesas_rza1_irqc",
- 		.of_match_table	= rza1_irqc_dt_ids,
-diff --git a/drivers/irqchip/irq-ts4800.c b/drivers/irqchip/irq-ts4800.c
-index b5dddb3c1568..cc219f28d317 100644
---- a/drivers/irqchip/irq-ts4800.c
-+++ b/drivers/irqchip/irq-ts4800.c
-@@ -154,7 +154,7 @@ MODULE_DEVICE_TABLE(of, ts4800_ic_of_match);
- 
- static struct platform_driver ts4800_ic_driver = {
- 	.probe		= ts4800_ic_probe,
--	.remove_new	= ts4800_ic_remove,
-+	.remove		= ts4800_ic_remove,
- 	.driver = {
- 		.name		= "ts4800-irqc",
- 		.of_match_table	= ts4800_ic_of_match,
-
-base-commit: 929beafbe7acce3267c06115e13e03ff6e50548a
--- 
-2.45.2
-
+- Krishna Chaitanya.
+>>> Remove the L2 poll too, after the PME_TURN_OFF message is sent
+>>> out.  Because the re-initialization would be done in
+>>> dw_pcie_resume_noirq().
+>>
+>> As Krishna explained, host needs to wait until the endpoint acks the
+>> message (just to give it some time to do cleanups). Then only the
+>> host can initiate D3Cold. It matters when the device supports L2.
+> 
+> The important thing here is to be clear about the *reason* to poll for
+> L2 and the *event* that must wait for L2.
+> 
+> I don't have any DesignWare specs, but when dw_pcie_suspend_noirq()
+> waits for DW_PCIE_LTSSM_L2_IDLE, I think what we're doing is waiting
+> for the link to be in the L2/L3 Ready pseudo-state (PCIe r6.0, sec
+> 5.2, fig 5-1).
+> 
+> L2 and L3 are states where main power to the downstream component is
+> off, i.e., the component is in D3cold (r6.0, sec 5.3.2), so there is
+> no link in those states.
+> 
+> The PME_Turn_Off handshake is part of the process to put the
+> downstream component in D3cold.  I think the reason for this handshake
+> is to allow an orderly shutdown of that component before main power is
+> removed.
+> 
+> When the downstream component receives PME_Turn_Off, it will stop
+> scheduling new TLPs, but it may already have TLPs scheduled but not
+> yet sent.  If power were removed immediately, they would be lost.  My
+> understanding is that the link will not enter L2/L3 Ready until the
+> components on both ends have completed whatever needs to be done with
+> those TLPs.  (This is based on the L2/L3 discussion in the Mindshare
+> PCIe book; I haven't found clear spec citations for all of it.)
+> 
+> I think waiting for L2/L3 Ready is to keep us from turning off main
+> power when the components are still trying to dispose of those TLPs.
+> 
+> So I think every controller that turns off main power needs to wait
+> for L2/L3 Ready.
+> 
+> There's also a requirement that software wait at least 100 ns after
+> L2/L3 Ready before turning off refclock and main power (sec
+> 5.3.3.2.1).
+> 
+> Bjorn
+> 
