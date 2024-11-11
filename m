@@ -1,186 +1,86 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF1015A84E
-	for <imx@lists.linux.dev>; Mon, 11 Nov 2024 14:31:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1701E481;
+	Mon, 11 Nov 2024 14:33:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731335484; cv=none; b=hetD9ANt54erTIpp49pdr08iNvkADHBx/jodsKiF0Jm4aqaNfdX/lQpec5VYtwXBKq0mZIa/p8xMmgiygCtDOvvDd7r5rZOs6AzEnuM9nSwceKYvp6zESWNHcacWcqKg92kPMFQW9oRjCyehRpOjLIaVbHhqyE3ddEd8LYNZyVc=
+	t=1731335635; cv=none; b=AWphpsiINQdJLB0yEreJrFfzC6JIS9FSQf3ihLtzH6HDncHrn4sidQbk17wBajT0by+Xoh2ROeGzPBZWTDt0cKXRHVEcm0oECYYVW0GdyBwkmSzvzrEArtPX5GUd8IKSV88v0dW4MIwqrbcrVlYKJu43smcZicP50vnjPGSqlNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731335484; c=relaxed/simple;
-	bh=iKqn3oJeHoVyN811N42NQHk6+Xod2qU3aEm7/NyqJnU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qLelTQ2bLELxhi4KJwTfaz6PX7utrUUGhK8VrsnSoN/86HDFq8+bwk2PeUL9KjJ/dubKHeCaqaDYkATkp1COeRxk1TcLHiVfkQXXAmLjZOgZXMOQBOkPtpcsGDIchQeZK+/WIqf6sboRn73ctV/QzOhrWmHQfBKrOif5kq0uuAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=MsGnFC4B; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=xTr2ARlH; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=MsGnFC4B; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=xTr2ARlH; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1731335635; c=relaxed/simple;
+	bh=SewJZP7f9NlP+i+/QC/OUav9taQ94h0x+CLNzfWNZl8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C7JAwKrpks8bF5OwS4tcvxAtXaRU2zEDvLT/psqEQYnwexq3sRK+u1utB5tT8DmMKxhsjxevlW1IPPEE+jwMC78b21BrJoh/hQHwwW8EUf/f0LnOUs1LuxdrNQVdYYwOu7ADNtEriaBuO82qP7jIfA6pM4m+pSiQtpd2ScfKqYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jTPvGWyz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="MsGnFC4B";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="xTr2ARlH";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="MsGnFC4B";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="xTr2ARlH"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 8E18E1F45A;
-	Mon, 11 Nov 2024 14:31:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1731335480; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=y9h9XHtfaqzI4O/2tolbkYILB+f7Kff73b6msVgAJtE=;
-	b=MsGnFC4BSR2+7GxXXTQcCKC1FqNtrHPRL0YnEym3FtLlMQVZBLHNGlHtsokskVy1d4iq7L
-	hlei8taMEuZHUdGVZmfBgvFIg0UkYez1UwdUjBM/9dCGka8uOav6MzRV+vt7Vije7BHHk5
-	bcQWUm601q0CkHsay9NBgoJbbkDlPq4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1731335480;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=y9h9XHtfaqzI4O/2tolbkYILB+f7Kff73b6msVgAJtE=;
-	b=xTr2ARlHUN2AlwFP0180z+5hxORs/dk6bMQMCfSE+GVGBu0ASd0RMOWVpQR29WRcwxYs5E
-	e/TLYXsWtoFM2WBg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1731335480; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=y9h9XHtfaqzI4O/2tolbkYILB+f7Kff73b6msVgAJtE=;
-	b=MsGnFC4BSR2+7GxXXTQcCKC1FqNtrHPRL0YnEym3FtLlMQVZBLHNGlHtsokskVy1d4iq7L
-	hlei8taMEuZHUdGVZmfBgvFIg0UkYez1UwdUjBM/9dCGka8uOav6MzRV+vt7Vije7BHHk5
-	bcQWUm601q0CkHsay9NBgoJbbkDlPq4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1731335480;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=y9h9XHtfaqzI4O/2tolbkYILB+f7Kff73b6msVgAJtE=;
-	b=xTr2ARlHUN2AlwFP0180z+5hxORs/dk6bMQMCfSE+GVGBu0ASd0RMOWVpQR29WRcwxYs5E
-	e/TLYXsWtoFM2WBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 54CDC13301;
-	Mon, 11 Nov 2024 14:31:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id eJRsEzgVMmeWaAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 11 Nov 2024 14:31:20 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	p.zabel@pengutronix.de
-Cc: dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 5/5] drm/gem-vram: Use default pitch and size for dumb buffers
-Date: Mon, 11 Nov 2024 15:23:07 +0100
-Message-ID: <20241111143114.631690-6-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241111143114.631690-1-tzimmermann@suse.de>
-References: <20241111143114.631690-1-tzimmermann@suse.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jTPvGWyz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C42C4CECF;
+	Mon, 11 Nov 2024 14:33:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731335634;
+	bh=SewJZP7f9NlP+i+/QC/OUav9taQ94h0x+CLNzfWNZl8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jTPvGWyztEaKSUfQSM+9QDWSlt0SZ92xNiyjQhjbSDa39BsYDIgBmlpsDrvOHyYXG
+	 JV9VEVP1vqx0YPAFrKq6JljE1czZ/+U+dBdS0HNHEiUe4sNQaI89RX5AnD/F5frs1X
+	 qq3cTe/vkPyHk9rr9y+/4FPJgNQ0Alh0KwzZvHljM0JlOo8pPO6BgyQEZfGAlhpKWV
+	 nN4IgzkcDZpcRmt7akZEFOR03rJxbTg8tIbPQdL7jF29mPRiofk1srzu4VdYb9E4pY
+	 0JkDJRP0J7erGIkTj8Ecqwjlc4QvhIF3cMm+qLAXrcT+shVDJKp3nU5GCcu8E0c7kM
+	 TAR1vi1+F3bjQ==
+Date: Mon, 11 Nov 2024 15:33:49 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, dlemoal@kernel.org, maz@kernel.org,
+	tglx@linutronix.de, jdmason@kudzu.us
+Subject: Re: [PATCH v5 0/5] PCI: EP: Add RC-to-EP doorbell with platform MSI
+ controller
+Message-ID: <ZzIVzfkZe-hkAb4G@ryzen>
+References: <20241108-ep-msi-v5-0-a14951c0d007@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-6.80 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_COUNT_TWO(0.00)[2];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FREEMAIL_TO(0.00)[linux.intel.com,kernel.org,gmail.com,ffwll.ch,pengutronix.de];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCVD_TLS_ALL(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLqirfcw6gnbcr9a9yhi49fhi6)];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com]
-X-Spam-Score: -6.80
-X-Spam-Flag: NO
+In-Reply-To: <20241108-ep-msi-v5-0-a14951c0d007@nxp.com>
 
-Use the pitch and size values stored in the args parameter for
-allocating a dumb buffer in drm_gem_vram_dumb_create(). Inline
-the relevant code from drm_gem_vram_fill_create_dumb(), but
-without the size computation. This value comes from
-drm_mode_create_dumb(). Align the pitch to a multiple of 8.
+On Fri, Nov 08, 2024 at 02:43:27PM -0500, Frank Li wrote:
 
-Only hibmc and vboxvideo use gem-vram. Hibmc invokes the call to
-drm_gem_vram_fill_create_dumb() directly and is therefore not affected.
+(snip)
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
----
- drivers/gpu/drm/drm_gem_vram_helper.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+> To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> To: Krzysztof Wilczyński <kw@linux.com>
+> To: Kishon Vijay Abraham I <kishon@kernel.org>
+> To: Bjorn Helgaas <bhelgaas@google.com>
+> To: Arnd Bergmann <arnd@arndb.de>
+> To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-pci@vger.kernel.org
+> Cc: imx@lists.linux.dev
+> Cc: Niklas Cassel <cassel@kernel.org>
+> Cc: cassel@kernel.org
+> Cc: dlemoal@kernel.org
+> Cc: maz@kernel.org
+> Cc: tglx@linutronix.de
+> Cc: jdmason@kudzu.us
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
 
-diff --git a/drivers/gpu/drm/drm_gem_vram_helper.c b/drivers/gpu/drm/drm_gem_vram_helper.c
-index 22b1fe9c03b8..0d1a9cce47e7 100644
---- a/drivers/gpu/drm/drm_gem_vram_helper.c
-+++ b/drivers/gpu/drm/drm_gem_vram_helper.c
-@@ -6,6 +6,7 @@
- #include <drm/drm_debugfs.h>
- #include <drm/drm_device.h>
- #include <drm/drm_drv.h>
-+#include <drm/drm_dumb_buffers.h>
- #include <drm/drm_file.h>
- #include <drm/drm_framebuffer.h>
- #include <drm/drm_gem_atomic_helper.h>
-@@ -582,10 +583,31 @@ int drm_gem_vram_driver_dumb_create(struct drm_file *file,
- 				    struct drm_device *dev,
- 				    struct drm_mode_create_dumb *args)
- {
-+	struct drm_gem_vram_object *gbo;
-+	int ret;
-+
- 	if (WARN_ONCE(!dev->vram_mm, "VRAM MM not initialized"))
- 		return -EINVAL;
- 
--	return drm_gem_vram_fill_create_dumb(file, dev, 0, 0, args);
-+	ret = drm_mode_align_dumb(args, 8, 0);
-+	if (ret)
-+		return ret;
-+
-+	gbo = drm_gem_vram_create(dev, args->size, 0);
-+	if (IS_ERR(gbo))
-+		return PTR_ERR(gbo);
-+
-+	ret = drm_gem_handle_create(file, &gbo->bo.base, &args->handle);
-+	if (ret)
-+		goto err_drm_gem_object_put;
-+
-+	drm_gem_object_put(&gbo->bo.base);
-+
-+	return 0;
-+
-+err_drm_gem_object_put:
-+	drm_gem_object_put(&gbo->bo.base);
-+	return ret;
- }
- EXPORT_SYMBOL(drm_gem_vram_driver_dumb_create);
- 
--- 
-2.47.0
+On rk3588:
+Tested-by: Niklas Cassel <cassel@kernel.org>
 
+
+Note that the series does not apply cleanly on latest pci/endpoint branch.
+
+
+Kind regards,
+Niklas
