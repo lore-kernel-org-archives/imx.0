@@ -1,163 +1,187 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010022.outbound.protection.outlook.com [52.101.69.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99CF14D428
-	for <imx@lists.linux.dev>; Mon, 11 Nov 2024 06:09:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731305352; cv=none; b=PjoCFmaGKOJJ3hjPVna9BTUC1gF3sUqmAvkcmBLsIyItovoyW4WC6queBkOnevXFbeix1rWWkBca9E0+PFSOS9wwwXCl3/TmVRHxYTTzdxuuq3vmvGfb4f7vxmXc1lOz/LJXU83MhyJBnL812LdeAO6TSiBTxxwjppSHEkwD7xE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731305352; c=relaxed/simple;
-	bh=Y+YcqdGqf+OGKcdRrC+abbyhOx97TLTW0GMdmUmwMpg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DxAO+w6rqUfXJL2KVnK5wt0H18oJC9JrqsuDHXriOTNlh8xoJh/0O6vmvhBx5O0thGL1RqecxbiWGXRpJCcWSYVNWcfWkkrG4W8FF9YZZrBBbPyk4fM6K6PUDvCUVR9sTmXJsI4TjHXo5eNO3f2zp7t9AkTgg/02X4FUItRsjMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zaRZKho/; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7110155382
+	for <imx@lists.linux.dev>; Mon, 11 Nov 2024 07:26:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.22
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731309986; cv=fail; b=PMSes/yDIowSWvAWgVCICwh7w5UUVfiiJ4fDMByEZObHmBm8jX1g26bOtLVyoJTTYl6yjJsH7KmjSeCol+oQ3naPraoWQr5ghp96ZmwuUSnpCKw1m3j8KUjxu/HECU5zkO1m2Niq4M0TeI2KhoNWMXp9fDGhGx4QmZEbdWBowlo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731309986; c=relaxed/simple;
+	bh=y0yDb7wi13Yq8Bz2eAqntIkNUOOvEsIIFhn1Eqgqcos=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=MhySO6KL86s59echW+sUilx204Y3E+ZviWTn76lWYVWgBjTGULyIeUbKSVbJ+tD8a9hb2AbJLTLyJp/zjuOy3q6UKZ3asW8uINRVFiG15nvcrZuiYPykUYZj5bvHF8s8voMSgJcoR9Vz0HrNQD5mOvls8DkKCvPaWVTMyXhagQI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=AndeUi9G; arc=fail smtp.client-ip=52.101.69.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zaRZKho/"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-20c803787abso33454655ad.0
-        for <imx@lists.linux.dev>; Sun, 10 Nov 2024 22:09:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731305350; x=1731910150; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=qkxZN5YdgAuoqBMpfCPX8HcOfpXqfkrH2t/OYEck+/8=;
-        b=zaRZKho/MEViDzrwvUgDfhmidAakwxIKkRmi6bcuywt9H2jVEaUR23CH0qdH9NcqlR
-         3iAYQw4I9vu/N8CPaN7u3nbeK8bhqcx8o6mJt2wluRyexkjke5yOBUAQ8yBlios9ma7r
-         aEQX3jB8mIsZb5N78q4sUrlnm/qC9sHzx9zlwxKzOuoog2gr4LVfLGkKqNLRjbsEfCBO
-         rjYj47rniy9iHHEvUplmOPQadeqgWtaH4OxleNt8pL1B2KHQHP6ltBkiXCNdAwCrPBcO
-         f9zqmCHC/zz/HsbTpFeVScKy2k11PIydj4YMK5agG3s3x5RdZl5ldpgledDMVoqYG3r3
-         kd5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731305350; x=1731910150;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qkxZN5YdgAuoqBMpfCPX8HcOfpXqfkrH2t/OYEck+/8=;
-        b=ahT5YZS2y5oEuuVJwOj+YnxuvtI+Cccc9K/Ba93RWaVap7NMaY9dOHVFfVzwW25Sys
-         iIpAhZbtjduajUmiHlwYwJXua1oUWKVX4qj1KP0ra5IfcKSodn3Mhmhh+s1CMVc3wFOO
-         ZmiRczKJAEcC/wcm7cE3FCEtA4QS7j67lkx7e9Z1eaA8zkZR024DHZdb0pDW/aLWyTeL
-         k3UQqC7spL1oiV9q4wqxqH6Vgn9yOR/pdKvDXRVhAAh54a1kzylVfi1P//LOa7o9MeTO
-         DpCfUkk8t6DoGPUdjUiLlVi36gVYHf02pE2QjAvq3rzCjsY350eZiPxlKrsIDj84IxwE
-         ZN+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWl1n8dNOGUfniYWxFUY+dfHee+u+pUUitYwRBWexPfKmcq7rKqMrma+y6I1DrTw8KSK3c=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwFPLK2ao0Cpwnk2TQ1HAs2UDwX9M5NPLWR0aaFMe5c7fnAWfAP
-	GMetR7rR8Wzul8gaAEXp69WmLoV2xXTZmMBue5D7k+9TvxGN7FHFKoGJyB6zWQ==
-X-Google-Smtp-Source: AGHT+IEl6gQgVgwKnj6tE3Fweh981irdtgKxjVaL3Zp4fjV5+8vkkGC4Z/QsrLc4gCH0NjBzR+4oiw==
-X-Received: by 2002:a17:903:1c2:b0:205:7007:84fa with SMTP id d9443c01a7336-211837c3ddemr194720175ad.28.1731305349913;
-        Sun, 10 Nov 2024 22:09:09 -0800 (PST)
-Received: from thinkpad ([117.193.211.140])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177e4205esm68869915ad.151.2024.11.10.22.09.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Nov 2024 22:09:09 -0800 (PST)
-Date: Mon, 11 Nov 2024 11:39:02 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Richard Zhu <hongxing.zhu@nxp.com>, jingoohan1@gmail.com,
-	bhelgaas@google.com, lpieralisi@kernel.org, kw@linux.com,
-	robh@kernel.org, frank.li@nxp.com, imx@lists.linux.dev,
-	kernel@pengutronix.de, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] PCI: dwc: Clean up some unnecessary codes in
- dw_pcie_suspend_noirq()
-Message-ID: <20241111060902.mdbksegqj5rblqsn@thinkpad>
-References: <20241107111334.n23ebkbs3uhxivvm@thinkpad>
- <20241108002425.GA1631063@bhelgaas>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="AndeUi9G"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IMgJ+HePActns8hynGUm3j9WLSCDyyrCyZc/mP/jztyNjerH05tDaL7SxlXhy0vE9I1JLGrfvfhTW+Izs/NYSSX+S7BPbtQwM5MTXJb9GhyJ0/CN0IkV46SMnazW+s+JpNvaESpnXm9ZcDxeBdsL+dFJvQp5UpbHCtigJyBu5L8a1Q6sw5lDiW+jT8a5p588Fdyj8XHcoUZO4gDR0w3WR8AA67Vcx4SvEr82DKhHBaiBU5DhhdIV54/3/I23ducUFrDBOUqSs+EtPtyZhO/OAzQU7yOS+8kySgij1eu0sx+MOYD6e1PWVF7CusaE/p71r75+L2nEJvdkkUN7iWfKyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=P1TMmag6hotFLU3OzdQLyDbwl0oGZUpqeE0Z2YcpNk8=;
+ b=Ka3eqZshUgm5XeNarCeZV/pLHWZBIyhhllIJd/tkvGpyB2ak2Gfycbor6XpNRjm7ubOv4YDiL1wOshgk6+QZ3dH+D9tb6fB4nDXuOycC3efnLw9Uq13FaydP76RH6uH2jssr5xN4ra+18/0+rxeDlBAfnQNYXzzd/xTu5WVLCU1Ub2O8BAftEktLjJhmHF2HqNxYn2N/UsIHFNhP4ZuAbJKVLxJyV8RXPx5pxKmbNw1HWHKAeIsyGAtZToq5VtSr41AoMRkmngVJdwSxuqviVdyJXjL+/DcPmCrBsCysKAtGGxqu70SlEgL4NaqGZGH+g2NOaLOy7W2KlEXKjr1Wog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=P1TMmag6hotFLU3OzdQLyDbwl0oGZUpqeE0Z2YcpNk8=;
+ b=AndeUi9G021EdjBsgl+hYpMYJQq8Z4wwx9MjwkrvaPuQlc9Ebb4tU8L0SEhxZ3grOGYLUi+Jvi35QDPeLsR/r6mDOnj6OTfcOXJyRj3gvSeOU1TQlaxU3t4xEHKWzfn/DG+B4L1qjPoyP4RzRg3nA1awpLLD750HcFg8+R5dx8BqogfvKSsZ0Jx+MKtta9LzeaH/3kX5/8Axyk7QxUXv78acSCQS23iOjFEYLNS5GWe3K9fk0lfE/Zcxhcrsq/2rA6djIkrPCaoCyhyRuR0HMHCp+NQDx7v04Tf3AZb5ZOEDmt75OmZTmO3BpLc+aWgU9GepWhwWL14ofJPEGU8OpQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by VI0PR04MB10854.eurprd04.prod.outlook.com (2603:10a6:800:25f::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.28; Mon, 11 Nov
+ 2024 07:26:21 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%6]) with mapi id 15.20.8137.027; Mon, 11 Nov 2024
+ 07:26:21 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+To: Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	imx@lists.linux.dev (open list:FREESCALE eDMA DRIVER),
+	dmaengine@vger.kernel.org (open list:FREESCALE eDMA DRIVER),
+	linux-kernel@vger.kernel.org (open list)
+Cc: Peng Fan <peng.fan@nxp.com>
+Subject: [PATCH V2 1/2] dmaengine: fsl-edma: cleanup chan after dma_async_device_unregister
+Date: Mon, 11 Nov 2024 15:26:00 +0800
+Message-Id: <20241111072602.1179457-1-peng.fan@oss.nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR01CA0134.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:8f::14) To PAXPR04MB8459.eurprd04.prod.outlook.com
+ (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241108002425.GA1631063@bhelgaas>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|VI0PR04MB10854:EE_
+X-MS-Office365-Filtering-Correlation-Id: d3ad120f-74fb-4454-5978-08dd022223c8
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|52116014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?0mo014/FbqAkXKOmjlTdGuB6i2k5E6yVoSUZ3SMNjV5BO4WPEncl38X4nFoK?=
+ =?us-ascii?Q?s2Oa6o2v+3yuK+CGmo/wQ01hAAckLtJJ2cUaVOav6OeiVNV7MJCcWn2z6Hkt?=
+ =?us-ascii?Q?SfX0uMaECEbD8L2qJmwSsL8ffdCeHuk0SO9c3VdqEcKKChuEszgGDrZY53Ve?=
+ =?us-ascii?Q?sIHidMLnnDZgW9DsPU7Jl/R21SePY2PZdvQz2sFBsSGjdu3S/eR8Wt1YtUb5?=
+ =?us-ascii?Q?Txtqxj41lYAa05Rmlt2/xetU+FWh5IZyCbGeiikro9JxLgV5zyGhNqD0m+7+?=
+ =?us-ascii?Q?yeqs015Y5v7jafP4LIoTtBunHEwghTBkA0or6xvYdWgyHYACqYy8l0NlA8MI?=
+ =?us-ascii?Q?uSPPunhcBIP0e1N/JWQyDIWJtvyCtkAvb7qvVm5zmqfY1/GWpvCmzCuTWGO8?=
+ =?us-ascii?Q?Q+ShZD7Klov21vCN07ASUTUVJHz1ZlKOd5GjOR5fd+eoQLbRJj6LO6KFWh1G?=
+ =?us-ascii?Q?FgH2bUc2RjMx5SH3YGOp3XG4yNXrac03Gjgzuu3zHNlsVSZXwSRfrtoBxqn3?=
+ =?us-ascii?Q?8qpO1guv6rur8ubBZTjdIB8QjvnO8VPH8Nsbyr8T+1WFdl7XhFUcaL4ZJFP+?=
+ =?us-ascii?Q?jRP5RXKANPRZ2iDzycJ3/Nynl0ro1m4yS7z1VFzSUSFYLKlyNxqGFmoyEzDz?=
+ =?us-ascii?Q?cvrWJNhgpcy6ffcT+/KgNSyzsFeE19MtXo85Z+GZO3Z8/dceAvufBH24Wfm6?=
+ =?us-ascii?Q?HpP9dPlFO23PZk63dbsWSOSEfFFMWOzdEbdelqPuODrx92EH5wHxLsdRKoB3?=
+ =?us-ascii?Q?/U8znu3IOJvN6iCiDJCKwUhSdTtXJloqaC/9gpHqYn3YYxnT/3SHeFL9Dl7N?=
+ =?us-ascii?Q?6BtygnsIQLaww9GDulXU/fgck/Q+hJA2lMRInyXsKiCmND15BTXETZ9ddzFp?=
+ =?us-ascii?Q?s0BGJ5SZx0yMyxf68QR1z7SQKAJ4LWVs4XVvVHbNw5MNHnnwaKy31BETnX2G?=
+ =?us-ascii?Q?o44xarSPSfJ3+mdpMgM8lN293MwX7uNc9Vl7oA2naPFo46XFB3B/0mO5hZAo?=
+ =?us-ascii?Q?ng6fwzIcmJaMklvyXwMqV4jgW+JbZYpfwfZpIvHy63IpRqiPEnUvKVSoinwi?=
+ =?us-ascii?Q?TTmQI30auYMKhjD5IRa8Jap5uY/QB2XcB7noGUhd4+e+3u6uaUBQ113lt2xJ?=
+ =?us-ascii?Q?zXe2fJ7b7+MmqkXmcOq7/JTLuvWgcu8u+G9FDnNWMvch5YYsqunMHInCGnWQ?=
+ =?us-ascii?Q?fMFOPc3ENM6n4SvFnsaDPLgoMPVunI8bOVTyebFMOVt51BGNvGl/UuY9z+Qj?=
+ =?us-ascii?Q?wvVQaUjGtEsox4Kl28ZsN3+ZNcUHmF/VVc9wt02pxFEIYqVmygU01TEI4viJ?=
+ =?us-ascii?Q?GW1a65faL0YlMX1hBTL6U90VbZBO0LilpMklqFA6E5EGI41mkHDaA2D2053s?=
+ =?us-ascii?Q?I6btCBs=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?zIzi8KsY3KMi1codqZeEz7/TVv6aXf4sO3dK+mYsmVNhZe2Snv8Yco3nRIqE?=
+ =?us-ascii?Q?qmyWOgPXgIomKDQhs8AlOKv2OVsW0OSoIFMoqeyGYPBaKv6dGMCdX7sKiBtw?=
+ =?us-ascii?Q?KwQJVOMIpfcnv2a+Ny3Mij7OLrd1dWolDSlaK/jCunL9h9wZSEvu1293qRxf?=
+ =?us-ascii?Q?rm+zFwoVMpUD+TOjezDQ89B9wseebaKjEOvFjiyFH/ctqUdGyphUmjWWBnWE?=
+ =?us-ascii?Q?Q2IMNIN0UwGA6MqNuV8HiaWLng/UPsDUDyC+UpGhQkOKtYaUl3T05bILo/lH?=
+ =?us-ascii?Q?bP0vLsuOamO5W0eufw8ZxfGtDmtXMvpMCVuo8mA1N7Y2KrUVFdrFgV9rXrWH?=
+ =?us-ascii?Q?qwIk17c5fN0hDshTPdHrgktm8oQj6FrxrIcMpS6VHJXUTZv3Jgo6lpDm+5go?=
+ =?us-ascii?Q?kTFi4iJr2MtUJUh8lTnwOsGWgcwW4p261tSAIfHq95TjCKdHis8jdb5EFlMn?=
+ =?us-ascii?Q?s2m3SQdKr2dgEtqgl2ykcyIRopHk2WwvgEsSi1d8qlcPT8yRVA2cF3swAYAP?=
+ =?us-ascii?Q?ZexkXXf5rv1WJhiPqtC07nXNPP2CDRlRFvowM8tzeJ8suXvYf6dXVFs5vLMx?=
+ =?us-ascii?Q?aAHlqVgmjkzc1JRdu5I0xBz2N9HF9DliQMQIqdP8VbJngI4zhMmTL2aApqsK?=
+ =?us-ascii?Q?wEQ6+jXdANErA9A1Jgq9wX5um9KVY8EjfeFLKvAHC8i82z599+R3lHGxT/iN?=
+ =?us-ascii?Q?2HXOLYqeA6u5xxM5s94nVUQikmFinwTi55Gcv/ci5S7WUo7AEXvBtdDAD46x?=
+ =?us-ascii?Q?PwS9CW0rxl1+U+BesqCZxcnNnodf7GrbMCY8NNR+kwnmuY5ljm8TbJXHy8sa?=
+ =?us-ascii?Q?w9h7wjvRECtlbcmo3sFFhc1kHBuC/LTLNG3C4rUeS7yYXXEdsvRHXy1NyU+y?=
+ =?us-ascii?Q?LU5lmWfvW5JUzfhmsB0mHm3AteBRgg8vl1qxiZ/IdYe1RvcP2eWM36DM/6yB?=
+ =?us-ascii?Q?5SDlw8IxZPDmpMwlN4fzYMvq11qS6pR1CudSCqp7qklrHRtkJTUnuX9A72wr?=
+ =?us-ascii?Q?AorGZlrCCmCOp6Fi6pMOFelsXVn1Go254+NrlKaOKChTbF0US8sWtZCUTJus?=
+ =?us-ascii?Q?XWHkPkZWTIpwX37VBn4A97BZUSdG0VsecvbnodHWVZbadNVWLmHg1XY4VLzw?=
+ =?us-ascii?Q?l9vqkqVNPw1tmXfvEI3+VsMVGYpi5p4UgkRnObJWQ/cJAP8AGfBZJHX3EBqh?=
+ =?us-ascii?Q?LXPAWNI1111VORTNnfijS/lw788Cz4sr9qZhIA1TlPKYNZeisNZknMl5m+Rh?=
+ =?us-ascii?Q?A8i751YuuWNkhGwOs6JdDZSROH44xV/Mxb9PutqTBWXOm954rRbRt6k6heMh?=
+ =?us-ascii?Q?cHWSo+uTrAQmU73v3XAhcQaH1JfFfcw70tNoTilS0llZcHoy2zclWxB+kNew?=
+ =?us-ascii?Q?4wtUHKJzrEWdEcAb2B5AyI/Ld1QUhptiSXY+rbO3uMyP4H7n4HMZYJ4ZGzKw?=
+ =?us-ascii?Q?hPvgVBtaksT0kKII2pYC07Fbva9rcAGC5LP0ohaGbkbmqn5hfMZ4GsVMBPRD?=
+ =?us-ascii?Q?yaXg/o31Zf9QBREDLiTo+oO5sE+lJpc3BDtEZ9RrHsrVuzj2uq84Wl/yBkLr?=
+ =?us-ascii?Q?XlNu9Zzz0EjHu5zT2Q8Ugk3xZfXxFrO4ZLL7bQBS?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d3ad120f-74fb-4454-5978-08dd022223c8
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2024 07:26:21.2236
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1W/3pm89Bk89MCyEj8k2XuTiBS36ftmvdG8XklgxxVkA7Tuoh8h7vzestpMTWVTIyBMHVoLEWeVXTw5eEAHOkQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10854
 
-On Thu, Nov 07, 2024 at 06:24:25PM -0600, Bjorn Helgaas wrote:
-> On Thu, Nov 07, 2024 at 11:13:34AM +0000, Manivannan Sadhasivam wrote:
-> > On Thu, Nov 07, 2024 at 04:44:55PM +0800, Richard Zhu wrote:
-> > > Before sending PME_TURN_OFF, don't test the LTSSM stat. Since it's
-> > > safe to send PME_TURN_OFF message regardless of whether the link
-> > > is up or down. So, there would be no need to test the LTSSM stat
-> > > before sending PME_TURN_OFF message.
-> > 
-> > What is the incentive to send PME_Turn_Off when link is not up?
-> 
-> There's no need to send PME_Turn_Off when link is not up.
-> 
-> But a link-up check is inherently racy because the link may go down
-> between the check and the PME_Turn_Off.  Since it's impossible for
-> software to guarantee the link is up, the Root Port should be able to
-> tolerate attempts to send PME_Turn_Off when the link is down.
-> 
-> So IMO there's no need to check whether the link is up, and checking
-> gives the misleading impression that "we know the link is up and
-> therefore sending PME_Turn_Off is safe."
-> 
+From: Peng Fan <peng.fan@nxp.com>
 
-I agree that the check is racy (not sure if there is a better way to avoid
-that), but if you send the PME_Turn_Off unconditionally, then it will result in
-L23 Ready timeout and users will see the error message.
+There is kernel dump when do module test:
+sysfs: cannot create duplicate filename
+/devices/platform/soc@0/44000000.bus/44000000.dma-controller/dma/dma0chan0
+ __dma_async_device_channel_register+0x128/0x19c
+ dma_async_device_register+0x150/0x454
+ fsl_edma_probe+0x6cc/0x8a0
+ platform_probe+0x68/0xc8
 
-> > > Remove the L2 poll too, after the PME_TURN_OFF message is sent
-> > > out.  Because the re-initialization would be done in
-> > > dw_pcie_resume_noirq().
-> > 
-> > As Krishna explained, host needs to wait until the endpoint acks the
-> > message (just to give it some time to do cleanups). Then only the
-> > host can initiate D3Cold. It matters when the device supports L2.
-> 
-> The important thing here is to be clear about the *reason* to poll for
-> L2 and the *event* that must wait for L2.
-> 
-> I don't have any DesignWare specs, but when dw_pcie_suspend_noirq()
-> waits for DW_PCIE_LTSSM_L2_IDLE, I think what we're doing is waiting
-> for the link to be in the L2/L3 Ready pseudo-state (PCIe r6.0, sec
-> 5.2, fig 5-1).
-> 
-> L2 and L3 are states where main power to the downstream component is
-> off, i.e., the component is in D3cold (r6.0, sec 5.3.2), so there is
-> no link in those states.
-> 
-> The PME_Turn_Off handshake is part of the process to put the
-> downstream component in D3cold.  I think the reason for this handshake
-> is to allow an orderly shutdown of that component before main power is
-> removed.
-> 
-> When the downstream component receives PME_Turn_Off, it will stop
-> scheduling new TLPs, but it may already have TLPs scheduled but not
-> yet sent.  If power were removed immediately, they would be lost.  My
-> understanding is that the link will not enter L2/L3 Ready until the
-> components on both ends have completed whatever needs to be done with
-> those TLPs.  (This is based on the L2/L3 discussion in the Mindshare
-> PCIe book; I haven't found clear spec citations for all of it.)
-> 
-> I think waiting for L2/L3 Ready is to keep us from turning off main
-> power when the components are still trying to dispose of those TLPs.
-> 
+fsl_edma_cleanup_vchan will unlink vchan.chan.device_node, while
+dma_async_device_unregister  needs the link to do
+__dma_async_device_channel_unregister. So need move fsl_edma_cleanup_vchan
+after dma_async_device_unregister to make sure channel could be freed.
 
-Not just disposing TLPs as per the spec, most endpoints also need to reset their
-state machine as well (if there is a way for the endpoint sw to delay sending
-L23 Ready).
+So clean up chan after dma_async_device_unregister to address this.
 
-> So I think every controller that turns off main power needs to wait
-> for L2/L3 Ready.
-> 
-> There's also a requirement that software wait at least 100 ns after
-> L2/L3 Ready before turning off refclock and main power (sec
-> 5.3.3.2.1).
-> 
+Fixes: 6f93b93b2a1b ("dmaengine: fsl-edma: kill the tasklets upon exit")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+---
 
-Right. Usually, the delay after PERST# assert would make sure this, but in
-layerscape driver (user of dw_pcie_suspend_noirq) I don't see power/refclk
-removal.
+V2:
+ Update commit log
 
-Richard Zhu/Frank, thoughts?
+ drivers/dma/fsl-edma-main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-- Mani
-
+diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+index f9f1eda79254..01bd5cb24a49 100644
+--- a/drivers/dma/fsl-edma-main.c
++++ b/drivers/dma/fsl-edma-main.c
+@@ -668,9 +668,9 @@ static void fsl_edma_remove(struct platform_device *pdev)
+ 	struct fsl_edma_engine *fsl_edma = platform_get_drvdata(pdev);
+ 
+ 	fsl_edma_irq_exit(pdev, fsl_edma);
+-	fsl_edma_cleanup_vchan(&fsl_edma->dma_dev);
+ 	of_dma_controller_free(np);
+ 	dma_async_device_unregister(&fsl_edma->dma_dev);
++	fsl_edma_cleanup_vchan(&fsl_edma->dma_dev);
+ 	fsl_disable_clocks(fsl_edma, fsl_edma->drvdata->dmamuxs);
+ }
+ 
 -- 
-மணிவண்ணன் சதாசிவம்
+2.37.1
+
