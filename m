@@ -1,243 +1,173 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2087.outbound.protection.outlook.com [40.107.22.87])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5141BB6BC
-	for <imx@lists.linux.dev>; Mon, 11 Nov 2024 21:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.87
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731361163; cv=fail; b=BjySLQbf6ukS0V8N7jLwh40gWeOcyOeu+LZFgob7nM3Scy1QO4SWG1m1fdGDYbpCb97VXeJ3Wo7AL0FMxdq+HWMi2EIkzm1i1S9dbIqVxaAeLqIlKAtghpLvPAY93I7A8KCE98ixkmYSQcE6TH6BEjLEO6vFR8dasfYcLVJ9vvY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731361163; c=relaxed/simple;
-	bh=TC6ECWjUyutwuSLCUvmGPD+KBN7OSGrn0D8wCIVbohk=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=d12eaCdlLccIztBJtaybqN3rlUR7G8sPb2bCsH2i0IP+jy6z5D/caM3bAef19LSncGfRtGDIbnqrISe3r7B/BODUxJo4XAYk6pv2nnD8MNrIIZGsS6Yvg64zhvI+1Wz4DmeMk81+d47ry3Z8T5N9mwuuwr7qWenxmhhM4aeh5BI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=fGdbY2c+; arc=fail smtp.client-ip=40.107.22.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A07D16DC0E
+	for <imx@lists.linux.dev>; Mon, 11 Nov 2024 21:45:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731361535; cv=none; b=bsWYA2ucoHECjvcLFUU6wyUpkxtaq1kLm9O97BoIPu0UMyzSKWy8mu4mFwyx7U+gBNLsJ1zAaaMqU2+lcVZKFHpVBtzlj+aIY6wBB1DK0kg1/KYzEJEUIGAYWgMYnZbeabT5WUC7By4if53ZTxPrwKbYVEBItQhoo9ZQn78w2Kg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731361535; c=relaxed/simple;
+	bh=GJiZfVtwqlPJxTs6tzyTLMZkg1w3QWU60EFk2yXniJo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g3GbVY98+Csjk49Aa3FDeIV2TA+QskmrRWMEb7JW5WzgDrbuIglDEj3XcMR/qC4dT561RuIP6pRFnI3GEqxbV8Kd3Qw+m0icTnL6TojAtnrnDqCE7OhJ1mpA7ILiQ0BW3Qmx6PdxFkw8rOgcwyRoOkBcB1PqhPvOWR12KA/zLxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=MSW7/Axj; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="fGdbY2c+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FtlY426y4IVjJVGUSKJbV4WOE5sb6A/1ffY4zd3OEE/1GXv9NL+jmGooP8SuhZcs83IiiDaqevSRbQ8WDqoHy5lIZnQP49vWBzuHQhzdWdEyq68Kyq8kCmdsEIs1KUTHVAa8vIBSq8ob1SVRhNwMf0ygF55YmPK4I34gERVQd05RBy9Dr+81SZHGrraylZzpU2ANSNZmKTmkit+SLYnyPmVA3c45R8KYouHwnNtL1mg5thLEArnU/8S6NPCaUyc2PqE7vJ87tW1B3kfQnPXOAAIBcExD6CgBjN3lpx7lwQEsHYKtOiOrGiTHAVZH8kMzdtRECxeghaU5HC8KRJqyJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kk0QytXGXOBAwOjegdCPUYkku/3sr6mJ/aD6VCApn7M=;
- b=UpH+oR9XkZodNgt6zyrxjrMDGKFs7d5PEeOp6L2PLPUj7FzZxcGKHL+E6jk/raLkwc/AyumbJLb2bZcqgOmmFLrXjT4SkjqqVWfSLnhjk1/0w97cZUCcQhD6OiCEuNB9NwggcWLQHJ/agsH+W91nKE7QGEj2YRGNiHSvY/eYCxgyUwrrnjpSRJyNyBZ8MVOCLBM2V9sBgniDstVhhLNpuhyxwc/Sc4TB0KXXF6cFMsMekD9tLrzlZ0oR2qI9ECchGaROWC0MX4ZSvGxHnqx/EtyG5Xan53WYuXFaMjXCo+R8dclYmymPMWsah9K5Dwq5eqCJXtGAKA8EbIS+WgD8Vw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kk0QytXGXOBAwOjegdCPUYkku/3sr6mJ/aD6VCApn7M=;
- b=fGdbY2c+quAZDW/tj7HrvgflNjOevGlkgyyaixEQcALHZvSYrZI6hWhJH/8f1LDdDJZgu2CwURhX0wpqwgCloI8kRa+YkvQswc2B21rYTBpJwkfHUjsjIVAzXgW857fHRIJ7ypgm87Bm48q6vTjP7GTA0G64PnDz8jdVu8IhXzmVtd+xMADZvshfncPQUwh3MMuJ5FYoEw9i1RYJirXR8NKfwJhwbc9sSIcrghyROQlbFVJX1haZuRhrCKnQchhzBZrepve6hsR3qsEHOZh2c9OY5dRHg8eVdlrBqfBGYZkVBr2hGa/+WVNv0+oe+pRJpra6yE1uZto45e3+jeXpSQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI1PR04MB9738.eurprd04.prod.outlook.com (2603:10a6:800:1dc::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.29; Mon, 11 Nov
- 2024 21:39:17 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8137.027; Mon, 11 Nov 2024
- 21:39:17 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Haibo Chen <haibo.chen@nxp.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	linux-iio@vger.kernel.org (open list:NXP i.MX 7D/6SX/6UL/93 AND VF610 ADC DRIVER),
-	imx@lists.linux.dev (open list:NXP i.MX 7D/6SX/6UL/93 AND VF610 ADC DRIVER),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v4 2/2] iio: adc: vf610_adc: limit i.MX6SX's channel number to 4
-Date: Mon, 11 Nov 2024 16:38:59 -0500
-Message-Id: <20241111213859.3317909-2-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241111213859.3317909-1-Frank.Li@nxp.com>
-References: <20241111213859.3317909-1-Frank.Li@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BYAPR07CA0108.namprd07.prod.outlook.com
- (2603:10b6:a03:12b::49) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="MSW7/Axj"
+Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id E809A8938A;
+	Mon, 11 Nov 2024 22:45:30 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1731361531;
+	bh=BKz2VN1nWMnbQqfmx/ND1K/EZd0XbehhCz5EUh9qlIY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=MSW7/AxjmzAKcgjprOCXGUC1ar47jLaWXMZer/XZOGGBF6UsP5sNzye1O63zU81Gx
+	 Hr8IzHdjo6r/nn03pANvlXmNoPbSqjt42N+ZYlpmnOJGUoGuTsuoCOU1B4u0vEFukU
+	 NibFZmb+nDu6c23lUr3eR0mC4+0HCyg+czmFtT7tHkNT7GkbaLr9pZ56YNVAEPNCDV
+	 vsSuTAzIE8AyKgt1ScrfB4gv+KVMXBwDIm5fDFPAzhtk9c/eez8ELA4Jpl98HsVNzf
+	 zT4b5hrAYDBqxC1U8Y6Bz1vRw4QVAecF3Na3le1Nl1JU3WyACTZhrmi0fdEvRYdP+X
+	 fnlXM/8z0DZ/g==
+From: Marek Vasut <marex@denx.de>
+To: linux-clk@vger.kernel.org
+Cc: Marek Vasut <marex@denx.de>,
+	Abel Vesa <abelvesa@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] clk: imx: pll14xx: Extend dynamic rates support to PLL1416x
+Date: Mon, 11 Nov 2024 22:44:54 +0100
+Message-ID: <20241111214516.208820-1-marex@denx.de>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI1PR04MB9738:EE_
-X-MS-Office365-Filtering-Correlation-Id: ab92004e-d529-4519-cede-08dd02994b00
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|376014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?hubzI68HTU5utsSO6TlkmSolgsH97031HBI4+oqyp1p2ohxZb3gpboLbdmh0?=
- =?us-ascii?Q?F7YqWKzHAkuVRgw6+NbhsPojwjh0qM8H4xFOiG/WNrzZps/EEXVryTMe5DIj?=
- =?us-ascii?Q?QxVU8dXM2GEFX1BJNgJVQO0CO3lPh+3pCddVT/dg4GK0z0lzK9zutAsZ5EJ/?=
- =?us-ascii?Q?0UDjAM+06yfTn6kdygByswXdcHc/id8cFgFXbWq+PbF6G5REmTAR3Jc+zo5n?=
- =?us-ascii?Q?+8gBNdFPMhvZytgYEtNwA/oLHKHz6r6dmtXn6Y3E7nI7+ZsCcTgnLZM+MHT2?=
- =?us-ascii?Q?l9jxuMT2f+EHJxc/ksP5mLoyPiRybkDZkcHCbvJhrIJ2WSeM94abwzH2efhm?=
- =?us-ascii?Q?Cxfncl2TCKOuKqY5MV4fAOkA/t25vn2j7YHQov2nr13cEjEhWMe4fj7oAyYn?=
- =?us-ascii?Q?HWTbx3jDvxmXEWOj773ac4hPotCrhpLm+AAmyZbK/p0yFRL79geJPMIqI9fp?=
- =?us-ascii?Q?x3q1+HlphBlirdLp7YqfAfUe6n4hQ/2dvPvjswWVVGgT+VqmItzz3129BK27?=
- =?us-ascii?Q?5QkwPFcZZQhKrwQEdOpps/6HfWiF7R0tdkCZQbBpVdZ4ASY8/kC/bvBN3TSP?=
- =?us-ascii?Q?f7zVNNCek0Xae95ldh1dZF78oKGjcK+8cAD8OGnFH9PM1aIwlXKFr/thke49?=
- =?us-ascii?Q?k6n6PYfdUIPx/dKvYJ3FmDQZarr62A4TFOmFKe5qeBCB5/ggkRryIYKG2n0g?=
- =?us-ascii?Q?YHO5AUAYEJ1q+5XJM5XKfQpkPMfzR3ZLtkOvAuEqBqYt8dpLXShRbZj4JQbr?=
- =?us-ascii?Q?PIlmytoBdXcKt/D3WYkVpF3iTxjdNe+K1ER7qc6uyVb2+ItlJWxwVYteEWPR?=
- =?us-ascii?Q?2MQVa1G1+VsPaDtKfJ85Jvz5975kEbktFKtmwZTBjLydgAZ5CY+oOQdqtSRF?=
- =?us-ascii?Q?djGHLCy3HJOhOPeEv0ZP3tMDsXtQA6Lf798zC3q4sG+/6t39FjYR1Mq7umPH?=
- =?us-ascii?Q?JGBWWJi2XPmQpOfGbx6b6+je1CgWL3+f5VyzyBmzyZm4CGm7TRSssQY37uks?=
- =?us-ascii?Q?g3IQYeZ2Z41zh8aCsrzsXEB5U60HTHRzC0ZM2pd5Z4K62Fb9X2iH8Sol12R6?=
- =?us-ascii?Q?gguV6uvnC3A2isSddQ0kcpXp3ewKnfjBl5m3b7vyLfKPw7x8oFjwEfJCuDq3?=
- =?us-ascii?Q?eStaWA1X1P7Fz/w+kIOG7uoZ6qeXJRGnCVEF+n6Q7BS3P9V6N+c7JPGi8qjM?=
- =?us-ascii?Q?mZNsHt1aq4qF36UkNmYCaStjucgPm+cPmuxyc1Yp/uoqd51gaY6Z87/q8k7O?=
- =?us-ascii?Q?62ZbiBef+BhXVwNMuc3odsRsGPeqaSqJ5WCELN+wF3P+Le0WYc68uUOppo6a?=
- =?us-ascii?Q?IWBQGYTGHXsy43iJwTkRHgd2fO1M9VYbfmxqn3gKX8yUYFH3DayhGzDCYCqk?=
- =?us-ascii?Q?n0dO/firWvXPDy77FCFauftK8Z+I?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?coSen/HRNW4ibk09d3/w57LZ9w7swMOrf/G2NlYPbGoxxb5FIZwT7I3A3vkR?=
- =?us-ascii?Q?JEaN9J3i8gZqZ3kxO4vhLJmmdMjtCkfyW+70DDwn2ufLoAseWep9GN6f8n3i?=
- =?us-ascii?Q?OqnZ1C11JZwyw9dPTFkHhJGtW3nQTs5/ZokoiABtOVirXtfiGFUM0/BEI0Ep?=
- =?us-ascii?Q?/8UveUQFxVJftVSiX6ul2NK+IbdVAfxLt+S/hp2m3z/ztJh2cp5phIfvzjKK?=
- =?us-ascii?Q?cTTHTVEJqbTCgdmDnWSX9Mt4DStGLoHLhZyY9rgiFeUhU5Pz1BU02Oo1H0Iy?=
- =?us-ascii?Q?El1xjgIBgyzTYIh02KIB90b8kC6TF25s43gvbYCGtw2Qkg1MCVMzM2749Eyn?=
- =?us-ascii?Q?gCarrgbFVgnyuge3WAULwyfCyrCDocImJ9UzMSDtzJkFZQhspj093cJt380b?=
- =?us-ascii?Q?dZjMZDGS4AT0YymPM6qZJhzlVsrN6LthKfYliqxXk/bRu7onFJ2OtFfJAEqd?=
- =?us-ascii?Q?nLCFXYvNx9lJlzbJw3gQotJmfYKH1Z26fqxED2WOzs4qKkRiOZss94fOQbZQ?=
- =?us-ascii?Q?wbiGlLMq+hHlLF1FBghWD/qgAzBn85XYio4A7mO+pzcNHQZ8edBW0VT+9aq2?=
- =?us-ascii?Q?Ts8HSNq2BIqWh36CKfxjYLVECQo77AVuIhA6/8RHrUzG4ElSvZ719ElDa2v6?=
- =?us-ascii?Q?zUvFiKBrM+xtKsnufSaNT/9yEW+nHg27Z9+EhSTuYAU5ZaiV/0KNzcKDGsFn?=
- =?us-ascii?Q?nAJLiX1yjexBzMRMmm9X1curh1zKq2s8vWf8YwrYs/j9+2NDrawwfo1PvAvW?=
- =?us-ascii?Q?IKKaVJWV/E2+PY6cwEC2O4/14bWbJXlxik1UEOsLtL2MGfohfjDPRWOs+46B?=
- =?us-ascii?Q?pWtkg4hscg5uZ7BS3bUtDr3SldoZSxOf1bJXHYUXCgPdGpn7Mp7oRJNRF5ix?=
- =?us-ascii?Q?HoZDciml73mOMI9kQv89mZ7UtT97FEuIMlBLGKrYfTgpsvHQxTmTdQlUjZ8H?=
- =?us-ascii?Q?9IgSLQSpdz1CcL8ZFBYe55h298EZhHi5Db0eVzsJBovsqLugQKqHiVrV/d5L?=
- =?us-ascii?Q?biNU/KFy7TZtcGIOVp5CKF/uIqKBOvydHvuro2zcEnz7+lMTN/qXYzXeag20?=
- =?us-ascii?Q?7zEyyPeqhPGz/LFAWwKTprDMH2ECnlXw8v3fIZPSEqWTTxadqaBuoChUJERl?=
- =?us-ascii?Q?CB7Jxh6Z7py7xIesXxGDb16GUI5vQ+Nuj5paNNpq8ngEFLSvywxxRlkCnksl?=
- =?us-ascii?Q?EsqpiNirWhgWZMBS0yhcbIjrLhdcVaTbe/HM0dhnijGloft6ipx1CK4sjp/X?=
- =?us-ascii?Q?Vff+3V9czBhOce/gqrzhUbl+feLfmZ0wyZkjzRIfPrlKdB+ENIzuisai1Elv?=
- =?us-ascii?Q?U3mC8gf0U1KwRVdrDGRvR+LcS0LDTzxsmHekha4mXY23QtwA+qqV8OMYGe5C?=
- =?us-ascii?Q?xKAdhaQG9OdAllpgukIuFlQPAdGC+fzF/TBjZG0LxrxIaJVqh4f9COlhwB39?=
- =?us-ascii?Q?LAgsy3kIhhP6kC/LHZSFbaT2ZMLmksjIr2AI/r7sfq0nZUtxXQ8RCtmEM4dr?=
- =?us-ascii?Q?mXDCFV/aM2RBP6f5tBPSBInIojyyidJkVi9DJDbg/tvlMO5BHraClwDcvWCL?=
- =?us-ascii?Q?9Vy+5KeJEzpg8nUTiSaWLT3Fm/DhGU2A/xPqU9rU?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ab92004e-d529-4519-cede-08dd02994b00
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2024 21:39:16.9772
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wmoTZbFw16bXyDnNthFjnKgwYYMjqTUCqRA7kxyh2NwC4478PNrjfdkEqbS8oipg8E0pLAotI83mlBxvRJTjfA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9738
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-i.MX6SX only has 4 ADC channels, so limit channel numbers to 4 for
-compatible string 'fsl,imx6sx-adc'.
+The pll1416x PLL so far only supports rates from a rate table passed
+during initialization. Calculating PLL settings dynamically helps in
+case e.g. multiple video outputs are used and they each need their own
+separate source of accurate pixel clock on i.MX8MP. In that case, e.g.
+PLL1416x PLL3 can be used as another Video PLL for another output.
 
-Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Extend the existing PLL1443x dynamic rate support to also apply to PLL1416x .
+
+Signed-off-by: Marek Vasut <marex@denx.de>
 ---
-compatible string 'fsl,imx6sx-adc' already document in
-Documentation/devicetree/bindings/iio/adc/fsl,vf610-adc.yaml
-Change from v3 to v4
-- Add struct vf610_chip_info to avoid cast int to void*
-
-Change from v2 to v3
-- none
-
-Change from v1 to v2
-- Add Haibo Chen <haibo.chen@nxp.com>
-- change cast to uintptr_t to fix below warning
-
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202411052345.gyJaM3h4-lkp@intel.com/
-All warnings (new ones prefixed by >>):
-
-   In file included from drivers/iio/adc/vf610_adc.c:20:   In file included from include/linux/regulator/consumer.h:35:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:21:
-   In file included from include/linux/mm.h:2213:
-   include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-     518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-         |                               ~~~~~~~~~~~ ^ ~~~>> drivers/iio/adc/vf610_adc.c:874:28: warning: cast to smaller integer type 'u32' (aka 'unsigned int') from 'const void *' [-Wvoid-pointer-to-int-cast]
-     874 |         indio_dev->num_channels = (u32)device_get_match_data(dev);
-         |
+Cc: Abel Vesa <abelvesa@kernel.org>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Michael Turquette <mturquette@baylibre.com>
+Cc: Peng Fan <peng.fan@nxp.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-clk@vger.kernel.org
 ---
- drivers/iio/adc/vf610_adc.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ drivers/clk/imx/clk-pll14xx.c | 39 ++++++++---------------------------
+ 1 file changed, 9 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/iio/adc/vf610_adc.c b/drivers/iio/adc/vf610_adc.c
-index d4b778799755b..6f66bd7ff8eca 100644
---- a/drivers/iio/adc/vf610_adc.c
-+++ b/drivers/iio/adc/vf610_adc.c
-@@ -177,6 +177,10 @@ struct vf610_adc {
- 	} scan;
- };
+diff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.c
+index d63564dbb12ca..19b9f764a0015 100644
+--- a/drivers/clk/imx/clk-pll14xx.c
++++ b/drivers/clk/imx/clk-pll14xx.c
+@@ -214,23 +214,7 @@ static void imx_pll14xx_calc_settings(struct clk_pll14xx *pll, unsigned long rat
+ 		 t->mdiv, t->kdiv);
+ }
  
-+struct vf610_chip_info {
-+	u8 num_channels;
-+};
-+
- static const u32 vf610_hw_avgs[] = { 1, 4, 8, 16, 32 };
- static const u32 vf610_lst_adder[] = { 3, 5, 7, 9, 13, 17, 21, 25 };
- 
-@@ -808,8 +812,17 @@ static const struct iio_info vf610_adc_iio_info = {
- 	.attrs = &vf610_attribute_group,
- };
- 
-+static const struct vf610_chip_info vf610_chip_info = {
-+	.num_channels = ARRAY_SIZE(vf610_adc_iio_channels),
-+};
-+
-+static const struct vf610_chip_info imx6sx_chip_info = {
-+	.num_channels = 4,
-+};
-+
- static const struct of_device_id vf610_adc_match[] = {
--	{ .compatible = "fsl,vf610-adc", },
-+	{ .compatible = "fsl,imx6sx-adc", .data = &imx6sx_chip_info},
-+	{ .compatible = "fsl,vf610-adc", .data = &vf610_chip_info},
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, vf610_adc_match);
-@@ -824,6 +837,7 @@ static void vf610_adc_action_remove(void *d)
- 
- static int vf610_adc_probe(struct platform_device *pdev)
+-static long clk_pll1416x_round_rate(struct clk_hw *hw, unsigned long rate,
+-			unsigned long *prate)
+-{
+-	struct clk_pll14xx *pll = to_clk_pll14xx(hw);
+-	const struct imx_pll14xx_rate_table *rate_table = pll->rate_table;
+-	int i;
+-
+-	/* Assuming rate_table is in descending order */
+-	for (i = 0; i < pll->rate_count; i++)
+-		if (rate >= rate_table[i].rate)
+-			return rate_table[i].rate;
+-
+-	/* return minimum supported value */
+-	return rate_table[pll->rate_count - 1].rate;
+-}
+-
+-static long clk_pll1443x_round_rate(struct clk_hw *hw, unsigned long rate,
++static long clk_pll14xx_round_rate(struct clk_hw *hw, unsigned long rate,
+ 			unsigned long *prate)
  {
-+	const struct vf610_chip_info *chip_info;
- 	struct device *dev = &pdev->dev;
- 	struct vf610_adc *info;
- 	struct iio_dev *indio_dev;
-@@ -841,6 +855,10 @@ static int vf610_adc_probe(struct platform_device *pdev)
- 	if (IS_ERR(info->regs))
- 		return PTR_ERR(info->regs);
+ 	struct clk_pll14xx *pll = to_clk_pll14xx(hw);
+@@ -285,22 +269,17 @@ static int clk_pll1416x_set_rate(struct clk_hw *hw, unsigned long drate,
+ 				 unsigned long prate)
+ {
+ 	struct clk_pll14xx *pll = to_clk_pll14xx(hw);
+-	const struct imx_pll14xx_rate_table *rate;
++	struct imx_pll14xx_rate_table rate;
+ 	u32 tmp, div_val;
+ 	int ret;
  
-+	chip_info = device_get_match_data(dev);
-+	if (!chip_info)
-+		return -EINVAL;
-+
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0)
- 		return irq;
-@@ -882,7 +900,7 @@ static int vf610_adc_probe(struct platform_device *pdev)
- 	indio_dev->info = &vf610_adc_iio_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = vf610_adc_iio_channels;
--	indio_dev->num_channels = ARRAY_SIZE(vf610_adc_iio_channels);
-+	indio_dev->num_channels = chip_info->num_channels;
+-	rate = imx_get_pll_settings(pll, drate);
+-	if (!rate) {
+-		pr_err("Invalid rate %lu for pll clk %s\n", drate,
+-		       clk_hw_get_name(hw));
+-		return -EINVAL;
+-	}
++	imx_pll14xx_calc_settings(pll, drate, prate, &rate);
  
- 	vf610_adc_cfg_init(info);
- 	vf610_adc_hw_init(info);
+ 	tmp = readl_relaxed(pll->base + DIV_CTL0);
+ 
+-	if (!clk_pll14xx_mp_change(rate, tmp)) {
++	if (!clk_pll14xx_mp_change(&rate, tmp)) {
+ 		tmp &= ~SDIV_MASK;
+-		tmp |= FIELD_PREP(SDIV_MASK, rate->sdiv);
++		tmp |= FIELD_PREP(SDIV_MASK, rate.sdiv);
+ 		writel_relaxed(tmp, pll->base + DIV_CTL0);
+ 
+ 		return 0;
+@@ -319,8 +298,8 @@ static int clk_pll1416x_set_rate(struct clk_hw *hw, unsigned long drate,
+ 	tmp |= BYPASS_MASK;
+ 	writel(tmp, pll->base + GNRL_CTL);
+ 
+-	div_val = FIELD_PREP(MDIV_MASK, rate->mdiv) | FIELD_PREP(PDIV_MASK, rate->pdiv) |
+-		FIELD_PREP(SDIV_MASK, rate->sdiv);
++	div_val = FIELD_PREP(MDIV_MASK, rate.mdiv) | FIELD_PREP(PDIV_MASK, rate.pdiv) |
++		FIELD_PREP(SDIV_MASK, rate.sdiv);
+ 	writel_relaxed(div_val, pll->base + DIV_CTL0);
+ 
+ 	/*
+@@ -468,7 +447,7 @@ static const struct clk_ops clk_pll1416x_ops = {
+ 	.unprepare	= clk_pll14xx_unprepare,
+ 	.is_prepared	= clk_pll14xx_is_prepared,
+ 	.recalc_rate	= clk_pll14xx_recalc_rate,
+-	.round_rate	= clk_pll1416x_round_rate,
++	.round_rate	= clk_pll14xx_round_rate,
+ 	.set_rate	= clk_pll1416x_set_rate,
+ };
+ 
+@@ -481,7 +460,7 @@ static const struct clk_ops clk_pll1443x_ops = {
+ 	.unprepare	= clk_pll14xx_unprepare,
+ 	.is_prepared	= clk_pll14xx_is_prepared,
+ 	.recalc_rate	= clk_pll14xx_recalc_rate,
+-	.round_rate	= clk_pll1443x_round_rate,
++	.round_rate	= clk_pll14xx_round_rate,
+ 	.set_rate	= clk_pll1443x_set_rate,
+ };
+ 
 -- 
-2.34.1
+2.45.2
 
