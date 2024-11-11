@@ -1,267 +1,258 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2047.outbound.protection.outlook.com [40.107.105.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471F71A76D4;
-	Mon, 11 Nov 2024 17:38:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731346708; cv=none; b=ouC7CQq6/homia4XXsdKZfcXOgarm6lupCsy1nVHGRKaB12BjyRT/0XCOQtHmgLWddvC1mbjYA08HsaNIhpd4FUp/oXdpil/7/MeFxNIOxHzCEJ0uKV4FB9CNpzhMJcZemaaIWZ2QEVX3p4Ni81qmSXLWuT6EzFDg3xEl/5ujpk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731346708; c=relaxed/simple;
-	bh=xxes8ZYVvfrk64X89XxSM8W9LIlOo1LuHzAFIPYNyLo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Dk+1agfOQBMGqmDPq3uFOGfoidwanZYSeJpkTAyjx+uf7B1vM3ORcXRB9RlYQpkMKxjfmkATAJt6OiUeZTrCeeSyEPJ7C8CchUlw4lvjmSH42/ZcsV0C25iF0vyYRRjy15ZZnR77YU/v4MnO22N9Q5L+yLzjMe9aTdM7B//fY38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=CYJ2oACd; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CAD1A9B53
+	for <imx@lists.linux.dev>; Mon, 11 Nov 2024 17:43:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731346983; cv=fail; b=ltUeFtkmTZ+vrRflDA10nuT1PmdYeWPUnmuB/BVMlg5nPlqS+W0XvqqdpuJz/deBKSoTWy92d0/RxGnLwW8cnmwanEgIvVTtT4JL+pPHSUa1uVRM0RFmhttgZS6ChGufwTIGf4ID9p3eflQNN/W63KL8SsH6DYJaHzj1ShSYMds=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731346983; c=relaxed/simple;
+	bh=1+0Vb4o6csXw0pXLibl6d7yHjiLdMrQJYrwz5hi77z0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=rCdjMo4+GfQLsmNmrpc0gPVXXZVQqqOWNLIkRout6ICefgmhM06sgwNmblLcxnocyLP+ETbqkGtxIZ42ODepiCjN96uebdckB/379BIkvJUArXu0j9ahOjpdBqF8s6Jc1EQhd+i2obygZklWoSIZRgw5iuqIha7eFJtDbCoNWUo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ts5oqJc6; arc=fail smtp.client-ip=40.107.105.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="CYJ2oACd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1731346689; x=1731951489; i=wahrenst@gmx.net;
-	bh=6OSw8xUt3COc/0od6QRSNQ+KToWY8URRRE3wwtW0ph0=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=CYJ2oACdo/j4zgm110Rm9RRALPBYpjL9AU8iQldZplnBAdNAWaEFRBEXrxB4fKB8
-	 NNKOPnYjXSz/DJvfihJ245N/PZE10rbB9T1DqgMafxmoGaIBCSMgiIJTvkL6KAUlg
-	 WEkVCROQ6/OmEqnxrePBJOySPCSF5ZqZyVdkCRBN3QGGVBhD0tu/vxHUUokrpIca4
-	 kk9WbKB7EGysubNRir4bPbzDjigy/qst6CfpYRIecnbX8ACuZ3hqKwx14WGTAjNFN
-	 gsqD2tj+PLI0kJ22fHb9Izv+NB62rB5kGKdAwFheApuRLvwMpnvNBLDsHtrHFkGxj
-	 f6ouG7psmwA7hCVXXw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.105] ([37.4.248.43]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MtOGU-1u4BUV0p02-00svqL; Mon, 11
- Nov 2024 18:38:09 +0100
-Message-ID: <eed25785-7972-43ce-9903-d8350e51ff7e@gmx.net>
-Date: Mon, 11 Nov 2024 18:38:08 +0100
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ts5oqJc6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=I0QECi2VIOKek8tEqSLlyt5zWD9QeCF+Hz7/kbiBbijMy9k0uJrDfDDnq2vxzrlSb4WJ/8/+tuwYdOfe85q/6ST/gmDCNOBKiAIduOFzgj3JI+0hkHfFFCVd+9z7+hu8T1Xj6mIeHP05C/DzjE4pQTshBtc/4BnvlsFQHC269xZKpLdLtzwYN1Uzsfsi3V9Y6LAOnuZQCv+gqVk7xxVETATXzxfv2PMNGj4o3oIk4Lfno20iygDXO5aHIhpsC6vkWLCSi4EIxRJy3TMM/jk19XTgKy89TATp/lYDNn+XRy3ccSPKitBeMlWV/nnkdotVlP1spNmjHK8vmvBFcNc8QQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=K4u5Zl7Zogw2TdkgUBEle1+J4Dxvv9jLsUK/rMLWqHE=;
+ b=QloGdtf+RUyUavYHb4ETkbZFcsEw+EdBUZQF6I1v8d9HG52gNQRsvx8jWPvWmZZC6PBZ9/BJmH5qbTMAZ8Ws65AYPMPl3WtinXD6F0Q58Xj27b9OsYFKxHJNIyUutgj7kzm/ePG4QgCE1OQ87kFcy+act8J/n5tPy19yUAbJlHaAZ25599usxQfGAMprUGYorsi0Lo+Qk2A/A7YB+0bSbk4JFB8VP+puokIoE2D7dLqMNIEi0zohrDHkd0E4Uyeli0ITr90SdGBBaTXyRDW0ariw6aEAAzzWi4mZy99jIsHtaRKQ7uEhvn+A65HtAmg2c6TcJ9wtD04M8EMSrNKkOw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=K4u5Zl7Zogw2TdkgUBEle1+J4Dxvv9jLsUK/rMLWqHE=;
+ b=Ts5oqJc6s1WpD9vVOYaJVYsyRI7Egi3vlGov3Ff7NFHRdzvUVnJk4l/JaaOvcDFtiGWfUtxsrJhhW/zILZPbsIsn/q6wBala0YBTAsQOJunF/rDaetfO4cedwJtH7DbP+oU20yK1FlL2QSnnK/YhoHkjon4isifVJ+Lxi1gFxHEaDqtpVvsMs4nBBjNNTUXWQcxR/Zyl34c9oZiapijM2HDy2J7w4Aqdk1E10Raq7kETG3ErsEbQAKN7Ez3OcNQRrj7cg6H1xWgbBs5q3K5uNzASy3naqBcofnUbrYTYa9i14LUs8HuReujoEBPOGQpyxLa6hBgMOq7eUP2iqslRXA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM9PR04MB7700.eurprd04.prod.outlook.com (2603:10a6:20b:2db::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.27; Mon, 11 Nov
+ 2024 17:42:58 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8137.027; Mon, 11 Nov 2024
+ 17:42:58 +0000
+Date: Mon, 11 Nov 2024 12:42:50 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, Richard Zhu <hongxing.zhu@nxp.com>,
+	jingoohan1@gmail.com, bhelgaas@google.com, lpieralisi@kernel.org,
+	kw@linux.com, robh@kernel.org, imx@lists.linux.dev,
+	kernel@pengutronix.de, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] PCI: dwc: Clean up some unnecessary codes in
+ dw_pcie_suspend_noirq()
+Message-ID: <ZzJCGkenhxgJxoC4@lizhi-Precision-Tower-5810>
+References: <20241107111334.n23ebkbs3uhxivvm@thinkpad>
+ <20241108002425.GA1631063@bhelgaas>
+ <20241111060902.mdbksegqj5rblqsn@thinkpad>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241111060902.mdbksegqj5rblqsn@thinkpad>
+X-ClientProxiedBy: SJ2PR07CA0002.namprd07.prod.outlook.com
+ (2603:10b6:a03:505::25) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] soc: imx: Add SoC device register for i.MX9
-To: alice.guo@oss.nxp.com
-Cc: imx@lists.linux.dev, s.hauer@pengutronix.de, festevam@gmail.com,
- shawnguo@kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, "alice.guo" <alice.guo@nxp.com>,
- alexander.stein@ew.tq-group.com, kernel@pengutronix.de
-References: <20241111032307.144733-1-alice.guo@oss.nxp.com>
-Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-In-Reply-To: <20241111032307.144733-1-alice.guo@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:dDNJzKU6qVuVwcuDn4e8a77d+91AdGDxjZ4AID7/NRDufgd9egR
- /B+Bg8xSjkSE62HryDFEqI3N7NjN0j1i4Czvw75+6HHzlNcsuvSoOxrCBo0sxUA1Mla/7rj
- RwYpx+suhsQfsNsf+Cwbck56IQdN3iaaw6w8fsSKgArEe8kxJJNXxt4SSnlhdmDEM/z2mcT
- h/UbA1kCYa7zv0jgB8BhQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:QtLGtceA+KQ=;4SM/hF+VxEnePS0VaBqjz2ONwmi
- LX7/TaksXGo7IUXWEhjmsr42Ah8300Wjs5w5KCbPRynad8jYgDOQjX8JbwVVnmZxHyTncY3bp
- EPUr7rMZVfSfKzvD/hvta5R8RmrYyGpl+irCNiJF1rfUP3mmb11RcqeqTiJ+FA5m4ksO88Joq
- 6EWKzeTD4MXVgdXBnZ6eM1Kk536vMQacqmW2rtcyS6Ryt+uorgOH5lQjDyy06km9dNqDAHSRf
- 1zDUSjSXwpuz6SD3gjrJqRInBF+1QJTOy6ZT1qGsdV1dCU+tMVLBwlEFzKvuq0mcnSysjeHMP
- QPW67+aw6WcWsQN45WV92guF180spiQwnXfKFPrMONX7I1g5V6Q8IazfYV1sSkvrP6dAptpBk
- HGWp3ZM/I9PZmTMfNhZL79UsNTx1r6BWRbSrn4DkzMl0a2GrFx3JyzZprZWFU+sFweWqyGyaI
- lXncnhcLkcDqcHCbfQ/w5D1CcDzDU3Q9S5AJZjuGvtJxiN81O25NsLCUgybuRHVsTgvKu5Nut
- bgjtFm6o1qNhs6q4yMJEOgjakl3rHcYzb8vudyveBgLdOYJCvmIQsfRoPCbNzd+rV3+fwCetx
- SRkdhe93OXqI177np2T0BoCEINxAFIOvhFwT7uEV6XWIowOqFbN4coTe8yMIgiLdOgMGM2/Dg
- pTNUFLUb1SfvUQMVUYlofmSpjXKqOPl97sOIpcYJWGRC5nd9DwnACfebwK7Fjur6VbgLDpfjx
- J7c64IKRDKPGxp6tzmr44toFwf55DLc3n6aNuiel3Froc7/JK6OaLX+0QPiix1UIWDq1njTdZ
- l4GAUcE/iev/8UuV+VpIvx1aQbm/NHHFlAEb6aXmk8rpTK/y0iYGT5p1xaziyj7llxM8A0V37
- qZszukPk9+9rbnLQUiLIQ0KghIucWQnzCVpuovK02GOBrg96mirh01M8f
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB7700:EE_
+X-MS-Office365-Filtering-Correlation-Id: aef898b3-fc59-48d4-c61d-08dd027847ee
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|7416014|52116014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?MVlxMzhPamIvb0hFSEdQYlROMmh4TkNvMjVhOVF4bEh3Y1k3MGk2MktmNnBW?=
+ =?utf-8?B?YXVxQ2tRN2FjWEVtOUhuVG5qYm1jVEU4Zys0eE1Jbm1yd3paSnJ4Y0VsZHJz?=
+ =?utf-8?B?ZGN1eU0yNitHYlhRc3VUeFU3dldvOWlTNXhnU0JKcEtRQ1BHVXR0VDZzWVc1?=
+ =?utf-8?B?L042V3c1b1UvYVVvYXdrWXBOUmJZVXdXTWRJSkIySktBQThjTDU4N05ybFFC?=
+ =?utf-8?B?Q3NWSm43MnNhKy9DNG1PMDFKSzNxYmpGSjlzdzZpbGM0KzVvcGNGVUJpRTB0?=
+ =?utf-8?B?dEd6MFZCNHFqeUxTSEFrM2Zmb3FtaFR3RzYyVlFCZ2JFTUJpUW5ET0xzdUNl?=
+ =?utf-8?B?djExVjBSUGNWUEVEcXhTdFErbmR0MGJhdDJiSmM2Tm1sdGJWazliU2p4TmNJ?=
+ =?utf-8?B?UTQwNEJYWHBtU1ZRaFcvOEF1eWRodnJ6Q013VVdCRDdlc0d2eXFKUE5tVGd5?=
+ =?utf-8?B?TVpha2VFWFppV0swalRIWkwreHA5OUxHVHEvaGZaZ1NDNXA4NVh0SlhwMmo2?=
+ =?utf-8?B?R2xQbm1Cd29iWlJ4eEtDb0FIMEpLNDQ0M3BGMmJ6QWtObUJSb1poS25oNnR0?=
+ =?utf-8?B?cHRncEg1NW1LZXluYlJONWI3alhpMkJCRktBMmcwb3kvL1dWMEtWVGltQy9u?=
+ =?utf-8?B?c0cwYUtxNlVlUUMrZjFPNUNHbDlkc1EzQUJYaHNuanV6c1RKb3dBa2R1T05W?=
+ =?utf-8?B?S0NDUmx3SXhhRnVBVStVczNpR3U4aTFVeFVKbmo3OG05WFpGWnp6UUJ6czRT?=
+ =?utf-8?B?enk3THVDMkFTbnZuRFYxaG1nSHFkWDk1NUIwTGVXZTNqMllmdDM0ZzJwVmto?=
+ =?utf-8?B?U2cyZmNkK20rM1BJQ05QTUVJVXVmS0dpTkkvVG9DMmQ1aEVNSXRIMWRLbWhV?=
+ =?utf-8?B?WHZQdkJuQUxxeGhMbWhvc2RMcHcxTnc1VGxhQ0RLQWFTeCt6T2x3VSs3YUFQ?=
+ =?utf-8?B?RkpsdjMzTnhkK01XNjhWTmNFdmFpRk9xNFFRTnUzbVQvNXVRUjQzYVYySDE0?=
+ =?utf-8?B?WUpzdEI2NUtZWGhrYkhtSHFacVFlcVhZZWpIWm0xVG42UGpaNDd6emRSVlVq?=
+ =?utf-8?B?YUhEbDRWSDhJUWQ5K1B6MjNXNklHb0Q4SDU1Tm1CdHBYSDJYUFpjSDh6N0l6?=
+ =?utf-8?B?S1lRcDRwRDlQbThvS3pZdWgxd25oRHdiV2JoVDQxbEVPTENFYU9OQ2hKL0dH?=
+ =?utf-8?B?Wk9qcWNDTFEvVlE3bFFSN1VnWkR0WkJsQ1M2dzU1OXNLUzUydmo4ZGt6S0ZX?=
+ =?utf-8?B?WE05a3Uwa2J5SjJBTjBUSlB2U2lVa21DUzg3MFd5L2FLN1lFQU52aEV6MUJY?=
+ =?utf-8?B?VmZURWJoc09ZOGlKL1NHRGJRQ3BHV3AxWVBNL1JqVkFobi85Zm1VWXdEcVdM?=
+ =?utf-8?B?UGpsQnRKQWI5NnU0bDh5NDlEWnRSMGVJTmVFYlRGMDIwNmw1YnRTcWRPbmxy?=
+ =?utf-8?B?VVFKY01GSTJjUXp3SFhIdFZlTlg4KzZiL1hUbFlUbTA3TFdMcVNHa1ZxRWdH?=
+ =?utf-8?B?WE9KSTJ0cDE1aE1pR3k2c1A1LzFjVTNYUWdJdTNwa2JOMTFjY29NM2RxR1BJ?=
+ =?utf-8?B?bHNoWVhaRnp2a1N0TGRPdExhVTk4UURtTWNVZE1rQVF6WGlhWjU3ZVVMUGdY?=
+ =?utf-8?B?cThudVdNZERaQlNlQnFHNE1tKzBOOWFoVzYzYWZJVmErNDYyV3gyYjQ3d2ky?=
+ =?utf-8?B?NFFzeXBOWW9oTzVwd0VMVUJiN0dHV1lnQys4Ym9ialdUeFR1SGhTek1pSlYx?=
+ =?utf-8?B?MXBrU01OUlJOMm8zVC9hemVsTDM2enJaNnpiUG9maUZxRGl6Szh5TWorZzUv?=
+ =?utf-8?Q?DQ+LEZrDy49xnCZRO9ahjSRKhWF40CjWQrfVg=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QWZrZEhvNHlnSmJYeFd5UnpsTFIvenZNQytSSHFrTGcyYmdGMkZCU3JEOENa?=
+ =?utf-8?B?UDhpV0lvb3ZqNE5EY3E5TmNpWE9zRnRMN3dQMHFDNElxamNUME1nR3ZqY0c4?=
+ =?utf-8?B?Nk44SlBHUUIybHoyMmovTTZDRkFyTmJjTGVoYkxYWW5rT2ZwNnZ5a2RhUGtQ?=
+ =?utf-8?B?UVBTNnJCWThRdVJuRlR4RWpnemNoYUFqMVdpaEhMNFhCcjBRelJZMEpkTXcz?=
+ =?utf-8?B?TXdYRUdtMlE0QVkrMnM0alJPSDRXcndHM3B6S2NVZVg5U1N1VHcxckJNQXNz?=
+ =?utf-8?B?c1hHWE1CZFhNUnBIaGh1M3NwQWt1VjU5WmQ0dkRWbEszVXZKMmxDc25oSlVK?=
+ =?utf-8?B?RGFPbDFKOUlFTC96VlFhcTNtNXNneFpiNEtFT25TUXFJMG5wVWNDQjJkWGE3?=
+ =?utf-8?B?SFBLcUpzcWVYaTBFVTZ5SFdoaEI5cU43VXZNdWFtYzlQNVpCTi9yQTdZRThi?=
+ =?utf-8?B?MG9tVzNLYkl5WjVzTHN2dDlSUnh4TDRnMlMxVjJDcXFScER3WXhNRDFjdTN5?=
+ =?utf-8?B?Z1VBQ29XSlZuVlZlVEM2MnQrNm9BQmUydWZzSVFIMDFQcitvbVdvNktHUHF0?=
+ =?utf-8?B?ZXN6dmdhM3RSRDdzdTVNSlFEK01xaTd3TnR2dGl3aUIyU0p6TGVSeGRRVHR3?=
+ =?utf-8?B?ZzZrUk4rZmJqMnhLL3NnelVFWElwSmhWeFFVaGo5SnA4ekZ1bXk0WnM1c29k?=
+ =?utf-8?B?SVVPV0lpNUxWd0w0cGdVbDN1YWNYdlVFWkZUbk9lYXdsUmhodDdkbjE5aHg1?=
+ =?utf-8?B?R0R3MEw1azllNGpPZ2lFYTE2SXd5d01pTjV4NTNjS1NUWXkvR3ZRRWZuZ08x?=
+ =?utf-8?B?RVdIb3pUVVZObmRDbGNEY2ZrUkhzYk0zazU0bDVyZ1VGSDFKVXk2dUdRUStX?=
+ =?utf-8?B?cG1tQW9hYmJVeTB2WHNVYXhFWUFtSjl3cWsvVlBZSHg2aVpuOWpzRkZqUWZi?=
+ =?utf-8?B?cVg4OXIzdW5oWDdUOHlFNzQwUE9QQlI2MmVHMjUwaTA5Um4xRnM0TXlndGcz?=
+ =?utf-8?B?YkFZaHVmc3NoTFdzKy9saXNuanFodkNxWjlSdU5hYUl1TnlURllBVnFqWEpZ?=
+ =?utf-8?B?NWpMaEpOWUQzTDlEcUgzeXRuaU9wSXVuY0ZsVG5ZckdSSFc1a1FpNlgrUXFm?=
+ =?utf-8?B?aUdBNmFySU9WaGswc09XMURjcU5TSjJrSWRSUm1lYkxxMWJoblJCOUdwdDJG?=
+ =?utf-8?B?TElLbStoRVQvb0RsVnV4aS9wNXI3cFhBemgxUWtiZ3liWXBHdEFBdm5Cb0tu?=
+ =?utf-8?B?OXE0bkYxOFAreFNqUUFRbUQyNTQ2RFU0cVVDVlFxK1ZmV0FMS2hmdXBPSkdo?=
+ =?utf-8?B?Z3NXejB0aXpXSEhxWXR2dGxqOWxPN3NFZXJ5UTZiendOaGtlNXJDUzhBR0JY?=
+ =?utf-8?B?dzl5Q3pIYk5BdUx4M3QwbTBRU3FFa0k1bHdYSld5S0RnOGRyenZDZ3JERkhv?=
+ =?utf-8?B?WjFBZTMwUEkvckk3dDliay9CSWtWZm5YblIvZEsxZjhTWlgzb1BzazgwNy9D?=
+ =?utf-8?B?Z3A0dENnak5WdnJTSXo1c09RemFDSHJMN1lmci90ZzNmZ3JzOXlKcUlNSkVu?=
+ =?utf-8?B?N2NXV2NVaVc5SW1OeUQrMmpvTENzYVI0bUxaZVE5Z0pYcWpabjFnQ1VvdzdX?=
+ =?utf-8?B?dForR2l2MU5rS1BOQk5scFZ1SU9TbElSVnU0b2NPRUVwSXQ5UlRpclZwRFNY?=
+ =?utf-8?B?UE55RHVIQjhHQnMySjJacFl1WTIzR1NWcUZ4aVllNVI2M1pCT0ttNlpMb1k1?=
+ =?utf-8?B?bXdZblhUNXNta2hsQS93cm85UExQRi9xNGtMZ2NVQWVkYkpJdVg5b3ZudHVF?=
+ =?utf-8?B?eEpzZFRsdnZBcS9lc0xlVE5BbHhlYUlLcXpFRjV6SkozQk5YeGVIOHVxcWs5?=
+ =?utf-8?B?WWxGbXpSWmIzd0FCb3IyelN6bG8zMCtMamFXdWdwR3RKOHhxRXpGRStqU25C?=
+ =?utf-8?B?bitEbnlQSHV3QkxWVHVRejNMK002bThVRVNER3BXaW04WDdpc281bDJpd1U4?=
+ =?utf-8?B?UjlGclNZeE9kbFd0cFZLdU5xdjFOVEtFRWo3c1Roemw2ODZxcGdkcUhWNU9m?=
+ =?utf-8?B?TUdzWm9pM0dWUmxMSERqVk9DUFVmZENIZGxIbWxoWnZIQk9DVXVaYVNZTlQ4?=
+ =?utf-8?Q?abDc=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: aef898b3-fc59-48d4-c61d-08dd027847ee
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2024 17:42:58.4185
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: V26TjJSkn66fXnwQGTf9ILDAu/SHO94ZX9E9hhinsQDTX/pYJZ6ihTLtdPkBCwjlrmZ/nlEF8uVdY9DcnfVfGg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7700
 
-Hi Alice,
+On Mon, Nov 11, 2024 at 11:39:02AM +0530, Manivannan Sadhasivam wrote:
+> On Thu, Nov 07, 2024 at 06:24:25PM -0600, Bjorn Helgaas wrote:
+> > On Thu, Nov 07, 2024 at 11:13:34AM +0000, Manivannan Sadhasivam wrote:
+> > > On Thu, Nov 07, 2024 at 04:44:55PM +0800, Richard Zhu wrote:
+> > > > Before sending PME_TURN_OFF, don't test the LTSSM stat. Since it's
+> > > > safe to send PME_TURN_OFF message regardless of whether the link
+> > > > is up or down. So, there would be no need to test the LTSSM stat
+> > > > before sending PME_TURN_OFF message.
+> > >
+> > > What is the incentive to send PME_Turn_Off when link is not up?
+> >
+> > There's no need to send PME_Turn_Off when link is not up.
+> >
+> > But a link-up check is inherently racy because the link may go down
+> > between the check and the PME_Turn_Off.  Since it's impossible for
+> > software to guarantee the link is up, the Root Port should be able to
+> > tolerate attempts to send PME_Turn_Off when the link is down.
+> >
+> > So IMO there's no need to check whether the link is up, and checking
+> > gives the misleading impression that "we know the link is up and
+> > therefore sending PME_Turn_Off is safe."
+> >
+>
+> I agree that the check is racy (not sure if there is a better way to avoid
+> that), but if you send the PME_Turn_Off unconditionally, then it will result in
+> L23 Ready timeout and users will see the error message.
+>
+> > > > Remove the L2 poll too, after the PME_TURN_OFF message is sent
+> > > > out.  Because the re-initialization would be done in
+> > > > dw_pcie_resume_noirq().
+> > >
+> > > As Krishna explained, host needs to wait until the endpoint acks the
+> > > message (just to give it some time to do cleanups). Then only the
+> > > host can initiate D3Cold. It matters when the device supports L2.
+> >
+> > The important thing here is to be clear about the *reason* to poll for
+> > L2 and the *event* that must wait for L2.
+> >
+> > I don't have any DesignWare specs, but when dw_pcie_suspend_noirq()
+> > waits for DW_PCIE_LTSSM_L2_IDLE, I think what we're doing is waiting
+> > for the link to be in the L2/L3 Ready pseudo-state (PCIe r6.0, sec
+> > 5.2, fig 5-1).
+> >
+> > L2 and L3 are states where main power to the downstream component is
+> > off, i.e., the component is in D3cold (r6.0, sec 5.3.2), so there is
+> > no link in those states.
+> >
+> > The PME_Turn_Off handshake is part of the process to put the
+> > downstream component in D3cold.  I think the reason for this handshake
+> > is to allow an orderly shutdown of that component before main power is
+> > removed.
+> >
+> > When the downstream component receives PME_Turn_Off, it will stop
+> > scheduling new TLPs, but it may already have TLPs scheduled but not
+> > yet sent.  If power were removed immediately, they would be lost.  My
+> > understanding is that the link will not enter L2/L3 Ready until the
+> > components on both ends have completed whatever needs to be done with
+> > those TLPs.  (This is based on the L2/L3 discussion in the Mindshare
+> > PCIe book; I haven't found clear spec citations for all of it.)
+> >
+> > I think waiting for L2/L3 Ready is to keep us from turning off main
+> > power when the components are still trying to dispose of those TLPs.
+> >
+>
+> Not just disposing TLPs as per the spec, most endpoints also need to reset their
+> state machine as well (if there is a way for the endpoint sw to delay sending
+> L23 Ready).
+>
+> > So I think every controller that turns off main power needs to wait
+> > for L2/L3 Ready.
+> >
+> > There's also a requirement that software wait at least 100 ns after
+> > L2/L3 Ready before turning off refclock and main power (sec
+> > 5.3.3.2.1).
+> >
+>
+> Right. Usually, the delay after PERST# assert would make sure this, but in
+> layerscape driver (user of dw_pcie_suspend_noirq) I don't see power/refclk
+> removal.
+>
+> Richard Zhu/Frank, thoughts?
 
-Am 11.11.24 um 04:23 schrieb alice.guo@oss.nxp.com:
-> From: "alice.guo" <alice.guo@nxp.com>
->
-> i.MX9 SoCs have SoC ID, SoC revision number and chip unique identifier
-> which are provided by the corresponding ARM trusted firmware API. This
-> patch intends to use SMC call to obtain these information and then
-> register i.MX9 SoC as a device.
->
-> Signed-off-by: Alice Guo <alice.guo@nxp.com>
-> Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-> ---
->
-> Changes for v2:
->   - refine error log print
-> Changes for v3:
->   - return -EINVAL when arm_smccc_smc failed
->   - fix the build warning caused by pr_err("%s: SMC failed: %d\n", __fun=
-c__, res.a0);
->   - drop the pr_err in imx9_soc_init
->   - free the memory in the reverse order of allocation
->   - use of_match_node instead of of_machine_is_compatible
-> Changes for v4:
->   - fix the build warning: 'imx9_soc_match' defined but not used [-Wunus=
-ed-const-variable=3D]
->   - add Tested-by and Reviewed-by
-> Changes for v5:
->   - probe imx9 soc driver as a platform driver
->
->   drivers/soc/imx/Makefile   |   2 +-
->   drivers/soc/imx/soc-imx9.c | 124 +++++++++++++++++++++++++++++++++++++
->   2 files changed, 125 insertions(+), 1 deletion(-)
->   create mode 100644 drivers/soc/imx/soc-imx9.c
->
-> diff --git a/drivers/soc/imx/Makefile b/drivers/soc/imx/Makefile
-> index 3ad321ca608a..ca6a5fa1618f 100644
-> --- a/drivers/soc/imx/Makefile
-> +++ b/drivers/soc/imx/Makefile
-> @@ -3,4 +3,4 @@ ifeq ($(CONFIG_ARM),y)
->   obj-$(CONFIG_ARCH_MXC) +=3D soc-imx.o
->   endif
->   obj-$(CONFIG_SOC_IMX8M) +=3D soc-imx8m.o
-> -obj-$(CONFIG_SOC_IMX9) +=3D imx93-src.o
-> +obj-$(CONFIG_SOC_IMX9) +=3D imx93-src.o soc-imx9.o
-> diff --git a/drivers/soc/imx/soc-imx9.c b/drivers/soc/imx/soc-imx9.c
-> new file mode 100644
-> index 000000000000..4ef92260e8f9
-> --- /dev/null
-> +++ b/drivers/soc/imx/soc-imx9.c
-> @@ -0,0 +1,124 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Copyright 2024 NXP
-> + */
-> +
-> +#include <linux/arm-smccc.h>
-> +#include <linux/init.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/slab.h>
-> +#include <linux/sys_soc.h>
-> +
-> +#define IMX_SIP_GET_SOC_INFO	0xc2000006
-> +#define SOC_ID(x)		(((x) & 0xFFFF) >> 8)
-> +#define SOC_REV_MAJOR(x)	((((x) >> 28) & 0xF) - 0x9)
-> +#define SOC_REV_MINOR(x)	(((x) >> 24) & 0xF)
-> +
-> +static int imx9_soc_probe(struct platform_device *pdev)
-> +{
-> +	struct soc_device_attribute *attr;
-> +	struct arm_smccc_res res;
-> +	struct soc_device *sdev;
-> +	u32 soc_id, rev_major, rev_minor;
-> +	u64 uid127_64, uid63_0;
-> +	int err;
-> +
-> +	attr =3D kzalloc(sizeof(*attr), GFP_KERNEL);
-> +	if (!attr)
-> +		return -ENOMEM;
-> +
-> +	err =3D of_property_read_string(of_root, "model", &attr->machine);
-> +	if (err) {
-> +		pr_err("%s: missing model property: %d\n", __func__, err);
-> +		goto attr;
-> +	}
-> +
-> +	attr->family =3D kasprintf(GFP_KERNEL, "Freescale i.MX");
-> +
-> +	/*
-> +	 * Retrieve the soc id, rev & uid info:
-> +	 * res.a1[31:16]: soc revision;
-> +	 * res.a1[15:0]: soc id;
-> +	 * res.a2: uid[127:64];
-> +	 * res.a3: uid[63:0];
-> +	 */
-> +	arm_smccc_smc(IMX_SIP_GET_SOC_INFO, 0, 0, 0, 0, 0, 0, 0, &res);
-> +	if (res.a0 !=3D SMCCC_RET_SUCCESS) {
-> +		pr_err("%s: SMC failed: 0x%lx\n", __func__, res.a0);
-> +		err =3D -EINVAL;
-> +		goto family;
-> +	}
-> +
-> +	soc_id =3D SOC_ID(res.a1);
-> +	rev_major =3D SOC_REV_MAJOR(res.a1);
-> +	rev_minor =3D SOC_REV_MINOR(res.a1);
-> +
-> +	attr->soc_id =3D kasprintf(GFP_KERNEL, "i.MX%2x", soc_id);
-> +	attr->revision =3D kasprintf(GFP_KERNEL, "%d.%d", rev_major, rev_minor=
-);
-> +
-> +	uid127_64 =3D res.a2;
-> +	uid63_0 =3D res.a3;
-> +	attr->serial_number =3D kasprintf(GFP_KERNEL, "%016llx%016llx", uid127=
-_64, uid63_0);
-> +
-> +	sdev =3D soc_device_register(attr);
-> +	if (IS_ERR(sdev)) {
-> +		err =3D PTR_ERR(sdev);
-> +		pr_err("%s failed to register SoC as a device: %d\n", __func__, err);
-> +		goto serial_number;
-> +	}
-> +
-> +	return 0;
-> +
-> +serial_number:
-> +	kfree(attr->serial_number);
-> +	kfree(attr->revision);
-> +	kfree(attr->soc_id);
-> +family:
-> +	kfree(attr->family);
-> +attr:
-> +	kfree(attr);
-> +	return err;
-> +}
-> +
-> +static __maybe_unused const struct of_device_id imx9_soc_match[] =3D {
-In case everything is correct, "__maybe_unused" can be dropped
-> +	{ .compatible =3D "fsl,imx93", },
-> +	{ .compatible =3D "fsl,imx95", },
-> +	{ }
-> +};
-MODULE_DEVICE_TABLE is missing
-> +
-> +static struct platform_driver imx9_soc_driver =3D {
-> +	.probe =3D imx9_soc_probe,
-> +	.driver.name =3D "imx9-soc",
-.of_match_table is missing
-> +};
-> +
-> +static int __init imx9_soc_init(void)
-> +{
-> +	int ret;
-> +	struct platform_device *pdev;
-> +
-> +	/* No match means it is not an i.MX 9 series SoC, do nothing. */
-> +	if (!of_match_node(imx9_soc_match, of_root))
-> +		return 0;
-> +
-> +	ret =3D platform_driver_register(&imx9_soc_driver);
-> +	if (ret) {
-> +		pr_err("failed to register imx9_soc platform driver: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	pdev =3D platform_device_register_simple("imx9-soc", -1, NULL, 0);
-> +	if (IS_ERR(pdev)) {
-> +		pr_err("failed to register imx9_soc platform device: %ld\n", PTR_ERR(=
-pdev));
-> +		platform_driver_unregister(&imx9_soc_driver);
-> +		return PTR_ERR(pdev);
-> +	}
-> +
-> +	return 0;
-> +}
- From my understand all these stuff belongs in the probe function now,
-so maybe the existing one should be renamed.
-> +device_initcall(imx9_soc_init);
-I think this should be replace by
+Generally, power/refclk remove when system enter sleep state. There is
+signal "suspend_request_b", which connect to PMIC. After CPU trigger this
+signnal, PMIC will turn off (pre fused) some power rail.
 
-module_platform_driver(imx9_soc_driver);
+Refclk(come from SOC chip), OSC will be shutdown when send out
+"suspend_request_b".
 
-Regards
-> +
-> +MODULE_AUTHOR("NXP");
-> +MODULE_DESCRIPTION("NXP i.MX9 SoC");
-> +MODULE_LICENSE("GPL");
+Frank
 
+
+>
+> - Mani
+>
+> --
+> மணிவண்ணன் சதாசிவம்
