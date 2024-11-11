@@ -1,133 +1,141 @@
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CECF132122
-	for <imx@lists.linux.dev>; Mon, 11 Nov 2024 14:17:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B76E41C79
+	for <imx@lists.linux.dev>; Mon, 11 Nov 2024 14:31:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731334631; cv=none; b=OKXJ+xFaxeJ2Jly2EU6KC3BareEcB5gTHw20Jzt7daYj8z7EB0fuI44t5s7xhYn2KYA0np8395LbXyyEEYmO4Zh1qjvQKhPbVW7E2Towv9/NkiC3NNxfRYcPcILKiGSslarYYNyjsz/Zk2bUg/09twA+O3ru1V/uKPPUyvnCY84=
+	t=1731335482; cv=none; b=nLgoZafhvtkDHeckzikhFQxR7CEF4LI1Oz5Z/a9vdFP1ifMBJEXeVZHNpxBxHqAcFW9rcT64UtcOXpK7TMb28LeJ9RDs2sHSgqlai+rfHJ318a3v9CXOm8SnbooZ0I4cVUsGRJGOoXZG+xqV/pN6SCqhMZ5A5sPS7yBUeD4Rbyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731334631; c=relaxed/simple;
-	bh=atKj27umbsbkvfy41nhNQunjFCIirqrEGyCUijGtQbM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gD4fZ9Dhty/gE33SmpQkebSYT/IEdWkscBo5lwGDw/I+yfeUWunkW8v6x5fB9QPFx+mW/ej1HNhw/EIAaRNRuMP64u9zssFTTNoJl93FifvDeADRQll3vpM2jjrsIJSNIGdDB/WIG2VjieTYNKYPsOG7PrTxp3dw7FtmhvkCqM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 7999E1A117E;
-	Mon, 11 Nov 2024 15:08:52 +0100 (CET)
-Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 6CDCC1A1174;
-	Mon, 11 Nov 2024 15:08:52 +0100 (CET)
-Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 2C4EF2037A;
-	Mon, 11 Nov 2024 15:08:52 +0100 (CET)
-Date: Mon, 11 Nov 2024 15:08:52 +0100
-From: Jan Petrous <jan.petrous@oss.nxp.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Minda Chen <minda.chen@starfivetech.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-	Keyur Chudgar <keyur@os.amperecomputing.com>,
-	Quan Nguyen <quan@os.amperecomputing.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>
-Subject: Re: [PATCH v4 14/16] net: stmmac: dwmac-s32: add basic NXP S32G/S32R
- glue driver
-Message-ID: <ZzIP9OrIi+X/akgg@lsv051416.swis.nl-cdc01.nxp.com>
-References: <20241028-upstream_s32cc_gmac-v4-0-03618f10e3e2@oss.nxp.com>
- <20241028-upstream_s32cc_gmac-v4-14-03618f10e3e2@oss.nxp.com>
- <c902dc2a-9b2a-44a0-be1d-88fb150f4f17@lunn.ch>
+	s=arc-20240116; t=1731335482; c=relaxed/simple;
+	bh=3q2ntUp0lyNNqotRFPFR9M/1XsEyI6ncSby6HiZ9E8g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JFIJkAj995vO6H/GF9He1SnMRy730mChpEUalmHkXtca4mVEud2qqnyxUzNraqPa+uQztmLUHJaHnGBChGpCIwGokhYtLRwnZn+V8gaD4wrDbt61Q3VL3vkbwkZleJPSMUqLbCkP/JU2e5761rx0HD//iodg/A2ZBvwRHKPxU5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=HNP7mWjx; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=XxpU9Zqb; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=HNP7mWjx; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=XxpU9Zqb; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HNP7mWjx";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="XxpU9Zqb";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HNP7mWjx";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="XxpU9Zqb"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 3FAB91F38E;
+	Mon, 11 Nov 2024 14:31:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1731335479; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ZtSNhYQRp5l2qSu/9O2ZZDBYQDxE3j+2jm6pYNufK9E=;
+	b=HNP7mWjxRuY1rlTlc1Vfy1n2uaeeBLCXkUqxbqsM9RX0VusoE6izvlZN6WJE0xjSasSBPu
+	/GrMbwPOcBp6LAYOe2ZaM6dU4FNchNf7yMAQjZH0Qk8r3c+Gn7HDS/Y49ggw6jp3crKrnH
+	uNKCVZbavd2/+BTTTAHe/6GyYIEyOco=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1731335479;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ZtSNhYQRp5l2qSu/9O2ZZDBYQDxE3j+2jm6pYNufK9E=;
+	b=XxpU9Zqbq8hDr4TXU4J7+iE5lqplzEqdLIVzCX21V2PMdkDUW5e8HW0dAlYQKXXxc779QL
+	1axiA65MrULVs/DA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1731335479; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ZtSNhYQRp5l2qSu/9O2ZZDBYQDxE3j+2jm6pYNufK9E=;
+	b=HNP7mWjxRuY1rlTlc1Vfy1n2uaeeBLCXkUqxbqsM9RX0VusoE6izvlZN6WJE0xjSasSBPu
+	/GrMbwPOcBp6LAYOe2ZaM6dU4FNchNf7yMAQjZH0Qk8r3c+Gn7HDS/Y49ggw6jp3crKrnH
+	uNKCVZbavd2/+BTTTAHe/6GyYIEyOco=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1731335479;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ZtSNhYQRp5l2qSu/9O2ZZDBYQDxE3j+2jm6pYNufK9E=;
+	b=XxpU9Zqbq8hDr4TXU4J7+iE5lqplzEqdLIVzCX21V2PMdkDUW5e8HW0dAlYQKXXxc779QL
+	1axiA65MrULVs/DA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 06A8313301;
+	Mon, 11 Nov 2024 14:31:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id sk83ADcVMmeWaAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 11 Nov 2024 14:31:19 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	p.zabel@pengutronix.de
+Cc: dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 0/5] drm/dumb-buffers: Fix and improve buffer-size calculation
+Date: Mon, 11 Nov 2024 15:23:02 +0100
+Message-ID: <20241111143114.631690-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c902dc2a-9b2a-44a0-be1d-88fb150f4f17@lunn.ch>
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[linux.intel.com,kernel.org,gmail.com,ffwll.ch,pengutronix.de];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-On Tue, Oct 29, 2024 at 01:15:52PM +0100, Andrew Lunn wrote:
-> > +#define GMAC_TX_RATE_125M	125000000	/* 125MHz */
-> > +#define GMAC_TX_RATE_25M	25000000	/* 25MHz */
-> > +#define GMAC_TX_RATE_2M5	2500000		/* 2.5MHz */
-> 
-> With the swap to the new helper, i think 25M and 2M5 are no longer
-> needed.
-> 
+Dumb-buffer pitch and size is specified by width, height, bits-per-pixel
+plus various hardware-specific alignments. The calculation of these
+values is inconsistent and duplicated among drivers. The results for
+formats with bpp < 8 are incorrect.
 
-Sure, I will fix it in v5.
+This series begins to fix this. Default scanline pitch and buffer size
+are now calculated with the existing 4CC helpers. The results are
+provided to drivers to avoid recalculating them. The series fixes the
+3 common GEM implementations for DMA, SHMEM and VRAM. Other memory
+managers can later be addressed separately.
 
-> > +static int s32_gmac_init(struct platform_device *pdev, void *priv)
-> > +{
-> > +	struct s32_priv_data *gmac = priv;
-> > +	int ret;
-> > +
-> > +	ret = clk_set_rate(gmac->tx_clk, GMAC_TX_RATE_125M);
-> > +	if (!ret)
-> > +		ret = clk_prepare_enable(gmac->tx_clk);
-> > +
-> > +	if (ret) {
-> > +		dev_err(&pdev->dev, "Can't set tx clock\n");
-> > +		return ret;
-> > +	}
-> > +
-> > +	ret = clk_prepare_enable(gmac->rx_clk);
-> > +	if (ret)
-> > +		dev_dbg(&pdev->dev, "Can't set rx, clock source is disabled.\n");
-> > +	else
-> > +		gmac->rx_clk_enabled = true;
-> 
-> Why would this fail? And if it does fail, why is it not fatal? Maybe a
-> comment here.
-> 
-> > +static void s32_fix_mac_speed(void *priv, unsigned int speed, unsigned int mode)
-> > +{
-> > +	struct s32_priv_data *gmac = priv;
-> > +	long tx_clk_rate;
-> > +	int ret;
-> > +
-> > +	if (!gmac->rx_clk_enabled) {
-> > +		ret = clk_prepare_enable(gmac->rx_clk);
-> > +		if (ret) {
-> > +			dev_err(gmac->dev, "Can't set rx clock\n");
-> 
-> dev_err(), so is failing now fatal, but since this is a void function,
-> you cannot report the error up the call stack?
-> 
+Thomas Zimmermann (5):
+  drm/dumb-buffers: Sanitize output on errors
+  drm/dumb-buffers: Fix size calculations and set default pitch and size
+  drm/gem-dma: Use aligned default pitch and size for dumb buffers
+  drm/gem-shmem: Use aligned default pitch and size for dumb buffers
+  drm/gem-vram: Use default pitch and size for dumb buffers
 
-I did a homework and checked the issue which was fixed by that 'lazy' rx
-clock enable procedure and got conslusion it is not needed anymore, as I
-was not able to reproduce the issue on the same board but with newer
-kernel version (6.6.32 versus 5.15.73).
+ drivers/gpu/drm/drm_dumb_buffers.c       | 123 +++++++++++++++++------
+ drivers/gpu/drm/drm_gem_dma_helper.c     |   7 +-
+ drivers/gpu/drm/drm_gem_shmem_helper.c   |  16 +--
+ drivers/gpu/drm/drm_gem_vram_helper.c    |  24 ++++-
+ drivers/gpu/drm/imx/ipuv3/imx-drm-core.c |   2 +
+ include/drm/drm_dumb_buffers.h           |  12 +++
+ 6 files changed, 141 insertions(+), 43 deletions(-)
+ create mode 100644 include/drm/drm_dumb_buffers.h
 
-So I will simplify rx clock management in v5.
+-- 
+2.47.0
 
-BR.
-/Jan
