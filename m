@@ -1,61 +1,61 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4892F15D5C5
-	for <imx@lists.linux.dev>; Mon, 11 Nov 2024 18:10:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7840F1AA79A
+	for <imx@lists.linux.dev>; Mon, 11 Nov 2024 18:37:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731348658; cv=none; b=Rpo9bNiXPuYaZHSd/5BWftzIg8fNYHaHjB/3tHtSD0EjmsxfDbVrzg0AvPq5FI5s4PK/SGANzvDLj4TjftnZ+akdyO8xXdIMX+B/4PRrUaydJetYkTN2uVHdJiDGss36ey/V+V20BbYxfD7aSw4Lh8Mxlo8PYDOibePmn4TefP4=
+	t=1731350228; cv=none; b=OXRA8OFCMXFDatS+r0mw3i44dQS4bAStk/LPQTVb9qWEMPEzD4yU6omAUKMeFs3PQbAr9pC+gIRz8oO4c5Gt20ZS8KuGZ3veTPRV1zoGPP0Cx13h+XWTkIL2v6+Hhy3wiSRr32x8i78lF9YEfwJTH+/rxceS2N+9gMHO+xzteFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731348658; c=relaxed/simple;
-	bh=2rRfR0LAyjcJJH/QKC/GhAZcwpyTWAfMPNqw+ohUHi4=;
+	s=arc-20240116; t=1731350228; c=relaxed/simple;
+	bh=tQ47q9fCkaEdTs2125TtomkL5S6XggvvaIp8DG0In2E=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=cu0X1O8fj841lKDv46qkPWeSm+sg7JuvXt0920TZsZlASODNcMIg0LEEUHDjyI48WkmO6YIKe123/1jx9UI+xx4lu26ZVcrAgs9ND5COvFaXXFSGD03lUsUO9dxWjGK4jagxcxWK+Xb/TQQO7eZsO3mbk6FNs5+X1IR5n1TSapQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H3bc/Prs; arc=none smtp.client-ip=209.85.214.181
+	 In-Reply-To:Content-Type; b=L863eld9vNQRl86Nv986L4qX9pAFAYVlOc/+V0rdB8BkuJfdQxervFHYPmPKv3OZa0JS5cKO/v9U70oRUPp6TuaIL9f3ouo4BygVTRFPRZIFYEYvidEHyzm+/9IUhU2GN+mwtGoSdNGls1TTqRhAghdoxOeJzLbb6pSHh+VMQa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k9fgzZ0T; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H3bc/Prs"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2118dfe6042so16635835ad.2
-        for <imx@lists.linux.dev>; Mon, 11 Nov 2024 10:10:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k9fgzZ0T"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-211a4682fcaso6745425ad.2
+        for <imx@lists.linux.dev>; Mon, 11 Nov 2024 10:37:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731348656; x=1731953456; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1731350227; x=1731955027; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=ou+pakJnN8GqsivMPkhl1TNQ2JSe3WqaNFbGvCJlURM=;
-        b=H3bc/PrsXD2tgEqogm/uwDboH8WOeHJo8ORY81VBEcX6mBeOIWW6ZpkPMlCpmcMYVb
-         BE9MaofSx2cMoqzJkkDmhyIDB4NSL6MaA36bkscd7LVRfA+lsJTLSjP7sdQDZuf51MDT
-         3WNcPqzw94LH9Da2vEC9NtlvoDEGqA3E4fkmc4rkXvKDTKFMow8Lmzezs47lDOuceLD+
-         rkVWTEJmgEVy9G/Vd6A1ZrLoi7tiS8UWGySsZVBMtbuIPwjcvW6VLUZ22Oe82VgcaeVq
-         Pxf7y/lINv7zXxvFusRtmQSsR9yvcWAwf52jBjvhVf4ZxnpwQwOZfbHq2vLzV5A71tuF
-         5VaA==
+        bh=GCiEccyKF8GZ8vErZhkNfUE8aukCUXiC4bcALe0PXfI=;
+        b=k9fgzZ0TV0XM5VRD5pNweeo/SPfjISMbc/Rtm47KZ2nsKzPTJNq5SuUT8q9WpuXXId
+         l22j6j6Ul02LaWV6MFwzBv3H9oWuM+608x2n8WHaMvclLNPCA+NuiMcbw5jiTy9D93Vd
+         B/N+533jo5yr3LE2lUQ4qCgOVYlVIcoIJTrdMj6Ub/ka2sZt9MRcimBkdrZxMrcTVean
+         KrRdC1qybHEk6T4irYuhpAmOpPNkacHcPfc9MT2Ck/lA9kwSKrpActCCD25oSng0PII+
+         Obzs+beh/ghZKC8WVawRzi4t6Gp9NuZXsLCR37a31nRLHBioN1jGbcmUZSaRen08cyLN
+         GWvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731348656; x=1731953456;
+        d=1e100.net; s=20230601; t=1731350227; x=1731955027;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:sender:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ou+pakJnN8GqsivMPkhl1TNQ2JSe3WqaNFbGvCJlURM=;
-        b=V9jX+K1UZdeU192FgD9HGoFeiy8s4pK4y5QCnfTeUTiIg3ZgPg257z2mA+4EXKxKB+
-         S4XOn8j2EV6RqpdYjv+nUay1nu/2jzidzNs8MYW62K8O4y4Z1xPQdBE6fcyYUacAQu4Q
-         2HTp3OZXd+u4yK7zZ6iWZqU8kQU57aVSLTaJWCWlt1kwmQubtr1D79pNQ3NSDHPIyYAw
-         3gL3mImqz+W6rSv7LpSM6NLoicDl251iFgq0uyn7k/tvk2F8j7uLnhUaUXO5gCTI6em/
-         KgkRtBTrP6Gd0DxvL1CNHniLJ0Zu10/rVKF0XNv5GR2WWciWJYFllGCkqh1Rv1iKsylG
-         l6hw==
-X-Forwarded-Encrypted: i=1; AJvYcCUJqKK89vD/Hf7yfDwH8flz3BGnfDYZ08ahpI8KdPchYOWgCxWgKBx1WBLHbJIbHV2oCuU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzTn66Ok8eMabSzeClI+8x61FoTO6Gfo83pDDkwPtzEeGRV/IFI
-	ky8IFt+kuCzaQHNhS9zgl5oYS4psS9C1EhZbC0H3M0nfooo3wrYv
-X-Google-Smtp-Source: AGHT+IEyM4w+bqgLpiyEoaQvV2sZGwHKl/UVHBGsIq5HXpnePLWUsiA8UymSNUOxXTSnqCLnhu1Vsg==
-X-Received: by 2002:a17:902:d50f:b0:20c:cf39:fe2d with SMTP id d9443c01a7336-21183533a62mr202214645ad.5.1731348656518;
-        Mon, 11 Nov 2024 10:10:56 -0800 (PST)
+        bh=GCiEccyKF8GZ8vErZhkNfUE8aukCUXiC4bcALe0PXfI=;
+        b=XJoL+K1hdfKttEx8tupQqpJMofF6RNrt/BFkqN148A6InxzqJQQ9JwZCUL8h0MrBiz
+         2XFqRdWdTUTUdaL7cxxJHJrWPaSRGLa7J8snEcz1x47+oWLKKfMCq3l1Su0csPv1hrPy
+         e2PdxYJQzPfuTFL/z/wpy32MYR9Ro59ph/3xoBdA10Lf4KoVpt8F4VlthE3Qab+yT0gy
+         Avd6rvc1dcT5FVN0Fnt9jkfX5gd5g7ozHUjpplNT96Y8Yd9lPWp08F1Q3ecoGhFz/P+N
+         8h605HIHGp2HPypYzgsp8O6cBJgB3dnXqTe20S55wy2uoBE6FN01xMhKJmIGLhEm+oaP
+         pbMA==
+X-Forwarded-Encrypted: i=1; AJvYcCWQGULZAgZojL8Qm9pRP3dZDfzPjjw6VNGk9qhQzeRq1L7G0QpRtCNGc7mf56pDyuFKq8Q=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx3fWZNbDFiylb0DYGrrqjv3RbVw9xitVwwaKrb9xHOZrRxur8Q
+	oIYrOO9O0uqywbDprUMImEcRWIr8YX4rFxh62lpDRE4Xz/Bovide
+X-Google-Smtp-Source: AGHT+IGr8e9DiV3V2QHHPadF3ED2eVTLHuUNPmsGNSWjihoWy0A1RwKBOBxWjUKHuwFj8UAk48IIJA==
+X-Received: by 2002:a17:902:d50a:b0:20b:cae5:dec4 with SMTP id d9443c01a7336-21183529badmr191550575ad.24.1731350226814;
+        Mon, 11 Nov 2024 10:37:06 -0800 (PST)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177e58316sm78945275ad.188.2024.11.11.10.10.54
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177dc9f23sm79351145ad.29.2024.11.11.10.37.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Nov 2024 10:10:55 -0800 (PST)
+        Mon, 11 Nov 2024 10:37:06 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <e8921251-02bb-409e-88d0-d635e7d08929@roeck-us.net>
-Date: Mon, 11 Nov 2024 10:10:54 -0800
+Message-ID: <f2690f72-9b50-438d-8301-9e93b03de3e4@roeck-us.net>
+Date: Mon, 11 Nov 2024 10:37:04 -0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -79,6 +79,7 @@ Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 References: <20241111-p3t1085-v3-0-bff511550aad@nxp.com>
  <20241111-p3t1085-v3-4-bff511550aad@nxp.com>
  <41995c8a-8b05-4c56-b4a3-5f275a88b899@roeck-us.net>
+ <e8921251-02bb-409e-88d0-d635e7d08929@roeck-us.net>
 Content-Language: en-US
 Autocrypt: addr=linux@roeck-us.net; keydata=
  xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
@@ -123,40 +124,48 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
  HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
  mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <41995c8a-8b05-4c56-b4a3-5f275a88b899@roeck-us.net>
+In-Reply-To: <e8921251-02bb-409e-88d0-d635e7d08929@roeck-us.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 11/11/24 10:04, Guenter Roeck wrote:
-[ ... ]
->> +static int p3t1085_i3c_probe(struct i3c_device *i3cdev)
->> +{
->> +    struct device *dev = i3cdev_to_dev(i3cdev);
->> +    struct regmap *regmap;
->> +
->> +    regmap = devm_regmap_init_i3c(i3cdev, &tmp108_regmap_config);
->> +    if (IS_ERR(regmap))
->> +        return dev_err_probe(dev, PTR_ERR(regmap),
->> +                     "Failed to register i3c regmap\n");
->> +
->> +    return tmp108_common_probe(dev, regmap, "p3t1085_i3c");
->> +}
->> +
->> +static struct i3c_driver p3t1085_driver = {
->> +    .driver = {
->> +        .name = "p3t1085_i3c",
->> +    },
->> +    .probe = p3t1085_i3c_probe,
->> +    .id_table = p3t1085_i3c_ids,
->> +};
->> +module_i3c_driver(p3t1085_driver);
->> +#endif
+On 11/11/24 10:10, Guenter Roeck wrote:
+> On 11/11/24 10:04, Guenter Roeck wrote:
+> [ ... ]
+>>> +static int p3t1085_i3c_probe(struct i3c_device *i3cdev)
+>>> +{
+>>> +    struct device *dev = i3cdev_to_dev(i3cdev);
+>>> +    struct regmap *regmap;
+>>> +
+>>> +    regmap = devm_regmap_init_i3c(i3cdev, &tmp108_regmap_config);
+>>> +    if (IS_ERR(regmap))
+>>> +        return dev_err_probe(dev, PTR_ERR(regmap),
+>>> +                     "Failed to register i3c regmap\n");
+>>> +
+>>> +    return tmp108_common_probe(dev, regmap, "p3t1085_i3c");
+>>> +}
+>>> +
+>>> +static struct i3c_driver p3t1085_driver = {
+>>> +    .driver = {
+>>> +        .name = "p3t1085_i3c",
+>>> +    },
+>>> +    .probe = p3t1085_i3c_probe,
+>>> +    .id_table = p3t1085_i3c_ids,
+>>> +};
+>>> +module_i3c_driver(p3t1085_driver);
+>>> +#endif
+>>
+>> While looking at i3c code, I found module_i3c_i2c_driver(). Can we use
+>> that function to register both i2c and i3c in one call ?
+>>
+> Answering my own question: No, because devm_regmap_init_i3c()
+> does not provide a dummy function if i3C is not enabled.
 > 
-> While looking at i3c code, I found module_i3c_i2c_driver(). Can we use
-> that function to register both i2c and i3c in one call ?
-> 
-Answering my own question: No, because devm_regmap_init_i3c()
-does not provide a dummy function if i3C is not enabled.
 
+I do have another concern, though: What happens if the i2c part of the driver
+registers and the i3c part fails to register ? module_i3c_i2c_driver() handles
+that situation by unregistering the i2c driver, but I don't really know
+what happens if a single module registers two drivers and one of them fails.
+
+Thanks,
 Guenter
 
