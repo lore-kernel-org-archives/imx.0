@@ -1,61 +1,61 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F59A158858
-	for <imx@lists.linux.dev>; Mon, 11 Nov 2024 18:04:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4892F15D5C5
+	for <imx@lists.linux.dev>; Mon, 11 Nov 2024 18:10:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731348259; cv=none; b=rZj+5pq9C99MoZpPu3M8gE+6JzA6vk4A/UanY3N3YRo1eu78J/If+lX55JSKRuk/gfZvr1QWR2BEadsif2UxTKF1Z1MzwZ9+EiSQbCC1FGqby+W47KalJ7ZP+3ITvE5eurOP6wRTZHBWCkkrWUUhVuuX5OZyIqn/atN6GJU2KUI=
+	t=1731348658; cv=none; b=Rpo9bNiXPuYaZHSd/5BWftzIg8fNYHaHjB/3tHtSD0EjmsxfDbVrzg0AvPq5FI5s4PK/SGANzvDLj4TjftnZ+akdyO8xXdIMX+B/4PRrUaydJetYkTN2uVHdJiDGss36ey/V+V20BbYxfD7aSw4Lh8Mxlo8PYDOibePmn4TefP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731348259; c=relaxed/simple;
-	bh=Zob6Dhfvuz9YDRj9DmM4VlKOg1HCcxbuB+dKRE5WFO8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VWQpzxI9EI2T9Ue7m/MTPfo0FIfxJoQZ72iuZC1Fsh7hlgENJopq19ZW6mQHDxbujD+jmg1hLJLQRD0Kp3hjdCMfhFnD7SfmHFpx30uqL3o/63ySzE7soDHzZgZZ9tlJ9yDtemYwi2LMbmRALQKtNvny9lgHftQRsWbHIZPf91w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DXPq3FZN; arc=none smtp.client-ip=209.85.210.176
+	s=arc-20240116; t=1731348658; c=relaxed/simple;
+	bh=2rRfR0LAyjcJJH/QKC/GhAZcwpyTWAfMPNqw+ohUHi4=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=cu0X1O8fj841lKDv46qkPWeSm+sg7JuvXt0920TZsZlASODNcMIg0LEEUHDjyI48WkmO6YIKe123/1jx9UI+xx4lu26ZVcrAgs9ND5COvFaXXFSGD03lUsUO9dxWjGK4jagxcxWK+Xb/TQQO7eZsO3mbk6FNs5+X1IR5n1TSapQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H3bc/Prs; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DXPq3FZN"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7205b6f51f3so3810083b3a.1
-        for <imx@lists.linux.dev>; Mon, 11 Nov 2024 10:04:17 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H3bc/Prs"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2118dfe6042so16635835ad.2
+        for <imx@lists.linux.dev>; Mon, 11 Nov 2024 10:10:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731348257; x=1731953057; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=PKmxg9GGHmNCX++vTNZsc4EelTdMMRYckJbYtzhirFw=;
-        b=DXPq3FZNnpl8gW1FcS4uBBT3u6vP1TPCUODKX0yVY4FT8aNTgAZBOCJ6TeWo+WXMoG
-         atJydBaQxZk/XiFhBhu3wfgEyq7eBcN3RV8k5xK5oBJXa0LtGl2P8kV/Im35915GrNXA
-         grFAr/DrKBnOjZtyADiYBmBzffgAEZGnfb2nQ/IU4xF2nWhy0LiAW5edRmPGzcPu/IOK
-         pOIBgloUKHOzflYtjVVas2pwA0C5ByqEjUudp16Zuac8LahTTNByDqg1e1gP0DYcLJ1Y
-         Y8ug7DHCOPdajOuwVXjUYHjf2b+CCiCMsqvPQpErQY7Drhpiovog1laY6QEkIOgygf5C
-         9vWw==
+        d=gmail.com; s=20230601; t=1731348656; x=1731953456; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=ou+pakJnN8GqsivMPkhl1TNQ2JSe3WqaNFbGvCJlURM=;
+        b=H3bc/PrsXD2tgEqogm/uwDboH8WOeHJo8ORY81VBEcX6mBeOIWW6ZpkPMlCpmcMYVb
+         BE9MaofSx2cMoqzJkkDmhyIDB4NSL6MaA36bkscd7LVRfA+lsJTLSjP7sdQDZuf51MDT
+         3WNcPqzw94LH9Da2vEC9NtlvoDEGqA3E4fkmc4rkXvKDTKFMow8Lmzezs47lDOuceLD+
+         rkVWTEJmgEVy9G/Vd6A1ZrLoi7tiS8UWGySsZVBMtbuIPwjcvW6VLUZ22Oe82VgcaeVq
+         Pxf7y/lINv7zXxvFusRtmQSsR9yvcWAwf52jBjvhVf4ZxnpwQwOZfbHq2vLzV5A71tuF
+         5VaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731348257; x=1731953057;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1731348656; x=1731953456;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:sender:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PKmxg9GGHmNCX++vTNZsc4EelTdMMRYckJbYtzhirFw=;
-        b=cIBOS9dlTh3U5EXeA8t5tSlFf77Bt+YiDat0BIe/ddu+s3e7B8X/kdrGuoax7z8YSg
-         Ekf1aN8lICa2s/NwSxjhf/2XZOYPoP98esilFHH3sUVDY8oNgfDtuyUCQo4Hp61Yss2x
-         1JmtckNEmubb1Qh7wS5sDuNfriD1wLihp0KvNrg1sQXQCvvku61PKOkhuPGDSFew+an9
-         hbB9ihJ4JypjSuvdhcrY0LNOml/wKWjr061Zx5hHCt5iY/hSQB2lOaJR7tHW0/7OmwuS
-         RbDXhVgg2nDfGlNnH5pTmLcJvIhoEf7QLujQ0LMbWYiu6IiENTlD5fm/89vtSl6cvnp7
-         NA/A==
-X-Forwarded-Encrypted: i=1; AJvYcCXcv3t+QpaLa5hgVcgl/wVEVLEePYSZB17so4Rry+2jna2SBDKmPoaLRxMx5mtT1FMqPL0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YygpJfwibs3ZaOaY9B1QJ4ZvwOrROSfVGQQLYeBSOohJ4B97sEj
-	LpeOg436PR7j/wPMqMXYwo3zgQHYQLkpuTnimJ2atpyy/LESYife
-X-Google-Smtp-Source: AGHT+IHm6HOvOrc1BUjUnjkjMNhGEE2/6o5R182iW37iCcmgBZIxz3bXmpi/ntFA/fVZ/0ndenLwkQ==
-X-Received: by 2002:a05:6a21:6da7:b0:1d9:21a0:14e0 with SMTP id adf61e73a8af0-1dc229266a9mr19535036637.12.1731348257036;
-        Mon, 11 Nov 2024 10:04:17 -0800 (PST)
+        bh=ou+pakJnN8GqsivMPkhl1TNQ2JSe3WqaNFbGvCJlURM=;
+        b=V9jX+K1UZdeU192FgD9HGoFeiy8s4pK4y5QCnfTeUTiIg3ZgPg257z2mA+4EXKxKB+
+         S4XOn8j2EV6RqpdYjv+nUay1nu/2jzidzNs8MYW62K8O4y4Z1xPQdBE6fcyYUacAQu4Q
+         2HTp3OZXd+u4yK7zZ6iWZqU8kQU57aVSLTaJWCWlt1kwmQubtr1D79pNQ3NSDHPIyYAw
+         3gL3mImqz+W6rSv7LpSM6NLoicDl251iFgq0uyn7k/tvk2F8j7uLnhUaUXO5gCTI6em/
+         KgkRtBTrP6Gd0DxvL1CNHniLJ0Zu10/rVKF0XNv5GR2WWciWJYFllGCkqh1Rv1iKsylG
+         l6hw==
+X-Forwarded-Encrypted: i=1; AJvYcCUJqKK89vD/Hf7yfDwH8flz3BGnfDYZ08ahpI8KdPchYOWgCxWgKBx1WBLHbJIbHV2oCuU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzTn66Ok8eMabSzeClI+8x61FoTO6Gfo83pDDkwPtzEeGRV/IFI
+	ky8IFt+kuCzaQHNhS9zgl5oYS4psS9C1EhZbC0H3M0nfooo3wrYv
+X-Google-Smtp-Source: AGHT+IEyM4w+bqgLpiyEoaQvV2sZGwHKl/UVHBGsIq5HXpnePLWUsiA8UymSNUOxXTSnqCLnhu1Vsg==
+X-Received: by 2002:a17:902:d50f:b0:20c:cf39:fe2d with SMTP id d9443c01a7336-21183533a62mr202214645ad.5.1731348656518;
+        Mon, 11 Nov 2024 10:10:56 -0800 (PST)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7f41f644a23sm8798446a12.53.2024.11.11.10.04.14
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177e58316sm78945275ad.188.2024.11.11.10.10.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Nov 2024 10:04:15 -0800 (PST)
+        Mon, 11 Nov 2024 10:10:55 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <41995c8a-8b05-4c56-b4a3-5f275a88b899@roeck-us.net>
-Date: Mon, 11 Nov 2024 10:04:13 -0800
+Message-ID: <e8921251-02bb-409e-88d0-d635e7d08929@roeck-us.net>
+Date: Mon, 11 Nov 2024 10:10:54 -0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -64,6 +64,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 4/5] hwmon: tmp108: Add support for I3C device
+From: Guenter Roeck <linux@roeck-us.net>
 To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
@@ -77,8 +78,8 @@ Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-hwmon@vger.kernel.org
 References: <20241111-p3t1085-v3-0-bff511550aad@nxp.com>
  <20241111-p3t1085-v3-4-bff511550aad@nxp.com>
+ <41995c8a-8b05-4c56-b4a3-5f275a88b899@roeck-us.net>
 Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
  xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
  RYHA7RCEK2dh6dDccykQk3bC90xXMPg+O3R+C/SkwcnUak1UZaeK/SwQbq/t0tkMzYDRxfJ7
@@ -122,94 +123,40 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
  HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
  mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20241111-p3t1085-v3-4-bff511550aad@nxp.com>
+In-Reply-To: <41995c8a-8b05-4c56-b4a3-5f275a88b899@roeck-us.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11/11/24 09:32, Frank Li wrote:
-> Add support for I3C device in the tmp108 driver to handle the P3T1085
-> sensor. Register the I3C device driver to enable I3C functionality for the
-> sensor.
+On 11/11/24 10:04, Guenter Roeck wrote:
+[ ... ]
+>> +static int p3t1085_i3c_probe(struct i3c_device *i3cdev)
+>> +{
+>> +    struct device *dev = i3cdev_to_dev(i3cdev);
+>> +    struct regmap *regmap;
+>> +
+>> +    regmap = devm_regmap_init_i3c(i3cdev, &tmp108_regmap_config);
+>> +    if (IS_ERR(regmap))
+>> +        return dev_err_probe(dev, PTR_ERR(regmap),
+>> +                     "Failed to register i3c regmap\n");
+>> +
+>> +    return tmp108_common_probe(dev, regmap, "p3t1085_i3c");
+>> +}
+>> +
+>> +static struct i3c_driver p3t1085_driver = {
+>> +    .driver = {
+>> +        .name = "p3t1085_i3c",
+>> +    },
+>> +    .probe = p3t1085_i3c_probe,
+>> +    .id_table = p3t1085_i3c_ids,
+>> +};
+>> +module_i3c_driver(p3t1085_driver);
+>> +#endif
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> change from v2 to v3
-> - change kconfig to select REGMAP_I3C if enable i3c
-> - remove i3c/master.h
-> - remove , after {}
-> - use #ifdef CONFIG_I3C about i3c register code
+> While looking at i3c code, I found module_i3c_i2c_driver(). Can we use
+> that function to register both i2c and i3c in one call ?
 > 
-> I2C    I3C
-> Y       Y       support both
-> Y       N       i3c part code will not be compiled
-> N       Y       whole TPM108 will not be compiled
-> N       N       whole TPM108 will not be compiled
-> ---
->   drivers/hwmon/Kconfig  |  1 +
->   drivers/hwmon/tmp108.c | 31 +++++++++++++++++++++++++++++++
->   2 files changed, 32 insertions(+)
-> 
-> diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-> index d43ca7aa4a548..9579db7849e1f 100644
-> --- a/drivers/hwmon/Kconfig
-> +++ b/drivers/hwmon/Kconfig
-> @@ -2298,6 +2298,7 @@ config SENSORS_TMP108
->   	tristate "Texas Instruments TMP108"
->   	depends on I2C
->   	select REGMAP_I2C
-> +	select REGMAP_I3C if I3C
->   	help
->   	  If you say yes here you get support for Texas Instruments TMP108
->   	  sensor chips and NXP P3T1085.
-> diff --git a/drivers/hwmon/tmp108.c b/drivers/hwmon/tmp108.c
-> index bfbea6349a95f..deb1505321335 100644
-> --- a/drivers/hwmon/tmp108.c
-> +++ b/drivers/hwmon/tmp108.c
-> @@ -13,6 +13,7 @@
->   #include <linux/mutex.h>
->   #include <linux/of.h>
->   #include <linux/i2c.h>
-> +#include <linux/i3c/device.h>
->   #include <linux/init.h>
->   #include <linux/jiffies.h>
->   #include <linux/regmap.h>
-> @@ -442,6 +443,36 @@ static struct i2c_driver tmp108_driver = {
->   
->   module_i2c_driver(tmp108_driver);
->   
-> +#ifdef CONFIG_I3C
-> +static const struct i3c_device_id p3t1085_i3c_ids[] = {
-> +	I3C_DEVICE(0x011b, 0x1529, NULL),
-> +	{}
-> +};
-> +MODULE_DEVICE_TABLE(i3c, p3t1085_i3c_ids);
-> +
-> +static int p3t1085_i3c_probe(struct i3c_device *i3cdev)
-> +{
-> +	struct device *dev = i3cdev_to_dev(i3cdev);
-> +	struct regmap *regmap;
-> +
-> +	regmap = devm_regmap_init_i3c(i3cdev, &tmp108_regmap_config);
-> +	if (IS_ERR(regmap))
-> +		return dev_err_probe(dev, PTR_ERR(regmap),
-> +				     "Failed to register i3c regmap\n");
-> +
-> +	return tmp108_common_probe(dev, regmap, "p3t1085_i3c");
-> +}
-> +
-> +static struct i3c_driver p3t1085_driver = {
-> +	.driver = {
-> +		.name = "p3t1085_i3c",
-> +	},
-> +	.probe = p3t1085_i3c_probe,
-> +	.id_table = p3t1085_i3c_ids,
-> +};
-> +module_i3c_driver(p3t1085_driver);
-> +#endif
+Answering my own question: No, because devm_regmap_init_i3c()
+does not provide a dummy function if i3C is not enabled.
 
-While looking at i3c code, I found module_i3c_i2c_driver(). Can we use
-that function to register both i2c and i3c in one call ?
-
-Thanks,
 Guenter
 
