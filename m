@@ -1,73 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFC615A85A;
-	Mon, 11 Nov 2024 14:02:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CECF132122
+	for <imx@lists.linux.dev>; Mon, 11 Nov 2024 14:17:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731333730; cv=none; b=GAQLWgrx/1upZ3XI5CZl+sS1Uwy2qdZOQtWlEnVTt5a/vprTZI1+I9Ys2VJNF+TAh5XiZlCk4IbP7XVpt/wWo1Lw1Bgi0wY7Py/LRq9GG2MWwANf3syLEdnYbd8iSyAhJuisXbzaCEJAFXRcvtxPsdzsFMFbQtMGwnsu8YLX1rQ=
+	t=1731334631; cv=none; b=OKXJ+xFaxeJ2Jly2EU6KC3BareEcB5gTHw20Jzt7daYj8z7EB0fuI44t5s7xhYn2KYA0np8395LbXyyEEYmO4Zh1qjvQKhPbVW7E2Towv9/NkiC3NNxfRYcPcILKiGSslarYYNyjsz/Zk2bUg/09twA+O3ru1V/uKPPUyvnCY84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731333730; c=relaxed/simple;
-	bh=sdI2GoFfHjss+k6nPzpItWxYvNsdy9CTWpBrfpUgQb0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=QySuZthGuiqKtMjv3ViBu3+yaF3DH+yGUPIyGJiphiz5/iy34U3kzOB8kDosepV9a4nYE+651Odm/LABfsYOJwp2HpCWfYTUf7VB5VjS2woN3/NbtDuNA71zeveUVo0ug1sHLAg2v1LHjvqk9vqVLPMJ2BCqISBNkkV+OruECAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YAthVMoF; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YAthVMoF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8616C4CECF;
-	Mon, 11 Nov 2024 14:02:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731333729;
-	bh=sdI2GoFfHjss+k6nPzpItWxYvNsdy9CTWpBrfpUgQb0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=YAthVMoFwipRt1rboQjLhlCNM0aWs9pTsKn0Rtgb+B3XZEpehyMV/ye50x2cRmTeM
-	 EtKdAP99NBLxdBnIVBWFme2H8txgWVx4zKFLNHYxaV7qss4Z+T/UozSYqK7PaPXkj4
-	 EbzwqW8w6t/CXyzTjY5F7pjkm+idiV9yYC4LFv3Zus7RsmlouZB7ziniWm2md88kbP
-	 ZHUB8PQIM0BNBM8AygnNu0scWi+dekyROVDJUkttIeryRos55Ff6x5KthqCJxqVAI+
-	 llDLrlGweSp/ZeGnBfyJxNoqnU+6QA+cgRwHSUikl4w4Mxrhq2e0b1dETqc4uAQWyi
-	 uLI8YcKR/zOeQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Tudor Ambarus <tudor.ambarus@linaro.org>
-Cc: peng.fan@oss.nxp.com,  m.felsch@pengutronix.de,  pratyush@kernel.org,
-  mwalle@kernel.org,  miquel.raynal@bootlin.com,  richard@nod.at,
-  vigneshr@ti.com,  robh@kernel.org,  krzk+dt@kernel.org,
-  conor+dt@kernel.org,  shawnguo@kernel.org,  s.hauer@pengutronix.de,
-  kernel@pengutronix.de,  festevam@gmail.com,
-  linux-mtd@lists.infradead.org,  devicetree@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  imx@lists.linux.dev,
-  linux-arm-kernel@lists.infradead.org,  Peng Fan <peng.fan@nxp.com>
-Subject: Re: [RESEND PATCH v4 2/2] mtd: spi-nor: support vcc-supply regulator
-In-Reply-To: <20241029102238.44673-2-tudor.ambarus@linaro.org> (Tudor
-	Ambarus's message of "Tue, 29 Oct 2024 10:22:38 +0000")
-References: <20241029102238.44673-1-tudor.ambarus@linaro.org>
-	<20241029102238.44673-2-tudor.ambarus@linaro.org>
-Date: Mon, 11 Nov 2024 14:02:05 +0000
-Message-ID: <mafs0zfm57tsy.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1731334631; c=relaxed/simple;
+	bh=atKj27umbsbkvfy41nhNQunjFCIirqrEGyCUijGtQbM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gD4fZ9Dhty/gE33SmpQkebSYT/IEdWkscBo5lwGDw/I+yfeUWunkW8v6x5fB9QPFx+mW/ej1HNhw/EIAaRNRuMP64u9zssFTTNoJl93FifvDeADRQll3vpM2jjrsIJSNIGdDB/WIG2VjieTYNKYPsOG7PrTxp3dw7FtmhvkCqM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 7999E1A117E;
+	Mon, 11 Nov 2024 15:08:52 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 6CDCC1A1174;
+	Mon, 11 Nov 2024 15:08:52 +0100 (CET)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 2C4EF2037A;
+	Mon, 11 Nov 2024 15:08:52 +0100 (CET)
+Date: Mon, 11 Nov 2024 15:08:52 +0100
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Minda Chen <minda.chen@starfivetech.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+	Keyur Chudgar <keyur@os.amperecomputing.com>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	NXP S32 Linux Team <s32@nxp.com>
+Subject: Re: [PATCH v4 14/16] net: stmmac: dwmac-s32: add basic NXP S32G/S32R
+ glue driver
+Message-ID: <ZzIP9OrIi+X/akgg@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20241028-upstream_s32cc_gmac-v4-0-03618f10e3e2@oss.nxp.com>
+ <20241028-upstream_s32cc_gmac-v4-14-03618f10e3e2@oss.nxp.com>
+ <c902dc2a-9b2a-44a0-be1d-88fb150f4f17@lunn.ch>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c902dc2a-9b2a-44a0-be1d-88fb150f4f17@lunn.ch>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-On Tue, Oct 29 2024, Tudor Ambarus wrote:
+On Tue, Oct 29, 2024 at 01:15:52PM +0100, Andrew Lunn wrote:
+> > +#define GMAC_TX_RATE_125M	125000000	/* 125MHz */
+> > +#define GMAC_TX_RATE_25M	25000000	/* 25MHz */
+> > +#define GMAC_TX_RATE_2M5	2500000		/* 2.5MHz */
+> 
+> With the swap to the new helper, i think 25M and 2M5 are no longer
+> needed.
+> 
 
-> From: Peng Fan <peng.fan@nxp.com>
->
-> SPI NOR flashes needs power supply to work properly. The power supply
-> maybe software controllable per board design. So add the support
-> for an vcc-supply regulator.
->
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
-> [ta: move devm_regulator_get_enable() to spi_nor_probe(). Add local dev
-> variable to avoid dereferences.]
-> Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Sure, I will fix it in v5.
 
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+> > +static int s32_gmac_init(struct platform_device *pdev, void *priv)
+> > +{
+> > +	struct s32_priv_data *gmac = priv;
+> > +	int ret;
+> > +
+> > +	ret = clk_set_rate(gmac->tx_clk, GMAC_TX_RATE_125M);
+> > +	if (!ret)
+> > +		ret = clk_prepare_enable(gmac->tx_clk);
+> > +
+> > +	if (ret) {
+> > +		dev_err(&pdev->dev, "Can't set tx clock\n");
+> > +		return ret;
+> > +	}
+> > +
+> > +	ret = clk_prepare_enable(gmac->rx_clk);
+> > +	if (ret)
+> > +		dev_dbg(&pdev->dev, "Can't set rx, clock source is disabled.\n");
+> > +	else
+> > +		gmac->rx_clk_enabled = true;
+> 
+> Why would this fail? And if it does fail, why is it not fatal? Maybe a
+> comment here.
+> 
+> > +static void s32_fix_mac_speed(void *priv, unsigned int speed, unsigned int mode)
+> > +{
+> > +	struct s32_priv_data *gmac = priv;
+> > +	long tx_clk_rate;
+> > +	int ret;
+> > +
+> > +	if (!gmac->rx_clk_enabled) {
+> > +		ret = clk_prepare_enable(gmac->rx_clk);
+> > +		if (ret) {
+> > +			dev_err(gmac->dev, "Can't set rx clock\n");
+> 
+> dev_err(), so is failing now fatal, but since this is a void function,
+> you cannot report the error up the call stack?
+> 
 
--- 
-Regards,
-Pratyush Yadav
+I did a homework and checked the issue which was fixed by that 'lazy' rx
+clock enable procedure and got conslusion it is not needed anymore, as I
+was not able to reproduce the issue on the same board but with newer
+kernel version (6.6.32 versus 5.15.73).
+
+So I will simplify rx clock management in v5.
+
+BR.
+/Jan
