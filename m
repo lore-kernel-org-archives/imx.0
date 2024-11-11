@@ -1,125 +1,148 @@
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9984A1A76CC
-	for <imx@lists.linux.dev>; Mon, 11 Nov 2024 19:29:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E030155A59
+	for <imx@lists.linux.dev>; Mon, 11 Nov 2024 19:44:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731353377; cv=none; b=e2BzvC8LBUguRvy3428riu/BofgskmsWye+KySqikgwSctaXzsii8gI3k3Zt4/SKVPOIC2cySctSgnocyUoX5yd0IJhSStHYgoiBy59v4ZeoXs9D9JBY+N1/tznMjPdByLu2AB5j1zkpz3GMm99nXDcn1LmR5GTsKfPW6oshUmI=
+	t=1731354253; cv=none; b=ZPA8MLBxq0fYdARBUxDt/fhz/9USEcBrfg+33BbCTgZD/seBvH89kvFGgmo4fXQ4hrAQkcr+WtcElUliSjBSMxPJSPAgtRejXyH0I87cYju6dfwDgj154TCNzcYRTp8LVqdLCkw0hwEbn/AZNxp2o99zrHIKbMYTAlQE4LiKFoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731353377; c=relaxed/simple;
-	bh=MGrDoVZBKCJUqSFuDTy6drHVcYGi4i0VUnifK1k48Fo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ODGRH0q9+cb9fF7nkLF/4Yvpqc5qrU2XuF/EhO5dODsCZXUdHyUtVnGCYnttSuX++zHCsm/Jb1TxxRnGuJ6rdk2KOqeNJJMIiNWPEHrmDWcJ3NStksDo8FFmsUXQM54GGDWExWfVxreFD0/sXLlas1pxz1IH7izzN5YxSF3gMxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TD7VyqUE; arc=none smtp.client-ip=209.85.160.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1731354253; c=relaxed/simple;
+	bh=L8cCX/CiNY4NkwsSEVjWSf/YB50YSShTfzUQNn831IU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LiSxSqICsYS2gnrS2LQ7j/yIX3T48oRczJcfJ/Pr/AiQlRcUXwiXQ2zQjmZwZ4uGm4tqAk5Zq1gfdp9Kntu/mv+4ZxKHSoQ1AqcGDND93+sNUGcJlS3Ljtt6NMaxKWMz04pUJVHGjsYnqrpWaciX7+CQT4DlfMh60WQGRuMn9MQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OBJcvbma; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TD7VyqUE"
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-28845df360fso2343440fac.1
-        for <imx@lists.linux.dev>; Mon, 11 Nov 2024 11:29:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OBJcvbma"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-7ee4c57b037so3514590a12.0
+        for <imx@lists.linux.dev>; Mon, 11 Nov 2024 11:44:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731353374; x=1731958174; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h1vUWXu4zDKdaSJZeWtM1voreY4yk9aTKqi7yYAqNXw=;
-        b=TD7VyqUEwA1jyTtYXI+dyHrixhSpNzPCC0HfCVIAbzwVDlQDO0tqpGmh2LoFynELmS
-         wCEfqDJP5+l3dfLOK1Xmo5BQza7A5+cRsya377a+/m1lB4FoFAAjD3Zj1Ac7m1rOfMml
-         AcbNc33CQG1To828i2auRWNOlSQLVVABZRDJJDD/wR4+ZoYVAeI29Pxi/3dkV2iyoLXw
-         nCHjRGNeFM1+aBjqeEnw9dLk3Fdd45tDXZVnNKii9OAOlRUnD18BgGMZ4Qsxhx1RdJXf
-         WVZdpDDIPSiaryydNIRaXqFzZsp3HiAyOtU5ztlQ6Dk/CyIRBWpSweR9Xvv/oghb77SD
-         D0Vw==
+        d=gmail.com; s=20230601; t=1731354251; x=1731959051; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=veL2tYK9DnM4z6o4abrBRrurn0HQ49ytttUvm/62mK8=;
+        b=OBJcvbmaDx6Lc4S9p3TbI+hFvL0JfOrp5lbDeq7I9k4vmKnZGsKnTxPZWDe+HzLhy8
+         p2N9maDqZzIGwaVztiDERCjKTGeEa7lAOcQGFDm1AopNvspkVWjoanE7RMzxC5eKHSsj
+         nNz7eeKVB5x8Y03uxmNNVLvsYUXewiWuD8c+3CgSzqaQFRcIikSbXuVq022cVsrO6tAm
+         ZXJeS+XnwiDR5THhXpIH1M67d7KO0wtpx4ec/puco2n7Pnj/K4gBYz9JLNFep411Brra
+         kIyVAiHJCg449uoesbj+ijesDWsEkSqOYXwE3rIYHvoj3pQ3uhiTiCWlwyOmyB/4+Nf/
+         zh4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731353374; x=1731958174;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=h1vUWXu4zDKdaSJZeWtM1voreY4yk9aTKqi7yYAqNXw=;
-        b=TBG/pEcT7ob5WjIFLIcQ1lWU0P7Vi+YEs4r5ofIvdCzxi94zZqc5yVyk0euWn8Br5Q
-         7utiLzrdPBl1oC2nUOyYmiej0gi+zQpPZak6BfCjDjulpiLVOb2MKMtEbmG6d/Unakxl
-         HwYt2uauogcrevXGwBWN/xa3LduI//ygItamaFuobk2XCWbVo3/wONTZj0MKGrjFCsPI
-         MEM/iW5U3aOfYe3385vkqhnrVkcmke0bYZWQgiOrnh2KO/+sUx8RAf9Ls1dXz8j2nHbX
-         9mIea2wDmoEjgqL6jt2zLdby1qi+SeeqlEoc5F46AojrEC3AXAzwWLniXHRO0EPmKFkA
-         qqQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXuoYSOiOx2ZMt47O1+b/WlsaXcl+xaZeym4ZhG6Z42Iz3TTotuETw/py74ZJtv0BzSfzQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz4o7exBV3GdAfU287GPWuMy0/zUXD92tWJRxYwReTwJWAY+n9v
-	HRHgcDqlkUbLZaYsL7e0SQBlUDHHopYXG4i7yw9UNfwsn3MUKZ4Nuw2SNvuS77uie2msUNUfkQ7
-	1JehXWhGcLMub+ObNuTFyj1J440w=
-X-Google-Smtp-Source: AGHT+IGHBbFAE824Z7ejSxwNuhavp9mnBTJDMnAcM9e5ShF/vhmJU9L9bJA8yQotfmv6no01sHmmXUuBPlpSARUN7sc=
-X-Received: by 2002:a05:6870:b06:b0:288:4eb9:5541 with SMTP id
- 586e51a60fabf-2955ff9c48cmr8070771fac.0.1731353374567; Mon, 11 Nov 2024
- 11:29:34 -0800 (PST)
+        d=1e100.net; s=20230601; t=1731354251; x=1731959051;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=veL2tYK9DnM4z6o4abrBRrurn0HQ49ytttUvm/62mK8=;
+        b=u31MNBwriJDkFfDmtomo76Rj12C1Y750Cr3Eq2rm1X4AkvGz/XG3qT4ScE3sWzGxc/
+         sDvcxGCHcQb4rwRViL6crszcwxsZwaCgp/jyzqHQDoPflvEz784CtQqKpEBPyYg/znQ7
+         5TdKaRtMgkXXrvDMUnmm+2H/S8uCM4/793jjET+CvIrBgniNUOOUVL3jQBwOiGwESu9u
+         nfi/+I7RB/Ma3WnvEmVJhUfYpGKuI3+zEv/BhMt79tm6Rt265BxJ1iX9c2ktD8iWku7T
+         SmQFhnXF/Vg4/pxCXnKczyF4WKDvfGd9MW+Vq3cN36LwnHM6FydyabtG2g016U51yx8g
+         pbyw==
+X-Forwarded-Encrypted: i=1; AJvYcCXqo1Sd33eLAxi7arnRjKWWDbXAgXDcOB4/ytM2pqa9DofvZOHxoWU7pB2Sx6xhXS1nGg8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwCfioPpOS/EnmtWEVei0hW+1xKRA+Pk28RVWJl42skibANXHM/
+	Oyy+jIhvxzBlSnkVy+D7g/Q12rc25E0xClxtDj5tyRp6oFgPhlFZpMviSA==
+X-Google-Smtp-Source: AGHT+IFHOCYxbg/qgY0GkJoG21foSSu1yr68jbLBsGuJy//lwDOcCwcIED/7dEbbGDOoCDv3wOZogQ==
+X-Received: by 2002:a05:6a20:840d:b0:1db:ec0b:f2dd with SMTP id adf61e73a8af0-1dc22b57940mr20555533637.44.1731354251186;
+        Mon, 11 Nov 2024 11:44:11 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7f41f65bd27sm8880023a12.81.2024.11.11.11.44.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Nov 2024 11:44:10 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <d1221ad1-2705-41b3-9dc9-05a3038e0cf2@roeck-us.net>
+Date: Mon, 11 Nov 2024 11:44:08 -0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241108134926.1324626-1-alexander.stein@ew.tq-group.com> <499869db340b2d4c257e12d20e15c200d0f815b1.camel@ew.tq-group.com>
-In-Reply-To: <499869db340b2d4c257e12d20e15c200d0f815b1.camel@ew.tq-group.com>
-From: Bruno Thomsen <bruno.thomsen@gmail.com>
-Date: Mon, 11 Nov 2024 20:29:18 +0100
-Message-ID: <CAH+2xPDip+mTxhMUHVXQfmYN5cROiMyFxMb1xzxT54y9cP5Acw@mail.gmail.com>
-Subject: Re: [PATCH 0/8] TQMa7x DT cleanup
-To: Markus.Niebel@ew.tq-group.com
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, =?UTF-8?Q?Jo=C3=A3o_Rodrigues?= <jrodrigues@ubimet.com>, 
-	linux@ew.tq-group.com, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/5] hwmon: tmp108: Add helper function
+ tmp108_common_probe() to prepare I3C support
+To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Jean Delvare <jdelvare@suse.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, Krzysztof Kozlowski <krzk@kernel.org>,
+ linux-hwmon@vger.kernel.org
+References: <20241111-p3t1085-v3-0-bff511550aad@nxp.com>
+ <20241111-p3t1085-v3-3-bff511550aad@nxp.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <20241111-p3t1085-v3-3-bff511550aad@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Den fre. 8. nov. 2024 kl. 15.03 skrev Niebel, Markus
-<Markus.Niebel@ew.tq-group.com>:
->
-> On Fri, 2024-11-08 at 14:49 +0100, Alexander Stein wrote:
-> > Hi all,
-> >
-> > this series fixes some DT binding check warnings as well as removing
-> > duplicated nodes. Eventually IRQ support for thernet PHYs was added.
-> > Additionally add CONFIG_JC42 to imx_v6_v7_defconfig.
-> >
-> > Best regards,
-> > Alexander
-> >
-> > Alexander Stein (8):
-> >   ARM: dts: imx7-mba7: remove LVDS transmitter regulator
-> >   ARM: dts: imx7-tqma7: Remove superfluous status=3D"okay" property
-> >   ARM: dts: imx7-tqma7: add missing vs-supply for LM75A (rev. 01xxx)
-> >   ARM: dts: imx7-mba7: Add 3.3V and 5.0V regulators
-> >   ARM: dts: imx7-mba7: Fix SD card vmmc-supply
-> >   ARM: dts: imx7-mba7: Remove duplicated power supply
-> >   ARM: dts: imx7[d]-mba7: add Ethernet PHY IRQ support
-> >   ARM: imx_v6_v7_defconfig: enable JC42 for TQMa7x
-> >
-> >  arch/arm/boot/dts/nxp/imx/imx7-mba7.dtsi  | 61 +++++++----------------
-> >  arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi |  3 +-
-> >  arch/arm/boot/dts/nxp/imx/imx7d-mba7.dts  |  3 +-
-> >  arch/arm/configs/imx_v6_v7_defconfig      |  1 +
-> >  4 files changed, 21 insertions(+), 47 deletions(-)
-> >
->
-> For the whole series:
+On 11/11/24 09:32, Frank Li wrote:
+> Add help function tmp108_common_probe() to pave road to support i3c for
+> P3T1085(NXP) chip.
+> 
+> Use dev_err_probe() to simple code.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Reviewed-by: Bruno Thomsen <bruno.thomsen@gmail.com>
+I applied the first two patches of the series, but I am holding back this
+and the subsequent patches since I don't know how the kernel handles having
+two drivers in a single module, and one of them fails to instantiate. I did
+not find a matching example elsewhere in the kernel. We may have to use
+the method used by the st_lsm6dsx driver - essentially splitting the driver
+into three parts (i2c, i3c, and common). That would be overkill; the alternative
+might be something like the approach used by module_i3c_i2c_driver(), but with
+a set of #ifdefs around (some of) the i3c code.
 
-Thanks for the cleanup.
+Guenter
 
-/Bruno
-
-> Reviewed-by: Markus Niebel <markus.niebel@ew.tq-group.com>
->
-> Thank you
-> Markus
->
-> --
-> TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Ge=
-rmany
-> Amtsgericht M=C3=BCnchen, HRB 105018
-> Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan S=
-chneider
-> http://www.tq-group.com/
