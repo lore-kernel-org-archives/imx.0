@@ -1,357 +1,299 @@
-Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2041.outbound.protection.outlook.com [40.107.103.41])
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2053.outbound.protection.outlook.com [40.107.249.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77198213128
-	for <imx@lists.linux.dev>; Tue, 12 Nov 2024 17:36:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D531B212F05
+	for <imx@lists.linux.dev>; Tue, 12 Nov 2024 17:48:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731433006; cv=fail; b=dlXZM3m7fzU4F3+O+RnxQJNkAM8yYS4FL8pS3G5TvjvySwVD9B0ADex5d+2zslka0264hTBkeb3RAsZ1XYy8fnRoZay12CLu0mcunNxE8NlJbqvqk5eBYAmdj4okLIk19mdksgZfIvb5bjtYvj2FnjTGDVeMaWNqdhyhnsIkxWU=
+	t=1731433721; cv=fail; b=YgeI0ZScnj8NtG1nK+VIj5eRAYwDJLVvXTuAEz+gcV/tfHZo17NCF3DUAFMNiI4D/dNHqSdpfTi0knFHGEYhr8Zx2tSoedW8gRUizxaD4zz4WmLS7gGaFKdDlpAmq2J1esoa6+z51Odr4hQn8ww8uRLyb8tM1RdeRJpKCnll5gs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731433006; c=relaxed/simple;
-	bh=K+NiXQNO+6rkYO3f02cmmRDS1pI7yWDuO/hl+r+cOmo=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=QQVirqKAGnR5ZYdPNcsRXa+PJZtER+snb7j0d51HZe6x224FJ0oafX2zqws0tFzYRzrPY6Ysx9lap5aJQXLaLqTXPl/yjjone7j5cGUmoMVHNq5Lyd77Hg1aSEo3QDzm+LCaFOKksTwCXLMeRnkeC1NWlSRzJWGNsHnuNLKO9tY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=T6VRVWTa; arc=fail smtp.client-ip=40.107.103.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1731433721; c=relaxed/simple;
+	bh=s7YA9k95gePGlrukCgg8t7xSR4rhzh9vJYZCUX7nc+8=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=Qde9Reeqeg8O7Bf3LjnjQMFlz0JrsdQzT047dme1qjmJj8ymtzko1LxwwdZv7E6+dopZc1ucpp2yQ8rnKdrayNB1YiFb06W5or6yd8gFQsz4uIOvKTupH29jwU4dZPnUZfMuDboaDbUbjXX41zxDbB39bpdFPjLcYgSYfqCwXJE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=d4KnvO/v; arc=fail smtp.client-ip=40.107.249.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="T6VRVWTa"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="d4KnvO/v"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q+pPG6U0B40RvgHI8T85pY0IqTh2hkPMDWQ+tTKgRp00XCfQMbhe5Xt+gZ80kXZh1vibRzil9J5LKIcinFsPwuWNLhH5dW9/7mhqMl7771cXbLiiNr1HvFcf3DIyaFqgiRP4IsekVsg+s+jc70sVkLPwZsRvwxSJj/ixZWTtmMTvNGvcZNbKVhtIEBPISorKq3posK3kMX6AdexwBnX+Oj1o4OmpXj7PbdsuhzHhWN3gufjQDudU8kcut/Ddq4RQ1HztNYPDTy1xP1MLjN6aUXfccaQqcoUf0OBeRbemyTp7sDShVcbbRjMR3wdMUVUHvynR9bqNcQaXWgw60v96QQ==
+ b=HuyrGUhsTcLaei//4aIhJGWD8va6dh4/9Ta1maT+nWEBss4TyOQq0sKUa9xoFpLSwTX6QcTCfuaFNC9GxnZUlXuEIPQwN9JzxDnSdQVa9cstjHs8Y6kl2UV4j5yV4RpEqEz7P97TfPZZIlW6rqSgY+qK66/BxC7Z9yCcywfSxRh+VvOa3jFALuv+YU+TV7Q7jZopf85PDoS6IHsdQB+g7ER5bifqpuyTXCjZTTOW3D99hdenkMv2JrHopys05IUBL9aVM0P2V+aM6eSA1GjkpbeMW7wVBaInEQ/YZtn2XQ7xX2Mb5rZRmjPm4XvpgWV01+H+nrHi68di6joS7rsUcQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MJteIlO79Y2rWFPXDocP4+6BR4BIfRzr/YKUuRAX+TA=;
- b=hDyPv0toobXSnRB25MDh66uqXzOs3vDhfS1XelUp0zDH6aYU7s+fdlUPDoNWI9XNQc+gVonbD8WQYUM+lwd8XsoxSrVT1z8w8vtnVPMW7qBVoGENOKKKabkUVJELZ21DSTD6ECF4fttNKazq4YS591ISqYvTZrUW8dhADSylUygUIPhg+b+6dwDaMO93nbs6Mod9FLN9B9CBewWZz49C6kY+hV5DkYFIv16RXZjVwhDCocLcc1dXyJcWvWshd14fTnLVPwcC1ezAd2lqf+CS/iaIx4APlixxbGRRUANJW6PvbUuOIlVoecN5yzoS9Xp4sX9zzWGLGaTDSvcI0xKr9Q==
+ bh=OWIv2PzhaS+Jt/HY1K+wJQOwISmpbW/M7FrtGt+j5P4=;
+ b=mfXbtl+NqpI3hxIcnK0GBYoVMOZOlYf7f4JvDtPAirIfnFtrfBboKQsh096WD77R9bMBurRoHlB2FQAUwomgrX8ETKoHxD7KQ8dCKi+PPqCp4MNwvBigDFxIAfHN3UZmvuDsbbKu3GO06O2Y/rENt4vGMYmhBY75OfRbovuhA3opcn+5jtaLpTGhxx1BDtdRYGTjhckYw8fYeGBYhGgDIfZwRcA14qVWU6rbSlqzZDHP9Rj2ftI/bmCnQ96GNVdJO4l450nXrxwKxvF4u8hqoGZsH8Bc7GLRg+fg8LI67+CCpG0Rh0ElN+V8ViS+/juFltQdAca/WTWTXK2r+zIRXA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MJteIlO79Y2rWFPXDocP4+6BR4BIfRzr/YKUuRAX+TA=;
- b=T6VRVWTa2Q5awhwYKBqGq7F6HGiY4Zz5cWb9IRVuZPpv3O+cCmmCbfzGZBq/4tC2xgA5/m61UFU/U/MiTNn9E5RJNWoIx/re8ZdMuQ0EtBPbXYIoONtnlWdLzoIg9ZqKkKmYatmMj4yM4E97LY35O8kj3SOTmD30GKn+oK028hLULAIuHWDg7RyvSUlhlUJJ0H33m6va0Sbvxuz9CDQ49AM+XUdPMQ3KTCLlomXcq98rvWOU8U7yhryhI5OlFxgdcpzIp62Iqo9GNeu/7fpQyaiWIGqinsgUjnNZ8wFzCL+O1cQu2TmrcznTNWC1nlUiQHbC6Vi26Buu1Y2DuG4oEA==
+ bh=OWIv2PzhaS+Jt/HY1K+wJQOwISmpbW/M7FrtGt+j5P4=;
+ b=d4KnvO/vh5B3gL4mDHXf+KERhBh381RtR6m/M6YRmjJ0RtZAKeYDKQ53bUADHxQUUC4SR32FHE/uuCB6wWwcZU5WJywqV7x2mnmgowHCz9bIoy64RwnfawPfQo6KGZ+LJsI6hWriF4ebouMvk5W/nwRVxx9zCpV7vwsK+42cBPuGvQ2/kaJAodJm03oY/7rDRwOi0iqYLVYaDMbWSaKB7Gjik3X7d/U5xZWLJLDl1/TJpTRyLQocNSe/aDc4PARNhi0g1nkaPIqmwfJb0z5G14COW62o/Gxe2czMHgm//gJO+xnkL3TI9ze/kOFurqg3z5BX4CUUOTYY/0k159SxuQ==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com (2603:10a6:10:352::15)
- by AM9PR04MB8812.eurprd04.prod.outlook.com (2603:10a6:20b:40b::24) with
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AS8PR04MB9510.eurprd04.prod.outlook.com (2603:10a6:20b:44a::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.29; Tue, 12 Nov
- 2024 17:36:40 +0000
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::708f:69ee:15df:6ebd]) by DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::708f:69ee:15df:6ebd%6]) with mapi id 15.20.8137.018; Tue, 12 Nov 2024
- 17:36:40 +0000
-Message-ID: <da1b454f-087c-489d-a967-7ab88d3a534a@oss.nxp.com>
-Date: Tue, 12 Nov 2024 19:36:35 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] serial: fsl_linflexuart: add clock management
-To: Frank Li <Frank.li@nxp.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Chester Lin <chester62515@gmail.com>,
- linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev, NXP S32 Linux
- <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>,
- Alberto Ruiz <aruizrui@redhat.com>, Enric Balletbo <eballetb@redhat.com>
-References: <20241111112921.2411242-1-ciprianmarian.costea@oss.nxp.com>
- <20241111112921.2411242-3-ciprianmarian.costea@oss.nxp.com>
- <ZzJ9wWvfmIc0taq8@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-In-Reply-To: <ZzJ9wWvfmIc0taq8@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AS4P190CA0068.EURP190.PROD.OUTLOOK.COM
- (2603:10a6:20b:656::28) To DU0PR04MB9251.eurprd04.prod.outlook.com
- (2603:10a6:10:352::15)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.17; Tue, 12 Nov
+ 2024 17:48:35 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8137.027; Tue, 12 Nov 2024
+ 17:48:35 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v6 0/5] PCI: EP: Add RC-to-EP doorbell with platform MSI
+ controller
+Date: Tue, 12 Nov 2024 12:48:13 -0500
+Message-Id: <20241112-ep-msi-v6-0-45f9722e3c2a@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAN2UM2cC/1XMSw6CMBSF4a2Qjq3p7QNaR+7DOOhL6UAgrWkwh
+ L1bSAAdnpv7/RNKPgaf0KWaUPQ5pNB3ZdSnCtlWd0+PgysbUUI5ECDYD/iVApaGW20YM2A8Ks9
+ D9I8wrqHbvew2pHcfP2s3s+W6JcSWyAwTbL2zUmmoLehrNw5n27/QEsj8BzHYES+ogcZp6pQyV
+ P4jcSAgckeiIA1cCbDEEdIcaJ7nL32uBOAEAQAA
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+ imx@lists.linux.dev, Niklas Cassel <cassel@kernel.org>, dlemoal@kernel.org, 
+ maz@kernel.org, tglx@linutronix.de, jdmason@kudzu.us, 
+ Frank Li <Frank.Li@nxp.com>
+X-Mailer: b4 0.13-dev-e586c
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1731433711; l=6467;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=s7YA9k95gePGlrukCgg8t7xSR4rhzh9vJYZCUX7nc+8=;
+ b=cKELdhYPRgdy7l1CrZ0GGqbiKBhl82po+E7jkmWzhLSMR5hjTgcNIAlaDBeHCSHyNhCib4pKY
+ j70meHwH+AKCwrLdZ7JPuiSOhQgca1IVPjoil/tT3vUTNeGoXve2OGR
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: SJ0PR03CA0076.namprd03.prod.outlook.com
+ (2603:10b6:a03:331::21) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9251:EE_|AM9PR04MB8812:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3b95fba2-c2ce-4658-00eb-08dd034090b1
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB9510:EE_
+X-MS-Office365-Filtering-Correlation-Id: 67493726-9531-4503-cfc3-08dd03423b4a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|52116014|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cXNrN2hxOVJZcEs1eG0zdDR3RENjMjdQQUowVEV5eGFpUmNIVFNSaWhVYlZ2?=
- =?utf-8?B?OWRLbFd5aWZod09XaHBRU202YWx6SnZ0dXZlK3Y0cU1XWDQ0YStFSWlQckJ6?=
- =?utf-8?B?ZXVpbWlCKzF4aEZER05FQTNRN2k0azFGeTVydXc5eFlDak9BR0hLT0dmYzNv?=
- =?utf-8?B?ZjY5UHJCQXBlMjNUWlhpV2c3aHIwVFBOYmN0YWNhWnpONVEvOXZqZ29uOWNs?=
- =?utf-8?B?ZFhWbTNFRitTQzFLeXFSdnozTkdlN1lndFZxT2xSRDBUQzh2MVpiaitnY3k5?=
- =?utf-8?B?Y3IxL05tcmthaXBwd2JlQ0o3bFZUN0xiMEtvWjhZeDQ3dGJXRjdkZzlWQzlK?=
- =?utf-8?B?bjdjSHF5ZUtUT1ZSYVVoNml6a3BPY3g2UmgzdTFGVGpSL0NRSU9LL2Rmb2dq?=
- =?utf-8?B?R3N0M0g0NUx3REhTSTJWQkNXb3BLOVVWVEwyS3hHVHJpQ1BBa1NjMW04UDZt?=
- =?utf-8?B?azJTcUdwdVNsTXQxejZLS3crbnp4UGFZN3NuQ2dXQ3BEbkVKbmRIc0tKeXVH?=
- =?utf-8?B?Q3IrL29xV2lSSTNMVG15b0FaWFhrT29kcStKOWM3WkhDYU9LMFdTeHp1aEkz?=
- =?utf-8?B?YlZBU0phNUdJUkV0YitWMWVvUERuU0xNQzB2eUtnc1VUa0hPVkFTZm1QYWla?=
- =?utf-8?B?dzBlUG9McVN6WGEzRVB3NUdLUU1ycFlKRDdQdmFub2p6RDkvYW54V0hIUkIr?=
- =?utf-8?B?R2g0K051ODFlM1RRZEZEWm5yQUt1M1oxcllxU2k4OWlEeXY3cUR0SnYxS3dF?=
- =?utf-8?B?UExKQkxDaVE0S1o1empjZ1hXeW9hU3JxUkhSTzZZckszRGhENFA2cjY1bW5p?=
- =?utf-8?B?QzR1WkNTRHhOQ0dsakFIWC9iUlJRWU1zSEt5V3FXQUg3M2Uvbk5JbzVvcjRK?=
- =?utf-8?B?eWJMRlZzUUFiSVZ3aEo4eGd2ejBiZUx6VXZPVC9GQ2VzVDBMMm16YXhEdGty?=
- =?utf-8?B?T2NGNFRsbExJVG9naHNKSVNMSE9iaXE1czJvczhPenpwUnpCUlNjNCtwcDdp?=
- =?utf-8?B?UGpsN3M5bXVzd2FIcS9nTVBocEhVS0d2QzhGZEE4ak96SlhQRG9LamRsaTEv?=
- =?utf-8?B?WitMVXBFam5tbXlQdlFqb1NXWUZOdEdWR2JnYm9ocklXYXYxek5IMzdoWWRU?=
- =?utf-8?B?MHlhUkhLZDhZeWxXeVZVcmlFdVdjYzUxSEdWcXNHeWZCdXlMa0puTGJ6ZlFX?=
- =?utf-8?B?N3NLRkUwTW8vdTd4WUNDdERnVkFCdXg4Nm1lcGxlSkZ6MG90d0MvOEZjVmh5?=
- =?utf-8?B?STJBOTUrOHViYmtUT0lxNXgxT1JoUVhDTEc4YVVvNzNMb1psaVovd1ZBUTBR?=
- =?utf-8?B?R0xWK0wzNko1d0NOYWRZbi9SYTF3cVAwNzR2RzZ0VUgrdzdhWjkwd1VXcjZs?=
- =?utf-8?B?L1N1RytSUXM3YlEyYjljYWdoUGE4bEdFaUs0RmlhV0ZMK1hpcUVHSmN1cWwz?=
- =?utf-8?B?YWlUaDNXb0xwR2ZVS2VzNmFRUWJGV2NXM3hJRFJnY09oa09zK1JMTjdjNGtS?=
- =?utf-8?B?VG9PRm94NitjQ3UrV01EdnpHNE5SaVdpeCtzOTB4SGJyV0NqTDNpTVkxQXBj?=
- =?utf-8?B?cEFSb2I1MGk2Q2lUelFHV2dyWkNCSUtmKzBvUDFtb09DRVc3VzdWREF5eStU?=
- =?utf-8?B?Y1BKd1NEaXNMYnlaSko4THNReVJYdVZnWmtRVmlOMHptZVVVNW5pR0R0dm5j?=
- =?utf-8?B?TWZZRWJHNnNsWWlvQ1Nob1VhdkV0REpPaFNNdndHMVRvZlRNemZESTFkbjho?=
- =?utf-8?Q?4lirFQQgL9WwaMMBwqwpp4oRevvIzN8AviZlOJN?=
+	=?utf-8?B?ZXo1czd0U0JWZ284UW9SSWRoeW5hRVMzV1BkaUM3V3dQYW9DR0ltaUNMTWNp?=
+ =?utf-8?B?ZUVjalYvTEkxSG9YSUhkUDdmdHo2aGIyMVNRQkRDWXZwWnN4QjZnT2FBdWtK?=
+ =?utf-8?B?MnpycnRwWEFHcXR1UW5heTg3MlpjSnVHZTRtYW5uSUZoMDRoaVlrcHhsaGl3?=
+ =?utf-8?B?K2pxTXVMampBWGZ6aGIrT1dFR1JDMStxdnZTbnBBUnZGYkZrWndrMGNKV1Vx?=
+ =?utf-8?B?anRuSTVvWXg1YUYrd0NzSEZhdWNRc2dmN1NISEEyR0VRZGpoSFZLMmRiN1U1?=
+ =?utf-8?B?dFFiOHNsYjAyaVZxMzZwdEZTbFR0Y2Y5cmtTQjkrMHBZMWVORlBXOW9yQWYw?=
+ =?utf-8?B?bUg5WWpoZnpZbEJ6SlVna29nU08yeWsxUHBmbnlzSG9VUDkxc2IvbzMxVjlx?=
+ =?utf-8?B?V3BhZkkvV2VRbTcyNUV6N3E2QnI3MkJkL2p0TWNaZG9GMHVnMzhYbWVxZHJT?=
+ =?utf-8?B?ZzQ4Nm9HSHBPdFh4SGtVUWFFV1ZscFlMemxYMXYxa2VCQ080QW02THRlVHM4?=
+ =?utf-8?B?b1kvZFd6L21TR1k3Q21NbG1mbkhEUzRMNU9yYVN1KytsTXo4U01XQit4OFdq?=
+ =?utf-8?B?ZU5VdE9zcHcza0NSRG5YbFNXZ3BtczcyQTJqZnJEeHpMUVRIbkFBR3dLeWNp?=
+ =?utf-8?B?ME82dHRBcTJOdHdLeS84N2FYRXNvUHRRS1AzbFQ0Mll2ak11TXN6cmFPQmhJ?=
+ =?utf-8?B?MmpTVnpoeGJNY1p4c0dnQUEybjZ0SjhlMGpnOERDWnNyalFlY3Bxa1VFYjd2?=
+ =?utf-8?B?Q2NsdVhvb2k2L1NOazdqeXUxdFFPbHFPb1Q0ZFF2ckgxclI5UkVQQXU5bjRw?=
+ =?utf-8?B?djArSUFydFRnRnFXaTB1WlhmeldKd0ZmNEdoc3ZONGpHY21aQWY5VVlCYjZm?=
+ =?utf-8?B?WE41VHo1WG5UTnkyYXV1TytkNUdJdU1kNHBMeXNmWG4xK3IxenRxdXV4TGxo?=
+ =?utf-8?B?R0J3ZGpuMFd4eEpTNDVBYWZGM1p5d0NnSlRnc1ZXK1duUHBValRuc2dVdHl5?=
+ =?utf-8?B?N2FkMjE4MHUyS1dldHNhb1BaOWwvTlIzTmpDMFRWOU4zUGExN3ZWZ0hpZTBH?=
+ =?utf-8?B?dlJjeHNvVnBqQy96SlR6cUtraUdYUkRTWGp3dVNDYmhmS1lTT0RCR2RBNVl2?=
+ =?utf-8?B?NW05c2VXNXprSW12bFBVRHJqSVNaaC9Zb3h2VDU4Q1dGSGlnQW82dWFhRkVV?=
+ =?utf-8?B?Rnpqa2cxeG1IT2h1N2E2L01VdENKZlJIcjI5K3BGNk0weFFYK3dnUDZOVHRN?=
+ =?utf-8?B?bDVHeXhMM0JYeHl1NUJyTHdVdFU0eFdXQTlLQjQyWGFMbUZtdzVZZ1RIbTFa?=
+ =?utf-8?B?S0lhK0FIalJ3M0hLNVI5L0tCM0g0VjBvaXVCQzE1aWh6YWRDYUFDYTMzczBP?=
+ =?utf-8?B?d3Z2VEgyc1pCemlZK3NMMDZnYVlhVlpSMkt0VFd3UWFyblhscmFyYWZPZDl3?=
+ =?utf-8?B?UDdiWjBaSmwvOVlLUWJYbTd6eGkyU1J5ZHptTU1RcXpZWHJ3WWs4WmQ4ek1a?=
+ =?utf-8?B?Y2ZiZDdFOXpnVlJqcGVLM1UwUnE0YWxmK2k2a2dSRVpLcmc2UkFYellta29h?=
+ =?utf-8?B?MUVMR1ZvWDVZUDBpci80V2ErMjJrU1NVdHdwbE9HNm1UMlQzS0ZtM1lraTNh?=
+ =?utf-8?B?Uyt2OWpNRHlKTmpDd0lWQUJ5UjZVMW9QT281Zkd5OE9Xa2VrSkl3Sng5T0hM?=
+ =?utf-8?B?cEhPTEU2bTVMcUUwcTRMSHFTWGZXU0dMUXd1MXlFZ1ROUVJmYzBEQlkzZkVF?=
+ =?utf-8?B?NHBBcTRzU3NaYm90QWxCL2I5TTRZTWpzRHhiQnpyeEVRai9vaU5ja2pwYzE3?=
+ =?utf-8?B?RzBLNllhUzFpbUtNeElVbWt2L2Z3L1F3Ky9lSC9LUUdTZzl4enEvRnE0anh5?=
+ =?utf-8?Q?nh1qpqi1pRfyC?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9251.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Q3c4TDMwQXhnU05GTlVjbU1xUVd2aXZ6TVpRU0RTMHg0cUZWWHNNcXVjUkcr?=
- =?utf-8?B?cUxJYmswL3czdE1sYy93S3R1c20yZkwxME1JZ0VIQytTNWIyS2V2WHJydmsz?=
- =?utf-8?B?Vk10bXFtQTVmeWVrZWQzZzg5bGQrWTZEWlBSWFBXKzBCdk9QVnFlenZhTDcy?=
- =?utf-8?B?K0t4S3JVUCtTY0VvTHFESE9WbElaRXFESlhiaUViMnFXUVg1ZitYZUZoQlVt?=
- =?utf-8?B?Q0NaSEZpZHRTcWpNY0t3T3JTa3RWSzNXWW9OR0MxOUtWNGhGaEFaV0VtSWVO?=
- =?utf-8?B?Z2g3dSthZWxsaGpVaVNTOWNTaDg0dmhrNjJEeFg1U1RmL0UyYWkxeDNLV3NE?=
- =?utf-8?B?NDdoU1UrY0xoZURZYWZnN2xwVFhRZ1dMeHYvQ3g1cFVmaStvaTY5MTJ3MUI4?=
- =?utf-8?B?MFU4MU44K0tzL2d4VzhTem9zZ2JCZDRZYkMydmsxVXFaSnFMM09hVXI4UXJS?=
- =?utf-8?B?QjJud2hyemNmWFgxT0tIc1NwRmR4WmY0QmlRck5VWU02TXh1RU9sL3lnWlpD?=
- =?utf-8?B?SDJTaVhNcjlSS29nV2NNM3hoTytnQktwTzBUTDNBVmNDR1hlYkVJNVdFVUhh?=
- =?utf-8?B?bXJmZmozRForRUxqZEdiWkZxMWhEbVFyaVVpdEdkSXdhOEJZZi90NmdUaFdP?=
- =?utf-8?B?RUZ6N2NWN3FJOGtOdm5YMndSZXB4Y0xvQ3JtZWI5em9XYTd6MnRNNHRjYldp?=
- =?utf-8?B?dDA4WjR4TWpOeGprWitRSXA2VlFnd1FkWjBrRmpHbUJXSlQwcFVXQU54Ry9R?=
- =?utf-8?B?M01ld2V1MkhIQ25FQTlvdUducGFUekQ1OXdvSEN4OHp6bDd6eWpzZEF3dlBF?=
- =?utf-8?B?Uy93VHdzNDh2eFMrY0phZGZMWWhiWGN0bVE2alRpVThIeUlLWVlLKzlUWjZN?=
- =?utf-8?B?TTZubDkyWmxobzNER1hETzRCajhUSjhHbUNrckd1L1NzS1J4YjFmNWhYbzdP?=
- =?utf-8?B?czJqKzRqYWxxanBRb2JVQ3hwb1JuZTFvN1R1dUJGYlZBYjB2YnZOTDNtNUx2?=
- =?utf-8?B?aDE5Y0kybnFYRzRmUi9qQ2VNMkx4dFU0K0hJMGhrUWdDUEsyQWpNQ3VHM09T?=
- =?utf-8?B?NkVEY3h4UGZvQ0l5a09GS3VET0hmOTdDa2NhZmdKdU1BaERwdzFncms3TU5L?=
- =?utf-8?B?R3VUeXVEYTFDOW1lV0FmUnRKWmxUYmhHY2hoK0o4UDMyZGpwRTgxTVFjeVRj?=
- =?utf-8?B?TnJTQ3NjTnFXUENCVE1TTno1RG9UbEp0RXRCOUdiVGJJeTFqOXpUZDFyZUVB?=
- =?utf-8?B?Z1JaZ3dvMGVZaTBMM1JIYWMzSVptdVZXVnl6YUV5Vnd3eWhtQXhuNUswdkN1?=
- =?utf-8?B?S0ZWenRyTFdlWmY1NzlCckYycGpZa2o0VVA1TnpVQmE4UHZyVnV3aU5vWjJ2?=
- =?utf-8?B?amdyWE5Dak9FNXhWY2t6YjJrZjZDY2wvaU91NGNoaWsxRUxMUTR2U1lKSFpR?=
- =?utf-8?B?elFzemluSUpTbXVSbE9nRU5Dei9UdzZZdW1NZjlXL1VMVlo3NXZqSVRWZHFu?=
- =?utf-8?B?K0xsT3lFUmVwK2FEbFNyTE5FMzhZd25yTjl3SDIvWWtaUmJKT3lqcUZpak9m?=
- =?utf-8?B?dTVQbG9hUVgwNzc1dmEyMEp4RTc0bGpxaDYwZXpaeHZ3V3dkOHpoNmI1akVB?=
- =?utf-8?B?OHR3Z2xVWG5VcElVVFdUL001ZjFBNWJicXdTS0tMQ3JpbWZSeGl3QitGdEQ0?=
- =?utf-8?B?SmhwL3VPbDZRZTBsZ0dRUlR4MjlFbDdRcGJ1KzFMOC8xUm1DTjNIdnJIR3RH?=
- =?utf-8?B?eDMvemRadEhuVmIvdEpleXJ0SEJOWEgxRlpmSnhFTG05MHNRTkZ6d1l0bkRS?=
- =?utf-8?B?MGdiT1VNTXhGMG5FSGN0MlU2Tm1GTVRvZXhtYmprUEM4enRWTzNGMzhtaUxm?=
- =?utf-8?B?MG1QV0Vyc2RRN1llZVVSbGc5MUIwTGM3MVN6VW9PempVZzBCZWVyMCtRWk9l?=
- =?utf-8?B?MDFiUnV5alBTWWE2UlIwNE93YXZHODNKNFhYcmRxOTd0M0hjQk5VT25ERS81?=
- =?utf-8?B?dmN0SjF0dXZVb0s2MEZxdXVjV1I2eDFOOEVnOTBJZnhycnFpZ0x4T0FnS016?=
- =?utf-8?B?Tk5xSmJCVStxU0dBR1pUeGtmZEtNK1BFQWQwRFpjNzNONzRUcS9MeTV3QS9R?=
- =?utf-8?B?U1NSQWY1b1U5aG1lNTg5amU5NnlBOGFHU1I3V3NuYmo0dmFRd1ZRV1hnK2xQ?=
- =?utf-8?Q?OxeKZE7rL3YXkTQ3N7gDi2o=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3b95fba2-c2ce-4658-00eb-08dd034090b1
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9251.eurprd04.prod.outlook.com
+	=?utf-8?B?UGFEVmJ1NVJZZHJ1c3FNSlJzd2s0UE1xWnRVOW5nN2VrQTVCa1p6WXQxUzFS?=
+ =?utf-8?B?RmJjSVIzM3ZYbEh3WWdZWTZGUzF3YzhXNEczZndvejZXNlFOeVVTdXJsSVJt?=
+ =?utf-8?B?UTZQV3lHZE95WEhSbUpxN0tBaXRRUDg1dzc3RFQ0cmFXbmltWC84QnV2TmNV?=
+ =?utf-8?B?OFNVR2ZlTU5Id2grSnEva0VQSFpRR04yS1FqRGZEQ2IyeXphN2srcWNFOWJt?=
+ =?utf-8?B?MEo4SHFzaGVZaDVkS2tBK1VGdDQ0TTNVeURJVHhjUHV3RkhXNmh0ZC9QWFlJ?=
+ =?utf-8?B?VzRjOHRnR0ttRTFUTTN1eU92Ly82MFdORGFNZ2ZqTFl6WjJNUDY1YzM4MVVF?=
+ =?utf-8?B?M05mc3owOHNVTlpDNHBITHJOTTk1YUlNRVhhRjR4WFEzbFNoNDRONENzZzJ0?=
+ =?utf-8?B?VTRCMUliZlV1OHQ1dFRzbWxoYVVXSnRRbUxsdVo4ZCtuS0wvR1lIZ0lxR0Fx?=
+ =?utf-8?B?ZEFMTWhxTjYza21DcWJhZ0hJWXFyQi9ObkNzZnFiUi83cGEvN09IOCtob0F0?=
+ =?utf-8?B?ckNielBsb3FGbjdTaEVmeWVGQjNNWm43UnNUOXc3bWN0b3dLcXg3QnpaRWRj?=
+ =?utf-8?B?YU9JYlptVnhsdEo0cmFDNy9RWWY1bHBFNFJCbnUyM3hpQjJYQ242N2l3YVJE?=
+ =?utf-8?B?NlFCSitFSzc5anIyMzZhUU9NYnNCV3FNOFpkTGFSZHBMdkZrc1ZET0grU0FV?=
+ =?utf-8?B?eWd4QUlXUHc0bnJpaWExeUNiRFh0dk9NOStEUUdvY0RuaDdTcGl4RUVLeG9F?=
+ =?utf-8?B?a0xXdHl1eFlsaERUVFphb2MvQmFlOGN0aHlVN0oycEM1bjFvK2JaRkpvejky?=
+ =?utf-8?B?QXFVVFp0MExqelh4OEwyUnd4dHQra3dUcFQyVnZhUG1UbE1tUW5aNkRxZVNR?=
+ =?utf-8?B?cVhFUUt4UEZielRnVWNqR3lGTFdDRWFaMndOMEoreUp4dGdXNUxIV3VrVTFQ?=
+ =?utf-8?B?SEFKOXhoTGVCcGFhM3JXNCtzbFgwR1BXaXlEbkFjTFAwMVJhNm8xVnRUVi9Z?=
+ =?utf-8?B?d0MyMHZhbExwemlGSTM4dWJDazhDdGx3akkzekwwZkZNK3dZYlVDQ0RUWEUy?=
+ =?utf-8?B?RW82dGw0dVhXWkorSFRJU3V1QkEzN3o3bG1rMlROOHJxSnFWMExFbTRLeUFO?=
+ =?utf-8?B?MTRtQTM4OWU1K3kvektnczlOcldXSGRJN2FhaGxUUUpERXNCR1NBYVE4S2Fh?=
+ =?utf-8?B?MkdseGdUM1BiOVN1MUdJSUNlVEx0empLdml6dVc5d0IzVEw0MU5ncHZsTVhq?=
+ =?utf-8?B?d2EvaDltMHVHV0l1S2NJM3hCNXFNV2FmcHp5cExJZDA3Rlh2MjYraE1oZlVJ?=
+ =?utf-8?B?bnRaRnZRcTBpQnc5cnlqT1FWSXp6b3Z0TGc3NUpxSjdjZklGckZCZ3ozcWxi?=
+ =?utf-8?B?UnI3NzBNNUJvb3dPVm9sOXBYbTdnMUZEY3lxbEZZL0p3T1VqaTNKenEwVDVI?=
+ =?utf-8?B?d0VyVDFyUTZWMUszNFhMVDdSRURUeUlDTzlYajRvT0RoSSsyYVErWm5sOGdO?=
+ =?utf-8?B?YXlUWm1Ra0d3dkt3Skg1ODlaQjhGOFpGaVBPaFdPRDVFNmJpanVxT0VSQnJo?=
+ =?utf-8?B?UGp5aWRjcytxU1YyQVM2VmtMUWdWZTMyVkV1Q0k5R1kwUzJvWVRWNlFLQjNj?=
+ =?utf-8?B?WGh4RzZkclgzRjd2akxmd2pZYjZkSWwvcERsMXRPTW5kSm5mRVhiR2tSYXg3?=
+ =?utf-8?B?WlZXVzdvUE4rOGNlQVFPMEJXekpoVjR2QWRaUWQ3RXUrTHg3QmxqaXVoKzhW?=
+ =?utf-8?B?U05SUnpucThCQzRTZnhtVTlaNFhsMWRkNjUybUQxNjIyVHFUbGpTcnVydU5V?=
+ =?utf-8?B?Vno1Z0hVSUpBY3doUERRdnJGbmEyK1Z4dDlVL0VZa21nNEp4RW4zRHo4bWRl?=
+ =?utf-8?B?WnVCckdIdExSKzFMV2xJOVJvd3VkcWhFTjJ6RE5zK0VnVDdoa1RWTzRlSGh1?=
+ =?utf-8?B?ZXJlRWcvaXAvVGczeHAva1l6aGNpb0E5a05wMnFHM1ptekVlNW0yQTdkd1JP?=
+ =?utf-8?B?WmVNeHZud2VraFRMNGRGUFZSTFB0TGhXZmorUVRDbTUvakF0Y3lqYUhxVGdB?=
+ =?utf-8?B?QXdwUXNzbUJ2UGlUMGNEbFlpek5EVWNBekNOaE9BUENzTTBnYXBPeGVjQVU5?=
+ =?utf-8?Q?xZGA=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 67493726-9531-4503-cfc3-08dd03423b4a
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2024 17:36:39.9925
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2024 17:48:35.5109
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qdHv9hjD3tXuc0wC4bbK2GB7yi/pqd35rNx2lUcIMqEFMD3H87pWyJXq5QgndR0jM3kVV7o9yFhciFcPAmX+VwXRwRVFktcYIhEtFejXXy8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8812
+X-MS-Exchange-CrossTenant-UserPrincipalName: BilsbOo9RD6uOPquw8akEE8YM8LV5d+V3UdBpMxwU/cEVzBTi3GI8d5Q3NmyLLVwa1tOaN+MbpixkgUiDbuDmw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9510
 
-On 11/11/2024 11:57 PM, Frank Li wrote:
-> On Mon, Nov 11, 2024 at 01:29:21PM +0200, Ciprian Costea wrote:
->> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
->>
->> Add optional clock 'ipg' and 'lin' support to NXP LINFlexD UART driver,
->> which is used by S32G2 and S32G3 SoCs.
->>
->> LINFlex driver should perform clock management and not rely on a previous
->> bootloader configuration.
->>
->> Clocking support is added as optional in order to not break existing
->> support for S32V234 SoC. Therefore, there should be no impact if not
->> providing LINFlexD clocks and continue to rely on a bootloader clock
->> configuration and enablement.
->>
->> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
->> ---
->>   drivers/tty/serial/fsl_linflexuart.c | 82 +++++++++++++++++++++++-----
->>   1 file changed, 68 insertions(+), 14 deletions(-)
->>
->> diff --git a/drivers/tty/serial/fsl_linflexuart.c b/drivers/tty/serial/fsl_linflexuart.c
->> index e972df4b188d..66b822f36d06 100644
->> --- a/drivers/tty/serial/fsl_linflexuart.c
->> +++ b/drivers/tty/serial/fsl_linflexuart.c
->> @@ -3,9 +3,10 @@
->>    * Freescale LINFlexD UART serial port driver
->>    *
->>    * Copyright 2012-2016 Freescale Semiconductor, Inc.
->> - * Copyright 2017-2019 NXP
->> + * Copyright 2017-2019, 2024 NXP
->>    */
->>
->> +#include <linux/clk.h>
->>   #include <linux/console.h>
->>   #include <linux/io.h>
->>   #include <linux/irq.h>
->> @@ -120,9 +121,29 @@
->>
->>   #define PREINIT_DELAY			2000 /* us */
->>
->> +struct linflex_devtype_data {
->> +	const char * const *clks_names;
->> +	int n_clks;
->> +};
->> +
->> +struct linflex_port {
->> +	struct uart_port port;
->> +	struct clk_bulk_data *clks;
->> +	const struct linflex_devtype_data *devtype_data;
->> +};
->> +
->> +static const char * const s32v234_clk_names[] = {
->> +	"ipg", "lin",
->> +};
->> +
->> +static const struct linflex_devtype_data s32v234_data = {
->> +	.clks_names = s32v234_clk_names,
->> +	.n_clks = ARRAY_SIZE(s32v234_clk_names),
->> +};
->> +
->>   static const struct of_device_id linflex_dt_ids[] = {
->>   	{
->> -		.compatible = "fsl,s32v234-linflexuart",
->> +		.compatible = "fsl,s32v234-linflexuart", .data = &s32v234_data,
->>   	},
->>   	{ /* sentinel */ }
->>   };
->> @@ -807,12 +828,13 @@ static struct uart_driver linflex_reg = {
->>   static int linflex_probe(struct platform_device *pdev)
->>   {
->>   	struct device_node *np = pdev->dev.of_node;
->> +	struct linflex_port *lfport;
->>   	struct uart_port *sport;
->>   	struct resource *res;
->> -	int ret;
->> +	int i, ret;
->>
->> -	sport = devm_kzalloc(&pdev->dev, sizeof(*sport), GFP_KERNEL);
->> -	if (!sport)
->> +	lfport = devm_kzalloc(&pdev->dev, sizeof(*lfport), GFP_KERNEL);
->> +	if (!lfport)
->>   		return -ENOMEM;
->>
->>   	ret = of_alias_get_id(np, "serial");
->> @@ -826,8 +848,14 @@ static int linflex_probe(struct platform_device *pdev)
->>   		return -ENOMEM;
->>   	}
->>
->> +	sport = &lfport->port;
->>   	sport->line = ret;
->>
->> +	lfport->devtype_data = of_device_get_match_data(&pdev->dev);
->> +	if (!lfport->devtype_data)
->> +		return dev_err_probe(&pdev->dev, -ENODEV,
->> +				"Failed to get linflexuart driver data\n");
->> +
->>   	sport->membase = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
->>   	if (IS_ERR(sport->membase))
->>   		return PTR_ERR(sport->membase);
->> @@ -844,37 +872,63 @@ static int linflex_probe(struct platform_device *pdev)
->>   	sport->flags = UPF_BOOT_AUTOCONF;
->>   	sport->has_sysrq = IS_ENABLED(CONFIG_SERIAL_FSL_LINFLEXUART_CONSOLE);
->>
->> -	linflex_ports[sport->line] = sport;
->> +	lfport->clks = devm_kmalloc_array(&pdev->dev, lfport->devtype_data->n_clks,
->> +				    sizeof(*lfport->clks), GFP_KERNEL);
->> +	if (!lfport->clks)
->> +		return -ENOMEM;
->> +
->> +	for (i = 0; i < lfport->devtype_data->n_clks; i++)
->> +		lfport->clks[i].id = lfport->devtype_data->clks_names[i];
->> +
->> +	ret = devm_clk_bulk_get_optional(&pdev->dev,
->> +					 lfport->devtype_data->n_clks, lfport->clks);
->> +	if (ret)
->> +		return dev_err_probe(&pdev->dev, ret,
->> +				"Failed to get linflexuart clocks\n");
->> +
->> +	ret = clk_bulk_prepare_enable(lfport->devtype_data->n_clks,
->> +				      lfport->clks);
->> +	if (ret)
->> +		return dev_err_probe(&pdev->dev, ret,
->> +				"Failed to enable linflexuart clocks\n");
-> 
-> devm_clk_bulk_get_all_enable() will be more simple. If use
-> clk_bulk_prepare_enable() here, you need add a customer action
-> devm_add_action_or_reset() otherwise if uart_add_one_port() failure,
-> all clocks will be enabled.
-> 
-> Frank
-> 
+┌────────────┐   ┌───────────────────────────────────┐   ┌────────────────┐
+│            │   │                                   │   │                │
+│            │   │ PCI Endpoint                      │   │ PCI Host       │
+│            │   │                                   │   │                │
+│            │◄──┤ 1.platform_msi_domain_alloc_irqs()│   │                │
+│            │   │                                   │   │                │
+│ MSI        ├──►│ 2.write_msi_msg()                 ├──►├─BAR<n>         │
+│ Controller │   │   update doorbell register address│   │                │
+│            │   │   for BAR                         │   │                │
+│            │   │                                   │   │ 3. Write BAR<n>│
+│            │◄──┼───────────────────────────────────┼───┤                │
+│            │   │                                   │   │                │
+│            ├──►│ 4.Irq Handle                      │   │                │
+│            │   │                                   │   │                │
+│            │   │                                   │   │                │
+└────────────┘   └───────────────────────────────────┘   └────────────────┘
 
-Thanks for pointing this out. I will add 'devm_add_action_or_reset' for 
-handling clks disablement and keep clock management as optional in the 
-LINFlexD driver.
+This patches based on old https://lore.kernel.org/imx/20221124055036.1630573-1-Frank.Li@nxp.com/
 
-Ciprian
+Original patch only target to vntb driver. But actually it is common
+method.
 
->>
->> -	platform_set_drvdata(pdev, sport);
->> +	linflex_ports[sport->line] = sport;
->> +	platform_set_drvdata(pdev, lfport);
->>
->>   	return uart_add_one_port(&linflex_reg, sport);
->>   }
->>
->>   static void linflex_remove(struct platform_device *pdev)
->>   {
->> -	struct uart_port *sport = platform_get_drvdata(pdev);
->> +	struct linflex_port *lfport = platform_get_drvdata(pdev);
->>
->> -	uart_remove_one_port(&linflex_reg, sport);
->> +	uart_remove_one_port(&linflex_reg, &lfport->port);
->>   }
->>
->>   #ifdef CONFIG_PM_SLEEP
->>   static int linflex_suspend(struct device *dev)
->>   {
->> -	struct uart_port *sport = dev_get_drvdata(dev);
->> +	struct linflex_port *lfport = dev_get_drvdata(dev);
->> +
->> +	uart_suspend_port(&linflex_reg, &lfport->port);
->>
->> -	uart_suspend_port(&linflex_reg, sport);
->> +	clk_bulk_disable_unprepare(lfport->devtype_data->n_clks,
->> +				   lfport->clks);
->>
->>   	return 0;
->>   }
->>
->>   static int linflex_resume(struct device *dev)
->>   {
->> -	struct uart_port *sport = dev_get_drvdata(dev);
->> +	struct linflex_port *lfport = dev_get_drvdata(dev);
->> +	int ret;
->>
->> -	uart_resume_port(&linflex_reg, sport);
->> +	ret = clk_bulk_prepare_enable(lfport->devtype_data->n_clks,
->> +				      lfport->clks);
->> +	if (ret)
->> +		return ret;
->>
->> -	return 0;
->> +	return uart_resume_port(&linflex_reg, &lfport->port);
->>   }
->>   #endif
->>
->> --
->> 2.45.2
->>
+This patches add new API to pci-epf-core, so any EP driver can use it.
+
+Previous v2 discussion here.
+https://lore.kernel.org/imx/20230911220920.1817033-1-Frank.Li@nxp.com/
+
+Changes in v6:
+- change doorbell_addr to doorbell_offset
+- use round_down()
+- add Niklas's test by tag
+- rebase to pci/endpoint
+- Link to v5: https://lore.kernel.org/r/20241108-ep-msi-v5-0-a14951c0d007@nxp.com
+
+Changes in v5:
+- Move request_irq to epf test function driver for more flexiable user case
+- Add fixed size bar handler
+- Some minor improvememtn to see each patches's changelog.
+- Link to v4: https://lore.kernel.org/r/20241031-ep-msi-v4-0-717da2d99b28@nxp.com
+
+Changes in v4:
+- Remove patch genirq/msi: Add cleanup guard define for msi_lock_descs()/msi_unlock_descs()
+- Use new method to avoid compatible problem.
+  Add new command DOORBELL_ENABLE and DOORBELL_DISABLE.
+  pcitest -B send DOORBELL_ENABLE first, EP test function driver try to
+remap one of BAR_N (except test register bar) to ITS MSI MMIO space. Old
+driver don't support new command, so failure return, not side effect.
+  After test, DOORBELL_DISABLE command send out to recover original map, so
+pcitest bar test can pass as normal.
+- Other detail change see each patches's change log
+- Link to v3: https://lore.kernel.org/r/20241015-ep-msi-v3-0-cedc89a16c1a@nxp.com
+
+Change from v2 to v3
+- Fixed manivannan's comments
+- Move common part to pci-ep-msi.c and pci-ep-msi.h
+- rebase to 6.12-rc1
+- use RevID to distingiush old version
+
+mkdir /sys/kernel/config/pci_ep/functions/pci_epf_test/func1
+echo 16 > /sys/kernel/config/pci_ep/functions/pci_epf_test/func1/msi_interrupts
+echo 0x080c > /sys/kernel/config/pci_ep/functions/pci_epf_test/func1/deviceid
+echo 0x1957 > /sys/kernel/config/pci_ep/functions/pci_epf_test/func1/vendorid
+echo 1 > /sys/kernel/config/pci_ep/functions/pci_epf_test/func1/revid
+^^^^^^ to enable platform msi support.
+ln -s /sys/kernel/config/pci_ep/functions/pci_epf_test/func1 /sys/kernel/config/pci_ep/controllers/4c380000.pcie-ep
+
+- use new device ID, which identify support doorbell to avoid broken
+compatility.
+
+    Enable doorbell support only for PCI_DEVICE_ID_IMX8_DB, while other devices
+    keep the same behavior as before.
+
+           EP side             RC with old driver      RC with new driver
+    PCI_DEVICE_ID_IMX8_DB          no probe              doorbell enabled
+    Other device ID             doorbell disabled*       doorbell disabled*
+
+    * Behavior remains unchanged.
+
+Change from v1 to v2
+- Add missed patch for endpont/pci-epf-test.c
+- Move alloc and free to epc driver from epf.
+- Provide general help function for EPC driver to alloc platform msi irq.
+- Fixed manivannan's comments.
+
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Krzysztof Wilczyński <kw@linux.com>
+To: Kishon Vijay Abraham I <kishon@kernel.org>
+To: Bjorn Helgaas <bhelgaas@google.com>
+To: Arnd Bergmann <arnd@arndb.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-pci@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: Niklas Cassel <cassel@kernel.org>
+Cc: cassel@kernel.org
+Cc: dlemoal@kernel.org
+Cc: maz@kernel.org
+Cc: tglx@linutronix.de
+Cc: jdmason@kudzu.us
+
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Frank Li (5):
+      PCI: endpoint: Add pci_epc_get_fn() API for customizable filtering
+      PCI: endpoint: Add RC-to-EP doorbell support using platform MSI controller
+      PCI: endpoint: pci-epf-test: Add doorbell test support
+      misc: pci_endpoint_test: Add doorbell test case
+      tools: PCI: Add 'B' option for test doorbell
+
+ drivers/misc/pci_endpoint_test.c              |  71 ++++++++++++++
+ drivers/pci/endpoint/Makefile                 |   2 +-
+ drivers/pci/endpoint/functions/pci-epf-test.c | 129 ++++++++++++++++++++++++++
+ drivers/pci/endpoint/pci-ep-msi.c             |  99 ++++++++++++++++++++
+ drivers/pci/endpoint/pci-epc-core.c           |  23 ++++-
+ include/linux/pci-ep-msi.h                    |  15 +++
+ include/linux/pci-epc.h                       |   2 +
+ include/linux/pci-epf.h                       |  16 ++++
+ include/uapi/linux/pcitest.h                  |   1 +
+ tools/pci/pcitest.c                           |  16 +++-
+ 10 files changed, 370 insertions(+), 4 deletions(-)
+---
+base-commit: f5373677e13177cfc7875f44a864f9a1db751df9
+change-id: 20241010-ep-msi-8b4cab33b1be
+
+Best regards,
+---
+Frank Li <Frank.Li@nxp.com>
 
