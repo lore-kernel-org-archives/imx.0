@@ -1,98 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653FF23098C;
-	Tue, 12 Nov 2024 11:39:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA8E1CD1FB;
+	Tue, 12 Nov 2024 12:36:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731411575; cv=none; b=SicAf4fd6Kbx8vKS5ZzFHvSi0ovq7PB3oW/r/mNJ+INLAi8fT7/pmq7Eo/1RJo4ij765nG7OOQhMblGGTO2A9xQuQpWv11OYdryNV7iDeXLQK49Z8wMMdYxWvZHjKD0AQ2LwAihsH2xj+bBNZm7Z85d7Yw134ciqIXbeMAcnak8=
+	t=1731415011; cv=none; b=l3xjPi1FnPVHKsrhXek7DSobsDjjmyaHN86+TI/NzCYVzUDpQDfA7RMcm9UV6iww9DxrLi3dbAjIytedEZ08Co3CbU2DRXK/VxqJibK87C6NivZ04ljP4h5+22ZiCDwVoKP+ewY5HkbhoLM/NeiTUmR42+zY0fvec8LFLsiOICM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731411575; c=relaxed/simple;
-	bh=LG7RZyrQQCMMftiyBGThQS+gGDQCRxNRxi5jzF0rtMU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=brWwCOwjCsznjZNN8YVHfqjz2OwY0fjMUb+i5tlRk/6ggcuH+fOLpj6CicYXSatqe1s8Yh3p+VY0wp2AMq2t62hV1RMaIp8UEWs7GsaDm8vLBbHO2WqIxQq/usCRGpBRnHmbDHX7VhyAc47O2jO/usl8DfNODsOPi2XuvsLO5Fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vknOjlpo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731415011; c=relaxed/simple;
+	bh=j7/f1cs+iC3zEmd0U4xhw5VpEjLNHJFPyUeBoxXe/YE=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=MNpy8I/2spLN7hxrnplN/YTP2q7aqSG2HS+fgkvSAmA5AoolCYJeXjH4PXqdQSUEyK1AEn4J7EqXMZv0RbOLqhG5CqULJNHQM19g+qDCdm5C554nRGNqLT+Vc+Zr48Mmoe/9yOp1TzF2sCqvRPBJGP0da5/Bad+rENBvmRtVHIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=O8AMiWdV; arc=none smtp.client-ip=188.40.30.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vknOjlpo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6627CC4CECD;
-	Tue, 12 Nov 2024 11:39:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731411575;
-	bh=LG7RZyrQQCMMftiyBGThQS+gGDQCRxNRxi5jzF0rtMU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vknOjlpo6yb1Vp6IvyGWB9fU+5x7MozaZPEx5An53FahQpTAnNO5K4ounXAy8oTiB
-	 TMyhmIa3vhWYr8Y70CpG7AqAsJ6Muua1r2mtSVbGPeuPR0Yb5JXd60v2VL3pSHRStQ
-	 uWb9VIFmeHvu95V7xCVSAH9p70B6Adjzvh7A37xU=
-Date: Tue, 12 Nov 2024 12:39:32 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Brian Norris <briannorris@chromium.org>,
-	Julius Werner <jwerner@chromium.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Gabriel Somlo <somlo@cmu.edu>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Michal Simek <michal.simek@amd.com>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Jay Buddhabhatti <jay.buddhabhatti@amd.com>,
-	Ronak Jain <ronak.jain@amd.com>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Praveen Teja Kundanala <praveen.teja.kundanala@amd.com>,
-	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev,
-	imx@lists.linux.dev, linux-riscv@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, qemu-devel@nongnu.org,
-	linux-rpi-kernel@lists.infradead.org
-Subject: Re: [PATCH] firmware: Switch back to struct platform_driver::remove()
-Message-ID: <2024111223-gizzard-scabby-eb98@gregkh>
-References: <36974feb6035201d53384557259ec72fe311053b.1731397962.git.u.kleine-koenig@baylibre.com>
+	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="O8AMiWdV"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
+	s=default2211; h=Content-Type:MIME-Version:Message-ID:Subject:To:From:Date:
+	Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References; bh=j7/f1cs+iC3zEmd0U4xhw5VpEjLNHJFPyUeBoxXe/YE=; b=O8
+	AMiWdVrkOVhfPW6cEDr7DfMl9GYrWuX4BnH1b08aP30bfXGwE6SniHgTxhhKwqyXnup2pAibEqicA
+	c/2BthUAr23l1z+GeoWD11iRkHc3UR8AXx+qe2GK0CVOy7FasYXOxNGYt6Vz3tBPyTz5B5l1mOsdO
+	H1paKbs8XJ5NVOBIGMY3wV+JGsAFaiF90SWhF97TTWtjeC44Wshm9ZwnwsW/D9/lBqnj+wuGAobNy
+	i6d/geqAqjd8d6r+d0QMwebMkGRP3krZTmS8OT5Xk3GuFD/eJZcMaX/Mb+Bup6RBzImYfrGdD8cBu
+	lpztIvhOfaW9XRc7n+dgy6KCKHDh8G/g==;
+Received: from sslproxy02.your-server.de ([78.47.166.47])
+	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sean@geanix.com>)
+	id 1tAq8M-000PiT-I4; Tue, 12 Nov 2024 13:36:38 +0100
+Received: from [185.17.218.86] (helo=Seans-MacBook-Pro.local)
+	by sslproxy02.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sean@geanix.com>)
+	id 1tAq8M-000492-0W;
+	Tue, 12 Nov 2024 13:36:38 +0100
+Date: Tue, 12 Nov 2024 13:36:37 +0100
+From: Sean Nyekjaer <sean@geanix.com>
+To: Wei Fang <wei.fang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	imx@lists.linux.dev, netdev@vger.kernel.org
+Subject: Initialize ethernet phy in low power mode before ndo_open
+Message-ID: <4t7npxg4jxxoeemcat3besmrfn6sbgsgoolpxbw5asfxfj7xxl@inac2mylgpzl>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <36974feb6035201d53384557259ec72fe311053b.1731397962.git.u.kleine-koenig@baylibre.com>
+X-Authenticated-Sender: sean@geanix.com
+X-Virus-Scanned: Clear (ClamAV 0.103.10/27456/Tue Nov 12 10:49:43 2024)
 
-On Tue, Nov 12, 2024 at 09:35:20AM +0100, Uwe Kleine-König wrote:
-> After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
-> return void") .remove() is (again) the right callback to implement for
-> platform drivers.
-> 
-> Convert all platform drivers below drivers/firmware to use .remove(),
-> with the eventual goal to drop struct platform_driver::remove_new(). As
-> .remove() and .remove_new() have the same prototypes, conversion is done
-> by just changing the structure member name in the driver initializer.
-> 
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-> ---
-> Hello,
-> 
-> I did a single patch for all of drivers/firmware. While I usually prefer
-> to do one logical change per patch, this seems to be overengineering
-> here as the individual changes are really trivial and shouldn't be much
-> in the way for stable backports.
-> 
-> There is no dedicated maintainer for drivers/firmware, maybe Sudeep as
-> biggest committer there can take it? Or would it be sensible to split
-> this patch?
+Hi,
 
-I'll just take it now, thanks!
+I'm using a imx6ull, we have an unused ethernet on our board. We would
+like it to use as little power as possible as it's battery operated.
+During probe I would expect the ethernet driver to probe the phy
+deivce and set it in low power mode (BMCR_PDOWN).
+The bit is correcly set if I up/down the interface, is that prefered
+behavior?
 
-greg k-h
+I can see it's the same stmmac driver for stm32mp1 etc.
+
+I can also set the phy in low power mode in the bootloader, but then the
+fec driver would reset phy and we end up where we started.
+
+Br,
+/Sean
