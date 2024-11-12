@@ -1,225 +1,98 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2082.outbound.protection.outlook.com [40.107.21.82])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E35219CAC
-	for <imx@lists.linux.dev>; Tue, 12 Nov 2024 20:37:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.82
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731443869; cv=fail; b=oauTRW3axMH0LY191IJ8gSgN5hEwfRxkJLo3ZM7Uho3D5cZgtne5TNPnbI7fzksfb+vaJAPRXG5ij7ZN955EsrHA6avJRED47h7/WPRv2O9AHLK6KuFYG8FyMIpjSNQhQm8CpqJMdKFTFOciytClAkRxrpQEEHTcrt0FSMFZjGA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731443869; c=relaxed/simple;
-	bh=aly5WPI2wddwhCAZlyU5iqS7w1CeIYYLnQZpL2RaCjM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=i///voq7CL5hlNes1f/exW4xNl88gyPRf4wyTTCR+Ktn1h4lZ0GuDJK0rB+if2gUMQChNzetZjy1LVZ+NUJfellR8zm/5VRdtYtDMLIIj5GRdUL760bQB6HStQMzQmmRTcw2+8wucl7YFkBQMQWp62lsYfZWGCaMsIjQoY8J8n8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Zk777NT8; arc=fail smtp.client-ip=40.107.21.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D62720604B
+	for <imx@lists.linux.dev>; Tue, 12 Nov 2024 21:53:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731448437; cv=none; b=DkxL+bb/MxNrQ8EzuKi+I1Ov5MzMskOBJKSB08nOqG8ktB19qreCIiElu95SpmXkPGGN2c0O+g+Ic5EX8YSNVXMoVTsT0d+x5/ItQe1ZWX8z+yp3RazqSpKZIl4cIUvJk9KaLLKBhjKboUVn411VRLoPNZEVC4710dZ+lVxWE+s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731448437; c=relaxed/simple;
+	bh=/zzi+Sm3IfKmepVKvgtCUfNCm1ncLHSViZHXYjpxNjI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DM33xm1hKVOcwVDbJPz8GJuonGVJL3p9vB/c25hu8lAJ0KqfsEqRNwoX+IlJwZmA7Dz6N1eIY45a3W7kMbAzVxdDJCNFBez9nyfqHfUrrqCvAuus386ZzlrtNf3FuaGTsArLL/p/iwQAig/Z1XflYx6dVT2+wZXDanbRvoqljxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=quIs6HjE; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Zk777NT8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Tg8fxJMEe3wVfucYThUjT5sFufqwLLLwMsbNURNz8lgt6vB5SwsEeIqL+JYurFloAL5NXN2gagH37oJKcX4UUMjj+YasXvHjK6ePevXaQNovCJBfp0r7gTivakhle1uER6wwC0JR5/VESyovFqm8lA8WofMphQFzLV3mE02+Dynt29ZNLUzl8Zkkh953gf3nWcZ9Dtr5jqPqmJJlNT9NU4/sNAMGpiM+kbRJs5NhbtFlI5ixlPU9vBbBow2VpDV2xznWvMA1cWxJ0LnNYpdzpt0EueDSozO8jMd6+Z3umgeSZqChuxHM246hGn/ZADuKPWnV5b8mIcw8D7EC6vUefQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=myR/O/uRq6aQeacykRE4b6036OhafHaILjWYp8TK6uo=;
- b=gucz+3Vf6CbGDfYA0WKi8fy+VuoJ8ITg1NSWWLy/4P5fkohyh/r4rEcH3dt1muCkDlKQ3nD8cfU2Ns3kUUCTGSaXmUXovTDI9J+/N2m6FyZ2x2vS9X8V+8WBCAGhsF1hNYZVpy7gD79455/Iw6shsTzX8X3TpfdA4Ii/wUGWSSIRsRY+J5ktRHnEyAmwp/8IxosEm+sebaZYiq9LyBfgg4JyUjR3SJfWoT0bQ4iX5VfNq3ZwDYCAMF4ACO0QFN7GomtJfpKdfWn1blumIt+mW/z5I7vZJAqmiKkhNFC/pNZYvzCYgYsOHT22Vwny6sm6m00EYnInqXlTf2f14bO2eQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=myR/O/uRq6aQeacykRE4b6036OhafHaILjWYp8TK6uo=;
- b=Zk777NT8++o7GNtTEXPPmYVFIVo55GjSqk4O8gXk8uDBPNKmrmRNKFZk3auW1MTMFDmYes9/OjU199j0gRzolsYA0cokec9mQadTMpiQaOQxduhCWUJQBLbmGOf1whK9Hzn1YJzxTpGOkkDzd2rUmT3bhpjX/yz/K9EQT2ipkRMD7bWfljZR9Q8WATUh+ur5lomzF9vnQ0egkLfWcNStXzEnVK5h2VO6ismIjjWH38tI9GumC4AxS2/eMO4xNPIiyOcMXu4P5iMXGA2qwp5DbszTAhV2sMe2Z26nwctKkftY1eVOdsX61lNg7Lf6ag2h/0vfwc/RkR8RcCiENlo1JA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS8PR04MB8868.eurprd04.prod.outlook.com (2603:10a6:20b:42f::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.17; Tue, 12 Nov
- 2024 20:37:42 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8137.027; Tue, 12 Nov 2024
- 20:37:42 +0000
-Date: Tue, 12 Nov 2024 15:37:34 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	imx@lists.linux.dev, dlemoal@kernel.org, maz@kernel.org,
-	tglx@linutronix.de, jdmason@kudzu.us
-Subject: Re: [PATCH v6 3/5] PCI: endpoint: pci-epf-test: Add doorbell test
- support
-Message-ID: <ZzO8jn6OpgFhl4TN@lizhi-Precision-Tower-5810>
-References: <20241112-ep-msi-v6-0-45f9722e3c2a@nxp.com>
- <20241112-ep-msi-v6-3-45f9722e3c2a@nxp.com>
- <ZzO3OcCNtHUfm867@x1-carbon>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZzO3OcCNtHUfm867@x1-carbon>
-X-ClientProxiedBy: SJ0PR05CA0101.namprd05.prod.outlook.com
- (2603:10b6:a03:334::16) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="quIs6HjE"
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 248EB894B2;
+	Tue, 12 Nov 2024 22:53:47 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1731448427;
+	bh=pNcgNPQUS5w0e2xKLQNX2Q32FCLJRV3b3KQ0eTd0R5k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=quIs6HjEPhWbHZZO5Fd0JVWw1y6YB8bAEzDt8tGe+NJuQNCS6lFXVGmzSTlGie/dD
+	 Aw7u6x7DNAO2JMpLJU3hMsYz3SGP5KJUW5QTjPTKScP4e6WSpw7pgopn1rtihPiR2a
+	 sqSCcVNR+REIoEsFApgikIteur/9Phrc7SwC2p5Tiv8kIS8a3cdla6WFlkC14TP9LX
+	 EcaupzPEX71WNKHgHBILE/4leawvI+jYM8gOb1b6vd7+MZiAGlEsvEYwZz9Npv+sL7
+	 Q5T2t5tksanbPr6RCIEaUoqewzJu79OtjKRoBA/hX+L1WR+YH8Ohvm5VBf7f0g4Lr0
+	 m028EPCXj75eA==
+Message-ID: <0a62d3b7-b435-40cf-9795-2fb4ea80a693@denx.de>
+Date: Tue, 12 Nov 2024 22:27:09 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8868:EE_
-X-MS-Office365-Filtering-Correlation-Id: c018612f-997b-4108-8e37-08dd0359db76
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|52116014|376014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?3SCJCnouVjkIO62h4J/Vzm6F3rNOFMt8wUHbHYW5DH1VCQxPRM37exBQp1E0?=
- =?us-ascii?Q?tr9JIfRb9QOmxDlx5kEnft2vEIAg/iXrnpsIcM+fCWZVgWtUiEduFKoeF14K?=
- =?us-ascii?Q?BWx7wqYiBrqr6Z0lMkxbyonE6mmKprGRQlM1wanfWPHiCCYndZuHanKt4TFq?=
- =?us-ascii?Q?0a3eXG8I+YehWUkSvMFMUVHk1NZts2OZrvSRumL7daK8sM3GybplyzUh5ZsF?=
- =?us-ascii?Q?8ifS5G1IQwKJF9HCAoQYGNfG7x5EG3Va+gBWKVaFQOKC0mJ/DzAI2fcc0q1d?=
- =?us-ascii?Q?14jR2UpexEduHRa/p/LQPzSddR+PfYoZtbXacTltHGelPJthyGSgy9I8rAf1?=
- =?us-ascii?Q?BKvUqFjj7ZqtKd2ZP2Xz1FA/wq3eBsGsQ3z4XPmV8Wn+B4xMGITXJ564YLUM?=
- =?us-ascii?Q?Gm/Ov6f27dRpYO1rZnEuPiaQLQQuSTXW05mVyd1/u4zLbulLzQNn0TUkdL+N?=
- =?us-ascii?Q?jC5pQmYeoE775gZ3a9v9LScO8hP8rfdQrUGVKkUm8QmMQWsrIZlldGEb+Rl5?=
- =?us-ascii?Q?3ae8zsCM5TmI5jpVh/LufrzCvtjN/c6BKsOzyOQ5NvlFVb+TDCVRE3AHezi0?=
- =?us-ascii?Q?/ypzbH+kvQbxPy108c9ZDNLecS3yMNar9cig/JsA7+l6j7RWmk1/MUUlIc8Z?=
- =?us-ascii?Q?77+ALHncu3FJrOn+nqQB3+pPYI3fPfsB8Ji2cZ7MMfprM90rKPeHvPukmBSu?=
- =?us-ascii?Q?biieCGA7qno7QHe4tWkV9Gha4FvlEgwYmr9Nu+zR9sglDVgmiHiIDSzIt8E7?=
- =?us-ascii?Q?I/ejq8YC9HvBlD3Uj8ldW4OA0XGGQ0ON4Yv5vlkv0mm5TDBq2dJSsk9xS7Tu?=
- =?us-ascii?Q?6un7fTY5eEcIPH/lviULUxf36bQmlRCvoQ09SEIYcIKar5PYAy7LJYYDOTdW?=
- =?us-ascii?Q?3uXsh2JoyZm2GZudx968Ix6USF9pTcpzxEz/KdXWlJZPp9FZFWsOQjRpmTA6?=
- =?us-ascii?Q?JYgk2QZeRSpUI2AX52MUEEFwXAhC5jsOxYRt8YUzqt9KnpSwIJhT5r8Fy8Xf?=
- =?us-ascii?Q?MpNjuXBHxssuYpXFF4fpL082oxCuwJ3sKHky3pzYi5LwFc0pQ9sC6gnWpxuW?=
- =?us-ascii?Q?Tg8QsZCZj12960+Of7R1MhGnZzkz1/ul1nDHSer8A04b3sfV0s5Vbj3krdxs?=
- =?us-ascii?Q?v9sIBb31S+vjhTmXT15UYjEQvPSptqyFYIMs+9va/h7muakOIb6g/7zPBZqy?=
- =?us-ascii?Q?mYAD8FKEHnQkLL7cGZ4+qBpafXbovu9uY9iyZCaBXXp0yyY067sYSOW3lUYl?=
- =?us-ascii?Q?R04ok1lqr91q4O7BaaelqmxsI1Jc2w1DYbQcvWTGEnbQa9mhCmO72GYNdgV1?=
- =?us-ascii?Q?V8klavZ/HY054cZR/sgY7RWB4IocQZugy1KbyYGzfj0YkRe/4e1Lpc1KKDti?=
- =?us-ascii?Q?Jskg6zOYN6+ZyRQ57PPvcVWGnk+S?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(52116014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?QbMztwWGw8bMLO2d573mvM2csx8F8F2+ZT/SrUYeUHK5BKjmPQhE9nDe8GFI?=
- =?us-ascii?Q?Yact2IbV/Y64eLgcLE01OOC9OzkSAS+OA47Gdmmc9ZSTfCfSYJOLDx6z3/dl?=
- =?us-ascii?Q?KwflH3Lx0xcbE+7/gLIwzX8ZLmeDlgT2ibVxDpQXUzYdkqT7rBv+dFqEGwdS?=
- =?us-ascii?Q?roPaquBVdNz5XDpEkUTX/SIybGa5VWV7AFcCx8C79/a7v5DNAverQKMVtPwH?=
- =?us-ascii?Q?TaUbsfZa5n+cK33n2yqyX3GJIZPnUe1m6joIUcc6j2GfyZdqJ1ntHMw9gMFX?=
- =?us-ascii?Q?KsVJ0tR5eWtKkh2y9LMQUa1PnVBAwdcCK6vFp2kykGll8WIvQrWQKJopLADf?=
- =?us-ascii?Q?W8MsN0MEXeDRJ63osRM9rVmdXanuoVmq8GWMWpDTopglxSeCfXKQuGJcyNmo?=
- =?us-ascii?Q?aps1P0mcVdmWJdgqpW0wvvpSNJdRiJWkPF5/4RTLopozIvfIpyX0m73SBD2K?=
- =?us-ascii?Q?8kc7nA56Q+PyGWL8R7NEHXevX8hJNXBTKiWFwwr/OyyCQtmdNnisHAu0nDhD?=
- =?us-ascii?Q?qdw59rbKGy4tzgHAxfWk34RzoXTnCXwml2tVuRwnSua68AQ/psmfF1zUon4N?=
- =?us-ascii?Q?PGpbjy2MIZ+FPW4kLSvFfTlYFwAy3Mu2j+obrHPWY/1tsbddwyTbwJD+Z+Nz?=
- =?us-ascii?Q?ClFGlIpBNoatMq0TaaeG2a2MoWcuK4JxbaRw0aclDnTXh617HN7oYhRov7Wb?=
- =?us-ascii?Q?o9i29mYxgnAT4yMjXrcQ3WOYTSc4eVeZWSGeHJhb8r/YEZaYxesgW64n3QKQ?=
- =?us-ascii?Q?Jnuw75KlPCymrL0bPX7Ucrzj0vooupjuVBttQUk3tnLgXFaBOfdijSPGCH4k?=
- =?us-ascii?Q?LyeZzaBMrKllUN2gh+Ulzzxf90epSxGUcD7rYp9KpWjsl67k2mCa4fAGwEsJ?=
- =?us-ascii?Q?hdPSmQHHwkdRvREjiC8t7tzUdXmBV77cD4k+h0JWiygQMEVLmbX0RwY4Y6Yh?=
- =?us-ascii?Q?+zM3o+8H44zlLIE+FovnAeMIXkqxzK0i40ybVnGNKHijMxyHGyCmMlPMBYin?=
- =?us-ascii?Q?W5/zBHFyer935kDPwwDpPs0s4/mWDbeMmzLmejUCN756lhaOhvSR7uB5WIs+?=
- =?us-ascii?Q?+2fXhDfqq6bdbChGOPjqoNwx/qZjRgyRKD98138B/KkdNj8GQw143nzjeOQ3?=
- =?us-ascii?Q?Kp1qt19crhB15hD4Bm/zqiO3+C1F1/fBtYBakeP5n/D8SZFj2n4zunj581zg?=
- =?us-ascii?Q?lTvbWVG5zozNZ0x8+p71jEBEntSpSBCuVL/22mS9Py6WtunvqdIUAneEYa3F?=
- =?us-ascii?Q?Ix0MQhKWobQI+n1VR84HrPsCJq1zOCv23vJD4z4Wvy5n7igjMQ/CHIiMvPHS?=
- =?us-ascii?Q?u43COK2NMRXjVhi0nFHPPdLsK9Bs5rHNxhckyP6duIG5s6ljpdXtjgLXW8z2?=
- =?us-ascii?Q?4sJAklYi5Xcn8dmyxesZrZG/OqaUHYdHzDAR4d80cKmuGiiamoZyL0jonJ8Y?=
- =?us-ascii?Q?71dVP5PNE7jgw7LeIPzN46O/xrplOytc81zMNwcJhP8vPRYPLBzZ7d6LnNaA?=
- =?us-ascii?Q?khomjL5riYtBp0slHbvCripQGCoKNfjotsDLO/fgi0uD6hNkrF7o5b9E5zdL?=
- =?us-ascii?Q?dBOISULTUWkVUe/F5MPWCxl67+m8A8FlLLJdA4W1?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c018612f-997b-4108-8e37-08dd0359db76
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2024 20:37:42.6552
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kHobkhbF7P4RBh4stvgjeFibzsbNhosQO+FTeuhB07tw8Q/k72pNSPjM4CsR4AZ84ug+yqv5ZbyckyHVS/OkpA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8868
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] clk: imx: pll14xx: Extend dynamic rates support to
+ PLL1416x
+To: Liu Ying <victor.liu@nxp.com>, linux-clk@vger.kernel.org
+Cc: Abel Vesa <abelvesa@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+ Michael Turquette <mturquette@baylibre.com>, Peng Fan <peng.fan@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Stephen Boyd <sboyd@kernel.org>, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+References: <20241111214516.208820-1-marex@denx.de>
+ <e58af9fa-f1b2-4d1b-8ca3-d256a7dee4ec@nxp.com>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <e58af9fa-f1b2-4d1b-8ca3-d256a7dee4ec@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On Tue, Nov 12, 2024 at 09:14:49PM +0100, Niklas Cassel wrote:
-> Hello Frank,
->
-> On Tue, Nov 12, 2024 at 12:48:16PM -0500, Frank Li wrote:
-> > Add three registers: doorbell_bar, doorbell_addr, and doorbell_data,
-> > along with doorbell_done. Use pci_epf_alloc_doorbell() to allocate a
-> > doorbell address space.
-> >
-> > Enable the Root Complex (RC) side driver to trigger pci-epc-test's doorbell
-> > callback handler by writing doorbell_data to the mapped doorbell_bar's
-> > address space.
-> >
-> > Set doorbell_done in the doorbell callback to indicate completion.
-> >
-> > To avoid broken compatibility, add new command COMMAND_ENABLE_DOORBELL
-> > and COMMAND_DISABLE_DOORBELL. Host side need send COMMAND_ENABLE_DOORBELL
-> > to map one bar's inbound address to MSI space. the command
-> > COMMAND_DISABLE_DOORBELL to recovery original inbound address mapping.
-> >
-> > 	 	Host side new driver	Host side old driver
-> >
-> > EP: new driver      S				F
-> > EP: old driver      F				F
-> >
-> > S: If EP side support MSI, 'pcitest -B' return success.
-> >    If EP side doesn't support MSI, the same to 'F'.
-> >
-> > F: 'pcitest -B' return failure, other case as usual.
-> >
-> > Tested-by: Niklas Cassel <cassel@kernel.org>
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> > Change from v5 to v6
-> > - rename doorbell_addr to doorbell_offset
->
-> Is there a reason why you chose to not incorporate the helper function
-> that I suggested here:
-> https://lore.kernel.org/linux-pci/ZzMtKUFi30_o6SwL@ryzen/
->
-> I didn't see any reply from you to that message.
+On 11/12/24 4:26 AM, Liu Ying wrote:
+> On 11/12/2024, Marek Vasut wrote:
+>> The pll1416x PLL so far only supports rates from a rate table passed
+>> during initialization. Calculating PLL settings dynamically helps in
+>> case e.g. multiple video outputs are used and they each need their own
+>> separate source of accurate pixel clock on i.MX8MP. In that case, e.g.
+>> PLL1416x PLL3 can be used as another Video PLL for another output.
+> 
+> Just want to point out that i.MX8MP audio AXI clock is supposed to be
+> derived from PLL3 to run at 600MHz in nominal mode(i.MX8MP data sheet
+> specifies that rate).  So, if a particular i.MX8MP system doesn't use
+> audio, PLL3 can be a free clock source to be used by an i.MX8MP display
+> pipeline, otherwise, video_pll1_out is supposed to be shared by i.MX8MP
+> MIPI DSI and LVDS display pipelines.
 
-Oh, you said at
-https://lore.kernel.org/imx/ZzIVzfkZe-hkAb4G@ryzen/T/#mc10e69e0e1e20cc8d8da9a8808177407d22bce06
+In the end, I started using Audio PLL and Video PLL PLL1443x for 
+accurate pixel clock generation and PLL3 to feed CLKOUTn where the less 
+accurate PLL3 PLL1416x is just fine.
 
-I think you give up your idea about helper function, because it is one
-for doorbell_offset, the other is for the atu address. bar's struct is
-difference with reg. even it is similar,
+With the disparate display requirements, sharing one Video PLL for 
+multiple outputs like DSI and LVDS is unrealistic. (maybe the next SoC 
+should have some nice PLL per display output)
 
-one if use "addr & (align - 1)" to get offset, the other is "addr & ~algin"
-to get base address.
+> Currently, IMX8MP_CLK_AUDIO_AXI_SRC's parent is assigned to
+> IMX8MP_SYS_PLL1_800M in imx8mp.dtsi.  Although it's rate is assigned
+> to 600MHz, the actual rate is 400MHz according to clk_summary because
+> the divider cannot find a ratio to reach 600MHz from the clock source
+> running at 800MHz.  Looking at imx8mp_audio_axi_sels[], sys_pll3_out
+> is the only free/appropriate clock source that can derive 600MHz audio
+> AXI clock from.  Maybe, someone will change IMX8MP_CLK_AUDIO_AXI_SRC's
+> parent to IMX8MP_SYS_PLL3_OUT ?
+Is the 400 MHz sufficient for audio-axi or does it have some negative 
+performance impact ? If the later, better send a patch to use PLL3 for 
+audio-axi .
 
->
-> Personally I think that it is nice to have the alignment code in a single
-> function, rather than duplicating the code. The helper also looks quite
-> similar to how we do outbound address translation alignment:
-> https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/commit/?h=endpoint&id=e73ea1c2d4d8f7ba5daaf7aa51171f63cf79bcd8
-> so that people will recognize the pattern more easily.
-
-Do you means add help function, which wrap epc's .align_addr()? I know you
-make some improvement about EP's alignment, but I have not realized that
-related this thread at all.
-
->
-> But I guess you didn't like my suggestion?
-> (Which is fine, but I would have expected some motivation.)
-
-May "I now see why you did this.
-One function is using the db offset, and the other is using the db base."
-mis-lead me.
-
-If I understand correct here, I can add wrap function for epc's
-.align_addr(). at next version.
-
-Frank
->
->
-> Kind regards,
-> Niklas
+Thanks !
