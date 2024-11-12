@@ -1,40 +1,47 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C23220B218;
-	Tue, 12 Nov 2024 19:43:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCBAF1A76D2;
+	Tue, 12 Nov 2024 20:14:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731440630; cv=none; b=PG1tf3NSI8ILU1iEny6Tm8EnFxVcySNIj5LZCd5IOyRxCGKtBSKOz4IrG5bssdmdlAd5CwxVBj0oeD4VGiYfNx7WlbJY90R4N3MW4YFdCbrdUkdfxElo8MUzPRgXHgSrFT9ErBjF0DkR6LXRnQNjDEOds4TSa0hUt9jX04ZA4C8=
+	t=1731442495; cv=none; b=c2eAQZM2f6JGLajYrAl+lz9Hkk1e4P+APCauAoRv8jZxNwEe7X/0GhoSzSUCJ4gNeA03mAoLOWcuWJ1t0OX3VqRhTjjQEZSIq7NVjuOcIJgwk3A6910f6iP51ATZkBaZvU+nKTKhfOwbtvgdKmQ1A4qN4clYNMYhypcDyToNDfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731440630; c=relaxed/simple;
-	bh=BeDSDoXPcPdLZNULBBBx2ulxSWrYGcd9EVpAudDaIx0=;
+	s=arc-20240116; t=1731442495; c=relaxed/simple;
+	bh=bgaoso6rbdkSsSON+N048bK3ATUOUcNNS6YEtD58y4k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uxWKuMvcvrHTC4ISQGsMfq+1QXGAzVmwwwAApqyl1yn7YzNSxwvy64EMkh8oEUbxY6Z64HGsh8EBjXCYZ64LgENEXSMVJPetwdLO5OYp4z8B1k9RXcSN27dmqRgQ5TupztLEmwCE3TbqvfaS6U1Kc4yp1/kpj5uh0PYtPWdAqD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=juduWgP0; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=cIrVsPVie1eaj9szfNFPsl7qv3uc6GRQOqL2/S8ZMsN7xe0dGb/y2xgoaxenXgUJ9fC6lSKLyEyoL7QRNk0mN54XZ16UpoW1hqooCNZAR5lTmcfYxGYYsl04RCubhdkzxUftblSZQOZKZBe206enxnSzIi8CygCEBjp5LTHkRHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pczimSjR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="juduWgP0"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=YSQXibYKsgFeeFgY2M4dFECJ3n26gpZRHHkGSthk2yo=; b=juduWgP0JfB4DsEUOY0m/jPCvG
-	nm3PJVq288H7QLH15qaIlX6RlOqI39tcgVOxIzCP5XYLrEacj7DCx6+Y+ZH/sdkrQhk9pgifd3rpg
-	gcp9gItA9FdOPA+kvoBZng8Of/DxuHZQ/LZ7gc4mSjVDDCdKDO1UgF/uFOdiTh/GXFtg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tAwnf-00D4mw-PT; Tue, 12 Nov 2024 20:43:43 +0100
-Date: Tue, 12 Nov 2024 20:43:43 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Sean Nyekjaer <sean@geanix.com>
-Cc: Wei Fang <wei.fang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	imx@lists.linux.dev, netdev@vger.kernel.org
-Subject: Re: Initialize ethernet phy in low power mode before ndo_open
-Message-ID: <c16c6440-bf79-42a1-a330-68d9bb96f75c@lunn.ch>
-References: <4t7npxg4jxxoeemcat3besmrfn6sbgsgoolpxbw5asfxfj7xxl@inac2mylgpzl>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pczimSjR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E10DC4CECD;
+	Tue, 12 Nov 2024 20:14:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731442495;
+	bh=bgaoso6rbdkSsSON+N048bK3ATUOUcNNS6YEtD58y4k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pczimSjRqUpjInik/O6oFCv6e7AnMunSaJwYQCcaLF7yr50WWVMBXIEmYdAmXr7gW
+	 HnW/FsI8/E44mPRRIweCFHHpJNfLSXjPkVarIlKFO0KJIA8PSL6NRnLITT+1Yz2aBf
+	 gXHP/GINQFcrrQCpdPshxtpHEPElNhcq9bMVSX4Z58DL1qFFuYx7hJ+pI/OolQcCH1
+	 LY91orHhYIiRnwbP86WEY2hlyVkq4A+dKq90PkEsnUelxyPKHBhMdNnOH24Q8gmTRl
+	 M8rwzKUlNj/xZJVzH09/oz1AAIM6oZiE6E2uNQnEe7/QILtQydnVgyTakCUZ9azItP
+	 QCtN5jZ1wFv4Q==
+Date: Tue, 12 Nov 2024 21:14:49 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, dlemoal@kernel.org, maz@kernel.org,
+	tglx@linutronix.de, jdmason@kudzu.us
+Subject: Re: [PATCH v6 3/5] PCI: endpoint: pci-epf-test: Add doorbell test
+ support
+Message-ID: <ZzO3OcCNtHUfm867@x1-carbon>
+References: <20241112-ep-msi-v6-0-45f9722e3c2a@nxp.com>
+ <20241112-ep-msi-v6-3-45f9722e3c2a@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -43,35 +50,57 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4t7npxg4jxxoeemcat3besmrfn6sbgsgoolpxbw5asfxfj7xxl@inac2mylgpzl>
+In-Reply-To: <20241112-ep-msi-v6-3-45f9722e3c2a@nxp.com>
 
-On Tue, Nov 12, 2024 at 01:36:37PM +0100, Sean Nyekjaer wrote:
-> Hi,
+Hello Frank,
+
+On Tue, Nov 12, 2024 at 12:48:16PM -0500, Frank Li wrote:
+> Add three registers: doorbell_bar, doorbell_addr, and doorbell_data,
+> along with doorbell_done. Use pci_epf_alloc_doorbell() to allocate a
+> doorbell address space.
 > 
-> I'm using a imx6ull, we have an unused ethernet on our board. We would
-> like it to use as little power as possible as it's battery operated.
-> During probe I would expect the ethernet driver to probe the phy
-> deivce and set it in low power mode (BMCR_PDOWN).
-> The bit is correcly set if I up/down the interface, is that prefered
-> behavior?
+> Enable the Root Complex (RC) side driver to trigger pci-epc-test's doorbell
+> callback handler by writing doorbell_data to the mapped doorbell_bar's
+> address space.
 > 
-> I can see it's the same stmmac driver for stm32mp1 etc.
+> Set doorbell_done in the doorbell callback to indicate completion.
 > 
-> I can also set the phy in low power mode in the bootloader, but then the
-> fec driver would reset phy and we end up where we started.
+> To avoid broken compatibility, add new command COMMAND_ENABLE_DOORBELL
+> and COMMAND_DISABLE_DOORBELL. Host side need send COMMAND_ENABLE_DOORBELL
+> to map one bar's inbound address to MSI space. the command
+> COMMAND_DISABLE_DOORBELL to recovery original inbound address mapping.
+> 
+> 	 	Host side new driver	Host side old driver
+> 
+> EP: new driver      S				F
+> EP: old driver      F				F
+> 
+> S: If EP side support MSI, 'pcitest -B' return success.
+>    If EP side doesn't support MSI, the same to 'F'.
+> 
+> F: 'pcitest -B' return failure, other case as usual.
+> 
+> Tested-by: Niklas Cassel <cassel@kernel.org>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Change from v5 to v6
+> - rename doorbell_addr to doorbell_offset
 
-There are conflicting requirements here. Most users want the interface
-up as quickly as possible. Autoneg takes a little over 1 second, which
-if you force the interface down in probe means open will take up to 1
-second longer before the interface is usable.
+Is there a reason why you chose to not incorporate the helper function
+that I suggested here:
+https://lore.kernel.org/linux-pci/ZzMtKUFi30_o6SwL@ryzen/
 
-Few users want minimal power requirements, which is the conflicting
-requirement.
+I didn't see any reply from you to that message.
 
-Changing the default is going to cause regressions and developers will
-complain their board takes longer to boot. So your best bet is to
-up/down the unused interface. Or if you don't need it at all, mark it
-as disabled in DT.
+Personally I think that it is nice to have the alignment code in a single
+function, rather than duplicating the code. The helper also looks quite
+similar to how we do outbound address translation alignment:
+https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/commit/?h=endpoint&id=e73ea1c2d4d8f7ba5daaf7aa51171f63cf79bcd8
+so that people will recognize the pattern more easily.
 
-	Andrew
+But I guess you didn't like my suggestion?
+(Which is fine, but I would have expected some motivation.)
 
+
+Kind regards,
+Niklas
