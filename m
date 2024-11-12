@@ -1,48 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F8B20B20B;
-	Tue, 12 Nov 2024 10:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D4020F5AF;
+	Tue, 12 Nov 2024 10:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407152; cv=none; b=C+EdKJMBKr8hckdSc88TTLnPGPJ0ut0ouIjEOkzIlMiP1V50yf6fmKHDkX2687gfGd2tyN7eQKmD5H3zZS3g0o9jSo2FETK12JcGRbSczIzSzJLOeEvKa+p0yVj0cZiy9YLuIyT4/mVHgMH0aW9Snb9hs+ODbszrsY2MdufHflo=
+	t=1731408350; cv=none; b=Zbk2ouwlnzszTjmaPg1+TQ0IgDF4BTz0/Q47a7Au+nGQByHViCmFDV/xjBqgEsTBcdsY2Qy9LfY/FdlSxA8PnHRaftUpGxc0oH3ufB/Jw+GnErK0VInst54LNXO2cZcxRGbLLDG4Q/8rn1PokrwqvXhnIvK8RP2O6xSTNUjsGy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407152; c=relaxed/simple;
-	bh=hDtwxlx263Ka4x+zd3cQnDTdGx8NUTZ76VVOto/UNHo=;
+	s=arc-20240116; t=1731408350; c=relaxed/simple;
+	bh=R6b2maNdwe+ovA4dr5//CKaFpQ6RmBWwyQHRZnAj7NY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dErmzHwA/z3Z8xXxP4jj5F58jritvZhzySa8p9sTCh4t/sowDSl9f926fxEj5ghhUlRAALcf3veVuCMt7nEhTychOTWfud4bONenSyrE6yroPGXQZoSxA0sj7JTNU5GvYPuAUnAgfogfEgitXt4xujMx/otG9z4OXcFEl07jtd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PrygTCVx; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=qb74BW3sU0sQFjfrP99Lhpypv4o9+KeaH7HGU7asjROkrHp0aEDOpy9tOG99TAZUE1bfrPGNET0ot2XkgkVJyX5RmV3CKDWO+LM5KuwmVzq8PqjlZ1dUG9RKHzlHH/M7pinKQV97qDqxwNKJrZVjWUcPswMt/B7fCj+55wS394w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=riX5qwcs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PrygTCVx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C33B8C4CECD;
-	Tue, 12 Nov 2024 10:25:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="riX5qwcs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF0AC4CECD;
+	Tue, 12 Nov 2024 10:45:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731407151;
-	bh=hDtwxlx263Ka4x+zd3cQnDTdGx8NUTZ76VVOto/UNHo=;
+	s=k20201202; t=1731408350;
+	bh=R6b2maNdwe+ovA4dr5//CKaFpQ6RmBWwyQHRZnAj7NY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PrygTCVxO8Ug/Sqh08YMfEsbHdJWvaU+4DkKvprpp4RXqbu+S8Ijzm/FugVZUiF/b
-	 Tq+rDTnODyp1NwRVrWDXjLxfu2jAuj28ZBJgaMg/DSYfP2Lc4vtLz4RkPJLDB6pL99
-	 iXLuIZUDjQ1fFVKbyHlA3KaIez7Vjkbf8KtN0v6tlJ8KviYJ5Q9UTAJpGs5zoMNA4N
-	 rGNyqymfUyTOgl614+7GFCrkvWHASyFk0UbXP/qQ4Ull2iTahUqgtq5LZocmjMQcuz
-	 MD+zcxQNtsjKQQqEx7vTseLidXj9apzU7aNjZ+xMhbd6bq21aZeHAOyOFt6lOok1A3
-	 2vYkxv3xTgCOQ==
-Date: Tue, 12 Nov 2024 11:25:45 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	imx@lists.linux.dev, dlemoal@kernel.org, maz@kernel.org,
-	tglx@linutronix.de, jdmason@kudzu.us
-Subject: Re: [PATCH v5 3/5] PCI: endpoint: pci-epf-test: Add doorbell test
- support
-Message-ID: <ZzMtKUFi30_o6SwL@ryzen>
-References: <20241108-ep-msi-v5-0-a14951c0d007@nxp.com>
- <20241108-ep-msi-v5-3-a14951c0d007@nxp.com>
- <ZzIYAIGjHQJqR5Qt@ryzen>
+	b=riX5qwcsg4XYrFblu7be/txKJ65JQUtTrvlr/nn64g/WObZ+T5nhF58jKivrdzmX4
+	 vCXHaRGbHM4NrO06rPFIBbJmDEKmsPzGnolNkireYwfxLVJLlV249TB66iu5LdXLz+
+	 oQSJt6BAFkSJOrJGSf0F/YQMnDgMbRxNtIt3/3K3FNQWezMeQ3u48ma5Vhs7OM1Dpm
+	 TDUaVuRuII9eRHJdjoI/kokTJ0kgPw2s0b3fBsQ8Fsi7in5rjrPJrc4g3Dr4ObM6JE
+	 yRI/q+ytTmoZzJCA4htAfKIfcxnjKOz/570pTQyskd5AnnwoB1E30XzHw8k7rPpv5Z
+	 3oH4GBdYgozNw==
+Date: Tue, 12 Nov 2024 18:45:43 +0800
+From: Peter Chen <peter.chen@kernel.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: gregkh@linuxfoundation.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com,
+	linux-usb@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH] usb: chipidea: imx: add imx8ulp support
+Message-ID: <20241112104543.GA663650@nchen-desktop>
+References: <20241111090916.1534047-1-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,146 +43,37 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZzIYAIGjHQJqR5Qt@ryzen>
+In-Reply-To: <20241111090916.1534047-1-xu.yang_2@nxp.com>
 
-On Mon, Nov 11, 2024 at 03:43:12PM +0100, Niklas Cassel wrote:
-> On Fri, Nov 08, 2024 at 02:43:30PM -0500, Frank Li wrote:
+On 24-11-11 17:09:16, Xu Yang wrote:
+> The dtbinding have imx7ulp and imx8ulp compatible with imx7d before. And
+> then the dtb follow the dtbinding. However, the driver doesn't add imx8ulp
+> compatible now. To make imx8ulp work well, this will add support for it.
 > 
-> Perhaps create a helper function so that you don't need to duplicate it.
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
-Something like this on top of your series:
+Acked-by: Peter Chen <peter.chen@kernel.org>
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
-index 8ede7aded03ee..b1707b4425432 100644
---- a/drivers/pci/endpoint/functions/pci-epf-test.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-test.c
-@@ -656,16 +656,25 @@ static void pci_epf_test_raise_irq(struct pci_epf_test *epf_test,
- 	}
- }
- 
--static void pci_epf_enable_doorbell(struct pci_epf_test *epf_test, struct pci_epf_test_reg *reg)
-+static int pci_epf_get_doorbell_addr(struct pci_epf_test *epf_test,
-+				     enum pci_barno bar, u64 *db_base,
-+				     u64 *db_offset)
- {
--	enum pci_barno bar = reg->doorbell_bar;
- 	struct pci_epf *epf = epf_test->epf;
--	struct pci_epc *epc = epf->epc;
--	struct pci_epf_bar db_bar;
- 	struct msi_msg *msg;
--	u64 doorbell_addr;
-+	u64 doorbell_addr, mask;
- 	u32 align;
--	int ret;
-+
-+	if (bar < BAR_0 || bar == epf_test->test_reg_bar || !epf->db_msg)
-+		return -EINVAL;
-+
-+	msg = &epf->db_msg[0].msg;
-+	doorbell_addr = msg->address_hi;
-+	doorbell_addr <<= 32;
-+	doorbell_addr |= msg->address_lo;
-+
-+	if (!doorbell_addr)
-+		return -EINVAL;
- 
- 	align = epf_test->epc_features->align;
- 	align = align ? align : 128;
-@@ -673,17 +682,28 @@ static void pci_epf_enable_doorbell(struct pci_epf_test *epf_test, struct pci_ep
- 	if (epf_test->epc_features->bar[bar].type == BAR_FIXED)
- 		align = max(epf_test->epc_features->bar[bar].fixed_size, align);
- 
--	if (bar < BAR_0 || bar == epf_test->test_reg_bar || !epf->db_msg) {
-+	mask = align - 1;
-+	*db_base = doorbell_addr & ~mask;
-+	*db_offset = doorbell_addr & mask;
-+
-+	return 0;
-+}
-+
-+static void pci_epf_enable_doorbell(struct pci_epf_test *epf_test, struct pci_epf_test_reg *reg)
-+{
-+	enum pci_barno bar = reg->doorbell_bar;
-+	struct pci_epf *epf = epf_test->epf;
-+	struct pci_epc *epc = epf->epc;
-+	struct pci_epf_bar db_bar;
-+	u64 db_base, db_offset;
-+	int ret;
-+
-+	if (pci_epf_get_doorbell_addr(epf_test, bar, &db_base, &db_offset)) {
- 		reg->status |= STATUS_DOORBELL_ENABLE_FAIL;
- 		return;
- 	}
- 
--	msg = &epf->db_msg[0].msg;
--	doorbell_addr = msg->address_hi;
--	doorbell_addr <<= 32;
--	doorbell_addr |= msg->address_lo;
--
--	db_bar.phys_addr = round_down(doorbell_addr, align);
-+	db_bar.phys_addr = db_base;
- 	db_bar.barno = bar;
- 	db_bar.size = epf->bar[bar].size;
- 	db_bar.flags = epf->bar[bar].flags;
-@@ -1015,9 +1035,7 @@ static int pci_epf_test_bind(struct pci_epf *epf)
- 	ret = pci_epf_alloc_doorbell(epf, 1);
- 	if (!ret) {
- 		struct pci_epf_test_reg *reg = epf_test->reg[test_reg_bar];
--		struct msi_msg *msg = &epf->db_msg[0].msg;
--		u32 align = epc_features->align;
--		u64 doorbell_addr;
-+		u64 db_base, db_offset;
- 		enum pci_barno bar;
- 
- 		bar = pci_epc_get_next_free_bar(epc_features, test_reg_bar + 1);
-@@ -1031,17 +1049,15 @@ static int pci_epf_test_bind(struct pci_epf *epf)
- 			return 0;
- 		}
- 
--		align = align ? align : 128;
--
--		if (epf_test->epc_features->bar[bar].type == BAR_FIXED)
--			align = max(epf_test->epc_features->bar[bar].fixed_size, align);
--
--		doorbell_addr = msg->address_hi;
--		doorbell_addr <<= 32;
--		doorbell_addr |= msg->address_lo;
-+		if (pci_epf_get_doorbell_addr(epf_test, bar, &db_base,
-+					      &db_offset)) {
-+			dev_err(&epf->dev, "Failed to get doorbell address\n");
-+			free_irq(epf->db_msg[0].virq, epf_test);
-+			return 0;
-+		}
- 
--		reg->doorbell_addr = doorbell_addr & (align - 1);
--		reg->doorbell_data = msg->data;
-+		reg->doorbell_addr = db_offset;
-+		reg->doorbell_data = epf->db_msg[0].msg.data;
- 		reg->doorbell_bar = bar;
- 	}
- 
-
-
-
+Peter
+> ---
+>  drivers/usb/chipidea/usbmisc_imx.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> Also one function is doing:
-> reg->doorbell_addr = doorbell_addr & (align - 1);
+> diff --git a/drivers/usb/chipidea/usbmisc_imx.c b/drivers/usb/chipidea/usbmisc_imx.c
+> index 173c78afd502..1394881fde5f 100644
+> --- a/drivers/usb/chipidea/usbmisc_imx.c
+> +++ b/drivers/usb/chipidea/usbmisc_imx.c
+> @@ -1285,6 +1285,10 @@ static const struct of_device_id usbmisc_imx_dt_ids[] = {
+>  		.compatible = "fsl,imx7ulp-usbmisc",
+>  		.data = &imx7ulp_usbmisc_ops,
+>  	},
+> +	{
+> +		.compatible = "fsl,imx8ulp-usbmisc",
+> +		.data = &imx7ulp_usbmisc_ops,
+> +	},
+>  	{ /* sentinel */ }
+>  };
+>  MODULE_DEVICE_TABLE(of, usbmisc_imx_dt_ids);
+> -- 
+> 2.34.1
 > 
-> to align, the other one is doing:
-> round_down(doorbell_addr, align);
-> 
-> Which seems to be a bit inconsistent.
-
-I now see why you did this.
-One function is using the db offset, and the other is using the db base.
-
-I strongly suggest that you rename:
-reg->doorbell_addr to reg->doorbell_offset
-and
-PCI_ENDPOINT_TEST_DB_ADDR to PCI_ENDPOINT_TEST_DB_OFFSET
-
-since the current names are very confusing.
-
-
-Kind regards,
-Niklas
