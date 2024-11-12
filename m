@@ -1,178 +1,295 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2531ABEB0
-	for <imx@lists.linux.dev>; Tue, 12 Nov 2024 08:02:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D20420C31B
+	for <imx@lists.linux.dev>; Tue, 12 Nov 2024 08:35:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731398546; cv=none; b=LdPinl0JKl8chf8H6/1OU+c+V7YCxpf7FZyic9HjicR1nNVh9XtYIxifgtatZ2NsTadmHpl+jCJWtNsDG3JPed/ohO0+CBTV//vZGcmNCGHYDU8MnM1JvDuB6xGf3wwZHpT8eoUyIwOzFTw5oelFM5FoAp/hiOPbaoSiOOcRs7s=
+	t=1731400559; cv=none; b=dQyexachq7EUOtnSzgJR3BqHdB8fWNeJt9kyMZAq0dHZP/VAe8wYRxFRYbwOXQbzw+0NpVXu4s8375UELARFHOv8eFpL6FZY3JVlF22utyI2Ii0FVAHcZEsA2WWqzeg7CbzyyzFIZiUBCB+nH8x8mHc13eHC/U4ClJ06WQjslo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731398546; c=relaxed/simple;
-	bh=Gdzfz6nuF3Mv2sztvCsvN7kvDs3V6ahV1Si39NMWwFI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T8+hiMpv+SyIW08TdA1mu4we/K12NvbDLploOvDf1gCvW/pyGu3F0sDJNuS1W8f496EWrFHPCSIL8/cpYSBZtiMUh2f5iSS5A1sC3kZKuhn9huZiJhTz4lbsi1+bHBodMqPl/X45Xf8WzCoatw3cSODKhzPkCaveCgbwO9Ij5GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mj4PBb0m; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1731400559; c=relaxed/simple;
+	bh=Mu/o9Qv5X4vFA1jVqoDuiGcIFYCOHs8UofluQ4+eEKY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UHgNn1g0yjk/Aogem6ZqWc81+Cq6LssJaQinbI0oZKyOuFd+02Zvb0NQmShStHD9QJwRHzIvTKv3/uTRJ/iTSUCJtb2hQGnpYu8wIVopXsNlxn0skxLRhH5DVsLorT3issCR7jrHqyuuMXVK8U4pyLmzOQx+J0pbUoSxeJtuMuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=0A9obPtf; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mj4PBb0m"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2e2fb304e7dso4355095a91.1
-        for <imx@lists.linux.dev>; Tue, 12 Nov 2024 00:02:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="0A9obPtf"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-431616c23b5so30582005e9.0
+        for <imx@lists.linux.dev>; Tue, 12 Nov 2024 00:35:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731398544; x=1732003344; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=tdmcDJQb0kxtWtYlqvMLgav0HJpmDO9A2F6bQ8vcVVk=;
-        b=mj4PBb0meIYIc6iQwVZ6jtFRgddcOXDrD8S9whb7K9TsR42IpRk/3T+GykGd/ExQqI
-         iKb9Qk11tBjHfEdvY5kmWjieB5fhhSbImcxPJTZXyh15Rc6LE89CbFnkml/RZW9uy5Wk
-         IXfJAdt39yygFEurQEdqGgHQ5jhh+F1htUO6o6pEo8FHLpW0T4v29EPxSgx2LZLNqX7A
-         1s1Cp5Rw1e6XJgZZEyO4n8m3PzZOgAvql0GgayzyzwHqP43p2Y5fiPwXarSRq9Zojr53
-         13okV5a3hB6py49/0Ivi9p/2IwgVwDLu+wy54gc7Y6EI6oPRWLrFZa+MOJMVjvlDRG7W
-         dMxA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731400555; x=1732005355; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=C6QofcCdQmsLqvy2bS7OgsAFd+Nwlz5uz8nWM8QdfQg=;
+        b=0A9obPtfEpMvblm2xAkh6Kn2ieom1lUyREwMxw8H/5LDS3CEctsLzRMKWOY0+vLEHA
+         iJr2Jjg31ra3iHz8ldDaey0C3NgmVktsVjj0pzNESVrO2NelSFE89hOG98UcYBi5f0CQ
+         rwfMXD9CHcVtxqDBwejOS/Afj5vGXm86dzPlXvaIsiGloSG7cE0zInrydWrsl8l/99mp
+         skfAWekmkEbdlzohdRybwCrsv1bF1uflDp9g05y78EzwAef7a/+UhlpZHisV2JeiuU9K
+         XkIkNYtnRQvCJNZbJUfLA0mhgrlNFwXWVfeFdZKPOWMQTt+K8m2qb7SbVQMiZsiOusSm
+         pcSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731398544; x=1732003344;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tdmcDJQb0kxtWtYlqvMLgav0HJpmDO9A2F6bQ8vcVVk=;
-        b=Z2rCBuR7TwCS9L+OLBjPMctUzAOunWinXRr5bGfCQxT25yZKyUVm8UdldgZf2PYzph
-         0ctaP/DSMZJ44ayJrbsrgYR8PxiB6ZCungoZkefqPXdctwym5SbX+oHC2CnRAUGZUUTs
-         25vP53kquPYyASabx+L58/Le986KsJsqFeb/R3FafJ1FZ8GBgGau7LaNjmanhjYOhZX4
-         vGp4Y5hpiXrd7E4njMNpCnuciqagI+2St16OsQmQY6jsJjrTMvDeJlUydlzGkfkRlio8
-         mCqInLmig1Mei8/Cr508HECOMdfHpybWdZsz7alUhj4IkF6Pt5fV6lr2LwN9KYVCTXVg
-         HeQg==
-X-Forwarded-Encrypted: i=1; AJvYcCW2ccWOXIMEkNNblXm6pSasIBepb0SSnSUdhLe87jisWmNSMlW1GDlEZyEn4i/h6sIOrnM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy4wZTmIHhwq0VdpwB8p8p1s26jbkVdnp5nrmXs2RVNVzpCK7t2
-	nsRkMJLO6iZOhEncOm0xJupzW0gvYXjtYUyFLhTOSEYnZUgm38r36umEQqBJcg==
-X-Google-Smtp-Source: AGHT+IGxmuoFDE3JbNsNx57MeL6QGeI+BKO4bDu8QDdKhoNLOa8X4pga/l3/7VWn1aeLrpGmDD9L0Q==
-X-Received: by 2002:a17:90b:4a87:b0:2e2:aef9:8f60 with SMTP id 98e67ed59e1d1-2e9b14ddb3bmr20379534a91.0.1731398544255;
-        Tue, 12 Nov 2024 00:02:24 -0800 (PST)
-Received: from thinkpad ([117.213.103.248])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e9b23a510bsm8093555a91.15.2024.11.12.00.02.20
+        d=1e100.net; s=20230601; t=1731400555; x=1732005355;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=C6QofcCdQmsLqvy2bS7OgsAFd+Nwlz5uz8nWM8QdfQg=;
+        b=iGGyKvw70eDwnTgVPUxNP0OSXvBohwz51uAIAQkFoxHgg+af8teeDtgU+vh6UqIi58
+         3aHnjjk7eER+hZgczPx5f9inhmOC8lFXzZCtKpL50cHVQsi8u36eIZPG0uMGLN2RLK9G
+         9LuUIF/cVFONIZdajtU3W+ClKzSI/ptuVBfcBLMJFxOgy/mOreancsKNA8X+Az73+Y5T
+         qSlGfbDNVOQlY8v+0sboHp7eysdN73y39pq7fITDMPPZmK4Le9nXZqIxwBREgrengdXV
+         oWmK8uRncTsv3ixTGJNhOuwPIavGXkzuV7V8v/lvtjJKU5iC3X5p6fDjaUJW4lOCihhl
+         CS8A==
+X-Forwarded-Encrypted: i=1; AJvYcCUpld1D9NA1OBtWxuK7Tv7ekWFbDdHIFle3R1Or6M4IeZ1Rd41T8IEZST/ZmISD+l8G9Qk=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy615bWFMPHylwkPJbZom+NHcbZmL04rWIu1tD1i9SOqdeNPM8l
+	m1iNX/QRWKzwEd1tyOSeP/neP+ZnZI3RfZhmYSttfA+V4MvP5XPfDdgoPwYXgCc=
+X-Google-Smtp-Source: AGHT+IGW+y3BR7dFB04YA4ES3C1lW4o7kCU2hloqBgpq+LKWd/AQDkgHN2jgVjcYHfhMS3JEIGnWwQ==
+X-Received: by 2002:a05:600c:4690:b0:431:5226:1633 with SMTP id 5b1f17b1804b1-432b744ef66mr130754775e9.6.1731400555594;
+        Tue, 12 Nov 2024 00:35:55 -0800 (PST)
+Received: from localhost (p509159f1.dip0.t-ipconnect.de. [80.145.89.241])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432aa523a0esm233176195e9.0.2024.11.12.00.35.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Nov 2024 00:02:23 -0800 (PST)
-Date: Tue, 12 Nov 2024 13:32:16 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, Richard Zhu <hongxing.zhu@nxp.com>,
-	jingoohan1@gmail.com, bhelgaas@google.com, lpieralisi@kernel.org,
-	kw@linux.com, robh@kernel.org, imx@lists.linux.dev,
-	kernel@pengutronix.de, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] PCI: dwc: Clean up some unnecessary codes in
- dw_pcie_suspend_noirq()
-Message-ID: <20241112080216.6kzdybe2su5ozp44@thinkpad>
-References: <20241107111334.n23ebkbs3uhxivvm@thinkpad>
- <20241108002425.GA1631063@bhelgaas>
- <20241111060902.mdbksegqj5rblqsn@thinkpad>
- <ZzJCGkenhxgJxoC4@lizhi-Precision-Tower-5810>
+        Tue, 12 Nov 2024 00:35:55 -0800 (PST)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Cristian Marussi <cristian.marussi@arm.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Brian Norris <briannorris@chromium.org>,
+	Julius Werner <jwerner@chromium.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Daire McNamara <daire.mcnamara@microchip.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Gabriel Somlo <somlo@cmu.edu>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Michal Simek <michal.simek@amd.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Jay Buddhabhatti <jay.buddhabhatti@amd.com>,
+	Ronak Jain <ronak.jain@amd.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Praveen Teja Kundanala <praveen.teja.kundanala@amd.com>,
+	arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	chrome-platform@lists.linux.dev,
+	imx@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	qemu-devel@nongnu.org,
+	linux-rpi-kernel@lists.infradead.org
+Subject: [PATCH] firmware: Switch back to struct platform_driver::remove()
+Date: Tue, 12 Nov 2024 09:35:20 +0100
+Message-ID:  <36974feb6035201d53384557259ec72fe311053b.1731397962.git.u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7555; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=Mu/o9Qv5X4vFA1jVqoDuiGcIFYCOHs8UofluQ4+eEKY=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnMxNYRTU/Z/YcH9oKPyjD1Bi3PtTwnTXisZzZA y+s+3m+Wv2JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZzMTWAAKCRCPgPtYfRL+ TnzXB/wIb7KWzpl9KhF1WQm264Rj2ne8x5AR+YU2GkZbmy5FZrtPt6HXJuJgBDULzpxixsmxIJF VlvB5dKowmesjkiHP1AFIiR2D9fWHM+CZMEFlqVCJGrdEQrW9D+UmULcTNI3XB222G4b7YLFHM0 ed5WNuOnohzkIvJSnXdnFm/sx4bu902DDKuNLJAvDs03YbVOb2skn28UEl0B7lXZ76AcJCc3CkS wV70cKyYkGbRAjHgBNtbZcxR/2sZ1BL6KTlE4IXgb8MxxwahMWg2nbcdW/xI3OHYzt0LTeREnhL 2dc2WNr0WcclVbruKzpBOsuQEfd3vxFF7Hm2ApRGzKe6CE3/
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZzJCGkenhxgJxoC4@lizhi-Precision-Tower-5810>
 
-On Mon, Nov 11, 2024 at 12:42:50PM -0500, Frank Li wrote:
-> On Mon, Nov 11, 2024 at 11:39:02AM +0530, Manivannan Sadhasivam wrote:
-> > On Thu, Nov 07, 2024 at 06:24:25PM -0600, Bjorn Helgaas wrote:
-> > > On Thu, Nov 07, 2024 at 11:13:34AM +0000, Manivannan Sadhasivam wrote:
-> > > > On Thu, Nov 07, 2024 at 04:44:55PM +0800, Richard Zhu wrote:
-> > > > > Before sending PME_TURN_OFF, don't test the LTSSM stat. Since it's
-> > > > > safe to send PME_TURN_OFF message regardless of whether the link
-> > > > > is up or down. So, there would be no need to test the LTSSM stat
-> > > > > before sending PME_TURN_OFF message.
-> > > >
-> > > > What is the incentive to send PME_Turn_Off when link is not up?
-> > >
-> > > There's no need to send PME_Turn_Off when link is not up.
-> > >
-> > > But a link-up check is inherently racy because the link may go down
-> > > between the check and the PME_Turn_Off.  Since it's impossible for
-> > > software to guarantee the link is up, the Root Port should be able to
-> > > tolerate attempts to send PME_Turn_Off when the link is down.
-> > >
-> > > So IMO there's no need to check whether the link is up, and checking
-> > > gives the misleading impression that "we know the link is up and
-> > > therefore sending PME_Turn_Off is safe."
-> > >
-> >
-> > I agree that the check is racy (not sure if there is a better way to avoid
-> > that), but if you send the PME_Turn_Off unconditionally, then it will result in
-> > L23 Ready timeout and users will see the error message.
-> >
-> > > > > Remove the L2 poll too, after the PME_TURN_OFF message is sent
-> > > > > out.  Because the re-initialization would be done in
-> > > > > dw_pcie_resume_noirq().
-> > > >
-> > > > As Krishna explained, host needs to wait until the endpoint acks the
-> > > > message (just to give it some time to do cleanups). Then only the
-> > > > host can initiate D3Cold. It matters when the device supports L2.
-> > >
-> > > The important thing here is to be clear about the *reason* to poll for
-> > > L2 and the *event* that must wait for L2.
-> > >
-> > > I don't have any DesignWare specs, but when dw_pcie_suspend_noirq()
-> > > waits for DW_PCIE_LTSSM_L2_IDLE, I think what we're doing is waiting
-> > > for the link to be in the L2/L3 Ready pseudo-state (PCIe r6.0, sec
-> > > 5.2, fig 5-1).
-> > >
-> > > L2 and L3 are states where main power to the downstream component is
-> > > off, i.e., the component is in D3cold (r6.0, sec 5.3.2), so there is
-> > > no link in those states.
-> > >
-> > > The PME_Turn_Off handshake is part of the process to put the
-> > > downstream component in D3cold.  I think the reason for this handshake
-> > > is to allow an orderly shutdown of that component before main power is
-> > > removed.
-> > >
-> > > When the downstream component receives PME_Turn_Off, it will stop
-> > > scheduling new TLPs, but it may already have TLPs scheduled but not
-> > > yet sent.  If power were removed immediately, they would be lost.  My
-> > > understanding is that the link will not enter L2/L3 Ready until the
-> > > components on both ends have completed whatever needs to be done with
-> > > those TLPs.  (This is based on the L2/L3 discussion in the Mindshare
-> > > PCIe book; I haven't found clear spec citations for all of it.)
-> > >
-> > > I think waiting for L2/L3 Ready is to keep us from turning off main
-> > > power when the components are still trying to dispose of those TLPs.
-> > >
-> >
-> > Not just disposing TLPs as per the spec, most endpoints also need to reset their
-> > state machine as well (if there is a way for the endpoint sw to delay sending
-> > L23 Ready).
-> >
-> > > So I think every controller that turns off main power needs to wait
-> > > for L2/L3 Ready.
-> > >
-> > > There's also a requirement that software wait at least 100 ns after
-> > > L2/L3 Ready before turning off refclock and main power (sec
-> > > 5.3.3.2.1).
-> > >
-> >
-> > Right. Usually, the delay after PERST# assert would make sure this, but in
-> > layerscape driver (user of dw_pcie_suspend_noirq) I don't see power/refclk
-> > removal.
-> >
-> > Richard Zhu/Frank, thoughts?
-> 
-> Generally, power/refclk remove when system enter sleep state. There is
-> signal "suspend_request_b", which connect to PMIC. After CPU trigger this
-> signnal, PMIC will turn off (pre fused) some power rail.
-> 
-> Refclk(come from SOC chip), OSC will be shutdown when send out
-> "suspend_request_b".
-> 
+After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
+return void") .remove() is (again) the right callback to implement for
+platform drivers.
 
-Thanks for clarifying! Then it would be better to add the 100ns delay after
-receiving the L23 Ready message from endpoint.
+Convert all platform drivers below drivers/firmware to use .remove(),
+with the eventual goal to drop struct platform_driver::remove_new(). As
+.remove() and .remove_new() have the same prototypes, conversion is done
+by just changing the structure member name in the driver initializer.
 
-- Mani
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+---
+Hello,
 
+I did a single patch for all of drivers/firmware. While I usually prefer
+to do one logical change per patch, this seems to be overengineering
+here as the individual changes are really trivial and shouldn't be much
+in the way for stable backports.
+
+There is no dedicated maintainer for drivers/firmware, maybe Sudeep as
+biggest committer there can take it? Or would it be sensible to split
+this patch?
+
+This is based on yesterday's next, if conflicts arise when you apply it
+at some later time and don't want to resolve them, feel free to just
+drop the changes to the conflicting files. I'll notice and followup at a
+later time then. Or ask me for a fixed resend. (Having said that, I
+recommend b4 am -3 + git am -3 which should resolve most conflicts just
+fine.)
+
+Best regards
+Uwe
+
+ drivers/firmware/arm_scmi/driver.c            | 2 +-
+ drivers/firmware/arm_scpi.c                   | 2 +-
+ drivers/firmware/google/coreboot_table.c      | 2 +-
+ drivers/firmware/imx/imx-dsp.c                | 2 +-
+ drivers/firmware/microchip/mpfs-auto-update.c | 2 +-
+ drivers/firmware/mtk-adsp-ipc.c               | 2 +-
+ drivers/firmware/qemu_fw_cfg.c                | 2 +-
+ drivers/firmware/raspberrypi.c                | 2 +-
+ drivers/firmware/stratix10-rsu.c              | 2 +-
+ drivers/firmware/stratix10-svc.c              | 2 +-
+ drivers/firmware/xilinx/zynqmp.c              | 2 +-
+ 11 files changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
+index 1f53ca1f87e3..1b5fb2c4ce86 100644
+--- a/drivers/firmware/arm_scmi/driver.c
++++ b/drivers/firmware/arm_scmi/driver.c
+@@ -3333,7 +3333,7 @@ static struct platform_driver scmi_driver = {
+ 		   .dev_groups = versions_groups,
+ 		   },
+ 	.probe = scmi_probe,
+-	.remove_new = scmi_remove,
++	.remove = scmi_remove,
+ };
+ 
+ static struct dentry *scmi_debugfs_init(void)
+diff --git a/drivers/firmware/arm_scpi.c b/drivers/firmware/arm_scpi.c
+index f4d47577f83e..87c323de17b9 100644
+--- a/drivers/firmware/arm_scpi.c
++++ b/drivers/firmware/arm_scpi.c
+@@ -1049,7 +1049,7 @@ static struct platform_driver scpi_driver = {
+ 		.dev_groups = versions_groups,
+ 	},
+ 	.probe = scpi_probe,
+-	.remove_new = scpi_remove,
++	.remove = scpi_remove,
+ };
+ module_platform_driver(scpi_driver);
+ 
+diff --git a/drivers/firmware/google/coreboot_table.c b/drivers/firmware/google/coreboot_table.c
+index 208652a8087c..882db32e51be 100644
+--- a/drivers/firmware/google/coreboot_table.c
++++ b/drivers/firmware/google/coreboot_table.c
+@@ -220,7 +220,7 @@ MODULE_DEVICE_TABLE(of, coreboot_of_match);
+ 
+ static struct platform_driver coreboot_table_driver = {
+ 	.probe = coreboot_table_probe,
+-	.remove_new = coreboot_table_remove,
++	.remove = coreboot_table_remove,
+ 	.driver = {
+ 		.name = "coreboot_table",
+ 		.acpi_match_table = ACPI_PTR(cros_coreboot_acpi_match),
+diff --git a/drivers/firmware/imx/imx-dsp.c b/drivers/firmware/imx/imx-dsp.c
+index 01c8ef14eaec..ed79e823157a 100644
+--- a/drivers/firmware/imx/imx-dsp.c
++++ b/drivers/firmware/imx/imx-dsp.c
+@@ -180,7 +180,7 @@ static struct platform_driver imx_dsp_driver = {
+ 		.name = "imx-dsp",
+ 	},
+ 	.probe = imx_dsp_probe,
+-	.remove_new = imx_dsp_remove,
++	.remove = imx_dsp_remove,
+ };
+ builtin_platform_driver(imx_dsp_driver);
+ 
+diff --git a/drivers/firmware/microchip/mpfs-auto-update.c b/drivers/firmware/microchip/mpfs-auto-update.c
+index 0f7ec8848202..38a03698cec9 100644
+--- a/drivers/firmware/microchip/mpfs-auto-update.c
++++ b/drivers/firmware/microchip/mpfs-auto-update.c
+@@ -458,7 +458,7 @@ static struct platform_driver mpfs_auto_update_driver = {
+ 		.name = "mpfs-auto-update",
+ 	},
+ 	.probe = mpfs_auto_update_probe,
+-	.remove_new = mpfs_auto_update_remove,
++	.remove = mpfs_auto_update_remove,
+ };
+ module_platform_driver(mpfs_auto_update_driver);
+ 
+diff --git a/drivers/firmware/mtk-adsp-ipc.c b/drivers/firmware/mtk-adsp-ipc.c
+index fdb083f42ebf..2b79371c61c9 100644
+--- a/drivers/firmware/mtk-adsp-ipc.c
++++ b/drivers/firmware/mtk-adsp-ipc.c
+@@ -132,7 +132,7 @@ static struct platform_driver mtk_adsp_ipc_driver = {
+ 		.name = "mtk-adsp-ipc",
+ 	},
+ 	.probe = mtk_adsp_ipc_probe,
+-	.remove_new = mtk_adsp_ipc_remove,
++	.remove = mtk_adsp_ipc_remove,
+ };
+ builtin_platform_driver(mtk_adsp_ipc_driver);
+ 
+diff --git a/drivers/firmware/qemu_fw_cfg.c b/drivers/firmware/qemu_fw_cfg.c
+index 85c525745b31..d58da3e4500a 100644
+--- a/drivers/firmware/qemu_fw_cfg.c
++++ b/drivers/firmware/qemu_fw_cfg.c
+@@ -757,7 +757,7 @@ MODULE_DEVICE_TABLE(acpi, fw_cfg_sysfs_acpi_match);
+ 
+ static struct platform_driver fw_cfg_sysfs_driver = {
+ 	.probe = fw_cfg_sysfs_probe,
+-	.remove_new = fw_cfg_sysfs_remove,
++	.remove = fw_cfg_sysfs_remove,
+ 	.driver = {
+ 		.name = "fw_cfg",
+ 		.of_match_table = fw_cfg_sysfs_mmio_match,
+diff --git a/drivers/firmware/raspberrypi.c b/drivers/firmware/raspberrypi.c
+index 18cc34987108..7ecde6921a0a 100644
+--- a/drivers/firmware/raspberrypi.c
++++ b/drivers/firmware/raspberrypi.c
+@@ -406,7 +406,7 @@ static struct platform_driver rpi_firmware_driver = {
+ 	},
+ 	.probe		= rpi_firmware_probe,
+ 	.shutdown	= rpi_firmware_shutdown,
+-	.remove_new	= rpi_firmware_remove,
++	.remove		= rpi_firmware_remove,
+ };
+ module_platform_driver(rpi_firmware_driver);
+ 
+diff --git a/drivers/firmware/stratix10-rsu.c b/drivers/firmware/stratix10-rsu.c
+index e20cee9c2d32..1ea39a0a76c7 100644
+--- a/drivers/firmware/stratix10-rsu.c
++++ b/drivers/firmware/stratix10-rsu.c
+@@ -802,7 +802,7 @@ static void stratix10_rsu_remove(struct platform_device *pdev)
+ 
+ static struct platform_driver stratix10_rsu_driver = {
+ 	.probe = stratix10_rsu_probe,
+-	.remove_new = stratix10_rsu_remove,
++	.remove = stratix10_rsu_remove,
+ 	.driver = {
+ 		.name = "stratix10-rsu",
+ 		.dev_groups = rsu_groups,
+diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
+index 528f37417aea..c5c78b869561 100644
+--- a/drivers/firmware/stratix10-svc.c
++++ b/drivers/firmware/stratix10-svc.c
+@@ -1271,7 +1271,7 @@ static void stratix10_svc_drv_remove(struct platform_device *pdev)
+ 
+ static struct platform_driver stratix10_svc_driver = {
+ 	.probe = stratix10_svc_drv_probe,
+-	.remove_new = stratix10_svc_drv_remove,
++	.remove = stratix10_svc_drv_remove,
+ 	.driver = {
+ 		.name = "stratix10-svc",
+ 		.of_match_table = stratix10_svc_drv_match,
+diff --git a/drivers/firmware/xilinx/zynqmp.c b/drivers/firmware/xilinx/zynqmp.c
+index cdb565c41119..720fa8b5d8e9 100644
+--- a/drivers/firmware/xilinx/zynqmp.c
++++ b/drivers/firmware/xilinx/zynqmp.c
+@@ -2118,6 +2118,6 @@ static struct platform_driver zynqmp_firmware_driver = {
+ 		.dev_groups = zynqmp_firmware_groups,
+ 	},
+ 	.probe = zynqmp_firmware_probe,
+-	.remove_new = zynqmp_firmware_remove,
++	.remove = zynqmp_firmware_remove,
+ };
+ module_platform_driver(zynqmp_firmware_driver);
+
+base-commit: 6d59cab07b8d74d0f0422b750038123334f6ecc2
 -- 
-மணிவண்ணன் சதாசிவம்
+2.45.2
+
