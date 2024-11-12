@@ -1,72 +1,94 @@
-Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA8E1CD1FB;
-	Tue, 12 Nov 2024 12:36:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854BD433C0;
+	Tue, 12 Nov 2024 13:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731415011; cv=none; b=l3xjPi1FnPVHKsrhXek7DSobsDjjmyaHN86+TI/NzCYVzUDpQDfA7RMcm9UV6iww9DxrLi3dbAjIytedEZ08Co3CbU2DRXK/VxqJibK87C6NivZ04ljP4h5+22ZiCDwVoKP+ewY5HkbhoLM/NeiTUmR42+zY0fvec8LFLsiOICM=
+	t=1731416565; cv=none; b=WPqdqLoi+0CEYhAYkmubbTdrIoXo3tazZAcL9ujeh38RKQFxV+sb20n7rYkTXDQEPjxLQ0zYwS8ktJC4QOx6td0CMYpsgcDvOyNTGrdYgSyyYHtam7fp6fKBkhNqq9CrdxgUq4lPrQQVsYCfg2/RJO8pRLp+cGhrCeLjOKttUjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731415011; c=relaxed/simple;
-	bh=j7/f1cs+iC3zEmd0U4xhw5VpEjLNHJFPyUeBoxXe/YE=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=MNpy8I/2spLN7hxrnplN/YTP2q7aqSG2HS+fgkvSAmA5AoolCYJeXjH4PXqdQSUEyK1AEn4J7EqXMZv0RbOLqhG5CqULJNHQM19g+qDCdm5C554nRGNqLT+Vc+Zr48Mmoe/9yOp1TzF2sCqvRPBJGP0da5/Bad+rENBvmRtVHIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=O8AMiWdV; arc=none smtp.client-ip=188.40.30.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+	s=arc-20240116; t=1731416565; c=relaxed/simple;
+	bh=C9qhHkdxvMTuRSejox1HHbCUK/S4CWthrHnzCrzr6wA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=oJaRylHxWx4/txnpfAJwuKsCXOoA2WZmMlDK9HY2UqKnA6/e9a/wBBGbyrEjS/Uj0e15/oCeHJPBpJJIfGdzzQ4BmuNu6bdu4J28Eg6+GC1uTbFru0wMFxDmF/C8zYaiAKKjmtah+Vs+crKCVPYjd6LGc6ZNFIJtYENYKdxhWO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ukwfhHS0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="O8AMiWdV"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
-	s=default2211; h=Content-Type:MIME-Version:Message-ID:Subject:To:From:Date:
-	Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References; bh=j7/f1cs+iC3zEmd0U4xhw5VpEjLNHJFPyUeBoxXe/YE=; b=O8
-	AMiWdVrkOVhfPW6cEDr7DfMl9GYrWuX4BnH1b08aP30bfXGwE6SniHgTxhhKwqyXnup2pAibEqicA
-	c/2BthUAr23l1z+GeoWD11iRkHc3UR8AXx+qe2GK0CVOy7FasYXOxNGYt6Vz3tBPyTz5B5l1mOsdO
-	H1paKbs8XJ5NVOBIGMY3wV+JGsAFaiF90SWhF97TTWtjeC44Wshm9ZwnwsW/D9/lBqnj+wuGAobNy
-	i6d/geqAqjd8d6r+d0QMwebMkGRP3krZTmS8OT5Xk3GuFD/eJZcMaX/Mb+Bup6RBzImYfrGdD8cBu
-	lpztIvhOfaW9XRc7n+dgy6KCKHDh8G/g==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sean@geanix.com>)
-	id 1tAq8M-000PiT-I4; Tue, 12 Nov 2024 13:36:38 +0100
-Received: from [185.17.218.86] (helo=Seans-MacBook-Pro.local)
-	by sslproxy02.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sean@geanix.com>)
-	id 1tAq8M-000492-0W;
-	Tue, 12 Nov 2024 13:36:38 +0100
-Date: Tue, 12 Nov 2024 13:36:37 +0100
-From: Sean Nyekjaer <sean@geanix.com>
-To: Wei Fang <wei.fang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	imx@lists.linux.dev, netdev@vger.kernel.org
-Subject: Initialize ethernet phy in low power mode before ndo_open
-Message-ID: <4t7npxg4jxxoeemcat3besmrfn6sbgsgoolpxbw5asfxfj7xxl@inac2mylgpzl>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ukwfhHS0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E08C4CECD;
+	Tue, 12 Nov 2024 13:02:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731416565;
+	bh=C9qhHkdxvMTuRSejox1HHbCUK/S4CWthrHnzCrzr6wA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ukwfhHS0Y+TX59sqrVKIwZrvE2+rCeaPVPjXHh3+Kjab9Z32uyBwTaZm4xnc/Gpwd
+	 8FJ1HiduPliq7Lzgl/BhcbQuJlxh+nTZ6hqYgBgxmZ071PUVk7w4b/9SHfTc3JiDWA
+	 6bDBBkji5/nX/00UvzwavQaApE3oVDWTC0sw1F0DH//Q4fXwBRE6u1/YSxbrjywYni
+	 4eqxY6Ng/n7KB8GJPeornUeNtR1P9g0tkrVl3r28Pv1jMZS16N6SEUki90oo1zPJAV
+	 gV+RuLvpuI8CTcuzUiMI7vFTXX1hbA1e65LeJVeFIzZZ3/S4nK8mzcfOa+k4JXJoUt
+	 IDRKSFU3z0x6Q==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Tudor Ambarus <tudor.ambarus@linaro.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  peng.fan@oss.nxp.com,
+  m.felsch@pengutronix.de,  mwalle@kernel.org,  miquel.raynal@bootlin.com,
+  richard@nod.at,  vigneshr@ti.com,  robh@kernel.org,  krzk+dt@kernel.org,
+  conor+dt@kernel.org,  shawnguo@kernel.org,  s.hauer@pengutronix.de,
+  kernel@pengutronix.de,  festevam@gmail.com,
+  linux-mtd@lists.infradead.org,  devicetree@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  imx@lists.linux.dev,
+  linux-arm-kernel@lists.infradead.org,  Peng Fan <peng.fan@nxp.com>
+Subject: Re: [RESEND PATCH v4 2/2] mtd: spi-nor: support vcc-supply regulator
+In-Reply-To: <7d5dcd4e-967c-4627-92d5-86232492c7e3@linaro.org> (Tudor
+	Ambarus's message of "Tue, 12 Nov 2024 07:01:19 +0000")
+References: <20241029102238.44673-1-tudor.ambarus@linaro.org>
+	<20241029102238.44673-2-tudor.ambarus@linaro.org>
+	<mafs0zfm57tsy.fsf@kernel.org>
+	<7d5dcd4e-967c-4627-92d5-86232492c7e3@linaro.org>
+Date: Tue, 12 Nov 2024 13:02:40 +0000
+Message-ID: <mafs0r07g7ggf.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-X-Authenticated-Sender: sean@geanix.com
-X-Virus-Scanned: Clear (ClamAV 0.103.10/27456/Tue Nov 12 10:49:43 2024)
+Content-Type: text/plain
 
-Hi,
+On Tue, Nov 12 2024, Tudor Ambarus wrote:
 
-I'm using a imx6ull, we have an unused ethernet on our board. We would
-like it to use as little power as possible as it's battery operated.
-During probe I would expect the ethernet driver to probe the phy
-deivce and set it in low power mode (BMCR_PDOWN).
-The bit is correcly set if I up/down the interface, is that prefered
-behavior?
+> On 11/11/24 2:02 PM, Pratyush Yadav wrote:
+>> On Tue, Oct 29 2024, Tudor Ambarus wrote:
+>> 
+>>> From: Peng Fan <peng.fan@nxp.com>
+>>>
+>>> SPI NOR flashes needs power supply to work properly. The power supply
+>>> maybe software controllable per board design. So add the support
+>>> for an vcc-supply regulator.
+>>>
+>>> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+>>> Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+>>> [ta: move devm_regulator_get_enable() to spi_nor_probe(). Add local dev
+>>> variable to avoid dereferences.]
+>>> Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+>> 
+>> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+>> 
+>
+> thanks, Pratyush. I sent a v5 here, where I introduce the temporary
+> variable to struct device in its dedicated patch. Would you mind adding
+> the R-b tag there?
+> https://lore.kernel.org/linux-mtd/20241111111946.9048-1-tudor.ambarus@linaro.org/
 
-I can see it's the same stmmac driver for stm32mp1 etc.
+Ah, I missed that in the many emails in by mailbox. Will take a look.
 
-I can also set the phy in low power mode in the bootloader, but then the
-fec driver would reset phy and we end up where we started.
+>
+> btw, I try to keep patchwork in sync, so you can see the status of
+> patches there as well:
+>
+> https://patchwork.ozlabs.org/project/linux-mtd/list/?series=&submitter=&state=&q=spi-nor&archive=&delegate=
+>
+> Thanks!
 
-Br,
-/Sean
+-- 
+Regards,
+Pratyush Yadav
