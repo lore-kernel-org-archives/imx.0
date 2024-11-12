@@ -1,295 +1,163 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2080.outbound.protection.outlook.com [40.107.105.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D20420C31B
-	for <imx@lists.linux.dev>; Tue, 12 Nov 2024 08:35:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731400559; cv=none; b=dQyexachq7EUOtnSzgJR3BqHdB8fWNeJt9kyMZAq0dHZP/VAe8wYRxFRYbwOXQbzw+0NpVXu4s8375UELARFHOv8eFpL6FZY3JVlF22utyI2Ii0FVAHcZEsA2WWqzeg7CbzyyzFIZiUBCB+nH8x8mHc13eHC/U4ClJ06WQjslo0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731400559; c=relaxed/simple;
-	bh=Mu/o9Qv5X4vFA1jVqoDuiGcIFYCOHs8UofluQ4+eEKY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UHgNn1g0yjk/Aogem6ZqWc81+Cq6LssJaQinbI0oZKyOuFd+02Zvb0NQmShStHD9QJwRHzIvTKv3/uTRJ/iTSUCJtb2hQGnpYu8wIVopXsNlxn0skxLRhH5DVsLorT3issCR7jrHqyuuMXVK8U4pyLmzOQx+J0pbUoSxeJtuMuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=0A9obPtf; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF9920EA37
+	for <imx@lists.linux.dev>; Tue, 12 Nov 2024 08:39:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.80
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731400768; cv=fail; b=JfwOIiyyIb8iRWu3KmQ5V1HQbp5UXtg3hGGCXuKYjjeASwuBX8OI/nfX3b82RpTXSEZRpITBsvaN25vUx4+Z6jTEmrJz+WiuqqNYnHm4f0kaJcFY2xhXi+MJxwqT5Spn0bUoXvmlQwEpsjkYX5dnqa8WNeKoYuVs/7awqz/7IEo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731400768; c=relaxed/simple;
+	bh=ZmPf68cjZwRL0FwE7sBU6MGkxvvpZe6rpRvpvLpGa+U=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=bWWfB1lPYX4Aj31JTUUyUivr3/RDBKOjslhg4RjgilD2UESq/vT+EX4bQl2LiheM4rHObuEWEUV1rM0zsLups+zvbvpvbYuzvcU5FY1AoEzGugw/n6ixeBj5CGn7+TeJanBu/75AaRvaYjYC0xuQogdbbIy+BOmReZp3WalgXqw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=TdIFLg8r; arc=fail smtp.client-ip=40.107.105.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="0A9obPtf"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-431616c23b5so30582005e9.0
-        for <imx@lists.linux.dev>; Tue, 12 Nov 2024 00:35:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731400555; x=1732005355; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=C6QofcCdQmsLqvy2bS7OgsAFd+Nwlz5uz8nWM8QdfQg=;
-        b=0A9obPtfEpMvblm2xAkh6Kn2ieom1lUyREwMxw8H/5LDS3CEctsLzRMKWOY0+vLEHA
-         iJr2Jjg31ra3iHz8ldDaey0C3NgmVktsVjj0pzNESVrO2NelSFE89hOG98UcYBi5f0CQ
-         rwfMXD9CHcVtxqDBwejOS/Afj5vGXm86dzPlXvaIsiGloSG7cE0zInrydWrsl8l/99mp
-         skfAWekmkEbdlzohdRybwCrsv1bF1uflDp9g05y78EzwAef7a/+UhlpZHisV2JeiuU9K
-         XkIkNYtnRQvCJNZbJUfLA0mhgrlNFwXWVfeFdZKPOWMQTt+K8m2qb7SbVQMiZsiOusSm
-         pcSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731400555; x=1732005355;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=C6QofcCdQmsLqvy2bS7OgsAFd+Nwlz5uz8nWM8QdfQg=;
-        b=iGGyKvw70eDwnTgVPUxNP0OSXvBohwz51uAIAQkFoxHgg+af8teeDtgU+vh6UqIi58
-         3aHnjjk7eER+hZgczPx5f9inhmOC8lFXzZCtKpL50cHVQsi8u36eIZPG0uMGLN2RLK9G
-         9LuUIF/cVFONIZdajtU3W+ClKzSI/ptuVBfcBLMJFxOgy/mOreancsKNA8X+Az73+Y5T
-         qSlGfbDNVOQlY8v+0sboHp7eysdN73y39pq7fITDMPPZmK4Le9nXZqIxwBREgrengdXV
-         oWmK8uRncTsv3ixTGJNhOuwPIavGXkzuV7V8v/lvtjJKU5iC3X5p6fDjaUJW4lOCihhl
-         CS8A==
-X-Forwarded-Encrypted: i=1; AJvYcCUpld1D9NA1OBtWxuK7Tv7ekWFbDdHIFle3R1Or6M4IeZ1Rd41T8IEZST/ZmISD+l8G9Qk=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy615bWFMPHylwkPJbZom+NHcbZmL04rWIu1tD1i9SOqdeNPM8l
-	m1iNX/QRWKzwEd1tyOSeP/neP+ZnZI3RfZhmYSttfA+V4MvP5XPfDdgoPwYXgCc=
-X-Google-Smtp-Source: AGHT+IGW+y3BR7dFB04YA4ES3C1lW4o7kCU2hloqBgpq+LKWd/AQDkgHN2jgVjcYHfhMS3JEIGnWwQ==
-X-Received: by 2002:a05:600c:4690:b0:431:5226:1633 with SMTP id 5b1f17b1804b1-432b744ef66mr130754775e9.6.1731400555594;
-        Tue, 12 Nov 2024 00:35:55 -0800 (PST)
-Received: from localhost (p509159f1.dip0.t-ipconnect.de. [80.145.89.241])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432aa523a0esm233176195e9.0.2024.11.12.00.35.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Nov 2024 00:35:55 -0800 (PST)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Sudeep Holla <sudeep.holla@arm.com>
-Cc: Cristian Marussi <cristian.marussi@arm.com>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Brian Norris <briannorris@chromium.org>,
-	Julius Werner <jwerner@chromium.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Gabriel Somlo <somlo@cmu.edu>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Michal Simek <michal.simek@amd.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Jay Buddhabhatti <jay.buddhabhatti@amd.com>,
-	Ronak Jain <ronak.jain@amd.com>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Praveen Teja Kundanala <praveen.teja.kundanala@amd.com>,
-	arm-scmi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	chrome-platform@lists.linux.dev,
-	imx@lists.linux.dev,
-	linux-riscv@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	qemu-devel@nongnu.org,
-	linux-rpi-kernel@lists.infradead.org
-Subject: [PATCH] firmware: Switch back to struct platform_driver::remove()
-Date: Tue, 12 Nov 2024 09:35:20 +0100
-Message-ID:  <36974feb6035201d53384557259ec72fe311053b.1731397962.git.u.kleine-koenig@baylibre.com>
-X-Mailer: git-send-email 2.45.2
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="TdIFLg8r"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yagHUCMW/01ykmfpY1/w1IizJWlUwbcu48SCbtm7PQS4aU1XeUuAYIk2vNDR8ZWhPUo1dAvhUCoSKi9CRLLfPnCw1Ga1NfzfN9Wd6Cgw7s01/Odm9taZtuQbKZ3fsSXJHmZJsglcT5XCu3e19rXGWf+tw2bSNB7EChlN9UZ1LKyIm3f/JUuHwkSdpL85SPAU8ga1cm+H+Xj3iNxbxjUmBNVydq35yUkegsuw37rdTyH6JCYevkOO1/YFWJdDIWfE5NW1mwFMv0xGZ9iMhUksY8S6L3YcdLv01uqipK5lmTIczIZZR30HhdcYf1qUx9oWsu5U6eae5NIZHGHxNh2wrw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZmPf68cjZwRL0FwE7sBU6MGkxvvpZe6rpRvpvLpGa+U=;
+ b=gneZ3fgPaLdSOCCxVVWreKu342SvHH/0haajNLUjzphs/zm0c4lCLA82faajZ1peREgvyW0B4wYmvQQIVskOOYl7Nng14anih/YbpVGjZo5gLAty2M/2leCyOQs0BrGuSUpAyf20OJ0qtNQZlSELvEQ84qn1OklCSEk13ZHzS1rAUQHIzdczT18yXuqdoQMnGt80xCeYGnNpXeg3ZtwBCUlmPRxhh5uq+L3GaSZMuzlWb3KKG4QGAZxh8+cIso70WknPZiHAcIDkSsTxKnFdOKet4FgFBGErel7dy2a05Y9a2EENPDVQpaaZmxR1geAvtBaNGv+Yqa/ooNEbCGMJiw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZmPf68cjZwRL0FwE7sBU6MGkxvvpZe6rpRvpvLpGa+U=;
+ b=TdIFLg8rrnNvqgYKExHQHdKuq70p/Ica5QHyzYZTMvFdbufl51M4aTPOKpsfRE2+pCrDqL0HW2SN6C6xRR3//g7EVXPzZ6wbuOILP/gNNdC9HlP1CFhosjURSmSDYBdJIJ8AJ5ALqbxur/MDTU2V6pp+N0GfEXnk6qhczMLDRXPYggMzSZyP+3i/2/ioRdfTpD9p5SGiv12Bs7KOV5u+6HC67mwRUJwIRF/ucrfOODy89FiCXXb8obHuRcT8i18kSrBgZcM+EedBH4dnG0tUagSYmeVdmIeemA12rSEocC5PaIq5mq4Tz56NWtw2n2E+bG8sOnJx0ieOO8RRpFadjQ==
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by AM0PR04MB6916.eurprd04.prod.outlook.com (2603:10a6:208:185::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.29; Tue, 12 Nov
+ 2024 08:39:22 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%6]) with mapi id 15.20.8137.027; Tue, 12 Nov 2024
+ 08:39:22 +0000
+From: Peng Fan <peng.fan@nxp.com>
+To: Marek Vasut <marex@denx.de>, "linux-clk@vger.kernel.org"
+	<linux-clk@vger.kernel.org>
+CC: Abel Vesa <abelvesa@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo
+	<shawnguo@kernel.org>, Stephen Boyd <sboyd@kernel.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH] clk: imx8mp: Fix clkout1/2 support
+Thread-Topic: [PATCH] clk: imx8mp: Fix clkout1/2 support
+Thread-Index: AQHbNKNxtuk+MPPDh0WQ86RisZplrrKzU15g
+Date: Tue, 12 Nov 2024 08:39:22 +0000
+Message-ID:
+ <PAXPR04MB8459329A30FC92B7C03BED6888592@PAXPR04MB8459.eurprd04.prod.outlook.com>
+References: <20241112013718.333771-1-marex@denx.de>
+In-Reply-To: <20241112013718.333771-1-marex@denx.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8459:EE_|AM0PR04MB6916:EE_
+x-ms-office365-filtering-correlation-id: e1bec1a8-70ea-4bf0-4068-08dd02f581fc
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|376014|7416014|1800799024|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?+3C5HBBLHD6KhsBCUe4YmCfij2CsYtQGdjlfg3XDtGdVQazwiX9RbW835gvZ?=
+ =?us-ascii?Q?8r/HEM5O7Lbs6YN5sDZCMuPEbVNSEswGQH/rT/CbT4YgH6fjgtMOHw3o5xC2?=
+ =?us-ascii?Q?ShwwuWGoxw3MlSmcajF6ZiZBmMLXrblclDlqW329SSOS8BvKshsrwfgPhGXG?=
+ =?us-ascii?Q?mOkNrOK/w2AhsaJQBTRmtHVLJq7+d01Ya53Z53kDBH8TKvsl3fxOMt/lsoEO?=
+ =?us-ascii?Q?p4oy4geTL9dYrbwGBMZrcUi+QrCgqm3CoS/xeGsY4/7ny7RGUoU8SJAJygTf?=
+ =?us-ascii?Q?iU0RJTsgXR47C+uk6OTp9r6x8er1v3K0TK3TwtevwoxQrN5ic+EE/6CkCBJE?=
+ =?us-ascii?Q?mMHNPwvxcavAGtsRu162MhATco0PHnhFZYEliIn47z5B+76TCVzTUCOsqWn1?=
+ =?us-ascii?Q?z5pNcdctSp7UyCQmD+DvuYGmDJE81V0lvWi20YEh2ZPVSl8gVwQlvWP4kRVI?=
+ =?us-ascii?Q?Pte6s50ywYgO6YOe/EsqeLWw4QRW7hG5yodpMgapMyO/7FYRFwYFP2eCclQQ?=
+ =?us-ascii?Q?s7Pl5xv0V2+YSQLjFkKVd8eH/U1eXljPRXxd5ihYlbv63vJWWUPWX4BN1Osa?=
+ =?us-ascii?Q?sSObx0GUtC1NWY9//hfo6QKg4IBfmOJOI+PLHvO5GHvDe3SO1gRpD0U6ybay?=
+ =?us-ascii?Q?VpTcylIqf5WP9wT6G6xbRUjyNtzHokQW7NdgAd/3KUFT4zAYhh/PQtEmq6Dp?=
+ =?us-ascii?Q?gBX/SL23eIZuKMQrCsLPWmLVnOIF4vxhBIxKOd1G7N9vYYy1uE/oLpYmx031?=
+ =?us-ascii?Q?++RBSRjn7FRXmQf5FR1QxuHHmy7KQ8/Y0T/9HjLM6L4+/KOTs2xZQhZvnyPJ?=
+ =?us-ascii?Q?H0BGyIIblHfDEWTV3Xv/yYHWFa9asTeaorKv5uBKyvLVP4NW0/jdep758SKd?=
+ =?us-ascii?Q?7fdNvZ/z344Q0iWxvE+Uf2p8/q2bCs2LSN8CEBCOtZuwEIxvxqxJNvMdY549?=
+ =?us-ascii?Q?SKGvMV0mgvwrUSxIVVA5pbUtkYyv/MjpJbVwc7+byOrW4DVIfHEnLdOJKodM?=
+ =?us-ascii?Q?ld+JFLbmOin3FbBs6+hsZ+tOotZ1bsxpXDX2g41lhuExZMLgxVRZDBWjgkuU?=
+ =?us-ascii?Q?cUB3ZRRYFFDQBEaDM9uwT5P2LOlWLJYKcf1GEyNlP8hiQBIFZwPmItL3Qs6Q?=
+ =?us-ascii?Q?iCnfKxE7WsbGvaxi+PzFYZL/SY3oO0ckPRq1eVHcE4UgYc1TayM9QVhc66oe?=
+ =?us-ascii?Q?v5n7JJNopXeWNCNurcBYaa/MJefJeeAcZWU47Z0Ms8qO80YPD2N+YEY4akla?=
+ =?us-ascii?Q?9lxnzc/DhVGtWxjGekp64GVzUa69AnYs0SYbT1IFwCX/ib0h6uMeLlr+vKf9?=
+ =?us-ascii?Q?accED1ExVgZmGJuGTTUB8+dIdyH4Kf5YoPgY/47tz5p1krHBMYlUy3SNTar3?=
+ =?us-ascii?Q?lQfw/tU=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?QW4kY6LjFCgsJfZqO9szs5fB6VLVjEAXYuqV/P2Yuw/GIDU6ZJXj3uYKUgwz?=
+ =?us-ascii?Q?DFk1jndz5hpLNW+sfpQAlYlEf4KcNWcfo5SdrzpnR9r9QqoXMa3VFcC87qQX?=
+ =?us-ascii?Q?+yGyckra/C0sILCbV1y5Iexr3AE4Oyj3kaGPBLYaVl9IoGUXtmNv8Twwl8mn?=
+ =?us-ascii?Q?OMq5ItJTDYQiZcKsESJnQtp2925sFpNTtycsABZ/eaoTqlJrPItKVV9Qpudu?=
+ =?us-ascii?Q?98lGxLLfTsrc4VgudJ7Jr/I6Acr972Xy0Pafb6utsUVSBbWlqBqLN0jKA77z?=
+ =?us-ascii?Q?dsnUhvRNpWwU4RHCFL70JV2FXwUXyNU9XYp7BrhBCcw4HHNj+hAY1kJ8kQTK?=
+ =?us-ascii?Q?iIU4lnp0AiOSY5ZtrSif1BLgtLmYSMhttQGFK6dkbeEkEW5g9tSTjF2Rt/F/?=
+ =?us-ascii?Q?auJXCABiBCD0g6P3FfqWfGm9Of773Q1ndJk56QFvXLMY88HwUZoL7gnwSSwi?=
+ =?us-ascii?Q?5hOlV8Fvkaa/H9qlcC3VxkZ9PYO6e9vje1wMtjl+kaZaFp138Mm5Q7xSA/FT?=
+ =?us-ascii?Q?L4070iIAWIhFjnbHgIEwtOAbKMsyB1wkJbp6m2NfxkaSdn/TL8+dKt1D4oTT?=
+ =?us-ascii?Q?CgPQAPGDFmgQvCEhUvR0HCaTgYrJWo1/iiKFoze6yAzLVh6zvWwjHvHgHcz4?=
+ =?us-ascii?Q?WZADnOHZU6tbXDOXtDrCNT/Rk5LdAksJEhcfLBGLe9m6vtqqqVjsvyENygLV?=
+ =?us-ascii?Q?etN2CpUsh3JCVwBPF8CTUGF1uXVvDyKo3nHvmi3O/c0XilM0+Oklq0nneQ9g?=
+ =?us-ascii?Q?JJQNsFeA8FrzqsAW/tFAziwVxq3+o/7XHSza2jQc9J7dftretCtvqF7xLubT?=
+ =?us-ascii?Q?2uTQPbngj5GSxyyiETS2IgIbPwWwzy+fCuZqeafTEsXPj/9JT3B5TL/klg5R?=
+ =?us-ascii?Q?bmvet69OZcroM8TEpgp0pbZ4e8QJOQ8Rt9knMQHT+Ci667/TWp2BVUf5ZVGc?=
+ =?us-ascii?Q?GgLVrvJU5AwyCwnJ0RiMvWFmfRwzdKj7pFiwi/etT13is045tBEp9yRjPc5P?=
+ =?us-ascii?Q?8mdo7SfFI60qEOPwU2mZ4XUeTKMnLWgoQLOeV8KpdRgrV8zih3JIMeCuTxQ3?=
+ =?us-ascii?Q?FG/jrTcJLGoG/mnktOhmbl5nc9g+BgAFzuSWxqSK6JRPFrJ6U0RGFYCFgnPL?=
+ =?us-ascii?Q?iFm3jl8gy4p3QDs79JIcjdz+I2wC+knyxnnO6mXpmtHgg9IUCUi5Wn6fX19Q?=
+ =?us-ascii?Q?KcXwP/Jh6lxb6FrbAaKaO6ijpDSaJIyF2BF/9AWciAe3CvF6hchZqehbudfA?=
+ =?us-ascii?Q?LutnHpyRS5ZQwLxU/mcsZ7QEeJl/TqpvBF3qlKtN42KuLANk6rwIc/E/FnI3?=
+ =?us-ascii?Q?QCyzeJcoQhbXIT6uQ/M03jCm1axDtObtuS3vw0z7cK6oKSIfZzl3Iyz5cgs2?=
+ =?us-ascii?Q?RUavL1HFO2D76QhXiCC6LmlnNREQk+2lkJk4BpljzuGLRYCz2yQEeWJCp8O7?=
+ =?us-ascii?Q?dpzU3GQzszWadRHflqhk1SaHkvAl5x9CAffwHcDUWIXdRJHAEdS/JaguF5LW?=
+ =?us-ascii?Q?8xCN1TX8wnC+x0+R74wkBdSb0n2qlacOaTj4bwMhl+iZXFA8bjOLGhyJeSt3?=
+ =?us-ascii?Q?J+vBE1pSoLQDYPkzyBI=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7555; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=Mu/o9Qv5X4vFA1jVqoDuiGcIFYCOHs8UofluQ4+eEKY=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnMxNYRTU/Z/YcH9oKPyjD1Bi3PtTwnTXisZzZA y+s+3m+Wv2JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZzMTWAAKCRCPgPtYfRL+ TnzXB/wIb7KWzpl9KhF1WQm264Rj2ne8x5AR+YU2GkZbmy5FZrtPt6HXJuJgBDULzpxixsmxIJF VlvB5dKowmesjkiHP1AFIiR2D9fWHM+CZMEFlqVCJGrdEQrW9D+UmULcTNI3XB222G4b7YLFHM0 ed5WNuOnohzkIvJSnXdnFm/sx4bu902DDKuNLJAvDs03YbVOb2skn28UEl0B7lXZ76AcJCc3CkS wV70cKyYkGbRAjHgBNtbZcxR/2sZ1BL6KTlE4IXgb8MxxwahMWg2nbcdW/xI3OHYzt0LTeREnhL 2dc2WNr0WcclVbruKzpBOsuQEfd3vxFF7Hm2ApRGzKe6CE3/
-X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e1bec1a8-70ea-4bf0-4068-08dd02f581fc
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Nov 2024 08:39:22.7321
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Q5zEwnr5IAwjJA15TzFp5OZRWBaMX+Oocoq6wznVrmST6XYtArAJiwfCyztS2L+14/13SNqk8sa4sMkM8SML2A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6916
 
-After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
-return void") .remove() is (again) the right callback to implement for
-platform drivers.
+> Subject: [PATCH] clk: imx8mp: Fix clkout1/2 support
+>=20
+> The CLKOUTn may be fed from PLL1/2/3, but the PLL1/2/3 has to be
+> enabled first by setting PLL_CLKE bit 11 in
+> CCM_ANALOG_SYS_PLLn_GEN_CTRL register.
+> The CCM_ANALOG_SYS_PLLn_GEN_CTRL bit 11 is modeled by plln_out
+> clock. Fix the clock tree and place the clkout1/2 under plln_sel instead
+> of plain plln to let the clock subsystem correctly control the bit 11 and
+> enable the PLL in case the CLKOUTn is supplied by PLL1/2/3.
+>=20
+> Fixes: 43896f56b59e ("clk: imx8mp: add clkout1/2 support")
+> Signed-off-by: Marek Vasut <marex@denx.de>
+> ---
 
-Convert all platform drivers below drivers/firmware to use .remove(),
-with the eventual goal to drop struct platform_driver::remove_new(). As
-.remove() and .remove_new() have the same prototypes, conversion is done
-by just changing the structure member name in the driver initializer.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
----
-Hello,
-
-I did a single patch for all of drivers/firmware. While I usually prefer
-to do one logical change per patch, this seems to be overengineering
-here as the individual changes are really trivial and shouldn't be much
-in the way for stable backports.
-
-There is no dedicated maintainer for drivers/firmware, maybe Sudeep as
-biggest committer there can take it? Or would it be sensible to split
-this patch?
-
-This is based on yesterday's next, if conflicts arise when you apply it
-at some later time and don't want to resolve them, feel free to just
-drop the changes to the conflicting files. I'll notice and followup at a
-later time then. Or ask me for a fixed resend. (Having said that, I
-recommend b4 am -3 + git am -3 which should resolve most conflicts just
-fine.)
-
-Best regards
-Uwe
-
- drivers/firmware/arm_scmi/driver.c            | 2 +-
- drivers/firmware/arm_scpi.c                   | 2 +-
- drivers/firmware/google/coreboot_table.c      | 2 +-
- drivers/firmware/imx/imx-dsp.c                | 2 +-
- drivers/firmware/microchip/mpfs-auto-update.c | 2 +-
- drivers/firmware/mtk-adsp-ipc.c               | 2 +-
- drivers/firmware/qemu_fw_cfg.c                | 2 +-
- drivers/firmware/raspberrypi.c                | 2 +-
- drivers/firmware/stratix10-rsu.c              | 2 +-
- drivers/firmware/stratix10-svc.c              | 2 +-
- drivers/firmware/xilinx/zynqmp.c              | 2 +-
- 11 files changed, 11 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
-index 1f53ca1f87e3..1b5fb2c4ce86 100644
---- a/drivers/firmware/arm_scmi/driver.c
-+++ b/drivers/firmware/arm_scmi/driver.c
-@@ -3333,7 +3333,7 @@ static struct platform_driver scmi_driver = {
- 		   .dev_groups = versions_groups,
- 		   },
- 	.probe = scmi_probe,
--	.remove_new = scmi_remove,
-+	.remove = scmi_remove,
- };
- 
- static struct dentry *scmi_debugfs_init(void)
-diff --git a/drivers/firmware/arm_scpi.c b/drivers/firmware/arm_scpi.c
-index f4d47577f83e..87c323de17b9 100644
---- a/drivers/firmware/arm_scpi.c
-+++ b/drivers/firmware/arm_scpi.c
-@@ -1049,7 +1049,7 @@ static struct platform_driver scpi_driver = {
- 		.dev_groups = versions_groups,
- 	},
- 	.probe = scpi_probe,
--	.remove_new = scpi_remove,
-+	.remove = scpi_remove,
- };
- module_platform_driver(scpi_driver);
- 
-diff --git a/drivers/firmware/google/coreboot_table.c b/drivers/firmware/google/coreboot_table.c
-index 208652a8087c..882db32e51be 100644
---- a/drivers/firmware/google/coreboot_table.c
-+++ b/drivers/firmware/google/coreboot_table.c
-@@ -220,7 +220,7 @@ MODULE_DEVICE_TABLE(of, coreboot_of_match);
- 
- static struct platform_driver coreboot_table_driver = {
- 	.probe = coreboot_table_probe,
--	.remove_new = coreboot_table_remove,
-+	.remove = coreboot_table_remove,
- 	.driver = {
- 		.name = "coreboot_table",
- 		.acpi_match_table = ACPI_PTR(cros_coreboot_acpi_match),
-diff --git a/drivers/firmware/imx/imx-dsp.c b/drivers/firmware/imx/imx-dsp.c
-index 01c8ef14eaec..ed79e823157a 100644
---- a/drivers/firmware/imx/imx-dsp.c
-+++ b/drivers/firmware/imx/imx-dsp.c
-@@ -180,7 +180,7 @@ static struct platform_driver imx_dsp_driver = {
- 		.name = "imx-dsp",
- 	},
- 	.probe = imx_dsp_probe,
--	.remove_new = imx_dsp_remove,
-+	.remove = imx_dsp_remove,
- };
- builtin_platform_driver(imx_dsp_driver);
- 
-diff --git a/drivers/firmware/microchip/mpfs-auto-update.c b/drivers/firmware/microchip/mpfs-auto-update.c
-index 0f7ec8848202..38a03698cec9 100644
---- a/drivers/firmware/microchip/mpfs-auto-update.c
-+++ b/drivers/firmware/microchip/mpfs-auto-update.c
-@@ -458,7 +458,7 @@ static struct platform_driver mpfs_auto_update_driver = {
- 		.name = "mpfs-auto-update",
- 	},
- 	.probe = mpfs_auto_update_probe,
--	.remove_new = mpfs_auto_update_remove,
-+	.remove = mpfs_auto_update_remove,
- };
- module_platform_driver(mpfs_auto_update_driver);
- 
-diff --git a/drivers/firmware/mtk-adsp-ipc.c b/drivers/firmware/mtk-adsp-ipc.c
-index fdb083f42ebf..2b79371c61c9 100644
---- a/drivers/firmware/mtk-adsp-ipc.c
-+++ b/drivers/firmware/mtk-adsp-ipc.c
-@@ -132,7 +132,7 @@ static struct platform_driver mtk_adsp_ipc_driver = {
- 		.name = "mtk-adsp-ipc",
- 	},
- 	.probe = mtk_adsp_ipc_probe,
--	.remove_new = mtk_adsp_ipc_remove,
-+	.remove = mtk_adsp_ipc_remove,
- };
- builtin_platform_driver(mtk_adsp_ipc_driver);
- 
-diff --git a/drivers/firmware/qemu_fw_cfg.c b/drivers/firmware/qemu_fw_cfg.c
-index 85c525745b31..d58da3e4500a 100644
---- a/drivers/firmware/qemu_fw_cfg.c
-+++ b/drivers/firmware/qemu_fw_cfg.c
-@@ -757,7 +757,7 @@ MODULE_DEVICE_TABLE(acpi, fw_cfg_sysfs_acpi_match);
- 
- static struct platform_driver fw_cfg_sysfs_driver = {
- 	.probe = fw_cfg_sysfs_probe,
--	.remove_new = fw_cfg_sysfs_remove,
-+	.remove = fw_cfg_sysfs_remove,
- 	.driver = {
- 		.name = "fw_cfg",
- 		.of_match_table = fw_cfg_sysfs_mmio_match,
-diff --git a/drivers/firmware/raspberrypi.c b/drivers/firmware/raspberrypi.c
-index 18cc34987108..7ecde6921a0a 100644
---- a/drivers/firmware/raspberrypi.c
-+++ b/drivers/firmware/raspberrypi.c
-@@ -406,7 +406,7 @@ static struct platform_driver rpi_firmware_driver = {
- 	},
- 	.probe		= rpi_firmware_probe,
- 	.shutdown	= rpi_firmware_shutdown,
--	.remove_new	= rpi_firmware_remove,
-+	.remove		= rpi_firmware_remove,
- };
- module_platform_driver(rpi_firmware_driver);
- 
-diff --git a/drivers/firmware/stratix10-rsu.c b/drivers/firmware/stratix10-rsu.c
-index e20cee9c2d32..1ea39a0a76c7 100644
---- a/drivers/firmware/stratix10-rsu.c
-+++ b/drivers/firmware/stratix10-rsu.c
-@@ -802,7 +802,7 @@ static void stratix10_rsu_remove(struct platform_device *pdev)
- 
- static struct platform_driver stratix10_rsu_driver = {
- 	.probe = stratix10_rsu_probe,
--	.remove_new = stratix10_rsu_remove,
-+	.remove = stratix10_rsu_remove,
- 	.driver = {
- 		.name = "stratix10-rsu",
- 		.dev_groups = rsu_groups,
-diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
-index 528f37417aea..c5c78b869561 100644
---- a/drivers/firmware/stratix10-svc.c
-+++ b/drivers/firmware/stratix10-svc.c
-@@ -1271,7 +1271,7 @@ static void stratix10_svc_drv_remove(struct platform_device *pdev)
- 
- static struct platform_driver stratix10_svc_driver = {
- 	.probe = stratix10_svc_drv_probe,
--	.remove_new = stratix10_svc_drv_remove,
-+	.remove = stratix10_svc_drv_remove,
- 	.driver = {
- 		.name = "stratix10-svc",
- 		.of_match_table = stratix10_svc_drv_match,
-diff --git a/drivers/firmware/xilinx/zynqmp.c b/drivers/firmware/xilinx/zynqmp.c
-index cdb565c41119..720fa8b5d8e9 100644
---- a/drivers/firmware/xilinx/zynqmp.c
-+++ b/drivers/firmware/xilinx/zynqmp.c
-@@ -2118,6 +2118,6 @@ static struct platform_driver zynqmp_firmware_driver = {
- 		.dev_groups = zynqmp_firmware_groups,
- 	},
- 	.probe = zynqmp_firmware_probe,
--	.remove_new = zynqmp_firmware_remove,
-+	.remove = zynqmp_firmware_remove,
- };
- module_platform_driver(zynqmp_firmware_driver);
-
-base-commit: 6d59cab07b8d74d0f0422b750038123334f6ecc2
--- 
-2.45.2
-
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
