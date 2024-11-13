@@ -1,127 +1,225 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2050.outbound.protection.outlook.com [40.107.21.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23484C6C;
-	Wed, 13 Nov 2024 14:34:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731508487; cv=none; b=nTEOlZawSQM/lutT8a3RVqGermjwAL9+Ie4gKUkSFlnPJyOQP2Rhotbc9wxXZQ7ZYNzlY7T7ZLorSaXlS2XKK918dSpG1rwsPfrO6T+ziLkRJ8EY/Wsx5AdEqnWskUn/nOTCRs+9tINPB2R20QCnziuQT3M5zcwllKsf0H0/KnI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731508487; c=relaxed/simple;
-	bh=dM5isGoT8gvEzdUI7m24PY0e10UMd7maYxFQPVEb2S8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r4C1fLQvfgCl5a8/MovDWiG/Q5y6/UVYtAURvdatFEuoo0PiYirwzf6M27ZTeQaZC3C/iEbNBLNcc6jN2boFDwGtr38QIg7adc198Nz7odhDF4RZcLC1Hl7D2hH6M+tWiTFrjlWcODsbINfaGyjQJaTIPvl3ZA3nzt7EMnsl/CY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gZzN44L7; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E53B2AE93
+	for <imx@lists.linux.dev>; Wed, 13 Nov 2024 14:39:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731508763; cv=fail; b=L7eB9nFa3XtjZZkWTE4p69XkdnZ4+lHlf72V81WLhPL1HlLNbThVwFuwyn8ABqtZz2zX6uk/HiAQFT5AGDVgMXqhNlV/2lxTwVW5d3BM5W/uko+RX1Yein43ZHmFbncoqGTvq8vVbR2xRWs70zuGEFokTqOa86ky9rPSEpNSv0k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731508763; c=relaxed/simple;
+	bh=49E8jKzYd0ysBW/E9bFyPJClCRviELQ7RH5TaMxemno=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=GqAnC+lSZDTYbVwXWd54uZFo9pUXucFW7rje6P16yAzND2CEaGEU/Q9Nrm2P4HDoKa8QfcgkzsNvHtknh1pRxs1QA0gDvvufpinchuoJ+4rDg6IPTkgfmpaC8kLUbUpGwIqSTn6pK+ZblqO990K3dzYJ57ooiT6u8tQ6IdeNZXc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=lH3y1jSH; arc=fail smtp.client-ip=40.107.21.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gZzN44L7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731508486; x=1763044486;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dM5isGoT8gvEzdUI7m24PY0e10UMd7maYxFQPVEb2S8=;
-  b=gZzN44L7zIYrx7ClEs5xnnBbMJbhlFnnEac41s5WzlUiLqQ61c3lXSak
-   K3Xzr35ZSD/i5wXCEfOZyi7i/wY5j5bwMCHeAm3cDeCJK7CXDd48oqxk2
-   fuYCIBPHljkK65sEgLJfLnhfHjHTQA9dfdzzAhHY/9blOf+vSq5EUC8fc
-   rsIJZ19ZVo/hk1DXPJ8SHQEhdce04666v/TllpGYTAzjRYLie5BrbGSwC
-   Co8OgovfxuwM0ClyxQlubl3RAlPMZzlHrSunJVSIvHtSFpRoucWUVqW+I
-   tqV4IVMSA/IW8vEnZ8HVEuqQ3hwdukK2lhdha0VCPEg3i1L5P8pKzxZru
-   g==;
-X-CSE-ConnectionGUID: cb5VjEV0SYiIwA4vM+pNhg==
-X-CSE-MsgGUID: J9nzizQnSBWHvE7zPooeUg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11254"; a="19010668"
-X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; 
-   d="scan'208";a="19010668"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2024 06:34:45 -0800
-X-CSE-ConnectionGUID: Mp0B/uQKTpulc6xwndRd1g==
-X-CSE-MsgGUID: dPCbY9paSP+5GgUIMsiBpg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; 
-   d="scan'208";a="88050341"
-Received: from lkp-server01.sh.intel.com (HELO 80bd855f15b3) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 13 Nov 2024 06:34:39 -0800
-Received: from kbuild by 80bd855f15b3 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tBES4-0000Sj-2J;
-	Wed, 13 Nov 2024 14:34:36 +0000
-Date: Wed, 13 Nov 2024 22:34:11 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>, Lee Jones <lee@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-gpio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	NXP S32 Linux Team <s32@nxp.com>,
-	Christophe Lizzi <clizzi@redhat.com>,
-	Alberto Ruiz <aruizrui@redhat.com>,
-	Enric Balletbo <eballetb@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	imx@lists.linux.dev,
-	Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
-Subject: Re: [PATCH v6 7/7] MAINTAINERS: add MAINTAINER for NXP SIUL2 MFD
- driver
-Message-ID: <202411132227.SO6y3U3E-lkp@intel.com>
-References: <20241113101124.1279648-8-andrei.stefanescu@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="lH3y1jSH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KrA7E3vbgLf5C9x4IbcJSxwaaYcMr34+Izc+xBchrDoFKaKy2PCl+vc1nSnF2cVF9T/UId1qKa6MOQmkxXwsb8n2y0uyyCEmhSiRQSyZeZHYjaeTJoRzj4/x6nyYmILTlhMYxx8n2xpYsUAkjCHxtLYUwCMdJ45OfwwzGLz+WR7i9JRpHU5kbsp0Kyopyz887esohDPvwToPcJ9a+iVn3zwcmmEoYSRMS0qQef3G0KP9WiDdFT86ZBqnm+y0oLoFzHUWLFrB+/ui2d9ouPk+hU1JReTBKyW29h2DxJDpz64WAbABwY9VDXqpBEQ9Gh3C0cp+iT0zdsZ4NnSSBj7MoA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rgeMKbNHX7OMRsNVa/OyARxRBiHeAgeBWdJwbEGzI0A=;
+ b=hJpV7dJVriiKtdh2OGSYr8CikLZekiQx5yCUxPIeDUdHF24v7QHAZhX/svkPLuUabQ3E52Z7MHh1Gf8Zmlq/xNG3K7CrnE4M8VRPkE2Hklr1yBYA82KRgtPzkMN4gptWz4pnkwzqPdNMlY1SKIj7TpIaeucrltT+eSAPWPa8ayNGEb0EkU3SfssRVEG12kBQaR+kpB5yJQrpDqR09FX6K9mHM5TxRJ7NJHFNfzktaZtL7B/c6L6zkZJrTv5LLCR1f0lVRgq6Tdl3S/zpnq5crL0JGMXsTS1dVNoEQxIXfjks3gg2OhtZwOjTvPa+/FfoYv2UWMQIAZdz5N2b/216yg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rgeMKbNHX7OMRsNVa/OyARxRBiHeAgeBWdJwbEGzI0A=;
+ b=lH3y1jSHyWV1zKPh7mrboljgVkAFDGDPV1oOFyeJdLAsiWLcsXruHQmLrVRyR7Kn3ZiCgkCRhavADjI/QU8Gr/jTGzV3Xwo97TiZWcS6CbBCkUAbY9NX0XTvPGtD8uqdSrqOgLGHl+zHrtIBZ4ZMMkLCVI2kU44nYCivJbS+qRKjs9dPuqm5avZmwK29qXQ/f4DlkMjdMup7B/UsgnbbDhaA1E9473f9Es9WTTkweWtlCuJgVahN5V6gsW9/xBNax6MaoXMczDK7OOMpBgmTVxIfK7GV9iTUuk4vFvJ/mFVWdvKja6pCzYNIjxPLPOAf5VMtWSuZSc7PfMiDKY/x/A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS8PR04MB8868.eurprd04.prod.outlook.com (2603:10a6:20b:42f::6)
+ by AM8PR04MB7203.eurprd04.prod.outlook.com (2603:10a6:20b:1d5::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.17; Wed, 13 Nov
+ 2024 14:39:16 +0000
+Received: from AS8PR04MB8868.eurprd04.prod.outlook.com
+ ([fe80::b317:9c26:147f:c06e]) by AS8PR04MB8868.eurprd04.prod.outlook.com
+ ([fe80::b317:9c26:147f:c06e%7]) with mapi id 15.20.8158.013; Wed, 13 Nov 2024
+ 14:39:14 +0000
+Date: Wed, 13 Nov 2024 16:39:11 +0200
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, frank.li@nxp.com, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v3 net-next 4/5] net: enetc: add LSO support for i.MX95
+ ENETC PF
+Message-ID: <4vfvfzegrk774qlo5fobie5qcleqxqaogphucpzlwlcnq3llqd@aspdtwwqbobn>
+References: <20241112091447.1850899-1-wei.fang@nxp.com>
+ <20241112091447.1850899-5-wei.fang@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241112091447.1850899-5-wei.fang@nxp.com>
+X-ClientProxiedBy: AM0PR04CA0143.eurprd04.prod.outlook.com
+ (2603:10a6:208:55::48) To AS8PR04MB8868.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42f::6)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241113101124.1279648-8-andrei.stefanescu@oss.nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8868:EE_|AM8PR04MB7203:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0d4a62f4-e30c-4a37-9a26-08dd03f0f213
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Dnb1phrywz/FAWq0xbM/5za1BiD46BXIfCLdjbkEkHrYdJhrktfhGZewv5Ky?=
+ =?us-ascii?Q?DyNIiOMPgaj3ptDeOkE3AuRi+jS+K6hG633MZYUTE7x3rfElbzGUnW/+sOLK?=
+ =?us-ascii?Q?2ubplG7fVVzOkA0k/Hzr2iQ8q6LtrXEzE+yEcRunDW4kldnulduyBJXvYPpU?=
+ =?us-ascii?Q?8U7VMHTXTaMBim3iuNUvwmWUPs8rYPt2bOh3hG/Po7jR91qh6ATHYPvI6yGo?=
+ =?us-ascii?Q?AyEhP0mKJ4PND4MoNULpeOzVG+qwDbtell8t0Qat9D5kxigO9ane7+gpHM8C?=
+ =?us-ascii?Q?90ObD7hlcFHCF0kPkSt4K9lXdzcc0f3Zb5msXrfOQrNSJB42t/nLlnX1nsUJ?=
+ =?us-ascii?Q?vDo3Zx+ONd2vNdxlzgONaua+cC6aYcdr5YiRTZxIN1/bPzTaggtGADDgl5E3?=
+ =?us-ascii?Q?CsjfZt8ZpbzwO6sJ461zDStufYaTfGr2hgjc5esU0KwIV5q/GevrkwkyWfZQ?=
+ =?us-ascii?Q?1FxkEfEvxOCONmeCekn+dFfFEQkN4UIWzYVU+0MlK7cQEbtNM5ehCZRlhvio?=
+ =?us-ascii?Q?syiuYl0kaDI+XC0Dp4WbySQ6iWZHLVZmuZJYc9KuYxSKmLKvtixEJdQwKILL?=
+ =?us-ascii?Q?PLTdq59CWvorJ+CImQJ0FD76Qu5HhhRJZy3lRraaFhnsFSAdg/Ms1lomIiX3?=
+ =?us-ascii?Q?2nmelswY6MKXB8eohZ7BGEIwa3IOyZ9RgE2y6Z66R9sIUEtrerKVYFq88Pw5?=
+ =?us-ascii?Q?Vdf5nBf34k9Fgowe+zWsdopIz9Ebe6cCG5T3YWnQimNMhpscEI8BuagVwQ5P?=
+ =?us-ascii?Q?nuXWcPzBDMFqyj8YYL+bgsDhM7PpJv+56NshnPwN4jCD4+PgkhxxuQPfsKJV?=
+ =?us-ascii?Q?qtTsCD9h+X10nJD3pQsw5mwvK/7fwdNm9CJbvLzXhyCWyXN9r7O2j0joWn0h?=
+ =?us-ascii?Q?rpDtq7/MNbkAdzFphFL1rLiKPVvYJ/m+l2L2e3kY5HG85OVWCwYebIg8LvXI?=
+ =?us-ascii?Q?UCX6bXpLvadTiMJ7y3yXpwzr+a2NR/eFh98pQTPjFtFjJi7nV/ywAgd9y0ym?=
+ =?us-ascii?Q?jfdViVhtludIDfWUJaXSQ0m0m0VeKDP5FjXF3309qIyy0/qwsr8efxdIw2FI?=
+ =?us-ascii?Q?1frFICiJ+tlDkc4iB3hAujVlsE+CgEWntckaxym+YFcUvf7vYdVLd/1aWO91?=
+ =?us-ascii?Q?WrosqTxjUBHL37zi5Nk4tUp4zAQQi8jRzDdvC2wbwb8b3XiYFiGDMytozrAm?=
+ =?us-ascii?Q?md8mG1/BZuGgqcNj7UeeXLsRjLhvmcG/1DBYfAm3ShMBFIWKtoO3tC0iMMKK?=
+ =?us-ascii?Q?x63wd0G3UGDsNGKVmv9/T3KMlKsBs/q/5UhoZ0fnvHFBhmBlx83jm/SIEGJO?=
+ =?us-ascii?Q?hdbztoGKUEGK1TAvhPTVWRP7?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8868.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?q2/SKE1WG+sK2K0gWOszPaus7/L42qAh60TLjZtw6MXnEbHh59v6qWu+Owh0?=
+ =?us-ascii?Q?yyDIx7PsuaVpZYq2jjoT0ff4CHVBkJoIuGPzwOHhbGXVhxYbixaeh8dGsGvW?=
+ =?us-ascii?Q?Dw8aliDFzOeREUP8weQ2k/xZvC/wL9Ma3nyXKu7y+71ptN7/nbXBOhqTq18R?=
+ =?us-ascii?Q?+Gyu789sziYCrVtyqYHZhY25TqZGjpxeyLd75YaSMIQVNL27DpA+QYVXYfV7?=
+ =?us-ascii?Q?xzqKVJZeRyHm9yZSQxcUufLvjhusKDB8+OGsUnVpLH05Evi38xUFlboO61zA?=
+ =?us-ascii?Q?Wi4D89U70UZwGGcxDmRI3J0g9UOdMuQDdw7eEY7lXI76yvFYLoG6kj0s2DhF?=
+ =?us-ascii?Q?dVnCqpfQbtMTN7Uzhko3TcJpnGMWbwt2yyZfTtSAhpaL3HYzG2nHCsQ3Q2sq?=
+ =?us-ascii?Q?Nu0FBy0iLVovPi8hO0ki2BKkus0xVwEKDrzx4V6aZmv2qq/6ZueFBzUHGcx+?=
+ =?us-ascii?Q?uulMTtkXQDwqH0t4aFXByDvuvaSk1eOcl+nKgD5deQ/Y5BAMYbJ+O3HujsZu?=
+ =?us-ascii?Q?+yoxF6wdlRco9zmg9a75u0XHh1kLtoK5CucX1+A3eUv46Ogs0pnjjtnFNb8G?=
+ =?us-ascii?Q?50m2GLc5uY8B9T3ZAuw8GkG9/2deH1V2QTCGiJCsg6MqILgngkRs9CwD3c+e?=
+ =?us-ascii?Q?ky3+bz9u35HB0wbui3Vli8UiY5tn5cCL62R58Q8B0lRrNqtL4JwtSFbmrpvx?=
+ =?us-ascii?Q?8yB98iYjrehlga3yOeSanRSSxV+/eUNtGGyeCKt0FaKdr+/EDtdAm8LfoKl0?=
+ =?us-ascii?Q?Y0CqeKHA4hCs9fIDDjRo3WLkVJHWYN0MLV2dR6VuTRnn1t8kqGeZ3WrUa87H?=
+ =?us-ascii?Q?Hb+f41wVkKKano9NqbQ6ACT7OiLD5zTl5VN+WZGylaMsmrFR1kFGE75OtRpw?=
+ =?us-ascii?Q?qQD0Ven2ScBxf7um6cDkRyL9+7Mjk0J84Ea+lwhGpabtxBU5Y2viTj2pI7pR?=
+ =?us-ascii?Q?FiiXI+sdhier8/46gqdRQm5j8J2GJ5kNxz+9MgrFhUrF3K4G4rbzo115YbHa?=
+ =?us-ascii?Q?XxT8IwA5MD9JwgPVZFv3An/FhEMJn+Q/4PoIBKEDrJKSErGdLG6tWwas79Wg?=
+ =?us-ascii?Q?BptR+scVF/UO8ocleRkwt/O5djU+BjQwBQMa1G1/kG6bGNjsTZqCE5JjOwQm?=
+ =?us-ascii?Q?wHTFWqKLvJNRMbNfeMxgh4X0r7jThxqU14lHWaXLs2LG2Y5EGnQ3Kyfv8+tV?=
+ =?us-ascii?Q?WXhcFWJyX1XDPOMe8CQQBiBVrMG1r5wp5oGUii5YTvxp0xj2F83u0KQtZp7S?=
+ =?us-ascii?Q?Z1w8VoVAr17oepuw3YjF4hKTajUPxgdmplRA/GbqrZtrSQVXnDQ8gfX6QKVu?=
+ =?us-ascii?Q?9/Qfa+aXr2IZPcZKoLhcWXa3ACK5C+IDwZEPjFG1aSug/IXIwCta3MQBPbKc?=
+ =?us-ascii?Q?ksjJnU7ssAqnpfkiSCB6qKny+6LfxTvwJBJ88MF2k2gFsvQ23rwngxFkQVHx?=
+ =?us-ascii?Q?fhYFGe4Pi8IZiZsodMm/BxtQNypeftb3yhxznpOrB8RMdASErz3ll8uqwxbW?=
+ =?us-ascii?Q?gxyA9BiSXEX4iXtXC4fEFaCukqT3CVOgC6ZdMg/WiscXXIG7eyKFivVVqDdO?=
+ =?us-ascii?Q?sbXK/wz00m+mJGYDSIZ4Zr6urdA+8Aevci5bWFLJ?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0d4a62f4-e30c-4a37-9a26-08dd03f0f213
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8868.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2024 14:39:14.8032
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3Ocqu9BQrLiNzRQRLEPmNNtq5C5Uy3aG4tqgXK2eR8zi8XlWhbW58BgB+bBQfJ/o3ko9DHAfOPDebVCbie91mg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7203
 
-Hi Andrei,
+On Tue, Nov 12, 2024 at 05:14:46PM +0800, Wei Fang wrote:
+> ENETC rev 4.1 supports large send offload (LSO), segmenting large TCP
+> and UDP transmit units into multiple Ethernet frames. To support LSO,
+> software needs to fill some auxiliary information in Tx BD, such as LSO
+> header length, frame length, LSO maximum segment size, etc.
+> 
+> At 1Gbps link rate, TCP segmentation was tested using iperf3, and the
+> CPU performance before and after applying the patch was compared through
+> the top command. It can be seen that LSO saves a significant amount of
+> CPU cycles compared to software TSO.
+> 
+> Before applying the patch:
+> %Cpu(s):  0.1 us,  4.1 sy,  0.0 ni, 85.7 id,  0.0 wa,  0.5 hi,  9.7 si
+> 
+> After applying the patch:
+> %Cpu(s):  0.1 us,  2.3 sy,  0.0 ni, 94.5 id,  0.0 wa,  0.4 hi,  2.6 si
+> 
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> v2: no changes
+> v3: use enetc_skb_is_ipv6() helper fucntion which is added in patch 2
+> ---
+>  drivers/net/ethernet/freescale/enetc/enetc.c  | 266 +++++++++++++++++-
+>  drivers/net/ethernet/freescale/enetc/enetc.h  |  15 +
+>  .../net/ethernet/freescale/enetc/enetc4_hw.h  |  22 ++
+>  .../net/ethernet/freescale/enetc/enetc_hw.h   |  15 +-
+>  .../freescale/enetc/enetc_pf_common.c         |   3 +
+>  5 files changed, 311 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+> index 7c6b844c2e96..91428bb99f6d 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+> @@ -527,6 +527,233 @@ static void enetc_tso_complete_csum(struct enetc_bdr *tx_ring, struct tso_t *tso
+>  	}
+>  }
+>  
+> +static inline int enetc_lso_count_descs(const struct sk_buff *skb)
+> +{
+> +	/* 4 BDs: 1 BD for LSO header + 1 BD for extended BD + 1 BD
+> +	 * for linear area data but not include LSO header, namely
+> +	 * skb_headlen(skb) - lso_hdr_len. And 1 BD for gap.
+> +	 */
+> +	return skb_shinfo(skb)->nr_frags + 4;
+> +}
 
-kernel test robot noticed the following build warnings:
+Why not move this static inline herper into the header?
 
-[auto build test WARNING on linusw-pinctrl/devel]
-[also build test WARNING on linusw-pinctrl/for-next lee-mfd/for-mfd-next shawnguo/for-next linus/master v6.12-rc7 next-20241113]
-[cannot apply to lee-mfd/for-mfd-fixes]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> +
+> +static int enetc_lso_get_hdr_len(const struct sk_buff *skb)
+> +{
+> +	int hdr_len, tlen;
+> +
+> +	tlen = skb_is_gso_tcp(skb) ? tcp_hdrlen(skb) : sizeof(struct udphdr);
+> +	hdr_len = skb_transport_offset(skb) + tlen;
+> +
+> +	return hdr_len;
+> +}
+> +
+> +static void enetc_lso_start(struct sk_buff *skb, struct enetc_lso_t *lso)
+> +{
+> +	lso->lso_seg_size = skb_shinfo(skb)->gso_size;
+> +	lso->ipv6 = enetc_skb_is_ipv6(skb);
+> +	lso->tcp = skb_is_gso_tcp(skb);
+> +	lso->l3_hdr_len = skb_network_header_len(skb);
+> +	lso->l3_start = skb_network_offset(skb);
+> +	lso->hdr_len = enetc_lso_get_hdr_len(skb);
+> +	lso->total_len = skb->len - lso->hdr_len;
+> +}
+> +
+> +static void enetc_lso_map_hdr(struct enetc_bdr *tx_ring, struct sk_buff *skb,
+> +			      int *i, struct enetc_lso_t *lso)
+> +{
+> +	union enetc_tx_bd txbd_tmp, *txbd;
+> +	struct enetc_tx_swbd *tx_swbd;
+> +	u16 frm_len, frm_len_ext;
+> +	u8 flags, e_flags = 0;
+> +	dma_addr_t addr;
+> +	char *hdr;
+> +
+> +	/* Get the fisrt BD of the LSO BDs chain */
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andrei-Stefanescu/dt-bindings-mfd-add-support-for-the-NXP-SIUL2-module/20241113-181639
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-pinctrl.git devel
-patch link:    https://lore.kernel.org/r/20241113101124.1279648-8-andrei.stefanescu%40oss.nxp.com
-patch subject: [PATCH v6 7/7] MAINTAINERS: add MAINTAINER for NXP SIUL2 MFD driver
-reproduce: (https://download.01.org/0day-ci/archive/20241113/202411132227.SO6y3U3E-lkp@intel.com/reproduce)
+s/fisrt/first/
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202411132227.SO6y3U3E-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`tc<../../networking/netlink_spec/tc>`
-   Warning: Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml references a file that doesn't exist: Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
-   Warning: Documentation/hwmon/g762.rst references a file that doesn't exist: Documentation/devicetree/bindings/hwmon/g762.txt
-   Warning: Documentation/userspace-api/netlink/index.rst references a file that doesn't exist: Documentation/networking/netlink_spec/index.rst
-   Warning: Documentation/userspace-api/netlink/specs.rst references a file that doesn't exist: Documentation/networking/netlink_spec/index.rst
->> Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/mfd/nxp,siul2.yaml
-   Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/reserved-memory/qcom
-   Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
-   Using alabaster theme
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
