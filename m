@@ -1,128 +1,91 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F284F1FF035
-	for <imx@lists.linux.dev>; Wed, 13 Nov 2024 12:18:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468B41FCF73;
+	Wed, 13 Nov 2024 12:19:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731500338; cv=none; b=F/e+sZDQ3spoTvr9cPjWrUxvpR08tB/qtqNJFEy49pEyM+uGY2EQl0L+pIIHK4leNZQAbzBNhJBAmxJISovfwRSuEmAjRLgKYQUtGhT8rX2hJ5wErXYSzCzoSnqz3ePkgTNQjHZos1y4NTedY1oNR81uw2xr17SYhmQnor6zCE0=
+	t=1731500364; cv=none; b=Vtou7HCC/zRX9zmzb52mMy7AOYMKLMw7Z+Uo0b24nKJX4le7MS2yDuqfe6OXYfIX/eEgDF/Bg8eZFQsVyIKf3bXODAiSGL3WIxDvccNHNZOAxOrEkdv1WyiUkNs5EXrzfpL07oDAHGeaEn7htb04lMWp4W6tOBPzFLf5qA0S7O8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731500338; c=relaxed/simple;
-	bh=CnC2sd8Oao1J21P/qBvL/HWz3WS+2cdCs0teDxRpgrQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NTsBVjuY2W/CDaonZB1UnMK9zOtHh3MkWlaAGbZpmXbNMz3EVfhB6KEP05+KUoHn6MNt4Cbe1UAiiD7/kVqrmM/sKb/MJNN8yNEiIYwvZqvvGyw/QkrlSQtIEsUeXFeya4IphKPDzGLA0pRv33+SQj17TTS3+VG7bW9yNrIkQ3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <jre@pengutronix.de>)
-	id 1tBCKh-0004eO-1X; Wed, 13 Nov 2024 13:18:51 +0100
-From: Jonas Rebmann <jre@pengutronix.de>
-Date: Wed, 13 Nov 2024 13:18:31 +0100
-Subject: [PATCH v2 1/2] spi: imx: pass struct spi_transfer to
- prepare_transfer()
+	s=arc-20240116; t=1731500364; c=relaxed/simple;
+	bh=MRfrMS2NSXnwvk0Sf7GaU1O/RZZoM1ZJQOA8Qn8wyr8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FIuwwGeqEY/Y4a4Oc30trrHOaE5l1LAONTG596at6TzuaSdw6zd+hB45SjubfxUyOBzGTrUcnNNGEnusyyYxq+w/HdwqhaZxetC4qElC5+Fmi6hxMoWRS8z2TEK1OoIal8mgAsx/uRr6diXAYzP/LnyGoPCImzqqKc3IgyQhWIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c6uQKSE+; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c6uQKSE+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 195F3C4CECD;
+	Wed, 13 Nov 2024 12:19:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731500363;
+	bh=MRfrMS2NSXnwvk0Sf7GaU1O/RZZoM1ZJQOA8Qn8wyr8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=c6uQKSE+Z8mVuqF3X2BreB9nkrA++x9ggOBttAbYhtUrRuA2+XptAHGTOCXyuBqQx
+	 RU9Bq2baf/NZ3gDA/OkAOflg3+RNv+GiTWLZn3FGWRtATVARpmhL5fWjr5exTvgtNb
+	 M3QKmQiH60HK+TRUqjR2kj+7mGwM8qdGFmE7gcVGRClz1O1wBLlrMKU0xZBxUDSRY4
+	 Ap/bVjhmf6rqG0NasSnosbsJs/qL2UGqNwgmvNsp6+To9y+AlMFvQNBj5u5D210RAr
+	 NWoWOVm7CSZYGhogLH2tKBUVkKCZluF4qGb56xaGI9h06zw9l9gyGnHVfaF7K0XWlP
+	 g0fAdRyO0YlWQ==
+Message-ID: <5e54aa43-8299-4166-8724-ebe48a9a9747@kernel.org>
+Date: Wed, 13 Nov 2024 13:19:18 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] samples: pktgen: correct dev to DEV
+To: Wei Fang <wei.fang@nxp.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "davem@davemloft.net" <davem@davemloft.net>,
+ "edumazet@google.com" <edumazet@google.com>,
+ "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
+ <pabeni@redhat.com>, "horms@kernel.org" <horms@kernel.org>,
+ "lorenzo@kernel.org" <lorenzo@kernel.org>
+References: <20241112030347.1849335-1-wei.fang@nxp.com>
+ <0cde0236-c539-487d-a212-b660331d3683@kernel.org>
+ <PAXPR04MB8510E9AF9E925D93C851E8A8885A2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Content-Language: en-US
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+In-Reply-To: <PAXPR04MB8510E9AF9E925D93C851E8A8885A2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241113-imx-spi-word-delay-v2-1-2b65b737bf29@pengutronix.de>
-References: <20241113-imx-spi-word-delay-v2-0-2b65b737bf29@pengutronix.de>
-In-Reply-To: <20241113-imx-spi-word-delay-v2-0-2b65b737bf29@pengutronix.de>
-To: Mark Brown <broonie@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
-Cc: kernel@pengutronix.de, linux-spi@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Jonas Rebmann <jre@pengutronix.de>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2903; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=CnC2sd8Oao1J21P/qBvL/HWz3WS+2cdCs0teDxRpgrQ=;
- b=owGbwMvMwCF2ZcYT3onnbjcwnlZLYkg3mak1i1f7ytH7a0ti4uuOuejpZicumPfx8m0ll3tKk
- Xfm2XSEd5SyMIhxMMiKKbLEqskpCBn7XzertIuFmcPKBDKEgYtTACaiocXIcEfhyL9uMTHn+rx3
- R0penPX/x5S+fp/K42uPDqpsKj/zYyHDH661AYLfInpPiV9lLGcJllM7lfCEuU/n2tW+2Sc6zJm
- +cQMA
-X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
- fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::ac
-X-SA-Exim-Mail-From: jre@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
 
-In an upcoming patch, mx51_ecspi_prepare_transfer() needs access to the
-word_delay parameter. To enable controller-specific handling of such
-per-transfer parameters, extend the prepare_transfer() function of the
-spi_imx_devtype_data interface to take a struct spi_transfer argument,
-update all controller-specific implementations accordingly.
 
-Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
----
- drivers/spi/spi-imx.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 85bd1a82a34eb4bc76a4b4528e087fc2ebfa8b85..65a8303b80b1191cd2c19d61f88836e7fd3c7ae9 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -71,7 +71,8 @@ struct spi_imx_data;
- struct spi_imx_devtype_data {
- 	void (*intctrl)(struct spi_imx_data *spi_imx, int enable);
- 	int (*prepare_message)(struct spi_imx_data *spi_imx, struct spi_message *msg);
--	int (*prepare_transfer)(struct spi_imx_data *spi_imx, struct spi_device *spi);
-+	int (*prepare_transfer)(struct spi_imx_data *spi_imx, struct spi_device *spi,
-+				struct spi_transfer *t);
- 	void (*trigger)(struct spi_imx_data *spi_imx);
- 	int (*rx_available)(struct spi_imx_data *spi_imx);
- 	void (*reset)(struct spi_imx_data *spi_imx);
-@@ -649,7 +650,7 @@ static void mx51_configure_cpha(struct spi_imx_data *spi_imx,
- }
- 
- static int mx51_ecspi_prepare_transfer(struct spi_imx_data *spi_imx,
--				       struct spi_device *spi)
-+				       struct spi_device *spi, struct spi_transfer *t)
- {
- 	u32 ctrl = readl(spi_imx->base + MX51_ECSPI_CTRL);
- 	u32 clk;
-@@ -774,7 +775,7 @@ static int mx31_prepare_message(struct spi_imx_data *spi_imx,
- }
- 
- static int mx31_prepare_transfer(struct spi_imx_data *spi_imx,
--				 struct spi_device *spi)
-+				 struct spi_device *spi, struct spi_transfer *t)
- {
- 	unsigned int reg = MX31_CSPICTRL_ENABLE | MX31_CSPICTRL_HOST;
- 	unsigned int clk;
-@@ -878,7 +879,7 @@ static int mx21_prepare_message(struct spi_imx_data *spi_imx,
- }
- 
- static int mx21_prepare_transfer(struct spi_imx_data *spi_imx,
--				 struct spi_device *spi)
-+				 struct spi_device *spi, struct spi_transfer *t)
- {
- 	unsigned int reg = MX21_CSPICTRL_ENABLE | MX21_CSPICTRL_HOST;
- 	unsigned int max = is_imx27_cspi(spi_imx) ? 16 : 18;
-@@ -953,7 +954,7 @@ static int mx1_prepare_message(struct spi_imx_data *spi_imx,
- }
- 
- static int mx1_prepare_transfer(struct spi_imx_data *spi_imx,
--				struct spi_device *spi)
-+				struct spi_device *spi, struct spi_transfer *t)
- {
- 	unsigned int reg = MX1_CSPICTRL_ENABLE | MX1_CSPICTRL_HOST;
- 	unsigned int clk;
-@@ -1304,7 +1305,7 @@ static int spi_imx_setupxfer(struct spi_device *spi,
- 		spi_imx->target_burst = t->len;
- 	}
- 
--	spi_imx->devtype_data->prepare_transfer(spi_imx, spi);
-+	spi_imx->devtype_data->prepare_transfer(spi_imx, spi, t);
- 
- 	return 0;
- }
+On 13/11/2024 11.06, Wei Fang wrote:
+>> On 12/11/2024 04.03, Wei Fang wrote:
+>>> In the pktgen_sample01_simple.sh script, the device variable is
+>>> uppercase 'DEV' instead of lowercase 'dev'. Because of this typo, the
+>>> script cannot enable UDP tx checksum.
+>>>
+>>> Fixes: 460a9aa23de6 ("samples: pktgen: add UDP tx checksum support")
+>>> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+>>> ---
+>>>    samples/pktgen/pktgen_sample01_simple.sh | 2 +-
+>>>    1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/samples/pktgen/pktgen_sample01_simple.sh
+>>> b/samples/pktgen/pktgen_sample01_simple.sh
+>>> index cdb9f497f87d..66cb707479e6 100755
+>>> --- a/samples/pktgen/pktgen_sample01_simple.sh
+>>> +++ b/samples/pktgen/pktgen_sample01_simple.sh
+>>
+>> Why are you only fixing one script?
+>>
+> 
+> Other scripts are correct, because they are all multi-threaded, "dev" is
+> defined for each thread like below.
+> 
+> dev=${DEV}@${thread}
+> 
 
--- 
-2.39.5
+Good point! - then this patch is enough :-)
 
+Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
+
+Thanks for fixing this,
+--Jesper
