@@ -1,91 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468B41FCF73;
-	Wed, 13 Nov 2024 12:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23484C6C;
+	Wed, 13 Nov 2024 14:34:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731500364; cv=none; b=Vtou7HCC/zRX9zmzb52mMy7AOYMKLMw7Z+Uo0b24nKJX4le7MS2yDuqfe6OXYfIX/eEgDF/Bg8eZFQsVyIKf3bXODAiSGL3WIxDvccNHNZOAxOrEkdv1WyiUkNs5EXrzfpL07oDAHGeaEn7htb04lMWp4W6tOBPzFLf5qA0S7O8=
+	t=1731508487; cv=none; b=nTEOlZawSQM/lutT8a3RVqGermjwAL9+Ie4gKUkSFlnPJyOQP2Rhotbc9wxXZQ7ZYNzlY7T7ZLorSaXlS2XKK918dSpG1rwsPfrO6T+ziLkRJ8EY/Wsx5AdEqnWskUn/nOTCRs+9tINPB2R20QCnziuQT3M5zcwllKsf0H0/KnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731500364; c=relaxed/simple;
-	bh=MRfrMS2NSXnwvk0Sf7GaU1O/RZZoM1ZJQOA8Qn8wyr8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FIuwwGeqEY/Y4a4Oc30trrHOaE5l1LAONTG596at6TzuaSdw6zd+hB45SjubfxUyOBzGTrUcnNNGEnusyyYxq+w/HdwqhaZxetC4qElC5+Fmi6hxMoWRS8z2TEK1OoIal8mgAsx/uRr6diXAYzP/LnyGoPCImzqqKc3IgyQhWIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c6uQKSE+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731508487; c=relaxed/simple;
+	bh=dM5isGoT8gvEzdUI7m24PY0e10UMd7maYxFQPVEb2S8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r4C1fLQvfgCl5a8/MovDWiG/Q5y6/UVYtAURvdatFEuoo0PiYirwzf6M27ZTeQaZC3C/iEbNBLNcc6jN2boFDwGtr38QIg7adc198Nz7odhDF4RZcLC1Hl7D2hH6M+tWiTFrjlWcODsbINfaGyjQJaTIPvl3ZA3nzt7EMnsl/CY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gZzN44L7; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c6uQKSE+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 195F3C4CECD;
-	Wed, 13 Nov 2024 12:19:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731500363;
-	bh=MRfrMS2NSXnwvk0Sf7GaU1O/RZZoM1ZJQOA8Qn8wyr8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=c6uQKSE+Z8mVuqF3X2BreB9nkrA++x9ggOBttAbYhtUrRuA2+XptAHGTOCXyuBqQx
-	 RU9Bq2baf/NZ3gDA/OkAOflg3+RNv+GiTWLZn3FGWRtATVARpmhL5fWjr5exTvgtNb
-	 M3QKmQiH60HK+TRUqjR2kj+7mGwM8qdGFmE7gcVGRClz1O1wBLlrMKU0xZBxUDSRY4
-	 Ap/bVjhmf6rqG0NasSnosbsJs/qL2UGqNwgmvNsp6+To9y+AlMFvQNBj5u5D210RAr
-	 NWoWOVm7CSZYGhogLH2tKBUVkKCZluF4qGb56xaGI9h06zw9l9gyGnHVfaF7K0XWlP
-	 g0fAdRyO0YlWQ==
-Message-ID: <5e54aa43-8299-4166-8724-ebe48a9a9747@kernel.org>
-Date: Wed, 13 Nov 2024 13:19:18 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gZzN44L7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1731508486; x=1763044486;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dM5isGoT8gvEzdUI7m24PY0e10UMd7maYxFQPVEb2S8=;
+  b=gZzN44L7zIYrx7ClEs5xnnBbMJbhlFnnEac41s5WzlUiLqQ61c3lXSak
+   K3Xzr35ZSD/i5wXCEfOZyi7i/wY5j5bwMCHeAm3cDeCJK7CXDd48oqxk2
+   fuYCIBPHljkK65sEgLJfLnhfHjHTQA9dfdzzAhHY/9blOf+vSq5EUC8fc
+   rsIJZ19ZVo/hk1DXPJ8SHQEhdce04666v/TllpGYTAzjRYLie5BrbGSwC
+   Co8OgovfxuwM0ClyxQlubl3RAlPMZzlHrSunJVSIvHtSFpRoucWUVqW+I
+   tqV4IVMSA/IW8vEnZ8HVEuqQ3hwdukK2lhdha0VCPEg3i1L5P8pKzxZru
+   g==;
+X-CSE-ConnectionGUID: cb5VjEV0SYiIwA4vM+pNhg==
+X-CSE-MsgGUID: J9nzizQnSBWHvE7zPooeUg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11254"; a="19010668"
+X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; 
+   d="scan'208";a="19010668"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2024 06:34:45 -0800
+X-CSE-ConnectionGUID: Mp0B/uQKTpulc6xwndRd1g==
+X-CSE-MsgGUID: dPCbY9paSP+5GgUIMsiBpg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; 
+   d="scan'208";a="88050341"
+Received: from lkp-server01.sh.intel.com (HELO 80bd855f15b3) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 13 Nov 2024 06:34:39 -0800
+Received: from kbuild by 80bd855f15b3 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tBES4-0000Sj-2J;
+	Wed, 13 Nov 2024 14:34:36 +0000
+Date: Wed, 13 Nov 2024 22:34:11 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>,
+	Larisa Grigore <larisa.grigore@nxp.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>, Lee Jones <lee@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-gpio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	NXP S32 Linux Team <s32@nxp.com>,
+	Christophe Lizzi <clizzi@redhat.com>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Enric Balletbo <eballetb@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	imx@lists.linux.dev,
+	Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+Subject: Re: [PATCH v6 7/7] MAINTAINERS: add MAINTAINER for NXP SIUL2 MFD
+ driver
+Message-ID: <202411132227.SO6y3U3E-lkp@intel.com>
+References: <20241113101124.1279648-8-andrei.stefanescu@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] samples: pktgen: correct dev to DEV
-To: Wei Fang <wei.fang@nxp.com>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "davem@davemloft.net" <davem@davemloft.net>,
- "edumazet@google.com" <edumazet@google.com>,
- "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
- <pabeni@redhat.com>, "horms@kernel.org" <horms@kernel.org>,
- "lorenzo@kernel.org" <lorenzo@kernel.org>
-References: <20241112030347.1849335-1-wei.fang@nxp.com>
- <0cde0236-c539-487d-a212-b660331d3683@kernel.org>
- <PAXPR04MB8510E9AF9E925D93C851E8A8885A2@PAXPR04MB8510.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: Jesper Dangaard Brouer <hawk@kernel.org>
-In-Reply-To: <PAXPR04MB8510E9AF9E925D93C851E8A8885A2@PAXPR04MB8510.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241113101124.1279648-8-andrei.stefanescu@oss.nxp.com>
 
+Hi Andrei,
 
+kernel test robot noticed the following build warnings:
 
-On 13/11/2024 11.06, Wei Fang wrote:
->> On 12/11/2024 04.03, Wei Fang wrote:
->>> In the pktgen_sample01_simple.sh script, the device variable is
->>> uppercase 'DEV' instead of lowercase 'dev'. Because of this typo, the
->>> script cannot enable UDP tx checksum.
->>>
->>> Fixes: 460a9aa23de6 ("samples: pktgen: add UDP tx checksum support")
->>> Signed-off-by: Wei Fang <wei.fang@nxp.com>
->>> ---
->>>    samples/pktgen/pktgen_sample01_simple.sh | 2 +-
->>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/samples/pktgen/pktgen_sample01_simple.sh
->>> b/samples/pktgen/pktgen_sample01_simple.sh
->>> index cdb9f497f87d..66cb707479e6 100755
->>> --- a/samples/pktgen/pktgen_sample01_simple.sh
->>> +++ b/samples/pktgen/pktgen_sample01_simple.sh
->>
->> Why are you only fixing one script?
->>
-> 
-> Other scripts are correct, because they are all multi-threaded, "dev" is
-> defined for each thread like below.
-> 
-> dev=${DEV}@${thread}
-> 
+[auto build test WARNING on linusw-pinctrl/devel]
+[also build test WARNING on linusw-pinctrl/for-next lee-mfd/for-mfd-next shawnguo/for-next linus/master v6.12-rc7 next-20241113]
+[cannot apply to lee-mfd/for-mfd-fixes]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Good point! - then this patch is enough :-)
+url:    https://github.com/intel-lab-lkp/linux/commits/Andrei-Stefanescu/dt-bindings-mfd-add-support-for-the-NXP-SIUL2-module/20241113-181639
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-pinctrl.git devel
+patch link:    https://lore.kernel.org/r/20241113101124.1279648-8-andrei.stefanescu%40oss.nxp.com
+patch subject: [PATCH v6 7/7] MAINTAINERS: add MAINTAINER for NXP SIUL2 MFD driver
+reproduce: (https://download.01.org/0day-ci/archive/20241113/202411132227.SO6y3U3E-lkp@intel.com/reproduce)
 
-Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202411132227.SO6y3U3E-lkp@intel.com/
 
-Thanks for fixing this,
---Jesper
+All warnings (new ones prefixed by >>):
+
+   Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`tc<../../networking/netlink_spec/tc>`
+   Warning: Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml references a file that doesn't exist: Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
+   Warning: Documentation/hwmon/g762.rst references a file that doesn't exist: Documentation/devicetree/bindings/hwmon/g762.txt
+   Warning: Documentation/userspace-api/netlink/index.rst references a file that doesn't exist: Documentation/networking/netlink_spec/index.rst
+   Warning: Documentation/userspace-api/netlink/specs.rst references a file that doesn't exist: Documentation/networking/netlink_spec/index.rst
+>> Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/mfd/nxp,siul2.yaml
+   Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/reserved-memory/qcom
+   Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
+   Using alabaster theme
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
