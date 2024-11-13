@@ -1,95 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCE1374C4;
-	Wed, 13 Nov 2024 17:56:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAEC202631
+	for <imx@lists.linux.dev>; Wed, 13 Nov 2024 17:57:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731520572; cv=none; b=V7nkTdJoiuypxN5WOz8EJnd1Pkl+XT15LkfKriUZ3twAVk2gWcstRqp17O9kp63mv8aD0rsEL9RgJGwSvvlYSQbVdbNGXia64cWvDKTyyzqARXvUlRXafSlCjx1fHNoItp7D6fHmg+k8W5hR7x36hURPVWXhCtWNOyxn6wDrfeU=
+	t=1731520677; cv=none; b=qZrJMmHyadKZsFiDEsS0VPDnshYmzr+PMapgbl1lFeM0GWYZ3SJkDzX+QidxjMIaXsfLiiA/2q7B7cz+or2Bi+r+zxza2oBorj4b5yecK49YG2RE/hZzIu/y5QunRg1nYfOvlT7S6y+ilOhSLNYVDKivEQplqNaLcpD10Vbauz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731520572; c=relaxed/simple;
-	bh=iCGxzfeNyUjtU0hWYfBjl367jZBoPsTX45bEajZUk20=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lYG4oMH1GtGpaU3ymH+zGsrBi7bZ9VtXF7Q7xJ9LYCs2/2ZVTV0ixtAN1O43rm9lIsYnuEdsVdIzgmmO5f7DEvR+Z6/PSzX0UeJrXM0AHnqRuFU3r38wG5A20u0g5TRdDg3CskrtubERCw+qcAtiQxJAgR4rsjoIeIdvxcSmmLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f7VN/6PI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731520677; c=relaxed/simple;
+	bh=2+naAnEhlYo0y7mD9BWzUkdNhpan/DMW2MuKIQuEKRk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Qev7H/WF40Cv4fMRf9UOztiNfHWGVn7edKvbhKumZ7NfM9snulNza6OQ/piygtbBZHDjOzrlCxzy8yKwxik0FEsgyg42kOomci0khithuV8JH7Pq4NTnrOxePGu7HinmaDxggLFM/Entlxbq2/BLuuuCHJZg07y3iDKafGy6giQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SDY+TkIX; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f7VN/6PI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BEFBC4CEC3;
-	Wed, 13 Nov 2024 17:56:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731520571;
-	bh=iCGxzfeNyUjtU0hWYfBjl367jZBoPsTX45bEajZUk20=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=f7VN/6PIugxGNKpd+VrZfoU/apxv8HuV89OLFh85XN5B1SRxhuoSh0mUqeJ7siJuT
-	 4aEJqLTVD096/yKqEX4/Ct+7koKh+cF7mW06Z4X/qazF7cg3WVghok+S+Zdz3LvYMQ
-	 csp33r6FHpTrDo8EwZdPqsKYOi3PzbdjzyiSaVTQkmwKBcsmZvJ8P69R/5ePT7MLtX
-	 5Q17FINJmfO87+FX//vsa0UCuIgvkbj+0PJmVcwAw8sKqbySblZ/CkzqSdPJtunFIo
-	 Rcc1JOuje+yhH90i4AqfLTJhGjfQBysc9BW/ygT/v1zkA6V5bX+to+ipY4mW5nQOBX
-	 k/55gVjO22OXw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1tBHb7-00CajX-2j;
-	Wed, 13 Nov 2024 17:56:09 +0000
-Date: Wed, 13 Nov 2024 17:53:36 +0000
-Message-ID: <867c97vx3z.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,	Lorenzo Pieralisi
- <lpieralisi@kernel.org>,	Krzysztof =?UTF-8?B?V2lsY3p5xYRza2k=?=
- <kw@linux.com>,	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Rob Herring <robh@kernel.org>,	Shawn Guo <shawnguo@kernel.org>,	Sascha
- Hauer <s.hauer@pengutronix.de>,	Pengutronix Kernel Team
- <kernel@pengutronix.de>,	Fabio Estevam <festevam@gmail.com>,
-	linux-pci@vger.kernel.org,	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,	imx@lists.linux.dev,
-	alyssa@rosenzweig.io,	bpf@vger.kernel.org,	broonie@kernel.org,
-	jgg@ziepe.ca,	joro@8bytes.org,	lgirdwood@gmail.com,	p.zabel@pengutronix.de,
-	robin.murphy@arm.com,	will@kernel.org
-Subject: Re: [PATCH v5 0/2] PCI: add enabe(disable)_device() hook for bridge
-In-Reply-To: <ZzTL/b4BEAGvSa1Q@lizhi-Precision-Tower-5810>
-References: <20241104-imx95_lut-v5-0-feb972f3f13b@nxp.com>
-	<ZzTL/b4BEAGvSa1Q@lizhi-Precision-Tower-5810>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SDY+TkIX"
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2fb4af0b6beso100880141fa.3
+        for <imx@lists.linux.dev>; Wed, 13 Nov 2024 09:57:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731520674; x=1732125474; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2+naAnEhlYo0y7mD9BWzUkdNhpan/DMW2MuKIQuEKRk=;
+        b=SDY+TkIX/sEMdUVLHEROoR8VRf9GakJz25lCuSwIYnRXUzeldy5PfFxh+Qn6tY/wet
+         xqRpiDoXEV64k606CQHf5V6qDBlWdyvfHF5Ivi8I5dwL45DWUqvkCGh1+lFJFy9o2fU6
+         SIaeyR5BFQ1qNRqwS9FrUGaCMwrBMnuZavsEGcpzJI1HtuwPJDLLc6LDlyue4H+2Tj4/
+         OoJEwptEVcVD2SvlyG6R0qBnPyywBUPY4boYBBpaHq8hDmDHyhmw61uNeRhEtH0ZekH7
+         J2Nibdssxc0s8atFLnHqosjHuV7ieKt1UmSyx69rmHllUZ0o4a1zj1c+xSVLho4RbY0A
+         b4JQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731520674; x=1732125474;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2+naAnEhlYo0y7mD9BWzUkdNhpan/DMW2MuKIQuEKRk=;
+        b=bVABVkv5zrIWREiA2xGX9oU/acRSYfl3UK0m0ZlolDSe2fnjf9eqMLgcsKcYK5JShM
+         pNquh20cs5mVXSJH0JFULU9uqlU5XgMNE4gX4dYiVI/IQXtEaHkq4vXhubMiawa/481q
+         NeBbLyMkEe5NquOirg0tO8kcoFMaaDJmMmcZTU2dNO/2qOEiY2qNG3Z4ssJDrHcuDzXz
+         OH/So9QNYsedvFQlsbGGZix1FAoX4P65uI9IfBvaGE8SmXZDbx0xlITiX1zAl8cc1A8+
+         J/zEXGSgL6qsSaXGLJhi2fAPaLp+BokLB3EfwP+/18pgs9+NzwKXwXnTXCgEVK+M0fev
+         kNAA==
+X-Forwarded-Encrypted: i=1; AJvYcCVBW45F7NFiXHnZgasEAOvBhZDOuowqJI8svytZl3W6HTWa1XRDTSwa+gtNEHUJVz4bouQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzFZW/myJH0GXW6OrT3gvsiPGjEisFBo1V/l3B5cjq0zyRkumkb
+	2IaFLUgoOkj5i1LNvUzf1pYMINX4kIoHitJevMgn38XZC2bNyHMrBeurKFp1dk4nyKLtw3gtk7Q
+	CIm1gfc+SAqXOYO/uEleFr5ID8UE=
+X-Google-Smtp-Source: AGHT+IG+aC5tPt2yrdBuMhr6qpWwFd7aP0+osiz15sDwB3XQBCFR0oq0kfKom9cIQROfLPtslJmNhaeftR6G8xMCBkM=
+X-Received: by 2002:a2e:b8cc:0:b0:2fa:fcf0:7c2a with SMTP id
+ 38308e7fff4ca-2ff202079b4mr141052341fa.24.1731520674006; Wed, 13 Nov 2024
+ 09:57:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: Frank.li@nxp.com, bhelgaas@google.com, hongxing.zhu@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, kw@linux.com, manivannan.sadhasivam@linaro.org, robh@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, alyssa@rosenzweig.io, bpf@vger.kernel.org, broonie@kernel.org, jgg@ziepe.ca, joro@8bytes.org, lgirdwood@gmail.com, p.zabel@pengutronix.de, robin.murphy@arm.com, will@kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+References: <20241023185841.1183706-1-festevam@gmail.com> <20241024-pep-proud-d714705c9ddf@spud>
+ <CAOMZO5BSZ4YAZ7Lqa3eGP9Wx=Ed7cgug==_UZqc7F57=XCJv3A@mail.gmail.com>
+In-Reply-To: <CAOMZO5BSZ4YAZ7Lqa3eGP9Wx=Ed7cgug==_UZqc7F57=XCJv3A@mail.gmail.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Wed, 13 Nov 2024 14:57:42 -0300
+Message-ID: <CAOMZO5AgQxd2_gkcPSdhfSDArEEkBVvo_yAW3hdHVXtHH5FyAg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: timer: fsl,imxgpt: Fix the fsl,imx7d-gpt fallback
+To: robh@kernel.org
+Cc: tglx@linutronix.de, daniel.lezcano@linaro.org, krzk+dt@kernel.org, 
+	Conor Dooley <conor@kernel.org>, conor+dt@kernel.org, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, Fabio Estevam <festevam@denx.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 13 Nov 2024 15:55:41 +0000,
-Frank Li <Frank.li@nxp.com> wrote:
-> 
-> On Mon, Nov 04, 2024 at 02:22:58PM -0500, Frank Li wrote:
-> 
-> Any comments for this patches?
-> 
-> Bjorn and give ack at v4 and Marc Zyngier give test/review tag at v4. I
-> just drop these because change to use helper function and funtionality is
-> the same.
+Rob,
 
-My tags still stand.
+On Tue, Nov 5, 2024 at 7:48=E2=80=AFAM Fabio Estevam <festevam@gmail.com> w=
+rote:
 
-> After this patch merge, I think apply's bus notification can convert to
-> this way.
+> > Acked-by: Conor Dooley <conor.dooley@microchip.com>
+>
+> Can you apply this series via your tree?
 
-I already did that conversion[1] as part of reviewing and testing the
-first patch in this series (and extending it to all consumers of
-host_generic).
-
-	M.
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms.git/log/?h=pci/apple-host-bridge-hook
-
--- 
-Without deviation from the norm, progress is not possible.
+A gentle ping.
