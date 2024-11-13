@@ -1,64 +1,82 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2050.outbound.protection.outlook.com [40.107.21.50])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2059.outbound.protection.outlook.com [40.107.20.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E53B2AE93
-	for <imx@lists.linux.dev>; Wed, 13 Nov 2024 14:39:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7C52185B3
+	for <imx@lists.linux.dev>; Wed, 13 Nov 2024 15:26:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.59
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731508763; cv=fail; b=L7eB9nFa3XtjZZkWTE4p69XkdnZ4+lHlf72V81WLhPL1HlLNbThVwFuwyn8ABqtZz2zX6uk/HiAQFT5AGDVgMXqhNlV/2lxTwVW5d3BM5W/uko+RX1Yein43ZHmFbncoqGTvq8vVbR2xRWs70zuGEFokTqOa86ky9rPSEpNSv0k=
+	t=1731511583; cv=fail; b=nNjja5XxqleANs7AnnFWUy3Ow3W0+dv+udxFVblaol2dJoZYFoN4UoHwEabZ63E4el2z6+h9gQ+rxcetRW/WWiEiuQ80M4bbjzBdxLPTHhO5SjQnkNEfq8Jx7fo7kDAIRwOBepPpQK58p48yhWbgIkany2taSmQoXTy/PgeWdqo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731508763; c=relaxed/simple;
-	bh=49E8jKzYd0ysBW/E9bFyPJClCRviELQ7RH5TaMxemno=;
+	s=arc-20240116; t=1731511583; c=relaxed/simple;
+	bh=9zeMdEF6lIUErPMEduTDfrINjw1F2aZ9TXicMQZ0Gmk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=GqAnC+lSZDTYbVwXWd54uZFo9pUXucFW7rje6P16yAzND2CEaGEU/Q9Nrm2P4HDoKa8QfcgkzsNvHtknh1pRxs1QA0gDvvufpinchuoJ+4rDg6IPTkgfmpaC8kLUbUpGwIqSTn6pK+ZblqO990K3dzYJ57ooiT6u8tQ6IdeNZXc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=lH3y1jSH; arc=fail smtp.client-ip=40.107.21.50
+	 Content-Disposition:In-Reply-To:MIME-Version; b=izrocyQGkUtOU4pC+sWeEJoyO2piCENauTSp5T0rXA7q540DgAfKqwyB0N29KZjUUbjb+xnh90K1TV6HTuYziIpX+Rw98N9DMriKoyAVGbUFiIv2DVjqskZ1i9T7mDP8o6N1thJ828vamwbLF3tcYRdUO/9aMjG5/uI/a/YD9uo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ncnJqAvD; arc=fail smtp.client-ip=40.107.20.59
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="lH3y1jSH"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ncnJqAvD"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KrA7E3vbgLf5C9x4IbcJSxwaaYcMr34+Izc+xBchrDoFKaKy2PCl+vc1nSnF2cVF9T/UId1qKa6MOQmkxXwsb8n2y0uyyCEmhSiRQSyZeZHYjaeTJoRzj4/x6nyYmILTlhMYxx8n2xpYsUAkjCHxtLYUwCMdJ45OfwwzGLz+WR7i9JRpHU5kbsp0Kyopyz887esohDPvwToPcJ9a+iVn3zwcmmEoYSRMS0qQef3G0KP9WiDdFT86ZBqnm+y0oLoFzHUWLFrB+/ui2d9ouPk+hU1JReTBKyW29h2DxJDpz64WAbABwY9VDXqpBEQ9Gh3C0cp+iT0zdsZ4NnSSBj7MoA==
+ b=KJDHMAMrN6xy+m8g6AkcTV9F8AbxZejrfNSw3IQIFtw9wCrGLVEqlDWzqVwKHs9RPUabWjMdBrhGZj1eOs8AyEZ91LaNB9h9IcuZUId7fq0s9fuJOw6kvTntVNe9lX6RDyPlcP0cwIEdYMrbTyywe+SkGQjzuhW6wNqiwpBhVjPcrGHsJW2wuk3P6Np1kTI8bnQv6VzmW02Z3/ihUDzFCnqrG7/mBc0bUiNWdFKcGxkrAszo9T/NPJJxMhdfcpQmquvoBH6LmljjAZFP+2otbf2z2vTsYxwKmyYNlhJnwhV+oCLRoU/5JgJvP2sFchSkc4klUsb9YNADnntPIulSVQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rgeMKbNHX7OMRsNVa/OyARxRBiHeAgeBWdJwbEGzI0A=;
- b=hJpV7dJVriiKtdh2OGSYr8CikLZekiQx5yCUxPIeDUdHF24v7QHAZhX/svkPLuUabQ3E52Z7MHh1Gf8Zmlq/xNG3K7CrnE4M8VRPkE2Hklr1yBYA82KRgtPzkMN4gptWz4pnkwzqPdNMlY1SKIj7TpIaeucrltT+eSAPWPa8ayNGEb0EkU3SfssRVEG12kBQaR+kpB5yJQrpDqR09FX6K9mHM5TxRJ7NJHFNfzktaZtL7B/c6L6zkZJrTv5LLCR1f0lVRgq6Tdl3S/zpnq5crL0JGMXsTS1dVNoEQxIXfjks3gg2OhtZwOjTvPa+/FfoYv2UWMQIAZdz5N2b/216yg==
+ bh=DWVYvGeSKKBkX8OnCLGLvSjd0lyP5dTVTlmN/GUEsOM=;
+ b=R4ZPUNR/c6MnsFOXZh2YSWUVD3Kil+Uw/xzr2Kr0yNPHtwr+ggePSnD5Z2shU1DrUZKQJkJgAejMFBBQMkHQGr+J46GXIHHk2expM0OjO5AcgIW0owOucRLQGNBbIYa8Qg4xRvx3+8n1LlIAG1vCbSjcOp0+94ZGFY88LStHEyAc7a7OIPUJ1pJsLeZHXVSf6GY5g2HM05gSAQNbgjZTvTdWGIfnXbqZc7lOIm+SDxesuOFMQLfbDxpJSuRbAEsVs0C9A6L17VWkoMlb95Z/y69uZcssacYcAhnEH17yjrES69SCu8lnSA07v6dxHTYM7VUPAG0qk2hkSANTSd4jdA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rgeMKbNHX7OMRsNVa/OyARxRBiHeAgeBWdJwbEGzI0A=;
- b=lH3y1jSHyWV1zKPh7mrboljgVkAFDGDPV1oOFyeJdLAsiWLcsXruHQmLrVRyR7Kn3ZiCgkCRhavADjI/QU8Gr/jTGzV3Xwo97TiZWcS6CbBCkUAbY9NX0XTvPGtD8uqdSrqOgLGHl+zHrtIBZ4ZMMkLCVI2kU44nYCivJbS+qRKjs9dPuqm5avZmwK29qXQ/f4DlkMjdMup7B/UsgnbbDhaA1E9473f9Es9WTTkweWtlCuJgVahN5V6gsW9/xBNax6MaoXMczDK7OOMpBgmTVxIfK7GV9iTUuk4vFvJ/mFVWdvKja6pCzYNIjxPLPOAf5VMtWSuZSc7PfMiDKY/x/A==
+ bh=DWVYvGeSKKBkX8OnCLGLvSjd0lyP5dTVTlmN/GUEsOM=;
+ b=ncnJqAvDBx7a7Ct9bXBgg/ZGe5GLN07K92sFShUcM6V9nrVCM3MfupqA+Mj/th0DvVl+xb13JySXhPiP5cxRwd5NsAh1Hab9s5f7Gctn9m//OW9jlf7f/x+oav9t+OQWFlD2zTo7lnpvGvuHm13+FEmtAvUrUX/AnilpMTQdiWnM8DGEgDGmCXlYBYdqiUHtLIRUtEs9JKRNS+NfY8XV+Jh+ahzug8FMjr+xLuo45gk8vW9bjvtMnEdOqPpTvEmrrM+tWNWOHku2xtl6cSW0VS94u1HeUo8OAoiOC4fXlJ5zGt2poI+3mRuu/stX1PC8heJG8ixEdf+h0Aydmt4H8A==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS8PR04MB8868.eurprd04.prod.outlook.com (2603:10a6:20b:42f::6)
- by AM8PR04MB7203.eurprd04.prod.outlook.com (2603:10a6:20b:1d5::16) with
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
+ by AM8PR04MB7761.eurprd04.prod.outlook.com (2603:10a6:20b:248::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.17; Wed, 13 Nov
- 2024 14:39:16 +0000
-Received: from AS8PR04MB8868.eurprd04.prod.outlook.com
- ([fe80::b317:9c26:147f:c06e]) by AS8PR04MB8868.eurprd04.prod.outlook.com
- ([fe80::b317:9c26:147f:c06e%7]) with mapi id 15.20.8158.013; Wed, 13 Nov 2024
- 14:39:14 +0000
-Date: Wed, 13 Nov 2024 16:39:11 +0200
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, frank.li@nxp.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v3 net-next 4/5] net: enetc: add LSO support for i.MX95
- ENETC PF
-Message-ID: <4vfvfzegrk774qlo5fobie5qcleqxqaogphucpzlwlcnq3llqd@aspdtwwqbobn>
-References: <20241112091447.1850899-1-wei.fang@nxp.com>
- <20241112091447.1850899-5-wei.fang@nxp.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.29; Wed, 13 Nov
+ 2024 15:26:16 +0000
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d]) by DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d%3]) with mapi id 15.20.8137.027; Wed, 13 Nov 2024
+ 15:26:16 +0000
+Date: Wed, 13 Nov 2024 10:26:04 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>,
+	Larisa Grigore <larisa.grigore@nxp.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>, Lee Jones <lee@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
+	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	NXP S32 Linux Team <s32@nxp.com>,
+	Christophe Lizzi <clizzi@redhat.com>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Enric Balletbo <eballetb@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v6 1/7] dt-bindings: mfd: add support for the NXP SIUL2
+ module
+Message-ID: <ZzTFDPxPvmpphTdb@lizhi-Precision-Tower-5810>
+References: <20241113101124.1279648-1-andrei.stefanescu@oss.nxp.com>
+ <20241113101124.1279648-2-andrei.stefanescu@oss.nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241112091447.1850899-5-wei.fang@nxp.com>
-X-ClientProxiedBy: AM0PR04CA0143.eurprd04.prod.outlook.com
- (2603:10a6:208:55::48) To AS8PR04MB8868.eurprd04.prod.outlook.com
- (2603:10a6:20b:42f::6)
+In-Reply-To: <20241113101124.1279648-2-andrei.stefanescu@oss.nxp.com>
+X-ClientProxiedBy: BYAPR07CA0097.namprd07.prod.outlook.com
+ (2603:10b6:a03:12b::38) To DB9PR04MB9626.eurprd04.prod.outlook.com
+ (2603:10a6:10:309::18)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -66,160 +84,271 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8868:EE_|AM8PR04MB7203:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0d4a62f4-e30c-4a37-9a26-08dd03f0f213
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|AM8PR04MB7761:EE_
+X-MS-Office365-Filtering-Correlation-Id: f904004c-8464-449f-0ede-08dd03f78428
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|52116014|7416014|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Dnb1phrywz/FAWq0xbM/5za1BiD46BXIfCLdjbkEkHrYdJhrktfhGZewv5Ky?=
- =?us-ascii?Q?DyNIiOMPgaj3ptDeOkE3AuRi+jS+K6hG633MZYUTE7x3rfElbzGUnW/+sOLK?=
- =?us-ascii?Q?2ubplG7fVVzOkA0k/Hzr2iQ8q6LtrXEzE+yEcRunDW4kldnulduyBJXvYPpU?=
- =?us-ascii?Q?8U7VMHTXTaMBim3iuNUvwmWUPs8rYPt2bOh3hG/Po7jR91qh6ATHYPvI6yGo?=
- =?us-ascii?Q?AyEhP0mKJ4PND4MoNULpeOzVG+qwDbtell8t0Qat9D5kxigO9ane7+gpHM8C?=
- =?us-ascii?Q?90ObD7hlcFHCF0kPkSt4K9lXdzcc0f3Zb5msXrfOQrNSJB42t/nLlnX1nsUJ?=
- =?us-ascii?Q?vDo3Zx+ONd2vNdxlzgONaua+cC6aYcdr5YiRTZxIN1/bPzTaggtGADDgl5E3?=
- =?us-ascii?Q?CsjfZt8ZpbzwO6sJ461zDStufYaTfGr2hgjc5esU0KwIV5q/GevrkwkyWfZQ?=
- =?us-ascii?Q?1FxkEfEvxOCONmeCekn+dFfFEQkN4UIWzYVU+0MlK7cQEbtNM5ehCZRlhvio?=
- =?us-ascii?Q?syiuYl0kaDI+XC0Dp4WbySQ6iWZHLVZmuZJYc9KuYxSKmLKvtixEJdQwKILL?=
- =?us-ascii?Q?PLTdq59CWvorJ+CImQJ0FD76Qu5HhhRJZy3lRraaFhnsFSAdg/Ms1lomIiX3?=
- =?us-ascii?Q?2nmelswY6MKXB8eohZ7BGEIwa3IOyZ9RgE2y6Z66R9sIUEtrerKVYFq88Pw5?=
- =?us-ascii?Q?Vdf5nBf34k9Fgowe+zWsdopIz9Ebe6cCG5T3YWnQimNMhpscEI8BuagVwQ5P?=
- =?us-ascii?Q?nuXWcPzBDMFqyj8YYL+bgsDhM7PpJv+56NshnPwN4jCD4+PgkhxxuQPfsKJV?=
- =?us-ascii?Q?qtTsCD9h+X10nJD3pQsw5mwvK/7fwdNm9CJbvLzXhyCWyXN9r7O2j0joWn0h?=
- =?us-ascii?Q?rpDtq7/MNbkAdzFphFL1rLiKPVvYJ/m+l2L2e3kY5HG85OVWCwYebIg8LvXI?=
- =?us-ascii?Q?UCX6bXpLvadTiMJ7y3yXpwzr+a2NR/eFh98pQTPjFtFjJi7nV/ywAgd9y0ym?=
- =?us-ascii?Q?jfdViVhtludIDfWUJaXSQ0m0m0VeKDP5FjXF3309qIyy0/qwsr8efxdIw2FI?=
- =?us-ascii?Q?1frFICiJ+tlDkc4iB3hAujVlsE+CgEWntckaxym+YFcUvf7vYdVLd/1aWO91?=
- =?us-ascii?Q?WrosqTxjUBHL37zi5Nk4tUp4zAQQi8jRzDdvC2wbwb8b3XiYFiGDMytozrAm?=
- =?us-ascii?Q?md8mG1/BZuGgqcNj7UeeXLsRjLhvmcG/1DBYfAm3ShMBFIWKtoO3tC0iMMKK?=
- =?us-ascii?Q?x63wd0G3UGDsNGKVmv9/T3KMlKsBs/q/5UhoZ0fnvHFBhmBlx83jm/SIEGJO?=
- =?us-ascii?Q?hdbztoGKUEGK1TAvhPTVWRP7?=
+	=?us-ascii?Q?OakSUgCRvpue3F1skZuDWl4TNDA5tw/z09uKWJtGl0e4EX7RJyWZzBLZxqvM?=
+ =?us-ascii?Q?AuouS2KMQZNNck5IRkiMKFFAE03PCaIRzIOmuL/PKuyPT8PzaD4ixmfBZ/AJ?=
+ =?us-ascii?Q?suYv4OwPgG9R8efR0MTyoqa66JjKqYxXQArFdDImi7yPkUiyRXxF9VBO5sDL?=
+ =?us-ascii?Q?YUo2NRpnuz1K/hs2toVI9DaBBmk/1rDSqKuUEDajuN/1mXE1ZNIB6fGmy/cA?=
+ =?us-ascii?Q?iYrT4djbV7y04dfxVtiVeWJZzJCn7Va9aZxlPtChFmq1qGtncpjHLoh+HaLb?=
+ =?us-ascii?Q?Uu4Hgaoqx4QbW4bGKmzX6DLPKsWX4fLQaEwE1qCjriI2cSsXeDmrO/Gp/EvW?=
+ =?us-ascii?Q?UJMvx9AFFG2k/vYk9czcF5EFrHMIVJ1g9UyIUu7Qp3HeWN6yQwiAzfZNypu4?=
+ =?us-ascii?Q?+F8Lltl8sOzRsQXGjKjaz/oK+55dlOgCtzSGde8Fb48dsQlsYXGzsvXdjE+j?=
+ =?us-ascii?Q?axbzDtJeyky9in8mEhsFx+piceJrZI/1+f1DZBpxF+xAD+DdWDF9KVMRF/nn?=
+ =?us-ascii?Q?7WJXf5sskJFcXzXWe+zAUPP3yvyqhykd/bnkW9//GXhLSHwQurPD4vHzW+WS?=
+ =?us-ascii?Q?spP+r+3MP+ClZdIzgd21iqtvX/AXYchlM+dtDK0V005O0g2cg1Ap8R6NcGZO?=
+ =?us-ascii?Q?lfGKqCqGgRAq3xAX1BwyBlEHLn+LYgzMgxPcnNlveaath/vmvojsLCF9Mfbb?=
+ =?us-ascii?Q?uwiWmql7HwRXCmmk8GIeHGROVcCPRJyUgmaVH60M9JhXRV2Gj7Wv7/G8lHr0?=
+ =?us-ascii?Q?UsM/nIIpuSiq/soDzDbSSj5oIIFBYXTWY3vzhXhw7UVbYfXHvyjCW8QwF+gI?=
+ =?us-ascii?Q?g4kd2xPb8Nld7YjB3bQAzA5OPm9JatGN2soiod5oJXP7erXpC0WEzlyc4AyK?=
+ =?us-ascii?Q?9nwyfxwG2a2oCmzzl0/ZUFA0xPcXWMJ4bLJbZVSlbpiL/j2VA0Jb/oZfXOUI?=
+ =?us-ascii?Q?KpVCM85uGWCYY7g6QAaOZqFRF8JtLPscP6hRIz+aN3qQuaBT+dxKuSCp6J8Q?=
+ =?us-ascii?Q?D/qXUN2p8Yn2MwXQmuV8m+pZpvId/vLHzoI/aoYcpNiVoI/PUwaboHzuBGsw?=
+ =?us-ascii?Q?epfjACLLbkoPpMEYQu5RZnbSMYCguXKHCHZ427Qq/WXwDxdxRp17Fi8SkKBk?=
+ =?us-ascii?Q?bhmZfepCQ8E+Z6kahQx1Q9GG3o41TG9saGgqY0DF8u8AkA/GRZpOJimJ0h72?=
+ =?us-ascii?Q?q2eYMDQjAKfqURTAeAZ+fqECOJCfJfH3+xFSPMP2h5PbFjUixe0+v7/DvlDO?=
+ =?us-ascii?Q?ieI+jpKUJQCFxVdngB20Lme1X8+0RcyHHDSFMhH2H1A9XNCu7MXnGLBJrbkT?=
+ =?us-ascii?Q?FcN5CgmUDyvpLjVHPvPcbIfk?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8868.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(7416014)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?q2/SKE1WG+sK2K0gWOszPaus7/L42qAh60TLjZtw6MXnEbHh59v6qWu+Owh0?=
- =?us-ascii?Q?yyDIx7PsuaVpZYq2jjoT0ff4CHVBkJoIuGPzwOHhbGXVhxYbixaeh8dGsGvW?=
- =?us-ascii?Q?Dw8aliDFzOeREUP8weQ2k/xZvC/wL9Ma3nyXKu7y+71ptN7/nbXBOhqTq18R?=
- =?us-ascii?Q?+Gyu789sziYCrVtyqYHZhY25TqZGjpxeyLd75YaSMIQVNL27DpA+QYVXYfV7?=
- =?us-ascii?Q?xzqKVJZeRyHm9yZSQxcUufLvjhusKDB8+OGsUnVpLH05Evi38xUFlboO61zA?=
- =?us-ascii?Q?Wi4D89U70UZwGGcxDmRI3J0g9UOdMuQDdw7eEY7lXI76yvFYLoG6kj0s2DhF?=
- =?us-ascii?Q?dVnCqpfQbtMTN7Uzhko3TcJpnGMWbwt2yyZfTtSAhpaL3HYzG2nHCsQ3Q2sq?=
- =?us-ascii?Q?Nu0FBy0iLVovPi8hO0ki2BKkus0xVwEKDrzx4V6aZmv2qq/6ZueFBzUHGcx+?=
- =?us-ascii?Q?uulMTtkXQDwqH0t4aFXByDvuvaSk1eOcl+nKgD5deQ/Y5BAMYbJ+O3HujsZu?=
- =?us-ascii?Q?+yoxF6wdlRco9zmg9a75u0XHh1kLtoK5CucX1+A3eUv46Ogs0pnjjtnFNb8G?=
- =?us-ascii?Q?50m2GLc5uY8B9T3ZAuw8GkG9/2deH1V2QTCGiJCsg6MqILgngkRs9CwD3c+e?=
- =?us-ascii?Q?ky3+bz9u35HB0wbui3Vli8UiY5tn5cCL62R58Q8B0lRrNqtL4JwtSFbmrpvx?=
- =?us-ascii?Q?8yB98iYjrehlga3yOeSanRSSxV+/eUNtGGyeCKt0FaKdr+/EDtdAm8LfoKl0?=
- =?us-ascii?Q?Y0CqeKHA4hCs9fIDDjRo3WLkVJHWYN0MLV2dR6VuTRnn1t8kqGeZ3WrUa87H?=
- =?us-ascii?Q?Hb+f41wVkKKano9NqbQ6ACT7OiLD5zTl5VN+WZGylaMsmrFR1kFGE75OtRpw?=
- =?us-ascii?Q?qQD0Ven2ScBxf7um6cDkRyL9+7Mjk0J84Ea+lwhGpabtxBU5Y2viTj2pI7pR?=
- =?us-ascii?Q?FiiXI+sdhier8/46gqdRQm5j8J2GJ5kNxz+9MgrFhUrF3K4G4rbzo115YbHa?=
- =?us-ascii?Q?XxT8IwA5MD9JwgPVZFv3An/FhEMJn+Q/4PoIBKEDrJKSErGdLG6tWwas79Wg?=
- =?us-ascii?Q?BptR+scVF/UO8ocleRkwt/O5djU+BjQwBQMa1G1/kG6bGNjsTZqCE5JjOwQm?=
- =?us-ascii?Q?wHTFWqKLvJNRMbNfeMxgh4X0r7jThxqU14lHWaXLs2LG2Y5EGnQ3Kyfv8+tV?=
- =?us-ascii?Q?WXhcFWJyX1XDPOMe8CQQBiBVrMG1r5wp5oGUii5YTvxp0xj2F83u0KQtZp7S?=
- =?us-ascii?Q?Z1w8VoVAr17oepuw3YjF4hKTajUPxgdmplRA/GbqrZtrSQVXnDQ8gfX6QKVu?=
- =?us-ascii?Q?9/Qfa+aXr2IZPcZKoLhcWXa3ACK5C+IDwZEPjFG1aSug/IXIwCta3MQBPbKc?=
- =?us-ascii?Q?ksjJnU7ssAqnpfkiSCB6qKny+6LfxTvwJBJ88MF2k2gFsvQ23rwngxFkQVHx?=
- =?us-ascii?Q?fhYFGe4Pi8IZiZsodMm/BxtQNypeftb3yhxznpOrB8RMdASErz3ll8uqwxbW?=
- =?us-ascii?Q?gxyA9BiSXEX4iXtXC4fEFaCukqT3CVOgC6ZdMg/WiscXXIG7eyKFivVVqDdO?=
- =?us-ascii?Q?sbXK/wz00m+mJGYDSIZ4Zr6urdA+8Aevci5bWFLJ?=
+	=?us-ascii?Q?XuaWVsTQxQW9AO1RAZ5Pq11YgM85gyIG4QGDspVhs7DMIqmaAZdXsY3JLT/+?=
+ =?us-ascii?Q?Orl5eEPj1NYlSK1QCvTwxDsxt1T8QhyD7r9R34AGDuea2peR+Sr5rgcakG6M?=
+ =?us-ascii?Q?0LH2NQngC/xFPVgjnfr9HG4vOTtt2YZdsIztGtyEuFVTKzzBP8jVpNvSGhIK?=
+ =?us-ascii?Q?c0yg8rKHHfBQyBipT4NsUDgncbfso4kZ6NQU7WrLe9lmPSi3yCzVGQ4/VJ8z?=
+ =?us-ascii?Q?gdtCg4NlP1Kyxek+BACGBrQKAljzfvHej7rP9z6Vc6r5SU8GsLPPXUC7P/LZ?=
+ =?us-ascii?Q?oorj/X2oKG5FK8j4SaL/4JcIIzQXxiIJJT2mKGJf8rI48aHALwxiEunBhQHh?=
+ =?us-ascii?Q?lFYgC52BYyu8OcZ/nmIcUcGF3lrGtV4AECEYFP7E4m7y1amcAXr0qPshOqQy?=
+ =?us-ascii?Q?K2zKfTT6gzp69Ufkj7onK+SxSlYo1QOBEhPMU9E3h7tVlrm3U0cKxfVW1Rx8?=
+ =?us-ascii?Q?ObYfPE61tnrL/3s/+zZ2sCox1pTshvtIqg/3EX5LEKyrdN+86nzJPY5jXLG5?=
+ =?us-ascii?Q?p9BbL6/yPTyPEap5C6HSBzCtNRL2+dayU3hIWRrq8O+ptPi236oUP027xT0D?=
+ =?us-ascii?Q?oqNm0thHaSB04Wp5Ff4W9svLu0lERpt91ByYlmmDNp6x9buuM1x2m4CVbEky?=
+ =?us-ascii?Q?gMbx/8OZHpy0Qx8iBuYG2kiF3y0DWWSEFqEwoGGgFw0RlsGGW8uKXHtHfINI?=
+ =?us-ascii?Q?g4qZNzcZSxu5AG5wH7bOfvlHsWgZFYxUy5HWhXOSDeO0BtA/xguHs+20zsPg?=
+ =?us-ascii?Q?kEfDswfsMbCa1R0BsSRO0387tsl/RWoEboaM6OY20ST6cuohtxF1+DIqFdPo?=
+ =?us-ascii?Q?lr45p6/PR5E9TRfody6VTmNLXlQRu7cp2Z6KkTBV4ww1TZAgMOElny6qdJ3+?=
+ =?us-ascii?Q?zfQWbnvHcJ2YSVrJOw/UOfTdoLnhkYs7qwymwJD4MIWvDsEiEM+mIGqAJ+ll?=
+ =?us-ascii?Q?nwg9elhBiqovT0ITmJ8s0EUc3uZL8y/9mdZ8rdn0+ggB4Ce238Ra4UyNkZXL?=
+ =?us-ascii?Q?ECunRopk0LQMzJ+HU3TFtPQnyD7TNTy7kjKku5N5t9ZYToM5abXO1cp0+rX2?=
+ =?us-ascii?Q?o0QOBt4PD8zmoOXCxvKIHd1wd0PzInwgaGq433PshiOxoF5GEbsEHpN/vr/9?=
+ =?us-ascii?Q?osRUrbSPIIcp8XUmWKctoexduNtHPjfWOpq+QmNtoDCJKGNh3TUBzmuXNa9y?=
+ =?us-ascii?Q?BZ4Bp/PN0OSJIDzakKtDqvsPXusn/hrdm8yjnyNOkh8BFc6OpNpgv7OJag6o?=
+ =?us-ascii?Q?xtNXT9xVki0YgNk20Kj3oQ0Rq1la7weZGrJHTF8HdFj7B1C5RVapPxi0ktTW?=
+ =?us-ascii?Q?wwul5wcZzGSegadMUKKc5wQ1Pxgfm1zaIUcz/t5Mc4rxDJqpSWxr5idZp6x0?=
+ =?us-ascii?Q?N0tSbFqGXkFM0jBgk4V8SampYOHrZ/IvYBy4BVM0I8oLG2jgHSjbZGrz3kfY?=
+ =?us-ascii?Q?Z+mhroV3GHDPtFqQhR8B7K/NpWSFzNca5vAW0M2bsvdTh+NL6guO9+FmumnR?=
+ =?us-ascii?Q?2Qt5PlYQE7ji+n65w6vmSbV6OiKHO5U+hueufKtCcwMG7mCBVgwLvD+WUkoO?=
+ =?us-ascii?Q?pvB4+7JMU0cr0KwJv9Xy83VtqePgJ0PagXJDFvFQ?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d4a62f4-e30c-4a37-9a26-08dd03f0f213
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8868.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f904004c-8464-449f-0ede-08dd03f78428
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2024 14:39:14.8032
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2024 15:26:16.7884
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3Ocqu9BQrLiNzRQRLEPmNNtq5C5Uy3aG4tqgXK2eR8zi8XlWhbW58BgB+bBQfJ/o3ko9DHAfOPDebVCbie91mg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7203
+X-MS-Exchange-CrossTenant-UserPrincipalName: gcviDfVVQoi9G+a3Bmc1BJlbpt88J9sBE2+wVF+uY3rB0LrNonLj6yJcMaAEIk5QlrMqbS81LF2WiyBg7xiQKw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7761
 
-On Tue, Nov 12, 2024 at 05:14:46PM +0800, Wei Fang wrote:
-> ENETC rev 4.1 supports large send offload (LSO), segmenting large TCP
-> and UDP transmit units into multiple Ethernet frames. To support LSO,
-> software needs to fill some auxiliary information in Tx BD, such as LSO
-> header length, frame length, LSO maximum segment size, etc.
-> 
-> At 1Gbps link rate, TCP segmentation was tested using iperf3, and the
-> CPU performance before and after applying the patch was compared through
-> the top command. It can be seen that LSO saves a significant amount of
-> CPU cycles compared to software TSO.
-> 
-> Before applying the patch:
-> %Cpu(s):  0.1 us,  4.1 sy,  0.0 ni, 85.7 id,  0.0 wa,  0.5 hi,  9.7 si
-> 
-> After applying the patch:
-> %Cpu(s):  0.1 us,  2.3 sy,  0.0 ni, 94.5 id,  0.0 wa,  0.4 hi,  2.6 si
-> 
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+On Wed, Nov 13, 2024 at 12:10:53PM +0200, Andrei Stefanescu wrote:
+> Add the dt-bindings for the NXP SIUL2 module which is a multi
+> function device. It can export information about the SoC, configure
+> the pinmux&pinconf for pins and it is also a GPIO controller with
+> interrupt capability.
+>
+> Signed-off-by: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
 > ---
-> v2: no changes
-> v3: use enetc_skb_is_ipv6() helper fucntion which is added in patch 2
-> ---
->  drivers/net/ethernet/freescale/enetc/enetc.c  | 266 +++++++++++++++++-
->  drivers/net/ethernet/freescale/enetc/enetc.h  |  15 +
->  .../net/ethernet/freescale/enetc/enetc4_hw.h  |  22 ++
->  .../net/ethernet/freescale/enetc/enetc_hw.h   |  15 +-
->  .../freescale/enetc/enetc_pf_common.c         |   3 +
->  5 files changed, 311 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-> index 7c6b844c2e96..91428bb99f6d 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> @@ -527,6 +527,233 @@ static void enetc_tso_complete_csum(struct enetc_bdr *tx_ring, struct tso_t *tso
->  	}
->  }
->  
-> +static inline int enetc_lso_count_descs(const struct sk_buff *skb)
-> +{
-> +	/* 4 BDs: 1 BD for LSO header + 1 BD for extended BD + 1 BD
-> +	 * for linear area data but not include LSO header, namely
-> +	 * skb_headlen(skb) - lso_hdr_len. And 1 BD for gap.
-> +	 */
-> +	return skb_shinfo(skb)->nr_frags + 4;
-> +}
+>  .../bindings/mfd/nxp,s32g2-siul2.yaml         | 165 ++++++++++++++++++
+>  1 file changed, 165 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mfd/nxp,s32g2-siul2.yaml
+>
+> diff --git a/Documentation/devicetree/bindings/mfd/nxp,s32g2-siul2.yaml b/Documentation/devicetree/bindings/mfd/nxp,s32g2-siul2.yaml
+> new file mode 100644
+> index 000000000000..a8edbea75bb6
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mfd/nxp,s32g2-siul2.yaml
+> @@ -0,0 +1,165 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +# Copyright 2024 NXP
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/mfd/nxp,s32g2-siul2.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP S32 System Integration Unit Lite2 (SIUL2)
+> +
+> +maintainers:
+> +  - Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+> +
+> +description: |
+> +  SIUL2 is a hardware block which implements pinmuxing,
+> +  pinconf, GPIOs (some with interrupt capability) and
+> +  registers which contain information about the SoC.
+> +  There are generally two SIUL2 modules whose functionality
+> +  is grouped together. For example interrupt configuration
+> +  registers are part of SIUL2_1 even though interrupts are
+> +  also available for SIUL2_0 pins.
+> +
+> +  The following register types are exported by SIUL2:
+> +    - MIDR (MCU ID Register) - information related to the SoC
+> +    - interrupt configuration registers
+> +    - MSCR (Multiplexed Signal Configuration Register) - pinmuxing and pinconf
+> +    - IMCR (Input Multiplexed Signal Configuration Register)- pinmuxing
+> +    - PGPDO (Parallel GPIO Pad Data Out Register) - GPIO output value
+> +    - PGPDI (Parallel GPIO Pad Data In Register) - GPIO input value
+> +
+> +  Most registers are 32bit wide with the exception of PGPDO/PGPDI which are
+> +  16bit wide.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - nxp,s32g2-siul2
+> +      - nxp,s32g3-siul2
+> +
+> +  reg:
+> +    maxItems: 2
+> +
+> +  reg-names:
+> +    items:
+> +      - const: siul20
+> +      - const: siul21
+> +
+> +  gpio-controller: true
+> +
+> +  "#gpio-cells":
+> +    const: 2
+> +
+> +  gpio-ranges:
+> +    maxItems: 2
+> +
+> +  gpio-reserved-ranges:
+> +    maxItems: 2
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  interrupt-controller: true
+> +
+> +  "#interrupt-cells":
+> +    const: 2
+> +
+> +  nvmem-layout:
+> +    $ref: /schemas/nvmem/layouts/nvmem-layout.yaml#
+> +    description:
+> +      This container may reference an NVMEM layout parser.
+> +
+> +patternProperties:
+> +  "-hog(-[0-9]+)?$":
+> +    required:
+> +      - gpio-hog
+> +
+> +  "-pins$":
+> +    type: object
+> +    additionalProperties: false
+> +
+> +    patternProperties:
+> +      "-grp[0-9]$":
+> +        type: object
+> +        allOf:
+> +          - $ref: /schemas/pinctrl/pinmux-node.yaml#
+> +          - $ref: /schemas/pinctrl/pincfg-node.yaml#
+> +        description:
+> +          Pinctrl node's client devices specify pin muxes using subnodes,
+> +          which in turn use the standard properties below.
+> +
+> +        properties:
+> +          bias-disable: true
+> +          bias-high-impedance: true
+> +          bias-pull-up: true
+> +          bias-pull-down: true
+> +          drive-open-drain: true
+> +          input-enable: true
+> +          output-enable: true
+> +
+> +          pinmux:
+> +            description: |
+> +              An integer array for representing pinmux configurations of
+> +              a device. Each integer consists of a PIN_ID and a 4-bit
+> +              selected signal source(SSS) as IOMUX setting, which is
+> +              calculated as: pinmux = (PIN_ID << 4 | SSS)
+> +
+> +          slew-rate:
+> +            description: Supported slew rate based on Fmax values (MHz)
+> +            enum: [83, 133, 150, 166, 208]
+> +        required:
+> +          - pinmux
+> +
+> +        additionalProperties: false
 
-Why not move this static inline herper into the header?
+There are $ref, need use  unevaluatedProperties: false
 
 > +
-> +static int enetc_lso_get_hdr_len(const struct sk_buff *skb)
-> +{
-> +	int hdr_len, tlen;
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reg-names
+> +  - gpio-controller
+> +  - "#gpio-cells"
+> +  - gpio-ranges
+> +  - gpio-reserved-ranges
+> +  - interrupts
+> +  - interrupt-controller
+> +  - "#interrupt-cells"
 > +
-> +	tlen = skb_is_gso_tcp(skb) ? tcp_hdrlen(skb) : sizeof(struct udphdr);
-> +	hdr_len = skb_transport_offset(skb) + tlen;
+> +additionalProperties: false
 > +
-> +	return hdr_len;
-> +}
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
 > +
-> +static void enetc_lso_start(struct sk_buff *skb, struct enetc_lso_t *lso)
-> +{
-> +	lso->lso_seg_size = skb_shinfo(skb)->gso_size;
-> +	lso->ipv6 = enetc_skb_is_ipv6(skb);
-> +	lso->tcp = skb_is_gso_tcp(skb);
-> +	lso->l3_hdr_len = skb_network_header_len(skb);
-> +	lso->l3_start = skb_network_offset(skb);
-> +	lso->hdr_len = enetc_lso_get_hdr_len(skb);
-> +	lso->total_len = skb->len - lso->hdr_len;
-> +}
-> +
-> +static void enetc_lso_map_hdr(struct enetc_bdr *tx_ring, struct sk_buff *skb,
-> +			      int *i, struct enetc_lso_t *lso)
-> +{
-> +	union enetc_tx_bd txbd_tmp, *txbd;
-> +	struct enetc_tx_swbd *tx_swbd;
-> +	u16 frm_len, frm_len_ext;
-> +	u8 flags, e_flags = 0;
-> +	dma_addr_t addr;
-> +	char *hdr;
-> +
-> +	/* Get the fisrt BD of the LSO BDs chain */
+> +    siul2@4009c000 {
 
-s/fisrt/first/
+generic node name, such as 'pinctrl'
 
+> +      compatible = "nxp,s32g2-siul2";
+> +      reg = <0x4009c000 0x179c>,
+> +            <0x44010000 0x17b0>;
+> +      reg-names = "siul20", "siul21";
+> +      gpio-controller;
+> +      #gpio-cells = <2>;
+> +      gpio-ranges = <&siul2 0 0 102>, <&siul2 112 112 79>;
+> +      gpio-reserved-ranges = <102 10>, <123 21>;
+> +      interrupt-controller;
+> +      #interrupt-cells = <2>;
+> +      interrupts = <GIC_SPI 210 IRQ_TYPE_LEVEL_HIGH>;
+> +
+> +      jtag_pins: jtag-pins {
+
+needn't lable 'jtag_pins' in example.
+
+> +        jtag-grp0 {
+> +          pinmux = <0x0>;
+> +          input-enable;
+> +          bias-pull-up;
+> +          slew-rate = <166>;
+> +        };
+> +      };
+> +
+> +      nvmem-layout {
+> +        compatible = "fixed-layout";
+> +        #address-cells = <1>;
+> +        #size-cells = <1>;
+> +
+> +        soc-major@0 {
+> +          reg = <0 0x4>;
+> +        };
+> +      };
+> +    };
+> +...
+> --
+> 2.45.2
+>
