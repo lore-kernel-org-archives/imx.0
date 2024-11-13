@@ -1,135 +1,97 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA431FEFAD
-	for <imx@lists.linux.dev>; Wed, 13 Nov 2024 11:06:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27F71FCF73
+	for <imx@lists.linux.dev>; Wed, 13 Nov 2024 12:18:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731495989; cv=none; b=p66ZKQ6PvU+RqwUcLPMLFgGqntVdqct/+oauN4EWTU7kuMUGxQQoVTU89d/z4eVzOkEFJlvoE/sJTk+Ijz4mF1D13rszbFi/I503ESTtGxkF7OheQn0Y8t4fOyvskNYygxgvjQdbYgkZcej1yhNDNhsEax1IJLRjg8HfhpPnahc=
+	t=1731500337; cv=none; b=X+2vJLopyJbrdc4APbhqFo+1fKA6iYHAWT3pWmB7Ct+LBojZP6+UXjUPs7nLjxCZ08mLgGD29ly1xc8Q7S1XKESIx/GAmMYl7/NuBXcoQu9gQADjop9cf1fo72sRH3st55sMVdXSphwhmWZ2/NlHIprStl1xWC4gUILoW+95hXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731495989; c=relaxed/simple;
-	bh=XEVyohAgQTzIrgFPnpSchrP88zAiy37n7h81BDJamDw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EFKQswxH+hfpcg1Gb+noAegPt62ewm2ta6H9FTl26oZsVshKxvDQozXudguCn4Gs5IkJ2TryAG62BnuBWUsPeblrRcQdmxuDgAJBubef9azNoMCbY7RdW7N9bZiZ+mULU1PhhxI1TTMLVEJ/Bt67UTE11RZef+YWdR++LEnA1EQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ecyX72th; arc=none smtp.client-ip=217.70.183.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ecyX72th"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E7FD820007;
-	Wed, 13 Nov 2024 11:06:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1731495985;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o1bcdub+Pq4Zg8rsA1cvX3AG9T2O7ZzZgbE8y/HRVoU=;
-	b=ecyX72thJcgQWXoHy7K1aTLh0+U9vcOAUFVzdLCR6p8uOOxaaYTXdxZRnJ6aGvIiO3IS85
-	BoUvssBSau3MDPvvrETfdqg1cAYh/QLKyYuVtUiiGzTDeQ+v6qPnBNMPd8abmA2uhsFIqr
-	bxQGGs8qkY+WxJFc2a2QaDdCl/+01d0W8buuyCG4uprI/+vp+UiPWUCO4pNvDCDnbQRRWr
-	ROBIgxgwrqdOXbg4FFVRWCl6+3AiLktIK7U0z/F3ebKnQ3NhTZSSMRcxRo8exyeKMLKLJ8
-	7iBWKbASqFWFkBV6P8lY4G3QE8JEdNmAdfMqlEKoWlCvHnn1fTSa3M1RS8N1Hw==
-Date: Wed, 13 Nov 2024 12:06:22 +0100
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Marek Vasut <marex@denx.de>
-Cc: Abel Vesa <abelvesa@kernel.org>, linux-clk@vger.kernel.org, Fabio
- Estevam <festevam@gmail.com>, "Lukas F . Hartmann" <lukas@mntmn.com>,
- Michael Turquette <mturquette@baylibre.com>, Peng Fan <peng.fan@nxp.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, Sascha Hauer
- <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Stephen Boyd
- <sboyd@kernel.org>, imx@lists.linux.dev, kernel@dh-electronics.com,
- linux-arm-kernel@lists.infradead.org, Miquel Raynal
- <miquel.raynal@bootlin.com>, Anson Huang <Anson.Huang@nxp.com>
-Subject: Re: [PATCH] clk: imx: clk-imx8mp: Allow media_disp pixel clock
- reconfigure parent rate
-Message-ID: <20241113120622.3501db73@booty>
-In-Reply-To: <79f21303-b0ba-45ed-a842-7e5364fd4efc@denx.de>
-References: <20240531202648.277078-1-marex@denx.de>
-	<20241112234206.558d5d5e@booty>
-	<79f21303-b0ba-45ed-a842-7e5364fd4efc@denx.de>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1731500337; c=relaxed/simple;
+	bh=tZGNi/z9iX3qW1qh+hyrUffDenpNLquRG7rp41ALlkw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=kXCMmchwfJAekuucmFmEb5MuuIqgqj7pNXYgAy/9u4zW6a2fTYT5EM/n/6O06+p1OppjVYygrcStE8Yq95/d1YIoTdoOPVv7bXgx5hu+0Y///UHCp5P1VGLlAW8eI/ePl5/DgPF7ALz9hUsu8stvGsIx9SGkmRuKwgjtzQv/Cps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <jre@pengutronix.de>)
+	id 1tBCKg-0004eO-WF; Wed, 13 Nov 2024 13:18:51 +0100
+From: Jonas Rebmann <jre@pengutronix.de>
+Subject: [PATCH v2 0/2] spi: imx: support word delay in ecspi
+Date: Wed, 13 Nov 2024 13:18:30 +0100
+Message-Id: <20241113-imx-spi-word-delay-v2-0-2b65b737bf29@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: luca.ceresoli@bootlin.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABaZNGcC/22NQQ6CMBBFr0Jm7ZhpQ8C68h6GBWkHmERb0iJCC
+ He34tble8l/f4PEUTjBtdgg8ixJgs+gTwXYofU9o7jMoEmXisigPBdMo+A7RIeOH+2KWjlLqiN
+ zsRbycIzcyXJE703mQdIU4np8zOprfzlF9b/crJBQt6YyWpWuNtVtZN+/phi8LGfH0Oz7/gEdz
+ Rl3uQAAAA==
+X-Change-ID: 20241009-imx-spi-word-delay-21dc01f098cc
+To: Mark Brown <broonie@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+Cc: kernel@pengutronix.de, linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Jonas Rebmann <jre@pengutronix.de>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1553; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=tZGNi/z9iX3qW1qh+hyrUffDenpNLquRG7rp41ALlkw=;
+ b=owGbwMvMwCF2ZcYT3onnbjcwnlZLYkg3malp7Kn/nLHILMjk/NSINDtPp3mZxt8f/9jnYPBuv
+ cDMrD2sHaUsDGIcDLJiiiyxanIKQsb+180q7WJh5rAygQxh4OIUgIm4nGdkeLZGXa43QKxlmtbq
+ lKSP8YuWXT4rMbOYq3NyQmpE0pWCBwz/vU+2TzLQ9zl/88avjmhLs8PTI6dtFp+zSWfB2gOejlf
+ DOAA=
+X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
+ fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::ac
+X-SA-Exim-Mail-From: jre@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hi Marek,
+The i.MX SPI controller supports inserting a configurable delay between
+subsequent words, which is needed for some slower devices that couldn't
+keep up otherwise.
 
-+Cc: Anson (initial author of clk-imx8mp.c)
+This patch series introduces support for the word delay parameters for
+i.MX51 onwards.
 
-On Wed, 13 Nov 2024 00:14:15 +0100
-Marek Vasut <marex@denx.de> wrote:
+The SPI clock (CSRC=0) was chosen as the clock source over the also
+available 32.768 KHz Low-Frequency Reference Clock (CSRC=1). The sample
+period control bits (SAMPLE_PERIOD) are set to the selected word delay
+converted to SPI clock cycles. A deviation from the requested number of
+wait cycles and the actual word delay was observed via both software
+timings and oscilloscope measurements and accounted for.
 
-> On 11/12/24 11:42 PM, Luca Ceresoli wrote:
-> > Hello Marek, Abel, =20
->=20
-> Hi,
->=20
-> > +Cc: Miqu=C3=A8l
-> >=20
-> > On Fri, 31 May 2024 22:26:26 +0200
-> > Marek Vasut <marex@denx.de> wrote:
-> >  =20
-> >> The media_disp[12]_pix clock supply LCDIFv3 pixel clock output. These
-> >> clocks are usually the only downstream clock from Video PLL on i.MX8MP.
-> >> Allow these clocks to reconfigure the Video PLL, as that results in
-> >> accurate pixel clock. If the Video PLL is not reconfigured, the pixel
-> >> clock accuracy is low.
-> >>
-> >> Signed-off-by: Marek Vasut <marex@denx.de> =20
-> >=20
-> > I'm afraid I just found this patch broke my previously working setup
-> > with a panel connected on the LDB. =20
-> Do you need a fix similar to this one?
->=20
-> 4fbb73416b10 ("arm64: dts: imx8mp-phyboard-pollux: Set Video PLL1=20
-> frequency to 506.8 MHz")
+The Chip Select Delay Control bits in the Sample Period Control Register
+remain zero.
 
-So, 4fbb73416b10 is adding an assigned-clock-rates to hardcode rates,
-especially the video_pll1 rate.
+Behaviour on i.MX35 and earlier, where the CSPI interface is used,
+remains unchanged.
 
-However this is not fixing the problem I'm seeing. The existing
-assigned-clock-rates value for video_pll1 used to work because it is
-the media_ldb parent, and the parent wasn't recalculated. After this
-patch got applied the video_pll1 rate is computed at runtime and so the
-hardcoded value in assigned-clock-rates does not matter in the end.
+Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
+---
+Changes in v2:
+- Remove accidentally added CCs
+- spi-imx.c: Add missing includes, Rb kernel test robot
+- Link to v1: https://lore.kernel.org/r/20241107-imx-spi-word-delay-v1-0-2a969214d796@pengutronix.de
 
-I also tried a configuration that appears to me as the most optimal for
-managing both an LVDS panel on LDB and a DSI panel (which is also
-present in the more complete design I'm working on):
+---
+Jonas Rebmann (2):
+      spi: imx: pass struct spi_transfer to prepare_transfer()
+      spi: imx: support word delay
 
- * media_ldb and media_disp2 (the two clocks involved in LDB/LVDS
-   output) left as children of video_pll1 as per imx8mp.dtsi
- * media_disp1 (used for DSI output) reparented to sys_pll3
+ drivers/spi/spi-imx.c | 108 ++++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 92 insertions(+), 16 deletions(-)
+---
+base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
+change-id: 20241009-imx-spi-word-delay-21dc01f098cc
 
-The above config assigns to each output (LVDS and DSI) an ad-hoc PLL.
-However the problem does not disappear, simply because the problem is
-that requesting a ~500 MHz rate to video_pll1 results in it to be
-configured at ~72 MHz.
- =20
-This confirms the problem I reported appears to be an incorrect
-computation of the video_pll1 rate, which in turn looks like a bug
-(which as I said is exposed, not introduced, by this patch). If
-setting a hardcoded value could make it work, that would look like
-hiding a bug, wouldn't it?
+Best regards,
+-- 
+Jonas Rebmann <jre@pengutronix.de>
 
-And at least with a single-panel setup the runtime computation should
-work just fine.
-
-More generally speaking, I don't follow your approach: your patch
-enables runtime computation of the video_pll1 rate, but you now suggest
-to hardcode it. Am I missing something?
-
-Luca
-
---=20
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
