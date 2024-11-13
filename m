@@ -1,339 +1,192 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010062.outbound.protection.outlook.com [52.101.69.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB8F2022D9
-	for <imx@lists.linux.dev>; Wed, 13 Nov 2024 17:48:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731520135; cv=none; b=hUpkXZr87LkwKl6HyIEX4hRNo9w65u4/osr4e0Ihin92N4oxEaahgQD82JqTGU0kLvuoeN6/rYr3zlmfniGdFHA8Eqk+gsctJ+9OMmdnCncRqGMMYVU9cDjZrR9af07S1wLjVcydvzrcJ1UETi4IHPfwP4/pxsSP/UP/Qt+nEnE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731520135; c=relaxed/simple;
-	bh=9qu0frD8NGZvMd+t0ojWG9jdk3Z4iUPQQmG4GYjaUSQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dp1T0y47SiRYLJTTlZ8Qfmw4XTmyWXTT8+iqflA+8CKd75AssGLTK3ft8TTAleNbRKxSpDeCOwWGGrFVt5EZRvH57tW8E1UdH4jETBKlhgNIy3X5JCRTFznKTIoS+LX52OrcLdsJUV8rD0Dsq9rwfmJD7MqR5oIdk6MSlNGKffw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uoS/fexN; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1692AE69
+	for <imx@lists.linux.dev>; Wed, 13 Nov 2024 17:54:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.62
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731520501; cv=fail; b=fV9p35Gkd/xbhy+J1dDzzFvlOyUUlHDi6txk1HEURb+UN4ThkquOvzV3uHfUQ0QGxYM8BuAKi181bI0i9WwFFToI8KB/NVCLfNbT3wCPgS6x+6zq6cqwuRfsQL1mtoRoVNVNDhKO2DCTkMC5ZanLw40zvXG8qbO9v4ye76E95RQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731520501; c=relaxed/simple;
+	bh=FcSX8AL2964+XiRawj4b9wELyZWpvop7uUO54djUL4c=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=opFWY91P62JvTrr6KAa2jNoFXjyf19AGqXQ1B0TzCASYzmto7/dL+IVTU9lW68Y8WQUur/7o4VsSSbLerlJeVZPzhBChGuRb37EN846hTMJ6dwm/XRBu0H+6zx70yu8Khd3Rz6bBR4pljtZv+M58tio2YJVctEUiNZ3I1oIkqjQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=YA8jo8Fn; arc=fail smtp.client-ip=52.101.69.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uoS/fexN"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-20cb47387ceso76151695ad.1
-        for <imx@lists.linux.dev>; Wed, 13 Nov 2024 09:48:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731520132; x=1732124932; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Y9rKfjR1HZdkhSoVFUPTH5q4XPsaUToI4Fa76nl271U=;
-        b=uoS/fexNC1Ose5WmXWZ4PYwyB4UQS9OKE2VrXamD8DFTal5YI58QhdUN5ZMgxEdIA7
-         IxzaTEC5yhNPzmiARmwTRb90CDCJ0lCeTyFdB1Wd3xvXbTKXgg4vkOGkPJo+3ztbOqzA
-         BTCD4vwfHcchJniSt78z0z4gD+FWTvSXQ2ovEFiqOEOyAYNoLmaAXikQQvGuOCsSKqwk
-         pmKtgyx82x6Z/KBsLPNRG0TFJs71sYOL59y7ZBk1Z8wkFe8K4LFP7iGIA0nVQRKKdCnP
-         XV/WaeNf5p7hFS1mDeYcQJcj7jlaWU73rAfoS+XXKuGxxvCmv965z1M6zY3dybZB6RlU
-         2Qog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731520132; x=1732124932;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y9rKfjR1HZdkhSoVFUPTH5q4XPsaUToI4Fa76nl271U=;
-        b=uVM7jWaVVGaElSQGdBD+imNDD+VwoBibp1QYvw7NiF2PmWSut1NF7afqQe4XTVopuI
-         G+untX/nEPo1spqhAyBEa8RT6iRoqch5FaaD7tJReQbuBi/dtHKD+ePdlX1djO9UYL5p
-         XPEtfOusRvYbJJkaQu+BnI0lbvMzvYXWHl0O2ljCAv6BPlVm90G276S9DQyaS0qJRooK
-         kp1BzBxzvQFWfLBwT4ijBJqD6DSuPRZ3ieqfxaOamXkT5zb6F7PJdETTOoHmX2TFhYjh
-         lTjI3FAi3I+vdl12RRXUjvH54IUpM68iQxXvVnX+eNeiVemQZ8r709EmHpmtzDXXEYhE
-         xxSA==
-X-Forwarded-Encrypted: i=1; AJvYcCWl1lhil1vZFrJquRrqUGAaMK16ThfuoLcbLQ1ieTW6EM1K8sbJJ4vDNrjyPyNx/e1qmOY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyP7/t8AhajwCwryY0nSUKAYBX7GPBbjGx6ezdjmBcQVpVgRZ6z
-	Oh+pnbKn7eRw2EPF1Qak7B8dwQej4lMEtHGtAOvxlQKEsX2F0V1FCZ5Rlm5z4Q==
-X-Google-Smtp-Source: AGHT+IGUx5vMux/zJWfHt+c3yDFnfCUQDJa3eB9NypPr2jzRRcay61/UDEWpDrYoWje8hXMYDmT3ow==
-X-Received: by 2002:a17:903:230b:b0:20b:9062:7b16 with SMTP id d9443c01a7336-211834e6c2amr288743745ad.9.1731520132170;
-        Wed, 13 Nov 2024 09:48:52 -0800 (PST)
-Received: from thinkpad ([117.213.102.160])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177e8752asm110135085ad.282.2024.11.13.09.48.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Nov 2024 09:48:51 -0800 (PST)
-Date: Wed, 13 Nov 2024 23:18:41 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, alyssa@rosenzweig.io, bpf@vger.kernel.org,
-	broonie@kernel.org, jgg@ziepe.ca, joro@8bytes.org,
-	lgirdwood@gmail.com, maz@kernel.org, p.zabel@pengutronix.de,
-	robin.murphy@arm.com, will@kernel.org
-Subject: Re: [PATCH v5 2/2] PCI: imx6: Add IOMMU and ITS MSI support for
- i.MX95
-Message-ID: <20241113174841.olnyu5l6rbmr3tqh@thinkpad>
-References: <20241104-imx95_lut-v5-0-feb972f3f13b@nxp.com>
- <20241104-imx95_lut-v5-2-feb972f3f13b@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="YA8jo8Fn"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fUyUU3yutqjLmbGgx6UAR7/uiHsSdclwfO6AeuiWTDCHQd9maTqVD4jL1AGme7ihprGv21ESBQlnRpQXfl5hVfCxrKo3L2Ltbisxp4TIeiSbNG1tRAovZt6tHBYHxF6+BWxcn+mhGbaWR9R9Rof7f+fKdtXZ1bnG34PZ69cn6gFHIzOXE7JoLYfaiP1LiFHyubb9qEJL+lMn943y+2rOX3OgSP+1tNoiehGp8DArBCDg8vY0YA/ESm4VW6Z/RssDujgC6T2ytiIhzs0Hqm3SLRA4Gvynk1ArKubSHwe96i3gd78ZYLb0zA2BzLXu448p9eOKhk2Z3CA3ZZ9/5RinPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RRNrw0ti8bR0J+BiM6g3keHBUAKzAgNnxB6RYJasqFw=;
+ b=Ey4xV4Kdj/+nNCWS/m014TXf+GiD+AisR+IxKH4z8K4CLxu1yyMBCNEZxlVY7xcy4VBRREzI5FJthMyNWfyTjMHZ/tJoa5RYL5jTJArpiYW/u9gaW0EOzMi1a/7jbYoI9K+0NnyZEgBwTVSmkqSsRHTeFQtqJJnhp5GwOnJ51J2AZH4HqFAcepOlhTOr4YB0xX9Lov2FT/HzqZpxECBI93xp+4jUjK5U1XmVOKmRI7B6ewXApzzd36mmZJAmzJR5KE4Q2vj2MAjQ6ZWsGzmTldpJsIK3670EmMTORjCOCHF/+bZNdKj9NCRugGzvzVQO1Zs9aPApiqzuxaiWUfBlQQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RRNrw0ti8bR0J+BiM6g3keHBUAKzAgNnxB6RYJasqFw=;
+ b=YA8jo8FntNoCTNGxkC7pBhbgssQ0vFngv+GOety+Vr3AodUPcgm8CdGX8a2+BhooOPwtmLX+gcpN1j3I6fsUR3WWakADctx1f1y7aHzT0tkThaoiJaBesLHnWwhgYOQ3BaOlACAZbLlh+pO9+uigeJwnbQGcZLtC8s9ZK44losfzSOteCXb/JsDHAqfM9yJXzNiyH3AzaH+8Ge30OpMk7r2gwm+U9eWO7xqresmAAHSIm2kZir/UAked3/3mU1eAiaxNk95tAiDjQrKY+JmwKQo8+51z9bCKYCOk8CCIykAv6+S6PESzXe8m2F2TyH5o96usUA5grjwKr9sMPtUZjg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PA1PR04MB10577.eurprd04.prod.outlook.com (2603:10a6:102:493::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.28; Wed, 13 Nov
+ 2024 17:54:55 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8137.027; Wed, 13 Nov 2024
+ 17:54:55 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 0/4] iio: accel: fxls8962af: add fxls8967af and fxls8974cf
+Date: Wed, 13 Nov 2024 12:54:38 -0500
+Message-Id: <20241113-fxls-v1-0-5e48ff1b1fb8@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAN7nNGcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxNDQ0Nj3bSKnGLdFEvjRAsQsEwzVwIqLShKTcusABsTHVtbCwBEON3mVgA
+ AAA==
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Sean Nyekjaer <sean@geanix.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ Frank Li <Frank.Li@nxp.com>, Han Xu <han.xu@nxp.com>, 
+ Haibo Chen <haibo.chen@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>
+X-Mailer: b4 0.13-dev-e586c
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1731520491; l=911;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=FcSX8AL2964+XiRawj4b9wELyZWpvop7uUO54djUL4c=;
+ b=RJgH3IZ1+ILedM5Jwm6kytm+BYmcFRqJXpJev4I3UPJyNDDqQMDfiW7Q5mIDYF78LagtZQigh
+ CstfGjtUXz4ALo8odl2YWT0bV2Yh7NJhDfq65omjE/Gu8tlUQgP1J9+
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: SJ0PR03CA0300.namprd03.prod.outlook.com
+ (2603:10b6:a03:39e::35) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241104-imx95_lut-v5-2-feb972f3f13b@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA1PR04MB10577:EE_
+X-MS-Office365-Filtering-Correlation-Id: 194a2bc5-e5ad-4823-faa8-08dd040c481a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|366016|7416014|1800799024|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZTl6dTBDT1FlT0hNdlIrbVJ6MVp4TEg0S2VtTW5kL3Era2lpYmZWUmZOdzJm?=
+ =?utf-8?B?TWdNZ1J1alI0dzJ3dGhncm56MWY1VTNyck5BRHR3bVFhT1lNNWFZTVRlZThX?=
+ =?utf-8?B?V1NHaFVtRUp0UktFekIxMWxVeWZWeXB1UkNBOUJHVWp5MkFIRFIzSXpEY1NN?=
+ =?utf-8?B?bVJJZVpNWitpM2tmdjMvNW9ybVJkbWRnVDBTOTVaOElidFpXTjhwS2dETEF0?=
+ =?utf-8?B?dUU4cHdlWVdCRDhDQVJaQ2NJTjRENXhKRW5GbElIS05XQjAvOVdnKytWRXRS?=
+ =?utf-8?B?UEYvMENpeFhUL21RL2RpOEFPUUc1TEx3QXprK3ZlNFAvK2VuL0JlK2UyT01t?=
+ =?utf-8?B?RHJ3dHhmcUtxakw0dEJqNEpuZGZ5NWRoM09PY1d0TXdiMHoxdzVMMGJxb3NT?=
+ =?utf-8?B?UEIybGZlSE5oekVOV2N1N0FyUTI1NTZ1ckc0aUxEeG1iSnVQcXlPbnAveWRG?=
+ =?utf-8?B?azgwbXhrRHZYNzZINGdSdVVEeFlESmpySURkVERBN0pBWGlMRURQL0dnajda?=
+ =?utf-8?B?UUJuSDZJQU54cEVmaWJIenBsVTBNekRWTEdUK2FnRUNOUzJJSGZrZWpjR0FB?=
+ =?utf-8?B?cmIvSXV0b3JhTHpvT1BUc1FPYmJMZmR4eUgzb25xa21kSGtieHBrR3ZZdllh?=
+ =?utf-8?B?UzQ4cXF4aHNnY1JqMnlCUEJRWGYyaEhhS21zdlhSZHQwWUUydkpzNzc3bElH?=
+ =?utf-8?B?aHg3ckNmbW4rcmkwT1R6aE1FYWp0VWdCei9IdW1kT0pVekN5RTRwOHBrMFFr?=
+ =?utf-8?B?RGFNNEY5SEs4OTdhUkFPZm4zK0haRWl0RWNaS0Y4QUtWVVk4NXpkcmJDOEs4?=
+ =?utf-8?B?NCtLSXFSM3AraFBpNzVjWHhGUE9UOW5XOU9MeG9JeTVTMHd6Yis5OGVhNTNH?=
+ =?utf-8?B?eGVXZHlzdHZZclFGNm9LaGhvMzlBOTE2ME04clVqRzlNcFB3OEp5TmlxbWZu?=
+ =?utf-8?B?d0JWQ1pmUldUbTZ1RUkyeUxSQWtESEhvUDIweU12b2tlRHdhd05weENLZWtr?=
+ =?utf-8?B?MzU2bFhnYkZpS0UzOU1MeVdtWHRzank2MnU5RzVUcjR6ZFBsVExoLzBsdTJI?=
+ =?utf-8?B?STZPZFo4b0pDYW0wb2VwNzc0ZlFra3JCek5hUVZxVXNIUitSMHJoUjlrdStK?=
+ =?utf-8?B?aGNjQ3hsdytjSXAzWjNmcnFWQmxpUStNNTRYc1Bka2dUSGZoalVSN3FzajdK?=
+ =?utf-8?B?WlJNNTlNaXZsczd0Q3J6ci8vMGpYL2taS0lSanluaEJYd21kc2cvcUdUTCt3?=
+ =?utf-8?B?TlhWQWcrdVdJbWZHUTk3NjhkOWxxSmZ4OGhmSm94UDFJdDEyZ25CTDJnN3NH?=
+ =?utf-8?B?TElaRG1lRCt0ejh1UEszM1FUUm56ZnE0M1F1cGhZanBlT0NNbmwrcEphdWFT?=
+ =?utf-8?B?VWdYUUMySmdDdGdHd2kveURjSE9BTDRDTCtQalh5MHlkeGlJbmkzbHRVRTJv?=
+ =?utf-8?B?bWozOStML0Fkanc1WWxUZ2VjVWJ5eFNIK09wWkc0SFArQ0dVeU11OUZsajZY?=
+ =?utf-8?B?M0V6SVlUTDdrUTNoRkZGZGVueThTREtFQmh0V0IxRGo2Q3dGVlZTYXdKRFBB?=
+ =?utf-8?B?K1IrMlh4dys2enRyUkV3RktQWUVOUldZT1BOWUxCS2xPQllHSWlhYTdHZHc2?=
+ =?utf-8?B?VlRZdkdUWEJoTkZESTFJNXlyU25aWkt0dlhOL0lER2R4MmVCYzZaVHMxZTl3?=
+ =?utf-8?B?NVYwUTYzbzJ4U2wzM3ZwdnowRFpLdS95WE85UExHMHUzYkYzK2RYdHpXUmZC?=
+ =?utf-8?B?RFZiZDJrOGptMjZlMTM5QWt1UzhtTTFXZnF6UnpmV0xybS9uSXNNSWxjNlN1?=
+ =?utf-8?Q?rLbLBuc4CrcdkpiUgG+k+QRCesxMW4xIsjekQ=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(7416014)(1800799024)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SlpPUThzaUE3dkR0VHpKUHRGNDZtbkMxZFFQQnd6K3MvUm5rV0YwbW5yRUta?=
+ =?utf-8?B?VlVNenhiSFNpbHpIanovNThKMm9PdllPZ1NPNFZSKzEzR3IzTUlYd2o4WGxw?=
+ =?utf-8?B?dmVqWUp0dXYrRWdySm0waVpta1ZLcHYzdFdoSjZkL1g4U0lYcDlrMjlIRlgr?=
+ =?utf-8?B?czgxZjJnc3o5OGl3dmNGeDJkQVJrSEtlMXRFNmZ4WlFzb0phTHg2ZE9idnEz?=
+ =?utf-8?B?blFtNTE3RnFqMmVJV3FtVUFDT3FZRTluek4xemM4UGdiSmtoQXFtQmViMVVs?=
+ =?utf-8?B?YXFXTG9MNnZoT0Z1OTI1TVkvOUU3bXNNWTVWT0RKTWJPRnlUZlBlN2wxQXpx?=
+ =?utf-8?B?QmpVNDdZMHdkNUJGdktoZ0xuNHM0WnY0VXczSmpqcVV1cUwraS9ROEdUQUk3?=
+ =?utf-8?B?NHhPNGRWZE1YdWxvN2pWb1FxSGl1WENtZThpRHVSaWY0MWNlUVBWSWJoTjAr?=
+ =?utf-8?B?b05ySEVsZEtqQWJhUlNyaEx6L21QZ1JrVitueFM3dDZYc1JPTy85Q1FJWjRJ?=
+ =?utf-8?B?dExJR3MzUHd6aW5HZC84VEJHRUtpTUdRMHFJUGdzeWJQS3p2UHZ5SkZmUTZU?=
+ =?utf-8?B?RjJYTUt6VDdLUTJCTGlXd254QVRBZEVKd3QxOWR2RHh0L0g2MjgxQnVpdTFs?=
+ =?utf-8?B?Z1FBY2ZaNWhQS3AxVHRyUjFZSjNsNmNUL0l4K3pPT0xSYisxS0Y1OFZCaGFP?=
+ =?utf-8?B?RWQ2QmQyRjRRa25YamlTM1JyYlQ0T3FsQll0M0xUY29SU1ZqSVVWK3pkRGY0?=
+ =?utf-8?B?bmdHR0pZcVRPNkxWeWd2dkNkbkZ5enFRSVRNNC9sY1BxRUFOeFdHQXYwVnl3?=
+ =?utf-8?B?ekdRNkpFYmVZb1lMRTYrNVduUWFFbm92V0ZmV0dTbmFId1Q1TTEraE9yRlFw?=
+ =?utf-8?B?dGtzZldPT2xLSnFXUUwwWFk5QVBXQWUxOHdBT3pOdng4U1FKNzNsTjVGN1ZK?=
+ =?utf-8?B?MW5tLzhEOFpad1JiUXFDUUtnSm9pVytwbm5pWm5vdnh3ZjZsNy9RaHdSNWlk?=
+ =?utf-8?B?QnRRUWorMks2N1pHZk1ZaS9uUHUyZEEzajdkSHc1MHZWenpEMHVEa0xNOXJB?=
+ =?utf-8?B?QUtlbnpxRGZGQ1NTYWRaL2xKVWxzWHVJNnluZFlUM2dHUW5TUnJ6NUdEMktL?=
+ =?utf-8?B?aUhPYjNCUTRoSjlPL1J6R1NMWHU4Vmx5Sk5CQTFKOHJJZUZMVTdBenc1M3VT?=
+ =?utf-8?B?c0lFWW9BRGdnM1ZGTUtUcUJFVVJrVkQzbjJrREFQQ1c0c2M0Qi9Vbnk3enpT?=
+ =?utf-8?B?STlld0k1MlRSNHd0d0Q2ZVJWem9EU3pxdFJYYXF5ZGU2R3FTdjFOWUhFVnd5?=
+ =?utf-8?B?V2t3SDhVTGo0N3oybU5naVFTRjI4VG5ZQ2lQN05iRzUxUThKekNaRklnbTYz?=
+ =?utf-8?B?Nm9reHlYTkFtUHlwaEJ5ZUpEMVZIYXJ3OVBwRU12N20zUXQrQ1h0SC9jNi8w?=
+ =?utf-8?B?ZG5PZ2tYZGJQZldzY05xTFVzRzJueXRiTjRJQjdCbVJyNkNnbDFsV25RUi8w?=
+ =?utf-8?B?R1IwTDdsZlFmNjgrWlFwVXUzVzlNZ0dMUWQ3RDBYZXFjZjU2eXBtbTc5OTlZ?=
+ =?utf-8?B?UTNwKzlxOG5VTjE0OVFubFFFcEhhWW1ZYmVlTGJiazlZWndsLzJYS096emFa?=
+ =?utf-8?B?cy96R2xZa2dFNUtKaUlxclkxT2ZoOEVkTCtGUlcvUm1sT0ovbEZhMUtEVmNU?=
+ =?utf-8?B?WUxWYVg4SFNhQlFpclZSaEpDcHhsQm9rWlBIT01XYnRDWlh0THd6ZnNSQlBJ?=
+ =?utf-8?B?b1E0dENOQWc1dTdMWmRDRzlWQVRMUzhDVVc3SHI0QzdCTlRWeXRVS3I2bC9j?=
+ =?utf-8?B?cElOaldyVC92VjZYTkZTajJvU2trcktxbWlmZzd5NHhEUHhIOFdYUkxYQklo?=
+ =?utf-8?B?SDFMUHZSMFEyQ05YNG5IVUlsa2I2cEpxc2pDa1VCY09QKzNBMFpxczA1cUNF?=
+ =?utf-8?B?R2h1K0ltVDFydmRQc1dFYklaUnhxVU4yd2Z1OEx6UGdzWjBOUmxvRHU5ZE4z?=
+ =?utf-8?B?UVk4Z1lwWTZldjd3REVLQllPQVcveGxmMXVma2ltS2lCMk5ScFdoNTlITFYw?=
+ =?utf-8?B?ZHBtT3BUNDJXQkNaY0xmUmlJWERUdmpMSEc5eXJpSmo2emJuY2wva1pqdENI?=
+ =?utf-8?Q?ji9ZfCKN/Qh+ATTq9bkb960t6?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 194a2bc5-e5ad-4823-faa8-08dd040c481a
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2024 17:54:55.3809
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7q1eJv+0wZejt7N9D0K58C01G0mfRwX3NJ2SzUV4qYQTtmjjQujTRCiXgAqYyGqVvS3tmv1b14DzKZHl4gvMXQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10577
 
-On Mon, Nov 04, 2024 at 02:23:00PM -0500, Frank Li wrote:
-> For the i.MX95, configuration of a LUT is necessary to convert Bus Device
-> Function (BDF) to stream IDs, which are utilized by both IOMMU and ITS.
-> This involves examining the msi-map and smmu-map to ensure consistent
-> mapping of PCI BDF to the same stream IDs. Subsequently, LUT-related
-> registers are configured. In the absence of an msi-map, the built-in MSI
-> controller is utilized as a fallback.
-> 
-> Register a PCI bus callback function to handle enable_device() and
-> disable_device() operations, setting up the LUT whenever a new PCI device
-> is enabled.
-> 
-> Acked-by: Richard Zhu <hongxing.zhu@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+fxls8967af and fxls8974cf are similar with fxls8962af, only change ID.
 
-Some minor comments below. It'd be good to get Robin's Ack for this patch.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Haibo Chen (1):
+      iio: accel: fxls8962af: add fxls8974cf support
 
-> ---
-> Change from v4 to v5
-> - rework commt message
-> - add comment for mutex
-> - s/reqid/rid/
-> - keep only one loop when enable lut
-> - add warning when try to add duplicate rid
-> - Replace hardcode 0xffff with IMX95_PE0_LUT_MASK
-> - Fix some error message
-> 
-> Change from v3 to v4
-> - Check target value at of_map_id().
-> - of_node_put() for target.
-> - add case for msi-map exist, but rid entry is not exist.
-> 
-> Change from v2 to v3
-> - Use the "target" argument of of_map_id()
-> - Check if rid already in lut table when enable device
-> 
-> change from v1 to v2
-> - set callback to pci_host_bridge instead pci->ops.
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c | 176 +++++++++++++++++++++++++++++++++-
->  1 file changed, 175 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 94f3411352bf0..e75dc361e284e 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -55,6 +55,22 @@
->  #define IMX95_PE0_GEN_CTRL_3			0x1058
->  #define IMX95_PCIE_LTSSM_EN			BIT(0)
->  
-> +#define IMX95_PE0_LUT_ACSCTRL			0x1008
-> +#define IMX95_PEO_LUT_RWA			BIT(16)
-> +#define IMX95_PE0_LUT_ENLOC			GENMASK(4, 0)
-> +
-> +#define IMX95_PE0_LUT_DATA1			0x100c
-> +#define IMX95_PE0_LUT_VLD			BIT(31)
-> +#define IMX95_PE0_LUT_DAC_ID			GENMASK(10, 8)
-> +#define IMX95_PE0_LUT_STREAM_ID			GENMASK(5, 0)
-> +
-> +#define IMX95_PE0_LUT_DATA2			0x1010
-> +#define IMX95_PE0_LUT_REQID			GENMASK(31, 16)
-> +#define IMX95_PE0_LUT_MASK			GENMASK(15, 0)
-> +
-> +#define IMX95_SID_MASK				GENMASK(5, 0)
-> +#define IMX95_MAX_LUT				32
-> +
->  #define to_imx_pcie(x)	dev_get_drvdata((x)->dev)
->  
->  enum imx_pcie_variants {
-> @@ -82,6 +98,7 @@ enum imx_pcie_variants {
->  #define IMX_PCIE_FLAG_HAS_PHY_RESET		BIT(5)
->  #define IMX_PCIE_FLAG_HAS_SERDES		BIT(6)
->  #define IMX_PCIE_FLAG_SUPPORT_64BIT		BIT(7)
-> +#define IMX_PCIE_FLAG_HAS_LUT			BIT(8)
->  
->  #define imx_check_flag(pci, val)	(pci->drvdata->flags & val)
->  
-> @@ -134,6 +151,9 @@ struct imx_pcie {
->  	struct device		*pd_pcie_phy;
->  	struct phy		*phy;
->  	const struct imx_pcie_drvdata *drvdata;
-> +
-> +	/* Ensure that only one device's LUT is configured at any given time */
-> +	struct mutex		lock;
->  };
->  
->  /* Parameters for the waiting for PCIe PHY PLL to lock on i.MX7 */
-> @@ -925,6 +945,152 @@ static void imx_pcie_stop_link(struct dw_pcie *pci)
->  	imx_pcie_ltssm_disable(dev);
->  }
->  
-> +static int imx_pcie_add_lut(struct imx_pcie *imx_pcie, u16 rid, u8 sid)
-> +{
-> +	struct dw_pcie *pci = imx_pcie->pci;
-> +	struct device *dev = pci->dev;
-> +	u32 data1, data2;
-> +	int free = -1;
-> +	int i;
-> +
-> +	if (sid >= 64) {
-> +		dev_err(dev, "Invalid SID for index %d\n", sid);
-> +		return -EINVAL;
-> +	}
-> +
-> +	guard(mutex)(&imx_pcie->lock);
-> +
-> +	for (i = 0; i < IMX95_MAX_LUT; i++) {
-> +		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, IMX95_PEO_LUT_RWA | i);
-> +		regmap_read(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA1, &data1);
-> +
-> +		if (!(data1 & IMX95_PE0_LUT_VLD)) {
-> +			if (free < 0)
-> +				free = i;
+Han Xu (3):
+      dt-bindings: iio: accel: fxls8962af: add compatible string 'nxp,fxls8967af'
+      dt-bindings: iio: accel: fxls8962af: add compatible string 'nxp,fxls8974cf'
+      iio: accel: fxls8962af: add fxls8967af support
 
-So you don't increment 'free' once it becomes >=0? Why can't you use the loop
-iterator 'i' itself instead of 'free'?
+ .../devicetree/bindings/iio/accel/nxp,fxls8962af.yaml      |  6 ++++++
+ drivers/iio/accel/fxls8962af-core.c                        | 14 ++++++++++++++
+ drivers/iio/accel/fxls8962af-i2c.c                         |  4 ++++
+ drivers/iio/accel/fxls8962af.h                             |  2 ++
+ 4 files changed, 26 insertions(+)
+---
+base-commit: bd05b9a700c10473c2f52bf12c5c5938c30e80b0
+change-id: 20241113-fxls-d93a888889f7
 
-> +			continue;
-> +		}
-> +
-> +		regmap_read(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA2, &data2);
-> +
-> +		/* Needn't add duplicated Request ID */
+Best regards,
+---
+Frank Li <Frank.Li@nxp.com>
 
-"Do not add duplicate RID"
-
-> +		if (rid == FIELD_GET(IMX95_PE0_LUT_REQID, data2)) {
-> +			dev_warn(dev, "Try to enable rid(%d) twice without disable it\n", rid);
-
-"Existing LUT entry available for RID (%d)\n"
-
-> +			return 0;
-> +		}
-> +	}
-> +
-> +	if (free < 0) {
-> +		dev_err(dev, "LUT entry is not available\n");
-> +		return -EINVAL;
-
-ENOSPC?
-
-> +	}
-> +
-> +	data1 = FIELD_PREP(IMX95_PE0_LUT_DAC_ID, 0);
-> +	data1 |= FIELD_PREP(IMX95_PE0_LUT_STREAM_ID, sid);
-> +	data1 |= IMX95_PE0_LUT_VLD;
-> +	regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA1, data1);
-> +
-> +	data2 = IMX95_PE0_LUT_MASK; /* Match all bits of rid */
-
-Please use 'RID' in comments everywhere.
-
-> +	data2 |= FIELD_PREP(IMX95_PE0_LUT_REQID, rid);
-> +	regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA2, data2);
-> +
-> +	regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, free);
-> +
-> +	return 0;
-> +}
-> +
-> +static void imx_pcie_remove_lut(struct imx_pcie *imx_pcie, u16 rid)
-> +{
-> +	u32 data2;
-> +	int i;
-> +
-> +	guard(mutex)(&imx_pcie->lock);
-> +
-> +	for (i = 0; i < IMX95_MAX_LUT; i++) {
-> +		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, IMX95_PEO_LUT_RWA | i);
-> +
-
-Remove newline.
-
-> +		regmap_read(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA2, &data2);
-> +		if (FIELD_GET(IMX95_PE0_LUT_REQID, data2) == rid) {
-> +			regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA1, 0);
-> +			regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA2, 0);
-> +			regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, i);
-> +
-> +			break;
-> +		}
-> +	}
-> +}
-> +
-> +static int imx_pcie_enable_device(struct pci_host_bridge *bridge, struct pci_dev *pdev)
-> +{
-> +	struct imx_pcie *imx_pcie = to_imx_pcie(to_dw_pcie_from_pp(bridge->sysdata));
-> +	u32 sid_i = 0, sid_m = 0, rid = pci_dev_id(pdev);
-
-No need to initialize sid_{i/m}.
-
-> +	struct device_node *target;
-> +	struct device *dev;
-> +	int err_i, err_m;
-> +
-> +	dev = imx_pcie->pci->dev;
-> +
-> +	target = NULL;
-> +	err_i = of_map_id(dev->of_node, rid, "iommu-map", "iommu-map-mask", &target, &sid_i);
-> +	if (target)
-> +		of_node_put(target);
-> +	else
-> +		err_i = -EINVAL;
-> +
-> +	target = NULL;
-> +	err_m = of_map_id(dev->of_node, rid, "msi-map", "msi-map-mask", &target, &sid_m);
-> +
-> +	/*
-> +	 * Return failure if msi-map exist and no entry for rid because dwc common
-> +	 * driver will skip setting up built-in MSI controller if msi-map existed.
-> +	 *
-> +	 *   err_m      target
-> +	 *	0	NULL		Return failure, function not work.
-> +	 *      !0      NULL		msi-map not exist, use built-in MSI.
-> +	 *	0	!NULL		Find one entry.
-> +	 *	!0	!NULL		Invalidate case.
-> +	 */
-> +	if (!err_m && !target)
-> +		return -EINVAL;
-> +	else if (target)
-> +		of_node_put(target); /* Find entry for rid in msi-map */
-> +
-> +	/*
-> +	 * msi-map        iommu-map
-> +	 *   Y                Y            ITS + SMMU, require the same sid
-> +	 *   Y                N            ITS
-> +	 *   N                Y            DWC MSI Ctrl + SMMU
-> +	 *   N                N            DWC MSI Ctrl
-> +	 */
-> +	if (!err_i && !err_m)
-> +		if ((sid_i & IMX95_SID_MASK) != (sid_m & IMX95_SID_MASK)) {
-> +			dev_err(dev, "iommu-map and msi-map entries mismatch!\n");
-> +			return -EINVAL;
-> +		}
-> +
-> +	/*
-> +	 * Both iommu-map and msi-map not exist, use dwc built-in MSI
-> +	 * controller, do nothing here.
-> +	 */
-> +	if (err_i && err_m)
-> +		return 0;
-> +
-> +	if (!err_i)
-> +		return imx_pcie_add_lut(imx_pcie, rid, sid_i);
-> +	else if (!err_m)
-> +		/* Hardware auto add 2 bit controller id ahead of stream ID */
-
-What is this comment for? I don't find it relevant here.
-
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
