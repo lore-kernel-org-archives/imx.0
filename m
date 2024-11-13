@@ -1,47 +1,47 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013043.outbound.protection.outlook.com [40.107.162.43])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013010.outbound.protection.outlook.com [40.107.159.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A782206055
-	for <imx@lists.linux.dev>; Wed, 13 Nov 2024 20:11:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF1A1662E4
+	for <imx@lists.linux.dev>; Wed, 13 Nov 2024 20:17:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.10
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731528683; cv=fail; b=XZOfCQ7M6HSlOaBhgotklJ7ICvCNN0Z/UGp/A3NOpFLyH4oxOJ3iNwsuDDZhjf7FsmDcvqjo5VHYMpIMUix74K245Rh4gQQC/6uJ7Z96HSeyqpxDWREqQYlTTnBCI+pbcrTVxtsvIXFgnma21IgF85CWCh43FrUPqIUTuMPhH2o=
+	t=1731529039; cv=fail; b=r/BUnTA3249o7vAJOjVU2kdmF6i0mGh9VBNMHP2oRASf1YRMDUK7LpOjFZJVfg0xvudgtJTLwYCBuq/QR8RxL3yjx78d3ifuxA7wr7D5uEkIvOxvMyzdIoUHXDOtXN0g3hfB1aykwelevI93VczpMW7Ewl/VBqjxX2l6FCcgtRs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731528683; c=relaxed/simple;
-	bh=1fWI/1neNwLKs2dZnsZnFqRjnmKe6GW8iBkMYVCyj5I=;
+	s=arc-20240116; t=1731529039; c=relaxed/simple;
+	bh=ZemJC8YJ28mEqOEQxYgY8hwWqAP1JgyAT/LuOoc7hr0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ptWexVSiqkVbJeu43FBOdEUkOhC4IDTW5WFcvYcroWH6dU6AjlxU/MXgB4qEmkXUs4EZM/nggqXxw4n7vv60tpIlWmLFG9hI2EPFGnnybaNnJhORn2+aOh7kPLQCLAvvyktcQJGIf4igGAFtnxVm0pDCn+TloPvs1sb4wbGtebk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BECtwS5N; arc=fail smtp.client-ip=40.107.162.43
+	 Content-Disposition:In-Reply-To:MIME-Version; b=t8bmdKewqzqlqA7KPssszCXWx9IONCdtiEWRq8BMGqYCaOYN1ttPE2B1i0z6gv7scPYEdK+OhPaYEJ0RpdUan41o0fgcu2ko5f1stBWlz2a5IMsCMLI7Irr2CQp4TNP7YXiI3uWsKBjAAfkwjQRPclUn5oIS0qZ8yyYTQUHOR+A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nrnizcr3; arc=fail smtp.client-ip=40.107.159.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BECtwS5N"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nrnizcr3"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=A6YW8nCT25t6wQ101EDXxDcIY9T4ODfwUpVP5I4m3BL2NmVLpQuOjHKpr5DGHozg8u5W8hVtkp2lnP7aDq2qsd+YxcDWwPfoK0A6lasrgh+8URfKBbe0ODibh28pCSdL1+w0tWeVzWZ+G8HZNyJsCicRh6e86WLj23miNKpHBgPkvcHur88NX3gJG94ObSSf/JFFBYZq0QBnfc8IKL+6gdEtE5NWLSiTv62GQgPf8dOSTXB4YeMvwQyR7M6rmroPEawTHX7rW12M/jrLCAv3qzXkorQ2YPUoQ17XMg/K0TghxK7XYO3P6cui9gBqcqIZrOzTxaM9CHc3PyPlqB2vMg==
+ b=r5ww4i4T2/cEYAp1OJ9PtOWIIykoaoUespj8l6j+uo+EDqaj/bnJgU6oaaN0aKVfYnyZN9MT81xyZqIc2/2rSRZI92OIXQ6lmfEiceBZikeKo+d5H/npOegrgvBZEcGn161O3f+lZ2MmpBn1mEJOqxERcbSDXuZWc40FwDYGSvJZ1s6tQNOFH0zG5iC2L1OT0ggBlSETTe7dRCoehtnwhy+SBZ3QlO5hir809vSzt88JrLXP/lv/RB9/kPT+sR3OMyzDl5qIGMQWaCI38q5QkYs9IXzwVSnL+emosBRvwRWC2Qv0O3jpyrBsToevqmSyPI4m1DHsBwcLIXLBcdtsQw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/8q1rVcEvyIL8kRP+tFAhRrRuRcUa5GYn+4TrsgfwkE=;
- b=FgVb/2QkpZasRl2fmBaCvXb/vtxj5twLDlYk/DrOPLNEVVQDZnjexM1lMbspB6GVuvOHK5PaShgfkEJxHfpMbU+/5g7iFb7X7DYgR7e5ZTBQGNcLdeiWtkrCmOjS2P2doPn8vdND+EPX1XvFV2G+rpqBZXiYVbmz4+RlSHgJQCjVeHJvWJ1JPJTjGBOorwKIGE+Jkfa3yt+iaSxZ4Uk26uI0HpLZFo4tpC0z3hpP3nkcYph1IkBqwpg09ybT49yVES+muGiDdVKHiYZGlbeMBm9SFo8ZCw//06DGL3drZFb4eNHqDPVsnvOmiJHLbe1wqfQsWrQRs9ytUIbs5sQghQ==
+ bh=j9PldUhApECkBw0gCugSGYgai4VYST1gyo5eifI3R4A=;
+ b=p/KGRBHu0s1GjUdVgK1Y0Jvy8a46syx1L2U41FQ4t0xsMy6+vETs6Uop3JbLH9jOB7Iw1b7XPuuC+5W1hc7sUAHOCqqS7APMh29zO9hNLf329wMjx1PcPpDB+YhVtO7KiTxc4bBcsSZj0uPuvep+Hvrnht+Rt2NcJNQkMZkzJ5BPOYrsnU/Ia61yaed7Uqhvq/w7CgwmehLYflzqh3Nf+lRZtNyFgzszT6UN/C8Nv2l12tbiZVu30lI8KaJOH1qBqHX7SjiWwQpQ6NODdOpXyyxqnlwbPq55pWqzpQ52g3GgHqYf+SDUT6vPAgobzxyemR0fv6pY9cK+B9vlwbUcnw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/8q1rVcEvyIL8kRP+tFAhRrRuRcUa5GYn+4TrsgfwkE=;
- b=BECtwS5NauS8FEvMFjRgEFKCSw+WRBCEd81YIAEQAWuZ3nig/2GavQXY1E6x+KPyVBmTHfTZRTq7ql2vssk7JfsyoIXo3NCT6h45hvpHm9l0E4dUn3N4tCSBEiqsvdSp3ccv1eFV7GFtPobceZN2uxJ9XbmmbFi6vkDzBiae8lDm85VD7JnM4gKDrjdodsiNXd+eQ4LKXmUw07CiF3UlRTcpk35O2mAIMRm2MaRW+FaJsvlkkcowgR/oUe8HrgAtK2IfSA58v/hCHJvId2ougNqO4jCtRrXzInJM+sKP9nhUp42bi4K9XYmHTc2OYC3HbCtZR/ILTc8t0MaBnELMfA==
+ bh=j9PldUhApECkBw0gCugSGYgai4VYST1gyo5eifI3R4A=;
+ b=nrnizcr37TNt2IYF1rjdiOGCa9eIriu5R61aGYoFmqqhF64S7AobcZdvKWIhGeA7+Z3nCG52yuWyMWgKFs+wtLHFgYbbyz3q8M/tY49X+Ww2ekTlI/PwYnMkW5EcFO5Jn8WksorTLewADF9P2W6d4sH2lL/7UPGuPEScsBu3BuJZWn709j3wUcn/bT3BeCxzsmsjruwUSGnHJ0ey68q0jc5HePAs4Ga/sqdU5QCcAgaTl7bnxjRC6G9mFrjnsXy+nulqamBTenVaGKAfRRjcDCDW2wIVdLWvT4nqviEg2z7RTzUb8dimOp7mF7S+iAnxqBHVUr4ylejYPHAK0KNA6w==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS8PR04MB7735.eurprd04.prod.outlook.com (2603:10a6:20b:2a5::24) with
+ by DU4PR04MB10647.eurprd04.prod.outlook.com (2603:10a6:10:589::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.29; Wed, 13 Nov
- 2024 20:11:18 +0000
+ 2024 20:17:13 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8137.027; Wed, 13 Nov 2024
- 20:11:18 +0000
-Date: Wed, 13 Nov 2024 15:11:10 -0500
+ 20:17:13 +0000
+Date: Wed, 13 Nov 2024 15:17:04 -0500
 From: Frank Li <Frank.li@nxp.com>
 To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -56,16 +56,15 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
 	linux-sound@vger.kernel.org, imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/5] ASoC: dt-bindings: audio-graph-card2: add widgets
- and hp-det-gpios support
-Message-ID: <ZzUH3n50Vw6RhmNJ@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH v2 4/5] ASoC: SOF: imx: add driver for imx95
+Message-ID: <ZzUJQCeWclsrr/lr@lizhi-Precision-Tower-5810>
 References: <20241113195240.3699-1-laurentiumihalcea111@gmail.com>
- <20241113195240.3699-4-laurentiumihalcea111@gmail.com>
+ <20241113195240.3699-5-laurentiumihalcea111@gmail.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241113195240.3699-4-laurentiumihalcea111@gmail.com>
-X-ClientProxiedBy: BYAPR02CA0034.namprd02.prod.outlook.com
- (2603:10b6:a02:ee::47) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <20241113195240.3699-5-laurentiumihalcea111@gmail.com>
+X-ClientProxiedBy: BYAPR07CA0008.namprd07.prod.outlook.com
+ (2603:10b6:a02:bc::21) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -74,114 +73,539 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB7735:EE_
-X-MS-Office365-Filtering-Correlation-Id: a36a0ff7-377b-4363-f621-08dd041f5592
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU4PR04MB10647:EE_
+X-MS-Office365-Filtering-Correlation-Id: e324e30c-bde5-4e30-425b-08dd04202923
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|52116014|7416014|1800799024|38350700014;
+	BCL:0;ARA:13230040|7416014|1800799024|52116014|366016|376014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?b+pHmqbNLSoW4PjcrxwycF4y4EOwXiALxhw6XMxipqsGxmKq8gPL3LI8olul?=
- =?us-ascii?Q?LZ3/KDcD9pRGOVNAZLdGsIWsvXrEjcvEqi3OzhhzvGRptE7XX69QqjfLHgNc?=
- =?us-ascii?Q?VmrjQWBsIggHDgg4ypF+kETFro2v/gACx2No6C/HY7ZcvpgOncXt2ezJppRw?=
- =?us-ascii?Q?b+anMKOjohRHOAsQbRQ3isZSuE1RMqcOKYRM28skH0rPU7/Dm7/4lBOuSbej?=
- =?us-ascii?Q?nmwvGZ54q5A+B2b6srVoOrTV1+5Mj82Uy+CZN1uRzmfZz4koPyoat4XXKGJz?=
- =?us-ascii?Q?EsnvaosTU8AXyomzo1bWu5K3KEVCpwP1wPAboOF58kgFdt1cl2oti/CH2j/B?=
- =?us-ascii?Q?Z6ktJImfzhANY2O9Clku9tE6VJdC7vOlkJfd0OR68Ja/pfXVigY8ckhQ/bvq?=
- =?us-ascii?Q?2c4Zg4U5qqYcd7fdLTbNe+8ex8M2Yq6i6Qra+sWeDJvgtJbSVTNADSnv0KK/?=
- =?us-ascii?Q?p3wuBMAj5FJ3nXqD9YaUSellEEtZ6MOI/DuAQ4iTd2zZA1jZ94EtoS7bdkqZ?=
- =?us-ascii?Q?pKWTVDxfscDjIbZ9kL58CXHgsBeh9c1532FdK3S/UDYEZF97wEYp3I89Ch9C?=
- =?us-ascii?Q?Mt5ab4X2/Zc+r6g46Uw8mF1sZHuqzyOHgK9/0pnE4Tt5+FLO81iiiH9LHlY3?=
- =?us-ascii?Q?7xwHY5w1X8ZWC4y/1megHl2hksP/6yGKU1xvf3uRys/YAKK/2NSD2m+ZnnYG?=
- =?us-ascii?Q?tZsi3hvxYabxSuC5hkvE5hpEipa9gjR7PJHH59mMgDG9VEwTM68N0qufaaOA?=
- =?us-ascii?Q?lMRg6amE5tDoq89HgUiTdrERkoKGROZtTJgVYv984oIVJJxmcm4UjcnUfBrA?=
- =?us-ascii?Q?BFXrmB1/cDt5zv+7BJk+mQFinsbNa2R/Oi9HnQRIkf0+jyhLUGC2WQ+xBuBj?=
- =?us-ascii?Q?bxf2snCc16Z+K0gGLuOmoJd+Hc1kwRK2c6gJnMDegZe0WUjbzZuGqJwvpdEV?=
- =?us-ascii?Q?DmDQOdvm+mZfye5gtsUDsQ1Z0DJ8kZVoWFxuQLXM+/Zt0ZNOtyOq/NLQS4Ip?=
- =?us-ascii?Q?J8i6PAAid5nAzNRqOtL1xiLgDuzxuIl7a8BFFIK00D1ca1SyBponvAniTzaD?=
- =?us-ascii?Q?6A74O6ERdiNOFRnqynO83hnkwS64NuY+XxoNjsWRDhTgzSkQnUyyt7UE4Lex?=
- =?us-ascii?Q?q4y5uLZrjdXuYIL5GVLX+t8eFn1CRw29a+PniEGJqo2v5iKnwSSG4Ihu3GwO?=
- =?us-ascii?Q?+4ns5tmX9AFVhN3n6a+V5xBcOr0/w/ntrMUmfBDya5FfTUnkan/4ogMnmqwo?=
- =?us-ascii?Q?Z3PIifhb31p0QUMfuPXlzogYmwXkgBC65s2beup+kUXoC1fJlio4iwrTisMQ?=
- =?us-ascii?Q?4UxNikXU+3zO5p/R7VXru7Dg3XDjG8LBHiMDrNVWnC4/G/+MPeslka21egL6?=
- =?us-ascii?Q?x3Rgg0Y=3D?=
+	=?us-ascii?Q?Wbxqt6CA92Aa63bNKb8oPFQZ2zLaRmrJMt96h/9QUWDclcuA09bype7kn0r6?=
+ =?us-ascii?Q?Jlt6brm6mt9OTCggm4urbcqCX/Yv0/UvXtlor3gLMRulE8OrD3tCG8d2R89A?=
+ =?us-ascii?Q?lVjYKRrruVk7dSZYYE+OX0je5hQjrdt45+Iz85Nya41bbgqhXt8bc9V5sXWH?=
+ =?us-ascii?Q?XL0fvzvqUFUAHvs8boqDR9zlFGcVwUqHezA6CVfUddOUsAhOonS+Dx1Su1xo?=
+ =?us-ascii?Q?rnt3Z/4TMkOplAJyDTNpam2VrGBwZXnAuQDJ8Hi6XRvbWKFWzLsP9ZLjxyBb?=
+ =?us-ascii?Q?sjFDZoycvMs3FxI26ww96PV+vIzWJhB7m3bR85ez12aqUqisdW649txUNtfI?=
+ =?us-ascii?Q?rfDZFBWMVNhuEz/as4670SDNbeshitzQykivTHmGxR0kdTdrnNtOCKB3Wlfd?=
+ =?us-ascii?Q?m2w8wp2s230gEnS5cNhbHzEymzLNdPmKJ6mJkgRjDqvmFW+64DiAnkb8tN9V?=
+ =?us-ascii?Q?TNgZ6deriAAIaSsr05YO69P0UvKH4EmMsTrCTwnxfaxcmxNWUNW0C4/8obKO?=
+ =?us-ascii?Q?BRIfSBqufeTKFXIiH+GKawclxLBMIoNsh9S6LuiNgwduXoZuGdX+rFK97cdg?=
+ =?us-ascii?Q?0ShubulBhuGuezVpt5qN4G20VEurpdOodIJTWhg9DKm6L0eD/kixrXeGD6CT?=
+ =?us-ascii?Q?uzMCG5aJcYYvrE483BdRAJEyvRkznHWfvoC9VBGaz5+mYXaREiNSMVr++Qwq?=
+ =?us-ascii?Q?ezH7MhRqlz+3O4PbriAF4kNApmEHy8rrQ3MsKAwp5//QEB1JPOXO6XDzKWnr?=
+ =?us-ascii?Q?Bq9vq3SxMoyF5jkQ4ljPTwBi/ftRmREs3jjTT9HOx7btEX6REqYF7qB+yQtp?=
+ =?us-ascii?Q?lAzzOXyHCQ8ioHxntf5wAUsznGGgV5whqxDywmzSQktfZ0G/feZ9MmeyqHW/?=
+ =?us-ascii?Q?QljS8wCsai4XjNpCn0M1ONjOITV1Tc38WSXh69JiECJ4vOP0Pn+aQRIAY36e?=
+ =?us-ascii?Q?3GUhwAHmKJYQqz62sJfnuTQQlIHeFQrMnS2KD1eqT0BQcUO2m4j+3z7R4f9F?=
+ =?us-ascii?Q?+hoXgDuJ1W8qPl4LqUb4vEvy3D0Z2g4R/DvyUpbwcMuFFUIM+wcJOjwC8TBd?=
+ =?us-ascii?Q?62ceUaBEbP4okhNSAIYvjELHlLtE//8gGQjRIvpZEIlD4EJaPPbXdrQ+Mzxq?=
+ =?us-ascii?Q?5FYrqJFEC5M8PIntw3gf44rQuIg0zruFo5X4SZt1qFj1AFKuFthXxVKsKkLR?=
+ =?us-ascii?Q?IpetWtQzzHVYM8PV0gA+OxBKf3gksDXB1jt6TodsY3HnxtqrSsXRZXgfWSdT?=
+ =?us-ascii?Q?5kcd+dd3A1r48Jajx9MP1s9NFOBDPcpgkTNei1H5/9qIqI1nL3C9rePOOpox?=
+ =?us-ascii?Q?oop5C1EqyNEt6vQNSk2+pqFqtfstxpNySX91n09Jo5sMAbyQ2eXDaiOW5gn2?=
+ =?us-ascii?Q?XM5Z/aw=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(52116014)(7416014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(52116014)(366016)(376014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?fknncCAxC7sfueuieC6n5idYSgRlsTOX8aiE/bq8U4XBslObqj2mzEy1Wa1m?=
- =?us-ascii?Q?HGQszCPEAi/Tzvb8K7m5NZCgOMtzLDybOpX2DAKFNw/PqJ8OifhZ/Jl8PQmk?=
- =?us-ascii?Q?TL9wZ3LzJo6RJ52ZiJcyjyNlYRNB6E7MULm28p2Z5RUX0wxp5L1gt0Qbcpon?=
- =?us-ascii?Q?LGKVHSq9eulJU/pHQRhcpzU8SWKi19q0G0ldvUcW4dN+2kh2wc3QsRTILNBU?=
- =?us-ascii?Q?159rleU9if4UgtJpJC+DInZhF/E0G2P3+62+i+DFiO1AAfirJB9nN5ILOHOb?=
- =?us-ascii?Q?fF9UkdhtZkwQa0xkIrcvFvQrizB56ofcQkbxhhbhWxeg4M3hGVIH3aczW16N?=
- =?us-ascii?Q?FbFqjgv42EYPj9FKk1R/lm1eU3YJo417iLy6VixegHGW9Cb/UpzWax7zQu0m?=
- =?us-ascii?Q?Hci6vM0im1+5jlxgN9kgsqLdc/BaoDxE/DHW9+W7rcZD0DGPdiUcwpP4z8OO?=
- =?us-ascii?Q?MRZsbUtb01FG+3k2k0ruuoRXNakjGiGYzAS06t1fbgpQbG1MfiBebV5dHzSe?=
- =?us-ascii?Q?5196ToCdYbrG831QVpUm01VCdf9PLhAVwLGNLCe7XrnH1ZaKENtOK0hdSsxq?=
- =?us-ascii?Q?temXawL+eDYgYv6APDp0MyNvBpTIadFVqVMCRE5AF4+MGc0rbEZ6YLZou9YK?=
- =?us-ascii?Q?5B9U2F/y1jpGyoYv3LTReN8ZW4yrbTbBmNZahRK3/wHrMtaRsl/ool53v7Tu?=
- =?us-ascii?Q?j+VrnYbD34Bxfek1QI4wN0LjfumDb6eQ2beKAkwrHuc3oQTAM4gOEWkVAzO/?=
- =?us-ascii?Q?ULM8K9mcyF9iH4mt/qg2gswgqR7mi9GbfULUselFcI+JM+UqBMfH9Zpf9Om9?=
- =?us-ascii?Q?wbJR7IA3vMwYLdXMrsPEG0IAeVGM9Xm5mNy5QY8eODcUb4lhxXgJWSYl3Y6I?=
- =?us-ascii?Q?rtwcV9Pn4OX9vGko+63CnmMv8fb10iOQbM9ahvKwPJHZE14a11Z6cIuCk60e?=
- =?us-ascii?Q?BqfTxttCu7CeiZDO9wctmem+H29UDHOeh9dTkOQW6jP4ph8CThvCJ2S1ju5Q?=
- =?us-ascii?Q?eTa1sdpFwG4BO1qeTczFaj/DBLaEbgjU9w6lnyDbZjUqdfVZKN9kOkq/iKaD?=
- =?us-ascii?Q?ZFlPjJW4nHrGMUsBBOcBGVBx8umgE6dAIjHSepeJD6ri0lRmeMN6GF3pNbba?=
- =?us-ascii?Q?ZyOVMUAv2zXdsGyiX8ir/EvMPDlyuPMRaUKaXnmzJOMPGZd5ybFW0QAVFv88?=
- =?us-ascii?Q?Fokmu6G5+20j6RtBdEA/EXallbuza9Bcho+sDECDxwlerOz9GSSUlRRMwiUd?=
- =?us-ascii?Q?cWyjRXaf42GBn+RIr0Fb98pFmHe5ir/zPdEjIin4m9GA6AK72FplWFJct2AN?=
- =?us-ascii?Q?39U9GO5UDmBISaP9Oyo5eANQwBSg1DFpGLuyVY+Wtvvxop3sgeD9D+LqeUMf?=
- =?us-ascii?Q?W1aV9UQ+ooJGQXa6qt6fqOl6waCi/p9ajBLYHgJfo5gVyddYInpEGPXhV1Dy?=
- =?us-ascii?Q?lqkSS9mo1zd56Y4WbvLT9ZNjxiIi040TBR2Bs4pIEqKpzLjsFogMwJkVmvA8?=
- =?us-ascii?Q?qakutWrZLRpuLO4alSgrU677gtJlprnj5PWHnrpScCI08hucskU9gcR+r5r4?=
- =?us-ascii?Q?HVvCihkvTs0qd311dfA=3D?=
+	=?us-ascii?Q?dPfZZKqvbGJIOXnGj2cIbPRW3jym03Rqfd/lVDChSOvJoPe+R1zpE3MR9jah?=
+ =?us-ascii?Q?cPhPe65RbP4HM4ofAtO6qWSv9tXafdJpGGjFqz7wP0OFGcvJi95GxETmwBdJ?=
+ =?us-ascii?Q?ciqPPEsx36czUUJbgAOzyvcHGtFjeOQh5SNhRFsWxzCuddoVBWWgIc7AowyN?=
+ =?us-ascii?Q?x15zNqW71MpP04jzPHgF76TUP9daXKOvbhSJOSvnDCPUbUsgPgILAMFiDIVd?=
+ =?us-ascii?Q?bjzTy9VYGB9AGQFdr318w/XObM+ep3M/ddnBd0/XxVI5K8TW5PHgBYcPau4K?=
+ =?us-ascii?Q?t8sfq5GMy+1/KIllvZKN6rVsJmDak+VVriZwFpa18ThqD0QTA0UA94eIdt/7?=
+ =?us-ascii?Q?+M21sy/MIS9jHGXOAx9J6MDR23CRUYZ83R5KDQgiF3uirbPUmDM1BkjPkZ55?=
+ =?us-ascii?Q?gsOTlv/WWt8xi8z+glUWNkWI0BdC1ib/Dv5ekjjDr/VGB/xA1nfYXfjsi2gH?=
+ =?us-ascii?Q?gQI2vKyd9ukbCMUduSZ8aATvijSPnscAglmhQgroFYwKDUtUGaopagq77kMc?=
+ =?us-ascii?Q?I18OmSKOR4PU+N0d72P3cNLDBMR8+ySDr+0qyPt2R9qUg5VueCpl0u/UYk1s?=
+ =?us-ascii?Q?S9FnlKLwoI/ZYY4Ut2HtF/52FQyQfvgXIPyP6sQJc2P2CfiXlcV5lcnDpvGB?=
+ =?us-ascii?Q?aGyARaDkBFD4hos1hwl24Vk9pAIXjMsMIGclATzrNupO7eBrFXuR5vqw28tA?=
+ =?us-ascii?Q?pw+emrEsEgWtX+pfHd3Tsm6nuUsrVpRpIKK5Y6Srwqm+Ibz7eDjlH0Oxhxfu?=
+ =?us-ascii?Q?SRVI7e2bs9isUVBOcOMw1z2SsiiSwoWknNnvFDzsS8lkBB+xS04R48JTaUA0?=
+ =?us-ascii?Q?AINb8i2jvBbk/NVrpKI3co5Xrnbx/UKVMscNUg0z4GbBwckctK0Wox8H8J7N?=
+ =?us-ascii?Q?PBBNwUIxgSEbIv9E72NPMSqxEFVT3Qpy65BVC7Yi30z9zVA0lX07CE0jzIuO?=
+ =?us-ascii?Q?wZu1DMPkramxRhDSqWJZQyxIw4G6RCrsKImuGh+ly2rrPmvt6zIqcwD9fVeL?=
+ =?us-ascii?Q?oUBy95v+QzSOBiAbKaBuxQtweId7icfot4BiLZm0i71Cl+H7zksjjNJLLAS0?=
+ =?us-ascii?Q?w6HAYxe4F+j/EzVGLhz7o0Uy6SiKMAnZrrVUbqKPwlLtIhvdu/4m4QxKWriC?=
+ =?us-ascii?Q?jlmPDg1HvlY5QsKZ/mW3ogbmmANDqExrLqPruW+gK9VaJzDhED990Tv1daUT?=
+ =?us-ascii?Q?lOyct60OstawneG7bBmc5DXAmQ3jpglUeTkgFToWuy5YbtHsk5U7n+3zU/qm?=
+ =?us-ascii?Q?rx7OY2tOWuNuu8xW0wkAdKDsYCO/c/ykthxphC37DMj5i60txH7Zt1jwl9Kd?=
+ =?us-ascii?Q?kRPaVYYsdD/NSvO4PgW9ckLHlFCX+uXWSQ2o8qzy2C+M4ZeWLPRQSVa+YXbK?=
+ =?us-ascii?Q?LzuPDoMt++iPrHy9n1tfijdF7PaIWoUy19kI0BWnVuwJ/FoYc8+5cttt+DHB?=
+ =?us-ascii?Q?DSzEzspK6Aggm7W6w+NndN8wSOOn3Nj5TlSOk30rs3ZF/w1oOhdRENeU4gCv?=
+ =?us-ascii?Q?4CASgBwuZot/dONwB8r3/sxhAxt037Cyb77euy51DrVcBXrij3yo2oDSSmeE?=
+ =?us-ascii?Q?HjhagNbQLFUzVNg2B8M=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a36a0ff7-377b-4363-f621-08dd041f5592
+X-MS-Exchange-CrossTenant-Network-Message-Id: e324e30c-bde5-4e30-425b-08dd04202923
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2024 20:11:18.3744
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2024 20:17:13.4873
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: t9XX58lPBrAw5+Nfz/Wf8AaX+e9I3Y5AgSNO6fMz3Lw0ewsZ6HrfSv2e1NNUD9wZUrN7XVrPGiCMeKdUkieBCw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7735
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZHycm5/Klpz02JfOftzjgNJ5g9k3AGIdratkbejAb7MNCEQjprpZzAUVt33GJUQO30dqOgkAK95isMliLedk2w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10647
 
-On Wed, Nov 13, 2024 at 02:52:38PM -0500, Laurentiu Mihalcea wrote:
+On Wed, Nov 13, 2024 at 02:52:39PM -0500, Laurentiu Mihalcea wrote:
 > From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 >
-> Introduce the 'widgets' property, allowing the creation of widgets from
-> 4 template widgets: Microphone, Line, Headphone, and Speaker. Also
-> introduce the 'hp-det-gpios' property, which allows using headphone
-> detection using the specified GPIO.
+> Add SOF driver for imx95.
 >
 > Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 > ---
->  .../devicetree/bindings/sound/audio-graph-card2.yaml          | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/Documentation/devicetree/bindings/sound/audio-graph-card2.yaml b/Documentation/devicetree/bindings/sound/audio-graph-card2.yaml
-> index f943f90d8b15..94588353f852 100644
-> --- a/Documentation/devicetree/bindings/sound/audio-graph-card2.yaml
-> +++ b/Documentation/devicetree/bindings/sound/audio-graph-card2.yaml
-> @@ -37,6 +37,10 @@ properties:
->    codec2codec:
->      type: object
->      description: Codec to Codec node
-> +  hp-det-gpios:
-> +    $ref: audio-graph.yaml#/properties/hp-det-gpios
-> +  widgets:
-> +    $ref: audio-graph.yaml#/properties/widgets
+>  sound/soc/sof/imx/Kconfig  |   8 +
+>  sound/soc/sof/imx/Makefile |   2 +
+>  sound/soc/sof/imx/imx95.c  | 401 +++++++++++++++++++++++++++++++++++++
 
-why not direct ref Documentation/devicetree/bindings/sound/audio-graph.yaml
-and define these again here.
+why not reused exist one? look likes simular.
 
 Frank
 
+>  3 files changed, 411 insertions(+)
+>  create mode 100644 sound/soc/sof/imx/imx95.c
 >
->  required:
->    - compatible
+> diff --git a/sound/soc/sof/imx/Kconfig b/sound/soc/sof/imx/Kconfig
+> index 4751b04d5e6f..51a70a193533 100644
+> --- a/sound/soc/sof/imx/Kconfig
+> +++ b/sound/soc/sof/imx/Kconfig
+> @@ -50,4 +50,12 @@ config SND_SOC_SOF_IMX8ULP
+>  	  Say Y if you have such a device.
+>  	  If unsure select "N".
+>
+> +config SND_SOC_SOF_IMX95
+> +	tristate "SOF support for i.MX95"
+> +	depends on IMX_DSP
+> +	help
+> +	  This adds support for Sound Open Firmware for NXP i.MX95 platforms.
+> +	  Say Y if you have such a device.
+> +	  If unsure select "N".
+> +
+>  endif ## SND_SOC_SOF_IMX_TOPLEVEL
+> diff --git a/sound/soc/sof/imx/Makefile b/sound/soc/sof/imx/Makefile
+> index be0bf0736dfa..715ac3798668 100644
+> --- a/sound/soc/sof/imx/Makefile
+> +++ b/sound/soc/sof/imx/Makefile
+> @@ -2,10 +2,12 @@
+>  snd-sof-imx8-y := imx8.o
+>  snd-sof-imx8m-y := imx8m.o
+>  snd-sof-imx8ulp-y := imx8ulp.o
+> +snd-sof-imx95-y := imx95.o
+>
+>  snd-sof-imx-common-y := imx-common.o
+>
+>  obj-$(CONFIG_SND_SOC_SOF_IMX8) += snd-sof-imx8.o
+>  obj-$(CONFIG_SND_SOC_SOF_IMX8M) += snd-sof-imx8m.o
+>  obj-$(CONFIG_SND_SOC_SOF_IMX8ULP) += snd-sof-imx8ulp.o
+> +obj-$(CONFIG_SND_SOC_SOF_IMX95) += snd-sof-imx95.o
+>  obj-$(CONFIG_SND_SOC_SOF_IMX_COMMON) += imx-common.o
+> diff --git a/sound/soc/sof/imx/imx95.c b/sound/soc/sof/imx/imx95.c
+> new file mode 100644
+> index 000000000000..5a0e44f5bd48
+> --- /dev/null
+> +++ b/sound/soc/sof/imx/imx95.c
+> @@ -0,0 +1,401 @@
+> +// SPDX-License-Identifier: (GPL-2.0-only OR BSD-3-Clause)
+> +/*
+> + * Copyright 2024 NXP
+> + */
+> +
+> +#include <linux/arm-smccc.h>
+> +#include <linux/clk.h>
+> +#include <linux/firmware/imx/dsp.h>
+> +#include <linux/module.h>
+> +#include <linux/of_platform.h>
+> +#include <linux/of_reserved_mem.h>
+> +#include <sound/sof.h>
+> +
+> +#include "../sof-of-dev.h"
+> +#include "../ops.h"
+> +
+> +#define IMX_SIP_SRC 0xC2000005
+> +#define IMX_SIP_SRC_M_RESET_ADDR_SET 0x03
+> +
+> +#define IMX95_CPU_VEC_FLAGS_BOOT BIT(29)
+> +
+> +#define IMX_SIP_LMM 0xC200000F
+> +#define IMX_SIP_LMM_BOOT 0x0
+> +#define IMX_SIP_LMM_SHUTDOWN 0x1
+> +
+> +#define IMX95_M7_LM_ID 0x1
+> +
+> +#define MBOX_DSPBOX_OFFSET 0x1000
+> +#define MBOX_WINDOW_OFFSET 0x6000000
+> +
+> +struct imx95_priv {
+> +	struct platform_device *ipc_dev;
+> +	struct imx_dsp_ipc *ipc_handle;
+> +	resource_size_t bootaddr;
+> +};
+> +
+> +static void imx95_ipc_handle_reply(struct imx_dsp_ipc *ipc)
+> +{
+> +	unsigned long flags;
+> +	struct snd_sof_dev *sdev = imx_dsp_get_data(ipc);
+> +
+> +	spin_lock_irqsave(&sdev->ipc_lock, flags);
+> +	snd_sof_ipc_process_reply(sdev, 0);
+> +	spin_unlock_irqrestore(&sdev->ipc_lock, flags);
+> +}
+> +
+> +static void imx95_ipc_handle_request(struct imx_dsp_ipc *ipc)
+> +{
+> +	snd_sof_ipc_msgs_rx(imx_dsp_get_data(ipc));
+> +}
+> +
+> +static struct imx_dsp_ops ipc_ops = {
+> +	.handle_reply = imx95_ipc_handle_reply,
+> +	.handle_request = imx95_ipc_handle_request,
+> +};
+> +
+> +static int imx95_disable_enable_core(bool enable)
+> +{
+> +	struct arm_smccc_res res;
+> +
+> +	if (enable)
+> +		arm_smccc_smc(IMX_SIP_LMM, IMX_SIP_LMM_BOOT, IMX95_M7_LM_ID,
+> +			      0, 0, 0, 0, 0, &res);
+> +	else
+> +		arm_smccc_smc(IMX_SIP_LMM, IMX_SIP_LMM_SHUTDOWN, IMX95_M7_LM_ID,
+> +			      0, 0, 0, 0, 0, &res);
+> +
+> +	return res.a0;
+> +}
+> +
+> +static int imx95_run(struct snd_sof_dev *sdev)
+> +{
+> +	return imx95_disable_enable_core(true);
+> +}
+> +
+> +static int imx95_send_msg(struct snd_sof_dev *sdev, struct snd_sof_ipc_msg *msg)
+> +{
+> +	struct imx95_priv *priv = sdev->pdata->hw_pdata;
+> +
+> +	sof_mailbox_write(sdev, sdev->host_box.offset,
+> +			  msg->msg_data, msg->msg_size);
+> +
+> +	imx_dsp_ring_doorbell(priv->ipc_handle, 0);
+> +
+> +	return 0;
+> +}
+> +
+> +static int imx95_get_mailbox_offset(struct snd_sof_dev *sdev)
+> +{
+> +	return MBOX_DSPBOX_OFFSET + MBOX_WINDOW_OFFSET;
+> +}
+> +
+> +static int imx95_get_bar_index(struct snd_sof_dev *sdev, u32 type)
+> +{
+> +	switch (type) {
+> +	case SOF_FW_BLK_TYPE_SRAM:
+> +		return type;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static int imx95_get_window_offset(struct snd_sof_dev *sdev, u32 id)
+> +{
+> +	return MBOX_WINDOW_OFFSET;
+> +}
+> +
+> +static int imx95_set_power_state(struct snd_sof_dev *sdev,
+> +				 const struct sof_dsp_power_state *target_state)
+> +{
+> +	sdev->dsp_power_state = *target_state;
+> +
+> +	return 0;
+> +}
+> +
+> +static int imx95_suspend_resume(struct snd_sof_dev *sdev, bool suspend)
+> +{
+> +	struct imx95_priv *priv;
+> +	int ret, i;
+> +
+> +	priv = sdev->pdata->hw_pdata;
+> +
+> +	if (suspend) {
+> +		ret = imx95_disable_enable_core(false);
+> +		if (ret) {
+> +			dev_err(sdev->dev, "failed to stop core\n");
+> +			return ret;
+> +		}
+> +	}
+> +
+> +	for (i = 0; i < DSP_MU_CHAN_NUM; i++) {
+> +		if (suspend)
+> +			imx_dsp_free_channel(priv->ipc_handle, i);
+> +		else
+> +			imx_dsp_request_channel(priv->ipc_handle, i);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int imx95_runtime_resume(struct snd_sof_dev *sdev)
+> +{
+> +	int ret;
+> +	const struct sof_dsp_power_state target_state = {
+> +		.state = SOF_DSP_PM_D0,
+> +	};
+> +
+> +	ret = imx95_suspend_resume(sdev, false);
+> +	if (ret < 0) {
+> +		dev_err(sdev->dev, "failed to runtime resume: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	return snd_sof_dsp_set_power_state(sdev, &target_state);
+> +}
+> +
+> +static int imx95_resume(struct snd_sof_dev *sdev)
+> +{
+> +	int ret;
+> +	const struct sof_dsp_power_state target_state = {
+> +		.state = SOF_DSP_PM_D0,
+> +	};
+> +
+> +	ret = imx95_suspend_resume(sdev, false);
+> +	if (ret < 0) {
+> +		dev_err(sdev->dev, "failed to resume: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	if (pm_runtime_suspended(sdev->dev)) {
+> +		pm_runtime_disable(sdev->dev);
+> +		pm_runtime_set_active(sdev->dev);
+> +		pm_runtime_mark_last_busy(sdev->dev);
+> +		pm_runtime_enable(sdev->dev);
+> +		pm_runtime_idle(sdev->dev);
+> +	}
+> +
+> +	return snd_sof_dsp_set_power_state(sdev, &target_state);
+> +}
+> +
+> +static int imx95_runtime_suspend(struct snd_sof_dev *sdev)
+> +{
+> +	int ret;
+> +	const struct sof_dsp_power_state target_state = {
+> +		.state = SOF_DSP_PM_D3,
+> +	};
+> +
+> +	ret = imx95_suspend_resume(sdev, true);
+> +	if (ret < 0) {
+> +		dev_err(sdev->dev, "failed to runtime suspend: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	return snd_sof_dsp_set_power_state(sdev, &target_state);
+> +}
+> +
+> +static int imx95_suspend(struct snd_sof_dev *sdev, unsigned int target_state)
+> +{
+> +	int ret;
+> +	const struct sof_dsp_power_state target_power_state = {
+> +		.state = target_state,
+> +	};
+> +
+> +	if (!pm_runtime_suspended(sdev->dev)) {
+> +		ret = imx95_suspend_resume(sdev, true);
+> +		if (ret < 0) {
+> +			dev_err(sdev->dev, "failed to suspend: %d\n", ret);
+> +			return ret;
+> +		}
+> +	}
+> +
+> +	return snd_sof_dsp_set_power_state(sdev, &target_power_state);
+> +}
+> +
+> +static struct snd_soc_dai_driver imx95_dai[] = {
+> +	{
+> +		.name = "sai3",
+> +		.playback = {
+> +			.channels_min = 1,
+> +			.channels_max = 32,
+> +		},
+> +		.capture = {
+> +			.channels_min = 1,
+> +			.channels_max = 32,
+> +		},
+> +	},
+> +};
+> +
+> +static int imx95_probe(struct snd_sof_dev *sdev)
+> +{
+> +	struct platform_device *pdev;
+> +	struct imx95_priv *priv;
+> +	struct resource *res;
+> +	struct arm_smccc_res smc_ret;
+> +	int ret;
+> +
+> +	pdev = container_of(sdev->dev, struct platform_device, dev);
+> +
+> +	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+> +	if (!priv)
+> +		return dev_err_probe(&pdev->dev, -ENOMEM, "failed to alloc priv\n");
+> +
+> +	sdev->pdata->hw_pdata = priv;
+> +
+> +	/* map SRAM */
+> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +	if (!res)
+> +		return dev_err_probe(&pdev->dev, -ENODEV,
+> +				     "failed to fetch SRAM region\n");
+> +
+> +	sdev->bar[SOF_FW_BLK_TYPE_SRAM] = devm_ioremap(&pdev->dev, res->start,
+> +						       resource_size(res));
+> +	if (IS_ERR(sdev->bar[SOF_FW_BLK_TYPE_SRAM]))
+> +		return dev_err_probe(&pdev->dev,
+> +				     PTR_ERR(sdev->bar[SOF_FW_BLK_TYPE_SRAM]),
+> +				     "failed to map SRAM region\n");
+> +
+> +	sdev->mmio_bar = SOF_FW_BLK_TYPE_SRAM;
+> +	sdev->mailbox_bar = SOF_FW_BLK_TYPE_SRAM;
+> +	sdev->dsp_box.offset = MBOX_DSPBOX_OFFSET + MBOX_WINDOW_OFFSET;
+> +	priv->bootaddr = res->start;
+> +
+> +	ret = of_reserved_mem_device_init(sdev->dev);
+> +	if (ret)
+> +		return dev_err_probe(&pdev->dev, ret,
+> +				     "failed to bind DMA region\n");
+> +
+> +	priv->ipc_dev = platform_device_register_data(&pdev->dev, "imx-dsp",
+> +						      PLATFORM_DEVID_NONE,
+> +						      pdev, sizeof(*pdev));
+> +	if (IS_ERR(priv->ipc_dev))
+> +		return dev_err_probe(&pdev->dev, PTR_ERR(priv->ipc_dev),
+> +				     "failed to create IPC device\n");
+> +
+> +	priv->ipc_handle = dev_get_drvdata(&priv->ipc_dev->dev);
+> +	if (!priv->ipc_handle) {
+> +		ret = -EPROBE_DEFER;
+> +		dev_err(&pdev->dev, "failed to fetch ipc handle\n");
+> +		goto err_unregister_ipc_dev;
+> +	}
+> +
+> +	priv->ipc_handle->ops = &ipc_ops;
+> +	imx_dsp_set_data(priv->ipc_handle, sdev);
+> +
+> +	/* set core boot reset address */
+> +	arm_smccc_smc(IMX_SIP_SRC, IMX_SIP_SRC_M_RESET_ADDR_SET, priv->bootaddr,
+> +		      IMX95_CPU_VEC_FLAGS_BOOT, 0, 0, 0, 0, &smc_ret);
+> +	if ((int)smc_ret.a0 < 0) {
+> +		ret = smc_ret.a0;
+> +		dev_err(&pdev->dev, "failed to set boot address: %d", ret);
+> +		goto err_unregister_ipc_dev;
+> +	}
+> +
+> +	return 0;
+> +
+> +err_unregister_ipc_dev:
+> +	platform_device_unregister(priv->ipc_dev);
+> +
+> +	return ret;
+> +}
+> +
+> +static void imx95_remove(struct snd_sof_dev *sdev)
+> +{
+> +	struct imx95_priv *priv;
+> +
+> +	priv = sdev->pdata->hw_pdata;
+> +
+> +	if (imx95_disable_enable_core(false))
+> +		dev_err(sdev->dev, "failed to stop core\n");
+> +
+> +	platform_device_unregister(priv->ipc_dev);
+> +}
+> +
+> +static const struct snd_sof_dsp_ops sof_imx95_ops = {
+> +	.probe = imx95_probe,
+> +	.remove = imx95_remove,
+> +
+> +	/* mandatory "DSP" ops */
+> +	.run = imx95_run,
+> +	.block_read = sof_block_read,
+> +	.block_write = sof_block_write,
+> +	.send_msg = imx95_send_msg,
+> +	.load_firmware = snd_sof_load_firmware_memcpy,
+> +	.ipc_msg_data = sof_ipc_msg_data,
+> +
+> +	.mailbox_read = sof_mailbox_read,
+> +	.mailbox_write = sof_mailbox_write,
+> +
+> +	.get_mailbox_offset = imx95_get_mailbox_offset,
+> +	.get_bar_index = imx95_get_bar_index,
+> +	.get_window_offset = imx95_get_window_offset,
+> +
+> +	.pcm_open = sof_stream_pcm_open,
+> +	.pcm_close = sof_stream_pcm_close,
+> +	.set_stream_data_offset = sof_set_stream_data_offset,
+> +
+> +	.runtime_suspend = imx95_runtime_suspend,
+> +	.runtime_resume = imx95_runtime_resume,
+> +
+> +	.resume = imx95_resume,
+> +	.suspend = imx95_suspend,
+> +
+> +	.set_power_state = imx95_set_power_state,
+> +
+> +	.drv = imx95_dai,
+> +	.num_drv = ARRAY_SIZE(imx95_dai),
+> +
+> +	.hw_info = SNDRV_PCM_INFO_MMAP |
+> +		   SNDRV_PCM_INFO_MMAP_VALID |
+> +		   SNDRV_PCM_INFO_INTERLEAVED |
+> +		   SNDRV_PCM_INFO_PAUSE |
+> +		   SNDRV_PCM_INFO_BATCH |
+> +		   SNDRV_PCM_INFO_NO_PERIOD_WAKEUP,
+> +};
+> +
+> +static struct snd_sof_of_mach sof_imx95_machs[] = {
+> +	{
+> +		.compatible = "fsl,imx95-19x19-evk",
+> +		.sof_tplg_filename = "sof-imx95-wm8962.tplg",
+> +		.drv_name = "asoc-audio-graph-card2",
+> +	},
+> +	{
+> +	},
+> +};
+> +
+> +static struct sof_dev_desc sof_of_imx95_desc = {
+> +	.of_machines = sof_imx95_machs,
+> +	.ipc_supported_mask = BIT(SOF_IPC_TYPE_3),
+> +	.ipc_default = SOF_IPC_TYPE_3,
+> +	.default_fw_path = {
+> +		[SOF_IPC_TYPE_3] = "imx/sof",
+> +	},
+> +	.default_tplg_path = {
+> +		[SOF_IPC_TYPE_3] = "imx/sof-tplg",
+> +	},
+> +	.default_fw_filename = {
+> +		[SOF_IPC_TYPE_3] = "sof-imx95.ri",
+> +	},
+> +	.ops = &sof_imx95_ops,
+> +};
+> +
+> +static const struct of_device_id sof_of_imx95_ids[] = {
+> +	{ .compatible = "fsl,imx95-cm7-sof", .data = &sof_of_imx95_desc },
+> +	{ },
+> +};
+> +MODULE_DEVICE_TABLE(of, sof_of_imx95_ids);
+> +
+> +static struct platform_driver snd_sof_of_imx95_driver = {
+> +	.probe = sof_of_probe,
+> +	.remove = sof_of_remove,
+> +	.driver = {
+> +		.name = "sof-audio-of-imx95",
+> +		.pm = &sof_of_pm,
+> +		.of_match_table = sof_of_imx95_ids,
+> +	},
+> +};
+> +module_platform_driver(snd_sof_of_imx95_driver);
+> +
+> +MODULE_LICENSE("Dual BSD/GPL");
+> +MODULE_DESCRIPTION("SOF support for i.MX95 platforms");
+> +MODULE_AUTHOR("Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>");
 > --
 > 2.34.1
 >
