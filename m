@@ -1,267 +1,274 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA2317F505
-	for <imx@lists.linux.dev>; Thu, 14 Nov 2024 17:28:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65B0262A3;
+	Thu, 14 Nov 2024 17:39:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731605298; cv=none; b=Wq6TobMpq1nuImi4ysaBAMxIVJQLkFv7gwVodvOfXCSZnDIQdbW6ShKqjIVAk27nl+pd75hf4MTdQ9HaJ5BEQzhmDCufzAkTrFIQaAOZjNNHPeTVRneZdXaOCOsIApxszxM8jrKiu7f4rUF71emyxjO6jYiBXeKrbNoFs51GL1E=
+	t=1731605988; cv=none; b=AVuSspQxVMqFUSjV+6hHgxFz5C+8suqxNjIyv8w+7WmJ96xf93A4guzM+TZzoyDo4PfNNpQZ80D+zpAKWxV2xpfmX0Kb0QTx8nd4cZ8vJwz59srk21pGFGQGqMzfV6Xr796s9kx5PzqBb/w3Sweq/MVyJ1tWvjPYdX/nneUm5wI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731605298; c=relaxed/simple;
-	bh=H4KQdNqPdafK8ASOUwb/NoICqx/zXnLGbTVG3nQABhY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G9nM0Q1A/XGJbL8fKgqmrXrhcPzzEWAiHteLeKtyuKYWVhxNA0ITgxE5Q7bdNTrA6o/tEe3UMnkzwnxXQjKMJhFVI3OOjorBINWZZ5bVE+S1XVBIf4o9zua5yKl3kzRJ98NDLi6vtSttt9Q/IkDC16WdGSPE3xJFAzT4nHzCkjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QJe+K4FP; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1731605988; c=relaxed/simple;
+	bh=LY1ej1vw3fIzR3cAO2ctNDFKI5g/jCoGlcy7UtLDXOo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F8rgyVO2/crYdAYWU6Nq58I6Akm7VQzXbupVZfDzXpJmEzKlud+mycocLf3wBkQw0iBjqSI/+KwX85+UwvaJxG0ZMIObJxpt2RQa8J3bltPlZFwUKuQXfF1pc6mwxVe7nJ7i8xRx0S1AUps4tXaYvMEvQlkrQBEDWOJOzFsP38E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=aKH1AkZv; arc=none smtp.client-ip=212.227.15.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QJe+K4FP"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-7f45ab88e7fso689538a12.1
-        for <imx@lists.linux.dev>; Thu, 14 Nov 2024 09:28:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731605296; x=1732210096; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=jINxuziEGUKxSEDQO12O3R9xdpJrug6G+fjPTMpWDhU=;
-        b=QJe+K4FPhofcHV6DcaHCNeo6NX3BW/HnSKZI7LgeEZHnJWG9ryvy++aDY/MOzIdNX2
-         TjtqdCqeYicgt3OJqQw0GB/Md0BY8AD+24e6Sm+47m9rU/sqLrTrMKmC3r6Q/EmLMBsc
-         z8UWw6pa87DtPOzSpAs3rZjaRZP+sBzx+Z4HTGGG98ZTjw5J1aK2MDE8KwW4u5DOdDaU
-         czyIFV1cO81cYVv4CzpbnUGSuapTptB8UZ4bt2t4fhWonD3FLMJMXspbASUXbesFsfQr
-         wFFYBU3mjmgATTgBxyRbn0OHgLQhkvgsYYu5kUnt3QF8yxf1jVu4uU0SzacdUu277fxh
-         HALg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731605296; x=1732210096;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jINxuziEGUKxSEDQO12O3R9xdpJrug6G+fjPTMpWDhU=;
-        b=nBsEH//3oiUkP73T7ejLLsUeim5V24arSmVCfoSxZWUJfiQ64vQvqv5+LkAu/2JSRF
-         fNuUaFofPZypUS3ty+xWQA5X6PduFIy7K62098vl5q34fotb84jQVXDlu0WsnCxOSE7H
-         d++DoRkzrqKDyUzZzjH5MpiI42QXnb7MQzkqddRwaeF3DWCpoHI3VFyhjMc76s62CVCY
-         PJc7PPqRS6DTndg9Adq8pPuMPABwvvp26D4faSqqe40Om662Xo+DcC8n71ZSeTGPPOcP
-         6aarJYBoYtQ3riz2vIdArnvKOqmtwebK43safsYpILCoDnWzTQgwCBVOiwYmoEXi/dKb
-         0RuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWEqSnrkXMpB1V5ZcN8Z4Omsk9B+629OYn7bV+fRGBd8zFXrqgvbfgsdAPjlNl+IzF/LOQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxyt/a/W2aPK8gAtG/qZej6Kb2YhZmabAdmaxgTErWo4t7gV3Tq
-	L6ANowiPGNM9RfX4KOi8cTzPNHUN8s7+5Sk+QWE3dA+SKeLvGhh4eCTlwY8CxQ==
-X-Google-Smtp-Source: AGHT+IF0kTNpd9maxDbIGrdGFuphWSiT+uTWui2ph8Yv10bDI8Lj8IF7aQjnn3D4RSc5j+V9Z/0nTg==
-X-Received: by 2002:a17:90b:4b4f:b0:2e1:e19f:609b with SMTP id 98e67ed59e1d1-2e9b177fc81mr32873637a91.24.1731605296407;
-        Thu, 14 Nov 2024 09:28:16 -0800 (PST)
-Received: from thinkpad ([117.193.208.47])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ea02495651sm1560066a91.16.2024.11.14.09.28.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Nov 2024 09:28:15 -0800 (PST)
-Date: Thu, 14 Nov 2024 22:58:06 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v7 0/7] PCI: dwc: opitimaze RC Host/EP pci_fixup_addr()
-Message-ID: <20241114172806.cusbzxlcqtayeqvw@thinkpad>
-References: <20241029-pci_fixup_addr-v7-0-8310dc24fb7c@nxp.com>
- <ZzYqKNAWRH6EMiny@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="aKH1AkZv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1731605971; x=1732210771; i=wahrenst@gmx.net;
+	bh=QVyaKxFQo0Kexw7pAfdHq+ncZpVV9gGVzi64IeD5HVw=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=aKH1AkZv4GuaaruAM8sKJc4etq6PuUvjZEofA3B/hGGXlFQksaasy9nGczpEYr8m
+	 De8mvNn0Qw8fcPlYqP/qHSN9zmC6xkLi+TIjkMtfNkuRHRBHIDivrJ8E5RfFHHAdu
+	 Lqa1kUy33z+hNLsUTnllHXwkF1xfjUPUfQFN+1JlfRO3dNRy4UWVUqEKA3Jvr/5YK
+	 s9oio+l07opu+DkSw6jxwDv5yh29yhcesW/V14upUTKdmx20j0W9WcFYNqRF2GF8G
+	 P35YajvpMF8kCpvsPYgkW1UP0aFfZb3Xz+PTPxKLARxHgc9Kndvnl886pE7yFzEcA
+	 +EadB2MDw8fDPgHg0w==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.105] ([37.4.248.43]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MyKDe-1tzKYR1Xgq-010Om6; Thu, 14
+ Nov 2024 18:39:31 +0100
+Message-ID: <4c157893-ceba-4a6a-a860-182af5f08c5f@gmx.net>
+Date: Thu, 14 Nov 2024 18:39:30 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZzYqKNAWRH6EMiny@lizhi-Precision-Tower-5810>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] soc: imx: Add SoC device register for i.MX9
+To: alice.guo@oss.nxp.com, alexander.stein@ew.tq-group.com,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, "alice.guo" <alice.guo@nxp.com>
+References: <20241111032307.144733-1-alice.guo@oss.nxp.com>
+Content-Language: en-US
+From: Stefan Wahren <wahrenst@gmx.net>
+In-Reply-To: <20241111032307.144733-1-alice.guo@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:cWx//gh6D80b94XAjSQH6K7k2iTU+lf7hW09THpVA0oyHpePheO
+ OWblZo9UujBnxMeitHWu+Kp0PdSSRhNm+362P/8b+gBDGQxvje5FPWC5IutnRPVgRx2lUoY
+ wEMuVInYLPTMVMsSFMOvkJ6TdCFjOaapBbB0G1hIej20NU7mgMqPv91IEMrUodN8zADnzRp
+ AB0eUZ3/4g/Ssn9kT0K7A==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:J5ap3uADCfA=;ET7q+/xSlZQGYeUqoSGP+iApWXy
+ 21TUSkvaNEqAG0R31qz/KshsqnfjHuVvh0UZOS+45OroAstuk3kVTVK7KiSZ5kE/Q3CdFhwrv
+ yu3vN80qn10GxQ7b0GyM7D2QzPmv8JmgNAxNq8Sb+zvKdxZi3rg+Bdl/D3FbrLKIFch0iLmcP
+ KB9laSsqdxtmt5X+clIa8O5Jl7IIs8cynDNwphhYY1ewcWt+3QPSr6vlHvPIhNlM6PKVyhVLX
+ fV7OtuEAd36oDnRu57fHPu5wL3aF6Dyxc7FWFrfXSZ/pXn52xr5X63eKU89/lqukWqI6DSATG
+ KihEcHMfs3NMZm/2nfArp6fqRsKyYOv7zc9yXNoB4cee2bUnO8GEs0hkyh+c+P6ypJbozWfc6
+ XLJsFhHvJN/8Vr48nB8yQpsq/3P6bU6Hb5oxwb1sGTfV2C3urW+xIQ+wKGygUmQiTfxZoXoUq
+ t11jpLn+5Q7wFHsbW4QbiEhDspFFhNRNopGVPgj6AadR7AX4Y4roGwu+60CENz+VZKgM5EOd1
+ 5wPtYVLqL2j6qBUA3CQKImZ7J8dGcm7Ojsf46GCxwq7kGi5gcUjuoTTEcyDAqJ+e2Or1CoF7b
+ mHjRjYJpyNNuC927sfyZPsIDKYoC/THwz7NFsdrKUsmfpsDN7JmpD+9AZINXRcRGAcesRjWUq
+ H2ep1Xzp6/thKJr4nQ4PT6ktA70Yj+ZgHyosVYQSr7J744XF469qNXtco6GRcIDXQZdW9MVVO
+ 2SxvLduCEOIZv62i9hahsL84yAaPYAKGyE08pRj6+XElwtcDWC/K53QlShIzycpwjre6J/sn4
+ DYVRq57nW27iBfHYh25DJACWPveqcT8Uph7kjGG2QeaiddarkTe4IgSsB4yBlwGuhL3wBk0c7
+ nkhA7nConmaKf8FwiULcCOp7KUCL2rWbzgHKQAv8WjTpsyhw0yb8BbBGt
 
-On Thu, Nov 14, 2024 at 11:49:44AM -0500, Frank Li wrote:
-> On Tue, Oct 29, 2024 at 12:36:33PM -0400, Frank Li wrote:
-> 
-> Mani:
-> 	Do you have chance to check dwc part?
-> 
+Hi Alice,
 
-Frank,
+these are the new comments
 
-Sorry for the delay. I plan to look into this (and other series) tomorrow.
+Am 11.11.24 um 04:23 schrieb alice.guo@oss.nxp.com:
+> From: "alice.guo" <alice.guo@nxp.com>
+>
+> i.MX9 SoCs have SoC ID, SoC revision number and chip unique identifier
+> which are provided by the corresponding ARM trusted firmware API. This
+> patch intends to use SMC call to obtain these information and then
+> register i.MX9 SoC as a device.
+>
+> Signed-off-by: Alice Guo <alice.guo@nxp.com>
+> Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+> ---
+>
+> Changes for v2:
+>   - refine error log print
+> Changes for v3:
+>   - return -EINVAL when arm_smccc_smc failed
+>   - fix the build warning caused by pr_err("%s: SMC failed: %d\n", __fun=
+c__, res.a0);
+>   - drop the pr_err in imx9_soc_init
+>   - free the memory in the reverse order of allocation
+>   - use of_match_node instead of of_machine_is_compatible
+> Changes for v4:
+>   - fix the build warning: 'imx9_soc_match' defined but not used [-Wunus=
+ed-const-variable=3D]
+>   - add Tested-by and Reviewed-by
+> Changes for v5:
+>   - probe imx9 soc driver as a platform driver
+>
+>   drivers/soc/imx/Makefile   |   2 +-
+>   drivers/soc/imx/soc-imx9.c | 124 +++++++++++++++++++++++++++++++++++++
+>   2 files changed, 125 insertions(+), 1 deletion(-)
+>   create mode 100644 drivers/soc/imx/soc-imx9.c
+>
+> diff --git a/drivers/soc/imx/Makefile b/drivers/soc/imx/Makefile
+> index 3ad321ca608a..ca6a5fa1618f 100644
+> --- a/drivers/soc/imx/Makefile
+> +++ b/drivers/soc/imx/Makefile
+> @@ -3,4 +3,4 @@ ifeq ($(CONFIG_ARM),y)
+>   obj-$(CONFIG_ARCH_MXC) +=3D soc-imx.o
+>   endif
+>   obj-$(CONFIG_SOC_IMX8M) +=3D soc-imx8m.o
+> -obj-$(CONFIG_SOC_IMX9) +=3D imx93-src.o
+> +obj-$(CONFIG_SOC_IMX9) +=3D imx93-src.o soc-imx9.o
+> diff --git a/drivers/soc/imx/soc-imx9.c b/drivers/soc/imx/soc-imx9.c
+> new file mode 100644
+> index 000000000000..4ef92260e8f9
+> --- /dev/null
+> +++ b/drivers/soc/imx/soc-imx9.c
+> @@ -0,0 +1,124 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Copyright 2024 NXP
+> + */
+> +
+> +#include <linux/arm-smccc.h>
+> +#include <linux/init.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/slab.h>
+> +#include <linux/sys_soc.h>
+> +
+> +#define IMX_SIP_GET_SOC_INFO	0xc2000006
+> +#define SOC_ID(x)		(((x) & 0xFFFF) >> 8)
+> +#define SOC_REV_MAJOR(x)	((((x) >> 28) & 0xF) - 0x9)
+> +#define SOC_REV_MINOR(x)	(((x) >> 24) & 0xF)
+> +
+> +static int imx9_soc_probe(struct platform_device *pdev)
+> +{
+> +	struct soc_device_attribute *attr;
+> +	struct arm_smccc_res res;
+> +	struct soc_device *sdev;
+> +	u32 soc_id, rev_major, rev_minor;
+> +	u64 uid127_64, uid63_0;
+> +	int err;
+> +
+> +	attr =3D kzalloc(sizeof(*attr), GFP_KERNEL);
+> +	if (!attr)
+> +		return -ENOMEM;
+> +
+> +	err =3D of_property_read_string(of_root, "model", &attr->machine);
+> +	if (err) {
+> +		pr_err("%s: missing model property: %d\n", __func__, err);
+> +		goto attr;
+> +	}
+> +
+> +	attr->family =3D kasprintf(GFP_KERNEL, "Freescale i.MX");
+> +
+> +	/*
+> +	 * Retrieve the soc id, rev & uid info:
+> +	 * res.a1[31:16]: soc revision;
+> +	 * res.a1[15:0]: soc id;
+> +	 * res.a2: uid[127:64];
+> +	 * res.a3: uid[63:0];
+> +	 */
+> +	arm_smccc_smc(IMX_SIP_GET_SOC_INFO, 0, 0, 0, 0, 0, 0, 0, &res);
+> +	if (res.a0 !=3D SMCCC_RET_SUCCESS) {
+> +		pr_err("%s: SMC failed: 0x%lx\n", __func__, res.a0);
+> +		err =3D -EINVAL;
+> +		goto family;
+> +	}
+I like it that soc-imx8m.c handles the corner case
+CONFIG_HAVE_ARM_SMCCC=3Dn in order to increase build coverage.
 
-- Mani
+Is it possible to adapt this driver accordingly?
+> +
+> +	soc_id =3D SOC_ID(res.a1);
+> +	rev_major =3D SOC_REV_MAJOR(res.a1);
+> +	rev_minor =3D SOC_REV_MINOR(res.a1);
+> +
+> +	attr->soc_id =3D kasprintf(GFP_KERNEL, "i.MX%2x", soc_id);
+> +	attr->revision =3D kasprintf(GFP_KERNEL, "%d.%d", rev_major, rev_minor=
+);
+> +
+> +	uid127_64 =3D res.a2;
+> +	uid63_0 =3D res.a3;
+> +	attr->serial_number =3D kasprintf(GFP_KERNEL, "%016llx%016llx", uid127=
+_64, uid63_0);
+> +
+> +	sdev =3D soc_device_register(attr);
+> +	if (IS_ERR(sdev)) {
+> +		err =3D PTR_ERR(sdev);
+> +		pr_err("%s failed to register SoC as a device: %d\n", __func__, err);
+> +		goto serial_number;
+> +	}
+> +
+> +	return 0;
+> +
+> +serial_number:
+> +	kfree(attr->serial_number);
+> +	kfree(attr->revision);
+> +	kfree(attr->soc_id);
+> +family:
+> +	kfree(attr->family);
+> +attr:
+> +	kfree(attr);
+> +	return err;
+> +}
+> +
+> +static __maybe_unused const struct of_device_id imx9_soc_match[] =3D {
+> +	{ .compatible =3D "fsl,imx93", },
+> +	{ .compatible =3D "fsl,imx95", },
+> +	{ }
+> +};
+> +
+> +static struct platform_driver imx9_soc_driver =3D {
+> +	.probe =3D imx9_soc_probe,
+> +	.driver.name =3D "imx9-soc",
+Just a nit:
 
-> Frank
-> 
-> > == RC side:
-> >
-> >             ┌─────────┐                    ┌────────────┐
-> >  ┌─────┐    │         │ IA: 0x8ff8_0000    │            │
-> >  │ CPU ├───►│   ┌────►├─────────────────┐  │ PCI        │
-> >  └─────┘    │   │     │ IA: 0x8ff0_0000 │  │            │
-> >   CPU Addr  │   │  ┌─►├─────────────┐   │  │ Controller │
-> > 0x7ff8_0000─┼───┘  │  │             │   │  │            │
-> >             │      │  │             │   │  │            │   PCI Addr
-> > 0x7ff0_0000─┼──────┘  │             │   └──► IOSpace   ─┼────────────►
-> >             │         │             │      │            │    0
-> > 0x7000_0000─┼────────►├─────────┐   │      │            │
-> >             └─────────┘         │   └──────► CfgSpace  ─┼────────────►
-> >              BUS Fabric         │          │            │    0
-> >                                 │          │            │
-> >                                 └──────────► MemSpace  ─┼────────────►
-> >                         IA: 0x8000_0000    │            │  0x8000_0000
-> >                                            └────────────┘
-> >
-> > Current dwc implimemnt, pci_fixup_addr() call back is needed when bus
-> > fabric convert cpu address before send to PCIe controller.
-> >
-> >     bus@5f000000 {
-> >             compatible = "simple-bus";
-> >             #address-cells = <1>;
-> >             #size-cells = <1>;
-> >             ranges = <0x80000000 0x0 0x70000000 0x10000000>;
-> >
-> >             pcie@5f010000 {
-> >                     compatible = "fsl,imx8q-pcie";
-> >                     reg = <0x5f010000 0x10000>, <0x8ff00000 0x80000>;
-> >                     reg-names = "dbi", "config";
-> >                     #address-cells = <3>;
-> >                     #size-cells = <2>;
-> >                     device_type = "pci";
-> >                     bus-range = <0x00 0xff>;
-> >                     ranges = <0x81000000 0 0x00000000 0x8ff80000 0 0x00010000>,
-> >                              <0x82000000 0 0x80000000 0x80000000 0 0x0ff00000>;
-> >             ...
-> >             };
-> >     };
-> >
-> > Device tree already can descript all address translate. Some hardware
-> > driver implement fixup function by mask some bits of cpu address. Last
-> > pci-imx6.c are little bit better by fetch memory resource's offset to do
-> > fixup.
-> >
-> > static u64 imx_pcie_cpu_addr_fixup(struct dw_pcie *pcie, u64 cpu_addr)
-> > {
-> > 	...
-> > 	entry = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
-> > 	return cpu_addr - entry->offset;
-> > }
-> >
-> > But it is not good by using IORESOURCE_MEM to fix up io/cfg address map
-> > although address translate is the same as IORESOURCE_MEM.
-> >
-> > This patches to fetch untranslate range information for PCIe controller
-> > (pcie@5f010000: ranges). So current config ATU without cpu_fixup_addr().
-> >
-> > == EP side:
-> >
-> >                    Endpoint
-> >   ┌───────────────────────────────────────────────┐
-> >   │                             pcie-ep@5f010000  │
-> >   │                             ┌────────────────┐│
-> >   │                             │   Endpoint     ││
-> >   │                             │   PCIe         ││
-> >   │                             │   Controller   ││
-> >   │           bus@5f000000      │                ││
-> >   │           ┌──────────┐      │                ││
-> >   │           │          │ Outbound Transfer     ││
-> >   │┌─────┐    │  Bus     ┼─────►│ ATU  ──────────┬┬─────►
-> >   ││     │    │  Fabric  │Bus   │                ││PCI Addr
-> >   ││ CPU ├───►│          │Addr  │                ││0xA000_0000
-> >   ││     │CPU │          │0x8000_0000            ││
-> >   │└─────┘Addr└──────────┘      │                ││
-> >   │       0x7000_0000           └────────────────┘│
-> >   └───────────────────────────────────────────────┘
-> >
-> > bus@5f000000 {
-> >         compatible = "simple-bus";
-> >         ranges = <0x80000000 0x0 0x70000000 0x10000000>;
-> >
-> >         pcie-ep@5f010000 {
-> >                 reg = <0x5f010000 0x00010000>,
-> >                       <0x80000000 0x10000000>;
-> >                 reg-names = "dbi", "addr_space";
-> >                 ...                ^^^^
-> >         };
-> >         ...
-> > };
-> >
-> > Add `bus_addr_base` to configure the outbound window address for CPU write.
-> > The BUS fabric generally passes the same address to the PCIe EP controller,
-> > but some BUS fabrics convert the address before sending it to the PCIe EP
-> > controller.
-> >
-> > Above diagram, CPU write data to outbound windows address 0x7000_0000,
-> > Bus fabric convert it to 0x8000_0000. ATU should use BUS address
-> > 0x8000_0000 as input address and convert to PCI address 0xA000_0000.
-> >
-> > Previously, `cpu_addr_fixup()` was used to handle address conversion. Now,
-> > the device tree provides this information.
-> >
-> > The both pave the road to eliminate ugle cpu_fixup_addr() callback function.
-> >
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> > Changes in v7:
-> > - fix
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202410291546.kvgEWJv7-lkp@intel.com/
-> > - Link to v6: https://lore.kernel.org/r/20241028-pci_fixup_addr-v6-0-ebebcd8fd4ff@nxp.com
-> >
-> > Changes in v6:
-> > - merge RC and EP to one thread!
-> > - Link to v5: https://lore.kernel.org/r/20241015-pci_fixup_addr-v5-0-ced556c85270@nxp.com
-> >
-> > Changes in v5:
-> > - update address order in diagram patches.
-> > - remove confused 0x5f00_0000 range
-> > - update patch1's commit message.
-> > - Link to v4: https://lore.kernel.org/r/20241008-pci_fixup_addr-v4-0-25e5200657bc@nxp.com
-> >
-> > Changes in v4:
-> > - Improve commit message by add driver source code path.
-> > - Link to v3: https://lore.kernel.org/r/20240930-pci_fixup_addr-v3-0-80ee70352fc7@nxp.com
-> >
-> > Changes in v3:
-> > - see each patch
-> > - Link to v2: https://lore.kernel.org/r/20240926-pci_fixup_addr-v2-0-e4524541edf4@nxp.com
-> >
-> > Changes in v2:
-> > - see each patch
-> > - Link to v1: https://lore.kernel.org/r/20240924-pci_fixup_addr-v1-0-57d14a91ec4f@nxp.com
-> >
-> > ---
-> > Frank Li (7):
-> >       of: address: Add parent_bus_addr to struct of_pci_range
-> >       PCI: dwc: Using parent_bus_addr in of_range to eliminate cpu_addr_fixup()
-> >       PCI: dwc: ep: Add bus_addr_base for outbound window
-> >       PCI: imx6: Remove cpu_addr_fixup()
-> >       dt-bindings: PCI: fsl,imx6q-pcie-ep: Add compatible string fsl,imx8q-pcie-ep
-> >       PCI: imx6: Pass correct sub mode when calling phy_set_mode_ext()
-> >       PCI: imx6: Add i.MX8Q PCIe Endpoint (EP) support
-> >
-> >  .../devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml | 38 ++++++++++++++-
-> >  drivers/of/address.c                               |  2 +
-> >  drivers/pci/controller/dwc/pci-imx6.c              | 46 +++++++++---------
-> >  drivers/pci/controller/dwc/pcie-designware-ep.c    | 21 ++++++++-
-> >  drivers/pci/controller/dwc/pcie-designware-host.c  | 55 +++++++++++++++++++++-
-> >  drivers/pci/controller/dwc/pcie-designware.h       |  9 ++++
-> >  include/linux/of_address.h                         |  1 +
-> >  7 files changed, 148 insertions(+), 24 deletions(-)
-> > ---
-> > base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
-> > change-id: 20240924-pci_fixup_addr-a8568f9bbb34
-> >
-> > Best regards,
-> > ---
-> > Frank Li <Frank.Li@nxp.com>
-> >
+.driver =3D {
+ =C2=A0=C2=A0=C2=A0 .name =3D "imx9-soc",
+},
 
--- 
-மணிவண்ணன் சதாசிவம்
+This makes it easier to extend later. Maybe we can use a define also for
+"imx9-soc" and use it
+> +};
+> +
+> +static int __init imx9_soc_init(void)
+> +{
+> +	int ret;
+> +	struct platform_device *pdev;
+> +
+> +	/* No match means it is not an i.MX 9 series SoC, do nothing. */
+> +	if (!of_match_node(imx9_soc_match, of_root))
+> +		return 0;
+> +
+> +	ret =3D platform_driver_register(&imx9_soc_driver);
+> +	if (ret) {
+> +		pr_err("failed to register imx9_soc platform driver: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	pdev =3D platform_device_register_simple("imx9-soc", -1, NULL, 0);
+here too
+
+Regards
+> +	if (IS_ERR(pdev)) {
+> +		pr_err("failed to register imx9_soc platform device: %ld\n", PTR_ERR(=
+pdev));
+> +		platform_driver_unregister(&imx9_soc_driver);
+> +		return PTR_ERR(pdev);
+> +	}
+> +
+> +	return 0;
+> +}
+> +device_initcall(imx9_soc_init);
+> +
+> +MODULE_AUTHOR("NXP");
+> +MODULE_DESCRIPTION("NXP i.MX9 SoC");
+> +MODULE_LICENSE("GPL");
+
