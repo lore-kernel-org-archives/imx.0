@@ -1,52 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECBB1487CD;
-	Thu, 14 Nov 2024 19:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCAA0EEDE;
+	Thu, 14 Nov 2024 20:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731611089; cv=none; b=PeXi8YZw+nqka3wS+La40WBYsbY5e5w4z1dVeDI+U3xBRyXJdWNAFsKHk4IRvkHNm1+fI2ealJ1Q1UlGk81RfC2f0jUMRXVjvHCfWiTAxfaY6EGMqRNHFcEVnCus73AVZfPL/fS6dMp2FpTk2Fk4flWouHWJ1hB0eo95aDkW9wQ=
+	t=1731614856; cv=none; b=nqO+IjZoZgCKnaOmohFERzA4qFVUn4j3u75zFlw5nGAwSDfGxzhYoSnh1I9cBDuOqKjx1kJ8ho1lOgbbGtd1D8XHvmP8qyF5qpOMcapZkpk9GYwA3MtY9Ybvq7GwFMHriDFbUBzUmCpGW2RCiv0YKMcLHAcAXPnJcp6jANRgUJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731611089; c=relaxed/simple;
-	bh=BO0ocrdM8qppSqW1SjWnEfOdpwdtAHOAMkaqKecG0Lo=;
+	s=arc-20240116; t=1731614856; c=relaxed/simple;
+	bh=nqJiNu8v2ujQkfJAmU9C5VR3//m4linYKmRisSXR+OY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I9ejgApOOJJPXwpSYPsil96jseJQl9fMIFPNttcb16/8Ln3kQT4swN5nrykbpTANSf+h5kwGcHUsXX5kVd9mCMnLMWcwT//XcnULLJxyJcbPneEQ8VDFy5ZsDJsJzQPhTu3icqMdnNZr5wPGn4Pp/13W1PC398kTHiIAa6T6cuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tr3txAoX; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Cok/VhV5oEXKMjbHv15KrbdLekuVzv6wgTiwk7rO9UKySph7+cqIzVkDNv0SuPXiJF+6er2bDK4c5QWmGDN7xV3Elb/T6x4RzkR1ctE5qmaMNnss+BuuQX28oYJDN/ybLgJnUErLOrLNc+RNHQcjc8QkUWln7tDCfd9OXdPMDcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KAtYBi4y; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tr3txAoX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8297CC4CECD;
-	Thu, 14 Nov 2024 19:04:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KAtYBi4y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D583C4CED5;
+	Thu, 14 Nov 2024 20:07:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731611088;
-	bh=BO0ocrdM8qppSqW1SjWnEfOdpwdtAHOAMkaqKecG0Lo=;
+	s=k20201202; t=1731614855;
+	bh=nqJiNu8v2ujQkfJAmU9C5VR3//m4linYKmRisSXR+OY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tr3txAoXtAXT5bN7zR3CtuwXVxxigCyNCfYdRUHQbWfKrqZ61Rg927F8rtYckWtYo
-	 k/k4qWwcpmnltWeU8AftQe0dN2t5V2o7lPTQgysNsdn/8C05fE+xW0sSqx4wE5Q1Rb
-	 sJxsDsR+qsXa9ge0klkjXIxM/oJtejumsMwhQ9FotePswtU2W+pgYOEVfISQN9YqDc
-	 QGCXpGPBJYBVVMJXL9/whHMlPx/n4ukWIP8FW4ih9SMYLc0dBVcPjN/KFZUUxKIsS4
-	 80AtBvFtHXF6DWKOQMOgTVvgjYw9heELRrvTvV6Rs7Jl0mpphqq6xoH3xCWwN04KLo
-	 1LEfksIezO9iQ==
-Date: Thu, 14 Nov 2024 19:04:43 +0000
+	b=KAtYBi4yJAjPz/PEMA36PsQw9r/rpNGJ7Lqm4OZfk6SoeAUyEso7XPg8UDgPzXRjk
+	 bkVYnm5caKILvncDhVBDdUoZ1FOzSwd3IqA4FoEJy1l/REaSKjGoVUV92f+IbFnHVs
+	 OIAoOvk5V1yvYRXFXV8AHX7d9dMZruDx6ts6xwgIJG5/FvOgy7qHBeS12Fvy6caNNP
+	 gs+67FJgpjm99NHhgYl9C4YrvKK1qhhtxo4VdifQ8V4+7nRDQ5jxFU3i+wxwpkYM+m
+	 7gQK9U5sKLsOaXmmYhVLY24M7O2dJ4FQgGAeDhnkmNQZ0VgGXf22Nr7sSrU9BsyX2l
+	 LwOV4jlpkwD8A==
+Date: Thu, 14 Nov 2024 20:07:30 +0000
 From: Conor Dooley <conor@kernel.org>
-To: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/3] media: dt-bindings: media: i2c: Add IMX462 to the
- IMX290 binding
-Message-ID: <20241114-affidavit-granola-ee8a7bb76d35@spud>
-References: <20241114-media-imx290-imx462-v1-0-c538a2e24786@raspberrypi.com>
- <20241114-media-imx290-imx462-v1-2-c538a2e24786@raspberrypi.com>
+	Conor Dooley <conor+dt@kernel.org>, Sean Nyekjaer <sean@geanix.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	Han Xu <han.xu@nxp.com>
+Subject: Re: [PATCH 1/4] dt-bindings: iio: accel: fxls8962af: add compatible
+ string 'nxp,fxls8967af'
+Message-ID: <20241114-showing-aspirin-8ca12f0b2e50@spud>
+References: <20241113-fxls-v1-0-5e48ff1b1fb8@nxp.com>
+ <20241113-fxls-v1-1-5e48ff1b1fb8@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,34 +48,70 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="UJbfj84JWYiL4PQf"
+	protocol="application/pgp-signature"; boundary="BLm+PiydXSQuPslL"
 Content-Disposition: inline
-In-Reply-To: <20241114-media-imx290-imx462-v1-2-c538a2e24786@raspberrypi.com>
+In-Reply-To: <20241113-fxls-v1-1-5e48ff1b1fb8@nxp.com>
 
 
---UJbfj84JWYiL4PQf
+--BLm+PiydXSQuPslL
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 14, 2024 at 04:01:14PM +0000, Dave Stevenson wrote:
-> IMX462 is the successor to IMX290, which is supportable by
-> the existing IMX290 driver via a new compatible string.
+On Wed, Nov 13, 2024 at 12:54:39PM -0500, Frank Li wrote:
+> From: Han Xu <han.xu@nxp.com>
 >=20
-> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+> Add compatible string 'nxp,fxls8967af' for the NXP FXLS8967AF acceleromet=
+er
+> sensor.
+>=20
+> Signed-off-by: Han Xu <han.xu@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml | 4 ++++
+>  1 file changed, 4 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.y=
+aml b/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
+> index 783c7ddfcd90a..c375ef1bd083f 100644
+> --- a/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
+> +++ b/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
+> @@ -14,12 +14,16 @@ description: |
+>    SPI and I2C interface.
+>      https://www.nxp.com/docs/en/data-sheet/FXLS8962AF.pdf
+>      https://www.nxp.com/docs/en/data-sheet/FXLS8964AF.pdf
+> +    https://www.nxp.com/docs/en/data-sheet/FXLS8967AF.pdf
+> =20
+>  properties:
+>    compatible:
+> +    description:
+> +      These chips are compatible with each other, just have different ID=
+s.
 
-You've got "media: " twice in $subject.
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Then there should be a fallback. Please remove this description and add
+the new device with a fallback to an existing one.
 
---UJbfj84JWYiL4PQf
+>      enum:
+>        - nxp,fxls8962af
+>        - nxp,fxls8964af
+> +      - nxp,fxls8967af
+> =20
+>    reg:
+>      maxItems: 1
+>=20
+> --=20
+> 2.34.1
+>=20
+
+--BLm+PiydXSQuPslL
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZzZJywAKCRB4tDGHoIJi
-0tBiAQD5ax1UE6LgvKkKSHs+2Rgk33ii2RN+pg21HWrkUGrpSwD/e3Ab1r7f0g6Z
-5C3Tkpi3lfXWYPKcXSjldPYCGPZEsgA=
-=IwPX
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZzZYggAKCRB4tDGHoIJi
+0qctAQDHl3DPf7LwU7fxaBdmPPX2qhiGz8tA8KDft9OZS+25AAD/YHIdFD71J05r
+0YRD5CgsZp+OvlL6M1mUzfcHKfiqmwc=
+=UnPl
 -----END PGP SIGNATURE-----
 
---UJbfj84JWYiL4PQf--
+--BLm+PiydXSQuPslL--
