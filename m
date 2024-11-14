@@ -1,44 +1,52 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E2018BB82;
-	Thu, 14 Nov 2024 17:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECBB1487CD;
+	Thu, 14 Nov 2024 19:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731606313; cv=none; b=JV+RVXZWHrxzk/mWHw/V3hZpCM7FSW0e1KysBRiNWVA85Be8dHDFWFMzbAuYcOzw2ZElOpu0K7opQaTpLW+4x1tXpNI+p/+0NZVMeJx4RjzQzEHd4p77pGJUaq0oS/BWoUY37qeUA3T2BM9MQKBY8K7peoftXilKjFLCPQR2xUY=
+	t=1731611089; cv=none; b=PeXi8YZw+nqka3wS+La40WBYsbY5e5w4z1dVeDI+U3xBRyXJdWNAFsKHk4IRvkHNm1+fI2ealJ1Q1UlGk81RfC2f0jUMRXVjvHCfWiTAxfaY6EGMqRNHFcEVnCus73AVZfPL/fS6dMp2FpTk2Fk4flWouHWJ1hB0eo95aDkW9wQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731606313; c=relaxed/simple;
-	bh=g2Nti/vf3sUh6QVaYsrF23szsr80tZFZx8AOgvPabRo=;
+	s=arc-20240116; t=1731611089; c=relaxed/simple;
+	bh=BO0ocrdM8qppSqW1SjWnEfOdpwdtAHOAMkaqKecG0Lo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ga8oDKPM3tndBjqT+NOYfQcctp7jaDQuOWyg476uO2ft8We9UvdIEbSutFJNQbTB9+X2zNGtdEkJgn8ByMfWiHnxlWzV6RE+8ltt9DtTT61+5U/dHGNj8e02fle5XJeQsmUWVoG5SZrvOe9aghm81uQ6WiVrBkUvmL9B3Mg7I/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X+fsqv1g; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=I9ejgApOOJJPXwpSYPsil96jseJQl9fMIFPNttcb16/8Ln3kQT4swN5nrykbpTANSf+h5kwGcHUsXX5kVd9mCMnLMWcwT//XcnULLJxyJcbPneEQ8VDFy5ZsDJsJzQPhTu3icqMdnNZr5wPGn4Pp/13W1PC398kTHiIAa6T6cuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tr3txAoX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X+fsqv1g"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF05DC4CED0;
-	Thu, 14 Nov 2024 17:45:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tr3txAoX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8297CC4CECD;
+	Thu, 14 Nov 2024 19:04:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731606312;
-	bh=g2Nti/vf3sUh6QVaYsrF23szsr80tZFZx8AOgvPabRo=;
+	s=k20201202; t=1731611088;
+	bh=BO0ocrdM8qppSqW1SjWnEfOdpwdtAHOAMkaqKecG0Lo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=X+fsqv1glf0GmgzH6OSjBqoombd9ydRBitGr7WMDXZ7M+kbjT0zIQHzmfVmKwMWoa
-	 fE+ilVhIy3AfBcBmjSUsQSk+8DHW5ORHxtCGp988nYZXeC/VyvLAGm/4WQHhCkVtwO
-	 G9H6V3P03U1g07EebDTsHjOFSwgRx9TXoHPoS1BNkZvRBCayrSGDWTvlIHTSRYB3dx
-	 fWYf36G1GPwYZXBEJzKEE1OB2VnYCr2z31aemas+incrKM6EOvrmq9K3M5/kgbsibP
-	 1ZZfUJ0PcFchtMGZulz+q2n3Y09WJc59G7TKz/pMhrroyugMM/Nieq3e+5Ji1h0NFm
-	 AOOeeuVUt6HUA==
-Date: Thu, 14 Nov 2024 17:45:07 +0000
+	b=tr3txAoXtAXT5bN7zR3CtuwXVxxigCyNCfYdRUHQbWfKrqZ61Rg927F8rtYckWtYo
+	 k/k4qWwcpmnltWeU8AftQe0dN2t5V2o7lPTQgysNsdn/8C05fE+xW0sSqx4wE5Q1Rb
+	 sJxsDsR+qsXa9ge0klkjXIxM/oJtejumsMwhQ9FotePswtU2W+pgYOEVfISQN9YqDc
+	 QGCXpGPBJYBVVMJXL9/whHMlPx/n4ukWIP8FW4ih9SMYLc0dBVcPjN/KFZUUxKIsS4
+	 80AtBvFtHXF6DWKOQMOgTVvgjYw9heELRrvTvV6Rs7Jl0mpphqq6xoH3xCWwN04KLo
+	 1LEfksIezO9iQ==
+Date: Thu, 14 Nov 2024 19:04:43 +0000
 From: Conor Dooley <conor@kernel.org>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: vkoul@kernel.org, kishon@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	jun.li@nxp.com, linux-phy@lists.infradead.org,
+To: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
 	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: phy: imx8mq-usb: optionally refer to
- usb-switch.yaml
-Message-ID: <20241114-marmalade-bottling-8fe656515ee7@spud>
-References: <20241114102203.4065533-1-xu.yang_2@nxp.com>
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 2/3] media: dt-bindings: media: i2c: Add IMX462 to the
+ IMX290 binding
+Message-ID: <20241114-affidavit-granola-ee8a7bb76d35@spud>
+References: <20241114-media-imx290-imx462-v1-0-c538a2e24786@raspberrypi.com>
+ <20241114-media-imx290-imx462-v1-2-c538a2e24786@raspberrypi.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,64 +54,34 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="tOtGMvqBontwFfXh"
+	protocol="application/pgp-signature"; boundary="UJbfj84JWYiL4PQf"
 Content-Disposition: inline
-In-Reply-To: <20241114102203.4065533-1-xu.yang_2@nxp.com>
+In-Reply-To: <20241114-media-imx290-imx462-v1-2-c538a2e24786@raspberrypi.com>
 
 
---tOtGMvqBontwFfXh
+--UJbfj84JWYiL4PQf
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 14, 2024 at 06:22:03PM +0800, Xu Yang wrote:
-> The i.MX95 usb-phy can work with or without orientation-switch. With
-> current setting, if usb-phy works without orientation-switch, the
-> dt-schema check will show below error:
+On Thu, Nov 14, 2024 at 04:01:14PM +0000, Dave Stevenson wrote:
+> IMX462 is the successor to IMX290, which is supportable by
+> the existing IMX290 driver via a new compatible string.
 >=20
-> phy@4c1f0040: 'oneOf' conditional failed, one must be fixed:
->         'port' is a required property
->         'ports' is a required property
->         from schema $id: http://devicetree.org/schemas/phy/fsl,imx8mq-usb=
--phy.yaml#
->=20
-> This will add a condition to optionally refer to usb-switch.yaml.
->=20
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-$subject is not what the patch does.
+You've got "media: " twice in $subject.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-> ---
->  Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml | 2 ++
->  1 file changed, 2 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yam=
-l b/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
-> index 6d6d211883ae..1238792157f8 100644
-> --- a/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
-> +++ b/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
-> @@ -118,6 +118,8 @@ allOf:
->            contains:
->              enum:
->                - fsl,imx95-usb-phy
-> +      required:
-> +        - orientation-switch
->      then:
->        $ref: /schemas/usb/usb-switch.yaml#
-> =20
-> --=20
-> 2.34.1
->=20
-
---tOtGMvqBontwFfXh
+--UJbfj84JWYiL4PQf
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZzY3IwAKCRB4tDGHoIJi
-0lZiAPsGD+L5kP752Lq06LoPa8MBvAshVTvc47iKq4VPeQ5BmAD7BdOzlk6wBkqL
-VeQlwYSD0nAuy3ALgJk41OF0j5zyiAA=
-=c160
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZzZJywAKCRB4tDGHoIJi
+0tBiAQD5ax1UE6LgvKkKSHs+2Rgk33ii2RN+pg21HWrkUGrpSwD/e3Ab1r7f0g6Z
+5C3Tkpi3lfXWYPKcXSjldPYCGPZEsgA=
+=IwPX
 -----END PGP SIGNATURE-----
 
---tOtGMvqBontwFfXh--
+--UJbfj84JWYiL4PQf--
