@@ -1,149 +1,238 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2056.outbound.protection.outlook.com [40.107.20.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9532E1CEACD
-	for <imx@lists.linux.dev>; Fri, 15 Nov 2024 14:40:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731681633; cv=none; b=BprpLBPpJzgMzzMPHDsZDiCP3u2h0MEa7n15/2Rlw7sdmC+NYY5lLh5Ayk+N6r7rkkBecFkQunY9tcpxuKXLE3ee5Fe+d6H/EZk4jAqu68zwxfMrYduTfQgSEsYPj1md4A5yA9JyP8150C7hlWRRA8EpMIc9Z+Pu7I/7ovdpvoM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731681633; c=relaxed/simple;
-	bh=959MsTQz65hf3eOqxrdEOR8H94M1v6fwbz0kNjifmac=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=aILw7n41D9jLpl72RwTH85uF2wLHJU12KI0pHZan3vDXjKwW07U/1yh4KLdXF/HzXIfgFZQXgXriF713Rp9FvUUHIVIvsSr4BRya9DGS4uXiNrhxuXnylb8iqwsUwSx4yXBdajW7kxczIqJFKH0aGwpHgfuKIHRrda5V6NEGbPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=oxnyUFwf; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E271CDA1A
+	for <imx@lists.linux.dev>; Fri, 15 Nov 2024 15:05:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.56
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731683161; cv=fail; b=MOT1q3s+MQE0UVnFq/wo3Ea3wTHzH/zHfo8mzv90QxlIsgD8am2Mwy/AtzVtZGNk0w3RiudYpTj51MfEw9A8h4BAG8wk8MMNGiilw0ACYjnpOFZoSh0LHuxk0aPbU4GCbNggpJAJYE/zBGBwpSwgPq4/m5QLXGJ7Xlv4AKFzO7A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731683161; c=relaxed/simple;
+	bh=ptRlveVm/tapGgpn31mQu3Szx9vF7/Zpq1FKmvZRLRc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=YBuGht/7XsX9eZKB/5QOm1+KA1Wgu5Za9qX3Lue/Abm/CeP1iS+kZYk/GndNXHu2WoBS5q1rQEGYqTOmuOFvsj6QpFUBdzb0Rymw1myougBGKmAWaD9vmLfwQ3tHYbb8CtXsHk/cwKwhGjXGMHMUFEbfVvQn6qQy5B4zf3tkMmM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=eoCnVavr; arc=fail smtp.client-ip=40.107.20.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="oxnyUFwf"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 22A27A03F3;
-	Fri, 15 Nov 2024 15:40:26 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=6/2MUpA9iiZewuVkOsHA
-	/MenPovLnhmD8c1npxgNkyA=; b=oxnyUFwf1GBAuF54WohUVoYHLcYbWL5OC3JN
-	WfA6bBY0jbXYlYO0X0OUeeG/zNgj7vAbK/cBQyDUoSQC6cSXzrdK5/k1nPazM8yk
-	Hh+pSItTYkGibeGcJsACpTu9q5JTS/Ku8FXsFloK/tnUSu4KcYIdUJcPO3IxkO7J
-	1XO0SVUDUDwv7z1PsQ2FodflkSI8p0iB97ELYYyYL57mFs+lWucXRZr+maV2Jf1a
-	DJjYLKzIr2cJDthaaYaqnWZ3HERHddc0wf64awhMLUHCMih4K37EOrqcISI3OqBT
-	xIvqdEeAp9HSHss45nlH6rcYVAtqugLc9tN5k2YGjzT0z8jSHUYuNzV/Ez+8C0fW
-	93E131l5/5ZbVJaRlwmOHVNxfEnrVTyJ8MT3TPqtk8J+rw1mjh4NklLiUah+e89f
-	TFJRhGlFZn5wWHG3QYyK80zHtDQfUfZx9JFhQgrJKx28ntiSsmsCroTzH1dKV5B4
-	TuDi0L+RPwCaLe/DDsyWv2f9FktlCwO0tKNAok/npQjyQtRyy71OTBi2SiyZ2iFy
-	65jt7ggA10MYoTb3K+Koh2LeuoE+JLE+uvEPnXhik7Jx5GpWnX63IjlShTeXI1In
-	UiUUxT9K3jti9wuAMRYqnGdTzeoJrMn3BVph3qon+PLd6kw+JHw4i0AIOPIh0osh
-	RCqgwsI=
-Message-ID: <f50ee921-277e-4aad-a96e-378c08ec8288@prolan.hu>
-Date: Fri, 15 Nov 2024 15:40:24 +0100
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="eoCnVavr"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ms7HCrZpYs6km3eVoedN1DgkAJJnCefjD7chaFNlgBRAtKdmRmKy3oa9wJrHmQM1IV7/CddczClnm+qiIZp/YfAyL3EjtBg+KakB3Glrge+3jBBavc613DS8XstxCse/JqKiMwUUzwVzWes9pze3DMdH342RLMPxGaxHTz9587RrIaymb0KmME3leiMmtT1qw7sInn6NYH76qrZ2oKJsu4k/tfFdpBJ9McCoZNnHVnqK485HOgqzcTu6+rOSDQnV1XoOk7OQsJ0fThb4z89cN3K3bhOaX53SKy582lwiEQIR3JyVi8yEXIbVYr0Llr2f7cTranGNWk2G3TOHmMIoHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9ZGrWCJiRUSCWoaxeFVKdu4p2WCXxN/fS7IiAMP6Ytc=;
+ b=f1AAIYoiNRKau1vvDLwsrGqARD+ctW4mZw0LG6TvKL+DPPSNrSYX6vrIWvTt0lifsTz/dDiLIuskHDy7bVZj0LJP3WRSB3wRsmqANqWBNW2dVlst/H+5pOQJXB9Kc80/MKc/1n1FK0LhEU2Q79xXiiEMKJkjS6fJMSVVetkFeG/Gu1Othrh3DEHj5bLuWunC1YwObBGnSkHI7MlKKigmZ7dURcmtB6cLfkxb+aYWK97SLdJpxowo1SAxZ8U+DD1IHEN3Fvs9+DE7k8e+YaMMrNisvxIjuD5NBDJZ1ZgsMc1sSzxXdvh/SfkcaDjtTzGd5Dk4JPQTNs0kCDNiJjeHqQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9ZGrWCJiRUSCWoaxeFVKdu4p2WCXxN/fS7IiAMP6Ytc=;
+ b=eoCnVavr9JCY0oOrbHWwwCjpiauX7QQ5I8NNpMLwPrCmnWwUnYunK/dxMZziZcEQ51Te4UQkUwwsLTYRoRLTTIi5yFqFNIBSk/9IvPY5ckk4oj6+/N2ViqMOOVV3vBK86g6J3vRK+M460Lg7z5ELy2GqHQWdOU0ZXMjAcANOtRMA+LqOLOA8ZszXR6PteHHsuTrNRJoWFqx633ftt05QbHowGaz3sjHQGrnvAEb4aG8Vf5Xe0JimpwiAtVT68fq9OEx+8WHglOPZRA3jkbzU1ARsELJQZe7kGmbbpo3P10XZaMh9tJvGcAzTkW1BzuaqufeTAntS85/4Xud06mxnJg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by VI0PR04MB10419.eurprd04.prod.outlook.com (2603:10a6:800:235::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.17; Fri, 15 Nov
+ 2024 15:05:55 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8158.017; Fri, 15 Nov 2024
+ 15:05:55 +0000
+Date: Fri, 15 Nov 2024 10:05:44 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: jingoohan1@gmail.com, bhelgaas@google.com, lpieralisi@kernel.org,
+	kw@linux.com, manivannan.sadhasivam@linaro.org, robh@kernel.org,
+	imx@lists.linux.dev, kernel@pengutronix.de,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] PCI: dwc: Clean up some unnecessary codes in
+ dw_pcie_suspend_noirq()
+Message-ID: <ZzdjSO/jjdu/aF7J@lizhi-Precision-Tower-5810>
+References: <20241115090321.527694-1-hongxing.zhu@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241115090321.527694-1-hongxing.zhu@nxp.com>
+X-ClientProxiedBy: SJ0PR03CA0372.namprd03.prod.outlook.com
+ (2603:10b6:a03:3a1::17) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 01/13] net: fec: fix typos found by codespell
-To: Marc Kleine-Budde <mkl@pengutronix.de>, Wei Fang <wei.fang@nxp.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Richard
- Cochran" <richardcochran@gmail.com>
-CC: <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <kernel@pengutronix.de>
-References: <20241016-fec-cleanups-v1-0-de783bd15e6a@pengutronix.de>
- <20241016-fec-cleanups-v1-1-de783bd15e6a@pengutronix.de>
-Content-Language: en-US
-From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
-In-Reply-To: <20241016-fec-cleanups-v1-1-de783bd15e6a@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
- ATLAS.intranet.prolan.hu (10.254.0.229)
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2980D94855617C6B
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI0PR04MB10419:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9c28f146-cc56-4d6b-7350-08dd058700fb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|52116014|7416014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?fFL6oADjsAykrXoADlFvv1x6FbWHU/ZVOcEH0oM6ho2MID0vxd+14WWPBsdO?=
+ =?us-ascii?Q?s0ZYvDz774tS8x89u7N4N/P+KmHFBwE4+TnIkcsz/QKg93RnUl0kzJmzWone?=
+ =?us-ascii?Q?PupKxy+gQSwxxiErmYUOq6QGomD4uvWMw83WmO453vfYv4uSJWSY3O3GfJk5?=
+ =?us-ascii?Q?d9j96YVe7YxuOK9u5yl2CfF5fqpgwMBAV1fOBkzbOjN14EFc4KH7dYrky0vu?=
+ =?us-ascii?Q?3lHHJ9BWJqDHz0HFuutABqTNs4iMVVBPn4fO+QzmN+K0P3PNcpw7VMWIf3FX?=
+ =?us-ascii?Q?b5j6gPDRvz7n//uUsdoHA9rcqY+uk8ZAedtlGdZH/My4CsysBpgEGipsP0K8?=
+ =?us-ascii?Q?Fboi/Bmm4BguvFsjNksnpdKyNYgGI727DnMjUl5BZhGpRczCcThNOD1VUitG?=
+ =?us-ascii?Q?ofA3EoX4M2akXCHxAFDOWj6S/tqsWJc055CqwKHigo+NHMkR2/AxF1WFQL/p?=
+ =?us-ascii?Q?xDXzn2Tt3GBYx4dQV6CCNEZfGFZT307swt8TvG/LWVwNSis70W2e4wErNuzB?=
+ =?us-ascii?Q?xvdrmHAFQWFk3x94/zGfNjfoNwPicfEDnjA5O/GIYZH4tNTcZKwurQQCKls7?=
+ =?us-ascii?Q?TFJ5L+NRieIiFhuUl7ygtAlT9eoEblWpsdrqJib1hs8oxf2K2qy9iIoHFx4y?=
+ =?us-ascii?Q?dEARpM5Zf2QtLiE6AxB12zXLBHKCq+QMFxYI7ID9yq0btv5QQFu+ezlM5qpD?=
+ =?us-ascii?Q?eIRUKyPnJafDIwhvX3Rn7dghPxXUTyS/T2EGS5cwnxN7MygLaX5UiUYuaqHM?=
+ =?us-ascii?Q?GcToPTfJPln+80MUDORPKLjj+YJlB1fBlATylZdVWh0gaIMEdJj9qXQtR68q?=
+ =?us-ascii?Q?3XI/9zJmI49zXHppZd4cr7DNF36FIhpFooThB3mZsHbwBORWFXK9Ft0NrPdt?=
+ =?us-ascii?Q?ZYrxQeo8Fxwd9QBZqDTb2txCtroIZPa2RPakFrHb0YgmX+XKITUTp0hpwwNA?=
+ =?us-ascii?Q?0I911JsrdkmpihuKw6lmBo4QDd26NR1L4RToDiiyljpDISwb94w41zevZQqO?=
+ =?us-ascii?Q?KFkVPgVU/8nu4BCIJef8b7jlKUeJhvyaE5UGaDfnu5SqsfwsUaqG/oKgqRri?=
+ =?us-ascii?Q?Rr18CamiGwLqA9wtYGvB2d1dIRKLlYPh2Rgs1qOpBaCPaFCGllIsmuzEiGR/?=
+ =?us-ascii?Q?gCiCsy2+V8lDyl/OrgXDLmsGOfmF4Tpao/X67R8Gvunl9Tu+qNn+LeKbEcZ9?=
+ =?us-ascii?Q?y4ZZdHTNmKW/5oWYAeK1lJLA7jvb3mI5UdheLogXWVFctFnK3wkcop9uY/Zj?=
+ =?us-ascii?Q?cO4tmTlqQKmN0Ll/gCMpBbfruaTxK1SfYh2gkJsnWplO00ZKBIcuLmWKV3di?=
+ =?us-ascii?Q?yUF3/dc6iCsl7E4R9HwXELeJBERYcYNM2FA7O2TxgoshCdXuZoKBuGaL/blX?=
+ =?us-ascii?Q?wd8aiR4=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(52116014)(7416014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Qh3wwMG2+YGI/qc8CsoBam2Pyq9vhH1la1xzu25d8hy87ACNoNpoYZ7enIiV?=
+ =?us-ascii?Q?XIWLkEzPJXT5C6wsEjkgAseKE/AOqb1LFgKlc1LndSmjbkBBT2ehCFCwrIZB?=
+ =?us-ascii?Q?GJYnI1dY7KWFU+tDjxtPUE6O4+QGDWywKnx3IaFtzwXDVcPgsamHj2U3H7t3?=
+ =?us-ascii?Q?biOTxVycaD5NSwZffOo7/Ligsx8R4t6gr4dxT60qLhyz2ZAJeDmDHoRipBJm?=
+ =?us-ascii?Q?l0TP5f0Qm6LZBGVqWjeFDht3YMgjDIXSQV9DzgnrkXAg7c401l7M/yQK6LOa?=
+ =?us-ascii?Q?6bA5bfszTj3hRbOTxk/kpfXZo41nbCxeRAahO8/HCZo02E8OjmTtg/ZutMR/?=
+ =?us-ascii?Q?TjNXWhJDHGwYNxU6OOZATioRamvEbyhGHVtz0fBPZOR9BxrJkUqhY0sVNhVM?=
+ =?us-ascii?Q?qeAQ1sLKaZRocAIstQjp+JBybhl1z5ryaeVV32LoVFK7FCmsVurzEBWESChq?=
+ =?us-ascii?Q?dfDkbwUIeWM0gx7Q/GxMtTVMVVazKu9c+TBQyeUZpA3ssGfa/iYDZMoHR4VO?=
+ =?us-ascii?Q?6G7MhT0SBhhvbxwqO0OUL16reuzQKPdcdzlE4h+co0+oISkinCqIQ7oTrfbq?=
+ =?us-ascii?Q?XgwOfLOd3fdpRBI9ivIjjdfy79GeEUVZVLYZoKup5O1SP5/nx+4H4KmpxjV1?=
+ =?us-ascii?Q?5bF0Vs8VayrwL/zYBmgQahGdEa9bUJXTBfClQ5mQfaLB1L7qZF7wwHrbAptG?=
+ =?us-ascii?Q?A9vTsnc8KJu7G6QECN4RNLg5AXLRhuwE5SHRwm8IpluUtP+x9iPeI2rMslXi?=
+ =?us-ascii?Q?mWLTUPDMKnGrY1gdBpJgmKvpVJWeJ7U5pBJSu8Xe7JDYk8QQyI20WKZ7LP5Q?=
+ =?us-ascii?Q?PNxcz1d+0NpNKjiSenDZAK29gRUm9YGHDRD+zcBGeZRJw49sObiPba57pWOu?=
+ =?us-ascii?Q?ut1bFwk6uk+7xQbvE98d5cbyHGACoQsMj16ojKTrwRFo7qc6PKJKmRnxqIdK?=
+ =?us-ascii?Q?OGrpZIhnh+TtaoDBVOl4qH4BOBy+ax07JnszuyDe7muQcPm6ZS9zsI/6VIjV?=
+ =?us-ascii?Q?QII4I7ORUF5sVyMCmLCROV5GYRk03VdKyZwCFlKo0I4iI8xzNgE3+KdAVM1r?=
+ =?us-ascii?Q?rF0dIuxUuDIqpxeRcewriMJwl2eFdc/KLPoOoQw0IcIy1sePNZzURWHe7c4B?=
+ =?us-ascii?Q?Yqg/zoGnZ6lLo6UqMQp8JO4I/O5EI2z3923cpPdqMwtoPASObi4w80UGQsJ7?=
+ =?us-ascii?Q?N96oTEqOg83x+rIUmUFpx0/KYcDuG5s2YT/nVYjvPBdm6UtkQDGitMCTlwAB?=
+ =?us-ascii?Q?6aqh4WBmVUbz2vYvXZMQTE+pN4urCmmfRvOfjM0UN5Tf8buyzYl33pUnE/3z?=
+ =?us-ascii?Q?j/w+MH9OkA49iaOZcuiUil/EPBjVk1D5L/hvUFZfuAQaZHnNClo0Kegn9rkW?=
+ =?us-ascii?Q?0KQi36QPKnEDFkcLzFtFhxxft38AVBqlB+pcEuJCCA5SxUgvPy199h0o0zQV?=
+ =?us-ascii?Q?YBS1gsCESAUmI3vjNnOJXJtp9W5eNuPdNPbdp4X/TUPV1an4zlBS1Mx4K1b+?=
+ =?us-ascii?Q?+4TLmiWzp3rIwby8O0sHa6qt1+Y21pxaKgoISQVmZLGvYzpMpkd5K4M7PF3+?=
+ =?us-ascii?Q?PUs+yIc14iyVy9aIFjwMyvhtGLI+p3eKnO2hB0iz?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c28f146-cc56-4d6b-7350-08dd058700fb
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2024 15:05:55.3436
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iC4eaaCZzDrNgRBEf45opFj+fJnz+5TtFyenYowryKI3lbO3r2aUEWbdb7V6LxdQZ3J8oeAMt2da3zaTxk08eQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10419
 
-Hi,
-
-On 2024. 10. 16. 23:51, Marc Kleine-Budde wrote:
-> codespell has found some typos in the comments, fix them.
-> 
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+On Fri, Nov 15, 2024 at 05:03:21PM +0800, Richard Zhu wrote:
+> Before sending PME_TURN_OFF, don't test the LTSSM stat. Since it's safe
+> to send PME_TURN_OFF message regardless of whether the link is up or
+> down. So, there would be no need to test the LTSSM stat before sending
+> PME_TURN_OFF message.
+>
+> Only dump the message when ltssm_stat is not in DETECT and POLL.
+> In the other words, there isn't a notification when no endpoint is
+> connected at all.
+>
+> When the endpoint is connected and after PME_TURN_OFF is issued. Just
+> print out one information instead of an error and exit, if the link
+> doesn't entry DW_PCIE_LTSSM_L2_IDLE stat. Since the recovery would be
+> done in the following closely dw_pcie_resume_noirq().
+>
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
 > ---
->   drivers/net/ethernet/freescale/fec.h     | 8 ++++----
->   drivers/net/ethernet/freescale/fec_ptp.c | 4 ++--
->   2 files changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
-> index 1cca0425d49397bbdb97f2c058bd759f9e602f17..77c2a08d23542accdb85b37a6f86847d9eb56a7a 100644
-> --- a/drivers/net/ethernet/freescale/fec.h
-> +++ b/drivers/net/ethernet/freescale/fec.h
-> @@ -115,7 +115,7 @@
->   #define IEEE_T_MCOL		0x254 /* Frames tx'd with multiple collision */
->   #define IEEE_T_DEF		0x258 /* Frames tx'd after deferral delay */
->   #define IEEE_T_LCOL		0x25c /* Frames tx'd with late collision */
-> -#define IEEE_T_EXCOL		0x260 /* Frames tx'd with excesv collisions */
-> +#define IEEE_T_EXCOL		0x260 /* Frames tx'd with excessive collisions */
->   #define IEEE_T_MACERR		0x264 /* Frames tx'd with TX FIFO underrun */
->   #define IEEE_T_CSERR		0x268 /* Frames tx'd with carrier sense err */
->   #define IEEE_T_SQE		0x26c /* Frames tx'd with SQE err */
-> @@ -342,7 +342,7 @@ struct bufdesc_ex {
->   #define FEC_TX_BD_FTYPE(X)	(((X) & 0xf) << 20)
->   
->   /* The number of Tx and Rx buffers.  These are allocated from the page
-> - * pool.  The code may assume these are power of two, so it it best
-> + * pool.  The code may assume these are power of two, so it is best
->    * to keep them that size.
->    * We don't need to allocate pages for the transmitter.  We just use
->    * the skbuffer directly.
-> @@ -460,7 +460,7 @@ struct bufdesc_ex {
->   #define FEC_QUIRK_SINGLE_MDIO		(1 << 11)
->   /* Controller supports RACC register */
->   #define FEC_QUIRK_HAS_RACC		(1 << 12)
-> -/* Controller supports interrupt coalesc */
-> +/* Controller supports interrupt coalesce */
->   #define FEC_QUIRK_HAS_COALESCE		(1 << 13)
->   /* Interrupt doesn't wake CPU from deep idle */
->   #define FEC_QUIRK_ERR006687		(1 << 14)
-> @@ -495,7 +495,7 @@ struct bufdesc_ex {
->    */
->   #define FEC_QUIRK_HAS_EEE		(1 << 20)
->   
-> -/* i.MX8QM ENET IP version add new feture to generate delayed TXC/RXC
-> +/* i.MX8QM ENET IP version add new feature to generate delayed TXC/RXC
->    * as an alternative option to make sure it works well with various PHYs.
->    * For the implementation of delayed clock, ENET takes synchronized 250MHz
->    * clocks to generate 2ns delay.
-> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-> index 7f6b57432071667e8553363f7c8c21198f38f530..8722f623d9e47e385439f1cee8c677e2b95b236d 100644
-> --- a/drivers/net/ethernet/freescale/fec_ptp.c
-> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
-> @@ -118,7 +118,7 @@ static u64 fec_ptp_read(const struct cyclecounter *cc)
->    * @fep: the fec_enet_private structure handle
->    * @enable: enable the channel pps output
->    *
-> - * This function enble the PPS ouput on the timer channel.
-> + * This function enable the PPS output on the timer channel.
+>  .../pci/controller/dwc/pcie-designware-host.c | 37 ++++++++++---------
+>  drivers/pci/controller/dwc/pcie-designware.h  |  1 +
+>  2 files changed, 21 insertions(+), 17 deletions(-)
+>
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+> index f7ceeb785fb0..c2053555c44b 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> @@ -927,23 +927,26 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+>  	if (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) & PCI_EXP_LNKCTL_ASPM_L1)
+>  		return 0;
+>
+> -	if (dw_pcie_get_ltssm(pci) > DW_PCIE_LTSSM_DETECT_ACT) {
+> -		/* Only send out PME_TURN_OFF when PCIE link is up */
+> -		if (pci->pp.ops->pme_turn_off)
+> -			pci->pp.ops->pme_turn_off(&pci->pp);
+> -		else
+> -			ret = dw_pcie_pme_turn_off(pci);
+> -
+> -		if (ret)
+> -			return ret;
+> +	if (pci->pp.ops->pme_turn_off)
+> +		pci->pp.ops->pme_turn_off(&pci->pp);
+> +	else
+> +		ret = dw_pcie_pme_turn_off(pci);
+> +	if (ret)
+> +		return ret;
+>
+> -		ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
+> -					PCIE_PME_TO_L2_TIMEOUT_US/10,
+> -					PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
+> -		if (ret) {
+> -			dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n", val);
+> -			return ret;
+> -		}
+> +	ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
 
-enableS
+val == DW_PCIE_LTSSM_L2_IDLE || val <= DW_PCIE_LTSSM_DETECT_WAIT
 
->    */
->   static int fec_ptp_enable_pps(struct fec_enet_private *fep, uint enable)
->   {
-> @@ -173,7 +173,7 @@ static int fec_ptp_enable_pps(struct fec_enet_private *fep, uint enable)
->   		 * very close to the second point, which means NSEC_PER_SEC
->   		 * - ts.tv_nsec is close to be zero(For example 20ns); Since the timer
->   		 * is still running when we calculate the first compare event, it is
-> -		 * possible that the remaining nanoseonds run out before the compare
-> +		 * possible that the remaining nanoseconds run out before the compare
->   		 * counter is calculated and written into TCCR register. To avoid
->   		 * this possibility, we will set the compare event to be the next
->   		 * of next second. The current setting is 31-bit timer and wrap
-> 
+it will avoid wait 10ms when no link up
 
-Otherwise, LGTM.
-Reviewed-by: Csókás, Bence <csokas.bence@prolan.hu>
-
-Bence
-
+> +				PCIE_PME_TO_L2_TIMEOUT_US/10,
+> +				PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
+> +	if (ret && (val > DW_PCIE_LTSSM_DETECT_WAIT))
+> +		/* Only dump message when ltssm_stat isn't in DETECT and POLL */
+> +		dev_info(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n", val);
+> +	else
+> +		/*
+> +		 * Refer to r6.0, sec 5.3.3.2.1, software should wait at least
+> +		 * 100ns after L2/L3 Ready before turning off refclock and
+> +		 * main power. It's harmless too when no endpoint connected.
+> +		 */
+> +		udelay(1);
+>  	}
+>
+>  	dw_pcie_stop_link(pci);
+> @@ -952,7 +955,7 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+>
+>  	pci->suspended = true;
+>
+> -	return ret;
+> +	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(dw_pcie_suspend_noirq);
+>
+> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+> index 347ab74ac35a..bf036e66717e 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware.h
+> +++ b/drivers/pci/controller/dwc/pcie-designware.h
+> @@ -330,6 +330,7 @@ enum dw_pcie_ltssm {
+>  	/* Need to align with PCIE_PORT_DEBUG0 bits 0:5 */
+>  	DW_PCIE_LTSSM_DETECT_QUIET = 0x0,
+>  	DW_PCIE_LTSSM_DETECT_ACT = 0x1,
+> +	DW_PCIE_LTSSM_DETECT_WAIT = 0x6,
+>  	DW_PCIE_LTSSM_L0 = 0x11,
+>  	DW_PCIE_LTSSM_L2_IDLE = 0x15,
+>
+> --
+> 2.37.1
+>
