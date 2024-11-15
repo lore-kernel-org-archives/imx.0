@@ -1,195 +1,149 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37931CEE98
-	for <imx@lists.linux.dev>; Fri, 15 Nov 2024 13:42:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9532E1CEACD
+	for <imx@lists.linux.dev>; Fri, 15 Nov 2024 14:40:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731678158; cv=none; b=gu2gbqaHzpp+JHJmDXgGnEBS7cImb3GiQEEjcwBHJ7QjwsQaiasCAhYZru9oE8PWCdhDSHNJOfjOQO3vwOOrSTupWlpOB7xjnjbYKdmiPiOwlJxFrJm/jTsSC0c5JTtsyfNXSGrsswCCrrfsh1tpPyOU9YoGGS2UaQndJPC3qY0=
+	t=1731681633; cv=none; b=BprpLBPpJzgMzzMPHDsZDiCP3u2h0MEa7n15/2Rlw7sdmC+NYY5lLh5Ayk+N6r7rkkBecFkQunY9tcpxuKXLE3ee5Fe+d6H/EZk4jAqu68zwxfMrYduTfQgSEsYPj1md4A5yA9JyP8150C7hlWRRA8EpMIc9Z+Pu7I/7ovdpvoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731678158; c=relaxed/simple;
-	bh=mW3MuLmfbgIMEqgVEGW9baS2AV3fJYbovPzK3y5vOSU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L+hJczLeGPvpnJqQe0Z/nKTCBoFxiZPwyVs0TfE1XWqtu9//Xuaaq7B6nqZYVt5n9iYZ5DxgMugGNDJtuViHrVc6SWArSvZoTlkx7GWeU9C+Zff2FQXnaOw+GlL+HbpIg+Dy3ee8fxNHM3cs0zW6zg9vvDeTf17LoOEwazG474I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cee5avkN; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1731681633; c=relaxed/simple;
+	bh=959MsTQz65hf3eOqxrdEOR8H94M1v6fwbz0kNjifmac=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=aILw7n41D9jLpl72RwTH85uF2wLHJU12KI0pHZan3vDXjKwW07U/1yh4KLdXF/HzXIfgFZQXgXriF713Rp9FvUUHIVIvsSr4BRya9DGS4uXiNrhxuXnylb8iqwsUwSx4yXBdajW7kxczIqJFKH0aGwpHgfuKIHRrda5V6NEGbPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=oxnyUFwf; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cee5avkN"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-7f4325168c8so427756a12.1
-        for <imx@lists.linux.dev>; Fri, 15 Nov 2024 05:42:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731678156; x=1732282956; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=1FkyVdlsRATShGE8GfRS5lqV1OLED0nfmhN50QSZ3W4=;
-        b=cee5avkNYUU+JX2VpI/j5e4b65a839VT4W0M38ZqeOiJMVg8fp+xWkteMbqQnUzrLn
-         7he+I21N/gnS2z1zwdN1xY0KgeLVzyjMp31GT2dUS0tzwj7fTE7E+cB9kVBEYAEmbJzR
-         tn9fuGrIMPfXYpXan1/kXin3L8OReVuneY9Ys5pYClkNTcDH4LJ+d65AuYHDg9iE6O5m
-         8/6L2LW9Ie/xWM4M/uWeQHF6ifioiVclHEbbRg74r6YjdrcyA/z510VULezEoywZnNG2
-         srQvsnMRuHdRGY+G46eJUtQj3Jvl8Snli068baUJX9NR0Zi1PZ1oubHMbwfa9rq35fJs
-         63WA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731678156; x=1732282956;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1FkyVdlsRATShGE8GfRS5lqV1OLED0nfmhN50QSZ3W4=;
-        b=TMKCXjDlN/eOI6k0aFrs0UFhLafNV/qPkISd6FLpr6zeqRvJDVh0ZAq6srY47Svhe9
-         KZapuNLk/7CuHjijNjrR7bPMgQDU/LhDER7ZPu0xfeevFC5UPeiiDHWwu7X6n2eowTcF
-         PQCdOaR93oplrCU+S4VSvtkd0Za5l/sx8CYx98GMYHACQN+cQlBVqn0JFHVRh7rPn2DB
-         tV2MFHX3jsfSfCNO+EivCCF/aGbP8zde9cXIX4iAkjdu5vDgCRO4bxwa77lInOuOW2vF
-         UWp8RkYEGEpYnJAzH1my/ll04UAOphTglhsZ1hfeVWo/p38d3YOZfMsBfJaXQdkcrAzq
-         bc4A==
-X-Forwarded-Encrypted: i=1; AJvYcCXBmdwHZvwtUK0PzD2fEp5CIGLB08+aUZAMSJlPPVMWD8/RfTFh9UjDlZFcfUwjZ9nrn60=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxfoe+u9sL4lFuB4BBjNTHT15ffYirYnLbErBhIZ0Yz90nL7Kc+
-	8+8eCHQ7oR+rtVTz/tOz6CA81TwUZ/TmXqOS+iY1P/xyj+nDPpj0+K7MIrKRGg==
-X-Google-Smtp-Source: AGHT+IGp/OjSmn7NxjC0IsG1rKt5fpJ1gFFvGf7ngcn+SVF2YiP5ayY+G6aeEVN7i6XGfOtMHxDk0Q==
-X-Received: by 2002:a05:6a20:12d1:b0:1c6:fb66:cfe with SMTP id adf61e73a8af0-1dc90b51f1fmr2758521637.21.1731678155980;
-        Fri, 15 Nov 2024 05:42:35 -0800 (PST)
-Received: from thinkpad ([117.193.215.93])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-724771c0cb9sm1360035b3a.121.2024.11.15.05.42.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Nov 2024 05:42:35 -0800 (PST)
-Date: Fri, 15 Nov 2024 19:12:26 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: jingoohan1@gmail.com, bhelgaas@google.com, lpieralisi@kernel.org,
-	kw@linux.com, robh@kernel.org, frank.li@nxp.com,
-	imx@lists.linux.dev, kernel@pengutronix.de,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] PCI: dwc: Clean up some unnecessary codes in
- dw_pcie_suspend_noirq()
-Message-ID: <20241115134226.w27n244spddoavqt@thinkpad>
-References: <20241115090321.527694-1-hongxing.zhu@nxp.com>
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="oxnyUFwf"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 22A27A03F3;
+	Fri, 15 Nov 2024 15:40:26 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=mail; bh=6/2MUpA9iiZewuVkOsHA
+	/MenPovLnhmD8c1npxgNkyA=; b=oxnyUFwf1GBAuF54WohUVoYHLcYbWL5OC3JN
+	WfA6bBY0jbXYlYO0X0OUeeG/zNgj7vAbK/cBQyDUoSQC6cSXzrdK5/k1nPazM8yk
+	Hh+pSItTYkGibeGcJsACpTu9q5JTS/Ku8FXsFloK/tnUSu4KcYIdUJcPO3IxkO7J
+	1XO0SVUDUDwv7z1PsQ2FodflkSI8p0iB97ELYYyYL57mFs+lWucXRZr+maV2Jf1a
+	DJjYLKzIr2cJDthaaYaqnWZ3HERHddc0wf64awhMLUHCMih4K37EOrqcISI3OqBT
+	xIvqdEeAp9HSHss45nlH6rcYVAtqugLc9tN5k2YGjzT0z8jSHUYuNzV/Ez+8C0fW
+	93E131l5/5ZbVJaRlwmOHVNxfEnrVTyJ8MT3TPqtk8J+rw1mjh4NklLiUah+e89f
+	TFJRhGlFZn5wWHG3QYyK80zHtDQfUfZx9JFhQgrJKx28ntiSsmsCroTzH1dKV5B4
+	TuDi0L+RPwCaLe/DDsyWv2f9FktlCwO0tKNAok/npQjyQtRyy71OTBi2SiyZ2iFy
+	65jt7ggA10MYoTb3K+Koh2LeuoE+JLE+uvEPnXhik7Jx5GpWnX63IjlShTeXI1In
+	UiUUxT9K3jti9wuAMRYqnGdTzeoJrMn3BVph3qon+PLd6kw+JHw4i0AIOPIh0osh
+	RCqgwsI=
+Message-ID: <f50ee921-277e-4aad-a96e-378c08ec8288@prolan.hu>
+Date: Fri, 15 Nov 2024 15:40:24 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 01/13] net: fec: fix typos found by codespell
+To: Marc Kleine-Budde <mkl@pengutronix.de>, Wei Fang <wei.fang@nxp.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Richard
+ Cochran" <richardcochran@gmail.com>
+CC: <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <kernel@pengutronix.de>
+References: <20241016-fec-cleanups-v1-0-de783bd15e6a@pengutronix.de>
+ <20241016-fec-cleanups-v1-1-de783bd15e6a@pengutronix.de>
+Content-Language: en-US
+From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
+In-Reply-To: <20241016-fec-cleanups-v1-1-de783bd15e6a@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241115090321.527694-1-hongxing.zhu@nxp.com>
+X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
+ ATLAS.intranet.prolan.hu (10.254.0.229)
+X-EsetResult: clean, is OK
+X-EsetId: 37303A2980D94855617C6B
 
-On Fri, Nov 15, 2024 at 05:03:21PM +0800, Richard Zhu wrote:
-> Before sending PME_TURN_OFF, don't test the LTSSM stat. Since it's safe
+Hi,
 
-s/stat/state
-
-here and below
-
-> to send PME_TURN_OFF message regardless of whether the link is up or
-> down. So, there would be no need to test the LTSSM stat before sending
-> PME_TURN_OFF message.
+On 2024. 10. 16. 23:51, Marc Kleine-Budde wrote:
+> codespell has found some typos in the comments, fix them.
 > 
-> Only dump the message when ltssm_stat is not in DETECT and POLL.
-
-s/dump/print
-
-> In the other words, there isn't a notification when no endpoint is
-
-s/notification/error message
-
-> connected at all.
-> 
-> When the endpoint is connected and after PME_TURN_OFF is issued. Just
-> print out one information instead of an error and exit, if the link
-> doesn't entry DW_PCIE_LTSSM_L2_IDLE stat. Since the recovery would be
-> done in the following closely dw_pcie_resume_noirq().
-> 
-
-How about,
-
-"Also, when the endpoint is connected and PME_TURN_OFF is sent, do not return
-error if the link doesn't enter L2. Just print a warning and continue with the
-suspend as the link will be recovered in dw_pcie_resume_noirq(). "
-
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 > ---
->  .../pci/controller/dwc/pcie-designware-host.c | 37 ++++++++++---------
->  drivers/pci/controller/dwc/pcie-designware.h  |  1 +
->  2 files changed, 21 insertions(+), 17 deletions(-)
+>   drivers/net/ethernet/freescale/fec.h     | 8 ++++----
+>   drivers/net/ethernet/freescale/fec_ptp.c | 4 ++--
+>   2 files changed, 6 insertions(+), 6 deletions(-)
 > 
-> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-> index f7ceeb785fb0..c2053555c44b 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> @@ -927,23 +927,26 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
->  	if (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) & PCI_EXP_LNKCTL_ASPM_L1)
->  		return 0;
->  
-> -	if (dw_pcie_get_ltssm(pci) > DW_PCIE_LTSSM_DETECT_ACT) {
-> -		/* Only send out PME_TURN_OFF when PCIE link is up */
-> -		if (pci->pp.ops->pme_turn_off)
-> -			pci->pp.ops->pme_turn_off(&pci->pp);
-> -		else
-> -			ret = dw_pcie_pme_turn_off(pci);
-> -
-> -		if (ret)
-> -			return ret;
-> +	if (pci->pp.ops->pme_turn_off)
-> +		pci->pp.ops->pme_turn_off(&pci->pp);
-> +	else
-> +		ret = dw_pcie_pme_turn_off(pci);
-> +	if (ret)
-> +		return ret;
->  
-> -		ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
-> -					PCIE_PME_TO_L2_TIMEOUT_US/10,
-> -					PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
-> -		if (ret) {
-> -			dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n", val);
-> -			return ret;
-> -		}
-> +	ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
-> +				PCIE_PME_TO_L2_TIMEOUT_US/10,
-> +				PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
-> +	if (ret && (val > DW_PCIE_LTSSM_DETECT_WAIT))
-> +		/* Only dump message when ltssm_stat isn't in DETECT and POLL */
-> +		dev_info(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n", val);
+> diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
+> index 1cca0425d49397bbdb97f2c058bd759f9e602f17..77c2a08d23542accdb85b37a6f86847d9eb56a7a 100644
+> --- a/drivers/net/ethernet/freescale/fec.h
+> +++ b/drivers/net/ethernet/freescale/fec.h
+> @@ -115,7 +115,7 @@
+>   #define IEEE_T_MCOL		0x254 /* Frames tx'd with multiple collision */
+>   #define IEEE_T_DEF		0x258 /* Frames tx'd after deferral delay */
+>   #define IEEE_T_LCOL		0x25c /* Frames tx'd with late collision */
+> -#define IEEE_T_EXCOL		0x260 /* Frames tx'd with excesv collisions */
+> +#define IEEE_T_EXCOL		0x260 /* Frames tx'd with excessive collisions */
+>   #define IEEE_T_MACERR		0x264 /* Frames tx'd with TX FIFO underrun */
+>   #define IEEE_T_CSERR		0x268 /* Frames tx'd with carrier sense err */
+>   #define IEEE_T_SQE		0x26c /* Frames tx'd with SQE err */
+> @@ -342,7 +342,7 @@ struct bufdesc_ex {
+>   #define FEC_TX_BD_FTYPE(X)	(((X) & 0xf) << 20)
+>   
+>   /* The number of Tx and Rx buffers.  These are allocated from the page
+> - * pool.  The code may assume these are power of two, so it it best
+> + * pool.  The code may assume these are power of two, so it is best
+>    * to keep them that size.
+>    * We don't need to allocate pages for the transmitter.  We just use
+>    * the skbuffer directly.
+> @@ -460,7 +460,7 @@ struct bufdesc_ex {
+>   #define FEC_QUIRK_SINGLE_MDIO		(1 << 11)
+>   /* Controller supports RACC register */
+>   #define FEC_QUIRK_HAS_RACC		(1 << 12)
+> -/* Controller supports interrupt coalesc */
+> +/* Controller supports interrupt coalesce */
+>   #define FEC_QUIRK_HAS_COALESCE		(1 << 13)
+>   /* Interrupt doesn't wake CPU from deep idle */
+>   #define FEC_QUIRK_ERR006687		(1 << 14)
+> @@ -495,7 +495,7 @@ struct bufdesc_ex {
+>    */
+>   #define FEC_QUIRK_HAS_EEE		(1 << 20)
+>   
+> -/* i.MX8QM ENET IP version add new feture to generate delayed TXC/RXC
+> +/* i.MX8QM ENET IP version add new feature to generate delayed TXC/RXC
+>    * as an alternative option to make sure it works well with various PHYs.
+>    * For the implementation of delayed clock, ENET takes synchronized 250MHz
+>    * clocks to generate 2ns delay.
+> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+> index 7f6b57432071667e8553363f7c8c21198f38f530..8722f623d9e47e385439f1cee8c677e2b95b236d 100644
+> --- a/drivers/net/ethernet/freescale/fec_ptp.c
+> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
+> @@ -118,7 +118,7 @@ static u64 fec_ptp_read(const struct cyclecounter *cc)
+>    * @fep: the fec_enet_private structure handle
+>    * @enable: enable the channel pps output
+>    *
+> - * This function enble the PPS ouput on the timer channel.
+> + * This function enable the PPS output on the timer channel.
 
-dev_warn() would be more appropriate.
+enableS
 
-- Mani
-
-> +	else
-> +		/*
-> +		 * Refer to r6.0, sec 5.3.3.2.1, software should wait at least
-> +		 * 100ns after L2/L3 Ready before turning off refclock and
-> +		 * main power. It's harmless too when no endpoint connected.
-> +		 */
-> +		udelay(1);
->  	}
->  
->  	dw_pcie_stop_link(pci);
-> @@ -952,7 +955,7 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
->  
->  	pci->suspended = true;
->  
-> -	return ret;
-> +	return 0;
->  }
->  EXPORT_SYMBOL_GPL(dw_pcie_suspend_noirq);
->  
-> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-> index 347ab74ac35a..bf036e66717e 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware.h
-> +++ b/drivers/pci/controller/dwc/pcie-designware.h
-> @@ -330,6 +330,7 @@ enum dw_pcie_ltssm {
->  	/* Need to align with PCIE_PORT_DEBUG0 bits 0:5 */
->  	DW_PCIE_LTSSM_DETECT_QUIET = 0x0,
->  	DW_PCIE_LTSSM_DETECT_ACT = 0x1,
-> +	DW_PCIE_LTSSM_DETECT_WAIT = 0x6,
->  	DW_PCIE_LTSSM_L0 = 0x11,
->  	DW_PCIE_LTSSM_L2_IDLE = 0x15,
->  
-> -- 
-> 2.37.1
-> 
+>    */
+>   static int fec_ptp_enable_pps(struct fec_enet_private *fep, uint enable)
+>   {
+> @@ -173,7 +173,7 @@ static int fec_ptp_enable_pps(struct fec_enet_private *fep, uint enable)
+>   		 * very close to the second point, which means NSEC_PER_SEC
+>   		 * - ts.tv_nsec is close to be zero(For example 20ns); Since the timer
+>   		 * is still running when we calculate the first compare event, it is
+> -		 * possible that the remaining nanoseonds run out before the compare
+> +		 * possible that the remaining nanoseconds run out before the compare
+>   		 * counter is calculated and written into TCCR register. To avoid
+>   		 * this possibility, we will set the compare event to be the next
+>   		 * of next second. The current setting is 31-bit timer and wrap
 > 
 
--- 
-மணிவண்ணன் சதாசிவம்
+Otherwise, LGTM.
+Reviewed-by: Csókás, Bence <csokas.bence@prolan.hu>
+
+Bence
+
