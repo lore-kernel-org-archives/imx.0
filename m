@@ -1,216 +1,339 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2077.outbound.protection.outlook.com [40.107.21.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D3C1B532F
-	for <imx@lists.linux.dev>; Fri, 15 Nov 2024 10:57:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.77
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731668223; cv=fail; b=Fx0YLcixYrNQph8/lfmSHg8PoyzJHe6falhdEUCaUp5XyNEkQz45naH4fLgnA2s3UJXutGRJBUso9IoUkz2cL9tlzz5tRu7o8KQ1NtiTTPsxaUESkpHMvw3QavW7vnUDcTmbyaApdqdic2q6YLEB3oEsiIP0mNpxOGnrN17eQ0I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731668223; c=relaxed/simple;
-	bh=rMh79KrAMVkhPQt0GUUHsuB7DhF18En26blPigZDcRM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pKQfWQxVdQWgt9HNi/bKzgXfDawMvRNNP+PjIsZcVdvbMepjZTfb2zysrdrQ2OudUbweaWBuRDAQi+DW6jOUy1jqoGH/3MvpqOUNFjXvCYEesRlzGXbJ1YrPxUUAnMiwcQVy6a3uyAplU+O/Sl4WiYlFHdlT8iGL/ksx+MCSn90=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ir0QuMFP; arc=fail smtp.client-ip=40.107.21.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD4A1A3035
+	for <imx@lists.linux.dev>; Fri, 15 Nov 2024 11:16:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731669409; cv=none; b=rac5ybDpQhvL2qln1qcY0DwhUHyIJXiRRQKxKSHfkQzDY9+3Z5gs/FUpkpEkaL3s7m+jmHG0LL42HIpjpnvlVS33xfTLGpF8liors4y7tYKHIhCIKcfIxJnP5gwH7jnE4aWnBFqNirZmJOfydLjgtElh0V/hz444cLvduLiUz7Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731669409; c=relaxed/simple;
+	bh=SwWzIqldCLaysihUO6019zuqKB9GTObOeQD3K0AbwUI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=C+oy0NajH2PKkTVTd+H0r6FV117xQT+oEIonMd0ntvrw1SokpVxJIFIsGaW3t/vQzY1ajR2mz3VJGZ+yIlT9FsWS2L4CBYgrku1e6L4A5CIIWxCkaPvFYjTiE9xsqI2SLRCbi6u6ZnbUh5z0Yu/3eXYfMuN5DQVbDPOy3HK8Cp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GLnk2G2p; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ir0QuMFP"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=v6bmKZCM5Gh68crRzQb6tsHngsVhDu2ZgYYPLjaVHHOLtmfaTIBQKSCxSIG/wrIv6sVo540Dg65FUTJCVPwwUOLLB8KV37L5QwW7fPDTnvOvBlmxp7t9krdpH83K3lUz1aFj5hRWYhWZzqa+TrDU33ZEHGjNGBmFNSJVMkiMYKy1N+H3HjeMh9MjGjp5/jVMRLD7GoXM1SsrzNKs2wnchje+zoiDEjSkAZnL7d+VC5bXqQMgKUWuvdxahRRwpmDIPWOoTzPUZ5CNc9kH0BvNsqNLXpcwVkQR0C+evvfUfsw7n+pRoe5OaboFidQmrTKZ1Hwbq5JoG0Wrex6rje1gsQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=q65kXmIixyWranXYOaxt/D1cL8R8/LmZCl6ae/IciN8=;
- b=pE+3yxqLSqk/DnrpXx+lygoC/1rOQsRD/P9UKfBdcT/CC/cOuXwt0+TbaJdnRM/WBeOMCs39egUZNXOoj/kCSfYErg+R6PutqGUZ5BRU93bEfzlybZPj/KMasU4F0s8xggoOOTxN6YZm4PblRfSSzReZyFNVbAJV1wdrcj/+RTeJWzEsU57yGS5w4NOiAdew5jlnA+vx4u/KUrdRBqpjcM2Z//38bIJDqq0jIarUYbs14+6pBJO6ZbgVQRdSMa9Aw719S3pFD5rHch9jGPrPzL6Yu03TmtvzFFaYF18jAUtvJNEnE0imcFD2nrRRIoeaKNw6GG7EIKbBjIHifZXcnA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=q65kXmIixyWranXYOaxt/D1cL8R8/LmZCl6ae/IciN8=;
- b=ir0QuMFPCJH753Xz0fTyGvDY4Hze2IocpbBWFXJt9TtwIXDz4aVDX/4H7ULUH7G1zMDJ8/KJExrDflI2Jn+/DcRYwpAxKVxdkVrIKuoJ7QtyXHMhdk5P5dgOkWGO+XBHvm8xmDlmQJAFEgXMKo+yyBP5CA2DjoF84LqnlV4dzVDomAILi5IkUcZ2mkVVCsxkpS6AT3Z9KV6O5jtbpKDDl0m/3JXQVA2AMFiNaLbIE5+yj5uvmb/rVArEk3BTwJNHZ2YV0f0wnJ5LITOZY3ls5WftpbxY96PFbUOKX29bDc/DBbhYSy7CvrFpCVHlFxbZr9AZ0RG5JZexhVt1qUbxlw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by AM9PR04MB8416.eurprd04.prod.outlook.com (2603:10a6:20b:3b7::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.19; Fri, 15 Nov
- 2024 10:56:59 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%6]) with mapi id 15.20.8158.017; Fri, 15 Nov 2024
- 10:56:59 +0000
-From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	imx@lists.linux.dev (open list:FREESCALE eDMA DRIVER),
-	dmaengine@vger.kernel.org (open list:FREESCALE eDMA DRIVER),
-	linux-kernel@vger.kernel.org (open list)
-Cc: Peng Fan <peng.fan@nxp.com>
-Subject: [PATCH V3 2/2] dmaengine: fsl-edma: free irq correctly in remove path
-Date: Fri, 15 Nov 2024 18:56:29 +0800
-Message-Id: <20241115105629.748390-2-peng.fan@oss.nxp.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20241115105629.748390-1-peng.fan@oss.nxp.com>
-References: <20241115105629.748390-1-peng.fan@oss.nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2P153CA0011.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:140::14) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GLnk2G2p"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a9f1d76dab1so279517866b.0
+        for <imx@lists.linux.dev>; Fri, 15 Nov 2024 03:16:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1731669405; x=1732274205; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lBW55Iflwg72JTtlsIBIwR/vdMLxSGAsNhfY6KX5Wg0=;
+        b=GLnk2G2pZARrD2QudhXWFbo/K/3bCb2/05FxzaoFg8U6qXGxPMcjVgOTFNvBdYiZH4
+         ph+saTL5yxxpPwv0a6XFeldGmr2qammhBsN15qkPIh7vWMBM5Pux+HUfYQlC9G/fqEoE
+         fjt7uDkw55mVFZRG+WiMYoOtDnmGlqVk9sJRgp7AlsFDoUo5TPUlkKQUNh+MVaS3rPkv
+         R4aOMP++xtpdmKXz0B/idFQLD4LcKtoClNgSv5gnrE7ISvYixwnKilWkvpJzSJ+X7I5U
+         g0ZNN7gLq3WvB08XpDG95SqtXRcUnuSIpOxINiS8fHayun86Er2DGyEgU3hMq35GmSM/
+         lUOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731669405; x=1732274205;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lBW55Iflwg72JTtlsIBIwR/vdMLxSGAsNhfY6KX5Wg0=;
+        b=HwbeXGceBVw9wFIU2zyKuXoEIGpTyS9FR79UrbML3h5VZpV00pqZkVfGeyUyqyhWv9
+         P3p3iIJc3gQuus4dFP/TkOcYtFy/QGm29+TkPva0w0mYcy8UsklFO5zt3TnJDvuaoM+A
+         mYr6hxmYi1OtTDw0+eyi9kvkmDVuaDnpa2ExjlPYIHN1mckytGJdL7si7VOnH0Ge0D5V
+         1uKavrPL1S6l3u+mZ4pp2P8hMyGlXmLK3h0swBKB+vzuYYtZK5vhi5rPppIjI0hLXKaf
+         efbGFwOBnCRHWKbubHByob/00iSVC5ojIUwf/3uLfvL5wSrRg8mYEbJTLXlt3aMu59zt
+         2/zA==
+X-Forwarded-Encrypted: i=1; AJvYcCVaFPMhH24nbffwb7t2H0Cvga0D8JZ52IIj3DJ6tUx00lTQJ5cPm76fSJ3LUEmrlKuWkDw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxEV440ALoT01Ac+ylzjt21Ye7Oy3AdUN/55Ait1s9rqoubIdQv
+	ZR53plyRPeKQkSdzaowRBf31JATkNgqrljo3cQrHNzD+W0jynYVjKrmQbwSV85Dk7/7+EmBdbAh
+	0C/+T2dz9GQEpGnr5r3zB0MDD8dsL/j4XaiKFiw==
+X-Google-Smtp-Source: AGHT+IGzAOeKh4aP0KrLyOScFsmFGloYqJ/oDkwXDhcYrHFK/Kj8IziJlvm2MOwc0x4hjYK43W0DfP4fzd+Fg3r6HYE=
+X-Received: by 2002:a17:906:d54b:b0:a9a:1b32:5aa8 with SMTP id
+ a640c23a62f3a-aa4833e8bc9mr182565966b.4.1731669405427; Fri, 15 Nov 2024
+ 03:16:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|AM9PR04MB8416:EE_
-X-MS-Office365-Filtering-Correlation-Id: a7496ac9-e996-4968-a5d3-08dd05643a73
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?8t9+MpUBeGPGs6GqmdiBlYuW4iPS1TAqDVmUSBfok5V5yFF5ADN44lj6X6XG?=
- =?us-ascii?Q?BbbIrAYywXkwoHzBV9t1nqxS/PXVjCsi3+MZiH+bFPLVLCjSpEaNpGI3GvdE?=
- =?us-ascii?Q?M+y4gMwzgb6wG/95r4DdhMLuRYxIWo3LrP8dygIhc5TGEMz4ur/RS6o93Ffh?=
- =?us-ascii?Q?iBT+Onas/jO5SPwjewK+DTM7UfTcfH0CAQDLryE/lb+Ak1drXork1pqZJMPI?=
- =?us-ascii?Q?DuAGjLF8u0aBoiXwaVXU5paIKUJ/u3fcjniZUQ1D2d1Wl/vuZj0srCARuw2Q?=
- =?us-ascii?Q?fkLZzkg4ogSvNPeErE31za8kCvyNLnpYN1ir6hbepfPbBT56Ae4Z52JfPqMe?=
- =?us-ascii?Q?p6/c132F+5hb4u/aoPFxSrGZPHV3CvOhR7WfMi3RccboDIhWoxKFLN7ttmG1?=
- =?us-ascii?Q?o1wiBU8nDa/hZZiuavJzVVYv4y9XHqYF6bplaGC7/LlBQd2v/8wnMKkVSD7p?=
- =?us-ascii?Q?RlRnsIBRnqCBsKpLduslt1V77t6Ycqb78N5OABYOLe6dvXwVlMjCl++dtzZw?=
- =?us-ascii?Q?mjmqL7j9I1VxjDsVGvrNfn4SZRaWEv2uol0OPl5ZEWRwp+LnW/URvhJ7sHk4?=
- =?us-ascii?Q?kKu4BCL/uvV7Cm2qXX6buzb5kijZ3qe1BVmGLUJEETQMLZO8a09HVE9z/Gkg?=
- =?us-ascii?Q?u5PMGfpSw6SUn/I0gG3OfG5ocmpoNAeCxsAtRZPLcejdvhPvTQEmFxjlyRBp?=
- =?us-ascii?Q?2PjD1rAEoPO7UywIiLuBCAAbxE8eLYSzd43lwGNKvT/4RUZDlA8A6/F10i3G?=
- =?us-ascii?Q?NpHfQeLK6lueseSMMxbljWakLRVkcjWQY4mvj++nMv9PlGZkeeyJRymjAp8g?=
- =?us-ascii?Q?vK0axpdu3XEf8Kd6ZJ2jvp0E1u3c9PT22lENjFDPQboc2v3KzdQAZSAYFWdd?=
- =?us-ascii?Q?ObQLmidLEMsJuIcWBiRzB+lwXG7RmcpWugrMUu8GxRY28+4+c4n8LHt5CSql?=
- =?us-ascii?Q?BgVOoKLAu9dthdwSTSkTwBcuMYdpO0zm7JolRjF4xGgsOuEiiI4HuCC2ioBM?=
- =?us-ascii?Q?mN5Rhq4WgL+cQ1H8hYenxZbFZNlJV/l1iPxDH+Xgw+q4fFRGqIJVhQFdPFWH?=
- =?us-ascii?Q?mioMqepQ4lhsUwlzRMNoAWOvT9TVXsW1ZgEzJcajm9SPx+V+Rj/NM+nGx3Mx?=
- =?us-ascii?Q?tfF7/xbHTKzzX3TM//yGtbZcc/2xon+Jh8sE45nBGAMkKclMTVnDqfTWo4W7?=
- =?us-ascii?Q?ktCad92JiyK6oznhqA1Okmsz2XFJtB0girh2N7698BG1hl4KsuoLSbbD0+qk?=
- =?us-ascii?Q?FMFSQMf8RzTS7X/MkstOIMkH5eWxjFzDRU7w9sXBx6c9zNx/r3DVV1iTQg/3?=
- =?us-ascii?Q?pJAl8bBEscObazBk8sH3oCyRR9LhPVY3/vDGuzRA0KZLwsL/qCZXgo3TzdLz?=
- =?us-ascii?Q?4PNVXCo=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?rU0i9FxphGnhS2soAobiizvmcVfieZw8RLg/T8MZ3PopPrfl4N/hYFmYdNEH?=
- =?us-ascii?Q?AmOaHIETTxWwtmL42rtu/5FvePxl3MXs1Xk3yVKNNnPG5eFf1wm02dP2ie4Q?=
- =?us-ascii?Q?l/tOBoTHUbxE0AprvxInp3doNOgAX+MB438PVbmBqpF3l+dqR2iaDk0fr+tj?=
- =?us-ascii?Q?JpikVpaJVqUoIy9V28zrr80uZY3oRvtG1tEWKQPoo4xnFwt6fCoaEDCiD74b?=
- =?us-ascii?Q?OT5Djbl/UPHLLy5ceaFqOVlL38kX2a4yJXhIqaJtlplt0MCrft+LZzRhxhR9?=
- =?us-ascii?Q?za7DoHEzpZun+WwEdJEgy+6CIi0jrnOZbO5UOjYw+9+MQkmY9ZiKTIXsMarO?=
- =?us-ascii?Q?QMh7xP5KX0RIdivz4SxKY6BCuWsEZP3sTi6t+eGSX3n4BfAoVsfneaIETOoV?=
- =?us-ascii?Q?M5QZiF+n0SvWOPN/FNVZoBJCfll5m3ka9mpOjFXAULd8CGPp3bdaaAR4fcCF?=
- =?us-ascii?Q?Se2qYmbfdIKCc06V91ZJ8ylCpkwkJk850Z+CgpG4px8tEQM8mIypdK9CB/WV?=
- =?us-ascii?Q?19xCR6b/0V3LSHmZWDPSuKSUjFl5AU1UpR89wIAxImqMS7+IGN6okEMm92RP?=
- =?us-ascii?Q?LjBSOz8+l4dOYSihsgux/DEYTmuaerckPdaHtSXn0a62r+g/GJ6qyv1wl/n+?=
- =?us-ascii?Q?iKhMqB+Rx+bnuFy6Ee5RTrUlVJEONg47CdywewIzdCEUF73yUv18/wrtUw1q?=
- =?us-ascii?Q?BuCm59An54b46h1hcZuqZZkGHzn0iyJPHuLWtQCvhgjnOHDXIZXgUCNpXFiV?=
- =?us-ascii?Q?evIDkN9YzcKFC2JFl10u38HcCo+SGgmFbAHOLZoJb0yYwWJVXr9QWfjrWepA?=
- =?us-ascii?Q?1iCf57SzEVqje7HcIczHTUBEp8WmWUXAKQ4ibRxTmezgPMb/EqEgllRg1AUI?=
- =?us-ascii?Q?bk7VhxQIYIb6975PCa2u32iPigmeX0mPd5rGdrk8fBeSlY5brGr39k172iaO?=
- =?us-ascii?Q?86ynOH+rQzMaDvUmaf5Z5+Iipd9uxfCYbyMaf1gmQWT2mNtI/LZ3eLfYZh8P?=
- =?us-ascii?Q?Kp+OZil3F4Q55zgTS2+plPeNqAtSBpZa75LsqLaOcgdBkV6ZnpsIQBHelP1t?=
- =?us-ascii?Q?4MLBpmv6vwQE2hQsP209L7lBu8YIJ+3pRBmBnk1EK+LsBWdfHejLIQ37a4/1?=
- =?us-ascii?Q?opSmPn79aCPDYTnVMFY+fnM2K65fNHhcwMbtzGRJDj4RS/UUpMTI3I9hjEDu?=
- =?us-ascii?Q?fmZl0oez+HeEpIJSjmi6hPq5DDb8WgxXrUN0Ww5M4uEM8MBQrPN0GTgxoNPt?=
- =?us-ascii?Q?C/aX/8iytl9QuW3Edj6n+CBtrz2RfKbVYbclhKnyXH76hO33afHNfrIpIEja?=
- =?us-ascii?Q?39eRHo6dQQ28F/5JV1PNmduhyJn0zU7mxhidjj+8mri+lvTxf1D92Hge/ATx?=
- =?us-ascii?Q?FGv9qnzcip2QHbDXxHN682vGPisZ0rDTIeIydCupeCtB/iVh/ieH4YZsixdE?=
- =?us-ascii?Q?1DrPj+u0q0xgJwwfhjoIpURrcMjnJ+tzIckCWnjxozkSzSxqgdyc/BUENGQz?=
- =?us-ascii?Q?8UhVkfMtMqTSHA2yU9Oz5AA7Q1uXitn3x3kM6LZd8kSCLcVKJ78z0FuNzjjr?=
- =?us-ascii?Q?F1jc0TS7sDxjfCJjKsfEa32w/RE9Kr2fAqpIT97N?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a7496ac9-e996-4968-a5d3-08dd05643a73
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2024 10:56:59.3145
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /5nf/Vj8F6Yzv4MBWmLtOEm0dyTFwnDv11SZha92WiCPP0DgjHggRycV2OLHk4XZmlpioH4Pl8jMUEBaeNnYIw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8416
+References: <20241014060130.1162629-1-haibo.chen@nxp.com> <20241014060130.1162629-3-haibo.chen@nxp.com>
+ <CAPDyKFr37wLYxdFJ-Lgbq7PbWyiQz+CuwMxwgeeP3QpMvdyjqg@mail.gmail.com>
+ <DU0PR04MB949604108991809742E83E5D90402@DU0PR04MB9496.eurprd04.prod.outlook.com>
+ <DU0PR04MB9496801A4571142F914BBF4990402@DU0PR04MB9496.eurprd04.prod.outlook.com>
+ <CAPDyKFpectKosHEU7cm7uNCNwHZaT0XCSn674dGtu8Y+hmf_Pw@mail.gmail.com> <DU0PR04MB9496E6ED8D3D6EB1FD26B450905C2@DU0PR04MB9496.eurprd04.prod.outlook.com>
+In-Reply-To: <DU0PR04MB9496E6ED8D3D6EB1FD26B450905C2@DU0PR04MB9496.eurprd04.prod.outlook.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Fri, 15 Nov 2024 12:16:08 +0100
+Message-ID: <CAPDyKFp_YmAc-f5vcju+Zg39OKzo1GYgefTgQriazumjk+5gVQ@mail.gmail.com>
+Subject: Re: [PATCH 2/4] mmc: host: sdhci-esdhc-imx: refactor the system PM logic
+To: Bough Chen <haibo.chen@nxp.com>
+Cc: "adrian.hunter@intel.com" <adrian.hunter@intel.com>, 
+	"linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"shawnguo@kernel.org" <shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
+	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, dl-S32 <S32@nxp.com>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Peng Fan <peng.fan@nxp.com>
+On Thu, 7 Nov 2024 at 10:20, Bough Chen <haibo.chen@nxp.com> wrote:
+>
+> > -----Original Message-----
+> > From: Ulf Hansson <ulf.hansson@linaro.org>
+> > Sent: 2024=E5=B9=B410=E6=9C=8822=E6=97=A5 16:29
+> > To: Bough Chen <haibo.chen@nxp.com>
+> > Cc: adrian.hunter@intel.com; linux-mmc@vger.kernel.org; imx@lists.linux=
+.dev;
+> > shawnguo@kernel.org; s.hauer@pengutronix.de; kernel@pengutronix.de;
+> > festevam@gmail.com; dl-S32 <S32@nxp.com>;
+> > linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org
+> > Subject: Re: [PATCH 2/4] mmc: host: sdhci-esdhc-imx: refactor the syste=
+m PM
+> > logic
+> >
+> > On Fri, 18 Oct 2024 at 05:20, Bough Chen <haibo.chen@nxp.com> wrote:
+> > >
+> > > > -----Original Message-----
+> > > > From: Bough Chen
+> > > > Sent: 2024=E5=B9=B410=E6=9C=8818=E6=97=A5 9:23
+> > > > To: Ulf Hansson <ulf.hansson@linaro.org>
+> > > > Cc: adrian.hunter@intel.com; linux-mmc@vger.kernel.org;
+> > > > imx@lists.linux.dev; shawnguo@kernel.org; s.hauer@pengutronix.de;
+> > > > kernel@pengutronix.de; festevam@gmail.com; dl-S32 <S32@nxp.com>;
+> > > > linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org
+> > > > Subject: RE: [PATCH 2/4] mmc: host: sdhci-esdhc-imx: refactor the
+> > > > system PM logic
+> > > >
+> > > > > -----Original Message-----
+> > > > > From: Ulf Hansson <ulf.hansson@linaro.org>
+> > > > > Sent: 2024=E5=B9=B410=E6=9C=8817=E6=97=A5 21:07
+> > > > > To: Bough Chen <haibo.chen@nxp.com>
+> > > > > Cc: adrian.hunter@intel.com; linux-mmc@vger.kernel.org;
+> > > > > imx@lists.linux.dev; shawnguo@kernel.org; s.hauer@pengutronix.de;
+> > > > > kernel@pengutronix.de; festevam@gmail.com; dl-S32 <S32@nxp.com>;
+> > > > > linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.or=
+g
+> > > > > Subject: Re: [PATCH 2/4] mmc: host: sdhci-esdhc-imx: refactor the
+> > > > > system PM logic
+> > > > >
+> > > > > On Mon, 14 Oct 2024 at 08:00, <haibo.chen@nxp.com> wrote:
+> > > > > >
+> > > > > > From: Haibo Chen <haibo.chen@nxp.com>
+> > > > > >
+> > > > > > Current suspend/resume logic has one issue. in suspend, will
+> > > > > > config register when call sdhci_suspend_host(), but at this
+> > > > > > time, can't guarantee host in runtime resume state. if not, the
+> > > > > > per clock is gate off, access register will hung.
+> > > > > >
+> > > > > > Now use pm_runtime_force_suspend/resume() in
+> > > > NOIRQ_SYSTEM_SLEEP_PM,
+> > > > > > add in NOIRQ stage can cover SDIO wakeup feature, because in
+> > > > > > interrupt handler, there is register access, need the per clock=
+ on.
+> > > > > >
+> > > > > > In sdhci_esdhc_suspend/sdhci_esdhc_resume, remove
+> > > > > > sdhci_suspend_host() and sdhci_resume_host(), all are handled i=
+n
+> > > > > > runtime PM callbacks except the wakeup irq setting.
+> > > > > >
+> > > > > > Remove pinctrl_pm_select_default_state() in sdhci_esdhc_resume,
+> > > > > > because
+> > > > > > pm_runtime_force_resume() already config the pinctrl state
+> > > > > > according to ios timing, and here config the default pinctrl
+> > > > > > state again is wrong for
+> > > > > > SDIO3.0 device if it keep power in suspend.
+> > > > >
+> > > > > I had a look at the code - and yes, there are certainly several
+> > > > > problems with PM support in this driver.
+> > > > >
+> > > > > >
+> > > > > > Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> > > > > > ---
+> > > > > >  drivers/mmc/host/sdhci-esdhc-imx.c | 39
+> > > > > > +++++++++++++++---------------
+> > > > > >  1 file changed, 19 insertions(+), 20 deletions(-)
+> > > > > >
+> > > > > > diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c
+> > > > > > b/drivers/mmc/host/sdhci-esdhc-imx.c
+> > > > > > index c7582ad45123..18febfeb60cf 100644
+> > > > > > --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> > > > > > +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> > > > > > @@ -1871,11 +1871,13 @@ static int sdhci_esdhc_suspend(struct
+> > > > > > device
+> > > > > *dev)
+> > > > > >         struct pltfm_imx_data *imx_data =3D
+> > sdhci_pltfm_priv(pltfm_host);
+> > > > > >         int ret;
+> > > > > >
+> > > > > > -       if (host->mmc->caps2 & MMC_CAP2_CQE) {
+> > > > > > -               ret =3D cqhci_suspend(host->mmc);
+> > > > > > -               if (ret)
+> > > > > > -                       return ret;
+> > > > > > -       }
+> > > > > > +       /*
+> > > > > > +        * Switch to runtime resume for two reasons:
+> > > > > > +        * 1, there is register access, so need to make sure
+> > > > > > + gate on ipg
+> > > > clock.
+> > > > >
+> > > > > You are right that we need to call pm_runtime_get_sync() for this=
+ reason.
+> > > > >
+> > > > > However, the real question is rather; Under what circumstances do
+> > > > > we really need to make a register access beyond this point?
+> > > > >
+> > > > > If the device is already runtime suspended, I am sure we could
+> > > > > just leave it in that state without having to touch any of its re=
+gisters.
+> > > > >
+> > > > > As I understand it, there are mainly two reasons why the device
+> > > > > may be runtime resumed at this point:
+> > > > > *) The runtime PM usage count has been bumped in
+> > > > > sdhci_enable_sdio_irq(), since the SDIO irqs are enabled and it's
+> > > > > likely that we will configure them for system wakeup too.
+> > > > > *) The device has been used, but nothing really prevents it from
+> > > > > being put into a low power state via the ->runtime_suspend() call=
+back.
+> > > > >
+> > > > > > +        * 2, make sure the pm_runtime_force_suspend() in NOIRQ
+> > > > > > + stage
+> > > > > really
+> > > > > > +        *    invoke its ->runtime_suspend callback.
+> > > > > > +        */
+> > > > >
+> > > > > Rather than using the *noirq-callbacks, we should be able to call
+> > > > > pm_runtime_force_suspend() from sdhci_esdhc_suspend(). And vice
+> > > > > versa for sdhci_esdhc_resume().
+> > > > >
+> > > > > Although, according to my earlier comment above, we also need to
+> > > > > take into account the SDIO irq. If it's being enabled for system
+> > > > > wakeup, we must not put the controller into low power mode by
+> > > > > calling pm_runtime_force_suspend(), otherwise we will not be able
+> > > > > to deliver the
+> > > > wakeup, right?
+> > > >
+> > > > Thanks for your careful review!
+> > > > Yes, I agree.
+> > >
+> > > Hi Ulf,
+> > >
+> > > Sorry, I maybe give the wrong answer.
+> > >
+> > > I double check the IP, usdhc can support sdio irq wakeup even when us=
+dhc
+> > clock gate off.
+> >
+> > Okay, so there is some out-band logic that can manage the SDIO irq, eve=
+n when
+> > the controller has been runtime suspended?
+>
+> Hi Ulf,
+>
+> Sorry for the late reply.
+>
+> Seems not out-band logic, refer to SD Host Controller Standard Specificat=
+ion Version 3.00, 2.2.13 Wakeup Control Register (Offset 02Bh), P45
+> Or refer to static bool sdhci_enable_irq_wakeups(struct sdhci_host *host)=
+ in sdhci.c
 
-To i.MX9, there is no valid fsl_edma->txirq/errirq, so add a check in
-fsl_edma_irq_exit to avoid issues. Otherwise there will be kernel dump:
-WARNING: CPU: 0 PID: 11 at kernel/irq/devres.c:144 devm_free_irq+0x74/0x80
-Modules linked in:
-CPU: 0 UID: 0 PID: 11 Comm: kworker/u8:0 Not tainted 6.12.0-rc7#18
-Hardware name: NXP i.MX93 11X11 EVK board (DT)
-Workqueue: events_unbound deferred_probe_work_func
-pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : devm_free_irq+0x74/0x80
-lr : devm_free_irq+0x48/0x80
-Call trace:
- devm_free_irq+0x74/0x80 (P)
- devm_free_irq+0x48/0x80 (L)
- fsl_edma_remove+0xc4/0xc8
- platform_remove+0x28/0x44
- device_remove+0x4c/0x80
+Right, those handle the in-band wakups.
 
-Fixes: 44eb827264de ("dmaengine: fsl-edma: request per-channel IRQ only when channel is allocated")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
----
-V3:
- Update commit log
-V2:
- None
+If the platform doesn't support some out-band logic to deliver wakups,
+we simply need to keep the controller always powered on, when SDIO
+irqs are enabled.
 
- drivers/dma/fsl-edma-main.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+In other words, call a pm_runtime_get_noresume() when SDIO irq gets
+enabled and pm_runtime_put_noidle() when they become disabled.
 
-diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-index 3966320c3d73..03b684d7358c 100644
---- a/drivers/dma/fsl-edma-main.c
-+++ b/drivers/dma/fsl-edma-main.c
-@@ -303,6 +303,7 @@ fsl_edma2_irq_init(struct platform_device *pdev,
- 
- 		/* The last IRQ is for eDMA err */
- 		if (i == count - 1) {
-+			fsl_edma->errirq = irq;
- 			ret = devm_request_irq(&pdev->dev, irq,
- 						fsl_edma_err_handler,
- 						0, "eDMA2-ERR", fsl_edma);
-@@ -322,10 +323,13 @@ static void fsl_edma_irq_exit(
- 		struct platform_device *pdev, struct fsl_edma_engine *fsl_edma)
- {
- 	if (fsl_edma->txirq == fsl_edma->errirq) {
--		devm_free_irq(&pdev->dev, fsl_edma->txirq, fsl_edma);
-+		if (fsl_edma->txirq >= 0)
-+			devm_free_irq(&pdev->dev, fsl_edma->txirq, fsl_edma);
- 	} else {
--		devm_free_irq(&pdev->dev, fsl_edma->txirq, fsl_edma);
--		devm_free_irq(&pdev->dev, fsl_edma->errirq, fsl_edma);
-+		if (fsl_edma->txirq >= 0)
-+			devm_free_irq(&pdev->dev, fsl_edma->txirq, fsl_edma);
-+		if (fsl_edma->errirq >= 0)
-+			devm_free_irq(&pdev->dev, fsl_edma->errirq, fsl_edma);
- 	}
- }
- 
-@@ -485,6 +489,8 @@ static int fsl_edma_probe(struct platform_device *pdev)
- 	if (!fsl_edma)
- 		return -ENOMEM;
- 
-+	fsl_edma->errirq = -EINVAL;
-+	fsl_edma->txirq = -EINVAL;
- 	fsl_edma->drvdata = drvdata;
- 	fsl_edma->n_chans = chans;
- 	mutex_init(&fsl_edma->fsl_edma_mutex);
--- 
-2.37.1
+>
+> >
+> > In these cases, we use dev_pm_set_dedicated_wake_irq* to manage that
+> > wake-irq. There are other mmc host drivers that implement support for t=
+his too.
+> >
+> > If you are referring to solely clock gating, that is not going to work.=
+ A runtime
+> > suspended controller is not supposed to deliver in-band irqs.
+>
+> In sdhci_irq(), it will check host->runtime_suspended, if in runtime susp=
+end state, directly return. But for SDIO wakeup irq, here will meet irq sto=
+rm, because no place to clear the interrupt status register.
+> This is why I involve noirq pm, force runtime resume before system handle=
+ sdio wakeup irq.
 
+That check is indeed to prevent us from accessing the controller when
+there are spurious irqs.
+
+Again, if there is no out-band logic you must keep the controller
+runtime resumed, when SDIO irqs are enabled.
+
+>
+> Or to support in-band SDIO wakeup, add some changes in common sdhic.c, ju=
+st like following, which do you prefer? Or any thought?
+>
+> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> index 0b46b50aa28b..8928af3e62d3 100644
+> --- a/drivers/mmc/host/sdhci.c
+> +++ b/drivers/mmc/host/sdhci.c
+> @@ -3532,7 +3532,10 @@ static irqreturn_t sdhci_irq(int irq, void *dev_id=
+)
+>         spin_lock(&host->lock);
+>
+>         if (host->runtime_suspended) {
+> +               disable_irq_nosync(host->irq);
+> +               host->wakeup_pending =3D true;
+
+No, this isn't the way to fix it. See above.
+
+>                 spin_unlock(&host->lock);
+>                 return IRQ_NONE;
+>         }
+>
+> @@ -3878,6 +3881,10 @@ int sdhci_runtime_resume_host(struct sdhci_host *h=
+ost, int soft_reset)
+>         spin_lock_irqsave(&host->lock, flags);
+>
+>         host->runtime_suspended =3D false;
+> +       if (host->wakeup_pending) {
+> +               host->wakeup_pending =3D false;
+> +               enable_irq(host->irq);
+> +       }
+>
+>         /* Enable SDIO IRQ */
+>         if (sdio_irq_claimed(mmc))
+> diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
+> index e62f483ff3b8..ce6f750cc4dc 100644
+> --- a/drivers/mmc/host/sdhci.h
+> +++ b/drivers/mmc/host/sdhci.h
+> @@ -536,6 +536,7 @@ struct sdhci_host {
+>         bool reinit_uhs;        /* Force UHS-related re-initialization */
+>
+>         bool runtime_suspended; /* Host is runtime suspended */
+> +       bool wakeup_pending;
+>         bool bus_on;            /* Bus power prevents runtime suspend */
+>         bool preset_enabled;    /* Preset is enabled */
+>         bool pending_reset;     /* Cmd/data reset is pending
+>
+>
+> Best Regards
+> Haibo Chen
+> >
+> > > So to save power, need to call pm_runtime_force_suspend() to gate off=
+ the
+> > clock when enable sdio irq for system wakeup.
+> > > This is the main reason I involve pm_runtime_force_suspend in noirq s=
+tage,
+> > because in sdhci_irq, there is register access, need gate on clock.
+> >
+> > In summary, to support the out-band irq as a wakeup for runtime and sys=
+tem
+> > suspend, dev_pm_set_dedicated_wake_irq* should be used.
+> >
+> > To move things forward, I suggest you start simple and add support for =
+the
+> > out-band irq as a step on top.
+> >
+> > [...]
+
+Kind regards
+Uffe
