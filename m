@@ -1,228 +1,236 @@
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012069.outbound.protection.outlook.com [52.101.66.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B4F188A3A
-	for <imx@lists.linux.dev>; Fri, 15 Nov 2024 08:52:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731660734; cv=none; b=JN7/18x9pTaD4Op/f7ZE6Cp2MUQaHXoOgdfOM+sE9ns8/3GfPAU2ijfY47F7sFSVUCEJQOS2JndeKjB6lvIul3hO0SA54WZuk6LjnhaE5jva9bQBsRYJG3KvkM/vNhFg06avTKf8fErR+f8/JkvdVWRtPA9L0zoS1FaskYSA7k8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731660734; c=relaxed/simple;
-	bh=bGxmR42ZqhzPo5U+KBhp/Vo3Bch/V1hPQBqkPLuoFbs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B4T2bTUk0YyXYVkl8dQswpMHWCPEidYqKkfcLR4CXUp4CKb7snklBJIAOl3qxTOd27TTb+1F1g6vBW2ZZ2u78tfq+LQtlbGpvZ5UIbvea+YPA4IoKzOz9YbClUsbGSWRvnZvs09RlIg8RCCJLMoaunQMHP/ujzrt+HKJQIt4ix8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com; spf=pass smtp.mailfrom=raspberrypi.com; dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b=B8xrTBYc; arc=none smtp.client-ip=209.85.219.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=raspberrypi.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DD718A922
+	for <imx@lists.linux.dev>; Fri, 15 Nov 2024 09:04:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731661475; cv=fail; b=bhfR30WHgH3nQCSDu+RCqgtNZKwmW6JeNUHwjdFlXjkQ50n0EEEClmWngKtxfXBdITqbXVvQXr6HPl83yo0I2LhGc/FpXEMNIHEVIUeV+o341abelENtnFTST8i8Mfoqadkitwdw+HogmkmiJSqv+f0QW6NODMEZ0EJ9u2lYcuY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731661475; c=relaxed/simple;
+	bh=aanrKSchLy9r4daDMaV8caaEuWVhDSXxScqVrh9IVIE=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=rjZ//Apf0swtAbHeM/H6Afk5UQpVIP0MqGF2KtSuZmKRatx67ZpWBtLKKkDIU4z1wpDNCEil5p3wLxb2Q14CSUd9tRNkmR/Cj0f+NqhdPM74oWQdKTsUclqqWRMLQZne6I25+qw0/aMY/YQqn3/x3Xda7R2fgGGxISYFRcG1GyI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=g8lEOdtm; arc=fail smtp.client-ip=52.101.66.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b="B8xrTBYc"
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e38261653aaso533043276.2
-        for <imx@lists.linux.dev>; Fri, 15 Nov 2024 00:52:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=raspberrypi.com; s=google; t=1731660732; x=1732265532; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=6S2nGodUHkF7oQtN5BOS0le7eARr47Goh8++DpENQG0=;
-        b=B8xrTBYcJCcTozuZv00whEP+qVpfHSzM4SNMsvFUyq3l4NZ1LgBTnw700T77MvQgN+
-         Cw6935OtjbEFEaQQjsL0x1xKv472nkXSsQN15zXn5jruYVByR4d/mbAMKCOXq6/iHqEs
-         kZlK18alzWoWDF7oZ1S9K8sEdpr91g7zFZIZFwzt+1gQcXohNVRy9sLu5fM/umj+Nr8F
-         Fs0U9k9yUyGFgN11BmW2SypNMykAKHFsd4DN/+GB1LivlJE+zzzJuMzIH4Wq98Pl8Zgu
-         IHJVZetuoACd+vCp9rfWVAS1IE3WR58LAT9kdde7WoeA1OGlFR0nQzZKnwCMaZ/iMU0S
-         YBNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731660732; x=1732265532;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6S2nGodUHkF7oQtN5BOS0le7eARr47Goh8++DpENQG0=;
-        b=soeC58mEYvS0LHadt9kOoiBYe1tMM1YML5aS0MICBtG7cAkzEJ8+z2z22DlwX5VEtF
-         iBsLuGtggkuYT1V1exb5OLFcftt3Tz3NxGg0J42bLAIErFeioojaAsf/zBTryO0jgXbX
-         zsHjGGu3QG9yEvz042bXs3Us42WcQj+s/ECXIFQV/QricYpcwNiDkevgmYTt8JZneZWV
-         BZzbG12JfVfn4cRIrFcD0sMgAPU/h+WJR1P+m/gW7wQgXytqYnFgh0kwD4djA83JWtAt
-         fNrKSIAg5sDVkdkXFAdou6QUtOX3y98VrBf4abc6zepdjRygnFONZNrNskh45PFo2+CU
-         oDow==
-X-Forwarded-Encrypted: i=1; AJvYcCVsdb54zFZOWiGrbhAfqyusQfzcBb3mKVK5duvEfcl0ZxVgqYLlqdszlCa3Ht6s6cFD1GY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwM6MTVrM+JKR5a2Mp6CaIEDtzYPEnoqxHBgc6VfzTRbrZDBHLX
-	butbKvkCDd6EuovvYJao+tELmI268USJ4ITY4Y0amfAFwKxVhvDHTQR4EOQK5vAfU6ccDfDBmgZ
-	vePGKbpLtBb8c798NeXZ9AfaDgbeFD2/CLhR7grkOT6nJoWL8Xx0=
-X-Google-Smtp-Source: AGHT+IHV94ciQ8ydggMMk7IA4ri1B28vEf2MSAaktiuDxaGnxBdFoxYrqrbgaH4WT2Q9fn8dihjYsjg1qMjvep1DlaY=
-X-Received: by 2002:a05:6902:b09:b0:e30:cea9:ba28 with SMTP id
- 3f1490d57ef6-e3826165b1bmr1162795276.30.1731660732215; Fri, 15 Nov 2024
- 00:52:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="g8lEOdtm"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Xkn7tQf3ShWdxO9WPR+B6IELgZ927CvalkEV2iIKoWESAHwPJ5YLhFPntDzjEcwqCIMoCMoQPbi5hSWdwK/+sG3pIufp7aMLnT3cxSeDMijs1M+u5e1GR+LM8yWNiHBo+XHEMokPPU9+J4k8QBjGxgvzXLpixkvSiBRzMrGr8hikMPH1UtukvDqIxWzQVOLk2OG2ygwq6QYv5+tBIgAgSSCvL/AGYvcjSvlosW2EtvJu5+1iSb3ZvjR2xGRxA4cjHYUHo0GceSm/dzb2cCCT7XzunFKttJS0QpypKgtC8iQbWHNjhZ5Pek6AhvDbBhRs2dBM+HPl47RBvlonqOsCdg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PD1cE70lCluhvrIdvwx8JoYXDch2k5OeUyq3IWdhax4=;
+ b=Bs+V9U0hurMiuwETu/3Gm/dVaPsepSh8SdVr94q3abn396tMRy9mUuZzuWtc37FOFWlzCXemOW2VrtXaXjDgeY1+HYNgNOZOlD3DiaVlamr+fYucy7QiW2SHNtX63J8sTlS9GtphqlW3HylFpa6fnFBknELuimZEh0rdqXZ1Z5IIaQoNm3NrT10odR2DJCreWqy28pDbCHbohL1/a7RGPv60hSqFay24C27tQNWH5LRSJDONij66VQQe3g9qpOfhW87vArmsz5NMfrlddfaz1Mo/PguKmaw69WCzRi4WGMLfk70q+4LgO6KlBZinwS5YGYwYjbrMdJX+eGQlJZcchQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PD1cE70lCluhvrIdvwx8JoYXDch2k5OeUyq3IWdhax4=;
+ b=g8lEOdtmgoQYLW6IYW+bMReEcPnhNTqC3ql4ifDuUtNoqQjWqlxmDmZVehOAjobZLbJLrcTrMoPiw+jatT2HAAOg6jlc8AgSejpjmolrTslgu6TyHGmURLEmSdCoqpYsAW2rOivXf+olqtdevNF8zlCpi6Y74M3eBQVBb2GRB1+fnMm9Ekq5d2sEGr+nYKBPK/H+D7gqQE7McXgzZgG8qHIuFr2D9NHeMGUPGJdIPvglneXmZstzzZ9/FWNkiTkzU91qDrREHTdkk9kQWbFqbAR/AO8l5og+a1ibNcvY9g8VzPSUqxROZXS1a17dF8veLySvMG0hXcvYXSdvuspS1A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS8PR04MB8676.eurprd04.prod.outlook.com (2603:10a6:20b:42b::10)
+ by VI2PR04MB10980.eurprd04.prod.outlook.com (2603:10a6:800:274::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.20; Fri, 15 Nov
+ 2024 09:04:29 +0000
+Received: from AS8PR04MB8676.eurprd04.prod.outlook.com
+ ([fe80::28b2:de72:ad25:5d93]) by AS8PR04MB8676.eurprd04.prod.outlook.com
+ ([fe80::28b2:de72:ad25:5d93%7]) with mapi id 15.20.8158.017; Fri, 15 Nov 2024
+ 09:04:28 +0000
+From: Richard Zhu <hongxing.zhu@nxp.com>
+To: jingoohan1@gmail.com,
+	bhelgaas@google.com,
+	lpieralisi@kernel.org,
+	kw@linux.com,
+	manivannan.sadhasivam@linaro.org,
+	robh@kernel.org,
+	frank.li@nxp.com
+Cc: imx@lists.linux.dev,
+	kernel@pengutronix.de,
+	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Richard Zhu <hongxing.zhu@nxp.com>
+Subject: [PATCH v2] PCI: dwc: Clean up some unnecessary codes in dw_pcie_suspend_noirq()
+Date: Fri, 15 Nov 2024 17:03:21 +0800
+Message-Id: <20241115090321.527694-1-hongxing.zhu@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR04CA0191.apcprd04.prod.outlook.com
+ (2603:1096:4:14::29) To AS8PR04MB8676.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42b::10)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241114-media-imx290-imx462-v1-0-c538a2e24786@raspberrypi.com>
- <20241114-media-imx290-imx462-v1-3-c538a2e24786@raspberrypi.com> <20241115000637.GK26171@pendragon.ideasonboard.com>
-In-Reply-To: <20241115000637.GK26171@pendragon.ideasonboard.com>
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Date: Fri, 15 Nov 2024 08:51:55 +0000
-Message-ID: <CAPY8ntBJu+mA3BcYkkVpr1L0jf2hp6e3kbpyGkB7mwbiDQDGzQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] media: i2c: imx290: Add configuration for IMX462
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8676:EE_|VI2PR04MB10980:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3e80a3b8-66e1-476d-41b2-08dd055482c2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?FUgybIGg2xFuuJTEsxjCg4CtNuZ5PaX5S8/heqTbEEc4gpC2xSFYjEOQVdVy?=
+ =?us-ascii?Q?6yGRxbNzYWO7lypkg2dVljA1UEg8j1hUZvJ091ld1O+2k464A8kGckvXmCdb?=
+ =?us-ascii?Q?BR9pSqex5xzPovpIvi2CShLV8RVkk0qFQOMF6ePO+aoljaMT4Xbzxk88g8na?=
+ =?us-ascii?Q?zIOTqrIjXRJGEmcQk3hpMBvepHZsjVVbjw5W4ODHKeDJkitCPj+PF5Z5k+yf?=
+ =?us-ascii?Q?YVOXEJCteW18oag0VWEFOmFFkG7lWERVoUFvZ4hQcdTS8k8MucUAtrhfTFVh?=
+ =?us-ascii?Q?dQ0wm4eUub6V2jIz7UvSWpxaln5eol6PgDrKySxSy1ltEOLCv19rQUpDnjCI?=
+ =?us-ascii?Q?KCSeSBYV99HvRvuFU0glacWq1z1HZZKzYadaMNfGdkFKLtpF8MEWkt+2zJYj?=
+ =?us-ascii?Q?dpcELFlSGpGOZTRmt4CZxJ1hquFcaQ0ZjODeztaGqcQq4i0vX4jfpLbU2OM6?=
+ =?us-ascii?Q?mVfTY1sgatmnZQahL4cQ8aU2hJRETYbwWwLMFqk5nlaMv0vGxH/7t0FANtR5?=
+ =?us-ascii?Q?Jz8ZdowMcM2VF5i80otYuU7GTCX9wbylxnfgX7YyjclOcllkkrrX+GLzAQQ1?=
+ =?us-ascii?Q?fnPMUoV7f2edXexFOce+Y9Rpb+BoHJA1L2RASm6mhCVwJRq43gs9LbDnBqO4?=
+ =?us-ascii?Q?J3DV2m7xG7mlGWOf2AgqanfRcCwlOVMQs6e0MlLxJTW1zfaL88kcs7Mg+1H4?=
+ =?us-ascii?Q?pmzqzhmlQ1fQeYXkIZEAYh1qjHm/v4rtmWwWaG6rW9pD3Liq89dmOCjopaiq?=
+ =?us-ascii?Q?KuKHiDRJdCGxoXzDqcseKwPPp9+maa+kVJ8+lnoH1l2jFKiBGtpzX/OaoUYl?=
+ =?us-ascii?Q?H6YDw6cTtPBD0uPaITTp7NK5EKpsq214I4v56AqWzm/bEAoM5PMTeK2jL62i?=
+ =?us-ascii?Q?G5nGjS1dtmuCqO9G9MLepbUxomuRpnOdfHRRVP5poKkgakGrsEVI+4oAgVKr?=
+ =?us-ascii?Q?RMNwpaJq91Q2cRwq3KNZTP0XvF3u4WUZxeuE6YQT0hIiTjfB+HDWON7hdEXj?=
+ =?us-ascii?Q?OuTVjgK5bF2cTgBjPR7tbipt/r0crPQHQHvf5SfE8OPc1KRUnVxBh0CePYZq?=
+ =?us-ascii?Q?ngVJWaOvxcZXsw7y1RrITdyYv69C5rhJh4JGMZ61Ftcyh+qZTho1LqlBp0d+?=
+ =?us-ascii?Q?0oPygFJoKszonT4yPcW3l6iOtpfAXHuKlGCh5tyyrDAki+WQY31rS9XU6+vr?=
+ =?us-ascii?Q?J5kydniUKJHOlMzbFhROWH+xb2W2IMwJiNQ34Em/glUyDZt8U4JmY0HUrszp?=
+ =?us-ascii?Q?NHYSRmp7h+TvrhSwITyzNLCg3vAo4Bg49nxR3rPydIqpfJyCiw5s6rT56tAj?=
+ =?us-ascii?Q?vr+GL/C1d1JxJ1TyEkl+YEbr0Zt52MkqQ9Qwujx8ZIV4CqtE28eXFh0frTzo?=
+ =?us-ascii?Q?/d0THUI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8676.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?oUx8SlNCcFoQtvueORXTY8csKLS0kT8gWXJRbYYOp/aDkd8TW4GfKCCBr2sy?=
+ =?us-ascii?Q?vt7hAwnEp+qubreGbh+x36CR93owomdI4f2lbpb87CmPmy6ol3esAmjGkqgM?=
+ =?us-ascii?Q?MSJTGNmbOiJLGM/6Vk58nG93xdeAM09JAiYm+wOtnOMFN1bHeUZ3+bii4Lfg?=
+ =?us-ascii?Q?09nRLG3manahxI9/TC9Z5MzQ2WOtG0yGnIVA/zxDYXvAmAWCkmbGAlqoRw3g?=
+ =?us-ascii?Q?S/ByS1Dy61MVXR3B8hfbxksa5oviN7MGzhlTrH7XkrnNTQV4Gko8cnffWwMY?=
+ =?us-ascii?Q?uUJll4aKVqHq4vX/Tij1m4kRiBo6+WLdeGGAdwKKGPXoInlSRQ81mHreOP85?=
+ =?us-ascii?Q?pLxm7WiEpnJhBGOBIfRDOFdeOzMk76f/Zry8pCFH22HF2AfZutX6dmgRh7ko?=
+ =?us-ascii?Q?0VofT7DhbfcsrGnfZrsU8fzBnUBJiQCTSYHx8JsGad4nEhAD9kymtytBdvES?=
+ =?us-ascii?Q?HO/D02WB290/KCmZU4mRCd6BY/+FLD2QBtaEgnrIRZfIkpCc+FFRpEWmFa5B?=
+ =?us-ascii?Q?q/0HC/dtQ5UQqF3vord6E9CI0WwcDzYQGkf/v0qyaOSnVmJRtygKBdNiUVSu?=
+ =?us-ascii?Q?1OvosbiBASUdXuRERTc6JQVZ2tSV72iaMfRu8u/xypdhugw5NmL6nF7RuSbW?=
+ =?us-ascii?Q?GHBSUchpMck6aYnCDN+AM/8kedPa67mlwqKU5M9RvX5+Ofjv6FcKDJGLR+lR?=
+ =?us-ascii?Q?1gRzhLDWHdKQNGyU56UB6SITywr3R4BaUEMJZFMfVmZDP3T2KpBQMeVZhQ/2?=
+ =?us-ascii?Q?7yfFIFoTs98ow1AqW/ArfnyB6Mu5fAmoDKhFTlZX7F/JM9HAGBbuQ4vCFVLw?=
+ =?us-ascii?Q?5Byp4SJPPlJ8NsokPRafQCPbi0fE19y2QMcr8wXlZcAI5JkedNxAocrWCSdh?=
+ =?us-ascii?Q?H1l2mdRjQMw2SE4UNIpVjbB4GEzYqnthNCzNJMC7H7Zwk0bA5DyCy66GDo1c?=
+ =?us-ascii?Q?eduT3ndp2GRfyveV1HyOm5Qa8UbalywJVkViVHV4qIdrnypaC3V4RHudKAKl?=
+ =?us-ascii?Q?Ka7DAfFXJLMDkal0yLPtbRLES6WRNGofaPGBQPjKb0Pvsoojcl7ogaopMrwx?=
+ =?us-ascii?Q?6ityU5FLw/RlHhjhTA0akpmqSNbK6ZEX1K2+UgNAXztUA2NjAcpi82BAHokB?=
+ =?us-ascii?Q?hXgw+F/p7Kd3u7W/ZwZSAg6TvfKw+tV0wMCmXetltFT9NgO7lE44BOEoHH0n?=
+ =?us-ascii?Q?hKgD8QKU+FjnztiGIsARiW2kDcFF6PKiBILP7mf4cfDfwY4Alut8zT2KVQ88?=
+ =?us-ascii?Q?1aooBdj0Cua5RWiNzsDiKDQAMqcfOETICAtCEWnM6V7HNeBtrEEb426jVrF1?=
+ =?us-ascii?Q?85fkYUM/CR6ObA0WT+lHFPwmzZ/gYELX02jgvLraU7Z6I45aPbS9jsVkJvEr?=
+ =?us-ascii?Q?+bQialNdvJQLRsNu3aTNSInVl/1WthUiqspRhbUBDTY8XyppeJD4mDeN4q/j?=
+ =?us-ascii?Q?iHILwcXAjy/uQ4hlwd4coFazl+HHvc+0tcu5crYzTPT4aZltDxDfwPvtlQhO?=
+ =?us-ascii?Q?JMAVZ0vf+4ualAKaIRheANY03ljjZXkWw40XdgUFMSRI8PJSvKk5ITnOBcOw?=
+ =?us-ascii?Q?rjRgStvBKrkh3LDf0y4F3NjPhdGTDQymdTr3mlt9?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3e80a3b8-66e1-476d-41b2-08dd055482c2
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8676.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2024 09:04:28.8258
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eKdJ0vw9aipupdcxjb9VDSz/lX0OohfUZSK/WZ7rgtg5wuO9xRuMuTDUF7Ns9JvORvQuKpxnIlxao1/TAeGfIg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10980
 
-Hi Laurent
+Before sending PME_TURN_OFF, don't test the LTSSM stat. Since it's safe
+to send PME_TURN_OFF message regardless of whether the link is up or
+down. So, there would be no need to test the LTSSM stat before sending
+PME_TURN_OFF message.
 
-On Fri, 15 Nov 2024 at 00:06, Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
->
-> Hi Dave,
->
-> Thank you for the patch.
->
-> On Thu, Nov 14, 2024 at 04:01:15PM +0000, Dave Stevenson wrote:
-> > IMX462 is the successor to IMX290, and wants very minor
-> > changes to the register setup.
-> >
-> > Add the relevant configuration to support it.
-> >
-> > Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-> > ---
-> >  drivers/media/i2c/imx290.c | 66 ++++++++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 66 insertions(+)
-> >
-> > diff --git a/drivers/media/i2c/imx290.c b/drivers/media/i2c/imx290.c
-> > index da654deb444a..f1780cc5d7cc 100644
-> > --- a/drivers/media/i2c/imx290.c
-> > +++ b/drivers/media/i2c/imx290.c
-> > @@ -170,6 +170,8 @@ enum imx290_model {
-> >       IMX290_MODEL_IMX290LQR,
-> >       IMX290_MODEL_IMX290LLR,
-> >       IMX290_MODEL_IMX327LQR,
-> > +     IMX290_MODEL_IMX462LQR,
-> > +     IMX290_MODEL_IMX462LLR,
-> >  };
-> >
-> >  struct imx290_model_info {
-> > @@ -316,6 +318,50 @@ static const struct cci_reg_sequence imx290_global_init_settings_290[] = {
-> >       { CCI_REG8(0x33b3), 0x04 },
-> >  };
-> >
-> > +static const struct cci_reg_sequence imx290_global_init_settings_462[] = {
-> > +     { CCI_REG8(0x300f), 0x00 },
-> > +     { CCI_REG8(0x3010), 0x21 },
-> > +     { CCI_REG8(0x3011), 0x02 },
->
-> As far as I can tell, the only difference in the init sequence between
-> imx290_global_init_settings_290 and imx290_global_init_settings_462 is
-> 0x3011 register which is not present in imx290_global_init_settings_290.
-> It is however included in imx290_global_init_settings, and set to 0x02.
-> Could we therefore use imx290_global_init_settings_290 for the imx462 ?
+Only dump the message when ltssm_stat is not in DETECT and POLL.
+In the other words, there isn't a notification when no endpoint is
+connected at all.
 
-I'd done a comparison of the datasheets, and register 0x3011 was the
-only one that changed. I'd missed that it was in
-imx290_global_init_settings.
+When the endpoint is connected and after PME_TURN_OFF is issued. Just
+print out one information instead of an error and exit, if the link
+doesn't entry DW_PCIE_LTSSM_L2_IDLE stat. Since the recovery would be
+done in the following closely dw_pcie_resume_noirq().
 
-My datasheets:
-IMX327LQR-C rev E17Z06B93 2019/03/25. 3011h "Set to 02h" (value
-changed in doc rev 0.3 from 0Ah)
-IMX290LQR-C rev E15510G82 2018/02/09. 3011h "Fixed to 00h" (always
-been that value).
-IMX462LQR-C rev E19Y13C13 2021/03/19. 3011h "Set to 02h" (value
-changed in doc rev 0.2 from 00h)
-The default value stated in all of them is 00h. In true Sony fashion,
-there's no description for that register functionality.
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+---
+ .../pci/controller/dwc/pcie-designware-host.c | 37 ++++++++++---------
+ drivers/pci/controller/dwc/pcie-designware.h  |  1 +
+ 2 files changed, 21 insertions(+), 17 deletions(-)
 
-So actually it looks like it was the addition of IMX327 in [1] should
-have changed that setting, unless someone else has a more recent
-datasheet for IMX290 that updates that.
-cc Alexander as the author of that patch. I'll find any discussion on it later.
+diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+index f7ceeb785fb0..c2053555c44b 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-host.c
++++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+@@ -927,23 +927,26 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+ 	if (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) & PCI_EXP_LNKCTL_ASPM_L1)
+ 		return 0;
+ 
+-	if (dw_pcie_get_ltssm(pci) > DW_PCIE_LTSSM_DETECT_ACT) {
+-		/* Only send out PME_TURN_OFF when PCIE link is up */
+-		if (pci->pp.ops->pme_turn_off)
+-			pci->pp.ops->pme_turn_off(&pci->pp);
+-		else
+-			ret = dw_pcie_pme_turn_off(pci);
+-
+-		if (ret)
+-			return ret;
++	if (pci->pp.ops->pme_turn_off)
++		pci->pp.ops->pme_turn_off(&pci->pp);
++	else
++		ret = dw_pcie_pme_turn_off(pci);
++	if (ret)
++		return ret;
+ 
+-		ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
+-					PCIE_PME_TO_L2_TIMEOUT_US/10,
+-					PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
+-		if (ret) {
+-			dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n", val);
+-			return ret;
+-		}
++	ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
++				PCIE_PME_TO_L2_TIMEOUT_US/10,
++				PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
++	if (ret && (val > DW_PCIE_LTSSM_DETECT_WAIT))
++		/* Only dump message when ltssm_stat isn't in DETECT and POLL */
++		dev_info(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n", val);
++	else
++		/*
++		 * Refer to r6.0, sec 5.3.3.2.1, software should wait at least
++		 * 100ns after L2/L3 Ready before turning off refclock and
++		 * main power. It's harmless too when no endpoint connected.
++		 */
++		udelay(1);
+ 	}
+ 
+ 	dw_pcie_stop_link(pci);
+@@ -952,7 +955,7 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+ 
+ 	pci->suspended = true;
+ 
+-	return ret;
++	return 0;
+ }
+ EXPORT_SYMBOL_GPL(dw_pcie_suspend_noirq);
+ 
+diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+index 347ab74ac35a..bf036e66717e 100644
+--- a/drivers/pci/controller/dwc/pcie-designware.h
++++ b/drivers/pci/controller/dwc/pcie-designware.h
+@@ -330,6 +330,7 @@ enum dw_pcie_ltssm {
+ 	/* Need to align with PCIE_PORT_DEBUG0 bits 0:5 */
+ 	DW_PCIE_LTSSM_DETECT_QUIET = 0x0,
+ 	DW_PCIE_LTSSM_DETECT_ACT = 0x1,
++	DW_PCIE_LTSSM_DETECT_WAIT = 0x6,
+ 	DW_PCIE_LTSSM_L0 = 0x11,
+ 	DW_PCIE_LTSSM_L2_IDLE = 0x15,
+ 
+-- 
+2.37.1
 
-  Dave
-
-[1] https://github.com/torvalds/linux/commit/2d41947ec2c0140c65783982692c2e3d89853c47
-
-> > +     { CCI_REG8(0x3016), 0x09 },
-> > +     { CCI_REG8(0x3070), 0x02 },
-> > +     { CCI_REG8(0x3071), 0x11 },
-> > +     { CCI_REG8(0x309b), 0x10 },
-> > +     { CCI_REG8(0x309c), 0x22 },
-> > +     { CCI_REG8(0x30a2), 0x02 },
-> > +     { CCI_REG8(0x30a6), 0x20 },
-> > +     { CCI_REG8(0x30a8), 0x20 },
-> > +     { CCI_REG8(0x30aa), 0x20 },
-> > +     { CCI_REG8(0x30ac), 0x20 },
-> > +     { CCI_REG8(0x30b0), 0x43 },
-> > +     { CCI_REG8(0x3119), 0x9e },
-> > +     { CCI_REG8(0x311c), 0x1e },
-> > +     { CCI_REG8(0x311e), 0x08 },
-> > +     { CCI_REG8(0x3128), 0x05 },
-> > +     { CCI_REG8(0x313d), 0x83 },
-> > +     { CCI_REG8(0x3150), 0x03 },
-> > +     { CCI_REG8(0x317e), 0x00 },
-> > +     { CCI_REG8(0x32b8), 0x50 },
-> > +     { CCI_REG8(0x32b9), 0x10 },
-> > +     { CCI_REG8(0x32ba), 0x00 },
-> > +     { CCI_REG8(0x32bb), 0x04 },
-> > +     { CCI_REG8(0x32c8), 0x50 },
-> > +     { CCI_REG8(0x32c9), 0x10 },
-> > +     { CCI_REG8(0x32ca), 0x00 },
-> > +     { CCI_REG8(0x32cb), 0x04 },
-> > +     { CCI_REG8(0x332c), 0xd3 },
-> > +     { CCI_REG8(0x332d), 0x10 },
-> > +     { CCI_REG8(0x332e), 0x0d },
-> > +     { CCI_REG8(0x3358), 0x06 },
-> > +     { CCI_REG8(0x3359), 0xe1 },
-> > +     { CCI_REG8(0x335a), 0x11 },
-> > +     { CCI_REG8(0x3360), 0x1e },
-> > +     { CCI_REG8(0x3361), 0x61 },
-> > +     { CCI_REG8(0x3362), 0x10 },
-> > +     { CCI_REG8(0x33b0), 0x50 },
-> > +     { CCI_REG8(0x33b2), 0x1a },
-> > +     { CCI_REG8(0x33b3), 0x04 },
-> > +};
-> > +
-> >  #define IMX290_NUM_CLK_REGS  2
-> >  static const struct cci_reg_sequence xclk_regs[][IMX290_NUM_CLK_REGS] = {
-> >       [IMX290_CLK_37_125] = {
-> > @@ -1455,6 +1501,20 @@ static const struct imx290_model_info imx290_models[] = {
-> >               .max_analog_gain = 98,
-> >               .name = "imx327",
-> >       },
-> > +     [IMX290_MODEL_IMX462LQR] = {
-> > +             .colour_variant = IMX290_VARIANT_COLOUR,
-> > +             .init_regs = imx290_global_init_settings_462,
-> > +             .init_regs_num = ARRAY_SIZE(imx290_global_init_settings_462),
-> > +             .max_analog_gain = 98,
-> > +             .name = "imx462",
-> > +     },
-> > +     [IMX290_MODEL_IMX462LLR] = {
-> > +             .colour_variant = IMX290_VARIANT_MONO,
-> > +             .init_regs = imx290_global_init_settings_462,
-> > +             .init_regs_num = ARRAY_SIZE(imx290_global_init_settings_462),
-> > +             .max_analog_gain = 98,
-> > +             .name = "imx462",
-> > +     },
-> >  };
-> >
-> >  static int imx290_parse_dt(struct imx290 *imx290)
-> > @@ -1653,6 +1713,12 @@ static const struct of_device_id imx290_of_match[] = {
-> >       }, {
-> >               .compatible = "sony,imx327lqr",
-> >               .data = &imx290_models[IMX290_MODEL_IMX327LQR],
-> > +     }, {
-> > +             .compatible = "sony,imx462lqr",
-> > +             .data = &imx290_models[IMX290_MODEL_IMX462LQR],
-> > +     }, {
-> > +             .compatible = "sony,imx462llr",
-> > +             .data = &imx290_models[IMX290_MODEL_IMX462LLR],
-> >       },
-> >       { /* sentinel */ },
-> >  };
->
-> --
-> Regards,
->
-> Laurent Pinchart
