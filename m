@@ -1,58 +1,58 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93791D619D
-	for <imx@lists.linux.dev>; Fri, 15 Nov 2024 17:51:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5CB614A088
+	for <imx@lists.linux.dev>; Fri, 15 Nov 2024 18:23:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731693120; cv=none; b=dUL1DJlI+67dnicmFrUNEqX2OHg4TBKZsTrd7CNCYT26jiocaMGfkVHTNUe33Z1zv9ZT4Q1JQEdcBEeiqApO8iTUvPWNh1D4JPIdzb1dDILTVIlnCVlq7vPy7zu7PzmRt0mNnYpp2269qDhGP3dcU8ESIUORmGs9xoId4nPD1K0=
+	t=1731695028; cv=none; b=urTtC4VlAYXIaBLVfF4Li81RGlxt5b10Hg1L26HPA7vzXcq2Ykxh/vKQ7hVWMHy3hD+Mje+f2zf7jqmLBaJzHoyPFnsG18Zm1wuzYFm4L2euKheLX56/McYbqfJ+KPzZCW3moM702iyPHeOh2xcTxFWI8+rzTp1mAkG5MMPmx3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731693120; c=relaxed/simple;
-	bh=09hYKCgXyDUZhuZQR4UkViK/zC1/odV9u3WUWthEMVw=;
+	s=arc-20240116; t=1731695028; c=relaxed/simple;
+	bh=GbWyhc1V4IVmIs1bffftUs21lGGTCqy73H9xpXKKptk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lIHiDVoKMCK3NWtG2PlWILCHPTgSSkPtn/SMAAUy1AhqoTe5XwzOCIppc9fuljE9X966wvGATli7LB6SzQvGOZ+MedQg29PlShRoIVxcfew5elRyVQK50N37GoHYudAA5BqMdM/EHi5ZMj16lYHlnXD2IZ22/1MT9zPEDfJ8Da4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vTz5c/RL; arc=none smtp.client-ip=209.85.214.173
+	 Content-Type:Content-Disposition:In-Reply-To; b=qkYWoDIHP+1kKDB+IaYYqtJQTh6d7c0jcMzmjc99IhdsO1bQ+GR6+vpnGcvDzSH4ZDfCzghHnGpiRPOXiVwb7pZ5ZbUDOTpSWLY+2pIYHVf/s3efYjCGhD5jalAW0nGNmFWxFUlZoxGpcSsMDXrEDoEkwScEZwz2bHswAK0o69E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=J+vexXNB; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vTz5c/RL"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-20c9978a221so23554365ad.1
-        for <imx@lists.linux.dev>; Fri, 15 Nov 2024 09:51:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="J+vexXNB"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-20c9978a221so23835625ad.1
+        for <imx@lists.linux.dev>; Fri, 15 Nov 2024 10:23:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731693118; x=1732297918; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1731695026; x=1732299826; darn=lists.linux.dev;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=HsIDulqPVm11kvME4lSY/OQMyOCr+gV0M7N3MMcJtZE=;
-        b=vTz5c/RL94zaQOgejV4rKlHfSNPSQGzKMthOMMJWXBohxxbWX6/LSX3dQLdk57fOcy
-         Qbyii01GGemqvfm6HUR+DMZvhkbZ4ZnWIgMkI1YaJ9l+PBLSCKFbeML5Ey8048Mme8GQ
-         NG2MoVoBIEKQkjEwl9uY9CpmpOcyCaIL4gk/0nVvwwDXsjX2/KXsKfkK9mO4elrE4PVI
-         QFSO/TNJsjC7xyn6G9Bn7IJEC0RCk+YyHa7OEse3HS71lcyTV2AoRLzTpmOlgM/GXPNm
-         vmYMxNSN6XfWRcw0VrUkH2axMWiPnHxexVVMQTI0rveHZTBQ4APAEzg/CEEyzdfAhmJF
-         p1Qw==
+        bh=1CnwJEhoyWWs0hfunP5nkD+KmYCyarErjrVddNp9cu4=;
+        b=J+vexXNBNW0/gWuXy4ypNdjhH+NDFiAEBorXTM52vBk+VDvlofNWxOar05+dqyXoK8
+         SRvhaNsP1bPyBpj3p0uZY0B+lXjO3n/RpqOA7xKRquAEKDRMxfcf0oi68JCwkRjSMYli
+         bPTWvZlItZd3eAqM8gyjdqBrRaIlDbwjuLS3vi43BSicyVXgL67t5YFlE7hyw/K2MktV
+         3VuBfioKvT8QbnE308QyLEZDi7ScHWStDfNyqfaPR6VkfOI/V+BuBRVeOCNIlY8EqDgl
+         g5m2i8AH9iZXoFvMErWq76FwRC443V1llzi9bRXyw51ATEH2inr2fGS2W/sh9MbuUuXa
+         s61Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731693118; x=1732297918;
+        d=1e100.net; s=20230601; t=1731695026; x=1732299826;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HsIDulqPVm11kvME4lSY/OQMyOCr+gV0M7N3MMcJtZE=;
-        b=J1WOlazTVhjDFArHstCuYuLTAPV30WATV9pVqXBB0px4JVbKIcHxPFc43ZVcIoBeAh
-         1dDwCMdONjsAMTnX4z+AuAhKVZgEdhQIvkiWYgL7Y5Egpe0al7r95reHpX7haktDLUtL
-         Y50svD6yO6OJ1wbWKSL7DTziqwfD8/MYb/YbPI6OsW7Dw1uduKWJxj+Uzy9WBG5D4qTh
-         OFFm7xluVFxi9iIsinIs08dZwUtnMQonxC+Hsl3ZmvSDgJxQjTOzSg+I/tFxax5kyUdq
-         sR6xMoz3WXzeHNH8eQBaPJlx6XgnI6AZkCHo0puGFxGv6GV7Ntb/beXJXg/eb3dMY85t
-         auIg==
-X-Forwarded-Encrypted: i=1; AJvYcCUWazv9jk342rMZ127KVbXdrEKuWzdVsqpa9XW5rYkUxn++StVBCu3PB/TLAuQT+GspMHU=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz3RTBgCUFMM5byfmuJFfNUz/hKN7yTS6M+RvIo04S4/neP6hjp
-	lvqyprgFG9ek8V6LIQc9kHCl3B+0O65QKNLDQ1hEVkBUImD5Av/3DT8dntTpfA==
-X-Google-Smtp-Source: AGHT+IEo8KIx+IDClFIGzyYawx9wyWhggQfWSS3I5L/7qTi+6XFaoyQ//P5mcasYulpv7qLH/9m62A==
-X-Received: by 2002:a17:902:d4ca:b0:20c:f3cf:50e6 with SMTP id d9443c01a7336-211d0ebc492mr54783415ad.38.1731693118199;
-        Fri, 15 Nov 2024 09:51:58 -0800 (PST)
+        bh=1CnwJEhoyWWs0hfunP5nkD+KmYCyarErjrVddNp9cu4=;
+        b=gWd187pmB/ohb6tSDmXSNvXU4xO4OwEamDQ8YRFV5EwtNNkXHNGsAiTFs0d16kOBs/
+         lrLjCSyeoSe1mkNfTWbQtFaR7+xgRum5EgyiPcsS5NO17DVQw98Sf2XklbdKFsPbrdxG
+         XNJzs6leNPATUBFT6rk48kDj7QFlVOiip/EQB7dbLb31C47yp4xqYsVrAnqXbS3mWdNV
+         0OhDZilG7x/3LhhUFlF6qcC6/2cT9iv6xKVj0hKqy2yw80JNlYFq/FFuR3Du9YnbTacX
+         rxb6Iq/J5FdbLKIjJJAlLgZgln6cVmTIocmj+d4nB6wh9eBalUj22ODKGmPppmjhyqLU
+         YOwg==
+X-Forwarded-Encrypted: i=1; AJvYcCWaGSQsgXbtlvWS/KxeJLJLr+sQOyFB6p4qHZddqwbHkxs7sGCvVz/8iTCtvE5DG4iQyMo=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy+2HksxZyAi2oOzemOkLK9JVaVSM/I8i1uEy6yJKU5VytG4KYh
+	YqfMSWfOC64ac04WOwyEV4dvSJCJiA1pZJ20LivM0lnjGIR0m0yx5MTSKF3Gtw==
+X-Google-Smtp-Source: AGHT+IEwWbdg7azduaJi6v/1T3xzOGMgr6uhezauDZeHmiw5GXWdDs8QfnFyhbpVqwXNdilvnfJezQ==
+X-Received: by 2002:a17:903:1d0:b0:20e:5792:32ed with SMTP id d9443c01a7336-211d0ebc0c5mr44114045ad.41.1731695026118;
+        Fri, 15 Nov 2024 10:23:46 -0800 (PST)
 Received: from thinkpad ([117.193.215.93])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211e9d0c389sm793705ad.161.2024.11.15.09.51.52
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211d0f51fe0sm15266645ad.233.2024.11.15.10.23.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Nov 2024 09:51:57 -0800 (PST)
-Date: Fri, 15 Nov 2024 23:21:48 +0530
+        Fri, 15 Nov 2024 10:23:45 -0800 (PST)
+Date: Fri, 15 Nov 2024 23:53:36 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Frank Li <Frank.Li@nxp.com>
 Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
@@ -68,11 +68,11 @@ Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
 	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH v7 2/7] PCI: dwc: Using parent_bus_addr in of_range to
- eliminate cpu_addr_fixup()
-Message-ID: <20241115175148.tqzqiv53mccz52tq@thinkpad>
+Subject: Re: [PATCH v7 3/7] PCI: dwc: ep: Add bus_addr_base for outbound
+ window
+Message-ID: <20241115182336.7jy63pt7n66h6pa2@thinkpad>
 References: <20241029-pci_fixup_addr-v7-0-8310dc24fb7c@nxp.com>
- <20241029-pci_fixup_addr-v7-2-8310dc24fb7c@nxp.com>
+ <20241029-pci_fixup_addr-v7-3-8310dc24fb7c@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -82,253 +82,173 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241029-pci_fixup_addr-v7-2-8310dc24fb7c@nxp.com>
+In-Reply-To: <20241029-pci_fixup_addr-v7-3-8310dc24fb7c@nxp.com>
 
-On Tue, Oct 29, 2024 at 12:36:35PM -0400, Frank Li wrote:
-
-Please reword the subject as:
-
-PCI: dwc: Use devicetree 'ranges' property to get rid of cpu_addr_fixup() callback
-
-> parent_bus_addr in struct of_range can indicate address information just
-> ahead of PCIe controller. Most system's bus fabric use 1:1 map between
-> input and output address. but some hardware like i.MX8QXP doesn't use 1:1
-> map. See below diagram:
+On Tue, Oct 29, 2024 at 12:36:36PM -0400, Frank Li wrote:
+>                    Endpoint
+>   ┌───────────────────────────────────────────────┐
+>   │                             pcie-ep@5f010000  │
+>   │                             ┌────────────────┐│
+>   │                             │   Endpoint     ││
+>   │                             │   PCIe         ││
+>   │                             │   Controller   ││
+>   │           bus@5f000000      │                ││
+>   │           ┌──────────┐      │                ││
+>   │           │          │ Outbound Transfer     ││
+>   │┌─────┐    │  Bus     ┼─────►│ ATU  ──────────┬┬─────►
+>   ││     │    │  Fabric  │Bus   │                ││PCI Addr
+>   ││ CPU ├───►│          │Addr  │                ││0xA000_0000
+>   ││     │CPU │          │0x8000_0000            ││
+>   │└─────┘Addr└──────────┘      │                ││
+>   │       0x7000_0000           └────────────────┘│
+>   └───────────────────────────────────────────────┘
 > 
->             ┌─────────┐                    ┌────────────┐
->  ┌─────┐    │         │ IA: 0x8ff8_0000    │            │
->  │ CPU ├───►│   ┌────►├─────────────────┐  │ PCI        │
->  └─────┘    │   │     │ IA: 0x8ff0_0000 │  │            │
->   CPU Addr  │   │  ┌─►├─────────────┐   │  │ Controller │
-> 0x7ff8_0000─┼───┘  │  │             │   │  │            │
->             │      │  │             │   │  │            │   PCI Addr
-> 0x7ff0_0000─┼──────┘  │             │   └──► IOSpace   ─┼────────────►
->             │         │             │      │            │    0
-> 0x7000_0000─┼────────►├─────────┐   │      │            │
->             └─────────┘         │   └──────► CfgSpace  ─┼────────────►
->              BUS Fabric         │          │            │    0
->                                 │          │            │
->                                 └──────────► MemSpace  ─┼────────────►
->                         IA: 0x8000_0000    │            │  0x8000_0000
->                                            └────────────┘
+> Add 'bus_addr_base' to configure the outbound window address for CPU write.
+
+This doesn't make a lot of sense to readers. Use something like,
+
+"Use 'ranges' property in DT to configure the iATU outbound window address."
+
+> The bus fabric generally passes the same address to the PCIe EP controller,
+> but some bus fabrics convert the address before sending it to the PCIe EP
+> controller.
+> 
+> Above diagram, CPU write data to outbound windows address 0x7000_0000,
+> Bus fabric convert it to 0x8000_0000. ATU should use bus address
+> 0x8000_0000 as input address and convert to PCI address 0xA000_0000.
+
+s/convert/map
+
+> 
+> Previously, 'cpu_addr_fixup()' was used to handle address conversion. Now,
+> the device tree provides this information, preferring a common method.
 > 
 > bus@5f000000 {
 > 	compatible = "simple-bus";
-> 	#address-cells = <1>;
-> 	#size-cells = <1>;
 > 	ranges = <0x80000000 0x0 0x70000000 0x10000000>;
 > 
-> 	pcie@5f010000 {
-> 		compatible = "fsl,imx8q-pcie";
-> 		reg = <0x5f010000 0x10000>, <0x8ff00000 0x80000>;
-> 		reg-names = "dbi", "config";
-> 		#address-cells = <3>;
-> 		#size-cells = <2>;
-> 		device_type = "pci";
-> 		bus-range = <0x00 0xff>;
-> 		ranges = <0x81000000 0 0x00000000 0x8ff80000 0 0x00010000>,
-> 			 <0x82000000 0 0x80000000 0x80000000 0 0x0ff00000>;
-> 	...
+> 	pcie-ep@5f010000 {
+> 		reg = <0x80000000 0x10000000>;
+> 		reg-names ="addr_space";
+> 		...
 > 	};
+> 	...
 > };
 > 
-> Term internal address (IA) here means the address just before PCIe
-> controller. After ATU use this IA instead CPU address, cpu_addr_fixup() can
-> be removed.
+> 'ranges' in bus@5f000000 descript how address convert from CPU address
+> to bus address.
+> 
+> Use `of_property_read_reg()` to obtain the bus address and set it to the
+> ATU correctly, eliminating the need for vendor-specific cpu_addr_fixup().
+> 
+> Add 'using_dtbus_info' to indicate device tree reflect correctly bus
+> address translation in case break compatibility.
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+One comment below. With that addressed,
+
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+
 > ---
-> Add a resource_size_t parent_bus_addr local varible to fix 32bit build
-> error.
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202410291546.kvgEWJv7-lkp@intel.com/
-> 
-> Chagne from v5 to v6
-> -add comments for of_property_read_reg().
-> 
-> Change from v4 to v5
-> - remove confused 0x5f00_0000 range in sample dts.
-> - reorder address at above diagram.
-> 
-> Change from v3 to v4
+> Change from v6 to v7
 > - none
 > 
+> Change from v5 to v6
+> - update diagram
+> - Add comments for of_property_read_reg()
+> - Remove unrelated 0x5f00_0000 in commit message
+> 
+> Change from v3 to v4
+> - change bus_addr_base to u64 to fix 32bit build error
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202410230328.BTHareG1-lkp@intel.com/
+> 
 > Change from v2 to v3
-> - %s/cpu_untranslate_addr/parent_bus_addr/g
-> - update diagram.
-> - improve commit message.
-> 
-> Change from v1 to v2
-> - update because patch1 change get untranslate address method.
-> - add using_dtbus_info in case break back compatibility for exited platform.
+> - Add using_dtbus_info to control if use device tree bus ranges
+> information.
 > ---
->  drivers/pci/controller/dwc/pcie-designware-host.c | 55 ++++++++++++++++++++++-
->  drivers/pci/controller/dwc/pcie-designware.h      |  8 ++++
->  2 files changed, 62 insertions(+), 1 deletion(-)
+>  drivers/pci/controller/dwc/pcie-designware-ep.c | 21 ++++++++++++++++++++-
+>  drivers/pci/controller/dwc/pcie-designware.h    |  1 +
+>  2 files changed, 21 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-> index 3e41865c72904..ea01b7bda0a76 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> @@ -418,6 +418,34 @@ static void dw_pcie_host_request_msg_tlp_res(struct dw_pcie_rp *pp)
->  	}
->  }
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> index 43ba5c6738df1..a5b40c32aadf5 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> @@ -9,6 +9,7 @@
+>  #include <linux/align.h>
+>  #include <linux/bitfield.h>
+>  #include <linux/of.h>
+> +#include <linux/of_address.h>
+>  #include <linux/platform_device.h>
 >  
-> +static int dw_pcie_get_untranslate_addr(struct dw_pcie *pci, resource_size_t pci_addr,
-> +					resource_size_t *i_addr)
-
-dw_pcie_get_parent_addr()? Since this function is anyway reading the parent
-address from DT.
-
-> +{
-> +	struct device *dev = pci->dev;
-> +	struct device_node *np = dev->of_node;
-> +	struct of_range_parser parser;
-> +	struct of_range range;
-> +	int ret;
-> +
-> +	if (!pci->using_dtbus_info) {
-> +		*i_addr = pci_addr;
-> +		return 0;
-> +	}
-> +
-> +	ret = of_range_parser_init(&parser, np);
-> +	if (ret)
-> +		return ret;
-> +
-> +	for_each_of_pci_range(&parser, &range) {
-> +		if (pci_addr == range.bus_addr) {
-> +			*i_addr = range.parent_bus_addr;
-> +			break;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  int dw_pcie_host_init(struct dw_pcie_rp *pp)
->  {
->  	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> @@ -427,6 +455,7 @@ int dw_pcie_host_init(struct dw_pcie_rp *pp)
->  	struct resource_entry *win;
->  	struct pci_host_bridge *bridge;
->  	struct resource *res;
+>  #include "pcie-designware.h"
+> @@ -294,7 +295,7 @@ static int dw_pcie_ep_map_addr(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+>  
+>  	atu.func_no = func_no;
+>  	atu.type = PCIE_ATU_TYPE_MEM;
+> -	atu.cpu_addr = addr;
+> +	atu.cpu_addr = addr - ep->phys_base + ep->bus_addr_base;
+>  	atu.pci_addr = pci_addr;
+>  	atu.size = size;
+>  	ret = dw_pcie_ep_outbound_atu(ep, &atu);
+> @@ -861,6 +862,7 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
+>  	struct device *dev = pci->dev;
+>  	struct platform_device *pdev = to_platform_device(dev);
+>  	struct device_node *np = dev->of_node;
 > +	int index;
->  	int ret;
 >  
->  	raw_spin_lock_init(&pp->lock);
-> @@ -440,6 +469,20 @@ int dw_pcie_host_init(struct dw_pcie_rp *pp)
->  		pp->cfg0_size = resource_size(res);
->  		pp->cfg0_base = res->start;
+>  	INIT_LIST_HEAD(&ep->func_list);
 >  
-> +		if (pci->using_dtbus_info) {
-> +			index = of_property_match_string(np, "reg-names", "config");
-> +			if (index < 0)
-> +				return -EINVAL;
-> +			/*
-> +			 * Retrieve the parent bus address of PCI config space.
-> +			 * If the parent bus ranges in the device tree provide
-> +			 * the correct address conversion information, set
-> +			 * 'using_dtbus_info' to true, The 'cpu_addr_fixup()'
-> +			 * can be eliminated.
-> +			 */
-
-Nobody will switch to 'ranges' property if you mention it in comments. We
-usually add dev_warn_once() to print a warning for broken DT so that the users
-will try to fix it. You can use below diff (as a separate patch ofc):
-
-```
-diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
-index 6d6cbc8b5b2c..d1e5395386fe 100644
---- a/drivers/pci/controller/dwc/pcie-designware.c
-+++ b/drivers/pci/controller/dwc/pcie-designware.c
-@@ -844,6 +844,9 @@ void dw_pcie_iatu_detect(struct dw_pcie *pci)
-                 dw_pcie_cap_is(pci, IATU_UNROLL) ? "T" : "F",
-                 pci->num_ob_windows, pci->num_ib_windows,
-                 pci->region_align / SZ_1K, (pci->region_limit + 1) / SZ_1G);
-+
-+       if (pci->ops && pci->ops->cpu_addr_fixup)
-+               dev_warn_once(pci->dev, "Broken \"ranges\" property detected. Please fix DT!\n");
- }
- 
- static u32 dw_pcie_readl_dma(struct dw_pcie *pci, u32 reg)
-```
-
-> +			of_property_read_reg(np, index, &pp->cfg0_base, NULL);
-
-Can you explain what is going on here?
-
-> +		}
+> @@ -873,6 +875,23 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
+>  		return -EINVAL;
+>  
+>  	ep->phys_base = res->start;
+> +	ep->bus_addr_base = ep->phys_base;
 > +
->  		pp->va_cfg0_base = devm_pci_remap_cfg_resource(dev, res);
->  		if (IS_ERR(pp->va_cfg0_base))
->  			return PTR_ERR(pp->va_cfg0_base);
-> @@ -462,6 +505,9 @@ int dw_pcie_host_init(struct dw_pcie_rp *pp)
->  		pp->io_base = pci_pio_to_address(win->res->start);
->  	}
->  
-> +	if (dw_pcie_get_untranslate_addr(pci, pp->io_bus_addr, &pp->io_base))
-> +		return -ENODEV;
-
-Use actual return value here and below.
-
-> +
->  	/* Set default bus ops */
->  	bridge->ops = &dw_pcie_ops;
->  	bridge->child_ops = &dw_child_pcie_ops;
-> @@ -722,6 +768,8 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
->  
->  	i = 0;
->  	resource_list_for_each_entry(entry, &pp->bridge->windows) {
-> +		resource_size_t parent_bus_addr;
-> +
->  		if (resource_type(entry->res) != IORESOURCE_MEM)
->  			continue;
->  
-> @@ -730,9 +778,14 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
->  
->  		atu.index = i;
->  		atu.type = PCIE_ATU_TYPE_MEM;
-> -		atu.cpu_addr = entry->res->start;
-> +		parent_bus_addr = entry->res->start;
->  		atu.pci_addr = entry->res->start - entry->offset;
->  
-> +		if (dw_pcie_get_untranslate_addr(pci, entry->res->start, &parent_bus_addr))
+> +	if (pci->using_dtbus_info) {
+> +		index = of_property_match_string(np, "reg-names", "addr_space");
+> +		if (index < 0)
 > +			return -EINVAL;
 > +
-> +		atu.cpu_addr = parent_bus_addr;
-> +
->  		/* Adjust iATU size if MSG TLP region was allocated before */
->  		if (pp->msg_res && pp->msg_res->parent == entry->res)
->  			atu.size = resource_size(entry->res) -
-> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-> index 347ab74ac35aa..f8067393ad35a 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware.h
-> +++ b/drivers/pci/controller/dwc/pcie-designware.h
-> @@ -463,6 +463,14 @@ struct dw_pcie {
->  	struct reset_control_bulk_data	core_rsts[DW_PCIE_NUM_CORE_RSTS];
->  	struct gpio_desc		*pe_rst;
->  	bool			suspended;
-> +	/*
-> +	 * Use device tree 'ranges' property of bus node instead using
-> +	 * cpu_addr_fixup(). Some old platform dts 'ranges' in bus node may not
-> +	 * reflect real hardware's behavior. In case break these platform back
-> +	 * compatibility, add below flags. Set it true if dts already correct
-> +	 * indicate bus fabric address convert.
+> +		/*
+> +		 * Retrieve the local bus address information, which is sent to
+> +		 * the PCIe Endpoint (EP) controller. If the parent bus
+> +		 * 'ranges' in the device tree provide the correct address
+> +		 * conversion information, set 'using_dtbus_info' to true. This
+> +		 * allows 'cpu_addr_fixup()' to be eliminated.
+> +		 */
 
-	/*
-	 * This flag indicates that the vendor driver uses devicetree 'ranges'
-	 * property to allow iATU to use the Intermediate Address (IA) for
-	 * outbound mapping. Using this flag also avoids the usage of
-	 * 'cpu_addr_fixup' callback implementation in the driver.
-	 */
-
-> +	 */
-> +	bool			using_dtbus_info;
-
-'use_dt_ranges'?
+		/*
+		 * Get the untranslated bus address from devicetree to use it as
+		 * the iATU CPU address in dw_pcie_ep_map_addr().
+		 */
 
 - Mani
+
+> +		of_property_read_reg(np, index, &ep->bus_addr_base, NULL);
+> +	}
+> +
+>  	ep->addr_size = resource_size(res);
+>  
+>  	if (ep->ops->pre_init)
+> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+> index f8067393ad35a..f10b533b04f77 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware.h
+> +++ b/drivers/pci/controller/dwc/pcie-designware.h
+> @@ -410,6 +410,7 @@ struct dw_pcie_ep {
+>  	struct list_head	func_list;
+>  	const struct dw_pcie_ep_ops *ops;
+>  	phys_addr_t		phys_base;
+> +	u64			bus_addr_base;
+>  	size_t			addr_size;
+>  	size_t			page_size;
+>  	u8			bar_to_atu[PCI_STD_NUM_BARS];
+> 
+> -- 
+> 2.34.1
+> 
 
 -- 
 மணிவண்ணன் சதாசிவம்
