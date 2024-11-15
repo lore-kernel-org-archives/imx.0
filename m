@@ -1,181 +1,90 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E369864D
-	for <imx@lists.linux.dev>; Fri, 15 Nov 2024 00:06:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+Received: from cmccmta1.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD9926AFB
+	for <imx@lists.linux.dev>; Fri, 15 Nov 2024 01:18:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.135
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731629209; cv=none; b=asKKkM9ThzzljEVz5Tb4xpk6xAatcP6KuOAdY4bssVh8CwDSGXjYJ1qjgmAZUwFalrtZWmsKWchnvHWBYVMky1DiaMhX4y/rGfDL0Mj/wj5QeVzbFpG0s/h7Omx2YMW9Rgxi0CPdjeKtzEVN42JqH9mE6WxnXFAnGKpi8A4fKLU=
+	t=1731633536; cv=none; b=IViQxZzE2mDtr1b1OWrXg5Tnb/Kbel53TgzCUzlyvlXEmuScpLQxl2hyM7Sx6zohjoWxhJsso6FRwKYo9XgeHV2+33c+oos8o1xK7+ffjo965eErXAahTq0nOO0h5Vj8Bg6eS66YUa/iM/Q3mfm8SLzsqxuuArEvk9Cyi4BpTQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731629209; c=relaxed/simple;
-	bh=YIj6SduvmKlaP26Hm+4C5+sfBfCiYj0SI/KKG3wsqVU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j3uLMnEZ/A97NKVjA5+glr3svCWJxw7Dl8Yt15QVktxXvp5EAYJT+rINlruf9Y79WK7TAWVLZ5GhtPAdbiHWlDTvkeh2W7exd6V0LeB0tdyg5ZxYzLBPIb9x3WScashCeWYvnv6oMoSNRubar49jXE0L8kJJ4UxCwrWIPntCBdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=gU3ZvJUy; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="gU3ZvJUy"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id B9B28502;
-	Fri, 15 Nov 2024 01:06:31 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1731629191;
-	bh=YIj6SduvmKlaP26Hm+4C5+sfBfCiYj0SI/KKG3wsqVU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gU3ZvJUyDerP3jeKWJbLcX2XrOTqceYAlxv3dPUVk/rNaWWfkuTm1J4S86vvnx1Ol
-	 63ysJOeS1bNUAN+Abunmo3O6yN8mDx2marQjfDBPmlFwr8XhSRiqkpiPP/C6+tWaNz
-	 XMQUp+cSQjLRRa8CezRNOk8tpQH/IqNr/oUtIXEI=
-Date: Fri, 15 Nov 2024 02:06:37 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 3/3] media: i2c: imx290: Add configuration for IMX462
-Message-ID: <20241115000637.GK26171@pendragon.ideasonboard.com>
-References: <20241114-media-imx290-imx462-v1-0-c538a2e24786@raspberrypi.com>
- <20241114-media-imx290-imx462-v1-3-c538a2e24786@raspberrypi.com>
+	s=arc-20240116; t=1731633536; c=relaxed/simple;
+	bh=j3Yc9esCHcVJb2KmDLHstL0XXEqzdkKMJZMzq1aSNA8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=BhtOUBdKX+MbbVrgzrsFJeCAjmuF+90X1DUfTi/zFiiQfPOuId3rojcaw9lvWH2ES9FoqHi9jxCrqes3Ji7/h3CNtNZ70y6NpGDOZM0VcfvOzGvNUN/7EHb0RYolPWnpvSPbfhcdFyKdwHsEjOxdcxmqLkVTGGk2AOC+5kW4sz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; arc=none smtp.client-ip=111.22.67.135
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app03-12003 (RichMail) with SMTP id 2ee36736a17765f-f4e87;
+	Fri, 15 Nov 2024 09:18:48 +0800 (CST)
+X-RM-TRANSID:2ee36736a17765f-f4e87
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.localdomain (unknown[223.108.79.101])
+	by rmsmtp-syy-appsvr05-12005 (RichMail) with SMTP id 2ee56736a178f13-dc523;
+	Fri, 15 Nov 2024 09:18:48 +0800 (CST)
+X-RM-TRANSID:2ee56736a178f13-dc523
+From: zhangjiao2 <zhangjiao2@cmss.chinamobile.com>
+To: frank.li@nxp.com
+Cc: imx@lists.linux.dev,
+	jassisinghbrar@gmail.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	s.hauer@pengutronix.de,
+	shawnguo@kernel.org,
+	zhang jiao <zhangjiao2@cmss.chinamobile.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v2] mailbox: imx: Modify the incorrect format specifier
+Date: Fri, 15 Nov 2024 09:18:46 +0800
+Message-Id: <20241115011846.2330-1-zhangjiao2@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <ZzYoWFVhfNnAcAmy@lizhi-Precision-Tower-5810>
+References: <ZzYoWFVhfNnAcAmy@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241114-media-imx290-imx462-v1-3-c538a2e24786@raspberrypi.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Dave,
+From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
 
-Thank you for the patch.
+Replace %i with %u in snprintf() because it is "unsigned int".
 
-On Thu, Nov 14, 2024 at 04:01:15PM +0000, Dave Stevenson wrote:
-> IMX462 is the successor to IMX290, and wants very minor
-> changes to the register setup.
-> 
-> Add the relevant configuration to support it.
-> 
-> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-> ---
->  drivers/media/i2c/imx290.c | 66 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 66 insertions(+)
-> 
-> diff --git a/drivers/media/i2c/imx290.c b/drivers/media/i2c/imx290.c
-> index da654deb444a..f1780cc5d7cc 100644
-> --- a/drivers/media/i2c/imx290.c
-> +++ b/drivers/media/i2c/imx290.c
-> @@ -170,6 +170,8 @@ enum imx290_model {
->  	IMX290_MODEL_IMX290LQR,
->  	IMX290_MODEL_IMX290LLR,
->  	IMX290_MODEL_IMX327LQR,
-> +	IMX290_MODEL_IMX462LQR,
-> +	IMX290_MODEL_IMX462LLR,
->  };
->  
->  struct imx290_model_info {
-> @@ -316,6 +318,50 @@ static const struct cci_reg_sequence imx290_global_init_settings_290[] = {
->  	{ CCI_REG8(0x33b3), 0x04 },
->  };
->  
-> +static const struct cci_reg_sequence imx290_global_init_settings_462[] = {
-> +	{ CCI_REG8(0x300f), 0x00 },
-> +	{ CCI_REG8(0x3010), 0x21 },
-> +	{ CCI_REG8(0x3011), 0x02 },
+Signed-off-by: zhang jiao <zhangjiao2@cmss.chinamobile.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+---
+v1->v2:
+	Modify commit info and add review tag.
 
-As far as I can tell, the only difference in the init sequence between
-imx290_global_init_settings_290 and imx290_global_init_settings_462 is
-0x3011 register which is not present in imx290_global_init_settings_290.
-It is however included in imx290_global_init_settings, and set to 0x02.
-Could we therefore use imx290_global_init_settings_290 for the imx462 ?
+ drivers/mailbox/imx-mailbox.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> +	{ CCI_REG8(0x3016), 0x09 },
-> +	{ CCI_REG8(0x3070), 0x02 },
-> +	{ CCI_REG8(0x3071), 0x11 },
-> +	{ CCI_REG8(0x309b), 0x10 },
-> +	{ CCI_REG8(0x309c), 0x22 },
-> +	{ CCI_REG8(0x30a2), 0x02 },
-> +	{ CCI_REG8(0x30a6), 0x20 },
-> +	{ CCI_REG8(0x30a8), 0x20 },
-> +	{ CCI_REG8(0x30aa), 0x20 },
-> +	{ CCI_REG8(0x30ac), 0x20 },
-> +	{ CCI_REG8(0x30b0), 0x43 },
-> +	{ CCI_REG8(0x3119), 0x9e },
-> +	{ CCI_REG8(0x311c), 0x1e },
-> +	{ CCI_REG8(0x311e), 0x08 },
-> +	{ CCI_REG8(0x3128), 0x05 },
-> +	{ CCI_REG8(0x313d), 0x83 },
-> +	{ CCI_REG8(0x3150), 0x03 },
-> +	{ CCI_REG8(0x317e), 0x00 },
-> +	{ CCI_REG8(0x32b8), 0x50 },
-> +	{ CCI_REG8(0x32b9), 0x10 },
-> +	{ CCI_REG8(0x32ba), 0x00 },
-> +	{ CCI_REG8(0x32bb), 0x04 },
-> +	{ CCI_REG8(0x32c8), 0x50 },
-> +	{ CCI_REG8(0x32c9), 0x10 },
-> +	{ CCI_REG8(0x32ca), 0x00 },
-> +	{ CCI_REG8(0x32cb), 0x04 },
-> +	{ CCI_REG8(0x332c), 0xd3 },
-> +	{ CCI_REG8(0x332d), 0x10 },
-> +	{ CCI_REG8(0x332e), 0x0d },
-> +	{ CCI_REG8(0x3358), 0x06 },
-> +	{ CCI_REG8(0x3359), 0xe1 },
-> +	{ CCI_REG8(0x335a), 0x11 },
-> +	{ CCI_REG8(0x3360), 0x1e },
-> +	{ CCI_REG8(0x3361), 0x61 },
-> +	{ CCI_REG8(0x3362), 0x10 },
-> +	{ CCI_REG8(0x33b0), 0x50 },
-> +	{ CCI_REG8(0x33b2), 0x1a },
-> +	{ CCI_REG8(0x33b3), 0x04 },
-> +};
-> +
->  #define IMX290_NUM_CLK_REGS	2
->  static const struct cci_reg_sequence xclk_regs[][IMX290_NUM_CLK_REGS] = {
->  	[IMX290_CLK_37_125] = {
-> @@ -1455,6 +1501,20 @@ static const struct imx290_model_info imx290_models[] = {
->  		.max_analog_gain = 98,
->  		.name = "imx327",
->  	},
-> +	[IMX290_MODEL_IMX462LQR] = {
-> +		.colour_variant = IMX290_VARIANT_COLOUR,
-> +		.init_regs = imx290_global_init_settings_462,
-> +		.init_regs_num = ARRAY_SIZE(imx290_global_init_settings_462),
-> +		.max_analog_gain = 98,
-> +		.name = "imx462",
-> +	},
-> +	[IMX290_MODEL_IMX462LLR] = {
-> +		.colour_variant = IMX290_VARIANT_MONO,
-> +		.init_regs = imx290_global_init_settings_462,
-> +		.init_regs_num = ARRAY_SIZE(imx290_global_init_settings_462),
-> +		.max_analog_gain = 98,
-> +		.name = "imx462",
-> +	},
->  };
->  
->  static int imx290_parse_dt(struct imx290 *imx290)
-> @@ -1653,6 +1713,12 @@ static const struct of_device_id imx290_of_match[] = {
->  	}, {
->  		.compatible = "sony,imx327lqr",
->  		.data = &imx290_models[IMX290_MODEL_IMX327LQR],
-> +	}, {
-> +		.compatible = "sony,imx462lqr",
-> +		.data = &imx290_models[IMX290_MODEL_IMX462LQR],
-> +	}, {
-> +		.compatible = "sony,imx462llr",
-> +		.data = &imx290_models[IMX290_MODEL_IMX462LLR],
->  	},
->  	{ /* sentinel */ },
->  };
-
+diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.c
+index f815dab3be50..3fe51b2de89e 100644
+--- a/drivers/mailbox/imx-mailbox.c
++++ b/drivers/mailbox/imx-mailbox.c
+@@ -782,7 +782,7 @@ static int imx_mu_init_generic(struct imx_mu_priv *priv)
+ 		cp->chan = &priv->mbox_chans[i];
+ 		priv->mbox_chans[i].con_priv = cp;
+ 		snprintf(cp->irq_desc, sizeof(cp->irq_desc),
+-			 "%s[%i-%i]", dev_name(priv->dev), cp->type, cp->idx);
++			 "%s[%i-%u]", dev_name(priv->dev), cp->type, cp->idx);
+ 	}
+ 
+ 	priv->mbox.num_chans = IMX_MU_CHANS;
+@@ -819,7 +819,7 @@ static int imx_mu_init_specific(struct imx_mu_priv *priv)
+ 		cp->chan = &priv->mbox_chans[i];
+ 		priv->mbox_chans[i].con_priv = cp;
+ 		snprintf(cp->irq_desc, sizeof(cp->irq_desc),
+-			 "%s[%i-%i]", dev_name(priv->dev), cp->type, cp->idx);
++			 "%s[%i-%u]", dev_name(priv->dev), cp->type, cp->idx);
+ 	}
+ 
+ 	priv->mbox.num_chans = num_chans;
 -- 
-Regards,
+2.33.0
 
-Laurent Pinchart
+
+
