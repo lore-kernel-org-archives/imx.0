@@ -1,52 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3294615383D;
-	Fri, 15 Nov 2024 17:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3D61D63CF;
+	Fri, 15 Nov 2024 17:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731692023; cv=none; b=ZPKqLJlbzP3yf6MIrMTyCiAjAbBZswi9A8zova7Qe/2xOQGHQAv/tvQ4Qxrj2cQuEmzmdTM7VmxvA2qJlV6W5cqIVdpC1gFJux1idfnxAWvKPODnv/7Gon0mwNI4qt0/RbmfcaO4IrV7MY7jbXcob5VE+Yf7cF9s4RW81eMbMlQ=
+	t=1731692145; cv=none; b=P+pgYCtk95QaSWY8ciJVk9uWakUXlJl4puUnt3TXOXzSOgHHHHyN7FAeOhrqZ1vVBeCaXdn81Tw8e6CqDi10CUiFbM6l7nOgg4+eszCugAebw1lB7WiP1dNGYPqwwE7ntTA64NujjwdpGhj5hUITMOja9SefXzt9+wqWdMAskXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731692023; c=relaxed/simple;
-	bh=KAyTU2wbJPNWq+AnPPIg5jRJD0fH1t6QufJ8G6BdE+g=;
+	s=arc-20240116; t=1731692145; c=relaxed/simple;
+	bh=84FTnS/tXEQAO33gnrKTfEaj14PRAW8pWgGeaB/rt18=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m4JN/F/FHOiVuvx5x2V1SC2cBU+m/7MZOrBp0ZTJ4G1pTM36S5UhMrQU7+R5ATlsOoB2TgC80o8WItNzkUizdsFnR8t/itLIMW0cONhWX7iO+q0McEnhRK7KKs5OZIqethgtBTl7swu6RWR/te3KrDWgL2Y0jVLF5MBMfH8RaFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ME/5oqI+; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=QS1nFjWCECBXacKuEFgVvC5G8L9HFccUdO+B7H1siV6WNsODnr343tHh6aYilT39Ojdf41mIYoPXHPuM2GVzn79wQmK9jZHjMFdSznEB26hEXNN2ErhzALLFZ48LzLBjkfl1QJVO2Yxn94DZYh2j1bqM1GONl10Hhp4RZglJYvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xgr+BHvU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ME/5oqI+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B938C4CECF;
-	Fri, 15 Nov 2024 17:33:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xgr+BHvU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288D9C4CECF;
+	Fri, 15 Nov 2024 17:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731692022;
-	bh=KAyTU2wbJPNWq+AnPPIg5jRJD0fH1t6QufJ8G6BdE+g=;
+	s=k20201202; t=1731692145;
+	bh=84FTnS/tXEQAO33gnrKTfEaj14PRAW8pWgGeaB/rt18=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ME/5oqI+9A5m65Ks+FI//A2msRKaoqyZsf8e+ZghTz6L0qiyWlGJI6zbxAO4SjmJ7
-	 QTv6C9Js0yK/mIY90hePo9stLZfjatvVg5Osg7PVkMKaHT0MvI1wZrW3oSKUVrrsx/
-	 fGfxx9566+orfgW9/TF5/rWaUCIRJL1j60bX5O6M6XeVlZoojkhxIif/G6voPR++Ep
-	 VrwdwVo20M6h4e7coL8dKdFziZGDy/mJCEbWTJJrM4FiEFlyZUz2TeibmpDAKmTOCJ
-	 vQ7UCDJDzVsyXx8f8wbgt5GNWmZmeMiG+4/ghCKaLIrFD+MIHxbiGK4Uf5Pn5KYe17
-	 QzfRUhDaCSGow==
-Date: Fri, 15 Nov 2024 11:33:40 -0600
-From: Rob Herring <robh@kernel.org>
+	b=Xgr+BHvUbyH8re/YwwwIVVIgsEAbgzRz4h4WFyhgL3YguDMOvxnKEeJruFU+d5V63
+	 kA1LmV9tHSpnWG8NOi3PCjtmmvUuQhCslJ81aGKth+X2RowUtu0hJ+0n5nkryxihoq
+	 rCBtKIk94PfzX2LmZKDAVf1FUXlfLSJbKX9hudKf88IhNopHUKE/FIuWDo//bNLVMo
+	 1EzO0Wxh3ULOMXwmfPPDJ/4/NWXeGRjMUG5W1CNkiLBKotVhm9L6zdzDKzGVjYyYRN
+	 X1EuKUKyrXRlekBLKK7lJzY97EzQ7L9KdmISaxJjCzNURLa2Qrny8EjI9vzG1fa8Wd
+	 Nb9jq2k+INX1Q==
+Date: Fri, 15 Nov 2024 18:35:39 +0100
+From: Niklas Cassel <cassel@kernel.org>
 To: Frank Li <Frank.li@nxp.com>
-Cc: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Takashi Iwai <tiwai@suse.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-sound@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/5] ASoC: dt-bindings: add common binding for NXP CPUs
-Message-ID: <20241115173340.GA3436142-robh@kernel.org>
-References: <20241113195240.3699-1-laurentiumihalcea111@gmail.com>
- <20241113195240.3699-2-laurentiumihalcea111@gmail.com>
- <ZzUF+iFeKSqKGcpX@lizhi-Precision-Tower-5810>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, dlemoal@kernel.org, maz@kernel.org,
+	tglx@linutronix.de, jdmason@kudzu.us
+Subject: Re: [PATCH v7 3/6] PCI: endpoint: Add pci_epf_align_addr() helper
+ for address alignment
+Message-ID: <ZzeGa-aWlv6bV3fv@ryzen>
+References: <20241114-ep-msi-v7-0-d4ac7aafbd2c@nxp.com>
+ <20241114-ep-msi-v7-3-d4ac7aafbd2c@nxp.com>
+ <ZzcaA4PMHRcsEaDt@ryzen>
+ <Zzd6Kp1mliKGW2m0@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,71 +52,42 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZzUF+iFeKSqKGcpX@lizhi-Precision-Tower-5810>
+In-Reply-To: <Zzd6Kp1mliKGW2m0@lizhi-Precision-Tower-5810>
 
-On Wed, Nov 13, 2024 at 03:03:06PM -0500, Frank Li wrote:
-> On Wed, Nov 13, 2024 at 02:52:36PM -0500, Laurentiu Mihalcea wrote:
-> > From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+On Fri, Nov 15, 2024 at 11:43:22AM -0500, Frank Li wrote:
+> On Fri, Nov 15, 2024 at 10:53:07AM +0100, Niklas Cassel wrote:
+> > On Thu, Nov 14, 2024 at 05:52:39PM -0500, Frank Li wrote:
+> > > +static inline int pci_epf_align_addr_lo_hi(struct pci_epf *epf, enum pci_barno bar,
+> > > +					   u32 low, u32 high, u64 *base, size_t *off)
+> > > +{
+> > > +	u64 addr = high;
+> > > +
+> > > +	addr <<= 32;
+> > > +	addr |= low;
+> > > +
+> > > +	return pci_epf_align_addr(epf, bar, addr, base, off);
+> > > +}
 > >
-> > Add common binding for NXP CPUs sharing the same programming
-> > model (i.e: audio processing with SOF).
+> > I'm not sure if this function deserves to live :)
+> > Can't the caller just do this before calling pci_epf_align_addr() ?
 > 
-> Add binding for NXP audio processor with Sound Open Firmware (SOF) support.
+> Ideally, kernel should have macro to combine 32bit macro to a 64bit, but
+> I have not found it.
 > 
-> >
-> > Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> > ---
-> >  .../bindings/sound/fsl,sof-cpu.yaml           | 35 +++++++++++++++++++
-> >  1 file changed, 35 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/sound/fsl,sof-cpu.yaml
-> >
-> > diff --git a/Documentation/devicetree/bindings/sound/fsl,sof-cpu.yaml b/Documentation/devicetree/bindings/sound/fsl,sof-cpu.yaml
-> > new file mode 100644
-> > index 000000000000..6d63fcd71154
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/sound/fsl,sof-cpu.yaml
-> > @@ -0,0 +1,35 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/sound/fsl,sof-cpu.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: NXP audio CPU common properties
+> It is quite easy to make error or warning by simple
+> (high << 32 | low)
 > 
-> audio processor?
+> It needs ((u64) high << 32 | low) at least. I just want to avoid everyone
+> to struggle simple issue.
 > 
-> > +
-> > +maintainers:
-> > +  - Daniel Baluta <daniel.baluta@nxp.com>
-> > +
-> > +properties:
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  mboxes:
-> > +    maxItems: 4
-> > +
-> > +  mbox-names:
-> > +    items:
-> > +      - const: txdb0
-> > +      - const: txdb1
-> > +      - const: rxdb0
-> > +      - const: rxdb1
-> > +
-> > +  memory-region:
-> > +    maxItems: 1
-> > +
-> > +required:
-> > +  - reg
-> > +  - mboxes
-> > +  - mbox-names
-> > +  - memory-region
-> > +
-> > +additionalProperties: true
-> 
-> example ?
+> And msi_msg use lo and hi. pci_function_test actually just demostrate how
+> to use doorbell. if other function driver use doorbell in future, avoid
+> "(u64) high << 32 | low" copy to everywhere.
 
-Common bindings generally don't have one.
+Keeping the helper is fine with me, but it probably should be renamed
+to include _ib_ or _inbound_ in the function name, similar to the comment
+for pci_epf_align_addr().
 
-Rob
+
+Kind regards,
+Niklas
