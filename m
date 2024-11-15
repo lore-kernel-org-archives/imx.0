@@ -1,271 +1,166 @@
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2062.outbound.protection.outlook.com [40.107.249.62])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61841D47C7
-	for <imx@lists.linux.dev>; Fri, 15 Nov 2024 16:43:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731689018; cv=fail; b=B5hnzXEh/FAytYTOWg/dWFwkj/18JkWS6BDsUU2DRUZDWlyC09Gm/sBDJKWeoEzFN3Qw+tvpjF46QzUBIzVqDBtMh1c+Rt/blJU/SENKeWgMVOhnKLi87P8YDGA7dGy7dOAVVvJnk9LCZlaGh1rUx+iLyhD8yrqCHSiXeyiEauw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731689018; c=relaxed/simple;
-	bh=F++goONjy4NViG0oxUFINinqH4g43UKsAH0DsHhEoao=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=VQj0AaYoSS/ViSLag17SZ5gATcAmdcGsVNupGeC/I+Agy1S5z68wP539vqAIA/VrMbdWC6og1fss0cjNrNn7FQVUDD0AH+6QGnAuIFruFmGEQYEYJ6Irq/pNmkOU2nbsMFvyyysWAaS8eCvPiuHsTEHdpVQB2gQOD5i4Gwlfuow=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ekf0NRnx; arc=fail smtp.client-ip=40.107.249.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80153136341
+	for <imx@lists.linux.dev>; Fri, 15 Nov 2024 17:09:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731690585; cv=none; b=BzYkaFv/C2f4gbvisC08UAQqXUTBb2MAmWViJqplLg/XhNe2ALdb8LaLO9Bi++O5c49SxApRtecFFIQd5tWWtdnfROXTftQzkY+eS+gzeQPI/ErCN/05OnSHJM5JhE+cYLs2rPkVrXKsxsECIIRnrX3Xo8+TNJv92Oe7QBbB3fc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731690585; c=relaxed/simple;
+	bh=pWPfvLeBGuX9cue0cHCm8fhQeuv5M3kL+xEL5g4KF68=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Rs4ZiutowvPfbaPZLLSUty8YJK8J74TEH1UoJa0iLOObzEq5V186WKafQfN7dNq17oLBJ1ICxKNz0Q+1MbQfDJZMAr8qNAm+e0N/Oe2wxQ4DaYhhwhgQQSM3ruetG9tpePWQUkiQeHTUdTOVXeFwVUPp0jl0AvbaAqToxkHEUFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=omlKjeNt; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ekf0NRnx"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aumRkjGRlUnUL2SCwEojPLmbUgp39Z166qBextI3B4Nrfvy4ezo6E513jHTxii7WTly5YR12S46dgf73RXpc1YO3zoFq891OOwztQc5p9o0ZyPJMglnP5auxhYSPGN6ioyDELuMq8yYAvtQRjEaPZYV13vsMB3CI8UnPFh/KdKDcrp7jePcmylQEzRUlmsoHLqojn+45T9XoHqk9r8Ji+QNggkglQoIyRdCJaXCyBdB1PH/s/SuglSt6dSc9Q16u5uBxz9tarjs4lfGIjagOBwiuDSajRpSvohwxHQ4FxyPquR8VmWmPiLtQqD6zvBZdhCPPlqf9JjnijESkA8G3pQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8u10Oeo9qCfNweg88P4S2oBZf5GChn1ilQZoVWilvMA=;
- b=Z+LQn4VE/90uppOSTTJghDuxsR1gd8P8AAmAjfIkG/pElK3zNtcBhc1zG5iuE7funEyj/pvfW5Ynt2IsWHyjirzrifsQ8qhIyCpjbhngiEDLJFqyw+NU9hjYs1hft+WurzoYQ542Bbbv5qTORTFNCpSRGy5Md/T6aYb6Ke1oJkmnc5lQdnhm24LT3V9OuduJmxT7vyA2NOwf9eNLXECuOeB+mxfHUZdYeahnnRMnF5SwOY8WuUIRhgP9cbnYxL68P73kErLAM5v6NG/t4hXsYJ2CoJdsHARoySpMrTPHuYT7NSPCYsz5BzorTL1qOpcQm3Z+bopn+i0lSP0pj3MJdg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8u10Oeo9qCfNweg88P4S2oBZf5GChn1ilQZoVWilvMA=;
- b=Ekf0NRnxhcGoT1FV4pc5WohKQJN6x+ktBEW4IXXm66Z/3iCLRzQ5B+dCMkpMD2yAxOzLb+TP2071t/3GN8SwsXEWZstxL4gy+P3KGjhhjSqgdDoM0tKaF7hjHDTkYMqXxDeF2N9z5lwKYGGF/xj87kZXBMoadh/IVkRAYREWrC65TqI7mIsyo0f7q03RN8E7RUhijEfxmqEG07R7m1GPrFd2UjqtQtBT6LHTFQ4hgHSPtJ7KYXKBt7dkHNgCxOo+4Xef9DrR3NEWwYkWPb4nQkvvAbAQHX4oRYv00wkk2dr75pDS/vc7HeH9pc1j8fNzyC9O4AVDsgKT7AVtz2QVHw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by GV1PR04MB10991.eurprd04.prod.outlook.com (2603:10a6:150:206::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.17; Fri, 15 Nov
- 2024 16:43:29 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8158.017; Fri, 15 Nov 2024
- 16:43:29 +0000
-Date: Fri, 15 Nov 2024 11:43:22 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	imx@lists.linux.dev, dlemoal@kernel.org, maz@kernel.org,
-	tglx@linutronix.de, jdmason@kudzu.us
-Subject: Re: [PATCH v7 3/6] PCI: endpoint: Add pci_epf_align_addr() helper
- for address alignment
-Message-ID: <Zzd6Kp1mliKGW2m0@lizhi-Precision-Tower-5810>
-References: <20241114-ep-msi-v7-0-d4ac7aafbd2c@nxp.com>
- <20241114-ep-msi-v7-3-d4ac7aafbd2c@nxp.com>
- <ZzcaA4PMHRcsEaDt@ryzen>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZzcaA4PMHRcsEaDt@ryzen>
-X-ClientProxiedBy: BY1P220CA0009.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:59d::7) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="omlKjeNt"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B0222C0006;
+	Fri, 15 Nov 2024 17:09:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1731690579;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Xg68OIUwvNHiLxkLQIPJGYXs1ivUdnydtUmZWb6wdh8=;
+	b=omlKjeNtEA26iMZm6ybnk557wfNobMAHIp1Olo4/+eqG+Hq4u+pXOaizJS0+Q+4Zs+SpKs
+	uvNJouKmuOMPwSaVfBgyGVBAvJBhMOlNx0al+nZmhwpvVwMXvsa4wCmlI/KVh/zN70DMI7
+	ofOp6BZEQqjRhw9knpfP+PLNmKHT0hwN80mgHK4iM2SPrV900sGi3RaIzvb8l+rubXuFuo
+	+yJRuAbeNI81Fp0O5tDmZqfXQ1ziRt6eAZFuFN0Gx1TY+64yexXuBKnl28WohSdLu18Fo9
+	8rYTRKMP349BfQnxzvgxkG+ZGqLCObLUEipcVRMCSLFT0Im/8WIipXJ4p4pgOg==
+Date: Fri, 15 Nov 2024 18:09:36 +0100
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Marek Vasut <marex@denx.de>
+Cc: Abel Vesa <abelvesa@kernel.org>, linux-clk@vger.kernel.org, Fabio
+ Estevam <festevam@gmail.com>, "Lukas F . Hartmann" <lukas@mntmn.com>,
+ Michael Turquette <mturquette@baylibre.com>, Peng Fan <peng.fan@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Stephen Boyd
+ <sboyd@kernel.org>, imx@lists.linux.dev, kernel@dh-electronics.com,
+ linux-arm-kernel@lists.infradead.org, Miquel Raynal
+ <miquel.raynal@bootlin.com>, Anson Huang <Anson.Huang@nxp.com>
+Subject: Re: [PATCH] clk: imx: clk-imx8mp: Allow media_disp pixel clock
+ reconfigure parent rate
+Message-ID: <20241115180936.4ab56be3@booty>
+In-Reply-To: <130fe140-e70d-4c45-aaab-e22762c58c88@denx.de>
+References: <20240531202648.277078-1-marex@denx.de>
+	<20241112234206.558d5d5e@booty>
+	<79f21303-b0ba-45ed-a842-7e5364fd4efc@denx.de>
+	<20241113120622.3501db73@booty>
+	<130fe140-e70d-4c45-aaab-e22762c58c88@denx.de>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GV1PR04MB10991:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6b3bba28-ca15-4fe3-3d86-08dd0594a261
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|52116014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?VM4nmSHhmkgRn5DhjMNnhv62/qxaCylAnu3BwEM2IlqV0gk7ZWWLrw7l8ULG?=
- =?us-ascii?Q?Iw1v3UA2Y58um8cqt6hV4Os3kxQxSds1pT/KUO3DziFpMXP+HzyNAlJMrgGa?=
- =?us-ascii?Q?lGVZAXjjOmVmZNgJN2uST62f0fgqU5LkyhtjyaiBvXWgLNNjPomDXSSFQStJ?=
- =?us-ascii?Q?RLzG9FzFX4t4oPq45KaaWfVlweveee0vQGsxEhcKycbzsHjWiGb2CTD9usUV?=
- =?us-ascii?Q?+8IYLPJC74On4uOC3thWGfq7n0UvjiBJu70Gsjv+taxz0F9JVMcIgb90Apb3?=
- =?us-ascii?Q?DwxcZXXP9m0ZcOXXKIKjF/Tyc/K8hqueAUipZ62f2FCDhB1//sD+egt4H2Cr?=
- =?us-ascii?Q?oQ8ZJSppNaf7IWYui+XuMLZINaIKgSv/5JV64uHZD31cZOxdfOJKnNGp+u6q?=
- =?us-ascii?Q?k+M3+ooWQOYB/jzNrVQVw0rwyYn8/5NYW2n92vqoMXIIrW0kWOKD6TH8jLlo?=
- =?us-ascii?Q?B9VsBzvM8A309O1Zj4o5bQOnyvYKHsTgTsQNN9FDmWm1i3pqNRP1LhF3UgIy?=
- =?us-ascii?Q?LQaiGaWv0/R29014gqCfdoLdstW8iSoZYDPB9sDqCE94+b0jDJy/eGuixAbB?=
- =?us-ascii?Q?yPW5th9TBDhfdKCGSrlIe0mvjEzmEWB+eJXN/eew/n0XG5V6xDX6lBpTjNbR?=
- =?us-ascii?Q?bU7vpSiP7V8R7XijF/Gze2N5Du9dKGv/eFG+G/Aqg4Ffny+rG89khsb4eyN4?=
- =?us-ascii?Q?VJJjlQYLFk2ddG/0g/gcwPlJOhXemJ07dDU3Zkvu2GT5G/WEBZyEKsYzJzIV?=
- =?us-ascii?Q?En8ub4/GKSTLE01qlNxm0SIiwyyo2iIJuG72Qsho9u9wvi6Tp5cmASrN0K6I?=
- =?us-ascii?Q?wugUe2ZHbHtwlTghFuaUidx9z6X1rGoJTZvV+6dsbX8oQ3Ry0bgqOYc26CGY?=
- =?us-ascii?Q?1DUxTUjxwROu7Y/EqrAsD0hjakI2mNZ2TUKK6PKYKzSrZt9CmiEiNzpX1qDW?=
- =?us-ascii?Q?aeG0NBRuVxt1qdbha2q/yr+ZCZEDrSo4CivNo67yFoSQYW5oqkXbOgZGzJOV?=
- =?us-ascii?Q?zPkZG7kpzUZ/S/rV86dYcjU/65jwq95NxOXZIuVeFACGLKPjlchvrEo0Il2z?=
- =?us-ascii?Q?r/+2hvJnXL2tNgorSa4mnUZj2XHqZAw/FkSe3iSWIoBeR0lyYfzv3m6OVc9l?=
- =?us-ascii?Q?jdo+vgFZMJCptN02M29KwnqoX5NPZrLUpOoLZ28KdTu5Op+Ru1Y5RLokEBV5?=
- =?us-ascii?Q?vHSq7SqJAZy9Xtw1Xz88C3Qigb1xdz7DOtxurpOSWKiTMGnCZOwpcV+JEwA6?=
- =?us-ascii?Q?cxXxSdFm2fpCh1OSZRih9e0h19oJ/bGmxwFA6XuA+GuD9gPX2r0HuJroNAI0?=
- =?us-ascii?Q?7ZBx1k4uTIXeNVTG2xdBNEDpPS2QlkEut9940qZpCpploSrGNIaTdZJ35R4P?=
- =?us-ascii?Q?h9a0DOs=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?d5Wl8FDOL9rGLFX1pjmPfPFxeaxZaIKGhjmda8/O7+tdlsw4DkrZ6ZVvzNen?=
- =?us-ascii?Q?XjBaow2EuTAiVPyEmCU4r59nm5eUfl+posWGPEJSjCfE4QSltfE8jL4eBMvr?=
- =?us-ascii?Q?CF4x34tO7yWz7DboMFwk9SvhHzmvBYPBFNpGmIzz54ESrI8cjfbuI4qA6NU8?=
- =?us-ascii?Q?l/yJNKh4ahXHSa8bAeD0lDITMtzHJB8UAiPzfELgwOBfuHiDTj1daXZlPmmL?=
- =?us-ascii?Q?6rC3olLBu0t3Upw8YGocoegxaz6/5dPQWtvCv9Yy1f/hhNM89aDj4EeNyOZY?=
- =?us-ascii?Q?9gYoCklLvEMIjFb5t+uU1AtdeJUOq6oFm+MMVtkvN+SApBVrddW3CE6j15s6?=
- =?us-ascii?Q?fKo/zt24yXZ1/OrbxiB+Nj5G47MtYWAwF6mhyTx9MkOkB9TLJmgiDYUMJV3p?=
- =?us-ascii?Q?DS7k2Vmw++e1CjOJnV5neRsiYV8r8kT67Il5fzlNS4SggJIfe31sxYI7JZmL?=
- =?us-ascii?Q?On2qH1ItxoRyitirsdqDBkMo59vDN1VmtsIzDDg2TWCE7u+d0XdHvSn9s1k/?=
- =?us-ascii?Q?J5WP7dvSDimWA0LHBWDflOLvYYCpzx5OFU0C1EyqNIuAzemaAxRX8DbKaGlz?=
- =?us-ascii?Q?S+hDJ2IME9AHTmJxWR/CFuIDelIrRsUJzR+W+KgR3RmAnZOA5UWMNka/o+Od?=
- =?us-ascii?Q?jBWTav/SoXR54t4Xtg5TC+4RNMkzUiJ18nC1cJ59VuIf2pcNLFjvlPyAjolJ?=
- =?us-ascii?Q?KKHX0UjOXdMLUdoV1kF8NiMmaHhyefTw+P3ivj5EyxL3wXoi/5AkUfkaB2mV?=
- =?us-ascii?Q?r+MvSPiHGzuWMx2qcpaqAj4oFkuhs/EIZdQ2Cp3oVKbCj/gDtUKXFCmM25DU?=
- =?us-ascii?Q?oPbhFfEQBXOxIkruSO2nBm1+LlF1fsYutSuPePHa29Vi9gDDrzcbLtH10+R0?=
- =?us-ascii?Q?kZBUECY/YapuI2KcUq5XvMnMNRMt5TgkH2+iSNp5JCuAgzr9F91FC4d6f2ry?=
- =?us-ascii?Q?O4oYqNGzEq7MvuWBORGUPS0B/PAZoPBzwGTDQfLO4WgZhMPLWru0v3C9AZxf?=
- =?us-ascii?Q?HpNTavL0G/2zfl9qycUF6TEFk/SWw+cKWksTCtUNLn1LEsoNr6P0tilKixu6?=
- =?us-ascii?Q?MQAS3KuMtYvjIcXe1MUC4k3Qy7Wp/GhMuyXJPfu+BBhT3P9UkrLeKpCfigxT?=
- =?us-ascii?Q?EtwACDY95quoxcubnURBJNuCNWfb2vpEss435/yS0t0xpMU5tXq3BVfzhfM2?=
- =?us-ascii?Q?pFlisAVMNO2lcoWLbjryoS8M3zhKx6S5HsD3rBpiWH0xHRIfgI3zoDJKNFk8?=
- =?us-ascii?Q?3xfjc30sc2TK5D4nUVOlJOfTwzyaurtRtT40H+FP3iGXI9K9/vFlE7JqvVqz?=
- =?us-ascii?Q?5LCNtKGNFyAlXO1zVM3iEYKhcvkXBQbIeTrM8+MXwpBwwsYC5l/tvzRUoa02?=
- =?us-ascii?Q?T1sceAqZdZ+usKvGSoyIP+B+C6E49KmQjajeKCVV2XnK9G2m3WSCHofSKpek?=
- =?us-ascii?Q?uU4rCJaCg6iWC7fjF4w7GEXqF7BrH0rPBdb2cLMbydiiJ927UkYn0odS34jM?=
- =?us-ascii?Q?Qjt9JOKo3SmmHS5iv9ozkCfLEaxxZw4SnYyYFGbgxvp5vpUMiFel5U71UhU6?=
- =?us-ascii?Q?mpvgoMCyodg7/zpx2/g=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6b3bba28-ca15-4fe3-3d86-08dd0594a261
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2024 16:43:29.5430
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6tL9JmNsaQ0TgvXnJ3GISkpZR48cRfIU0wRpYZ/2sSr7/3spsWmNU7j5L8TQ6evqmkZ4NjAuGwtDuGp5VEFtsA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10991
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: luca.ceresoli@bootlin.com
 
-On Fri, Nov 15, 2024 at 10:53:07AM +0100, Niklas Cassel wrote:
-> On Thu, Nov 14, 2024 at 05:52:39PM -0500, Frank Li wrote:
-> > Introduce the helper function pci_epf_align_addr() to adjust addresses
-> > according to PCI BAR alignment requirements, converting addresses into base
-> > and offset values.
-> >
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> > change from v6 to v7
-> > - new patch
-> > ---
-> >  drivers/pci/endpoint/pci-epf-core.c | 39 +++++++++++++++++++++++++++++++++++++
-> >  include/linux/pci-epf.h             | 13 +++++++++++++
-> >  2 files changed, 52 insertions(+)
-> >
-> > diff --git a/drivers/pci/endpoint/pci-epf-core.c b/drivers/pci/endpoint/pci-epf-core.c
-> > index 8fa2797d4169a..a3f172cc786e9 100644
-> > --- a/drivers/pci/endpoint/pci-epf-core.c
-> > +++ b/drivers/pci/endpoint/pci-epf-core.c
-> > @@ -464,6 +464,45 @@ struct pci_epf *pci_epf_create(const char *name)
-> >  }
-> >  EXPORT_SYMBOL_GPL(pci_epf_create);
-> >
-> > +/**
-> > + * pci_epf_align_addr() - Get base address and offset that match bar's
-> > + *			  alignment requirement
-> > + * @epf: the EPF device
-> > + * @addr: the address of the memory
-> > + * @bar: the BAR number corresponding to map addr
-> > + * @base: return base address, which match BAR's alignment requirement, nothing
-> > + *	  return if NULL
-> > + * @off: return offset, nothing return if NULL
-> > + *
-> > + * Helper function to convert input 'addr' to base and offset, which match
-> > + * BAR's alignment requirement.
-> > + */
-> > +int pci_epf_align_addr(struct pci_epf *epf, enum pci_barno bar, u64 addr, u64 *base, size_t *off)
->
-> Nit: perhaps rename this function to:
-> pci_epf_align_ib_addr()
-> or
-> pci_epf_align_inbound_addr()
->
-> to more clearly not confuse this with:
-> if (epc->ops->align_addr)
-> .align_addr()
-> (Ideally those functions should have been named align_ob_addr(),
-> or align_outbound_addr())
->
->
-> > +{
-> > +	const struct pci_epc_features *epc_features;
-> > +	u64 align;
-> > +
-> > +	epc_features = pci_epc_get_features(epf->epc, epf->func_no, epf->vfunc_no);
-> > +	if (!epc_features) {
-> > +		dev_err(&epf->dev, "epc_features not implemented\n");
-> > +		return -EOPNOTSUPP;
-> > +	}
-> > +
-> > +	align = epc_features->align;
-> > +	align = align ? align : 128;
-> > +	if (epc_features->bar[bar].type == BAR_FIXED)
-> > +		align = max(epc_features->bar[bar].fixed_size, align);
-> > +
-> > +	if (base)
-> > +		*base = round_down(addr, align);
-> > +
-> > +	if (off)
-> > +		*off = addr & (align - 1);
-> > +
-> > +	return 0;
-> > +}
-> > +EXPORT_SYMBOL_GPL(pci_epf_align_addr);
-> > +
-> >  static void pci_epf_dev_release(struct device *dev)
-> >  {
-> >  	struct pci_epf *epf = to_pci_epf(dev);
-> > diff --git a/include/linux/pci-epf.h b/include/linux/pci-epf.h
-> > index 5374e6515ffa0..20f4f31ba9b36 100644
-> > --- a/include/linux/pci-epf.h
-> > +++ b/include/linux/pci-epf.h
-> > @@ -238,6 +238,19 @@ void *pci_epf_alloc_space(struct pci_epf *epf, size_t size, enum pci_barno bar,
-> >  			  enum pci_epc_interface_type type);
-> >  void pci_epf_free_space(struct pci_epf *epf, void *addr, enum pci_barno bar,
-> >  			enum pci_epc_interface_type type);
-> > +
-> > +int pci_epf_align_addr(struct pci_epf *epf, enum pci_barno bar, u64 addr, u64 *base, size_t *off);
-> > +static inline int pci_epf_align_addr_lo_hi(struct pci_epf *epf, enum pci_barno bar,
-> > +					   u32 low, u32 high, u64 *base, size_t *off)
-> > +{
-> > +	u64 addr = high;
-> > +
-> > +	addr <<= 32;
-> > +	addr |= low;
-> > +
-> > +	return pci_epf_align_addr(epf, bar, addr, base, off);
-> > +}
->
-> I'm not sure if this function deserves to live :)
-> Can't the caller just do this before calling pci_epf_align_addr() ?
+Hi Marek,
 
-Ideally, kernel should have macro to combine 32bit macro to a 64bit, but
-I have not found it.
+just a quick feedback about my latest discoveries.
 
-It is quite easy to make error or warning by simple
-(high << 32 | low)
+On Wed, 13 Nov 2024 22:19:02 +0100
+Marek Vasut <marex@denx.de> wrote:
 
-It needs ((u64) high << 32 | low) at least. I just want to avoid everyone
-to struggle simple issue.
+> On 11/13/24 12:06 PM, Luca Ceresoli wrote:
+> > Hi Marek, =20
+>=20
+> Hi,
+>=20
+> >>>> The media_disp[12]_pix clock supply LCDIFv3 pixel clock output. These
+> >>>> clocks are usually the only downstream clock from Video PLL on i.MX8=
+MP.
+> >>>> Allow these clocks to reconfigure the Video PLL, as that results in
+> >>>> accurate pixel clock. If the Video PLL is not reconfigured, the pixel
+> >>>> clock accuracy is low.
+> >>>>
+> >>>> Signed-off-by: Marek Vasut <marex@denx.de> =20
+> >>>
+> >>> I'm afraid I just found this patch broke my previously working setup
+> >>> with a panel connected on the LDB. =20
+> >> Do you need a fix similar to this one?
+> >>
+> >> 4fbb73416b10 ("arm64: dts: imx8mp-phyboard-pollux: Set Video PLL1
+> >> frequency to 506.8 MHz") =20
+> >=20
+> > So, 4fbb73416b10 is adding an assigned-clock-rates to hardcode rates,
+> > especially the video_pll1 rate. =20
+>=20
+> Nope.
+>=20
+> See arch/arm64/boot/dts/freescale/imx8mp.dtsi
+>=20
+> 1891                         media_blk_ctrl: blk-ctrl@32ec0000 {
+> ...
+> 1951                                 assigned-clock-rates =3D <500000000>=
+,=20
+> <200000000>,
+> 1952                                                        <0>, <0>,=20
+> <500000000>,
+> 1953                                                        <1039500000>;
+>=20
+> That imx8mp.dtsi preconfigures the Video PLL1 to some random clock=20
+> frequency.
+>=20
+> Commit 4fbb73416b10 ("arm64: dts: imx8mp-phyboard-pollux: Set Video PLL1=
+=20
+> frequency to 506.8 MHz") configures the Video PLL1 to a frequency from=20
+> which both your panel pixel clock and LDB serializer clock can be=20
+> successfully divided down.
+>=20
+> Which panel do you use ?
+>=20
+> Try this -- Revert this patch, check /sys/kernel/debug/clk/clk_summary=20
+> and compare it with (I assume) panel-simple.c entry for the panel you=20
+> use, and notice the disp_pix clock are likely a bit off. That's because=20
+> the lcdif driver did its best to divide those pixel clock down from=20
+> 1039500000 set in imx8mp.dtsi .
+>=20
+> If you really want accurate pixel clock for your panel, you need similar=
+=20
+> change to 4fbb73416b10 and configure the Video PLL such that the=20
+> accurate pixel clock can be derived from it. The Video PLL cannot be set=
+=20
+> to pixel clock, because the LDB serializer clock are either 7x the pixel=
+=20
+> clock, or 3.5x the pixel clock (for dual link LVDS), so the Video PLL=20
+> has to be set to 7x or 3.5x pixel clock of the panel, then you should=20
+> get accurate pixel clock and a working panel again.
 
-And msi_msg use lo and hi. pci_function_test actually just demostrate how
-to use doorbell. if other function driver use doorbell in future, avoid
-"(u64) high << 32 | low" copy to everywhere.
+I found that I'm having the same issue that has been discussed in some
+related threads: the lcdif2 configures the video_pll1 to ~72 MHz, and
+later LDB tries to set it to 7x that value, failing.
 
-Maybe like upper_32_bits(), add global helper macro
+I would have guessed your "[PATCH 1/2] clk: imx: clk-imx8mp: Allow LDB
+serializer clock reconfigure parent rate" would have fixed it, and it
+actually allwos the LDB to set a proper (7x) rate for video_pll1, but
+then also the media_disp2 goes to the same rate. Apparently the
+video_pll1 is not propagated to media_disp2. I haven't dug into this.
 
-#define low32_high32_to_64bit(l, h) ((u64)(h) << 32 | low)
+So this is not the bug I had suspected about video_pll1 rate
+computation.
 
-Frank
->
->
-> Kind regards,
-> Niklas
+For now my workaround is to set the exact rate to video_pll1 via
+assigned-clock-rates.
+
+However this breaks the case of using both lcdif1 and lcdif2. For that
+I have added a reparenting of media_disp1 to sys_pll3 and it looks like
+working.
+
+Would you mind keeping Miqu=C3=A8l and me in Cc in following discussions
+about the imx8mp video clocks? We are also facing this topic and we are
+happy to contribute.
+
+Luca
+
+--=20
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
