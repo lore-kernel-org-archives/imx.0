@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0D0192B86;
-	Fri, 15 Nov 2024 09:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A091B2195;
+	Fri, 15 Nov 2024 10:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731664393; cv=none; b=GxJ08OYlGrhe5S6UOkSe8xvOpaRkMCuA2HdyfcN+4eENxmRTUV3r2wbxl1Gu1A4f3rengrJFLmDDJXk9EWVjXY+/ZS11aVoFaOw2w7yJ+8b6XhY2EYMIaL1lZK9PjE/o3g9OKMmH7kaD8znMTN8f2mvC9UvDmz7KHwIJ7Hbd7Es=
+	t=1731665276; cv=none; b=qZ5DIf4XGvufqDSF/XA2m17N1ZE+c+ayFF97LV5BrnVLjAO4IqlQgwguzp5d1BRqi6C7uQf6VKPvlxOStPdHgVFWFUQgeRgdbkkz2veC8iTLOvhWgZ1TANShdIeG0f89dlGh+/iQTzAwxzTIC4gMEzSj84vk1TnehqhARQBR/i4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731664393; c=relaxed/simple;
-	bh=LA+PquU5EOzHfhbQ9li0o4XBaqT+vOref1iMwYUFCYI=;
+	s=arc-20240116; t=1731665276; c=relaxed/simple;
+	bh=lJKsGQI4xz6t71E2kqE8xiRIHAV3ZEdmgwiJINGlAs4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pnbmiwImZtkpkc2F/+zVQJ+pSHx56jKISFD2sWIGF0MbiIc8DWGowOhqeaj3nYLMSNjA4ZU5RntsWIvZ27GzLuiY1+CobM7Ii5UJyM0dkiGMk4OxBFJYCU3GFfZKO5SDo+zjVn4aEVkC5MDe8YEiUJcpgBrhGObQbCH4LZf9sbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dS7VomFC; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q23GkiB+j7S2Z43L3x/aJaCTINqfyNl08EjIQB0NIA2BPUHLRDWvDfRLTK/RJs5hVYc/ALAE4Fxyy55eGIB3aqiXmxfu2QXsTo34KflNw/L4yhYIBXmLdVLLt4RaQ2vkJF+92jsF+8mpFDRLGDU1qKysfd3EWGVRsyqV3m/CU6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kkkMeZeT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dS7VomFC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED44C4CED4;
-	Fri, 15 Nov 2024 09:53:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kkkMeZeT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C2AC4CECF;
+	Fri, 15 Nov 2024 10:07:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731664392;
-	bh=LA+PquU5EOzHfhbQ9li0o4XBaqT+vOref1iMwYUFCYI=;
+	s=k20201202; t=1731665276;
+	bh=lJKsGQI4xz6t71E2kqE8xiRIHAV3ZEdmgwiJINGlAs4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dS7VomFCDmJFVoWc28AjaXgjfRiTt5VCE2WWnw5SvNiUIgRIO5kOdHMS8UhDVUnce
-	 MZehENLsEV5K9u7eIGMXKN3bb582PDKkhbrp0EQ3vE8Q+U3EJWMG1Hruk/O18v+aBb
-	 qODwEe8RmRf0O6v882Xh3lPEk30qlRU1UH8muuGq/VM3rFrQYPYd38+ziO2Pgbk6n6
-	 U/GCniYZlWcBk0aoc+B9uepEURNgJ53fzLZzrOCrFm5BdjiDwgq9aHCgVES4Lu1KTs
-	 Kqd/BYUMkUVSjfKMrYgt1l/qwgeB83+WP28t2khErqOcccwYrs24AAAsNq7IwEml5U
-	 BojV1jkiRNjMw==
-Date: Fri, 15 Nov 2024 10:53:07 +0100
+	b=kkkMeZeTYtDOa+VZqtvyzrO+OAnKC3+HJyYFpAyXD/KFjBTulyHAAtwX3hCoxgalE
+	 WAEfGCSV5wNcJS47uOlu+ozlzuuJtfp21STz3StWQh0130Y/WkjKYHOYbB2nza2+rf
+	 8yNfM0RzIwljjnMsN2DwyZ1XdZ890n0Oof1zxK+NiFymh+fhiMdf68FDNX+GVHxQtM
+	 5u4gkRReKVXdFP71nCaJZsb0EUmrDkvfisPbws2fXuUyvJIwckCVfW79PxXXXWKh2t
+	 hxBUpJaWTpQfuEfXDEeV5JiaAa3hTq4GGXRiJsusHQ20szylEkjM99eOJe0/h7u7C8
+	 KvSWE3Tu7dY8A==
+Date: Fri, 15 Nov 2024 11:07:50 +0100
 From: Niklas Cassel <cassel@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
 Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
@@ -39,7 +39,7 @@ Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	tglx@linutronix.de, jdmason@kudzu.us
 Subject: Re: [PATCH v7 3/6] PCI: endpoint: Add pci_epf_align_addr() helper
  for address alignment
-Message-ID: <ZzcaA4PMHRcsEaDt@ryzen>
+Message-ID: <ZzcdduDnQH6L1We6@ryzen>
 References: <20241114-ep-msi-v7-0-d4ac7aafbd2c@nxp.com>
  <20241114-ep-msi-v7-3-d4ac7aafbd2c@nxp.com>
 Precedence: bulk
@@ -86,72 +86,9 @@ On Thu, Nov 14, 2024 at 05:52:39PM -0500, Frank Li wrote:
 > + *
 > + * Helper function to convert input 'addr' to base and offset, which match
 > + * BAR's alignment requirement.
-> + */
-> +int pci_epf_align_addr(struct pci_epf *epf, enum pci_barno bar, u64 addr, u64 *base, size_t *off)
 
-Nit: perhaps rename this function to:
-pci_epf_align_ib_addr()
-or
-pci_epf_align_inbound_addr()
-
-to more clearly not confuse this with:
-if (epc->ops->align_addr)
-.align_addr()
-(Ideally those functions should have been named align_ob_addr(),
-or align_outbound_addr())
-
-
-> +{
-> +	const struct pci_epc_features *epc_features;
-> +	u64 align;
-> +
-> +	epc_features = pci_epc_get_features(epf->epc, epf->func_no, epf->vfunc_no);
-> +	if (!epc_features) {
-> +		dev_err(&epf->dev, "epc_features not implemented\n");
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	align = epc_features->align;
-> +	align = align ? align : 128;
-> +	if (epc_features->bar[bar].type == BAR_FIXED)
-> +		align = max(epc_features->bar[bar].fixed_size, align);
-> +
-> +	if (base)
-> +		*base = round_down(addr, align);
-> +
-> +	if (off)
-> +		*off = addr & (align - 1);
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(pci_epf_align_addr);
-> +
->  static void pci_epf_dev_release(struct device *dev)
->  {
->  	struct pci_epf *epf = to_pci_epf(dev);
-> diff --git a/include/linux/pci-epf.h b/include/linux/pci-epf.h
-> index 5374e6515ffa0..20f4f31ba9b36 100644
-> --- a/include/linux/pci-epf.h
-> +++ b/include/linux/pci-epf.h
-> @@ -238,6 +238,19 @@ void *pci_epf_alloc_space(struct pci_epf *epf, size_t size, enum pci_barno bar,
->  			  enum pci_epc_interface_type type);
->  void pci_epf_free_space(struct pci_epf *epf, void *addr, enum pci_barno bar,
->  			enum pci_epc_interface_type type);
-> +
-> +int pci_epf_align_addr(struct pci_epf *epf, enum pci_barno bar, u64 addr, u64 *base, size_t *off);
-> +static inline int pci_epf_align_addr_lo_hi(struct pci_epf *epf, enum pci_barno bar,
-> +					   u32 low, u32 high, u64 *base, size_t *off)
-> +{
-> +	u64 addr = high;
-> +
-> +	addr <<= 32;
-> +	addr |= low;
-> +
-> +	return pci_epf_align_addr(epf, bar, addr, base, off);
-> +}
-
-I'm not sure if this function deserves to live :)
-Can't the caller just do this before calling pci_epf_align_addr() ?
+Should we perhaps also mention that this function is not needed in the
+"normal case" ? (i.e. pci_epf_alloc_space() + pci_epc_set_bar())
 
 
 Kind regards,
