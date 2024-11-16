@@ -1,96 +1,126 @@
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F881990A8
-	for <imx@lists.linux.dev>; Sat, 16 Nov 2024 19:37:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECC71922E0
+	for <imx@lists.linux.dev>; Sat, 16 Nov 2024 20:07:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731785825; cv=none; b=PVh/5lDhK1ePTK+w/7iUSex5OgibFNYlLaCqWuTVc8wsMdTMsg5TMe+0/6BTn+aCIDFiuggSogGdA/dKUbUQAJTarrNLx1On4lpil4yWFH/ObRFn9mjvr2UoJntLlAuX31Swhq/pECh4FbqdM4mxg4j4JJ+AXL6W+fRhzs8XAEE=
+	t=1731787663; cv=none; b=uH/5DwIHA3SJx3hZZGwoyN5TNbbqiZtxSMqI3ccfbyXCWawlkqOnxfRfFLy6y+JaXiJRIX2HZjariUDjd23eV10hvKo8OquLQLByYOny30NLgzcFFfqsbTtqAlLBhzbil6hGPe5vmZkjfZV8i8liYPiVyDr7fvi5YHxWV/GMatY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731785825; c=relaxed/simple;
-	bh=ELlNSiKS+DrwlChWXi2ylpoZK4FqLfd2aifSISBqemQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WEibw/rNzfZe3FKyFKyzZihCrP1Ho3W7OpAiQV6H8hKHotfIIdmhkXHcufdHTTV21l5/x94f9ot/SCMuJ5xeFvYfaKi0afyfCyex+bgQpU7O5Fh2F0y1UEoVVnrLElfYDVp3Y5WlEetVLSraqT2PbdMOxnC5m//YoshtmzuDQ4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Z19skp1S; arc=none smtp.client-ip=217.70.183.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1731787663; c=relaxed/simple;
+	bh=Eb7bakNuDMt536McYSWp7VRPHActWbHVTmLakZn4EVo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OFITRgrEySuNbYJCjBShqaimYDdYSPxP6dI2KbOhixIDeNjJuVK+RhecIudHsoje/3Kqh7cbl8rMdz7upkq1qX/iI1Be/atFGCLm5eVSSd9116B5lASuUNotFiOESpirEHEM+c3kXjJLeTlcn4oKhsXfkknkekNhfEHj9O7Wmp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=ejCltd7G; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Z19skp1S"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 98A9C60002;
-	Sat, 16 Nov 2024 19:36:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1731785814;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fz9hLc2YmSBpYXp/MdXJqnvHA+ad6QdDvN4TBAUYxjQ=;
-	b=Z19skp1SaKh+mEGWDUQh6eY2O/8ZedG637T9RB/uRFodDTX9qvoP0kZme8fkxVZlr1zg0/
-	7HMtSYa8npUzBWfg5aIFRN8HvVfbpyqvYLnOr8DdLli2x0RiTUmkv4cqiSQ0uIfnaOdi6z
-	1pIl6j4DynSoKrA9bDInIjT9K0dn8iNKRC6TVg95p2sOT+BxxLQVjIBTrKgcZo0RcNfmRM
-	Fzgmxt49xpxNcuiZkS2oCNWhLWMKj853522oTP8wivl2n9jjexP75tKzp0gTadVj6oGayb
-	boK5lpl8XfRjGvc93TirgXS6f4S8vEwFxGx5aFZsGc7tsBG2Dgzh/rXIGcBXNQ==
-Date: Sat, 16 Nov 2024 20:36:52 +0100
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Jacky Bai <ping.bai@nxp.com>, Peng Fan <peng.fan@nxp.com>,
-	"open list:REAL TIME CLOCK (RTC) SUBSYSTEM" <linux-rtc@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] rtc: bbnsm: Enable RTC by default to fix time read
- failure
-Message-ID: <20241116193652a13b3081@mail.local>
-References: <20241115194858.3837298-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="ejCltd7G"
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id C2DC389378;
+	Sat, 16 Nov 2024 21:07:32 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1731787653;
+	bh=xPbam/hqk2QR/wXTH/4/tBGNCnFHw4Qhbd8fGZD6CC4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ejCltd7GiaHHmcgRz64KB54p0NIqVHI/bz37T1H8yzSbZgpBOkY8pUdUXVQvZdpVV
+	 Z/3Mhsy+Q17DgxsZC3+gJY9OAyxSH/ETaQn1DpN/ZlY0UEu+FLk+qNBiGoxL8S8r3n
+	 cVFjpNYUJuHLMvVo3BK2M/C7Tu9SSPtKWP5WczyXnlsH54w4BXpBoj8dX7LhnbvUvX
+	 LRMv6xPTiZFzQEIQi9iyGwvQm1z1cecDVz2iKYE9bnFAkhBEp+IVB/8OyWT4hreqEy
+	 eeLPz/TfBIg6qkpEqAm9Ynj9iiYUEqFQEK1k84oT8gU7a814JVdH9+TfkBaE3tuuYm
+	 o2ayNt6C6pPkw==
+Message-ID: <6bc5b8d7-ff10-4860-ac46-1460a7d850da@denx.de>
+Date: Sat, 16 Nov 2024 20:47:07 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241115194858.3837298-1-Frank.Li@nxp.com>
-X-GND-Sasl: alexandre.belloni@bootlin.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] clk: imx: clk-imx8mp: Allow media_disp pixel clock
+ reconfigure parent rate
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Abel Vesa <abelvesa@kernel.org>, linux-clk@vger.kernel.org,
+ Fabio Estevam <festevam@gmail.com>, "Lukas F . Hartmann" <lukas@mntmn.com>,
+ Michael Turquette <mturquette@baylibre.com>, Peng Fan <peng.fan@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Stephen Boyd <sboyd@kernel.org>, imx@lists.linux.dev,
+ kernel@dh-electronics.com, linux-arm-kernel@lists.infradead.org,
+ Miquel Raynal <miquel.raynal@bootlin.com>, Anson Huang <Anson.Huang@nxp.com>
+References: <20240531202648.277078-1-marex@denx.de>
+ <20241112234206.558d5d5e@booty>
+ <79f21303-b0ba-45ed-a842-7e5364fd4efc@denx.de>
+ <20241113120622.3501db73@booty>
+ <130fe140-e70d-4c45-aaab-e22762c58c88@denx.de>
+ <20241115180936.4ab56be3@booty>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <20241115180936.4ab56be3@booty>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On 15/11/2024 14:48:58-0500, Frank Li wrote:
-> From: Jacky Bai <ping.bai@nxp.com>
+On 11/15/24 6:09 PM, Luca Ceresoli wrote:
+> Hi Marek,
+
+Hi,
+
+>> Commit 4fbb73416b10 ("arm64: dts: imx8mp-phyboard-pollux: Set Video PLL1
+>> frequency to 506.8 MHz") configures the Video PLL1 to a frequency from
+>> which both your panel pixel clock and LDB serializer clock can be
+>> successfully divided down.
+>>
+>> Which panel do you use ?
+>>
+>> Try this -- Revert this patch, check /sys/kernel/debug/clk/clk_summary
+>> and compare it with (I assume) panel-simple.c entry for the panel you
+>> use, and notice the disp_pix clock are likely a bit off. That's because
+>> the lcdif driver did its best to divide those pixel clock down from
+>> 1039500000 set in imx8mp.dtsi .
+>>
+>> If you really want accurate pixel clock for your panel, you need similar
+>> change to 4fbb73416b10 and configure the Video PLL such that the
+>> accurate pixel clock can be derived from it. The Video PLL cannot be set
+>> to pixel clock, because the LDB serializer clock are either 7x the pixel
+>> clock, or 3.5x the pixel clock (for dual link LVDS), so the Video PLL
+>> has to be set to 7x or 3.5x pixel clock of the panel, then you should
+>> get accurate pixel clock and a working panel again.
 > 
-> Enable the RTC by default even when no valid time is set to ensure the
-> RTC's time read and alarm functions work properly. Without this, running
-> hwclock results in the following error:
+> I found that I'm having the same issue that has been discussed in some
+> related threads: the lcdif2 configures the video_pll1 to ~72 MHz, and
+> later LDB tries to set it to 7x that value, failing.
+
+Right, which is solved by configuring the Video PLL to the correct 
+frequency in DT up front ... unless you have more than one output 
+supplied by that Video PLL.
+
+> I would have guessed your "[PATCH 1/2] clk: imx: clk-imx8mp: Allow LDB
+> serializer clock reconfigure parent rate" would have fixed it, and it
+> actually allwos the LDB to set a proper (7x) rate for video_pll1, but
+> then also the media_disp2 goes to the same rate. Apparently the
+> video_pll1 is not propagated to media_disp2. I haven't dug into this.
 > 
-> hwclock: ioctl(RTC_RD_TIME) to /dev/rtc0 to read the time failed: Invalid argument
+> So this is not the bug I had suspected about video_pll1 rate
+> computation.
 > 
-
-
-What is providing your hwclock and which version does it have?
-
-
-> Fixes: eb7b85853c38 ("rtc: bbnsm: Add the bbnsm rtc support")
-> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-> Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/rtc/rtc-nxp-bbnsm.c | 3 +++
->  1 file changed, 3 insertions(+)
+> For now my workaround is to set the exact rate to video_pll1 via
+> assigned-clock-rates.
 > 
-> diff --git a/drivers/rtc/rtc-nxp-bbnsm.c b/drivers/rtc/rtc-nxp-bbnsm.c
-> index fa3b0328c7a25..6610db2f75125 100644
-> --- a/drivers/rtc/rtc-nxp-bbnsm.c
-> +++ b/drivers/rtc/rtc-nxp-bbnsm.c
-> @@ -189,6 +189,9 @@ static int bbnsm_rtc_probe(struct platform_device *pdev)
->  	/* clear all the pending events */
->  	regmap_write(bbnsm->regmap, BBNSM_EVENTS, 0x7A);
->  
-> +	/* Enable the Real-Time counter */
-> +	regmap_update_bits(bbnsm->regmap, BBNSM_CTRL, RTC_EN_MSK, RTC_EN);
-> +
->  	device_init_wakeup(&pdev->dev, true);
->  	dev_pm_set_wake_irq(&pdev->dev, bbnsm->irq);
->  
-> -- 
-> 2.34.1
-> 
+> However this breaks the case of using both lcdif1 and lcdif2. For that
+> I have added a reparenting of media_disp1 to sys_pll3 and it looks like
+> working.
 
--- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+See the patch link in the previous email, if you can use one Audio PLL 
+as PLL for the other DISP PIX, then you will be able to achieve accurate 
+pixel clock on both outputs. Can you do that ?
+
+> Would you mind keeping Miquèl and me in Cc in following discussions
+> about the imx8mp video clocks? We are also facing this topic and we are
+> happy to contribute.
+Sure
