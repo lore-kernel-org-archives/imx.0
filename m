@@ -1,100 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6541158218;
-	Sat, 16 Nov 2024 03:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E83EF383
+	for <imx@lists.linux.dev>; Sat, 16 Nov 2024 04:02:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731726035; cv=none; b=t+pc1jTpP4B1SEWRzEyKMI5vsQvC+eGGjYF5NoeRmklV+SOjKBx7G1oHz6YduGrbLiv1sJQNyAVSqCZveI2H/AK6jsF8hfUYix/ipAiaiAZiM+IWY9j/T46K7nyBUO+aEYLJtBqGAjfd55+I8ayTDPCHSIMUhbXS9olL+GNS4Yw=
+	t=1731729753; cv=none; b=CXgaE3IRqBOGWBFMJ0/g2M+gkJxKHctxTaAkmQf6J5z7rTARDHgOOrZKMQgg46Z2P6Bj6BHLruJDljK8QaE7MShHvUDre5K4H2bR16T2fbwhPvYZVNyIiTDVVYa1hcdj7mhDWTWAjnqGDHLlefnyaesS4xhSV82rvTp0iwUOln0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731726035; c=relaxed/simple;
-	bh=CVhcmjlJVAT/9QDdLdPQPRfwrgG97KWHWW1vpQQD5NY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YY5qdMMrf4pr10SnZoFj5eoRnji9h86w8UKAx7YjvZ6mQV7nBAQ6f/+8wcE4s9URdF58Q15bAtAaBDFCacdNqiE9X/MavxEsCzdlDb+TMcvU8pIVP3fVhThDIgShqQJCSpDEM5w999aDqY7/fxZoz6kDsOGCX0MJxZ1A6PlloZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SoirdFIw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731729753; c=relaxed/simple;
+	bh=r4vF8IrdFMgD08hcK4U30rLGVHmU114j0pb9IOhiAkw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b9EZ8FDZNHyJhUlG2Mkt4WM1rD7Qy+xNkBRzrWgT1cz1f0F3u/dQP1AC4//CcBRVmQ+spHFRQDLBpPkjQO5YE9QIpk7J4LYbsnKY0HlURHVFkLBYoogfLnY5Xdz1oQr8sB+DoB0DzUD0w6QhtBCcvDro02ZaBzjLQ3d8oh6MXek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=gpXgdBXa; arc=none smtp.client-ip=220.197.32.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SoirdFIw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAFB2C4CECF;
-	Sat, 16 Nov 2024 03:00:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731726035;
-	bh=CVhcmjlJVAT/9QDdLdPQPRfwrgG97KWHWW1vpQQD5NY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SoirdFIwhJduTEXvAB4KIEvQjyOFGqMqgcEb7U0fLVmOhm5u5QCxO1OQPzESfEKws
-	 qHKMx4z8qQXdtvrveLzDb8YgCIdl60pnxnchGILAKVGVqniJaxBW3w0I/3mb3TX3GZ
-	 nEuUFFOfpXgKlfpw/VOFQoAEQxobalznTx7bTEWdf9dXGUzeaOD0+BaUWWRMF8vwpI
-	 7Pu162a644EuizdKnJXlNwwbpMOBLGDWcuHJPisf13epcekT8Xw6WEOcG9Yp4rbKV7
-	 pB1HItzOIhMdMSv/vVyCDbmMiQ41kaSuXlEyzuZDZKEIfhY7vEeQq6SoL4GRditpBP
-	 t+Vb8moENHR9Q==
-Date: Fri, 15 Nov 2024 19:00:33 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, frank.li@nxp.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v4 net-next 2/5] net: enetc: add Tx checksum offload for
- i.MX95 ENETC
-Message-ID: <20241115190033.7452392e@kernel.org>
-In-Reply-To: <20241115024744.1903377-3-wei.fang@nxp.com>
-References: <20241115024744.1903377-1-wei.fang@nxp.com>
-	<20241115024744.1903377-3-wei.fang@nxp.com>
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="gpXgdBXa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=8mPwbXqgnl9XrwzwWBl68KnzBBVTshHswhakrqB5B24=;
+	b=gpXgdBXa+f7hGWMWaNsXNRxZs8DVzasNtoJ5a/rJ9woAz0YHpql6I1dHQ00UZ/
+	vXvgNeddwMcR1yDUPqFSB8tpcsbKIACXJcG0jaSqdszBoXcG6QM4nPV96wdUMaRz
+	HQAW++oNfsyaaMxINUI/feX9m31UhnngyxesoiIVtZNM4=
+Received: from dragon (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgAHL7rHEThnfPKpAg--.27117S3;
+	Sat, 16 Nov 2024 11:30:17 +0800 (CST)
+Date: Sat, 16 Nov 2024 11:30:15 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Arnd Bergmann <arnd@kernel.org>, Peng Fan <peng.fan@nxp.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-sound@vger.kernel.org
+Subject: Re: [PATCH] firmware: arm_scmi: fix i.MX build dependency
+Message-ID: <ZzgRx5BdYI3yzAGb@dragon>
+References: <20241115230555.2435004-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241115230555.2435004-1-arnd@kernel.org>
+X-CM-TRANSID:Ms8vCgAHL7rHEThnfPKpAg--.27117S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7AF47WFWUZFyxWw4UWr1ftFb_yoW8CF17pa
+	9a9FyDCFyDJr4rJF47Ar4xX3W09a9YkrWrJF4DG3y8Zrn8ZF4kKFyvgw15XFyku3savr10
+	9F48Xws8WFyqya7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jrhL8UUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEhaZZWc3+Cc7HAAAsQ
 
-On Fri, 15 Nov 2024 10:47:41 +0800 Wei Fang wrote:
-> +static inline bool enetc_skb_is_ipv6(struct sk_buff *skb)
-> +{
-> +	return vlan_get_protocol(skb) == htons(ETH_P_IPV6);
-> +}
-> +
-> +static inline bool enetc_skb_is_tcp(struct sk_buff *skb)
-> +{
-> +	return skb->csum_offset == offsetof(struct tcphdr, check);
-> +}
+On Sat, Nov 16, 2024 at 12:05:18AM +0100, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> The newly added SCMI vendor driver references functions in the
+> protocol driver but needs a Kconfig dependency to ensure it can link,
+> essentially the Kconfig dependency needs to be reversed to match the
+> link time dependency:
+> 
+> arm-linux-gnueabi-ld: sound/soc/fsl/fsl_mqs.o: in function `fsl_mqs_sm_write':
+> fsl_mqs.c:(.text+0x1aa): undefined reference to `scmi_imx_misc_ctrl_set'
+> arm-linux-gnueabi-ld: sound/soc/fsl/fsl_mqs.o: in function `fsl_mqs_sm_read':
+> fsl_mqs.c:(.text+0x1ee): undefined reference to `scmi_imx_misc_ctrl_get'
+> 
+> This however only works after changing the dependency in the SND_SOC_FSL_MQS
+> driver as well, which uses 'select IMX_SCMI_MISC_DRV' to turn on a
+> driver it depends on. This is generally a bad idea, so the best solution
+> is to change that into a dependency.
+> 
+> To allow the ASoC driver to keep building with the SCMI support, this
+> needs to be an optional dependency that enforces the link-time
+> dependency if IMX_SCMI_MISC_DRV is a loadable module but not
+> depend on it if that is disabled.
+> 
+> Fixes: 61c9f03e22fc ("firmware: arm_scmi: Add initial support for i.MX MISC protocol")
+> Fixes: 101c9023594a ("ASoC: fsl_mqs: Support accessing registers by scmi interface")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+> I'm not sure this is the version we want to go with in the end, without
+> having read the code in detail, but the version in linux-next is clearly
+> wrong in multiple ways and this is the best I could come up with so far.
+> 
+> If we can agree on this approach, it needs to go through the ASoC tree
+> as that contains the 101c9023594a commit at the moment.
 
-Please don't use "inline" for trivial functions, compiler will inline
-them anyway, and it hides unused code. In addition to being pointless.
+Thanks for spotting and fixing, Arnd!
 
->  static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
->  {
->  	bool do_vlan, do_onestep_tstamp = false, do_twostep_tstamp = false;
-> @@ -160,6 +181,27 @@ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
->  	dma_addr_t dma;
->  	u8 flags = 0;
->  
-> +	enetc_clear_tx_bd(&temp_bd);
-> +	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-> +		/* Can not support TSD and checksum offload at the same time */
-> +		if (priv->active_offloads & ENETC_F_TXCSUM &&
-> +		    enetc_tx_csum_offload_check(skb) && !tx_ring->tsd_enable) {
-> +			temp_bd.l3_start = skb_network_offset(skb);
-> +			temp_bd.ipcs = enetc_skb_is_ipv6(skb) ? 0 : 1;
+Unless Peng has objection to this change, I'm good with it.
 
-Linux calculates the IPv4 csum, always, no need.
+Shawn
 
-> +			temp_bd.l3_hdr_size = skb_network_header_len(skb) / 4;
-> +			temp_bd.l3t = enetc_skb_is_ipv6(skb) ? 1 : 0;
-
-no need for ternary op, simply :
-
-		temp_bd.l3t = enetc_skb_is_ipv6(skb);
-
-> +			temp_bd.l4t = enetc_skb_is_tcp(skb) ? ENETC_TXBD_L4T_TCP :
-> +							      ENETC_TXBD_L4T_UDP;
-> +			flags |= ENETC_TXBD_FLAGS_CSUM_LSO | ENETC_TXBD_FLAGS_L4CS;
-> +		} else {
-> +			if (skb_checksum_help(skb)) {
-> +				dev_err(tx_ring->dev, "skb_checksum_help() error\n");
-> +
-> +				return 0;
-
-don't print errors on the datapath, it may flood the logs
--- 
-pw-bot: cr
