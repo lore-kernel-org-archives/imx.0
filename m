@@ -1,250 +1,102 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2081.outbound.protection.outlook.com [40.107.21.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-29.smtpout.orange.fr [80.12.242.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C3826ACB
-	for <imx@lists.linux.dev>; Sun, 17 Nov 2024 11:07:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.81
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731841677; cv=fail; b=fxcFZdlWX6UXU8JNB23Bh4j3MAgBFUmWz8YvQTKnstoQ/dx5TKjRnbvSDuTm1giqdNPC9X40g0pSszSovUps3bfZKnuZOcO9lQ/ZIe1iBqJmnSiLdG8hdc5hc9TOKZ8wvV02ZnlUDVdrMkeVHhCbAdCo0KLPP4B7NeiP0fZ9u5c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731841677; c=relaxed/simple;
-	bh=dTz3xU5ivIQjtGSXBjma7+m6+IHX7rewLsdzIBLCV2s=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=J/U6SXjS8ci3Ek0Ir5aqKtg69BBJxn7wVN3vZN4dNC1LgG4fvHIIpz9J8sLh1u7qs9nVGtjubNxfIJuRIt4dS9DHW6B4cSILftxIKhbqCAVTMA8SxzVsYf+gQsFjztGYhT7FnK6MHOHNHkSfnx58GyAqvwdKFIpblbC4a0Zd+W0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=NdL0H25X; arc=fail smtp.client-ip=40.107.21.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726AD7E105
+	for <imx@lists.linux.dev>; Sun, 17 Nov 2024 11:22:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.29
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731842527; cv=none; b=eMJmWCOqNPKIEriOjeQAk27plFba5308D6sogltyuA7/DDMYjGy1wH6D6y6qLlFy+363VPKScnJR2v9KlGX+fn28OedDAjBswqa5Errre0x3rXA0+1rE6cX+hURu53YYc2Jx2QkJ2JzwOP0C5af+kdiJAOJfl/qcH8PbULOdp70=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731842527; c=relaxed/simple;
+	bh=GL6L0RdEB3pV7TqNFOrFDekS6axn/OVeGdxC9qw5byM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MvCrqq6pZyUIBzSpBhAnEZj7NyBnJH5scNd9TjaLl21233S32TGt3+MaXI4pwkCRDW4APrej0x1ZqjWkt0BoEBUs40o4332PAMc4z89VelpavXp1++WiAMlRfHp1ONbaVgzELrPJwceCfUldfQ/B6DJ9S9WCeGFdtC3tJqOZ3gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=g3uU7i02; arc=none smtp.client-ip=80.12.242.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="NdL0H25X"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OkjLj7yQkZxTE8qcvNPMJtYj4/jcqMJRG7JJjF4OsOBRD5Q0SEOyyVObDITejL2xW5kgOiDgG1VklPZ7l7n9cq9uaawEDq+HGVKIZuIORUEmjOuD5SyHWZZT+yhlLcJrkDOM8hw7qrUPO67OEvC/uZhELDyZgaddJvllcUpTDgptUon6zQKOdeCSBSxWf9dwnp+LdJuo3gsBIhMr4SpFZkRkZ+E1oGf7vmey9U3FzkWMmYVqLp90npsy7LQViwUAMpkTfbJ19NxUv4Ms041aO+NvB6E+hJm8aNh32kqGI2w5J91EQLgz6RcJ2kvoJ8Dp2s6SaYvvLwc/ZxiXPeFJYw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kxJDx95bUmW+2VGDcpcO+lCDgR1zUplRfWZzIqcRW58=;
- b=RqnN6xnDy0KkuxNBabQkPdkR07vRwDav94JpL6kJfYjH15q3chsPzIa0NFdwZwGjLv4qC0JXJMxXl0Ni4FpdfNJjKOJGFpycH9rWGX/5tI+x5T+ziXL4WW2dP/fP1qJ/UouGJpzJUNb0aRs7YMbOmBHGJPoUjkFc6JyUzgzZOkxrCzS9D9Ak33zWSeRLmqwVhmqWY0QdPb11ZCD11zDQ/fJvPBvarIEr/Z7pYdQrYIm1e7Kb25bLX1GgOAgZRAVWoM6HZ8kZp4GRyunUMKfjDqT5ZERS5/oKrIN6W10Y5x2m87XEugfAQqbBFfN+K2Nc1mSr1A//3XyZcwPbWQ8E1Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kxJDx95bUmW+2VGDcpcO+lCDgR1zUplRfWZzIqcRW58=;
- b=NdL0H25XiGjd4xPXa+ohrzxIQhKOu6O9CWoNwy92MbJCXXLPLpnbmCwHyjHCZPaGFC9OYreykToIjJK/7E/tBAyBo9WDEpdWnQsxcWvZI8DJbP7ox1y/slppl/6BlxveqgMyil1c9G64XKNztLcH9PE3KvmpKEjXAyV+UZrSISxp2jdXhzErQs1tv4bdRjJtR3KFhldi3DvxX3ItTt54U0VCwYMm2+cbsyU4WyUdApJGHdhSPcbZeleeq8w5yusTbfHoI7Gfb4Yd3huvcdKFwJvzrTFTOhroS3dRyE6rYXjCHn5UG8DlcVvr2oFI5Inmgp3exynBYqNqet30Xdo5Zw==
-Received: from DB9PR04MB8461.eurprd04.prod.outlook.com (2603:10a6:10:2cf::20)
- by GV1PR04MB10560.eurprd04.prod.outlook.com (2603:10a6:150:203::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.21; Sun, 17 Nov
- 2024 11:07:51 +0000
-Received: from DB9PR04MB8461.eurprd04.prod.outlook.com
- ([fe80::b1b9:faa9:901b:c197]) by DB9PR04MB8461.eurprd04.prod.outlook.com
- ([fe80::b1b9:faa9:901b:c197%5]) with mapi id 15.20.8158.021; Sun, 17 Nov 2024
- 11:07:51 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: Frank Li <frank.li@nxp.com>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-CC: Vinod Koul <vkoul@kernel.org>, "open list:FREESCALE eDMA DRIVER"
-	<imx@lists.linux.dev>, "open list:FREESCALE eDMA DRIVER"
-	<dmaengine@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH V3 2/2] dmaengine: fsl-edma: free irq correctly in remove
- path
-Thread-Topic: [PATCH V3 2/2] dmaengine: fsl-edma: free irq correctly in remove
- path
-Thread-Index: AQHbN00YuLiEZEKAsEm+xXjVZKuTQLK4cwMAgALfyMA=
-Date: Sun, 17 Nov 2024 11:07:51 +0000
-Message-ID:
- <DB9PR04MB8461407FB15C100903EFEFB988262@DB9PR04MB8461.eurprd04.prod.outlook.com>
-References: <20241115105629.748390-1-peng.fan@oss.nxp.com>
- <20241115105629.748390-2-peng.fan@oss.nxp.com>
- <Zzdk5qcUyhNhRZSR@lizhi-Precision-Tower-5810>
-In-Reply-To: <Zzdk5qcUyhNhRZSR@lizhi-Precision-Tower-5810>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DB9PR04MB8461:EE_|GV1PR04MB10560:EE_
-x-ms-office365-filtering-correlation-id: 3e0b633b-bbe9-48d0-7eea-08dd06f81447
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?mFhGUAFicxj17CgqW3lAHwu4FlNVjHpDSxHtiHlxZY4aNGcXzcU8GYMWAmkq?=
- =?us-ascii?Q?p6EmVeccU0n/1F33i/XBFoDLGEeOrBsU3ScpKuhWYH6dLtOEE5l/TJcnaHQX?=
- =?us-ascii?Q?R1wl0kxQve5a2T0OtZJo9WcNKu4MmwQcIr0F88bro7ZUDORREE9R9etm1+jE?=
- =?us-ascii?Q?Y/n2N76D/M77Z1xLTWaPX9QexVye1XZLBag2RbyvfyndF6sfKp+x/H8McNK5?=
- =?us-ascii?Q?BSR3kTnlhPaStGTHUXTcqK7fRApbXV2L9FJJY4hQ0lg5teb4UEFSb1GFmw42?=
- =?us-ascii?Q?wmFwlrqZ2wmYJVyD6BUYY5HuLIhsshYq0qWcmgs/dAZ7795o9unrG7lZmcpy?=
- =?us-ascii?Q?w8G8WxVqJWtH9AQkF9nqVVykXQBEO7SW+HCuyF6YHYNr2B5spfcP3ED7RzCe?=
- =?us-ascii?Q?eE4NC5sK8g/2cxDTae6DhxIUWB01T7TZ1dtnWDCrPv1AHLEHWYaFNMqlaq5C?=
- =?us-ascii?Q?ThEUgW67TX7PgfRrQFFWBNL/i7bONZdRm2oA1jUzclXkH21myjLHJQGtEdYA?=
- =?us-ascii?Q?hloBlbd4kV4y5zAIOhJRdUI/y5FQYrDFRVhlLH1F4+74/7xnEFOW/5+uogyG?=
- =?us-ascii?Q?FXZx6Nc0E3//dllXai8KNmXesrRbhzZIowhkOVDuN1VllDjvYceAYeV+H/1s?=
- =?us-ascii?Q?7mUXu6vRR/97N4I8jJfBB3kxUFK42K18OjK9OX6WmywOejo9BSF2hBg6rePw?=
- =?us-ascii?Q?FsiVa9VSvMRCNoxJrMmnLZHXhczeEF6sMj6HH5mDpmfx8pJ5+Iggv4dS3W1O?=
- =?us-ascii?Q?uE+4ysHXcF17q3ag5nUcQ1uyzw4trHebfiV4uT8HRde3VYkGyEnsNIGxNFVT?=
- =?us-ascii?Q?+zMetL7hl5mkLgPCet4QKAyB7woYosVtcorIffziAZhlIsIZyBs6PBvQ/fNu?=
- =?us-ascii?Q?/FPMHjzq8abXL0fldjCoW5QG82kzqMMvHY0cLE7nq2k0os/j7W2iuthgXPBl?=
- =?us-ascii?Q?oL6n23bH1VwXJu0iRhJNx9nX1HauNhf5LJfGr7QpPJK76+P6oGVz4qweIm1y?=
- =?us-ascii?Q?r5X3UH0XklnF7h2nNRbPqNBog/TzkXcqFdbGUoJOc/aUSBSKL7gmOgbnw1Ys?=
- =?us-ascii?Q?QXkG9Kji54YKLGXmy2WoZQRj5IfgAaxqcvceGavImXzHuq2aG4ODIHXBmDzN?=
- =?us-ascii?Q?QpuOB14wIT7qqmTZHbWnGZtVWZj79JQwfj5ngT/mSAtpP8Jm9I6K+jU/vV/A?=
- =?us-ascii?Q?vzVnHuqmlg4T1nP+NvIBq3OoN4t0fQQdPPzMnDgSubpqMifkcL2IT4oWKbLv?=
- =?us-ascii?Q?XMQrZlmw95RJVrIosgHWxlVjQSI7jJXYZRmnhAHDTGmxdF9Zmgl948lCnnI0?=
- =?us-ascii?Q?ayGDRsJ+kvouD/DSmBR9qgU4bycPcgF7QwcRuvit4cp80d3LQBYTaWgHRewa?=
- =?us-ascii?Q?aW9cjRI=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB8461.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?HPjps4v2C+Q3TP1Uwe/+Mj1iis2CWv24yNIn5vcBijwqp5DN+Q+tZ6tCIITj?=
- =?us-ascii?Q?5F5GaPM3rFGlvq41pRCTIfV7SB3cB3TITCxME6+86I9efMmeZdgq4llLKgGO?=
- =?us-ascii?Q?t1oVWqMznp79qx54f034zr+8vSEWIuY0nIvxMQY/BlnjeVAhWKllHbESKLLi?=
- =?us-ascii?Q?gV7OCtxrqBYV49PhBB7P2bruRtWcKYZx8hfRo0u2eLJmOnp81z7LEZfV6Bll?=
- =?us-ascii?Q?BUqbu+NqT48STrpvsNIH4ce7JjWi8ID8ohzLfGpSEC1rwENYJR9sYdu9boYw?=
- =?us-ascii?Q?nu5RTKJKD1QmomjzHkDzhcJB9akKgaovpooS90e2V2fbwnVgLpVM11jtuhn5?=
- =?us-ascii?Q?D8AMA4oH5ANAjhDpq83fl2Md5n1UaOFlv+R7BwxCmCKP1Rzfrv4f/uDVZOEh?=
- =?us-ascii?Q?Y9SCOGP0EPYvaZPtY9dvn0ktHhVkQhpe8NsviPI+urZdqtMIItz8Lfs0aql9?=
- =?us-ascii?Q?hKqUcrXy1FWcg3yZZd4e1iL6t0jAFjwnG664Vgz3get6ARtBTMwVM1jW+lc5?=
- =?us-ascii?Q?Hd8mG4dcz564wM6Auxh4QJISkQEuQMfBRDCFvs1Qj+7pAt1YCrfduFaubWQ6?=
- =?us-ascii?Q?OnwvFZfB6PsR2FcASnxQs2jX9uIjudFJt/fd7aYT+vt+Wm0lRk8DThEo7qQ3?=
- =?us-ascii?Q?0QjvC+QqvfZavJS0vZMl359fRQGEQwUbXHzMrexm9RZxUykJVyOiWmNHRJwx?=
- =?us-ascii?Q?CHOetQssZgNUmqT12pdzhwwDB6cIBc4VXKx/QdjauAGULUS+tV/rN7l8kCok?=
- =?us-ascii?Q?VawgMYAQZpb62Vk/y/2fxi/+ZSCBCrWMOdgXB6jFs6c/bxhD+nvHjnkIab0B?=
- =?us-ascii?Q?di61bs+eW0FIJbnZo+hLS1pGNtYQ3NJQiZrsVfFlEV0KBmCtJ187L8h/H38U?=
- =?us-ascii?Q?NarQUfPX9yeCtvoe2kdBHJ9hqehDsGh4L30WKgHVNHH7CopyH2It65RVRCgF?=
- =?us-ascii?Q?bU/Jfm008PRvwpMlfg3JcN/lvRElZ7UvE06hiYGVUOx2e44zC2RJn/ueAlIv?=
- =?us-ascii?Q?qa0R5BUAP28PhoePy5mIJxicRtAQeNmkIs8oEadOClkFHtc0PKkNAsvQ3LAD?=
- =?us-ascii?Q?U3vCjce7jokxjlzzP5oiHOFQbYGZWrEu6dRpLAKwTdOQhVIIjszsYM8+vOIh?=
- =?us-ascii?Q?V4Io48dPWHtj167YsjxRt2vyKUDvABS1TXZRH2y8pQS8TszM29XIPp4rcr78?=
- =?us-ascii?Q?DPl2FIXx2Fn6V9EMT0onP4T2MhITDMn6I3+Hz4Rgfjx6UQJUlTH52zO38RRb?=
- =?us-ascii?Q?uqkwhHHIw0l9wQbJMc3jr38y83pffJs00mmCGteCgBVnOIhFmD5TevbZ0IMo?=
- =?us-ascii?Q?SjgKu+0sDVdDvAWHsyxCbTjRYaFv3kRZTsMj0yKr2w1XL7mI7ldV6YFhAgx/?=
- =?us-ascii?Q?4LKJ46qTxFqvo+ie/rJteJiyYGlndq3kE5N5JtFn5rFyn9EmvT91asvvsL7b?=
- =?us-ascii?Q?YpBYRgrccAXySAZOpxA1rNt1k3vnXE5L7kQrZVdVAawo5oRUZZxEw5pqJAkU?=
- =?us-ascii?Q?q3+eQ2brhXIIAuMIb0JppspYRnv88sCbSuaT3dyGwkcp/5V7gTFVWA/VRjem?=
- =?us-ascii?Q?BH+TT9uP0SW+L1JRBVg=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="g3uU7i02"
+Received: from localhost.localdomain ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id CdLltujfVkz9DCdLltiABX; Sun, 17 Nov 2024 12:21:58 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1731842518;
+	bh=wutmjbunPazncW+7ACgp5eT9w4BJnbyk7q/fyDFLZ9g=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=g3uU7i02kt7I5UMCR2YSd0Jh7XdjTBkf1sV5I1IvB/dWjRSWhguCsUDnUcPk9SjIQ
+	 xDbA/sY5wzXGp8+lUTDjx2fYMIK+VM/BprxDh/mzNzDLzaFTigAq1Hoc/IMPxrGRgY
+	 yqA2uh+d8/VzX1GnsqNb4qS5v8Iar4rlm+iGqNfcHgGXZGryfmrV7xDXJMq7kAN91Y
+	 JyYvVYr2+ybGGGY+e7EVDLVvyXFZCP6CqVg1QbNvsA7+wIQU+PEWXsGIqQSmnZ+BLd
+	 JF7rqbpM7vRTqz1nBMLz3TAqN9PhVDxzsu0uCkF/T2TkPAYdSfR9bSUBG7OXrejMFw
+	 x+wqWFVIao+EQ==
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 17 Nov 2024 12:21:58 +0100
+X-ME-IP: 90.11.132.44
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Thomas Gleixner <tglx@linutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Marc Zyngier <maz@kernel.org>,
+	Aisheng Dong <aisheng.dong@nxp.com>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] irqchip/imx-irqsteer: Fix irq handling if an error occurs in imx_irqsteer_irq_handler()
+Date: Sun, 17 Nov 2024 12:21:43 +0100
+Message-ID: <ad6514c771fef0ac2d1b3c050c6db5d5e0fd034d.1731842478.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB8461.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3e0b633b-bbe9-48d0-7eea-08dd06f81447
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Nov 2024 11:07:51.7891
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ix8iuP9WjUax82nz34oSo/SQdkWNAewcVxCU1koqIXqe9wr7lHNnB4k15iQMFxPzQ1OHU2VBR25BRYVvdchprw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10560
+Content-Transfer-Encoding: 8bit
 
-> Subject: Re: [PATCH V3 2/2] dmaengine: fsl-edma: free irq correctly in
-> remove path
->=20
-> On Fri, Nov 15, 2024 at 06:56:29PM +0800, Peng Fan (OSS) wrote:
-> > From: Peng Fan <peng.fan@nxp.com>
-> >
-> > To i.MX9, there is no valid fsl_edma->txirq/errirq, so add a check in
-> > fsl_edma_irq_exit to avoid issues. Otherwise there will be kernel
-> dump:
->=20
-> Nik:
->=20
-> Add fsl_edma->txirq/errirq check to avoid below warning because no
-> errirq at i.MX9 platform.
->=20
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+chained_irq_enter(() should be paired with a corresponding
+chained_irq_exit().
 
-Thanks, since this is minor commit update. Not sure Vinok could help
-to update, or need me to update and send v4.
+Here, if (hwirq < 0), a early return occurs and chained_irq_exit() is not
+called.
 
-Thanks,
-Peng.
+Add a new label and a goto for fix it.
 
->=20
-> > WARNING: CPU: 0 PID: 11 at kernel/irq/devres.c:144
-> > devm_free_irq+0x74/0x80 Modules linked in:
-> > CPU: 0 UID: 0 PID: 11 Comm: kworker/u8:0 Not tainted 6.12.0-
-> rc7#18
-> > Hardware name: NXP i.MX93 11X11 EVK board (DT)
-> > Workqueue: events_unbound deferred_probe_work_func
-> > pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=3D--)
-> pc :
-> > devm_free_irq+0x74/0x80 lr : devm_free_irq+0x48/0x80 Call trace:
-> >  devm_free_irq+0x74/0x80 (P)
-> >  devm_free_irq+0x48/0x80 (L)
-> >  fsl_edma_remove+0xc4/0xc8
-> >  platform_remove+0x28/0x44
-> >  device_remove+0x4c/0x80
-> >
-> > Fixes: 44eb827264de ("dmaengine: fsl-edma: request per-channel
-> IRQ
-> > only when channel is allocated")
-> > Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> > ---
-> > V3:
-> >  Update commit log
-> > V2:
-> >  None
-> >
-> >  drivers/dma/fsl-edma-main.c | 12 +++++++++---
-> >  1 file changed, 9 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-
-> main.c
-> > index 3966320c3d73..03b684d7358c 100644
-> > --- a/drivers/dma/fsl-edma-main.c
-> > +++ b/drivers/dma/fsl-edma-main.c
-> > @@ -303,6 +303,7 @@ fsl_edma2_irq_init(struct platform_device
-> *pdev,
-> >
-> >  		/* The last IRQ is for eDMA err */
-> >  		if (i =3D=3D count - 1) {
-> > +			fsl_edma->errirq =3D irq;
-> >  			ret =3D devm_request_irq(&pdev->dev, irq,
-> >
-> 	fsl_edma_err_handler,
-> >  						0, "eDMA2-ERR",
-> fsl_edma);
-> > @@ -322,10 +323,13 @@ static void fsl_edma_irq_exit(
-> >  		struct platform_device *pdev, struct fsl_edma_engine
-> *fsl_edma)  {
-> >  	if (fsl_edma->txirq =3D=3D fsl_edma->errirq) {
-> > -		devm_free_irq(&pdev->dev, fsl_edma->txirq,
-> fsl_edma);
-> > +		if (fsl_edma->txirq >=3D 0)
-> > +			devm_free_irq(&pdev->dev, fsl_edma->txirq,
-> fsl_edma);
-> >  	} else {
-> > -		devm_free_irq(&pdev->dev, fsl_edma->txirq,
-> fsl_edma);
-> > -		devm_free_irq(&pdev->dev, fsl_edma->errirq,
-> fsl_edma);
-> > +		if (fsl_edma->txirq >=3D 0)
-> > +			devm_free_irq(&pdev->dev, fsl_edma->txirq,
-> fsl_edma);
-> > +		if (fsl_edma->errirq >=3D 0)
-> > +			devm_free_irq(&pdev->dev, fsl_edma->errirq,
-> fsl_edma);
-> >  	}
-> >  }
-> >
-> > @@ -485,6 +489,8 @@ static int fsl_edma_probe(struct
-> platform_device *pdev)
-> >  	if (!fsl_edma)
-> >  		return -ENOMEM;
-> >
-> > +	fsl_edma->errirq =3D -EINVAL;
-> > +	fsl_edma->txirq =3D -EINVAL;
-> >  	fsl_edma->drvdata =3D drvdata;
-> >  	fsl_edma->n_chans =3D chans;
-> >  	mutex_init(&fsl_edma->fsl_edma_mutex);
-> > --
-> > 2.37.1
-> >
+Fixes: 28528fca4908 ("irqchip/imx-irqsteer: Add multi output interrupts support")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Compile tested only.
+
+Review with care, irq handling is sometimes tricky...
+---
+ drivers/irqchip/irq-imx-irqsteer.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
+index 75a0e980ff35..59abe5a8beb8 100644
+--- a/drivers/irqchip/irq-imx-irqsteer.c
++++ b/drivers/irqchip/irq-imx-irqsteer.c
+@@ -135,7 +135,7 @@ static void imx_irqsteer_irq_handler(struct irq_desc *desc)
+ 	if (hwirq < 0) {
+ 		pr_warn("%s: unable to get hwirq base for irq %d\n",
+ 			__func__, irq);
+-		return;
++		goto out;
+ 	}
+ 
+ 	for (i = 0; i < 2; i++, hwirq += 32) {
+@@ -153,6 +153,7 @@ static void imx_irqsteer_irq_handler(struct irq_desc *desc)
+ 			generic_handle_domain_irq(data->domain, pos + hwirq);
+ 	}
+ 
++out:
+ 	chained_irq_exit(irq_desc_get_chip(desc), desc);
+ }
+ 
+-- 
+2.47.0
+
