@@ -1,119 +1,195 @@
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B182C6A3
-	for <imx@lists.linux.dev>; Sun, 17 Nov 2024 15:39:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2E81D8A0B;
+	Sun, 17 Nov 2024 20:54:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731857954; cv=none; b=IKxfJ83lXokEjcshsHTXou47k0v2FYerVWemIUNDLQQ6a9wGiRXNB814ShkXt8vFtg2FiCezrusZri1d7YKjQQVW3RE5cEpz9dRnt7HJaQElcwkQ/uOM4mki3rA0lPQdUkC4Qs/66DngqzAVa4EW4x526trehFuzsuWjfjCTZq8=
+	t=1731876886; cv=none; b=t4lmYoX6ZLkOtSjLDubmKWp/EvqoGdvk5GBpfp7TCdrVAzotZW3GmUk45YxaHuf4VoPlE+atiOC9DFFSkJpcuOUSpC4xBeC1kKRfn2J52N94GGfJzzvRxt4wfesQQoWkmruEjo+pB9d0A3FNlos0F+tR+166ARMUFBVRsSd58Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731857954; c=relaxed/simple;
-	bh=vfJw0C9mvbKaRPxQRr3ddRzBrn5U8By/saKIXyh4gys=;
+	s=arc-20240116; t=1731876886; c=relaxed/simple;
+	bh=w9SUo0onmIEsCbHLk8aWeLWWcw+C7sEI352gJsh+oTo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r/hxEMpF+ZFTYur7V0+hD6a4CUOw5uHqPf1y+byAQ8F8pewXUNO0FHsWFjRnE9VOvIAa/Im5ZA52gqVP16HScb1ZnBKMk6ebk2meJVIvpaUSzynbGtp4WQ3V8G/fVfBUeKV0cbkDP+7Hs0POowhinnE+xqPpQ2noLbzefT9FEnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 604521A033D;
-	Sun, 17 Nov 2024 16:39:05 +0100 (CET)
-Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 5302A1A0018;
-	Sun, 17 Nov 2024 16:39:05 +0100 (CET)
-Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 0CBCC203CE;
-	Sun, 17 Nov 2024 16:39:05 +0100 (CET)
-Date: Sun, 17 Nov 2024 16:39:05 +0100
-From: Jan Petrous <jan.petrous@oss.nxp.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=uAHkXXuUgrgHZMegLcncXyYT05HB61j8b6lThkdSI4aVj28ZZXb0phb6wXWLwIo+bImHNTUMM4Bn0Ux8IkH+ydOpgVIuMDbpJPnVOqrXWJj9c/R6jdB4SNtFPGM/bSI41okC8zhCI0YRexY5BzIuNTkDo+VPjqcG8Edfn9Scdqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=XZe5vUJI; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="XZe5vUJI"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 701F57FE;
+	Sun, 17 Nov 2024 21:54:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1731876859;
+	bh=w9SUo0onmIEsCbHLk8aWeLWWcw+C7sEI352gJsh+oTo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XZe5vUJIolLfMAXIsVhz7GffiGmYnhewBuHdpxEvyTaXOd4N0DgZ4tZSXv4c2lG6W
+	 P1rY+Y4mit0F7L7b6m1SfRmXQEUS7GNzudoX7LQ8FZPzyXf8+sXDu7C268CgkZxL7P
+	 /8QQwAwE2VSY81CTqI8e/nIrkb9w4cBk5Zd/KEKQ=
+Date: Sun, 17 Nov 2024 22:54:26 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Karol Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>,
+	Danilo Krummrich <dakr@redhat.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Leo Li <sunpeng.li@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	Xinhui Pan <Xinhui.Pan@amd.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Raphael Gallais-Pou <rgallaispou@gmail.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>, Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Peter Senna Tschudin <peter.senna@gmail.com>,
+	Ian Ray <ian.ray@ge.com>,
+	Martyn Welch <martyn.welch@collabora.co.uk>,
+	Inki Dae <inki.dae@samsung.com>,
+	Seung-Woo Kim <sw0312.kim@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Stefan Agner <stefan@agner.ch>, Alison Wang <alison.wang@nxp.com>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Minda Chen <minda.chen@starfivetech.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-	Keyur Chudgar <keyur@os.amperecomputing.com>,
-	Quan Nguyen <quan@os.amperecomputing.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>,
-	Andrei Botila <andrei.botila@nxp.org>,
-	Jacob Keller <jacob.e.keller@intel.com>
-Subject: Re: [PATCH v4 16/16] net: stmmac: dwmac-s32: Read PTP clock rate
- when ready
-Message-ID: <ZzoOGdlbQXQVxPkv@lsv051416.swis.nl-cdc01.nxp.com>
-References: <20241028-upstream_s32cc_gmac-v4-0-03618f10e3e2@oss.nxp.com>
- <20241028-upstream_s32cc_gmac-v4-16-03618f10e3e2@oss.nxp.com>
- <9154cc5f-a330-4f6d-b161-827e64231e35@lunn.ch>
+	Fabio Estevam <festevam@gmail.com>, Rob Clark <robdclark@gmail.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Sean Paul <sean@poorly.run>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Dave Airlie <airlied@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+	Sandy Huang <hjc@rock-chips.com>,
+	Heiko =?utf-8?Q?St=C3=BCbner?= <heiko@sntech.de>,
+	Andy Yan <andy.yan@rock-chips.com>, Chen-Yu Tsai <wens@csie.org>,
+	Samuel Holland <samuel@sholland.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	=?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>,
+	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
+	Gurchetan Singh <gurchetansingh@chromium.org>,
+	Chia-I Wu <olvaffe@gmail.com>, Zack Rusin <zack.rusin@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	nouveau@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+	virtualization@lists.linux.dev, spice-devel@lists.freedesktop.org,
+	linux-rockchip@lists.infradead.org, linux-sunxi@lists.linux.dev,
+	linux-tegra@vger.kernel.org
+Subject: Re: [PATCH 1/5] drm/encoder_slave: make mode_valid accept const
+ struct drm_display_mode
+Message-ID: <20241117205426.GE12409@pendragon.ideasonboard.com>
+References: <20241115-drm-connector-mode-valid-const-v1-0-b1b523156f71@linaro.org>
+ <20241115-drm-connector-mode-valid-const-v1-1-b1b523156f71@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <9154cc5f-a330-4f6d-b161-827e64231e35@lunn.ch>
-X-Virus-Scanned: ClamAV using ClamSMTP
+In-Reply-To: <20241115-drm-connector-mode-valid-const-v1-1-b1b523156f71@linaro.org>
 
-On Tue, Oct 29, 2024 at 01:18:43PM +0100, Andrew Lunn wrote:
-> On Mon, Oct 28, 2024 at 09:24:58PM +0100, Jan Petrous via B4 Relay wrote:
-> > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-> > 
-> > The PTP clock is read by stmmac_platform during DT parse.
-> > On S32G/R the clock is not ready and returns 0. Postpone
-> > reading of the clock on PTP init.
+Hi Dmitry,
+
+Thank you for the patch.
+
+On Fri, Nov 15, 2024 at 11:09:26PM +0200, Dmitry Baryshkov wrote:
+> The mode_valid() callbacks of drm_encoder, drm_crtc and drm_bridge
+> accept const struct drm_display_mode argument. Change the mode_valid
+> callback of drm_encoder_slave to also accept const argument.
 > 
-> This needs more explanation as to why this is a feature, not a bug,
-> for the PTP clock.
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+
+On a side note, there's only two I2C slave encoder drivers left... I
+wonder if we could so something about them. The ch7006 and sil164
+drivers seem to be used by nouveau only, could they be moved to
+drivers/gpu/drm/nouveau/ ? We would move the whole drm_encoder_slave
+implementation there too, and leave it to die (or get taken out of limbo
+and fixed) with dispnv04.
+
+> ---
+>  drivers/gpu/drm/i2c/ch7006_drv.c          | 2 +-
+>  drivers/gpu/drm/i2c/sil164_drv.c          | 2 +-
+>  drivers/gpu/drm/nouveau/dispnv04/tvnv17.c | 2 +-
+>  include/drm/drm_encoder_slave.h           | 2 +-
+>  4 files changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/i2c/ch7006_drv.c b/drivers/gpu/drm/i2c/ch7006_drv.c
+> index 131512a5f3bd996ad1e2eb869ffa09837daba0c7..a57f0a41c1a9e2006142fe0bad2914b0c344c82a 100644
+> --- a/drivers/gpu/drm/i2c/ch7006_drv.c
+> +++ b/drivers/gpu/drm/i2c/ch7006_drv.c
+> @@ -104,7 +104,7 @@ static bool ch7006_encoder_mode_fixup(struct drm_encoder *encoder,
+>  }
+>  
+>  static int ch7006_encoder_mode_valid(struct drm_encoder *encoder,
+> -				     struct drm_display_mode *mode)
+> +				     const struct drm_display_mode *mode)
+>  {
+>  	if (ch7006_lookup_mode(encoder, mode))
+>  		return MODE_OK;
+> diff --git a/drivers/gpu/drm/i2c/sil164_drv.c b/drivers/gpu/drm/i2c/sil164_drv.c
+> index ff23422727fce290a188e495d343e32bc2c373ec..708e119072fcb50c31b5596b75dc341429b93697 100644
+> --- a/drivers/gpu/drm/i2c/sil164_drv.c
+> +++ b/drivers/gpu/drm/i2c/sil164_drv.c
+> @@ -255,7 +255,7 @@ sil164_encoder_restore(struct drm_encoder *encoder)
+>  
+>  static int
+>  sil164_encoder_mode_valid(struct drm_encoder *encoder,
+> -			  struct drm_display_mode *mode)
+> +			  const struct drm_display_mode *mode)
+>  {
+>  	struct sil164_priv *priv = to_sil164_priv(encoder);
+>  
+> diff --git a/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c b/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
+> index 3ecb101d23e949b753b873d24eec01ad6fe7f5d6..35ad4e10d27323c87704a3ff35b7dc26462c82bd 100644
+> --- a/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
+> +++ b/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
+> @@ -308,7 +308,7 @@ static int nv17_tv_get_modes(struct drm_encoder *encoder,
+>  }
+>  
+>  static int nv17_tv_mode_valid(struct drm_encoder *encoder,
+> -			      struct drm_display_mode *mode)
+> +			      const struct drm_display_mode *mode)
+>  {
+>  	struct nv17_tv_norm_params *tv_norm = get_tv_norm(encoder);
+>  
+> diff --git a/include/drm/drm_encoder_slave.h b/include/drm/drm_encoder_slave.h
+> index 49172166a164474f43e4afb2eeeb3cde8ae7c61a..b526643833dcf78bae29f9fbbe27de3f730b55d8 100644
+> --- a/include/drm/drm_encoder_slave.h
+> +++ b/include/drm/drm_encoder_slave.h
+> @@ -85,7 +85,7 @@ struct drm_encoder_slave_funcs {
+>  	 * @mode_valid: Analogous to &drm_encoder_helper_funcs @mode_valid.
+>  	 */
+>  	int (*mode_valid)(struct drm_encoder *encoder,
+> -			  struct drm_display_mode *mode);
+> +			  const struct drm_display_mode *mode);
+>  	/**
+>  	 * @mode_set: Analogous to &drm_encoder_helper_funcs @mode_set
+>  	 * callback. Wrapped by drm_i2c_encoder_mode_set().
 > 
 
-Thanks for comment. I did a homework and found out the root cause is
-using PTP clocks before they are properly enabled. As I understand,
-the clocks, especially the composite variant, require preparation and/or
-enabling them, what is not managed correctly for PTP clocks when
-stmmac_platform is used. In this case, the PTP clock value is read this way:
+-- 
+Regards,
 
-   stmmac_probe_config_dt:
-   // https://github.com/torvalds/linux/blob/4a5df37964673effcd9f84041f7423206a5ae5f2/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c#L634
-
-	/* Fall-back to main clock in case of no PTP ref is passed */
-	plat->clk_ptp_ref = devm_clk_get(&pdev->dev, "ptp_ref");
-	if (IS_ERR(plat->clk_ptp_ref)) {
-		plat->clk_ptp_rate = clk_get_rate(plat->stmmac_clk);
-		plat->clk_ptp_ref = NULL;
-		dev_info(&pdev->dev, "PTP uses main clock\n");
-	} else {
-		plat->clk_ptp_rate = clk_get_rate(plat->clk_ptp_ref);
-		dev_dbg(&pdev->dev, "PTP rate %d\n", plat->clk_ptp_rate);
-	}
-
-If I change getter to enabled getter:
-	plat->clk_ptp_ref = devm_clk_get_enabled(&pdev->dev, "ptp_ref");
-
-The driver got valid rate and the patch is not needed anymore.
-
-So, if I didn't miss something, it seems like I have to replace the current
-patch with one fixing clk getter.
-
-BR.
-/Jan
+Laurent Pinchart
