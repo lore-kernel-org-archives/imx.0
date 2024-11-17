@@ -1,102 +1,119 @@
-Received: from smtp.smtpout.orange.fr (smtp-29.smtpout.orange.fr [80.12.242.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726AD7E105
-	for <imx@lists.linux.dev>; Sun, 17 Nov 2024 11:22:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B182C6A3
+	for <imx@lists.linux.dev>; Sun, 17 Nov 2024 15:39:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731842527; cv=none; b=eMJmWCOqNPKIEriOjeQAk27plFba5308D6sogltyuA7/DDMYjGy1wH6D6y6qLlFy+363VPKScnJR2v9KlGX+fn28OedDAjBswqa5Errre0x3rXA0+1rE6cX+hURu53YYc2Jx2QkJ2JzwOP0C5af+kdiJAOJfl/qcH8PbULOdp70=
+	t=1731857954; cv=none; b=IKxfJ83lXokEjcshsHTXou47k0v2FYerVWemIUNDLQQ6a9wGiRXNB814ShkXt8vFtg2FiCezrusZri1d7YKjQQVW3RE5cEpz9dRnt7HJaQElcwkQ/uOM4mki3rA0lPQdUkC4Qs/66DngqzAVa4EW4x526trehFuzsuWjfjCTZq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731842527; c=relaxed/simple;
-	bh=GL6L0RdEB3pV7TqNFOrFDekS6axn/OVeGdxC9qw5byM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MvCrqq6pZyUIBzSpBhAnEZj7NyBnJH5scNd9TjaLl21233S32TGt3+MaXI4pwkCRDW4APrej0x1ZqjWkt0BoEBUs40o4332PAMc4z89VelpavXp1++WiAMlRfHp1ONbaVgzELrPJwceCfUldfQ/B6DJ9S9WCeGFdtC3tJqOZ3gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=g3uU7i02; arc=none smtp.client-ip=80.12.242.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="g3uU7i02"
-Received: from localhost.localdomain ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id CdLltujfVkz9DCdLltiABX; Sun, 17 Nov 2024 12:21:58 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1731842518;
-	bh=wutmjbunPazncW+7ACgp5eT9w4BJnbyk7q/fyDFLZ9g=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=g3uU7i02kt7I5UMCR2YSd0Jh7XdjTBkf1sV5I1IvB/dWjRSWhguCsUDnUcPk9SjIQ
-	 xDbA/sY5wzXGp8+lUTDjx2fYMIK+VM/BprxDh/mzNzDLzaFTigAq1Hoc/IMPxrGRgY
-	 yqA2uh+d8/VzX1GnsqNb4qS5v8Iar4rlm+iGqNfcHgGXZGryfmrV7xDXJMq7kAN91Y
-	 JyYvVYr2+ybGGGY+e7EVDLVvyXFZCP6CqVg1QbNvsA7+wIQU+PEWXsGIqQSmnZ+BLd
-	 JF7rqbpM7vRTqz1nBMLz3TAqN9PhVDxzsu0uCkF/T2TkPAYdSfR9bSUBG7OXrejMFw
-	 x+wqWFVIao+EQ==
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 17 Nov 2024 12:21:58 +0100
-X-ME-IP: 90.11.132.44
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Thomas Gleixner <tglx@linutronix.de>,
+	s=arc-20240116; t=1731857954; c=relaxed/simple;
+	bh=vfJw0C9mvbKaRPxQRr3ddRzBrn5U8By/saKIXyh4gys=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r/hxEMpF+ZFTYur7V0+hD6a4CUOw5uHqPf1y+byAQ8F8pewXUNO0FHsWFjRnE9VOvIAa/Im5ZA52gqVP16HScb1ZnBKMk6ebk2meJVIvpaUSzynbGtp4WQ3V8G/fVfBUeKV0cbkDP+7Hs0POowhinnE+xqPpQ2noLbzefT9FEnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 604521A033D;
+	Sun, 17 Nov 2024 16:39:05 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 5302A1A0018;
+	Sun, 17 Nov 2024 16:39:05 +0100 (CET)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 0CBCC203CE;
+	Sun, 17 Nov 2024 16:39:05 +0100 (CET)
+Date: Sun, 17 Nov 2024 16:39:05 +0100
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Marc Zyngier <maz@kernel.org>,
-	Aisheng Dong <aisheng.dong@nxp.com>
-Cc: linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH] irqchip/imx-irqsteer: Fix irq handling if an error occurs in imx_irqsteer_irq_handler()
-Date: Sun, 17 Nov 2024 12:21:43 +0100
-Message-ID: <ad6514c771fef0ac2d1b3c050c6db5d5e0fd034d.1731842478.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.47.0
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Minda Chen <minda.chen@starfivetech.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+	Keyur Chudgar <keyur@os.amperecomputing.com>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	NXP S32 Linux Team <s32@nxp.com>,
+	Andrei Botila <andrei.botila@nxp.org>,
+	Jacob Keller <jacob.e.keller@intel.com>
+Subject: Re: [PATCH v4 16/16] net: stmmac: dwmac-s32: Read PTP clock rate
+ when ready
+Message-ID: <ZzoOGdlbQXQVxPkv@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20241028-upstream_s32cc_gmac-v4-0-03618f10e3e2@oss.nxp.com>
+ <20241028-upstream_s32cc_gmac-v4-16-03618f10e3e2@oss.nxp.com>
+ <9154cc5f-a330-4f6d-b161-827e64231e35@lunn.ch>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9154cc5f-a330-4f6d-b161-827e64231e35@lunn.ch>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-chained_irq_enter(() should be paired with a corresponding
-chained_irq_exit().
+On Tue, Oct 29, 2024 at 01:18:43PM +0100, Andrew Lunn wrote:
+> On Mon, Oct 28, 2024 at 09:24:58PM +0100, Jan Petrous via B4 Relay wrote:
+> > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> > 
+> > The PTP clock is read by stmmac_platform during DT parse.
+> > On S32G/R the clock is not ready and returns 0. Postpone
+> > reading of the clock on PTP init.
+> 
+> This needs more explanation as to why this is a feature, not a bug,
+> for the PTP clock.
+> 
 
-Here, if (hwirq < 0), a early return occurs and chained_irq_exit() is not
-called.
+Thanks for comment. I did a homework and found out the root cause is
+using PTP clocks before they are properly enabled. As I understand,
+the clocks, especially the composite variant, require preparation and/or
+enabling them, what is not managed correctly for PTP clocks when
+stmmac_platform is used. In this case, the PTP clock value is read this way:
 
-Add a new label and a goto for fix it.
+   stmmac_probe_config_dt:
+   // https://github.com/torvalds/linux/blob/4a5df37964673effcd9f84041f7423206a5ae5f2/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c#L634
 
-Fixes: 28528fca4908 ("irqchip/imx-irqsteer: Add multi output interrupts support")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Compile tested only.
+	/* Fall-back to main clock in case of no PTP ref is passed */
+	plat->clk_ptp_ref = devm_clk_get(&pdev->dev, "ptp_ref");
+	if (IS_ERR(plat->clk_ptp_ref)) {
+		plat->clk_ptp_rate = clk_get_rate(plat->stmmac_clk);
+		plat->clk_ptp_ref = NULL;
+		dev_info(&pdev->dev, "PTP uses main clock\n");
+	} else {
+		plat->clk_ptp_rate = clk_get_rate(plat->clk_ptp_ref);
+		dev_dbg(&pdev->dev, "PTP rate %d\n", plat->clk_ptp_rate);
+	}
 
-Review with care, irq handling is sometimes tricky...
----
- drivers/irqchip/irq-imx-irqsteer.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+If I change getter to enabled getter:
+	plat->clk_ptp_ref = devm_clk_get_enabled(&pdev->dev, "ptp_ref");
 
-diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
-index 75a0e980ff35..59abe5a8beb8 100644
---- a/drivers/irqchip/irq-imx-irqsteer.c
-+++ b/drivers/irqchip/irq-imx-irqsteer.c
-@@ -135,7 +135,7 @@ static void imx_irqsteer_irq_handler(struct irq_desc *desc)
- 	if (hwirq < 0) {
- 		pr_warn("%s: unable to get hwirq base for irq %d\n",
- 			__func__, irq);
--		return;
-+		goto out;
- 	}
- 
- 	for (i = 0; i < 2; i++, hwirq += 32) {
-@@ -153,6 +153,7 @@ static void imx_irqsteer_irq_handler(struct irq_desc *desc)
- 			generic_handle_domain_irq(data->domain, pos + hwirq);
- 	}
- 
-+out:
- 	chained_irq_exit(irq_desc_get_chip(desc), desc);
- }
- 
--- 
-2.47.0
+The driver got valid rate and the patch is not needed anymore.
 
+So, if I didn't miss something, it seems like I have to replace the current
+patch with one fixing clk getter.
+
+BR.
+/Jan
