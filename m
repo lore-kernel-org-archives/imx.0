@@ -1,126 +1,129 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECC71922E0
-	for <imx@lists.linux.dev>; Sat, 16 Nov 2024 20:07:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD0356BB5B
+	for <imx@lists.linux.dev>; Sun, 17 Nov 2024 10:03:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731787663; cv=none; b=uH/5DwIHA3SJx3hZZGwoyN5TNbbqiZtxSMqI3ccfbyXCWawlkqOnxfRfFLy6y+JaXiJRIX2HZjariUDjd23eV10hvKo8OquLQLByYOny30NLgzcFFfqsbTtqAlLBhzbil6hGPe5vmZkjfZV8i8liYPiVyDr7fvi5YHxWV/GMatY=
+	t=1731837813; cv=none; b=fYDvkjRXtw1LZQ8VFmBIX8QQx+/lTZBlRlaUQNgz0G04MbhJgrEQEZru6Rs00L18EBDTNTzorJghQJvTtf512HENQ/h4SoCXk2KtSAN3TeTVz5ez8m8F2d2t8kltQir62MwMW2TxQW4FM87+ggH4H//m4Un1vCQYx/l7wTwmLPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731787663; c=relaxed/simple;
-	bh=Eb7bakNuDMt536McYSWp7VRPHActWbHVTmLakZn4EVo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OFITRgrEySuNbYJCjBShqaimYDdYSPxP6dI2KbOhixIDeNjJuVK+RhecIudHsoje/3Kqh7cbl8rMdz7upkq1qX/iI1Be/atFGCLm5eVSSd9116B5lASuUNotFiOESpirEHEM+c3kXjJLeTlcn4oKhsXfkknkekNhfEHj9O7Wmp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=ejCltd7G; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="ejCltd7G"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id C2DC389378;
-	Sat, 16 Nov 2024 21:07:32 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1731787653;
-	bh=xPbam/hqk2QR/wXTH/4/tBGNCnFHw4Qhbd8fGZD6CC4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ejCltd7GiaHHmcgRz64KB54p0NIqVHI/bz37T1H8yzSbZgpBOkY8pUdUXVQvZdpVV
-	 Z/3Mhsy+Q17DgxsZC3+gJY9OAyxSH/ETaQn1DpN/ZlY0UEu+FLk+qNBiGoxL8S8r3n
-	 cVFjpNYUJuHLMvVo3BK2M/C7Tu9SSPtKWP5WczyXnlsH54w4BXpBoj8dX7LhnbvUvX
-	 LRMv6xPTiZFzQEIQi9iyGwvQm1z1cecDVz2iKYE9bnFAkhBEp+IVB/8OyWT4hreqEy
-	 eeLPz/TfBIg6qkpEqAm9Ynj9iiYUEqFQEK1k84oT8gU7a814JVdH9+TfkBaE3tuuYm
-	 o2ayNt6C6pPkw==
-Message-ID: <6bc5b8d7-ff10-4860-ac46-1460a7d850da@denx.de>
-Date: Sat, 16 Nov 2024 20:47:07 +0100
+	s=arc-20240116; t=1731837813; c=relaxed/simple;
+	bh=wLngz+w8R8ARLEGH+KooMXrrnp/v/UtKleyZ2Ad5FW0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZMFSaEw8AFWNV+jly2Q7Vvuj9O0vj6OoHV6HD1LS7jvYnBDf29k+/UkRVPZB9FpaMbZpVG2dAaGg+oV/dx5DfpykqDOw+eZp57AaArM2fB7eLfIuJN0GdqLqaFlHW86b9K6+HEk+1WyH88Gsf+hipw8aBLU23bAXG99z0wlCcgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5B76E1424;
+	Sun, 17 Nov 2024 02:03:54 -0800 (PST)
+Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DBAC33F6A8;
+	Sun, 17 Nov 2024 02:03:21 -0800 (PST)
+Date: Sun, 17 Nov 2024 10:03:11 +0000
+From: Cristian Marussi <cristian.marussi@arm.com>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Sudeep Holla <sudeep.holla@arm.com>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Peng Fan <peng.fan@nxp.com>, arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org
+Subject: Re: [PATCH] firmware: arm_scmi: fix i.MX build dependency
+Message-ID: <Zzm_X0o-TkkGQeAN@pluto>
+References: <20241115230555.2435004-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] clk: imx: clk-imx8mp: Allow media_disp pixel clock
- reconfigure parent rate
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Abel Vesa <abelvesa@kernel.org>, linux-clk@vger.kernel.org,
- Fabio Estevam <festevam@gmail.com>, "Lukas F . Hartmann" <lukas@mntmn.com>,
- Michael Turquette <mturquette@baylibre.com>, Peng Fan <peng.fan@nxp.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Stephen Boyd <sboyd@kernel.org>, imx@lists.linux.dev,
- kernel@dh-electronics.com, linux-arm-kernel@lists.infradead.org,
- Miquel Raynal <miquel.raynal@bootlin.com>, Anson Huang <Anson.Huang@nxp.com>
-References: <20240531202648.277078-1-marex@denx.de>
- <20241112234206.558d5d5e@booty>
- <79f21303-b0ba-45ed-a842-7e5364fd4efc@denx.de>
- <20241113120622.3501db73@booty>
- <130fe140-e70d-4c45-aaab-e22762c58c88@denx.de>
- <20241115180936.4ab56be3@booty>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <20241115180936.4ab56be3@booty>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241115230555.2435004-1-arnd@kernel.org>
 
-On 11/15/24 6:09 PM, Luca Ceresoli wrote:
-> Hi Marek,
-
-Hi,
-
->> Commit 4fbb73416b10 ("arm64: dts: imx8mp-phyboard-pollux: Set Video PLL1
->> frequency to 506.8 MHz") configures the Video PLL1 to a frequency from
->> which both your panel pixel clock and LDB serializer clock can be
->> successfully divided down.
->>
->> Which panel do you use ?
->>
->> Try this -- Revert this patch, check /sys/kernel/debug/clk/clk_summary
->> and compare it with (I assume) panel-simple.c entry for the panel you
->> use, and notice the disp_pix clock are likely a bit off. That's because
->> the lcdif driver did its best to divide those pixel clock down from
->> 1039500000 set in imx8mp.dtsi .
->>
->> If you really want accurate pixel clock for your panel, you need similar
->> change to 4fbb73416b10 and configure the Video PLL such that the
->> accurate pixel clock can be derived from it. The Video PLL cannot be set
->> to pixel clock, because the LDB serializer clock are either 7x the pixel
->> clock, or 3.5x the pixel clock (for dual link LVDS), so the Video PLL
->> has to be set to 7x or 3.5x pixel clock of the panel, then you should
->> get accurate pixel clock and a working panel again.
+On Sat, Nov 16, 2024 at 12:05:18AM +0100, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> I found that I'm having the same issue that has been discussed in some
-> related threads: the lcdif2 configures the video_pll1 to ~72 MHz, and
-> later LDB tries to set it to 7x that value, failing.
 
-Right, which is solved by configuring the Video PLL to the correct 
-frequency in DT up front ... unless you have more than one output 
-supplied by that Video PLL.
+Hi Arnd,
 
-> I would have guessed your "[PATCH 1/2] clk: imx: clk-imx8mp: Allow LDB
-> serializer clock reconfigure parent rate" would have fixed it, and it
-> actually allwos the LDB to set a proper (7x) rate for video_pll1, but
-> then also the media_disp2 goes to the same rate. Apparently the
-> video_pll1 is not propagated to media_disp2. I haven't dug into this.
+> The newly added SCMI vendor driver references functions in the
+> protocol driver but needs a Kconfig dependency to ensure it can link,
+> essentially the Kconfig dependency needs to be reversed to match the
+> link time dependency:
 > 
-> So this is not the bug I had suspected about video_pll1 rate
-> computation.
+> arm-linux-gnueabi-ld: sound/soc/fsl/fsl_mqs.o: in function `fsl_mqs_sm_write':
+> fsl_mqs.c:(.text+0x1aa): undefined reference to `scmi_imx_misc_ctrl_set'
+> arm-linux-gnueabi-ld: sound/soc/fsl/fsl_mqs.o: in function `fsl_mqs_sm_read':
+> fsl_mqs.c:(.text+0x1ee): undefined reference to `scmi_imx_misc_ctrl_get'
 > 
-> For now my workaround is to set the exact rate to video_pll1 via
-> assigned-clock-rates.
+
+The SCMI drivers, like the newly added IMX_SCMI_MISC_DRV, generally make
+ue of the related vendor protocol like IMX_SCMI_MISC_EXT, BUT the SCMI
+stack is designed in a way that NO symbols are needed to be exported by
+the protocol layer (to avoid a huge and growing number of symbols
+exports)...so usually the current DRV-->PROTO dependency is fine.
+
+In this case, AFAIU, it is the SCMI driver that in turn exports a few
+helpers that are used by another driver fsl_mqs, which in turn could be
+compiled and work with or without the SCMI stack, so with this patch we
+are artificially reversing the DRV<--PROTO dependency to solve this
+scenario in all the compillation scenarios...
+
+....BUT given that the IMX_SCMI_MISC_DRV is the one that should export
+the missing symbols could NOT this solved in a cleaner way, without
+adding the fake reverse dependency, by instead modifying the header of
+the driver with something like the classic:
+
+--->8-----
+diff --git a/include/linux/firmware/imx/sm.h b/include/linux/firmware/imx/sm.h
+index 9b85a3f028d1..3a7a3ec367c5 100644
+--- a/include/linux/firmware/imx/sm.h
++++ b/include/linux/firmware/imx/sm.h
+@@ -17,7 +17,19 @@
+ #define SCMI_IMX_CTRL_SAI4_MCLK                4       /* WAKE SAI4 MCLK */
+ #define SCMI_IMX_CTRL_SAI5_MCLK                5       /* WAKE SAI5 MCLK */
+ 
++#ifdef IMX_SCMI_MISC_DRV
+ int scmi_imx_misc_ctrl_get(u32 id, u32 *num, u32 *val);
+ int scmi_imx_misc_ctrl_set(u32 id, u32 val);
++#else
++static inline int scmi_imx_misc_ctrl_get(u32 id, u32 *num, u32 *val)
++{
++       return 0;
++}
++
++static inline int scmi_imx_misc_ctrl_set(u32 id, u32 val)
++{
++       return 0;
++}
++#endif
+ 
+ #endif
+----->8-----------
+
+....to just support compilation in all the scenarios.
+
+> This however only works after changing the dependency in the SND_SOC_FSL_MQS
+> driver as well, which uses 'select IMX_SCMI_MISC_DRV' to turn on a
+> driver it depends on. This is generally a bad idea, so the best solution
+> is to change that into a dependency.
 > 
-> However this breaks the case of using both lcdif1 and lcdif2. For that
-> I have added a reparenting of media_disp1 to sys_pll3 and it looks like
-> working.
+> To allow the ASoC driver to keep building with the SCMI support, this
+> needs to be an optional dependency that enforces the link-time
+> dependency if IMX_SCMI_MISC_DRV is a loadable module but not
+> depend on it if that is disabled.
+> 
 
-See the patch link in the previous email, if you can use one Audio PLL 
-as PLL for the other DISP PIX, then you will be able to achieve accurate 
-pixel clock on both outputs. Can you do that ?
+...and maybe with the above additions you could avoid also these other
+dep changes...
 
-> Would you mind keeping Miquèl and me in Cc in following discussions
-> about the imx8mp video clocks? We are also facing this topic and we are
-> happy to contribute.
-Sure
+...not sure if I am missing something and I have definitely not tested
+any of my babbling above...
+
+Thanks,
+Cristian
