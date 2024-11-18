@@ -1,214 +1,204 @@
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013020.outbound.protection.outlook.com [40.107.159.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074451DE2A6
-	for <imx@lists.linux.dev>; Sun, 17 Nov 2024 23:56:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731887768; cv=none; b=tgCuX/nACdsou5chCtN2pDxf+b0N/UX/VlXDBW7MqQTtnHaLoX77/xei40GIRxZTx9awo7z5kxLZGShCTmNz8iHxRnBA8TMlG8HKnTeNYUKDBdgancw3WHvK8lv6DSwQHzIserlnFYUeDE4VpL9MQlGpgRTUxyi9mTUctfS/fx0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731887768; c=relaxed/simple;
-	bh=AXUAAMMCChSJE4bliw2VT6tfy0PiveEycxgtD0KOvw4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pDP1NVX/F2GzBzgmjfVslqQpEG4wm2xDbeOn33cyrzcefjQiYlCXBCY45mzg+d8pqqVxVebilL/daIdseJQj1d69g/pk+lCxWnCp9kog315pw8cURV9Jzrs2ZXdj9Xb+8AJ+zjHVLmuOMe86WZnfEZmYJM+nqlEJmpmKv9qfEug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=h3VsTXZR; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A67360
+	for <imx@lists.linux.dev>; Mon, 18 Nov 2024 01:23:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731893003; cv=fail; b=oFr8v7IJwOrSAGlVfxMr29OOz2Ss7x2TXlyTJoob4658Rm9gy+9yRGCYwJ49U6FhVhVetZoC32QHkMBMAPTcDaSj4sGNAj4r6xJT9atINs24ZNUFPsaJHKC22Fu0bMHSJrS+ywHMTZIOMT+Oxxf2GREEqIm8PxQSJFSpFQJfzoE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731893003; c=relaxed/simple;
+	bh=th9lKV+s3J4FNMK9wrqSlEavvofUj9zwgZytBSJIvFA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=aJiEELyKICyn5x6jgX9aZyW8DhdELMrTdwHSae/8FU3aa8mfRknJ+9xkQUoQU/n8gqI76pyosPrdyfFH1yWeMF5T3I6PRCo8Rtdh9ZFRM89naHPYusoH8wm4OcdOsQol7TyChQX6Pifxz6X6EqN0ELiKub5gopr+yGTvPv3jfC4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=T4vUxoM6; arc=fail smtp.client-ip=40.107.159.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="h3VsTXZR"
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-6ee8e894deeso2924087b3.0
-        for <imx@lists.linux.dev>; Sun, 17 Nov 2024 15:56:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731887765; x=1732492565; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ec/Hk8LFdU6/qTj98SnoNsMivsG+0SE1lo+pLnCS5cs=;
-        b=h3VsTXZRMG1cMcel0QLaXw09VLo5oiAPPMAVuwbr1nY6zbQswUm30385OqW1B7rQub
-         9+2voYVZLIx79NLdzwJWc0ZqTi5HhPtXLmhwCN1YuiggpjIj3GTfC6lNntAYpe8Dw6MJ
-         zDUjcl0ZcUPFf+LunU55ajjbwYivihqYbWCExFcuJ0Rz4cHkHcWw+VUasHZBH8xNkmIf
-         rdhyd5WAYBKwiq2huMKM30VlxgxLurCj/PIdyoAg8fe9qTkzEuQEjd6v1shyv5BLlS+6
-         Jg4qlaSITvDg9bYBiza3R64QF4CzsKoox+GN8iaK0BOtD3xfjoGLQ3Y2i0vl7EErY/7Q
-         hq8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731887765; x=1732492565;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Ec/Hk8LFdU6/qTj98SnoNsMivsG+0SE1lo+pLnCS5cs=;
-        b=r3M6e70zRyLW2ZdHMZowqcrW9L0uwlqTHcjcOnkgvw9LN3+F4gEeC7LgdSTGd4bsCu
-         KEAfJsTuki2UQx/niIaAn4kBb+YbHbC861Y5/+nm1wemPl6JhF+Ot/DyskvDQiKsU3Xq
-         fDN6v0TJujdDRDkP9VTJ/C3YuicRGbbAzuNjp1a6FhrmrQY2Z+tIzzT/gJMpxPvXgMy7
-         qwdsZCDp+e3KHxmCwBN0NwR6/FUNbAHhZi13AI8H0ZJffcrCxKoItZ8j9jyjdXXX4V1A
-         pAwzQcELeaEgHDLN9bxOKgGDVVjUx4MQpqzafhGZ+t3Dfy0jo6gDKL5JG4HVtYhixycj
-         rG9A==
-X-Forwarded-Encrypted: i=1; AJvYcCU+ALlulsxXf9hnjwbKdxrKRmJ6MYOovCniwyQpxUB9vrOYq2DJ/GbxwmxBGg7uY3kV2vI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxO6E2M1oTO9R7JLyXtpM6nm7yCRoxmyylVx9hDEBfPXM1zIZkT
-	1qgm1t5xinm5YDuC9wez6YfIcWyKecs/1pyWQXcGQeO/oTuzFv71OgNSc/CGx8n2MCWboIS+Wam
-	MwtQAa3SjDyzC/c/3ZaHjZ746a/KPK5nGp3bs7Q==
-X-Google-Smtp-Source: AGHT+IGdPgjTWzOdmSZKhRLhwp47xWv9WolMRYt8LQitXBXOFxH5M2pSFFLUJPVswZmbkhncp4AJ66Q6lhrBlLmxMBA=
-X-Received: by 2002:a05:690c:6384:b0:6ee:3f5e:1c18 with SMTP id
- 00721157ae682-6ee55a2abddmr96890087b3.4.1731887764985; Sun, 17 Nov 2024
- 15:56:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="T4vUxoM6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RdjnjfepK9J9IG1yNSWS8LgSWRk12C9hgFalIxEShTe2AxgBI4YQ0pxAKrE6hv4JLg2VznwVk876/D+UzB1fG9smyLHTP73sKiEbt6XlT03n7ckjrz54Len+xB73mZC6R6zWI3umLEoyEEiItsfhS6yOJIxe6zclFtvIqVluWpQkCK8wW0HEWGlGIPXG43nfDg4ZeB+qbY1MkH2vWYQh2EMsjqCJWiQMdNZuau27S6sU6AlkQLnI0llrhi8ca97WtpjSJAFbcK1StrkX8/Wr8anK7boHGLAUI/1aoeY7Bk7yfzd2etaQhnajY2FKObKfFfd7s15mJrifJsNBWHg3EA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gNBer0psvK+rZoym+inEYB/DUew8FshfFU7WAqOCPLE=;
+ b=Z92+oHsx+kf3qRYvCh0TZCxdx1MbBT/2pRmCrkISTGAYo2h2Af8wKAo/xn+43Zp+5kuhwoo29OJjYTP+xkVQ3Pjb9L3Uetv2VOjbW7TklQoftIApkEABeCVF35b9MdrBDmtNEQZZ7owCO0WU8wmxIM9d/XcFaDeCvmDntYelFk954jATteITF3B/9bM3mtqY8yV+SBwylF3b6hO5siEShGXOGPRd7KnLjq7V65hqhWBc3S2VowZpMyl+Y17d2DiKf1RN5KuG/ZsDCGKn7z0x4U+XkhiqKDXsgeFFI7CTNx1gha8IkxLLWUA7GQSyge0LcMQWcMKVKYRaDiJxIUiFMw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gNBer0psvK+rZoym+inEYB/DUew8FshfFU7WAqOCPLE=;
+ b=T4vUxoM6J9vsnQMk5DfpofiYdnZ+ZqcQZXUoD0bd82ung+JuLGEbOG+sLaShg0+TnsRT6OqwB/1RIREaGfsYEvpQO+AU124TogPV8jJTOCCarTsJN3Dt5a5cGlDMsOM5DUVVVkda0ootBGTydxL/PrtCVh1usPR1g2dJH4pUG5a/yXXEtRbyBGQQJ9fHcXdnyT9e7L5g7DcXiWWZIZ42uksV5cu7sliaOkFYvai/i0nub/f1FKv7XOncMTgFwyDdjVQ584tOoxijQskXF/h4lZvvr2bHzq+owT9yL9qrs3JzOyOq9dTgA26m6aOEJRL9aNX3lirNxHJ9gz+QuBLjUQ==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by GVXPR04MB10874.eurprd04.prod.outlook.com (2603:10a6:150:215::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.22; Mon, 18 Nov
+ 2024 01:23:17 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%7]) with mapi id 15.20.8158.023; Mon, 18 Nov 2024
+ 01:23:17 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
+	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, Frank Li <frank.li@nxp.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: RE: [PATCH v4 net-next 2/5] net: enetc: add Tx checksum offload for
+ i.MX95 ENETC
+Thread-Topic: [PATCH v4 net-next 2/5] net: enetc: add Tx checksum offload for
+ i.MX95 ENETC
+Thread-Index: AQHbNwr1A8eHkh5jjEahHHolwfLwKLK5OVGAgAMJU0A=
+Date: Mon, 18 Nov 2024 01:23:17 +0000
+Message-ID:
+ <PAXPR04MB851082CFB4011ABB615AB20A88272@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20241115024744.1903377-1-wei.fang@nxp.com>
+	<20241115024744.1903377-3-wei.fang@nxp.com>
+ <20241115190033.7452392e@kernel.org>
+In-Reply-To: <20241115190033.7452392e@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|GVXPR04MB10874:EE_
+x-ms-office365-filtering-correlation-id: fee4a2c5-db55-44a2-b4d0-08dd076f94e8
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?ZWc8ZLCiX/wNipXtQNKAVPgGe2K7t69Q8xhXZ5XCiXujnX0iRLmIjLRY49B0?=
+ =?us-ascii?Q?ZthCMWxr5tlOS107Z4rt4vBN2j8os+3VvgxXPNSNaKXE468vr6ncMncCOhf/?=
+ =?us-ascii?Q?0FRUeN9Sxbo1flXFLZg+XWbDSL1TuCf4J6b7kX4zdADjCsmSxi+cFFf3zvou?=
+ =?us-ascii?Q?v/aSk2MK0AhY4KU0rGzgmriM4a+AjtplPYkxzBIlItC0zLT5Tq9GzNnaasHl?=
+ =?us-ascii?Q?AgmVBNzxIgKILDvPWIbMkKtWf9qfE9pDq1SKhvZI74QMNEibP+0+VcPlUdNA?=
+ =?us-ascii?Q?C5PAoM6nMHfivGPRQTbHzZbtKrp4xyRKmDKMdpi08rYBfCYMY6ejqEs3ZWQy?=
+ =?us-ascii?Q?3SmDRdRJRQg4jl7mGkYb/VTaMdJB173E43PFatJrKk+KncPyfbZdXwdp7B8X?=
+ =?us-ascii?Q?C2422rFivGX/xAUGXT4mSx69L246dAmJltH1QUjFjKFAuo0ZnAH+2iluZhzE?=
+ =?us-ascii?Q?lyBc9RJFDDcw3rBgOqHF8BTYSBjs0pR/X6WLPYmfYe4OIp0N2flH4++oilZ3?=
+ =?us-ascii?Q?DPtqSmFyTZeU1TQK2XsiX1GPpmmnjIeG2bK6MxZ0JxYvnvzt10WdkYC+benQ?=
+ =?us-ascii?Q?pm3aRlOKOAqx4ufLdZDg1E2vQnfkdKzdm3JSoip7p5ekf5SU6rCCRlAHXaaH?=
+ =?us-ascii?Q?nZyRxkB5IrskJdv/390jv113LPHXiDID+NG7wh/sjVNlQzJI4EUggf8MQNt0?=
+ =?us-ascii?Q?hyBSNGtkdMxZItKpbgOVkkpuOQLEBckOzdCxoZAaJRTRG3UIkejOqi/PrScE?=
+ =?us-ascii?Q?ULTINZjcejtMdvzf6VBluFv1PzYFNoFXg6dVAvk359tynzmHgNbwtgoJGYPU?=
+ =?us-ascii?Q?DiCNzaG0Y31QxOwQ2aQSTW+4dHW05qDi8Qb+cfbcCVmKvKCv02ztBT+82J3d?=
+ =?us-ascii?Q?moOOgVg2U9tKHCeYYU10lTyPzyjsdK9K1J2wbgam6VR04SXnYMqMf1/Y1X0N?=
+ =?us-ascii?Q?Kowc41XA2G5KeHksYA1Hhn97eXZKOvE3Ya0gEhJOCMgpbtO1ayCDE1mpzuf9?=
+ =?us-ascii?Q?AGKhv7tf4XDQuo6nHoyxbBYFHf84eoDEHCodL4Anf9fjUl1GKJfGddAoRZN2?=
+ =?us-ascii?Q?S7+UZ3BKtB2z7k9iQ9ZChtQMDG0QKLxZXVz00Z2YUzuix3Ki4iADkcWSeJZ3?=
+ =?us-ascii?Q?Q49tyjWY/TsrwArKSkBBbsMR/DZQWXw2vk7dlM8gz+JCQsD/bp0DE9+ObS3h?=
+ =?us-ascii?Q?4Kot77d6BNpFWLAg+D5MJB/i1+rhpdbnUnraziUcF9XyHnbZ+BBS3TgCKBl7?=
+ =?us-ascii?Q?/av7w4dvxn774eZ8+Ov7pQbplUP94S9DfrCmtXE0c6LYF7jTpUBU6YxRn9HK?=
+ =?us-ascii?Q?dXRS2qG6vWwmuJIPojxSpoKxlOUjRnq1CiXCaxN+9vUiBqAJiK9A4Fexm12i?=
+ =?us-ascii?Q?efzGVNM=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?kQ4SsdE7pTxeyKUbfPI+iq9P9dr16f673UeTk0LQn6jneBeNhKEroRS6MahP?=
+ =?us-ascii?Q?zawDabwx1er5aPo0V8A3ukMIeMegEEcsRm790g5JG2jGio8oMX5VVpZcl9fX?=
+ =?us-ascii?Q?D1BuJ5IBvWvAunnre2SE3jORCUyTSRDDoPm/ZIC3wYp1ZenVjTq94wq6nl9X?=
+ =?us-ascii?Q?bl43e4DH2OAwNmr7b/9Cs0N8/Blq3kxK2ufJK8sKc1iItZ3kzTTP1BhCsCIB?=
+ =?us-ascii?Q?gyoUmvSGjZ5JiLwCQVsuGbQQGUAJoDhnH894ycBQ+QcD3CxblalKHBPGCmYs?=
+ =?us-ascii?Q?ykOHmPntYB/Agk0Qds+IMHPsTgbZx4qwXcE/XeT7uXF78lQWebk/7Y7/WGVu?=
+ =?us-ascii?Q?tl1axVXDta+4IvjZN4+L8AjgYxWg6Kr4dONmqR7L9fsUY4Xw9a7XSZ+tYfPW?=
+ =?us-ascii?Q?PFjJ+6lb643XTRs1qo1msZFJgkiArQQQA4WNLulppOFhq97PCnJr6zkY40mC?=
+ =?us-ascii?Q?KK8HBQ0fOuTp5rCokoShQKeBjuGOcFQSmNNAhK72Qhw1EXJydTiJD4UGBD7O?=
+ =?us-ascii?Q?uwZZdABxalfp7hHHst/Za1GiSYYKqYCkI9RVxVHEa1G4e3BSwjLTDE5T9cWB?=
+ =?us-ascii?Q?AzrMrpd722PYzMpc2M+GoeE7CG5pw9emQes+r/yRar7Gx1C/FV5exInt6O3F?=
+ =?us-ascii?Q?bMO7BvD6WPGOFk5MeGJAxIoNEr5Xk1HnkMPWzI4Ugy0+CaAr6js1RANnhztD?=
+ =?us-ascii?Q?DZLFThgCJCOD7967Z8aMn43G5s0lMJs47q1ndz4Gj3NNwk0lNAhkyYWxQAt6?=
+ =?us-ascii?Q?QnZUUHqoALFcOox2kxKv4P7UQufy3mECdQ6PQ3xo5Zx+F1wChS5Yzwg00HxN?=
+ =?us-ascii?Q?Pzs+BL0fVEHAwdHKVSzkco6qWYXqvKJYJSc0pN/H/P5wNVWOijyR632etc/v?=
+ =?us-ascii?Q?Stmv8RxvzLrUzBOCTJnIB84XwcjrUbySoeHBbKCUybzmtqwCOXaKVZ9xk7+6?=
+ =?us-ascii?Q?LBjquIxF9B0CeUrP1pePckSIxYwyLgxHzu6JNcDh2INHcG6lrSsMjAyKTfWR?=
+ =?us-ascii?Q?lzzl/SOzvfChXb5QwM6elPrj7kVuYHyq2N80OEqXBM+IPMj8BHLyO4jB/pPF?=
+ =?us-ascii?Q?lJMmn3EYG283AhBPlJUJmi0TQ5L0oDYEqHqCBrJtLqZer65XA4HEg4k5kc9/?=
+ =?us-ascii?Q?ttjj7NHapZpvwo9GVcgvACrJQqX9X/C9AV40ZtrP8u27he4oWhyE9OnuUdUI?=
+ =?us-ascii?Q?EF5FjsCXISXVnx5wISc5IoofdOifhHu2J/TrK0EGxU2DfL6vX4VOR3oNklFR?=
+ =?us-ascii?Q?BTKkOYjXk8MIOu1y662/1Vei9PpqVcnbYMxwGkmExxvKkb4idpiQNWPs4w/a?=
+ =?us-ascii?Q?YTHZxOVBHDNdCeFAk+M6n6uE1yrDN8CDxyeUV88xfYuTFVbkbVsrr+WSRqIP?=
+ =?us-ascii?Q?WJfxDcm5c4NAVdpGT93ORkQ/JI6fSqCXP5/7qn7xZVn0sC5NK0aOT7wbtMuM?=
+ =?us-ascii?Q?wBrAvPkWOm6SYqupYofLr8876ZIsOy/vG/zP9DQC+tBkIdb10YY1S6hPUrkX?=
+ =?us-ascii?Q?BaJqfc/sSpql6ZqeP+Pwqdfj4dhiVG25/9T3iW/29N1mQMCu5fifutHHPEbY?=
+ =?us-ascii?Q?tYK4u7pC55bwUIBI5WU=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241115-drm-connector-mode-valid-const-v1-0-b1b523156f71@linaro.org>
- <20241115-drm-connector-mode-valid-const-v1-1-b1b523156f71@linaro.org>
- <20241117205426.GE12409@pendragon.ideasonboard.com> <CAA8EJpr=4AQVRKbtR2MaCQfguGW0a=3ay-ttew-mFR4f086Uyg@mail.gmail.com>
- <20241117233250.GK12409@pendragon.ideasonboard.com>
-In-Reply-To: <20241117233250.GK12409@pendragon.ideasonboard.com>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Mon, 18 Nov 2024 01:55:54 +0200
-Message-ID: <CAA8EJpq6Gkp4W=rGbpY6ASPgoDt=64HTFDk4_OZsTmbSUxhhGw@mail.gmail.com>
-Subject: Re: [PATCH 1/5] drm/encoder_slave: make mode_valid accept const
- struct drm_display_mode
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Karol Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>, 
-	Danilo Krummrich <dakr@redhat.com>, Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>, 
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>, Alex Deucher <alexander.deucher@amd.com>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Xinhui Pan <Xinhui.Pan@amd.com>, Alain Volmat <alain.volmat@foss.st.com>, 
-	Raphael Gallais-Pou <rgallaispou@gmail.com>, Liviu Dudau <liviu.dudau@arm.com>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Robert Foss <rfoss@kernel.org>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Peter Senna Tschudin <peter.senna@gmail.com>, 
-	Ian Ray <ian.ray@ge.com>, Martyn Welch <martyn.welch@collabora.co.uk>, 
-	Inki Dae <inki.dae@samsung.com>, Seung-Woo Kim <sw0312.kim@samsung.com>, 
-	Kyungmin Park <kyungmin.park@samsung.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Stefan Agner <stefan@agner.ch>, 
-	Alison Wang <alison.wang@nxp.com>, Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Rob Clark <robdclark@gmail.com>, 
-	Abhinav Kumar <quic_abhinavk@quicinc.com>, Sean Paul <sean@poorly.run>, 
-	Marijn Suijten <marijn.suijten@somainline.org>, Dave Airlie <airlied@redhat.com>, 
-	Gerd Hoffmann <kraxel@redhat.com>, Sandy Huang <hjc@rock-chips.com>, 
-	=?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
-	Andy Yan <andy.yan@rock-chips.com>, Chen-Yu Tsai <wens@csie.org>, 
-	Samuel Holland <samuel@sholland.org>, Thierry Reding <thierry.reding@gmail.com>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Dave Stevenson <dave.stevenson@raspberrypi.com>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
-	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, Gurchetan Singh <gurchetansingh@chromium.org>, 
-	Chia-I Wu <olvaffe@gmail.com>, Zack Rusin <zack.rusin@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, intel-gfx@lists.freedesktop.org, 
-	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org, 
-	amd-gfx@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
-	linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
-	virtualization@lists.linux.dev, spice-devel@lists.freedesktop.org, 
-	linux-rockchip@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	linux-tegra@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fee4a2c5-db55-44a2-b4d0-08dd076f94e8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Nov 2024 01:23:17.7151
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 9dFDf2CgdqTGfAFmyWNlSgdCcJVpP+3pL0EgdgtCbVEnBX8CQB80ezzU8NfnWTEvUi5O08K7sbPQwRdkCfb6Nw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10874
 
-On Mon, 18 Nov 2024 at 01:33, Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
->
-> On Mon, Nov 18, 2024 at 01:22:12AM +0200, Dmitry Baryshkov wrote:
-> > On Sun, 17 Nov 2024 at 22:54, Laurent Pinchart wrote:
-> > > On Fri, Nov 15, 2024 at 11:09:26PM +0200, Dmitry Baryshkov wrote:
-> > > > The mode_valid() callbacks of drm_encoder, drm_crtc and drm_bridge
-> > > > accept const struct drm_display_mode argument. Change the mode_valid
-> > > > callback of drm_encoder_slave to also accept const argument.
-> > > >
-> > > > Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> > >
-> > > Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-> > >
-> > > On a side note, there's only two I2C slave encoder drivers left... I
-> > > wonder if we could so something about them. The ch7006 and sil164
-> > > drivers seem to be used by nouveau only, could they be moved to
-> > > drivers/gpu/drm/nouveau/ ? We would move the whole drm_encoder_slave
-> > > implementation there too, and leave it to die (or get taken out of limbo
-> > > and fixed) with dispnv04.
+> On Fri, 15 Nov 2024 10:47:41 +0800 Wei Fang wrote:
+> > +static inline bool enetc_skb_is_ipv6(struct sk_buff *skb) {
+> > +	return vlan_get_protocol(skb) =3D=3D htons(ETH_P_IPV6); }
+> > +
+> > +static inline bool enetc_skb_is_tcp(struct sk_buff *skb) {
+> > +	return skb->csum_offset =3D=3D offsetof(struct tcphdr, check); }
+>=20
+> Please don't use "inline" for trivial functions, compiler will inline the=
+m anyway,
+> and it hides unused code. In addition to being pointless.
+>=20
+> >  static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct
+> > sk_buff *skb)  {
+> >  	bool do_vlan, do_onestep_tstamp =3D false, do_twostep_tstamp =3D fals=
+e;
+> > @@ -160,6 +181,27 @@ static int enetc_map_tx_buffs(struct enetc_bdr
+> *tx_ring, struct sk_buff *skb)
+> >  	dma_addr_t dma;
+> >  	u8 flags =3D 0;
 > >
-> > Or it might be better to switch to drm_bridge. Currently we also have
-> > sil164 (sub)drivers in ast and i915 drivers. I don't know if there is
-> > any common code to share or not. If there is some, it might be nice to
-> > use common framework.
->
-> That would require porting nouveau and i915 to drm_bridge. As much as
-> I'd love to see that happening, I won't hold my breath.
+> > +	enetc_clear_tx_bd(&temp_bd);
+> > +	if (skb->ip_summed =3D=3D CHECKSUM_PARTIAL) {
+> > +		/* Can not support TSD and checksum offload at the same time */
+> > +		if (priv->active_offloads & ENETC_F_TXCSUM &&
+> > +		    enetc_tx_csum_offload_check(skb) && !tx_ring->tsd_enable) {
+> > +			temp_bd.l3_start =3D skb_network_offset(skb);
+> > +			temp_bd.ipcs =3D enetc_skb_is_ipv6(skb) ? 0 : 1;
+>=20
+> Linux calculates the IPv4 csum, always, no need.
+>=20
+> > +			temp_bd.l3_hdr_size =3D skb_network_header_len(skb) / 4;
+> > +			temp_bd.l3t =3D enetc_skb_is_ipv6(skb) ? 1 : 0;
+>=20
+> no need for ternary op, simply :
+>=20
+> 		temp_bd.l3t =3D enetc_skb_is_ipv6(skb);
+>=20
+> > +			temp_bd.l4t =3D enetc_skb_is_tcp(skb) ? ENETC_TXBD_L4T_TCP :
+> > +							      ENETC_TXBD_L4T_UDP;
+> > +			flags |=3D ENETC_TXBD_FLAGS_CSUM_LSO |
+> ENETC_TXBD_FLAGS_L4CS;
+> > +		} else {
+> > +			if (skb_checksum_help(skb)) {
+> > +				dev_err(tx_ring->dev, "skb_checksum_help() error\n");
+> > +
+> > +				return 0;
+>=20
+> don't print errors on the datapath, it may flood the logs
 
-Me neither. Probably moving those two and drm_encoder_slave to nouveau
-is really the best course for now.
+Thanks for the comments, I will improve this patch.
 
->
-> > > > ---
-> > > >  drivers/gpu/drm/i2c/ch7006_drv.c          | 2 +-
-> > > >  drivers/gpu/drm/i2c/sil164_drv.c          | 2 +-
-> > > >  drivers/gpu/drm/nouveau/dispnv04/tvnv17.c | 2 +-
-> > > >  include/drm/drm_encoder_slave.h           | 2 +-
-> > > >  4 files changed, 4 insertions(+), 4 deletions(-)
-> > > >
-> > > > diff --git a/drivers/gpu/drm/i2c/ch7006_drv.c b/drivers/gpu/drm/i2c/ch7006_drv.c
-> > > > index 131512a5f3bd996ad1e2eb869ffa09837daba0c7..a57f0a41c1a9e2006142fe0bad2914b0c344c82a 100644
-> > > > --- a/drivers/gpu/drm/i2c/ch7006_drv.c
-> > > > +++ b/drivers/gpu/drm/i2c/ch7006_drv.c
-> > > > @@ -104,7 +104,7 @@ static bool ch7006_encoder_mode_fixup(struct drm_encoder *encoder,
-> > > >  }
-> > > >
-> > > >  static int ch7006_encoder_mode_valid(struct drm_encoder *encoder,
-> > > > -                                  struct drm_display_mode *mode)
-> > > > +                                  const struct drm_display_mode *mode)
-> > > >  {
-> > > >       if (ch7006_lookup_mode(encoder, mode))
-> > > >               return MODE_OK;
-> > > > diff --git a/drivers/gpu/drm/i2c/sil164_drv.c b/drivers/gpu/drm/i2c/sil164_drv.c
-> > > > index ff23422727fce290a188e495d343e32bc2c373ec..708e119072fcb50c31b5596b75dc341429b93697 100644
-> > > > --- a/drivers/gpu/drm/i2c/sil164_drv.c
-> > > > +++ b/drivers/gpu/drm/i2c/sil164_drv.c
-> > > > @@ -255,7 +255,7 @@ sil164_encoder_restore(struct drm_encoder *encoder)
-> > > >
-> > > >  static int
-> > > >  sil164_encoder_mode_valid(struct drm_encoder *encoder,
-> > > > -                       struct drm_display_mode *mode)
-> > > > +                       const struct drm_display_mode *mode)
-> > > >  {
-> > > >       struct sil164_priv *priv = to_sil164_priv(encoder);
-> > > >
-> > > > diff --git a/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c b/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
-> > > > index 3ecb101d23e949b753b873d24eec01ad6fe7f5d6..35ad4e10d27323c87704a3ff35b7dc26462c82bd 100644
-> > > > --- a/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
-> > > > +++ b/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
-> > > > @@ -308,7 +308,7 @@ static int nv17_tv_get_modes(struct drm_encoder *encoder,
-> > > >  }
-> > > >
-> > > >  static int nv17_tv_mode_valid(struct drm_encoder *encoder,
-> > > > -                           struct drm_display_mode *mode)
-> > > > +                           const struct drm_display_mode *mode)
-> > > >  {
-> > > >       struct nv17_tv_norm_params *tv_norm = get_tv_norm(encoder);
-> > > >
-> > > > diff --git a/include/drm/drm_encoder_slave.h b/include/drm/drm_encoder_slave.h
-> > > > index 49172166a164474f43e4afb2eeeb3cde8ae7c61a..b526643833dcf78bae29f9fbbe27de3f730b55d8 100644
-> > > > --- a/include/drm/drm_encoder_slave.h
-> > > > +++ b/include/drm/drm_encoder_slave.h
-> > > > @@ -85,7 +85,7 @@ struct drm_encoder_slave_funcs {
-> > > >        * @mode_valid: Analogous to &drm_encoder_helper_funcs @mode_valid.
-> > > >        */
-> > > >       int (*mode_valid)(struct drm_encoder *encoder,
-> > > > -                       struct drm_display_mode *mode);
-> > > > +                       const struct drm_display_mode *mode);
-> > > >       /**
-> > > >        * @mode_set: Analogous to &drm_encoder_helper_funcs @mode_set
-> > > >        * callback. Wrapped by drm_i2c_encoder_mode_set().
-> > > >
->
 > --
-> Regards,
->
-> Laurent Pinchart
-
-
-
--- 
-With best wishes
-Dmitry
+> pw-bot: cr
