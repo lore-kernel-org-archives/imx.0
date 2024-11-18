@@ -1,362 +1,326 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2059.outbound.protection.outlook.com [40.107.22.59])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16EBC1BD4E2
-	for <imx@lists.linux.dev>; Mon, 18 Nov 2024 15:45:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731944704; cv=fail; b=ago+6INNH+jFB8XfMpa/djHkyM9U9/Ca/QrPaNzHt8cDU9DsuBFqmiPGT2JcB+zuYNAhsQZJE9czUBI+WlHZv1iVu54xgx+zwJvxVd63dUdBpYnAyotafrsreLhirpzxzDsTXHajGu479JG7uERa4CBtspPUbypzfjV8OjZ3lTU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731944704; c=relaxed/simple;
-	bh=xB3YnWOPMf7vBRSv0QPmdkNaDPxOw1qbqN/0Mjto6e0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mqAOUkqegwgruTDTLktrjbUxpTSZ9kyGVdZiWf5c/DNvqP8CjYvxlmf7TSzDOxvSIwt9PKm8oudEcDoBeshkLmS/Bs8TGEfxw0MVdHWaDhuO1LsjYObduyv+hGXoaHtyk5J5NzL9JoeZPAxKuqk0WCC97l97gp0JXRiQbWa89rA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=tWycAWsb; arc=fail smtp.client-ip=40.107.22.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C781DFFB;
+	Mon, 18 Nov 2024 15:46:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731944816; cv=none; b=QM8N7GzwktYMGr4sZrZImLUDK4AcV1Dp4+aTPFVsgt8ZNr7pzmpw7GEBz5sA97hZaBVmYD4nYV//qCpAGgeYsuSrgP41cR5Ob061fknsskir7Uqf+gAtne31qOai+Rlmn4SmXADg3zwa6FIVLS+Q2qD+OzXh4AaJpLfXI2hf3z4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731944816; c=relaxed/simple;
+	bh=WNrW3/tULqjb523vUE87ymlM/sk1V7Tb/5c1zihqYyw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pvUjouTGW7b1o3vvAOUWvg1yigSq2LG+4z1ZWyaGeGDwParrpHqqbRSv4CTwlMCddOuwJ0NaS1js0VslyO1/jN2YbChbHyFQqPdtrn/OwvciGUcgRdHyZGR74/k8X4ewjosTLnoprUOX6FYBw8eB2yT2hGRTrEwaiGAP/wxD5rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MSjNA0Cm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="tWycAWsb"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pGgs1que/YFM7ao053+l6CZXUKGSoDPJGEHn/W5IATEQAOOOzmY3QStOdF89yOruXfHij7MlepucFvCNUux5OE4UzEWHCr7MNdkDBRvML41y/Vx07PxOWvSVoKzglv3JG/J6fUZO56YkjuT2r7xYYkdqVMggQ0vSkslFB7zPjOn7vpsXo9WZpxSKgl3vxdBj4WKI6zIxRlNk+d4ChP0gd/LidV1HFzKdniiOSYUuG2qqdKicL+gDcsXuipLKWdhEzWYW0sL/P6Ox9PG2cD4bDM5wBWeQhzbhDIbd4p9F3lWwijenmWKX4eRlZIb0Tcx1yRE0HIBB65YWteqq9gm5OA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Qz6tK5jtgpStWq0dqpcnv7/5+iLJYfbGydSFQ++J7Dk=;
- b=gndISZECZQcz9Lf3ssboZ1GPS5z00W2BIW1Z3bNQfxx00LI8NXYVOomUvZl/PPOcyGyJlAk4aJGap6QRslE+qMGUKW4yOLGlLNjTepTLxOkBNde8DSyI7MzYrxSj1ULQxTNV31ClPkLZ59ryVGxEb5BwZOXXFjCDPiceumgx5eY1oqIDHC6yTwk8cifRkkR/SDj6BCpsZwBreTbo5JdT6I2coBHaDETUScJfvaJupN1CcuRz/d4sQypf+jxobLAIWNwzidGEuuu92YhyAUzMf2cXF/8vWGAdZK82IxElNMGuEfJe53Bsr9oct88WIdNS1LZlhiterVfzDE5uEjQc+A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Qz6tK5jtgpStWq0dqpcnv7/5+iLJYfbGydSFQ++J7Dk=;
- b=tWycAWsbVpU6s/3ebxbZ0dsW0oIvFKYYKQh/bwxgslBG31ySVK41po40/PZK+A5cVVH4OYAJMp0InPXPQT9C664qZ9BJEMg1BMy+6Bo3wa15+vp65OeCdvaQbbWuyj5O0VLEFk5tsEOKmu0462uaEnFMSytgXMq5xpmQviQTYJcrxMcGPPnGhJS0MNZjIu1FPh8MbF0jH0GKVOnkFiupb7u4kizElNBMXdXpwLp6SEXLgwnBVcKmOOxMQo74krdCf1frW39+nbWpuZQZRYGKqnMsyQgDcEhbZ8JqsiybRL9Dy0Ef5HD+jg7jJeN65hkt0zsolwHqjj0YbhLVHWE6mg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com (2603:10a6:10:352::15)
- by AM7PR04MB7175.eurprd04.prod.outlook.com (2603:10a6:20b:111::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.23; Mon, 18 Nov
- 2024 15:44:57 +0000
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::708f:69ee:15df:6ebd]) by DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::708f:69ee:15df:6ebd%6]) with mapi id 15.20.8158.021; Mon, 18 Nov 2024
- 15:44:57 +0000
-From: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Chester Lin <chester62515@gmail.com>
-Cc: linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	NXP S32 Linux <s32@nxp.com>,
-	Christophe Lizzi <clizzi@redhat.com>,
-	Alberto Ruiz <aruizrui@redhat.com>,
-	Enric Balletbo <eballetb@redhat.com>,
-	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-Subject: [PATCH v5 2/2] serial: fsl_linflexuart: add clock management
-Date: Mon, 18 Nov 2024 17:44:48 +0200
-Message-ID: <20241118154449.3895692-3-ciprianmarian.costea@oss.nxp.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241118154449.3895692-1-ciprianmarian.costea@oss.nxp.com>
-References: <20241118154449.3895692-1-ciprianmarian.costea@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AS4P190CA0001.EURP190.PROD.OUTLOOK.COM
- (2603:10a6:20b:5de::7) To DU0PR04MB9251.eurprd04.prod.outlook.com
- (2603:10a6:10:352::15)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MSjNA0Cm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31DF6C4CECC;
+	Mon, 18 Nov 2024 15:46:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731944815;
+	bh=WNrW3/tULqjb523vUE87ymlM/sk1V7Tb/5c1zihqYyw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MSjNA0CmOxIZoRtLJcZ5I7vUdO3vz2wIU4ysjd2XFfrR2YjNGsDwNpnbbj518aWgH
+	 gSL1rEJJOOj+AlnzV2DNLcykNbAochaKGB6OGrpUC5T7aXuynP7si7x4OIbj92Luvk
+	 Xc5eeu1YSZaMbnB4iuSPCHtXkOa/8sdokBKnGtuZLcI0avEzfuZGIxkrCZSTUEzhNU
+	 kLe5/lRuuQbNEHLj+mjjZy+Ja2jAkCRwPRC37ikTtz8uuBfX0bDvzsANSVTjg/r/tU
+	 eNTmLkpLX3CnZad2EebkuKSgYkAObZWRFKgyHuvejhLNhpa030KjM/Ph3nI1ApJxqp
+	 a6WCLedyKIPkw==
+Date: Mon, 18 Nov 2024 16:46:53 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: Marek Vasut <marex@denx.de>, dri-devel@lists.freedesktop.org, 
+	Abel Vesa <abelvesa@kernel.org>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+	David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>, 
+	Isaac Scott <isaac.scott@ideasonboard.com>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Jonas Karlman <jonas@kwiboo.se>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Michael Turquette <mturquette@baylibre.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Peng Fan <peng.fan@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Robert Foss <rfoss@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>, 
+	Stephen Boyd <sboyd@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, imx@lists.linux.dev, 
+	kernel@dh-electronics.com, linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
+Subject: Re: [PATCH 1/2] clk: imx: clk-imx8mp: Allow LDB serializer clock
+ reconfigure parent rate
+Message-ID: <20241118-sceptical-mastodon-of-pizza-df93de@houat>
+References: <20241008223846.337162-1-marex@denx.de>
+ <dbede671-c97b-4ad7-8a54-f1b381fea082@nxp.com>
+ <00ffd38c-b01a-40cd-9130-19c35a387ca0@denx.de>
+ <819380c3-d13f-4989-b305-388fc60d30e4@nxp.com>
+ <d99e0021-3253-4312-9b50-6031ae0f8d8e@denx.de>
+ <d1307426-9a86-4356-93b8-9a10c8369ad8@nxp.com>
+ <20241022-quirky-ubiquitous-hamster-11dca5@houat>
+ <47d92ae0-c71a-4c18-9ad7-432c0f70a31f@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9251:EE_|AM7PR04MB7175:EE_
-X-MS-Office365-Filtering-Correlation-Id: a65347ee-cc41-4325-dd79-08dd07e7f405
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?a1ZUc2llWVkzaGNZNUduVHVFUWY0M3dsTzNpc2xVdkdjUVFKakptYTFyRGhq?=
- =?utf-8?B?dDJ5T1YrZ0dTM3lSNXAwL0lCODdkSXZuQ1poK3NML1V1SWZyQ2tYNlFxcDla?=
- =?utf-8?B?ZENPUzBmVHc0cjNXMWthUTBucytnUnprKy9URmJHTUpzSkdCYVh1UFFud2h3?=
- =?utf-8?B?RWJEZ0FpSUxJSnRMU2t1T04wRnl1WU4xNFRZc1UvNFdJU2d3NExYaVBXckY3?=
- =?utf-8?B?RndBRDEzRnlKQnluZXpNNDVRSTFoU01xb3pnbHdWQTNUb1kzUDdZQ0dXRGJr?=
- =?utf-8?B?NHpJNEJuT1p1cU5iWnNhRXhMMDVTNEtiT09SWEpmT1BSdGMxaEkxcTMrSWFn?=
- =?utf-8?B?c2M2enU5Qk5abiswOEpZQmlLV1ZlR3lzTHNVYndtYnY4ZkdoQzJYa2ZCZENT?=
- =?utf-8?B?cWNKbnp4QW5sUzUyOUltU1ZReTlmQUhpSkdEcFFSUlhLRDdWa21nam50VkxY?=
- =?utf-8?B?UzlSbFhoRkx5ZkFRSDF0MXAyZ1ExakQvN1lQRkZkYVpwcVRkcGJXcVd0VnpN?=
- =?utf-8?B?VklMcGlydi8vMkxXb2dldzd3U1dIdEx6SXh4Q3BlblJaTG9TSXQ0VkhBbytE?=
- =?utf-8?B?MXJQVVFoZXJnU3I5NzVyOFV4M25CS09EajlBa3g2aFdKeDRMMENxUHNJb3Mr?=
- =?utf-8?B?SmRrb1g2UEY4VlprcXdja2pLRUs4dzJpNkdBcE1iNnBzdzBmU0dYQUlKemt0?=
- =?utf-8?B?TzQzZjhucHpmOGQrWFlOQWU1cVpPVk51NjhmZit2ZTRzYUNTS2NiSkkzdGls?=
- =?utf-8?B?RkNpYnhmeTZNMFBBaHVDTlpDUWJaUkZac2RqNVI3K25aNHVFcUx3ZHRHYUNt?=
- =?utf-8?B?djd1cGsrdDJ6NksvSUFtMnVDaW1tSU9Sb05SbEFVT3Z0TDlpQXdsZWpHTFl0?=
- =?utf-8?B?eUI5VHNvV3FSQStYMkNlTVp6cGZEL2xuczBGVkFrMmhMNkpTTk9FVjRZZk9t?=
- =?utf-8?B?Z3ZrT0lidS9BaitKT3JNQWtBVDZUZitmUGpzM1orNmM0REFGS1RyZVhTNysy?=
- =?utf-8?B?Tm12R1MyOEhMdGZ4cmxGVXh4bDZMUERBVEdSZ0pJWjdPY0huK0tvUzUzZjFx?=
- =?utf-8?B?dVh6K3EzSXgxOGpZOG5JUzdESzRvTXVQcklCNkphcDJrZm1XYXdqN1JBK3BM?=
- =?utf-8?B?amd3RThjd0J2cWo5WGZDTDYzTnhHSm9BR1J3UUxUSytOK3RHeGcxWTdRU2pa?=
- =?utf-8?B?QUVlTHR2VmtJa1lQbXNta0MvOExCemQ5WDdYaEF1MHlTSVhpWmIwbjV5TjR1?=
- =?utf-8?B?bmVHTXhFL3Jqb2tNclFZdmFPSzUvL3UwMU53amFpYlNRd3lnaXBtQXNjN05F?=
- =?utf-8?B?b21TQ1VSclpCVUVvWWZDTytYbjRlMnN2a0VFVEpkbTlxRzBUYXhLYnNiRnZU?=
- =?utf-8?B?QUh3WmE5ZzM4OEkvdnc5ZUtFdjB1VDlMcTY1TjNQYWhrS2RPQTZEZ3Q5VHho?=
- =?utf-8?B?U0pRaWo5MklOQjAyT1VEeWNpVHQ5SUxINk5zNnZOcE9TQllKTmlyenNvMlBj?=
- =?utf-8?B?VDhoLzU1RVlLcXZ2YjJjSDBkNlBad3JKZmJ5MWliNm55N2VNbkMwZ0lqWjR1?=
- =?utf-8?B?MERvSXFoYnJhQVdaYVNoK0NUVnBXY1U4SWhBRUkrdWVOZStaUm9JVlZVK2RD?=
- =?utf-8?B?MUpiQXk1cDBCOFlyd25OWW55c1o2ZTRJTnQrazZZWE1uTllWOTJMb2JnU2tO?=
- =?utf-8?B?NDVTOGE5QzMzVVU5c3NVRXNuS2JxcHUza2t0c1VjNi8yaWFpZ3h4aWFYVFBw?=
- =?utf-8?Q?4EYsjpGboHTY7Tzy/y6VJtiaOZOZVwiNX873oLN?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9251.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NXE1REZFd2FJMEk5RnA5YzZjaHJkdjVxOU12R0xnVTArcGh3NE1wZ0NmOGJU?=
- =?utf-8?B?NU4wdHJwMExWQW96VHdVWGsvemtNWjJCLytlK2tXRU9IdFJDTDdGU3VqamlC?=
- =?utf-8?B?Y3JnN3dzQW5UQVNFYSttZnFYNjNEa0tFUkJYZXBuQlVCelhOVzJTWlF4Ri80?=
- =?utf-8?B?MnV3dXJGaHJHU1l5TFF5VUFqS2hIc2JjOWFRNGpWMk9XRHJCYk01d1lBUHVl?=
- =?utf-8?B?UCtDMTl5KzMzN3lUU3lsdERWWG5DbmdXek5rY2VQRzAyclZIdlhFbE5nZGlp?=
- =?utf-8?B?ZU9LbVl3WXZlRmRSZC9UclJBaHNYL1pEM2VRRnlmRHk0U29EYnJRdUxrTEtm?=
- =?utf-8?B?ckNnUklxY3R3VzE4VUZ6RWRXY0FSMHZVdE5MMWJrVElYVkYzL1ZJamkwTVpZ?=
- =?utf-8?B?TjVjaEVDZm1JT1BsMkhRM3djM2xrMWtLdVNZbEhWd2thbTVBSXpkeGJZblhv?=
- =?utf-8?B?NXRGdWZla05DR01XM0kzN2w0OUQxYmZBY1M4bW5sdERoOVgvbyt4dUZvcjBX?=
- =?utf-8?B?NlF0TFRYVWxRVzFta1hXQVZtRjBWNjVsRWxZV3VtUmVkanl2dGJiVlJTOWV6?=
- =?utf-8?B?NWxEMFhMZW9WRXBnc3A3aXAvZ3pJbmxNdHp3Y1lBTnQwN0UxdjlPSGViZHVr?=
- =?utf-8?B?MWw3RTkxNnk4MGo4S1ZJOTFYWmtwZjltTUlZRHhrOUhSQlpuYWRNY3hDTVdD?=
- =?utf-8?B?VHdzNnJ5clp4VTU5bmh5amsvWEtWaUU1NlJXLzh5ZUl4a0lqNC8zcXZlWlJO?=
- =?utf-8?B?KzBiTktvbnc2OXBKakZpWWtsMysxTDEvelc1TVNNWnZzdzY2SWZCRkpvdzBX?=
- =?utf-8?B?Yi83WkY4cVY3M1ptSXBaQTV0NEFWVndwb1F2UG9oaEtXRUdRdENxWFV3YWgr?=
- =?utf-8?B?anB5RVFBZmplYjdqd0haZ1JWQWh6aDVaZE9TYU8yR3FYM2xkck9GNkVGSEpD?=
- =?utf-8?B?ZklwenFRTkFhQlJzWGZYMHFCenNnNTZDaWZiOWIzbHY1aUdvYXhLbGhiNnN4?=
- =?utf-8?B?b0FqblBna0ZKV1ZxeEVtOVo3ejl6V3BVM2lYc3hUVjFEdHBDNldPejNveWVu?=
- =?utf-8?B?WjFmUlhTMlJuRUFPK3FCamhBZU9BYjZEb0RtVTFJblNybE81NjdEVm0yL28y?=
- =?utf-8?B?Sm5OeVQ0Z2pqc2lHbnNzRTRtbEJQMHIzY2pZeXJtYlZoanBuN2VYQjBrMmVU?=
- =?utf-8?B?bXJzOXZlRkdxbkthRDBEZnY3MjNGZEF6eDJaOGdSSkJNMjdxQ0s0a0dGcndD?=
- =?utf-8?B?OFpkdExiVkVWSlVVa3pSYmVBNkFGQ1JOeGo1Nm04TnVYVko5TVJpMEYyVHJk?=
- =?utf-8?B?NU9kYTg5WkRLcXYxSVpSaGM0SUZpdEZTRlZhVFJLSkREMVJWTS9NT0tWbTNI?=
- =?utf-8?B?NFpLdi9NaW9wb2xsZVk0NUxxSm9VYS9ndFhJaG5WRHVkUkRGc09tNG43MUpi?=
- =?utf-8?B?MGRBalM0Lzc2WUlMaG14S01rckNZMFEzYWJYZ1QyQytyN2xBUlBxQjI0b2wx?=
- =?utf-8?B?V055NnVLUmtXTzhtOGM2QktaL0VlL01lSUx6bFcvRjRXZHZhWHRFbjZnUFlG?=
- =?utf-8?B?bUpFZjRvYXpFTG1Tekc2N2pyU0F0Si96bll2SW96b1IrcFJaSDkzU280NmYv?=
- =?utf-8?B?bVZJNFdXZThEUk51c1JGRlpONWt6TkxaT0pjRmJLNFFEbm9mZjRXN3lJTitF?=
- =?utf-8?B?TThlelU5cXE2VmNNRGZjUWs4bzBTYWN0YWp1dW1kNkZ0dHloNk9wNnRkM04v?=
- =?utf-8?B?Sks4ek8vWEltYlJhM3YvQW9ZUmlEWExSWnJtenJCaGJzamkrTStsNXV3MXZ4?=
- =?utf-8?B?TzhwR1pGTDRidEExZWZxeFlTcjdCdkc3RytwZmZPSnFIWWdQS3BJdFFOZCs2?=
- =?utf-8?B?VTBSUEQ5SnJaOTlXYjM2YnZkVExKQ0xOSmJwYWVWVEVkQUN3emk3dGJvd2R4?=
- =?utf-8?B?MWh3b1AwOWk2ZCthOHpnVFdhZnJuN2lCSlpLWVRlZE0yWlBuVUVTSG5FcmFn?=
- =?utf-8?B?TU52amlHVnJVOGp1ZmZQaXVEY3c5QVhJVzdXVFhrODBEVE1uNWlLN0lJdHBa?=
- =?utf-8?B?aWJvOUlxYWVERmRiTitGTXhMNjRtcDdpMnNlQkNaTlZzYzMrRDNHOFFaVGN5?=
- =?utf-8?B?VUxDSlFwT2hQWEdHbEZ6a0puRHVqZ21mNzJ0U1FWY3JsbFdtaTUxNzh6YTQ3?=
- =?utf-8?B?T3c9PQ==?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a65347ee-cc41-4325-dd79-08dd07e7f405
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9251.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2024 15:44:57.0707
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jjHugFCj7eGCMbZAZPsx1Hv0GM5b8hpO42wr3KvvDL92EjY+gMQqc6axPt9AHFv1Bqh2fuSlGF3WrtfIRDDHgJkc4RLzbaUU6JmJdS3sUgM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB7175
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="daaqffk3kobrz3nx"
+Content-Disposition: inline
+In-Reply-To: <47d92ae0-c71a-4c18-9ad7-432c0f70a31f@nxp.com>
 
-From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 
-Add optional clock 'ipg' and 'lin' support to NXP LINFlexD UART driver,
-which is used by S32G2 and S32G3 SoCs.
+--daaqffk3kobrz3nx
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 1/2] clk: imx: clk-imx8mp: Allow LDB serializer clock
+ reconfigure parent rate
+MIME-Version: 1.0
 
-LINFlex driver should perform clock management and not rely on a previous
-bootloader configuration.
+On Thu, Oct 31, 2024 at 10:35:27AM +0800, Liu Ying wrote:
+> Hi Maxime,
+>=20
+> On 10/22/2024, Maxime Ripard wrote:
+> > On Tue, Oct 22, 2024 at 02:13:57PM +0800, Liu Ying wrote:
+> >> On 10/13/2024, Marek Vasut wrote:
+> >>> On 10/11/24 8:18 AM, Liu Ying wrote:
+> >>>> On 10/11/2024, Marek Vasut wrote:
+> >>>>> On 10/10/24 7:22 AM, Liu Ying wrote:
+> >>>>>> On 10/09/2024, Marek Vasut wrote:
+> >>>>>>> The media_ldb_root_clk supply LDB serializer. These clock are usu=
+ally
+> >>>>>>> shared with the LCDIFv3 pixel clock and supplied by the Video PLL=
+ on
+> >>>>>>> i.MX8MP, but the LDB clock run at either x7 or x14 rate of the LC=
+DIFv3
+> >>>>>>> pixel clock. Allow the LDB to reconfigure Video PLL as needed, as=
+ that
+> >>>>>>> results in accurate serializer clock.
+> >>>>>>>
+> >>>>>>> Signed-off-by: Marek Vasut <marex@denx.de>
+> >>>>>>> ---
+> >>>>>>> Cc: Abel Vesa <abelvesa@kernel.org>
+> >>>>>>> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+> >>>>>>> Cc: David Airlie <airlied@gmail.com>
+> >>>>>>> Cc: Fabio Estevam <festevam@gmail.com>
+> >>>>>>> Cc: Isaac Scott <isaac.scott@ideasonboard.com>
+> >>>>>>> Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+> >>>>>>> Cc: Jonas Karlman <jonas@kwiboo.se>
+> >>>>>>> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+> >>>>>>> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> >>>>>>> Cc: Maxime Ripard <mripard@kernel.org>
+> >>>>>>> Cc: Michael Turquette <mturquette@baylibre.com>
+> >>>>>>> Cc: Neil Armstrong <neil.armstrong@linaro.org>
+> >>>>>>> Cc: Peng Fan <peng.fan@nxp.com>
+> >>>>>>> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> >>>>>>> Cc: Robert Foss <rfoss@kernel.org>
+> >>>>>>> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> >>>>>>> Cc: Shawn Guo <shawnguo@kernel.org>
+> >>>>>>> Cc: Simona Vetter <simona@ffwll.ch>
+> >>>>>>> Cc: Stephen Boyd <sboyd@kernel.org>
+> >>>>>>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> >>>>>>> Cc: dri-devel@lists.freedesktop.org
+> >>>>>>> Cc: imx@lists.linux.dev
+> >>>>>>> Cc: kernel@dh-electronics.com
+> >>>>>>> Cc: linux-arm-kernel@lists.infradead.org
+> >>>>>>> Cc: linux-clk@vger.kernel.org
+> >>>>>>> ---
+> >>>>>>> =A0=A0 drivers/clk/imx/clk-imx8mp.c | 2 +-
+> >>>>>>> =A0=A0 1 file changed, 1 insertion(+), 1 deletion(-)
+> >>>>>>>
+> >>>>>>> diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-i=
+mx8mp.c
+> >>>>>>> index 516dbd170c8a3..2e61d340b8ab7 100644
+> >>>>>>> --- a/drivers/clk/imx/clk-imx8mp.c
+> >>>>>>> +++ b/drivers/clk/imx/clk-imx8mp.c
+> >>>>>>> @@ -611,7 +611,7 @@ static int imx8mp_clocks_probe(struct platfor=
+m_device *pdev)
+> >>>>>>> =A0=A0=A0=A0=A0=A0 hws[IMX8MP_CLK_MEDIA_MIPI_PHY1_REF] =3D imx8m_=
+clk_hw_composite("media_mipi_phy1_ref", imx8mp_media_mipi_phy1_ref_sels, cc=
+m_base + 0xbd80);
+> >>>>>>> =A0=A0=A0=A0=A0=A0 hws[IMX8MP_CLK_MEDIA_DISP1_PIX] =3D imx8m_clk_=
+hw_composite_bus_flags("media_disp1_pix", imx8mp_media_disp_pix_sels, ccm_b=
+ase + 0xbe00, CLK_SET_RATE_PARENT);
+> >>>>>>> =A0=A0=A0=A0=A0=A0 hws[IMX8MP_CLK_MEDIA_CAM2_PIX] =3D imx8m_clk_h=
+w_composite("media_cam2_pix", imx8mp_media_cam2_pix_sels, ccm_base + 0xbe80=
+);
+> >>>>>>> -=A0=A0=A0 hws[IMX8MP_CLK_MEDIA_LDB] =3D imx8m_clk_hw_composite("=
+media_ldb", imx8mp_media_ldb_sels, ccm_base + 0xbf00);
+> >>>>>>> +=A0=A0=A0 hws[IMX8MP_CLK_MEDIA_LDB] =3D imx8m_clk_hw_composite_b=
+us_flags("media_ldb", imx8mp_media_ldb_sels, ccm_base + 0xbf00, CLK_SET_RAT=
+E_PARENT);
+> >>>>>>
+> >>>>>> This patch would cause the below in-flight LDB bridge driver
+> >>>>>> patch[1] fail to do display mode validation upon display modes
+> >>>>>> read from LVDS to HDMI converter IT6263's DDC I2C bus.
+> >>>>>
+> >>>>> Why ?
+> >>>>
+> >>>> Mode validation is affected only for dual LVDS link mode.
+> >>>> For single LVDS link mode, this patch does open more display
+> >>>> modes read from the DDC I2C bus.=A0 The reason behind is that
+> >>>> LVDS serial clock rate/pixel clock rate =3D 3.5 for dual LVDS
+> >>>> link mode, while it's 7 for single LVDS link mode.
+> >>>>
+> >>>> In my system, "video_pll1" clock rate is assigned to 1.0395GHz
+> >>>> in imx8mp.dtsi.=A0 For 1920x1080-60.00Hz with 148.5MHz pixel
+> >>>> clock rate, "media_ldb" clock rate is 519.75MHz and
+> >>>> "media_disp2_pix" clock rate is 148.5MHz, which is fine for
+> >>>> dual LVDS link mode(x3.5).=A0 For newly opened up 1920x1080-59.94Hz
+> >>>> with 148.352MHz pixel clock rate, "video_pll1" clock rate will
+> >>>> be changed to 519.232MHz, "media_ldb" clock rate is 519.232MHz
+> >>>> and "media_disp2_pix" clock rate is wrongly set to 519.232MHz
+> >>>> too because "media_disp2_pix" clock cannot handle the 3.5
+> >>>> division ratio from "video_pll1_out" clock running at
+> >>>> 519.232MHz.=A0 See the below clk_summary.
+> >>>
+> >>> Shouldn't this patch help exactly with that ?
+> >>
+> >> No, it doesn't help but only makes clk_round_rate() called in
+> >> LDB driver's .mode_valid() against 148.352MHz return 148.352MHz
+> >> which allows the unexpected 1920x1080-59.94Hz display mode.
+> >>
+> >>>
+> >>> It should allow you to set video_pll1_out to whatever is necessary by=
+ LDB first, fixate that frequency, and the LCDIFv3 would then be forced to =
+use /7 divider from faster Video PLL1 , right ?
+> >>
+> >> Yes, it allows that for single-link LVDS use cases.
+> >> And, __no__, for dual-link LVDS use cases because the
+> >> video_pll1_out clock rate needs to be 2x the LVDS serial clock
+> >> rate.=20
+> >>
+> >>>
+> >>>> =A0=A0=A0=A0 video_pll1_ref_sel=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 1=A0=A0=A0=A0=A0=A0 1=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=A0 24=
+000000=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0 50000=A0=A0=A0=
+=A0=A0 Y=A0=A0=A0=A0=A0 deviceless=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0 no_connection_id
+> >>>> =A0=A0=A0=A0=A0=A0=A0 video_pll1=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0 1=A0=A0=A0=A0=A0=A0 1=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=
+=A0=A0=A0=A0 519232000=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0 500=
+00=A0=A0=A0=A0=A0 Y=A0=A0=A0=A0=A0=A0=A0=A0 deviceless=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 no_connection_id
+> >>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 video_pll1_bypass=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 1=A0=A0=A0=A0=A0=A0 1=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=
+ 519232000=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0 50000=A0=A0=A0=
+=A0=A0 Y=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 deviceless=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 no_connection_id
+> >>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 video_pll1_out=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0 2=A0=A0=A0=A0=A0=A0 2=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=
+=A0=A0 519232000=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0 50000=A0=
+=A0=A0=A0=A0 Y=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 deviceless=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 no_connection_id
+> >>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 media_ldb=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0 1=A0=A0=A0=A0=A0=A0 1=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=
+=A0=A0=A0=A0=A0 519232000=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0 =
+50000=A0=A0=A0=A0=A0 Y=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 d=
+eviceless=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 no=
+_connection_id
+> >>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 media_ldb_=
+root_clk 1=A0=A0=A0=A0=A0=A0 1=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=A0 =
+519232000=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0 50000=A0=A0=A0=
+=A0=A0 Y=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 32ec00=
+00.blk-ctrl:bridge@5c=A0=A0=A0=A0 ldb
+> >>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 deviceless=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 no_connection_id
+> >>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 media_disp1_pix=A0=
+=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=
+=A0 129808000=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0 50000=A0=A0=
+=A0=A0=A0 N=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 deviceless=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 no_connecti=
+on_id
+> >>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 media_disp=
+1_pix_root_clk 0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=
+=A0=A0 129808000=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0 50000=A0=
+=A0=A0=A0=A0 N=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 =
+32e80000.display-controller=A0=A0=A0=A0 pix
+> >>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 32ec0000.blk-ctrl=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 disp1
+> >>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 deviceless=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 no_connection_id
+> >>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 media_disp2_pix=A0=
+=A0=A0=A0=A0 1=A0=A0=A0=A0=A0=A0 1=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=
+=A0 519232000=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0 50000=A0=A0=
+=A0=A0=A0 Y=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 deviceless=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 no_connecti=
+on_id
+> >>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 media_disp=
+2_pix_root_clk 1=A0=A0=A0=A0=A0=A0 1=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=
+=A0=A0 519232000=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0 50000=A0=
+=A0=A0=A0=A0 Y=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 =
+32e90000.display-controller=A0=A0=A0=A0 pix
+> >>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 32ec0000.blk-ctrl=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 disp2
+> >>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 deviceless=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 no_connection_id
+> >>>>
+> >>>> Single LVDS link mode is not affected because "media_disp2_pix"
+> >>>> clock can handle the 7 division ratio.
+> >>>>
+> >>>> To support the dual LVDS link mode, "video_pll1" clock rate needs
+> >>>> to be x2 "media_ldb" clock rate so that "media_disp2_pix" clock
+> >>>> can use 7 division ratio to achieve the /3.5 clock rate comparing
+> >>>> to "media_ldb" clock rate.=A0 However, "video_pll1" is not seen by
+> >>>> LDB driver thus not directly controlled by it.=A0 This is another
+> >>>> reason why assigning a reasonable "video_pll1" clock rate in DT
+> >>>> makes sense.
+> >>>
+> >>> I agree that _right_now_, the DT clock assignment is the only option.
+> >>> I would like to see that DT part disappear and instead would prefer i=
+f the LDB/LCDIF could figure out the clock tree configuration themselves.
+> >>
+> >> I think we'll live with the assigned clock rate in DT, because the
+> >> i.MX8MP LDB and Samsung MIPI DSI display pipelines need to share a
+> >> video PLL, like I mentioned in comments for patch 2.
+> >=20
+> > Guys. There's 4 different discussions that look to be on the same topic,
+> > and doing workarounds in the DT, DRM driver and clock driver for
+> > something that looks like a broken clock.
+>=20
+> This is a bit complicated, because it is related to i.MX8MP MIPI DSI/
+> LVDS/HDMI, i.MX93 MIPI DSI/LVDS/parallel display pipelines.  Even
+> i.MX6SX LVDS display pipeline is a bit related, since i.MX8MP/i.MX93/
+> i.MX6SX LDBs share the same fsl-ldb.c driver.
+>=20
+> >=20
+> > Could we have *somewhere* a proper description of what the problem is
+> > exactly, so we can review it? Because at the moment, it's certainly not
+> > helping.
+>=20
+> Can you please suggest a place where this could happen?
 
-Clocking support is added as optional in order to not break existing
-support for S32V234 SoC. Therefore, there should be no impact if not
-providing LINFlexD clocks and continue to rely on a bootloader clock
-configuration and enablement.
+Here, by mail will be good. Worst case scenario using a ascii art.
 
-Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
----
- drivers/tty/serial/fsl_linflexuart.c | 95 ++++++++++++++++++++++++----
- 1 file changed, 81 insertions(+), 14 deletions(-)
+Maxime
 
-diff --git a/drivers/tty/serial/fsl_linflexuart.c b/drivers/tty/serial/fsl_linflexuart.c
-index e972df4b188d..394c2f66d4a2 100644
---- a/drivers/tty/serial/fsl_linflexuart.c
-+++ b/drivers/tty/serial/fsl_linflexuart.c
-@@ -3,9 +3,10 @@
-  * Freescale LINFlexD UART serial port driver
-  *
-  * Copyright 2012-2016 Freescale Semiconductor, Inc.
-- * Copyright 2017-2019 NXP
-+ * Copyright 2017-2019, 2024 NXP
-  */
- 
-+#include <linux/clk.h>
- #include <linux/console.h>
- #include <linux/io.h>
- #include <linux/irq.h>
-@@ -120,9 +121,29 @@
- 
- #define PREINIT_DELAY			2000 /* us */
- 
-+struct linflex_devtype_data {
-+	const char * const *clks_names;
-+	int n_clks;
-+};
-+
-+struct linflex_port {
-+	struct uart_port port;
-+	struct clk_bulk_data *clks;
-+	const struct linflex_devtype_data *devtype_data;
-+};
-+
-+static const char * const s32v234_clk_names[] = {
-+	"ipg", "lin",
-+};
-+
-+static const struct linflex_devtype_data s32v234_data = {
-+	.clks_names = s32v234_clk_names,
-+	.n_clks = ARRAY_SIZE(s32v234_clk_names),
-+};
-+
- static const struct of_device_id linflex_dt_ids[] = {
- 	{
--		.compatible = "fsl,s32v234-linflexuart",
-+		.compatible = "fsl,s32v234-linflexuart", .data = &s32v234_data,
- 	},
- 	{ /* sentinel */ }
- };
-@@ -776,6 +797,14 @@ static void linflex_earlycon_write(struct console *con, const char *s,
- 	uart_console_write(&dev->port, s, n, linflex_earlycon_putchar);
- }
- 
-+static void linflex_disable_clks(void *data)
-+{
-+	struct linflex_port *lfport = data;
-+
-+	clk_bulk_disable_unprepare(lfport->devtype_data->n_clks,
-+				   lfport->clks);
-+}
-+
- static int __init linflex_early_console_setup(struct earlycon_device *device,
- 					      const char *options)
- {
-@@ -807,12 +836,13 @@ static struct uart_driver linflex_reg = {
- static int linflex_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
-+	struct linflex_port *lfport;
- 	struct uart_port *sport;
- 	struct resource *res;
--	int ret;
-+	int i, ret;
- 
--	sport = devm_kzalloc(&pdev->dev, sizeof(*sport), GFP_KERNEL);
--	if (!sport)
-+	lfport = devm_kzalloc(&pdev->dev, sizeof(*lfport), GFP_KERNEL);
-+	if (!lfport)
- 		return -ENOMEM;
- 
- 	ret = of_alias_get_id(np, "serial");
-@@ -826,8 +856,14 @@ static int linflex_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 	}
- 
-+	sport = &lfport->port;
- 	sport->line = ret;
- 
-+	lfport->devtype_data = of_device_get_match_data(&pdev->dev);
-+	if (!lfport->devtype_data)
-+		return dev_err_probe(&pdev->dev, -ENODEV,
-+				"Failed to get linflexuart driver data\n");
-+
- 	sport->membase = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
- 	if (IS_ERR(sport->membase))
- 		return PTR_ERR(sport->membase);
-@@ -844,37 +880,68 @@ static int linflex_probe(struct platform_device *pdev)
- 	sport->flags = UPF_BOOT_AUTOCONF;
- 	sport->has_sysrq = IS_ENABLED(CONFIG_SERIAL_FSL_LINFLEXUART_CONSOLE);
- 
--	linflex_ports[sport->line] = sport;
-+	lfport->clks = devm_kmalloc_array(&pdev->dev, lfport->devtype_data->n_clks,
-+					  sizeof(*lfport->clks), GFP_KERNEL);
-+	if (!lfport->clks)
-+		return -ENOMEM;
-+
-+	for (i = 0; i < lfport->devtype_data->n_clks; i++)
-+		lfport->clks[i].id = lfport->devtype_data->clks_names[i];
-+
-+	ret = devm_clk_bulk_get_optional(&pdev->dev,
-+					 lfport->devtype_data->n_clks, lfport->clks);
-+	if (ret)
-+		return dev_err_probe(&pdev->dev, ret,
-+				"Failed to get linflexuart clocks\n");
- 
--	platform_set_drvdata(pdev, sport);
-+	ret = clk_bulk_prepare_enable(lfport->devtype_data->n_clks,
-+				      lfport->clks);
-+	if (ret)
-+		return dev_err_probe(&pdev->dev, ret,
-+				"Failed to enable linflexuart clocks\n");
-+
-+	ret = devm_add_action_or_reset(&pdev->dev,
-+				       linflex_disable_clks, lfport);
-+	if (ret)
-+		return ret;
-+
-+	linflex_ports[sport->line] = sport;
-+	platform_set_drvdata(pdev, lfport);
- 
- 	return uart_add_one_port(&linflex_reg, sport);
- }
- 
- static void linflex_remove(struct platform_device *pdev)
- {
--	struct uart_port *sport = platform_get_drvdata(pdev);
-+	struct linflex_port *lfport = platform_get_drvdata(pdev);
- 
--	uart_remove_one_port(&linflex_reg, sport);
-+	uart_remove_one_port(&linflex_reg, &lfport->port);
- }
- 
- #ifdef CONFIG_PM_SLEEP
- static int linflex_suspend(struct device *dev)
- {
--	struct uart_port *sport = dev_get_drvdata(dev);
-+	struct linflex_port *lfport = dev_get_drvdata(dev);
- 
--	uart_suspend_port(&linflex_reg, sport);
-+	uart_suspend_port(&linflex_reg, &lfport->port);
-+
-+	clk_bulk_disable_unprepare(lfport->devtype_data->n_clks,
-+				   lfport->clks);
- 
- 	return 0;
- }
- 
- static int linflex_resume(struct device *dev)
- {
--	struct uart_port *sport = dev_get_drvdata(dev);
-+	struct linflex_port *lfport = dev_get_drvdata(dev);
-+	int ret;
- 
--	uart_resume_port(&linflex_reg, sport);
-+	ret = clk_bulk_prepare_enable(lfport->devtype_data->n_clks,
-+				      lfport->clks);
-+	if (ret)
-+		return ret;
- 
--	return 0;
-+	return uart_resume_port(&linflex_reg, &lfport->port);
- }
- #endif
- 
--- 
-2.45.2
+--daaqffk3kobrz3nx
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZzthbAAKCRAnX84Zoj2+
+drubAYDnfOPHEbUtSBuKsSW0gwIdqyDhobohzo9e8ywlQGt8/ZdxHagqLzmAANjC
+lfvXD8YBfiUmQk9afkVIWM8Lk15XjzxrIrfcAhwZuqOrsIwH11sfRr3+lczF7pKs
+0ats6CZJoQ==
+=5w/N
+-----END PGP SIGNATURE-----
+
+--daaqffk3kobrz3nx--
