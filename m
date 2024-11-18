@@ -1,199 +1,145 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2061.outbound.protection.outlook.com [40.107.22.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4496EDDC1
-	for <imx@lists.linux.dev>; Mon, 18 Nov 2024 19:25:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731957928; cv=fail; b=DbuiKmc5VrZD2PmjKgVOPRcSQ0lrczP2cyRoOPigG5u1Gd5/c74EFof2J7Neiyp6B+8rN/04ka5FGHjhteRcXVfOv5WfmxK4+HO5O/N98Ci0e6ETO110EVVdvaAqEiyGceB0lBjaTt0z8ALL9CFmCXHw1zjS3HqoELGwz7BlAKk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731957928; c=relaxed/simple;
-	bh=6Du+8ehMgIshijHu9FKHsyYjb+bRQXkB20RskRSFBJ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=fC+s1f+ZEAtfXMWoNxT3Mn+vLlfdiPZ7qz9HwS88yXUfI/z71SbMK6Dml5A0U1epgGd/Gpq+196W++uUaRGBsQ2yd9B6VtfA0r0JzfPdERi7VAY/pqjgvmP+SzLslciwBRnrhoMJ5jKm2hOQI3ACIT6QUTskSOowrYUgfoinKmM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=UXM+PuzA; arc=fail smtp.client-ip=40.107.22.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FE01DED69;
+	Mon, 18 Nov 2024 19:25:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731957961; cv=none; b=cbL3yxTVDUgKins/9EBmCdtH2yeAiyuP7qtTN+9eQ2/KTKt6j6W77rU46eFhts9V5C5FkIauUIk215li7B4BRthLbcjm9tT+NYHstKL5Govg2QvZTmAxNlh+ElSk0WzmhL2Kdynqa+AxQfEsmi2ZVM9qbZV2gBz5zqsQbrsXtBQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731957961; c=relaxed/simple;
+	bh=IvvPfEQx8+njDlP7eg+rVy3Zr9WN9X65JlqiJMcGRGU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=i8yVNIaDoC8sQxtB1RpqO1a+X7lJ0+OXZue99KmK5XuPEtuZfPGiFSCse1lBcgMp9XhwX68CwGHgHBu3vhaQsxYoQ6YbYziiCmuYDC2BJN0yetqoDQkK7FYoLG39mNrrgEqAQz5cpzWUJetNHBqRGLGFILcBM9E3WxWHAeAGj3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S9+E7XcQ; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="UXM+PuzA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aBBRtRMKIWvPTFSrBNaQVtYxpT/uE7s6Pus1+/QzDUzEFOsCqDkZI0xaZr8Q2xC+uNDxx3KlKw6acRU+3LROILDcl1f5Le5i4gKmT57tW3jWJolcElaa6xBrjER1zDdFDgsKD/CK864xS7c/U+/KEppePrvzQvPf/3RAiJNc5p+6J3e2EyV57YWUoQKzQI/1zZkqOUhOfZvDB/f21mpAmNZg53JWfle29ov40kO1iTgV5F/JVf1/6q7+fDrBfoCwALnveXbPL5WGYXbJUbkNrD/CcYmaRqtKkSU/V834HXets69x6NJLc0BoGHSBT4bfPCAiFP/k7440EKpsjuo+rQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FtWh9b7WVeLlVm7/LD1BgOWtt5VtMRPgI8sgcSXDE8k=;
- b=Yw+X1kbsecah3cia3Fb8WBgB6UW+OklmwMqewssP+RDWYjAm6i6nmm8Tr5RimJEN6Famt9ninyjixZffiFRKPrnPwHah2MuOzOuXW7+RQrgW8qNuQKLVeVxl5XVdzwEh4Hx9fkrfv/7hlIKQzJp7BA706OaPGtN0lG7UAkSrLCI6l+A9hlRYQFH28SrfIOmtC+4X0JOtxIAaXsUh29kqJGe3zfNkXRLsb4CioYSUOdfG1txUIOpVGNK5WkXllZgnm3gSOB2F83cet0wbiguEFJsaCER0Uq9eG/m6eUKmeQVYMITYT+UB49a7S2wMZy91wa7TTKZi2M+wZGFI/7I+Ww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FtWh9b7WVeLlVm7/LD1BgOWtt5VtMRPgI8sgcSXDE8k=;
- b=UXM+PuzAmyFlJ5S0sNareaC/g+AuzvbVBpowfMalohty9XPyLpng22ArTAkywi343nqefeUhqjpKJJqJoNq9VGfY6nS4QSgyMRcmFeL32tEdGb419pjMSAvqa8gg5wW/pBco67Hv39gBhK9kouyInzL2is28LDEV3hQdIRgpyKsWb8SjQ2IxGg9SdhyCGpHSZYrpMNjHTf4IarEiLyARs5c5brn0L3pUrSqoyvm8xYc2HZP2sFuw+uje1vtvkR4Ny5wbE4NYRr6m27xW0SR8gBzWJ4Z91Pmfcjz1XNmlGrmWymvhYSLFpUl7rionZrUjXXuL4acKE0oVrbysY7Avmw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PAXPR04MB8640.eurprd04.prod.outlook.com (2603:10a6:102:21f::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.23; Mon, 18 Nov
- 2024 19:25:22 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.8158.021; Mon, 18 Nov 2024
- 19:25:22 +0000
-Date: Mon, 18 Nov 2024 14:25:13 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Jacky Bai <ping.bai@nxp.com>, Peng Fan <peng.fan@nxp.com>,
-	"open list:REAL TIME CLOCK (RTC) SUBSYSTEM" <linux-rtc@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] rtc: bbnsm: Enable RTC by default to fix time read
- failure
-Message-ID: <ZzuUmS8clXgKSbpW@lizhi-Precision-Tower-5810>
-References: <20241115194858.3837298-1-Frank.Li@nxp.com>
- <20241116193652a13b3081@mail.local>
- <2024111722084384333dcf@mail.local>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024111722084384333dcf@mail.local>
-X-ClientProxiedBy: BYAPR01CA0021.prod.exchangelabs.com (2603:10b6:a02:80::34)
- To PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S9+E7XcQ"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4315eeb2601so34253155e9.2;
+        Mon, 18 Nov 2024 11:25:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731957958; x=1732562758; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9pD0Ic6pq3x9QjpEUEJLIp8QMqGQFkQZMFW6bkNDgUM=;
+        b=S9+E7XcQKRxz3ChAeMgW8wyOf+0LHgTc75hkXDNks5OxtHkfgAxXj9t0iHfWqCZJFu
+         pWQyNTvuROoDrCyXozRYvQzKZMOOl6eQJGzHawm11efQgtThny7TxHGXpLcbQ4/kdUda
+         Q8fw8fdVasyHeFvE5730Z0lxvxukk+GUQN0iXLMHOlG7vPhCVLGg8zpSz2AzhULitW7j
+         e13WwkBqNsRy7tmBnCLVR6XZK5Kpjm9zTwFK7ybUQNCMH9cMkOVRvXq8b2PdYK4lkDqT
+         JvynMwBNpa87lKqne/rbxwgaHWjF2MoxPZNmZYTxeRUwQZ480CtqK0KFsVq9Cy/TXuio
+         Bmfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731957958; x=1732562758;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9pD0Ic6pq3x9QjpEUEJLIp8QMqGQFkQZMFW6bkNDgUM=;
+        b=HgTMxj2M8pGnpQwyKHzYAtTBpH+Pbcnk+0IrCqzBs+qq74W9kgd1rFoIyLMqBw3Itf
+         UueI6iylXYJfv5V+xKWFE5oDujXMi66kz77hymX/UlJsqwGiU7Y1l41TUBJ15J/hpF3E
+         4zSumEhEL0u7fUZwZ63ZuDz4XTQWJx5bQA0GGiw73j+TalCG6DN57s8shlUhVUgK9PED
+         PDLIa7OyxuSHtiKN45gFvrMiHf4syGrsBEUtBSoTF1h61GXqiNLSDQ6D1ErLDLDYQRnf
+         5LtA0EBS6PJfx0YlcWGAOQ1KUQVdvV3zxp3084Xo9SFjd8s1cP75k9Rh7XoqAVBd+K+Z
+         uKyg==
+X-Forwarded-Encrypted: i=1; AJvYcCUJSUYLZAj/1htsxyPip36mKh7eYDzqfqTG2Z774INV8zS0P5ilSlGKfRyEvfv5p0ptuVg=@lists.linux.dev, AJvYcCVcBm5tE4cHc4WAPCqvOWxwFvBCGZbuOL5+CIVr/GNzAAp1eWKdjjcaiXTTLU0FGYpZzqR8OrBc56+5YCUIm1I=@lists.linux.dev, AJvYcCXyimsk6Ee9XFW/M98xA/ur7pB12bFfQLxYoCK/zNWe+EM4Yvihg/l8yaIl17s75FScfv7w/UZILTS6jg4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyMgEftdROscZH5OK087tqybQyLoIVQfqYSfukOsNVrOLlP5IJ5
+	++ASSruwMizNhpwcbirwQUgVc2Ct6hF4/xiJnnHT3mN+0VgjKBoY
+X-Google-Smtp-Source: AGHT+IH+lcOQ8Rj8oM11CtrUWBNXK6zZA1wltL3ZBTXjDjqXIpvoTVhgtssacVRTup7RXCuDYGl00g==
+X-Received: by 2002:a05:600c:1d97:b0:426:59fe:ac27 with SMTP id 5b1f17b1804b1-432df78f3demr130180715e9.26.1731957957571;
+        Mon, 18 Nov 2024 11:25:57 -0800 (PST)
+Received: from ?IPV6:2001:861:3385:e20:6384:4cf:52c5:3194? ([2001:861:3385:e20:6384:4cf:52c5:3194])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432da298c81sm172023915e9.39.2024.11.18.11.25.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Nov 2024 11:25:57 -0800 (PST)
+Message-ID: <8a4f69dd-b393-4e84-be3c-58f8b33bd59d@gmail.com>
+Date: Mon, 18 Nov 2024 20:25:49 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB8640:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7e85a412-4084-44ed-73e5-08dd0806bf03
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|1800799024|376014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?O7spOYWowQ2NQPbe/dafh16ENIFfIB06f0lfZX3bB84yiq15OWggkbTw+gML?=
- =?us-ascii?Q?Y8hmH4/7S+/oaWAF3NqlIN4XRG7e2dN0SchudgNSJnm693KI4ZGYUorLduMj?=
- =?us-ascii?Q?Nxsu+eoPkJvmYPofarmCaSJVLxXFrFlpGi+dK6aVCEzorBfGFfJ6QjYGUmqU?=
- =?us-ascii?Q?xPBX6qI3Bjf01Rmb4tkK3yhnTjbK/3jkjnlZ/TV7dI+Z6hsOzac6sOG67oac?=
- =?us-ascii?Q?cyQ25oiWx7B1iGDoc1QBZlRbABYXa3GB87q3GHzgCKvarJoFLStqECOsh6K2?=
- =?us-ascii?Q?vMJGXMSTSk5sZnaScu93+hawvaUA1IZAXq8iWFgmQ6bClI9upCEr+htOe2R4?=
- =?us-ascii?Q?s7tjW5It2YrCyG8aYStvIOZLDkoj05YHQF2Gfw+WxDC2r/MZRTYS8WNKsU8c?=
- =?us-ascii?Q?8hZYlYtV3FI1b7HwejD8bjj971hudnn+iCI9GckLk43rcEPDv/+hCAH4s1rq?=
- =?us-ascii?Q?JDd+St1ZYCVOyN2ahrq7K5W/3eDgiotEdAHu1DZo8GmEa54Ldh3tBhgP6tRn?=
- =?us-ascii?Q?cvfnqZlEGuMYgiIk+QlRXttvfSdt+ot+LIAKAT5ElgG0/whxoVO5sNyGXhyl?=
- =?us-ascii?Q?v6HArJ1lhi9L62r3IuapbV7okqhARARsm1ncu1AYWoRToRtwDW9fbslFD98u?=
- =?us-ascii?Q?UBuopz9+wiw7p4cS9ceplGyrT2u6VgW4v1uY9Vm4Xu04oxOv3VL9rhCjkL2z?=
- =?us-ascii?Q?FdX0ZXf9T/pDlR+yoM0JwLASIGeZ80/Oy/Sbx6lFAPp0aOTcK4aIRiMK6okQ?=
- =?us-ascii?Q?ouoH9GZrt0nECL0sO2QkXEt3q8xteZxcV5poJHzS+1C2O2dJrQEeiHZbwLA8?=
- =?us-ascii?Q?FIO7CVA8aVupdhfjm+jFx4fs+G9NgEMgyo33XOrsfnjJqOLeXX5XsbDuVy7w?=
- =?us-ascii?Q?ZoCcfPlp/rLtsBaSxSdgNYqBh7d+HgNT+Z4qc+qAvsDpdBmzR2xI+LEXn1pN?=
- =?us-ascii?Q?hXJvSE6YsXvrCSUcXHSiaYDl6aOuwnztfFNEIDz6QkoMCo7UV0T4QiN6NMiZ?=
- =?us-ascii?Q?W03CDr6UeJ/j5IZxFVaD5W+pp29eRvXFQbSKXFP6QMyJEUYlQX5qIV0Lj3f9?=
- =?us-ascii?Q?24lFMEEjRFoNCJcs40XnYhvbx2xskDsMu3qpB+NqAhXcq1/AEJJRWm9gHisv?=
- =?us-ascii?Q?+mhRxMBqprkW0P8/P04+7daCbfZENFsVWIqo5LTEA56c6VB9+Xe3GsOxi87W?=
- =?us-ascii?Q?ml6jO4kjmw7cwkOVxNTiGHOiY4HLO79yWYTavvKwNKZi8npvtrzAJxtpt/Zu?=
- =?us-ascii?Q?xDyN3wZqZ7lCWPrC5/jdj0BWbRrKlWO5skOCstq+icRCJWt0moypDD8XnEMG?=
- =?us-ascii?Q?LHyCNwBVROwNrwJz6nfDbQSD?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?jDDm3g7itwC8e7Gkc+BtLCtl1E6R7iemJzZhAxw1LUlr+m/o/S3ZuKZPyhOr?=
- =?us-ascii?Q?akdtsCvGVMtbpx0eaGRNa01GvbhUxUUlkV1HWaiEIFZbt+LS5hkwO+r7VCRy?=
- =?us-ascii?Q?l4Xpv2RQjU81LsjdoQR7sKZ0yIZnviugxqOl1954qAfa1VnbnX7B0iLN3D76?=
- =?us-ascii?Q?KmPvP4oT2QMeJ07gUsuz/Xp0DyxJ4L1wCGYxf+89kupeqM7tuVskyumu8amT?=
- =?us-ascii?Q?Nesk2AOtyFmakgmMcuPzo6VdGIrkaV6dMH0F+8nNecVoZtfdAJYVoL2dnL0T?=
- =?us-ascii?Q?dyLx8C7ewItwjfbcTKkZ0Ws0o6tYdc0mmBoOnc93twsh2EfpPdWBXbVDo8OB?=
- =?us-ascii?Q?vF2oMBH6aDVileUGIJzP+8BEyQOh+SnU934rg8NyfCrBWHLOAYSlfOwA/guP?=
- =?us-ascii?Q?hducbyTqwvGsKmswJ7/WZg874IWrB+NArT3ou/M94sDXujBGF8J/B6tlQ/KP?=
- =?us-ascii?Q?1DbykK+27z//MV7Bphv4B2k0sBpaeT9zlGAtiEK96U5OXFClYmyewEgSjnn1?=
- =?us-ascii?Q?pZuNRoJRF2xcC5RX820k0w4sjMKjzzTMXq1xZ8aE2YNDl8STMtEs03Qymqqm?=
- =?us-ascii?Q?PNBIxSalV6iDIjoJlpgo/kZh+iZl/isPlMD9oSyIE4v8yZhFYOpo3R6WutXq?=
- =?us-ascii?Q?0Ju0+B2UVS73TEEEkEDI2fuckDbPhRZ3AOVRNbA97chnmd79pgtbgCYmMtST?=
- =?us-ascii?Q?5NfS5TV2ByfuVSBzdFtwgvCyhB12cOnYAug3isQzsjzpf3U2uXaaDpuJy72U?=
- =?us-ascii?Q?rmqJNo54O/anhhy5lLHy9PfC1UPIiGuQ0rZPo/t719QMSC946yOPPQOI3bR3?=
- =?us-ascii?Q?lWQntOh9okGMAmn8B1atsnggfacSsi/nAtf0W/Rm65IVhliv1yP2wGu8q2V+?=
- =?us-ascii?Q?vnigrNNyev1Z1gpbRcPJCXMd3j9QmTPqQRbVB6ldJNGEdhLyKPREFXfQRfmg?=
- =?us-ascii?Q?O4FzfYNto+5v4G3VZqsNyOybvWMqFDgpYDGikia3G6r8w5O9LRoDLLEvTNQP?=
- =?us-ascii?Q?yYl3uMYp3bsiQFRy5IiWpGJ2nr+4FZ5A//Ttl545MrTUXquXSPW/U4Uno162?=
- =?us-ascii?Q?LN8sm2VDJ2DWzH9upSSHJM4+7RqhT1km+B3scDiE+hlVN1kOpDdYWUpQ61J7?=
- =?us-ascii?Q?gJkrpch+ImuPiz0zTRhWyA3MPcYaKNEdHEoObnQlqGDUjY84ExHLM3RkzvnB?=
- =?us-ascii?Q?ky+6n0Pfsqii7+ZXKUOr8wBZO/XUGT4uGo1DStl+k03BbjB/sMYvZN80KLJG?=
- =?us-ascii?Q?8gqiiQej7lNkr6YmonyomByeOzId4qeDouNqBQiG9NSkJQYmkWuyJFOqdv8o?=
- =?us-ascii?Q?yyvAkmwkdjSuywLagQn71w6jNQUsAHAvZyK2u123zDs0z3ZP0vG4V33bos7A?=
- =?us-ascii?Q?YIXBg+EC0FLcvaNwXJwiLKC95U7eLxaoKZDCiE9KWdIFqL+qVxZhq4KxQW74?=
- =?us-ascii?Q?nnQ4sAyQdJfL5emVtM8DnT9sAzU0JFwffAGjwAnoMaEB7klEvpMGVpdzsWD8?=
- =?us-ascii?Q?CZ4h3Bd+cbNTj1KbpESItPIMH5bBrCWDN6iAfiIJKrP5xQjDfIPnGvbD6k5S?=
- =?us-ascii?Q?9zxlgI0GRVbSNMjwC7o=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e85a412-4084-44ed-73e5-08dd0806bf03
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2024 19:25:22.6890
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0120I03RzEyRSyzYa6Fl7DTE7zTnApYAT7XfPG10DK2VuAOdftndWIlPR6oRbsk6kPaky57FgdNgLnNa+vsTRQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8640
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/5] drm/sti: hda: pass const struct drm_display_mode* to
+ hda_get_mode_idx()
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Karol Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>,
+ Danilo Krummrich <dakr@redhat.com>, Harry Wentland <harry.wentland@amd.com>,
+ Leo Li <sunpeng.li@amd.com>, Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Xinhui Pan <Xinhui.Pan@amd.com>, Alain Volmat <alain.volmat@foss.st.com>,
+ Liviu Dudau <liviu.dudau@arm.com>, Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Peter Senna Tschudin <peter.senna@gmail.com>, Ian Ray <ian.ray@ge.com>,
+ Martyn Welch <martyn.welch@collabora.co.uk>, Inki Dae
+ <inki.dae@samsung.com>, Seung-Woo Kim <sw0312.kim@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar
+ <alim.akhtar@samsung.com>, Stefan Agner <stefan@agner.ch>,
+ Alison Wang <alison.wang@nxp.com>,
+ Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Rob Clark <robdclark@gmail.com>,
+ Abhinav Kumar <quic_abhinavk@quicinc.com>, Sean Paul <sean@poorly.run>,
+ Marijn Suijten <marijn.suijten@somainline.org>,
+ Dave Airlie <airlied@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Sandy Huang <hjc@rock-chips.com>, =?UTF-8?Q?Heiko_St=C3=BCbner?=
+ <heiko@sntech.de>, Andy Yan <andy.yan@rock-chips.com>,
+ Chen-Yu Tsai <wens@csie.org>, Samuel Holland <samuel@sholland.org>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Mikko Perttunen <mperttunen@nvidia.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Dave Stevenson <dave.stevenson@raspberrypi.com>,
+ =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
+ Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
+ Gurchetan Singh <gurchetansingh@chromium.org>, Chia-I Wu
+ <olvaffe@gmail.com>, Zack Rusin <zack.rusin@broadcom.com>,
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ nouveau@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+ linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+ freedreno@lists.freedesktop.org, virtualization@lists.linux.dev,
+ spice-devel@lists.freedesktop.org, linux-rockchip@lists.infradead.org,
+ linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org
+References: <20241115-drm-connector-mode-valid-const-v1-0-b1b523156f71@linaro.org>
+ <20241115-drm-connector-mode-valid-const-v1-3-b1b523156f71@linaro.org>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?Rapha=C3=ABl_Gallais-Pou?= <rgallaispou@gmail.com>
+In-Reply-To: <20241115-drm-connector-mode-valid-const-v1-3-b1b523156f71@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sun, Nov 17, 2024 at 11:08:43PM +0100, Alexandre Belloni wrote:
-> On 16/11/2024 20:36:54+0100, Alexandre Belloni wrote:
-> > On 15/11/2024 14:48:58-0500, Frank Li wrote:
-> > > From: Jacky Bai <ping.bai@nxp.com>
-> > >
-> > > Enable the RTC by default even when no valid time is set to ensure the
-> > > RTC's time read and alarm functions work properly. Without this, running
-> > > hwclock results in the following error:
-> > >
-> > > hwclock: ioctl(RTC_RD_TIME) to /dev/rtc0 to read the time failed: Invalid argument
-> > >
-> >
-> >
-> > What is providing your hwclock and which version does it have?
->
->
-> This is a bug in util-linux that needs to be fixed.
 
-What's suposed/expected beheavor? I think rtc should be enable by default.
 
-Frank
+> Make hda_get_mode_idx() accept const struct drm_display_mode pointer
+> instead of just raw struct drm_display_mode.  This is a preparation to
+> converting the mode_valid() callback of drm_connector to accept const
+> struct drm_display_mode argument.
+> 
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> ---
 
-> >
-> >
-> > > Fixes: eb7b85853c38 ("rtc: bbnsm: Add the bbnsm rtc support")
-> > > Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-> > > Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >  drivers/rtc/rtc-nxp-bbnsm.c | 3 +++
-> > >  1 file changed, 3 insertions(+)
-> > >
-> > > diff --git a/drivers/rtc/rtc-nxp-bbnsm.c b/drivers/rtc/rtc-nxp-bbnsm.c
-> > > index fa3b0328c7a25..6610db2f75125 100644
-> > > --- a/drivers/rtc/rtc-nxp-bbnsm.c
-> > > +++ b/drivers/rtc/rtc-nxp-bbnsm.c
-> > > @@ -189,6 +189,9 @@ static int bbnsm_rtc_probe(struct platform_device *pdev)
-> > >  	/* clear all the pending events */
-> > >  	regmap_write(bbnsm->regmap, BBNSM_EVENTS, 0x7A);
-> > >
-> > > +	/* Enable the Real-Time counter */
-> > > +	regmap_update_bits(bbnsm->regmap, BBNSM_CTRL, RTC_EN_MSK, RTC_EN);
-> > > +
-> > >  	device_init_wakeup(&pdev->dev, true);
-> > >  	dev_pm_set_wake_irq(&pdev->dev, bbnsm->irq);
-> > >
-> > > --
-> > > 2.34.1
-> > >
-> >
-> > --
-> > Alexandre Belloni, co-owner and COO, Bootlin
-> > Embedded Linux and Kernel engineering
-> > https://bootlin.com
->
-> --
-> Alexandre Belloni, co-owner and COO, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
+Hi Dmitry,
+
+Thank you for the patch.
+
+Acked-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
+
+
+Regards,
+Raphaël
