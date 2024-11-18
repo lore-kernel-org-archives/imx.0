@@ -1,123 +1,89 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB317193071;
-	Mon, 18 Nov 2024 10:12:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F2F25760;
+	Mon, 18 Nov 2024 10:25:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731924726; cv=none; b=l996AAettv+sInuG74O1YzEdV6Zxg0C8QiAq5ZSYRfr5xdSHrdqgppHr9206QxNhIddSJWFNdQjXioWG9e3c2HatLnHofuZRedNwDGxOPZOSXwLrAAr3uHCgicF9zWor+SLiCfJQo9ogHGfi3he6IWLmOTlhp+f7OTcxonwxwdQ=
+	t=1731925517; cv=none; b=HQggiMl3LY/KNzjMjtvnm+7bHM4xEVDeus1hsu9fxdlivAcEHwyo9OY5GLQW+3hNpDeEW1dhFEsL6V4oIJiMhnNe+7PN09U+JftOq2W/DEubXCEDmgFt5AnQEjlKa1Qhre4qBc3j4BNLSMB4kkHDl05C4+XLGmTZf2cHVHb9uFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731924726; c=relaxed/simple;
-	bh=tvZh19UrT7RhLG31esa3Q+Wb623PF1oP3Z3DIP8DHuU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Uz3MbpbmJEaAhydc+G2BMwcWoJPsA0wzuK9ubAjF8lWF7yeHb+LGwoRa+wCQVGSBstKKZBVlOFzzMid/LhMrnz8eGzZSyD52dhCjDYISr+opi+sROcJwPV6XP31EljgXmaJdYGtyrbg6TLtUtrKXNjr7pS81ZY2OpwhTApJMSHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FbZhR4WY; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1731925517; c=relaxed/simple;
+	bh=ggXBfg4okLKWMAgjg72jaDL3DCA1UF4GqsJy38hSKnY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=abV465xEQhLffh2onGMFd8SRx3z+6q9A+d8tbjHSPB5juO9Cq/trlquSxCS+V6eAc170Zs/5UB+2M9wlrwTgce4sFC9dZLBAzKYzUF+CcrnsJneFNz5dgMMJkj6zZJnxaPsVUQxSKHcY0UTNXFF7ZYRlC0OKBSuiOGvzUEulX8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sJCCrg9b; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FbZhR4WY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731924726; x=1763460726;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=tvZh19UrT7RhLG31esa3Q+Wb623PF1oP3Z3DIP8DHuU=;
-  b=FbZhR4WYmb6BRRIbUciN7k3vn5BVeUVu5jIKVFyAhtt39SYujaptTVGl
-   cJXEuKJE2n4x3BkzVsmAby3w1e3DzKPqn3Cf9Rjl5bHS8mNWkzolPk8lf
-   arULmNOIChx8gO1hx744ziuZiyK6o/SfABU+FnOA1YGbITAgGTjnTFmdT
-   TXKvLv7knRvFdJXag4tHxtFLQ0YwgTnWcDnG5Y5fbGbWCZxBZe/5pNCR9
-   /Y2VSwNbjCt/4tYlL4zIzIihMu0NA40bje0HJVM9pH2/xFYEgJPZQG2oF
-   m0zsgqCS+j2aSOuoLks6zKeES+anChyCvvSGvzuFNiAnZ2tmXSy/M9G6z
-   Q==;
-X-CSE-ConnectionGUID: GtIsCuEsT8WuSxagFQgRAQ==
-X-CSE-MsgGUID: X/cEg4k6QRigrsIzbrVI6w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="31723834"
-X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; 
-   d="scan'208";a="31723834"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2024 02:12:05 -0800
-X-CSE-ConnectionGUID: YDbs2x0ITtmplL0jZe8pGw==
-X-CSE-MsgGUID: U7Vin29dRNK1mgt6lMVUiw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; 
-   d="scan'208";a="89100237"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.246.148])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2024 02:11:40 -0800
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, Rodrigo Vivi
- <rodrigo.vivi@intel.com>, Joonas Lahtinen
- <joonas.lahtinen@linux.intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten
- Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Karol
- Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>, Danilo
- Krummrich <dakr@redhat.com>, Harry Wentland <harry.wentland@amd.com>, Leo
- Li <sunpeng.li@amd.com>, Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>, Alex
- Deucher <alexander.deucher@amd.com>, Christian =?utf-8?Q?K=C3=B6nig?=
- <christian.koenig@amd.com>, Xinhui Pan <Xinhui.Pan@amd.com>, Alain Volmat
- <alain.volmat@foss.st.com>, Raphael Gallais-Pou <rgallaispou@gmail.com>,
- Liviu Dudau <liviu.dudau@arm.com>, Andrzej Hajda
- <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>,
- Robert Foss <rfoss@kernel.org>, Laurent Pinchart
- <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Peter Senna Tschudin
- <peter.senna@gmail.com>, Ian Ray <ian.ray@ge.com>, Martyn Welch
- <martyn.welch@collabora.co.uk>, Inki Dae <inki.dae@samsung.com>, Seung-Woo
- Kim <sw0312.kim@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar
- <alim.akhtar@samsung.com>, Stefan Agner <stefan@agner.ch>, Alison Wang
- <alison.wang@nxp.com>, Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
- Philipp Zabel <p.zabel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Rob Clark
- <robdclark@gmail.com>, Abhinav Kumar <quic_abhinavk@quicinc.com>, Sean
- Paul <sean@poorly.run>, Marijn Suijten <marijn.suijten@somainline.org>,
- Dave Airlie <airlied@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, Sandy
- Huang <hjc@rock-chips.com>, Heiko =?utf-8?Q?St=C3=BCbner?=
- <heiko@sntech.de>, Andy Yan
- <andy.yan@rock-chips.com>, Chen-Yu Tsai <wens@csie.org>, Samuel Holland
- <samuel@sholland.org>, Thierry Reding <thierry.reding@gmail.com>, Mikko
- Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>,
- Dave Stevenson <dave.stevenson@raspberrypi.com>, =?utf-8?Q?Ma=C3=ADra?=
- Canal
- <mcanal@igalia.com>, Raspberry Pi Kernel Maintenance
- <kernel-list@raspberrypi.com>, Gurchetan Singh
- <gurchetansingh@chromium.org>, Chia-I Wu <olvaffe@gmail.com>, Zack Rusin
- <zack.rusin@broadcom.com>, Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- nouveau@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
- linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-msm@vger.kernel.org,
- freedreno@lists.freedesktop.org, virtualization@lists.linux.dev,
- spice-devel@lists.freedesktop.org, linux-rockchip@lists.infradead.org,
- linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH 5/5] drm/connector: make mode_valid accept const struct
- drm_display_mode
-In-Reply-To: <20241115-drm-connector-mode-valid-const-v1-5-b1b523156f71@linaro.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20241115-drm-connector-mode-valid-const-v1-0-b1b523156f71@linaro.org>
- <20241115-drm-connector-mode-valid-const-v1-5-b1b523156f71@linaro.org>
-Date: Mon, 18 Nov 2024 12:11:37 +0200
-Message-ID: <87jzd04zs6.fsf@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sJCCrg9b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2136EC4CECC;
+	Mon, 18 Nov 2024 10:25:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731925516;
+	bh=ggXBfg4okLKWMAgjg72jaDL3DCA1UF4GqsJy38hSKnY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sJCCrg9bvID2IyZQEAeQeREC3tc+Lc7oWwX4q7GVqzfB7U2G0UxpqoKMwl6LYHt7D
+	 0/LqX4mgHcylmECKoDG9/grRXGMeDTD3uL5Haf/Ou9cuO42a2U2Yvkl7/HRHonK/l3
+	 cJ0MoOCJ+7GBMj9HHGFX5anGLRBmh4z0s2BGT2x98azXgcAWx/fYFgAi7Ys6FI5vn6
+	 qJKiCWMw26fUyWrb1PmEmb+KI8/VCGGpl3Fb+TEnmVrJzyamH1l5ddbG4DUq99Csgw
+	 w7jpdRqgpzHbTHJub4CEzXj/2veMUuSIUcFIUlQ4cqiH1n9n27a4Qr34D6ZbuTH3ZN
+	 3L7+V/h9OwKDw==
+Date: Mon, 18 Nov 2024 10:25:08 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Sudeep Holla <sudeep.holla@arm.com>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Peng Fan <peng.fan@nxp.com>, arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org
+Subject: Re: [PATCH] firmware: arm_scmi: fix i.MX build dependency
+Message-ID: <5b8e7658-85bd-4f08-b535-49dd228badd1@sirena.org.uk>
+References: <20241115230555.2435004-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
-
-On Fri, 15 Nov 2024, Dmitry Baryshkov <dmitry.baryshkov@linaro.org> wrote:
-> The mode_valid() callbacks of drm_encoder, drm_crtc and drm_bridge
-> accept const struct drm_display_mode argument. Change the mode_valid
-> callback of drm_connector to also accept const argument.
->
-> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-
-Acked-by: Jani Nikula <jani.nikula@intel.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="QAxsM1bWuCAH5DLb"
+Content-Disposition: inline
+In-Reply-To: <20241115230555.2435004-1-arnd@kernel.org>
+X-Cookie: Used staples are good with SOY SAUCE!
 
 
--- 
-Jani Nikula, Intel
+--QAxsM1bWuCAH5DLb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Sat, Nov 16, 2024 at 12:05:18AM +0100, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+>=20
+> The newly added SCMI vendor driver references functions in the
+> protocol driver but needs a Kconfig dependency to ensure it can link,
+> essentially the Kconfig dependency needs to be reversed to match the
+> link time dependency:
+
+Acked-by: Mark Brown <broonie@kernel.org>
+
+--QAxsM1bWuCAH5DLb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmc7FgMACgkQJNaLcl1U
+h9AHygf+I9zVvzEwmUe8hbkMAhNzupktcwow3B9jxslgerjTscA5tuygFib3caoG
+anu+zdsOxBLh/pYdc/MrKXBEt5Avbe7rK+hXv7po0spzAX/Z45NyvuZ0wsQjm43E
+0PbRY139l03Y93jWXC5YEupS9M9p7/Fh0JdTn+qSca1jT8P0B+/OZTHGghRLteLZ
+1qTG77fhn4ru60+MADnLvYqw47eVOgcykhZJSCA3qSfkekSxypAvq13lvyBSiPgj
+lVEjzhWsaaAzfI1q4u+TcsPbuuMoLk6uFX1HBwSAeD+DUePRPuoPg+jRVEjUf08/
+66z5nRhBiYqT06/LiOjkjLecgy/K+g==
+=Rp8x
+-----END PGP SIGNATURE-----
+
+--QAxsM1bWuCAH5DLb--
