@@ -1,192 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FFBD1798C;
-	Tue, 19 Nov 2024 14:07:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0E61CCB35
+	for <imx@lists.linux.dev>; Tue, 19 Nov 2024 14:59:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732025234; cv=none; b=IfLhfBMWmcUfVI1PyHFjBoHehZKFZWmdU52BQEWYxo8vJlXEXyvDsrs5vziRzJYOud7OM3O+VS7HzUEDsuPGwwB/ySXadCLPz1lqM91zadqnxIMBC+Es913hA3BzaUZCxugN629bxx0n32zAFNlCIGDYaIpiqjLcTecQsOPahn8=
+	t=1732028385; cv=none; b=RRqc+tHYjHtcRZk30sWU6D7Ov9Q6SA+SC1KZ3WbtzQevgd6/U0zcxRjPT17POR3s87fUOpX8loivrHB4eRVtc1EuGJ+U0Tzz3akltw2oukc/k6EhK9sY/Gs2SUiyTV4F1LvW75AHDckyx2smvKx+ErJgPJJ/F6fYmJSX4J3JNQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732025234; c=relaxed/simple;
-	bh=mebWzILOAfAKv58yaSkEWhm/2aEw4TVR9ZNMKA1P9ic=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E3sO2aGrLyb1uXwYtlHh4T6cVqaFqDO347fitrLZXYotllx4SedzGJXvfIEK6dwhFrNOzd9jZVM/0MKpDBSxqQzkHVhKxEGFmhakU9AWncTpq1xZaKPuX6Tw9lsGEFPuQfsCNuOcSUuEFj3X8LCl6RcKOGu5aKJ43hltb0Dr2Tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BlZJQ3RH; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BlZJQ3RH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C68CC4CECF;
-	Tue, 19 Nov 2024 14:07:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732025234;
-	bh=mebWzILOAfAKv58yaSkEWhm/2aEw4TVR9ZNMKA1P9ic=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BlZJQ3RHFY0useN/T0rRiAgdzcCHwJaiesCKlxjfCmpEO1VOcTkkwumKMonFWR2dq
-	 ELg5RU6UHlnI55GtQjCuTB1IQw48/G6P/53QjW0bMgFMNLtzLJtolmMZ5a/Lpl6J0G
-	 CYunRywsUYknOKVeFZtmy9h8+OPdi9WrMf8FCC67JL/FdVch5/9BRUEMNraV/7fp2+
-	 H2MnyMHX0hPNwFLHUOVaLVdCupJPWJBrL8TL3RLnbY2KeyjcKTyCd9f/3TqxAhJE3O
-	 RYKaw12ZkwPcd/h+GSczJaEe+ooGh4/yqAo5P2dCLq6sTat5mPUXCVx+k/2mHsbhic
-	 cZhDf2tXchclg==
-Message-ID: <d137cc7e-9b78-4cfb-ac50-023d1ea4c82b@kernel.org>
-Date: Tue, 19 Nov 2024 15:07:08 +0100
+	s=arc-20240116; t=1732028385; c=relaxed/simple;
+	bh=jLbles4+yT3+MXOfnSEudDLKvptgFiWTDvyagS1hn0w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gZJKp73hjgJCmWfxJ+XI9EmpOXPQYYF0GdpJTwmGgUNwEuUHzeXq0F+NwbCCRgsGji+hEADdeJ3eu84DE00SPyrYooTFLIpyk7lDEW8s1nb56imwZX80xqns1p6OkeaDhkfnL6eWzW7/x7965stsWX/K5EXnrc4WrbR7hEOg9qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id A8AA9201A7C;
+	Tue, 19 Nov 2024 15:51:06 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 8CBF0200A3E;
+	Tue, 19 Nov 2024 15:51:06 +0100 (CET)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 7ACB32037C;
+	Tue, 19 Nov 2024 15:51:05 +0100 (CET)
+Date: Tue, 19 Nov 2024 15:51:06 +0100
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Minda Chen <minda.chen@starfivetech.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+	Keyur Chudgar <keyur@os.amperecomputing.com>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	NXP S32 Linux Team <s32@nxp.com>
+Subject: Re: [PATCH v4 14/16] net: stmmac: dwmac-s32: add basic NXP S32G/S32R
+ glue driver
+Message-ID: <Zzyl2q7D1GIA1vUG@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20241028-upstream_s32cc_gmac-v4-0-03618f10e3e2@oss.nxp.com>
+ <20241028-upstream_s32cc_gmac-v4-14-03618f10e3e2@oss.nxp.com>
+ <xanb4j56u2rjwpkyj5gwh6y6t36gpvawph62jw72ksh7jximhr@cjwlp7wsxgp6>
+ <ZyOXgdqUgg2qlCah@lsv051416.swis.nl-cdc01.nxp.com>
+ <b9aefcf2-8f0d-431c-865b-34c9b8e69c4d@kernel.org>
+ <ZyO7fn3NWULA9bGG@lsv051416.swis.nl-cdc01.nxp.com>
+ <ZyO9Mfq+znZdJJrJ@lsv051416.swis.nl-cdc01.nxp.com>
+ <9e876379-c555-45e6-8a8a-752d90fdc8ed@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/8] dt-bindings: clock: imx8m-clock: support spread
- spectrum clocking
-To: Peng Fan <peng.fan@nxp.com>,
- Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-amarula@amarulasolutions.com" <linux-amarula@amarulasolutions.com>,
- Abel Vesa <abelvesa@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Michael Turquette <mturquette@baylibre.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>
-References: <20241106090549.3684963-1-dario.binacchi@amarulasolutions.com>
- <20241106090549.3684963-2-dario.binacchi@amarulasolutions.com>
- <4bix7me5vaoyhcuffyp4btajmhy7no6ltczoesopaz2fqupyaw@fensx4nn472u>
- <b7c1499b-8337-421c-9734-6e518d678ff8@kernel.org>
- <CABGWkvrYJL9=zrPSFuEAgKO+9gDHD6RmCJM6Br6Le_eh578ETQ@mail.gmail.com>
- <54dd6ae6-b992-451e-b1c6-8a1968955f4a@kernel.org>
- <PAXPR04MB8459BE3474EFD4FCC28E0E82885D2@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <8c310eca-d695-418c-82cb-a89351d83887@kernel.org>
- <PAXPR04MB8459B6F8D5C623D19CCF6B39885E2@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <bc02327b-dea8-48c9-b036-4a0eda0c4cb9@kernel.org>
- <9f6b243b-0642-41db-85ed-d020bfa3e6e2@kernel.org>
- <PAXPR04MB845978F4D3C6E887E0DE8D5488582@PAXPR04MB8459.eurprd04.prod.outlook.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <PAXPR04MB845978F4D3C6E887E0DE8D5488582@PAXPR04MB8459.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9e876379-c555-45e6-8a8a-752d90fdc8ed@kernel.org>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-On 11/11/2024 02:49, Peng Fan wrote:
->>> I don't understand now even more. Or I understand even less now.
->> Why
->>> binding references its own clocks via phandle? This makes no sense
->> at
->>> all, except of course assigned clocks, but that's because we have one
->>> property for multiple cases.
->>
->> And BTW if that was the point then the example is confusing because
->> the &clk phandle is not the device node in the example but it should.
->> Neither description says which device's clocks are these.
->>
->> This is expressed very poorly in the binding, look:
->> "Phandles of the PLL" - it clearly suggests some other clocks, not its
->> own, that's so obvious I did not even think of asking. Patchset goes
->> slow also because of poor explanation, lack of diagrams and expecting
->> me to remember your clock hierarchy.
+On Fri, Nov 01, 2024 at 04:40:50PM +0100, Krzysztof Kozlowski wrote:
+> On 31/10/2024 18:24, Jan Petrous wrote:
+> > On Thu, Oct 31, 2024 at 06:16:46PM +0100, Jan Petrous wrote:
+> >> On Thu, Oct 31, 2024 at 04:44:45PM +0100, Krzysztof Kozlowski wrote:
+> >>> On 31/10/2024 15:43, Jan Petrous wrote:
+> >>>> On Tue, Oct 29, 2024 at 08:13:40AM +0100, Krzysztof Kozlowski wrote:
+> >>>>> On Mon, Oct 28, 2024 at 09:24:56PM +0100, Jan Petrous (OSS) wrote:
+> >>>>>> +	plat->init = s32_gmac_init;
+> >>>>>> +	plat->exit = s32_gmac_exit;
+> >>>>>> +	plat->fix_mac_speed = s32_fix_mac_speed;
+> >>>>>> +
+> >>>>>> +	plat->bsp_priv = gmac;
+> >>>>>> +
+> >>>>>> +	return stmmac_pltfr_probe(pdev, plat, &res);
+> >>>>>> +}
+> >>>>>> +
+> >>>>>> +static const struct of_device_id s32_dwmac_match[] = {
+> >>>>>> +	{ .compatible = "nxp,s32g2-dwmac" },
+> >>>>>> +	{ .compatible = "nxp,s32g3-dwmac" },
+> >>>>>> +	{ .compatible = "nxp,s32r-dwmac" },
+> >>>>>
+> >>>>> Why do you need three same entries?
+> >>>>>
+> >>>>
+> >>>> We have three different SoCs and in v3 review you told me
+> >>>> to return all back:
+> >>>> https://patchwork.kernel.org/comment/26067257/
+> >>>
+> >>> It was about binding, not driver.
+> >>>
+> >>> I also asked there: use proper fallback and compatibility. Both comments
+> >>> of course affect your driver, but why choosing only first part?
+> >>>
+> >>
+> >> Does it mean I should remove first two (G2/G3) members from match array
+> >> and use "nxp,s32r-dwmac" as fallback for G2/G3? And similarly change
+> >> the bindings to:
+> >>
+> >>   compatible:
+> >>     oneOf:
+> >>       - const: nxp,s32r-dwmac
+> >>       - items:
+> >> 	  - enum:
+> >> 	      - nxp,s32g2-dwmac
+> >> 	      - nxp,s32g3-dwmac
+> >>           - const: nxp,s32r-dwmac
+> >>
+> >> And add here, into the driver, those members back when some device
+> >> specific feature will be needed? Am I understand your hints right?
+> >>
+> > 
+> > Sorry, it's not correct. This way I'm not able to detect S32R which is
+> > the only one with higher speed.
+> > 
+> > Then I could use the G2 as fallback I think, Ie.:
+> > 
+> >   compatible:
+> >     oneOf:
+> >       - const: nxp,s32g2-dwmac
+> >       - items:
+> > 	  - enum:
+> >               - nxp,s32g3-dwmac
+> >               - nxp,s32r-dwmac
+> >            - const: nxp,s32g2-dwmac
 > 
+> I don't understand. In both cases you can 'detect r', if by this you
+> meant match and bind. I don't care which one is the fallback, but if one
+> does not work it points to different issues with your code.
 > 
-> Dario may improve the patchset in new version. But let me just try
-> to explain a bit more about the hardware logic, I hope this could
-> give you some knowledge on i.MX clock and we could get some
-> suggestions on next:
-> 
-> 
-> OSC will generate 24MHz clock to Anatop module.
-> Anatop module takes 24MHz as input and produces various PLLs.
-> Clock Control Module(CCM) takes PLLs as input, and outputs the final
-> clocks to various IPs, saying video IPs.
-> 
-> The Anatop module could produce PLLs with spread spectrum enabled.
-> The Clock Control module just divides the freq and output the end IPs.
-> The end IPs cares about spread spectrum for high quality clock, the
-> Clock Control modules does not care. Now back to binding,
 
-All above makes sense. The previous message:
-"Because in current design, ccm is taken as producer of
-CLK_IMX8M_VIDEO_PLL, not consumer. "
+I see. I will use the last variant (with s32g2 as fallback) in v5.
 
-confused me a lot because it suggests that these PLLs are provided by
-CCM. It turns out not... so the answer is like I said long time ago: you
-must take these clocks as inputs and this is done via clocks property.
-Not fsl,clocks or fsc,i-want-more-properties-clocks.
-
-> 
-> There is a imx8m-anatop binding fsl,imx8m-anatop.yaml for anatop
-> and a imx8m-clock.yaml binding for clock control module.
-> 
-> I think the patchset is to enable spread spectrum of a PLL globally,
-> not for a specific device saying video IP here. So the patchset put
-> the properties under the clock control module.
-
-I understand. This looks however as misrepresentation. If you do not
-have the video IP block enabled, why would you configure spread
-spectrum? IOW, spread spectrum as you described is needed for the final
-IP block and this final IP block should configure it. Properties belong
-there.
-
-It's kind of similar for some OPP/performance/bandwidth requests. Even
-more similar to clock frequencies. Which device requests to configure
-given clock frequencies? Final consumer, not clock controller.
-
-
-> 
-> For example, there are VPU_JPEG, VPU_DECODE, both will use
-> video PLL with high quality. So the clock producer just produce
-> PLLs with Spread Spectrum(SS) enabled, and put the SS properties
-> under CCM or anatop node, not video IP nodes.
-> 
-> 
-> We could have a talk on IRC if Dario, Abel and you are available to
-> discuss on this topic.
-
-
-
-Best regards,
-Krzysztof
+BR.
+/Jan
