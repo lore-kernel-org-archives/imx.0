@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C38513FD83;
-	Tue, 19 Nov 2024 09:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A5D146A73;
+	Tue, 19 Nov 2024 09:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732008131; cv=none; b=PDXyYqa10uhnDb13e2EIJg5HAtJx/3KFmTvEhBcY7qTROj90VaSozjbdNEOLOxT5N72e9I54eiwGJ9gYciXWrHq7wsG3xyQU0Q/H2GK4GRf6569BOdZXUV7xulvWHDiqeEr5ju3IRcnchfPx5nNyv7PeZtBR5RINs+6kWtaxqbI=
+	t=1732008377; cv=none; b=Q/JLxtNNV+3za0tZB3S4udYPy4EonDy2i/l0euMsmpGCbL3BbJGiZmZoaA9QfcFDmDVkTWd7CWDdm4SaIXbQxt8Y3yirs6mxgQbugfDNcBoGPSpwWNvfvSOvsDZvp7kfSo6Nhs8St5TLUwdIGUZ4qLMcvkHY171orHFtJsqnt2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732008131; c=relaxed/simple;
-	bh=otKua02jAeNlNSGxTqaWXT14ODl0eEvT6E1rePN2ac8=;
+	s=arc-20240116; t=1732008377; c=relaxed/simple;
+	bh=7mePgQRSkpmfIveXMK9lb5lPmV+fFAPKdLmVe2Fi60A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CTJgcrN5ojtxcgmaL2o8CSJNQidz3iygZzRDL4Qrumbg4Jg6wF+zHKBU26iGFIEJv77FsAi0ox70Az6BKblmQkjX66RSxxfKoWFUdqRQ6WF0MrFQYX34WropNv7SlEVyWHjjlqg8XkLnGItjnzggBFMqsVcQzaHBAVDfSeUPGkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nz3EaCAG; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=rbK2CBYiGA1O+Q44t7OL3pwOkkxxYsXrKbxu3DMYt4w2/v9bfszo9DVuzMjCU7T3Nmo42Ve10BsGpPzJMXIzLjn48mwNn4c3tLCdqvIuscK+wQZuoDIX5XH3xom+gkOQNvHiz5AOxFAJhUCL/T0I0fBTD3Jnfm6AtLbfbhSHlcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GHfigUYs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nz3EaCAG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 443D5C4CECF;
-	Tue, 19 Nov 2024 09:22:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GHfigUYs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CCD8C4CECF;
+	Tue, 19 Nov 2024 09:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732008130;
-	bh=otKua02jAeNlNSGxTqaWXT14ODl0eEvT6E1rePN2ac8=;
+	s=k20201202; t=1732008377;
+	bh=7mePgQRSkpmfIveXMK9lb5lPmV+fFAPKdLmVe2Fi60A=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nz3EaCAGpxUWm5KBvWbBNUqVh5POJTVqhagezRvEJGHLQSbilt5H3Esug8q0Lxs7N
-	 jgGggeudPMYctQbf/D8Zp/rpLronqn323I30tIaiP0uJ/h3vQdjj0BlVJPA0n7guuh
-	 oKMi5sKhSvssjNXfJ/ZaMBOP27oa8cfcSrfQ8oz/IP9daUfGjizywOBEBgrhh+TddF
-	 hD3oL8RcdomkG8P+mujOJAHGtSHzViQzmbRzj4rjRDEbwkcnItRryfNlgTycD5zvTA
-	 ru72xfuQeGYPz8Dp7vF0EAyQeAWyNL6QSGOx+cDCDMSwJFA8q4UCY3BCxsHMjkAATL
-	 qfUp0k/OWHGFg==
-Message-ID: <18e7a32c-a8de-4e5a-80aa-248b2090e346@kernel.org>
-Date: Tue, 19 Nov 2024 10:21:59 +0100
+	b=GHfigUYs7mnM49q4h+91RIdknDmcVyeysT+2BAWJW5HgPzkbL01OM+N8KUiqTTQwR
+	 gIpcLQPuilmBvDRcjlo6g1idMTOyNOjyS2MFOaEfaYDBaYekxgCiCr9m4Oe2kDowh4
+	 B3hmjuH6pqBJiHSYsfju8/mhCcbfKEtZEHuBR1587M5gkhEJuuTCb0rmdtsMy5UjBM
+	 +a185obDtQ/DDZ85J79VFpJGTYyYnPPKAF76eIUJIE9qlzzngnQvk588ApeOAaNdOa
+	 Juu7yfodN5ccE3sk/ztOa12A1TX0aAml6kPVo6cTsf289SGESEUQb7Y3WjJi96blk+
+	 OZu0t1Td0ClDQ==
+Message-ID: <2ccbf862-2b3e-4c08-b6bd-d9571e88a675@kernel.org>
+Date: Tue, 19 Nov 2024 10:26:07 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,8 +35,7 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/7] dt-bindings: mfd: add support for the NXP SIUL2
- module
+Subject: Re: [PATCH v6 4/7] pinctrl: s32: convert the driver into an mfd cell
 To: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>,
  Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
  <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>,
@@ -56,7 +55,7 @@ Cc: linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
  Alberto Ruiz <aruizrui@redhat.com>, Enric Balletbo <eballetb@redhat.com>,
  Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev
 References: <20241113101124.1279648-1-andrei.stefanescu@oss.nxp.com>
- <20241113101124.1279648-2-andrei.stefanescu@oss.nxp.com>
+ <20241113101124.1279648-5-andrei.stefanescu@oss.nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -102,133 +101,95 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20241113101124.1279648-2-andrei.stefanescu@oss.nxp.com>
+In-Reply-To: <20241113101124.1279648-5-andrei.stefanescu@oss.nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 13/11/2024 11:10, Andrei Stefanescu wrote:
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - nxp,s32g2-siul2
-> +      - nxp,s32g3-siul2
+>  
+> -static inline void s32_pin_set_pull(enum pin_config_param param,
+> -				   unsigned int *mask, unsigned int *config)
+> +static void s32_pin_set_pull(enum pin_config_param param,
+> +			     unsigned int *mask, unsigned int *config)
+>  {
+>  	switch (param) {
+>  	case PIN_CONFIG_BIAS_DISABLE:
+> @@ -762,15 +757,15 @@ static int s32_pinctrl_parse_groups(struct device_node *np,
+>  	grp->data.name = np->name;
+>  
+>  	npins = of_property_count_elems_of_size(np, "pinmux", sizeof(u32));
+> -	if (npins < 0) {
+> -		dev_err(dev, "Failed to read 'pinmux' property in node %s.\n",
+> -			grp->data.name);
+> -		return -EINVAL;
+> -	}
+> -	if (!npins) {
+> -		dev_err(dev, "The group %s has no pins.\n", grp->data.name);
+> -		return -EINVAL;
+> -	}
+> +	if (npins < 0)
+> +		return dev_err_probe(dev, -EINVAL,
+> +				     "Failed to read 'pinmux' in node %s\n",
+> +				     grp->data.name);
 
-Not much improved. See other NXP bindings how they do this.
-
-> +
-> +  reg:
-> +    maxItems: 2
-> +
-> +  reg-names:
-> +    items:
-> +      - const: siul20
-> +      - const: siul21
-> +
-> +  gpio-controller: true
-> +
-> +  "#gpio-cells":
-> +    const: 2
-> +
-> +  gpio-ranges:
-> +    maxItems: 2
-> +
-> +  gpio-reserved-ranges:
-> +    maxItems: 2
-
-That's odd to always require two reserved ranges. Does this mean all
-devices have exactly the same reserved GPIOs? Then the driver should not
-export them.
+I do not see how this change is related. Looks you are mixing cleanups
+with refactoring into MFD cell. These are two different things.
 
 > +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  interrupt-controller: true
-> +
-> +  "#interrupt-cells":
-> +    const: 2
-> +
-> +  nvmem-layout:
-> +    $ref: /schemas/nvmem/layouts/nvmem-layout.yaml#
-> +    description:
-> +      This container may reference an NVMEM layout parser.
-> +
-> +patternProperties:
-> +  "-hog(-[0-9]+)?$":
-> +    required:
-> +      - gpio-hog
-> +
-> +  "-pins$":
-> +    type: object
-> +    additionalProperties: false
-> +
-> +    patternProperties:
-> +      "-grp[0-9]$":
-> +        type: object
-> +        allOf:
-> +          - $ref: /schemas/pinctrl/pinmux-node.yaml#
-> +          - $ref: /schemas/pinctrl/pincfg-node.yaml#
-> +        description:
-> +          Pinctrl node's client devices specify pin muxes using subnodes,
-> +          which in turn use the standard properties below.
-> +
-> +        properties:
-> +          bias-disable: true
-> +          bias-high-impedance: true
-> +          bias-pull-up: true
-> +          bias-pull-down: true
-> +          drive-open-drain: true
-> +          input-enable: true
-> +          output-enable: true
-> +
-> +          pinmux:
-> +            description: |
-> +              An integer array for representing pinmux configurations of
-> +              a device. Each integer consists of a PIN_ID and a 4-bit
-> +              selected signal source(SSS) as IOMUX setting, which is
-> +              calculated as: pinmux = (PIN_ID << 4 | SSS)
-> +
-> +          slew-rate:
-> +            description: Supported slew rate based on Fmax values (MHz)
-> +            enum: [83, 133, 150, 166, 208]
-> +        required:
-> +          - pinmux
-> +
-> +        additionalProperties: false
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - reg-names
-> +  - gpio-controller
-> +  - "#gpio-cells"
-> +  - gpio-ranges
-> +  - gpio-reserved-ranges
-> +  - interrupts
-> +  - interrupt-controller
-> +  - "#interrupt-cells"
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    siul2@4009c000 {
+> +	if (!npins)
+> +		return dev_err_probe(dev, -EINVAL,
+> +				     "The group %s has no pins\n",
+> +				     grp->data.name);
+>  
+>  	grp->data.npins = npins;
+>  
+> @@ -811,11 +806,9 @@ static int s32_pinctrl_parse_functions(struct device_node *np,
+>  	/* Initialise function */
+>  	func->name = np->name;
+>  	func->ngroups = of_get_child_count(np);
+> -	if (func->ngroups == 0) {
+> -		dev_err(info->dev, "no groups defined in %pOF\n", np);
+> -		return -EINVAL;
+> -	}
+> -
+> +	if (func->ngroups == 0)
+> +		return dev_err_probe(info->dev, -EINVAL,
+> +				     "No groups defined in %pOF\n", np);
+>  	groups = devm_kcalloc(info->dev, func->ngroups,
+>  				    sizeof(*func->groups), GFP_KERNEL);
+>  	if (!groups)
+> @@ -838,57 +831,42 @@ static int s32_pinctrl_parse_functions(struct device_node *np,
+>  static int s32_pinctrl_probe_dt(struct platform_device *pdev,
+>  				struct s32_pinctrl *ipctl)
+>  {
+> +	struct nxp_siul2_mfd *mfd = dev_get_drvdata(pdev->dev.parent);
+>  	struct s32_pinctrl_soc_info *info = ipctl->info;
+> -	struct device_node *np = pdev->dev.of_node;
+> -	struct resource *res;
+> -	struct regmap *map;
+> -	void __iomem *base;
+> -	unsigned int mem_regions = info->soc_data->mem_regions;
+> +	unsigned int mem_regions;
+> +	struct device_node *np;
+> +	u32 nfuncs = 0, i = 0, j;
+> +	u8 regmap_type;
+>  	int ret;
+> -	u32 nfuncs = 0;
+> -	u32 i = 0;
+>  
+> +	np = pdev->dev.parent->of_node;
+>  	if (!np)
+>  		return -ENODEV;
+>  
+> -	if (mem_regions == 0 || mem_regions >= 10000) {
+> -		dev_err(&pdev->dev, "mem_regions is invalid: %u\n", mem_regions);
+> -		return -EINVAL;
+> -	}
+> +	/* one MSCR and one IMCR region per SIUL2 module */
 
-<form letter>
-This is a friendly reminder during the review process.
+How is this related to converion into MFD cell?
 
-It seems my or other reviewer's previous comments were not fully
-addressed. Maybe the feedback got lost between the quotes, maybe you
-just forgot to apply it. Please go back to the previous discussion and
-either implement all requested changes or keep discussing them.
-
-Thank you.
-</form letter>
-
+Still looks like an ABI break.
 
 
 Best regards,
