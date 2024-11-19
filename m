@@ -1,115 +1,158 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2059F1CC89A
-	for <imx@lists.linux.dev>; Tue, 19 Nov 2024 15:25:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41EE21D0145
+	for <imx@lists.linux.dev>; Tue, 19 Nov 2024 15:41:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732029932; cv=none; b=F1y9eivzFtfHDF38ua1BBPkdUwlOt1iPNWWKU8RG4q9elTeL6jtQKQjfFI8RyYpAqdfh5w8ruW8eIh4V/Ya3WpKnEf/KjQImMbVJ9juEHeaAuAxTdf24keKtzdks4WaCs2Os90+37meVwo4lIN0r1FET/lKR6TA+YiQJDi52MBA=
+	t=1732030898; cv=none; b=Gz0AbIhNRe5lG7YeRU6H3Uf3L070eikxHf87kDE+YdqXoLgbxM6gWW11pJomdHcTFGCxoFCiMzVc6L0xLoazeZQiP9m5+J1qcpUOXbFUDG6Y+WMfqPhrSg27q3lZugxJb52+FVJABzcMkH9QvcDqmBUMOW+0NiqpuFl1FrwQBlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732029932; c=relaxed/simple;
-	bh=VH6iOtx79DeGUGJ4jw8WfbN0aFWGMbAWjSxfxYMIkoE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Rv/DMCHCVJ38raB5xuJ3MyLU9vD6ly4tMqhE/AeNtO54WCgYFALLugVz1Mfn8guucXyHbDFzsMUoCg5i57ONvhMfiSKAJAa6u9AdbQ8k/uhQxU0a2oKUsgexieoL1i81tzBxZx8MVARIaLwG2w09dRgtaJGKnzMXKNmxyW/d3gY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I0wR7IwN; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1732030898; c=relaxed/simple;
+	bh=LMlnjlnlYyS1T8w8ya2+4ZjbQ/AtQ6bGHG760o+tXPY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=fVDzrrH/RqIumoyk0aYEuNq5p6yVCgKrz83PZuBH3U5UDheO7veZpUUXDetwRehN2P907Dj6K29PNa9pK5TAAWxGrl/6jv+x0/cTVEUCXeyDJ/J2QO2Nf+Kcaer7RxOz8XDM+wvC2Kjq3Checfe05bD9zE8nYuU7f9mmCwJrins=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=io9RKrrl; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I0wR7IwN"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2ea49a1b4c8so2072168a91.2
-        for <imx@lists.linux.dev>; Tue, 19 Nov 2024 07:25:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732029930; x=1732634730; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dlci+2BKdigoipxB8Vb8O10YHCpzCE4DRKacOckTZAU=;
-        b=I0wR7IwNVeeqXzIHeatcViegSD3nIRzmZHFUEFoAhq0wvkhZD5EnyvWzskK2V1Tch5
-         lJ6Nch2HlnLJmAjKvZbYai5LV2v6ZM32voRUMP9rmgc6DPbvVUA0VpV/OaL1TjVLLrgS
-         FgZE7q9z8ubcQYDmhZYcpZIfn9mUuuj0g1rFi7B7IjLyXhUheQt7zsYz3IQ3tSa4i6Xx
-         jXL26n5sRXO8XJAdDY+er/HGo3dlaX6ny3NWWvXkTh/7cT4yOnOuELkYk811y6O4BLON
-         3sV3KYVngYmq3UBfMDqiyhI3vSz9+sBN0Gh4wptCvlC+S+eIgCQJRzloFP+3B1TsJ3LG
-         VvRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732029930; x=1732634730;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dlci+2BKdigoipxB8Vb8O10YHCpzCE4DRKacOckTZAU=;
-        b=RDlh2ngnJw67SA7GgqK5YjaTbI94ty2iKaZfhyv6I2FdvNBblNDCpHdS1k7AjCxnSZ
-         dGVgnenC0bM+kXVh5nl+zrNepb+cUIVs977Vp4aw6mq7gk9+KLi9Av0F0RY1f23R1KCx
-         8aJcKJn29bGjsYs6gRYQ7Bg38lfGLbvIL06kNWNsRT7OdyZRmF2H9pUOvqNfl8bXrrDd
-         jOotWfAOJpRYh41k3iLMbXFmN9Ii9FYj5Zgr+nyhECzAG9KqeOVty10CBVr6XqXwjWzJ
-         9WPD9k125QRAE3yiH6P7MYTOGa07t/CCYPp6+nH6z1ERQZWgxBMAI6ogmRkIbywiFla8
-         1DSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV49O2IQykqOIq6bYdQXhhB0kdo7IX1L3lR+JOxP+NN121sOhGaUMN7zpeT1fWDjVuiJIA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxx4Stf1OV5bbivGn4+/J70sU2Zb5ZDckz5f1Ba5tPhgpFRr8JU
-	jqLEVzKPlTbD+anf0pgHKyF+BFHFmlhbD1WCqMHq2345P8tBOgOXpxSMM+37YsF92sWlbLU9dsp
-	awx05DRguhvi6vWpfCgKmXu2jdns=
-X-Google-Smtp-Source: AGHT+IE7/1v+nPPImVoZLSJAIkad+M/ZIXkCwHk4Aqn15nIJP6zl1vdILO2DJvmdjbejL4ELnTacW/VVIHzDh0f9LoI=
-X-Received: by 2002:a17:90b:3ecb:b0:2ea:5823:c153 with SMTP id
- 98e67ed59e1d1-2ea5823c73dmr11754596a91.19.1732029930342; Tue, 19 Nov 2024
- 07:25:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="io9RKrrl"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id DCE0B1BF20C;
+	Tue, 19 Nov 2024 15:41:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1732030889;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+KJPrpVSpjlMsljEONMGLhUb9kDFkewDTz7vO3IORSI=;
+	b=io9RKrrlUJ5LfS28I+zGTgdXazwkVChYn/JjjVqtb5QYNC9yIXDAhmkzunCCdpOx3BIUOX
+	0FhAT9sqGU1TAcPeslSlemLGuz4nik2+LXLN7Syk/AHbOpnn7v7qKEC5BGXk600IObMBUJ
+	k5tnn3K6hWPGJO+yM8BXvIE/TDFTToxotzYUcxhavwFJs+BT9FsI3Ea8sJOhRtTpL+rsnA
+	npx/M+CQj9Okjc85fwF1w20qH0V3N2uLAzbBzdL0KwjsgZzQHfpVjaMDCEo6lrUaktYqa0
+	PuqjD4weYeHzqovr/76QnUG6wc4hvn1b8VxXm8nGwZFrpSm7uBxu3FmF3d2tJA==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Marek Vasut <marex@denx.de>
+Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>,  Abel Vesa
+ <abelvesa@kernel.org>,  linux-clk@vger.kernel.org,  Fabio Estevam
+ <festevam@gmail.com>,  "Lukas F . Hartmann" <lukas@mntmn.com>,  Michael
+ Turquette <mturquette@baylibre.com>,  Peng Fan <peng.fan@nxp.com>,
+  Pengutronix Kernel Team <kernel@pengutronix.de>,  Sascha Hauer
+ <s.hauer@pengutronix.de>,  Shawn Guo <shawnguo@kernel.org>,  Stephen Boyd
+ <sboyd@kernel.org>,  imx@lists.linux.dev,  kernel@dh-electronics.com,
+  linux-arm-kernel@lists.infradead.org,  Anson Huang <Anson.Huang@nxp.com>
+Subject: Re: [PATCH] clk: imx: clk-imx8mp: Allow media_disp pixel clock
+ reconfigure parent rate
+In-Reply-To: <c3da6311-1eb7-4a67-977e-32c28897f0e0@denx.de> (Marek Vasut's
+	message of "Mon, 18 Nov 2024 15:30:04 +0100")
+References: <20240531202648.277078-1-marex@denx.de>
+	<20241112234206.558d5d5e@booty>
+	<79f21303-b0ba-45ed-a842-7e5364fd4efc@denx.de>
+	<20241113120622.3501db73@booty>
+	<130fe140-e70d-4c45-aaab-e22762c58c88@denx.de>
+	<20241115180936.4ab56be3@booty>
+	<6bc5b8d7-ff10-4860-ac46-1460a7d850da@denx.de>
+	<871pz9c606.fsf@bootlin.com>
+	<c3da6311-1eb7-4a67-977e-32c28897f0e0@denx.de>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Tue, 19 Nov 2024 16:41:28 +0100
+Message-ID: <87cyirz0wn.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241119130726.2761726-1-daniel.baluta@nxp.com> <Zzyn+i4khAqWBSjS@lizhi-Precision-Tower-5810>
-In-Reply-To: <Zzyn+i4khAqWBSjS@lizhi-Precision-Tower-5810>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Tue, 19 Nov 2024 17:26:35 +0200
-Message-ID: <CAEnQRZAG4Piw6NfQC7Yyc5-d2ymfq3YeL=FpV5_hNt26AzRhjQ@mail.gmail.com>
-Subject: Re: [RFC PATCH] soc: imx: Add AHB to IP Bridge configuration driver
-To: Frank Li <Frank.li@nxp.com>
-Cc: Daniel Baluta <daniel.baluta@nxp.com>, conor+dt@kernel.org, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev, 
-	robh@kernel.org, krzk+dt@kernel.org, kernel@pengutronix.de, 
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, aisheng.dong@nxp.com, peng.fan@nxp.com, 
-	iuliana.prodan@nxp.com, laurentiu.mihalcea@nxp.com, shengjiu.wang@nxp.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On Tue, Nov 19, 2024 at 5:00=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
+Hi Marek,
+
+On 18/11/2024 at 15:30:04 +01, Marek Vasut <marex@denx.de> wrote:
+
+> On 11/18/24 9:15 AM, Miquel Raynal wrote:
+>> Hi Marek,
 >
-> On Tue, Nov 19, 2024 at 03:07:26PM +0200, Daniel Baluta wrote:
-> > This is a RFC patch in order to allow AHB to IP Bridge (AIPSTZ)
-> > configuration to be restored after a suspend/resume operation.
-> >
-> > This is particularly useful for aips5 bus where the aipstz
-> > configuration is lost at suspend.
-> >
-> > In order to configure aipstz bridge we register a platform driver
-> > that will set default configuration permission at probe.
-> >
-> > Because AIPS configuration is lost at suspend/resume time we register
-> > a power notifier callback that will take care of re-initializing the
-> > configuration at resume.
+> Hello Miquel,
 >
-> why not use suspend/resume callback? what's happen if devices under AIPS
-> suspend/resume before AIPS resume function.
-
-We are attaching to AIPS power domain. So any device that will resume
-will have first to power up the domain which in turn will configure the bri=
-dge.
-
-So with this it doesn't really matter the suspend/resume order
-becasuse the notifier
-that will configure the bridge is already register.
-
-But I wonder if there could be a problem if a device goes
-suspend/resume before the bridge
-probe function gets a chance to be called.
-
-> supposed
->         bridge@30df0000 {
->                 ...
->                 some child node {
->                 }
+>>>>> If you really want accurate pixel clock for your panel, you need simi=
+lar
+>>>>> change to 4fbb73416b10 and configure the Video PLL such that the
+>>>>> accurate pixel clock can be derived from it. The Video PLL cannot be =
+set
+>>>>> to pixel clock, because the LDB serializer clock are either 7x the pi=
+xel
+>>>>> clock, or 3.5x the pixel clock (for dual link LVDS), so the Video PLL
+>>>>> has to be set to 7x or 3.5x pixel clock of the panel, then you should
+>>>>> get accurate pixel clock and a working panel again.
+>>>> I found that I'm having the same issue that has been discussed in some
+>>>> related threads: the lcdif2 configures the video_pll1 to ~72 MHz, and
+>>>> later LDB tries to set it to 7x that value, failing.
+>>>
+>>> Right, which is solved by configuring the Video PLL to the correct
+>>> frequency in DT up front ... unless you have more than one output
+>>> supplied by that Video PLL.
+>> No, this looks like a bug in the imx8 clock driver. I would expect the
+>> core to handle such case without DT hack. It is not okay to fix clock
+>> frequencies in DT because drivers are failing to do it properly. I
+>> understand there are advanced/dual cases with very specific frequencies
+>> where you don't expect it to magically work and giving hints with DT
+>> assigned-clocks* properties makes sense, but here I don't think we
+>> should consider it as a proper fix.
 >
->                 so child node's devies suspend/resume will after bidged's
-> suspend resume.
+> It is not a proper fix, it is the best we can do right now. I already
+
+I am sorry I probably misunderstood your previous reply then. I am fine
+with the assigned-clocks workaround.
+
+> replied to Luca with a bunch of patches where I tried to come up with a
+> way to negotiate the pixel clock in drivers ... I need to get back to
+> those.
+
+Indeed, thanks to your feedback we got it fixed locally, so short term
+is okay for us (but people not reading this thread might still suffer
+from the problem though).
+
+>> If I may recap:
+>> 1- a simple display pipeline works
+>> 2- the pixel frequency could be more precise so the video_pll1 parent is
+>>     used to dynamically compute a better frequency
+>> 3- the video_pll1 parent is too low in some cases which breaks the
+>>     pipeline
+>> 4- we need to force video_pll1 to a value in DT
+>> How possibly 4 could be a relevant answer to 2, seriously? May I
+>> return
+>> you the advice, if you want a better video_pll1 value in the first
+>> place, why not assigning it up front in DT?
 >
->         }
+> Because I have DSI-to-(e)DP bridge on the DSI bus and I do not know the
+> pixel clock needed by attached panel up front.
+>
+> I already included a link to DTO which allowed me to operate both this
+> DSI-to-(e)DP bridge and LVDS panel with accurate pixel clock, I was
+> hoping that would also let you solve 3 and 4. 4fbb73416b10 ("arm64: dts:
+> imx8mp-phyboard-pollux: Set Video PLL1 frequency to 506.8 MHz") fixed
+> 3. for Isaac at least.
+>
+>> I understand your goal, and I agree with it, but please acknowledge that
+>> even though the current patch looks fine per-se, it is exposing a real
+>> bug that is now visible. Hiding it with DT properties feels really wrong.
+> I do fully agree the whole DT Video PLL1 clock frequency configuration
+> is not good and it should not be in the DT at all. That is my goal in
+> the very end.
+>
+> The drivers (in this case, LCDIF1 + LCDIF2 + LDB) should negotiate the
+> Video PLL1 frequency that fits them all best and configure it
+> accordingly, without any DT assign-clock* workarounds.
+
+Ok, good to know we are aligned :-)
+
+> I just didn't figure out a way to do that ^ yet.
+
+Of course, getting rid of the DT workarounds is probably a long term
+goal, unlike the mid-term goal which is: "fixing" today's situation for
+"everyone with a simple setup". We are also looking into this and
+willing to find a proper solution.
+
+Cheers,
+Miqu=C3=A8l
