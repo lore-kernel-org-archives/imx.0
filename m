@@ -1,44 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3661CEAA6;
-	Tue, 19 Nov 2024 16:59:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518931D0B9B
+	for <imx@lists.linux.dev>; Tue, 19 Nov 2024 17:09:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732035563; cv=none; b=YBnSTt1Es1HxunQlVmQDFen0ENKQXFb3zQFB7Q63stw3M0BuC1nlbDmFySiJD2Gt1bLNJMF1YGzDeqWR8E28lLgCjhO6Cd0coVVVC8k0tOydvPsR1dPMhBMt7/9An5c3x9aYgvszNQI/H8aQ9eE08L/F4kESicBfqO1rszWJ9Vg=
+	t=1732036191; cv=none; b=OmJHKlmVmeFYElXv6CGCu+EmOS9ACA0Yx7IbXXffkky9wnaKzk+cpv72OZqngtedGRl/uMGcxj97aDeQS3S6ZGSSUeqsmRay1RWm5RG9Mhf+N0ziqTv0iI5WXx8C94ZzQIiNFNh8T9kmsiF8zOTE/A1GlnTPwnlGhswLrEKnMX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732035563; c=relaxed/simple;
-	bh=ZrZ7oXhDqYlbr9ayO+VZap9onESv9xBNkLB9RG6TA+I=;
+	s=arc-20240116; t=1732036191; c=relaxed/simple;
+	bh=L6lD6VmUqKcxEpjKjYStL9tVt6sSY1vJPeuxibqExWo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bO5nPmrmM7PyFQP3nTsDK5Edr9x5weNDmReN0pHhqUaE03HrZqhPB1PG5H7WSZxx2H9bFTEHVu+ELCkRUedzKrlY4f+OQEOU3LSjwcFmJnm2XWXic3HanIQU1hbKXgEHsQ22x8ji8xxigJAwqjsFEmmSC8OER8h/OHAKTP4UUtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pc67rj0v; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=pfs+DTlZtjLFSkrSDYmOXXFVSoOOZTZa2aJBdqjjy04zMZyvzCdphU3ZzYWZea8OeOOjAihL/p+phQrDw0XuTFiCxZsWJXbCc0ZPsbvlxZcVGPtzWo6pG2qPv/OidVmoIjhEaiO+mKMIvz3iQndHvzEYBqiH3fKGwVoySmb8pBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=V+EI5x9f; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pc67rj0v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 947DAC4CECF;
-	Tue, 19 Nov 2024 16:59:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732035562;
-	bh=ZrZ7oXhDqYlbr9ayO+VZap9onESv9xBNkLB9RG6TA+I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pc67rj0vZ6EiqMKOPOqDWXRJvqsgxa1E0CNs2ldTqYvQ59aoconRIwz790MOGBHNB
-	 4aMzCXz3G9UinnG0afclfsIznGQdKib1JZw1u/t72vagyfA3u9OWHExlsj4tXC7AyB
-	 BEpM0i7H8hXbQJuMprnnzQJhXrIXpDnAENHj/EHP19o1qjxQ6JCalLVGU8FnVYn/B3
-	 HSKLaQFQkFpeEvF0HDerRwsYV8C+XGov3ynf0hsuwaQyVe9WdxPX4tu36JWQNWePsD
-	 Z8Uvget7YfXmjmC8kb2ATtPp0YofVVtEixx9KtMGAW6quPVndVo1WupWcE51mp5k36
-	 8I7lzrANSc/kA==
-Date: Tue, 19 Nov 2024 10:59:21 -0600
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: linux-kernel@vger.kernel.org, Han Xu <han.xu@nxp.com>,
-	Jonathan Cameron <jic23@kernel.org>, imx@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>, Conor Dooley <conor+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v2 2/4] dt-bindings: iio: accel: fxls8962af: add
- compatible string 'nxp,fxls8974cf'
-Message-ID: <173203556027.1804813.15784012336062429559.robh@kernel.org>
-References: <20241115-fxls-v2-0-95f3df9228ed@nxp.com>
- <20241115-fxls-v2-2-95f3df9228ed@nxp.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="V+EI5x9f"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=2g7o3qX8HNqQpFdW0w76lQBmquzjn2sh9zKqXbBe8z0=; b=V+EI5x9fdojHa+anMP+6+G+WQt
+	Jn4L/qLS3VTeYjRZ+pBRZLjIEE8enEx4vn2xbr/luVIYyY6m9nDcQs7pVPOy0lxeGqPvCVMDwAx1A
+	HNMs0PYLQYjSkhPD62Wcj+J4sjXT4LxLIBdYIae6PZhJXGxRDEemHRtx/4aHCAQ2U5jKJM19Crozs
+	y1PG0S6Sjr3H0yCuZN1ohVwOfvvn6D6b2OSeWmvplezsngcROc8iU9+ti2ZvRZoKjtCUwAgXct6vj
+	nVcTMFHA5wpxhl9NB2eNsLGxBwYL4S+6y61wRoLiSm7qyddvniWDjQaqO9JSFFo4xRL+lYoQLvQPF
+	R973z1sQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:33436)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tDRj6-00047C-1y;
+	Tue, 19 Nov 2024 17:09:21 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tDRj1-0006En-2U;
+	Tue, 19 Nov 2024 17:09:15 +0000
+Date: Tue, 19 Nov 2024 17:09:15 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: jan.petrous@oss.nxp.com
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Minda Chen <minda.chen@starfivetech.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+	Keyur Chudgar <keyur@os.amperecomputing.com>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	NXP S32 Linux Team <s32@nxp.com>
+Subject: Re: [PATCH v5 16/16] net: stmmac: platform: Fix PTP clock rate
+ reading
+Message-ID: <ZzzGO5zgDvIK6JJ_@shell.armlinux.org.uk>
+References: <20241119-upstream_s32cc_gmac-v5-0-7dcc90fcffef@oss.nxp.com>
+ <20241119-upstream_s32cc_gmac-v5-16-7dcc90fcffef@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,22 +84,59 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241115-fxls-v2-2-95f3df9228ed@nxp.com>
+In-Reply-To: <20241119-upstream_s32cc_gmac-v5-16-7dcc90fcffef@oss.nxp.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-
-On Fri, 15 Nov 2024 15:23:58 -0500, Frank Li wrote:
-> From: Han Xu <han.xu@nxp.com>
+On Tue, Nov 19, 2024 at 04:00:22PM +0100, Jan Petrous via B4 Relay wrote:
+> From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 > 
-> Add 'nxp,fxls8974cf' compatible for the FXLS8974CF sensor, falling back to
-> 'nxp,fxls8962af' as the only difference is the ID.
+> The stmmac driver supports many vendors SoCs using Synopsys-licensed
+> Ethernet controller IP. Most of these vendors reuse the stmmac_platform
+> codebase, which has a potential PTP clock initialization issue.
+> The PTP clock rate reading might require ungating what is not provided.
 > 
-> Signed-off-by: Han Xu <han.xu@nxp.com>
-> Reviewed-by: Sean Nyekjaer <sean@geanix.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Fix the PTP clock initialization by enabling it immediately.
+> 
+> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 > ---
->  Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml | 2 ++
->  1 file changed, 2 insertions(+)
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+> index b1e4df1a86a0..db3e8ef4fc3a 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+> @@ -632,7 +632,7 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
+>  	clk_prepare_enable(plat->pclk);
+>  
+>  	/* Fall-back to main clock in case of no PTP ref is passed */
+> -	plat->clk_ptp_ref = devm_clk_get(&pdev->dev, "ptp_ref");
+> +	plat->clk_ptp_ref = devm_clk_get_enabled(&pdev->dev, "ptp_ref");
+>  	if (IS_ERR(plat->clk_ptp_ref)) {
+>  		plat->clk_ptp_rate = clk_get_rate(plat->stmmac_clk);
+>  		plat->clk_ptp_ref = NULL;
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Looking at where the driver makes use of clk_ptp_ref, it currently
+prepares and enables this clock via stmmac_open(), disables and
+unprepares via stmmac_release().
 
+There could be a platform where this is being used as a power saving
+measure, and replacing devm_clk_get() with devm_clk_get_enabled() will
+defeat that.
+
+I would suggest that if you need the clock to be enabled in order to
+get its rate, then the call to clk_get_rate() should have the
+enable/disable around it to allow these other sites to work as they
+have done.
+
+Alternatively, we may take the view that the power saving is not
+necessary, or stopping the clock is not a good idea (loss of time
+in the 1588 block?) so the above changed would be sensible but only
+if the clk_prepare_enable() and clk_disable_unprepare() calls on
+this particular clock are also removed.
+
+I can't say which is the correct way forward.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
