@@ -1,283 +1,288 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2077.outbound.protection.outlook.com [40.107.20.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CED919D06E
-	for <imx@lists.linux.dev>; Tue, 19 Nov 2024 08:11:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.77
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732003869; cv=fail; b=TxJK6CIyipy7yIvCzFnzxBw4YnNIdpGZSHrah89ZmDwNManonbVH0X2xLn/t60A/NzzVNM6kkkA10p1YNoq7TyNY88GAUpLj4UmWLzaGWAeVKRytltfac2NaOV2AMysWm+TYv2Pqeg5RPOT6Ljrhh1yna/Gd9aPrs0gjLB/kskc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732003869; c=relaxed/simple;
-	bh=G0WXPIXmMq0Zlpzu9iMfPQeI0xxXc0kD7I0Hsy8XA30=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rpI4s0YWcDA+edJXivZ9DCz1lPMUOxrUKSrKKT3dpR8i8ONcx6lpOvCEzWeqhd1ilXdWxx2qILZPHM1yev8W/kRKcnAkxrG1Wmu/cR9WA2cJBdJnLi/T3X2rQy0YcenWJ4aYvtDFKmDUG8k2dkZbUoQqSaxU/YhwjOk+m0vj5v4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=djEO/WED; arc=fail smtp.client-ip=40.107.20.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E87158874
+	for <imx@lists.linux.dev>; Tue, 19 Nov 2024 08:17:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732004235; cv=none; b=Czy53+v5M1Sz/nkYkWi9iLmQntU19dFRCGsM5bjVH2gP+5Ea8rLzuSWcmkrvsuQ9/dSjN26L3JK6mTK7p/7ayQP+IXpkkFReW3AyB1UDYuNcE8E1VGxwZ/StxRHKPjHKWlX4Lbwld2NEShtwqEGipwLKVcuyEnzUsbm0M2FHNAs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732004235; c=relaxed/simple;
+	bh=BnCPo5Jv3ffjYxxYM7XQApvz+ShJZ5fwcjW9lNQ732I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=i5kpnJCfXprPg5R1GsWrLt6rvQ3YtnHQv2/qWKYxQkGiDTQpuhRLBVyPebXFXsGyfOr+vRl67K0zIgyUz2XASzF76vKBtNYqtlKzR335veEeR4GAhU4FTtLYlqpFaZ49ZbzFRdUU/v+OODV0TYKCqVqsVnC9T4YejZWoGM0r4D0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=CtxqTE8G; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="djEO/WED"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=erPxxAu5A/5CQq2wJpp2OlE5rTgujdX/BckliJSEHS+h3YWo0osU8ASQ5BxTZ+NcEi8Iup6NMUIZOKl4rjGhEtaFk6+ScGWicdOEktK9/Q4bu1jLkDa3eU4q5OwDU45zgnX5DWW0MicQmr3uq/VMQl7Zn8PXPzTfJEm5xELvog5AOz1bXcpgMX4xtbE42SUTpL1PLxOucPBIrgH2iX/J+Ck+VokGHIDnhqs7f2dkmylgRAqfloCubeegHmPPjiLIDF7t/TNJizW1xaoSkHcwnEKSqz6FtcAZZRfFEsWA4KS/bC0Rd+xMVnaKC+NJvHLRS8m56tIUc7BaGBNjgsocfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=d+MvJjMJ3N0pA8nHxioLNChTuV+Hmdtz2LxJKzYJbxY=;
- b=LZQU4HQvUYFa+ArSxX8oSEzccrJKmfNo+23N7fRjaTBdF0LUQT4EDWGqE28Y6OidmGrmjEw77Xjr79BVsIgqELrOmbRnBHWYpvy25UzuPywhVlwOywi+fFLJJW6b5FVUosnwfYgswrYyrE/ZGX42Yntu0dkrZTC0J4zjynwGGiLZwYQSBW9UiiCpos8PJJVC4Duccvb/E7B5TPJy+Bl081SNStjSy8S9A64TFrd0TAnFcuQt9r/uxqzG/WxSG+5UjEvW+fwHqP8Bgp0+gMnkRPKVD5/wypzu84f6YfG/9H3WOZzDjTAqw5T/IrrRZpB2QvON+u3nuIM4nnFo7hBwSw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d+MvJjMJ3N0pA8nHxioLNChTuV+Hmdtz2LxJKzYJbxY=;
- b=djEO/WEDxg/M+oRBHEBMMuPvZYEqG5NWgDjGhpNDYen5IvNcqvExPcuMCo5T1a6P8wnPldgABIdzmToO2gUtjdtqs1h5Aa4u1Z6GF1H3VsMvx9+dqe95HBKWH/vaw29D24EWi+VT3c4HqykqQPpuDSsXDjLtOYrIOMHGsZFm9ePTCSvTLsgkVi1GyfQfx0vsPHBnd2WD3FYm1vp/a7hhROZ0Yd7YLeZ5uMnCXyKRjuZowecS3KcDjlE2zUjncMdfTYTJGCiFsHvSM00LHEK/rY/PthI88VfhABhT+DEeNan7VfOcJU3upUyRvIIhjqrffaoo0PPZwo8680b2pXLhxg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com (2603:10a6:10:352::15)
- by AM8PR04MB7876.eurprd04.prod.outlook.com (2603:10a6:20b:240::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.23; Tue, 19 Nov
- 2024 08:11:03 +0000
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::708f:69ee:15df:6ebd]) by DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::708f:69ee:15df:6ebd%6]) with mapi id 15.20.8158.021; Tue, 19 Nov 2024
- 08:11:03 +0000
-From: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
-To: Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: linux-can@vger.kernel.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="CtxqTE8G"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3822b77da55so2059400f8f.1
+        for <imx@lists.linux.dev>; Tue, 19 Nov 2024 00:17:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1732004230; x=1732609030; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rfRPeJv9b+5MklHMVSrCiVgH+hmaDNicfWnfjxpRi08=;
+        b=CtxqTE8Gxa6x4zxcsnGFiG3SaPvuD69RsJcvJXXcAjU5SIHx/jdeWDZPKcQr/2zc7n
+         UNTSmczeJ7Hjg5ONFrxtDH+c0bwHNmX7q7y4ikQua/DyM1om9rs7aEBhVzef/dm10rUp
+         GnD6YlwLit4W8kkuPuLWgBvW5HcS12dnfCPswUE+8go3EgksfWUMQFMm2cE/uzfuvpfj
+         Wy9/QlzbdNOrzYf08DiUarHOpkpjxynBiY7mRQSUINbqGhMes9tbp9mhDXZRoWcTDZ/D
+         Yl/tlfKv3IzthnYZnZ0K94NdOIvp6LH5CTFFqN+3eXHNVf9urdkxsLhDQDIFZA8D7zOh
+         4lsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732004230; x=1732609030;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rfRPeJv9b+5MklHMVSrCiVgH+hmaDNicfWnfjxpRi08=;
+        b=FDYfPMR25qOZ3sZ5AUK+H6C0orWpZPdB7BlNwMnVIDJj3J2JnT1qLaBqcxODxXSlPL
+         mjvGxZIzjme9c/O0PjHhV8XSlPZi/aEt1zJob+BrrYAb6tm4qbGzPS/1OYcZyaohm/kd
+         RXVjem1H4YmVoXdOSryvPJ78T49eSi8kEcWArZBS5JQWhBMeavc82RoOpjhjMBHS1tCY
+         k0cWm+0BLkxVpI2TSr6NBF/jWMRaR9HTzQnjmZ5G3dIBny1LOSAQAeuQtZi5rTE5loWh
+         ft8ArxxA6fQqLNyIvsN61u6whmPma1tkWFKaCuksoqH5K9K311bCd0vTKCnX5eqOTR8P
+         X/iA==
+X-Forwarded-Encrypted: i=1; AJvYcCW3Sv3p7Lztk8L/rXdFt2e83Hq1d9HYZz/SbXAmrWHlWEAMCCNXlP+Gnf/i2MPa1NVXCto=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzz9JfFwYsgJSPgbl/4CyCoaRuPv1VVi0BHZeJ2vGoaeTlSjOVZ
+	CCmPbnvphKSiF135FYok01oLqmtnKBTpw6PSyT0E4RxKMRX/sDbjBFkNxYadMntDB5eug+ro6xP
+	R
+X-Google-Smtp-Source: AGHT+IE8UC5xo/EXauIpi30O/6QpEs3dvAFOyd1qOQ9SCqrRP4JGzhvWxQ0rNGF/bwnRQGTw1YZ6JQ==
+X-Received: by 2002:a5d:6d82:0:b0:382:484d:45da with SMTP id ffacd0b85a97d-3824cb30e81mr1673211f8f.6.1732004228585;
+        Tue, 19 Nov 2024 00:17:08 -0800 (PST)
+Received: from localhost ([2a02:8071:b783:6940:9b70:ed4b:d274:54e5])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38244220183sm6495288f8f.99.2024.11.19.00.17.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Nov 2024 00:17:08 -0800 (PST)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Jassi Brar <jassisinghbrar@gmail.com>
+Cc: Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Michal Simek <michal.simek@amd.com>,
 	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
-	NXP Linux Team <s32@nxp.com>,
-	Christophe Lizzi <clizzi@redhat.com>,
-	Alberto Ruiz <aruizrui@redhat.com>,
-	Enric Balletbo <eballetb@redhat.com>,
-	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-Subject: [PATCH 3/3] can: flexcan: handle S32G2/S32G3 separate interrupt lines
-Date: Tue, 19 Nov 2024 10:10:53 +0200
-Message-ID: <20241119081053.4175940-4-ciprianmarian.costea@oss.nxp.com>
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sunxi@lists.linux.dev,
+	linux-tegra@vger.kernel.org
+Subject: [PATCH] mailbox: Switch back to struct platform_driver::remove()
+Date: Tue, 19 Nov 2024 09:16:51 +0100
+Message-ID:  <6f0297ba884c670d604232c2861347940082c8e6.1732004078.git.u.kleine-koenig@baylibre.com>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241119081053.4175940-1-ciprianmarian.costea@oss.nxp.com>
-References: <20241119081053.4175940-1-ciprianmarian.costea@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AM4PR05CA0021.eurprd05.prod.outlook.com (2603:10a6:205::34)
- To DU0PR04MB9251.eurprd04.prod.outlook.com (2603:10a6:10:352::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9251:EE_|AM8PR04MB7876:EE_
-X-MS-Office365-Filtering-Correlation-Id: bc93aa2f-5cb8-4877-cfef-08dd0871b617
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?c0Z3bGNLZFBlT1hIQXovSnd3KzB6SE9CbXhQa0pqcE5DRk5JV2t0a05tTUJ2?=
- =?utf-8?B?YTYvQTlpVEJ5akNuMkpBcEpiM0Q1eDNmSG9kRHEvTTV5R1hRdVB0Ykd1Nmxw?=
- =?utf-8?B?alBLMjRJaFNhNmllVkZuUUxmdnM0WGgxd1h4LzR4WjRSZy9ubElCNStGVDh5?=
- =?utf-8?B?WWtFYVJyMnpwL25FdlhrYllYb1VoQjRhTGdHdzNjZHJybWtpelRoN0VUSUlT?=
- =?utf-8?B?cEpJV0tVa2tRQ0NxV3BFczBIaWc3NVgwRHFONmJUQXdqcytISmhqcWZSeTM3?=
- =?utf-8?B?MWxwUmRxazdraElVeGd3UTFVdkhsS04yS0R0MEwzbWFsdktOUW5yU1RjZy9p?=
- =?utf-8?B?NzRoQjNwTVVPZmxxaEovc21SUWFWeS9iWHFxbit0NlhkWVdSVG4waUdSN0pB?=
- =?utf-8?B?Mlg3a2tUL2N2UlYxeWZ2cGxseS9tQ1pIWCt5TXFxMTJPeStiNCtVUGZORkRJ?=
- =?utf-8?B?MkxLcnZVdlRCRlQ4OTdlYjdoUzlzdDhhQ0JPWkFwMUptc3dKUTJac05Kbkk1?=
- =?utf-8?B?QjNOSGh1dmw4amsvQmVTRjNaT2pXNFUzRUppcUNhckhQdEM3Y2ErQkpBd2VJ?=
- =?utf-8?B?aFdOUG1QUHZCd1plcUxJVWtnazNjOEd3S01rakxFMVJONG15Y2RoT2pqRWRm?=
- =?utf-8?B?ZExsS2Nyd0VVZlA1SXUyVUVTRmI0M3ZiMitrYU9nM0pGRUFnYTRhaFVjTzht?=
- =?utf-8?B?QnF4TW5LZVpBZzZCT1dVR0ppazc1WHQ4U0ZQNE05Q08vYUdzZ0JIZkU1eDR3?=
- =?utf-8?B?UXRQWW1YdElwZDlxSzRvSnZ4VFhuYzZVM25XcldnUkl5djNHWWZ2bU55YUVl?=
- =?utf-8?B?UDQxN3ZFWXBydXloZktsVHlHa1JMaHc5TkZNUk9leFZaU0IyaVM4SXcxUUNp?=
- =?utf-8?B?anltaEEyTDlOdjFtWlFlcExBcnA2ekRaRmFCZmhyTkM4Qy9GSDRnc2pua1JZ?=
- =?utf-8?B?S0E2ZHZkRHF0b2Z2SFFvYTNPMkc2ZlJZMlZJb21WSHlKVnBINHR2c2VKc1pr?=
- =?utf-8?B?Wm5TQ1Y1SE5NZzh2TkpiUmRaUnRnRHlGSTZtQjNZN2NtYWtRanZvQVltY2dN?=
- =?utf-8?B?YXBBOXE4MkJhSjMvWVFmY3lCUUc0NGtsMkRhcXkxbGlnK25HcG10ZkYwVkxI?=
- =?utf-8?B?MUowY29OMEVKYythYUE2REVkNDdWeG5PWExmcG85VGFjeGErLzhyWW1DQWJR?=
- =?utf-8?B?cTBuTGdTbnRUNGxQQ0pPdy9oOGhRZTRSUS9HaXlQSlV5QXZqRDVWMGQrajk1?=
- =?utf-8?B?Rmd3bHY3M0Y3V0QwdldpakcxWStqeDZSd1h2MTBqQUl3Q0ZXR1NVbVFKdmFk?=
- =?utf-8?B?SGVqWk9MQ0FkVFRabzB4Q1pTdGxHdTB6QVNETVNXN2hFTDQ2V1lHOTgyWkR3?=
- =?utf-8?B?dzZaRy9vSCt5VHpZT0hGWlRsUUlJdnBQdUNoZWNhRzZ3Z0dGUDhXNEtPWjVG?=
- =?utf-8?B?SElUVkl5anRzLzZ5cTF6azQwRUtyTFBEVDlsM0l3d3o0ZnNrNHpsdDByWGFR?=
- =?utf-8?B?QllaRm5hN1E0dE5uWC9LWTl6NjY2UXozWlhjM3NKeE40d243SzhuS2RiZWtw?=
- =?utf-8?B?bE52c3h5NDlmZ1hUY0Q4bDEvN2dJcXF0em5NQmRIcU9qVmtYTVBIWlRGSDZV?=
- =?utf-8?B?Sm96YVJaekZUa2dVVUZQMWhoZTVXTWZhL3krMlRRRHVnenN0SmppTmhrcTRr?=
- =?utf-8?B?ZnZabGFwVUtyNHBzaitndU9ROU5COWVHMUxmbUx0M2ZGWGw2OGxETEpJQnhl?=
- =?utf-8?B?cFMzOTloZ2RCZFRiYnhFVVljWVJ6YW41MWowcVgwaWpjQUFUMHlSemhlczZy?=
- =?utf-8?Q?etgRKlWdU4BzfE1Fo0MzU0tawqVJqrqOx2zAQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9251.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZUJRdnRWVU4wb3gxc3Rlb2RKMjQ3eGJtaXZscUU1UXVLWGdldm5pOUNZRUtH?=
- =?utf-8?B?cW5NbHRxbVBZT3g0cjhLY1haYjJSNHJqRzJpOXgvVlBYYkViVmxzY1RQS0hM?=
- =?utf-8?B?eTV0UGJnZ2hNbHhiOXlzc1Rmd2FRRUx5TzVTZFB2SGF2bkM1dzVnNWFxdUlN?=
- =?utf-8?B?NHExMnhab0w3WW1Ga1ZQcTBuU3FUdW40NkJROHFYaHFiQm9raWMxNHV5Uk1N?=
- =?utf-8?B?RjAyVEpiYmtSREdwQ05GMjRrcHF2dEpVYW5qQVluUnFqRVNxTERWR1ZuWmF0?=
- =?utf-8?B?eE5EQndva3oyYkRpMWp6YlBMR1EwT2lWWVcrQjBKQnFheFUwTXZ0TWp0SFlo?=
- =?utf-8?B?ZjBtRUY2R3RlZDlpVUpjbFppWWJjWldhZWRNV29HSm1QUC91RTVqeWUvYkFN?=
- =?utf-8?B?bUVRTXZXNjZuNEYxK2ZyUUN0NWk0WktLM3hDbjlWVHRZYmtFOGI4cGs1YVF3?=
- =?utf-8?B?UmdMRXlnSEJZclBRRG15ZG9VeVVEUHEvbzNCQ3RGZG9OMWVxS1owSEtqK1ZQ?=
- =?utf-8?B?aW04bk5jcGpXaVBHMXRMdzFJVnNFWFozQmplWmpzbUF5TjFQcjMzWWpqUU5q?=
- =?utf-8?B?eDFxM3pyK3J3VmdUZmI0ZUo1TzMzZi9uTWZsZiswTXREbFhubjdoK0gwVXdM?=
- =?utf-8?B?Zkk1Z2lPckZ3dXpBL2FLQW1Lc2NXVjZlQ2Eza21QcjVBbU44RXVZVmJab29p?=
- =?utf-8?B?VnlzdkhPQnZUbk1Ja1NQSzNkalhrcVZJazJYV2M3ZVUzeDlFd2Urb29KK1N0?=
- =?utf-8?B?bU8zNVhkdXlBcTBJWlg5MkpxK2F3TWE3MFRDMVhnS1R6MnZxWWVFYS9iRE8x?=
- =?utf-8?B?aUlmclRFalgveVlzNjNhMGVLZFE5RENwMHZBR0QwT2g5MHloQkZ0NzJLS1gz?=
- =?utf-8?B?b3lyQ2FtL0h1WHhMV250MU5ZK0d1bVdNVXNPeU5hVEx6WmlyUzY4eHBTRTYz?=
- =?utf-8?B?dGFReHhqaUd2Vmh5SXRuaUxmeHVTYXYydlZkTER6NFdTYjlkZ3N2OFpsY1F0?=
- =?utf-8?B?a09tM3dyRnF2OHhIMmVsVlpEeCtaRlFzaXNMczVFN2JSTDNYRkd3Wkh5TGta?=
- =?utf-8?B?UHlCWVllT1kvYXczM3llRGUvNk12cUdlNk1qWWtVOTFNTVVEUk1qQldGQlJY?=
- =?utf-8?B?bEk1TkpZcHlTRnFVWWdQS1AvREhEdStVN0MrVkJWR2VBSkg0aXB5U09MU25w?=
- =?utf-8?B?R25LbmYwZkEyRHRkK0p3S1YyczQ4dEM4bnlKMmVCL25Ka0NyQWlwVTFYTyto?=
- =?utf-8?B?a3ZGRkRhNzVQUGVoeE8rSFlWV0lwSEJCQ25jcm44QVJDSVl5TU9sR2NLS3c3?=
- =?utf-8?B?UUFRWlJMZkYrWVJjb3RoYXhscDFIN0cyVWdpZzVtVkNhNTFsVytnTVF4VEd2?=
- =?utf-8?B?eE8wT2QyeDhZeWRSVi9Ha1lXcHhlMnhBWGlqK3B6Rzc1Ri9MSjM1OHJNelBm?=
- =?utf-8?B?bGtWTE9ibGlSc1hzWHMyeHM3QnJJaXAvRllTZ3VHY1lPVElROEJzdHA3dERC?=
- =?utf-8?B?N1pQdEJQMnJ5ekE1OXJ4SjFlTWYraDhBMTl4N0lFUGlrVW1uN0N4T0w1T3lC?=
- =?utf-8?B?UlNMRDE5ZVI5ZElldkxQbks4bkpramhCMWxXMnVjUlloOHNid25ZUURkd3U5?=
- =?utf-8?B?UmY4K1JCb1M4dytlN1N0eXU3OFhqUm95Vm9yYjM5UXg2ZXNzbEF0Zm9BMmZH?=
- =?utf-8?B?MW5ZQ1U2eWhsMTJpcEM5TytDdkhEUzVQbGcvUU1kUnBodHpmT0JQU21HYndo?=
- =?utf-8?B?eWxSazhDNWd3bDdYZnQ2R1FselVjRWJBUlY4SmVCNXdGMzVXOUp6dDFhc2R0?=
- =?utf-8?B?b3FjTmhkenhKcDMvWndyL09oTHJLYnZpRlIrNGY3K0tmaFJrNmRtQzNyb0lS?=
- =?utf-8?B?R3BkcThHV3hCR3JoVGI3VDdSZk5Dd1puVFEyc0NzcDk4dUZKWjhTMEpWYytH?=
- =?utf-8?B?bEZCV1ErakdSOVhBbjJ4RVZQUCt1V3l0RzI2ZFU2SFprMTZhUXdraVg3MElj?=
- =?utf-8?B?TTlSTEZGYjFnSHhlcSt2enZXTnhMYVNUNGt1ZE9XdmIrejNSNVF4VDl6cUp1?=
- =?utf-8?B?ODZIZE9QbktlZ1BocUo2MFJuNkV0Z0tFUUVQNDJMUVR1YVVrNHkyMEZFakZY?=
- =?utf-8?B?RGQ5eTJ3MURkNDZQTVJXUVZaZVFoaFFTZlJJdjExQ0JSRk8wMW11ME14TkZ3?=
- =?utf-8?B?cEE9PQ==?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bc93aa2f-5cb8-4877-cfef-08dd0871b617
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9251.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2024 08:11:03.7235
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: H3X6bGugneoxgBVbFvkW2TPf3yTkSebfD4BFRZctynlcyrDmhdHx8/S+/F6wKGuWPqFEn/9Ns3wO+9bVp83MOJOyNkKG1beAeIr0+5WC+ZI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7876
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7380; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=BnCPo5Jv3ffjYxxYM7XQApvz+ShJZ5fwcjW9lNQ732I=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnPEl0l82yWH4cD9PUDIPfKIE/RnbW2FKHwIBNo NRXP1KykqyJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZzxJdAAKCRCPgPtYfRL+ ToaTCACO97vvz1RQ3OfeVhaCoF9jIByuwurbxrlo/e4TXGjXh2MD85LTlsW7X/pdlEpXrP7LStP rubeC1o9FEsFEJDpzNVhMoNb2mBLHniaqeivaaIITO1C7iOgf/7l6bUdNF6szQsgsyIOa7eK+h4 6Evgz1M3LBYLhtZcwyCg8pysblUX/f+7Bpgdzo1ijgQjhinFHE0K8ep6xD7n3F0gZTUEt/9QWEa fgoFuQD5sY05UOOOvRjFNRAkpP+8qV6HYJ8eSFoFVoVvAsSuYcnfHR1oaeC82Zdgm4c4nHE4sye cAgefJza5W4P8GCaVvE9A7L2tHfGs7DQoQm1AUVXBMxOcDDU
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
+return void") .remove() is (again) the right callback to implement for
+platform drivers.
 
-On S32G2/S32G3 SoC, there are separate interrupts
-for state change, bus errors, MBs 0-7 and MBs 8-127 respectively.
+Convert all platform drivers below drivers/mailbox to use .remove(),
+with the eventual goal to drop struct platform_driver::remove_new(). As
+.remove() and .remove_new() have the same prototypes, conversion is done
+by just changing the structure member name in the driver initializer.
 
-In order to handle this FlexCAN hardware particularity, reuse
-the 'FLEXCAN_QUIRK_NR_IRQ_3' quirk provided by mcf5441x's irq
-handling support.
+Make a few indentions consistent while touching these struct
+initializers.
 
-Additionally, introduce 'FLEXCAN_QUIRK_SECONDARY_MB_IRQ' quirk,
-which can be used in case there are two separate mailbox ranges
-controlled by independent hardware interrupt lines, as it is
-the case on S32G2/S32G3 SoC.
-
-Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 ---
- drivers/net/can/flexcan/flexcan-core.c | 25 +++++++++++++++++++++++--
- drivers/net/can/flexcan/flexcan.h      |  3 +++
- 2 files changed, 26 insertions(+), 2 deletions(-)
+Hello,
 
-diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
-index f0dee04800d3..dc56d4a7d30b 100644
---- a/drivers/net/can/flexcan/flexcan-core.c
-+++ b/drivers/net/can/flexcan/flexcan-core.c
-@@ -390,9 +390,10 @@ static const struct flexcan_devtype_data nxp_s32g2_devtype_data = {
- 	.quirks = FLEXCAN_QUIRK_DISABLE_RXFG | FLEXCAN_QUIRK_ENABLE_EACEN_RRS |
- 		FLEXCAN_QUIRK_DISABLE_MECR | FLEXCAN_QUIRK_BROKEN_PERR_STATE |
- 		FLEXCAN_QUIRK_USE_RX_MAILBOX | FLEXCAN_QUIRK_SUPPORT_FD |
--		FLEXCAN_QUIRK_SUPPORT_ECC |
-+		FLEXCAN_QUIRK_SUPPORT_ECC | FLEXCAN_QUIRK_NR_IRQ_3 |
- 		FLEXCAN_QUIRK_SUPPORT_RX_MAILBOX |
--		FLEXCAN_QUIRK_SUPPORT_RX_MAILBOX_RTR,
-+		FLEXCAN_QUIRK_SUPPORT_RX_MAILBOX_RTR |
-+		FLEXCAN_QUIRK_SECONDARY_MB_IRQ,
+I did a single patch for all of drivers/mailbox. While I usually prefer
+to do one logical change per patch, this seems to be overengineering
+here as the individual changes are really trivial and shouldn't be much
+in the way for stable backports. But I'll happily split the patch if you
+prefer it split.
+
+This is based on today's next, if conflicts arise when you apply it at
+some later time and don't want to resolve them, feel free to just drop
+the changes to the conflicting files. I'll notice and followup at a
+later time then. Or ask me for a fixed resend.
+
+Best regards
+Uwe
+
+ drivers/mailbox/bcm-flexrm-mailbox.c    | 2 +-
+ drivers/mailbox/bcm-pdc-mailbox.c       | 2 +-
+ drivers/mailbox/imx-mailbox.c           | 2 +-
+ drivers/mailbox/mailbox-test.c          | 4 ++--
+ drivers/mailbox/mtk-cmdq-mailbox.c      | 2 +-
+ drivers/mailbox/qcom-apcs-ipc-mailbox.c | 2 +-
+ drivers/mailbox/qcom-ipcc.c             | 2 +-
+ drivers/mailbox/stm32-ipcc.c            | 2 +-
+ drivers/mailbox/sun6i-msgbox.c          | 4 ++--
+ drivers/mailbox/tegra-hsp.c             | 2 +-
+ drivers/mailbox/zynqmp-ipi-mailbox.c    | 2 +-
+ 11 files changed, 13 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/mailbox/bcm-flexrm-mailbox.c b/drivers/mailbox/bcm-flexrm-mailbox.c
+index b1abc2a0c971..41f79e51d9e5 100644
+--- a/drivers/mailbox/bcm-flexrm-mailbox.c
++++ b/drivers/mailbox/bcm-flexrm-mailbox.c
+@@ -1675,7 +1675,7 @@ static struct platform_driver flexrm_mbox_driver = {
+ 		.of_match_table = flexrm_mbox_of_match,
+ 	},
+ 	.probe		= flexrm_mbox_probe,
+-	.remove_new	= flexrm_mbox_remove,
++	.remove		= flexrm_mbox_remove,
+ };
+ module_platform_driver(flexrm_mbox_driver);
+ 
+diff --git a/drivers/mailbox/bcm-pdc-mailbox.c b/drivers/mailbox/bcm-pdc-mailbox.c
+index a873672a9082..406bc41cba60 100644
+--- a/drivers/mailbox/bcm-pdc-mailbox.c
++++ b/drivers/mailbox/bcm-pdc-mailbox.c
+@@ -1618,7 +1618,7 @@ static void pdc_remove(struct platform_device *pdev)
+ 
+ static struct platform_driver pdc_mbox_driver = {
+ 	.probe = pdc_probe,
+-	.remove_new = pdc_remove,
++	.remove = pdc_remove,
+ 	.driver = {
+ 		   .name = "brcm-iproc-pdc-mbox",
+ 		   .of_match_table = pdc_mbox_of_match,
+diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.c
+index f815dab3be50..9889e4d0d9da 100644
+--- a/drivers/mailbox/imx-mailbox.c
++++ b/drivers/mailbox/imx-mailbox.c
+@@ -1120,7 +1120,7 @@ static const struct dev_pm_ops imx_mu_pm_ops = {
+ 
+ static struct platform_driver imx_mu_driver = {
+ 	.probe		= imx_mu_probe,
+-	.remove_new	= imx_mu_remove,
++	.remove		= imx_mu_remove,
+ 	.driver = {
+ 		.name	= "imx_mu",
+ 		.of_match_table = imx_mu_dt_ids,
+diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
+index 3386b4e72551..c9dd8c42c0cd 100644
+--- a/drivers/mailbox/mailbox-test.c
++++ b/drivers/mailbox/mailbox-test.c
+@@ -441,8 +441,8 @@ static struct platform_driver mbox_test_driver = {
+ 		.name = "mailbox_test",
+ 		.of_match_table = mbox_test_match,
+ 	},
+-	.probe  = mbox_test_probe,
+-	.remove_new = mbox_test_remove,
++	.probe = mbox_test_probe,
++	.remove = mbox_test_remove,
+ };
+ module_platform_driver(mbox_test_driver);
+ 
+diff --git a/drivers/mailbox/mtk-cmdq-mailbox.c b/drivers/mailbox/mtk-cmdq-mailbox.c
+index 4bff73532085..bac5b8eaa665 100644
+--- a/drivers/mailbox/mtk-cmdq-mailbox.c
++++ b/drivers/mailbox/mtk-cmdq-mailbox.c
+@@ -796,7 +796,7 @@ MODULE_DEVICE_TABLE(of, cmdq_of_ids);
+ 
+ static struct platform_driver cmdq_drv = {
+ 	.probe = cmdq_probe,
+-	.remove_new = cmdq_remove,
++	.remove = cmdq_remove,
+ 	.driver = {
+ 		.name = "mtk_cmdq",
+ 		.pm = &cmdq_pm_ops,
+diff --git a/drivers/mailbox/qcom-apcs-ipc-mailbox.c b/drivers/mailbox/qcom-apcs-ipc-mailbox.c
+index 7d91e7c016ba..f0d1fc0fb9ff 100644
+--- a/drivers/mailbox/qcom-apcs-ipc-mailbox.c
++++ b/drivers/mailbox/qcom-apcs-ipc-mailbox.c
+@@ -167,7 +167,7 @@ MODULE_DEVICE_TABLE(of, qcom_apcs_ipc_of_match);
+ 
+ static struct platform_driver qcom_apcs_ipc_driver = {
+ 	.probe = qcom_apcs_ipc_probe,
+-	.remove_new = qcom_apcs_ipc_remove,
++	.remove = qcom_apcs_ipc_remove,
+ 	.driver = {
+ 		.name = "qcom_apcs_ipc",
+ 		.of_match_table = qcom_apcs_ipc_of_match,
+diff --git a/drivers/mailbox/qcom-ipcc.c b/drivers/mailbox/qcom-ipcc.c
+index d537cc9c4d4b..14c7907c6632 100644
+--- a/drivers/mailbox/qcom-ipcc.c
++++ b/drivers/mailbox/qcom-ipcc.c
+@@ -346,7 +346,7 @@ static const struct dev_pm_ops qcom_ipcc_dev_pm_ops = {
+ 
+ static struct platform_driver qcom_ipcc_driver = {
+ 	.probe = qcom_ipcc_probe,
+-	.remove_new = qcom_ipcc_remove,
++	.remove = qcom_ipcc_remove,
+ 	.driver = {
+ 		.name = "qcom-ipcc",
+ 		.of_match_table = qcom_ipcc_of_match,
+diff --git a/drivers/mailbox/stm32-ipcc.c b/drivers/mailbox/stm32-ipcc.c
+index 1442f275782b..4f63f1a14ca6 100644
+--- a/drivers/mailbox/stm32-ipcc.c
++++ b/drivers/mailbox/stm32-ipcc.c
+@@ -379,7 +379,7 @@ static struct platform_driver stm32_ipcc_driver = {
+ 		.of_match_table = stm32_ipcc_of_match,
+ 	},
+ 	.probe		= stm32_ipcc_probe,
+-	.remove_new	= stm32_ipcc_remove,
++	.remove		= stm32_ipcc_remove,
  };
  
- static const struct can_bittiming_const flexcan_bittiming_const = {
-@@ -1771,12 +1772,21 @@ static int flexcan_open(struct net_device *dev)
- 			goto out_free_irq_boff;
- 	}
+ module_platform_driver(stm32_ipcc_driver);
+diff --git a/drivers/mailbox/sun6i-msgbox.c b/drivers/mailbox/sun6i-msgbox.c
+index 3dcc54dc83b2..6ba6920f4645 100644
+--- a/drivers/mailbox/sun6i-msgbox.c
++++ b/drivers/mailbox/sun6i-msgbox.c
+@@ -307,8 +307,8 @@ static struct platform_driver sun6i_msgbox_driver = {
+ 		.name = "sun6i-msgbox",
+ 		.of_match_table = sun6i_msgbox_of_match,
+ 	},
+-	.probe  = sun6i_msgbox_probe,
+-	.remove_new = sun6i_msgbox_remove,
++	.probe = sun6i_msgbox_probe,
++	.remove = sun6i_msgbox_remove,
+ };
+ module_platform_driver(sun6i_msgbox_driver);
  
-+	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ) {
-+		err = request_irq(priv->irq_secondary_mb,
-+				  flexcan_irq, IRQF_SHARED, dev->name, dev);
-+		if (err)
-+			goto out_free_irq_err;
-+	}
-+
- 	flexcan_chip_interrupts_enable(dev);
+diff --git a/drivers/mailbox/tegra-hsp.c b/drivers/mailbox/tegra-hsp.c
+index 19ef56cbcfd3..8d5e2d7dc03b 100644
+--- a/drivers/mailbox/tegra-hsp.c
++++ b/drivers/mailbox/tegra-hsp.c
+@@ -951,7 +951,7 @@ static struct platform_driver tegra_hsp_driver = {
+ 		.pm = &tegra_hsp_pm_ops,
+ 	},
+ 	.probe = tegra_hsp_probe,
+-	.remove_new = tegra_hsp_remove,
++	.remove = tegra_hsp_remove,
+ };
  
- 	netif_start_queue(dev);
+ static int __init tegra_hsp_init(void)
+diff --git a/drivers/mailbox/zynqmp-ipi-mailbox.c b/drivers/mailbox/zynqmp-ipi-mailbox.c
+index 521d08b9ab47..91365acd334d 100644
+--- a/drivers/mailbox/zynqmp-ipi-mailbox.c
++++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
+@@ -1015,7 +1015,7 @@ MODULE_DEVICE_TABLE(of, zynqmp_ipi_of_match);
  
- 	return 0;
- 
-+ out_free_irq_err:
-+	free_irq(priv->irq_err, dev);
-  out_free_irq_boff:
- 	free_irq(priv->irq_boff, dev);
-  out_free_irq:
-@@ -1808,6 +1818,9 @@ static int flexcan_close(struct net_device *dev)
- 		free_irq(priv->irq_boff, dev);
- 	}
- 
-+	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ)
-+		free_irq(priv->irq_secondary_mb, dev);
-+
- 	free_irq(dev->irq, dev);
- 	can_rx_offload_disable(&priv->offload);
- 	flexcan_chip_stop_disable_on_error(dev);
-@@ -2197,6 +2210,14 @@ static int flexcan_probe(struct platform_device *pdev)
- 		}
- 	}
- 
-+	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ) {
-+		priv->irq_secondary_mb = platform_get_irq(pdev, 3);
-+		if (priv->irq_secondary_mb < 0) {
-+			err = priv->irq_secondary_mb;
-+			goto failed_platform_get_irq;
-+		}
-+	}
-+
- 	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SUPPORT_FD) {
- 		priv->can.ctrlmode_supported |= CAN_CTRLMODE_FD |
- 			CAN_CTRLMODE_FD_NON_ISO;
-diff --git a/drivers/net/can/flexcan/flexcan.h b/drivers/net/can/flexcan/flexcan.h
-index 4933d8c7439e..d4b1a954c538 100644
---- a/drivers/net/can/flexcan/flexcan.h
-+++ b/drivers/net/can/flexcan/flexcan.h
-@@ -70,6 +70,8 @@
- #define FLEXCAN_QUIRK_SUPPORT_RX_FIFO BIT(16)
- /* Setup stop mode with ATF SCMI protocol to support wakeup */
- #define FLEXCAN_QUIRK_SETUP_STOP_MODE_SCMI BIT(17)
-+/* Setup secondary mailbox interrupt */
-+#define FLEXCAN_QUIRK_SECONDARY_MB_IRQ	BIT(18)
- 
- struct flexcan_devtype_data {
- 	u32 quirks;		/* quirks needed for different IP cores */
-@@ -105,6 +107,7 @@ struct flexcan_priv {
- 	struct regulator *reg_xceiver;
- 	struct flexcan_stop_mode stm;
- 
-+	int irq_secondary_mb;
- 	int irq_boff;
- 	int irq_err;
- 
+ static struct platform_driver zynqmp_ipi_driver = {
+ 	.probe = zynqmp_ipi_probe,
+-	.remove_new = zynqmp_ipi_remove,
++	.remove = zynqmp_ipi_remove,
+ 	.driver = {
+ 		   .name = "zynqmp-ipi",
+ 		   .of_match_table = of_match_ptr(zynqmp_ipi_of_match),
+
+base-commit: 414c97c966b69e4a6ea7b32970fa166b2f9b9ef0
 -- 
 2.45.2
 
