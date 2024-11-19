@@ -1,115 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84A11D0E24;
-	Tue, 19 Nov 2024 15:01:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2059F1CC89A
+	for <imx@lists.linux.dev>; Tue, 19 Nov 2024 15:25:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732028465; cv=none; b=mewPxSQGKgCZwDClJXbbgmnZIpXBxKc+WlOn1/nPzai9KyUvQIe+If0zuVFlsd6VyeKYKZvkarrLPhDJrbjgDm4l+k6FTJ4l5M1dRN7yO5i6NITzkFHMNl0ZeV2IgdTgMRdoDkElwfEGR/HeBnV41Acf96t7cAqbXp3Ajj9YpAA=
+	t=1732029932; cv=none; b=F1y9eivzFtfHDF38ua1BBPkdUwlOt1iPNWWKU8RG4q9elTeL6jtQKQjfFI8RyYpAqdfh5w8ruW8eIh4V/Ya3WpKnEf/KjQImMbVJ9juEHeaAuAxTdf24keKtzdks4WaCs2Os90+37meVwo4lIN0r1FET/lKR6TA+YiQJDi52MBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732028465; c=relaxed/simple;
-	bh=OHxB9rBJfD9alhtYQwEZOwU5JQFBquZocPkNzhxXMqo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qe6SbzYGiEmtkMj5ZzRUgQGDiXiJvN7eAnqOLlC7XTnbXG11Nb57cJ6GK4qzCxQxCUJgTiYm78TlgYoYxJyDHwF2vqv7sES0cbVYPC7q6Wjc8dYRNx7F/IBOhteW+Vip5somHFgLFqSgZbWaVOo9sXoAASXbxqK8FDDKTWEyxzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VKGrz6wi; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1732029932; c=relaxed/simple;
+	bh=VH6iOtx79DeGUGJ4jw8WfbN0aFWGMbAWjSxfxYMIkoE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Rv/DMCHCVJ38raB5xuJ3MyLU9vD6ly4tMqhE/AeNtO54WCgYFALLugVz1Mfn8guucXyHbDFzsMUoCg5i57ONvhMfiSKAJAa6u9AdbQ8k/uhQxU0a2oKUsgexieoL1i81tzBxZx8MVARIaLwG2w09dRgtaJGKnzMXKNmxyW/d3gY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I0wR7IwN; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VKGrz6wi"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 712E1C4AF09;
-	Tue, 19 Nov 2024 15:01:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732028465;
-	bh=OHxB9rBJfD9alhtYQwEZOwU5JQFBquZocPkNzhxXMqo=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=VKGrz6wipn/LFmH8fMXXJyLXayMB+Im0igBI4lrMWMm7pR1cBZbT80UjZuAv/xa2u
-	 ile6rQTSgvXm4ZZhfiYpcmcUmPtvSZUabEMkz5HmmVmaknYqcs8ICsX9CoDOHZmakj
-	 VFvcmsxIRIRqfheLUNWRDWfFMWFoEDociWQzyWmirCQI16asY8ZkMLkj3GUUaAz9hy
-	 PePdUFHT8kuvOxazr6Cs7SP9Cwk/J+5lSwzJUFQte76Zn7miBAfPXUlifQJJCeS+Pq
-	 VsiV9ufJJmcK9BxrEpSMqBQq1JGXeACKMo5GHYRmVR4ncvF38kZWP942lT5gusUurO
-	 ABtPQ6wQ+tuiw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 64FDAD44167;
-	Tue, 19 Nov 2024 15:01:05 +0000 (UTC)
-From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
-Date: Tue, 19 Nov 2024 16:00:22 +0100
-Subject: [PATCH v5 16/16] net: stmmac: platform: Fix PTP clock rate reading
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I0wR7IwN"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2ea49a1b4c8so2072168a91.2
+        for <imx@lists.linux.dev>; Tue, 19 Nov 2024 07:25:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732029930; x=1732634730; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dlci+2BKdigoipxB8Vb8O10YHCpzCE4DRKacOckTZAU=;
+        b=I0wR7IwNVeeqXzIHeatcViegSD3nIRzmZHFUEFoAhq0wvkhZD5EnyvWzskK2V1Tch5
+         lJ6Nch2HlnLJmAjKvZbYai5LV2v6ZM32voRUMP9rmgc6DPbvVUA0VpV/OaL1TjVLLrgS
+         FgZE7q9z8ubcQYDmhZYcpZIfn9mUuuj0g1rFi7B7IjLyXhUheQt7zsYz3IQ3tSa4i6Xx
+         jXL26n5sRXO8XJAdDY+er/HGo3dlaX6ny3NWWvXkTh/7cT4yOnOuELkYk811y6O4BLON
+         3sV3KYVngYmq3UBfMDqiyhI3vSz9+sBN0Gh4wptCvlC+S+eIgCQJRzloFP+3B1TsJ3LG
+         VvRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732029930; x=1732634730;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dlci+2BKdigoipxB8Vb8O10YHCpzCE4DRKacOckTZAU=;
+        b=RDlh2ngnJw67SA7GgqK5YjaTbI94ty2iKaZfhyv6I2FdvNBblNDCpHdS1k7AjCxnSZ
+         dGVgnenC0bM+kXVh5nl+zrNepb+cUIVs977Vp4aw6mq7gk9+KLi9Av0F0RY1f23R1KCx
+         8aJcKJn29bGjsYs6gRYQ7Bg38lfGLbvIL06kNWNsRT7OdyZRmF2H9pUOvqNfl8bXrrDd
+         jOotWfAOJpRYh41k3iLMbXFmN9Ii9FYj5Zgr+nyhECzAG9KqeOVty10CBVr6XqXwjWzJ
+         9WPD9k125QRAE3yiH6P7MYTOGa07t/CCYPp6+nH6z1ERQZWgxBMAI6ogmRkIbywiFla8
+         1DSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV49O2IQykqOIq6bYdQXhhB0kdo7IX1L3lR+JOxP+NN121sOhGaUMN7zpeT1fWDjVuiJIA=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxx4Stf1OV5bbivGn4+/J70sU2Zb5ZDckz5f1Ba5tPhgpFRr8JU
+	jqLEVzKPlTbD+anf0pgHKyF+BFHFmlhbD1WCqMHq2345P8tBOgOXpxSMM+37YsF92sWlbLU9dsp
+	awx05DRguhvi6vWpfCgKmXu2jdns=
+X-Google-Smtp-Source: AGHT+IE7/1v+nPPImVoZLSJAIkad+M/ZIXkCwHk4Aqn15nIJP6zl1vdILO2DJvmdjbejL4ELnTacW/VVIHzDh0f9LoI=
+X-Received: by 2002:a17:90b:3ecb:b0:2ea:5823:c153 with SMTP id
+ 98e67ed59e1d1-2ea5823c73dmr11754596a91.19.1732029930342; Tue, 19 Nov 2024
+ 07:25:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241119-upstream_s32cc_gmac-v5-16-7dcc90fcffef@oss.nxp.com>
-References: <20241119-upstream_s32cc_gmac-v5-0-7dcc90fcffef@oss.nxp.com>
-In-Reply-To: <20241119-upstream_s32cc_gmac-v5-0-7dcc90fcffef@oss.nxp.com>
-To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Jose Abreu <joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
- Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Emil Renner Berthing <kernel@esmil.dk>, 
- Minda Chen <minda.chen@starfivetech.com>, 
- Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
- Iyappan Subramanian <iyappan@os.amperecomputing.com>, 
- Keyur Chudgar <keyur@os.amperecomputing.com>, 
- Quan Nguyen <quan@os.amperecomputing.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Giuseppe Cavallaro <peppe.cavallaro@st.com>
-Cc: linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, 
- devicetree@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
- "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1732028461; l=1264;
- i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
- bh=SPtatx8x0ZkbtjnD8HA6OeWFeo+DZZ7ciHEBKeYJXkM=;
- b=2UaIZd/gCwdI5kIGbU8BJj5qpiNrj2FL1GF/utf3Q9uRD7+lnoiRcKDO9pbhMhMM611X5TL1E
- toRgEv2X5geDhoQ+eHY+2G/4K1Vn3mTfArX/V9Hwli6Rqyvby60GyYU
-X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
- pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
-X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
- auth_id=217
-X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-Reply-To: jan.petrous@oss.nxp.com
+References: <20241119130726.2761726-1-daniel.baluta@nxp.com> <Zzyn+i4khAqWBSjS@lizhi-Precision-Tower-5810>
+In-Reply-To: <Zzyn+i4khAqWBSjS@lizhi-Precision-Tower-5810>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Tue, 19 Nov 2024 17:26:35 +0200
+Message-ID: <CAEnQRZAG4Piw6NfQC7Yyc5-d2ymfq3YeL=FpV5_hNt26AzRhjQ@mail.gmail.com>
+Subject: Re: [RFC PATCH] soc: imx: Add AHB to IP Bridge configuration driver
+To: Frank Li <Frank.li@nxp.com>
+Cc: Daniel Baluta <daniel.baluta@nxp.com>, conor+dt@kernel.org, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev, 
+	robh@kernel.org, krzk+dt@kernel.org, kernel@pengutronix.de, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, aisheng.dong@nxp.com, peng.fan@nxp.com, 
+	iuliana.prodan@nxp.com, laurentiu.mihalcea@nxp.com, shengjiu.wang@nxp.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+On Tue, Nov 19, 2024 at 5:00=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
+>
+> On Tue, Nov 19, 2024 at 03:07:26PM +0200, Daniel Baluta wrote:
+> > This is a RFC patch in order to allow AHB to IP Bridge (AIPSTZ)
+> > configuration to be restored after a suspend/resume operation.
+> >
+> > This is particularly useful for aips5 bus where the aipstz
+> > configuration is lost at suspend.
+> >
+> > In order to configure aipstz bridge we register a platform driver
+> > that will set default configuration permission at probe.
+> >
+> > Because AIPS configuration is lost at suspend/resume time we register
+> > a power notifier callback that will take care of re-initializing the
+> > configuration at resume.
+>
+> why not use suspend/resume callback? what's happen if devices under AIPS
+> suspend/resume before AIPS resume function.
 
-The stmmac driver supports many vendors SoCs using Synopsys-licensed
-Ethernet controller IP. Most of these vendors reuse the stmmac_platform
-codebase, which has a potential PTP clock initialization issue.
-The PTP clock rate reading might require ungating what is not provided.
+We are attaching to AIPS power domain. So any device that will resume
+will have first to power up the domain which in turn will configure the bri=
+dge.
 
-Fix the PTP clock initialization by enabling it immediately.
+So with this it doesn't really matter the suspend/resume order
+becasuse the notifier
+that will configure the bridge is already register.
 
-Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+But I wonder if there could be a problem if a device goes
+suspend/resume before the bridge
+probe function gets a chance to be called.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-index b1e4df1a86a0..db3e8ef4fc3a 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-@@ -632,7 +632,7 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 	clk_prepare_enable(plat->pclk);
- 
- 	/* Fall-back to main clock in case of no PTP ref is passed */
--	plat->clk_ptp_ref = devm_clk_get(&pdev->dev, "ptp_ref");
-+	plat->clk_ptp_ref = devm_clk_get_enabled(&pdev->dev, "ptp_ref");
- 	if (IS_ERR(plat->clk_ptp_ref)) {
- 		plat->clk_ptp_rate = clk_get_rate(plat->stmmac_clk);
- 		plat->clk_ptp_ref = NULL;
-
--- 
-2.47.0
-
-
+> supposed
+>         bridge@30df0000 {
+>                 ...
+>                 some child node {
+>                 }
+>
+>                 so child node's devies suspend/resume will after bidged's
+> suspend resume.
+>
+>         }
