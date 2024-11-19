@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E92541CDA3B;
-	Tue, 19 Nov 2024 13:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 041D01CCED7;
+	Tue, 19 Nov 2024 13:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732024311; cv=none; b=sN7waC45rvYCjPihuTKlx/lXbRRHrAPZVqmdLbF7WPK6JZjpm2ropelyN4uYvz+MGsITMSTZldHDgfOxKZbYVwR3nXBFaF4o7PLeDnEkYY+wjb6IYsUMVi1S2PZXt9dMyOC0z1qppB0yR779CbhCz7dYvG4gEh3HtWZbBa5GHXM=
+	t=1732024423; cv=none; b=ZpxHcgMHl2rfzWMeRXAMcSiySbBjnMTQqoiygNS/YcB++LCe4Ih1vq+uWTC725/Amt6mQrvDFV634PXjqgjDatY7NWkCMdU9pfxkh5a0Qxev0fGqoy5xcg77pMR5kkYU360vPCGHNcWmejtC3c/2558FyzUhspikichYIzb7TqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732024311; c=relaxed/simple;
-	bh=QOPd2fVeUYrn4fIboHHWZsjCq3g3VbqNih5yxq9ztQ4=;
+	s=arc-20240116; t=1732024423; c=relaxed/simple;
+	bh=ZaeUTzkw4cqujbNOAx/dScYSg3b3LlW/20U9wg/ZYns=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rppE5iQ/6xz/rJh7BOyfSNKSIa05RkExL2Q+zDTJevEnfXhHSruWa421v6rstFElUTtPVrF2XjfbCEAaQedGyeebk+dOxIOR7I9jDx6njwiFyivXjKqkzzb3yeeDVDadsXAeHCe3yAv4Ob9hzyeajMRTgtDFRNFdHHP4TEc29lQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QH28NMWK; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=mHWKuoiMl+623az239BrRtUYNIpN/MZ3B6sWN89F6zlcIVCVgssWwActFbLIEWIDau3eFj8uJG19Js9gxXmZBY/8MomMG+1lM0fWtbyzpIeTD5WHOjGQw4ictjx0eXWsi7RI7jjStnwCkyg54hVr1TL2c5bCSBuqj+2WrbzPgVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J7rD09N7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QH28NMWK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88965C4CED0;
-	Tue, 19 Nov 2024 13:51:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J7rD09N7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C6AC4CECF;
+	Tue, 19 Nov 2024 13:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732024310;
-	bh=QOPd2fVeUYrn4fIboHHWZsjCq3g3VbqNih5yxq9ztQ4=;
+	s=k20201202; t=1732024422;
+	bh=ZaeUTzkw4cqujbNOAx/dScYSg3b3LlW/20U9wg/ZYns=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QH28NMWKFmMo6lasjGxd5qszGhw9uSB4kH//w70dOMEyN0CuFpJiYwfLfEDN5Mz7k
-	 riUIYuO0iXOb+jeUvUOyK8Qo5MtvTRE7+HMi55yC67wg5tNul1xVsEwuwPAcTSZHKJ
-	 L/Mq+eUHeBsCiEmpDDGokO8OjGkxBq5QR9XizI9XAxLY7e8fMjyOvm9CWZohRJdnaq
-	 ZkcN9IxQyuwIfiIFvpURIFQ6zG7Od8xUEuWwN5EdCG5cOPyTcaD0AkdqNR3ZI9g8ES
-	 XnGwN4NN8HpiL3W4y/S0VdBib3Zi0Q8Zjz3z7/Fbc54FNPmpUFpVhYNlYZV+BJZ2i/
-	 sqZdODZmw8Aww==
-Message-ID: <0868a2b6-5b1c-4cdd-9f87-808b4a00914e@kernel.org>
-Date: Tue, 19 Nov 2024 14:51:41 +0100
+	b=J7rD09N7zmx7nf9mtIwwlqIkk33oaUPdZ0N6gmr0KhmrWqqy7Y9JK11aLi6+qogN+
+	 hweWqktjf3I0ZZ+YdJ3lcnZbvaxZ1HFhAmK3gD+qakqm9wp+u71SPxbxKBIOsrzAOG
+	 PZRL7C8DTuIRVj77STPbyfgxEPWlAEp0x5Jam/dTJCkvpwXO2IGFsGH7Wpg/SIXSST
+	 BN6q/COk78cY83/UF8d+ru3x+bhDiF8oGci83Dxdx3ZRNgrguT6rG37nNPsBJ1jjmi
+	 uOXCMDgexOQ3Z2SHyOdiO5A2UWDJWxEnf0yvjwS7BG+Dw6/3+AsR+6+FLiaS7uflEW
+	 NHCNqAEuLgYyA==
+Message-ID: <3c2d9f76-12bf-4d9f-afcd-9c4ae3a4d2a0@kernel.org>
+Date: Tue, 19 Nov 2024 14:53:35 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,29 +35,36 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/7] pinctrl: s32: convert the driver into an mfd cell
-To: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>,
- Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
- <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Chester Lin <chester62515@gmail.com>,
- Matthias Brugger <mbrugger@suse.com>,
- Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>,
- Larisa Grigore <larisa.grigore@nxp.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Lee Jones <lee@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Dong Aisheng <aisheng.dong@nxp.com>,
- Jacky Bai <ping.bai@nxp.com>
-Cc: linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- NXP S32 Linux Team <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>,
- Alberto Ruiz <aruizrui@redhat.com>, Enric Balletbo <eballetb@redhat.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev
-References: <20241113101124.1279648-1-andrei.stefanescu@oss.nxp.com>
- <20241113101124.1279648-5-andrei.stefanescu@oss.nxp.com>
- <2ccbf862-2b3e-4c08-b6bd-d9571e88a675@kernel.org>
- <34ec26f5-25c1-4510-a4df-caffb75a3d9e@oss.nxp.com>
+Subject: Re: [PATCH v3 1/8] dt-bindings: clock: imx8m-clock: support spread
+ spectrum clocking
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+ Peng Fan <peng.fan@nxp.com>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-amarula@amarulasolutions.com" <linux-amarula@amarulasolutions.com>,
+ Abel Vesa <abelvesa@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Michael Turquette <mturquette@baylibre.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>
+References: <20241106090549.3684963-1-dario.binacchi@amarulasolutions.com>
+ <20241106090549.3684963-2-dario.binacchi@amarulasolutions.com>
+ <4bix7me5vaoyhcuffyp4btajmhy7no6ltczoesopaz2fqupyaw@fensx4nn472u>
+ <b7c1499b-8337-421c-9734-6e518d678ff8@kernel.org>
+ <CABGWkvrYJL9=zrPSFuEAgKO+9gDHD6RmCJM6Br6Le_eh578ETQ@mail.gmail.com>
+ <54dd6ae6-b992-451e-b1c6-8a1968955f4a@kernel.org>
+ <PAXPR04MB8459BE3474EFD4FCC28E0E82885D2@PAXPR04MB8459.eurprd04.prod.outlook.com>
+ <8c310eca-d695-418c-82cb-a89351d83887@kernel.org>
+ <PAXPR04MB8459B6F8D5C623D19CCF6B39885E2@PAXPR04MB8459.eurprd04.prod.outlook.com>
+ <bc02327b-dea8-48c9-b036-4a0eda0c4cb9@kernel.org>
+ <9f6b243b-0642-41db-85ed-d020bfa3e6e2@kernel.org>
+ <PAXPR04MB845978F4D3C6E887E0DE8D5488582@PAXPR04MB8459.eurprd04.prod.outlook.com>
+ <CABGWkvqXOg=Y7K+oc6Q-3UWGC-WLEK_tmQzyRBW6x0fvQTsqvw@mail.gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -103,69 +110,68 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <34ec26f5-25c1-4510-a4df-caffb75a3d9e@oss.nxp.com>
+In-Reply-To: <CABGWkvqXOg=Y7K+oc6Q-3UWGC-WLEK_tmQzyRBW6x0fvQTsqvw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 19/11/2024 10:57, Andrei Stefanescu wrote:
-> Hi Krzysztof,
+On 11/11/2024 12:57, Dario Binacchi wrote:
 > 
->>> +	if (npins < 0)
->>> +		return dev_err_probe(dev, -EINVAL,
->>> +				     "Failed to read 'pinmux' in node %s\n",
->>> +				     grp->data.name);
->>
->> I do not see how this change is related. Looks you are mixing cleanups
->> with refactoring into MFD cell. These are two different things.
+> Thank you Peng, for the information.
 > 
-> Yes, I also included some small refactoring changes. I didn't think they were
-> important enough to include them in a separate commit. Would you like me to separate
-> them in another commit?
-
-You cannot include such changes along other, meaningful changes. This
-does not apply to this patch only but all contributions. There is a
-clear policy how cleanups, bugs and new things are being upstreamed:
-https://elixir.bootlin.com/linux/v6.12/source/Documentation/process/submitting-patches.rst#L168
-
-Please read above document very carefully. This is v6 and we still
-circle around absolute basics.
-
+> Do you think it would make sense to add the PLL nodes with SSCG to the
+> anatop node?
 > 
->>> -	if (mem_regions == 0 || mem_regions >= 10000) {
->>> -		dev_err(&pdev->dev, "mem_regions is invalid: %u\n", mem_regions);
->>> -		return -EINVAL;
->>> -	}
->>> +	/* one MSCR and one IMCR region per SIUL2 module */
->>
->> How is this related to converion into MFD cell?
+> anatop: clock-controller@30360000 {
+>     compatible = "fsl,imx8mn-anatop", "fsl,imx8mm-anatop";
+>     reg = <0x30360000 0x10000>;
+>     #clock-cells = <1>;
 > 
-> We no longer parse the device tree to configure the regmaps, we instead
-> get them from the mfd driver. This is the main point of converting this
-> driver into an mfd cell. 
+>     clk_video_pll1_ref_sel: clock-video-pll1-ref-sel@28 {
+>         compatible = "fsl,imx8mn-mux-clock";
+
+No. Nodes per clock were long time ago NAKed.
+
+>         #clock-cells = <0>;
+>         clocks = <&osc_24m>, <&clk_dummy>, <&clk_dummy>, <&clk_dummy>;
+>         fsl,anatop = <&anatop 0x28>;
+>         fsl,bit-shift = <0>;
+>         clock-output-names = "video_pll1_ref_sel";
+>     };
 > 
->>
->> Still looks like an ABI break.
->>
+>     clk_video_pll1: clock-video-pll1@28 {
+>         compatible = "fsl,pll14xx-clock";
+>         #clock-cells = <0>;
+>         clocks = <&clk_video_pll1_ref_sel>;
+>         ...
+>         fsl,ssc-modfreq-hz = <6000>;
+>         fsl,ssc-modrate-percent = <3>;
+>         fsl,ssc-modmethod = "down-spread";
+>     };
+> };
 > 
-> Yes, the driver no longer adheres to the nxp,s32g2-siul2-pinctrl.yaml binding.
-
-I did not find in commit msg explanation that this is ABI break and why
-it is allowed. I asked for it.
-
+> This example only considers the video PLL, so to be complete, it
+> should also add the clk_audio_pll1,
+> clk_audio_pll2 and clk_dram_pll nodes. It is based on an RFC series
+> that I sent about a year ago,
+> which was not accepted. In this way, the SSCG properties (i.e.,
+> "fsl,ssc-modfreq-hz", "fsl,ssc-modrate-percent"
+> and "fsl,ssc-modmethod") would be added to the relevant nodes, and I
+> would take only the essential parts
+> from that series. This would still mean implementing the PLL driver
+> ("fsl,pll14xx-clock") and its mux ("fsl,imx8mn-mux-clock").
 > 
-> The intention is to deprecate that binding since it doesn't correctly describe
-> the hardware. I am not sure on how to do this. I thought that changing this
-> driver and removing the old compatible would be enough.
-
-No, you cannot break the ABI. Either you deprecate this or just don't touch.
-
+> These clocks can then be added to the "clocks" list of the "ccm" node:
 > 
-> Would it be better to add another file which would contain the old probing
-> function(and match the old binding) so clients would be able to select the
-> old implementation?
-
-I don't understand that. Your driver is supposed to keep ABI. Not
-through some selection but just as is.
+> clk: clock-controller@30380000 {
+>     compatible = "fsl,imx8mn-ccm";
+>     ...
+>     clocks = <&osc_32k>, <&osc_24m>, <&clk_ext1>, <&clk_ext2>,
+>                   <&clk_ext3>, <&clk_ext4>, <&clk_video_pll1>,
+>                   <&clk_audio_pll1>, <&clk_audio_pll2>, <&clk_dram_pll>;
+>     ...
+> }
+> 
+These clocks can be added anyway.
 
 Best regards,
 Krzysztof
