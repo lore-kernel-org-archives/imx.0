@@ -1,317 +1,242 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2081.outbound.protection.outlook.com [40.107.21.81])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2072.outbound.protection.outlook.com [40.107.20.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AC113DBB1
-	for <imx@lists.linux.dev>; Tue, 19 Nov 2024 10:01:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D953F1C1AD1
+	for <imx@lists.linux.dev>; Tue, 19 Nov 2024 10:09:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.72
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732010519; cv=fail; b=aXi8XP9YUuExX6k0wdKrKBliEEpp4zn/hAqfXcp2gRg4yUUBgZ/5B7t5zFBCdCWNccqn11zgTx6lBhCnL8vwFXfjIIU7r6mBLj/zd+//IL4pVbfW6TiXGaopxFaSd9iXoWN4M2slsxvaUhoWxajnHFU1tzcNGIlATKQo91Fkr+o=
+	t=1732010999; cv=fail; b=OgD1hv2CpcT7oPlvi7HAgTUGoIQ/0rOUb0evhRzYqI2Ph3HkU3hDxKbpUDG14JT3oRGoYpUniYpwXwEUfxWdHu95Cb2EZ0Z3ARGd/pFrBkrgu4RBODPo56NvUJ7x00LHohH5mTGctNIUHvg0O4Qt9uPyLxsGo6UDrFebOn9C394=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732010519; c=relaxed/simple;
-	bh=n36xsiUKjCtsrzBNS8BWkejTd8YACaI0CVYPjgcSzA8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=jXoRjWxTtXdVRgFcudZZoA8iN5d5KUjZcVzgkICUXB19Jgv8k73dApmQx2uU6em9oepDz3Vb7IHa7p7ZOAmN8MVIHCArGgyU8NrXp6vyWOljMlD+fJzIVWGDYVXkPIYmrJnm/n0mVp/vgOZGCuhQnjOMJUzE8yy7XjJHRESQOOE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=RH57sxU2; arc=fail smtp.client-ip=40.107.21.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1732010999; c=relaxed/simple;
+	bh=N+WmSPDoxi8DNjz7rt87Rp+oGt3Zl2pymBkj7lUpJ5k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=NAxvwsi3QN8Pe4z5/dN46B8qK++pzvOm9Kb/soFfjSwXyw/Q/IpaKv4KG8ClyGNGaRtEKcFAdGgVJsx7AvSa3Wp4HZlPho9TC1eQoL5+a5LRxvjE16xGMZ1ZMcuUiv9Lyg+8FwTpO2Fc1RVYpZeL8pNtwsFwDqZpHJVD7yMbWyg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=a5EVKKay; arc=fail smtp.client-ip=40.107.20.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="RH57sxU2"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="a5EVKKay"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PA8QIijlx0/LNpcGslvEEPzJQPtiPhl+fjVqUgvQEuZ+wYPeVVXabIRP9abJmFz2vuNaEkoSpgQs6d7CPzahJ48OlPRlWPkR12yborvAkzNAFSH1UAbJc0r63ozjxUYSB3zsfLz+KSrpBgH+i2c4TtLCaYn4MtFXax3xn1oJgkbZKW9E6y0vjTBI6zPN4C7iWgO6X31pPFdIlGvTMen1F7fRwosuyQwXfWi5iu4GlIxH/XXrvGZ84oEHIbmsEljnElSYWMIVOU4KotYO++MRocsY4f7r/sqizarXIx0PnZrS4b4iRdaUE2RPMdl6czD2H45zvrZOjY4XMlBRarDk/A==
+ b=fxvr7P0prZ+WdD24393gHrQwxZsj0j73Lv1n5u/147qRamIbbLRvuvdxJTd0M9r3M9T1JmrpQhJo4PsvM27kZYH2efGIyCgdYnDdjZ07PuY+bMNhV4x8m9RiKjjiuBboIlNUg9d3IFVwYoTHbT2yULeNivjX7L67nOqXgzZzoht/Yqkc9wKpqLgY6vi2tstpJRqvdUa/rXV6fLDjBOVE3MW8sP/q5NNBTbiVfPuFz8+thye9aIibup3vhzc6i+/Hnxc59n4GFAwRPqjCGm+mvCD+Oc4Xdni/EOMF6prSjKbRdYKzxTxSq6Mnu9kXedJ1uKGd1hKa1bWVnGAjhjz4LQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fgBqqKQzNEJmQrte9r0bzY8LA3QknRFL+OJBKIziAkc=;
- b=OOse2/aPfru+gYRgbGHpHZ6WM0G72hao43P2+4akYmqsYZwIFQ3x24FWQCKPquft1Ro+TJcVgQNChED6o3XtJzFbGjYSboCLYLjR4YWxME4IWmA+X2zdXMDv+xpQmakKw7aGRqO/KDItIVOeekPQOY61Ir1yGWqziuUclQQIZdaUQq/CeHls8UIkVxohWFeBycm3gqVlNC1GCVKBgzOKbO921b0tkTXqh/EuItT4QTdWWuPC5PGWzRuhS77x6en1HqoYbmReI2T4Kn16xm5cNWrjqPL54FydhMQBve5xPEXZiFd4ZfGp4ckLi86dO0VxsGiP44N/Jnyn+q8ZaYVn+A==
+ bh=1og3xBx3TcLGOM0hgrhkwz0AE9BJdmvnl46cNmpAhTo=;
+ b=nng8IRVJWtXaqUU5UvUJpR0kFrHR2SqmULCbRJZ1NVVbpB9npl2XNOTIsit4+hqyeYAoZor5tjb0L6OJqH0nUMdAfZXJ/f126UtEKxWsNzJPLR1Tkp086YsQOg6mVg2R6wRZy42dW+UOeLB/xC70KwDLT4yGJmwmyO8LZw3kRPreUiHd9lUWkJfgGybagcC0NFxd5sDy4YAfTYqb+F8Fx/4RXdeGzPva3Lhj9kznJxR6vHCHTbfnrPxztqJLVTr9PD4veyM3mOgttoSDbsTMMhNstCy4r9xuGAqr+96esI++0tsuL88Md1GK5gTwFTw4XMZ3Sg1GEN4zZHAuWmDJkQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fgBqqKQzNEJmQrte9r0bzY8LA3QknRFL+OJBKIziAkc=;
- b=RH57sxU2X/IJV9jQXh3LjCXoVajQVlxVeD/W/JH9EfCzJwrJvtRO+RaE42N7WcszfUB1mBLn4loWckKJnNh3IUnyB/FcTqaWKv1hSgCJXhjajPbkZiswP6iv2UhKgp+aHWqPjDoUI7NsjBJ/FBqSepur/cKZqW9vUFDyxZvj1DvLdBzVmTXdnOAXoF7OFk4GTJO8LsV9l+bTdhoZZYvvH1IGA7OEtmLSyorvYdXOkiv0hp8cdnM3o3zTug7OtUfNtg9bpsjyn5lm8v8mIXzfGY4W/fesykCdVtBdjLSx41L+t10AnU55TSyeT+egD6aVebzNre9hn0BZS7Z2lsZ5Qg==
+ bh=1og3xBx3TcLGOM0hgrhkwz0AE9BJdmvnl46cNmpAhTo=;
+ b=a5EVKKayjPw7WSVJ/5e38UCvKhSW6mYhNFietRAQ0jfkBKPa3IujaaC8c3vD9i23FRrzwckN1jd7sWetnOw3aSshEWl6IrdUY4z2r0Z5jfRoffmFMLpZC6twxHr6q3EoP5SZzKZFr/7yzYnvXhoAsi1jalL4gkUl8bQ156CK4rs78SrhuVqSYj9qdk+s9FEjxccMJciiRciSrgzE+Buz2THJxYyT1rtTI1+fQ4UTnlwI7lTvHg9cgFXcvEfRvbOogmA/QzsX8KskJJke6mxZvf5zYwUjZuEJqZa/doucB1QLEuwVuQITQKTbuLCff/xR8x8tWBKAuqcePLJ5PKqjIg==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com (2603:10a6:10:352::15)
- by AS8PR04MB8563.eurprd04.prod.outlook.com (2603:10a6:20b:422::14) with
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by GV1PR04MB9215.eurprd04.prod.outlook.com (2603:10a6:150:2a::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.23; Tue, 19 Nov
- 2024 10:01:51 +0000
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::708f:69ee:15df:6ebd]) by DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::708f:69ee:15df:6ebd%6]) with mapi id 15.20.8158.021; Tue, 19 Nov 2024
- 10:01:51 +0000
-Message-ID: <bfa5200d-6e56-417d-ac3b-52390398dba2@oss.nxp.com>
-Date: Tue, 19 Nov 2024 12:01:46 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] can: flexcan: handle S32G2/S32G3 separate interrupt
- lines
-To: Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
- Marc Kleine-Budde <mkl@pengutronix.de>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-can@vger.kernel.org, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, NXP Linux Team <s32@nxp.com>,
- Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
- Enric Balletbo <eballetb@redhat.com>
-References: <20241119081053.4175940-1-ciprianmarian.costea@oss.nxp.com>
- <20241119081053.4175940-4-ciprianmarian.costea@oss.nxp.com>
- <57915ed9-e57e-4ca3-bc31-6405893c937e@wanadoo.fr>
-Content-Language: en-US
-From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-In-Reply-To: <57915ed9-e57e-4ca3-bc31-6405893c937e@wanadoo.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AS4P195CA0009.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:20b:5e2::17) To DU0PR04MB9251.eurprd04.prod.outlook.com
- (2603:10a6:10:352::15)
+ 2024 10:09:51 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7%6]) with mapi id 15.20.8158.023; Tue, 19 Nov 2024
+ 10:09:50 +0000
+Date: Tue, 19 Nov 2024 18:07:29 +0800
+From: Xu Yang <xu.yang_2@nxp.com>
+To: Conor Dooley <conor@kernel.org>
+Cc: vkoul@kernel.org, kishon@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	jun.li@nxp.com, linux-phy@lists.infradead.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: phy: imx8mq-usb: optionally refer to
+ usb-switch.yaml
+Message-ID: <20241119100729.cjol44ozd55vcter@hippo>
+References: <20241114102203.4065533-1-xu.yang_2@nxp.com>
+ <20241114-marmalade-bottling-8fe656515ee7@spud>
+ <20241115020045.qlrkyrelpgdwpxxk@hippo>
+ <20241115-bladder-legislate-7daef7a750ad@spud>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241115-bladder-legislate-7daef7a750ad@spud>
+X-ClientProxiedBy: AM9P250CA0021.EURP250.PROD.OUTLOOK.COM
+ (2603:10a6:20b:21c::26) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9251:EE_|AS8PR04MB8563:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6f52322c-f2d3-4ba1-86ff-08dd0881306c
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|GV1PR04MB9215:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2089a5e9-e93c-447e-178d-08dd08824dca
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|376014|366016|921020;
+	BCL:0;ARA:13230040|7416014|52116014|376014|1800799024|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZmJqV3phUDZ5T05RaHA0OWs0bE5JVTBxV2pSeWM3RTBsaVpYVUc4SG8zd1Bk?=
- =?utf-8?B?MGFlR1pyczgyQlh1SC90Y1JlTmVRMXZQTUFZeVIrT0ZwMVdrbUlvajRJMmQy?=
- =?utf-8?B?T2JiTm1DU2l6eTFGeXJUU295K0xRb1JVZjFKYURleEFvODU4OTJNTDdoSzJN?=
- =?utf-8?B?REIrNGZjaW9od1RkdURVckdhL1l0Y2pON2tqVFB5WGp6U1NXVkJPUk5qcHdK?=
- =?utf-8?B?ekh4OWVvT2RMb0lTY2JPWHFZSFVOR1lxVnFLNGUrQVFDWms1YnJZUlVMbnFi?=
- =?utf-8?B?UGlOc3pKd0NWNk5GTWNyLyszbDd0K1dSOUIrU1QxbGVtUjFtT1QrMWkzbnZ0?=
- =?utf-8?B?R1U5dzkwR25MSDlHemZzUHZEL00vUERYM1ptM2VhekpBN3ltMkM5azRtTEpC?=
- =?utf-8?B?aFRxZXFZbVRmeHQ4MFlBUzV6b0l2YVcrSGFkZk9aMFJsUy9FRkg1SXVRSXRz?=
- =?utf-8?B?ZlMvZnQrUmMrUmtPbU5FZHVVMWZ0Rng5MndsS0xPd281eExUMFJFdGJiTUdP?=
- =?utf-8?B?dytUNmlXSEZ4WHRqNVlRRU5BNmZTSnhPR0FEckowQXo4ZEYvS1lGbGdPSE1r?=
- =?utf-8?B?VGZSK2ZNMmZ0UTBKRndSWS95a1YvWEhhSno4ajduYkdkMzIvTVpNbkNrdDhN?=
- =?utf-8?B?VFdiUGpxTTZqcG81b0prSklQaE9OT3V5WXoxcEtSWHh0RHpLSnBGeEtxZzAy?=
- =?utf-8?B?NHIybUdPandVV2lEeFlDU3dCaG5vWDVXY3laMG9XUGlCSExNaG01ZFZ0SnI4?=
- =?utf-8?B?TzFhYnZIaWt2ZUtVVVhYYmV5c2ozRGpIWUhENlgwd2tiZkJFdnp2SDgwaTY3?=
- =?utf-8?B?eS9UUHhIa3hDa0s4VGpmblNKcVFWVVEzQXcxaGZFeTZ2ZG1McFVlc0lBc1Ja?=
- =?utf-8?B?SWxoT0tlNGJKV1dNQ09wcXRmUnRYR3ExUktOVnFKTExpVzNLN2VOQmRUd0c5?=
- =?utf-8?B?bE1UUGZJVW5OR1FBOFRwK2lydkRqQTBOZWc4eFJieFcyY0I5bm9PdGN1b3JU?=
- =?utf-8?B?RDJEQmJWckFEWjU4NjZxVlo1NDJCUEVsM3ZvY0NoU3VNenBpUUtkWTNxeFZN?=
- =?utf-8?B?YWhUY1ZuNW0rUWtwOEtNd1pnY216Q3ZRUWlsOEQyTmxuS2s4L1VCdUpuNUtZ?=
- =?utf-8?B?eVNjU1Y4NUpuTEMrWElXRkswOURSUTRJVXk1YlpzdnBnR3NscUFja1ZZZDVH?=
- =?utf-8?B?VUFpOEhXeEVJZ2JUeEtCMjBBSFR2N2h0UzNhUmpxUkZYWmJvRVVHRlJNbmhE?=
- =?utf-8?B?N25yTUcxOU5BTGo0WmJKOXV0ZDZzTEVnT3JXV2ovYm9mWU9SeE16aGU5ZlJU?=
- =?utf-8?B?czNRV0ZTZ253OXR2UmdrblppeVcxQlRUckdGeGZiUFlsN0NWYm9HV0tZSnJB?=
- =?utf-8?B?N00vSDkwREV2dW9XVTFETzBMQ0R1blRiR3lrT3ZkSE9aQWRQWGFCdWxXYlBk?=
- =?utf-8?B?U0l3OU1XdzR6R1ZQblNJVFg2RENMRnFkUFllT3ZWLy9Eb2VYK3RvYm1OTUZu?=
- =?utf-8?B?ZjFrWTF6b1NDTzhKQmNBeXBJdUZkYW4zSkZXYVhYMS93YnM5Q2ZoTFU4emZv?=
- =?utf-8?B?U0NEZitXSE5pdzErb3g1S0FQckliNk45RWJDcC94enFjUFlZWE82WjRrL0wr?=
- =?utf-8?B?ZzYzWE9KTzBXakVjR3czTVhQZUVJbmxRSEZEWk1kMWErK2UrYXpiemNOZWFV?=
- =?utf-8?B?TDB4dVBVbS9yMlZhYnk2YkpWL3V1T3VnUlhiMmkvTHhuWHVHakNmY2Q4d1BZ?=
- =?utf-8?B?YnpMREY1SStyNitoTWp2MmJDbkJWV3ZucFJnU2QvNnNaQ3U3ZDNLLzNIcWNY?=
- =?utf-8?Q?Q++Yn4LrVfzybo8pBvG3UFNOfzLX5RstkFDz0=3D?=
+	=?us-ascii?Q?aIaZJ3QPgV3jC7xhWbTyheyIDQCAYqVSvrt/w1H3ABUrLLQKVzurx3WmKuCv?=
+ =?us-ascii?Q?b0eK9BbE5G+yOqYaAvg0NKxWPlJ9AA8RKJlHwu1mCUnEe8g6EmpJQLO9g0Em?=
+ =?us-ascii?Q?fk4OXqav3LRHbxTSRj7mkdP3PDC8L/BzeM84HhClPGQo/r2KFsFax7vCqWX5?=
+ =?us-ascii?Q?O0xS1dBLtYjNFeqIbJIJiLtxZc274MWOD2XFh/IAYDXbU8Uj5FWXQfQunu6f?=
+ =?us-ascii?Q?T0KdqNSuSkWzQ/1hIi1hir0D8C+MLY3PO1GuF5Nbv72NK/Y+BosFcqkcdcWC?=
+ =?us-ascii?Q?QqIv6anqWbp84ryfPi5VVC7urVGcoSpZubGyJOXQGY+wlnuAncfCN1y5k/4t?=
+ =?us-ascii?Q?7nWVedCwLUhIQ7EeSbhnqfGcNTH0kWciBD36bkRLzUv6glFab8qLxhiJ7L/q?=
+ =?us-ascii?Q?NAaelQDAsCv1JtGPqz2bO7Zr7We7PSmvuDv1Q9XhFZxiz2Sso9fbDIl+Wu6r?=
+ =?us-ascii?Q?qDSec/08gF1vv9XH9uz8Arx35XoK1Zz7np+IRxzcgsPXEkmK9I8asGng41/v?=
+ =?us-ascii?Q?jh06WlvpMV6ob1tbx8GmIy29d/j/JUudv2wHvF1svnw3+r9o8c8NVA4cU+6t?=
+ =?us-ascii?Q?S17g6itOGaRmo/aVqyzoW/QTqDw+I/s3NlQe3CHbzL42HogiGBvCqwWVCwcV?=
+ =?us-ascii?Q?kSwdjSbqk1xsFhBACiatVNGyaUVMA+bLct45pAxmZ2NEjC67oI69y/Vse+bP?=
+ =?us-ascii?Q?UF+w1yiAr8AhXkS/yTRifQXYhKskLgal/NUjjERTe2XuC0+EqfEDzWsrIYIu?=
+ =?us-ascii?Q?jM/PWmESQI4HH1CHNjsAHQwNNhnL1VSVkafhNwWHE5I4vtZZuMZ7cwiJR6eh?=
+ =?us-ascii?Q?TSDYTRTUOyaHZKanGoxLjG9Hbsc2/ap+ZUFmk+mg8uz9eC8vs/c16aYQ82lR?=
+ =?us-ascii?Q?2IfYZJR4/RaXxItLqQ4FuVnc1y6P18hbJotcNjT6P1ATSxGnPu3Zhc8iSyVR?=
+ =?us-ascii?Q?fJEMP2hrx6vLcf3E0+gvtzchOg6l66nHI9YylY1BFzF2Nc+7qLI+6GBIUTU2?=
+ =?us-ascii?Q?zhMkrnQpXuYNSn6hQBOQzjhQvm1HcX/ErHxyoG9twTCxUKYjU3a+B03pIFZp?=
+ =?us-ascii?Q?MSLVx0SC2kNh4W45WeaGOqrctfxWWairrt4qpUns33ExGkRF51ubHcnudKHg?=
+ =?us-ascii?Q?f8BWBjQpBRmcqbsBbaK/dt5lo39itboFc/CiMkwaDjp8NSvXmfC60cRT+R/q?=
+ =?us-ascii?Q?1Rth09h3273xHQXo1VShC2qwgjzyXoU4hnD1IUU7iRu86L89lkZaZEc8Qh7f?=
+ =?us-ascii?Q?somv2bRWpiG8mbTPZwgblIJ4DCHCRDBCluCplqG3uYj4qjJ2y5CGLdjj8PD3?=
+ =?us-ascii?Q?mPoMj5RwpM6Kqnv+AKFf1fdY7UMQRLTygcuVsUSx1vDVZtk41KLplwRtT0Nq?=
+ =?us-ascii?Q?ss4Iw4JP5JNraaSOIiaUPOpT46pc?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9251.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(921020);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VVU3NzdlY3hOTERMRHBkREk0a2pKSkVUbFFralNxVHJtN3J5eUwvMUFVYVpr?=
- =?utf-8?B?N1B3QU1yS0pQTFlQSHFqbVBBOTAweWZTelZqQlVmMDVpOXM3bHBTd2J5OUxz?=
- =?utf-8?B?ai93c2lrR3h6eldGMEZJcStXaENuOVF3NUVja2R4aFR1OHFEbUNtdWZFbVZG?=
- =?utf-8?B?SEQ0ZE9HR1pqN0xRR1RWNlk0YzRJTWdQYy80ak9wQ1M1TFo3K3dNanJuUzc3?=
- =?utf-8?B?MmU1b1JaOTIzTUZaeHdURy9jYUtiZ1hNNUF6azFtSm9SL1BrVDNIWHdXZW41?=
- =?utf-8?B?Z2RoTVlQVC9Xd3VLbmRTeDMxWkJLS1JNRXVwQlAyb3VlMUpkNGQ4dFY4SEpB?=
- =?utf-8?B?TEtmUkFWbVIvUXp1T0p5T1lZU25lWW5jcHM4RDJxKzQyNEgwN1RUYjhHK3ZH?=
- =?utf-8?B?QUdhV0RlNzZkMTdwRnVQRFNnQ0UxcGVSeXBabklZdjlHaFg2RHVwK3RQVFNs?=
- =?utf-8?B?MWpUdTUwN2g0VnRIVSt3b2RhODljc2RWSG5FdEhLejVDeVVPMGlpMnpjNzM2?=
- =?utf-8?B?TWRhbUg0MkVHWnplaExIczdyTU1zQXA5dWFXUUF6RGl1T2Z3SzRER1EzS2hh?=
- =?utf-8?B?TWh6UFJWb3FOcmZSMmR4Qlc1eDN2bFU3c2ZUOU01dzV2S0o2V09IcTExSmFy?=
- =?utf-8?B?cXlFVXAyUkg0ZkF0aWxBaHhYK0RicmhtcDVqM0h6MzgzWlhyT0xLY2lVUXgw?=
- =?utf-8?B?aUlnVHNpS2pMaHJEbTR4dmtPeVY0akRUTFlrYlQrNHlPVmE1N0dUMFZJNFdO?=
- =?utf-8?B?a0lGZHhIK0twalhudk9CQTlwVGErK00zSU1VQmxhLzAreVhENGxBbzJjTFNj?=
- =?utf-8?B?RkphcisvVHpsZGw1ajVQaTJWMFA1WWwwN0EwTkQ2ckRKWDZTeWprcW4zOE9L?=
- =?utf-8?B?SG41Q1cxUmRVUHlvMzlxdW5oelNSTHQ0WGlmRUZiMmgzcFJuNVF4U09PZ09w?=
- =?utf-8?B?alZwL29BMm41NkgxMGd0K1RnajZQVTFhUVNRUDlJZ05rTi84eFhwSlBqbmN2?=
- =?utf-8?B?Yjg4czRRSkd0c0FqRkdLRkFRNmJpRWVLck1BTXlBR3FEWU93M0JnVVFRQ0w3?=
- =?utf-8?B?cVMwTG5DYnM1YzhUMUNlYnNFRkRDa1dkMlFqUmJ4RHZOek1vaWUxWld0SmtW?=
- =?utf-8?B?SzIxTnpnZ0dEanBXUnlxQ3JodHhvT3F2dmNTWW9WTEpEaXQzUGZ1RmFDRTB5?=
- =?utf-8?B?R2NJVWdVOHBGUzBqYWpBS0JSS3E2S3BLcW9xdDZhcURHb2Y0YUJLanlVN2JS?=
- =?utf-8?B?Q2YxdVg4VENnTWNHVHozUVQzaWtORE9DS1BRYzR0V29zOFpiZjIreWhUa3Np?=
- =?utf-8?B?Tll1WVIyUG1OQnhnU0lvTFQ5OVRGUXpyeU5KM0NtbWIzQXQzd3BNYjRzdTMw?=
- =?utf-8?B?ZWpUN2lwbEpHYlJHSWRmb3BEYlhybXFqSm1kNGN3aXU1QkJDU1J3ejdnam91?=
- =?utf-8?B?ZC9TUkd3dmdNeVZ2ZkJLQmNmU0t6WjRPSGphR2lxN0lCWHRNN0dYbHRURG5h?=
- =?utf-8?B?TkhaTmEwVmpFVldsS3B1RTZJSlJmNysreW9XUmpqNDZKbkZCYldiYVIzamgz?=
- =?utf-8?B?MDhEdGNEWXEwSDhDTWdyaW5vSE1YWnN4VFNUV0tLbE9DWXNLdHpsdjQwcERp?=
- =?utf-8?B?cTl2UXZSNjR1TWZtQ04zUTBBTkxHV05DOHNIQnNTK093SkFMQkttQjMrN1ZL?=
- =?utf-8?B?dG1ieFExVzE1WlBGRUNIYWZrS1JyZnlOVEpVbStNSUYyVExuc09zeWVDd1Rn?=
- =?utf-8?B?Z3o3RUhnUlZ2bjA4TlpxMFJ0Qmp6VUxlVjZvR0RSeVVBVW5tOE1LOXE5OTgv?=
- =?utf-8?B?WS92UjZ4dFRiblYrejNiYm9BL1U3QjZHanJHU1JvTG5RcFpCdWNqUU9kbUR0?=
- =?utf-8?B?QjFlSjFKRGVMQllmN0dZZ2dNeGhpWEdTdkR3S3NGRzcvWkRhVVRheTZlcXF5?=
- =?utf-8?B?ZVhpRVZrTnQxWTUyRHVML3hDdWlrSkZmVWloRTVNeWZTVURYem1TQnJYb0VY?=
- =?utf-8?B?R2s0Tm90QStrZjBBT08rNnNvTzE0c1ZEMmRaSHdvSzhUUWZtOFVnYjJ0SUdH?=
- =?utf-8?B?a29wNGo3ellxQ1VuTWkyTS9tc050NTFFZ3YxQ21VbWpVdUJlbDNzSTArdFN4?=
- =?utf-8?B?TXlXMEtrWHJGemI1MWVVcHBpYkNYTUdFTWRnR3E1R09Vd3dDM3RidGJZZ2RN?=
- =?utf-8?Q?usHG7rXpfgHzTGYaPTGnDlw=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6f52322c-f2d3-4ba1-86ff-08dd0881306c
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9251.eurprd04.prod.outlook.com
+	=?us-ascii?Q?hxcyZbJdCYs2NCHTHcGy/ea69A+1DSPTH7MrRoC7l05+aax76t7gk+OnQD2z?=
+ =?us-ascii?Q?S9Q8hQZt8H6LJUvGQP6GSuA8/vq+HZG6gVW0UMavQkQURcr6x9CsyN2TRzFs?=
+ =?us-ascii?Q?/WTPLYzams6iI1oijRdOud+wyVcPA+aY1iQK6QzysSqwpgqPba3NZD+6iqHX?=
+ =?us-ascii?Q?AgvcYDx0eXX4eQe6gC7Ufl6T99lu3k7t2uCGFNUoeJtaVlcTDNnFKeIKq/cf?=
+ =?us-ascii?Q?BS6OD1ONUgeoubqkT7QI+bYpKNfbqYetyAG7oAnwRmVD9OgqBQw3mFu3MAs/?=
+ =?us-ascii?Q?HQ2PBZzxdK1Iz4bVpfTJ9EUaxNLQy8AUTo44pva94928sp1rQalWk2EMiUul?=
+ =?us-ascii?Q?T7hJbLjl+F0PSk1tyz1Ur1zQcQwr4usf/N0YKb9+h8cTrv4o+tDpdQ+hDUGe?=
+ =?us-ascii?Q?POFM2TikitOpGfOzH6xX7hOJbh+lZV2KTBp86cWl65lcC5SkQhpCtVcPZKPd?=
+ =?us-ascii?Q?iRn+abm92nArqQirTc8SkemoCEU510bLbKqXgHzEHKxIdF2VJlAVneLWSzdK?=
+ =?us-ascii?Q?4VNYnyOQpvx6A6XWbBWEWQtHOIzquU/LrcAoXD9MVpr5ffizBGFlz+MgoIjX?=
+ =?us-ascii?Q?bjTSkAKtTAvuEnJNPP4c7Q3U0Wavfh1rWHVm9v8/Ffyj7mcZz3zF2H6y97hb?=
+ =?us-ascii?Q?5mqzknWG1d+T0wzZCtHrrRG8iSSxwRLLoqw0KvZQubZ6YBBBbL98fuhOvWpT?=
+ =?us-ascii?Q?uxyTkYoaNQWdomgQsalOVN8MImquMEltlgKAkgGNKMaLM/JwgpTOuVKdu3+K?=
+ =?us-ascii?Q?TMLh9/NbEHTGuTy7voXtqVYVdHs1HyQ2wOoirregRveBivWGYXYkiuRI13l8?=
+ =?us-ascii?Q?h6tcNmtMONkvfNBYr3J/oSVmQozpA7aU3o1+QwR+STq4LUwn12RcGZm7YD03?=
+ =?us-ascii?Q?X0sfMHHTkwSrMsLQEHQIx2x5OVVLX3eUg3NqbVCtaJF3ejCUjXGKlooBCih2?=
+ =?us-ascii?Q?0iYI9EBqNDuRwNOTFe1ezAYKh0aHizMovCaJrgkJsJvMvqZqbiV9RN8ygO0a?=
+ =?us-ascii?Q?pjj/W7SMoi6D5SbV63bbcWyy0DJ4iYZexlWDFb267z518vOCL2DSI5MRx2i7?=
+ =?us-ascii?Q?4BJ4KY+nCwfIjedCk8BRk73QGqSaMeaRq5QSXuhRLhJ9nbUb99986XWvIKWY?=
+ =?us-ascii?Q?i1wM/N+PduN4KyJawTyJumzlj+EorkTgoyzF10VIQN5fqF42da2KRRfuqq8a?=
+ =?us-ascii?Q?tzbgt4iyf20sSnvG6+ErOnlP8DGnW3mZBRDZmR/E+X8qG6aHICgvLTorHFLZ?=
+ =?us-ascii?Q?jcwyxTnepvtMLEIJ9JahAX0n/+0WVU1zquCaLb8JRDYIW83ZBstvk38JQmpr?=
+ =?us-ascii?Q?rcKJwAWnS9fpWNRam+4g5xWXFXZrZA4ytnCZEpQDAbpL3pAT9VyM7wjqS+L5?=
+ =?us-ascii?Q?J/jwTaWIqJthbfFRf84SX4z2oDJp2pGUn9qjAhHQjD2zy8w0Lm+J9EQcN4Bj?=
+ =?us-ascii?Q?V70JpZjXDjfF7GwqQr5jYmFWwgE0f3UCtJX1eP1G/KCYjP/Rqyi0sPe/aPUO?=
+ =?us-ascii?Q?b1eO01gCbFF+BT392RdrywgnrIreS1fZUbZVnURdtmuiapnKvyzYgRPr6Y2O?=
+ =?us-ascii?Q?up02QKhVYFtXSFY2SFlXtXURLyRU0vi9yD5lMKNT?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2089a5e9-e93c-447e-178d-08dd08824dca
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2024 10:01:51.6790
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2024 10:09:50.8357
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1zBMxljLybqoFYsSy5CAlE0+uwj6AiOiLw/Bed3lye1MiaQcnbA7rherTDX/GvYv3/hrsTguViR+rgh78koZJApgdt+vdhB16SDPJ2VydaY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8563
+X-MS-Exchange-CrossTenant-UserPrincipalName: C2wN7cHta/kJgaK+Xr6dN0lNZcnEDPKfzKJTSnOkOmpaAodvfg9lwo+46Mrgn/GUh16TjVw6WkhZPMhz2Si68Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB9215
 
-On 11/19/2024 11:26 AM, Vincent Mailhol wrote:
-> On 19/11/2024 at 17:10, Ciprian Costea wrote:
->> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
->>
->> On S32G2/S32G3 SoC, there are separate interrupts
->> for state change, bus errors, MBs 0-7 and MBs 8-127 respectively.
->>
->> In order to handle this FlexCAN hardware particularity, reuse
->> the 'FLEXCAN_QUIRK_NR_IRQ_3' quirk provided by mcf5441x's irq
->> handling support.
->>
->> Additionally, introduce 'FLEXCAN_QUIRK_SECONDARY_MB_IRQ' quirk,
->> which can be used in case there are two separate mailbox ranges
->> controlled by independent hardware interrupt lines, as it is
->> the case on S32G2/S32G3 SoC.
->>
->> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
->> ---
->>   drivers/net/can/flexcan/flexcan-core.c | 25 +++++++++++++++++++++++--
->>   drivers/net/can/flexcan/flexcan.h      |  3 +++
->>   2 files changed, 26 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
->> index f0dee04800d3..dc56d4a7d30b 100644
->> --- a/drivers/net/can/flexcan/flexcan-core.c
->> +++ b/drivers/net/can/flexcan/flexcan-core.c
->> @@ -390,9 +390,10 @@ static const struct flexcan_devtype_data nxp_s32g2_devtype_data = {
->>   	.quirks = FLEXCAN_QUIRK_DISABLE_RXFG | FLEXCAN_QUIRK_ENABLE_EACEN_RRS |
->>   		FLEXCAN_QUIRK_DISABLE_MECR | FLEXCAN_QUIRK_BROKEN_PERR_STATE |
->>   		FLEXCAN_QUIRK_USE_RX_MAILBOX | FLEXCAN_QUIRK_SUPPORT_FD |
->> -		FLEXCAN_QUIRK_SUPPORT_ECC |
->> +		FLEXCAN_QUIRK_SUPPORT_ECC | FLEXCAN_QUIRK_NR_IRQ_3 |
->>   		FLEXCAN_QUIRK_SUPPORT_RX_MAILBOX |
->> -		FLEXCAN_QUIRK_SUPPORT_RX_MAILBOX_RTR,
->> +		FLEXCAN_QUIRK_SUPPORT_RX_MAILBOX_RTR |
->> +		FLEXCAN_QUIRK_SECONDARY_MB_IRQ,
->>   };
->>   
->>   static const struct can_bittiming_const flexcan_bittiming_const = {
->> @@ -1771,12 +1772,21 @@ static int flexcan_open(struct net_device *dev)
->>   			goto out_free_irq_boff;
->>   	}
->>   
->> +	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ) {
->> +		err = request_irq(priv->irq_secondary_mb,
->> +				  flexcan_irq, IRQF_SHARED, dev->name, dev);
->> +		if (err)
->> +			goto out_free_irq_err;
->> +	}
+On Fri, Nov 15, 2024 at 06:34:50PM +0000, Conor Dooley wrote:
+> On Fri, Nov 15, 2024 at 10:00:45AM +0800, Xu Yang wrote:
+> > On Thu, Nov 14, 2024 at 05:45:07PM +0000, Conor Dooley wrote:
+> > > On Thu, Nov 14, 2024 at 06:22:03PM +0800, Xu Yang wrote:
+> > > > The i.MX95 usb-phy can work with or without orientation-switch. With
+> > > > current setting, if usb-phy works without orientation-switch, the
+> > > > dt-schema check will show below error:
+> > > > 
+> > > > phy@4c1f0040: 'oneOf' conditional failed, one must be fixed:
+> > > >         'port' is a required property
+> > > >         'ports' is a required property
+> > > >         from schema $id: http://devicetree.org/schemas/phy/fsl,imx8mq-usb-phy.yaml#
+> > > > 
+> > > > This will add a condition to optionally refer to usb-switch.yaml.
+> > > > 
+> > > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > > 
+> > > $subject is not what the patch does.
+> > 
+> > I look through other yaml and find below format could achieve the
+> > restriction on one property:
+> > 
+> > https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git/tree/Documentation/devicetree/bindings/usb/gpio-sbu-mux.yaml?h=usb-testing#n54
+> > 
+> >   - if:
+> >       required:
+> >         - mode-switch
+> >     then:
+> >       required:
+> >         - enable-gpios
+> > 
+> > If mode-switch is present, then enable-gpios is required. If not, then
+> > enable-gpios is not required.
+> > 
+> > For my case, if compatible contains "fsl,imx95-usb-phy" and orientation-switch
+> > is present, then this schema needs to refer to usb-switch.yaml. If not. then
+> > this schema will not refer to usb-switch.yaml. So the subject could reflect
+> > the thing this patch does.
+> > 
+> > Is this feasible? If not, could you give some advices? 
 > 
-> Is the logic here correct?
-> 
->    request_irq(priv->irq_err, flexcan_irq, IRQF_SHARED, dev->name, dev);
-> 
-> is called only if the device has the FLEXCAN_QUIRK_NR_IRQ_3 quirk.
-> 
-> So, if the device has the FLEXCAN_QUIRK_SECONDARY_MB_IRQ but not the
-> FLEXCAN_QUIRK_NR_IRQ_3, you may end up trying to free an irq which was
-> not initialized.
-> 
-> Did you confirm if it is safe to call free_irq() on an uninitialized irq?
-> 
-> (and I can see that currently there is no such device with
-> FLEXCAN_QUIRK_SECONDARY_MB_IRQ but without FLEXCAN_QUIRK_NR_IRQ_3, but
-> who knows if such device will be introduced in the future?)
-> 
+> Hmm, I guess I can now see an interpretation of the wording that
+> reflects what the patch contents contains. However, you need a hardware
+> based justification for the condition you're adding since it disables
+> mode-switch and defining port nodes etc if orientation-switch isn't present.
 
-Hello Vincent,
+Okay. You are right. Based on current schema, it does disable mode-switch and
+port. However, the initial intention of referring usb-switch.yaml is only to
+support orientation switching.
 
-Thanks for your review. Indeed this seems to be an incorrect logic since 
-I do not want to create any dependency between 'FLEXCAN_QUIRK_NR_IRQ_3' 
-and 'FLEXCAN_QUIRK_SECONDARY_MB_IRQ'.
+> That's fine if that hardware doesn't support mode switching or ports
+> without orientation switching, but not if it does.
 
-I will change the impacted section to:
-	if (err) {
-		if (priv->devtype_data.quirks & FLEXCAN_QUIRK_NR_IRQ_3)
-			goto out_free_irq_err;
-		else
-			goto out_free_irq;
-	}
+Yes, the hardware doesn't support mode swiching for now. Therefore, it should
+be fine to add such condition. Maybe the future hardware will need mode-switch
+and this schema needs update accordingly.
 
-Best Regards,
-Ciprian
+I find the condition of judging compatible "fsl,imx95-usb-phy" and orientation-switch
+present is a little complicated. I plan to send v2 to simply the condition.
 
->>   	flexcan_chip_interrupts_enable(dev);
->>   
->>   	netif_start_queue(dev);
->>   
->>   	return 0;
->>   
->> + out_free_irq_err:
->> +	free_irq(priv->irq_err, dev);
->>    out_free_irq_boff:
->>   	free_irq(priv->irq_boff, dev);
->>    out_free_irq:
->> @@ -1808,6 +1818,9 @@ static int flexcan_close(struct net_device *dev)
->>   		free_irq(priv->irq_boff, dev);
->>   	}
->>   
->> +	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ)
->> +		free_irq(priv->irq_secondary_mb, dev);
->> +
->>   	free_irq(dev->irq, dev);
->>   	can_rx_offload_disable(&priv->offload);
->>   	flexcan_chip_stop_disable_on_error(dev);
->> @@ -2197,6 +2210,14 @@ static int flexcan_probe(struct platform_device *pdev)
->>   		}
->>   	}
->>   
->> +	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ) {
->> +		priv->irq_secondary_mb = platform_get_irq(pdev, 3);
->> +		if (priv->irq_secondary_mb < 0) {
->> +			err = priv->irq_secondary_mb;
->> +			goto failed_platform_get_irq;
->> +		}
->> +	}
->> +
->>   	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SUPPORT_FD) {
->>   		priv->can.ctrlmode_supported |= CAN_CTRLMODE_FD |
->>   			CAN_CTRLMODE_FD_NON_ISO;
->> diff --git a/drivers/net/can/flexcan/flexcan.h b/drivers/net/can/flexcan/flexcan.h
->> index 4933d8c7439e..d4b1a954c538 100644
->> --- a/drivers/net/can/flexcan/flexcan.h
->> +++ b/drivers/net/can/flexcan/flexcan.h
->> @@ -70,6 +70,8 @@
->>   #define FLEXCAN_QUIRK_SUPPORT_RX_FIFO BIT(16)
->>   /* Setup stop mode with ATF SCMI protocol to support wakeup */
->>   #define FLEXCAN_QUIRK_SETUP_STOP_MODE_SCMI BIT(17)
->> +/* Setup secondary mailbox interrupt */
->> +#define FLEXCAN_QUIRK_SECONDARY_MB_IRQ	BIT(18)
->>   
->>   struct flexcan_devtype_data {
->>   	u32 quirks;		/* quirks needed for different IP cores */
->> @@ -105,6 +107,7 @@ struct flexcan_priv {
->>   	struct regulator *reg_xceiver;
->>   	struct flexcan_stop_mode stm;
->>   
->> +	int irq_secondary_mb;
->>   	int irq_boff;
->>   	int irq_err;
->>   
+Thanks,
+Xu Yang
+
 > 
-> Yours sincerely,
-> Vincent Mailhol
+> Cheers,
+> Conor.
 > 
+> > 
+> > Thanks,
+> > Xu Yang
+> > 
+> > > 
+> > > > ---
+> > > >  Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml | 2 ++
+> > > >  1 file changed, 2 insertions(+)
+> > > > 
+> > > > diff --git a/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml b/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
+> > > > index 6d6d211883ae..1238792157f8 100644
+> > > > --- a/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
+> > > > +++ b/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
+> > > > @@ -118,6 +118,8 @@ allOf:
+> > > >            contains:
+> > > >              enum:
+> > > >                - fsl,imx95-usb-phy
+> > > > +      required:
+> > > > +        - orientation-switch
+> > > >      then:
+> > > >        $ref: /schemas/usb/usb-switch.yaml#
+> > > >  
+> > > > -- 
+> > > > 2.34.1
+> > > > 
+> > 
+> > 
+
 
