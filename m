@@ -1,190 +1,135 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2081.outbound.protection.outlook.com [40.107.104.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-22.smtpout.orange.fr [80.12.242.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B0B1BD9F4
-	for <imx@lists.linux.dev>; Tue, 19 Nov 2024 10:50:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.81
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732013428; cv=fail; b=RQb1HzXH/j5KK5JlefdE2bygACJnSHX0iwPEA/vcVYs2srolxFVWRrZlTcuwHtA7iqF7sHlaJPxTH0PAOC4dRGfPPZhoqDvSx+98Eb2kmQLFM1ZBWVhfMuraFWk9jSH1yfws7JW3b4psZQ8h1uudzBlwSa4gKmk0zsDeqrqE3DY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732013428; c=relaxed/simple;
-	bh=KO2pVqmdqmiZXY8fD6fM/um3d4FkfEfQI3olJUpUXxU=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=ILQ9akgKHFJdyZHfSQygEIIm3wF2hEU9xwCxfnAT/q3oXxsXwnY7PaQUgd7ZpzA9wT19BEaI49/GSQNdzY/2ml5+Fh+hrqknlNBmCmp1SbqIgV9aLeO8BjA0tEVNimD280nEcF8eXw2SYJihYk2BGtuFhMiJBnsYZUZiWmWP0WM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=GiNTmxVD; arc=fail smtp.client-ip=40.107.104.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90088198A37
+	for <imx@lists.linux.dev>; Tue, 19 Nov 2024 11:26:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.22
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732015606; cv=none; b=RjqsyX7D3KUUFfdyKKSb0xA0oXE/B5Fd0B7SwLZ5j4d7vL/hkIjJLvFhxQVXqg+DmcTn+1JnsLPLuNYMEZsCS2BiPfqNdemlAElylqnXMzohwZNSatgjb1tNOkWnw3cvN7J7b6V/v9Aw5h1x7pAmrmNkK9AHD6QSJ5JOw49yDHM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732015606; c=relaxed/simple;
+	bh=jikjswAKs7ol2d86wYoGsx6UY//r1CS50Ko2Q/uD/Io=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gYZKpXehHeogHv3pRoNt18ZkpGuLm6P7Elp5maI0IuUUmTZwY9WBzImFJakBmqozjRmEmNt95Hz4V7JQftr/M84jq1i46pVCQjLP8Bt7WNTBqcYCvPvbCYhbYhgfxTrCNuOkolxSPbVzSNAoKxTmSEIekWxVYt6DocAgTdWV9Yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=dD5In/S0; arc=none smtp.client-ip=80.12.242.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="GiNTmxVD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=alrdz4e2Gr8mqKZWNAeIV6PJHkcYxD5dMzEAVZRpSyG+cLiDWDWLXEMqY+Lc8NW9dmqLcUyu6Gy3V5mHCxkRkm7nM2hg8DpUMYotuLqeWotWdIw4EsEx+HICviSkFPfBXXojeWG5rPSctRtpxjI18SrBDGRkHtwQ0259XqNeCcMWQ1VMIKIBh5e5rg7TyVYnDHClBgpXI+jAOeIg5jOmio/+n6RU5nuKi61l03nIw5cpxk7dsubxkC6wSimQC7rOkxOyBuf0LLiDhRlpSd7nOl/7swTCorVCaY2hm8jZQ1t/xSTNlFp7TtL1zcuy7pX6ciwy5kcPxD13NqHcr3eyNw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3MYDQqisN2KniiILQsunnGU5a0Xmilz6YeeH6WTn3TI=;
- b=u8KkNih6CLZM05gY63vrYut/nQJaRM7QLFLYgzRn/SekHDACt+YIm2Vs0R6wa7oK966Y48wvKhtj6VVc+Mh8kJ+ywrGN2nt+Br4Nznv5co1dWbylP0BPGkkABiCsShZ916BbcAPEjypvmcHmRfD/qE9uJifJXfvvJWyrOxu/iBPAz5/98u202EZZdxpN/d7uEyIiGjGYmCx/MEtqggH7vb/SwTvjL3JasoDt7w4AIkiCZcW3SwpLviBPg7Cq8VOXE/BM2Q2VH7O4KP0yjniJAfMnQmR/kbRJq7mpw6urFDV9Gao6KmJAfWnEdcucw4LXd+PNY+VOt/x7O0DveUPfpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3MYDQqisN2KniiILQsunnGU5a0Xmilz6YeeH6WTn3TI=;
- b=GiNTmxVDtUXe671yUxluSVHihpvL9DsteHv4q8zfk2Eo6OyzJtMxv+ZA9yLUvi0niw8EdVRMSSgBH1XNUsKF0JyxylPykHCUD/gQg7Ojls6VmLNk2X1dkPzzt6ZLj0L/h1n0MnNiepdhhWhzJHUcAtLp8VwilIgaDgqIfYR3um+8UoBS6rTHf9wOpmVQZ+kigvaoCR3SccoCjY+j2FW+rpkvo2yP4Thyl0tMpc1OXMGspPUp1b/l1XpQkXbYhRtQ4/Qo8MB8xGppogEszca4nkeeSRji2kkJPJj4OlczHAvf3pU6zMDZ0OZeyIinm6WC1oHG/AAT/oeZWAWvLPVBKQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by AS8PR04MB7637.eurprd04.prod.outlook.com (2603:10a6:20b:29d::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.14; Tue, 19 Nov
- 2024 10:50:23 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7%6]) with mapi id 15.20.8158.023; Tue, 19 Nov 2024
- 10:50:23 +0000
-From: Xu Yang <xu.yang_2@nxp.com>
-To: vkoul@kernel.org,
-	kishon@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	gregkh@linuxfoundation.org,
-	jun.li@nxp.com,
-	alexander.stein@ew.tq-group.com
-Cc: linux-phy@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-usb@vger.kernel.org
-Subject: [PATCH v2] dt-bindings: phy: imx8mq-usb: correct reference to usb-switch.yaml
-Date: Tue, 19 Nov 2024 18:50:17 +0800
-Message-Id: <20241119105017.917833-1-xu.yang_2@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR01CA0162.apcprd01.prod.exchangelabs.com
- (2603:1096:4:28::18) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="dD5In/S0"
+Received: from [172.16.82.72] ([124.33.176.97])
+	by smtp.orange.fr with ESMTPA
+	id DMNHtEHNmNywhDMNIthG2G; Tue, 19 Nov 2024 12:26:35 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1732015595;
+	bh=d9GXcffo0UAX9pD8MRFRvCySp0v93Es0xkObTh1140o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=dD5In/S04frbfPzHzkSlfngFTsOTi/1BdloRL546rlbqNKsazcYCgHaFYx2xGnCWK
+	 DkRKSXvHVziTyYsylfNvmgM7XUBAn7TiJ9XUNGojfc96r7k/jQOueoXvGUUnOD290K
+	 P37KMcSaylJNiEgzRZIsDtxkD18NkhW62HlNEoJeJbXVpfde5GhyhV4ONTlrWX1a+O
+	 aY2Cj1KwuxtgfMyzd+KT5YreEiVwLtKZnwJnFTcCYgtverp+jT0hUn+ApIWLA+t/Zx
+	 bxOZBYw4aGn8VIEvQEpCD04GtgTWpOLPcev/awAWKQxe1ynVQ4ryGZNxu8nRNrw0Zj
+	 +scF5J1bswNBw==
+X-ME-Helo: [172.16.82.72]
+X-ME-Auth: bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 19 Nov 2024 12:26:35 +0100
+X-ME-IP: 124.33.176.97
+Message-ID: <f84991f7-66c6-4366-9953-b230761b6b7a@wanadoo.fr>
+Date: Tue, 19 Nov 2024 20:26:26 +0900
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|AS8PR04MB7637:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3d436e68-588a-4fff-89ec-08dd0887f7cb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|52116014|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?YUf9Gb6Mp6Bm9EwqG5iD0H/Fv4kH7qpWxuZoXImVs+DvmfK9GQzY/dDIQSkk?=
- =?us-ascii?Q?NWmQQn9r8Wf0SYiH8MK7p7YMp4QffvtDEQEi7E7DDUbEAbydDMx+UrHtX78b?=
- =?us-ascii?Q?rOla3gzcILpe+fejLw0FxAOlPFDNv5VronFtnTfMva+ULQKBBSsg/+i6g99w?=
- =?us-ascii?Q?DW4kXNaCJoOmb1Sq52WhDJfavEIleukd1Z5UZmWUxNEPdQMuUN2cFbWFuCtG?=
- =?us-ascii?Q?Lfwzethn39hKa1rzHAy/B1eWxf33V8QNwUGbse3h2RPgVs3qf0MgYfcOp8+B?=
- =?us-ascii?Q?rKaOa52UuYQKIinc96G7ZA1gP63bEe4jAqfdQmSXT2soRgcDanIzlLIYpIJ5?=
- =?us-ascii?Q?Vh+NqEk/1bgzVDzrovZyZKHnwnPvIuUZdpgT6gPx0cu7uz9c7BSX5S1dum39?=
- =?us-ascii?Q?62UK9dZbhlmx32DQChMSC7T2oob6cZJLx3d8qhmxQAXj5d0C7Sd5TNH7mggi?=
- =?us-ascii?Q?5HRaRauHAut94uEXGV74V62OfjJIAO0iozzpnG5x7hmXsJ8USLVHuxoMcKFi?=
- =?us-ascii?Q?ZOCa45cyQH+aOGxDk+qZ/aObSIpRLmoQarphuE9nNg2/OzlqRiHbHm49YK0Z?=
- =?us-ascii?Q?rk0OWAoWF2lAwUldIApPhvhg4ObnJSeDSIT24N5DuyNcvFDV8PhXo0kEbaQ/?=
- =?us-ascii?Q?DxraKcnvYy/4b9YQLB3dpQJDtLfz4awkRKQ1wXewOr+f4HzHcnJZ3B0Z6do0?=
- =?us-ascii?Q?WigTO6VK3nqvwheQFvvb+ZyK622twtZLo0vT7Jaqtdg0fkol7JFV5PjBTdDK?=
- =?us-ascii?Q?hjt8yxzV50ErVpdBNXBUGRypxzmMrwguePfTq+xsMB3C46l8xUC9b06XMNg3?=
- =?us-ascii?Q?mvGQpps05QLprZG33VfwCOrdft44L0s7sdwMJQr5Cj7eU07PSXSPav0RiV44?=
- =?us-ascii?Q?BkhTQKGZyQY8TpXrx5pCOzlY12CYOjcZvG1JUWVhRuxt/4+LBbTyv3UKXNxE?=
- =?us-ascii?Q?4As263qem+V/Lw4Q5zerXMBFilR8DvcY/OGy1yP24q5sYRHYBg5Pz0u0xNQD?=
- =?us-ascii?Q?v//gWImeBFlWcbWRqi6v8gimkIgGkEQEMG6JMhBsBxL/P9Ls/xlfW+wdoq2I?=
- =?us-ascii?Q?OruTTMa63MVWlgjMJvSipH40Mgw4dN/F7qRXcCEl3hIL5J4lM+cCNiBuehaB?=
- =?us-ascii?Q?9CiF1wCRV15knWqKfLr66iD044yfRi5Fw2BnByxPWSmMDTLtE77UBcFy8KyM?=
- =?us-ascii?Q?X3QPkWB7DNStSJPwwJjocQXFBm4tHt0FoXuMDwYnNWVZ/VfZtjxVIBTWXeZF?=
- =?us-ascii?Q?UBUzEk62tNq3qJuahPKBUVfmhGGboJi0mkapvkpS7ov3PO7jCTApkP7TV0ik?=
- =?us-ascii?Q?TNdZxmiw3dEjcqOvsxHn2XPWpcrf53bH+MUw3vGZuQbt7VTtiiY72zkROv5i?=
- =?us-ascii?Q?TFCq62FvHVEcOhDNDaAtOx1UOslr?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(52116014)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?joiBkPphpMJYzUNjEs8+nL/AGw+sjPn8xaUC0PcBzgB0mgVulwXlTcXhtcFw?=
- =?us-ascii?Q?Nf2eUtLG7QsPu/ECMrdcYbMmMkGWvoHMftoijbCB0qHVdgkOpKvxmrl6PImB?=
- =?us-ascii?Q?IdBMJzKloTLm4XCjVFMYOC6Gyqgnc7PRjMBnBeu/NpkSu4viSw8XrexxzBB5?=
- =?us-ascii?Q?+yti46eN1kuoEiAOoVuG5QZ6xSsi2MrFdroRHbc3Q8wFZIsDAcN6nTW9zXzr?=
- =?us-ascii?Q?+0/DRyjbYEbHODlFcGXitvWc6UhY+mx5lCcsTdmOYh9GMW7LLa93yp6H/+Ab?=
- =?us-ascii?Q?8mro65FG7CFpYckOjicZG2VZPW/fvdoohppHnObKdSlrBXcTff3sP4cAa20A?=
- =?us-ascii?Q?l2qNnpOzkHUVieFpN1PXsUo7b9Fb6GPNg9E1E1N/iyelN479bbpK9eqo1edt?=
- =?us-ascii?Q?1STZiNnrV8pEwcbG/YolDBAPDlFEsLJh8lM9RWqBNvrkFirZ3OwDB0uRyjRc?=
- =?us-ascii?Q?Z63MI3qj0EVRQsqpX3ysenlCMfbh3SCEoi1Dum3H4qnYH76cWMxm170s1YBN?=
- =?us-ascii?Q?Vu1mlpKmWFsjEraEamGFBLbJpWntFxQayQsHg52cZu5tIGtSnOkp1ogeGpRM?=
- =?us-ascii?Q?d3iGj3fjoVv/f2//gt3Osd/ul97y7i33sfMkPPvZtNtyMXHPxb7MXI+fsuja?=
- =?us-ascii?Q?tjk0E3rnNRYSQhxzJXGq5GeJR5OmIEI9VIOHs76t1+kJ8VNCg6LAV97549nw?=
- =?us-ascii?Q?17j9UX8iWAjm+Hk5YDHAqsLJmVsX4p8x4SbLnx7b+V+BEvpSB8wcl4uDFvRh?=
- =?us-ascii?Q?uRNXiDLGbUM1e/dYktyTlL2P8kWDKELigqk4SanRs538++gW8OvqoARSu6BG?=
- =?us-ascii?Q?YyrL2ClKnLCuodvxMilsQnZqDSKnXhv0KCThC5PZEe1BparlDfFZyAoZ4HE7?=
- =?us-ascii?Q?UM+DUgrFDJnP5iOOg9BFyRrk85aQ9sMFj81ot30T7F4aHu5aNMkEM75yIHyN?=
- =?us-ascii?Q?r1+bvLEOO9BI9r4UgPx6KFZxV7SfWriZrV3QFLh/9oviOYjMi6wHNQWqdMqa?=
- =?us-ascii?Q?qsX+owYGO3511TIX0JjdYs2YJk9IlcKwESqxHGx1wYJ6eh9IZtfeFlvzZreP?=
- =?us-ascii?Q?tDzY0i6OsdW3CwuRTJJRzYvAOjtBlIK0L3MCtaZdzePucV/tcxvKxXvq3f3j?=
- =?us-ascii?Q?W7+RtQwmTVVcGxplCqgdOAtUA7kmr92RPqDUXjZc5ZuVnQbKVSo+hIdg4DMx?=
- =?us-ascii?Q?ypP95Hx0XQmijmISWcMwaqjPbxXRNMlfb/CDMoAD43gJt+B29RzjLzKvrX2U?=
- =?us-ascii?Q?RArvbCbuRDIHvVUix41IPVV1BcvN/zrpmI6hbEo4oIM9dPaF95feJv3VXtpe?=
- =?us-ascii?Q?lf8vQiixlJJ0hFzgJumyfP9aCFf2VnCfN7c3cn0wRL070kmodHP7qYk8blaO?=
- =?us-ascii?Q?i4vzorQfudIsSMmSRMrYXN76xojtjc4vYI8sop+DPx5tAYjDe5x5mG4w3tlv?=
- =?us-ascii?Q?nwV2Aw10Sygj0xCP6Gup05Ft9Yt1kjlYG7goHdDg44TtgOiZehxSanwQD3wI?=
- =?us-ascii?Q?p+XFxZIqtXopLvF7om0V5vBpp40g0p2/BNddg0tuXnjqwwSsIJkL+sC2TWWB?=
- =?us-ascii?Q?GIaTeLX3JTz8c4clAYH4HD81vzWmmHKj8xUKljKl?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3d436e68-588a-4fff-89ec-08dd0887f7cb
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2024 10:50:23.1362
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CQAeUeId5um2UEA/fPa4sEnMV+ecy3+yLyHeKShTcUGb4PVyCHYvDZYuOi/tJzu3YAePyIZX1g7aVjzNMwjp5Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7637
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] can: flexcan: handle S32G2/S32G3 separate interrupt
+ lines
+To: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
+ Marc Kleine-Budde <mkl@pengutronix.de>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: linux-can@vger.kernel.org, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, NXP Linux Team <s32@nxp.com>,
+ Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
+ Enric Balletbo <eballetb@redhat.com>
+References: <20241119081053.4175940-1-ciprianmarian.costea@oss.nxp.com>
+ <20241119081053.4175940-4-ciprianmarian.costea@oss.nxp.com>
+ <57915ed9-e57e-4ca3-bc31-6405893c937e@wanadoo.fr>
+ <bfa5200d-6e56-417d-ac3b-52390398dba2@oss.nxp.com>
+Content-Language: en-US
+From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+In-Reply-To: <bfa5200d-6e56-417d-ac3b-52390398dba2@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The i.MX95 usb-phy can work with or without orientation-switch. With
-current setting, if usb-phy works without orientation-switch, the
-dt-schema check will show below error:
+On 19/11/2024 at 19:01, Ciprian Marian Costea wrote:
+> On 11/19/2024 11:26 AM, Vincent Mailhol wrote:
+>> On 19/11/2024 at 17:10, Ciprian Costea wrote:
 
-phy@4c1f0040: 'oneOf' conditional failed, one must be fixed:
-        'port' is a required property
-        'ports' is a required property
-        from schema $id: http://devicetree.org/schemas/phy/fsl,imx8mq-usb-phy.yaml#
+(...)
 
-This will correct the behavior of referring to usb-switch.yaml.
+>>>   +    if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ) {
+>>> +        err = request_irq(priv->irq_secondary_mb,
+>>> +                  flexcan_irq, IRQF_SHARED, dev->name, dev);
+>>> +        if (err)
+>>> +            goto out_free_irq_err;
+>>> +    }
+>>
+>> Is the logic here correct?
+>>
+>>    request_irq(priv->irq_err, flexcan_irq, IRQF_SHARED, dev->name, dev);
+>>
+>> is called only if the device has the FLEXCAN_QUIRK_NR_IRQ_3 quirk.
+>>
+>> So, if the device has the FLEXCAN_QUIRK_SECONDARY_MB_IRQ but not the
+>> FLEXCAN_QUIRK_NR_IRQ_3, you may end up trying to free an irq which was
+>> not initialized.
+>>
+>> Did you confirm if it is safe to call free_irq() on an uninitialized irq?
+>>
+>> (and I can see that currently there is no such device with
+>> FLEXCAN_QUIRK_SECONDARY_MB_IRQ but without FLEXCAN_QUIRK_NR_IRQ_3, but
+>> who knows if such device will be introduced in the future?)
+>>
+> 
+> Hello Vincent,
+> 
+> Thanks for your review. Indeed this seems to be an incorrect logic since
+> I do not want to create any dependency between 'FLEXCAN_QUIRK_NR_IRQ_3'
+> and 'FLEXCAN_QUIRK_SECONDARY_MB_IRQ'.
+> 
+> I will change the impacted section to:
+>     if (err) {
+>         if (priv->devtype_data.quirks & FLEXCAN_QUIRK_NR_IRQ_3)
+>             goto out_free_irq_err;
+>         else
+>             goto out_free_irq;
+>     }
 
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+This is better. Alternatively, you could move the check into the label:
 
----
-v2: remake patch and subject
----
- .../devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml        | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+  out_free_irq_err:
+  	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_NR_IRQ_3)
+  		free_irq(priv->irq_err, dev);
 
-diff --git a/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml b/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
-index 6d6d211883ae..daee0c0fc915 100644
---- a/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
-+++ b/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
-@@ -113,11 +113,8 @@ allOf:
-           maxItems: 1
- 
-   - if:
--      properties:
--        compatible:
--          contains:
--            enum:
--              - fsl,imx95-usb-phy
-+      required:
-+        - orientation-switch
-     then:
-       $ref: /schemas/usb/usb-switch.yaml#
- 
--- 
-2.34.1
+But this is not a strong preference, I let you pick the one which you
+prefer.
+
+>>>       flexcan_chip_interrupts_enable(dev);
+>>>         netif_start_queue(dev);
+>>>         return 0;
+>>>   + out_free_irq_err:
+>>> +    free_irq(priv->irq_err, dev);
+>>>    out_free_irq_boff:
+>>>       free_irq(priv->irq_boff, dev);
+>>>    out_free_irq:
+
+(...)
+
+
+Yours sincerely,
+Vincent Mailhol
 
