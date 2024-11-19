@@ -1,44 +1,44 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906CA1D1E69
-	for <imx@lists.linux.dev>; Tue, 19 Nov 2024 16:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE4C1D1F58
+	for <imx@lists.linux.dev>; Tue, 19 Nov 2024 16:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732034563; cv=none; b=agnACFIa8QJ+pQdd1GuRph3vlM7QeH3GthT6TM5NJ8pdB2gA9A7vtwJnTFrK/GJRcQUxUGimvkll2bh4bjmco2St7KRHlJxZXR27VrVGe+obTodupnDgW+8GDNdFdOWHA+zGsCV5u7MWncT7OuWIG3xO2/rkV4BHo0keXxwrUlk=
+	t=1732034598; cv=none; b=ETN5VqTXs7J2UMacnkM38YFfJ8zhfUYLIRyDmf1r9OkQvdIpLXJbaXIam3yKekuzGveZh4JT6XV7/vR82yJCihVB9+Evimquk4HHmPo8fZKb80xSihSMZnQqaYh3aa0xdn5WEULYxOaaYAL15gto/LQfY09DvtJFHSNz9fUFX+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732034563; c=relaxed/simple;
-	bh=Fabr3ReqEmsQjNcp+IXcw/3Xe1MNKSm12w79U4tPlCQ=;
+	s=arc-20240116; t=1732034598; c=relaxed/simple;
+	bh=yXO6dKMxQPTi+wXTBhpgCBzLO5R6i0zSQeU1AflX/z8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JqXQqZN9hijSl6m70El0neE+GzyKu4UxaXJaQd/3CiR5pMj6QrcPODXPCehnKcgYf28ujpTEnjd+AD6kyI5UWSTTa+xKHWrN3Cgx3Vu7jSocfRbVNlUwl/Aos7i970HjV8dY0q29DXmoe2vMHnvSsYpnnJNXD3c+Mwm/3ZjQeyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=A7hN0Hk2; arc=none smtp.client-ip=78.32.30.218
+	 Content-Type:Content-Disposition:In-Reply-To; b=RncPOVYRH3tySIRmS4eEicej1iM8QybPyIPSkY2EiFvXmmWWjXGkQiFL8iTf58AwbibZC8MxGaqhdJmxsUYZ3d00qKbL8BFCQzxoMt0N/0dkunlNvgE7V0X/L0MV84O4oHSqOEAgHFGcsqMut9wKBUrWfXdUEv4P1UnH9VS4i1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=zn99iGt/; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="A7hN0Hk2"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="zn99iGt/"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
 	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=9CfPndcwSpFi9hNnsDG4kxLyrPKMJDc10lVqC9dCYk8=; b=A7hN0Hk2Zmz++TCr166toktatF
-	QMPEZVC82D1Ar0ySXseMynMwTLhF/vcBbhlABFqUEu9L4eCj1U24tFezSQjboOjXr0KlR+5uCuRiO
-	EJobuVaIyjCRpa9LBc5x5xINgqCT8OcIyidFIZADkKSv2WF493PAEgXGYcBv0iO5uy0SpegRc7G0e
-	wRNDj/cmJAl9GBp14UuDrtXgQoRMSrT/AQxRR1//A2480LLuw0R5CyIGBOejVkJmXOTjtAFG/qDRU
-	p5lFom6osZKvaZtE1IFpYqP6WMDyk+3bho82AE/7oE4NLirBOjK4wtg9+uvfXzSnVlETckHXJe2Ht
-	aH9YLbkw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:34792)
+	bh=mdLgeAl4sTOGLbDwzJxkXQU16k/1XsYWsAMS1Ga0JUM=; b=zn99iGt/lq4Uuh+s97m9zSH8p3
+	Q8LonByanwad7aH4gDuYJ3DbPfQlgAVoKvOdLCj3xqBHFEiX8uPUoHMjZZwcDUqlZX5DZnBjBaCji
+	qoHiRbxhbsLZ/jRCdx8nuAWe9jLPNIE8k/8K+zpq5JeRVvrxXBhk6iCyShkEzY3crJL8IvdD7Vwr3
+	A00Px4X2PIPip0YBTzbv9Z46msruBS98GaiP1HMfvOTgnpS2/MMhsjboseHsc69VbTOfY9wuU/qeU
+	rxzI8C58Dq5aora7slkQxnmuJhVtEqwM9SU1vaFyxst4QkwIy28zED84d/7Qr3U8ThlamoGPkyuPT
+	1GgUG80Q==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:34956)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <linux@armlinux.org.uk>)
-	id 1tDRIv-0003xe-1j;
-	Tue, 19 Nov 2024 16:42:18 +0000
+	id 1tDRJX-0003yO-1s;
+	Tue, 19 Nov 2024 16:42:56 +0000
 Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
 	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tDRIt-0006D0-1B;
-	Tue, 19 Nov 2024 16:42:15 +0000
-Date: Tue, 19 Nov 2024 16:42:15 +0000
+	id 1tDRJV-0006DA-1y;
+	Tue, 19 Nov 2024 16:42:53 +0000
+Date: Tue, 19 Nov 2024 16:42:53 +0000
 From: "Russell King (Oracle)" <linux@armlinux.org.uk>
 To: jan.petrous@oss.nxp.com
 Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
@@ -71,10 +71,10 @@ Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
 	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
 	imx@lists.linux.dev, devicetree@vger.kernel.org,
 	NXP S32 Linux Team <s32@nxp.com>
-Subject: Re: [PATCH v5 05/16] net: dwmac-dwc-qos-eth: Use helper rgmii_clock
-Message-ID: <Zzy_5wl1IRy7taow@shell.armlinux.org.uk>
+Subject: Re: [PATCH v5 06/16] net: dwmac-imx: Use helper rgmii_clock
+Message-ID: <ZzzADeIBYos6fgtQ@shell.armlinux.org.uk>
 References: <20241119-upstream_s32cc_gmac-v5-0-7dcc90fcffef@oss.nxp.com>
- <20241119-upstream_s32cc_gmac-v5-5-7dcc90fcffef@oss.nxp.com>
+ <20241119-upstream_s32cc_gmac-v5-6-7dcc90fcffef@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -83,10 +83,10 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241119-upstream_s32cc_gmac-v5-5-7dcc90fcffef@oss.nxp.com>
+In-Reply-To: <20241119-upstream_s32cc_gmac-v5-6-7dcc90fcffef@oss.nxp.com>
 Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Tue, Nov 19, 2024 at 04:00:11PM +0100, Jan Petrous via B4 Relay wrote:
+On Tue, Nov 19, 2024 at 04:00:12PM +0100, Jan Petrous via B4 Relay wrote:
 > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 > 
 > Utilize a new helper function rgmii_clock().
