@@ -1,220 +1,149 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6037A1AC420
-	for <imx@lists.linux.dev>; Wed, 20 Nov 2024 13:01:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880511A7262;
+	Wed, 20 Nov 2024 13:30:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107718; cv=none; b=O3/SpVVocsq+nb53nO2qMcDzwD+QQYmI9whkxvcLjWJSZVDKJnKNaJuwcOizvvcVY0vQSQKrBW016MqUco1q7/MPrmMCRjFrWDreyhny1IInYGqgVuTaZQvpBSNY1WsRvUPBfy+VBtWAOkqCChwksoc3LP22WyRBIG/tYP9hlKI=
+	t=1732109402; cv=none; b=ZWDH1j2ed26vDLrHon/PWO1urPh+qyAYk77qnjoNGjW1eKHYEHVMzjkFfH1+uU3V0YywSp1UBGIHp+BWcubQb/9fQ/cfFVxMWXYhfJC/RfASUDUBP6j/mCzihk6uKQMHsDzqHLPvbGrTCutlCm4w2b9gMYNuHXQW5wzkoDjS2+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107718; c=relaxed/simple;
-	bh=YAdf51mk3yxuCs2OUJEetCC1+47aPHLM8gQBhUIr1v4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k6scQDExRMVcX9IkMNxmYufq8x9LdSdGXQMrcHQ2HcC8ZEHQepqZ+CuV4fBEIHchPFLmn3AfjwLOBrNDyg3Fla5JusdZrZ/Z1KR8Ybl4m8/pSc9nPvrPaGjrQ/jyEVZlZ9bLRUu3yeU9AMEEyOMriY6CRel/Rw1BHfM/3hFDZFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id B088D201D81;
-	Wed, 20 Nov 2024 14:01:54 +0100 (CET)
-Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id AABEC200262;
-	Wed, 20 Nov 2024 14:01:54 +0100 (CET)
-Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 58A4D203C8;
-	Wed, 20 Nov 2024 14:01:54 +0100 (CET)
-Date: Wed, 20 Nov 2024 14:01:54 +0100
-From: Jan Petrous <jan.petrous@oss.nxp.com>
-To: Rob Herring <robh@kernel.org>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Minda Chen <minda.chen@starfivetech.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-	Keyur Chudgar <keyur@os.amperecomputing.com>,
-	Quan Nguyen <quan@os.amperecomputing.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>
-Subject: Re: [PATCH v5 13/16] dt-bindings: net: Add DT bindings for DWMAC on
- NXP S32G/R SoCs
-Message-ID: <Zz3dwo5lQZBNpdwM@lsv051416.swis.nl-cdc01.nxp.com>
-References: <20241119-upstream_s32cc_gmac-v5-0-7dcc90fcffef@oss.nxp.com>
- <20241119-upstream_s32cc_gmac-v5-13-7dcc90fcffef@oss.nxp.com>
- <20241119203903.GA2249015-robh@kernel.org>
+	s=arc-20240116; t=1732109402; c=relaxed/simple;
+	bh=isJA2biOXVu6F7lzmbZnW7b3ubuI6gH7McIl9fuN/Vs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LIkvulfWZBwygiRGIQ2emmYN05tgm8esZ+J8eh8p3gIOMsCScanMw83SP5uOemY47odcXyLzAWiyNRLyTMkMVDoXOdrUV69zgjqkkGvSmKYY/L3m8YxLsJoEMfqeTN6yQBJzDmLHF+jO2usKUcEMywlWibsw4yBYxr4Hi/+xeMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VzZwppXn; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VzZwppXn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C7BC4CECD;
+	Wed, 20 Nov 2024 13:29:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732109402;
+	bh=isJA2biOXVu6F7lzmbZnW7b3ubuI6gH7McIl9fuN/Vs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=VzZwppXnYlNYwZGUsEvTci14bLXT/uqtugKrsJGnX2G23qjq+GvlWknsaG1VR6UKO
+	 JDD5kw+na49C5OBF9NGYPkeo/p3hszkv7pUPL3jt0dS82sCDn9n1eyQqVgMj/Me2/O
+	 DDnynK2v+egyXLIvPEk7CdyYjVjHJrgtPmql9yFJPp0VyzTWq9R+O5FuQP5m5VXLfq
+	 qMYWR1Fb4uNsh0E+zfJ/WxPbsm22QkRucraYRy7zCK+cmub4YOAF4NHBJC4n7M0nhP
+	 8UEUUV2AUTHhuXIeRJPvdpxDJNoCc5PVYy+8F++PsKWAb1MG/S4PwEh1FlDG3Klq7G
+	 OGYgGPL1hbyJQ==
+Message-ID: <3e9e7164-7e9b-4a65-8051-c1423b6ccc11@kernel.org>
+Date: Wed, 20 Nov 2024 14:29:54 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241119203903.GA2249015-robh@kernel.org>
-X-Virus-Scanned: ClamAV using ClamSMTP
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] dt-bindings: can: fsl,flexcan: add S32G2/S32G3 SoC
+ support
+To: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
+ Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-can@vger.kernel.org,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ NXP Linux Team <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>,
+ Alberto Ruiz <aruizrui@redhat.com>, Enric Balletbo <eballetb@redhat.com>
+References: <20241119081053.4175940-1-ciprianmarian.costea@oss.nxp.com>
+ <20241119081053.4175940-2-ciprianmarian.costea@oss.nxp.com>
+ <o4uiphg4lcmdmvibiheyvqa4zmp3kijn7u3qo5c5mofemqaii7@fdn3h2hspks7>
+ <5527f0e2-1986-4eb5-b16a-86276db0cbb5@kernel.org>
+ <cc38915f-bd91-413c-93fc-4f1a5f3b1541@oss.nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <cc38915f-bd91-413c-93fc-4f1a5f3b1541@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 19, 2024 at 02:39:03PM -0600, Rob Herring wrote:
-> On Tue, Nov 19, 2024 at 04:00:19PM +0100, Jan Petrous (OSS) wrote:
-> > Add basic description for DWMAC ethernet IP on NXP S32G2xx, S32G3xx
-> > and S32R45 automotive series SoCs.
-> > 
-> > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
-> > ---
-> >  .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 105 +++++++++++++++++++++
-> >  .../devicetree/bindings/net/snps,dwmac.yaml        |   3 +
-> >  2 files changed, 108 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
-> > new file mode 100644
-> > index 000000000000..a141e826a295
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
-> > @@ -0,0 +1,105 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +# Copyright 2021-2024 NXP
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/net/nxp,s32-dwmac.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: NXP S32G2xx/S32G3xx/S32R45 GMAC ethernet controller
-> > +
-> > +maintainers:
-> > +  - Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
-> > +
-> > +description:
-> > +  This device is a Synopsys DWC IP, integrated on NXP S32G/R SoCs.
-> > +  The SoC series S32G2xx and S32G3xx feature one DWMAC instance,
-> > +  the SoC S32R45 has two instances. The devices can use RGMII/RMII/MII
-> > +  interface over Pinctrl device or the output can be routed
-> > +  to the embedded SerDes for SGMII connectivity.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    oneOf:
-> > +      - const: nxp,s32g2-dwmac
-> > +      - items:
-> > +        - enum:
-> > +            - nxp,s32g3-dwmac
-> > +            - nxp,s32r45-dwmac
-> > +        - const: nxp,s32g2-dwmac
-> > +
-> > +  reg:
-> > +    items:
-> > +      - description: Main GMAC registers
-> > +      - description: GMAC PHY mode control register
-> > +
-> > +  interrupts:
-> > +    maxItems: 1
-> > +
-> > +  interrupt-names:
-> > +    const: macirq
-> > +
-> > +  clocks:
-> > +    items:
-> > +      - description: Main GMAC clock
-> > +      - description: Transmit clock
-> > +      - description: Receive clock
-> > +      - description: PTP reference clock
-> > +
-> > +  clock-names:
-> > +    items:
-> > +      - const: stmmaceth
-> > +      - const: tx
-> > +      - const: rx
-> > +      - const: ptp_ref
-> > +
-> > +required:
-> > +  - clocks
-> > +  - clock-names
-> > +
-> > +allOf:
-> > +  - $ref: snps,dwmac.yaml#
-> > +
-> > +unevaluatedProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> > +    #include <dt-bindings/interrupt-controller/irq.h>
-> > +    #include <dt-bindings/phy/phy.h>
-> > +    bus {
-> > +      #address-cells = <2>;
-> > +      #size-cells = <2>;
-> > +
-> > +      ethernet@4033c000 {
-> > +        compatible = "nxp,s32g2-dwmac";
-> > +        reg = <0x0 0x4033c000 0x0 0x2000>, /* gmac IP */
-> > +              <0x0 0x4007c004 0x0 0x4>;    /* GMAC_0_CTRL_STS */
-> > +        interrupt-parent = <&gic>;
-> > +        interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
-> > +        interrupt-names = "macirq";
-> > +        snps,mtl-rx-config = <&mtl_rx_setup>;
-> > +        snps,mtl-tx-config = <&mtl_tx_setup>;
-> > +        clocks = <&clks 24>, <&clks 17>, <&clks 16>, <&clks 15>;
-> > +        clock-names = "stmmaceth", "tx", "rx", "ptp_ref";
-> > +        phy-mode = "rgmii-id";
-> > +        phy-handle = <&phy0>;
-> > +
-> > +        mtl_rx_setup: rx-queues-config {
-> > +          snps,rx-queues-to-use = <5>;
-> > +        };
-> > +
-> > +        mtl_tx_setup: tx-queues-config {
-> > +          snps,tx-queues-to-use = <5>;
-> > +        };
-> > +
-> > +        mdio {
-> > +          #address-cells = <1>;
-> > +          #size-cells = <0>;
-> > +          compatible = "snps,dwmac-mdio";
-> > +
-> > +          phy0: ethernet-phy@0 {
-> > +            reg = <0>;
-> > +          };
-> > +        };
-> > +      };
-> > +    };
-> > diff --git a/Documentation/devicetree/bindings/net/snps,dwmac.yaml b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-> > index 4e2ba1bf788c..a88d1c236eaf 100644
-> > --- a/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-> > +++ b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-> > @@ -66,6 +66,9 @@ properties:
-> >          - ingenic,x2000-mac
-> >          - loongson,ls2k-dwmac
-> >          - loongson,ls7a-dwmac
-> > +        - nxp,s32g2-dwmac
-> > +        - nxp,s32g3-dwmac
-> > +        - nxp,s32r-dwmac
+On 20/11/2024 11:33, Ciprian Marian Costea wrote:
+> On 11/20/2024 11:12 AM, Krzysztof Kozlowski wrote:
+>> On 20/11/2024 09:45, Krzysztof Kozlowski wrote:
+>>> On Tue, Nov 19, 2024 at 10:10:51AM +0200, Ciprian Costea wrote:
+>>>>     reg:
+>>>>       maxItems: 1
+>>>> @@ -136,6 +138,23 @@ required:
+>>>>     - reg
+>>>>     - interrupts
+>>>>   
+>>>> +allOf:
+>>>> +  - $ref: can-controller.yaml#
+>>>> +  - if:
+>>>> +      properties:
+>>>> +        compatible:
+>>>> +          contains:
+>>>> +            const: nxp,s32g2-flexcan
+>>>> +    then:
+>>>> +      properties:
+>>>> +        interrupts:
+>>>> +          minItems: 4
+>>>> +          maxItems: 4
+>>>
+>>> Top level says max is 1. You need to keep there widest constraints.
+>> And list items here instead...
+>>
+>> Best regards,
+>> Krzysztof
 > 
-> You really only need to add nxp,s32g2-dwmac since it's always present.
-
-Ok, I will remove those two in v6.
-
+> Hello Krzysztof,
 > 
-> Other than the yamllint issue,
-> 
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+> Just to confirm before making any changes:
+> Are you referring to directly change 'maxItems' to value 4 ? Instead of 
 
-Thanks.
-/Jan
+No, I want you to create a list here. List the items. Nothing about
+"maxItems" in my message above (unless you quote earlier but then
+respond under proper quote). Just like other bindings are doing.
+
+https://elixir.bootlin.com/linux/v6.11-rc6/source/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml#L127
+
+> using this 'if' condition under 'allOf' ?
+
+Best regards,
+Krzysztof
