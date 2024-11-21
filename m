@@ -1,104 +1,147 @@
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79336188907
-	for <imx@lists.linux.dev>; Thu, 21 Nov 2024 17:13:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97DBD19D8B4
+	for <imx@lists.linux.dev>; Thu, 21 Nov 2024 17:41:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732209187; cv=none; b=hxYWFaT649NiXWVKJMeiUigGt0kibCavhonAwWxffs+Q35LsvH8lOF19K3B3xuk/WyHZsvzE1jG3i3EB75nplp4OsMcNZhUew/G+qYhroMeyMMGeBRaOePBxCc2iEcq4HDxfSQysMiNhVO1xopYKERndXFOgEYen8OQT1HNHa2g=
+	t=1732210906; cv=none; b=oHxleQtiZwizV2Vq3cD4UNumEdblD+EhJk952YTl11iJ36ikq1FUBRBlltkasxNuC6PhD6B/djzh1kqN0LSJyy+wHpIMv2bX86tJDzLYrqOCn/IFJbJD/ncOx1xAmWus/shqYoYJ2OQm2Gjva80rSUa+tVym37KpGmwLOk7+eK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732209187; c=relaxed/simple;
-	bh=GcWWyOMvMcHfUlznL29VswDqfZ4aK48pVXyV1KQ6Bw0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PdE/FUlsm1lwfr7h8Q0dRwvYVg2mNyGdVfvulYhDdagvSEZ5ma1kUIFQ53UgMfc+XiwRWPpaRGnC+AJHD2PFcKcwjQWKNyYPENIM9EIyoGSzo0kPodM7FSzYjeQ/xc5xtxnuqAV29OKVWD/xymjQXiXaxa55VJ0FMof7oSZ4NO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 4748B1A063E;
-	Thu, 21 Nov 2024 18:12:58 +0100 (CET)
-Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 4441B1A063A;
-	Thu, 21 Nov 2024 18:12:58 +0100 (CET)
-Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 7BFFC2026C;
-	Thu, 21 Nov 2024 18:12:57 +0100 (CET)
-Date: Thu, 21 Nov 2024 18:12:58 +0100
-From: Jan Petrous <jan.petrous@oss.nxp.com>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Minda Chen <minda.chen@starfivetech.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-	Keyur Chudgar <keyur@os.amperecomputing.com>,
-	Quan Nguyen <quan@os.amperecomputing.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>
-Subject: Re: [PATCH v5 16/16] net: stmmac: platform: Fix PTP clock rate
- reading
-Message-ID: <Zz9qGvb9v9+SXSev@lsv051416.swis.nl-cdc01.nxp.com>
-References: <20241119-upstream_s32cc_gmac-v5-0-7dcc90fcffef@oss.nxp.com>
- <20241119-upstream_s32cc_gmac-v5-16-7dcc90fcffef@oss.nxp.com>
- <d6794550-07f2-46df-aa4f-c728b06d50bd@redhat.com>
+	s=arc-20240116; t=1732210906; c=relaxed/simple;
+	bh=3MDNYNBVQxoC/C2zKV4LcrVyC0GAlf77KRLnvIIXazo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=I++7fzNlIv8MqYHKtxGhFjdOG84w4WYJvfKZaxIdPK2XzZtZlTFnsmReRERhDso6HxpcTFWZ5B98qLKqC31deHbtdUz4yjO1URH7meiVZkgR0Mi/tlKtXuJRX5DWw8As2kcKOntPPA79LiK+aYn9vLZIesWVd2wq2vX+Ma6X6rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=XPJhU6Aw; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="XPJhU6Aw"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id CD1472000A;
+	Thu, 21 Nov 2024 17:41:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1732210896;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=rt80qnAyyepZvbd8DfB3ShuvRFOqvgROOwcu9fM6x3U=;
+	b=XPJhU6AwXFGRUUnfGQvejV+oHxkMvweUkwv9ULqvHbQa8KI16HGZgTZzN7fv0AWbOGlv9k
+	Ykr621Z3EWSQFd0/Eh4GQ5JaBq19W19D1tx0V82mCLr56bacduLtP9ITRqEX3GjJvSvt9V
+	uixNsJpbWe4tnkysNvTuVA+/5DnMevlnv6uLbVS+q4olykwKN8OSRYr5av9Ycaaytja792
+	vvAB1aZOjvs8cZtuR+kon8EIZ89Mk6DHMm3EEXEKzpHJjptxGjMGNM2FVEnDLEVi4ljdD8
+	zb6YH3vlOoQTG6XstKJeBVuEHA85FLbEQoTmTtKrLn9gRCEAo4310ZykbKN5qQ==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 0/5] clk: Fix simple video pipelines on i.MX8
+Date: Thu, 21 Nov 2024 18:41:10 +0100
+Message-Id: <20241121-ge-ian-debug-imx8-clk-tree-v1-0-0f1b722588fe@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d6794550-07f2-46df-aa4f-c728b06d50bd@redhat.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALZwP2cC/x3MTQ5AMBBA4avIrE1i6ifiKmJROpigpEUk4u7K8
+ nuLd4NnJ+yhim5wfIqX1QZQHEE3ajswigkGlaiMSBF+RVs03B4DynKV2M0T7o4ZW5OqXOuyKHq
+ CMNgc93L987p5nhenn/rUbAAAAA==
+X-Change-ID: 20241121-ge-ian-debug-imx8-clk-tree-bd325aa866f1
+To: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Ying Liu <victor.liu@nxp.com>, 
+ Marek Vasut <marex@denx.de>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ linux-clk@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, Abel Vesa <abel.vesa@linaro.org>, 
+ Herve Codina <herve.codina@bootlin.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Ian Ray <ian.ray@ge.com>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, stable@vger.kernel.org
+X-Mailer: b4 0.15-dev
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On Thu, Nov 21, 2024 at 08:45:20AM +0100, Paolo Abeni wrote:
-> On 11/19/24 16:00, Jan Petrous (OSS) wrote:
-> > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-> > 
-> > The stmmac driver supports many vendors SoCs using Synopsys-licensed
-> > Ethernet controller IP. Most of these vendors reuse the stmmac_platform
-> > codebase, which has a potential PTP clock initialization issue.
-> > The PTP clock rate reading might require ungating what is not provided.
-> > 
-> > Fix the PTP clock initialization by enabling it immediately.
-> > 
-> > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
-> 
-> Side, process-related note: it would be great if you could trim the
-> patch series below 16 (currently off-by-one):
-> 
-> https://elixir.bootlin.com/linux/v6.11.8/source/Documentation/process/maintainer-netdev.rst#L14
-> 
-> This patch looks like an independent fix, possibly worth the 'net' tree.
-> If so, please submit this patch separately, including a suitable fixes
-> tag and including the 'net' keyword in the patch subj prefix.
-> 
+Recent changes in the clock tree have set CLK_SET_RATE_PARENT to the two
+LCDIF pixel clocks. The idea is, instead of using assigned-clock
+properties to set upstream PLL rates to high frequencies and hoping that
+a single divisor (namely media_disp[12]_pix) will be close enough in
+most cases, we should tell the clock core to use the PLL to properly
+derive an accurate pixel clock rate in the first place. Here is the
+situation.
 
-Yeh, I also was a bit worried about patchwork fail check on patch series
-size. Thanks for your hint, I will remove this PTP clock rate patch from
-the series and resend it to the 'net' tree with fixes tag.
+[Before ff06ea04e4cf ("clk: imx: clk-imx8mp: Allow media_disp pixel clock reconfigure parent rate")]
 
-BR.
-/Jan
+Before setting CLK_SET_RATE_PARENT to the media_disp[12]_pix clocks, the sequence of events was:
+- PLL is assigned to a high rate,
+- media_disp[12]_pix is set to approximately freq A by using a single divisor,
+- media_ldb is set to approximately freq 7*A by using another single divisor.
+=> The display was working, but the pixel clock was inaccurate.
+
+[After ff06ea04e4cf ("clk: imx: clk-imx8mp: Allow media_disp pixel clock reconfigure parent rate")]
+
+After setting CLK_SET_RATE_PARENT to the media_disp[12]_pix clocks, the
+sequence of events became:
+- media_disp[12]_pix is set to freq A by using a divisor of 1 and
+  setting video_pll1 to freq A.
+- media_ldb is trying to compute its divisor to set freq 7*A, but the
+  upstream PLL is to low, it does not recompute it, so it ends up
+  setting a divisor of 1 and being at freq A instead of 7*A.
+=> The display is sadly no longer working
+
+[After applying PATCH "clk: imx: clk-imx8mp: Allow LDB serializer clock reconfigure parent rate"]
+
+This is a commit from Marek, which is, I believe going in the right
+direction, so I am including it. Just with this change, the situation is
+slightly different, but the result is the same:
+- media_disp[12]_pix is set to freq A by using a divisor of 1 and
+  setting video_pll1 to freq A.
+- media_ldb is set to 7*A by using a divisor of 1 and setting video_pll1
+  to freq 7*A.
+  /!\ This as the side effect of changing media_disp[12]_pix from freq A
+  to freq 7*A.
+=> The display is still not working
+
+[After applying this series]
+
+The goal of the following patches is to prevent clock subtree walks to
+"just recalculate" the pixel clocks, ignoring the fact that they should
+no longer change. They should adapt their divisors to the new upstream
+rates instead. As a result, the display pipeline is working again.
+
+Note: if more than one display is connected, we need the LDB driver to
+act accordingly, thus the LDB driver must be adapted. Also, if accurate
+pixel clocks are not possible with two different displays, we will still
+need (at least for now) to make sure one of them is reparented to
+another PLL, like the audio PLL (but audio PLL are of a different kind,
+and are slightly less accurate).
+
+So this series aims at fixing the i.MX8MP display pipeline for simple
+setups. Said otherwise, returning to the same level of support as
+before, but with (hopefully) more accurate frequencies. I believe this
+approach manages to fix both Marek situation and all people using a
+straightforward LCD based setup. For more complex setups, we need more
+smartness from DRM and clk, but this is gonna take a bit of time.
+
+---
+Marek Vasut (1):
+      clk: imx: clk-imx8mp: Allow LDB serializer clock reconfigure parent rate
+
+Miquel Raynal (4):
+      clk: Add a helper to determine a clock rate
+      clk: Split clk_calc_subtree()
+      clk: Add flag to prevent frequency changes when walking subtrees
+      clk: imx: imx8mp: Prevent media clocks to be incompatibly changed
+
+ drivers/clk/clk.c            | 39 ++++++++++++++++++++++++++++++++-------
+ drivers/clk/imx/clk-imx8mp.c |  6 +++---
+ include/linux/clk-provider.h |  2 ++
+ 3 files changed, 37 insertions(+), 10 deletions(-)
+---
+base-commit: 62facaf164585923d081eedcb6871f4ff3c2e953
+change-id: 20241121-ge-ian-debug-imx8-clk-tree-bd325aa866f1
+
+Best regards,
+-- 
+Miquel Raynal <miquel.raynal@bootlin.com>
+
