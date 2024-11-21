@@ -1,179 +1,81 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD0C230991
-	for <imx@lists.linux.dev>; Thu, 21 Nov 2024 03:45:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C866CDAF
+	for <imx@lists.linux.dev>; Thu, 21 Nov 2024 04:16:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732160758; cv=none; b=I3GtHH1lozUgRE7XnPoh83odSVlahupt37G4ZaofuvCqWRB6XfJWea4tbyaamaIGoNjJzjmA3DJdimDXgZWOeusmWdJo4LBOfUUJcgrw8Cj8ykpr+3Y6QpAo7IVhS6mgZ/Sn8wJ86cR0FNu4Q8JWhiGhnPw+ok1CYzEA0W+nIiQ=
+	t=1732162592; cv=none; b=WQEGf0bYjX/k5BiCyZWOyVVIjgwVK1tk+DBYWCaBsIKQRevBEMwiUpoNaRO36kpE/rrzZ7j0oi7cr1lu7zJvunIQyDQb0XCsnK3Jj2US5haclQgVhCS34ifrYM95ig8VVaOs1f+HBOZsINH94c5sd8lUe2bN5SwNcM+ToR8X02s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732160758; c=relaxed/simple;
-	bh=W6NRhNfE/tN5Hbr1vVe7ak6L9aO11G7A1l6/pEAVtAk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AtYdVAVUlsGXvYkVGD43YSRcq/zEFFsDnn+iwqlKVnS4aFLsqROIwrDZQ4d0mYzNvw9MsU3pn7OhMVCnpVNR8+/poUut6pYmeKkM9s1rfZusXfGo6NxK83xigw8cHWGXwiPQ9O4qdP4CuE3YNbBJj1E8fv1Wzaci5ruuHkeBK3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=RqZ15P5G; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1732162592; c=relaxed/simple;
+	bh=MHlNy/0tw8Q0FVWot95NbIAN831BQMEo/m14012GQ4w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fW/EBbQXCmZdMgce7LgR9hBv+jLIIWOfMEDwnNcbZ5IYq0xZACBr+MYh0F3H2Ts0cJL02k9DIL0aEhP77BPynLd/Fb0LZzHn4s+NM7TTcFucAuVSZE0mKlfZF3gUXXAkuav0ZQSmrzkGnPj7lFxpjwAAAvLW3m9ogMesNL+24nY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=Z47VNZrj; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="RqZ15P5G"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id D831E219;
-	Thu, 21 Nov 2024 04:45:36 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1732160737;
-	bh=W6NRhNfE/tN5Hbr1vVe7ak6L9aO11G7A1l6/pEAVtAk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RqZ15P5GNl+znM1p21KhrhS9yJJ+oOxvta1u/t17xJ9auQg+4ohsHufLOVv0R6+XG
-	 ySCzDgYUW3FJ1BDlrVbJcFBcJOyq7iiRae2tvX/dPFWX/FyVBA2iYv1YUgxyMdtFxc
-	 b1VMAig4wULTt3/G9pjywCsDzPMGH1N/h6YiMLTs=
-Date: Thu, 21 Nov 2024 05:45:46 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 4/4] media: i2c: imx290: Add configuration for IMX462
-Message-ID: <20241121034546.GG12409@pendragon.ideasonboard.com>
-References: <20241120-media-imx290-imx462-v2-0-7e562cf191d8@raspberrypi.com>
- <20241120-media-imx290-imx462-v2-4-7e562cf191d8@raspberrypi.com>
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="Z47VNZrj"
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 6131789634;
+	Thu, 21 Nov 2024 05:16:27 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1732162589;
+	bh=/h+Aqf+FUd6Y7eBOAWkUFVG4S9BbIuewS7MSwsHNJ0U=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Z47VNZrjkXdRpTnkUBfyeS+GzuPm3YNuXhwk4wB3lz3abLpC5KL+scqK74W7Qk6y2
+	 Ykr9H/DHfjCHTHs4j0YoPjoj+Fb3BioGcvxQXmbexmKYeR8atLfkVNsyA5rr600KlS
+	 GpFsOwPSmL9PQMEczOJRqQDKGz/93fO0sovc7vN7FLrey6j0cyuN6jgUZP8KtQeO2/
+	 1FH6gk2or/Btc9F9JdpgirEgjHGTjOR9Xj9lIIXz/qI5KVnDhPBbfrzTOV0wdyBqF5
+	 lEXsCO+3TQaC5xG7dcbbVKJI/A3LOlw9OMnhQsmLcMNdeDAf4ZcTe5Gw0WqpVUVKzl
+	 nqjaRa7D319qg==
+Message-ID: <5f56ac1e-7b88-4962-838f-66dbac292828@denx.de>
+Date: Thu, 21 Nov 2024 03:47:17 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241120-media-imx290-imx462-v2-4-7e562cf191d8@raspberrypi.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] clk: imx: clk-imx8mp: Allow LDB serializer clock
+ reconfigure parent rate
+To: Liu Ying <victor.liu@nxp.com>, dri-devel@lists.freedesktop.org
+Cc: Abel Vesa <abelvesa@kernel.org>, Andrzej Hajda <andrzej.hajda@intel.com>,
+ David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ Isaac Scott <isaac.scott@ideasonboard.com>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>, Jonas Karlman <jonas@kwiboo.se>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Peng Fan <peng.fan@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Robert Foss <rfoss@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>,
+ Stephen Boyd <sboyd@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ imx@lists.linux.dev, kernel@dh-electronics.com,
+ linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
+References: <20241008223846.337162-1-marex@denx.de>
+ <dbede671-c97b-4ad7-8a54-f1b381fea082@nxp.com>
+ <00ffd38c-b01a-40cd-9130-19c35a387ca0@denx.de>
+ <819380c3-d13f-4989-b305-388fc60d30e4@nxp.com>
+ <d99e0021-3253-4312-9b50-6031ae0f8d8e@denx.de>
+ <d1307426-9a86-4356-93b8-9a10c8369ad8@nxp.com>
+ <1f5e9559-59f8-490b-9cb2-2f8d4a8823e6@denx.de>
+ <41855af3-53bf-4a02-bd5a-9982becf2726@nxp.com>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <41855af3-53bf-4a02-bd5a-9982becf2726@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-Hi Dave,
+I'll stop this thread, let's continue the discussion in one place in:
 
-Thank you for the patch.
-
-On Wed, Nov 20, 2024 at 07:17:06PM +0000, Dave Stevenson wrote:
-> IMX462 is the successor to IMX290, and wants very minor
-> changes to the register setup.
-> 
-> Add the relevant configuration to support it.
-> 
-> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-
-> ---
->  drivers/media/i2c/imx290.c | 66 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 66 insertions(+)
-> 
-> diff --git a/drivers/media/i2c/imx290.c b/drivers/media/i2c/imx290.c
-> index 7d794a509670..3bad7779d0d0 100644
-> --- a/drivers/media/i2c/imx290.c
-> +++ b/drivers/media/i2c/imx290.c
-> @@ -170,6 +170,8 @@ enum imx290_model {
->  	IMX290_MODEL_IMX290LQR,
->  	IMX290_MODEL_IMX290LLR,
->  	IMX290_MODEL_IMX327LQR,
-> +	IMX290_MODEL_IMX462LQR,
-> +	IMX290_MODEL_IMX462LLR,
->  };
->  
->  struct imx290_model_info {
-> @@ -316,6 +318,50 @@ static const struct cci_reg_sequence imx290_global_init_settings_290[] = {
->  	{ CCI_REG8(0x33b3), 0x04 },
->  };
->  
-> +static const struct cci_reg_sequence imx290_global_init_settings_462[] = {
-> +	{ CCI_REG8(0x300f), 0x00 },
-> +	{ CCI_REG8(0x3010), 0x21 },
-> +	{ CCI_REG8(0x3011), 0x02 },
-> +	{ CCI_REG8(0x3016), 0x09 },
-> +	{ CCI_REG8(0x3070), 0x02 },
-> +	{ CCI_REG8(0x3071), 0x11 },
-> +	{ CCI_REG8(0x309b), 0x10 },
-> +	{ CCI_REG8(0x309c), 0x22 },
-> +	{ CCI_REG8(0x30a2), 0x02 },
-> +	{ CCI_REG8(0x30a6), 0x20 },
-> +	{ CCI_REG8(0x30a8), 0x20 },
-> +	{ CCI_REG8(0x30aa), 0x20 },
-> +	{ CCI_REG8(0x30ac), 0x20 },
-> +	{ CCI_REG8(0x30b0), 0x43 },
-> +	{ CCI_REG8(0x3119), 0x9e },
-> +	{ CCI_REG8(0x311c), 0x1e },
-> +	{ CCI_REG8(0x311e), 0x08 },
-> +	{ CCI_REG8(0x3128), 0x05 },
-> +	{ CCI_REG8(0x313d), 0x83 },
-> +	{ CCI_REG8(0x3150), 0x03 },
-> +	{ CCI_REG8(0x317e), 0x00 },
-> +	{ CCI_REG8(0x32b8), 0x50 },
-> +	{ CCI_REG8(0x32b9), 0x10 },
-> +	{ CCI_REG8(0x32ba), 0x00 },
-> +	{ CCI_REG8(0x32bb), 0x04 },
-> +	{ CCI_REG8(0x32c8), 0x50 },
-> +	{ CCI_REG8(0x32c9), 0x10 },
-> +	{ CCI_REG8(0x32ca), 0x00 },
-> +	{ CCI_REG8(0x32cb), 0x04 },
-> +	{ CCI_REG8(0x332c), 0xd3 },
-> +	{ CCI_REG8(0x332d), 0x10 },
-> +	{ CCI_REG8(0x332e), 0x0d },
-> +	{ CCI_REG8(0x3358), 0x06 },
-> +	{ CCI_REG8(0x3359), 0xe1 },
-> +	{ CCI_REG8(0x335a), 0x11 },
-> +	{ CCI_REG8(0x3360), 0x1e },
-> +	{ CCI_REG8(0x3361), 0x61 },
-> +	{ CCI_REG8(0x3362), 0x10 },
-> +	{ CCI_REG8(0x33b0), 0x50 },
-> +	{ CCI_REG8(0x33b2), 0x1a },
-> +	{ CCI_REG8(0x33b3), 0x04 },
-> +};
-> +
->  #define IMX290_NUM_CLK_REGS	2
->  static const struct cci_reg_sequence xclk_regs[][IMX290_NUM_CLK_REGS] = {
->  	[IMX290_CLK_37_125] = {
-> @@ -1456,6 +1502,20 @@ static const struct imx290_model_info imx290_models[] = {
->  		.max_analog_gain = 98,
->  		.name = "imx327",
->  	},
-> +	[IMX290_MODEL_IMX462LQR] = {
-> +		.colour_variant = IMX290_VARIANT_COLOUR,
-> +		.init_regs = imx290_global_init_settings_462,
-> +		.init_regs_num = ARRAY_SIZE(imx290_global_init_settings_462),
-> +		.max_analog_gain = 98,
-> +		.name = "imx462",
-> +	},
-> +	[IMX290_MODEL_IMX462LLR] = {
-> +		.colour_variant = IMX290_VARIANT_MONO,
-> +		.init_regs = imx290_global_init_settings_462,
-> +		.init_regs_num = ARRAY_SIZE(imx290_global_init_settings_462),
-> +		.max_analog_gain = 98,
-> +		.name = "imx462",
-> +	},
->  };
->  
->  static int imx290_parse_dt(struct imx290 *imx290)
-> @@ -1654,6 +1714,12 @@ static const struct of_device_id imx290_of_match[] = {
->  	}, {
->  		.compatible = "sony,imx327lqr",
->  		.data = &imx290_models[IMX290_MODEL_IMX327LQR],
-> +	}, {
-> +		.compatible = "sony,imx462lqr",
-> +		.data = &imx290_models[IMX290_MODEL_IMX462LQR],
-> +	}, {
-> +		.compatible = "sony,imx462llr",
-> +		.data = &imx290_models[IMX290_MODEL_IMX462LLR],
->  	},
->  	{ /* sentinel */ },
->  };
-
--- 
-Regards,
-
-Laurent Pinchart
+[PATCH v7 2/7] Revert "clk: imx: clk-imx8mp: Allow media_disp pixel 
+clock reconfigure parent rate"
