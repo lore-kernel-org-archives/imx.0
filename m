@@ -1,39 +1,38 @@
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4A41A9B5A
-	for <imx@lists.linux.dev>; Thu, 21 Nov 2024 17:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D7C1B5808
+	for <imx@lists.linux.dev>; Thu, 21 Nov 2024 17:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732210909; cv=none; b=YGLosTaSpSMlCTTE7Ap5o2B7c+ILsjTldFVplHAz95CxelQVP2blqUfg1wiui2LsATdtTUpgD3UiGLZn2XcMXzt8UccVp1g4RXWFvnupvj7YiEQQw1RKHY03kUIAfQ+suNb0dbIV6+HFVj1XB+ktTePiRInWtu7OSjzthbXSbjY=
+	t=1732210909; cv=none; b=UXWyl1Q3KHvsAM8jkbA4AQXhWFQmXmb3yMTOHkZSAfd+vZYF0EoL9RieaejnSKEoJ1hD5jK1sS9hRMT4r8sxbI9uyXvOH7LxiLebxpivrUgrHpC6cKDJ2htej88Bn1aLirQvOU9kzu/2kakk/+4YI6YCPJUOFt8Z/jhPCmb4uE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1732210909; c=relaxed/simple;
-	bh=vZMGVlzPw/7v2ZFp7bgQck20bK9sg0BZJrP7XmQ9X5Q=;
+	bh=r+RIGjSXhFIM6oHafCjRoKK3MZLKYmcB9BrO3X79kSI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ciXsb7GXyE6YubmTC3AZZ/xavpQ86FfSiUxkdExdu3YrZrQfjE18d4L3iAIMQdUfYSbSuo+Mu/749p8gYi9v6dso8sa3/boE1dvdU+Q1TnvaC4sbtabwSXnQB/gunDA0Xq45Ik3mknhTf1VnVwen3GFSN280k3S/4oMqZckr4tI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=KwoxBPvC; arc=none smtp.client-ip=217.70.183.200
+	 In-Reply-To:To:Cc; b=pae+G3FXd8A9F6nPoPa8T9a/MWEhYhAbSNjx5L2X+uDpZ/EmA0HDEu8bNFMIj0tkcBNP+yTtYTDGjZkEjLkYltqYfhrmYJvaV52U1IegeIYhp/svWM4UWEVz5pkdnroFaNb2vIf5XTLl9K9u1Xqz4agPyojatZyZaIx7nfYnvlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Y85agxXt; arc=none smtp.client-ip=217.70.183.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="KwoxBPvC"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B06972000C;
-	Thu, 21 Nov 2024 17:41:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Y85agxXt"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 017F020002;
+	Thu, 21 Nov 2024 17:41:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1732210897;
+	t=1732210900;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HNSGIUDWKtHK2V3krzyRKB3CsE+LudVK/AtAMHaXQPM=;
-	b=KwoxBPvC0Zrft6aR7f763oIRvd7CMINTpkCKQP/bHCyzyolyQ5scMkb+NAdB7DBIqOVf3u
-	Xlz3JO4Wu29Ce5OBWtm1j8aMzum1QQQ6tmCz2blMejXb6VzQH8b5aVoFgeLG2OtB4DAYTv
-	b4ldBapMLak5ZXgUDWFzMm6rhwlllZ0GY1J7NOF/ONOOOX5auLPJ0oY7llWLk6kC6V8KSc
-	8FQ5aUTIt8ouNKfTUAjx6M6otK8zTYlRYFrqVHYhu1UF4Oe7/Zkr717Dp1YXjZOQ8dH/kD
-	3jbvJcIzy3wSucOaOWnK/ywWQ5pJcTI74TZ+u4DV9UN+JGOKredQvaCh6C0F/A==
+	bh=g9fPs0nLthnmbo8a6LrEY10rX186VeNy9SlwRtv5peU=;
+	b=Y85agxXtRhcAxZzQaTYfg/Fqro4DYf58mDGp1y2m/tvKQcRgdR/TTvqBShF6rleawyFLVC
+	IL3KSEBqc9lFFlv8XSTrCWVE7Ya1BYJoyqXcfSCbfjV69dQjmX/PdKTVyRgr5zJeu7hK6G
+	8QIJEAuv3qhpsSXUiv6lQXu86m7nOjj0jX/WYxZmuwglh7Xnm6RtoJrgjNEVary+Nfx2Q6
+	D/XqaeYScbjs1uQ4vuWWzrVr1nPrz+Ys1W03dt9oE7tWDDdnFIpjlUXRQC1HDQ9GUDNqxZ
+	iK2+XlZEwiGBprWAfMHfqxvln9cn4lB0BmnJ+r6gkj4PK7WuOPUASa/oLCCeUQ==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Thu, 21 Nov 2024 18:41:11 +0100
-Subject: [PATCH 1/5] clk: imx: clk-imx8mp: Allow LDB serializer clock
- reconfigure parent rate
+Date: Thu, 21 Nov 2024 18:41:13 +0100
+Subject: [PATCH 3/5] clk: Split clk_calc_subtree()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -42,7 +41,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241121-ge-ian-debug-imx8-clk-tree-v1-1-0f1b722588fe@bootlin.com>
+Message-Id: <20241121-ge-ian-debug-imx8-clk-tree-v1-3-0f1b722588fe@bootlin.com>
 References: <20241121-ge-ian-debug-imx8-clk-tree-v1-0-0f1b722588fe@bootlin.com>
 In-Reply-To: <20241121-ge-ian-debug-imx8-clk-tree-v1-0-0f1b722588fe@bootlin.com>
 To: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
@@ -63,34 +62,73 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 X-Mailer: b4 0.15-dev
 X-GND-Sasl: miquel.raynal@bootlin.com
 
-From: Marek Vasut <marex@denx.de>
+This helper does two different things:
+- it calculates the new clock frequency
+    - as part of this task, it also handles a possible parent change
+- it walks the clock subtree to further update frequencies as well (but
+  the parent changes are no longer relevant there).
 
-The media_ldb_root_clk supply LDB serializer. These clock are usually
-shared with the LCDIFv3 pixel clock and supplied by the Video PLL on
-i.MX8MP, but the LDB clock run at either x7 or x14 rate of the LCDIFv3
-pixel clock. Allow the LDB to reconfigure Video PLL as needed, as that
-results in accurate serializer clock.
+In order to ease the understanding of the next step, let's split this
+helper into:
+- clk_calc_core_and_subtree() which performs the top clock update (with
+  the parents handling) and then calls...
+- clk_calc_subtree() (which calls itself recursively) in order to
+  perform the subtree updates.
 
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+There is no functional change intended.
+
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/clk/imx/clk-imx8mp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/clk.c | 22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
-index 516dbd170c8a356f293621b371b9ef9b9bec90a4..2e61d340b8ab7f626155563c46e0d4142caf3fa9 100644
---- a/drivers/clk/imx/clk-imx8mp.c
-+++ b/drivers/clk/imx/clk-imx8mp.c
-@@ -611,7 +611,7 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
- 	hws[IMX8MP_CLK_MEDIA_MIPI_PHY1_REF] = imx8m_clk_hw_composite("media_mipi_phy1_ref", imx8mp_media_mipi_phy1_ref_sels, ccm_base + 0xbd80);
- 	hws[IMX8MP_CLK_MEDIA_DISP1_PIX] = imx8m_clk_hw_composite_bus_flags("media_disp1_pix", imx8mp_media_disp_pix_sels, ccm_base + 0xbe00, CLK_SET_RATE_PARENT);
- 	hws[IMX8MP_CLK_MEDIA_CAM2_PIX] = imx8m_clk_hw_composite("media_cam2_pix", imx8mp_media_cam2_pix_sels, ccm_base + 0xbe80);
--	hws[IMX8MP_CLK_MEDIA_LDB] = imx8m_clk_hw_composite("media_ldb", imx8mp_media_ldb_sels, ccm_base + 0xbf00);
-+	hws[IMX8MP_CLK_MEDIA_LDB] = imx8m_clk_hw_composite_bus_flags("media_ldb", imx8mp_media_ldb_sels, ccm_base + 0xbf00, CLK_SET_RATE_PARENT);
- 	hws[IMX8MP_CLK_MEMREPAIR] = imx8m_clk_hw_composite_critical("mem_repair", imx8mp_memrepair_sels, ccm_base + 0xbf80);
- 	hws[IMX8MP_CLK_MEDIA_MIPI_TEST_BYTE] = imx8m_clk_hw_composite("media_mipi_test_byte", imx8mp_media_mipi_test_byte_sels, ccm_base + 0xc100);
- 	hws[IMX8MP_CLK_ECSPI3] = imx8m_clk_hw_composite("ecspi3", imx8mp_ecspi3_sels, ccm_base + 0xc180);
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index f171539bbb842f57698249a475c62f3f5719ccd1..adfc5bfb93b5a65b6f58c52ca2c432d651f7dd7d 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -2268,8 +2268,18 @@ static int __clk_speculate_rates(struct clk_core *core,
+ 	return ret;
+ }
+ 
+-static void clk_calc_subtree(struct clk_core *core, unsigned long new_rate,
+-			     struct clk_core *new_parent, u8 p_index)
++static void clk_calc_subtree(struct clk_core *core)
++{
++	struct clk_core *child;
++
++	core->new_rate = clk_recalc(core, core->parent->new_rate);
++
++	hlist_for_each_entry(child, &core->children, child_node)
++		clk_calc_subtree(child);
++}
++
++static void clk_calc_core_and_subtree(struct clk_core *core, unsigned long new_rate,
++				      struct clk_core *new_parent, u8 p_index)
+ {
+ 	struct clk_core *child;
+ 
+@@ -2281,10 +2291,8 @@ static void clk_calc_subtree(struct clk_core *core, unsigned long new_rate,
+ 	if (new_parent && new_parent != core->parent)
+ 		new_parent->new_child = core;
+ 
+-	hlist_for_each_entry(child, &core->children, child_node) {
+-		child->new_rate = clk_recalc(child, new_rate);
+-		clk_calc_subtree(child, child->new_rate, NULL, 0);
+-	}
++	hlist_for_each_entry(child, &core->children, child_node)
++		clk_calc_subtree(child);
+ }
+ 
+ /*
+@@ -2368,7 +2376,7 @@ static struct clk_core *clk_calc_new_rates(struct clk_core *core,
+ 		top = clk_calc_new_rates(parent, best_parent_rate);
+ 
+ out:
+-	clk_calc_subtree(core, new_rate, parent, p_index);
++	clk_calc_core_and_subtree(core, new_rate, parent, p_index);
+ 
+ 	return top;
+ }
 
 -- 
 2.47.0
