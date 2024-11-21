@@ -1,86 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F17051885A4;
-	Thu, 21 Nov 2024 15:40:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79336188907
+	for <imx@lists.linux.dev>; Thu, 21 Nov 2024 17:13:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732203611; cv=none; b=K6Gu3GSPnPe2kuRKSjmeF4RzArNcBJ7OHted9/rUlhMa++DLz3drbHyxwEafCEb5BW2P2MkNGf5Cwjl+0VZdJRMcXgqqq0keFS7d1IWnz4gOu8Qwz+fdmwbsIMBSHg0QQX+TnYlz5sz4/5DtKI7dDml8vAB7vMXwfxAU63XuCv4=
+	t=1732209187; cv=none; b=hxYWFaT649NiXWVKJMeiUigGt0kibCavhonAwWxffs+Q35LsvH8lOF19K3B3xuk/WyHZsvzE1jG3i3EB75nplp4OsMcNZhUew/G+qYhroMeyMMGeBRaOePBxCc2iEcq4HDxfSQysMiNhVO1xopYKERndXFOgEYen8OQT1HNHa2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732203611; c=relaxed/simple;
-	bh=YZe6apbPywKnuBiI9kxysJmS1YErPglRXgh3hvEaPok=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=MNoRKMrw1BgCdwiSWA8TVtEROikFd3i5Tk74ORiz21LSXxmLaK6XmjZMn1pAgvwOQYh5grUJie1FTZLYwVhdhsh/ouUzPO1CLbECLdhQsln1r0fvz7tldnHJwud5pyyBd4B4u6DOKwH+DyvUCquK04ZVMAc9EqqoHkOzv1trhkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U1b6A1RF; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U1b6A1RF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35FBAC4CECC;
-	Thu, 21 Nov 2024 15:40:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732203610;
-	bh=YZe6apbPywKnuBiI9kxysJmS1YErPglRXgh3hvEaPok=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=U1b6A1RFgralOmM19lP5XHwjJ0A03aSUPZw4sPL9upf57JHyY05sHjPS1NH5uDW+Y
-	 sbHQTnfyVrOmRo04vlwUhcauTfhOFX/NpnVM1/oHgzHJTfw+917DgvtBTDq5DwBmlK
-	 VJMa6A90tZ496Ol8Xo+I+NPOvzdLH91MdqbUX1gMMXrLXkor5zCehGCTQ+dbphjpAQ
-	 5M37ZYqjfXRk0SniQCXrHOzSsC05dDDECoyykZNtpgP7SYSFOu4yEN1eWdjE7uso+y
-	 kSMvxdochZXrFrwJg1gF6Zw2gKr9uxZhjh8uBIoYAqpwA3/UxqZ+mBoJdkA0yKsm2O
-	 kjcdxOnsb7+8w==
-From: Mark Brown <broonie@kernel.org>
-To: viorel.suman@nxp.com, kernel@pengutronix.de, s.hauer@pengutronix.de, 
- shawnguo@kernel.org, tiwai@suse.com, perex@perex.cz, 
- shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, 
- Charles Han <hanchunchao@inspur.com>
-Cc: imx@lists.linux.dev, inux-arm-kernel@lists.infradead.org, 
- linux-sound@vger.kernel.org
-In-Reply-To: <20241118084553.4195-1-hanchunchao@inspur.com>
-References: <20241118084553.4195-1-hanchunchao@inspur.com>
-Subject: Re: [v2] ASoC: imx-audmix: Add NULL check in imx_audmix_probe
-Message-Id: <173220360795.62732.11682946245448931724.b4-ty@kernel.org>
-Date: Thu, 21 Nov 2024 15:40:07 +0000
+	s=arc-20240116; t=1732209187; c=relaxed/simple;
+	bh=GcWWyOMvMcHfUlznL29VswDqfZ4aK48pVXyV1KQ6Bw0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PdE/FUlsm1lwfr7h8Q0dRwvYVg2mNyGdVfvulYhDdagvSEZ5ma1kUIFQ53UgMfc+XiwRWPpaRGnC+AJHD2PFcKcwjQWKNyYPENIM9EIyoGSzo0kPodM7FSzYjeQ/xc5xtxnuqAV29OKVWD/xymjQXiXaxa55VJ0FMof7oSZ4NO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 4748B1A063E;
+	Thu, 21 Nov 2024 18:12:58 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 4441B1A063A;
+	Thu, 21 Nov 2024 18:12:58 +0100 (CET)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 7BFFC2026C;
+	Thu, 21 Nov 2024 18:12:57 +0100 (CET)
+Date: Thu, 21 Nov 2024 18:12:58 +0100
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Minda Chen <minda.chen@starfivetech.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+	Keyur Chudgar <keyur@os.amperecomputing.com>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	NXP S32 Linux Team <s32@nxp.com>
+Subject: Re: [PATCH v5 16/16] net: stmmac: platform: Fix PTP clock rate
+ reading
+Message-ID: <Zz9qGvb9v9+SXSev@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20241119-upstream_s32cc_gmac-v5-0-7dcc90fcffef@oss.nxp.com>
+ <20241119-upstream_s32cc_gmac-v5-16-7dcc90fcffef@oss.nxp.com>
+ <d6794550-07f2-46df-aa4f-c728b06d50bd@redhat.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-9b746
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d6794550-07f2-46df-aa4f-c728b06d50bd@redhat.com>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-On Mon, 18 Nov 2024 16:45:53 +0800, Charles Han wrote:
-> devm_kasprintf() can return a NULL pointer on failure,but this
-> returned value in imx_audmix_probe() is not checked.
-> Add NULL check in imx_audmix_probe(), to handle kernel NULL
-> pointer dereference error.
+On Thu, Nov 21, 2024 at 08:45:20AM +0100, Paolo Abeni wrote:
+> On 11/19/24 16:00, Jan Petrous (OSS) wrote:
+> > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> > 
+> > The stmmac driver supports many vendors SoCs using Synopsys-licensed
+> > Ethernet controller IP. Most of these vendors reuse the stmmac_platform
+> > codebase, which has a potential PTP clock initialization issue.
+> > The PTP clock rate reading might require ungating what is not provided.
+> > 
+> > Fix the PTP clock initialization by enabling it immediately.
+> > 
+> > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 > 
+> Side, process-related note: it would be great if you could trim the
+> patch series below 16 (currently off-by-one):
+> 
+> https://elixir.bootlin.com/linux/v6.11.8/source/Documentation/process/maintainer-netdev.rst#L14
+> 
+> This patch looks like an independent fix, possibly worth the 'net' tree.
+> If so, please submit this patch separately, including a suitable fixes
+> tag and including the 'net' keyword in the patch subj prefix.
 > 
 
-Applied to
+Yeh, I also was a bit worried about patchwork fail check on patch series
+size. Thanks for your hint, I will remove this PTP clock rate patch from
+the series and resend it to the 'net' tree with fixes tag.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/1] ASoC: imx-audmix: Add NULL check in imx_audmix_probe
-      commit: e038f43edaf0083f6aa7c9415d86cf28dfd152f9
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+BR.
+/Jan
