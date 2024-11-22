@@ -1,87 +1,78 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF351DE8BE
-	for <imx@lists.linux.dev>; Fri, 22 Nov 2024 17:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4901DE3D6
+	for <imx@lists.linux.dev>; Fri, 22 Nov 2024 17:13:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732295452; cv=none; b=lGCLrUrcdRRM+a5xr0z2FtjKwCf74XysWKgDYWxgAovf51HIQLLy7FdO4fiNEaaeMJrDOJGel5hbECXta40KcTxgSMAa38l47wzmtov2uHCy1HFNci5KWhvF4M/ADV44piUIs7EjBAowPzMRnAUsLc99dAuPqDPgi7FhV4KTl5k=
+	t=1732295628; cv=none; b=G5NF6v/aMhapnNws8Q77hV+LzN/xUzQC66u/0ydGZ4eusjbU9hWYOWdHZrODcpAHNY6ICkU2Oy5cF9p42Hlq2FjJSnAwqXdh/ARcQXyPdi8ds/JFIO4qHJRRVX3gEtmDRlq6TT97aZvV06XkbFbDMOOy+DCVv+xneyJPG9gcyzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732295452; c=relaxed/simple;
-	bh=JSfJBNYEbA8FDDOxY/qXqSPsOBH8pc0lxdl5eHk3OHg=;
+	s=arc-20240116; t=1732295628; c=relaxed/simple;
+	bh=9Utb13MynaifzSiCb+13ADGTdToHf99pkQJS+1gzmyo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VtxO1Yq7xw8Ja+ztjIpqlKWCwp9XkWQHtK1XSyiW23N76ujud1lbn4y30549iKvrUga3vx2CqoYn43k2Znnq782wEMi3BF9r5Z2oPCL7+KswTfPuuiUbTFTIeK8fHU6QqFndCa570fEVervzsEdgT5DmPs4CYL92lqcgkox7fKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wO+6P+qX; arc=none smtp.client-ip=209.85.215.176
+	 Content-Type:Content-Disposition:In-Reply-To; b=L7/tS0wwXv9aqU6qpmqUP9tfdics8puQPJycj4HHN7pnZ5VXKjoPs2vMzuHtzerEmqb5lI/pZ9MeCeNRZCICr6VCUILzCriJxWKK8icehdtAF+G9ydTHMhcDktY3oGRZzrx2BU1wuLlcLDIBsGizHG0H0dbATU2Z9FAcswgarSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Nih0WYMv; arc=none smtp.client-ip=209.85.210.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wO+6P+qX"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-7f4325168c8so1560212a12.1
-        for <imx@lists.linux.dev>; Fri, 22 Nov 2024 09:10:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Nih0WYMv"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-724ea6a8cfbso570606b3a.2
+        for <imx@lists.linux.dev>; Fri, 22 Nov 2024 09:13:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1732295450; x=1732900250; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1732295626; x=1732900426; darn=lists.linux.dev;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=m9Rzu/atJszaZiZQ8bphSysVEtM05e/rUjckRGXXQa8=;
-        b=wO+6P+qXDVmo8WWe0EfrPdhqevveJBVKZn9phi+hCDjtevF0emijjT65Exyv//+X4A
-         AsFjfenAvIp/+pXHLxSDh/GFH+EOBhTeWv5KLFBguuZhqWMkAEmPagk/XWWpwbes9CXO
-         JpfpAivqwQgV9wflWWChM136Dweah3S2QzVQkabcDy/kOc+cT5tZRZFS9UZKfAxv5nAE
-         8t/1Dj443u1X1iwoH6QGr0i8engv4ruiMaNPjouZteoyQqBlxzGD6pMlgIYK2tqcdFXd
-         YGobRC81T3X6EBSOO5y2DnkLuYhrNV92M+LklM4DZyGg6HJu0EJ/c348KtoJoA+wTfsD
-         N4VQ==
+        bh=J3Ifp0rGPbm/e/7rhcYVsj05S6iHCWRwu0XzDIJa52Y=;
+        b=Nih0WYMv/2FPtFF2vjLb0vxW8Bb5CbRdWJnxUeMlb9JXWLc8iynd9qsMZbAGi2i6jS
+         ew5A3JZEIaOIphhNB1CIdjQmS0rREJ8PcoODuzWhORc11CXeTThbEdqcq1GW5aE27s0O
+         pCR4gIvEmWNTgXEHHZitQ9vZEaYJIdeAgCm5ub74DWkOHagYuESkQyPbQSIHzPkcl36J
+         NAQrIjAIdR2c5d7aRiBqigYkl8PsUXipy162aeIVBNLvq/iytZJVvG01CHNHhTGI5Cky
+         Cw3V06Q1+G4yfb9T/M1ToC4S4hfdYs/jptwl1LGcM7CGpfmx9n4qJAMk7WNwd9IsIxUm
+         CsrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732295450; x=1732900250;
+        d=1e100.net; s=20230601; t=1732295626; x=1732900426;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=m9Rzu/atJszaZiZQ8bphSysVEtM05e/rUjckRGXXQa8=;
-        b=n2vVYMRWPgtBvL6UGsGROpZ0jpyBHyt0SVhAjLrspeADEx3TVB+7C5bumTt+fCVZJ7
-         bSNLnQVCqVlJJPg8ixeVNLNC5Xt0TciSQ6/XfsAQvbUrYpGkTT5dvO6u/CDW71EA8iT4
-         TQIIYutzvlXJXbMwsO0XddAKLtU4nk3yPcjqQ9bk7NQW7h2iw2uQ4l8xwhLv0VRi6ioq
-         74bZoVGfL0+g3OQFlRmfnYGrAO7Z1RUqyGTUqmHXoEaEIM2+/B+VrvVfRI5qNmCigmHZ
-         gwulgNEdmTtOXqUfPJopM3jucgTCAOy0G8dK05f7NPj3BZ8s5sHBoWLepQsY0JYB/3sS
-         3daQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWo0yzEq3tG2S0XbM05oXo0HvlfBpXte3PzSgshskQN1sGwomlamiLvEuet22W1cN7k4Bo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyQ6YdS8H4yVracLBnw/tt02mi50eof7sGNn7o2zX4AeWjTvXhu
-	b7dN7CjgI2v6x4Gtl9ZWGP/pLoJ6Fpz4kF3Bu5RybpcwHSBWOO+7xgJb8kyDUw==
-X-Gm-Gg: ASbGncuDpXnASAY1Ek2m/4/akZHwu4LV7HM6Ct20f+I1WnTrpW33ZPGQNtB2/4sfkV2
-	wuIeKqLSkLR7MGwDE30Gug1JkoLSI7iPjtVGfueDH95SgdNZDFS0SQBWg51SwN5BI+q5VqoaXVV
-	KFeaTj+T/Z9glEOUA/O+qA6NPE6GJRWJA4RKUWXDmrD3lK1uhjSkcD1wG+cXikFolJ2ro25qvVG
-	BmFh5/299St5e498+kfyZZgSt8xNgo+PykDcx5kiI9WLmJdM1+/1QTmReWx
-X-Google-Smtp-Source: AGHT+IFIhc1R40hXLVSot1qpNb47cXTxZcrRwISXx0lJGKYTEDxVxH0DwKBYDolmma7+CJxTTAgLkQ==
-X-Received: by 2002:a05:6a20:d503:b0:1c6:fb66:cfe with SMTP id adf61e73a8af0-1e09e45ff0emr4838841637.21.1732295449974;
-        Fri, 22 Nov 2024 09:10:49 -0800 (PST)
+        bh=J3Ifp0rGPbm/e/7rhcYVsj05S6iHCWRwu0XzDIJa52Y=;
+        b=s1ajsf4WbnceTo2U79X4UBMtRIx3yOa0W8cjBMfJRLhnGLBaP0EJokOEbFjaAyJsyS
+         nAW9nvI8jQZl3urWIZstT2y8t00Uuhedzmf3Vw/EuqCQmFC1TvLifqLlY/BGeJHFNm5c
+         MBhl5fN84g/p3hOR9emze8NAyslm+j6DdiVScTYsX4Dlq6QMaU2iUcFGml+hN/dlfCCL
+         gcKdiVDWVLKMzjK8Zp+UAemDQASDzI9R6j121vtH1Ru4EFLbfmV63ukFKfFlY1U6YIpm
+         shAZYWZFegyJia7kAZ2Tfz4wvc+tCV1kHyFsgwzYWcJdYNqcgUTBwci5QMRTpIIyo3FW
+         AujQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWxO1YEYyvVBpEBbHegNZppjFnD9LUop+o4fZ1OReScdLlBLiAL4ILeh/JqUB6yiyLv1SE=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzr1x+AO2GBZ5MAw2ObPeVVwHL8cBWvZOxG0qpMJIz0ft5fDoNd
+	XUlDAm9MrbZ0nIIay9rxomzCXx/zs3cG9jlbzQs6N2KEzMfGW3Q6DA2MVbtF9h7U1VELfHFJOxs
+	=
+X-Gm-Gg: ASbGncucxxUCJrfllK36eomEWHFRv42Ud9+OaHQeuOWGe9M5iyP9UR3ECZLqUEBnGcv
+	lYAGEea4YRA1CwutccWk76psidF2ocVmITeLBUizMtYp3XUVtV8jGMsyXPvbRs6/vobUQVncp17
+	dbNzzM/abkYEEIR1eJoOB9fOvCVUn6FDzUKHCOS9D/0QychQlJXo0/zyMKNofvn4VjtamXAkPbu
+	Tv1QjIr9MLPPEy/O6zbWmcdD3oo4AbzEegbwOAWwWDvW8z92UgejvhHj6JG
+X-Google-Smtp-Source: AGHT+IFSLoW5PIBSR6LBkAITjbzrM29xeBOvFQPIeej5XJi4ofiDVZntpwn9iotOelT7YjAqhB/X7A==
+X-Received: by 2002:a05:6a00:a8f:b0:724:62b3:58da with SMTP id d2e1a72fcca58-724df5de418mr4726297b3a.6.1732295626152;
+        Fri, 22 Nov 2024 09:13:46 -0800 (PST)
 Received: from thinkpad ([49.207.202.49])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-724de57a562sm1847026b3a.195.2024.11.22.09.10.45
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-724e0fca304sm1684411b3a.175.2024.11.22.09.13.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Nov 2024 09:10:49 -0800 (PST)
-Date: Fri, 22 Nov 2024 22:40:43 +0530
+        Fri, 22 Nov 2024 09:13:45 -0800 (PST)
+Date: Fri, 22 Nov 2024 22:43:40 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: "l.stach@pengutronix.de" <l.stach@pengutronix.de>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"kw@linux.com" <kw@linux.com>, "robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>,
-	Frank Li <frank.li@nxp.com>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v6 04/10] PCI: imx6: Correct controller_id generation
- logic for i.MX7D
-Message-ID: <20241122171043.j2xh4fvdo6goq7o2@thinkpad>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>, l.stach@pengutronix.de,
+	bhelgaas@google.com, lpieralisi@kernel.org, kw@linux.com,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+	imx@lists.linux.dev, kernel@pengutronix.de,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 10/10] arm64: dts: imx95: Add ref clock for i.MX95 PCIe
+Message-ID: <20241122171340.4uwlddrwadg3vyz4@thinkpad>
 References: <20241101070610.1267391-1-hongxing.zhu@nxp.com>
- <20241101070610.1267391-5-hongxing.zhu@nxp.com>
- <20241115064321.3cuqng7bzmphiomw@thinkpad>
- <AS8PR04MB8676989276C723C26DADFB5D8C272@AS8PR04MB8676.eurprd04.prod.outlook.com>
+ <20241101070610.1267391-11-hongxing.zhu@nxp.com>
+ <20241115071605.qwy4hfqmrnaknokl@thinkpad>
+ <ZzeE0lR8DGG214qq@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -91,38 +82,46 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <AS8PR04MB8676989276C723C26DADFB5D8C272@AS8PR04MB8676.eurprd04.prod.outlook.com>
+In-Reply-To: <ZzeE0lR8DGG214qq@lizhi-Precision-Tower-5810>
 
-On Mon, Nov 18, 2024 at 02:59:48AM +0000, Hongxing Zhu wrote:
-> > -----Original Message-----
-> > From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > Sent: 2024年11月15日 14:43
-> > To: Hongxing Zhu <hongxing.zhu@nxp.com>
-> > Cc: l.stach@pengutronix.de; bhelgaas@google.com; lpieralisi@kernel.org;
-> > kw@linux.com; robh@kernel.org; krzk+dt@kernel.org; conor+dt@kernel.org;
-> > shawnguo@kernel.org; Frank Li <frank.li@nxp.com>;
-> > s.hauer@pengutronix.de; festevam@gmail.com; imx@lists.linux.dev;
-> > kernel@pengutronix.de; linux-pci@vger.kernel.org;
-> > linux-arm-kernel@lists.infradead.org; devicetree@vger.kernel.org;
-> > linux-kernel@vger.kernel.org
-> > Subject: Re: [PATCH v6 04/10] PCI: imx6: Correct controller_id generation
-> > logic for i.MX7D
-> > 
-> > On Fri, Nov 01, 2024 at 03:06:04PM +0800, Richard Zhu wrote:
-> > > i.MX7D only has one PCIe controller, so controller_id should always be 0.
-> > > The previous code is incorrect although yielding the correct result.
-> > > Fix by removing IMX7D from the switch case branch.
+On Fri, Nov 15, 2024 at 12:28:50PM -0500, Frank Li wrote:
+> On Fri, Nov 15, 2024 at 12:46:05PM +0530, Manivannan Sadhasivam wrote:
+> > On Fri, Nov 01, 2024 at 03:06:10PM +0800, Richard Zhu wrote:
+> > > Add ref clock for i.MX95 PCIe here, when the internal PLL is used as
+> > > PCIe reference clock.
 > > >
-> > 
-> > Worth adding a fixes tag?
-> > 
-> It's originated from commit 2d8ed461dbc9 ("PCI: imx6: Add support for i.MX8MQ")
+> > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > >  arch/arm64/boot/dts/freescale/imx95.dtsi | 18 ++++++++++++++----
+> > >  1 file changed, 14 insertions(+), 4 deletions(-)
+> > >
+> > > diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> > > index 03661e76550f..5cb504b5f851 100644
+> > > --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
+> > > +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> > > @@ -1473,6 +1473,14 @@ smmu: iommu@490d0000 {
+> > >  			};
+> > >  		};
+> > >
+> > > +		hsio_blk_ctl: syscon@4c0100c0 {
+> > > +			compatible = "nxp,imx95-hsio-blk-ctl", "syscon";
+> > > +			reg = <0x0 0x4c0100c0 0x0 0x4>;
+> > > +			#clock-cells = <1>;
+> > > +			clocks = <&dummy>;
+> >
+> > What does this 'dummy' clock do? Looks like it doesn't have a frequency at all.
+> > Is bootloader updating it? But the name looks wierd.
 > 
-> How about to add one Fixes tag like this?
-> Fixes: commit 2d8ed461dbc9 ("PCI: imx6: Add support for i.MX8MQ")
+> dummy clock is not used for this instance, which needn't at all. Leave here
+> just keep compatible with the other instance.
+> 
+> Some instance of "nxp,imx95-hsio-blk-ctl" required input clocks. but this
+> one is not, so put dummy here.
 > 
 
-Okay.
+DT should describe the hardware and hardware cannot have dummy clock. If the IP
+requires a clock, then pass relevant clock (even if it is a fixed-clock).
 
 - Mani
 
