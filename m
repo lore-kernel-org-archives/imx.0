@@ -1,77 +1,88 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80A67082F
-	for <imx@lists.linux.dev>; Fri, 22 Nov 2024 16:57:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C849D13635C
+	for <imx@lists.linux.dev>; Fri, 22 Nov 2024 17:07:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732294641; cv=none; b=n6XvlzqgU3d5wfzfHkAoG9TB/4fyP0G5AFHmhyUDke2dt0dLXs+St+tlmgXndZay0hkt4fDryKmriJaIlBrdjybvWRe5jgTbZKtknaban+PWy8soYPt5ldPma1PtQTdcvw8BZHtvmmj7I4DdQ6x4E+TQ/lwX7/7t8lGZRT/7ivo=
+	t=1732295252; cv=none; b=gFbzvkTHuFNNFsg10lIbkGcGiBFDHc94Mc1zT2gWt7y9OYtC/sTcR7/O1H0a1cBzxJ1V1DW/axeYwS3tks40ZejwBictkm/iP2BvAfXZO2zyBdYTQYvytcbM8h9yGU5c61Mgtv3/THUe70Zg7B1uDlWyEtWk3wOV6gwKoS+rtQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732294641; c=relaxed/simple;
-	bh=ZNhJ0AnnhsP1xQ5LpsDqA3efNo9VGhUGzrAteBE+23s=;
+	s=arc-20240116; t=1732295252; c=relaxed/simple;
+	bh=qHGeW+9YJHnoV8xlYG8Yntca2NxQVMAEhNoIhEt+6xM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aKk1FNXz+lcP9EHVKjdaC1uVcVMS8h8Nb85lG8HJGjqn7v+SFhDP/oriF9WCJTt3UZt6uM8S7qN6wCRe1VsbtiSrw2AEBz2lZ8gUkOqurxRoMPl0QeC/QBHGMZBiM6Al/4w9aGassJNpB49svoEE5ZOsEfhS+uqn+T4E/T7fU+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ytUyACfp; arc=none smtp.client-ip=209.85.214.175
+	 Content-Type:Content-Disposition:In-Reply-To; b=JBdGOsU28UlxU7zvBoEsl2XamH9HTwF8Zbzjo31wtmxYGJdsbkcEd1fS9iNs7skFV9U4tH7HoN53G7O0CR6NmhLo4vW30dUf3GuZTA5Q31yjyJqmc/Cf4d58dXOhMXYphfmIkK26xVzpt/Nxspex+4WcnMtUp+p2g/nAJyq4N84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lHu7/UYh; arc=none smtp.client-ip=209.85.210.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ytUyACfp"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2120f9ec28eso18915505ad.1
-        for <imx@lists.linux.dev>; Fri, 22 Nov 2024 08:57:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lHu7/UYh"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-71e625b00bcso2059797b3a.3
+        for <imx@lists.linux.dev>; Fri, 22 Nov 2024 09:07:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1732294639; x=1732899439; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1732295250; x=1732900050; darn=lists.linux.dev;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=FZwDSMvFnipM0RD36mLVFKH4L1T4MEAtnhkfsYAv+8A=;
-        b=ytUyACfpVUZH+Wgce66R1h9zfMWGs8SlmeabJn8qJ9t2wQ3WKH+U/iyCF6vOMSeOzc
-         zRFXJkOMZFkRGYXsmTLPJEg8+usSXkFOywdetu4MqQh6HAOePTBXmAyEb4alkjMS9+dl
-         9G1cTKPyE685TwNj1L+XBJ3sra9ZLrOCW5xFrehJovHWYOWNQIw3p+zW8AK+qlAnTBPG
-         Hg/4ogiN1Gfb+5wWdidkdF3/MhWeIMxXmvFn2Sj43QR2XF8lpJjB45JEpR03XcC4MDlt
-         0mOBv2SDAaaJLiHKKhWOZXstUJXxpTjm6n4kmXfOaEL09/gh+kMfxX8Ia8yo7GKDWv3u
-         4IIw==
+        bh=0/2iR2t92OCH9/EybMxXNXRhh30tebsZGZl/G3WtQ4A=;
+        b=lHu7/UYhQfE1yotfJKZ220/wJ61YPd8H4AW4ErYvNBaEzz1Nc87HThfX6/RTBO/G+M
+         NkbVYICysQo3uzAjQUX/b3Vw/BM/QK/G+5rYy3l5pizJbj/tyCQDjm/9AUFyUHqknDlr
+         stcVApLDq+QYMRez5gtbTlcbzBdx099KsSMT0KYhfzViOlBJ7ye/p49/Aq6mOr122MP3
+         v3zT4sJ+nEcmie4ZiM75ZkKdAXKNbASE7EAbmaVAYUSmlFxqkCOiQdAs49W/3KEqdcYq
+         4ENXqk6130PnaXADeMTVpRqcJXP3ngDWObqfNf3rPuWpOYXp9Q2h1FRIj1Ctw1wa0iCv
+         9oig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732294639; x=1732899439;
+        d=1e100.net; s=20230601; t=1732295250; x=1732900050;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FZwDSMvFnipM0RD36mLVFKH4L1T4MEAtnhkfsYAv+8A=;
-        b=RNDfS4v2JhpDfhyARL2f515Uc27jDgwpeKbaUqklJYaywVhmHFe5Hdb41Xsf2U8aNc
-         9os8ssoWZjPLprA4Hs3SHELb70+oQcui6pqWkbCjRy3VGNBZqBacpcAcg6pQgFbYWcbZ
-         dTSCBwpMDn6QoVJJt+OGNqyE1kxunRzBh9k75Yh3DWqvGa93uBUygcwk03HaX4/cGDKf
-         cEq9M4MulikivyTed6Y5Eh83UvlDfFM4+DdnTSFxprYsFkTYv1GGLaFiyXUIPRJG5FVV
-         LmjNwPHTz0rFVHiAQsQswF8fVbz2+19ajwSFZcXv8GV1aUd/Ndgp3YeNCzCt/ymq9FFi
-         J+wQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUbkqHJF9S4c3fWLk1JVAHcMiys5bRsFcINi0OsdbGFG9JAmVYE61WT8JKUL0S3/4Jqckw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzbttOeDz6sx7MN4mDs0561At+ONQpqXSVD4rW9Gob5mJveumFn
-	GNXlO/W9szOzPOkVEwTj5Tg088ks31QTpCQfEXWbdXNiZleIsZ5SA5Y0ByCnzw==
-X-Gm-Gg: ASbGncvCO7U6Rp5ii08dJTAcYo1Plw7Yb4jm8JmTf8yC4yZWqvhzKbis5m6E5kAhcKK
-	5k/uwkWXLQ6WMkNG3T/ijIGqSzuXixlErkEUsadwsORC902rxe0RNBZKVxAQYQk8rrUmmbTxT5M
-	pIiTJLQ1DGm0fh2I1LK1JRI5ITEUZ9VkNg/SKFZ0EU11On09d7brzM0P46Pvt8NF2HgfuepCOm3
-	3olPU6haVEo6klkZnuJzV5cIeVPF8Cco2JYRVWGLxC8yZUJ4Hm7ZeTMACAN
-X-Google-Smtp-Source: AGHT+IEBQTm+mdF5/l17srn1QQIlJ8cpbCtyU3PjuFrTHKPmmM8RGnmeO63H3UfI8TU8tQ6zNeMktQ==
-X-Received: by 2002:a17:902:d2c3:b0:20c:6bff:fcb1 with SMTP id d9443c01a7336-2129fe0903emr55796195ad.1.1732294639012;
-        Fri, 22 Nov 2024 08:57:19 -0800 (PST)
+        bh=0/2iR2t92OCH9/EybMxXNXRhh30tebsZGZl/G3WtQ4A=;
+        b=JVyeVaN3t80vlQ0HlxgEOqqEi3RoWatETPlq6x+9bJ7/qK5PRFW3weuiUp1PBGvE+H
+         cBbwq3DgZszjmOkBA/DzIEhPe0Q1yP3TrWKz/xr8QzkGVUjYqS/xNiQa4/aHAsJWhMNS
+         sjERkp+3nJhCH26rZE6l9f0XxzEk/Mz8OCa5HAaFp695Zs5p6SS7uY8pM48KictBCpYk
+         a/FinlGk+gQ53oZKrABphAQVyqJV1ZLyKwgn09RwMr9Rv+c1k/Dn1dqrowBNi0ZqiHHI
+         PNjKFvTnoarBuR1NNmKisknfWMgB49TiLFfjIkhP/Wh0gVeLi8yWyj82dwjMIIs8tYsa
+         2gWw==
+X-Forwarded-Encrypted: i=1; AJvYcCVxA45YknKc9jWl33Ofsw1T4RiyDJjYiVNKfJdc44j2/8zuiePEhy6rvGf3PqiKmR1+8OY=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw6LheN6TPDZqcdfhWn0UNEAaHTWVMnYl6YKgkKG3izRxYduLol
+	y+VdJTMlnHUJ4GLacaaqZE/AnwWPkGRhT/Jdb8JbAopgIkf2w3xjWVAYE5KuvdeyGPNBvQxCL48
+	=
+X-Gm-Gg: ASbGncvBBV56ytnMtZftx4nOrKeRTPjs7hoc9jqwNfUVgPOabvJa1NTbbf3ZOcNrKVp
+	G29Llt/OVZtao43OK5TFhROqbfY+8uLUdtkcwN7/RQxPoQwz108n10Pugxo2YG1ugmZonneODeR
+	Cgdyo7dYOhY5i500fJEKoqKqnyLEu6tnnXvdqBTGn6OlUDnjoD3cjSNaAtv2x289q8fclgW7aK3
+	3vJ2eT6xVqIAnDYIu9AazyWoYHeFlDSn2JiRorS7+CliVRNvJVJmVdKNiF3
+X-Google-Smtp-Source: AGHT+IGZvDpaoKhSksqbzMsm60Yp0W7DGNYEnn4YmD/coS4PDUIKaXASCZ3cNh00dMOu8rfdsP6n3g==
+X-Received: by 2002:a17:902:d4c6:b0:20e:a2f7:8ab9 with SMTP id d9443c01a7336-2129f6ac33amr44650405ad.27.1732295250203;
+        Fri, 22 Nov 2024 09:07:30 -0800 (PST)
 Received: from thinkpad ([49.207.202.49])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2129dc21a1asm18338035ad.222.2024.11.22.08.57.14
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2129dba1b40sm18541705ad.87.2024.11.22.09.07.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Nov 2024 08:57:18 -0800 (PST)
-Date: Fri, 22 Nov 2024 22:27:12 +0530
+        Fri, 22 Nov 2024 09:07:29 -0800 (PST)
+Date: Fri, 22 Nov 2024 22:37:23 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Richard Zhu <hongxing.zhu@nxp.com>, l.stach@pengutronix.de,
-	bhelgaas@google.com, lpieralisi@kernel.org, kw@linux.com,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
-	imx@lists.linux.dev, kernel@pengutronix.de,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 08/10] PCI: imx6: Use dwc common suspend resume method
-Message-ID: <20241122165712.5m7xuycxzjzatf35@thinkpad>
+To: Hongxing Zhu <hongxing.zhu@nxp.com>
+Cc: "l.stach@pengutronix.de" <l.stach@pengutronix.de>,
+	"bhelgaas@google.com" <bhelgaas@google.com>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	"kw@linux.com" <kw@linux.com>, "robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>,
+	Frank Li <frank.li@nxp.com>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v6 05/10] PCI: imx6: Make core reset assertion
+ deassertion symmetric
+Message-ID: <20241122170723.s43eokayvnuhas4r@thinkpad>
 References: <20241101070610.1267391-1-hongxing.zhu@nxp.com>
- <20241101070610.1267391-9-hongxing.zhu@nxp.com>
- <20241115070932.vt4cqshyjtks2hq4@thinkpad>
- <ZzeHGd/vfNFgsID2@lizhi-Precision-Tower-5810>
+ <20241101070610.1267391-6-hongxing.zhu@nxp.com>
+ <20241115065221.scfb2chnoetpdzu6@thinkpad>
+ <AS8PR04MB8676D25A87FBF45E2B1D26628C272@AS8PR04MB8676.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -81,53 +92,39 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZzeHGd/vfNFgsID2@lizhi-Precision-Tower-5810>
+In-Reply-To: <AS8PR04MB8676D25A87FBF45E2B1D26628C272@AS8PR04MB8676.eurprd04.prod.outlook.com>
 
-On Fri, Nov 15, 2024 at 12:38:33PM -0500, Frank Li wrote:
-> On Fri, Nov 15, 2024 at 12:39:32PM +0530, Manivannan Sadhasivam wrote:
-> > On Fri, Nov 01, 2024 at 03:06:08PM +0800, Richard Zhu wrote:
-> > > From: Frank Li <Frank.Li@nxp.com>
+On Mon, Nov 18, 2024 at 02:59:59AM +0000, Hongxing Zhu wrote:
+> > -----Original Message-----
+> > From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > Sent: 2024年11月15日 14:52
+> > To: Hongxing Zhu <hongxing.zhu@nxp.com>
+> > Cc: l.stach@pengutronix.de; bhelgaas@google.com; lpieralisi@kernel.org;
+> > kw@linux.com; robh@kernel.org; krzk+dt@kernel.org; conor+dt@kernel.org;
+> > shawnguo@kernel.org; Frank Li <frank.li@nxp.com>;
+> > s.hauer@pengutronix.de; festevam@gmail.com; imx@lists.linux.dev;
+> > kernel@pengutronix.de; linux-pci@vger.kernel.org;
+> > linux-arm-kernel@lists.infradead.org; devicetree@vger.kernel.org;
+> > linux-kernel@vger.kernel.org
+> > Subject: Re: [PATCH v6 05/10] PCI: imx6: Make core reset assertion
+> > deassertion symmetric
+> > 
+> > On Fri, Nov 01, 2024 at 03:06:05PM +0800, Richard Zhu wrote:
+> > > Add apps_reset deassertion in the imx_pcie_deassert_core_reset(). Let
+> > > it be symmetric with imx_pcie_assert_core_reset().
 > > >
-> > > Call common dwc suspend/resume function. Use dwc common iATU method to
-> > > send out PME_TURN_OFF message. In Old DWC implementations,
-> > > PCIE_ATU_INHIBIT_PAYLOAD bit in iATU Ctrl2 register is reserved. So the
-> > > generic DWC implementation of sending the PME_Turn_Off message using a
-> > > dummy MMIO write cannot be used. Use previouse method to kick off
-> > > PME_TURN_OFF MSG for these platforms.
-> > >
-> > > Replace the imx_pcie_stop_link() and imx_pcie_host_exit() by
-> > > dw_pcie_suspend_noirq() in imx_pcie_suspend_noirq().
-> > >
-> > > Since dw_pcie_suspend_noirq() already does these, see below call stack:
-> > > dw_pcie_suspend_noirq()
-> > >   dw_pcie_stop_link();
-> > >     imx_pcie_stop_link();
-> > >   pci->pp.ops->deinit();
-> > >     imx_pcie_host_exit();
-> > >
-> > > Replace the imx_pcie_host_init(), dw_pcie_setup_rc() and
-> > > imx_pcie_start_link() by dw_pcie_resume_noirq() in
-> > > imx_pcie_resume_noirq().
-> > >
-> > > Since dw_pcie_resume_noirq() already does these, see below call stack:
-> > > dw_pcie_resume_noirq()
-> > >   pci->pp.ops->init();
-> > >     imx_pcie_host_init();
-> > >   dw_pcie_setup_rc();
-> > >   dw_pcie_start_link();
-> > >     imx_pcie_start_link();
-> > >
-> >
-> > Are these two changes (dw_pcie_suspend_noirq(), dw_pcie_resume_noirq()) related
-> > to this patch? If not, these should be in a separate patch.
-> 
-> 
-> Sorry, this patch have not touch dw_pcie_suspend_noirq() and
-> dw_pcie_resume_noirq()'s implement, just call it. I have not understood
-> what's your means.
+> > > In the commit first introduced apps_reset, apps_reset is asserted in
+> > > imx6_pcie_assert_core_reset(), but it is de-asserted in another place,
+> > > in
+> > 
+> > I'd suggest rewording like below to make it easy to understand,
+> > 
+> > "PCI: imx6: Deassert apps_reset in imx_pcie_assert_core_reset()
+> I'm very appreciate for your rewords. Should the imx_pcie_assert_core_reset()
+>  be imx_pcie_deassert_core_reset()?
 > 
 
-Sorry, I got confused. Please ignore above comment.
+Yeah!
 
 - Mani
 
