@@ -1,48 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F17D18DF6E;
-	Sun, 24 Nov 2024 12:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D2E1B5ECB;
+	Sun, 24 Nov 2024 12:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452936; cv=none; b=jdpjtSdkjYkI7amL6PDG9h0+c5FNqVOh6vA3Yl2HLGMclL2D4I1GSsAqdU4fuaW+CrVp4zxF/WMkiNZnn6JHiGaPahz3yZ72O0Ibq0y5OFIuWZ4NU7lUqbXbSEIoE7rz/QOSrgEU0aM8fLTb3roHWf8cnoNqG3OT59AE3C4118I=
+	t=1732453011; cv=none; b=qtBAltBKxr4VRNDNzH0s88MNCAE8+8b0G/9H+9p32KqObafAymDNHIFl8e2PZ/ZcATG3Xc40Z5aOxdKaWGgl53NIf7UB80PlFtVXuUXXfs2K/mAVQBrSgk87oHdH7l2hQGk0U92BdAC400e4TnKSXA0J2Fqt6yk5nrAZXiWblzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452936; c=relaxed/simple;
+	s=arc-20240116; t=1732453011; c=relaxed/simple;
 	bh=Gi4S+XoGOa1N8NVG9aViLxho10X6kxajzcJV2M2Iu7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I82fhLlYl6rHQBRKnIS/FTI/RBDZCECw5EDqIL3aG35/zUL+4t6qQuOjMvFrOoo7+q104zRyFwyjAkunkbU9PBD6hDuRC+/ARus8O/LMkwHkqNK7AXWtBNLkrKI1W7XVKK1fUqgO79ZKvBuM92U4FtQ7OlvSPiyjCY8688nDbI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VFXHlX57; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=f4+V0Mra72m/VpD6FhOHwsVSqfHCf6lcVzbjKEYcweZu/nBxwGh0UdQ29Xi/1ORlNZoGyyz4KYTx6clrZqu+uyN6aPIT94223d3FCJVJvJAxq8BngUFozYCA7cmjus3v4pXtDg/nF06tVZKAnIQRvZYy6FSsUZiCQ7OvN9AuIeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SkGXG2r5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VFXHlX57"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F66C4CECC;
-	Sun, 24 Nov 2024 12:55:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SkGXG2r5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66AF7C4CECC;
+	Sun, 24 Nov 2024 12:56:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452935;
+	s=k20201202; t=1732453010;
 	bh=Gi4S+XoGOa1N8NVG9aViLxho10X6kxajzcJV2M2Iu7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VFXHlX57jCMKXaB9M+Rtavtrn1I0L7Nwhkl8+9f23eFIEQhCGDHiBqbP7ZeUZEPTl
-	 Efxx3ecNN7Ak/QdN7H/XCLYOQM+jlVkXbpADlA2cN49Fhzlu8yyb8MVbCA/VXabujw
-	 OC0ZW32vbeL5LJNtTIvS5prMaVqQ4DmJLBLJQ7Tdtbm1GBq26FXJToBEZuZIibH1ri
-	 mamad39GysynzDljYHrBRYEZCRFR2P42Vbu5aCV6O8RZ/r515Hodud5/Jdgl5c18Il
-	 zvQckbum6v84OWHxshl3epqxiBWegwcOunDx3nGzCFS6Si3ElUCHDDAtdRmvSDJpR+
-	 BX8lKLqdFvQpA==
+	b=SkGXG2r52B9RgBr9jAeD9ryVr7Ff17juOmxTcPDZ5utmVE0FS0hM1Mval1hFT7yN5
+	 gzFPZgsHhfRnAXQDFYw8WIbHTf1UXb+l8nT7evmzoX5cxqZz4sPASK3y7ZmUO2MD5g
+	 5AlixFi2S9JwKkeNtuOt+b2p+14Twu9XRAW1ycp6WMIkYHN+msQv3AtB9D/EvPbmgQ
+	 3MqLNP49NWSy4paLgKEcwn/GoC1/tvypCxpwZIaWzc3z/v37gUoKcxsiIbZhIO0sKp
+	 esd7JJbH34WUe1A1xyXyrES2HNTiP/21k0LoeQWw0miq0CrJEnzbw2hgUc6YKeoRg/
+	 BEWFzhxYG+CRQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Marek Vasut <marex@denx.de>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	neil.armstrong@linaro.org,
-	arnd@arndb.de,
+	angelogioacchino.delregno@collabora.com,
 	quic_jjohnson@quicinc.com,
+	arnd@arndb.de,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 6/9] soc: imx8m: Probe the SoC driver as platform driver
-Date: Sun, 24 Nov 2024 07:54:20 -0500
-Message-ID: <20241124125515.3340625-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 5/7] soc: imx8m: Probe the SoC driver as platform driver
+Date: Sun, 24 Nov 2024 07:55:50 -0500
+Message-ID: <20241124125636.3340867-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241124125515.3340625-1-sashal@kernel.org>
-References: <20241124125515.3340625-1-sashal@kernel.org>
+In-Reply-To: <20241124125636.3340867-1-sashal@kernel.org>
+References: <20241124125636.3340867-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,7 +51,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.119
+X-stable-base: Linux 5.15.173
 Content-Transfer-Encoding: 8bit
 
 From: Marek Vasut <marex@denx.de>
