@@ -1,215 +1,187 @@
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923E013FD72
-	for <imx@lists.linux.dev>; Sun, 24 Nov 2024 22:18:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF6813D246;
+	Sun, 24 Nov 2024 22:43:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732486730; cv=none; b=O3nJC3sydEBh4/bPAWy7VsJEjD5H6wRQZgCpkHhjcmMqGvsQNeVZRC2dgJyNrDXBe3IAlNtCa9AqFKWiIl9hd69qv1Aj9Jx52HahVFOmJ8NY4RjK13Kld9XvAnREifgJJjrxhOYfB3ICvVwgtlP1jECUfP8XnoUHfNTPHG/+l58=
+	t=1732488194; cv=none; b=LGnTR8Zg5jSXM5pmDERzUDOAngLPkNb+nUdxKYSHfofXLV7i1jAaRR+SvC3FP9aKaLvjASwk0+H65S0xlYL9w148W4+vFBgNk7LjTjFpMYoSLIywxqfQyYl5rat3a6yMTxJrd7L+ewVzYDZO0EWRLe9utRKst+zS8ZkLHPZFBaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732486730; c=relaxed/simple;
-	bh=u7kQYVP2q/NUDySFecDk5xUiUxBqNf/gjfU1dgYlhRg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TkBRFI3pFlHXMW+vQnbV9UAnTiByBAtUPIAENPUifZffkR+7Cbg3IAa8I7KGh0euHhsJvEhy8XcQHjAfjYUIPyMf8f1hA4Wy2yh2urIRrgshrYTS1lfL+vJfDtFocsZXQYsb1hQbZOf6FueJGyTi+/QEzoF92sI5gQLoumU+Hhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id D40F01A07D4;
-	Sun, 24 Nov 2024 23:18:40 +0100 (CET)
-Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id C192A1A07F5;
-	Sun, 24 Nov 2024 23:18:40 +0100 (CET)
-Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 722BA203B1;
-	Sun, 24 Nov 2024 23:18:39 +0100 (CET)
-Date: Sun, 24 Nov 2024 23:18:40 +0100
-From: Jan Petrous <jan.petrous@oss.nxp.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Minda Chen <minda.chen@starfivetech.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-	Keyur Chudgar <keyur@os.amperecomputing.com>,
-	Quan Nguyen <quan@os.amperecomputing.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>
-Subject: Re: [PATCH v5 14/16] net: stmmac: dwmac-s32: add basic NXP S32G/S32R
- glue driver
-Message-ID: <Z0OmQI+4sEbA0lFs@lsv051416.swis.nl-cdc01.nxp.com>
-References: <20241119-upstream_s32cc_gmac-v5-0-7dcc90fcffef@oss.nxp.com>
- <20241119-upstream_s32cc_gmac-v5-14-7dcc90fcffef@oss.nxp.com>
- <ZzzDu0tcyixAZ8l1@shell.armlinux.org.uk>
+	s=arc-20240116; t=1732488194; c=relaxed/simple;
+	bh=n/Zmpn1SW9SKnUGt+nFAHEbVDk6vv8Ps2OCoF2nXL94=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ZG79tHZz8+BC3+O+urT2NyMBJjqBs4qgFhCqdhOnokj79CKKPibi4K3wsrVHU2wDRfKdb4PWR9Chkp1RZQc2CgpPs5NUsRitce5jUmcA4ryKMZ3DflutCXbq8wBsWFOSJ6pJHDOh4EIBp7rGKfyafaCAjak4eyrERtSVu1fBYDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IXW1odbD; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IXW1odbD"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D5805C4CEDB;
+	Sun, 24 Nov 2024 22:43:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732488193;
+	bh=n/Zmpn1SW9SKnUGt+nFAHEbVDk6vv8Ps2OCoF2nXL94=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=IXW1odbDEeRnoPfClYmnuoo1UwdToSgEB/2rI873KI50zqjpomMbmAryDW+5iN5Gu
+	 adESSrC55zgnYgJyN3rgkwMnCF6ZMJJUthv1DE5hBM0qGDNUs12TTdQNJwpToTn3l2
+	 x0f9T7Oc2paqp+m6F1hv8EhuTfruEdAKZx7UpL1JhF0g06r4Zst7cRypJhoE9M1OPl
+	 0uWlUF1BXiomy/luhzIAeDO1Rt2MBdKAWKZNgQH75gyarVKukaTFKosDIRJN+sv607
+	 akVjX/S7T0NBeT12y5hBpIU84FOfkRi5OYkvbyzoKWafPpZJRNEUYol/R//41/cMEN
+	 2cHZGpfbZ3row==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C700ED3B7C2;
+	Sun, 24 Nov 2024 22:43:13 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Date: Sun, 24 Nov 2024 23:42:34 +0100
+Subject: [PATCH RFC net-next v6 03/15] net: stmmac: Fix clock rate
+ variables size
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZzzDu0tcyixAZ8l1@shell.armlinux.org.uk>
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241124-upstream_s32cc_gmac-v6-3-dc5718ccf001@oss.nxp.com>
+References: <20241124-upstream_s32cc_gmac-v6-0-dc5718ccf001@oss.nxp.com>
+In-Reply-To: <20241124-upstream_s32cc_gmac-v6-0-dc5718ccf001@oss.nxp.com>
+To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Jose Abreu <joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
+ Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Emil Renner Berthing <kernel@esmil.dk>, 
+ Minda Chen <minda.chen@starfivetech.com>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Iyappan Subramanian <iyappan@os.amperecomputing.com>, 
+ Keyur Chudgar <keyur@os.amperecomputing.com>, 
+ Quan Nguyen <quan@os.amperecomputing.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, 
+ devicetree@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>, 
+ Serge Semin <fancer.lancer@gmail.com>, 
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1732488190; l=4080;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=PjyG/bciJnCl1zgeP+KpvNNgB+qJrOmgZuJqhRBWPuo=;
+ b=znvrXADUMs7BxpCCyJgP1HuR3JqECd26+Chy+zoixcHYROslkHXw/fTTAB+uowr5PemF3CLtK
+ 01+r6V+Ys4WB5tuqI6/KCRdJHwt2810f73zX4oeBSttpiWq16dO6c9R
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
-On Tue, Nov 19, 2024 at 04:58:35PM +0000, Russell King (Oracle) wrote:
-> On Tue, Nov 19, 2024 at 04:00:20PM +0100, Jan Petrous via B4 Relay wrote:
-> > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-> > 
-> > NXP S32G2xx/S32G3xx and S32R45 are automotive grade SoCs
-> > that integrate one or two Synopsys DWMAC 5.10/5.20 IPs.
-> > 
-> > The basic driver supports only RGMII interface.
-> > 
-> > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
-> 
-> One thing that stands out to me in this is the duplication of the PHY
-> interface mode. I would much prefer if we didn't end up with multiple
-> copies, but instead made use of the one already in plat_stmmacenet_data
-> maybe by storing a its pointer in struct s32_priv_data?
+From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-I missed the struct plat_stmmacenet_data's phy_interface member. I
-switch the duplicate member intf_mode in struct s32_priv_data to
-pointer.
+The clock API clk_get_rate() returns unsigned long value.
+Expand affected members of stmmac platform data and
+convert the stmmac_clk_csr_set() and dwmac4_core_init() methods
+to defining the unsigned long clk_rate local variables.
 
-> 
-> > ---
-> >  drivers/net/ethernet/stmicro/stmmac/Kconfig     |  12 ++
-> >  drivers/net/ethernet/stmicro/stmmac/Makefile    |   1 +
-> >  drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c | 204 ++++++++++++++++++++++++
-> >  3 files changed, 217 insertions(+)
-> > 
-> > diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-> > index 05cc07b8f48c..a6579377bedb 100644
-> > --- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
-> > +++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-> > @@ -154,6 +154,18 @@ config DWMAC_RZN1
-> >  	  the stmmac device driver. This support can make use of a custom MII
-> >  	  converter PCS device.
-> >  
-> > +config DWMAC_S32
-> > +	tristate "NXP S32G/S32R GMAC support"
-> > +	default ARCH_S32
-> > +	depends on OF && (ARCH_S32 || COMPILE_TEST)
-> > +	help
-> > +	  Support for ethernet controller on NXP S32CC SOCs.
-> > +
-> > +	  This selects NXP SoC glue layer support for the stmmac
-> > +	  device driver. This driver is used for the S32CC series
-> > +	  SOCs GMAC ethernet controller, ie. S32G2xx, S32G3xx and
-> > +	  S32R45.
-> > +
-> >  config DWMAC_SOCFPGA
-> >  	tristate "SOCFPGA dwmac support"
-> >  	default ARCH_INTEL_SOCFPGA
-> > diff --git a/drivers/net/ethernet/stmicro/stmmac/Makefile b/drivers/net/ethernet/stmicro/stmmac/Makefile
-> > index c2f0e91f6bf8..1e87e2652c82 100644
-> > --- a/drivers/net/ethernet/stmicro/stmmac/Makefile
-> > +++ b/drivers/net/ethernet/stmicro/stmmac/Makefile
-> > @@ -22,6 +22,7 @@ obj-$(CONFIG_DWMAC_MESON)	+= dwmac-meson.o dwmac-meson8b.o
-> >  obj-$(CONFIG_DWMAC_QCOM_ETHQOS)	+= dwmac-qcom-ethqos.o
-> >  obj-$(CONFIG_DWMAC_ROCKCHIP)	+= dwmac-rk.o
-> >  obj-$(CONFIG_DWMAC_RZN1)	+= dwmac-rzn1.o
-> > +obj-$(CONFIG_DWMAC_S32)		+= dwmac-s32.o
-> >  obj-$(CONFIG_DWMAC_SOCFPGA)	+= dwmac-altr-socfpga.o
-> >  obj-$(CONFIG_DWMAC_STARFIVE)	+= dwmac-starfive.o
-> >  obj-$(CONFIG_DWMAC_STI)		+= dwmac-sti.o
-> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
-> > new file mode 100644
-> > index 000000000000..9af7cd093100
-> > --- /dev/null
-> > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
-> > @@ -0,0 +1,204 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * NXP S32G/R GMAC glue layer
-> > + *
-> > + * Copyright 2019-2024 NXP
-> > + *
-> > + */
-> > +
-> > +#include <linux/clk.h>
-> > +#include <linux/clk-provider.h>
-> > +#include <linux/device.h>
-> > +#include <linux/ethtool.h>
-> > +#include <linux/io.h>
-> > +#include <linux/module.h>
-> > +#include <linux/of_mdio.h>
-> > +#include <linux/of_address.h>
-> > +#include <linux/phy.h>
-> > +#include <linux/phylink.h>
-> > +#include <linux/platform_device.h>
-> > +#include <linux/stmmac.h>
-> > +
-> > +#include "stmmac_platform.h"
-> > +
-> > +#define GMAC_TX_RATE_125M	125000000	/* 125MHz */
-> > +
-> > +/* SoC PHY interface control register */
-> > +#define PHY_INTF_SEL_MII	0x00
-> > +#define PHY_INTF_SEL_SGMII	0x01
-> > +#define PHY_INTF_SEL_RGMII	0x02
-> > +#define PHY_INTF_SEL_RMII	0x08
-> > +
-> > +struct s32_priv_data {
-> > +	void __iomem *ioaddr;
-> > +	void __iomem *ctrl_sts;
-> > +	struct device *dev;
-> > +	phy_interface_t intf_mode;
-> > +	struct clk *tx_clk;
-> > +	struct clk *rx_clk;
-> > +};
-> > +
-> > +static int s32_gmac_write_phy_intf_select(struct s32_priv_data *gmac)
-> > +{
-> > +	u32 intf_sel;
-> > +
-> > +	switch (gmac->intf_mode) {
-> > +	case PHY_INTERFACE_MODE_RGMII:
-> > +	case PHY_INTERFACE_MODE_RGMII_ID:
-> > +	case PHY_INTERFACE_MODE_RGMII_TXID:
-> > +	case PHY_INTERFACE_MODE_RGMII_RXID:
-> > +		intf_sel = PHY_INTF_SEL_RGMII;
-> > +		break;
-> > +	default:
-> > +		dev_err(gmac->dev, "Unsupported PHY interface: %s\n",
-> > +			phy_modes(gmac->intf_mode));
-> > +		return -EINVAL;
-> > +	}
-> 
-> This can be simplfied to:
-> 
-> 	if (!phy_interface_mode_is_rgmii(...)) {
-> 		dev_err(gmac->dev, "Unsupported PHY interface: %s\n",
-> 			phy_modes(...));
-> 		return -EINVAL;
-> 	}
-> 
-> Also, would it not be better to validate this in s32_dwmac_probe()?
-> 
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c | 2 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c       | 2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c       | 2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c   | 2 +-
+ include/linux/stmmac.h                                  | 6 +++---
+ 5 files changed, 7 insertions(+), 7 deletions(-)
 
-Thanks, I move the interface mode to s32_dwmac_probe() in v6.
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+index 901a3c1959fa..2a5b38723635 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+@@ -777,7 +777,7 @@ static void ethqos_ptp_clk_freq_config(struct stmmac_priv *priv)
+ 		netdev_err(priv->dev, "Failed to max out clk_ptp_ref: %d\n", err);
+ 	plat_dat->clk_ptp_rate = clk_get_rate(plat_dat->clk_ptp_ref);
+ 
+-	netdev_dbg(priv->dev, "PTP rate %d\n", plat_dat->clk_ptp_rate);
++	netdev_dbg(priv->dev, "PTP rate %lu\n", plat_dat->clk_ptp_rate);
+ }
+ 
+ static int qcom_ethqos_probe(struct platform_device *pdev)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
+index c25781874aa7..c36f90a782c5 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
+@@ -27,7 +27,7 @@ static void dwmac4_core_init(struct mac_device_info *hw,
+ 	struct stmmac_priv *priv = netdev_priv(dev);
+ 	void __iomem *ioaddr = hw->pcsr;
+ 	u32 value = readl(ioaddr + GMAC_CONFIG);
+-	u32 clk_rate;
++	unsigned long clk_rate;
+ 
+ 	value |= GMAC_CORE_INIT;
+ 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 8304f82b3a50..efbf34456612 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -301,7 +301,7 @@ static void stmmac_global_err(struct stmmac_priv *priv)
+  */
+ static void stmmac_clk_csr_set(struct stmmac_priv *priv)
+ {
+-	u32 clk_rate;
++	unsigned long clk_rate;
+ 
+ 	clk_rate = clk_get_rate(priv->plat->stmmac_clk);
+ 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index 3ac32444e492..06e07e6e180b 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -640,7 +640,7 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
+ 		dev_info(&pdev->dev, "PTP uses main clock\n");
+ 	} else {
+ 		plat->clk_ptp_rate = clk_get_rate(plat->clk_ptp_ref);
+-		dev_dbg(&pdev->dev, "PTP rate %d\n", plat->clk_ptp_rate);
++		dev_dbg(&pdev->dev, "PTP rate %lu\n", plat->clk_ptp_rate);
+ 	}
+ 
+ 	plat->stmmac_rst = devm_reset_control_get_optional(&pdev->dev,
+diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
+index 865d0fe26f98..c9878a612e53 100644
+--- a/include/linux/stmmac.h
++++ b/include/linux/stmmac.h
+@@ -252,8 +252,8 @@ struct plat_stmmacenet_data {
+ 	struct clk *stmmac_clk;
+ 	struct clk *pclk;
+ 	struct clk *clk_ptp_ref;
+-	unsigned int clk_ptp_rate;
+-	unsigned int clk_ref_rate;
++	unsigned long clk_ptp_rate;
++	unsigned long clk_ref_rate;
+ 	unsigned int mult_fact_100ns;
+ 	s32 ptp_max_adj;
+ 	u32 cdc_error_adj;
+@@ -265,7 +265,7 @@ struct plat_stmmacenet_data {
+ 	int mac_port_sel_speed;
+ 	int has_xgmac;
+ 	u8 vlan_fail_q;
+-	unsigned int eee_usecs_rate;
++	unsigned long eee_usecs_rate;
+ 	struct pci_dev *pdev;
+ 	int int_snapshot_num;
+ 	int msi_mac_vec;
 
-BR.
-/Jan
+-- 
+2.47.0
+
+
