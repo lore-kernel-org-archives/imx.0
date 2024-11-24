@@ -1,136 +1,224 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA16188CCA
-	for <imx@lists.linux.dev>; Sun, 24 Nov 2024 13:17:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0894E1E32B1;
+	Sun, 24 Nov 2024 13:37:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732454236; cv=none; b=KE8vrHLkhkA8Uog9tYFnbae11UosvE0DYedMkOu3cw4aRUxZgAsd7jeksAUbZoZf+jMMO5J2Lr9djEMbzUCMyYeQgWG6v4fRwJXU7RX+SM7oEb5nXN2ijGPfi8CteJnTAdOmt6VGib7+I/wM75kk3vl1Lh/jKBOJFqjwwvm0264=
+	t=1732455455; cv=none; b=fAeHD9HOcjJmXcKCWyyaJrl6euTzPTAXAPuZpcE1AgwOAl0oO/QMmBzpqj+X7KwbFSzgL7WS64oNpi7T8HcEc0wyeWMsH9pM+elpQeafxsotpTIgIQjCpQ91tKGGtvZO5khM0bKF/nBAAhyUJhtuqe+prS0NbBueKBfJmklJvQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732454236; c=relaxed/simple;
-	bh=IlLv58cNCyEoanSXpkpsRvNx5ayjQp+gFk1gE15T0ns=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XYQkzbIU4AASppJ/DmRZ6WLgekxcyZdDw7jddHPI7PWLZS4vIsWLszhZq3Zkt6INnaKpVrJh9h0AjkEHN4LPRlCSau3CnWJ7lTmrHbnpQCAT9vDuxni5SE8Bwiyxe2sv0U3G7XHPlCZ4TgATuu+dcXi7n9Ijqo8iYB8DDSkIS+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Gbwy5AQn; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1732455455; c=relaxed/simple;
+	bh=etKWQqRir1fnlJZqbLpLotJgPM+t6WIibgr+QZvh6WY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hb+L0jFCJU8zU5TOPv2h2bJsrcSwROE9n4DFyYsr0un+WojUeOuuwLeLecDt8L2OQUolkBt3MspnfgnrD/nusE6HSZNpVopq8zHXbJRS7aL42gGZudPit5648VanAWs/jDVYEgX5TdEmEaoRbo403RMNIHWgLF3y3HcRJ2XPjvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=crIKhPcg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Gbwy5AQn"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7250844b0ecso165193b3a.1
-        for <imx@lists.linux.dev>; Sun, 24 Nov 2024 05:17:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1732454234; x=1733059034; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=3x2SMWVaYfpqUnnbF6mOMPwbeMyaHbo8dfeGfWcWU+k=;
-        b=Gbwy5AQnzfe5uEXI5n8F1Yz0b8PIu9l/iohgMeHS1HWr+99zOIKC+O7kQiTo1YuRZ3
-         SKzTvbZCS0ONM8Vyr8GYc2Vc9dsFRAXcoTxaOijOc1YqJbY+dHxKnY2NuiROKcLnjWeS
-         G9TrMD4Qq2PTS7JOEIyJOtwVXQj7tx9GcLbpJvXgoUUUUm4Z1G7CksMa0MWj26c4vpfO
-         6Vz6UpAePdBSju6SGP8o4c1y23d/U5rn2tGuCoEtx56LVts6CznPiOiSWGbdeh/iB+YF
-         48ebMoOueW5Qp0LQyFFfjscRPnUnFFS8O+s0hdZPtJhpK1HKOuu4KkcVodXCFtdQ8EcC
-         e5Ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732454234; x=1733059034;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3x2SMWVaYfpqUnnbF6mOMPwbeMyaHbo8dfeGfWcWU+k=;
-        b=gFV0oIlDse2z3zwGEC0EJPExDpXxxtJwpHay5wIDY3CV21FEpV8nXCDeOGouy7FFO7
-         fLlcMqeM0U4W00qmrOKZi48s9Tw0MXQLMu7U2Dz52ExmeTHJnNODQFUKLCgufVFIZcD4
-         TzbapK6HFoueyEp96+y8QaFnAdcb3e28DiPkSQYnNKQc2yLp7jhilrnj01gruH1a+wF2
-         tvt0mIwPZh1pmmNlzv47ul/2ous5H25oSY1AehOc02YkOMboZmYwDL+vG49/zhQHjiG8
-         UknTk0A1JN0BvBEYMxL7DgJzSMVV8jz6cEL2SREiw3L1+z7BDmCj5BdVB/+QdFA+hrPL
-         hK0w==
-X-Forwarded-Encrypted: i=1; AJvYcCUQWcXF5vcKrL0P+Q72gQHgOhyyJ/jWAB63hGOjTt9kGB1SnhrLGLLjwwO2jVBLiJpLhq0=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz7u0pOLSlz7q24CZ3rIxB9zwfvivSD5NeabKXqtSd5xH8pu3ds
-	JIfFnrSBnO7MAA911u02AkCTODF6YVZHfJv/9s8o5/Or+2WZt29yaYm+nFYi6w==
-X-Gm-Gg: ASbGnctLPgBtXIhXCS7SlBjDIJV7CPD+S51iWY1/ogp3WaI0HCyYbZYPzeJtL7J4aHX
-	xg8b+C77/jPKd9qaVPC+MBqoHtzbpY6B+Mg5aYMIuotYxvg6fjyM4x4xeex5mQhc/tuGwrRqHlE
-	n2XixUbU8mu/z2uWoURusZBWc7rnQWNm1Ffj+Ho455klZFp5sqqd5aZfMctf9akBSjXq9UdyI9t
-	k9k7Eii+K0R8KmwiyEmtz/PwM/PaECtb/CJ7Ph1OLa4tEbYSpSDskFiUCfz
-X-Google-Smtp-Source: AGHT+IEtFLA66MFjNRjbQgvd5A29dDLWgZl+Mi7ZlRgR1PZjK50HEIwS0D8UPsDBN8IXVDgJz+1Pcg==
-X-Received: by 2002:a17:903:32c1:b0:20b:8bd0:7387 with SMTP id d9443c01a7336-2129f28f81amr143096695ad.52.1732454233985;
-        Sun, 24 Nov 2024 05:17:13 -0800 (PST)
-Received: from thinkpad ([36.255.17.192])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2129dba357bsm46433795ad.88.2024.11.24.05.17.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 24 Nov 2024 05:17:13 -0800 (PST)
-Date: Sun, 24 Nov 2024 18:47:01 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Frank Li <Frank.Li@nxp.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	imx@lists.linux.dev, dlemoal@kernel.org, maz@kernel.org,
-	tglx@linutronix.de, jdmason@kudzu.us
-Subject: Re: [PATCH v8 2/6] PCI: endpoint: Add RC-to-EP doorbell support
- using platform MSI controller
-Message-ID: <20241124131701.yrb4bkhwigcux6b4@thinkpad>
-References: <20241116-ep-msi-v8-0-6f1f68ffd1bb@nxp.com>
- <20241116-ep-msi-v8-2-6f1f68ffd1bb@nxp.com>
- <20241124071100.ts34jbnosiipnx2x@thinkpad>
- <113B93C0-8384-431A-BE4D-AA98B67C342A@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="crIKhPcg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35528C4CED3;
+	Sun, 24 Nov 2024 13:37:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732455453;
+	bh=etKWQqRir1fnlJZqbLpLotJgPM+t6WIibgr+QZvh6WY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=crIKhPcgOqq6YPNx6YQw4bvobYed2Q8FA26tPNAm5630M7Q2dSkHbVIbDC+OReaMq
+	 j5TrTahvCAaeV2vrZW5TrlhivuCcFb9o13gHkY6vl295EvXecjpR1/0jHgqXZhQDC4
+	 JfWHSUDiveht6oemUJKtZvPEkalquabPFiVISHHNt/W1x8fstfSrz3dKEgXaQIQeFJ
+	 lTZXEN3gI7PsMRBxjiTv3Yd8RJyrKmH5YKEf3rmgt5mpO+1CecedAhGgAn2RvkVQjy
+	 gb/gbF+GgwPVN/xdpzVC2WF0ozM2ddki7CDEOfXr0UxOytaG9F5fOrDYToK6OWpJ4Q
+	 IPP/XlNJWbbiA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	claudiu.manoil@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	imx@lists.linux.dev,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 076/107] net: enetc: remove ERR050089 workaround for i.MX95
+Date: Sun, 24 Nov 2024 08:29:36 -0500
+Message-ID: <20241124133301.3341829-76-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241124133301.3341829-1-sashal@kernel.org>
+References: <20241124133301.3341829-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <113B93C0-8384-431A-BE4D-AA98B67C342A@kernel.org>
 
-On Sun, Nov 24, 2024 at 10:56:38AM +0100, Niklas Cassel wrote:
-> 
-> 
-> On 24 November 2024 08:11:00 CET, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> wrote:
-> >On Sat, Nov 16, 2024 at 09:40:42AM -0500, Frank Li wrote:
-> >> +static int pci_epc_alloc_doorbell(struct pci_epc *epc, struct pci_epf *epf)
-> >> +{
-> >> +	struct device *dev = epc->dev.parent;
-> >> +	u16 num_db = epf->num_db;
-> >> +	int i = 0;
-> >> +	int ret;
-> >> +
-> >> +	guard(mutex)(&epc->lock);
-> >> +
-> >> +	ret = platform_device_msi_init_and_alloc_irqs(dev, num_db, pci_epc_write_msi_msg);
-> >> +	if (ret) {
-> >> +		dev_err(dev, "Failed to allocate MSI, may miss 'msi-parent' at your DTS\n");
-> >
-> >No need to mention 'msi-parent'. Just 'Failed to allocate MSI' is enough.
-> 
-> If you look at the existing pcie_ep device tree nodes for all SoCs, you will see that it is very rare to see an EP node which specifies msi-parent.
-> 
-> I guess that makes sense, since before this series, AFAICT, msi-parent was completely unused, so there was no need for an EP node to specify it.
-> 
-> I'm okay to change the error print as you suggested, but in that case I really think that we should add a comment above the check, something suggestive like:
-> 
-> /*
->  * The pcie_ep DT node has to specify
->  * 'msi-parent' for EP doorbell support to work.
->  * Right now only GIC ITS is supported.
->  * If you have GIC ITS and reached this print,
->  * perhaps you are missing 'msi-parent' in DT?
->  */
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-Looks good to me (except that the comment needs to fit 80 columns) :)
+[ Upstream commit 86831a3f4cd4c924dd78cf0d6e4d73acacfe1b11 ]
 
-- Mani
+The ERR050089 workaround causes performance degradation and potential
+functional issues (e.g., RCU stalls) under certain workloads. Since
+new SoCs like i.MX95 do not require this workaround, use a static key
+to compile out enetc_lock_mdio() and enetc_unlock_mdio() at runtime,
+improving performance and avoiding unnecessary logic.
 
-> if (ret) {
->         dev_err(dev, "Failed to allocate MSI\n");
->         return -ENODEV;
-> }
-> 
-> 
-> Kind regards,
-> Niklas
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ .../net/ethernet/freescale/enetc/enetc_hw.h   | 34 +++++++++++++------
+ .../ethernet/freescale/enetc/enetc_pci_mdio.c | 28 +++++++++++++++
+ 2 files changed, 52 insertions(+), 10 deletions(-)
 
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+index 1619943fb2637..6a7b9b75d660d 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+@@ -396,18 +396,22 @@ struct enetc_hw {
+  */
+ extern rwlock_t enetc_mdio_lock;
+ 
++DECLARE_STATIC_KEY_FALSE(enetc_has_err050089);
++
+ /* use this locking primitive only on the fast datapath to
+  * group together multiple non-MDIO register accesses to
+  * minimize the overhead of the lock
+  */
+ static inline void enetc_lock_mdio(void)
+ {
+-	read_lock(&enetc_mdio_lock);
++	if (static_branch_unlikely(&enetc_has_err050089))
++		read_lock(&enetc_mdio_lock);
+ }
+ 
+ static inline void enetc_unlock_mdio(void)
+ {
+-	read_unlock(&enetc_mdio_lock);
++	if (static_branch_unlikely(&enetc_has_err050089))
++		read_unlock(&enetc_mdio_lock);
+ }
+ 
+ /* use these accessors only on the fast datapath under
+@@ -416,14 +420,16 @@ static inline void enetc_unlock_mdio(void)
+  */
+ static inline u32 enetc_rd_reg_hot(void __iomem *reg)
+ {
+-	lockdep_assert_held(&enetc_mdio_lock);
++	if (static_branch_unlikely(&enetc_has_err050089))
++		lockdep_assert_held(&enetc_mdio_lock);
+ 
+ 	return ioread32(reg);
+ }
+ 
+ static inline void enetc_wr_reg_hot(void __iomem *reg, u32 val)
+ {
+-	lockdep_assert_held(&enetc_mdio_lock);
++	if (static_branch_unlikely(&enetc_has_err050089))
++		lockdep_assert_held(&enetc_mdio_lock);
+ 
+ 	iowrite32(val, reg);
+ }
+@@ -452,9 +458,13 @@ static inline u32 _enetc_rd_mdio_reg_wa(void __iomem *reg)
+ 	unsigned long flags;
+ 	u32 val;
+ 
+-	write_lock_irqsave(&enetc_mdio_lock, flags);
+-	val = ioread32(reg);
+-	write_unlock_irqrestore(&enetc_mdio_lock, flags);
++	if (static_branch_unlikely(&enetc_has_err050089)) {
++		write_lock_irqsave(&enetc_mdio_lock, flags);
++		val = ioread32(reg);
++		write_unlock_irqrestore(&enetc_mdio_lock, flags);
++	} else {
++		val = ioread32(reg);
++	}
+ 
+ 	return val;
+ }
+@@ -463,9 +473,13 @@ static inline void _enetc_wr_mdio_reg_wa(void __iomem *reg, u32 val)
+ {
+ 	unsigned long flags;
+ 
+-	write_lock_irqsave(&enetc_mdio_lock, flags);
+-	iowrite32(val, reg);
+-	write_unlock_irqrestore(&enetc_mdio_lock, flags);
++	if (static_branch_unlikely(&enetc_has_err050089)) {
++		write_lock_irqsave(&enetc_mdio_lock, flags);
++		iowrite32(val, reg);
++		write_unlock_irqrestore(&enetc_mdio_lock, flags);
++	} else {
++		iowrite32(val, reg);
++	}
+ }
+ 
+ #ifdef ioread64
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c b/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
+index a1b595bd79935..e178cd9375a13 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
+@@ -9,6 +9,28 @@
+ #define ENETC_MDIO_BUS_NAME	ENETC_MDIO_DEV_NAME " Bus"
+ #define ENETC_MDIO_DRV_NAME	ENETC_MDIO_DEV_NAME " driver"
+ 
++DEFINE_STATIC_KEY_FALSE(enetc_has_err050089);
++EXPORT_SYMBOL_GPL(enetc_has_err050089);
++
++static void enetc_emdio_enable_err050089(struct pci_dev *pdev)
++{
++	if (pdev->vendor == PCI_VENDOR_ID_FREESCALE &&
++	    pdev->device == ENETC_MDIO_DEV_ID) {
++		static_branch_inc(&enetc_has_err050089);
++		dev_info(&pdev->dev, "Enabled ERR050089 workaround\n");
++	}
++}
++
++static void enetc_emdio_disable_err050089(struct pci_dev *pdev)
++{
++	if (pdev->vendor == PCI_VENDOR_ID_FREESCALE &&
++	    pdev->device == ENETC_MDIO_DEV_ID) {
++		static_branch_dec(&enetc_has_err050089);
++		if (!static_key_enabled(&enetc_has_err050089.key))
++			dev_info(&pdev->dev, "Disabled ERR050089 workaround\n");
++	}
++}
++
+ static int enetc_pci_mdio_probe(struct pci_dev *pdev,
+ 				const struct pci_device_id *ent)
+ {
+@@ -62,6 +84,8 @@ static int enetc_pci_mdio_probe(struct pci_dev *pdev,
+ 		goto err_pci_mem_reg;
+ 	}
+ 
++	enetc_emdio_enable_err050089(pdev);
++
+ 	err = of_mdiobus_register(bus, dev->of_node);
+ 	if (err)
+ 		goto err_mdiobus_reg;
+@@ -71,6 +95,7 @@ static int enetc_pci_mdio_probe(struct pci_dev *pdev,
+ 	return 0;
+ 
+ err_mdiobus_reg:
++	enetc_emdio_disable_err050089(pdev);
+ 	pci_release_region(pdev, 0);
+ err_pci_mem_reg:
+ 	pci_disable_device(pdev);
+@@ -88,6 +113,9 @@ static void enetc_pci_mdio_remove(struct pci_dev *pdev)
+ 	struct enetc_mdio_priv *mdio_priv;
+ 
+ 	mdiobus_unregister(bus);
++
++	enetc_emdio_disable_err050089(pdev);
++
+ 	mdio_priv = bus->priv;
+ 	iounmap(mdio_priv->hw->port);
+ 	pci_release_region(pdev, 0);
 -- 
-மணிவண்ணன் சதாசிவம்
+2.43.0
+
