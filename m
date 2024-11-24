@@ -1,39 +1,39 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F9E1F682F;
-	Sun, 24 Nov 2024 13:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE061B218F;
+	Sun, 24 Nov 2024 13:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456105; cv=none; b=aG0vV+CAYTFNaBrVGF78UdosZO1mel0o+yhTdh1n5p/727lUdLyIX0L/5SckfZsMFXCQM52hRZVmjtsSzKsDpCM9uhXNai7+1LiYyENcLx9G8C8tXmoqu4DU0YA9igLYSroSgizje1QJKa0f4cZNiiQyxFZjUXBjdhZuGhTwvLE=
+	t=1732456269; cv=none; b=hZcZfukn1IK+tHE/tzXXsLWnhQtfhfHpk064RuhUWsLa6vwGCEyKBBKWWlMplthV6EgG7sex5VheGPBJSO54yhZ5q+N0bWr3nPnZISfPwrUdpXXgyh9Y6oUCcBDjgqEPQNhMRcyDFINyLEZ/lHspsXXo6q0l2pPxLdLzxN50Y1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456105; c=relaxed/simple;
-	bh=IrncszXAlY37bheEyzX1W0R8+6aW7EZqwIL8KR6xRCk=;
+	s=arc-20240116; t=1732456269; c=relaxed/simple;
+	bh=TB1H2XvPtNdX00+JQZFZ8ZWF9ie/H03SqekazIFj1x0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n7xbOXARdcSllkBxm0321ezxnwoVXkjgZQCvufdOuTghwOQm5mK4YbIWC5ial5tLchRnwu2oOMpI9cVzzbm0u2ffWGpkLzBsLMttoheEDaCxlVVWEn7+f+45G+HykqRLWbTU8Wlp2b3uCWK8aEi0v0Hg7a+4pchc4v/m3YeYDgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GJkjhw3+; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=fkFEwA/fXYMCisUIbIFBTIHEcsGak7mPgtduHrzrpRWpoGgEqlKmsHpWjWhV5JOAigdhZbVL3BDTKqNCG+W/fCkDh+YnZELPIr8BUUu+EYxFqnHcFK+8reUVqcpX9fqzkTLFxRLDShN4DCtBAnst8e2fdsGuxOunIEfYwDG03M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qI22AsNa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GJkjhw3+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49634C4CECC;
-	Sun, 24 Nov 2024 13:48:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qI22AsNa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC3FC4CED3;
+	Sun, 24 Nov 2024 13:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456105;
-	bh=IrncszXAlY37bheEyzX1W0R8+6aW7EZqwIL8KR6xRCk=;
+	s=k20201202; t=1732456269;
+	bh=TB1H2XvPtNdX00+JQZFZ8ZWF9ie/H03SqekazIFj1x0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GJkjhw3+URqJT2Gw9mb+8Gsa8FY4w8PFhCHpYNHAZkFIaA5DIeHTsy41jNO5eyoXQ
-	 p6/x2mOtI+xJQMikfUALlN38mtzDv8e7js/tmg+KLBR26SrY1OWYA19MVyDsMWcMZt
-	 jdMdKb3hku/sHO/H+bIq+ITciL7oJfDa8luj0s/XR2rNo2z21SJfFEOF525DStn4pp
-	 cRhNQ3vvMPIH28aLnpl7et8M9+eX452JGAfQxAjEGrh+kVOHytS4mQMwGTdqwhot7k
-	 7xunckgB0CRD+tK+eLAR3KKTMChjXdRPNIsED0BRhiEpbPEbjdL0v3rQ55Qq4MjPt8
-	 2f0GrvbnUFVZA==
+	b=qI22AsNaNz52qBZbxmXKa+xJ9G4XG5CFSzgZf10gCp3dlosdUO6YsGmouZOD6TbPv
+	 SaPDe5ikg58PNjzOEkeH1bffbUv9exMNJR9uXjzZlOEG2aZ2vx4IC7BIhL/VyyNFZR
+	 ZF/mqxSMvBRGyVR8NvVv7BzpRbSQw4viYBMspH95dNbqCm6cBozRgkHkAjNGbs9Cy9
+	 G1MVGy2Xas+57MLYLIKSXMc802iZGsSPB7um6JUD4l85UuwPhOM4Uxepok3mFJHoqD
+	 32mUofj9qUCSGdRgBVY/jglg86BKrk7Ip4TarmcDH3Pes4I0olFMrXRlKl9xI3gR2q
+	 RxOoVY8Csz4Ww==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Wei Fang <wei.fang@nxp.com>,
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
 	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
 	claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
 	xiaoning.wang@nxp.com,
 	andrew+netdev@lunn.ch,
 	edumazet@google.com,
@@ -41,12 +41,12 @@ Cc: Wei Fang <wei.fang@nxp.com>,
 	pabeni@redhat.com,
 	imx@lists.linux.dev,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 44/61] net: enetc: add i.MX95 EMDIO support
-Date: Sun, 24 Nov 2024 08:45:19 -0500
-Message-ID: <20241124134637.3346391-44-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 35/48] net: enetc: remove ERR050089 workaround for i.MX95
+Date: Sun, 24 Nov 2024 08:48:58 -0500
+Message-ID: <20241124134950.3348099-35-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241124134637.3346391-1-sashal@kernel.org>
-References: <20241124134637.3346391-1-sashal@kernel.org>
+In-Reply-To: <20241124134950.3348099-1-sashal@kernel.org>
+References: <20241124134950.3348099-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,45 +55,170 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.63
+X-stable-base: Linux 6.1.119
 Content-Transfer-Encoding: 8bit
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit a52201fb9caa9b33b4d881725d1ec733438b07f2 ]
+[ Upstream commit 86831a3f4cd4c924dd78cf0d6e4d73acacfe1b11 ]
 
-The verdor ID and device ID of i.MX95 EMDIO are different from LS1028A
-EMDIO, so add new vendor ID and device ID to pci_device_id table to
-support i.MX95 EMDIO.
+The ERR050089 workaround causes performance degradation and potential
+functional issues (e.g., RCU stalls) under certain workloads. Since
+new SoCs like i.MX95 do not require this workaround, use a static key
+to compile out enetc_lock_mdio() and enetc_unlock_mdio() at runtime,
+improving performance and avoiding unnecessary logic.
 
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 Signed-off-by: Wei Fang <wei.fang@nxp.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c | 3 +++
- 1 file changed, 3 insertions(+)
+ .../net/ethernet/freescale/enetc/enetc_hw.h   | 34 +++++++++++++------
+ .../ethernet/freescale/enetc/enetc_pci_mdio.c | 28 +++++++++++++++
+ 2 files changed, 52 insertions(+), 10 deletions(-)
 
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+index 18ca1f42b1f75..a5e38804e2811 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+@@ -372,18 +372,22 @@ struct enetc_hw {
+  */
+ extern rwlock_t enetc_mdio_lock;
+ 
++DECLARE_STATIC_KEY_FALSE(enetc_has_err050089);
++
+ /* use this locking primitive only on the fast datapath to
+  * group together multiple non-MDIO register accesses to
+  * minimize the overhead of the lock
+  */
+ static inline void enetc_lock_mdio(void)
+ {
+-	read_lock(&enetc_mdio_lock);
++	if (static_branch_unlikely(&enetc_has_err050089))
++		read_lock(&enetc_mdio_lock);
+ }
+ 
+ static inline void enetc_unlock_mdio(void)
+ {
+-	read_unlock(&enetc_mdio_lock);
++	if (static_branch_unlikely(&enetc_has_err050089))
++		read_unlock(&enetc_mdio_lock);
+ }
+ 
+ /* use these accessors only on the fast datapath under
+@@ -392,14 +396,16 @@ static inline void enetc_unlock_mdio(void)
+  */
+ static inline u32 enetc_rd_reg_hot(void __iomem *reg)
+ {
+-	lockdep_assert_held(&enetc_mdio_lock);
++	if (static_branch_unlikely(&enetc_has_err050089))
++		lockdep_assert_held(&enetc_mdio_lock);
+ 
+ 	return ioread32(reg);
+ }
+ 
+ static inline void enetc_wr_reg_hot(void __iomem *reg, u32 val)
+ {
+-	lockdep_assert_held(&enetc_mdio_lock);
++	if (static_branch_unlikely(&enetc_has_err050089))
++		lockdep_assert_held(&enetc_mdio_lock);
+ 
+ 	iowrite32(val, reg);
+ }
+@@ -428,9 +434,13 @@ static inline u32 _enetc_rd_mdio_reg_wa(void __iomem *reg)
+ 	unsigned long flags;
+ 	u32 val;
+ 
+-	write_lock_irqsave(&enetc_mdio_lock, flags);
+-	val = ioread32(reg);
+-	write_unlock_irqrestore(&enetc_mdio_lock, flags);
++	if (static_branch_unlikely(&enetc_has_err050089)) {
++		write_lock_irqsave(&enetc_mdio_lock, flags);
++		val = ioread32(reg);
++		write_unlock_irqrestore(&enetc_mdio_lock, flags);
++	} else {
++		val = ioread32(reg);
++	}
+ 
+ 	return val;
+ }
+@@ -439,9 +449,13 @@ static inline void _enetc_wr_mdio_reg_wa(void __iomem *reg, u32 val)
+ {
+ 	unsigned long flags;
+ 
+-	write_lock_irqsave(&enetc_mdio_lock, flags);
+-	iowrite32(val, reg);
+-	write_unlock_irqrestore(&enetc_mdio_lock, flags);
++	if (static_branch_unlikely(&enetc_has_err050089)) {
++		write_lock_irqsave(&enetc_mdio_lock, flags);
++		iowrite32(val, reg);
++		write_unlock_irqrestore(&enetc_mdio_lock, flags);
++	} else {
++		iowrite32(val, reg);
++	}
+ }
+ 
+ #ifdef ioread64
 diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c b/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
-index e178cd9375a13..e108cac8288d3 100644
+index dafb26f81f95f..d3248881a9b7e 100644
 --- a/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
 +++ b/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
-@@ -4,6 +4,8 @@
- #include <linux/of_mdio.h>
- #include "enetc_pf.h"
- 
-+#define NETC_EMDIO_VEN_ID	0x1131
-+#define NETC_EMDIO_DEV_ID	0xee00
- #define ENETC_MDIO_DEV_ID	0xee01
- #define ENETC_MDIO_DEV_NAME	"FSL PCIe IE Central MDIO"
+@@ -9,6 +9,28 @@
  #define ENETC_MDIO_BUS_NAME	ENETC_MDIO_DEV_NAME " Bus"
-@@ -124,6 +126,7 @@ static void enetc_pci_mdio_remove(struct pci_dev *pdev)
+ #define ENETC_MDIO_DRV_NAME	ENETC_MDIO_DEV_NAME " driver"
  
- static const struct pci_device_id enetc_pci_mdio_id_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, ENETC_MDIO_DEV_ID) },
-+	{ PCI_DEVICE(NETC_EMDIO_VEN_ID, NETC_EMDIO_DEV_ID) },
- 	{ 0, } /* End of table. */
- };
- MODULE_DEVICE_TABLE(pci, enetc_pci_mdio_id_table);
++DEFINE_STATIC_KEY_FALSE(enetc_has_err050089);
++EXPORT_SYMBOL_GPL(enetc_has_err050089);
++
++static void enetc_emdio_enable_err050089(struct pci_dev *pdev)
++{
++	if (pdev->vendor == PCI_VENDOR_ID_FREESCALE &&
++	    pdev->device == ENETC_MDIO_DEV_ID) {
++		static_branch_inc(&enetc_has_err050089);
++		dev_info(&pdev->dev, "Enabled ERR050089 workaround\n");
++	}
++}
++
++static void enetc_emdio_disable_err050089(struct pci_dev *pdev)
++{
++	if (pdev->vendor == PCI_VENDOR_ID_FREESCALE &&
++	    pdev->device == ENETC_MDIO_DEV_ID) {
++		static_branch_dec(&enetc_has_err050089);
++		if (!static_key_enabled(&enetc_has_err050089.key))
++			dev_info(&pdev->dev, "Disabled ERR050089 workaround\n");
++	}
++}
++
+ static int enetc_pci_mdio_probe(struct pci_dev *pdev,
+ 				const struct pci_device_id *ent)
+ {
+@@ -60,6 +82,8 @@ static int enetc_pci_mdio_probe(struct pci_dev *pdev,
+ 		goto err_pci_mem_reg;
+ 	}
+ 
++	enetc_emdio_enable_err050089(pdev);
++
+ 	err = of_mdiobus_register(bus, dev->of_node);
+ 	if (err)
+ 		goto err_mdiobus_reg;
+@@ -69,6 +93,7 @@ static int enetc_pci_mdio_probe(struct pci_dev *pdev,
+ 	return 0;
+ 
+ err_mdiobus_reg:
++	enetc_emdio_disable_err050089(pdev);
+ 	pci_release_region(pdev, 0);
+ err_pci_mem_reg:
+ 	pci_disable_device(pdev);
+@@ -86,6 +111,9 @@ static void enetc_pci_mdio_remove(struct pci_dev *pdev)
+ 	struct enetc_mdio_priv *mdio_priv;
+ 
+ 	mdiobus_unregister(bus);
++
++	enetc_emdio_disable_err050089(pdev);
++
+ 	mdio_priv = bus->priv;
+ 	iounmap(mdio_priv->hw->port);
+ 	pci_release_region(pdev, 0);
 -- 
 2.43.0
 
