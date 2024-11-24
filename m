@@ -1,47 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78A41DEFF5;
-	Sun, 24 Nov 2024 12:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C3A1F6690;
+	Sun, 24 Nov 2024 12:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452731; cv=none; b=l/iH+cBodBq1l4/78Z0fz5dMRXAKUwjMcRYUM3khFBDZ4bzqSMZqXRJEJ8wo48AbcyCS+UuLmTcUuJppp6+1O1PS/4uuzubjzuvXj5l8FXpMGbI9p9onv+TWckkOff5oth6GHIhmz1QDxnogljpJypwf24ZhfJxhXnZfJq52Za0=
+	t=1732452735; cv=none; b=LYx5kSlW0Gbht9+FnrDHdxZdPJWH6a3zDOdaozbbzSA6sAo3Napj6uyghtm6RFrpGB2s8C9ji0Svi8XeB8ZBW3k0Kps4Z1iNK3Wwlyno5So1309+DeBaLn+todBCuV2vdxc1oyY4kshJ0PnFmEnU1fyVfcErbJDgYLnUyKtO8mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452731; c=relaxed/simple;
-	bh=Q3vJFI8VEQ+dQP8mtJd2dsAUO29gicA9uABtQSdl9/Y=;
+	s=arc-20240116; t=1732452735; c=relaxed/simple;
+	bh=wFEfmeTrQKkQ5fyvgPDxY6pRcnx986Z4n6OcWaXZVnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Haak89bkr5UKbroUpDHNlfh/muIamZ6YITsLi7MBTNph31upmRBZxQL1imF0RrZP0f/x6a2k1A8E0NOKX5EqH9INNtUp5CGXSF6paYMHJxAp3fVEKsbll68EJwkAooJEr6OQyMlb7/2aus1UkcqwSSLp2ii+NC2ar66Ykujm3t0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mn8WSm9Z; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=Ne99ytdR85FjYD/LX5MJmeeCJS+m6Q06Ejcb5TNUlVWT+NVSyIKFLpdIWrGPfH8tVw7DW6K0K6BECX06GBsm9tIeSC4oGSiURM8KxmrQEFmuft1OglTWi6MVInVpZLpe2xZgsYrAycyu1LN7rpNW1e467wiNem75px7Fp4RDqNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SCc+8ojN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mn8WSm9Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F10FBC4CED1;
-	Sun, 24 Nov 2024 12:52:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SCc+8ojN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB49DC4CED1;
+	Sun, 24 Nov 2024 12:52:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452730;
-	bh=Q3vJFI8VEQ+dQP8mtJd2dsAUO29gicA9uABtQSdl9/Y=;
+	s=k20201202; t=1732452735;
+	bh=wFEfmeTrQKkQ5fyvgPDxY6pRcnx986Z4n6OcWaXZVnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mn8WSm9ZQt/eYmaY7S8KvMXEohLD32CSr1KBAAAa6P9i9yaUy0NQfnktX/dZ18B/h
-	 3zDfQI12bicpO65Z3d5wllDZ5enGtmBT0JGf16MrT7hXZgzknBtKjDVq1gaK/+u3g1
-	 dOMbumK5mASPl7yv39WuJIBo4N1ryyaJXFXuetgXr3pa36FoHny/pF2FlQayl3DF6u
-	 22ai6s92oONScHxHKGN0hJXSmy0rWG4UL/ODR3JSZ+oi3jb2PIL2Cadpws+CohPJC0
-	 5Y1tzUipyT4lFLc8zjCzWlpZvjrhX857k0lsdg4z+OcnjuAk19ByCE89HBtNaHx2Go
-	 3dpkq/LbEB6bA==
+	b=SCc+8ojN4Z0MIvdyxC2PqxF3avt9O2/7Yeq85s0KSlKa7cFztWpfx0BJjnkOYuer6
+	 yi2/g3UhW+0rTxGRdTFRH8w4cCMxyOohMBzBLwdzkHTOFDqGDyMgHZbL0+IuFA+2nm
+	 18uKOaQgAapg+m72LG2pV0bc++nPlSZcFFJqxVBP34WS24aXx6Y3qlazxRyJLwIXaS
+	 AhzIEXOF9BxIv9Cd7WKYMd3Qj1FL9XvyDt/XlDXe2FQuW/WfnrgHRUVI0/FLms8w2Q
+	 Hu1Xm++z1zqTYpctzblMHpr8116QZG3NH4FND0Q1Lowm2pNJJC+chQhMMkC5BWu6xX
+	 J6bC0JV7wiylQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Peng Fan <peng.fan@nxp.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+Cc: Marek Vasut <marex@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	shawnguo@kernel.org,
+	arnd@arndb.de,
+	linus.walleij@linaro.org,
+	angelogioacchino.delregno@collabora.com,
+	quic_jjohnson@quicinc.com,
 	imx@lists.linux.dev,
-	linux-mmc@vger.kernel.org,
-	s32@nxp.com,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.11 13/20] mmc: sdhci-esdhc-imx: enable quirks SDHCI_QUIRK_NO_LED
-Date: Sun, 24 Nov 2024 07:50:43 -0500
-Message-ID: <20241124125124.3339648-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.11 15/20] soc: imx8m: Probe the SoC driver as platform driver
+Date: Sun, 24 Nov 2024 07:50:45 -0500
+Message-ID: <20241124125124.3339648-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124125124.3339648-1-sashal@kernel.org>
 References: <20241124125124.3339648-1-sashal@kernel.org>
@@ -56,73 +55,271 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 4dede2b76f4a760e948e1a49b1520881cb459bd3 ]
+[ Upstream commit 9cc832d37799dbea950c4c8a34721b02b8b5a8ff ]
 
-Enable SDHCI_QUIRK_NO_LED for i.MX7ULP, i.MX8MM, i.MX8QXP and
-i.MXRT1050. Even there is LCTL register bit, there is no IOMUX PAD
-for it. So there is no sense to enable LED for SDHCI for these SoCs.
+With driver_async_probe=* on kernel command line, the following trace is
+produced because on i.MX8M Plus hardware because the soc-imx8m.c driver
+calls of_clk_get_by_name() which returns -EPROBE_DEFER because the clock
+driver is not yet probed. This was not detected during regular testing
+without driver_async_probe.
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20240923062016.1165868-1-peng.fan@oss.nxp.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Convert the SoC code to platform driver and instantiate a platform device
+in its current device_initcall() to probe the platform driver. Rework
+.soc_revision callback to always return valid error code and return SoC
+revision via parameter. This way, if anything in the .soc_revision callback
+return -EPROBE_DEFER, it gets propagated to .probe and the .probe will get
+retried later.
+
+"
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 1 at drivers/soc/imx/soc-imx8m.c:115 imx8mm_soc_revision+0xdc/0x180
+CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.11.0-next-20240924-00002-g2062bb554dea #603
+Hardware name: DH electronics i.MX8M Plus DHCOM Premium Developer Kit (3) (DT)
+pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : imx8mm_soc_revision+0xdc/0x180
+lr : imx8mm_soc_revision+0xd0/0x180
+sp : ffff8000821fbcc0
+x29: ffff8000821fbce0 x28: 0000000000000000 x27: ffff800081810120
+x26: ffff8000818a9970 x25: 0000000000000006 x24: 0000000000824311
+x23: ffff8000817f42c8 x22: ffff0000df8be210 x21: fffffffffffffdfb
+x20: ffff800082780000 x19: 0000000000000001 x18: ffffffffffffffff
+x17: ffff800081fff418 x16: ffff8000823e1000 x15: ffff0000c03b65e8
+x14: ffff0000c00051b0 x13: ffff800082790000 x12: 0000000000000801
+x11: ffff80008278ffff x10: ffff80008209d3a6 x9 : ffff80008062e95c
+x8 : ffff8000821fb9a0 x7 : 0000000000000000 x6 : 00000000000080e3
+x5 : ffff0000df8c03d8 x4 : 0000000000000000 x3 : 0000000000000000
+x2 : 0000000000000000 x1 : fffffffffffffdfb x0 : fffffffffffffdfb
+Call trace:
+ imx8mm_soc_revision+0xdc/0x180
+ imx8_soc_init+0xb0/0x1e0
+ do_one_initcall+0x94/0x1a8
+ kernel_init_freeable+0x240/0x2a8
+ kernel_init+0x28/0x140
+ ret_from_fork+0x10/0x20
+---[ end trace 0000000000000000 ]---
+SoC: i.MX8MP revision 1.1
+"
+
+Signed-off-by: Marek Vasut <marex@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-esdhc-imx.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/soc/imx/soc-imx8m.c | 107 ++++++++++++++++++++++++++++--------
+ 1 file changed, 85 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index 8f0bc6dca2b04..ef3a44f2dff16 100644
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -238,6 +238,7 @@ struct esdhc_platform_data {
+diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
+index fe111bae38c8e..5ea8887828c06 100644
+--- a/drivers/soc/imx/soc-imx8m.c
++++ b/drivers/soc/imx/soc-imx8m.c
+@@ -30,7 +30,7 @@
  
- struct esdhc_soc_data {
- 	u32 flags;
-+	u32 quirks;
+ struct imx8_soc_data {
+ 	char *name;
+-	u32 (*soc_revision)(void);
++	int (*soc_revision)(u32 *socrev);
  };
  
- static const struct esdhc_soc_data esdhc_imx25_data = {
-@@ -309,10 +310,12 @@ static struct esdhc_soc_data usdhc_imx7ulp_data = {
- 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
- 			| ESDHC_FLAG_PMQOS | ESDHC_FLAG_HS400
- 			| ESDHC_FLAG_STATE_LOST_IN_LPMODE,
-+	.quirks = SDHCI_QUIRK_NO_LED,
- };
- static struct esdhc_soc_data usdhc_imxrt1050_data = {
- 	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
- 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200,
-+	.quirks = SDHCI_QUIRK_NO_LED,
- };
+ static u64 soc_uid;
+@@ -51,24 +51,29 @@ static u32 imx8mq_soc_revision_from_atf(void)
+ static inline u32 imx8mq_soc_revision_from_atf(void) { return 0; };
+ #endif
  
- static struct esdhc_soc_data usdhc_imx8qxp_data = {
-@@ -321,6 +324,7 @@ static struct esdhc_soc_data usdhc_imx8qxp_data = {
- 			| ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES
- 			| ESDHC_FLAG_STATE_LOST_IN_LPMODE
- 			| ESDHC_FLAG_CLK_RATE_LOST_IN_PM_RUNTIME,
-+	.quirks = SDHCI_QUIRK_NO_LED,
- };
+-static u32 __init imx8mq_soc_revision(void)
++static int imx8mq_soc_revision(u32 *socrev)
+ {
+ 	struct device_node *np;
+ 	void __iomem *ocotp_base;
+ 	u32 magic;
+ 	u32 rev;
+ 	struct clk *clk;
++	int ret;
  
- static struct esdhc_soc_data usdhc_imx8mm_data = {
-@@ -328,6 +332,7 @@ static struct esdhc_soc_data usdhc_imx8mm_data = {
- 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
- 			| ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES
- 			| ESDHC_FLAG_STATE_LOST_IN_LPMODE,
-+	.quirks = SDHCI_QUIRK_NO_LED,
- };
+ 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mq-ocotp");
+ 	if (!np)
+-		return 0;
++		return -EINVAL;
  
- struct pltfm_imx_data {
-@@ -1687,6 +1692,7 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
+ 	ocotp_base = of_iomap(np, 0);
+-	WARN_ON(!ocotp_base);
++	if (!ocotp_base) {
++		ret = -EINVAL;
++		goto err_iomap;
++	}
++
+ 	clk = of_clk_get_by_name(np, NULL);
+ 	if (IS_ERR(clk)) {
+-		WARN_ON(IS_ERR(clk));
+-		return 0;
++		ret = PTR_ERR(clk);
++		goto err_clk;
+ 	}
  
- 	imx_data->socdata = device_get_match_data(&pdev->dev);
+ 	clk_prepare_enable(clk);
+@@ -88,32 +93,45 @@ static u32 __init imx8mq_soc_revision(void)
+ 	soc_uid <<= 32;
+ 	soc_uid |= readl_relaxed(ocotp_base + OCOTP_UID_LOW);
  
-+	host->quirks |= imx_data->socdata->quirks;
- 	if (imx_data->socdata->flags & ESDHC_FLAG_PMQOS)
- 		cpu_latency_qos_add_request(&imx_data->pm_qos_req, 0);
++	*socrev = rev;
++
+ 	clk_disable_unprepare(clk);
+ 	clk_put(clk);
+ 	iounmap(ocotp_base);
+ 	of_node_put(np);
  
+-	return rev;
++	return 0;
++
++err_clk:
++	iounmap(ocotp_base);
++err_iomap:
++	of_node_put(np);
++	return ret;
+ }
+ 
+-static void __init imx8mm_soc_uid(void)
++static int imx8mm_soc_uid(void)
+ {
+ 	void __iomem *ocotp_base;
+ 	struct device_node *np;
+ 	struct clk *clk;
++	int ret = 0;
+ 	u32 offset = of_machine_is_compatible("fsl,imx8mp") ?
+ 		     IMX8MP_OCOTP_UID_OFFSET : 0;
+ 
+ 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mm-ocotp");
+ 	if (!np)
+-		return;
++		return -EINVAL;
+ 
+ 	ocotp_base = of_iomap(np, 0);
+-	WARN_ON(!ocotp_base);
++	if (!ocotp_base) {
++		ret = -EINVAL;
++		goto err_iomap;
++	}
++
+ 	clk = of_clk_get_by_name(np, NULL);
+ 	if (IS_ERR(clk)) {
+-		WARN_ON(IS_ERR(clk));
+-		return;
++		ret = PTR_ERR(clk);
++		goto err_clk;
+ 	}
+ 
+ 	clk_prepare_enable(clk);
+@@ -124,31 +142,41 @@ static void __init imx8mm_soc_uid(void)
+ 
+ 	clk_disable_unprepare(clk);
+ 	clk_put(clk);
++
++err_clk:
+ 	iounmap(ocotp_base);
++err_iomap:
+ 	of_node_put(np);
++
++	return ret;
+ }
+ 
+-static u32 __init imx8mm_soc_revision(void)
++static int imx8mm_soc_revision(u32 *socrev)
+ {
+ 	struct device_node *np;
+ 	void __iomem *anatop_base;
+-	u32 rev;
++	int ret;
+ 
+ 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mm-anatop");
+ 	if (!np)
+-		return 0;
++		return -EINVAL;
+ 
+ 	anatop_base = of_iomap(np, 0);
+-	WARN_ON(!anatop_base);
++	if (!anatop_base) {
++		ret = -EINVAL;
++		goto err_iomap;
++	}
+ 
+-	rev = readl_relaxed(anatop_base + ANADIG_DIGPROG_IMX8MM);
++	*socrev = readl_relaxed(anatop_base + ANADIG_DIGPROG_IMX8MM);
+ 
+ 	iounmap(anatop_base);
+ 	of_node_put(np);
+ 
+-	imx8mm_soc_uid();
++	return imx8mm_soc_uid();
+ 
+-	return rev;
++err_iomap:
++	of_node_put(np);
++	return ret;
+ }
+ 
+ static const struct imx8_soc_data imx8mq_soc_data = {
+@@ -184,7 +212,7 @@ static __maybe_unused const struct of_device_id imx8_soc_match[] = {
+ 	kasprintf(GFP_KERNEL, "%d.%d", (soc_rev >> 4) & 0xf,  soc_rev & 0xf) : \
+ 	"unknown"
+ 
+-static int __init imx8_soc_init(void)
++static int imx8m_soc_probe(struct platform_device *pdev)
+ {
+ 	struct soc_device_attribute *soc_dev_attr;
+ 	struct soc_device *soc_dev;
+@@ -212,8 +240,11 @@ static int __init imx8_soc_init(void)
+ 	data = id->data;
+ 	if (data) {
+ 		soc_dev_attr->soc_id = data->name;
+-		if (data->soc_revision)
+-			soc_rev = data->soc_revision();
++		if (data->soc_revision) {
++			ret = data->soc_revision(&soc_rev);
++			if (ret)
++				goto free_soc;
++		}
+ 	}
+ 
+ 	soc_dev_attr->revision = imx8_revision(soc_rev);
+@@ -251,6 +282,38 @@ static int __init imx8_soc_init(void)
+ 	kfree(soc_dev_attr);
+ 	return ret;
+ }
++
++static struct platform_driver imx8m_soc_driver = {
++	.probe = imx8m_soc_probe,
++	.driver = {
++		.name = "imx8m-soc",
++	},
++};
++
++static int __init imx8_soc_init(void)
++{
++	struct platform_device *pdev;
++	int ret;
++
++	/* No match means this is non-i.MX8M hardware, do nothing. */
++	if (!of_match_node(imx8_soc_match, of_root))
++		return 0;
++
++	ret = platform_driver_register(&imx8m_soc_driver);
++	if (ret) {
++		pr_err("Failed to register imx8m-soc platform driver: %d\n", ret);
++		return ret;
++	}
++
++	pdev = platform_device_register_simple("imx8m-soc", -1, NULL, 0);
++	if (IS_ERR(pdev)) {
++		pr_err("Failed to register imx8m-soc platform device: %ld\n", PTR_ERR(pdev));
++		platform_driver_unregister(&imx8m_soc_driver);
++		return PTR_ERR(pdev);
++	}
++
++	return 0;
++}
+ device_initcall(imx8_soc_init);
+ MODULE_DESCRIPTION("NXP i.MX8M SoC driver");
+ MODULE_LICENSE("GPL");
 -- 
 2.43.0
 
