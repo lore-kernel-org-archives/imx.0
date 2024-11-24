@@ -1,68 +1,67 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594FF558BA
-	for <imx@lists.linux.dev>; Sun, 24 Nov 2024 21:27:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923E013FD72
+	for <imx@lists.linux.dev>; Sun, 24 Nov 2024 22:18:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732483644; cv=none; b=UkBARNOzWonAk6I4Veidtplf6BRiHmiqE6yl7xOOODigoniUj4v2R4cDqwQiHwwFsZFM8S+hlQCRKlgxS0NBDZkgrM7xXzQFqi00uOiTUctgMVqQJHsBvcGa1fml0VThqCwt+w8wuYnTxqFwUyMZLyD6XAMxdKvPi0uBpSra6c0=
+	t=1732486730; cv=none; b=O3nJC3sydEBh4/bPAWy7VsJEjD5H6wRQZgCpkHhjcmMqGvsQNeVZRC2dgJyNrDXBe3IAlNtCa9AqFKWiIl9hd69qv1Aj9Jx52HahVFOmJ8NY4RjK13Kld9XvAnREifgJJjrxhOYfB3ICvVwgtlP1jECUfP8XnoUHfNTPHG/+l58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732483644; c=relaxed/simple;
-	bh=q0zFXd4JS29b9+I/dNk67ZUXr84q4C+lpXjI7/mm3SA=;
+	s=arc-20240116; t=1732486730; c=relaxed/simple;
+	bh=u7kQYVP2q/NUDySFecDk5xUiUxBqNf/gjfU1dgYlhRg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WADzC7qVl8YqUHuRN8vSiOl+2JiqSyVL/jqwzJb5KYu3w71OEbmBgKZDa04NDy8suEhT+AOu30L6lAxj3tDrrbsRdlFZ5soCbhGzDtISxhAwihKzxZAmosXvg27bor27TtLwwyq8ojMMa8YosPHFhGGsUt9nkqfhS1Om9YmLFmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.21
+	 Content-Type:Content-Disposition:In-Reply-To; b=TkBRFI3pFlHXMW+vQnbV9UAnTiByBAtUPIAENPUifZffkR+7Cbg3IAa8I7KGh0euHhsJvEhy8XcQHjAfjYUIPyMf8f1hA4Wy2yh2urIRrgshrYTS1lfL+vJfDtFocsZXQYsb1hQbZOf6FueJGyTi+/QEzoF92sI5gQLoumU+Hhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id BA7F12008A6;
-	Sun, 24 Nov 2024 22:27:14 +0100 (CET)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id D40F01A07D4;
+	Sun, 24 Nov 2024 23:18:40 +0100 (CET)
 Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id A3260200464;
-	Sun, 24 Nov 2024 22:27:14 +0100 (CET)
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id C192A1A07F5;
+	Sun, 24 Nov 2024 23:18:40 +0100 (CET)
 Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 5A97E203C1;
-	Sun, 24 Nov 2024 22:27:13 +0100 (CET)
-Date: Sun, 24 Nov 2024 22:27:14 +0100
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 722BA203B1;
+	Sun, 24 Nov 2024 23:18:39 +0100 (CET)
+Date: Sun, 24 Nov 2024 23:18:40 +0100
 From: Jan Petrous <jan.petrous@oss.nxp.com>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Jose Abreu <joabreu@synopsys.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Russell King <linux@armlinux.org.uk>,
-	Minda Chen <minda.chen@starfivetech.com>,
-	linux-arm-msm@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Shawn Guo <shawnguo@kernel.org>,
-	Quan Nguyen <quan@os.amperecomputing.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>, imx@lists.linux.dev,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Andrew Lunn <andrew@lunn.ch>, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Keyur Chudgar <keyur@os.amperecomputing.com>,
-	Fabio Estevam <festevam@gmail.com>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
 	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Minda Chen <minda.chen@starfivetech.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+	Keyur Chudgar <keyur@os.amperecomputing.com>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
 	NXP S32 Linux Team <s32@nxp.com>
-Subject: Re: [PATCH v5 13/16] dt-bindings: net: Add DT bindings for DWMAC on
- NXP S32G/R SoCs
-Message-ID: <Z0OaMjw0A4OadZfI@lsv051416.swis.nl-cdc01.nxp.com>
+Subject: Re: [PATCH v5 14/16] net: stmmac: dwmac-s32: add basic NXP S32G/S32R
+ glue driver
+Message-ID: <Z0OmQI+4sEbA0lFs@lsv051416.swis.nl-cdc01.nxp.com>
 References: <20241119-upstream_s32cc_gmac-v5-0-7dcc90fcffef@oss.nxp.com>
- <20241119-upstream_s32cc_gmac-v5-13-7dcc90fcffef@oss.nxp.com>
- <173203348678.1765163.1636321988738538785.robh@kernel.org>
+ <20241119-upstream_s32cc_gmac-v5-14-7dcc90fcffef@oss.nxp.com>
+ <ZzzDu0tcyixAZ8l1@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -71,72 +70,146 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <173203348678.1765163.1636321988738538785.robh@kernel.org>
+In-Reply-To: <ZzzDu0tcyixAZ8l1@shell.armlinux.org.uk>
 X-Virus-Scanned: ClamAV using ClamSMTP
 
-On Tue, Nov 19, 2024 at 10:24:46AM -0600, Rob Herring (Arm) wrote:
-> 
-> On Tue, 19 Nov 2024 16:00:19 +0100, Jan Petrous (OSS) wrote:
-> > Add basic description for DWMAC ethernet IP on NXP S32G2xx, S32G3xx
-> > and S32R45 automotive series SoCs.
+On Tue, Nov 19, 2024 at 04:58:35PM +0000, Russell King (Oracle) wrote:
+> On Tue, Nov 19, 2024 at 04:00:20PM +0100, Jan Petrous via B4 Relay wrote:
+> > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> > 
+> > NXP S32G2xx/S32G3xx and S32R45 are automotive grade SoCs
+> > that integrate one or two Synopsys DWMAC 5.10/5.20 IPs.
+> > 
+> > The basic driver supports only RGMII interface.
 > > 
 > > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> 
+> One thing that stands out to me in this is the duplication of the PHY
+> interface mode. I would much prefer if we didn't end up with multiple
+> copies, but instead made use of the one already in plat_stmmacenet_data
+> maybe by storing a its pointer in struct s32_priv_data?
+
+I missed the struct plat_stmmacenet_data's phy_interface member. I
+switch the duplicate member intf_mode in struct s32_priv_data to
+pointer.
+
+> 
 > > ---
-> >  .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 105 +++++++++++++++++++++
-> >  .../devicetree/bindings/net/snps,dwmac.yaml        |   3 +
-> >  2 files changed, 108 insertions(+)
+> >  drivers/net/ethernet/stmicro/stmmac/Kconfig     |  12 ++
+> >  drivers/net/ethernet/stmicro/stmmac/Makefile    |   1 +
+> >  drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c | 204 ++++++++++++++++++++++++
+> >  3 files changed, 217 insertions(+)
 > > 
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+> > index 05cc07b8f48c..a6579377bedb 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+> > @@ -154,6 +154,18 @@ config DWMAC_RZN1
+> >  	  the stmmac device driver. This support can make use of a custom MII
+> >  	  converter PCS device.
+> >  
+> > +config DWMAC_S32
+> > +	tristate "NXP S32G/S32R GMAC support"
+> > +	default ARCH_S32
+> > +	depends on OF && (ARCH_S32 || COMPILE_TEST)
+> > +	help
+> > +	  Support for ethernet controller on NXP S32CC SOCs.
+> > +
+> > +	  This selects NXP SoC glue layer support for the stmmac
+> > +	  device driver. This driver is used for the S32CC series
+> > +	  SOCs GMAC ethernet controller, ie. S32G2xx, S32G3xx and
+> > +	  S32R45.
+> > +
+> >  config DWMAC_SOCFPGA
+> >  	tristate "SOCFPGA dwmac support"
+> >  	default ARCH_INTEL_SOCFPGA
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/Makefile b/drivers/net/ethernet/stmicro/stmmac/Makefile
+> > index c2f0e91f6bf8..1e87e2652c82 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/Makefile
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/Makefile
+> > @@ -22,6 +22,7 @@ obj-$(CONFIG_DWMAC_MESON)	+= dwmac-meson.o dwmac-meson8b.o
+> >  obj-$(CONFIG_DWMAC_QCOM_ETHQOS)	+= dwmac-qcom-ethqos.o
+> >  obj-$(CONFIG_DWMAC_ROCKCHIP)	+= dwmac-rk.o
+> >  obj-$(CONFIG_DWMAC_RZN1)	+= dwmac-rzn1.o
+> > +obj-$(CONFIG_DWMAC_S32)		+= dwmac-s32.o
+> >  obj-$(CONFIG_DWMAC_SOCFPGA)	+= dwmac-altr-socfpga.o
+> >  obj-$(CONFIG_DWMAC_STARFIVE)	+= dwmac-starfive.o
+> >  obj-$(CONFIG_DWMAC_STI)		+= dwmac-sti.o
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> > new file mode 100644
+> > index 000000000000..9af7cd093100
+> > --- /dev/null
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> > @@ -0,0 +1,204 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * NXP S32G/R GMAC glue layer
+> > + *
+> > + * Copyright 2019-2024 NXP
+> > + *
+> > + */
+> > +
+> > +#include <linux/clk.h>
+> > +#include <linux/clk-provider.h>
+> > +#include <linux/device.h>
+> > +#include <linux/ethtool.h>
+> > +#include <linux/io.h>
+> > +#include <linux/module.h>
+> > +#include <linux/of_mdio.h>
+> > +#include <linux/of_address.h>
+> > +#include <linux/phy.h>
+> > +#include <linux/phylink.h>
+> > +#include <linux/platform_device.h>
+> > +#include <linux/stmmac.h>
+> > +
+> > +#include "stmmac_platform.h"
+> > +
+> > +#define GMAC_TX_RATE_125M	125000000	/* 125MHz */
+> > +
+> > +/* SoC PHY interface control register */
+> > +#define PHY_INTF_SEL_MII	0x00
+> > +#define PHY_INTF_SEL_SGMII	0x01
+> > +#define PHY_INTF_SEL_RGMII	0x02
+> > +#define PHY_INTF_SEL_RMII	0x08
+> > +
+> > +struct s32_priv_data {
+> > +	void __iomem *ioaddr;
+> > +	void __iomem *ctrl_sts;
+> > +	struct device *dev;
+> > +	phy_interface_t intf_mode;
+> > +	struct clk *tx_clk;
+> > +	struct clk *rx_clk;
+> > +};
+> > +
+> > +static int s32_gmac_write_phy_intf_select(struct s32_priv_data *gmac)
+> > +{
+> > +	u32 intf_sel;
+> > +
+> > +	switch (gmac->intf_mode) {
+> > +	case PHY_INTERFACE_MODE_RGMII:
+> > +	case PHY_INTERFACE_MODE_RGMII_ID:
+> > +	case PHY_INTERFACE_MODE_RGMII_TXID:
+> > +	case PHY_INTERFACE_MODE_RGMII_RXID:
+> > +		intf_sel = PHY_INTF_SEL_RGMII;
+> > +		break;
+> > +	default:
+> > +		dev_err(gmac->dev, "Unsupported PHY interface: %s\n",
+> > +			phy_modes(gmac->intf_mode));
+> > +		return -EINVAL;
+> > +	}
 > 
-> My bot found errors running 'make dt_binding_check' on your patch:
+> This can be simplfied to:
 > 
-> yamllint warnings/errors:
-> ./Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml:25:9: [warning] wrong indentation: expected 10 but found 8 (indentation)
+> 	if (!phy_interface_mode_is_rgmii(...)) {
+> 		dev_err(gmac->dev, "Unsupported PHY interface: %s\n",
+> 			phy_modes(...));
+> 		return -EINVAL;
+> 	}
+> 
+> Also, would it not be better to validate this in s32_dwmac_probe()?
 > 
 
-Thanks, I will fix it in v6.
-
-> dtschema/dtc warnings/errors:
-> 
-> doc reference errors (make refcheckdocs):
-
-I have also noticed the refcheckdocs errors, but AFAIK those are not
-connected to my commit:
-
- $ make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-   refcheckdocs
- Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`rt_link<../../networking/netlink_spec/rt_link>`
- Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`tc<../../networking/netlink_spec/tc>`
- Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`tc<../../networking/netlink_spec/tc>`
- Documentation/devicetree/bindings/nvmem/zii,rave-sp-eeprom.txt: Documentation/devicetree/bindings/mfd/zii,rave-sp.txt
- Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml: Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
- Documentation/hwmon/g762.rst: Documentation/devicetree/bindings/hwmon/g762.txt
- Documentation/hwmon/isl28022.rst: Documentation/devicetree/bindings/hwmon/isl,isl28022.yaml
- Documentation/translations/ja_JP/SubmittingPatches: linux-2.6.12-vanilla/Documentation/dontdiff
- Documentation/userspace-api/netlink/index.rst: Documentation/networking/netlink_spec/index.rst
- Documentation/userspace-api/netlink/specs.rst: Documentation/networking/netlink_spec/index.rst
- MAINTAINERS: Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
- lib/Kconfig.debug: Documentation/dev-tools/fault-injection/fault-injection.rst
-
-> 
-> See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20241119-upstream_s32cc_gmac-v5-13-7dcc90fcffef@oss.nxp.com
-> 
-> The base for the series is generally the latest rc1. A different dependency
-> should be noted in *this* patch.
-
-I have series based on v6.12 and I don't see there any v6.13-rc1.
-
-> 
-> If you already ran 'make dt_binding_check' and didn't see the above
-> error(s), then make sure 'yamllint' is installed and dt-schema is up to
-> date:
-> 
-> pip3 install dtschema --upgrade
-> 
-> Please check and re-submit after running the above command yourself. Note
-> that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-> your schema. However, it must be unset to test all examples with your schema.
-> 
-
-I rechecked with fixed indentation, no any error was found.
+Thanks, I move the interface mode to s32_dwmac_probe() in v6.
 
 BR.
 /Jan
