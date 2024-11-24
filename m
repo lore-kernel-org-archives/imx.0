@@ -1,79 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7F218FC9F;
-	Sun, 24 Nov 2024 15:26:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594FF558BA
+	for <imx@lists.linux.dev>; Sun, 24 Nov 2024 21:27:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732461976; cv=none; b=GkkwE0U0QTv56JolIB3Oje0CCPlp1Ck0l47K+v0wwsE4tYlsCvPr2s4qjJCyq4LJAJgXF5Sug6TypSr0oxpRAcC5HnJuS7ibLxrd4rUMREd///8HQkdLW3ECpqhI/ZePabFCtteML2Y/sZK2nNQwb/k4gmqfMPSkUTZUf9ZZreQ=
+	t=1732483644; cv=none; b=UkBARNOzWonAk6I4Veidtplf6BRiHmiqE6yl7xOOODigoniUj4v2R4cDqwQiHwwFsZFM8S+hlQCRKlgxS0NBDZkgrM7xXzQFqi00uOiTUctgMVqQJHsBvcGa1fml0VThqCwt+w8wuYnTxqFwUyMZLyD6XAMxdKvPi0uBpSra6c0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732461976; c=relaxed/simple;
-	bh=x15zhF9GW0i/jB5F4aM+ww3ByyaY8y3kDOuMbCCVrlA=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=qv01Z3eOm1A4kSFphAUm9Wzop6t2HrxWH8uC9HF1zmzS2/4+Ae1MbE7LvQo5Mbup+A8LVVr/lIR3g2EpzCR85g1FOmhVkPdkMHdyJUwCIhROrCBz2cujU5p2sUaofizgJQrV6MSJTZgxa3m7+hGW7TvAKoAUoOgdvjNasBh+kyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NS0edT7p; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NS0edT7p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B2C9C4CECC;
-	Sun, 24 Nov 2024 15:26:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732461976;
-	bh=x15zhF9GW0i/jB5F4aM+ww3ByyaY8y3kDOuMbCCVrlA=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=NS0edT7pdihHuaSLhTj0mB3QGaWr+bZiDWNrGAI9JoKJFBPTYkvoZqlknaRZETY8R
-	 legxidwxNwveE3K0UGcOWRLTF7eIS7G2aHw44AZUMjrhUpJOukQCNTvoMN+f/BEgt3
-	 3qNe6uvT9Po34PoCC4vLcG6+kI8U8lHp37c4Ke5ia4KSeiSkq6F06SBU0gUjS8wDDk
-	 DB/z8YHlm91qTEUS7+s/gRUGeWP2A+PnZ6dJJPa9gcZAccCi9iZaBxZ3frK7Ri4Xab
-	 4tjWSVMPvLK4Wmh5dzghFgdXKpfHB24wF5i18vfoqs4WuptKKMjiwevNK/bQquFe/p
-	 XUR0iJBIPGzQQ==
-Date: Sun, 24 Nov 2024 16:26:14 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-CC: Frank Li <Frank.Li@nxp.com>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
- Kishon Vijay Abraham I <kishon@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, imx@lists.linux.dev,
- dlemoal@kernel.org, maz@kernel.org, tglx@linutronix.de, jdmason@kudzu.us
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v8_2/6=5D_PCI=3A_endpoint=3A_Add_RC-to-EP?=
- =?US-ASCII?Q?_doorbell_support_using_platform_MSI_controller?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20241124131701.yrb4bkhwigcux6b4@thinkpad>
-References: <20241116-ep-msi-v8-0-6f1f68ffd1bb@nxp.com> <20241116-ep-msi-v8-2-6f1f68ffd1bb@nxp.com> <20241124071100.ts34jbnosiipnx2x@thinkpad> <113B93C0-8384-431A-BE4D-AA98B67C342A@kernel.org> <20241124131701.yrb4bkhwigcux6b4@thinkpad>
-Message-ID: <066A8516-07D3-43F0-A135-9F4360FE9698@kernel.org>
+	s=arc-20240116; t=1732483644; c=relaxed/simple;
+	bh=q0zFXd4JS29b9+I/dNk67ZUXr84q4C+lpXjI7/mm3SA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WADzC7qVl8YqUHuRN8vSiOl+2JiqSyVL/jqwzJb5KYu3w71OEbmBgKZDa04NDy8suEhT+AOu30L6lAxj3tDrrbsRdlFZ5soCbhGzDtISxhAwihKzxZAmosXvg27bor27TtLwwyq8ojMMa8YosPHFhGGsUt9nkqfhS1Om9YmLFmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id BA7F12008A6;
+	Sun, 24 Nov 2024 22:27:14 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id A3260200464;
+	Sun, 24 Nov 2024 22:27:14 +0100 (CET)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 5A97E203C1;
+	Sun, 24 Nov 2024 22:27:13 +0100 (CET)
+Date: Sun, 24 Nov 2024 22:27:14 +0100
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Jose Abreu <joabreu@synopsys.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Russell King <linux@armlinux.org.uk>,
+	Minda Chen <minda.chen@starfivetech.com>,
+	linux-arm-msm@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Shawn Guo <shawnguo@kernel.org>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>, imx@lists.linux.dev,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Andrew Lunn <andrew@lunn.ch>, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Keyur Chudgar <keyur@os.amperecomputing.com>,
+	Fabio Estevam <festevam@gmail.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	NXP S32 Linux Team <s32@nxp.com>
+Subject: Re: [PATCH v5 13/16] dt-bindings: net: Add DT bindings for DWMAC on
+ NXP S32G/R SoCs
+Message-ID: <Z0OaMjw0A4OadZfI@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20241119-upstream_s32cc_gmac-v5-0-7dcc90fcffef@oss.nxp.com>
+ <20241119-upstream_s32cc_gmac-v5-13-7dcc90fcffef@oss.nxp.com>
+ <173203348678.1765163.1636321988738538785.robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <173203348678.1765163.1636321988738538785.robh@kernel.org>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
+On Tue, Nov 19, 2024 at 10:24:46AM -0600, Rob Herring (Arm) wrote:
+> 
+> On Tue, 19 Nov 2024 16:00:19 +0100, Jan Petrous (OSS) wrote:
+> > Add basic description for DWMAC ethernet IP on NXP S32G2xx, S32G3xx
+> > and S32R45 automotive series SoCs.
+> > 
+> > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> > ---
+> >  .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 105 +++++++++++++++++++++
+> >  .../devicetree/bindings/net/snps,dwmac.yaml        |   3 +
+> >  2 files changed, 108 insertions(+)
+> > 
+> 
+> My bot found errors running 'make dt_binding_check' on your patch:
+> 
+> yamllint warnings/errors:
+> ./Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml:25:9: [warning] wrong indentation: expected 10 but found 8 (indentation)
+> 
 
+Thanks, I will fix it in v6.
 
-On 24 November 2024 14:17:01 CET, Manivannan Sadhasivam <manivannan=2Esadh=
-asivam@linaro=2Eorg> wrote:
->On Sun, Nov 24, 2024 at 10:56:38AM +0100, Niklas Cassel wrote:
->>=20
->> I'm okay to change the error print as you suggested, but in that case I=
- really think that we should add a comment above the check, something sugge=
-stive like:
->>=20
->> /*
->>  * The pcie_ep DT node has to specify
->>  * 'msi-parent' for EP doorbell support to work=2E
->>  * Right now only GIC ITS is supported=2E
->>  * If you have GIC ITS and reached this print,
->>  * perhaps you are missing 'msi-parent' in DT?
->>  */
->
->Looks good to me (except that the comment needs to fit 80 columns) :)
+> dtschema/dtc warnings/errors:
+> 
+> doc reference errors (make refcheckdocs):
 
-Sorry about that, I wrote the reply from my phone :D
+I have also noticed the refcheckdocs errors, but AFAIK those are not
+connected to my commit:
 
+ $ make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-   refcheckdocs
+ Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`rt_link<../../networking/netlink_spec/rt_link>`
+ Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`tc<../../networking/netlink_spec/tc>`
+ Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`tc<../../networking/netlink_spec/tc>`
+ Documentation/devicetree/bindings/nvmem/zii,rave-sp-eeprom.txt: Documentation/devicetree/bindings/mfd/zii,rave-sp.txt
+ Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml: Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
+ Documentation/hwmon/g762.rst: Documentation/devicetree/bindings/hwmon/g762.txt
+ Documentation/hwmon/isl28022.rst: Documentation/devicetree/bindings/hwmon/isl,isl28022.yaml
+ Documentation/translations/ja_JP/SubmittingPatches: linux-2.6.12-vanilla/Documentation/dontdiff
+ Documentation/userspace-api/netlink/index.rst: Documentation/networking/netlink_spec/index.rst
+ Documentation/userspace-api/netlink/specs.rst: Documentation/networking/netlink_spec/index.rst
+ MAINTAINERS: Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
+ lib/Kconfig.debug: Documentation/dev-tools/fault-injection/fault-injection.rst
 
-Kind regards,
-Niklas
+> 
+> See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20241119-upstream_s32cc_gmac-v5-13-7dcc90fcffef@oss.nxp.com
+> 
+> The base for the series is generally the latest rc1. A different dependency
+> should be noted in *this* patch.
+
+I have series based on v6.12 and I don't see there any v6.13-rc1.
+
+> 
+> If you already ran 'make dt_binding_check' and didn't see the above
+> error(s), then make sure 'yamllint' is installed and dt-schema is up to
+> date:
+> 
+> pip3 install dtschema --upgrade
+> 
+> Please check and re-submit after running the above command yourself. Note
+> that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+> your schema. However, it must be unset to test all examples with your schema.
+> 
+
+I rechecked with fixed indentation, no any error was found.
+
+BR.
+/Jan
