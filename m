@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461E21DEFC0;
-	Sun, 24 Nov 2024 12:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F17D18DF6E;
+	Sun, 24 Nov 2024 12:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452839; cv=none; b=K7KX1miiLBqxGjj7j5RSGTsVXMVf6etFZyaeyhEb7/LQAjzEXcNrr82eecPh1eq2qYxF1+v68vdg4JvNnjxmB0Gtg8IwSvtiknUvNHMO4CTdbnFYPRLdG9TI5XD8RT5TprfS1U4F0W/jauqQxhu1IwykwqZQKO84j3aBAgRWuyM=
+	t=1732452936; cv=none; b=jdpjtSdkjYkI7amL6PDG9h0+c5FNqVOh6vA3Yl2HLGMclL2D4I1GSsAqdU4fuaW+CrVp4zxF/WMkiNZnn6JHiGaPahz3yZ72O0Ibq0y5OFIuWZ4NU7lUqbXbSEIoE7rz/QOSrgEU0aM8fLTb3roHWf8cnoNqG3OT59AE3C4118I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452839; c=relaxed/simple;
-	bh=/wvMxT3t64anURdRebvqqCvN+x70v8LFq801MdFRNBw=;
+	s=arc-20240116; t=1732452936; c=relaxed/simple;
+	bh=Gi4S+XoGOa1N8NVG9aViLxho10X6kxajzcJV2M2Iu7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UJ8+K0VFmoaOJSD5ru8cDrm3/0QXIuAMYfZeJZMqA4M2pLIBglZDS4UgjMYdN1pozAEwiq7Y8E5gGURiJzg17TLD7fvBYCKzaxJCKhiXTSMSbeVpoAi+2BlgStuU25n9T39zjgiGWKvcglTJHpnTn+pNts8oTl30qXvvDEQMF/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n6zjNjXJ; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=I82fhLlYl6rHQBRKnIS/FTI/RBDZCECw5EDqIL3aG35/zUL+4t6qQuOjMvFrOoo7+q104zRyFwyjAkunkbU9PBD6hDuRC+/ARus8O/LMkwHkqNK7AXWtBNLkrKI1W7XVKK1fUqgO79ZKvBuM92U4FtQ7OlvSPiyjCY8688nDbI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VFXHlX57; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n6zjNjXJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4EDCC4CECC;
-	Sun, 24 Nov 2024 12:53:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VFXHlX57"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F66C4CECC;
+	Sun, 24 Nov 2024 12:55:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452838;
-	bh=/wvMxT3t64anURdRebvqqCvN+x70v8LFq801MdFRNBw=;
+	s=k20201202; t=1732452935;
+	bh=Gi4S+XoGOa1N8NVG9aViLxho10X6kxajzcJV2M2Iu7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n6zjNjXJEc2swcfDCUhvrcDhVECgATdlsrGwLJlkaKtCF3qXzUcVwxBwTiETdwM9y
-	 YymZ4E6dgBVruHF4BXapr5+8NNv5+N2wzhJzienWnqNdKFdwGXLEcgvfoJvI+L5RRT
-	 FvHbdk+rN85Yr+hderweA3E+FYVSB7q0SkB7geemqlwYAuQouXoAtGVm0NIHKwCM+w
-	 ivV5agojfh+7ugipZD+GmHlEgwIWadcEjNK2/klLA/ov+ZSA3IkJGggzIVB9Dv9vE5
-	 hyVDwXd51PVmA/UHCNouxQ3LKmNSfCwgPZIUe/AYlqXjWAcanbiDZPNjPUgRW2/Ps1
-	 AdKTh1PK55jBQ==
+	b=VFXHlX57jCMKXaB9M+Rtavtrn1I0L7Nwhkl8+9f23eFIEQhCGDHiBqbP7ZeUZEPTl
+	 Efxx3ecNN7Ak/QdN7H/XCLYOQM+jlVkXbpADlA2cN49Fhzlu8yyb8MVbCA/VXabujw
+	 OC0ZW32vbeL5LJNtTIvS5prMaVqQ4DmJLBLJQ7Tdtbm1GBq26FXJToBEZuZIibH1ri
+	 mamad39GysynzDljYHrBRYEZCRFR2P42Vbu5aCV6O8RZ/r515Hodud5/Jdgl5c18Il
+	 zvQckbum6v84OWHxshl3epqxiBWegwcOunDx3nGzCFS6Si3ElUCHDDAtdRmvSDJpR+
+	 BX8lKLqdFvQpA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -33,16 +33,16 @@ Cc: Marek Vasut <marex@denx.de>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	neil.armstrong@linaro.org,
-	linus.walleij@linaro.org,
+	arnd@arndb.de,
 	quic_jjohnson@quicinc.com,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 11/16] soc: imx8m: Probe the SoC driver as platform driver
-Date: Sun, 24 Nov 2024 07:52:29 -0500
-Message-ID: <20241124125311.3340223-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 6/9] soc: imx8m: Probe the SoC driver as platform driver
+Date: Sun, 24 Nov 2024 07:54:20 -0500
+Message-ID: <20241124125515.3340625-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241124125311.3340223-1-sashal@kernel.org>
-References: <20241124125311.3340223-1-sashal@kernel.org>
+In-Reply-To: <20241124125515.3340625-1-sashal@kernel.org>
+References: <20241124125515.3340625-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,7 +51,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.63
+X-stable-base: Linux 6.1.119
 Content-Transfer-Encoding: 8bit
 
 From: Marek Vasut <marex@denx.de>
@@ -109,7 +109,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 85 insertions(+), 22 deletions(-)
 
 diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
-index ec87d9d878f30..1ff8c7d847a9e 100644
+index 08197b03955dd..a160854a19178 100644
 --- a/drivers/soc/imx/soc-imx8m.c
 +++ b/drivers/soc/imx/soc-imx8m.c
 @@ -30,7 +30,7 @@
@@ -280,7 +280,7 @@ index ec87d9d878f30..1ff8c7d847a9e 100644
  	}
  
  	soc_dev_attr->revision = imx8_revision(soc_rev);
-@@ -251,5 +282,37 @@ static int __init imx8_soc_init(void)
+@@ -251,4 +282,36 @@ static int __init imx8_soc_init(void)
  	kfree(soc_dev_attr);
  	return ret;
  }
@@ -317,7 +317,6 @@ index ec87d9d878f30..1ff8c7d847a9e 100644
 +	return 0;
 +}
  device_initcall(imx8_soc_init);
- MODULE_LICENSE("GPL");
 -- 
 2.43.0
 
