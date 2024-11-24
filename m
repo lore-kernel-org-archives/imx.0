@@ -1,43 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548271AC43A;
-	Sun, 24 Nov 2024 12:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E2E1E00B0;
+	Sun, 24 Nov 2024 12:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452794; cv=none; b=gCN0Z5zvcrVj+rQwBx9hjdlUmW9Lw3PgHi4nzY37594Q4Gq+ukEPn2TPgoDMjt1w5oA3u2pMmPmvpLh+SYck6SdA7Jv1t9beByKnclw1mpU6EANyg3/VTeA9cbCWwdHuHzC1c/kMcVsSVe9Xfe2P5Cf0EvfiZFIZCCl8Kz1dL7Y=
+	t=1732452835; cv=none; b=XwAuagdb04HjE7OsnbLCom8gQoiLqKms90TJFSJKke0maBriIb7hsouwJkQMlDG5GLhpT6ho6JmTCC1T80ZuJCiBvUr6yvBYEkJ44gFcXus/IhQMLN2yCSXb/Dgs0CqlT8aQ8w0Xdke99GSTjFCdB9FKqkXrns903qNnE5xqUas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452794; c=relaxed/simple;
-	bh=zm4sYBlw+dcRQe2cg9YcRTsb3nX+GEQvk/csuVhxMlk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p5tYciP7kTSPpM3McTiShvm29BxO2D2ewWvBHGIlKd0hd9rPW45spLuFwhcW+EZQkV7EcLXJP0JQDtECc8zculCDYMk6YoVITT/LoiDlB9KRBJVseavGE1yeD/5gl+uBcR4z5VsEbicetyCRQF/UGQxkMIMBiLCH65EcN12GvTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C57r+DHJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1732452835; c=relaxed/simple;
+	bh=cJcv5ATerOqHRrqC8Sut9kB2yJ2kCCaPo0YASFDYuZ4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GBe54Qv1EXM7CdSzD8Ow+rcTYvJi2qqQgdjzXHoSsE8g/zp6aicT9PKqlMtNBeXeaKSH0ZfteKtVbK1yJn5crW8alCprCa3npctpTI4iNhGR4owr+i06WgY7oUhbwmgfdvdzG7/tqJ+xBXtodmtTFc3vk+Tqq9StpzbkJT5QONI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rJzTiRfO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C57r+DHJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 454FCC4CECC;
-	Sun, 24 Nov 2024 12:53:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rJzTiRfO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD50FC4CED1;
+	Sun, 24 Nov 2024 12:53:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452794;
-	bh=zm4sYBlw+dcRQe2cg9YcRTsb3nX+GEQvk/csuVhxMlk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=C57r+DHJ0Btc+J6FbVxDI9EegYX8FR/0UEfWY/6RjQQTNng73GJvg3CBDz6NpCTbM
-	 feeUfj9bCTeKbK76U6IlpapMGW4L2HjVCZCQH8tAJVAFKmzHdkNgJcg156RIOedwEk
-	 NFRJ1rZVwGXY96p61Keu9o43J4A8OQlW1+MmaFaHtXImlBXCDAsQKcd74GK9WxwJ6r
-	 Yb0niP+v/DnHkw5aLocaCVAhDxMTslDJwB+Gkr0PakclSPz1U6TWGUZODqUBfHNqCR
-	 mh452h1I5vLI4a2UY/sWhJbCwu3oRtSiJJNwJ/9aqmmalgK9KUE6raP9AC0IXhoSBm
-	 gPLKWQy3jaFzQ==
+	s=k20201202; t=1732452835;
+	bh=cJcv5ATerOqHRrqC8Sut9kB2yJ2kCCaPo0YASFDYuZ4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=rJzTiRfOpp0geavRZZiaPBAw3BP+C1+7nveqKgxvDBhYJTbucKFVVE0uwQq8ak36g
+	 AF2wdctTWBnorN0doiIRW1p8tRuvXbsojNu7KdDEoecJ5Fyy+7piaaRo43xGFD/M7N
+	 1GlK3JhszfXnKHYAoIg1FcYA3PAttYB6qVJbAXBNd1V4i9saO0SygaHRWLYrMIVJCs
+	 d5RMM6zVjlY2U6Ib0PUZgOm3w5UdWlPwegc+vJ4lAe8h/wttrMHo58CSjNtT49TbNQ
+	 xhs7kBD9RsNDXp84h9jez5iA0qdBTb5I0SMZJNhV1BFzrB9TncNj5apyP6PXQCE7Cv
+	 wENWZMf6eZMgQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Stefan Wahren <wahrenst@gmx.net>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Peng Fan <peng.fan@nxp.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-spi@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 01/16] spi: spi-fsl-lpspi: Adjust type of scldiv
-Date: Sun, 24 Nov 2024 07:52:19 -0500
-Message-ID: <20241124125311.3340223-1-sashal@kernel.org>
+	shawnguo@kernel.org,
+	linux-mmc@vger.kernel.org,
+	imx@lists.linux.dev,
+	s32@nxp.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.6 10/16] mmc: sdhci-esdhc-imx: enable quirks SDHCI_QUIRK_NO_LED
+Date: Sun, 24 Nov 2024 07:52:28 -0500
+Message-ID: <20241124125311.3340223-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241124125311.3340223-1-sashal@kernel.org>
+References: <20241124125311.3340223-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,56 +56,73 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.63
 Content-Transfer-Encoding: 8bit
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit fa8ecda9876ac1e7b29257aa82af1fd0695496e2 ]
+[ Upstream commit 4dede2b76f4a760e948e1a49b1520881cb459bd3 ]
 
-The target value of scldiv is just a byte, but its calculation in
-fsl_lpspi_set_bitrate could be negative. So use an adequate type to store
-the result and avoid overflows. After that this needs range check
-adjustments, but this should make the code less opaque.
+Enable SDHCI_QUIRK_NO_LED for i.MX7ULP, i.MX8MM, i.MX8QXP and
+i.MXRT1050. Even there is LCTL register bit, there is no IOMUX PAD
+for it. So there is no sense to enable LED for SDHCI for these SoCs.
 
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20240930093056.93418-2-wahrenst@gmx.net
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240923062016.1165868-1-peng.fan@oss.nxp.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/mmc/host/sdhci-esdhc-imx.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 13313f07839b6..84881983d5d9f 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -315,9 +315,10 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_data *fsl_lpspi)
- static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
- {
- 	struct lpspi_config config = fsl_lpspi->config;
--	unsigned int perclk_rate, scldiv, div;
-+	unsigned int perclk_rate, div;
- 	u8 prescale_max;
- 	u8 prescale;
-+	int scldiv;
+diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+index 3b8030f3552af..e4e9b84f210b2 100644
+--- a/drivers/mmc/host/sdhci-esdhc-imx.c
++++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+@@ -235,6 +235,7 @@ struct esdhc_platform_data {
  
- 	perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
- 	prescale_max = fsl_lpspi->devtype_data->prescale_max;
-@@ -338,13 +339,13 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ struct esdhc_soc_data {
+ 	u32 flags;
++	u32 quirks;
+ };
  
- 	for (prescale = 0; prescale <= prescale_max; prescale++) {
- 		scldiv = div / (1 << prescale) - 2;
--		if (scldiv < 256) {
-+		if (scldiv >= 0 && scldiv < 256) {
- 			fsl_lpspi->config.prescale = prescale;
- 			break;
- 		}
- 	}
+ static const struct esdhc_soc_data esdhc_imx25_data = {
+@@ -306,10 +307,12 @@ static struct esdhc_soc_data usdhc_imx7ulp_data = {
+ 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
+ 			| ESDHC_FLAG_PMQOS | ESDHC_FLAG_HS400
+ 			| ESDHC_FLAG_STATE_LOST_IN_LPMODE,
++	.quirks = SDHCI_QUIRK_NO_LED,
+ };
+ static struct esdhc_soc_data usdhc_imxrt1050_data = {
+ 	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
+ 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200,
++	.quirks = SDHCI_QUIRK_NO_LED,
+ };
  
--	if (scldiv >= 256)
-+	if (scldiv < 0 || scldiv >= 256)
- 		return -EINVAL;
+ static struct esdhc_soc_data usdhc_imx8qxp_data = {
+@@ -318,6 +321,7 @@ static struct esdhc_soc_data usdhc_imx8qxp_data = {
+ 			| ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES
+ 			| ESDHC_FLAG_STATE_LOST_IN_LPMODE
+ 			| ESDHC_FLAG_CLK_RATE_LOST_IN_PM_RUNTIME,
++	.quirks = SDHCI_QUIRK_NO_LED,
+ };
  
- 	writel(scldiv | (scldiv << 8) | ((scldiv >> 1) << 16),
+ static struct esdhc_soc_data usdhc_imx8mm_data = {
+@@ -325,6 +329,7 @@ static struct esdhc_soc_data usdhc_imx8mm_data = {
+ 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
+ 			| ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES
+ 			| ESDHC_FLAG_STATE_LOST_IN_LPMODE,
++	.quirks = SDHCI_QUIRK_NO_LED,
+ };
+ 
+ struct pltfm_imx_data {
+@@ -1664,6 +1669,7 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
+ 
+ 	imx_data->socdata = device_get_match_data(&pdev->dev);
+ 
++	host->quirks |= imx_data->socdata->quirks;
+ 	if (imx_data->socdata->flags & ESDHC_FLAG_PMQOS)
+ 		cpu_latency_qos_add_request(&imx_data->pm_qos_req, 0);
+ 
 -- 
 2.43.0
 
