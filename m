@@ -1,322 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D2E1B5ECB;
-	Sun, 24 Nov 2024 12:56:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA16188CCA
+	for <imx@lists.linux.dev>; Sun, 24 Nov 2024 13:17:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732453011; cv=none; b=qtBAltBKxr4VRNDNzH0s88MNCAE8+8b0G/9H+9p32KqObafAymDNHIFl8e2PZ/ZcATG3Xc40Z5aOxdKaWGgl53NIf7UB80PlFtVXuUXXfs2K/mAVQBrSgk87oHdH7l2hQGk0U92BdAC400e4TnKSXA0J2Fqt6yk5nrAZXiWblzI=
+	t=1732454236; cv=none; b=KE8vrHLkhkA8Uog9tYFnbae11UosvE0DYedMkOu3cw4aRUxZgAsd7jeksAUbZoZf+jMMO5J2Lr9djEMbzUCMyYeQgWG6v4fRwJXU7RX+SM7oEb5nXN2ijGPfi8CteJnTAdOmt6VGib7+I/wM75kk3vl1Lh/jKBOJFqjwwvm0264=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732453011; c=relaxed/simple;
-	bh=Gi4S+XoGOa1N8NVG9aViLxho10X6kxajzcJV2M2Iu7c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f4+V0Mra72m/VpD6FhOHwsVSqfHCf6lcVzbjKEYcweZu/nBxwGh0UdQ29Xi/1ORlNZoGyyz4KYTx6clrZqu+uyN6aPIT94223d3FCJVJvJAxq8BngUFozYCA7cmjus3v4pXtDg/nF06tVZKAnIQRvZYy6FSsUZiCQ7OvN9AuIeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SkGXG2r5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1732454236; c=relaxed/simple;
+	bh=IlLv58cNCyEoanSXpkpsRvNx5ayjQp+gFk1gE15T0ns=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XYQkzbIU4AASppJ/DmRZ6WLgekxcyZdDw7jddHPI7PWLZS4vIsWLszhZq3Zkt6INnaKpVrJh9h0AjkEHN4LPRlCSau3CnWJ7lTmrHbnpQCAT9vDuxni5SE8Bwiyxe2sv0U3G7XHPlCZ4TgATuu+dcXi7n9Ijqo8iYB8DDSkIS+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Gbwy5AQn; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SkGXG2r5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66AF7C4CECC;
-	Sun, 24 Nov 2024 12:56:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732453010;
-	bh=Gi4S+XoGOa1N8NVG9aViLxho10X6kxajzcJV2M2Iu7c=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SkGXG2r52B9RgBr9jAeD9ryVr7Ff17juOmxTcPDZ5utmVE0FS0hM1Mval1hFT7yN5
-	 gzFPZgsHhfRnAXQDFYw8WIbHTf1UXb+l8nT7evmzoX5cxqZz4sPASK3y7ZmUO2MD5g
-	 5AlixFi2S9JwKkeNtuOt+b2p+14Twu9XRAW1ycp6WMIkYHN+msQv3AtB9D/EvPbmgQ
-	 3MqLNP49NWSy4paLgKEcwn/GoC1/tvypCxpwZIaWzc3z/v37gUoKcxsiIbZhIO0sKp
-	 esd7JJbH34WUe1A1xyXyrES2HNTiP/21k0LoeQWw0miq0CrJEnzbw2hgUc6YKeoRg/
-	 BEWFzhxYG+CRQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Marek Vasut <marex@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	angelogioacchino.delregno@collabora.com,
-	quic_jjohnson@quicinc.com,
-	arnd@arndb.de,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.15 5/7] soc: imx8m: Probe the SoC driver as platform driver
-Date: Sun, 24 Nov 2024 07:55:50 -0500
-Message-ID: <20241124125636.3340867-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241124125636.3340867-1-sashal@kernel.org>
-References: <20241124125636.3340867-1-sashal@kernel.org>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Gbwy5AQn"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7250844b0ecso165193b3a.1
+        for <imx@lists.linux.dev>; Sun, 24 Nov 2024 05:17:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1732454234; x=1733059034; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=3x2SMWVaYfpqUnnbF6mOMPwbeMyaHbo8dfeGfWcWU+k=;
+        b=Gbwy5AQnzfe5uEXI5n8F1Yz0b8PIu9l/iohgMeHS1HWr+99zOIKC+O7kQiTo1YuRZ3
+         SKzTvbZCS0ONM8Vyr8GYc2Vc9dsFRAXcoTxaOijOc1YqJbY+dHxKnY2NuiROKcLnjWeS
+         G9TrMD4Qq2PTS7JOEIyJOtwVXQj7tx9GcLbpJvXgoUUUUm4Z1G7CksMa0MWj26c4vpfO
+         6Vz6UpAePdBSju6SGP8o4c1y23d/U5rn2tGuCoEtx56LVts6CznPiOiSWGbdeh/iB+YF
+         48ebMoOueW5Qp0LQyFFfjscRPnUnFFS8O+s0hdZPtJhpK1HKOuu4KkcVodXCFtdQ8EcC
+         e5Ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732454234; x=1733059034;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3x2SMWVaYfpqUnnbF6mOMPwbeMyaHbo8dfeGfWcWU+k=;
+        b=gFV0oIlDse2z3zwGEC0EJPExDpXxxtJwpHay5wIDY3CV21FEpV8nXCDeOGouy7FFO7
+         fLlcMqeM0U4W00qmrOKZi48s9Tw0MXQLMu7U2Dz52ExmeTHJnNODQFUKLCgufVFIZcD4
+         TzbapK6HFoueyEp96+y8QaFnAdcb3e28DiPkSQYnNKQc2yLp7jhilrnj01gruH1a+wF2
+         tvt0mIwPZh1pmmNlzv47ul/2ous5H25oSY1AehOc02YkOMboZmYwDL+vG49/zhQHjiG8
+         UknTk0A1JN0BvBEYMxL7DgJzSMVV8jz6cEL2SREiw3L1+z7BDmCj5BdVB/+QdFA+hrPL
+         hK0w==
+X-Forwarded-Encrypted: i=1; AJvYcCUQWcXF5vcKrL0P+Q72gQHgOhyyJ/jWAB63hGOjTt9kGB1SnhrLGLLjwwO2jVBLiJpLhq0=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz7u0pOLSlz7q24CZ3rIxB9zwfvivSD5NeabKXqtSd5xH8pu3ds
+	JIfFnrSBnO7MAA911u02AkCTODF6YVZHfJv/9s8o5/Or+2WZt29yaYm+nFYi6w==
+X-Gm-Gg: ASbGnctLPgBtXIhXCS7SlBjDIJV7CPD+S51iWY1/ogp3WaI0HCyYbZYPzeJtL7J4aHX
+	xg8b+C77/jPKd9qaVPC+MBqoHtzbpY6B+Mg5aYMIuotYxvg6fjyM4x4xeex5mQhc/tuGwrRqHlE
+	n2XixUbU8mu/z2uWoURusZBWc7rnQWNm1Ffj+Ho455klZFp5sqqd5aZfMctf9akBSjXq9UdyI9t
+	k9k7Eii+K0R8KmwiyEmtz/PwM/PaECtb/CJ7Ph1OLa4tEbYSpSDskFiUCfz
+X-Google-Smtp-Source: AGHT+IEtFLA66MFjNRjbQgvd5A29dDLWgZl+Mi7ZlRgR1PZjK50HEIwS0D8UPsDBN8IXVDgJz+1Pcg==
+X-Received: by 2002:a17:903:32c1:b0:20b:8bd0:7387 with SMTP id d9443c01a7336-2129f28f81amr143096695ad.52.1732454233985;
+        Sun, 24 Nov 2024 05:17:13 -0800 (PST)
+Received: from thinkpad ([36.255.17.192])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2129dba357bsm46433795ad.88.2024.11.24.05.17.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 Nov 2024 05:17:13 -0800 (PST)
+Date: Sun, 24 Nov 2024 18:47:01 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Niklas Cassel <cassel@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, dlemoal@kernel.org, maz@kernel.org,
+	tglx@linutronix.de, jdmason@kudzu.us
+Subject: Re: [PATCH v8 2/6] PCI: endpoint: Add RC-to-EP doorbell support
+ using platform MSI controller
+Message-ID: <20241124131701.yrb4bkhwigcux6b4@thinkpad>
+References: <20241116-ep-msi-v8-0-6f1f68ffd1bb@nxp.com>
+ <20241116-ep-msi-v8-2-6f1f68ffd1bb@nxp.com>
+ <20241124071100.ts34jbnosiipnx2x@thinkpad>
+ <113B93C0-8384-431A-BE4D-AA98B67C342A@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.173
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <113B93C0-8384-431A-BE4D-AA98B67C342A@kernel.org>
 
-From: Marek Vasut <marex@denx.de>
+On Sun, Nov 24, 2024 at 10:56:38AM +0100, Niklas Cassel wrote:
+> 
+> 
+> On 24 November 2024 08:11:00 CET, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> wrote:
+> >On Sat, Nov 16, 2024 at 09:40:42AM -0500, Frank Li wrote:
+> >> +static int pci_epc_alloc_doorbell(struct pci_epc *epc, struct pci_epf *epf)
+> >> +{
+> >> +	struct device *dev = epc->dev.parent;
+> >> +	u16 num_db = epf->num_db;
+> >> +	int i = 0;
+> >> +	int ret;
+> >> +
+> >> +	guard(mutex)(&epc->lock);
+> >> +
+> >> +	ret = platform_device_msi_init_and_alloc_irqs(dev, num_db, pci_epc_write_msi_msg);
+> >> +	if (ret) {
+> >> +		dev_err(dev, "Failed to allocate MSI, may miss 'msi-parent' at your DTS\n");
+> >
+> >No need to mention 'msi-parent'. Just 'Failed to allocate MSI' is enough.
+> 
+> If you look at the existing pcie_ep device tree nodes for all SoCs, you will see that it is very rare to see an EP node which specifies msi-parent.
+> 
+> I guess that makes sense, since before this series, AFAICT, msi-parent was completely unused, so there was no need for an EP node to specify it.
+> 
+> I'm okay to change the error print as you suggested, but in that case I really think that we should add a comment above the check, something suggestive like:
+> 
+> /*
+>  * The pcie_ep DT node has to specify
+>  * 'msi-parent' for EP doorbell support to work.
+>  * Right now only GIC ITS is supported.
+>  * If you have GIC ITS and reached this print,
+>  * perhaps you are missing 'msi-parent' in DT?
+>  */
 
-[ Upstream commit 9cc832d37799dbea950c4c8a34721b02b8b5a8ff ]
+Looks good to me (except that the comment needs to fit 80 columns) :)
 
-With driver_async_probe=* on kernel command line, the following trace is
-produced because on i.MX8M Plus hardware because the soc-imx8m.c driver
-calls of_clk_get_by_name() which returns -EPROBE_DEFER because the clock
-driver is not yet probed. This was not detected during regular testing
-without driver_async_probe.
+- Mani
 
-Convert the SoC code to platform driver and instantiate a platform device
-in its current device_initcall() to probe the platform driver. Rework
-.soc_revision callback to always return valid error code and return SoC
-revision via parameter. This way, if anything in the .soc_revision callback
-return -EPROBE_DEFER, it gets propagated to .probe and the .probe will get
-retried later.
+> if (ret) {
+>         dev_err(dev, "Failed to allocate MSI\n");
+>         return -ENODEV;
+> }
+> 
+> 
+> Kind regards,
+> Niklas
 
-"
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 1 at drivers/soc/imx/soc-imx8m.c:115 imx8mm_soc_revision+0xdc/0x180
-CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.11.0-next-20240924-00002-g2062bb554dea #603
-Hardware name: DH electronics i.MX8M Plus DHCOM Premium Developer Kit (3) (DT)
-pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : imx8mm_soc_revision+0xdc/0x180
-lr : imx8mm_soc_revision+0xd0/0x180
-sp : ffff8000821fbcc0
-x29: ffff8000821fbce0 x28: 0000000000000000 x27: ffff800081810120
-x26: ffff8000818a9970 x25: 0000000000000006 x24: 0000000000824311
-x23: ffff8000817f42c8 x22: ffff0000df8be210 x21: fffffffffffffdfb
-x20: ffff800082780000 x19: 0000000000000001 x18: ffffffffffffffff
-x17: ffff800081fff418 x16: ffff8000823e1000 x15: ffff0000c03b65e8
-x14: ffff0000c00051b0 x13: ffff800082790000 x12: 0000000000000801
-x11: ffff80008278ffff x10: ffff80008209d3a6 x9 : ffff80008062e95c
-x8 : ffff8000821fb9a0 x7 : 0000000000000000 x6 : 00000000000080e3
-x5 : ffff0000df8c03d8 x4 : 0000000000000000 x3 : 0000000000000000
-x2 : 0000000000000000 x1 : fffffffffffffdfb x0 : fffffffffffffdfb
-Call trace:
- imx8mm_soc_revision+0xdc/0x180
- imx8_soc_init+0xb0/0x1e0
- do_one_initcall+0x94/0x1a8
- kernel_init_freeable+0x240/0x2a8
- kernel_init+0x28/0x140
- ret_from_fork+0x10/0x20
----[ end trace 0000000000000000 ]---
-SoC: i.MX8MP revision 1.1
-"
-
-Signed-off-by: Marek Vasut <marex@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/soc/imx/soc-imx8m.c | 107 ++++++++++++++++++++++++++++--------
- 1 file changed, 85 insertions(+), 22 deletions(-)
-
-diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
-index 08197b03955dd..a160854a19178 100644
---- a/drivers/soc/imx/soc-imx8m.c
-+++ b/drivers/soc/imx/soc-imx8m.c
-@@ -30,7 +30,7 @@
- 
- struct imx8_soc_data {
- 	char *name;
--	u32 (*soc_revision)(void);
-+	int (*soc_revision)(u32 *socrev);
- };
- 
- static u64 soc_uid;
-@@ -51,24 +51,29 @@ static u32 imx8mq_soc_revision_from_atf(void)
- static inline u32 imx8mq_soc_revision_from_atf(void) { return 0; };
- #endif
- 
--static u32 __init imx8mq_soc_revision(void)
-+static int imx8mq_soc_revision(u32 *socrev)
- {
- 	struct device_node *np;
- 	void __iomem *ocotp_base;
- 	u32 magic;
- 	u32 rev;
- 	struct clk *clk;
-+	int ret;
- 
- 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mq-ocotp");
- 	if (!np)
--		return 0;
-+		return -EINVAL;
- 
- 	ocotp_base = of_iomap(np, 0);
--	WARN_ON(!ocotp_base);
-+	if (!ocotp_base) {
-+		ret = -EINVAL;
-+		goto err_iomap;
-+	}
-+
- 	clk = of_clk_get_by_name(np, NULL);
- 	if (IS_ERR(clk)) {
--		WARN_ON(IS_ERR(clk));
--		return 0;
-+		ret = PTR_ERR(clk);
-+		goto err_clk;
- 	}
- 
- 	clk_prepare_enable(clk);
-@@ -88,32 +93,45 @@ static u32 __init imx8mq_soc_revision(void)
- 	soc_uid <<= 32;
- 	soc_uid |= readl_relaxed(ocotp_base + OCOTP_UID_LOW);
- 
-+	*socrev = rev;
-+
- 	clk_disable_unprepare(clk);
- 	clk_put(clk);
- 	iounmap(ocotp_base);
- 	of_node_put(np);
- 
--	return rev;
-+	return 0;
-+
-+err_clk:
-+	iounmap(ocotp_base);
-+err_iomap:
-+	of_node_put(np);
-+	return ret;
- }
- 
--static void __init imx8mm_soc_uid(void)
-+static int imx8mm_soc_uid(void)
- {
- 	void __iomem *ocotp_base;
- 	struct device_node *np;
- 	struct clk *clk;
-+	int ret = 0;
- 	u32 offset = of_machine_is_compatible("fsl,imx8mp") ?
- 		     IMX8MP_OCOTP_UID_OFFSET : 0;
- 
- 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mm-ocotp");
- 	if (!np)
--		return;
-+		return -EINVAL;
- 
- 	ocotp_base = of_iomap(np, 0);
--	WARN_ON(!ocotp_base);
-+	if (!ocotp_base) {
-+		ret = -EINVAL;
-+		goto err_iomap;
-+	}
-+
- 	clk = of_clk_get_by_name(np, NULL);
- 	if (IS_ERR(clk)) {
--		WARN_ON(IS_ERR(clk));
--		return;
-+		ret = PTR_ERR(clk);
-+		goto err_clk;
- 	}
- 
- 	clk_prepare_enable(clk);
-@@ -124,31 +142,41 @@ static void __init imx8mm_soc_uid(void)
- 
- 	clk_disable_unprepare(clk);
- 	clk_put(clk);
-+
-+err_clk:
- 	iounmap(ocotp_base);
-+err_iomap:
- 	of_node_put(np);
-+
-+	return ret;
- }
- 
--static u32 __init imx8mm_soc_revision(void)
-+static int imx8mm_soc_revision(u32 *socrev)
- {
- 	struct device_node *np;
- 	void __iomem *anatop_base;
--	u32 rev;
-+	int ret;
- 
- 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mm-anatop");
- 	if (!np)
--		return 0;
-+		return -EINVAL;
- 
- 	anatop_base = of_iomap(np, 0);
--	WARN_ON(!anatop_base);
-+	if (!anatop_base) {
-+		ret = -EINVAL;
-+		goto err_iomap;
-+	}
- 
--	rev = readl_relaxed(anatop_base + ANADIG_DIGPROG_IMX8MM);
-+	*socrev = readl_relaxed(anatop_base + ANADIG_DIGPROG_IMX8MM);
- 
- 	iounmap(anatop_base);
- 	of_node_put(np);
- 
--	imx8mm_soc_uid();
-+	return imx8mm_soc_uid();
- 
--	return rev;
-+err_iomap:
-+	of_node_put(np);
-+	return ret;
- }
- 
- static const struct imx8_soc_data imx8mq_soc_data = {
-@@ -184,7 +212,7 @@ static __maybe_unused const struct of_device_id imx8_soc_match[] = {
- 	kasprintf(GFP_KERNEL, "%d.%d", (soc_rev >> 4) & 0xf,  soc_rev & 0xf) : \
- 	"unknown"
- 
--static int __init imx8_soc_init(void)
-+static int imx8m_soc_probe(struct platform_device *pdev)
- {
- 	struct soc_device_attribute *soc_dev_attr;
- 	struct soc_device *soc_dev;
-@@ -212,8 +240,11 @@ static int __init imx8_soc_init(void)
- 	data = id->data;
- 	if (data) {
- 		soc_dev_attr->soc_id = data->name;
--		if (data->soc_revision)
--			soc_rev = data->soc_revision();
-+		if (data->soc_revision) {
-+			ret = data->soc_revision(&soc_rev);
-+			if (ret)
-+				goto free_soc;
-+		}
- 	}
- 
- 	soc_dev_attr->revision = imx8_revision(soc_rev);
-@@ -251,4 +282,36 @@ static int __init imx8_soc_init(void)
- 	kfree(soc_dev_attr);
- 	return ret;
- }
-+
-+static struct platform_driver imx8m_soc_driver = {
-+	.probe = imx8m_soc_probe,
-+	.driver = {
-+		.name = "imx8m-soc",
-+	},
-+};
-+
-+static int __init imx8_soc_init(void)
-+{
-+	struct platform_device *pdev;
-+	int ret;
-+
-+	/* No match means this is non-i.MX8M hardware, do nothing. */
-+	if (!of_match_node(imx8_soc_match, of_root))
-+		return 0;
-+
-+	ret = platform_driver_register(&imx8m_soc_driver);
-+	if (ret) {
-+		pr_err("Failed to register imx8m-soc platform driver: %d\n", ret);
-+		return ret;
-+	}
-+
-+	pdev = platform_device_register_simple("imx8m-soc", -1, NULL, 0);
-+	if (IS_ERR(pdev)) {
-+		pr_err("Failed to register imx8m-soc platform device: %ld\n", PTR_ERR(pdev));
-+		platform_driver_unregister(&imx8m_soc_driver);
-+		return PTR_ERR(pdev);
-+	}
-+
-+	return 0;
-+}
- device_initcall(imx8_soc_init);
 -- 
-2.43.0
-
+மணிவண்ணன் சதாசிவம்
