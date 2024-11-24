@@ -1,103 +1,107 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2EC33987;
-	Sun, 24 Nov 2024 09:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F8B199FB0;
+	Sun, 24 Nov 2024 12:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732442201; cv=none; b=kwbDud8E3L+z6QKR7pP6CUS8Z4nV1Dz0hVjkrIuXdUdnPCAsjOjZc6mFvJt3xZUR0o7puv/ODHEVSZgTEP1aUFSynQH3ycZUV5fuy2U4zFRIhrCnotq7umpp+inMaBwAyllKAE/3Lgj18gNrpSvgU52CamspP7QBTfWb0UFEvS0=
+	t=1732452563; cv=none; b=RFzfsMmBDSrYgxDHa9+dL+fxDznizIc/XfN67DhSksLnwEcbxhJoxI4Bq1hzqq0bODPit48oLoMbrFFk4JYKSR+LbATFHVuxKMOnnxNw/yDsjurM/EdqsIjalI30BdUdKQBOdUUsMR4dVEBhzQA6RI7K2QTHU2Wq8ipf3vOciic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732442201; c=relaxed/simple;
-	bh=FtzR8QfDziwOhvMSs+hEciy3op5O9l9NexN6HGEXINU=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=pB+wtr2zqrULM2+voyZ0HVo6EG/J63TVJqAId7CJujzak4pD63BOREZjEX/e+R9uCKU4c2Mku+PMfOMQNudfZAmGHCcxLypoo0CEmLhzXQcHt7H4VdNETujYt0dVfOQ55u8+RA+cDcRior674kCYuwlysFn1gxYXYu5CsBdK6bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CH2EVsJ+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1732452563; c=relaxed/simple;
+	bh=r9UHBgJlSBenZzEj8ZbrIVDOfkVGTV/88zxZVPmAKaA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ixshR+zKWuJSJnBxAS2lnQbyhDkrNvCYtC3XANsGVES2LDYp8fx132XyFX6Hg9sf+V9GOKF78MXJFQOET2I1uzEQ8xuMgzXhd1RRtg2dT4AQeitm0pfs3JuGiXJxnZ5en1pmiXU2lybG99Zppd0bTWyUwSSA/41o3f+OQGUlxOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JAxe+wED; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CH2EVsJ+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0F0C4CECC;
-	Sun, 24 Nov 2024 09:56:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JAxe+wED"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEFB2C4CED1;
+	Sun, 24 Nov 2024 12:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732442200;
-	bh=FtzR8QfDziwOhvMSs+hEciy3op5O9l9NexN6HGEXINU=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=CH2EVsJ+3DLtocLj3hzQF/BkwbSDoPw4qXznAW/a864sb3SRocV79ZZbt1Yu9x7FR
-	 +dBb4hhB3CiyRtE3NeDbzbNEEXNClNvsX1p3dzmutxrSiWLyhqb7tLFIHiG5Ix6y6W
-	 4WMEp7m5SVg/A8enQyqS7y6EBbzi8gzXQJvD2HgVv8wWFbpXdUHJZ7UqfqsLuz5H9z
-	 OCMVgS91Y3FaQWsFa6fKdlY6tt/iDZnWP8c8aAcoP6SB6T2Ztc5ppQC3HQS/aG5uSs
-	 Wslv6kOxZ5GF/SrhoJ7uiZtMqTV0KECJ/j1jDDHcjY1u2fAGVLxVY3EdKhJQZLtmzU
-	 SgYRe8X9bDGnw==
-Date: Sun, 24 Nov 2024 10:56:38 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
- Frank Li <Frank.Li@nxp.com>
-CC: =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
- Kishon Vijay Abraham I <kishon@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, imx@lists.linux.dev,
- dlemoal@kernel.org, maz@kernel.org, tglx@linutronix.de, jdmason@kudzu.us
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v8_2/6=5D_PCI=3A_endpoint=3A_Add_RC-to-EP?=
- =?US-ASCII?Q?_doorbell_support_using_platform_MSI_controller?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20241124071100.ts34jbnosiipnx2x@thinkpad>
-References: <20241116-ep-msi-v8-0-6f1f68ffd1bb@nxp.com> <20241116-ep-msi-v8-2-6f1f68ffd1bb@nxp.com> <20241124071100.ts34jbnosiipnx2x@thinkpad>
-Message-ID: <113B93C0-8384-431A-BE4D-AA98B67C342A@kernel.org>
+	s=k20201202; t=1732452562;
+	bh=r9UHBgJlSBenZzEj8ZbrIVDOfkVGTV/88zxZVPmAKaA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=JAxe+wEDLRGgkjcaAYL/Fk94TC/PLpn36+MX9nI2/0OHyamEbjba/+Y2Feq73Pm7a
+	 0AJdIbedLlUS37KKPSEBdq2h9DBHGcjzM/yUwRo/rJLb19aoHZYpcw72+VJH8wHAu6
+	 bkOxIaRBf6rUoNaNxIv8M+IISpdWR7vgAjLmVW0MTYcfw0/8QREwrzgNyHVjR3U5Ww
+	 2j6yjPHrfYIUXGMUxmgk5mUiu4GV1bKTq1UozFXY5jaHOkanuZn3zAU9XaszUL+gkw
+	 +snlmrqOdTYTkv4PJuw1stAaWMC3CNY7NlcdyPZVJfi0h2TBQb6wwk5nwtnnbk0kQK
+	 bB4ab9viJSrOg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Stefan Wahren <wahrenst@gmx.net>,
+	Frank Li <Frank.Li@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-spi@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.12 02/23] spi: spi-fsl-lpspi: Adjust type of scldiv
+Date: Sun, 24 Nov 2024 07:48:13 -0500
+Message-ID: <20241124124919.3338752-2-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241124124919.3338752-1-sashal@kernel.org>
+References: <20241124124919.3338752-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.12.1
+Content-Transfer-Encoding: 8bit
 
+From: Stefan Wahren <wahrenst@gmx.net>
 
+[ Upstream commit fa8ecda9876ac1e7b29257aa82af1fd0695496e2 ]
 
-On 24 November 2024 08:11:00 CET, Manivannan Sadhasivam <manivannan=2Esadh=
-asivam@linaro=2Eorg> wrote:
->On Sat, Nov 16, 2024 at 09:40:42AM -0500, Frank Li wrote:
->> +static int pci_epc_alloc_doorbell(struct pci_epc *epc, struct pci_epf =
-*epf)
->> +{
->> +	struct device *dev =3D epc->dev=2Eparent;
->> +	u16 num_db =3D epf->num_db;
->> +	int i =3D 0;
->> +	int ret;
->> +
->> +	guard(mutex)(&epc->lock);
->> +
->> +	ret =3D platform_device_msi_init_and_alloc_irqs(dev, num_db, pci_epc_=
-write_msi_msg);
->> +	if (ret) {
->> +		dev_err(dev, "Failed to allocate MSI, may miss 'msi-parent' at your =
-DTS\n");
->
->No need to mention 'msi-parent'=2E Just 'Failed to allocate MSI' is enoug=
-h=2E
+The target value of scldiv is just a byte, but its calculation in
+fsl_lpspi_set_bitrate could be negative. So use an adequate type to store
+the result and avoid overflows. After that this needs range check
+adjustments, but this should make the code less opaque.
 
-If you look at the existing pcie_ep device tree nodes for all SoCs, you wi=
-ll see that it is very rare to see an EP node which specifies msi-parent=2E
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20240930093056.93418-2-wahrenst@gmx.net
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi-fsl-lpspi.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-I guess that makes sense, since before this series, AFAICT, msi-parent was=
- completely unused, so there was no need for an EP node to specify it=2E
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 977e8b55c82b7..196cc68f2057b 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -315,9 +315,10 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_data *fsl_lpspi)
+ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ {
+ 	struct lpspi_config config = fsl_lpspi->config;
+-	unsigned int perclk_rate, scldiv, div;
++	unsigned int perclk_rate, div;
+ 	u8 prescale_max;
+ 	u8 prescale;
++	int scldiv;
+ 
+ 	perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
+ 	prescale_max = fsl_lpspi->devtype_data->prescale_max;
+@@ -338,13 +339,13 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ 
+ 	for (prescale = 0; prescale <= prescale_max; prescale++) {
+ 		scldiv = div / (1 << prescale) - 2;
+-		if (scldiv < 256) {
++		if (scldiv >= 0 && scldiv < 256) {
+ 			fsl_lpspi->config.prescale = prescale;
+ 			break;
+ 		}
+ 	}
+ 
+-	if (scldiv >= 256)
++	if (scldiv < 0 || scldiv >= 256)
+ 		return -EINVAL;
+ 
+ 	writel(scldiv | (scldiv << 8) | ((scldiv >> 1) << 16),
+-- 
+2.43.0
 
-I'm okay to change the error print as you suggested, but in that case I re=
-ally think that we should add a comment above the check, something suggesti=
-ve like:
-
-/*
- * The pcie_ep DT node has to specify
- * 'msi-parent' for EP doorbell support to work=2E
- * Right now only GIC ITS is supported=2E
- * If you have GIC ITS and reached this print,
- * perhaps you are missing 'msi-parent' in DT?
- */
-if (ret) {
-        dev_err(dev, "Failed to allocate MSI\n");
-        return -ENODEV;
-}
-
-
-Kind regards,
-Niklas
