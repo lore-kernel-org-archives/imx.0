@@ -1,39 +1,39 @@
 Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B06D45003
-	for <imx@lists.linux.dev>; Mon, 25 Nov 2024 09:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50DFA18FDAA
+	for <imx@lists.linux.dev>; Mon, 25 Nov 2024 09:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732525368; cv=none; b=BglCBGBeeRDSJl60HTtA34dIry7N5N5Au8x6SqbBIb8wQuLrt3tRq5JVHXa4n57uE3VbnYI6YZ/1x1FNOwZ1YaycBNPLTfwFBgTsXeLDeDUkx9XxlUF+9CPlB28RjrJul7fgxC3OmJw5raz40B6xScuAX+TpGG+a67UVSTq54LU=
+	t=1732525371; cv=none; b=bzQl16mZ7iLylAhXkPjuJ/Z4hdsL7Svk54JUj+NT9diyzYy/xoP2jLIxQ1Yk8LYVuZsi3WJcIakizR5OK1OLqjbv/cN8a+cl78iw/JEbbzQgV7I02ZMAtwz3+sG0VtEV/qNDMvWt2Rm7R67OVFzgQ/6qcXboa2zswWCazkLVvFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732525368; c=relaxed/simple;
-	bh=moye7+rAbEF75I8Vz7/S5oWD/NyLQi99at0LkLw/DpI=;
+	s=arc-20240116; t=1732525371; c=relaxed/simple;
+	bh=uZT2iBXe9UuhlJ9TygrX1VqYtFP+FE4SxrxENxyx7QQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YLJymtxEsiTAlzoTseFnE9U4AC6ljx+7jeSydpeiv68TmCAcuR09yY8l8ZDhfKQ9T+DRZza6EeuAkiSaAMCckfTnlCL+QBMoV9g3digmnQaTTxYyr6+Ad+Y2g92Q9tsKAC9SjHlpYF5ODN80X5N/2VbBAKacjGV+FTR9R0ivJ5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=iv1oiJ65; arc=none smtp.client-ip=46.19.9.99
+	 MIME-Version; b=chsny/jnCWLyGjIOufIOm0GhdnX3e4rQWTY0lqoEfnYavAEmGLqEAoN6ljUT0OdCAL2BOHn+XzjBxS86RfLsb8dxHDgxWlow+iIIq4A3X+FnHv2lR13KOHI/+47fE3wasnLCHnyBxSBppQBxS9VznByTITG4RUiwMnbgqMMJf+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=Vv/Ejg7m; arc=none smtp.client-ip=46.19.9.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="iv1oiJ65"
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="Vv/Ejg7m"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
 	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=V+qSCG7OvsEXIIRRw7Pi0nnCo1fiNOSsrVbS8QaQL6I=; b=iv1oiJ653Ry86VW5Opkp5TEqbr
-	/ILa1wWx/FRaIP35zd4Hx9reHJOswpyZGnuYxxs9ZogIRAE88FBxuKRp8le+IGLLxb7IoTYcIOiA9
-	jRCuxxLIAsh45GnBZfA/QFjak7DtnaxWvMg/rRWZX+pqB3EehTEQb2fkAweCr7bBuDHycAypsjINl
-	7qAKVHMy+Yjj0aqav1Q9s+TSdvVI8CdOZUi4CvvPyQo+XZB36CN2TXiDYxwe7YTaTFFoRZjmE6NlP
-	POJUAuv12Y7H7xzeK2HHpH7m2+Y0DBIBbhPpK55CRw8A4aOeCkb9WdxUtmvPOi/IYlsdIXJwPnqtR
-	eNW4sEcA==;
+	bh=2VSk0YkTxmS7lNUnuFUnvEgxZ7d4xlsb3g/LizjVEFY=; b=Vv/Ejg7mXXs3XOL0J+2qpzgPC/
+	x6atx0vBWZIaDYLP1fJGIbY7DsKduQ02SiTIusyF6/uEpqmbGre24O3EL//tRc//JHeGdyhf21RHA
+	ZZ8304pDgeanf5XQy+4XLAr3j93kA4HUD1hLYEjJMHJqzPSm1NSpvj6tQwL9icJkla8aynUE6916O
+	BitYvWDPaTV6uggcR7AznGzf82lGwxlRgzJfdBaGm2lliHPbcZi57T2INdtSwRLZfKY4eEsGEua2H
+	mEuqIcDJzcoBErh42TA1kreiq47N9Ck94gW1fF8dVNP3l0dyH82nvmbXTWxzXJbiww/ZpOZvrzhNX
+	7muhO9DQ==;
 Received: from [91.26.50.162] (port=58340 helo=and-HP-Z4..)
 	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <andrej.picej@norik.com>)
-	id 1tFUIp-00Eq70-34;
-	Mon, 25 Nov 2024 09:18:39 +0100
+	id 1tFUIp-00Eq70-0m;
+	Mon, 25 Nov 2024 09:18:38 +0100
 From: Andrej Picej <andrej.picej@norik.com>
 To: shawnguo@kernel.org,
 	s.hauer@pengutronix.de,
@@ -47,9 +47,9 @@ Cc: imx@lists.linux.dev,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	upstream@lists.phytec.de
-Subject: [PATCH 05/15] arm64: dts: imx8mm-phycore-som: add descriptions to nodes
-Date: Mon, 25 Nov 2024 09:18:04 +0100
-Message-Id: <20241125081814.397352-6-andrej.picej@norik.com>
+Subject: [PATCH 04/15] arm64: dts: imx8mm-phycore-som: Assign regulator for dsi to lvds bridge
+Date: Mon, 25 Nov 2024 09:18:03 +0100
+Message-Id: <20241125081814.397352-5-andrej.picej@norik.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241125081814.397352-1-andrej.picej@norik.com>
 References: <20241125081814.397352-1-andrej.picej@norik.com>
@@ -71,46 +71,31 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-From: Yannic Moog <y.moog@phytec.de>
+From: Yashwanth Varakala <y.varakala@phytec.de>
 
-Add missing EEPROM and RTC descriptions. Also use eMMC with
-lower-case "e".
+Add a missing voltage regulator of 1.8v to the sn65dsi83
+(dsi_lvds bridge) node. Due to the absence of this regulator, a fallback
+dummy regulator is used and that triggers a warning message from the
+kernel. Assigning the appropriate regulator avoids the warning.
 
-Signed-off-by: Yannic Moog <y.moog@phytec.de>
+Signed-off-by: Yashwanth Varakala <y.varakala@phytec.de>
 Signed-off-by: Andrej Picej <andrej.picej@norik.com>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
-index 7e859c65317a..cced82226c6d 100644
+index 8de5a46512b0..7e859c65317a 100644
 --- a/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
-@@ -290,6 +290,7 @@ sn65dsi83: bridge@2d {
+@@ -286,6 +286,7 @@ sn65dsi83: bridge@2d {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_sn65dsi83>;
+ 		reg = <0x2d>;
++		vcc-supply = <&reg_vdd_1v8>;
  		status = "disabled";
  	};
  
-+	/* EEPROM */
- 	eeprom@51 {
- 		compatible = "atmel,24c32";
- 		pagesize = <32>;
-@@ -297,6 +298,7 @@ eeprom@51 {
- 		vcc-supply = <&reg_vdd_3v3_s>;
- 	};
- 
-+	/* RTC */
- 	rv3028: rtc@52 {
- 		compatible = "microcrystal,rv3028";
- 		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
-@@ -307,7 +309,7 @@ rv3028: rtc@52 {
- 	};
- };
- 
--/* EMMC */
-+/* eMMC */
- &usdhc3 {
- 	assigned-clocks = <&clk IMX8MM_CLK_USDHC3_ROOT>;
- 	assigned-clock-rates = <400000000>;
 -- 
 2.34.1
 
