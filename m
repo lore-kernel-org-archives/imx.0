@@ -1,63 +1,72 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010003.outbound.protection.outlook.com [52.101.69.3])
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2044.outbound.protection.outlook.com [40.107.104.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416682F2D
-	for <imx@lists.linux.dev>; Mon, 25 Nov 2024 19:24:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69F871BC9FE
+	for <imx@lists.linux.dev>; Mon, 25 Nov 2024 19:30:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.44
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732562696; cv=fail; b=DNnlqCjStCtjobsGU0sH8cfkgBsyDWdkyUZObqBAZIrf8ipD6s7U0tVC8JxWuxcY/4O+WbI1QmVn1vL6CocHql6Z/4Uzsuk4AA3TBP1joxl8lf2Dx9H5QPDBmcPmF1Mgn2Lc6tgdVfCIxPi0rRYvYIL2fDiLvEBfdHvzAydOP4o=
+	t=1732563011; cv=fail; b=h1Qhy4ix0wk4XW+bCnPu/kYGHOgzKrQq3cWmts49CAC0ts4I384A2k60tymuY2uIK1CAghgceCZ9OeAEgs5uiH5aX3cD/GjGvFwerHaWd5ep9itXuce6s+UIeRvdOPTrbwLpe3FltbcJcebDyrzgXpb8UCxhsA7qbVn0B9kD1Dk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732562696; c=relaxed/simple;
-	bh=gVRdKA4vZEo1gI0IvY+Knn7dtPSzy3Y8MBChSgKcatU=;
+	s=arc-20240116; t=1732563011; c=relaxed/simple;
+	bh=TLAEsjNv0ngfovY/kAjtngeaW0ytXffY1AeOiic1TXs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Fo69OXWf0raWIIdeER2ZkUmEKCMB3XOHfXbPzvtr8HyWCEOUdo+OsgbosOUeGN7JJMmArhY5pmW8t/CGzjQ6/LsRuXEKfokmbVWGZY3HzX1bwjoK3tnQfIS8Xs7FTcr/uXMX8TVkhV2e9OJ+yfutKb9/u7unswJs0oSe1zFXTQc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=PFmXGeHc; arc=fail smtp.client-ip=52.101.69.3
+	 Content-Disposition:In-Reply-To:MIME-Version; b=GVj5lXUwwv7Qlneg3VdtATPPkxcNiDawmNaYzaek03U/hkZAAxsHa0pfmn6Vi8gTrxR/pHIByjs2DwKFqsLd6ykH6dMeYbPJjmB4wIMLKMUdx6196i4AXrdVzWFJshZ4OS3Yk7LDUFxB3gMVks5oTDGmoUaULICWDWQBTDqz/EA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=O343naaT; arc=fail smtp.client-ip=40.107.104.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="PFmXGeHc"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="O343naaT"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=V06kks34F4V4KxCjd3AmRHy7yYSXeYhoWmrYzIXaChOLdK3DJiYDuYiP8RK1y64GG4OQKoKCwov40WHnEEx7ZXXYpIsxJu23SVqlcCSrxwYgGZEwOiCz5bHxcPWBJVH3U93t8V37SP7bjiuQ9kjKNFPTk3lws6Jx9EKAtTXFcDtN8JeoKIOlhq7hkLRWAjmBGt4HMoiRYxWSAsuH9zBJpGNLpuqHh+W9JNjd/qRDjrz2PWgKbrWsbEFHfznIkFac6a+xidr8PpcWANp+jMUo+Sue+CmH9RyZJmDQiYebfhvqU9bEWco3zLj0Ds9VZeMlwpU3lTrVneDVNeAk5mnGUA==
+ b=yG+6EOZKOQsGQ4lB+XKNXAcFi8ATxBWioXKHoG6nndKH+dAbq1KxELMwPaEU/H0czgtSn3lPZtfkxSQmrrGWIKynNg+CxtTB6mDtsvjDIPw2d/RdGVzWOGakcFS5tXtN7xgS0Kzzkp/PqEZ1vQ//UNbDYcIEi7Wtr7QDfCW8snptiEHOtasoU66s2hqDCx7nLB23O3qVzwEtgK2dwUVUGr9kH/PQpfaesP3A3PlRPtkoY8cyhaxFjIdh/5oeLyROSrPXKSUf5sYfjdinxBqy8lxBm5BdNbn0WQgR2+fFa3D63RrzxRi5ji3al+0ZLAjiOUYpnYHDb2n5CH7u91AKtw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TSFwS48kL2a9UubSNR2I9a210XsscyekzE4UQ9PdPY8=;
- b=uAbMYu7WmBF4CpURsRNLvGLba5mLNpM9COgXsbxcTxawdyBy7c283z+Q4hclg2RoRQR7uu987Oiv94unEJvt9ExhILdHV4QXL2BZE9MvCxfnZSSDATi5gUXKCFV5gDUTHXakCIoL3aMpOcgMI6x/Mz1aPPct3scdb4mMTvCuKDaOZCvcFXaTY3g4wpwxSVPZDP7xF9SH3SmJF6a6EtBAeFZuojPsJREKOjyV+IhFvYKHjF1LpAuCG6th35nPgako4e5gNRwBqTLs0jHI02vFahZwiFrI2o/Mrn/Wqo7/U3dV+r11uWmOa1eoekT/U+anCQtwCgZGT0COX5lX5tljHQ==
+ bh=nvL2K8HtHiS2mkxAKaLwOL+QRdBph3La61cqErZKqRk=;
+ b=G4N1pZPAGzlF7ZayLuWjFzmElHH0WZNwWQkx+IZBbhRHlS9puhvbah+ivaIGXzmNCdm4RGyzax1nXYIj/N3gM2CXOGvwvPB9EcPMxyK7iyaA9mRZKMgt/et42rKum07AnoifiIRO4iAI2E1/UH/sEeDN65JQ/43AlKQe65TXrCxxQWA5Y06zBKQGH034eQ4gKbQCtt0rd9BKySCPVRJNh5Bbbg/Po+PK30q3gsSqic5Y0SJVzP29X8qVobcRv+5AeMoEpQ482huHkIpNDpQWnzqLXfTddNHw5lj3dF5/ivLtlPfUsmRY2OnlXAkqGnrSBdmqeHH8zTk99QUdjlMddA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TSFwS48kL2a9UubSNR2I9a210XsscyekzE4UQ9PdPY8=;
- b=PFmXGeHca9fRZcjmGnaMA06EYCWh59aAQunJCWDIozKgLnRYj6lMDzzRtFVcjGKeTsmuBb/okIlD/ZSZ0ErDaO90lxbD8k/bDoTAn8MA3VChyZSmpQyZ/v42xDbto4n7njarlx1F1HR4s/GvplTiYuN2FYtZcXVVb5ZvZGb9pzRTgEI4u6M+an3h7NJGplWex1PJ5Oruu4Zdu8HdoFvbzi+81ggQe3EEsVvlVTOp+dLogKGKKWB56inCu+agI+UGsaY/faet9OHewlwdMJ9a4jDnzLSQAknG/tAL5/3E3AC5xLA8gpH5luS1NTSWkoZwRBkBxVHa70wrNgeEVdACHg==
+ bh=nvL2K8HtHiS2mkxAKaLwOL+QRdBph3La61cqErZKqRk=;
+ b=O343naaTp+sbENb08wQYHuL+Q1z0uDt10zbcSePt+EnQ5+oX1jsXBs4bmw0mj/mPJEw8+3stH8tvUQ6WMX9GQP+hje8d5CJnradh0gDBAXaUtKz1HytZB6BkTkaoUHWMwFcie0ULSxDdtSz/75ihFbS0eIe2mzHgesNa4xoVZoS2YsLHhkhHSneCxYma/12Xcn9cWYUeZqDr3Q/klug4If0df3wuIBkRsCNMP4uQH/2hpj38Pvmgu0P5CJv9aAPjsgcs0Gz/NGGp6KEx0uM2K3R9boHuGGvemrFJM15M1JU+yb2oT8uLSLmWBIJwiGNk8iu067h7U+xjDipJ0/kInw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS8PR04MB8103.eurprd04.prod.outlook.com (2603:10a6:20b:3b3::14) with
+ by DU4PR04MB10982.eurprd04.prod.outlook.com (2603:10a6:10:589::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.20; Mon, 25 Nov
- 2024 19:24:50 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.27; Mon, 25 Nov
+ 2024 19:30:06 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8182.019; Mon, 25 Nov 2024
- 19:24:50 +0000
-Date: Mon, 25 Nov 2024 14:24:44 -0500
+ 19:30:06 +0000
+Date: Mon, 25 Nov 2024 14:29:56 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Haibo Chen <haibo.chen@nxp.com>, Lars-Peter Clausen <lars@metafoo.de>,
-	"open list:NXP i.MX 7D/6SX/6UL/93 AND VF610 ADC DRIVER" <linux-iio@vger.kernel.org>,
-	"open list:NXP i.MX 7D/6SX/6UL/93 AND VF610 ADC DRIVER" <imx@lists.linux.dev>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 1/2] iio: adc: vf610_adc: use devm_* and
- dev_err_probe() to simple code
-Message-ID: <Z0TO/OL5DQWSMLfG@lizhi-Precision-Tower-5810>
-References: <20241111213859.3317909-1-Frank.Li@nxp.com>
- <20241123152637.27a66403@jic23-huawei>
+To: Bjorn Helgaas <bhelgaas@google.com>, Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	alyssa@rosenzweig.io, bpf@vger.kernel.org, broonie@kernel.org,
+	jgg@ziepe.ca, joro@8bytes.org, lgirdwood@gmail.com, maz@kernel.org,
+	p.zabel@pengutronix.de, robin.murphy@arm.com, will@kernel.org
+Subject: Re: [PATCH v6 1/2] PCI: Add enable_device() and disable_device()
+ callbacks for bridges
+Message-ID: <Z0TQNOTeASXJWU8N@lizhi-Precision-Tower-5810>
+References: <20241118-imx95_lut-v6-0-a2951ba13347@nxp.com>
+ <20241118-imx95_lut-v6-1-a2951ba13347@nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241123152637.27a66403@jic23-huawei>
-X-ClientProxiedBy: PH7P220CA0073.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:32c::20) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <20241118-imx95_lut-v6-1-a2951ba13347@nxp.com>
+X-ClientProxiedBy: PH7P220CA0048.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:32b::19) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -66,260 +75,224 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8103:EE_
-X-MS-Office365-Filtering-Correlation-Id: b1dc8866-85b2-4d1e-073d-08dd0d86d493
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU4PR04MB10982:EE_
+X-MS-Office365-Filtering-Correlation-Id: e20b8f46-b191-44a9-59d1-08dd0d8790fd
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|52116014|376014|38350700014;
+	BCL:0;ARA:13230040|1800799024|7416014|376014|52116014|366016|921020|7053199007|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?JUmm9jq7pnFbIWf+mMJHRGV621WM5zSBRo8uPIdAg+qcsTPqegIQIx52jBca?=
- =?us-ascii?Q?NW210v7wKDT4cEejhRkjFRo/hnAcRZOUqGN88Kge0IZwNpDXfii0wwVHt/01?=
- =?us-ascii?Q?LF+Jryrz5p9NFOirK1/pP4fW5yf0Ia84w1jMDrYGINgTDKS/ExUnfAq4haL9?=
- =?us-ascii?Q?6EpISgzMkir/Ii3UhMWhf8qNRPZxutlj33dSe+iesTfBkrmOKNmk/wBaobJ2?=
- =?us-ascii?Q?/13R69cZ5q92tmqPk/me4sDfSRVTYi1Hl8TDwxIqlISHN3ZxUvH8SZ7XUjcF?=
- =?us-ascii?Q?A+3OPlyDEhEqObwPtqv2qxkaaJzsZgxyZ1M8saEVoEH/MnFiGgXw1H+IdSa4?=
- =?us-ascii?Q?QiL9CXTx5tbtGaTK7bnaewQH/KfZvCiENW/TO6qn1JIXwb2FTcigNIuf35my?=
- =?us-ascii?Q?AwDjCmMZDNQe8CeezMJQH+myh+g4hw6jiMeIHidQb6pNCMv3vmvJVIBlO72o?=
- =?us-ascii?Q?AUUg+p9y5PhqRhZif5gWo0qwh5QOuevkv5LJSj1aH41YIQMIIO0vWvii6R4g?=
- =?us-ascii?Q?U7jv8BIpZwNvYT2LkphMP3wa4GkPTxb7NDElP57/qCDsmxhEjZyhVjNu3J/q?=
- =?us-ascii?Q?9g0mPkIJx9Q6N+qVYxbVAKqG2zQBB80BYEoSnaiG5i+JKuo+c3GoRV0n1V5b?=
- =?us-ascii?Q?wRI1ffYhiNfxVVVeSHo1DwP2bouEYKpD7qosXHpzm2h04vPu62LQyoVnE5hB?=
- =?us-ascii?Q?d8ZJCw3ykK3TgzTMIsXg3IMbE+voSpS8j1u+ef/2tB2Htohr3B+KQdkiBEgH?=
- =?us-ascii?Q?hiAf8LEJyTOo6KMXKoltRqLrYqKamprKVICNjTqHJg+Dno0QRt6cVKxTeHux?=
- =?us-ascii?Q?Po+MyJqaSgM2a0NJcMdQCzuKDz8EDNs3hOcmGgJs711WYRDgmwFMp3zEsUXp?=
- =?us-ascii?Q?b2LZ8v5xIIuZvs1WLIXWEdzHl4DLeiCwYMsSwUic/Fk4NnKobmJE/8KHYZTW?=
- =?us-ascii?Q?TBlYmZ1SDhdmLwD+adcxo2o43u46moS8X0zfXklO+LzQIJMoUKyspd0Y9f9w?=
- =?us-ascii?Q?QIQc7U00jyG4Gm2jNkw6YyZXltT3GF+Ns/adlhl6FV/OkmdSeOcWQHcLWAu8?=
- =?us-ascii?Q?nyJiTglH2zGgJCsKdRMZJE0N/al3ldobTtjCnOSK4fYUMdJFHDNlKx8JLS+C?=
- =?us-ascii?Q?60LFJ/LA997yG9jDq+K6n9pzpcIn3p9wRmPNp8VEeldFHbU0rvCV3Qv6Ps+3?=
- =?us-ascii?Q?kRlnv3L+UP/0ETuvEWRTP6GOIInoC6DQyAwxjcFe/zw6IQ4XrnhNuvYVTIKJ?=
- =?us-ascii?Q?HMsSXhGCSi0tLF6zPXW3FITaX6pia8PB7GGrV0jF2pK9o2FsIFz2HAUZDnxi?=
- =?us-ascii?Q?bYC4/acrmDGBT7iQXtylMgok3Kk80lvD6hfCkua7uAd4cFndrY9+whiS7PXM?=
- =?us-ascii?Q?WbGGoes+jzVx5hUPDZiffj/kC2FvY9MOSgi9oAAcUWbbSWE8lQ=3D=3D?=
+	=?us-ascii?Q?dTGYzS1U4QtMi0b22cGROPDoCek5InIDHMSAhzyaTuikHLMSkfHAxK9lriP2?=
+ =?us-ascii?Q?IU6pUY4UWz6QzR5t3k5NgA6eiqfASruE+X0ulDc7x0ek2FixnL4WYZOlfn5a?=
+ =?us-ascii?Q?NP4KllR6NYdMIsIvWYF1JI4RFaH8wzA0DlE3RHUC8EstsAQ6ehe/1i2+kGN2?=
+ =?us-ascii?Q?Z/FUHZ/vQsBJVzFFPAkKyUW0W5cS2TPFDT4fKuleO4w4WE/xbY6/vAWY7Ui8?=
+ =?us-ascii?Q?HESqnMoc/YRseJye6pX1EbOpgjZYaM3nAc+QNmoLNnsPRtUsz/wq9VjTYuuI?=
+ =?us-ascii?Q?jvHoE3Z3rA4PRcAGGcJz7HmR3Uv9jUCNFUQZgge2YtKax/tjIrkyuXJPWkta?=
+ =?us-ascii?Q?wy3iYc2UPC4Iit3vmFln68vEl7GRLhkdOVOt5j7WIVvroP2Nw8UbQqt+L4Ze?=
+ =?us-ascii?Q?hRktB9dm3nLJFE94adc7lseH1WCv7unHm7qg0E2/Cyg7NDJCevnVsgghdRSN?=
+ =?us-ascii?Q?+/IJMiIhLfqs9ysnP6PY7MY11g+iXkg3J7+YaNpUm66GVauT1Ip7FGXIftFH?=
+ =?us-ascii?Q?UqPcv7m1hSz3OIOdGb1Ilga7Z9duRIMELhBXYr67blnccVsy87AAiS+020fA?=
+ =?us-ascii?Q?MIVKVBSKPfUoqdQFZAHOCP1jqHd7n3vYOz9z9jpNJyPiBfBB4tNbex4x3M66?=
+ =?us-ascii?Q?sP5QdJl35vYcMonl0AjJ2g9PvwHSAu5U+VRiS5ZZkwsRrgzf0qjcBnEXONDK?=
+ =?us-ascii?Q?9Xr9q9JCdeZJhL+V1pjOPojkb0COIG9WjqpYhqpIjOKiZKByo1IPk0ytcOPf?=
+ =?us-ascii?Q?SV4/vJVW95VHvdqYqZUQ2nAFJUQ8lia6vIT92rot+9AAi8ibAyaYDbQAhVWt?=
+ =?us-ascii?Q?aXK9v0ZABF7jWK68Bv8+S38iXr3lIQq1Rw91M8wTGxRlk8asN100I0iFaxvW?=
+ =?us-ascii?Q?nD/OFgn0Q0h4+SJh4XWu7AUapN8vj0R3BFrsI7zv7EjUOpFPCbt+dzdO3jDn?=
+ =?us-ascii?Q?+xZwpuIluLjwCMIjgMxrhoxd805LEwi5U0mREWIWMgYg9FibCFaMno6U4VPb?=
+ =?us-ascii?Q?fU205ZlozeW8OR6wqz01ok5wQOss/CBZOIvt6KwsNEkbhif+oYLW0Zj28sqh?=
+ =?us-ascii?Q?VZ6HKJxkyrVhu0tVyT/g4RKYn/tWt6vN55ERT2+P3R7p6sGwTxrmrGKKXp4K?=
+ =?us-ascii?Q?j7eU8bHgmJeJOOc86X53bD9USWE+hlxpIAKv6ShEOH2XdmNLkw9L50cXNJh2?=
+ =?us-ascii?Q?bK1y228dvviO2BVmxd768X/hyP7DCu8UG9k+HYCJp/VVOO5M++v/s+Jxb4Kc?=
+ =?us-ascii?Q?fa5c4NTanfPaIW9VuCcaS/1bdJo5WkuSlHaYDQhq3D/jwsAZLrbaW6cLi6mf?=
+ =?us-ascii?Q?bryw6k9xuBTQOSt/x6j9f84GyCFB3RMRZtpQB7iTEbblrPZqLNvo3KtOhPCp?=
+ =?us-ascii?Q?RxwDJ+GP1LUXQKKyCj3QBceU2epBXTOPjo3mP/fsMLK+2nHxXjrY7ZnWmaBu?=
+ =?us-ascii?Q?rNrYG07/JaA=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(52116014)(366016)(921020)(7053199007)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ZpUebmDIN+re+4gLmKO5q/utAGxPogO9hx9SkuHLTQboOWu+50jUtBHfSiYO?=
- =?us-ascii?Q?ZfG/Uwsbg3M9tIkX2l12dCo86XeyC+Trd03uUvMcRivZeElmkHIQe8oL6cs2?=
- =?us-ascii?Q?/maiQad2fsmKY5E47EhmEXURCmZOZk8qZs3LSuVuqv7QKSVQ+HEeaedWMLQR?=
- =?us-ascii?Q?5HfXWUtSbLoFCq/8xU+/3ImhdvNz3+gjLgtXV5+vNvpFvoqVS9FJx9REXMaj?=
- =?us-ascii?Q?lt521WeWBj97uYvWRUratC1nkR7vYW4foYVu4AJ2Uskg3UA/3Ap656SIim6E?=
- =?us-ascii?Q?FA/EmGy5TkQ9OU+i5fY7QJ3fS5keBePvPujM7pudLmd35+ZKmJKDNV2rARZl?=
- =?us-ascii?Q?+vrLzvJ3kr1DAjYNskT/RtfHTgX7BkDL5zleo0NovkIOoX8qZQPAJeiRLb/c?=
- =?us-ascii?Q?1u+s9P/QaAPqeShO4+Eh31zUOyUO2teDWjkalGXP7Ai8TGo8xYanah0yV1d3?=
- =?us-ascii?Q?eNZzo5tmsXImboWByn/xx6PVNjHezmiF1oUglAhQER1yT0s64LL/3Z1qA5lT?=
- =?us-ascii?Q?kLO2pE4lp3JZ2yGh9Zd8Y50CbfkvhjHjiLX6SS/gI2zSUfivqXbH3xkGwGho?=
- =?us-ascii?Q?x3eVyezjej9GfJ2GTQPdt8v/P4Xwd0/jz34bzaFPji8I9S3ntWUAjUReyjTX?=
- =?us-ascii?Q?g6uPZXvBC10t6ykMoRzUdNjX1eDQmN7aZACMOW/LUyTgHtSlK9weL0sD4PY2?=
- =?us-ascii?Q?kjYmQr4HqyWnvsYl0VEZvEL67dNb8VqB0+PFOIwu5WPhi15SV37lDPiqesj1?=
- =?us-ascii?Q?ejMBsGJ46fImIIZgtYs5fZvQXN5NZZVjYxUIj1mDb3y02RlxgJtAr87WA0rS?=
- =?us-ascii?Q?6aTMW/1FZAJQdfQHjDiMU6bc2ELutGMTAeB4ZfFnsc3HYaSgi90cR65UCehi?=
- =?us-ascii?Q?rmYIDIYoCZZDqMX0wYfxbdQlfiZY0UvUtNkuZHffwVXF1JqC8I4fNiHvspxk?=
- =?us-ascii?Q?K4CyW61n7ZG+6UtkHQ+3AYqGObDsQ76zl4SPyYRBpjOFLo7hYYuRf3hBfqyP?=
- =?us-ascii?Q?QejcwQp2QsRdouBB+veLsNBnaJmTEtiafiXE/cWeTphRnE6t806TyI52pfFj?=
- =?us-ascii?Q?ToG1NxErtYKvbf4ua60AxVWy1rhiOAQaZjhQHDB7Ll7/EXAJzBCdlYbqSxc8?=
- =?us-ascii?Q?a/SrqDDQ9mrL6TJBUmH9c8GFXkZ2zM/by2BIhJ2AevRhAd0+VkAJZvyOAhoW?=
- =?us-ascii?Q?ffUy8OfeVH7h/jp8TrRw+YZyvGl6Gs220DJwEn8p3ChnTFfJo/PHLY50Edug?=
- =?us-ascii?Q?TFzddzr9gxn7c/VdaWXyk7CrlXnx/xrOpk8FuAOMVMfe2vdlPbgr7zBV+jAM?=
- =?us-ascii?Q?D5QT49SKlxBtSHVyE0xnpMOmEHzKL13Yqoz5okdpGpsyZi7dV6837H5nDQgE?=
- =?us-ascii?Q?DIj3A3vs1BC8nIQs9SVqR/3pHrEmUmH1cySj8thiHmxc2UGt0QynZMFnSCn6?=
- =?us-ascii?Q?qf0K5Rk1PRdpblGc1qsTGGjvo13iEtCsi4ubAzcy0AtTAMyq4f8cUeuKBGTO?=
- =?us-ascii?Q?iqFovW0iJ+PfQSFaourSoXMS/YzvuYZSp/Vl/+wkNMMj0Tu4Rn+y8Dlx4njA?=
- =?us-ascii?Q?iWYN8iMVwJxeNikN7TA=3D?=
+	=?us-ascii?Q?44jXBry3235W51J/1VKjuuWcDgoOolr2FR2h2+XNfryjCRa2OUi6Ro4HX8Th?=
+ =?us-ascii?Q?F2MJANlJcmmkWEkD5o2nAvgpFZ/oKWhVji0n3sWi8emEeog+z/zb6zigPkkc?=
+ =?us-ascii?Q?0vC8nn8ITVSDuU5i/29jff3G7cAAoGhFthfxQ4GJ/1T4rJCDZQt4zM1P68eO?=
+ =?us-ascii?Q?8fa25lljoNAoVBYxwlVSwtnjcaXLtZCWQag3CM++kdRwdI20JQ23BNpI3oNm?=
+ =?us-ascii?Q?C2dlqtlkSY6Nl99Vun+BgwN7e2ULQs42+IYLgP+Mhnrt1jpEzw5n3QOzQN5f?=
+ =?us-ascii?Q?5CenteCpDbN+OvJHTv5cWCFncZVgMZ1J3A91OfrpXmLeVJqdHncSq2jpWGW5?=
+ =?us-ascii?Q?vINwMnE9syB6Zus181yNW5L3NmOCSuOVD6ubNj187jNy/E5BnyKegqAJYEno?=
+ =?us-ascii?Q?aalYd7AIi91hlZf752pdgDqXTZNc0JhSz8R0ZcYb24Rp33py5fwC2Xx6hypw?=
+ =?us-ascii?Q?xMw/GqOzKwwetFNN/I8ddKlBQCcbw/9Df5sl+E/CRqvEz2XVX44GseSTgsmc?=
+ =?us-ascii?Q?1fVW4cMn6uKJPE91xp48goG/c5rH77oVdwO+IZ5s6gzfyi5yyWpq1VTuAipY?=
+ =?us-ascii?Q?YdC3sDzmIhp7z3AZqlma0T6zTcn8l5qeJMIIljHPLB+3dEsoSyusRXTZ4PTK?=
+ =?us-ascii?Q?gbN5lG2+pbNTWhnNzRKIOFeIU8xtm+8fZ9Zje1az2zhSJZwYxIjsZy0qAq9Y?=
+ =?us-ascii?Q?lCIfB7bp7cQB+nmP58UCSSEc7XLTg8hJEOIoHMtXDifGJHM6bX6PybDA6Inu?=
+ =?us-ascii?Q?nCBRrSDgUpT9HRYcDojY7gwfDeeGuGRxAoaG00U9E2N/h8dIrSBp2hr8GTSX?=
+ =?us-ascii?Q?jQRN34g+LXrzusiUSl3GtVY7Scp8JRc0ZhtWqoulPYH6Kd0txMy5H8kuVd7Y?=
+ =?us-ascii?Q?SLVpRehnAwLPm1URgHoP8jXEJDJ0FY7a1yL5k0dR4LhyagOHfGLxgULeQ0lA?=
+ =?us-ascii?Q?DdMhOhlCVWwm8enSSx4VYQ7kFgqpte8xaZfPnq4Y3unMrEl9vMdtCuIfvOMR?=
+ =?us-ascii?Q?RpjxE69gov+54+Q5KHqPpCxv+XxzwKXoXOdA5ZHQysZG7yqfpu5IixTHjqV2?=
+ =?us-ascii?Q?L3yQM2GXyPTRB1RB1xx1haSKmZjzK9XUH7IiQWZm6PEMRJxspXMEtGYI5GUG?=
+ =?us-ascii?Q?Utoxge4XOkzdsHkeLYocFs9x3X1nRFbkGRgoaecOYmci9npvB+qbmi4StsOX?=
+ =?us-ascii?Q?lN5ews8oXBg3FIdgKvPfWOkXRHz+AJMoygopNTMnnhKe933IWhAnEEsE8Srs?=
+ =?us-ascii?Q?W2/zZXFWURTai3lGIbs1aZmf+lsdS6RN68Ctf+/z0Nu9WR/G52FinUcESVBp?=
+ =?us-ascii?Q?DcE5g4VBnKTkxFG3jHxtVSbk9h2moUnt58xT5dzSTVxHbY1IwWnWJVS7PErN?=
+ =?us-ascii?Q?9vpspNQKveO30WhYSXXVHkqE0R59MDS1iRanSxavAAEBVFQLA235lfOe4zCQ?=
+ =?us-ascii?Q?6dVlkU9XbaNFot+2o14Ztp/sOJ4NFXSlIQ+DK+ModgSbED0Ns2xgbrn02d2W?=
+ =?us-ascii?Q?Eqo2cT0Fo1q9L7ad81VSBW3lKQCxbhTOpyYrh/cEzqqHLPek/Hu1TdtIGUrc?=
+ =?us-ascii?Q?CYLbexfu6RGIoEH7r+l/GmA9pPkKG4A1NNWRtJik?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b1dc8866-85b2-4d1e-073d-08dd0d86d493
+X-MS-Exchange-CrossTenant-Network-Message-Id: e20b8f46-b191-44a9-59d1-08dd0d8790fd
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2024 19:24:50.0512
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2024 19:30:06.2348
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UvfVUsUJsKYz0ebBJbeMqgimiCp/Zmtc+pWiA6d4/UZ99bqomK7OtPYRe7Uvl+CkEeRX9HW+t/2ToMgdQnag+g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8103
+X-MS-Exchange-CrossTenant-UserPrincipalName: R+ZS2cLbSpdbJk7AnwowbqeGcol54lE1/D0dn232cBcGmZMl87HGE4A+YsvutdflY3TeVF+IMnXD0zR/BgUDHA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10982
 
-On Sat, Nov 23, 2024 at 03:26:37PM +0000, Jonathan Cameron wrote:
-> On Mon, 11 Nov 2024 16:38:58 -0500
-> Frank Li <Frank.Li@nxp.com> wrote:
+On Mon, Nov 18, 2024 at 03:24:27PM -0500, Frank Li wrote:
+> Some PCIe host bridges require special handling when enabling or disabling
+> PCIe Endpoints. For example, the i.MX95 platform has a lookup table to map
+> Requester IDs to StreamIDs, which are used by the SMMU and MSI controller
+> to identify the source of DMA accesses.
 >
-> > Use devm_* and dev_err_probe() simplify probe function and remove
-> > vf610_adc_remove().
-> >
-> > Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> Hi Frank,
+> Without this mapping, DMA accesses may target unintended memory, which
+> would corrupt memory or read the wrong data.
 >
-> One (hopefully final) question inline.
+> Add a host bridge .enable_device() hook the imx6 driver can use to
+> configure the Requester ID to StreamID mapping. The hardware table isn't
+> big enough to map all possible Requester IDs, so this hook may fail if no
+> table space is available. In that case, return failure from
+> pci_enable_device().
 >
-> Jonathan
+> It might make more sense to make pci_set_master() decline to enable bus
+> mastering and return failure, but it currently doesn't have a way to return
+> failure.
 >
-> > ---
-> > Change from v3 to v4
-> > - keep vref_uv as u32
-> > - keep original regulator part and only add
-> > devm_add_action_or_reset(&pdev->dev, vf610_adc_remove, info)
-> >
-> > Change from v2 to v3
-> > - change vref_uv to int from u32 to fix below warning
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202411070633.NIrO7Ert-lkp@intel.com/
-> > smatch warnings:
-> > drivers/iio/adc/vf610_adc.c:857 vf610_adc_probe() warn: unsigned 'info->vref_uv' is never less than zero.
-> >
-> > vim +857 drivers/iio/adc/vf610_adc.c
-> >
-> > Change from v1 to v2
-> > - add Haibo's review tag
-> > ---
-> >  drivers/iio/adc/vf610_adc.c | 79 ++++++++++++-------------------------
-> >  1 file changed, 26 insertions(+), 53 deletions(-)
-> >
-> > diff --git a/drivers/iio/adc/vf610_adc.c b/drivers/iio/adc/vf610_adc.c
-> > index 4d83c12975c53..d4b778799755b 100644
-> > --- a/drivers/iio/adc/vf610_adc.c
-> > +++ b/drivers/iio/adc/vf610_adc.c
-> > @@ -814,6 +814,14 @@ static const struct of_device_id vf610_adc_match[] = {
-> >  };
-> >  MODULE_DEVICE_TABLE(of, vf610_adc_match);
-> >
-> > +static void vf610_adc_action_remove(void *d)
-> > +{
-> > +	struct vf610_adc *info = d;
-> > +
-> > +	if (info->vref)
-> > +		regulator_disable(info->vref);
->
-> Why is the check on info->vref needed?
-> vref is required to reach the point where this callback is registered.
->
-> > +}
-> > +
-> >  static int vf610_adc_probe(struct platform_device *pdev)
-> >  {
-> >  	struct device *dev = &pdev->dev;
-> > @@ -823,10 +831,8 @@ static int vf610_adc_probe(struct platform_device *pdev)
-> >  	int ret;
-> >
-> >  	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(struct vf610_adc));
-> > -	if (!indio_dev) {
-> > -		dev_err(&pdev->dev, "Failed allocating iio device\n");
-> > -		return -ENOMEM;
-> > -	}
-> > +	if (!indio_dev)
-> > +		return dev_err_probe(&pdev->dev, -ENOMEM, "Failed allocating iio device\n");
-> >
-> >  	info = iio_priv(indio_dev);
-> >  	info->dev = &pdev->dev;
-> > @@ -842,17 +848,12 @@ static int vf610_adc_probe(struct platform_device *pdev)
-> >  	ret = devm_request_irq(info->dev, irq,
-> >  				vf610_adc_isr, 0,
-> >  				dev_name(&pdev->dev), indio_dev);
-> > -	if (ret < 0) {
-> > -		dev_err(&pdev->dev, "failed requesting irq, irq = %d\n", irq);
-> > -		return ret;
-> > -	}
-> > +	if (ret < 0)
-> > +		return dev_err_probe(&pdev->dev, ret, "failed requesting irq, irq = %d\n", irq);
-> >
-> > -	info->clk = devm_clk_get(&pdev->dev, "adc");
-> > -	if (IS_ERR(info->clk)) {
-> > -		dev_err(&pdev->dev, "failed getting clock, err = %ld\n",
-> > -						PTR_ERR(info->clk));
-> > -		return PTR_ERR(info->clk);
-> > -	}
-> > +	info->clk = devm_clk_get_enabled(&pdev->dev, "adc");
-> > +	if (IS_ERR(info->clk))
-> > +		return dev_err_probe(&pdev->dev, PTR_ERR(info->clk), "failed getting clock\n");
-> >
-> >  	info->vref = devm_regulator_get(&pdev->dev, "vref");
-> >  	if (IS_ERR(info->vref))
-> > @@ -862,6 +863,10 @@ static int vf610_adc_probe(struct platform_device *pdev)
-> >  	if (ret)
-> >  		return ret;
-> >
-> > +	ret = devm_add_action_or_reset(&pdev->dev, vf610_adc_action_remove, info);
->
-> As above, but this time if info->vref is not set, we have already returned so it
-> must be set and doesn't need checking the callback.
+> Reviewed-by: Marc Zyngier <maz@kernel.org>
+> Tested-by: Marc Zyngier <maz@kernel.org>
+> Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Yes, you are right. Needn't check it at callback.
+Bjon:
+
+    I need fix some for patch 2.
+    Can I keep your ack tag (v4)?
 
 Frank
+
+> ---
+> Change from v5 to v6
+> - Add Marc testedby and Reviewed-by tag
+> - Add Mani's acked tag
 >
-> > +	if (ret)
-> > +		return ret;
-> > +
-> >  	info->vref_uv = regulator_get_voltage(info->vref);
-> >
-> >  	device_property_read_u32_array(dev, "fsl,adck-max-frequency", info->max_adck_rate, 3);
-> > @@ -879,52 +884,21 @@ static int vf610_adc_probe(struct platform_device *pdev)
-> >  	indio_dev->channels = vf610_adc_iio_channels;
-> >  	indio_dev->num_channels = ARRAY_SIZE(vf610_adc_iio_channels);
-> >
-> > -	ret = clk_prepare_enable(info->clk);
-> > -	if (ret) {
-> > -		dev_err(&pdev->dev,
-> > -			"Could not prepare or enable the clock.\n");
-> > -		goto error_adc_clk_enable;
-> > -	}
-> > -
-> >  	vf610_adc_cfg_init(info);
-> >  	vf610_adc_hw_init(info);
-> >
-> > -	ret = iio_triggered_buffer_setup(indio_dev, &iio_pollfunc_store_time,
-> > -					NULL, &iio_triggered_buffer_setup_ops);
-> > -	if (ret < 0) {
-> > -		dev_err(&pdev->dev, "Couldn't initialise the buffer\n");
-> > -		goto error_iio_device_register;
-> > -	}
-> > +	ret = devm_iio_triggered_buffer_setup(&pdev->dev, indio_dev, &iio_pollfunc_store_time,
-> > +					      NULL, &iio_triggered_buffer_setup_ops);
-> > +	if (ret < 0)
-> > +		return dev_err_probe(&pdev->dev, ret, "Couldn't initialise the buffer\n");
-> >
-> >  	mutex_init(&info->lock);
-> >
-> > -	ret = iio_device_register(indio_dev);
-> > -	if (ret) {
-> > -		dev_err(&pdev->dev, "Couldn't register the device.\n");
-> > -		goto error_adc_buffer_init;
-> > -	}
-> > +	ret = devm_iio_device_register(&pdev->dev, indio_dev);
-> > +	if (ret)
-> > +		return dev_err_probe(&pdev->dev, ret, "Couldn't register the device.\n");
-> >
-> >  	return 0;
-> > -
-> > -error_adc_buffer_init:
-> > -	iio_triggered_buffer_cleanup(indio_dev);
-> > -error_iio_device_register:
-> > -	clk_disable_unprepare(info->clk);
-> > -error_adc_clk_enable:
-> > -	regulator_disable(info->vref);
-> > -
-> > -	return ret;
-> > -}
-> > -
-> > -static void vf610_adc_remove(struct platform_device *pdev)
-> > -{
-> > -	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-> > -	struct vf610_adc *info = iio_priv(indio_dev);
-> > -
-> > -	iio_device_unregister(indio_dev);
-> > -	iio_triggered_buffer_cleanup(indio_dev);
-> > -	regulator_disable(info->vref);
-> > -	clk_disable_unprepare(info->clk);
-> >  }
-> >
-> >  static int vf610_adc_suspend(struct device *dev)
-> > @@ -972,7 +946,6 @@ static DEFINE_SIMPLE_DEV_PM_OPS(vf610_adc_pm_ops, vf610_adc_suspend,
-> >
-> >  static struct platform_driver vf610_adc_driver = {
-> >  	.probe          = vf610_adc_probe,
-> > -	.remove         = vf610_adc_remove,
-> >  	.driver         = {
-> >  		.name   = DRIVER_NAME,
-> >  		.of_match_table = vf610_adc_match,
+> Change from v4 to v5
+> - Add two static help functions
+> int pci_host_bridge_enable_device(dev);
+> void pci_host_bridge_disable_device(dev);
+> - remove tags because big change
+> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> Reviewed-by: Marc Zyngier <maz@kernel.org>
+> Tested-by: Marc Zyngier <maz@kernel.org>
+>
+> Change from v3 to v4
+> - Add Bjorn's ack tag
+>
+> Change from v2 to v3
+> - use Bjorn suggest's commit message.
+> - call disable_device() when error happen.
+>
+> Change from v1 to v2
+> - move enable(disable)device ops to pci_host_bridge
+> ---
+>  drivers/pci/pci.c   | 36 +++++++++++++++++++++++++++++++++++-
+>  include/linux/pci.h |  2 ++
+>  2 files changed, 37 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index 67013df89a694..4735bc665ab3b 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -2055,6 +2055,28 @@ int __weak pcibios_enable_device(struct pci_dev *dev, int bars)
+>  	return pci_enable_resources(dev, bars);
+>  }
+>
+> +static int pci_host_bridge_enable_device(struct pci_dev *dev)
+> +{
+> +	struct pci_host_bridge *host_bridge = pci_find_host_bridge(dev->bus);
+> +	int err;
+> +
+> +	if (host_bridge && host_bridge->enable_device) {
+> +		err = host_bridge->enable_device(host_bridge, dev);
+> +		if (err)
+> +			return err;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static void pci_host_bridge_disable_device(struct pci_dev *dev)
+> +{
+> +	struct pci_host_bridge *host_bridge = pci_find_host_bridge(dev->bus);
+> +
+> +	if (host_bridge && host_bridge->disable_device)
+> +		host_bridge->disable_device(host_bridge, dev);
+> +}
+> +
+>  static int do_pci_enable_device(struct pci_dev *dev, int bars)
+>  {
+>  	int err;
+> @@ -2070,9 +2092,13 @@ static int do_pci_enable_device(struct pci_dev *dev, int bars)
+>  	if (bridge)
+>  		pcie_aspm_powersave_config_link(bridge);
+>
+> +	err = pci_host_bridge_enable_device(dev);
+> +	if (err)
+> +		return err;
+> +
+>  	err = pcibios_enable_device(dev, bars);
+>  	if (err < 0)
+> -		return err;
+> +		goto err_enable;
+>  	pci_fixup_device(pci_fixup_enable, dev);
+>
+>  	if (dev->msi_enabled || dev->msix_enabled)
+> @@ -2087,6 +2113,12 @@ static int do_pci_enable_device(struct pci_dev *dev, int bars)
+>  	}
+>
+>  	return 0;
+> +
+> +err_enable:
+> +	pci_host_bridge_disable_device(dev);
+> +
+> +	return err;
+> +
+>  }
+>
+>  /**
+> @@ -2270,6 +2302,8 @@ void pci_disable_device(struct pci_dev *dev)
+>  	if (atomic_dec_return(&dev->enable_cnt) != 0)
+>  		return;
+>
+> +	pci_host_bridge_disable_device(dev);
+> +
+>  	do_pci_disable_device(dev);
+>
+>  	dev->is_busmaster = 0;
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index a17edc6c28fda..5f75c30f263be 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -596,6 +596,8 @@ struct pci_host_bridge {
+>  	u8 (*swizzle_irq)(struct pci_dev *, u8 *); /* Platform IRQ swizzler */
+>  	int (*map_irq)(const struct pci_dev *, u8, u8);
+>  	void (*release_fn)(struct pci_host_bridge *);
+> +	int (*enable_device)(struct pci_host_bridge *bridge, struct pci_dev *dev);
+> +	void (*disable_device)(struct pci_host_bridge *bridge, struct pci_dev *dev);
+>  	void		*release_data;
+>  	unsigned int	ignore_reset_delay:1;	/* For entire hierarchy */
+>  	unsigned int	no_ext_tags:1;		/* No Extended Tags */
+>
+> --
+> 2.34.1
 >
