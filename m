@@ -1,103 +1,176 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2057.outbound.protection.outlook.com [40.107.20.57])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0AEC1925A6
-	for <imx@lists.linux.dev>; Mon, 25 Nov 2024 10:53:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732531989; cv=none; b=QlX6oWdPuQty19JuHIgOkFADHtAXKCduL8yHTGXDPoaMCgyOZr6rl9y6W6YHVEknk/zXEf/FMXhVqG4oTRDMX7srw3olcrVMXVkcEdslzENn4HDQ3AICN9t0oA8+c4CiuUjZz58vGqwZE9N+9B8itxAVTcVGTUZqAmGjysl5IcM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732531989; c=relaxed/simple;
-	bh=3jcBf0eL6Gi2Rg6poX5bDC7FF84+Wlh4gqM+ewFsiIA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iLYvuTzJgorfdLaOQXEhMp2DafN6PAV2+6QPYeJMKrnUuOql6qcs6efOa+BT11Lfaw+ocvOJndkWhChHMF/M5ssTTog31f3cY0REkQmmANfsXWaGQjzjK9ADmqv0oyac78C2rANaEUpHfWuM8e2V0GIsPNmBqk9ujWVoTt7vU/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=ZYfrj838; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F048F5E
+	for <imx@lists.linux.dev>; Mon, 25 Nov 2024 13:34:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732541689; cv=fail; b=aLcXQgtCSvMvhuwm/hh0ZH+tj++cqiCtwtwCXNKA6PENIke2G8wnLsqaPjlChhjn0g9z4I/zUvEi2db7wQawGrXct/zpR7pcv+nLnvD1fiRQhJ/D+R+NoIHvLVwi9+SOUdAUwQwdY1USxC/mWVhCj1MobLfrrbWmsu9Nfrm4VzA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732541689; c=relaxed/simple;
+	bh=RRnTaF68u7EGb7C19w317NoPWlh0Rp2xpJdd9gBLIcY=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=jisBd5pklEB+y0ZwhSPGnK/xV25NGmdz5hr7xg2dsfC1O3gRiJmDiNG7+6+OlQRGWFg7dnXGT9kmL5kKcFIARdlCuIWN7vMXQdBQjIuiv84Ql25SVMd9eVResgQsj20eIYysxkVkSiQyXMrYg+j/OAUH2Vug2to66M+BawReAT8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=T6C6ggwd; arc=fail smtp.client-ip=40.107.20.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="ZYfrj838"
-Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 1E756262A7;
-	Mon, 25 Nov 2024 11:52:58 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1732531978;
-	bh=hmQWA+nwpDDcGMMWDzj5b5llGkioHK+B9GAwscWHsf8=;
-	h=Received:From:To:Subject;
-	b=ZYfrj838yqQBq+MD5xjL1RdFq/zTs84dqXtTqrLEVI0BvgjI7PabTQ+4t8f3ceZx1
-	 +bgbcTJZG7kJm4sOAnseL56ApNbSwEcXv/OEmNp6qXqdzdEkw1FK5JlaHxMKxaFuzT
-	 Mvi8WDOvCkgBqs6ZuhRkXzc0NC56CBxP7xMrpBfZ4ltng4O+6hYdQvaxyo0xd/x+aK
-	 a7I2mVi6aU8U9duQei/4IcijBLyfFagIRTjS5R4R4qCxTPaulnhlTbOLpex4GQvrdX
-	 d86c5tDbtN75uV2MqQ/fauaRApXM9BOtbWOQmhUhhqHd8TNHTBcouEc1vNdB8K8C75
-	 8VrGTNu6GvA9g==
-Received: by gaggiata.pivistrello.it (Postfix, from userid 1000)
-	id ADFCE7F996; Mon, 25 Nov 2024 11:52:57 +0100 (CET)
-Date: Mon, 25 Nov 2024 11:52:57 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
-	p.zabel@pengutronix.de, maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
-	simona@ffwll.ch, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, glx@linutronix.de,
-	vkoul@kernel.org, kishon@kernel.org, aisheng.dong@nxp.com,
-	agx@sigxcpu.org, francesco@dolcini.it, frank.li@nxp.com,
-	dmitry.baryshkov@linaro.org
-Subject: Re: [DO NOT MERGE PATCH v4 16/19] arm64: dts: imx8qxp: Add display
- controller subsystem
-Message-ID: <Z0RXCYZ_7fBvpcvd@gaggiata.pivistrello.it>
-References: <20241125093316.2357162-1-victor.liu@nxp.com>
- <20241125093316.2357162-17-victor.liu@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="T6C6ggwd"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ST9NonN/dee26wMEuC//1TnaCsfKHAO6Cbf2ftzamf8DlS0u9Rm3zIUKaLvaMlYjYxPt3FVMxSTUDDY7ED3d7JAuiNUAUVcgU5i5aMgY0hzFt5KJHXGf2nhBsu/ia1vDmUwdyUS/c0rcqVzhMCNuCyuUpEFLKKy9V6fJWsUhyjSTntobIrgfwkmLva0zy2pgnJidjS3ccmZ4GwLnqk6CoS02YNcZMvS7e94OazCFLAkJ2Fm8GwkpWKfSGWDY1EgomWLowejS+T49iG37TDHC9JBX9Vzxb7l+WWWcOdaXYUCMHLIC3ZJDcNxUrWY4VADxDqZskMCXfVGrxIq19nHCVQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ai1v46WTup8sFF2Z2AC6a25GYbSY2ANB9udVAi6sqsM=;
+ b=svjnUyvmF8BnfdiJr22TNsSh92fb+KUj7Zyc/Fqn28ge+CJLqitYsR9rryJU1CABMzoXcI6FIy06PXrx06X+b7PeheyH5vCoMUcfcE1pFEd4iejuonw5zra9KIdMY4zLjQg8HbmrVLv2sskPxSZdNWB6IXoh7KXosuW08m3n+WLFsucl15VcVQrqoPhgfbAGTuFppqMj5d3VmmQ7fuhEMecO7wwU2UqnxUd8k290EhCznMazm2oWgIPD075lG5b35oav4CEREM5Ujcmkl0h0fylyhwx3J+FSuqH/4fYf4jcRWCW/8zAHofrnjKHY7+b3KMQK7TIotaeGkfQTmcmuSg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ai1v46WTup8sFF2Z2AC6a25GYbSY2ANB9udVAi6sqsM=;
+ b=T6C6ggwdsXJGiEdBxMTR5BRJVouR2yhVCcQfm+PrIyabd27GkJas3+kyz9KQjUd13xvR6vbCePSwf65Gd0iYjJ7JTBL25PmZfIxr8KzD8gRc+H57c9bGRZ0kBOEbC4WijShOUP01Ud5wmB+qZtDaG3QZhUkb1z222DwimaBEqz3/CwBX0DVQJw4LT/2E4dzg1KuueWfW41jKDep2q+ZWrfRCr1GB8/a9ghYpYuJaInlROhXGhDJI/zRfAqCG18Cmpy+oWSIFwFQKSsq7BMCfqCH03/AUwA4OWBfsYTeeT46yt1O/ySpWhpdaBCPMpuEjjCRVFU25VVMM7fJkRFIXjQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR0402MB3937.eurprd04.prod.outlook.com (2603:10a6:208:5::22)
+ by AS8PR04MB8769.eurprd04.prod.outlook.com (2603:10a6:20b:340::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.21; Mon, 25 Nov
+ 2024 13:34:43 +0000
+Received: from AM0PR0402MB3937.eurprd04.prod.outlook.com
+ ([fe80::4e37:f56b:8a3e:bff0]) by AM0PR0402MB3937.eurprd04.prod.outlook.com
+ ([fe80::4e37:f56b:8a3e:bff0%4]) with mapi id 15.20.8048.020; Mon, 25 Nov 2024
+ 13:34:43 +0000
+From: carlos.song@nxp.com
+To: o.rempel@pengutronix.de,
+	kernel@pengutronix.de,
+	andi.shyti@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	festevam@gmail.com,
+	frank.li@nxp.com
+Cc: linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] i2c: imx: switch different pinctrl state in different system power status
+Date: Mon, 25 Nov 2024 21:43:22 +0800
+Message-Id: <20241125134322.1611845-1-carlos.song@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: AS4P191CA0053.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:20b:657::29) To AM0PR0402MB3937.eurprd04.prod.outlook.com
+ (2603:10a6:208:5::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241125093316.2357162-17-victor.liu@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR0402MB3937:EE_|AS8PR04MB8769:EE_
+X-MS-Office365-Filtering-Correlation-Id: c6b06f30-20e2-4163-b84d-08dd0d55eb69
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|52116014|366016|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ORgCW+PqPlag0PW56SXxThRkTY0PQzBKvKrOxD+L0s3jqTE+Gm+JEohpi8ZL?=
+ =?us-ascii?Q?3xdaojEGVSkZ/pLN65HdRQBGwyqemZKOFADnkCOJos/nh5DO/3pQUpZ4dNYg?=
+ =?us-ascii?Q?cEY+5d3JWJ0ZxahuiV8dVfkYWsWoEFut0L5NCL84v+WmrlsLcLrQMtLxUbiV?=
+ =?us-ascii?Q?wg2de5jdQHl/MsVCbKsS9wqtnVO9fHVJQZ7R9cXSah0cQJnVw5jSFpylKL1Y?=
+ =?us-ascii?Q?N6A4qwOI2klBIVJKoMWVLts1nG6s0MiGnqYFVHcFYKGCyowCv7I9DF0sqWMs?=
+ =?us-ascii?Q?jFg9zyGKlevVbWwqOXjIMvM0nQx4v+xPgZ6SUvgNL4cOPbiF83mMgGp3lzLi?=
+ =?us-ascii?Q?lVaLhf4dwOYsnUPZPnuazJo2+AppFipLAY9Z/GB1bkv+JHwo7+bx3yblSmlN?=
+ =?us-ascii?Q?hkAZqdFrYXaR3+g3jee0SN6nM9GHmPNme2/JEZLfIod3EmMwz1TgaXPMHi8d?=
+ =?us-ascii?Q?xrwC9DDf5CbFSdTl7hh2JDr9TBtUVycNjbJxdwrNg92avLLIWUgt+SxZi/Vo?=
+ =?us-ascii?Q?pnVwLCR2ZzUWQm2g4ZwpietWOVZ3+nUtoSwEzVO5O44AJvAbWJcu/MKHRMer?=
+ =?us-ascii?Q?xQlgnkUXo8fSV5kbcgYud3jDYRlRk3WmOCx0DgS6kufooUiShSRKtWB0/ClE?=
+ =?us-ascii?Q?kHq5XNI/2KhYERVOpcunyEya/UE8BhiXrJ8lMXJD58lxCEgJB+nOecpjU6kr?=
+ =?us-ascii?Q?fVF3LpY5UJN+Nt6zvCkOT23EVPAf1k2KzXDgQDIdSTvls2IXZbuHWOzlkWry?=
+ =?us-ascii?Q?E/jFIzhs/1Vj7g6BPOcJveImL8sytJHscwrRwl8qiq+zydfPPfIumbeRExgB?=
+ =?us-ascii?Q?KsuU5+vrWNsJmvQXw+GwUMg4FUcaBGVwqpvJEcfd9K6DoJuK2gNFLdgFTM4D?=
+ =?us-ascii?Q?0qab0/luYtVzpA/YRSTcE/jsO0HlOZ6oK5QBmH6ZtD6AG4IaKndBHBYVjgwK?=
+ =?us-ascii?Q?59AhvlN0r4UBDxDDy9+5VePzAASjsJItIDNf4ZNBl7lqq5J0BbDbuL8QHJJd?=
+ =?us-ascii?Q?GApZ0cE75W9uFSEkNv+xdbTE7oTAksbwzUAnqGFw3oDx6ftAYhco04BVQhI3?=
+ =?us-ascii?Q?T2L11+g7je3SdgUPdVK0QguDeM7gcrQ/bkKeEAfeHBMcbBzVpNpxTZ8P0GN4?=
+ =?us-ascii?Q?nSm9Vrxk9zejWPU4HJVyBqbTS3npmqAU/5xPuMGe9y3scuFu8y2YJEKMQ5Rj?=
+ =?us-ascii?Q?nG4FUwCxMLO9/rHm4xXo3AYWaoX9hs8kVJcqYYH0/FN5yttWUw24OvJROgav?=
+ =?us-ascii?Q?cihaTVMMZbS2DxE6YHEIg2jM8jADTH3faHqeJs96DUN1h+eNyMIDzcyKjGmc?=
+ =?us-ascii?Q?dwuqTRnuHSYHR1+2AM4L/8yM0acwhyQkIOOb3N04aUH+P57IZ/KXUv9t6sLq?=
+ =?us-ascii?Q?R03q/eRPrhB63voSOG6MJKLFAGKhd/AauMU+vZquKdiJ0h3iKA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR0402MB3937.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?VWmhxbN+c5p7mN/SuuJgy1+m43qHbaxQ394SrbKyQQzYgd4q/q15jQ+hP1hF?=
+ =?us-ascii?Q?psL2IbuNjgbWnqa0BktIlo5TXwOf+2bNkkF/iEzevTs5IKU7/mDVUov0cG7k?=
+ =?us-ascii?Q?NWH5ZUpL+FK3eXQY/WcfRNueg92xlDTrd3oXUpK5GKD6ZNUbNt/VQevUbFFZ?=
+ =?us-ascii?Q?ierm479OlWEJjQNPYS4Fng2s+rwf2WUBeBZQG9oZy7F/udSDqd4mXxPsORVQ?=
+ =?us-ascii?Q?gexU8Mev/r2ZcEgbeTKUiSACjxtMrS5ZQqDZctPzHHiyxZKtXrkdpLM+yoen?=
+ =?us-ascii?Q?j/ylrTWwD6T7flHtJYnO/UKtgAVwSHnHaFueMDhZgYNyBdtx4I7E67nhlNyR?=
+ =?us-ascii?Q?LDRoL1mzBAk+v6c2fDb3TRoMlaA1F8HF7YBvOqS9aUb0KV+QD/oLxWVVhC9N?=
+ =?us-ascii?Q?b3EiM7ULSFJR5uH+Qu85qjHxPEzA6IqcWTuPGDQIRylxcEBzZqeJA385x1Va?=
+ =?us-ascii?Q?AQMBrf45qlzfN9PXvLiqzQ6QPEyob7TJrGgm6fDhnV1HpWC8+90Va/LVwWh7?=
+ =?us-ascii?Q?9rBRJ7oKnP3CKo+rmm57fobUsx3ikeL/VDRrUY5DPnLD+EmuPurm8vemtLr3?=
+ =?us-ascii?Q?gDKY2XuyyRovd4uC8cuSj9bazzMxYPuK/qs4PVUjmOCcYthirYK1nk/paBUQ?=
+ =?us-ascii?Q?bi8zI8e7CBCWhsHlgrbB8Zz2dXOzd/i7l4QJao1/pZid/FEeuzCG7mjls1DV?=
+ =?us-ascii?Q?RkqQaazbRWVpRcxvv4KqM4lxzBNnXnzSWl7O/GjXEpUpGrIEomj040Ex6GCo?=
+ =?us-ascii?Q?A89NKOgTdrqpybpw0R/4Vb9yY0USvORM7r/8dHdXI57eJLn2r+kuD9eq4lBY?=
+ =?us-ascii?Q?zlJ6TO0HDDIAFBxWSLjkfnPOrQ8MB1JFf17G3yfAwO629lMj2q3D+QTEmhTX?=
+ =?us-ascii?Q?hGjjmt40zDIZ348OuO7SWZv/+UB94fEQXsrPadT4+KJbBxPsW1EbZReKceG7?=
+ =?us-ascii?Q?o/AN9fKkwuB5ZE/5VSkraF3nu4LBVlS+hVlUIf+sANGUwOyWm6svnDJ9X5VU?=
+ =?us-ascii?Q?NODXwJ5jbG4F5mlCaAsxIbcRyEkKfnHjIP/RpsXZgAr0G7tzjbxPSyOWeGTg?=
+ =?us-ascii?Q?lBa2yb/N3vjnVBdx1epZm90Hs6SjNaTfoxdHSEYzTLg2DON+Leg8v8eKo3b+?=
+ =?us-ascii?Q?VSDiU+spwU5zIhuDch02I5cAGrdO7pLViH1erwv5IFTDl9KJOUMrUey61qL6?=
+ =?us-ascii?Q?JbzEzIS2j1CP5JA5Oip8FtZyJ4NNOgF0knVYOjltGtfrAQWDG0bnHcBe5INS?=
+ =?us-ascii?Q?u5QARAu9pfcqJ4hJNsrLiL5bFkYf1hP4xF74cwf6JEL1zoJiiOPxMm5vzCb4?=
+ =?us-ascii?Q?HJvnfsB9iAstGh5gIZgzJC+tpB00Y24ibumngF9pw2yjXKjcb/74Oupl91Wo?=
+ =?us-ascii?Q?b9JA75adALJJzH/6hdirZDCOuEZvzkB3R9lREFCyhLFz5u90AgAc22yauB+v?=
+ =?us-ascii?Q?TrHME1A509jl0961ZpS1g4/lMu85gZhbmJSzbFHGaH2pnzsufKrPaAq7hbs9?=
+ =?us-ascii?Q?NNKpgAH9xuqKkUOVC1S3+VozhhmhGL+kiibobfR66XMAUc0+1NHCHN61FojX?=
+ =?us-ascii?Q?ogamHPn05Djp5Io4MC4yzGYNSVCl09VEyx72K2hN?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c6b06f30-20e2-4163-b84d-08dd0d55eb69
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR0402MB3937.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2024 13:34:43.3732
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QxnpeQVSbIyRQTrTll+XhfudzTrVar+qTlGXXaags+p/yZ3mo946LfXgX8tCU5tC/VsPa/eEN8zw5iqwe4yKRw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8769
 
-On Mon, Nov 25, 2024 at 05:33:13PM +0800, Liu Ying wrote:
-> Add display controller subsystem in i.MX8qxp SoC.
-> 
-> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+From: Carlos Song <carlos.song@nxp.com>
 
-...
+Switch different pinctrl state in different system power status.
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi b/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
-> index 05138326f0a5..35cc82cbbcd1 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
-> @@ -20,6 +20,27 @@ / {
->  	#size-cells = <2>;
->  
->  	aliases {
-> +		dc0 = &dc0;
-> +		dc0-constframe0 = &dc0_constframe0;
-> +		dc0-constframe1 = &dc0_constframe1;
-> +		dc0-constframe4 = &dc0_constframe4;
-> +		dc0-constframe5 = &dc0_constframe5;
-> +		dc0-display-engine0 = &dc0_display_engine0;
-> +		dc0-display-engine1 = &dc0_display_engine1;
-> +		dc0-extdst0 = &dc0_extdst0;
-> +		dc0-extdst1 = &dc0_extdst1;
-> +		dc0-extdst4 = &dc0_extdst4;
-> +		dc0-extdst5 = &dc0_extdst5;
-> +		dc0-fetchlayer0 = &dc0_fetchlayer0;
-> +		dc0-fetchwarp2 = &dc0_fetchwarp2;
-> +		dc0-framegen0 = &dc0_framegen0;
-> +		dc0-framegen1 = &dc0_framegen1;
-> +		dc0-layerblend0 = &dc0_layerblend0;
-> +		dc0-layerblend1 = &dc0_layerblend1;
-> +		dc0-layerblend2 = &dc0_layerblend2;
-> +		dc0-layerblend3 = &dc0_layerblend3;
-> +		dc0-tcon0 = &dc0_tcon0;
-> +		dc0-tcon1 = &dc0_tcon1;
+Signed-off-by: Carlos Song <carlos.song@nxp.com>
+---
+ drivers/i2c/busses/i2c-imx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-what would you use those aliases for?
-
-Francesco
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index f751d231ded8..cf8931a8013d 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -1859,6 +1859,7 @@ static int i2c_imx_runtime_suspend(struct device *dev)
+ 	struct imx_i2c_struct *i2c_imx = dev_get_drvdata(dev);
+ 
+ 	clk_disable(i2c_imx->clk);
++	pinctrl_pm_select_sleep_state(dev);
+ 
+ 	return 0;
+ }
+@@ -1868,6 +1869,7 @@ static int i2c_imx_runtime_resume(struct device *dev)
+ 	struct imx_i2c_struct *i2c_imx = dev_get_drvdata(dev);
+ 	int ret;
+ 
++	pinctrl_pm_select_default_state(dev);
+ 	ret = clk_enable(i2c_imx->clk);
+ 	if (ret)
+ 		dev_err(dev, "can't enable I2C clock, ret=%d\n", ret);
+-- 
+2.34.1
 
