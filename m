@@ -1,69 +1,63 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010068.outbound.protection.outlook.com [52.101.69.68])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010003.outbound.protection.outlook.com [52.101.69.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59341AF0CE
-	for <imx@lists.linux.dev>; Mon, 25 Nov 2024 19:22:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416682F2D
+	for <imx@lists.linux.dev>; Mon, 25 Nov 2024 19:24:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.3
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732562556; cv=fail; b=HZEQkFpTMRdPHPzp6NuWOJIkocIZl4UxNy34/JGUGPv6KEvmhc7rwJmvsrtRpqc8jw4I7aqjkThd+stMI3raSQI2TtTiVRtnw8Z/rdjYIIySoStgHsO6jAvS1FM+a724Kv6FgXqHk8QzwcKd//gYt/JiIqgVDolEKs2SQmedTh0=
+	t=1732562696; cv=fail; b=DNnlqCjStCtjobsGU0sH8cfkgBsyDWdkyUZObqBAZIrf8ipD6s7U0tVC8JxWuxcY/4O+WbI1QmVn1vL6CocHql6Z/4Uzsuk4AA3TBP1joxl8lf2Dx9H5QPDBmcPmF1Mgn2Lc6tgdVfCIxPi0rRYvYIL2fDiLvEBfdHvzAydOP4o=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732562556; c=relaxed/simple;
-	bh=QOXUOOV3aoLvPwtuDWUpJ6VtiZN+nVGP8kyABxD2ShA=;
+	s=arc-20240116; t=1732562696; c=relaxed/simple;
+	bh=gVRdKA4vZEo1gI0IvY+Knn7dtPSzy3Y8MBChSgKcatU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=J0inVUEoNjYBMSZbpVz8Na5ZMtUyeqY8qGSq0WwYQC3WRucwE+23dPuIvtJGK74pYsRoNL9ACZLUf+tc9eLw4VEpO1pMABvLv8G4XfRpPf32kKa3PAlxFl01R701LM1OxNx4SJLYqAW25FQC15qGEqINmWzGzTfAitCIsaSU/yM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Cai+JDqN; arc=fail smtp.client-ip=52.101.69.68
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Fo69OXWf0raWIIdeER2ZkUmEKCMB3XOHfXbPzvtr8HyWCEOUdo+OsgbosOUeGN7JJMmArhY5pmW8t/CGzjQ6/LsRuXEKfokmbVWGZY3HzX1bwjoK3tnQfIS8Xs7FTcr/uXMX8TVkhV2e9OJ+yfutKb9/u7unswJs0oSe1zFXTQc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=PFmXGeHc; arc=fail smtp.client-ip=52.101.69.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Cai+JDqN"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="PFmXGeHc"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kwtiP54KVp4tVjv1+Q+gIInHoexQjgk9HMQlW25N0HoS1p9unY+L/3INTwfSyiUikCsIRi++Eg5Q85BdIElrnCqdwIMoDe4s0ZiwZ78OKYsuyoEcbqoXgdqlAx+6J6eT+bgGYNtK/ccclKjuza7tbgGmulLmlFeGWZ2miVchNnpZqMo2wmk9uVzZoRhIJOTsB+Nx2ke+ug9slfXEqR22rg41MUwgXtWLMmEp/IJJVoJm46TG/3x6rNIR7UAZm5jY1LzFW3yp22bNDp06YnxRUKllDMYjDOUDFE7ekl8CHH8CG/WvhKcdYd9PF1S1tRMza4Y2jBU7MGJWAOsvGqQ9Tw==
+ b=V06kks34F4V4KxCjd3AmRHy7yYSXeYhoWmrYzIXaChOLdK3DJiYDuYiP8RK1y64GG4OQKoKCwov40WHnEEx7ZXXYpIsxJu23SVqlcCSrxwYgGZEwOiCz5bHxcPWBJVH3U93t8V37SP7bjiuQ9kjKNFPTk3lws6Jx9EKAtTXFcDtN8JeoKIOlhq7hkLRWAjmBGt4HMoiRYxWSAsuH9zBJpGNLpuqHh+W9JNjd/qRDjrz2PWgKbrWsbEFHfznIkFac6a+xidr8PpcWANp+jMUo+Sue+CmH9RyZJmDQiYebfhvqU9bEWco3zLj0Ds9VZeMlwpU3lTrVneDVNeAk5mnGUA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DC7j3UP+cPGhE1hptxX2d9WfCyF40TUdwikAuFBESi4=;
- b=x7KtqwWPGMlF6HELMUOM7J9ZUabbi7jHtv/DTPBFSY9X4iS6juVWwhFG3U3h5dIlq6PfmThUOp6nUDa38CTU3YotrYQ0s14KasGEPd/l70npQV9vlC+kzE/wJqtP0F0VypQIxQ697ke++RNAB1gPn1PSJWPctGxbBFqzOMtbyFFTBm6ZDF+e7D3fHu67MzvagARNi+WS8CIjnm+f0TM9G71F/rmTD2lB5m6Q5ZY8bHiQ6iN2wzNC2MsEsBFh0QqRF/Ni4cyRv+EMuf4zasL2cNpVUOQ3vnBnu/qpjgYri5POj8R1Ee3ZNcvrqoafApzqeYirzJkhruL15esZBvvGAg==
+ bh=TSFwS48kL2a9UubSNR2I9a210XsscyekzE4UQ9PdPY8=;
+ b=uAbMYu7WmBF4CpURsRNLvGLba5mLNpM9COgXsbxcTxawdyBy7c283z+Q4hclg2RoRQR7uu987Oiv94unEJvt9ExhILdHV4QXL2BZE9MvCxfnZSSDATi5gUXKCFV5gDUTHXakCIoL3aMpOcgMI6x/Mz1aPPct3scdb4mMTvCuKDaOZCvcFXaTY3g4wpwxSVPZDP7xF9SH3SmJF6a6EtBAeFZuojPsJREKOjyV+IhFvYKHjF1LpAuCG6th35nPgako4e5gNRwBqTLs0jHI02vFahZwiFrI2o/Mrn/Wqo7/U3dV+r11uWmOa1eoekT/U+anCQtwCgZGT0COX5lX5tljHQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DC7j3UP+cPGhE1hptxX2d9WfCyF40TUdwikAuFBESi4=;
- b=Cai+JDqN9CoscwUmpbcthfZvZjKBfhZC1rBE1nbLxJyPq5e64KRySATfiSdwyzeDxN2cKOuQw087YdNAWVzl/a3TYmmJQRDtuzw+uACelGA0mvLRfciCzFgEyErwdu6v9wsCymkwf3Al+3EJcIXqsyTmwTG2gIEmV4+P8DaNbzePkiCxJjCXue5a8AzOuAo3vozfIUniipZaE1Aqy2Mw4m9ffT1FH1RDRbVAA5KYYMeU6QXFKOHHbwPL/KxboDKjOMN0L2SHvTHH8UwgssLb3RV2sXI8bZVZqiJKCs0SG6kP33t3NKs5y+6gcMvedNhKH/IITuho6OjgNa3p546R2w==
+ bh=TSFwS48kL2a9UubSNR2I9a210XsscyekzE4UQ9PdPY8=;
+ b=PFmXGeHca9fRZcjmGnaMA06EYCWh59aAQunJCWDIozKgLnRYj6lMDzzRtFVcjGKeTsmuBb/okIlD/ZSZ0ErDaO90lxbD8k/bDoTAn8MA3VChyZSmpQyZ/v42xDbto4n7njarlx1F1HR4s/GvplTiYuN2FYtZcXVVb5ZvZGb9pzRTgEI4u6M+an3h7NJGplWex1PJ5Oruu4Zdu8HdoFvbzi+81ggQe3EEsVvlVTOp+dLogKGKKWB56inCu+agI+UGsaY/faet9OHewlwdMJ9a4jDnzLSQAknG/tAL5/3E3AC5xLA8gpH5luS1NTSWkoZwRBkBxVHa70wrNgeEVdACHg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
  by AS8PR04MB8103.eurprd04.prod.outlook.com (2603:10a6:20b:3b3::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.20; Mon, 25 Nov
- 2024 19:22:30 +0000
+ 2024 19:24:50 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8182.019; Mon, 25 Nov 2024
- 19:22:30 +0000
-Date: Mon, 25 Nov 2024 14:22:23 -0500
+ 19:24:50 +0000
+Date: Mon, 25 Nov 2024 14:24:44 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	imx@lists.linux.dev, Niklas Cassel <cassel@kernel.org>,
-	dlemoal@kernel.org, maz@kernel.org, tglx@linutronix.de,
-	jdmason@kudzu.us
-Subject: Re: [PATCH v8 3/6] PCI: endpoint: Add pci_epf_align_addr() helper
- for address alignment
-Message-ID: <Z0TOb0ErwuGQwF8G@lizhi-Precision-Tower-5810>
-References: <20241116-ep-msi-v8-0-6f1f68ffd1bb@nxp.com>
- <20241116-ep-msi-v8-3-6f1f68ffd1bb@nxp.com>
- <20241124073239.5yl5zsmrrcrhmibh@thinkpad>
-Content-Type: text/plain; charset=utf-8
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Haibo Chen <haibo.chen@nxp.com>, Lars-Peter Clausen <lars@metafoo.de>,
+	"open list:NXP i.MX 7D/6SX/6UL/93 AND VF610 ADC DRIVER" <linux-iio@vger.kernel.org>,
+	"open list:NXP i.MX 7D/6SX/6UL/93 AND VF610 ADC DRIVER" <imx@lists.linux.dev>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 1/2] iio: adc: vf610_adc: use devm_* and
+ dev_err_probe() to simple code
+Message-ID: <Z0TO/OL5DQWSMLfG@lizhi-Precision-Tower-5810>
+References: <20241111213859.3317909-1-Frank.Li@nxp.com>
+ <20241123152637.27a66403@jic23-huawei>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241124073239.5yl5zsmrrcrhmibh@thinkpad>
-X-ClientProxiedBy: PH7P221CA0070.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:510:328::22) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <20241123152637.27a66403@jic23-huawei>
+X-ClientProxiedBy: PH7P220CA0073.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:32c::20) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -73,228 +67,259 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8103:EE_
-X-MS-Office365-Filtering-Correlation-Id: 80db821e-857f-4dc2-d12d-08dd0d86813f
+X-MS-Office365-Filtering-Correlation-Id: b1dc8866-85b2-4d1e-073d-08dd0d86d493
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|52116014|376014|7416014|38350700014;
+	BCL:0;ARA:13230040|1800799024|366016|52116014|376014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dEp4c2dDaFVjQTVTT0JJRlAya1JiWGhMMlVHSmk0b1duSjduT3E4czgwdncr?=
- =?utf-8?B?aFB3U1B2SjQ1WjVnNFNIdjlIYmx1RzhmK0lGQlJ5aWdaNW12SUZWWEJ3eTVN?=
- =?utf-8?B?S2VFcGtMMnhRZmNBQ1N3UlJhYjhlTHhScHpaazZjcElpZ3BvYittSU9Md243?=
- =?utf-8?B?T2k2NDc5b3J0c0d5b0xlT0VGSGlXWkpodThyRlpjMno1MllUc3RKcHZ6YTU5?=
- =?utf-8?B?VFJTUlpJN1ZoRGNCQk1EMWpMNlV3MFVzbk1nemY0eVBxK3RyNFN1aTZHYUp5?=
- =?utf-8?B?dFEyUm1KUlFKNkJxZGZYeXNlNzJ1VWw4emVpOEpMUk5tN2NFV2Q1NEFXdXFF?=
- =?utf-8?B?YmdLVVN6bnd6TVVNdjNXcUkwbW9sRkZXeUZwOERMbVZvN21KRC91QWlyZEVP?=
- =?utf-8?B?Sm5PYVBLajZsWlVjVU1DNWNwMmFXdXQ2TTljVFlsa1JZU1pPbzlxSjY0Y0cr?=
- =?utf-8?B?amQ1SmhRczJUeVJrUm5JRU03aEdyQU1wSUxPMnZ5RkVCOGpWeUpTSlYySnVT?=
- =?utf-8?B?TlZTb3FHV2FZOHpzbSsrUW0rb2JEa25DTEhWcmIvc3QxWnlOQURXNk1pVTc5?=
- =?utf-8?B?emdIbTdncmRtdmtpcFBoMzhsUXgvMndFdFBiVzBWdldhdGtpOUN6d3M1bVlL?=
- =?utf-8?B?cU4rcVRPbkYvY3RZNzFRUkNzT3JrVzIzQkUyNW9CS3NQc2ZPR0FpdmFWSytw?=
- =?utf-8?B?bFhoT3dlV1RxMkFHdG9GQzBBakppU0RNNjQwVmFVVDR6UDF3MFFKbE9YSmZj?=
- =?utf-8?B?c3lnMlkxN3Jjd3MrZy9LSnI4TE9oeG1VQklGQ3BYVURIZ3c2NERZZm1mWkNQ?=
- =?utf-8?B?M2EyeGhpYy9BV2NKVmg1amRFK1NyS05MZ0hlUXUzYWdWdVZjK0dOUk9yTVJP?=
- =?utf-8?B?Y05MenJNSG92ZEtIYXZNcDFlTC9NNnpaRmlZSEhSMGp6WjczcDV3M2kwVDlk?=
- =?utf-8?B?QW1pWm51VmdYaDgvMSt4aG1udmpkSzcwV3dzZ3Fzb3RyZUo2OWRjZnZZQWs3?=
- =?utf-8?B?c29OUms0Wk8wYjczUnVVV2JCZ0pFcGpPc2RwdmNKY3M4ang5QUM1czVUQU5Y?=
- =?utf-8?B?SUVKZFMrUmFYQUdvOElYdEkvRWs3ZVhxTVVSaHdQL21zZisvY29yZ1NJV0Ji?=
- =?utf-8?B?N09RM2xhZ0xMbmxUeUs0OUptVG04NDZUd20wU3F5eXFkT25nUTVnVUZ6dEU5?=
- =?utf-8?B?bkVLR3d3WDg0L2tQQWtFcHUyMWNsSHpyWGtXQmF5TkpkNHZXM0JlMmJveUdQ?=
- =?utf-8?B?Wm93OFRBY0RjUFpFRWhPVE9wVStUR3dwMEtTSUtqZmFqMmlOT3Y3VitVVk5J?=
- =?utf-8?B?dEgwTE5wb1l4UjBWanBaTlZSbktBdnA4bFRXWjM1VFVRUzJURmlEc2VFc2l2?=
- =?utf-8?B?NEhadU1GeEc5bFhZYWJLelFNTDBIMm1pZTFONXJjTHRCcWU3d1hHN0s2TzNz?=
- =?utf-8?B?blBtQ3BFWHNuM25pSjhtQTRIUk9JcW8zRUxnekZhVTZ2NHlsdGFGeUk3bTJv?=
- =?utf-8?B?U3d0SFlSR0ZZTTQyR01oOWM5SW5ZUy9sVStCWmtxUjJ1aDgxWStzcmRDdk9q?=
- =?utf-8?B?TmozZHVhcWY1N3JCWGxrRTZhdFVhOVYxTUxDVHhUbk9wNUtDRW1CYUNGaFl1?=
- =?utf-8?B?TSt4QlRkR0NTVElGd3ZzZFh0ak5nbEYwcG96MGhXRVFVODR3czJRa25jUDhY?=
- =?utf-8?B?bS9ZR2k5RWI3RmhyVHhDMDhIekNwZmhKR3BMdTNKZXQycHhJM0VBT3k3QjhM?=
- =?utf-8?B?NERuclNUT0RIejJTOVh4Y1EwelJhSnNod2tXaFRQNXc3RnpqR1dxYURMdkJI?=
- =?utf-8?B?U1phdFVmSWZDa0pLYURkd200QUtkOGxpSWNKVHNaR0ZrWGpCUUV0a3RyV1hK?=
- =?utf-8?B?Y0Rha1lXaSs3U1NLbm1ua2w3a290WUJzcGp5bVREWSs2M3c9PQ==?=
+	=?us-ascii?Q?JUmm9jq7pnFbIWf+mMJHRGV621WM5zSBRo8uPIdAg+qcsTPqegIQIx52jBca?=
+ =?us-ascii?Q?NW210v7wKDT4cEejhRkjFRo/hnAcRZOUqGN88Kge0IZwNpDXfii0wwVHt/01?=
+ =?us-ascii?Q?LF+Jryrz5p9NFOirK1/pP4fW5yf0Ia84w1jMDrYGINgTDKS/ExUnfAq4haL9?=
+ =?us-ascii?Q?6EpISgzMkir/Ii3UhMWhf8qNRPZxutlj33dSe+iesTfBkrmOKNmk/wBaobJ2?=
+ =?us-ascii?Q?/13R69cZ5q92tmqPk/me4sDfSRVTYi1Hl8TDwxIqlISHN3ZxUvH8SZ7XUjcF?=
+ =?us-ascii?Q?A+3OPlyDEhEqObwPtqv2qxkaaJzsZgxyZ1M8saEVoEH/MnFiGgXw1H+IdSa4?=
+ =?us-ascii?Q?QiL9CXTx5tbtGaTK7bnaewQH/KfZvCiENW/TO6qn1JIXwb2FTcigNIuf35my?=
+ =?us-ascii?Q?AwDjCmMZDNQe8CeezMJQH+myh+g4hw6jiMeIHidQb6pNCMv3vmvJVIBlO72o?=
+ =?us-ascii?Q?AUUg+p9y5PhqRhZif5gWo0qwh5QOuevkv5LJSj1aH41YIQMIIO0vWvii6R4g?=
+ =?us-ascii?Q?U7jv8BIpZwNvYT2LkphMP3wa4GkPTxb7NDElP57/qCDsmxhEjZyhVjNu3J/q?=
+ =?us-ascii?Q?9g0mPkIJx9Q6N+qVYxbVAKqG2zQBB80BYEoSnaiG5i+JKuo+c3GoRV0n1V5b?=
+ =?us-ascii?Q?wRI1ffYhiNfxVVVeSHo1DwP2bouEYKpD7qosXHpzm2h04vPu62LQyoVnE5hB?=
+ =?us-ascii?Q?d8ZJCw3ykK3TgzTMIsXg3IMbE+voSpS8j1u+ef/2tB2Htohr3B+KQdkiBEgH?=
+ =?us-ascii?Q?hiAf8LEJyTOo6KMXKoltRqLrYqKamprKVICNjTqHJg+Dno0QRt6cVKxTeHux?=
+ =?us-ascii?Q?Po+MyJqaSgM2a0NJcMdQCzuKDz8EDNs3hOcmGgJs711WYRDgmwFMp3zEsUXp?=
+ =?us-ascii?Q?b2LZ8v5xIIuZvs1WLIXWEdzHl4DLeiCwYMsSwUic/Fk4NnKobmJE/8KHYZTW?=
+ =?us-ascii?Q?TBlYmZ1SDhdmLwD+adcxo2o43u46moS8X0zfXklO+LzQIJMoUKyspd0Y9f9w?=
+ =?us-ascii?Q?QIQc7U00jyG4Gm2jNkw6YyZXltT3GF+Ns/adlhl6FV/OkmdSeOcWQHcLWAu8?=
+ =?us-ascii?Q?nyJiTglH2zGgJCsKdRMZJE0N/al3ldobTtjCnOSK4fYUMdJFHDNlKx8JLS+C?=
+ =?us-ascii?Q?60LFJ/LA997yG9jDq+K6n9pzpcIn3p9wRmPNp8VEeldFHbU0rvCV3Qv6Ps+3?=
+ =?us-ascii?Q?kRlnv3L+UP/0ETuvEWRTP6GOIInoC6DQyAwxjcFe/zw6IQ4XrnhNuvYVTIKJ?=
+ =?us-ascii?Q?HMsSXhGCSi0tLF6zPXW3FITaX6pia8PB7GGrV0jF2pK9o2FsIFz2HAUZDnxi?=
+ =?us-ascii?Q?bYC4/acrmDGBT7iQXtylMgok3Kk80lvD6hfCkua7uAd4cFndrY9+whiS7PXM?=
+ =?us-ascii?Q?WbGGoes+jzVx5hUPDZiffj/kC2FvY9MOSgi9oAAcUWbbSWE8lQ=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(376014)(7416014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bFgzMjFZWHZzOVptMkhrd0ZoaTBnNVFUOEw0akJOZzFHVkI1aHFMeXkrMG9z?=
- =?utf-8?B?ZGtNMWc4NmZUYlUvWmVHZTk2R04wUCtmOXc5RXVkdXpGdGo2aExCUzFmZHBh?=
- =?utf-8?B?c2tLbi82Nzl1NEl0V3JMQW1waGN1RUdCQlJGVTIxdGJiUTd5TlhnR01mUHl3?=
- =?utf-8?B?UUFiMmpJTFc0U2t3S0NVc0JxM0pUdytzMU5JbFVXZ09kSGZZOGpqU2Q5WThI?=
- =?utf-8?B?MXlkazV0aGQ3UGQyS2RvTFJLcUZnWnp5elh0U21vYzBYN3IrSmdzUDB1WDht?=
- =?utf-8?B?bFNXQUJWMERBaWpGamtONFFleG0yUGcxUTJ2azBIZ2Nwb1NuZW1NVEtBb0xh?=
- =?utf-8?B?a3kvYm1JUEhWcWVDem1lSkFTU1VvdlRUcjNDM2oyMzBFODNCbC90VU5GQk93?=
- =?utf-8?B?L004MlRtM1JYc3Q3TW9LZVNtQ0ViMmpjVXpXSENhek5JbnpLL3NpbUFGM1Ez?=
- =?utf-8?B?dEZYUnVPYWRHdW9HbTV4Y0RMbXYrM3NzeklJWUJzNXNFZ3ZZeFE0M1ArTWFD?=
- =?utf-8?B?SE5mVlUzSXRJV2RGQU1ZbWI5SFVGbWFCRUlweXY0L3Z1SzEzU0J3VnRqdGRk?=
- =?utf-8?B?amNVYVFNaVhEUi93TDVPS1RQeU1FN3ZpMjBrazA0L0RqUktnSnFxRDMvZFA1?=
- =?utf-8?B?UWpYWitQV3NKL1Y3dHR4cHRMTVR1U2dzTXF5cUJyYTRIVW9LUkJLcWJxcVBN?=
- =?utf-8?B?Z2R0NHlpS0hqRStjemlNR21YTE0xRGJuQlJUN2dxcEJpcUlyOEhzdVdUcUZU?=
- =?utf-8?B?VGptdVhLRG8xRm1qSDd3UlBOemJDY0JJZTR4eFI3R1VINU56Nk5pTEhhVGpm?=
- =?utf-8?B?NWZUYVBVRzl0UVlYT2NMNWlhR0hoSkhhSHFjYjVYODZueE9pZGtuMEo2TEFa?=
- =?utf-8?B?cHltYzA2eXlPdTRtdjVpZEpSbDZtVVVpbWI2RVRMVUNKckdYSDBPczZnMUNp?=
- =?utf-8?B?dE1hNEZGaTZLRVRJZWVBZlN3UWRaN056cEJ1V0RIRmhVSlBlYXlWUGNzdUlJ?=
- =?utf-8?B?ZGh4SDlnME5wMHhaNmIycHVKZnFzZGxhTHBDR3RJUG51VE5RaVJFYTcxcVp0?=
- =?utf-8?B?aXJ4T3lBU3BrRHovcWNxazZlV3VrR3RIOXRMNDJnTWRGc3dtWHdGNkxCUWIz?=
- =?utf-8?B?QmdrWldpb3lyamxuaHlESHFycUxpRHBxd3NnaGxwbVl1eklpQXpnOTZUcW14?=
- =?utf-8?B?eTcyejBHYkFjRU9KRGdOdTBKUUdiTjhpcW9TSXh4T2xMWUNNbXBtNUtEWHA3?=
- =?utf-8?B?My9GY29sZkFBbG84SStnRkJ4cWVYNHVOSDh5bjBHckFxaG55eWxySzUwUFFM?=
- =?utf-8?B?TnFKakM0cXhUQ1V3SFE3a283ME1FYlJJcmhQSmVXZXdzWVNUNWdiRVZIcjR4?=
- =?utf-8?B?SzQ1Q3ZHWTlTekpKdWkyWlpoWG9EdHpJTCs4cm93b1pXNnhrOFI2a2pFVUFz?=
- =?utf-8?B?T2s3cC8vZ1Z0V2hWU3FsaHdrSU5wS3V5NEJQLyt3VEJPc0pkZDNyeGpTekR3?=
- =?utf-8?B?aTNZTXpVNUcrd3QwRGhFWjZkaEtPUTQwVjF5N0ZreXlOTlpwQng5NmdKcllo?=
- =?utf-8?B?cC94cmFzUldJamdSN2I0R3lHUklpeFM0aW9NTmdtVkF1dUtPeWZobDYvYi96?=
- =?utf-8?B?OFV5Vk5FZzY2TlhIQlJ4c2x3TGphM0xCWndaa2p1VzRPTlN2M0dGaE5ocW92?=
- =?utf-8?B?ZUYvUnBmRXMvQUg5ME04RUhjSWhGTmVqb0QyT1NIVi81QXhZcXREbnNxZFRE?=
- =?utf-8?B?MVlyMmZaRWZLU0ljejB6Qzhyd0N0VGozRHhzbWhKVkdabElZZTF6R3pTdy9T?=
- =?utf-8?B?Q0ZLczhLMkcwTmpMYlFPSlFyTFBJejdUSU9qSkR2Wi9odHdNV1ZCYjlSU3F0?=
- =?utf-8?B?Vk9zckswcDRQcE0vQ0NYZ3BGaktLSUJ6MVVud3ViaWkxRUtGei94NUpxQ1BS?=
- =?utf-8?B?c1VaMWUwR0k4V3ZFL2VLYlpIci8wOHFNZE9FUEZpWGZSdVBnbXNyc0FZTGR5?=
- =?utf-8?B?MzE5cmEzdGFvN21FN3R4K21Vb0Y3K1RBbWRndzV3RW9ySmJxZk54U0tOVGNu?=
- =?utf-8?B?TnUzaFdpYXJaM25Va2ZnaTdUc1p6dFUvQzBtVytoS2VzL1V5SkQ2MkFiYTJU?=
- =?utf-8?Q?uH8Th8M2Xidd4pj/0v7gcV3Nh?=
+	=?us-ascii?Q?ZpUebmDIN+re+4gLmKO5q/utAGxPogO9hx9SkuHLTQboOWu+50jUtBHfSiYO?=
+ =?us-ascii?Q?ZfG/Uwsbg3M9tIkX2l12dCo86XeyC+Trd03uUvMcRivZeElmkHIQe8oL6cs2?=
+ =?us-ascii?Q?/maiQad2fsmKY5E47EhmEXURCmZOZk8qZs3LSuVuqv7QKSVQ+HEeaedWMLQR?=
+ =?us-ascii?Q?5HfXWUtSbLoFCq/8xU+/3ImhdvNz3+gjLgtXV5+vNvpFvoqVS9FJx9REXMaj?=
+ =?us-ascii?Q?lt521WeWBj97uYvWRUratC1nkR7vYW4foYVu4AJ2Uskg3UA/3Ap656SIim6E?=
+ =?us-ascii?Q?FA/EmGy5TkQ9OU+i5fY7QJ3fS5keBePvPujM7pudLmd35+ZKmJKDNV2rARZl?=
+ =?us-ascii?Q?+vrLzvJ3kr1DAjYNskT/RtfHTgX7BkDL5zleo0NovkIOoX8qZQPAJeiRLb/c?=
+ =?us-ascii?Q?1u+s9P/QaAPqeShO4+Eh31zUOyUO2teDWjkalGXP7Ai8TGo8xYanah0yV1d3?=
+ =?us-ascii?Q?eNZzo5tmsXImboWByn/xx6PVNjHezmiF1oUglAhQER1yT0s64LL/3Z1qA5lT?=
+ =?us-ascii?Q?kLO2pE4lp3JZ2yGh9Zd8Y50CbfkvhjHjiLX6SS/gI2zSUfivqXbH3xkGwGho?=
+ =?us-ascii?Q?x3eVyezjej9GfJ2GTQPdt8v/P4Xwd0/jz34bzaFPji8I9S3ntWUAjUReyjTX?=
+ =?us-ascii?Q?g6uPZXvBC10t6ykMoRzUdNjX1eDQmN7aZACMOW/LUyTgHtSlK9weL0sD4PY2?=
+ =?us-ascii?Q?kjYmQr4HqyWnvsYl0VEZvEL67dNb8VqB0+PFOIwu5WPhi15SV37lDPiqesj1?=
+ =?us-ascii?Q?ejMBsGJ46fImIIZgtYs5fZvQXN5NZZVjYxUIj1mDb3y02RlxgJtAr87WA0rS?=
+ =?us-ascii?Q?6aTMW/1FZAJQdfQHjDiMU6bc2ELutGMTAeB4ZfFnsc3HYaSgi90cR65UCehi?=
+ =?us-ascii?Q?rmYIDIYoCZZDqMX0wYfxbdQlfiZY0UvUtNkuZHffwVXF1JqC8I4fNiHvspxk?=
+ =?us-ascii?Q?K4CyW61n7ZG+6UtkHQ+3AYqGObDsQ76zl4SPyYRBpjOFLo7hYYuRf3hBfqyP?=
+ =?us-ascii?Q?QejcwQp2QsRdouBB+veLsNBnaJmTEtiafiXE/cWeTphRnE6t806TyI52pfFj?=
+ =?us-ascii?Q?ToG1NxErtYKvbf4ua60AxVWy1rhiOAQaZjhQHDB7Ll7/EXAJzBCdlYbqSxc8?=
+ =?us-ascii?Q?a/SrqDDQ9mrL6TJBUmH9c8GFXkZ2zM/by2BIhJ2AevRhAd0+VkAJZvyOAhoW?=
+ =?us-ascii?Q?ffUy8OfeVH7h/jp8TrRw+YZyvGl6Gs220DJwEn8p3ChnTFfJo/PHLY50Edug?=
+ =?us-ascii?Q?TFzddzr9gxn7c/VdaWXyk7CrlXnx/xrOpk8FuAOMVMfe2vdlPbgr7zBV+jAM?=
+ =?us-ascii?Q?D5QT49SKlxBtSHVyE0xnpMOmEHzKL13Yqoz5okdpGpsyZi7dV6837H5nDQgE?=
+ =?us-ascii?Q?DIj3A3vs1BC8nIQs9SVqR/3pHrEmUmH1cySj8thiHmxc2UGt0QynZMFnSCn6?=
+ =?us-ascii?Q?qf0K5Rk1PRdpblGc1qsTGGjvo13iEtCsi4ubAzcy0AtTAMyq4f8cUeuKBGTO?=
+ =?us-ascii?Q?iqFovW0iJ+PfQSFaourSoXMS/YzvuYZSp/Vl/+wkNMMj0Tu4Rn+y8Dlx4njA?=
+ =?us-ascii?Q?iWYN8iMVwJxeNikN7TA=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 80db821e-857f-4dc2-d12d-08dd0d86813f
+X-MS-Exchange-CrossTenant-Network-Message-Id: b1dc8866-85b2-4d1e-073d-08dd0d86d493
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2024 19:22:30.2659
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2024 19:24:50.0512
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fXezno+8Ch8Al2QSNITJABynmrqheXfCTp//2vfPVBCgXSq7lhg7PlIQo0IToy0xkYLtj6yje17V39Hd+MkATA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: UvfVUsUJsKYz0ebBJbeMqgimiCp/Zmtc+pWiA6d4/UZ99bqomK7OtPYRe7Uvl+CkEeRX9HW+t/2ToMgdQnag+g==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8103
 
-On Sun, Nov 24, 2024 at 01:02:39PM +0530, Manivannan Sadhasivam wrote:
-> On Sat, Nov 16, 2024 at 09:40:43AM -0500, Frank Li wrote:
-> > Introduce the helper function pci_epf_align_addr() to adjust addresses
+On Sat, Nov 23, 2024 at 03:26:37PM +0000, Jonathan Cameron wrote:
+> On Mon, 11 Nov 2024 16:38:58 -0500
+> Frank Li <Frank.Li@nxp.com> wrote:
 >
-> pci_epf_align_inbound_addr()?
->
-> > according to PCI BAR alignment requirements, converting addresses into base
-> > and offset values.
+> > Use devm_* and dev_err_probe() simplify probe function and remove
+> > vf610_adc_remove().
 > >
+> > Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
 > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Hi Frank,
+>
+> One (hopefully final) question inline.
+>
+> Jonathan
+>
 > > ---
-> > change from v7 to v8
-> > - change name to pci_epf_align_inbound_addr()
-> > - update comment said only need for memory, which not allocated by
-> > pci_epf_alloc_space().
+> > Change from v3 to v4
+> > - keep vref_uv as u32
+> > - keep original regulator part and only add
+> > devm_add_action_or_reset(&pdev->dev, vf610_adc_remove, info)
 > >
-> > change from v6 to v7
-> > - new patch
+> > Change from v2 to v3
+> > - change vref_uv to int from u32 to fix below warning
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Closes: https://lore.kernel.org/oe-kbuild-all/202411070633.NIrO7Ert-lkp@intel.com/
+> > smatch warnings:
+> > drivers/iio/adc/vf610_adc.c:857 vf610_adc_probe() warn: unsigned 'info->vref_uv' is never less than zero.
+> >
+> > vim +857 drivers/iio/adc/vf610_adc.c
+> >
+> > Change from v1 to v2
+> > - add Haibo's review tag
 > > ---
-> >  drivers/pci/endpoint/pci-epf-core.c | 45 +++++++++++++++++++++++++++++++++++++
-> >  include/linux/pci-epf.h             | 14 ++++++++++++
-> >  2 files changed, 59 insertions(+)
+> >  drivers/iio/adc/vf610_adc.c | 79 ++++++++++++-------------------------
+> >  1 file changed, 26 insertions(+), 53 deletions(-)
 > >
-> > diff --git a/drivers/pci/endpoint/pci-epf-core.c b/drivers/pci/endpoint/pci-epf-core.c
-> > index 8fa2797d4169a..4dfc218ebe20b 100644
-> > --- a/drivers/pci/endpoint/pci-epf-core.c
-> > +++ b/drivers/pci/endpoint/pci-epf-core.c
-> > @@ -464,6 +464,51 @@ struct pci_epf *pci_epf_create(const char *name)
-> >  }
-> >  EXPORT_SYMBOL_GPL(pci_epf_create);
+> > diff --git a/drivers/iio/adc/vf610_adc.c b/drivers/iio/adc/vf610_adc.c
+> > index 4d83c12975c53..d4b778799755b 100644
+> > --- a/drivers/iio/adc/vf610_adc.c
+> > +++ b/drivers/iio/adc/vf610_adc.c
+> > @@ -814,6 +814,14 @@ static const struct of_device_id vf610_adc_match[] = {
+> >  };
+> >  MODULE_DEVICE_TABLE(of, vf610_adc_match);
 > >
-> > +/**
-> > + * pci_epf_align_inbound_addr() - Get base address and offset that match bar's
->
-> BAR's
->
-> > + *			  alignment requirement
-> > + * @epf: the EPF device
-> > + * @addr: the address of the memory
-> > + * @bar: the BAR number corresponding to map addr
-> > + * @base: return base address, which match BAR's alignment requirement, nothing
-> > + *	  return if NULL
->
-> Below, you are updating 'base' only if it is not NULL. Why would anyone call
-> this API with 'base' and 'offset' set to NULL?
-
-Some time, they may just want one of two.
-
->
-> > + * @off: return offset, nothing return if NULL
-> > + *
-> > + * Helper function to convert input 'addr' to base and offset, which match
-> > + * BAR's alignment requirement.
-> > + *
-> > + * The pci_epf_alloc_space() function already accounts for alignment. This is
-> > + * primarily intended for use with other memory regions not allocated by
-> > + * pci_epf_alloc_space(), such as peripheral register spaces or the trigger
-> > + * address for a platform MSI controller.
-> > + */
-> > +int pci_epf_align_inbound_addr(struct pci_epf *epf, enum pci_barno bar,
-> > +			       u64 addr, u64 *base, size_t *off)
+> > +static void vf610_adc_action_remove(void *d)
 > > +{
-> > +	const struct pci_epc_features *epc_features;
-> > +	u64 align;
+> > +	struct vf610_adc *info = d;
 > > +
-> > +	epc_features = pci_epc_get_features(epf->epc, epf->func_no, epf->vfunc_no);
-> > +	if (!epc_features) {
-> > +		dev_err(&epf->dev, "epc_features not implemented\n");
-> > +		return -EOPNOTSUPP;
-> > +	}
-> > +
-> > +	align = epc_features->align;
-> > +	align = align ? align : 128;
-> > +	if (epc_features->bar[bar].type == BAR_FIXED)
-> > +		align = max(epc_features->bar[bar].fixed_size, align);
-> > +
-> > +	if (base)
-> > +		*base = round_down(addr, align);
-> > +
-> > +	if (off)
-> > +		*off = addr & (align - 1);
-> > +
-> > +	return 0;
-> > +}
-> > +EXPORT_SYMBOL_GPL(pci_epf_align_inbound_addr);
-> > +
-> >  static void pci_epf_dev_release(struct device *dev)
-> >  {
-> >  	struct pci_epf *epf = to_pci_epf(dev);
-> > diff --git a/include/linux/pci-epf.h b/include/linux/pci-epf.h
-> > index 5374e6515ffa0..eff73ccb5e702 100644
-> > --- a/include/linux/pci-epf.h
-> > +++ b/include/linux/pci-epf.h
-> > @@ -238,6 +238,20 @@ void *pci_epf_alloc_space(struct pci_epf *epf, size_t size, enum pci_barno bar,
-> >  			  enum pci_epc_interface_type type);
-> >  void pci_epf_free_space(struct pci_epf *epf, void *addr, enum pci_barno bar,
-> >  			enum pci_epc_interface_type type);
-> > +
-> > +int pci_epf_align_inbound_addr(struct pci_epf *epf, enum pci_barno bar,
-> > +			       u64 addr, u64 *base, size_t *off);
-> > +static inline int pci_epf_align_inbound_addr_lo_hi(struct pci_epf *epf, enum pci_barno bar,
-> > +						   u32 low, u32 high, u64 *base, size_t *off)
+> > +	if (info->vref)
+> > +		regulator_disable(info->vref);
 >
-> Why can't you just use pci_epf_align_inbound_addr() directly? Or the caller
-> could pass u64 address directly.
+> Why is the check on info->vref needed?
+> vref is required to reach the point where this callback is registered.
+>
+> > +}
+> > +
+> >  static int vf610_adc_probe(struct platform_device *pdev)
+> >  {
+> >  	struct device *dev = &pdev->dev;
+> > @@ -823,10 +831,8 @@ static int vf610_adc_probe(struct platform_device *pdev)
+> >  	int ret;
+> >
+> >  	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(struct vf610_adc));
+> > -	if (!indio_dev) {
+> > -		dev_err(&pdev->dev, "Failed allocating iio device\n");
+> > -		return -ENOMEM;
+> > -	}
+> > +	if (!indio_dev)
+> > +		return dev_err_probe(&pdev->dev, -ENOMEM, "Failed allocating iio device\n");
+> >
+> >  	info = iio_priv(indio_dev);
+> >  	info->dev = &pdev->dev;
+> > @@ -842,17 +848,12 @@ static int vf610_adc_probe(struct platform_device *pdev)
+> >  	ret = devm_request_irq(info->dev, irq,
+> >  				vf610_adc_isr, 0,
+> >  				dev_name(&pdev->dev), indio_dev);
+> > -	if (ret < 0) {
+> > -		dev_err(&pdev->dev, "failed requesting irq, irq = %d\n", irq);
+> > -		return ret;
+> > -	}
+> > +	if (ret < 0)
+> > +		return dev_err_probe(&pdev->dev, ret, "failed requesting irq, irq = %d\n", irq);
+> >
+> > -	info->clk = devm_clk_get(&pdev->dev, "adc");
+> > -	if (IS_ERR(info->clk)) {
+> > -		dev_err(&pdev->dev, "failed getting clock, err = %ld\n",
+> > -						PTR_ERR(info->clk));
+> > -		return PTR_ERR(info->clk);
+> > -	}
+> > +	info->clk = devm_clk_get_enabled(&pdev->dev, "adc");
+> > +	if (IS_ERR(info->clk))
+> > +		return dev_err_probe(&pdev->dev, PTR_ERR(info->clk), "failed getting clock\n");
+> >
+> >  	info->vref = devm_regulator_get(&pdev->dev, "vref");
+> >  	if (IS_ERR(info->vref))
+> > @@ -862,6 +863,10 @@ static int vf610_adc_probe(struct platform_device *pdev)
+> >  	if (ret)
+> >  		return ret;
+> >
+> > +	ret = devm_add_action_or_reset(&pdev->dev, vf610_adc_action_remove, info);
+>
+> As above, but this time if info->vref is not set, we have already returned so it
+> must be set and doesn't need checking the callback.
 
-
-msi message sperate low32 and high32.  (h << 32 | low) is quite easy to
-cause build warning.  it should be ((u64) h << 32) | low. Avoid copy this
-logic code at many EPF places.
+Yes, you are right. Needn't check it at callback.
 
 Frank
-
 >
-> - Mani
->
-> > +{
-> > +	u64 addr = high;
+> > +	if (ret)
+> > +		return ret;
 > > +
-> > +	addr <<= 32;
-> > +	addr |= low;
-> > +
-> > +	return pci_epf_align_inbound_addr(epf, bar, addr, base, off);
-> > +}
-> > +
-> >  int pci_epf_bind(struct pci_epf *epf);
-> >  void pci_epf_unbind(struct pci_epf *epf);
-> >  int pci_epf_add_vepf(struct pci_epf *epf_pf, struct pci_epf *epf_vf);
+> >  	info->vref_uv = regulator_get_voltage(info->vref);
 > >
-> > --
-> > 2.34.1
+> >  	device_property_read_u32_array(dev, "fsl,adck-max-frequency", info->max_adck_rate, 3);
+> > @@ -879,52 +884,21 @@ static int vf610_adc_probe(struct platform_device *pdev)
+> >  	indio_dev->channels = vf610_adc_iio_channels;
+> >  	indio_dev->num_channels = ARRAY_SIZE(vf610_adc_iio_channels);
 > >
+> > -	ret = clk_prepare_enable(info->clk);
+> > -	if (ret) {
+> > -		dev_err(&pdev->dev,
+> > -			"Could not prepare or enable the clock.\n");
+> > -		goto error_adc_clk_enable;
+> > -	}
+> > -
+> >  	vf610_adc_cfg_init(info);
+> >  	vf610_adc_hw_init(info);
+> >
+> > -	ret = iio_triggered_buffer_setup(indio_dev, &iio_pollfunc_store_time,
+> > -					NULL, &iio_triggered_buffer_setup_ops);
+> > -	if (ret < 0) {
+> > -		dev_err(&pdev->dev, "Couldn't initialise the buffer\n");
+> > -		goto error_iio_device_register;
+> > -	}
+> > +	ret = devm_iio_triggered_buffer_setup(&pdev->dev, indio_dev, &iio_pollfunc_store_time,
+> > +					      NULL, &iio_triggered_buffer_setup_ops);
+> > +	if (ret < 0)
+> > +		return dev_err_probe(&pdev->dev, ret, "Couldn't initialise the buffer\n");
+> >
+> >  	mutex_init(&info->lock);
+> >
+> > -	ret = iio_device_register(indio_dev);
+> > -	if (ret) {
+> > -		dev_err(&pdev->dev, "Couldn't register the device.\n");
+> > -		goto error_adc_buffer_init;
+> > -	}
+> > +	ret = devm_iio_device_register(&pdev->dev, indio_dev);
+> > +	if (ret)
+> > +		return dev_err_probe(&pdev->dev, ret, "Couldn't register the device.\n");
+> >
+> >  	return 0;
+> > -
+> > -error_adc_buffer_init:
+> > -	iio_triggered_buffer_cleanup(indio_dev);
+> > -error_iio_device_register:
+> > -	clk_disable_unprepare(info->clk);
+> > -error_adc_clk_enable:
+> > -	regulator_disable(info->vref);
+> > -
+> > -	return ret;
+> > -}
+> > -
+> > -static void vf610_adc_remove(struct platform_device *pdev)
+> > -{
+> > -	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
+> > -	struct vf610_adc *info = iio_priv(indio_dev);
+> > -
+> > -	iio_device_unregister(indio_dev);
+> > -	iio_triggered_buffer_cleanup(indio_dev);
+> > -	regulator_disable(info->vref);
+> > -	clk_disable_unprepare(info->clk);
+> >  }
+> >
+> >  static int vf610_adc_suspend(struct device *dev)
+> > @@ -972,7 +946,6 @@ static DEFINE_SIMPLE_DEV_PM_OPS(vf610_adc_pm_ops, vf610_adc_suspend,
+> >
+> >  static struct platform_driver vf610_adc_driver = {
+> >  	.probe          = vf610_adc_probe,
+> > -	.remove         = vf610_adc_remove,
+> >  	.driver         = {
+> >  		.name   = DRIVER_NAME,
+> >  		.of_match_table = vf610_adc_match,
 >
-> --
-> மணிவண்ணன் சதாசிவம்
