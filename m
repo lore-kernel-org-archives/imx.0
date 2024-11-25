@@ -1,389 +1,353 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2058.outbound.protection.outlook.com [40.107.104.58])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A8838385
-	for <imx@lists.linux.dev>; Mon, 25 Nov 2024 02:45:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.58
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732502711; cv=fail; b=La7g3a7vR1I+njwMi6FTacp8luwxZzXaqid2i+LO+CokLZTvDdBgWLnS1ulDr8dg5bWUx8uvzwN+T1bo5kScMem+XdTyCnTGtzP7pNabgdf2wTtbTMFaTnkozjm8InazqXPU5ybDdn2QGtLXMHBKRt/ztvG2nMjtV+6jP3BO8Uo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732502711; c=relaxed/simple;
-	bh=oJzRzeDg+v3K3CjIL+TN7HuYA+6iJWwGJV6e/VDWQHQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=scht5Q2s2k7EZsF7/fUlLA+H9JHKgxTKc+op4FHJxealHlvFOjIavbi+FHa5wrJ9hpYO4i5rcQ8dDk4gSgzGWop1T4EYf6Czmdp/MyIjpLJoCbv+vWB8/2YxNpeVAfWYarrbxQd2SE10q6h76/yPCb1UdyjH4/AcKoRWv6Nfh5o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=GcJrykKN; arc=fail smtp.client-ip=40.107.104.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7FA1A296
+	for <imx@lists.linux.dev>; Mon, 25 Nov 2024 08:18:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732522727; cv=none; b=iIN3L7UxEnYBbrVrnpyLQZ9HAQSdm+maIF5wjG19Rp40kHZmdKZI2ZhdhUrQwk4LXzYXoeIUa7E6khWWKuRN50yIdDuSsWhtDgXZ8q0wLfuEJybf3HdeYrTC++7i0UDvKlCQ3+0cVqJ9wJ7H3U4MYVj2J84owI4YqCopewwtA3w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732522727; c=relaxed/simple;
+	bh=x+OjlsSswDeHDUjfGS7SsM6lq4dsPQkyisgWVq6VdT8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=IYpTF9OBrUCodQMet9mZmSUKN3ImcIZzJulK0eG9vIY01I5tUPCGYs0iz/ITeADLZHpdsYJNizSVVntCsxEVjE+b20AsUwTzw/1sNhsapImsrqAacWWwGzbnhe2IMMXeXcxZnmLnSMXxEVHOKAK+//AtWs6pSLANzqK4uorrAZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=qE46I8Pc; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="GcJrykKN"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QHar4JuMiZZ1ydajp0DnVkUxslLRyO19DYfg/1OIw9B9V0+BqVWO5HHcZTLJgmmXNv7OwgabLQtICcIjgD92dc/yGmU285GXQ5iFk0mcCxbRYNod4j5SgkdaFUdBYBVujZeP2m1g/UyBbfyasJUQkTK9/W07tJs6Q5mSMGDi9Hhu9TDh5RK6MShnkeDxZcetVdoOk7vcX1nnkY/M+xZFf6tzVtrSFwXVjpO6Jqq9K0el3EFH2qDxEqT5L/Z/A6jedj8rwu730GruBAXgGq+ekfUELi4nQCfY/RuTdwH56Q6AZJaTvtDswK+F+I6SNxR6n3WG1xVArIG+Y7pR2IJJpA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sbfrLrRO5iNjfojsiXpqsVRUkGjrCouFwFMYCr+0x5k=;
- b=iKNYvVY+jwCqHpuR+eVOGXInaPp5Ez6BVMfbi4ulAnwUlyMP/gj6LaSdx2tmYIpuAtt5ceWalR8vkA/21WZFCJ9CgEB2ESYk5FN7d2sfrVLK1G19i5b3ncBDc/aqV+FSxKQXl8rZFRJ+ijmasNYkHIex4ZTy8KnPgxJKAu09N3EjyRD3diMQWvC4nGSZsRYxF2HLh2iPjg0YgpcL2dONB9JHmyokNVZPDOZXyceTTO/Ik+HYE2dy/I0blx5A9UVzdoe9eJyrW4YtCIR7LhzFWwKYjH1a4o5xWMy5avR5eoMxlFFmaCjJXQ2W2JbN2Nf5AxBEyHygKPLtero1+A2NhA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sbfrLrRO5iNjfojsiXpqsVRUkGjrCouFwFMYCr+0x5k=;
- b=GcJrykKNDEKOHczjmhVzwPgKGdZIbuzhHmM2A0A4nuHj1fFPdwG6REyioPq0zZbEiDB/kmxOWdXFlLjbAiPQVme1Apgn/gw58x+qXy64Cf4uIrj9mbrWcnphcOV7YnI8/ZUFv5WRBukHwnHeNrj2Dss9cuLqRWlTX7EThY6j/73Ykq0S9CfMFT/xc7ibPNR27QGh5qD9ZqLVW63DIN0JmWc/HTb5X04r3TsejV83W6f1jW5gYkUF/y8oIkn4RWZ0u+DOL/CC5afez/IExsdlA9hMuzkEhXFr+/a4Xqo7qLk/8s8UDSdYjL1QIN+mnMSi2tENJmCUAFizalXEqwzIEA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by VI0PR04MB10496.eurprd04.prod.outlook.com (2603:10a6:800:21a::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.22; Mon, 25 Nov
- 2024 02:45:05 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%7]) with mapi id 15.20.8182.019; Mon, 25 Nov 2024
- 02:45:05 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	florian.fainelli@broadcom.com,
-	heiko.stuebner@cherry.de
-Cc: netdev@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="qE46I8Pc"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=Q9A9zS7HvraKzjdgfn8Ov4S8PCWJdU9OXYoLlZl+Xp0=; b=qE46I8Pc3z2w2J3YnMWbv2Z1K4
+	PRZmexis1BUMzS+EWwDLe02MAATE8lZ2d71upjYb7m9O+gf3UX9DNNz5nSNtMCMtsDi3Xh4gPvTXp
+	cGBExHbnkcUIYx+F88RPF5igvSE/2cA7iuVPbqUPG46rqBambtVAB9Jam+jFFMJ2Yv9Xf7SNZzdf5
+	wYBgiI5dsOaCJmY3UCINCO4gG+V0OJ9YLwnNhJFa5V47aVHJGGTL+A5RM6vOvsgNL9HCu2GbPOAWG
+	np3EaeIRxD/HaqAt8W7Jh9HyjD+oovGdJvEL/7aUFThRjxrr/t2wYeV3UwzemOD1bdF+SMIuAHPAN
+	JX4zTluA==;
+Received: from [91.26.50.162] (port=58340 helo=and-HP-Z4..)
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <andrej.picej@norik.com>)
+	id 1tFUIu-00Eq70-0d;
+	Mon, 25 Nov 2024 09:18:43 +0100
+From: Andrej Picej <andrej.picej@norik.com>
+To: shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org
+Cc: imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH net] net: phy: micrel: Dynamically control external clock of KSZ PHY
-Date: Mon, 25 Nov 2024 10:29:05 +0800
-Message-Id: <20241125022906.2140428-1-wei.fang@nxp.com>
+	upstream@lists.phytec.de
+Subject: [PATCH 11/15] arm64: dts: imx8mm-phyboard-polis: Add support for PEB-AV-10
+Date: Mon, 25 Nov 2024 09:18:10 +0100
+Message-Id: <20241125081814.397352-12-andrej.picej@norik.com>
 X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR02CA0046.apcprd02.prod.outlook.com
- (2603:1096:4:196::15) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+In-Reply-To: <20241125081814.397352-1-andrej.picej@norik.com>
+References: <20241125081814.397352-1-andrej.picej@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|VI0PR04MB10496:EE_
-X-MS-Office365-Filtering-Correlation-Id: e7f20e28-1f75-4f68-72c6-08dd0cfb2a9e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|52116014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?s3u/gOeWd2hTyv3y+F/hL2Kl7xfz9RX0j+strBqk1k3Y3LwTo+dFhFvltJ/4?=
- =?us-ascii?Q?VWU9KZRT0IO5YM2LV4zQVhnbmBg68hXS6C3uuhzL5zbd/mNRZWWx2ze1ijxA?=
- =?us-ascii?Q?1e8I5mmxqGFdV3kACphhsyMVhXyrc8qFcP+/ACbQLTo37f/rwb72COGZxv5Y?=
- =?us-ascii?Q?J9A5d7uY2o/itT7Qfx5yLTDrRX2NYaPXyEVQwVQMNZDZJH9z2v4to+RjcHm6?=
- =?us-ascii?Q?k0RpZrcE34x4k0zE5YpdRbDj1Z87+RMeFUNTnc3l0Qm9je6sbuHbvr0J/sXX?=
- =?us-ascii?Q?/dlmFGNUTrF/dLk22c8K+JZ07ziGPvOKTxQb0Fd19blXsY34wJQ50DEKUBb6?=
- =?us-ascii?Q?SJvz2Dw9lLa+TzwYYAFfYFPIZ5qj9o/rb83S+/BNJnyaNGGRg6EcAZNN35Xa?=
- =?us-ascii?Q?oR6TlrqPJFyx+EPUSncggu5XUoUXg1cw+tRNqo2ZqJkY/bdvOn93PKY1vVou?=
- =?us-ascii?Q?NdrqPKtQTTeqX2VOVHUo48rwpGkZZTNvJXJ+0CTcNlX0ePyQuZI87772AfLW?=
- =?us-ascii?Q?EBYUvucF+NR++R5lruZBmnqz14gDH6ywfCL4pWUWqTdG5IP8QXTBJXn1x+07?=
- =?us-ascii?Q?XW1+z2YzXGmUG0EzLckxuXMux0M8UCvbuMtIXjrna03TV7D7smJAQaYbS9XU?=
- =?us-ascii?Q?t3odl5oentsQ+lrGjq2C63IwKVy4gSfrwmyQWHOcdKxjiUiL696ajDyI8GLO?=
- =?us-ascii?Q?L5BEGY3FpGjhn/zvvJV9fvVQgXU8Sg6WiYlUqnYsQm5DrU3zuJ4Pa0GvH653?=
- =?us-ascii?Q?FRpHpaRjgKHbUEkicNbnsgjEtbCO0G6abPtIG6ksK/Q7liuwvTky6a1aSsHJ?=
- =?us-ascii?Q?mz1ONm/VZH1Fe8wir1IJbU8mNcNdl3n7m6WMERXUtxeNB09eDvLNaauwkWh7?=
- =?us-ascii?Q?cGVO4MR6KZ9mgcuYvb5GNQR7R2EXCd/Ufvad559nG7M6xsVntUQbS0Q/teLn?=
- =?us-ascii?Q?bfCHQLqzyMIBxm7ngZ/ZOquMAkWLUE6ct1DRXS6TH7vk32BztprzlNryiHKa?=
- =?us-ascii?Q?ccTKzX49UgN9s8fgfELg35w+qEe4NRoa289UPE8ZRwT00/TyzDB8jX8vBDT+?=
- =?us-ascii?Q?lsUC4Eo95jxU4Y3QhTYKvnFCMui4wzUPT3Zx9Gia4bQc8nSigoHDFIHfiMKN?=
- =?us-ascii?Q?1gu+B5E1gxx5NnraKEdR8XnK1PGNv1eWGXaHs//oo6I6p8JDSJDHCKpvO0YK?=
- =?us-ascii?Q?be/tVxHzv4rXLYZK3wQsrqMGr6Nsk5esWt3c6fDN453xU6iFhXn63YBc3mNM?=
- =?us-ascii?Q?Oyz9SGC32iSpPsLIECRAq9uBcUJFqdgArOTmnpdKehKGjlP8Qp353jTg515h?=
- =?us-ascii?Q?rr0ij77qiQQpjnuMjzGOAdJ7iwipTuxeyu9nMy8h44i8uw3mugOUygleW+Gt?=
- =?us-ascii?Q?Mdum1YWhfvraaNlJefJ4xURWqDenBlrtDXxYDzc/Iu4kf0KAPA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?WBmTVFNsKzXdcmIJTD3OGTa3GeMrAPn8z0eiaIYzN02E5Zl7IvQOH/TF1QCI?=
- =?us-ascii?Q?qFYCg9VKoJRt0YdA34VQ5IEd+D4t81NNcpa7mvWbskL2iRSxDXOsEPXzOkDv?=
- =?us-ascii?Q?I9kbGuS7ZSRlR3wEr2jiDBdj1izdI7Qspwu5X/6wzPe30nFtenW8MieDSEH9?=
- =?us-ascii?Q?LiUEKrp6uodxRuNja6KC4vmSOacqMHU4DH2Orzopuoe+q7pWPU8fRrp5UtQy?=
- =?us-ascii?Q?VH6EFjYCAFHm5Eu1MzekcDVgt5iNSdnoXnTvjasez+SqWvkfwZUzEglwkCpI?=
- =?us-ascii?Q?Q6bzVfRud10eA1nhYmziM8dRnm7SeoBoTV2yfBICisHh3xLVgizPV0o3NY6z?=
- =?us-ascii?Q?CEAgmTzl8KB4zQZ5TE5XetdG9ehKf64dNy9LgYtih1RtCOYws7LCYXAAITkr?=
- =?us-ascii?Q?9UFkiApq6p6UcAqgIfLzPilHWRPhDnWcZMa4aXTl4C8HX1v0sLQwt3TcYrYz?=
- =?us-ascii?Q?ROFhuUtThc6W+JRwByiMVMTDF2jMRoXGdCkF2O6zr/tkfdG3vz6Zv7bnjQDR?=
- =?us-ascii?Q?CSl03xUZiZmIeeIzmh09sNrNu4fSlb42h6s23qUNkia1/36e1k7DY7yhF3gS?=
- =?us-ascii?Q?bwYtL54UVOuVTSL35wL//KnC3jLpB3fbXcIXWM1u8qpBXaX1714+4ksTWuyt?=
- =?us-ascii?Q?20YLQFlEnOpl8hLjSjtqPAkdwHhWm1Ro/kQmInvOG+6x/CZGGvEPxlqtWWbL?=
- =?us-ascii?Q?9MahsQX/kxARy8HvuaM36oUJa/4uglYe9UzbNeJfDx32IxfCyVmHZWgKL4QS?=
- =?us-ascii?Q?59uBqyYtEeMwgjYT12m6Iw/z2OAW71dHp9oWvdqCR+h/TBJU5ZXl6SbD8ttk?=
- =?us-ascii?Q?B2/CY6HtccDwNgygCHD4HNxmE+I2qi+KvV0hpRpkkujWOSrxxJrL/eCBHkyU?=
- =?us-ascii?Q?EiUahrOS6WG0g5GIjCjBTX82GRey1R0w6LopJtjlwH8gfyjgCQE96LEfCShh?=
- =?us-ascii?Q?wqQ0r5tuotShFELGrQUcKYaRl6lpLh5sCErmEWbnmoJ2PrIK5oDR+kvOzxJF?=
- =?us-ascii?Q?tz8ya7xhuq6mzy/lIMqsuCQhOHXNC9fUoxZsQ5ZcLY7nGWFRZEJxYkzvAWsF?=
- =?us-ascii?Q?HM1qeCIJ3DZO5lxD7DPdOiATd5VPeQ/tZ3vNoPjBNdKwFAAhaIJJ3jUhF4Ik?=
- =?us-ascii?Q?VfNKGnUzR0WSXes3RDWk3E3vUrCD8Y2/ObK4QMN+sFo6QIA+CkkCuFLYJB/s?=
- =?us-ascii?Q?2IXVSA6MLhOqLqfgl4RkIh3Zu/yYVqjdc4bUORoDIjsVWJ9xU9BgxzywW4gN?=
- =?us-ascii?Q?8Jf1EvXY9/M8O6HkhaKtgVtRH2XNqU3YyXONTSb/dqHbrUl9XtYUc1iDLoi1?=
- =?us-ascii?Q?YtOQIzM04M5HNSckkphZAIw6MAHmZFE2sBOvzuZARzXq+Momorz0ALb5VVtA?=
- =?us-ascii?Q?NU7q1B+lB5cTPGCWRGvBer7+iBWU2KAkjhD8rIwG4zQHUf5VwERIGwMyDSS/?=
- =?us-ascii?Q?K31crt17s9VX9PyI93hZDDTplSRfx/bAboRRIkFqbkv5QBmgO4JrGUJVPYF0?=
- =?us-ascii?Q?m/cKRDr7FudRohqUp43ks/CSudJ6bTRfz1TwhRmwrylwEACbKk88B7SZTKBL?=
- =?us-ascii?Q?XHyBRAELNpLQLAjCbf6OBnUSx3+losV3y1uSO1do?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e7f20e28-1f75-4f68-72c6-08dd0cfb2a9e
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2024 02:45:04.9928
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tIg5Jska5iODeyH5NUJWdUECnFdj1c1cOtmVLzLkFzQ5ox0keb64DZLsVoJNefNC/4SAxI/oExKSJVUPrbpN2Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10496
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
+X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On the i.MX6ULL-14x14-EVK board, when using the 6.12 kernel, it is found
-that after disabling the two network ports, the clk_enable_count of the
-enet1_ref and enet2_ref clocks is not 0 (these two clocks are used as the
-clock source of the RMII reference clock of the two KSZ8081 PHYs), but
-there is no such problem in the 6.6 kernel.
+From: Teresa Remmet <t.remmet@phytec.de>
 
-After analysis, we found that since the commit 985329462723 ("net: phy:
-micrel: use devm_clk_get_optional_enabled for the rmii-ref clock"), the
-external clock of KSZ PHY has been enabled when the PHY driver probes,
-and it can only be disabled when the PHY driver is removed. This causes
-the clock to continue working when the system is suspended or the network
-port is down.
+PEB-AV-10 is an Audio/Video extension module which extends
+phyBOARD-Polis i.MX8MM.
+With MIPI DSI to LVDS bridge already populated on SoM the PEB-AV-10 adds
+support for:
+- connecting 10" display,
+- audio with TLV320AIC and
+- EEPROM.
 
-To solve this problem, the clock is enabled when resume() of the PHY
-driver is called, and the clock is disabled when suspend() is called.
-Since the PHY driver's resume() and suspend() interfaces are not called
-in pairs, an additional clk_enable flag is added. When suspend() is
-called, the clock is disabled only if clk_enable is true. Conversely,
-when resume() is called, the clock is enabled if clk_enable is false.
-
-Fixes: 985329462723 ("net: phy: micrel: use devm_clk_get_optional_enabled for the rmii-ref clock")
-Fixes: 99ac4cbcc2a5 ("net: phy: micrel: allow usage of generic ethernet-phy clock")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+Signed-off-by: Andrej Picej <andrej.picej@norik.com>
 ---
- drivers/net/phy/micrel.c | 103 ++++++++++++++++++++++++++++++++++++---
- 1 file changed, 95 insertions(+), 8 deletions(-)
+ arch/arm64/boot/dts/freescale/Makefile        |   5 +
+ .../imx8mm-phyboard-polis-peb-av-10.dtso      | 237 ++++++++++++++++++
+ 2 files changed, 242 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 3ef508840674..44577b5d48d5 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -432,10 +432,12 @@ struct kszphy_ptp_priv {
- struct kszphy_priv {
- 	struct kszphy_ptp_priv ptp_priv;
- 	const struct kszphy_type *type;
-+	struct clk *clk;
- 	int led_mode;
- 	u16 vct_ctrl1000;
- 	bool rmii_ref_clk_sel;
- 	bool rmii_ref_clk_sel_val;
-+	bool clk_enable;
- 	u64 stats[ARRAY_SIZE(kszphy_hw_stats)];
- };
- 
-@@ -2050,8 +2052,27 @@ static void kszphy_get_stats(struct phy_device *phydev,
- 		data[i] = kszphy_get_stat(phydev, i);
- }
- 
-+static void kszphy_enable_clk(struct kszphy_priv *priv)
-+{
-+	if (!priv->clk_enable && priv->clk) {
-+		clk_prepare_enable(priv->clk);
-+		priv->clk_enable = true;
-+	}
-+}
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index 9d3df8b218a2..b411d76c3d1d 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -122,6 +122,11 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mm-mx8menlo.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mm-nitrogen-r2.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mm-phg.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mm-phyboard-polis-rdk.dtb
 +
-+static void kszphy_disable_clk(struct kszphy_priv *priv)
-+{
-+	if (priv->clk_enable && priv->clk) {
-+		clk_disable_unprepare(priv->clk);
-+		priv->clk_enable = false;
-+	}
-+}
++imx8mm-phyboard-polis-peb-av-10-dtbs += imx8mm-phyboard-polis-rdk.dtb imx8mm-phyboard-polis-peb-av-10.dtbo
 +
- static int kszphy_suspend(struct phy_device *phydev)
- {
-+	struct kszphy_priv *priv = phydev->priv;
-+	int ret;
++dtb-$(CONFIG_ARCH_MXC) += imx8mm-phyboard-polis-peb-av-10.dtb
 +
- 	/* Disable PHY Interrupts */
- 	if (phy_interrupt_is_valid(phydev)) {
- 		phydev->interrupts = PHY_INTERRUPT_DISABLED;
-@@ -2059,7 +2080,13 @@ static int kszphy_suspend(struct phy_device *phydev)
- 			phydev->drv->config_intr(phydev);
- 	}
- 
--	return genphy_suspend(phydev);
-+	ret = genphy_suspend(phydev);
-+	if (ret)
-+		return ret;
+ dtb-$(CONFIG_ARCH_MXC) += imx8mm-phygate-tauri-l.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mm-prt8mm.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mm-tqma8mqml-mba8mx.dtb
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso
+new file mode 100644
+index 000000000000..a9de42cf14be
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso
+@@ -0,0 +1,237 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2024 PHYTEC Messtechnik GmbH
++ * Author: Teresa Remmet <t.remmet@phytec.de>
++ */
 +
-+	kszphy_disable_clk(priv);
++/dts-v1/;
++/plugin/;
 +
-+	return 0;
- }
- 
- static void kszphy_parse_led_mode(struct phy_device *phydev)
-@@ -2088,8 +2115,11 @@ static void kszphy_parse_led_mode(struct phy_device *phydev)
- 
- static int kszphy_resume(struct phy_device *phydev)
- {
-+	struct kszphy_priv *priv = phydev->priv;
- 	int ret;
- 
-+	kszphy_enable_clk(priv);
++#include <dt-bindings/clock/imx8mm-clock.h>
++#include <dt-bindings/gpio/gpio.h>
++#include "imx8mm-pinfunc.h"
 +
- 	genphy_resume(phydev);
- 
- 	/* After switching from power-down to normal mode, an internal global
-@@ -2112,6 +2142,24 @@ static int kszphy_resume(struct phy_device *phydev)
- 	return 0;
- }
- 
-+static int ksz8041_resume(struct phy_device *phydev)
-+{
-+	struct kszphy_priv *priv = phydev->priv;
++&{/} {
++	backlight: backlight {
++		compatible = "pwm-backlight";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_lcd>;
++		default-brightness-level = <6>;
++		pwms = <&pwm4 0 50000 0>;
++		power-supply = <&reg_vdd_3v3_s>;
++		enable-gpios = <&gpio5 1 GPIO_ACTIVE_HIGH>;
++		brightness-levels= <0 4 8 16 32 64 128 255>;
++	};
 +
-+	kszphy_enable_clk(priv);
++	panel {
++		compatible = "edt,etml1010g3dra";
++		backlight = <&backlight>;
++		power-supply = <&reg_vcc_3v3>;
 +
-+	return 0;
-+}
++		port {
++			panel_in: endpoint {
++				remote-endpoint = <&bridge_out>;
++			};
++		};
++	};
 +
-+static int ksz8041_suspend(struct phy_device *phydev)
-+{
-+	struct kszphy_priv *priv = phydev->priv;
++	reg_sound_1v8: regulator-1v8 {
++		compatible = "regulator-fixed";
++		regulator-name = "VCC_1V8_Audio";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++	};
 +
-+	kszphy_disable_clk(priv);
++	reg_sound_3v3: regulator-3v3 {
++		compatible = "regulator-fixed";
++		regulator-name = "VCC_3V3_Analog";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++	};
 +
-+	return 0;
-+}
++	sound-peb-av-10 {
++		compatible = "simple-audio-card";
++		simple-audio-card,name = "snd-peb-av-10";
++		simple-audio-card,format = "i2s";
++		simple-audio-card,bitclock-master = <&dailink_master>;
++		simple-audio-card,frame-master = <&dailink_master>;
++		simple-audio-card,mclk-fs = <32>;
++		simple-audio-card,widgets =
++			"Line", "Line In",
++			"Speaker", "Speaker",
++			"Microphone", "Microphone Jack",
++			"Headphone", "Headphone Jack";
++		simple-audio-card,routing =
++			"Speaker", "SPOP",
++			"Speaker", "SPOM",
++			"Headphone Jack", "HPLOUT",
++			"Headphone Jack", "HPROUT",
++			"LINE1L", "Line In",
++			"LINE1R", "Line In",
++			"MIC3R", "Microphone Jack",
++			"Microphone Jack", "Mic Bias";
 +
- static int ksz9477_resume(struct phy_device *phydev)
- {
- 	int ret;
-@@ -2150,8 +2198,11 @@ static int ksz9477_resume(struct phy_device *phydev)
- 
- static int ksz8061_resume(struct phy_device *phydev)
- {
-+	struct kszphy_priv *priv = phydev->priv;
- 	int ret;
- 
-+	kszphy_enable_clk(priv);
++		simple-audio-card,cpu {
++			sound-dai = <&sai5>;
++		};
 +
- 	/* This function can be called twice when the Ethernet device is on. */
- 	ret = phy_read(phydev, MII_BMCR);
- 	if (ret < 0)
-@@ -2194,7 +2245,7 @@ static int kszphy_probe(struct phy_device *phydev)
- 
- 	kszphy_parse_led_mode(phydev);
- 
--	clk = devm_clk_get_optional_enabled(&phydev->mdio.dev, "rmii-ref");
-+	clk = devm_clk_get_optional(&phydev->mdio.dev, "rmii-ref");
- 	/* NOTE: clk may be NULL if building without CONFIG_HAVE_CLK */
- 	if (!IS_ERR_OR_NULL(clk)) {
- 		unsigned long rate = clk_get_rate(clk);
-@@ -2216,11 +2267,14 @@ static int kszphy_probe(struct phy_device *phydev)
- 		}
- 	} else if (!clk) {
- 		/* unnamed clock from the generic ethernet-phy binding */
--		clk = devm_clk_get_optional_enabled(&phydev->mdio.dev, NULL);
-+		clk = devm_clk_get_optional(&phydev->mdio.dev, NULL);
- 		if (IS_ERR(clk))
- 			return PTR_ERR(clk);
- 	}
- 
-+	if (!IS_ERR_OR_NULL(clk))
-+		priv->clk = clk;
++		dailink_master: simple-audio-card,codec {
++			sound-dai = <&codec>;
++			clocks = <&clk IMX8MM_CLK_SAI5>;
++		};
++	};
++};
 +
- 	if (ksz8041_fiber_mode(phydev))
- 		phydev->port = PORT_FIBRE;
- 
-@@ -5290,15 +5344,45 @@ static int lan8841_probe(struct phy_device *phydev)
- 	return 0;
- }
- 
-+static int lan8804_suspend(struct phy_device *phydev)
-+{
-+	struct kszphy_priv *priv = phydev->priv;
-+	int ret;
++&i2c3 {
++	clock-frequency = <400000>;
++	pinctrl-names = "default", "gpio";
++	pinctrl-0 = <&pinctrl_i2c3>;
++	pinctrl-1 = <&pinctrl_i2c3_gpio>;
++	sda-gpios = <&gpio5 19 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++	scl-gpios = <&gpio5 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++	#address-cells = <1>;
++	#size-cells = <0>;
++	status = "okay";
 +
-+	ret = genphy_suspend(phydev);
-+	if (ret)
-+		return ret;
++	codec: codec@18 {
++		compatible = "ti,tlv320aic3007";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_tlv320>;
++		#sound-dai-cells = <0>;
++		reg = <0x18>;
++		reset-gpios = <&gpio4 28 GPIO_ACTIVE_LOW>;
++		ai3x-gpio-func = <0xd 0x0>;
++		ai3x-micbias-vg = <2>;
++		AVDD-supply = <&reg_sound_3v3>;
++		IOVDD-supply = <&reg_sound_3v3>;
++		DRVDD-supply = <&reg_sound_3v3>;
++		DVDD-supply = <&reg_sound_1v8>;
++	};
 +
-+	kszphy_disable_clk(priv);
++	eeprom@57 {
++		compatible = "atmel,24c32";
++		pagesize = <32>;
++		reg = <0x57>;
++		vcc-supply = <&reg_vdd_3v3_s>;
++	};
 +
-+	return 0;
-+}
++	eeprom@5f {
++		compatible = "atmel,24c32";
++		pagesize = <32>;
++		reg = <0x5f>;
++		size = <32>;
++		vcc-supply = <&reg_vdd_3v3_s>;
++	};
++};
 +
-+static int lan8841_resume(struct phy_device *phydev)
-+{
-+	struct kszphy_priv *priv = phydev->priv;
++&lcdif {
++	status = "okay";
++};
 +
-+	kszphy_enable_clk(priv);
++&mipi_dsi {
++	samsung,esc-clock-frequency = <10000000>;
++	status = "okay";
 +
-+	return genphy_resume(phydev);
-+}
++	ports {
++		#address-cells = <1>;
++		#size-cells = <0>;
++		port@1 {
++			reg = <1>;
++			dsi_out: endpoint {
++				remote-endpoint = <&bridge_in>;
++			};
++		};
++	};
++};
 +
- static int lan8841_suspend(struct phy_device *phydev)
- {
- 	struct kszphy_priv *priv = phydev->priv;
- 	struct kszphy_ptp_priv *ptp_priv = &priv->ptp_priv;
-+	int ret;
- 
- 	if (ptp_priv->ptp_clock)
- 		ptp_cancel_worker_sync(ptp_priv->ptp_clock);
- 
--	return genphy_suspend(phydev);
-+	ret = genphy_suspend(phydev);
-+	if (ret)
-+		return ret;
++&pwm4 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_pwm4>;
++	status = "okay";
++};
 +
-+	kszphy_disable_clk(priv);
++&sai5 {
++	assigned-clocks = <&clk IMX8MM_CLK_SAI5>;
++	assigned-clock-parents = <&clk IMX8MM_AUDIO_PLL2_OUT>;
++	assigned-clock-rates = <11289600>;
++	clocks = <&clk IMX8MM_CLK_SAI5_IPG>, <&clk IMX8MM_CLK_DUMMY>,
++		<&clk IMX8MM_CLK_SAI5_ROOT>, <&clk IMX8MM_CLK_DUMMY>,
++		<&clk IMX8MM_CLK_DUMMY>, <&clk IMX8MM_AUDIO_PLL1_OUT>,
++		<&clk IMX8MM_AUDIO_PLL2_OUT>;
++	clock-names = "bus", "mclk0", "mclk1", "mclk2", "mclk3", "pll8k",
++			"pll11k";
++	fsl,sai-mclk-direction-output;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_sai5>;
++	#sound-dai-cells = <0>;
++	status = "okay";
++};
 +
-+	return 0;
- }
- 
- static struct phy_driver ksphy_driver[] = {
-@@ -5358,9 +5442,12 @@ static struct phy_driver ksphy_driver[] = {
- 	.get_sset_count = kszphy_get_sset_count,
- 	.get_strings	= kszphy_get_strings,
- 	.get_stats	= kszphy_get_stats,
--	/* No suspend/resume callbacks because of errata DS80000700A,
--	 * receiver error following software power down.
-+	/* Because of errata DS80000700A, receiver error following software
-+	 * power down. Suspend and resume callbacks only disable and enable
-+	 * external rmii reference clock.
- 	 */
-+	.suspend	= ksz8041_suspend,
-+	.resume		= ksz8041_resume,
- }, {
- 	.phy_id		= PHY_ID_KSZ8041RNLI,
- 	.phy_id_mask	= MICREL_PHY_ID_MASK,
-@@ -5507,7 +5594,7 @@ static struct phy_driver ksphy_driver[] = {
- 	.get_sset_count	= kszphy_get_sset_count,
- 	.get_strings	= kszphy_get_strings,
- 	.get_stats	= kszphy_get_stats,
--	.suspend	= genphy_suspend,
-+	.suspend	= lan8804_suspend,
- 	.resume		= kszphy_resume,
- 	.config_intr	= lan8804_config_intr,
- 	.handle_interrupt = lan8804_handle_interrupt,
-@@ -5526,7 +5613,7 @@ static struct phy_driver ksphy_driver[] = {
- 	.get_strings	= kszphy_get_strings,
- 	.get_stats	= kszphy_get_stats,
- 	.suspend	= lan8841_suspend,
--	.resume		= genphy_resume,
-+	.resume		= lan8841_resume,
- 	.cable_test_start	= lan8814_cable_test_start,
- 	.cable_test_get_status	= ksz886x_cable_test_get_status,
- }, {
++&sn65dsi83 {
++	status = "okay";
++
++	ports {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		port@0 {
++			reg = <0>;
++			bridge_in: endpoint {
++				remote-endpoint = <&dsi_out>;
++				data-lanes = <1 2 3 4>;
++			};
++		};
++
++		port@2 {
++			reg = <2>;
++			bridge_out: endpoint {
++				remote-endpoint = <&panel_in>;
++			};
++		};
++	};
++};
++
++&iomuxc {
++
++	pinctrl_i2c3: i2c3grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_I2C3_SCL_I2C3_SCL          0x400001c2
++			MX8MM_IOMUXC_I2C3_SDA_I2C3_SDA          0x400001c2
++		>;
++	};
++
++	pinctrl_i2c3_gpio: i2c3gpiogrp {
++		fsl,pins = <
++			MX8MM_IOMUXC_I2C3_SCL_GPIO5_IO18        0x1e2
++			MX8MM_IOMUXC_I2C3_SDA_GPIO5_IO19        0x1e2
++		>;
++	};
++	pinctrl_lcd: lcd0grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SAI3_TXD_GPIO5_IO1		0x12
++		>;
++	};
++
++	pinctrl_pwm4: pwm4grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SAI3_MCLK_PWM4_OUT		0x12
++		>;
++	};
++
++	pinctrl_sai5: sai5grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SAI5_MCLK_SAI5_MCLK        0xd6
++			MX8MM_IOMUXC_SAI5_RXD0_SAI5_RX_DATA0    0xd6
++			MX8MM_IOMUXC_SAI5_RXD1_SAI5_TX_SYNC     0xd6
++			MX8MM_IOMUXC_SAI5_RXD2_SAI5_TX_BCLK     0xd6
++			MX8MM_IOMUXC_SAI5_RXD3_SAI5_TX_DATA0    0xd6
++		>;
++	};
++
++	pinctrl_tlv320: tlv320grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SAI3_RXFS_GPIO4_IO28       0x16
++			MX8MM_IOMUXC_SAI5_RXC_GPIO3_IO20        0x16
++		>;
++	};
++};
 -- 
 2.34.1
 
