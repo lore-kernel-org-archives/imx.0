@@ -1,39 +1,39 @@
 Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285F918FDBC
-	for <imx@lists.linux.dev>; Mon, 25 Nov 2024 09:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D884518FC7B
+	for <imx@lists.linux.dev>; Mon, 25 Nov 2024 09:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732525209; cv=none; b=QIxm1+fG+YciOMb0nZj/RU4oHSLX3qXg590610IO15i30SSkGeUHjtKlBj7BJzktzFO7ZHzjwoiiwP16EKtDR4kOQ0zr4Scj59KTkGNxVknMKThvrfeihPi80n9jLkRHqMnRfChbzF50vIGY/PYRonwdFUzl2kxMG4OUkWPXPeE=
+	t=1732525213; cv=none; b=MmKFIlq//9FOHgkMJMr1oKkG8VDAeN8ndZDdJl9P8xERu9xKAc2fDyP3/QLxjODH7KLHNG+odg5QSByV6/+YPnZVvq8eymy2wILn7PrKgp01VTeZmiofNnS83LH3eyoinFUFM+OicZIxXWzSZsHVBvg+9/7fuObE/7JvH3HchtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732525209; c=relaxed/simple;
-	bh=cCjwqiypvmHR3YiuotuXhVmxvnHRJGZNNvmMo/P2KuA=;
+	s=arc-20240116; t=1732525213; c=relaxed/simple;
+	bh=P0VxazLqNTE4yoG5sYRoWSvw0IVV4rpPxlq/5ASEH5o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dO/joAX/3TElKtLebJa4Bn6EbRStrkucqDxECLj4PXyAmUTAtVwfidTYqc0bljbcna/QPiiLLJx6rbc9izahUBghNtc+YG18/Q4+zwLpauarXJc/sySXG+TeeZfpTsV/lb9nyVUKIu02mLEufCImlKsrGketYl648UgrrM5KIII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=U5HN/MgF; arc=none smtp.client-ip=46.19.9.99
+	 MIME-Version; b=t7F3vGcxYVY0Sx+rw8E+zI1h631ytVbfp02E+hAFAaix6xqpiZDHQYtQNXUVp6wbMhy5ssY2vs7YIo2Ler2ocjaCZOpEIZFtWKnIkudBhYu26uAR3yOEakOXzTOyR4BPcRGvM4E6Tv7mtdk1gQ12TNqXsmvKu1gT/O6561E0TkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=ciktTgDM; arc=none smtp.client-ip=46.19.9.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="U5HN/MgF"
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="ciktTgDM"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
 	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=xrEA6K10caIyYSUnQG5tc6sO1syANSVcfUKDl8q12Go=; b=U5HN/MgFwm/1e/fUu/RbSqbrrz
-	h8eUDc1CO8l9wVbZzFNCWaNrClDTrRD88UOtpRXaPtbsCqjKFeUwhzYroUfU5hk5yrVZi8UbAKCix
-	mJ7RGId+cWK+cNeVD97r8iqAbAFvOwoqBcyW07Px+Tne3FzHjQk7W6ToXusCLjAn8uOsvyLNm7crF
-	Kzg4g7MjAMyJb07pXm51xI3xdrYnhWWDSTmYvlPYdSrEU1UHmR+vtkBDaPKuovoBRuXsqVvLvFzzx
-	0Ptwfi5n2Mf7j6qt5KpuPuXjwARCJWNOh3cmVHP29JjgtBk7FbRw6QK8KgOx7dOfpDVGmOpXOFhTY
-	M8mZGxRw==;
+	bh=1dzaABlyBSIv+A59mAzCEfDd1bQYz8WOCUm8CNI+AfI=; b=ciktTgDMdjuTVssUTG6WLN6R3O
+	OZwgB8JLgyyH0NteENs/nYm8+JCKQMvMQJ0aRTU78WHCjjOKlP4YJyMjsNKozaE49xtp6/pVrBTjH
+	9PAWMhOiIdePVKuBwkvX6bkAK0lkc95mzZ1MbM2X6UQ4PjEZGtCaxxRKZDUeMQmcNUvNMTiiQjy+r
+	K8uEBNpCrDYbVH6bbFq0Lb1WvurdBx70XMOnqsmQDSPfyQjIoYSDZ5QG9ZsUW2Gimt9Cb0c3OM2LE
+	X67OyF4RlcQ58EQw/z19ucV++7U74/CfVXLH8Sl6kfM/C+4OF/CRD4aiqcsc6srNe56TGmyaDjoiI
+	iQUxNBRA==;
 Received: from [91.26.50.162] (port=58340 helo=and-HP-Z4..)
 	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <andrej.picej@norik.com>)
-	id 1tFUIq-00Eq70-2A;
-	Mon, 25 Nov 2024 09:18:40 +0100
+	id 1tFUIr-00Eq70-1G;
+	Mon, 25 Nov 2024 09:18:41 +0100
 From: Andrej Picej <andrej.picej@norik.com>
 To: shawnguo@kernel.org,
 	s.hauer@pengutronix.de,
@@ -47,9 +47,9 @@ Cc: imx@lists.linux.dev,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	upstream@lists.phytec.de
-Subject: [PATCH 06/15] arm64: dts: imx8mm-phyboard-polis: add RTC description
-Date: Mon, 25 Nov 2024 09:18:05 +0100
-Message-Id: <20241125081814.397352-7-andrej.picej@norik.com>
+Subject: [PATCH 07/15] arm64: dts: imx8mm-phyboard-polis: Set RTC as wakeup-source
+Date: Mon, 25 Nov 2024 09:18:06 +0100
+Message-Id: <20241125081814.397352-8-andrej.picej@norik.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241125081814.397352-1-andrej.picej@norik.com>
 References: <20241125081814.397352-1-andrej.picej@norik.com>
@@ -71,28 +71,26 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-From: Yannic Moog <y.moog@phytec.de>
+RV-3028 RTC can be used to wakeup the system on phyBOARD-Polis-i.MX8MM,
+mark the device as wakeup source.
 
-Add RTC description.
-
-Signed-off-by: Yannic Moog <y.moog@phytec.de>
 Signed-off-by: Andrej Picej <andrej.picej@norik.com>
 ---
  arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts | 1 +
  1 file changed, 1 insertion(+)
 
 diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
-index 31d5c57d3c24..6c95257119d6 100644
+index 6c95257119d6..7aaf705c7e47 100644
 --- a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
 +++ b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
-@@ -219,6 +219,7 @@ &pcie_phy {
- 	status = "okay";
- };
- 
-+/* RTC */
+@@ -223,6 +223,7 @@ &pcie_phy {
  &rv3028 {
  	aux-voltage-chargeable = <1>;
  	trickle-resistor-ohms = <3000>;
++	wakeup-source;
+ };
+ 
+ &snvs_pwrkey {
 -- 
 2.34.1
 
