@@ -1,64 +1,69 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2073.outbound.protection.outlook.com [40.107.21.73])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2078.outbound.protection.outlook.com [40.107.21.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B321B4F02
-	for <imx@lists.linux.dev>; Mon, 25 Nov 2024 17:55:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617351A76D0
+	for <imx@lists.linux.dev>; Mon, 25 Nov 2024 18:03:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.78
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732557304; cv=fail; b=DnzAndoEJOHxCKGGHtgWUreEOf+SbeTA2FObFX9sholalr0vor3+OMtZLaDGvfivzEBuhsWVsk2kTwFmD92HvhWL3geEEF2LXjNVFKEOWMkflRJy8V7mc7qRJ9HuHYVAlQkpq5GoNUFfii5qxSMXslo7t0R+kY0T4eR5b9+J0To=
+	t=1732557836; cv=fail; b=N394gm74qhFK43jxlok9Lfkc5bXL97RUCnKRL2Q7vq2rhDWTaAueLIOjInQh27IUujZMWXHsryLIetnFNy2TqWZ8Dfr9k5AqR7INKwWc+vAWHl3tuLAfiAWHfMxeiSggWZ/r5SgDZUtpY3GgzSIFLpoaNNj99e8IeWHSBztboGY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732557304; c=relaxed/simple;
-	bh=j6FlPcSGpU07hasCvCQ2IEtEyk/5tjUvDZsj33XdCuE=;
+	s=arc-20240116; t=1732557836; c=relaxed/simple;
+	bh=+wm4c3hV/SvH2TaFKeJguWajsQ74n6vtVr8JS0I/DbQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=BOeApRu7EfzFcOhvDmfqm5N3/Uc1cMFVCHrRBENyrKAC4zhqVOx2XFVggqjfMD6UGMG1728vLeYflfbdzV+0+oSXjGWu/AGpaj/7EKy7LCGdyodMzrSNfNdd6+XTxeasvtKAakuTdm+T/Gq2ZoSpRbVcLZOtiO62alvMWqkFJr8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=h2sxGSBL; arc=fail smtp.client-ip=40.107.21.73
+	 Content-Disposition:In-Reply-To:MIME-Version; b=gY46iziAQdP+M9+ptHMtfDajMB3+qqfgiejf8hHRblJh7cWXV3ZvVUOc/8CU7KeuTm4JZXhHNwF/JBQ5aytJZbu5wJrLxK3OcTrsduTTup5k5KxwdReozE+OeRFT68nN2X68N3PpMwYeBzcDcm6I1nhbiS1jamQdBL9690kBOLg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=bl3yB5Eb; arc=fail smtp.client-ip=40.107.21.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="h2sxGSBL"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="bl3yB5Eb"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GlDBm/ukK2Rivq0iREE1i4BxZhECRh/RfTiLYopFE1uaAeUDgzsYdqALSDODqARDh6h3N/pe21jJsNxprHd+4YrpKbzDL0P7N1nV+VZydgLWbRHtnvu1pLuJEdSE+NrX+0TQYxC23hZqIqrsYQry7fRBRn6vo+C7yNN6DteFzx+R4JmsIDx1Xf/rQk5sLKuEkoLmJr/gNsLUZ1cw13o6+oo5Dh8zi7R5zHOIxXinxfHRgonxhExVtcqHxb162LHXFJ771PCPxGO85rWiVUCCQ8INlydkDzez9GNj2YAcCz8vlbsIc/riT3qdu/39HaMD5yQUIsD8sGbxJT/MfF27Pg==
+ b=qiraVifA7fug/HUbLm71fugLYTWu3lSPMSlgQkZ2OalB54pxWLVmBIdQp8D00TZ1x9x0GvQkPQEyCVCjmoZVZwNrMkojUnu0QdEGN+HSWSKL0mWxbHP9WlnuDGow3xRYnEr0whWk+e1wA1et6mxuT2LQtMdvLCkICvsp12ugMc7PZgNWaI8fY30njOGFY8DTkkI1Gx4zP0T4Z+2sL/SHhyesTzLB+PM168vm5/K1N4O6pcCrhGa0hYzSSACa4GbDqfRjGFTljw7niOaslQNofe18672k6MqqjjOslVOlSC/nkhHY3nao4EJjttZ2xIuJCFwhPO3/bNYhNoaPTgZmvQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tUNLtVZ9GWZp+CVt7mAB4IWl4ogTIZsgEuID508Oi94=;
- b=t+OjMLYxLLOveavy0u9lkmUQnYebrX/fWn2zWvCemY6fU28tYjN881ASlapofs6n9UtYuErSDiI3y0mJ/uMw7/EGfvk1JvpgUsEXebPk/vdFlFTeggrrSzEvaKCjguBflsF3SAK1ow/1X0RjnHldoEkn/tbcHpkH0p6e4d/kB7QvDmkpJodl7Wh+wIHzKIL+b90WtIJn7WSpsVOo92ad+byehu5Ow2dv3RMMDeFitnjpSAy/zW5bxpUyziKyouN9Mri8fliGfd3VJezfYL7DKjYU6WbxgIWcmgsFODherQzMDoFQvaITHdIwSoi3urIfJaTjTuMRhUn84GR34OKNEw==
+ bh=Y7fl9Uae1Z9Fg3YjdhqAdx6KjoKc+0zavZU0ar+jKIs=;
+ b=osX85tQTh0l1LjENanxHVUBP7W7vgUPJggemUljV5RA7Sjm/ZYkYdXxjbjoyO3dNKG4KgZzhJXa48NTwt3Cm7UEwmFXAjs26MlnuoK7xILNNwXHIxNx7FcuKZ1RFzBMJvyO8GflP12M3VmmV+kz1+fZtmXsp1HPPX0+wYxWCi2KqnCen1p9CvylJNpS0hZaDWK1Akiaco7ZXXToQXQXso0PoVgYlx2d9f8xIi7W87gXDPOM2QVD6W1pmOV+/2IzHjCBEmiODY3LfPaGarrh9M5xyQRTUNjr0FNARAGtAiX1quW8ON5Hg9GcWPLi4TC8tz3D/NDdMJ4UX/Q48czdyTQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tUNLtVZ9GWZp+CVt7mAB4IWl4ogTIZsgEuID508Oi94=;
- b=h2sxGSBLexTcpyavuAhbfr/1XKpBeH68iIEVk10PTNYY7HCJtPdJn3h635dmGNRgTP6NtFch8k41CCW57aOJF+V8L4xu6WlOYmA6ZFidt5Q9R3TwM5Z9Ck9dplOLKL62wvoScIcwh51l8i5X9Vl/vEan5vrGnrGhuh5DOz4Nej03nYksbbF2wJJuThDOg0Mmj0Dj+5sqJGrhqosyUD/7EM6CwjOQwvN6z3CgIa1yK0tyYif/P84If0T0IROKP5NghSzfiumLqpp91pOei0aYIxM0/z7wa2V5U39cJ0HyZIp9hjAqO0FT0K3kkzJsXF/SAeSorOW3skNBTt+cAWLMeg==
+ bh=Y7fl9Uae1Z9Fg3YjdhqAdx6KjoKc+0zavZU0ar+jKIs=;
+ b=bl3yB5EbD4rfWtNHUIGwsjUf/75aVBvRXPh56tVhT3AY5dWa5VLW7IFB0B8K00g60qH7hmQwEPuVQIhRzqLAkSWvdaTrLXMBk28UTRV/8d6afUKFV1yLUUt8CFl7ygVbokq1dGUKHUkyGmCdhEPg5qRP6Hxzex3GkNkOw9uuCS1mkdLZsGoLD8QL9zL9W14kDeE44hdxEqD4pTNVy94hlPDd/fCtyUjcltI3Tddunto5RpzgZ5BOwDbiMU8w+8/IoPYsNHpR/DMb11UFD58qpnPMvlSfZ05eGg3UGdXUdouTLVexnstuYaosahwkz8qpEc9fFZ4oz3KPmhvbLWZ+bQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI1PR04MB7133.eurprd04.prod.outlook.com (2603:10a6:800:126::13) with
+ by GV1PR04MB10154.eurprd04.prod.outlook.com (2603:10a6:150:1ac::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.21; Mon, 25 Nov
- 2024 17:54:57 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.19; Mon, 25 Nov
+ 2024 18:03:51 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8182.019; Mon, 25 Nov 2024
- 17:54:57 +0000
-Date: Mon, 25 Nov 2024 12:54:50 -0500
+ 18:03:50 +0000
+Date: Mon, 25 Nov 2024 13:03:37 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, florian.fainelli@broadcom.com,
-	heiko.stuebner@cherry.de, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH net] net: phy: micrel: Dynamically control external clock
- of KSZ PHY
-Message-ID: <Z0S56m1YIFEPHA/Y@lizhi-Precision-Tower-5810>
-References: <20241125022906.2140428-1-wei.fang@nxp.com>
-Content-Type: text/plain; charset=us-ascii
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, Niklas Cassel <cassel@kernel.org>,
+	dlemoal@kernel.org, maz@kernel.org, tglx@linutronix.de,
+	jdmason@kudzu.us
+Subject: Re: [PATCH v8 2/6] PCI: endpoint: Add RC-to-EP doorbell support
+ using platform MSI controller
+Message-ID: <Z0S7+U5W2DOmzdJL@lizhi-Precision-Tower-5810>
+References: <20241116-ep-msi-v8-0-6f1f68ffd1bb@nxp.com>
+ <20241116-ep-msi-v8-2-6f1f68ffd1bb@nxp.com>
+ <20241124071100.ts34jbnosiipnx2x@thinkpad>
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241125022906.2140428-1-wei.fang@nxp.com>
-X-ClientProxiedBy: PH7P221CA0047.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:510:33c::19) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241124071100.ts34jbnosiipnx2x@thinkpad>
+X-ClientProxiedBy: CY5PR13CA0029.namprd13.prod.outlook.com (2603:10b6:930::6)
+ To AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -66,334 +71,234 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI1PR04MB7133:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4fabf89d-ec93-43ef-0d45-08dd0d7a4643
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GV1PR04MB10154:EE_
+X-MS-Office365-Filtering-Correlation-Id: 30ffa3ac-dccc-4512-4fb7-08dd0d7b8425
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|7416014|376014|1800799024|366016|38350700014;
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|52116014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?57zRTAOJFBAEj7zoqE1mp010McLuwYTKSLvRkiGovL9IB1IhjokHqXUOpZH4?=
- =?us-ascii?Q?tZw6DXDuGP4+scLudMPmFVdrCK+TzFyQVBw6GDlUAbbIIqxlc5cfkj/Uhb1N?=
- =?us-ascii?Q?/cXvusm2edPf1QerT7By3/fM/6ymfj7rtMNh+uCyJmZHz+U6xSbbqUZw1mAz?=
- =?us-ascii?Q?gwB6wQh85MNy9mI6CyonedyLGKNuaqSDrpETr83UwCi9eWEnyw8oC0x5H0F7?=
- =?us-ascii?Q?/5eG5iEDNa/g0SUnCfX4SwgJ2qGR2t0FdzFPjk7YqC0/jZ9txTxS2v4mW3S/?=
- =?us-ascii?Q?CuzF2EUtbsJdaTNAFDLOiVtzbKqX+SdFY26QJvsUZ6QBRV2LnPaqOtEsaBvz?=
- =?us-ascii?Q?+1EVzTUrtpUQtFapvwT5f7EXHOFIQwOMRrkMTy203gtplhIdAsK4d4KG2iLy?=
- =?us-ascii?Q?60KPAXR7rbuEaHPAyu8ov6YgLyc+fE0wqMeIfuyi+UqXAtwO3TGBv3CGrCXK?=
- =?us-ascii?Q?XzfP43n5iusEGrLoD8bMGddWnpcXTOjx9dqdy1oqfP0uDO5K/KeSFWOmj2pd?=
- =?us-ascii?Q?2N05DK6suNXZxnau7BcgBacAbdLkShSiUZzhbznVir4DHm7+NtB3NFDk/JY9?=
- =?us-ascii?Q?iz+BOBoppuF8OQm5JMoE9wimylE9Ad93MVjNzLpExZGVepvIBxRefF8OGEWQ?=
- =?us-ascii?Q?1f5SD/OSIWLq7EFvo4Hl0pUoXwEpUrfaDFAHg+Np1ZQSErm8idvRwGsI6nU4?=
- =?us-ascii?Q?tVlw56ugk2PJ/+3M9V+/3P/prJ4hNukw0FC2/7Gdr2DJstveWjC1curL4tcO?=
- =?us-ascii?Q?ekW3ph0pT4fPP4PVN7CHetDH/CFZIxOZkfpEk4bTTCZMnth9EjMA28sqYLHr?=
- =?us-ascii?Q?379UstNo6FdeznA2EQ9zshtwiluJe3woTIoSE8L7WnEDX09JR62hxT4Howf7?=
- =?us-ascii?Q?KfgcEdYsxiI+AxRQYUZHqLwXUQkDBW0LKJEdRCL3xAoVWrrTieRhXDOBOIP+?=
- =?us-ascii?Q?c8QG5/XMAHpew7KiZBmGKuUP6gbD4XQrZ0N5dy7aVufJJiIDORPL6ZI12F1o?=
- =?us-ascii?Q?OC6byRlcXwoDZ5UOEt9/EyLd0znHR0sCFNy4WoJLZ78q7wiuEVkZaihqqsX/?=
- =?us-ascii?Q?zPMhe8BVoIl5StvGfIZfRdV00kLFxufqw+tNLwyLRflHoRD6EePx2Trwtn/m?=
- =?us-ascii?Q?hwGZVEk7ZY47uw36Fad6XyfeAOMKJf3k0x4ZoOYWnNM2ySBzVPAJgqKzZuNv?=
- =?us-ascii?Q?EbTgm6k5vWYYiCrcMFxlTYrTIjR769iEqtOVElF0j9aTW1+3QR+xQiBxE/WM?=
- =?us-ascii?Q?Y4Cp0WQIlK03AwgTjFwLyXG/8dx2BYZ1GmdL2+1N8UC2HuQjmzKA+J5/nl6+?=
- =?us-ascii?Q?HOhc5UD1u1NMvFzpC5M6XzMmvvWDXO6jnVaAuW1DsM+1prKpEuTY44iC15wm?=
- =?us-ascii?Q?Ym4l/Zga089KChTqX1i3lMCrlsC9+gaZHmYwPt8kNukEaFeRNw=3D=3D?=
+	=?utf-8?B?eEUvM1dkR082Rk50YjNBNGpEKytqc3lrcFI5SFk5VEpiUW9DS2JUT2xLZUlX?=
+ =?utf-8?B?bkExaDF3Ry9PNEZUNllNNHVnVGIrSm5JOUMrMHNYVEthRnVxalE1RDQwQWJy?=
+ =?utf-8?B?TzZFQ0xJYzhvaDRpVWZmSGJ0ajJ5QUpHQjgzR1Z6cWxYMDJxTUxPdUVFaUVO?=
+ =?utf-8?B?dGZxdlRBNmFJZTJ3NXFrM09oeTUwMEM5WmZub1NrTERCKzhTcFZvZEFJSkZW?=
+ =?utf-8?B?QWk1SDR6ZytNMU5zN1NPN0xrV05UQ1J2b1JuUHZVOGdzOTFHd1BRMyt3V0Rr?=
+ =?utf-8?B?dnlZNVZ4bjdKMjFrblUySjc1YVhWcnBLRDg2ckN5cjlqVXFlM0xOeG1jTnhY?=
+ =?utf-8?B?L0hEN0dJMUJmTDZMR0MzM283K04xcHlFM1ZoRnVYS1hiZHRaS1M2MWZZVHVX?=
+ =?utf-8?B?SjNJaSt4SmdOOUtadmNnd3hNK09EcE1mb3VvM2FFYTVlcFZyZWZJbkxrQ0px?=
+ =?utf-8?B?UkhyYU4wTTEybWpGbGtXYllrcGtTQzMxVXNLSTlmWHFmU3dVVUxlQlBNNVh5?=
+ =?utf-8?B?ZWZBODdaQjcrQmNCVVR5cnRnS0pad1lFV2hqYktKSmhFamkwVThycndBVWNZ?=
+ =?utf-8?B?c2JGQ1haYUI3aHJmWGMySlBONnFmZG1RdnE0UFFOL1AveGVZdEwyTWNQeUdP?=
+ =?utf-8?B?RG1GQ0M3NWlpR3pSUTBtZTE3YWdUKytaTnBsa3dKVUJYZDh1aWZHeDA4Wk1C?=
+ =?utf-8?B?YzcrTjVmendKWjN1K1hUMTdPS0NOUmd5MTdVSjRrVmo4RVRHQi84dHI5ZWlD?=
+ =?utf-8?B?TkFQRy9tMlpDTWxiVzdWTU9scmZyOEVSREtyVlVGejZGNVNKb0Q4cGNzYW83?=
+ =?utf-8?B?RVFNYkhIVjJodWl6VnVMcFc3VStTcWJDTmdtVEpiRXEyNE91NklJZnV6M0Vh?=
+ =?utf-8?B?emMwekRMOWVQRm1PTnpBaWowYWlsN04ybUZLcWkyQVdYV1JWbEZBZUZNUmJh?=
+ =?utf-8?B?V2k3aEpMeXpUNFNmbUh1NFIzNEhHSXM2bUcvYk1DdlQ1ZEw0eUJnaXBXSml6?=
+ =?utf-8?B?Q0NXdk9SS1hrdGlwaGhLazZUdzZQYlEwY0wzYU9IbjFaTHFZSjM3NW5IMWlV?=
+ =?utf-8?B?Ykc4SEgrZGJOdk1lU0V2Qktzak02NmZyTmdzLy9xbkNneUVVVmlLRldLcytU?=
+ =?utf-8?B?cXl3WWFUVFJOK3VwVHQ0ODBQMTZDSy84UDNkNXMxWUNzb1ljU05wVEFBeXB3?=
+ =?utf-8?B?dlh1eFVRQk5LdG11WnN5NzRYZzhFOFBXc3dGWUhWTUNDLzg4Uno4bmszTDNl?=
+ =?utf-8?B?QnlrUkRmRUZOVENMR2RsK2dJNGV0SVI1eUVFR2pkczNtK3dpS0J1Vk9UYmhK?=
+ =?utf-8?B?Si9TZkFEdCtnZzFzNHVnZFVTM2t1Rkx2dVdYRnNRSkozaTZ0ZHJDZTlVRE0r?=
+ =?utf-8?B?cmhGaTVpRk5EVTBhZGliNS81NjFzbDQxMWlMdHh4WktaT0VqS3JyODlTV3JR?=
+ =?utf-8?B?WHBCZjd5YUx3aTBQVi9pa1VYSEN4Z3BMaWhXWWRScUNGSC9CRzlLalZMbjk3?=
+ =?utf-8?B?L3VsY244b0VYdlVGU0ozSGE5b1o3UGNYckJzbGdXVnZ3YkFFK3hObjdNczNo?=
+ =?utf-8?B?ZHo0eG9ReWZkcmJ5RVRkRGFxQVJGdnQ0TmpRVW1TcGM3K0phbTZLWm9BbC9F?=
+ =?utf-8?B?Vmh6VWpPRS9HUFVGVlJmVWZkVklpQVBjT25kaXE1QVV0S3hzZDJ4M0l5cmh6?=
+ =?utf-8?B?aVE2dXNtWWdCcDBSdU1XM0crRjBhYVhITi8rSCtqdG1YT0pPeWZlaUw4WUFp?=
+ =?utf-8?B?b3BpY0ltVmZ6SzZidjk0R2ZQWVFsY1R4VGpzWDlidXh2Nm43SXlaN2tUZXY3?=
+ =?utf-8?B?VlU4UVZrK2lqZmtzZ3ZmRms2SHdxTEhIc1FaYkIzMnNiUi9WRk45WFpvN2Zr?=
+ =?utf-8?B?OFpITmZCdS84RlB1M2FidGRVbG9SSWJaTHRpcFIxUS9ZK3c9PQ==?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?eX2aelcCPfXnJTea7hpae2/htZO8DiMnc/aE9TwLvFeDuBLT76bNH1NSFvEi?=
- =?us-ascii?Q?I8dnvHpJQp69AA8xFfsCIlCCbzqxSQMwc2v3idhMcx8X85kWth2tnvgKoDzm?=
- =?us-ascii?Q?UPz2ZthZOE8xs9PS2CvQEHDWubsnr9Cl3HFUTViSwCR9ucGMwxgUrlmIKA0F?=
- =?us-ascii?Q?U6xCVRzkKXr9wg+Yj2QflL675URxq6ZRZcTcz7A5gDUleQc6XSbEp2PHAFLb?=
- =?us-ascii?Q?EhCyx9m4HGTLzq1f3mYku0vtkvKol88BMVBUW3RFDbYs0pfABgxYS1Rl9Fx0?=
- =?us-ascii?Q?q4GtJOdUIEemmAmhzf5dkEtgKMqkeFOj3N6mUROcgswsgs6qRLSBsXJR0vTY?=
- =?us-ascii?Q?b+aj7624C4X2xdo30BpNX/nkvNCJpbIQJl6Dns3eQVcehVJDu8k7+HzPZgcS?=
- =?us-ascii?Q?uxt6dv9HJ9clPY7my8QL0MOq0TFY3xuSkUbIGSIKVRIQyAqZln7+9Cy8tzhF?=
- =?us-ascii?Q?aVRMHkcnQyvuO7NSZeXW3ilBjel1IMfZF9Nc/+n4m9XEhpfPh9q5A8D/b4Yv?=
- =?us-ascii?Q?xdAqVr9kcsujWCq3evEM6ZhNck1LQFl8NwVPtcBz2qHFve/NqQv/voolPZR7?=
- =?us-ascii?Q?87umVg4SqatTd09oXJreb2UPvO6mmaFHy0PefY0DkBx50+LfzG/WUBHmDJgh?=
- =?us-ascii?Q?aOMzgh1YFeN1caB4yCpP97fYbEstWgsNOdg6uOhMJHEnjSkiKXdpk0rYDGU+?=
- =?us-ascii?Q?yTj+YgzFbYSHxyhAOmv2TDn5HsXESktkr4/h4qOngnUwh/pEImMxFQkVCywV?=
- =?us-ascii?Q?fgoPWYiov722mzyYTjuvxbLVgCXenvkHaf4pIeF5uMJf252n9WSlAlcK6HtA?=
- =?us-ascii?Q?O/PEcesaI6VvWzGzO+ewwR1DaLSefeHUo+bSppnebt+MJi/EkmUSv6VDDowe?=
- =?us-ascii?Q?FfcoQ+YZ0abRxf+/+oXGZx9xO9+dMXn3K6TiZvtowf/vV6lf8LEkvwEzGUNU?=
- =?us-ascii?Q?z5UPcZEVhoGhMQMnBV5pouidZIrlupLnb46PJ7EThHb3yNC0jnlG8l1ggiVl?=
- =?us-ascii?Q?VIpIGIPpL3kLz2G5iZt6OMjS8esC41OLZoTTxdTi6B6lEpMUpMRP79nBNe5c?=
- =?us-ascii?Q?9TCjzZYQ7qeI9sT5pN4OANVXU1mP6IYTqgxhnzUX/HdkZ8JIyA1lMdb2Gzir?=
- =?us-ascii?Q?HZJAcoZFnshX0i1jmvWvXdJkNLZCfaviBVoJVgsZvILExCxV9GOtTcwzPHcA?=
- =?us-ascii?Q?FRkbUTwRJ0Amt/DXiHYdJEzFSKZchNahfYpekk0j96DwqFIpNn050TP5fbxY?=
- =?us-ascii?Q?N8yVnNfia/xAsWDYm8kYd8euEA75nGTuaE8GWocQQlEODChNPoOGMA2C0hDT?=
- =?us-ascii?Q?0Ud+H1G2jMh9LrnxQqD4t0pJgVzS2hTLvkNKcWBMPmVkJML1ggLRrIsKoZSu?=
- =?us-ascii?Q?xM4XzjnGorgVLNmSIe05+r09eFmQZBSzm6UfnhLBcDLLatzgUKDKLdvJcYax?=
- =?us-ascii?Q?RWlwWLwMT9h116PApMweRS3i8d945hULQ+SHxJp08daKwYXBh7cPaDs5mY3H?=
- =?us-ascii?Q?9ROwHuOc44zZUuq+7PHG8ow7rGvAHOH4GUck+b5pxiMbl5lQek47pHzXg7Fq?=
- =?us-ascii?Q?B9a7PodKEQyH0uNTVUwfgrqBY4qgCqC1aWIljCre?=
+	=?utf-8?B?ZCttL1BPT1hpdHVyNi9PcUtRZXN0K01sZGExS3FTSExERG5UNithOVIxeFhH?=
+ =?utf-8?B?Z05zS2gwL3MraXNTa1oxWDhOa1A1cUFNMUZBMXhaMm4yVDBWbEpEOENZK3FV?=
+ =?utf-8?B?Tnd6N3F2dmtIVFF4QWhXNWNXRU9GOHNBdk01emoyWTRneVRTaFd1ZHAwclZ2?=
+ =?utf-8?B?Q0xNOGJOWW44M1JwVmIwdU1OMWY4ZG9vRTZmbElDUnorZFlOMjF2RUJPWnBS?=
+ =?utf-8?B?OUlkcXltRUtLSXlrZXJEaWljcXJZTmdLMnNyTlV0QVJFdjBVQ3RUandSajBU?=
+ =?utf-8?B?OEk0NDEyOG1IU044U0RLdmx2WkR6SnVSQ2swWXFjMVByUVNWL0ZqemxMeDZ5?=
+ =?utf-8?B?THBXeDgyNVZqLzVVWUlTZkRVNkx6Nk9YNkxzWmlENEpkMjNUWnFzNElINzFX?=
+ =?utf-8?B?UFNBUzZRMC9PMi9zRUFWcUJVUUhFbEFNNmdzb1RXMEhZQ2F4YVUzSDhVNzFF?=
+ =?utf-8?B?TFdoeG1mbzY4cEY3ZHlySmVnMG44NmVENWtaZDVyYmpCdTVDVnM5NE1BbWF5?=
+ =?utf-8?B?Rmp0aDlQTlppQXdBVjBCVm1jbjM4V1o1eU5rMXNkVmpGaVJOTEh5SWJmbGtU?=
+ =?utf-8?B?b0RFQ01pLzdaQjVXQ3NGQ1dXYVJIVGEwWUQ4ZVhkeHNWdXpacUN2SmtyT3h1?=
+ =?utf-8?B?Qm4zT2JvM1RTVk85NjFHajM2UGs2VkQxZnVzc3ZVcURSRnVPME12b0d3Vkht?=
+ =?utf-8?B?dEFwTmR2dVY3RnZFdHFTMzdhemh2R0I2RXpBVFpJbThJSWZ4ZG4zUnZITStq?=
+ =?utf-8?B?MjFNajI4ZUdSbnBtR25Ya1oyUk5SOXppYTMrOWtkeXo4akFIR2hEY0Jab09O?=
+ =?utf-8?B?SkpRc0Y2aHRmS2Z4NFM0TGdjZlMwUGladzhteDdhQUJLbW43SllBWWRBaXpJ?=
+ =?utf-8?B?cnREMkV2T0s4eWxZM2grMFJlbDZjeFdIcko3R01rS0lvSXBRdEZZYjNGS3Q0?=
+ =?utf-8?B?MTlpT2lDNk9ZSWFmcGRPbXJYOXgxL0tCVjN3UWo5cFdyQjVua1BYMXloTVZO?=
+ =?utf-8?B?UjZncUZWOVRCUWEvcW9mS2dXUmV3cVZPMHNOWGQveityeThlNDdtVzJvYjdU?=
+ =?utf-8?B?d3FYS2w1WmIvcVM3UVBSK01tZUhSakNtQkN5LzR3aHJnL1NQaEJQa2JPK2s5?=
+ =?utf-8?B?VmNsamVqNndXaUpDM0tBU0NrNld5S2NiYnBuWmNhYjczQWdhWjhQTVltcUJH?=
+ =?utf-8?B?dVZzTnFIdDRIdG9FdlFKVXRNV29QaGh4TnhwcHA2WE9sdS9iNlYySXo0R05T?=
+ =?utf-8?B?dFc1aERSemZ5bTNrSVFZNGQxR244bFgxOTZJNnJPWWFmdnZiTHlZam1ncEk4?=
+ =?utf-8?B?SkFRUFc0dGNwME9wUGQwbU9WbElsbzFtNmhzak51S1h6QmZoRW5LODM1cUlx?=
+ =?utf-8?B?c1B0ekwwdWN5dUUwZjZBMm45cXN1QU1KYTZKc3Npd01CTVlvSURodWtqa0hK?=
+ =?utf-8?B?NnAyb2d0OHlHMGpYMTZIMit1Z0ZxY1JSUUhFYmRNcHNlZ1VTM1ZFeFBIYnd3?=
+ =?utf-8?B?NEozaVRSbkJKQ3gyMVpxa0RjN3IrOWl1eEpVbGlBQlhzK1d2Y0ZxcHBHZ3A3?=
+ =?utf-8?B?NWVuV3k0WFJNSzQya2lPNDA4YWd1bjFpRFdTYzYrU3ZrelBWaTIyQlg0OTVu?=
+ =?utf-8?B?NTAwM2tVNzhWUGxlRkRSL1dBSFc1NUdmQjMwa0t2QlBLZktDRXROV0ovSGlT?=
+ =?utf-8?B?L056MjR0Z1JqeUFqYTVoQzlqZjhYODNBSzhoeEVKQU1RMmFvekRwVHJLZ3o5?=
+ =?utf-8?B?OWRhOXlsS2FxUHJKeDNVZzZjSjB3YkpYQU5XaXB4ZkNQaVBGa2cxYmh1dGMr?=
+ =?utf-8?B?Q2NIbnZKRm9vZk1MOGp2ZTdRTmVCMmFRMi9DUmJwZGE0WmhhaWt6ZGlwYVVV?=
+ =?utf-8?B?WW54ZnEwcHdWOWRUdXBkdllBSmtQbG05Qitmb0hDUElDMVRaTjhqVUkzWVVP?=
+ =?utf-8?B?K2Zac0ZYaGR1bE9mV2pOMTAwbWIxUC8vM2FvTUZVek85UWxUc1Nrc09KWFVt?=
+ =?utf-8?B?QVpxdW94NmlZYXBZMjhpVzZ0YiszcFFTVHFjZlMxNTFadkhZT1ZjVTJzNWhJ?=
+ =?utf-8?B?dEdPUUprRU5wWFlDVVNyMkxCNHJydDg4TjZYV2g1eUZUQVFMWGJHUmFtNUNw?=
+ =?utf-8?Q?o1HTORhZXdbvq0jna64zNmHDc?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4fabf89d-ec93-43ef-0d45-08dd0d7a4643
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 30ffa3ac-dccc-4512-4fb7-08dd0d7b8425
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9621.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2024 17:54:57.4373
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2024 18:03:50.8907
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DV5McTRDvTZEYZbjisMqmNDoxmKGLKbO3maZFCB6c03+2m+Mfc42UwlvnFunJ5QrjTJRm1oEiT0ipRndqm+YTA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7133
+X-MS-Exchange-CrossTenant-UserPrincipalName: VtgbCjvGEodO5tboe69+4XnZZ8vePoXrqzAL5i1yITrbdemJBhfji9jD/8XsfiYOt/rTdP00h8hwQRzpr9TS4A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10154
 
-On Mon, Nov 25, 2024 at 10:29:05AM +0800, Wei Fang wrote:
-> On the i.MX6ULL-14x14-EVK board, when using the 6.12 kernel, it is found
-> that after disabling the two network ports, the clk_enable_count of the
-> enet1_ref and enet2_ref clocks is not 0 (these two clocks are used as the
-> clock source of the RMII reference clock of the two KSZ8081 PHYs), but
-> there is no such problem in the 6.6 kernel.
+On Sun, Nov 24, 2024 at 12:41:00PM +0530, Manivannan Sadhasivam wrote:
+> On Sat, Nov 16, 2024 at 09:40:42AM -0500, Frank Li wrote:
+> > Doorbell feature is implemented by mapping the EP's MSI interrupt
+> > controller message address to a dedicated BAR in the EPC core. It is the
+> > responsibility of the EPF driver to pass the actual message data to be
+> > written by the host to the doorbell BAR region through its own logic.
+> >
+> > Tested-by: Niklas Cassel <cassel@kernel.org>
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> > change from v5 to v8
+> > -none
+> >
+> > Change from v4 to v5
+> > - Remove request_irq() in pci_epc_alloc_doorbell() and leave to EP function
+> > driver, so ep function driver can register differece call back function for
+> > difference doorbell events and set irq affinity to differece CPU core.
+> > - Improve error message when MSI allocate failure.
+> >
+> > Change from v3 to v4
+> > - msi change to use msi_get_virq() avoid use msi_for_each_desc().
+> > - add new struct for pci_epf_doorbell_msg to msi msg,virq and irq name.
+> > - move mutex lock to epc function
+> > - initialize variable at declear place.
+> > - passdown epf to epc*() function to simplify code.
+> > ---
+> >  drivers/pci/endpoint/Makefile     |  2 +-
+> >  drivers/pci/endpoint/pci-ep-msi.c | 99 +++++++++++++++++++++++++++++++++++++++
+> >  include/linux/pci-ep-msi.h        | 15 ++++++
+> >  include/linux/pci-epf.h           | 16 +++++++
+> >  4 files changed, 131 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/pci/endpoint/Makefile b/drivers/pci/endpoint/Makefile
+> > index 95b2fe47e3b06..a1ccce440c2c5 100644
+> > --- a/drivers/pci/endpoint/Makefile
+> > +++ b/drivers/pci/endpoint/Makefile
+> > @@ -5,4 +5,4 @@
+> >
+> >  obj-$(CONFIG_PCI_ENDPOINT_CONFIGFS)	+= pci-ep-cfs.o
+> >  obj-$(CONFIG_PCI_ENDPOINT)		+= pci-epc-core.o pci-epf-core.o\
+> > -					   pci-epc-mem.o functions/
+> > +					   pci-epc-mem.o pci-ep-msi.o functions/
+> > diff --git a/drivers/pci/endpoint/pci-ep-msi.c b/drivers/pci/endpoint/pci-ep-msi.c
+> > new file mode 100644
+> > index 0000000000000..7868a529dce37
+> > --- /dev/null
+> > +++ b/drivers/pci/endpoint/pci-ep-msi.c
+> > @@ -0,0 +1,99 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * PCI Endpoint *Controller* (EPC) MSI library
+> > + *
+> > + * Copyright (C) 2024 NXP
+> > + * Author: Frank Li <Frank.Li@nxp.com>
+> > + */
+> > +
+> > +#include <linux/cleanup.h>
+> > +#include <linux/device.h>
+> > +#include <linux/slab.h>
+>
+> Please sort alphabetically.
+>
+> > +#include <linux/module.h>
+> > +#include <linux/msi.h>
+> > +#include <linux/pci-epc.h>
+> > +#include <linux/pci-epf.h>
+> > +#include <linux/pci-ep-cfs.h>
+> > +#include <linux/pci-ep-msi.h>
+> > +
+> > +static bool pci_epc_match_parent(struct device *dev, void *param)
+> > +{
+> > +	return dev->parent == param;
+> > +}
+> > +
+> > +static void pci_epc_write_msi_msg(struct msi_desc *desc, struct msi_msg *msg)
+> > +{
+> > +	struct pci_epc *epc __free(pci_epc_put) = NULL;
+> > +	struct pci_epf *epf;
+> > +
+> > +	epc = pci_epc_get_fn(pci_epc_match_parent, desc->dev);
+>
+> You were passing 'epc->dev.parent' to platform_device_msi_init_and_alloc_irqs().
+> So 'desc->dev' should be the EPC parent, right? If so, you can do:
+>
+> 	epc = pci_epc_get(dev_name(msi_desc_to_dev(desc)));
+>
+> since we are reusing the parent dev name for EPC.
 
-skip your debug progress, just descript the problem itself.
+I think it is not good to depend on hidden situation, "name is the same."
+May it change in future because no one will realize here depend on the same
+name and just think it is trivial update for device name.
 
 >
-> After analysis, we found that since the commit 985329462723 ("net: phy:
-> micrel: use devm_clk_get_optional_enabled for the rmii-ref clock"), the
-> external clock of KSZ PHY has been enabled when the PHY driver probes,
-> and it can only be disabled when the PHY driver is removed. This causes
-> the clock to continue working when the system is suspended or the network
-> port is down.
+> > +	if (!epc)
+> > +		return;
+> > +
+> > +	/* Only support one EPF for doorbell */
+> > +	epf = list_first_entry_or_null(&epc->pci_epf, struct pci_epf, list);
 >
-> To solve this problem, the clock is enabled when resume() of the PHY
-> driver is called, and the clock is disabled when suspend() is called.
-> Since the PHY driver's resume() and suspend() interfaces are not called
-> in pairs, an additional clk_enable flag is added. When suspend() is
+> Why don't you impose this restriction in pci_epf_alloc_doorbell() itself?
 
-Why  resume() and suspend() is not call paired?
+This is callback from platform_device_msi_init_and_alloc_irqs(). So it is
+actually restriction at pci_epf_alloc_doorbell().
 
-
-> called, the clock is disabled only if clk_enable is true. Conversely,
-> when resume() is called, the clock is enabled if clk_enable is false.
 >
-> Fixes: 985329462723 ("net: phy: micrel: use devm_clk_get_optional_enabled for the rmii-ref clock")
-> Fixes: 99ac4cbcc2a5 ("net: phy: micrel: allow usage of generic ethernet-phy clock")
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
->  drivers/net/phy/micrel.c | 103 ++++++++++++++++++++++++++++++++++++---
->  1 file changed, 95 insertions(+), 8 deletions(-)
+> > +
+> > +	if (epf && epf->db_msg && desc->msi_index < epf->num_db)
+> > +		memcpy(&epf->db_msg[desc->msi_index].msg, msg, sizeof(*msg));
+> > +}
+> > +
+> > +static void pci_epc_free_doorbell(struct pci_epc *epc, struct pci_epf *epf)
+> > +{
+> > +	guard(mutex)(&epc->lock);
+> > +
+> > +	platform_device_msi_free_irqs_all(epc->dev.parent);
+> > +}
+> > +
+> > +static int pci_epc_alloc_doorbell(struct pci_epc *epc, struct pci_epf *epf)
+> > +{
+> > +	struct device *dev = epc->dev.parent;
+> > +	u16 num_db = epf->num_db;
+> > +	int i = 0;
+> > +	int ret;
+> > +
+> > +	guard(mutex)(&epc->lock);
+> > +
+> > +	ret = platform_device_msi_init_and_alloc_irqs(dev, num_db, pci_epc_write_msi_msg);
+> > +	if (ret) {
+> > +		dev_err(dev, "Failed to allocate MSI, may miss 'msi-parent' at your DTS\n");
 >
-> diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-> index 3ef508840674..44577b5d48d5 100644
-> --- a/drivers/net/phy/micrel.c
-> +++ b/drivers/net/phy/micrel.c
-> @@ -432,10 +432,12 @@ struct kszphy_ptp_priv {
->  struct kszphy_priv {
->  	struct kszphy_ptp_priv ptp_priv;
->  	const struct kszphy_type *type;
-> +	struct clk *clk;
->  	int led_mode;
->  	u16 vct_ctrl1000;
->  	bool rmii_ref_clk_sel;
->  	bool rmii_ref_clk_sel_val;
-> +	bool clk_enable;
->  	u64 stats[ARRAY_SIZE(kszphy_hw_stats)];
->  };
+> No need to mention 'msi-parent'. Just 'Failed to allocate MSI' is enough.
 >
-> @@ -2050,8 +2052,27 @@ static void kszphy_get_stats(struct phy_device *phydev,
->  		data[i] = kszphy_get_stat(phydev, i);
->  }
+> > +		return -ENOMEM;
 >
-> +static void kszphy_enable_clk(struct kszphy_priv *priv)
-> +{
-> +	if (!priv->clk_enable && priv->clk) {
-> +		clk_prepare_enable(priv->clk);
-> +		priv->clk_enable = true;
-> +	}
-> +}
-> +
-> +static void kszphy_disable_clk(struct kszphy_priv *priv)
-> +{
-> +	if (priv->clk_enable && priv->clk) {
-> +		clk_disable_unprepare(priv->clk);
-> +		priv->clk_enable = false;
-> +	}
-> +}
-
-Generally, clock not check enable status, just call enable/disable pair.
-
-Frank
-
-> +
->  static int kszphy_suspend(struct phy_device *phydev)
->  {
-> +	struct kszphy_priv *priv = phydev->priv;
-> +	int ret;
-> +
->  	/* Disable PHY Interrupts */
->  	if (phy_interrupt_is_valid(phydev)) {
->  		phydev->interrupts = PHY_INTERRUPT_DISABLED;
-> @@ -2059,7 +2080,13 @@ static int kszphy_suspend(struct phy_device *phydev)
->  			phydev->drv->config_intr(phydev);
->  	}
+> -ENODEV?
 >
-> -	return genphy_suspend(phydev);
-> +	ret = genphy_suspend(phydev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	kszphy_disable_clk(priv);
-> +
-> +	return 0;
->  }
+> - Mani
 >
->  static void kszphy_parse_led_mode(struct phy_device *phydev)
-> @@ -2088,8 +2115,11 @@ static void kszphy_parse_led_mode(struct phy_device *phydev)
->
->  static int kszphy_resume(struct phy_device *phydev)
->  {
-> +	struct kszphy_priv *priv = phydev->priv;
->  	int ret;
->
-> +	kszphy_enable_clk(priv);
-> +
->  	genphy_resume(phydev);
->
->  	/* After switching from power-down to normal mode, an internal global
-> @@ -2112,6 +2142,24 @@ static int kszphy_resume(struct phy_device *phydev)
->  	return 0;
->  }
->
-> +static int ksz8041_resume(struct phy_device *phydev)
-> +{
-> +	struct kszphy_priv *priv = phydev->priv;
-> +
-> +	kszphy_enable_clk(priv);
-> +
-> +	return 0;
-> +}
-> +
-> +static int ksz8041_suspend(struct phy_device *phydev)
-> +{
-> +	struct kszphy_priv *priv = phydev->priv;
-> +
-> +	kszphy_disable_clk(priv);
-> +
-> +	return 0;
-> +}
-> +
->  static int ksz9477_resume(struct phy_device *phydev)
->  {
->  	int ret;
-> @@ -2150,8 +2198,11 @@ static int ksz9477_resume(struct phy_device *phydev)
->
->  static int ksz8061_resume(struct phy_device *phydev)
->  {
-> +	struct kszphy_priv *priv = phydev->priv;
->  	int ret;
->
-> +	kszphy_enable_clk(priv);
-> +
->  	/* This function can be called twice when the Ethernet device is on. */
->  	ret = phy_read(phydev, MII_BMCR);
->  	if (ret < 0)
-> @@ -2194,7 +2245,7 @@ static int kszphy_probe(struct phy_device *phydev)
->
->  	kszphy_parse_led_mode(phydev);
->
-> -	clk = devm_clk_get_optional_enabled(&phydev->mdio.dev, "rmii-ref");
-> +	clk = devm_clk_get_optional(&phydev->mdio.dev, "rmii-ref");
->  	/* NOTE: clk may be NULL if building without CONFIG_HAVE_CLK */
->  	if (!IS_ERR_OR_NULL(clk)) {
->  		unsigned long rate = clk_get_rate(clk);
-> @@ -2216,11 +2267,14 @@ static int kszphy_probe(struct phy_device *phydev)
->  		}
->  	} else if (!clk) {
->  		/* unnamed clock from the generic ethernet-phy binding */
-> -		clk = devm_clk_get_optional_enabled(&phydev->mdio.dev, NULL);
-> +		clk = devm_clk_get_optional(&phydev->mdio.dev, NULL);
->  		if (IS_ERR(clk))
->  			return PTR_ERR(clk);
->  	}
->
-> +	if (!IS_ERR_OR_NULL(clk))
-> +		priv->clk = clk;
-> +
->  	if (ksz8041_fiber_mode(phydev))
->  		phydev->port = PORT_FIBRE;
->
-> @@ -5290,15 +5344,45 @@ static int lan8841_probe(struct phy_device *phydev)
->  	return 0;
->  }
->
-> +static int lan8804_suspend(struct phy_device *phydev)
-> +{
-> +	struct kszphy_priv *priv = phydev->priv;
-> +	int ret;
-> +
-> +	ret = genphy_suspend(phydev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	kszphy_disable_clk(priv);
-> +
-> +	return 0;
-> +}
-> +
-> +static int lan8841_resume(struct phy_device *phydev)
-> +{
-> +	struct kszphy_priv *priv = phydev->priv;
-> +
-> +	kszphy_enable_clk(priv);
-> +
-> +	return genphy_resume(phydev);
-> +}
-> +
->  static int lan8841_suspend(struct phy_device *phydev)
->  {
->  	struct kszphy_priv *priv = phydev->priv;
->  	struct kszphy_ptp_priv *ptp_priv = &priv->ptp_priv;
-> +	int ret;
->
->  	if (ptp_priv->ptp_clock)
->  		ptp_cancel_worker_sync(ptp_priv->ptp_clock);
->
-> -	return genphy_suspend(phydev);
-> +	ret = genphy_suspend(phydev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	kszphy_disable_clk(priv);
-> +
-> +	return 0;
->  }
->
->  static struct phy_driver ksphy_driver[] = {
-> @@ -5358,9 +5442,12 @@ static struct phy_driver ksphy_driver[] = {
->  	.get_sset_count = kszphy_get_sset_count,
->  	.get_strings	= kszphy_get_strings,
->  	.get_stats	= kszphy_get_stats,
-> -	/* No suspend/resume callbacks because of errata DS80000700A,
-> -	 * receiver error following software power down.
-> +	/* Because of errata DS80000700A, receiver error following software
-> +	 * power down. Suspend and resume callbacks only disable and enable
-> +	 * external rmii reference clock.
->  	 */
-> +	.suspend	= ksz8041_suspend,
-> +	.resume		= ksz8041_resume,
->  }, {
->  	.phy_id		= PHY_ID_KSZ8041RNLI,
->  	.phy_id_mask	= MICREL_PHY_ID_MASK,
-> @@ -5507,7 +5594,7 @@ static struct phy_driver ksphy_driver[] = {
->  	.get_sset_count	= kszphy_get_sset_count,
->  	.get_strings	= kszphy_get_strings,
->  	.get_stats	= kszphy_get_stats,
-> -	.suspend	= genphy_suspend,
-> +	.suspend	= lan8804_suspend,
->  	.resume		= kszphy_resume,
->  	.config_intr	= lan8804_config_intr,
->  	.handle_interrupt = lan8804_handle_interrupt,
-> @@ -5526,7 +5613,7 @@ static struct phy_driver ksphy_driver[] = {
->  	.get_strings	= kszphy_get_strings,
->  	.get_stats	= kszphy_get_stats,
->  	.suspend	= lan8841_suspend,
-> -	.resume		= genphy_resume,
-> +	.resume		= lan8841_resume,
->  	.cable_test_start	= lan8814_cable_test_start,
->  	.cable_test_get_status	= ksz886x_cable_test_get_status,
->  }, {
 > --
-> 2.34.1
->
+> மணிவண்ணன் சதாசிவம்
