@@ -1,39 +1,39 @@
 Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8598014885E
-	for <imx@lists.linux.dev>; Mon, 25 Nov 2024 09:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B06D45003
+	for <imx@lists.linux.dev>; Mon, 25 Nov 2024 09:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732525355; cv=none; b=MP5pAvNPcL7tFngsvb2NFdyLg579FXifLYHmfX2GZzWx5X/JI+ZNmh0c57/4XQTEkobC45zntbwvwoAozSB1YecCO9aBruaRK1agGUAAac+7Lxd1Co9wSqFdLW/QTLg4buLQtj4LB7jho9Vuu4TvgCqXRzj/4mPSdHvN+6z7imU=
+	t=1732525368; cv=none; b=BglCBGBeeRDSJl60HTtA34dIry7N5N5Au8x6SqbBIb8wQuLrt3tRq5JVHXa4n57uE3VbnYI6YZ/1x1FNOwZ1YaycBNPLTfwFBgTsXeLDeDUkx9XxlUF+9CPlB28RjrJul7fgxC3OmJw5raz40B6xScuAX+TpGG+a67UVSTq54LU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732525355; c=relaxed/simple;
-	bh=uJXExFdZHf6SBVQ9PilFPTPrzrw19XFPVd9ZOVy8v7Y=;
+	s=arc-20240116; t=1732525368; c=relaxed/simple;
+	bh=moye7+rAbEF75I8Vz7/S5oWD/NyLQi99at0LkLw/DpI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=M3hMjXQsGmLWAjMwcn1iUJpzUaJ2S6Fz4jXHDf78ipxo0Wtc1gFXp/qIqusfEgsDPEQpaSVl7CMj13wyZ1jBsxyLnE5LHaPMA5ztICfiBzxNcBxGJWBXXcK+x0JXtPY6GsGlB1aY3g9AjLxahgmJZs3TvuL9kRIVQx/7YiQm26M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=ppKY9K0Q; arc=none smtp.client-ip=46.19.9.99
+	 MIME-Version; b=YLJymtxEsiTAlzoTseFnE9U4AC6ljx+7jeSydpeiv68TmCAcuR09yY8l8ZDhfKQ9T+DRZza6EeuAkiSaAMCckfTnlCL+QBMoV9g3digmnQaTTxYyr6+Ad+Y2g92Q9tsKAC9SjHlpYF5ODN80X5N/2VbBAKacjGV+FTR9R0ivJ5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=iv1oiJ65; arc=none smtp.client-ip=46.19.9.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="ppKY9K0Q"
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="iv1oiJ65"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
 	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=VokN2zx5/a7fgGVGyKWlkWcp8WKF3/t1J4RYnujfUYQ=; b=ppKY9K0QngzwQmsmUbJNKx2azH
-	5f1UvKpoGUdXhA3yJc/v8yO7nYpk612Ln860A5xTeypGMSYaRSnTKX7rkgGC4aRwIuEobC/adEz+J
-	gCxfc0dN8aN0Hfsxw/mcT4+uU/AhFQNCXdMwcRRqe0Li0PfSGPYQhTHRJ0BY0fWylmoX09pEnlUSI
-	3lFHuDHN6u5JThxKQk0pWMcJZOKN5pMr/0N1jlgjSYmsj8OGQ3XLsi047LzHzGneTrSJ98CdN65Sh
-	93dZVgLUuErELOcFDZZ11lFFeG2WaErC0WveQptEFzvCjPe+mM4kNG6jj9OzCW6P+DrTX9D2Emjrb
-	KiALj/Rw==;
+	bh=V+qSCG7OvsEXIIRRw7Pi0nnCo1fiNOSsrVbS8QaQL6I=; b=iv1oiJ653Ry86VW5Opkp5TEqbr
+	/ILa1wWx/FRaIP35zd4Hx9reHJOswpyZGnuYxxs9ZogIRAE88FBxuKRp8le+IGLLxb7IoTYcIOiA9
+	jRCuxxLIAsh45GnBZfA/QFjak7DtnaxWvMg/rRWZX+pqB3EehTEQb2fkAweCr7bBuDHycAypsjINl
+	7qAKVHMy+Yjj0aqav1Q9s+TSdvVI8CdOZUi4CvvPyQo+XZB36CN2TXiDYxwe7YTaTFFoRZjmE6NlP
+	POJUAuv12Y7H7xzeK2HHpH7m2+Y0DBIBbhPpK55CRw8A4aOeCkb9WdxUtmvPOi/IYlsdIXJwPnqtR
+	eNW4sEcA==;
 Received: from [91.26.50.162] (port=58340 helo=and-HP-Z4..)
 	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <andrej.picej@norik.com>)
-	id 1tFUIt-00Eq70-1b;
-	Mon, 25 Nov 2024 09:18:43 +0100
+	id 1tFUIp-00Eq70-34;
+	Mon, 25 Nov 2024 09:18:39 +0100
 From: Andrej Picej <andrej.picej@norik.com>
 To: shawnguo@kernel.org,
 	s.hauer@pengutronix.de,
@@ -47,9 +47,9 @@ Cc: imx@lists.linux.dev,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	upstream@lists.phytec.de
-Subject: [PATCH 10/15] arm64: dts: imx8mm-phyboard-polis: Assign missing regulator for bluetooth
-Date: Mon, 25 Nov 2024 09:18:09 +0100
-Message-Id: <20241125081814.397352-11-andrej.picej@norik.com>
+Subject: [PATCH 05/15] arm64: dts: imx8mm-phycore-som: add descriptions to nodes
+Date: Mon, 25 Nov 2024 09:18:04 +0100
+Message-Id: <20241125081814.397352-6-andrej.picej@norik.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241125081814.397352-1-andrej.picej@norik.com>
 References: <20241125081814.397352-1-andrej.picej@norik.com>
@@ -71,30 +71,46 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-From: Yashwanth Varakala <y.varakala@phytec.de>
+From: Yannic Moog <y.moog@phytec.de>
 
-Assign the missing regulator to the bluetooth node. Absence of
-this regulator triggers the warning message from kernel as driver
-uses a fallback dummy regulator when there is no regulator assigned.
+Add missing EEPROM and RTC descriptions. Also use eMMC with
+lower-case "e".
 
-Signed-off-by: Yashwanth Varakala <y.varakala@phytec.de>
+Signed-off-by: Yannic Moog <y.moog@phytec.de>
 Signed-off-by: Andrej Picej <andrej.picej@norik.com>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
-index f5f503c3c6b9..defe59d957d8 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
-@@ -266,6 +266,7 @@ bluetooth {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_bt>;
- 		shutdown-gpios = <&gpio2 6 GPIO_ACTIVE_HIGH>;
-+		vbat-supply = <&reg_vcc_3v3>;
- 		vddio-supply = <&reg_vcc_3v3>;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
+index 7e859c65317a..cced82226c6d 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
+@@ -290,6 +290,7 @@ sn65dsi83: bridge@2d {
+ 		status = "disabled";
+ 	};
+ 
++	/* EEPROM */
+ 	eeprom@51 {
+ 		compatible = "atmel,24c32";
+ 		pagesize = <32>;
+@@ -297,6 +298,7 @@ eeprom@51 {
+ 		vcc-supply = <&reg_vdd_3v3_s>;
+ 	};
+ 
++	/* RTC */
+ 	rv3028: rtc@52 {
+ 		compatible = "microcrystal,rv3028";
+ 		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
+@@ -307,7 +309,7 @@ rv3028: rtc@52 {
  	};
  };
+ 
+-/* EMMC */
++/* eMMC */
+ &usdhc3 {
+ 	assigned-clocks = <&clk IMX8MM_CLK_USDHC3_ROOT>;
+ 	assigned-clock-rates = <400000000>;
 -- 
 2.34.1
 
