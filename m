@@ -1,39 +1,39 @@
 Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE7F19007D
-	for <imx@lists.linux.dev>; Mon, 25 Nov 2024 09:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8598014885E
+	for <imx@lists.linux.dev>; Mon, 25 Nov 2024 09:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732525288; cv=none; b=lLgL+PPi1yqHlr6FDiVdzF9Etfykl4i/sVmfFteTmE1dlPZGL8scRRTRGYE+cR+r3evZrnPYkcUp6ryIaqlOULBP4x9b5K37u9J1MjPHaHdYmCjLKzXZvkeHkpe7d8POHTJOix+xqrAHbtKFG526sGe7/pq3JjsLD+kSAaBF6eo=
+	t=1732525355; cv=none; b=MP5pAvNPcL7tFngsvb2NFdyLg579FXifLYHmfX2GZzWx5X/JI+ZNmh0c57/4XQTEkobC45zntbwvwoAozSB1YecCO9aBruaRK1agGUAAac+7Lxd1Co9wSqFdLW/QTLg4buLQtj4LB7jho9Vuu4TvgCqXRzj/4mPSdHvN+6z7imU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732525288; c=relaxed/simple;
-	bh=w/soCacKPpjMdFZ3tk4vbyPiDg+AdL89p1uSrPXja0w=;
+	s=arc-20240116; t=1732525355; c=relaxed/simple;
+	bh=uJXExFdZHf6SBVQ9PilFPTPrzrw19XFPVd9ZOVy8v7Y=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pcR0j6XpYLbZ1fHKdpIuD5hLQv9hA8mXEoGTCxqPcfLzUN4y7g528iBQzEp5x2e4gaApZZx9zpNO0rWTMojOznwsz3641V0RZgrfpSezaRKiZXX+kWitOavsynCGzgs14uBgsFoNK3LaH+paOV6KXrHGasIY0WA9PIx3JL0gTwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=nWipbfoQ; arc=none smtp.client-ip=46.19.9.99
+	 MIME-Version; b=M3hMjXQsGmLWAjMwcn1iUJpzUaJ2S6Fz4jXHDf78ipxo0Wtc1gFXp/qIqusfEgsDPEQpaSVl7CMj13wyZ1jBsxyLnE5LHaPMA5ztICfiBzxNcBxGJWBXXcK+x0JXtPY6GsGlB1aY3g9AjLxahgmJZs3TvuL9kRIVQx/7YiQm26M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=ppKY9K0Q; arc=none smtp.client-ip=46.19.9.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="nWipbfoQ"
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="ppKY9K0Q"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
 	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=BnHdfh91G6T+ycFdjp0k9hFV7z9eOwmLyOOxZ8pJsTE=; b=nWipbfoQ6TkkG9eDB2uuc4V4Ba
-	gLA0Tn8IXz+/u9861hheMd5Js47LEirSh/Fv3SF4nBl0JxIQLC+UnSXY2u3axCT+vgc+4VWUH70i5
-	ER8RuSgm3zGSVOdHVy5AVteV/fv2CuxTf/UwNMG1jeS6JCP+A49rltdW8SqNqKpIsTSRl8ZBOsTMn
-	+9dEr9FcRDI6ow+kaFd+aMuR7cQFRlF4VzfmbxVlmefIS6N2u+Lg65lOz3qGqwEWY/CUau6fRnpox
-	BnaPErBGgbU7Qm2p4I8rHL8ROnBLm2Mt/ukj4AY+3vHbBVIHrNcltDn1+t8q8GD/WS6JsvID+kDN/
-	RCWabBVw==;
+	bh=VokN2zx5/a7fgGVGyKWlkWcp8WKF3/t1J4RYnujfUYQ=; b=ppKY9K0QngzwQmsmUbJNKx2azH
+	5f1UvKpoGUdXhA3yJc/v8yO7nYpk612Ln860A5xTeypGMSYaRSnTKX7rkgGC4aRwIuEobC/adEz+J
+	gCxfc0dN8aN0Hfsxw/mcT4+uU/AhFQNCXdMwcRRqe0Li0PfSGPYQhTHRJ0BY0fWylmoX09pEnlUSI
+	3lFHuDHN6u5JThxKQk0pWMcJZOKN5pMr/0N1jlgjSYmsj8OGQ3XLsi047LzHzGneTrSJ98CdN65Sh
+	93dZVgLUuErELOcFDZZ11lFFeG2WaErC0WveQptEFzvCjPe+mM4kNG6jj9OzCW6P+DrTX9D2Emjrb
+	KiALj/Rw==;
 Received: from [91.26.50.162] (port=58340 helo=and-HP-Z4..)
 	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <andrej.picej@norik.com>)
-	id 1tFUIs-00Eq70-2Y;
-	Mon, 25 Nov 2024 09:18:42 +0100
+	id 1tFUIt-00Eq70-1b;
+	Mon, 25 Nov 2024 09:18:43 +0100
 From: Andrej Picej <andrej.picej@norik.com>
 To: shawnguo@kernel.org,
 	s.hauer@pengutronix.de,
@@ -47,9 +47,9 @@ Cc: imx@lists.linux.dev,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	upstream@lists.phytec.de
-Subject: [PATCH 09/15] arm64: dts: imx8mm: move bulk of rtc properties to carrierboards
-Date: Mon, 25 Nov 2024 09:18:08 +0100
-Message-Id: <20241125081814.397352-10-andrej.picej@norik.com>
+Subject: [PATCH 10/15] arm64: dts: imx8mm-phyboard-polis: Assign missing regulator for bluetooth
+Date: Mon, 25 Nov 2024 09:18:09 +0100
+Message-Id: <20241125081814.397352-11-andrej.picej@norik.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241125081814.397352-1-andrej.picej@norik.com>
 References: <20241125081814.397352-1-andrej.picej@norik.com>
@@ -71,64 +71,30 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-From: Yannic Moog <y.moog@phytec.de>
+From: Yashwanth Varakala <y.varakala@phytec.de>
 
-Move properties from SoM's dtsi to carrierboard's dts as they are
-actually defined by the carrier board design.
+Assign the missing regulator to the bluetooth node. Absence of
+this regulator triggers the warning message from kernel as driver
+uses a fallback dummy regulator when there is no regulator assigned.
 
-Signed-off-by: Yannic Moog <y.moog@phytec.de>
+Signed-off-by: Yashwanth Varakala <y.varakala@phytec.de>
 Signed-off-by: Andrej Picej <andrej.picej@norik.com>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts | 4 ++++
- arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi       | 4 ----
- arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l.dts    | 4 ++++
- 3 files changed, 8 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
-index 7aaf705c7e47..f5f503c3c6b9 100644
+index f5f503c3c6b9..defe59d957d8 100644
 --- a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
 +++ b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
-@@ -221,6 +221,10 @@ &pcie_phy {
- 
- /* RTC */
- &rv3028 {
-+	interrupt-parent = <&gpio1>;
-+	interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
-+	pinctrl-0 = <&pinctrl_rtc>;
-+	pinctrl-names = "default";
- 	aux-voltage-chargeable = <1>;
- 	trickle-resistor-ohms = <3000>;
- 	wakeup-source;
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
-index cced82226c6d..fdfe28780d6f 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
-@@ -301,10 +301,6 @@ eeprom@51 {
- 	/* RTC */
- 	rv3028: rtc@52 {
- 		compatible = "microcrystal,rv3028";
--		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
--		interrupt-parent = <&gpio1>;
--		pinctrl-names = "default";
--		pinctrl-0 = <&pinctrl_rtc>;
- 		reg = <0x52>;
+@@ -266,6 +266,7 @@ bluetooth {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_bt>;
+ 		shutdown-gpios = <&gpio2 6 GPIO_ACTIVE_HIGH>;
++		vbat-supply = <&reg_vcc_3v3>;
+ 		vddio-supply = <&reg_vcc_3v3>;
  	};
  };
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l.dts b/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l.dts
-index c9bf4ac254bb..b7b18d5a4f68 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l.dts
-@@ -215,6 +215,10 @@ &pwm4 {
- 
- /* RTC */
- &rv3028 {
-+	interrupt-parent = <&gpio1>;
-+	interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
-+	pinctrl-0 = <&pinctrl_rtc>;
-+	pinctrl-names = "default";
- 	aux-voltage-chargeable = <1>;
- 	trickle-resistor-ohms = <3000>;
- 	wakeup-source;
 -- 
 2.34.1
 
