@@ -1,207 +1,192 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9781CCB40
-	for <imx@lists.linux.dev>; Tue, 26 Nov 2024 10:59:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A057F7DA68
+	for <imx@lists.linux.dev>; Tue, 26 Nov 2024 11:03:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732618800; cv=none; b=eE3jDH/ZFvBPDO3OM+NP3YGNFJibhEYcg/KjQfkLoZ9MvtNCrPmoQeTyoN6G8y1TKhgH575rPwGRt+6KhxRf4XM8br7Y1nVRm9QUn3nz82Ge8/PO+kWiKylXrPXr4pGRBXLRHXYD/ozmF/YZrCcECnLDzKmSVI98FJfnIO4X/MI=
+	t=1732619027; cv=none; b=AyhwHfipCv5L/p/Xt0H+7e3JO05Zc31Gw+xmGdGwxXwfcMcAQpsmLZ0yEfkStoMGoPixRF6CrZeTEtcDclxiZdEklC+jEXVLS8+05oo72LiaGbEDL7T4RBodiT9LVO6iEGTR/YaUTYvhAbvt8WpKsB0c2rDjLztJ3jMbKyBNUX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732618800; c=relaxed/simple;
-	bh=KZOy2PsGSLeRARy7LZDQ2bm+JG1QxNV2pkuwwj66+wk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ATzOCdgQm27EYreKMzWBmlOW1Mk29J0AVYD7jQaqfFo3L0w93DABG/Kmnz/OlO9mLJWIByhkD0yFJ1YM+2A57Homf/Bb5IiYwslsS8uRmXp8Nl+ZLcisOXnR30l9Vwbu4p8y3Oe+79CnbHerylJNxBHSMy6jHk5CJqwG4MAHT5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tFtIG-0004nI-4y; Tue, 26 Nov 2024 11:59:44 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tFtIE-000EZ5-2X;
-	Tue, 26 Nov 2024 11:59:43 +0100
-Received: from pengutronix.de (pd9e59fec.dip0.t-ipconnect.de [217.229.159.236])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 2BC9A37D91F;
-	Tue, 26 Nov 2024 10:59:43 +0000 (UTC)
-Date: Tue, 26 Nov 2024 11:59:42 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>, 
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-can@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, NXP S32 Linux <s32@nxp.com>, 
-	imx@lists.linux.dev, Christophe Lizzi <clizzi@redhat.com>, 
-	Alberto Ruiz <aruizrui@redhat.com>, Enric Balletbo <eballetb@redhat.com>, 
-	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v2 1/3] dt-bindings: can: fsl,flexcan: add S32G2/S32G3
- SoC support
-Message-ID: <20241126-independent-crocodile-of-finesse-106009-mkl@pengutronix.de>
-References: <20241125163103.4166207-1-ciprianmarian.costea@oss.nxp.com>
- <20241125163103.4166207-2-ciprianmarian.costea@oss.nxp.com>
- <y2fbsxg4pney2iapzcdooxyz6l3pmw6ms2ddupf637svitelbt@wthu23ld5ryq>
+	s=arc-20240116; t=1732619027; c=relaxed/simple;
+	bh=6Z23awsBbOP6OgQ+o/XZYsLEbMzvF/Bu6+MuhtkIPiI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=h8ykoMEh7IxpQGK5Qpz8z+DQDU4VFNKHji2XqIs7RhUBVwr4VoyyhDToRamkEYQujQ/OAnUPgjeRQq0wrn4NCzWgjtPxG3VMpJQBhqywYxj0gZpgiHFYj1rQTzlT3CA6jBaElzqTwsE9I61aQjuHdF5+QY5kSC3WKS0QRfOSL5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dGxOjP4Z; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dGxOjP4Z"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2138140004;
+	Tue, 26 Nov 2024 11:03:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1732619017;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9qIA4RDGJqq407wcmAgXUIpGA4Wmfra8Ng+61C/q9qs=;
+	b=dGxOjP4ZvCxQVdk1DkvAOxtspwrRNnjALhmi/ccJI/bJi4pEOSyW1c9xyiiF9U648W0kWk
+	jnXj12nGCKJz8JXIk047HqrQvNv4XID/J7+tvT5tp0Vdxb+ttSUfSLtBNlHOpnH8TIeJPl
+	IVwiw7RvJ8gD1ZEN90Ko4nU4OYvAz+wfz+ONxKBV8WDK/6fVbotTWHZxG/+pqoR6Qz/Kz9
+	AWcEGlAWi7Znia0fNB2Oce/Png0sULaIpyCXr/cdO4amdTnyf813ES29D6M4K7/4MXQEmd
+	V4ORwkluE/FjB8muTuKZUK3V8Mtp/MgCAvZUwLgN5ZjcLCxrDDd/KH6+LwJu+Q==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: Abel Vesa <abelvesa@kernel.org>,  Peng Fan <peng.fan@nxp.com>,  Michael
+ Turquette <mturquette@baylibre.com>,  Stephen Boyd <sboyd@kernel.org>,
+  Shawn Guo <shawnguo@kernel.org>,  Sascha Hauer <s.hauer@pengutronix.de>,
+  Pengutronix Kernel Team <kernel@pengutronix.de>,  Fabio Estevam
+ <festevam@gmail.com>,  Marek Vasut <marex@denx.de>,  Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>,  linux-clk@vger.kernel.org,
+  imx@lists.linux.dev,  linux-arm-kernel@lists.infradead.org,
+  linux-kernel@vger.kernel.org,  dri-devel@lists.freedesktop.org,  Abel
+ Vesa <abel.vesa@linaro.org>,  Herve Codina <herve.codina@bootlin.com>,
+  Luca Ceresoli <luca.ceresoli@bootlin.com>,  Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>,  Ian Ray <ian.ray@ge.com>,
+  stable@vger.kernel.org
+Subject: Re: [PATCH 0/5] clk: Fix simple video pipelines on i.MX8
+In-Reply-To: <55bb77b4-5172-4b4a-aaea-df6972a417dc@nxp.com> (Liu Ying's
+	message of "Tue, 26 Nov 2024 14:49:38 +0800")
+References: <20241121-ge-ian-debug-imx8-clk-tree-v1-0-0f1b722588fe@bootlin.com>
+	<b98fdf46-3d09-4693-86fe-954fc723e3a6@nxp.com>
+	<87zflrpp8w.fsf@bootlin.com>
+	<55bb77b4-5172-4b4a-aaea-df6972a417dc@nxp.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Tue, 26 Nov 2024 12:03:35 +0100
+Message-ID: <87h67uw92w.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="dfsenyb7jvpat5a3"
-Content-Disposition: inline
-In-Reply-To: <y2fbsxg4pney2iapzcdooxyz6l3pmw6ms2ddupf637svitelbt@wthu23ld5ryq>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
-
-
---dfsenyb7jvpat5a3
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 1/3] dt-bindings: can: fsl,flexcan: add S32G2/S32G3
- SoC support
-MIME-Version: 1.0
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On 26.11.2024 08:19:04, Krzysztof Kozlowski wrote:
-> On Mon, Nov 25, 2024 at 06:31:00PM +0200, Ciprian Costea wrote:
-> > From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-> >=20
-> > Add S32G2/S32G3 SoCs compatible strings.
-> >=20
-> > A particularity for these SoCs is the presence of separate interrupts f=
-or
-> > state change, bus errors, MBs 0-7 and MBs 8-127 respectively.
-> >=20
-> > Increase maxItems of 'interrupts' to 4 for S32G based SoCs and keep the
-> > same restriction for other SoCs.
-> >=20
-> > Also, as part of this commit, move the 'allOf' after the required
-> > properties to make the documentation easier to read.
-> >=20
-> > Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
->=20
-> You made multiple changes afterwards, which invalidated the review. See
-> submitting-patches which explain what to do in such case.
->=20
-> > ---
-> >  .../bindings/net/can/fsl,flexcan.yaml         | 46 +++++++++++++++++--
-> >  1 file changed, 42 insertions(+), 4 deletions(-)
->=20
-> ...
->=20
-> >      maxItems: 2
-> > @@ -136,6 +143,37 @@ required:
-> >    - reg
-> >    - interrupts
-> > =20
-> > +allOf:
-> > +  - $ref: can-controller.yaml#
-> > +  - if:
-> > +      properties:
-> > +        compatible:
-> > +          contains:
-> > +            const: nxp,s32g2-flexcan
-> > +    then:
-> > +      properties:
-> > +        interrupts:
-> > +          items:
-> > +            - description:
-> > +                Message Buffer interrupt for mailboxes 0-7
->=20
-> Keep it in one line.
+Hi Liu,
 
-According to the excel sheet the IRQ is also for the enhanced RX FIFO.
+>>> The
+>>> pixel clock can be got from LDB's remote input LCDIF DT node by
+>>> calling of_clk_get_by_name() in fsl_ldb_probe() like the below patch
+>>> does. Similar to setting pixel clock rate, I think a chance is that
+>>> pixel clock enablement can be moved from LCDIF driver to
+>>> fsl_ldb_atomic_enable() to avoid on-the-fly division ratio change.
+>>=20
+>> TBH, this sounds like a hack and is no longer required with this series.
+>
+> Pixel clock is an input signal to LDB, which is reflected in LDB block
+> diagram in i.MX8MP TRM(see Figure 13-70) where "CLOCK" goes into LDB
+> along with "DATA", "HSYNC", "VSYNC", "DATA_EN" and "CONTROL".  So,
+> fsl,ldb.yaml should have documented the pixel clock in clocks and
+> clock-names properties, but unfortunately it doesn't and it's too late
+> to do so.  The workaround is to get the pixel clock from LCDIF DT node
+> in the LDB driver.  I would call it a workaround rather than a hack,
+> since fsl,ldb.yaml should have documented the pixel clock in the first
+> place.
+>
+>>=20
+>> You are just trying to circumvent the fact that until now, applying a
+>> rate in an upper clock would unconfigure the downstream rates, and I
+>> think this is our first real problem.
+>
+> I'm still not a fan of setting CLK_SET_RATE_PARENT flag to the LDB clock
+> and pixel clocks.  If we look at the bigger picture, the first real
+> problem is probably how to support both separated video PLLs and shared
+> video PLL.
+>
+>>=20
+>>> https://patchwork.kernel.org/project/linux-clk/patch/20241114065759.334=
+1908-6-victor.liu@nxp.com/
+>>>
+>>> Actually, one sibling patch of the above patch reverts ff06ea04e4cf
+>>> because I thought "fixed PLL rate" is the only solution, though I'm
+>>> discussing any alternative solution of "dynamically changeable PLL
+>>> rate" with Marek in the thread of the sibling patch.
+>>=20
+>> I don't think we want fixed PLL rates. Especially if you start using
+>
+> I don't want fixed PLL rates, either...
+>
+>> external (hot-pluggable) displays with different needs: it just does not
+>
+> ... but, considering the problem of how to support separated/shared video
+> PLLs, I think we have to accept the fixed PLL rates.  So, unfortunately
+> some video modes read from EDID cannot fly.  If there is an feasible
+> alternative solution, it will be good to implement it, but till now I
+> don't see any.
 
->=20
-> > +            - description:
-> > +                Interrupt indicating that the CAN bus went to Buss Off=
- state
->=20
-> s/Interrupt indicating that//
-> Buss Off state status?
+Can you please remind me what your exact display setup (and their
+required pixel clocks) is?
 
-What about: "Device went into Bus Off state"
+AFAIU, you don't want to use dynamic calculations for the PLL because it
+breaks your use case with HDMI. Of course this is a very limited use
+case, because using a static rate means almost a single type of display
+can be plugged.
 
-However from the excel sheet I read it as a device changes state, to Bus
-Off, finished Bus Off or transition from error counters from < 96 to >=3D 9=
-6.
+The clock subsystem will not recalculate the video_pll1 if you can
+achieve a perfect rate change using the LDB/PIX divisors. So let me
+propose the below addition to this series. With the below diff, your
+setup should still work with assigned clock rates, while letting us
+handle our calculations dynamically.
 
-So "Device state change" would be a more complete description?
+The addition I am now proposing is to remove CLK_SET_RATE_PARENT to both
+media_disp[12]_pix clocks. This should actually fix your situation while
+keeping pixel clocks accurate as far it is possible as the LDB clock
+will change video_pll1 only if the PLL rate is not suitable for it in
+the first place. And then, there will be no other clock messing with
+this PLL. This is probably a safer approach, which should still allow
+accurate dynamic rate calculations for "simple" setups *and* let the
+static assignations work otherwise:
 
-> > +            - description:
-> > +                Interrupt indicating that errors were detected on the =
-CAN bus
->=20
-> Error detection?
->=20
-> > +            - description:
-> > +                Message Buffer interrupt for mailboxes 8-127 (ored)
+-       hws[IMX8MP_CLK_MEDIA_DISP2_PIX] =3D imx8m_clk_hw_composite_bus_flag=
+s("media_disp2_pix", imx8mp_media_disp_pix_sels, ccm_base + 0x9300, CLK_SET=
+_RATE_PARENT | CLK_NO_RATE_CHANGE_DURING_PROPAGATION);
++       hws[IMX8MP_CLK_MEDIA_DISP2_PIX] =3D imx8m_clk_hw_composite_bus_flag=
+s("media_disp2_pix", imx8mp_media_disp_pix_sels, ccm_base + 0x9300, CLK_NO_=
+RATE_CHANGE_DURING_PROPAGATION);
+[...]
+-       hws[IMX8MP_CLK_MEDIA_DISP1_PIX] =3D imx8m_clk_hw_composite_bus_flag=
+s("media_disp1_pix", imx8mp_media_disp_pix_sels, ccm_base + 0xbe00, CLK_SET=
+_RATE_PARENT | CLK_NO_RATE_CHANGE_DURING_PROPAGATION);
++       hws[IMX8MP_CLK_MEDIA_DISP1_PIX] =3D imx8m_clk_hw_composite_bus_flag=
+s("media_disp1_pix", imx8mp_media_disp_pix_sels, ccm_base + 0xbe00, CLK_NO_=
+RATE_CHANGE_DURING_PROPAGATION);
 
-nitpick: all these different events for the other interrupts are ored,
-so IMHO you can omit the "(ored)".
+Can you please give this proposal a try?
 
-> > +        interrupt-names:
-> > +          items:
-> > +            - const: mb_0-7
->=20
-> Choose one: either underscores or hyphens. Keep it consistent in your
-> bindings.
+[...]
 
-> > +            - const: state
-> > +            - const: berr
+>> --- a/drivers/gpu/drm/bridge/fsl-ldb.c
+>> +++ b/drivers/gpu/drm/bridge/fsl-ldb.c
+>> @@ -177,6 +177,17 @@ static void fsl_ldb_atomic_enable(struct drm_bridge=
+ *bridge,
+>>         mode =3D &crtc_state->adjusted_mode;
+>>=20=20
+>>         requested_link_freq =3D fsl_ldb_link_frequency(fsl_ldb, mode->cl=
+ock);
+>> +       /*
+>> +        * Dual cases require a 3.5 rate division on the pixel clocks, w=
+hich
+>> +        * cannot be achieved with regular single divisors. Instead, dou=
+ble the
+>> +        * parent PLL rate in the first place. In order to do that, we f=
+irst
+>> +        * require twice the target clock rate, which will program the u=
+pper
+>> +        * PLL. Then, we ask for the actual targeted rate, which can be =
+achieved
+>> +        * by dividing by 2 the already configured upper PLL rate, witho=
+ut
+>> +        * making further changes to it.
+>> +        */
+>> +       if (fsl_ldb_is_dual(fsl_ldb))
+>> +               clk_set_rate(fsl_ldb->clk, requested_link_freq * 2);
+>
+> I don't think i.MX6SX LDB needs this, because the "ldb" clock's parent
+> is a mux clock with "ldb_di0_div_3_5" or "ldb_di0_div_7" parents.
 
-The order of IRQ names is not consistent with the description.
+Ah, you mean we should only do this in the imx8 case, right?
 
-> > +            - const: mb_8-127
->=20
-> Choose one: either underscores or hyphens. Keep it consistent in your
-> bindings.
->=20
-> > +      required:
-> > +        - compatible
-> > +        - reg
-> > +        - interrupts
-> > +        - interrupt-names
->=20
-> What happened to "else:"? Why all other devices now have up to 4 interrup=
-ts?
-
-Do you already have a dtsi snippet for the flexcan nodes? Please make
-sure that the interrupts are correctly mapped.
-
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---dfsenyb7jvpat5a3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmdFqhsACgkQKDiiPnot
-vG/LTgf+Mwp1q1vMJAIFstJubBhTvSCwOJbyA++jfcLd3MuPutHUalDu0aHMeb77
-A9Us5XLu3d3zwqFhPmSBC2pZYS/71wq7193lTCvD3W/PFx5o5NjHv8QK5Zr2zYIM
-hPVDVWPPJHHLp/sqKCfpOWUbyXvedKLAmtqcSjk11iUiUHisiMUWpgX6KQ9X/a/2
-bIYYgHBm9EVitdDY49MzdwJH6+tE+xZ9qsfrgEgT1QpGDoD1TErBuijcAyxn/LW6
-XSsLhDu/HDsmV499Wj9lSuaHo1+E8Zm6Yy0XVJWdOOO4VisvVOkbFbP51NcEPyez
-7RhKu4VQEpP+m49vw8rQT+wEIy6Vjg==
-=KwpE
------END PGP SIGNATURE-----
-
---dfsenyb7jvpat5a3--
+Thanks,
+Miqu=C3=A8l
