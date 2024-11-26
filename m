@@ -1,110 +1,120 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B7E1CDFC1
-	for <imx@lists.linux.dev>; Tue, 26 Nov 2024 09:22:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7061BB6B3;
+	Tue, 26 Nov 2024 09:36:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732612945; cv=none; b=bFJqW4I4mGpRUpssG8BZ1/TWNcIiKEmFAJuXPyhcCq7N7FmJmb0GI0Pnt3s2JoipDEVkipqQcGLLLa6nTWJSGBqk2X9TJ/cqH9ppGgaA+pytDrJ7Eo4WsgA6pEhoEXjtEKMhVZpRTWrpsPRGPseCG0k3UUSb3hrD1eijTyikF6U=
+	t=1732613780; cv=none; b=qD86TGTK+N47KHUjnGZ1l40faNsneEJcHhU6u/DLJFzoJWpGft0fjiRDpTpfPEt67HKMSXP6WYJ5c7tNRb/5VaUyaWjbaP5rmUeSiPpkdQOvWhv+ovcIVgWyJWjo7KXmHGuZ6tZbjZkgb4Q10J7d8ywRRdt1Q4di7MX/oUEFQ8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732612945; c=relaxed/simple;
-	bh=uiIsNIrO77rbKiYWghXwpEab6AsPFvdpccRbm80Ge4Q=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eQpr4O4XV+9dxQC2u+ycb6r7ZTW41XkyE3YDXbqsNFSQrkPmXZh7vVORB6NGYJaZqqYAvG5iChbnAb/+bkEKgLDHoqn99sQWdowHSGu0aZ5sE0t+kxRbYFLIJ6Wtjxi4dAyHi6p0cnr26oQ79UcZRNKYSghEf7jql0ESYYH1enk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1tFrlu-0005uA-Fq; Tue, 26 Nov 2024 10:22:14 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1tFrlt-000DzJ-1Z;
-	Tue, 26 Nov 2024 10:22:14 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1tFrlt-00B5zE-1t;
-	Tue, 26 Nov 2024 10:22:14 +0100
-From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Date: Tue, 26 Nov 2024 10:22:13 +0100
-Subject: [PATCH 1/3] ARM: dts: imx6qdl: add phy-3p0-supply to usb phys
+	s=arc-20240116; t=1732613780; c=relaxed/simple;
+	bh=KVIfCGQmDp6Zc3maWEFRnxe4bj7QJ4bEIv2RSq4VTCY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WmRDIWb3xLft6AfZSwqndAzaiuKR7AwrBMMnyN8SAdkMiVcllkH7/gfbeMHZjzeP3OeJpgULtYeLduqGa4Asqv6dMKNGtyPLXxcR2VwqFql4TVoF96Gu7vdDkq3DfBjHLz9p2vq3GcCrZAVyUegFWa8BUE700A5QGMyvl8TNebU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i483S0mZ; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i483S0mZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B88C4CECF;
+	Tue, 26 Nov 2024 09:36:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732613780;
+	bh=KVIfCGQmDp6Zc3maWEFRnxe4bj7QJ4bEIv2RSq4VTCY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=i483S0mZ90NIOez44lmtrk07Ib+MFFXS0ndoi0HcksmC2pemfEIJ0sWA+wO+4bv9X
+	 iTKq3YFgrWNF1eYgCesIo1VxYaJnn/EtyhLlGLybxSkeBFUnuDRsQJymBWMbAoAceo
+	 j7/wIK9Iu2AG2lCnSbiQToGKNvsy8sMxe6qlNgIWHs/V14AD2N4BXvHciQcjs14cuD
+	 k1AYLvqRRUXaXKegtZzlxzyFqSuMP6aR4gpXDuTfJplxGcDVJFQ+R+6ltNT4JNRk6i
+	 NrvtwUcwIHDSELdeUDEhnFRg3S692pOpWxv+W1Eu+xjf8/CLCAanfreCv+qxxkGAbS
+	 rL9mxFS35Fgqw==
+Date: Tue, 26 Nov 2024 10:36:14 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Frank Li <Frank.li@nxp.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, dlemoal@kernel.org, maz@kernel.org,
+	tglx@linutronix.de, jdmason@kudzu.us
+Subject: Re: [PATCH v8 3/6] PCI: endpoint: Add pci_epf_align_addr() helper
+ for address alignment
+Message-ID: <Z0WWjiamjkWfQXKk@ryzen>
+References: <20241116-ep-msi-v8-0-6f1f68ffd1bb@nxp.com>
+ <20241116-ep-msi-v8-3-6f1f68ffd1bb@nxp.com>
+ <20241124073239.5yl5zsmrrcrhmibh@thinkpad>
+ <Z0TOb0ErwuGQwF8G@lizhi-Precision-Tower-5810>
+ <20241126041903.lq6zunvzoc2mmgbl@thinkpad>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241126-v6-12-topic-imx-3p0-regulator-v1-1-c618ed111c75@pengutronix.de>
-References: <20241126-v6-12-topic-imx-3p0-regulator-v1-0-c618ed111c75@pengutronix.de>
-In-Reply-To: <20241126-v6-12-topic-imx-3p0-regulator-v1-0-c618ed111c75@pengutronix.de>
-To: Shawn Guo <shawnguo@kernel.org>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Stefan Kerkmann <s.kerkmann@pengutronix.de>
-X-Mailer: b4 0.14.2
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: s.kerkmann@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241126041903.lq6zunvzoc2mmgbl@thinkpad>
 
-The integrated usb phys are supplied by the 3p0 regulator, which has a
-voltage range of 2.625V to 3.4V. Thus the min and max values are
-corrected and the regulator added as a proper supply for the usb phys.
+On Tue, Nov 26, 2024 at 09:49:03AM +0530, Manivannan Sadhasivam wrote:
+> On Mon, Nov 25, 2024 at 02:22:23PM -0500, Frank Li wrote:
+> > On Sun, Nov 24, 2024 at 01:02:39PM +0530, Manivannan Sadhasivam wrote:
+> > > On Sat, Nov 16, 2024 at 09:40:43AM -0500, Frank Li wrote:
+> > > > Introduce the helper function pci_epf_align_addr() to adjust addresses
+> > >
+> > > pci_epf_align_inbound_addr()?
+> > >
+> > > > according to PCI BAR alignment requirements, converting addresses into base
+> > > > and offset values.
+> > > >
+> > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > ---
+> > > > change from v7 to v8
+> > > > - change name to pci_epf_align_inbound_addr()
+> > > > - update comment said only need for memory, which not allocated by
+> > > > pci_epf_alloc_space().
+> > > >
+> > > > change from v6 to v7
+> > > > - new patch
+> > > > ---
+> > > >  drivers/pci/endpoint/pci-epf-core.c | 45 +++++++++++++++++++++++++++++++++++++
+> > > >  include/linux/pci-epf.h             | 14 ++++++++++++
+> > > >  2 files changed, 59 insertions(+)
+> > > >
+> > > > diff --git a/drivers/pci/endpoint/pci-epf-core.c b/drivers/pci/endpoint/pci-epf-core.c
+> > > > index 8fa2797d4169a..4dfc218ebe20b 100644
+> > > > --- a/drivers/pci/endpoint/pci-epf-core.c
+> > > > +++ b/drivers/pci/endpoint/pci-epf-core.c
+> > > > @@ -464,6 +464,51 @@ struct pci_epf *pci_epf_create(const char *name)
+> > > >  }
+> > > >  EXPORT_SYMBOL_GPL(pci_epf_create);
+> > > >
+> > > > +/**
+> > > > + * pci_epf_align_inbound_addr() - Get base address and offset that match bar's
+> > >
+> > > BAR's
+> > >
+> > > > + *			  alignment requirement
+> > > > + * @epf: the EPF device
+> > > > + * @addr: the address of the memory
+> > > > + * @bar: the BAR number corresponding to map addr
+> > > > + * @base: return base address, which match BAR's alignment requirement, nothing
+> > > > + *	  return if NULL
+> > >
+> > > Below, you are updating 'base' only if it is not NULL. Why would anyone call
+> > > this API with 'base' and 'offset' set to NULL?
+> > 
+> > Some time, they may just want one of two.
+> > 
+> 
+> What would be the purpose? I fail to see it.
 
-This fixes the following warnings during the probe of the mxs_phy
-driver:
+Currently, the only user of this function is the call:
+ret = pci_epf_align_inbound_addr_lo_hi(epf, bar, msg->address_lo, msg->address_hi,
+				       &db_bar.phys_addr, &offset);
 
-mxs_phy 20c9000.usbphy: supply phy-3p0 not found, using dummy regulator
-mxs_phy 20ca000.usbphy: supply phy-3p0 not found, using dummy regulator
+Which doesn't send in NULL as either 'base' or 'offset', so these NULL
+checks do currently look meaningless to me. I suggest to just kill them.
 
-The 3p0 regulator handling was introduced by commit 966d73152078 ("usb:
-phy: mxs: enable regulator phy-3p0 to improve signal qualilty")`.
 
-Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
----
- arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
-index d2200c9db25aec90dbd348dedee4bfef47eb3ee7..45bcfd7faf9db628479359b5c0a26e1011a7c2d3 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
-@@ -711,8 +711,8 @@ reg_vdd1p1: regulator-1p1 {
- 				reg_vdd3p0: regulator-3p0 {
- 					compatible = "fsl,anatop-regulator";
- 					regulator-name = "vdd3p0";
--					regulator-min-microvolt = <2800000>;
--					regulator-max-microvolt = <3150000>;
-+					regulator-min-microvolt = <2625000>;
-+					regulator-max-microvolt = <3400000>;
- 					regulator-always-on;
- 					anatop-reg-offset = <0x120>;
- 					anatop-vol-bit-shift = <8>;
-@@ -806,6 +806,7 @@ usbphy1: usbphy@20c9000 {
- 				reg = <0x020c9000 0x1000>;
- 				interrupts = <0 44 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clks IMX6QDL_CLK_USBPHY1>;
-+				phy-3p0-supply = <&reg_vdd3p0>;
- 				fsl,anatop = <&anatop>;
- 			};
- 
-@@ -814,6 +815,7 @@ usbphy2: usbphy@20ca000 {
- 				reg = <0x020ca000 0x1000>;
- 				interrupts = <0 45 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clks IMX6QDL_CLK_USBPHY2>;
-+				phy-3p0-supply = <&reg_vdd3p0>;
- 				fsl,anatop = <&anatop>;
- 			};
- 
-
--- 
-2.39.5
-
+Kind regards,
+Niklas
