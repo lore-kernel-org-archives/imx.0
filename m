@@ -1,147 +1,92 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE991BFE0C
-	for <imx@lists.linux.dev>; Tue, 26 Nov 2024 10:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C4821C4A24;
+	Tue, 26 Nov 2024 10:27:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732616642; cv=none; b=SSHG4UFSBxlq4ttitM7Oi0ClsEQbhDhsPTg4/FhUJAG/nx03/46D405jkXDlmBNnjOedQ3t95SYRzecFSRo8bH0HFDrABmQkYmC3UlB6CTSDlzr22FF30LiCRHRQ36VigBT7WS4KR0ikvotsDl9sXr2yXghNcj9/8AoFqEF2mSQ=
+	t=1732616827; cv=none; b=hhzMbk6gspgJRKLAGTrKPSiPtA/JsqboXubrfGTEXcOVeMDEAIJsUD3fkXFu99n9NtkeGGcL323BMj3Fo/Fot/6HPNsHYXFeJf31eXYTT1c6WhVSopcxGTFf5soi4QpMPm6EJuKY+dubhbl9sCLgKGG9gYmhr0llR8myigitfxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732616642; c=relaxed/simple;
-	bh=Gl1YzyF45JshhprewtQzalCtCwzj+O7eTYyonCHwwWQ=;
+	s=arc-20240116; t=1732616827; c=relaxed/simple;
+	bh=8yD+7qp8fEbXME2L4sxjUo1tkAIWbTe4iL3xiOmwJmc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tTUkIYWyp+p43O6Z1EgUXhpgn21BFmGZDDKn06WyDQO9WAdMo3THNBUW+cTX+9p/Zx4clXCX1j9wql2x69LuoPz9z2wZsTPIcPEkvyZzJkOipVZuYyJLsrYWKVKdBxGwaz2Yj/qYHVoOTkvloDRmn5KjgCmiQUw6I7Y008U2a7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tFsja-00033P-Dp; Tue, 26 Nov 2024 11:23:54 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tFsjZ-000ERt-18;
-	Tue, 26 Nov 2024 11:23:54 +0100
-Received: from pengutronix.de (pd9e59fec.dip0.t-ipconnect.de [217.229.159.236])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id C120437D8B6;
-	Tue, 26 Nov 2024 10:23:53 +0000 (UTC)
-Date: Tue, 26 Nov 2024 11:23:53 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Carlos Song <carlos.song@nxp.com>
-Cc: Frank Li <frank.li@nxp.com>, 
-	"o.rempel@pengutronix.de" <o.rempel@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>, 
-	"andi.shyti@kernel.org" <andi.shyti@kernel.org>, "shawnguo@kernel.org" <shawnguo@kernel.org>, 
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] i2c: imx: support DMA defer probing
-Message-ID: <20241126-paper-nightingale-of-wealth-de17e7-mkl@pengutronix.de>
-References: <20241126082535.1878554-1-carlos.song@nxp.com>
- <20241126-economic-energetic-junglefowl-5197a9-mkl@pengutronix.de>
- <AM0PR0402MB39372380307BC4252BD131ACE82F2@AM0PR0402MB3937.eurprd04.prod.outlook.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=LGqqvEhtr0J6w3cquJ8mYuZ3G4aYaasrobV3XCyENfsGnYK73y9aRNhWJxPL0Gp32jTYaC3Xt6V4uRZ/oZE1VJydJHSxoGOVmymC6lXPSRghWTO1cyF57ovd0h8Ya6Nxr/8liYSOZ3s4t/iiOjxvduG9b7VP+QSbvwkARBUi2IM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ADBBkBdi; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ADBBkBdi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB44DC4CECF;
+	Tue, 26 Nov 2024 10:27:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732616826;
+	bh=8yD+7qp8fEbXME2L4sxjUo1tkAIWbTe4iL3xiOmwJmc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ADBBkBdiZgDnaWhhgBxz4pL2/tU+re6/UzgnAWYVdWIZJOHMKi1NIeVphYaRLXLbl
+	 KL3WMAB3eJSRJLayxrzOjVktQHM8USz0JWC5i7fmb/Z2Q7G/stckKtw4X6HAnVOaTw
+	 xUb1v3tlzqbtKf2gPZBAKQGQ+wAmzwfqrmcAACORTQavY4CwINSnsjFw76ISVoPTyl
+	 NfHgfsfakdqoTplnsjP4dj5lR1AHaxDs/bzrmCdWhoydZyN5JRYaVZaBWNESzcAhCF
+	 VL6pjqufjTr6v9eS6ezFZUMWwoYXrUv3yfq0A99sUELu1bpu93OWI5xmEZ/pm9F8Ms
+	 D5mDnxOwjUfIA==
+Date: Tue, 26 Nov 2024 11:27:01 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Frank Li <Frank.li@nxp.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, dlemoal@kernel.org, maz@kernel.org,
+	tglx@linutronix.de, jdmason@kudzu.us
+Subject: Re: [PATCH v8 3/6] PCI: endpoint: Add pci_epf_align_addr() helper
+ for address alignment
+Message-ID: <Z0Widd3IZNV4DGS_@ryzen>
+References: <20241116-ep-msi-v8-0-6f1f68ffd1bb@nxp.com>
+ <20241116-ep-msi-v8-3-6f1f68ffd1bb@nxp.com>
+ <20241124073239.5yl5zsmrrcrhmibh@thinkpad>
+ <Z0TOb0ErwuGQwF8G@lizhi-Precision-Tower-5810>
+ <20241126041903.lq6zunvzoc2mmgbl@thinkpad>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="pvifcaczcjfl73wu"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <AM0PR0402MB39372380307BC4252BD131ACE82F2@AM0PR0402MB3937.eurprd04.prod.outlook.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+In-Reply-To: <20241126041903.lq6zunvzoc2mmgbl@thinkpad>
 
-
---pvifcaczcjfl73wu
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2] i2c: imx: support DMA defer probing
-MIME-Version: 1.0
-
-On 26.11.2024 10:15:27, Carlos Song wrote:
-> > >  static void i2c_imx_dma_callback(void *arg) @@ -1803,6 +1804,13 @@
-> > > static int i2c_imx_probe(struct platform_device *pdev)
-> > >  	if (ret =3D=3D -EPROBE_DEFER)
-> > >  		goto clk_notifier_unregister;
+On Tue, Nov 26, 2024 at 09:49:03AM +0530, Manivannan Sadhasivam wrote:
+> On Mon, Nov 25, 2024 at 02:22:23PM -0500, Frank Li wrote:
+> > On Sun, Nov 24, 2024 at 01:02:39PM +0530, Manivannan Sadhasivam wrote:
+> > > On Sat, Nov 16, 2024 at 09:40:43AM -0500, Frank Li wrote:
+> > > > +static inline int pci_epf_align_inbound_addr_lo_hi(struct pci_epf *epf, enum pci_barno bar,
+> > > > +						   u32 low, u32 high, u64 *base, size_t *off)
 > > >
-> > > +	/* Init DMA config if supported */
-> > > +	ret =3D i2c_imx_dma_request(i2c_imx, phy_addr);
-> > > +	if (ret =3D=3D -EPROBE_DEFER) {
-> > > +		dev_err(&pdev->dev, "DMA not ready, go defer probe!\n");
-> > > +		goto clk_notifier_unregister;
-> > > +	}
-> >=20
-> > Don't spam the logs if the driver defers probing, it's not a error. And=
- it looks
-> > strange to ignore all other errors here. Either add a comment here, som=
-ething
-> > like "continue without DMA", or let the function return
-> > 0 in case the driver should continue and propagate the error if the cal=
-ler should
-> > take care of it.
-> >=20
->=20
-> Hi,
-> Thank you for your suggestion! I agree with you.
-> I will change to this logic:
-> 	ret =3D i2c_imx_dma_request(i2c_imx, phy_addr);
-> 	if (ret) {
-> 		if (ret =3D=3D -EPROBE_DEFER)
-> 			goto clk_notifier_unregister;
-> 		dev_info(&pdev->dev, "use pio mode\n");
-> 	}
->=20
-> Ret =3D 0  ----->  enable DMA successfully  -------> no print
-> Ret!=3D0  ----->  defer probe ---------> no print and try again
-> Ret!=3D0  ----->  fail to enable DMA ------> remind now is using pio mode
->=20
-> Do you think the logic is acceptable?
+> > > Why can't you just use pci_epf_align_inbound_addr() directly? Or the caller
+> > > could pass u64 address directly.
+> > 
+> > 
+> > msi message sperate low32 and high32.  (h << 32 | low) is quite easy to
+> > cause build warning.  it should be ((u64) h << 32) | low. Avoid copy this
+> > logic code at many EPF places.
+> > 
+> 
+> There is absolutely no overhead in doing so. Also the concern for me is,
+> pci_epf_align_inbound_addr() is exported but only used within
+> pci_epf_align_inbound_addr_lo_hi(). This causes confusion. So I'd prefer to have
+> a single exported API that is used by the callers.
 
-Yes, the other option is to move the logic into i2c_imx_dma_request()
-and let it return 0 in case of DMA or fallback to PIO, or an error in
-case of probe defer or a fatal error.
+Yes, other EPF drivers will need to copy the line:
+pci_epf_align_inbound_addr(..., ((u64) h << 32) | low, ...)
+instead of:
+pci_epf_align_inbound_addr_lo_hi(..., low, high, ...)
 
-This way the probe function will look like this:
+which I think is fine to be honest.
 
-     ret =3D i2c_imx_dma_request(i2c_imx, phy_addr);
-     if (ret)
-                return dev_err_probe(&pdev->dev, ret, "Failed to setup DMA\=
-n");
+Probably simplest thing is just to kill
+pci_epf_align_inbound_addr_lo_hi().
 
 
-regards,
-Marc
+Kind regards,
+Niklas
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---pvifcaczcjfl73wu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmdFobYACgkQKDiiPnot
-vG9Llwf/Wiv7XC46iia/74g2fDIJu4YvYXnAdteDyubnJwlpk/staezEgeh11+FB
-V7BahH36iz1E3w0phN/JpzgZxKjpHDACgm7iDoil6/VHUZFJYbxFCiwQnbGYBpTv
-ekAyLcdsfDhSEP8sPTaraAiCQVZT/7C7Vjxk6kMrqaOEELTkZ+nRl5OW0Ym0SWhZ
-ID8m4rQyNzbxUMZg0/dEbyCcf6E2CJzUe8diixOc4DT1VtLWqEW0qHvZdsBMn7fW
-a6+F68O4oQD8pPC1lm1/yvUmwMY/RqWfXhT9cJU3ArxfqJsEFKeLEI5I0DIymosh
-p/S7I/1xEjQhBCPW0NTMyMUBqsdoAg==
-=L7AI
------END PGP SIGNATURE-----
-
---pvifcaczcjfl73wu--
