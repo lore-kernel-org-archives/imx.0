@@ -1,155 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12451DDC38;
-	Tue, 26 Nov 2024 19:08:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C471ABED8
+	for <imx@lists.linux.dev>; Tue, 26 Nov 2024 19:41:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732648097; cv=none; b=Rp8J/4XrmqN3uZLa20uM8oHj3Dsrbkr9T4GHFo4Tk7xM9PQ4DLWnncix91BJ8EK4I3EcEg2l6TU8NYCqGo+rZbk1nfmIqDYerzQ3gxL0f7d43+lm3UjvBE0L2pRLO2m7+7C7legkVBKQIRU+DI2B61nwh9Z347XtBBSl8KV4sZU=
+	t=1732650114; cv=none; b=CvTqEnWlB8r6RAid/PYoG67JlarIzn1sQ/Uwu341y2HGVe9wjb3XmIHuu/HmoNaTxBEILGTLFICe47C7RwnCh/bA8o0NJIvBo0xycph5amPCIWrKKryWjnUw5AV4Pk3e1REbrn8wD86QXlFDIqqNuwukjCJSnrX/NqmZ57lIiqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732648097; c=relaxed/simple;
-	bh=nIeRagzK58V7Ks73k5Bp/hvKPVTIaUQkmSrD3W8O7NY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BV+EULD2BQ3FbZeY5YvoeOdisRtWPxWOPTRajcg9Cp16UJeYSvBumVOqIx57lM8nnQpc8cR6n+d3AtriVTmem4VpSkVNGkP2v10GEw4eKPXyqrz+BytgocdTn5iAw2zIlasKkaBpAZmX1HsXA7pJer1mkjCTFXT4d8nQchqFogE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uLyLfWD2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1732650114; c=relaxed/simple;
+	bh=QYCrl8yMWx4+xNcX+5udHJinnbGAeuEVIiam0dp+egI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LMGqjuWeCTkjdUQ111xpZTnnlLOdx0PzDsXO6CJsP9ZRnX+xefiecl0DEY1JNya1Ha03axjf328H0vOKgNRKGoc+Y/4gbv6kl2mDox1iRN+dDpASbxeKozmW5b7bRv/J/XKOHWGvzKaBPiRkUz15XCJR6W6BRot5lppfCS6LghQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZvUz/KqL; arc=none smtp.client-ip=209.85.210.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uLyLfWD2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD999C4CECF;
-	Tue, 26 Nov 2024 19:08:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732648096;
-	bh=nIeRagzK58V7Ks73k5Bp/hvKPVTIaUQkmSrD3W8O7NY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uLyLfWD2YgCpffsqKYq5DoxElUAqDbqLTD6NhN5v8zyvx8QEN1VONjztSr17ppksQ
-	 ZaZfToyi/5TWdIPLujLvwq6ITfO5GZqv7CtA1VjkPxFJoba3KYi68gl51m8Cipp4lk
-	 m9n0hL2Yt2R9U+MfrJAm2rtOz1RqVh796fnt8ZzCaPH8spbI4t5t70LUSjR8lNWo1x
-	 WPZB7BeJ5nRWeFYhr8gAdLu77NJOay6OKANo+yiMN43X/gCJhDenMg/qAzysbcejzw
-	 eKQBR2ka5o7rryBkizbYobTAgHldx4lz5bAusfgAyHxDxd9aBVcMjBMZBhZxcKh9y6
-	 NvaKMZYwPvIwQ==
-Message-ID: <0c4f7e62-bf9e-4e4f-8493-db1e56773f38@kernel.org>
-Date: Tue, 26 Nov 2024 20:08:09 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZvUz/KqL"
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-71d5ef7daf1so509856a34.1
+        for <imx@lists.linux.dev>; Tue, 26 Nov 2024 11:41:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732650112; x=1733254912; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gdOpj6n/TpCW+M6qJNyMJAxTe9+Oh/jv0QhEZd/cyn4=;
+        b=ZvUz/KqLUOirQmfw/UWt+d6CglUSotmUDpoaZz9+Y9Mb84rTS2G/RTRXYYvuyKax+m
+         i16fQJjgdzmKDuOcvQISeIo0TiNLgNbBJUWZ+BF1tAN0RCiq9ZtqozAdC3sKI7OGDPEV
+         zmmoXkQyBLoeRnOhWxUS5yD8lNZ+L4T3hsR78NbZKcqGs+hMgDc3VsWtcvcpETEud36Q
+         zg2StCe2CoMMg4siiV9i1Uvzgl2qk0fGy24q9sE1SzRCFAqCSuQ7PlSsyaJukmgOT7B6
+         hh4yNvylxNGYtQGVFqcPhcRjOs/OPIFIR7d1QBLI/yTEKlZfBoWsLGWcrPlJiFse7E8g
+         G/6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732650112; x=1733254912;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gdOpj6n/TpCW+M6qJNyMJAxTe9+Oh/jv0QhEZd/cyn4=;
+        b=X2osKLKu4wkSykqRckEoEHRpIRK9TVH8malIx1jUomvw0XomzgmBZ1VakYCQylBoZD
+         4UkgbAjVFrefbN3bIPO+D+UgjNSET1pYVhIVB/KYw5/0LeYdlfPAEULYX1soHwWsA9yZ
+         xNfDRAi6eduoUEPIoq8tjO3ZWi6KTs9p5PzTU/Qbk9nNuxnopr1+RHP4ZJGa15rBpIlm
+         gnikODFKFmFyL3u1tahZ/XFOD9Tb9QXURb0PkqFE6IsV9/PSArv3FqQ2Jg54xXvUGGRR
+         hcTocLAg+B5oGSwBuC9h1edGDCXhs9M9rGF1wmgyZbiWek8vHujy1V0B/z5ReSivHj3y
+         iCbA==
+X-Forwarded-Encrypted: i=1; AJvYcCUr0a6aTjb/kCRYsxvLdvbK5KA20TMPxJHBj1wUTyCDlxRdNm/pgN3U8L5KAbDcbrxkVmA=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyrtsd5y/qJEioZtzkclSjIeNsbi0H6iCpBmALguzq3TiOhyIMD
+	pZdf43Fsn6R2CNvZqac10WJjpGW61IR7xnnV4otyJxmYk/gILGGjJtsy3g==
+X-Gm-Gg: ASbGncutxqnXe7z4ywAG/QIR1Iz4E5WBB0CSDTqibkc6hkUsZqoeoKz8GqSQ9AMUECt
+	EkI/12jUXWItlRIg89ioLiMRtKv/4As2wuyqrSMYZtHXj+5x5pUPKCDvHRZGhh4C+F9DIUEPX75
+	Ky2Zhm7nqypoGNhCeBCnvcAtwohc6l/lz3AdES6y4Sogw2cRKAWfUVbMhead1YJbw8agTfEiwjF
+	Et+BtEIH7B0bAGbqr8JE2sB8al7L9x4Abo5RkixB9jOE4fCa1iiIPEJfpcS0rgc
+X-Google-Smtp-Source: AGHT+IF+qleM6e28lbhrKv8SHeOCH/FuIj3K4jQgailnXQEBm51/BgQbfblpSw+RSONlWze7PTecwQ==
+X-Received: by 2002:a05:6830:700e:b0:710:e61c:7a4c with SMTP id 46e09a7af769-71d65d05a85mr309535a34.29.1732650111959;
+        Tue, 26 Nov 2024 11:41:51 -0800 (PST)
+Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:8a47:3216:e3cc:f1d9])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fbcc1e25cesm9147384a12.28.2024.11.26.11.41.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Nov 2024 11:41:51 -0800 (PST)
+From: Fabio Estevam <festevam@gmail.com>
+To: shawnguo@kernel.org
+Cc: esben@geanix.com,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	kernel@pengutronix.de,
+	linux@roeck-us.net,
+	Fabio Estevam <festevam@denx.de>
+Subject: [PATCH] ARM: imx: defconfig: Explicitly select CONFIG_PINCTRL
+Date: Tue, 26 Nov 2024 16:41:46 -0300
+Message-Id: <20241126194146.1193094-1-festevam@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/4] dt-bindings: rtc: add schema for NXP S32G2/S32G3
- SoCs
-To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
-Cc: linux-rtc@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, NXP S32 Linux <s32@nxp.com>,
- Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
- Enric Balletbo <eballetb@redhat.com>,
- Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>,
- Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
-References: <20241126114940.421143-1-ciprianmarian.costea@oss.nxp.com>
- <20241126114940.421143-2-ciprianmarian.costea@oss.nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20241126114940.421143-2-ciprianmarian.costea@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 26/11/2024 12:49, Ciprian Costea wrote:
-> +
-> +title: NXP S32G2/S32G3 Real Time Clock (RTC)
-> +
-> +maintainers:
-> +  - Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
-> +  - Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
-> +
-> +description:
-> +  RTC hardware module present on S32G2/S32G3 SoCs is used as a wakeup source.
-> +  It is not kept alive during system reset and it is not battery-powered.
+From: Fabio Estevam <festevam@denx.de>
 
-Does this mean that this is not a standard RTC thus standard RTC schema
-does not apply?
+Since commit 17d210018914 ("ARM: imx: Allow user to disable pinctrl"),
+the CONFIG_PINCTRL option is no longer implicitly selected, causing
+several i.MX SoC pinctrl drivers no longer getting selected by default.
 
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - enum:
-> +          - nxp,s32g2-rtc
-> +      - items:
-> +          - const: nxp,s32g3-rtc
-> +          - const: nxp,s32g2-rtc
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    items:
-> +      - description: ipg clock drives the access to the RTC iomapped registers
-> +      - description: Clock source for the RTC module. Can be selected between
-> +          4 different clock sources using an integrated hardware mux.
-> +          On S32G2/S32G3 SoCs, 'source0' is the SIRC clock (~32KHz) and it is
-> +          available during standby and runtime. 'source1' is reserved and cannot
+This causes boot regressions on the ARMv4, ARMv5, ARMv6 and ARMv7
+i.MX SoCs.
 
-I am not sure what are the benefits of allowing to choose a clock which
-cannot be used. I think source1 should be dropped.
+Fix it by selecting CONFIG_PINCTRL inside the affected defconfigs.
 
-> +          be used. 'source2' is the FIRC clock and it is only available during
-> +          runtime providing a better resolution (~48MHz). 'source3' is an external
-> +          RTC clock source which can be additionally added in hardware.
-> +
-> +  clock-names:
-> +    items:
-> +      - const: ipg
-> +      - enum: [ source0, source1, source2, source3 ]
-> +
-Best regards,
-Krzysztof
+Fixes: 17d210018914 ("ARM: imx: Allow user to disable pinctrl")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Closes: https://lore.kernel.org/linux-arm-kernel/49ff070a-ce67-42d7-84ec-8b54fd7e9742@roeck-us.net/
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+---
+ arch/arm/configs/imx_v4_v5_defconfig | 1 +
+ arch/arm/configs/imx_v6_v7_defconfig | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/arch/arm/configs/imx_v4_v5_defconfig b/arch/arm/configs/imx_v4_v5_defconfig
+index 875c8cdbada7..1af29d12129d 100644
+--- a/arch/arm/configs/imx_v4_v5_defconfig
++++ b/arch/arm/configs/imx_v4_v5_defconfig
+@@ -83,6 +83,7 @@ CONFIG_I2C_IMX=y
+ CONFIG_SPI=y
+ CONFIG_SPI_IMX=y
+ CONFIG_SPI_SPIDEV=y
++CONFIG_PINCTRL=y
+ CONFIG_GPIO_SYSFS=y
+ CONFIG_GPIO_MXC=y
+ CONFIG_W1=y
+diff --git a/arch/arm/configs/imx_v6_v7_defconfig b/arch/arm/configs/imx_v6_v7_defconfig
+index 0beecdde55f5..73f7aa7e75f7 100644
+--- a/arch/arm/configs/imx_v6_v7_defconfig
++++ b/arch/arm/configs/imx_v6_v7_defconfig
+@@ -204,6 +204,7 @@ CONFIG_SPI_FSL_QUADSPI=y
+ CONFIG_SPI_GPIO=y
+ CONFIG_SPI_IMX=y
+ CONFIG_SPI_FSL_DSPI=y
++CONFIG_PINCTRL=y
+ CONFIG_PINCTRL_IMX8MM=y
+ CONFIG_PINCTRL_IMX8MN=y
+ CONFIG_PINCTRL_IMX8MP=y
+-- 
+2.34.1
+
