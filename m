@@ -1,15 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 212371CD1FD
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B7E1CDFC1
 	for <imx@lists.linux.dev>; Tue, 26 Nov 2024 09:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732612944; cv=none; b=XtlcsnzAwQCSeLA3R5WTdZaS0YByt9aOJS1hEM3pTKdI/k00FrsLMcVbHh7bWAR9m2zg/CxsJyHiNDDmwJIAYlJ8M5FVa5AvYsIM5Z5KedlkpOU3lTsnchpLcLUzFrIg8usw73HZMyfclcRS6XeMY/H5gtp+TwWP5zaa2Hf0c/8=
+	t=1732612945; cv=none; b=bFJqW4I4mGpRUpssG8BZ1/TWNcIiKEmFAJuXPyhcCq7N7FmJmb0GI0Pnt3s2JoipDEVkipqQcGLLLa6nTWJSGBqk2X9TJ/cqH9ppGgaA+pytDrJ7Eo4WsgA6pEhoEXjtEKMhVZpRTWrpsPRGPseCG0k3UUSb3hrD1eijTyikF6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732612944; c=relaxed/simple;
-	bh=tbNO8qwwTMQ8v0nEBu+LUXPeItxjOx76oDm+Y6OPnR4=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=oFzDcCb9WLinUFRgpII2F0CI5dAy2XdHH9bqqArmSZAXljgup5+ESCi4LdX96Pw7YRShDfGOl7uGG3SXyrPum58fFR9Bu4itZGeBhDgq7BrjX78TtYZ7BPVhlUBH1r7FRvPVazAaXl0+AZvZBiP5sa56djapqpxFpkFz9AvoUQU=
+	s=arc-20240116; t=1732612945; c=relaxed/simple;
+	bh=uiIsNIrO77rbKiYWghXwpEab6AsPFvdpccRbm80Ge4Q=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=eQpr4O4XV+9dxQC2u+ycb6r7ZTW41XkyE3YDXbqsNFSQrkPmXZh7vVORB6NGYJaZqqYAvG5iChbnAb/+bkEKgLDHoqn99sQWdowHSGu0aZ5sE0t+kxRbYFLIJ6Wtjxi4dAyHi6p0cnr26oQ79UcZRNKYSghEf7jql0ESYYH1enk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -17,22 +18,21 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1tFrlu-0005u8-Fj; Tue, 26 Nov 2024 10:22:14 +0100
+	id 1tFrlu-0005uA-Fq; Tue, 26 Nov 2024 10:22:14 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1tFrlt-000DzI-1Y;
+	id 1tFrlt-000DzJ-1Z;
 	Tue, 26 Nov 2024 10:22:14 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1tFrlt-00B5zE-1s;
+	id 1tFrlt-00B5zE-1t;
 	Tue, 26 Nov 2024 10:22:14 +0100
 From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Subject: [PATCH 0/3] ARM: dts: imx: add phy-3p0-supply for i.MX6 series
-Date: Tue, 26 Nov 2024 10:22:12 +0100
-Message-Id: <20241126-v6-12-topic-imx-3p0-regulator-v1-0-c618ed111c75@pengutronix.de>
+Date: Tue, 26 Nov 2024 10:22:13 +0100
+Subject: [PATCH 1/3] ARM: dts: imx6qdl: add phy-3p0-supply to usb phys
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,10 +41,9 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAESTRWcC/x3MQQqEMAwAwK9IzhtoYxX1K8seikYNqC2pK4L4d
- 4vHucwFiVU4QVdcoHxIkrBl2E8B/ey3iVGGbCBDzlqq8ajREu4hSo+ynlhGg8rTf/F7UHTODJW
- nyreNgXxE5VHO9//+7vsBKs15XW8AAAA=
-X-Change-ID: 20241126-v6-12-topic-imx-3p0-regulator-440d5a25a980
+Message-Id: <20241126-v6-12-topic-imx-3p0-regulator-v1-1-c618ed111c75@pengutronix.de>
+References: <20241126-v6-12-topic-imx-3p0-regulator-v1-0-c618ed111c75@pengutronix.de>
+In-Reply-To: <20241126-v6-12-topic-imx-3p0-regulator-v1-0-c618ed111c75@pengutronix.de>
 To: Shawn Guo <shawnguo@kernel.org>, 
  Pengutronix Kernel Team <kernel@pengutronix.de>
 Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
@@ -66,28 +65,46 @@ driver:
 mxs_phy 20c9000.usbphy: supply phy-3p0 not found, using dummy regulator
 mxs_phy 20ca000.usbphy: supply phy-3p0 not found, using dummy regulator
 
-The regulator handling was introduced by commit `966d73152078 (usb: phy:
-mxs: enable regulator phy-3p0 to improve signal qualilty, 2024-07-26)`.
-
-I have consulted the reference manuals for the affected SoCs but only
-tested the changes on an actual i.MX6Q SoC.
+The 3p0 regulator handling was introduced by commit 966d73152078 ("usb:
+phy: mxs: enable regulator phy-3p0 to improve signal qualilty")`.
 
 Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 ---
-Stefan Kerkmann (3):
-      ARM: dts: imx6qdl: add phy-3p0-supply to usb phys
-      ARM: dts: imx6sl: add phy-3p0-supply to usb phys
-      ARM: dts: imx6sx: add phy-3p0-supply to usb phys
-
  arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi | 6 ++++--
- arch/arm/boot/dts/nxp/imx/imx6sl.dtsi  | 6 ++++--
- arch/arm/boot/dts/nxp/imx/imx6sx.dtsi  | 6 ++++--
- 3 files changed, 12 insertions(+), 6 deletions(-)
----
-base-commit: 7eef7e306d3c40a0c5b9ff6adc9b273cc894dbd5
-change-id: 20241126-v6-12-topic-imx-3p0-regulator-440d5a25a980
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Best regards,
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
+index d2200c9db25aec90dbd348dedee4bfef47eb3ee7..45bcfd7faf9db628479359b5c0a26e1011a7c2d3 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
+@@ -711,8 +711,8 @@ reg_vdd1p1: regulator-1p1 {
+ 				reg_vdd3p0: regulator-3p0 {
+ 					compatible = "fsl,anatop-regulator";
+ 					regulator-name = "vdd3p0";
+-					regulator-min-microvolt = <2800000>;
+-					regulator-max-microvolt = <3150000>;
++					regulator-min-microvolt = <2625000>;
++					regulator-max-microvolt = <3400000>;
+ 					regulator-always-on;
+ 					anatop-reg-offset = <0x120>;
+ 					anatop-vol-bit-shift = <8>;
+@@ -806,6 +806,7 @@ usbphy1: usbphy@20c9000 {
+ 				reg = <0x020c9000 0x1000>;
+ 				interrupts = <0 44 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks IMX6QDL_CLK_USBPHY1>;
++				phy-3p0-supply = <&reg_vdd3p0>;
+ 				fsl,anatop = <&anatop>;
+ 			};
+ 
+@@ -814,6 +815,7 @@ usbphy2: usbphy@20ca000 {
+ 				reg = <0x020ca000 0x1000>;
+ 				interrupts = <0 45 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks IMX6QDL_CLK_USBPHY2>;
++				phy-3p0-supply = <&reg_vdd3p0>;
+ 				fsl,anatop = <&anatop>;
+ 			};
+ 
+
 -- 
-Stefan Kerkmann <s.kerkmann@pengutronix.de>
+2.39.5
 
