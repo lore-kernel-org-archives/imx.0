@@ -1,132 +1,181 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF2714A85;
-	Tue, 26 Nov 2024 08:43:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BDC13C3F6
+	for <imx@lists.linux.dev>; Tue, 26 Nov 2024 08:55:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732610600; cv=none; b=JsLc0tRIJbnk68FNXRkioYMFV0Y0zEqS3yZfZqu45odOpz7O3tEAVXXcx8bUeMJcEzJKvB3rh+R4gURrCbZqe1NFC8t4WtbB61MzlE43+7hKCD8U809ZeKowI69mNTyoojmwU+zzppC5y/4F8/AJk4IMbTiTY/Sb0/KjZI9lleA=
+	t=1732611350; cv=none; b=h2V1n1iALPgLevJV/Nfcx//cTuE5BOR5ucAMJUpJQ1bxBpOHM8+feBW4AyuERqidhoIqE3U4/as4J4wC0oZ3k4sgKi3WpZ1c3MSmJOg/RbWyfPCSx9OUWfE0L6MIvBpeJSZRnmxLF4vRKRULd2oDN+HYxzjwo4vFHmZX72gl88c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732610600; c=relaxed/simple;
-	bh=KO4QChkeXAG6Ye9voL0kF1b9b0iezByykeh0B91eWOU=;
+	s=arc-20240116; t=1732611350; c=relaxed/simple;
+	bh=Nop+Fg8GS/0NpREEDIYBgHXxXm3xMK8uqkpjtLrbD+8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sDSW44T/WkQ1jaxCmjRWXrqhZVKlaZo27ienQeXGbP+MaDGD+tbgacrmm08RbwUoU19JnstWkqAwN34r12fTjhuMNhJ3ae16PropSEj5Fum/XDJOrsWaL1QrMgnFBGJkR0BE0cXYaDsB8D3cZspoBBNe2GAQj+6Dxb0O2Rj48CY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LysdB1sj; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LysdB1sj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ADDDC4CECF;
-	Tue, 26 Nov 2024 08:43:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732610599;
-	bh=KO4QChkeXAG6Ye9voL0kF1b9b0iezByykeh0B91eWOU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LysdB1sjC85kARHi4P1uA6mphsyY2WNeU6Uoxlf4hYuWmaSplc0EO98GwvqXyuGtj
-	 eC67M2vKoBHT0dpJxsNGcS0A87DyoJOWyZ1PUfXZhYL0J82fETMOmOlOT5+9iFh75F
-	 G43EGLPROxWeYcr2AXeve0GXF3zj4UdtjYPFQVkpd1yTceukMTw5xY91uef8jFiEua
-	 0u3ARhK5hIugNZ0UiPnvbhYm/ZxOMmZ7CQm3urOdgFDnaFK0cxWD9jyaM4S9gsTk4P
-	 Mm1fbOdhSW3QDg3zZcP8RpjamEowa7SlewSs+efHysJ/fvyV1o7iEVn1iGlgGTvP8L
-	 ZwuS+fw6CB1+g==
-Date: Tue, 26 Nov 2024 09:43:17 +0100
-From: Maxime Ripard <mripard@kernel.org>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: Francesco Dolcini <francesco@dolcini.it>, 
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org, 
-	p.zabel@pengutronix.de, maarten.lankhorst@linux.intel.com, tzimmermann@suse.de, 
-	airlied@gmail.com, simona@ffwll.ch, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, glx@linutronix.de, vkoul@kernel.org, 
-	kishon@kernel.org, aisheng.dong@nxp.com, agx@sigxcpu.org, frank.li@nxp.com, 
-	dmitry.baryshkov@linaro.org
-Subject: Re: [DO NOT MERGE PATCH v4 16/19] arm64: dts: imx8qxp: Add display
- controller subsystem
-Message-ID: <20241126-overjoyed-futuristic-saluki-cb6cc7@houat>
-References: <20241125093316.2357162-1-victor.liu@nxp.com>
- <20241125093316.2357162-17-victor.liu@nxp.com>
- <Z0RXCYZ_7fBvpcvd@gaggiata.pivistrello.it>
- <d004dfe7-d019-4f53-8373-c8c4e031748c@nxp.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZfER5cCV8LpeiAAiQp6GFIeGDiBDuyUH5QIdS2BkIBtAG/vwcMnfgSBnISz7EW9B82n3GKisB3XQQftsTZA2L1iD2Un+0jmVPacDvh0amwVoPHS1dQMMlwbkrY+I/x7OXgKHgYuheiH8+/BnuOaxW6H2pjeFwEkmzD7fHHOncVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tFrME-0002WF-HB; Tue, 26 Nov 2024 09:55:42 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tFrMD-000Der-0E;
+	Tue, 26 Nov 2024 09:55:41 +0100
+Received: from pengutronix.de (pd9e59fec.dip0.t-ipconnect.de [217.229.159.236])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 6F55437D766;
+	Tue, 26 Nov 2024 08:55:41 +0000 (UTC)
+Date: Tue, 26 Nov 2024 09:55:41 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: carlos.song@nxp.com
+Cc: frank.li@nxp.com, o.rempel@pengutronix.de, kernel@pengutronix.de, 
+	andi.shyti@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com, 
+	imx@lists.linux.dev, linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] i2c: imx: support DMA defer probing
+Message-ID: <20241126-economic-energetic-junglefowl-5197a9-mkl@pengutronix.de>
+References: <20241126082535.1878554-1-carlos.song@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="fgeuvrs34ws7krrf"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="idutayp4iw5aar47"
 Content-Disposition: inline
-In-Reply-To: <d004dfe7-d019-4f53-8373-c8c4e031748c@nxp.com>
+In-Reply-To: <20241126082535.1878554-1-carlos.song@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
 
---fgeuvrs34ws7krrf
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+--idutayp4iw5aar47
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [DO NOT MERGE PATCH v4 16/19] arm64: dts: imx8qxp: Add display
- controller subsystem
+Subject: Re: [PATCH v2] i2c: imx: support DMA defer probing
 MIME-Version: 1.0
 
-On Tue, Nov 26, 2024 at 10:08:26AM +0800, Liu Ying wrote:
-> On 11/25/2024, Francesco Dolcini wrote:
-> > On Mon, Nov 25, 2024 at 05:33:13PM +0800, Liu Ying wrote:
-> >> Add display controller subsystem in i.MX8qxp SoC.
-> >>
-> >> Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> >=20
-> > ...
-> >=20
-> >> diff --git a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi b/arch/arm64/b=
-oot/dts/freescale/imx8qxp.dtsi
-> >> index 05138326f0a5..35cc82cbbcd1 100644
-> >> --- a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
-> >> +++ b/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
-> >> @@ -20,6 +20,27 @@ / {
-> >>  	#size-cells =3D <2>;
-> >> =20
-> >>  	aliases {
-> >> +		dc0 =3D &dc0;
-> >> +		dc0-constframe0 =3D &dc0_constframe0;
-> >> +		dc0-constframe1 =3D &dc0_constframe1;
-> >> +		dc0-constframe4 =3D &dc0_constframe4;
-> >> +		dc0-constframe5 =3D &dc0_constframe5;
-> >> +		dc0-display-engine0 =3D &dc0_display_engine0;
-> >> +		dc0-display-engine1 =3D &dc0_display_engine1;
-> >> +		dc0-extdst0 =3D &dc0_extdst0;
-> >> +		dc0-extdst1 =3D &dc0_extdst1;
-> >> +		dc0-extdst4 =3D &dc0_extdst4;
-> >> +		dc0-extdst5 =3D &dc0_extdst5;
-> >> +		dc0-fetchlayer0 =3D &dc0_fetchlayer0;
-> >> +		dc0-fetchwarp2 =3D &dc0_fetchwarp2;
-> >> +		dc0-framegen0 =3D &dc0_framegen0;
-> >> +		dc0-framegen1 =3D &dc0_framegen1;
-> >> +		dc0-layerblend0 =3D &dc0_layerblend0;
-> >> +		dc0-layerblend1 =3D &dc0_layerblend1;
-> >> +		dc0-layerblend2 =3D &dc0_layerblend2;
-> >> +		dc0-layerblend3 =3D &dc0_layerblend3;
-> >> +		dc0-tcon0 =3D &dc0_tcon0;
-> >> +		dc0-tcon1 =3D &dc0_tcon1;
-> >=20
-> > what would you use those aliases for?
+On 26.11.2024 16:25:35, carlos.song@nxp.com wrote:
+> From: Carlos Song <carlos.song@nxp.com>
 >=20
-> They are used to get the instance numbers of display controller
-> and display controller's internal processing units from display
-> driver, e.g., patch 9 & 10 get instance numbers of some display
-> controller's internal processing units.
+> Return -EPROBE_DEFER when dma_request_slave_channel() because DMA driver
+> have not ready yet.
+>=20
+> Move i2c_imx_dma_request() before registering I2C adapter to avoid
+> infinite loop of .probe() calls to the same driver, see "e8c220fac415
+> Revert "i2c: imx: improve the error handling in i2c_imx_dma_request()""
+> and "Documentation/driver-api/driver-model/driver.rst".
+>=20
+> Use CPU mode to avoid stuck registering i2c adapter when DMA resources
+> are unavailable.
+>=20
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+> ---
+> Change for V2:
+> - According to Frank's comments, wrap at 75 char and Simplify fix code
+>   at i2c_imx_dma_request().
+> - Use strict patch check, fix alignment warning at i2c_imx_dma_request()
+> ---
+>  drivers/i2c/busses/i2c-imx.c | 21 +++++++++++++--------
+>  1 file changed, 13 insertions(+), 8 deletions(-)
+>=20
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index 5ed4cb61e262..4e5633166a1e 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -397,17 +397,16 @@ static void i2c_imx_reset_regs(struct imx_i2c_struc=
+t *i2c_imx)
+>  }
+> =20
+>  /* Functions for DMA support */
+> -static void i2c_imx_dma_request(struct imx_i2c_struct *i2c_imx,
+> -						dma_addr_t phy_addr)
+> +static int i2c_imx_dma_request(struct imx_i2c_struct *i2c_imx, dma_addr_=
+t phy_addr)
+>  {
+>  	struct imx_i2c_dma *dma;
+>  	struct dma_slave_config dma_sconfig;
+> -	struct device *dev =3D &i2c_imx->adapter.dev;
+> +	struct device *dev =3D i2c_imx->adapter.dev.parent;
+>  	int ret;
+> =20
+>  	dma =3D devm_kzalloc(dev, sizeof(*dma), GFP_KERNEL);
+>  	if (!dma)
+> -		return;
+> +		return -ENOMEM;
+> =20
+>  	dma->chan_tx =3D dma_request_chan(dev, "tx");
+>  	if (IS_ERR(dma->chan_tx)) {
+> @@ -452,7 +451,7 @@ static void i2c_imx_dma_request(struct imx_i2c_struct=
+ *i2c_imx,
+>  	dev_info(dev, "using %s (tx) and %s (rx) for DMA transfers\n",
+>  		dma_chan_name(dma->chan_tx), dma_chan_name(dma->chan_rx));
+> =20
+> -	return;
+> +	return 0;
+> =20
+>  fail_rx:
+>  	dma_release_channel(dma->chan_rx);
+> @@ -460,6 +459,8 @@ static void i2c_imx_dma_request(struct imx_i2c_struct=
+ *i2c_imx,
+>  	dma_release_channel(dma->chan_tx);
+>  fail_al:
+>  	devm_kfree(dev, dma);
+> +
+> +	return ret;
+>  }
+> =20
+>  static void i2c_imx_dma_callback(void *arg)
+> @@ -1803,6 +1804,13 @@ static int i2c_imx_probe(struct platform_device *p=
+dev)
+>  	if (ret =3D=3D -EPROBE_DEFER)
+>  		goto clk_notifier_unregister;
+> =20
+> +	/* Init DMA config if supported */
+> +	ret =3D i2c_imx_dma_request(i2c_imx, phy_addr);
+> +	if (ret =3D=3D -EPROBE_DEFER) {
+> +		dev_err(&pdev->dev, "DMA not ready, go defer probe!\n");
+> +		goto clk_notifier_unregister;
+> +	}
 
-AFAIK, it's not listed anywhere in your bindings. Did you get an
-acked-by from a DT maintainer for those aliases as well?
+Don't spam the logs if the driver defers probing, it's not a error. And
+it looks strange to ignore all other errors here. Either add a comment
+here, something like "continue without DMA", or let the function return
+0 in case the driver should continue and propagate the error if the
+caller should take care of it.
 
-Maxime
+Marc
 
---fgeuvrs34ws7krrf
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--idutayp4iw5aar47
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZ0WKJAAKCRAnX84Zoj2+
-dv4FAX967eYE5R0RWLQVTJQQ3qJdNEVy6ugNTjWr8xtIy2N8MIIRzNEYEwwM1k4I
-4XQfvwoBgKYYryHo1ibtm7ah1MNmHl1h0R5wMhd+pMQv6UR7szQ8hWR4Bz3qc4SU
-9QJkkLsfPQ==
-=oNFh
+iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmdFjQoACgkQKDiiPnot
+vG9yIgf+KeMn1/k836gXtD2Zg1FuuWGbO2RIaxvsdEJjgPTk0/uKBRn6hl6dcD6E
+WLeR88F/j/GCTj5kOuFWCDaUlTyIsnWvSHpy/Rj9BebzsAL6dbiUWQ7a8CGvvA6L
+PLtCoNC5JcooBTmqGXIRjRdBbpFnNo+BHPmwoeseFIbsTitjuESVjvsG6m8gDoAn
+w1zieedbBsvAhpiukgxVFav5PDe2wdrXtTBdwNYvynBhnbVNjxxrxhz3k5eaaBWq
+BSutaHC/ObVAMb8UqORr8TqQqlwZBuiPSxghHXdRl/7IMFhs6F3QdKIjlMZQPsoI
+YJcLA6tWs00i/VanuDHWa8WA2RMyWg==
+=Wvyt
 -----END PGP SIGNATURE-----
 
---fgeuvrs34ws7krrf--
+--idutayp4iw5aar47--
