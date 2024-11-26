@@ -1,123 +1,247 @@
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013058.outbound.protection.outlook.com [40.107.159.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C471ABED8
-	for <imx@lists.linux.dev>; Tue, 26 Nov 2024 19:41:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732650114; cv=none; b=CvTqEnWlB8r6RAid/PYoG67JlarIzn1sQ/Uwu341y2HGVe9wjb3XmIHuu/HmoNaTxBEILGTLFICe47C7RwnCh/bA8o0NJIvBo0xycph5amPCIWrKKryWjnUw5AV4Pk3e1REbrn8wD86QXlFDIqqNuwukjCJSnrX/NqmZ57lIiqg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732650114; c=relaxed/simple;
-	bh=QYCrl8yMWx4+xNcX+5udHJinnbGAeuEVIiam0dp+egI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LMGqjuWeCTkjdUQ111xpZTnnlLOdx0PzDsXO6CJsP9ZRnX+xefiecl0DEY1JNya1Ha03axjf328H0vOKgNRKGoc+Y/4gbv6kl2mDox1iRN+dDpASbxeKozmW5b7bRv/J/XKOHWGvzKaBPiRkUz15XCJR6W6BRot5lppfCS6LghQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZvUz/KqL; arc=none smtp.client-ip=209.85.210.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1C928689
+	for <imx@lists.linux.dev>; Tue, 26 Nov 2024 19:53:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732650800; cv=fail; b=K8BpgVachusoYJJcORE+2zt2c4PaWdaYxG+2n1YG0bcefKxPdPbhH4S0Ww3NSUM77K69jXyyguui7Na2IrWYZyKmIHPbE+Mukjc4WnIBy8Fj1lfPCq3KvVwnfNZrYGhgNEsWk3WgOkRJtizGkKTGsFaKmEFxFyfMLQ49KrBvlk4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732650800; c=relaxed/simple;
+	bh=lOH6uKgp4qocjXTGqI2DZ7uMpsB1hN0XNn3KR3ot/D8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mktKg3/3Bgorv61bikz1LNQJCLOrXuOUxxwZmq3zqzsksEv+/eVm/O4nyi/5A7HKKBvV8yi8gz+ZoSf1MIFJA4Iw19eaXzIuN4Aq/xz0JO6+tb575sBBe3HtF7kS2Z2rF2nuqOPCU1m5lZBHq0kpLOmgTliXDDvIQEttXg6GK44=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=C58bUuF5; arc=fail smtp.client-ip=40.107.159.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZvUz/KqL"
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-71d5ef7daf1so509856a34.1
-        for <imx@lists.linux.dev>; Tue, 26 Nov 2024 11:41:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732650112; x=1733254912; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gdOpj6n/TpCW+M6qJNyMJAxTe9+Oh/jv0QhEZd/cyn4=;
-        b=ZvUz/KqLUOirQmfw/UWt+d6CglUSotmUDpoaZz9+Y9Mb84rTS2G/RTRXYYvuyKax+m
-         i16fQJjgdzmKDuOcvQISeIo0TiNLgNbBJUWZ+BF1tAN0RCiq9ZtqozAdC3sKI7OGDPEV
-         zmmoXkQyBLoeRnOhWxUS5yD8lNZ+L4T3hsR78NbZKcqGs+hMgDc3VsWtcvcpETEud36Q
-         zg2StCe2CoMMg4siiV9i1Uvzgl2qk0fGy24q9sE1SzRCFAqCSuQ7PlSsyaJukmgOT7B6
-         hh4yNvylxNGYtQGVFqcPhcRjOs/OPIFIR7d1QBLI/yTEKlZfBoWsLGWcrPlJiFse7E8g
-         G/6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732650112; x=1733254912;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gdOpj6n/TpCW+M6qJNyMJAxTe9+Oh/jv0QhEZd/cyn4=;
-        b=X2osKLKu4wkSykqRckEoEHRpIRK9TVH8malIx1jUomvw0XomzgmBZ1VakYCQylBoZD
-         4UkgbAjVFrefbN3bIPO+D+UgjNSET1pYVhIVB/KYw5/0LeYdlfPAEULYX1soHwWsA9yZ
-         xNfDRAi6eduoUEPIoq8tjO3ZWi6KTs9p5PzTU/Qbk9nNuxnopr1+RHP4ZJGa15rBpIlm
-         gnikODFKFmFyL3u1tahZ/XFOD9Tb9QXURb0PkqFE6IsV9/PSArv3FqQ2Jg54xXvUGGRR
-         hcTocLAg+B5oGSwBuC9h1edGDCXhs9M9rGF1wmgyZbiWek8vHujy1V0B/z5ReSivHj3y
-         iCbA==
-X-Forwarded-Encrypted: i=1; AJvYcCUr0a6aTjb/kCRYsxvLdvbK5KA20TMPxJHBj1wUTyCDlxRdNm/pgN3U8L5KAbDcbrxkVmA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyrtsd5y/qJEioZtzkclSjIeNsbi0H6iCpBmALguzq3TiOhyIMD
-	pZdf43Fsn6R2CNvZqac10WJjpGW61IR7xnnV4otyJxmYk/gILGGjJtsy3g==
-X-Gm-Gg: ASbGncutxqnXe7z4ywAG/QIR1Iz4E5WBB0CSDTqibkc6hkUsZqoeoKz8GqSQ9AMUECt
-	EkI/12jUXWItlRIg89ioLiMRtKv/4As2wuyqrSMYZtHXj+5x5pUPKCDvHRZGhh4C+F9DIUEPX75
-	Ky2Zhm7nqypoGNhCeBCnvcAtwohc6l/lz3AdES6y4Sogw2cRKAWfUVbMhead1YJbw8agTfEiwjF
-	Et+BtEIH7B0bAGbqr8JE2sB8al7L9x4Abo5RkixB9jOE4fCa1iiIPEJfpcS0rgc
-X-Google-Smtp-Source: AGHT+IF+qleM6e28lbhrKv8SHeOCH/FuIj3K4jQgailnXQEBm51/BgQbfblpSw+RSONlWze7PTecwQ==
-X-Received: by 2002:a05:6830:700e:b0:710:e61c:7a4c with SMTP id 46e09a7af769-71d65d05a85mr309535a34.29.1732650111959;
-        Tue, 26 Nov 2024 11:41:51 -0800 (PST)
-Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:8a47:3216:e3cc:f1d9])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fbcc1e25cesm9147384a12.28.2024.11.26.11.41.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Nov 2024 11:41:51 -0800 (PST)
-From: Fabio Estevam <festevam@gmail.com>
-To: shawnguo@kernel.org
-Cc: esben@geanix.com,
-	linux-arm-kernel@lists.infradead.org,
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="C58bUuF5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jbOV45b4VSq+gvTpAVmCSkD98xYX4L++fmELxg2jzgN5SHuZlQvzXt5vfHaj98m2sLQqZ9wferOp4bhGWsEP/bOdAQzxy8lRKgs5m2N82IM8k5J0Xl0+yNOz8dI22i7jxHv3LqG7uZbwsi4UnQ3Q4mSQTsaPI21WjQMimv/pUt+IcWvYn04leO8TXn7WM1OvGQGJzhMPd0Woj0Y/fmec2iLdp8ek0oreGgkyxSdTXhkCs6sOsvgzNRDwREzF7KGjBQ2vQxzJ3DZCEGQzOeVe7nlf8aVbZFcptNg3ljU7I7Rwvufwhho/dWZwynJTgMgnKyuBvNfv0dg7bYmC0gB1Kg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UBQqwxMGjqwTIRtBIMH/Dslh28Cnyih9ZZXgeWnGIgQ=;
+ b=Nk1foO4j6PCys57lj/3sm7IJhGflvuXbuPvunwBD4ID4NHUca8cpex6PYcA9Cirthm7dGslcGHPZwoJjI1jN/3YKZXxdVtDQ9YLxLwQN4v8grL/QS56Y8kUd5i+mVfjf4OlQiQTcCTtmIT8PAo9t5y6FepHPWLcbZqDl+mr1wy5Zi88KMt0JPBHoL9Y1ssQctCUuRcFbMshMXCsmmWsvDIBVPFEK+IyN7oQF7RCCYZD74zBmq337IQY1FX9ul9GD2Id6EjoxTWbcIpzn1a9/nK6EhMfSRZAtVU5t2SCDLkNQ0TbLbhMfO/KTQXS2ql2YhiuPJDdVdMjJEWVKUoGK+Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UBQqwxMGjqwTIRtBIMH/Dslh28Cnyih9ZZXgeWnGIgQ=;
+ b=C58bUuF53saPUdyDt5+MwQVqlbOxxfN/bQfRqPRXu6q9m8dsRg2+PFWfY8HmybBijd17M78V+AK6RCMZjJ5O3lt9uyrdMcYGi7Q3PdG3bGsZROlo0TR0A3rmXMAFf4TW9MWp7hdC3WiYm5/uV1a9ukIH05rJmkJqGFs+vIxK3/uiL0+fDDllY9hQqNFK6ck1muQgIwULiMC8x47KjDkpa0mpW3N9sP/Vr2m/oMa5xyPYW2IGc/6sdOJL7Upp4aFl6HX9RNzEswhnk080ZUC5nuhLXtz+BAEdsPo0gQ86jHHxlGb+6M/qMdhpEHTBUmFYj47A6UKGALta7Gph+4/eMw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by GVXPR04MB9831.eurprd04.prod.outlook.com (2603:10a6:150:11c::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.21; Tue, 26 Nov
+ 2024 19:53:13 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8182.019; Tue, 26 Nov 2024
+ 19:53:13 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: jic23@kernel.org
+Cc: Frank.Li@nxp.com,
+	haibo.chen@nxp.com,
 	imx@lists.linux.dev,
-	kernel@pengutronix.de,
-	linux@roeck-us.net,
-	Fabio Estevam <festevam@denx.de>
-Subject: [PATCH] ARM: imx: defconfig: Explicitly select CONFIG_PINCTRL
-Date: Tue, 26 Nov 2024 16:41:46 -0300
-Message-Id: <20241126194146.1193094-1-festevam@gmail.com>
+	lars@metafoo.de,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v5 2/2] iio: adc: vf610_adc: limit i.MX6SX's channel number to 4
+Date: Tue, 26 Nov 2024 14:52:56 -0500
+Message-Id: <20241126195256.2441622-2-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241126195256.2441622-1-Frank.Li@nxp.com>
+References: <20241126195256.2441622-1-Frank.Li@nxp.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR13CA0190.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c3::15) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GVXPR04MB9831:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8015b945-515a-4ef3-67a3-08dd0e53f665
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ixM3cQ6Js6TrwdA1zrdQEvIJnbyUj9pScsFYpTPDSL0I7hKXSbKNiiCDfXQA?=
+ =?us-ascii?Q?rmUkdT9Fut20XJr/s+bf5Zo3Z7Ogi2SYQv4MJgYQEaeXY49xN8BHB6Mz6PSJ?=
+ =?us-ascii?Q?mQsv7juHZdzkkPCdqQ6kibsfKOGl/HVo2Ho0BJTd6XawBs1dICIRDccl9/FO?=
+ =?us-ascii?Q?CjUEURLT/37WnYqRUsh/1hCqZBG78bKre5prwRZZTxvQHdE0ZGTEJurToiIR?=
+ =?us-ascii?Q?Sw1YCH5H7D/++RnzWreydR6UTCN/HlwqiIh2G3sxdtBqXVrLaOWALo98YOt5?=
+ =?us-ascii?Q?4Cbvp3gAU+6z9pX/Rh9P6WWYZmdSAThCN3Pyq3A/TKKKRsdTNgAObF2zh6wC?=
+ =?us-ascii?Q?qSyTU0q/q5Poh+EFkfsqWDb/YGLoMIgW9+4nB4xSfyF3pvfNfbo5TVyeGGCa?=
+ =?us-ascii?Q?kZmxM5CRbdpZG89JCGaw0D0Hl+Y3Kk7fjeIZZmRhXYWOTKBFFUOZ65n4woYW?=
+ =?us-ascii?Q?yJYje8N/PSdgyVjN/wn3g/3vchCQEeB7d6KpgDxekuHaDaLimsblws8ZFZHk?=
+ =?us-ascii?Q?8ufUKhiWE5ed7EjnJgjp7aZOMXG7vTrUO533on+lkpfM8stIqu0w0ShlphCt?=
+ =?us-ascii?Q?Dd/a8V0CXa6M1lIbao/yAJdffttkqaqr1HeJ60jGsc0/4vLVoSQ8sDwI+HWr?=
+ =?us-ascii?Q?z1ko+Jbi35IFArY5/9Gg+IJKAZVZPZhgBzGEEFDGkR0U1ZpoXLncM+vCjmUN?=
+ =?us-ascii?Q?cayI8PZs0gPnxsaZouxgrJqCElOSHRLpowbPGjszlnlEQ/armeUtZx4Dm0HD?=
+ =?us-ascii?Q?21FE/tqMMZJ1wf+wiIaeFX9RPTClnLEcjKt+dtMk1gylqv/m+Za4sOhjcfMc?=
+ =?us-ascii?Q?4ZaCQjvnakDfabDilqwZg064XAoKKU3R9E/0NAudCdLzFHfbE3VunSE2zoas?=
+ =?us-ascii?Q?+A7LVxUvvdsIkfxfmo7tLU+3qTvDS91LvA2oIJPVJCdwnSA9Aw4DkdPHwRQL?=
+ =?us-ascii?Q?Qlqe2VhFMw8o+ftx/eW4LKZ57xx3lDnMmUT8KlxHMMVGDZBagqJ5qE08Xq0k?=
+ =?us-ascii?Q?E3qQ6vrx7ijD5KYdFgRWlO5sLjhShT9z76IKLaVIRD5o7IprBDSygqOppruN?=
+ =?us-ascii?Q?syZpFhFs5GBBVW2YvOGpBf0IKtr/qHy/YoWiFXAZt+SM7A4pmfJMn6GXwDEY?=
+ =?us-ascii?Q?GBcDl7DsaGYVqH7jnaX1dXrOEp8/s8q2XLgJLjBK6lJYnCO6/guL9iqDX00U?=
+ =?us-ascii?Q?aty8L6S5hchRHAhDUKBRraIp7rexNOUkzoMffADRxNr0AY66a7DiYCm4gFIr?=
+ =?us-ascii?Q?YDM2ift6avlbqyzLSwQbcVrD7BCS71AgZuIZnatJq/YTBEPHcqShGHRR6Pnu?=
+ =?us-ascii?Q?42fG2XueJ2eCj0eUxga8RibQK9a+SK9ADB+3Fjxv2/1Qs7I6vJjlqXqTVroX?=
+ =?us-ascii?Q?klXYernpFXwL4qkhJ03JRUL4f/1RWKHyCA5oFejq8gexv/zitg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?NiuXjXLmAIpaBHIsiH271hk1Zdf3zhMiPY+ToVafPJWg9eu1QHa3HLq8Chql?=
+ =?us-ascii?Q?n6rzgYDH+0JvZ4PZJ6LqT3vZ0tGISbXwUs38inYuB522jh3YYRF16dj9pw7G?=
+ =?us-ascii?Q?/EPoJuji1PmYf9UdbyNloZJ8aSTZ6epd9nfUbxZZsjNd2edshzZyZq1aNN9M?=
+ =?us-ascii?Q?XjWlTQaagJRlDcRyYd/FetK519StsPsem+5tdnDoVZNOCH19K1+d5ZSsOS7s?=
+ =?us-ascii?Q?twEzGm+FwCEP8u4Sp2AoVc05Ou0+j0ncBjh3FaD/VZIEUjMJzg7xYVpWmYwn?=
+ =?us-ascii?Q?n9zDWaNfWcAbEnZaPohBVIUHnhJYFYD7jKrjfOKeHopbGO8sjf4lc9IvrzXf?=
+ =?us-ascii?Q?um6K5Psupcz6Y4j8Gzjy0JZGap65wdpIpkBmcy/ZhY91xbYN1SM+YmVCCbjh?=
+ =?us-ascii?Q?/qxSA3Pv9RATEVSmCsmcUQ8X6We9PiZTOUYadFyQ8a8V15EiQiAPMQCRLKw8?=
+ =?us-ascii?Q?hdlHtCmIUkY41hP5exmj7qoTFyiMZB0m+tIvydrGGBSNBVUQzJQAJGrxau5Q?=
+ =?us-ascii?Q?qvSUChzkc7lxBH56Vbf6BvS/CGvYhPObswDk9pXQJTR4dQEJOlkdt0d6NopB?=
+ =?us-ascii?Q?KlkodqGGDTbH8siynzyPo5X8UycZW+LR5wyNAvqvWYBWYcyOH3n3bP5C/v7+?=
+ =?us-ascii?Q?D6Z4wS1yM524b1mXpe3PJ8Iy1MCkAfBZZXStoFblTVmJOnP0VFhm7phuwuVA?=
+ =?us-ascii?Q?YU90tu6TwwblB8hU83YiBurrTMYEbCCFF/yaCkCJJCYASp2XHnn1UlG9JTGO?=
+ =?us-ascii?Q?cIQEJjDfn+jbzhc1rq1bmUFc9e4/NlljQXdj22pbvhIZWFpYsZO2AODmF3G0?=
+ =?us-ascii?Q?uQUo3NJGz+kBVPvEmuOm2pLMcY3KIXMoFkN2QBzlfQoHvQE4blSYsLi60Qha?=
+ =?us-ascii?Q?eWRK2IvcfPKhE6/9U0yAhiSY8ddM4GFmSKaRE1/Ryo/dxK8VR+ZREUkIvXk9?=
+ =?us-ascii?Q?BQgCaKZi8965K5JHbHvcuWqavGtTToQ4N4238kgLFSPF5N4CsT18Byz8Q5U1?=
+ =?us-ascii?Q?jlQi9FQ7r/7h3eRQojK9cROIcWgVUcqHnCHQs8NdQqOolqpFcoax7BW5/2oE?=
+ =?us-ascii?Q?tIKj0DGkCKE3pW/eyJ0QoGb45R4G91yHXJfxpOS41XWk93Q7Pj2adz6S6WCQ?=
+ =?us-ascii?Q?BtBlBm6tKsH6D0I4/fgDvXzlrPNT4YJd4J/YIDF99XYFZXC858m5HnE5D6ya?=
+ =?us-ascii?Q?8W8V0H1agLyLG1/bWN/44Yu+9uxb4VgyVQ6+z5nuQyecCjqrrBqSIJQE2a3J?=
+ =?us-ascii?Q?9J0fFBNKBQGVcnF+ZWOSdlTTAJFo/AAjeDi87Kuyo7LslZgFOIPe4nUHfDlJ?=
+ =?us-ascii?Q?rYRXtlhU9hXyUqTbGwbaVPXli3H2FlnQkjLbVHW3v/G89ESKUVAvieKhRCLE?=
+ =?us-ascii?Q?2gxoDjVyjhOnpj9Sr+ie2/hWGPzHvbJ7KWze57bux4Mhl0ElmuAd3fSupR2g?=
+ =?us-ascii?Q?HNzzxr2A/Xluu4T/ncQyslCgPMYGwVwSDoxOYzxi2FqnBL2lwDBaa4DATg30?=
+ =?us-ascii?Q?77aSmDZHlrRZ73TFrG3tYF8QGsTAw8ZQVHaiH05hY/YcgED7StfCdSiwW1sS?=
+ =?us-ascii?Q?OHrVIiu86nxd+k2kdWOkUVJsM8LMT+yHcKdOW93x?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8015b945-515a-4ef3-67a3-08dd0e53f665
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2024 19:53:13.7056
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fXRCFZ2Ch/UmxKKI5zWA/K2W2vniOFWcOiS0rnjqpjHp9yE/CbjJ1PZ0R2ObFAd1teaO2Xs3uf2WAfC90IWnMg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9831
 
-From: Fabio Estevam <festevam@denx.de>
+i.MX6SX only has 4 ADC channels, so limit channel numbers to 4 for
+compatible string 'fsl,imx6sx-adc'.
 
-Since commit 17d210018914 ("ARM: imx: Allow user to disable pinctrl"),
-the CONFIG_PINCTRL option is no longer implicitly selected, causing
-several i.MX SoC pinctrl drivers no longer getting selected by default.
-
-This causes boot regressions on the ARMv4, ARMv5, ARMv6 and ARMv7
-i.MX SoCs.
-
-Fix it by selecting CONFIG_PINCTRL inside the affected defconfigs.
-
-Fixes: 17d210018914 ("ARM: imx: Allow user to disable pinctrl")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Closes: https://lore.kernel.org/linux-arm-kernel/49ff070a-ce67-42d7-84ec-8b54fd7e9742@roeck-us.net/
-Signed-off-by: Fabio Estevam <festevam@denx.de>
+Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- arch/arm/configs/imx_v4_v5_defconfig | 1 +
- arch/arm/configs/imx_v6_v7_defconfig | 1 +
- 2 files changed, 2 insertions(+)
+compatible string 'fsl,imx6sx-adc' already document in
+Documentation/devicetree/bindings/iio/adc/fsl,vf610-adc.yaml
+Change from v4 to v5
+- none
 
-diff --git a/arch/arm/configs/imx_v4_v5_defconfig b/arch/arm/configs/imx_v4_v5_defconfig
-index 875c8cdbada7..1af29d12129d 100644
---- a/arch/arm/configs/imx_v4_v5_defconfig
-+++ b/arch/arm/configs/imx_v4_v5_defconfig
-@@ -83,6 +83,7 @@ CONFIG_I2C_IMX=y
- CONFIG_SPI=y
- CONFIG_SPI_IMX=y
- CONFIG_SPI_SPIDEV=y
-+CONFIG_PINCTRL=y
- CONFIG_GPIO_SYSFS=y
- CONFIG_GPIO_MXC=y
- CONFIG_W1=y
-diff --git a/arch/arm/configs/imx_v6_v7_defconfig b/arch/arm/configs/imx_v6_v7_defconfig
-index 0beecdde55f5..73f7aa7e75f7 100644
---- a/arch/arm/configs/imx_v6_v7_defconfig
-+++ b/arch/arm/configs/imx_v6_v7_defconfig
-@@ -204,6 +204,7 @@ CONFIG_SPI_FSL_QUADSPI=y
- CONFIG_SPI_GPIO=y
- CONFIG_SPI_IMX=y
- CONFIG_SPI_FSL_DSPI=y
-+CONFIG_PINCTRL=y
- CONFIG_PINCTRL_IMX8MM=y
- CONFIG_PINCTRL_IMX8MN=y
- CONFIG_PINCTRL_IMX8MP=y
+Change from v3 to v4
+- Add struct vf610_chip_info to avoid cast int to void*
+
+Change from v2 to v3
+- none
+
+Change from v1 to v2
+- Add Haibo Chen <haibo.chen@nxp.com>
+- change cast to uintptr_t to fix below warning
+
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202411052345.gyJaM3h4-lkp@intel.com/
+All warnings (new ones prefixed by >>):
+
+   In file included from drivers/iio/adc/vf610_adc.c:20:   In file included from include/linux/regulator/consumer.h:35:
+   In file included from include/linux/suspend.h:5:
+   In file included from include/linux/swap.h:9:
+   In file included from include/linux/memcontrol.h:21:
+   In file included from include/linux/mm.h:2213:
+   include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
+     518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
+         |                               ~~~~~~~~~~~ ^ ~~~>> drivers/iio/adc/vf610_adc.c:874:28: warning: cast to smaller integer type 'u32' (aka 'unsigned int') from 'const void *' [-Wvoid-pointer-to-int-cast]
+     874 |         indio_dev->num_channels = (u32)device_get_match_data(dev);
+         |
+---
+ drivers/iio/adc/vf610_adc.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/iio/adc/vf610_adc.c b/drivers/iio/adc/vf610_adc.c
+index fb7afa91151f2..ed05c2b3caeca 100644
+--- a/drivers/iio/adc/vf610_adc.c
++++ b/drivers/iio/adc/vf610_adc.c
+@@ -177,6 +177,10 @@ struct vf610_adc {
+ 	} scan;
+ };
+ 
++struct vf610_chip_info {
++	u8 num_channels;
++};
++
+ static const u32 vf610_hw_avgs[] = { 1, 4, 8, 16, 32 };
+ static const u32 vf610_lst_adder[] = { 3, 5, 7, 9, 13, 17, 21, 25 };
+ 
+@@ -808,8 +812,17 @@ static const struct iio_info vf610_adc_iio_info = {
+ 	.attrs = &vf610_attribute_group,
+ };
+ 
++static const struct vf610_chip_info vf610_chip_info = {
++	.num_channels = ARRAY_SIZE(vf610_adc_iio_channels),
++};
++
++static const struct vf610_chip_info imx6sx_chip_info = {
++	.num_channels = 4,
++};
++
+ static const struct of_device_id vf610_adc_match[] = {
+-	{ .compatible = "fsl,vf610-adc", },
++	{ .compatible = "fsl,imx6sx-adc", .data = &imx6sx_chip_info},
++	{ .compatible = "fsl,vf610-adc", .data = &vf610_chip_info},
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, vf610_adc_match);
+@@ -823,6 +836,7 @@ static void vf610_adc_action_remove(void *d)
+ 
+ static int vf610_adc_probe(struct platform_device *pdev)
+ {
++	const struct vf610_chip_info *chip_info;
+ 	struct device *dev = &pdev->dev;
+ 	struct vf610_adc *info;
+ 	struct iio_dev *indio_dev;
+@@ -840,6 +854,10 @@ static int vf610_adc_probe(struct platform_device *pdev)
+ 	if (IS_ERR(info->regs))
+ 		return PTR_ERR(info->regs);
+ 
++	chip_info = device_get_match_data(dev);
++	if (!chip_info)
++		return -EINVAL;
++
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0)
+ 		return irq;
+@@ -881,7 +899,7 @@ static int vf610_adc_probe(struct platform_device *pdev)
+ 	indio_dev->info = &vf610_adc_iio_info;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 	indio_dev->channels = vf610_adc_iio_channels;
+-	indio_dev->num_channels = ARRAY_SIZE(vf610_adc_iio_channels);
++	indio_dev->num_channels = chip_info->num_channels;
+ 
+ 	vf610_adc_cfg_init(info);
+ 	vf610_adc_hw_init(info);
 -- 
 2.34.1
 
