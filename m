@@ -1,318 +1,328 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2064.outbound.protection.outlook.com [40.107.21.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233B21BF7E8
-	for <imx@lists.linux.dev>; Tue, 26 Nov 2024 12:41:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732624881; cv=none; b=riSYMbZSAeQ3FmJFv7EbzcXamu6ph79kAYpImU3e4RdHr7xbOzgdGpWuMIJ72N3quFixhU/QqaZIRt4UPpj+T5FEnvgclBEZ0QQG6Yp2JtV31Jy7FU9AnmDJOkIiv4KOLUDe++Ly0v9b8ZZc5xwGRuFojbbJXv04eKhi6hgNcFs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732624881; c=relaxed/simple;
-	bh=5QGqLgj7ult2KpL1mhiCaa8OlPSUKLYv0B9W4FZ6P0Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tFzxtKBXgp03WooM1k3yIMW5EKcSNR3lEpCgBNDNMZQTfgxLKIADpWh8BikBNH4UpUOd67QstIuQoWY4/DD9+GXZRhlz84XrvRZC6tLgP3PQHanP3v2lOcUtJb/f121XaBdp5+kRVNGrYvfhLfxGd6nKSYG86lqqsjH8XnC7GwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HylJWy6B; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FBE1CEE96
+	for <imx@lists.linux.dev>; Tue, 26 Nov 2024 13:48:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732628906; cv=fail; b=Fo2YOrdPO9pwBl7yExEZYEdljfMusZkKl4E8EJV2IGSpO7DOi/VuCAsMBYCl+d/UyQUS5ptKPrUzK1LGhA6v8v0BYOxtKUzYl5GkaSNMtbebKCG4IXzidX66GOKGwHQWN8aAmgKTMsNAdMyulAOtQGUNLIaySZpZ6/IJU4Xkwi8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732628906; c=relaxed/simple;
+	bh=9zNeULgW43+/vqWBRiU82UQkhPr3j649oiKLby7Yz+o=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=XzWlLqDRoZoKGIC+7hRq3RnczYIAYc2Z7VL1h6TTE+dR2sAOfNi/CoM+uhTb953zUntu0JP3yLWzE48NXG7jfEFLdD8wXF2DXbLY0JNfmlNYXPAQsAHwDgpg393OyuWEVDyo1uu5w1UoeX0XPe6ZwvXaZyKxTSdh264d/Eg2wVc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=a4FB66W9; arc=fail smtp.client-ip=40.107.21.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HylJWy6B"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-21290973bcbso53107365ad.3
-        for <imx@lists.linux.dev>; Tue, 26 Nov 2024 04:41:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1732624878; x=1733229678; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=MxF+aV1Hv4QY3oDIZgKkkm4GIfDo73DrZkwY5UF6N5I=;
-        b=HylJWy6BPSO8PaI0K7tCpzTX7QcV5WPiHSKkkFD+eR7Q9BmJnufN6yRHu6wIoivzpB
-         GhGUSMtH2H2JM8HAFpMSNgmpNdk0WneSIg1HSMs8EVoh7EDMA49mPFZCZ8QYIb5bWTe7
-         pd4GLm9sCX8BjXA84D4/B0R41z4j8ig9ZHzVU9dqI2nmXD7rcnzMyr9f7JaniRXiFqVt
-         WoOmc5TfiD+nPUWoVs8eDBuDCCj9T+D93Cv6n7MuX/gp+UJj5TJu872IONmkyhq8bi65
-         VwrbOVE0snQQc0jH55FXfSbxhtIDjF82bjT14tGNlxCD1fl43FT6Ps0rfaMroXmb6vTU
-         ybvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732624878; x=1733229678;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MxF+aV1Hv4QY3oDIZgKkkm4GIfDo73DrZkwY5UF6N5I=;
-        b=UAxl9xewwg73n1MMv9N5qwY50HJyTimrh96FsmSnVuT7FmK/ESLKjU33zHuZqOzaOB
-         qhiCpusqJYwUgd/zXjaT3qopfoy7ZYVvDKLBfRqvelEwXfA8lioGVF/eFFFT+WJptz7X
-         KcC8+KjeoKusLpNMSLqKWLvI7oA4i+E7lmMqE3iblJCr8NGK566i86pZyajxw069PvY/
-         sg86E9MjSkkhZLeIf6pC6lNyezFuCT5gtbLLNMrG4TZ8koZKNyo6yNdWlx152G30bkvV
-         fjkmhd3nlLQYZVqSrQnpG1RojpD8reBBm8dNxp5L0rxLAswaEnpdTUO16YlduP1VPVJi
-         wmTg==
-X-Forwarded-Encrypted: i=1; AJvYcCX9Y5UM3nA28pcK7x5qCAzjIEGP6pXJemxN8npINH7IIrEabqDH1+1A78gSRXMG/TX8fOs=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzuedCE8VU4Qy+WeZmfrnVmrIaPJ2X3KKakkLBz6T4T3Z9DwEfK
-	hJsvQQ+hz411VSfrJSwj0KJM0QI3bve+h9+bCpiW7RyKWbnZD/hPVEKbeoZY5PbZXHBLCWQbn8Q
-	=
-X-Gm-Gg: ASbGncure2gq+HW6alXZfuWXrgtKr2357G0k8hgIGYEK77d3VBRnDczOLsnxZznz/uP
-	QbnClgpy3nPANzBAj9BsId+C63DJRroEZ2eeDUFT3B5SaLy26TE0W3NU3lZzzuHjJAkIMdH5697
-	fYEa9sZZEKkT0UBJ3a97fi54cYE52an+q1ECxX7UgM/x6buQgA01uhhXaLZJylD5N5Xje+V8HMt
-	ulEEsooRkI+7f9zgWPPpRr/qaMExAHe6EmbviafNDqX4mGgfB/TxNnCVQ0q
-X-Google-Smtp-Source: AGHT+IHNkV0w1MtKgqBXdudpD0c62ethWhe9CLuXm06H3Scg2apzmGTe2RkEFVHEhLbz5G18I7I10Q==
-X-Received: by 2002:a17:902:dac5:b0:212:500:74e with SMTP id d9443c01a7336-2129f51d2c6mr233343125ad.11.1732624878328;
-        Tue, 26 Nov 2024 04:41:18 -0800 (PST)
-Received: from thinkpad ([120.60.136.64])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2129dc22237sm83758345ad.243.2024.11.26.04.41.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Nov 2024 04:41:17 -0800 (PST)
-Date: Tue, 26 Nov 2024 18:11:12 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Frank Li <Frank.li@nxp.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	imx@lists.linux.dev, dlemoal@kernel.org, maz@kernel.org,
-	tglx@linutronix.de, jdmason@kudzu.us
-Subject: Re: [PATCH v8 4/6] PCI: endpoint: pci-epf-test: Add doorbell test
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="a4FB66W9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=j6rWhGzf2ogMoCqOF8OZ49oJItvLwqGkt90iN0TTOg1nu5LPwaeiQagXA3PjoBKcM/rJ0/yCirBg2yawdNgDbcE1QpJ29HqSyrmAg19fODJpPpNN93hs+EgH5jljApK5rKsB/rBQ4XRotVy4cxPMjwpt0cRMlaXVO61ni3TheEtgaeIKa/rCzbq4foHbRbto1CxMRiFuEjkxOVLoOXomZf7NxTLxH/4lf6r7tLKz0ABTpbw8xZF6NGKzjUukjvuuCLYGwAaNj0X1z4VQ9cUrdFxG82mc44SskTJMjypV2d7p/qruHy13BeEKC74c7cQjXv+wTkAV6Un7uYbcHR5oWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cpQtzKkxEKj3hLCDUrYnY9QgM12z3/zHBRUZNdXKvp4=;
+ b=kg8uXWDyYca4QqO0tMhBqWC2FOScapEQptlBZRgFr52Vg4BHJAqWhBIGJYPOqTwfwUJNqbZw5AnrqPAfH9BQFiX4vC2ySCawhy6N2aPP0g0CKJS770wmh6vxgVEly0gLN223V58sKTwkQ8tDA1RuU2x1j++D5kP+tIT1Je6jUQGGiETPTqGylqqwJY9owWej/zLS8rsPjjU8m+eSYoZxdY7fa+wy/6EYBhPumpuTZkFNuZZBR9uuCafa3TzBOMS5ZvX4FGgByJg8wZPj9+mnVdW9VlN6JgGvua09yfF3fBSJsY1PIZAdLLZRSsSYiHLtvn/jWcvQozVpDSKp0+g4/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cpQtzKkxEKj3hLCDUrYnY9QgM12z3/zHBRUZNdXKvp4=;
+ b=a4FB66W9mDCcUzMGTLcg6J/Dzsgy440kWnb0IwozuZwcG2q1LsNmobApL0sOo8wPDOHuu7EONk8nlY4ItqconUZQnqetPBYVHbvztCtDSY38RQ2+yGASxXd3ERVamoCoc0afYIxhXUebHdfT5jz9WFE1gZsl1g7Hb5Xv8QFV76U0hjDiHgIGBFJNZUDcZnGtMlDKj10NBYlPqpaMOOjrhA5c1/YIF1SfFu7AcWdSFICOa4WMJ2meZvQ4zNtMcl7nJefR7mUhy/VjMPHrye+8n7xPxKuwEmbBEOkI8fNicH61tRTNocvDdjg5fn4EDR9aCSlgOEomvYc6wlp+gu4VOw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU0PR04MB9251.eurprd04.prod.outlook.com (2603:10a6:10:352::15)
+ by PA4PR04MB7983.eurprd04.prod.outlook.com (2603:10a6:102:c9::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.20; Tue, 26 Nov
+ 2024 13:48:20 +0000
+Received: from DU0PR04MB9251.eurprd04.prod.outlook.com
+ ([fe80::708f:69ee:15df:6ebd]) by DU0PR04MB9251.eurprd04.prod.outlook.com
+ ([fe80::708f:69ee:15df:6ebd%6]) with mapi id 15.20.8182.019; Tue, 26 Nov 2024
+ 13:48:19 +0000
+Message-ID: <01a7de95-24e2-4c75-a818-bbc363e89844@oss.nxp.com>
+Date: Tue, 26 Nov 2024 15:48:15 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] dt-bindings: can: fsl,flexcan: add S32G2/S32G3 SoC
  support
-Message-ID: <20241126124112.5o4c3lzem72lkvdw@thinkpad>
-References: <20241116-ep-msi-v8-0-6f1f68ffd1bb@nxp.com>
- <20241116-ep-msi-v8-4-6f1f68ffd1bb@nxp.com>
- <20241124075645.szue5nzm4gcjspxf@thinkpad>
- <Z0TNMIX4ehaB+mSn@lizhi-Precision-Tower-5810>
- <20241126042523.6qlmhkjfl5kwouth@thinkpad>
- <Z0WcKeM2630u_xSK@ryzen>
+To: Marc Kleine-Budde <mkl@pengutronix.de>,
+ Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-can@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ NXP S32 Linux <s32@nxp.com>, imx@lists.linux.dev,
+ Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
+ Enric Balletbo <eballetb@redhat.com>, Frank Li <Frank.Li@nxp.com>
+References: <20241125163103.4166207-1-ciprianmarian.costea@oss.nxp.com>
+ <20241125163103.4166207-2-ciprianmarian.costea@oss.nxp.com>
+ <y2fbsxg4pney2iapzcdooxyz6l3pmw6ms2ddupf637svitelbt@wthu23ld5ryq>
+ <20241126-independent-crocodile-of-finesse-106009-mkl@pengutronix.de>
+Content-Language: en-US
+From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+In-Reply-To: <20241126-independent-crocodile-of-finesse-106009-mkl@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BE1P281CA0190.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:b10:8d::9) To DU0PR04MB9251.eurprd04.prod.outlook.com
+ (2603:10a6:10:352::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z0WcKeM2630u_xSK@ryzen>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9251:EE_|PA4PR04MB7983:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7418fd30-a7aa-4972-a51b-08dd0e20fc77
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZHdCak5OVjN5NFRhQkk2YmZ0RXBCY1ZlTUxJcENlRFhINy8xak5sdm82cFI2?=
+ =?utf-8?B?eDM0VWQvL3RIM2YxclBrNE1EVWU2eDZvRHlONWUycjduYnkyU1JVYU9zeWdp?=
+ =?utf-8?B?Z1NJOG9McWZLeUpTNklnUU1KaFZHRjVlR255NHhWQXlPRXloSmNyUjhQY3RK?=
+ =?utf-8?B?SVhOMlB0UFErdGN1QXFTZkhseWxnOHAvcm9oM1JXTElmdFhqaG9ETWZpYmo1?=
+ =?utf-8?B?SFIyTzRBNDAzUmZscXVTdDQxM0piOTVta29LMDViVzZuRjlXZFpsbzRtRk5x?=
+ =?utf-8?B?VmlleVFYVjZMZHNJc3M3OC90YjZDcFAzNHd4SzZCVDJwcTExOVdSalpTNGsy?=
+ =?utf-8?B?UkRIRnJMN01UZWtQaFcvR2pVNTVwSFRGNlkvWmdOall4ckovYTIwYWJlZTM4?=
+ =?utf-8?B?c2tXQXh3eWUyNWxDdDd4NEtZaktpOHg4UG1JaTdtYzQ5OWgvRUU0NVpDT0s1?=
+ =?utf-8?B?NUpMR0NSL1RYQ1pNampNU1U2eE92ZjFYUHVjNjJ4a2o3QlY3bzZkY3hmL2Zy?=
+ =?utf-8?B?Ni85eS90RWk4aiszYlpsUnpkUGptVmpxeUdUVXRzSWEzdTFTRTBWVUphUzY2?=
+ =?utf-8?B?NTMwWCswWWdBeGlUSnhmN1ZZREFGa2xaR1ZLb1ZsUkhRYWxRdUlaVitZbkxo?=
+ =?utf-8?B?UWQrWEJUVVZRZkdJVkd2YWJSVk9rNjhOQkJzL0txeGh1VlFsM3VSSUg2WUV3?=
+ =?utf-8?B?WVplMDh1VzJ1QnYxa2ZLcWdIb2pIOUc2RnB3M3RqRmNBcjVIQlRqSDhtWjlK?=
+ =?utf-8?B?bFozUmNNV2Y2N295bHJzNjlXeTgySVNjT1QraHRnNzg4SVI4dmhzMURhdm84?=
+ =?utf-8?B?MnlPRjhUdWZJamtxL200eVI1L0JrS1BGZE1FWVNWWFYzVWV2emhvQ1phbkpl?=
+ =?utf-8?B?V04rdnlKNzJUQ1RVcE1OTVFCdXhqYzJBOFJTVTh1OTMyZlNsd21nYngrazI4?=
+ =?utf-8?B?WGltbjI1K2RqZG9zSkhSZXQxa293c00rMVdWWEs3aUgzc2xKSGx5MzJkTmxJ?=
+ =?utf-8?B?WVN2YVd5WWRYcGxMWFk0WGM4a1p3OHUrSS9QeUZVeDMyWUY3NmkyOUJYVFFh?=
+ =?utf-8?B?WmtaeUJsZWxHd3NNOUZ3U24vMmM0TEZoUXpqdWRTS3Y3ZXQxT09FeDdzaTNw?=
+ =?utf-8?B?VDdJUVpmY3VOMmhvNFZZaTVBT2NEZmFjTXAxZHdWNW9SelhNUWVSd0loVEFJ?=
+ =?utf-8?B?cEZ2NmVFb3ZvUlVzNWU5WlhXQ2FIRVdFNUp0aktCYWRQZjRHMVl0MHBjUktT?=
+ =?utf-8?B?dDVoSSt1K3dpMHdGYkh6N3FNNklmaTluZ1dGMjRQWENwUVRoelN0M05BSFYv?=
+ =?utf-8?B?RjhLek1XclFBOTNzYlpWWndaMU1JZnJyMEJzMlBkUDBmWUVIZkh1R3d2Ukhn?=
+ =?utf-8?B?ME5JMFpteVlibFVnbFJOWkQ4c0JFMFFsdW5HNzNBSFo0QlVwbmUxcXVUc0tW?=
+ =?utf-8?B?REFnMEpXWExIbm4vSXJBdEhlZHdHWE9pQ0l3TkFLM05yYU04UTlQdzBEWGYy?=
+ =?utf-8?B?TWpraXRNajhyNUh0SmlmalNCZktvVk1zanJyVDNsMFZNenNFR2hldDc4N0VJ?=
+ =?utf-8?B?NUxvWkVwTy9wVWphNU1iL1BsU0FyU1VySDhxZDRuZ0M0OUFjejY3N0tza1o5?=
+ =?utf-8?B?c1ozYm5iN0RWKy9mYTFZcG5SN3dPRzBkUXNZUTZBakVKNXBVanYyVHAwZXhl?=
+ =?utf-8?B?endncFNyZHJWaTdjWjlNVWI1WnlSa2JNTHRKMWxCRkVXS3dJamcxNmhjRWFZ?=
+ =?utf-8?B?TWxtZlhHTlA5VkwycGtBaTVBZTIxd3RRdzNaVkJFQmJxRENjeHlhN1k1R2ti?=
+ =?utf-8?B?VjMzR2ZoakpuNEE5UHNsUT09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9251.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bVFBOHNYdTZjNFdNbXNZZG45eHk3ekNUSTJTSFV0Q0JERUVlR1h5VWREbmJF?=
+ =?utf-8?B?ZWpLVDZWTVJHZ1hzYkRhcVFvK0R5R0RGNDZqMSt4STdWRnhZV0pJYzZJMEFP?=
+ =?utf-8?B?L0FoNm1PUUdpK0t0MmJBSzJVazlQbVFXMDFFdWQyeHkvV1dSOVRMUHNHMWs1?=
+ =?utf-8?B?RXhyekx6eHdFTlNkZ0kwbHBPUC9ZNkRTVjVRQVNtSzZ4OXFNQnJPZi9ZMXRC?=
+ =?utf-8?B?VUhIR0I3RGtrQUk5WWFKdFBFMzl2WGppa0k3YnlOdGNVQTVTd0R1bmdHOG13?=
+ =?utf-8?B?VEtRT1FEYzhlR2pBUU5FU05pQlJ2Q0RBNk9hMTZvZFhYcko2WWlrcnloNjJK?=
+ =?utf-8?B?andIUnhxNm1Da2gvc2t6akdmakg0WmhzNlRHQ3lCTmgzNDRJbnhndVREbUli?=
+ =?utf-8?B?V0wvNng0emp0Nk84anBBTWVpQUhtVFQrOWVCc3FOSFRoMWhnU2JYS3gzVnFu?=
+ =?utf-8?B?Q01tdy9qWmIyN2ttc1g4MG9IUEhmcVFaRkNIanI3c3VLRVVaUWtIRG5STVZh?=
+ =?utf-8?B?UWtKOFZPVHhXRkxSc2hBaU9MM0FuSGR2NXRVMWUvZU9Qb1dhWERxemtzREdM?=
+ =?utf-8?B?VlNLK2FUQWw2YW90TmlqQW9ZU2xOdXR0QnpWY3FWb2dpR0R6U0JTbXhPV1By?=
+ =?utf-8?B?UTdXbWVhRmw2Z2htNi9UNkVWdnN2TlZWcEFraitEWnR4d0kwUUZXdnFUTlIx?=
+ =?utf-8?B?YzdVeDN5VHMvZXVrYW03a1NLNTRrWVJ4SmI3WmdvRmVCWGZLdW42RTFmeXBr?=
+ =?utf-8?B?STZLTGJyYmcxa1AyYjRSUTVtVFVRdGM1NjdFbGtITUg1cGQybUppaFhXTGo3?=
+ =?utf-8?B?ZE55RVJJMnpsTXNBdTlucWJpUVFtUjN4amxzV2VlUUl0SXFDTzNnZEUvK1I0?=
+ =?utf-8?B?MDZHNGNOSXo2TFA1TUdVU0xUVmtxK0NmQ1N0TzMrYWwwbWc4ZE9ZOUNFcytF?=
+ =?utf-8?B?TXhVQUtXdUV5anF5VHRQSElrTUVUd01jZmxSSkNhdEsyVytaazFWcnpVWDJF?=
+ =?utf-8?B?RTVBYmdxR21qNzYySFkyc3EwSitoaHg4ZU1wVjE3YW5DTWYvMEFnOHZ1NmFT?=
+ =?utf-8?B?cmxCZ1kzOVZiSEVZd2VRa1RnRVhvVWVab3l2aFpvY3FGU3FKN3NvbmVlemRq?=
+ =?utf-8?B?eDZJSWFLbm0vM1NUVk1PYUV4UHV1SHA4U1IxL2o5bTZXL2NSeHBKVzByOThE?=
+ =?utf-8?B?L2VCMnBZbU4yTFExc2RFSHpwbmVRWkMreG9hZXJMQnlteHIzdTlsd0dWeGlZ?=
+ =?utf-8?B?Q016d2dpZXZ1T0tYYnBOU3dnaVJFSmZEei8zdTRlWXBwZVhkVUVLVUJXR1Fh?=
+ =?utf-8?B?SWFLNjZ4Z2p6c3VsV0V4K2hPZ2VTcDVDNS9nMSsxblc3QXRVMUloUDRlbmFE?=
+ =?utf-8?B?V0x1QVd2NHNBRmorTmlocDQ1KzBFUm1HQVlqT2RXZmZNZjlFTm9ScjkvRVox?=
+ =?utf-8?B?bFkrbGljYVhLYjEzalJPcG1zU29VSkRwOTVMd1dhNWlaTE5FQnRuWks0NjVY?=
+ =?utf-8?B?VGd1MVg1WmpJeXlWL2ZaTEZBeWxOblZjM2cvTzFHYWQvcmM0d3pzMlg4cXo0?=
+ =?utf-8?B?eUllNklDYjVUU1ljN2JGL0xuazk1bE5TK2QvbndmSVVRRVNOemI0bUw5OXgr?=
+ =?utf-8?B?bTViU29OcGdLbi9DZW5JQnAyUkdHNjdDMUsxM0J2eGUxUmkrZ2VORHBIeVlV?=
+ =?utf-8?B?QWJaMTAranQ4MElBWlpnQ0dEaXBJVFBPb0lTK1NwQ0NxVHFEWndiTnM1bXVL?=
+ =?utf-8?B?UXpDcWsySUZ0UVpzbnpydWh6WHBpNTlORHVpV0dqR0VGbGxhNzhQanVpYi9G?=
+ =?utf-8?B?YUIrOUd6U3R6V2Y5eVRTQ2pidVRqRHg0L2NIZ1dwNm9zc254N3h5cnBJSkpy?=
+ =?utf-8?B?ME0reHBqVU40TmZYaGxlUFMyU2RQc29VMkFJVVhJUnZvbUFSLzMrdHQ2TzR6?=
+ =?utf-8?B?OElYbEE5dlI5ejVqT2Y3alpaczVqTWVVcHNJRWorbmc4K1VzRU1xL3RaUzk4?=
+ =?utf-8?B?b2liWU8vVU13UENmMHh1Uk1vUWtnZ2VCMkI1cUNlUEtoTngxRFNUTTlJK3ly?=
+ =?utf-8?B?OWV4RjhnSHAvb0l2TUZxT295VzdXaU16cnZlY0F0UDJEZjRvVXZWMGNtWmlJ?=
+ =?utf-8?B?akFyTzBNS2g3VDlLK0RIYlBkMGpNd0Qzbm9ZRFRNb01TZTRUYlBjazhiR29J?=
+ =?utf-8?Q?t8HOSNi41Q+qhlj4etmd3bg=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7418fd30-a7aa-4972-a51b-08dd0e20fc77
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9251.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2024 13:48:19.7785
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: z0g4DfYwyam8+CwGRF2Fn3Rgr3SXtGZp1c0BP9z0AxarAWYv9k/aKstx8ibShpG2iAkcasQDJdnf8W3YEvisU55yp2ff3xFSZ1eblaonKD0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7983
 
-On Tue, Nov 26, 2024 at 11:00:09AM +0100, Niklas Cassel wrote:
-> On Tue, Nov 26, 2024 at 09:55:23AM +0530, Manivannan Sadhasivam wrote:
-> > On Mon, Nov 25, 2024 at 02:17:04PM -0500, Frank Li wrote:
-> > > On Sun, Nov 24, 2024 at 01:26:45PM +0530, Manivannan Sadhasivam wrote:
-> > > > On Sat, Nov 16, 2024 at 09:40:44AM -0500, Frank Li wrote:
-> > > > > Add three registers: doorbell_bar, doorbell_addr, and doorbell_data,
-> > > > > along with doorbell_done. Use pci_epf_alloc_doorbell() to allocate a
-> > > >
-> > > > I don't see 'doorbell_done' defined anywhere.
-> > > >
-> > > > > doorbell address space.
-> > > > >
-> > > > > Enable the Root Complex (RC) side driver to trigger pci-epc-test's doorbell
-> > > > > callback handler by writing doorbell_data to the mapped doorbell_bar's
-> > > > > address space.
-> > > > >
-> > > > > Set doorbell_done in the doorbell callback to indicate completion.
-> > > > >
-> > > >
-> > > > Same here.
-> > > >
-> > > > > To avoid broken compatibility, add new command COMMAND_ENABLE_DOORBELL
-> > > >
-> > > > 'avoid breaking compatibility between host and endpoint,...'
-> > > >
-> > > > > and COMMAND_DISABLE_DOORBELL. Host side need send COMMAND_ENABLE_DOORBELL
-> > > > > to map one bar's inbound address to MSI space. the command
-> > > > > COMMAND_DISABLE_DOORBELL to recovery original inbound address mapping.
-> > > > >
-> > > > > 	 	Host side new driver	Host side old driver
-> > > > >
-> > > > > EP: new driver      S				F
-> > > > > EP: old driver      F				F
-> > > >
-> > > > So the last case of old EP and host drivers will fail?
-> > > 
-> > > doorbell test will fail if old EP.
-> > > 
-> > 
-> > How come there would be doorbell test if it is an old host driver?
+On 11/26/2024 12:59 PM, Marc Kleine-Budde wrote:
+> On 26.11.2024 08:19:04, Krzysztof Kozlowski wrote:
+>> On Mon, Nov 25, 2024 at 06:31:00PM +0200, Ciprian Costea wrote:
+>>> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+>>>
+>>> Add S32G2/S32G3 SoCs compatible strings.
+>>>
+>>> A particularity for these SoCs is the presence of separate interrupts for
+>>> state change, bus errors, MBs 0-7 and MBs 8-127 respectively.
+>>>
+>>> Increase maxItems of 'interrupts' to 4 for S32G based SoCs and keep the
+>>> same restriction for other SoCs.
+>>>
+>>> Also, as part of this commit, move the 'allOf' after the required
+>>> properties to make the documentation easier to read.
+>>>
+>>> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+>>> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+>>
+>> You made multiple changes afterwards, which invalidated the review. See
+>> submitting-patches which explain what to do in such case.
+>>
+>>> ---
+>>>   .../bindings/net/can/fsl,flexcan.yaml         | 46 +++++++++++++++++--
+>>>   1 file changed, 42 insertions(+), 4 deletions(-)
+>>
+>> ...
+>>
+>>>       maxItems: 2
+>>> @@ -136,6 +143,37 @@ required:
+>>>     - reg
+>>>     - interrupts
+>>>   
+>>> +allOf:
+>>> +  - $ref: can-controller.yaml#
+>>> +  - if:
+>>> +      properties:
+>>> +        compatible:
+>>> +          contains:
+>>> +            const: nxp,s32g2-flexcan
+>>> +    then:
+>>> +      properties:
+>>> +        interrupts:
+>>> +          items:
+>>> +            - description:
+>>> +                Message Buffer interrupt for mailboxes 0-7
+>>
+>> Keep it in one line.
 > 
-> I also don't understand this.
-> 
-> The new commands: DOORBELL_ENABLE / DOORBELL_DISABLE
-> can only be sent if there is a new host driver.
-> 
-> Sending DOORBELL_ENABLE / DOORBELL_DISABLE will obviously
-> return "Invalid command" if the EP driver is old.
-> 
-> If EP driver is new, DOORBELL_ENABLE will only return success if the SoC
-> has support for GIC ITS and has configured DTS with msi-parent
-> (i.e. if the pci_epf_alloc_doorbell() call was successful).
-> 
-> 
-> > 
-> > > >
-> > > > >
-> > > > > S: If EP side support MSI, 'pcitest -B' return success.
-> > > > >    If EP side doesn't support MSI, the same to 'F'.
-> > > > >
-> > > > > F: 'pcitest -B' return failure, other case as usual.
-> > > > >
-> > > > > Tested-by: Niklas Cassel <cassel@kernel.org>
-> > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > > ---
-> > > > > Change from v7 to v8
-> > > > > - rename to pci_epf_align_inbound_addr_lo_hi()
-> > > > >
-> > > > > Change from v6 to v7
-> > > > > - use help function pci_epf_align_addr_lo_hi()
-> > > > >
-> > > > > Change from v5 to v6
-> > > > > - rename doorbell_addr to doorbell_offset
-> > > > >
-> > > > > Chagne from v4 to v5
-> > > > > - Add doorbell free at unbind function.
-> > > > > - Move msi irq handler to here to more complex user case, such as differece
-> > > > > doorbell can use difference handler function.
-> > > > > - Add Niklas's code to handle fixed bar's case. If need add your signed-off
-> > > > > tag or co-developer tag, please let me know.
-> > > > >
-> > > > > change from v3 to v4
-> > > > > - remove revid requirement
-> > > > > - Add command COMMAND_ENABLE_DOORBELL and COMMAND_DISABLE_DOORBELL.
-> > > > > - call pci_epc_set_bar() to map inbound address to MSI space only at
-> > > > > COMMAND_ENABLE_DOORBELL.
-> > > > > ---
-> > > > >  drivers/pci/endpoint/functions/pci-epf-test.c | 117 ++++++++++++++++++++++++++
-> > > > >  1 file changed, 117 insertions(+)
-> > > > >
-> > > > > diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
-> > > > > index ef6677f34116e..410b2f4bb7ce7 100644
-> > > > > --- a/drivers/pci/endpoint/functions/pci-epf-test.c
-> > > > > +++ b/drivers/pci/endpoint/functions/pci-epf-test.c
-> > > > > @@ -11,12 +11,14 @@
-> > > > >  #include <linux/dmaengine.h>
-> > > > >  #include <linux/io.h>
-> > > > >  #include <linux/module.h>
-> > > > > +#include <linux/msi.h>
-> > > > >  #include <linux/slab.h>
-> > > > >  #include <linux/pci_ids.h>
-> > > > >  #include <linux/random.h>
-> > > > >
-> > > > >  #include <linux/pci-epc.h>
-> > > > >  #include <linux/pci-epf.h>
-> > > > > +#include <linux/pci-ep-msi.h>
-> > > > >  #include <linux/pci_regs.h>
-> > > > >
-> > > > >  #define IRQ_TYPE_INTX			0
-> > > > > @@ -29,6 +31,8 @@
-> > > > >  #define COMMAND_READ			BIT(3)
-> > > > >  #define COMMAND_WRITE			BIT(4)
-> > > > >  #define COMMAND_COPY			BIT(5)
-> > > > > +#define COMMAND_ENABLE_DOORBELL		BIT(6)
-> > > > > +#define COMMAND_DISABLE_DOORBELL	BIT(7)
-> > > > >
-> > > > >  #define STATUS_READ_SUCCESS		BIT(0)
-> > > > >  #define STATUS_READ_FAIL		BIT(1)
-> > > > > @@ -39,6 +43,11 @@
-> > > > >  #define STATUS_IRQ_RAISED		BIT(6)
-> > > > >  #define STATUS_SRC_ADDR_INVALID		BIT(7)
-> > > > >  #define STATUS_DST_ADDR_INVALID		BIT(8)
-> > > > > +#define STATUS_DOORBELL_SUCCESS		BIT(9)
-> > > > > +#define STATUS_DOORBELL_ENABLE_SUCCESS	BIT(10)
-> > > > > +#define STATUS_DOORBELL_ENABLE_FAIL	BIT(11)
-> > > > > +#define STATUS_DOORBELL_DISABLE_SUCCESS BIT(12)
-> > > > > +#define STATUS_DOORBELL_DISABLE_FAIL	BIT(13)
-> > > > >
-> > > > >  #define FLAG_USE_DMA			BIT(0)
-> > > > >
-> > > > > @@ -74,6 +83,9 @@ struct pci_epf_test_reg {
-> > > > >  	u32	irq_type;
-> > > > >  	u32	irq_number;
-> > > > >  	u32	flags;
-> > > > > +	u32	doorbell_bar;
-> > > > > +	u32	doorbell_offset;
-> > > > > +	u32	doorbell_data;
-> > > > >  } __packed;
-> > > > >
-> > > > >  static struct pci_epf_header test_header = {
-> > > > > @@ -642,6 +654,63 @@ static void pci_epf_test_raise_irq(struct pci_epf_test *epf_test,
-> > > > >  	}
-> > > > >  }
-> > > > >
-> > > > > +static void pci_epf_enable_doorbell(struct pci_epf_test *epf_test, struct pci_epf_test_reg *reg)
-> > > > > +{
-> > > > > +	enum pci_barno bar = reg->doorbell_bar;
-> > > > > +	struct pci_epf *epf = epf_test->epf;
-> > > > > +	struct pci_epc *epc = epf->epc;
-> > > > > +	struct pci_epf_bar db_bar;
-> > > >
-> > > > db_bar = {};
-> > > >
-> > > > > +	struct msi_msg *msg;
-> > > > > +	size_t offset;
-> > > > > +	int ret;
-> > > > > +
-> > > > > +	if (bar < BAR_0 || bar == epf_test->test_reg_bar || !epf->db_msg) {
-> > > >
-> > > > What is the need of BAR check here and below? pci_epf_alloc_doorbell() should've
-> > > > allocated proper BAR already.
-> > > 
-> > > Not check it at call pci_epf_alloc_doorbell() because it optional feature.
-> > 
-> > What is 'optional feature' here? allocating doorbell?
-> > 
-> > > It return failure when it actually use it.
-> > > 
-> > 
-> > So host can call pci_epf_enable_doorbell() without pci_epf_alloc_doorbell()?
-> 
-> This patch calls pci_epf_alloc_doorbell() in pci_epf_test_bind(), so at
-> .bind() time.
-> 
-> DOORBELL_ENABLE and DOORBELL_DISABLE are two new commands, so the host driver
-> could theoretically send these even if pci_epf_alloc_doorbell() failed.
-> 
-> 
-> pci_epf_test_cmd_handler() additions looks like this:
-> 
-> +	case COMMAND_ENABLE_DOORBELL:
-> +		pci_epf_enable_doorbell(epf_test, reg);
-> +		pci_epf_test_raise_irq(epf_test, reg);
-> +		break;
-> +	case COMMAND_DISABLE_DOORBELL:
-> +		pci_epf_disable_doorbell(epf_test, reg);
-> +		pci_epf_test_raise_irq(epf_test, reg);
-> +		break;
-> 
-> so they will call pci_epf_enable_doorbell()/pci_epf_disable_doorbell()
-> unconditionally, without any check to see if the doorbell was allocated.
-> 
-> We could move the was doorbell allocated check (if (!epf->db_msg)) to
-> pci_epf_test_cmd_handler(), but that would make pci_epf_test_cmd_handler()
-> more messy, so personally I think it is fine to keep the doorbell allocated
-> check in pci_epf_enable_doorbell()/pci_epf_disable_doorbell().
-> 
-> 
-> I did earlier suggest to Frank to move the pci_epf_alloc_doorbell() call
-> to pci_epf_enable_doorbell():
-> https://lore.kernel.org/linux-pci/Zy02mPTvaPAFFxGi@ryzen/
-> 
-> His reply is here::
-> https://lore.kernel.org/linux-pci/Zy1CxtKSgRuEPX5A@lizhi-Precision-Tower-5810/
-> 
-> "it may be too frequent to allocate and free msi resources when call
-> pci_epf_enable_doorbell()/pci_epf_disable_doorbell()."
-> 
-> I don't think that is a good argument, as presumably (in the normal case) an
-> EPF driver will enable doorbell in the beginning, and then keep it enabled.
-> 
-> However, one point could be that pci-epf-test currently does all allocations
-> (the allocations for the backing memory) in .bind(), so in one way it makes
-> sense to also allocate the doorbell in .bind().
-> 
-> To play devil's advocate, I guess you could argue that doorbell feature is
-> optional, while allocating backing memory for BARs is not, so it makes sense
-> that they are not allocated at the same time.
+> According to the excel sheet the IRQ is also for the enhanced RX FIFO.
 > 
 
-I like the idea of calling pci_epf_alloc_doorbell() in
-pci_epf_{enable/disable}_doorbell() APIs. And as you said, it doesn't make sense
-to call these APIs too frequently.
+Hello Marc,
 
-- Mani
+Thank you for taking time in reviewing this patchset.
 
--- 
-மணிவண்ணன் சதாசிவம்
+I will update description for the first irq as:
+'Message Buffer interrupt for mailboxes 0-7 and Enhanced RX FIFO'
+
+>>
+>>> +            - description:
+>>> +                Interrupt indicating that the CAN bus went to Buss Off state
+>>
+>> s/Interrupt indicating that//
+>> Buss Off state status?
+> 
+> What about: "Device went into Bus Off state"
+> 
+> However from the excel sheet I read it as a device changes state, to Bus
+> Off, finished Bus Off or transition from error counters from < 96 to >= 96.
+> 
+> So "Device state change" would be a more complete description?
+> 
+
+I agree "Device state change" would be a more suitable description. I 
+will update accordingly in V3.
+
+>>> +            - description:
+>>> +                Interrupt indicating that errors were detected on the CAN bus
+>>
+>> Error detection?
+>>
+>>> +            - description:
+>>> +                Message Buffer interrupt for mailboxes 8-127 (ored)
+> 
+> nitpick: all these different events for the other interrupts are ored,
+> so IMHO you can omit the "(ored)".
+> 
+
+True. I will update.
+
+>>> +        interrupt-names:
+>>> +          items:
+>>> +            - const: mb_0-7
+>>
+>> Choose one: either underscores or hyphens. Keep it consistent in your
+>> bindings.
+> 
+>>> +            - const: state
+>>> +            - const: berr
+> 
+> The order of IRQ names is not consistent with the description.
+> 
+
+Good point. Indeed the order which is in the S32G3 interrupt map excel 
+is not consistent with the bindings.
+
+The reason is that in the flexcan driver, reusing the 
+'FLEXCAN_QUIRK_NR_IRQ_3' quirk forces the probing of irqs to be done in 
+the following order:
+mailbox (irq) -> state (irq_boff) -> berr (irq_err)
+
+Hence in order to maintain ABI compatibility I am proposing the 
+following order for irqs in case of S32G2/S32G3 SoCs:
+mb-0-7 -> state -> berr -> mb-8-127
+
+>>> +            - const: mb_8-127
+>>
+>> Choose one: either underscores or hyphens. Keep it consistent in your
+>> bindings.
+>>
+>>> +      required:
+>>> +        - compatible
+>>> +        - reg
+>>> +        - interrupts
+>>> +        - interrupt-names
+>>
+>> What happened to "else:"? Why all other devices now have up to 4 interrupts?
+> 
+> Do you already have a dtsi snippet for the flexcan nodes? Please make
+> sure that the interrupts are correctly mapped.
+> 
+> regards,
+> Marc
+> 
+
+Yes, I am testing using the following dtsi snippet:
+
+can0: can@401b4000 {
+     compatible = "nxp,s32g3-flexcan",
+                  "nxp,s32g2-flexcan";
+     reg = <0x401b4000 0xa000>;
+     interrupts = <GIC_SPI 39 IRQ_TYPE_LEVEL_HIGH>,
+                  <GIC_SPI 37 IRQ_TYPE_LEVEL_HIGH>,
+                  <GIC_SPI 38 IRQ_TYPE_LEVEL_HIGH>,
+                  <GIC_SPI 40 IRQ_TYPE_LEVEL_HIGH>;
+     interrupt-names = "mb-0-7", "state", "berr", "mb-8-127";
+     clocks = <&clks 9>, <&clks 11>;
+     clock-names = "ipg", "per";
+};
+
+
+And checking with:
+$ make ARCH=arm64 CHECK_DTBS=y W=1 freescale/s32g274a-evb.dtb 
+freescale/s32g274a-rdb2.dtb freescale/s32g399a-rdb3.dtb
+
+
+Best Regards,
+Ciprian
