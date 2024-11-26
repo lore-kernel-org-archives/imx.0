@@ -1,138 +1,211 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011038.outbound.protection.outlook.com [52.101.65.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6981898FC;
-	Tue, 26 Nov 2024 07:19:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732605549; cv=none; b=W8NqpT2FyPgZ4UIw1BUubMBasQqSCyku28ELiO5Pa/+nTMQbjU4OpmSKnzFQq8pn3BqCw3t4S9jVcVYu6bk5ya87p9aek3mz0S4VpUUPKTi3qMxKDPsbjJu5KmVLvPb3fIbkS22cGG2vLZze/29wVANlH/ukd7kvedYF2k1AEfE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732605549; c=relaxed/simple;
-	bh=/h87k1FDp1WC2VzUI6S8sjWKocwTaIiJ1ZT69Aei16k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hvFlNy7nOH8SmNTAHgBLxUtmon2pCBVcwhcI0m7QQYI8VKlUnGUTvggJ8f7lGnqiNq73/NhvPZw/47aARnYNZijMkN+tqZdvoRz2m5/tzSOGzj37ZJfGWcAIKEAbQAl5EP7h45Gg+OJYhIxq2H/8GP02MIe0Vvo408tNg6o25X8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RG7ZnBH4; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E519513212B
+	for <imx@lists.linux.dev>; Tue, 26 Nov 2024 07:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.38
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732606388; cv=fail; b=j1Z5Y+8EMgOTYST/mEjrEeROkR0aF3k8qNU7g1lFKfpCPt046+xTMjoF4n/kIM8JBxtdBZCpTfxK3smL8EU2t1So7asI6zftYAseDsYVqUkI9OrDEvPesJOuj2CROijM4rGeI3ngONNvU4OTIXPZ5SqM9Lufn4zvOIKZ3YL+B8I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732606388; c=relaxed/simple;
+	bh=LxY2YLOs5SYA1RDaWYlPEk0QUFyvfnn1i5RsOyXNyBo=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=EoKiU54W2n2PHlfLgepQtW9IESdfIiQwPriw8BZJjo4ZaqNnNF1FFNWsgGNanbuT10gCb4GoDnwOD8DBOdm3k4y6wpF9/VHMSED+CPEKbZPv/DN+SHfTN/cTyZ0X1VwzHSDsAxAJTU9aBfjMhQvzMkcHhBZGHYAmmSxE/ZLPRUc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=JmKggbDI; arc=fail smtp.client-ip=52.101.65.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RG7ZnBH4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A12C4CED2;
-	Tue, 26 Nov 2024 07:19:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732605548;
-	bh=/h87k1FDp1WC2VzUI6S8sjWKocwTaIiJ1ZT69Aei16k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RG7ZnBH4LTJCfQ9mUNJN180Zjq5tHx7KY2IjU+qmvWBydXBh513L/x12lTxEhqXPx
-	 yPkWsZ4p3wQdICvAlp3ax2IO92HcRrNbU8JqDLQmTsfymbRaJr0ls/rU/oRy1Y8j7s
-	 9nwgeJapxwrPHjK1YkGwjJDJuS+OwiIccdw+qZRwkeQiv6MKNDsx0CZ+QMMghXOHw4
-	 SHTjeHsy3kJGLiQIHRO6UuNI3cT5dUxXmr09kNiyM5fqzM+RVKSapE7lS3R7pey0WE
-	 Jp8ZEsD0e9KbQu9mdPUc3FWpiDrAYtSsuC8UdYUZm5AWclxgj+2wpw3uQ6WY4vbEiB
-	 DmlKuQvrq+yQA==
-Date: Tue, 26 Nov 2024 08:19:04 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>, 
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-can@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, NXP S32 Linux <s32@nxp.com>, 
-	imx@lists.linux.dev, Christophe Lizzi <clizzi@redhat.com>, 
-	Alberto Ruiz <aruizrui@redhat.com>, Enric Balletbo <eballetb@redhat.com>, 
-	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v2 1/3] dt-bindings: can: fsl,flexcan: add S32G2/S32G3
- SoC support
-Message-ID: <y2fbsxg4pney2iapzcdooxyz6l3pmw6ms2ddupf637svitelbt@wthu23ld5ryq>
-References: <20241125163103.4166207-1-ciprianmarian.costea@oss.nxp.com>
- <20241125163103.4166207-2-ciprianmarian.costea@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="JmKggbDI"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lptu380q02GKZNwTR+kCXngKJxUy2lGFZLYh6y+/vhbzkvNcL9/WSOwyuKEfCYqUVXnqQuZFQ16OQZWL7P6NV6vxKrGxdWFBToFZb0GVdt8TgrANVULjHsfQaDl1PJvVgqlCMVNSJSMzlTLsdMCAWv4rMlD04nnFkyL+cCj/97UiFVe6V3EPhO1Fp5OYpncQqA99fvcbYnLhommp2u1I1oxKZMuSvQPBwRwE7fxZjES9uC9rVbd1myn96OJm3E/YlWG1wKPYJVcwQtDpGotJAL/AdL4ZB3daoyV1eaPIdxgv5FbWt9O7GPvOuoPyW168tKWt2XDj13udaqp7HRoABg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5FJjDJvQcVp/KdhZJEJAM6DkEK11WtwPVEr6LGks/0I=;
+ b=fJk78IxBLKgk6gWX+yTCfDOLkRQAsZrv27brxDvmnHu8ifTklIrIJdF+b2AiGZxA3mSb+XFNl/FuisX1aSAPldr5ji04dlNLVGJEHch3Hkuno8ld6tFIduiWnJEiImlrh09x2/eU8nB5WR29eIwApx9Hojj4xYh8Z4FImL2WHm170E9tDBVgfzBX0Rtjzf5rsY1mucqQI+RcHT815Lhch+aANK9L4We4sUq1xNCcOvkVmKrqwjsrXODUxSC+vVhkX9iBXFvKJEhBFgmK+ChW5q6V8aXP8PtXq8xepknq9dS5UPr795ujnVH3eho9PrJn1zK19Z8GYnt7HXoS5evexQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5FJjDJvQcVp/KdhZJEJAM6DkEK11WtwPVEr6LGks/0I=;
+ b=JmKggbDIrB+W8t3B7zAuy+RcriF+XBNgwq+BTuz72Wnq17ZqROubefrwswGrIkXcnwRWPOYNEdTl2vEJheyaQt/Ketc3DB500Fs4tPvLRGGxAvtcGffNYSYEBSGadtU8lIyCh849gar2Oam+xiaQGDixCT+JMEreboCKhR1FKlbxQmEpnYj3s6NH2jrZNgkxaVZx7pgbAxItkRoliytkyhpBTZO8P1ev7U2tRlf9QZ9C2qXPssUXb57ZV00v/v68kAna9xpNhSqjmB/s4PcBSgUxG1Os3vCW2bVSYyhu8HPvLvwOaWxursbiJ2yBxr4/YDPJMbJ6djhJCARiDEVrSw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by AM9PR04MB8569.eurprd04.prod.outlook.com (2603:10a6:20b:434::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.21; Tue, 26 Nov
+ 2024 07:33:03 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90%6]) with mapi id 15.20.8182.019; Tue, 26 Nov 2024
+ 07:33:03 +0000
+Message-ID: <741238a9-cde5-4a1c-9598-68d8ac29cfbd@nxp.com>
+Date: Tue, 26 Nov 2024 15:33:12 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [DO NOT MERGE PATCH v4 15/19] dt-bindings: firmware: imx: Add SCU
+ controlled display pixel link nodes
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+ p.zabel@pengutronix.de, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, glx@linutronix.de, vkoul@kernel.org, kishon@kernel.org,
+ aisheng.dong@nxp.com, agx@sigxcpu.org, francesco@dolcini.it,
+ frank.li@nxp.com, dmitry.baryshkov@linaro.org
+References: <20241125093316.2357162-1-victor.liu@nxp.com>
+ <20241125093316.2357162-16-victor.liu@nxp.com>
+ <6rijytubyumhgvhlvzx3dtyfncknizs3iz7arhno2mjottyu33@subihom7khzl>
+From: Liu Ying <victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <6rijytubyumhgvhlvzx3dtyfncknizs3iz7arhno2mjottyu33@subihom7khzl>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SG2PR02CA0112.apcprd02.prod.outlook.com
+ (2603:1096:4:92::28) To AM7PR04MB7046.eurprd04.prod.outlook.com
+ (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241125163103.4166207-2-ciprianmarian.costea@oss.nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|AM9PR04MB8569:EE_
+X-MS-Office365-Filtering-Correlation-Id: c4833259-2de1-4159-6f9c-08dd0dec8fdf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?eFJ6V2hyNjRZZ0ducVdpSFJPM1B4cHRhL0dacldpSjFUMGcrS1JwR2dqT0Ix?=
+ =?utf-8?B?ckZ3MjZsT0lLdUh1ZFJkS0J3QndEaFhQbUR3Mjh0TmxJejlwSFkyWkRGREVa?=
+ =?utf-8?B?RzRvS0FvK0ZYSlpld3NudTRFZ2RaUWxxSExCcC95bHNnZGFMWTNGZmpSV0Ra?=
+ =?utf-8?B?YlJvSDFocDlqUTVWUm1jWU0rWTBka0FsM3d5V0gzRS9KRURvazB6UFlSdnNM?=
+ =?utf-8?B?cEUzQ0wwYmpodGY3bTRNZXZ2bWhvWE9kU1BiTlZPcm5Vd1pEcXdJeDNpeUty?=
+ =?utf-8?B?cUlIeXplYkhGNWU3cWw1Z0h1aFIyVmZHQ1lUWUl5MGk2eDlPOGJTYlFWYU5S?=
+ =?utf-8?B?c0Jic2JJekFxTDJsMWZUbzdpU1V0UDVXM21Da2FrU0JTR2F2T0JEaW9zRHg1?=
+ =?utf-8?B?aW9vOHNySUJDTEV6MUZyR0ZTUDZoQ3RTcjFVRkR4ZmVaYzc4VGFQcnp3OWpX?=
+ =?utf-8?B?b1k2T1hQVklxZlJHTHdEeUVTdDNQUlZnN2E1Y3JqYnVjMGlUZ2MwRTRQWnh6?=
+ =?utf-8?B?ODI0aHhkZGtWK1duWUt2amgvajBOZUs4ZDkrR3IvTW9CZU5LSHBMSUlBamZ5?=
+ =?utf-8?B?T1h6Q21zNUJHbGp2NVZBem9sYWgwanRrbnk4T3VoL1Q4cUtLY2tTeWZ2NDlq?=
+ =?utf-8?B?UXNmZkcvTTFNUWhXdmlaL1FqZkxQT05KZ0FSbUE3YjVmdGFYVm5PTFFHcGhJ?=
+ =?utf-8?B?TWFMdHZGOU41OFR6d0ZIdGVHS1ZYT1lHZGtueit2eURJZ3Z0WXNJYUdUWFNG?=
+ =?utf-8?B?L1pHS1lmOEt3dHJLaG1iQUo3TmlSYmppNUVEQ2paeXBKWkt0UnJIME1Xc0FH?=
+ =?utf-8?B?bGxrQUtnWXJSQ1V0TXNNZ0l1a1dPRmoxK0VBVlV4M1Qyb1QwdE43ZmllZENr?=
+ =?utf-8?B?Mnk4bEp3TmZzbm1JSnF2QTE0QllnRTRGcjBkZ3pDOXFrRWxKdk13OVVxaTVK?=
+ =?utf-8?B?NVpvSGlJbERWVmd6eDd5TTBmaHJtWEVZOU54MlpHWHdBU2NzdkZQcFJ4SFc5?=
+ =?utf-8?B?b1d4eTc4UDNvZFVydUZWcG1sQktlNjEzdFNjaCtjWjBHTWxTR3djVzd4bERX?=
+ =?utf-8?B?VmoySkdwbDU0cm54cEZxb1dSeXFsby91bWlFTjRjV1E4bTJPSXArY1NUek9K?=
+ =?utf-8?B?dzR2Z21PZURRNk02VUFzUmliNGVHT3N4UGlTRTBSRlBvYTlQL0tJdXJYcWxm?=
+ =?utf-8?B?ZnFSSW4rYW9ybngzZkNlSnYwWHZBTHF6WnNFNU9lcHJvT3NNRDV5MGlhUE5E?=
+ =?utf-8?B?aFNwbWdsUXVpMjVvM1Y1ek9ESHFlUVVvcmE4cUpKc1lRZUFtbEhOOEN3YUhB?=
+ =?utf-8?B?SU9ROFRhb0RsOElNdndRZzNwQVFScWVvS2pCeXo2SytJWElOL1RPNVpaUVZM?=
+ =?utf-8?B?QWpoV09lbTAydklGYko0cE9tYUNFVlNVS3MvNithS2U4Ulo5eUpZbU56dUV1?=
+ =?utf-8?B?Rm5ucTdjTzZIdXpFRk1LTHFWVDRWakkwT211YUhRRW9RVENlVk9sS011dTd4?=
+ =?utf-8?B?OHl2Yk9ENkZnVTJGTW01cmpqZDdzWDh2bkgyditoenBTaFVtQXNKb1JzbVhD?=
+ =?utf-8?B?dllBREFGT25qcW0xQUp1Z2VEUi8wRDgrSTJtZTdjWUcza1RuTlNWWm9hSU5w?=
+ =?utf-8?B?a3c4QmloM3VqYTg1ckJta2tvdDdqTWhjSmlHUm9tSUlBWmZMU2FjakhpVUNi?=
+ =?utf-8?B?NTF3OUNJZTgyMmZBNkJCRGpTSDAvVmp0Z3Z5NFJjSTNCOFJQUW45cXhUenpm?=
+ =?utf-8?Q?u0M3geQMF4HV6DI1z4=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Nzd2eDJJTjFCc3c1SkJjSVVjaVJuVHJ6c1pCeSt4T0s0Q2h0d252aGNYREMr?=
+ =?utf-8?B?YjFFN09YbElrVittSmsrbXhzWThCNmErRk1Ld3F6ZmlDWndjdGM1blFLSHVw?=
+ =?utf-8?B?WjYzc2FOU0pQeTZpM2U2OGZEc1dRcVlzZndQWXNRRnd1cnJWWUZzRUIxb2gy?=
+ =?utf-8?B?VzcrTS9oM0dzcWJZRkxnZGphaFMwTlBwZjVGc3dqY003RWxaRjNwTlJNN0Iy?=
+ =?utf-8?B?bjR4SGVNQmlYekFSekJxQjY5R1FBdTZWWUhOaDBRV1ZkYnhnZmhMRit2YzI4?=
+ =?utf-8?B?c3VBTWlZeGxObFpUS2FpWEY3N3dmNXlMWVRodi9lZmdSZGczL1hGU1kxbDda?=
+ =?utf-8?B?RUp1dHdIRkhiTnZNMmUxMTQya3M2U1U1SEhrK2JGa1hRWWNDbHlJZU5IbW1n?=
+ =?utf-8?B?TXh6N21xTTBDdXdicUs3VGFOZ01uUTQydnkvVHVJNDZybWx4OEtEYVBjZzlk?=
+ =?utf-8?B?QVRxSkFEcHBmd0U5Z0krdDQxV0sxMmMyZ3l2WHl2NVI3NStyQUZBUllGV0lK?=
+ =?utf-8?B?dFlWNlV6aU9iSzZhZUNNYmdobVQwMTVPMmlnRjc3Mm9pUnJCQjY5SThmL3BL?=
+ =?utf-8?B?ZC93RXdadHczYzZZNzkwMlBNcXpHV2kvYm5aSmdabzV6ZzBiZFlQQjhhL0U1?=
+ =?utf-8?B?bW54bE44VW9BS1VjaGl3YjE0aUZ0U0V0cTBUenAzVkxUeTZYNURXb21KQk5j?=
+ =?utf-8?B?ZWYxb3BWUnlwV0VpM1liWWFRWEtXMElXMHl5cGh6UE41Vmlac2JzenV3a0xK?=
+ =?utf-8?B?T1FtWkJSUnF0MnJvbWZ2VzJiTVFRbXp4TUZWUjU4QlRKRU1sdzU2RGQzRksz?=
+ =?utf-8?B?T1lUUVhsR0dONnRpS1RWRWZCMVROWlVPejJtaDlEUGtFd3NIcXA2M1I0bTdy?=
+ =?utf-8?B?eld3aUEyN3Z0OE1rOWZFdDdHZHFnb3g4dEpuMllkblhPT0RjYmFwVHRiNzJy?=
+ =?utf-8?B?MHMvN1FaVnhKaS85cnRKNVhVaVFmTmdzekNtQkRiL2JCR3VNeUtUL3pkbUp1?=
+ =?utf-8?B?YW1wMVU3SzdRMEF5MFZTT1QyUFN4dTdtV1JPalROR0Z0NGt6LzZLZ1lDL2Fl?=
+ =?utf-8?B?czc2TEl3TkN6bk04UjVVQ21YaEVRZzU0RFJVTk5XVGFZVE9UVEJJN0NpYzVQ?=
+ =?utf-8?B?ZFJUNThpM2Qyb24vVHN5RTJlS1YyNEFzWnZTSm5halNGckNvR3RYMytuZkpn?=
+ =?utf-8?B?Z090ZTBPZFZPWTFXaGNLdkhxM25LUnozMmErd0FCdFZCZzlWeEJIYWhneWFy?=
+ =?utf-8?B?VUFyMjRoendSTXZlTFJ4YVcxeFpxZnArR2NLNmFoOTBmL3BkdHFwN0xSRlJ0?=
+ =?utf-8?B?eDd3ZzJ4akNxRHUzZ2ZtcTJ5akNyYzRvbE41eWM1bFhLVTFGQXhKaEdCRzBr?=
+ =?utf-8?B?Z1RqNEliMmZidXY3a2l4UlA1TzhsWk5xSnFLYkh2T2ZFTkpzUXdCNC9iNWZQ?=
+ =?utf-8?B?eVE0MVZmK2xIZG4ydzhkTmV6WW9FM1R5WnNQd0dkVVRBL1pjWW5RTFpyYnB2?=
+ =?utf-8?B?WHpUYkFuaGM2NlhkdU4vZGMra0lYTE5pTmJadjZnVmNzb2crRmZ6anF2aUxC?=
+ =?utf-8?B?RU9QVzIzWmE5WndXVWU5MCs5QVRkang3L3BEWGxqaXRPa3gyZlVXTlZZVDJ3?=
+ =?utf-8?B?MFc2ak5talNybnAxdU4rdXNaaE02S1Rad1JXTGRCcTBKSXIrZE9UbnpCQmF6?=
+ =?utf-8?B?cHJyZHljZDNsRUZSYk4ydHhoRUd1bU5uL1FUaFpZZW1qSHRMY1RmQ1RXZzEr?=
+ =?utf-8?B?eXZWYzRiYitXNFNBcVhtL253NTRqcThwMUN5Unk5bVBqbE9NNE5VTUdGVk9V?=
+ =?utf-8?B?ZzJjY21UUzZBZ3ZWZm8wUXlJMnRKWHhqVThWeEEwTFN0Ky96VzA0SmV1MW1Z?=
+ =?utf-8?B?c1Noa1VnT0lPRi9kdHdOKzg3Umtob2VwOUNrUkh0SVBodUcxQXFqR2VqOWQ3?=
+ =?utf-8?B?b0VuOENRcXk1SWRvbkcxR08yVFYxdHNEdk9GMitKVTNhR2xLVDdaTkJvd1cv?=
+ =?utf-8?B?bllZZk1LRXN3ME1NOWxGMmk1QVJaY0pzWnJHNGRTQi9sY3hIYkhpd2ZCUEdm?=
+ =?utf-8?B?RmowNmFMNHU2QkIvbmdkSEdhUnFYNDhabnY5RjJqSUpPYkVSTHpnRTVvOFp6?=
+ =?utf-8?Q?F2zRQKBBtfyNsubYctAX7BtxT?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c4833259-2de1-4159-6f9c-08dd0dec8fdf
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2024 07:33:03.6558
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vb4ZTxq2LxF5PV0kik3ILEa8mCbi6i4GijDO1Ya5+b0EbcHTwEiGCqz6tPl1+MLFGzJwTx/v3dxMxbEzhQr9zg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8569
 
-On Mon, Nov 25, 2024 at 06:31:00PM +0200, Ciprian Costea wrote:
-> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+On 11/26/2024, Krzysztof Kozlowski wrote:
+> On Mon, Nov 25, 2024 at 05:33:12PM +0800, Liu Ying wrote:
+>> Document SCU controlled display pixel link child nodes.
+>>
+>> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+>> ---
+>> v4:
+>> * No change.
+>>
+>> v3:
+>> * No change.
+>>
+>> v2:
+>> * New patch as needed by display controller subsystem device tree.
 > 
-> Add S32G2/S32G3 SoCs compatible strings.
+> DO NOT MERGE means also do not review?
+
+According to Rob's comment on v2, DO NOT MERGE means no need to review.
+
+https://www.spinics.net/lists/devicetree/msg720125.html
+
 > 
-> A particularity for these SoCs is the presence of separate interrupts for
-> state change, bus errors, MBs 0-7 and MBs 8-127 respectively.
+> Your cover letter does not explain what you want here, except not
+> merging. Why posting things which should not be merged, without context?
+
+The patches with "DO NOT MERGE" prefix facilitate testing a LVDS panel
+on i.MX8qxp MEK as requested by Francesco.  Francesco suggested the
+prefix.
+
+https://lkml.org/lkml/2024/7/5/709
+
+The cover letter mentions that the patch series facilitates the test.
+But, I'll clarify things better in cover letter in next version if
+needed. 
+
 > 
-> Increase maxItems of 'interrupts' to 4 for S32G based SoCs and keep the
-> same restriction for other SoCs.
+> I'll ignore this patch for now.
 > 
-> Also, as part of this commit, move the 'allOf' after the required
-> properties to make the documentation easier to read.
+> Best regards,
+> Krzysztof
 > 
-> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-You made multiple changes afterwards, which invalidated the review. See
-submitting-patches which explain what to do in such case.
-
-> ---
->  .../bindings/net/can/fsl,flexcan.yaml         | 46 +++++++++++++++++--
->  1 file changed, 42 insertions(+), 4 deletions(-)
-
-...
-
->      maxItems: 2
-> @@ -136,6 +143,37 @@ required:
->    - reg
->    - interrupts
->  
-> +allOf:
-> +  - $ref: can-controller.yaml#
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: nxp,s32g2-flexcan
-> +    then:
-> +      properties:
-> +        interrupts:
-> +          items:
-> +            - description:
-> +                Message Buffer interrupt for mailboxes 0-7
-
-Keep it in one line.
-
-> +            - description:
-> +                Interrupt indicating that the CAN bus went to Buss Off state
-
-s/Interrupt indicating that//
-Buss Off state status?
-
-> +            - description:
-> +                Interrupt indicating that errors were detected on the CAN bus
-
-Error detection?
-
-> +            - description:
-> +                Message Buffer interrupt for mailboxes 8-127 (ored)
-> +        interrupt-names:
-> +          items:
-> +            - const: mb_0-7
-
-Choose one: either underscores or hyphens. Keep it consistent in your
-bindings.
-
-> +            - const: state
-> +            - const: berr
-> +            - const: mb_8-127
-
-Choose one: either underscores or hyphens. Keep it consistent in your
-bindings.
-
-> +      required:
-> +        - compatible
-> +        - reg
-> +        - interrupts
-> +        - interrupt-names
-
-What happened to "else:"? Why all other devices now have up to 4 interrupts?
-
-Best regards,
-Krzysztof
+-- 
+Regards,
+Liu Ying
 
