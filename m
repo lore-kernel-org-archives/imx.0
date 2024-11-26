@@ -1,161 +1,280 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA1D1BC063
-	for <imx@lists.linux.dev>; Tue, 26 Nov 2024 09:56:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F551B4F08;
+	Tue, 26 Nov 2024 10:00:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732614990; cv=none; b=kM1zv282rRpbRa2egl6irM5VoJHYpEiIdGygfjELyEnCu/nrWjGoXRygWIwzbSc4GDfOH+Xm0MgjxA7j233qrQo021mEE8PG0Cnhzo3t+j03B5Z60JnZy0dhSGKnCe7T4UUQSJaXMPLNjoGxCLlCsDyplBr/gSFv87bYChXyQss=
+	t=1732615215; cv=none; b=qaxxEVVMB480G59hcEiisZjm8xuC3txIavd5ceaa+K+gIgyxyl4FpekpuE+lcq4rA8l3xR5bY/kQ4OI21OGLmde4O8i2OXEjOWol10RKCGwcpmBg5fSFeqIMyMUeLtBV4F7a01teulT/X4tM2hyj0cl0Veh+cCMwBGYiKyWD+vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732614990; c=relaxed/simple;
-	bh=+feGJRjcfPwbPpHmyp0x7CL0HRq3+5VOgfkum0dgPQ8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pS6Rpquf0mpAM/QjqL0BVj4b1ZPoRZFqQYISl+vMoWsJKdFcK683qjTTBCFD7vysUIetEDAUGqF3/8CPM1ii77SVxbTopoMPrnFzjtSzYTN9k8G9N/V+SVtWepYkxxbB2NJxYsj+Q5zoU2GEi/XcyEXlDpNe0KiyWrW/nigfVNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tFsIv-00011x-Vm; Tue, 26 Nov 2024 10:56:22 +0100
-Message-ID: <19a43db4-db5c-4638-9778-d94fb571a206@pengutronix.de>
-Date: Tue, 26 Nov 2024 10:56:21 +0100
+	s=arc-20240116; t=1732615215; c=relaxed/simple;
+	bh=mtGttjzXQNRJ1TECfxmaqrgito64kGtgG9AXu640lR8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZEqjDSVK1nRcWIyUVS+DSChkojMDNZNyCPBQCaaim5IMhBpUGIT1p70WqEdl7I13sP5VFT3UYmU8ucCJhnitTEqo5D3x0KE02h6NMdV0MJ5ZN4q1mXbZt2H6QfJjFlOzCU/2whBKmXIoZyGF2BGu/7VVhBU3N8GU2jaYsqCLRIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rja/+k7i; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rja/+k7i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB7FC4CECF;
+	Tue, 26 Nov 2024 10:00:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732615215;
+	bh=mtGttjzXQNRJ1TECfxmaqrgito64kGtgG9AXu640lR8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Rja/+k7iGLU+7lPFpMuV3Xh5wST3exoi0Es1fG/8rHlZ+6YdB/+JlhcRblAE+G6oy
+	 ezG/KFO+IffZ5yoG6wQWRS2g5m1Gt2oTzg5SapSCNr/ueadlAiBXNNwVNHTRxbj9Qc
+	 TIIe5ghqzGllJ6Hlf/fCzAbyhXFxU56yoaSRYlRePYz+68X6HQzfINo6vHB7jmfjlv
+	 5aTYMfO3Co8IjY3uuFf7MmsEEUQOYsaP1VkWWhPWiLVHfB7Jk5ODVvpD6N4Nfiq7zd
+	 sDGyQ7ABfyJ9xjNFRicn85DR7dPwroE7O+U4HRueX/pKdx4+dKf+ELYwXNop2FMXp/
+	 JV2pWUAWlELHw==
+Date: Tue, 26 Nov 2024 11:00:09 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Frank Li <Frank.li@nxp.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, dlemoal@kernel.org, maz@kernel.org,
+	tglx@linutronix.de, jdmason@kudzu.us
+Subject: Re: [PATCH v8 4/6] PCI: endpoint: pci-epf-test: Add doorbell test
+ support
+Message-ID: <Z0WcKeM2630u_xSK@ryzen>
+References: <20241116-ep-msi-v8-0-6f1f68ffd1bb@nxp.com>
+ <20241116-ep-msi-v8-4-6f1f68ffd1bb@nxp.com>
+ <20241124075645.szue5nzm4gcjspxf@thinkpad>
+ <Z0TNMIX4ehaB+mSn@lizhi-Precision-Tower-5810>
+ <20241126042523.6qlmhkjfl5kwouth@thinkpad>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] i2c: imx: support DMA defer probing
-To: carlos.song@nxp.com, frank.li@nxp.com, o.rempel@pengutronix.de,
- kernel@pengutronix.de, andi.shyti@kernel.org, shawnguo@kernel.org,
- s.hauer@pengutronix.de, festevam@gmail.com
-Cc: imx@lists.linux.dev, linux-i2c@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20241126082535.1878554-1-carlos.song@nxp.com>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20241126082535.1878554-1-carlos.song@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241126042523.6qlmhkjfl5kwouth@thinkpad>
 
-Hello Carlos,
-
-On 26.11.24 09:25, carlos.song@nxp.com wrote:
-> From: Carlos Song <carlos.song@nxp.com>
+On Tue, Nov 26, 2024 at 09:55:23AM +0530, Manivannan Sadhasivam wrote:
+> On Mon, Nov 25, 2024 at 02:17:04PM -0500, Frank Li wrote:
+> > On Sun, Nov 24, 2024 at 01:26:45PM +0530, Manivannan Sadhasivam wrote:
+> > > On Sat, Nov 16, 2024 at 09:40:44AM -0500, Frank Li wrote:
+> > > > Add three registers: doorbell_bar, doorbell_addr, and doorbell_data,
+> > > > along with doorbell_done. Use pci_epf_alloc_doorbell() to allocate a
+> > >
+> > > I don't see 'doorbell_done' defined anywhere.
+> > >
+> > > > doorbell address space.
+> > > >
+> > > > Enable the Root Complex (RC) side driver to trigger pci-epc-test's doorbell
+> > > > callback handler by writing doorbell_data to the mapped doorbell_bar's
+> > > > address space.
+> > > >
+> > > > Set doorbell_done in the doorbell callback to indicate completion.
+> > > >
+> > >
+> > > Same here.
+> > >
+> > > > To avoid broken compatibility, add new command COMMAND_ENABLE_DOORBELL
+> > >
+> > > 'avoid breaking compatibility between host and endpoint,...'
+> > >
+> > > > and COMMAND_DISABLE_DOORBELL. Host side need send COMMAND_ENABLE_DOORBELL
+> > > > to map one bar's inbound address to MSI space. the command
+> > > > COMMAND_DISABLE_DOORBELL to recovery original inbound address mapping.
+> > > >
+> > > > 	 	Host side new driver	Host side old driver
+> > > >
+> > > > EP: new driver      S				F
+> > > > EP: old driver      F				F
+> > >
+> > > So the last case of old EP and host drivers will fail?
+> > 
+> > doorbell test will fail if old EP.
+> > 
 > 
-> Return -EPROBE_DEFER when dma_request_slave_channel() because DMA driver
-> have not ready yet.
-> 
-> Move i2c_imx_dma_request() before registering I2C adapter to avoid
-> infinite loop of .probe() calls to the same driver, see "e8c220fac415
-> Revert "i2c: imx: improve the error handling in i2c_imx_dma_request()""
-> and "Documentation/driver-api/driver-model/driver.rst".
-> 
-> Use CPU mode to avoid stuck registering i2c adapter when DMA resources
-> are unavailable.
+> How come there would be doorbell test if it is an old host driver?
 
-Wouldn't this break probe for all i2c-imx users who have CONFIG_IMX_SDMA
-disabled?
+I also don't understand this.
 
-Also I am wondering on what kernel version and what configuration
-(CONFIG_I2C_IMX=?, CONFIG_IMX_SDMA=?) you have that made you run into
-this situation.
+The new commands: DOORBELL_ENABLE / DOORBELL_DISABLE
+can only be sent if there is a new host driver.
 
-I'd have expected that with fw_devlink enabled, the I2C controller wouldn't
-be probed before the DMA provider is available.
+Sending DOORBELL_ENABLE / DOORBELL_DISABLE will obviously
+return "Invalid command" if the EP driver is old.
 
-Cheers,
-Ahmad
+If EP driver is new, DOORBELL_ENABLE will only return success if the SoC
+has support for GIC ITS and has configured DTS with msi-parent
+(i.e. if the pci_epf_alloc_doorbell() call was successful).
+
 
 > 
-> Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-> ---
-> Change for V2:
-> - According to Frank's comments, wrap at 75 char and Simplify fix code
->   at i2c_imx_dma_request().
-> - Use strict patch check, fix alignment warning at i2c_imx_dma_request()
-> ---
->  drivers/i2c/busses/i2c-imx.c | 21 +++++++++++++--------
->  1 file changed, 13 insertions(+), 8 deletions(-)
+> > >
+> > > >
+> > > > S: If EP side support MSI, 'pcitest -B' return success.
+> > > >    If EP side doesn't support MSI, the same to 'F'.
+> > > >
+> > > > F: 'pcitest -B' return failure, other case as usual.
+> > > >
+> > > > Tested-by: Niklas Cassel <cassel@kernel.org>
+> > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > ---
+> > > > Change from v7 to v8
+> > > > - rename to pci_epf_align_inbound_addr_lo_hi()
+> > > >
+> > > > Change from v6 to v7
+> > > > - use help function pci_epf_align_addr_lo_hi()
+> > > >
+> > > > Change from v5 to v6
+> > > > - rename doorbell_addr to doorbell_offset
+> > > >
+> > > > Chagne from v4 to v5
+> > > > - Add doorbell free at unbind function.
+> > > > - Move msi irq handler to here to more complex user case, such as differece
+> > > > doorbell can use difference handler function.
+> > > > - Add Niklas's code to handle fixed bar's case. If need add your signed-off
+> > > > tag or co-developer tag, please let me know.
+> > > >
+> > > > change from v3 to v4
+> > > > - remove revid requirement
+> > > > - Add command COMMAND_ENABLE_DOORBELL and COMMAND_DISABLE_DOORBELL.
+> > > > - call pci_epc_set_bar() to map inbound address to MSI space only at
+> > > > COMMAND_ENABLE_DOORBELL.
+> > > > ---
+> > > >  drivers/pci/endpoint/functions/pci-epf-test.c | 117 ++++++++++++++++++++++++++
+> > > >  1 file changed, 117 insertions(+)
+> > > >
+> > > > diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
+> > > > index ef6677f34116e..410b2f4bb7ce7 100644
+> > > > --- a/drivers/pci/endpoint/functions/pci-epf-test.c
+> > > > +++ b/drivers/pci/endpoint/functions/pci-epf-test.c
+> > > > @@ -11,12 +11,14 @@
+> > > >  #include <linux/dmaengine.h>
+> > > >  #include <linux/io.h>
+> > > >  #include <linux/module.h>
+> > > > +#include <linux/msi.h>
+> > > >  #include <linux/slab.h>
+> > > >  #include <linux/pci_ids.h>
+> > > >  #include <linux/random.h>
+> > > >
+> > > >  #include <linux/pci-epc.h>
+> > > >  #include <linux/pci-epf.h>
+> > > > +#include <linux/pci-ep-msi.h>
+> > > >  #include <linux/pci_regs.h>
+> > > >
+> > > >  #define IRQ_TYPE_INTX			0
+> > > > @@ -29,6 +31,8 @@
+> > > >  #define COMMAND_READ			BIT(3)
+> > > >  #define COMMAND_WRITE			BIT(4)
+> > > >  #define COMMAND_COPY			BIT(5)
+> > > > +#define COMMAND_ENABLE_DOORBELL		BIT(6)
+> > > > +#define COMMAND_DISABLE_DOORBELL	BIT(7)
+> > > >
+> > > >  #define STATUS_READ_SUCCESS		BIT(0)
+> > > >  #define STATUS_READ_FAIL		BIT(1)
+> > > > @@ -39,6 +43,11 @@
+> > > >  #define STATUS_IRQ_RAISED		BIT(6)
+> > > >  #define STATUS_SRC_ADDR_INVALID		BIT(7)
+> > > >  #define STATUS_DST_ADDR_INVALID		BIT(8)
+> > > > +#define STATUS_DOORBELL_SUCCESS		BIT(9)
+> > > > +#define STATUS_DOORBELL_ENABLE_SUCCESS	BIT(10)
+> > > > +#define STATUS_DOORBELL_ENABLE_FAIL	BIT(11)
+> > > > +#define STATUS_DOORBELL_DISABLE_SUCCESS BIT(12)
+> > > > +#define STATUS_DOORBELL_DISABLE_FAIL	BIT(13)
+> > > >
+> > > >  #define FLAG_USE_DMA			BIT(0)
+> > > >
+> > > > @@ -74,6 +83,9 @@ struct pci_epf_test_reg {
+> > > >  	u32	irq_type;
+> > > >  	u32	irq_number;
+> > > >  	u32	flags;
+> > > > +	u32	doorbell_bar;
+> > > > +	u32	doorbell_offset;
+> > > > +	u32	doorbell_data;
+> > > >  } __packed;
+> > > >
+> > > >  static struct pci_epf_header test_header = {
+> > > > @@ -642,6 +654,63 @@ static void pci_epf_test_raise_irq(struct pci_epf_test *epf_test,
+> > > >  	}
+> > > >  }
+> > > >
+> > > > +static void pci_epf_enable_doorbell(struct pci_epf_test *epf_test, struct pci_epf_test_reg *reg)
+> > > > +{
+> > > > +	enum pci_barno bar = reg->doorbell_bar;
+> > > > +	struct pci_epf *epf = epf_test->epf;
+> > > > +	struct pci_epc *epc = epf->epc;
+> > > > +	struct pci_epf_bar db_bar;
+> > >
+> > > db_bar = {};
+> > >
+> > > > +	struct msi_msg *msg;
+> > > > +	size_t offset;
+> > > > +	int ret;
+> > > > +
+> > > > +	if (bar < BAR_0 || bar == epf_test->test_reg_bar || !epf->db_msg) {
+> > >
+> > > What is the need of BAR check here and below? pci_epf_alloc_doorbell() should've
+> > > allocated proper BAR already.
+> > 
+> > Not check it at call pci_epf_alloc_doorbell() because it optional feature.
 > 
-> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-> index 5ed4cb61e262..4e5633166a1e 100644
-> --- a/drivers/i2c/busses/i2c-imx.c
-> +++ b/drivers/i2c/busses/i2c-imx.c
-> @@ -397,17 +397,16 @@ static void i2c_imx_reset_regs(struct imx_i2c_struct *i2c_imx)
->  }
->  
->  /* Functions for DMA support */
-> -static void i2c_imx_dma_request(struct imx_i2c_struct *i2c_imx,
-> -						dma_addr_t phy_addr)
-> +static int i2c_imx_dma_request(struct imx_i2c_struct *i2c_imx, dma_addr_t phy_addr)
->  {
->  	struct imx_i2c_dma *dma;
->  	struct dma_slave_config dma_sconfig;
-> -	struct device *dev = &i2c_imx->adapter.dev;
-> +	struct device *dev = i2c_imx->adapter.dev.parent;
->  	int ret;
->  
->  	dma = devm_kzalloc(dev, sizeof(*dma), GFP_KERNEL);
->  	if (!dma)
-> -		return;
-> +		return -ENOMEM;
->  
->  	dma->chan_tx = dma_request_chan(dev, "tx");
->  	if (IS_ERR(dma->chan_tx)) {
-> @@ -452,7 +451,7 @@ static void i2c_imx_dma_request(struct imx_i2c_struct *i2c_imx,
->  	dev_info(dev, "using %s (tx) and %s (rx) for DMA transfers\n",
->  		dma_chan_name(dma->chan_tx), dma_chan_name(dma->chan_rx));
->  
-> -	return;
-> +	return 0;
->  
->  fail_rx:
->  	dma_release_channel(dma->chan_rx);
-> @@ -460,6 +459,8 @@ static void i2c_imx_dma_request(struct imx_i2c_struct *i2c_imx,
->  	dma_release_channel(dma->chan_tx);
->  fail_al:
->  	devm_kfree(dev, dma);
-> +
-> +	return ret;
->  }
->  
->  static void i2c_imx_dma_callback(void *arg)
-> @@ -1803,6 +1804,13 @@ static int i2c_imx_probe(struct platform_device *pdev)
->  	if (ret == -EPROBE_DEFER)
->  		goto clk_notifier_unregister;
->  
-> +	/* Init DMA config if supported */
-> +	ret = i2c_imx_dma_request(i2c_imx, phy_addr);
-> +	if (ret == -EPROBE_DEFER) {
-> +		dev_err(&pdev->dev, "DMA not ready, go defer probe!\n");
-> +		goto clk_notifier_unregister;
-> +	}
-> +
->  	/* Add I2C adapter */
->  	ret = i2c_add_numbered_adapter(&i2c_imx->adapter);
->  	if (ret < 0)
-> @@ -1817,9 +1825,6 @@ static int i2c_imx_probe(struct platform_device *pdev)
->  		i2c_imx->adapter.name);
->  	dev_info(&i2c_imx->adapter.dev, "IMX I2C adapter registered\n");
->  
-> -	/* Init DMA config if supported */
-> -	i2c_imx_dma_request(i2c_imx, phy_addr);
-> -
->  	return 0;   /* Return OK */
->  
->  clk_notifier_unregister:
+> What is 'optional feature' here? allocating doorbell?
+> 
+> > It return failure when it actually use it.
+> > 
+> 
+> So host can call pci_epf_enable_doorbell() without pci_epf_alloc_doorbell()?
+
+This patch calls pci_epf_alloc_doorbell() in pci_epf_test_bind(), so at
+.bind() time.
+
+DOORBELL_ENABLE and DOORBELL_DISABLE are two new commands, so the host driver
+could theoretically send these even if pci_epf_alloc_doorbell() failed.
 
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+pci_epf_test_cmd_handler() additions looks like this:
+
++	case COMMAND_ENABLE_DOORBELL:
++		pci_epf_enable_doorbell(epf_test, reg);
++		pci_epf_test_raise_irq(epf_test, reg);
++		break;
++	case COMMAND_DISABLE_DOORBELL:
++		pci_epf_disable_doorbell(epf_test, reg);
++		pci_epf_test_raise_irq(epf_test, reg);
++		break;
+
+so they will call pci_epf_enable_doorbell()/pci_epf_disable_doorbell()
+unconditionally, without any check to see if the doorbell was allocated.
+
+We could move the was doorbell allocated check (if (!epf->db_msg)) to
+pci_epf_test_cmd_handler(), but that would make pci_epf_test_cmd_handler()
+more messy, so personally I think it is fine to keep the doorbell allocated
+check in pci_epf_enable_doorbell()/pci_epf_disable_doorbell().
+
+
+I did earlier suggest to Frank to move the pci_epf_alloc_doorbell() call
+to pci_epf_enable_doorbell():
+https://lore.kernel.org/linux-pci/Zy02mPTvaPAFFxGi@ryzen/
+
+His reply is here::
+https://lore.kernel.org/linux-pci/Zy1CxtKSgRuEPX5A@lizhi-Precision-Tower-5810/
+
+"it may be too frequent to allocate and free msi resources when call
+pci_epf_enable_doorbell()/pci_epf_disable_doorbell()."
+
+I don't think that is a good argument, as presumably (in the normal case) an
+EPF driver will enable doorbell in the beginning, and then keep it enabled.
+
+However, one point could be that pci-epf-test currently does all allocations
+(the allocations for the backing memory) in .bind(), so in one way it makes
+sense to also allocate the doorbell in .bind().
+
+To play devil's advocate, I guess you could argue that doorbell feature is
+optional, while allocating backing memory for BARs is not, so it makes sense
+that they are not allocated at the same time.
+
+I guess it is up to the EPF maintainer to decide what he thinks is best :)
+
+
+Kind regards,
+Niklas
