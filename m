@@ -1,120 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7061BB6B3;
-	Tue, 26 Nov 2024 09:36:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA1D1BC063
+	for <imx@lists.linux.dev>; Tue, 26 Nov 2024 09:56:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732613780; cv=none; b=qD86TGTK+N47KHUjnGZ1l40faNsneEJcHhU6u/DLJFzoJWpGft0fjiRDpTpfPEt67HKMSXP6WYJ5c7tNRb/5VaUyaWjbaP5rmUeSiPpkdQOvWhv+ovcIVgWyJWjo7KXmHGuZ6tZbjZkgb4Q10J7d8ywRRdt1Q4di7MX/oUEFQ8s=
+	t=1732614990; cv=none; b=kM1zv282rRpbRa2egl6irM5VoJHYpEiIdGygfjELyEnCu/nrWjGoXRygWIwzbSc4GDfOH+Xm0MgjxA7j233qrQo021mEE8PG0Cnhzo3t+j03B5Z60JnZy0dhSGKnCe7T4UUQSJaXMPLNjoGxCLlCsDyplBr/gSFv87bYChXyQss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732613780; c=relaxed/simple;
-	bh=KVIfCGQmDp6Zc3maWEFRnxe4bj7QJ4bEIv2RSq4VTCY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WmRDIWb3xLft6AfZSwqndAzaiuKR7AwrBMMnyN8SAdkMiVcllkH7/gfbeMHZjzeP3OeJpgULtYeLduqGa4Asqv6dMKNGtyPLXxcR2VwqFql4TVoF96Gu7vdDkq3DfBjHLz9p2vq3GcCrZAVyUegFWa8BUE700A5QGMyvl8TNebU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i483S0mZ; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i483S0mZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B88C4CECF;
-	Tue, 26 Nov 2024 09:36:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732613780;
-	bh=KVIfCGQmDp6Zc3maWEFRnxe4bj7QJ4bEIv2RSq4VTCY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=i483S0mZ90NIOez44lmtrk07Ib+MFFXS0ndoi0HcksmC2pemfEIJ0sWA+wO+4bv9X
-	 iTKq3YFgrWNF1eYgCesIo1VxYaJnn/EtyhLlGLybxSkeBFUnuDRsQJymBWMbAoAceo
-	 j7/wIK9Iu2AG2lCnSbiQToGKNvsy8sMxe6qlNgIWHs/V14AD2N4BXvHciQcjs14cuD
-	 k1AYLvqRRUXaXKegtZzlxzyFqSuMP6aR4gpXDuTfJplxGcDVJFQ+R+6ltNT4JNRk6i
-	 NrvtwUcwIHDSELdeUDEhnFRg3S692pOpWxv+W1Eu+xjf8/CLCAanfreCv+qxxkGAbS
-	 rL9mxFS35Fgqw==
-Date: Tue, 26 Nov 2024 10:36:14 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Frank Li <Frank.li@nxp.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	imx@lists.linux.dev, dlemoal@kernel.org, maz@kernel.org,
-	tglx@linutronix.de, jdmason@kudzu.us
-Subject: Re: [PATCH v8 3/6] PCI: endpoint: Add pci_epf_align_addr() helper
- for address alignment
-Message-ID: <Z0WWjiamjkWfQXKk@ryzen>
-References: <20241116-ep-msi-v8-0-6f1f68ffd1bb@nxp.com>
- <20241116-ep-msi-v8-3-6f1f68ffd1bb@nxp.com>
- <20241124073239.5yl5zsmrrcrhmibh@thinkpad>
- <Z0TOb0ErwuGQwF8G@lizhi-Precision-Tower-5810>
- <20241126041903.lq6zunvzoc2mmgbl@thinkpad>
+	s=arc-20240116; t=1732614990; c=relaxed/simple;
+	bh=+feGJRjcfPwbPpHmyp0x7CL0HRq3+5VOgfkum0dgPQ8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pS6Rpquf0mpAM/QjqL0BVj4b1ZPoRZFqQYISl+vMoWsJKdFcK683qjTTBCFD7vysUIetEDAUGqF3/8CPM1ii77SVxbTopoMPrnFzjtSzYTN9k8G9N/V+SVtWepYkxxbB2NJxYsj+Q5zoU2GEi/XcyEXlDpNe0KiyWrW/nigfVNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tFsIv-00011x-Vm; Tue, 26 Nov 2024 10:56:22 +0100
+Message-ID: <19a43db4-db5c-4638-9778-d94fb571a206@pengutronix.de>
+Date: Tue, 26 Nov 2024 10:56:21 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241126041903.lq6zunvzoc2mmgbl@thinkpad>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] i2c: imx: support DMA defer probing
+To: carlos.song@nxp.com, frank.li@nxp.com, o.rempel@pengutronix.de,
+ kernel@pengutronix.de, andi.shyti@kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, festevam@gmail.com
+Cc: imx@lists.linux.dev, linux-i2c@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20241126082535.1878554-1-carlos.song@nxp.com>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20241126082535.1878554-1-carlos.song@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Tue, Nov 26, 2024 at 09:49:03AM +0530, Manivannan Sadhasivam wrote:
-> On Mon, Nov 25, 2024 at 02:22:23PM -0500, Frank Li wrote:
-> > On Sun, Nov 24, 2024 at 01:02:39PM +0530, Manivannan Sadhasivam wrote:
-> > > On Sat, Nov 16, 2024 at 09:40:43AM -0500, Frank Li wrote:
-> > > > Introduce the helper function pci_epf_align_addr() to adjust addresses
-> > >
-> > > pci_epf_align_inbound_addr()?
-> > >
-> > > > according to PCI BAR alignment requirements, converting addresses into base
-> > > > and offset values.
-> > > >
-> > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > ---
-> > > > change from v7 to v8
-> > > > - change name to pci_epf_align_inbound_addr()
-> > > > - update comment said only need for memory, which not allocated by
-> > > > pci_epf_alloc_space().
-> > > >
-> > > > change from v6 to v7
-> > > > - new patch
-> > > > ---
-> > > >  drivers/pci/endpoint/pci-epf-core.c | 45 +++++++++++++++++++++++++++++++++++++
-> > > >  include/linux/pci-epf.h             | 14 ++++++++++++
-> > > >  2 files changed, 59 insertions(+)
-> > > >
-> > > > diff --git a/drivers/pci/endpoint/pci-epf-core.c b/drivers/pci/endpoint/pci-epf-core.c
-> > > > index 8fa2797d4169a..4dfc218ebe20b 100644
-> > > > --- a/drivers/pci/endpoint/pci-epf-core.c
-> > > > +++ b/drivers/pci/endpoint/pci-epf-core.c
-> > > > @@ -464,6 +464,51 @@ struct pci_epf *pci_epf_create(const char *name)
-> > > >  }
-> > > >  EXPORT_SYMBOL_GPL(pci_epf_create);
-> > > >
-> > > > +/**
-> > > > + * pci_epf_align_inbound_addr() - Get base address and offset that match bar's
-> > >
-> > > BAR's
-> > >
-> > > > + *			  alignment requirement
-> > > > + * @epf: the EPF device
-> > > > + * @addr: the address of the memory
-> > > > + * @bar: the BAR number corresponding to map addr
-> > > > + * @base: return base address, which match BAR's alignment requirement, nothing
-> > > > + *	  return if NULL
-> > >
-> > > Below, you are updating 'base' only if it is not NULL. Why would anyone call
-> > > this API with 'base' and 'offset' set to NULL?
-> > 
-> > Some time, they may just want one of two.
-> > 
+Hello Carlos,
+
+On 26.11.24 09:25, carlos.song@nxp.com wrote:
+> From: Carlos Song <carlos.song@nxp.com>
 > 
-> What would be the purpose? I fail to see it.
+> Return -EPROBE_DEFER when dma_request_slave_channel() because DMA driver
+> have not ready yet.
+> 
+> Move i2c_imx_dma_request() before registering I2C adapter to avoid
+> infinite loop of .probe() calls to the same driver, see "e8c220fac415
+> Revert "i2c: imx: improve the error handling in i2c_imx_dma_request()""
+> and "Documentation/driver-api/driver-model/driver.rst".
+> 
+> Use CPU mode to avoid stuck registering i2c adapter when DMA resources
+> are unavailable.
 
-Currently, the only user of this function is the call:
-ret = pci_epf_align_inbound_addr_lo_hi(epf, bar, msg->address_lo, msg->address_hi,
-				       &db_bar.phys_addr, &offset);
+Wouldn't this break probe for all i2c-imx users who have CONFIG_IMX_SDMA
+disabled?
 
-Which doesn't send in NULL as either 'base' or 'offset', so these NULL
-checks do currently look meaningless to me. I suggest to just kill them.
+Also I am wondering on what kernel version and what configuration
+(CONFIG_I2C_IMX=?, CONFIG_IMX_SDMA=?) you have that made you run into
+this situation.
+
+I'd have expected that with fw_devlink enabled, the I2C controller wouldn't
+be probed before the DMA provider is available.
+
+Cheers,
+Ahmad
+
+> 
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+> ---
+> Change for V2:
+> - According to Frank's comments, wrap at 75 char and Simplify fix code
+>   at i2c_imx_dma_request().
+> - Use strict patch check, fix alignment warning at i2c_imx_dma_request()
+> ---
+>  drivers/i2c/busses/i2c-imx.c | 21 +++++++++++++--------
+>  1 file changed, 13 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index 5ed4cb61e262..4e5633166a1e 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -397,17 +397,16 @@ static void i2c_imx_reset_regs(struct imx_i2c_struct *i2c_imx)
+>  }
+>  
+>  /* Functions for DMA support */
+> -static void i2c_imx_dma_request(struct imx_i2c_struct *i2c_imx,
+> -						dma_addr_t phy_addr)
+> +static int i2c_imx_dma_request(struct imx_i2c_struct *i2c_imx, dma_addr_t phy_addr)
+>  {
+>  	struct imx_i2c_dma *dma;
+>  	struct dma_slave_config dma_sconfig;
+> -	struct device *dev = &i2c_imx->adapter.dev;
+> +	struct device *dev = i2c_imx->adapter.dev.parent;
+>  	int ret;
+>  
+>  	dma = devm_kzalloc(dev, sizeof(*dma), GFP_KERNEL);
+>  	if (!dma)
+> -		return;
+> +		return -ENOMEM;
+>  
+>  	dma->chan_tx = dma_request_chan(dev, "tx");
+>  	if (IS_ERR(dma->chan_tx)) {
+> @@ -452,7 +451,7 @@ static void i2c_imx_dma_request(struct imx_i2c_struct *i2c_imx,
+>  	dev_info(dev, "using %s (tx) and %s (rx) for DMA transfers\n",
+>  		dma_chan_name(dma->chan_tx), dma_chan_name(dma->chan_rx));
+>  
+> -	return;
+> +	return 0;
+>  
+>  fail_rx:
+>  	dma_release_channel(dma->chan_rx);
+> @@ -460,6 +459,8 @@ static void i2c_imx_dma_request(struct imx_i2c_struct *i2c_imx,
+>  	dma_release_channel(dma->chan_tx);
+>  fail_al:
+>  	devm_kfree(dev, dma);
+> +
+> +	return ret;
+>  }
+>  
+>  static void i2c_imx_dma_callback(void *arg)
+> @@ -1803,6 +1804,13 @@ static int i2c_imx_probe(struct platform_device *pdev)
+>  	if (ret == -EPROBE_DEFER)
+>  		goto clk_notifier_unregister;
+>  
+> +	/* Init DMA config if supported */
+> +	ret = i2c_imx_dma_request(i2c_imx, phy_addr);
+> +	if (ret == -EPROBE_DEFER) {
+> +		dev_err(&pdev->dev, "DMA not ready, go defer probe!\n");
+> +		goto clk_notifier_unregister;
+> +	}
+> +
+>  	/* Add I2C adapter */
+>  	ret = i2c_add_numbered_adapter(&i2c_imx->adapter);
+>  	if (ret < 0)
+> @@ -1817,9 +1825,6 @@ static int i2c_imx_probe(struct platform_device *pdev)
+>  		i2c_imx->adapter.name);
+>  	dev_info(&i2c_imx->adapter.dev, "IMX I2C adapter registered\n");
+>  
+> -	/* Init DMA config if supported */
+> -	i2c_imx_dma_request(i2c_imx, phy_addr);
+> -
+>  	return 0;   /* Return OK */
+>  
+>  clk_notifier_unregister:
 
 
-Kind regards,
-Niklas
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
