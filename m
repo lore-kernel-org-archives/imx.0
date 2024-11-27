@@ -1,196 +1,177 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A001EBA19
-	for <imx@lists.linux.dev>; Wed, 27 Nov 2024 11:01:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0361F76A4
+	for <imx@lists.linux.dev>; Wed, 27 Nov 2024 11:30:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732705320; cv=none; b=QSx2d+rEFKMiQBQNauwoAf51BQNJdevMAe3h6zZ8ksWVgbgQslxuD1b2JL7NZPJ2zNss8WaObJf3jF4M605wNSpe2M+WN17vJPGoam8oQSJRgJVWPTT+a2DfOk2Qs1fAgZdHbtjrA/kKqIYA63I806mkf6S9LMM6F5IBpzIiFC8=
+	t=1732707023; cv=none; b=cLGahm4c0kSuFWk6yk2G7dOdjA4Kx25cXznViKk7ChiHYVVc7L0QdZtNytgBSzRYwnykHb6cfUBFhsXXw1uD1J22Kp+QdE92GmaDxTJX1MbhMghoNDv9WJaQgqsuDwqCpz1sVKU+4/xbyffpWoaXuMKGBqEgzFncbvOvLrybU2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732705320; c=relaxed/simple;
-	bh=T6DgXkgqz6HZ36ZmsXSqt2fUlETXH1SYEt5e2pB4Jt0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SyvrqEcGpYLgVevZXscC95rPpFoP7NB93d9oyA9+HcqmPWSjLcvXeq6b+wQpY8EvLqiLYDRmNbUXBXQ6X7OqdMPqExbhEBZ9NcTRBlbgX5ZnWIUNv6pxRAkoLfNp5PQDiwON5tToWwUh7wce7b/tlFWQ2xu09JZYHGtUEON3AXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=DLXWtXFk; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	s=arc-20240116; t=1732707023; c=relaxed/simple;
+	bh=3MOy1Ce5id+J6cpIeW0xZT3xJs2eNEdo5SYH8mde8Yo=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=DEeeQ4CJAcMseF7DAGnvjAxGPbongPHRcGuvDOZQ7z5PngCeEGkRF0hTxYNcAHAB28uVrFnl/8SlQkvS8aIbnJ6GDA+yL9dDd3LeXSd3ZfLwYq6JG5cUiA/fktni749YlKCuf6r77bMPHWtFQ7lQlbNPzwVj5TYhOuD/CEtBE04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=HdBnZdDe; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=aqH5CTLm; arc=none smtp.client-ip=103.168.172.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="DLXWtXFk"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=WPNnkNusSbpQG7FakN9Ye2q95yHSoDQUaIuZWXayp+I=; b=DLXWtXFkj6e4fvq/C3RHTNR89S
-	TsFawNMwRcQWuVLolTfJG5osTMUgN4XuWfL/YQYQCy9tYfpwjFnrCK0cp4sBMEdrR8J8uh5DSP5r+
-	Gx58Qgbuk/3xwDwGiHWuIFHzqdGuUwWvz33ojwUMhGaFuO4y8z90TZZnVWhtjWdl5yXr8SR+x2o/g
-	ctvef4iRcobweEyOF/BztOnJDTB2r2ejM1ZOTp+R+dckV/ZMN6lETuzOS/mUmxp/jpQvMT++rLMK+
-	ADtwO+YGpzaivNQzhM0jM6AzEpQbpFm202dAXv07W8sNS+iQcGioUGvv4ExirYWV2F/EKri1BDwCM
-	s0M4jHgA==;
-Received: from [89.212.21.243] (port=49272 helo=[192.168.69.52])
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <andrej.picej@norik.com>)
-	id 1tGFnw-007bvX-1g;
-	Wed, 27 Nov 2024 12:01:56 +0100
-Message-ID: <c2af397e-b1a0-4ec7-8ff0-60b9e36cd939@norik.com>
-Date: Wed, 27 Nov 2024 12:01:55 +0100
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="HdBnZdDe";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="aqH5CTLm"
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 2D884114013B;
+	Wed, 27 Nov 2024 06:30:20 -0500 (EST)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-10.internal (MEProxy); Wed, 27 Nov 2024 06:30:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1732707020;
+	 x=1732793420; bh=YLuq++YdEMYtNk53nxLF/a+DeKLmrB6uV6hfk/PqmxE=; b=
+	HdBnZdDev+jBlkDD3YVbHlELQfgWBIPJPIZ9wetQrERFJBqe0YPmrxbtuZLEA7TA
+	Y1fKt/S1E50ZvnxuXpZch4b9sGyA6VZh2ViQK9bpIJuoMsgVLfvOsR3Ang464HET
+	DA8kRj05eTQBkJUG1BhfpakX/f9cmLY1Qj8aIeCQUhjqdcIK8yoy7iEFrQ5tvMe4
+	aa65CIyMofbErT7RDEFiGBX6tUC7knqkqftJAyWvVnIvK7AV6o3Mj67wuzBoXRVS
+	NWTLWIvm5x1pyacW4/FEqCwThOJ+StA+qpakhqCdVYUA+BuI2Vls4GeIe3wsFOel
+	SmDGaKlPZHnQuE+bC60KvA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1732707020; x=
+	1732793420; bh=YLuq++YdEMYtNk53nxLF/a+DeKLmrB6uV6hfk/PqmxE=; b=a
+	qH5CTLmVdf9VIFUGwBb03yguiiJiw2tOTVfbhza0n0tG2ztGSTFvHnltstduiMtF
+	X5qpamG1a7TAyml7DJ+38o9oewEiKJQJfNn2Fa8W2NLf+ungc/VjEBMAgFVusKdJ
+	l5HNsBgccFS+9iuC+af1OejA9eJdxHvvYMITWcg3590ZnkoVHjSNFYkXOeUQcy2C
+	lts3a1k7zjaWZg+o+rpc8sbsLLLi3G+PXYfjrQS3RtbVsQhIg+iEWA3wOdG2ToYc
+	9/YvoGyioODNWL5jfQFxjKyurxAJtey94NBedx+9JM9Dvh4VopP0xAANr94shxPZ
+	L25AC7lpx29J32S9usgIQ==
+X-ME-Sender: <xms:ywJHZ-gLGM5CIy6Qhpn6A_PRoc3tpsSIedxb_PRU5VHtNYrMmHPj5w>
+    <xme:ywJHZ_Cdxcxojcyno2Fw0OiXfUyc4H28kpDm-CTMPlmRZ0R4wJpW7DAh9ecjJ29ZY
+    vOrKI3hdPjhEZwhS_I>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrgeelgddvkecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredttden
+    ucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdrug
+    gvqeenucggtffrrghtthgvrhhnpedtiefhffdthfeileevheehveevieeggfegieeggfel
+    feduudevgeegieetfeevgfenucffohhmrghinhepfihikhhiphgvughirgdrohhrghenuc
+    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnuges
+    rghrnhgusgdruggvpdhnsggprhgtphhtthhopeduiedpmhhouggvpehsmhhtphhouhhtpd
+    hrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthho
+    pehfvghsthgvvhgrmhesuggvnhigrdguvgdprhgtphhtthhopegvshgsvghnsehgvggrnh
+    higidrtghomhdprhgtphhtthhopehfvghsthgvvhgrmhesghhmrghilhdrtghomhdprhgt
+    phhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinh
+    hushdrfigrlhhlvghijheslhhinhgrrhhordhorhhgpdhrtghpthhtoheplhhinhhugidq
+    rghrmhdqkhgvrhhnvghlsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpth
+    htohepihhmgieslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopegrihhshhgv
+    nhhgrdguohhnghesnhigphdrtghomh
+X-ME-Proxy: <xmx:ywJHZ2E3qmzeci5Eq22yWxTdtIijiLONNqq-lGZSkz7dYWHoz_Ig5Q>
+    <xmx:ywJHZ3QmiqJi-uIBi1awqKF5Uvdn4LC6kLCyAgmLARkg4aQXCttmyA>
+    <xmx:ywJHZ7xbkpoFbJKvURCphY35123mN9i-5AJEVAhkWXkWLrAwi0nh1Q>
+    <xmx:ywJHZ16T8mi2o_0ZjyaCWCyho8CnO1XdOpVFuOIH_oJ3NuQoqIx8wA>
+    <xmx:zAJHZ7BpNBWOuHZW1CyS4omKmSBo-FKJzW6EnrRSnPHb_jJu8Xw-1j4_>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 79DEB2220071; Wed, 27 Nov 2024 06:30:19 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Upstream] [PATCH 09/15] arm64: dts: imx8mm: move bulk of rtc
- properties to carrierboards
-To: Teresa Remmet <T.Remmet@phytec.de>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
- "robh@kernel.org" <robh@kernel.org>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
- "festevam@gmail.com" <festevam@gmail.com>,
- "conor+dt@kernel.org" <conor+dt@kernel.org>
-Cc: "imx@lists.linux.dev" <imx@lists.linux.dev>,
- PHYTEC Upstream <upstream@lists.phytec.de>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-References: <20241125081814.397352-1-andrej.picej@norik.com>
- <20241125081814.397352-10-andrej.picej@norik.com>
- <67e55b1f18f2a676b890c9a4133575e8b90f6019.camel@phytec.de>
-Content-Language: en-US
-From: Andrej Picej <andrej.picej@norik.com>
-Autocrypt: addr=andrej.picej@norik.com; keydata=
- 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
- xtT/8OxBOVSHvA==
-In-Reply-To: <67e55b1f18f2a676b890c9a4133575e8b90f6019.camel@phytec.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
-X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Date: Wed, 27 Nov 2024 12:29:58 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Rasmus Villemoes" <ravi@prevas.dk>
+Cc: "Fabio Estevam" <festevam@gmail.com>,
+ "Guenter Roeck" <linux@roeck-us.net>,
+ "Linus Walleij" <linus.walleij@linaro.org>,
+ "Esben Haabendal" <esben@geanix.com>, "Russell King" <linux@armlinux.org.uk>,
+ "Shawn Guo" <shawnguo@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+ "Dong Aisheng" <aisheng.dong@nxp.com>, "Jacky Bai" <ping.bai@nxp.com>,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ linux-kernel@vger.kernel.org,
+ "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+ "Fabio Estevam" <festevam@denx.de>
+Message-Id: <45ba6632-43f0-4142-85f8-9dc3f9d1e698@app.fastmail.com>
+In-Reply-To: <87ldx5htm3.fsf@prevas.dk>
+References: <20240506-imx-pinctrl-optional-v2-0-bdff75085156@geanix.com>
+ <20240506-imx-pinctrl-optional-v2-1-bdff75085156@geanix.com>
+ <49ff070a-ce67-42d7-84ec-8b54fd7e9742@roeck-us.net>
+ <CACRpkdaBR5mmj43y_80b9jd3TAqRWMdCyD9EP6AY-Y0-asz4TA@mail.gmail.com>
+ <1ff005f8-384d-465e-9597-b6d5fd903862@roeck-us.net>
+ <CAOMZO5DW3t-sof_uaFa_qJPE3WFq_155mFTxGMWh0m++csgopg@mail.gmail.com>
+ <87ttbthwdu.fsf@prevas.dk>
+ <5881df5a-9495-49b9-9956-0538055bba60@app.fastmail.com>
+ <87ldx5htm3.fsf@prevas.dk>
+Subject: Re: [PATCH v2 1/3] ARM: imx: Allow user to disable pinctrl
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Hi Teresa,
-
-On 27. 11. 24 11:34, Teresa Remmet wrote:
-> Hello Andrej,
-> 
-> Am Montag, dem 25.11.2024 um 09:18 +0100 schrieb Andrej Picej:
->> From: Yannic Moog <y.moog@phytec.de>
+On Wed, Nov 27, 2024, at 11:13, Rasmus Villemoes wrote:
+> On Wed, Nov 27 2024, "Arnd Bergmann" <arnd@arndb.de> wrote:
+>> On Wed, Nov 27, 2024, at 10:13, Rasmus Villemoes wrote:
+>>> On Tue, Nov 26 2024, Fabio Estevam <festevam@gmail.com> wrote:
 >>
->> Move properties from SoM's dtsi to carrierboard's dts as they are
->> actually defined by the carrier board design.
->>
->> Signed-off-by: Yannic Moog <y.moog@phytec.de>
->> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
->> ---
->>   arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts | 4 ++++
->>   arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi       | 4 ----
->>   arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l.dts    | 4 ++++
->>   3 files changed, 8 insertions(+), 4 deletions(-)
->>
->> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-
->> rdk.dts b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
->> index 7aaf705c7e47..f5f503c3c6b9 100644
->> --- a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
->> +++ b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
->> @@ -221,6 +221,10 @@ &pcie_phy {
->>   
->>   /* RTC */
->>   &rv3028 {
->> +       interrupt-parent = <&gpio1>;
->> +       interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
->> +       pinctrl-0 = <&pinctrl_rtc>;
-> 
-> You should also move the pinctrl settings to the carrier boards.
-> As the pin can be used differently and should not be defined by the
-> SoM.
+>> Please never use imply. Even if you think it's the right
+>> thing in a particular case, it will come back to bite you
+>> later.
+>
+> Could you elaborate?
+>
+>> See also https://en.wikipedia.org/wiki/COMEFROM ;-)
+>
+> Yes yes, we've probably all seen that at some point and chuckled, but I
+> fail to see why imply would be worse than select.
 
-Ok will fix this in v2. Thanks.
+There are multiple problems here that I conflated, let
+me try to explain better:
 
-BR,
-Andrej.
+- The patch here replaces a hard 'select' with a softer 'default'
+  for the i.MX drivers. Both variants are used in multiple
+  pinctrl drivers, and there are sensible arguments to go
+  one way or another. However, mixing 'select' and 'default'
+  on a given platform would be wrong, and my point here is
+  that mixing 'imply' and 'default' on a single platform is
+  just as wrong, specifically because of the COMEFROM issue:
+  even if it all works as intended, a reader will have a hard
+  time figuring out why exactly it works like this, and this
+  likely leads to bugs in the future.
 
-> 
-> Thanks,
-> Teresa
-> 
->> +       pinctrl-names = "default";
->>          aux-voltage-chargeable = <1>;
->>          trickle-resistor-ohms = <3000>;
->>          wakeup-source;
->> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
->> b/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
->> index cced82226c6d..fdfe28780d6f 100644
->> --- a/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
->> +++ b/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
->> @@ -301,10 +301,6 @@ eeprom@51 {
->>          /* RTC */
->>          rv3028: rtc@52 {
->>                  compatible = "microcrystal,rv3028";
->> -               interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
->> -               interrupt-parent = <&gpio1>;
->> -               pinctrl-names = "default";
->> -               pinctrl-0 = <&pinctrl_rtc>;
->>                  reg = <0x52>;
->>          };
->>   };
->> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l.dts
->> b/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l.dts
->> index c9bf4ac254bb..b7b18d5a4f68 100644
->> --- a/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l.dts
->> +++ b/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l.dts
->> @@ -215,6 +215,10 @@ &pwm4 {
->>   
->>   /* RTC */
->>   &rv3028 {
->> +       interrupt-parent = <&gpio1>;
->> +       interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
->> +       pinctrl-0 = <&pinctrl_rtc>;
->> +       pinctrl-names = "default";
->>          aux-voltage-chargeable = <1>;
->>          trickle-resistor-ohms = <3000>;
->>          wakeup-source;
-> 
+- In the more common cases I've seen, the use of 'imply' is
+  itself a bug, usually developers pick it because there is a
+  hard dependency between two drivers, but using 'select'
+  causes build issues, either from broken Kconfig constraints
+  or from link failures. I tend to find out about them when
+  a randconfig build still runs into the link failure and
+  the 'imply' just made it less likely to happen.
+
+>> I would prefer we completely kill off that keyword from the Kconfig
+>> language and replace it with the reverse 'default'. In this
+>> particular case, having 'default ARCH_IMX' in 'PINCTRL'
+>> would of course not be a great idea,
+>
+> Just to be clear, it would be 'default y if ARCH_MXC', not 'default
+> ARCH_IMX', right?
+
+Either one, the two statements have the same effect in this case
+since both ARCH_IMX and PINCTRL are 'bool' symbols.
+
+Overall, my best advice here is still to not change the way
+i.MX pinctrl works at all, but just fix Layerscape to not depend
+on i.MX. The reason for the 'select' here is clearly that the
+i.MX machines would fail to boot without pinctrl, and changing
+that because of Layerscape seems backwards.
+
+On the other hand, removing all 'select PINCTRL' and instead
+using 'default' consistently may be a good idea for the
+long run, especially if we want to do the same for clk, irqchip,
+timer, regulator etc. At the moment, we have an arbitrary
+cutoff where some subsystems are always considered essential,
+while others are always considered optional and some are in
+the middle even if turning them off still makes the system
+unusable.
+
+       Arnd
