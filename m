@@ -1,128 +1,112 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9344D202F80
-	for <imx@lists.linux.dev>; Wed, 27 Nov 2024 19:06:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2805013DBB6;
+	Wed, 27 Nov 2024 19:25:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732734386; cv=none; b=pfmM6xhBUOXP3yRo+7P4c17Np2m3x3jhkSVZ0NVsK/b8YR7it6ubZv+qsoS9+M9+HND6IhR7GLTi1ohlPgsgKy9UCnI+ON6AiJzeZG+MB/0bWPcMsbsk1QHN0TZ0TzOQ5y+ImPzfxO3xyUcheqbOvXIyeY2jfEvgGoTpUdCobsU=
+	t=1732735559; cv=none; b=P7AyoKU1sflHIF4acTBBKBVlCMMqwNXa4Omm6R0SfiMmQX15XefcO/6htIRDsqSKnAnjBxhgQxP6YTPqg/5xF0EV1wnNPxTO1FCm6rkZPjCMlNolK2P7VULX0latVIU9HgbaTw+GdYSEFlfegEF6xvbeTm9xMlN9Hib1wWqkOvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732734386; c=relaxed/simple;
-	bh=7ec7IU/QOhQpuUrj/Jhjkr9X93j0m/1X/OiosCdCTNs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kY63PtLlKug1XK0pcIWawIsPQnOXucQMWGkcoLRrnKVvr4oqlB7AeXCK2UdNSpbeWtq5M+6Q3Jh1+gsCcTSXIUt75JzcbPUfTEE2/Lmd+7dRulOzB5weogsfsL+ZN+g2RcigUSBDxcEtqx9wVZECu+idassewY9wG4wdImLO+co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BKuuA40U; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1732735559; c=relaxed/simple;
+	bh=LvmHpaWsiLGTPibuZ7yWpqo4clNPX7pnbNk8sleUTwA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ceWtb7guIfEe2fg62y2utf1Ibcmw/wVXUbh+QiLpIpMwdRQJrTwAuC2OstaVF+YnZ8L1DyrM1UVNJMR16dSDQHqxJpgXOLaDHEEGSS5xf97txfJa7tb5VDihXoRyUOvqreimYhYdCFtzcRxp+hiJqyL0EYuFMLK5DaVK409zWSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MQ70w9m6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BKuuA40U"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-724e7d5d5b2so116102b3a.2
-        for <imx@lists.linux.dev>; Wed, 27 Nov 2024 11:06:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732734382; x=1733339182; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7iRGowmY09x6NtLH9Lb1/0sWvfPDP0DN1AXCvHkKcIk=;
-        b=BKuuA40U3oe5VKKabIny0fI+hR67Tk6lHZdnC+oZ2OLm+6lzRPCxAMKjWGa/9cbLTK
-         58+v/AcRt4P8hyzCW/C4RsbwBeid14XI+0GoYvHwOaXraWyt12p6RtBoiq9WPbJS5yUS
-         +20hxlkaACYmIhOL0TinrfuctdIu2Zr7EC80r5EeDYTaM4iiHKM0e9jZS7EnDI2tNEMv
-         6X9dKYq9noA98d1biSfYPMOCym2KRzGPJrl+RM7Zc8IHIxIHpzN9O3yga23WWs4K5zZn
-         gUD+y/7VvgPxicZLZZe3XGZYK4Rmca6GN+XZHTBVDf/AT346KHFQSZIax/V9y0MfQS2S
-         Ombw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732734382; x=1733339182;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7iRGowmY09x6NtLH9Lb1/0sWvfPDP0DN1AXCvHkKcIk=;
-        b=vBnrKthlo3afPXeylqkGr7wbLl6EHwhTVs5Z5DNyhumm/lzRFBd4iKRYY76asg6dfP
-         D/HQukrEOl75GWwYEaKJxNFZ4ADMNC2KweDVtHV6mUCPHInJajHL6hBVrktmF4dCBcsP
-         WhGbQVrhW2IExrywIiA0D/OLbh3rJgGZEH4g94jZZEIOqo+dPhK0qH+SGW5IOsfVXpn6
-         O5uT0aQh4MuwpEOnrbx/9Wwwq+YNQwqCzFOSySBt1izOabmSP8MkIrgs1WQkyTcoZc8m
-         rzhpvmSPGBE1BmJ2lugGtg4sWEhV5mWKbf4uY/waPomxlHmtTtY8oVlXLX761Gp1l5d1
-         dRmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUroE1KCQ5wKH4WOfRlZVFi8JLUkQSIuEGUjBABUZ3ijQ4wBw70hUgLM26UE5HFJ6mAuh8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyEWZxQiGln8vvtsKw9TIuyzMGJnOmL/WG8sYBChTNH5o/NvQp/
-	t9Ixnw5rZywm85xMle3IDajhyYD0+i0/SgMij2CtlLD1LWPYvC4J
-X-Gm-Gg: ASbGncv1bmk0qBjgqpLlZUGXftXYN9fJPdsIURLBEu544ZJWlTSWQhB9eEjBThWyZZY
-	gOGtaxoHVUStfH7SYbsrS2Me7NSEiavbfzRu9MXmtvKN8+Y1aiVmhr41JpoYubf/J51YyrvpC/a
-	jVpnKVfq4eYVxfidIWT843JYRs1kASVVqICxqF5kkUQafVRNqBvjOAhLp24KVAj1RTpQ+Usp4/E
-	qMndk9mMqKp9w/j/zMJDYFnk4BTyyl/1qtb8aomTEIedbZdYY7xNjx7/Y3eGDs=
-X-Google-Smtp-Source: AGHT+IHRWI7ciDiEU560CDl4hwoigQDwlqav9MEDJA2PtR7FPWVN5aMtjqTpiIgHPEe1PoP0+IF+Yg==
-X-Received: by 2002:a05:6a00:1492:b0:71e:59d2:9c99 with SMTP id d2e1a72fcca58-7252ff9f26emr5723057b3a.4.1732734381744;
-        Wed, 27 Nov 2024 11:06:21 -0800 (PST)
-Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:4986:34c:3f75:d990])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-724de554fd6sm10550036b3a.139.2024.11.27.11.06.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Nov 2024 11:06:21 -0800 (PST)
-From: Fabio Estevam <festevam@gmail.com>
-To: shawnguo@kernel.org
-Cc: linux@armlinux.org.uk,
-	s.hauer@pengutronix.de,
-	linus.walleij@linaro.org,
-	esben@geanix.com,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux@roeck-us.net,
-	arnd@arndb.de,
-	Fabio Estevam <festevam@denx.de>
-Subject: [PATCH v2] ARM: imx: Re-introduce the PINCTRL selection
-Date: Wed, 27 Nov 2024 16:06:05 -0300
-Message-Id: <20241127190605.1367157-1-festevam@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MQ70w9m6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3653C4CECC;
+	Wed, 27 Nov 2024 19:25:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732735559;
+	bh=LvmHpaWsiLGTPibuZ7yWpqo4clNPX7pnbNk8sleUTwA=;
+	h=From:Date:Subject:To:Cc:From;
+	b=MQ70w9m6MasuDm59oyN3C2+4FQnIQD08QODGBWdNj04cRVs6ffOk9WH4yrFxIE0yz
+	 yGBzZiEhQoxpCfUF2var9/r3m8N7UQArDBKuunJUqn/uEZEfHOIOZ+kvFyjqy7hjXA
+	 Y8dzmCk7XwUGe+hkpLRzMXyBira3hzkbMU5OnTlHcwgwB+yiCI2vHhPKyZWa0KocUv
+	 9GIqi9WpzDHucgcOTqfYN4PpvCsIZ2NNz0QPvG96JuPF2SW5ufiebvvMN1FP7pFKea
+	 UuChfx7Nzos0SGroHiYAdB63i1SZYzBfw3i3ivjbEJZE4LNo5EYuJJktfvevEeTy35
+	 Hwctu7ZHwuaJQ==
+From: Mark Brown <broonie@kernel.org>
+Date: Wed, 27 Nov 2024 19:24:40 +0000
+Subject: [PATCH] ARM: imx_*_defconfig: Fix i.MX pinctrl enablement
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241127-imx-pinctrl-enable-v1-1-d3431a98253b@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAPdxR2cC/x3MQQqAIBBA0avErBtIyaSuEi3UxhooC40IwrsnL
+ d/i/xcSRaYEQ/VCpJsTH6FA1BW41YSFkOdikI1shZAaeX/w5OCuuCEFYzdC71SnjbJK2x5KeEb
+ y/PzTccr5AxrmlZRkAAAA
+X-Change-ID: 20241127-imx-pinctrl-enable-fc567a5b57b9
+To: Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Esben Haabendal <esben@geanix.com>
+Cc: linux-arm-kernel@lists.infradead.org, soc@lists.linux.dev, 
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ Mark Brown <broonie@kernel.org>
+X-Mailer: b4 0.15-dev-9b746
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1772; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=LvmHpaWsiLGTPibuZ7yWpqo4clNPX7pnbNk8sleUTwA=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBnR3JDS5fbsq6RUbHGhH+FD7nNrEDxNnEzj9wjItiT
+ tiBJMnuJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZ0dyQwAKCRAk1otyXVSH0GRqB/
+ 0QevSDMqjV7z2IZEUNybXCoiOgt1G9j3SwrjYejb0ukcADztwpxBJiZrtEtBVtDCSslxz4VeNbKwFM
+ mT5qegrGRBOJwu3fXmoSkUQ9BGG2qU8PdFXHMNvJL9s0NXZxqm3ZmzDi6tIkTYApw7WeGmBljNntRE
+ PdypRDnfX3M7hsycjnQTJsyC37bBg/I9aNxqi4hlllqLbjf+M8yBG7nx9G4zLMhFl7Px/lp+JjL6jl
+ TiTGWw0tUo8TnehY6xnIb2yRbt+du6x0Q/sdxqbEsCX9i9rGo62Ul/6l7YX3kxCREkgTSSIeLMsXt8
+ 7pW2FCyELp+ys2eVoRdT0EsXfjBSG1
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-From: Fabio Estevam <festevam@denx.de>
-
-Since commit 17d210018914 ("ARM: imx: Allow user to disable pinctrl"),
-the CONFIG_PINCTRL option is no longer implicitly selected, causing
-several i.MX SoC pinctrl drivers no longer getting selected by default.
-
-This causes boot regressions on the ARMv4, ARMv5, ARMv6 and ARMv7
-i.MX SoCs.
-
-Fix it by selecting CONFIG_PINCTRL as before.
-
-This defeats the purpose of 7d210018914 ("ARM: imx: Allow user to disable
-pinctrl"), but it is the less invasive fix for the boot regressions.
-
-The attempt to build Layerscape without pinctrl can still be explored
-later as suggested by Arnd:
-
-"Overall, my best advice here is still to not change the way
-i.MX pinctrl works at all, but just fix Layerscape to not depend
-on i.MX. The reason for the 'select' here is clearly that the
-i.MX machines would fail to boot without pinctrl, and changing
-that because of Layerscape seems backwards."
+When the i.MX pinctrl drivers were made user controllable by 17d210018914
+("ARM: imx: Allow user to disable pinctrl") the select of pinctrl by the
+arch code was removed. This change means that for the i.MX specific
+defconfigs nothing enables the base PINCTRL Kconfig and things that depend
+on it (eg, audio on the i.MX6 UDOO boards) stop working. Explicitly enable
+PINCTRL in these configs to restore functionality with them.
 
 Fixes: 17d210018914 ("ARM: imx: Allow user to disable pinctrl")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Closes: https://lore.kernel.org/linux-arm-kernel/49ff070a-ce67-42d7-84ec-8b54fd7e9742@roeck-us.net/
-Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
-Changes since v1:
-- Reintroduce "select PINCTRL" as a minimal fix for 6.13-rc.
+ arch/arm/configs/imx_v4_v5_defconfig | 1 +
+ arch/arm/configs/imx_v6_v7_defconfig | 1 +
+ 2 files changed, 2 insertions(+)
 
- arch/arm/mach-imx/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+diff --git a/arch/arm/configs/imx_v4_v5_defconfig b/arch/arm/configs/imx_v4_v5_defconfig
+index 875c8cdbada7d662994c9301c1caf5d30d7407e3..1af29d12129d01b0de0b9dde30eb9b43c5a83071 100644
+--- a/arch/arm/configs/imx_v4_v5_defconfig
++++ b/arch/arm/configs/imx_v4_v5_defconfig
+@@ -83,6 +83,7 @@ CONFIG_I2C_IMX=y
+ CONFIG_SPI=y
+ CONFIG_SPI_IMX=y
+ CONFIG_SPI_SPIDEV=y
++CONFIG_PINCTRL=y
+ CONFIG_GPIO_SYSFS=y
+ CONFIG_GPIO_MXC=y
+ CONFIG_W1=y
+diff --git a/arch/arm/configs/imx_v6_v7_defconfig b/arch/arm/configs/imx_v6_v7_defconfig
+index 0beecdde55f58330494b98ea0f1ecf9c04643e14..73f7aa7e75f71e304ac4c4c64277066d1c03a72a 100644
+--- a/arch/arm/configs/imx_v6_v7_defconfig
++++ b/arch/arm/configs/imx_v6_v7_defconfig
+@@ -204,6 +204,7 @@ CONFIG_SPI_FSL_QUADSPI=y
+ CONFIG_SPI_GPIO=y
+ CONFIG_SPI_IMX=y
+ CONFIG_SPI_FSL_DSPI=y
++CONFIG_PINCTRL=y
+ CONFIG_PINCTRL_IMX8MM=y
+ CONFIG_PINCTRL_IMX8MN=y
+ CONFIG_PINCTRL_IMX8MP=y
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index e4fe059cd861..dc47b2312127 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -6,6 +6,7 @@ menuconfig ARCH_MXC
- 	select CLKSRC_IMX_GPT
- 	select GENERIC_IRQ_CHIP
- 	select GPIOLIB
-+	select PINCTRL
- 	select PM_OPP if PM
- 	select SOC_BUS
- 	select SRAM
+---
+base-commit: aaf20f870da056752f6386693cc0d8e25421ef35
+change-id: 20241127-imx-pinctrl-enable-fc567a5b57b9
+
+Best regards,
 -- 
-2.34.1
+Mark Brown <broonie@kernel.org>
 
