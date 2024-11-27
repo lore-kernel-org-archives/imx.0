@@ -1,177 +1,245 @@
-Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2076.outbound.protection.outlook.com [40.107.20.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0361F76A4
-	for <imx@lists.linux.dev>; Wed, 27 Nov 2024 11:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732707023; cv=none; b=cLGahm4c0kSuFWk6yk2G7dOdjA4Kx25cXznViKk7ChiHYVVc7L0QdZtNytgBSzRYwnykHb6cfUBFhsXXw1uD1J22Kp+QdE92GmaDxTJX1MbhMghoNDv9WJaQgqsuDwqCpz1sVKU+4/xbyffpWoaXuMKGBqEgzFncbvOvLrybU2M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732707023; c=relaxed/simple;
-	bh=3MOy1Ce5id+J6cpIeW0xZT3xJs2eNEdo5SYH8mde8Yo=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=DEeeQ4CJAcMseF7DAGnvjAxGPbongPHRcGuvDOZQ7z5PngCeEGkRF0hTxYNcAHAB28uVrFnl/8SlQkvS8aIbnJ6GDA+yL9dDd3LeXSd3ZfLwYq6JG5cUiA/fktni749YlKCuf6r77bMPHWtFQ7lQlbNPzwVj5TYhOuD/CEtBE04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=HdBnZdDe; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=aqH5CTLm; arc=none smtp.client-ip=103.168.172.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8768F1FA261
+	for <imx@lists.linux.dev>; Wed, 27 Nov 2024 12:01:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732708912; cv=fail; b=bOeg+ICfeEA5olYvULfQVQIzcBoqFMyOVXEqJyL/+8RyJ+2VinlIQesAf3KbF7hn13tNYYikUlD7z8msdaN33anLzEKEcpORabqDUorUOr8EZtpNhPbseWp25tRXHOGgKZvtTOWmYssZBywHQaikLGpQIR+KOazuy6/kMrRHXYE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732708912; c=relaxed/simple;
+	bh=PL7N25CQEsCtHt5EtS+8PWjmJL6dPAsOcFGvdEBLc/E=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=GUiRueaoM/0QLSFREJXPKK7TgGN4+zOng93/ijrLX66c0fXbjzWBNO7IAs7vfM35Aw7A/TrBjd+xeJ4lMh/N2+x81GHDA4XbTYttMmAJ4aCo6Bc92N2N83n/w7658Y5zxku84TsvWEiIJJhp3mFbyfuYjWOz6SK513kbSX98zo0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=j8Qb3E4W; arc=fail smtp.client-ip=40.107.20.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="HdBnZdDe";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="aqH5CTLm"
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 2D884114013B;
-	Wed, 27 Nov 2024 06:30:20 -0500 (EST)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Wed, 27 Nov 2024 06:30:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1732707020;
-	 x=1732793420; bh=YLuq++YdEMYtNk53nxLF/a+DeKLmrB6uV6hfk/PqmxE=; b=
-	HdBnZdDev+jBlkDD3YVbHlELQfgWBIPJPIZ9wetQrERFJBqe0YPmrxbtuZLEA7TA
-	Y1fKt/S1E50ZvnxuXpZch4b9sGyA6VZh2ViQK9bpIJuoMsgVLfvOsR3Ang464HET
-	DA8kRj05eTQBkJUG1BhfpakX/f9cmLY1Qj8aIeCQUhjqdcIK8yoy7iEFrQ5tvMe4
-	aa65CIyMofbErT7RDEFiGBX6tUC7knqkqftJAyWvVnIvK7AV6o3Mj67wuzBoXRVS
-	NWTLWIvm5x1pyacW4/FEqCwThOJ+StA+qpakhqCdVYUA+BuI2Vls4GeIe3wsFOel
-	SmDGaKlPZHnQuE+bC60KvA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1732707020; x=
-	1732793420; bh=YLuq++YdEMYtNk53nxLF/a+DeKLmrB6uV6hfk/PqmxE=; b=a
-	qH5CTLmVdf9VIFUGwBb03yguiiJiw2tOTVfbhza0n0tG2ztGSTFvHnltstduiMtF
-	X5qpamG1a7TAyml7DJ+38o9oewEiKJQJfNn2Fa8W2NLf+ungc/VjEBMAgFVusKdJ
-	l5HNsBgccFS+9iuC+af1OejA9eJdxHvvYMITWcg3590ZnkoVHjSNFYkXOeUQcy2C
-	lts3a1k7zjaWZg+o+rpc8sbsLLLi3G+PXYfjrQS3RtbVsQhIg+iEWA3wOdG2ToYc
-	9/YvoGyioODNWL5jfQFxjKyurxAJtey94NBedx+9JM9Dvh4VopP0xAANr94shxPZ
-	L25AC7lpx29J32S9usgIQ==
-X-ME-Sender: <xms:ywJHZ-gLGM5CIy6Qhpn6A_PRoc3tpsSIedxb_PRU5VHtNYrMmHPj5w>
-    <xme:ywJHZ_Cdxcxojcyno2Fw0OiXfUyc4H28kpDm-CTMPlmRZ0R4wJpW7DAh9ecjJ29ZY
-    vOrKI3hdPjhEZwhS_I>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrgeelgddvkecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
-    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
-    hsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredttden
-    ucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdrug
-    gvqeenucggtffrrghtthgvrhhnpedtiefhffdthfeileevheehveevieeggfegieeggfel
-    feduudevgeegieetfeevgfenucffohhmrghinhepfihikhhiphgvughirgdrohhrghenuc
-    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnuges
-    rghrnhgusgdruggvpdhnsggprhgtphhtthhopeduiedpmhhouggvpehsmhhtphhouhhtpd
-    hrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthho
-    pehfvghsthgvvhgrmhesuggvnhigrdguvgdprhgtphhtthhopegvshgsvghnsehgvggrnh
-    higidrtghomhdprhgtphhtthhopehfvghsthgvvhgrmhesghhmrghilhdrtghomhdprhgt
-    phhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinh
-    hushdrfigrlhhlvghijheslhhinhgrrhhordhorhhgpdhrtghpthhtoheplhhinhhugidq
-    rghrmhdqkhgvrhhnvghlsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpth
-    htohepihhmgieslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopegrihhshhgv
-    nhhgrdguohhnghesnhigphdrtghomh
-X-ME-Proxy: <xmx:ywJHZ2E3qmzeci5Eq22yWxTdtIijiLONNqq-lGZSkz7dYWHoz_Ig5Q>
-    <xmx:ywJHZ3QmiqJi-uIBi1awqKF5Uvdn4LC6kLCyAgmLARkg4aQXCttmyA>
-    <xmx:ywJHZ7xbkpoFbJKvURCphY35123mN9i-5AJEVAhkWXkWLrAwi0nh1Q>
-    <xmx:ywJHZ16T8mi2o_0ZjyaCWCyho8CnO1XdOpVFuOIH_oJ3NuQoqIx8wA>
-    <xmx:zAJHZ7BpNBWOuHZW1CyS4omKmSBo-FKJzW6EnrRSnPHb_jJu8Xw-1j4_>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 79DEB2220071; Wed, 27 Nov 2024 06:30:19 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="j8Qb3E4W"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fFF04/3KUQjUY04Ot6oeo+hKXWIeplZQxlm8r7NX8DzOnv/KmBP54fJGYY73XWiZsZpdxWf7dZcDxNl13hl4ZZadvgDC1dDAPGzbl7GDjobi5ax83mzMF7IpsQ4lmu1xxAhMeV2UKIW/7WDyeqHECXqFjVeXpSqonoPEwUDLMs1kiot7hJpyfXS1t13CX0K8bpA30TjoteaPCP0ADkfM1rtAMk5RqNxs952qAAFf8pbHmkERzEmIay2ew9NY4ZuU+fyeaexD3KoDxK0S2+Zyo+DvWCKkseHnl/8zoNnr5Hb7qkfpvpYI+5rYuJWaM//tw7rBrnEkzNOqut/mDJ7TWg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ofc7E9xbxB+HL3oucpJz74FXoYulQl+sLVvvgMN1Deg=;
+ b=k+4uEqbo89MejLxAFawCqzze+diOIlLmmfADWDgzoN8mZRYA2lCBXxcUeZFoTYC4auRm+n70BtM0OWqCCLa1G99J0uiDUypEJ4RJKJYfa3qGP4QVVfrX/jXjXeCSCJLZdPOZXXk3nKJHcxgAUuXuPfQbcKeWKo+U9DxuycCUcYwuJKegAYLAPPTuw0iDAS9ws0aJV/JUnr+webDeK/RCx/KiP7Ker4veE36o268Jcmng90aJDs5pXT6ur+z+YbEVuMCM2me/R4o9K0hB321bBnFP0X1UN4He+GlrZASG48Tvkxi8czd9x5LfFkK0sUH0gUn2K76RfIzq43GiPBbt6Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ofc7E9xbxB+HL3oucpJz74FXoYulQl+sLVvvgMN1Deg=;
+ b=j8Qb3E4WT2xwaIL5ZdCw2eG1BAT0vETgLDsmdGfCamrKnF72VC0BQLxPxJgLlcvTChaG6T1wcvRzN7Tmwxek0C7UDH7SJ4YvWtYuyTlzk0ldHFyPp4/vbNy3qggLZL/H2CwIUj1g9mHMKE0ynL8yl+rpCIcqAKfdNxDQuhXrtvx6xschz2ruAsJQlj70hUlE7POVv1M2/qMzCtRtOZ6ikjuPZqGC8pL6G2cYPhY0Q2tMlHIXCGh+lejohmx2Lpzep445RNgd+97SYpig9I4KQe7k+Hym9aFm5VNAARa1EGJjQLsDTrif/4IEL62j7ybE5Erk2ETzDklvO3bAKvKuag==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU0PR04MB9251.eurprd04.prod.outlook.com (2603:10a6:10:352::15)
+ by DU4PR04MB11079.eurprd04.prod.outlook.com (2603:10a6:10:589::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.21; Wed, 27 Nov
+ 2024 12:01:46 +0000
+Received: from DU0PR04MB9251.eurprd04.prod.outlook.com
+ ([fe80::708f:69ee:15df:6ebd]) by DU0PR04MB9251.eurprd04.prod.outlook.com
+ ([fe80::708f:69ee:15df:6ebd%6]) with mapi id 15.20.8207.010; Wed, 27 Nov 2024
+ 12:01:46 +0000
+Message-ID: <a089bbb7-a378-47a7-bb83-a38c8d2f47e2@oss.nxp.com>
+Date: Wed, 27 Nov 2024 14:01:15 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/4] dt-bindings: rtc: add schema for NXP S32G2/S32G3
+ SoCs
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+Cc: linux-rtc@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, NXP S32 Linux <s32@nxp.com>,
+ Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
+ Enric Balletbo <eballetb@redhat.com>,
+ Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>,
+ Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
+References: <20241126114940.421143-1-ciprianmarian.costea@oss.nxp.com>
+ <20241126114940.421143-2-ciprianmarian.costea@oss.nxp.com>
+ <0c4f7e62-bf9e-4e4f-8493-db1e56773f38@kernel.org>
+Content-Language: en-US
+From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+In-Reply-To: <0c4f7e62-bf9e-4e4f-8493-db1e56773f38@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AS4P189CA0021.EURP189.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5db::12) To DU0PR04MB9251.eurprd04.prod.outlook.com
+ (2603:10a6:10:352::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Wed, 27 Nov 2024 12:29:58 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Rasmus Villemoes" <ravi@prevas.dk>
-Cc: "Fabio Estevam" <festevam@gmail.com>,
- "Guenter Roeck" <linux@roeck-us.net>,
- "Linus Walleij" <linus.walleij@linaro.org>,
- "Esben Haabendal" <esben@geanix.com>, "Russell King" <linux@armlinux.org.uk>,
- "Shawn Guo" <shawnguo@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>,
- "Dong Aisheng" <aisheng.dong@nxp.com>, "Jacky Bai" <ping.bai@nxp.com>,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org,
- "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
- "Fabio Estevam" <festevam@denx.de>
-Message-Id: <45ba6632-43f0-4142-85f8-9dc3f9d1e698@app.fastmail.com>
-In-Reply-To: <87ldx5htm3.fsf@prevas.dk>
-References: <20240506-imx-pinctrl-optional-v2-0-bdff75085156@geanix.com>
- <20240506-imx-pinctrl-optional-v2-1-bdff75085156@geanix.com>
- <49ff070a-ce67-42d7-84ec-8b54fd7e9742@roeck-us.net>
- <CACRpkdaBR5mmj43y_80b9jd3TAqRWMdCyD9EP6AY-Y0-asz4TA@mail.gmail.com>
- <1ff005f8-384d-465e-9597-b6d5fd903862@roeck-us.net>
- <CAOMZO5DW3t-sof_uaFa_qJPE3WFq_155mFTxGMWh0m++csgopg@mail.gmail.com>
- <87ttbthwdu.fsf@prevas.dk>
- <5881df5a-9495-49b9-9956-0538055bba60@app.fastmail.com>
- <87ldx5htm3.fsf@prevas.dk>
-Subject: Re: [PATCH v2 1/3] ARM: imx: Allow user to disable pinctrl
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9251:EE_|DU4PR04MB11079:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8111747f-5f2e-470d-9653-08dd0edb4422
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?M2UzZFh6UTU3ZCtaYm9Ecml5Zm91TzBycmtoellDUnlxMmcwNi9QM01MOVov?=
+ =?utf-8?B?NG52SU9aZGpUMHBlOG8zeUVCbi9lOVpwZGhONlBmMU1jaGIrR1hBTld3Ni8x?=
+ =?utf-8?B?Q2YrOGhKMExqMWFDeGZmVENYU1RRcHFlQzBmdDZobUdHN1ZmSDJkS0pzYXhL?=
+ =?utf-8?B?NUVsQ2IxMlY3OXFuZ3B6QWdYNHRmcWtxQ2o5dG1GN1Z6VHFJUVpQTzlJalhQ?=
+ =?utf-8?B?ekpLUXRkaTZ1MlAzUnBmNmVKQlRDTDlaSHk5QkRSVzE2cWs2M3dud2RPZjlJ?=
+ =?utf-8?B?ZjJpMmVjUmgwTlRqcW52cGNwTzcxNXJyN1FOMGZYZUxGUVYxa3d5WStUTG5n?=
+ =?utf-8?B?SEJrbDVVSktVMlhHNmV5Mm9LQWswKytVM1NYUE15WUU1b2d1Sy8wYnRCMzhS?=
+ =?utf-8?B?Y3gvck1DMkVLTHVzaXVVRmxSM1ZEVzNmTHhOQm03dC9kcHBRcDNCUCt6SnZZ?=
+ =?utf-8?B?OUp5MHhkekVGZTZaMkNRU0VUUUV4cy8rK0QwaDdNSUpuWE85K3hNbnN2T0RX?=
+ =?utf-8?B?U29HdDFhajNFYlVBUmUxWjBUVVJyRitDcHN6VG54YTQ1VENoOVh4K3FGTFJE?=
+ =?utf-8?B?Y3R6M1hZek9ZekRCVCtjTmM2Ui96Y1lnM3FLR2RuTlJqMGEyYktJMUYwMHRV?=
+ =?utf-8?B?NzdaNDFrMUhKREdHVXY2anlNTHlhT1QwWmhlblNYYWZWVmYzRDVzTUhqd0NP?=
+ =?utf-8?B?TzMrQmljWWlVeFRhdFZUODFXVmQwWGJXTmVsNERhd1hqbnd1bXYxUWF6RVFU?=
+ =?utf-8?B?cFFaaEhGVk41REF5aW1yb0FiTUdwU1ZQREJidHZ2OUpLbWJVWW5zU2E4dmN1?=
+ =?utf-8?B?M0xCeDcyNDVzakRhK3VzZ0J5UHFNbFdBNFZFblZRMFpvRG1BZ005b20rbG9h?=
+ =?utf-8?B?M2RpaStFS2c0U3RoNU44M1lockUyaGJ4M241cHA3eTBTYnJzbm1BR01hVEZC?=
+ =?utf-8?B?TXJueUlZL2dONG9SSTZ2dUgrVmhuOHdpUnh6YXp4TjFGVUl0QkdKdk1zd2JJ?=
+ =?utf-8?B?Wkg4Sk8yV1FKcXlxRWlkNEtzbHdSUnE2WE4yZ2hrcXdPTDdaY05SVFRBQm5x?=
+ =?utf-8?B?T05oQjAxUmczN1gvTVdBYUEzd1VuNUM1bzVHN3g1dGxIeFQyUDdYMHJxQ2Jz?=
+ =?utf-8?B?RDBiUG02YURTTmxlNll4TXhoNjlJdWYwV3Ewa1AyTjdhbXZQUGlBaW50dW1a?=
+ =?utf-8?B?aSs0cHh6M0oyNUpHKzd3bXBVZDExUGRmVGhXczc3Q2FDRkVXaW9KYnlHNFpq?=
+ =?utf-8?B?L042d1RpRDRNRjh2aHNNek1DMUFxSXlQajhQVFJBTEVlRTF4WThZMDkrZlRv?=
+ =?utf-8?B?eVkyazZ6N2hGN2F1NzZoVjZoR2RBcmcwby9xYTNhWGN1S0NHQ3p0NU90eEJT?=
+ =?utf-8?B?Q0pzZEVUMG5ieVl0YmlpUlF1dzIzcFJRS3BBZituN0Y2NTFlM0VPYll5VjF2?=
+ =?utf-8?B?RDl0T0lCQ1VPNDNFOFpJYU1BQmtBbFV4VE1BN1hBdmhOUUdiTHVhKzVuck1L?=
+ =?utf-8?B?WDRQcldKSFBmRlNXNjBKOWtXdDNBbU50OFZzVkJmWDhyUzlQNFkxcFFVOUFv?=
+ =?utf-8?B?YkpwTkY2ajRrWndkYUFyeVFHTHVCbitUSE9EbHc0YkJlYlFLQUNjSUJSZ3Fo?=
+ =?utf-8?B?cXQ4cFR1ZjhxN1E0RkFCUVYwcndmMUNLWVFnblB3cVhqTFFUcTZ2Q3FrVHAz?=
+ =?utf-8?B?Q0VyMlQyanJqTHZpTk1Ob0Z2N1pJRWYxYVRYbjYzcmF4cGl5WmZmR0dlaE9o?=
+ =?utf-8?B?WU5Ua0VybWpCVDhHWDdBbDBkMmVPUmYxTGhsOWFORk9NSFpDVHZid1lISkNH?=
+ =?utf-8?B?bHNXV3N4S2ZNN056aSsyZz09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9251.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WHZkdmp2OHQrWUs0RHEvZG9OKzhIMmhGSTQrcmtMVjRDMVR0OXlDS01ja3pC?=
+ =?utf-8?B?TTlPVTNEbWE5cGJlaXhqeVFUVzhHUDRWcS9FYVh1L1NFMHVxbGF1MjV0aGhK?=
+ =?utf-8?B?NGRiS3I1T3gxNDdCTjlmSitFU08xaHkyNzMrR1JjMkw0eS9PMGRtWEdsbjRH?=
+ =?utf-8?B?Znk2TFB2ckhKV1RlNktlTTlCU1hSeTJkRWtid05hVlpRckpnNmNMUzZqMHFr?=
+ =?utf-8?B?WEFIdUZ2anE0enNTdEZQNFVjNFFBcW9IcW94Sk9Sd2RvRm9mSThhclFQZnBo?=
+ =?utf-8?B?clVYQ3I0VHBMVmtpeWJNaHoySHN2aHFZOEdFRzhQTmhqZUVOV2NuaXV4OWpN?=
+ =?utf-8?B?NGtJajhuL3Mxd3NhSE9icy9WeDFMQnJmY1NGd1ZSUXdWdjJlanpRTTVibDN6?=
+ =?utf-8?B?Ull6NVpnUVFWa3gxa3QvRjc2bnZzbU0vOE5vWHBCd1RScmVPVE1RRHRuUG1m?=
+ =?utf-8?B?bFRHS1lmbXpaamdWKzR4L2NIcnAwdndmL1ZOOHFSdVNhYkxlTnZ3L0tGa3kr?=
+ =?utf-8?B?QXFuTlVaK0FURUhzWkVlS2RzblNyem9iYlh5cXRabk16TVhkQlRmQ2JuNXlL?=
+ =?utf-8?B?NllRUGxtYTV4NGNLTy9TK05Vc1JLZUEwVkRGUWwraXBKU3V6bkM0SUcvaFRv?=
+ =?utf-8?B?dkw4TXhNWlR0NEQ3SW91NUxXdzIyaEdoM00rL3pnbkZRVUxmVXVHR1d5S3Jk?=
+ =?utf-8?B?VHBsY0NQZHZOK2RFV0UwYWtCWlBoT2dpalVycUxvMkxEOTZHSjNEVTNlajN2?=
+ =?utf-8?B?SG5RNktLUEc2cVF6YmJGNVNPb1FOdkx6aks1ak1GTTBJLzA0dDdHdlBFVVYw?=
+ =?utf-8?B?SlZsdjdhUmJjczVUcnlFSGx1VkNmaFFuOXJWbGdIQWx3Vk5zdWExY0Q3K0xw?=
+ =?utf-8?B?QW5hR1FvQnZSTW55VEtSSkhYOXhpWDlnZWQyNkZkNnFKbS85Q3E2dzlqQml6?=
+ =?utf-8?B?L3BncVZNT2pMRjF1dll4R1VnU1U4bjQrOHo2Y21MWS9taWJVcTlRbEl1MXRF?=
+ =?utf-8?B?eXAweFpUT0p1NGNGTEEwY1NDSmZjVVkyYng2WVlhcWM4c0RDTCt1OUZXaDIv?=
+ =?utf-8?B?ekhqTlVDKzZOYkR2SWhPUE5UdzFIbDR6YkpwcFpJeit1VEtNWGFxUExUQjBu?=
+ =?utf-8?B?VWsxNDkvRkEyK3JaUkxrS2JUa2UraDkwaFVITTQxM056RVpScE44djkyYi9h?=
+ =?utf-8?B?dVhyVjUzNThFYkNFNnh2eURTS3RtWUdFclJYQkhqQ0xnU1BnajRpVEd6SHdi?=
+ =?utf-8?B?dTZSYzJ4VFlnK2gyRE9LQ0Evd3hTVGZiRFdVcVdqeGZ6NVdVRnpjQ1ZsQ2NV?=
+ =?utf-8?B?VUZrbnFHQUJKWi9ZS3laMFJJOHIyVHJIa1d2Uml2dFRxZzRTZkxWM2dpNGUr?=
+ =?utf-8?B?VDRBZHVmemVERXBUNk9HNmRrMmZ0Y0dTeVAxLzhVVVEwK3BRRUoxa0FtMVFv?=
+ =?utf-8?B?cHVFVjd3a0dOWWQxMXdWMFdXL2VJcGxvREF3OHFmbnhHT1BxQ01vTlhvS3dp?=
+ =?utf-8?B?SHNIZWxEMUdEdFdEbzZ3dUJ3VlBMNmloZXR6L3J4Zy95aVpWTmhqd2Q0RTln?=
+ =?utf-8?B?VGR2V1VETFowelA0OHgrb2hKczNUS21yeXZaUkpwcCtUc20rMVY0bzZkVVJj?=
+ =?utf-8?B?TFI1R3pjM2xGSTltdzhDMGZKTjZZWTVQL2hLSjRxemZvUmltdG92RlV2eWJK?=
+ =?utf-8?B?WllJdlA1c0FMS21FSFIxL3Nwdk9SdEFIVjA3OFFoTzRKbTdXd3FaNDBLMG42?=
+ =?utf-8?B?VEViRld2V3VDMUs0ekg5cmFMVk02Tmk3VXdVcUVrdHhDK3hDWE1XQU1hR093?=
+ =?utf-8?B?b1IyMlZoSWdHNkV2NEExYU8vM2tmNi8zd2tTRlRNNXlGL1pyazFQV2JiU3py?=
+ =?utf-8?B?NW00eFdlZFVQdjdmYUdaM3VnWDlRRVp6c2YzNGR5WlZwSTJBME1FdkY5UlBR?=
+ =?utf-8?B?Q0sxSmlVM25JTDNNWGQvNXlCbzU5UTNUL3c5VDhjWGg5REJqY09xVXpabDYz?=
+ =?utf-8?B?ZEtoZ0tmSzRrZEU1Mk50ZTZ0Z2w0QklMVEdFZUgxL2RUMFVwMksyRWlRSXVh?=
+ =?utf-8?B?a1h1bnRHbk9od3QrclBVOVlmenVhRWtPR3JCUWhINkxHWTQxeUpTNFEvZDJz?=
+ =?utf-8?B?MnJSNEVjb2dQRGpMN1A4SDdFeDh0SjhyM3NoZTVubXg3UTMzSXFjd0VNc3ha?=
+ =?utf-8?Q?zC0pOzMunry7l5459CQHcLk=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8111747f-5f2e-470d-9653-08dd0edb4422
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9251.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2024 12:01:46.4473
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bPPK/PD7cXKIqZ2SSRIT2YAIr1ZhbqRAv4e6lBTSPSn3dRqNq70RpPaq2sBs+1CXZUvPfKkqmaZ1yVcvg7KIMugEgFrwfCaxZ5xfr2JP7AI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB11079
 
-On Wed, Nov 27, 2024, at 11:13, Rasmus Villemoes wrote:
-> On Wed, Nov 27 2024, "Arnd Bergmann" <arnd@arndb.de> wrote:
->> On Wed, Nov 27, 2024, at 10:13, Rasmus Villemoes wrote:
->>> On Tue, Nov 26 2024, Fabio Estevam <festevam@gmail.com> wrote:
->>
->> Please never use imply. Even if you think it's the right
->> thing in a particular case, it will come back to bite you
->> later.
->
-> Could you elaborate?
->
->> See also https://en.wikipedia.org/wiki/COMEFROM ;-)
->
-> Yes yes, we've probably all seen that at some point and chuckled, but I
-> fail to see why imply would be worse than select.
+On 11/26/2024 9:08 PM, Krzysztof Kozlowski wrote:
+> On 26/11/2024 12:49, Ciprian Costea wrote:
+>> +
+>> +title: NXP S32G2/S32G3 Real Time Clock (RTC)
+>> +
+>> +maintainers:
+>> +  - Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
+>> +  - Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
+>> +
+>> +description:
+>> +  RTC hardware module present on S32G2/S32G3 SoCs is used as a wakeup source.
+>> +  It is not kept alive during system reset and it is not battery-powered.
+> 
+> Does this mean that this is not a standard RTC thus standard RTC schema
+> does not apply?
+> 
 
-There are multiple problems here that I conflated, let
-me try to explain better:
+Hello Krzysztof,
 
-- The patch here replaces a hard 'select' with a softer 'default'
-  for the i.MX drivers. Both variants are used in multiple
-  pinctrl drivers, and there are sensible arguments to go
-  one way or another. However, mixing 'select' and 'default'
-  on a given platform would be wrong, and my point here is
-  that mixing 'imply' and 'default' on a single platform is
-  just as wrong, specifically because of the COMEFROM issue:
-  even if it all works as intended, a reader will have a hard
-  time figuring out why exactly it works like this, and this
-  likely leads to bugs in the future.
+I would say the standard RTC schema does apply but indeed you bring up a 
+valid point in the fact that I forgot to reference 'rtc.yaml' schema.
+I will fix this in V6, by adding:
 
-- In the more common cases I've seen, the use of 'imply' is
-  itself a bug, usually developers pick it because there is a
-  hard dependency between two drivers, but using 'select'
-  causes build issues, either from broken Kconfig constraints
-  or from link failures. I tend to find out about them when
-  a randconfig build still runs into the link failure and
-  the 'imply' just made it less likely to happen.
+allOf:
+   - $ref: rtc.yaml#
 
->> I would prefer we completely kill off that keyword from the Kconfig
->> language and replace it with the reverse 'default'. In this
->> particular case, having 'default ARCH_IMX' in 'PINCTRL'
->> would of course not be a great idea,
->
-> Just to be clear, it would be 'default y if ARCH_MXC', not 'default
-> ARCH_IMX', right?
+>> +
+>> +properties:
+>> +  compatible:
+>> +    oneOf:
+>> +      - enum:
+>> +          - nxp,s32g2-rtc
+>> +      - items:
+>> +          - const: nxp,s32g3-rtc
+>> +          - const: nxp,s32g2-rtc
+>> +
+>> +  reg:
+>> +    maxItems: 1
+>> +
+>> +  interrupts:
+>> +    maxItems: 1
+>> +
+>> +  clocks:
+>> +    items:
+>> +      - description: ipg clock drives the access to the RTC iomapped registers
+>> +      - description: Clock source for the RTC module. Can be selected between
+>> +          4 different clock sources using an integrated hardware mux.
+>> +          On S32G2/S32G3 SoCs, 'source0' is the SIRC clock (~32KHz) and it is
+>> +          available during standby and runtime. 'source1' is reserved and cannot
+> 
+> I am not sure what are the benefits of allowing to choose a clock which
+> cannot be used. I think source1 should be dropped.
+> 
 
-Either one, the two statements have the same effect in this case
-since both ARCH_IMX and PINCTRL are 'bool' symbols.
+The current RTC support targets S32G2/S32G3 SoCs where 'source1' clock 
+source cannot be used. The reasoning for allowing to choose it is that 
+on future SoCs from S32 family the same RTC module may be integrated and 
+'source1' may become available.
 
-Overall, my best advice here is still to not change the way
-i.MX pinctrl works at all, but just fix Layerscape to not depend
-on i.MX. The reason for the 'select' here is clearly that the
-i.MX machines would fail to boot without pinctrl, and changing
-that because of Layerscape seems backwards.
+>> +          be used. 'source2' is the FIRC clock and it is only available during
+>> +          runtime providing a better resolution (~48MHz). 'source3' is an external
+>> +          RTC clock source which can be additionally added in hardware.
+>> +
+>> +  clock-names:
+>> +    items:
+>> +      - const: ipg
+>> +      - enum: [ source0, source1, source2, source3 ]
+>> +
+> Best regards,
+> Krzysztof
 
-On the other hand, removing all 'select PINCTRL' and instead
-using 'default' consistently may be a good idea for the
-long run, especially if we want to do the same for clk, irqchip,
-timer, regulator etc. At the moment, we have an arbitrary
-cutoff where some subsystems are always considered essential,
-while others are always considered optional and some are in
-the middle even if turning them off still makes the system
-unusable.
+Best Regards,
+Ciprian
 
-       Arnd
