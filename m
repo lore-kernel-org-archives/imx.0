@@ -1,152 +1,95 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9BD186E2F
-	for <imx@lists.linux.dev>; Wed, 27 Nov 2024 08:42:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B69154BEA;
+	Wed, 27 Nov 2024 08:53:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732696968; cv=none; b=Gt1nwk4CUIUD1jzwPbiE3a4jx7nF8vl9Fkjrt9OJSgaliBcvGIbfiq6jGbHgS8SJp0g49XE8vAbVzP9nNHmSsPTMo7Y+RsDTj8V9wP2Wq+w2TSET2Notcq++aBjFAjKTn5ZPAZugRll8pxwjNnp/jTSkif9B1Esm75iF66GzBlg=
+	t=1732697640; cv=none; b=rhZT8tyDmm62Ek+iugYMdVorYfIY5pQCNvLtEm6nDbV43iHaW3qtEz024rqQ7tewozgbr4bCszKRNqMj3EwIQjANTePADJ5gJ/TpuBh1iUUplXM+N0gXNFzDeMVUFjXkIUr7ts/jhLqHV1CJzx1AF0G6p0RuU0K79Z4e9jCuN1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732696968; c=relaxed/simple;
-	bh=NlYQBbt4vAGGW65taHg686I5E+/mZFReRuNLnbeBtSA=;
+	s=arc-20240116; t=1732697640; c=relaxed/simple;
+	bh=GTzXM271KTS+OKkc7ykloLsBziWS3jjzqhZTo6a8EF0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VWUrYIvLvj4LiJm1CFsG8UKASQ6e587coViJBa8QIei+l9DsF9cN6fyfvT5vRAK+aILg45w5Pj/olkEvNr3TOwXxk7pYvTH/AmmxFNzblB4pF/8GhyeE0T3G2axS0M1UtkPTh9JiJIhD1I0nIDe7G5qlA6FM07WiEjKiCgUErfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tGDdB-0007ev-U1; Wed, 27 Nov 2024 09:42:41 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tGDdA-000Od7-2j;
-	Wed, 27 Nov 2024 09:42:41 +0100
-Received: from pengutronix.de (pd9e59fec.dip0.t-ipconnect.de [217.229.159.236])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 4B92637E23A;
-	Wed, 27 Nov 2024 08:42:41 +0000 (UTC)
-Date: Wed, 27 Nov 2024 09:42:40 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: carlos.song@nxp.com
-Cc: frank.li@nxp.com, o.rempel@pengutronix.de, kernel@pengutronix.de, 
-	andi.shyti@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com, 
-	linux-i2c@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] i2c: imx: support DMA defer probing
-Message-ID: <20241127-attentive-orthodox-tuna-8f8af0-mkl@pengutronix.de>
-References: <20241127083818.2108201-1-carlos.song@nxp.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=t1b/jnXeZ5yJqB337o/iHBR+E6/QNiRpfWacvMU0NrxFmrJJqlPEBfUySA0a1hUTeDXygSSZKZ/Ak95VKCjwpb8VRQzJuuWyOYaowtC0zYv65Jf+L6Fi6d4+SuZ/sQKaQCalKjIftGAVyoUoFL/OJnQGEJGF48nr8q1ILT1YqDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oXKiGNly; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oXKiGNly"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 645DEC4CECC;
+	Wed, 27 Nov 2024 08:53:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732697639;
+	bh=GTzXM271KTS+OKkc7ykloLsBziWS3jjzqhZTo6a8EF0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oXKiGNlyZQceBCDjYgRpXnO5tlWKreUOdXPH77t5mGA0hsfCbTQbNdfOI58uftfZW
+	 MDSqeVRJuuHg4lbLQpZowcfhxS5Vw22vEv6EK9c+PwCp7iYYuMlScMQOZ6CVTZp/Ti
+	 MhD+dlNVdGlrjZOvi9lAxFO8HlIUY5cLWDO8M9Gs0DCiIGHBFsRxwfK+Q7JrO5MEey
+	 sxJ7ZMXWHJpKtNs+ai61WvHXdzZIDgedcsNFn7r5sMAeYZ7WJRTbc/CQnu8hWIN1Mt
+	 GtGeHtywiot3Fd68k82LucuP1pWQ/h5kQquk6ou8DH+kZiyjYKerC6UZYcxVFlNHls
+	 vFSe1n/J62uZw==
+Date: Wed, 27 Nov 2024 09:53:53 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, dlemoal@kernel.org, maz@kernel.org,
+	tglx@linutronix.de, jdmason@kudzu.us
+Subject: Re: [PATCH v8 4/6] PCI: endpoint: pci-epf-test: Add doorbell test
+ support
+Message-ID: <Z0beIUiqXsz5DwVJ@ryzen>
+References: <20241116-ep-msi-v8-0-6f1f68ffd1bb@nxp.com>
+ <20241116-ep-msi-v8-4-6f1f68ffd1bb@nxp.com>
+ <20241124075645.szue5nzm4gcjspxf@thinkpad>
+ <Z0TNMIX4ehaB+mSn@lizhi-Precision-Tower-5810>
+ <20241126042523.6qlmhkjfl5kwouth@thinkpad>
+ <Z0WcKeM2630u_xSK@ryzen>
+ <20241126124112.5o4c3lzem72lkvdw@thinkpad>
+ <Z0X9ccbTO1I2zefm@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="pxqnpspionffusqk"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241127083818.2108201-1-carlos.song@nxp.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+In-Reply-To: <Z0X9ccbTO1I2zefm@lizhi-Precision-Tower-5810>
+
+On Tue, Nov 26, 2024 at 11:55:13AM -0500, Frank Li wrote:
+> On Tue, Nov 26, 2024 at 06:11:12PM +0530, Manivannan Sadhasivam wrote:
+> > On Tue, Nov 26, 2024 at 11:00:09AM +0100, Niklas Cassel wrote:
+> > > On Tue, Nov 26, 2024 at 09:55:23AM +0530, Manivannan Sadhasivam wrote:
+> > > > On Mon, Nov 25, 2024 at 02:17:04PM -0500, Frank Li wrote:
+> > > > > On Sun, Nov 24, 2024 at 01:26:45PM +0530, Manivannan Sadhasivam wrote:
+> > > > > > On Sat, Nov 16, 2024 at 09:40:44AM -0500, Frank Li wrote:
+> > > > > > > Add three registers: doorbell_bar, doorbell_addr, and doorbell_data,
+> >
+> > I like the idea of calling pci_epf_alloc_doorbell() in
+> > pci_epf_{enable/disable}_doorbell() APIs. And as you said, it doesn't make sense
+> > to call these APIs too frequently.
+> 
+> I not sure what's you means and direction for next version.
+
+Move pci_epf_alloc_doorbell() from .bind() to pci_epf_enable_doorbell().
+Move pci_epf_free_doorbell() from .unbind() to pci_epf_disable_doorbell().
+
+If the pci_epf_alloc_doorbell() call within pci_epf_enable_doorbell() fails,
+let pci_epf_enable_doorbell() set STATUS_DOORBELL_ENABLE_FAIL.
 
 
---pxqnpspionffusqk
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v4] i2c: imx: support DMA defer probing
-MIME-Version: 1.0
+> This patch just go first step. If we can append to ITS to bar0 in future,
+> pci_epf_alloc_doorbell() will become more reasonable at bind() function.
 
-On 27.11.2024 16:38:18, carlos.song@nxp.com wrote:
-> From: Carlos Song <carlos.song@nxp.com>
->=20
-> Return -EPROBE_DEFER when dma_request_slave_channel() because DMA driver
-> have not ready yet.
->=20
-> Move i2c_imx_dma_request() before registering I2C adapter to avoid
-> infinite loop of .probe() calls to the same driver, see "e8c220fac415
-> Revert "i2c: imx: improve the error handling in i2c_imx_dma_request()""
-> and "Documentation/driver-api/driver-model/driver.rst".
->=20
-> Use CPU mode to avoid stuck registering i2c adapter when DMA resources
-> are unavailable.
->=20
-> Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-> ---
-> Change for V4:
-> - Output "Only use PIO mode" log in debug level when no DMA configure.
-> Change for V3:
-> - According to Marc's comment, remove error print when defer probe.
->   Add info log when DMA has not been enabled and add error log when
->   DMA error, both won't stuck the i2c adapter register, just for remindin=
-g,
->   i2c adapter is working only in PIO mode.
-> Change for V2:
-> - According to Frank's comments, wrap at 75 char and Simplify fix code
->   at i2c_imx_dma_request().
-> - Use strict patch check, fix alignment warning at i2c_imx_dma_request()
-> ---
->  drivers/i2c/busses/i2c-imx.c | 31 +++++++++++++++++++++++--------
->  1 file changed, 23 insertions(+), 8 deletions(-)
->=20
-> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-> index 5ed4cb61e262..b11d66d56c55 100644
-> --- a/drivers/i2c/busses/i2c-imx.c
-> +++ b/drivers/i2c/busses/i2c-imx.c
-> @@ -397,17 +397,16 @@ static void i2c_imx_reset_regs(struct imx_i2c_struc=
-t *i2c_imx)
->  }
-> =20
->  /* Functions for DMA support */
-> -static void i2c_imx_dma_request(struct imx_i2c_struct *i2c_imx,
-> -						dma_addr_t phy_addr)
-> +static int i2c_imx_dma_request(struct imx_i2c_struct *i2c_imx, dma_addr_=
-t phy_addr)
->  {
->  	struct imx_i2c_dma *dma;
->  	struct dma_slave_config dma_sconfig;
-> -	struct device *dev =3D &i2c_imx->adapter.dev;
-> +	struct device *dev =3D i2c_imx->adapter.dev.parent;
+To be fair, we are probably quite far away from supporting a BAR with two
+backing memory areas. It would require a lot of changes in the PCI endpoint
+framework, and a lot of changes in the DWC driver.
 
-Why is this change needed? What's the purpose?
+And even if we do add all the support for it, why can't we keep the
+doorbell allocation in pci_epf_enable_doorbell() ?
 
->  	int ret;
-> =20
->  	dma =3D devm_kzalloc(dev, sizeof(*dma), GFP_KERNEL);
 
-This means you bind the allocated memory to the parent device, not the
-i2c device anymore.
-
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---pxqnpspionffusqk
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmdG234ACgkQKDiiPnot
-vG8A7gf7B/b0e/ASM4AusSjiFR0rAASfg7BeudhvJ3auw76AlPe6JjyyTodUlfur
-xfFTVzsqrCeeuCq7lkJfILu2RPFu4vVhR6PNc3ubUyimyxYJYrJdTJgj3IvCPArd
-+xI1QsI5zo/H2TYU1+y8woXHVqnLosva6A8FKH7hnsOxGnk5UXJLmBDiLsThuYdw
-oWevSaTDQXAZZH82ImQ+Rwiax/fABhMEomldtCK7uJ72JTG269xmmMNifHYF5749
-tn9Vtca6nizXN90og71/kiMnABwotiFD5GGbprEb67i3XAkbN85cewMv/2gFsNUn
-v5bcHKwgORbWdRuq3HaPfCbJVwWofw==
-=xqso
------END PGP SIGNATURE-----
-
---pxqnpspionffusqk--
+Kind regards,
+Niklas
