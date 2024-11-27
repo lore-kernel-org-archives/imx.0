@@ -1,215 +1,421 @@
-Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2129.outbound.protection.outlook.com [40.107.241.129])
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2078.outbound.protection.outlook.com [40.107.241.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346A5192D7F
-	for <imx@lists.linux.dev>; Wed, 27 Nov 2024 10:34:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD73E197558
+	for <imx@lists.linux.dev>; Wed, 27 Nov 2024 10:43:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.78
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732703670; cv=fail; b=EjPehX4cPzaiB2gkJlTR8yVfOAKxqNXIbSFDBC5tjvylsykG8jncjne/0cHdUG/kZRva76UYl7lKiEzvOdTdmKOGV1avhR3Dzyhmo1aIV+d6E0R7r03LZx5JrOWHQgpYNAXYlqQplip2rKsKjVg7pF5DJzT9uHNLF0TZE/734uE=
+	t=1732704191; cv=fail; b=HaL1QjtgdEqWU+y73kkY5nMMY+jdDGhjsbHo74y7GX+9AfevPRBmOE5LlVVF3eOhq0G3vh733RIlafHPALTEzSeoyQMm8J+uVBK8HKMJM0EfEKGDk+ORqsGJu67c/UyERA4nG7jdd78KVHEdyMpSFHLKDMuIXkgs6OA+P0IBnGI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732703670; c=relaxed/simple;
-	bh=9DXyYO85vNEPVun2ol6SPIhvxU4OFn302vQLJCcuYKM=;
+	s=arc-20240116; t=1732704191; c=relaxed/simple;
+	bh=8juaH6ZZhp6oUqPrTlvLQF+ZpGjHtrZsELLqO3pCQRk=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=XaaBGXzUhTWsjimtFmVuKLa8kOERUwhkru9TbdcwnpglbCYurZiCwSBOfPMQ2avGxgUEdp1C3a4F3x8CEllrZjvbs+O7hLf0z2edUjZ+tr9YWcSWBmGokqrlZ1EeKqzkN90UALbE3DsMvaB+dLNKiH3QkaxniMIXlAXjENYvPGE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytecmesstechnikgmbh.onmicrosoft.com header.i=@phytecmesstechnikgmbh.onmicrosoft.com header.b=PHOzXDV7; arc=fail smtp.client-ip=40.107.241.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
+	 Content-Type:MIME-Version; b=rmmC1ZKmWfHs+iXO0+qkO44C2zyf/aTiaKAbVQr8rUtqImgP/l/Fd7i1DxIx9ERl5TreCkCAeUW6opDWdlmgaDHSZkTN49DmVkawCthJPIUYlfSrP2EPOwCKclYrk3YNB5TKYr+ld/FUQwEpKsLs/LX7yGOjTtw1BMQQoYs6w3U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=cTwtdbD/; arc=fail smtp.client-ip=40.107.241.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=phytecmesstechnikgmbh.onmicrosoft.com header.i=@phytecmesstechnikgmbh.onmicrosoft.com header.b="PHOzXDV7"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="cTwtdbD/"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YJkNHaXngUwQymzttKatmIkFofb238IFELr4XAbWHuy+N5UfQ5qcdY+W0K3AMSQ825zTBgAv276LDyALctcJGxuGooO+oNKMMYudd6sxY0pm9vnmz1O9z/lvde+EWZaLdjduE9RfKvat8LT2Y/U7m5sEZDYbBkNucGKyeZLqFq8gDiaGwkgKlp+91SiODKb2T3A3bTbzOOkjZTQEXxZazlkojbNjZXTFNQBc2NYddyRRZsP4/3Rsowtul0sKyFTKu8jZXO6Iz3N/AZRB+WSpTIDDSXuBU5VmWgkFmvaLEXnY0YekBOMtFlU41zdYehMUuzDC2qqjLWxIq5OW/9NUjA==
+ b=JhejRXZNOdPXxkcgJq94SQju7xFr9AHxXIjz+33f/PfJ0ZMkF8sGO0ce7KmAxoS10YvK0CsHICbtYDjRRkpv1faGA3rJrbtYXAd2eYoWI7y9KC1Jjb3L01/7Raij9xlpn47XyczenhClEGLNBwjPa1iNWnlUQjJYyZc9jz1zU6VLdeFHobP+C02PAFyD/7nuThe7Qt3+nhC9Ef7VAp2cPRk1jm4Y8nFW9yPoGWEKAhULOH/KY0QiedGNYPxVYYQEly8+Q4M37UffCJgrQbXFss6gbN3Vi6Ierx0RVvS8KYlPSBQQ9z5LSE/ZJM1KU9dOU/ogB9Miyu07KMXFVCdgQg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9DXyYO85vNEPVun2ol6SPIhvxU4OFn302vQLJCcuYKM=;
- b=IEme9TNqHouA3iLGKqwL/J7LxNqpX8/eS5LvQPNch00eVHNFGQ0Nut8Ngkr4aQi0Hz+FZe9KjQb6/J/+3yW1jqFH7hdcC6bH+RhXIjHnUHiLBjdZOvvX/cHD3CHtpy2Svy3Jvquv5QsGERYcgWnxT93f2sb/76vcVnv8KBVoMFztizQUBaHkSnAkBHRZVyTWR/2q2eQmPiafXPQTBRwS9LZ1zA8hly+OPM5gTRrMt1NxbWva5aAcJsGvg06cMrEFgXlWZ7sYuGyWaTcF+IQlzGnCqQSAvBfsn000ocIOBgo9ZgmWMgUR//g0M1cGY9seZer7FnHi+FNM7v1fZFun/A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
- is 91.26.50.189) smtp.rcpttodomain=pengutronix.de smtp.mailfrom=phytec.de;
- dmarc=none action=none header.from=phytec.de; dkim=none (message not signed);
- arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=phytecmesstechnikgmbh.onmicrosoft.com;
- s=selector1-phytecmesstechnikgmbh-onmicrosoft-com;
+ bh=TXCVNBd69jHrs1nIIWqlj8hWyBNypqhT+TOh03YiFtw=;
+ b=xMi6zfj36bMJtg0wKJr1Ow9I8yuGIMREbtAs0zwSq69v2doCx8kCM5AmTJjr3R7+FfAD6THgP8BoTJKw2U8urPlIibfvFJSLDOpFdl8EQ0OTwulBnQySP5GDOu3HXmMW4h9/R2HpK2ABwP9HEA+K+NxcaDpANbCNMtTExHUMM+wEjlN5GQY5imqaW3WB5iqKnln2Tfk14fZ7gPYgH2XFhdsmoFNiRQiLVOb/vmw/iIEUdFq0XSMSyhy/qI639YlPGcrHAvj1uJIgGiQSh3PkR12nVi+IVrRuiybGtwBRjkJobmbteo/AQpJsmTWBt+0GIl1WRy31JbJNdcF+YqtS5Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9DXyYO85vNEPVun2ol6SPIhvxU4OFn302vQLJCcuYKM=;
- b=PHOzXDV71Z6Mq+zuPjTkz2weaeAH4RaRX9x2x42ryZvjt9CB7PwhfeGrMl2G5dnmPQ6+eEJ7ibpjVf6tXT2w/tZV0OiZfEanCVkn/PevXsKNcgxOKsQo9+IHmCXSiP94izVI8wuWyYKG5xkuV5FdTbE74OIIqtNqXv80CDuvrBg=
-Received: from AS4PR09CA0004.eurprd09.prod.outlook.com (2603:10a6:20b:5e0::10)
- by DB8P195MB0647.EURP195.PROD.OUTLOOK.COM (2603:10a6:10:15e::23) with
+ bh=TXCVNBd69jHrs1nIIWqlj8hWyBNypqhT+TOh03YiFtw=;
+ b=cTwtdbD/2/1zg5nIp3crYjo8ZqGmJc56XoF+NF7Nh59TJq7i8j6ync9sot9J9WO5FeZUHIiyeXahOXNHNEKI6Dbrm9RWmuZ/B5/T6Iz4v9x7Ey3pa2Ib0vPbF69RgTjOewRK/TcGqm25BFWvxfcEIYap3f10e9tN2P+4jdxIOxgSoBLmt4/ssdMVungryHNjLzbY842ecbGmhBOBlwFrIN9TOVpcN9IQJSYfglGXUio0FT3Iu5tciekZEVCZ04Wt0z58jmJSWDoCaoXerUh8p28dJLFRsDy9B7qZqcadrdTjg8TdiCh6Yex30eS7qmKdbCigHLRNZwPDzNwYmECb9w==
+Received: from AM0PR0402MB3937.eurprd04.prod.outlook.com (2603:10a6:208:5::22)
+ by PA4PR04MB9224.eurprd04.prod.outlook.com (2603:10a6:102:2a3::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.21; Wed, 27 Nov
- 2024 10:34:21 +0000
-Received: from AM3PEPF0000A78E.eurprd04.prod.outlook.com
- (2603:10a6:20b:5e0:cafe::80) by AS4PR09CA0004.outlook.office365.com
- (2603:10a6:20b:5e0::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8182.21 via Frontend Transport; Wed,
- 27 Nov 2024 10:34:21 +0000
-X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is 91.26.50.189)
- smtp.mailfrom=phytec.de; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=phytec.de;
-Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
- phytec.de discourages use of 91.26.50.189 as permitted sender)
-Received: from Diagnostix.phytec.de (91.26.50.189) by
- AM3PEPF0000A78E.mail.protection.outlook.com (10.167.16.117) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8207.12 via Frontend Transport; Wed, 27 Nov 2024 10:34:21 +0000
-Received: from Berlix.phytec.de (172.25.0.12) by Diagnostix.phytec.de
- (172.25.0.14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Wed, 27 Nov
- 2024 11:34:21 +0100
-Received: from Berlix.phytec.de (172.25.0.12) by Berlix.phytec.de
- (172.25.0.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Wed, 27 Nov
- 2024 11:34:20 +0100
-Received: from Berlix.phytec.de ([fe80::197e:d26b:2ca:c7b4]) by
- berlix.phytec.de ([fe80::197e:d26b:2ca:c7b4%4]) with mapi id 15.01.2507.006;
- Wed, 27 Nov 2024 11:34:20 +0100
-From: Teresa Remmet <T.Remmet@phytec.de>
-To: "kernel@pengutronix.de" <kernel@pengutronix.de>, Andrej Picej
-	<andrej.picej@norik.com>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"robh@kernel.org" <robh@kernel.org>, "shawnguo@kernel.org"
-	<shawnguo@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"festevam@gmail.com" <festevam@gmail.com>, "conor+dt@kernel.org"
-	<conor+dt@kernel.org>
-CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, PHYTEC Upstream
-	<upstream@lists.phytec.de>, "linux-arm-kernel@lists.infradead.org"
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.20; Wed, 27 Nov
+ 2024 10:43:04 +0000
+Received: from AM0PR0402MB3937.eurprd04.prod.outlook.com
+ ([fe80::4e37:f56b:8a3e:bff0]) by AM0PR0402MB3937.eurprd04.prod.outlook.com
+ ([fe80::4e37:f56b:8a3e:bff0%4]) with mapi id 15.20.8048.020; Wed, 27 Nov 2024
+ 10:43:04 +0000
+From: Carlos Song <carlos.song@nxp.com>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, "mkl@pengutronix.de"
+	<mkl@pengutronix.de>, Frank Li <frank.li@nxp.com>, "o.rempel@pengutronix.de"
+	<o.rempel@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"andi.shyti@kernel.org" <andi.shyti@kernel.org>, "shawnguo@kernel.org"
+	<shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>
+CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-i2c@vger.kernel.org"
+	<linux-i2c@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
 	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>
-Subject: Re: [Upstream] [PATCH 09/15] arm64: dts: imx8mm: move bulk of rtc
- properties to carrierboards
-Thread-Topic: [Upstream] [PATCH 09/15] arm64: dts: imx8mm: move bulk of rtc
- properties to carrierboards
-Thread-Index: AQHbQLfregM3vA0FpE+zcnaGsHT4ZQ==
-Date: Wed, 27 Nov 2024 10:34:20 +0000
-Message-ID: <67e55b1f18f2a676b890c9a4133575e8b90f6019.camel@phytec.de>
-References: <20241125081814.397352-1-andrej.picej@norik.com>
-	 <20241125081814.397352-10-andrej.picej@norik.com>
-In-Reply-To: <20241125081814.397352-10-andrej.picej@norik.com>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4] i2c: imx: support DMA defer probing
+Thread-Topic: [PATCH v4] i2c: imx: support DMA defer probing
+Thread-Index: AQHbQLkj2JmsLENAeEerpa0YTZxURQ==
+Date: Wed, 27 Nov 2024 10:43:04 +0000
+Message-ID:
+ <AM0PR0402MB39370E69BC4B71C761EE8377E8282@AM0PR0402MB3937.eurprd04.prod.outlook.com>
+References: <20241127083818.2108201-1-carlos.song@nxp.com>
+ <153e8e36-7b0e-4379-9cc3-6dacb5d705be@pengutronix.de>
+In-Reply-To: <153e8e36-7b0e-4379-9cc3-6dacb5d705be@pengutronix.de>
+Accept-Language: en-US
+Content-Language: en-US
 X-MS-Has-Attach:
 X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <085E60527F312C49AC3B060C855C54CE@phytec.de>
-Content-Transfer-Encoding: base64
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM0PR0402MB3937:EE_|PA4PR04MB9224:EE_
+x-ms-office365-filtering-correlation-id: 474f73de-f239-459b-f7b2-08dd0ed045bd
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|376014|366016|1800799024|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?Zw4driscAPviCDU6+WhpG7ExEoQa/11A7EG6LVJq0LkhtIhBY63VifDV/C/Z?=
+ =?us-ascii?Q?cg3hvf0JBXihc14ZOXtQ6NXVWrw+uHdx2ybjj1EUdNB8zRsF/mUnea7M7Gju?=
+ =?us-ascii?Q?fRs4I2vKY48Ehf8kKTGXiLwqB1qFgSM1PbjTcWTk/5WHv5iVOBzXdCDb3xzb?=
+ =?us-ascii?Q?zpoiFjiddZqNMW5ZwD2OffveGnSJgU7nKk3CIFhkt3N2bYrpyUjOGjpYZw0H?=
+ =?us-ascii?Q?NsLeqVc64nbX1dVuCoM39LjTFQIf/LyTPiYHoC2YXNHNXeY1rsqB8NkzAqe1?=
+ =?us-ascii?Q?sGCa2Ec012rLZtnUK3YmRm1A4cBLPcCRA66HYPvRH53nixQ8eOTaGczdLGp+?=
+ =?us-ascii?Q?OFOgsZxrzQB4ypGfhSEql1XAuKws/jOn4OPUg4zxwPmrGhq+rSZVVo8ByEEa?=
+ =?us-ascii?Q?WpNTG9dnuFw3nS81h7jZtlyHYyY3FOQtH4S4TJ+eryHYP5ntZPakk8ormY/y?=
+ =?us-ascii?Q?9roDmi6uHV2ztAetmnrp67f23u4CdiKXA/Xd7WmWNvBlZnCGE3HR5sAe4/+0?=
+ =?us-ascii?Q?DN9/OJE4UHygNUSZMVERNRS/FCnL0NJ+B5Oobml9gZzoL6mNVyqS5d1gb8Fn?=
+ =?us-ascii?Q?VME6GV9Nq+sSp0cqCt1PgTg6JCyyLO6ke05sI+F8cup2/Mix1dj4FWPHj94s?=
+ =?us-ascii?Q?8MMIFj04gjDBUWuEaKvhMZBjb7ebRybDulEogOQdI8+Ahn4oP91JGBvV9NuM?=
+ =?us-ascii?Q?GNi0wXSW5uvjmuBGwunFL8MN7Rnpo74JiQU3RhKzua4qJe2vVP9Od8OuXX/q?=
+ =?us-ascii?Q?pCrfgfCRMEewxnPpfJ6Ko5gX6McoVbVIIuxhZnDmi1R+usLyo71nN0AXii0p?=
+ =?us-ascii?Q?a60zUMLBbfMDBzEkbQ/ck5SXwav9FY0pAjbqtVg1QOXJMCFode4ncLIsa5X4?=
+ =?us-ascii?Q?ORZ/iUc4qFSyP4zsc+XFlyINm0Ul28jNhaZOegHIJZ1vpSAgpJm5tlCl1djo?=
+ =?us-ascii?Q?iTwYFjbL00BAdNzTdOQE/EqChirRhSG0RgnWuUFFLDgUsE2cJLQS4N2IgD1H?=
+ =?us-ascii?Q?Zw8HUMiUBPpyxXLaqSydUJ2dLHb1jy62zl0B1TG6J4xF/6tP8ku1NjV/12ZL?=
+ =?us-ascii?Q?lcbP+LqdXqniM12VV4ztSf1xdXaqWKwaOjZL1A5mCzVwi3HFB+1SlOOkm/XT?=
+ =?us-ascii?Q?or5JpAydvSzgzJBCRN5NooOMf5FREKDRPUZig4XIlF3soXyPIEeDxB2xII35?=
+ =?us-ascii?Q?VW3zcZTH8ZRfOI1X63aOU6MPmoNLJzDWPKinK8HRnIpiANVPXY7ZbTqIigrg?=
+ =?us-ascii?Q?lqhl6al9IjW5cVnT6RvESFp0mn5YqCI+7GKxZ26ddMM+s5D789kg/J6wM/3W?=
+ =?us-ascii?Q?QTf1+EKTsVnOy5GLF4m/XKRcBbIBa3AbNKFvA4ceQQvEghCapnh+S5IEMWUY?=
+ =?us-ascii?Q?TGJe+EY=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR0402MB3937.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?0h6UtcE3OsWc/7s3aeEd8wr1Km1pRA7x85Jn8PpUBEX0fyJYTYoRoRRyFvFd?=
+ =?us-ascii?Q?otGLS1xeKLIJc4xlQDoD2eGEHIRCaysucpI7AvInO12IbphCX5eAwKwqxFs7?=
+ =?us-ascii?Q?DaMo/lof3edvDJx0GkMmG2lWrdPe9BuFS6a7S1RcoFlWhiDT83DApVm5s7pI?=
+ =?us-ascii?Q?yDmHG/cm7WnJaMkEl6yaUgZ9DG3hVYWyJFUzVvo8K6zKYvvDJgQy7QuVNqSB?=
+ =?us-ascii?Q?90ANbdMcISwNSGej0UjzlyAo52A6wICcD96jAKefk3Jz1hDCpRVK+nt8joDk?=
+ =?us-ascii?Q?0wnc6pbZtCxoJbZFsW9t1fEucyNl6L/11MyCuYj1YBhc+ZImx9Ex8fBAH7WH?=
+ =?us-ascii?Q?pCvoVAMYyHs/swqAO0So2nW5BdZYCoHfz9T1vKs1Hww1I3uLwGWIzxJXJz/o?=
+ =?us-ascii?Q?qeXwYCMeeTKiOgAzfhBMXsy2837n3g+mtyYLH2E9NNkvGPHTgkRCYjtbTlwn?=
+ =?us-ascii?Q?jCzIUGqbwSypL3Gfs2yTW6fK7vruxyJsrt6AnXsrRApJ8JK9HEBwXWXS4ves?=
+ =?us-ascii?Q?unt2S+wLnMZxucleogOGVi/y9rUArldvqAFL7AzshzRzlqviVNJBejk7VxMm?=
+ =?us-ascii?Q?0aOgcEu66lxbhGqYo8CZ7m1A9iDGKYHSD3at8sRWu0slpJ93tU6g5hkzxbey?=
+ =?us-ascii?Q?mxnKNq8MZUJew78tsz5xvTrIc9i6w/vXs1amrE7hXcOjMQLy/XS4ordng9fW?=
+ =?us-ascii?Q?fHbns3as5rcDcTOUZtu3Xaz1VN83x3YWPBSc9qllfpwHwxQ9MpAi4RT0LSka?=
+ =?us-ascii?Q?iyP5suVkJe+LU1p3obMAySEhhqD3bvCTylpcQW01f6x1EsnPosv1h9ymi8hr?=
+ =?us-ascii?Q?uwOMO2j+derJCjWOg1pinFQBag63y5MnYlCC4Z87lMMvhjG2QXwHoe410HFu?=
+ =?us-ascii?Q?aDtPy0LaLCa0bqnM3NmWDB/p6rKjD3iwzLVzzV3d13fO4CkDK3tHI1nkufcv?=
+ =?us-ascii?Q?eGeGHJt3qfg91rGS1lOZWr44fUeiNfg7agpo9INX3SsBvtaD0ZuexC1ZELEt?=
+ =?us-ascii?Q?UMbP4wZiqV2xtUf6bZIQT215QzSiHZcNSdcDcB4jQl1SmnDlKJEWmWLe++3y?=
+ =?us-ascii?Q?OK+2Bw3REzojq2s2pgi4ZHyP/mS71Wj8Jh/VvqjIPB3R7gh9SlbwMHTUbZuc?=
+ =?us-ascii?Q?l73vQTtAQfx1Ez8NdQBcVLOPHTXC+NSrxZGur+QuDCKB/Q7a9cB83SZdA4Ho?=
+ =?us-ascii?Q?nqdnKDF8L9nW62mg7DpR3iyCdp03KxbRPzmvqHeOmFUksD+OJ/I1QweUDici?=
+ =?us-ascii?Q?6ubrlGXq3I4RwP4hME81QltAFNEf2YDLKFZl6n1DVWKTk5cWFDUo3q98YqVk?=
+ =?us-ascii?Q?TKB6Q1z1cQIRs68oxQ9A5F/7Eyhbs1DfBnx+iB1tral09kFpAJSWg+QC+JNu?=
+ =?us-ascii?Q?8J2wb54/eWoV0PWFQh6GT8eR1ShomCSqIsymbqiSC99gjVL1nZBCXxpVb26k?=
+ =?us-ascii?Q?R7AZARyWTe+quBI+xyFjpeHi3Oif4z91EiJmO2bP2VoVVRw+dyS1JKny8aNh?=
+ =?us-ascii?Q?npdjXGmgUFFzckRBl1k5WNibCBFwxCDtMHiX1+eEy5UthiEmUOyxnhL9HNLb?=
+ =?us-ascii?Q?uH8RCD47cBY2hgVk7dU=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM3PEPF0000A78E:EE_|DB8P195MB0647:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0fc96ead-dce6-4eda-11ae-08dd0ecf0e0d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|376014|7416014|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TEVRdHRqVXVSQkNIZUZCL0FKbWtiMit2OGtIRG9CRlpnV0VQL2NUYVlxRmhp?=
- =?utf-8?B?bmoydEsrM3ZoNE90dmNWNlZDYTJkaUkrd09uODBqZHRoUTFmUkU0OWFvc3VP?=
- =?utf-8?B?SklBZ3djSGFsUzBlZFJQejlYS2dHaXkvcWVxbFNrcUlITC9RY1ArREsrR1pn?=
- =?utf-8?B?c25yc0RIeUoyZXVhVFZyYU1rVlBWa0d5Q1MrMFdRQWp3dXlUeHhiVDRyTXQ2?=
- =?utf-8?B?c2ludTZuZUFCd0RRVmliYzVqUlB5L25BZW9ndFBrK0VVRms2ZG9CMDY1VHo1?=
- =?utf-8?B?YjZCaVV0VllzeHFUMHlpcmcvL2FxWEwzUnBTdjBpTk9OWXdaenVMZjZxTGIy?=
- =?utf-8?B?aGNjV0ZKZksyeUVRR296SjFkcFNvVElweklqNmJUVGpNNExlSlpVRnA5WnJ6?=
- =?utf-8?B?RGN3WE9Bb2JIWjFxMnc0eXBaa0N3TjI5RFAvYW54Q2RQVVZUTUZQM1NiZlJq?=
- =?utf-8?B?OWhqRk9lbStHSVJURW9rQ2p0VHozMzFqUmJpMytGU1VPRFB5c21QRmlmY3hG?=
- =?utf-8?B?dnZnOS9lbVlQK3RxUFdKUWJPd01xbk5xODNzcGk4c294Um90czhiS1RqM1RK?=
- =?utf-8?B?UUptMDZGaWVsRElGNFZqeTZGbFdSNHVjTnowYVB6cHhtTnRpWklxbUNFVE1q?=
- =?utf-8?B?WW9yRFlCYlJJSEFsdk1DY0xOVHdzNEhlbm9VOG5seDNuSUVRWlpTbkRReTBp?=
- =?utf-8?B?WkUyeG1NVFU0OVI0YkZSVk1RUS90Mm9pRVFVbENreUo4U1h4MG5zM3k0V0o1?=
- =?utf-8?B?N3h2S3BzaXBNNlF5Z09OMGpzQ2F3MUFJV2RpNW0rdmJNZXdmUzBNaWN2cXBS?=
- =?utf-8?B?bU5WdkZiOW05RDc5bDRzUU85b0diUWc1ZGFxbTE1dUwxeWpvYlo2RXduamVh?=
- =?utf-8?B?a0Nxb0F6Q1RIODRyYjdUK1ltejhLTDQ2S2h1WkJFelIvVTVNK09oZjY2aVZ4?=
- =?utf-8?B?UXVIdjBJZVdBbGg2VlQ1MU1UU2NDckFONGxlNnJKZVN2QVpHaFpHZEM0WDFU?=
- =?utf-8?B?VEFJNCtSY3hRMmE5T0lQK0VWMjJaVTZYODB5SzRUM3lFb2ZKd2hBN3lDYmly?=
- =?utf-8?B?c2crd2wrczRETWV6MWFWcnRlVHM1ckgrOUxmZnpUR3FzdUJVbTFabEE1Q2F4?=
- =?utf-8?B?R3piSjVzZEZjbGg4OUViSW42QnlpQWhCdDR4ekVoTTAza012WGpubUJJdUVu?=
- =?utf-8?B?ZFZtT0t6VERLSlVnWW1UVjJZUWg2RkU1bnhaUGd3N0gyMW1ISmFTVGRubmZO?=
- =?utf-8?B?dURYM3UvMG1ETmkxd2tGOE16d0haSjVJYUN5aXhZeHZHUWFydFhzNWdSU25l?=
- =?utf-8?B?b3V2VjZobVR6eVNjcTRwbGkzWXlpMzRrdE53aGhLRTJiQktMWVduajU1TnI2?=
- =?utf-8?B?cG5pUS9iU2R1Qk0zeUMzY0JXVktKS3FWbzl2TUd5MlZoUklZVW4xZmNKcEJJ?=
- =?utf-8?B?aERWbzQ4c3FhZGhMZU15SndKcVFSVWZSQ2ZDYkVQaXhNenprdS96T1dqRHRR?=
- =?utf-8?B?dnBXVityUTdqR0JEUG1UU254NGtkd2dyaVRRVVZ4Z0NsUjV6NDJoRVNhWHFM?=
- =?utf-8?B?NEJYL3BrTHRJY3RuMjM3dERXYy9xbnVZWlo1eHhUL3h3ZU1FeGs2a1F1T2ph?=
- =?utf-8?B?NGt5eFg4ZmxDQXAxVXgrS0FNVCt1bGNzNkJiMmllUUpVQUJRSVNDWEFlZEdu?=
- =?utf-8?B?TkpjblZud3NRQzlkNkxtQ3g2Z0tWalRjYnRFZks5Ung0bjY2bEFiK282ZzhP?=
- =?utf-8?B?UU92YmJaNGRPbkc1Q3lxRTV1STNRWE1CWW51YUNRb21ITkliTUtEOFIrYSs0?=
- =?utf-8?B?cTU0WU9FU3RXRGZWZStTMUh4YWoxb2w2cG5kZkVPZlN1MFlTczBqZ1NGN3V6?=
- =?utf-8?B?bjIvekVCQ3FJYUE5MHY0TnU3TkpKckZGU1lOVkRub3ZmeTdZaXVSMzB4M3k3?=
- =?utf-8?Q?07eOTRmuTdkOMIhKNTXF35WiE8XTx36S?=
-X-Forefront-Antispam-Report:
-	CIP:91.26.50.189;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:Diagnostix.phytec.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(376014)(7416014)(82310400026);DIR:OUT;SFP:1102;
-X-OriginatorOrg: phytec.de
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2024 10:34:21.2922
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR0402MB3937.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 474f73de-f239-459b-f7b2-08dd0ed045bd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Nov 2024 10:43:04.2209
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0fc96ead-dce6-4eda-11ae-08dd0ecf0e0d
-X-MS-Exchange-CrossTenant-Id: e609157c-80e2-446d-9be3-9c99c2399d29
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e609157c-80e2-446d-9be3-9c99c2399d29;Ip=[91.26.50.189];Helo=[Diagnostix.phytec.de]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AM3PEPF0000A78E.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8P195MB0647
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: uWCoiBsb9vGixGz2655BMEAzRqBvcwrEs3I39bVp043BGsRv47SIghLLPkaPB5U+pWyQr1xPSA4fa47YcR8XMA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9224
 
-SGVsbG8gQW5kcmVqLA0KDQpBbSBNb250YWcsIGRlbSAyNS4xMS4yMDI0IHVtIDA5OjE4ICswMTAw
-IHNjaHJpZWIgQW5kcmVqIFBpY2VqOg0KPiBGcm9tOiBZYW5uaWMgTW9vZyA8eS5tb29nQHBoeXRl
-Yy5kZT4NCj4gDQo+IE1vdmUgcHJvcGVydGllcyBmcm9tIFNvTSdzIGR0c2kgdG8gY2FycmllcmJv
-YXJkJ3MgZHRzIGFzIHRoZXkgYXJlDQo+IGFjdHVhbGx5IGRlZmluZWQgYnkgdGhlIGNhcnJpZXIg
-Ym9hcmQgZGVzaWduLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogWWFubmljIE1vb2cgPHkubW9vZ0Bw
-aHl0ZWMuZGU+DQo+IFNpZ25lZC1vZmYtYnk6IEFuZHJlaiBQaWNlaiA8YW5kcmVqLnBpY2VqQG5v
-cmlrLmNvbT4NCj4gLS0tDQo+IMKgYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1t
-LXBoeWJvYXJkLXBvbGlzLXJkay5kdHMgfCA0ICsrKysNCj4gwqBhcmNoL2FybTY0L2Jvb3QvZHRz
-L2ZyZWVzY2FsZS9pbXg4bW0tcGh5Y29yZS1zb20uZHRzacKgwqDCoMKgwqDCoCB8IDQgLS0tLQ0K
-PiDCoGFyY2gvYXJtNjQvYm9vdC9kdHMvZnJlZXNjYWxlL2lteDhtbS1waHlnYXRlLXRhdXJpLWwu
-ZHRzwqDCoMKgIHwgNCArKysrDQo+IMKgMyBmaWxlcyBjaGFuZ2VkLCA4IGluc2VydGlvbnMoKyks
-IDQgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm02NC9ib290L2R0cy9m
-cmVlc2NhbGUvaW14OG1tLXBoeWJvYXJkLXBvbGlzLQ0KPiByZGsuZHRzIGIvYXJjaC9hcm02NC9i
-b290L2R0cy9mcmVlc2NhbGUvaW14OG1tLXBoeWJvYXJkLXBvbGlzLXJkay5kdHMNCj4gaW5kZXgg
-N2FhZjcwNWM3ZTQ3Li5mNWY1MDNjM2M2YjkgMTAwNjQ0DQo+IC0tLSBhL2FyY2gvYXJtNjQvYm9v
-dC9kdHMvZnJlZXNjYWxlL2lteDhtbS1waHlib2FyZC1wb2xpcy1yZGsuZHRzDQo+ICsrKyBiL2Fy
-Y2gvYXJtNjQvYm9vdC9kdHMvZnJlZXNjYWxlL2lteDhtbS1waHlib2FyZC1wb2xpcy1yZGsuZHRz
-DQo+IEBAIC0yMjEsNiArMjIxLDEwIEBAICZwY2llX3BoeSB7DQo+IMKgDQo+IMKgLyogUlRDICov
-DQo+IMKgJnJ2MzAyOCB7DQo+ICvCoMKgwqDCoMKgwqDCoGludGVycnVwdC1wYXJlbnQgPSA8Jmdw
-aW8xPjsNCj4gK8KgwqDCoMKgwqDCoMKgaW50ZXJydXB0cyA9IDwzIElSUV9UWVBFX0xFVkVMX0xP
-Vz47DQo+ICvCoMKgwqDCoMKgwqDCoHBpbmN0cmwtMCA9IDwmcGluY3RybF9ydGM+Ow0KDQpZb3Ug
-c2hvdWxkIGFsc28gbW92ZSB0aGUgcGluY3RybCBzZXR0aW5ncyB0byB0aGUgY2FycmllciBib2Fy
-ZHMuDQpBcyB0aGUgcGluIGNhbiBiZSB1c2VkIGRpZmZlcmVudGx5IGFuZCBzaG91bGQgbm90IGJl
-IGRlZmluZWQgYnkgdGhlDQpTb00uDQoNClRoYW5rcywNClRlcmVzYSANCg0KPiArwqDCoMKgwqDC
-oMKgwqBwaW5jdHJsLW5hbWVzID0gImRlZmF1bHQiOw0KPiDCoMKgwqDCoMKgwqDCoMKgYXV4LXZv
-bHRhZ2UtY2hhcmdlYWJsZSA9IDwxPjsNCj4gwqDCoMKgwqDCoMKgwqDCoHRyaWNrbGUtcmVzaXN0
-b3Itb2htcyA9IDwzMDAwPjsNCj4gwqDCoMKgwqDCoMKgwqDCoHdha2V1cC1zb3VyY2U7DQo+IGRp
-ZmYgLS1naXQgYS9hcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bW0tcGh5Y29yZS1z
-b20uZHRzaQ0KPiBiL2FyY2gvYXJtNjQvYm9vdC9kdHMvZnJlZXNjYWxlL2lteDhtbS1waHljb3Jl
-LXNvbS5kdHNpDQo+IGluZGV4IGNjZWQ4MjIyNmM2ZC4uZmRmZTI4NzgwZDZmIDEwMDY0NA0KPiAt
-LS0gYS9hcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bW0tcGh5Y29yZS1zb20uZHRz
-aQ0KPiArKysgYi9hcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bW0tcGh5Y29yZS1z
-b20uZHRzaQ0KPiBAQCAtMzAxLDEwICszMDEsNiBAQCBlZXByb21ANTEgew0KPiDCoMKgwqDCoMKg
-wqDCoMKgLyogUlRDICovDQo+IMKgwqDCoMKgwqDCoMKgwqBydjMwMjg6IHJ0Y0A1MiB7DQo+IMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgY29tcGF0aWJsZSA9ICJtaWNyb2NyeXN0YWws
-cnYzMDI4IjsNCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGludGVycnVwdHMgPSA8
-MyBJUlFfVFlQRV9MRVZFTF9MT1c+Ow0KPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-aW50ZXJydXB0LXBhcmVudCA9IDwmZ3BpbzE+Ow0KPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgcGluY3RybC1uYW1lcyA9ICJkZWZhdWx0IjsNCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoHBpbmN0cmwtMCA9IDwmcGluY3RybF9ydGM+Ow0KPiDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoHJlZyA9IDwweDUyPjsNCj4gwqDCoMKgwqDCoMKgwqDCoH07DQo+IMKg
-fTsNCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtNjQvYm9vdC9kdHMvZnJlZXNjYWxlL2lteDhtbS1w
-aHlnYXRlLXRhdXJpLWwuZHRzDQo+IGIvYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14
-OG1tLXBoeWdhdGUtdGF1cmktbC5kdHMNCj4gaW5kZXggYzliZjRhYzI1NGJiLi5iN2IxOGQ1YTRm
-NjggMTAwNjQ0DQo+IC0tLSBhL2FyY2gvYXJtNjQvYm9vdC9kdHMvZnJlZXNjYWxlL2lteDhtbS1w
-aHlnYXRlLXRhdXJpLWwuZHRzDQo+ICsrKyBiL2FyY2gvYXJtNjQvYm9vdC9kdHMvZnJlZXNjYWxl
-L2lteDhtbS1waHlnYXRlLXRhdXJpLWwuZHRzDQo+IEBAIC0yMTUsNiArMjE1LDEwIEBAICZwd200
-IHsNCj4gwqANCj4gwqAvKiBSVEMgKi8NCj4gwqAmcnYzMDI4IHsNCj4gK8KgwqDCoMKgwqDCoMKg
-aW50ZXJydXB0LXBhcmVudCA9IDwmZ3BpbzE+Ow0KPiArwqDCoMKgwqDCoMKgwqBpbnRlcnJ1cHRz
-ID0gPDMgSVJRX1RZUEVfTEVWRUxfTE9XPjsNCj4gK8KgwqDCoMKgwqDCoMKgcGluY3RybC0wID0g
-PCZwaW5jdHJsX3J0Yz47DQo+ICvCoMKgwqDCoMKgwqDCoHBpbmN0cmwtbmFtZXMgPSAiZGVmYXVs
-dCI7DQo+IMKgwqDCoMKgwqDCoMKgwqBhdXgtdm9sdGFnZS1jaGFyZ2VhYmxlID0gPDE+Ow0KPiDC
-oMKgwqDCoMKgwqDCoMKgdHJpY2tsZS1yZXNpc3Rvci1vaG1zID0gPDMwMDA+Ow0KPiDCoMKgwqDC
-oMKgwqDCoMKgd2FrZXVwLXNvdXJjZTsNCg0KLS0gDQpQSFlURUMgTWVzc3RlY2huaWsgR21iSCB8
-IEJhcmNlbG9uYS1BbGxlZSAxIHwgNTUxMjkgTWFpbnosIEdlcm1hbnkNCg0KR2VzY2jDpGZ0c2bD
-vGhyZXI6IERpcGwuLUluZy4gTWljaGFlbCBNaXRlemtpLCBEaXBsLi1JbmcuIEJvZG8gSHViZXIs
-DQpEaXBsLi1JbmcuIChGSCkgTWFya3VzIExpY2tlcyB8IEhhbmRlbHNyZWdpc3RlciBNYWlueiBI
-UkIgNDY1NiB8DQpGaW5hbnphbXQgTWFpbnogfCBTdC5Oci4gMjYvNjY1LzAwNjA4LCBERSAxNDkw
-NTk4NTUNCg==
+
+
+> -----Original Message-----
+> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Sent: Wednesday, November 27, 2024 4:38 PM
+> To: Carlos Song <carlos.song@nxp.com>; mkl@pengutronix.de; Frank Li
+> <frank.li@nxp.com>; o.rempel@pengutronix.de; kernel@pengutronix.de;
+> andi.shyti@kernel.org; shawnguo@kernel.org; s.hauer@pengutronix.de;
+> festevam@gmail.com
+> Cc: imx@lists.linux.dev; linux-i2c@vger.kernel.org;
+> linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org
+> Subject: [EXT] Re: [PATCH v4] i2c: imx: support DMA defer probing
+>
+> Caution: This is an external email. Please take care when clicking links =
+or
+> opening attachments. When in doubt, report the message using the 'Report =
+this
+> email' button
+>
+>
+> Hello Carlos,
+>
+> On 27.11.24 09:38, carlos.song@nxp.com wrote:
+> > From: Carlos Song <carlos.song@nxp.com>
+> >
+> > Return -EPROBE_DEFER when dma_request_slave_channel() because DMA
+> > driver have not ready yet.
+> >
+> > Move i2c_imx_dma_request() before registering I2C adapter to avoid
+> > infinite loop of .probe() calls to the same driver, see "e8c220fac415
+> > Revert "i2c: imx: improve the error handling in i2c_imx_dma_request()""
+> > and "Documentation/driver-api/driver-model/driver.rst".
+> >
+> > Use CPU mode to avoid stuck registering i2c adapter when DMA resources
+> > are unavailable.
+>
+> Please try to address open questions before sending new versions of the p=
+atch
+> set. Otherwise, it's difficult to follow the conversation.
+>
+> Did you see my question[1] on your v2:
+>
+
+Hi, thank you so much! So sorry about it... I missed it yesterday. I will a=
+nswer your question[1] in this mail.
+
+
+> | Wouldn't this break probe for all i2c-imx users who have
+> | CONFIG_IMX_SDMA disabled?
+> |
+
+I have tested i2c probe at IMX and LS platform when DMA disabled, it won't =
+break i2c-imx probe.
+When require DMA channel in i2c_imx_dma_request, find no devices and return
+-ENODEV, as you see at V4 patch, it will continue to probe and work in PIO =
+mode.
+I2C adapter should keep available whatever DMA mode is or isn't enabled.
+
+> | Also I am wondering on what kernel version and what configuration
+> | (CONFIG_I2C_IMX=3D?, CONFIG_IMX_SDMA=3D?) you have that made you run in=
+to
+> | this situation.
+> |
+
+I want to correct something, these code about DMA in i2c-imx.c is for eDMA =
+not for SDMA.
+For eDMA mode, I have tested this patch at layerscape-1043 platform. My pat=
+ch is based on
+cfba9f07a1d6 (tag: next-20241122, origin/master, origin/HEAD).
+
+Test log is :
+No apply this patch:
+CONFIG_I2C_IMX=3Dy
+CONFIG_FSL_EDMA=3Dy
+root@ls1043ardb:~# dmesg | grep i2c
+[    1.162053] i2c i2c-0: IMX I2C adapter registered
+[    1.166826] i2c i2c-0: using dma0chan16 (tx) and dma0chan17 (rx) for DMA=
+ transfers
+[    4.722057] i2c_dev: i2c /dev entries driver
+
+Not apply the patch:
+CONFIG_I2C_IMX=3Dy
+CONFIG_FSL_EDMA=3Dm
+root@ls1043ardb:~# dmesg | grep i2c
+[    1.166381] i2c i2c-0: IMX I2C adapter registered
+[    4.719226] i2c_dev: i2c /dev entries driver
+(result shows i2c not enabled the eDMA mode)
+root@ls1043ardb:~# i2cdetect -y -l
+i2c-0   i2c             2180000.i2c                             I2C adapter
+root@ls1043ardb:~# i2cdetect -y 0
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+00:                         08 -- -- -- -- -- -- --
+10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+40: UU -- -- -- -- -- -- -- -- -- -- -- UU -- -- --
+50: -- UU UU UU -- -- -- -- -- -- -- -- -- -- -- --
+60: -- -- -- -- -- -- -- -- -- 69 -- -- -- -- -- --
+70: -- -- -- -- -- -- -- --
+
+After apply the patch:
+CONFIG_I2C_IMX=3Dy
+CONFIG_FSL_EDMA=3Dm
+root@ls1043ardb:~#
+root@ls1043ardb:~# dmesg | grep i2c
+[    4.697046] i2c_dev: i2c /dev entries driver
+[    7.304142] imx-i2c 2180000.i2c: using dma0chan16 (tx) and dma0chan17 (r=
+x) for DMA transfers
+[    7.313532] i2c i2c-0: IMX I2C adapter registered
+(result shows i2c probed after eDMA module installed)
+root@ls1043ardb:~#
+root@ls1043ardb:~# i2cdetect -y -l
+i2c-0   i2c             2180000.i2c                             I2C adapter
+root@ls1043ardb:~# i2cdetect -y 0
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+00:                         08 -- -- -- -- -- -- --
+10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+40: UU -- -- -- -- -- -- -- -- -- -- -- UU -- -- --
+50: -- UU UU UU -- -- -- -- -- -- -- -- -- -- -- --
+60: -- -- -- -- -- -- -- -- -- 69 -- -- -- -- -- --
+70: -- -- -- -- -- -- -- --
+
+
+> | I'd have expected that with fw_devlink enabled, the I2C controller
+> | wouldn't be probed before the DMA provider is available.
+>
+
+This is a legacy patch, it has been in our local tree for a long time. The =
+related history is relatively vague.
+I reproduced the problem and found this patch is effective, so I referred t=
+he community patch and
+legacy patch to rewrite the commit log(I am not sure if this would happened=
+ in some cases so I kept this information).
+Now it seems that these descriptions are redundant. I should completely rem=
+oved this in the commit log:
+    Move i2c_imx_dma_request() before registering I2C adapter to avoid
+    infinite loop of .probe() calls to the same driver, see "e8c220fac415
+    Revert "i2c: imx: improve the error handling in i2c_imx_dma_request()""
+    and "Documentation/driver-api/driver-model/driver.rst".
+
+[1]: https://lore.kernel.org/all/19a43db4-db5c-4638-9778-d94fb571a206@pengu=
+tronix.de/
+[2]:https://lore.kernel.org/all/153e8e36-7b0e-4379-9cc3-6dacb5d705be@pengut=
+ronix.de/
+
+> >
+> > Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> > Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+> > ---
+> > Change for V4:
+> > - Output "Only use PIO mode" log in debug level when no DMA configure.
+> > Change for V3:
+> > - According to Marc's comment, remove error print when defer probe.
+> >   Add info log when DMA has not been enabled and add error log when
+> >   DMA error, both won't stuck the i2c adapter register, just for remind=
+ing,
+> >   i2c adapter is working only in PIO mode.
+> > Change for V2:
+> > - According to Frank's comments, wrap at 75 char and Simplify fix code
+> >   at i2c_imx_dma_request().
+> > - Use strict patch check, fix alignment warning at
+> > i2c_imx_dma_request()
+> > ---
+> >  drivers/i2c/busses/i2c-imx.c | 31 +++++++++++++++++++++++--------
+> >  1 file changed, 23 insertions(+), 8 deletions(-)
+> >
+> > diff --git a/drivers/i2c/busses/i2c-imx.c
+> > b/drivers/i2c/busses/i2c-imx.c index 5ed4cb61e262..b11d66d56c55 100644
+> > --- a/drivers/i2c/busses/i2c-imx.c
+> > +++ b/drivers/i2c/busses/i2c-imx.c
+> > @@ -397,17 +397,16 @@ static void i2c_imx_reset_regs(struct
+> > imx_i2c_struct *i2c_imx)  }
+> >
+> >  /* Functions for DMA support */
+> > -static void i2c_imx_dma_request(struct imx_i2c_struct *i2c_imx,
+> > -                                             dma_addr_t
+> phy_addr)
+> > +static int i2c_imx_dma_request(struct imx_i2c_struct *i2c_imx,
+> > +dma_addr_t phy_addr)
+> >  {
+> >       struct imx_i2c_dma *dma;
+> >       struct dma_slave_config dma_sconfig;
+> > -     struct device *dev =3D &i2c_imx->adapter.dev;
+> > +     struct device *dev =3D i2c_imx->adapter.dev.parent;
+> >       int ret;
+> >
+> >       dma =3D devm_kzalloc(dev, sizeof(*dma), GFP_KERNEL);
+> >       if (!dma)
+> > -             return;
+> > +             return -ENOMEM;
+> >
+> >       dma->chan_tx =3D dma_request_chan(dev, "tx");
+> >       if (IS_ERR(dma->chan_tx)) {
+> > @@ -452,7 +451,7 @@ static void i2c_imx_dma_request(struct
+> imx_i2c_struct *i2c_imx,
+> >       dev_info(dev, "using %s (tx) and %s (rx) for DMA transfers\n",
+> >               dma_chan_name(dma->chan_tx),
+> > dma_chan_name(dma->chan_rx));
+> >
+> > -     return;
+> > +     return 0;
+> >
+> >  fail_rx:
+> >       dma_release_channel(dma->chan_rx);
+> > @@ -460,6 +459,8 @@ static void i2c_imx_dma_request(struct
+> imx_i2c_struct *i2c_imx,
+> >       dma_release_channel(dma->chan_tx);
+> >  fail_al:
+> >       devm_kfree(dev, dma);
+> > +
+> > +     return ret;
+> >  }
+> >
+> >  static void i2c_imx_dma_callback(void *arg) @@ -1803,6 +1804,23 @@
+> > static int i2c_imx_probe(struct platform_device *pdev)
+> >       if (ret =3D=3D -EPROBE_DEFER)
+> >               goto clk_notifier_unregister;
+> >
+> > +     /*
+> > +      * Init DMA config if supported, -ENODEV means DMA not enabled at
+> > +      * this platform, that is not a real error, so just remind "only
+> > +      * PIO mode is used". If DMA is enabled, but meet error when requ=
+est
+> > +      * DMA channel, error should be showed in probe error log. PIO mo=
+de
+> > +      * should be available regardless of DMA.
+> > +      */
+> > +     ret =3D i2c_imx_dma_request(i2c_imx, phy_addr);
+> > +     if (ret) {
+> > +             if (ret =3D=3D -EPROBE_DEFER)
+> > +                     goto clk_notifier_unregister;
+> > +             else if (ret =3D=3D -ENODEV)
+> > +                     dev_dbg(&pdev->dev, "Only use PIO mode\n");
+> > +             else
+> > +                     dev_err_probe(&pdev->dev, ret, "Failed to setup
+> DMA, only use PIO mode\n");
+> > +     }
+> > +
+> >       /* Add I2C adapter */
+> >       ret =3D i2c_add_numbered_adapter(&i2c_imx->adapter);
+> >       if (ret < 0)
+> > @@ -1817,9 +1835,6 @@ static int i2c_imx_probe(struct platform_device
+> *pdev)
+> >               i2c_imx->adapter.name);
+> >       dev_info(&i2c_imx->adapter.dev, "IMX I2C adapter registered\n");
+> >
+> > -     /* Init DMA config if supported */
+> > -     i2c_imx_dma_request(i2c_imx, phy_addr);
+> > -
+> >       return 0;   /* Return OK */
+> >
+> >  clk_notifier_unregister:
+>
+>
+> --
+> Pengutronix e.K.                           |
+> |
+> Steuerwalder Str. 21                       |
+> http://www.pen/
+> gutronix.de%2F&data=3D05%7C02%7Ccarlos.song%40nxp.com%7C1acf840d499f
+> 49a7872408dd0ebedc39%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0
+> %7C638682935131084746%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAw
+> MDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&s
+> data=3DY9Qn9XEk15yu4CespwsNu6hl3%2FqfNTvEeOn4ZvnGxbo%3D&reserved=3D0
+> |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0
+> |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:
+> +49-5121-206917-5555 |
