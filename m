@@ -1,183 +1,116 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108001DC74A
-	for <imx@lists.linux.dev>; Tue, 26 Nov 2024 23:53:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384C12581
+	for <imx@lists.linux.dev>; Wed, 27 Nov 2024 00:13:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732665186; cv=none; b=NWs13fZFxRZbEjq3Ny5eV3hN5bwxgRp6TG5beDqA1Plq6jCF79s0uWWm2pQgHJqsMyahKPbFbPxLIqLhCuoilJzblu4lLAJ6vHCxDlFwo8MCvF8c0E1PQ6NijAhJl4htZEZvbiyJblo/Ejie/VdYS6TTlfXXmWsybFRtVSEvX/Y=
+	t=1732666393; cv=none; b=bWXLkmwkxwtrIHJt3YkFNw9uGI2D2DFGWEOVkFE0g6kyF74NLT5rvxVsW+biPqZLNlc4h+IhPDag3S3Wpk2v1AAhPScCygS3xvRwp8HLFOgSmy4kvGvTtc2GzU783YHA0lH85kPWd2C/PGqvxAAvjbkMsuxVrYAJpZg7M8QJemg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732665186; c=relaxed/simple;
-	bh=V7GPfC/BvKvlcEQJz3x25eNhixzXaqUhRbElO3/Aj7E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aUx+QfKfuRb9HhtshAFppz36KEjHTY7tzS9IYEIOuMMuBmsaCeoArunTF7/L9c28IJ8T7GcCld4sHWtrUqI1AccDHpXXuffbXGNoORi4n/X4avq9zEEb4rEqNLuFm4RYHfNvn1UEgHMTu4TEZuV9bQ6sALyq8kYe6JY616FwWno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HDui21Kn; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+	s=arc-20240116; t=1732666393; c=relaxed/simple;
+	bh=1s0GMdOaub6JZFEU/3kZ6RzEwRPZmYNpUF3LvYdjTPY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kL9SRWkFyIZfNVK9giyWfliad3iY1/VWwfakNulvTjVmE5SnqiFB58OnVaBh3IDicRClUfTXuCcZi+JM/oyx70qpBEdqszr06WIYNalkebBQkYXkPgnbNNKGM8L2xrHvQ2aUBG227WFJgm0JpnJ0cVmhHE2hUWLSy+96QcTiIpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HzdRi+u9; arc=none smtp.client-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HDui21Kn"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2129fd7b1a5so44620655ad.1
-        for <imx@lists.linux.dev>; Tue, 26 Nov 2024 15:53:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HzdRi+u9"
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2ffa12ad18cso72047921fa.2
+        for <imx@lists.linux.dev>; Tue, 26 Nov 2024 16:13:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732665184; x=1733269984; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=Mv0GRhBH22P990rmtaQGs6C18s0425l5jLKWrD0nHGY=;
-        b=HDui21KnpyIxUKdurr5kwPJTX2mnqaqzhX3p2hzBkEUSKs56QLw5noCx92FcoxrOF5
-         weryW3ggGgGxVt6a/QCDhwTxIU1s+ONsvOVL3V5AAkKmbADNalCy3Ic817xDnwLZb1MD
-         i5S7uLjBKt+yGHroI+Nz7O4c024jYMiMF+RviP4haNMjU5bJcKhQpd17WSCP7EJ5NMWf
-         P6hBnp+5vr4CbIAhGK8WPt8sl4PROusDslY0GSowbGS1ev6Lo2ZS63RsE+WXWuiICGTT
-         pQH21zgu23x3iyVDn2hVH/TxOpmuB1Y9sVaj6OJzPHDG1gDtOqZsVf6MnIPIV6IiKSlR
-         xsnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732665184; x=1733269984;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1732666390; x=1733271190; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Mv0GRhBH22P990rmtaQGs6C18s0425l5jLKWrD0nHGY=;
-        b=Uju7zlfBmVk2L7Vmlu7ZhHaPGLv44/Bcw3ZDb2T+4fKPX5tIOlP1W5s6OeIzePb+qS
-         ydOe0ChX+ICoQs2nTeq096cLV3o6SgV+oaJsWIpAV9q0numqpB6T9MryXVrOTdUkoxkZ
-         nyXXBkSi3K1nKQA8m7jMAwp1OK8XJNouDpk0Ln/IOVxirRz532blbj9zHAkZJ8H+tIdv
-         u6868ytXDCCr+oreJnIYawxtcR0bYUU4xICAy10OI/mVnZTg44+HcUgXrLcEK8hsq8eL
-         QGRXY1AOd5qEvfH1UvkdV3eMMITOw3CTRKfo+4bHiKwneDYBFe5B9wmQy84J+I14oBS0
-         fHOw==
-X-Forwarded-Encrypted: i=1; AJvYcCXJCGi/E+6NJBN9EXCtSJeavhH+Grc55s/N1kDsjNbSfA5AYywuC3Ybt/VZkx10H2cEgOc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxtQbT/Q1o+XJSwkH4vvXNUZ8JDj7tcwzTXDbQgchyfpON9RTnb
-	/R7Bn8VoBjo+lHEzFrb51DwmzMD+i5CxQaAt/uthSBwOyGLdJSc0
-X-Gm-Gg: ASbGnctYwHkWiB5HGSIrak/x6LTzsChxVYtZJVx7n0wB7KX9j/sl0RcOG9hh3pEOC+3
-	dGgzzL8A2eR1/m7OtldQQnsNT8x954DFYTiFDLRKJHEd/ah8z+jLePfyYd3fb3QzUzx19Uk1rSz
-	MiErceFAnbUPP//0mkk3Xuv1BVXmdDWX5mDcaE4+rq5roBEZhrNxTTx8SA95dfdpNpPkl4i8uFF
-	ERNP3bPpWps1YFxGl6ZlVY8lz/ZHcDHdcDfdd/EW28JJUOTJj9Ib5A8QpiO52v1MaB2TjPWvtWk
-	vtNHGk0nAkrvJNBmjys/vm8=
-X-Google-Smtp-Source: AGHT+IE+aE0RgQuJgMVW2Z2si/glU755xysZtQ/41BKL2LKF0wCUKtK1Qcir7UQQcj0Abw8HICDgRw==
-X-Received: by 2002:a17:902:da92:b0:211:efa9:a4df with SMTP id d9443c01a7336-2150128c651mr9699265ad.17.1732665184346;
-        Tue, 26 Nov 2024 15:53:04 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2129dbfed7esm90546515ad.148.2024.11.26.15.53.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Nov 2024 15:53:03 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <1ff005f8-384d-465e-9597-b6d5fd903862@roeck-us.net>
-Date: Tue, 26 Nov 2024 15:53:01 -0800
+        bh=1mHAZtZY187R1tmVbvpFVMB0HrZE579WEANnpnfyzOs=;
+        b=HzdRi+u9teygXx7D317PJap5IZ09ugbTUZIoi+w6o/ZmCJgoL9VD+3rvFCkyFW7ula
+         MkTLZzDSHk+Q0KA2MRoqEn7WGBIIpLEqB8z+lPrHMNqK7paHsH1X3bGaDH9Z/msOXOo7
+         eAteKlQm+FS1BFEAw0UL80CE/Wwjp33Sq1ZPaIhtzrgxvY7kfqpoC2y+or+uhP1uFfXK
+         u1YY4XYERT47+GyrErkmyVptghwA4/0gDhi6fhQZGl27lxhz1I4hEjwf7dNDkpgFpctE
+         8S/T/8Eizqndi7scWTQ9aMnsQiKXl2H980s3wx84lE2kPn2zq8yOYp1bvhehuoToE8LB
+         Fyag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732666390; x=1733271190;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1mHAZtZY187R1tmVbvpFVMB0HrZE579WEANnpnfyzOs=;
+        b=VTK1tSClmODVX+1gxQBI6Yr7NO8xFbUK6jvZTCyZPnI3BDnMx6gPOlyXB4MupiamW0
+         JJnAwFpWET/ItLhx0NfCCCqAlGu4ih1EFzVOR6zI7kyZi9bNh+Es+rilNViaxTqLcZ/M
+         YrzIh4g17GoXisKAm9tzu0iUUPumlTB0a+KAKUvjiPpldNqppz3rKVn+tT+zeoOEu0v7
+         yAwAb85m5qGDcsM24qhJ0RBgYddmZLqsOcMO/mfDLTHIBuGmT3TJW9ezrzNWTTRGXAhz
+         d3dN/AmqPy9MoWDMmMaDZy97sFZELijNzyUpAf7Nx40Gh1e3JLXJaEA3V/CRa+uvOxbf
+         XuXg==
+X-Forwarded-Encrypted: i=1; AJvYcCUwf+kbvUw7hAaq3mqIUeT/c12GRe+dx5k5rYGX5fSuzRAxRSVfnOsMjhXE4lw1SPr8N5A=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxRasRR3shwtggolRK3C9JWxXVsXwksV9w4CeXcGQ6vZLgo7Yxi
+	bMHDq3BqcANoB2qE+EdR75J5VyvmcqwRmAnljO8drqD7RAxZZQT8K3lANNJenUruOniKz0hlMD0
+	d2fW/sgOib4o5KsaiG8dtVkaTdMk=
+X-Gm-Gg: ASbGncu7ANxXTlZZzeDo78H09CieJi1dJt87DoGYaB9NFjrSxsX5WXTZYBGE62GUje3
+	8JcfxYwUMy29gjXK0dwCosGJL+rFLsAYFC1RKe1jJq5bedcUbBP00cyDRPAEz0Ck=
+X-Google-Smtp-Source: AGHT+IG8q8GRhyD6Rb04/tM7viMaskxhAL4cx8GuBAEbIRuca10p/iXJ1l1H05icicDUVP5+9Ae8JTKFG8Cdjh4SJgw=
+X-Received: by 2002:a05:651c:12c4:b0:2ff:54f3:a91f with SMTP id
+ 38308e7fff4ca-2ffd60a5943mr4507171fa.24.1732666390097; Tue, 26 Nov 2024
+ 16:13:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] ARM: imx: Allow user to disable pinctrl
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Esben Haabendal <esben@geanix.com>, Russell King <linux@armlinux.org.uk>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Dong Aisheng <aisheng.dong@nxp.com>,
- Jacky Bai <ping.bai@nxp.com>, Arnd Bergmann <arnd@arndb.de>,
- Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
- Fabio Estevam <festevam@denx.de>
 References: <20240506-imx-pinctrl-optional-v2-0-bdff75085156@geanix.com>
  <20240506-imx-pinctrl-optional-v2-1-bdff75085156@geanix.com>
- <49ff070a-ce67-42d7-84ec-8b54fd7e9742@roeck-us.net>
- <CACRpkdaBR5mmj43y_80b9jd3TAqRWMdCyD9EP6AY-Y0-asz4TA@mail.gmail.com>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <CACRpkdaBR5mmj43y_80b9jd3TAqRWMdCyD9EP6AY-Y0-asz4TA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+ <49ff070a-ce67-42d7-84ec-8b54fd7e9742@roeck-us.net> <CACRpkdaBR5mmj43y_80b9jd3TAqRWMdCyD9EP6AY-Y0-asz4TA@mail.gmail.com>
+ <1ff005f8-384d-465e-9597-b6d5fd903862@roeck-us.net>
+In-Reply-To: <1ff005f8-384d-465e-9597-b6d5fd903862@roeck-us.net>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Tue, 26 Nov 2024 21:12:58 -0300
+Message-ID: <CAOMZO5DW3t-sof_uaFa_qJPE3WFq_155mFTxGMWh0m++csgopg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] ARM: imx: Allow user to disable pinctrl
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Esben Haabendal <esben@geanix.com>, 
+	Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Rasmus Villemoes <rasmus.villemoes@prevas.dk>, linux-arm-kernel@lists.infradead.org, 
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	Fabio Estevam <festevam@denx.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/26/24 13:24, Linus Walleij wrote:
-> On Tue, Nov 26, 2024 at 5:17 PM Guenter Roeck <linux@roeck-us.net> wrote:
->> On Mon, May 06, 2024 at 12:23:53PM +0200, Esben Haabendal wrote:
-> 
->>> Making pinctrl drivers and subsequently the pinctrl framework
->>> user-controllable, allows building a kernel without this.
->>> While in many (most) cases, this could make the system unbootable, it
->>> does allow building smaller kernels for those situations where picntrl
->>> is not needed.
->>>
->>> One such situation is when building a kernel for NXP LS1021A systems,
->>> which does not have run-time controllable pinctrl, so pinctrl framework
->>> and drivers are 100% dead-weight.
->>>
->>>
->>> Signed-off-by: Esben Haabendal <esben@geanix.com>
->>
->> This patch didn't update default configurations, meaning PINCTRL is now
->> disabled by affected configurations such as imx_v4_v5_defconfig or
->> imx_v6_v7_defconfig, making pretty much all imx platforms non-bootable
->> unless the default configuration is changed manually.
-> 
-> Since the patch tries to add default selects for all drivers I suspect this
-> oneliner is the culprit:
-> 
-> @@ -6,7 +6,6 @@ menuconfig ARCH_MXC
->          select CLKSRC_IMX_GPT
->          select GENERIC_IRQ_CHIP
->          select GPIOLIB
-> -       select PINCTRL
->          select PM_OPP if PM
->          select SOC_BUS
->          select SRAM
-> 
-> Should we just add that one line back?
-> 
+On Tue, Nov 26, 2024 at 8:53=E2=80=AFPM Guenter Roeck <linux@roeck-us.net> =
+wrote:
 
-My understanding (which may be wrong) is that being able to disable
-PINCTRL was the whole point of the patch.
+> My understanding (which may be wrong) is that being able to disable
+> PINCTRL was the whole point of the patch.
 
-Fabio submitted a patch enabling PINCTRL for imx_v4_v5_defconfig and
-imx_v6_v7_defconfig explicitly [1]. I don't know if that fixes the
-problem for good - I see CONFIG_ARCH_MXC in other configurations as
-well.
+Exactly.
 
-Guenter
+Adding back the "select PINCTRL" line defeats the purpose of the patch
+in Subject.
 
----
-[1] https://lore.kernel.org/imx/d718ddd2-d473-4455-b21a-15024e46787c@roeck-us.net/T/#mc71dc21d99e0b013c5ce46c0d90940fd8806ae9a
+> Fabio submitted a patch enabling PINCTRL for imx_v4_v5_defconfig and
+> imx_v6_v7_defconfig explicitly [1]. I don't know if that fixes the
+> problem for good - I see CONFIG_ARCH_MXC in other configurations as
+> well.
+
+Good point. I can send a v2 adding CONFIG_PINCTRL=3Dy to the other defconfi=
+gs.
+
+However, after thinking more about it, I wonder if the patch in
+Subject is worth it.
+
+It can help reduce the kernel size for LS1021A that does not need
+pinctrl, but on the other
+hand, it will cause pain to lots of people who have i.MX products
+running custom defconfigs.
+
+When they update their kernel to 6.13-rc1 their i.MX will not boot and
+that will be a very unpleasant experience.
+
+What do you think?
+
+Should we go with the approach of selecting  CONFIG_PINCTRL=3Dy or
+should we revert this patch?
+
+IMHO, the benefit of this patch does not justify the bad impact on users.
