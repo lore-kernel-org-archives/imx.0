@@ -1,73 +1,81 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422C313AA3F
-	for <imx@lists.linux.dev>; Wed, 27 Nov 2024 06:01:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EAB14AD02
+	for <imx@lists.linux.dev>; Wed, 27 Nov 2024 06:20:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732687304; cv=none; b=C+/Ts+QOFUKGEmS5qRX+YPcl4a/GWgrCKu2PnTpOEJEbEuK7TAxCisbsSJhdL6/ToZTSk5GkgdxrbhBGM59+EfP/8teI6vj57fZYIOfpupWfBc/y/d1qqv+hKJlLhAKzRlhPKGHD3b7Intkp09Rmw05gLcnn9LELRqO+uRQT8dQ=
+	t=1732688420; cv=none; b=r2AsJv7pUDSFQtNtmAIDe5solb+TjEVUVo1y3oCbW/+r/dSgWaHjYWDKhcUpHjgAhlp4Zej8laHGGdQjApCKrvCx8oGC5bjziKhrjXioCiB0T6OC7Q/iwEjhfL5fMceQZGKn/3/1O/20FBBTpa07rlSkCRwoyHs/8QlLME4ZIM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732687304; c=relaxed/simple;
-	bh=+pmdwmmhZdYr6Apa02nMXEwsIq+I1rZk5qVaZg/xJpc=;
+	s=arc-20240116; t=1732688420; c=relaxed/simple;
+	bh=w/D8fsQPcNEG6MIfpMgWgqvfnTdWrpFGSFDTBCPsVec=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QKLSuF8hxGaJWsYUv2DIobenDS73p/oFJ55Y6Z9NwcmIIU7i8Mz5CuXMNv/qaCVPMI8oo9y1Dk5VzCsdHOan0wwk+6SQoQAmJW6DcQcK2ueOt7r4FmEQSzGHL/SBjMH2B3TaO0FnRMOGLgnEmrkJ49WLrVRfh0cnhQBXvidC7Tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=K8lIa/dB; arc=none smtp.client-ip=209.85.214.181
+	 Content-Type:Content-Disposition:In-Reply-To; b=OKheByZPsFKtZd0Siaqg7lGq20kGhwUMztlZ5jwSHQoDubn1dy7LjfZmHDUxjhy3ZZXhMVfUlN8zJDXzvkaVd4NsxdJSjyURpmB0RSbb6m4C2VoRgzBDkkhrAE+3sWBh+AYaFvzW+gUHgZNoeZB3K5ID1gy1gwwVnatxdtPRLuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GVOsD+Iq; arc=none smtp.client-ip=209.85.210.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="K8lIa/dB"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-21288ce11d7so50434955ad.2
-        for <imx@lists.linux.dev>; Tue, 26 Nov 2024 22:01:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GVOsD+Iq"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7251abe0e69so2104495b3a.0
+        for <imx@lists.linux.dev>; Tue, 26 Nov 2024 22:20:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1732687302; x=1733292102; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1732688419; x=1733293219; darn=lists.linux.dev;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=ykkZstOa8bXXD8shy4Wz7LF8azAidbDjZzgBbS7DJo4=;
-        b=K8lIa/dBGXWEnpnwrtjla/mMO6LxWeEQODWv16bN6dl4/6lzBhmBj6m1ahGDoRDxKD
-         bWjfzP2qYbeJB9ndeq4Y5IFAEJivcNS7pZJ+tw/zAaSNWCQhNEBPx7MucUs8QWVqkTMA
-         nRxSaEV62cemGqcuimb7mdrTHGpY30wTv7RPDYVlN0NFd7ia9Uxvt1i6rNkx/CuirqW6
-         nuQbtGB1gEzY/W/wgSuXZmjAJ4ngIbEQBJrhPZ4eqCPxKcBidGyp8rWRQO+Dp69Rz1Wd
-         RCjlAziLnUMfuRxv9eoT9XSi7U+qozI5PIWDRoLeQUVmZrCMb2rKcmUO3pT+tyUzgUKo
-         o+lw==
+        bh=mLuEvPFQ6kcM1n0FkkyOUV7NsMkiebhxF8YqLhaowtw=;
+        b=GVOsD+IqpQ/ZXT5kUF6rGoGp7dt2uMpyDug12vO/1xRv2YeQU9VYvY3rhZhZoMLpgT
+         k8kJEfC2lpH3o7W8t0ymsL+nujWsVefG9m3hmFoTWu6cUgnXW3stU3yyNVft8oKBAnNX
+         gVEDa7Yh9tSqEZmuhL9NeGSUEel+7B8YORXLbHKYho7psFgcX+C4IIgjil2+dKdpyDhK
+         tC0vChGu7eKUR7+tPFRA67uFqzHMVrbjOcD2jiE4MW2CnpcF1ISsL7lJ4KKCTLpydu9j
+         VbJliduigtP7UAadzungAKSOrh38C8IqUoBecd9xhkgnpDGP50TxRIfLibb27Jtpmsye
+         VZUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732687302; x=1733292102;
+        d=1e100.net; s=20230601; t=1732688419; x=1733293219;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ykkZstOa8bXXD8shy4Wz7LF8azAidbDjZzgBbS7DJo4=;
-        b=b5fMZNFkPOUFV14JBmSKMGqSXIyiQOLKYFf7hXXWq8ljd0TPknHAnGgKxlXM0tm2IM
-         yk+I/NKArDNkVtgAiDLlo6A1iPQF7wUIKW/5C3ZtD+1wJ6GtSZeDAAh5qD9+yA8wjD36
-         Ci20FBw2JNN6OLAY2HsskQhkNpMPZcsTFJyvABJMYZK+AfjbTXgeggI0czK/NVXFTB2Q
-         bl0eC7reGRWZ+oUa6ZMPkCK7WIiR/jnMlKMW1eaiv+e73U7NgPDQnC6L32JbBsUp5ETL
-         9H5hf9rNa7ikqEFwCNR9wPEkOIyuuDyYAkuXRG2LZmmC8pQx0Gx4S5uM6Ykm6Xj8S/gH
-         V4pg==
-X-Forwarded-Encrypted: i=1; AJvYcCVjWfa7K3OOjfeJURiXFwoqYXWdDsC/RgI+SjIvyDtCTfe4/+OmdMGDMHrtrf0R7U3hqIc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwX5JmS6EPtjWUL44VvHbJULYHSAMCi46Yty8zmpt32TrNfG8QL
-	ldOTgsCceEw1Rny4VQvv1ezFy7xLca+w0igBzp4kdCvIo7JyDBQtZNm1oECXzg==
-X-Gm-Gg: ASbGncuaM76mg+ow0o8VBVXUDSuobgHkcawGqPWSKs1/3wXNv6xWpEMcYLljGEYnArz
-	GL8lagd1anIE53bNEtUtMvoVJ/ptTj4WGinCRHJq81xip4E0fj5tqdl9mxelQtVfwq/7JHU9tAq
-	RLC+cFpt3cVAcBKL/h6TZc+FTZm58VzreqHcsT/CA72VtcFyBy82RtHx+O8oDO3FB8N8bEs/J/A
-	ZtGRezBR7wm5Li3UBpJ6ttq4NqQ0qhkbXin/DfbIOFdnBkGo4WjLfloX2ZA
-X-Google-Smtp-Source: AGHT+IElcgtOc9MKuqCcQKs788nAqHcwj4F+w9zIfHU7WoZTfiySo28O12pa/pXEa3gpawHEreJy/w==
-X-Received: by 2002:a17:902:d4c4:b0:212:48f2:9be9 with SMTP id d9443c01a7336-2150185797bmr20448515ad.30.1732687302401;
-        Tue, 26 Nov 2024 22:01:42 -0800 (PST)
+        bh=mLuEvPFQ6kcM1n0FkkyOUV7NsMkiebhxF8YqLhaowtw=;
+        b=UGPGiVmoEAq6hYZyUAP6PP50gtOiKL99oKL8ZywKNUoaN0Rj0KHECAS3+YCCElmL0k
+         cvTYGsmaz73RUulitUcqKRlm/c3P+dCAh4kHMDL/6e8GL3wDVNCEmoH6Q3x3gXvkyfNB
+         5Al+07pbq4NHF4H6enADxGcT4h6v8yVMohF0FHDAp3XJM50lh0LktFXCcrU0GWcrG62L
+         E0NdiqUYu2SSk8+m0StuagRwYOoK2DiIW4B4++X8n/Ccnr/5FVkNnmSbP0XdyF3hD2qz
+         cglDJWwd0SU8diYdCBqztiPQMcofUbLQ6KIo1ksh7RmwqXcx+qQjFkxk5OQTtjG+DLgv
+         N8QQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXqX2gWdw8OToC6b8pCKejBhR0hfqFD9yjkq5LEJueueHPUysLKFR5tgv6VhB6iHwOhDA8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxdKyKlrKUyXd/OtjFwjaE4wDMKRQW+/R+w3pQyhriE+J493Vuv
+	YOlUATSVzPcrROBqL1L2SL4oRVLuz9848qVetj5oMCov+Raf7+OVvcjEQgtYLg==
+X-Gm-Gg: ASbGncvNd5ueSWVi1aaIMw9UEP7Q1MyH0voAJDrfsDsc+e8Gx4ES+Of82hbu4CAj0dr
+	ck5jHVV2BvqaZdZuspOYhWgVqXEZlTc3/yJQoXIyI1UbE12NexdYkpDZseMrA9mjXIv7fs1P9+K
+	9Doq6hzcr4dWQ3uffEK4+jT3SPfeMN50q8t6pQVcXaiRl3e8EhsDveRTaCf5fjQXjSSFEMBgsaP
+	8vlGkK4qaxaIVusZbMwbp+L8qELnYlmDPJ2MWnAJuh1Uu2U/JNSEB7OLWhU
+X-Google-Smtp-Source: AGHT+IGMQz7BH6QCsJCOIshdD5nGI4ii2ks2kgkA1lV0ck1baioPhXJl9j4dkpEkR7e4LinD/4buOA==
+X-Received: by 2002:a05:6a00:ccf:b0:724:de1c:bac9 with SMTP id d2e1a72fcca58-7253007749fmr2753689b3a.13.1732688418746;
+        Tue, 26 Nov 2024 22:20:18 -0800 (PST)
 Received: from thinkpad ([120.60.136.64])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2129dba345asm95076825ad.97.2024.11.26.22.01.38
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-724eb65d2adsm8372423b3a.159.2024.11.26.22.20.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Nov 2024 22:01:41 -0800 (PST)
-Date: Wed, 27 Nov 2024 11:31:32 +0530
+        Tue, 26 Nov 2024 22:20:18 -0800 (PST)
+Date: Wed, 27 Nov 2024 11:50:04 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: jingoohan1@gmail.com, bhelgaas@google.com, lpieralisi@kernel.org,
-	kw@linux.com, robh@kernel.org, frank.li@nxp.com,
-	quic_krichai@quicinc.com, imx@lists.linux.dev,
-	kernel@pengutronix.de, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5] PCI: dwc: Clean up some unnecessary codes in
- dw_pcie_suspend_noirq()
-Message-ID: <20241127060132.hsawrwlkxkgvvji5@thinkpad>
-References: <20241126073909.4058733-1-hongxing.zhu@nxp.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, Niklas Cassel <cassel@kernel.org>,
+	dlemoal@kernel.org, maz@kernel.org, tglx@linutronix.de,
+	jdmason@kudzu.us
+Subject: Re: [PATCH v8 2/6] PCI: endpoint: Add RC-to-EP doorbell support
+ using platform MSI controller
+Message-ID: <20241127062004.oruhwkhj4zrvjx25@thinkpad>
+References: <20241116-ep-msi-v8-0-6f1f68ffd1bb@nxp.com>
+ <20241116-ep-msi-v8-2-6f1f68ffd1bb@nxp.com>
+ <20241124071100.ts34jbnosiipnx2x@thinkpad>
+ <Z0S7+U5W2DOmzdJL@lizhi-Precision-Tower-5810>
+ <20241126041449.qouyatajd5rie5o2@thinkpad>
+ <Z0YAChEOnmezCBcU@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -77,110 +85,58 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241126073909.4058733-1-hongxing.zhu@nxp.com>
+In-Reply-To: <Z0YAChEOnmezCBcU@lizhi-Precision-Tower-5810>
 
-On Tue, Nov 26, 2024 at 03:39:09PM +0800, Richard Zhu wrote:
-> Before sending PME_TURN_OFF, don't test the LTSSM state. Since it's safe
-> to send PME_TURN_OFF message regardless of whether the link is up or
-> down. So, there would be no need to test the LTSSM state before sending
-> PME_TURN_OFF message.
-> 
-> Only print the message when ltssm_stat is not in DETECT and POLL.
-> In the other words, there isn't an error message when no endpoint is
-> connected at all.
-> 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+On Tue, Nov 26, 2024 at 12:19:01PM -0500, Frank Li wrote:
 
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+[...]
+
+> > > > > +	/* Only support one EPF for doorbell */
+> > > > > +	epf = list_first_entry_or_null(&epc->pci_epf, struct pci_epf, list);
+> > > >
+> > > > Why don't you impose this restriction in pci_epf_alloc_doorbell() itself?
+> > >
+> > > This is callback from platform_device_msi_init_and_alloc_irqs(). So it is
+> > > actually restriction at pci_epf_alloc_doorbell().
+> > >
+> >
+> > I don't know how to parse this last sentence. But my question was why don't you
+> > impose this one EPF restriction in pci_epf_alloc_doorbell() before allocating
+> > the MSI domain using platform_device_msi_init_and_alloc_irqs()? This way if
+> > someone calls pci_epf_alloc_doorbell() multi EPF, it will fail.
+> 
+> Yes, it is limitation for current platfrom msi framework. It is totally
+> equal.
+> 
+> call stack is
+> 	pci_epf_alloc_doorbell()
+> 	     platform_device_msi_init_and_alloc_irqs()
+> 		...
+> 		pci_epc_write_msi_msg()
+> 
+> 
+> 
+> It is totally equal return at pci_epc_write_msi_msg() or return before
+> platform_device_msi_init_and_alloc_irqs().
+> 
+
+No, these two are not the same. pci_epc_write_msi_msg() will only be called
+when enabling the MSI, which is too late IMO. Why are you insisting in
+calling platform_device_msi_init_and_alloc_irqs() for multi EPF? I don't quite
+understand.
+
+If the platform cannot support it, then it should not be called in first place.
+
+> why check epf in pci_epc_write_msi_msg() is because it use epf in here.
+> pci_epf_alloc_doorbell() never use epf variable. If check unused variable
+> in pci_epf_alloc_doorbell(), user don't know why and what's exactly
+> restrict it.
+> 
+
+This is not a good argument and doesn't make sense, sorry. You should not call
+platform_device_msi_init_and_alloc_irqs() for multi EPF.
 
 - Mani
-
-> ---
-> v5 changes:
-> - Remove the redundant check "(val > DW_PCIE_LTSSM_DETECT_WAIT)".
-> v4 changes:
-> - Keep error return when L2 entry is failed and the endpoint is
->   connected refer to Krishna' comments. Thanks.
-> v3 changes:
-> - Refine the commit message refer to Manivannan's comments.
-> - Regarding Frank's comments, avoid 10ms wait when no link up.
-> v2 changes:
-> - Don't remove L2 poll check.
-> - Add one 1us delay after L2 entry.
-> - No error return when L2 entry is timeout
-> - Don't print message when no link up.
-> ---
->  .../pci/controller/dwc/pcie-designware-host.c | 38 +++++++++++--------
->  drivers/pci/controller/dwc/pcie-designware.h  |  1 +
->  2 files changed, 23 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-> index 24e89b66b772..bbd0ee862c12 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> @@ -927,25 +927,31 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
->  	if (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) & PCI_EXP_LNKCTL_ASPM_L1)
->  		return 0;
->  
-> -	/* Only send out PME_TURN_OFF when PCIE link is up */
-> -	if (dw_pcie_get_ltssm(pci) > DW_PCIE_LTSSM_DETECT_ACT) {
-> -		if (pci->pp.ops->pme_turn_off)
-> -			pci->pp.ops->pme_turn_off(&pci->pp);
-> -		else
-> -			ret = dw_pcie_pme_turn_off(pci);
-> -
-> -		if (ret)
-> -			return ret;
-> +	if (pci->pp.ops->pme_turn_off)
-> +		pci->pp.ops->pme_turn_off(&pci->pp);
-> +	else
-> +		ret = dw_pcie_pme_turn_off(pci);
-> +	if (ret)
-> +		return ret;
->  
-> -		ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
-> -					PCIE_PME_TO_L2_TIMEOUT_US/10,
-> -					PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
-> -		if (ret) {
-> -			dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n", val);
-> -			return ret;
-> -		}
-> +	ret = read_poll_timeout(dw_pcie_get_ltssm, val,
-> +				val == DW_PCIE_LTSSM_L2_IDLE ||
-> +				val <= DW_PCIE_LTSSM_DETECT_WAIT,
-> +				PCIE_PME_TO_L2_TIMEOUT_US/10,
-> +				PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
-> +	if (ret) {
-> +		/* Only dump message when ltssm_stat isn't in DETECT and POLL */
-> +		dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n", val);
-> +		return ret;
->  	}
->  
-> +	/*
-> +	 * Refer to r6.0, sec 5.3.3.2.1, software should wait at least
-> +	 * 100ns after L2/L3 Ready before turning off refclock and
-> +	 * main power. It's harmless too when no endpoint connected.
-> +	 */
-> +	udelay(1);
-> +
->  	dw_pcie_stop_link(pci);
->  	if (pci->pp.ops->deinit)
->  		pci->pp.ops->deinit(&pci->pp);
-> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-> index 347ab74ac35a..bf036e66717e 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware.h
-> +++ b/drivers/pci/controller/dwc/pcie-designware.h
-> @@ -330,6 +330,7 @@ enum dw_pcie_ltssm {
->  	/* Need to align with PCIE_PORT_DEBUG0 bits 0:5 */
->  	DW_PCIE_LTSSM_DETECT_QUIET = 0x0,
->  	DW_PCIE_LTSSM_DETECT_ACT = 0x1,
-> +	DW_PCIE_LTSSM_DETECT_WAIT = 0x6,
->  	DW_PCIE_LTSSM_L0 = 0x11,
->  	DW_PCIE_LTSSM_L2_IDLE = 0x15,
->  
-> -- 
-> 2.37.1
-> 
 
 -- 
 மணிவண்ணன் சதாசிவம்
