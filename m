@@ -1,32 +1,32 @@
 Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B09200BA9
-	for <imx@lists.linux.dev>; Wed, 27 Nov 2024 16:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29D4201118
+	for <imx@lists.linux.dev>; Wed, 27 Nov 2024 16:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732725883; cv=none; b=NmfA5L7UfWYkxiDC0etZRreIXiTAHxRyAajIssWpWB8xt/YM5RorI3m/TAulHxe5X0Vq8ZGCLRr2VA/yBeIzc7+VLFnphBEuUGXHmfR0yOOMJVixeeVOJ2izeF5a9+3qB4eX9mRNtYT0wUd5u2iXv5s96ZKNmfKBSlGdNqWe8/k=
+	t=1732725893; cv=none; b=skxBYkzrZLTxpQDM8CMVaVwtnIMvNCeBlQRolUrc/dosRaqPovOL9w9jYR7P+lep8EvZZ9hUfkXKJnOz/I9P6XPBHBc8SmQhC7Uv3lcO0igDGafNF1cGaaKbuLnAPIifFiCv0ukTFSk4wmi03JtvNGUk8VS1LZ/APTy58vLSAlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732725883; c=relaxed/simple;
-	bh=gUjM1dpIwBdlgK1gcDpU85tOGxsJBAbOWJnShHwzhL4=;
+	s=arc-20240116; t=1732725893; c=relaxed/simple;
+	bh=Dst3lRgZfCn0jt4o8GB3zk2DwsdtMafO6CwVb8n1pKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CtCh0UNy1Fl/tJpNWYhLEBGwnvY+ue0NB3mwpgAhDCMK3xEXdHJuTuuwb5GYWf2DpCd83PkyMKqXRua7daKiJwEjDHZGK/zX3av2iPNseM38jIneZlj62Az9RGcaYrRNJh4waGoUqytz4Xf7jJYYiR0aKOdTM547+TBsgX6vb3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=PhfuUTss; arc=none smtp.client-ip=116.203.77.234
+	 MIME-Version; b=X8fMKM4P1oYJLnwwLTqnW54FbmF7xpjz5J9N4NqcTWAPXkba6wQ0eSTErTkso3mYOXAQosMXBkiVd2YBDJyF2ueC+QS8APYL6K/3GFlwD8aSI2JGyukU5l0IvHOS+GIzaTnyNmDe6V5441syCAH6SpfcidhSM3YN0YlodGrDg0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=dEM1yq0j; arc=none smtp.client-ip=116.203.77.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="PhfuUTss"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6433CBFB98;
-	Wed, 27 Nov 2024 17:44:38 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="dEM1yq0j"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C01BEBFB93;
+	Wed, 27 Nov 2024 17:44:49 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=dkim;
-	t=1732725878; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1732725890; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=X1oXhqEsz9Br6MRzf1dH+hH5nzNYl1h9TOKMungz6pU=;
-	b=PhfuUTss9WT1lTnktA3gwOzlukMBwMCL5XxMcHMzvuVZxzw405Yu/EdBKcgLpLs1oPRium
-	nsAfKe5cPl97Dciy8rJfBUmw8kpqbQSgkDy7/GQLwBNAZuyu6xAIbvH95woGjV2dENQopq
-	7Uryj0YpuJFClA31uUMIHAQuxSYgSgTqsjKZwjHhBO3gMAHITVBXmEOCD26WmaN90wcux6
-	QfsoZHeHe7bwQPSBJL+1iAS+CIpDwd9rL7YNWInh8z1jOaXt31Y6Uy0YUlmY16Gytz8qdN
-	vkY17uogNSb5XKx4N/FsvE/O35tnVY+QpitvfIJaGyuGtaWnKs3GHmN3mzRwhw==
+	bh=7zl3FVHQMKuhP3XVJBG/Ttr48W93+v0BfVf6Zw4g7fc=;
+	b=dEM1yq0jm86SeDL3LgsMmo8o8DyGwbeDsnltKY2YZ2vqhEAtUFHm+zfOObUWy42IiZuvmz
+	xoZcLo51owZKhNeu/APDsSbmQ1dncvJqm5OPpBZ6x2j3BzrgSFdPe5bhEYDF2y3kJhcJdD
+	fe+Sa5iPBsjulub/Ui/fEZVHN+7TH2Z1j8P4jU0LSi1QRniY3SEq/6AjMXhIeG4uZou0uX
+	T1JWQWErldLCAHGbbKjNE4ikIYiVlyKKwYpR4H1psxCSrbxMA5V02PVKDd+eD0Avyt+dl9
+	WsMz/eNxiHEr+afpYj/BgWXY/MU8svW8dpYl+aWeyGHiLAtYIimWdeyAbccyRg==
 From: Frieder Schrempf <frieder@fris.de>
 To: linux-arm-kernel@lists.infradead.org,
 	Marek Vasut <marex@denx.de>,
@@ -40,11 +40,10 @@ To: linux-arm-kernel@lists.infradead.org,
 	Shawn Guo <shawnguo@kernel.org>
 Cc: Frieder Schrempf <frieder.schrempf@kontron.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: [PATCH v2 04/11] arm64: dts: imx8mp-skov-reva: Use hardware signal for SD card VSELECT
-Date: Wed, 27 Nov 2024 17:42:20 +0100
-Message-ID: <20241127164337.613915-5-frieder@fris.de>
+Subject: [PATCH v2 09/11] arm64: dts: imx8mm-kontron: Add support for reading SD_VSEL signal
+Date: Wed, 27 Nov 2024 17:42:25 +0100
+Message-ID: <20241127164337.613915-10-frieder@fris.de>
 In-Reply-To: <20241127164337.613915-1-frieder@fris.de>
 References: <20241127164337.613915-1-frieder@fris.de>
 Precedence: bulk
@@ -58,58 +57,107 @@ X-Last-TLS-Session-Version: TLSv1.3
 
 From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-The USDHC controller is able to control the IO voltage of the SD card.
-There is no reason to use a GPIO to control it.
+This fixes the LDO5 regulator handling of the pca9450 driver by
+taking the status of the SD_VSEL into account to determine which
+configuration register is used for the voltage setting.
+
+Even without this change there is no functional issue, as the code
+for switching the voltage in sdhci.c currently switches both, the
+VSELECT/SD_VSEL signal and the regulator voltage at the same time
+and doesn't run into an invalid corner case.
+
+We should still make sure, that we always use the correct register
+when controlling the regulator. At least in U-Boot this fixes an
+actual bug where the wrong IO voltage is used and it makes sure
+that the correct voltage can be read from sysfs.
 
 Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
 ---
 Changes for v2:
-* new patch
+* rebase to current master
 ---
- arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts    | 10 +++++++---
+ .../arm64/boot/dts/freescale/imx8mm-kontron-osm-s.dtsi |  7 ++++---
+ 2 files changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
-index 59813ef8e2bb3..33031e946329d 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
-@@ -232,7 +232,6 @@ pmic@25 {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_pmic>;
- 		interrupts-extended = <&gpio1 3 IRQ_TYPE_EDGE_RISING>;
--		sd-vsel-gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts b/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts
+index a8ef4fba16a9e..d16490d876874 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts
+@@ -254,6 +254,10 @@ &pwm2 {
+ 	status = "okay";
+ };
  
- 		regulators {
- 			reg_vdd_soc: BUCK1 {
-@@ -555,7 +554,6 @@ MX8MP_IOMUXC_I2C4_SDA__I2C4_SDA				0x400001c3
- 	pinctrl_pmic: pmicirqgrp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03			0x41
--			MX8MP_IOMUXC_GPIO1_IO04__GPIO1_IO04			0x41
++&reg_nvcc_sd {
++	sd-vsel-gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
++};
++
+ &uart1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_uart1>;
+@@ -454,7 +458,7 @@ MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d0
+ 			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d0
+ 			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d0
+ 			MX8MM_IOMUXC_SD2_CD_B_GPIO2_IO12		0x19
+-			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0xd0
++			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x40000d0
  		>;
  	};
  
-@@ -623,6 +621,7 @@ MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0			0x1d0
- 			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1			0x1d0
- 			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2			0x1d0
- 			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3			0x1d0
-+			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT			0xc0
+@@ -467,7 +471,7 @@ MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4
+ 			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4
+ 			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4
+ 			MX8MM_IOMUXC_SD2_CD_B_GPIO2_IO12		0x19
+-			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0xd0
++			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x40000d0
  		>;
  	};
  
-@@ -634,6 +633,7 @@ MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0			0x1d4
- 			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1			0x1d4
- 			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2			0x1d4
- 			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3			0x1d4
-+			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT			0xc0
+@@ -480,7 +484,7 @@ MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d6
+ 			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d6
+ 			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d6
+ 			MX8MM_IOMUXC_SD2_CD_B_GPIO2_IO12		0x19
+-			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0xd0
++			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x40000d0
+ 		>;
+ 	};
+ };
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-kontron-osm-s.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-kontron-osm-s.dtsi
+index 663ae52b48526..d455429652305 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-kontron-osm-s.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-kontron-osm-s.dtsi
+@@ -342,6 +342,7 @@ reg_nvcc_sd: LDO5 {
+ 				regulator-name = "NVCC_SD (LDO5)";
+ 				regulator-min-microvolt = <1800000>;
+ 				regulator-max-microvolt = <3300000>;
++				sd-vsel-gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
+ 			};
+ 		};
+ 	};
+@@ -794,7 +795,7 @@ MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d0 /* SDIO_A_D1 */
+ 			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d0 /* SDIO_A_D2 */
+ 			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d0 /* SDIO_A_D3 */
+ 			MX8MM_IOMUXC_SD2_WP_USDHC2_WP			0x400000d6 /* SDIO_A_WP */
+-			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x90
++			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x40000090
  		>;
  	};
  
-@@ -645,6 +645,7 @@ MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0			0x1d6
- 			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1			0x1d6
- 			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2			0x1d6
- 			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3			0x1d6
-+			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT			0xc0
+@@ -807,7 +808,7 @@ MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4 /* SDIO_A_D1 */
+ 			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4 /* SDIO_A_D2 */
+ 			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4 /* SDIO_A_D3 */
+ 			MX8MM_IOMUXC_SD2_WP_USDHC2_WP			0x400000d6 /* SDIO_A_WP */
+-			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x90
++			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x40000090
+ 		>;
+ 	};
+ 
+@@ -820,7 +821,7 @@ MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d6 /* SDIO_A_D1 */
+ 			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d6 /* SDIO_A_D2 */
+ 			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d6 /* SDIO_A_D3 */
+ 			MX8MM_IOMUXC_SD2_WP_USDHC2_WP			0x400000d6 /* SDIO_A_WP */
+-			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x90
++			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x40000090
  		>;
  	};
  
