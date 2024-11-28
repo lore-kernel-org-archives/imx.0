@@ -1,81 +1,73 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022C71A0BC9
-	for <imx@lists.linux.dev>; Thu, 28 Nov 2024 14:29:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56E11C302B;
+	Thu, 28 Nov 2024 21:18:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732804165; cv=none; b=bLeEpzZqLV422j2VSGDtLD8k6D/1Mu4Z4QjYSKXmy4vjumQJ9NPwOiD3m3thTrQx5Ydhwir5RyyqYpYq6hn/Z0ze/bpAUAEjMbyc/SsCsJLJU4Nh6LSIpUQJhqtNbgaomJ8/Iv5cr2HhnxeH9YGegHNAlYgbVqqMPZ4fTm4/JOs=
+	t=1732828712; cv=none; b=vDGUaWfRXiq0KGzqgJquTNboInnr68KKwQEMsCLwdNBqtUPfutZSHM/7eJCYwD43D7BeeznwV6zFP9QZFLrSxdkhOYZQ9/El0Cmlpd7Ms4kkBdv/tf5SXVt47WGRN3HW2NKayJeh4owsG/+Je60JQyxkc+TdpDH6ww0eaGZwhHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732804165; c=relaxed/simple;
-	bh=8C+LvW+PEHBuKL7Wp5/gkI3vy4HHAgxioycokK9zAWM=;
+	s=arc-20240116; t=1732828712; c=relaxed/simple;
+	bh=GO+N933rH1qIyupawKjaT9KoZU7mSDCkyHjVeWZvROM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XVAwelrb9hMLRpr2uIpApWdMnmK//RfBe373dllYYy1EWmJNZC1RVDMvjBFT9v5Ns+29/2H0MkdjBR9ITr7SQ6FsC7QqkkZ84C11QtaSqUTwdo0sMxbFe31n4WiFu1Wdba+A/t/aK0Hp3PWIJJX9VlzQn3HFgsgOrD+k4k3+7lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rU+fKXdp; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=mEgO1HsBKLv8kKOsNFPpCsxBB+cml2lHcwwSknvhP8Ge3DIIwu6WGqDe3n7xEB9OxIhHO+Ewu5H7JtgjLWhnyyp3MnVnc43XMZaMBPulVl/FiUo61UVtdpnVMNL07RJBTxyjjQKjHe82nEGFrQ1CHlq7Z1yMDjtbVovs7phRJyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JmJCxTUv; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rU+fKXdp"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2ffd6882dcbso7522141fa.0
-        for <imx@lists.linux.dev>; Thu, 28 Nov 2024 06:29:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1732804162; x=1733408962; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gVTU1Tn1ipuhM+cKq2hwkSW2xDfrygz6twBX9l1uqsw=;
-        b=rU+fKXdpUKMSlfLVqPN2CMg8GctMhAqxNNj7zMTS3q5kBHKtSr5Z9jOiqqknbRfgg3
-         pI01GOb3M0scRNJ0zu0nXxkVH4qVTZiq2/IgeNHEOf1ydexUqXDoA3zCvX6hX9idmDkX
-         u2+dQZstnA88Sqj+S+Bu6LP25ToUCGvsr92gJdWX18I4upynFx4SJYMqEbRFZxGdZcxx
-         0QLrEGQ2zGoavYjpBrAjSST/l6A/m/8OlcrCg2l3DH06luJYG1z7RLxO+1gysYZaFgCq
-         cBR1ce4cYGA3nYb/k8jUzgoEbMgQLAwIP+es7vZVhv/aLlqvaT7lxJlKUOH7+qPiMQqI
-         wzUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732804162; x=1733408962;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gVTU1Tn1ipuhM+cKq2hwkSW2xDfrygz6twBX9l1uqsw=;
-        b=DKabMhxUosR/PainXO1E6g35IqM3gQGqla5gYQwuyHLPzQpkcMWL0qstfSyVSn0FcN
-         Oke8oZHnaNguNSdAHoLni8iy4KNmn0LoVvyXsVGeacjaa3oV6rudLbG3GFQg++45d50N
-         2FWbK03AM0AUj5+CSwrm5E7aa+/SOF2neMy4an/2KL29pU/3JaPmOO7Dzqu58jAFVupZ
-         yhwi2dmNzKgevgqzfzQ0Fl9/9SA6Up+wLSz/OC2yW3kEjtO4ynpGNfaBrtCT1tM3mShY
-         aH1qqT2shXnlQoOVqBjdZgoRdWfeM3zsYgEc+UoyxeoMzSEf8koBIm2/3yZugB5Pchtx
-         tnGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVVLF7uO8tipBDFllsoMt0YuWjz8ULGmV+D1z6WBuhFDgV9z6MLs/uUlQ8Cnvip72h6YC4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YylqY20XIsresOSOtfWLRn2x9uAMeP8VNOLZfFsZLXDEDp9Ps65
-	akIxwHvLokp52aCaxB0oduSmBxTJ0FJ7p5JgEWm2Qyasa7dXUOk1Aur0qaKKfKQ=
-X-Gm-Gg: ASbGncvXqvfq7rZmI5SSRVCnBKZDRHnDd/wirodxXSQ1IUg31jfX03D1JflRQZKufGz
-	FQRDNTTeun6VUnbkAz0EPs0UvFYPcJz9GmYIP1pIWJhxFlk3PunnQ9Y+yArLacXGb/Bqvy4SpMH
-	l+5qDbnldWuOt7CvZMJ1cPvv7Wi3fRjzea2BH/fIUQ4nCw9uE3KMNvkKXY7EFTlAu6NjmAZKJLO
-	VHswnpFl7NJ46rIBc5WWg2kIiFNwObu8yUzZ1T1QAZQpH2lhhCi91f0IFgAyuweXVY6PlrM6yEn
-	kbWVmmgsKZXEFDbrn1UD/r77rX/BQQ==
-X-Google-Smtp-Source: AGHT+IHyweCAzP9pLJO4NLISzRUT/iPlUo6AXMrkwOg8DkwU8W+NduHNwNsOOPQzb40Ox1rkWfW9sg==
-X-Received: by 2002:a05:651c:1607:b0:2ff:d49f:dd4a with SMTP id 38308e7fff4ca-2ffd60293b7mr29667881fa.21.1732804162195;
-        Thu, 28 Nov 2024 06:29:22 -0800 (PST)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ffdfbeb8f0sm2073581fa.35.2024.11.28.06.29.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Nov 2024 06:29:20 -0800 (PST)
-Date: Thu, 28 Nov 2024 16:29:18 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Andrej Picej <andrej.picej@norik.com>
-Cc: Maxime Ripard <mripard@kernel.org>, Rob Herring <robh@kernel.org>, 
-	andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org, 
-	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com, airlied@gmail.com, 
-	simona@ffwll.ch, maarten.lankhorst@linux.intel.com, tzimmermann@suse.de, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, marex@denx.de, 
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/3] dt-bindings: drm/bridge: ti-sn65dsi83: Add optional
- property ti,lvds-vcom
-Message-ID: <3jojqg2auvktifilp5qt7tcppsfagk3zrlrmjxlnwxnehd6fwg@y7nxhhtp5t6y>
-References: <20241127103031.1007893-1-andrej.picej@norik.com>
- <20241127103031.1007893-2-andrej.picej@norik.com>
- <20241127151630.GA3515396-robh@kernel.org>
- <3b5768e5-dcb6-436d-837c-418676e13b2e@norik.com>
- <20241128-mottled-nostalgic-oriole-be31ce@houat>
- <56f9bee2-74bd-4150-abab-fbc1459d7e36@norik.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JmJCxTUv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1732828710; x=1764364710;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=GO+N933rH1qIyupawKjaT9KoZU7mSDCkyHjVeWZvROM=;
+  b=JmJCxTUvqqnXbuh/E0lPMpYe/fCyw4jJCjhJ0dqERCTe6WBgOy0ZHLsX
+   YNg4NwqK2VG9bX9+x1crRGUueyzDCj2PIqxszV07BQexB2BA7rq65kFQf
+   4YxgWsUFO3d2wo3VccD6POp51l5U1YL1YV16CRS1hLSc+3caB32NT8+NW
+   v4HkSuLzdmuyQWS7XZ8utMvXrmigxxXKnnzyGwKJjxUES0ok59M6aKnpd
+   16S1YLleIXLivZM+oXVgMDWMvpTKCbtOpQMMPOGw17zqUYF9d1/EdQFju
+   DAsEYELoNjsm9VZPiRaxJnP2Xa5S9ztkiCpB1ZrvxwlGftvNcysQPFYe4
+   g==;
+X-CSE-ConnectionGUID: HJCy1uiPTGiBA9n+jUB8vQ==
+X-CSE-MsgGUID: tmHpD7ByR/WsNlN4JUPVrw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11270"; a="36999187"
+X-IronPort-AV: E=Sophos;i="6.12,193,1728975600"; 
+   d="scan'208";a="36999187"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2024 13:18:30 -0800
+X-CSE-ConnectionGUID: yuXQn1uPTdemmEhda96acg==
+X-CSE-MsgGUID: 9FrGQozmT5m6JkP2rMIpxg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,193,1728975600"; 
+   d="scan'208";a="129819816"
+Received: from lkp-server01.sh.intel.com (HELO 8122d2fc1967) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 28 Nov 2024 13:18:26 -0800
+Received: from kbuild by 8122d2fc1967 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tGlu3-000A3b-1H;
+	Thu, 28 Nov 2024 21:18:23 +0000
+Date: Fri, 29 Nov 2024 05:18:02 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, linux-rtc@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	NXP S32 Linux <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Enric Balletbo <eballetb@redhat.com>,
+	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
+	Bogdan Hamciuc <bogdan.hamciuc@nxp.com>,
+	Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
+Subject: Re: [PATCH v5 2/4] rtc: s32g: add NXP S32G2/S32G3 SoC support
+Message-ID: <202411290700.vbqI1pTY-lkp@intel.com>
+References: <20241126114940.421143-3-ciprianmarian.costea@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -84,81 +76,68 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <56f9bee2-74bd-4150-abab-fbc1459d7e36@norik.com>
+In-Reply-To: <20241126114940.421143-3-ciprianmarian.costea@oss.nxp.com>
 
-On Thu, Nov 28, 2024 at 11:57:16AM +0100, Andrej Picej wrote:
-> Hi Maxime,
-> 
-> On 28. 11. 24 11:29, Maxime Ripard wrote:
-> > On Thu, Nov 28, 2024 at 09:46:33AM +0100, Andrej Picej wrote:
-> > > On 27. 11. 24 16:16, Rob Herring wrote:
-> > > > On Wed, Nov 27, 2024 at 11:30:29AM +0100, Andrej Picej wrote:
-> > > > > From: Janine Hagemann <j.hagemann@phytec.de>
-> > > > > 
-> > > > > Add an optional property to change LVDS output voltage. This depends on
-> > > > > the connected display specifications. With this property we directly set
-> > > > > the LVDS_VCOM (0x19) register.
-> > > > > Better register property mapping would be quite tricky. Please check
-> > > > > bridge's datasheet for details on how register values set the LVDS
-> > > > > data lines and LVDS clock output voltage.
-> > > > > 
-> > > > > Signed-off-by: Janine Hagemann <j.hagemann@phytec.de>
-> > > > > Signed-off-by: Andrej Picej <andrej.picej@norik.com>
-> > > > > ---
-> > > > >    .../bindings/display/bridge/ti,sn65dsi83.yaml      | 14 +++++++++++++-
-> > > > >    1 file changed, 13 insertions(+), 1 deletion(-)
-> > > > > 
-> > > > > diff --git a/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml b/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml
-> > > > > index 48a97bb3e2e0..5b2c0c281824 100644
-> > > > > --- a/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml
-> > > > > +++ b/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml
-> > > > > @@ -58,6 +58,12 @@ properties:
-> > > > >                      - const: 2
-> > > > >                      - const: 3
-> > > > >                      - const: 4
-> > > > > +              ti,lvds-vcom:
-> > > > > +                $ref: /schemas/types.yaml#/definitions/uint32
-> > > > > +                description: LVDS output voltage configuration. This defines
-> > > > > +                  LVDS_VCOM (0x19) register value. Check bridge's datasheet for
-> > > > > +                  details on how register values set the LVDS data lines and
-> > > > > +                  LVDS clock output voltage.
-> > > > 
-> > > > Constraints? 0 - 2^32 are all valid values?
-> > > 
-> > > Not really, only first 6 bits, which also means that this can be uint8 then.
-> > > Will fix with other issues.
-> > 
-> > Also, generally speaking directly using register values is really
-> > frowned upon, even more so when they match a value expressed in a
-> > standard unit.
-> 
-> Yes, I am aware that this is not how devide-tree/device drivers should work.
-> But setting this values based on wanted LVDS voltage will be quite tricky.
-> Matching a value expressed in mV would be quite hard, take a look in the
-> bridge datasheet [1], Chapter 6.5 Electrical Characteristics (|VOD|).
-> Basically both:
-> - LVDS data line output and
-> - LVDS clock voltage
-> is determined by the CSR 0x19.3:2. So when checking which Reg setting CSR
-> 0x19 should be set to both conditions should meet specifications of the
-> connected display. Output voltage for the same CSR 0x19 setting differs
-> between LVDS data lines and LVDS clock.
-> 
-> Anyway, I'll prepare a v2 which only sets a part of this register, a
-> bitfield (2 bits) that is responsible for LVDS differential output voltage.
+Hi Ciprian,
 
-Please use mV to specify the value in device tree. Yes, it's not easy.
-Yes, it is still recommended for multiple reasons.
+kernel test robot noticed the following build warnings:
 
-> 
-> [1] https://www.ti.com/lit/ds/symlink/sn65dsi83.pdf?ts=1732738773429&ref_url=https%253A%252F%252Fwww.mouser.co.uk%252F
-> 
-> Best regards,
-> Andrej
-> 
-> > 
-> > Maxime
+[auto build test WARNING on robh/for-next]
+[also build test WARNING on arm64/for-next/core linus/master v6.12]
+[cannot apply to abelloni/rtc-next next-20241128]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Ciprian-Costea/dt-bindings-rtc-add-schema-for-NXP-S32G2-S32G3-SoCs/20241128-100010
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
+patch link:    https://lore.kernel.org/r/20241126114940.421143-3-ciprianmarian.costea%40oss.nxp.com
+patch subject: [PATCH v5 2/4] rtc: s32g: add NXP S32G2/S32G3 SoC support
+config: loongarch-allyesconfig (https://download.01.org/0day-ci/archive/20241129/202411290700.vbqI1pTY-lkp@intel.com/config)
+compiler: loongarch64-linux-gcc (GCC) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241129/202411290700.vbqI1pTY-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202411290700.vbqI1pTY-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/rtc/rtc-s32g.c:109: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+    * Convert a number of seconds to a value suitable for RTCVAL in our clock's
+
+
+vim +109 drivers/rtc/rtc-s32g.c
+
+   107	
+   108	/**
+ > 109	 * Convert a number of seconds to a value suitable for RTCVAL in our clock's
+   110	 * current configuration.
+   111	 * @rtcval: The value to go into RTCVAL[RTCVAL]
+   112	 * Returns: 0 for success, -EINVAL if @seconds push the counter past the
+   113	 *          32bit register range
+   114	 */
+   115	static int sec_to_rtcval(const struct rtc_priv *priv,
+   116				 unsigned long seconds, u32 *rtcval)
+   117	{
+   118		u32 delta_cnt;
+   119	
+   120		if (!seconds || seconds > cycles_to_sec(priv->rtc_hz, RTCCNT_MAX_VAL))
+   121			return -EINVAL;
+   122	
+   123		/*
+   124		 * RTCCNT is read-only; we must return a value relative to the
+   125		 * current value of the counter (and hope we don't linger around
+   126		 * too much before we get to enable the interrupt)
+   127		 */
+   128		delta_cnt = seconds * priv->rtc_hz;
+   129		*rtcval = delta_cnt + ioread32(priv->rtc_base + RTCCNT_OFFSET);
+   130	
+   131		return 0;
+   132	}
+   133	
 
 -- 
-With best wishes
-Dmitry
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
