@@ -1,27 +1,27 @@
 Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D55C1428E7
-	for <imx@lists.linux.dev>; Thu, 28 Nov 2024 10:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3459D15E5CA
+	for <imx@lists.linux.dev>; Thu, 28 Nov 2024 11:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732791449; cv=none; b=AIFAz/dqXv0RHvKxPaqKJbwGCqzSliRRt0oC5OR0SuA/T7sHvfo+OXQetn5vpeamzX4CZSd12/QUshPOnCAf+Ir8lAsvF7t9hZWJV3o2fKU4NSdnB5D043yMvGr7LjOdFhUGBYQT5LbrtK5K+U0OwavyF/x4awbLZ6xds6iljNI=
+	t=1732792176; cv=none; b=NjMNYJpWRQfWDkUL33FkUJ5Ghrl5bf6G73Gcs+nXOmpEGOPErbFGfV/6Jo6k3pzhsbh+Cxu7DwU+tUMI/tTKKzPJWsP3rAaxOlPBgRVgFOu6QpNKfFfGu3nqEsMr5vySoI9uDPWOHobVpF3gVwRJ/QheYQgsAG8uB4yHhNSjcbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732791449; c=relaxed/simple;
-	bh=wlA5czvcbRh5+RTGwducbEagxk6hSXBSIdSDTwo+DDM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sj7j75NwXioNpTtp/rMJfltChsvquFqiYG6qN519W56oE3ZC9fQDYnJBlXCONgPrVxF6Xb+CSJnuiPY5cEwwoSomN4Ifdr12ar3WQxTJbaB7DM2wejqblwWkwYAUflieOApiwhv8g3uw+ZOZZu//TU7qaKVm9n0amaTr/iCEEH8=
+	s=arc-20240116; t=1732792176; c=relaxed/simple;
+	bh=cTQC+IqQiqWKdsiQhmE8xsGi/6gPJFCi9Oc5kU8wIbQ=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=LpzNiGcnh+XgcRjCr1BxlTdymOhwGu1A6AdTOQJo9WAfcQeKGCSqDMzw7Q4plBJrVxeFDtMGu95kOdQY+ZYtJYDkUaId9GiVgGUrGd6P9anJtSlIrePHJz4sOzJXmg1hEeuUMGF6UI6QJgitC+CiiDrganOqF4W77E6FPLloh4g=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; arc=none smtp.client-ip=46.19.9.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
-Received: from [89.212.21.243] (port=43044 helo=[192.168.69.52])
+Received: from [89.212.21.243] (port=60100 helo=[192.168.69.52])
 	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.96.2)
 	(envelope-from <andrej.picej@norik.com>)
-	id 1tGcD1-00CJZu-1K;
-	Thu, 28 Nov 2024 11:57:18 +0100
-Message-ID: <56f9bee2-74bd-4150-abab-fbc1459d7e36@norik.com>
-Date: Thu, 28 Nov 2024 11:57:16 +0100
+	id 1tGcOq-00CLXV-1R;
+	Thu, 28 Nov 2024 12:09:32 +0100
+Message-ID: <9b3e439b-269d-488a-a0aa-13a22d21619c@norik.com>
+Date: Thu, 28 Nov 2024 12:09:31 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -29,26 +29,21 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] dt-bindings: drm/bridge: ti-sn65dsi83: Add optional
- property ti,lvds-vcom
-To: Maxime Ripard <mripard@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, andrzej.hajda@intel.com,
- neil.armstrong@linaro.org, rfoss@kernel.org,
+Subject: Re: [PATCH 0/3] sn65dsi83: Add LVDS_VCOM option in device-tree
+From: Andrej Picej <andrej.picej@norik.com>
+To: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
  Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
  jernej.skrabec@gmail.com, airlied@gmail.com, simona@ffwll.ch,
- maarten.lankhorst@linux.intel.com, tzimmermann@suse.de, krzk+dt@kernel.org,
- conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, marex@denx.de,
- dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, marex@denx.de
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
+ linux-arm-kernel@lists.infradead.org,
+ PHYTEC Upstream <upstream@lists.phytec.de>
 References: <20241127103031.1007893-1-andrej.picej@norik.com>
- <20241127103031.1007893-2-andrej.picej@norik.com>
- <20241127151630.GA3515396-robh@kernel.org>
- <3b5768e5-dcb6-436d-837c-418676e13b2e@norik.com>
- <20241128-mottled-nostalgic-oriole-be31ce@houat>
 Content-Language: en-US
-From: Andrej Picej <andrej.picej@norik.com>
 Autocrypt: addr=andrej.picej@norik.com; keydata=
  xsDNBGa0T6ABDAC4Acdg6VCJQi1O9x5GxXU1b3hDR/luNg85c1aC7bcFhy6/ZUY9suHS/kPF
  StNNiUybFZ2xE8Z18L+iQjNT3klDNUteroenx9eVhK5P1verK4GPlCB+nOwayoe/3ic5S9cC
@@ -83,7 +78,7 @@ Autocrypt: addr=andrej.picej@norik.com; keydata=
  w4gWiaZTJM2lirY3/na1R8U0Qv6eodPa6OqK6N0OEdkGA1mlOzZusZGIfUyyzIThuLED/MKZ
  /398mQiv1i++TVho/54XoTtEnmV8zZmY25VIE1UXHzef+A12P9ZUmtuA3TOdDemS5EXebl/I
  xtT/8OxBOVSHvA==
-In-Reply-To: <20241128-mottled-nostalgic-oriole-be31ce@houat>
+In-Reply-To: <20241127103031.1007893-1-andrej.picej@norik.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -97,71 +92,30 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-Hi Maxime,
+Forgot to CC PHYTEC upstream mailing list. Doing this now.
 
-On 28. 11. 24 11:29, Maxime Ripard wrote:
-> On Thu, Nov 28, 2024 at 09:46:33AM +0100, Andrej Picej wrote:
->> On 27. 11. 24 16:16, Rob Herring wrote:
->>> On Wed, Nov 27, 2024 at 11:30:29AM +0100, Andrej Picej wrote:
->>>> From: Janine Hagemann <j.hagemann@phytec.de>
->>>>
->>>> Add an optional property to change LVDS output voltage. This depends on
->>>> the connected display specifications. With this property we directly set
->>>> the LVDS_VCOM (0x19) register.
->>>> Better register property mapping would be quite tricky. Please check
->>>> bridge's datasheet for details on how register values set the LVDS
->>>> data lines and LVDS clock output voltage.
->>>>
->>>> Signed-off-by: Janine Hagemann <j.hagemann@phytec.de>
->>>> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
->>>> ---
->>>>    .../bindings/display/bridge/ti,sn65dsi83.yaml      | 14 +++++++++++++-
->>>>    1 file changed, 13 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml b/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml
->>>> index 48a97bb3e2e0..5b2c0c281824 100644
->>>> --- a/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml
->>>> +++ b/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml
->>>> @@ -58,6 +58,12 @@ properties:
->>>>                      - const: 2
->>>>                      - const: 3
->>>>                      - const: 4
->>>> +              ti,lvds-vcom:
->>>> +                $ref: /schemas/types.yaml#/definitions/uint32
->>>> +                description: LVDS output voltage configuration. This defines
->>>> +                  LVDS_VCOM (0x19) register value. Check bridge's datasheet for
->>>> +                  details on how register values set the LVDS data lines and
->>>> +                  LVDS clock output voltage.
->>>
->>> Constraints? 0 - 2^32 are all valid values?
->>
->> Not really, only first 6 bits, which also means that this can be uint8 then.
->> Will fix with other issues.
-> 
-> Also, generally speaking directly using register values is really
-> frowned upon, even more so when they match a value expressed in a
-> standard unit.
-
-Yes, I am aware that this is not how devide-tree/device drivers should 
-work. But setting this values based on wanted LVDS voltage will be quite 
-tricky. Matching a value expressed in mV would be quite hard, take a 
-look in the bridge datasheet [1], Chapter 6.5 Electrical Characteristics 
-(|VOD|). Basically both:
-- LVDS data line output and
-- LVDS clock voltage
-is determined by the CSR 0x19.3:2. So when checking which Reg setting 
-CSR 0x19 should be set to both conditions should meet specifications of 
-the connected display. Output voltage for the same CSR 0x19 setting 
-differs between LVDS data lines and LVDS clock.
-
-Anyway, I'll prepare a v2 which only sets a part of this register, a 
-bitfield (2 bits) that is responsible for LVDS differential output voltage.
-
-[1] 
-https://www.ti.com/lit/ds/symlink/sn65dsi83.pdf?ts=1732738773429&ref_url=https%253A%252F%252Fwww.mouser.co.uk%252F
-
-Best regards,
-Andrej
-
-> 
-> Maxime
+On 27. 11. 24 11:30, Andrej Picej wrote:
+> Hi all,
+>
+> This patch series depends on the patch
+> "[PATCH 11/15] arm64: dts: imx8mm-phyboard-polis: Add support for PEB-AV-10"
+> (https://lore.kernel.org/linux-arm-kernel/20241125081814.397352-12-andrej.picej@norik.com/)
+> which is currently under review. Please apply the dependent series first before
+> applying this one.
+>
+> Best regards,
+> Andrej
+>
+> Andrej Picej (1):
+>    arm64: dts: imx8mm-phyboard-polis-peb-av-10: Set custom lvds_vcom
+>
+> Janine Hagemann (2):
+>    dt-bindings: drm/bridge: ti-sn65dsi83: Add optional property
+>      ti,lvds-vcom
+>    drm/bridge: ti-sn65dsi83: Add ti,lvds-vcom as optional property
+>
+>   .../bindings/display/bridge/ti,sn65dsi83.yaml      | 14 +++++++++++++-
+>   .../freescale/imx8mm-phyboard-polis-peb-av-10.dtso |  1 +
+>   drivers/gpu/drm/bridge/ti-sn65dsi83.c              | 10 +++++++++-
+>   3 files changed, 23 insertions(+), 2 deletions(-)
+>
