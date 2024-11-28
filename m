@@ -1,208 +1,134 @@
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC31E14E2CD
-	for <imx@lists.linux.dev>; Thu, 28 Nov 2024 08:50:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE2115383C;
+	Thu, 28 Nov 2024 10:29:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732783859; cv=none; b=NygkBEhBOMoLy2yhgYpuqDfD7VE6f9PKyeEdlVn6mznX+31MBlk8KusNL6YUipcdxklIdFqxVMZAgfjYPHlb84jLstgl48NEx9X3KmxXeXAwb5bcXBZpDxqKjnds5NGhgPyH7DSESaOrieAq+3W6/1rMSnDE0GQu28UpXf9RG0o=
+	t=1732789764; cv=none; b=fQGaZU9HByhSAid1tY/Ho6qtwy3Rv53hFqgHpAzXxn6bGm7iRWfEze0e0qeB5vjD//Hg0zY5eY2ZKIMrHM9zazQtVZ8iJ2mzlu3XlJR+bp09uQU0ockjT0pd+PWnDrXDJ+EpzXy45BvncIVeLYmAkTldgCoIXSw7qFYUSlWo2k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732783859; c=relaxed/simple;
-	bh=I6cGktlifvU5SqyHCpxWRIIkrk3UI6gKoK3RsROdavw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CvGgTAANN5hfdyt49Ik7h2u2neenzlmpUuqFt4USBzfRrbPEKvP85xGxJoZfUABQBh0t82KtCKUTACDVoeMH0pUbQs3iwfLwdNF4XPkN3aHnaJmBspsafRqfCHgzKF7EOGmyL7KwOfm0LYhNkH6PkSexQvD0SfMQVQu5U80l/nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=Cq2gG0ud; arc=none smtp.client-ip=91.207.212.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+	s=arc-20240116; t=1732789764; c=relaxed/simple;
+	bh=UN9E/IslKJJ6kXg07JlJB5mwNZgSYgjjqJXv+tdg8to=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YAZPUR4dCzkw/JtKueI8fqDPgLojFlKut2gq8ij9FrLgdaWHMbhmNg/MTDSH99E9l4h127OS9xxjaRNdRtLCEBktAH/1gsoLTs6OHEN9ByfmYQy9RLLSZGhvGshU/hwvdlEMUFSzTpfo5fnXwGzaRJrimlnGwoe0FoyJa9evNkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vLmuCLCj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="Cq2gG0ud"
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AS20mMo014838;
-	Thu, 28 Nov 2024 09:50:30 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=selector1; bh=EYr4h/c0WQP59LjcKOXodU
-	NANQzD9BhOLn9fwkTUXdw=; b=Cq2gG0udCMmyFRXkl+cmmchbQjWFadgBjjPbAx
-	1W4jzoSRgq8pSxF8He9LOfuz6QwwHzsIA8Nedyu/mlRGsWqaUlRX6AcReY7Frsdq
-	Tyv3etwZEnNe0NahQ+dzspPTlP69X1VnvE2Mnauy6z8iI9J+hXCk/sZ+RTy3VSlK
-	QzK9S4YT7f7TdGzXrCu5jeeIgABSC0KC8s4lJVPLTNPK46HOwcePPac/dZrlN8k+
-	jG3zodNPqFljM56OPtXmSXeWPNXfy2tANBrjb9FAKOLKKbQr3zblUJEZcSeYovOl
-	fps5s05Cx5JM08pUjRK9y30alkODhzGiZBvqD2r6skaM74aA==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 436719b4kq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Nov 2024 09:50:30 +0100 (CET)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 249CC4002D;
-	Thu, 28 Nov 2024 09:48:36 +0100 (CET)
-Received: from Webmail-eu.st.com (eqndag1node6.st.com [10.75.129.135])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 82CDD266A56;
-	Thu, 28 Nov 2024 09:42:48 +0100 (CET)
-Received: from SAFDAG1NODE1.st.com (10.75.90.17) by EQNDAG1NODE6.st.com
- (10.75.129.135) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Thu, 28 Nov
- 2024 09:42:48 +0100
-Received: from localhost (10.48.86.121) by SAFDAG1NODE1.st.com (10.75.90.17)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Thu, 28 Nov
- 2024 09:42:47 +0100
-From: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-To: Bjorn Andersson <andersson@kernel.org>,
-        Mathieu Poirier
-	<mathieu.poirier@linaro.org>,
-        Rob Herring <robh@kernel.org>,
-        "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        "Maxime
- Coquelin" <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue
-	<alexandre.torgue@foss.st.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer
-	<s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Neil Armstrong
-	<neil.armstrong@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        "Jerome
- Brunet" <jbrunet@baylibre.com>,
-        Martin Blumenstingl
-	<martin.blumenstingl@googlemail.com>,
-        Matthias Brugger
-	<matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>,
-        Patrice Chotard
-	<patrice.chotard@foss.st.com>,
-        Fabien Dessenne <fabien.dessenne@foss.st.com>,
-        Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-CC: <linux-remoteproc@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <imx@lists.linux.dev>, <linux-amlogic@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>, <linux-arm-msm@vger.kernel.org>
-Subject: [PATCH v15 0/8] Introduction of a remoteproc tee to load signed firmware
-Date: Thu, 28 Nov 2024 09:42:07 +0100
-Message-ID: <20241128084219.2159197-1-arnaud.pouliquen@foss.st.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vLmuCLCj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C5CC4CECE;
+	Thu, 28 Nov 2024 10:29:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732789763;
+	bh=UN9E/IslKJJ6kXg07JlJB5mwNZgSYgjjqJXv+tdg8to=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vLmuCLCjnYq+kiQoVtx+OI6vriP/NyPLzBqvfhzYve/l4WNpbc1wYdDQssVor5zdt
+	 p5KtJ1sm9eTKXSYshjV2SkAmRd2LCrMJwq890kcxask80KqdRBvGJ7ABwVAP42ztkp
+	 kh0u1amEpZ7e+XlAmgQYbDL3QhpVrbm7sHWPw7dJAaVUEZc6Og232TsDsyV5Y2BBsJ
+	 T7lrV9F+V1tHkasuVo5nhpjqYgLc7V4P3enqP+dX4UXJwbqeb5uQZhUZ/Xmn7l8aWx
+	 1XsM9pjx8udc9EV2jBiSUdvch42d6NKcruq7zzYhGoMRw04jX4HlIjkWokSNcZTWQ8
+	 fB+i97A77k18w==
+Date: Thu, 28 Nov 2024 11:29:20 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: Andrej Picej <andrej.picej@norik.com>
+Cc: Rob Herring <robh@kernel.org>, andrzej.hajda@intel.com, 
+	neil.armstrong@linaro.org, rfoss@kernel.org, Laurent.pinchart@ideasonboard.com, 
+	jonas@kwiboo.se, jernej.skrabec@gmail.com, airlied@gmail.com, simona@ffwll.ch, 
+	maarten.lankhorst@linux.intel.com, tzimmermann@suse.de, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, marex@denx.de, dri-devel@lists.freedesktop.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/3] dt-bindings: drm/bridge: ti-sn65dsi83: Add optional
+ property ti,lvds-vcom
+Message-ID: <20241128-mottled-nostalgic-oriole-be31ce@houat>
+References: <20241127103031.1007893-1-andrej.picej@norik.com>
+ <20241127103031.1007893-2-andrej.picej@norik.com>
+ <20241127151630.GA3515396-robh@kernel.org>
+ <3b5768e5-dcb6-436d-837c-418676e13b2e@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SAFCAS1NODE1.st.com (10.75.90.11) To SAFDAG1NODE1.st.com
- (10.75.90.17)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-
-Main updates from version V14[1]:
-Fix Rename missing load() to load_segments() in pru_rproc.c.
-
-Main updates from version V13[2]:
-- Introduce new rproc_ops operation: load_fw() and release_fw(),
-- Rename load() operation to load_segments() in rproc_ops structure and
-  drivers.
-
-More details are available in each patch commit message.
-
-[1] https://lore.kernel.org/linux-arm-kernel/20241126091042.918144-1-arnaud.pouliquen@foss.st.com/T/
-[2] https://lore.kernel.org/linux-arm-kernel/20241104133515.256497-1-arnaud.pouliquen@foss.st.com/T/
-
-Tested-on: commit adc218676eef ("Linux 6.12")
-Description of the feature:
---------------------------
-This series proposes the implementation of a remoteproc tee driver to
-communicate with a TEE trusted application responsible for authenticating
-and loading the remoteproc firmware image in an Arm secure context.
-
-1) Principle:
-
-The remoteproc tee driver provides services to communicate with the OP-TEE
-trusted application running on the Trusted Execution Context (TEE).
-The trusted application in TEE manages the remote processor lifecycle:
-
-- authenticating and loading firmware images,
-- isolating and securing the remote processor memories,
-- supporting multi-firmware (e.g., TF-M + Zephyr on a Cortex-M33),
-- managing the start and stop of the firmware by the TEE.
-
-2) Format of the signed image:
-
-Refer to:
-https://github.com/OP-TEE/optee_os/blob/master/ta/remoteproc/src/remoteproc_core.c#L18-L57
-
-3) OP-TEE trusted application API:
-
-Refer to:
-https://github.com/OP-TEE/optee_os/blob/master/ta/remoteproc/include/ta_remoteproc.h
-
-4) OP-TEE signature script
-
-Refer to:
-https://github.com/OP-TEE/optee_os/blob/master/scripts/sign_rproc_fw.py
-
-Example of usage:
-sign_rproc_fw.py --in <fw1.elf> --in <fw2.elf> --out <signed_fw.sign> --key ${OP-TEE_PATH}/keys/default.pem
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="tvgn3pzm6x2sclac"
+Content-Disposition: inline
+In-Reply-To: <3b5768e5-dcb6-436d-837c-418676e13b2e@norik.com>
 
 
-5) Impact on User space Application
+--tvgn3pzm6x2sclac
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 1/3] dt-bindings: drm/bridge: ti-sn65dsi83: Add optional
+ property ti,lvds-vcom
+MIME-Version: 1.0
 
-No sysfs impact. The user only needs to provide the signed firmware image
-instead of the ELF image.
+On Thu, Nov 28, 2024 at 09:46:33AM +0100, Andrej Picej wrote:
+> On 27. 11. 24 16:16, Rob Herring wrote:
+> > On Wed, Nov 27, 2024 at 11:30:29AM +0100, Andrej Picej wrote:
+> > > From: Janine Hagemann <j.hagemann@phytec.de>
+> > >=20
+> > > Add an optional property to change LVDS output voltage. This depends =
+on
+> > > the connected display specifications. With this property we directly =
+set
+> > > the LVDS_VCOM (0x19) register.
+> > > Better register property mapping would be quite tricky. Please check
+> > > bridge's datasheet for details on how register values set the LVDS
+> > > data lines and LVDS clock output voltage.
+> > >=20
+> > > Signed-off-by: Janine Hagemann <j.hagemann@phytec.de>
+> > > Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+> > > ---
+> > >   .../bindings/display/bridge/ti,sn65dsi83.yaml      | 14 +++++++++++=
+++-
+> > >   1 file changed, 13 insertions(+), 1 deletion(-)
+> > >=20
+> > > diff --git a/Documentation/devicetree/bindings/display/bridge/ti,sn65=
+dsi83.yaml b/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.=
+yaml
+> > > index 48a97bb3e2e0..5b2c0c281824 100644
+> > > --- a/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.y=
+aml
+> > > +++ b/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.y=
+aml
+> > > @@ -58,6 +58,12 @@ properties:
+> > >                     - const: 2
+> > >                     - const: 3
+> > >                     - const: 4
+> > > +              ti,lvds-vcom:
+> > > +                $ref: /schemas/types.yaml#/definitions/uint32
+> > > +                description: LVDS output voltage configuration. This=
+ defines
+> > > +                  LVDS_VCOM (0x19) register value. Check bridge's da=
+tasheet for
+> > > +                  details on how register values set the LVDS data l=
+ines and
+> > > +                  LVDS clock output voltage.
+> >=20
+> > Constraints? 0 - 2^32 are all valid values?
+>=20
+> Not really, only first 6 bits, which also means that this can be uint8 th=
+en.
+> Will fix with other issues.
 
+Also, generally speaking directly using register values is really
+frowned upon, even more so when they match a value expressed in a
+standard unit.
 
-For more information about the implementation, a presentation is available here
-(note that the format of the signed image has evolved between the presentation
-and the integration in OP-TEE).
+Maxime
 
-https://resources.linaro.org/en/resource/6c5bGvZwUAjX56fvxthxds
+--tvgn3pzm6x2sclac
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Arnaud Pouliquen (8):
-  remoteproc: core: Introduce rproc_pa_to_va helper
-  remoteproc: Add TEE support
-  remoteproc: Introduce load_fw and release_fw optional operation
-  remoteproc: Rename load() operation to load_segments() in rproc_ops
-    struct
-  remoteproc: Make load_segments and load_fw ops exclusive and optional
-  dt-bindings: remoteproc: Add compatibility for TEE support
-  remoteproc: stm32: Create sub-functions to request shutdown and
-    release
-  remoteproc: stm32: Add support of an OP-TEE TA to load the firmware
+-----BEGIN PGP SIGNATURE-----
 
- .../bindings/remoteproc/st,stm32-rproc.yaml   |  58 +-
- drivers/remoteproc/Kconfig                    |  10 +
- drivers/remoteproc/Makefile                   |   1 +
- drivers/remoteproc/imx_dsp_rproc.c            |   2 +-
- drivers/remoteproc/imx_rproc.c                |   2 +-
- drivers/remoteproc/meson_mx_ao_arc.c          |   2 +-
- drivers/remoteproc/mtk_scp.c                  |   2 +-
- drivers/remoteproc/pru_rproc.c                |   2 +-
- drivers/remoteproc/qcom_q6v5_adsp.c           |   2 +-
- drivers/remoteproc/qcom_q6v5_mss.c            |   2 +-
- drivers/remoteproc/qcom_q6v5_pas.c            |   4 +-
- drivers/remoteproc/qcom_q6v5_wcss.c           |   4 +-
- drivers/remoteproc/qcom_wcnss.c               |   2 +-
- drivers/remoteproc/rcar_rproc.c               |   2 +-
- drivers/remoteproc/remoteproc_core.c          |  68 ++-
- drivers/remoteproc/remoteproc_internal.h      |  20 +-
- drivers/remoteproc/remoteproc_tee.c           | 508 ++++++++++++++++++
- drivers/remoteproc/st_remoteproc.c            |   2 +-
- drivers/remoteproc/st_slim_rproc.c            |   2 +-
- drivers/remoteproc/stm32_rproc.c              | 141 +++--
- drivers/remoteproc/xlnx_r5_remoteproc.c       |   2 +-
- include/linux/remoteproc.h                    |  20 +-
- include/linux/remoteproc_tee.h                | 105 ++++
- 23 files changed, 894 insertions(+), 69 deletions(-)
- create mode 100644 drivers/remoteproc/remoteproc_tee.c
- create mode 100644 include/linux/remoteproc_tee.h
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZ0hF9wAKCRAnX84Zoj2+
+dhSoAX9Uu3UcKpopfFbkrgWp56OEJeL/hrbtsgKELqjxdDABI0ujjZDWXpMg1rM8
+FxDYFLkBgMOgSjdgLtFASjWYBF1ZOJauobTk1LyMFCHiK30f0SS5gjfI+r7wL/pr
+FqWXHi0wAw==
+=sZjc
+-----END PGP SIGNATURE-----
 
-
-base-commit: adc218676eef25575469234709c2d87185ca223a
--- 
-2.25.1
-
+--tvgn3pzm6x2sclac--
