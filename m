@@ -1,238 +1,224 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2070.outbound.protection.outlook.com [40.107.22.70])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B524E38DFC
-	for <imx@lists.linux.dev>; Thu, 28 Nov 2024 02:01:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732759262; cv=fail; b=mFQHy5GTx6IaMDynGlDarha1fvYc1fq/pd34w/Pictf6AB42RtjoPmIwQGj8niDIo2/Ys8xhk/G9D/MOBeKwhU1tAVxGz0T2tlRrSz1WOQZwoZ5tps5jeqIEeyB72Mf1sLa1vXa04E0+uqpgCn/x3gcDI/526zT7MUHqcddBg0g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732759262; c=relaxed/simple;
-	bh=eOk6Diiw4MFmoiZNNwdBURGcrorZt+kWwYAuQPUibhI=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=qoLY/75guWZfTrMW6odeHL3qktNdWUiRQccxOaftGhctiNTpm95bZnnTAZ3mzi11sHnv2bQt/CJjJJarYpdroTaw7vtLxFoJ1wGxQQK0ZCWzblZyHmhQWmgvULWdLkgpIRUabiBNOHQUIJSsgRIe2zYUZthSGqW4L5a340jkPUo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=DV5BPpTG; arc=fail smtp.client-ip=40.107.22.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F3D13FD86;
+	Thu, 28 Nov 2024 05:59:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732773575; cv=none; b=HWZTlXdZnMoqpt7+Psd8AyEVZNLL7zRlBB1JivusdcqX03QoBBzUnofwo0qnbAl7Mlsv8fRQaxN8Y5D0SJ9Ux0gU0a9tldj159TpeqrDWoKlrzuyelPRyfisSQro3P02cvLhKyTr0WE+s27Lga86E5wnfkLMFbmuooVEjEmHrrA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732773575; c=relaxed/simple;
+	bh=c0KVSQsmu1rPPpFE3S5HnK03A6rk+5gg33/ro18oufE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qzmDFfLS8nLJuuC6IwfL34c3GvOn6068RUE4VlPVoEa1ChyYfIweyfy1Jfl0my/n02jYzWBEPJ0U3gRCeGuyC+82ayq8I+eDclvpA3trA+97TY6dfFQ77lZWV93yeHkwbTpcqQn+Mll21sohbX5VMW9ud2bzJZvWDGZvMPaVaek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ANNJ3Fkt; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="DV5BPpTG"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SWOmRukwvpGS/MOTNH+nB3qI1/b/Tab/y4LQGBMsTHfzw3tj6pU4Vy3uKQEu7VlbzylKDee1kWZ8k0UbA6rg2fzVhHK9rTrqE2FSlYvm4J4BiCKGa8frG433db5gnQWSh0ugCdfXLbfiE6vMmoelrephFhlYfGEPAayCFQuEsph5b5KjpPXqN+Jx0BET/gPaNKIpuwmeqSjOKgbUQN5K1l4qQ0Zs7SFqT1gCIyKdRg3l4dTXRJfeiiG3ej58lro8IlGUtev8HlFgDRcTNoj4c8OORM6GHhGrzL1ABHvfVwGBiorprCD9tzIVkbYphU50oHAU85Uwi4IXlEP1QxWLpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9HbYzv9+E5Xb+bR9vCC1HuF8NtSHKD3eFYNLGvFihl8=;
- b=nrHOz61zHd+AWf8udbl0HGTXBK1aLlEJWXg+ledHDaXytY23xq2Laetp7d3tGGSvALdltZAGK+OxWi5aS+UmTrC5pWOhI8nKQSPBrS0jyWMnlRuqmu3Iy/FSO3Tbz8I73ThY2/IG96NpC9PLMC0K1uth2rshJZwwIRdvkfqsmiCNCWgM/fctilYvbnYmpJGe6jFl0KgWmnR9KfB/NzjU0iMWrRzpvuQIfCEqS/z2MbX0jQMlV1w3JINjN1eA/4sXjmRWtaS3wuXIuuO0ecb0OXeFHqTrAlUjHr1d72DY3KRoKiOUzzGQd/B00IRirp0meEiiNFDYWNrnjYvsRt9S7g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9HbYzv9+E5Xb+bR9vCC1HuF8NtSHKD3eFYNLGvFihl8=;
- b=DV5BPpTGLBdJb7C20lrDm+tk+pVJyrlPcmJijjbr5axkciHJoJoEopfUdcPqftvb+WQ2a37IEC6WnYRNJQkVU7O3sARW8UQ5UkHgSwWlODz7Wkk8G6LvjQNrKT3QHIZlvRITe9l+AB8weSZ78qkVA+zorgpm59RMUlVIFGtzPyJU6Oy9P7j4IbDpQ8XP+9U8Gffk0GFqH7rU3P/YPI0zLM0fyHPPV06NSZu8HNaWeEDdTci/UHSpHghEY+maf5ruaMhAFTdsV9BlHeXU9EUrjcMeDDmzEt45xU4PwfG0j3scm34tshfZfzx2Up+3DjtIUE/rJISTCu3WGIGIpp6uYA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU0PR04MB9496.eurprd04.prod.outlook.com (2603:10a6:10:32d::19)
- by PAXPR04MB8391.eurprd04.prod.outlook.com (2603:10a6:102:1c4::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.13; Thu, 28 Nov
- 2024 02:00:57 +0000
-Received: from DU0PR04MB9496.eurprd04.prod.outlook.com
- ([fe80::4fa3:7420:14ed:5334]) by DU0PR04MB9496.eurprd04.prod.outlook.com
- ([fe80::4fa3:7420:14ed:5334%5]) with mapi id 15.20.8182.018; Thu, 28 Nov 2024
- 02:00:57 +0000
-From: haibo.chen@nxp.com
-To: linus.walleij@linaro.org,
-	brgl@bgdev.pl
-Cc: lgirdwood@gmail.com,
-	broonie@kernel.org,
-	marek.vasut@gmail.com,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH v2] gpio: pca953x: do not enable regmap cache when there is no regulator
-Date: Thu, 28 Nov 2024 10:00:42 +0800
-Message-Id: <20241128020042.3124957-1-haibo.chen@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR02CA0033.apcprd02.prod.outlook.com
- (2603:1096:4:195::20) To DU0PR04MB9496.eurprd04.prod.outlook.com
- (2603:10a6:10:32d::19)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ANNJ3Fkt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1732773573; x=1764309573;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=c0KVSQsmu1rPPpFE3S5HnK03A6rk+5gg33/ro18oufE=;
+  b=ANNJ3Fktf0C79okrhDW4lYngFcx3IfVpobfLIuwgshqbK+tMeefOxhNC
+   1KFT/OtKfenmQLpZidOpTvtQzzFBDzo9TUR8KWlbi0z9ACa46RZiU6i3x
+   ICt2QIFBvuBpKL14zC2kMDH7pscEmGP+fY80y2uYBUBT7gR5ci7BKPJLQ
+   J0zF2Lr9KZ/CtlxqqOInEXrhADEfQPVHgeD47EnZfZhkFeGZMgUoOAtxa
+   QLqdvhzJ8LWR+teYEEl6ox5mF392w0KLUxBKh3GWB/M16RfOv6/nCqYfv
+   eSGJYZ8VA6o5vu/08O1w3ISI9BBnvhzP36zCeUsJI6bgqUkKJ5ryxUjm3
+   g==;
+X-CSE-ConnectionGUID: WGpy4fBZQFiOPnpdZPJKPw==
+X-CSE-MsgGUID: bl96ufSLSRuA3RevSJvmBQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11269"; a="43662849"
+X-IronPort-AV: E=Sophos;i="6.12,191,1728975600"; 
+   d="scan'208";a="43662849"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2024 21:59:32 -0800
+X-CSE-ConnectionGUID: kPW4/6JXQPuGryDD7XfTRQ==
+X-CSE-MsgGUID: lmzrxaPdSyinw+0AgZvGbg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,191,1728975600"; 
+   d="scan'208";a="91751016"
+Received: from lkp-server01.sh.intel.com (HELO 8122d2fc1967) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 27 Nov 2024 21:59:27 -0800
+Received: from kbuild by 8122d2fc1967 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tGXYi-00097f-2U;
+	Thu, 28 Nov 2024 05:59:24 +0000
+Date: Thu, 28 Nov 2024 13:58:50 +0800
+From: kernel test robot <lkp@intel.com>
+To: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-amlogic@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH v14 4/8] remoteproc: Rename load() operation to
+ load_segments() in rproc_ops struct
+Message-ID: <202411281332.Ra70nJAW-lkp@intel.com>
+References: <20241126091042.918144-5-arnaud.pouliquen@foss.st.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9496:EE_|PAXPR04MB8391:EE_
-X-MS-Office365-Filtering-Correlation-Id: a345cc9d-5dfe-4092-09f6-08dd0f507fd6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?gduHQWDfAQv6BHCsvcgW+Hx4WkOYa3aLGgeX47WvLoxfsQp1KxHoL3+WMD3i?=
- =?us-ascii?Q?RCr74uxFTXLQ0gbpOX5PEvUe8LH/jfB6MWw7FztGqtGLkHY5noa8seT5ruCe?=
- =?us-ascii?Q?CBnBHE/RLSkuAai5xFmTOeWigBaeSBErNlxav8yK1OaRGNoAuqpm0UO5D5cp?=
- =?us-ascii?Q?5eDbD6Ewq5X50FfiDWrAalpOgCfViHqd+uTi6PvMRV6SaZdo1l5sTLYnog6e?=
- =?us-ascii?Q?kM/mQel54xkYGcP2ujCgr2nkoTA0LjJ1aSHAttyQrHknqen0aUac0voyPTyV?=
- =?us-ascii?Q?pLvmPCbKtrT/gOXhOY5/8MNimLEkAqOb9L7Om2g3RTETUZMhHkI8feEIu+G1?=
- =?us-ascii?Q?Kvjj8AGf6CV2nnnlZg2nu9ZB3K0VusTD+18Mi7i1mmhRpdarb/iqTWKk47oH?=
- =?us-ascii?Q?ftchi7/WvLkYyJ224ggz8J9ZeBLPtOWNpv1RDIhhlXww3fxPQzBvkOxXI00m?=
- =?us-ascii?Q?zouMF9ZyfbVw9HBLomcoXqDbOSXyvGitOWYcp57ce74gX9g6iyH3VmXHGxQC?=
- =?us-ascii?Q?h+oZsqqwm8om6lYvbKMNn1OT/y4isTut2zs8wdlrSLEn58fxhN7UoYzcAyt0?=
- =?us-ascii?Q?17kQUf3jk/oXUnRuYUkeKhr+lNyiIStP6N8hF2Ab0y4jttEg7kwJGp1c/TUU?=
- =?us-ascii?Q?zUgnCdD8tuAH0B2YO5Y0W8v/uMwj0TF/ERzfMLlZhFeQ1VOIgOSJleHlyWGU?=
- =?us-ascii?Q?pAjquDPbw7Pv1thJ4QcQ1m3biK3VcKXITYb5ojUeNQGx5v+i7CneXh12AO70?=
- =?us-ascii?Q?ATqWgxJCV84uZ6iTRoMBbER6w/2sQ/oIUJuyOPZtkDTK9C+v/NrY8IYWxl0E?=
- =?us-ascii?Q?nXNQ1pOjb4pP31Veb5RcC5cu63Hwk1BtphtuB2kJn/hvVX9e5L3UaDxEZ34j?=
- =?us-ascii?Q?LE/9Xnh0w/gcGihE4MzP/l3dk3/VHmCfUhmzc6OZe4b4h3UrFJp+2zuU5vFg?=
- =?us-ascii?Q?07xJu59gxFOFPW/R7mMNMJQy6i2dIDRZUg61Z2EHW/rkUxSEd7c9043Mnkol?=
- =?us-ascii?Q?naSvo/CExkvFX20h6WeLj+rf1cm2jHVHtkTlN6drjr5DRBWFl2glD0SW+sbx?=
- =?us-ascii?Q?NforIu3k4gQRRylh3tkyrEnchm0IwVZfem8H354wwPJwlB1BnlE/lhLukOVK?=
- =?us-ascii?Q?8l/RAAKmBxF6lqa8t3cJLz0locT7PX3xI8/KeBoELoyfQdwp+Amkp/WM0JHX?=
- =?us-ascii?Q?msRzXWliHCR7oPZgvva10i0dtPSDSt1kREJlTqr4DvxDg1JrBjDqMi9PwGYb?=
- =?us-ascii?Q?9h7X33k5JVCr1jq2RBopR+mXIpLDJPvpUBTYysm+UrURXc+SRbX/rePjSKzV?=
- =?us-ascii?Q?yPrHKleKLux7aD7GYHmgqi384ZnGnm3Hv/mM0BLFQVwWHI/69iu4WpNUxqtm?=
- =?us-ascii?Q?jlk2m8l4JHOCAzVhblIpl9Sehbl2Xeg+HnWUMdQUNaecS3yG7Q=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9496.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?jxLIF2UGX78yNjp/6XXVkRBwP7Ka/njy3L/Tfc7n+Rwe4SfgpUIiKPZlRaZ8?=
- =?us-ascii?Q?FiQwk1a4MGuLdJcjg/93J4TjD0vKdc/EdpYtEcvfxvnF1S7WGkdPt1iMbHp6?=
- =?us-ascii?Q?rJOPFmKtgdrVrvJBJp1Tje3a2K4xXcDugIuwtVVYy21lpyPbC72U88DWDS5J?=
- =?us-ascii?Q?uv0yGHyu8qhx1RZLuzjKlSl/gB3xOmlSNBfhdfEUcfbjJDfKZjMQLBUYdabN?=
- =?us-ascii?Q?p18VifHJCHipShtjvFVsPugsyB++Q30QPw/KEFm1sK2Cg+giOELwAR0pQMVx?=
- =?us-ascii?Q?O9s74bvsqILo4HlRuvXeNTXXqxLAs3Ggleu3R8gaMQEv3OIpDEBstnsmu3ge?=
- =?us-ascii?Q?Y2z4dB1/w4+e1nN7XUJ6iOvjw+zklXixqlL6OCwoBkcyUrRuEfhJmPGocy/K?=
- =?us-ascii?Q?DVvkjGzTXx3ERTP4QJCrd+yoUDJNERqsLK//dHLN775J0QmWaOQe8s7sS/Fg?=
- =?us-ascii?Q?A/ftzAYZutuBJsoe0laI2kS4UZlkRW/lfDEtaBBUt388eMlINFs1NibhPhSS?=
- =?us-ascii?Q?TSThJj4eIXedoACj3dciORX9V4Lnvjp3X0Xxp8iGfGXgQWL9/Fo4O/IBhH+F?=
- =?us-ascii?Q?qSutAMfxpzVuo+4etgNk4yA3890/dQ1dGpvtQqP1RQ9Hx15zJdISlBVMWDxi?=
- =?us-ascii?Q?ys4rAZNHUrrruEx2kzR/e3IjRp8LOPnnLGYcTs4AdscME1V+g3jE0cLbAeL4?=
- =?us-ascii?Q?z+Wdp0D6V6y+R/wc3oDrLCHX4ddt7Nym0PznoLFm8uqldckhEE/SPvb3Cf/2?=
- =?us-ascii?Q?7EM+Ng/EbwRD3WP9COtrHw/m46Am4Xv4B9UsTZ15mXmdAkmyNib79ThFubG9?=
- =?us-ascii?Q?9RgK5QMGQjtOoIbiph0m4IAZf6Vyl5ABfG++quyEvrRnZdM3Rv1DPZ6+Okjn?=
- =?us-ascii?Q?uig6HI6jPaoyrlK2LTeiAMUtRjMcqCvcgVZh9+xnajZid8uJ67IuCNgmPy/F?=
- =?us-ascii?Q?xSeLY9NgMmfKD7gfGSrA0/8qR63JupMjX4teW8fgoZuBV091fe+Sfjl+ecQd?=
- =?us-ascii?Q?MnvXDd4mH7ubUFt0JKs8CUQIETEgumanw9MvAXb1hJKiI3GZcfrJY9uJi++A?=
- =?us-ascii?Q?NqAr3J9mPRZYag5frZewTkbHG41Ib/lSrMAH6YpJ2SEXzWx1XTRUjMzJKMNp?=
- =?us-ascii?Q?s69kMST4X7ISjCwE7hBffaSqUTkGGFVwEHu+DjrlJsxYHfKnXbJJhCSmCCtd?=
- =?us-ascii?Q?gUV626CD9+bXqy9q6agd0BJg+VOlxJf1BrEGRNwE2ReuTKPTg9qYapme34YA?=
- =?us-ascii?Q?VF77lzDrHSl0MzyKxPDegqiPtSV8vI8ynW2xTTOU41IUdgnDSHFIZtboVkSf?=
- =?us-ascii?Q?P4uH0HXWz2MzHXCSunsdobDVri52ruyOnpQ/pcsi6Se2fgS3SguConzO139s?=
- =?us-ascii?Q?saCy+hPoe5XH/tupcI5CXSgGz9q1pz+H+E1ruAdveBL4BzrdVkmfISZ5n90L?=
- =?us-ascii?Q?ovJNh4Fv5YNSkt4mONUptKJjnt7vw8xO353he6UY337kFTZuogNfJdPnBt8T?=
- =?us-ascii?Q?ZtDzoXVXv26FJxxOnJzLgXXhU7Y+Z02GXGmDHSy2TxvIeNqaoSuAHDfuuj8m?=
- =?us-ascii?Q?om+pFcUrIxE3z7FrarP4kKIvHZWBaaoQrd1bEtAX?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a345cc9d-5dfe-4092-09f6-08dd0f507fd6
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9496.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Nov 2024 02:00:57.4788
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mRmO61rPgLo9j+FI0w+UZ3Fj2mDzKBM+qDbRftGYFVp4jRu4V9yi2U3+2wAygn+tgcC6cf79oA5/8z9O+C/KWw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8391
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241126091042.918144-5-arnaud.pouliquen@foss.st.com>
 
-From: Haibo Chen <haibo.chen@nxp.com>
+Hi Arnaud,
 
-Regmap cache mechanism is enabled in default. Thus, IO expander wouldn't
-handle GPIO set really before resuming back.
+kernel test robot noticed the following build errors:
 
-But there are cases need to toggle gpio in NO_IRQ stage.
-e.g. To align with PCIe specification, PERST# signal connected on the IO
-expander must be toggled during PCIe RC's NO_IRQ_RESUME.
+[auto build test ERROR on adc218676eef25575469234709c2d87185ca223a]
 
-Do not enable the regmap cache when IO expander doesn't have the regulator
-during system PM. That means the power of IO expander would be kept on,
-and the GPIOs of the IO expander can be toggled really during system PM.
+url:    https://github.com/intel-lab-lkp/linux/commits/Arnaud-Pouliquen/remoteproc-core-Introduce-rproc_pa_to_va-helper/20241128-094434
+base:   adc218676eef25575469234709c2d87185ca223a
+patch link:    https://lore.kernel.org/r/20241126091042.918144-5-arnaud.pouliquen%40foss.st.com
+patch subject: [PATCH v14 4/8] remoteproc: Rename load() operation to load_segments() in rproc_ops struct
+config: i386-buildonly-randconfig-002-20241128 (https://download.01.org/0day-ci/archive/20241128/202411281332.Ra70nJAW-lkp@intel.com/config)
+compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241128/202411281332.Ra70nJAW-lkp@intel.com/reproduce)
 
-Fixes: b76574300504 ("gpio: pca953x: Restore registers after suspend/resume cycle")
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
----
-Changes for V2:
-  correct the commit head, and add fix tag
-  fix some typo in the code comment
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202411281332.Ra70nJAW-lkp@intel.com/
 
----
- drivers/gpio/gpio-pca953x.c | 35 ++++++++++++++++++++++++++---------
- 1 file changed, 26 insertions(+), 9 deletions(-)
+All errors (new ones prefixed by >>):
 
-diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
-index 272febc3230e..2ef1db58a6a1 100644
---- a/drivers/gpio/gpio-pca953x.c
-+++ b/drivers/gpio/gpio-pca953x.c
-@@ -1040,9 +1040,15 @@ static int pca953x_get_and_enable_regulator(struct pca953x_chip *chip)
- 	struct regulator *reg = chip->regulator;
- 	int ret;
- 
--	reg = devm_regulator_get(dev, "vcc");
--	if (IS_ERR(reg))
--		return dev_err_probe(dev, PTR_ERR(reg), "reg get err\n");
-+	reg = devm_regulator_get_optional(dev, "vcc");
-+	if (IS_ERR(reg)) {
-+		if (PTR_ERR(reg) == -ENODEV) {
-+			chip->regulator = NULL;
-+			return 0;
-+		} else {
-+			return dev_err_probe(dev, PTR_ERR(reg), "reg get err\n");
-+		}
-+	}
- 
- 	ret = regulator_enable(reg);
- 	if (ret)
-@@ -1240,11 +1246,20 @@ static int pca953x_suspend(struct device *dev)
- {
- 	struct pca953x_chip *chip = dev_get_drvdata(dev);
- 
--	pca953x_save_context(chip);
-+	/*
-+	 * Only save context when regulator is exist,
-+	 * if no regulator, power keeps on, can also
-+	 * handle gpio related operation.
-+	 * e.g. PCIe RC needs to toggle the RST pin in
-+	 * NOIRQ resume stage, so can't open regmap
-+	 * cache if there is no regulator.
-+	 */
-+	if (chip->regulator)
-+		pca953x_save_context(chip);
- 
- 	if (atomic_read(&chip->wakeup_path))
- 		device_set_wakeup_path(dev);
--	else
-+	else if (chip->regulator)
- 		regulator_disable(chip->regulator);
- 
- 	return 0;
-@@ -1255,7 +1270,7 @@ static int pca953x_resume(struct device *dev)
- 	struct pca953x_chip *chip = dev_get_drvdata(dev);
- 	int ret;
- 
--	if (!atomic_read(&chip->wakeup_path)) {
-+	if (!atomic_read(&chip->wakeup_path) && chip->regulator) {
- 		ret = regulator_enable(chip->regulator);
- 		if (ret) {
- 			dev_err(dev, "Failed to enable regulator: %d\n", ret);
-@@ -1263,9 +1278,11 @@ static int pca953x_resume(struct device *dev)
- 		}
- 	}
- 
--	ret = pca953x_restore_context(chip);
--	if (ret)
--		dev_err(dev, "Failed to restore register map: %d\n", ret);
-+	if (chip->regulator) {
-+		ret = pca953x_restore_context(chip);
-+		if (ret)
-+			dev_err(dev, "Failed to restore register map: %d\n", ret);
-+	}
- 
- 	return ret;
- }
+   In file included from drivers/remoteproc/pru_rproc.c:24:
+   In file included from include/linux/remoteproc.h:40:
+   In file included from include/linux/virtio.h:7:
+   In file included from include/linux/scatterlist.h:8:
+   In file included from include/linux/mm.h:2213:
+   include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
+     518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
+         |                               ~~~~~~~~~~~ ^ ~~~
+>> drivers/remoteproc/pru_rproc.c:1018:14: error: no member named 'load' in 'struct rproc_ops'
+    1018 |         rproc->ops->load = pru_rproc_load_elf_segments;
+         |         ~~~~~~~~~~  ^
+   1 warning and 1 error generated.
+
+
+vim +1018 drivers/remoteproc/pru_rproc.c
+
+d4ce2de7e4af8b Suman Anna      2020-12-08   987  
+d4ce2de7e4af8b Suman Anna      2020-12-08   988  static int pru_rproc_probe(struct platform_device *pdev)
+d4ce2de7e4af8b Suman Anna      2020-12-08   989  {
+d4ce2de7e4af8b Suman Anna      2020-12-08   990  	struct device *dev = &pdev->dev;
+d4ce2de7e4af8b Suman Anna      2020-12-08   991  	struct device_node *np = dev->of_node;
+d4ce2de7e4af8b Suman Anna      2020-12-08   992  	struct platform_device *ppdev = to_platform_device(dev->parent);
+d4ce2de7e4af8b Suman Anna      2020-12-08   993  	struct pru_rproc *pru;
+d4ce2de7e4af8b Suman Anna      2020-12-08   994  	const char *fw_name;
+d4ce2de7e4af8b Suman Anna      2020-12-08   995  	struct rproc *rproc = NULL;
+d4ce2de7e4af8b Suman Anna      2020-12-08   996  	struct resource *res;
+d4ce2de7e4af8b Suman Anna      2020-12-08   997  	int i, ret;
+1d39f4d199214f Suman Anna      2020-12-08   998  	const struct pru_private_data *data;
+d4ce2de7e4af8b Suman Anna      2020-12-08   999  	const char *mem_names[PRU_IOMEM_MAX] = { "iram", "control", "debug" };
+d4ce2de7e4af8b Suman Anna      2020-12-08  1000  
+1d39f4d199214f Suman Anna      2020-12-08  1001  	data = of_device_get_match_data(&pdev->dev);
+1d39f4d199214f Suman Anna      2020-12-08  1002  	if (!data)
+1d39f4d199214f Suman Anna      2020-12-08  1003  		return -ENODEV;
+1d39f4d199214f Suman Anna      2020-12-08  1004  
+d4ce2de7e4af8b Suman Anna      2020-12-08  1005  	ret = of_property_read_string(np, "firmware-name", &fw_name);
+d4ce2de7e4af8b Suman Anna      2020-12-08  1006  	if (ret) {
+d4ce2de7e4af8b Suman Anna      2020-12-08  1007  		dev_err(dev, "unable to retrieve firmware-name %d\n", ret);
+d4ce2de7e4af8b Suman Anna      2020-12-08  1008  		return ret;
+d4ce2de7e4af8b Suman Anna      2020-12-08  1009  	}
+d4ce2de7e4af8b Suman Anna      2020-12-08  1010  
+d4ce2de7e4af8b Suman Anna      2020-12-08  1011  	rproc = devm_rproc_alloc(dev, pdev->name, &pru_rproc_ops, fw_name,
+d4ce2de7e4af8b Suman Anna      2020-12-08  1012  				 sizeof(*pru));
+d4ce2de7e4af8b Suman Anna      2020-12-08  1013  	if (!rproc) {
+d4ce2de7e4af8b Suman Anna      2020-12-08  1014  		dev_err(dev, "rproc_alloc failed\n");
+d4ce2de7e4af8b Suman Anna      2020-12-08  1015  		return -ENOMEM;
+d4ce2de7e4af8b Suman Anna      2020-12-08  1016  	}
+d4ce2de7e4af8b Suman Anna      2020-12-08  1017  	/* use a custom load function to deal with PRU-specific quirks */
+d4ce2de7e4af8b Suman Anna      2020-12-08 @1018  	rproc->ops->load = pru_rproc_load_elf_segments;
+d4ce2de7e4af8b Suman Anna      2020-12-08  1019  
+d4ce2de7e4af8b Suman Anna      2020-12-08  1020  	/* use a custom parse function to deal with PRU-specific resources */
+d4ce2de7e4af8b Suman Anna      2020-12-08  1021  	rproc->ops->parse_fw = pru_rproc_parse_fw;
+d4ce2de7e4af8b Suman Anna      2020-12-08  1022  
+d4ce2de7e4af8b Suman Anna      2020-12-08  1023  	/* error recovery is not supported for PRUs */
+d4ce2de7e4af8b Suman Anna      2020-12-08  1024  	rproc->recovery_disabled = true;
+d4ce2de7e4af8b Suman Anna      2020-12-08  1025  
+d4ce2de7e4af8b Suman Anna      2020-12-08  1026  	/*
+d4ce2de7e4af8b Suman Anna      2020-12-08  1027  	 * rproc_add will auto-boot the processor normally, but this is not
+d4ce2de7e4af8b Suman Anna      2020-12-08  1028  	 * desired with PRU client driven boot-flow methodology. A PRU
+d4ce2de7e4af8b Suman Anna      2020-12-08  1029  	 * application/client driver will boot the corresponding PRU
+d4ce2de7e4af8b Suman Anna      2020-12-08  1030  	 * remote-processor as part of its state machine either through the
+d4ce2de7e4af8b Suman Anna      2020-12-08  1031  	 * remoteproc sysfs interface or through the equivalent kernel API.
+d4ce2de7e4af8b Suman Anna      2020-12-08  1032  	 */
+d4ce2de7e4af8b Suman Anna      2020-12-08  1033  	rproc->auto_boot = false;
+d4ce2de7e4af8b Suman Anna      2020-12-08  1034  
+d4ce2de7e4af8b Suman Anna      2020-12-08  1035  	pru = rproc->priv;
+d4ce2de7e4af8b Suman Anna      2020-12-08  1036  	pru->dev = dev;
+1d39f4d199214f Suman Anna      2020-12-08  1037  	pru->data = data;
+d4ce2de7e4af8b Suman Anna      2020-12-08  1038  	pru->pruss = platform_get_drvdata(ppdev);
+d4ce2de7e4af8b Suman Anna      2020-12-08  1039  	pru->rproc = rproc;
+d4ce2de7e4af8b Suman Anna      2020-12-08  1040  	pru->fw_name = fw_name;
+919e8942548aa8 MD Danish Anwar 2023-01-06  1041  	pru->client_np = NULL;
+102853400321ba Roger Quadros   2023-01-06  1042  	spin_lock_init(&pru->rmw_lock);
+919e8942548aa8 MD Danish Anwar 2023-01-06  1043  	mutex_init(&pru->lock);
+d4ce2de7e4af8b Suman Anna      2020-12-08  1044  
+d4ce2de7e4af8b Suman Anna      2020-12-08  1045  	for (i = 0; i < ARRAY_SIZE(mem_names); i++) {
+d4ce2de7e4af8b Suman Anna      2020-12-08  1046  		res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
+d4ce2de7e4af8b Suman Anna      2020-12-08  1047  						   mem_names[i]);
+d4ce2de7e4af8b Suman Anna      2020-12-08  1048  		pru->mem_regions[i].va = devm_ioremap_resource(dev, res);
+d4ce2de7e4af8b Suman Anna      2020-12-08  1049  		if (IS_ERR(pru->mem_regions[i].va)) {
+d4ce2de7e4af8b Suman Anna      2020-12-08  1050  			dev_err(dev, "failed to parse and map memory resource %d %s\n",
+d4ce2de7e4af8b Suman Anna      2020-12-08  1051  				i, mem_names[i]);
+d4ce2de7e4af8b Suman Anna      2020-12-08  1052  			ret = PTR_ERR(pru->mem_regions[i].va);
+d4ce2de7e4af8b Suman Anna      2020-12-08  1053  			return ret;
+d4ce2de7e4af8b Suman Anna      2020-12-08  1054  		}
+d4ce2de7e4af8b Suman Anna      2020-12-08  1055  		pru->mem_regions[i].pa = res->start;
+d4ce2de7e4af8b Suman Anna      2020-12-08  1056  		pru->mem_regions[i].size = resource_size(res);
+d4ce2de7e4af8b Suman Anna      2020-12-08  1057  
+d4ce2de7e4af8b Suman Anna      2020-12-08  1058  		dev_dbg(dev, "memory %8s: pa %pa size 0x%zx va %pK\n",
+d4ce2de7e4af8b Suman Anna      2020-12-08  1059  			mem_names[i], &pru->mem_regions[i].pa,
+d4ce2de7e4af8b Suman Anna      2020-12-08  1060  			pru->mem_regions[i].size, pru->mem_regions[i].va);
+d4ce2de7e4af8b Suman Anna      2020-12-08  1061  	}
+d4ce2de7e4af8b Suman Anna      2020-12-08  1062  
+d4ce2de7e4af8b Suman Anna      2020-12-08  1063  	ret = pru_rproc_set_id(pru);
+d4ce2de7e4af8b Suman Anna      2020-12-08  1064  	if (ret < 0)
+d4ce2de7e4af8b Suman Anna      2020-12-08  1065  		return ret;
+d4ce2de7e4af8b Suman Anna      2020-12-08  1066  
+d4ce2de7e4af8b Suman Anna      2020-12-08  1067  	platform_set_drvdata(pdev, rproc);
+d4ce2de7e4af8b Suman Anna      2020-12-08  1068  
+d4ce2de7e4af8b Suman Anna      2020-12-08  1069  	ret = devm_rproc_add(dev, pru->rproc);
+d4ce2de7e4af8b Suman Anna      2020-12-08  1070  	if (ret) {
+d4ce2de7e4af8b Suman Anna      2020-12-08  1071  		dev_err(dev, "rproc_add failed: %d\n", ret);
+d4ce2de7e4af8b Suman Anna      2020-12-08  1072  		return ret;
+d4ce2de7e4af8b Suman Anna      2020-12-08  1073  	}
+d4ce2de7e4af8b Suman Anna      2020-12-08  1074  
+20ad1de0f14fbd Suman Anna      2020-12-08  1075  	pru_rproc_create_debug_entries(rproc);
+20ad1de0f14fbd Suman Anna      2020-12-08  1076  
+d4ce2de7e4af8b Suman Anna      2020-12-08  1077  	dev_dbg(dev, "PRU rproc node %pOF probed successfully\n", np);
+d4ce2de7e4af8b Suman Anna      2020-12-08  1078  
+d4ce2de7e4af8b Suman Anna      2020-12-08  1079  	return 0;
+d4ce2de7e4af8b Suman Anna      2020-12-08  1080  }
+d4ce2de7e4af8b Suman Anna      2020-12-08  1081  
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
