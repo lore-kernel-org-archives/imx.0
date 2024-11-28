@@ -1,121 +1,102 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3459D15E5CA
-	for <imx@lists.linux.dev>; Thu, 28 Nov 2024 11:09:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678BB19ADA2;
+	Thu, 28 Nov 2024 12:28:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732792176; cv=none; b=NjMNYJpWRQfWDkUL33FkUJ5Ghrl5bf6G73Gcs+nXOmpEGOPErbFGfV/6Jo6k3pzhsbh+Cxu7DwU+tUMI/tTKKzPJWsP3rAaxOlPBgRVgFOu6QpNKfFfGu3nqEsMr5vySoI9uDPWOHobVpF3gVwRJ/QheYQgsAG8uB4yHhNSjcbI=
+	t=1732796909; cv=none; b=KKJCcCXeKgB0wqabQBog5q/Y1ZZGVLBo5cFVDtTBnDs5B9NPCgY/JaiStHghwFUwLshTerBzAKz9RQGTcaX1CmKWbTXbNqq+nMxEkgi3Ugl1u3EZ0fivovppkokFbPOTl+ZUr+TA7w5mp5PtUDhsuD+FfK8oahjV+tKuJsuXnHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732792176; c=relaxed/simple;
-	bh=cTQC+IqQiqWKdsiQhmE8xsGi/6gPJFCi9Oc5kU8wIbQ=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=LpzNiGcnh+XgcRjCr1BxlTdymOhwGu1A6AdTOQJo9WAfcQeKGCSqDMzw7Q4plBJrVxeFDtMGu95kOdQY+ZYtJYDkUaId9GiVgGUrGd6P9anJtSlIrePHJz4sOzJXmg1hEeuUMGF6UI6QJgitC+CiiDrganOqF4W77E6FPLloh4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
-Received: from [89.212.21.243] (port=60100 helo=[192.168.69.52])
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <andrej.picej@norik.com>)
-	id 1tGcOq-00CLXV-1R;
-	Thu, 28 Nov 2024 12:09:32 +0100
-Message-ID: <9b3e439b-269d-488a-a0aa-13a22d21619c@norik.com>
-Date: Thu, 28 Nov 2024 12:09:31 +0100
+	s=arc-20240116; t=1732796909; c=relaxed/simple;
+	bh=MHc7zFRNdcoYDHMMyGXUp65o6fUhD22xiGSStCZ2fGE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ohh1/jKrtxX70tGrqN3Uf25XG0/78mytGNhZaWUzLd42lNZix+fQdGXtXSIRo86duPTLu/YHeUwNnqEFM3/ehCoqQPRECso68APZICH5v07p8UeOHtMYnmudSzaYNSiAx7DTDTiRYnI61D/J5PJ/9VKxmw2QtvvKedvc5y27fmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OP2GI/AH; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OP2GI/AH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C94EC4CECE;
+	Thu, 28 Nov 2024 12:28:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732796909;
+	bh=MHc7zFRNdcoYDHMMyGXUp65o6fUhD22xiGSStCZ2fGE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OP2GI/AH9EdlmoPyIxqSeDnR9e4mKju3AHGUhh97t24dAh09SDwJBhE32aXLBzVCW
+	 NTgP73nxKohq+hWy7hywd0EpULCCKJeauzYVCyocErAsKNOzg4kXcrJvKSgUNE04fk
+	 4W/wBchONMdUVbIbOa8q52gF4878ei0PgbbDopqMMXi7e00hdtLEAF4ojAoziBgi9/
+	 pwFrMMAfW9B8eHeP0h1Wdv5EgZNMXKVOb7qaPdOheP4CI3QPwhwPB9NjcPBouKKHGc
+	 hu7XgKqS4isGQqSkE0+AoALZWTtOuUpDUGJNWaKScPvM60lpz/fiyiJ6z4WScJ37rC
+	 6Fe/vEBgxzWbg==
+Date: Thu, 28 Nov 2024 12:28:24 +0000
+From: Mark Brown <broonie@kernel.org>
+To: haibo.chen@nxp.com
+Cc: linus.walleij@linaro.org, brgl@bgdev.pl, lgirdwood@gmail.com,
+	marek.vasut@gmail.com, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2] gpio: pca953x: do not enable regmap cache when there
+ is no regulator
+Message-ID: <f71643eb-ee9c-4b39-af26-738ae82fd4bd@sirena.org.uk>
+References: <20241128020042.3124957-1-haibo.chen@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] sn65dsi83: Add LVDS_VCOM option in device-tree
-From: Andrej Picej <andrej.picej@norik.com>
-To: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
- Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, airlied@gmail.com, simona@ffwll.ch,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, marex@denx.de
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org,
- PHYTEC Upstream <upstream@lists.phytec.de>
-References: <20241127103031.1007893-1-andrej.picej@norik.com>
-Content-Language: en-US
-Autocrypt: addr=andrej.picej@norik.com; keydata=
- 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
- xtT/8OxBOVSHvA==
-In-Reply-To: <20241127103031.1007893-1-andrej.picej@norik.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
-X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="l04+5UwyAsztrhVZ"
+Content-Disposition: inline
+In-Reply-To: <20241128020042.3124957-1-haibo.chen@nxp.com>
+X-Cookie: Close cover before striking.
 
-Forgot to CC PHYTEC upstream mailing list. Doing this now.
 
-On 27. 11. 24 11:30, Andrej Picej wrote:
-> Hi all,
->
-> This patch series depends on the patch
-> "[PATCH 11/15] arm64: dts: imx8mm-phyboard-polis: Add support for PEB-AV-10"
-> (https://lore.kernel.org/linux-arm-kernel/20241125081814.397352-12-andrej.picej@norik.com/)
-> which is currently under review. Please apply the dependent series first before
-> applying this one.
->
-> Best regards,
-> Andrej
->
-> Andrej Picej (1):
->    arm64: dts: imx8mm-phyboard-polis-peb-av-10: Set custom lvds_vcom
->
-> Janine Hagemann (2):
->    dt-bindings: drm/bridge: ti-sn65dsi83: Add optional property
->      ti,lvds-vcom
->    drm/bridge: ti-sn65dsi83: Add ti,lvds-vcom as optional property
->
->   .../bindings/display/bridge/ti,sn65dsi83.yaml      | 14 +++++++++++++-
->   .../freescale/imx8mm-phyboard-polis-peb-av-10.dtso |  1 +
->   drivers/gpu/drm/bridge/ti-sn65dsi83.c              | 10 +++++++++-
->   3 files changed, 23 insertions(+), 2 deletions(-)
->
+--l04+5UwyAsztrhVZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Thu, Nov 28, 2024 at 10:00:42AM +0800, haibo.chen@nxp.com wrote:
+
+> Regmap cache mechanism is enabled in default. Thus, IO expander wouldn't
+> handle GPIO set really before resuming back.
+
+> But there are cases need to toggle gpio in NO_IRQ stage.
+> e.g. To align with PCIe specification, PERST# signal connected on the IO
+> expander must be toggled during PCIe RC's NO_IRQ_RESUME.
+
+> Do not enable the regmap cache when IO expander doesn't have the regulator
+> during system PM. That means the power of IO expander would be kept on,
+> and the GPIOs of the IO expander can be toggled really during system PM.
+
+Aside from the fact that the device will always have a regulator (power
+isn't optional) this is obviously not related to any sequencing needs
+that you have on resume.  It might happen to work on your system, but it
+will potentially break other systems which do actually need the
+registers restoring but don't have a regulator explicitly defined and
+will fail to do anything on a system with ordering requirements that do
+have one defined.  The fix for this is to make this driver resume early
+if it's needed by other things that run in the resume sequence.
+
+> -	reg = devm_regulator_get(dev, "vcc");
+> -	if (IS_ERR(reg))
+> -		return dev_err_probe(dev, PTR_ERR(reg), "reg get err\n");
+> +	reg = devm_regulator_get_optional(dev, "vcc");
+> +	if (IS_ERR(reg)) {
+
+This is obviously buggy, the main supply for the device is not going to
+be optional.
+
+--l04+5UwyAsztrhVZ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmdIYecACgkQJNaLcl1U
+h9BgNAf/dTR8Fzvk8LYCiJ/tU5uFh6TXYHDwWOp0ZMpPqUPcM6UbZkCkSJxbOwut
+kLASTbXndT33wz+o8HgkiX5+aB2hN61CJFbPDp/FmXXN9I6sp/rQQVyJMxMm8JRE
+Kp8D+aSAqZlIkEcBllEmxAbVFOZRNfxWP9cTRQqXRNHJOurMJf1aoPFBmhsXN8sa
+6vQ9gJZxM7tOPMkeCTmNQ4HsNZYFVzImBAhvx3QGEo5HATG0+atay0WG0N6wUsuD
+lOfF3bJqAJE88/Cx3AhOTxjbHtNNvXVtS6SHxMZC4bOb3h8MuAFJXYRa921v4eg0
+rpCv8UE5zNlaI3CIRXQkOfJYk2+gPg==
+=5hum
+-----END PGP SIGNATURE-----
+
+--l04+5UwyAsztrhVZ--
