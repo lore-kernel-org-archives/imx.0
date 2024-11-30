@@ -1,146 +1,103 @@
-Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lx20.hoststar.hosting (lx20.hoststar.hosting [168.119.41.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBF7148838
-	for <imx@lists.linux.dev>; Sat, 30 Nov 2024 11:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14F3198E99;
+	Sat, 30 Nov 2024 14:58:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.41.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732966715; cv=none; b=LwCbZjGk0WGAoBjOdKUWm95Fr//DZTxD0vsLGjjRn9b6nSBpXEB6Xk+VMon/NIQKxGMAjO9TBPWJ09jPD8KYVZfneAz1Kj9LgdwP02a+1EYgnrzr8ObsjIAb/S0S0cMNZSofCxS7+f8ZJP+EhsONGlfmctjoFu+CbWPj+EEwK7Y=
+	t=1732978719; cv=none; b=MyghkJGGUCLAhP0L0MuOb9Cahs9Qc6NCju4FhVYRUB0XbpFQOXph9GGXZImGW+KwqFgvNo/HtJC4uJ0HHTwcZjGOzv5/cJQlRvlBsnD640YmsAhAnAhFq/YpnGBnvgvR9VL3mJg83ElPdWB5G2GZOWyJJJsm8b54CfcxpbQ7hHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732966715; c=relaxed/simple;
-	bh=llwMWTWTWdxE0Hpd9KZKubPcqkDdkWEnwBHV/Go2mvU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mNz6f6wsA3guxvwjLVlwMF5+2XjIzvHb6E413N1nRfLdjit4j3ZlcaTcbOgDKNFggD+XIhbjvIWaOp5bHg8SQ1IgP+7VuISLa2qqi4CfaemVrFiScPEpp44ZdK3/m2IRZMQoOx93BWTH6r5cI3CAnoOgLvSghIXEsPmEVUcPCMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P9UwqHFn; arc=none smtp.client-ip=209.85.222.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1732978719; c=relaxed/simple;
+	bh=hRHt1lKznXLvZ2Cm50+cd/mXkEiynz1ejTZcgSUzC8Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=M5ZzQ9dq34+ylBnCKn+tbd/gYwbj+qOJS2w7Md4C2FU/0fZNLm4MjNI4MpJL/dG+g3AuOLCaG9eO/yKJTgqL32mjlVH3JD63dazJ1sNmr0OvrJQN74aeLFaq4wdOY7gn3wWL5MHoNhxXttRHuRnv9c3bFUNy3GSQwroxUQWN/OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=emfend.at; spf=pass smtp.mailfrom=emfend.at; dkim=pass (1024-bit key) header.d=emfend.at header.i=@emfend.at header.b=kNP1i5Wx; arc=none smtp.client-ip=168.119.41.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=emfend.at
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=emfend.at
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P9UwqHFn"
-Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-856e7bc5651so1570287241.0
-        for <imx@lists.linux.dev>; Sat, 30 Nov 2024 03:38:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732966712; x=1733571512; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lbrr2qfB6+/BjJuq7E43lJE1sJas5MBGpSJDZ+XWZO4=;
-        b=P9UwqHFns/BShyXKXH6Ygs5aOsbgQBrkG4PJAnjNct6r4Xeh9ds5DdkDqci44w7Si1
-         00gIrt11RQhtscJfO9ikrH5m7gUIWtjnJXBdqgp8MZU6gsySDbyC+X28Z3j9rAdYopO6
-         UGEq8TlI0GqeIhAvalsSFpHcjrPXi7tYFG8Ue3MzSGw4kog3iuCoAUjor/KFSSEUbzpp
-         4eAC+VRlSrLRkgx/R6NTy751DtbK9EQ0er7JrwPXrDIfj+Rqo6VXTuv15Eza2LcKhlag
-         QzU3qNxl0rbwSaL5p5/cgyFKImvixv/ZNptRa98YKSKHLwS4WlMoaasWPY2tydOeDmgj
-         T/Vw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732966712; x=1733571512;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lbrr2qfB6+/BjJuq7E43lJE1sJas5MBGpSJDZ+XWZO4=;
-        b=it673FkCHD3qIlC6QgSvLzASBcPWegymsAWXqdafI5l9ItWJw8NJZmR7CnBjFOVvxT
-         7MFKHwa3g5woFuZ+2vc7TM4ix598lH2fiP8at+dALblwAMLzHlT3YCm1yhztUAiHYGkj
-         NpX7+x8Y9eU0SKrvFzdqhQD+dPPDnQWS2GDwcEXUhz3mKtMDVxR040PagnxASfgs5Zh7
-         n/oVy7jdxG3ocrzfaAX4mg/xBGPpb81IVGDSttctSUTZivve1g6KE55iNfLVmNKuaKVv
-         WNODE5DNGSqfBDrLIcbj7v3dLRMcWMA6veXVc+SFIy9AGitxuyCZQxQm2JxrZcggv5pl
-         xGpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV9JODNOjGx2uxeJIYmTx7IiMTSPvTFrRQEBzDCztLeZehSWOncCX/XfrnLWu0scK/1plo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxoyIFP5Nw9NYkmLGR76JTmChIJlef29KvYlfiJw3hKISGgIvnT
-	3rWY+Nf+dlY6nQhaybYEs7Nsndj/DdnkyPLWfHObLqh44RfdHtb3hiZA98Bv7vF+xOQJ6qoyn6k
-	tJwaRBiQ8HgQQcepl6Oi5V8LFxgs=
-X-Gm-Gg: ASbGncsK5Y3yo0GN5IhsR+EbymWDG3H5RazqjpCqwoPSdjQhzCCMUgUhb1csjGVax5X
-	NLJHyxgVOk4vr2lb0bzAJI29bwLmdrA==
-X-Google-Smtp-Source: AGHT+IEOjlIPuE+ZgXLyvfndQVoFGvXTAQTOLhdzhSDM04yBi3Tp+D0cxFQCuCqvm5sj20DBHerEXbDd1U2rr4EjqZ4=
-X-Received: by 2002:a05:6102:1519:b0:4af:586c:6197 with SMTP id
- ada2fe7eead31-4af586c620emr14093624137.0.1732966712559; Sat, 30 Nov 2024
- 03:38:32 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=emfend.at header.i=@emfend.at header.b="kNP1i5Wx"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=emfend.at;
+	 s=mail; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:Cc:
+	To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=LBqtIkKqqs3bjj0mz+CKgjkWz2efBS8qbc1Tcg5LZaI=; b=kNP1i5WxNv3Jj6oqGm67tOKT0M
+	l5b9i72VFafsO6LBqtqglQeA86VHYbMYweAc3y9BwvGmFiUSzlpKjuV4P17YMkin613UYI0i025eK
+	AJz6v67LBD4E8pezHQeOa5s9dau+oat8Pu7wb8/EcA2g5HPRgpUfzxbXo+S4fp40tk8E=;
+Received: from 194-208-208-245.tele.net ([194.208.208.245]:61203 helo=localhost.localdomain)
+	by lx20.hoststar.hosting with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <matthias.fend@emfend.at>)
+	id 1tHOHn-008ZQH-VJ; Sat, 30 Nov 2024 15:17:28 +0100
+From: Matthias Fend <matthias.fend@emfend.at>
+To: Michael Riesch <michael.riesch@wolfvision.net>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] media: dt-bindings: sony,imx415: add required clock-names property
+Date: Sat, 30 Nov 2024 15:17:15 +0100
+Message-Id: <20241130141716.1007115-1-matthias.fend@emfend.at>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241108-b4-max17042-v4-0-87c6d99b3d3d@gmail.com>
- <20241108-b4-max17042-v4-2-87c6d99b3d3d@gmail.com> <a7182597-b45e-40cf-baeb-60f69ec2365d@marvell.com>
-In-Reply-To: <a7182597-b45e-40cf-baeb-60f69ec2365d@marvell.com>
-From: Dzmitry Sankouski <dsankouski@gmail.com>
-Date: Sat, 30 Nov 2024 14:38:21 +0300
-Message-ID: <CABTCjFB9ybKmNh-xuF0qaWQc_j4zNXW36vimdrEPh2hzP1VsBw@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] power: supply: max17042: add platform driver variant
-To: Amit Singh Tomar <amitsinght@marvell.com>
-Cc: Hans de Goede <hdegoede@redhat.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>, Purism Kernel Team <kernel@puri.sm>, 
-	Sebastian Reichel <sre@kernel.org>, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, linux-pm@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-msm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: 
+X-Spam-Bar: 
+X-Spam-Report: 
 
-=D0=BF=D1=82, 29 =D0=BD=D0=BE=D1=8F=D0=B1. 2024=E2=80=AF=D0=B3. =D0=B2 17:0=
-3, Amit Singh Tomar <amitsinght@marvell.com>:
->
-> Hi,
->
-> >
-> > The solution here add and option to use max17042 driver as a MFD
-> > sub device, thus allowing any additional functionality be implemented a=
-s
-> > another sub device. This will help to reduce code duplication in MFD
-> > fuel gauge drivers.
-> >
-> > Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
-> > ---
-> > Changes in v4:
-> > - rename module_init and module_exit fuctions
-> > - rework max17042_init
-> > - assign chip_type in probe function
-> > - pass i2c_client as pointer on pointer, to use same pointer created in
-> >     MFD. This allows devm_regmap_init_i2c to cleanup gracefully.
-> >
-> > Changes in v3:
-> > - pass dev pointer in max17042_probe
-> > - remove prints
-> > ---
-> >    drivers/power/supply/max17042_battery.c | 116 ++++++++++++++++++++++=
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----=
--------------------
-> >    1 file changed, 92 insertions(+), 24 deletions(-)
-> >
-> > diff --git a/drivers/power/supply/max17042_battery.c b/drivers/power/su=
-pply/max17042_battery.c
-(...)
-> > +static int max17042_platform_probe(struct platform_device *pdev)
-> > +{
-> > +     struct device *dev =3D &pdev->dev;
-> > +     struct i2c_client **i2c =3D dev_get_platdata(dev);
-> This seems a bit unusual; can't we just use:
-> struct i2c_client *i2c =3D dev_get_platdata(&pdev->dev); instead?
-> > +     const struct platform_device_id *id =3D platform_get_device_id(pd=
-ev);
-> > +
-> > +     if (!i2c)
-> > +             return -EINVAL;
-> > +
-> > +     return max17042_probe(*i2c, dev, id->driver_data);
-> and then just pass "i2c" here ?
+The imx415 driver expects a clock with the name "inck".
+Document this in the bindings.
 
-This leads to hang on freeing devm resources, when unloading modules.
+Signed-off-by: Matthias Fend <matthias.fend@emfend.at>
+---
+ .../devicetree/bindings/media/i2c/sony,imx415.yaml          | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Platform driver version intended to be used as MFD sub device, where mfd
-creates a dummy i2c client, and passes it to max17042 via platform data.
-Sequence is: insmod MFD; insmod max17042; rmmod max17042; rmmod MFD; hang h=
-ere.
+diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx415.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx415.yaml
+index 34962c5c7006..e110b39bb391 100644
+--- a/Documentation/devicetree/bindings/media/i2c/sony,imx415.yaml
++++ b/Documentation/devicetree/bindings/media/i2c/sony,imx415.yaml
+@@ -31,6 +31,10 @@ properties:
+     description: Input clock (24 MHz, 27 MHz, 37.125 MHz, 72 MHz or 74.25 MHz)
+     maxItems: 1
+ 
++  clock-names:
++    items:
++      - const: inck
++
+   avdd-supply:
+     description: Analog power supply (2.9 V)
+ 
+@@ -76,6 +80,7 @@ required:
+   - compatible
+   - reg
+   - clocks
++  - clock-names
+   - avdd-supply
+   - dvdd-supply
+   - ovdd-supply
+@@ -96,6 +101,7 @@ examples:
+             reg = <0x1a>;
+             avdd-supply = <&vcc2v9_cam>;
+             clocks = <&clock_cam>;
++            clock-names = "inck";
+             dvdd-supply = <&vcc1v1_cam>;
+             lens-focus = <&vcm>;
+             orientation = <2>;
+-- 
+2.34.1
 
-My guess is that it is caused by a new pointer to the i2c-client. New point=
-er
-created at `platform_device_add_data` function call in `mfd_add_device`.
-Since C is pass by value, new pointer is assigned to platform device data.
-
---=20
-
-Best regards,
-Dzmitry
