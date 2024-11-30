@@ -1,109 +1,146 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F285A15E5DC
-	for <imx@lists.linux.dev>; Fri, 29 Nov 2024 22:54:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBF7148838
+	for <imx@lists.linux.dev>; Sat, 30 Nov 2024 11:38:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732920843; cv=none; b=K8bUcftSUG4JddNnQH7ypOVxjiYloCGAZqUPC41A6CGSuAw2/E0se3aksFfyPRXqclmNYI45oVSe0cnkGNEfIzjYMeE0BbxEO4e4P84L4eIwqS2Qgoh8s2cPSSxSfz77qRIkKXl1sB8p+4sQQTu/oc9Q7uK8G/HFNviuTTkNI3E=
+	t=1732966715; cv=none; b=LwCbZjGk0WGAoBjOdKUWm95Fr//DZTxD0vsLGjjRn9b6nSBpXEB6Xk+VMon/NIQKxGMAjO9TBPWJ09jPD8KYVZfneAz1Kj9LgdwP02a+1EYgnrzr8ObsjIAb/S0S0cMNZSofCxS7+f8ZJP+EhsONGlfmctjoFu+CbWPj+EEwK7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732920843; c=relaxed/simple;
-	bh=WKyfqIey8BdSBpHRzlBKwl2jvnn1XIYjneHFkheyqzM=;
+	s=arc-20240116; t=1732966715; c=relaxed/simple;
+	bh=llwMWTWTWdxE0Hpd9KZKubPcqkDdkWEnwBHV/Go2mvU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=p2aKq36KEATqf6mJFH1F3mFPHCKxdpNoeJlL4hZFF0C6V53t52qTTt/9LAXVtSs1gaZtn5bHE8U0Wuq5mYrR+H7eoZwkcP2x/wB7TOfDrLq8k5iGuQaDGnh4cAXmXvDJ6fUL7YqR3ESs2zJTZcpGRIOs10E7VplSzwOWVjDwuEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pHoyYY5U; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 To:Cc:Content-Type; b=mNz6f6wsA3guxvwjLVlwMF5+2XjIzvHb6E413N1nRfLdjit4j3ZlcaTcbOgDKNFggD+XIhbjvIWaOp5bHg8SQ1IgP+7VuISLa2qqi4CfaemVrFiScPEpp44ZdK3/m2IRZMQoOx93BWTH6r5cI3CAnoOgLvSghIXEsPmEVUcPCMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P9UwqHFn; arc=none smtp.client-ip=209.85.222.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pHoyYY5U"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-53dd668c5easo2446655e87.1
-        for <imx@lists.linux.dev>; Fri, 29 Nov 2024 14:54:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P9UwqHFn"
+Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-856e7bc5651so1570287241.0
+        for <imx@lists.linux.dev>; Sat, 30 Nov 2024 03:38:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1732920839; x=1733525639; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1732966712; x=1733571512; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WKyfqIey8BdSBpHRzlBKwl2jvnn1XIYjneHFkheyqzM=;
-        b=pHoyYY5UPr692oYOASazTf/GCldPvKwshD3JqAEuPEBiYbzd0ttkBpUuPhoyRBLDMa
-         5WffC30GKulQToJOuSPzBH+kmb4/IJmIVKvZ8+QAj9XHpN+9eYwR5NV1dkAM7lW6LeUe
-         v286WYbWFhqkj66ZOSAl0bQ024UWyBkc+qo2X7E/x/9V+otgzIzoMIGQP38GRlJ1GOB3
-         Ro2c+B2TVwgGAfjhKz/tipjlAwCBRiNqT5a6X4GeswCCw27zXQPOlBWIoV1B6czbh7Hw
-         f3mMzIo0twZAqL8kbjPscqi7cbC0zyFKAe5v0jS8HkBS6UxUDwMtzGywReoXNJtrVuRQ
-         9+JQ==
+        bh=lbrr2qfB6+/BjJuq7E43lJE1sJas5MBGpSJDZ+XWZO4=;
+        b=P9UwqHFns/BShyXKXH6Ygs5aOsbgQBrkG4PJAnjNct6r4Xeh9ds5DdkDqci44w7Si1
+         00gIrt11RQhtscJfO9ikrH5m7gUIWtjnJXBdqgp8MZU6gsySDbyC+X28Z3j9rAdYopO6
+         UGEq8TlI0GqeIhAvalsSFpHcjrPXi7tYFG8Ue3MzSGw4kog3iuCoAUjor/KFSSEUbzpp
+         4eAC+VRlSrLRkgx/R6NTy751DtbK9EQ0er7JrwPXrDIfj+Rqo6VXTuv15Eza2LcKhlag
+         QzU3qNxl0rbwSaL5p5/cgyFKImvixv/ZNptRa98YKSKHLwS4WlMoaasWPY2tydOeDmgj
+         T/Vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732920839; x=1733525639;
+        d=1e100.net; s=20230601; t=1732966712; x=1733571512;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WKyfqIey8BdSBpHRzlBKwl2jvnn1XIYjneHFkheyqzM=;
-        b=Ta10Vj088CjZHr1GjnABlmAT7r1izvtXPoqjOHSUlbqbzuU1N2m0x6h+kDzuxOaBZO
-         jWsaIl8/wpy6dtfhCWZrjU3E/pvYkXQUUdGHn6v5nFhX1TocHLhXvAECFrR4iK3yulJu
-         wy/rPEO93HD2AWgq7EHrpVHyyaqYUpJJftYF6YRFLCpjJM0Rx8tlI/nPeLKAKQ8kSXgS
-         9I2h1CVfa0tbg8MXY4DyAlLfpdXFejPcUpNyIV/dAMjtxs5PhjMFwA0SZuhPXQTjVqm6
-         NkheS1JTmaSFCf5tUSI9KBaxTvhQGPoUg9pza9PWgBCR7GPv7Gg4mcVM2wDGmN1rA0VJ
-         KCjg==
-X-Forwarded-Encrypted: i=1; AJvYcCXVQy4kvBN732FPhVMFlcMEOuZNY6NR1JFTKXtDJ6Mv5PXQDGjXUuk2KHfkq2m1ECNU7AI=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw3ZwXchmY12keCQEy0Y/BOk3HvD8T6OdcJnP0JaJgHx9cNxFUB
-	WSITGuyNoCS/xzGDcaLqznlZYKpQei8bFXpspVCGLhSWpz9fDLXeDlPseiFeWFltD6yrwWwm3en
-	sRDREaCJad69Dx1ICT8NrSJIRuMoTgvitG0dRXQ==
-X-Gm-Gg: ASbGnct+awMLEDoAWlljC0mpGltQ+WktcWTQAhYqtW73qbKIygrei4P7QpaMvPPKQJg
-	e+DjoM3BU1Z59NcMuGsi3rSv/ozKkLA==
-X-Google-Smtp-Source: AGHT+IGcVRupOMbTvZ7t+jprssuIrvHdEDt/2Twz85iMQXHN5G0PwHo8oCHXUut9lX73sLXrsQN4D4noECo1WJcQuBQ=
-X-Received: by 2002:ac2:5687:0:b0:53d:ed29:43ac with SMTP id
- 2adb3069b0e04-53df5080beamr3485099e87.28.1732920838933; Fri, 29 Nov 2024
- 14:53:58 -0800 (PST)
+        bh=lbrr2qfB6+/BjJuq7E43lJE1sJas5MBGpSJDZ+XWZO4=;
+        b=it673FkCHD3qIlC6QgSvLzASBcPWegymsAWXqdafI5l9ItWJw8NJZmR7CnBjFOVvxT
+         7MFKHwa3g5woFuZ+2vc7TM4ix598lH2fiP8at+dALblwAMLzHlT3YCm1yhztUAiHYGkj
+         NpX7+x8Y9eU0SKrvFzdqhQD+dPPDnQWS2GDwcEXUhz3mKtMDVxR040PagnxASfgs5Zh7
+         n/oVy7jdxG3ocrzfaAX4mg/xBGPpb81IVGDSttctSUTZivve1g6KE55iNfLVmNKuaKVv
+         WNODE5DNGSqfBDrLIcbj7v3dLRMcWMA6veXVc+SFIy9AGitxuyCZQxQm2JxrZcggv5pl
+         xGpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV9JODNOjGx2uxeJIYmTx7IiMTSPvTFrRQEBzDCztLeZehSWOncCX/XfrnLWu0scK/1plo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxoyIFP5Nw9NYkmLGR76JTmChIJlef29KvYlfiJw3hKISGgIvnT
+	3rWY+Nf+dlY6nQhaybYEs7Nsndj/DdnkyPLWfHObLqh44RfdHtb3hiZA98Bv7vF+xOQJ6qoyn6k
+	tJwaRBiQ8HgQQcepl6Oi5V8LFxgs=
+X-Gm-Gg: ASbGncsK5Y3yo0GN5IhsR+EbymWDG3H5RazqjpCqwoPSdjQhzCCMUgUhb1csjGVax5X
+	NLJHyxgVOk4vr2lb0bzAJI29bwLmdrA==
+X-Google-Smtp-Source: AGHT+IEOjlIPuE+ZgXLyvfndQVoFGvXTAQTOLhdzhSDM04yBi3Tp+D0cxFQCuCqvm5sj20DBHerEXbDd1U2rr4EjqZ4=
+X-Received: by 2002:a05:6102:1519:b0:4af:586c:6197 with SMTP id
+ ada2fe7eead31-4af586c620emr14093624137.0.1732966712559; Sat, 30 Nov 2024
+ 03:38:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241127190605.1367157-1-festevam@gmail.com>
-In-Reply-To: <20241127190605.1367157-1-festevam@gmail.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Fri, 29 Nov 2024 23:53:47 +0100
-Message-ID: <CACRpkdYAeM+=P0ymMUQhn3urV9HMWK7+4FkNDZevfvz_AbSF+Q@mail.gmail.com>
-Subject: Re: [PATCH v2] ARM: imx: Re-introduce the PINCTRL selection
-To: Fabio Estevam <festevam@gmail.com>
-Cc: shawnguo@kernel.org, linux@armlinux.org.uk, s.hauer@pengutronix.de, 
-	esben@geanix.com, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
-	linux@roeck-us.net, arnd@arndb.de, Fabio Estevam <festevam@denx.de>
+References: <20241108-b4-max17042-v4-0-87c6d99b3d3d@gmail.com>
+ <20241108-b4-max17042-v4-2-87c6d99b3d3d@gmail.com> <a7182597-b45e-40cf-baeb-60f69ec2365d@marvell.com>
+In-Reply-To: <a7182597-b45e-40cf-baeb-60f69ec2365d@marvell.com>
+From: Dzmitry Sankouski <dsankouski@gmail.com>
+Date: Sat, 30 Nov 2024 14:38:21 +0300
+Message-ID: <CABTCjFB9ybKmNh-xuF0qaWQc_j4zNXW36vimdrEPh2hzP1VsBw@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] power: supply: max17042: add platform driver variant
+To: Amit Singh Tomar <amitsinght@marvell.com>
+Cc: Hans de Goede <hdegoede@redhat.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>, Purism Kernel Team <kernel@puri.sm>, 
+	Sebastian Reichel <sre@kernel.org>, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Alim Akhtar <alim.akhtar@samsung.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, linux-pm@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-msm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 27, 2024 at 8:06=E2=80=AFPM Fabio Estevam <festevam@gmail.com> =
-wrote:
+=D0=BF=D1=82, 29 =D0=BD=D0=BE=D1=8F=D0=B1. 2024=E2=80=AF=D0=B3. =D0=B2 17:0=
+3, Amit Singh Tomar <amitsinght@marvell.com>:
+>
+> Hi,
+>
+> >
+> > The solution here add and option to use max17042 driver as a MFD
+> > sub device, thus allowing any additional functionality be implemented a=
+s
+> > another sub device. This will help to reduce code duplication in MFD
+> > fuel gauge drivers.
+> >
+> > Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
+> > ---
+> > Changes in v4:
+> > - rename module_init and module_exit fuctions
+> > - rework max17042_init
+> > - assign chip_type in probe function
+> > - pass i2c_client as pointer on pointer, to use same pointer created in
+> >     MFD. This allows devm_regmap_init_i2c to cleanup gracefully.
+> >
+> > Changes in v3:
+> > - pass dev pointer in max17042_probe
+> > - remove prints
+> > ---
+> >    drivers/power/supply/max17042_battery.c | 116 ++++++++++++++++++++++=
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----=
+-------------------
+> >    1 file changed, 92 insertions(+), 24 deletions(-)
+> >
+> > diff --git a/drivers/power/supply/max17042_battery.c b/drivers/power/su=
+pply/max17042_battery.c
+(...)
+> > +static int max17042_platform_probe(struct platform_device *pdev)
+> > +{
+> > +     struct device *dev =3D &pdev->dev;
+> > +     struct i2c_client **i2c =3D dev_get_platdata(dev);
+> This seems a bit unusual; can't we just use:
+> struct i2c_client *i2c =3D dev_get_platdata(&pdev->dev); instead?
+> > +     const struct platform_device_id *id =3D platform_get_device_id(pd=
+ev);
+> > +
+> > +     if (!i2c)
+> > +             return -EINVAL;
+> > +
+> > +     return max17042_probe(*i2c, dev, id->driver_data);
+> and then just pass "i2c" here ?
 
-> From: Fabio Estevam <festevam@denx.de>
->
-> Since commit 17d210018914 ("ARM: imx: Allow user to disable pinctrl"),
-> the CONFIG_PINCTRL option is no longer implicitly selected, causing
-> several i.MX SoC pinctrl drivers no longer getting selected by default.
->
-> This causes boot regressions on the ARMv4, ARMv5, ARMv6 and ARMv7
-> i.MX SoCs.
->
-> Fix it by selecting CONFIG_PINCTRL as before.
->
-> This defeats the purpose of 7d210018914 ("ARM: imx: Allow user to disable
-> pinctrl"), but it is the less invasive fix for the boot regressions.
->
-> The attempt to build Layerscape without pinctrl can still be explored
-> later as suggested by Arnd:
->
-> "Overall, my best advice here is still to not change the way
-> i.MX pinctrl works at all, but just fix Layerscape to not depend
-> on i.MX. The reason for the 'select' here is clearly that the
-> i.MX machines would fail to boot without pinctrl, and changing
-> that because of Layerscape seems backwards."
->
-> Fixes: 17d210018914 ("ARM: imx: Allow user to disable pinctrl")
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
-> Closes: https://lore.kernel.org/linux-arm-kernel/49ff070a-ce67-42d7-84ec-=
-8b54fd7e9742@roeck-us.net/
-> Signed-off-by: Fabio Estevam <festevam@denx.de>
+This leads to hang on freeing devm resources, when unloading modules.
 
-Patch applied for fixes!
+Platform driver version intended to be used as MFD sub device, where mfd
+creates a dummy i2c client, and passes it to max17042 via platform data.
+Sequence is: insmod MFD; insmod max17042; rmmod max17042; rmmod MFD; hang h=
+ere.
 
-Yours,
-Linus Walleij
+My guess is that it is caused by a new pointer to the i2c-client. New point=
+er
+created at `platform_device_add_data` function call in `mfd_add_device`.
+Since C is pass by value, new pointer is assigned to platform device data.
+
+--=20
+
+Best regards,
+Dzmitry
