@@ -1,206 +1,202 @@
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2068.outbound.protection.outlook.com [40.107.247.68])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F941DE89C
-	for <imx@lists.linux.dev>; Mon,  2 Dec 2024 20:22:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733170940; cv=fail; b=iGQhrfQQkCMvVb3JWw/UnMBUmjKsg3M1+dt4ZpKXaORnNVf9qZTOhZBasTHlA+BzPhTbiXFGlE8VpZwITcMCmu+R6s6CCO9HEQ5gnIlvtth0ZXHaF/wLoLC/WrOczmE9FJXJFLOaNKDiXkm7QZ1tPU8/8YG9Itj25E9Ze9pHQNI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733170940; c=relaxed/simple;
-	bh=76qwiCBEm0Rb/gbybVB0jSkHtxb7Hxzq38Xa1usdioA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=VW/M+34qSpKDwUBURrarkmjQ9K+f+04ShcvUBhvGM2NpkAxzYKq+8n8O1lmDWZOtNmg8gjDxx+idanCGWN6T0Q2f+zkQSGNmzOrEZVFzIxW1KPeoc+EFCW5UaHWe3RSf/2OjQ6HVSEHXCQmL1qR/ivYxH/944aDiQyni87Jxxas=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=DtVLRUET; arc=fail smtp.client-ip=40.107.247.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBC51DF73B;
+	Mon,  2 Dec 2024 22:03:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733177024; cv=none; b=BanQjJ20hT5UoH006iwnuZ48mZc6hQma9m3tfPBUXGXWQyCosV8cSBt7reGCqvDzhmFdajmJMZIvQXb36HNFhsWD2L1owo83Al6HHPpYE3tEDkWp1WanxePpXl3J62TbttQH9a6E4hV64xBnJi0v7R/L/CyxXipCoSsqlbpKUm4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733177024; c=relaxed/simple;
+	bh=m97YtqZ0nOeP7DlKMU96/zqeCgvOSU2UBu4HI+SXTrE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Xy+joI22EImmLDiEoyUSR8j8jx/YrP2vy0cA/qBwRvNGATPJLJkLBvk3/+JuQJ8htwhWnFp0P9iQpyEVAQzH+goISzQDhwhYB3prB7gZOyzU4fIO5PZev35yWvDJTkYofV6FTugYX1Yqr40fprhISzyYjBtaxw9rPVnDf1BCJGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=suBtcrMh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="DtVLRUET"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=T18RHMomNLK5+C8r/D5PcdGEBSsY+VlFgz5pnFt2PFH4jpOzW9uygtt5RleUKkbIYquOvGVKqa68Fny21xlZWD05/uPl7JCNzw/JoiDcHqBxBB+1B8VRoZDg8yTR+9k4NlJO8cAZtr00QnpxZtoODVM7UosNseqqF+Fyk8A1ZwOOZjUuBTeiOKQwzFuJU2loXOw6vbFU/imA2drj12FvrCKjRekJbAqllqz3K57J43uROD6fr6jMWXPYijDaK/ikGo8mvXW+lLrNfUDPYhJlqSnd21AxuUuzI5Y4Nh4fe40FkeWEUE/ywfQOB3deUgL1YngaGB6NfcZVJ14RvrHtag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EM7J18TNS4jIX3r7Waqpa/KAZoKkaFOBeHEkLktc0Aw=;
- b=wSBVrE5p68KfOcUewPXdJp/xprZIuTS8+sP9+FTuYeoOUBXULuTiS9zEQ0bxGi2acD8c92VfqwSZCW+cNYgJ7FMLDId+tNgmHi/GWjEhzFmYPYpKxOVg+REkzKHxng1KkXu++ecQ4fryn5u82e1/e6J4x6KJItai03ho13Y/fUZu2EQfzVj0ZhIwsGdc42rXegvCiEb56yoC7Az1buyJmAqu8hNcIgZhzcwV+OmnVr7cAKcXZTQQ1n3WdnaZC6yXiisCf1+w0dbHVbaOTfi37uVX5KFEaO3aRQnY8F8WpJZgIDpKFjw1wE+QKlzR6jL7AibdyC7c6D923wZ5kTrn6w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EM7J18TNS4jIX3r7Waqpa/KAZoKkaFOBeHEkLktc0Aw=;
- b=DtVLRUET6rLGvlypMLAxxzMNtE2S1ajvtnuxoqBzVoc3q+l5AGJNW5MXVjTSu3nCWI37qwLsLczb8O3YE4kTzKIQHxSV3bF2HkA7a6FNACQR8UJsIU4msshujNsFWh+o+v19qnpRE87HlIntDXIdakpw+2jV4WcO5sXNC7y1BNgj/xblQaQKl4hnx793B+5fOPwfrWRkFkwhKKimuHAvEQUnAvBlcr+rgh0GwcEoIEGz8z9yONZKRPJ33s+fqn1LjLD66KahT8Vf3IEyv+CsGoqLXIoFRxBps6fTLmzva+3IekDrQHeR0xlMbikHzayWjMsUcgbJcgWS/MXwWXil7Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VE1PR04MB7230.eurprd04.prod.outlook.com (2603:10a6:800:1ab::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.18; Mon, 2 Dec
- 2024 20:22:11 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8207.017; Mon, 2 Dec 2024
- 20:22:11 +0000
-Date: Mon, 2 Dec 2024 15:21:57 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Pengfei Li <pengfei.li_1@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de,
-	catalin.marinas@arm.com, will@kernel.org, kernel@pengutronix.de,
-	festevam@gmail.com, joao.goncalves@toradex.com, marex@denx.de,
-	hvilleneuve@dimonoff.com, hiago.franco@toradex.com,
-	peng.fan@nxp.com, frieder.schrempf@kontron.de,
-	alexander.stein@ew.tq-group.com, m.othacehe@gmail.com,
-	mwalle@kernel.org, Max.Merchel@ew.tq-group.com,
-	quic_bjorande@quicinc.com, geert+renesas@glider.be,
-	dmitry.baryshkov@linaro.org, neil.armstrong@linaro.org,
-	arnd@arndb.de, nfraprado@collabora.com, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, ping.bai@nxp.com,
-	ye.li@nxp.com, aisheng.dong@nxp.com, carlos.song@nxp.com
-Subject: Re: [PATCH v3 0/4] Add i.MX91 platform support
-Message-ID: <Z04W5chGq5TitB9f@lizhi-Precision-Tower-5810>
-References: <20241120094945.3032663-1-pengfei.li_1@nxp.com>
- <Z01gfuVIIhl0rYwI@pengfei-OptiPlex-Tower-Plus-7010>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z01gfuVIIhl0rYwI@pengfei-OptiPlex-Tower-Plus-7010>
-X-ClientProxiedBy: SJ0PR13CA0074.namprd13.prod.outlook.com
- (2603:10b6:a03:2c4::19) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="suBtcrMh"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 21DA7C4CED2;
+	Mon,  2 Dec 2024 22:03:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733177024;
+	bh=m97YtqZ0nOeP7DlKMU96/zqeCgvOSU2UBu4HI+SXTrE=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=suBtcrMhV2fSZlAboW4SMzYp4uycjSteA321rOR2y3MQy6nRZyGCykqAWRyeOZnL1
+	 Hgwz8cAQkkeUYr3JRXYvW2p7pbjiXUiHiPTi0VyTHKNEoJWl1qsHQXg/PVhly0oGJm
+	 3ZnPS4imCA/chjMTa/5ZncC7XB7w0mXydoewcK8EfZSbVCQ5GGmiuXRbgbbw0szYfz
+	 w31uCh1NtP2HpTmp99XXbh6T2MlK60DyvN2GMlGdtrPehDhyHpPGbKSHxVRQTall0B
+	 p7TI2DzApXS1JGCZ8EbYcEqnmXs2qABO7x/RSagzTmKnTaE0+ZYijv/F+oo7Pkg+nz
+	 0JKYADbX0K1Lw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 00CD2E69E92;
+	Mon,  2 Dec 2024 22:03:44 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Subject: [PATCH net-next v7 00/15] Add support for Synopsis DWMAC IP on NXP
+ Automotive SoCs S32G2xx/S32G3xx/S32R45
+Date: Mon, 02 Dec 2024 23:03:39 +0100
+Message-Id: <20241202-upstream_s32cc_gmac-v7-0-bc3e1f9f656e@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VE1PR04MB7230:EE_
-X-MS-Office365-Filtering-Correlation-Id: ad52e275-31ce-475f-84c5-08dd130f006f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|7416014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?nVE4aEUr8yTU35HqKhSARgcEXLOf2pzuT7VlEhKLzzj8RxwddrmtTcxv/zgm?=
- =?us-ascii?Q?A1g2C6u2zfqZv5HPnUQTHxsIMj4hbDfiFZKzqKVvTJ4MatOQkkJBDBa4mgNj?=
- =?us-ascii?Q?8ve7IWzyxQp1GEIZ534QPujro9/Rh7WRnxakyr6R4rizLwFa4+VDpqs6u5Fi?=
- =?us-ascii?Q?CcDCwb2dCl3bl74Sz/jOcAu4Fvi0hRT3AEQK9rLGngvUlfzxZGpMn8U7sX4B?=
- =?us-ascii?Q?e7mAQnZPG7WIGYpyIXRpKDuT8VstOKUSdgj0JjkMOdQi+Q7aMLkmNm96Kdt2?=
- =?us-ascii?Q?XPN6y+3Swm8BkTL+qqiyqnYWvUsjtty6B2vyNVFZWz480t1gojpQ97/+9Euj?=
- =?us-ascii?Q?n1k+Y9tBsLC4CYVxPBgz2FgnNxQiOm3WLKUUKE3gq+npN6tkShBmWxbbN/di?=
- =?us-ascii?Q?Mlc5uLanxuEgehTtwGsrEMdyxCsTz9kpjIuZCKn2Jj5XEergFNlNclFDYhxh?=
- =?us-ascii?Q?0l4NUM1Izh7cTbJbh2E3pW7ZhjBoVPpNPogTPAMhBZl02VZiCAtFGrdJkVL0?=
- =?us-ascii?Q?BTwHaC5r6ZebWj0P4O6snznGLcu2htZh0dwbBbKP7k7P0xoNjworIrIfsaGz?=
- =?us-ascii?Q?DZ+BXWohv2arV9Q9irmOOYWAPinF13HLQoy+EbVFJPIthTyKQbUcbv6+FpyU?=
- =?us-ascii?Q?FltnrQ6hUiOuHV7p1r2hwVuMOzvgX9Ch9BCoTDb8npegBkFuqCq40A9d3PWC?=
- =?us-ascii?Q?AJXFfIRPoO2sHVK2lPJ808WCRrR29qJOMeoWym8zgTFIDtyQGmzW/pZep0Rv?=
- =?us-ascii?Q?bNekkE9HksksvjzSpOTOxrJhF6p5FErCewMqSdo6vJLYv+vo34jHj4j/JNqk?=
- =?us-ascii?Q?CBrZiDMFhbQJAiBl3Fy95cWfWh7ScopT9IHxdsQYLHIs3lK1vUsZSe/kcHF8?=
- =?us-ascii?Q?9p4GM2UL4CZjLy4cmko7pUNC3pMw1PnVj18+K20do6K6PN75jfhTFHg15roT?=
- =?us-ascii?Q?iRt3Z2t0OOrvLd9nHjKpWT+sqi7cC8Kxh3skthIO5WWR+GJ/9Wrh23zSEyqD?=
- =?us-ascii?Q?xCAZ80Du2XqBJCqBCpebQc/QgbHwqen2GD2ghRGnTg9d/vf1buqPBYnEMm7w?=
- =?us-ascii?Q?wt9Q5nnoanEuZEHFSV9sOLOO70p76pmJe1NiXqU5tP3IM/qQXE5vDeBrze6k?=
- =?us-ascii?Q?IauKJOrCLHCFHiDb75PIj3JDXeWdXI29R9SFRHVOG5WI9UHeHTghIsjs+NGx?=
- =?us-ascii?Q?YPZLvfsCMv493C3r3/5ZrZOUVAaQFCtZhKT2whiNVId3f1zIsy7scEf1Gsn+?=
- =?us-ascii?Q?83/nS9aHT9LgIgJaCi31Sx8XEZ7cgP1r98bbz6xBrxcP1Z+xlnfOW4o8IjWB?=
- =?us-ascii?Q?tNXfCIUrz/bvdGGFPaMVqyIk3OH36tS41EMcdhQLTxCjEa6ZwJnQHBlVykDu?=
- =?us-ascii?Q?NUoSoD6a7jhRxrFmeAjSWsLfab1EF35iR/074WQJhwOG5KZSKg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(7416014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?1aMxOZbrJcXfHT5e7CD9ENRl5xygoP+cxNkUoIqPtk87JXWJVsYVcRT3b4VK?=
- =?us-ascii?Q?dJsltWykDlb3w9c+ZJTmvGJ89pFCmwBhlBwB/PITrEl7wIWUqYEMu4GXjTaK?=
- =?us-ascii?Q?FK/q7JdvHhffE+BxJvaLyu3QaHKRv6W52SSDCxiiwc+96U+JLZnaIyxuUqCx?=
- =?us-ascii?Q?kX8QkRoyVcXO1xbeCEvicerUZYLveHXC7WHLAbqL985pNjirWGfaTQ/PYnuf?=
- =?us-ascii?Q?IuN1DZP0Ve0lgF9pRbOzmfCoeBJDBCrGJnY1tVL93ZK7sSLoa7MhyXGtQ+K1?=
- =?us-ascii?Q?xiH2/jKK+wyxBi+Vuy8Qer7edPQjt/8JYhlEA1QkEbauSPiSDhDuitDWi66/?=
- =?us-ascii?Q?WinzWpNuInJnda0zq7AJ8A9gT7GqepedNvdO6lrlTl7e+CgagGPmY0mFC1U0?=
- =?us-ascii?Q?WnQ++JB2lycugPS85aOho392IKDmtmhgLTdDmG2XumHD5bkQYROuFYHpcTQ3?=
- =?us-ascii?Q?Tzg1G4hxJb5nszGYx7ArByi0j/TuNA60K3F3sIxVRx5WkdSBiV4ZUzI3kX/G?=
- =?us-ascii?Q?3CZqxQr1uNQeiN7m5nLW2NyZ13zAMUQN6DyM/nmxR2fpHVhAwwScZRwx5Gdt?=
- =?us-ascii?Q?+ex3GXYO3S68rvdDTPTaquHYNPW888UYVjDMH2r8d0YyaTVSGZiz0z3dbYi+?=
- =?us-ascii?Q?MWctm6CROGld+DzQp3D/VvFcP1sC8RahNLu7FeHzsj6bngr3YQ/K/EVMU/rd?=
- =?us-ascii?Q?L/NKxlzawLSa1utyJFWkOjHnEvrntEejy8dlbJWhgK2f56x3YX4YuNyebu3L?=
- =?us-ascii?Q?M0MIqE0R+yHuLehlY2FJXuVdD9TGtL6HHaU3F8Uo1ivat2KeRv6vHgx6+u23?=
- =?us-ascii?Q?eNi/5aOcPmKHKchuvh0gKD4ESsy0gL+CyO4ZL2rlrtKBCkAmFz/0kT1LyHwq?=
- =?us-ascii?Q?kOewwLX3g2uZN5WV25w3yrNUg2FQMUlGYRGV21iNEPGwds+E3z0ADHPOk+IY?=
- =?us-ascii?Q?watjjlY/Y3fG36gHHUxOOiMD3mZ/PJ7g4ywQTUSzYyKH5sMP+ZEZpQDd1kEV?=
- =?us-ascii?Q?VOp6jtBYEkqq8vnBYI3WHHWY0q36n3sJuN9B8VnAoIAjJ6Sjr29wSn8J1B99?=
- =?us-ascii?Q?uwq7cL3+S55FBvTMoFrsvFfnhJLyd7JPEwab0lQkpwRp/v4zBQzDaa5PF8nI?=
- =?us-ascii?Q?uATDmni3FLbO9KPAYAWK2OrEdDqxrpZ4DUOF9aAbsMAauowABflhlEqAk8oM?=
- =?us-ascii?Q?m4gl+cz/Zdkhq0ticUrZZuyMIaT3eoAky1/Lxdx7Pg78T5YzhOtJKJ7SdZLz?=
- =?us-ascii?Q?bbPWzvcPHvuu5HEZjLLR+EevtgwhqBf7+8oWjiMHROp0Z+rC7gNs2PzIcxC+?=
- =?us-ascii?Q?AfAX+GjVYAXzJJmBK78dASMf6sZzAt6aEitfiEPEp5oPZASPjdwS/xGRP2Nq?=
- =?us-ascii?Q?+i0muWS499HST46CNQDe9FuCVWf/Dri14e9x2qTGbXzdH2j5G9oV9lr3ff0K?=
- =?us-ascii?Q?KcOidSggVYzjasWCWtYIpI9pqLsDJ8nvm10RdvAJ17OWL7mRswNouWQbBaRA?=
- =?us-ascii?Q?sY0E1WEZZUCKLo0UnWYwyXcyr8K2gDo7+fsy2cNp0CsiitZo2w+zqI0s3dJ3?=
- =?us-ascii?Q?Xew/ncTfBacYorSCHsjVwDHUF3LT56vGLmi6K7ek?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ad52e275-31ce-475f-84c5-08dd130f006f
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Dec 2024 20:22:11.2762
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Dswn9ToAiPu0yC3KMr77Gcya+rG75AzrWP4ya5QkKVy/CH8rzXTaMpY+hYl9wv9U3CdYLdD7r7PpIwjyG+9cLQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7230
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALsuTmcC/23PTW6DMBAF4KtEXtfR2MZ/XfUeVRXBME68wCCbI
+ qqIu9dh01Rh+fQ039PcWaEcqbD3051lWmKJY6rBvp0Y3tp0JR77mpkE2YCXin9PZc7UDpeiJOL
+ lOrTIjfOCOqs7IQ2rl1OmENdd/WSJZp5ondlXbW6xzGP+2ecWtfcPWYA4lhfFgfeu6XRrbOcVf
+ IylnNM6nXEcdnFpnhTpjpWmKqCMcEEAKZKviv5ThPDHiq6K7RE9BAyBwqtinhTZHCvm8RFqKxx
+ iABD/lW3bfgH71upxlAEAAA==
+To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Jose Abreu <joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
+ Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Emil Renner Berthing <kernel@esmil.dk>, 
+ Minda Chen <minda.chen@starfivetech.com>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Iyappan Subramanian <iyappan@os.amperecomputing.com>, 
+ Keyur Chudgar <keyur@os.amperecomputing.com>, 
+ Quan Nguyen <quan@os.amperecomputing.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, 
+ devicetree@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
+ 0x1207@gmail.com, fancer.lancer@gmail.com, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>, 
+ Jacob Keller <jacob.e.keller@intel.com>, 
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1733177021; l=4944;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=m97YtqZ0nOeP7DlKMU96/zqeCgvOSU2UBu4HI+SXTrE=;
+ b=LRmGIZz1oyy/VKtHAoJ/DaPlHu7EU9479mUEusQCDeEqkwrULahRx/1/l+G9AxGE+is73m0Su
+ mLi9xojFVa1CiygfStQophpuhjf6feJFlQKOt3U21G5ch+PknJ1KOFu
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
-On Mon, Dec 02, 2024 at 03:24:44PM +0800, Pengfei Li wrote:
-> On Wed, Nov 20, 2024 at 05:49:41PM +0800, Pengfei Li wrote:
-> > The design of the i.MX91 platform is very similar to i.MX93.
-> > The mainly difference between i.MX91 and i.MX93 is as follows:
-> > - i.MX91 removed some clocks and modified the names of some clocks.
-> > - i.MX91 only has one A core
-> > - i.MX91 has different pinmux
-> >
-> > Therefore, i.MX91 can reuse i.MX93 dtsi.
-> >
-> > ---
-> > Change for v3:
-> > - Add Conor's ack on patch #1
-> > - format imx91-11x11-evk.dts with the dt-format tool
-> > - add lpi2c1 node
-> > - link to v2: https://lore.kernel.org/all/20241118051541.2621360-1-pengfei.li_1@nxp.com/
-> >
-> > Pengfei Li (4):
-> >   dt-bindings: arm: fsl: Add i.MX91 11x11 evk board
-> >   arm64: dts: freescale: Add i.MX91 dtsi support
-> >   arm64: dts: freescale: Add i.MX91 11x11 EVK basic support
-> >   arm64: defconfig: enable i.MX91 pinctrl
-> >
-> >  .../devicetree/bindings/arm/fsl.yaml          |   6 +
-> >  arch/arm64/boot/dts/freescale/Makefile        |   1 +
-> >  .../boot/dts/freescale/imx91-11x11-evk.dts    | 875 ++++++++++++++++++
-> >  arch/arm64/boot/dts/freescale/imx91-pinfunc.h | 770 +++++++++++++++
-> >  arch/arm64/boot/dts/freescale/imx91.dtsi      |  70 ++
-> >  arch/arm64/configs/defconfig                  |   1 +
-> >  6 files changed, 1723 insertions(+)
-> >  create mode 100644 arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts
-> >  create mode 100644 arch/arm64/boot/dts/freescale/imx91-pinfunc.h
-> >  create mode 100644 arch/arm64/boot/dts/freescale/imx91.dtsi
-> >
-> > --
-> > 2.34.1
-> >
-> >
->
-> Hi Rob Herring,
->
-> I haven't received any comments from others about this version of the patch set, is this patch set applicable?
+The SoC series S32G2xx and S32G3xx feature one DWMAC instance,
+the SoC S32R45 has two instances. The devices can use RGMII/RMII/MII
+interface over Pinctrl device or the output can be routed
+to the embedded SerDes for SGMII connectivity.
 
-Pengfei:
+The provided stmmac glue code implements only basic functionality,
+interface support is restricted to RGMII only. More, including
+SGMII/SerDes support will come later.
 
-	Conor Dooley have acked binding patch. Wait for guo shawn pick up
-these. v6.13-rc1 just create.
+This patchset adds stmmac glue driver based on downstream NXP git [0].
 
-Frank
+[0] https://github.com/nxp-auto-linux/linux
+
+v7:
+- rebased on v6.13-rc1 and removed RFC prefix
+- Link to v6: https://lore.kernel.org/r/20241124-upstream_s32cc_gmac-v6-0-dc5718ccf001@oss.nxp.com
+
+v6:
+- removed dead code in dwmac-intel-plat.c
+- yaml: fix indention
+- validate interface mode in probe
+- dropped patch#16 to fit in max 15 patches in series
+- Link to v5: https://lore.kernel.org/r/20241119-upstream_s32cc_gmac-v5-0-7dcc90fcffef@oss.nxp.com
+
+v5:
+- yaml: refactored compatible string to use fallback
+- yaml: fix indention in example
+- fix xmas tree formating in local variable declarations
+- removed lazy rx clk setup
+- drop PTP clock reading patch and replace it with stmmac_platform fix
+- Link to v4: https://lore.kernel.org/r/20241028-upstream_s32cc_gmac-v4-0-03618f10e3e2@oss.nxp.com
+
+v4:
+- fixed empty commit messages for rgmi_clock() helper patches
+- fixed yaml path in MAINTAINERS
+- switched to platform_driver::remove() as suggested Uwe
+- yaml: returned back all compatibility sting values
+- added better commit description for rgmii_clock() helper
+- Link to v3: https://lore.kernel.org/r/20241013-upstream_s32cc_gmac-v3-0-d84b5a67b930@oss.nxp.com
+
+v3:
+- switched to b4 WoW to overcome threading issue with b4
+- extracted the hunk with the typo fix from v2 patch#1 to separate patch
+  as Jacob suggested
+- removed dead code for RMII/MII support, which will be added alter
+- used new rgmii_clock() helper in other stmmac:dwmac glue drivers
+- yaml: compatible strings compressed to simple one "nxp,s32-dwmac",
+  removed duplicated required properties, already defined in snps,dwmac,
+  fixed example
+
+v2:
+- send to wider audience as first version missed many maintainers
+- created rgmi_clk() helper as Russell suggested (see patch#4)
+- address Andrew's, Russell's, Serge's and Simon's comments
+
+Message-ID: <AM9PR04MB85066576AD6848E2402DA354E2832@AM9PR04MB8506.eurprd04.prod.outlook.com>
+
+Cc: 
+
+Cc: 
+
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+---
+---
+Jan Petrous (OSS) (15):
+      net: driver: stmmac: Fix CSR divider comment
+      net: driver: stmmac: Extend CSR calc support
+      net: stmmac: Fix clock rate variables size
+      net: phy: Add helper for mapping RGMII link speed to clock rate
+      net: dwmac-dwc-qos-eth: Use helper rgmii_clock
+      net: dwmac-imx: Use helper rgmii_clock
+      net: dwmac-intel-plat: Use helper rgmii_clock
+      net: dwmac-rk: Use helper rgmii_clock
+      net: dwmac-starfive: Use helper rgmii_clock
+      net: macb: Use helper rgmii_clock
+      net: xgene_enet: Use helper rgmii_clock
+      net: dwmac-sti: Use helper rgmii_clock
+      dt-bindings: net: Add DT bindings for DWMAC on NXP S32G/R SoCs
+      net: stmmac: dwmac-s32: add basic NXP S32G/S32R glue driver
+      MAINTAINERS: Add Jan Petrous as the NXP S32G/R DWMAC driver maintainer
+
+ .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 105 ++++++++++++
+ .../devicetree/bindings/net/snps,dwmac.yaml        |   1 +
+ MAINTAINERS                                        |   7 +
+ drivers/net/ethernet/apm/xgene/xgene_enet_hw.c     |  16 +-
+ drivers/net/ethernet/cadence/macb_main.c           |  14 +-
+ drivers/net/ethernet/stmicro/stmmac/Kconfig        |  12 ++
+ drivers/net/ethernet/stmicro/stmmac/Makefile       |   1 +
+ drivers/net/ethernet/stmicro/stmmac/common.h       |   2 +
+ .../ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c    |  11 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c    |  15 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-intel-plat.c |  22 +--
+ .../ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c    |   2 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c     |  30 +---
+ drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c    | 189 +++++++++++++++++++++
+ .../net/ethernet/stmicro/stmmac/dwmac-starfive.c   |  19 +--
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c    |  18 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c  |   2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  |   6 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_platform.c  |   2 +-
+ include/linux/phy.h                                |  23 +++
+ include/linux/stmmac.h                             |  10 +-
+ 21 files changed, 386 insertions(+), 121 deletions(-)
+---
+base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
+change-id: 20240923-upstream_s32cc_gmac-6891eb75b126
+
+Best regards,
+-- 
+Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 
 
->
-> BR,
-> Pengfei Li
->
