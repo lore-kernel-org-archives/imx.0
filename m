@@ -1,85 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B061FE469;
-	Mon,  2 Dec 2024 13:19:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17340209698;
+	Mon,  2 Dec 2024 14:49:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733145580; cv=none; b=f2Q2QljelOLbmADivQxDcVyPtzll1BViL/ahW3Lk5YXIU29dKyp8xAg9IZfo+7PXDALUZfuRtold19vp3fTAlBp//KQbRLoOEUZRfum4+kP/Tkz0CoII2NI9cQB1WLhtdr6LbHiQuf3GbTzymWcPIGBo7zVrGrQHf8Q7cfmYg/w=
+	t=1733150946; cv=none; b=e1lZYV9c2rsjQSA7wpvQpDMJyB6i0XlI7mVRRw6oWz84Kmfe0puSOAXTwoHyrctcPlsf2XU1PJwi8yNE26Yw7YHPu48zqkh8ZojBfDS5ry2SR1ifSFaczujlFk/ULZUcK/5CD2rReT2fOrhMjhtfc3n7On6kKYCD1UYHwaH9ZCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733145580; c=relaxed/simple;
-	bh=3ANWplAUBgovd+r2c5F0DHHbFkPx0NNGGSzCJkkazTY=;
+	s=arc-20240116; t=1733150946; c=relaxed/simple;
+	bh=pi5Mf/nr1qoJZfgRUUnsVgusjVAqfgyggwQ5OZJQnTE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ca1+UaDD6YTSuNmj8QDd1bi6UM5jopW81KqUgnq59J4qlIayQh35UyzJ1AiVHvJ4oWpXOpONQhcJdKG/epTFgOVnpOr34kpAMrCMTsqrj8M+EB2RVFhtTqTUqXaE9bgfwIoo2/RaUOGjR35ki0r5G/J7hbuSsHbygFagFrO3Efc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QsvnnYeR; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=XzgzvV973RaPIYCJ6QQwNOAzBJSAV5xR8wnPAs4n2kdXIFBWBllwKcb/kEZd40+dmwNmhvpVMi2+zuwLQ00dcsXgGke5q03rOKXPxqCsyXcEqYHg/S0kpIJFV4bcirw793Bqj+RlrR2/WTFceL0YtMbx7xJUQL3tPDY4HEE0e6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=TtXSqWRQ; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QsvnnYeR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F154C4CED1;
-	Mon,  2 Dec 2024 13:19:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733145580;
-	bh=3ANWplAUBgovd+r2c5F0DHHbFkPx0NNGGSzCJkkazTY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QsvnnYeRmQFOM47DM3aMTxuclN6ixZs73+YJA+Vxitho9R2GoOAN/s5U8Ggl02Dit
-	 rVr6QnFKjqYx8mDprfyf6HyqbrxRFNHERZoGuntFWZrMyVIXDAITPihjT/w4mzZQsU
-	 b+daFEdL+shpyPrKxCnTwCX1Wsj8M10ooIscN26h2pgfBtWEC7R4XPqQoH7WRCHPA4
-	 5dajSumU0us0bWYUJb8lRL5WYHB92MZDGYIBVdE92fX11cpfJZSBbwUVq7TOfQSswU
-	 Ezv9aWK6BcoYQv74YHV2tiYZRQ3HsV+wSl1OWYFsgLOkLI9HHS22BHfywXQgd/GYQO
-	 hWnle2F0xiEVQ==
-Date: Mon, 2 Dec 2024 13:19:35 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Bough Chen <haibo.chen@nxp.com>
-Cc: "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
-	"brgl@bgdev.pl" <brgl@bgdev.pl>,
-	"lgirdwood@gmail.com" <lgirdwood@gmail.com>,
-	"marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: [PATCH v2] gpio: pca953x: do not enable regmap cache when there
- is no regulator
-Message-ID: <9b214857-4cea-4480-86b3-0e469ce9e36f@sirena.org.uk>
-References: <20241128020042.3124957-1-haibo.chen@nxp.com>
- <f71643eb-ee9c-4b39-af26-738ae82fd4bd@sirena.org.uk>
- <DU0PR04MB9496A16FB98C8492C9F012CD902A2@DU0PR04MB9496.eurprd04.prod.outlook.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="TtXSqWRQ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=d0sGftyf/7BoaDmfklTa6dQjOZv9IFd5AtZRQ5ymZm4=; b=TtXSqWRQrSMsnARGmMN2W1dkwc
+	Uaj1wl7CiCEu78RVwYbboGQwMTNC3sx2zPGQ7nOof5aD0bIz+6WQI3ZFYHTThV381v4jEmjSEPfdf
+	i1A9ej6h7xQCEFchT3/Z1RMcbgfoFwWa/AXAxpnaRnHE9t1EfxwYTbT2HMXfW90CJssQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tI7jK-00ExwL-BB; Mon, 02 Dec 2024 15:48:54 +0100
+Date: Mon, 2 Dec 2024 15:48:54 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	florian.fainelli@broadcom.com, heiko.stuebner@cherry.de,
+	frank.li@nxp.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2 net] net: phy: micrel: Dynamically control external
+ clock of KSZ PHY
+Message-ID: <003d5029-2339-4e18-b632-be35384b2f7a@lunn.ch>
+References: <20241202084535.2520151-1-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="yuASf+FYGuLtSoxu"
-Content-Disposition: inline
-In-Reply-To: <DU0PR04MB9496A16FB98C8492C9F012CD902A2@DU0PR04MB9496.eurprd04.prod.outlook.com>
-X-Cookie: (null cookie
-
-
---yuASf+FYGuLtSoxu
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20241202084535.2520151-1-wei.fang@nxp.com>
 
-On Fri, Nov 29, 2024 at 02:26:13AM +0000, Bough Chen wrote:
+On Mon, Dec 02, 2024 at 04:45:35PM +0800, Wei Fang wrote:
+> On the i.MX6ULL-14x14-EVK board, enet1_ref and enet2_ref are used as the
+> clock sources for two external KSZ PHYs. However, after closing the two
+> FEC ports, the clk_enable_count of the enet1_ref and enet2_ref clocks is
+> not 0. The root cause is that since the commit 985329462723 ("net: phy:
+> micrel: use devm_clk_get_optional_enabled for the rmii-ref clock"), the
+> external clock of KSZ PHY has been enabled when the PHY driver probes,
+> and it can only be disabled when the PHY driver is removed. This causes
+> the clock to continue working when the system is suspended or the network
+> port is down.
 
-> I once thought to move current system PM to NOIRQ PM, but seems not all i2c bus controller support i2c operation during NOIRQ PM.
-> Let me think whether there is a better solution, or do you have any suggestion?
+The referenced commit is a one liner:
 
-I'm not sure we have any better option than also moving the I2C
-controllers TBH.
+@@ -2001,7 +2001,7 @@ static int kszphy_probe(struct phy_device *phydev)
+ 
+        kszphy_parse_led_mode(phydev);
+ 
+-       clk = devm_clk_get(&phydev->mdio.dev, "rmii-ref");
++       clk = devm_clk_get_optional_enabled(&phydev->mdio.dev, "rmii-ref");
+        /* NOTE: clk may be NULL if building without CONFIG_HAVE_CLK */
 
---yuASf+FYGuLtSoxu
-Content-Type: application/pgp-signature; name="signature.asc"
+and here you are adding 103 lines as a fix. This seems out of
+proportion. Did this truly work before this change?
 
------BEGIN PGP SIGNATURE-----
+The commit message says:
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmdNs+YACgkQJNaLcl1U
-h9Ao1Af/VsL/J5Brjv4Z6AnYFbaiN/Ecg77q9kmJWxki3Sm7JFh6IXJW351neMZT
-wd9jnv53TTJJFMsBomhgI2UmkpnGw371HTCW2Io7DiSglJO8RLRZqTkRieiCZ4C8
-QKPmlCd8t+HB4PWK6Lsx7OgXGS1YbpdTY9r+U4q8xFLc2OG82oTjgUuQ+lA3FymU
-6ifrZcX0fzgxrJuXskmn6IOolUm53muvOSkd9S5q2uDr5hsg3J2hp8tcDjrLK5Jb
-x4KuquxoRwQ5W72fK/x6NTwF68Vsh01ee21f5MQaOi40bdfZYC2F6GSjgvkK0GyS
-pWbZ6FYbmXPfgzExvbxXxXLtaTmrFA==
-=BOsp
------END PGP SIGNATURE-----
+    While the external clock input will most likely be enabled, it's not
+    guaranteed and clk_get_rate in some suppliers will even just return
+    valid results when the clock is running.
 
---yuASf+FYGuLtSoxu--
+So it seems like a much simpler fix is to put a
+clock_enable/clock_disable around clk_get_rate.
+
+	Andrew
