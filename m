@@ -1,110 +1,149 @@
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39AE6209F5F
-	for <imx@lists.linux.dev>; Mon,  2 Dec 2024 15:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0EB1714BF
+	for <imx@lists.linux.dev>; Mon,  2 Dec 2024 16:12:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733153062; cv=none; b=YmIlMb62ubGw/7Y6ffCXUzBvfDsRpJ7AD3iZW0jChuZ/8+Fc4W7DcZR72SL9kLMA2mPbse4ei5AfjtfqTpEjQ/DJkNJTYHLB8Fpu8+GUg7ricxyKmMBYAPNHgNOSpJ1VOO3oR8HnwzdRWF5A285utbYjYDsgveqe3kfI1D7qBc4=
+	t=1733155969; cv=none; b=anGqWbAmkKVdKqWcCqoKEcMDAlK1uaDj+7NAFtaCNo0K+fNRbFmQkUh8nfOrv0iXxvkrLi3AF62KJ4b1XmjKQXDECS4n7d4pCN7J0eMGPivpu6e5PvBk3KYWJoil2KFs9+KmYkF+czxqyWoIDxLjvDjcuvXtMAr7ylj4fqD6gJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733153062; c=relaxed/simple;
-	bh=s+q08AhHsFGE1EfP39d6m5AmxX15U2YOkkHYuDiep54=;
+	s=arc-20240116; t=1733155969; c=relaxed/simple;
+	bh=XLKlaA22370vq2g3K3tte2gx1v7huvhbQMtU+YATtrQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P1LHZkvI+LcR9vMfbVKo/FvLnlvLj2i2HQxNUL3F/XHpY6ztz7wlnD/3OklLPt5Bav1r4RnYSiUFf+ljkRqdmwmrdYvCLiPjKqW5MfeabBMtZRL2upBMDFKUvXM2+n5onH3640OJKVHGohJyK3bRLM73gAj7TlgJhLRO6Ce354Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nCBJrPEc; arc=none smtp.client-ip=209.85.219.178
+	 To:Cc:Content-Type; b=S27p+3rtkcgebCci70V4I6Ye+2wssL1frGQlPvWpUscwt4As9disotH/mvTy3s3sKF+/Gk6rhbkj4rtD8Q7iijuVV9d4Bcgl0RGtrBqRjINJm+lKoilYGWHRh0afg7j05mMPNpjlAcbBKjMXvzXDvdB/eFMpxFKQf7M98EDmFLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=smnBLp77; arc=none smtp.client-ip=209.85.128.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nCBJrPEc"
-Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e399f8bb391so1471159276.2
-        for <imx@lists.linux.dev>; Mon, 02 Dec 2024 07:24:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="smnBLp77"
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-6ef81222be7so15831777b3.3
+        for <imx@lists.linux.dev>; Mon, 02 Dec 2024 08:12:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733153060; x=1733757860; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1733155966; x=1733760766; darn=lists.linux.dev;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=vZdmxpNfvpO1w4hAAEKWGZSvaKeExVY5BF0241uhp8o=;
-        b=nCBJrPEcNGvL+YeyiWlxHHr+W8GyoR2QZ2ScpO70zvxsZJ+1VaG6lSoM383xrt40Go
-         zio1jU2E8r5FcqHdM1OS2JRN4y/APx45G1VEpDzrqdFdQZmurswTLhoUI38QlSM8XK1v
-         HkdGRCTFwPe5Ro11AswbvGEl1VYBReMoOsHXyFSK5jJ2FR/Npl3ejZSHFOwzPQB72oZA
-         MhMJfA6Crv19WroiF41NJLjnt9NCikvI9h7f5RA18+wKfiqvDq0TGBDo4AXe61IfbyFx
-         staYa9aAT/qa4JCBqrfivGErhK0YTxrXEdVcdox4xQhrbYBDq3oXOSWXYkmeirBBnBfh
-         6U+Q==
+        bh=uSc4oaHdwRNziEqNhHrjMgTiwYs2HHk19dmenoRtAWk=;
+        b=smnBLp772qQokYaxwvYs6OsAq0q1apXekF6+wmD1+7JAr4zk6xB1G5qGcvSpCC44f/
+         cb7BIGhMdIQVBPhb4WpMY3RYHURkIka///DLYJ/cg3uScaLjAWaE756/eD57MWuHdZbo
+         4dOveZsKOY6GFdA+bJY4J4gDyBDGNx5gtxgqtBO8tfpo9QOqRuSUJCjcmuUj0k6WRiXr
+         LsvIRfKVbScUS1tDrfPnX2by9L6sns3NQAsIF8QrAojtDUgBXiqXzognHJ06fOA4m1Vk
+         m2pogMDTQ7AdpBkC7x6uOkQXwqnZZdVA2mImU4XWbMKKdI6pCMDGe7HiWQzSJVgzdE63
+         MxKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733153060; x=1733757860;
+        d=1e100.net; s=20230601; t=1733155966; x=1733760766;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=vZdmxpNfvpO1w4hAAEKWGZSvaKeExVY5BF0241uhp8o=;
-        b=G7vNHmUo4Dqjvj0u47uxLPaLEpQqQO+9Ty7ZcplVi8N22iZ9EnC8kjHjQkKnBAW9zp
-         QtgCp1UycnTnztxK0ROmerElBLqKeYHr4+19JQtZvii1+chFsaB7P4+DY/uYzWOjeUrN
-         t/gxq5M9B8fIusPELlsxtIL/R7j55iMDOhV55piYen80wic/P8YyA3FEb3aGpXPopPVr
-         asNSCJYfPrbp5xCltFszw1JBZiWwOOT6Vqf0KhwVhJKo3ZtK6eg2Te7rTq2GEgI9mege
-         Fdl205EFr3WJ66hYz8DQtTRCEdvFdOqG0XBxEJQHUNYXxqwg+yYg9/4qHsgq7yCWtM1/
-         Jc6A==
-X-Forwarded-Encrypted: i=1; AJvYcCUukp+1Cbols+LzFRdGtoqfxQyajin7Y519icEHTOGlHGs9g1j0TOg5YBKB/GqgOatUxVE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxJo+YFojMG8UaXZczNkZ4OqYoh5bX5tIm0UrJX6+mgCF1a0qAd
-	Uu2qhjfwrwfQzCChQLkSfBmqkcP30fKInYscDdYbXHvkGQP2nIC4vVsz7eIVXtnVPKYqt5lXov9
-	Aa8DdkjF3jXRTFMHUsWUzYzYSDW8ZOjyJHT0X+Q==
-X-Gm-Gg: ASbGnct5S4ekAYFRWRyHgjf1jn6XaeW6h99jEqaVdio0P7MJHXxXcbTpx32yF1kCupd
-	USDB4cSCseB/9exX+ZM/Ypmh+dNosWDjc
-X-Google-Smtp-Source: AGHT+IFOFC5zPUF0itgIKsAUHr0BlLtuJZtIXZEze3rfpOri9Ohtmk1VeC2LzJL5dOFw7QQghHYnT6Ig09tgFYZXMYk=
-X-Received: by 2002:a05:6902:18c1:b0:e39:8482:5d5f with SMTP id
- 3f1490d57ef6-e3984825e68mr13245250276.46.1733153058435; Mon, 02 Dec 2024
- 07:24:18 -0800 (PST)
+        bh=uSc4oaHdwRNziEqNhHrjMgTiwYs2HHk19dmenoRtAWk=;
+        b=U6smIIXApOO9yZNtH/66pxC8OS8hLbeTs8IPbMR4/n0cdmfSr+hJeHCNuxFy+CmDcs
+         S6wblbCrxnM1HJJwnOzsg2vcYjNGjhBrAijxsI8MPBvcQN/PbcbfiDpsDBtoYWxTFa28
+         UroDLiadfY3gBFRm1soQvpG8s1kvp3+R0tDonp4L/yts+XNVUZqvcckT8R8o7uDqyQQl
+         eetXndJJnk1JUnErm+Fq/j6V91O8FLh0Ib0rXmfR9NefDYckfX6uC+Ec9/syMcXh58gf
+         BJFwxFf5VEZWwVKoMVkzjJdqU+WQS5/UZEIe20Hoh9y4ubJIFkLTZVHuJs7ua0hhScSq
+         zhyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWhH/fnmfR/hBdoaRCovuCiMNvG4Ir1qCBekO6GdX84vIlWfjmaMVQUIkuxgUhknUzvTOc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzhIJ+O4dRefF4RqQ/O+uMZM+UNxm6aFUSLYXALctN0QOzJTQuc
+	9DX0Dexwa5ELAWR1b43jWeAwiJEMSeWZxigQxWdN1Un22hildggn0x0gVmoWVwGZS2OCiQB3JFk
+	dPZYcjowMhWrfqJtlZmXDzkzUH/OUBp2TwFF2QQ==
+X-Gm-Gg: ASbGnctWDs23FaimgAl/KRQfDARIhbFtz9AjsW39d9aO6MPHNMJyQ9lt4xXeIyw3Eob
+	ca5+ofLbjg0fQzWK1IjBrV4le8aMqWQBA
+X-Google-Smtp-Source: AGHT+IHONp0dk8Yoe87v3UNeSPiKD8c6OQO1yBQtzwhyjC1T8YXjuupz6BUT7dFNeVR/yJzTpI+zO7gY+3/7XDn2iJM=
+X-Received: by 2002:a05:6902:e13:b0:e38:b34d:121a with SMTP id
+ 3f1490d57ef6-e395b8af561mr22234937276.20.1733155965799; Mon, 02 Dec 2024
+ 08:12:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241125083357.1041949-1-ciprianmarian.costea@oss.nxp.com>
-In-Reply-To: <20241125083357.1041949-1-ciprianmarian.costea@oss.nxp.com>
+References: <20241121075231.3910922-1-shengjiu.wang@nxp.com>
+In-Reply-To: <20241121075231.3910922-1-shengjiu.wang@nxp.com>
 From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Mon, 2 Dec 2024 16:23:42 +0100
-Message-ID: <CAPDyKFpkSRmGhZ68m7TyQNSqYKa7gnHigKpu4nKOpb-HWfCdeA@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-esdhc-imx: enable 'SDHCI_QUIRK_NO_LED' quirk
- for S32G
-To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
-Cc: Haibo Chen <haibo.chen@nxp.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev, 
-	linux-mmc@vger.kernel.org, s32@nxp.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Christophe Lizzi <clizzi@redhat.com>, 
-	Alberto Ruiz <aruizrui@redhat.com>, Enric Balletbo <eballetb@redhat.com>
+Date: Mon, 2 Dec 2024 17:12:10 +0100
+Message-ID: <CAPDyKFrm8wv7uFAumx5d6uMhr=LLUT8_RsQhNMF4DyOUe7uMFg@mail.gmail.com>
+Subject: Re: [PATCH] pmdomain: imx: gpcv2: Adjust delay after power up handshake
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, linux-pm@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	shengjiu.wang@gmail.com, francesco@dolcini.it
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 25 Nov 2024 at 09:34, Ciprian Costea
-<ciprianmarian.costea@oss.nxp.com> wrote:
+On Thu, 21 Nov 2024 at 08:53, Shengjiu Wang <shengjiu.wang@nxp.com> wrote:
 >
-> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+> The udelay(5) is not enough, sometimes below kernel panic
+> still be triggered:
 >
-> Enable 'SDHCI_QUIRK_NO_LED' quirk for S32G2/S32G3 SoCs.
-> S32G SDHCI controller does not have a LED signal line.
+> [    4.012973] Kernel panic - not syncing: Asynchronous SError Interrupt
+> [    4.012976] CPU: 2 UID: 0 PID: 186 Comm: (udev-worker) Not tainted 6.12.0-rc2-0.0.0-devel-00004-g8b1b79e88956 #1
+> [    4.012982] Hardware name: Toradex Verdin iMX8M Plus WB on Dahlia Board (DT)
+> [    4.012985] Call trace:
+> [...]
+> [    4.013029]  arm64_serror_panic+0x64/0x70
+> [    4.013034]  do_serror+0x3c/0x70
+> [    4.013039]  el1h_64_error_handler+0x30/0x54
+> [    4.013046]  el1h_64_error+0x64/0x68
+> [    4.013050]  clk_imx8mp_audiomix_runtime_resume+0x38/0x48
+> [    4.013059]  __genpd_runtime_resume+0x30/0x80
+> [    4.013066]  genpd_runtime_resume+0x114/0x29c
+> [    4.013073]  __rpm_callback+0x48/0x1e0
+> [    4.013079]  rpm_callback+0x68/0x80
+> [    4.013084]  rpm_resume+0x3bc/0x6a0
+> [    4.013089]  __pm_runtime_resume+0x50/0x9c
+> [    4.013095]  pm_runtime_get_suppliers+0x60/0x8c
+> [    4.013101]  __driver_probe_device+0x4c/0x14c
+> [    4.013108]  driver_probe_device+0x3c/0x120
+> [    4.013114]  __driver_attach+0xc4/0x200
+> [    4.013119]  bus_for_each_dev+0x7c/0xe0
+> [    4.013125]  driver_attach+0x24/0x30
+> [    4.013130]  bus_add_driver+0x110/0x240
+> [    4.013135]  driver_register+0x68/0x124
+> [    4.013142]  __platform_driver_register+0x24/0x30
+> [    4.013149]  sdma_driver_init+0x20/0x1000 [imx_sdma]
+> [    4.013163]  do_one_initcall+0x60/0x1e0
+> [    4.013168]  do_init_module+0x5c/0x21c
+> [    4.013175]  load_module+0x1a98/0x205c
+> [    4.013181]  init_module_from_file+0x88/0xd4
+> [    4.013187]  __arm64_sys_finit_module+0x258/0x350
+> [    4.013194]  invoke_syscall.constprop.0+0x50/0xe0
+> [    4.013202]  do_el0_svc+0xa8/0xe0
+> [    4.013208]  el0_svc+0x3c/0x140
+> [    4.013215]  el0t_64_sync_handler+0x120/0x12c
+> [    4.013222]  el0t_64_sync+0x190/0x194
+> [    4.013228] SMP: stopping secondary CPUs
 >
-> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+> The correct way is to wait handshake, but it needs BUS clock of
+> BLK-CTL be enabled, which is in separate driver. So delay is the
+> only option here. The udelay(10) is a data got by experiment.
+>
+> Fixes: e8dc41afca16 ("pmdomain: imx: gpcv2: Add delay after power up handshake")
+> Reported-by: Francesco Dolcini <francesco@dolcini.it>
+> Closes: https://lore.kernel.org/lkml/20241007132555.GA53279@francesco-nb/
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-Applied for next, thanks!
+Applied for fixes and by adding a stable tag, thanks!
 
 Kind regards
 Uffe
 
-
 > ---
->  drivers/mmc/host/sdhci-esdhc-imx.c | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/pmdomain/imx/gpcv2.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-> index d55d045ef236..e23177ea9d91 100644
-> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
-> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-> @@ -304,6 +304,7 @@ static struct esdhc_soc_data usdhc_s32g2_data = {
->                         | ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
->                         | ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES
->                         | ESDHC_FLAG_SKIP_ERR004536 | ESDHC_FLAG_SKIP_CD_WAKE,
-> +       .quirks = SDHCI_QUIRK_NO_LED,
->  };
+> diff --git a/drivers/pmdomain/imx/gpcv2.c b/drivers/pmdomain/imx/gpcv2.c
+> index 6e6ecbf2e152..760301ad8e39 100644
+> --- a/drivers/pmdomain/imx/gpcv2.c
+> +++ b/drivers/pmdomain/imx/gpcv2.c
+> @@ -403,7 +403,7 @@ static int imx_pgc_power_up(struct generic_pm_domain *genpd)
+>                  * already reaches target before udelay()
+>                  */
+>                 regmap_read_bypassed(domain->regmap, domain->regs->hsk, &reg_val);
+> -               udelay(5);
+> +               udelay(10);
+>         }
 >
->  static struct esdhc_soc_data usdhc_imx7ulp_data = {
+>         /* Disable reset clocks for all devices in the domain */
 > --
-> 2.45.2
+> 2.34.1
 >
