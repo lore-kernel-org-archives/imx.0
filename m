@@ -1,127 +1,195 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2069.outbound.protection.outlook.com [40.107.22.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7C91FC119
-	for <imx@lists.linux.dev>; Mon,  2 Dec 2024 07:21:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733124097; cv=none; b=heTRH76N0qwrYEcSUk9ImOgrjjPUmjsyrV4LXFdSrY2B3gfeotuW0MHMp3XgtCit/ClDGAVJEcSt6DIhD3laxzS1J3OH2MJ004OVXnnYoeI5zKoXsv1rEwFyTJ2RL58D+5vLx5t5wQEUmKX2u6ZSFw4DLuLs4jPSZBhT333qfOQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733124097; c=relaxed/simple;
-	bh=JR1DzFuehno689HiuVhi6Cqy7pat2pHwRV/EadrjbIQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ST9j1Q2wxRFCw2qAydV3LXZwwHHH60jjmfpv+bG+lrdAIYB4+VGzQYgHPz7OGPtzeAcXFBDOCV+G4T8T12tJGY8p9BwBsKQeQvDYVnIXhzaLtOAzla7x7FmfHOp8SPbIAmNANhVvFR2R1ESEq3g+0DM/AHMAUCjTuEGCWKiyDUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=qJ2pFSut; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035D31F9402
+	for <imx@lists.linux.dev>; Mon,  2 Dec 2024 07:25:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733124351; cv=fail; b=GJ0voV8pZTmSM4qyBO1orfUkHjDy+pUJL/0XwJLkWA1zvNkw4UpkomBKS4y/fOH7o9Vg7iuqVWQ7MZHhu6g69s96gqOKKq3qTQtk+2b0DLcmRGm3dGuJ3JNf9SjwiWNDNyx1q7XVZMrYtKzR8S1yxHJLgt2WH0amCod5D0B71aw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733124351; c=relaxed/simple;
+	bh=Ld6ZNT1OcJtovl3l0gUyT3TqH406KUAk4NDowo0Dz9o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=JMgiVllDP4JDZ/kLC8hZK/2vB+6zgClBHwWWSLkspuyT6mSbpWnzNX7b/UqaFVYSs/Qgyz/PO+ZpDvDtdDAyo/GFUf2nxaBDmTfNaMX7ousow8E8FDsziuNsomaCB0cgGxr9TVg+CbFoh26kUVr/ljaggiYSZZS6Bpbg7JpIH/c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=STH538Jq; arc=fail smtp.client-ip=40.107.22.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="qJ2pFSut"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=k17wIGNmT2cEiZCCXv+NwrOwqtSHIMqM4K4cnYwPwwM=; b=qJ2pFSuthreaXW+3ZoXtnzPQ/t
-	2HEz0EIw3BbhAFqODqWCtlPCbEXOdOL+KjiD5JemwK1EUz4qOMJnowhCh3855m70x3S4A7MTW8wGn
-	ghBhEr5DH2JJoSIq7zlApo2JCxq1k00B05Az+EM8YVFkpZlom8HlH58Og6HDc4NG1M8Nrq1m9e3BX
-	HrsWkBdX91znFtue3DEh6obAxjEpC5u7dFimg6pf7YQH26vQL/TEsOY8bdeD0hb20lJNfh9RRA3u0
-	z4tsWJyuE4EY5T79yVFbrNw2Dz+o36iu+Bafr69ZMpv81j/zYKFazF1Hjzoi2f7hJGkwt0SXjsLuA
-	to7rvbSg==;
-Received: from [89.212.21.243] (port=53766 helo=and-HP-Z4..)
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <andrej.picej@norik.com>)
-	id 1tI0kL-007Bva-0f;
-	Mon, 02 Dec 2024 08:21:29 +0100
-From: Andrej Picej <andrej.picej@norik.com>
-To: shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org
-Cc: imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	upstream@lists.phytec.de
-Subject: [PATCH v2 14/15] arm64: dts: imx8mm-phycore-som: Add no-eth phy overlay
-Date: Mon,  2 Dec 2024 08:20:51 +0100
-Message-Id: <20241202072052.2195283-15-andrej.picej@norik.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241202072052.2195283-1-andrej.picej@norik.com>
-References: <20241202072052.2195283-1-andrej.picej@norik.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="STH538Jq"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=byixGU11vBXDXrPhyHpaNAAt/RK/SUTC/GAYKyMrHIpz3qztyELLTxP5+QQY91AWxWATABTd2c1lRXgtRYYZ0zt8acBOGDRimbNlaDbbk1F4XcYj+mJ/xAEo2xjuaQq5sb382/4fQp20l7htWyGWPB+JF45rZpMlSh+O+q3eMxU/tzv0ffAe7Gb7prs9nh9V6h5gLOXUWwqdRZIS7eUa0TF0SXzxn+Fs+b+6iP5CWdtAKdrpkwl+yB6fmVlGz7105RgvcDCrBG6b//IyKO8Up53cqzyYm8dccnufaEfuuNGGF/j6s/hYnqQ3GDlptRp3roXL9qv/r9q+etd7IUOgeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UXQtAS/PsVTVPPWEt+Vm1dMCFgJPeXzFRj+s1d2k4l8=;
+ b=Gsf5ngCzMg1ts/OMDhJfuHPNFTJfqawhx6w1WZvzpUC4pGrvQZxg3tzIrC5n3u/n6+S7Qk3bRwy8fbWo8RQxrrelIyQvHzNYndVl8yK0bP7P9I6toXTIyL5Aoy79+OuRMatArQYcK6sYQIjgIkCcYqrOvlUjM4r/o3idWicrnZOvaWA/V82/ULemyytC1eWGyo+PayZTydpxCZ3wiaoahSHr7ADP62HYseFkUmQ/EfvKWaGwuVOlQfn3YAOl9HNxAiqQazWjXaNF2pq/jmAljPxuaDk8tTlgvikxHrvfXa5xBOTVYGhn4ym6hrsNrrhWDvpCn0WE+VBsRqXMGzlNIg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UXQtAS/PsVTVPPWEt+Vm1dMCFgJPeXzFRj+s1d2k4l8=;
+ b=STH538JqA7z9c31arLM3WcSdkcpUPTCj1aAk7PIL5rewsiJ3vz7eMWd8mplLIUHi2+Xhjb34XnRD0nNq0caphDacBWD5Zf6OIg13jZvQDMTlOTPW+GL51HaDjjhVr/hV9b2hshHqAmnQ+zYRttZpTGmjYiJy9HasAdFR/yZC/0BjnwF+lwkudX0zJdLyFqp7HTXqnFiXX9YmywEi5NvQgWuja7c27T9yZkHBYVIRV8yB9deVJGjVqqNgsbkEXX3p2kCE5NPgIAuNyY/pQEjsRoBQ8ACSWm58yv57RDZp+/yfXL6I0U20uW2WdAOES6X0FBWdYf03Kkys9PAdhunlIw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DB8PR04MB7065.eurprd04.prod.outlook.com (2603:10a6:10:127::9)
+ by AS8PR04MB8803.eurprd04.prod.outlook.com (2603:10a6:20b:42e::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.18; Mon, 2 Dec
+ 2024 07:25:45 +0000
+Received: from DB8PR04MB7065.eurprd04.prod.outlook.com
+ ([fe80::8af7:8659:9d42:bd84]) by DB8PR04MB7065.eurprd04.prod.outlook.com
+ ([fe80::8af7:8659:9d42:bd84%4]) with mapi id 15.20.8207.017; Mon, 2 Dec 2024
+ 07:25:45 +0000
+Date: Mon, 2 Dec 2024 15:24:44 +0800
+From: Pengfei Li <pengfei.li_1@nxp.com>
+To: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de,
+	catalin.marinas@arm.com, will@kernel.org, kernel@pengutronix.de,
+	festevam@gmail.com
+Cc: joao.goncalves@toradex.com, marex@denx.de, hvilleneuve@dimonoff.com,
+	hiago.franco@toradex.com, peng.fan@nxp.com,
+	frieder.schrempf@kontron.de, alexander.stein@ew.tq-group.com,
+	m.othacehe@gmail.com, mwalle@kernel.org,
+	Max.Merchel@ew.tq-group.com, quic_bjorande@quicinc.com,
+	geert+renesas@glider.be, dmitry.baryshkov@linaro.org,
+	neil.armstrong@linaro.org, arnd@arndb.de, nfraprado@collabora.com,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	ping.bai@nxp.com, ye.li@nxp.com, aisheng.dong@nxp.com,
+	frank.li@nxp.com, carlos.song@nxp.com
+Subject: Re: [PATCH v3 0/4] Add i.MX91 platform support
+Message-ID: <Z01gfuVIIhl0rYwI@pengfei-OptiPlex-Tower-Plus-7010>
+References: <20241120094945.3032663-1-pengfei.li_1@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241120094945.3032663-1-pengfei.li_1@nxp.com>
+X-ClientProxiedBy: SG2PR02CA0075.apcprd02.prod.outlook.com
+ (2603:1096:4:90::15) To DB8PR04MB7065.eurprd04.prod.outlook.com
+ (2603:10a6:10:127::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
-X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB8PR04MB7065:EE_|AS8PR04MB8803:EE_
+X-MS-Office365-Filtering-Correlation-Id: 60b552a8-2aa6-453c-ccd3-08dd12a2893d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|52116014|7416014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ObCHe6H/ezsBGKr+2kwh4YxCH0fLYyzhwYaQ6Nt2Kea5gTkjagKSrxZ7d5RF?=
+ =?us-ascii?Q?PZGXQ0iSlckRzm5ouKv4N0xz30w3VWWu8NZ7hpC9ZKfCDjUG7nni34VThUp5?=
+ =?us-ascii?Q?dpjeA2g6aJVEEAsTck5FeZgN+UKw2M9KZ1zoxXR9MA2UhZIQc8JMtefq/8Dj?=
+ =?us-ascii?Q?G6xy6QKX8kmX0c2uTZjBCpB4vWZ8tgytUL8/GYK/nXjFZucyu4UWETTrQvhZ?=
+ =?us-ascii?Q?Tsr5nswNVdNusjEi/XReAi3P1IZUDel0+8MWn4+ID1IYmRnBnMfmhbyz0tQ+?=
+ =?us-ascii?Q?wusQJbelFuCef6uwqPy6N5BF9hcnmh66abDq85X812fxNOxtSu38ZoUYJPir?=
+ =?us-ascii?Q?JvBE3XKIfCR23ZAwADP5q9HyW4Y1S5NIy3TQvctPfuVIJ+WpgNsb0yLvKPtZ?=
+ =?us-ascii?Q?Jal0t/GSfeA0prtJB/ZApxy+cxqdOQpmGsy5XJ+E3eao87TPBGBC1gH+S2jI?=
+ =?us-ascii?Q?inwo75M8qx1Dnyd8MZOeBEA/W7dH9lUw0YNGic9rncj3g1A7+50PXtWE619o?=
+ =?us-ascii?Q?k3dmYA9aBbtZ/xpI/4D+NRaVjhs4oqPUemxkUaCTCjC74FHrDTg6lcgBJshH?=
+ =?us-ascii?Q?IGMoX6Ue1YCeyA9AhutiLoGi2nixMd9ds+22ZqSgeE+IoQ9eCMYLU7aMF9Sp?=
+ =?us-ascii?Q?pp1LrsSYCuVg3y6BQPO5npZyAXyh6Yyf5hDTDNonSdfrKbM8psj5w8p94SnK?=
+ =?us-ascii?Q?6RUzuBVQIY/BO9S2FWHxlCdMH1bQ0NH77joqyXpbfPdhnxA3NT3c7jrnGAwt?=
+ =?us-ascii?Q?ipwkIBxpdELCupqX4QhkrzFrharp8WK8J2UhAYpfM+7S7jzFwHG5/vF48aIU?=
+ =?us-ascii?Q?yRXdN+gxPxIguQ0UYlh01Lm59MUG7OIzrXH/g6hQUU0khzqMOkEBJFGe3RdT?=
+ =?us-ascii?Q?GC4sNxewbTYElDT18REMHj1i4w60JHzZzGridSOnmDFLsC67WAdF8vgz3xwb?=
+ =?us-ascii?Q?wzjqyj9vYN4AAQn7q9kVb5Z3fxY1/SsABnrsLaQ394YGl6FrXCVguMGgjvmr?=
+ =?us-ascii?Q?YSgWSakKT+sy9/MQaxpV5juJhH7UEryRZFa1QA+xQmlmwHAItouIcN99q/u0?=
+ =?us-ascii?Q?IMIGVWFztuMjMzxGv6GUXXoo1+f7wZc3bjwnauHj8Un6afttPGZIKlx3Y7lQ?=
+ =?us-ascii?Q?PbL3PZ1AXatfvIQvmlu27VCYfTXRdV1RcVA70N8/SIWLcxjbk/5pWFUtdIZq?=
+ =?us-ascii?Q?sso21Uffzlza4aTMrOc6La9j1+X72yBLLtwPqmVPf0Y6QIz5OkZ5YA4WBJKX?=
+ =?us-ascii?Q?u1m+8dsmAHx4XVH0twCHMW8l2bvadChuG01iul2BIBt4vs5eg3eMGd9zA6sc?=
+ =?us-ascii?Q?P1772b3tYGFJsIBUmlfnn4ExjczrVJMPVpfoAURZfnxSTszsJodizKVu4X7h?=
+ =?us-ascii?Q?gpNkmx7BCrtocypqWubmBjTMMPkvXK30qcndudNvoYkRvTVLvw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR04MB7065.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(52116014)(7416014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Eu1owu6yQzy+5fxN5Gw0GnIyMhJuYAhO7LaFkdtGucon+zmc0VQt2+I/xSeR?=
+ =?us-ascii?Q?/PUKeSf9yL6aiPjeQggZktAUZP+Bvi/HyyFfuhReJizGC4+J41ygmb1wUCfh?=
+ =?us-ascii?Q?yTfk+A8ozPnIHiNXjvun5Wyokh7iKrv2VNj2ucq5xqulpHGUNCx+vFU1yvDu?=
+ =?us-ascii?Q?1epVSfKKmhRuj275BiKjVEWCmUc2ZpHki4neNjPY7gm/EkL0VZHtUbKBIQp1?=
+ =?us-ascii?Q?0oYZ4hNgCcAsthYIYJUbDxJEKAh424DjHivoqCsqYJWNQcPmWEI9McMG6aa0?=
+ =?us-ascii?Q?q8uqL475jnT7ZbgWLtVRAuuqXYmd2D7N7qDERCDitS6Io1ZWNba8EwzHWbs2?=
+ =?us-ascii?Q?0046jW8PO9AY3rKTvOAalEtxoaRxlntDy6diJ6hncRFGvo8RuzFo7XHxULbs?=
+ =?us-ascii?Q?/BsiyHkaaQ+nG7jkuaZqvnp1tOiq88nuHU3XuReO+om0Tc9uXM/11IvotNMR?=
+ =?us-ascii?Q?RVD6bz8+vAXio43N+B5aqXEEzlaEkJiY8q7amfu39VaW4oGzcFuXAzcNmG7l?=
+ =?us-ascii?Q?pLRafa+VXlOZSjWIc4meww6FfO+Shq8ioqVpIWFqnG6g8Q+gSzY7R0G+vBly?=
+ =?us-ascii?Q?0oTvWYRkCfbOhVbYr7Dt1rdPw7MFfeCtMsZstC5zCez/ITCEQXXyxkWVoyKe?=
+ =?us-ascii?Q?oNrQm8qeTXCCXfjvJArN/zNKA4iBBsI6nvy7ICmSUIwua+aiu0Xn9FDzZHS7?=
+ =?us-ascii?Q?1XHmWKSpnJlwhc2AAv70Qm04CMbMopkOiEr9IoIsb8LIP5KH94j0lq98q2pr?=
+ =?us-ascii?Q?mxmAmRfw7p9MRGY49rhFMWjRyKp/QWq8H4Imp9sJOqqZo+VE7+nOGYUcJmhN?=
+ =?us-ascii?Q?EQ1yviduux4UOA7HSy1JtVW79yfGhaNSrxSeIQfA1/RGP3JHilV9YXWNi28h?=
+ =?us-ascii?Q?NIKVeBYF+g3CzyaNSHsFxtt4GHumXspQbwJgGoOIJytgbJsd8guTRwEqqD9y?=
+ =?us-ascii?Q?G5xY/3uTh696mR25Ba+zpsn7gFghWRW7ahM3qyt1G+nKF/UMXM1E+EtDu+PF?=
+ =?us-ascii?Q?By3ET9OyJ0U2Jtdf8L7oe5nfcYBv+ZBrAyY/182Gy5SnixnOWBMTurumtELv?=
+ =?us-ascii?Q?BbJHkLjJ2aTK4sLUyDYJBfT3wdR6wZWMaJG19ALYFBulcsW5JDVogWpnwtyk?=
+ =?us-ascii?Q?EyCH78lrzOBFhbpvE+ZSAFglI78F3N62mJhLEApNeh/EKN3o//1c6sLIx8wU?=
+ =?us-ascii?Q?n1n9ySrrl2HhkA7j+yuIckCCd4c39VYhHp4ODtcXZHmoQk1kzLJnmzbUnSlL?=
+ =?us-ascii?Q?XtztuCdmpwnzEjkE9rWv6YnfRZm+wtsIpdwQMLH/fzjd3moIpkNeQcjd6Z6Y?=
+ =?us-ascii?Q?ShIACQ3OGNXXupKxkbeUG+a2rpBNuK/6/F9F7QNPC4N4EGNoAwJjEtPchSxy?=
+ =?us-ascii?Q?GeUXGu3HtqBk0FKnr/JjOZPLZjE0sctTcvIrT9231TgaQr6eH6o7sYPNrSWg?=
+ =?us-ascii?Q?5rYiC7woeodoh7+vvUOoTdxi5ylU/5vY+SY3l0DFoaAEa6sdjdYYt0b3Nkdl?=
+ =?us-ascii?Q?kXWNBwt4LzOyvUf9N20K+Ecz5/0uuVVqEH1/uclrid5bfZrew4l/kfaOYF48?=
+ =?us-ascii?Q?YdniSN/0Gplp8VmcIFS2u6d0efZztnA6fMp/FNZ7?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 60b552a8-2aa6-453c-ccd3-08dd12a2893d
+X-MS-Exchange-CrossTenant-AuthSource: DB8PR04MB7065.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Dec 2024 07:25:45.7385
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6hx2HTklegMDZwY2xnI1gv+W/uZRRbCJbqL7QnXjybGBY70X1ZpTo+6RG//tgPyfTidiUjSa8ZFBjrotZyRHag==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8803
 
-From: Teresa Remmet <t.remmet@phytec.de>
+On Wed, Nov 20, 2024 at 05:49:41PM +0800, Pengfei Li wrote:
+> The design of the i.MX91 platform is very similar to i.MX93.
+> The mainly difference between i.MX91 and i.MX93 is as follows:
+> - i.MX91 removed some clocks and modified the names of some clocks.
+> - i.MX91 only has one A core
+> - i.MX91 has different pinmux
+> 
+> Therefore, i.MX91 can reuse i.MX93 dtsi.
+> 
+> ---
+> Change for v3:
+> - Add Conor's ack on patch #1
+> - format imx91-11x11-evk.dts with the dt-format tool
+> - add lpi2c1 node
+> - link to v2: https://lore.kernel.org/all/20241118051541.2621360-1-pengfei.li_1@nxp.com/
+> 
+> Pengfei Li (4):
+>   dt-bindings: arm: fsl: Add i.MX91 11x11 evk board
+>   arm64: dts: freescale: Add i.MX91 dtsi support
+>   arm64: dts: freescale: Add i.MX91 11x11 EVK basic support
+>   arm64: defconfig: enable i.MX91 pinctrl
+> 
+>  .../devicetree/bindings/arm/fsl.yaml          |   6 +
+>  arch/arm64/boot/dts/freescale/Makefile        |   1 +
+>  .../boot/dts/freescale/imx91-11x11-evk.dts    | 875 ++++++++++++++++++
+>  arch/arm64/boot/dts/freescale/imx91-pinfunc.h | 770 +++++++++++++++
+>  arch/arm64/boot/dts/freescale/imx91.dtsi      |  70 ++
+>  arch/arm64/configs/defconfig                  |   1 +
+>  6 files changed, 1723 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx91-pinfunc.h
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx91.dtsi
+> 
+> -- 
+> 2.34.1
+> 
+> 
 
-There are SoM variants with no eth phy populated. Add overlay to be
-able to support this.
+Hi Rob Herring,
 
-Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
-Signed-off-by: Andrej Picej <andrej.picej@norik.com>
----
-Changes in v2:
- - no change.
----
- arch/arm64/boot/dts/freescale/Makefile               |  2 ++
- .../boot/dts/freescale/imx8mm-phycore-no-eth.dtso    | 12 ++++++++++++
- 2 files changed, 14 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-phycore-no-eth.dtso
+I haven't received any comments from others about this version of the patch set, is this patch set applicable?
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 5bc083a7b778..da6ddce6b7c7 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -125,10 +125,12 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mm-phyboard-polis-rdk.dtb
- 
- imx8mm-phyboard-polis-peb-av-10-dtbs += imx8mm-phyboard-polis-rdk.dtb imx8mm-phyboard-polis-peb-av-10.dtbo
- imx8mm-phyboard-polis-peb-eval-01-dtbs += imx8mm-phyboard-polis-rdk.dtb imx8mm-phyboard-polis-peb-eval-01.dtbo
-+imx8mm-phycore-no-eth-dtbs += imx8mm-phyboard-polis-rdk.dtb imx8mm-phycore-no-eth.dtbo
- imx8mm-phycore-rpmsg-dtbs += imx8mm-phyboard-polis-rdk.dtb imx8mm-phycore-rpmsg.dtbo
- 
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-phyboard-polis-peb-av-10.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-phyboard-polis-peb-eval-01.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mm-phycore-no-eth.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-phycore-rpmsg.dtb
- 
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-phygate-tauri-l.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phycore-no-eth.dtso b/arch/arm64/boot/dts/freescale/imx8mm-phycore-no-eth.dtso
-new file mode 100644
-index 000000000000..dd66ccfbb4d7
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-phycore-no-eth.dtso
-@@ -0,0 +1,12 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2024 PHYTEC Messtechnik GmbH
-+ * Author: Teresa Remmet <t.remmet@phytec.de>
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+&ethphy0 {
-+	status = "disabled";
-+};
--- 
-2.34.1
+BR,
+Pengfei Li
 
