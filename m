@@ -1,122 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E9433F6;
-	Mon,  2 Dec 2024 06:32:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A87C1F9A97
+	for <imx@lists.linux.dev>; Mon,  2 Dec 2024 07:21:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733121176; cv=none; b=agmZ2eMHU0SKn3b41TyoPbuQ74vBd6nzpM1eiOXt2kSp6C8AlWf0MGT+z/7Ssvmv3dk9nmgWcy0/8jL8uGvJImxE7uJq7hAmBdafAEMH12WwmiNStd0io+inSJRHtJUSzs4Pud7jRsNZONfmPUk051jtpEhkbY0xrfYYm9fVE6Q=
+	t=1733124082; cv=none; b=qZMF/mqxdJ8yz0+uBRgIXy19gnJq8IsYbJ67hpm2hZvvcXycc2qHM4FRRmsr0E2t4MdlbywTbeDoYInwNIIXnIIPxpYJjoyTWGSTSWz/tVdbrqdj6OzBBhr5ByRpjkwwPYAVLra3fcuBm5ZdMxCDjAGdLXQtkuEJ9eWlJZbQBLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733121176; c=relaxed/simple;
-	bh=FKejrmxPaO2Kf6aanyz6BPixRTVTPy+IRBJ8nEgtwno=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DaXegmi1LB9I5kRW/ZT6Vt/LyH0JsoTRuKVQyHsINRcD3fmgD0wcu2xx6kt6+Rf90GSJaNoAC5fbPGPtaflvEWCLEA6h0AYrsgOcYh52Q2bHlMgKNi5WkTzF9JJo5iUxeyxKurDy9D/5jSAg4bDGwMktQFxx4AB4Ib9F4N2GsK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=syb3Q8NQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733124082; c=relaxed/simple;
+	bh=e/N4zEf41eTpw12OT3r56Z4cX9cB6dPfNbXeSAThuWE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=IHJL2e418YRWDG9QBOIjelIM/PKv32GsjtvLe3Ob2qyt0cjsPf7x/8fARLXU2Wc5Us6zossH6rfFVz0/7z9/OnktNGFJYUwPZQX1VUVE+0NrIQgS4DNjUPfmPOo2yvjNdsEad+DpZ4Cu5ZPMbv2XRZGAcBAQVaaKA4tm3aDTr5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=RZzZt9vQ; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="syb3Q8NQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE1C6C4CED2;
-	Mon,  2 Dec 2024 06:32:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733121176;
-	bh=FKejrmxPaO2Kf6aanyz6BPixRTVTPy+IRBJ8nEgtwno=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=syb3Q8NQl4QlQIejvWOmznnidIBZIu5RYQoZOEMHKffK82hv68C1l+6zQIW4p6qKm
-	 0VJuHNMNrTIIrk9ZUuefeazTYNXRKaWO2i1agqeXCVadvzNjr7NIaKm3tcNWvzQsj0
-	 ZbPtgADbjkoT6fK5l1eBQwDQCOb0E+1hhvZkPOcU=
-Date: Mon, 2 Dec 2024 07:32:52 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: peter.chen@kernel.org, linux-usb@vger.kernel.org, imx@lists.linux.dev,
-	jun.li@nxp.com
-Subject: Re: [PATCH] usb: chipidea: host: Improve port index sanitizing
-Message-ID: <2024120211-scruffy-query-1a50@gregkh>
-References: <20241129113318.296073-1-xu.yang_2@nxp.com>
- <2024112946-undercut-ivory-5fe2@gregkh>
- <20241202023311.2q6bmef7wykymbno@hippo>
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="RZzZt9vQ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=j60eV0RDWpIwo/6h35ZqVsbEzvZp+/wceYsBxRYHttU=; b=RZzZt9vQzISA7TfQ/XdmsgdjDa
+	1vIlqm69BOBIsCDduCMBaO3+YeaDvk5B9zxGi4wwvrFk8jLZbI7ldPNtfO2Q0TKaM51SlMmyVwTzE
+	7Y6L7IeAONjH3eC3OdUpn8jBWgZ9AIgHPRHhZR8zIp12GmeNp4hQvI9FD6EuOR9huHgXJtE9bGC6u
+	3sHOF3Hksx4xQY+T+kn4znl0WIxe5e0iwTa+QkQdYVPH7MAIAAxVfk/HBXtapr3L1LyUZjQ4kEvfH
+	ApwJAN2iLxq3bvgnJ2xB49EgEVmo6jBAavB0MXC84X/kHVmCfGXpO5bfqfQ1Axur22zugYAJxyPlF
+	vHohSiuQ==;
+Received: from [89.212.21.243] (port=53766 helo=and-HP-Z4..)
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <andrej.picej@norik.com>)
+	id 1tI0k4-007Bva-2g;
+	Mon, 02 Dec 2024 08:21:12 +0100
+From: Andrej Picej <andrej.picej@norik.com>
+To: shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org
+Cc: imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	upstream@lists.phytec.de
+Subject: [PATCH v2 01/15] arm64: dts: imx8mm-phycore-som: Keep LDO3 on in suspend
+Date: Mon,  2 Dec 2024 08:20:38 +0100
+Message-Id: <20241202072052.2195283-2-andrej.picej@norik.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241202072052.2195283-1-andrej.picej@norik.com>
+References: <20241202072052.2195283-1-andrej.picej@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241202023311.2q6bmef7wykymbno@hippo>
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
+X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Mon, Dec 02, 2024 at 10:33:11AM +0800, Xu Yang wrote:
-> On Fri, Nov 29, 2024 at 01:14:35PM +0100, Greg KH wrote:
-> > On Fri, Nov 29, 2024 at 07:33:18PM +0800, Xu Yang wrote:
-> > > Coverity complains "Illegal address computation (OVERRUN)" on status_reg.
-> > > This will follow "846cbf98cbef USB: EHCI: Improve port index sanitizing" to
-> > > improve port index sanitizing.
-> > > 
-> > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> > > ---
-> > >  drivers/usb/chipidea/host.c | 10 ++++++++--
-> > >  1 file changed, 8 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/drivers/usb/chipidea/host.c b/drivers/usb/chipidea/host.c
-> > > index 0cce19208370..442d79e32a65 100644
-> > > --- a/drivers/usb/chipidea/host.c
-> > > +++ b/drivers/usb/chipidea/host.c
-> > > @@ -256,8 +256,14 @@ static int ci_ehci_hub_control(
-> > >  	struct device *dev = hcd->self.controller;
-> > >  	struct ci_hdrc *ci = dev_get_drvdata(dev);
-> > >  
-> > > -	port_index = wIndex & 0xff;
-> > > -	port_index -= (port_index > 0);
-> > > +	/*
-> > > +	 * Avoid out-of-bounds values while calculating the port index
-> > > +	 * from wIndex. The compiler doesn't like pointers to invalid
-> > > +	 * addresses, even if they are never used.
-> > 
-> > The compiler does not care so what does care?  Why is this needed if it
-> > is never accessed?  This comment is odd to me.
-> 
-> I refer to Alan's comments[1]. So the compiler may report this issue on his
-> side. On my side, the static analysis tool is Coverity from Synopsys. It's
-> reporting that port_index may be bigger than HCS_N_PORTS_MAX(15). So
-> illegal array pointer may be caculated. 
-> 
-> [1] https://lore.kernel.org/r/20211002190217.GA537967@rowland.harvard.edu
-> 
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> > 
-> > 
-> > > +	 */
-> > > +	port_index = (wIndex - 1) & 0xff;
-> > > +	if (port_index >= HCS_N_PORTS_MAX)
-> > > +		port_index = 0;
-> > >  	status_reg = &ehci->regs->port_status[port_index];
-> > 
-> > So this is used?  But what controls wIndex here and how can it be too
-> > big?
-> 
-> The wIndex stands for port number here. Actually wIndex won't be too big.
-> However, the static analysis tool just see:
-> 
->   port_index = wIndex & 0xff;
->   port_index -= (port_index > 0);
-> 
-> and it think the value of port_index is now between 0 and 254 (inclusive).
-> 
-> ehci_def.h define port_status as below:
-> 
->   #define HCS_N_PORTS_MAX         15
->   u32     port_status[HCS_N_PORTS_MAX];
-> 
-> So the tool think illegal array pointer may be obtained.
-> 
->   status_reg = &ehci->regs->port_status[port_index];
+From: Teresa Remmet <t.remmet@phytec.de>
 
-Many times, static analysis tools are just wrong :)
+LDO3 is also used as switch for enabling VDD_3V3_S and need to
+be kept on during suspend. Disabling this can lead to an unwanted
+reset during resume.
 
-But ok, this makes a bit more sense, can you resend this with the
-additional information in the changelog text?
+Set LDO3 to 2,5V as the voltage should be fix.
 
-thanks,
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+---
+Changes in v2:
+ - no change
+---
+ arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-greg k-h
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
+index 6069678244f3..7761acc5c510 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
+@@ -161,11 +161,13 @@ reg_vcc_enet: ldo3 {
+ 				regulator-always-on;
+ 				regulator-boot-on;
+ 				regulator-max-microvolt = <2500000>;
+-				regulator-min-microvolt = <1500000>;
++				regulator-min-microvolt = <2500000>;
+ 				regulator-name = "VCC_ENET_2V5 (LDO3)";
+ 
+ 				regulator-state-mem {
+-					regulator-off-in-suspend;
++					regulator-on-in-suspend;
++					regulator-suspend-max-microvolt = <2500000>;
++					regulator-suspend-min-microvolt = <2500000>;
+ 				};
+ 			};
+ 
+-- 
+2.34.1
+
