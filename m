@@ -1,39 +1,39 @@
 Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC981F9F68
-	for <imx@lists.linux.dev>; Mon,  2 Dec 2024 07:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7973D1FBCA8
+	for <imx@lists.linux.dev>; Mon,  2 Dec 2024 07:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733124088; cv=none; b=CkpfVy+Ujk2rHQvjYvyzen6/4oydK9M01D9lj5K0ydSxsjgbMn1yja+MmXeGS2v0iptPWAzU1CNHDi5/+evS00SN1Blp1gJq2ykAK5mV2m5GkQL3zuv41+1jc9e5PtEeiT3tk81jo7zgHYX8WbBS0qM84oM26uoLcIN3qiXzakc=
+	t=1733124092; cv=none; b=tCqIIVCf2QzUYcnh9iPkQsAW7aXUpn+D1+xy7PvGn0kdfhpBswmC8EMhNXcg0YqqaMM74fwBD+vRrSphkJfABiSLiHkp3yVLfVl2f4zuMCuzuGIlFiepxwgTLlkhEJMjak0/uqG7OUM16qFWyfLrBLzER3S7F8sx4nbS/JTg9Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733124088; c=relaxed/simple;
-	bh=cr74MPzlg0vgsT4tx60RQNtoGEhJm4+oJz5W38vC4cI=;
+	s=arc-20240116; t=1733124092; c=relaxed/simple;
+	bh=rHic5IzRZgoHr+kddtOq9kzilx5r4zHV74WhXMZUi1Y=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ko6vTdzmfiopAxJ5/abMJ3CcvOolM7eZk29Az1gthgoQTwngnNB6O+dLqbAxBop19gIaSxZAZEk8kYQw731vabnypyVvFzW95EEuxt3yj+FFoQWqcB5xPYdYY+80z6BnOZBTt5c623ALs/TA/txiH14FtOsycMJ1bapTCT9HaKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=EoN2Rgbh; arc=none smtp.client-ip=46.19.9.99
+	 MIME-Version; b=USQewC3pvXKGWwO8aS90rPvJhRtG4BCD8jOhcvjrgWtpVVz1Kat1rE5dT0MDEU+uK/ODkbKfsss5CCOoijfwA0UwQ1SYPrSkOogQ3sgZq6tp5UxD+xR4CEBa6ieBIQkYiaj9UcN7JCYr3Iu7Ijpur7WdnwC/XSYTD6TPt4Le++8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=lvDr9KMw; arc=none smtp.client-ip=46.19.9.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="EoN2Rgbh"
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="lvDr9KMw"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
 	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=rF86hPgASe36tDhPu57qGl4irorvhPrOkYViQu3caaY=; b=EoN2RgbhCBnbE09c/jBpePIMot
-	nkBCXH6Wpq6g3Iw3B0Kw0VWuQAe69LkX0Eqvcx+UwjoU5kzFAyIVFBXGXItNjjWQmDhl61HrqF0Cb
-	4Gt6hTirU+Ie3iB6tmSh0J7/fdhypUPabbtIWXSJh6VQSBbQafg5ZfdCnnKMejVT3kaM9L11BSi0u
-	UrOIp4yeYM6dSRFav4/pJSd/BLMUFC1bi3Je4rY+ygv9nWBqvLTx71hSK+Z1PYiVYfiKkyai+8NVz
-	Lryb7cHL/cfmMX5YkPl+tM5TfnYgA6ryAdoHlAEsBqe8GlTQ+O77s4nSa8R6GdL+xFuyUSzI6mT+2
-	2v6KkF2Q==;
+	bh=cG2xOtfHFuhOgbTSnjFFp3cDu4M2Sf8eSDUv8xZDtW0=; b=lvDr9KMweTYwcYTBNdNjxPOUOg
+	jCJagkRlx9gdry/pA8f8/w1EfQZnDZzTRlCO1RwDWGyw0eSxr01vEcA4DHK7k9JwUVBrBSxk6nT/U
+	ux7xBT6WkNUcHDIKk1ojIWEZ53gdL/ex5C9jr+ui7waE7RyB383eZbzDu55zG3ism+tM3D2calB3X
+	sZs5UuVrpAG3VX9XQCoFCGN52YVP9Xw3lFQSxzxuanM0C2c1VhNrIK4JMBZUv4WrWkO5ztig5ESSO
+	p31KocBfmxItHokGm66OtrA7rFRrKnYHMKLs/Y4YYoFRj6R5mExU+POr71X2Uo//JrjXA0kY0Avlt
+	7qGh9LOw==;
 Received: from [89.212.21.243] (port=53766 helo=and-HP-Z4..)
 	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <andrej.picej@norik.com>)
-	id 1tI0kF-007Bva-2C;
-	Mon, 02 Dec 2024 08:21:23 +0100
+	id 1tI0kL-007Bva-03;
+	Mon, 02 Dec 2024 08:21:29 +0100
 From: Andrej Picej <andrej.picej@norik.com>
 To: shawnguo@kernel.org,
 	s.hauer@pengutronix.de,
@@ -47,9 +47,9 @@ Cc: imx@lists.linux.dev,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	upstream@lists.phytec.de
-Subject: [PATCH v2 09/15] arm64: dts: imx8mm: move bulk of rtc properties to carrierboards
-Date: Mon,  2 Dec 2024 08:20:46 +0100
-Message-Id: <20241202072052.2195283-10-andrej.picej@norik.com>
+Subject: [PATCH v2 12/15] arm64: dts: imx8mm-phyboard-polis: Add overlay for PEB-EVAL-01
+Date: Mon,  2 Dec 2024 08:20:49 +0100
+Message-Id: <20241202072052.2195283-13-andrej.picej@norik.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241202072052.2195283-1-andrej.picej@norik.com>
 References: <20241202072052.2195283-1-andrej.picej@norik.com>
@@ -71,106 +71,115 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-From: Yannic Moog <y.moog@phytec.de>
+From: Janine Hagemann <j.hagemann@phytec.de>
 
-Move properties from SoM's dtsi to carrierboard's dts as they are
-actually defined by the carrier board design.
+Add support for the PEB-EVAL-01 expansion board for
+phyBOARD-Polis-i.MX8MM.
 
-Signed-off-by: Yannic Moog <y.moog@phytec.de>
+Signed-off-by: Janine Hagemann <j.hagemann@phytec.de>
 Signed-off-by: Andrej Picej <andrej.picej@norik.com>
 ---
 Changes in v2:
- - also moved pinctrl settings to the carrier boards dts.
+ - no change.
 ---
- .../boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts   | 10 ++++++++++
- arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi  | 10 ----------
- .../boot/dts/freescale/imx8mm-phygate-tauri-l.dts      | 10 ++++++++++
- 3 files changed, 20 insertions(+), 10 deletions(-)
+ arch/arm64/boot/dts/freescale/Makefile        |  2 +
+ .../imx8mm-phyboard-polis-peb-eval-01.dtso    | 72 +++++++++++++++++++
+ 2 files changed, 74 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-eval-01.dtso
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
-index 7aaf705c7e47..17e5dd40b5d7 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
-@@ -221,6 +221,10 @@ &pcie_phy {
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index b411d76c3d1d..99be36a04db9 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -124,8 +124,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mm-phg.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mm-phyboard-polis-rdk.dtb
  
- /* RTC */
- &rv3028 {
-+	interrupt-parent = <&gpio1>;
-+	interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
-+	pinctrl-0 = <&pinctrl_rtc>;
-+	pinctrl-names = "default";
- 	aux-voltage-chargeable = <1>;
- 	trickle-resistor-ohms = <3000>;
- 	wakeup-source;
-@@ -410,6 +414,12 @@ MX8MM_IOMUXC_SD2_RESET_B_GPIO2_IO19	0x40
- 		>;
- 	};
+ imx8mm-phyboard-polis-peb-av-10-dtbs += imx8mm-phyboard-polis-rdk.dtb imx8mm-phyboard-polis-peb-av-10.dtbo
++imx8mm-phyboard-polis-peb-eval-01-dtbs += imx8mm-phyboard-polis-rdk.dtb imx8mm-phyboard-polis-peb-eval-01.dtbo
  
-+	pinctrl_rtc: rtcgrp {
+ dtb-$(CONFIG_ARCH_MXC) += imx8mm-phyboard-polis-peb-av-10.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx8mm-phyboard-polis-peb-eval-01.dtb
+ 
+ dtb-$(CONFIG_ARCH_MXC) += imx8mm-phygate-tauri-l.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mm-prt8mm.dtb
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-eval-01.dtso b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-eval-01.dtso
+new file mode 100644
+index 000000000000..2ca4ae6e2bf2
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-eval-01.dtso
+@@ -0,0 +1,72 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2024 PHYTEC Messtechnik GmbH
++ * Author: Janine Hagemann <j.hagemann@phytec.de>
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/input/linux-event-codes.h>
++#include "imx8mm-pinfunc.h"
++
++&{/} {
++	gpio-keys {
++		compatible = "gpio-keys";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_gpio_keys>;
++
++		button-0 {
++			label = "home";
++			linux,code = <KEY_HOME>;
++			gpios = <&gpio4 17 GPIO_ACTIVE_LOW>;
++			wakeup-source;
++		};
++
++		button-1 {
++			label = "menu";
++			linux,code = <KEY_MENU>;
++			gpios = <&gpio5 29 GPIO_ACTIVE_LOW>;
++			wakeup-source;
++		};
++	};
++
++	user-leds {
++		compatible = "gpio-leds";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_user_leds>;
++
++		user-led1 {
++			gpios = <&gpio4 14 GPIO_ACTIVE_HIGH>;
++			default-state = "on";
++		};
++
++		user-led2 {
++			gpios = <&gpio4 15 GPIO_ACTIVE_HIGH>;
++			default-state = "on";
++		};
++
++		user-led3 {
++			gpios = <&gpio5 28 GPIO_ACTIVE_HIGH>;
++			default-state = "on";
++		};
++	};
++};
++
++&iomuxc {
++	pinctrl_gpio_keys: gpio_keysgrp {
 +		fsl,pins = <
-+			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3		0x1c0
++			MX8MM_IOMUXC_SAI1_TXD5_GPIO4_IO17	0x16
++			MX8MM_IOMUXC_UART4_TXD_GPIO5_IO29	0x16
 +		>;
 +	};
 +
- 	pinctrl_tpm: tpmgrp {
- 		fsl,pins = <
- 			MX8MM_IOMUXC_SD1_STROBE_GPIO2_IO11      0x140
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
-index cced82226c6d..672baba4c8d0 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
-@@ -301,10 +301,6 @@ eeprom@51 {
- 	/* RTC */
- 	rv3028: rtc@52 {
- 		compatible = "microcrystal,rv3028";
--		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
--		interrupt-parent = <&gpio1>;
--		pinctrl-names = "default";
--		pinctrl-0 = <&pinctrl_rtc>;
- 		reg = <0x52>;
- 	};
- };
-@@ -377,12 +373,6 @@ MX8MM_IOMUXC_I2C1_SCL_GPIO5_IO14		0x1e0
- 		>;
- 	};
- 
--	pinctrl_rtc: rtcgrp {
--		fsl,pins = <
--			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3		0x1c0
--		>;
--	};
--
- 	pinctrl_sn65dsi83: sn65dsi83grp {
- 		fsl,pins = <
- 			MX8MM_IOMUXC_GPIO1_IO10_GPIO1_IO10		0x0
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l.dts b/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l.dts
-index c9bf4ac254bb..755cf9cacd22 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l.dts
-@@ -215,6 +215,10 @@ &pwm4 {
- 
- /* RTC */
- &rv3028 {
-+	interrupt-parent = <&gpio1>;
-+	interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
-+	pinctrl-0 = <&pinctrl_rtc>;
-+	pinctrl-names = "default";
- 	aux-voltage-chargeable = <1>;
- 	trickle-resistor-ohms = <3000>;
- 	wakeup-source;
-@@ -395,6 +399,12 @@ MX8MM_IOMUXC_SD2_RESET_B_GPIO2_IO19     0x40
- 		>;
- 	};
- 
-+	pinctrl_rtc: rtcgrp {
++	pinctrl_user_leds: user_ledsgrp {
 +		fsl,pins = <
-+			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3		0x1c0
++			MX8MM_IOMUXC_SAI1_TXD3_GPIO4_IO15	0x16
++			MX8MM_IOMUXC_UART4_RXD_GPIO5_IO28	0x16
++			MX8MM_IOMUXC_SAI1_TXD2_GPIO4_IO14	0x16
 +		>;
 +	};
-+
- 	pinctrl_tempsense: tempsensegrp {
- 		fsl,pins = <
- 			MX8MM_IOMUXC_SAI3_TXFS_GPIO4_IO31	0x00
++};
 -- 
 2.34.1
 
