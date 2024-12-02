@@ -1,47 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F161F940D;
-	Mon,  2 Dec 2024 07:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE1F1F9EAA;
+	Mon,  2 Dec 2024 07:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733124825; cv=none; b=LERw0m0fvLte8wuglVjZqVsWcGdnJNrEl3r/jVWNFUEfwsJXNe/WE/6/STxjzqQCx94T8JpZic1jsd7faupCbgut3J68We8ZSHkVpluZ5i8cS1JlPg/C0jtk+U8+OxSy+WYjh1ys9Z7BMWU8zzZ8xM9QJe5ZiwE4/ml6s3wF6Jw=
+	t=1733126171; cv=none; b=rOEjnR0JmWEcndJ4f1T/tSRKY5buapDm3llApdiEk0HO7I+fw325cJ+2k8bcD5gBgo1mv+RWp8CBXoIFWrBmk7zlxxAnuSemgWMb0t0v77Yuc+JIfo1GTDLZkvCcESygR7cxzGdZCcWw8WxaUsS3brmkLPTCtFmhekhaZEPerRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733124825; c=relaxed/simple;
-	bh=XOBsyR5DiRbgmlAcXrezcofMfsl0yDzLXPs9uCednS0=;
+	s=arc-20240116; t=1733126171; c=relaxed/simple;
+	bh=kZjVug5ya7hH0mDNjWlcPVU/GfxeZCgwrE9NG175/s4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O/5ilENy0hoSlAtavj6ohLenqW59SwhI77B34WzAdssZ7AsOrmGvimiNa7FNlb+r3UzzVVH2g8AvaCkxgKbxi8+LyJQTCMDbIb73LWw4vIVf+wVlUH5wA03UjIyklg42Bn5dYKozXq75/AxACR/sh3jsaUJTRU+deaAPTpNu5lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H18LKsD9; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=FiyQC3YUrPuSuPweJ/c4X5NvTDx5GTnpxIN0LewhkQycGlg5UbyMvPPRg1gP3r//Sd6Q4BQxy4HRmzp+Rh6LUtGlli5UXEvYSkSJPUyog2OhM+FjR9KLuwOBOUBrCD9mg8BPXhOh9tEvqn7U74qLKbUgIdeM8u63UAHsrVOSejA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YAQBLFbz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H18LKsD9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 714B3C4CED2;
-	Mon,  2 Dec 2024 07:33:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YAQBLFbz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D21C4CED2;
+	Mon,  2 Dec 2024 07:56:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733124824;
-	bh=XOBsyR5DiRbgmlAcXrezcofMfsl0yDzLXPs9uCednS0=;
+	s=k20201202; t=1733126170;
+	bh=kZjVug5ya7hH0mDNjWlcPVU/GfxeZCgwrE9NG175/s4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H18LKsD9QsEdL61655SufKEXHNOnhYGkHw+Zz/lTG1RcTEWROKUAQjH8YBOj1+sbV
-	 PEB0L3AHmV/gvZ1ymar+Snmxud1Kl3ZPh3csSEWgt61V5m2MrFLLXhTkDpbRudooZx
-	 w7cLUE9k5EXcjeMT5gNjyKPSYQASvMRHdduFFQsI68kl7VKOMgobO33G0QDa2GtMC5
-	 O6Tgu/tMDshqYGXQdCXECxzHQpxoA/nbeM2sKDMzr/gI7Rgxtri03b5ElcxJk6nUYB
-	 lsDuf/xFiPMMAh+2SCsM8krN8EXlGGGN0vJe6uJOrZhrb9rSGvNkgLzTYvntPOTtnr
-	 LTOwzorOjdnlQ==
-Date: Mon, 2 Dec 2024 08:33:41 +0100
+	b=YAQBLFbzade4+DSJ9YhBk0Yft2NNUlROVJ3w1OZynq1eVWROLvLc3ieheeSwrWfgJ
+	 GSGu1f+rBsnsRISz5mla0Ok/GvoJs8TN/mpUspXtJv8HT9unMivZ8uvcL4IVKGmQQO
+	 UlRAr2m06+t48T34AW6hhOjmhU4Amqt+9D0fdkFXCn/qKHB972QIsF+kYG1rf2rxW7
+	 nYY6mAejKzs7N7WCKRCX689XRrRCqg4Kk+mMO1rqV6LH2jAJnI3MnY51/mTd9nICjM
+	 0mXg1531ZuMTM9eJtHt3v7a1bxWhUCIZC3U8GR0LV2ArZEfoUn3SYw4vaQETo0BZq7
+	 ZduM6j8UAACXA==
+Date: Mon, 2 Dec 2024 08:56:07 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com, 
-	Abel Vesa <abelvesa@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Michael Turquette <mturquette@baylibre.com>, Peng Fan <peng.fan@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
+To: Matthias Fend <matthias.fend@emfend.at>
+Cc: Michael Riesch <michael.riesch@wolfvision.net>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org, 
 	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-clk@vger.kernel.org
-Subject: Re: [PATCH v4 08/18] dt-bindings: clock: imx8mm: add binding
- definitions for anatop
-Message-ID: <2t7eok4xmjxywt4dzjviz4brvohk2y7gceu2srioocgpekpu23@grgdf24djo4o>
-References: <20241201174639.742000-1-dario.binacchi@amarulasolutions.com>
- <20241201174639.742000-9-dario.binacchi@amarulasolutions.com>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] media: dt-bindings: sony,imx415: add required
+ clock-names property
+Message-ID: <bh3obpt6bcklejdvrk4r6ienraz5zmhrdyotijhvlwexussqgj@hicmx34vi27w>
+References: <20241130141716.1007115-1-matthias.fend@emfend.at>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,21 +48,16 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241201174639.742000-9-dario.binacchi@amarulasolutions.com>
+In-Reply-To: <20241130141716.1007115-1-matthias.fend@emfend.at>
 
-On Sun, Dec 01, 2024 at 06:46:08PM +0100, Dario Binacchi wrote:
-> Add the bindings definitions for the anatop node. The patch is
-> preparatory for future developments.
-> 
-> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-> 
->  - Added in v4
-> 
-> ---
-> 
-> (no changes since v1)
+On Sat, Nov 30, 2024 at 03:17:15PM +0100, Matthias Fend wrote:
+> The imx415 driver expects a clock with the name "inck".
+> Document this in the bindings.
 
-My comments apply everywhere, I'll mark everything as changes requested.
+No, fix the driver instead of bypassing review. It was decided to drop
+it during review, so you cannot reintroduce it 2 years later claiming
+that's now ABI. Of course original submission was buggy and never
+tested, but that does not allow review bypass.
 
 Best regards,
 Krzysztof
