@@ -1,91 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE891D8E1E;
-	Tue,  3 Dec 2024 22:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AC8202F84
+	for <imx@lists.linux.dev>; Tue,  3 Dec 2024 23:14:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733265562; cv=none; b=UVgw32R+EEjWvXkV2G39Zr6C/BI9SxoHqcMWRM0DfruZOY1VCRUjuiZIaU96B3/9N0P6L2AWasukShaQ41FlnALiulxReC/mmX566UGyKqwySByWznYAVP0+NYz7k9m3xU43phkyuJadM2gaIPOEOUlCtA5vBWbf5kgw/f346wM=
+	t=1733267669; cv=none; b=F3BgDTKIyJtU3mmlw1UUP0dW+8XzWLg2rW44FFhKWrcuVqmOl/8eLOWF5wmP19mmGSeAd2i0WXubgt71tzCFEUhU9zlFLQt0kd3/R36SMVTZfaeZBnMnATNKeJHEkP6uCXK6WiDn1y0mULQIcqtfrbUnaIfdoMDJnPh4TvDqKAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733265562; c=relaxed/simple;
-	bh=wKj6FXFllNBDaF5OSfRBHXGeyHVdbB1UAA4vOa8B/yU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Th2phDNrHphlY04iy+DCEcH5//oYFLh4FfLl4cmofjh8aFrLDU2WsaeweInAhuRs8m05lseHKu9q+XojNkHk0w9FehDk9VPJM0QTgoGQLp0pNe5AFexrqFPZzNhe6tEGcFumRHDTirv+EtJyy0eA73daZtZE7ERzayDSgemDqG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M+Oamw/N; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733267669; c=relaxed/simple;
+	bh=P9I8+Rvwv/9S/ZImA3AtB2up+Y15XK414ln9rAgTeJQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=BooaobpcC2X/LWRE0z4Xn1bqbvGEwTToGQDbB49lQYytiGy3ul0PaTt7kjG0pjLyMWjyA3MroP7VrTQxB8sloPr+xkj2tWNfjMNtJfzTnRlMDA37IA/m/jUgiLP+VCCSagCFzGcefpBYNfRRr3HuqRjp/a9zEartoT5E+HhGXEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uGdF7Wd4; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=I+74efFb; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M+Oamw/N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B9C8C4CEDC;
-	Tue,  3 Dec 2024 22:39:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733265561;
-	bh=wKj6FXFllNBDaF5OSfRBHXGeyHVdbB1UAA4vOa8B/yU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=M+Oamw/NYy+DFLqyJxR/dJ/vewk97b3hm56heP86XNoADsAj9LwNVSg5mfa7aVwFV
-	 P8nNRDpOF1beu9AGtqQgfQVog68tmtYdkBjEk8oWFaGrT6dH7CZdPjdOHEyntkZXay
-	 yuPq7xu3pR7qVcGxdVwF0eTyMc98bDqCuTXvaQogxXiOG8Gj0Bi1Qc92jHMXVJiFZa
-	 mtL39MAgLaEu+tkKWt5WuUmu38wDfq8JCyQMtQaRTxgQwXFvGAMbbVkDiSJ33oUfrG
-	 lIHCujR5DIVQNUeoNUqY0Hnlmbu+vOibhxsHndJy1VYRLeHBeiHkIQuUdJ2PoKUm9y
-	 xVuhTRGHwfF/Q==
-Date: Tue, 3 Dec 2024 16:39:20 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uGdF7Wd4";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="I+74efFb"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1733267666;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AwG8bjCzJpnjiYjQenvpNH701rJgmgaojMUFj2iL/Vc=;
+	b=uGdF7Wd4Kue1Y0fcH2j/hkgoB/fhGzmQswuYBdLkhxtekcrOpOWrejr9iW9UiCZYq5AGmM
+	0QjZuljhk/UjVn0VvpNp1WxWrpJPU0Qo5wZpmjUL3iGPnoOVty7mBF+suZuYoxsu+xIf9r
+	eSx5IBQw/DdQ8jVXNczsF6J/aqQFAc5kTZZ3KrMAuEKM7fEPhwrDKfQUoTkH/PcZzHRoEo
+	XL1gCR/AvJqHFyDXyOU0eKIcD1sZ35NXCnRDthGDE00tn64YvMPZGpcS0dXnWxLzZV11fW
+	lajQLWKPNR33WvQAu3wnHmWJ1qTZBWxe/WdCirZZUWzNfBtYieLmlmmdEpNkkw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1733267666;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AwG8bjCzJpnjiYjQenvpNH701rJgmgaojMUFj2iL/Vc=;
+	b=I+74efFbzlOGTz6lDCdzXKlbP5s1uQOdQ+XY7NBpJW/7xbOUY3Tqaz88xFpCQIAOzVf4pg
+	DpwZXD4F62cEbYBQ==
 To: Frank Li <Frank.li@nxp.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, alyssa@rosenzweig.io, bpf@vger.kernel.org,
-	broonie@kernel.org, jgg@ziepe.ca, joro@8bytes.org,
-	lgirdwood@gmail.com, maz@kernel.org, p.zabel@pengutronix.de,
-	robin.murphy@arm.com, will@kernel.org
-Subject: Re: [PATCH v5 1/2] PCI: Add enable_device() and disable_device()
- callbacks for bridges
-Message-ID: <20241203223920.GA2969750@bhelgaas>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Krzysztof
+ =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Kishon Vijay Abraham I
+ <kishon@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Anup Patel <apatel@ventanamicro.com>,
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+ imx@lists.linux.dev, Niklas Cassel <cassel@kernel.org>,
+ dlemoal@kernel.org, maz@kernel.org, jdmason@kudzu.us, stable@kernel.org
+Subject: Re: [PATCH v9 1/6] platform-msi: Add msi_remove_device_irq_domain()
+ in platform_device_msi_free_irqs_all()
+In-Reply-To: <Z096wCMFmR7AyfWn@lizhi-Precision-Tower-5810>
+References: <20241203-ep-msi-v9-0-a60dbc3f15dd@nxp.com>
+ <20241203-ep-msi-v9-1-a60dbc3f15dd@nxp.com> <87y10wsc6z.ffs@tglx>
+ <Z096wCMFmR7AyfWn@lizhi-Precision-Tower-5810>
+Date: Wed, 04 Dec 2024 00:14:25 +0100
+Message-ID: <87plm8s6jy.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z09tOGxAK6nBB8wV@lizhi-Precision-Tower-5810>
+Content-Type: text/plain
 
-On Tue, Dec 03, 2024 at 03:42:32PM -0500, Frank Li wrote:
-> On Mon, Nov 04, 2024 at 02:22:59PM -0500, Frank Li wrote:
-> > Some PCIe host bridges require special handling when enabling or disabling
-> > PCIe Endpoints. For example, the i.MX95 platform has a lookup table to map
-> > Requester IDs to StreamIDs, which are used by the SMMU and MSI controller
-> > to identify the source of DMA accesses.
-> >
-> > Without this mapping, DMA accesses may target unintended memory, which
-> > would corrupt memory or read the wrong data.
-> >
-> > Add a host bridge .enable_device() hook the imx6 driver can use to
-> > configure the Requester ID to StreamID mapping. The hardware table isn't
-> > big enough to map all possible Requester IDs, so this hook may fail if no
-> > table space is available. In that case, return failure from
-> > pci_enable_device().
-> >
-> > It might make more sense to make pci_set_master() decline to enable bus
-> > mastering and return failure, but it currently doesn't have a way to return
-> > failure.
-> >
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> 
-> Bjorn Helgaas:
-> 
-> 	Can I keep your acked tag? Compared V4, just use static helper
-> functions.
+On Tue, Dec 03 2024 at 16:40, Frank Li wrote:
+> On Tue, Dec 03, 2024 at 10:12:36PM +0100, Thomas Gleixner wrote:
+>> Sure, but that's not a fix and not required for stable because no
+>> existing driver is affected by this unless I'm missing something.
+>>
+>> What's the actual use case for this? You describe in great length what
+>> fails, which is nice, but I'm missing the larger picture here.
+>
+> PCI host send a door bell to PCI endpoint, which use platform msi to
+> trigger a IRQ.
+>
+> PCI Host side				PCI endpoint side
+>
+> Send "enable"  command      ->         call platform_device_msi_init_and_alloc_irqs()
+> Get doorbell address        <-         send back MSI address by shared memory
+> Write data to doorbell      -> 	       MSI irq handler triggered.
+> Send "Disable"  command     ->	       call platform_device_msi_free_irqs_all()
+>
+>
+> At endpoint side, need dymatic response "enable/disable" commands. Of
+> course, I can call msi_remove_device_irq_domain() in my disable function.
+> But I think it should be symetic in alloc/free pair functions.
 
-Can you rebase this to pci/main (v6.13-rc1)?  This would go via the
-PCI tree, so it will need to be rebased anyway, and then I can ack
-that.
+No objections, but that's not a justification for a stable backport as
+nothing in tree has this problem right now. You add a new use case which
+requires it, so only that new use case has this dependency, no?
 
-Bjorn
+Thanks,
+
+        tglx
