@@ -1,117 +1,177 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2055.outbound.protection.outlook.com [40.107.21.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47471E3DE5
-	for <imx@lists.linux.dev>; Tue,  3 Dec 2024 11:01:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733223681; cv=none; b=aQzQD6Xf4rv3as6LKHNVABGxTUQrprxJlxnK/8aMJd0gyoQv9hdFfcMA2+cXvBFCuhd+EsIetAH76ygark1Uq04gHHVLH9Q+stUFD174JKDJtViW6vThyhx2FawhugqT8bF01SAz3nv0Ss+f6QLM25Ww+/uzn7dE2x0lNPihqro=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733223681; c=relaxed/simple;
-	bh=tvm2U0hPeS+2Z1mu9fUzdXcEDS21EHlstTfYGANzVac=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sjpRVnSM3xrEcfW+1vlQ17QMg/ukgBtPnYJXj5wwH1APdw4qKw89OEdVO7rl2qHbT2vLGnQNH39mxJO7qeJMua6YFN9sVSfBM2sKcHzSYkjMXqjdDAlGynAmYQteKNNTRW/6H9eYu6reAXrErMi0II/aNv2ynVm9LqU96nNBqyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=dtMb68y3; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10FA1E25FE
+	for <imx@lists.linux.dev>; Tue,  3 Dec 2024 13:06:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733231162; cv=fail; b=BfEJSmke/JpRfS8703cZ5GBQ0CLPTKaAeW8EaXKROyW07GIy40Pl5ugkA6MWMsGgBYhTdvx3UGFTvaw5HvWw/1P0AQNcrBPB6kEpkY40qfqBBtJ0g/OJflQzmPTe+EbxXPVToyH/feh4Z4XZ0rFKG5Dggzh6xviOpDHxdFjDUDI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733231162; c=relaxed/simple;
+	bh=6G/45fb6miEdR9X6Gtt9qn+KD0QX5OA+7ejSEXUSAsE=;
+	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Y3uzKHtEHpgNPuiEG8jcuAb6CqOFQ3N4zaSjK+7C6MbQwr6Al8P6H9W7fqFhRbuN1ULiChw89yq8+3tw8HKrlyfPRX7LfYBD3ZxltoohbuPgCYJWrhS/nzt9El7eI9cTXm4XGXrwwnS13tSkgmbX7n3abII4CWLPbQ8bMO5OHdI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=f7zwxNIr; arc=fail smtp.client-ip=40.107.21.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="dtMb68y3"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=GFOo5u8aTRK7DhrsU260UeP6FhrEO8wPjHVlLdKzJ1w=; b=dtMb68y3lpHLKU0c1tR4gkjF+V
-	ad1pKfy/m7Ua/q0KSXO8jrUEzMoyOzkz2ocyB13GREkilWMp7Z5RYjxAc8vU95PiOcph+gavbGoh9
-	WW8j7vYFHfHB3hOSIqSDEQcscVjYjFc2arm/fkJ3rW/FG3XJUIgMV4VpPf3P6DCskVHBTLeshk+Y4
-	/X8stw+PIT+jYpr36osFhs+zTpGI5VhK30uFRjNskZYJZQX9Le1OtgGSUGRnPz/I/Hrbtbj+wzGjQ
-	dpUPSGX82cpRRWw8vDUIJKlt5pPT1yvZUG83zCVK9MlcYZE+7BbqwqVCKNO464pp4mwgEfNWRUD/L
-	KgUcYraw==;
-Received: from [89.212.21.243] (port=52296 helo=and-HP-Z4..)
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <andrej.picej@norik.com>)
-	id 1tIQeX-00Bd83-0c;
-	Tue, 03 Dec 2024 12:01:13 +0100
-From: Andrej Picej <andrej.picej@norik.com>
-To: andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org,
-	rfoss@kernel.org,
-	Laurent.pinchart@ideasonboard.com,
-	jonas@kwiboo.se,
-	jernej.skrabec@gmail.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	marex@denx.de
-Cc: dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	upstream@lists.phytec.de
-Subject: [PATCH v3 3/3] arm64: dts: imx8mm-phyboard-polis-peb-av-10: Set lvds-vod-swing
-Date: Tue,  3 Dec 2024 12:00:54 +0100
-Message-Id: <20241203110054.2506123-4-andrej.picej@norik.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241203110054.2506123-1-andrej.picej@norik.com>
-References: <20241203110054.2506123-1-andrej.picej@norik.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="f7zwxNIr"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=a5BiI0ZRi9aCDke/XvSqSwDEscnmfSITfadVg/9LlPYwDAo7itOTvUhcZiqdU5RWNmp6Ad82rvNEwTm/PLCRR0t63dpodyHw1X8mLsoQzInd1l3UiJVe1bH8nE/cNNAyufoCf95/CvtQnlVjZiqIu3XBGsK15CdHZjnVa3E1x1xigdlY3zUBBBCdQlbYy+gosovfdC+0onzd9ToeKUFzmUJAfo6JpqoViF2vPDnvPEQ6ijpHTzQ6eja4TbOUfM36menICLPVsLhCoWvJuR22StVeiiBEKMy3olfwjDd7605/EmpCN2EieAKz/LIvTJV7fwQyFiVwfpWOWVe3udSTkQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8x05kfaQVpCRcdfAVgIfJ3QfKGZdtodktYmBmdDZf4A=;
+ b=QLLkpN2YWmddTeAIrTvPt0Awhsk6qwV9PphAbVpvh+XkdudWT2Z6ImbZba4ATbV2PQge1orB6jLvd9jN5HtFED7HmjgXtR3zc20EIeSMOEPZMbBghL783NIe1RjSRsRnB8JKO8Eh04lFFSwXlL6Vs0fZagpC/zYlqaDHUakDZhWpw1coJ9L5ZhIaPbQCho2fUm5VwZxLONVULu5A7a3jrsKKdwtVHUbPeY7B58gBaZUHbm2d4hd/TOK6PDf/pvKRJLPBW1H0OUhyO1AYpDgxG9tRMmGTtTYQMrqF7rG7FsbPRg8yIsqjmH2h9cQM/sRfzwFEXkZ3tCn35LwtO7iJOg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8x05kfaQVpCRcdfAVgIfJ3QfKGZdtodktYmBmdDZf4A=;
+ b=f7zwxNIrvMjfYzpbXL6hMgKH1HBxEgXj/H18A7WVfJAn6VCLW6w90QhFB1d524lV05Op6bMJlxdmFlURdZB1Yr45hpycMeQ19hBQEqzcncGVnV89PFZFJ8HPD2YqTo8asFT9a6R8+BShLCbFezezcWDw8mffwTbhFLLHMppqh5cTq3t42h3zY82B7wFuNgshbYXgJmHILDwrmjOW9j/ODzL7f8DMYlGmP0lHaCP6Yn3wBoVcyrugrGd+UD1iancbGHcQRH7A/THKC9ONwk/UAt7y96CGtw9vR0HQ7oiAhW9iMxuBue9ImhvMHUco1qwskQ4u1PfEfkIi7kopWHyrNw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by PA4PR04MB7743.eurprd04.prod.outlook.com (2603:10a6:102:b8::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.19; Tue, 3 Dec
+ 2024 13:05:56 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%5]) with mapi id 15.20.8207.017; Tue, 3 Dec 2024
+ 13:05:56 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+To: Abel Vesa <abelvesa@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengfei Li <pengfei.li_1@nxp.com>,
+	linux-clk@vger.kernel.org (open list:NXP i.MX CLOCK DRIVERS),
+	imx@lists.linux.dev (open list:NXP i.MX CLOCK DRIVERS),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] clk: imx: Enable IMX93_CLK_LVDS_GATE only for i.MX93
+Date: Tue,  3 Dec 2024 21:05:29 +0800
+Message-Id: <20241203130530.1206526-1-peng.fan@oss.nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR03CA0124.apcprd03.prod.outlook.com
+ (2603:1096:4:91::28) To PAXPR04MB8459.eurprd04.prod.outlook.com
+ (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
-X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|PA4PR04MB7743:EE_
+X-MS-Office365-Filtering-Correlation-Id: b5f6b35e-a5eb-4dfc-17f9-08dd139b39a9
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|52116014|7416014|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?5UyrzVmwm4fEpya6MIUGARvfuCTeqocXnGDu1wpJxdgGXEyv00Bo0SlohDOE?=
+ =?us-ascii?Q?6LjL0WTYEZJudw0oqzlZzHmnT/NUOZQegQX6Aj2/Dz+wP0m2FwWTaH7l/OP6?=
+ =?us-ascii?Q?N/atLT9WXV8Rm9G1mMjy+LbzRsRFJNtT/lwm8P+h7mSnkdQmEaBtsot5fVfd?=
+ =?us-ascii?Q?dFm2kD2+IdaiPGh25I88qddmfGN4RjbGyJN9BjBE1GIoKgXYGuwynG9sPFww?=
+ =?us-ascii?Q?zEqg1vegTyfVvLggl5DPhWbxOKigyGcTNV5W8G9wvI830E+qJi8RT/qF/+Ox?=
+ =?us-ascii?Q?XUKVPbi4Pru6pFbiPE0jyKcXv+dtgkCaF9myQzhKsgnmoD76h+Fwylu/9cCw?=
+ =?us-ascii?Q?HQ9NdHIliarvK1ZLrcTrrQJQNi80dCBfMlXqc9Bdx0MhFNjp8G/ZhgR53Mtn?=
+ =?us-ascii?Q?AxhFr/UmPmIf6Np9tfIJKkjN9FTxpMX+LuYBAerOTgkjQf8JYpl3pCs9blzj?=
+ =?us-ascii?Q?RTLoMHzQ7XncM6XgSAhvzmFRp7opZWkWmA4Mm9OT3KoFfYfsCyTYW9goaCvr?=
+ =?us-ascii?Q?l1VNk03Wf8uedjZ17yif3hUe0fLr6Y7tXwf3O8fgnkdD4rsSXg0w6X8YxYEW?=
+ =?us-ascii?Q?rqLb+4w7fE1rX7ZVggmnrZuMjubAOOKoB9BbI3mC+TCOUP/waQwNEf96inBm?=
+ =?us-ascii?Q?qY08Q8SbrAQurr1yKcubjNkXBVI1VdA+udqW71D5cu0suorWBi4J2Q3px5PT?=
+ =?us-ascii?Q?KGTB/cmJv1eSVpnPsE9evZgEICxtoQ/3PVHVVyvNgNE38yEJ2toJaAUrdQ7a?=
+ =?us-ascii?Q?SuQoNSHCBFhzVUd6rAfI0eulENLGJkY3pWUTau1O4drzi3kUEsnqihNyYL3F?=
+ =?us-ascii?Q?LODgGw1JfzmDYq3F8M/q/up4a6pqwZlfZLsSnJxxMBCOHMIHljbgAj1iOTR7?=
+ =?us-ascii?Q?LXRQ0iXW+EN1238aqy/5PyF/hgfem5PQui0jZ9ZoCF41mf56CunDBZ7lM6E5?=
+ =?us-ascii?Q?+pIMGkxhImOPQTd/402zCEFwtcVa7jp9cyDM0lqiekLCjf7wU/xlB1/GdkiJ?=
+ =?us-ascii?Q?lN/C8/dgxT3S58bFhNIj6FdxNDsF0RGnF7PUwiwlIcnxJeR9mb5obl9bpZFd?=
+ =?us-ascii?Q?liRcp+7+ZGigEl0oR7U1vv1w6ip+Q3SashOnKJZlAl+r69936smb0QO4k+lM?=
+ =?us-ascii?Q?7pzgW+FnRHKV2s3Msyc7im4iHIAVTNe5K1nC0djHS4lG/7Te70TJjqqxkvGw?=
+ =?us-ascii?Q?sdNGyycAPVBAOhjag3eOCYCTE7FhTiKb9lp24nU6hj3Wtv4ACO38+M4eKzgd?=
+ =?us-ascii?Q?+c1VMgxPJdtqx+Rj4Bj46mJMX2YDbDeoTl/7ZVWCJAYsPyzJyRjt3TgUC8iu?=
+ =?us-ascii?Q?hegtTGB4lVcsO3P+1RdRhIRkUA0BREyJ4kQ3hz0P78dvtq6sz7CHnNoV3sr2?=
+ =?us-ascii?Q?F3OZl2Sg5RHTzz6IT4wBvMYcFUJofwZD1W2aiYvhknM1bh987PELEapumetj?=
+ =?us-ascii?Q?LPEKVDvuhd8=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(52116014)(7416014)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?wKl5PuiCtUGB5wRVNganF0aCgS1UwYT0DvYnBfoh5yzQify8y2kVE0u94bFf?=
+ =?us-ascii?Q?lJBe4aMDXsLhI3Uo9DTTwUDWkp9rb2naaHE6OoDphsCuaR8ZeLjLhZy49QnD?=
+ =?us-ascii?Q?YoPFvt98gOQ6WaLh8OziyJ6Sf6aHpzVCHLj2uttmJO5IZXZ+UNaD8mA2rThX?=
+ =?us-ascii?Q?KaQvst7QeRV7qQJ/d7oxJxuhdDjEjQ/qfoZNvFBV8Y1GwADOXo8Ye0lRYW7W?=
+ =?us-ascii?Q?qQJLh4a4q4c7ZUcVriq0B2wPvA9j2R5OFGfRs7sB16pB7jcB7fuxxgp00bR/?=
+ =?us-ascii?Q?QC1M1tSxmQxghSHjFAMm9ibovthyKc+V9V3ATj5ZJ5/3eSxeCLLFsA4wk5oo?=
+ =?us-ascii?Q?Mcrq+4i5p0pQP8jPlLfTEc54l5kNBWB8756pIaIj/pB6dWI+wZoBnPu1hWlM?=
+ =?us-ascii?Q?rWSd30CHEp1hN/eXi+yEFXO1tQspQOlWencqJvModja5oHMRCDXAF8dF2W04?=
+ =?us-ascii?Q?uceoXDqVAoVtndogFYA0qZ0qPBgJUT790vQmF/iaANUQdRZlvubKt9No22W5?=
+ =?us-ascii?Q?a64yS+07rAnledDUnwgy+u2BPckathxk1BH7aYToki3z5Z8fT9/Sxc/T6xId?=
+ =?us-ascii?Q?fB9xj9QzpFweqKe/C6KxolLH4BBWfnqgFhwlCisTCDud1f+dVBFWaU97mipe?=
+ =?us-ascii?Q?9Fg8AoxWiD+6hT3F+nnKfWcqzHEoJqT7hGpTEhvTr9BKTaH4sJPld2kSKcKT?=
+ =?us-ascii?Q?/1y8jq7y6kBGcF/BdYiSLqD0xSKJtZjaYSuxMBgUO9dotCaA0bnAjbhGtOdZ?=
+ =?us-ascii?Q?Qiw8OKnzhjk/8/bqU5h8/MceBeGIbLzJJveSD8HLWXiVAflp6zcbogBp08AI?=
+ =?us-ascii?Q?Giw+xfPHETYwcayHNOVccn6N1tgqHKRPJ1IWKXs0iE6SXbbyTbmay1eV9dha?=
+ =?us-ascii?Q?v0wHdTl+m0APNV3m3Q0T8xvU91Js6SW851WT9/iuqzjhyxJCLYPen6vzW0O9?=
+ =?us-ascii?Q?CIWzonZSCsWgtRWHtJ0Y14qH3/6JapWNeHt08q2SmyJnEs/HEtzN/NzVjfpv?=
+ =?us-ascii?Q?FPRQLGOIb2dFt3DgirQojuLJJSm+/UVKAKK9RbOXZ+vhm6YsrWOGxERxs5+r?=
+ =?us-ascii?Q?5b35uFhN0JNot4c4q6bMbTmUi+alnTWvDTHQHkX0v7JDaMn8XRLBrwYmFqki?=
+ =?us-ascii?Q?BvdKaTv2+Ed8fQXhAtM4G0pG8nFRBzn5j+coGxBucv9AzVMyZUFacIsxvc5V?=
+ =?us-ascii?Q?+6LA/UY+bCNsfn/KoKilPGU8bqA54D5i6vHR4r2w52Q6hxQWNMN+2JElXeVL?=
+ =?us-ascii?Q?Q6HrOxWMtNfrmPu/kvya+cz+0d7BixWfbwpgXkt8TS0g1EZmm8Turw/Sxu08?=
+ =?us-ascii?Q?MeqwSp+3zZfuClZ1+io0tnhHLvUzSPnIRqAeKQIZrqe0nggDDIXh3Vfi5cb+?=
+ =?us-ascii?Q?XkcfZoNJBgDVdSknn+yHCm9v5AHoX2k1pvrmMxki7Bx5R0rBFIG4PQ8jroyk?=
+ =?us-ascii?Q?QEeSeDQVy8mRn8ABZM5MVibyycAwakl3QnVVNeB2n/FHiaBKIrZCK86r2vRJ?=
+ =?us-ascii?Q?EzwpX3kXL6/zETvsPz4Tklq65IFWhpksTCy/hB5LBRHFS87GRS0AGfWItgm7?=
+ =?us-ascii?Q?B3ZVes/8wb7AITCulGu886fc8/6R5ILrg8r2Fce2?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b5f6b35e-a5eb-4dfc-17f9-08dd139b39a9
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2024 13:05:56.8147
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AvReJ78x02y5/6hUDt4TtdXw6ZG3aa+fM3Gg6RifjbVxVpvkqx3UkiKPDPcyQEqnH7gvB6xxfFoTxEcSZY7oJg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7743
 
-Set custom differential output voltage for LVDS, to fulfill requirements
-of the connected display. LVDS differential voltage for data-lanes and
-clock output has to be between 200 mV and 600 mV.
-Driver sets 200 Ohm near-end termination by default.
+From: Peng Fan <peng.fan@nxp.com>
 
-Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+Enable the LVDS gate only for i.MX93, because i.MX91 does not support
+LVDS.
+
+Fixes: a27bfff88dd2 ("clk: imx: add i.MX91 clk")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
 ---
-Changes in v3:
-- no change
-Changes in v2:
-- use new properties from previous patches
----
- .../boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso     | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/clk/imx/clk-imx93.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso
-index a9de42cf14be..8bf9cc553bea 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso
-@@ -186,6 +186,8 @@ port@2 {
- 			reg = <2>;
- 			bridge_out: endpoint {
- 				remote-endpoint = <&panel_in>;
-+				ti,lvds-vod-swing-clock-microvolt = <200000 600000>;
-+				ti,lvds-vod-swing-data-microvolt = <200000 600000>;
- 			};
- 		};
- 	};
+diff --git a/drivers/clk/imx/clk-imx93.c b/drivers/clk/imx/clk-imx93.c
+index 58a516dd385b..a0d2972ba9cd 100644
+--- a/drivers/clk/imx/clk-imx93.c
++++ b/drivers/clk/imx/clk-imx93.c
+@@ -239,7 +239,7 @@ static const struct imx93_clk_ccgr {
+ 	{ IMX93_CLK_SAI3_IPG,		"sai3_ipg_clk", "bus_wakeup_root",	0x94c0, 0, &share_count_sai3},
+ 	{ IMX93_CLK_MIPI_CSI_GATE,	"mipi_csi",	"media_apb_root",	0x9580, },
+ 	{ IMX93_CLK_MIPI_DSI_GATE,	"mipi_dsi",	"media_apb_root",	0x95c0, },
+-	{ IMX93_CLK_LVDS_GATE,		"lvds",		"media_ldb_root",	0x9600, },
++	{ IMX93_CLK_LVDS_GATE,		"lvds",		"media_ldb_root",	0x9600, 0, NULL, PLAT_IMX93 },
+ 	{ IMX93_CLK_LCDIF_GATE,		"lcdif",	"media_apb_root",	0x9640, },
+ 	{ IMX93_CLK_PXP_GATE,		"pxp",		"media_apb_root",	0x9680, },
+ 	{ IMX93_CLK_ISI_GATE,		"isi",		"media_apb_root",	0x96c0, },
 -- 
-2.34.1
+2.37.1
 
