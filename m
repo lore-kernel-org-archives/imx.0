@@ -1,37 +1,38 @@
 Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BDD91D47BC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE7E1DE2AE
 	for <imx@lists.linux.dev>; Tue,  3 Dec 2024 08:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733216341; cv=none; b=s0SNR6hKob5EK/IU7vdOWJIOWCBdWKl25Mxy75pjIJFsFlPdmw0skfX1olWlp2kiLESiBobn5FI6eZkao9/+jBn/Axv1l96CsLi0FpNwq410qz8MuLtp2AQMPWPj4kK9nh99aKvVaTmmJLS/LaDnkkZg1w6h8a4vr0W/49k+UJM=
+	t=1733216341; cv=none; b=NkeTCj2jLbXpTx+UEbbtiLnwMEJ6+b2vkB7zcZIDSINjRcMa2zAnbm3ISvH6UyQSmNnlrWZ8ZGCcWOrA3LANSrtdGOuk3uq7LJ67N+xBwieIAxVdUtPVIcY5pGcXghmYh/XVCEeg1UezvhUZNOf8YMZD/2NrlvLTUs7vojUyAew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733216341; c=relaxed/simple;
-	bh=jpVkQG4ut9qf/pljgv0GIyKYTYR+HbX906dK5JPbMGQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MnVvWdILPAYZNpgaF3KulocEviyplztbGpf3hJAJ+ZXGZk/LvDfVBWwXlyTrTl6t0a5loJLo4j3IDRyjlGyhs9S385JdYuh5IO1mVTAciri5fskBW1aF/eNsM1z2Fo9WCwuIe+reBy/n+VuRrssvS/4990gx7r0pPPJ7H0d3uXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=IohL/7cH; arc=none smtp.client-ip=46.19.9.99
+	bh=khkUV8Lxcpqj5sKeh0U6wAVOnRexPM/9dhNFtQt1Ds4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Z4+ONudX410ED5IbInoYuW7MRCf4a98M8iiZJ1AOuU76MkLlUv0gESJ4dZXzZujlA6xIGVo21YPR2MsLw7xagXt6n3tAgf8/b9QZY8w62y0LElWdHfiHUu1/7Hbsfh7M9CVnYXYemKk1VQNE+mU2YhTR3b6r7tJEWpKRqub+qLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=l32co7a+; arc=none smtp.client-ip=46.19.9.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="IohL/7cH"
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="l32co7a+"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=X412GLjVjNgho4d5BU2d+RZdrHHdZR4eFJmgPaiIEUM=; b=IohL/7cHd6PBHWtvYAg8G8g2Z4
-	dandx4NF3wie961zgDH7zBPPol2b3nSNRVE9FZijFqx7ChLAJ/gNe57kL4tlrfgLLDEBg/D1Q6KDl
-	sEUrS8nAw2oqW15U2/OrTXssRcTG5ICUHgu69+IfwRnFLKNqEUdYKCVIungVWb8dk31T+T6yA6XwG
-	Wgb8azFG13W1asAMyQoiCU/IzWqLilF8sfHWsxzMeX6iHLxZWzkCqIYXC9uBMVVErqUNuoari40SS
-	ybZa69aEktxNAF2dA50uzPt867fTHJbEvFv9gpT6tMiyxbQyMBeDVM045FVQ0+HjPqN10kQ4ECBuD
-	LacpYQig==;
+	bh=n7ps5hHUEyNPix9x2ti12jd8VGdE1MaH46+QldCC9TM=; b=l32co7a+CMBSHkqle13YReDRID
+	aPgCl+3Hz6xvOA5ll8Nga98E4iPEMLw2lzrjD8jFAQe0cpaS4gGh+LuQMIFGxRvQNN+lbcyNORMt/
+	1L0mR8rvxW1IpjD1g5NDsmRAxyNayb8rsBU70HNVJ0e55p7oFrKAb4bvuPJthyZ/nehGw+NOqEJpp
+	Io13eiiJpI/0yCx9O+H9a7X6tJ1WVoTz4vv9qIZU9NTOKSlgYRBjegrnYMKuSNpoNRuHRtnJtXjA3
+	h1O+JrdJDCw0rnOp3N1CHThY8E+oENLCjBENukkf3ajMhRYu3aX/jsBf+ZETtt7KY4neWagokWlHo
+	zUsN2rFg==;
 Received: from [89.212.21.243] (port=47386 helo=and-HP-Z4..)
 	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <andrej.picej@norik.com>)
-	id 1tIOk7-00BGOq-0Y;
+	id 1tIOk7-00BGOq-19;
 	Tue, 03 Dec 2024 09:58:50 +0100
 From: Andrej Picej <andrej.picej@norik.com>
 To: andrzej.hajda@intel.com,
@@ -59,10 +60,12 @@ Cc: dri-devel@lists.freedesktop.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	upstream@lists.phytec.de
-Subject: [PATCH v2 0/3] SN65DSI83/4 lvds_vod_swing properties
-Date: Tue,  3 Dec 2024 09:58:19 +0100
-Message-Id: <20241203085822.2475138-1-andrej.picej@norik.com>
+Subject: [PATCH v2 1/3] dt-bindings: drm/bridge: ti-sn65dsi83: Add properties for ti,lvds-vod-swing
+Date: Tue,  3 Dec 2024 09:58:20 +0100
+Message-Id: <20241203085822.2475138-2-andrej.picej@norik.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241203085822.2475138-1-andrej.picej@norik.com>
+References: <20241203085822.2475138-1-andrej.picej@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -81,38 +84,89 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-Hi all,
+Add properties which can be used to specify LVDS differential output
+voltage. Since this also depends on near-end signal termination also
+include property which sets this. LVDS differential output voltage is
+specified with an array (min, max), which should match the one from
+connected device.
 
-this is a v2, which is quite different than the v1. The LVDS differential
-voltage swing is now specified as arrays of min, max in microvolts. Two
-arrays, one for data-lanes and one for clock-lane can be specified.
-Additionally, because LVDS voltage swing depends on near-end termination
-this can now also be specified with separate property.
+Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+---
+Changes in v2:
+- move LVDS port schema to a $defs and reference it from there
+- properties are now defined in microvolts/ohms
+- use 1 property for data-lane and 1 for clock-lane LVDS voltage swing
+- add 1 property which sets LVDS near-end termination
+- since major change was done change the authorship to myself
+---
+ .../bindings/display/bridge/ti,sn65dsi83.yaml | 36 +++++++++++++++++--
+ 1 file changed, 33 insertions(+), 3 deletions(-)
 
-Driver goes through the tables, taken from datasheet [1] and selects the
-appropriate configuration. If appropriate configuration can not be found
-the probe fails. If these properties are not defined default values are
-used as before.
-
-v1 is at: https://lore.kernel.org/all/20241127103031.1007893-1-andrej.picej@norik.com/
-v2 changes are described in corresponding patches.
-
-[1] https://www.ti.com/lit/ds/symlink/sn65dsi83.pdf?ts=1732738773429&ref_url=https%253A%252F%252Fwww.mouser.co.uk%252F
-
-Best regards,
-Andrej
-
-Andrej Picej (3):
-  dt-bindings: drm/bridge: ti-sn65dsi83: Add properties for
-    ti,lvds-vod-swing
-  drm/bridge: ti-sn65dsi83: Add ti,lvds-vod-swing optional properties
-  arm64: dts: imx8mm-phyboard-polis-peb-av-10: Set lvds-vod-swing
-
- .../bindings/display/bridge/ti,sn65dsi83.yaml |  36 ++++-
- .../imx8mm-phyboard-polis-peb-av-10.dtso      |   2 +
- drivers/gpu/drm/bridge/ti-sn65dsi83.c         | 144 +++++++++++++++++-
- 3 files changed, 176 insertions(+), 6 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml b/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml
+index 48a97bb3e2e0..6da9b6e3beb9 100644
+--- a/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml
++++ b/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml
+@@ -80,12 +80,12 @@ properties:
+                   - const: 4
+ 
+       port@2:
+-        $ref: /schemas/graph.yaml#/properties/port
+         description: Video port for LVDS Channel-A output (panel or bridge).
++        $ref: '#/$defs/lvds-port'
+ 
+       port@3:
+-        $ref: /schemas/graph.yaml#/properties/port
+         description: Video port for LVDS Channel-B output (panel or bridge).
++        $ref: '#/$defs/lvds-port'
+ 
+     required:
+       - port@0
+@@ -96,6 +96,36 @@ required:
+   - reg
+   - ports
+ 
++$defs:
++  lvds-port:
++    $ref: /schemas/graph.yaml#/$defs/port-base
++    unevaluatedProperties: false
++
++    properties:
++      endpoint:
++        $ref: /schemas/media/video-interfaces.yaml#
++        unevaluatedProperties: false
++
++        properties:
++          ti,lvds-termination-ohms:
++            description: The value of near end differential termination in ohms.
++            enum: [100, 200]
++            default: 200
++
++          ti,lvds-vod-swing-clock-microvolt:
++            description: LVDS diferential output voltage <min max> for clock
++              lanes in microvolts.
++            $ref: /schemas/types.yaml#/definitions/uint32-array
++            minItems: 2
++            maxItems: 2
++
++          ti,lvds-vod-swing-data-microvolt:
++            description: LVDS diferential output voltage <min max> for data
++              lanes in microvolts.
++            $ref: /schemas/types.yaml#/definitions/uint32-array
++            minItems: 2
++            maxItems: 2
++
+ allOf:
+   - if:
+       properties:
+@@ -120,7 +150,7 @@ allOf:
+           properties:
+             port@1: false
+ 
+-additionalProperties: false
++additionalProperties: true
+ 
+ examples:
+   - |
 -- 
 2.34.1
 
