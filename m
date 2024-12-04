@@ -1,64 +1,65 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0027120C474
-	for <imx@lists.linux.dev>; Wed,  4 Dec 2024 15:57:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B5620A5FC
+	for <imx@lists.linux.dev>; Wed,  4 Dec 2024 15:57:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733327868; cv=none; b=Lj4rNUnP0nN/CjnBb/8eiI/Cq0jK6xDRqUXTiPiTlGMXA5l09BIwgFSfUMr/pW2hmGLTflFskR1CA6+en7p1TTl983+Had7eWLz35K6tALYrKqVmvkKLxUvFcLdggPiLlEiJiJxYqBTNmwDH4CbS08JJZgigRHV744sJdanKgPs=
+	t=1733327871; cv=none; b=iAeA+cXKNDvQnQthx8FW4JJ93S5Sl8ZQUZYXNTYBJYiTxTdqskLJAdT6ck4uiC4El7zdr6qZdu2BInlUtBK1e6TVrDxQtqvhbn6IV2/bBQj81Oq8u6QpcMU7yh3fYFpYcofNL8VPMjlD4R8wyof5FqhjdvjA9/S4zMYFoMmLxu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733327868; c=relaxed/simple;
-	bh=YnG7z0fOKJrMFIenIZn/cMyKITkPo1UCS66LL8X/56M=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=IGAZL40xByrnpgXgTNWTgqnL+BTHzEr/blqlkOaECkWVf/c+wbWNUEb/fVmJB7EPaMc3cprLVR8MnHlOLNhip3RuRb3CEsnUh8KOZ/NjgpyJwpJagPK5kuSLWquOhnfaob9N5getAEZrpNsFGLwGMW+v7fJYi2za4rlS2eXsMrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IHezV1d9; arc=none smtp.client-ip=209.85.167.45
+	s=arc-20240116; t=1733327871; c=relaxed/simple;
+	bh=8KQt7pjdBn+B5huSjAB+LdsFv0g/yxS7A8zqbMHAK4c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=mXimzTqX34XGlUXPBexiwlklda2zt/LvzbdTbIyIfgR5B8d4LTKzI9XR59SG2KSiX2xP1B688KH+Nr50LW3h216VqR/MhO5/ctPjd88nbyzTZTUsDj/EGRfJXwmVXBdb1QFTaDZOcCfbVDgAZeSlMfAdw7+x4YMyOjTyX4T2HF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YCmR5QIk; arc=none smtp.client-ip=209.85.167.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IHezV1d9"
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-53de79c2be4so8351005e87.2
-        for <imx@lists.linux.dev>; Wed, 04 Dec 2024 07:57:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YCmR5QIk"
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-53e152731d0so929853e87.0
+        for <imx@lists.linux.dev>; Wed, 04 Dec 2024 07:57:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733327865; x=1733932665; darn=lists.linux.dev;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=an+Z8/U/MO56+6B3k0dC/+jPNgqzlMa1M5Aal/WF2R8=;
-        b=IHezV1d9aYDVmgbZAzuYyx9l+65nVTkG4tGOd5HuwRsLkQgFMqLQlaG0+7fS8GtyU8
-         JtdpgGhRZ8G4S5fjwou9qC+c6iNefU/yNMnPrQq7JCA/LD5LmOLXxKy3vh5ZWxz38c2f
-         3L2FyuRYUwTPPHnOm2cPd/fY5sWZM0LnC5FHssYGK9nDDItO5c2QCIgTjMhZaKFx47f0
-         kO0R05QvtnIyKklGpeapzAeMes7PHA8Fe5GO/ZdwAumjFvumtud+7nNvXT0jReKtloNt
-         O27EAGslEP0+KbGKEKdASQRsvCrW7OaF1iJq+8pRTEpIJlCDtb1CvHZrHOFrjLf0qSAN
-         jHjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733327865; x=1733932665;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1733327868; x=1733932668; darn=lists.linux.dev;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=an+Z8/U/MO56+6B3k0dC/+jPNgqzlMa1M5Aal/WF2R8=;
-        b=uGcn0kOn2Ycm3Bev1ACpoSFEg9lEVzniDSrXK6ZPkyGQVI3Ng3U6jHZIkpu0xxOMHY
-         XB5kLwfMU5ST/tb8c8O7enRbUO9dHBtOZtbOHkZY7+unoVIIIVnTWnDuq13uN7hU4Nzr
-         dLFCmd2tpbfMGRTwU/wGmD4eIH9SKR42HIZIjFPfXeNkTwF3Dt9OfwUuupv9u4kg1gfO
-         HA6Dxlt9ZLDT9KXGSPOU+/81J07RRUKVNqlZG8IMyFQ+V6XuJP7Jwl9SLhd7QXoMrXvv
-         3ROcC4yeivGFNXI3/JY3HMjPS3XvPnJTjRT5SSecC2hPjPmOp3hHeL4NDU19xJKn0dyO
-         FTHw==
-X-Forwarded-Encrypted: i=1; AJvYcCWCw513zcMhmIfHebqVOvr7/NfLvoLVIFY3YORDiF2asKVdAA4s+wY1U7bQVHhj34D8aOc=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz9FbTKxxmSB2r/ZBZq08rADzEMQSUQQqq3U9xccondlR2ngNzA
-	PrCK1sh7ANywzzQ+l/DjP/Mdwa5g+J/qJjVzafNJ7V2zMWvd4sWI
-X-Gm-Gg: ASbGncunsIMv7cCzIDZ3G2fwvpyAUnefkojdJAFhWVOKfLI1UvQHSY2RgYAe8kJ4xOR
-	W7cHG5n6ZBXmPrjDKRd4Rz4am0ztTZvzXovXI3L1SeWc0LsXzdZn/9/a/Co01jfcEdkJgBu9Lkt
-	Dbq6JkGa14qZctuWqxUHUWIGSjp0hI52HbzCY0p1xti6BvjMGBtWFW1oSpr+Lr0d4c48+v0jMSj
-	mtjGtU4QvKLeZzAPkvTWxUjZfLIyIei4X7UjjVooSicLXZ4Euljmoval34DODbL0GzKptjaCoNJ
-	+/i1wPUs/ZvK8wc=
-X-Google-Smtp-Source: AGHT+IEy9n6nxWmwqhFSvEOtXxa2/T4QYEk0NY96t8djbuTb5+3DKRoxBp5roEh8mU61qF3g4m3EWA==
-X-Received: by 2002:a05:6512:234a:b0:53d:e4d2:bb9 with SMTP id 2adb3069b0e04-53e12a3521cmr4486318e87.54.1733327864801;
-        Wed, 04 Dec 2024 07:57:44 -0800 (PST)
+        bh=3nkKg1tuuHFEH5PqoMy9MV06rNk95ek43/M1WdoCMPo=;
+        b=YCmR5QIk08nnfE4Lzd62wijFyrFS6+VHpmvlyyDL3K7x1OmWvf47Gm22nA2wx4+TnC
+         9Td0sfuL6Gq3pJ83dWK4brxLTBmxF9c9qKW2E+j0KfGpkRBUeH91fh3RPeqLUnW75xBr
+         kw8ZG5uSqhI/cWzoN6UMqGlLaaFw+eWipZ8uTLp1u4I7+RUYv8ySSl6kOKW5dnd/DziG
+         iOO09yAkBpWtr5iQ5Vx2RnvHNvdZ/N4HaSzHH3sAyuuq2zXxexjvP0djyHUkcCqnzr6P
+         qBSjiEOeds3inxREibMG8fYhFaVp59FbLLEXLsacFuU7eaLtycQkblaC0uDXbnXoFegf
+         WfOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733327868; x=1733932668;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3nkKg1tuuHFEH5PqoMy9MV06rNk95ek43/M1WdoCMPo=;
+        b=f4IkcExZYZBHpbFGsnSdrOmnC6InQVNEt5HF0ze9OxnPZT2G7YYkgqycQ5BkI9/yAD
+         Yxv992ZHfJAl/Jyrhde5PUELIQFF1tNsYdFBUhZ535KMyUTw+xu4JcoHJ9u42BuT3fxb
+         /ukDPx5R+CTXEJbzRjPVKvMpu5yZg14xxlWRWpYGW1EiKG4fiUYJmD6Xhm7xlSQqQEcL
+         uYXPLsZAtiT1CkXCNMZQyg1HiLS99yDk9OgTY6ge2bEoRJvXV/kX5eh6KmWqim58B6C/
+         CptP4d5GgYP93+DVFpWiLg19fhuAgFpxYX3Lni3fSMKvR/eKuv2m1sJsPSeHnfSNLWPn
+         hQ6w==
+X-Forwarded-Encrypted: i=1; AJvYcCXStwxF1dfDWD2wW837Ewn+65wpO/lGJpCbGlFE4Xcs1NQ+s1uFjRg/px+tc55ntzGtmv0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyEykK/cuq2A3GvONnvFTjMPBJa1qPyKTr7DSw+ldkGg8TlrGra
+	0JP3rEk8AhkUEwRpmJ9PG1oUQAevAvz4AXhIBOfzglv7sb45QAo9
+X-Gm-Gg: ASbGncvJnUjaW+xAf5wIiHwljEDqC54xmGFCwP7LTdG4bGxtjyWoy4QvbjjuvZ/vmVC
+	lCJCt+MMZwXn0hByS+dKGvtJ5HGyXu4ZoOapwei3hEB5Mhpn+I1lLGhRzNY+WzRVQ+9DKi8MZn/
+	irGNdjVRSPcF1n4ekzjRB/hv5N/2aKK1nujmL/AYsJ8XG03/oUx9v1oZKi31Ou2l45UFNdmLwwd
+	rLzEFsadpnGKVRciSERWc7JXgxpbl6b9jBmWgOSZ8Rs4WOFobvHe17qjccJy553NRizWysPms2s
+	9zjgfMTjYPGbeu8=
+X-Google-Smtp-Source: AGHT+IHAcb5udTy8nhI2YPMmDYf9btt3l6VlGD8R5t5Rr1u9eOFtISjwR/bSWUTbOGgS5xor4NF4lQ==
+X-Received: by 2002:a05:6512:159b:b0:53d:ed29:43ac with SMTP id 2adb3069b0e04-53e12df00a2mr2112889e87.28.1733327867939;
+        Wed, 04 Dec 2024 07:57:47 -0800 (PST)
 Received: from [172.17.0.1] (83-233-6-197.cust.bredband2.com. [83.233.6.197])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53e1f5498easm168999e87.105.2024.12.04.07.57.41
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53e1f5498easm168999e87.105.2024.12.04.07.57.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Dec 2024 07:57:43 -0800 (PST)
+        Wed, 04 Dec 2024 07:57:46 -0800 (PST)
 From: Marcus Folkesson <marcus.folkesson@gmail.com>
-Subject: [PATCH 0/9] Rebuild default configurations for some ARM boards
-Date: Wed, 04 Dec 2024 16:56:42 +0100
-Message-Id: <20241204-defconfigs-v1-0-86587652d37a@gmail.com>
+Date: Wed, 04 Dec 2024 16:56:43 +0100
+Subject: [PATCH 1/9] ARM: axm55xx_defconfig: rebuild default configuration
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -67,10 +68,9 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIALp7UGcC/x3MQQqAIBBA0avIrBN0sIKuEi1iHG02GgoRiHdPW
- r7F/w0qF+EKm2pQ+JEqOQ3YSQFdZ4qsxQ8DGnQWjdOeA+UUJFa9muVE62lmRzCCu3CQ95/tR+8
- f4GScaFwAAAA=
-X-Change-ID: 20241204-defconfigs-706a21dc5e4c
+Message-Id: <20241204-defconfigs-v1-1-86587652d37a@gmail.com>
+References: <20241204-defconfigs-v1-0-86587652d37a@gmail.com>
+In-Reply-To: <20241204-defconfigs-v1-0-86587652d37a@gmail.com>
 To: Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
  Gregory Clement <gregory.clement@bootlin.com>, 
  Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
@@ -82,69 +82,177 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  imx@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
  Marcus Folkesson <marcus.folkesson@gmail.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1936;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4266;
  i=marcus.folkesson@gmail.com; h=from:subject:message-id;
- bh=YnG7z0fOKJrMFIenIZn/cMyKITkPo1UCS66LL8X/56M=;
- b=owEBbQKS/ZANAwAIAYiATm9ZXVIyAcsmYgBnUHvE/sKv4AaxRiWeBOth6xz467RGh5qwWXEon
- sjLcr5gT5eJAjMEAAEIAB0WIQQFUaLotmy1TWTBLGWIgE5vWV1SMgUCZ1B7xAAKCRCIgE5vWV1S
- MimdEADQXFpBCP3zM2ifwMzmUGOrx6G7P/aLw8UR67mVpyR+t5nSRIqRdDwJGb0BbSdwEKFGuZd
- MgOPNFZDkKduYqnqfcFoPOW0s6GKmNBsH6zsCvx3n2XwX6nvGVzl8P7DZqfNE+a7DajajRt74pq
- tI6bpsVDQLM/7hphDkLVkOb3MiITjryc57v9p3DSsqZf4Zr2ImKOtt+pvXTmrpmSld96R6LmOVJ
- A23Z/cRjWRtKyJnlFwt982t/zVsu24ebApAvTHYT4aZ4EY2nkWIgBTbUtdZZjF4J2DWu61JCRrb
- /AubGtaFC/Gt5c7CVhHYEF1VYEJLULwdEVesAxMGAU89wfPCzt2dC9k656g6jxUejosEt7txbq4
- 0ALq/dp9tb34ud+PvelWF1kw9peKgw18yyitFo9jy5fAliMcNTOFSfJ+ddzs5r//pZiVvTL8WDS
- 8AQd1z6bpr2y6imt3u4J3Jr/xT+iF+klJgp88h1lrgIi9i6JRgVtPjhYJ6sRpW+j5iRDe5caHuT
- ENZDbbatG80h/+IjrAbYJNoERNarGQWuCFyDCt40sjZ3vi9E+ymYJh7IE7RxXPHmcvZfqymPWP7
- 1OumeLUAJ2WwfFS8ehe9mJ+bfqVuTY+xSovrB0r5XzWP3OALPcnEFly/lPjTiatJmuD/VWCDATH
- tG0cwW70ZxepPsA==
+ bh=8KQt7pjdBn+B5huSjAB+LdsFv0g/yxS7A8zqbMHAK4c=;
+ b=owEBbQKS/ZANAwAIAYiATm9ZXVIyAcsmYgBnUHvJS7ip8U7wYAMpzFqthb2ew9xg5v3/G9C43
+ N2EKshFRlCJAjMEAAEIAB0WIQQFUaLotmy1TWTBLGWIgE5vWV1SMgUCZ1B7yQAKCRCIgE5vWV1S
+ MsraEADLx49LPm9PHTLMe85Mz5h71JDNAkwmSyHU6u59/ljroYOIe9DrWljN+1DdNXr/V4vKxyZ
+ CH9lScPP7/IpKgYy+bGw73H0Tc9JL/LMZFcxu3tQCPdoomELb4kbZ8ReGEN9TeaW8PdFrpLkBBK
+ C4SamEjUkw6bEV5CyIpFUqpM5CEudbN1XAStGKSeuChoa1sUUJxmOJDSaFuB+BXWP7nz/bACWK5
+ mRX9zbrddiK1aAN5R7yUzocj/cMYTgRxdJMIgsT1SztNzmA5ORac9o9WXEPLaNUxNFqiUzfa3nR
+ +tPFHPiZVI14PtR5B0v2MKCrazaHYUQjGMZEk6HJ+cAe/lCuSqm/BSg72L2a4sWAwQM19+Y0Xtm
+ 4oW70fAMWHttfEK80RcKHYaKkaX82hssAwb7o2QiYkC3FVqHQQkXS14vykXhi3iKdgiq9SjrkBI
+ eZn+U6w+1Yjr06eJ3ehoBJP9CiYbbP26qDTqBRAhKnfswHEZX9/kZM63ddVYH60DI8NPzPST/pj
+ SfZ7AIMqemTcA1KXCFC6CiMjq8R6A/Q0bthmVJoE6Qb2eLa28s5TZaTRFJtRNJ2c+J7jPwrN+5D
+ QrrCDpTMjzYw5bedxN9Au2mlxW43ZdVd+RikFGAtY/BKB3NWebUBvSSOwMJng/rDsdU1qVfwIO+
+ T9Mg6jPWc1T6ZAA==
 X-Developer-Key: i=marcus.folkesson@gmail.com; a=openpgp;
  fpr=AB91D46C7E0F6E6FB2AB640EC0FE25D598F6C127
 
-I was building Yocto for a davinci based board and got the following:
+This configuration contains obsolete configuration options e.g.
+CONFIG_MTD_M25P80 which is integrated into MTD_SPI_NOR.
 
-[INFO]: the following symbols were not found in the active configuration:
-     - CONFIG_MTD_M25P80
-     - CONFIG_DRM_TINYDRM
-
-Both of these configuration options are obsolete in newer kernels.
-When searching the tree for other instances of these I found a few in
-other defconfig files.
-
-This series is simply a
-$ make foo_defconfig
-$ make savedefconfig
-$ cp defconfig arch/arm/configs/foo_defconfig
-
-for those defconfigs that contained any of the options listed above.
+Rebuild this configuration by run:
+make ARCH=arm axm55xx_defconfig
+make ARCH=arm savedefconfig
 
 Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
 ---
-Marcus Folkesson (9):
-      ARM: axm55xx_defconfig: rebuild default configuration
-      ARM: davinci_all_defconfig: rebuild default configuration
-      ARM: dove_defconfig: rebuild default configuration
-      ARM: keystone_defconfig: rebuild default configuration
-      ARM: mvebu_v5_defconfig: rebuild default configuration
-      ARM: mxs_defconfig: rebuild default configuration
-      ARM: pxa_defconfig: rebuild default configuration
-      ARM: qcom_defconfig: rebuild default configuration
-      ARM: socfpga_defconfig: rebuild default configuration
+ arch/arm/configs/axm55xx_defconfig | 30 ------------------------------
+ 1 file changed, 30 deletions(-)
 
- arch/arm/configs/axm55xx_defconfig     | 30 ---------------
- arch/arm/configs/davinci_all_defconfig | 18 ---------
- arch/arm/configs/dove_defconfig        | 11 ------
- arch/arm/configs/keystone_defconfig    | 12 +-----
- arch/arm/configs/mvebu_v5_defconfig    |  8 ----
- arch/arm/configs/mxs_defconfig         | 11 ------
- arch/arm/configs/pxa_defconfig         | 69 +---------------------------------
- arch/arm/configs/qcom_defconfig        | 27 +------------
- arch/arm/configs/socfpga_defconfig     |  3 --
- 9 files changed, 4 insertions(+), 185 deletions(-)
----
-base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
-change-id: 20241204-defconfigs-706a21dc5e4c
+diff --git a/arch/arm/configs/axm55xx_defconfig b/arch/arm/configs/axm55xx_defconfig
+index 516689dc6cf16407f2b82370ed08df8da1b5770f..d30e8a350ed26e07af6722666cde763ab3196c85 100644
+--- a/arch/arm/configs/axm55xx_defconfig
++++ b/arch/arm/configs/axm55xx_defconfig
+@@ -1,6 +1,5 @@
+ CONFIG_SYSVIPC=y
+ CONFIG_POSIX_MQUEUE=y
+-CONFIG_FHANDLE=y
+ CONFIG_AUDIT=y
+ CONFIG_HIGH_RES_TIMERS=y
+ CONFIG_PREEMPT=y
+@@ -27,18 +26,15 @@ CONFIG_ARCH_AXXIA=y
+ CONFIG_ARM_LPAE=y
+ CONFIG_ARM_THUMBEE=y
+ CONFIG_ARM_ERRATA_430973=y
+-CONFIG_ARM_ERRATA_643719=y
+ CONFIG_ARM_ERRATA_720789=y
+ CONFIG_ARM_ERRATA_754322=y
+ CONFIG_ARM_ERRATA_754327=y
+ CONFIG_ARM_ERRATA_764369=y
+ CONFIG_ARM_ERRATA_775420=y
+ CONFIG_ARM_ERRATA_798181=y
+-CONFIG_PCIE_AXXIA=y
+ CONFIG_SMP=y
+ CONFIG_NR_CPUS=16
+ CONFIG_HOTPLUG_CPU=y
+-CONFIG_AEABI=y
+ CONFIG_OABI_COMPAT=y
+ CONFIG_HIGHMEM=y
+ CONFIG_ARM_APPENDED_DTB=y
+@@ -85,8 +81,6 @@ CONFIG_MTD_CFI_AMDSTD=y
+ CONFIG_MTD_CFI_STAA=y
+ CONFIG_MTD_PHYSMAP=y
+ CONFIG_MTD_PHYSMAP_OF=y
+-CONFIG_MTD_M25P80=y
+-CONFIG_PROC_DEVICETREE=y
+ CONFIG_BLK_DEV_LOOP=y
+ CONFIG_BLK_DEV_RAM=y
+ CONFIG_EEPROM_AT24=y
+@@ -94,7 +88,6 @@ CONFIG_EEPROM_AT25=y
+ CONFIG_BLK_DEV_SD=y
+ CONFIG_CHR_DEV_SG=y
+ CONFIG_ATA=y
+-CONFIG_PATA_PLATFORM=y
+ CONFIG_PATA_OF_PLATFORM=y
+ CONFIG_MD=y
+ CONFIG_BLK_DEV_DM=y
+@@ -103,7 +96,6 @@ CONFIG_NETDEVICES=y
+ CONFIG_TUN=y
+ CONFIG_VETH=y
+ CONFIG_VIRTIO_NET=y
+-# CONFIG_NET_CADENCE is not set
+ # CONFIG_NET_VENDOR_BROADCOM is not set
+ # CONFIG_NET_VENDOR_CIRRUS is not set
+ # CONFIG_NET_VENDOR_FARADAY is not set
+@@ -116,7 +108,6 @@ CONFIG_VIRTIO_NET=y
+ # CONFIG_NET_VENDOR_STMICRO is not set
+ # CONFIG_NET_VENDOR_VIA is not set
+ # CONFIG_NET_VENDOR_WIZNET is not set
+-CONFIG_BROADCOM_PHY=y
+ # CONFIG_WLAN is not set
+ # CONFIG_MOUSE_PS2_ALPS is not set
+ # CONFIG_MOUSE_PS2_LOGIPS2PP is not set
+@@ -132,10 +123,8 @@ CONFIG_VIRTIO_CONSOLE=y
+ CONFIG_I2C=y
+ CONFIG_I2C_CHARDEV=y
+ CONFIG_I2C_MUX=y
+-CONFIG_I2C_AXXIA=y
+ CONFIG_SPI=y
+ CONFIG_SPI_PL022=y
+-CONFIG_DP83640_PHY=y
+ CONFIG_GPIOLIB=y
+ CONFIG_GPIO_SYSFS=y
+ CONFIG_GPIO_PL061=y
+@@ -150,10 +139,7 @@ CONFIG_PMBUS=y
+ CONFIG_SENSORS_LTC2978=y
+ CONFIG_WATCHDOG=y
+ CONFIG_ARM_SP805_WATCHDOG=y
+-# CONFIG_LOGO_LINUX_MONO is not set
+-# CONFIG_LOGO_LINUX_VGA16 is not set
+ CONFIG_HID_A4TECH=y
+-CONFIG_HID_APPLE=y
+ CONFIG_HID_BELKIN=y
+ CONFIG_HID_CHERRY=y
+ CONFIG_HID_CHICONY=y
+@@ -164,7 +150,6 @@ CONFIG_HID_KYE=y
+ CONFIG_HID_GYRATION=y
+ CONFIG_HID_TWINHAN=y
+ CONFIG_HID_KENSINGTON=y
+-CONFIG_HID_LOGITECH=y
+ CONFIG_HID_MICROSOFT=y
+ CONFIG_HID_MONTEREY=y
+ CONFIG_HID_NTRIG=y
+@@ -182,7 +167,6 @@ CONFIG_USB=y
+ CONFIG_USB_ANNOUNCE_NEW_DEVICES=y
+ CONFIG_USB_EHCI_HCD=y
+ # CONFIG_USB_EHCI_TT_NEWSCHED is not set
+-CONFIG_USB_EHCI_HCD_AXXIA=y
+ CONFIG_USB_STORAGE=y
+ CONFIG_MMC=y
+ CONFIG_MMC_ARMMMCI=y
+@@ -195,18 +179,9 @@ CONFIG_PL320_MBOX=y
+ # CONFIG_IOMMU_SUPPORT is not set
+ CONFIG_EXT2_FS=y
+ CONFIG_EXT3_FS=y
+-# CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+-CONFIG_EXT4_FS=y
+ CONFIG_AUTOFS_FS=y
+ CONFIG_FUSE_FS=y
+ CONFIG_CUSE=y
+-CONFIG_FSCACHE=y
+-CONFIG_FSCACHE_STATS=y
+-CONFIG_FSCACHE_HISTOGRAM=y
+-CONFIG_FSCACHE_DEBUG=y
+-CONFIG_FSCACHE_OBJECT_LIST=y
+-CONFIG_CACHEFILES=y
+-CONFIG_CACHEFILES_HISTOGRAM=y
+ CONFIG_ISO9660_FS=y
+ CONFIG_UDF_FS=y
+ CONFIG_MSDOS_FS=y
+@@ -218,19 +193,14 @@ CONFIG_CRAMFS=y
+ CONFIG_NFS_FS=y
+ CONFIG_NFS_V4=y
+ CONFIG_ROOT_NFS=y
+-CONFIG_NFS_FSCACHE=y
+ CONFIG_SUNRPC_DEBUG=y
+ CONFIG_NLS_CODEPAGE_437=y
+ CONFIG_NLS_ISO8859_1=y
+ CONFIG_CRYPTO_XCBC=y
+ CONFIG_PRINTK_TIME=y
+ CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+-CONFIG_DEBUG_FS=y
+ CONFIG_MAGIC_SYSRQ=y
+ # CONFIG_SCHED_DEBUG is not set
+ CONFIG_RCU_CPU_STALL_TIMEOUT=60
+ # CONFIG_FTRACE is not set
+ CONFIG_DEBUG_USER=y
+-CONFIG_CRYPTO_GCM=y
+-CONFIG_CRYPTO_SHA256=y
+-# CONFIG_CRYPTO_ANSI_CPRNG is not set
 
-Best regards,
 -- 
-Marcus Folkesson <marcus.folkesson@gmail.com>
+2.47.0
 
