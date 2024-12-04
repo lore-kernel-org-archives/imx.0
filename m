@@ -1,66 +1,65 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A0E20D51A
-	for <imx@lists.linux.dev>; Wed,  4 Dec 2024 15:57:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D63320DD64
+	for <imx@lists.linux.dev>; Wed,  4 Dec 2024 15:57:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733327874; cv=none; b=HdugnhdlyX9C7bdliM6yLJ00kdLDKYxj1p7+2gJFiRG+VK/dca6sLw5gTESB89H48VxLTJ/+j3At2zxh95cA72pGTtzB/BNrx4i5QfA5fLjKONMsYpLdMO5Ypa6T8kjmrH+ONsPWgeBL2Atrt8Mf5taDGvTnPy366JL07otBNuo=
+	t=1733327878; cv=none; b=S5FYSderyssAbu5e6wBvDaUO9FPUFyNvZH5Zcw3PrP9E7INuxIUqROxcuFIio3IkJjexDkpoNUPv9WGD9C5L7arlPkRz4uxGMg9tXXpJttGSOG9M3rkR/qhvPCOTXN06DdQIWcpfHS1HcXiLEEeqeNJO92rhxGo3q0FUued89FI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733327874; c=relaxed/simple;
-	bh=zjQeF+lHLGXt0nBZef6OKhZZCWLAYAtCLWguUvf+RB8=;
+	s=arc-20240116; t=1733327878; c=relaxed/simple;
+	bh=HdpaVHroT6iC/mIuADXOnpTo/dSXbaiBN9gF6efkgy0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Hr59ZrJaeU+YudCEPjvW1IXuRHxHxup4Q1ZQLWWbGv/hANnI/bLw35wtn1vgiNNXNso6M5Kw9ZdNlH5zPVu3xebstUpE2SB6cGgXlUiY5NK5GiqVI7by/tOFSq1s5YPNDa4DWMd2N3PBQJIreTldp0zhXXyZFpKFEO1cq19MZxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AbNfhvQN; arc=none smtp.client-ip=209.85.167.48
+	 In-Reply-To:To:Cc; b=uJU4Q9v7KDLSlWBhHztemukgNtg9TxAPBv3AGaSeLbAd0pwcKBBhl/Crlgc06Y9f4Uwv+Hjf6NqdWqKV7PzwmYkYqrKABZNipArdTsqnd9+qXWhD3vlgMOLcCPa4Vc2u5VpInQjADPTgUdens2bk4kTAOIK+WadV01YlAmIVj14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b+yuU8FN; arc=none smtp.client-ip=209.85.167.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AbNfhvQN"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-53e152731d0so929932e87.0
-        for <imx@lists.linux.dev>; Wed, 04 Dec 2024 07:57:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b+yuU8FN"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-53e2121112eso53126e87.3
+        for <imx@lists.linux.dev>; Wed, 04 Dec 2024 07:57:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733327871; x=1733932671; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1733327874; x=1733932674; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=GSJIaNwMpBSVKM3jz7waFi0qzaqRh8xMyWjRSkgvN1w=;
-        b=AbNfhvQNRQmTzvCXSvhJTSKO8KzdU/48R2ApnUCT0b+05XlXnQVBCCaDKeuiwdZwFa
-         qZrIRElTURrjWUug9vNB4x8diuDTBuKkapwYNxDme9fHKLDG+bhX/EvR93QtTMJ0UwJF
-         hutKuzaJpr2oiW4d5LlwXtzUOj2FCQMD3T0WEM0A7tQTfqMpq/5gxjCnEvYUePmKwM7n
-         1OtH01z7CBGBT5LW4PNAvVVcEqW+FfkK1YNdwN1SRA9Raw31wwb/MGb/PZvVgFRX2lRN
-         TZ04IoP6+yqCzBkavfKXn1+bnLEXZ24lhVXQv81IULcx+olx+pcgcrMv0Dt+VTmaeevI
-         GzPQ==
+        bh=pE54ERLXzMFHOSVaFHGMF5JbmllGHfQ89Y0kI1gToQg=;
+        b=b+yuU8FNIPcxUAgAWITU1UenN0u09k7g1ywSERcj44n1o8We3bu+jod/IQlUjtET6d
+         ea+K9PgpZ6A+3r+b7T0jc4WYcynJ/GB8F/pjMKhK1cjPpPupmx/ywg8lSzdi7dGOtO6G
+         Neig17xhydxKgksG7slzj82P+t8bWj+JwIy0YyAxC2rouBfiOsU5GSaFKWiRBCTtnNmh
+         e+DVljwpa9wmPeV1oqTdlocpa5Fu/DfWJWmbWfWVcZKnQluHJIQ58A+tcclCgyTtWRGI
+         u5IWWdZBlhZrzzhOcy/HwYan2dnU7zTO+Q8tYws3fHOXfzdSKO0Sc071ZpwehTO0zyIk
+         O/GQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733327871; x=1733932671;
+        d=1e100.net; s=20230601; t=1733327874; x=1733932674;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GSJIaNwMpBSVKM3jz7waFi0qzaqRh8xMyWjRSkgvN1w=;
-        b=Sbtw276fdkaSj3QLK8Z1K9OPf/Ec56NnAklTYri/T2wd5iJPsJAmpLoItwe8yDGn11
-         yterzDYmSXBmAtw8ru/14LzMtMnEJJbDDHwgqAYvd/J4awPHthWKlwwUgIoF2CEQjaYf
-         1gOkw7qbqRfMDcJ/3tfP7fSuRB4TH5F+3ujpZ8C0kjs3XvtE8eHDpy9U1MGVrBB7E3RI
-         d0TH0RCngVou8RHGEH15qIlTDNj6lodtxRGjCv55tOFtvTRW9aZhwN4OVxXTozQ+L2pS
-         KK436AEYgXqBg/4J2kGQFhxgqySL1wFafxWoEUj3BDxAgmHUUJ0P7IREZhp3QeUL+fhf
-         pcYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUt6ZoY/hTX9K9bgb0IIbOcF5WXwJ+Abt66q4Tl7iQyE5mXgNmXHv/FMicC1LW9vYBEvD0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxRjzXujhuuUtbFBJVvR/GDI3xhj1FwCjYqHsq9VC8tPj+etTAs
-	nvLc8u7n5/qhHelrl6EfgGI7c3E4vZO7e8/0YBB1uVUkWvcXZmYt
-X-Gm-Gg: ASbGncuyEa9rk2TA1k3+CnfInVhFK+D7qXbAAQNBpHqzFDUu18Buc1cjk7TBq/xIeXU
-	E/wRjMzYZeL49qwYF8Z4W0F1xD2CipCy8lvoqX/mB2dMoycbQa/oHJXGMiUh6fwU4nr2arGfMBR
-	b9CIpKx5KV7/Za8JoK4ERV4GABFR4exg+YEL2rLyt2npD4CZP2yyoM6T1P+A/CQjGyh1mzy61k4
-	3twvqfJbCJw56DoaR0XlhRn007HGBCNsRzXOwQqlFtj0RW88C3kx2GjVptauNXlWvpn7nIIS+VO
-	0rj9BDUk24BkRB8=
-X-Google-Smtp-Source: AGHT+IFK+sV7O4icijjKv457E5UuddczGGVpjLjFLjjS3CacPYgnaEiA3MVt7SsciegK+X62jTjZDA==
-X-Received: by 2002:a05:6512:118a:b0:53e:1d35:802b with SMTP id 2adb3069b0e04-53e1d3580aemr870242e87.22.1733327871107;
-        Wed, 04 Dec 2024 07:57:51 -0800 (PST)
+        bh=pE54ERLXzMFHOSVaFHGMF5JbmllGHfQ89Y0kI1gToQg=;
+        b=JqaJOtICkst+lXIEJAIPfN0A/eCefpQWVgrUqy4G9Dz/6xhOepqXsjPelshg5aUPi2
+         I4EqOvsZGbifUc/3kCp4m1a7kb1EvPC4HJqnLQz4zGjcMCae6Wrm/Jpd6lpBOXcjyca6
+         ENL+cPfX3YvBgvEfqn2aT1UFbKJzgnAVH3BWmjybHPWmYVNN/92kUK+4t/I29AdnVHKH
+         KqHZT/9+X20xfnyMbeFfvKxbC1H4cvM25Oer2rsGS4I8tCKWss+Q3dosXwDZlSDLONFk
+         5qANz/N5Fx+XBvrPgR4AwBRrmP776HATIkDozbn+YF0KAaWDSMoyxiVg6/g0R/9ThHms
+         qd5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVsLMje030HpG9Dd8z02pDcLSSbklFu8teqvTulQUsAZhYSQDhzPpSqnMyybpqmJUafRDI=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw2lhrJ7glypR5vy1RtzevZ9V6LSMwWklYTYRIoJ4iCZp6RgTyh
+	y6wYM0yt/gLctgZWfrVvz5SdCsEOhqPcUI5HWHc3BEScJyp+Q4fm
+X-Gm-Gg: ASbGnct7uO32PWRLaTdP0FQeKqZ65Hh62IftUF2PaV5pWaNd4558ITGm9u511I+zdJ3
+	XKaXeIjIQRDP3J6fR0cqiwcdJbLge+WmISUBbd8Ce68cb/URoLX9MEIoz+Lj650LZK0AwLfXoU/
+	Lemwcjm8fQJy8FcXFIC5LNJar3QMlUl4IHRiHt6rO4ILMkaJtt8WdFHgQVlfj215E6zDoukvzTo
+	jUikiZNV5QSRBQOfb71O6EGp48HqkVmlYW7/Kui4rMIlKpKfAxHexbX25YRlzmrKzaOtrOZRuFr
+	rE8OZ9UrGvqG5CU=
+X-Google-Smtp-Source: AGHT+IE9tM02DUH8MOCjzjoQQbTra+vnau6HGJnv0bJ8SHLzV3mdbCN08x9wN5NL4MZ4tHud9pXj/w==
+X-Received: by 2002:a05:6512:3b1e:b0:53e:f38:60eb with SMTP id 2adb3069b0e04-53e129cd2f1mr3878419e87.10.1733327874359;
+        Wed, 04 Dec 2024 07:57:54 -0800 (PST)
 Received: from [172.17.0.1] (83-233-6-197.cust.bredband2.com. [83.233.6.197])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53e1f5498easm168999e87.105.2024.12.04.07.57.48
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53e1f5498easm168999e87.105.2024.12.04.07.57.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Dec 2024 07:57:49 -0800 (PST)
+        Wed, 04 Dec 2024 07:57:52 -0800 (PST)
 From: Marcus Folkesson <marcus.folkesson@gmail.com>
-Date: Wed, 04 Dec 2024 16:56:44 +0100
-Subject: [PATCH 2/9] ARM: davinci_all_defconfig: rebuild default
- configuration
+Date: Wed, 04 Dec 2024 16:56:45 +0100
+Subject: [PATCH 3/9] ARM: dove_defconfig: rebuild default configuration
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,7 +68,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241204-defconfigs-v1-2-86587652d37a@gmail.com>
+Message-Id: <20241204-defconfigs-v1-3-86587652d37a@gmail.com>
 References: <20241204-defconfigs-v1-0-86587652d37a@gmail.com>
 In-Reply-To: <20241204-defconfigs-v1-0-86587652d37a@gmail.com>
 To: Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
@@ -83,21 +82,21 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  imx@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
  Marcus Folkesson <marcus.folkesson@gmail.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3651;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2163;
  i=marcus.folkesson@gmail.com; h=from:subject:message-id;
- bh=zjQeF+lHLGXt0nBZef6OKhZZCWLAYAtCLWguUvf+RB8=;
- b=owEBbQKS/ZANAwAIAYiATm9ZXVIyAcsmYgBnUHvO2C97zXXxQW6czHz2jFaB/m+N9evB/PHNu
- 48CzcfkS8GJAjMEAAEIAB0WIQQFUaLotmy1TWTBLGWIgE5vWV1SMgUCZ1B7zgAKCRCIgE5vWV1S
- Mkd9EACa7dWnhdxZ/VRwCKnmJRA7zIPAmC7tIzR+zRXuXs+a95upoo/ZyESKuqLwNTsfZ1kCK01
- rNz9PIIJIGTjWWZpiZQ+teoVg4Mi15eNNCqGTwjVpaLDS9EAwZ3S8FJhSleO5LihSDE45XAEDhJ
- UIFRg89f3IvmQTLMmpKDeLTukzruYLiPEvD2bXJw9REYeKz7O7XWa9Jfn+ePN9whWU6zoe6Xhqw
- CL+x6oK8/NC0rTcueevwDvEnsM5bD8iInLmTd6bHT9J1XJTt9ek+5qHe4h2+6L94FwnFZqior7/
- WgM8wJX/mAX62sP0xcP4GlnNMnpyARZfnGFOy6gy4P/MwPx6byCnQ11tI5E3ASVO8B52rBsqWoA
- UHO4ulHPZoVApKf2/TN0H2J5bduRAxn0rBCw0NEvyksi0qNj7HM5gVIBq0IU1Ydf51zgoJToKyB
- fw54yqJLZ82kcwuw3wb9tztcrm8tnMuVry32orTB2JhtDt+RxKKqA266UCGaIpn049fYsyYe/rQ
- F6XQXxiAjuVuweKehGCZagm6lxG9BNcDtU/wXv7Vpz3YKGaM77mFRX2Gk23nA/Ojf91yqXv7TzD
- hyE4DqyOdYzkqAMBu22/KOQT8BoXp0WgOCpNGRoS6cVbL10ADb+KTqqbQU+V96K+Hb8K/Q4zXQp
- gLGrJSIi6PlnmkQ==
+ bh=HdpaVHroT6iC/mIuADXOnpTo/dSXbaiBN9gF6efkgy0=;
+ b=owEBbQKS/ZANAwAIAYiATm9ZXVIyAcsmYgBnUHvTAsyCMOgmu7E7wO60y6tKwceJVxfi79/8L
+ xMvNhX1cYyJAjMEAAEIAB0WIQQFUaLotmy1TWTBLGWIgE5vWV1SMgUCZ1B70wAKCRCIgE5vWV1S
+ MoSJD/9KbSQFCcwv99pqsWFQON7Uam7nPkP8bGmLJAjlaK+anFeRQOjNCs8z+ohJSol7YY3eFwG
+ u3x8NtJ0vhmHurJkTv5jzI2UuAT0povAAGeUcZPtB0XWm2c4vo7wdu96TazEMlr1BItqO3xogVn
+ wZfE7jIGaXkPYaMEcJr8fu+kgGAUq2Ie6yIj6pLI4Shj1Q5C8ObGzYJttVJwAZscK+USBJNt7cP
+ Y5hBvNZpl3ObqbeyMGgntiDjeQGiXblr6Yknv0oXVDWHRR8V7YlV22DNLcTT+2JTivfjG3137RX
+ Gnernb3VmE3Nk/VBJE1MfwInv6y41HakaQ+MNzq//n3Wj3zSAUfo149qMfmvxCMz7f+1W6tGdNU
+ NtSCYuyA6+Yfp9PWKW9M9mlHxEIBIuUhtlJ7XXbpvPaGlEW5tv7pZLwSSnc8HIqYYqTy4OjEP0t
+ MOgVy+BGu+hppz7NhMGfZ63FsnqTJTVjDq0mtez7zY+yzJ/buQS8L8BhZQ1Mq7GrjgD0HbmPPvB
+ 6KYr9rkhVwqUUS1xt1HZ118kwupanjZH7e1XLxLR1DryxkHDSAabhYDO3d4iwuSc2wrKsgvLc+9
+ zYQdAx383LofbDG6NLIOJTyVBjH7/jCt29rzXvjUs0ay3ED2Y1QIjDSqHiHuTsVJ4EPGFaBdcZX
+ gBi+mFXD/llylAA==
 X-Developer-Key: i=marcus.folkesson@gmail.com; a=openpgp;
  fpr=AB91D46C7E0F6E6FB2AB640EC0FE25D598F6C127
 
@@ -105,129 +104,76 @@ This configuration contains obsolete configuration options e.g.
 CONFIG_MTD_M25P80 which is integrated into MTD_SPI_NOR.
 
 Rebuild this configuration by run:
-make ARCH=arm davinci_all_defconfig
+make ARCH=arm dove_defconfig
 make ARCH=arm savedefconfig
 
 Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
 ---
- arch/arm/configs/davinci_all_defconfig | 18 ------------------
- 1 file changed, 18 deletions(-)
+ arch/arm/configs/dove_defconfig | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-diff --git a/arch/arm/configs/davinci_all_defconfig b/arch/arm/configs/davinci_all_defconfig
-index 3474e475373ae89a90bb5af8f11fca2aa9c289dc..6465a56cb51f5cf89b6bb1b00e1ff82707758e6a 100644
---- a/arch/arm/configs/davinci_all_defconfig
-+++ b/arch/arm/configs/davinci_all_defconfig
-@@ -10,8 +10,6 @@ CONFIG_CGROUPS=y
- CONFIG_CHECKPOINT_RESTORE=y
- CONFIG_BLK_DEV_INITRD=y
+diff --git a/arch/arm/configs/dove_defconfig b/arch/arm/configs/dove_defconfig
+index 2849d17f585660aa8ff6aad5d554c4bb2d794c60..c3e19e6aa6c9d8e40ecee7d97d185909db61b6c2 100644
+--- a/arch/arm/configs/dove_defconfig
++++ b/arch/arm/configs/dove_defconfig
+@@ -3,11 +3,8 @@ CONFIG_NO_HZ_IDLE=y
+ CONFIG_HIGH_RES_TIMERS=y
+ CONFIG_LOG_BUF_SHIFT=14
  CONFIG_EXPERT=y
--CONFIG_ARCH_MULTIPLATFORM=y
--CONFIG_ARCH_MULTI_V5=y
- # CONFIG_ARCH_MULTI_V7 is not set
- CONFIG_ARCH_DAVINCI=y
- CONFIG_ARCH_DAVINCI_DA830=y
-@@ -19,10 +17,8 @@ CONFIG_ARCH_DAVINCI_DA850=y
- CONFIG_DAVINCI_MUX_DEBUG=y
- CONFIG_DAVINCI_MUX_WARNINGS=y
- CONFIG_AEABI=y
--CONFIG_SECCOMP=y
+-# CONFIG_ARCH_MULTI_V6 is not set
+-CONFIG_ARCH_MULTI_V7=y
+ CONFIG_ARCH_DOVE=y
+ CONFIG_MACH_CM_A510=y
+-CONFIG_AEABI=y
+ CONFIG_HIGHMEM=y
  CONFIG_ARM_APPENDED_DTB=y
  CONFIG_ARM_ATAG_DTB_COMPAT=y
--CONFIG_AUTO_ZRELADDR=y
- CONFIG_CPU_FREQ=y
- CONFIG_CPU_FREQ_DEFAULT_GOV_USERSPACE=y
- CONFIG_CPU_FREQ_GOV_PERFORMANCE=m
-@@ -53,7 +49,6 @@ CONFIG_BT_HCIUART=m
- CONFIG_BT_HCIUART_LL=y
- CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
--CONFIG_FW_LOADER=m
- CONFIG_DA8XX_MSTPRI=y
- CONFIG_MTD=m
- CONFIG_MTD_TESTS=m
-@@ -63,7 +58,6 @@ CONFIG_MTD_CFI=m
- CONFIG_MTD_CFI_INTELEXT=m
- CONFIG_MTD_CFI_AMDSTD=m
- CONFIG_MTD_PHYSMAP=m
--CONFIG_MTD_M25P80=m
- CONFIG_MTD_RAW_NAND=m
- CONFIG_MTD_NAND_DAVINCI=m
- CONFIG_MTD_SPI_NOR=m
-@@ -77,7 +71,6 @@ CONFIG_EEPROM_AT24=y
- CONFIG_BLK_DEV_SD=m
- CONFIG_ATA=m
- CONFIG_AHCI_DA850=m
--CONFIG_PATA_BK3710=m
+@@ -40,7 +37,6 @@ CONFIG_MTD_CFI_GEOMETRY=y
+ CONFIG_MTD_CFI_INTELEXT=y
+ CONFIG_MTD_CFI_STAA=y
+ CONFIG_MTD_PHYSMAP=y
+-CONFIG_MTD_M25P80=y
+ CONFIG_MTD_SPI_NOR=y
+ CONFIG_BLK_DEV_LOOP=y
+ CONFIG_BLK_DEV_RAM=y
+@@ -53,7 +49,6 @@ CONFIG_ATA=y
+ CONFIG_SATA_MV=y
  CONFIG_NETDEVICES=y
- CONFIG_NETCONSOLE=y
- CONFIG_TUN=m
-@@ -116,12 +109,10 @@ CONFIG_I2C_DAVINCI=y
- CONFIG_SPI=y
- CONFIG_SPI_DAVINCI=m
- CONFIG_PINCTRL_DA850_PUPD=m
--CONFIG_PINCTRL_SINGLE=y
- CONFIG_GPIOLIB=y
- CONFIG_GPIO_SYSFS=y
- CONFIG_GPIO_PCA953X=y
- CONFIG_GPIO_PCA953X_IRQ=y
--CONFIG_RESET_CONTROLLER=y
- CONFIG_POWER_RESET=y
- CONFIG_POWER_RESET_GPIO=y
- CONFIG_SYSCON_REBOOT_MODE=m
-@@ -133,32 +124,26 @@ CONFIG_REGULATOR=y
- CONFIG_REGULATOR_FIXED_VOLTAGE=y
- CONFIG_REGULATOR_TPS6507X=y
- CONFIG_MEDIA_SUPPORT=m
--CONFIG_MEDIA_CAMERA_SUPPORT=y
- CONFIG_MEDIA_USB_SUPPORT=y
- CONFIG_USB_VIDEO_CLASS=m
- CONFIG_V4L_PLATFORM_DRIVERS=y
- CONFIG_VIDEO_DAVINCI_VPIF_DISPLAY=m
- CONFIG_VIDEO_DAVINCI_VPIF_CAPTURE=m
--# CONFIG_MEDIA_SUBDRV_AUTOSELECT is not set
- CONFIG_VIDEO_TVP514X=m
- CONFIG_VIDEO_ADV7343=m
- CONFIG_DRM=m
- CONFIG_DRM_TILCDC=m
- CONFIG_DRM_SIMPLE_BRIDGE=m
--CONFIG_DRM_TINYDRM=m
- CONFIG_TINYDRM_ST7586=m
- CONFIG_FB=y
--CONFIG_FB_DA8XX=y
- CONFIG_FIRMWARE_EDID=y
- CONFIG_BACKLIGHT_PWM=m
- CONFIG_BACKLIGHT_GPIO=m
--CONFIG_FRAMEBUFFER_CONSOLE=y
- CONFIG_LOGO=y
- CONFIG_SOUND=m
- CONFIG_SND=m
- CONFIG_SND_USB_AUDIO=m
- CONFIG_SND_SOC=m
--CONFIG_SND_SOC_TLV320AIC3X=m
- CONFIG_SND_SOC_DAVINCI_MCASP=m
- CONFIG_SND_SOC_DAVINCI_EVM=m
- CONFIG_SND_SIMPLE_CARD=m
-@@ -204,14 +189,12 @@ CONFIG_MMC_DAVINCI=y
- CONFIG_NEW_LEDS=y
- CONFIG_LEDS_CLASS=m
- CONFIG_LEDS_GPIO=m
--CONFIG_LEDS_TRIGGERS=y
- CONFIG_LEDS_TRIGGER_TIMER=m
- CONFIG_LEDS_TRIGGER_HEARTBEAT=m
- CONFIG_LEDS_TRIGGER_DEFAULT_ON=m
- CONFIG_RTC_CLASS=y
- CONFIG_RTC_DRV_OMAP=m
- CONFIG_DMADEVICES=y
--CONFIG_TI_EDMA=y
- CONFIG_COMMON_CLK_PWM=m
- CONFIG_REMOTEPROC=y
- CONFIG_DA8XX_REMOTEPROC=m
-@@ -254,5 +237,4 @@ CONFIG_DMA_CMA=y
- CONFIG_DEBUG_FS=y
- CONFIG_DEBUG_RT_MUTEXES=y
- CONFIG_DEBUG_MUTEXES=y
--# CONFIG_ARM_UNWIND is not set
- CONFIG_DEBUG_USER=y
+ CONFIG_MV643XX_ETH=y
+-# CONFIG_INPUT_MOUSEDEV is not set
+ CONFIG_INPUT_EVDEV=y
+ # CONFIG_KEYBOARD_ATKBD is not set
+ # CONFIG_MOUSE_PS2 is not set
+@@ -96,8 +91,6 @@ CONFIG_DMADEVICES=y
+ CONFIG_MV_XOR=y
+ CONFIG_EXT2_FS=y
+ CONFIG_EXT3_FS=y
+-# CONFIG_EXT3_FS_XATTR is not set
+-CONFIG_EXT4_FS=y
+ CONFIG_ISO9660_FS=y
+ CONFIG_JOLIET=y
+ CONFIG_UDF_FS=m
+@@ -112,12 +105,9 @@ CONFIG_NLS_CODEPAGE_850=y
+ CONFIG_NLS_ISO8859_1=y
+ CONFIG_NLS_ISO8859_2=y
+ CONFIG_NLS_UTF8=y
+-CONFIG_TIMER_STATS=y
+ CONFIG_CRYPTO_NULL=y
+ CONFIG_CRYPTO_BLOWFISH=y
+-CONFIG_CRYPTO_TEA=y
+ CONFIG_CRYPTO_TWOFISH=y
+-CONFIG_CRYPTO_ECB=m
+ CONFIG_CRYPTO_PCBC=m
+ CONFIG_CRYPTO_HMAC=y
+ CONFIG_CRYPTO_MD4=y
+@@ -126,7 +116,6 @@ CONFIG_CRYPTO_SHA256=y
+ CONFIG_CRYPTO_SHA512=y
+ CONFIG_CRYPTO_DEFLATE=y
+ CONFIG_CRYPTO_LZO=y
+-# CONFIG_CRYPTO_ANSI_CPRNG is not set
+ CONFIG_CRYPTO_DEV_MARVELL_CESA=y
+ CONFIG_CRC_CCITT=y
+ CONFIG_LIBCRC32C=y
 
 -- 
 2.47.0
