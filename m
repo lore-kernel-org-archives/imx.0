@@ -1,30 +1,30 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20DA199FA4;
-	Wed,  4 Dec 2024 23:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8EA82066D4;
+	Wed,  4 Dec 2024 23:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733354868; cv=none; b=q1ffSYnkczPaMDwhr8gmCO1IqccmGP/BBQHTD1X0t7aJmUJB5Q8EEHna1itKfe60fvdHJ6D4MGzUSmxDkcya3TTxsv64RAYIa82egnlz0y8pa8K5sXW1GiaQlieHYmNZlZSOc3YJYw03bP/S5f/J64cBgsmLJbTtLv9ife/B76g=
+	t=1733354926; cv=none; b=D5HzXRosFqmHeIrJD9zSFgQHq63KuD5MXtGqTqKMgf60piIxK+9zmf5zF1JUnrvptraEDDrXjlP1hU/URb/jPEsokwOM145OfsFiomzCYpI5J2JgO8EEugYGfbHqKaUJKkYm1KsKM23ob7ig0yEGI9FU3iSZ9zHUNB79X99SDw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733354868; c=relaxed/simple;
-	bh=2lTEFNxmgsLzehvi5xaYBbzeac9Q5WJzz1xmFsfPIok=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mffqR/haxeEHTQQGNxJc/sAzlfcJ5OVjKdt4MU1ynmIo852fcltQCpHVEm+WOnIVS+U8N/yYl8s3qWuyYrP6apsU1vN+UQSfsOgU9kBkm9fgnss1UVMh9MhTD8e3pYzGqNJ9shvfJVAUf9BJ+ZcZOiiBEVpyOJ+3qGFEZ8Hs7OE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KrjQge4k; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733354926; c=relaxed/simple;
+	bh=TGuyA9UR05R0EA//8oCib2q+/iAF7KW5tp/fKrg23IQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AFQrlYYDAsaeAvs2FD5+NkJENMuAUaRjtH97vlcJllWOeHR0raSCOTr/kgbgxHRl8BbDu+Rn/TjbDuhi2mcwP2rsVtQ+Cx/JYe8dUwy1VCE+Ww6OoV+yfI2RD5bQWdc0S5EZtzJ4ZSYdObY30sx7yXrZW8fW4Umn1tBYkadRDtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jtSBvPEE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KrjQge4k"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A070BC4CECD;
-	Wed,  4 Dec 2024 23:27:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jtSBvPEE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A96EC4CECD;
+	Wed,  4 Dec 2024 23:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733354867;
-	bh=2lTEFNxmgsLzehvi5xaYBbzeac9Q5WJzz1xmFsfPIok=;
+	s=k20201202; t=1733354926;
+	bh=TGuyA9UR05R0EA//8oCib2q+/iAF7KW5tp/fKrg23IQ=;
 	h=From:To:Cc:Subject:Date:From;
-	b=KrjQge4knmZjipSInPhMpJly92RaZefFqX2Wn6GyVNg7QBMtCsEn0MsSENy6Melru
-	 XIo9e3HwvUWVy/ne9gdGPrMAr8Caz75TVxVAUdsmxsmUXs1jfAtq0/HjZgNsfNyT2v
-	 lUT7BaSXA4mfpcQQuOpzD3e8P2aX9X+Nru3MtjrMqb2UeGRVHBrNGwM6A6bITT73jN
-	 94R0wTGcwesWydxDqgVXNMcbs94ckLhqGVrYgXyH2BVE+VjdLbeJsiTqmNvK5XpqjY
-	 V3cetXrJTm4omhJIRjfTA3SpbHXPooa65FPUu5DAhkMqpR/WXw4qn/UiXK27O9HOHV
-	 Z6UvPwsK4/PZg==
+	b=jtSBvPEEQmYvHVQDnZaqb2/YY0N9ZmPseVNRJHHctbWOrjFwScEHT8Xyv8UC5aOP2
+	 87WBaQvVkCn4oIleujX1HB/OOjkv1heYmb7AR0O3iXh4O5AhMu/WqzNhnDDBj3QelI
+	 P60eOWcWkOZM3uQVmbUh3yxUl5DkbzKtGCC3tPaiPfSQ1n4jwbF9Vfr6XxzHxZE/VL
+	 OixR2Y4g8qVV8FP/RoPnBaNCAudisdwdOipeo+tacnmht2hWuKn+Q+ygSsT3nFHeGF
+	 2cprZsSzycsIU8k9v6PhgpxNRVuyZY02gHGGVxka0O3vypPCXPEQINm5RsQeBASI3f
+	 5jgjW24Sg/mGw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -36,9 +36,9 @@ Cc: Xu Yang <xu.yang_2@nxp.com>,
 	linux-usb@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 01/15] usb: chipidea: add CI_HDRC_HAS_SHORT_PKT_LIMIT flag
-Date: Wed,  4 Dec 2024 17:15:55 -0500
-Message-ID: <20241204221627.2247598-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.11 01/15] usb: chipidea: add CI_HDRC_HAS_SHORT_PKT_LIMIT flag
+Date: Wed,  4 Dec 2024 17:16:55 -0500
+Message-ID: <20241204221726.2247988-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -48,7 +48,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.1
+X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
 From: Xu Yang <xu.yang_2@nxp.com>
@@ -97,7 +97,7 @@ index 2a38e1eb65466..e4b003d060c26 100644
  	bool				in_lpm;
  	bool				wakeup_int;
 diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-index c64ab0e07ea03..17b3ac2ac8a1e 100644
+index bdc04ce919f7a..b76e7c3fa2c6e 100644
 --- a/drivers/usb/chipidea/ci_hdrc_imx.c
 +++ b/drivers/usb/chipidea/ci_hdrc_imx.c
 @@ -342,6 +342,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
