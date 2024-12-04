@@ -1,411 +1,346 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2076.outbound.protection.outlook.com [40.107.241.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8431C3C05
-	for <imx@lists.linux.dev>; Wed,  4 Dec 2024 18:02:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733335364; cv=none; b=G9dJ2EF2CEuPJomzme5IcoGTF7a5LDP1OoYHT2bd3cfg8HFfzdVYt7ikvFpe67X3Feenk7nc6OGoxSx5XXV1dmvDp8yIjHiuzWmWMwYX3vYzsN0AUuNrlR2b6Klp/4Nm5rOlRPZam5XekOi2SBDU+rLtglYeyaU4PhYBNFH7oz4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733335364; c=relaxed/simple;
-	bh=08n36W/CMnCDfr62bUaB+P/NXZKNqgjlOHf6GtLMtoc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LWgGceQ+W3Iza+tsgV3JJ2sC2Diwsaky29WZUCzVyhqrmlFpZdmESXPdZx1B5pAHUOhoYFNzvEs0Ss6e+Lmu3OiHwmGC/Ek//HtptM8t6vLLhigrRuUORBoq7qUpZGvGoNCEZnMQFTbk9uVrXrQOzUeFPtLx5TavfO0oqYwqEZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ue3y9wex; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF29207DF3
+	for <imx@lists.linux.dev>; Wed,  4 Dec 2024 23:26:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733354781; cv=fail; b=R15u8jOoGlNqYuUMrNbCx086imGVzxgFbs6y1W+1Zhb6KnKs4cPBtDBGr+LvKQFpypTluIogBpp2PAka+mNKpAmQItCCL5wr1fc2f0/RqfYW/6JO+dQGuk27G9dbeTluR26NAlTZ25kWHHpodG8eD+7nRJ4UyuQtzMjY1mHJr+4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733354781; c=relaxed/simple;
+	bh=ndCsNl7CzN6Fgn0Kp89Q1LtC1gKv1xdWwtoLPsqn874=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=EUxsUXcH3+wfPD+aCXDwmD3IveynCMfxVlxxNJYMaDt10dkH8mYAh+P8Eoa+jILcfPkNYJcKaY0r9ukyD6stnpikEtwOcXAddA4ACPLVKR9S9gKIys40QUp6PuVRbeBDiVEfrD6yBVMi/0qQDrsR0nEVS++VDJY4nSnRAriRCp8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=YtKU66a5; arc=fail smtp.client-ip=40.107.241.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ue3y9wex"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-723f37dd76cso108997b3a.0
-        for <imx@lists.linux.dev>; Wed, 04 Dec 2024 10:02:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733335362; x=1733940162; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PeBuKTAzT5t/xg0HOfB6aMdefP/YbNUMgGL/5kx9O2s=;
-        b=ue3y9wexxlhwwIUbDcMnGT+mGMmGZXvf4V/+P6PyJRXcpwJH1n1XmCOcKDd6Ij+Yqz
-         0B2tI0R/D+D8Z7d2nRZH2K49rBRYkN84lG1wzT07xmWmAIGTMuoe5k/CNrMXM2gtyOzB
-         dEuyT4pCwkgpnK99v0HrVbKBGFpkuKxJI9k7DyGES/irsXhQXp9mEB5tGPve2ANHVdIV
-         Edgm5PYK/g7PssvX1Yzy5V/oMZ3zhjlRU2XCUpe2YrZoumtLfYEEQR1AzPlQK4VXUFy9
-         qWNEIK+Q82hz6I7+qPldkh98VWRHzje6yCBPIYUPiIK4w0AhGbkJaKLF/XwlUssvN1UG
-         PmnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733335362; x=1733940162;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PeBuKTAzT5t/xg0HOfB6aMdefP/YbNUMgGL/5kx9O2s=;
-        b=OvCr3ts5sQ9betlYoN5avhK7xjjyMrm1G/8FmANSQw0YfDWoxqBEZ8bdv3P/wPtnTJ
-         qVnfHduBSyJ4vfocCyQJLZ+r2pCWB/gKlu+fX0ybHvikXHbpcq07bu9DkznpWPeVnd5x
-         TX8nPZ2c1N8kRMzSZ+BsBSgqBvBo1yqxdayCbx6SZZjvMvtNaW6gh64SAXXoYik/zrSH
-         FF1K8kLmYUYPdq2BI7brVeqH/hHqOLpLGCFyxhmdKxWcpx4m7dViFoYQkuBHTgmmRNRz
-         LvKh9Aor360dxJY+mMxLjlQIuaG8f5I091INng01YIzNmHJWmDfV64A6jSkq6yMd74DS
-         NtbA==
-X-Forwarded-Encrypted: i=1; AJvYcCWcQoSC4mr0LRiiFixj3J4EdxOn3L9FqKkcrTiyS6xAPS+2RJW8lgg+XqyYOxiclWVk/iA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw//rCcjOV6nc1IBj50QABK5t4gspo7Is50ADFSeWnxXAq+otxU
-	7d8ww/++ZiUN+Q6hyJ5KKul758bZmpqt65C5DQ1CVJ4r7SaFee5bHQM8FqE+tUU=
-X-Gm-Gg: ASbGnctZsLVfVXm2g6pT6suDTMxWZktJYYnPAV4GXnpS+tZX6AWIatJgUQMfYE1KsrR
-	g4OE2KCS7pB2zlsINoPofn3pggGfRXBJ/hHQjOXTYwT/BkHuym+HFryuJntt214OQhtv4K5nefS
-	Vd0l+aWSuWmCkHIOfMke8n4iRrUqPiw24IG1HajwKmaGnT3y4FAzJf9lVwUuyLUEDeowO7AMBP3
-	MHIUN1hwIOpKJWBCBq6ZrnyGIB7guzzzUTLd2IPZJLHWZafyV+EHA==
-X-Google-Smtp-Source: AGHT+IGz/ZtmC4PnERHkalD6CvmzPb7Tp2woBDFzd1PcOy0yfXwbSkND0GchAL+Kghl7UNvinfrk8Q==
-X-Received: by 2002:a05:6a00:180a:b0:725:1d37:ebff with SMTP id d2e1a72fcca58-7257fcd968dmr10230325b3a.22.1733335361978;
-        Wed, 04 Dec 2024 10:02:41 -0800 (PST)
-Received: from p14s ([2604:3d09:148c:c800:cb58:bf7f:6102:4f57])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7259470e2c9sm1282202b3a.190.2024.12.04.10.02.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Dec 2024 10:02:41 -0800 (PST)
-Date: Wed, 4 Dec 2024 11:02:38 -0700
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	kernel test robot <lkp@intel.com>, linux-remoteproc@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH v15 4/8] remoteproc: Rename load() operation to
- load_segments() in rproc_ops struct
-Message-ID: <Z1CZPhu1T2opd906@p14s>
-References: <20241128084219.2159197-1-arnaud.pouliquen@foss.st.com>
- <20241128084219.2159197-5-arnaud.pouliquen@foss.st.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="YtKU66a5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ri/3bUT8PAjDEBOg16+ZSnbyo91nwBiA58G8LUlW66N/33v5JU7jPpoebDND+VH2KfBJahEF1WVYEer5WVOEohscdSb9nbpnKPw053Yjrtco62VE75ikkK+Wyyz+puydVKqxIGP951iXGW9YopHrV9ZEeQzXmUQYYTt0ZnPEtYZAizeD0eNODezdlxP7337LWpmNHp9szBEltg3S90WwVJeXDOFCQVxEFFQKdZ4cmD/Pijme9aNKnVruSZd9svwHFdIssq7aHeqf/jX5YkM24yJpDdYGo+6qyDqqUbnTf32SAFQ5XTjpcYhndTk4g0Tbjy1TsV7BuAg1nMwOFuD+Ng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Au0gmyzBByXMX9kk9x9rwBQKfT1Y9pshosRUmRms4M0=;
+ b=dDtgM0MGUz7VgRMOGC/xW0u6i4uMA3m5jzLU9nALRxoTMWRfT41fiv+N3VnopmiQx5amkSvXc50b+v9div6HDIf7F5kwBfthZn7RFjr2H5t35hmPIoaSFLXLCykQJ7oZq9TqRmd0RJAOUOffZGbwMAEvqhu7asltaB4hxLkz4EnM5XBMudD84ew350PrBgGGFZAPwCWDLXoaqmRVfPmxCUPubKJrdW6MDhc/ZHyNxvKYnEtErX1EHlD7I1iMFYj5VRbMd3MIGulV82Qv0+/kNLxAe/Cp+scXXYyk7TcpqZEAWJAL5rvBHqmncPXmBx45omi9TW1OlFncZx4WwOhAtA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Au0gmyzBByXMX9kk9x9rwBQKfT1Y9pshosRUmRms4M0=;
+ b=YtKU66a5GS0a1qw7qb+5T9q8ljR/jz7h3sqRb65BxB/TEaG7FcRsJQ1Eiv9bf7VivJGMKonEfWcmNuyUphPk/Oah87UOCvnodADpF5+qxzqySGY0FtEc00KnPwE5WCGFifG941VcmCC3U6dNMEGbdUwbFa+UIOAumZ7u7eEhaWnkTgpbl5D5vrYYCsK/FdMPZRKHPBRA9fYdjhD0RKmJER/kHlNmuUwRGiZcG3buZQ2nUdxH6rRprlSpo9U90yHNtN2EVFI+CM5spTZJtm7iL0vWXQMc99J5N1s75nu3H4neUdN3jYCeID9YhBI+Y0Qft7wXT+21UjS+OKvDbrDGIQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DU4PR04MB11006.eurprd04.prod.outlook.com (2603:10a6:10:58a::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.11; Wed, 4 Dec
+ 2024 23:26:14 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8230.010; Wed, 4 Dec 2024
+ 23:26:14 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v10 0/7] PCI: EP: Add RC-to-EP doorbell with platform MSI
+ controller
+Date: Wed, 04 Dec 2024 18:25:50 -0500
+Message-Id: <20241204-ep-msi-v10-0-87c378dbcd6d@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAP7kUGcC/13PS27DIBCA4atErEvF8Car3qPKAhhoWMS27MpKF
+ fnuwZGC7S5nxPdreJApjSVN5Hx6kDHNZSp9VwdgHycSr777SbRgXRDOuAQGjKaB3qZCbZDRByE
+ ChETq42FMudxfpe9Lna9l+u3Hv1d4Fuv2nVDvxCwoozFhtM6DjuC/uvvwGfsbWQOz3CEBDcmKD
+ Bj0HJ0L3B6R2hAw25CqyIN0CiJDxswR6R0C3pCuSKrsDOdJRP7vPLNHsiFTEUofjfc5II9HZPd
+ IN2Qr0hmytjkjhHBEbkOciYbc+ifNMESRQSFuaFmWJ7ORz5XZAQAA
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Thomas Gleixner <tglx@linutronix.de>, Anup Patel <apatel@ventanamicro.com>, 
+ Marc Zyngier <maz@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+ imx@lists.linux.dev, Niklas Cassel <cassel@kernel.org>, dlemoal@kernel.org, 
+ jdmason@kudzu.us, linux-arm-kernel@lists.infradead.org, 
+ Frank Li <Frank.Li@nxp.com>
+X-Mailer: b4 0.13-dev-e586c
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1733354769; l=8442;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=ndCsNl7CzN6Fgn0Kp89Q1LtC1gKv1xdWwtoLPsqn874=;
+ b=ILm4DKj5EZzMS+iAluuDbx4E4V+D6/l9gx92p+0d8AMpI66uZjgjwWMoIqN+6TI0mXU7m2A4c
+ d3dl8btJIsnDsP2DMiqTK/mkp0Zi3UHq+b7Jt1ekpCvFj9d9H2uDrNZ
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: SJ0PR05CA0031.namprd05.prod.outlook.com
+ (2603:10b6:a03:33f::6) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241128084219.2159197-5-arnaud.pouliquen@foss.st.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU4PR04MB11006:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5cf8f125-e4c2-4b1b-9c03-08dd14bb0b84
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|52116014|376014|7416014|1800799024|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TmFmSmdMVFBoN2RsSmJYNENPZklET3dSbXRMdUxQdllhcDZubGVzbTdqam43?=
+ =?utf-8?B?MU5DemVlRm1pR0tZdnVYdGdBSFpHaXhwa2lZMnJ2WE9YNllRY3lTem1KUTRU?=
+ =?utf-8?B?Rm80RHhoN2pWSHVOQ05uSVFVelJlVlhBVERBckNyQ1FpMDcyZWNOQ2h4Z3JL?=
+ =?utf-8?B?bTByYXU3ZkJSUDh0WjJDRC93WjVIMCtYMk02T0NMOFd3enFsSzRrVjZFcXdR?=
+ =?utf-8?B?bm9XaTVvdldVYkd0QTNPc0tzNWpjRXpBSXhKVFc2R2xpYVdJRFgxTUVyZEwy?=
+ =?utf-8?B?MWc5QTB5dXRSZFNZMDdMWGczTkplYWhpSldBYVR4U25RQVRzWnhESjYyeFlD?=
+ =?utf-8?B?QnpMR3NxRUlvSFJPZ2tJZlFUM2tWTmNRUVhIOEZIVW9HcFpRNURUaU9pNmI2?=
+ =?utf-8?B?YTVRaEtOOEExQzd1dnN0Yk9DU3dvKzgvMlllSnh2T2NBQmJOTWQyVkhGdEx2?=
+ =?utf-8?B?M3VMOUJyYUw5akdWekFSOVJBMXVId2ppU2IzcUUrT0hyc24ydG9XZkxoNmdO?=
+ =?utf-8?B?WUlNL1dHbnpranVXamFqem1HQjVwaFlGS0FQb0QvVk0yNm43ZFF5SXNaQzJM?=
+ =?utf-8?B?N2NsZ1I1RUZheEJ2WFl2b2hKV0hiYjVPdkRnZUpDSkJOa3l3UitLZFhXd1Nu?=
+ =?utf-8?B?eXhPNTI0bTRVNWQzTTdiSG5JVDRROVFMNHBoNE5acGZNejRhRGhabGNoN29D?=
+ =?utf-8?B?Y3kxTHRSZGdLb1paR1pVcjk5amJNQWllc3ZKRkRhZjdzK2JGNVJ4blR0Mmdy?=
+ =?utf-8?B?UWNhQk56bnlmbzlzMU5MOG9MOUxEdkFlR1g0N1B3M0czR0tnQ0pwNnZUbWFk?=
+ =?utf-8?B?VHozYXBvb2JMTmVpLzBpaGtVYmlBVHRSTTl2NUdTNjJKS0RRcFk4dDErZE52?=
+ =?utf-8?B?USszUTZ5dkwydUZSWktXU0s0SUVKZXBuQTNnajk0ejVaKzluY2QzWVhXaHpM?=
+ =?utf-8?B?RmVqMEJkVUk3Q0gwb09SVFhXM25mam4rcjVzYm9NU29jL3dwMklrazFWQldp?=
+ =?utf-8?B?cU9PanpMWFVNWDY4MTJmakloaWxlZ2FVTVZPUEtFMzRxK1BOZ0k2L3BXVk1L?=
+ =?utf-8?B?QldBN2FmaGZBSGEyVEFoWmEvVm5XekYwUTl3QXc5WDdQdUkyREhEMCtNZGF6?=
+ =?utf-8?B?c3daanc0dXBHWDI0ZHh0Tld2NXZFRE16d3BsSDZRU3RPbkJqSVhZUDhIRUp4?=
+ =?utf-8?B?MmFkVFd1RU14OHd6dnlYQUdwODMzVmZINFd1Z1RYVk5QTjhtekcwMFhrMUJm?=
+ =?utf-8?B?OXZyR2IzaEMyMURmR0l6MCtDVFF5ZnlKWHd4b01YeXNwbmlWYkJKU1djMHA2?=
+ =?utf-8?B?WHpZYXk4dHovZFNYUFowU2lwODFmNXZYa3NCRDE0Q2RhYXkyT1B5UERER1Yr?=
+ =?utf-8?B?cTNVR3Urc3JhcFJQaThaR1ZHcWxoa1dnYjNDenMxUDNzL2V5QU5pOXVIblVt?=
+ =?utf-8?B?c2RabFl5VUZxakFaNUJ2K1dtc2RYUWxpN2xkSUZtdHplcHdDdnBkWWtxY05P?=
+ =?utf-8?B?V2V6Vm1JOEQvcHQ1WUJKRmRKQngwSG5pTHgrVGM2aUZ3OU5QWWRwN1dzOURs?=
+ =?utf-8?B?S0wzZm5QS1VoRThsYW5sUEJaMHozMWI3KzR1M0lITzd6ZTBMVCtVdW1mcTVI?=
+ =?utf-8?B?NjhNRGNQdE00cWhNMWs1cHhTMkJ1S202RnQ5N0poSjBsc1NPSjMvTTR3dld5?=
+ =?utf-8?B?clN6SHEvMFExRG4xRVM1QjdBVk9nMzZCQzIxR1E0MERhOEVPaDdwaFlqeVd1?=
+ =?utf-8?B?MzAxdkliS055MDFGT3hqTi9uNUZWRzJhZmJSd01GTmxEMUxHbUlHUnMxWkQ5?=
+ =?utf-8?B?ZDNXeGx1Q2d6T3RveUppMnVhV29RMXlmYk9uY0E4QnBaVDRLdVZEdWVMZWVE?=
+ =?utf-8?B?S0tseHV1K25nOUc2QXcrcXBqSzFSUnc2VGNPLzgrMTgvc0RucFZIUnpkeFFX?=
+ =?utf-8?Q?nnbGHibhkkM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(7416014)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VlRxQVo3a3d3a2JtbTk4dDFJOEEwNytxY3I5ZmE4UmlUT0RCSFhHS2VQMHli?=
+ =?utf-8?B?SEtDL2pxRVlMNVlyOTBORTBhcFRKbW4xSURSM21pZTErbFkvcUR1M0V0UWwx?=
+ =?utf-8?B?NEhjUXlWTmZRTStiTndaR250bGFBVWZLcWNDQ3BFclR6UHNjNzdrR0EvNk1u?=
+ =?utf-8?B?VktOUnJBamI3b1VIeW5qcS9DZFM1em1vSUI1bDlNY25aVWpuQzNoWE91ZzFR?=
+ =?utf-8?B?WENaVS9ZeDRMTUpxVm5ic0k0VnhiTmlIb243Mm5GOEozTGNvbms0dEFxanBF?=
+ =?utf-8?B?aVlIVEY5T3FzQVZwNjJXMFN5S3dNQTFXd3JaVUYyVVpBcFQ0WllldW5OSFZF?=
+ =?utf-8?B?R2txWFFsVXJybFNJWi9vT25uMmhmWVNmNjhqMGFnT3dNU2JZbUNFUEVibmJK?=
+ =?utf-8?B?amsySkRQY2pGaDFocjlCa0ptYU1VbExsU05pQlJvN0lzaTVIUmRkZGVIblNF?=
+ =?utf-8?B?OEU0Q2w4MHlQL0lBUkFJczN2U0N2alBMTUxtb0tIZGxsUkNsM0d4bEU3N1hG?=
+ =?utf-8?B?R3ErR2RVeW9USVYrY29FVG5scDhCeFJRVm5HTmoycXJ0TmZGWkJJTFl2dXlz?=
+ =?utf-8?B?MVh4Z0FGYTdOMFZRT29nN1VDeVFFWkNwOEdBM0VrUmNtM1g0M2hsSHAxbkhj?=
+ =?utf-8?B?WnpEL1d0eUlKVUpTWmRYV2hBREJqcGhQaEtYdWJjWU5FeGZCdXFXNnUxZEpy?=
+ =?utf-8?B?UGgrNlliM1pjTkNZeTJ1VE1YcnBUK3pmY2s3UmJnWWZjdkNKK25XNncwYjdh?=
+ =?utf-8?B?Rk5sejNWRTNLS29JYjZRcFJyMUJDbG1tUUVBNW9Lc0taQktuUVR0c0crUldB?=
+ =?utf-8?B?VjQvRnJjcURVbE8yZjN0SEQzWER0NUNNMHpVRy9lREc5c2J4OHdVQTFxaFRQ?=
+ =?utf-8?B?TW5rTEtTdmcwMGlUK1lyKy8vVC9zS1RER2d6ak1ndGt3Tklaa0ZVYmowenQr?=
+ =?utf-8?B?d2JGVlZ1dUNJK0I3dzFmV1hpazlCQ01aYWxzSWhBc2RBNjdXZkQ2LzdMVzNS?=
+ =?utf-8?B?V0xVMGhQY0l2S1kzbFpwOFJacXBEZ2h3Q0RIbnJuV1lDbWFQME82UDg3aFBO?=
+ =?utf-8?B?NWFDWjlNRnF5bXM2L1pMZDAzN28xRFNLQlh6KzdCRFhCRjhuTjFNVUNNdVhh?=
+ =?utf-8?B?OUxySTlhRENQWDN2dlVGT3FVb3NBS0d3bkwraDNxODVQcENxL25ZZGIyc1Bk?=
+ =?utf-8?B?ZDhoeHltMFBpTjh1YURFYk5pUE9WY2ZHUnIxcGV2cHlJVEJBaE5FZ0Y3emo3?=
+ =?utf-8?B?YThSNy9SMHdsdklhSUxwTDEyd0lxWTlmZHYvdjdKc0tjYkFZa1lhdnhtNmVD?=
+ =?utf-8?B?NUVETWVjU1RwTyttS3BGYktEVEtkMkNQOG92aEhyc0srMGg3US9Ld2NJelly?=
+ =?utf-8?B?SzJFOExMRGxnNDBwenRGSG8xa3I5SzlvU0tlK2NRMXowOFhxZkh0L2RoUlYy?=
+ =?utf-8?B?aWRGbTFDOHZyRmdMVmQxRG14aE9CMzM0UHpjMjk0ZjBrWHFISkxHd21rZ3E1?=
+ =?utf-8?B?QkFyVkFyT0hQYm1LZlYvVjZBMmlHM3Y0U1AwbmlMOVdjRE1rOWk0Qjdpb1FR?=
+ =?utf-8?B?cjlTNTNLYU85dHF0RjNiOTlIUHFUNUJIdGUzb2Vjc1RKbGt3NHM0N1VHaytk?=
+ =?utf-8?B?UzY1ZE9JdENxU1Nvd053U01wTmo0VVZHellsejVZZWIrdXRidXJXRjJuRzZS?=
+ =?utf-8?B?Q3lKYllXWVhxU0Y0UmNSdkJlL3ViYmdPZXVLUnY5bjRZZWk0Lys5Mk5pc2Zx?=
+ =?utf-8?B?amRXeHRhb084SU5HbXJCamtzZmtzRmd5MzBwNm8rN04vN0M0SHdSRlZQcnlD?=
+ =?utf-8?B?UzViTllUTG1jRStiYWE2SjVIbVBFY0V0dW05WmlSWGtEOUs0V3gyeHg0TkJW?=
+ =?utf-8?B?UW01NnhhSWRuQnZyOEVWSnVxUWtQMGxKNmNqcGhHU1lyalh2RTQ1VmJTdDVt?=
+ =?utf-8?B?OVo3aWozNnpPTWR0SjBHMlVrZHRRRzg1ekZUVVBQWUYrMHRMOFVseHJnUnZ2?=
+ =?utf-8?B?WDNPK3BjT0w0c0taZ24wRHplcFNzclVhVnkrYzE3cVNTYWN0czNrSWtPVWxS?=
+ =?utf-8?B?d2NRK2RBQm1HNUJJc2FIcmdyaVd5S1ljTktrbmJXc1dOeDlHMWkzMGY3L1Zu?=
+ =?utf-8?Q?GZnA=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5cf8f125-e4c2-4b1b-9c03-08dd14bb0b84
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2024 23:26:14.2225
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yvP0pJ5m6qqEJO0FpGucl2ZlNIfQQ9uesSmw8tTAaaqnTMjLAfRm7YZU7a+bjMZjL/5IRCczo51iX2ckDk5IuA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB11006
 
-On Thu, Nov 28, 2024 at 09:42:11AM +0100, Arnaud Pouliquen wrote:
-> With the introduction of the load_fw() operation in the rproc_ops
-> structure, we need to clarify the difference in the use of the load()
-> and load_fw() ops.
-> 
-> The legacy load() is dedicated to loading the ELF segments into memory.
-> Rename this to a more explicit name: load_segments().
+┌────────────┐   ┌───────────────────────────────────┐   ┌────────────────┐
+│            │   │                                   │   │                │
+│            │   │ PCI Endpoint                      │   │ PCI Host       │
+│            │   │                                   │   │                │
+│            │◄──┤ 1.platform_msi_domain_alloc_irqs()│   │                │
+│            │   │                                   │   │                │
+│ MSI        ├──►│ 2.write_msi_msg()                 ├──►├─BAR<n>         │
+│ Controller │   │   update doorbell register address│   │                │
+│            │   │   for BAR                         │   │                │
+│            │   │                                   │   │ 3. Write BAR<n>│
+│            │◄──┼───────────────────────────────────┼───┤                │
+│            │   │                                   │   │                │
+│            ├──►│ 4.Irq Handle                      │   │                │
+│            │   │                                   │   │                │
+│            │   │                                   │   │                │
+└────────────┘   └───────────────────────────────────┘   └────────────────┘
 
-This is introducing more code churn than is worth it.  Please enhance the usage
-comment for ->load() as part of the previous patch and drop this one.
+This patches based on old https://lore.kernel.org/imx/20221124055036.1630573-1-Frank.Li@nxp.com/
 
-I am done reviewing this set.
+Original patch only target to vntb driver. But actually it is common
+method.
 
-Thanks,
-Mathieu
+This patches add new API to pci-epf-core, so any EP driver can use it.
 
-> 
-> Suggested-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-> Signed-off-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-> ---
-> Update vs version V14:
-> Fix: Rename missing load() to load_segments() in drivers/remoteproc/pru_rproc.c.
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202411281332.Ra70nJAW-lkp@intel.com/
-> 
-> ---
->  drivers/remoteproc/imx_dsp_rproc.c       | 2 +-
->  drivers/remoteproc/imx_rproc.c           | 2 +-
->  drivers/remoteproc/meson_mx_ao_arc.c     | 2 +-
->  drivers/remoteproc/mtk_scp.c             | 2 +-
->  drivers/remoteproc/pru_rproc.c           | 2 +-
->  drivers/remoteproc/qcom_q6v5_adsp.c      | 2 +-
->  drivers/remoteproc/qcom_q6v5_mss.c       | 2 +-
->  drivers/remoteproc/qcom_q6v5_pas.c       | 4 ++--
->  drivers/remoteproc/qcom_q6v5_wcss.c      | 4 ++--
->  drivers/remoteproc/qcom_wcnss.c          | 2 +-
->  drivers/remoteproc/rcar_rproc.c          | 2 +-
->  drivers/remoteproc/remoteproc_core.c     | 4 ++--
->  drivers/remoteproc/remoteproc_internal.h | 4 ++--
->  drivers/remoteproc/st_remoteproc.c       | 2 +-
->  drivers/remoteproc/st_slim_rproc.c       | 2 +-
->  drivers/remoteproc/stm32_rproc.c         | 2 +-
->  drivers/remoteproc/xlnx_r5_remoteproc.c  | 2 +-
->  include/linux/remoteproc.h               | 4 ++--
->  18 files changed, 23 insertions(+), 23 deletions(-)
-> 
-> diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
-> index 376187ad5754..a4a85fbce907 100644
-> --- a/drivers/remoteproc/imx_dsp_rproc.c
-> +++ b/drivers/remoteproc/imx_dsp_rproc.c
-> @@ -934,7 +934,7 @@ static const struct rproc_ops imx_dsp_rproc_ops = {
->  	.start		= imx_dsp_rproc_start,
->  	.stop		= imx_dsp_rproc_stop,
->  	.kick		= imx_dsp_rproc_kick,
-> -	.load		= imx_dsp_rproc_elf_load_segments,
-> +	.load_segments	= imx_dsp_rproc_elf_load_segments,
->  	.parse_fw	= imx_dsp_rproc_parse_fw,
->  	.find_loaded_rsc_table = rproc_elf_find_loaded_rsc_table,
->  	.sanity_check	= rproc_elf_sanity_check,
-> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> index 800015ff7ff9..f45b3207f7e9 100644
-> --- a/drivers/remoteproc/imx_rproc.c
-> +++ b/drivers/remoteproc/imx_rproc.c
-> @@ -681,7 +681,7 @@ static const struct rproc_ops imx_rproc_ops = {
->  	.stop		= imx_rproc_stop,
->  	.kick		= imx_rproc_kick,
->  	.da_to_va       = imx_rproc_da_to_va,
-> -	.load		= rproc_elf_load_segments,
-> +	.load_segments	= rproc_elf_load_segments,
->  	.parse_fw	= imx_rproc_parse_fw,
->  	.find_loaded_rsc_table = imx_rproc_elf_find_loaded_rsc_table,
->  	.get_loaded_rsc_table = imx_rproc_get_loaded_rsc_table,
-> diff --git a/drivers/remoteproc/meson_mx_ao_arc.c b/drivers/remoteproc/meson_mx_ao_arc.c
-> index f6744b538323..a1c8c0929ce3 100644
-> --- a/drivers/remoteproc/meson_mx_ao_arc.c
-> +++ b/drivers/remoteproc/meson_mx_ao_arc.c
-> @@ -137,7 +137,7 @@ static struct rproc_ops meson_mx_ao_arc_rproc_ops = {
->  	.stop		= meson_mx_ao_arc_rproc_stop,
->  	.da_to_va	= meson_mx_ao_arc_rproc_da_to_va,
->  	.get_boot_addr	= rproc_elf_get_boot_addr,
-> -	.load		= rproc_elf_load_segments,
-> +	.load_segments	= rproc_elf_load_segments,
->  	.sanity_check	= rproc_elf_sanity_check,
->  };
->  
-> diff --git a/drivers/remoteproc/mtk_scp.c b/drivers/remoteproc/mtk_scp.c
-> index e744c07507ee..4e9a8bf3bc6e 100644
-> --- a/drivers/remoteproc/mtk_scp.c
-> +++ b/drivers/remoteproc/mtk_scp.c
-> @@ -924,7 +924,7 @@ static int scp_stop(struct rproc *rproc)
->  static const struct rproc_ops scp_ops = {
->  	.start		= scp_start,
->  	.stop		= scp_stop,
-> -	.load		= scp_load,
-> +	.load_segments	= scp_load,
->  	.da_to_va	= scp_da_to_va,
->  	.parse_fw	= scp_parse_fw,
->  	.sanity_check	= rproc_elf_sanity_check,
-> diff --git a/drivers/remoteproc/pru_rproc.c b/drivers/remoteproc/pru_rproc.c
-> index 327f0c7ee3d6..0b2bf2574f74 100644
-> --- a/drivers/remoteproc/pru_rproc.c
-> +++ b/drivers/remoteproc/pru_rproc.c
-> @@ -1015,7 +1015,7 @@ static int pru_rproc_probe(struct platform_device *pdev)
->  		return -ENOMEM;
->  	}
->  	/* use a custom load function to deal with PRU-specific quirks */
-> -	rproc->ops->load = pru_rproc_load_elf_segments;
-> +	rproc->ops->load_segments = pru_rproc_load_elf_segments;
->  
->  	/* use a custom parse function to deal with PRU-specific resources */
->  	rproc->ops->parse_fw = pru_rproc_parse_fw;
-> diff --git a/drivers/remoteproc/qcom_q6v5_adsp.c b/drivers/remoteproc/qcom_q6v5_adsp.c
-> index 572dcb0f055b..aa9896930bcf 100644
-> --- a/drivers/remoteproc/qcom_q6v5_adsp.c
-> +++ b/drivers/remoteproc/qcom_q6v5_adsp.c
-> @@ -527,7 +527,7 @@ static const struct rproc_ops adsp_ops = {
->  	.stop = adsp_stop,
->  	.da_to_va = adsp_da_to_va,
->  	.parse_fw = adsp_parse_firmware,
-> -	.load = adsp_load,
-> +	.load_segments = adsp_load,
->  	.panic = adsp_panic,
->  };
->  
-> diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qcom_q6v5_mss.c
-> index 2a42215ce8e0..a8beac1deabe 100644
-> --- a/drivers/remoteproc/qcom_q6v5_mss.c
-> +++ b/drivers/remoteproc/qcom_q6v5_mss.c
-> @@ -1687,7 +1687,7 @@ static const struct rproc_ops q6v5_ops = {
->  	.start = q6v5_start,
->  	.stop = q6v5_stop,
->  	.parse_fw = qcom_q6v5_register_dump_segments,
-> -	.load = q6v5_load,
-> +	.load_segments = q6v5_load,
->  	.panic = q6v5_panic,
->  };
->  
-> diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
-> index ef82835e98a4..9b269ce390c1 100644
-> --- a/drivers/remoteproc/qcom_q6v5_pas.c
-> +++ b/drivers/remoteproc/qcom_q6v5_pas.c
-> @@ -436,7 +436,7 @@ static const struct rproc_ops adsp_ops = {
->  	.stop = adsp_stop,
->  	.da_to_va = adsp_da_to_va,
->  	.parse_fw = qcom_register_dump_segments,
-> -	.load = adsp_load,
-> +	.load_segments = adsp_load,
->  	.panic = adsp_panic,
->  };
->  
-> @@ -446,7 +446,7 @@ static const struct rproc_ops adsp_minidump_ops = {
->  	.stop = adsp_stop,
->  	.da_to_va = adsp_da_to_va,
->  	.parse_fw = qcom_register_dump_segments,
-> -	.load = adsp_load,
-> +	.load_segments = adsp_load,
->  	.panic = adsp_panic,
->  	.coredump = adsp_minidump,
->  };
-> diff --git a/drivers/remoteproc/qcom_q6v5_wcss.c b/drivers/remoteproc/qcom_q6v5_wcss.c
-> index e913dabae992..44b5736dc8b9 100644
-> --- a/drivers/remoteproc/qcom_q6v5_wcss.c
-> +++ b/drivers/remoteproc/qcom_q6v5_wcss.c
-> @@ -771,7 +771,7 @@ static const struct rproc_ops q6v5_wcss_ipq8074_ops = {
->  	.start = q6v5_wcss_start,
->  	.stop = q6v5_wcss_stop,
->  	.da_to_va = q6v5_wcss_da_to_va,
-> -	.load = q6v5_wcss_load,
-> +	.load_segments = q6v5_wcss_load,
->  	.get_boot_addr = rproc_elf_get_boot_addr,
->  };
->  
-> @@ -779,7 +779,7 @@ static const struct rproc_ops q6v5_wcss_qcs404_ops = {
->  	.start = q6v5_qcs404_wcss_start,
->  	.stop = q6v5_wcss_stop,
->  	.da_to_va = q6v5_wcss_da_to_va,
-> -	.load = q6v5_wcss_load,
-> +	.load_segments = q6v5_wcss_load,
->  	.get_boot_addr = rproc_elf_get_boot_addr,
->  	.parse_fw = qcom_register_dump_segments,
->  };
-> diff --git a/drivers/remoteproc/qcom_wcnss.c b/drivers/remoteproc/qcom_wcnss.c
-> index a7bb9da27029..42102bc4c458 100644
-> --- a/drivers/remoteproc/qcom_wcnss.c
-> +++ b/drivers/remoteproc/qcom_wcnss.c
-> @@ -335,7 +335,7 @@ static const struct rproc_ops wcnss_ops = {
->  	.stop = wcnss_stop,
->  	.da_to_va = wcnss_da_to_va,
->  	.parse_fw = qcom_register_dump_segments,
-> -	.load = wcnss_load,
-> +	.load_segments = wcnss_load,
->  };
->  
->  static irqreturn_t wcnss_wdog_interrupt(int irq, void *dev)
-> diff --git a/drivers/remoteproc/rcar_rproc.c b/drivers/remoteproc/rcar_rproc.c
-> index cc17e8421f65..e36778fec072 100644
-> --- a/drivers/remoteproc/rcar_rproc.c
-> +++ b/drivers/remoteproc/rcar_rproc.c
-> @@ -142,7 +142,7 @@ static struct rproc_ops rcar_rproc_ops = {
->  	.prepare	= rcar_rproc_prepare,
->  	.start		= rcar_rproc_start,
->  	.stop		= rcar_rproc_stop,
-> -	.load		= rproc_elf_load_segments,
-> +	.load_segments	= rproc_elf_load_segments,
->  	.parse_fw	= rcar_rproc_parse_fw,
->  	.find_loaded_rsc_table = rproc_elf_find_loaded_rsc_table,
->  	.sanity_check	= rproc_elf_sanity_check,
-> diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
-> index 8df4b2c59bb6..e4ad024efcda 100644
-> --- a/drivers/remoteproc/remoteproc_core.c
-> +++ b/drivers/remoteproc/remoteproc_core.c
-> @@ -2485,11 +2485,11 @@ static int rproc_alloc_ops(struct rproc *rproc, const struct rproc_ops *ops)
->  	if (!rproc->ops->coredump)
->  		rproc->ops->coredump = rproc_coredump;
->  
-> -	if (rproc->ops->load || rproc->ops->load_fw)
-> +	if (rproc->ops->load_segments || rproc->ops->load_fw)
->  		return 0;
->  
->  	/* Default to ELF loader if no load function is specified */
-> -	rproc->ops->load = rproc_elf_load_segments;
-> +	rproc->ops->load_segments = rproc_elf_load_segments;
->  	rproc->ops->parse_fw = rproc_elf_load_rsc_table;
->  	rproc->ops->find_loaded_rsc_table = rproc_elf_find_loaded_rsc_table;
->  	rproc->ops->sanity_check = rproc_elf_sanity_check;
-> diff --git a/drivers/remoteproc/remoteproc_internal.h b/drivers/remoteproc/remoteproc_internal.h
-> index 2104ca449178..b898494600cf 100644
-> --- a/drivers/remoteproc/remoteproc_internal.h
-> +++ b/drivers/remoteproc/remoteproc_internal.h
-> @@ -167,8 +167,8 @@ u64 rproc_get_boot_addr(struct rproc *rproc, const struct firmware *fw)
->  static inline
->  int rproc_load_segments(struct rproc *rproc, const struct firmware *fw)
->  {
-> -	if (rproc->ops->load)
-> -		return rproc->ops->load(rproc, fw);
-> +	if (rproc->ops->load_segments)
-> +		return rproc->ops->load_segments(rproc, fw);
->  
->  	return -EINVAL;
->  }
-> diff --git a/drivers/remoteproc/st_remoteproc.c b/drivers/remoteproc/st_remoteproc.c
-> index 1340be9d0110..8d6b75e91531 100644
-> --- a/drivers/remoteproc/st_remoteproc.c
-> +++ b/drivers/remoteproc/st_remoteproc.c
-> @@ -233,7 +233,7 @@ static const struct rproc_ops st_rproc_ops = {
->  	.start			= st_rproc_start,
->  	.stop			= st_rproc_stop,
->  	.parse_fw		= st_rproc_parse_fw,
-> -	.load			= rproc_elf_load_segments,
-> +	.load_segments		= rproc_elf_load_segments,
->  	.find_loaded_rsc_table	= rproc_elf_find_loaded_rsc_table,
->  	.sanity_check		= rproc_elf_sanity_check,
->  	.get_boot_addr		= rproc_elf_get_boot_addr,
-> diff --git a/drivers/remoteproc/st_slim_rproc.c b/drivers/remoteproc/st_slim_rproc.c
-> index 5412beb0a692..0f91d8f1e7c7 100644
-> --- a/drivers/remoteproc/st_slim_rproc.c
-> +++ b/drivers/remoteproc/st_slim_rproc.c
-> @@ -201,7 +201,7 @@ static const struct rproc_ops slim_rproc_ops = {
->  	.stop		= slim_rproc_stop,
->  	.da_to_va       = slim_rproc_da_to_va,
->  	.get_boot_addr	= rproc_elf_get_boot_addr,
-> -	.load		= rproc_elf_load_segments,
-> +	.load_segments	= rproc_elf_load_segments,
->  	.sanity_check	= rproc_elf_sanity_check,
->  };
->  
-> diff --git a/drivers/remoteproc/stm32_rproc.c b/drivers/remoteproc/stm32_rproc.c
-> index 8c7f7950b80e..7e8ffd9fcc57 100644
-> --- a/drivers/remoteproc/stm32_rproc.c
-> +++ b/drivers/remoteproc/stm32_rproc.c
-> @@ -667,7 +667,7 @@ static const struct rproc_ops st_rproc_ops = {
->  	.attach		= stm32_rproc_attach,
->  	.detach		= stm32_rproc_detach,
->  	.kick		= stm32_rproc_kick,
-> -	.load		= rproc_elf_load_segments,
-> +	.load_segments	= rproc_elf_load_segments,
->  	.parse_fw	= stm32_rproc_parse_fw,
->  	.find_loaded_rsc_table = rproc_elf_find_loaded_rsc_table,
->  	.get_loaded_rsc_table = stm32_rproc_get_loaded_rsc_table,
-> diff --git a/drivers/remoteproc/xlnx_r5_remoteproc.c b/drivers/remoteproc/xlnx_r5_remoteproc.c
-> index 5aeedeaf3c41..59cfba0a02e7 100644
-> --- a/drivers/remoteproc/xlnx_r5_remoteproc.c
-> +++ b/drivers/remoteproc/xlnx_r5_remoteproc.c
-> @@ -864,7 +864,7 @@ static const struct rproc_ops zynqmp_r5_rproc_ops = {
->  	.unprepare	= zynqmp_r5_rproc_unprepare,
->  	.start		= zynqmp_r5_rproc_start,
->  	.stop		= zynqmp_r5_rproc_stop,
-> -	.load		= rproc_elf_load_segments,
-> +	.load_segments	= rproc_elf_load_segments,
->  	.parse_fw	= zynqmp_r5_parse_fw,
->  	.find_loaded_rsc_table = rproc_elf_find_loaded_rsc_table,
->  	.sanity_check	= rproc_elf_sanity_check,
-> diff --git a/include/linux/remoteproc.h b/include/linux/remoteproc.h
-> index ba6fd560f7ba..55c20424a99f 100644
-> --- a/include/linux/remoteproc.h
-> +++ b/include/linux/remoteproc.h
-> @@ -374,7 +374,7 @@ enum rsc_handling_status {
->   * @find_loaded_rsc_table: find the loaded resource table from firmware image
->   * @get_loaded_rsc_table: get resource table installed in memory
->   *			  by external entity
-> - * @load:		load firmware to memory, where the remote processor
-> + * @load_segments:	load firmware ELF segment to memory, where the remote processor
->   *			expects to find it
->   * @sanity_check:	sanity check the fw image
->   * @get_boot_addr:	get boot address to entry point specified in firmware
-> @@ -402,7 +402,7 @@ struct rproc_ops {
->  				struct rproc *rproc, const struct firmware *fw);
->  	struct resource_table *(*get_loaded_rsc_table)(
->  				struct rproc *rproc, size_t *size);
-> -	int (*load)(struct rproc *rproc, const struct firmware *fw);
-> +	int (*load_segments)(struct rproc *rproc, const struct firmware *fw);
->  	int (*sanity_check)(struct rproc *rproc, const struct firmware *fw);
->  	u64 (*get_boot_addr)(struct rproc *rproc, const struct firmware *fw);
->  	unsigned long (*panic)(struct rproc *rproc);
-> -- 
-> 2.25.1
-> 
+Previous v2 discussion here.
+https://lore.kernel.org/imx/20230911220920.1817033-1-Frank.Li@nxp.com/
+
+Changes in v10:
+
+Thomas Gleixner:
+	There are big change in pci-ep-msi.c. I am sure if go on the
+corrent path. The key improvement is remove only 1 function devices's
+limitation.
+
+	I use new patch for imutable check, which relative additional
+feature compared to base enablement patch.
+
+- Remove patch Add msi_remove_device_irq_domain() in platform_device_msi_free_irqs_all()
+- Add new patch irqchip/gic-v3-its: Avoid overwriting msi_prepare callback if provided by msi_domain_info
+- Remove only support 1 endpoint function limiation.
+- Create one MSI domain for each endpoint function devices.
+- Use "msi-map" in pci ep controler node, instead of of msi-parent. first
+argument is
+	(func_no << 8 | vfunc_no)
+
+- Link to v9: https://lore.kernel.org/r/20241203-ep-msi-v9-0-a60dbc3f15dd@nxp.com
+
+Changes in v9
+- Add patch platform-msi: Add msi_remove_device_irq_domain() in platform_device_msi_free_irqs_all()
+- Remove patch PCI: endpoint: Add pci_epc_get_fn() API for customizable filtering
+- Remove API pci_epf_align_inbound_addr_lo_hi
+- Move doorbell_alloc in to doorbell_enable function.
+- Link to v8: https://lore.kernel.org/r/20241116-ep-msi-v8-0-6f1f68ffd1bb@nxp.com
+
+Changes in v8:
+- update helper function name to pci_epf_align_inbound_addr()
+- Link to v7: https://lore.kernel.org/r/20241114-ep-msi-v7-0-d4ac7aafbd2c@nxp.com
+
+Changes in v7:
+- Add helper function pci_epf_align_addr();
+- Link to v6: https://lore.kernel.org/r/20241112-ep-msi-v6-0-45f9722e3c2a@nxp.com
+
+Changes in v6:
+- change doorbell_addr to doorbell_offset
+- use round_down()
+- add Niklas's test by tag
+- rebase to pci/endpoint
+- Link to v5: https://lore.kernel.org/r/20241108-ep-msi-v5-0-a14951c0d007@nxp.com
+
+Changes in v5:
+- Move request_irq to epf test function driver for more flexiable user case
+- Add fixed size bar handler
+- Some minor improvememtn to see each patches's changelog.
+- Link to v4: https://lore.kernel.org/r/20241031-ep-msi-v4-0-717da2d99b28@nxp.com
+
+Changes in v4:
+- Remove patch genirq/msi: Add cleanup guard define for msi_lock_descs()/msi_unlock_descs()
+- Use new method to avoid compatible problem.
+  Add new command DOORBELL_ENABLE and DOORBELL_DISABLE.
+  pcitest -B send DOORBELL_ENABLE first, EP test function driver try to
+remap one of BAR_N (except test register bar) to ITS MSI MMIO space. Old
+driver don't support new command, so failure return, not side effect.
+  After test, DOORBELL_DISABLE command send out to recover original map, so
+pcitest bar test can pass as normal.
+- Other detail change see each patches's change log
+- Link to v3: https://lore.kernel.org/r/20241015-ep-msi-v3-0-cedc89a16c1a@nxp.com
+
+Change from v2 to v3
+- Fixed manivannan's comments
+- Move common part to pci-ep-msi.c and pci-ep-msi.h
+- rebase to 6.12-rc1
+- use RevID to distingiush old version
+
+mkdir /sys/kernel/config/pci_ep/functions/pci_epf_test/func1
+echo 16 > /sys/kernel/config/pci_ep/functions/pci_epf_test/func1/msi_interrupts
+echo 0x080c > /sys/kernel/config/pci_ep/functions/pci_epf_test/func1/deviceid
+echo 0x1957 > /sys/kernel/config/pci_ep/functions/pci_epf_test/func1/vendorid
+echo 1 > /sys/kernel/config/pci_ep/functions/pci_epf_test/func1/revid
+^^^^^^ to enable platform msi support.
+ln -s /sys/kernel/config/pci_ep/functions/pci_epf_test/func1 /sys/kernel/config/pci_ep/controllers/4c380000.pcie-ep
+
+- use new device ID, which identify support doorbell to avoid broken
+compatility.
+
+    Enable doorbell support only for PCI_DEVICE_ID_IMX8_DB, while other devices
+    keep the same behavior as before.
+
+           EP side             RC with old driver      RC with new driver
+    PCI_DEVICE_ID_IMX8_DB          no probe              doorbell enabled
+    Other device ID             doorbell disabled*       doorbell disabled*
+
+    * Behavior remains unchanged.
+
+Change from v1 to v2
+- Add missed patch for endpont/pci-epf-test.c
+- Move alloc and free to epc driver from epf.
+- Provide general help function for EPC driver to alloc platform msi irq.
+- Fixed manivannan's comments.
+
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Krzysztof Wilczyński <kw@linux.com>
+To: Kishon Vijay Abraham I <kishon@kernel.org>
+To: Bjorn Helgaas <bhelgaas@google.com>
+To: Arnd Bergmann <arnd@arndb.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-pci@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: Niklas Cassel <cassel@kernel.org>
+Cc: dlemoal@kernel.org
+Cc: jdmason@kudzu.us
+To: Rafael J. Wysocki <rafael@kernel.org>
+To: Thomas Gleixner <tglx@linutronix.de>
+To: Anup Patel <apatel@ventanamicro.com>
+To: Kishon Vijay Abraham I <kishon@kernel.org>
+To: Marc Zyngier <maz@kernel.org>
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: linux-arm-kernel@lists.infradead.org
+
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Frank Li (7):
+      irqchip/gic-v3-its: Avoid overwriting msi_prepare callback if provided by msi_domain_info
+      PCI: endpoint: Add RC-to-EP doorbell support using platform MSI controller
+      PCI: endpoint: pci-ep-msi: Add MSI address/data pair mutable check
+      PCI: endpoint: Add pci_epf_align_inbound_addr() helper for address alignment
+      PCI: endpoint: pci-epf-test: Add doorbell test support
+      misc: pci_endpoint_test: Add doorbell test case
+      tools: PCI: Add 'B' option for test doorbell
+
+ drivers/irqchip/irq-gic-v3-its-msi-parent.c   |   3 +-
+ drivers/misc/pci_endpoint_test.c              |  80 +++++++++++++
+ drivers/pci/endpoint/Makefile                 |   2 +-
+ drivers/pci/endpoint/functions/pci-epf-test.c | 132 ++++++++++++++++++++++
+ drivers/pci/endpoint/pci-ep-msi.c             | 156 ++++++++++++++++++++++++++
+ drivers/pci/endpoint/pci-epf-core.c           |  44 ++++++++
+ include/linux/msi.h                           |   2 +
+ include/linux/pci-ep-msi.h                    |  15 +++
+ include/linux/pci-epf.h                       |  19 ++++
+ include/uapi/linux/pcitest.h                  |   1 +
+ tools/pci/pcitest.c                           |  16 ++-
+ 11 files changed, 467 insertions(+), 3 deletions(-)
+---
+base-commit: f134785ecf3bd881a10f83dccacdcea2ac45e673
+change-id: 20241010-ep-msi-8b4cab33b1be
+
+Best regards,
+---
+Frank Li <Frank.Li@nxp.com>
+
