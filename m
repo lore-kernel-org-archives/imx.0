@@ -1,65 +1,65 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5995D2101A9
-	for <imx@lists.linux.dev>; Wed,  4 Dec 2024 15:58:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932932139B2
+	for <imx@lists.linux.dev>; Wed,  4 Dec 2024 15:58:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733327892; cv=none; b=se7zWeg03PbRpGqcldZYDSblFgF1Tu6791TgK+XsCiq54/K8WjBXSe5Rl+AOiDq5ARhOOWKmDOyqGC3Zm6qjojNIKNovv6AMJrdGFByYwvBTM506Xdd+D5pv0rzYNTOZ1KxL1N+PxwfoSzfo/HaZmC3ExvNj8wG3l8K2XuWfgbE=
+	t=1733327895; cv=none; b=ACQZelYP/MUb4wswp6+laM+B6dZvYELNtvX4oxwoEQUdC8/XIEDCikKr9VRjxEmjxlxI1H+4fiaIv6DZC6KMvxs5ajmW/l/H7C1sLXUARzY589dOFOWY6zEhuxclF2rnQDyNYP1ceJkD5VvOxbU/88vLIop7ryraxLhZLJL/2f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733327892; c=relaxed/simple;
-	bh=qLf+OscItBw8MHpWEaV1DqM+RlkXLw4hOz0zFmKFx8Q=;
+	s=arc-20240116; t=1733327895; c=relaxed/simple;
+	bh=S6Rb/mVurB3CrznT++E7Ya5mPE957VSJz8lp4pr8HDM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WgvqUOGvIx6Kh7M7ertBM2Y6M2bWcWyQy/cStcWr4W5G/rUOs8ER2gO6/ji31uiA9SXJ9ZyRQQQV737PrvXXK0UTKucTDZaNpinJE4yJeOS5XnG3Ei8CbgKbTgOmSnlvJRzaxDk2lm30to97/0GICnciFGHxzQexA0Vu6PAoDms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XWzdh5OR; arc=none smtp.client-ip=209.85.167.48
+	 In-Reply-To:To:Cc; b=Vs91q6KgMGp/7PGawxBDCgYyRyLD/Fhk0NV5hkqiugDUSz6TC2OisqtKzHLTa4jSYBcu3DbeC67xAqgGugIhTWemIbVhahz7bx8kpVQ9BLNN4BY+J25kUOfH7olxTQsLfvq6urpH1pW9vFP9aYR3SnQA40GzmHQtApwHUbF4dVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zix0QAor; arc=none smtp.client-ip=209.85.167.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XWzdh5OR"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-53df1e063d8so9061668e87.3
-        for <imx@lists.linux.dev>; Wed, 04 Dec 2024 07:58:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zix0QAor"
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-53e2121112eso53520e87.3
+        for <imx@lists.linux.dev>; Wed, 04 Dec 2024 07:58:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733327888; x=1733932688; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1733327892; x=1733932692; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=SRNozn+CmJ/ud473L/9S72anLINqKxujpLwpR8ystFA=;
-        b=XWzdh5ORwXwU9lddY5GYnyqpE+40kZL3TFbLJSX/XU7czeZiyco2as5V9lmzDPqTDX
-         +lBQ5adJpyLg+Yg3X5rMqVg66bUAnHEwb9kKaH7uckdavx5XZbRG/x2NGx9+RX2ZsykN
-         NU671QoCe0x+IXTN8b9u0J+xLNKRxnyFErXDjK76s4xqqpC9lsW+Q2dKbt85pFPbMR0/
-         PDQZWASuOyWou1ptCi/xPcg6wEGTTfdh5gGgP0i7GzRbUndFK+R6iQCthJJDaXOzaACo
-         tX/GfSQFw09XIuRkQp24AivU098900J5O5dcI9W7k0vXQwGj+aAgjutMWs/TW8dQzlHo
-         fVfQ==
+        bh=ERqtwU8OA/8boolNfifBHtI3svqy087oNlMJx9UxCto=;
+        b=Zix0QAorwEeSTOw8Ocs+DJ7W9EorwtkQVA8nsILf65YUuCHGG6AO3Q21xaDwlJM3Wq
+         7MwlfW89fcpoUT3yuZS+WRU/kdF6Nl5+OXdvkdSU7Q+1L8YlH2xqN2CH7snackH0b2nY
+         VCPOJRc5zuPJ+ItruyzNBLeHZigFztXjqF4ePqD0BcekdizBgFk+sEagkkTdRp+JXcsn
+         avqsvyvX5a7wTMR/9k1dp8j4IM/q+R2m67ReISLt8+a31VRKAfVsB/OfRu1sJ86IreKn
+         CtBrKHnbCK4emDfCZB4tjaiUmCMQX1aP+bTkf6ky9OmiVKJvwjVqu+eSt1ZJL6FPZXJb
+         hAmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733327888; x=1733932688;
+        d=1e100.net; s=20230601; t=1733327892; x=1733932692;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SRNozn+CmJ/ud473L/9S72anLINqKxujpLwpR8ystFA=;
-        b=OitlhSmcM/baoSHA3bYrNrBOehK9WKdWhA+cvcIZ2uY4FAZApqjuTccBN76Uy4H11C
-         SO8+JO5fmb7bh0s9c3DPY/fQtUR2vAsfZmsDRdEQLkcUC2TaWf21+F8J6zVw6SUEOL9k
-         g9z5uyPS+cfQ0B82yQPmWQZKvx3nrQIPJpaDJRW4z+sitQIDcpMvZ1uWh5c940RfJxvm
-         YN9H3YWfaz96E4CjQmIZdxWL6+fetg7Xut+lECrnCZuKHOl/j0FnBB+eBTe3aHj6Gij6
-         v5Mq0AKRaY2xXtfP+w7WuWCpXImmAkK96qZX6Qyy7NoghVNYTYnbtLJWjA2VS/AUfyHK
-         GAzw==
-X-Forwarded-Encrypted: i=1; AJvYcCWrYBJX+To487tDUZv2j5vi+Rs8Fk97l0946e9wdinLjjg+onVEsCEhLaVOB65PZ17Gi3Q=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwFsx4g6UC8+EPEetE67LJEaAGAPWj9rNIbWMPRG9KTTWUq3peS
-	aH68IdAYDDOhOXp0QW0GjERjAMbzX1Ez3gIRy9RzVQ533sqVGxPX
-X-Gm-Gg: ASbGncv1lSqDyv3vX9bOISsLeiCi0QmCczrD/yhpI84qI2t3Umxyb1BL9+aJtyzirlB
-	pbwhVVbn3CrhHGGnYG6Ybja/iRtIwOvwhdt5xs5v2pTbCPg89sipzgnwrgcomA46PkXWLxzcMpw
-	WWh4s9VSklhojWTIKJ1IC1NLiUjzeYHhU23AINdySTz6d1wSpluERO2OPKPpSYphW+ZtyQ9bBkH
-	hfwHskG+abR0sQ3zmEMGkhd1wN8IGn8mRXU36m9Pxlk61L61azpm0M9Npie9kNZLpz5jsjCnXnI
-	8A8snXCtcvNvJ4o=
-X-Google-Smtp-Source: AGHT+IFaHu0p8meQ8L3Hziy4MXUTfssymJH4vo37O/hYKq4ya/mGS+ElObDyqmeHNSYxvva8OfGHwQ==
-X-Received: by 2002:a05:6512:224d:b0:53d:f82a:deb8 with SMTP id 2adb3069b0e04-53e129fdd73mr4650320e87.14.1733327888326;
-        Wed, 04 Dec 2024 07:58:08 -0800 (PST)
+        bh=ERqtwU8OA/8boolNfifBHtI3svqy087oNlMJx9UxCto=;
+        b=mKW8lzO+Es5DBLIbUZZvFgWNNDIl2JaDXlr/KKw5j/n7bbljknYIqyyNCjkXzaYjUQ
+         JBw4jGmAMQ1kun6+TRm16l4OzAKNA+W9gOx2zDD1viXaLh0Rw4E40Phh/HxWSEq+ow4Z
+         13zk9IsibOw7WhT8mmQO0S0FNg9CE60LvBTaveA6u/Kc7J2tw/e5xNdeybOaiwTYIy6l
+         peQz4MlGEzahI1LUK/vldOVxfOEHQKBIiNgWXXEzAQrAgXjOr6pneYPWRsPyLA3qxD7u
+         Nyn8IHMcoIZszdK5KpmiJn4xx7445jLw5QB4ImLaoLxYEeKKtMP71dC2F9hhmlGwcugf
+         w6NQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXfclIMY+NyNKaXz+CFi4Tlpam+HAKoFrsuB/f9Zfv2wEogq/th44/I3pocqIHeypO+3RY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwLJ6pea4gwXsfwgVF4RJX2lUeiCvac6ZrMDFuU55ya3IHxkpze
+	R/t29iv3yMOJ9sClQs3WtyIrbF7Fi5+c8pOeSUunomlbFTtTqqcx
+X-Gm-Gg: ASbGncvoEDYo9ANwaxXUMY2VQZZeUVZIHqPAlQ9CO+P+JsAiMXkv+vHNdi0bO8mEare
+	wuoXW5iWzIbxbuOoj//jdVxhg3uP/eZqJ44Rf08gsQWf9G/j5krllM0tvjPLg0ogX3Zs7CQjFFJ
+	cvoX/5PqhX0UdP8ZwLAt+qrAY0BCbpqKXjBTEeLPQ7UeG9ay5yvIwMtpoIbGZW/FO0Yguo14m88
+	jEGb4LyJ2StBpmwfsXjNm/xv/t0WhBZQnU2Niuv6IuwhnpMlDFzDF9o32tfBKIhRC1inagIGHf2
+	bHsgfG9web+Yebk=
+X-Google-Smtp-Source: AGHT+IE+kEoBbCoYkLKnifs9gNrwDg0/EoXrecLwl97llJBHT7iNVuPl6X8ay9kKQ5BBUQOvWv6xFA==
+X-Received: by 2002:a05:6512:39c9:b0:53e:1ca7:e0e1 with SMTP id 2adb3069b0e04-53e1ca7e2fbmr1940269e87.48.1733327891633;
+        Wed, 04 Dec 2024 07:58:11 -0800 (PST)
 Received: from [172.17.0.1] (83-233-6-197.cust.bredband2.com. [83.233.6.197])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53e1f5498easm168999e87.105.2024.12.04.07.58.05
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53e1f5498easm168999e87.105.2024.12.04.07.58.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Dec 2024 07:58:06 -0800 (PST)
+        Wed, 04 Dec 2024 07:58:09 -0800 (PST)
 From: Marcus Folkesson <marcus.folkesson@gmail.com>
-Date: Wed, 04 Dec 2024 16:56:50 +0100
-Subject: [PATCH 8/9] ARM: qcom_defconfig: rebuild default configuration
+Date: Wed, 04 Dec 2024 16:56:51 +0100
+Subject: [PATCH 9/9] ARM: socfpga_defconfig: rebuild default configuration
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -68,7 +68,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241204-defconfigs-v1-8-86587652d37a@gmail.com>
+Message-Id: <20241204-defconfigs-v1-9-86587652d37a@gmail.com>
 References: <20241204-defconfigs-v1-0-86587652d37a@gmail.com>
 In-Reply-To: <20241204-defconfigs-v1-0-86587652d37a@gmail.com>
 To: Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
@@ -82,21 +82,21 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  imx@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
  Marcus Folkesson <marcus.folkesson@gmail.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4815;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1241;
  i=marcus.folkesson@gmail.com; h=from:subject:message-id;
- bh=qLf+OscItBw8MHpWEaV1DqM+RlkXLw4hOz0zFmKFx8Q=;
- b=owEBbQKS/ZANAwAIAYiATm9ZXVIyAcsmYgBnUHvr/6QKFOKNlHDLGT9HydO3AqmoddYqDOLYb
- y3vjUNPVy+JAjMEAAEIAB0WIQQFUaLotmy1TWTBLGWIgE5vWV1SMgUCZ1B76wAKCRCIgE5vWV1S
- MquMEADEJAgMYnB4LEUqby0BzakaMLt0xuqIwLK/I4IR9GDSOtruMFF/LXX286F0WmJhfTDHVON
- jtC+Iq4/rAI0I5VuegINbTSQVqenwvxL38AkPwGec41R9RUSns+kSXnt4F3on88h7cSBZJ91JSD
- k0GWbGDK5JsomO8p1YSRB5ompRKJjwVVGdw4MmeVe5vusSE9TUgMequt3bW+jN3vJn3UE3T9H3f
- Iz7AnxwUr93ORQiIn+s6TOe+I0jO7kOuAV2Eqte4xt6Wmh7aU5xyEXv1yMZBq7Q0ov8GmKKlxt2
- SaKk/AZUyXc/89i61PSij2pPSfhkTg0WzuAfagBsOoEaRcXQIir7rKN+gejKKT6D63Ju1eDmkVj
- ESaMxOn+jFfN+QaOZAOLLRn022nciPMkoFgxYmK+jOlqVifMrQkbU35j/KnUC0+Icg94+F/WQ/A
- S0X+ef7BCKBy+E/NLI/0vmMi6EazfwVy3rvXAqstvhM3lRVfKtfvWRHIwwHsOcwNcD5cj+QeM6e
- vFMQeZWcLk9WbJh8PzsPuJOR90smWU3Sj89f0RvpoN/n7oxGrt06H5D7Q9d95leoPmofN5QpDut
- jMdLRUXZO0nQN9jGQzKvWyjV9wOrIYKcPs/kD5JcGMFqM4xsv9HvhLKJ2A6Mm01Ak5kdHBp03EM
- YdOO96nFKbFvr9g==
+ bh=S6Rb/mVurB3CrznT++E7Ya5mPE957VSJz8lp4pr8HDM=;
+ b=owEBbQKS/ZANAwAIAYiATm9ZXVIyAcsmYgBnUHvwJ+cCx0uF/fqpIJmM21EDZ3lt1UiVigNGK
+ eef3S37RnSJAjMEAAEIAB0WIQQFUaLotmy1TWTBLGWIgE5vWV1SMgUCZ1B78AAKCRCIgE5vWV1S
+ Mj9hD/wN77SL824IT6g7JyBPkgmErbp6/Y/OZrf3FgD9B7F4lBl+X2LT//GB3+iyNul+3BikBgh
+ BwuGyUwhSct+C5Sq+oVQCu2HG8ms+1kNGl/EHILWDYvYGYJcXr0u7e1IF5jmv7gCiM3myCusPKY
+ AETbDZahjYdnWnfNf1U+sOeBw81AhQq2eNxx+sT5bQ7qF1t0BUTXuHVB0XH3CQlkmXrX3tfYpTG
+ D4FIckCRadFZ34NkWtRHme1m6kRkUXaYInAtxRL3reZ9V7LNclpuLbNp1l6ryNEmWyVfgyGMPha
+ nbIuOSTjG+OCXYwEiGoJdEpK+GO2rDApr8tfYLqavol6pwye5QNFAJPjd41L0eUxJ84AyNFNE7i
+ ePhUDoGUkbf9gnsCKRx4z3dWbN3NyR0djL6D3j/40L7iNcbmfZv7RtC0ZutCwE9VI1un+SjRcjf
+ /9u+A3lFRcqtrDjZUf6ulSidwizc+8ZjOTJBLx+BNUkZMxnTJ5CuBcauNCepHMiV7pgsxCHuBqR
+ hhHia77aFKgwF1appiYa/LFd/MfDakiHpmjE/7y10fpmiiah0Rdg0g1dzJtresgvc1q8riy4C5L
+ Wm4ibA1iN85GnHXL79CCODH3PHBM4K6lmvx5t62IOj3aJdnAERjh99RQ6Gtj3w0FY3iveMIqIwr
+ 1j9SS25nE8HzMcQ==
 X-Developer-Key: i=marcus.folkesson@gmail.com; a=openpgp;
  fpr=AB91D46C7E0F6E6FB2AB640EC0FE25D598F6C127
 
@@ -104,171 +104,42 @@ This configuration contains obsolete configuration options e.g.
 CONFIG_MTD_M25P80 which is integrated into MTD_SPI_NOR.
 
 Rebuild this configuration by run:
-make ARCH=arm qcom_defconfig
+make ARCH=arm socfpga_defconfig
 make ARCH=arm savedefconfig
 
 Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
 ---
- arch/arm/configs/qcom_defconfig | 27 +--------------------------
- 1 file changed, 1 insertion(+), 26 deletions(-)
+ arch/arm/configs/socfpga_defconfig | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/arm/configs/qcom_defconfig b/arch/arm/configs/qcom_defconfig
-index ec52ccece0ca7d6471f04ef4a6953f02530655c5..bc58e76eee18a583da4a591d57dcd632eaae862c 100644
---- a/arch/arm/configs/qcom_defconfig
-+++ b/arch/arm/configs/qcom_defconfig
-@@ -10,10 +10,6 @@ CONFIG_EXPERT=y
- CONFIG_KALLSYMS_ALL=y
- CONFIG_PROFILING=y
- CONFIG_ARCH_QCOM=y
--CONFIG_ARCH_MSM8X60=y
--CONFIG_ARCH_MSM8960=y
--CONFIG_ARCH_MSM8974=y
--CONFIG_ARCH_MDM9615=y
- CONFIG_SMP=y
- CONFIG_ARM_PSCI=y
- CONFIG_HIGHMEM=y
-@@ -43,9 +39,6 @@ CONFIG_IP_MULTIPLE_TABLES=y
- CONFIG_IP_ROUTE_VERBOSE=y
- CONFIG_IP_PNP=y
- CONFIG_IP_PNP_DHCP=y
--# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
--# CONFIG_INET_XFRM_MODE_TUNNEL is not set
--# CONFIG_INET_XFRM_MODE_BEET is not set
- # CONFIG_IPV6 is not set
- CONFIG_QRTR=m
- CONFIG_QRTR_SMD=m
-@@ -63,7 +56,6 @@ CONFIG_DEVTMPFS_MOUNT=y
+diff --git a/arch/arm/configs/socfpga_defconfig b/arch/arm/configs/socfpga_defconfig
+index 294906c8f16e8f4f5f6a4af5770d79a68528fb34..90c3aca7f8afde7db0062e46261ad6def7e8c146 100644
+--- a/arch/arm/configs/socfpga_defconfig
++++ b/arch/arm/configs/socfpga_defconfig
+@@ -41,7 +41,6 @@ CONFIG_DEVTMPFS=y
+ CONFIG_DEVTMPFS_MOUNT=y
  CONFIG_MTD=y
- CONFIG_MTD_QCOMSMEM_PARTS=y
  CONFIG_MTD_BLOCK=y
 -CONFIG_MTD_M25P80=y
  CONFIG_MTD_RAW_NAND=y
- CONFIG_MTD_NAND_QCOM=y
+ CONFIG_MTD_NAND_DENALI_DT=y
  CONFIG_MTD_SPI_NOR=y
-@@ -105,7 +97,6 @@ CONFIG_KEYBOARD_PMIC8XXX=y
- CONFIG_INPUT_JOYSTICK=y
- CONFIG_INPUT_TOUCHSCREEN=y
- CONFIG_INPUT_MISC=y
--CONFIG_INPUT_MSM_VIBRATOR=m
- CONFIG_INPUT_PM8941_PWRKEY=m
- CONFIG_INPUT_PM8XXX_VIBRATOR=y
- CONFIG_INPUT_PMIC8XXX_PWRKEY=y
-@@ -120,7 +111,6 @@ CONFIG_SERIAL_MSM=y
- CONFIG_SERIAL_MSM_CONSOLE=y
- CONFIG_SERIAL_DEV_BUS=y
- CONFIG_HW_RANDOM=y
--CONFIG_I2C=y
+@@ -84,7 +83,6 @@ CONFIG_SERIAL_8250_DW=y
+ CONFIG_I2C=y
  CONFIG_I2C_CHARDEV=y
- CONFIG_I2C_QUP=y
+ CONFIG_I2C_DESIGNWARE_CORE=y
+-CONFIG_I2C_DESIGNWARE_PLATFORM=y
  CONFIG_SPI=y
-@@ -139,7 +129,6 @@ CONFIG_PINCTRL_MDM9615=y
- CONFIG_PINCTRL_MSM8X74=y
- CONFIG_PINCTRL_MSM8909=y
- CONFIG_PINCTRL_MSM8916=y
--CONFIG_GPIOLIB=y
- CONFIG_PINCTRL_SDX55=y
- CONFIG_PINCTRL_SDX65=y
- CONFIG_PINCTRL_QCOM_SPMI_PMIC=y
-@@ -156,7 +145,6 @@ CONFIG_QCOM_WDT=y
- CONFIG_MFD_PM8XXX=y
- CONFIG_MFD_QCOM_RPM=y
- CONFIG_MFD_SPMI_PMIC=y
--CONFIG_REGULATOR=y
- CONFIG_REGULATOR_FIXED_VOLTAGE=y
- CONFIG_REGULATOR_QCOM_RPM=y
- CONFIG_REGULATOR_QCOM_RPMH=y
-@@ -165,15 +153,13 @@ CONFIG_REGULATOR_QCOM_SPMI=y
- CONFIG_MEDIA_SUPPORT=y
- CONFIG_DRM=y
- CONFIG_DRM_MSM=m
--CONFIG_DRM_PANEL_SIMPLE=y
- CONFIG_DRM_PANEL_EDP=y
-+CONFIG_DRM_PANEL_SIMPLE=y
- CONFIG_DRM_ANALOGIX_ANX78XX=m
- CONFIG_FB=y
--# CONFIG_LCD_CLASS_DEVICE is not set
- CONFIG_BACKLIGHT_CLASS_DEVICE=y
- CONFIG_BACKLIGHT_LM3630A=y
- CONFIG_BACKLIGHT_LP855X=y
--CONFIG_FRAMEBUFFER_CONSOLE=y
- CONFIG_SOUND=y
- CONFIG_SND=y
- CONFIG_SND_DYNAMIC_MINORS=y
-@@ -187,16 +173,13 @@ CONFIG_USB_ANNOUNCE_NEW_DEVICES=y
- CONFIG_USB_OTG=y
- CONFIG_USB_MON=y
- CONFIG_USB_EHCI_HCD=y
--CONFIG_USB_EHCI_MSM=y
- CONFIG_USB_ACM=y
- CONFIG_USB_DWC3=y
- CONFIG_USB_CHIPIDEA=y
- CONFIG_USB_CHIPIDEA_UDC=y
- CONFIG_USB_CHIPIDEA_HOST=y
--CONFIG_USB_CHIPIDEA_ULPI=y
- CONFIG_USB_SERIAL=y
- CONFIG_USB_HSIC_USB4604=y
--CONFIG_USB_MSM_OTG=y
- CONFIG_USB_GADGET=y
- CONFIG_USB_GADGET_DEBUG_FILES=y
- CONFIG_USB_GADGET_VBUS_DRAW=500
-@@ -204,7 +187,6 @@ CONFIG_USB_CONFIGFS=y
- CONFIG_USB_CONFIGFS_NCM=y
- CONFIG_USB_CONFIGFS_ECM=y
- CONFIG_USB_CONFIGFS_F_FS=y
--CONFIG_USB_ULPI_BUS=y
- CONFIG_USB_ETH=m
- CONFIG_MMC=y
- CONFIG_MMC_BLOCK_MINORS=32
-@@ -234,7 +216,6 @@ CONFIG_IPQ_GCC_4019=y
- CONFIG_IPQ_LCC_806X=y
- CONFIG_MSM_GCC_8660=y
- CONFIG_MSM_LCC_8960=y
--CONFIG_MDM_LCC_9615=y
- CONFIG_MSM_MMCC_8960=y
- CONFIG_MSM_MMCC_8974=y
- CONFIG_SDX_GCC_55=y
-@@ -245,9 +226,7 @@ CONFIG_QCOM_APCS_IPC=y
- CONFIG_MSM_IOMMU=y
- CONFIG_ARM_SMMU=y
- CONFIG_REMOTEPROC=y
--CONFIG_QCOM_ADSP_PIL=y
- CONFIG_QCOM_Q6V5_PAS=y
--CONFIG_QCOM_Q6V5_PIL=y
- CONFIG_QCOM_WCNSS_PIL=y
- CONFIG_RPMSG_CHAR=y
- CONFIG_RPMSG_CTRL=y
-@@ -256,7 +235,6 @@ CONFIG_RPMSG_QCOM_SMD=y
- CONFIG_QCOM_COMMAND_DB=y
- CONFIG_QCOM_GSBI=y
- CONFIG_QCOM_OCMEM=y
--CONFIG_QCOM_PM=y
- CONFIG_QCOM_RMTFS_MEM=y
- CONFIG_QCOM_RPMH=y
- CONFIG_QCOM_SMEM=y
-@@ -289,7 +267,6 @@ CONFIG_PHY_QCOM_USB_HS=y
- CONFIG_PHY_QCOM_USB_SNPS_FEMTO_V2=y
- CONFIG_PHY_QCOM_USB_HSIC=y
- CONFIG_NVMEM_QCOM_QFPROM=y
--CONFIG_INTERCONNECT=y
- CONFIG_INTERCONNECT_QCOM=y
- CONFIG_INTERCONNECT_QCOM_MSM8974=m
- CONFIG_INTERCONNECT_QCOM_SDX55=m
-@@ -298,7 +275,6 @@ CONFIG_EXT2_FS_XATTR=y
- CONFIG_EXT3_FS=y
- CONFIG_FUSE_FS=y
+ CONFIG_SPI_CADENCE_QUADSPI=y
+ CONFIG_SPI_DESIGNWARE=y
+@@ -140,7 +138,6 @@ CONFIG_EXT3_FS=y
+ CONFIG_AUTOFS_FS=y
  CONFIG_VFAT_FS=y
--CONFIG_TMPFS=y
+ CONFIG_NTFS_FS=y
+-CONFIG_NTFS_RW=y
+ CONFIG_TMPFS=y
  CONFIG_JFFS2_FS=y
- CONFIG_UBIFS_FS=y
  CONFIG_NFS_FS=y
-@@ -310,7 +286,6 @@ CONFIG_NLS_ASCII=y
- CONFIG_NLS_ISO8859_1=y
- CONFIG_NLS_UTF8=y
- CONFIG_CRYPTO_USER=m
--CONFIG_CRYPTO_USER_API=m
- CONFIG_CRYPTO_USER_API_HASH=m
- CONFIG_CRYPTO_USER_API_SKCIPHER=m
- CONFIG_CRYPTO_USER_API_RNG=m
 
 -- 
 2.47.0
