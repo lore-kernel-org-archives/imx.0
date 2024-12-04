@@ -1,100 +1,74 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522EB746E
-	for <imx@lists.linux.dev>; Wed,  4 Dec 2024 13:08:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9261B4124;
+	Wed,  4 Dec 2024 14:56:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733317696; cv=none; b=upfQDthL3D1A7SId79AI4dY/vgqGkOu60vUpYDcTxM17bI+LUo2Ksf+Qjl2hkxhis5M6dyKMfiO/RWRhR45RwfcQ2/85YbqssQDclQJASuAmLrI9vjAD7zKvRPoukYXPLHrF7QQUe6HQJxo34zpVKoaxhFngUhZ0v3JAG64254I=
+	t=1733324194; cv=none; b=ZosFuYM8RtuqMXBPHqjL7JCeUkgERiHjdlRUXra3vqUYs9dsE4BjlwJW97YBdXa/XKXSZxqykVublRndeibKrYOgR/ITvmEIYi4eFuBvZpPjrn6/T4fN8akiD1xjv5zMpT6LVzzOt8KcEhDyuCNQUeyPu5x8zXt61oFpklOYSIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733317696; c=relaxed/simple;
-	bh=05RaxY8NTJZsdAMk/F+MVGS6iIIbXrpDd0cv9NTMgsY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=O2o9Ee5JMXXoQExVMUQXURHRn2wYUeEGmqSeBU5uVOVqxNUP4NwWh1rojRAwPuGtxckfj0H1TpfRye64OmyRqQJw5Yj7Q122pSjEGg1IC+PXBJSwEgiNe0s5nO6bOVcOazYo+O+mFQGYEyVCVBLGfRx8o1F2+CyH5qGqEOJn9Ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zFBy1gyA; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=6OVT3qJb; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1733324194; c=relaxed/simple;
+	bh=VrApkmCQ7OLsx/HiaNNmAgFTOOUbcnn1Hg4GyGxNkg0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e7pbsHwgY4HJ6SrDb8zRlZDJjcRKmCqm0wljOOThtG2QbAIbcNipJLlqEf+cuW4EO6oodP7v58PdRx66TtPKv6cVXvxu0ZAO0KODaYS8ftYK9Nzp3K2ESidInNUCtnkrnwqbM/zT6z/HMNxs8gL8QzSVEFz2MdFda/FGAffvCyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00wFZg2i; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zFBy1gyA";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="6OVT3qJb"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1733317692;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ai6Td+7Re4FB0bJzl00OhDz0NYYlW8jViszOUHsn54c=;
-	b=zFBy1gyAVOA9KgJwUcsOSY5q9TPYuTqu9LkGJXJC+RsJzCZ7aB9Hb8nslQDzhJxP91iwvv
-	ayQxv7NwBnF4sH3k8udsY2kj2yVSgy3UbvHYSc/TlBtYprapRncVYqnz9OqkYwl7zoVdus
-	WVNuh76NkV+R/LL6iczxXh3IyHhtj0znSpYq9EbcK+ddnOKFWaTbrCsVYKnVMMnzg2emje
-	dBeADw1CwksN/+R6mi+nyuwA7ICGcwnyCynmBocoNktqzyxhYZzFPMvUeKhlH4+dnC4qMq
-	SUHNdv4ZcG9KgMYfwso3Qa6O9aY8H93m3bWyRh3fQD81s5p3OtIIM+uCzLNuPQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1733317692;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ai6Td+7Re4FB0bJzl00OhDz0NYYlW8jViszOUHsn54c=;
-	b=6OVT3qJb7QSbzkewvzZYWWbqCQIHPBJ/jiRUicmS4fVMvTkHZhy9KpkcqF9yl8uB0Mg8Yi
-	pXiq6/VkKOtt1zCA==
-To: Frank Li <Frank.li@nxp.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Krzysztof
- =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Kishon Vijay Abraham I
- <kishon@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Anup Patel <apatel@ventanamicro.com>,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
- imx@lists.linux.dev, Niklas Cassel <cassel@kernel.org>,
- dlemoal@kernel.org, maz@kernel.org, jdmason@kudzu.us
-Subject: Re: [PATCH v9 2/6] PCI: endpoint: Add RC-to-EP doorbell support
- using platform MSI controller
-In-Reply-To: <Z0+TFbH5uWgFq6xY@lizhi-Precision-Tower-5810>
-References: <20241203-ep-msi-v9-0-a60dbc3f15dd@nxp.com>
- <20241203-ep-msi-v9-2-a60dbc3f15dd@nxp.com> <87v7w0s9a8.ffs@tglx>
- <Z0+TFbH5uWgFq6xY@lizhi-Precision-Tower-5810>
-Date: Wed, 04 Dec 2024 14:08:12 +0100
-Message-ID: <87jzcfsiir.ffs@tglx>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00wFZg2i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9123FC4CECD;
+	Wed,  4 Dec 2024 14:56:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733324194;
+	bh=VrApkmCQ7OLsx/HiaNNmAgFTOOUbcnn1Hg4GyGxNkg0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=00wFZg2iCDEA+yYAGVNIilVjNHb/PkMT7u36jhDJHmCjTiSpTl9GWdl9NVTchz/fd
+	 GNpu3Lvx4WhfCAUKmz/6Neidzv9DiryQ284aofvjJPlF4FcI23Zyqm/LQ9TQqhgHk8
+	 a4MTa2nb1hiCYNpX3ffEOeWY2W5UikabaXnZg3nI=
+Date: Wed, 4 Dec 2024 15:56:30 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: Thinh.Nguyen@synopsys.com, mathias.nyman@intel.com,
+	linux-usb@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH] usb: host: xhci-plat: set skip_phy_initialization if
+ software node has XHCI_SKIP_PHY_INIT property
+Message-ID: <2024120402-applause-perky-223c@gregkh>
+References: <20241105073904.2416057-1-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241105073904.2416057-1-xu.yang_2@nxp.com>
 
-On Tue, Dec 03 2024 at 18:24, Frank Li wrote:
-> On Tue, Dec 03, 2024 at 11:15:27PM +0100, Thomas Gleixner wrote:
->> The fact that a MSI parent domain supports DOMAIN_BUS_DEVICE_MSI does
->> not guarantee that the parent is translation table based.
->>
->> As this is intended to be a generic library for all sorts of EP
->> implementations, there needs to be
->>
->>   - either a mechanism to prevent the initialization if the underlying
->>     MSI parent domain does not provide immutable messages
->
-> How to know such information?
+On Tue, Nov 05, 2024 at 03:39:04PM +0800, Xu Yang wrote:
+> The source of quirk XHCI_SKIP_PHY_INIT comes from xhci_plat_priv.quirks or
+> software node property. This will set skip_phy_initialization if software
+> node also has XHCI_SKIP_PHY_INIT property.
+> 
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> ---
+>  drivers/usb/host/xhci-plat.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
+> index e6c9006bd568..77853b86794a 100644
+> --- a/drivers/usb/host/xhci-plat.c
+> +++ b/drivers/usb/host/xhci-plat.c
+> @@ -290,7 +290,8 @@ int xhci_plat_probe(struct platform_device *pdev, struct device *sysdev, const s
+>  
+>  	hcd->tpl_support = of_usb_host_tpl_support(sysdev->of_node);
+>  
+> -	if (priv && (priv->quirks & XHCI_SKIP_PHY_INIT))
+> +	if ((priv && (priv->quirks & XHCI_SKIP_PHY_INIT)) ||
+> +		(xhci->quirks & XHCI_SKIP_PHY_INIT))
 
-It obviously needs to be flagged somehow in the domain and the EP magic
-needs to check that flag. 
+Wrong indentation :(
 
->>
->>   - or support for endpoint specific msi_write_msg() implementations
->
-> Even provide specific msi_write_msg(), write to address/data to shared
-> memory.
->
-> host driver:
-> 1. read address/data from shared memory
-> 2. write data to address.
->
-> 1 and 2 is not atomic. So it can't avoid above raise conditon.
+Also, what commit id does this fix?  Should it go to stable kernels, and
+if so, how far back?  And if not, why not?
 
-Correct. So you cannot support that case, which in turn requires to have
-a mechanism to check for the immutable property.
+thanks,
 
-Thanks,
-
-        tglx
-
+greg k-h
