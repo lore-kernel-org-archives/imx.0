@@ -1,322 +1,180 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2074.outbound.protection.outlook.com [40.107.105.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35662219A85
-	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 13:41:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733406073; cv=none; b=uV3gugxSdrvyEIWM8QJqxXtqOv0uwsedW05LSD6bV7HUgARsFnmY3QYm9ctUDuV7ere4qwf8ok8GniZkwvJmTjUPe3q+GlMz2r7ZgvYNRXZLNumNBt3RIomSxFnZaThF6nWKzIFdkAdD2kwazN1vCBaa/vCYLMwU/gwYsbOd58o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733406073; c=relaxed/simple;
-	bh=+B0Y1ymrKLNXbXLxHW3N4CZv+OVLqQil6iGbBGOMqsA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RuscUe8yv9Z0lvK1SsxjfbxxfU/5vnOFCglEiIEPaCuzzCeRPWmfsLhGGEFQmVZTB09rMsmHU0qAqv1QphFEW7i57Habey7k7gywjHxKQPFjh20FjgfMT5bBaRje9rvcWWEu/WSeR0oG+nlriVtm6tBUHwS96kUFz8GBZBuiqEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=Log0uBB1; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1011F21C17C
+	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 14:56:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.74
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733410585; cv=fail; b=edAnlxzUG3IBirOk4LgNPxAFLKMfSvG/k03pAoYEQDQ+I4eAyB8Z4H8VM+h39vX/8/SrSDJIhJn89rC1XCtlNDLXI4S0biSZcpcgwHYfUYAa2etAj5F7Gt8+HANesZwsPyrkOdSMO5sTPrjfokKkFHsPrMClDH5IThekAZPq078=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733410585; c=relaxed/simple;
+	bh=KGyvCT7j8/TZb42Zq/ZsBm8nsqFFeY+3kKTJ+ysaLVc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=qnKMp9vC10c5r2SveHjSOdAUPr+LVeqcLrfi4s6f0XnWW0+/EnEv/Cz8mY1/B1pvH2rD+nY5BJqmI97ig46jUgaOaZimegIGe+LaB34NQzZeQAVh4jgGXiqw5RqjVUYPp1Yq+aIkiSn3VXCJC0/OH+7DSm66g6ewGNZBf78itfA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=TAftLHFn; arc=fail smtp.client-ip=40.107.105.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="Log0uBB1"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=bhdvQ2tS304+xUyVbV3+k0uqJMUCeMsaHMXtMPtXBEA=; b=Log0uBB1JPeWcSGWghi0DOBari
-	GThD4pcyT1IavjmhighFpkZPbRpF4KqApB5UPDAzdBix2YQiocLcsHaSItKS15Hn/TgcSP03KQIy5
-	61MYFPxwNTT+h50b/ZORlCIiYbl31TK5DwuyROs3fcCXx6mEm0Yt+sXv9Lwoeht6Aq9sI+Ny4ouR0
-	51KxOUBrNBArMVgc/5iQ198+Eo1OKxrHtUSjuzgpoe+kbuAmgZ/EpWnwnEMnbkfUaDZJual3jbSWS
-	EL6Svnw0DM6CQ3sFxzPBHV4O2UVq2rHRz+UgQwowOsc2f8HPzDkLYSMwf0wTDRAwoX+lck1ZWDs9D
-	LMuvOOLg==;
-Received: from [89.212.21.243] (port=51914 helo=and-HP-Z4..)
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <andrej.picej@norik.com>)
-	id 1tJC6P-001iy5-1F;
-	Thu, 05 Dec 2024 14:41:09 +0100
-From: Andrej Picej <andrej.picej@norik.com>
-To: andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org,
-	rfoss@kernel.org,
-	Laurent.pinchart@ideasonboard.com,
-	jonas@kwiboo.se,
-	jernej.skrabec@gmail.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	marex@denx.de
-Cc: dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	upstream@lists.phytec.de
-Subject: [PATCH v4 2/3] drm/bridge: ti-sn65dsi83: Add ti,lvds-vod-swing optional properties
-Date: Thu,  5 Dec 2024 14:40:20 +0100
-Message-Id: <20241205134021.2592013-3-andrej.picej@norik.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241205134021.2592013-1-andrej.picej@norik.com>
-References: <20241205134021.2592013-1-andrej.picej@norik.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="TAftLHFn"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=a44vjT9uADLc06tiTo7lc0VBQ/Nkvmo2fERK7vRjqr2sH04b0HoQ1cJmJI8xrvwd2SJHxmCg58F7l/AXcd+/4kq37thhpx0SThnAQaJOL9pZCNdBKVpAscnesx3jrQ1M2CuWYrxtG/B3cAw875IaUaJhOwUWFpD/748dXXqL9A4fetugZJSkiMNjmwBwP+yKkXuHFO7i7m+TTuXJi5H/9MGPmp4fo2CMq9/+dn0sXZqW9QRLqRdMbtmlTGjPcRiBPCbus2gM3dfPt8p3VpiP4hj9Q1i222OujHSoL8L4OUMdYZu3Pd8H/i3mWI2ZdIfJUFIBwUK3MOuqUd6UVR+aSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=u8ObJYMcR3OKldnMUh90N4/yPoctlilZXTYH80GUDjw=;
+ b=XDMsutPHsvpas2OlsMjNEHBFSqkOllUyvF131q8MgIkPQqzshJyKvueRv798eWc6e15+8SARGrnFiNvHYVFVT1OpZivGjopyrn/39KoMDlZXgVrHQ+g4ntxOyvARuqEY68I6WIDf7GYUuX0ZPsCobqkD3yZ28djL/MkcsJdsvIaIc/w2fkgi6gUYCKrO2pz3wCT7gn4Gztxcrd2rj/OBEKABB3y869I3IVdF2/OQZB4rwqblHdfC9wGOUNWL491Z2TPe8jb3c5Fw1Yc9TUqYLUS6DZyNvlABpnvYS9DKtITEzASGVgxAFpJ9rTd9EP3Lo8mYWDDuW+aRneUMiFaNQw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=u8ObJYMcR3OKldnMUh90N4/yPoctlilZXTYH80GUDjw=;
+ b=TAftLHFna8zUrE23MetN+wkq2hC070ZNDnINhMm+Lxqw/oB0TFWVxhZhvHakGmU2Iqm01lhVjmMqcoU1yl3JwfJ4I0II3U5JwCMIOiSd+cLzs3Qmo5Ilrpa6fUbPDHyk1HDdg9EXPdABdRNVXfZTQr2GJUrepS7o07EAIQR0KZ2hILxaQb9Q1fYZmPPJMDASYUdkNiyT37CtOB0YlBbRAlh3lcFqqpbB+AoEOxf2V+dAQxDAWslOgE26ZIDPmL6D+mA4s6EtP309NFdKFk5GHqqgl4E2RYxqFNhyYUq/KfTkBKXujDdOoIRlkDR+q46Fns2KdlyyUWK7cpF0zGP+Xw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM8PR04MB7812.eurprd04.prod.outlook.com (2603:10a6:20b:245::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.12; Thu, 5 Dec
+ 2024 14:56:20 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8230.010; Thu, 5 Dec 2024
+ 14:56:20 +0000
+Date: Thu, 5 Dec 2024 09:56:11 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Anup Patel <apatel@ventanamicro.com>, Marc Zyngier <maz@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, Niklas Cassel <cassel@kernel.org>,
+	dlemoal@kernel.org, jdmason@kudzu.us,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v10 3/7] PCI: endpoint: pci-ep-msi: Add MSI address/data
+ pair mutable check
+Message-ID: <Z1G/CwFvO/aBLBe8@lizhi-Precision-Tower-5810>
+References: <20241204-ep-msi-v10-0-87c378dbcd6d@nxp.com>
+ <20241204-ep-msi-v10-3-87c378dbcd6d@nxp.com>
+ <87ttbiqnq8.ffs@tglx>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87ttbiqnq8.ffs@tglx>
+X-ClientProxiedBy: BYAPR11CA0106.namprd11.prod.outlook.com
+ (2603:10b6:a03:f4::47) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
-X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM8PR04MB7812:EE_
+X-MS-Office365-Filtering-Correlation-Id: 18e13a82-8faa-4e0b-8ad4-08dd153cfabb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?VSHD3y2UoS0pvR7RTvYGKfNhAblnuPxZ9q86GjVHgo9/ZJ48I3MdY4liVb+u?=
+ =?us-ascii?Q?P3NEazdL8W30Kev2suL/gYnceYnaq28FlT7GIAQosXFic6s3K9p5Ocvyd5KR?=
+ =?us-ascii?Q?R0b2fYlmscfJfxw2vkne3tRADxUQRJyAbr8/dnqfvuFzNOs+N4mYuoERidBQ?=
+ =?us-ascii?Q?HOdRuHrA7zfoX7Wrm+xPcE3/kz8zW62/L4BUAkUJExwtkTWRmkxIy4+IsBK/?=
+ =?us-ascii?Q?hebt3L27gk/JEAydquRqkd/oZ8WeiI7I4IXhBMX7DtoP6a/7aAkT63iEAQAy?=
+ =?us-ascii?Q?gSW7N7yLbfs9vlvDP/ZsbaMkJ79zVd2QIxJHOFxU/RPHXenk4cpVFbwU2zi1?=
+ =?us-ascii?Q?Cm9eAxH5r6vMPnW2b5NWPaYG+q6lnZurD0BDd4btyZGr3K8n3t1FUx10wgRl?=
+ =?us-ascii?Q?jAQQdOwvjpfUkj6nt6PM0c85VXnIImMpf5tT1IkwKonF6QlgFJO4SzImouFP?=
+ =?us-ascii?Q?w/DU/DeCjOQ2UwZ2rebkJjXeYoz1YN54YMd6NClf7Gna5Q5OaE6mFbuZW0pM?=
+ =?us-ascii?Q?ygTkWCtSlV1ZCAnL86il167OV9sag6eX0ihl8dOMdF13MCf+/5YCi7uXe9J5?=
+ =?us-ascii?Q?ag31P7Pe9JBrorA0tXeTnwL4FyXY3mxcJ5sVCvzsdUZgFRMRTmJEUae5X6D+?=
+ =?us-ascii?Q?VuJeREUfZbH2R138Nkj4rF3YJU7ElqMaNNS2+G1EpIOGvhfZg5uP5BT299hk?=
+ =?us-ascii?Q?QVWVrgeEUf1G0DYSQf9VvIIjivHHuchzpyt1+YPcoGzrzo3D6/n6LWYpwb8O?=
+ =?us-ascii?Q?s0LA2W5bESmJtkUm6NPr2ijNRd0qsSG4RgNpYN9ah90sj1slXgjzHDic1+hH?=
+ =?us-ascii?Q?hwrS2fIOrxi++E6u86ZvMQZ3FwdBQ9ETpQq8AuPJckwYdbVwMBqqVpjSf0Bc?=
+ =?us-ascii?Q?4jO3t73l+aOQGEDfmm+Hu7nzQnKNCbFkkX8G6suMhnTbGtBPg/3Rzuor8Ute?=
+ =?us-ascii?Q?qA6GrNvG2uMAW0Vb6tfbFjLZSQERs3brQAGw5VVViXKCfMzM+uVq5Tm6uXVp?=
+ =?us-ascii?Q?UkJllSuQvfxRcT9GSHUv7PJfRtPQARKaGSzrd1tfjMgQOIGndWoQuVet0XZG?=
+ =?us-ascii?Q?MQzfgzxUTLo2vRJUM2QMvroXLf0YI3NHUFg27DrTrKLCrcjcBbhJLKW0m88V?=
+ =?us-ascii?Q?MJ1/ks88awDCkQz5jH+x1pkWdsO7lJEglaHPIg7ppknnBt37MGTevW/sTM0k?=
+ =?us-ascii?Q?N7XtOeNsrbAEZcKXvRvrg4yy8HOG1zBcJO42L23e9qBRcmHICwJA+RsTWpPL?=
+ =?us-ascii?Q?UBRp1cFMQaw8nZHF2hCdGimVaop/orbVwIq6OySXzXVpECUmr/l08oljf3Ir?=
+ =?us-ascii?Q?nspUp2FR8WbqORZhn5wSfWk1372cdrFPVh3o4pDh0/vXRr0LX1knONyzc2LT?=
+ =?us-ascii?Q?oXlQsdomBfm4AYOWaaaTjP2W2SASY/o2q+sKjJysdKtMcqyl+A=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ZsTA5hxNR9JXs1EptUeJcU48AFgDgMQVkehiDUJuevEEk1A4IXlvrZf6vb6W?=
+ =?us-ascii?Q?zX1ozri+XzZOOVxOQwg4H63ihSbQOMsxQOabktyTuCbvj8DHN/burKXFup5o?=
+ =?us-ascii?Q?2PaU0EIHV7L2TiT6PnekokU/Bl/dReMOvpImNnGmu68oSDvHJDHqkV4i15Ud?=
+ =?us-ascii?Q?eFGTGzwCwGXTvLbuY7R7TAPwHCKYE/f0cs3TrdQM6KpG/4Rg9FvBS+JmajXc?=
+ =?us-ascii?Q?WaoG3UusmKXgSYemz+fgLTSm8ZYzgZGQNS0ZkD7IgF5Oz2JEovcqjO4Y0s/f?=
+ =?us-ascii?Q?8tBaNNe+Yf9//3VnUTbOp+T1Ug/zhTnBAzCfv5vWCTD8Seax9WwxTfQJfyfr?=
+ =?us-ascii?Q?JNqZ28Y6HUdNwdMnVh7jwzmSGtuHhP655FO7rzP2JSq9mqObigY9F9cRuXYD?=
+ =?us-ascii?Q?h2NWX2liOIykeQ1tyH8o3PxjwNAEFZZxoypi2aqFWeDkKQP/VrEL4y5RG79Y?=
+ =?us-ascii?Q?BneQmLJWaGF5ODvRHx7LeJZ5ue+akiK+giapBHHbKDr35iq56UrxD/SWmkNn?=
+ =?us-ascii?Q?Wwfo2jcPHrChekUdCjHCV5K5QxMXHu92g6o1YVCSH2h/fwfVybrVpEcz4nQY?=
+ =?us-ascii?Q?1kIt89Sec36JSF7o9GVbRcAjPs5x9lc4Y4nEt5rqifxXw+cb9xdM910/tFMz?=
+ =?us-ascii?Q?dDV0YMbQGCNnNJA6lUWuitXGeRsiSu3gbfqqIori4jOCF7yYTSYCClNvtAEC?=
+ =?us-ascii?Q?/DzYJJv22dxod0PLNOnQ0MEdHnvOZlBtEOTykaxX4bpSx3GMLr3FIEwSL1Yk?=
+ =?us-ascii?Q?Z1j43lulYC+qqZ5oAf3gKAn4BbXHh7d2UaCmmtUxCUeyY24saQj01YCCXGyv?=
+ =?us-ascii?Q?GMns2Hx8ewUzaZ2vFH4LvWhmUzR/UYeugr3scuT3lZtqGsw3jYoWg3RalAa5?=
+ =?us-ascii?Q?VKA4W5tljnAiZv1hXnTDW+lzbOIpcSxSTzeFtyk1/T0IfzuRWn9pc3R2k4f8?=
+ =?us-ascii?Q?F9rEHx4/nt0HmDmsiUYtxh0CO3ya/FWRFAgGrhrqe9nkTX4ITPSbmabk5RXd?=
+ =?us-ascii?Q?9eBhzl22p9S74FHohJLertNm3v3Jfx7G5XHMKKgQSIzxvNloK+8Txt1t9YZT?=
+ =?us-ascii?Q?gJ4pDDj9N2yOn41HXsDV3+bKvdJWjqa5+MOLctP6LLwul0woVcBoRB4RVxsI?=
+ =?us-ascii?Q?46ndrjgULmWISFQ3R1hFj2h5sZDy7oTpmBVGQBS73tmk+cFWuSo7BIrUgdM+?=
+ =?us-ascii?Q?bW/j5zxS6ib3u+SZtkHIp2XUpf3i17U+V7NunmXuj1gZjRmzLlkEbgIYhdwH?=
+ =?us-ascii?Q?ind8wUfO3RTBY1U7oWRcfwUqpbAjJgd5z6h569tt9ym+4h2hV+7+KOXJZQvq?=
+ =?us-ascii?Q?XFWvCgzblk92C+37gYYWlMzobfWFiumPn5u062jP7qgLKFgvx3g+yYz2DbZV?=
+ =?us-ascii?Q?iteiVIEM9fJ8zPf6bnm2LafGoE8AKp+eix9/Tr9QE/ixTwL13M2v3+Jh5s87?=
+ =?us-ascii?Q?04Adwqra+mTNtLkL4lklCFZcCyXxpB6wLebBHP1epJLEwGudAcjlRxx5ygnB?=
+ =?us-ascii?Q?PpeuLkv+9Ybj7a3rGP3gu5J8AMRjQLgSyXl8NkRJh/ZhmmCtsQJRg+4hOeHV?=
+ =?us-ascii?Q?w+IXvelxU0L1RWy7Vko=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 18e13a82-8faa-4e0b-8ad4-08dd153cfabb
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2024 14:56:20.6485
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uAcKVqeOB4acyQ7tJSGx/oQW45UJJgP1MxRbUVFZewsGV3DuXgcAMDYNnOfxIeir0IuwVKQcioMmYkXbkNyYaA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7812
 
-Add a optional properties to change LVDS output voltage. This should not
-be static as this depends mainly on the connected display voltage
-requirement. We have three properties:
-- "ti,lvds-termination-ohms", which sets near end termination,
-- "ti,lvds-vod-swing-data-microvolt" and
-- "ti,lvds-vod-swing-clock-microvolt" which both set LVDS differential
-output voltage for data and clock lanes. They are defined as an array
-with min and max values. The appropriate bitfield will be set if
-selected constraints can be met.
+On Thu, Dec 05, 2024 at 02:10:55PM +0100, Thomas Gleixner wrote:
+> On Wed, Dec 04 2024 at 18:25, Frank Li wrote:
+> > Some MSI controller change address/data pair when irq_set_affinity().
+> > Current PCI endpoint can't support this type MSI controller. So add flag
+> > MSI_FLAG_MUTABLE in include/linux/msi.h and check it when allocate
+> > doorbell.
+>
+> Q: Who is going to annotate the affected domains with that flag?
+>
+> A: Nobody.
+>
+> Q: What's the value of the flag?
+>
+> A: Zero, as as it prevents exactly nothing.
+>
+> You want a MSI_FLAG_MSG_IMMUTABLE and set that on the domains which
+> provide it. That way you ensure that someone looked at the domain to
+> validate it.
 
-If "ti,lvds-termination-ohms" is not defined the default of 200 Ohm near
-end termination will be used. Selecting only one:
-"ti,lvds-vod-swing-data-microvolt" or
-"ti,lvds-vod-swing-clock-microvolt" can be done, but the output voltage
-constraint for only data/clock lanes will be met. Setting both is
-recommended.
+Okay, at beginning I think most MSI controller is immutable. So I use
+MSI_FLAG_MSG_MUTABLE.
 
-Signed-off-by: Andrej Picej <andrej.picej@norik.com>
----
-Changes in v4:
-- fix typo in commit message bitfiled -> bitfield
-- use arrays (lvds_vod_swing_conf and lvds_term_conf) in private data, instead
-of separate variables for channel A/B
-- add more checks on return value of "of_property_read_u32_array"
-Changes in v3:
-- use microvolts for default array values 1000 mV -> 1000000 uV.
-Changes in v2:
-- use datasheet tables to get the proper configuration
-- since major change was done change the authorship to myself
----
- drivers/gpu/drm/bridge/ti-sn65dsi83.c | 147 +++++++++++++++++++++++++-
- 1 file changed, 144 insertions(+), 3 deletions(-)
+It is fine change to MSI_FLAG_MSG_IMMUTABLE.
 
-diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-index 57a7ed13f996..f724d2a6777b 100644
---- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-@@ -132,6 +132,16 @@
- #define  REG_IRQ_STAT_CHA_SOT_BIT_ERR		BIT(2)
- #define  REG_IRQ_STAT_CHA_PLL_UNLOCK		BIT(0)
- 
-+enum sn65dsi83_channel {
-+	CHANNEL_A,
-+	CHANNEL_B
-+};
-+
-+enum sn65dsi83_lvds_term {
-+	OHM_100,
-+	OHM_200
-+};
-+
- enum sn65dsi83_model {
- 	MODEL_SN65DSI83,
- 	MODEL_SN65DSI84,
-@@ -147,6 +157,8 @@ struct sn65dsi83 {
- 	struct regulator		*vcc;
- 	bool				lvds_dual_link;
- 	bool				lvds_dual_link_even_odd_swap;
-+	int				lvds_vod_swing_conf[2];
-+	int				lvds_term_conf[2];
- };
- 
- static const struct regmap_range sn65dsi83_readable_ranges[] = {
-@@ -237,6 +249,36 @@ static const struct regmap_config sn65dsi83_regmap_config = {
- 	.max_register = REG_IRQ_STAT,
- };
- 
-+static const int lvds_vod_swing_data_table[2][4][2] = {
-+	{	/* 100 Ohm */
-+		{ 180000, 313000 },
-+		{ 215000, 372000 },
-+		{ 250000, 430000 },
-+		{ 290000, 488000 },
-+	},
-+	{	/* 200 Ohm */
-+		{ 150000, 261000 },
-+		{ 200000, 346000 },
-+		{ 250000, 428000 },
-+		{ 300000, 511000 },
-+	},
-+};
-+
-+static const int lvds_vod_swing_clock_table[2][4][2] = {
-+	{	/* 100 Ohm */
-+		{ 140000, 244000 },
-+		{ 168000, 290000 },
-+		{ 195000, 335000 },
-+		{ 226000, 381000 },
-+	},
-+	{	/* 200 Ohm */
-+		{ 117000, 204000 },
-+		{ 156000, 270000 },
-+		{ 195000, 334000 },
-+		{ 234000, 399000 },
-+	},
-+};
-+
- static struct sn65dsi83 *bridge_to_sn65dsi83(struct drm_bridge *bridge)
- {
- 	return container_of(bridge, struct sn65dsi83, bridge);
-@@ -435,12 +477,16 @@ static void sn65dsi83_atomic_pre_enable(struct drm_bridge *bridge,
- 		val |= REG_LVDS_FMT_LVDS_LINK_CFG;
- 
- 	regmap_write(ctx->regmap, REG_LVDS_FMT, val);
--	regmap_write(ctx->regmap, REG_LVDS_VCOM, 0x05);
-+	regmap_write(ctx->regmap, REG_LVDS_VCOM,
-+			REG_LVDS_VCOM_CHA_LVDS_VOD_SWING(ctx->lvds_vod_swing_conf[CHANNEL_A]) |
-+			REG_LVDS_VCOM_CHB_LVDS_VOD_SWING(ctx->lvds_vod_swing_conf[CHANNEL_B]));
- 	regmap_write(ctx->regmap, REG_LVDS_LANE,
- 		     (ctx->lvds_dual_link_even_odd_swap ?
- 		      REG_LVDS_LANE_EVEN_ODD_SWAP : 0) |
--		     REG_LVDS_LANE_CHA_LVDS_TERM |
--		     REG_LVDS_LANE_CHB_LVDS_TERM);
-+		     (ctx->lvds_term_conf[CHANNEL_A] ?
-+			  REG_LVDS_LANE_CHA_LVDS_TERM : 0) |
-+		     (ctx->lvds_term_conf[CHANNEL_B] ?
-+			  REG_LVDS_LANE_CHB_LVDS_TERM : 0));
- 	regmap_write(ctx->regmap, REG_LVDS_CM, 0x00);
- 
- 	le16val = cpu_to_le16(mode->hdisplay);
-@@ -576,10 +622,101 @@ static const struct drm_bridge_funcs sn65dsi83_funcs = {
- 	.atomic_get_input_bus_fmts = sn65dsi83_atomic_get_input_bus_fmts,
- };
- 
-+static int sn65dsi83_select_lvds_vod_swing(struct device *dev,
-+	u32 lvds_vod_swing_data[2], u32 lvds_vod_swing_clk[2], u8 lvds_term)
-+{
-+	int i;
-+
-+	for (i = 0; i <= 3; i++) {
-+		if (lvds_vod_swing_data_table[lvds_term][i][0] >= lvds_vod_swing_data[0] &&
-+		lvds_vod_swing_data_table[lvds_term][i][1] <= lvds_vod_swing_data[1] &&
-+		lvds_vod_swing_clock_table[lvds_term][i][0] >= lvds_vod_swing_clk[0] &&
-+		lvds_vod_swing_clock_table[lvds_term][i][1] <= lvds_vod_swing_clk[1])
-+			return i;
-+	}
-+
-+	dev_err(dev, "failed to find appropriate LVDS_VOD_SWING configuration\n");
-+	return -EINVAL;
-+}
-+
-+static int sn65dsi83_parse_lvds_endpoint(struct sn65dsi83 *ctx, int channel)
-+{
-+	struct device *dev = ctx->dev;
-+	struct device_node *endpoint;
-+	/* Set so the property can be freely selected if not defined */
-+	u32 lvds_vod_swing_data[2] = { 0, 1000000 };
-+	u32 lvds_vod_swing_clk[2] = { 0, 1000000 };
-+	u32 lvds_term = 200;
-+	u8 lvds_term_conf;
-+	int endpoint_reg;
-+	int lvds_vod_swing_conf;
-+	int ret = 0;
-+	int ret_data;
-+	int ret_clock;
-+
-+	if (channel == CHANNEL_A)
-+		endpoint_reg = 2;
-+	else
-+		endpoint_reg = 3;
-+
-+	endpoint = of_graph_get_endpoint_by_regs(dev->of_node, endpoint_reg, -1);
-+	of_property_read_u32(endpoint, "ti,lvds-termination-ohms", &lvds_term);
-+
-+	if (lvds_term == 200)
-+		lvds_term_conf = OHM_200;
-+	else
-+		lvds_term_conf = OHM_100;
-+
-+	ctx->lvds_term_conf[channel] = lvds_term_conf;
-+
-+	ret_data = of_property_read_u32_array(endpoint,
-+			"ti,lvds-vod-swing-data-microvolt", lvds_vod_swing_data,
-+			ARRAY_SIZE(lvds_vod_swing_data));
-+	if (ret_data != 0 && ret_data != -EINVAL) {
-+		ret = ret_data;
-+		goto exit;
-+	}
-+
-+	ret_clock = of_property_read_u32_array(endpoint,
-+			"ti,lvds-vod-swing-clock-microvolt", lvds_vod_swing_clk,
-+			ARRAY_SIZE(lvds_vod_swing_clk));
-+	if (ret_clock != 0 && ret_clock != -EINVAL) {
-+		ret = ret_clock;
-+		goto exit;
-+	}
-+
-+	/* If any of the two properties is defined. */
-+	if (!ret_data || !ret_clock) {
-+		lvds_vod_swing_conf = sn65dsi83_select_lvds_vod_swing(dev,
-+			lvds_vod_swing_data, lvds_vod_swing_clk,
-+			lvds_term_conf);
-+		if (lvds_vod_swing_conf < 0) {
-+			ret = lvds_vod_swing_conf;
-+			goto exit;
-+		}
-+
-+		ctx->lvds_vod_swing_conf[channel] = lvds_vod_swing_conf;
-+	}
-+	ret = 0;
-+exit:
-+	of_node_put(endpoint);
-+	return ret;
-+}
-+
- static int sn65dsi83_parse_dt(struct sn65dsi83 *ctx, enum sn65dsi83_model model)
- {
- 	struct drm_bridge *panel_bridge;
- 	struct device *dev = ctx->dev;
-+	int ret;
-+
-+	ctx->lvds_vod_swing_conf[CHANNEL_A] = 0x1;
-+	ctx->lvds_vod_swing_conf[CHANNEL_B] = 0x1;
-+	ctx->lvds_term_conf[CHANNEL_A] = 0x1;
-+	ctx->lvds_term_conf[CHANNEL_B] = 0x1;
-+
-+	ret = sn65dsi83_parse_lvds_endpoint(ctx, CHANNEL_A);
-+	if (ret < 0)
-+		return ret;
- 
- 	ctx->lvds_dual_link = false;
- 	ctx->lvds_dual_link_even_odd_swap = false;
-@@ -587,6 +724,10 @@ static int sn65dsi83_parse_dt(struct sn65dsi83 *ctx, enum sn65dsi83_model model)
- 		struct device_node *port2, *port3;
- 		int dual_link;
- 
-+		ret = sn65dsi83_parse_lvds_endpoint(ctx, CHANNEL_B);
-+		if (ret < 0)
-+			return ret;
-+
- 		port2 = of_graph_get_port_by_id(dev->of_node, 2);
- 		port3 = of_graph_get_port_by_id(dev->of_node, 3);
- 		dual_link = drm_of_lvds_get_dual_link_pixel_order(port2, port3);
--- 
-2.34.1
+Frank
 
+>
+> Thanks,
+>
+>         tglx
