@@ -1,70 +1,77 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2074.outbound.protection.outlook.com [40.107.20.74])
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2048.outbound.protection.outlook.com [40.107.249.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69BC121323B
-	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 20:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35935028C
+	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 21:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733429686; cv=fail; b=CeOwZvSLhxcg8GSDlL0GuUDKwAKK5fYzykWZcaYapiqB0kUDdwWxqs8EjwH9HfBSeVyzl100lTwBGz+AJRk5giztws/Ov/QcCiU0eN2JcR16iJqDrTFFAXkm8tEyPz2ZiY4LzW3VBYRezIcyxBl42IK/kJLRgx6Ka0n2cCv66v0=
+	t=1733432880; cv=fail; b=RMGKkXzHvrxOgbGXhITfaCaVYJLxqBfW8hLZdRZf7a+WAfCDSJTsqfYzt0XN7/UMTkZBDxkYSYF3r7rRp1RqkdQnA052OvYc0VjEMXlLBQak5/FA6r5m2M7ttGkvf0dpFBtJqhMx3+7VZPyBzg8yeu/b/LIGXigiZqMESwupTBg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733429686; c=relaxed/simple;
-	bh=V6LJEqmCuxIOhXTmsMxzcw03HqS58w1NVGrMeaHnwPg=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=a53v9TEf6cGMBmBjl0ldIi7QThn1Kl+P3soiNp+MdGaFl4ExokcgG9LXwA6ggOLwLREiJKBq8ZeajkEXAP+FyPToxI7GEhUq6GBAbhHHD9/l6nLtqO3tzfCG+DOnCRIuUSvrB2QmoPro2iM5e9FVD3O9KHO6tnxHBwnkFgAQ3uw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Y0ALtj6L; arc=fail smtp.client-ip=40.107.20.74
+	s=arc-20240116; t=1733432880; c=relaxed/simple;
+	bh=HQe7kpJAU7L0+hiUTOpu033/mYHDHAjJsthKWEDAXG0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=dhB0jNeY0UNhRfVYKQdcxyqFr2B6LOJIH1xpnwnFzFqGd40/hClnUjKLoUE/h0XikYneVKbkps7CKawb6YyZD2CGojE8ST5H9AkYMISw6tK00G4b38ngBwZdoj8xWCg3jBeCbiLJZTiBZZPQ4ANN9HDyOIB0XpgoVhELw7qgK+U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=kkVVTZA5; arc=fail smtp.client-ip=40.107.249.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Y0ALtj6L"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="kkVVTZA5"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gqYU3qlj6sXQ+U7EPbSnAVOjzZOEdJQXUZ7YytZUL+QE1zJiYyqTQwzRf+iSe/02G29mcaCL+Tpx/sMDGWKASHVH6nU3cTiqvJdB4zafGL/hyvNos0TORIJkZTQV88tlKPKaM/IOMl2tkd8/O96N4eLMrMK6SapVzVDmoWIZqT9ZeIw/dWIJvrczTZERe3qoHOR9yUALV0pTY8IFvCGLy1YiAPxdCGkiV5er8+/KIx6uswOLW48lwD5jY3Nqwsc48SeJFzL/vRsgbPiKkdHaxmaThZQ4Sgl0/R1ZIBG/BmDB4MoGnjr2G+y8LAj5vGpmdJvXMkruYaROp9yy5hSu5w==
+ b=LIMymRAY0jS9bUbJDv3AIXGqAlMoNLzF/4p+nybzia9LfOl5XfCPM+HTDUv9rHkO6ZJKAmPlM82l9Z6ePehm4+gMcOUJ6QpTFZf5b/1Y5Xt1t8lo8Oc9ScCfGGqfL+tIcFGdqctSQqSLZr4NOxlBv8LZcEnphqqPgwYSYXNKdFEQzqp3734xi2GY6z6SkfEJ4MH+rs0PiWF5RB+ebMnQLSVLpTainFtywhQpOqQyChYdsWxhunSb7DbYeTM0VnDBJ4dEv3tQ9x4LrflewvoQA3XP5gU8w7pUPQsld81xFXFGftcLO99Q2iyuf/+Pm3ApVSS95OsPg7zW2vqh+wimCg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BdHrSlGEm91Hs7yL39JUe49NnNhesv00gLm7jpse5qI=;
- b=MLJESEP8NdgHkx7BSr0zEjR9n+axGexvNWwDrl2DxT1HwWUr40+yJP870LUbidfANRT8DAsL9sVLK4Tbqh4RXysBIojhPsTPdCdyv2ZJ5yVItHnQhBYJgjGSqs+lQ7jhSJBN9uR+xgo/u+bywaJYDEGto6ShItcAB1XISztoaR555HwOdJiRHny4X/5ojZmUZ1CmPSyQYD+3R3I+4sEA2/gZuGLcddLvMSzzZhSTQCn+b4bUeBuuzYVzvDmxQHr8LLU7der465ACy3iIb31Nk9HAFoMknZmh3zjt96rvu6D/huuIQzA7wOvAcZJo0axJuZtXRG/bso61cxmEcyF7JA==
+ bh=cX9Fp3T/bHXaqQ+ENyiqPCZrUmaK1R0YaDrlF5QXQec=;
+ b=lPsZPryl4tSNV1TL/zsvaUT4lNg9oowwVP44AwXZiqScR3nDKQkDNB4FF6b7FphHKG4ftGBf8vzvp+j6sqVGrd1WwuFrzE47mAY+EUi6kmwZUHQ02FK9uAaegjCZCY/uOZQ+OtD863PPf0k5PDujOuI2d8c+ZZwcF/JoY8m+wshmuERauJThOIBVYvTlpt49BZFeak5KC8k6lQSp9qvGt0IUt3SmjSeLiCZccLl10zOVP/dooksdbgNSWJp0StF69MrkQSVgXdiLYHf/u7z0MNZBZ7+LrTEbj0qfHAJn/EYNw1jFTJtnB27rKKH9TYfXVwqvgsY4bU53uJYInWzLig==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BdHrSlGEm91Hs7yL39JUe49NnNhesv00gLm7jpse5qI=;
- b=Y0ALtj6LjtH1dvPYusSYV63wfzjXa1n5+il1anIW+M0fZexGQ7BFAC5ue2I8Guj4om8wmtr9L3Wn/maaZJtQC6a34yFX4bQWohd5SDogqhVi71YJXmlnHFUQHfYETqpMfoNFoAYh//TE3edc5Lp1+Ywn8Vmto6XfkbUKNKtHT1PGQdGDArqryZBfsC18MkR600B1/fz8aud2UsnrxV6cmQPYfGul0/Ba7ZguVBij5BNBV3p9uFxeWkNl/nfR36pHm3DmGruugyIWWsTs6AsQ4Vo614mor0yWENaoJ3X8y57/LHWG9J8OHu30n4zlIfi2ScCqGEPUG00fHDtNIVI/CA==
+ bh=cX9Fp3T/bHXaqQ+ENyiqPCZrUmaK1R0YaDrlF5QXQec=;
+ b=kkVVTZA5LYNmdrfLkDH/ZCjinqhcOQZiou19ZFrlsjCPwbGmgMY6esVMVM3ENgqYqsrfv4n85iKB37mGRi0lyHJaZBYHBsNMH97uLasLqIpIug6qLX+eWmy5L/hrZDULodBUjWcoUW59mn5prVXh4jzzjwfQ845cEhFC8Bm7YCXV23qCivoJY+ixehtzox+EvH4I8G/k5cbML8m6pGcKpQzImUSjrtRBAfXHPPBJ1nrAayxLjnSrgrT8qpa1zqi6FSRmDbISQ72eGrBfn4HwC3Bnz97k6GFeDl8QMkM8B14SafuAV0fYnDHkUFHpilirG54GiHAlYSwqgUfn9EBhzA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS8PR04MB8200.eurprd04.prod.outlook.com (2603:10a6:20b:3f8::24) with
+ by AS4PR04MB9410.eurprd04.prod.outlook.com (2603:10a6:20b:4e9::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.12; Thu, 5 Dec
- 2024 20:14:40 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.18; Thu, 5 Dec
+ 2024 21:07:54 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8230.010; Thu, 5 Dec 2024
- 20:14:39 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Rob Herring <robh@kernel.org>,
+ 21:07:54 +0000
+Date: Thu, 5 Dec 2024 16:07:44 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Karthikeyan Mitran <m.karthikeyan@mobiveil.co.in>,
-	Frank <Li@nxp.com>,
-	linux-pci@vger.kernel.org (open list:PCI DRIVER FOR NXP LAYERSCAPE GEN4 CONTROLLER),
-	linux-arm-kernel@lists.infradead.org (moderated list:PCI DRIVER FOR NXP LAYERSCAPE GEN4 CONTROLLER),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] dt-bindings: PCI: mobiveil: convert mobiveil-pcie.txt to yaml format
-Date: Thu,  5 Dec 2024 15:14:22 -0500
-Message-Id: <20241205201423.3430862-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR05CA0012.namprd05.prod.outlook.com
- (2603:10b6:a03:33b::17) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	Guido =?iso-8859-1?Q?G=FAnther?= <agx@sigxcpu.org>,
+	Robert Chiras <robert.chiras@nxp.com>,
+	"open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: display: nwl-dsi: Allow 'data-lanes'
+ property for port@1
+Message-ID: <Z1IWIFWQqvwCi1S+@lizhi-Precision-Tower-5810>
+References: <20241031194714.2398527-1-Frank.Li@nxp.com>
+ <20241104154059.GA203243-robh@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241104154059.GA203243-robh@kernel.org>
+X-ClientProxiedBy: SJ0PR05CA0193.namprd05.prod.outlook.com
+ (2603:10b6:a03:330::18) To DB9PR04MB9626.eurprd04.prod.outlook.com
+ (2603:10a6:10:309::18)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -72,414 +79,142 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8200:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3b6fd937-3a16-4a1f-5f0c-08dd156972ad
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS4PR04MB9410:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8f83e31e-913c-4ccc-93a9-08dd1570e27a
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|52116014|1800799024|366016|38350700014|921020;
+ BCL:0;ARA:13230040|1800799024|52116014|376014|7416014|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?3G/M2sduOvyyz2tMqkh23uZwMZHcUnQd96J4yaK76zZJ7MQyIf6v1iNlSQiZ?=
- =?us-ascii?Q?/fPxrSXHIFqkofDo+MjIGb4IzID5SaNjTRlorXB7A9tz+JNIJ8gy6ZVvHMA6?=
- =?us-ascii?Q?Lp4pyHc6eu/phPq6jJONPpIpA5urR/HuVRG2uexdelLkC2g6jUQxX8+FAe8v?=
- =?us-ascii?Q?5NHr7KY3ZvvqNB9dbTC7h7G8/ktqNDslZmrDa3Gu/M5YM3rM6cXR4Cjb6SHa?=
- =?us-ascii?Q?3MkpCdmc+GVyd1AXzqKfA+/wGp3dWoLWQGe2NZAI5WhFIGdQ9qGN+xWGyKby?=
- =?us-ascii?Q?ZCbv/Sk6eIXeXStzMp0rDEs/fIxiklX5a979eElLYj/MfWWevkhq80ULg1/h?=
- =?us-ascii?Q?A+wM6hs1cGcN371zyWY6k5p3Va3HplgMJ4iPFpabMSgtKneCQMciTN0MFVwY?=
- =?us-ascii?Q?fF55ypAxV4VqDnNRrzhjbzmJ3LQnKI+VGlPDvoYha/cM/P1MCAwiip0e2MV5?=
- =?us-ascii?Q?dOlye9rCZAuSeuBr2fDcC48wK0quhONZhA8egJcG4vmoDRtNBgmYCmHaPZAb?=
- =?us-ascii?Q?4GaSZB0jMPHGjfvCoU8CfcHk0G5DGqhbKTHK+NKFp76uN6OMn8PrEjG3W9Z0?=
- =?us-ascii?Q?5fNmSg8OZYJphdFm37SsPkMHFV+PtdAlrUgGOvgYj1bBt3rpnqV/oKyUbN/D?=
- =?us-ascii?Q?AKI3cfm7mJbcqIhjJWPMbQpk6yP2svdpxfh6OC83CpOFBzL4qvG3dkr6B1aQ?=
- =?us-ascii?Q?Kn240Nu70NjyTuBxhyNTi6ZimZcqewNezrEYTcD3R1/wsAJ6gxh9MeH9i+De?=
- =?us-ascii?Q?dYtzfhSGrOF61g6SLPAWiJIalP9b1zeJcyUrmWTw1zJe0GVLD5ZNpMYysAPy?=
- =?us-ascii?Q?FgIVF0/YOEjlW0kBfadOycQ7MmnB5nrLcKjZI0JoZLAYT7wTuAaA24Mutvyb?=
- =?us-ascii?Q?BDCcHKX1WT4YxAOWn6qE4EjrXpSQ9e4ntA9mYGzmDFTkHaxvEJn7xTv3+Urg?=
- =?us-ascii?Q?vGkm2RVccXnsJ9OAudj4ULNMYn8IIEFwLJH1M5B0qv6E3iaOy61Ytpsmu55H?=
- =?us-ascii?Q?5gJD+BRLkjRhCliPJvC1u2lfrk6wNf+p1fDhOIIkwMPKg98H7SmjS7Y3Vepy?=
- =?us-ascii?Q?BnPd8k66G8uy0ePu+g6mOFd7dsKXhSs26s4yQUpLqN2GctJpM6ZQ+YkyfaUE?=
- =?us-ascii?Q?sk/QSXu2YNS4l0GAe+b4x8heDhl1X3uvoiNT5M/PYUJTPESt8QE1TS1fMdFY?=
- =?us-ascii?Q?72Qn9sHUjV00v6jk5s5sCOEGxejEYW/I1PDGJ9VjnIk26ss21JYDOoi8QQVP?=
- =?us-ascii?Q?N+9G6/pEkbBnxDNUF1ivO18ldq0j8Z77a5vsavQ0R71DWCPs1LeIFqcsr8WY?=
- =?us-ascii?Q?ua52JTfzPqd+GIfKHV84XvnDVfF7wm2OU3QIaOIgip/HfR0C7G9i8Djspm+O?=
- =?us-ascii?Q?+/IJZ4c=3D?=
+ =?us-ascii?Q?U2BmbMCFWEIQe8Fslbce39db204rszOMozAu2oKEeksJgc5iyXyRCCF438GX?=
+ =?us-ascii?Q?rbRyCUKM97FA1EdGnA/UQA81a7aOzJAjCCevXKnGKZ5wu2tlezy/1/OEj5SE?=
+ =?us-ascii?Q?Jr9a4CO7xiYOAEfDt2ej1cFl824MdAev0oXSyAUX4im9MSbDgOZzktZ8uGxt?=
+ =?us-ascii?Q?3U4Op5FlKcpf+lByWAz2VfjZrvYjFf88UVkLvKDl38hMetDHnS0fVYxbu9DE?=
+ =?us-ascii?Q?p/ppLeL9FKWe6Al/PyCVliRa+jZE6h96wCpGBhvAmQoXlML/acaJ9A5x2Z/h?=
+ =?us-ascii?Q?1/8CWsv/VvxyzjzCbehCBvUfze2aAHZOW0H9YzGLzo7tSUTH7Z2uSG3v51vb?=
+ =?us-ascii?Q?RjrC8ywv4l8kFiQhxADt7gWxHSHtcSNAivUgTOLxuYj7UqP/+C/nC/lJ4TrB?=
+ =?us-ascii?Q?vSDSsQHfory5IGU0qPbBdOvxhUOuS8EMq52FnuRHjd3RSVGIaAi6C8lIeJDX?=
+ =?us-ascii?Q?RKlUU0pmSn1J75ExcWfPcMqz5jlDEaygJvtNRT/6IxVucK7vz2futbfiGFUA?=
+ =?us-ascii?Q?atZkkqmFYKj6Ypg/U1vGzduo1eC3OnM4Vzg1xOlSgHecWg0DujzPgAC/yE51?=
+ =?us-ascii?Q?5P84lRel+KEznyZDvkOLqz7Q6q6Z1PqvicJsOAnFVTpj2ElpSHtAonhhEBbf?=
+ =?us-ascii?Q?xtn7pi5p+iwtKd+YG/tjyZsZOkRrCLDa0K4iLkaLb9b8KuxXsbvm3vUTpIUv?=
+ =?us-ascii?Q?hi7xvEAP5n9u1eK+faYp1js30Op+sAccwJbiRsFcGDrBeJ5FUjtrjSgZhmWC?=
+ =?us-ascii?Q?EoDdTHZhpq5gE04KzXI1SuyF9eE3Tu8vGlI0d4TpdrSGUeKf8YPQjnAGDcSq?=
+ =?us-ascii?Q?MvqqfPOC6AqAM2fF4nL1Yqj7N/Mpa77kCE58plru0YBfpTVvbDl6p2gU5AWn?=
+ =?us-ascii?Q?EgdNoSO51ANDOqevhfEowXkBajXO0rIyf/TG85N0/cCIn5QIxFMjR9C1Vo9K?=
+ =?us-ascii?Q?CQQE50m2T2yvzj4LUMpUORdwYB/kXfaOXhTLdiYmEa3Xx7dkNOg8w1WHYjqz?=
+ =?us-ascii?Q?KTjgBd9t3O6BKXnUGK25RfoSpIyWpwIyt+idT79RTbK+36ch4tisvPL8Rluy?=
+ =?us-ascii?Q?udh5W3PT4g7un7Zuim4aKN7pFI2mWJL/xvNDDYObcc1mfIVfawzyrWagva2x?=
+ =?us-ascii?Q?UAoi7YmbUC+1MnvyQv3jEg7g+PnAB3eCBPp/40XuYJwof/rgtodaesUXW65C?=
+ =?us-ascii?Q?XsYefRl1PCs9c8bHbj1N0J8meR2mrKTT3s0WOz/wKAEwOIohADNhn7aDmYh0?=
+ =?us-ascii?Q?GJZjbbI3tr5O4uDc9cexA6H4d1X3IO67J4K5if252oF0MOFMmVd97k/vdfi/?=
+ =?us-ascii?Q?FrvWrg7bzYsvC3z7l1tMU5VPaPHfqGtvD9srVlJQb2tzNNEk4uLnjn2DPoSO?=
+ =?us-ascii?Q?Lfg/bVRY11CFL8Jc+CmBhIzISYwFp1RmWFVlXuUtzrTxcLD+KA=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(1800799024)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(376014)(7416014)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Qk2aXxjD+NxV7bC4qgwGrEXPfj6RNb30XWFvQoLkrlelwwCEhvJDZ36xCygz?=
- =?us-ascii?Q?F2R9XJp4U0EX2FZJHcqfVP63Z7NKoZfXUkuwx119m680+6nNQLMISdereWrS?=
- =?us-ascii?Q?8KdvI26PQNugyh8BV0WS9PnOkMy8pqOC5Fb8LJSVJQP5x0rhWKf4zrP5Wu8h?=
- =?us-ascii?Q?SQURDDCClgL5mGcxcjrWR42bEPOgRQd3o8dY/LeONdiyoS3qS8or9ADH2fFY?=
- =?us-ascii?Q?j4AuniiX0d0h1E+ko39Irzw3UVr3VWhl2/lsnrT5guHkocX6Xiswulc8x8oj?=
- =?us-ascii?Q?iSleQlY32BbBpS/rUagggKqgP/oCxCTa4cvPAIohD2xfqIQMYPEYdG07GQih?=
- =?us-ascii?Q?UAkDAhRvZij7Yv26D7VNyHaRF8zwQSl8swUqp0DLNDAAbImFni6g4RlEkH44?=
- =?us-ascii?Q?eQ6KuGEeLyNvUC+S8YhmD6VIpCCYxK/uUAJJbWnMh0uwgNL024RY4JLDS1bc?=
- =?us-ascii?Q?4yhVqux2Y8mnMQFmxHLP3IdL7dSMKKxz51kP99IxXQW5xf4Ivfs4KmV1lPsB?=
- =?us-ascii?Q?jK8vTNY3jEaqx59ev+Skzne2XYo2yGNXr+AjMJqyIxki2cvHEGK3e2ldlppn?=
- =?us-ascii?Q?KpVibfEkqEsrw+IVSOj5gmIYikVFtPPwJHUZ0lT5ea7GeGnMGDtfFF7+2oKp?=
- =?us-ascii?Q?zIOQ5Y4Vwf1ZMD1WHhHy4QVJYoV038VqO3YsP0NZ4WaccY/fpBvPT0mkAmJw?=
- =?us-ascii?Q?SHB8JolhiYiLdOYQYflYqRAgCXVtbrxy/LNev/623ebeUhR7N6ZOvMtyMz3d?=
- =?us-ascii?Q?4rMvfNeUEyTKj0Z+x4Rw1wA1vu9dv+p9iwuD15KLJgT4GsTCNSaVgmh4jByq?=
- =?us-ascii?Q?+DjGaeSIViLEEq2k/ksLPpJMClVCys4Z04hRHEQJJpp5PEoU0S9bVrqGIP+/?=
- =?us-ascii?Q?8TnxdsHVuzHoEOve0pm8WQNtTdJLUfR+1HkRB4vTvdYakBwcaQWNc7/RSOSk?=
- =?us-ascii?Q?bjXn8UXjedH8UrDh7S/RjIT8jV19OEebpmgDF/VnDp8RqGUOtb9aEEeT71xi?=
- =?us-ascii?Q?Z+xketHn85kdUy+JiB0Pa7zD5OcmOQtlWm7a44pfyXWOlA8wbQO6bcCqk5zM?=
- =?us-ascii?Q?OCQNTApsAPKdo+1fsUZAtmvqCYynxFiu5tqdhOOySM/X58704q6RB3xYSbYC?=
- =?us-ascii?Q?UnwB4TjPeYNn/JwFRNQ3WyMN0WqRGQbGcUTZsC4il5U0p9bHr9c4bzZYo++6?=
- =?us-ascii?Q?43JV7CX0vEdXzgWy4ICbK1nEPsq6NaNVC3ppvLduoIc3Lz6sne7QrsPf8jmG?=
- =?us-ascii?Q?kFpXsawjd1UistrcVBTzRTf82f3qZ0pSZiswteUpNT8+WGI3UIi+C/YH6x/A?=
- =?us-ascii?Q?0Ctp5PbI1YgaUARcgePG+MRWw0g86y6ZVSfQP/g0QFboOpKUjiM2MGjQjKia?=
- =?us-ascii?Q?ekyiNCHtT2hZeNGkGD7MuVYBGtSZlaS5OIvwNO+5NiC8AlolkHTGxgkZR6/f?=
- =?us-ascii?Q?YS3zjHnVbImMPCez8gTOjj18UEvIMd3U8uXtXuaWZRcLGelLQYupoEYXgmg7?=
- =?us-ascii?Q?b2K9jMHchBIxhb8H1IM3emZ856Ga1msFL/xqVW+m4nuwwuegKdPC/nPdjwqJ?=
- =?us-ascii?Q?mpo2onX+SqjSx8HRSo6XCyxK+orIufJPxSeQOpzL?=
+ =?us-ascii?Q?deXHyoYAFN/cQiUAReo9W4VTQwWRBMm6woblSsn6iZGISRyJnm0oP/4isLd4?=
+ =?us-ascii?Q?Hhy7K+Avf5P1DAVAwcVNuZvnULlSYLsNo2Uez9U98TZx9RmcEtyGJ0dHtsoZ?=
+ =?us-ascii?Q?G8TI1VcL2EPvRIqfqq/eYxb8j5bKaxkSEWhuL+dBzdYwkZhuaKgAijpGHTDU?=
+ =?us-ascii?Q?C03afaVyd8m7j4Jq3sqOa1L0RFXQcluRr0qaq3Syvzh3f0k/wPJKE6Zdn3jA?=
+ =?us-ascii?Q?0Myqzg/VLzZXFhqNd6S++fMEKZsLx8ngOCeqQGTSmsICeoock/aTbF0ldUGZ?=
+ =?us-ascii?Q?6/6qGt/vBjzbfX8QvKLQDmet0B3gnnpYvPvke4sIQpvRMKXmIGwoy0NWfChq?=
+ =?us-ascii?Q?/l8Z4OkKgV1+/YLc9JX/5KaaQsB3K2ffRDB37vfxheTCqDYXWKgGKwxNuKm/?=
+ =?us-ascii?Q?94hV/soku2aMBpwl6TBbeieI3zAvSFpMmID4Ryu4Ed8MaE13TwO+MqKIoPw2?=
+ =?us-ascii?Q?lW5KCqYiclB/P9kYfizKf/k5TmHnviwcIZryUNZs9gKJHqSyM9ZuQNkEUAXN?=
+ =?us-ascii?Q?AFWx8WzGBFQJkclMdUsbWwHlLGNUga+EbUA/+QgC8KzIlbZ9sKGYR+ehkGR/?=
+ =?us-ascii?Q?XSoMDZRkGH39dcBqIxdk6eZXI2yFC35dctCfWaI6zUF/ohTUJRFniZF4jUs4?=
+ =?us-ascii?Q?kX+6JFr7x1dAflYsXMy+w+TC9Haf/OLVHO0Q+5OTCM7vjB90rvf8qkB0tV1c?=
+ =?us-ascii?Q?BMXs6O1HDq6aAOBOGcvOgMFwHpQpcqrQHJf6EHT2REMMBvQQnTd64qpdX25X?=
+ =?us-ascii?Q?37zTyUBSB5V3dAyb/tZtCW9h03QRrttcdO9G2Uy+mP/CkOCWhoAA/SkXEAdL?=
+ =?us-ascii?Q?vBgf56+RfPShHCpOAnCBwVNRerh3W1/DGVpb+VjZ7GVFV044U1ph3wuTC0P6?=
+ =?us-ascii?Q?Gq3Uf1ktcdFgBdXuusTb4Pwm6JzKhSLa4AyADboT58e7/5tM9dymyD2+xjMn?=
+ =?us-ascii?Q?5xz5ojemSEmqW2R2+L/x/o4isYQw8dZW0WvPqFPauS3fXQItlZbcQw0Zmsyv?=
+ =?us-ascii?Q?EX9D6MrcPAW7z8XdQNAxs8HBKzR5h16EZwnFl035KrvcrwBM7OXDKc/KpGAx?=
+ =?us-ascii?Q?sJBbiZvqtF6hk3iMJtc8siLMiwb7akqICk4WDnHlQMiBwJnHgb4rsgMSebEO?=
+ =?us-ascii?Q?sdPvcj8MQWh+xyIXDAPMLgddZZKGPV88yPq7m7KxTf1EKBqGoQYu4dluEles?=
+ =?us-ascii?Q?Vy1FTzXyHOvvhBNWoY2gjY1tCxtv2BuhF1ZA+i51hCKpdcKIxkur5x6ZxqU4?=
+ =?us-ascii?Q?Q2DuB2hqo++PgJDE/AIyrnCgOKML+A9508mg2q1KxRMx1TdXaCANJYDPjsXq?=
+ =?us-ascii?Q?yyNPnvyb6lx9ddX+AP9Vpmh2WL77wrNUZeHlVvtOigDuBGoGF1299w6LzM09?=
+ =?us-ascii?Q?SCVtfjkT8V5m4IEbzeGksp8oewKTe9pEgOLGnhE3IK4eLmdDMQsyF5syY0RA?=
+ =?us-ascii?Q?7nUsqdpiBQKJm1dcpH2faQb11BcI1+5IG0LrgLVMsqKJT06uCPIPUreC6xpu?=
+ =?us-ascii?Q?tl/v23IZBYl7R8LQvTQsa86PMOzn5kxBRdZfqZbd2zPwqqiB0gDWwxpbauq8?=
+ =?us-ascii?Q?qoqzHAbM+iMgSWEpouwl6V3BJBIpjgdMDj6DPzI3?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3b6fd937-3a16-4a1f-5f0c-08dd156972ad
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8f83e31e-913c-4ccc-93a9-08dd1570e27a
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2024 20:14:39.9003
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2024 21:07:54.2897
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qYVYElu4NHOp4JvU6v7xRetasfpD9Ob7Oz2Poor3+18By03JoCUB3ngX+/sn5zFtRrXAxlO7Lndeo+dql09MCg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8200
+X-MS-Exchange-CrossTenant-UserPrincipalName: RrMeG6Z9w74BKNUnWthXMOscVvaD6NcBYPcCwse40EniTgV8ucQgi1mf3lCkz7Udzq+x18etVacGNXWNtNw7RA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9410
 
-Convert device tree binding doc mobiveil-pcie.txt to yaml format. Merge
-layerscape-pcie-gen4.txt into this file.
+On Mon, Nov 04, 2024 at 09:40:59AM -0600, Rob Herring wrote:
+> On Thu, Oct 31, 2024 at 03:47:14PM -0400, Frank Li wrote:
+> > Change $ref of port@1 from 'port' to 'port-base' and add 'endpoint'
+> > property referencing video-interfaces.yaml. Allow 'data-lanes' values
+> > 1, 2, 3, and 4 for port@1.
+>
+> Describe "why", not what the changes are. I can read the diff. Why is
+> the IP has a configurable number of lanes...
 
-Additional change:
-- interrupt-names: "aer", "pme", "intr", which align order in examples.
-- reg-names: csr_axi_slave, config_axi_slave, which align existed dts file.
+How about
 
-Fix below CHECK_DTBS warning:
-arch/arm64/boot/dts/freescale/fsl-lx2160a-qds.dtb: /soc/pcie@3400000: failed to match any schema with compatible: ['fsl,lx2160a-pcie']
+"This controller support scalable data lanes from 1 to 4. Add the
+'data-lanes' property to configure the number of MIPI display panel lanes
+selected for boards."
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-lx2160a r2 already don't use this IP. But someone still complain when I
-try to remove old r1 support.
+Frank
 
-So convert to yaml file to avoid annoised CHECK_DTBS warnings.
----
- .../bindings/pci/layerscape-pcie-gen4.txt     |  52 ------
- .../bindings/pci/mbvl,gpex40-pcie.yaml        | 167 ++++++++++++++++++
- .../devicetree/bindings/pci/mobiveil-pcie.txt |  72 --------
- 3 files changed, 167 insertions(+), 124 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/pci/layerscape-pcie-gen4.txt
- create mode 100644 Documentation/devicetree/bindings/pci/mbvl,gpex40-pcie.yaml
- delete mode 100644 Documentation/devicetree/bindings/pci/mobiveil-pcie.txt
-
-diff --git a/Documentation/devicetree/bindings/pci/layerscape-pcie-gen4.txt b/Documentation/devicetree/bindings/pci/layerscape-pcie-gen4.txt
-deleted file mode 100644
-index b40fb5d15d3d9..0000000000000
---- a/Documentation/devicetree/bindings/pci/layerscape-pcie-gen4.txt
-+++ /dev/null
-@@ -1,52 +0,0 @@
--NXP Layerscape PCIe Gen4 controller
--
--This PCIe controller is based on the Mobiveil PCIe IP and thus inherits all
--the common properties defined in mobiveil-pcie.txt.
--
--Required properties:
--- compatible: should contain the platform identifier such as:
--  "fsl,lx2160a-pcie"
--- reg: base addresses and lengths of the PCIe controller register blocks.
--  "csr_axi_slave": Bridge config registers
--  "config_axi_slave": PCIe controller registers
--- interrupts: A list of interrupt outputs of the controller. Must contain an
--  entry for each entry in the interrupt-names property.
--- interrupt-names: It could include the following entries:
--  "intr": The interrupt that is asserted for controller interrupts
--  "aer": Asserted for aer interrupt when chip support the aer interrupt with
--	 none MSI/MSI-X/INTx mode,but there is interrupt line for aer.
--  "pme": Asserted for pme interrupt when chip support the pme interrupt with
--	 none MSI/MSI-X/INTx mode,but there is interrupt line for pme.
--- dma-coherent: Indicates that the hardware IP block can ensure the coherency
--  of the data transferred from/to the IP block. This can avoid the software
--  cache flush/invalid actions, and improve the performance significantly.
--- msi-parent : See the generic MSI binding described in
--  Documentation/devicetree/bindings/interrupt-controller/msi.txt.
--
--Example:
--
--	pcie@3400000 {
--		compatible = "fsl,lx2160a-pcie";
--		reg = <0x00 0x03400000 0x0 0x00100000   /* controller registers */
--		       0x80 0x00000000 0x0 0x00001000>; /* configuration space */
--		reg-names = "csr_axi_slave", "config_axi_slave";
--		interrupts = <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>, /* AER interrupt */
--			     <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>, /* PME interrupt */
--			     <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>; /* controller interrupt */
--		interrupt-names = "aer", "pme", "intr";
--		#address-cells = <3>;
--		#size-cells = <2>;
--		device_type = "pci";
--		apio-wins = <8>;
--		ppio-wins = <8>;
--		dma-coherent;
--		bus-range = <0x0 0xff>;
--		msi-parent = <&its>;
--		ranges = <0x82000000 0x0 0x40000000 0x80 0x40000000 0x0 0x40000000>;
--		#interrupt-cells = <1>;
--		interrupt-map-mask = <0 0 0 7>;
--		interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>,
--				<0000 0 0 2 &gic 0 0 GIC_SPI 110 IRQ_TYPE_LEVEL_HIGH>,
--				<0000 0 0 3 &gic 0 0 GIC_SPI 111 IRQ_TYPE_LEVEL_HIGH>,
--				<0000 0 0 4 &gic 0 0 GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>;
--	};
-diff --git a/Documentation/devicetree/bindings/pci/mbvl,gpex40-pcie.yaml b/Documentation/devicetree/bindings/pci/mbvl,gpex40-pcie.yaml
-new file mode 100644
-index 0000000000000..160ddc4bc45bf
---- /dev/null
-+++ b/Documentation/devicetree/bindings/pci/mbvl,gpex40-pcie.yaml
-@@ -0,0 +1,167 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/pci/mbvl,gpex40-pcie.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Mobiveil AXI PCIe Root Port Bridge
-+
-+maintainers:
-+  - Frank Li <Frank Li@nxp.com>
-+
-+description:
-+  Mobiveil's GPEX 4.0 is a PCIe Gen4 root port bridge IP. This configurable IP
-+  has up to 8 outbound and inbound windows for the address translation.
-+
-+  NXP Layerscape PCIe Gen4 controller (Deprecated) base on Mobiveil's GPEX 4.0.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - mbvl,gpex40-pcie
-+      - fsl,lx2160a-pcie
-+
-+  reg:
-+    items:
-+      - description: PCIe controller registers
-+      - description: Bridge config registers
-+      - description: GPIO registers to control slot power
-+      - description: MSI registers
-+    minItems: 2
-+
-+  reg-names:
-+    items:
-+      - const: csr_axi_slave
-+      - const: config_axi_slave
-+      - const: gpio_slave
-+      - const: apb_csr
-+    minItems: 2
-+
-+  apio-wins:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: |
-+      numbers of requested apio outbound windows
-+        1. Config window
-+        2. Memory window
-+    default: 2
-+    maximum: 256
-+
-+  ppio-wins:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: number of requested ppio inbound windows
-+    default: 1
-+    maximum: 256
-+
-+  interrupt-controller: true
-+
-+  "#interrupt-cells":
-+    const: 1
-+
-+  interrupts:
-+    minItems: 1
-+    maxItems: 3
-+
-+  interrupt-names:
-+    minItems: 1
-+    maxItems: 3
-+
-+  dma-coherent: true
-+
-+  msi-parent: true
-+
-+required:
-+  - compatible
-+  - reg
-+  - reg-names
-+
-+allOf:
-+  - $ref: /schemas/pci/pci-host-bridge.yaml#
-+  - if:
-+      properties:
-+        compatible:
-+          enum:
-+            - fsl,lx2160a-pcie
-+    then:
-+      properties:
-+        reg:
-+          maxItems: 2
-+
-+        reg-names:
-+          maxItems: 2
-+
-+        interrupt-names:
-+          items:
-+            - const: aer
-+            - const: pme
-+            - const: intr
-+    else:
-+      properties:
-+        dma-coherent: false
-+        msi-parent: false
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+
-+    pcie@b0000000 {
-+        compatible = "mbvl,gpex40-pcie";
-+        reg = <0xb0000000 0x00010000>,
-+              <0xa0000000 0x00001000>,
-+              <0xff000000 0x00200000>,
-+              <0xb0010000 0x00001000>;
-+        reg-names = "csr_axi_slave",
-+                    "config_axi_slave",
-+                    "gpio_slave",
-+                    "apb_csr";
-+        #address-cells = <3>;
-+        #size-cells = <2>;
-+        device_type = "pci";
-+        apio-wins = <2>;
-+        ppio-wins = <1>;
-+        bus-range = <0x00000000 0x000000ff>;
-+        interrupt-controller;
-+        #interrupt-cells = <1>;
-+        interrupt-parent = <&gic>;
-+        interrupts = <GIC_SPI 89 IRQ_TYPE_LEVEL_HIGH>;
-+        interrupt-map-mask = <0 0 0 7>;
-+        interrupt-map = <0 0 0 0 &pci_express 0>,
-+                        <0 0 0 1 &pci_express 1>,
-+                        <0 0 0 2 &pci_express 2>,
-+                        <0 0 0 3 &pci_express 3>;
-+        ranges = <0x83000000 0 0x00000000 0xa8000000 0 0x8000000>;
-+    };
-+
-+  - |
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+
-+    soc {
-+        #address-cells = <2>;
-+        #size-cells = <2>;
-+        pcie@3400000 {
-+            compatible = "fsl,lx2160a-pcie";
-+            reg = <0x00 0x03400000 0x0 0x00100000   /* controller registers */
-+                   0x80 0x00000000 0x0 0x00001000>; /* configuration space */
-+            reg-names = "csr_axi_slave", "config_axi_slave";
-+            interrupts = <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>, /* AER interrupt */
-+                         <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>, /* PME interrupt */
-+                        <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>; /* controller interrupt */
-+            interrupt-names = "aer", "pme", "intr";
-+            #address-cells = <3>;
-+            #size-cells = <2>;
-+            device_type = "pci";
-+            apio-wins = <8>;
-+            ppio-wins = <8>;
-+            dma-coherent;
-+            bus-range = <0x0 0xff>;
-+            msi-parent = <&its>;
-+            ranges = <0x82000000 0x0 0x40000000 0x80 0x40000000 0x0 0x40000000>;
-+            #interrupt-cells = <1>;
-+            interrupt-map-mask = <0 0 0 7>;
-+            interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>,
-+                            <0000 0 0 2 &gic 0 0 GIC_SPI 110 IRQ_TYPE_LEVEL_HIGH>,
-+                            <0000 0 0 3 &gic 0 0 GIC_SPI 111 IRQ_TYPE_LEVEL_HIGH>,
-+                            <0000 0 0 4 &gic 0 0 GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>;
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/pci/mobiveil-pcie.txt b/Documentation/devicetree/bindings/pci/mobiveil-pcie.txt
-deleted file mode 100644
-index 64156993e052d..0000000000000
---- a/Documentation/devicetree/bindings/pci/mobiveil-pcie.txt
-+++ /dev/null
-@@ -1,72 +0,0 @@
--* Mobiveil AXI PCIe Root Port Bridge DT description
--
--Mobiveil's GPEX 4.0 is a PCIe Gen4 root port bridge IP. This configurable IP
--has up to 8 outbound and inbound windows for the address translation.
--
--Required properties:
--- #address-cells: Address representation for root ports, set to <3>
--- #size-cells: Size representation for root ports, set to <2>
--- #interrupt-cells: specifies the number of cells needed to encode an
--	interrupt source. The value must be 1.
--- compatible: Should contain "mbvl,gpex40-pcie"
--- reg: Should contain PCIe registers location and length
--	Mandatory:
--	"config_axi_slave": PCIe controller registers
--	"csr_axi_slave"	  : Bridge config registers
--	Optional:
--	"gpio_slave"	  : GPIO registers to control slot power
--	"apb_csr"	  : MSI registers
--
--- device_type: must be "pci"
--- apio-wins : number of requested apio outbound windows
--		default 2 outbound windows are configured -
--		1. Config window
--		2. Memory window
--- ppio-wins : number of requested ppio inbound windows
--		default 1 inbound memory window is configured.
--- bus-range: PCI bus numbers covered
--- interrupt-controller: identifies the node as an interrupt controller
--- #interrupt-cells: specifies the number of cells needed to encode an
--	interrupt source. The value must be 1.
--- interrupts: The interrupt line of the PCIe controller
--		last cell of this field is set to 4 to
--		denote it as IRQ_TYPE_LEVEL_HIGH type interrupt.
--- interrupt-map-mask,
--	interrupt-map: standard PCI properties to define the mapping of the
--	PCI interface to interrupt numbers.
--- ranges: ranges for the PCI memory regions (I/O space region is not
--	supported by hardware)
--	Please refer to the standard PCI bus binding document for a more
--	detailed explanation
--
--
--Example:
--++++++++
--	pcie0: pcie@a0000000 {
--		#address-cells = <3>;
--		#size-cells = <2>;
--		compatible = "mbvl,gpex40-pcie";
--		reg =	<0xa0000000 0x00001000>,
--			<0xb0000000 0x00010000>,
--			<0xff000000 0x00200000>,
--			<0xb0010000 0x00001000>;
--		reg-names =	"config_axi_slave",
--				"csr_axi_slave",
--				"gpio_slave",
--				"apb_csr";
--		device_type = "pci";
--		apio-wins = <2>;
--		ppio-wins = <1>;
--		bus-range = <0x00000000 0x000000ff>;
--		interrupt-controller;
--		interrupt-parent = <&gic>;
--		#interrupt-cells = <1>;
--		interrupts = < 0 89 4 >;
--		interrupt-map-mask = <0 0 0 7>;
--		interrupt-map = <0 0 0 0 &pci_express 0>,
--				<0 0 0 1 &pci_express 1>,
--				<0 0 0 2 &pci_express 2>,
--				<0 0 0 3 &pci_express 3>;
--		ranges = < 0x83000000 0 0x00000000 0xa8000000 0 0x8000000>;
--
--	};
--- 
-2.34.1
-
+>
+> >
+> > Fix below CHECK_DTB warnings:
+> > arch/arm64/boot/dts/freescale/imx8mq-tqma8mq-mba8mx-lvds-tm070jvhg33.dtb:
+> >  dsi@30a00000: ports:port@1:endpoint: Unevaluated properties are not allowed ('data-lanes' was unexpected)
+> >
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> >  .../bindings/display/bridge/nwl-dsi.yaml       | 18 +++++++++++++++++-
+> >  1 file changed, 17 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/Documentation/devicetree/bindings/display/bridge/nwl-dsi.yaml b/Documentation/devicetree/bindings/display/bridge/nwl-dsi.yaml
+> > index 350fb8f400f02..5952e6448ed47 100644
+> > --- a/Documentation/devicetree/bindings/display/bridge/nwl-dsi.yaml
+> > +++ b/Documentation/devicetree/bindings/display/bridge/nwl-dsi.yaml
+> > @@ -111,11 +111,27 @@ properties:
+> >          unevaluatedProperties: false
+> >
+> >        port@1:
+> > -        $ref: /schemas/graph.yaml#/properties/port
+> > +        $ref: /schemas/graph.yaml#/$defs/port-base
+> > +        unevaluatedProperties: false
+> >          description:
+> >            DSI output port node to the panel or the next bridge
+> >            in the chain
+> >
+> > +        properties:
+> > +          endpoint:
+> > +            $ref: /schemas/media/video-interfaces.yaml#
+> > +            unevaluatedProperties: false
+> > +
+> > +            properties:
+> > +              data-lanes:
+> > +                description: array of physical DSI data lane indexes.
+> > +                minItems: 1
+> > +                items:
+> > +                  - const: 1
+> > +                  - const: 2
+> > +                  - const: 3
+> > +                  - const: 4
+> > +
+> >      required:
+> >        - port@0
+> >        - port@1
+> > --
+> > 2.34.1
+> >
