@@ -1,48 +1,90 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC08E1D4600
-	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 10:32:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80AFA206F11
+	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 10:42:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733394754; cv=none; b=TIcRMrzmY74D6rBBZce9WlcMQaesFVgevZKletUeBuVxFl1L7pFVNzylqLGdW8PZxvBOnf/3LTkoRuvJcgy9qC2ZvRyUaiqDQPfa1O9MwbNC3IAK3DakapcxYHWU5bkktDUK0o/DWDyznztq+9/7x8y6pYSSC3QLSI92mZ/JZfY=
+	t=1733395333; cv=none; b=e/Donh7C65BgIz9OGv8V2cxbt/5PYuUJRiuq8dpgXj02zH+5swAgnw0obzFcWujEPs2c0gFPrQnrv8JQYBKWn8MHuYs61M0MA0bvdD2Os4piGOTY+yqILg0UdPzCHgHE9RpkjAS0+XDm/JnuyQf9xmFrrPKsrt9tRvIxbgISRKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733394754; c=relaxed/simple;
-	bh=NwnPXq6beLuD7Kx9NedivA1VklXLvPKXPufN9V5jeCA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m/Izlh0RIaxg1+aDaRoij6IMVw0kl1gb6CVaVuc/h1bVxv5kqyGlX+0ej5ZUntj5p7o/kY6Ow4ObFceldtVx5XmfAU4w4HwXRmr6/GnQyROii/ApOgZ8eaMHGbFs3hRC0go4Wl8WJpMuLhNkJ9e6F/T/wGxMFSwfd0wOeK8eeBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 23C70FEC;
-	Thu,  5 Dec 2024 02:33:00 -0800 (PST)
-Received: from usa.arm.com (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3152F3F5A1;
-	Thu,  5 Dec 2024 02:32:29 -0800 (PST)
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
-	Arnd Bergmann <arnd@kernel.org>
-Cc: Sudeep Holla <sudeep.holla@arm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	arm-scmi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-sound@vger.kernel.org
-Subject: Re: [PATCH] firmware: arm_scmi: fix i.MX build dependency
-Date: Thu,  5 Dec 2024 10:32:25 +0000
-Message-Id: <173339471403.691669.17537976195919564595.b4-ty@arm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241115230555.2435004-1-arnd@kernel.org>
-References: <20241115230555.2435004-1-arnd@kernel.org>
+	s=arc-20240116; t=1733395333; c=relaxed/simple;
+	bh=lBjSO4XZQcFnEk/bAzX1s58M9esiJswkbspXoeJzI6s=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=OQwjewiixgU9EqkDbQNIxGjDgaM3irvKtZyg8znj7/9tE6Db2gf39oPojIDdHzEFLoUQVp6C1sxtJ023RshGtV/sollmG7QQQHmVlyp9fKDesQUIwOo1xh4B6oIIUCJ5r4wVG0tUFFuhQQZwruxuV7I3WkuBxJolYttOHlWkiBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UtCNo7wN; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UtCNo7wN"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-385db79aafbso27268f8f.1
+        for <imx@lists.linux.dev>; Thu, 05 Dec 2024 02:42:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1733395330; x=1734000130; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FnoZGxzHG6LZDyvVjX+CssXgRHCJAKynJ1wSQcpNHJ0=;
+        b=UtCNo7wNsGOVCxokLTl4avJ655YzsekwnGdirRWzwS51rh8cOi7TiC+jl/GYNzrori
+         RJFvf28oohHQ1vDCEWGeVE1F6+go4kLU0+0rIOvNIast9dgfr+pjr93ymAOjlU3rl+gu
+         NuAv2BcwmvOYouWhgHpBYuZSWSVrGrF/DU4QQHFEpr8XGqulYh12cSnpgBI0esU1bBqB
+         Im5vyoRO9FNXJLK9syYfAv+1Okfqi0ekLjaMzLgpIOgQXzEJ4I8+YSQ722pmOhGp6eZv
+         u6ekHqnfKoHBVKIl0jMlzB0nfI517lo/EsWVWSLy+4cvMKWWyl5LTpx3avGVbmVpiLvk
+         ORgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733395330; x=1734000130;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FnoZGxzHG6LZDyvVjX+CssXgRHCJAKynJ1wSQcpNHJ0=;
+        b=PhES8Sif78Qr1GM0qYUcWURN8+klUheW8WUi4t2k9fZVc3cjx+Ad0QkfYH7jIC2o2D
+         yyWBad2MfjZXrx5ggvYiWJlhH0qo+675GJA0ONGullaKt+tzT/rMtzvt2ropQdzYwhl+
+         ioPbSigIwIBZSCQmMPHVj4WCBETMdtbayUvul6+uNlqW6I6gWVifLQz4ICZrlVmPPL9X
+         WxpeqoVL20t07D9JNREOi07HttdQaTyogjZvu57m6mtFXB1q8nvQDadREFAwxr702fgd
+         BXzcF1rdj93aWI6NpaAPmC06608Am8WB49FCeoEmv/qnIn8SKtmfzM55i1xJz3ux03cL
+         CGPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWYzMXI1OwJ+THD2srI/2gMLm450drUoOxTyZPMY1A6lQdee0MQnx5xb02zMCEGYfRU2Nc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzsdLjBRKLFhnLlP6aovJFnmckdXnRSOF0CJGyEwwDgUduNjXI2
+	+S3jieahrPi3kdDYJiUK04wynNyi+25s/9jMzxd81UG4q9b8OCaqmq/ew6ksPXo=
+X-Gm-Gg: ASbGncusYfS1USI51FLjdKnrMhRdeD30YUdvk9mbdlby0CWBbkAN5d82706aUs0N7Vj
+	JcbCE7vXXyeI6riUr2uoX9Mq4hHcXSS65427U1Qabz7nvxAFdh9fONLJlCkHvoKhAlS7tq3OAyR
+	ceQlH8Z5FcRMDbve6rDsAiB26H1r1Gvrs+esGIPJeSfcEJcCDtnQL7oc0w8SwfEc56voL0+DIjR
+	WgrGKHHZATZiBAm8xq2zPjMo+yKEXeh9J4vm/qaWZVmq2XjnMi2mFB0J/93ZIssAQ==
+X-Google-Smtp-Source: AGHT+IGz3GjcyfBhQ5HlqLVmhmG7Qtmhnbj9BaPJEz/QzVaC6xVbnrbhQALk4UuX4nKmsjVBEJ+aKg==
+X-Received: by 2002:a5d:6d82:0:b0:385:e8e7:d0ac with SMTP id ffacd0b85a97d-385fde34d9bmr2947632f8f.13.1733395329824;
+        Thu, 05 Dec 2024 02:42:09 -0800 (PST)
+Received: from [127.0.1.1] ([178.197.223.165])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3861ecf406csm1662701f8f.3.2024.12.05.02.42.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Dec 2024 02:42:09 -0800 (PST)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Lubomir Rintel <lkundrak@v3.sk>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Magnus Damm <magnus.damm@gmail.com>, 
+ Heiko Stuebner <heiko@sntech.de>, 
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Paul Cercueil <paul@crapouillou.net>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+ Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
+ Nicolin Chen <nicoleotsuka@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, 
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
+ Adrien Grassein <adrien.grassein@gmail.com>, Adam Ford <aford173@gmail.com>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+ linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+ linux-mips@vger.kernel.org, alsa-devel@alsa-project.org, 
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+In-Reply-To: <cover.1727438777.git.geert+renesas@glider.be>
+References: <cover.1727438777.git.geert+renesas@glider.be>
+Subject: Re: (subset) [PATCH treewide 00/11] ASoC: Clean up
+ {hp,mic}-det-gpio handling
+Message-Id: <173339532775.70936.4554643874403091214.b4-ty@linaro.org>
+Date: Thu, 05 Dec 2024 11:42:07 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,26 +92,28 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 
-On Sat, 16 Nov 2024 00:05:18 +0100, Arnd Bergmann wrote:
-> The newly added SCMI vendor driver references functions in the
-> protocol driver but needs a Kconfig dependency to ensure it can link,
-> essentially the Kconfig dependency needs to be reversed to match the
-> link time dependency:
+
+On Fri, 27 Sep 2024 14:42:15 +0200, Geert Uytterhoeven wrote:
+> 	Hi all,
 > 
-> arm-linux-gnueabi-ld: sound/soc/fsl/fsl_mqs.o: in function `fsl_mqs_sm_write':
-> fsl_mqs.c:(.text+0x1aa): undefined reference to `scmi_imx_misc_ctrl_set'
-> arm-linux-gnueabi-ld: sound/soc/fsl/fsl_mqs.o: in function `fsl_mqs_sm_read':
-> fsl_mqs.c:(.text+0x1ee): undefined reference to `scmi_imx_misc_ctrl_get'
+> The "gpio" suffix for GPIO consumers was deprecated a while ago, in
+> favor of the "gpios" suffix.  However, there are still several users of
+> the "hp-det-gpio" and "mic-det-gpio" properties, in DT bindings,
+> drivers, and DT source files.
 > 
 > [...]
 
-Applied to sudeep.holla/linux (for-next/scmi/fixes), thanks!
+Applied, thanks!
 
-[1/1] firmware: arm_scmi: fix i.MX build dependency
-      https://git.kernel.org/sudeep.holla/c/514b2262ade4
---
-Regards,
-Sudeep
+[03/11] ARM: dts: marvell: mmp2-olpc-xo-1-75: Switch to {hp,mic}-det-gpios
+        https://git.kernel.org/krzk/linux-dt/c/62f95d8a4920706e94759a8f5e34677528530cf1
+[08/11] arm64: dts: uniphier: Switch to hp-det-gpios
+        https://git.kernel.org/krzk/linux-dt/c/751df73d825b3f7e6cad42ed333c28096635784d
+
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
