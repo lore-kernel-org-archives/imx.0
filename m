@@ -1,163 +1,132 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0811B59A;
-	Thu,  5 Dec 2024 16:19:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470322F29
+	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 16:24:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733415563; cv=none; b=QCXCGXVBZEF95r59wGtXhj7Z4fc4Y65SJuRW2uHWU3DvxhXvegcrgXnVtiJAySIr91/NhVXFyofljOPL1RagCk6wo6+kqVw6b/bU7p90nAaXCGsAF6hFu9DPOjqvXQ8gWQgZautgx2+5FLh+U2ATFWMvOMfWavx9ALxdyXCnZOY=
+	t=1733415879; cv=none; b=UGAw98TedBevJcN0pqainxmqrX3qQGacYS/qsQvvMxHeFid6+3lXShwFygsChFYp07XLFRGYda60M0EiExPNhDummsDuX5s0FadX4nyL1GDVen1F8dTkntOgwbvo5HKQcyf4ULXoNI8CBsM1jc4w1edRtLqMtHbCvEou3qESSgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733415563; c=relaxed/simple;
-	bh=RQuaPC2ur4uaraO165fvbtuw9fpDtmA6qNnsLNhAwWQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oyXP6n9nIQFa2mnPR5/ChDp5IDO8K5mbkT4clLPn0MapAC8IFyKYVbu+Emv1xYAYxLq+W32Eeprc9InCgNdSbow38I+8xzNHhiHIt/2U6Y8kQ2RyanN09iiUjAI5y5y+Zs9fKdXwrC4nMOg7Y+n4k9dvaH6aKvYR9fKZy+PJl/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B0HbRa+z; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1733415879; c=relaxed/simple;
+	bh=dNZEbm7bSlhbjJGLhWJD1Ps63pwrMUfHSEN/U6Xa5j0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u6s6S3Y/mIABz5L5iXJFgO0t5U3pgv9awvGwlT7Zqh0M0zOtWSBsBnMhSNvocRO6SeBCzXgF2DQg99gwX9NV/PwkFIQ30JE4xACQHyFBjoROfxWJjITQ+SaN87F5dFm0d2I06TFgf/Qml7pvh/YgZn4wU7ICZvP47LbmBnbUIvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=K2SqnFss; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B0HbRa+z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733415561; x=1764951561;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=RQuaPC2ur4uaraO165fvbtuw9fpDtmA6qNnsLNhAwWQ=;
-  b=B0HbRa+zPeDOSyhCg1WIKezZqmBypxBGa0wk0AkG2yOpnzg6M+xNhdtt
-   uZadOfseBzz+C+2BUj54QIwrYcEpZ4oYHw8a5/yKdDfi60yEHXvNXv3hL
-   5UNGLW57tAbyWWdtpqI9HrbVIg1lOlwjCOBRI/ptHTgPJCj6F1BrULjE7
-   Ts75XMlF2cYytrjzGOMAo7sq7gEFtNmBliYbiXljvJloKkc97taUG9VBW
-   zugyT8mXnh2/Wl2J7QJ3Qo3amWWrOGOPHdj37eheNwmvFVSOnPo92wrUQ
-   iSDgYVrWNuEPo8/5L/9MYrTWdpVzacq7ryh5Nlxd0cQFOqewoxvrQB1Tg
-   g==;
-X-CSE-ConnectionGUID: 59scgUa0RZ+OhfPe/Zu79Q==
-X-CSE-MsgGUID: usVWwMrBQ/K4ohCNwj7R9Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11277"; a="37522384"
-X-IronPort-AV: E=Sophos;i="6.12,210,1728975600"; 
-   d="scan'208";a="37522384"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2024 08:18:51 -0800
-X-CSE-ConnectionGUID: SKjPmepHRFSK5ooVJrwuiQ==
-X-CSE-MsgGUID: a+TN6FZqQSyXZ4kLpEe+EA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="99181428"
-Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 05 Dec 2024 08:18:46 -0800
-Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tJEYu-0000C7-0P;
-	Thu, 05 Dec 2024 16:18:44 +0000
-Date: Fri, 6 Dec 2024 00:17:54 +0800
-From: kernel test robot <lkp@intel.com>
-To: Vabhav Sharma <vabhav.sharma@nxp.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="K2SqnFss"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a9ec267b879so212379566b.2
+        for <imx@lists.linux.dev>; Thu, 05 Dec 2024 08:24:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google; t=1733415875; x=1734020675; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q+EB++J/yowUMrD7IvepBqWDVig6KUMpfQ1WpjD4ens=;
+        b=K2SqnFssxMsml8szpFgCz80kxl78xs9aBKgmrdc64oQxyy+pafosq90S+8+tblQaSS
+         BiFl8Ta671pg4Y5HocmDIJ5jp+l/CeKac8v4pJn//99fV3jQ8RdS2QfNsTB/8TdX0fKm
+         TZsQGSqfjBxUe0QRf3MRlXFQaHh2V2WuelWO4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733415875; x=1734020675;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Q+EB++J/yowUMrD7IvepBqWDVig6KUMpfQ1WpjD4ens=;
+        b=gwPVAJf8gmOlote6cQ7S5wrAfredSYNchmLpQN5uIrS1qDZRMKdp05625cHAFqXGlS
+         qoFv9jyii3E3xVnUkRF7gLBM8kjzgvO0ygAhLuVeN8trV8OPwNrAPz5RHDtIc36E3PFQ
+         9qHM4ad0ojKZZxAxdMHpu742bw5yasGNGJYtkrRvwhU0t+I3nAiWOzMrQApeqaY/JEq4
+         5Xhy6Ot5cz8njLdr06ANBKbzPQyeqxkXjruvTwNgXFDAPFLsV2Y0FBxeDuy4AcnsUhNu
+         Frm2QYiOT8rzYLTioRlObjfal6NBiRp+irjgU1L3zthyKW7XxpoH7+U0OOno0DgApIyf
+         hCKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUqg/hWGugepKxc5p4jLyYDBzQaPAE0YNqRlSxEcd0w3INImWj9MSSCXqplGgRpOf1QI3I=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzjb2ZeSgTmr4PJwz0HVrg7PUIGxDMAK/OkjUY8yIiE7uLcYfC7
+	+ZTDg5Bff+BFJpS6v68ZPX4ypS402EupfGAKkqpj8viQiY+xbMBucApUIRQlo90=
+X-Gm-Gg: ASbGncuo4VjfNmdOTrLlK1B338oV/3QddvLK2Hqspmzoj6t/jh4h8h2xX3sA8uWBRPb
+	g0pkk5zuEkelRxOEqQijzDmtbKBobZP2cAu8m3fXhGtQ0UBdNmjI4KwLqhrJB7Qx2HRfXHoc6di
+	UQjhk449ekCGPHy1MNzbqQji07D2OYU/S+3Ne/fudgYs11f+EEROwJ5fFcKne6GLWUVuQ1pNM5q
+	gxXTV9VeRjd6uuOAXm1jt0gC4bcd9hQrCydvtoMbJmya40nkwlSPAmtU+kz2oRyDiFovTIuGGkx
+	x7S2bUUAwbi7UBlN5LVinXSG8bMDHzjDxmJwseaWuopXKA==
+X-Google-Smtp-Source: AGHT+IGADqZ1DS4WW7fjZME67XfYyJ9/Ms38VwzFpIjDiSj4wLXET1zw9ysNdFxbGcj293rTqfarbw==
+X-Received: by 2002:a17:906:9c0f:b0:aa6:24a2:697b with SMTP id a640c23a62f3a-aa624a27056mr315906766b.27.1733415875558;
+        Thu, 05 Dec 2024 08:24:35 -0800 (PST)
+Received: from dario-ThinkPad-T14s-Gen-2i.amarulasolutions.com ([2001:b07:6474:ebbf:61a1:9bc8:52c6:3c2d])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa625e4dee6sm112286566b.32.2024.12.05.08.24.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Dec 2024 08:24:35 -0800 (PST)
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-amarula@amarulasolutions.com,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Michael Trimarchi <michael@amarulasolutions.com>,
+	David Airlie <airlied@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Marek Vasut <marex@denx.de>,
+	Maxime Ripard <mripard@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, frank.li@nxp.com,
-	pankaj.gupta@nxp.com, daniel.baluta@nxp.com,
-	silvano.dininno@nxp.com, V.Sethi@nxp.com,
-	meenakshi.aggarwal@nxp.com, Vabhav Sharma <vabhav.sharma@nxp.com>,
-	Franck LENORMAND <franck.lenormand@nxp.com>
-Subject: Re: [PATCH v4 4/4] firmware: imx: secvio: Add support for SNVS
- secvio and tamper via SCFW
-Message-ID: <202412060014.woL5otGn-lkp@intel.com>
-References: <20241205-secvio-v4-4-5c37cdc39573@nxp.com>
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Simona Vetter <simona@ffwll.ch>,
+	Stefan Agner <stefan@agner.ch>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [RESEND PATCH v2] drm/mxsfb: Remove generic DRM drivers in probe function
+Date: Thu,  5 Dec 2024 17:24:23 +0100
+Message-ID: <20241205162432.1803869-1-dario.binacchi@amarulasolutions.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241205-secvio-v4-4-5c37cdc39573@nxp.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Vabhav,
+Use aperture helpers to remove all generic graphics drivers before
+loading mxsfb. Makes mxsfb compatible with simpledrm.
 
-kernel test robot noticed the following build warnings:
+Co-developed-by: Michael Trimarchi <michael@amarulasolutions.com>
+Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-[auto build test WARNING on 9852d85ec9d492ebef56dc5f229416c925758edc]
+---
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Vabhav-Sharma/dt-bindings-firmware-imx-add-nvmem-phandle/20241205-125909
-base:   9852d85ec9d492ebef56dc5f229416c925758edc
-patch link:    https://lore.kernel.org/r/20241205-secvio-v4-4-5c37cdc39573%40nxp.com
-patch subject: [PATCH v4 4/4] firmware: imx: secvio: Add support for SNVS secvio and tamper via SCFW
-config: nios2-randconfig-r063-20241205 (https://download.01.org/0day-ci/archive/20241206/202412060014.woL5otGn-lkp@intel.com/config)
-compiler: nios2-linux-gcc (GCC) 14.2.0
+Changes in v2:
+- Use aperture_remove_all_conflicting_devices() instead of
+  drm_aperture_remove_framebuffers().
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202412060014.woL5otGn-lkp@intel.com/
+ drivers/gpu/drm/mxsfb/mxsfb_drv.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-cocci warnings: (new ones prefixed by >>)
->> drivers/firmware/imx/imx-scu-secvio.c:368:11-29: WARNING opportunity for simple_open, see also structure on line 419
-
-vim +368 drivers/firmware/imx/imx-scu-secvio.c
-
-   367	
- > 368	static int imx_secvio_sc_open(struct inode *node, struct file *filp)
-   369	{
-   370		filp->private_data = node->i_private;
-   371	
-   372		return 0;
-   373	}
-   374	
-   375	static long imx_secvio_sc_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
-   376	{
-   377		struct device *dev = file->private_data;
-   378		struct secvio_sc_notifier_info info;
-   379		int ret;
-   380	
-   381		switch (cmd) {
-   382		case IMX_SECVIO_SC_GET_STATE:
-   383			ret = imx_secvio_sc_get_state(dev, &info);
-   384			if (ret)
-   385				return ret;
-   386	
-   387			ret = copy_to_user((void __user *)arg, &info, sizeof(info));
-   388			if (ret) {
-   389				dev_err(dev, "Fail to copy info to user\n");
-   390				return -EFAULT;
-   391			}
-   392			break;
-   393		case IMX_SECVIO_SC_CHECK_STATE:
-   394			ret = imx_secvio_sc_check_state(dev);
-   395			if (ret)
-   396				return ret;
-   397			break;
-   398		case IMX_SECVIO_SC_CLEAR_STATE:
-   399			ret = copy_from_user(&info, (void __user *)arg, sizeof(info));
-   400			if (ret) {
-   401				dev_err(dev, "Fail to copy info from user\n");
-   402				return -EFAULT;
-   403			}
-   404	
-   405			ret = imx_secvio_sc_clear_state(dev, info.hpsvs, info.lps,
-   406							    info.lptds);
-   407			if (ret)
-   408				return ret;
-   409			break;
-   410		default:
-   411			ret = -ENOIOCTLCMD;
-   412		}
-   413	
-   414		return ret;
-   415	}
-   416	
-   417	static const struct file_operations imx_secvio_sc_fops = {
-   418		.owner = THIS_MODULE,
- > 419		.open = imx_secvio_sc_open,
-   420		.unlocked_ioctl = imx_secvio_sc_ioctl,
-   421	};
-   422	
-
+diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.c b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+index 6b95e4eb3e4e..10da8b54f4c6 100644
+--- a/drivers/gpu/drm/mxsfb/mxsfb_drv.c
++++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+@@ -8,6 +8,7 @@
+  * Copyright (C) 2008 Embedded Alley Solutions, Inc All Rights Reserved.
+  */
+ 
++#include <linux/aperture.h>
+ #include <linux/clk.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/io.h>
+@@ -362,6 +363,15 @@ static int mxsfb_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err_free;
+ 
++	/*
++	 * Remove early framebuffers (ie. simplefb). The framebuffer can be
++	 * located anywhere in RAM
++	 */
++	ret = aperture_remove_all_conflicting_devices(mxsfb_driver.name);
++	if (ret)
++		return dev_err_probe(&pdev->dev, ret,
++				     "can't kick out existing framebuffers\n");
++
+ 	ret = drm_dev_register(drm, 0);
+ 	if (ret)
+ 		goto err_unload;
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
