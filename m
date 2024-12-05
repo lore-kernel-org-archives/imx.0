@@ -1,90 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E0E22259A;
-	Thu,  5 Dec 2024 16:58:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD33225779
+	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 16:58:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733417918; cv=none; b=RMephJR7x5N51klpLtqouMf3MUKC0K2MXyvqyxrkfXD5ODZFGPZk8x4+G0/ZAx94wIXAeIsiDVdYDzxi2AmngU9JEwTZvZ52Urr7TRY7ososqMaZmZd2p1N4Ey9DqYlERBlJMDizxouIumXpv7bpOYsCeiJqK3t1AyEqxjBxQtU=
+	t=1733417920; cv=none; b=CozpbbrTLsabrFIe0AnRYPMuo+fjWLNa9O7m+R4veRKPOuheX3VGU8TbiMZRDdJPV9XqcpwISzXjZQvZntrPVL7YtEukPPSBjaOEEiSKdnfswwcHLISoQJBT1/3OpwYjdo7GamvgdtRMVl2zbkEXxovRDVrklyVJI4w4PiXHrmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733417918; c=relaxed/simple;
-	bh=nTRnH3LEvkzjiwoZZ3ih3yskW6g7MF8/Slf2mJenKdc=;
+	s=arc-20240116; t=1733417920; c=relaxed/simple;
+	bh=r+M1B2fNSe91EZkTdXggMhb7GCJ7g56x/PAojdaLcj8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QXoifLFDkeKzK+pyweZNc0DqLumib3cJFpLB/i0e7GoIw41QAtzdM1gbdtCnZyXCuJ+w3Mw1mNsZpFocFU8ihogLN1H8Gs99qhS6qEP4GRLiByVOfPiQ00rw1gXl4VadljPOuLszJHYhE9S4TF+0SPfll65CIZg6cpmCeoHrqcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ECHlgGIm; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=fRr4H8GCNrdbJbcUP4K/BoyMgDLQKba28faGWBQTV/O3jRfzgR07hDwyNFiLFOE/FR/fXLhRc0xbUYtKnUDetTA+ZP5GTHdmQJVU/XERmQ++b23sqQaHrpFCKG8jkv6K6nZT0VyUdaFUwux4D8Tf2wU3tiJtkx/k9Zr+VAkWoz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=OZSDhWSI; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ECHlgGIm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74AEC4CED1;
-	Thu,  5 Dec 2024 16:58:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733417917;
-	bh=nTRnH3LEvkzjiwoZZ3ih3yskW6g7MF8/Slf2mJenKdc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ECHlgGImtotL50LXwi9oXB2Vy3NH00it6CMDrVvFBZ8yci1Mh+nPCt7GeY2te6fIl
-	 33bCCvrecW8FFnbLz2CBzZJ2QKiKO+nJDywY2SqpTx1xnz0O6+qzgkqZGsB5jwtcW2
-	 ZhTrfdVSbN37lriLFPIQXployevdgh5E070M/ehMf4YNeBICp+8vVUF3FS2eqnDHF3
-	 u8QKCP4nbfoXxdm1JlG8TY8IQmMfI6Pz70dyIzk0HzU6sKDZpk+VJC1Jqdx1mKl1FH
-	 eulnVP4i9+zYdjN9Z2sc4NCgLbSLLZjWnKJgcOo5JrYwEiETLkFACX6XhwzQ4tPOiE
-	 JAdED9o/MRXVw==
-Date: Thu, 5 Dec 2024 16:58:31 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Robin Gong <yibin.gong@nxp.com>,
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="OZSDhWSI"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=DeVYKYC++7v89xWZg/BcHEQbyOA06uBwOslFWdgxmWk=; b=OZSDhWSIwfVVoNU6oJeFFY4S3C
+	Gkx3Gf35uXSOQKkOCtwwxjjqNS7bAD1esQHNqxmmrD7B25BMjjPHMjT+pLCeKKHyLTtrqxLHCjIxV
+	psKOPBrUr1K5fn5rQTIu1Dho1jBsNH4Z4jifB7a4PalNMywQhJNcM9CtEijT8s9vfUGqET7fL5lI0
+	IAwU4C+ikgjy0YYDAVdlvgVPqOykILXsFDUIlvlHZpbbOfmmHOD0xli3299wsOmHBFn5bltsiu6He
+	WUQspi6XYQKPlIJ4hvFX1XIyo4Ldcpg0Zz3pIKclCFJtuRfjwVxSMsKzG0RQ6wRJNd4s4wbTYuh+z
+	RfxnpLHQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:46892)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tJFB1-0005Do-1t;
+	Thu, 05 Dec 2024 16:58:08 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tJFAw-0006hx-2L;
+	Thu, 05 Dec 2024 16:58:02 +0000
+Date: Thu, 5 Dec 2024 16:58:02 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: jan.petrous@oss.nxp.com
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev, joy.zou@nxp.com,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 5/5] arm64: dts: imx93: add pca9452 support
-Message-ID: <b5b07f6f-a5c5-4b29-ada3-962dbbba42d4@sirena.org.uk>
-References: <20241205-pca9450-v1-0-aab448b74e78@nxp.com>
- <20241205-pca9450-v1-5-aab448b74e78@nxp.com>
+	Fabio Estevam <festevam@gmail.com>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Minda Chen <minda.chen@starfivetech.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+	Keyur Chudgar <keyur@os.amperecomputing.com>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	NXP S32 Linux Team <s32@nxp.com>, 0x1207@gmail.com,
+	fancer.lancer@gmail.com
+Subject: Re: [PATCH net-next v8 07/15] net: dwmac-intel-plat: Use helper
+ rgmii_clock
+Message-ID: <Z1Hbml22IgrTyzeN@shell.armlinux.org.uk>
+References: <20241205-upstream_s32cc_gmac-v8-0-ec1d180df815@oss.nxp.com>
+ <20241205-upstream_s32cc_gmac-v8-7-ec1d180df815@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="+N1E8Hjj5Y37D8a5"
-Content-Disposition: inline
-In-Reply-To: <20241205-pca9450-v1-5-aab448b74e78@nxp.com>
-X-Cookie: System checkpoint complete.
-
-
---+N1E8Hjj5Y37D8a5
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20241205-upstream_s32cc_gmac-v8-7-ec1d180df815@oss.nxp.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Thu, Dec 05, 2024 at 11:51:13AM -0500, Frank Li wrote:
+On Thu, Dec 05, 2024 at 05:43:04PM +0100, Jan Petrous via B4 Relay wrote:
+> From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> 
+> Utilize a new helper function rgmii_clock().
+> 
+> When in, remove dead code in kmb_eth_fix_mac_speed().
+> 
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 
-> +				regulator-name = "BUCK1";
-> +				regulator-min-microvolt = <610000>;
-> +				regulator-max-microvolt = <950000>;
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-> +				regulator-name = "BUCK4";
-> +				regulator-min-microvolt = <1620000>;
-> +				regulator-max-microvolt = <3400000>;
+Thanks!
 
-The regulators all have really wide ranges, especially with no obvious
-consumers specified.  Are these actually valid for the board?
-
---+N1E8Hjj5Y37D8a5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmdR27YACgkQJNaLcl1U
-h9BM6wf9HQleDuZ4uYHDOaaCK09bL4yTR8x6i7YoMmnlls2srtzGMRGZZ1cb/sPr
-a0RwpUShL14RqyuRYmEerOprPVYYLpvx+Poe70MiMG00p1c2wDbLrt2o3OYppkmh
-9DXALyEsWkqnL6bzUD9T+m/zBfaIfUuO+ZY/IGiI+mVl0vzDEebE+hq9Jg4rvoNd
-lN7951ImhymCfvRvkUM/RmjuLkijea9e00JW0Mqbai6WbhC5NYbo6Ya+inPKtkKX
-+zuQQlnFcs93oqTJqtngequdn8bmyvjzHKmBXzS3kz1PmUUV69gXm2C7FbYOh88x
-H0307QzEKgiy+Cugcn/uBhoFj41F3w==
-=Ioa2
------END PGP SIGNATURE-----
-
---+N1E8Hjj5Y37D8a5--
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
