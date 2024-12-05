@@ -1,319 +1,485 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2074.outbound.protection.outlook.com [40.107.20.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E1B22D4DD
-	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 18:49:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733424603; cv=none; b=krbT6aBg1wTq5B8Neu++sHi4ehgaNPib6ekOr8osyQkJDD4XRIvGVibY7kc9chNvt69ZjqLc6FyIGrJ50KhfBNzzGjoR6sZltkbHJiSrZBpU81DlBOpgJeaQwh9qVLO3TtOA0kdHuA+loTyMtVofRcVu+6m6Zy92TJjHCd1ypno=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733424603; c=relaxed/simple;
-	bh=M/rBbGAx2CuXXqqgw76JMcAKs+dETgh4yUtfeqkmFqY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Yb+oiwrPTPx99quy02+brCPZSiMGVcfH9qxuFqyPLFejnsBAm0vRyFpu/k+EeGdhYP9YY7alhlCAxucNuaCgSdqulaNu7ZIASvsyxGiheKCjy/akqI9efQ6n/bcgsS79BMcO0mpVbvq7SMvvPx3L9/JHwpw5dxn0rCV9AnxQUjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tJGv7-0006PO-8a; Thu, 05 Dec 2024 19:49:49 +0100
-Message-ID: <6b39268b-7487-427d-aff5-f3ca3b2afd42@pengutronix.de>
-Date: Thu, 5 Dec 2024 19:49:47 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69BC121323B
+	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 20:14:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.74
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733429686; cv=fail; b=CeOwZvSLhxcg8GSDlL0GuUDKwAKK5fYzykWZcaYapiqB0kUDdwWxqs8EjwH9HfBSeVyzl100lTwBGz+AJRk5giztws/Ov/QcCiU0eN2JcR16iJqDrTFFAXkm8tEyPz2ZiY4LzW3VBYRezIcyxBl42IK/kJLRgx6Ka0n2cCv66v0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733429686; c=relaxed/simple;
+	bh=V6LJEqmCuxIOhXTmsMxzcw03HqS58w1NVGrMeaHnwPg=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=a53v9TEf6cGMBmBjl0ldIi7QThn1Kl+P3soiNp+MdGaFl4ExokcgG9LXwA6ggOLwLREiJKBq8ZeajkEXAP+FyPToxI7GEhUq6GBAbhHHD9/l6nLtqO3tzfCG+DOnCRIuUSvrB2QmoPro2iM5e9FVD3O9KHO6tnxHBwnkFgAQ3uw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Y0ALtj6L; arc=fail smtp.client-ip=40.107.20.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Y0ALtj6L"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gqYU3qlj6sXQ+U7EPbSnAVOjzZOEdJQXUZ7YytZUL+QE1zJiYyqTQwzRf+iSe/02G29mcaCL+Tpx/sMDGWKASHVH6nU3cTiqvJdB4zafGL/hyvNos0TORIJkZTQV88tlKPKaM/IOMl2tkd8/O96N4eLMrMK6SapVzVDmoWIZqT9ZeIw/dWIJvrczTZERe3qoHOR9yUALV0pTY8IFvCGLy1YiAPxdCGkiV5er8+/KIx6uswOLW48lwD5jY3Nqwsc48SeJFzL/vRsgbPiKkdHaxmaThZQ4Sgl0/R1ZIBG/BmDB4MoGnjr2G+y8LAj5vGpmdJvXMkruYaROp9yy5hSu5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BdHrSlGEm91Hs7yL39JUe49NnNhesv00gLm7jpse5qI=;
+ b=MLJESEP8NdgHkx7BSr0zEjR9n+axGexvNWwDrl2DxT1HwWUr40+yJP870LUbidfANRT8DAsL9sVLK4Tbqh4RXysBIojhPsTPdCdyv2ZJ5yVItHnQhBYJgjGSqs+lQ7jhSJBN9uR+xgo/u+bywaJYDEGto6ShItcAB1XISztoaR555HwOdJiRHny4X/5ojZmUZ1CmPSyQYD+3R3I+4sEA2/gZuGLcddLvMSzzZhSTQCn+b4bUeBuuzYVzvDmxQHr8LLU7der465ACy3iIb31Nk9HAFoMknZmh3zjt96rvu6D/huuIQzA7wOvAcZJo0axJuZtXRG/bso61cxmEcyF7JA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BdHrSlGEm91Hs7yL39JUe49NnNhesv00gLm7jpse5qI=;
+ b=Y0ALtj6LjtH1dvPYusSYV63wfzjXa1n5+il1anIW+M0fZexGQ7BFAC5ue2I8Guj4om8wmtr9L3Wn/maaZJtQC6a34yFX4bQWohd5SDogqhVi71YJXmlnHFUQHfYETqpMfoNFoAYh//TE3edc5Lp1+Ywn8Vmto6XfkbUKNKtHT1PGQdGDArqryZBfsC18MkR600B1/fz8aud2UsnrxV6cmQPYfGul0/Ba7ZguVBij5BNBV3p9uFxeWkNl/nfR36pHm3DmGruugyIWWsTs6AsQ4Vo614mor0yWENaoJ3X8y57/LHWG9J8OHu30n4zlIfi2ScCqGEPUG00fHDtNIVI/CA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AS8PR04MB8200.eurprd04.prod.outlook.com (2603:10a6:20b:3f8::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.12; Thu, 5 Dec
+ 2024 20:14:40 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8230.010; Thu, 5 Dec 2024
+ 20:14:39 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Karthikeyan Mitran <m.karthikeyan@mobiveil.co.in>,
+	Frank <Li@nxp.com>,
+	linux-pci@vger.kernel.org (open list:PCI DRIVER FOR NXP LAYERSCAPE GEN4 CONTROLLER),
+	linux-arm-kernel@lists.infradead.org (moderated list:PCI DRIVER FOR NXP LAYERSCAPE GEN4 CONTROLLER),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] dt-bindings: PCI: mobiveil: convert mobiveil-pcie.txt to yaml format
+Date: Thu,  5 Dec 2024 15:14:22 -0500
+Message-Id: <20241205201423.3430862-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR05CA0012.namprd05.prod.outlook.com
+ (2603:10b6:a03:33b::17) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] i2c: imx: support DMA defer probing
-To: Carlos Song <carlos.song@nxp.com>, "mkl@pengutronix.de"
- <mkl@pengutronix.de>, Frank Li <frank.li@nxp.com>,
- "o.rempel@pengutronix.de" <o.rempel@pengutronix.de>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- "andi.shyti@kernel.org" <andi.shyti@kernel.org>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
- "festevam@gmail.com" <festevam@gmail.com>
-Cc: "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20241127083818.2108201-1-carlos.song@nxp.com>
- <153e8e36-7b0e-4379-9cc3-6dacb5d705be@pengutronix.de>
- <AM0PR0402MB39370E69BC4B71C761EE8377E8282@AM0PR0402MB3937.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <AM0PR0402MB39370E69BC4B71C761EE8377E8282@AM0PR0402MB3937.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8200:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3b6fd937-3a16-4a1f-5f0c-08dd156972ad
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|52116014|1800799024|366016|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?3G/M2sduOvyyz2tMqkh23uZwMZHcUnQd96J4yaK76zZJ7MQyIf6v1iNlSQiZ?=
+ =?us-ascii?Q?/fPxrSXHIFqkofDo+MjIGb4IzID5SaNjTRlorXB7A9tz+JNIJ8gy6ZVvHMA6?=
+ =?us-ascii?Q?Lp4pyHc6eu/phPq6jJONPpIpA5urR/HuVRG2uexdelLkC2g6jUQxX8+FAe8v?=
+ =?us-ascii?Q?5NHr7KY3ZvvqNB9dbTC7h7G8/ktqNDslZmrDa3Gu/M5YM3rM6cXR4Cjb6SHa?=
+ =?us-ascii?Q?3MkpCdmc+GVyd1AXzqKfA+/wGp3dWoLWQGe2NZAI5WhFIGdQ9qGN+xWGyKby?=
+ =?us-ascii?Q?ZCbv/Sk6eIXeXStzMp0rDEs/fIxiklX5a979eElLYj/MfWWevkhq80ULg1/h?=
+ =?us-ascii?Q?A+wM6hs1cGcN371zyWY6k5p3Va3HplgMJ4iPFpabMSgtKneCQMciTN0MFVwY?=
+ =?us-ascii?Q?fF55ypAxV4VqDnNRrzhjbzmJ3LQnKI+VGlPDvoYha/cM/P1MCAwiip0e2MV5?=
+ =?us-ascii?Q?dOlye9rCZAuSeuBr2fDcC48wK0quhONZhA8egJcG4vmoDRtNBgmYCmHaPZAb?=
+ =?us-ascii?Q?4GaSZB0jMPHGjfvCoU8CfcHk0G5DGqhbKTHK+NKFp76uN6OMn8PrEjG3W9Z0?=
+ =?us-ascii?Q?5fNmSg8OZYJphdFm37SsPkMHFV+PtdAlrUgGOvgYj1bBt3rpnqV/oKyUbN/D?=
+ =?us-ascii?Q?AKI3cfm7mJbcqIhjJWPMbQpk6yP2svdpxfh6OC83CpOFBzL4qvG3dkr6B1aQ?=
+ =?us-ascii?Q?Kn240Nu70NjyTuBxhyNTi6ZimZcqewNezrEYTcD3R1/wsAJ6gxh9MeH9i+De?=
+ =?us-ascii?Q?dYtzfhSGrOF61g6SLPAWiJIalP9b1zeJcyUrmWTw1zJe0GVLD5ZNpMYysAPy?=
+ =?us-ascii?Q?FgIVF0/YOEjlW0kBfadOycQ7MmnB5nrLcKjZI0JoZLAYT7wTuAaA24Mutvyb?=
+ =?us-ascii?Q?BDCcHKX1WT4YxAOWn6qE4EjrXpSQ9e4ntA9mYGzmDFTkHaxvEJn7xTv3+Urg?=
+ =?us-ascii?Q?vGkm2RVccXnsJ9OAudj4ULNMYn8IIEFwLJH1M5B0qv6E3iaOy61Ytpsmu55H?=
+ =?us-ascii?Q?5gJD+BRLkjRhCliPJvC1u2lfrk6wNf+p1fDhOIIkwMPKg98H7SmjS7Y3Vepy?=
+ =?us-ascii?Q?BnPd8k66G8uy0ePu+g6mOFd7dsKXhSs26s4yQUpLqN2GctJpM6ZQ+YkyfaUE?=
+ =?us-ascii?Q?sk/QSXu2YNS4l0GAe+b4x8heDhl1X3uvoiNT5M/PYUJTPESt8QE1TS1fMdFY?=
+ =?us-ascii?Q?72Qn9sHUjV00v6jk5s5sCOEGxejEYW/I1PDGJ9VjnIk26ss21JYDOoi8QQVP?=
+ =?us-ascii?Q?N+9G6/pEkbBnxDNUF1ivO18ldq0j8Z77a5vsavQ0R71DWCPs1LeIFqcsr8WY?=
+ =?us-ascii?Q?ua52JTfzPqd+GIfKHV84XvnDVfF7wm2OU3QIaOIgip/HfR0C7G9i8Djspm+O?=
+ =?us-ascii?Q?+/IJZ4c=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(1800799024)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Qk2aXxjD+NxV7bC4qgwGrEXPfj6RNb30XWFvQoLkrlelwwCEhvJDZ36xCygz?=
+ =?us-ascii?Q?F2R9XJp4U0EX2FZJHcqfVP63Z7NKoZfXUkuwx119m680+6nNQLMISdereWrS?=
+ =?us-ascii?Q?8KdvI26PQNugyh8BV0WS9PnOkMy8pqOC5Fb8LJSVJQP5x0rhWKf4zrP5Wu8h?=
+ =?us-ascii?Q?SQURDDCClgL5mGcxcjrWR42bEPOgRQd3o8dY/LeONdiyoS3qS8or9ADH2fFY?=
+ =?us-ascii?Q?j4AuniiX0d0h1E+ko39Irzw3UVr3VWhl2/lsnrT5guHkocX6Xiswulc8x8oj?=
+ =?us-ascii?Q?iSleQlY32BbBpS/rUagggKqgP/oCxCTa4cvPAIohD2xfqIQMYPEYdG07GQih?=
+ =?us-ascii?Q?UAkDAhRvZij7Yv26D7VNyHaRF8zwQSl8swUqp0DLNDAAbImFni6g4RlEkH44?=
+ =?us-ascii?Q?eQ6KuGEeLyNvUC+S8YhmD6VIpCCYxK/uUAJJbWnMh0uwgNL024RY4JLDS1bc?=
+ =?us-ascii?Q?4yhVqux2Y8mnMQFmxHLP3IdL7dSMKKxz51kP99IxXQW5xf4Ivfs4KmV1lPsB?=
+ =?us-ascii?Q?jK8vTNY3jEaqx59ev+Skzne2XYo2yGNXr+AjMJqyIxki2cvHEGK3e2ldlppn?=
+ =?us-ascii?Q?KpVibfEkqEsrw+IVSOj5gmIYikVFtPPwJHUZ0lT5ea7GeGnMGDtfFF7+2oKp?=
+ =?us-ascii?Q?zIOQ5Y4Vwf1ZMD1WHhHy4QVJYoV038VqO3YsP0NZ4WaccY/fpBvPT0mkAmJw?=
+ =?us-ascii?Q?SHB8JolhiYiLdOYQYflYqRAgCXVtbrxy/LNev/623ebeUhR7N6ZOvMtyMz3d?=
+ =?us-ascii?Q?4rMvfNeUEyTKj0Z+x4Rw1wA1vu9dv+p9iwuD15KLJgT4GsTCNSaVgmh4jByq?=
+ =?us-ascii?Q?+DjGaeSIViLEEq2k/ksLPpJMClVCys4Z04hRHEQJJpp5PEoU0S9bVrqGIP+/?=
+ =?us-ascii?Q?8TnxdsHVuzHoEOve0pm8WQNtTdJLUfR+1HkRB4vTvdYakBwcaQWNc7/RSOSk?=
+ =?us-ascii?Q?bjXn8UXjedH8UrDh7S/RjIT8jV19OEebpmgDF/VnDp8RqGUOtb9aEEeT71xi?=
+ =?us-ascii?Q?Z+xketHn85kdUy+JiB0Pa7zD5OcmOQtlWm7a44pfyXWOlA8wbQO6bcCqk5zM?=
+ =?us-ascii?Q?OCQNTApsAPKdo+1fsUZAtmvqCYynxFiu5tqdhOOySM/X58704q6RB3xYSbYC?=
+ =?us-ascii?Q?UnwB4TjPeYNn/JwFRNQ3WyMN0WqRGQbGcUTZsC4il5U0p9bHr9c4bzZYo++6?=
+ =?us-ascii?Q?43JV7CX0vEdXzgWy4ICbK1nEPsq6NaNVC3ppvLduoIc3Lz6sne7QrsPf8jmG?=
+ =?us-ascii?Q?kFpXsawjd1UistrcVBTzRTf82f3qZ0pSZiswteUpNT8+WGI3UIi+C/YH6x/A?=
+ =?us-ascii?Q?0Ctp5PbI1YgaUARcgePG+MRWw0g86y6ZVSfQP/g0QFboOpKUjiM2MGjQjKia?=
+ =?us-ascii?Q?ekyiNCHtT2hZeNGkGD7MuVYBGtSZlaS5OIvwNO+5NiC8AlolkHTGxgkZR6/f?=
+ =?us-ascii?Q?YS3zjHnVbImMPCez8gTOjj18UEvIMd3U8uXtXuaWZRcLGelLQYupoEYXgmg7?=
+ =?us-ascii?Q?b2K9jMHchBIxhb8H1IM3emZ856Ga1msFL/xqVW+m4nuwwuegKdPC/nPdjwqJ?=
+ =?us-ascii?Q?mpo2onX+SqjSx8HRSo6XCyxK+orIufJPxSeQOpzL?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3b6fd937-3a16-4a1f-5f0c-08dd156972ad
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2024 20:14:39.9003
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qYVYElu4NHOp4JvU6v7xRetasfpD9Ob7Oz2Poor3+18By03JoCUB3ngX+/sn5zFtRrXAxlO7Lndeo+dql09MCg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8200
 
-Hello Carlos,
+Convert device tree binding doc mobiveil-pcie.txt to yaml format. Merge
+layerscape-pcie-gen4.txt into this file.
 
-On 27.11.24 11:43, Carlos Song wrote:
->> -----Original Message-----
->> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> Sent: Wednesday, November 27, 2024 4:38 PM
->> To: Carlos Song <carlos.song@nxp.com>; mkl@pengutronix.de; Frank Li
->> <frank.li@nxp.com>; o.rempel@pengutronix.de; kernel@pengutronix.de;
->> andi.shyti@kernel.org; shawnguo@kernel.org; s.hauer@pengutronix.de;
->> festevam@gmail.com
->> Cc: imx@lists.linux.dev; linux-i2c@vger.kernel.org;
->> linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org
->> Subject: [EXT] Re: [PATCH v4] i2c: imx: support DMA defer probing
+Additional change:
+- interrupt-names: "aer", "pme", "intr", which align order in examples.
+- reg-names: csr_axi_slave, config_axi_slave, which align existed dts file.
 
->> Please try to address open questions before sending new versions of the patch
->> set. Otherwise, it's difficult to follow the conversation.
->>
->> Did you see my question[1] on your v2:
->>
-> 
-> Hi, thank you so much! So sorry about it... I missed it yesterday. I will answer your question[1] in this mail.
-> 
-> 
->> | Wouldn't this break probe for all i2c-imx users who have
->> | CONFIG_IMX_SDMA disabled?
->> |
-> 
-> I have tested i2c probe at IMX and LS platform when DMA disabled,
+Fix below CHECK_DTBS warning:
+arch/arm64/boot/dts/freescale/fsl-lx2160a-qds.dtb: /soc/pcie@3400000: failed to match any schema with compatible: ['fsl,lx2160a-pcie']
 
-What does DMA disabled mean? Did you leave the dmas property in the device
-tree unchanged, but just disabled the config option?
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+lx2160a r2 already don't use this IP. But someone still complain when I
+try to remove old r1 support.
 
-> it won't break i2c-imx probe.
-> When require DMA channel in i2c_imx_dma_request, find no devices and return
-> -ENODEV, as you see at V4 patch, it will continue to probe and work in PIO mode.
-> I2C adapter should keep available whatever DMA mode is or isn't enabled.
+So convert to yaml file to avoid annoised CHECK_DTBS warnings.
+---
+ .../bindings/pci/layerscape-pcie-gen4.txt     |  52 ------
+ .../bindings/pci/mbvl,gpex40-pcie.yaml        | 167 ++++++++++++++++++
+ .../devicetree/bindings/pci/mobiveil-pcie.txt |  72 --------
+ 3 files changed, 167 insertions(+), 124 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/pci/layerscape-pcie-gen4.txt
+ create mode 100644 Documentation/devicetree/bindings/pci/mbvl,gpex40-pcie.yaml
+ delete mode 100644 Documentation/devicetree/bindings/pci/mobiveil-pcie.txt
 
-If that's the case, then all is good. I thought the situation described
-above would return -EPROBE_DEFER instead. I haven't dug into the code
-to understand what the difference between when dma_request_chan().
-
->> | Also I am wondering on what kernel version and what configuration
->> | (CONFIG_I2C_IMX=?, CONFIG_IMX_SDMA=?) you have that made you run into
->> | this situation.
->> |
-> 
-> I want to correct something, these code about DMA in i2c-imx.c is for eDMA not for SDMA.
-> For eDMA mode, I have tested this patch at layerscape-1043 platform. My patch is based on
-> cfba9f07a1d6 (tag: next-20241122, origin/master, origin/HEAD).
-
-The driver also handles i.MX variants like i.MX6, i.MX8 and so on, which
-have SDMA. So eDMA is not the only DMA driver it is used with.
-
-> 
-> Test log is :
-> No apply this patch:
-> CONFIG_I2C_IMX=y
-> CONFIG_FSL_EDMA=y
-> root@ls1043ardb:~# dmesg | grep i2c
-> [    1.162053] i2c i2c-0: IMX I2C adapter registered
-> [    1.166826] i2c i2c-0: using dma0chan16 (tx) and dma0chan17 (rx) for DMA transfers
-> [    4.722057] i2c_dev: i2c /dev entries driver
-> 
-> Not apply the patch:
-> CONFIG_I2C_IMX=y
-> CONFIG_FSL_EDMA=m
-> root@ls1043ardb:~# dmesg | grep i2c
-> [    1.166381] i2c i2c-0: IMX I2C adapter registered
-> [    4.719226] i2c_dev: i2c /dev entries driver
-> (result shows i2c not enabled the eDMA mode)
-> root@ls1043ardb:~# i2cdetect -y -l
-> i2c-0   i2c             2180000.i2c                             I2C adapter
-> root@ls1043ardb:~# i2cdetect -y 0
->      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
-> 00:                         08 -- -- -- -- -- -- --
-> 10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-> 20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-> 30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-> 40: UU -- -- -- -- -- -- -- -- -- -- -- UU -- -- --
-> 50: -- UU UU UU -- -- -- -- -- -- -- -- -- -- -- --
-> 60: -- -- -- -- -- -- -- -- -- 69 -- -- -- -- -- --
-> 70: -- -- -- -- -- -- -- --
-> 
-> After apply the patch:
-> CONFIG_I2C_IMX=y
-> CONFIG_FSL_EDMA=m
-> root@ls1043ardb:~#
-> root@ls1043ardb:~# dmesg | grep i2c
-> [    4.697046] i2c_dev: i2c /dev entries driver
-> [    7.304142] imx-i2c 2180000.i2c: using dma0chan16 (tx) and dma0chan17 (rx) for DMA transfers
-> [    7.313532] i2c i2c-0: IMX I2C adapter registered
-> (result shows i2c probed after eDMA module installed)
-
-My concern is this configuration:
-
-  - A user has eDMA/SDMA module or disabled, but enabled in DT
-  - The I2C has a PMIC, which is needed for eMMC VCC
-  - System startup is stuck or considerably delayed
-
-> root@ls1043ardb:~#
-> root@ls1043ardb:~# i2cdetect -y -l
-> i2c-0   i2c             2180000.i2c                             I2C adapter
-> root@ls1043ardb:~# i2cdetect -y 0
->      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
-> 00:                         08 -- -- -- -- -- -- --
-> 10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-> 20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-> 30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-> 40: UU -- -- -- -- -- -- -- -- -- -- -- UU -- -- --
-> 50: -- UU UU UU -- -- -- -- -- -- -- -- -- -- -- --
-> 60: -- -- -- -- -- -- -- -- -- 69 -- -- -- -- -- --
-> 70: -- -- -- -- -- -- -- --
-> 
-> 
->> | I'd have expected that with fw_devlink enabled, the I2C controller
->> | wouldn't be probed before the DMA provider is available.
->>
-> 
-> This is a legacy patch, it has been in our local tree for a long time. The related history is relatively vague.
-> I reproduced the problem and found this patch is effective, so I referred the community patch and
-> legacy patch to rewrite the commit log(I am not sure if this would happened in some cases so I kept this information).
-> Now it seems that these descriptions are redundant. I should completely removed this in the commit log:
->     Move i2c_imx_dma_request() before registering I2C adapter to avoid
->     infinite loop of .probe() calls to the same driver, see "e8c220fac415
->     Revert "i2c: imx: improve the error handling in i2c_imx_dma_request()""
->     and "Documentation/driver-api/driver-model/driver.rst".
-
-Cheers,
-Ahmad
-
-> 
-> [1]: https://lore.kernel.org/all/19a43db4-db5c-4638-9778-d94fb571a206@pengutronix.de/
-> [2]:https://lore.kernel.org/all/153e8e36-7b0e-4379-9cc3-6dacb5d705be@pengutronix.de/
-> 
->>>
->>> Signed-off-by: Carlos Song <carlos.song@nxp.com>
->>> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
->>> ---
->>> Change for V4:
->>> - Output "Only use PIO mode" log in debug level when no DMA configure.
->>> Change for V3:
->>> - According to Marc's comment, remove error print when defer probe.
->>>   Add info log when DMA has not been enabled and add error log when
->>>   DMA error, both won't stuck the i2c adapter register, just for reminding,
->>>   i2c adapter is working only in PIO mode.
->>> Change for V2:
->>> - According to Frank's comments, wrap at 75 char and Simplify fix code
->>>   at i2c_imx_dma_request().
->>> - Use strict patch check, fix alignment warning at
->>> i2c_imx_dma_request()
->>> ---
->>>  drivers/i2c/busses/i2c-imx.c | 31 +++++++++++++++++++++++--------
->>>  1 file changed, 23 insertions(+), 8 deletions(-)
->>>
->>> diff --git a/drivers/i2c/busses/i2c-imx.c
->>> b/drivers/i2c/busses/i2c-imx.c index 5ed4cb61e262..b11d66d56c55 100644
->>> --- a/drivers/i2c/busses/i2c-imx.c
->>> +++ b/drivers/i2c/busses/i2c-imx.c
->>> @@ -397,17 +397,16 @@ static void i2c_imx_reset_regs(struct
->>> imx_i2c_struct *i2c_imx)  }
->>>
->>>  /* Functions for DMA support */
->>> -static void i2c_imx_dma_request(struct imx_i2c_struct *i2c_imx,
->>> -                                             dma_addr_t
->> phy_addr)
->>> +static int i2c_imx_dma_request(struct imx_i2c_struct *i2c_imx,
->>> +dma_addr_t phy_addr)
->>>  {
->>>       struct imx_i2c_dma *dma;
->>>       struct dma_slave_config dma_sconfig;
->>> -     struct device *dev = &i2c_imx->adapter.dev;
->>> +     struct device *dev = i2c_imx->adapter.dev.parent;
->>>       int ret;
->>>
->>>       dma = devm_kzalloc(dev, sizeof(*dma), GFP_KERNEL);
->>>       if (!dma)
->>> -             return;
->>> +             return -ENOMEM;
->>>
->>>       dma->chan_tx = dma_request_chan(dev, "tx");
->>>       if (IS_ERR(dma->chan_tx)) {
->>> @@ -452,7 +451,7 @@ static void i2c_imx_dma_request(struct
->> imx_i2c_struct *i2c_imx,
->>>       dev_info(dev, "using %s (tx) and %s (rx) for DMA transfers\n",
->>>               dma_chan_name(dma->chan_tx),
->>> dma_chan_name(dma->chan_rx));
->>>
->>> -     return;
->>> +     return 0;
->>>
->>>  fail_rx:
->>>       dma_release_channel(dma->chan_rx);
->>> @@ -460,6 +459,8 @@ static void i2c_imx_dma_request(struct
->> imx_i2c_struct *i2c_imx,
->>>       dma_release_channel(dma->chan_tx);
->>>  fail_al:
->>>       devm_kfree(dev, dma);
->>> +
->>> +     return ret;
->>>  }
->>>
->>>  static void i2c_imx_dma_callback(void *arg) @@ -1803,6 +1804,23 @@
->>> static int i2c_imx_probe(struct platform_device *pdev)
->>>       if (ret == -EPROBE_DEFER)
->>>               goto clk_notifier_unregister;
->>>
->>> +     /*
->>> +      * Init DMA config if supported, -ENODEV means DMA not enabled at
->>> +      * this platform, that is not a real error, so just remind "only
->>> +      * PIO mode is used". If DMA is enabled, but meet error when request
->>> +      * DMA channel, error should be showed in probe error log. PIO mode
->>> +      * should be available regardless of DMA.
->>> +      */
->>> +     ret = i2c_imx_dma_request(i2c_imx, phy_addr);
->>> +     if (ret) {
->>> +             if (ret == -EPROBE_DEFER)
->>> +                     goto clk_notifier_unregister;
->>> +             else if (ret == -ENODEV)
->>> +                     dev_dbg(&pdev->dev, "Only use PIO mode\n");
->>> +             else
->>> +                     dev_err_probe(&pdev->dev, ret, "Failed to setup
->> DMA, only use PIO mode\n");
->>> +     }
->>> +
->>>       /* Add I2C adapter */
->>>       ret = i2c_add_numbered_adapter(&i2c_imx->adapter);
->>>       if (ret < 0)
->>> @@ -1817,9 +1835,6 @@ static int i2c_imx_probe(struct platform_device
->> *pdev)
->>>               i2c_imx->adapter.name);
->>>       dev_info(&i2c_imx->adapter.dev, "IMX I2C adapter registered\n");
->>>
->>> -     /* Init DMA config if supported */
->>> -     i2c_imx_dma_request(i2c_imx, phy_addr);
->>> -
->>>       return 0;   /* Return OK */
->>>
->>>  clk_notifier_unregister:
->>
->>
->> --
->> Pengutronix e.K.                           |
->> |
->> Steuerwalder Str. 21                       |
->> http://www.pen/
->> gutronix.de%2F&data=05%7C02%7Ccarlos.song%40nxp.com%7C1acf840d499f
->> 49a7872408dd0ebedc39%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0
->> %7C638682935131084746%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAw
->> MDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&s
->> data=Y9Qn9XEk15yu4CespwsNu6hl3%2FqfNTvEeOn4ZvnGxbo%3D&reserved=0
->> |
->> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0
->> |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:
->> +49-5121-206917-5555 |
-> 
-
-
+diff --git a/Documentation/devicetree/bindings/pci/layerscape-pcie-gen4.txt b/Documentation/devicetree/bindings/pci/layerscape-pcie-gen4.txt
+deleted file mode 100644
+index b40fb5d15d3d9..0000000000000
+--- a/Documentation/devicetree/bindings/pci/layerscape-pcie-gen4.txt
++++ /dev/null
+@@ -1,52 +0,0 @@
+-NXP Layerscape PCIe Gen4 controller
+-
+-This PCIe controller is based on the Mobiveil PCIe IP and thus inherits all
+-the common properties defined in mobiveil-pcie.txt.
+-
+-Required properties:
+-- compatible: should contain the platform identifier such as:
+-  "fsl,lx2160a-pcie"
+-- reg: base addresses and lengths of the PCIe controller register blocks.
+-  "csr_axi_slave": Bridge config registers
+-  "config_axi_slave": PCIe controller registers
+-- interrupts: A list of interrupt outputs of the controller. Must contain an
+-  entry for each entry in the interrupt-names property.
+-- interrupt-names: It could include the following entries:
+-  "intr": The interrupt that is asserted for controller interrupts
+-  "aer": Asserted for aer interrupt when chip support the aer interrupt with
+-	 none MSI/MSI-X/INTx mode,but there is interrupt line for aer.
+-  "pme": Asserted for pme interrupt when chip support the pme interrupt with
+-	 none MSI/MSI-X/INTx mode,but there is interrupt line for pme.
+-- dma-coherent: Indicates that the hardware IP block can ensure the coherency
+-  of the data transferred from/to the IP block. This can avoid the software
+-  cache flush/invalid actions, and improve the performance significantly.
+-- msi-parent : See the generic MSI binding described in
+-  Documentation/devicetree/bindings/interrupt-controller/msi.txt.
+-
+-Example:
+-
+-	pcie@3400000 {
+-		compatible = "fsl,lx2160a-pcie";
+-		reg = <0x00 0x03400000 0x0 0x00100000   /* controller registers */
+-		       0x80 0x00000000 0x0 0x00001000>; /* configuration space */
+-		reg-names = "csr_axi_slave", "config_axi_slave";
+-		interrupts = <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>, /* AER interrupt */
+-			     <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>, /* PME interrupt */
+-			     <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>; /* controller interrupt */
+-		interrupt-names = "aer", "pme", "intr";
+-		#address-cells = <3>;
+-		#size-cells = <2>;
+-		device_type = "pci";
+-		apio-wins = <8>;
+-		ppio-wins = <8>;
+-		dma-coherent;
+-		bus-range = <0x0 0xff>;
+-		msi-parent = <&its>;
+-		ranges = <0x82000000 0x0 0x40000000 0x80 0x40000000 0x0 0x40000000>;
+-		#interrupt-cells = <1>;
+-		interrupt-map-mask = <0 0 0 7>;
+-		interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>,
+-				<0000 0 0 2 &gic 0 0 GIC_SPI 110 IRQ_TYPE_LEVEL_HIGH>,
+-				<0000 0 0 3 &gic 0 0 GIC_SPI 111 IRQ_TYPE_LEVEL_HIGH>,
+-				<0000 0 0 4 &gic 0 0 GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>;
+-	};
+diff --git a/Documentation/devicetree/bindings/pci/mbvl,gpex40-pcie.yaml b/Documentation/devicetree/bindings/pci/mbvl,gpex40-pcie.yaml
+new file mode 100644
+index 0000000000000..160ddc4bc45bf
+--- /dev/null
++++ b/Documentation/devicetree/bindings/pci/mbvl,gpex40-pcie.yaml
+@@ -0,0 +1,167 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/pci/mbvl,gpex40-pcie.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Mobiveil AXI PCIe Root Port Bridge
++
++maintainers:
++  - Frank Li <Frank Li@nxp.com>
++
++description:
++  Mobiveil's GPEX 4.0 is a PCIe Gen4 root port bridge IP. This configurable IP
++  has up to 8 outbound and inbound windows for the address translation.
++
++  NXP Layerscape PCIe Gen4 controller (Deprecated) base on Mobiveil's GPEX 4.0.
++
++properties:
++  compatible:
++    enum:
++      - mbvl,gpex40-pcie
++      - fsl,lx2160a-pcie
++
++  reg:
++    items:
++      - description: PCIe controller registers
++      - description: Bridge config registers
++      - description: GPIO registers to control slot power
++      - description: MSI registers
++    minItems: 2
++
++  reg-names:
++    items:
++      - const: csr_axi_slave
++      - const: config_axi_slave
++      - const: gpio_slave
++      - const: apb_csr
++    minItems: 2
++
++  apio-wins:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      numbers of requested apio outbound windows
++        1. Config window
++        2. Memory window
++    default: 2
++    maximum: 256
++
++  ppio-wins:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: number of requested ppio inbound windows
++    default: 1
++    maximum: 256
++
++  interrupt-controller: true
++
++  "#interrupt-cells":
++    const: 1
++
++  interrupts:
++    minItems: 1
++    maxItems: 3
++
++  interrupt-names:
++    minItems: 1
++    maxItems: 3
++
++  dma-coherent: true
++
++  msi-parent: true
++
++required:
++  - compatible
++  - reg
++  - reg-names
++
++allOf:
++  - $ref: /schemas/pci/pci-host-bridge.yaml#
++  - if:
++      properties:
++        compatible:
++          enum:
++            - fsl,lx2160a-pcie
++    then:
++      properties:
++        reg:
++          maxItems: 2
++
++        reg-names:
++          maxItems: 2
++
++        interrupt-names:
++          items:
++            - const: aer
++            - const: pme
++            - const: intr
++    else:
++      properties:
++        dma-coherent: false
++        msi-parent: false
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++
++    pcie@b0000000 {
++        compatible = "mbvl,gpex40-pcie";
++        reg = <0xb0000000 0x00010000>,
++              <0xa0000000 0x00001000>,
++              <0xff000000 0x00200000>,
++              <0xb0010000 0x00001000>;
++        reg-names = "csr_axi_slave",
++                    "config_axi_slave",
++                    "gpio_slave",
++                    "apb_csr";
++        #address-cells = <3>;
++        #size-cells = <2>;
++        device_type = "pci";
++        apio-wins = <2>;
++        ppio-wins = <1>;
++        bus-range = <0x00000000 0x000000ff>;
++        interrupt-controller;
++        #interrupt-cells = <1>;
++        interrupt-parent = <&gic>;
++        interrupts = <GIC_SPI 89 IRQ_TYPE_LEVEL_HIGH>;
++        interrupt-map-mask = <0 0 0 7>;
++        interrupt-map = <0 0 0 0 &pci_express 0>,
++                        <0 0 0 1 &pci_express 1>,
++                        <0 0 0 2 &pci_express 2>,
++                        <0 0 0 3 &pci_express 3>;
++        ranges = <0x83000000 0 0x00000000 0xa8000000 0 0x8000000>;
++    };
++
++  - |
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++
++    soc {
++        #address-cells = <2>;
++        #size-cells = <2>;
++        pcie@3400000 {
++            compatible = "fsl,lx2160a-pcie";
++            reg = <0x00 0x03400000 0x0 0x00100000   /* controller registers */
++                   0x80 0x00000000 0x0 0x00001000>; /* configuration space */
++            reg-names = "csr_axi_slave", "config_axi_slave";
++            interrupts = <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>, /* AER interrupt */
++                         <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>, /* PME interrupt */
++                        <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>; /* controller interrupt */
++            interrupt-names = "aer", "pme", "intr";
++            #address-cells = <3>;
++            #size-cells = <2>;
++            device_type = "pci";
++            apio-wins = <8>;
++            ppio-wins = <8>;
++            dma-coherent;
++            bus-range = <0x0 0xff>;
++            msi-parent = <&its>;
++            ranges = <0x82000000 0x0 0x40000000 0x80 0x40000000 0x0 0x40000000>;
++            #interrupt-cells = <1>;
++            interrupt-map-mask = <0 0 0 7>;
++            interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>,
++                            <0000 0 0 2 &gic 0 0 GIC_SPI 110 IRQ_TYPE_LEVEL_HIGH>,
++                            <0000 0 0 3 &gic 0 0 GIC_SPI 111 IRQ_TYPE_LEVEL_HIGH>,
++                            <0000 0 0 4 &gic 0 0 GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>;
++        };
++    };
+diff --git a/Documentation/devicetree/bindings/pci/mobiveil-pcie.txt b/Documentation/devicetree/bindings/pci/mobiveil-pcie.txt
+deleted file mode 100644
+index 64156993e052d..0000000000000
+--- a/Documentation/devicetree/bindings/pci/mobiveil-pcie.txt
++++ /dev/null
+@@ -1,72 +0,0 @@
+-* Mobiveil AXI PCIe Root Port Bridge DT description
+-
+-Mobiveil's GPEX 4.0 is a PCIe Gen4 root port bridge IP. This configurable IP
+-has up to 8 outbound and inbound windows for the address translation.
+-
+-Required properties:
+-- #address-cells: Address representation for root ports, set to <3>
+-- #size-cells: Size representation for root ports, set to <2>
+-- #interrupt-cells: specifies the number of cells needed to encode an
+-	interrupt source. The value must be 1.
+-- compatible: Should contain "mbvl,gpex40-pcie"
+-- reg: Should contain PCIe registers location and length
+-	Mandatory:
+-	"config_axi_slave": PCIe controller registers
+-	"csr_axi_slave"	  : Bridge config registers
+-	Optional:
+-	"gpio_slave"	  : GPIO registers to control slot power
+-	"apb_csr"	  : MSI registers
+-
+-- device_type: must be "pci"
+-- apio-wins : number of requested apio outbound windows
+-		default 2 outbound windows are configured -
+-		1. Config window
+-		2. Memory window
+-- ppio-wins : number of requested ppio inbound windows
+-		default 1 inbound memory window is configured.
+-- bus-range: PCI bus numbers covered
+-- interrupt-controller: identifies the node as an interrupt controller
+-- #interrupt-cells: specifies the number of cells needed to encode an
+-	interrupt source. The value must be 1.
+-- interrupts: The interrupt line of the PCIe controller
+-		last cell of this field is set to 4 to
+-		denote it as IRQ_TYPE_LEVEL_HIGH type interrupt.
+-- interrupt-map-mask,
+-	interrupt-map: standard PCI properties to define the mapping of the
+-	PCI interface to interrupt numbers.
+-- ranges: ranges for the PCI memory regions (I/O space region is not
+-	supported by hardware)
+-	Please refer to the standard PCI bus binding document for a more
+-	detailed explanation
+-
+-
+-Example:
+-++++++++
+-	pcie0: pcie@a0000000 {
+-		#address-cells = <3>;
+-		#size-cells = <2>;
+-		compatible = "mbvl,gpex40-pcie";
+-		reg =	<0xa0000000 0x00001000>,
+-			<0xb0000000 0x00010000>,
+-			<0xff000000 0x00200000>,
+-			<0xb0010000 0x00001000>;
+-		reg-names =	"config_axi_slave",
+-				"csr_axi_slave",
+-				"gpio_slave",
+-				"apb_csr";
+-		device_type = "pci";
+-		apio-wins = <2>;
+-		ppio-wins = <1>;
+-		bus-range = <0x00000000 0x000000ff>;
+-		interrupt-controller;
+-		interrupt-parent = <&gic>;
+-		#interrupt-cells = <1>;
+-		interrupts = < 0 89 4 >;
+-		interrupt-map-mask = <0 0 0 7>;
+-		interrupt-map = <0 0 0 0 &pci_express 0>,
+-				<0 0 0 1 &pci_express 1>,
+-				<0 0 0 2 &pci_express 2>,
+-				<0 0 0 3 &pci_express 3>;
+-		ranges = < 0x83000000 0 0x00000000 0xa8000000 0 0x8000000>;
+-
+-	};
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.34.1
+
