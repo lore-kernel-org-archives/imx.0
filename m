@@ -1,138 +1,189 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2045.outbound.protection.outlook.com [40.107.103.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8EA82066D4;
-	Wed,  4 Dec 2024 23:28:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733354926; cv=none; b=D5HzXRosFqmHeIrJD9zSFgQHq63KuD5MXtGqTqKMgf60piIxK+9zmf5zF1JUnrvptraEDDrXjlP1hU/URb/jPEsokwOM145OfsFiomzCYpI5J2JgO8EEugYGfbHqKaUJKkYm1KsKM23ob7ig0yEGI9FU3iSZ9zHUNB79X99SDw0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733354926; c=relaxed/simple;
-	bh=TGuyA9UR05R0EA//8oCib2q+/iAF7KW5tp/fKrg23IQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AFQrlYYDAsaeAvs2FD5+NkJENMuAUaRjtH97vlcJllWOeHR0raSCOTr/kgbgxHRl8BbDu+Rn/TjbDuhi2mcwP2rsVtQ+Cx/JYe8dUwy1VCE+Ww6OoV+yfI2RD5bQWdc0S5EZtzJ4ZSYdObY30sx7yXrZW8fW4Umn1tBYkadRDtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jtSBvPEE; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7070B191F60
+	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 04:56:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733374620; cv=fail; b=tv23QuKvdFjlsaZ1Lb2ymKimIhudsnaDhX3tF2vMYE85AHtvOvHQjvUvsmGYyj4rcPQ+tIi5S7jK/RFRy2syo/4YPJaxbuPJaEUSH29rDuxhzPTpJWJU52gvywcP2GinMvWvou6T+ckThSWKTtwRug8d5X55b9cen60k1VrpPMM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733374620; c=relaxed/simple;
+	bh=ye0Px8Z8s2/SVfmDWTRVZ67goEAONgsAujQea3Yb+eM=;
+	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
+	 To:Cc:MIME-Version; b=nyKGhJdRdxWrxH/ZRD/NWBmBYpxDa6hfAffGD71TNZVNM5EkpaLef87ODEuIdtc7yKdvHeqAVauK0tZvmGkFtyQBf030b/R6kCEpTspqn7pKuW32naoFxzt8JRUAYH0md3PrLebRab2O/kGDKrarp9OAzQ7JMOtwJkqTXmMIH5I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=kTW1O4Qx; arc=fail smtp.client-ip=40.107.103.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jtSBvPEE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A96EC4CECD;
-	Wed,  4 Dec 2024 23:28:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733354926;
-	bh=TGuyA9UR05R0EA//8oCib2q+/iAF7KW5tp/fKrg23IQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=jtSBvPEEQmYvHVQDnZaqb2/YY0N9ZmPseVNRJHHctbWOrjFwScEHT8Xyv8UC5aOP2
-	 87WBaQvVkCn4oIleujX1HB/OOjkv1heYmb7AR0O3iXh4O5AhMu/WqzNhnDDBj3QelI
-	 P60eOWcWkOZM3uQVmbUh3yxUl5DkbzKtGCC3tPaiPfSQ1n4jwbF9Vfr6XxzHxZE/VL
-	 OixR2Y4g8qVV8FP/RoPnBaNCAudisdwdOipeo+tacnmht2hWuKn+Q+ygSsT3nFHeGF
-	 2cprZsSzycsIU8k9v6PhgpxNRVuyZY02gHGGVxka0O3vypPCXPEQINm5RsQeBASI3f
-	 5jgjW24Sg/mGw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Xu Yang <xu.yang_2@nxp.com>,
-	Peter Chen <peter.chen@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	shawnguo@kernel.org,
-	linux-usb@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.11 01/15] usb: chipidea: add CI_HDRC_HAS_SHORT_PKT_LIMIT flag
-Date: Wed,  4 Dec 2024 17:16:55 -0500
-Message-ID: <20241204221726.2247988-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="kTW1O4Qx"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vTTtRmqwfG1qDPXoEDnwVXDUmBtWZkpqmLIQbdjvL8zjYKhQwDyjtb27tqn6NsgzNeVOkqKDDiNlm+fk+t1jO7vZurSjT42QVU4UbkD1rH/O+/mteV3FdO1XP6bsNrONpqNK5K/AgtL0chM6C2+WC/Szb+5qJIWaSUl9rK4OiB9EIHVJ8WWqDeK20Ngq6FP0+FfzeQ7nPc8/BJZC7ZuC/21/apaw95lgCLttYx4eY3s84mJ57W6RSpw3ZEs8SA6Lrb/s9l80RUN99iWKQnMudZ2+gcJClCkFNuvkuqfMiWbaT7THU034/6+tATelM2RKkG1tGtsKc5u/XcVY+GOznQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2iVW/Qlwy9lp7qpESljJRNndbTTtiVaVKUWesau8r6k=;
+ b=Dl0/V/EqzJfvdknYzbKntcnxdRfgwVC3Fnr4U09fHy3JaWVRKA7LHnYzfqZMBirXxJ+K+FU7HKKxwex1Gyhr8NVh8bLx8ie7i0f6QuHCJhYJUT78cw+iPOKYpJ9xtBlfdwLuD93bJp6WWPEy3eHYOIijFUmb7v6xoFA3dDUstmCeY9URVxb3iaDaKYOInrp5WA5Xz/wsXojcjsWBemk2UBwaBQaQcpbrRkrjrqGf0XocVY39xVg/J8UvKEWaUWczHR6wc61SjlZZvpV2DkkymrcbqazL1znP3QXb9KaPv6jlMEy+8HPOqJprnhA7HMpjJvJj5Kzum/lVfqYrc7Ox+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2iVW/Qlwy9lp7qpESljJRNndbTTtiVaVKUWesau8r6k=;
+ b=kTW1O4Qxoxsw9QwZU6ydXoOxudfU7+JfzKxstZUxhCgE4uKLjcQRoYuF9Gcd/NFYtjxa7IQZfs6ew6MV0oCoQhMPx/TPm9FGHt3eyLRu+IMDlfcnZu0GWgWSKSLSCQKOQI5UoaAAy/dBa2nXvIJ3ZL5Ui90LrxkvadoRoqJQs3Q5cWMveQfHbkBpERHa+wWsXHEwCE2jZ8EPweeM6Dp0rgMfpnIyeuUpLEDnvjeRGvTQCMRO/bKZ13p0qgr+m1+sOHn4RqSjS/MP2e8j0po/VH5Nt5l9Pj5VAv8ZxHTpBsDbnqS70abYAC6DsBXrsCaclgaK4lWG6SyMCy3s2obogw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS1PR04MB9358.eurprd04.prod.outlook.com (2603:10a6:20b:4dc::19)
+ by DB8PR04MB6794.eurprd04.prod.outlook.com (2603:10a6:10:11b::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.11; Thu, 5 Dec
+ 2024 04:56:55 +0000
+Received: from AS1PR04MB9358.eurprd04.prod.outlook.com
+ ([fe80::d74b:21b6:d315:cb84]) by AS1PR04MB9358.eurprd04.prod.outlook.com
+ ([fe80::d74b:21b6:d315:cb84%5]) with mapi id 15.20.8230.010; Thu, 5 Dec 2024
+ 04:56:55 +0000
+From: Vabhav Sharma <vabhav.sharma@nxp.com>
+Date: Thu, 05 Dec 2024 05:56:32 +0100
+Subject: [PATCH v4 1/4] dt-bindings: firmware: imx: add nvmem phandle
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241205-secvio-v4-1-5c37cdc39573@nxp.com>
+References: <20241205-secvio-v4-0-5c37cdc39573@nxp.com>
+In-Reply-To: <20241205-secvio-v4-0-5c37cdc39573@nxp.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Dong Aisheng <aisheng.dong@nxp.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, frank.li@nxp.com, 
+ pankaj.gupta@nxp.com, daniel.baluta@nxp.com, silvano.dininno@nxp.com, 
+ V.Sethi@nxp.com, meenakshi.aggarwal@nxp.com, 
+ Vabhav Sharma <vabhav.sharma@nxp.com>
+X-Mailer: b4 0.13.0
+X-ClientProxiedBy: AM9P192CA0022.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:20b:21d::27) To AS1PR04MB9358.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4dc::19)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.11.10
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS1PR04MB9358:EE_|DB8PR04MB6794:EE_
+X-MS-Office365-Filtering-Correlation-Id: 68f81206-baa5-40b0-0406-08dd14e93cc2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|52116014|1800799024|7416014|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?UG1RSzRObFFCd0dzUm9CSXEweE5iU3lYYWxoa0pWNjZvSG01S0hLbkdsU2J6?=
+ =?utf-8?B?VGZNOFpxcmhlR3FYNjVqQXpoYUdzTDZUNDN4ZmpiK2VpWkpQTVdNVFY1Qlk2?=
+ =?utf-8?B?SHZSakxRZ2JXWHpTd3dVZDU0TDRmSDFsNHZ3SXBtNVpnOGV0V2ZpelI5a29x?=
+ =?utf-8?B?Vi9Ock5XUWJFcm44SGhaV0EzTmUrZi94SHNqODBkeXNvcHlFR29WMFhkRU5E?=
+ =?utf-8?B?TkJCYkpZZTg3OGhEZ3JBV0tZL01iMW9MVXJobjRaekxlcEg3UWQ5ZWpBRFlm?=
+ =?utf-8?B?bThOamNUeHNaM3JIN3IvSE5UR0dzVWhTYnJIOGN5R3dUT2VrZTRiT2FBS2NG?=
+ =?utf-8?B?Z1o2aitqMysxOXIyOHhBWGx1MFU5VUhwUWR2aHpuM2dDU2J1YUVlYmV2bjFl?=
+ =?utf-8?B?VXRuSTMxQUQyaXE0aGxGK3g0SnFPVllwaUlDRzF2R0g0OGtWQVlwSm11Mlo2?=
+ =?utf-8?B?cmdHcEFrTm9JZW9IbDByMmhXVjI5WHRQS2FGcnh5VGptbWNmZHdkVjBMWmtC?=
+ =?utf-8?B?U3lPMWM2NXY4c3dFdjd1YU5JcUFZdUNXclJIeEVxRG1PcDlkM1F4bFZvMkM4?=
+ =?utf-8?B?elVHV2FwZm8yQS9qRHhxaFJNdFVMZTVKakNWT09iN3g3b1ZQaUhadVdLRzlr?=
+ =?utf-8?B?VDgxK2hUbndadjZKVGpDajRSd2hIeFR2TWVMVjQ5Vk1kL1l6K2RoL3FSOGtF?=
+ =?utf-8?B?S2lidmhZemVHU0dRaklqK3F3UWpkOWtXeklGVGJRdm5mSU9rdGZZeHQycjlN?=
+ =?utf-8?B?d0IySWtPeWFxanB3K01YZk02ZXp6RVY2TXZJelhldmRVS1ZxVVFQY04wa1hG?=
+ =?utf-8?B?RWdtS2VmMzhndGRFWmRsUG1UU09nRDBnVWVpaXBXNFdIWk5lanl5U04zeFBT?=
+ =?utf-8?B?bGU5eEpJZHhnVkdkUUZkRm41amZ6d24vMVQyeU81ZzdHQTZiY3JvQjdIaHEv?=
+ =?utf-8?B?bGVncGR5Umg5SFM0dzJIbEtCWUdacXkvWTdrNnhsTlFmK1QwTCtXRVNHMHRI?=
+ =?utf-8?B?M2pqMFFaOWYxdG9lNy9FN3d4TG5nTGpjWUNtU3BMcTlWOUFVYUxoVG50aHJB?=
+ =?utf-8?B?cEZ5Sm5JbkdKNEErWEkzaUdpNzBjUmdEMkUyNmJOaENmV1h2NmQ0Y0htQWpk?=
+ =?utf-8?B?VmZ3bEhLam5MVTVmdFlGdjBiSjVYeHN6eVk5dXVxVTBYYmpLZlRWamFwQ2dy?=
+ =?utf-8?B?bU9MTDZ2QjFsdFAvekpLNmhxbjVvWi9KeTdXNDRlaGtlUW9NYjNROGdYMytP?=
+ =?utf-8?B?Q0JRV0hsM25EYVhkRVJqdVQ3ZjdNRmNMU2RCZ2NCdDFNbnV2S3NCaWkvRysy?=
+ =?utf-8?B?b1ZDR0pMMVZiMEhlVFEydHoxbDN3RjRxVGFXWVhWM1A2ZlRpOFd1ZUlTNC9p?=
+ =?utf-8?B?bHZHL1d1OEdETCtkcGxwWmhmN08reSs4Sy9DT3B2OStHdWU2bTdmdzVHdzZM?=
+ =?utf-8?B?UWNUZFE2M2VmRlNraW9lcENwc1REWGVobVdaOVY4UFAzeDNMSTBTK21yVnRH?=
+ =?utf-8?B?WnhGTHpWOVltbWdpckhKNkpKaW5lVU5jY1RyYXFVcTBTMWdsaXVycTZKKzZR?=
+ =?utf-8?B?R2w1VjFRNkJsTk1lNUpkV01Ia3ZZVHNQYTdhdGpaVDJ1ZGJDRXFacXFoTVNm?=
+ =?utf-8?B?NFd0bHlzbGhvY3lNZ0FIR0ZOaDNoV2NsZ2NESUlMb0tZb0QvdVFYNVg3Z3NJ?=
+ =?utf-8?B?djdLT2pWMXh3dENyYXlvUVV3SThlbFQ1bGpPVC8yWTNSb2JNVUp2RGZuR1hr?=
+ =?utf-8?B?Z1V5UEVaQkpsWXhpRHUzNXU2cjFlNW8zVEliZHkvMHRJR3UrUWhUN2wvbmh3?=
+ =?utf-8?B?UDNCZ1NBYVNITkZ2SUlyTlU2Y0F4L29EaHpFa0JvZ1I0WVVOS2o0aDdoRXVu?=
+ =?utf-8?B?SzM1MUROanJacjFuSmVqVkc2WUVjdk1uSkRUaFlGSHVxZlE9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS1PR04MB9358.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(1800799024)(7416014)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cEJSTDNFWFI1Qk54WGtCeWN1dTIyd1VYM3RFaXhaajRJSEVjT1VDR3N1aVUr?=
+ =?utf-8?B?dGhUeFQ5aTVnSGtpcnFKN2V5T1orZXQrMkFzVmpzMndUNVptVXgvWlBLVVpQ?=
+ =?utf-8?B?bEw0QUVVdE94Smp3V1BCenJIYmU1RFRmQmZrYzAvQ0VKQWdydWlWdG00UGNT?=
+ =?utf-8?B?L0FIbzd3YnVsRlFiMmZlZlpBajZYUzlmUHJhK1J5NGtzMTI4MTRkdmY0a0x0?=
+ =?utf-8?B?SnhudHFLNHBXQlBvd1RCZ2dmTVk2RzEwSTh1S2YxZ1RDSGRjWWI4b0hKdC9J?=
+ =?utf-8?B?cllEYXdhRk5BVlViNzlhWDA2bVJob3B6MWVqVlExbTVTL2REZmFoUDM3b01m?=
+ =?utf-8?B?TndvM056OWFLQ0s5Z29ibmFCcTZvMFN0akRma2M4c0tHbEVOaXpsa285b3pG?=
+ =?utf-8?B?eGF0N2xCaWZUc0xiS0orNXc1Z1FQSkpPQ2NsNFo5TnNtS1lQZm1nazdvS0ox?=
+ =?utf-8?B?WWxRVmRSNzVXUjl0NlRudUlHZkpMUmtTM1dnU3JzcndULytwdmVIOTJyZTdh?=
+ =?utf-8?B?K2IwNzBsYlduWGgzRVVMYnpuVFduOXVKcGdsQUdWS0JtTmYrVDdHZEFTdVE5?=
+ =?utf-8?B?ajFwdTdkL0VZMHBFc0xwb3NQK0hxZE9sNVo3WUYwMTRmVlZMb0tLZERveFk0?=
+ =?utf-8?B?OWxpRFdhSDBSWlRLQWNIand5SFNIK2ZYMjVWbHBaZkswWXdxZUN6eEJ0a2Fp?=
+ =?utf-8?B?WjlPYVFEeXdJMVZnNzFValFxdzF4MFkxcW9WcFo3bDFmY2pvRzM5dHFIcnZC?=
+ =?utf-8?B?Z0owTlJYV20wSzRLdnI3WExRelB5ekowNzFCUEgrSXpNMW5OQjE2N05QVkRm?=
+ =?utf-8?B?N2w2dE94ZXpZNU50Z3FaS0hWY0NRZkZHMW05ZnA2NktYT0VjV1ZiTkwxc2Nn?=
+ =?utf-8?B?clk2TENtNDNtRnArMVNPbENWUkRUdXJPU01vTlZTc05aL3B2Z2RuMHErQlIr?=
+ =?utf-8?B?UVdRaWdCNUMrelJSQkRuZnFRVGRXME1OVGhMSS9UYlhRelBzRmt4WGkzN05a?=
+ =?utf-8?B?ZEFaQk9FenlJQTVnRHpCNDdiYnNQazkrOWEvNnphblQyWkF4dGszekR3ZXJv?=
+ =?utf-8?B?UE1DNGE5WTJBZ3V3Q3ZYMVZIa1F5Z1FtMjgyemRDZEhtTzlMblhiblBhVFB3?=
+ =?utf-8?B?R3FFMTNnV3hlL2lEVUZhOUdaaTM2S0hQdjJaVDRyQVd3MVpKSi9FVTlrTGFi?=
+ =?utf-8?B?OExDTk9BOVVJUFplcXBnWXZXM2RLQnpxWGFGRGE5dFlaa2E4ckdOS0pSL0Ji?=
+ =?utf-8?B?RzlBTkJyMGErN1JGOWFsaXZLL0ZwT0NYWm9tQlY3VXlva0RuMDBUMmFyZitP?=
+ =?utf-8?B?ODl1VUZjL3FvMnZmY1llMkNtSG0vY1BZWjBmaFZlSERSbTRvNU9tdmgxazUv?=
+ =?utf-8?B?ZnhIRkhxUUo0OTNBVVdSYk9Fb09GOHVYdDBybTdRTG82OXozM05TTm1weFYz?=
+ =?utf-8?B?ZWdyQXVCSzhlL01ORVo5c3VqWGppT054UjNnaTdGVGZBRWVxWHVjQm1WNVlG?=
+ =?utf-8?B?dXpSQkJBY0hDNzlIaUYwV2ZGUUhERlhqS2dzL29SY3JkTGEzU0t5bzladi9H?=
+ =?utf-8?B?a1BkVmxhWmQxZEU3ZEMrZFJ6Nmh2K2ZwZDVseGFXaXVLV0prckxaMGx6czVz?=
+ =?utf-8?B?enc2YndMMStrNis4WklnMWdMcGd6YWY4d09TaDA1RnlhNVNiSktIeTkwbXhw?=
+ =?utf-8?B?bzF1bXR5VlpORHNucnRIYWF1bEhuRnF5R0RBU1FKamg1TWNMTnpGOGpPNFNT?=
+ =?utf-8?B?eUNXRjdEOW1nazlOM01tZDdLdkdhVkRlNlJLQngxT1p0bXN0ZDdoMUs0MTFs?=
+ =?utf-8?B?VVpEZXpONkEveFlIQ3F4V2lJMmZHN2FqZnBtYWY2WVVqdkxGVGFLVlFSZzd3?=
+ =?utf-8?B?ZXl2bjREWVhJNU5BVFNJZytxR0t2Y0pnaVFvYUViMWxTZjFxZmRTUWdzcWxD?=
+ =?utf-8?B?N0srRVovdVhYdXB4ZTVCVlYvd09qazNiQ1AxSUVBemxDbnJPY2Z1RzFqRThk?=
+ =?utf-8?B?THdKSGFFUHRIK1UrRGVwWUZNc0tHNE0rK2NSaUQ4aGtrTzhwYnFzMllVLzRv?=
+ =?utf-8?B?NTkwUE5POGhoT05lTm9LcDNHdCs0VG1WdmwxcWdiTDhsd04rcWRLaFJBb2gr?=
+ =?utf-8?Q?vbD1t4awsjFBLTHX/gb2iN25J?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 68f81206-baa5-40b0-0406-08dd14e93cc2
+X-MS-Exchange-CrossTenant-AuthSource: AS1PR04MB9358.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2024 04:56:53.7025
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9g8SE4lltTuhRCKzkpTJRrZdMfpjNbL+z+XnJ6frtePhVEddKLaobgCR+l2gh8X7NwgsGa7RwvD/+ul/7PMFbw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6794
 
-From: Xu Yang <xu.yang_2@nxp.com>
+nvmem phandle is required by secvio driver to
+read fuse.
 
-[ Upstream commit ec841b8d73cff37f8960e209017efe1eb2fb21f2 ]
-
-Currently, the imx deivice controller has below limitations:
-
-1. can't generate short packet interrupt if IOC not set in dTD. So if one
-   request span more than one dTDs and only the last dTD set IOC, the usb
-   request will pending there if no more data comes.
-2. the controller can't accurately deliver data to differtent usb requests
-   in some cases due to short packet. For example: one usb request span 3
-   dTDs, then if the controller received a short packet the next packet
-   will go to 2nd dTD of current request rather than the first dTD of next
-   request.
-3. can't build a bus packet use multiple dTDs. For example: controller
-   needs to send one packet of 512 bytes use dTD1 (200 bytes) + dTD2
-   (312 bytes), actually the host side will see 200 bytes short packet.
-
-Based on these limits, add CI_HDRC_HAS_SHORT_PKT_LIMIT flag and use it on
-imx platforms.
-
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20240923081203.2851768-1-xu.yang_2@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Vabhav Sharma <vabhav.sharma@nxp.com>
 ---
- drivers/usb/chipidea/ci.h          | 1 +
- drivers/usb/chipidea/ci_hdrc_imx.c | 1 +
- drivers/usb/chipidea/core.c        | 2 ++
- include/linux/usb/chipidea.h       | 1 +
- 4 files changed, 5 insertions(+)
+ Documentation/devicetree/bindings/firmware/fsl,scu.yaml | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/usb/chipidea/ci.h b/drivers/usb/chipidea/ci.h
-index 2a38e1eb65466..e4b003d060c26 100644
---- a/drivers/usb/chipidea/ci.h
-+++ b/drivers/usb/chipidea/ci.h
-@@ -260,6 +260,7 @@ struct ci_hdrc {
- 	bool				b_sess_valid_event;
- 	bool				imx28_write_fix;
- 	bool				has_portsc_pec_bug;
-+	bool				has_short_pkt_limit;
- 	bool				supports_runtime_pm;
- 	bool				in_lpm;
- 	bool				wakeup_int;
-diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-index bdc04ce919f7a..b76e7c3fa2c6e 100644
---- a/drivers/usb/chipidea/ci_hdrc_imx.c
-+++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -342,6 +342,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 	struct ci_hdrc_platform_data pdata = {
- 		.name		= dev_name(&pdev->dev),
- 		.capoffset	= DEF_CAPOFFSET,
-+		.flags		= CI_HDRC_HAS_SHORT_PKT_LIMIT,
- 		.notify_event	= ci_hdrc_imx_notify_event,
- 	};
- 	int ret;
-diff --git a/drivers/usb/chipidea/core.c b/drivers/usb/chipidea/core.c
-index 835bf2428dc6e..5aa16dbfc289c 100644
---- a/drivers/usb/chipidea/core.c
-+++ b/drivers/usb/chipidea/core.c
-@@ -1076,6 +1076,8 @@ static int ci_hdrc_probe(struct platform_device *pdev)
- 		CI_HDRC_SUPPORTS_RUNTIME_PM);
- 	ci->has_portsc_pec_bug = !!(ci->platdata->flags &
- 		CI_HDRC_HAS_PORTSC_PEC_MISSED);
-+	ci->has_short_pkt_limit = !!(ci->platdata->flags &
-+		CI_HDRC_HAS_SHORT_PKT_LIMIT);
- 	platform_set_drvdata(pdev, ci);
+diff --git a/Documentation/devicetree/bindings/firmware/fsl,scu.yaml b/Documentation/devicetree/bindings/firmware/fsl,scu.yaml
+index 557e524786c2..c88d9c2dac24 100644
+--- a/Documentation/devicetree/bindings/firmware/fsl,scu.yaml
++++ b/Documentation/devicetree/bindings/firmware/fsl,scu.yaml
+@@ -112,6 +112,9 @@ properties:
+           - const: rx2
+           - const: rx3
+           - const: gip3
++  nvmem:
++    description:
++      phandle of NVMEM controller provided by the SCU
  
- 	ret = hw_device_init(ci, base);
-diff --git a/include/linux/usb/chipidea.h b/include/linux/usb/chipidea.h
-index 5a7f96684ea22..ebdfef124b2bc 100644
---- a/include/linux/usb/chipidea.h
-+++ b/include/linux/usb/chipidea.h
-@@ -65,6 +65,7 @@ struct ci_hdrc_platform_data {
- #define CI_HDRC_PHY_VBUS_CONTROL	BIT(16)
- #define CI_HDRC_HAS_PORTSC_PEC_MISSED	BIT(17)
- #define CI_HDRC_FORCE_VBUS_ACTIVE_ALWAYS	BIT(18)
-+#define	CI_HDRC_HAS_SHORT_PKT_LIMIT	BIT(19)
- 	enum usb_dr_mode	dr_mode;
- #define CI_HDRC_CONTROLLER_RESET_EVENT		0
- #define CI_HDRC_CONTROLLER_STOPPED_EVENT	1
+   pinctrl:
+     description:
+
 -- 
-2.43.0
+2.25.1
 
