@@ -1,86 +1,167 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59720218840
-	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 13:11:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDEBE218E90
+	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 13:41:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733404267; cv=none; b=fQcor+n5gKTZaoNiQbs0TDq5zAieweWswrDD1azxGJl16fZhQl/RnEvv8AZNBgXaW+Snt6BCmqXGbp+FICJwlrWW+IpMAT/tYwgpbi6+zxhFYRkQJztM+gVdNdxg0zeE6NKWRx2KYFZEURyP5esbBmkzrPFzKgWr9K9FR8GLR/0=
+	t=1733406067; cv=none; b=AgdCAzIcQaUr33byL6FUJOxkm8fwoudtHDstaNvRp7PiGBID1YrpCAfFLW5Et+H3fLbBHT/B+BfTRMK0K7Z4Exty728+0KrUf/7uFDNMrsIPZmmRDLz5ULZPS3hoS3OI/wkZaxeeBBkeMN1FCMIkNF/5fyZdZhcy7tin6ZE9zPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733404267; c=relaxed/simple;
-	bh=8OwUNqW2vG7Kp0Vngd/eTUDgtb2xVKzL1mxTLPnP8PA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=sZw4zBNh46ZqqPI2tY3K5k9PKj29lBO51vkW5QBDXIcP0reqdMazMGfE2tNoFj2snf6GEvZGuSVoAsbdc3MonUuqFWIc5MTDEpqYWjABCobS/8niPtNfvnXuQFqBLUxi4aj1aYqQp6oKZdFy4jojaZG5dg17WINT6zC5l6fJK1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SSecgSoJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TF6tbNwZ; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1733406067; c=relaxed/simple;
+	bh=CVTa+Yryd5WCOoSohPiqRTTYHDbNwvFcN336w6MRtHs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=O0c6OIpfa4CNaPtYabl5dRJZCwExQtgu2sf4gCw9GxKQl156SpO61LAJwvJSsw18eneKu/bRQzpVpuSAowj6gNmkS+Tls6pxwFqNRDDoDK6Whpv+xBRoJktSd+34R9fe8Y/6pwpG9Wsunq4kvUOiAT64VUTbQ/nS+ZwKJafR4Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=gZznjb7t; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SSecgSoJ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TF6tbNwZ"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1733404256;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2r5ZSOC+jMK+Pn41a+KdPBf5Tp8LhGYfDQCBVqyptSw=;
-	b=SSecgSoJaTW4GK3OxeSbVglrdiNuLnmzjVRYetQUMbKN9YgTDPUJKRPT2xBYIFSFUPXkU9
-	iL545q3NwhxiwKrJ9Kj14INBRUO3VqNClhU2zZ7NkgeiWmFzxONN7HnrxI8c5hJdXJ4qsS
-	EZ5Kb+Tx4a42G8/+/wmvIG3g3GiTJ/oXZvc3QOeJM/NWD0pEgedh1c8gM5zAXiuEBREd5a
-	m4rTBF3EQiWMdBj7XAhjSNnZe4fHph/13dd/m6Rhxo2TOUn4pr1Kl8kydS2Z8e1UpewYv5
-	gnNbECNnBH37KBm9FozVwUygpXr3DcjAZbAuEDlMXhEnaac/6tfV3p8OISq0jQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1733404256;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2r5ZSOC+jMK+Pn41a+KdPBf5Tp8LhGYfDQCBVqyptSw=;
-	b=TF6tbNwZIKHNI5y92mqJbv4JxvZqe0fERVOSlkTSDhw6+5AqZuIK7VX1meXEl6Q8c1huFY
-	zk4IFSFIUV+rekBQ==
-To: Frank Li <Frank.Li@nxp.com>, Manivannan Sadhasivam
- <manivannan.sadhasivam@linaro.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
- <kw@linux.com>,
- Kishon Vijay Abraham I <kishon@kernel.org>, Bjorn Helgaas
- <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Anup Patel <apatel@ventanamicro.com>, Marc Zyngier <maz@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
- imx@lists.linux.dev, Niklas Cassel <cassel@kernel.org>,
- dlemoal@kernel.org, jdmason@kudzu.us,
- linux-arm-kernel@lists.infradead.org, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v10 3/7] PCI: endpoint: pci-ep-msi: Add MSI address/data
- pair mutable check
-In-Reply-To: <20241204-ep-msi-v10-3-87c378dbcd6d@nxp.com>
-References: <20241204-ep-msi-v10-0-87c378dbcd6d@nxp.com>
- <20241204-ep-msi-v10-3-87c378dbcd6d@nxp.com>
-Date: Thu, 05 Dec 2024 14:10:55 +0100
-Message-ID: <87ttbiqnq8.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="gZznjb7t"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=lMPpn7vURo2QJgxJJZTuStA+ZdH2S+Bbb3WyYBZp9YY=; b=gZznjb7tF5mnoBBGWV0T0B6Z/t
+	xrRjsfMUg22t/CWvrf+1yL3f8Vbi/uDtue78GPP5cxIeDMMgB5kP4jBxRtz7caeh1OMKQQNyTm+1y
+	DDITTda1b0YYnhFBRF/hhYCwfh6fn+7Ux+TH+LvI7YpTwpYuQXOJ0HZUAWhXUXPp2qXDQnjGgIjc2
+	thoAGeG+tolcLU0t/fcUnlsHgS5As/BfEQdjR3xxvD2L1rWcf5rlr6M2EpX1BxGViNRecMgQUSQVN
+	oTb9Z4XLDNeLOLcFOsZCleuWRi5oV8MaGsWpC+eFevM+sfi+64RLV2pG6pIFSQV0dMHqa1UnpK1Vo
+	c/KUwfAw==;
+Received: from [89.212.21.243] (port=51914 helo=and-HP-Z4..)
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <andrej.picej@norik.com>)
+	id 1tJC6K-001iy5-05;
+	Thu, 05 Dec 2024 14:41:04 +0100
+From: Andrej Picej <andrej.picej@norik.com>
+To: andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org,
+	rfoss@kernel.org,
+	Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se,
+	jernej.skrabec@gmail.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	marex@denx.de
+Cc: dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	upstream@lists.phytec.de
+Subject: [PATCH v4 1/3] dt-bindings: drm/bridge: ti-sn65dsi83: Add properties for ti,lvds-vod-swing
+Date: Thu,  5 Dec 2024 14:40:19 +0100
+Message-Id: <20241205134021.2592013-2-andrej.picej@norik.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241205134021.2592013-1-andrej.picej@norik.com>
+References: <20241205134021.2592013-1-andrej.picej@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
+X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Wed, Dec 04 2024 at 18:25, Frank Li wrote:
-> Some MSI controller change address/data pair when irq_set_affinity().
-> Current PCI endpoint can't support this type MSI controller. So add flag
-> MSI_FLAG_MUTABLE in include/linux/msi.h and check it when allocate
-> doorbell.
+Add properties which can be used to specify LVDS differential output
+voltage. Since this also depends on near-end signal termination also
+include property which sets this. LVDS differential output voltage is
+specified with an array (min, max), which should match the one from
+connected device.
 
-Q: Who is going to annotate the affected domains with that flag?
+Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+---
+Changes in v4:
+- removed "additionalProperties: true" from the patch as it is not needed
+Changes in v3:
+- no change
+Changes in v2:
+- move LVDS port schema to a $defs and reference it from there
+- properties are now defined in microvolts/ohms
+- use 1 property for data-lane and 1 for clock-lane LVDS voltage swing
+- add 1 property which sets LVDS near-end termination
+- since major change was done change the authorship to myself
+---
+ .../bindings/display/bridge/ti,sn65dsi83.yaml | 34 +++++++++++++++++--
+ 1 file changed, 32 insertions(+), 2 deletions(-)
 
-A: Nobody.
+diff --git a/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml b/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml
+index 48a97bb3e2e0..bad6f5c81b06 100644
+--- a/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml
++++ b/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml
+@@ -80,12 +80,12 @@ properties:
+                   - const: 4
+ 
+       port@2:
+-        $ref: /schemas/graph.yaml#/properties/port
+         description: Video port for LVDS Channel-A output (panel or bridge).
++        $ref: '#/$defs/lvds-port'
+ 
+       port@3:
+-        $ref: /schemas/graph.yaml#/properties/port
+         description: Video port for LVDS Channel-B output (panel or bridge).
++        $ref: '#/$defs/lvds-port'
+ 
+     required:
+       - port@0
+@@ -96,6 +96,36 @@ required:
+   - reg
+   - ports
+ 
++$defs:
++  lvds-port:
++    $ref: /schemas/graph.yaml#/$defs/port-base
++    unevaluatedProperties: false
++
++    properties:
++      endpoint:
++        $ref: /schemas/media/video-interfaces.yaml#
++        unevaluatedProperties: false
++
++        properties:
++          ti,lvds-termination-ohms:
++            description: The value of near end differential termination in ohms.
++            enum: [100, 200]
++            default: 200
++
++          ti,lvds-vod-swing-clock-microvolt:
++            description: LVDS diferential output voltage <min max> for clock
++              lanes in microvolts.
++            $ref: /schemas/types.yaml#/definitions/uint32-array
++            minItems: 2
++            maxItems: 2
++
++          ti,lvds-vod-swing-data-microvolt:
++            description: LVDS diferential output voltage <min max> for data
++              lanes in microvolts.
++            $ref: /schemas/types.yaml#/definitions/uint32-array
++            minItems: 2
++            maxItems: 2
++
+ allOf:
+   - if:
+       properties:
+-- 
+2.34.1
 
-Q: What's the value of the flag?
-
-A: Zero, as as it prevents exactly nothing.
-
-You want a MSI_FLAG_MSG_IMMUTABLE and set that on the domains which
-provide it. That way you ensure that someone looked at the domain to
-validate it.
-
-Thanks,
-
-        tglx
