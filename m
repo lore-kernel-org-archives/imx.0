@@ -1,130 +1,112 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC0D21C197
-	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 15:08:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AFF6218E83;
+	Thu,  5 Dec 2024 15:16:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733411336; cv=none; b=UCrcVlqye6/jVkFRK3+HoQQlx0plwSyoVXLL9sBQWBJsr8lqp6m/BR47L6vufrZdtGOgh9g6AlbysANA0iS5nLVNhiaG5KCVJpjvzOWKC28oRx48Y8KQaFSsUlz4LCnzGQun94YKRSWLWYTiLcV0MDFfcpluABdKqC0KXCWJwBc=
+	t=1733411801; cv=none; b=Wa+dI7RK6E9gH+1J55XlIjlEtK5kmZMJE2MdPMQrDbyM4mrFRW0Unv4sg930R96+/aZe3OUXy9seS5YzEXKYO5DuolrtytLtsfmCswDvcRKRWZfrxFdRPKb3aYOhAki4dab+iLQrWwSj5CRaMwQgc7TU629MpIYEAFEBUB0mgmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733411336; c=relaxed/simple;
-	bh=wUItljh0wOLzIOQydlmjVTP6wmRh+MNoE9QFAebbE4E=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YmIQMqU0+FU+FyhEk87i+eXE4c6U6Gmw5cOdK+K9Ceqc/23KqkHocdKBHJ7NzUe2TE+Ik3fGhIJq16uyfrySmdb2WTS6nkBiWM2ceEcIN4/jGfPwb3X+1e/vlmWB7g2idLjNiHrj+OmncV2/9yQwt+aysBX5NYxFpHn3tEPC9OM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=Df4LUl7L; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=DJRRMfH0 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1733411801; c=relaxed/simple;
+	bh=HMHcEDj1u4GqWG3hL1RI/WKaNLDp5HE83xY8eaa6M1k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W3ld6kZoczcxvX2jnRgQFXF81px0BCbNKfxMFLxXMgmsazPSEYNm5wMVdAouZQZBr+LIShOwHv9bauOhfUD4PDYY2Ryl/11bi1FuIUW0/t4JfXZAJYBySUBYWI9nGZMxe8FOIl8mggMWd1PQPKXag/tjxQQtZLV0Lvo/3GAtVBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Odw6A6I9; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="Df4LUl7L";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="DJRRMfH0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1733411334; x=1764947334;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=smbLgrckE25I2ak+4aah04Lb2EF2OUKb5fz0/VhJ75I=;
-  b=Df4LUl7LkloHu25Nh77Grx6+VdPkusjU2+dDjQ0Qf2t4kIFB2gGeKcUW
-   cZ8QwFjSDMvFio1iXoP9W86TTXt1nR3fUX2ugUFwlSheVXL/oen5blqqr
-   FdRdm6ygx5ve/bmNmKJF6fgWoW8Ha8d1OzSbwA+udB3F8nuwp3Xp+BbC3
-   H+KFyLp1zo8xfEPNZSjw0iugB8ZjLQ0g2D4plPra7moB2C63VQj8dX/Et
-   qPv6XKV6En942BTbJDDV42umkeeGvzukloJV8QwatQpoPqLQgbqjwEJA0
-   MVVxfSC7KmZt97LLkjGFiKPejZqTFjoRsyyeTn6n2FBonPjQiyYC/8v8d
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Odw6A6I9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733411800; x=1764947800;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HMHcEDj1u4GqWG3hL1RI/WKaNLDp5HE83xY8eaa6M1k=;
+  b=Odw6A6I9KyDl4gHdf88pBoFxVwkjaJsunlcFA/PPLYCQira2HTOeHpTH
+   wrljz12I7LmsybkNLM06rcjwI498uLmEA7To+8npZlXJXwBtHhTQc8hae
+   SLoTl5llLqUpIdsBYnpr7ie2xPkXFZdcsCW3I/vhT8xWz8TtAg5hc+waY
+   7Hdo0ViH7mCgTkPhDh36xudfADS3sTVXs/MWCXysCd8xD/mFKsojWdkwB
+   axAauEZAFlI2SWBAIdfZdGaSR2CKRuaI9LlHJxTJGzElGlyc9KUcUNfQP
+   ly0DNV/JqvISRi4qgtJVbLckRlOppo0JAcS8Kbmw5A89R0B2cJkQBvjpl
    g==;
-X-CSE-ConnectionGUID: Lq1MR0QGQ86NvTiQJl2PRw==
-X-CSE-MsgGUID: DbLBHJfeT9am2vHox1kHow==
-X-IronPort-AV: E=Sophos;i="6.12,210,1728943200"; 
-   d="scan'208";a="40434854"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 05 Dec 2024 16:07:43 +0100
-X-CheckPoint: {6751C1BF-25-D31EDE1A-D52D6119}
-X-MAIL-CPID: 24AF9B8854DF14342AD0D1FA9D6FBB27_5
-X-Control-Analysis: str=0001.0A682F18.6751C1BF.00B9,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CBF08163400;
-	Thu,  5 Dec 2024 16:07:38 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1733411259;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=smbLgrckE25I2ak+4aah04Lb2EF2OUKb5fz0/VhJ75I=;
-	b=DJRRMfH0BmXxQ69J9qzYp6PivF8XSEGNBASYXXiYuJd/rZqoSRiRQc1vQVCVSCckroofek
-	2Y8KOGe+A5QoRIg027e2s+hwKjzUnPPUAS2W2OVOGhzDUoITPb6b+E+YMhWDPRSnQp/JzL
-	wEnsUQGdXNPEYScdC/+ckaEQneDO/ksHM18vHH+pEDGhxonL/64pnerxGivO5R39U7G5jp
-	xma5cK8UsJFf9aV79vD5hqmp95CZYM/c/gi8vRrq/XUZncy/ABR5sFa6ASBiRxb4bzCChz
-	OhtDoF/iHQqHvRqdUwXXWNO44K3DI/irQWT7Hrf7JE9d4vKVRyQTJSUkV0J7OQ==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+X-CSE-ConnectionGUID: zJtgmFjsRWGe4WmSyxohtQ==
+X-CSE-MsgGUID: oqZJd0bASCSUusFFGaF6kQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11277"; a="44204034"
+X-IronPort-AV: E=Sophos;i="6.12,210,1728975600"; 
+   d="scan'208";a="44204034"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2024 07:16:39 -0800
+X-CSE-ConnectionGUID: qM0wgrqgS0m4GFVf3rwMDw==
+X-CSE-MsgGUID: n8kyKvbxR1SYEXvK1hJoew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,210,1728975600"; 
+   d="scan'208";a="94201590"
+Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 05 Dec 2024 07:16:35 -0800
+Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tJDah-00006p-2h;
+	Thu, 05 Dec 2024 15:16:31 +0000
+Date: Thu, 5 Dec 2024 23:15:38 +0800
+From: kernel test robot <lkp@intel.com>
+To: Vabhav Sharma <vabhav.sharma@nxp.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Peng Fan <peng.fan@nxp.com>
-Cc: Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	linux@ew.tq-group.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Alexander Stein <alexander.stein@ew.tq-group.com>
-Subject: [PATCH v2 2/2] arm64: dt: imx93-tqma9352-mba93xxla: enable Open Drain for MDIO
-Date: Thu,  5 Dec 2024 16:07:29 +0100
-Message-Id: <20241205150730.3132807-2-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241205150730.3132807-1-alexander.stein@ew.tq-group.com>
-References: <20241205150730.3132807-1-alexander.stein@ew.tq-group.com>
+	Fabio Estevam <festevam@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, frank.li@nxp.com,
+	pankaj.gupta@nxp.com, daniel.baluta@nxp.com,
+	silvano.dininno@nxp.com, V.Sethi@nxp.com,
+	meenakshi.aggarwal@nxp.com, Vabhav Sharma <vabhav.sharma@nxp.com>,
+	Franck LENORMAND <franck.lenormand@nxp.com>
+Subject: Re: [PATCH v4 4/4] firmware: imx: secvio: Add support for SNVS
+ secvio and tamper via SCFW
+Message-ID: <202412052340.ub9tlWcC-lkp@intel.com>
+References: <20241205-secvio-v4-4-5c37cdc39573@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241205-secvio-v4-4-5c37cdc39573@nxp.com>
 
-From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+Hi Vabhav,
 
-The board has a pull-up resistor for MDIO pin per PHY design guide.
-When MDIO is idle, it needs to be high and open drain is better
-to be used here for power saving.
+kernel test robot noticed the following build errors:
 
-Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
-Changes in v2:
-* Update commit message
+[auto build test ERROR on 9852d85ec9d492ebef56dc5f229416c925758edc]
 
- .../arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+url:    https://github.com/intel-lab-lkp/linux/commits/Vabhav-Sharma/dt-bindings-firmware-imx-add-nvmem-phandle/20241205-125909
+base:   9852d85ec9d492ebef56dc5f229416c925758edc
+patch link:    https://lore.kernel.org/r/20241205-secvio-v4-4-5c37cdc39573%40nxp.com
+patch subject: [PATCH v4 4/4] firmware: imx: secvio: Add support for SNVS secvio and tamper via SCFW
+config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20241205/202412052340.ub9tlWcC-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241205/202412052340.ub9tlWcC-lkp@intel.com/reproduce)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
-index 0b4b3bb866d06..2e953a05c590e 100644
---- a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
-+++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
-@@ -597,8 +597,8 @@ pinctrl_eqos: eqosgrp {
- 		fsl,pins = <
- 			/* PD | FSEL_2 | DSE X4 */
- 			MX93_PAD_ENET1_MDC__ENET_QOS_MDC			0x51e
--			/* SION | HYS | FSEL_2 | DSE X4 */
--			MX93_PAD_ENET1_MDIO__ENET_QOS_MDIO			0x4000111e
-+			/* SION | HYS | ODE | FSEL_2 | DSE X4 */
-+			MX93_PAD_ENET1_MDIO__ENET_QOS_MDIO			0x4000191e
- 			/* HYS | FSEL_0 | DSE no drive */
- 			MX93_PAD_ENET1_RD0__ENET_QOS_RGMII_RD0			0x1000
- 			MX93_PAD_ENET1_RD1__ENET_QOS_RGMII_RD1			0x1000
-@@ -629,8 +629,8 @@ pinctrl_fec: fecgrp {
- 		fsl,pins = <
- 			/* PD | FSEL_2 | DSE X4 */
- 			MX93_PAD_ENET2_MDC__ENET1_MDC			0x51e
--			/* SION | HYS | FSEL_2 | DSE X4 */
--			MX93_PAD_ENET2_MDIO__ENET1_MDIO			0x4000111e
-+			/* SION | HYS | ODE | FSEL_2 | DSE X4 */
-+			MX93_PAD_ENET2_MDIO__ENET1_MDIO			0x4000191e
- 			/* HYS | FSEL_0 | DSE no drive */
- 			MX93_PAD_ENET2_RD0__ENET1_RGMII_RD0		0x1000
- 			MX93_PAD_ENET2_RD1__ENET1_RGMII_RD1		0x1000
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202412052340.ub9tlWcC-lkp@intel.com/
+
+All errors (new ones prefixed by >>, old ones prefixed by <<):
+
+ERROR: modpost: missing MODULE_LICENSE() in drivers/firmware/imx/imx-scu-secvio.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/firmware/imx/imx-scu-secvio.o
+ERROR: modpost: "__delay" [drivers/net/mdio/mdio-cavium.ko] undefined!
+ERROR: modpost: "devm_of_clk_add_hw_provider" [drivers/media/i2c/tc358746.ko] undefined!
+ERROR: modpost: "devm_clk_hw_register" [drivers/media/i2c/tc358746.ko] undefined!
+ERROR: modpost: "of_clk_hw_simple_get" [drivers/media/i2c/tc358746.ko] undefined!
+>> ERROR: modpost: "imx_secvio_sc_debugfs" [drivers/firmware/imx/imx-scu-secvio.ko] undefined!
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
