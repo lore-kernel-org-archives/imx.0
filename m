@@ -1,46 +1,31 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD128229B25
-	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 16:52:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73ACF21D5AC
+	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 16:55:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733417522; cv=none; b=SFdrudF6BlGcItgrTQ2ufohDCoJdVQOhc4m5Pe8IxzkrQ73FLrt2pXKNOeZUPKmJYc6+eUpUSBBUsy43wY+j/roI1pQXvILE9GXuKGQzWxexE8qglrPyTumsZg9OxOevknkSkkF6Orbm/uHCZjph5cPOj27afRfF4F8fGjbtNhg=
+	t=1733417732; cv=none; b=O2UO8YrebXj6D6y3JMNWIjvKB3Julecfz78JHtOUd9WlC5PrPMnxn/1R8fhqFUqtHBeJYhTQOurR1N0x745EGLd8SmHPYUXw2hD3F7eKq2xjdTrleQgdxp6+gyo0TuDuhbGR54gjtkJ6O1Kgbsx8fDLpgX81S/s0ud3+hjVLv2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733417522; c=relaxed/simple;
-	bh=P9EPHJQc4bTsB4hGE5HCvIT64O7CFyXT6mNMwFFliCQ=;
+	s=arc-20240116; t=1733417732; c=relaxed/simple;
+	bh=82W0TyfT2rH+T/IOK0zXh3UFR7FgQxGFGhYdNOUeQck=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VfRNCF6YqsFLn8UDBRXK9Dv6FBmWwy2qNGmdJG6LSfHiDhKj0s2pKMkS8EDc+jJrQcY4uLNWsOvpoimAlFGQ8Nu7jAEzMHQVzknLL3PH2WANU2MQmOmOqzZQ4wwz0oYGUkyv5L3vCYgp4vCZ8Zs3oQzzpi5jsTwzh/UxMkqOWWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=UzoJTvjX; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="UzoJTvjX"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=eY09Fm627PVbCKVl5kryyt7XcMRMEBR6XVqQMDGQMZE=; b=UzoJTvjX8sDdc8D0FXaOQM39se
-	W3x2k2ogf9ZBC+mZBz9SUkt3/NCvftbFiRdTvbWNpv1zyDAvyAbIs84WVYV7GKQJ+0ygPMYN9vJsI
-	l7CgtULAUpjRc8DzGm/omRupqYRQCs5DW2XQUXazA2zBONtMFNQCHJ99csaZEZur/XwWMmMo+uAUv
-	DDRn7ag7oPIiUQsfmrhzGd7SqjV9feBGJVn4/tz1XwWx4v/mCki28Z9cRfGT5+ecyprrHmj8o5ouM
-	Ld2Iwa1ZNPijv/wQTouGcuvJ/s+pbw92672l7j7juT74dY/W8QEC/oZK8kWjhS/yX4SLg5im7vdNC
-	1v97PjnQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:41306)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1tJF4Y-0005C1-1d;
-	Thu, 05 Dec 2024 16:51:27 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tJF4R-0006ho-15;
-	Thu, 05 Dec 2024 16:51:19 +0000
-Date: Thu, 5 Dec 2024 16:51:19 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: jan.petrous@oss.nxp.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=QzUDujRTew/TtGPGNO7VuBRi6jTcg3+qHw+aqLTIFwoxKDTUPrS1FprhEGpHBv9sip1nrrittOK2MCWfYZznVTY4jBRRnEXD7SCggDSDDqnKuUwAQcE8meoRuecMWdL8H8/PdohsKcz4lFygGP0KumLYUmJxeasJuZn6JqVIAQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id B7C471A0357;
+	Thu,  5 Dec 2024 17:55:22 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id A00DC1A01D2;
+	Thu,  5 Dec 2024 17:55:22 +0100 (CET)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id B2763203A7;
+	Thu,  5 Dec 2024 17:55:21 +0100 (CET)
+Date: Thu, 5 Dec 2024 17:55:22 +0100
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
 Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
 	Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Jose Abreu <joabreu@synopsys.com>,
@@ -74,9 +59,10 @@ Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
 	NXP S32 Linux Team <s32@nxp.com>, 0x1207@gmail.com,
 	fancer.lancer@gmail.com, Jacob Keller <jacob.e.keller@intel.com>
 Subject: Re: [PATCH net-next v8 01/15] net: stmmac: Fix CSR divider comment
-Message-ID: <Z1HaB6hT0QX4Jlyx@shell.armlinux.org.uk>
+Message-ID: <Z1Ha+me4+hbOj9JO@lsv051416.swis.nl-cdc01.nxp.com>
 References: <20241205-upstream_s32cc_gmac-v8-0-ec1d180df815@oss.nxp.com>
  <20241205-upstream_s32cc_gmac-v8-1-ec1d180df815@oss.nxp.com>
+ <Z1HaB6hT0QX4Jlyx@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -85,25 +71,28 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241205-upstream_s32cc_gmac-v8-1-ec1d180df815@oss.nxp.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <Z1HaB6hT0QX4Jlyx@shell.armlinux.org.uk>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-On Thu, Dec 05, 2024 at 05:42:58PM +0100, Jan Petrous via B4 Relay wrote:
-> From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+On Thu, Dec 05, 2024 at 04:51:19PM +0000, Russell King (Oracle) wrote:
+> On Thu, Dec 05, 2024 at 05:42:58PM +0100, Jan Petrous via B4 Relay wrote:
+> > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> > 
+> > The comment in declaration of STMMAC_CSR_250_300M
+> > incorrectly describes the constant as '/* MDC = clk_scr_i/122 */'
+> > but the DWC Ether QOS Handbook version 5.20a says it is
+> > CSR clock/124.
+> > 
+> > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> > Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 > 
-> The comment in declaration of STMMAC_CSR_250_300M
-> incorrectly describes the constant as '/* MDC = clk_scr_i/122 */'
-> but the DWC Ether QOS Handbook version 5.20a says it is
-> CSR clock/124.
+> I gave my reviewed-by for this patch in the previous posting, but you
+> haven't included it.
 > 
-> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
-> Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+> Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-I gave my reviewed-by for this patch in the previous posting, but you
-haven't included it.
+Hi Russell,
+sorry for that, I missed it. Should I resend the v8 series?
 
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+BR.
+/Jan
