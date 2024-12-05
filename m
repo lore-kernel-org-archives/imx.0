@@ -1,98 +1,90 @@
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73ACF21D5AC
-	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 16:55:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E0E22259A;
+	Thu,  5 Dec 2024 16:58:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733417732; cv=none; b=O2UO8YrebXj6D6y3JMNWIjvKB3Julecfz78JHtOUd9WlC5PrPMnxn/1R8fhqFUqtHBeJYhTQOurR1N0x745EGLd8SmHPYUXw2hD3F7eKq2xjdTrleQgdxp6+gyo0TuDuhbGR54gjtkJ6O1Kgbsx8fDLpgX81S/s0ud3+hjVLv2Q=
+	t=1733417918; cv=none; b=RMephJR7x5N51klpLtqouMf3MUKC0K2MXyvqyxrkfXD5ODZFGPZk8x4+G0/ZAx94wIXAeIsiDVdYDzxi2AmngU9JEwTZvZ52Urr7TRY7ososqMaZmZd2p1N4Ey9DqYlERBlJMDizxouIumXpv7bpOYsCeiJqK3t1AyEqxjBxQtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733417732; c=relaxed/simple;
-	bh=82W0TyfT2rH+T/IOK0zXh3UFR7FgQxGFGhYdNOUeQck=;
+	s=arc-20240116; t=1733417918; c=relaxed/simple;
+	bh=nTRnH3LEvkzjiwoZZ3ih3yskW6g7MF8/Slf2mJenKdc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QzUDujRTew/TtGPGNO7VuBRi6jTcg3+qHw+aqLTIFwoxKDTUPrS1FprhEGpHBv9sip1nrrittOK2MCWfYZznVTY4jBRRnEXD7SCggDSDDqnKuUwAQcE8meoRuecMWdL8H8/PdohsKcz4lFygGP0KumLYUmJxeasJuZn6JqVIAQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id B7C471A0357;
-	Thu,  5 Dec 2024 17:55:22 +0100 (CET)
-Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id A00DC1A01D2;
-	Thu,  5 Dec 2024 17:55:22 +0100 (CET)
-Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id B2763203A7;
-	Thu,  5 Dec 2024 17:55:21 +0100 (CET)
-Date: Thu, 5 Dec 2024 17:55:22 +0100
-From: Jan Petrous <jan.petrous@oss.nxp.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=QXoifLFDkeKzK+pyweZNc0DqLumib3cJFpLB/i0e7GoIw41QAtzdM1gbdtCnZyXCuJ+w3Mw1mNsZpFocFU8ihogLN1H8Gs99qhS6qEP4GRLiByVOfPiQ00rw1gXl4VadljPOuLszJHYhE9S4TF+0SPfll65CIZg6cpmCeoHrqcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ECHlgGIm; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ECHlgGIm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74AEC4CED1;
+	Thu,  5 Dec 2024 16:58:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733417917;
+	bh=nTRnH3LEvkzjiwoZZ3ih3yskW6g7MF8/Slf2mJenKdc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ECHlgGImtotL50LXwi9oXB2Vy3NH00it6CMDrVvFBZ8yci1Mh+nPCt7GeY2te6fIl
+	 33bCCvrecW8FFnbLz2CBzZJ2QKiKO+nJDywY2SqpTx1xnz0O6+qzgkqZGsB5jwtcW2
+	 ZhTrfdVSbN37lriLFPIQXployevdgh5E070M/ehMf4YNeBICp+8vVUF3FS2eqnDHF3
+	 u8QKCP4nbfoXxdm1JlG8TY8IQmMfI6Pz70dyIzk0HzU6sKDZpk+VJC1Jqdx1mKl1FH
+	 eulnVP4i9+zYdjN9Z2sc4NCgLbSLLZjWnKJgcOo5JrYwEiETLkFACX6XhwzQ4tPOiE
+	 JAdED9o/MRXVw==
+Date: Thu, 5 Dec 2024 16:58:31 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Robin Gong <yibin.gong@nxp.com>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Minda Chen <minda.chen@starfivetech.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-	Keyur Chudgar <keyur@os.amperecomputing.com>,
-	Quan Nguyen <quan@os.amperecomputing.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>, 0x1207@gmail.com,
-	fancer.lancer@gmail.com, Jacob Keller <jacob.e.keller@intel.com>
-Subject: Re: [PATCH net-next v8 01/15] net: stmmac: Fix CSR divider comment
-Message-ID: <Z1Ha+me4+hbOj9JO@lsv051416.swis.nl-cdc01.nxp.com>
-References: <20241205-upstream_s32cc_gmac-v8-0-ec1d180df815@oss.nxp.com>
- <20241205-upstream_s32cc_gmac-v8-1-ec1d180df815@oss.nxp.com>
- <Z1HaB6hT0QX4Jlyx@shell.armlinux.org.uk>
+	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev, joy.zou@nxp.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 5/5] arm64: dts: imx93: add pca9452 support
+Message-ID: <b5b07f6f-a5c5-4b29-ada3-962dbbba42d4@sirena.org.uk>
+References: <20241205-pca9450-v1-0-aab448b74e78@nxp.com>
+ <20241205-pca9450-v1-5-aab448b74e78@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="+N1E8Hjj5Y37D8a5"
+Content-Disposition: inline
+In-Reply-To: <20241205-pca9450-v1-5-aab448b74e78@nxp.com>
+X-Cookie: System checkpoint complete.
+
+
+--+N1E8Hjj5Y37D8a5
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z1HaB6hT0QX4Jlyx@shell.armlinux.org.uk>
-X-Virus-Scanned: ClamAV using ClamSMTP
 
-On Thu, Dec 05, 2024 at 04:51:19PM +0000, Russell King (Oracle) wrote:
-> On Thu, Dec 05, 2024 at 05:42:58PM +0100, Jan Petrous via B4 Relay wrote:
-> > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-> > 
-> > The comment in declaration of STMMAC_CSR_250_300M
-> > incorrectly describes the constant as '/* MDC = clk_scr_i/122 */'
-> > but the DWC Ether QOS Handbook version 5.20a says it is
-> > CSR clock/124.
-> > 
-> > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
-> > Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-> 
-> I gave my reviewed-by for this patch in the previous posting, but you
-> haven't included it.
-> 
-> Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+On Thu, Dec 05, 2024 at 11:51:13AM -0500, Frank Li wrote:
 
-Hi Russell,
-sorry for that, I missed it. Should I resend the v8 series?
+> +				regulator-name = "BUCK1";
+> +				regulator-min-microvolt = <610000>;
+> +				regulator-max-microvolt = <950000>;
 
-BR.
-/Jan
+> +				regulator-name = "BUCK4";
+> +				regulator-min-microvolt = <1620000>;
+> +				regulator-max-microvolt = <3400000>;
+
+The regulators all have really wide ranges, especially with no obvious
+consumers specified.  Are these actually valid for the board?
+
+--+N1E8Hjj5Y37D8a5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmdR27YACgkQJNaLcl1U
+h9BM6wf9HQleDuZ4uYHDOaaCK09bL4yTR8x6i7YoMmnlls2srtzGMRGZZ1cb/sPr
+a0RwpUShL14RqyuRYmEerOprPVYYLpvx+Poe70MiMG00p1c2wDbLrt2o3OYppkmh
+9DXALyEsWkqnL6bzUD9T+m/zBfaIfUuO+ZY/IGiI+mVl0vzDEebE+hq9Jg4rvoNd
+lN7951ImhymCfvRvkUM/RmjuLkijea9e00JW0Mqbai6WbhC5NYbo6Ya+inPKtkKX
++zuQQlnFcs93oqTJqtngequdn8bmyvjzHKmBXzS3kz1PmUUV69gXm2C7FbYOh88x
+H0307QzEKgiy+Cugcn/uBhoFj41F3w==
+=Ioa2
+-----END PGP SIGNATURE-----
+
+--+N1E8Hjj5Y37D8a5--
