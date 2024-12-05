@@ -1,85 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58D5218E98;
-	Thu,  5 Dec 2024 17:58:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7705226ED9
+	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 18:05:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733421510; cv=none; b=kepVfB979kOc1izUpI+1McnZaTsPa/U/9MacohL5DaxtCAyO+/apGWVYrDceURaKNsXUQ4j1B2q4xMqqtzGcs4gvCggkHQPM8ovuAHsmmfA/gVB/PSvJiWZgKZJ6gdctTR71ERWigb3tJ9uvHabiDJND5KtEmB/rsqJiN455oJc=
+	t=1733421917; cv=none; b=jggguzC/RWtGoFObZQ8CWjTtV7wlIe2Gl33WWAnzaKTKOeAMu10XQaIJn/aoULhNeL4HnIYsyeNgeD4eI1rTHHYWv2VO9J2wWDOioLGmY8LZT4qIf8gy7t2h4R57J/ZRSI8L1n35qA6XK0Obffgk06qfbm2OvLfjR3kEKL399Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733421510; c=relaxed/simple;
-	bh=73xQjGFD4kv0bIyMOBquAjnNM1xCWQ7ChvbHtBBk+Ag=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f2XLcw7qK6pjDnjIhXvILxsAG2v/c7gKRZ1rAd3B/Kg5yOUPTFhXh9LZFJx59JnRm9vOFUOjSC7XxYeCx+u9HNxqSs+/0SUb1+O9rB4WHA4hLeg/LhOP5Iik5RBAkYguUOFxDEE9KNrCB6ES3KkNkwrn+mlsOC5+hN74smbA9eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Orlrb+El; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733421917; c=relaxed/simple;
+	bh=f3oC/5XyI3YEdeEGvrWYb1QL6QS05ON7ASm8AOP/poY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Kt7GwmBd+994HqmMMPWr9wmmIEzWi51Jd8EoGwE/IgDtxl8dYqapls1jg2iRW9mssuBJNibpwPkgnbJwWScOWM8AIrZC/PRD9tc+BwPtmDVYXc3NJVY9Y55MgEXy6t1KGPj4r6JdGoBuHmUM/If9Ajf4hQPsq+OcdGYNEykNiAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nzpIl9YB; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+4Rsy8fT; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Orlrb+El"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF0AC4CED1;
-	Thu,  5 Dec 2024 17:58:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733421510;
-	bh=73xQjGFD4kv0bIyMOBquAjnNM1xCWQ7ChvbHtBBk+Ag=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Orlrb+ElrHdizDwlaDZTRLYCgXbBCQ7lTewAAGkzKjsd2qydeM+XKlwzkgmHmNakO
-	 /Tg1HkdP0dmYfuhOwdRfv/iqU0R5Che9ad6MPbCSkOjUQ4o3huwLs9e42to2S/Plbi
-	 fLUrVrT2+wROyeUOu7V/5B8hFgFlrDNnU4JsuV5RqE1x2iXZpSpQBG2PO/JfXWp2/4
-	 r3tCBU9HrWPHnBgmDharqVj374h+kKmfJx981ZFl4g0jypdF+Z6wwkrSeE/7RwwZWP
-	 48hqgipspHnjAN5w8ooFd1fs+ag48MQvzPj72b8DvOKVT5EKZoqapsgIc4dlwVmnnb
-	 OQ1s9bINGxWYA==
-Date: Thu, 5 Dec 2024 17:58:25 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Robin Gong <yibin.gong@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev, joy.zou@nxp.com,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 3/5] regulator: dt-bindings: pca9450: Add pca9452 support
-Message-ID: <20241205-cornfield-stoplight-664ad32353de@spud>
-References: <20241205-pca9450-v1-0-aab448b74e78@nxp.com>
- <20241205-pca9450-v1-3-aab448b74e78@nxp.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nzpIl9YB";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+4Rsy8fT"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1733421913;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BglboHQ7tVu4BxDK/EuzRuAGpk+spIRm/9NWQyWzxwk=;
+	b=nzpIl9YBICnzKJI2Pjvf7pkScFiSL9S5X4wczpmO39asv6i5Z5SF3UYOzOO2mqZVUE41dd
+	2zHRSj2qsel3OpEJ2kfDqI56RWlxU2MY40FwlxpwWSyXJ3ajQEFqK76st0cebIzRndq9pA
+	2K7XMPdBI6WOD0qjt5Y5K/ajyDIWjWtfx2/48zBYcsP8jwZBtIzK1dN2E82xpHAFca52/K
+	W7+oLVtuMAXCAUa7hz/zKRr885/ye+gH8lK5Zi/qu6MMMqRgoSP6YT7UQO6KJ2wrrqqE5T
+	CUxPyDxk6gq/DiLPQEUej3k429WBRKnuYABK/KMSPr9Nag6vvKCtUvuF6SSXpA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1733421913;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BglboHQ7tVu4BxDK/EuzRuAGpk+spIRm/9NWQyWzxwk=;
+	b=+4Rsy8fTbbnjB6wPATM5TxkjCHnu+iZXm4JyQV8eFr1jCKHhPGsKvDTyDr8BPvspeOadXi
+	R164aOSReCT8w6Dg==
+To: Frank Li <Frank.li@nxp.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Krzysztof
+ =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Kishon Vijay Abraham I
+ <kishon@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Anup Patel <apatel@ventanamicro.com>, Marc Zyngier
+ <maz@kernel.org>, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+ imx@lists.linux.dev, Niklas Cassel <cassel@kernel.org>,
+ dlemoal@kernel.org, jdmason@kudzu.us, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v10 3/7] PCI: endpoint: pci-ep-msi: Add MSI address/data
+ pair mutable check
+In-Reply-To: <Z1G/CwFvO/aBLBe8@lizhi-Precision-Tower-5810>
+References: <20241204-ep-msi-v10-0-87c378dbcd6d@nxp.com>
+ <20241204-ep-msi-v10-3-87c378dbcd6d@nxp.com> <87ttbiqnq8.ffs@tglx>
+ <Z1G/CwFvO/aBLBe8@lizhi-Precision-Tower-5810>
+Date: Thu, 05 Dec 2024 19:05:13 +0100
+Message-ID: <87ldwuqa3q.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="MyZ5EmMb99Zgg/w4"
-Content-Disposition: inline
-In-Reply-To: <20241205-pca9450-v1-3-aab448b74e78@nxp.com>
+Content-Type: text/plain
 
+On Thu, Dec 05 2024 at 09:56, Frank Li wrote:
+> On Thu, Dec 05, 2024 at 02:10:55PM +0100, Thomas Gleixner wrote:
+>> You want a MSI_FLAG_MSG_IMMUTABLE and set that on the domains which
+>> provide it. That way you ensure that someone looked at the domain to
+>> validate it.
+>
+> Okay, at beginning I think most MSI controller is immutable. So I use
+> MSI_FLAG_MSG_MUTABLE.
 
---MyZ5EmMb99Zgg/w4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+If you want to do that then _you_ have to go through every single
+interrupt controllers, validate and opt-out in case it does change the
+message. Otherwise that flag is completely pointless.
 
-On Thu, Dec 05, 2024 at 11:51:11AM -0500, Frank Li wrote:
-> From: Joy Zou <joy.zou@nxp.com>
->=20
-> Add compatible string 'nxp,pca9452'. pca9452 add 'ldo3' compared with
-> pca9451a.
->=20
-> Signed-off-by: Joy Zou <joy.zou@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Instead of adding the IMMUTABLE flag for one controller you know and
+then let others who want to utilize this amend their controllers.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Opt-in is less work and more safe than opt-out. See?
 
---MyZ5EmMb99Zgg/w4
-Content-Type: application/pgp-signature; name="signature.asc"
+Thanks,
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ1HpwAAKCRB4tDGHoIJi
-0vSkAP0e4ibG2OMWjU9zkkepAuDnmh7gZrt/mo0r917YnFvyvQEA1mACkRWBygEy
-s2e5cq6G63ISm+PTrFg9VWDwjfPXngs=
-=9/jl
------END PGP SIGNATURE-----
-
---MyZ5EmMb99Zgg/w4--
+        tglx
