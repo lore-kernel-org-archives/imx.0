@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF1D193429;
-	Thu,  5 Dec 2024 09:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A420C1D47D9;
+	Thu,  5 Dec 2024 09:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733390155; cv=none; b=JBtiMbPo58Yxla/lN8EcsnZMYZLd3+2G4HzA8D0njPh6lgtberpnI9cy3ckW8krTQirZCei4NujFuUDyly8lpHJnwXxKRQLrLATGPhVM5CJb0SZMXLYcLGtf8MDWZ/yzlr2q4xR5L2sD7dptqesVLVDT6WATtEJVRbxguTlCQwo=
+	t=1733390237; cv=none; b=theGH54PvXJFTCbLhnl8wh+MbfAeQHgngPYDWM56bpW8VIwYQ3Zy4BNCITRNRwG/JV+4Cj58I+YaRVd7IJ2Di2DmR8ILw51eN/AG5CRuJMoKV/odl75GoIDZX7/scIll+WiN9UAzbb+hy+3XuNAhJGhAko64eo+65HlQh/kIUsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733390155; c=relaxed/simple;
-	bh=QxsS1zt4cKu7VPdlxLyUmcsdHRV9xaGmHvKPAtuRewE=;
+	s=arc-20240116; t=1733390237; c=relaxed/simple;
+	bh=QOb9P9iUUuYbXp8H+bEnhQIs7EBkcuBhE1xcEl9HfSE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IorvAAhtxQp4aJKCyf2xlJtSyeOYBB6f1PYjFGZ9UJn3yQDLG5J4VElD51fD7jd+UosIWno4sFpmZPUSLjINqywaFHh50mYhTHGO/Js9Vj75JyI09jOkWM4BnkboPb4NRSsYNSwN1zp7pzKgHpn8a5rqRaVyCbfXiGvgtZUpnQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YcG1+ZfM; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=rcJWYSWot0+yhP6l56WqmDb3/pZqjdShOqfHSVGAmjSW/cuo7/J6sM5X7mQ1jzGHb5F619+l6lCrrUS8xowFwQyu4zp7QDybeYdssnTbb4w2mql5dY2GtH4UjQQm20VPMWwpZr+K3iUVYj2PUd7q+PK5dhAyGucziwToCq1z2Sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dUQJ7wRi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YcG1+ZfM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFF6C4CEDE;
-	Thu,  5 Dec 2024 09:15:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dUQJ7wRi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4560C4CED1;
+	Thu,  5 Dec 2024 09:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733390155;
-	bh=QxsS1zt4cKu7VPdlxLyUmcsdHRV9xaGmHvKPAtuRewE=;
+	s=k20201202; t=1733390237;
+	bh=QOb9P9iUUuYbXp8H+bEnhQIs7EBkcuBhE1xcEl9HfSE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YcG1+ZfMM2JuVSoAttk82yF39pLUmtI9CaYcpQTWxHQ2B2HWn3gRgqyO4Jt90j9lW
-	 5QAmvD57cTKI8UkZOW/AzPfN99Cp//+jwyeedvZt9c4+2Z/JZ1FWVw9In5KQHqvzvF
-	 LNink6QIpfLwPlXngozSNm1p0PR+F1tc4EvAkTVTHMCE1yrbalksb0iJeU/9Rx5Lxv
-	 fHgxvay9nfWig2wQUZCT5qVZP9nloU85K1toMzTi+fs7bCx4xUJXBLtkN/v3Pwrty4
-	 nkdWbJktWh41loqOgqRjp/Kmo0KFAGrQRTi41kUNorvrSOnvpfE5LZAMuCcty6hDxu
-	 LMYlPB/Sqe4nQ==
-Date: Thu, 5 Dec 2024 10:15:51 +0100
+	b=dUQJ7wRi1jEPT4Ea18YNhAjq8BH/p8Nh8GdgvQvFwsk6AcSoFIwi0obdKwoDanA8D
+	 erRYDZub8cjMcdChPYVwWj2EdteaJtPk5sp8VTk3lXciaJEaudp8jw4bEjRCBqK6ad
+	 2YP9SjIBMPWU3DOrfouWL1evpNl76Kt/jTFBVPddZ+P6dyNqx7PpkFxNxECx19TsMm
+	 cVABsLUrOTnvZNds7gqnxdtnbW8RiHL85WLXRl12MGy3ruQ8I2jchQabR0iuVQMbJo
+	 SsV808YnOZkfZmvZdTsrR0B8uoNsYBdsDW2RsGjDgXZK/qMS8YevXseuO+iTFdAAx7
+	 HH9P0VNYJOu2A==
+Date: Thu, 5 Dec 2024 10:17:13 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Vabhav Sharma <vabhav.sharma@nxp.com>
 Cc: Rob Herring <robh@kernel.org>, 
@@ -38,11 +38,9 @@ Cc: Rob Herring <robh@kernel.org>,
 	pankaj.gupta@nxp.com, daniel.baluta@nxp.com, silvano.dininno@nxp.com, V.Sethi@nxp.com, 
 	meenakshi.aggarwal@nxp.com, Franck LENORMAND <franck.lenormand@nxp.com>, 
 	Iuliana Prodan <iuliana.prodan@nxp.com>, Horia Geanta <horia.geanta@nxp.com>
-Subject: Re: [PATCH v4 3/4] firmware: imx: Add SC APIs required for secvio
- module
-Message-ID: <bdwn6slol2pnpf25xmcyx6rro5jaiadpob5fvl45ngtru3bea3@pucfhsmsxrct>
+Subject: Re: [PATCH v4 0/4] firmware: imx: secvio: Add secvio support
+Message-ID: <qgh5pzcjlke55eszovjfa3xs4icepcwz7dpfalgo2p6xyv4yei@xmgofqph4yph>
 References: <20241205-secvio-v4-0-5c37cdc39573@nxp.com>
- <20241205-secvio-v4-3-5c37cdc39573@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,107 +49,50 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241205-secvio-v4-3-5c37cdc39573@nxp.com>
+In-Reply-To: <20241205-secvio-v4-0-5c37cdc39573@nxp.com>
 
-On Thu, Dec 05, 2024 at 05:56:34AM +0100, Vabhav Sharma wrote:
-> The Security Violation module requires below System Controller
-> Security controller API to interact with SNVS block via SCFW
->     - imx_sc_seco_build_info
->     - imx_sc_seco_secvio_enable
->     - imx_sc_seco_secvio_config
->     - imx_sc_seco_secvio_dgo_config
+On Thu, Dec 05, 2024 at 05:56:31AM +0100, Vabhav Sharma wrote:
+> The tampers are security feature available on i.MX products and
+> managed by SNVS block.The tamper goal is to detect the variation
+> of hardware or physical parameters, which can indicate an attack.
 > 
-> Signed-off-by: Franck LENORMAND <franck.lenormand@nxp.com>
-> Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
-> Reviewed-by: Horia Geanta<horia.geanta@nxp.com>
-> Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
-> Signed-off-by: Vabhav Sharma <vabhav.sharma@nxp.com>
-> ---
->  drivers/firmware/imx/Makefile         |   2 +-
->  drivers/firmware/imx/imx-scu.c        |   4 +-
->  drivers/firmware/imx/seco.c           | 216 ++++++++++++++++++++++++++++++++++
->  include/linux/firmware/imx/ipc.h      |   1 +
->  include/linux/firmware/imx/sci.h      |   4 +
->  include/linux/firmware/imx/svc/seco.h |  69 +++++++++++
->  6 files changed, 294 insertions(+), 2 deletions(-)
+> The SNVS, which provides secure non-volatile storage, allows to
+> detect some hardware attacks against the SoC.They are connected
+> to the security-violation ports, which send an alert when an
+> out-of-range value is detected.
 > 
-> diff --git a/drivers/firmware/imx/Makefile b/drivers/firmware/imx/Makefile
-> index 8d046c341be8..7aaecf570c56 100644
-> --- a/drivers/firmware/imx/Makefile
-> +++ b/drivers/firmware/imx/Makefile
-> @@ -1,4 +1,4 @@
->  # SPDX-License-Identifier: GPL-2.0
->  obj-$(CONFIG_IMX_DSP)		+= imx-dsp.o
-> -obj-$(CONFIG_IMX_SCU)		+= imx-scu.o misc.o imx-scu-irq.o rm.o imx-scu-soc.o
-> +obj-$(CONFIG_IMX_SCU)		+= imx-scu.o misc.o imx-scu-irq.o rm.o imx-scu-soc.o seco.o
->  obj-${CONFIG_IMX_SCMI_MISC_DRV}	+= sm-misc.o
-> diff --git a/drivers/firmware/imx/imx-scu.c b/drivers/firmware/imx/imx-scu.c
-> index 1dd4362ef9a3..c96dc73689a8 100644
-> --- a/drivers/firmware/imx/imx-scu.c
-> +++ b/drivers/firmware/imx/imx-scu.c
-> @@ -242,9 +242,11 @@ int imx_scu_call_rpc(struct imx_sc_ipc *sc_ipc, void *msg, bool have_resp)
->  		 * APIs are defined as void function in SCU firmware, so they
->  		 * should be treated as return success always.
->  		 */
-> -		if ((saved_svc == IMX_SC_RPC_SVC_MISC) &&
-> +		if (((saved_svc == IMX_SC_RPC_SVC_MISC) &&
->  			(saved_func == IMX_SC_MISC_FUNC_UNIQUE_ID ||
->  			 saved_func == IMX_SC_MISC_FUNC_GET_BUTTON_STATUS))
-> +			 || (saved_svc == IMX_SC_RPC_SVC_SECO &&
-> +			 saved_func == IMX_SC_SECO_FUNC_BUILD_INFO))
->  			ret = 0;
->  	}
->  
-> diff --git a/drivers/firmware/imx/seco.c b/drivers/firmware/imx/seco.c
-> new file mode 100644
-> index 000000000000..2d6bf301ac87
-> --- /dev/null
-> +++ b/drivers/firmware/imx/seco.c
-> @@ -0,0 +1,216 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Copyright 2020, 2024 NXP
-> + *
-> + * File containing client-side RPC functions for the SECO service. These
-> + * function are ported to clients that communicate to the SC.
-> + */
-> +
-> +#include <linux/firmware/imx/sci.h>
-> +
-> +struct imx_sc_msg_seco_get_build_id {
-> +	struct imx_sc_rpc_msg hdr;
-> +	u32 version;
-> +	u32 commit;
-> +} __packed __aligned(4);
-> +
-> +int imx_sc_seco_build_info(struct imx_sc_ipc *ipc, uint32_t *version,
-> +			   uint32_t *commit)
-> +{
-> +	struct imx_sc_msg_seco_get_build_id msg;
-> +	struct imx_sc_rpc_msg *hdr = &msg.hdr;
-> +	int ret;
-> +
-> +	hdr->ver = IMX_SC_RPC_VERSION;
-> +	hdr->svc = IMX_SC_RPC_SVC_SECO;
-> +	hdr->func = IMX_SC_SECO_FUNC_BUILD_INFO;
-> +	hdr->size = 1;
-> +
-> +	ret = imx_scu_call_rpc(ipc, &msg, true);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (version)
-> +		*version = msg.version;
-> +	if (commit)
-> +		*commit = msg.commit;
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL(imx_sc_seco_build_info);
+> This detection is done by:
+> -Analog tampers: measure analogic values
+> 	- External clock frequency.
+> 	- Temperature.
+> 	- Voltage.
+> 
+> - Digital tampers:
+> 	- External tamper
+> 	- Other detectors:
+> 		- Secure real-time counter rollover tamper.
+> 		- Monotonic counter rollover tamper.
+> 		- Power supply glitch tamper.
+> 
+> The on-chip sensors for voltage, temperature, and clock frequency
+> indicate if tamper scenarios may be present. These sensors generate an
+> out-of-range signal that causes a security violation to clear the
+> authentication and storage keys and to block access to sensitive
+> information.
+> 
+> Add linux module secvio driver to handle security violation interrupt.
+> 
+> The "imx-secvio-sc" module is designed to report security violations
+> and tamper triggering to the user.
+> 
+> The functionalities of the module are accessible via the "debugfs"
+> kernel.The folder containing the interface files for the module is
+> "<kernel_debugfs>/secvio/".
 
 
-NAK for all your exports: no users. Stop adding exports for your
-downstream drivers.
+Debugfs is for debugging, not accessing functions. Come with proper
+sysfs or other control interface and its ABI, not debugging one to avoid
+any review.
 
 Best regards,
 Krzysztof
