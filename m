@@ -1,214 +1,146 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622B01917D7
-	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 16:32:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C0022144B;
+	Thu,  5 Dec 2024 16:43:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733416354; cv=none; b=GQFC3c75w89LnpYn6bFZSmiqxnfO7X/xcC/ff7jKiD89vtSsi/apJS7xhUhMur9d5GoqUxpUPGL5+mbe3Ydrgr9zNde/+ZpnQRFRzvw1yYyUWquBuT2f+lLCBrKWTVhUMMSwqK1xnpHh4uIhiZ9MT1EfcMW0a6IumheJUI75LLM=
+	t=1733417012; cv=none; b=HzY+cadHWkjniJ/XVcqxFlLLyIxS5ZCPcYpuuItSRCrrvSFKIbKXkF19IGio30kTeHu8XfYqimiyCIwFmLo/zQ0FEJ4lNVccT0MJQd3NajCaEEjOoGlHCKw9PY+3iyI41KYDOB2SQiVhdC3eebG093dnPTJYf1ryA2ZukVenZNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733416354; c=relaxed/simple;
-	bh=5/t50KbKhNz64OAY/4Y06g3odbxGzNudMERRkJpSxuk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bTb5Ht8HlqX9dnHhCsStfylY03XVCJHtx2vZuVByhCQ+iqmQ7reLxV7lR2KeYOIHSFusIponK6MuzUzc347B7eC8qFZPsVPmvLsw1MeS6cVrSJtHDb7LSnwLhNH9DjVZ5ujIXaj8BB3TnZ73VzRu7qq0w/VMVsyYjpDb/ZmvcII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=zpsBalh2; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ZF7S5vkb; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=zpsBalh2; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ZF7S5vkb; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1733417012; c=relaxed/simple;
+	bh=fQ/wiWKsuKCk0mrEeSWFTz5B5YHpae7Id2vaFJhJWVU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=pZE9Z/eX8c6SguK7oIxDSeNgD4b9Tc9G/4Roa3TIDcph+jYg8X1IBM5d7cm1chvxns0A8+MqW8M3pmWfLdGTkOfFA5Cst6Ja217ipDtji3ndg/eHU9Boar048B2mG3rOe8jpLR7/aQEUZEEj2/4xmvNLHRff2bDg20l7Z9r+Elc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZdeTpPn4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="zpsBalh2";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ZF7S5vkb";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="zpsBalh2";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ZF7S5vkb"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 69B141F449;
-	Thu,  5 Dec 2024 16:32:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1733416350; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=sFODuswEf40ujz3zdendiC/keZEpnZZvntEr8R9li84=;
-	b=zpsBalh2dYOwtb23WM90EJa20muNVVrLx9x9yUR1iQhFQmgeXSwSJXnOaMB7R0hMOOqZlT
-	0/XvATkiwoIGDm2TnmLvs4pwW+VkQTOmdHK3IfIrWX0gEp4OZ2LXt5G48gDUlqnl+UzuYL
-	0tNDeTdQva6uVgTTDtIuPjqT1nT1Ndk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1733416350;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=sFODuswEf40ujz3zdendiC/keZEpnZZvntEr8R9li84=;
-	b=ZF7S5vkbS9H5SxQGqOLECCQXBnCRCCGd8f0sfA+6sWNRLqyS8zr7AA31nI52WJU5kiqDXa
-	/T9hwklbL/lWyiDA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1733416350; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=sFODuswEf40ujz3zdendiC/keZEpnZZvntEr8R9li84=;
-	b=zpsBalh2dYOwtb23WM90EJa20muNVVrLx9x9yUR1iQhFQmgeXSwSJXnOaMB7R0hMOOqZlT
-	0/XvATkiwoIGDm2TnmLvs4pwW+VkQTOmdHK3IfIrWX0gEp4OZ2LXt5G48gDUlqnl+UzuYL
-	0tNDeTdQva6uVgTTDtIuPjqT1nT1Ndk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1733416350;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=sFODuswEf40ujz3zdendiC/keZEpnZZvntEr8R9li84=;
-	b=ZF7S5vkbS9H5SxQGqOLECCQXBnCRCCGd8f0sfA+6sWNRLqyS8zr7AA31nI52WJU5kiqDXa
-	/T9hwklbL/lWyiDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 00210132EB;
-	Thu,  5 Dec 2024 16:32:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id myY8Op3VUWfyDAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Thu, 05 Dec 2024 16:32:29 +0000
-Message-ID: <1ea567f4-33c2-40a6-9bca-117e4daee8ef@suse.de>
-Date: Thu, 5 Dec 2024 17:32:29 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZdeTpPn4"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CAFEDC4CEE4;
+	Thu,  5 Dec 2024 16:43:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733417011;
+	bh=fQ/wiWKsuKCk0mrEeSWFTz5B5YHpae7Id2vaFJhJWVU=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=ZdeTpPn4miPcr1cOi8V99g/F3rpOALzz8Izfnx/f+8HzsbD//jAOs9PfRrDjOPdU6
+	 2TVbOsw7JFwKOdHEHbdKNZai4c4RsWpxe8zwFFqdinlzVVYcw7TDRN/8y9KUddAh+r
+	 cG96GVzX7wSJI8wDO/itKYeeVCX28CUkshhdCPW5QX3Rlv31BNkqSQD7pkMvsBnKkT
+	 pBRp4Bl0ToZ6a4Pwy8jfWnni7RlBhSH10wy7wKcqdhZQuqIjyEgv1S5b4C4hAZsgrT
+	 jGZ9uujI1aZpx8EjhD8CP0OqNr01ZgbVpDYIkyPFGLmdhi77QmXQ1XluWpDH4efuJG
+	 olbjs+0a3rbrw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BBAC5E77170;
+	Thu,  5 Dec 2024 16:43:31 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Date: Thu, 05 Dec 2024 17:42:59 +0100
+Subject: [PATCH net-next v8 02/15] net: stmmac: Extend CSR calc support
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND PATCH v2] drm/mxsfb: Remove generic DRM drivers in probe
- function
-To: Dario Binacchi <dario.binacchi@amarulasolutions.com>,
- linux-kernel@vger.kernel.org
-Cc: linux-amarula@amarulasolutions.com,
- Michael Trimarchi <michael@amarulasolutions.com>,
- David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Marek Vasut <marex@denx.de>, Maxime Ripard <mripard@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Simona Vetter <simona@ffwll.ch>, Stefan Agner <stefan@agner.ch>,
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-References: <20241205162432.1803869-1-dario.binacchi@amarulasolutions.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20241205162432.1803869-1-dario.binacchi@amarulasolutions.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_ALL(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[amarulasolutions.com,gmail.com,linux.intel.com,denx.de,kernel.org,pengutronix.de,ffwll.ch,agner.ch,lists.freedesktop.org,lists.linux.dev,lists.infradead.org];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amarulasolutions.com:email,suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -4.30
-X-Spam-Flag: NO
+Message-Id: <20241205-upstream_s32cc_gmac-v8-2-ec1d180df815@oss.nxp.com>
+References: <20241205-upstream_s32cc_gmac-v8-0-ec1d180df815@oss.nxp.com>
+In-Reply-To: <20241205-upstream_s32cc_gmac-v8-0-ec1d180df815@oss.nxp.com>
+To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Jose Abreu <joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
+ Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Emil Renner Berthing <kernel@esmil.dk>, 
+ Minda Chen <minda.chen@starfivetech.com>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Iyappan Subramanian <iyappan@os.amperecomputing.com>, 
+ Keyur Chudgar <keyur@os.amperecomputing.com>, 
+ Quan Nguyen <quan@os.amperecomputing.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, 
+ devicetree@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
+ 0x1207@gmail.com, fancer.lancer@gmail.com, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>, 
+ Jacob Keller <jacob.e.keller@intel.com>, 
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1733417009; l=2290;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=fDnNMvO2KmjBflv1GlEvIV7YLrxVPMMghn+V0RbzyAA=;
+ b=DPIcLOBghbMJaPzoNAkVtnDlOM/EtO7yz3KF3UZC5yxzyc5hKRzn/+s2uyWSSIgONWU2P81vL
+ lp3YRqgTW6FCQjByMwjCTeVUHCfxqtL0hip2mtiiQdFWOzj8pa+hwrp
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
+From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
+Add support for CSR clock range up to 800 MHz.
 
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/common.h      | 2 ++
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 ++++
+ include/linux/stmmac.h                            | 2 ++
+ 3 files changed, 8 insertions(+)
 
-Am 05.12.24 um 17:24 schrieb Dario Binacchi:
-> Use aperture helpers to remove all generic graphics drivers before
-> loading mxsfb. Makes mxsfb compatible with simpledrm.
->
-> Co-developed-by: Michael Trimarchi <michael@amarulasolutions.com>
-> Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
-> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-
->
-> ---
->
-> Changes in v2:
-> - Use aperture_remove_all_conflicting_devices() instead of
->    drm_aperture_remove_framebuffers().
->
->   drivers/gpu/drm/mxsfb/mxsfb_drv.c | 10 ++++++++++
->   1 file changed, 10 insertions(+)
->
-> diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.c b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
-> index 6b95e4eb3e4e..10da8b54f4c6 100644
-> --- a/drivers/gpu/drm/mxsfb/mxsfb_drv.c
-> +++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
-> @@ -8,6 +8,7 @@
->    * Copyright (C) 2008 Embedded Alley Solutions, Inc All Rights Reserved.
->    */
->   
-> +#include <linux/aperture.h>
->   #include <linux/clk.h>
->   #include <linux/dma-mapping.h>
->   #include <linux/io.h>
-> @@ -362,6 +363,15 @@ static int mxsfb_probe(struct platform_device *pdev)
->   	if (ret)
->   		goto err_free;
->   
-> +	/*
-> +	 * Remove early framebuffers (ie. simplefb). The framebuffer can be
-> +	 * located anywhere in RAM
-> +	 */
-> +	ret = aperture_remove_all_conflicting_devices(mxsfb_driver.name);
-> +	if (ret)
-> +		return dev_err_probe(&pdev->dev, ret,
-> +				     "can't kick out existing framebuffers\n");
-> +
->   	ret = drm_dev_register(drm, 0);
->   	if (ret)
->   		goto err_unload;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
+index 1367fa5c9b8e..70d601f45481 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/common.h
++++ b/drivers/net/ethernet/stmicro/stmmac/common.h
+@@ -257,6 +257,8 @@ struct stmmac_safety_stats {
+ #define CSR_F_150M	150000000
+ #define CSR_F_250M	250000000
+ #define CSR_F_300M	300000000
++#define CSR_F_500M	500000000
++#define CSR_F_800M	800000000
+ 
+ #define	MAC_CSR_H_FRQ_MASK	0x20
+ 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 9b262cdad60b..3cb7ad6ccc4e 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -325,6 +325,10 @@ static void stmmac_clk_csr_set(struct stmmac_priv *priv)
+ 			priv->clk_csr = STMMAC_CSR_150_250M;
+ 		else if ((clk_rate >= CSR_F_250M) && (clk_rate <= CSR_F_300M))
+ 			priv->clk_csr = STMMAC_CSR_250_300M;
++		else if ((clk_rate >= CSR_F_300M) && (clk_rate < CSR_F_500M))
++			priv->clk_csr = STMMAC_CSR_300_500M;
++		else if ((clk_rate >= CSR_F_500M) && (clk_rate < CSR_F_800M))
++			priv->clk_csr = STMMAC_CSR_500_800M;
+ 	}
+ 
+ 	if (priv->plat->flags & STMMAC_FLAG_HAS_SUN8I) {
+diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
+index 75cbfb576358..865d0fe26f98 100644
+--- a/include/linux/stmmac.h
++++ b/include/linux/stmmac.h
+@@ -34,6 +34,8 @@
+ #define	STMMAC_CSR_35_60M	0x3	/* MDC = clk_scr_i/26 */
+ #define	STMMAC_CSR_150_250M	0x4	/* MDC = clk_scr_i/102 */
+ #define	STMMAC_CSR_250_300M	0x5	/* MDC = clk_scr_i/124 */
++#define	STMMAC_CSR_300_500M	0x6	/* MDC = clk_scr_i/204 */
++#define	STMMAC_CSR_500_800M	0x7	/* MDC = clk_scr_i/324 */
+ 
+ /* MTL algorithms identifiers */
+ #define MTL_TX_ALGORITHM_WRR	0x0
 
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+2.47.0
+
 
