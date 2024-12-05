@@ -1,112 +1,160 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AFF6218E83;
-	Thu,  5 Dec 2024 15:16:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195D6BE49
+	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 15:22:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733411801; cv=none; b=Wa+dI7RK6E9gH+1J55XlIjlEtK5kmZMJE2MdPMQrDbyM4mrFRW0Unv4sg930R96+/aZe3OUXy9seS5YzEXKYO5DuolrtytLtsfmCswDvcRKRWZfrxFdRPKb3aYOhAki4dab+iLQrWwSj5CRaMwQgc7TU629MpIYEAFEBUB0mgmU=
+	t=1733412156; cv=none; b=iC5wgiFxaoQUU2U2mFJWEGzDVhY1orVKR4e7DntLSWJ22EPEqb/r1ICymBZmFNebG6LeMi6j1EbNz9vexOkVGXqmHhU9rssCrzDRyIZ1GaaLy7cdhwksnzn+GLED+5Cg2tm9McHKuqLoHB3D9spb91EA9Aoz7qG0ZioLvibZ9pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733411801; c=relaxed/simple;
-	bh=HMHcEDj1u4GqWG3hL1RI/WKaNLDp5HE83xY8eaa6M1k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W3ld6kZoczcxvX2jnRgQFXF81px0BCbNKfxMFLxXMgmsazPSEYNm5wMVdAouZQZBr+LIShOwHv9bauOhfUD4PDYY2Ryl/11bi1FuIUW0/t4JfXZAJYBySUBYWI9nGZMxe8FOIl8mggMWd1PQPKXag/tjxQQtZLV0Lvo/3GAtVBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Odw6A6I9; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1733412156; c=relaxed/simple;
+	bh=WUv8DIfvaOrg5xzRIwFyNjV1vbHABHoRXf3mFeWDKVQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NFlfSivn705ZclmbPDCGh9QnzYnrNHWCQBF8dVPUHpCPZizyVeZralmmITUkUyLz+oBvXL0QSEdsytQZT16GZxO2A5r3yU6jubYtwtVABAKbwc4jcIBdXjRbmIWfzdRXf3z9kDuEXVHtvyUnQqZxglGpfCN+onqfLzXL/h/Wzjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=UCE2bKer; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=KHXc9JZX reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Odw6A6I9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733411800; x=1764947800;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=HMHcEDj1u4GqWG3hL1RI/WKaNLDp5HE83xY8eaa6M1k=;
-  b=Odw6A6I9KyDl4gHdf88pBoFxVwkjaJsunlcFA/PPLYCQira2HTOeHpTH
-   wrljz12I7LmsybkNLM06rcjwI498uLmEA7To+8npZlXJXwBtHhTQc8hae
-   SLoTl5llLqUpIdsBYnpr7ie2xPkXFZdcsCW3I/vhT8xWz8TtAg5hc+waY
-   7Hdo0ViH7mCgTkPhDh36xudfADS3sTVXs/MWCXysCd8xD/mFKsojWdkwB
-   axAauEZAFlI2SWBAIdfZdGaSR2CKRuaI9LlHJxTJGzElGlyc9KUcUNfQP
-   ly0DNV/JqvISRi4qgtJVbLckRlOppo0JAcS8Kbmw5A89R0B2cJkQBvjpl
-   g==;
-X-CSE-ConnectionGUID: zJtgmFjsRWGe4WmSyxohtQ==
-X-CSE-MsgGUID: oqZJd0bASCSUusFFGaF6kQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11277"; a="44204034"
-X-IronPort-AV: E=Sophos;i="6.12,210,1728975600"; 
-   d="scan'208";a="44204034"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2024 07:16:39 -0800
-X-CSE-ConnectionGUID: qM0wgrqgS0m4GFVf3rwMDw==
-X-CSE-MsgGUID: n8kyKvbxR1SYEXvK1hJoew==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,210,1728975600"; 
-   d="scan'208";a="94201590"
-Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 05 Dec 2024 07:16:35 -0800
-Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tJDah-00006p-2h;
-	Thu, 05 Dec 2024 15:16:31 +0000
-Date: Thu, 5 Dec 2024 23:15:38 +0800
-From: kernel test robot <lkp@intel.com>
-To: Vabhav Sharma <vabhav.sharma@nxp.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, frank.li@nxp.com,
-	pankaj.gupta@nxp.com, daniel.baluta@nxp.com,
-	silvano.dininno@nxp.com, V.Sethi@nxp.com,
-	meenakshi.aggarwal@nxp.com, Vabhav Sharma <vabhav.sharma@nxp.com>,
-	Franck LENORMAND <franck.lenormand@nxp.com>
-Subject: Re: [PATCH v4 4/4] firmware: imx: secvio: Add support for SNVS
- secvio and tamper via SCFW
-Message-ID: <202412052340.ub9tlWcC-lkp@intel.com>
-References: <20241205-secvio-v4-4-5c37cdc39573@nxp.com>
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="UCE2bKer";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="KHXc9JZX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1733412153; x=1764948153;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=OgpqTYmx1JwJV2MXhL2h0e8cSJoFw6QERgxshp0L/wQ=;
+  b=UCE2bKeroNkgMIM1TQc1O5JQXtGcel3ZeZHXxp8s60zoUipgU68PfnxG
+   egn270suPQJj2EVrl79yGIOcOLIEPDRt8GcUdLGc79KA5MWNB857zw003
+   r6GIV84aPGNpydLfoOsOc15wAd+6cW7V9LWN5t3ECRRTdGxn2enzIL01Q
+   l3HA4jT2SV6igrLXZzxk+cHXqJL4szPPXSgLXC8aLA1Zbroyr9uwReRBF
+   4SxeeuouEaM6UyNe4aCa2TeYU6kuOF75u7CDByTrWDZL7DciyNOqzf2iy
+   Zo73PaGDAGpVNt9SfhU7ROcpnXTJpW+3ud1sY64vOut2ObW1NmtlBLAUG
+   w==;
+X-CSE-ConnectionGUID: UHuHdMOHR8eI0Ysd+CRJnQ==
+X-CSE-MsgGUID: HUOL6jrqQzyh1aS6IVtEsA==
+X-IronPort-AV: E=Sophos;i="6.12,210,1728943200"; 
+   d="scan'208";a="40435227"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 05 Dec 2024 16:22:30 +0100
+X-CheckPoint: {6751C536-37-86C05612-CA75E1CA}
+X-MAIL-CPID: FCDE8C9170E3D42729ED4A0AD7E02C0D_1
+X-Control-Analysis: str=0001.0A682F21.6751C537.0039,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 502B6163BB5;
+	Thu,  5 Dec 2024 16:22:23 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1733412146;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OgpqTYmx1JwJV2MXhL2h0e8cSJoFw6QERgxshp0L/wQ=;
+	b=KHXc9JZXoqdeRsEZnWh0P2KoB3nAhvdjG7ZxHhi2Xl3w/sBB5T89MPHE34iZUVvxyoMME5
+	ML7qUzm+CAyupIe4+o7+jDJrLIt1qwEuKrktHkyz/HRLGYrpKr90X2deBlIp4nR59D5qgh
+	9pIBOjbeKpl2qtz8QhkW5s8c/O4JeSnWqP52TqhJbvMXOMwl+DeLzMDR0Y4HFiFwC5+3UW
+	BQwCqL82hTsAwk7QhdJXIo1Sx1E/uQml8erg4mGT51+d5GrJY04rFF0gQUg2Sitj6Ma9z4
+	5ITi7+M3JF6tRYAyJClPpB/liq9cxJjV0ohPX8+1y811NOGP0tVe7b+TgjY1xw==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Dave Stevenson <dave.stevenson@raspberrypi.com>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Dave Stevenson <dave.stevenson@raspberrypi.com>
+Subject: Re: [PATCH v2 1/4] media: i2c: imx290: Limit analogue gain according to module
+Date: Thu, 05 Dec 2024 16:22:22 +0100
+Message-ID: <4950196.GXAFRqVoOG@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20241120-media-imx290-imx462-v2-1-7e562cf191d8@raspberrypi.com>
+References: <20241120-media-imx290-imx462-v2-0-7e562cf191d8@raspberrypi.com> <20241120-media-imx290-imx462-v2-1-7e562cf191d8@raspberrypi.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241205-secvio-v4-4-5c37cdc39573@nxp.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Vabhav,
+Hi Dave,
 
-kernel test robot noticed the following build errors:
+Am Mittwoch, 20. November 2024, 20:17:03 CET schrieb Dave Stevenson:
+> The imx327 only supports up to 29.4dB of analogue gain, vs
+> the imx290 going up to 30dB. Both are in 0.3dB steps.
 
-[auto build test ERROR on 9852d85ec9d492ebef56dc5f229416c925758edc]
+While I agree for 30dB on imx290, my (maybe outdated) Rev0.2 datasheet says
+up to 27dB in 0.3dB steps.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Vabhav-Sharma/dt-bindings-firmware-imx-add-nvmem-phandle/20241205-125909
-base:   9852d85ec9d492ebef56dc5f229416c925758edc
-patch link:    https://lore.kernel.org/r/20241205-secvio-v4-4-5c37cdc39573%40nxp.com
-patch subject: [PATCH v4 4/4] firmware: imx: secvio: Add support for SNVS secvio and tamper via SCFW
-config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20241205/202412052340.ub9tlWcC-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241205/202412052340.ub9tlWcC-lkp@intel.com/reproduce)
+Despite that this change looks good.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202412052340.ub9tlWcC-lkp@intel.com/
+Best regards,
+Alexander
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
+> As we now have model specific config, fix this mismatch,
+> and delete the comment referencing it.
+>=20
+> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> ---
+>  drivers/media/i2c/imx290.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/drivers/media/i2c/imx290.c b/drivers/media/i2c/imx290.c
+> index ee698c99001d..da654deb444a 100644
+> --- a/drivers/media/i2c/imx290.c
+> +++ b/drivers/media/i2c/imx290.c
+> @@ -176,6 +176,7 @@ struct imx290_model_info {
+>  	enum imx290_colour_variant colour_variant;
+>  	const struct cci_reg_sequence *init_regs;
+>  	size_t init_regs_num;
+> +	unsigned int max_analog_gain;
+>  	const char *name;
+>  };
+> =20
+> @@ -876,14 +877,10 @@ static int imx290_ctrl_init(struct imx290 *imx290)
+>  	 * up to 72.0dB (240) add further digital gain. Limit the range to
+>  	 * analog gain only, support for digital gain can be added separately
+>  	 * if needed.
+> -	 *
+> -	 * The IMX327 and IMX462 are largely compatible with the IMX290, but
+> -	 * have an analog gain range of 0.0dB to 29.4dB and 42dB of digital
+> -	 * gain. When support for those sensors gets added to the driver, the
+> -	 * gain control should be adjusted accordingly.
+>  	 */
+>  	v4l2_ctrl_new_std(&imx290->ctrls, &imx290_ctrl_ops,
+> -			  V4L2_CID_ANALOGUE_GAIN, 0, 100, 1, 0);
+> +			  V4L2_CID_ANALOGUE_GAIN, 0,
+> +			  imx290->model->max_analog_gain, 1, 0);
+> =20
+>  	/*
+>  	 * Correct range will be determined through imx290_ctrl_update setting
+> @@ -1441,18 +1438,21 @@ static const struct imx290_model_info imx290_mode=
+ls[] =3D {
+>  		.colour_variant =3D IMX290_VARIANT_COLOUR,
+>  		.init_regs =3D imx290_global_init_settings_290,
+>  		.init_regs_num =3D ARRAY_SIZE(imx290_global_init_settings_290),
+> +		.max_analog_gain =3D 100,
+>  		.name =3D "imx290",
+>  	},
+>  	[IMX290_MODEL_IMX290LLR] =3D {
+>  		.colour_variant =3D IMX290_VARIANT_MONO,
+>  		.init_regs =3D imx290_global_init_settings_290,
+>  		.init_regs_num =3D ARRAY_SIZE(imx290_global_init_settings_290),
+> +		.max_analog_gain =3D 100,
+>  		.name =3D "imx290",
+>  	},
+>  	[IMX290_MODEL_IMX327LQR] =3D {
+>  		.colour_variant =3D IMX290_VARIANT_COLOUR,
+>  		.init_regs =3D imx290_global_init_settings_327,
+>  		.init_regs_num =3D ARRAY_SIZE(imx290_global_init_settings_327),
+> +		.max_analog_gain =3D 98,
+>  		.name =3D "imx327",
+>  	},
+>  };
+>=20
+>=20
 
-ERROR: modpost: missing MODULE_LICENSE() in drivers/firmware/imx/imx-scu-secvio.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/firmware/imx/imx-scu-secvio.o
-ERROR: modpost: "__delay" [drivers/net/mdio/mdio-cavium.ko] undefined!
-ERROR: modpost: "devm_of_clk_add_hw_provider" [drivers/media/i2c/tc358746.ko] undefined!
-ERROR: modpost: "devm_clk_hw_register" [drivers/media/i2c/tc358746.ko] undefined!
-ERROR: modpost: "of_clk_hw_simple_get" [drivers/media/i2c/tc358746.ko] undefined!
->> ERROR: modpost: "imx_secvio_sc_debugfs" [drivers/firmware/imx/imx-scu-secvio.ko] undefined!
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
