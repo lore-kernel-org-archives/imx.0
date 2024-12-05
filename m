@@ -1,140 +1,214 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1CC1891AB
-	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 16:26:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622B01917D7
+	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 16:32:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733415978; cv=none; b=WhBoCMia95WYXIpeZ6d8E6OZe9V3p2XFnitLnyETYhFzlqDvMzOgt1rZe7Og1TVlu0QRsbn+4Ndwpz3eDRK8+/vP83Yw87RsKpHIRryO25TSBO9NgjMGqsnv4IPiwZRB832H2okAYVTriQfzwDN3TFZtZdGL5Sz7sNwtq+zK3yI=
+	t=1733416354; cv=none; b=GQFC3c75w89LnpYn6bFZSmiqxnfO7X/xcC/ff7jKiD89vtSsi/apJS7xhUhMur9d5GoqUxpUPGL5+mbe3Ydrgr9zNde/+ZpnQRFRzvw1yYyUWquBuT2f+lLCBrKWTVhUMMSwqK1xnpHh4uIhiZ9MT1EfcMW0a6IumheJUI75LLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733415978; c=relaxed/simple;
-	bh=yC5x0Kr3GQ+y52MwCBTCIIJOZYvx1zk4EFtR7xU0I1M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cosCZMitO1IhdGozkJmnDA7HZuk0bKo+TodjQTERAU5u5ka6kJ8L5falgEo35qyH3sELE6nooiDvWHFZIxWXmm+bTbQKjXPtVB3sW/8gdhX9OSg/fqMyj7N19SiSiFb6g8vanVNQgh46IbNWC0B0sTHoioIRgekLWl4MucjNBwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=Egmu4vo9; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	s=arc-20240116; t=1733416354; c=relaxed/simple;
+	bh=5/t50KbKhNz64OAY/4Y06g3odbxGzNudMERRkJpSxuk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bTb5Ht8HlqX9dnHhCsStfylY03XVCJHtx2vZuVByhCQ+iqmQ7reLxV7lR2KeYOIHSFusIponK6MuzUzc347B7eC8qFZPsVPmvLsw1MeS6cVrSJtHDb7LSnwLhNH9DjVZ5ujIXaj8BB3TnZ73VzRu7qq0w/VMVsyYjpDb/ZmvcII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=zpsBalh2; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ZF7S5vkb; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=zpsBalh2; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ZF7S5vkb; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="Egmu4vo9"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5d0cfb9fecaso1702041a12.2
-        for <imx@lists.linux.dev>; Thu, 05 Dec 2024 08:26:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1733415976; x=1734020776; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JCLk/wc3MKwAF912ySsq2eZpu6hxxtGQsnffSicJSqo=;
-        b=Egmu4vo94z0GvUEk2ssln3OHsXkmLosau/f39UAjQhHYTZ+SaH4gaOYQFg44YDVjcS
-         2xTMI92fUUsb092/M20nl2cRVlkhJA2UnqmXKXj+zs28NR/buMP9Go2V+K4WwLn4LTkR
-         TAx2pgqvm0BZSLn71sAHMNKdBlEvt+xvF8Ed8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733415976; x=1734020776;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JCLk/wc3MKwAF912ySsq2eZpu6hxxtGQsnffSicJSqo=;
-        b=WCMDecRoOOxoxVroi8+H4S+N8J774nw6Qvf9Naf8gKMCQ75UEZOewn6ZjZMQzV3uvA
-         HaqRbywOc4KR6o0EnFiCRw6GZMesbRTE2UhhltOScSVRST9WJg2kKd1aIWA1rqyFAOI6
-         I+DeCCWXzff1yhzxkiKbtpUK8HGKqL/JRxLRM/RmI3fhW5XdIPP6jfpZ5/15LtrBVeLC
-         Wpg7IAAjQwya4pif6EMtBpL2RgznXqu1oza03oy4rqBrdrmYOTiJVC5jJ2lRId1R5X8P
-         AW8pVlZsGkPXM6/5oJfxVDlpmstBi17rmdzWDOor9T63fHeL6CqX9dCiM7CrElaNaF/n
-         Lt4w==
-X-Forwarded-Encrypted: i=1; AJvYcCXXgfE8lPpaDgmiEQhuwSy8B0qEtygu+CeSEhcwbrdj0ztDme52N0wiXhmRyZHwU6IZWvw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyRCVQDVBp/9t+POucmc6PkLVl0Xbxp6jsSgpFGh5tA5MF+LY5q
-	Dd9BGRmBUfHiaegDtU4KwBJPpt/LN/+HUuIj4yglusuiJqIdrhJSE78S5sQrsJg=
-X-Gm-Gg: ASbGncvbTNlxvwZOy1gWW0aXnp5es3Ezky4wN/tFAwdvMGTxFnxkGxTKCr9zh2svReo
-	jf7kwnwqjw+qR49bwMbPCaFaY7vi5ncpc7fC1Raigrg7OHVMHhmQNG6DzaMtKYvekzxvy7hvW2c
-	kTBtlVfzV2RI5cE0CJT6SQTdf06CxYy+xOIpIn+jXZslyMiSKZldD9dV/MbDAFvXTyNSaRuFvS2
-	/pLv0A4ttDYaqID86Q1UKCPTzCZK/fn7JOgESwRGFed9BjeP2JiY64frgXvL4dmm8Ww3QwhMJtQ
-	8B3AFWbGOOfH9Bj+189SCNMxOUVrEA7HMT2DACB12sSwGw==
-X-Google-Smtp-Source: AGHT+IFXrt5EyVJNmwjOInbQwIR0hRyAYkVbpEnHiym56laCVf9oh8OvxH+kl7ISbHpLv75ASv1ecQ==
-X-Received: by 2002:a05:6402:5107:b0:5d0:eb2d:db97 with SMTP id 4fb4d7f45d1cf-5d10cb80219mr11709960a12.25.1733415975690;
-        Thu, 05 Dec 2024 08:26:15 -0800 (PST)
-Received: from dario-ThinkPad-T14s-Gen-2i.amarulasolutions.com ([2001:b07:6474:ebbf:61a1:9bc8:52c6:3c2d])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d14c798f98sm965026a12.57.2024.12.05.08.26.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Dec 2024 08:26:15 -0800 (PST)
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-amarula@amarulasolutions.com,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Michael Trimarchi <michael@amarulasolutions.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [RESEND PATCH v2] arm64: dts: imx8mn-bsh-smm-s2/pro: add simple-framebuffer
-Date: Thu,  5 Dec 2024 17:26:04 +0100
-Message-ID: <20241205162612.1804274-1-dario.binacchi@amarulasolutions.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="zpsBalh2";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ZF7S5vkb";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="zpsBalh2";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ZF7S5vkb"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 69B141F449;
+	Thu,  5 Dec 2024 16:32:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1733416350; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=sFODuswEf40ujz3zdendiC/keZEpnZZvntEr8R9li84=;
+	b=zpsBalh2dYOwtb23WM90EJa20muNVVrLx9x9yUR1iQhFQmgeXSwSJXnOaMB7R0hMOOqZlT
+	0/XvATkiwoIGDm2TnmLvs4pwW+VkQTOmdHK3IfIrWX0gEp4OZ2LXt5G48gDUlqnl+UzuYL
+	0tNDeTdQva6uVgTTDtIuPjqT1nT1Ndk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1733416350;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=sFODuswEf40ujz3zdendiC/keZEpnZZvntEr8R9li84=;
+	b=ZF7S5vkbS9H5SxQGqOLECCQXBnCRCCGd8f0sfA+6sWNRLqyS8zr7AA31nI52WJU5kiqDXa
+	/T9hwklbL/lWyiDA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1733416350; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=sFODuswEf40ujz3zdendiC/keZEpnZZvntEr8R9li84=;
+	b=zpsBalh2dYOwtb23WM90EJa20muNVVrLx9x9yUR1iQhFQmgeXSwSJXnOaMB7R0hMOOqZlT
+	0/XvATkiwoIGDm2TnmLvs4pwW+VkQTOmdHK3IfIrWX0gEp4OZ2LXt5G48gDUlqnl+UzuYL
+	0tNDeTdQva6uVgTTDtIuPjqT1nT1Ndk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1733416350;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=sFODuswEf40ujz3zdendiC/keZEpnZZvntEr8R9li84=;
+	b=ZF7S5vkbS9H5SxQGqOLECCQXBnCRCCGd8f0sfA+6sWNRLqyS8zr7AA31nI52WJU5kiqDXa
+	/T9hwklbL/lWyiDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 00210132EB;
+	Thu,  5 Dec 2024 16:32:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id myY8Op3VUWfyDAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Thu, 05 Dec 2024 16:32:29 +0000
+Message-ID: <1ea567f4-33c2-40a6-9bca-117e4daee8ef@suse.de>
+Date: Thu, 5 Dec 2024 17:32:29 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND PATCH v2] drm/mxsfb: Remove generic DRM drivers in probe
+ function
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+ linux-kernel@vger.kernel.org
+Cc: linux-amarula@amarulasolutions.com,
+ Michael Trimarchi <michael@amarulasolutions.com>,
+ David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Marek Vasut <marex@denx.de>, Maxime Ripard <mripard@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Simona Vetter <simona@ffwll.ch>, Stefan Agner <stefan@agner.ch>,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+References: <20241205162432.1803869-1-dario.binacchi@amarulasolutions.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20241205162432.1803869-1-dario.binacchi@amarulasolutions.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_ALL(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[amarulasolutions.com,gmail.com,linux.intel.com,denx.de,kernel.org,pengutronix.de,ffwll.ch,agner.ch,lists.freedesktop.org,lists.linux.dev,lists.infradead.org];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amarulasolutions.com:email,suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -4.30
+X-Spam-Flag: NO
 
-Add a simple-framebuffer node for U-Boot to further fill and activate.
 
-Co-developed-by: Michael Trimarchi <michael@amarulasolutions.com>
-Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
----
 
-Changes in v2:
-- Fix the warnings:
-  (ranges_format): /chosen:ranges: empty "ranges" property but its #address-cells (1) differs from / (2)
-  (ranges_format): /chosen:ranges: empty "ranges" property but its #size-cells (1) differs from / (2)
-  by setting both #address-cells and #size-cells to 2.
+Am 05.12.24 um 17:24 schrieb Dario Binacchi:
+> Use aperture helpers to remove all generic graphics drivers before
+> loading mxsfb. Makes mxsfb compatible with simpledrm.
+>
+> Co-developed-by: Michael Trimarchi <michael@amarulasolutions.com>
+> Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
- .../freescale/imx8mn-bsh-smm-s2-display.dtsi  | 28 +++++++++++++++++++
- 1 file changed, 28 insertions(+)
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi
-index 7675583a6b67..98dec3c42060 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-display.dtsi
-@@ -4,6 +4,34 @@
-  */
- 
- / {
-+	chosen {
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+		ranges;
-+
-+		framebuffer-panel0 {
-+			compatible = "simple-framebuffer";
-+			clocks = <&clk IMX8MN_CLK_DISP_PIXEL_ROOT>, /* lcdif */
-+				 <&clk IMX8MN_CLK_DISP_APB_ROOT>,
-+				 <&clk IMX8MN_CLK_DISP_AXI_ROOT>,
-+				 <&clk IMX8MN_VIDEO_PLL1>,
-+				 <&clk IMX8MN_CLK_DISP_AXI_ROOT>, /* pgc_dispmix */
-+				 <&clk IMX8MN_CLK_DISP_APB_ROOT>,
-+				 <&clk IMX8MN_CLK_DISP_AXI>,
-+				 <&clk IMX8MN_CLK_DISP_APB>,
-+				 <&clk IMX8MN_SYS_PLL2_1000M>,
-+				 <&clk IMX8MN_SYS_PLL1_800M>,
-+				 <&clk IMX8MN_CLK_DSI_CORE>, /* mipi_disi */
-+				 <&clk IMX8MN_CLK_DSI_PHY_REF>;
-+
-+			power-domains = <&disp_blk_ctrl IMX8MN_DISPBLK_PD_LCDIF>,
-+					<&disp_blk_ctrl IMX8MN_DISPBLK_PD_MIPI_DSI>;
-+			dvdd-supply = <&reg_3v3_dvdd>;
-+			avdd-supply = <&reg_v3v3_avdd>;
-+			status = "disabled";
-+		};
-+	};
-+
- 	backlight: backlight {
- 		compatible = "pwm-backlight";
- 		pwms = <&pwm1 0 700000 0>;	/* 700000 ns = 1337Hz */
+>
+> ---
+>
+> Changes in v2:
+> - Use aperture_remove_all_conflicting_devices() instead of
+>    drm_aperture_remove_framebuffers().
+>
+>   drivers/gpu/drm/mxsfb/mxsfb_drv.c | 10 ++++++++++
+>   1 file changed, 10 insertions(+)
+>
+> diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.c b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+> index 6b95e4eb3e4e..10da8b54f4c6 100644
+> --- a/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+> +++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+> @@ -8,6 +8,7 @@
+>    * Copyright (C) 2008 Embedded Alley Solutions, Inc All Rights Reserved.
+>    */
+>   
+> +#include <linux/aperture.h>
+>   #include <linux/clk.h>
+>   #include <linux/dma-mapping.h>
+>   #include <linux/io.h>
+> @@ -362,6 +363,15 @@ static int mxsfb_probe(struct platform_device *pdev)
+>   	if (ret)
+>   		goto err_free;
+>   
+> +	/*
+> +	 * Remove early framebuffers (ie. simplefb). The framebuffer can be
+> +	 * located anywhere in RAM
+> +	 */
+> +	ret = aperture_remove_all_conflicting_devices(mxsfb_driver.name);
+> +	if (ret)
+> +		return dev_err_probe(&pdev->dev, ret,
+> +				     "can't kick out existing framebuffers\n");
+> +
+>   	ret = drm_dev_register(drm, 0);
+>   	if (ret)
+>   		goto err_unload;
+
 -- 
-2.43.0
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
 
