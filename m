@@ -1,81 +1,76 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E58E20C499
-	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 11:20:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D2020D513
+	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 11:20:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733397609; cv=none; b=HCI9aZ3LwOHIQhhljtpfPDSlNCABBcvGkjuJyKLUFrKjP/JkdlpWpuMfgeYGhCV0zM0wsRZInK+jkNoJKKKyZLgXwdkXVC0/RU+koTcjB/Pm72m/qqpZZMfb5YFq0Jh1CqpSVAGkhmB5qbXgK+Hvk2owyK2hkOx3tDXYEoJqDpY=
+	t=1733397610; cv=none; b=L5S8933InRUm2h/zfQpkT1d+PTriaKgCaAfqyTGI7utibgkG2CiuJDsHnBFID+bSzKlP5riUNE7kP3zJEHrwdSMgbfn+lftbywgWvkexjYCUpwE8ZQgtkl8IMGC0AxEpbPLtmYU1jRT2oB1Go4poiIMl/PP7mmwOYMtfZVw6NLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733397609; c=relaxed/simple;
-	bh=oa9Gm93vVm1rGdVo4AFQE15aHx6ue06yVsUQ62xYJYQ=;
+	s=arc-20240116; t=1733397610; c=relaxed/simple;
+	bh=UMdg/7HEARC6ZgU2mWDyh9m6gc8+etDqX0OWe/Oj1Is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s6RYwvFK6StOmF21PdYJgp2RdFsXPZlBmt3K2i5/XLj06R+UklQtPgu9Zk89U8CT+vuldpqbJK3iA1rNXKL7BnWsBIFXgaweSkmAQgmu0pR6gR8BqnONeYviLSnen62rTaSuorWC5nAWACJj78ko9WlM8HQ0VjT1fXZzgnqUP8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=FAbS6eoj; arc=none smtp.client-ip=209.85.218.51
+	 MIME-Version; b=vBv9B7tamXU1jQOZvFO4eJ2S06eeGM10KqN73GLl0m2B0BLEO5lIMHOepn8PFIDl73UkLhsyK9R5sgP6+lbgs86x39cxDJYrTx5X+s3aF0C7kM8uJjhZy3SXtjKHE4XP77hTCrzE5dM7IR7yEGndZEabLkp3pqyP7KHGQArZ8hU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=aEUcRihM; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="FAbS6eoj"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-aa5b0d8bd41so112046666b.2
-        for <imx@lists.linux.dev>; Thu, 05 Dec 2024 03:20:05 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="aEUcRihM"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a9ec267b879so147021566b.2
+        for <imx@lists.linux.dev>; Thu, 05 Dec 2024 03:20:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1733397604; x=1734002404; darn=lists.linux.dev;
+        d=amarulasolutions.com; s=google; t=1733397607; x=1734002407; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8qxAaFLk5+E1lAMIL+qkYRoUyf16X1PKrF8INezZ3F8=;
-        b=FAbS6eojq+ZwLojZZVRJS7nSPzl8WYVeF6isOzt1z/9VpbeQ5vO1dR/8b/Tv17FRV4
-         m1q6OcjJgNskrGgkxmsKXWeueqwfmtrOWXCZIGJyIGbCUC3heE5fXlXgMw1MmjyadlM6
-         BrRpuiyGtklH7IqeOwdXUNw6VtYJzOytWTPXg=
+        bh=deJRTkp3cj8LQIAgwHRGE8nfXmDlGN+dwLVOnyJ9CpQ=;
+        b=aEUcRihMlFecQWWmiQUkOrqxOFEBnH3grzxQGSoozbidrTFbVd9SUN7PLodSJNTsaJ
+         NBuPrvNt8OCya1kSAQTxBiUX7xwFiT7rjg+xwEzlCx+yLvcVVRE0v6amn8yrdoREfXYA
+         NQvzjJuvEO5YJ7ivUHFYdcYGxkNW/u0IFL6fU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733397604; x=1734002404;
+        d=1e100.net; s=20230601; t=1733397607; x=1734002407;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8qxAaFLk5+E1lAMIL+qkYRoUyf16X1PKrF8INezZ3F8=;
-        b=OzwOQRpen1Q2Td+h0p/5jZvfKbeY4Niyt3Ttbbwc8lrHsfa83R39es2q/iwmwYknAB
-         SWw5MhBsIR/IlbKxKF6FTK9+4NU4I69afpM4vteFUCivSSt/Zxx9YrPd09Pyr6AcuOPo
-         1s2UrLgfiUPGTQVzdIb/qPsWMAuCgyCs4CeXuYff4n1PRN1vIffJ6TP0PtXbf2XkgdSY
-         NOnQM05swOClQHkgep4AXh8Nvuq6zyrINndVp/hOJ11Sj+sTpcXvzm0CPXm1iRrgOVA6
-         gx3yaxXp55HvLDVGp4KEaDInXJ58olBcyTZ0fvGxh4FGkiuNyBHFGCcPCjw1N5KW7Xiy
-         5l0g==
-X-Forwarded-Encrypted: i=1; AJvYcCWQqDkuyrQ0CdzId5xgSxVPPKjE34+cHT487LBmAeoxrYDWbb60qYoqJ2+SzEl63zMyo/w=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzc0QU/VTrX8CvwQ36CvpDtSeZl1xh6DPdouOSB+rCFWuHOjfjy
-	TxyFYRsGqBJbs+xQwrUHzsDtVAjp9fPS99CtoiqzF1sTWn427xs6E7WfPpTog5g=
-X-Gm-Gg: ASbGnctYf2a2XX+hRhSyPVQ/CQnB9t96OWUEe45x2VxMHSrR5Kuj1URfKrxlDxcRKJp
-	pMXPR1L1cq6afexeiDMXb7xmmrUVNWP6u6mVEtprtS9fx4TYDispfrvA7+XjKsx15WBgk2KJlIk
-	GVsNr1jdKzi3CNhYaK0nLJTZB55/Qxlh+7nyh3mQRkiJqadbTL/YNUzkntDLISaHHquWu/wNiFD
-	h2rjqsCud7G9ledlinduWO+P2tUrWndcws53mLuxsEsqWdqJfT3ov+gVqsi8tYik1d6fmk/ryra
-	d11CX770149nzHe9a/veQ01jIbItjwXcCbzjvsPDP8B4oQ==
-X-Google-Smtp-Source: AGHT+IEgFpXLsMoTzNiUj81+8z1QLJMCQqPzFfWukhsHBlq5eIb4F02MTbl2wSjJnR15AvECCxPBJw==
-X-Received: by 2002:a17:906:32c3:b0:aa5:43ee:2ff6 with SMTP id a640c23a62f3a-aa5f7d011c6mr812629366b.1.1733397604406;
-        Thu, 05 Dec 2024 03:20:04 -0800 (PST)
+        bh=deJRTkp3cj8LQIAgwHRGE8nfXmDlGN+dwLVOnyJ9CpQ=;
+        b=ArnEy2B+ApY2T3VWj95uq8SixYILOAeq9Bn3APvXfy+rU/qn6P36RzR2ihxmRts+g/
+         qQ/PKqPPu8TZYV4IgFhj43YyAnQpNWeQl6GTicBjVSlfugU71N5Ww9Qouh3rq6Ztbp58
+         rPrtc4PSrcr5JkFFgTxKTGcLB1XwzIpEVzYGmRNRG6g95wLbHMVOCs61nUwPquYQd/fJ
+         oSSqpKaALE1clYxErCWRSwUvQPeRV04qjQ8cqWKk3YEDcbdbru5qFk9PD1OwPpAftoGK
+         vFwcFKZr78rmXJ4flB2MmWcolr3MJGQAT9GJ3HHVkdfBNHBjx/1PLQ4nkEh3cRR3av7E
+         fOBw==
+X-Forwarded-Encrypted: i=1; AJvYcCXjIxthYuEVEwa9fhN1LCbtHC3dBJO78+mKlSu4vCNxPQd6LXv+AbPmzGOsgb/bp5MPkRQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzE34V1z+m0ewJt6+9OAq25CqZFoKlE/yuyHyiMkqakgYEifaPo
+	1AMJnclwu7IM77FAdnyjC01QRBTtv/+YzL/NuLxcHTLuoE+6MTGWYCzbd+VUd/I=
+X-Gm-Gg: ASbGncu6Xm36aY83bVFZHfj5pDamLYI/jWYrbR+5CIJy5yd7A8yBTBtcKyaIzaMEX0g
+	fpEk6aCcvQMeBH6pnILMtcPbtWgCCMCGWC/pSRp0dfx1B76HcYYaRvr4nX8K2JBlkYFIdzfdKEe
+	Sgsdo36hRQqb65vWkx30tEJnNuV41D5DHgmNa+34NVqFU2mOtBZQg94z+WOSwTe19fJVGU0v/5G
+	QLutjmKh8PLAkJOHWRpAdsIHJiNe19+x+u6yctO8TebqEpoM/wSJBg8lsAIPd/jFt8t/GMNK02Y
+	1WlXPfo+ucwveyAV5U659yrRvcV3QwVJF38EMERFR/RQQg==
+X-Google-Smtp-Source: AGHT+IEDfHJCy4mKgveNLG8+12l0nNuJTsz+6IEw9fSTRFtpyymfLeQoj2SsxUuqEuLQtMZgkWDydQ==
+X-Received: by 2002:a17:906:328f:b0:aa6:25c4:7a71 with SMTP id a640c23a62f3a-aa625c48787mr161327966b.16.1733397606942;
+        Thu, 05 Dec 2024 03:20:06 -0800 (PST)
 Received: from dario-ThinkPad-T14s-Gen-2i.amarulasolutions.com ([2001:b07:6474:ebbf:61a1:9bc8:52c6:3c2d])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa625eedcd0sm77505266b.87.2024.12.05.03.20.02
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa625eedcd0sm77505266b.87.2024.12.05.03.20.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Dec 2024 03:20:04 -0800 (PST)
+        Thu, 05 Dec 2024 03:20:06 -0800 (PST)
 From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-amarula@amarulasolutions.com,
 	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Abel Vesa <abelvesa@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Fabio Estevam <festevam@gmail.com>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Peng Fan <peng.fan@nxp.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Rob Herring <robh@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Shawn Guo <shawnguo@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-clk@vger.kernel.org
-Subject: [PATCH v5 15/20] dt-bindings: clock: imx8m-clock: support spread spectrum clocking
-Date: Thu,  5 Dec 2024 12:17:50 +0100
-Message-ID: <20241205111939.1796244-16-dario.binacchi@amarulasolutions.com>
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v5 17/20] arm64: dts: imx8mn: add PLLs to clock controller module (ccm)
+Date: Thu,  5 Dec 2024 12:17:52 +0100
+Message-ID: <20241205111939.1796244-18-dario.binacchi@amarulasolutions.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241205111939.1796244-1-dario.binacchi@amarulasolutions.com>
 References: <20241205111939.1796244-1-dario.binacchi@amarulasolutions.com>
@@ -87,8 +82,8 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The patch adds the DT bindings for enabling and tuning spread spectrum
-clocking generation.
+Add the PLLs generated by anatop to the clock list of the Clock
+Controller Module (CCM) node.
 
 Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
@@ -97,162 +92,32 @@ Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 (no changes since v4)
 
 Changes in v4:
-- Drop "fsl,ssc-clocks" property. The other added properties now refer
-  to the clock list.
-- Updated minItems and maxItems of
-  - clocks
-  - clock-names
-  - fsl,ssc-modfreq-hz
-  - fsl,ssc-modrate-percent
-  - fsl,ssc-modmethod
-- Updated the dts examples
+- New
 
-Changes in v3:
-- Added in v3
-- The dt-bindings have been moved from fsl,imx8m-anatop.yaml to
-  imx8m-clock.yaml. The anatop device (fsl,imx8m-anatop.yaml) is
-  indeed more or less a syscon, so it represents a memory area
-  accessible by ccm (imx8m-clock.yaml) to setup the PLLs.
+ arch/arm64/boot/dts/freescale/imx8mn.dtsi | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-Changes in v2:
-- Add "allOf:" and place it after "required:" block, like in the
-  example schema.
-- Move the properties definition to the top-level.
-- Drop unit types as requested by the "make dt_binding_check" command.
-
- .../bindings/clock/imx8m-clock.yaml           | 77 +++++++++++++++++--
- 1 file changed, 71 insertions(+), 6 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-index c643d4a81478..83036f6d2274 100644
---- a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-+++ b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-@@ -29,12 +29,12 @@ properties:
-     maxItems: 2
- 
-   clocks:
--    minItems: 6
--    maxItems: 7
-+    minItems: 7
-+    maxItems: 10
- 
-   clock-names:
--    minItems: 6
--    maxItems: 7
-+    minItems: 7
-+    maxItems: 10
- 
-   '#clock-cells':
-     const: 1
-@@ -43,6 +43,34 @@ properties:
-       ID in its "clocks" phandle cell. See include/dt-bindings/clock/imx8m-clock.h
-       for the full list of i.MX8M clock IDs.
- 
-+  fsl,ssc-modfreq-hz:
-+    description:
-+      The values of modulation frequency (Hz unit) for each clock
-+      supporting spread spectrum.
-+    minItems: 7
-+    maxItems: 10
-+
-+  fsl,ssc-modrate-percent:
-+    description:
-+      The percentage values of modulation rate for each clock
-+      supporting spread spectrum.
-+    minItems: 7
-+    maxItems: 10
-+
-+  fsl,ssc-modmethod:
-+    $ref: /schemas/types.yaml#/definitions/non-unique-string-array
-+    description:
-+      The modulation techniques for each clock supporting spread
-+      spectrum.
-+    minItems: 7
-+    maxItems: 10
-+    items:
-+      enum:
-+        - ""
-+        - down-spread
-+        - up-spread
-+        - center-spread
-+
- required:
-   - compatible
-   - reg
-@@ -76,6 +104,10 @@ allOf:
-             - const: clk_ext2
-             - const: clk_ext3
-             - const: clk_ext4
-+        fsl,ssc-modfreq-hz: false
-+        fsl,ssc-modrate-percent: false
-+        fsl,ssc-modmethod: false
-+
-     else:
-       properties:
-         clocks:
-@@ -86,6 +118,10 @@ allOf:
-             - description: ext2 clock input
-             - description: ext3 clock input
-             - description: ext4 clock input
-+            - description: audio1 PLL input
-+            - description: audio2 PLL input
-+            - description: dram PLL input
-+            - description: video PLL input
- 
-         clock-names:
-           items:
-@@ -95,20 +131,49 @@ allOf:
-             - const: clk_ext2
-             - const: clk_ext3
-             - const: clk_ext4
-+            - const: audio_pll1
-+            - const: audio_pll2
-+            - const: dram_pll
-+            - const: video_pll
- 
- additionalProperties: false
- 
- examples:
-   # Clock Control Module node:
-   - |
-+    #include <dt-bindings/clock/imx8mm-clock.h>
-+
-     clock-controller@30380000 {
-         compatible = "fsl,imx8mm-ccm";
-         reg = <0x30380000 0x10000>;
-         #clock-cells = <1>;
-         clocks = <&osc_32k>, <&osc_24m>, <&clk_ext1>, <&clk_ext2>,
--                 <&clk_ext3>, <&clk_ext4>;
-+                 <&clk_ext3>, <&clk_ext4>,
-+                 <&anatop IMX8MM_ANATOP_AUDIO_PLL1>,
-+                 <&anatop IMX8MM_ANATOP_AUDIO_PLL1>,
-+                 <&anatop IMX8MM_ANATOP_DRAM_PLL>,
-+                 <&anatop IMX8MM_ANATOP_VIDEO_PLL>;
-         clock-names = "osc_32k", "osc_24m", "clk_ext1", "clk_ext2",
--                      "clk_ext3", "clk_ext4";
-+                      "clk_ext3", "clk_ext4", "audio_pll1", "audio_pll2",
-+                      "dram_pll", "video_pll";
-+        fsl,ssc-modfreq-hz = <0>, <0>, <0>, <0>,
-+                             <0>, <0>,
-+                             <6818>,
-+                             <0>,
-+                             <0>,
-+                             <2419>;
-+        fsl,ssc-modrate-percent = <0>, <0>, <0>, <0>,
-+                             <0>, <0>,
-+                             <3>,
-+                             <0>,
-+                             <0>,
-+                             <7>;
-+        fsl,ssc-modmethod = "", "", "", "",
-+                            "", "",
-+                            "down-spread",
-+                            "",
-+                            "",
-+                            "center-spread";
-     };
- 
-   - |
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn.dtsi b/arch/arm64/boot/dts/freescale/imx8mn.dtsi
+index 49be492b5687..aaa179784717 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mn.dtsi
+@@ -643,9 +643,14 @@ clk: clock-controller@30380000 {
+ 					     <GIC_SPI 86 IRQ_TYPE_LEVEL_HIGH>;
+ 				#clock-cells = <1>;
+ 				clocks = <&osc_32k>, <&osc_24m>, <&clk_ext1>, <&clk_ext2>,
+-					 <&clk_ext3>, <&clk_ext4>;
++					 <&clk_ext3>, <&clk_ext4>,
++					 <&anatop IMX8MN_ANATOP_AUDIO_PLL1>,
++					 <&anatop IMX8MN_ANATOP_AUDIO_PLL1>,
++					 <&anatop IMX8MN_ANATOP_DRAM_PLL>,
++					 <&anatop IMX8MN_ANATOP_VIDEO_PLL>;
+ 				clock-names = "osc_32k", "osc_24m", "clk_ext1", "clk_ext2",
+-					      "clk_ext3", "clk_ext4";
++					      "clk_ext3", "clk_ext4", "audio_pll1", "audio_pll2",
++					      "dram_pll", "video_pll";
+ 				assigned-clocks = <&clk IMX8MN_CLK_A53_SRC>,
+ 						<&clk IMX8MN_CLK_A53_CORE>,
+ 						<&clk IMX8MN_CLK_NOC>,
 -- 
 2.43.0
 
