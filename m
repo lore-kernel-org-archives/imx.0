@@ -1,160 +1,200 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195D6BE49
-	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 15:22:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F3622258D
+	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 15:37:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733412156; cv=none; b=iC5wgiFxaoQUU2U2mFJWEGzDVhY1orVKR4e7DntLSWJ22EPEqb/r1ICymBZmFNebG6LeMi6j1EbNz9vexOkVGXqmHhU9rssCrzDRyIZ1GaaLy7cdhwksnzn+GLED+5Cg2tm9McHKuqLoHB3D9spb91EA9Aoz7qG0ZioLvibZ9pI=
+	t=1733413044; cv=none; b=VvX0KNhkqIAYBreW6/JJWUtR1hoqj9dle/RlH23cs/VuQAGplf7mHuQawyZBpYa8IvPpplqqrDLVG1fRBy8TYtC6SCCnJ3hyV/cHGrmyFMBLCPkqvZRcuj/rytwevzsdtK+NVmYLNqOfQYSbgzgSUdjFXPZxNGlkG8nlvsUu+es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733412156; c=relaxed/simple;
-	bh=WUv8DIfvaOrg5xzRIwFyNjV1vbHABHoRXf3mFeWDKVQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NFlfSivn705ZclmbPDCGh9QnzYnrNHWCQBF8dVPUHpCPZizyVeZralmmITUkUyLz+oBvXL0QSEdsytQZT16GZxO2A5r3yU6jubYtwtVABAKbwc4jcIBdXjRbmIWfzdRXf3z9kDuEXVHtvyUnQqZxglGpfCN+onqfLzXL/h/Wzjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=UCE2bKer; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=KHXc9JZX reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1733413044; c=relaxed/simple;
+	bh=gEmoxYmjGVmPKVZnUdOndVWFvRpv2PDnwsBJ/5OLNnE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Wzbx6JmyOI5HeOfl2akClFPyQ3mefPZAFHVlySBPcbjjpNbYrzPqgs8bGmVftFWtQBO81UCdtD6dfXNQs01RMfLk7aneJ4E/Xu0BUqnOwiplgjQ+L34CXQn5phB5+BYIEqvc1Nvhw1fvWt8px0xwnSsKaJBcRmP9lm/tmgZL6SE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com; spf=pass smtp.mailfrom=raspberrypi.com; dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b=tvkpfFw5; arc=none smtp.client-ip=209.85.219.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=raspberrypi.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="UCE2bKer";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="KHXc9JZX"
+	dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b="tvkpfFw5"
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e398823d6aaso2397681276.0
+        for <imx@lists.linux.dev>; Thu, 05 Dec 2024 07:37:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1733412153; x=1764948153;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=OgpqTYmx1JwJV2MXhL2h0e8cSJoFw6QERgxshp0L/wQ=;
-  b=UCE2bKeroNkgMIM1TQc1O5JQXtGcel3ZeZHXxp8s60zoUipgU68PfnxG
-   egn270suPQJj2EVrl79yGIOcOLIEPDRt8GcUdLGc79KA5MWNB857zw003
-   r6GIV84aPGNpydLfoOsOc15wAd+6cW7V9LWN5t3ECRRTdGxn2enzIL01Q
-   l3HA4jT2SV6igrLXZzxk+cHXqJL4szPPXSgLXC8aLA1Zbroyr9uwReRBF
-   4SxeeuouEaM6UyNe4aCa2TeYU6kuOF75u7CDByTrWDZL7DciyNOqzf2iy
-   Zo73PaGDAGpVNt9SfhU7ROcpnXTJpW+3ud1sY64vOut2ObW1NmtlBLAUG
-   w==;
-X-CSE-ConnectionGUID: UHuHdMOHR8eI0Ysd+CRJnQ==
-X-CSE-MsgGUID: HUOL6jrqQzyh1aS6IVtEsA==
-X-IronPort-AV: E=Sophos;i="6.12,210,1728943200"; 
-   d="scan'208";a="40435227"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 05 Dec 2024 16:22:30 +0100
-X-CheckPoint: {6751C536-37-86C05612-CA75E1CA}
-X-MAIL-CPID: FCDE8C9170E3D42729ED4A0AD7E02C0D_1
-X-Control-Analysis: str=0001.0A682F21.6751C537.0039,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 502B6163BB5;
-	Thu,  5 Dec 2024 16:22:23 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1733412146;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OgpqTYmx1JwJV2MXhL2h0e8cSJoFw6QERgxshp0L/wQ=;
-	b=KHXc9JZXoqdeRsEZnWh0P2KoB3nAhvdjG7ZxHhi2Xl3w/sBB5T89MPHE34iZUVvxyoMME5
-	ML7qUzm+CAyupIe4+o7+jDJrLIt1qwEuKrktHkyz/HRLGYrpKr90X2deBlIp4nR59D5qgh
-	9pIBOjbeKpl2qtz8QhkW5s8c/O4JeSnWqP52TqhJbvMXOMwl+DeLzMDR0Y4HFiFwC5+3UW
-	BQwCqL82hTsAwk7QhdJXIo1Sx1E/uQml8erg4mGT51+d5GrJY04rFF0gQUg2Sitj6Ma9z4
-	5ITi7+M3JF6tRYAyJClPpB/liq9cxJjV0ohPX8+1y811NOGP0tVe7b+TgjY1xw==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Dave Stevenson <dave.stevenson@raspberrypi.com>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Dave Stevenson <dave.stevenson@raspberrypi.com>
-Subject: Re: [PATCH v2 1/4] media: i2c: imx290: Limit analogue gain according to module
-Date: Thu, 05 Dec 2024 16:22:22 +0100
-Message-ID: <4950196.GXAFRqVoOG@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20241120-media-imx290-imx462-v2-1-7e562cf191d8@raspberrypi.com>
-References: <20241120-media-imx290-imx462-v2-0-7e562cf191d8@raspberrypi.com> <20241120-media-imx290-imx462-v2-1-7e562cf191d8@raspberrypi.com>
+        d=raspberrypi.com; s=google; t=1733413041; x=1734017841; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Cvnuwz6nzd9J+v7i/2glRxiW3BDpNySZESBXX3gw+HE=;
+        b=tvkpfFw5zOwWG3tAffGQ3HaJMUzIHJAZdO+8pV1kxfVSSJhAf+zs5Q2FqXtdYdTpaV
+         i1kdSRnr0pqpsBYtyUijdL21Vycv0cBu/x/mg9emg8aInu4Rna1jnvQqbE16PRIP7jH+
+         seKyXyYqfkDhbCADksXDu4EpVT+Uku8jp1ZlfKvlerZ9qzxqC5mJoF3x07tXlXiVp4J0
+         d8T97mz+bfYSbot/v5vX+7o9HeDF4ZRqdfWK+sNXQqKGLIzxrVhGGsyHeIJszIoZf95V
+         GfQVurxUGMMUl7xeAS9+1O+0LNOoapvXF4D+Kw5tnn6dS9G+8DO4pGp3FXTP16I5aDr0
+         rHhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733413041; x=1734017841;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Cvnuwz6nzd9J+v7i/2glRxiW3BDpNySZESBXX3gw+HE=;
+        b=RgUw3JCkOI3H+7ioTIQvG8Lb6jUnWywp5zygTN38qwTXe9aLQBwjVcCXuPp7gFnNej
+         8FLPL9G35M7v6mWyjr/wIDPElkb8fB63MD6+0+Yik/3SmHvPdOZKn2UjwYTgveDpcG+R
+         wobYTGF1DrZGfPjxlmlO2jnHppL4vAuhS4P3nRONO3jpdTI3dH5nqD7AhyYzxlvysSdy
+         G+6Q1I1xoEdVUCGYQ9CCJka4/7Vr17iGx+5jDXksVu2+wvCFP7gpf78v8resCzGLQT3J
+         t8dufraebbWW1gBxucec8/k9tycBwUMLJvHlg9MQcWRedL0tS7wmCApCfT4mI1JJJ2/r
+         vlZg==
+X-Forwarded-Encrypted: i=1; AJvYcCWTgXgiygomJZw/3QE8/gAbdnuxJcYxYOuUi69Ms/neE8XWUY6/XNKeFtMk/75wwRfklFk=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx40k3wRSAVpmEqUMTOQKsBtcvwowObZUbi1lEBW9dF/+PHhcL+
+	lwqEBNA2QvjpWAbW/SePm/oWQWVCihkmA9CBBNfukL5+PXX9Kuy0Y131kJr81vb0Wn7VtC41Aym
+	ZhvzpEOnHCUpQ47pQXZ1ZDmqkLtuVzyfUlg9KRA==
+X-Gm-Gg: ASbGncvzWRjxFBH3IHv7+h67ZG1wFTrqZ6Ez+QNxxJF1+N7f5aoRHjMxKNRSJq3Lm82
+	lxKrl25R6KDdFSB/nBMi6PkuRHsr0tTI=
+X-Google-Smtp-Source: AGHT+IFpaAlwyFG/o3y6U8AoYyYaH4HrVsIRutKcp/sQ/k2hjoYuqd/E0RRbh99HY/5KNXQ6u6Of3iU8Fjlwm/TBpEE=
+X-Received: by 2002:a05:6902:2387:b0:e38:8e02:1f15 with SMTP id
+ 3f1490d57ef6-e39f22ab27bmr3592909276.17.1733413041665; Thu, 05 Dec 2024
+ 07:37:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+References: <20241120-media-imx290-imx462-v2-0-7e562cf191d8@raspberrypi.com>
+ <20241120-media-imx290-imx462-v2-1-7e562cf191d8@raspberrypi.com> <4950196.GXAFRqVoOG@steina-w>
+In-Reply-To: <4950196.GXAFRqVoOG@steina-w>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Date: Thu, 5 Dec 2024 15:37:01 +0000
+Message-ID: <CAPY8ntCeYOtBhEKCcygsT-aAHJ8rxo5qP0NdjE9DMJmHCxZzsA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] media: i2c: imx290: Limit analogue gain according
+ to module
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Dave,
+Hi Alexander
 
-Am Mittwoch, 20. November 2024, 20:17:03 CET schrieb Dave Stevenson:
-> The imx327 only supports up to 29.4dB of analogue gain, vs
-> the imx290 going up to 30dB. Both are in 0.3dB steps.
+On Thu, 5 Dec 2024 at 15:22, Alexander Stein
+<alexander.stein@ew.tq-group.com> wrote:
+>
+> Hi Dave,
+>
+> Am Mittwoch, 20. November 2024, 20:17:03 CET schrieb Dave Stevenson:
+> > The imx327 only supports up to 29.4dB of analogue gain, vs
+> > the imx290 going up to 30dB. Both are in 0.3dB steps.
+>
+> While I agree for 30dB on imx290, my (maybe outdated) Rev0.2 datasheet sa=
+ys
+> up to 27dB in 0.3dB steps.
 
-While I agree for 30dB on imx290, my (maybe outdated) Rev0.2 datasheet says
-up to 27dB in 0.3dB steps.
+For IMX327, I have revision E17Z06B93 2019/03/25.
 
-Despite that this change looks good.
+The revision control section for Rev0.3 lists
+Page 1: "Correction: Max analog gain 27dB - 29.4dB"
+Page 74: "Correction: Max Gain 69dB -> 71.4dB"
 
-Best regards,
-Alexander
+The graph in "Gain Adjustment Function" (page 74) also shows values
+above 27dB as being purely analogue gain. Certainly 0x62 is red for
+analogue, which would be a gain of 29.4dB. The next dot is 0x64 (30dB)
+and blue, so we have to trust the text for 0x63 being 29.4dB analogue
+and 0.3dB digital gain.
 
-> As we now have model specific config, fix this mismatch,
-> and delete the comment referencing it.
->=20
-> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> ---
->  drivers/media/i2c/imx290.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
->=20
-> diff --git a/drivers/media/i2c/imx290.c b/drivers/media/i2c/imx290.c
-> index ee698c99001d..da654deb444a 100644
-> --- a/drivers/media/i2c/imx290.c
-> +++ b/drivers/media/i2c/imx290.c
-> @@ -176,6 +176,7 @@ struct imx290_model_info {
->  	enum imx290_colour_variant colour_variant;
->  	const struct cci_reg_sequence *init_regs;
->  	size_t init_regs_num;
-> +	unsigned int max_analog_gain;
->  	const char *name;
->  };
-> =20
-> @@ -876,14 +877,10 @@ static int imx290_ctrl_init(struct imx290 *imx290)
->  	 * up to 72.0dB (240) add further digital gain. Limit the range to
->  	 * analog gain only, support for digital gain can be added separately
->  	 * if needed.
-> -	 *
-> -	 * The IMX327 and IMX462 are largely compatible with the IMX290, but
-> -	 * have an analog gain range of 0.0dB to 29.4dB and 42dB of digital
-> -	 * gain. When support for those sensors gets added to the driver, the
-> -	 * gain control should be adjusted accordingly.
->  	 */
->  	v4l2_ctrl_new_std(&imx290->ctrls, &imx290_ctrl_ops,
-> -			  V4L2_CID_ANALOGUE_GAIN, 0, 100, 1, 0);
-> +			  V4L2_CID_ANALOGUE_GAIN, 0,
-> +			  imx290->model->max_analog_gain, 1, 0);
-> =20
->  	/*
->  	 * Correct range will be determined through imx290_ctrl_update setting
-> @@ -1441,18 +1438,21 @@ static const struct imx290_model_info imx290_mode=
-ls[] =3D {
->  		.colour_variant =3D IMX290_VARIANT_COLOUR,
->  		.init_regs =3D imx290_global_init_settings_290,
->  		.init_regs_num =3D ARRAY_SIZE(imx290_global_init_settings_290),
-> +		.max_analog_gain =3D 100,
->  		.name =3D "imx290",
->  	},
->  	[IMX290_MODEL_IMX290LLR] =3D {
->  		.colour_variant =3D IMX290_VARIANT_MONO,
->  		.init_regs =3D imx290_global_init_settings_290,
->  		.init_regs_num =3D ARRAY_SIZE(imx290_global_init_settings_290),
-> +		.max_analog_gain =3D 100,
->  		.name =3D "imx290",
->  	},
->  	[IMX290_MODEL_IMX327LQR] =3D {
->  		.colour_variant =3D IMX290_VARIANT_COLOUR,
->  		.init_regs =3D imx290_global_init_settings_327,
->  		.init_regs_num =3D ARRAY_SIZE(imx290_global_init_settings_327),
-> +		.max_analog_gain =3D 98,
->  		.name =3D "imx327",
->  	},
->  };
->=20
->=20
+So I'm happy that the limit is 29.4dB.
 
+  Dave
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
-
+> Despite that this change looks good.
+>
+> Best regards,
+> Alexander
+>
+> > As we now have model specific config, fix this mismatch,
+> > and delete the comment referencing it.
+> >
+> > Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+> > Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > ---
+> >  drivers/media/i2c/imx290.c | 12 ++++++------
+> >  1 file changed, 6 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/drivers/media/i2c/imx290.c b/drivers/media/i2c/imx290.c
+> > index ee698c99001d..da654deb444a 100644
+> > --- a/drivers/media/i2c/imx290.c
+> > +++ b/drivers/media/i2c/imx290.c
+> > @@ -176,6 +176,7 @@ struct imx290_model_info {
+> >       enum imx290_colour_variant colour_variant;
+> >       const struct cci_reg_sequence *init_regs;
+> >       size_t init_regs_num;
+> > +     unsigned int max_analog_gain;
+> >       const char *name;
+> >  };
+> >
+> > @@ -876,14 +877,10 @@ static int imx290_ctrl_init(struct imx290 *imx290=
+)
+> >        * up to 72.0dB (240) add further digital gain. Limit the range t=
+o
+> >        * analog gain only, support for digital gain can be added separa=
+tely
+> >        * if needed.
+> > -      *
+> > -      * The IMX327 and IMX462 are largely compatible with the IMX290, =
+but
+> > -      * have an analog gain range of 0.0dB to 29.4dB and 42dB of digit=
+al
+> > -      * gain. When support for those sensors gets added to the driver,=
+ the
+> > -      * gain control should be adjusted accordingly.
+> >        */
+> >       v4l2_ctrl_new_std(&imx290->ctrls, &imx290_ctrl_ops,
+> > -                       V4L2_CID_ANALOGUE_GAIN, 0, 100, 1, 0);
+> > +                       V4L2_CID_ANALOGUE_GAIN, 0,
+> > +                       imx290->model->max_analog_gain, 1, 0);
+> >
+> >       /*
+> >        * Correct range will be determined through imx290_ctrl_update se=
+tting
+> > @@ -1441,18 +1438,21 @@ static const struct imx290_model_info imx290_mo=
+dels[] =3D {
+> >               .colour_variant =3D IMX290_VARIANT_COLOUR,
+> >               .init_regs =3D imx290_global_init_settings_290,
+> >               .init_regs_num =3D ARRAY_SIZE(imx290_global_init_settings=
+_290),
+> > +             .max_analog_gain =3D 100,
+> >               .name =3D "imx290",
+> >       },
+> >       [IMX290_MODEL_IMX290LLR] =3D {
+> >               .colour_variant =3D IMX290_VARIANT_MONO,
+> >               .init_regs =3D imx290_global_init_settings_290,
+> >               .init_regs_num =3D ARRAY_SIZE(imx290_global_init_settings=
+_290),
+> > +             .max_analog_gain =3D 100,
+> >               .name =3D "imx290",
+> >       },
+> >       [IMX290_MODEL_IMX327LQR] =3D {
+> >               .colour_variant =3D IMX290_VARIANT_COLOUR,
+> >               .init_regs =3D imx290_global_init_settings_327,
+> >               .init_regs_num =3D ARRAY_SIZE(imx290_global_init_settings=
+_327),
+> > +             .max_analog_gain =3D 98,
+> >               .name =3D "imx327",
+> >       },
+> >  };
+> >
+> >
+>
+>
+> --
+> TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Ge=
+rmany
+> Amtsgericht M=C3=BCnchen, HRB 105018
+> Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan S=
+chneider
+> http://www.tq-group.com/
+>
+>
