@@ -1,64 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC781C3318;
-	Thu,  5 Dec 2024 12:49:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59720218840
+	for <imx@lists.linux.dev>; Thu,  5 Dec 2024 13:11:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733402952; cv=none; b=j31gp/bgo4Ek9Mr0Xz1CWsA+YwKSOSPn0r83hn4qdLODF6kG/phIF1xPtZoZmzr9WdmB56ajR+8eGKDgKbayCzHp5Nt9Vh3iAfnlbfmfgYgK9dIjBVHtNKpv2kSZB0pOmZIYfSzGTbkey283cPj5XvGRdJzdyAoVgdFw6Sm3JVU=
+	t=1733404267; cv=none; b=fQcor+n5gKTZaoNiQbs0TDq5zAieweWswrDD1azxGJl16fZhQl/RnEvv8AZNBgXaW+Snt6BCmqXGbp+FICJwlrWW+IpMAT/tYwgpbi6+zxhFYRkQJztM+gVdNdxg0zeE6NKWRx2KYFZEURyP5esbBmkzrPFzKgWr9K9FR8GLR/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733402952; c=relaxed/simple;
-	bh=NX65WV8yGDARxy+vn58QtGbfHPztV3lEHWFUXOR1Bm8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JYxE1Qc93azPs1eyxhnoMOoWFCnOB1RkvTckplDAWZYuXAWSTQ8o41Ps9IThEHn6efh0akrzY+VFqJfBcoiLMdBVHFLXVipuPQTPQ2hLIs2vCLkrtWsGn/CAFb80sEfUJUUZHQHnjalNGOXv0IBDR1sGAdomN4tlbkYF8ZBYsxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aCP674tn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733404267; c=relaxed/simple;
+	bh=8OwUNqW2vG7Kp0Vngd/eTUDgtb2xVKzL1mxTLPnP8PA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=sZw4zBNh46ZqqPI2tY3K5k9PKj29lBO51vkW5QBDXIcP0reqdMazMGfE2tNoFj2snf6GEvZGuSVoAsbdc3MonUuqFWIc5MTDEpqYWjABCobS/8niPtNfvnXuQFqBLUxi4aj1aYqQp6oKZdFy4jojaZG5dg17WINT6zC5l6fJK1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SSecgSoJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TF6tbNwZ; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aCP674tn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE20EC4CED1;
-	Thu,  5 Dec 2024 12:49:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733402952;
-	bh=NX65WV8yGDARxy+vn58QtGbfHPztV3lEHWFUXOR1Bm8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aCP674tnYTtG1/sShnPtXahYcZP9Pp/xcBbTpwDFSRa+H/wJ+U0npBKfuTgfj2sQn
-	 SYx5bWtaOySE97f8VkeEmtLFjv2rRwP30KvJrcDLA6tJW5Zq+WTcJMBi3LY/bdOrc4
-	 HreAAFtMOmfp14kAdkkceSlcnp8neyogzq/upGam8HTkVW17H0qEi0KDZ3ik0WNnzH
-	 kVhb3wAhmz3W+hCfWpvFlATki+IZ5rqqBZyaOG0Tzt/uLFgAIaAN+hq2+Hto2Nl0Ha
-	 pa5gMs2XLBC8USH5CcxQXXk1wIB4Z9BqP4z5XAzqinccNgMYipJGqrTCxrkMsVUVMs
-	 6Y01IA5ZDt/Aw==
-Date: Thu, 5 Dec 2024 13:49:09 +0100
-From: Andi Shyti <andi.shyti@kernel.org>
-To: carlos.song@nxp.com
-Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, festevam@gmail.com, frank.li@nxp.com, linux-i2c@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] i2c: imx: fix divide by zero warning
-Message-ID: <buy4r64ugalvyfqcctrq5l7ylnryjulf26yohgbzbnsy3asrbg@3ikvipa4keny>
-References: <20241125141521.1612947-1-carlos.song@nxp.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SSecgSoJ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TF6tbNwZ"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1733404256;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2r5ZSOC+jMK+Pn41a+KdPBf5Tp8LhGYfDQCBVqyptSw=;
+	b=SSecgSoJaTW4GK3OxeSbVglrdiNuLnmzjVRYetQUMbKN9YgTDPUJKRPT2xBYIFSFUPXkU9
+	iL545q3NwhxiwKrJ9Kj14INBRUO3VqNClhU2zZ7NkgeiWmFzxONN7HnrxI8c5hJdXJ4qsS
+	EZ5Kb+Tx4a42G8/+/wmvIG3g3GiTJ/oXZvc3QOeJM/NWD0pEgedh1c8gM5zAXiuEBREd5a
+	m4rTBF3EQiWMdBj7XAhjSNnZe4fHph/13dd/m6Rhxo2TOUn4pr1Kl8kydS2Z8e1UpewYv5
+	gnNbECNnBH37KBm9FozVwUygpXr3DcjAZbAuEDlMXhEnaac/6tfV3p8OISq0jQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1733404256;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2r5ZSOC+jMK+Pn41a+KdPBf5Tp8LhGYfDQCBVqyptSw=;
+	b=TF6tbNwZIKHNI5y92mqJbv4JxvZqe0fERVOSlkTSDhw6+5AqZuIK7VX1meXEl6Q8c1huFY
+	zk4IFSFIUV+rekBQ==
+To: Frank Li <Frank.Li@nxp.com>, Manivannan Sadhasivam
+ <manivannan.sadhasivam@linaro.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
+ <kw@linux.com>,
+ Kishon Vijay Abraham I <kishon@kernel.org>, Bjorn Helgaas
+ <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Anup Patel <apatel@ventanamicro.com>, Marc Zyngier <maz@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+ imx@lists.linux.dev, Niklas Cassel <cassel@kernel.org>,
+ dlemoal@kernel.org, jdmason@kudzu.us,
+ linux-arm-kernel@lists.infradead.org, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v10 3/7] PCI: endpoint: pci-ep-msi: Add MSI address/data
+ pair mutable check
+In-Reply-To: <20241204-ep-msi-v10-3-87c378dbcd6d@nxp.com>
+References: <20241204-ep-msi-v10-0-87c378dbcd6d@nxp.com>
+ <20241204-ep-msi-v10-3-87c378dbcd6d@nxp.com>
+Date: Thu, 05 Dec 2024 14:10:55 +0100
+Message-ID: <87ttbiqnq8.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241125141521.1612947-1-carlos.song@nxp.com>
+Content-Type: text/plain
 
-Hi Carlos,
+On Wed, Dec 04 2024 at 18:25, Frank Li wrote:
+> Some MSI controller change address/data pair when irq_set_affinity().
+> Current PCI endpoint can't support this type MSI controller. So add flag
+> MSI_FLAG_MUTABLE in include/linux/msi.h and check it when allocate
+> doorbell.
 
-On Mon, Nov 25, 2024 at 10:15:21PM +0800, carlos.song@nxp.com wrote:
-> From: Carlos Song <carlos.song@nxp.com>
-> 
-> Add "i2c_clk_rate / 2" check to avoid "divide by zero warning".
-> i2c_clk_rate may be zero if i2c clock is disabled.
-> 
-> Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Q: Who is going to annotate the affected domains with that flag?
 
-merged to i2c/i2c-host,
+A: Nobody.
 
-thanks,
-Andi
+Q: What's the value of the flag?
+
+A: Zero, as as it prevents exactly nothing.
+
+You want a MSI_FLAG_MSG_IMMUTABLE and set that on the domains which
+provide it. That way you ensure that someone looked at the domain to
+validate it.
+
+Thanks,
+
+        tglx
