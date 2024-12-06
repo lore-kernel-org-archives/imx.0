@@ -1,380 +1,257 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2085.outbound.protection.outlook.com [40.107.22.85])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2071.outbound.protection.outlook.com [40.107.20.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091E413BAC6
-	for <imx@lists.linux.dev>; Fri,  6 Dec 2024 01:36:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B38BE46
+	for <imx@lists.linux.dev>; Fri,  6 Dec 2024 07:10:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.71
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733449017; cv=fail; b=KVW2dgWt0XhUkGMNfdaRBaR3XCzVYTyNOGnBNG0eck30Cjg1NfKTN61kQs8Ua2RoNkMBDyM94zdyj3fe80rdy8i8WV9C9HGZu1Nx+L3jM/IK2jg6l13pCu68qexXTYVUbHBbUGxQkrHtLwwgu6wWY2nO4exXJvLqxCJ7sfuIN80=
+	t=1733469007; cv=fail; b=nHVW3SkV31brXRXwoGv2HOgC6SH7J5MfdTUOPdly7lSbkqhn2VEQOp+U/+9rc9adNYbGEqHBJvv//x6qEqrJHRTDkwc2rDXv3tPGD8f4zvqXbEmT9JnJu+WRcgrF5BI3xV5eHznzHhvzr/M0zJPKwNLCGU7nrVVGRyy0yNC1h1Q=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733449017; c=relaxed/simple;
-	bh=txnYu/QpAtY0s3APt3kO2iYvgZKuR4v/uXhDHQZTREs=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=KK3FiHGUODUshOp2gnyTljk+ayF1hc5zZ8A6GMTR0/M8useRbyOCtevMUVVtHGddHzKkAjSSZPwx6tI05jfwCF8v3Bnvp+NXOsPAcEqTvZhRfRiNrjepkQFmZFOXCXcu318b0coUOons+D2eSzXKxXXHZ1FCBgcZMVTM6O296lU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=IPF2CZ4B; arc=fail smtp.client-ip=40.107.22.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1733469007; c=relaxed/simple;
+	bh=OwVOoYcHW0MAz++TaDaZosK0qJ1n3ye+cWyRJhZ028g=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=kOuLE0hXhvnR4s3HGuIVgnQ8IKqFubAzc+adGNDRpYT2du86m1qNsYLduGN5VAw8wh1gVHXqiBscEaT8Y8nGjmpu55z022Vr5Dehou0Pisz/vlvHwnaj/GZZvEEX+xkKwZJwH791Q7efxnUdflkNTE48/RdO2echTR+pQIXavLY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=pR8VqjNO; arc=fail smtp.client-ip=40.107.20.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="IPF2CZ4B"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="pR8VqjNO"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vjAcIiflLMka2S68X1oCTfulbFk9kevUH4GYhNsp6rD5zvA1eDzXeshSCp1Qo2iazlkFBysEl3IuYRzgl/U3I8+YfekH7YKWIQZoP7LkPZxsjz2NRpTQ9C1tslFCdThqs933hDioK/BRkLVGp1Guk66sv9LR7ctmJc4Xt3zZWc8z0+sC4Nivq2YmChHohOYFq8f1yiX09DVjYLC401D+r4tsZfORCidVQegWTMHmCCjrQVfWJWzrLBDVhHG8CURGxHGz/Qg/M9dTXhl5B7xnolsGQDcSitDMN7J5f1r3CEVz3Q3bbvouSd9zDAJEh+txn0gO5YVavyetbjISVqpWIQ==
+ b=eyx0Jcu8p5LQ8yXPUjxvuQzoGcOx/labLbiZAxx7zUCWjjUe/j7Fn1YKsvcXAbXUrC8Vm10nwtg3r4FD6+XE1NISYfyjpZ7Hfz2yqx8uEODu3rV+SqXm9k4+IHZZOOaPQWHEns/JGih7dsGguYPm1b2tuk5R06losBq3dd1hlrNdxgbBxOMFMaiIgMsGlmrT2HSHUquZLF9Fbp+j9OZp2WJ8DdwOYIiAw6h0T9/jU0SxQyUc8n5eHb1r32C3i9oo5r+6jE7Dd4tTaRIBjxuhtwuh4ZD62pARrCUgoTerDNawm17yZUpqgjKCMz2M3fylf7qUw3WPogMZbkxst9qIAA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SzshkbMzHpP1IrgsSFUhQ1czQLV+mKwHnNUsmg+NnyU=;
- b=s50iJsVA4CSTPbsXeLtdkiRUkoamvHSO9ACz2KWzxktwf3igWYw3G/jqU20O9jSv0fDaw4IYXhu3esu8WTo7DFSF2Kfwc3off5Vgg+dRZPRjrPzF8cPHdBvBJdm2KBehcZPDrvnmXwxNMOo9mNWAXQ5zVPhHxLM7w1yMEhgMFWDO1Yv8rNHQIjTtdwgDH/D2vGeLn7YZwq4CKLz+JcYFUZh1l/2fhUn24YckwRBRLt3weCMP/HVeF9Nu0Oeh5I5hH5EJoPatmTuxsmt78wm3YjUqBSKkM3pfMw4Mboikxz6XcaazBcItmNzNHXrOlTG6KctReNdqKm9PRhjsZzyzLw==
+ bh=kzgCNglm6eAON2T84Qo6ziGsIt6w0AyzOvXdt+K3ygc=;
+ b=jnFzxrHySPof002o7+AQWXQX7Z3PxFs92qnorUF55YvnDOnjrbFAQouk8fyOcMEeNHXw+iMDLRPtNeLpGVYox5mRAuRodfnpRkES6at9X4x4KdTjwtkUVvrOj05bGoAOfnu8fpjn7SSU+jF7/EzhwY/CcjlMy8h++KCt1DoXOaCAsn+I3ALHqR5WAyPHIVrX+Q9AnZJyhhxBn7BZDOI6vHtVPH/Z6Vc1VjsZST8BaUPtpZ0icCfD/Y1Vt69MIErkiVfM30JVXMuf8GGAhUdaXZYtzz5WqmVz1/aBt0LBnq+Bv3S89iXOOagThSrt+xqgTpK3OOrMusHTj6Cj781u4A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SzshkbMzHpP1IrgsSFUhQ1czQLV+mKwHnNUsmg+NnyU=;
- b=IPF2CZ4B+arOJxZZNwAB9AUTzO/wTRcohVR+QNK/QX5eHtAzA3KwbN7A5R76PXA/W5tlaE7TW8dJPJAk2Q50SCY6GC2Jgr4jBO3Ry9wbqfQzW+DyNlvw6wU9kUo+FPMLKVBwUZD9GaN9BQnT1jxVWXVfs3nkCkNLbxURh1cYHXeiPIpCTIv9BxCEQUEU3VcfOQf4JDLAxMdg0VlOsyLWBQKzAe7U4OUX4eHIS1B0l2JxhRhBhSmY0POmyRgsf84+vb2ePAfCwPWWZOl6ujSz8YRXzoC0N247p/g3+9AcH3zEyrgNjfahnIQankPvtrKN/3EqZGv40DhFl88ZAv1FbQ==
+ bh=kzgCNglm6eAON2T84Qo6ziGsIt6w0AyzOvXdt+K3ygc=;
+ b=pR8VqjNOjN5oZhjhYcR3xaL/iYM+tHvvWvHXvnIMebDhsBqvvBtw3z0ZC6iawmIeo1W57BtIIK0bbp9sTQvuBUDIj3c4EBUQHKAEpIbSUCnCN5KpDtK5hrfrBbGfNDT+7P3OX+iVxXKZX4ZL96gmgmW/ja2uHaUHehR+LIXeI8pjHS4dZymsXl58hcQO5jn+lNktVwGE7djpkjurhhFOz2ZiffyG8vHACuDJ3EZiQJghGqy8yN+EhyaempnfaYeWbU0Nq2FxLLF3jxIZX6hJXazJkuHYJLqmMbZwULtcS9ET9N1Fc3Y9Tv3MMSk92ywSaO2VhUopLkZoBWgzwzT9Vg==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by AM8PR04MB7233.eurprd04.prod.outlook.com (2603:10a6:20b:1df::15) with
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU0PR04MB9251.eurprd04.prod.outlook.com (2603:10a6:10:352::15)
+ by DB9PR04MB9889.eurprd04.prod.outlook.com (2603:10a6:10:4ef::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.24; Fri, 6 Dec
- 2024 01:36:51 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8230.010; Fri, 6 Dec 2024
- 01:36:51 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	florian.fainelli@broadcom.com,
-	heiko.stuebner@cherry.de,
-	fank.li@nxp.com
-Cc: netdev@vger.kernel.org,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.10; Fri, 6 Dec
+ 2024 07:09:59 +0000
+Received: from DU0PR04MB9251.eurprd04.prod.outlook.com
+ ([fe80::708f:69ee:15df:6ebd]) by DU0PR04MB9251.eurprd04.prod.outlook.com
+ ([fe80::708f:69ee:15df:6ebd%6]) with mapi id 15.20.8207.017; Fri, 6 Dec 2024
+ 07:09:59 +0000
+From: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Cc: linux-rtc@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH v3 net] net: phy: micrel: Dynamically control external clock of KSZ PHY
-Date: Fri,  6 Dec 2024 09:21:13 +0800
-Message-Id: <20241206012113.437029-1-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
+	linux-arm-kernel@lists.infradead.org,
+	NXP S32 Linux <s32@nxp.com>,
+	imx@lists.linux.dev,
+	Christophe Lizzi <clizzi@redhat.com>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Enric Balletbo <eballetb@redhat.com>,
+	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+Subject: [PATCH v6 0/4] add NXP RTC driver support for S32G2/S32G3 SoCs
+Date: Fri,  6 Dec 2024 09:09:51 +0200
+Message-ID: <20241206070955.1503412-1-ciprianmarian.costea@oss.nxp.com>
+X-Mailer: git-send-email 2.45.2
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2P153CA0030.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c7::17)
- To PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+X-ClientProxiedBy: AM0PR06CA0079.eurprd06.prod.outlook.com
+ (2603:10a6:208:fa::20) To DU0PR04MB9251.eurprd04.prod.outlook.com
+ (2603:10a6:10:352::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|AM8PR04MB7233:EE_
-X-MS-Office365-Filtering-Correlation-Id: bf6db4c2-290c-4e64-00aa-08dd159674ef
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9251:EE_|DB9PR04MB9889:EE_
+X-MS-Office365-Filtering-Correlation-Id: bf4dacf1-1e2d-4f5f-6528-08dd15c4feca
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|7416014|376014|1800799024|366016|38350700014|921020;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?91M+2faGqrg769PMgKvKuqvoyYAiV5dXpsHUemHqwvhjzSrP2+8BgIo5BDEL?=
- =?us-ascii?Q?S3YbMvMiUN5MfIvRfCHFklhwTQ+rSGMgdqY39dXoW//dqj7w+bvy4vBM+MaG?=
- =?us-ascii?Q?5cDAT80Mtc8/s+pamcST1EPXN5hGRflsg7lFngzg+aSpTROK0D3bwYn8IoQF?=
- =?us-ascii?Q?NvhM2nZQBzI5N9ZWtG3IGIqQB+fSnNHrPFWeiCzj8BJafZ3LAdv1PGRrK4Ha?=
- =?us-ascii?Q?xpMABJR/hVKjrf2MurLNrR0vEz2JmjLAdMtCwuoTqHuB0rsouXPGxJJ5mF7y?=
- =?us-ascii?Q?SOCwoQb2cZl9enXkv2gFveGIeODlIAqUco7HeUg7HA57nAbp59um3ZWI5OA6?=
- =?us-ascii?Q?VNsUWZzf0Kw1NPSjtMlWjMHYlT5+QngV0Qzk5mGg4fzDijg52cxDHQd23/Jz?=
- =?us-ascii?Q?GzH59PkG2hR4bgFKD38pZLmTILX0JoxOZMZxDSMPpxCTpU0Uzk5p4ylAUNCd?=
- =?us-ascii?Q?3tMy4cVvrXkHXj4J4EhpmkpFB5SULNtg7aNnagtky1+8bLqsv4InQO6s6lWS?=
- =?us-ascii?Q?ciwd/FSs7WYWLEJ90qvi9NEjYkQ/+JNP0bWGpCZo2zZpqjF+gHwUUvDeXs9h?=
- =?us-ascii?Q?jsUFFVwz/KWyzaH/vM/UP/cGPWMirs/k0Xr97ovNEjZ3SoOZK0eSLdIhZSWJ?=
- =?us-ascii?Q?14rdUZb9TWaWxKozHKCrmrMnjmAJAEH+DgctFHBZcjlQ9sAwXUJXZjogqFa9?=
- =?us-ascii?Q?RQqTcmm0TBWQoZ/kURxbhbQOYcpTYriQb8dVf888xIyewiughd4ghx74mbVP?=
- =?us-ascii?Q?ZyWThWvbrNQ+OXqlJiOgnyxN70tmCeC3deQSidB0ESZdphRx4LRzcW8hmxnf?=
- =?us-ascii?Q?KX/gpoTB41J01FjvBz917vFfBgxlhoDeZABx076JtfSWIjyQHdEA/Lc1Zp0o?=
- =?us-ascii?Q?CMG2uUFic1yRggSXWOw5xVWXaQKX1QdtUMOqaofvm3hANULugUdligzoNk+7?=
- =?us-ascii?Q?RffJk51qOQwHa5xRuYZwh7JPJfKmxX8YVthdbF2ISyoHtwAL4m+LM6QIJNN/?=
- =?us-ascii?Q?GzPBtgrw7VBcGQeCGl2xKWbEy7fod4R/kC4t0Hfx3JIMkmi37INmHerFK6Wc?=
- =?us-ascii?Q?efS/44gb+1eXDFcrNQRFDvg7rVOqvGEfe56zzkkzii1HhDaQ509sont7BwEZ?=
- =?us-ascii?Q?P+R1+IhmaE/MRTlhuHouR1b5CF6mGiC6pTi8y8eQ9pBuvSpK7APFTrciahOt?=
- =?us-ascii?Q?R+qHMnND7yRfMZe6IYKfji6EI6b8h1uS/ZVsNI9BvF2mly6kzrp2KeWYuosM?=
- =?us-ascii?Q?UBlBWiFpUKj5Z19nhBECkZp2h9mX0961s+SBn+kxqxW08sZQXX1dHf+Y24vr?=
- =?us-ascii?Q?7qsgy9keGli5ybptO1hW9T3XIaZe8OraDkY0MjTNyJIZaR2G8ch4IWB2yXw0?=
- =?us-ascii?Q?42c+wwx1vQyQ5RhwaeZ49rpf8tHZUBBqOoXd6JKRtOuhF0wd8Ob8dU8Ff00D?=
- =?us-ascii?Q?40QkVY90njM=3D?=
+	=?utf-8?B?bGhhOW5QNWVBVTdJYkdOclZJamNoelNoaHQwMmtKZG84S3l2a1R2bE1DRzNp?=
+ =?utf-8?B?YU53ZnVUNmNyVHpSVzBOTjJ2ZVdoa2FjRDc1ZjU4bFNCNFZlVmdQQm1GVUdx?=
+ =?utf-8?B?eVNETldPWktmbWVxT3FHWUpRTmFyQVZhQkdKK1R4M1o3WnIwMTh2eHpPcHN3?=
+ =?utf-8?B?dTdYeVR4VnQrY0VudlhaV1hhb0JKampIUkVWek4rQlpydmFpQ0hITm5wQlFV?=
+ =?utf-8?B?a0JmN2lVVzFULzhNaGJSWnVOUDdtSlFYSFFDWkFRZEh2dkdnelorN0U5MTNw?=
+ =?utf-8?B?NVlDTzZwczE0SGVpSVYySkVVandldy9iaGJlbUFCd0VUaW83QzFTVkRrMlBQ?=
+ =?utf-8?B?VVYyYkoyQW5OakJBUjkzQjlJVUlrWWhOWFBvVzF6ZE1MK0gvUEg2c2hKc205?=
+ =?utf-8?B?d2pPUnR4S2JzY2xOc3NzeWxyMENGSmYwWndVWUlybXhsV1ZWdmVOM2hLcVZP?=
+ =?utf-8?B?R09FQjRIUUxUaENBWmN1emkxZFBhK1lRNnhiQXpCRzFKbGZyQUNZWlNSYkRi?=
+ =?utf-8?B?eHZzaVNjM2ttbExkWEtOSmhYOFBhSFoyZDVOVlpsRUZyejh6Wkl0cStaU054?=
+ =?utf-8?B?MWllSmxzMGtTZ210cFN6cWQ1c1B6VGh4U1V4dVY2c1Q4THgxdC9TUVNJcXV4?=
+ =?utf-8?B?amNGVGN3NmhKN0FXeWgwSERpdklZMHRzUWtsRTBZUTluanBxUGQwTW9jemRk?=
+ =?utf-8?B?d0hEUkZSa1ZtZXhxQTRXU2s3bVFrVE5IOXVlaVptRDVLSmJkNE5CVWlkczN5?=
+ =?utf-8?B?Zy9wU0dRT2RuNy9KUHI4ZG1xMFR4TWtnTW9wZlIzclBQcVU5WDVBRXBMcHlB?=
+ =?utf-8?B?bG1SZmhxaWRHMVdxNDZHckRUNUtBckUwT1pKNmFvTk9ndTFmenJEbzNaTENJ?=
+ =?utf-8?B?aHQ2cUlwQm1WTUUyMEFxazlzTFJVaTUrSkJWRVUra0RmMjBxS2FYTkI1aUVy?=
+ =?utf-8?B?b3lqUExyS3MyTU1mV1N3YU1yS3ZUajVzaCtZNzh6dUJERHg5c2U3RWk2VmRK?=
+ =?utf-8?B?SHBwNHFDQjFxTE9qZGREaXczRC85eU5HMDM5YkhCaWJ6RCtaNUFtcVprczh0?=
+ =?utf-8?B?ekROalNmS0pwRElSa3c1Zk93bkszTkI2RjB4ZmtsUFAzQ1QzeWtmSEpLa3di?=
+ =?utf-8?B?RVlGQ2NPVGRtVGR5TldVQXQ5TFhRRWhTV3Q0VG44dGc3Y2puUkYzWnZwaE9k?=
+ =?utf-8?B?ZHNJNjdPdkNUaE12eXJlcHEza000MUxPV3ZWOUdsa0xYUGduZWloYU5qOXdv?=
+ =?utf-8?B?bVBQNXdKU0ZtSlRnQnRlTDdkZVhuKzIyc05aTVRQS2JUdGxMTFpWZVhnQ05Z?=
+ =?utf-8?B?cVFuSU9XekFYazVZVTF5dEFrdTlqM3NKbDcyMmJ6aWtMTlNKU3ByRTIxbEN0?=
+ =?utf-8?B?K25kRkJ4RjNxZmFuQW90c2hYcDYxazNwUXBTZnN2ekhzdy9ZZ05XU21FaTB0?=
+ =?utf-8?B?RzVZZzcxYUxqbWJYUXhoRGVkQjV4YnZmeUhIcXVCMjM1ZVZrNzNjNFFiaWhk?=
+ =?utf-8?B?SEtDNzhPYlZUSTMxcUEvWnJkMjNPT3NZK1Y5L3V4ejVkZG5Ic3R6aXdQQXB4?=
+ =?utf-8?B?NVh5QU5zWXp4YWsycy9IdzJkNlRub2NkenFaUGt6VVFDTTcyWkcxZmUwZ2RE?=
+ =?utf-8?B?ZEVUbDB1eVFuOGFaVGdCYVNKZnZBeDNLR3p6UExCS1k1ZVo3NG50MVBjZjFM?=
+ =?utf-8?B?VlA5eE9PdTVqSmx5RDBza0NWdWpDdmNiRUtHTGo5SnpFUEJhLzJ4Tks3dUJJ?=
+ =?utf-8?B?VlZTdVVyMlBJL1IzSHcvdkF3QjRNa0dTc0trUjk1RC9vMVFxRHVrd1ZxMUVH?=
+ =?utf-8?B?Z3ppS2hnU2FWblhDSzR1dz09?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(1800799024)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9251.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?HgM0LnwvVbHWCg9+Rph/ep1GjWet/GWSvcTlAChRiJZexgF9pcMLr20zHOa4?=
- =?us-ascii?Q?f0ZyKCiG/qDpKnPz6IHLzB6BltQ94VnVpr9raH0FYretmiaVc96eEw7sjbGI?=
- =?us-ascii?Q?i527NC1LDDM+LKTzedmQ98nRDwFjq/o5V7snBtBwF6F6kcMOwBhACElBYJ8G?=
- =?us-ascii?Q?GfhEIbxDLdv8ZgD/BqTFmcr9JU7UcS4fGKcr1SA7JNhKh7cRXDsMksjZWGAY?=
- =?us-ascii?Q?sWw+8G3vl2DoTAmKOW0D94jm8WD/URj2pKQflqF16UnFKb3zz1kl6vzItPkn?=
- =?us-ascii?Q?O3QolLmrIGfIAB58Etuw0Rx6bmDwBTaXe1DDcPMZEly3M05RDiTuU2//fJZz?=
- =?us-ascii?Q?Ef3rKkmUtApVWssR13oCiSLyJA8vsVj+f59IzKJrF5uexZj3Lv7JYMK6PG37?=
- =?us-ascii?Q?49WIRUk/mSt6To4ybOip77E8wcW+nLA1totDWjJ9xAtQScYa9BsEMTXEVh+F?=
- =?us-ascii?Q?D9nA8RMtBCd/JY/M0IWfeK8vJ/2BAGIjI12ygpb9DfoTgnnzB506DsFcFwzC?=
- =?us-ascii?Q?UZ1YRNhpNqi38JcTJrWTXfNb5Hcg2HpkRvs+0c8TIFhqWTX2HD2DnaaBpFCs?=
- =?us-ascii?Q?JLGChIN6fz37TWMhZvZipfqUbu+v37/8wtWdWUMfi78cQj2NrBGItJHn6jzX?=
- =?us-ascii?Q?xbCXOISLW23ufMRnMdXOY+dgeSlUg/CLloxoJkoQ6pUSuparBKag8PGCGQ2n?=
- =?us-ascii?Q?Y1yIgCsUIsta+8qdY8vyF1cLOBB9RajyfCQ7e6dhsjsEwlos3C8OBPs1Ux+w?=
- =?us-ascii?Q?j32tqt/kCxTxqGDKr2LI/rXjIU6b7Py6whLxotkeAClEtBjbk6yt8aqUsTiJ?=
- =?us-ascii?Q?nyMAoeh+HFKCAzQoX2bkiu55uONqIbvEvl1wThfRZybkB+1c2M+Qx7gt+BkP?=
- =?us-ascii?Q?xS/fCBppuqRkTNYQYF4tQyhVr9+NeC1cLqTafW7c801Zd1o9Af+zzrBUW3Ha?=
- =?us-ascii?Q?43B/zWK3hOxjVlPTjtgTthafe+xDtCUnCPqBY8DDFoD7nEcM1r59uSKcbtPk?=
- =?us-ascii?Q?sN/sn3AjKjSLtFArGbRQMDM5gIzJksxogwLhtsVozrthmPDW3G8hZ4LNCxAY?=
- =?us-ascii?Q?I3ahzZFwGPNjzGfS+MkXz7Uh+nYtwnrVd5HId/87jRUNr35jk6/ewkr46m0p?=
- =?us-ascii?Q?QgYMkGTySIacG5nKtZYfy35uQcXcQ+6cmdpRPd1Z8wreHXN1ZM2M3sc9ISPq?=
- =?us-ascii?Q?PTYNTZT63+njMNZXxFJ22HMpo+xyC//kvNXPER2E9SyC6YTWqOQ70r/2aKZC?=
- =?us-ascii?Q?NqR89lXDkbxkRI4KqklNpo2NpXSyC2//zA82RQvAfUBkpiH7xXp7QZpnXpDP?=
- =?us-ascii?Q?SasTz0cxW/rJOvRW4Rr7xFuz9RbUU6aeiqUvxpu34qWKui9WYUNWvlfq9EEo?=
- =?us-ascii?Q?J9mFE3NkyeEBoECp2H+cVCyVg3mIImLTnEdJ+pAudkL31FcfBzY1jnqRqbou?=
- =?us-ascii?Q?8Fflp93ivQ2D9KDwQ26xDNxpDFCm+sguoPa5MnlRasoymPVupkvcYKPaNq1R?=
- =?us-ascii?Q?+wVdwg/daOMyo++5Jd4Y3vmpXDVKn/cTbhPjGjbBYKdIdfuHx6zzJWszRi7W?=
- =?us-ascii?Q?DLELGHm72iqjVU50YSOdH4C45hAjOxrs7OQRmkBC?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bf6db4c2-290c-4e64-00aa-08dd159674ef
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+	=?utf-8?B?QmV6WGg4ME5uL29PN3A0YzUrSWdoQ0NEYnlydnhIYjZESlcraktVYW13Uk9x?=
+ =?utf-8?B?V0pWYk1YVW5RUUZsYkhuVnB5a05HZWlKTDFUZkVFaHQ0d29zUFdqYjhvOUk0?=
+ =?utf-8?B?cW9ONm5LeFhMZWZZY2N6bHR4Q0liZG9PUGs4SXdIM3dJN1BmdjVOS3RVWjdW?=
+ =?utf-8?B?Nnk5a2JpaU43Wm5TVFdFb0R3NHJoalFxOVdUZ2xSbUc5allhS1JveFlJQmls?=
+ =?utf-8?B?SXEvOGJkcThHS3dZUEhlYjJRRUVUUElDd0dBa3l2RWVnREJUSmdtYXFVdmRo?=
+ =?utf-8?B?emZvWW5ZMzlPRVRMdjlYSzlxWmRNMG1wc0JKRHFNemJFNEJ4VHFXd1k3WXNO?=
+ =?utf-8?B?YnBmTjRMQmozYitYNXhkQ1J1SGhmTlRkWkpYcktkSnNYWmVLLzluUGZ4WmZ0?=
+ =?utf-8?B?bFJMRm01V251ZmdMTmFBSEJmaE8xdElUQnNrNkxVY0oxVjJKcGpSTjdXSGR6?=
+ =?utf-8?B?QWdUMURwQzBmY3htdW96ZGZ5NW5EcWo1WmdQczNFcGE2ZmJvR3AwZWNJYnNt?=
+ =?utf-8?B?WjFmSmw2L2dVYUV2anQwRVhzUWt5RFF0WDFmb0hVN1Zad2tCQUJ0TzNRRHM2?=
+ =?utf-8?B?RWxEYU41d1ZkRGF5ZXZBQmoyQTJuejIxckorZ29iK0dMaW9YeXYxbnlDRlVN?=
+ =?utf-8?B?ZzZUNWlWT1J4SmZ6aVIwVm5FcUIrSE1ZcUxPYlF4YzQrM0JaZjN4M1d2QlJm?=
+ =?utf-8?B?KzRXWUZaUVlReldyV2lRNlQ2SXZUZlZGQysyYUwrN0xsQ2l6d3diRkNYbC9r?=
+ =?utf-8?B?Vit5T1djMFlkVTBucGViaDlFbzVXd2wwejhYajlhWHQ3VTNQNVFQTjI4Nml2?=
+ =?utf-8?B?Ylh3NWdhaG9IOTQ1N2I3eHpBcVFLaVlyM0JHa2VlU01xUSs3Ly9FMTgwSWxT?=
+ =?utf-8?B?TVlZYVBnSjVROVNHYjV0Y3BHb0hGR2VMbjl6YUhZSzdhelRyZHI4MytlL3J3?=
+ =?utf-8?B?ZEg3c1FUbGtSazBtNTN4bVZGYVJBeVZrZ051NFFvaWttbGhKbGhCc25vQ2Rw?=
+ =?utf-8?B?WSs0cXZCMW5JRVdXQVhkTDFVN2lzUFAxellUbDdOVTl3dm90eHYrU3RyUEYv?=
+ =?utf-8?B?Qzl0MUJ4SVljSGNlckJpVUlYUE8vM1VLV3E4N2ozbkxKV0xqUzZCSittOXFS?=
+ =?utf-8?B?bTEwZndjcnVZZ252dHl3eGxYZTZvWm5CSWdvaG5ZNDd4NVhjZURtZkZRTUkv?=
+ =?utf-8?B?Qlc4bFBJUlVFTHJjeDBteHpnamc3ZlB1bHJteDFhRngvSnMzWnF3Q2E4czNC?=
+ =?utf-8?B?Y21qMys3M09hRDdvbEVhZ0hZbmhqUHNKd3o4UWRRdG1QZmhJZ3NDTExJYTB4?=
+ =?utf-8?B?b0hzL3IzblFoOUNaeXlLTmR3S0wvWTZ0SmFQRnpqY3hmbzNwbHVwT2JZR0tR?=
+ =?utf-8?B?TG1yaEZrazN1VTFUejhmR3hoVmJhYUxWUjVycHE4S0dFVEt3VlhBc08zN3l5?=
+ =?utf-8?B?R2w4Z3FZSkFZbWYvWkE0cEpFMnV5YmtiTmRKMWFCMG85eTRXbTByMDdVUUJs?=
+ =?utf-8?B?czNpWUlUbklHTlVyMFhLQkRBRjFFSGhBR0NCNjR3TWdTTktEdVlGd0h0MTZ2?=
+ =?utf-8?B?VUJIQmNSNndwN1pNRUZFYXdrZGY3M3M0WjJtekp3VDN6Zy9qTzd6VGlOclBk?=
+ =?utf-8?B?NkFHd3A4Q2lEZXhEZXFxNHZuYkJIR3BoalVTcnh2ZUlVQlhQeFRIRDVlbGVk?=
+ =?utf-8?B?ZVZlVEhaTDNJN01rWUg5azRNVDE1SkxvUThSaDBPYVdMb0YrYXJqcTBGTmFy?=
+ =?utf-8?B?cGJxT1JRK1BJcmlFTTF6L0dDMThrR3ZkUDJCUTEvUW1USzE4VlhBS3VLUFFH?=
+ =?utf-8?B?L3ZiWHNSZThPdFN6VXlWU2hiMkJlQ3RYWHJtUXMyYlJveGNiVnByTWEybith?=
+ =?utf-8?B?UjhZSWVTdENOaXNkUmxYbGFncDFpdkNZakh0c1JpMGtMVXpvRFQ2TUZrclQv?=
+ =?utf-8?B?MmxTUGdHbTlLbnhXL1hiNE5KY3M4bnRBYnhuUkJkNnlZMjllVnN1aXlLU25L?=
+ =?utf-8?B?UFBTSFdsWEN4b0N5M0d0NFNmRy9aaVppUitqUkxnbE5UbUZBQXhFelFoM1oy?=
+ =?utf-8?B?YURUZG9RL1dacENYdVkvTWM1QnU3N1dQdk1BWitZc3ZEMjlMUEFyV3A5Nk94?=
+ =?utf-8?B?WUtNeUY0cjZlc0pOMlBzMWNKbU91Tzd3c25YT040cVZ4Y0t2blByQnFPODlF?=
+ =?utf-8?B?S1E9PQ==?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bf4dacf1-1e2d-4f5f-6528-08dd15c4feca
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9251.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Dec 2024 01:36:50.9684
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Dec 2024 07:09:59.1273
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mt6v4n1vxIJo9YOIArTaIs0wHLMc6TA+NnM8gXq1pXI+Y0NvrBAr8dX9tjWgs9U2DIymM/nJxbK4uh/AyeiRKg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7233
+X-MS-Exchange-CrossTenant-UserPrincipalName: tBPUL31gU7iBm1kKLHcaINLj5tK2GOPNAaAkTzpuF1BodcBmCvj8rBWTTMRK8jquVCvN6KLeoAqqWUagusK3/8YFrHygY+MFvXhkiFdhMSY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9889
 
-On the i.MX6ULL-14x14-EVK board, enet1_ref and enet2_ref are used as the
-clock sources for two external KSZ PHYs. However, after closing the two
-FEC ports, the clk_enable_count of the enet1_ref and enet2_ref clocks is
-not 0. The root cause is that since the commit 985329462723 ("net: phy:
-micrel: use devm_clk_get_optional_enabled for the rmii-ref clock"), the
-external clock of KSZ PHY has been enabled when the PHY driver probes,
-and it can only be disabled when the PHY driver is removed. This causes
-the clock to continue working when the system is suspended or the network
-port is down.
+From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 
-To solve this problem, the clock is enabled when phy_driver::resume() is
-called, and the clock is disabled when phy_driver::suspend() is called.
-Since phy_driver::resume() and phy_driver::suspend() are not called in
-pairs, an additional clk_enable flag is added. When phy_driver::suspend()
-is called, the clock is disabled only if clk_enable is true. Conversely,
-when phy_driver::resume() is called, the clock is enabled if clk_enable
-is false.
+This patch series add support for the NXP RTC hardware module present on
+S32G2/S32G3 SoCs.
 
-Fixes: 985329462723 ("net: phy: micrel: use devm_clk_get_optional_enabled for the rmii-ref clock")
-Fixes: 99ac4cbcc2a5 ("net: phy: micrel: allow usage of generic ethernet-phy clock")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
-v1 link: https://lore.kernel.org/imx/20241125022906.2140428-1-wei.fang@nxp.com/
-v2 changes: only refine the commit message.
-v2 link: https://lore.kernel.org/imx/20241202084535.2520151-1-wei.fang@nxp.com/
-v3 changes: disable clock after getting the clock rate in kszphy_probe()
----
- drivers/net/phy/micrel.c | 101 ++++++++++++++++++++++++++++++++++++---
- 1 file changed, 95 insertions(+), 6 deletions(-)
+RTC tracks clock time during system suspend. It is used as a time-based
+wakeup source for the S32G2/S32G3 SoCs.
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 3ef508840674..ffc2ac39fa48 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -432,10 +432,12 @@ struct kszphy_ptp_priv {
- struct kszphy_priv {
- 	struct kszphy_ptp_priv ptp_priv;
- 	const struct kszphy_type *type;
-+	struct clk *clk;
- 	int led_mode;
- 	u16 vct_ctrl1000;
- 	bool rmii_ref_clk_sel;
- 	bool rmii_ref_clk_sel_val;
-+	bool clk_enable;
- 	u64 stats[ARRAY_SIZE(kszphy_hw_stats)];
- };
- 
-@@ -2050,8 +2052,27 @@ static void kszphy_get_stats(struct phy_device *phydev,
- 		data[i] = kszphy_get_stat(phydev, i);
- }
- 
-+static void kszphy_enable_clk(struct kszphy_priv *priv)
-+{
-+	if (!priv->clk_enable && priv->clk) {
-+		clk_prepare_enable(priv->clk);
-+		priv->clk_enable = true;
-+	}
-+}
-+
-+static void kszphy_disable_clk(struct kszphy_priv *priv)
-+{
-+	if (priv->clk_enable && priv->clk) {
-+		clk_disable_unprepare(priv->clk);
-+		priv->clk_enable = false;
-+	}
-+}
-+
- static int kszphy_suspend(struct phy_device *phydev)
- {
-+	struct kszphy_priv *priv = phydev->priv;
-+	int ret;
-+
- 	/* Disable PHY Interrupts */
- 	if (phy_interrupt_is_valid(phydev)) {
- 		phydev->interrupts = PHY_INTERRUPT_DISABLED;
-@@ -2059,7 +2080,13 @@ static int kszphy_suspend(struct phy_device *phydev)
- 			phydev->drv->config_intr(phydev);
- 	}
- 
--	return genphy_suspend(phydev);
-+	ret = genphy_suspend(phydev);
-+	if (ret)
-+		return ret;
-+
-+	kszphy_disable_clk(priv);
-+
-+	return 0;
- }
- 
- static void kszphy_parse_led_mode(struct phy_device *phydev)
-@@ -2088,8 +2115,11 @@ static void kszphy_parse_led_mode(struct phy_device *phydev)
- 
- static int kszphy_resume(struct phy_device *phydev)
- {
-+	struct kszphy_priv *priv = phydev->priv;
- 	int ret;
- 
-+	kszphy_enable_clk(priv);
-+
- 	genphy_resume(phydev);
- 
- 	/* After switching from power-down to normal mode, an internal global
-@@ -2112,6 +2142,24 @@ static int kszphy_resume(struct phy_device *phydev)
- 	return 0;
- }
- 
-+static int ksz8041_resume(struct phy_device *phydev)
-+{
-+	struct kszphy_priv *priv = phydev->priv;
-+
-+	kszphy_enable_clk(priv);
-+
-+	return 0;
-+}
-+
-+static int ksz8041_suspend(struct phy_device *phydev)
-+{
-+	struct kszphy_priv *priv = phydev->priv;
-+
-+	kszphy_disable_clk(priv);
-+
-+	return 0;
-+}
-+
- static int ksz9477_resume(struct phy_device *phydev)
- {
- 	int ret;
-@@ -2150,8 +2198,11 @@ static int ksz9477_resume(struct phy_device *phydev)
- 
- static int ksz8061_resume(struct phy_device *phydev)
- {
-+	struct kszphy_priv *priv = phydev->priv;
- 	int ret;
- 
-+	kszphy_enable_clk(priv);
-+
- 	/* This function can be called twice when the Ethernet device is on. */
- 	ret = phy_read(phydev, MII_BMCR);
- 	if (ret < 0)
-@@ -2221,6 +2272,11 @@ static int kszphy_probe(struct phy_device *phydev)
- 			return PTR_ERR(clk);
- 	}
- 
-+	if (!IS_ERR_OR_NULL(clk)) {
-+		clk_disable_unprepare(clk);
-+		priv->clk = clk;
-+	}
-+
- 	if (ksz8041_fiber_mode(phydev))
- 		phydev->port = PORT_FIBRE;
- 
-@@ -5290,15 +5346,45 @@ static int lan8841_probe(struct phy_device *phydev)
- 	return 0;
- }
- 
-+static int lan8804_suspend(struct phy_device *phydev)
-+{
-+	struct kszphy_priv *priv = phydev->priv;
-+	int ret;
-+
-+	ret = genphy_suspend(phydev);
-+	if (ret)
-+		return ret;
-+
-+	kszphy_disable_clk(priv);
-+
-+	return 0;
-+}
-+
-+static int lan8841_resume(struct phy_device *phydev)
-+{
-+	struct kszphy_priv *priv = phydev->priv;
-+
-+	kszphy_enable_clk(priv);
-+
-+	return genphy_resume(phydev);
-+}
-+
- static int lan8841_suspend(struct phy_device *phydev)
- {
- 	struct kszphy_priv *priv = phydev->priv;
- 	struct kszphy_ptp_priv *ptp_priv = &priv->ptp_priv;
-+	int ret;
- 
- 	if (ptp_priv->ptp_clock)
- 		ptp_cancel_worker_sync(ptp_priv->ptp_clock);
- 
--	return genphy_suspend(phydev);
-+	ret = genphy_suspend(phydev);
-+	if (ret)
-+		return ret;
-+
-+	kszphy_disable_clk(priv);
-+
-+	return 0;
- }
- 
- static struct phy_driver ksphy_driver[] = {
-@@ -5358,9 +5444,12 @@ static struct phy_driver ksphy_driver[] = {
- 	.get_sset_count = kszphy_get_sset_count,
- 	.get_strings	= kszphy_get_strings,
- 	.get_stats	= kszphy_get_stats,
--	/* No suspend/resume callbacks because of errata DS80000700A,
--	 * receiver error following software power down.
-+	/* Because of errata DS80000700A, receiver error following software
-+	 * power down. Suspend and resume callbacks only disable and enable
-+	 * external rmii reference clock.
- 	 */
-+	.suspend	= ksz8041_suspend,
-+	.resume		= ksz8041_resume,
- }, {
- 	.phy_id		= PHY_ID_KSZ8041RNLI,
- 	.phy_id_mask	= MICREL_PHY_ID_MASK,
-@@ -5507,7 +5596,7 @@ static struct phy_driver ksphy_driver[] = {
- 	.get_sset_count	= kszphy_get_sset_count,
- 	.get_strings	= kszphy_get_strings,
- 	.get_stats	= kszphy_get_stats,
--	.suspend	= genphy_suspend,
-+	.suspend	= lan8804_suspend,
- 	.resume		= kszphy_resume,
- 	.config_intr	= lan8804_config_intr,
- 	.handle_interrupt = lan8804_handle_interrupt,
-@@ -5526,7 +5615,7 @@ static struct phy_driver ksphy_driver[] = {
- 	.get_strings	= kszphy_get_strings,
- 	.get_stats	= kszphy_get_stats,
- 	.suspend	= lan8841_suspend,
--	.resume		= genphy_resume,
-+	.resume		= lan8841_resume,
- 	.cable_test_start	= lan8814_cable_test_start,
- 	.cable_test_get_status	= ksz886x_cable_test_get_status,
- }, {
+RTC is not battery-powered and it is not kept alive during system reset.
+
+Following is an example of Suspend to RAM trigger on S32G2/S32G3 SoCs,
+using userspace tools such as rtcwake:
+# rtcwake -s 2 -m mem
+# rtcwake: assuming RTC uses UTC ...
+# rtcwake: wakeup from "mem" using /dev/rtc0 at Wed Feb  6 06:28:36 2036
+#
+
+Changes in V6:
+- Fixed a coding style issue regarding kernel doc reported by kernel test robot
+- Refactored small sections from the S32G RTC driver without impacting
+  functionality
+- Fixed an error probe path issue on S32G RTC driver.
+- Added 'rtc' schema in S32G-RTC bindings
+
+Changes in V5:
+- Removed rollover support.
+- Removed clock switching support between Runtime and Suspend. A clock source
+  which is always available has been used instead.
+- Enabled 512 value RTC hardware frequency divisor to achieve higher rollover
+  time
+- Removed unneeded 'remove' callback.
+- Decreased driver print verbosity on error paths.
+- Provided 'clock-names' actual names in bindings documentation
+- Remove __maybe_unused notations. Used the DEFINE_SIMPLE_DEV_PM_OPS() and
+  pm_sleep_ptr() macros to handle the .suspend/.resume callbacks.
+- Fixed some alignment issues.
+
+Changes in V4:
+- Dropped 'assigned-*' clock management approach. Simplified RTC Runtime
+  and Suspend/Standby clock configuration.
+- Simplified error paths on probe function
+- Removed node label from bindings example
+- Several cosmetic coding style fixes
+
+Changes in V3:
+- Removed 'nxp,s32g3-rtc' compatible string
+- Change to 'remove' callback from 'remove_new'
+- Used 'dev.parent' from 'struct rtc_device' instead of defining a
+  specific 'struct device' in driver data
+- Fixed several errors reported by kernel test robot
+- Removed 'assigned-clocks', 'assigned-clock-parents' and
+  'assigned-clock-rates' from required properties in the binding
+  documentation.
+- Refactored S32G RTC driver such that a default clock source and
+  divisors configuration will be applied in case 'assigned-clocks' and
+  'assigned-clock-parents' properties are missing.
+
+Changes in V2:
+- Removed 'clksel' support from dts bindings. Used clock parents support
+  from CCF to better illustrate the RTC hardware IP from S32G2/S32G3.
+- Removed frequency dividers support from dts bindings. Used assigned
+  clock frequencies support from CCF instead.
+- Reduced the interval while RTC is voluntarily disabled to a simple
+  register write in order to avoid any race condition between a possbile
+  rollover and 'suspend' callback execution flow.
+- Updated bindings documentation with respect to clocking support.
+- Fixed a potential unused variable warning reported by kernel test robot.
+- Updated to usage of 'devm_rtc_allocate_device' and 'devm_rtc_register_device'
+  instead of deprecated 'devm_rtc_device_register'.
+
+Ciprian Marian Costea (4):
+  dt-bindings: rtc: add schema for NXP S32G2/S32G3 SoCs
+  rtc: s32g: add NXP S32G2/S32G3 SoC support
+  arm64: defconfig: add S32G RTC module support
+  MAINTAINERS: add NXP S32G RTC driver
+
+ .../devicetree/bindings/rtc/nxp,s32g-rtc.yaml |  72 +++
+ MAINTAINERS                                   |   2 +
+ arch/arm64/configs/defconfig                  |   1 +
+ drivers/rtc/Kconfig                           |  11 +
+ drivers/rtc/Makefile                          |   1 +
+ drivers/rtc/rtc-s32g.c                        | 529 ++++++++++++++++++
+ 6 files changed, 616 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/rtc/nxp,s32g-rtc.yaml
+ create mode 100644 drivers/rtc/rtc-s32g.c
+
 -- 
-2.34.1
+2.45.2
 
