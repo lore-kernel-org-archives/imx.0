@@ -1,68 +1,63 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2084.outbound.protection.outlook.com [40.107.105.84])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013025.outbound.protection.outlook.com [40.107.162.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896221714DF
-	for <imx@lists.linux.dev>; Fri,  6 Dec 2024 22:25:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F0F212F99
+	for <imx@lists.linux.dev>; Fri,  6 Dec 2024 22:56:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.25
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733523954; cv=fail; b=ixtOcKBH5PwQpoIiqQpsdTiDwXXQ/rHBVk4mrlwI1c63m66NELwU+mJv1KTuTJYPEUt9reCJ3powwIFvCcYJMNccoC3U431PAwxN+TpzP0ecB6Y0fosYCypaniKL1EsWH/lWh3yBnJ7MSpINu21jnEvBMolz16+fNHo0iEuwIzU=
+	t=1733525819; cv=fail; b=nI29RsOYnxNWni7ts4w3U8J6HZ0SCZ7CZMVvuvywHSmi1GF1Mj+WV9vyLjFBFGmU4aKIhDq20VIb5iLmmzDlp58t2zNwqoD4ZZjKYjHfTVZc10nld4gGH2bQofIaN8G4vfTbAqOuhiymIf+h+nm0nXhGbqdzzQxvN5zgancV6qY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733523954; c=relaxed/simple;
-	bh=DhFtITstaTP38tNfP1wMcSqWXtF3HT/2uGiWR9Ki9/I=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=kISH5bGAb/LijCO0Teuv8HLfI4IGpxPMjrUizrE3at4Lf3xl8eKQl/tyKy0UnceYnFWjzSAvRJa12BxPfdsriKJBHVxZxSj8hLt6/trm5Bj1TuR3+r0mCqhBPI21iKpWxJA9xz62NX+JY9JtBpYrjOFnRNu3A/r1aO3gGXe3WEE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ZGqpcpyK; arc=fail smtp.client-ip=40.107.105.84
+	s=arc-20240116; t=1733525819; c=relaxed/simple;
+	bh=gdaZmGZKt/HEMZsvvWdVjisT/bSHP+AXZvmK/21Rxks=;
+	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MFoY91DpywN0WSdzYYYm6aa78z9RVvgjvqrI100V/U3JpE8izC2INOD4nBMfWuHgzg/muErWER14pjKLfRhmE8cwXPsyWqTfL54KJSSd6M8+dkHzDFF9aDvN1igxjTAEjUE5FDtmkZVjDyQT2M4X1MxtXc7RLiReRfttpFVjKso=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=iDgihNNu; arc=fail smtp.client-ip=40.107.162.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ZGqpcpyK"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="iDgihNNu"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iUXSQ1/p8NQXrPRu5+81+9F4IVYmGUeICEpRDi7vgE7wRH7eD29sILibumm4z9ibWEiYbG4nq0UrBBRHYtfHwQOMaxYqIAzaZKB7PtEY9Dxu5PQisjXidmtWIWv3rcPc2UKvXr5LmhfH538Szt0OZ8ywVLAU8DEuvg7agqbgFlQEl0/nGykGz8PJH/4yJCQU3qtlW3hyNbnaORGYr0b4qz7Cj5aFm7ISbRjDI7Sfl/PFpGavKXRxq2snCPVooGpkFXps+8YHHlP1IPwWy3lOAgQx6lYnUN8u6UqLt1wLNkb/pk8bR1yAO1SuaKbWZhSq9dqAS/cMDG0Bt6DPAQePqg==
+ b=T82eu2FWssXcdrYxQ12w+tz8QPRnS/N4m3lNF4ygwsjgD8wJGNp2XvKL2O45X4LkcSf6CW0uElVcn8t1x/+v9Aq4wTepg3dcny5Bn8oddQ0arbYtayI/z50Q34F0DE0TEUWnEzzDM8gxywch3W8ncr6ceWpQ3hW7uAtWSLPA9DNp9z6vpzj6y77GjGH7MgIQll93YmRrWZYQTA1nzvbaiJMeVfTA5+IjYxPyXtcMphzJsBsdZcff6EOadJ752Ic5Ix1RIdqZP0e48izBO8eTBOH87mRv/9vTf28s0K+uH5O/HbTTyulr7Fx6W9VTECcFi3g2CCIv42XEtHXNMBO0hQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=d5TChl6I4bXcRz4tbFzepw85qOuiXcLxG8bUpP+DLkQ=;
- b=B7In4OAcY4o/oxRpPtz/YNDvZzRBHzlO624w6fiZoiXYKvDUsHRNDlQUphFjziem1Ts2kaqN7avy6DQFGXCFzIeZAE3PQKpNXwefBpI2ehRl+0UtxBhC+4zhSORCCLaXhvcFM4RYZ7mzX2Zq/bwQSZexdhgUTQEcobEr3qF/+uyaENi4vaSA+fYZDrP+8UUJUfHrbmgooEx27/2SpTac3tMRdPfHnQKyW6QhUYrrW5QC4bGmAb2uasVd65HN3ibc6l2wTEOuNGlyTg9csSatLarJA/WZdHUrIL4hdkVxT89sDms+egrmYdv+ZDxP0IDNoz3KXoo+JrpvNiCIci3ysw==
+ bh=Fz0VnUtPq+U1rvgBgMjKNagLttDXW0PMW8mcqI0ufrQ=;
+ b=wNsp9p6TDFee/NJbPb56+E8akUy+t8AH10Oitbhwmuhg2xpcCgRhPo1t7vCgjSVN19k6bbYGiD1qXuXulNKOL0j6jN3erl9qFNdpemac66lnRf8Q63e9lEU9PI7Rhl+myGjwnm9Ra3we2kSLjde8qX9aLXgZOF6M6E8EHESdfhPF4E6udc7OCcSytNmrz8XAzgnQUnpnkO3aihqeW8VhOK+0DecEolkPQlE0g9ySgYm9rDa3it++ZtBQs4o0UYnoUWikY71iGleIOcuBmZ85v9pNXEA4Q4rfh3Tdm5swSiwv7bqpnaDYJj+f8YNNkI8e/+OGhPqYHZ3uaJ1QmOnmwQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d5TChl6I4bXcRz4tbFzepw85qOuiXcLxG8bUpP+DLkQ=;
- b=ZGqpcpyKt8Jppf7UtEvsXGigwYZye1oohpG0i/iph2DQpT8jB9e8fiRu5Bga24nO9YrUIaIU5jH9ZYuQ8/tkAgczyxfXARYmODUY1ATJcqXXCcgRstJ0ikvZQR9rNLhQsbukMAr0o4Y2SQIcTiO759sImC13ZTCM72n/iOT3I4R1j490HEoOQrXSB4xolB1aBhOkLH7JGOiWTv5HN4Ck+4idgh00Yr62kcE40Dq8jL/WCa026w/GOfoRZMs+i6ehxHW46H2bqz63TGsNQeYjlIF6xPRRDtcBqUgL0J9KUswSxOWgTMxIdqwNgwp5o+zEzHO8Fs4jPdkAZYGCREk+kQ==
+ bh=Fz0VnUtPq+U1rvgBgMjKNagLttDXW0PMW8mcqI0ufrQ=;
+ b=iDgihNNuKu1EyLR0ClHoDlzl6bk6MiuahRLf8tu4WRIUvjoxKXHdZgT3K1TTg6t2WPc5pytEQ5wTQNDDAp5YwBbfT+V6Wm3+6Pp5tCeDPUV6L8Inx25Es+6kE9lqpREvBGM5M3tFP7tookx8zyvp76utEYZYe19RiqwqdHt9DqjqEdeaLPRjcoONnL2s+uhPBxCb7Cw6O0T04JZ3hh5HrH8TJhmeDFPD0Gxf+7kRnj6PGcjeCFvUob9WSc1lMUHs2k2IwvFDudkRyBlxeWbmR+m+DAGN5s28Pu5GMhFp5vAMw4dSxfgx2pW9oDEfwncQlTeoS93813Pqj5ct3h+3Gg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by GV1PR04MB10128.eurprd04.prod.outlook.com (2603:10a6:150:1af::15) with
+ by VI0PR04MB10709.eurprd04.prod.outlook.com (2603:10a6:800:262::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.11; Fri, 6 Dec
- 2024 22:25:47 +0000
+ 2024 22:56:54 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8230.010; Fri, 6 Dec 2024
- 22:25:47 +0000
+ 22:56:54 +0000
 From: Frank Li <Frank.Li@nxp.com>
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Karthikeyan Mitran <m.karthikeyan@mobiveil.co.in>,
-	Hou Zhiqiang <Zhiqiang.Hou@nxp.com>,
-	Frank <Li@nxp.com>,
-	linux-pci@vger.kernel.org (open list:PCI NATIVE HOST BRIDGE AND ENDPOINT DRIVERS),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+To: Haibo Chen <haibo.chen@nxp.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	linux-iio@vger.kernel.org (open list:NXP i.MX 7D/6SX/6UL/93 AND VF610 ADC DRIVER),
+	imx@lists.linux.dev (open list:NXP i.MX 7D/6SX/6UL/93 AND VF610 ADC DRIVER),
 	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH v2 1/1] dt-bindings: PCI: mobiveil: convert mobiveil-pcie.txt to yaml format
-Date: Fri,  6 Dec 2024 17:25:27 -0500
-Message-Id: <20241206222529.3706373-1-Frank.Li@nxp.com>
+Subject: [PATCH v6 1/2] iio: adc: vf610_adc: use devm_* and dev_err_probe() to simple code
+Date: Fri,  6 Dec 2024 17:56:23 -0500
+Message-Id: <20241206225624.3744880-3-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241206225624.3744880-1-Frank.Li@nxp.com>
+References: <20241206225624.3744880-1-Frank.Li@nxp.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BYAPR08CA0003.namprd08.prod.outlook.com
- (2603:10b6:a03:100::16) To PAXPR04MB9642.eurprd04.prod.outlook.com
+X-ClientProxiedBy: SJ2PR07CA0007.namprd07.prod.outlook.com
+ (2603:10b6:a03:505::12) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -71,444 +66,245 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GV1PR04MB10128:EE_
-X-MS-Office365-Filtering-Correlation-Id: 39fdd058-9910-4a5f-05d0-08dd1644ee9d
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI0PR04MB10709:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3a159193-c2cf-4c26-3eec-08dd16494790
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|52116014|1800799024|7416014|921020|38350700014;
+	BCL:0;ARA:13230040|1800799024|376014|52116014|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?N+MiUOlyKmYZYQCNM0YRbtYLd6qI7zpxwtH/6OjFpiuVwShXw5R0MgsUus/D?=
- =?us-ascii?Q?m4QYgxyp3FEmyn3XkmUhaUlalRrz+HktjGNIpyUkV7wBrc8M+GlMl+kOV+js?=
- =?us-ascii?Q?MBbkoRIN7vApTCRQlcKZUizDtWNpHgUm+Lgd7zh4JgjySAMFGAoRK5WlGsYd?=
- =?us-ascii?Q?1Helr4umxpxE3lAhKSJDeOx4P7l5FkW2sOlfVyMyvkrif4r/HuiIg9WXkkMD?=
- =?us-ascii?Q?6MLdenCThx6lSthwzer7U/+MAc9o5dcazI4gP/MYB+wo1nLHNUSKywvy278x?=
- =?us-ascii?Q?xzvdn47/WcLGi15btVxEzLwxWDCEWbBqt0O9OQOxPh0s7t44/SQzaBPmO2vV?=
- =?us-ascii?Q?1j1M8V+BKbgf3WCxw6069P2F5zUWrqZ/eglO+j7xS8B58GMVGMY/iQtBOjU7?=
- =?us-ascii?Q?tQiunK29lCTYEGOC8tJiRxG3NtvGEijiM98eZyC22tbBpqJ3T+kooYO6Kovf?=
- =?us-ascii?Q?kpzf8nxGtDvp9cxNKKenrK4LliVS0pffUyBJ5aKjXNLforIpm2a/NXI0zkF/?=
- =?us-ascii?Q?0uXeCd0E8CvMRMOw3TMwCUpSEM3TQVZlA7dVUBisZpa8uqHhsYCfXdQpN9AA?=
- =?us-ascii?Q?HtMA8vDfUGeFBnNsKwaZ4tAHEfpEMC9Aen+aH56Vl8/kJ6G2HOOvqFT1S79m?=
- =?us-ascii?Q?76lBe8m5galOSLBdYJSbUDhc2Dj5bm8c7/ITF3mldi1zvqt8IMwq9ua8+F2e?=
- =?us-ascii?Q?O5ywv3h8lmvq7wOF4YaHJOZRunma/zkViS5BHcHKWcdH/4b4wBk7cohPVzK6?=
- =?us-ascii?Q?EeJe2ScAFUpjIJ4Pr728WvSN0kI15ZQoLLnnbCqIbHtjvJlMsdqgGw2IH7d2?=
- =?us-ascii?Q?6IsepALIG80maC5Ms4Be2Q0nrGG+T7V+1iU+ubJzSCFLVx9xpwPAWsWtDDk4?=
- =?us-ascii?Q?FZ/dXc6r2Q8Tna7Dg0nI3Ri8N0B+kKAka63D3Q339hH1pr57/CSFISmGKIgF?=
- =?us-ascii?Q?yRXr5ZC0mBCcQvcO4OGBcNjunAjzuYKIW6NvMPsNmYVE/t2N7jBoQJDALNan?=
- =?us-ascii?Q?uMJcsd2FuVjXViJGK8ja1JyHd7WJ854YK0ar6oWCBb2v3MqbRD4UMge7QXqR?=
- =?us-ascii?Q?7KP05/Gd0HWP4r7I7Q5nS+pY8mDLeMu1HhTjFYKLE+pI2IhZ8Qay7YuFYr6q?=
- =?us-ascii?Q?VxNtHbb0ASQ0ijiOduLj0vW9VnsLLSC1nEj1vPDmeYmxVlwflmcel0LInYmf?=
- =?us-ascii?Q?lI2Wxy7wHCK7lOImj8tjHjppSUNKCZSJ7cmSXxRZck1b/hgYwVRllfcBV0ym?=
- =?us-ascii?Q?WAHzCaeD1PRg24xJM2GqhL8dMgI0v09sY/qW8nqxU8ar36H1L4Z8gmq+Pqd2?=
- =?us-ascii?Q?aiPnuW7q1tjGiFGnABnGmTh8+IIMU+ZjL1F2k8MeqWirEe0C3WsPLEy2LPVl?=
- =?us-ascii?Q?oID8yx8=3D?=
+	=?us-ascii?Q?BHPRf4DMBZjVLoO5+/0at9zwdbmy9/CaWMkEyH5FxUCtf96nVHv5uuFNWq+7?=
+ =?us-ascii?Q?4SJT65lUou7tmF1CS56VnemswesihAg8rMCjuYQj5psaQEZ/RSBHvM/LKRa7?=
+ =?us-ascii?Q?43WzyU0eP01C0OtvQC7kkKqArzwufe2AlndwxfVS2fBcADAxvFS8qi2ZR3ba?=
+ =?us-ascii?Q?IA/rjtSJ0ceGvDZm773WfccF93g1A8/wTQv2SOfeSGaYRFu/aFuSlBClNFV2?=
+ =?us-ascii?Q?/sJFQc2Zjd6Qj1lNwL2x+kmr1Z4fZ22KqK1m5wI6u3jSkADsRjRfbQX1F9M/?=
+ =?us-ascii?Q?S6I+M06xziLxPaiJL3bk5M6HJ5MNbwXZHJT77hD8WWNx4pav5fWO2VvRML5S?=
+ =?us-ascii?Q?mTsNvBt1E+eV9u1wuRJpLQ3Bl7qU1z+NhDQ6SU5Skzzb7QQcwlQX2WfWZZbH?=
+ =?us-ascii?Q?YviKWyyJibzWL8NrS9KjONltozbCJV63ZbNdJ7OE8RWw3c12jH3n9FWh4IBR?=
+ =?us-ascii?Q?sb7rx9sN+8h99fCt5N0BEJk5Ubf1GY8MdfTqE1/BBQxWIFr/ooTj0S8LqqGI?=
+ =?us-ascii?Q?Kef/SGO1Hs87iYZ7qH6UHVCKCzo6zJCgVhKunoslmv8R7WoU9l9rynAsmB0r?=
+ =?us-ascii?Q?xicNYQULlh2OPAo6KhD3yGMonhb1+1RcrNZIdYW09xMs9/49oaVL3P+yuGKV?=
+ =?us-ascii?Q?DrcDnXaE5O+B3X0C7bbTqFnee1AYivCJSIjCRJfRPaJQJtPcsQeYdjyfpDuJ?=
+ =?us-ascii?Q?rXxnwSJyP3BqYQPZppyLeVp3IKQFYqd2DkE6kWWc38IFKMJ8YBYXmb/YxUcx?=
+ =?us-ascii?Q?/rsudeGs3NcmQJE1oQf1VScyf3rKtKSVjtbfWfFddRN4vIw7yaM6Gzki0eUR?=
+ =?us-ascii?Q?LRK7atJW27NFLUwSaGhjYs+cUDux8Eq69iVbE8qH5yppNY3jRF2AWiJjLFwC?=
+ =?us-ascii?Q?4CYl1eXY2ZbBWOHyZHKw9LXbWvUQvAsbO3L38R3cQQX+spsznTjrqEJkVwBB?=
+ =?us-ascii?Q?JMH+RVwa29eC+6ONivv0iC+ipesCU6qfhnF+A5dhBDPlusYtDIZkC90dha2W?=
+ =?us-ascii?Q?HptLF61EIIUvJkpNA52zQSYOA17kKbF/63cm786R6/iVVEMypXpfK0Rb+Aoz?=
+ =?us-ascii?Q?Yg/pn8Y6MWGrqgzkLpZnaXK6hup2glKDX9diqa8BwdexzhgG2YwsbH57Va2n?=
+ =?us-ascii?Q?C9PnrmpFPKnTJX5fyxVcm3q0Vc56h+7bLXP+Q6UGzNcZajuHoIjBeCMNyTVO?=
+ =?us-ascii?Q?83DfqPRQTKlBT2LBS3mKRFKGm8R0jV/HAlQAo+W3ofVxsJFAdKBLvH5PYMGp?=
+ =?us-ascii?Q?uhZeoMgWUpBwxRKv8FhiMPkUlwHyZs0kMk8e7Dx0p+b2fIKHMyBrByQ6X05G?=
+ =?us-ascii?Q?UThLhYW45imh2n8G7e24LEMjokRteKIXJaL2OQkQ2nLz2w5R2i2th+tzA5r9?=
+ =?us-ascii?Q?iVIr7PpHGHy0cqGCxmGSGnYqz+v1LOQtYkXcloIkjLAyk0fa1A=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(52116014)(1800799024)(7416014)(921020)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+J5qtibPn5LSPA26n+h6GfX+NOC7AQlSxud1QGcoxJtmaEMq1c96NtBezfkl?=
- =?us-ascii?Q?lbqBNvtBXd8PTbTaJQKo7hXDh950s5cyLorY6OD+ViNu1UJ5IfQ6G6d3meNT?=
- =?us-ascii?Q?vRSbVGn7gMfQ1SLetJs2gTR4qj2EIZSNHVjhJCzBTjRyxReKHcmH8oWRm72+?=
- =?us-ascii?Q?Gc0CH97sosuRnXYhVzxeI4gpRWwaDhBvoSUW/1G0X96a0uaChz/MzPdsLSLj?=
- =?us-ascii?Q?fWui5WNva0DVbelMxxqa1g6zRZdC2niAdz+QJrKSjbm9aJCeUVupiz12wgzt?=
- =?us-ascii?Q?4jG+pKNjmlwJHMuelFYiMyS0U5NR6Ryq1ZbkvG7+F0eSPMr5c3t9+aPFebGC?=
- =?us-ascii?Q?Nm/raN0kgnFKWFMc4w1CGkZ4HgHY87OuJkxUikFR0iOYJXkTfrKRIuYd58/q?=
- =?us-ascii?Q?dV0OxcPGPcnNW4puCZI3Vd9qbW7m8izJDTWd/yBKJjS29hfRSeSKUTvrkdIz?=
- =?us-ascii?Q?N9y8GHrhIgooQ7VxTrrQ7bxx6fX/PEECD9YznITW21AEuLBHnc3HKVsfNVWQ?=
- =?us-ascii?Q?ijpB/caf2TGRHHmVYKnlVnTHjgQfOt09+y+suVMaxTI7fPigBjC1nuGnmtep?=
- =?us-ascii?Q?y6nqDMPbwED9Gflih2BaANOb6e27wcHqRKCQg0esnoYQrexijYt0Lxr1gyBa?=
- =?us-ascii?Q?94JmTvjaOScw4Mq3GvoenbYzcQaH5K6dmACxRFP+C0vm4pk/cZxQ1CdPqcPp?=
- =?us-ascii?Q?pXzROsQvdpYmaua1dOi3RsqlmQNGeItpNf+RuLObb3NYEe9zZxL99hIvSnuI?=
- =?us-ascii?Q?A0BivCY3+yw4wl6kLgaxI9vMKIV86EV9Q7ur9HXfzYYiaMGIFldIK9V+M9RK?=
- =?us-ascii?Q?VwnzoI01uZZHBQup8126ucRzo1YizPfM7dtGrZP5BLgFKXEWpBagAR6mRVfy?=
- =?us-ascii?Q?q+vM1NxBZsueAE24ii5e2sZP67Vxkk0AxW8zIwuLCxyDYdQOx5Q87LopNvsu?=
- =?us-ascii?Q?Xfd/fCK69WZsw2JhSJ52B2HSkCFMRIDKLk0J7Bz1eJZvLpd+cQvqNRMIfJK8?=
- =?us-ascii?Q?sN1uMZ5YJ1TrIG2NQ/g0eO9SmB4HvzoLomhwhB81HtDjyEzFCMsoFEKtzzMB?=
- =?us-ascii?Q?t9TheLj5uhHmk+XKhkg4hW9ycqZ+fdVlJfMgIrT+lzZgsaqLCxn9+7rC1Xgp?=
- =?us-ascii?Q?nvarZJJ/kssC9POoq/dnHPj7frynAb8BIBxyyOKCEnsB0b/GnP/nB0okIqD3?=
- =?us-ascii?Q?JsLKztdI1vfaSJWDwPbnY5aiUd34lfa6NWgaLzJJLyywa8gkjhDfnVKvpaTl?=
- =?us-ascii?Q?TC27sb22+bp1cb48i4e7so+/B9pxBo4TmLzFL1otOWziUVZ8EYMFRYF33LE7?=
- =?us-ascii?Q?Tp4qWC0SH/E/f3Q8thS21ecFFYFmR8+cpSSMMIeKXCezmzUHn2APERMk49Z8?=
- =?us-ascii?Q?1la1P31B3yJtWcvNEIfd4p7/sSb8jGsUvdP8Wf65Wo/NDxwEWG7T7wqHVXI6?=
- =?us-ascii?Q?sTOi/3Hj2DWZmS2AErk74uN4fpPDqNE4WsF3e4lTTG4QVfxNmxyJ3ffcXCIT?=
- =?us-ascii?Q?TYcCulgrnq3nmM2HcTo2IafsxMrOP0q/X/Wq3DSN06kzaydFM9KVvx+iJ6Gl?=
- =?us-ascii?Q?lxwXt2vSguCIGQXuEDheg61x5bBNeTAxufs8L3fm?=
+	=?us-ascii?Q?PoZ0b9JS9DWXIkHZXaXYMzzGWvmCWbhEVi44kFWPh6Q3IZmhHLrqPROG7TgL?=
+ =?us-ascii?Q?Ci1Dog1kvP5G8JQy5mflYMCWhvJgG91TsLijhfxPIgUSSRiQXk80BbmTXyvT?=
+ =?us-ascii?Q?S98CdsfF6I393CGfJrV5SUz+i82cMwq9Ef72B/VWMbTIxe06Fs1x2pvvNa5a?=
+ =?us-ascii?Q?hr19/KbFMNrbjsyTPljOc5ygscjNmOZh/K8x1qilrrTI480SrEYejGK2shMD?=
+ =?us-ascii?Q?PqQHLqfJ2mxi4KQj5HtQt6VSOLug2NRNy29zo4jKj/E7k+46fzdBKUQOJKzq?=
+ =?us-ascii?Q?BaUpWjnB0FWjDdbvLGGiNp5cPfbs4JwL9Da0CkkivxzCF8qm/EEy8WrBibsg?=
+ =?us-ascii?Q?K8TK0CAspjU84XJX85ZPh0QYJuvJBqfej/ZAFtjH16VTUI3H/omiWCKxel3c?=
+ =?us-ascii?Q?Gl/JmYuibOOP43ajlElUkocXZ3qq8DzjtKYSwn8rgHemWbURMmmSwxC4zfSM?=
+ =?us-ascii?Q?H5O85eLhHTKbQjxKf/VDVp+gQP0xAqxKKcuq4pPhmNlwZNuQuBVfu6KbAZft?=
+ =?us-ascii?Q?hLwiIJsziqlpJLfhwEVUYY9P4iREqTgYEa39hAjwXMQjSQFFu2JTPOp3YJPi?=
+ =?us-ascii?Q?LZkv0EXpYK0ORIT/POuMbQc1JfTHBbTXdl/ycRK2QW/qr3XZ21me5Y8ukZsY?=
+ =?us-ascii?Q?YCWZaAmiMo1rn1TNTyfD7zjKIOHh7QglRS9n7M85DE6SEJvkpwgwjsAIvUrk?=
+ =?us-ascii?Q?JUnPvzPI+OGuEM9I5wcf+lw0CBZ/c99VclcBph+V6qcQXxdLs0x1PHK/+DKN?=
+ =?us-ascii?Q?Q8XZNbz/ovDJSk0eQaYsFuyVQ8HjC9jB0OVZazbkYrcPp3f8BR5PiYiMeTFl?=
+ =?us-ascii?Q?5ZIK5x1ZKxkzXdIVP7C6X54leocTKr5xFmMrRoc3SF1Gqfc0XWL0ULsFy550?=
+ =?us-ascii?Q?PXRH2R3S7mSUF1J3b1l9upYVRG3NJCQQ8M3WMtB+5O5VH84UmzlCSXER2R9H?=
+ =?us-ascii?Q?UXALaJBd7Qis1Ne3rzFXC9mz4ZJldu/RFde7Uv20/Qmqqvlm7mVwdI8Cwpaf?=
+ =?us-ascii?Q?qvVnogmgI0f6FbK7eq+DDMsBY4/A+YLhkz7zcmhBTl6H80PBv41ksl+QJbE8?=
+ =?us-ascii?Q?JE+bkC+MbsC+OnOJcV3qI33pfuvlAXD1kMF3uPu/fwVHlGkzpZHFegt0eOqd?=
+ =?us-ascii?Q?WXURPdn60BmgpAwKA/fCnuz04zoXqqd+xVEBCGxKLdTR5DmuhsBFZDOckO0q?=
+ =?us-ascii?Q?BCcVh9y4ZUdLswHAlBkWEGJg9bZNzqYVq5pTF+2DMR3y1MwRojUWIIx1Q3m5?=
+ =?us-ascii?Q?Y201HYVXltlTgvkniKocXhkeMCwYb3M4Tr5/ccNPm4xtESB1PfX9rLEfJCLF?=
+ =?us-ascii?Q?bWdezKdHeqJ4vKtpqeTJjc4CA2C7jORa1Pjr1xwBI/0BT+o6qxkVE3A2Ih4r?=
+ =?us-ascii?Q?cveJLnkrNOOhFpNDn4q0wqyTSR/s7TO7U4Owpr6yoBvymMjSWmvr2WAIfvBP?=
+ =?us-ascii?Q?+ItcOwhf1n92OdfcUVKXVM18R284KdFkDvQOuI7uCcc0qeHHbevxzBSeaEMG?=
+ =?us-ascii?Q?O79ypYOoZacEKb8GOGHwQYRz4p/yS+GUHLpQFMxcSTtp5zEtVcCcQUHunNdd?=
+ =?us-ascii?Q?Sf5jUAJTvj6TU2X4UCLPO3weEYl+hbkWL31/laYe?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 39fdd058-9910-4a5f-05d0-08dd1644ee9d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3a159193-c2cf-4c26-3eec-08dd16494790
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Dec 2024 22:25:47.5037
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Dec 2024 22:56:54.6899
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Nt4XFmV2WjpXfBD3syG7wGWIUz3b31i7N01lS4Uh/SfTs+iWb2EqLHQSF++8isYhNHz3IL2kF+YjaKB7EMZqcg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10128
+X-MS-Exchange-CrossTenant-UserPrincipalName: il+JOE66tIhIv/ZptaoQFOB+zVnuaXYzOcRybyqdsASbBX9T/2d8mi2++kvOClKXI5ZG0t4AXa7q4y81jcoBZQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10709
 
-Convert device tree binding doc mobiveil-pcie.txt to yaml format. Merge
-layerscape-pcie-gen4.txt into this file.
+Use devm_* and dev_err_probe() simplify probe function and remove
+vf610_adc_remove().
 
-Additional change:
-- interrupt-names: "aer", "pme", "intr", which align order in examples.
-- reg-names: csr_axi_slave, config_axi_slave, which align existed dts file.
-
-Fix below CHECK_DTBS warning:
-arch/arm64/boot/dts/freescale/fsl-lx2160a-qds.dtb: /soc/pcie@3400000: failed to match any schema with compatible: ['fsl,lx2160a-pcie']
-
+Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
-Change from v1 to v2
-- update MAINTEAINER file to fix below
+Change from v5 to v6
+- none
+
+Change from v4 to v5
+- Remove vref check in remove action callback
+
+Change from v3 to v4
+- keep vref_uv as u32
+- keep original regulator part and only add
+devm_add_action_or_reset(&pdev->dev, vf610_adc_remove, info)
+
+Change from v2 to v3
+- change vref_uv to int from u32 to fix below warning
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202412070127.BkBJhnZ4-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202411070633.NIrO7Ert-lkp@intel.com/
+smatch warnings:
+drivers/iio/adc/vf610_adc.c:857 vf610_adc_probe() warn: unsigned 'info->vref_uv' is never less than zero.
 
->> Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/pci/mobiveil-pcie.txt
->> Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/pci/layerscape-pcie-gen4.txt
+vim +857 drivers/iio/adc/vf610_adc.c
 
-lx2160a r2 already don't use this IP. But someone still complain when I
-try to remove old r1 support.
-
-So convert to yaml file to avoid annoised CHECK_DTBS warnings.
+Change from v1 to v2
+- add Haibo's review tag
 ---
- .../bindings/pci/layerscape-pcie-gen4.txt     |  52 ------
- .../bindings/pci/mbvl,gpex40-pcie.yaml        | 167 ++++++++++++++++++
- .../devicetree/bindings/pci/mobiveil-pcie.txt |  72 --------
- MAINTAINERS                                   |   3 +-
- 4 files changed, 168 insertions(+), 126 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/pci/layerscape-pcie-gen4.txt
- create mode 100644 Documentation/devicetree/bindings/pci/mbvl,gpex40-pcie.yaml
- delete mode 100644 Documentation/devicetree/bindings/pci/mobiveil-pcie.txt
+ drivers/iio/adc/vf610_adc.c | 78 ++++++++++++-------------------------
+ 1 file changed, 25 insertions(+), 53 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/pci/layerscape-pcie-gen4.txt b/Documentation/devicetree/bindings/pci/layerscape-pcie-gen4.txt
-deleted file mode 100644
-index b40fb5d15d3d9..0000000000000
---- a/Documentation/devicetree/bindings/pci/layerscape-pcie-gen4.txt
-+++ /dev/null
-@@ -1,52 +0,0 @@
--NXP Layerscape PCIe Gen4 controller
--
--This PCIe controller is based on the Mobiveil PCIe IP and thus inherits all
--the common properties defined in mobiveil-pcie.txt.
--
--Required properties:
--- compatible: should contain the platform identifier such as:
--  "fsl,lx2160a-pcie"
--- reg: base addresses and lengths of the PCIe controller register blocks.
--  "csr_axi_slave": Bridge config registers
--  "config_axi_slave": PCIe controller registers
--- interrupts: A list of interrupt outputs of the controller. Must contain an
--  entry for each entry in the interrupt-names property.
--- interrupt-names: It could include the following entries:
--  "intr": The interrupt that is asserted for controller interrupts
--  "aer": Asserted for aer interrupt when chip support the aer interrupt with
--	 none MSI/MSI-X/INTx mode,but there is interrupt line for aer.
--  "pme": Asserted for pme interrupt when chip support the pme interrupt with
--	 none MSI/MSI-X/INTx mode,but there is interrupt line for pme.
--- dma-coherent: Indicates that the hardware IP block can ensure the coherency
--  of the data transferred from/to the IP block. This can avoid the software
--  cache flush/invalid actions, and improve the performance significantly.
--- msi-parent : See the generic MSI binding described in
--  Documentation/devicetree/bindings/interrupt-controller/msi.txt.
--
--Example:
--
--	pcie@3400000 {
--		compatible = "fsl,lx2160a-pcie";
--		reg = <0x00 0x03400000 0x0 0x00100000   /* controller registers */
--		       0x80 0x00000000 0x0 0x00001000>; /* configuration space */
--		reg-names = "csr_axi_slave", "config_axi_slave";
--		interrupts = <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>, /* AER interrupt */
--			     <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>, /* PME interrupt */
--			     <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>; /* controller interrupt */
--		interrupt-names = "aer", "pme", "intr";
--		#address-cells = <3>;
--		#size-cells = <2>;
--		device_type = "pci";
--		apio-wins = <8>;
--		ppio-wins = <8>;
--		dma-coherent;
--		bus-range = <0x0 0xff>;
--		msi-parent = <&its>;
--		ranges = <0x82000000 0x0 0x40000000 0x80 0x40000000 0x0 0x40000000>;
--		#interrupt-cells = <1>;
--		interrupt-map-mask = <0 0 0 7>;
--		interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>,
--				<0000 0 0 2 &gic 0 0 GIC_SPI 110 IRQ_TYPE_LEVEL_HIGH>,
--				<0000 0 0 3 &gic 0 0 GIC_SPI 111 IRQ_TYPE_LEVEL_HIGH>,
--				<0000 0 0 4 &gic 0 0 GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>;
--	};
-diff --git a/Documentation/devicetree/bindings/pci/mbvl,gpex40-pcie.yaml b/Documentation/devicetree/bindings/pci/mbvl,gpex40-pcie.yaml
-new file mode 100644
-index 0000000000000..160ddc4bc45bf
---- /dev/null
-+++ b/Documentation/devicetree/bindings/pci/mbvl,gpex40-pcie.yaml
-@@ -0,0 +1,167 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/pci/mbvl,gpex40-pcie.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Mobiveil AXI PCIe Root Port Bridge
-+
-+maintainers:
-+  - Frank Li <Frank Li@nxp.com>
-+
-+description:
-+  Mobiveil's GPEX 4.0 is a PCIe Gen4 root port bridge IP. This configurable IP
-+  has up to 8 outbound and inbound windows for the address translation.
-+
-+  NXP Layerscape PCIe Gen4 controller (Deprecated) base on Mobiveil's GPEX 4.0.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - mbvl,gpex40-pcie
-+      - fsl,lx2160a-pcie
-+
-+  reg:
-+    items:
-+      - description: PCIe controller registers
-+      - description: Bridge config registers
-+      - description: GPIO registers to control slot power
-+      - description: MSI registers
-+    minItems: 2
-+
-+  reg-names:
-+    items:
-+      - const: csr_axi_slave
-+      - const: config_axi_slave
-+      - const: gpio_slave
-+      - const: apb_csr
-+    minItems: 2
-+
-+  apio-wins:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: |
-+      numbers of requested apio outbound windows
-+        1. Config window
-+        2. Memory window
-+    default: 2
-+    maximum: 256
-+
-+  ppio-wins:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: number of requested ppio inbound windows
-+    default: 1
-+    maximum: 256
-+
-+  interrupt-controller: true
-+
-+  "#interrupt-cells":
-+    const: 1
-+
-+  interrupts:
-+    minItems: 1
-+    maxItems: 3
-+
-+  interrupt-names:
-+    minItems: 1
-+    maxItems: 3
-+
-+  dma-coherent: true
-+
-+  msi-parent: true
-+
-+required:
-+  - compatible
-+  - reg
-+  - reg-names
-+
-+allOf:
-+  - $ref: /schemas/pci/pci-host-bridge.yaml#
-+  - if:
-+      properties:
-+        compatible:
-+          enum:
-+            - fsl,lx2160a-pcie
-+    then:
-+      properties:
-+        reg:
-+          maxItems: 2
-+
-+        reg-names:
-+          maxItems: 2
-+
-+        interrupt-names:
-+          items:
-+            - const: aer
-+            - const: pme
-+            - const: intr
-+    else:
-+      properties:
-+        dma-coherent: false
-+        msi-parent: false
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+
-+    pcie@b0000000 {
-+        compatible = "mbvl,gpex40-pcie";
-+        reg = <0xb0000000 0x00010000>,
-+              <0xa0000000 0x00001000>,
-+              <0xff000000 0x00200000>,
-+              <0xb0010000 0x00001000>;
-+        reg-names = "csr_axi_slave",
-+                    "config_axi_slave",
-+                    "gpio_slave",
-+                    "apb_csr";
-+        #address-cells = <3>;
-+        #size-cells = <2>;
-+        device_type = "pci";
-+        apio-wins = <2>;
-+        ppio-wins = <1>;
-+        bus-range = <0x00000000 0x000000ff>;
-+        interrupt-controller;
-+        #interrupt-cells = <1>;
-+        interrupt-parent = <&gic>;
-+        interrupts = <GIC_SPI 89 IRQ_TYPE_LEVEL_HIGH>;
-+        interrupt-map-mask = <0 0 0 7>;
-+        interrupt-map = <0 0 0 0 &pci_express 0>,
-+                        <0 0 0 1 &pci_express 1>,
-+                        <0 0 0 2 &pci_express 2>,
-+                        <0 0 0 3 &pci_express 3>;
-+        ranges = <0x83000000 0 0x00000000 0xa8000000 0 0x8000000>;
-+    };
-+
-+  - |
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+
-+    soc {
-+        #address-cells = <2>;
-+        #size-cells = <2>;
-+        pcie@3400000 {
-+            compatible = "fsl,lx2160a-pcie";
-+            reg = <0x00 0x03400000 0x0 0x00100000   /* controller registers */
-+                   0x80 0x00000000 0x0 0x00001000>; /* configuration space */
-+            reg-names = "csr_axi_slave", "config_axi_slave";
-+            interrupts = <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>, /* AER interrupt */
-+                         <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>, /* PME interrupt */
-+                        <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>; /* controller interrupt */
-+            interrupt-names = "aer", "pme", "intr";
-+            #address-cells = <3>;
-+            #size-cells = <2>;
-+            device_type = "pci";
-+            apio-wins = <8>;
-+            ppio-wins = <8>;
-+            dma-coherent;
-+            bus-range = <0x0 0xff>;
-+            msi-parent = <&its>;
-+            ranges = <0x82000000 0x0 0x40000000 0x80 0x40000000 0x0 0x40000000>;
-+            #interrupt-cells = <1>;
-+            interrupt-map-mask = <0 0 0 7>;
-+            interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>,
-+                            <0000 0 0 2 &gic 0 0 GIC_SPI 110 IRQ_TYPE_LEVEL_HIGH>,
-+                            <0000 0 0 3 &gic 0 0 GIC_SPI 111 IRQ_TYPE_LEVEL_HIGH>,
-+                            <0000 0 0 4 &gic 0 0 GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>;
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/pci/mobiveil-pcie.txt b/Documentation/devicetree/bindings/pci/mobiveil-pcie.txt
-deleted file mode 100644
-index 64156993e052d..0000000000000
---- a/Documentation/devicetree/bindings/pci/mobiveil-pcie.txt
-+++ /dev/null
-@@ -1,72 +0,0 @@
--* Mobiveil AXI PCIe Root Port Bridge DT description
--
--Mobiveil's GPEX 4.0 is a PCIe Gen4 root port bridge IP. This configurable IP
--has up to 8 outbound and inbound windows for the address translation.
--
--Required properties:
--- #address-cells: Address representation for root ports, set to <3>
--- #size-cells: Size representation for root ports, set to <2>
--- #interrupt-cells: specifies the number of cells needed to encode an
--	interrupt source. The value must be 1.
--- compatible: Should contain "mbvl,gpex40-pcie"
--- reg: Should contain PCIe registers location and length
--	Mandatory:
--	"config_axi_slave": PCIe controller registers
--	"csr_axi_slave"	  : Bridge config registers
--	Optional:
--	"gpio_slave"	  : GPIO registers to control slot power
--	"apb_csr"	  : MSI registers
--
--- device_type: must be "pci"
--- apio-wins : number of requested apio outbound windows
--		default 2 outbound windows are configured -
--		1. Config window
--		2. Memory window
--- ppio-wins : number of requested ppio inbound windows
--		default 1 inbound memory window is configured.
--- bus-range: PCI bus numbers covered
--- interrupt-controller: identifies the node as an interrupt controller
--- #interrupt-cells: specifies the number of cells needed to encode an
--	interrupt source. The value must be 1.
--- interrupts: The interrupt line of the PCIe controller
--		last cell of this field is set to 4 to
--		denote it as IRQ_TYPE_LEVEL_HIGH type interrupt.
--- interrupt-map-mask,
--	interrupt-map: standard PCI properties to define the mapping of the
--	PCI interface to interrupt numbers.
--- ranges: ranges for the PCI memory regions (I/O space region is not
--	supported by hardware)
--	Please refer to the standard PCI bus binding document for a more
--	detailed explanation
--
--
--Example:
--++++++++
--	pcie0: pcie@a0000000 {
--		#address-cells = <3>;
--		#size-cells = <2>;
--		compatible = "mbvl,gpex40-pcie";
--		reg =	<0xa0000000 0x00001000>,
--			<0xb0000000 0x00010000>,
--			<0xff000000 0x00200000>,
--			<0xb0010000 0x00001000>;
--		reg-names =	"config_axi_slave",
--				"csr_axi_slave",
--				"gpio_slave",
--				"apb_csr";
--		device_type = "pci";
--		apio-wins = <2>;
--		ppio-wins = <1>;
--		bus-range = <0x00000000 0x000000ff>;
--		interrupt-controller;
--		interrupt-parent = <&gic>;
--		#interrupt-cells = <1>;
--		interrupts = < 0 89 4 >;
--		interrupt-map-mask = <0 0 0 7>;
--		interrupt-map = <0 0 0 0 &pci_express 0>,
--				<0 0 0 1 &pci_express 1>,
--				<0 0 0 2 &pci_express 2>,
--				<0 0 0 3 &pci_express 3>;
--		ranges = < 0x83000000 0 0x00000000 0xa8000000 0 0x8000000>;
--
--	};
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1e930c7a58b13..e0fcdd8b6434c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17901,7 +17901,7 @@ M:	Karthikeyan Mitran <m.karthikeyan@mobiveil.co.in>
- M:	Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
- L:	linux-pci@vger.kernel.org
- S:	Supported
--F:	Documentation/devicetree/bindings/pci/mobiveil-pcie.txt
-+F:	Documentation/devicetree/bindings/pci/mbvl,gpex40-pcie.yaml
- F:	drivers/pci/controller/mobiveil/pcie-mobiveil*
+diff --git a/drivers/iio/adc/vf610_adc.c b/drivers/iio/adc/vf610_adc.c
+index 4d83c12975c53..fb7afa91151f2 100644
+--- a/drivers/iio/adc/vf610_adc.c
++++ b/drivers/iio/adc/vf610_adc.c
+@@ -814,6 +814,13 @@ static const struct of_device_id vf610_adc_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, vf610_adc_match);
  
- PCI DRIVER FOR MVEBU (Marvell Armada 370 and Armada XP SOC support)
-@@ -17925,7 +17925,6 @@ M:	Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
- L:	linux-pci@vger.kernel.org
- L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
- S:	Maintained
--F:	Documentation/devicetree/bindings/pci/layerscape-pcie-gen4.txt
- F:	drivers/pci/controller/mobiveil/pcie-layerscape-gen4.c
++static void vf610_adc_action_remove(void *d)
++{
++	struct vf610_adc *info = d;
++
++	regulator_disable(info->vref);
++}
++
+ static int vf610_adc_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -823,10 +830,8 @@ static int vf610_adc_probe(struct platform_device *pdev)
+ 	int ret;
  
- PCI DRIVER FOR PLDA PCIE IP
+ 	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(struct vf610_adc));
+-	if (!indio_dev) {
+-		dev_err(&pdev->dev, "Failed allocating iio device\n");
+-		return -ENOMEM;
+-	}
++	if (!indio_dev)
++		return dev_err_probe(&pdev->dev, -ENOMEM, "Failed allocating iio device\n");
+ 
+ 	info = iio_priv(indio_dev);
+ 	info->dev = &pdev->dev;
+@@ -842,17 +847,12 @@ static int vf610_adc_probe(struct platform_device *pdev)
+ 	ret = devm_request_irq(info->dev, irq,
+ 				vf610_adc_isr, 0,
+ 				dev_name(&pdev->dev), indio_dev);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "failed requesting irq, irq = %d\n", irq);
+-		return ret;
+-	}
++	if (ret < 0)
++		return dev_err_probe(&pdev->dev, ret, "failed requesting irq, irq = %d\n", irq);
+ 
+-	info->clk = devm_clk_get(&pdev->dev, "adc");
+-	if (IS_ERR(info->clk)) {
+-		dev_err(&pdev->dev, "failed getting clock, err = %ld\n",
+-						PTR_ERR(info->clk));
+-		return PTR_ERR(info->clk);
+-	}
++	info->clk = devm_clk_get_enabled(&pdev->dev, "adc");
++	if (IS_ERR(info->clk))
++		return dev_err_probe(&pdev->dev, PTR_ERR(info->clk), "failed getting clock\n");
+ 
+ 	info->vref = devm_regulator_get(&pdev->dev, "vref");
+ 	if (IS_ERR(info->vref))
+@@ -862,6 +862,10 @@ static int vf610_adc_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
+ 
++	ret = devm_add_action_or_reset(&pdev->dev, vf610_adc_action_remove, info);
++	if (ret)
++		return ret;
++
+ 	info->vref_uv = regulator_get_voltage(info->vref);
+ 
+ 	device_property_read_u32_array(dev, "fsl,adck-max-frequency", info->max_adck_rate, 3);
+@@ -879,52 +883,21 @@ static int vf610_adc_probe(struct platform_device *pdev)
+ 	indio_dev->channels = vf610_adc_iio_channels;
+ 	indio_dev->num_channels = ARRAY_SIZE(vf610_adc_iio_channels);
+ 
+-	ret = clk_prepare_enable(info->clk);
+-	if (ret) {
+-		dev_err(&pdev->dev,
+-			"Could not prepare or enable the clock.\n");
+-		goto error_adc_clk_enable;
+-	}
+-
+ 	vf610_adc_cfg_init(info);
+ 	vf610_adc_hw_init(info);
+ 
+-	ret = iio_triggered_buffer_setup(indio_dev, &iio_pollfunc_store_time,
+-					NULL, &iio_triggered_buffer_setup_ops);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "Couldn't initialise the buffer\n");
+-		goto error_iio_device_register;
+-	}
++	ret = devm_iio_triggered_buffer_setup(&pdev->dev, indio_dev, &iio_pollfunc_store_time,
++					      NULL, &iio_triggered_buffer_setup_ops);
++	if (ret < 0)
++		return dev_err_probe(&pdev->dev, ret, "Couldn't initialise the buffer\n");
+ 
+ 	mutex_init(&info->lock);
+ 
+-	ret = iio_device_register(indio_dev);
+-	if (ret) {
+-		dev_err(&pdev->dev, "Couldn't register the device.\n");
+-		goto error_adc_buffer_init;
+-	}
++	ret = devm_iio_device_register(&pdev->dev, indio_dev);
++	if (ret)
++		return dev_err_probe(&pdev->dev, ret, "Couldn't register the device.\n");
+ 
+ 	return 0;
+-
+-error_adc_buffer_init:
+-	iio_triggered_buffer_cleanup(indio_dev);
+-error_iio_device_register:
+-	clk_disable_unprepare(info->clk);
+-error_adc_clk_enable:
+-	regulator_disable(info->vref);
+-
+-	return ret;
+-}
+-
+-static void vf610_adc_remove(struct platform_device *pdev)
+-{
+-	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
+-	struct vf610_adc *info = iio_priv(indio_dev);
+-
+-	iio_device_unregister(indio_dev);
+-	iio_triggered_buffer_cleanup(indio_dev);
+-	regulator_disable(info->vref);
+-	clk_disable_unprepare(info->clk);
+ }
+ 
+ static int vf610_adc_suspend(struct device *dev)
+@@ -972,7 +945,6 @@ static DEFINE_SIMPLE_DEV_PM_OPS(vf610_adc_pm_ops, vf610_adc_suspend,
+ 
+ static struct platform_driver vf610_adc_driver = {
+ 	.probe          = vf610_adc_probe,
+-	.remove         = vf610_adc_remove,
+ 	.driver         = {
+ 		.name   = DRIVER_NAME,
+ 		.of_match_table = vf610_adc_match,
 -- 
 2.34.1
 
