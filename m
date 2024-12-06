@@ -1,47 +1,55 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063E920765A;
-	Fri,  6 Dec 2024 13:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5883179D2;
+	Fri,  6 Dec 2024 13:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733490259; cv=none; b=nc7T76xIaQ1oMOanMRi2gG5z6Hy+hotBdM2djsR0MmmdzWYHdKTsDjy+pKI0/+L+HvpVTHM0rsm6MNG0OqAyARYnP4VdtLB4KbGB+pFeUlvrPHIc2jEtxwuw37CyHdhVLz9Cv1IVKqEvSlo/X0oKNRslPIUHdKBFgX7GC6rWZ4c=
+	t=1733491906; cv=none; b=cXVpHQeDyviIpaQ3L0IMGU66KGFPoXyfDxjjooJwKfa0Cfx0SdnUESCj17iHq2P9ZWBNjsiLxysJjPoqIJ/CRZZIbt+Apmln4E6dfKN3LEE6GpGWKd65CeBKAzm+PRJpMlWCPRDp9J+eEMR1brdvu4meWwymZwbG+JJF0UaiTEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733490259; c=relaxed/simple;
-	bh=VLfoQRnwWe0Rvqit/Z+Tb+RfEtPz3Jei9eCUy65SVAU=;
+	s=arc-20240116; t=1733491906; c=relaxed/simple;
+	bh=lVHr4EPApzBT0shqeiUzPtW7g+/3CUZBqO46WoEfjEQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tmdoPf5mAQzuhtIBlQUTqBdUWdII9NDedAfOi2CLBWGC6stl07YKvM50Rod4fwhLwc/N0XbIdXmRTFRwChES9n34qc4PTDkyk60PVuZzP0zZLbyu+wCPNQlVeDqKvKrAaundwmOxG3EqujTX+hTXI7O0ZUPvQC4DfnAAjCugt7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y0EpTmWL; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=rpbzL/JRW7h7yX2ZllRJ25mfydQUiMSDkRVvqDiGPsGVibaU1o0nFZDkJToKHBPC9Rnw6zMJ69ym3Jx87Da8o2o6xXQz4hwJOKBGJmVBwrBS420PwViRAlAzXASPOOaJFL8w6pCwW+NntyVdG7pAWqMdMzN8AE+/YO910O10UOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L3o6mit1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y0EpTmWL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B17C4CEE0;
-	Fri,  6 Dec 2024 13:04:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L3o6mit1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53AB5C4CED1;
+	Fri,  6 Dec 2024 13:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733490258;
-	bh=VLfoQRnwWe0Rvqit/Z+Tb+RfEtPz3Jei9eCUy65SVAU=;
+	s=k20201202; t=1733491905;
+	bh=lVHr4EPApzBT0shqeiUzPtW7g+/3CUZBqO46WoEfjEQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Y0EpTmWLThG3R0PlwzAt7twm24nccovDnKlaPEcQS420UMIwrtO8xHxpRVxkymzH9
-	 KH5TnQgF9SxF7RhZwz83d0UAZ7VrV6Mn2zCla7AcoZyDrKudTYbv5rqby013bXNGJo
-	 f2lhAIDa8OwmIDCnwMLAPYGwWDFVA082tVGOO3ohR/GMKagavcsPEtMIJy80BcI5K5
-	 pWjAoeR6vrve6+NdEWNQTKH+KPSJfEK2TmrH28pTH4f4KrY7SKWxtu4Ufk0dRGBCGq
-	 TjtVm+G6AsBDUc0t8I2hBdKMw8+O31HQ9RfqgrWcXdX40FfDIJ9wWyM/pX1WP/Z+/5
-	 0lHK18/yeAvAA==
-Date: Fri, 6 Dec 2024 14:04:15 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com, 
-	Abel Vesa <abelvesa@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Michael Turquette <mturquette@baylibre.com>, Peng Fan <peng.fan@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-clk@vger.kernel.org
-Subject: Re: [PATCH v5 15/20] dt-bindings: clock: imx8m-clock: support spread
- spectrum clocking
-Message-ID: <gbymcmoya7dfmedq4nkopqpswh63d2ujxl2elc2x7x325b75bu@anp36sdya43v>
-References: <20241205111939.1796244-1-dario.binacchi@amarulasolutions.com>
- <20241205111939.1796244-16-dario.binacchi@amarulasolutions.com>
+	b=L3o6mit1UqcwGYmyEIMw7d1pTyDmTOImJPMYQ9Of67e0W5YuQUdFOBp/Ebm2F/jPF
+	 HiEx1ptu3P7Jl3QJaCNwzMN4uQxNwyWv8w9jfCUBjqiFqIY0NMOqj4dxLJIh+CBQu8
+	 PrfVCavddeVNyzGip/FiyV0fUuYLhQfQOLBpo0BbMRaEtbx5je+F1xFoMnZxzk8aj8
+	 t3vBKbIJh0GNaTeADeQKjWtfoR/y6jhnExEsWMCFl0BEoKYmZxiCB/NJfWIAAznSRd
+	 MMpS9VzWLLbStb+ouYmjNuFwShOeRnznPRwgmiDN4qPhVJ0TqCpSlJd9pdoQ56jXAZ
+	 SA9vuwtjNJiXQ==
+Date: Fri, 6 Dec 2024 13:31:41 +0000
+From: Simon Horman <horms@kernel.org>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	Frank Li <frank.li@nxp.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH v6 RESEND net-next 2/5] net: enetc: add Tx checksum
+ offload for i.MX95 ENETC
+Message-ID: <20241206133141.GR2581@kernel.org>
+References: <20241204052932.112446-1-wei.fang@nxp.com>
+ <20241204052932.112446-3-wei.fang@nxp.com>
+ <20241206093708.GI2581@kernel.org>
+ <PAXPR04MB8510D797ABEFA1D6153A3C9A88312@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20241206123219.GN2581@kernel.org>
+ <PAXPR04MB851043CBB0B4458BACE0AEBE88312@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,136 +58,90 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241205111939.1796244-16-dario.binacchi@amarulasolutions.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <PAXPR04MB851043CBB0B4458BACE0AEBE88312@PAXPR04MB8510.eurprd04.prod.outlook.com>
 
-On Thu, Dec 05, 2024 at 12:17:50PM +0100, Dario Binacchi wrote:
-> The patch adds the DT bindings for enabling and tuning spread spectrum
-> clocking generation.
+On Fri, Dec 06, 2024 at 12:38:49PM +0000, Wei Fang wrote:
+> > -----Original Message-----
+> > From: Simon Horman <horms@kernel.org>
+> > Sent: 2024年12月6日 20:32
+> > To: Wei Fang <wei.fang@nxp.com>
+> > Cc: Claudiu Manoil <claudiu.manoil@nxp.com>; Vladimir Oltean
+> > <vladimir.oltean@nxp.com>; Clark Wang <xiaoning.wang@nxp.com>;
+> > andrew+netdev@lunn.ch; davem@davemloft.net; edumazet@google.com;
+> > kuba@kernel.org; pabeni@redhat.com; Frank Li <frank.li@nxp.com>;
+> > netdev@vger.kernel.org; linux-kernel@vger.kernel.org; imx@lists.linux.dev
+> > Subject: Re: [PATCH v6 RESEND net-next 2/5] net: enetc: add Tx checksum
+> > offload for i.MX95 ENETC
+> > 
+> > On Fri, Dec 06, 2024 at 10:46:49AM +0000, Wei Fang wrote:
+> > > > -----Original Message-----
+> > > > From: Simon Horman <horms@kernel.org>
+> > > > Sent: 2024年12月6日 17:37
+> > > > To: Wei Fang <wei.fang@nxp.com>
+> > > > Cc: Claudiu Manoil <claudiu.manoil@nxp.com>; Vladimir Oltean
+> > > > <vladimir.oltean@nxp.com>; Clark Wang <xiaoning.wang@nxp.com>;
+> > > > andrew+netdev@lunn.ch; davem@davemloft.net; edumazet@google.com;
+> > > > kuba@kernel.org; pabeni@redhat.com; Frank Li <frank.li@nxp.com>;
+> > > > netdev@vger.kernel.org; linux-kernel@vger.kernel.org;
+> > > > imx@lists.linux.dev
+> > > > Subject: Re: [PATCH v6 RESEND net-next 2/5] net: enetc: add Tx
+> > > > checksum offload for i.MX95 ENETC
+> > > >
+> > > > On Wed, Dec 04, 2024 at 01:29:29PM +0800, Wei Fang wrote:
+> > > > > In addition to supporting Rx checksum offload, i.MX95 ENETC also
+> > > > > supports Tx checksum offload. The transmit checksum offload is
+> > > > > implemented through the Tx BD. To support Tx checksum offload,
+> > > > > software needs to fill some auxiliary information in Tx BD, such
+> > > > > as IP version, IP header offset and size, whether L4 is UDP or TCP, etc.
+> > > > >
+> > > > > Same as Rx checksum offload, Tx checksum offload capability isn't
+> > > > > defined in register, so tx_csum bit is added to struct
+> > > > > enetc_drvdata to indicate whether the device supports Tx checksum
+> > offload.
+> > > > >
+> > > > > Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> > > > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > > > > Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+> > > >
+> > > > ...
+> > > >
+> > > > > diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+> > > > b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+> > > > > index 4b8fd1879005..590b1412fadf 100644
+> > > > > --- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+> > > > > +++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+> > > > > @@ -558,7 +558,12 @@ union enetc_tx_bd {
+> > > > >  		__le16 frm_len;
+> > > > >  		union {
+> > > > >  			struct {
+> > > > > -				u8 reserved[3];
+> > > > > +				u8 l3_start:7;
+> > > > > +				u8 ipcs:1;
+> > > > > +				u8 l3_hdr_size:7;
+> > > > > +				u8 l3t:1;
+> > > > > +				u8 resv:5;
+> > > > > +				u8 l4t:3;
+> > > > >  				u8 flags;
+> > > > >  			}; /* default layout */
+> > > >
+> > > > Hi Wei,
+> > > >
+> > > > Given that little-endian types are used elsewhere in this structure
+> > > > I am guessing that the layout above works for little-endian hosts
+> > > > but will not work on big-endian hosts.
+> > > >
+> > > > If so, I would suggest an alternate approach of using a single
+> > > > 32-bit word and accessing it using a combination of FIELD_PREP() and
+> > > > FIELD_GET() using masks created using GENMASK() and BIT().
+> > >
+> > > Good suggestion, I will refine it, thanks.
+> > 
+> > Thanks. I forgot to mention that you will likely also need to add
+> > cpu_to_le32 and le32_to_cpu to the mix.
+> > 
 > 
-> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-> 
-> ---
-> 
-> (no changes since v4)
-> 
-> Changes in v4:
-> - Drop "fsl,ssc-clocks" property. The other added properties now refer
->   to the clock list.
-> - Updated minItems and maxItems of
->   - clocks
->   - clock-names
->   - fsl,ssc-modfreq-hz
->   - fsl,ssc-modrate-percent
->   - fsl,ssc-modmethod
-> - Updated the dts examples
-> 
-> Changes in v3:
-> - Added in v3
-> - The dt-bindings have been moved from fsl,imx8m-anatop.yaml to
->   imx8m-clock.yaml. The anatop device (fsl,imx8m-anatop.yaml) is
->   indeed more or less a syscon, so it represents a memory area
->   accessible by ccm (imx8m-clock.yaml) to setup the PLLs.
-> 
-> Changes in v2:
-> - Add "allOf:" and place it after "required:" block, like in the
->   example schema.
-> - Move the properties definition to the top-level.
-> - Drop unit types as requested by the "make dt_binding_check" command.
-> 
->  .../bindings/clock/imx8m-clock.yaml           | 77 +++++++++++++++++--
->  1 file changed, 71 insertions(+), 6 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-> index c643d4a81478..83036f6d2274 100644
-> --- a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-> +++ b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-> @@ -29,12 +29,12 @@ properties:
->      maxItems: 2
->  
->    clocks:
-> -    minItems: 6
-> -    maxItems: 7
-> +    minItems: 7
-> +    maxItems: 10
+> I think I will use u8 instead of 32-bit, because I don't want to affect
+> the existing 'u8 flag'. And u8 is good enough.
 
-ABI break without mentioning, without any explanation in the commit msg.
-
->  
->    clock-names:
-> -    minItems: 6
-> -    maxItems: 7
-> +    minItems: 7
-> +    maxItems: 10
->  
->    '#clock-cells':
->      const: 1
-> @@ -43,6 +43,34 @@ properties:
->        ID in its "clocks" phandle cell. See include/dt-bindings/clock/imx8m-clock.h
->        for the full list of i.MX8M clock IDs.
->  
-> +  fsl,ssc-modfreq-hz:
-> +    description:
-> +      The values of modulation frequency (Hz unit) for each clock
-> +      supporting spread spectrum.
-> +    minItems: 7
-> +    maxItems: 10
-
-Why all cloks receive now spread spectrum? I had impression - and all
-your previous versions were doing this - that you have only three or
-four clocks with SSC.
-
-Do existing clocks 1-6 support SSC?
-
-> +
-> +  fsl,ssc-modrate-percent:
-> +    description:
-> +      The percentage values of modulation rate for each clock
-> +      supporting spread spectrum.
-> +    minItems: 7
-> +    maxItems: 10
-> +
-> +  fsl,ssc-modmethod:
-> +    $ref: /schemas/types.yaml#/definitions/non-unique-string-array
-> +    description:
-> +      The modulation techniques for each clock supporting spread
-> +      spectrum.
-> +    minItems: 7
-> +    maxItems: 10
-> +    items:
-> +      enum:
-> +        - ""
-
-Drop "", not sure why do you need it.
-
-> +        - down-spread
-> +        - up-spread
-> +        - center-spread
-> +
->  required:
->    - compatible
->    - reg
-> @@ -76,6 +104,10 @@ allOf:
->              - const: clk_ext2
->              - const: clk_ext3
->              - const: clk_ext4
-> +        fsl,ssc-modfreq-hz: false
-> +        fsl,ssc-modrate-percent: false
-> +        fsl,ssc-modmethod: false
-> +
->      else:
->        properties:
->          clocks:
-> @@ -86,6 +118,10 @@ allOf:
->              - description: ext2 clock input
->              - description: ext3 clock input
->              - description: ext4 clock input
-> +            - description: audio1 PLL input
-> +            - description: audio2 PLL input
-> +            - description: dram PLL input
-> +            - description: video PLL input
-
-Also ABI break....
-
-Best regards,
-Krzysztof
-
+Sure, I agree that looks like it should work.
