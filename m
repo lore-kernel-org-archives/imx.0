@@ -1,100 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AF21F9F43;
-	Fri,  6 Dec 2024 09:37:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0BC1B4F08
+	for <imx@lists.linux.dev>; Fri,  6 Dec 2024 09:47:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733477833; cv=none; b=rGL1C8MiC3k+IG7bHWlfLgov/M9fK479cw4fPSEOInXNyhfuPYOw+kp23TEoNLzZtfFSAVXKxyKNZAU+g+TulLCQRFoyTkfOJ0q51J/LCWyOZLi6vE0pPD/CIO17LJRNraTDlZOUUhLycbd/Fca28jO55pJDnxDFDQN1Uv+cZj0=
+	t=1733478432; cv=none; b=b8kvf+pNL8S6jqqOKsdV+NP9+Zw+Ygk5BTt8eO0lWGwhKMvHxC0PHyQr6ZD/7r1aMcH/Cimh96F10i4FNdZyamVGHozhEvpMTbvFwuLaEawetDG55sy/eFNTbLrqa6B4/HePBFqbPI9FaQ5qaUIGJDtUvlORqaAJDtnPtD6f0/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733477833; c=relaxed/simple;
-	bh=pM3I9LaJcdLGXKHGOfytgDj//czg5lPUGDRR4kXGCgQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SQjwnY8zxpijstAYNShP4yPac6HvQZ4y10/7CeDRf0uW43jBG9Q6hkoe34H/pfbpqfFsUucwQiMIZfp49x+IUDN3fRHW2oE4RI1O6pazI5+a8QufSz474fUh/RXhoTkIXA/nAhphTWxKzU9pz6iTEVOZwn9s3YaTUMzKpFDLEFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ViklMXlj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733478432; c=relaxed/simple;
+	bh=NyqUxD4+oNCtW8qXiH/xVm64iV6vut41ehuQt6eTnzQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=hxHn0v0D6CNBPEuwFv8+WqhQWGFaOUdVLzAwYero6VJiHLK1ultASXuwNzhUPwyy+p7DN5kJTGFKNzRUSyZ7J8poFXVeFtiKh2uM8+ENRVyC1Ixp04LhQxsjtZZSk0GTf1V0O6RF0kl3Xca9dmMOadtYFilktDwYWrlHQVgRl/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=G7v3a7Mz; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ViklMXlj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7094C4CED1;
-	Fri,  6 Dec 2024 09:37:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733477833;
-	bh=pM3I9LaJcdLGXKHGOfytgDj//czg5lPUGDRR4kXGCgQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ViklMXlj7RQwYJYgAqahW7PxSY16ARsma57cIVZcWLULFfteHs3ZNgv2AuhkK++b0
-	 RC7nXSsswcLMjZzfrld1YPcpQCX+N1GvkY4Bxr9BTTukTwVWuN7EJm5U9SWVoeJHDF
-	 OD0eqm2kJgrWejd/Cuhz8n/7sl9c5FokpC5RhEMW/Hy94h7ls3azGlQvFlBg+Wl/8k
-	 fNweUJhR79WrXeE4TlJYi4gLiotyS4IPVckKDh/spXYbvtPavIQedrGQcVjGAFBCPo
-	 zwGGsEXWRHfElBhfNc2dchUlNP6IU9OgDDTfcgOt4IFFY+JWgkj2w5vhCLXrQ7kWDm
-	 pS6kGi2Y1/Y6w==
-Date: Fri, 6 Dec 2024 09:37:08 +0000
-From: Simon Horman <horms@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, frank.li@nxp.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v6 RESEND net-next 2/5] net: enetc: add Tx checksum
- offload for i.MX95 ENETC
-Message-ID: <20241206093708.GI2581@kernel.org>
-References: <20241204052932.112446-1-wei.fang@nxp.com>
- <20241204052932.112446-3-wei.fang@nxp.com>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="G7v3a7Mz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1733478431; x=1765014431;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=NyqUxD4+oNCtW8qXiH/xVm64iV6vut41ehuQt6eTnzQ=;
+  b=G7v3a7MzIcuS1ejWpLwvqgcdcJKqLetwKkC0LI2ceREbaFx1KV5z/oWI
+   TBpqP+k+BOKlG9+27Nbr+Hizg9ZpkwvaiiJBH/EWjDGJGyOJq5x75uBsw
+   2JM9oKUWhDOzx6Ly3jKyJtIU1B5r2JRHLow01JDhNJxZwwKNG/0bM5Il+
+   FZ2TAkW0Fb0AKPKdzd3fS2eKjS6/syRWIEWSqDuOjC59L+IDDSh15/8st
+   EYjK5mL7/KsHgJJITrEw58NkXU0rNWNvqGBrZEJDTldLKZ/WSyFGg/z1c
+   TkVdsh2xkIev+dF0iGd2r0hXMSihrCgeQOEK8tmUqi7sjRodTLJ4m1vja
+   w==;
+X-CSE-ConnectionGUID: pTa19jmpRCeKQo/pb8i0zg==
+X-CSE-MsgGUID: twfRaRnqSvecierGvL/pdQ==
+X-IronPort-AV: E=Sophos;i="6.12,213,1728975600"; 
+   d="scan'208";a="202666736"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 06 Dec 2024 02:47:09 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Fri, 6 Dec 2024 02:47:04 -0700
+Received: from [10.159.245.205] (10.10.85.11) by chn-vm-ex04.mchp-main.com
+ (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
+ Transport; Fri, 6 Dec 2024 02:46:57 -0700
+Message-ID: <43ec4b5e-9ccb-412f-a2c7-cac5f8bc2bbd@microchip.com>
+Date: Fri, 6 Dec 2024 10:47:07 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241204052932.112446-3-wei.fang@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v8 10/15] net: macb: Use helper rgmii_clock
+Content-Language: en-US, fr-FR
+To: <jan.petrous@oss.nxp.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Jose Abreu
+	<joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, Richard Cochran
+	<richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit
+	<hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, Shawn Guo
+	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Emil
+ Renner Berthing <kernel@esmil.dk>, Minda Chen <minda.chen@starfivetech.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Iyappan Subramanian
+	<iyappan@os.amperecomputing.com>, Keyur Chudgar
+	<keyur@os.amperecomputing.com>, Quan Nguyen <quan@os.amperecomputing.com>,
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Giuseppe Cavallaro
+	<peppe.cavallaro@st.com>, Andrew Lunn <andrew+netdev@lunn.ch>
+CC: <linux-stm32@st-md-mailman.stormreply.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+	<imx@lists.linux.dev>, <devicetree@vger.kernel.org>, NXP S32 Linux Team
+	<s32@nxp.com>, <0x1207@gmail.com>, <fancer.lancer@gmail.com>, "Russell King
+ (Oracle)" <rmk+kernel@armlinux.org.uk>
+References: <20241205-upstream_s32cc_gmac-v8-0-ec1d180df815@oss.nxp.com>
+ <20241205-upstream_s32cc_gmac-v8-10-ec1d180df815@oss.nxp.com>
+From: Nicolas Ferre <nicolas.ferre@microchip.com>
+Organization: microchip
+In-Reply-To: <20241205-upstream_s32cc_gmac-v8-10-ec1d180df815@oss.nxp.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Dec 04, 2024 at 01:29:29PM +0800, Wei Fang wrote:
-> In addition to supporting Rx checksum offload, i.MX95 ENETC also supports
-> Tx checksum offload. The transmit checksum offload is implemented through
-> the Tx BD. To support Tx checksum offload, software needs to fill some
-> auxiliary information in Tx BD, such as IP version, IP header offset and
-> size, whether L4 is UDP or TCP, etc.
+On 05/12/2024 at 17:43, Jan Petrous via B4 Relay wrote:
+> From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 > 
-> Same as Rx checksum offload, Tx checksum offload capability isn't defined
-> in register, so tx_csum bit is added to struct enetc_drvdata to indicate
-> whether the device supports Tx checksum offload.
+> Utilize a new helper function rgmii_clock().
 > 
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 
-...
+If needed:
+Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> index 4b8fd1879005..590b1412fadf 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> @@ -558,7 +558,12 @@ union enetc_tx_bd {
->  		__le16 frm_len;
->  		union {
->  			struct {
-> -				u8 reserved[3];
-> +				u8 l3_start:7;
-> +				u8 ipcs:1;
-> +				u8 l3_hdr_size:7;
-> +				u8 l3t:1;
-> +				u8 resv:5;
-> +				u8 l4t:3;
->  				u8 flags;
->  			}; /* default layout */
+Thanks, best regards,
+   Nicolas
 
-Hi Wei,
+> ---
+>   drivers/net/ethernet/cadence/macb_main.c | 14 ++------------
+>   1 file changed, 2 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+> index daa416fb1724..640f500f989d 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> @@ -530,19 +530,9 @@ static void macb_set_tx_clk(struct macb *bp, int speed)
+>          if (bp->phy_interface == PHY_INTERFACE_MODE_MII)
+>                  return;
+> 
+> -       switch (speed) {
+> -       case SPEED_10:
+> -               rate = 2500000;
+> -               break;
+> -       case SPEED_100:
+> -               rate = 25000000;
+> -               break;
+> -       case SPEED_1000:
+> -               rate = 125000000;
+> -               break;
+> -       default:
+> +       rate = rgmii_clock(speed);
+> +       if (rate < 0)
+>                  return;
+> -       }
+> 
+>          rate_rounded = clk_round_rate(bp->tx_clk, rate);
+>          if (rate_rounded < 0)
+> 
+> --
+> 2.47.0
+> 
+> 
 
-Given that little-endian types are used elsewhere in this structure
-I am guessing that the layout above works for little-endian hosts
-but will not work on big-endian hosts.
-
-If so, I would suggest an alternate approach of using a single 32-bit
-word and accessing it using a combination of FIELD_PREP() and FIELD_GET()
-using masks created using GENMASK() and BIT().
-
-Or, less desirably IMHO, by providing an alternate layout for
-the embedded struct for big endian systems.
-
-...
