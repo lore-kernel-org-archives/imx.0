@@ -1,202 +1,220 @@
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2043.outbound.protection.outlook.com [40.107.247.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F70E1AF0D1
-	for <imx@lists.linux.dev>; Fri,  6 Dec 2024 08:04:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733472293; cv=none; b=nKdBfL7ukSk/0FjIG0mj7f611Wm3pMZQy8Ahac3m80aVZVr/GwIGmCrkCDbpR1BHL6W3+zJHXtED3Q0Ld0DZ9tgPKYGFD4EvlPZP5gQg7niblWCvV44cg/Ys+SWKm75RDhGq13X2q34/7f6HA9c/99I3Sawm3r+nrVxRxH1Yrd8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733472293; c=relaxed/simple;
-	bh=tm0KNVA21OZ4SXncAJY19lTDh7zqCvm+WsLH1NXKVgQ=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=UvxbiXNQmq5Llsuje0LRPCThc2HvHgNsw4aynpf/ViA5mOLD5aHH+kK8QC+YepaD5SQ91vPJVdKNruxbFRD7Ho/uGNaDM+dg0tG9aKW3cYtt0BNqMjsWhYSfvhRq3uZ3WxMbn6a6Bn3oiI8/Q6XJ7RxiD4BsSJ1sbw4Gd238KQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=P5E0ktnW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=oOYHLgN4; arc=none smtp.client-ip=202.12.124.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71321B4122
+	for <imx@lists.linux.dev>; Fri,  6 Dec 2024 08:48:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733474940; cv=fail; b=KjepGJyZTIGj+GWQqvuQ5bctDI3K7/4H4MQhMxhfOh6tR4lUPQ3e51dZTy59/JItdAuHX1waec940VrbIWJhGD+PBsuAJiCK8QNZ7dUj0GiRL3TvpzZl9z2QleR1u8Zfyixud0gPljVzZViO7Z3lXohJZs9Ut5MBW1WA2laPZk0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733474940; c=relaxed/simple;
+	bh=Tr7B9ERWtXV9fytB1VL8OYTOWorWfCTX1R74Hcyr0iI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=InQr1ydzy7g0cjyY2oP3TFevJrDJvR3MGYxOZTweAc/NZlDO1ermKQO8x4UAPfTUQJbRPkMrFbouxvRmwwgkTt60xsezG1X/qZhit08KHPMyvgj09iqhOghNGSnQC70lpDo8LZo4ULRCPyRImM4cTPitOzfsqGdT3ICO9Y96x7Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=S2TPzT0S; arc=fail smtp.client-ip=40.107.247.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="P5E0ktnW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="oOYHLgN4"
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfout.stl.internal (Postfix) with ESMTP id C9AFE114013D;
-	Fri,  6 Dec 2024 03:04:48 -0500 (EST)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Fri, 06 Dec 2024 03:04:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1733472288;
-	 x=1733558688; bh=yttDIhvUtMw6e5hq3bpLC7IVE+x1nQ+E4Z0RE9OfEO0=; b=
-	P5E0ktnWTPpmP5VDREcEAwox0Q2IDJiYo1d0BqEPgSgpM2JYP31lH96fkxtZ97tT
-	uRSmk3hZN/dJuI4iBDmkeK4cCt/t+kVLy5lgb4eeYdUTvUVny3O75raQbb0i+DLi
-	tSydi+qBCJcU8ImQR+BvA0vvHTdayLFjxn/1IU/PgCZoNnJFtl7s6XmGrrboJWQ6
-	WrK5Z4+E8cp9D64+htGCoC0d4MAD9dXEgICSZBS+1K/hBJi9dcv1kvSKzmCyVsop
-	qDSAgsdMzdJ6NdPHu/+IAUoy3+Cdj9HjjO95Cces25pddvJH1jWgCtOIEwGPUAKB
-	9OounoP/dYyIIvo8Z+WLEg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1733472288; x=
-	1733558688; bh=yttDIhvUtMw6e5hq3bpLC7IVE+x1nQ+E4Z0RE9OfEO0=; b=o
-	OYHLgN4PkVIR6stnw4Ngu9j7A3ItRXm5IcUROU4qruQV8SZ4RRmpK9O0iEubqtoG
-	Ds4XD5KYoyTdtl8jkE+47j9yE0xUaJsleOfe6EkIzHRGaN2Q0AnDe7EGzxVoFkbo
-	5kQfnlJG/J52fB8cVf6yx1oWKVRAejKder9YaAZtLM0GBpAT4lNwyenbjeBlbLD8
-	tC/F0jxXG6J+hRnAzMLq91ospsd6gZO7/Z4WH5D35RAwZj0s3sOfl7PG/DNzTf2Q
-	RYln0LxZrf5+1CivaM1LIXDch3wwTbLg/ZaQiWbMLAV832sUQFt18lU/VPa+R25N
-	/bBQzNXrZYn0n+VNmREig==
-X-ME-Sender: <xms:ILBSZ6z164FS0fTgeLr5-wzSY2fCehSDL-7v_hDLCsxJ-9Bx4fBRJQ>
-    <xme:ILBSZ2Q-tjp6tDfEtchI7p5_xOvU7IJSnDiKIXNpOxcrU4mmXbnU3MLLWaKSaP4Uy
-    8b8FTJW8HIu8Bda8ww>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrieekgdduudefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
-    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
-    guvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefg
-    gfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudek
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegtrghtrghlihhnrdhmrghrihhnrg
-    hssegrrhhmrdgtohhmpdhrtghpthhtoheprghlvgigrghnughrvgdrsggvlhhlohhnihes
-    sghoohhtlhhinhdrtghomhdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnvghlrd
-    horhhgpdhrtghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthht
-    oheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopeifihhllheskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrghrmhdqkhgvrhhnvghlsehlihhsthhs
-    rdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepihhmgieslhhishhtshdrlhhinh
-    hugidruggvvhdprhgtphhtthhopehghhgvnhhnrgguihdrphhrohgtohhptghiuhgtsehn
-    gihprdgtohhm
-X-ME-Proxy: <xmx:ILBSZ8XANu-RSLVdm36Vpd9abv59S-x6ku57HYkblN-EqHhXOIsrww>
-    <xmx:ILBSZwh-ANwu2jdedGwWBWeyEnD7Z8CMYEroseJhF_aQDq0B7JN7ow>
-    <xmx:ILBSZ8CdFHkRuFR07-1-ZzGno9xBri8OX5S-vJyi8fk3MdlDMhyWaA>
-    <xmx:ILBSZxJHaIG1YG60pRfFH4TwCg_2uGkGQP8l6j2wnqPzg6cvd48OYA>
-    <xmx:ILBSZ826rvu48Uz0LIEXGu08Aw7fEKkVAUbVCePg4_eiRMv9OWVbJr79>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 097F52220072; Fri,  6 Dec 2024 03:04:48 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="S2TPzT0S"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TBSHmWqfyLhuz0DPI0ITg97Hprq0bF+YC0S0hze9p6t+ZxcgJlcao5wz8HMnykMaNG0cP7pu371KOzg8ts3JSy/RQWtn/dyNQ/BCXeqj/j4a5fswyJqHloYKavqhudFU8sHesS+/q36zR8YejcmktG7x5knkGZV7kHmS9e6658xI0uPTSOP5Bj+9OK6kShYb3yAmuoBtaJm8kne4uw2mQ8A463+Cx6fs9IBKOnpg97b9f/VUtebGPTwzcANDeEtPopeQMQGNneyGFwtMOasXIDrvU7SkoWxSofbSS2wYv7tUrtGEy7R55uZVw5JlswdPV9mpRu/COdiasIk/1fPB9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vqCGfV4CoGa26D5xYRB642zCvwy3oUGLjXqpd2WvmL8=;
+ b=ESW3ffsVT1QJEMtTyQD+Lct+VkD2BxX4MS7LjHbAyKB5ycwKoEizv9TPmVk8LdVu+apq4XgQNgSnvKKe4LyYasRhxhS88keO0aSGhLRIaHGt9HYLHSFqxCZtnltsJhrJhHKDXWWv8Bao4UBmkqGnef42gWrTVPfFpvFPIzjAcxIfTb1GvN1pHW/+4a5g8GWbsHa6DxXKckpPe280uap74oaSVFhEvWpGie40Z8tkgfta/YDDj5P7sFenK/hZWp4J/Unmmr83NH+ndTyjagQognWFTorwBa8oLlfQ+qRdISR7ouZx6gQJAB1D75BFXq9qMzdBO2eChs5VVh168kvVDw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vqCGfV4CoGa26D5xYRB642zCvwy3oUGLjXqpd2WvmL8=;
+ b=S2TPzT0SvNoNoG4AAB8JZ6BoJBEKjlz+eFxCP1th3yNVbymp0FVe9dZH4kbsExd6TKe9GveJuUHzOVbf5FODMfRfYMwyZfQdn39s4d64aOyOKbbcdtuU6an1eUlYzkS0srs8Flc9Jm1mZIX/gUc8aBcezZMDl5VgHyfH9s9VPAWaT0T0T1eYTyw5+dJPmmpseRZ1EqZnZyaH/sT1bxcZrfERslPFQ2jdoYcnaM0s3QAAbgmfNNqhKL4NIDWxx71E2jyH8DyTSBsWpcP05ZQ3qftpIPR8KvsNEW8YanB3EVFZWzeC1SSleKMNwRBYclinVN2Zq6vgBZROSMK8q7n5DA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by GVXPR04MB10301.eurprd04.prod.outlook.com (2603:10a6:150:1dd::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.19; Fri, 6 Dec
+ 2024 08:48:48 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%5]) with mapi id 15.20.8230.010; Fri, 6 Dec 2024
+ 08:48:48 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+To: Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	imx@lists.linux.dev (open list:FREESCALE eDMA DRIVER),
+	dmaengine@vger.kernel.org (open list:FREESCALE eDMA DRIVER),
+	linux-kernel@vger.kernel.org (open list)
+Cc: Peng Fan <peng.fan@nxp.com>
+Subject: [PATCH V4 2/2] dmaengine: fsl-edma: free irq correctly in remove path
+Date: Fri,  6 Dec 2024 16:48:16 +0800
+Message-Id: <20241206084817.3799312-2-peng.fan@oss.nxp.com>
+X-Mailer: git-send-email 2.37.1
+In-Reply-To: <20241206084817.3799312-1-peng.fan@oss.nxp.com>
+References: <20241206084817.3799312-1-peng.fan@oss.nxp.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR06CA0223.apcprd06.prod.outlook.com
+ (2603:1096:4:68::31) To PAXPR04MB8459.eurprd04.prod.outlook.com
+ (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Fri, 06 Dec 2024 09:04:02 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Ciprian Costea" <ciprianmarian.costea@oss.nxp.com>,
- "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
- "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
- "Conor Dooley" <conor+dt@kernel.org>,
- "Catalin Marinas" <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>
-Cc: linux-rtc@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- "NXP S32 Linux Team" <s32@nxp.com>, imx@lists.linux.dev,
- "Christophe Lizzi" <clizzi@redhat.com>, "Alberto Ruiz" <aruizrui@redhat.com>,
- "Enric Balletbo" <eballetb@redhat.com>,
- "Bogdan Hamciuc" <bogdan.hamciuc@nxp.com>,
- "Ghennadi Procopciuc" <Ghennadi.Procopciuc@nxp.com>
-Message-Id: <2005af5d-bdb7-4675-8f0e-82cb817801af@app.fastmail.com>
-In-Reply-To: <20241206070955.1503412-3-ciprianmarian.costea@oss.nxp.com>
-References: <20241206070955.1503412-1-ciprianmarian.costea@oss.nxp.com>
- <20241206070955.1503412-3-ciprianmarian.costea@oss.nxp.com>
-Subject: Re: [PATCH v6 2/4] rtc: s32g: add NXP S32G2/S32G3 SoC support
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|GVXPR04MB10301:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7a729444-85d7-4cfe-a587-08dd15d2ccb8
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|366016|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?phGPYVUhEWhuu98bwPCi9LXEloLPHhEhV4/BaDvgIS2ZSuQEgrK6/wHTUSJn?=
+ =?us-ascii?Q?BhdqS5pYGJZd8fkNFKQ5tDC6T2bkFjgoqDJ9c8XD0g7J2UB9Fhzd5sbNQ2BH?=
+ =?us-ascii?Q?OBsgfG2J674pIcTj6pJmxb7LpQMz67eRx5xly+IghrAtZSVgmhM7bZets4gj?=
+ =?us-ascii?Q?gfySFsAVhwcOrVSW3ASb/Y8FhXtXLiCMy36Mjn0U1BdSEojyYThpXdCwicVT?=
+ =?us-ascii?Q?psu5SxP0SA7ttjG9JwFbpzUZZv1czeCXWXlzTxk9LfqhyRiNRw7Zb+2peT4h?=
+ =?us-ascii?Q?8IqMQGZKMjxOHu1s7eZxKL+P9dMJN8EbMU8dmvxm4og7nIXKl67d3WkNkAB9?=
+ =?us-ascii?Q?rtO5YCGpt2px8WVxbBjcGPx8lGQS+eu8/ZPbwUkPXCgzRnF5G3ptGpJ/Zycd?=
+ =?us-ascii?Q?rI/Aw13PBHSHbijYSGGU0mxK1H7v4yS2UmpZMd9RWentEVUUcPAkmzBXZiwg?=
+ =?us-ascii?Q?/eBmuAuq5ZCfGVXiYBfJUI/PkE25WJP7TY3T6Za2U+TaYl2ytFISz+2tZRQp?=
+ =?us-ascii?Q?ks9uxZK6jaNzRYds8vgdr4KQkv28YMqP3dymap0wrXiiWZh37z6bphf+8AgY?=
+ =?us-ascii?Q?aQ9KPm0c/R/3MGJJ8ZCBDJWhFmslZu8CSofvLO8eJirNSiRyvQRMHPhUApqb?=
+ =?us-ascii?Q?FMvsMPfRJKqKTap1WWhL5DvJh0rBX7S+p50qEeCBIB14jAaCABOaAIfrcaJI?=
+ =?us-ascii?Q?ZgoGCDUsXIv7q1/knW/WamQ6V2Dnk9w+iyMjLl+N68rC7xI67z1hDZ16SNAD?=
+ =?us-ascii?Q?lPQY5kilTOfl+5flWl5Z3lOEDYvnPpO3WVqHrxRhWgnt5Dts4ue28XSPYKcf?=
+ =?us-ascii?Q?5IKr+g7B1+NK5weJMvNjZ0LGr6kyCr2y/yNzGO85bQ9FhJu1SxLW2X2352V+?=
+ =?us-ascii?Q?afIfDCcl1YjImDuPrFnbRw8MQi8RsUc1LFIh/6s5Ibwk4hpc03qnraDBvIfx?=
+ =?us-ascii?Q?516YxbN7q/x/WEps81futhzuA3inM0kUc1vYrphM41b5JbJLtLQf9GpN6jR9?=
+ =?us-ascii?Q?5ZKmzFkGZXajEs+AaCse9FGFzvbQmgpbxDsoDgNs5L90xJ2D3HQR21Zxrd+n?=
+ =?us-ascii?Q?May+wprKLEKYKQyO8iJdVvAaG/jBWUTadIRSz82dPMaHTDJx9j923uBrUwQh?=
+ =?us-ascii?Q?HZM83H9nDt5U/mNWmCOx6YcHf26a/XaqXSLT6jeNlroDooADE9oUNJkr5W1E?=
+ =?us-ascii?Q?IWQbVLvIP/93cvv7lrYrxrKXxXos+znFAsg+y8u92qvjNwpGXGDNLvjMe739?=
+ =?us-ascii?Q?4WMnUDqIL5K0Btr61XFkC2JNm31qwwydmyR8l7e4XjaOJbjcJFt7446bE5Hh?=
+ =?us-ascii?Q?xjDCjBHNuA1xaSVwNjtM1Qa2y2yrq2xcYMzXuSwi/e086fn4qAfMkxXhjGGM?=
+ =?us-ascii?Q?PJD80QUJnTPVXQc6L2DocF9qvL59Z7pG87F6ots1XLrwakT+Vg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?1pmmAexjACUnKK9WxUWrz5/nKc8fodyBR/sc1CPcXsNbTOdKdhnNrwoBuf+p?=
+ =?us-ascii?Q?Y1WNi31RnByuf+Z/EIiFfEa+jpfSg5xZsAHQMM0hcfxNYN7+nVWBFIAwhixf?=
+ =?us-ascii?Q?Wa2hvSErW3MnQtjnXJmnufifSj8YciuVqP6nQoDtR9n4d/ZabtHnr4L+Sqij?=
+ =?us-ascii?Q?EvwmETpXF9i75+90oPMq47UU3pVKrkWOu6cewwggFT0B35eMXdsf9uphDRu9?=
+ =?us-ascii?Q?3M+dWeIVx/in3sdHNGrxFIlnVspZs9wuaz7vPdYBCbc5AWTMpbw5NSCAVSJp?=
+ =?us-ascii?Q?XrVq2Ykx/m98ao8UWdFp0PNfpPbQH+JKvl393w4E/1XlGY75Q38IvEwtzIlU?=
+ =?us-ascii?Q?F1wwZqvSnfXcXVUYUAUF2L9ty7C1Z2df0D1tyJCKSZUZQ2A6MkoSDJnVyZ96?=
+ =?us-ascii?Q?hp5jt8wc9/je9g2xns/DCxRKZROJqOrTo4NVZLv5R60W39s6orev0rKmuOOH?=
+ =?us-ascii?Q?oIQRTcp9FuW+Pipuqevvs2aPAy9kkeWm6eUTo5U/cBggyWkZBYKF9SnKZO06?=
+ =?us-ascii?Q?8Xs82XvLUEAwn7x2HukhJ7MbEqZhFPDl6gxR4Y9vFmufJSoAwzPcHS6qdes3?=
+ =?us-ascii?Q?cN9Pyq7sGg/eqGv2JBlKcUfaQSa1/dm+X1+lOFDn+D/pE9Ayp11rM57ZSsiR?=
+ =?us-ascii?Q?gFdJADSMPxSqkT0pvNzVuyusaFduG9CH8E+wI7U/sv9gsuoANFOTT1LPWujd?=
+ =?us-ascii?Q?LhTNn/Seb5o58k3trnmf/w1EX9QFR61ZCalo/Wqb6AAkzl2dqf3z6og9dYJ1?=
+ =?us-ascii?Q?qjCLqdRFdq528Ca23aeDoipuDpbUiyaMgPEFockM98ndq2VJTq7DGrdWdCpo?=
+ =?us-ascii?Q?VC7Xsc0FmpwhSnTIR+UuUOUbzS6TCD1VQ+Gw68V9wjZCVWcld+ytTtA2Snhc?=
+ =?us-ascii?Q?QgXUsna+pGDY4CwnRF/Yl6cpRXPDfm/jLBtRVrLVdi5VnbVeBrJdX2PvQAtV?=
+ =?us-ascii?Q?Zzgxgt7X6W9Mq0heCXPZ50iEnAp6m+rY/4DPaeX7n5DF1Lze2KJYPBqmknkR?=
+ =?us-ascii?Q?iSvL+RtYJt45aRLa33wFQWLPwiXc6UfgwqwDFoOYNtALR9FgFl6AoyamC365?=
+ =?us-ascii?Q?P3WHj/ixwXbRdl6vRP0YaUDT1arTeE1bGGeQ2fX0XwD16mRnMuUBAstydH7Y?=
+ =?us-ascii?Q?CBgoWxLdE1v1/Ojfhps5m/QhmwuuzahDPRbW+mtg3ULTdxzqmYKaxJDFuctg?=
+ =?us-ascii?Q?qZWFPzju+9Oc7qpt5t3qyGE2+HhZW2bNguIBhplwnrhgY2bRFxLtopjRXRJK?=
+ =?us-ascii?Q?qgX/92OkIU4vpuQetGnAdkWCUn4LRhOgFbvWP/IHAa8GUqAaG4lUjVNNzelY?=
+ =?us-ascii?Q?mY1zr1OUtFS/+lWTM5NxDGmk65L0CNNGs/m7h0SMSJSuz3Ko59mrh9i3SkDr?=
+ =?us-ascii?Q?H5SoTlwN4SZVImODU95Rui2BtK9GZXUHNDUYCp8FJl5RxAn48uGDF1LwABUb?=
+ =?us-ascii?Q?pwwWJZ5aHv90f2+GQgfTE+btFoxAvNNTF25K3UAzrBk1zQyzDoteeL1OCcGm?=
+ =?us-ascii?Q?19YBlELg+eJogkyCjsLrpvvOAi0/1n41iKvKhmfc+3daXq2fC7Q16adQjl/l?=
+ =?us-ascii?Q?iJkUI3GuKX0vrtjodfCC/wYAskXsxzRicg5bf4oA?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7a729444-85d7-4cfe-a587-08dd15d2ccb8
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Dec 2024 08:48:48.0609
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: t9mNDUuZDNEJW4UngdyPDMQaMKFr2QrhjVlUm1xGh+jxy9Dz6/EMA8hl9NO7bvrFStbcsZKg/HsckCNx9xrVLg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10301
 
-On Fri, Dec 6, 2024, at 08:09, Ciprian Costea wrote:
-> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
->
-> Add a RTC driver for NXP S32G2/S32G3 SoCs.
->
-> RTC tracks clock time during system suspend. It can be a wakeup source
-> for the S32G2/S32G3 SoC based boards.
->
-> The RTC module from S32G2/S32G3 is not battery-powered and it is not kept
-> alive during system reset.
->
-> Co-developed-by: Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
-> Signed-off-by: Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
-> Co-developed-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
-> Signed-off-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
-> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-I read through the driver and this looks all good to me, but there
-are two fairly minor things I noticed:
+Add fsl_edma->txirq/errirq check to avoid below warning because no
+errirq at i.MX9 platform. Otherwise there will be kernel dump:
+WARNING: CPU: 0 PID: 11 at kernel/irq/devres.c:144 devm_free_irq+0x74/0x80
+Modules linked in:
+CPU: 0 UID: 0 PID: 11 Comm: kworker/u8:0 Not tainted 6.12.0-rc7#18
+Hardware name: NXP i.MX93 11X11 EVK board (DT)
+Workqueue: events_unbound deferred_probe_work_func
+pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : devm_free_irq+0x74/0x80
+lr : devm_free_irq+0x48/0x80
+Call trace:
+ devm_free_irq+0x74/0x80 (P)
+ devm_free_irq+0x48/0x80 (L)
+ fsl_edma_remove+0xc4/0xc8
+ platform_remove+0x28/0x44
+ device_remove+0x4c/0x80
 
-> +	u64 rtc_hz;
+Fixes: 44eb827264de ("dmaengine: fsl-edma: request per-channel IRQ only when channel is allocated")
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+---
+V4:
+ Update commit log per Frank
+ Add R-b
+V3:
+ Update commit log
+V2:
+ None
 
-I see the clock rate is a 64-bit value, which is clearly what
-comes from the clk interface in the kernel
+ drivers/dma/fsl-edma-main.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-> +static u64 cycles_to_sec(u64 hz, u64 cycles)
-> +{
-> +	return div_u64(cycles, hz);
-> +}
+diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+index 3966320c3d73..03b684d7358c 100644
+--- a/drivers/dma/fsl-edma-main.c
++++ b/drivers/dma/fsl-edma-main.c
+@@ -303,6 +303,7 @@ fsl_edma2_irq_init(struct platform_device *pdev,
+ 
+ 		/* The last IRQ is for eDMA err */
+ 		if (i == count - 1) {
++			fsl_edma->errirq = irq;
+ 			ret = devm_request_irq(&pdev->dev, irq,
+ 						fsl_edma_err_handler,
+ 						0, "eDMA2-ERR", fsl_edma);
+@@ -322,10 +323,13 @@ static void fsl_edma_irq_exit(
+ 		struct platform_device *pdev, struct fsl_edma_engine *fsl_edma)
+ {
+ 	if (fsl_edma->txirq == fsl_edma->errirq) {
+-		devm_free_irq(&pdev->dev, fsl_edma->txirq, fsl_edma);
++		if (fsl_edma->txirq >= 0)
++			devm_free_irq(&pdev->dev, fsl_edma->txirq, fsl_edma);
+ 	} else {
+-		devm_free_irq(&pdev->dev, fsl_edma->txirq, fsl_edma);
+-		devm_free_irq(&pdev->dev, fsl_edma->errirq, fsl_edma);
++		if (fsl_edma->txirq >= 0)
++			devm_free_irq(&pdev->dev, fsl_edma->txirq, fsl_edma);
++		if (fsl_edma->errirq >= 0)
++			devm_free_irq(&pdev->dev, fsl_edma->errirq, fsl_edma);
+ 	}
+ }
+ 
+@@ -485,6 +489,8 @@ static int fsl_edma_probe(struct platform_device *pdev)
+ 	if (!fsl_edma)
+ 		return -ENOMEM;
+ 
++	fsl_edma->errirq = -EINVAL;
++	fsl_edma->txirq = -EINVAL;
+ 	fsl_edma->drvdata = drvdata;
+ 	fsl_edma->n_chans = chans;
+ 	mutex_init(&fsl_edma->fsl_edma_mutex);
+-- 
+2.37.1
 
-and you divide by the clk rate to convert the register value
-to seconds (as expected)
-
-> +	u32 delta_cnt;
-> +
-> +	if (!seconds || seconds > cycles_to_sec(priv->rtc_hz, RTCCNT_MAX_VAL))
-> +		return -EINVAL;
-
-However, the range of the register value is only 32 bits,
-which means there is no need to ever divide it by a 64-bit
-number, and with the 32kHz clock in the binding example,
-you only have about 37 hours worth of range here.
-
-It would appear that this makes the rtc unsuitable for
-storing absolute time across reboots, and only serve during
-runtime, which is a limitation you should probably document.
-
-> +static s64 s32g_rtc_get_time_or_alrm(struct rtc_priv *priv,
-> +				     u32 offset)
-> +{
-> +	u32 counter;
-> +
-> +	counter = ioread32(priv->rtc_base + offset);
-> +
-> +	if (counter < priv->base.cycles)
-> +		return -EINVAL;
-
-If 'counter' wraps every 37 hours, this will inevitably fail,
-right? E.g. if priv->base.cycles was already at a large
-32-bit number, even reading it shortly later will produce
-a small value after the wraparound.
-
-Using something like time_before() should address this,
-but I think you may need a custom version that works on
-32-bit numbers.
-
-> +static int s32g_rtc_resume(struct device *dev)
-> +{
-> +	struct rtc_priv *priv = dev_get_drvdata(dev);
-> +	int ret;
-> +
-> +	if (!device_may_wakeup(dev))
-> +		return 0;
-> +
-> +	/* Disable wake-up interrupts */
-> +	s32g_enable_api_irq(dev, 0);
-> +
-> +	ret = rtc_clk_src_setup(priv);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/*
-> +	 * Now RTCCNT has just been reset, and is out of sync with priv->base;
-> +	 * reapply the saved time settings.
-> +	 */
-> +	return s32g_rtc_set_time(dev, &priv->base.tm);
-> +}
-
-This also fails if the system has been suspended for more than
-37 hours, right?
-
-One more minor comment: you are using ioread32()/iowrite32()
-to access the MMIO registers, which is a bit unusual. I would
-suggest changing those to the more common readl()/writel()
-that do the exact same thing on arm64.
-
-        Arnd
