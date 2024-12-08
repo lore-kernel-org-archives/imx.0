@@ -1,141 +1,263 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F2014F9F9
-	for <imx@lists.linux.dev>; Sun,  8 Dec 2024 15:54:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A21714A4EB
+	for <imx@lists.linux.dev>; Sun,  8 Dec 2024 16:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733673300; cv=none; b=XSKhSt9K7CYxdAHISyGQ2qPA1+eYxe8ZuTW0d5lmRFYaK6OZ6e0ODGYHzmsPytSL65O5P6ONbeg1lgxT0G4d1of8gKSmFH2/CU5XwBeMgrpp3dc+P1zUMsIf53r5qkAXzaR8giR3A9aS24kDQ9Wp4jjkPXzotKAtT86oJ0yTf3M=
+	t=1733676460; cv=none; b=Lh82p0/MhXB+MkIfxs2wEQ+Mi0rfo8P3JP9Zg/hlAZL9BMLvj577a5tbkuMFetWrbkP1URFbdtFOI+gUsaPU91fI9owrFCOJNOd7WCTPb/WujbQkotdSbmxGECXmhUgM3DgXeO7zsNB5zcHIM6kPwkvlzOMpTruPt55T7fVpaRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733673300; c=relaxed/simple;
-	bh=sLGXgrOtyFUCSrAr0PZXAw3CO+iv36B75V8uwsPkqk8=;
+	s=arc-20240116; t=1733676460; c=relaxed/simple;
+	bh=KXohNUn1sgfZ0nJn3W3B9ixngyCUFopa/KgR6a70T7I=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Hx/xLeQCkuTY3KP8Vkuubpaagkufy1p7jHIKbTRPuS9Ib/41o63KYakF+iXhwm48/DE2k5fFWTvuih9YzdIE14l1WVKcNpAoM7PRFm01SV7HDzmSUPge3W2ts1UARmdP7EV5AQTX97mnqzQq3+ETcfKTp0kQT+di9olV+/ms3ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wlOADmis; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=OpQN/wmMKqfBHsokdzZI0J3dYQl0BIhqWC6dRpnzF5WVWH63grAFnnxsiBGlkMVYJcAz6pBEcVWLQNRZh6DBzm7MbRz232mJFZFJymAm//tQAvqP4/6EFy826V+dHJdtBUD3b5+qPYfKhwUJUQ2GXypREBlZWCpSF4M6F8IEmf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=JaYJWovT; arc=none smtp.client-ip=209.85.219.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wlOADmis"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5ceca0ec4e7so4348413a12.0
-        for <imx@lists.linux.dev>; Sun, 08 Dec 2024 07:54:57 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="JaYJWovT"
+Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e3a1cfeb711so1157686276.0
+        for <imx@lists.linux.dev>; Sun, 08 Dec 2024 08:47:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733673296; x=1734278096; darn=lists.linux.dev;
+        d=amarulasolutions.com; s=google; t=1733676457; x=1734281257; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=n8Ir5Ze5F+Cakp++YqE/4K5mzAf5gGTj0H2toLbkGXQ=;
-        b=wlOADmisk7OnKaRN3G/0x+aZTsN6FxpDPf7KeAAL0R0e+45fiGp3SDgPYAwXH2kfKc
-         YyIRWvgR6kNpa5hUw0qQb2OI/vcwMgyjmdi3DNTnfh2PvOfS0otzubjBeiQEz49QL5vq
-         SQbVN6HiyyhloSNzaPVavJ7Llw7LFKkzgOsINHXpVq1QvcDVFwnl7ka79Yhz74maNy6U
-         ByI+bVlWI2eYJsyRbuvyGndrszFJicPG69cXumTiEoR2J75GaAwhLc9Il10Of3eGYcz9
-         gws9KiuJgC9Nz88UimIcdQ5YrediksZag/Vru70Lm/6H9BdCx5EXi/JOdJiELWEgrAtf
-         yC9Q==
+        bh=QVkFTMeEWzKzl3eTyT6uuEMADLGUM2vIlykoDjxe32M=;
+        b=JaYJWovT81GmAO3eEWNvmt6yM7iTS3MT2hPrptNtkez3AL0fQ0gy7fsrW2URQtaVmU
+         5Es/3RlKzcisAGgGrOUkpGQpT8CUoj9mdj8HdseEHD3jvz/i9MBQ5R3h31fJmqib9iOq
+         GnqU1gC+64en64Sj7MfJpwbVHgBsLYrZ54Qi0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733673296; x=1734278096;
+        d=1e100.net; s=20230601; t=1733676457; x=1734281257;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=n8Ir5Ze5F+Cakp++YqE/4K5mzAf5gGTj0H2toLbkGXQ=;
-        b=C3VjhkMjYEWfoZEchUd0EJpcFA08EdMVGzdjB0Jm3+9JKdr+uMjHDHWPv//ETv8BuD
-         w97e3UrkVrRXRLfEC2VN4n3cUMQMtcjUpdMRzrBCrqTbf7y1ptvXse/XsvDFvwYWforG
-         YjGWGAeHO5nsV+NDbiGiBjfbSAi5e4iADaKKKKJvIVkpGX2qnT/mLzyEeuHmbZXzKxsH
-         yxMAe9Bd7+2pzyEM8qnqLCQYIO0RJEBbaSu9QtEp/eBmye2xnzfk1ICCan72EHYf6E4u
-         pSLXSNVKKGym6J3x//u108O+6wqmWdR+xZkjrRV6WY5doDqOegnHQj2rFLcFxtwYXKOb
-         gDxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVcSYcAVm024ORgvgvTxCn2/ubdxR70DfSB8OHum2WDyGiP1i5P4Xrfzjn18rHoHuwRdKk=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzTaN8HloIMHEjooKd85ufEVPg/CcM8cWm4xAWlGthJSecchkSB
-	vTapIz5HcEBMGna6bo9iyw5ROK+zOmHjAuJuNapAEKFAC/Nea5WxZ7M/64q0FTUsZSSumkh73FB
-	59zKUvpH7sqWvkPNcXvbPUbbjMVPeP/GO6Q9v
-X-Gm-Gg: ASbGncuHnlhWOI95sqT8LA/2WEccKbGi6XV6gPmy8pp8Az5hXf3BnE88I5MsnNxIvmz
-	s07JFBl39PYwRZYT9hvGMgSXVwL4Gdhk=
-X-Google-Smtp-Source: AGHT+IHNDCZtWupPE2CKmpqwWgSSxU8NjMFFGRWVi+JYDVnnaUFSF2Bl/ZJ1PGYqEOpPVp+J3GCHhK5AwFATV2K8lgg=
-X-Received: by 2002:a05:6402:4586:b0:5d0:bf27:ef8a with SMTP id
- 4fb4d7f45d1cf-5d3be715323mr8666902a12.26.1733673295651; Sun, 08 Dec 2024
- 07:54:55 -0800 (PST)
+        bh=QVkFTMeEWzKzl3eTyT6uuEMADLGUM2vIlykoDjxe32M=;
+        b=KPb+bNuWXENHtnDh3jJ5E4GcuOgeeKOmz4kjG3d//1YakqFZUCDfU5f4dZqUDpSa+o
+         ANUFOk1ChnfwG9sQlbsK7GSynSyyAicRLPaPrOVZPUYBmaQiMSXOIZ/1qiMP+Yq0R2aS
+         veJsLIW6vO+KY6bdgqoI3JKOtLnlQX4ZNa249TOqMRbDnLYIEiD1BsV//cJNuvYrT1sp
+         pr/Y54RPFrZFoCAzw3G3nqkZssmXTZg4G5TXkA84JCn7Ynu9pTYTM2ugmArAUGQHuhzO
+         TTAObMppIadI/4rC+iQkETL4o4Owc1EAsnnznsMpSfJBHoH1452iEPB79kWU6i825yMR
+         OxvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVxaGLZ89IfD7E2EqpEtYXZyDstriTgPT2uqMUGc58rFMSSxynj+yH+/8VoKosMMdAvhJE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzQ3mjukRm5+7rfzzRBp7k1iPUL5mHlyarV7MpycW4dA0J5D5a0
+	BxfkZXxNADbSOVVlQtLqQL4mSAGk5zppqENC7U8tzf1yot13Nq/18VVAJg41e6ksGu143OJ9V2N
+	18hXGjYrprRA5C9/aANn4hkc+0R/xcr2AlxqndQ==
+X-Gm-Gg: ASbGncssiv23WrxIPMbmUBVlzSCUzGAjH1n/tzoQG7N5QnQ7RjyQrnVrq9UTcK30Sfn
+	24r/9g11h0Y+C0P2/FOxmA99UlnR+
+X-Google-Smtp-Source: AGHT+IHKC4Dc3IJ0AlV+3nSKSyKc3lmzh1gUjiXPcN3vPccSLKXkcjoWpKPkQOx2bu7H1wu2vu7YerTOebNWs3uV2XQ=
+X-Received: by 2002:a05:6902:218b:b0:e38:9b5f:58a6 with SMTP id
+ 3f1490d57ef6-e3a0b4c89b2mr7285740276.46.1733676457470; Sun, 08 Dec 2024
+ 08:47:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241204052932.112446-1-wei.fang@nxp.com> <20241204052932.112446-6-wei.fang@nxp.com>
- <Z1W2lp5jNPqJZi4C@shredder>
-In-Reply-To: <Z1W2lp5jNPqJZi4C@shredder>
-From: Eric Dumazet <edumazet@google.com>
-Date: Sun, 8 Dec 2024 16:54:44 +0100
-Message-ID: <CANn89i+E+kCZCNBtu=XnyLHsMNF=Ks9BkK1+qTQNxrPDQX-Mcw@mail.gmail.com>
-Subject: Re: [PATCH v6 RESEND net-next 5/5] net: enetc: add UDP segmentation
- offload support
-To: Ido Schimmel <idosch@idosch.org>
-Cc: Wei Fang <wei.fang@nxp.com>, claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, 
-	xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	kuba@kernel.org, pabeni@redhat.com, frank.li@nxp.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+References: <20241205111939.1796244-1-dario.binacchi@amarulasolutions.com>
+ <20241205111939.1796244-16-dario.binacchi@amarulasolutions.com> <gbymcmoya7dfmedq4nkopqpswh63d2ujxl2elc2x7x325b75bu@anp36sdya43v>
+In-Reply-To: <gbymcmoya7dfmedq4nkopqpswh63d2ujxl2elc2x7x325b75bu@anp36sdya43v>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Date: Sun, 8 Dec 2024 17:47:26 +0100
+Message-ID: <CABGWkvoQzAhpVJ+QRfVZeps-Jn8REGF+21SPN=f24Tdf1d5DDQ@mail.gmail.com>
+Subject: Re: [PATCH v5 15/20] dt-bindings: clock: imx8m-clock: support spread
+ spectrum clocking
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com, 
+	Abel Vesa <abelvesa@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Michael Turquette <mturquette@baylibre.com>, Peng Fan <peng.fan@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Dec 8, 2024 at 4:09=E2=80=AFPM Ido Schimmel <idosch@idosch.org> wro=
-te:
+On Fri, Dec 6, 2024 at 2:04=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.org=
+> wrote:
 >
-> On Wed, Dec 04, 2024 at 01:29:32PM +0800, Wei Fang wrote:
-> > Set NETIF_F_GSO_UDP_L4 bit of hw_features and features because i.MX95
-> > enetc and LS1028A driver implements UDP segmentation.
+> On Thu, Dec 05, 2024 at 12:17:50PM +0100, Dario Binacchi wrote:
+> > The patch adds the DT bindings for enabling and tuning spread spectrum
+> > clocking generation.
 > >
-> > - i.MX95 ENETC supports UDP segmentation via LSO.
-> > - LS1028A ENETC supports UDP segmentation since the commit 3d5b459ba0e3
-> > ("net: tso: add UDP segmentation support").
+> > Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 > >
-> > Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
 > > ---
-> > v2: rephrase the commit message
-> > v3: no changes
-> > v4: fix typo in commit message
-> > v5: no changes
-> > v6: no changes
-> > ---
-> >  drivers/net/ethernet/freescale/enetc/enetc_pf_common.c | 6 ++++--
-> >  drivers/net/ethernet/freescale/enetc/enetc_vf.c        | 6 ++++--
-> >  2 files changed, 8 insertions(+), 4 deletions(-)
 > >
-> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c b/d=
-rivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-> > index 82a67356abe4..76fc3c6fdec1 100644
-> > --- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-> > +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-> > @@ -110,11 +110,13 @@ void enetc_pf_netdev_setup(struct enetc_si *si, s=
-truct net_device *ndev,
-> >       ndev->hw_features =3D NETIF_F_SG | NETIF_F_RXCSUM |
-> >                           NETIF_F_HW_VLAN_CTAG_TX | NETIF_F_HW_VLAN_CTA=
-G_RX |
-> >                           NETIF_F_HW_VLAN_CTAG_FILTER | NETIF_F_LOOPBAC=
-K |
-> > -                         NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6;
-> > +                         NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6 =
-|
-> > +                         NETIF_F_GSO_UDP_L4;
-> >       ndev->features =3D NETIF_F_HIGHDMA | NETIF_F_SG | NETIF_F_RXCSUM =
-|
-> >                        NETIF_F_HW_VLAN_CTAG_TX |
-> >                        NETIF_F_HW_VLAN_CTAG_RX |
-> > -                      NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6;
-> > +                      NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6 |
-> > +                      NETIF_F_GSO_UDP_L4;
-> >       ndev->vlan_features =3D NETIF_F_SG | NETIF_F_HW_CSUM |
-> >                             NETIF_F_TSO | NETIF_F_TSO6;
+> > (no changes since v4)
+> >
+> > Changes in v4:
+> > - Drop "fsl,ssc-clocks" property. The other added properties now refer
+> >   to the clock list.
+> > - Updated minItems and maxItems of
+> >   - clocks
+> >   - clock-names
+> >   - fsl,ssc-modfreq-hz
+> >   - fsl,ssc-modrate-percent
+> >   - fsl,ssc-modmethod
+> > - Updated the dts examples
+> >
+> > Changes in v3:
+> > - Added in v3
+> > - The dt-bindings have been moved from fsl,imx8m-anatop.yaml to
+> >   imx8m-clock.yaml. The anatop device (fsl,imx8m-anatop.yaml) is
+> >   indeed more or less a syscon, so it represents a memory area
+> >   accessible by ccm (imx8m-clock.yaml) to setup the PLLs.
+> >
+> > Changes in v2:
+> > - Add "allOf:" and place it after "required:" block, like in the
+> >   example schema.
+> > - Move the properties definition to the top-level.
+> > - Drop unit types as requested by the "make dt_binding_check" command.
+> >
+> >  .../bindings/clock/imx8m-clock.yaml           | 77 +++++++++++++++++--
+> >  1 file changed, 71 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml b=
+/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
+> > index c643d4a81478..83036f6d2274 100644
+> > --- a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
+> > +++ b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
+> > @@ -29,12 +29,12 @@ properties:
+> >      maxItems: 2
+> >
+> >    clocks:
+> > -    minItems: 6
+> > -    maxItems: 7
+> > +    minItems: 7
+> > +    maxItems: 10
 >
-> I didn't see any wording about it in the commit message / cover letter
-> so I will ask: Any reason not to enable UDP segmentation offload on
-> upper VLAN devices by setting the feature in 'ndev->vlan_features'?
+> ABI break without mentioning, without any explanation in the commit msg.
+>
+> >
+> >    clock-names:
+> > -    minItems: 6
+> > -    maxItems: 7
+> > +    minItems: 7
+> > +    maxItems: 10
+> >
+> >    '#clock-cells':
+> >      const: 1
+> > @@ -43,6 +43,34 @@ properties:
+> >        ID in its "clocks" phandle cell. See include/dt-bindings/clock/i=
+mx8m-clock.h
+> >        for the full list of i.MX8M clock IDs.
+> >
+> > +  fsl,ssc-modfreq-hz:
+> > +    description:
+> > +      The values of modulation frequency (Hz unit) for each clock
+> > +      supporting spread spectrum.
+> > +    minItems: 7
+> > +    maxItems: 10
+>
+> Why all cloks receive now spread spectrum? I had impression - and all
+> your previous versions were doing this - that you have only three or
+> four clocks with SSC.
 
-Going to back to my commit, it stated that net/core/tso.c was only
-dealing with basic stuff.
+Exactly. Indeed, the first six values are not valid as SSC properties but a=
+re
+only used to reach the point where the first PLL with SSC (i.e., audio_pll1=
+)
+can be indexed, which is in position 7 in the clocks list.
+This was the rationale I followed.
+And it is explicitly outlined in the example section.
+The "" for the fsl,ssc-method property is precisely aimed at specifying a
+"no SSC" method, which also fixes the warning:
 
-Adding vlan support would need some changes there, I guess this should
-be done if there is enough interest and testing.
+fsl,ssc-method:0: '' is not one of ['down-spread', 'up-spread', 'center-spr=
+ead']
 
-    commit 3d5b459ba0e3788ab471e8cb98eee89964a9c5e8    net: tso: add
-UDP segmentation support
+raised by
+make dt_binding_check DT_SCHEMA_FILES=3Dimx8m-clock.yaml
 
-    Note that like TCP, we do not support additional encapsulations,
-    and that checksums must be offloaded to the NIC.
+Or would it be acceptable to specify a list of SSC values that applies only=
+ to
+the last 4 PLLs in the clocks list?
+
+I feel like I might be missing something.
+
+Could you kindly suggest what to do or provide a DTS example to show me
+what you expect?
+
+Thanks and regards,
+Dario
+
+>
+> Do existing clocks 1-6 support SSC?
+>
+> > +
+> > +  fsl,ssc-modrate-percent:
+> > +    description:
+> > +      The percentage values of modulation rate for each clock
+> > +      supporting spread spectrum.
+> > +    minItems: 7
+> > +    maxItems: 10
+> > +
+> > +  fsl,ssc-modmethod:
+> > +    $ref: /schemas/types.yaml#/definitions/non-unique-string-array
+> > +    description:
+> > +      The modulation techniques for each clock supporting spread
+> > +      spectrum.
+> > +    minItems: 7
+> > +    maxItems: 10
+> > +    items:
+> > +      enum:
+> > +        - ""
+>
+> Drop "", not sure why do you need it.
+>
+> > +        - down-spread
+> > +        - up-spread
+> > +        - center-spread
+> > +
+> >  required:
+> >    - compatible
+> >    - reg
+> > @@ -76,6 +104,10 @@ allOf:
+> >              - const: clk_ext2
+> >              - const: clk_ext3
+> >              - const: clk_ext4
+> > +        fsl,ssc-modfreq-hz: false
+> > +        fsl,ssc-modrate-percent: false
+> > +        fsl,ssc-modmethod: false
+> > +
+> >      else:
+> >        properties:
+> >          clocks:
+> > @@ -86,6 +118,10 @@ allOf:
+> >              - description: ext2 clock input
+> >              - description: ext3 clock input
+> >              - description: ext4 clock input
+> > +            - description: audio1 PLL input
+> > +            - description: audio2 PLL input
+> > +            - description: dram PLL input
+> > +            - description: video PLL input
+>
+> Also ABI break....
+>
+> Best regards,
+> Krzysztof
+>
+
+
+--=20
+
+Dario Binacchi
+
+Senior Embedded Linux Developer
+
+dario.binacchi@amarulasolutions.com
+
+__________________________________
+
+
+Amarula Solutions SRL
+
+Via Le Canevare 30, 31100 Treviso, Veneto, IT
+
+T. +39 042 243 5310
+info@amarulasolutions.com
+
+www.amarulasolutions.com
