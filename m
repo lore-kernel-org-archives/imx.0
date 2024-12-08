@@ -1,156 +1,238 @@
-Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C75E17BA5
-	for <imx@lists.linux.dev>; Sun,  8 Dec 2024 15:09:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A8C4A3E
+	for <imx@lists.linux.dev>; Sun,  8 Dec 2024 15:47:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733670557; cv=none; b=PcAmw3uWIUc9nHuXjKG6w0xse2jCb39hhGl8IJES+F+x7rPR4lufssQQzrJajAKeTOFaZbDEc8n9Fhg3FdurCR0ZLs0GxeFeZ0ua3v0P/7/KJAD6i85YjoglDVZneJ1DDysJb7Sw5llYIrnF8szQO6Zhh9I1eSIEJ5p91TwbDf4=
+	t=1733672855; cv=none; b=PPrfCGDXSYOirf9+if4MarduifAOg0gPSennrk3jq2BCEp6vuhCaYVmq3ZI5MOfqHvkPTxg86zqnLYqLjiJdQ5Z7CiOtEQ7nfRHgKREkdvYxHNT27JQJqtwAV3pOrSuD1efdTLz0qLY/l2eFzpzsDJ+1U4WwEHsbnohwf9jHLoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733670557; c=relaxed/simple;
-	bh=0/24tb5J5ZhpVmnerobC8TCw5uPq4OQXR25zSLmdD70=;
+	s=arc-20240116; t=1733672855; c=relaxed/simple;
+	bh=wNUOxvL83TzsGifq3IVokVvTfxVKq3AXSvoF49vydRw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LdVnxUM//3Zg7yXzVuFR5+FrFAJx/Gm5Af3iM+wsVNtjWNR7AQ0QYQMbkVH4xM7xRjKclYLj+TofrvnAAOBZZvZDH9Pn/n72ZPck9X61XUEcK/GSvEhSvXhcuY4pmQ679diPNkFO0Cx38iCf5gCFFU2adzgr3QlAw5syxwcCeHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=fztLzeQ2; arc=none smtp.client-ip=103.168.172.145
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hc7XX7ksG0wLFGtJHzoBgZJ/x0Vb2MFhM6Cqbrr2+wQDpfe5/YBr9nd7k6LHogVNlfFBid86dZtz917ODV4aytxYGDjRL9sk9JeNecRBQaadaICRqgnnHPFdmKp3XaCM52WRIu8D7RcGDUCWlP9iPKljXwu/z4y9+aTY0r4C3j0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=IbVxRtn/; arc=none smtp.client-ip=103.168.172.156
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="fztLzeQ2"
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
-	by mailfout.phl.internal (Postfix) with ESMTP id 59B7C13838E6;
-	Sun,  8 Dec 2024 10:09:14 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Sun, 08 Dec 2024 10:09:14 -0500
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="IbVxRtn/"
+Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 5B6FD1140152;
+	Sun,  8 Dec 2024 10:47:32 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Sun, 08 Dec 2024 10:47:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1733670554; x=1733756954; bh=vQ0fUrvfmSwHGUIm0t5bIdaTbvcjvBrQHDH
-	gjP/z5gk=; b=fztLzeQ2iSEguxwlTQL/dO/rjzZP/vvUPzkj5Nbkkz+xnFQEdFq
-	dnG7NlgVuX7kEG7ilKdgJYoiKi5VDqE1HJgiMGvAIx8fUPIBUAWbjKOVcfa71OPW
-	qM3z28yWapYWrKF0ThLhHtzswjhYFIj+WZ1xplhgnWPSUQX56oSTZNttF0UqkKjs
-	N6kfcYDEzr2TLs14G6DfdPoK8cSbAkQThP1u2yaGA6QKWAzP4MSS6wRgD7bHwAUi
-	+omGafcnJtXDFg940oNb99HxTbcP+rWUBxEDgtu36MGFRYwVtQXvbxVpDhmMxb6L
-	CfjV6Gbo+dsn27ziCdiAMgH7bOtMgN7DtPw==
-X-ME-Sender: <xms:mbZVZ3KH4ZNlr4KszFswctL3fgmLCXDUdf7I0wSWPZlBSWfwKCZ52Q>
-    <xme:mbZVZ7IzxZcajYx5V8J1tTrsE_xCXAygPKucCLV_2Dg3uQ577FH5UO_KTEh311zOG
-    nHBgfnHdOatsHw>
-X-ME-Received: <xmr:mbZVZ_tG4ca5F1cSJwNsZ6tSufoajT5sYH12gomO1IcweRVymdsNlvq6TIRO>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrjeefgdejfecutefuodetggdotefrodftvf
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1733672852; x=
+	1733759252; bh=0JUvzhJNY3ZdO4SAnbwz1UN2DckRSUWEHcK7aapXk8I=; b=I
+	bVxRtn/HaV9RKcTFVke0iVCvuOKTf7VjU9dMAZMx1V0dJJcZJNJeM7VVJa+6G8D6
+	Bl7casc3F4G+D6ndWId6cRtX8DD/CJtY8WqVcnRimSzv7f8GbDOkXORo/EvsYTY7
+	V6GbBjgLEftIdCTJ0AvglO4rlsHm1/WOs4DpLxi18Q/jUJOfbjDeeKAz8Ojf2nof
+	Qv4y06Md8x4ChSIr3ue/zDzx8hf+ylXyyG6Ry5XmOAHoAZQ0H2Q/jLOgo+YL8Smu
+	nNvg8b2pnT83QMxDbefbpGMvX8cLyRT39pRbSfw6cfq+R/Z3zutJYfEcM/cb0es4
+	jo46W34SZgYDaqCPlGuvg==
+X-ME-Sender: <xms:k79VZ6xMbzYQQPERLxP0eES253SM-_X-JWJA6XY-DMEj-lyjrin4mw>
+    <xme:k79VZ2RJzEqMQVhewpHyG1__nOADq_ipTQX6PVkEZmpRHixAjFALij13iTKJomvoH
+    zGulveFqmDMW58>
+X-ME-Received: <xmr:k79VZ8Vve7rI6cIC4Xeka3bAPsjGz163rXzjjjTLdCbxPcOMmFlblHIhX7m9>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrjeefgdekudcutefuodetggdotefrodftvf
     curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
     tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
-    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecu
-    hfhrohhmpefkughoucfutghhihhmmhgvlhcuoehiughoshgthhesihguohhstghhrdhorh
-    hgqeenucggtffrrghtthgvrhhnpedvudefveekheeugeeftddvveefgfduieefudeifefg
-    leekheegleegjeejgeeghfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
-    grihhlfhhrohhmpehiughoshgthhesihguohhstghhrdhorhhgpdhnsggprhgtphhtthho
-    pedufedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepfigvihdrfhgrnhhgsehngi
-    hprdgtohhmpdhrtghpthhtoheptghlrghuughiuhdrmhgrnhhoihhlsehngihprdgtohhm
-    pdhrtghpthhtohepvhhlrgguihhmihhrrdholhhtvggrnhesnhigphdrtghomhdprhgtph
-    htthhopeigihgrohhnihhnghdrfigrnhhgsehngihprdgtohhmpdhrtghpthhtoheprghn
-    ughrvgifodhnvghtuggvvheslhhunhhnrdgthhdprhgtphhtthhopegurghvvghmsegurg
-    hvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdr
-    tghomhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepph
-    grsggvnhhisehrvgguhhgrthdrtghomh
-X-ME-Proxy: <xmx:mbZVZwYn-HGtpe1O8smjfG7xkg6J03zuegDBlLehaEYI6xUXYtAK2A>
-    <xmx:mbZVZ-bFg-ODKBTwYAKxb5WJ4jSzQMYqDXL6QIzsxQL-eUmcTksNXA>
-    <xmx:mbZVZ0CD1qe1jNVxGrungQpdB1EJYkKOy5MPbRLKIjr81OMccvwZRg>
-    <xmx:mbZVZ8bz3iFu7bzIm87LOAZY_SmioxlqOBC2Xa_5lNR8WZXKoi-KzQ>
-    <xmx:mrZVZ6Rx57OgYC9GcsEeSLG9_W910dgH0uZ99qYqrQ1_EZO6vyBO20ZX>
+    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeen
+    ucfhrhhomhepkfguohcuufgthhhimhhmvghluceoihguohhstghhsehiughoshgthhdroh
+    hrgheqnecuggftrfgrthhtvghrnhephfdvudeileeiteejkedtgffhgfdtvdevgedtheeh
+    vedufeffkeevhfetvdeggfehnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpnhgvth
+    hfihhlthgvrhdrohhrghdpnhgvthguvghvtghonhhfrdhinhhfohenucevlhhushhtvghr
+    ufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehiughoshgthhesihguohhstg
+    hhrdhorhhgpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepfigvihdrfhgrnhhgsehngihprdgtohhmpdhrtghpthhtohepthhomheshhgvrh
+    gsvghrthhlrghnugdrtghomhdprhgtphhtthhopehhohhrmhhssehkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopegtlhgruhguihhurdhmrghnohhilhesnhigphdrtghomhdprhgtph
+    htthhopehvlhgrughimhhirhdrohhlthgvrghnsehngihprdgtohhmpdhrtghpthhtohep
+    gihirghonhhinhhgrdifrghnghesnhigphdrtghomhdprhgtphhtthhopegrnhgurhgvfi
+    donhgvthguvghvsehluhhnnhdrtghhpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhl
+    ohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhm
+X-ME-Proxy: <xmx:k79VZwgBeXFgKJ4a_0jCt_hxhl6LmPLYrOrymJ4FTsVMXRpUkrdggA>
+    <xmx:k79VZ8BkFicNaUmRtUF0TEMFO-wt8xpgA8_fijiVtOlFvMNHzEyP-g>
+    <xmx:k79VZxIC9KSS-DYHjlSZ7-BjmBUftlXWvZNFGLfE8HFn7O2F2Vb_sA>
+    <xmx:k79VZzCf9mwfPtTKYPYvZhTBZRw-KJBwOmyYcPBfGdUlF7kgJf_FWg>
+    <xmx:lL9VZ0btcnBu4SMcSmVsMQIbbj0h8B6UFYjbkZOuylDpsNJvSa5GWQnS>
 Feedback-ID: i494840e7:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 8 Dec 2024 10:09:13 -0500 (EST)
-Date: Sun, 8 Dec 2024 17:09:10 +0200
+ 8 Dec 2024 10:47:30 -0500 (EST)
+Date: Sun, 8 Dec 2024 17:47:29 +0200
 From: Ido Schimmel <idosch@idosch.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, frank.li@nxp.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v6 RESEND net-next 5/5] net: enetc: add UDP segmentation
- offload support
-Message-ID: <Z1W2lp5jNPqJZi4C@shredder>
+To: Wei Fang <wei.fang@nxp.com>, tom@herbertland.com
+Cc: Simon Horman <horms@kernel.org>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	Frank Li <frank.li@nxp.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH v6 RESEND net-next 1/5] net: enetc: add Rx checksum
+ offload for i.MX95 ENETC
+Message-ID: <Z1W_kSMUp3lsLPr_@shredder>
 References: <20241204052932.112446-1-wei.fang@nxp.com>
- <20241204052932.112446-6-wei.fang@nxp.com>
+ <20241204052932.112446-2-wei.fang@nxp.com>
+ <20241206092329.GH2581@kernel.org>
+ <PAXPR04MB85101D0EE82ED8EEF48A588988312@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20241206123030.GM2581@kernel.org>
+ <PAXPR04MB85107FD857F1AB33BBE4F70988312@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241204052932.112446-6-wei.fang@nxp.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <PAXPR04MB85107FD857F1AB33BBE4F70988312@PAXPR04MB8510.eurprd04.prod.outlook.com>
 
-On Wed, Dec 04, 2024 at 01:29:32PM +0800, Wei Fang wrote:
-> Set NETIF_F_GSO_UDP_L4 bit of hw_features and features because i.MX95
-> enetc and LS1028A driver implements UDP segmentation.
+On Fri, Dec 06, 2024 at 12:45:02PM +0000, Wei Fang wrote:
+> > -----Original Message-----
+> > From: Simon Horman <horms@kernel.org>
+> > Sent: 2024年12月6日 20:31
+> > To: Wei Fang <wei.fang@nxp.com>
+> > Cc: Claudiu Manoil <claudiu.manoil@nxp.com>; Vladimir Oltean
+> > <vladimir.oltean@nxp.com>; Clark Wang <xiaoning.wang@nxp.com>;
+> > andrew+netdev@lunn.ch; davem@davemloft.net; edumazet@google.com;
+> > kuba@kernel.org; pabeni@redhat.com; Frank Li <frank.li@nxp.com>;
+> > netdev@vger.kernel.org; linux-kernel@vger.kernel.org; imx@lists.linux.dev
+> > Subject: Re: [PATCH v6 RESEND net-next 1/5] net: enetc: add Rx checksum
+> > offload for i.MX95 ENETC
+> > 
+> > On Fri, Dec 06, 2024 at 10:33:15AM +0000, Wei Fang wrote:
+> > > > -----Original Message-----
+> > > > From: Simon Horman <horms@kernel.org>
+> > > > Sent: 2024年12月6日 17:23
+> > > > To: Wei Fang <wei.fang@nxp.com>
+> > > > Cc: Claudiu Manoil <claudiu.manoil@nxp.com>; Vladimir Oltean
+> > > > <vladimir.oltean@nxp.com>; Clark Wang <xiaoning.wang@nxp.com>;
+> > > > andrew+netdev@lunn.ch; davem@davemloft.net; edumazet@google.com;
+> > > > kuba@kernel.org; pabeni@redhat.com; Frank Li <frank.li@nxp.com>;
+> > > > netdev@vger.kernel.org; linux-kernel@vger.kernel.org; imx@lists.linux.dev
+> > > > Subject: Re: [PATCH v6 RESEND net-next 1/5] net: enetc: add Rx checksum
+> > > > offload for i.MX95 ENETC
+> > > >
+> > > > On Wed, Dec 04, 2024 at 01:29:28PM +0800, Wei Fang wrote:
+> > > > > ENETC rev 4.1 supports TCP and UDP checksum offload for receive, the bit
+> > > > > 108 of the Rx BD will be set if the TCP/UDP checksum is correct. Since
+> > > > > this capability is not defined in register, the rx_csum bit is added to
+> > > > > struct enetc_drvdata to indicate whether the device supports Rx
+> > checksum
+> > > > > offload.
+> > > > >
+> > > > > Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> > > > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > > > > Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+> > > > > ---
+> > > > > v2: no changes
+> > > > > v3: no changes
+> > > > > v4: no changes
+> > > > > v5: no changes
+> > > > > v6: no changes
+> > > > > ---
+> > > > >  drivers/net/ethernet/freescale/enetc/enetc.c       | 14
+> > ++++++++++----
+> > > > >  drivers/net/ethernet/freescale/enetc/enetc.h       |  2 ++
+> > > > >  drivers/net/ethernet/freescale/enetc/enetc_hw.h    |  2 ++
+> > > > >  .../net/ethernet/freescale/enetc/enetc_pf_common.c |  3 +++
+> > > > >  4 files changed, 17 insertions(+), 4 deletions(-)
+> > > > >
+> > > > > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c
+> > > > b/drivers/net/ethernet/freescale/enetc/enetc.c
+> > > > > index 35634c516e26..3137b6ee62d3 100644
+> > > > > --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> > > > > +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+> > > > > @@ -1011,10 +1011,15 @@ static void enetc_get_offloads(struct
+> > enetc_bdr
+> > > > *rx_ring,
+> > > > >
+> > > > >  	/* TODO: hashing */
+> > > > >  	if (rx_ring->ndev->features & NETIF_F_RXCSUM) {
+> > > > > -		u16 inet_csum = le16_to_cpu(rxbd->r.inet_csum);
+> > > > > -
+> > > > > -		skb->csum = csum_unfold((__force
+> > __sum16)~htons(inet_csum));
+> > > > > -		skb->ip_summed = CHECKSUM_COMPLETE;
+> > > > > +		if (priv->active_offloads & ENETC_F_RXCSUM &&
+> > > > > +		    le16_to_cpu(rxbd->r.flags) &
+> > ENETC_RXBD_FLAG_L4_CSUM_OK)
+> > > > {
+> > > > > +			skb->ip_summed = CHECKSUM_UNNECESSARY;
+> > > > > +		} else {
+> > > > > +			u16 inet_csum = le16_to_cpu(rxbd->r.inet_csum);
+> > > > > +
+> > > > > +			skb->csum = csum_unfold((__force
+> > __sum16)~htons(inet_csum));
+> > > > > +			skb->ip_summed = CHECKSUM_COMPLETE;
+> > > > > +		}
+> > > > >  	}
+> > > >
+> > > > Hi Wei,
+> > > >
+> > > > I am wondering about the relationship between the above and
+> > > > hardware support for CHECKSUM_COMPLETE.
+> > > >
+> > > > Prior to this patch CHECKSUM_COMPLETE was always used, which seems
+> > > > desirable. But with this patch, CHECKSUM_UNNECESSARY is conditionally
+> > used.
+> > > >
+> > > > If those cases don't work with CHECKSUM_COMPLETE then is this a
+> > bug-fix?
+> > > >
+> > > > Or, alternatively, if those cases do work with CHECKSUM_COMPLETE, then
+> > > > I'm unsure why this change is necessary or desirable. It's my understanding
+> > > > that from the Kernel's perspective CHECKSUM_COMPLETE is preferable to
+> > > > CHECKSUM_UNNECESSARY.
+> > > >
+> > > > ...
+> > >
+> > > Rx checksum offload is a new feature of ENETC v4. We would like to exploit
+> > this
+> > > capability of the hardware to save CPU cycles in calculating and verifying
+> > checksum.
+> > >
+> > 
+> > Understood, but CHECKSUM_UNNECESSARY is usually the preferred option as
+> > it
+> > is more flexible, e.g. allowing low-cost calculation of inner checksums
+> > in the presence of encapsulation.
 > 
-> - i.MX95 ENETC supports UDP segmentation via LSO.
-> - LS1028A ENETC supports UDP segmentation since the commit 3d5b459ba0e3
-> ("net: tso: add UDP segmentation support").
-> 
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> v2: rephrase the commit message
-> v3: no changes
-> v4: fix typo in commit message
-> v5: no changes
-> v6: no changes
-> ---
->  drivers/net/ethernet/freescale/enetc/enetc_pf_common.c | 6 ++++--
->  drivers/net/ethernet/freescale/enetc/enetc_vf.c        | 6 ++++--
->  2 files changed, 8 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-> index 82a67356abe4..76fc3c6fdec1 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-> @@ -110,11 +110,13 @@ void enetc_pf_netdev_setup(struct enetc_si *si, struct net_device *ndev,
->  	ndev->hw_features = NETIF_F_SG | NETIF_F_RXCSUM |
->  			    NETIF_F_HW_VLAN_CTAG_TX | NETIF_F_HW_VLAN_CTAG_RX |
->  			    NETIF_F_HW_VLAN_CTAG_FILTER | NETIF_F_LOOPBACK |
-> -			    NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6;
-> +			    NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6 |
-> +			    NETIF_F_GSO_UDP_L4;
->  	ndev->features = NETIF_F_HIGHDMA | NETIF_F_SG | NETIF_F_RXCSUM |
->  			 NETIF_F_HW_VLAN_CTAG_TX |
->  			 NETIF_F_HW_VLAN_CTAG_RX |
-> -			 NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6;
-> +			 NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6 |
-> +			 NETIF_F_GSO_UDP_L4;
->  	ndev->vlan_features = NETIF_F_SG | NETIF_F_HW_CSUM |
->  			      NETIF_F_TSO | NETIF_F_TSO6;
+> I think you mean 'CHECKSUM_COMPLETE' is the preferred option. But there is no
+> strong reason against using CHECKSUM_UNNECESSARY. So I hope to keep this patch.
 
-I didn't see any wording about it in the commit message / cover letter
-so I will ask: Any reason not to enable UDP segmentation offload on
-upper VLAN devices by setting the feature in 'ndev->vlan_features'?
+I was also under the impression that CHECKSUM_COMPLETE is more desirable
+than CHECKSUM_UNNECESSARY. Maybe Tom can help.
 
->  
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_vf.c b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-> index 63d78b2b8670..3768752b6008 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-> @@ -145,11 +145,13 @@ static void enetc_vf_netdev_setup(struct enetc_si *si, struct net_device *ndev,
->  	ndev->hw_features = NETIF_F_SG | NETIF_F_RXCSUM |
->  			    NETIF_F_HW_VLAN_CTAG_TX |
->  			    NETIF_F_HW_VLAN_CTAG_RX |
-> -			    NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6;
-> +			    NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6 |
-> +			    NETIF_F_GSO_UDP_L4;
->  	ndev->features = NETIF_F_HIGHDMA | NETIF_F_SG | NETIF_F_RXCSUM |
->  			 NETIF_F_HW_VLAN_CTAG_TX |
->  			 NETIF_F_HW_VLAN_CTAG_RX |
-> -			 NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6;
-> +			 NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6 |
-> +			 NETIF_F_GSO_UDP_L4;
->  	ndev->vlan_features = NETIF_F_SG | NETIF_F_HW_CSUM |
->  			      NETIF_F_TSO | NETIF_F_TSO6;
->  
-> -- 
-> 2.34.1
-> 
-> 
+Tom:
+
+If a device can report both CHECKSUM_UNNECESSARY and CHECKSUM_COMPLETE,
+is there any advantage in reporting CHECKSUM_UNNECESSARY? The only
+advantage I can think of is that when the kernel pulls headers (IPv6 for
+example) it wouldn't need to compute their checksum in order to adjust
+skb->csum, but I am not sure how critical that is.
+
+I am asking because I am interested in knowing what is the
+recommendation for future devices: Implement both or only
+CHECKSUM_COMPLETE?
+
+Original patch is here [1] and I did read your paper [2] and David's
+presentation [3].
+
+Thanks
+
+[1] https://lore.kernel.org/netdev/20241204052932.112446-1-wei.fang@nxp.com/T/#mf89bb4c6c72e8dd4a697551cbc9485217366d013
+[2] https://people.netfilter.org/pablo/netdev0.1/papers/UDP-Encapsulation-in-Linux.pdf
+[3] https://www.netdevconf.info/1.1/proceedings/slides/miller-hardware-checksumming.pdf
