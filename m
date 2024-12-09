@@ -1,71 +1,203 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B74216380
-	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 09:50:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D5521A954
+	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 09:52:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733737840; cv=none; b=FEyXIlSkf3otRExygRCxd3N/PEiaPkLoma+G/jB6YvPdc4nojBK/4iimKx8fWc1Cdbk7I9KxwU7qLO1lzHDq0MaZyF2DpK9S7ZQLCMu5NW4YNQT17GZrAYXz4irvgxx4JxwicSuuNWePdfvtA12M1+0gwkE8ioNGC4IVs3Z4t9I=
+	t=1733737971; cv=none; b=OUiuc3IDNl6sKrUDnXLmBpFhNiIiT2U1GLyn1yNLiMBFRDIsGsghl8+UcOpv8VdlrJrBiNHBS+DKrqxgPKv1E/LNYBgHQyTB1G7oHTcLbsA67+3xxxQgK8DTnoBJKjt0UV+LJ+OJnY5VBZaNGBFiIeij52W3FTYAl3bik/m7CmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733737840; c=relaxed/simple;
-	bh=3NPSA3+8fscJ2FyuYaclk2rGZQ3JVTTNETwfOklgM3M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DS5Gn3xApmiB4GneM168x+VckhMGVhU6Oi5udVMasXYJJbvYjRbfnaK6d5jTNXGhRds+HYS7eusx2X8jWw/5Gl3UFewrtPCroVKduUHEtghJIoRpkGDafA6KqM1nTeuz68hd1SS+riAmZUaijrMvjsu022pwUseW0BqoWyTDXxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=kXQPbSzn; arc=none smtp.client-ip=1.95.21.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1733737971; c=relaxed/simple;
+	bh=FmeH/nvjYxMQ9tgd/hUvoWhDnmO7I9JNkvHWVe4JytM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=P4uOw2apCkk+Rj7+Iwr4+bVu4/R9uDEVuEueKLWFn1n45vHJ2G0IAGvEG41i0SoqyhbhrWzeQyb8VqdXAluVG4dbnJ5c+Mb3q3tEdGuo3xmAUxWM3araCmr1EEc6RmbcJM59jm7N5+uk4FNTnzq94S7RAcGHazqYWuH8MU1HcNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=esPYALMV; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="kXQPbSzn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=ChAIwGV7ZFkveVH5BCfEgrQPKa+agmYwut0/xNKhFek=;
-	b=kXQPbSzn+GbtajNR9BYQgkCkT46oSgqEAk3vHk2xh08y8sMDwLyTPHvGVH86JT
-	90W2P/YNcISXT49tA0P8H+N7ydzUSjU1PgY33KB8wfr8u29gSsqSif+/UCaq5IZs
-	88dVcX/NQ014JwgTSZPM5oBizvpZiAg4d06b2H8j84V0s=
-Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgB3NtRBvVZnJDOOBA--.47668S3;
-	Mon, 09 Dec 2024 17:49:55 +0800 (CST)
-Date: Mon, 9 Dec 2024 17:49:52 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Marek Vasut <marex@denx.de>
-Cc: linux-arm-kernel@lists.infradead.org,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>, Peng Fan <peng.fan@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, kernel@dh-electronics.com,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH] MAINTAINERS: Update entry for DH electronics DHSOM SoMs
- and boards
-Message-ID: <Z1a9QGfVsSzc81ZL@dragon>
-References: <20241111113524.10727-1-marex@denx.de>
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="esPYALMV"
+Received: from wsk (095160158109.dynamic-2-waw-k-4-2-0.vectranet.pl [95.160.158.109])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: lukma@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 2849088B64;
+	Mon,  9 Dec 2024 10:52:41 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1733737961;
+	bh=2TgYRWKrBT4x2/7OKtG/vlEAcXmGZZN4TsXVm7o2K1I=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=esPYALMVjpVOUkI8/CAsguyrUxuh8FMSTTtKqG6U/5ClMnInIoqizAHSulrXFQINm
+	 0LKFikzSXg97Ewh8XZeDPRfMOf1UZXKowHDEdSz56ppcKjg18uZT+W3WXWW5y78SZj
+	 idtejTcRVdC+vmPWHQaPxOBNTKn1ot4qoZQ0SwcjFixJkS48JVL5Fh0O1ah3BoDoaN
+	 67XsivyHEz3MC6fg3TEbe3FDJBTrt9ZFFZgthl9rLDkIAuqDWwwRZDP1kzlBaVsszv
+	 yEa9AlpLibVUnYg46AiDZcWoAMo5vqCNGGyAT53rtTbUZfEjtjUzNsY2MDUgv1msgK
+	 Q94AmHcP8ivBg==
+Date: Mon, 9 Dec 2024 10:52:40 +0100
+From: Lukasz Majewski <lukma@denx.de>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+ <festevam@gmail.com>, devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Stefan
+ Wahren <wahrenst@gmx.net>
+Subject: Re: [PATCH v11 1/3] dt-bindings: display: Add
+ powertip,{st7272|hx8238a} as DT Schema description
+Message-ID: <20241209105240.72d8d84a@wsk>
+In-Reply-To: <20241107085705.490940-1-lukma@denx.de>
+References: <20241107085705.490940-1-lukma@denx.de>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241111113524.10727-1-marex@denx.de>
-X-CM-TRANSID:Ms8vCgB3NtRBvVZnJDOOBA--.47668S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUaznQUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCRWwZWdWsiw1LwAAs8
+Content-Type: multipart/signed; boundary="Sig_//Fyy5bZHZM.GutZmTzQ0v9p";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On Mon, Nov 11, 2024 at 12:34:21PM +0100, Marek Vasut wrote:
-> Update the MAINTAINERS entry to cover all DH electronics DHSOM
-> SoMs and boards. The DHSOM is the name which covers all modules,
-> DHCOM is the SODIMM seated SoM, DHCOR is the solder on module.
-> Use glob pattern to match on every DT file which contains either
-> of those three module substrings in lowercase.
-> 
-> Signed-off-by: Marek Vasut <marex@denx.de>
+--Sig_//Fyy5bZHZM.GutZmTzQ0v9p
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Applied, thanks!
+Dear Community,
 
+> This patch provides the DT Schema description of:
+> - powertip,st7272  320 x 240 LCD display
+> - powertip,hx8238a 320 x 240 LCD display
+>=20
+> Used with the different HW revisions of btt3 devices.
+>=20
+> Signed-off-by: Lukasz Majewski <lukma@denx.de>
+> Reviewed-by: Rob Herring <robh@kernel.org>
+
+Are there any more comments for this particular patch?
+
+If not - can it be applied as it prevents dts patchs to be pull by
+Shawn.
+
+> ---
+>=20
+> Changes for v9:
+> - New patch
+>=20
+> Changes for v10:
+> - None
+>=20
+> Changes for v11:
+> - Combine both separate dt-bindings patches for powertip,st7272 and
+>   powertip,hx8238a into one
+> - Drop the quotes for in "title" entry of powertip*.yaml files
+> ---
+>  .../display/panel/powertip,hx8238a.yaml       | 29
+> +++++++++++++++++++ .../display/panel/powertip,st7272.yaml        |
+> 29 +++++++++++++++++++ 2 files changed, 58 insertions(+)
+>  create mode 100644
+> Documentation/devicetree/bindings/display/panel/powertip,hx8238a.yaml
+> create mode 100644
+> Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
+>=20
+> diff --git
+> a/Documentation/devicetree/bindings/display/panel/powertip,hx8238a.yaml
+> b/Documentation/devicetree/bindings/display/panel/powertip,hx8238a.yaml
+> new file mode 100644 index 000000000000..b7d74faeb5d5 --- /dev/null
+> +++
+> b/Documentation/devicetree/bindings/display/panel/powertip,hx8238a.yaml
+> @@ -0,0 +1,29 @@ +# SPDX-License-Identifier: GPL-2.0-only OR
+> BSD-2-Clause +%YAML 1.2
+> +---
+> +$id:
+> http://devicetree.org/schemas/display/panel/powertip,hx8238a.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml# +
+> +title: Powertip Electronic Technology Co. 320 x 240 LCD panel
+> +
+> +maintainers:
+> +  - Lukasz Majewski <lukma@denx.de>
+> +
+> +allOf:
+> +  - $ref: panel-dpi.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - const: powertip,hx8238a
+> +      - {} # panel-dpi, but not listed here to avoid false select
+> +
+> +  height-mm: true
+> +  panel-timing: true
+> +  port: true
+> +  power-supply: true
+> +  width-mm: true
+> +
+> +additionalProperties: false
+> +
+> +...
+> diff --git
+> a/Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
+> b/Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
+> new file mode 100644 index 000000000000..f3622800f13f --- /dev/null
+> +++
+> b/Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
+> @@ -0,0 +1,29 @@ +# SPDX-License-Identifier: GPL-2.0-only OR
+> BSD-2-Clause +%YAML 1.2
+> +---
+> +$id:
+> http://devicetree.org/schemas/display/panel/powertip,st7272.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml# +
+> +title: Powertip Electronic Technology Co. 320 x 240 LCD panel
+> +
+> +maintainers:
+> +  - Lukasz Majewski <lukma@denx.de>
+> +
+> +allOf:
+> +  - $ref: panel-dpi.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - const: powertip,st7272
+> +      - {} # panel-dpi, but not listed here to avoid false select
+> +
+> +  height-mm: true
+> +  panel-timing: true
+> +  port: true
+> +  power-supply: true
+> +  width-mm: true
+> +
+> +additionalProperties: false
+> +
+> +...
+
+
+
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_//Fyy5bZHZM.GutZmTzQ0v9p
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmdWvegACgkQAR8vZIA0
+zr06jwf/Uki+jPjbdKp28ndQTmn0DS2DhJn04m0+xpfsdAF10D8JInAbJtWlVEQU
+B61lINUcP/H/t6mpGMwYFb1QdRbFAzmxEGr4leiMRMQ9A4RxvzzzPWbF1Tu3hfnf
+OyPEfvWYHxdUh0qXvO5Cd7wKxxRw1gDF+yEzcu/VxvrniJPUSQIv7brOvmXNNP2d
+j4yvvb3p/tWXTjJL+m+lyLkjdJriAdKH+if3wCU++dyPOLq+P48jr9s9peMcFXLI
++j8UUL5T8tKhDWpYfnLjh4uE89J6VSwoLmgMppYQuzYWaNk1DEKSshn1eVdhVS15
+suRvKryJhDfKkCi1xfF2wxgHZCUBGw==
+=S4ZQ
+-----END PGP SIGNATURE-----
+
+--Sig_//Fyy5bZHZM.GutZmTzQ0v9p--
