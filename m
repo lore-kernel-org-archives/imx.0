@@ -1,231 +1,340 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2078.outbound.protection.outlook.com [40.107.105.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02B014D283
-	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 17:09:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733764171; cv=none; b=txzP9XZ1c+2OuMR54zVbQ2c9LG/4bLULWeHeOlD85HcQCyuqii95aemY4CPHT3fXKLs/guq/MIOA2KRHBk/Golyi0rw8sBV6NJ/zvDbI8qJVedjVOp56vLTibXFsaIfBypWO19E4IG3f7ejnSDIapxV5iP7b4FklYadjztBQMLk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733764171; c=relaxed/simple;
-	bh=5dO0bHCkiOuMyRRsOtUMU9n5Sh4eTa7inauhZAnT2uI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Jbbj4JpTcnLvrv3EyGGP5sgUr0os0ocZgX+OmAZNNC93qGX+44Xl74DmLMNW/eTSwGgKhl9EJEvcLHkGm6wExDMrnR5HZUhhySb3v5e3qQioCLFcJxwNOATro9lrDeAKRlUBrDdnE8uKYey85eWD9ODWAxOutbsr1yt4ZlYCw34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=Elb76gn0; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E997288CC
+	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 17:17:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.78
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733764673; cv=fail; b=RfH131vJ6J5uDOi6oCUHAfW5dcR7eJRRyqm3LoHsBRTVrPuvNHpDdj9J8J3InWYsPOjYpH0wh3qrfMw8fNyzpEMGIxZFS6+i4TJC/eF1WPUUbSM4dwPMNE7g+OI/6MpfKDgFfG2k57AFsuikgG54yPUMtQChP6rIXBL3t9FngWM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733764673; c=relaxed/simple;
+	bh=9ybCUj4YQ0q+werXbgr65KxCtAIpktyo6Q7dF55Hj3o=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=NCWM2MV3WhpytNjl1eBrcGgQcDITL1SOTJM1LT9zkwmOA2xzo24sHb4JYbKGv9PdOpjFTc2HDoX2HZVk4+eQQy9JWmiSrQSz+qKv958dcFHVdCv7ycPl9741OxnLneEJpIR/tfrDhirp6ZKOCtxGT3XwvUA/6JlTmuy7EnxolXg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=CW8bC7lN; arc=fail smtp.client-ip=40.107.105.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="Elb76gn0"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-53e3a37ae07so2384195e87.3
-        for <imx@lists.linux.dev>; Mon, 09 Dec 2024 09:09:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1733764167; x=1734368967; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2dQoNlSLU0HPpFMCspBWlxi64Lg9FL6brLFfxEcaxG8=;
-        b=Elb76gn0nVvBpXKxVtYg0SfDZ+Y/TfFNA1LI46g0CdG02vIxblkD1QxIj2VyxNuZRd
-         FlddyfbMFQF+Ko8iPDac1riJ+e6nZc8gqjOsJ0PBWCcXM6kly5jVWsBgDu+E756UbEN0
-         f/j9IelVQyuX9wz9muBNdOnpH4QHPlaEwM883ZOQpPEpQEPmyEjBy1CEo1ps4UvpZnji
-         5zbga40RW1kJkMggRSURAhBIvf24J+z7Ns7sx3E7VUPkuc8AF+121yoOcNG1PXIZDmNP
-         twibXEePVh0Y0J6AeJj9R50YfjpXewgXk9qh8lkCeKZet4DE+Uvg38YvAbEbrsK2e0Rs
-         fEaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733764167; x=1734368967;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2dQoNlSLU0HPpFMCspBWlxi64Lg9FL6brLFfxEcaxG8=;
-        b=TnsW2JgM4FGjY48YKLZXFK58K6+/jYcR5wcg9cW+7hYoTlyWV11bOuddo+9QoX3Lqy
-         Cmo4HNPawTLXBLOz3jNxTZUfksdPHidZgScoiWHnMBoixV8IoUFRBbUxNutKtMYPgdVY
-         jY0u5S0yQRL4bkXAxjQIprNUKOEeA2mgFKWQDwLaEO0/671KdjikE2JzqIsw7MwsJ0T1
-         oe35+ZLwh/kMbKAdQO5l1f+CAptAAPy5ofWJAdWvs3Z3UK8aWOto/MhehspXiWjl1E9n
-         8isHL9N8xG4JE4i1sfvT/9BCAAw8CitIIY5YEJypzNY+tMXFAhe+4XK6yhEj2zTwlwsw
-         2bLg==
-X-Forwarded-Encrypted: i=1; AJvYcCWD4tFeijbvoXh44BFzE8TWoHeadpMv5pB9detxTihBR6T/BRg1/TpramQnOt+tUogBehc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwGxnHjpHO8GWwy23FJxsBa2QGD9yGMnAdD/2o1rHx1HQbi1ViR
-	jr3VXTNA/PVKsQv9MG1l2cd8mJccYZg1Gw5RiEtdNm298r5sa08aRspitbEU/f1ddoU3mDcZfa1
-	4ZnOOgiHQaMWhS/1xLjRavbHp8TQmG+7SbNYIkA==
-X-Gm-Gg: ASbGncvckkwkM/qGPz6o3CKRzIE9FuhddCaEaS/j/RLjFPeeg2BpQGZubYKw92Gyh33
-	miui2GYdTdJLvcyrHqvdHnTWfes5ImtG6Fg==
-X-Google-Smtp-Source: AGHT+IG6uSRDfPHJzHiWWjwtpQy8M4+4XudoroPlj5CXYPC49kBjcmD0V2caDVBsCTaJa23u6C6/4BVZxa5RJ8VB4hc=
-X-Received: by 2002:a05:6512:acc:b0:53e:3740:4a8d with SMTP id
- 2adb3069b0e04-53e37404c0emr3635765e87.3.1733764167141; Mon, 09 Dec 2024
- 09:09:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="CW8bC7lN"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Cn5za9MXnXvIMi0i6xC490htkHB2KX+/H0tQ0Le6Vw/d/AxpHkjUiv+e8hTk8KIReprlBFDs2LNjZo7i8q4A64TaJoqw1cwMUUvX3qhbotboQKAtyaVGhRI3j/A+O22chDFOpas6C5UBboIyEuTSPeB18GrK2S682q+18MAmNomqA0Z1LukGrRGGHWnUtgKlvcNZQlVKs/v9KcwBMvXmACoDlR8P7N0xqDL3YC7j8bJH5UbCmuP4zm8+oHhrMnHKPFX1BftxCU+etvnpAn7ZwyzMLDnxXZMl6QsLKAyVKr7q22F9im7BKyPRrvIgFDN4J4zuWXZwe8OrMB/ZNwrSNw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=J35l1quNpgTFJJh4jnuEygCTk+oZS9c4j/oKBYkeJVY=;
+ b=r7yd+27tDcgUYJBHhhpFS5O93UVWlAUxpZxKIHDmiYDVE5ZjT78dYA7hv2JySB5X0yyTz4Zxouz00r6u33ddbFjtXcOpC2YTFKXl/MvjFmWQHIxMui1EbA5ap8GaKfxh4qsIDmnQt+t3Pt5I3PVqDG/6BAZdKH69Kccr7TJ8P4no3Jf0nBrmx7tcsquTWpJ1PCD1X2PjFFcVo3+psVdpwxobYpsH+xwf/rTaoxyc9OdkyaowvYD7UR0rAweA8Vdwyj5m4tyu0v4Sf+64e7bhfnOFc6enJs8tBbdHiPjAaM9RvGPt8R4vNXy92MeQnsx+ITe8HMp7HgWLla5KxMJc5w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=J35l1quNpgTFJJh4jnuEygCTk+oZS9c4j/oKBYkeJVY=;
+ b=CW8bC7lNu200PtIIq1ULJ0EeBz/FdPPkI2n7MIZoHstaf5C6N7MVc33jHI9hE/oy9YMLWSJmhBLeVbMxNRghKbJzUZQ1yZnoYpq2puM1BSyrZ/7y9j4Aqnlu8qA9X/slZacyi5BIft/trf3yQKjyt5lBSaJPSyqj5gCy6bUygdkQEhhOTxxrta3ozOiGQI9D/xVrskEMUr69hQJo5p5IoKcGYCaU9Unf7+ZLj/8Qq8JEdOYbUQAIPAvIqPQ/iLw7X58h3TDUIpwDJ0Pp6/5f6hU1SRELCCRiVsDDIZ+wE2X6+gcIKoDpoukEarS96JrdGVw4lRw4hvYaJHjWF7OTgA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU0PR04MB9251.eurprd04.prod.outlook.com (2603:10a6:10:352::15)
+ by PAXPR04MB8365.eurprd04.prod.outlook.com (2603:10a6:102:1cf::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.12; Mon, 9 Dec
+ 2024 17:17:46 +0000
+Received: from DU0PR04MB9251.eurprd04.prod.outlook.com
+ ([fe80::708f:69ee:15df:6ebd]) by DU0PR04MB9251.eurprd04.prod.outlook.com
+ ([fe80::708f:69ee:15df:6ebd%6]) with mapi id 15.20.8230.016; Mon, 9 Dec 2024
+ 17:17:46 +0000
+Message-ID: <42d39f8e-0b59-4185-af1f-f778522608d2@oss.nxp.com>
+Date: Mon, 9 Dec 2024 19:17:42 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 2/4] rtc: s32g: add NXP S32G2/S32G3 SoC support
+To: Arnd Bergmann <arnd@arndb.de>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+Cc: linux-rtc@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ NXP S32 Linux Team <s32@nxp.com>, imx@lists.linux.dev,
+ Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
+ Enric Balletbo <eballetb@redhat.com>, Bogdan Hamciuc
+ <bogdan.hamciuc@nxp.com>, Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
+References: <20241206070955.1503412-1-ciprianmarian.costea@oss.nxp.com>
+ <20241206070955.1503412-3-ciprianmarian.costea@oss.nxp.com>
+ <2005af5d-bdb7-4675-8f0e-82cb817801af@app.fastmail.com>
+ <6f4a0be8-4def-4066-9b44-d43059b7a90d@oss.nxp.com>
+ <94cba886-86cb-41f1-96ee-501623add7db@app.fastmail.com>
+Content-Language: en-US
+From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+In-Reply-To: <94cba886-86cb-41f1-96ee-501623add7db@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AM0PR10CA0063.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:208:15::16) To DU0PR04MB9251.eurprd04.prod.outlook.com
+ (2603:10a6:10:352::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241208150711.297624-1-apatel@ventanamicro.com>
- <20241208150711.297624-2-apatel@ventanamicro.com> <875xnuq6dc.ffs@tglx>
- <CAK9=C2VqU2mdLL-R20bdgvDHi0WcuNyUSqRo7Pztsu-8X1wVvw@mail.gmail.com> <87r06gq2di.ffs@tglx>
-In-Reply-To: <87r06gq2di.ffs@tglx>
-From: Anup Patel <apatel@ventanamicro.com>
-Date: Mon, 9 Dec 2024 22:39:16 +0530
-Message-ID: <CAK9=C2UZKgkA_xZPs2=RBo7bUDKpeY2gBA2j3+S4i4xSLqC5BQ@mail.gmail.com>
-Subject: Re: [PATCH 1/4] irqchip/riscv-imsic: Handle non-atomic MSI updates
- for device
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>, 
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Atish Patra <atishp@atishpatra.org>, 
-	Andrew Jones <ajones@ventanamicro.com>, Sunil V L <sunilvl@ventanamicro.com>, 
-	Anup Patel <anup@brainfault.org>, linux-riscv@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9251:EE_|PAXPR04MB8365:EE_
+X-MS-Office365-Filtering-Correlation-Id: efaa6f56-3182-463f-a892-08dd1875665f
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?SUVhVGRkMkx6aXJRSVVIdkxmVm9oRHE4TnNMTW52MXUyMW9KYkFYWVd6alBX?=
+ =?utf-8?B?UlBiaFNNYkRvMS81Ulh0NWdxdGVUdUgwbG1iYlpBVWtmUFROV2J2QmJFbXF1?=
+ =?utf-8?B?OFdsTDM5K0lOOE9HcXVXbkFJRVpmbFZHdEZHV1RqVmMzV3h2dmxDOElud0dR?=
+ =?utf-8?B?SklYT0s3SlZJY0NRQTFCRGJsU29Ydyt5L284ZTN1YlBFd2F2ZEwzOFI4MG1B?=
+ =?utf-8?B?dmlvR29nUWVTQ2NiM2VTZFNYUW5tanRlV3hpcXc2a05xQ3BJOXNHTHlZdjVa?=
+ =?utf-8?B?SWlsaVZmeEFHMlpNbWxMaVo2T05YdnZZQ0dTTk5nSXpLUlJTZ3pOSWIrUDdW?=
+ =?utf-8?B?bGxUTW9sTEpZUTRXTjBicE1yM0tPL1A4emtRNFpESUNwd3hHVkFSZTNJN2p3?=
+ =?utf-8?B?eDdRL1lMYzcramczZFlNdkRIUHZsNVIvQjdPMTBhK0QweFpEZE9wTDNwUWN0?=
+ =?utf-8?B?ZVhnNzZ5dUxRZlM2YlRwSVZvR2VDYWNWNi8yZVBXaitDbldpUm43S1YrS0FT?=
+ =?utf-8?B?b0JLM29TSkpWVy8yV2VVV1lMdlg0RVJkZStEem4rcUhhbElyR0h0Q1lKR0w3?=
+ =?utf-8?B?MTJGMmtMS3U3YmhwODRnbk1NbWxvZVJna2I5RDlNUDNtdTBWb0djQTI3UmhX?=
+ =?utf-8?B?a2c3S0xqeFJRaTZnNUwwbVA2cmZKWUlpZXRTVUVHZ2JxcGg0UDZtQy9rRThT?=
+ =?utf-8?B?cFZWMTBzTHRpZmMyNjhZL09kM2JwSk5EdjM0QUlpUldGdTl3TEVwN0hFUTRm?=
+ =?utf-8?B?NTNUY0NKR3gyNVAwQi9aOGp4SkZRWU1RYmFtcWI4WWRHRFMrYnJpWDhUVzFV?=
+ =?utf-8?B?cXJlZ1dlUFZBVzFzc1MycC9uMHpWcW5ZdTl3UDVaNW0wa3Vvd1R2NXo3aWI3?=
+ =?utf-8?B?WGpnR2s2Y2tLMjZ4VkNrQkVsM2VvdmtjeVpPQW84NEhxbUEwck9YTjNmYWVu?=
+ =?utf-8?B?cVpSblRVbm9SSVZzZjFYbmpYY1FRRjR4WGRrNnBnK21qcWwyT2tFTThnTVFD?=
+ =?utf-8?B?dFYxMW5Ib3JqQU91YlFDdkZhZmlXMmdXZFM2M3NycUw5ZDQ5YkpIVTQ0VHVV?=
+ =?utf-8?B?Rkozc3daZVB4Q1ZQVG0zdnp2a1ZiUWNrVDY2Z0FrUzU2Y0s3TkppL1VvbStT?=
+ =?utf-8?B?WXgwU1o0QndQaGJoRzN5bTlHV25VR0k3YVY3Z3hhSkNpcDJHTnVDTlR4VklS?=
+ =?utf-8?B?RjBlS2c3R2RLcEtFT0NkQUtNMit5bG1uY2FtOTJnajJsNUJuV3VLbTJtWmlX?=
+ =?utf-8?B?OS90S0M3WnFXL1FsU1RuUWxjeGlIMitjSUMzelBaY0tySEMyNVh2MEF3b1RD?=
+ =?utf-8?B?QlczWHk3QkhQUDRxdWhhblFHRk95QmxndWVUVlBMc29FTmdjS2tjdVU5enR6?=
+ =?utf-8?B?QWF3VEhsUHYvNnJjelhVQWI0aTNPT1NpclZrSXBuWmNVczVNY05FNUt0b0xN?=
+ =?utf-8?B?ZE9Ra09hWUJNVDk1RmM2U21rT3U4cE42bEcxVTFvK0xqNzBHbnJpbloya1JW?=
+ =?utf-8?B?ODkwWUhTdUVoTzNTdnEwb0xRZzA3d1lHT0llR3FDcWFSYmFZcDlRNHhKTzFh?=
+ =?utf-8?B?bnYrMzZnb2g2MitLaDFkdVBTcExWaEhDODcwajkzVGJKSFpEaTNUSy9tRHVL?=
+ =?utf-8?B?ZTZ0MUpKZjdmMi9vd0ZVUkd6ZmJpV0ZUczZBSGZEODdvWmdaL2ZFYlUzQmhm?=
+ =?utf-8?B?cFpKK01KR3lLZHNTcXpwc0k2b1AzUzBoL0RCZEc3TFYwcVZLenhqWnExd2FP?=
+ =?utf-8?Q?F7BKJ3+X2oTRudH6SVSqUlGZpGmgfh54KNw0w11?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9251.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NFg5SEQxQVVXR3Z0VVh1SGp2c01URlVsZGJuWEZwYjBaemprWFRoRjUzUnkv?=
+ =?utf-8?B?NEphUjlPcURIM1ZreDc5WGtieTNVT3lhYTkxSXVFVzIrQk9uMU04cUc0ZXV6?=
+ =?utf-8?B?T1NBclRDUm5maUFVbUVPRWRNLzVYYXQzKzU3N2MreS8zTUp4azg3WThzS0JU?=
+ =?utf-8?B?RmIvdUhxQnhyY095TnVGY1lBemR1OTQrVy9jVVJ5cnQ2cDh0cWFoYjM1OGx3?=
+ =?utf-8?B?cDkzeTlVNnpRckxCNG1Qa2cxcFhpazNiMVJTY0xTMmtIU0gvM1d1d1lIcldF?=
+ =?utf-8?B?ejdWbGkrQUh5SlFJWkJhN0llcFFmN0ZQSlNBWVZkUU0vNk9kbjBnNnNMaFlw?=
+ =?utf-8?B?WkdCdGUyYVdacFFIK25jdURnTGYxem42ZHJlLzk3N2NjRFVJVHpHTllabUdk?=
+ =?utf-8?B?UWplTzVLRWpsaFdWZlNwdXYwYm5LS3F4L1FtYmhZVjJPWGcvZk9lOVZITDJL?=
+ =?utf-8?B?NGdMb3ZxZ2dyR1pvWHdBYk8yZXlLUW9LbTdUYytCSVB3aE56Z3dWK0k2U3JF?=
+ =?utf-8?B?dmJMWmFreVBnd1pLNEJycldqT0xqb3ZpWHo2RUE4bE1aQ0krbm0xYnY3V3Bj?=
+ =?utf-8?B?cWxzSkZaY3FRemozZDhZRS9WeHVvd29XRTBpVis4dE5ua0JDcExoZmE2cWha?=
+ =?utf-8?B?aFdpN09hQjloc2J2MUQzUUtzRTVXUitUaFkzWHpsOGhtd0dWQ0FoeVplWEdL?=
+ =?utf-8?B?WDNjMWhabW0yb0NuVC8xczRFYmxHZ2RYdzJnYlFqOXpyTFRVWVZPblJtbGNV?=
+ =?utf-8?B?d0x2UWpVdXRkUldBYTZMMnBrRTlMcGpUY0VQbmZDY2hHc21hRTNJRnlKNE9n?=
+ =?utf-8?B?UFBBK2NRZnRKWm05b0NMTnpJL0c5WkZ3Y0JmeVFBYUo0N09FNkZyOGpVa0xh?=
+ =?utf-8?B?VTBOOThGZlhhNGNTaVd3SzhSZFllWCs1cUc5dVYxVzNIV004SXBqc3Z2aE45?=
+ =?utf-8?B?MjhvMit3TjFxQnVpTndlblJ4Zm5JRTZLd2tlU1l1Z1o1QkQvRXhnZVFBR085?=
+ =?utf-8?B?a3hTN3BaNy9QRFBYOEtTZVk4dVpvd2pqZVlNWGJWcXJKRjRzUTRyK0RQMjlE?=
+ =?utf-8?B?elpTTHNmdXZoNWt5cm5GSy9sSVdxWTBZUlg4a3BwTUdtdDd1c2NOSXVBNkt2?=
+ =?utf-8?B?dWpCMDdRMVBKelVMcGZnU2RETUhyeFZyY2F5V1RFMVlWazFnVTRvQ0xHRmx3?=
+ =?utf-8?B?WFoveVRmQzVqdHVsbnJwZVdrUWlGNUFaNUJKTHBuRk1HVVV2SHhmWWJhS2FX?=
+ =?utf-8?B?ZHlPMzZkSHNYVXNCOGhoVXhtTzk3RzJIcGxEaXY2UjlsYmZ3KzFSTWVJYjVY?=
+ =?utf-8?B?dFJEOFNGMklZT0VJTGpEVEJGUStYbDVuM25uT0ZPMEZuNXhORzVseExBRzRP?=
+ =?utf-8?B?VmZpMzlGVkRQZDVIYmFzanFnSlpNMUR4c1ZIZjlHZndkYWtyNEhIdGY5NEV1?=
+ =?utf-8?B?WkViKzNHdUh3bmdkNVlJVzAyN1lVOUFqRWR5NHo1UzdaTTh4RDBMVGtEdndP?=
+ =?utf-8?B?eHN6dmNwSEF0ODNrRUQyOHRBVDRkT1FuTFFrQUlZUGZJK2xNeC9CNUM4M2hY?=
+ =?utf-8?B?cFhQWko1dmlqNW1VUGlNOTBTYmwvd3NySWtxdm04ZCtJVHduRDFIUU94Sldx?=
+ =?utf-8?B?TW85MW9WR3FpaWJVc0V1bHBuTk40SjdEUnhGUXU0ZWI4M0s4NFNaOTdLMTlQ?=
+ =?utf-8?B?MTZyN3cvZ3ZQQ2U0dVg2R25BdEIzaS9CSzdoQmtYTEFSeXFZdm9YbUtzcVc3?=
+ =?utf-8?B?SnZQN1E3Y2tWMmJkRWNxOFVRQmdmT3BGZDhUTGlIbUxWZjI0bDJEVWlCRkQ3?=
+ =?utf-8?B?bnB0eHdTLzRkT0lLaDNENlVYWW9MTm83dVh6T2hIY3JYek5YbkUyS05CcjM5?=
+ =?utf-8?B?OVlmME5HTFAycmpabjNGNjVrRnFGQkhKQk43OFlqSjBGZmdxT3JveUlDRFFS?=
+ =?utf-8?B?cGNTYXRFOEt3QVZWS3RDZ3BjV3hVNVg3YWJiZ2JHSlg0aDFCUUVyREtWbklS?=
+ =?utf-8?B?ZS9uL1AyQWZaZ1dnUjUxR2N3MGh2SEl2MGxxT3FaMndGUTVqQ2dPVTF4ZWRT?=
+ =?utf-8?B?QXQ1WlFKUDJnbi9CcXk4VzMzV0NQUjZYUjZ3ZEZPalVQV0NldForZEo2U3R1?=
+ =?utf-8?B?YnRZQnZTNjNKNUJvTWV0cHV2bjFVdTNsb1pMbEREbUxNZzM5ZmhVUGtJTFUr?=
+ =?utf-8?Q?bsROb+Ux2H3r7pVc8aXS7dc=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: efaa6f56-3182-463f-a892-08dd1875665f
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9251.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Dec 2024 17:17:46.5963
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bEPkf2AXe94I6ps2DBxvefZeADk/M6eC7jy8yVS+0ePBO/wZ3FvEONw7kjp6m5HuOHlcOZhVak+7HNnwHTt9P2Pmc2CP1sAu3LDrv5ty4nM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8365
 
-On Mon, Dec 9, 2024 at 9:23=E2=80=AFPM Thomas Gleixner <tglx@linutronix.de>=
- wrote:
->
-> Anup!
->
-> On Mon, Dec 09 2024 at 17:38, Anup Patel wrote:
-> > On Mon, Dec 9, 2024 at 1:44=E2=80=AFAM Thomas Gleixner <tglx@linutronix=
-.de> wrote:
-> >> There is no guarantee that set_affinity() runs on the original target
-> >> CPU (CPU 1). Your scheme only works, when CPU1 vector 0x20 is not used
-> >> by some other device. If it's used, you lost as CPU1 will consume the
-> >> vector and your pending check is not seeing anything.
-> >>
-> >> x86 ensures CPU locality by deferring the affinity move to the next
-> >> device interrupt on the original target CPU (CPU1 in the above
-> >> example). See CONFIG_GENERIC_IRQ_PENDING.
-> >
-> > I agree with you.
-> >
-> > The IMSIC driver must do the affinity move upon the next device
-> > interrupt on the old CPU. I will update this patch in the next revision=
-.
-> >
-> > BTW, I did not find CONFIG_GENERIC_IRQ_PENDING. Is the
-> > name correct ?
->
-> CONFIG_GENERIC_PENDING_IRQ is close enough :)
->
-> >> The interrupt domains which are not affected (remap) set the
-> >> IRQ_MOVE_PCNTXT flag to avoid that dance and don't use that affinity
-> >> setter code path at all.
-> >
-> > Yes, setting the IRQ_MOVE_PCNTXT flag in the remap domain
-> > makes perfect sense.
-> >
-> > I suggest adding IRQ_MOVE_PCNTXT usage as part of Drew's
-> > irqbypass series which adds a remap domain in the IOMMU
-> > driver. Unless you insist on having it as part of this series ?
->
-> You need to look at the other RISC-V controllers. Those which do not
-> need this should set it. That's historically backwards.
+On 12/6/2024 2:41 PM, Arnd Bergmann wrote:
+> [You don't often get email from arnd@arndb.de. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+> 
+> On Fri, Dec 6, 2024, at 13:05, Ciprian Marian Costea wrote:
+>> On 12/6/2024 10:04 AM, Arnd Bergmann wrote:
+>>>
+>>> However, the range of the register value is only 32 bits,
+>>> which means there is no need to ever divide it by a 64-bit
+>>> number, and with the 32kHz clock in the binding example,
+>>> you only have about 37 hours worth of range here.
+>>>
+>>
+>> I am not sure what is the suggestion here. To cast 'cycles' variable to
+>> 32-bit ?
+>> If yes, indeed 'div_u64' converts 'cycles' (the divisor) to 32-bit so I
+>> agree it should be u32 instead of u64.
+>> If not, I would prefer to keep using a 64-by-32 division and avoid
+>> casting 'hz' to 32-bit.
+> 
+> The confusing bit here is that the extra function just serves to
+> the dividend 'cycles' from 32-bit to 64-bit, and then calling
+> div_u64() implicitly casts the dividend 'hz' from 64-bit to
+> 32-bit, so you definitely get a 32-by-32 division already
+> if the function is inlined properly.
+> 
+> I think storing 'rtc_hz' as a u32 variable and adding a range
+> check when filling it would help, mainly to save the next reader
+> from having to understand what is going on.
+> 
 
-I will update the RISC-V APLIC MSI-mode driver in the next revision.
-This driver is a good candidate to use IRQ_MOVE_PCNTXT and
-IRQCHIP_MOVE_DEFERRED.
+The confusion on my end is that I cannot see where 'div_u64() implicitly 
+casts the dividend 'hz' from 64-bit to 32-bit' by following the method's 
+implementation [1]
 
->
-> I think we can reverse the logic here. As this needs backporting, I
-> can't make a full cleanup of this, but for your problem the patch below
-> should just work.
->
-> Select GENERIC_PENDING_IRQ and GENERIC_PENDING_IRQ_CHIPFLAGS and set the
-> IRQCHIP_MOVE_DEFERRED flag on your interrrupt chip and the core logic
-> takes care of the PCNTXT bits.
+But I agree that 'rtc_hz' can be stored into a 32-bit variable with a 
+range check added when it is taken from the Linux clock API to avoid any
+unneeded abstractions.
 
-Sure, I will update.
+[1] 
+https://elixir.bootlin.com/linux/v6.12.4/source/include/linux/math64.h#L127
 
-Thanks,
-Anup
+>>> It would appear that this makes the rtc unsuitable for
+>>> storing absolute time across reboots, and only serve during
+>>> runtime, which is a limitation you should probably document.
+>>>
+>>
+>> Actually there is the option to use DIV512 and/or DIV32 hardware
+>> divisors for the RTC clock. The driver uses a DIV512 divisor by default
+>> in order to achieve higher RTC count ranges (by achieving a smaller RTC
+>> freq). Therefore, the 37 hours become 37 * 512 => ~ 2 years.
+> 
+> Ah, makes sense. Can you add comments in an appropriate place in
+> the code about this?
+> 
 
+Sure. I will add such comment in the S32G RTC driver in V7.
 
->
-> I'll convert x86 in a seperate step and remove the PCNTXT leftovers and
-> the new config knob once the dust has settled.
->
-> Thanks,
->
->         tglx
-> ---
-> --- a/include/linux/irq.h
-> +++ b/include/linux/irq.h
-> @@ -567,6 +567,7 @@ struct irq_chip {
->   *                                    in the suspend path if they are in=
- disabled state
->   * IRQCHIP_AFFINITY_PRE_STARTUP:      Default affinity update before sta=
-rtup
->   * IRQCHIP_IMMUTABLE:                Don't ever change anything in this =
-chip
-> + * IRQCHIP_MOVE_DEFERRED:            Move the interrupt in actual interr=
-upt context
->   */
->  enum {
->         IRQCHIP_SET_TYPE_MASKED                 =3D (1 <<  0),
-> @@ -581,6 +582,7 @@ enum {
->         IRQCHIP_ENABLE_WAKEUP_ON_SUSPEND        =3D (1 <<  9),
->         IRQCHIP_AFFINITY_PRE_STARTUP            =3D (1 << 10),
->         IRQCHIP_IMMUTABLE                       =3D (1 << 11),
-> +       IRQCHIP_MOVE_DEFERRED                   =3D (1 << 12),
->  };
->
->  #include <linux/irqdesc.h>
-> --- a/kernel/irq/Kconfig
-> +++ b/kernel/irq/Kconfig
-> @@ -31,6 +31,10 @@ config GENERIC_IRQ_EFFECTIVE_AFF_MASK
->  config GENERIC_PENDING_IRQ
->         bool
->
-> +# Deduce delayed migration from top-level interrupt chip flags
-> +config GENERIC_PENDING_IRQ_CHIPFLAGS
-> +       bool
-> +
->  # Support for generic irq migrating off cpu before the cpu is offline.
->  config GENERIC_IRQ_MIGRATION
->         bool
-> --- a/kernel/irq/chip.c
-> +++ b/kernel/irq/chip.c
-> @@ -47,6 +47,13 @@ int irq_set_chip(unsigned int irq, const
->                 return -EINVAL;
->
->         desc->irq_data.chip =3D (struct irq_chip *)(chip ?: &no_irq_chip)=
-;
-> +
-> +       if (IS_ENABLED(CONFIG_GENERIC_PENDING_IRQ_CHIPFLAGS) && chip) {
-> +               if (chip->flags & IRQCHIP_MOVE_DEFERRED)
-> +                       irqd_clear(&desc->irq_data, IRQD_MOVE_PCNTXT);
-> +               else
-> +                       irqd_set(&desc->irq_data, IRQD_MOVE_PCNTXT);
-> +       }
->         irq_put_desc_unlock(desc, flags);
->         /*
->          * For !CONFIG_SPARSE_IRQ make the irq show up in
-> @@ -1114,16 +1121,21 @@ void irq_modify_status(unsigned int irq,
->         trigger =3D irqd_get_trigger_type(&desc->irq_data);
->
->         irqd_clear(&desc->irq_data, IRQD_NO_BALANCING | IRQD_PER_CPU |
-> -                  IRQD_TRIGGER_MASK | IRQD_LEVEL | IRQD_MOVE_PCNTXT);
-> +                  IRQD_TRIGGER_MASK | IRQD_LEVEL);
->         if (irq_settings_has_no_balance_set(desc))
->                 irqd_set(&desc->irq_data, IRQD_NO_BALANCING);
->         if (irq_settings_is_per_cpu(desc))
->                 irqd_set(&desc->irq_data, IRQD_PER_CPU);
-> -       if (irq_settings_can_move_pcntxt(desc))
-> -               irqd_set(&desc->irq_data, IRQD_MOVE_PCNTXT);
->         if (irq_settings_is_level(desc))
->                 irqd_set(&desc->irq_data, IRQD_LEVEL);
->
-> +       /* Keep this around until x86 is converted over */
-> +       if (!IS_ENABLED(CONFIG_GENERIC_PENDING_IRQ_CHIPFLAGS)) {
-> +               irqd_clear(&desc->irq_data, IRQD_MOVE_PCNTXT);
-> +               if (irq_settings_can_move_pcntxt(desc))
-> +                       irqd_set(&desc->irq_data, IRQD_MOVE_PCNTXT);
-> +       }
-> +
->         tmp =3D irq_settings_get_trigger_mask(desc);
->         if (tmp !=3D IRQ_TYPE_NONE)
->                 trigger =3D tmp;
->
->
->
+>> However, the rtc limitation of not being persistent during reboot
+>> remains, due to hardware RTC module registers present of NXP S32G2/S32G3
+>> SoCs being reset during system reboot. On the other hand, during system
+>> suspend, the RTC module will keep counting if a clock source is available.
+>>
+>> Currently, this limittion is documented as follows:
+>> "RTC tracks clock time during system suspend. It can be a wakeup source
+>> for the S32G2/S32G3 SoC based boards.
+>>
+>> The RTC module from S32G2/S32G3 is not battery-powered and it is not
+>> kept alive during system reset."
+> 
+> My bad, I really should not have skipped the patch
+> description ;-)
+> 
+>>> If 'counter' wraps every 37 hours, this will inevitably fail,
+>>> right? E.g. if priv->base.cycles was already at a large
+>>> 32-bit number, even reading it shortly later will produce
+>>> a small value after the wraparound.
+>>>
+>>> Using something like time_before() should address this,
+>>> but I think you may need a custom version that works on
+>>> 32-bit numbers.
+>>>
+>>
+>> This is correct. Would the following change be acceptable ?
+>>
+>> -       if (counter < priv->base.cycles)
+>> -               return -EINVAL;
+>> -
+>> -       counter -= priv->base.cycles;
+>> +       if (counter < priv->base.cycles) {
+>> +               /* A rollover on RTCCTN has occurred */
+>> +               counter += RTCCNT_MAX_VAL - priv->base.cycles;
+>> +               priv->base.cycles = 0;
+>> +       } else {
+>> +               counter -= priv->base.cycles;
+>> +       }
+> 
+> This is the same as just removing the error handling and
+> relying on unsigned integer overflow semantics.
+> 
+> The usual check we do in time_before()/time_after instead
+> checks if the elapsed time is less than half the available
+> range:
+> 
+> #define time_after(a,b)         \
+>          (typecheck(unsigned long, a) && \
+>           typecheck(unsigned long, b) && \
+>           ((long)((b) - (a)) < 0))
+> 
+
+Ok. Thanks for the suggestion. I will look into using 
+'time_before()/time_after()' API instead of directly checking via 
+comparison operators.
+
+>>>> +static int s32g_rtc_resume(struct device *dev)
+>>>> +{
+>>>> +     struct rtc_priv *priv = dev_get_drvdata(dev);
+>>>> +     int ret;
+>>>> +
+>>>> +     if (!device_may_wakeup(dev))
+>>>> +             return 0;
+>>>> +
+>>>> +     /* Disable wake-up interrupts */
+>>>> +     s32g_enable_api_irq(dev, 0);
+>>>> +
+>>>> +     ret = rtc_clk_src_setup(priv);
+>>>> +     if (ret)
+>>>> +             return ret;
+>>>> +
+>>>> +     /*
+>>>> +      * Now RTCCNT has just been reset, and is out of sync with priv->base;
+>>>> +      * reapply the saved time settings.
+>>>> +      */
+>>>> +     return s32g_rtc_set_time(dev, &priv->base.tm);
+>>>> +}
+>>>
+>>> This also fails if the system has been suspended for more than
+>>> 37 hours, right?
+>>
+>> Actually, the system would not go into suspend (returning with error) if
+>> the alarm setting passes the 32-bit / clk_freq range.
+>> The check is added in 'sec_to_rtcval' which is called from the suspend
+>> routine.
+> 
+> Who sets that alarm though? Are you relying on custom userspace
+> for this, or is that something that the kernel already does
+> that I'm missing?
+> 
+>         Arnd
+
+The test usage is via 'rtcwake' [2] userspace tool.
+I've detailed a bit the testing scenario in the cover letter for this 
+patchset [3]:
+
+"
+Following is an example of Suspend to RAM trigger on S32G2/S32G3 SoCs,
+using userspace tools such as rtcwake:
+# rtcwake -s 2 -m mem
+# rtcwake: assuming RTC uses UTC ...
+# rtcwake: wakeup from "mem" using /dev/rtc0 at Wed Feb  6 06:28:36 2036
+#
+"
+
+[2] https://man7.org/linux/man-pages/man8/rtcwake.8.html
+[3] 
+https://lore.kernel.org/all/20241206070955.1503412-1-ciprianmarian.costea@oss.nxp.com/
+
+Best Regards,
+Ciprian
+
