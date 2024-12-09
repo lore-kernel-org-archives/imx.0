@@ -1,136 +1,200 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6631D1B4236
-	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 15:44:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489C712F59C
+	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 15:53:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733759065; cv=none; b=u7iFJXQ5da3jKUZuoiTJRSX7UI7JR7hRx9fh4gTmCSCdkT+MEqXJBBHRIxjdlZNzoXDO8cHCLxbDN77oYtYsCi2O74tAcV9XXWkjRHcxzsUSoOLYyvrxzXZesSB6pe7r/Rjmt+DrOz1TDLJQAVd56G2mTR4aHHprHH3GWLxbACc=
+	t=1733759614; cv=none; b=mxL+L34/G5jfDeBe3wvvFdWA487Q60xrPa+FRftjj3qWP4jEvlD1rdgi+hyLau7Cx/IIoNUM2mbb7PcY/8uG/5BM1r4bZiEv04EhnMLIOf5m/OhuwMvu5fAi6ihWScZMWkeL59u4Mk9L9aVGxVoXMqZNYaWi+70+4RaHQyI+S38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733759065; c=relaxed/simple;
-	bh=R8gakXjOFzr18Msjlv7x86OREF32D5o5FO2PwvyoUBM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RkO4OZcAr3kGHd4MQWCC32dcB2xiqKy16ndn3fYCy/5xqmzWSGzWJeu5DJzTQe9sja6C5fCngBTYapqXNQMWMlvvLs/c6X4fPoArSe5KT3/jnp2+GrPj/LD5y8tFUoH2LBcoN9XTGFVqSv2xieOWCnxx+8pGTPhV/QH5iD6lvaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bjrC4V0q; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733759614; c=relaxed/simple;
+	bh=2kEgOq4YANYlbymoL67UkWgy+GutWR7wZUgWNXf9d30=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ejKHqvvO2zvOekseGR4a/S9KGKzmsojR7M/Cf/1zwLuYhWpFec1/XcWiaQi8ehfWZROyEHd2CO50EFxzTd+ivY+FWgL+kahDPcHPdyFUIwpd8r3e4UlCPnlqsuSsVaxaQWlERCkc63Eu1N6jLTQj7PAJ+TldBGYSl7J/WjXX5m0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ykr7Zkxq; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mEGMYqFq; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bjrC4V0q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5722DC4CED1;
-	Mon,  9 Dec 2024 15:44:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733759064;
-	bh=R8gakXjOFzr18Msjlv7x86OREF32D5o5FO2PwvyoUBM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bjrC4V0qC4WIBxl6N0Y3m5rcxQsl1BfIrhsvpBgBWFlMQXQBu+bfgXOa+u+oASu5N
-	 qG31jsynbRm21VBvEMV/iR187vUF2xTQQ49CEjm1yI7WOsIQV/pdzcXUN0c6x+q6+y
-	 15rusoyBzN6eGgB1axdDnADEaUeQYM5CCbEkCr/eZtXo98KyZiB53L9TLRwidSOMIh
-	 XDEelyShmDLRX5ZALy2M+mThSJ9j/fyZaJVpTwbZkf5Wb8PbnlnL68XbeKU6KnRi3K
-	 +y+oxX6YHNWXbpbHiLJisqI9aMhE2gxsK/N33DiN17/+tjoQ2Uk7YEWqXVLhg1y4y/
-	 ixOfuhHnbA2Og==
-Date: Mon, 9 Dec 2024 15:44:20 +0000
-From: Will Deacon <will@kernel.org>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: Frank.li@nxp.com, mark.rutland@arm.com, shawnguo@kernel.org,
-	kernel@pengutronix.de, festevam@gmail.com,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH v2] perf: imx9_perf: Introduce AXI filter version to
- refactor the driver and better extension
-Message-ID: <20241209154419.GB12428@willie-the-truck>
-References: <20241125104338.2433339-1-xu.yang_2@nxp.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ykr7Zkxq";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mEGMYqFq"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1733759610;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Oa/eRmj9sytyxrud4O4mAvjeRx/S9NypgThFLDmDcCE=;
+	b=Ykr7ZkxqH+rHf85Xrj7aG+Lm+COeUJB7sSvEhIQX7r7g0TwE81qtfgtCxTODRzFZ+NGi7D
+	+SK6ikPzhzfRcle7vTYH8T3Rz11u4xVeLGYboZuoDf/GtrUW0YWdKmcbXyZiuuSPB/i/Gs
+	0cYTX0XvY3sw9SlgygwKpdp7QkhThC5xVdcppxnbCVOAc6QJ5/o5BckCrtPd1O8PdQ8opn
+	mz2pVwzYBL//F6pNBm4DopJCTDMseN2OsoVWmDyqxoa6tFQ28yshIkhV9mPjTD5hv74ERv
+	HOoCreIJah+0eKDO6mwPcDMEyXHV9TUvoyB6Zi8LEsLa2WRxH8P6hGM7yFHS1w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1733759610;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Oa/eRmj9sytyxrud4O4mAvjeRx/S9NypgThFLDmDcCE=;
+	b=mEGMYqFqXVsV1WU4zD3oERVxJV8xPiOpwHIShLDSIpc44nxTYpe8IO6Y5H/V3ZQV8ipTLT
+	/X781OAzFoM2DGCw==
+To: Anup Patel <apatel@ventanamicro.com>
+Cc: Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Andrew Lunn <andrew@lunn.ch>, Gregory Clement
+ <gregory.clement@bootlin.com>, Sebastian Hesselbarth
+ <sebastian.hesselbarth@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Atish Patra
+ <atishp@atishpatra.org>, Andrew Jones <ajones@ventanamicro.com>, Sunil V L
+ <sunilvl@ventanamicro.com>, Anup Patel <anup@brainfault.org>,
+ linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH 1/4] irqchip/riscv-imsic: Handle non-atomic MSI updates
+ for device
+In-Reply-To: <CAK9=C2VqU2mdLL-R20bdgvDHi0WcuNyUSqRo7Pztsu-8X1wVvw@mail.gmail.com>
+References: <20241208150711.297624-1-apatel@ventanamicro.com>
+ <20241208150711.297624-2-apatel@ventanamicro.com> <875xnuq6dc.ffs@tglx>
+ <CAK9=C2VqU2mdLL-R20bdgvDHi0WcuNyUSqRo7Pztsu-8X1wVvw@mail.gmail.com>
+Date: Mon, 09 Dec 2024 16:53:29 +0100
+Message-ID: <87r06gq2di.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241125104338.2433339-1-xu.yang_2@nxp.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 25, 2024 at 06:43:38PM +0800, Xu Yang wrote:
-> The imx93 is the first supported DDR PMU that supports read transaction,
-> write transaction and read beats events which corresponding respecitively
-> to counter 2, 3 and 4.
-> 
-> However, transaction-based AXI match has low accuracy when get total bits
-> compared to beats-based. And imx93 doesn't assign AXI_ID to each master.
-> So axi filter is not used widely on imx93. This could be regards as AXI
-> filter version 1.
-> 
-> To improve the AXI filter capability, imx95 supports 1 read beats and 3
-> write beats event which corresponding respecitively to counter 2-5. imx95
-> also detailed AXI_ID allocation so that most of the master could be count
-> individually. This could be regards as AXI filter version 2.
-> 
-> This will introduce AXI filter version to refactor the driver and support
-> better extension, such as coming imx943.
-> 
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> 
-> ---
-> Changes in v2:
->  - modify subject
->  - add comments for AXI_FILTER version
->  - type -> filter_ver
-> ---
->  drivers/perf/fsl_imx9_ddr_perf.c | 33 ++++++++++++++++++++++++--------
->  1 file changed, 25 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/perf/fsl_imx9_ddr_perf.c b/drivers/perf/fsl_imx9_ddr_perf.c
-> index 3c856d9a4e97..e2c2c674b6d2 100644
-> --- a/drivers/perf/fsl_imx9_ddr_perf.c
-> +++ b/drivers/perf/fsl_imx9_ddr_perf.c
-> @@ -63,8 +63,21 @@
->  
->  static DEFINE_IDA(ddr_ida);
->  
-> +/*
-> + * V1 support 1 read transaction, 1 write transaction and 1 read beats
-> + * event which corresponding respecitively to counter 2, 3 and 4.
-> + */
-> +#define DDR_PERF_AXI_FILTER_V1		0x1
-> +
-> +/*
-> + * V2 support 1 read beats and 3 write beats events which corresponding
-> + * respecitively to counter 2-5.
-> + */
-> +#define DDR_PERF_AXI_FILTER_V2		0x2
-> +
->  struct imx_ddr_devtype_data {
->  	const char *identifier;		/* system PMU identifier for userspace */
-> +	unsigned int filter_ver;	/* AXI filter version */
->  };
->  
->  struct ddr_pmu {
-> @@ -83,24 +96,27 @@ struct ddr_pmu {
->  
->  static const struct imx_ddr_devtype_data imx91_devtype_data = {
->  	.identifier = "imx91",
-> +	.filter_ver = DDR_PERF_AXI_FILTER_V1
->  };
+Anup!
 
-[...]
+On Mon, Dec 09 2024 at 17:38, Anup Patel wrote:
+> On Mon, Dec 9, 2024 at 1:44=E2=80=AFAM Thomas Gleixner <tglx@linutronix.d=
+e> wrote:
+>> There is no guarantee that set_affinity() runs on the original target
+>> CPU (CPU 1). Your scheme only works, when CPU1 vector 0x20 is not used
+>> by some other device. If it's used, you lost as CPU1 will consume the
+>> vector and your pending check is not seeing anything.
+>>
+>> x86 ensures CPU locality by deferring the affinity move to the next
+>> device interrupt on the original target CPU (CPU1 in the above
+>> example). See CONFIG_GENERIC_IRQ_PENDING.
+>
+> I agree with you.
+>
+> The IMSIC driver must do the affinity move upon the next device
+> interrupt on the old CPU. I will update this patch in the next revision.
+>
+> BTW, I did not find CONFIG_GENERIC_IRQ_PENDING. Is the
+> name correct ?
 
-> -static inline bool is_imx93(struct ddr_pmu *pmu)
-> +static inline bool axi_filter_v1(struct ddr_pmu *pmu)
->  {
-> -	return pmu->devtype_data == &imx93_devtype_data;
-> +	return pmu->devtype_data->filter_ver == DDR_PERF_AXI_FILTER_V1;
->  }
+CONFIG_GENERIC_PENDING_IRQ is close enough :)
 
-[...]
+>> The interrupt domains which are not affected (remap) set the
+>> IRQ_MOVE_PCNTXT flag to avoid that dance and don't use that affinity
+>> setter code path at all.
+>
+> Yes, setting the IRQ_MOVE_PCNTXT flag in the remap domain
+> makes perfect sense.
+>
+> I suggest adding IRQ_MOVE_PCNTXT usage as part of Drew's
+> irqbypass series which adds a remap domain in the IOMMU
+> driver. Unless you insist on having it as part of this series ?
 
-> @@ -624,11 +641,11 @@ static int ddr_perf_event_add(struct perf_event *event, int flags)
->  	hwc->idx = counter;
->  	hwc->state |= PERF_HES_STOPPED;
->  
-> -	if (is_imx93(pmu))
-> +	if (axi_filter_v1(pmu))
->  		/* read trans, write trans, read beat */
->  		imx93_ddr_perf_monitor_config(pmu, event_id, counter, cfg1, cfg2);
+You need to look at the other RISC-V controllers. Those which do not
+need this should set it. That's historically backwards.
 
-Hmm, doesn't this change mean we now enable this for imx91 as well? My
-reading of the commit message is that imx93 was the first chip which
-supports this.
+I think we can reverse the logic here. As this needs backporting, I
+can't make a full cleanup of this, but for your problem the patch below
+should just work.
 
-Will
+Select GENERIC_PENDING_IRQ and GENERIC_PENDING_IRQ_CHIPFLAGS and set the
+IRQCHIP_MOVE_DEFERRED flag on your interrrupt chip and the core logic
+takes care of the PCNTXT bits.
+
+I'll convert x86 in a seperate step and remove the PCNTXT leftovers and
+the new config knob once the dust has settled.
+
+Thanks,
+
+        tglx
+---
+--- a/include/linux/irq.h
++++ b/include/linux/irq.h
+@@ -567,6 +567,7 @@ struct irq_chip {
+  *                                    in the suspend path if they are in d=
+isabled state
+  * IRQCHIP_AFFINITY_PRE_STARTUP:      Default affinity update before start=
+up
+  * IRQCHIP_IMMUTABLE:		      Don't ever change anything in this chip
++ * IRQCHIP_MOVE_DEFERRED:	      Move the interrupt in actual interrupt con=
+text
+  */
+ enum {
+ 	IRQCHIP_SET_TYPE_MASKED			=3D (1 <<  0),
+@@ -581,6 +582,7 @@ enum {
+ 	IRQCHIP_ENABLE_WAKEUP_ON_SUSPEND	=3D (1 <<  9),
+ 	IRQCHIP_AFFINITY_PRE_STARTUP		=3D (1 << 10),
+ 	IRQCHIP_IMMUTABLE			=3D (1 << 11),
++	IRQCHIP_MOVE_DEFERRED			=3D (1 << 12),
+ };
+=20
+ #include <linux/irqdesc.h>
+--- a/kernel/irq/Kconfig
++++ b/kernel/irq/Kconfig
+@@ -31,6 +31,10 @@ config GENERIC_IRQ_EFFECTIVE_AFF_MASK
+ config GENERIC_PENDING_IRQ
+ 	bool
+=20
++# Deduce delayed migration from top-level interrupt chip flags
++config GENERIC_PENDING_IRQ_CHIPFLAGS
++	bool
++
+ # Support for generic irq migrating off cpu before the cpu is offline.
+ config GENERIC_IRQ_MIGRATION
+ 	bool
+--- a/kernel/irq/chip.c
++++ b/kernel/irq/chip.c
+@@ -47,6 +47,13 @@ int irq_set_chip(unsigned int irq, const
+ 		return -EINVAL;
+=20
+ 	desc->irq_data.chip =3D (struct irq_chip *)(chip ?: &no_irq_chip);
++
++	if (IS_ENABLED(CONFIG_GENERIC_PENDING_IRQ_CHIPFLAGS) && chip) {
++		if (chip->flags & IRQCHIP_MOVE_DEFERRED)
++			irqd_clear(&desc->irq_data, IRQD_MOVE_PCNTXT);
++		else
++			irqd_set(&desc->irq_data, IRQD_MOVE_PCNTXT);
++	}
+ 	irq_put_desc_unlock(desc, flags);
+ 	/*
+ 	 * For !CONFIG_SPARSE_IRQ make the irq show up in
+@@ -1114,16 +1121,21 @@ void irq_modify_status(unsigned int irq,
+ 	trigger =3D irqd_get_trigger_type(&desc->irq_data);
+=20
+ 	irqd_clear(&desc->irq_data, IRQD_NO_BALANCING | IRQD_PER_CPU |
+-		   IRQD_TRIGGER_MASK | IRQD_LEVEL | IRQD_MOVE_PCNTXT);
++		   IRQD_TRIGGER_MASK | IRQD_LEVEL);
+ 	if (irq_settings_has_no_balance_set(desc))
+ 		irqd_set(&desc->irq_data, IRQD_NO_BALANCING);
+ 	if (irq_settings_is_per_cpu(desc))
+ 		irqd_set(&desc->irq_data, IRQD_PER_CPU);
+-	if (irq_settings_can_move_pcntxt(desc))
+-		irqd_set(&desc->irq_data, IRQD_MOVE_PCNTXT);
+ 	if (irq_settings_is_level(desc))
+ 		irqd_set(&desc->irq_data, IRQD_LEVEL);
+=20
++	/* Keep this around until x86 is converted over */
++	if (!IS_ENABLED(CONFIG_GENERIC_PENDING_IRQ_CHIPFLAGS)) {
++		irqd_clear(&desc->irq_data, IRQD_MOVE_PCNTXT);
++		if (irq_settings_can_move_pcntxt(desc))
++			irqd_set(&desc->irq_data, IRQD_MOVE_PCNTXT);
++	}
++
+ 	tmp =3D irq_settings_get_trigger_mask(desc);
+ 	if (tmp !=3D IRQ_TYPE_NONE)
+ 		trigger =3D tmp;
+
+
+
