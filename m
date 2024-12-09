@@ -1,146 +1,136 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE881B4250
-	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 14:37:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6631D1B4236
+	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 15:44:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733755044; cv=none; b=VY+S9w5cXI384ltpwPTLvv0dYzyjpXxZw1pdX8EljXk1/5nhDJGX6KAA0garIIzvJKNWIpPssACIw196C+NQK7RtOO/xOW98Zt1J7dckelcBky+WoVxEI0GNBz6hwVZ/aG44pNv3FsKGWdHzWIccasWJX0WgJ3vyAL3iNvcvCc4=
+	t=1733759065; cv=none; b=u7iFJXQ5da3jKUZuoiTJRSX7UI7JR7hRx9fh4gTmCSCdkT+MEqXJBBHRIxjdlZNzoXDO8cHCLxbDN77oYtYsCi2O74tAcV9XXWkjRHcxzsUSoOLYyvrxzXZesSB6pe7r/Rjmt+DrOz1TDLJQAVd56G2mTR4aHHprHH3GWLxbACc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733755044; c=relaxed/simple;
-	bh=hwj7xKZdi6rABzF0tFGA2x0rapKpS4MylfkrwNt8HV4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RaenwhL+t6ckkuRzSb9gIAESgMEuiAHV1GoVfqx78hn/xjdxID/9y1skhaVK25BptsgIPrmLSacLaXoBzZafx6BLnTimuD7wV2Vq1JwqqFdPc1beWTjNI2ATpcPo5MlhvUAegX9hMLutXn2bY2EnQBBF6G0iA5fT1S/wFqWmXjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <l.stach@pengutronix.de>)
-	id 1tKesi-00068A-Ni; Mon, 09 Dec 2024 15:37:04 +0100
-Message-ID: <ea1ca102ab0ec5068d82935623fd9ffb0b9aade1.camel@pengutronix.de>
-Subject: Re: [PATCH] serial: imx: Use uart_port_lock_irqsave() instead of
- uart_port_lock()
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Xiaolei Wang <xiaolei.wang@windriver.com>, gregkh@linuxfoundation.org, 
-	jirislaby@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, esben@geanix.com, 
-	linux@rasmusvillemoes.dk, l.sanfilippo@kunbus.com, marex@denx.de, 
-	stefan.eichenberger@toradex.com, cniedermaier@dh-electronics.com, 
-	rickaran@axis.com, xiaoliei.wang@windriver.com
-Cc: linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
-Date: Mon, 09 Dec 2024 15:37:01 +0100
-In-Reply-To: <20241209124732.693834-1-xiaolei.wang@windriver.com>
-References: <20241209124732.693834-1-xiaolei.wang@windriver.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1733759065; c=relaxed/simple;
+	bh=R8gakXjOFzr18Msjlv7x86OREF32D5o5FO2PwvyoUBM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RkO4OZcAr3kGHd4MQWCC32dcB2xiqKy16ndn3fYCy/5xqmzWSGzWJeu5DJzTQe9sja6C5fCngBTYapqXNQMWMlvvLs/c6X4fPoArSe5KT3/jnp2+GrPj/LD5y8tFUoH2LBcoN9XTGFVqSv2xieOWCnxx+8pGTPhV/QH5iD6lvaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bjrC4V0q; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bjrC4V0q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5722DC4CED1;
+	Mon,  9 Dec 2024 15:44:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733759064;
+	bh=R8gakXjOFzr18Msjlv7x86OREF32D5o5FO2PwvyoUBM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bjrC4V0qC4WIBxl6N0Y3m5rcxQsl1BfIrhsvpBgBWFlMQXQBu+bfgXOa+u+oASu5N
+	 qG31jsynbRm21VBvEMV/iR187vUF2xTQQ49CEjm1yI7WOsIQV/pdzcXUN0c6x+q6+y
+	 15rusoyBzN6eGgB1axdDnADEaUeQYM5CCbEkCr/eZtXo98KyZiB53L9TLRwidSOMIh
+	 XDEelyShmDLRX5ZALy2M+mThSJ9j/fyZaJVpTwbZkf5Wb8PbnlnL68XbeKU6KnRi3K
+	 +y+oxX6YHNWXbpbHiLJisqI9aMhE2gxsK/N33DiN17/+tjoQ2Uk7YEWqXVLhg1y4y/
+	 ixOfuhHnbA2Og==
+Date: Mon, 9 Dec 2024 15:44:20 +0000
+From: Will Deacon <will@kernel.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: Frank.li@nxp.com, mark.rutland@arm.com, shawnguo@kernel.org,
+	kernel@pengutronix.de, festevam@gmail.com,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2] perf: imx9_perf: Introduce AXI filter version to
+ refactor the driver and better extension
+Message-ID: <20241209154419.GB12428@willie-the-truck>
+References: <20241125104338.2433339-1-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: l.stach@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241125104338.2433339-1-xu.yang_2@nxp.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-Am Montag, dem 09.12.2024 um 20:47 +0800 schrieb Xiaolei Wang:
-> When executing 'ehco mem > /sys/power/state', the following
-> deadlock occurs. Since there is output during the serial
-> port entering the suspend process, the suspend will be
-> interrupted, resulting in the nesting of locks. Therefore,
-> use uart_port_lock_irqsave instead of uart_port_unlock.
->=20
-> WARNING: inconsistent lock state
-> 6.12.0-rc2-00002-g3c199ed5bd64-dirty #23 Not tainted
-> --------------------------------
-> inconsistent {IN-HARDIRQ-W} -> {HARDIRQ-ON-W} usage.
-> sh/494 [HC0[0]:SC0[0]:HE1:SE1] takes:
-> c4db5850 (&port_lock_key){?.-.}-{3:3}, at: imx_uart_enable_wakeup+0x14/0x=
-254
-> {IN-HARDIRQ-W} state was registered at:
->   lock_acquire+0x104/0x348
->   _raw_spin_lock+0x48/0x84
->   imx_uart_int+0x14/0x4dc
->   __handle_irq_event_percpu+0xac/0x2fc
->   handle_irq_event_percpu+0xc/0x40
->   handle_irq_event+0x38/0x8c
->   handle_fasteoi_irq+0xb4/0x1b8
->   handle_irq_desc+0x1c/0x2c
->   gic_handle_irq+0x6c/0xa0
->   generic_handle_arch_irq+0x2c/0x64
->   call_with_stack+0x18/0x20
->   __irq_svc+0x9c/0xbc
->   _raw_spin_unlock_irqrestore+0x2c/0x48
->   uart_write+0xd8/0x3a0
->   do_output_char+0x1a8/0x1e4
->   n_tty_write+0x224/0x440
->   file_tty_write.constprop.0+0x124/0x250
->   do_iter_readv_writev+0x100/0x1e0
->   vfs_writev+0xc4/0x448
->   do_writev+0x68/0xf8
->   ret_fast_syscall+0x0/0x1c
-> irq event stamp: 31593
-> hardirqs last  enabled at (31593): [<c1150e48>] _raw_spin_unlock_irqresto=
-re+0x44/0x48
-> hardirqs last disabled at (31592): [<c07f32f0>] clk_enable_lock+0x60/0x12=
-0
-> softirqs last  enabled at (30334): [<c012d1d4>] handle_softirqs+0x2cc/0x4=
-78
-> softirqs last disabled at (30325): [<c012d510>] __irq_exit_rcu+0x120/0x15=
-c
->=20
-> other info that might help us debug this:
->  Possible unsafe locking scenario:
->=20
->        CPU0
->        ----
->   lock(&port_lock_key);
->   <Interrupt>
->     lock(&port_lock_key);
->=20
-> Fixes: 3c199ed5bd64 ("serial: imx: Grab port lock in imx_uart_enable_wake=
-up()")
-> Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+On Mon, Nov 25, 2024 at 06:43:38PM +0800, Xu Yang wrote:
+> The imx93 is the first supported DDR PMU that supports read transaction,
+> write transaction and read beats events which corresponding respecitively
+> to counter 2, 3 and 4.
+> 
+> However, transaction-based AXI match has low accuracy when get total bits
+> compared to beats-based. And imx93 doesn't assign AXI_ID to each master.
+> So axi filter is not used widely on imx93. This could be regards as AXI
+> filter version 1.
+> 
+> To improve the AXI filter capability, imx95 supports 1 read beats and 3
+> write beats event which corresponding respecitively to counter 2-5. imx95
+> also detailed AXI_ID allocation so that most of the master could be count
+> individually. This could be regards as AXI filter version 2.
+> 
+> This will introduce AXI filter version to refactor the driver and support
+> better extension, such as coming imx943.
+> 
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> 
 > ---
->  drivers/tty/serial/imx.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-> index 17f70e4bee43..4470bcb3ef19 100644
-> --- a/drivers/tty/serial/imx.c
-> +++ b/drivers/tty/serial/imx.c
-> @@ -2691,8 +2691,9 @@ static void imx_uart_save_context(struct imx_port *=
-sport)
->  static void imx_uart_enable_wakeup(struct imx_port *sport, bool on)
+> Changes in v2:
+>  - modify subject
+>  - add comments for AXI_FILTER version
+>  - type -> filter_ver
+> ---
+>  drivers/perf/fsl_imx9_ddr_perf.c | 33 ++++++++++++++++++++++++--------
+>  1 file changed, 25 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/perf/fsl_imx9_ddr_perf.c b/drivers/perf/fsl_imx9_ddr_perf.c
+> index 3c856d9a4e97..e2c2c674b6d2 100644
+> --- a/drivers/perf/fsl_imx9_ddr_perf.c
+> +++ b/drivers/perf/fsl_imx9_ddr_perf.c
+> @@ -63,8 +63,21 @@
+>  
+>  static DEFINE_IDA(ddr_ida);
+>  
+> +/*
+> + * V1 support 1 read transaction, 1 write transaction and 1 read beats
+> + * event which corresponding respecitively to counter 2, 3 and 4.
+> + */
+> +#define DDR_PERF_AXI_FILTER_V1		0x1
+> +
+> +/*
+> + * V2 support 1 read beats and 3 write beats events which corresponding
+> + * respecitively to counter 2-5.
+> + */
+> +#define DDR_PERF_AXI_FILTER_V2		0x2
+> +
+>  struct imx_ddr_devtype_data {
+>  	const char *identifier;		/* system PMU identifier for userspace */
+> +	unsigned int filter_ver;	/* AXI filter version */
+>  };
+>  
+>  struct ddr_pmu {
+> @@ -83,24 +96,27 @@ struct ddr_pmu {
+>  
+>  static const struct imx_ddr_devtype_data imx91_devtype_data = {
+>  	.identifier = "imx91",
+> +	.filter_ver = DDR_PERF_AXI_FILTER_V1
+>  };
+
+[...]
+
+> -static inline bool is_imx93(struct ddr_pmu *pmu)
+> +static inline bool axi_filter_v1(struct ddr_pmu *pmu)
 >  {
->  	u32 ucr3;
-> +	unsigned long flags;
-> =20
-> -	uart_port_lock(&sport->port);
-> +	uart_port_lock_irqsave(&sport->port, &flags);
-
-This function is only called from process context, so it should be fine
-to use uart_port_lock_irq().
-
-Regards,
-Lucas
-
-> =20
->  	ucr3 =3D imx_uart_readl(sport, UCR3);
->  	if (on) {
-> @@ -2714,7 +2715,7 @@ static void imx_uart_enable_wakeup(struct imx_port =
-*sport, bool on)
->  		imx_uart_writel(sport, ucr1, UCR1);
->  	}
-> =20
-> -	uart_port_unlock(&sport->port);
-> +	uart_port_unlock_irqrestore(&sport->port, flags);
+> -	return pmu->devtype_data == &imx93_devtype_data;
+> +	return pmu->devtype_data->filter_ver == DDR_PERF_AXI_FILTER_V1;
 >  }
-> =20
->  static int imx_uart_suspend_noirq(struct device *dev)
 
+[...]
+
+> @@ -624,11 +641,11 @@ static int ddr_perf_event_add(struct perf_event *event, int flags)
+>  	hwc->idx = counter;
+>  	hwc->state |= PERF_HES_STOPPED;
+>  
+> -	if (is_imx93(pmu))
+> +	if (axi_filter_v1(pmu))
+>  		/* read trans, write trans, read beat */
+>  		imx93_ddr_perf_monitor_config(pmu, event_id, counter, cfg1, cfg2);
+
+Hmm, doesn't this change mean we now enable this for imx91 as well? My
+reading of the commit message is that imx93 was the first chip which
+supports this.
+
+Will
