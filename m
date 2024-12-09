@@ -1,38 +1,42 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B976022068A
-	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 12:32:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13AB42236EF
+	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 12:38:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733747545; cv=none; b=QolM1DKZY4QonuUvK+5kS2mXsT3JuMg+fvWbPeES4lAYsa7U4RjMhYftGlwya5eYc89YYodYab1ix6hd9KfRMoLIWGI/qin3g7rQhqNoYtU7TOSEEhDGxCDJ6MZNIRnh/Y09c7vyW+hwPXXb9upa3Q0q5+PEtL+qoZ3AJrmAXbE=
+	t=1733747906; cv=none; b=g0RDhIZ+7LDFgAljyEd262kqFp5m8bXUt6EC+x79k5rkfXCKyP2uWVL6cvcqrvq+QhE1fnVvhd/y1n1RhrQh71/0AenC1aKb719rFfc6NpoVojun6tXHunMdiU0SQLQXVUUOaEUHPV8R/iDuXcudSPfzg/lXv5GOpyzz7AnTbS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733747545; c=relaxed/simple;
-	bh=locmv9bU7swIPpoywjbPDhPcbAaiqMU2Tsk33gzmpUg=;
+	s=arc-20240116; t=1733747906; c=relaxed/simple;
+	bh=Uasg6/SNEB69YisucaqWqZZ4VUkZJjS9utpq28O7SvE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AEm+k3uJINTxKR1v1fwpQvETR6xUOHgda13nU7BhJfBOsD6TXVlFAGa5R+i3sR7bAimoWAZh7l9xWRturi7+GMbwH8UNUDJIPoaKelItuzFuLlRXmy0OG0KLn/h5DoYjh6kEgSbqO4nV00ouy3Fv0+dQUqU2GcHLPFNv77dzAqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=Di7ejoNy; arc=none smtp.client-ip=220.197.32.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=abDn5Nc46OoLY0DVCa2YWl/+xuW98sKe+bXWYlA+vWVniXV2s1+u4V45svnrB9iaRch3XggoUJv6exMkgJi/OgFTms4uqKFvUPyB7IlSr8xjN2DyTizl7RjnUmqXAhLpeBSoE+r2IrgDwQy2P4xGCkFxLld0FIEd3hDW25muDzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=PkXEga3K; arc=none smtp.client-ip=220.197.32.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="Di7ejoNy"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="PkXEga3K"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=a9t1ybfU0p7i8XBRjmbNqnf9Mds9LGg2edrrvPPWhKQ=;
-	b=Di7ejoNyYcqLxWzulNQP0tYoJbO8C8F4kYu+FAb9NdrJmszrWuusAJLAP1Ja0Q
-	YeNNLOvd/pGKQU6QW7mRe7EsBYggrE9a2701cmVYkXUcD+58w07hyAtNTegNJwNB
-	H54wHZ8uKZble5GadJec1OzCtVq/e5MtZkyhfZe6YzC9c=
+	Content-Type; bh=HSQa61tbPwqUeRkPuD+XeddE/YYm1t+0527lCAZDVbQ=;
+	b=PkXEga3Kr1UJDtXcvvImu3rh8lbk6jQ3qSI+Nv8pWYbSjyWijbWI1zNS2b6FXw
+	SaUc/oBI2Yd9+GHRQBr0E3brsRRZLTwlc0DCgx74rVHm+MruRW7Gdgy1jnCnZ7lL
+	zFdaDfhnDnmaTxVUspnF27OpyAyHJyk9z3Tfef3zewdno=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgB3vA0+41ZnRTaQBA--.47901S3;
-	Mon, 09 Dec 2024 20:32:00 +0800 (CST)
-Date: Mon, 9 Dec 2024 20:31:58 +0800
+	by gzsmtp3 (Coremail) with SMTP id M88vCgDXEPCL5FZnDnZzBA--.46129S3;
+	Mon, 09 Dec 2024 20:37:33 +0800 (CST)
+Date: Mon, 9 Dec 2024 20:37:31 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: alice.guo@oss.nxp.com
-Cc: alexander.stein@ew.tq-group.com, wahrenst@gmx.net, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, "alice.guo" <alice.guo@nxp.com>
-Subject: Re: [PATCH v6] soc: imx: Add SoC device register for i.MX9
-Message-ID: <Z1bjPhQxV34bEZS4@dragon>
-References: <20241118021716.396001-1-alice.guo@oss.nxp.com>
+To: abelvesa@kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: peng.fan@nxp.com, mturquette@baylibre.com, sboyd@kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, imx@lists.linux.dev, shengjiu.wang@gmail.com,
+	linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] arm64: dts: imx93: Use IMX93_CLK_SPDIF_IPG as
+ SPDIF IPG clock
+Message-ID: <Z1bkixjbyFhH3ZgL@dragon>
+References: <20241119015805.3840606-1-shengjiu.wang@nxp.com>
+ <20241119015805.3840606-4-shengjiu.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,23 +45,52 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241118021716.396001-1-alice.guo@oss.nxp.com>
-X-CM-TRANSID:Ms8vCgB3vA0+41ZnRTaQBA--.47901S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUslApUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEROwZWdW4JcK1gAAsN
+In-Reply-To: <20241119015805.3840606-4-shengjiu.wang@nxp.com>
+X-CM-TRANSID:M88vCgDXEPCL5FZnDnZzBA--.46129S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7KFW5XF15XFy5Ar4ruw4DArb_yoW8JFWfpF
+	yfCr43Jw1vgF1rC3sIqr1Sq3s5Gw43GFs3uF45XryUt3y3uryIqF4Sgrsagw1xXr4fuw43
+	tF12qr1UJ3WrZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jz7KsUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEROwZWdW4JcK1gABsM
 
-On Mon, Nov 18, 2024 at 10:17:16AM +0800, alice.guo@oss.nxp.com wrote:
-> From: "alice.guo" <alice.guo@nxp.com>
+On Tue, Nov 19, 2024 at 09:58:05AM +0800, Shengjiu Wang wrote:
+> IMX93_CLK_BUS_WAKEUP is not accurate IPG clock, which
+> missed the clock gate part.
 > 
-> i.MX9 SoCs have SoC ID, SoC revision number and chip unique identifier
-> which are provided by the corresponding ARM trusted firmware API. This
-> patch intends to use SMC call to obtain these information and then
-> register i.MX9 SoC as a device.
+> IMX93_CLK_SPDIF_IPG is the correct clock.
 > 
-> Signed-off-by: Alice Guo <alice.guo@nxp.com>
-> Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+> Fixes: 1c4a4f7362fd ("arm64: dts: imx93: Add audio device nodes")
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-Applied, thanks!
+Hi Abel,
+
+I guess it would be the best for you to apply the whole series through
+clock tree?  In that case:
+
+Acked-by: Shawn Guo <shawnguo@kernel.org>
+
+Thanks,
+Shawn
+
+> ---
+>  arch/arm64/boot/dts/freescale/imx93.dtsi | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx93.dtsi b/arch/arm64/boot/dts/freescale/imx93.dtsi
+> index 688488de8cd2..56766fdb0b1e 100644
+> --- a/arch/arm64/boot/dts/freescale/imx93.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx93.dtsi
+> @@ -925,7 +925,7 @@ xcvr: xcvr@42680000 {
+>  				reg-names = "ram", "regs", "rxfifo", "txfifo";
+>  				interrupts = <GIC_SPI 203 IRQ_TYPE_LEVEL_HIGH>,
+>  					     <GIC_SPI 204 IRQ_TYPE_LEVEL_HIGH>;
+> -				clocks = <&clk IMX93_CLK_BUS_WAKEUP>,
+> +				clocks = <&clk IMX93_CLK_SPDIF_IPG>,
+>  					 <&clk IMX93_CLK_SPDIF_GATE>,
+>  					 <&clk IMX93_CLK_DUMMY>,
+>  					 <&clk IMX93_CLK_AUD_XCVR_GATE>;
+> -- 
+> 2.34.1
+> 
 
