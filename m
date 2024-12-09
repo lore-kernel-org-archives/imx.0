@@ -1,39 +1,45 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E844374EA
-	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 08:27:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ADBB12CDAE
+	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 08:37:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733732864; cv=none; b=l85p6Hc83KSNibfCaj0dwwsPMv98lf+x7Jy0S6px3V41Nw25gu3smUjIMJnygEfTlpeAUCH5WdSFvhMZwvR1ElYDQ0xWinOtOwIiIRm8ANWahtYp5RHrrFUM3/ZrYy7ZAQbyAtxHniDmIB/l3FG6zscKsFUunDaPt1++jCh8rbE=
+	t=1733733440; cv=none; b=Abcxeif2C+WawAW5XlBJ7Um+lCsKIU22+0DEtoeRkN5zhOfeUB2yplh4V3SwuZFu8s9rLaXarvpJIJH9LMI4BRi20DAQAU+UrknpIDeMEGoJqbHOwSUtk+95bsy+pc2g0c8YLHiBAxnkR2cZcyusRWbXmQpfJL5RczhB2FLWQuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733732864; c=relaxed/simple;
-	bh=i6UXFMAMIY3QiR0e6G2t/WA9FEry4P3PLtzEmgPIU5Y=;
+	s=arc-20240116; t=1733733440; c=relaxed/simple;
+	bh=/+n6QG8R6D9zIR2ROqIAJS9brJs7afCml+rj4Z7FRfI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tX/dB+UjlIATxvKnywX7NlqgIobc0/8Mec9Yedh/ZWUzzaXgr6w0xmJi7nA/lTVO2blcmdGj4fs/9zSDhe0WBMAeC8Pln3SO4Q6WCVJNpFQz+VqzllIfI2sf5P9IkPqqBSYDqulQflI2YWGACzOtX/2YWDARyzcY0JFW/+KwSMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=AYBY+R2Y; arc=none smtp.client-ip=1.95.21.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=ur03C0Md9oXPFj9N8629m4fDsPmwleICL+dcQFM1ldipZg2+ieKq66y/zWXUhkmRTGCSzsOSdjkAmD3uBYzVW+q0qcYVmmfqllr18ERWYBjzoP2nnQ259XRb1bMuYm0VNlfevkcdc5nyN5ZfDbRMQvI3tE9xvXmfKD97AYtQiHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=OlebIETz; arc=none smtp.client-ip=220.197.32.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="AYBY+R2Y"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="OlebIETz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=Uck9vxqkblasHvKIYn8GVu5axHgPGfdiHnrPp5elho4=;
-	b=AYBY+R2Y5CebWsEEabugNRT1aE9+ieboWGLmtFlDxH5T+brP7bxBHxhheEhVCx
-	ciqsJR9CwFRGe4bnLHy4dYj9OOfMK9HHlfx7WJS+6U12tWiYGPT7rgRwDteZxTw7
-	XneVSL7O8SZgwuTWrUfsPGaAEUMqvUZ8h0G5iBi/mUwlA=
+	Content-Type; bh=YnPHthB8LMV885tm2rzcxoiQ16KBEntsl0UFvMdQ5Uc=;
+	b=OlebIETzWJZPMwMwiY14oww5JJuepQGVeAXTeZimR0bjfe/+F1B8hp9/9/rTyx
+	bz5boksMDTAqM7oVRfo6Q73ckNGHckIUSxiDXeuatyOUBgrhQJCUBq7irb3tvgPd
+	xbHl/ZrVlRlW97C+ZSz541pTExVPaTvo2BYTQDeGTh5f4=
 Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgCnDkXlqVZn58h6BA--.46377S3;
-	Mon, 09 Dec 2024 16:27:18 +0800 (CST)
-Date: Mon, 9 Dec 2024 16:27:16 +0800
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD3boEqrFZnOi+NBA--.47304S3;
+	Mon, 09 Dec 2024 16:36:59 +0800 (CST)
+Date: Mon, 9 Dec 2024 16:36:57 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: imx95: correct the address length of
- netcmix_blk_ctrl
-Message-ID: <Z1ap5M0KGCcz5rfl@dragon>
-References: <20241105054603.1470260-1-wei.fang@nxp.com>
+To: Heiko Schocher <hs@denx.de>
+Cc: linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 3/3] arm64: dts: imx8mp: add aristainetos3 board
+ support
+Message-ID: <Z1asKaRAJKTBv8ui@dragon>
+References: <20241105064206.43626-1-hs@denx.de>
+ <20241105064206.43626-4-hs@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -42,19 +48,20 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241105054603.1470260-1-wei.fang@nxp.com>
-X-CM-TRANSID:Mc8vCgCnDkXlqVZn58h6BA--.46377S3
+In-Reply-To: <20241105064206.43626-4-hs@denx.de>
+X-CM-TRANSID:Ms8vCgD3boEqrFZnOi+NBA--.47304S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU-PfHUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAgqwZWdWlR9k4QAAsj
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUsmFCUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCRywZWdWeNriYAAAsR
 
-On Tue, Nov 05, 2024 at 01:46:02PM +0800, Wei Fang wrote:
-> The netc_blk_ctrl is controlled by the imx95-blk-ctl clock driver and
-> provides relevant clock configurations for NETC, SAI and MQS. Its address
-> length should be 8 bytes instead of 0x1000.
+On Tue, Nov 05, 2024 at 07:42:06AM +0100, Heiko Schocher wrote:
+> Add support for the i.MX8MP based aristainetos3 boards from ABB.
 > 
-> Fixes: 7764fef26ea9 ("arm64: dts: imx95: Add NETCMIX block control support")
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> The board uses a ABB specific SoM from ADLink, based on NXP
+> i.MX8MP SoC. The SoM is used on 3 different carrier boards,
+> with small differences.
+> 
+> Signed-off-by: Heiko Schocher <hs@denx.de>
 
 Applied, thanks!
 
