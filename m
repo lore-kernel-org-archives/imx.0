@@ -1,702 +1,231 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2045.outbound.protection.outlook.com [40.107.105.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B625C1465BA
-	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 16:55:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733763310; cv=fail; b=qWz2vXp/1yp2uXio7AOYm2htQz9Ntc535Gf3Wml2F5QQuFtpfM02j3suj8OUOpCdeQmvmWwoUCrIXOegB+zxY/9NV1vtUshHigSiGIdao3BPE+LqlWq78HL94gQBrhRkhH19EfhZnc010Jpi4sKLwlha7CqBg9ErXE/gdRvGPmA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733763310; c=relaxed/simple;
-	bh=/lvt8+YBCP3SwDAGV6nH/AgQnNYQmuGIghC4IyioQoQ=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=T/r63cN499laLpAMG91/lFB/FS6/suoq4EDX7tIKwCRy8i52tLQl6WOlBEGicj1O2xylmLg8wgmaVBI9IhEVt9lhRcv9aZwnXKpOPOoz9Ll+QL+kBWMPPwlma8XYQeTigOFTD92IoPtDst4ZroTcIT/p3k+j4z3lqGPpY8v/BBk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=XGN/xNbX; arc=fail smtp.client-ip=40.107.105.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02B014D283
+	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 17:09:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733764171; cv=none; b=txzP9XZ1c+2OuMR54zVbQ2c9LG/4bLULWeHeOlD85HcQCyuqii95aemY4CPHT3fXKLs/guq/MIOA2KRHBk/Golyi0rw8sBV6NJ/zvDbI8qJVedjVOp56vLTibXFsaIfBypWO19E4IG3f7ejnSDIapxV5iP7b4FklYadjztBQMLk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733764171; c=relaxed/simple;
+	bh=5dO0bHCkiOuMyRRsOtUMU9n5Sh4eTa7inauhZAnT2uI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Jbbj4JpTcnLvrv3EyGGP5sgUr0os0ocZgX+OmAZNNC93qGX+44Xl74DmLMNW/eTSwGgKhl9EJEvcLHkGm6wExDMrnR5HZUhhySb3v5e3qQioCLFcJxwNOATro9lrDeAKRlUBrDdnE8uKYey85eWD9ODWAxOutbsr1yt4ZlYCw34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=Elb76gn0; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="XGN/xNbX"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lldWL/tUuMQsXJD1CrwaRJa0IlEov6HV+BNm0r3zjLRqywoC8/vpkWKIdDKLUZe+HlDE4Rs/1tnrPiWFDAf0ItOoDxrPQdnZVGC96RAj2xa+/qJTbp1yBxuTkWYhb9IipCKDPa9SjPMxhp88+3JdliT0f9FY/Bd1u4WnR0TGzpkW1InM36AH4kSURKuIxqjeHTXuz2vEPDfZUgLGQiIRRSB8vx2YRUldhRBvouQz7X9u2BkK1jB3mKQBw7oqWWkzmnkHRUS43xref0zqF8ItEty1kxo7zb9uOVdU/idl5Ar2XDDycj+ryzP0jYHwlyjALjBHPQjDzTrrK81Po6/Egw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ItXAMmdxz7bRIXo7ZOjt3K00uox+NoY8JgCJXD2U8IY=;
- b=bF8Kvbn8gVtAWZc30mlUFLkOPi34loL1QH1L5zbJK9+1wyEI4MkbvcjRG8dsDTmKuVIqdHYpSX6P80YP+7bxs/XYJc4Hx+5/RauiBUa/zgVeHGK86+AoLJsz29X3XGGuS9oWT548sme+CuEQl2yXiRrirjnzv5rx8DDvs0ANQyQVEXbY83e75nQ5M0U784ZUhPf52cMLbFSYflqWzBVVmnNusVUkbB+dQLx2GPoFE5KNfhu+AiF1g7g0ENqmyypoyxpb2G42IvPWn4fYdldgG0rSkSOg73OS1LK/PSDPaJU53NdLnY2hynU2eKYxmp+oni8bTGNIhpdAbQzCaWH8nQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ItXAMmdxz7bRIXo7ZOjt3K00uox+NoY8JgCJXD2U8IY=;
- b=XGN/xNbXqo5KRgsmypbeMj8sJ43aaasII4Nxmdn0368n64dB5bZ4ABWQTQP6SUgoKOGXAL5abCZ0caw7lakN5eG/7YeJhQqIL4JyOhnplgLqdAC/cefpIWBp8xJ3bCV/oWBmOS2JpzHU3yDRvX/85qvziH08RPT7HGztWhDIDgN1nqplUm30lKtn6ZRplABOpzdzxqSBlDPytTeivpmwi754N1cT6wD0w0mWBDjL+MEVgw1Jikw4Wc1BcqUwogDSRs0uJsWFrE2dIVJyKB17JZP2sJMJmLW7qy53mEvszKodq1dwT58o3Xd3kH+l7DcHUh5BwH2Q6xELu4JqpICsGQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com (2603:10a6:10:352::15)
- by GVXPR04MB10660.eurprd04.prod.outlook.com (2603:10a6:150:221::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.18; Mon, 9 Dec
- 2024 16:55:03 +0000
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::708f:69ee:15df:6ebd]) by DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::708f:69ee:15df:6ebd%6]) with mapi id 15.20.8230.016; Mon, 9 Dec 2024
- 16:55:03 +0000
-Message-ID: <64332634-751c-400c-9f46-7903ec85fe03@oss.nxp.com>
-Date: Mon, 9 Dec 2024 18:54:59 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: s32g: add I2C support
-To: Frank Li <Frank.li@nxp.com>
-Cc: Chester Lin <chester62515@gmail.com>, Matthias Brugger
- <mbrugger@suse.com>, Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- NXP S32 Linux <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>,
- Alberto Ruiz <aruizrui@redhat.com>, Enric Balletbo <eballetb@redhat.com>
-References: <20241206123119.1688712-1-ciprianmarian.costea@oss.nxp.com>
- <Z1MwkyWka3yDm8Ez@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-In-Reply-To: <Z1MwkyWka3yDm8Ez@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM8P190CA0020.EURP190.PROD.OUTLOOK.COM
- (2603:10a6:20b:219::25) To DU0PR04MB9251.eurprd04.prod.outlook.com
- (2603:10a6:10:352::15)
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="Elb76gn0"
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-53e3a37ae07so2384195e87.3
+        for <imx@lists.linux.dev>; Mon, 09 Dec 2024 09:09:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1733764167; x=1734368967; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2dQoNlSLU0HPpFMCspBWlxi64Lg9FL6brLFfxEcaxG8=;
+        b=Elb76gn0nVvBpXKxVtYg0SfDZ+Y/TfFNA1LI46g0CdG02vIxblkD1QxIj2VyxNuZRd
+         FlddyfbMFQF+Ko8iPDac1riJ+e6nZc8gqjOsJ0PBWCcXM6kly5jVWsBgDu+E756UbEN0
+         f/j9IelVQyuX9wz9muBNdOnpH4QHPlaEwM883ZOQpPEpQEPmyEjBy1CEo1ps4UvpZnji
+         5zbga40RW1kJkMggRSURAhBIvf24J+z7Ns7sx3E7VUPkuc8AF+121yoOcNG1PXIZDmNP
+         twibXEePVh0Y0J6AeJj9R50YfjpXewgXk9qh8lkCeKZet4DE+Uvg38YvAbEbrsK2e0Rs
+         fEaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733764167; x=1734368967;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2dQoNlSLU0HPpFMCspBWlxi64Lg9FL6brLFfxEcaxG8=;
+        b=TnsW2JgM4FGjY48YKLZXFK58K6+/jYcR5wcg9cW+7hYoTlyWV11bOuddo+9QoX3Lqy
+         Cmo4HNPawTLXBLOz3jNxTZUfksdPHidZgScoiWHnMBoixV8IoUFRBbUxNutKtMYPgdVY
+         jY0u5S0yQRL4bkXAxjQIprNUKOEeA2mgFKWQDwLaEO0/671KdjikE2JzqIsw7MwsJ0T1
+         oe35+ZLwh/kMbKAdQO5l1f+CAptAAPy5ofWJAdWvs3Z3UK8aWOto/MhehspXiWjl1E9n
+         8isHL9N8xG4JE4i1sfvT/9BCAAw8CitIIY5YEJypzNY+tMXFAhe+4XK6yhEj2zTwlwsw
+         2bLg==
+X-Forwarded-Encrypted: i=1; AJvYcCWD4tFeijbvoXh44BFzE8TWoHeadpMv5pB9detxTihBR6T/BRg1/TpramQnOt+tUogBehc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwGxnHjpHO8GWwy23FJxsBa2QGD9yGMnAdD/2o1rHx1HQbi1ViR
+	jr3VXTNA/PVKsQv9MG1l2cd8mJccYZg1Gw5RiEtdNm298r5sa08aRspitbEU/f1ddoU3mDcZfa1
+	4ZnOOgiHQaMWhS/1xLjRavbHp8TQmG+7SbNYIkA==
+X-Gm-Gg: ASbGncvckkwkM/qGPz6o3CKRzIE9FuhddCaEaS/j/RLjFPeeg2BpQGZubYKw92Gyh33
+	miui2GYdTdJLvcyrHqvdHnTWfes5ImtG6Fg==
+X-Google-Smtp-Source: AGHT+IG6uSRDfPHJzHiWWjwtpQy8M4+4XudoroPlj5CXYPC49kBjcmD0V2caDVBsCTaJa23u6C6/4BVZxa5RJ8VB4hc=
+X-Received: by 2002:a05:6512:acc:b0:53e:3740:4a8d with SMTP id
+ 2adb3069b0e04-53e37404c0emr3635765e87.3.1733764167141; Mon, 09 Dec 2024
+ 09:09:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9251:EE_|GVXPR04MB10660:EE_
-X-MS-Office365-Filtering-Correlation-Id: 59fe2fdb-8269-41f4-4a0f-08dd187239eb
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?T2dPcWZwaVJIS0JLZHU5Q3Fzb0hNMk1waS9RSWlnNVcyOW1ta3VCUUt1TmZk?=
- =?utf-8?B?QzFVTE9wVm4rb21yRVo5Z2Zvb1hjNlBrYXhNQklLdlNJUm43SVZRcHVoWGRO?=
- =?utf-8?B?b0dySWRYSE1nQ25kdXhUYmg0bkhUdXRSSlNSTEdPUU1zdE5pVFJkb1kzQlpq?=
- =?utf-8?B?c2lyR1RrSCsrQ1l3QmlYODM0SzUvanBVV090YnZRNUJmQkM1ZW1veHd5cXpG?=
- =?utf-8?B?N2hSZG52NXdVWmsxV2d1MkY3eUx0ek1RMXAybDZ3STNETTJHRXA0Z1hGK0FX?=
- =?utf-8?B?bS9yTXFjQXI0bXJ4OTlZQmJUVW9keDd4YXc4ZGM1TmxVOURnSnQzcVdYcHpu?=
- =?utf-8?B?aWIxSm03NFpORlpKWVdJWEtwSzE2UHpjRW12S3R6RHBISW5ueW9adU9YcGFO?=
- =?utf-8?B?OUJhMnF5QlM0NVhacUVDbzNuUVFxYnRXeGxFWUJBVXdQbFRyUWE3MENoK1ZL?=
- =?utf-8?B?R093OG42VTQ4ci9JM1Y1TnNlSkFaVnFYbUFGalFPaHo2L21Xd2VaLytQUTN3?=
- =?utf-8?B?NFg2Z21sYjRHandpWVl2ZkdZUjZ6WU41SnVYTVJQSURKdmRPcVJ1TVF5OTVk?=
- =?utf-8?B?amZ3OWxKZTFDM2x0SnB1RkhZc0xNVG9IV3RwOE1qTEtaTk9qd0ZtL2RPTkhI?=
- =?utf-8?B?WjJPMDA0U05LVHNNS0gwSmxuZ1JmMzFYS2JTYnRnZjVKaGhWUVIrY1laUjhu?=
- =?utf-8?B?RVB4eVNSTjhQOERSNDJvNEdaS0lpS1RUVExsNWNRTjJsSE12eDVFc3hTb3Jk?=
- =?utf-8?B?WTlmdTJlWjM0S0RTNXd4WmQ3b3lRNlQ0TWN5NjJuOTVsZElkLzBkNXFJd2lI?=
- =?utf-8?B?Z2VtUWpJYlMrcVhCaHdId3dnNGlaY0E2S0dRMVBzWmQvVWF3YU5MUjdGT1Ro?=
- =?utf-8?B?VVhsd1FYOG50UVBjbUxscGN6Q2Zzd2hZcURFU3pDREdhZStNQ3MzVG5VVDcw?=
- =?utf-8?B?cXpyMzQ4T3ZnOUNsMHZqdG9TS3VJVG1wb0JFN2hxYUFCU0YrWDQvZktsV1Aw?=
- =?utf-8?B?SlVkU2Y1UkZqNndBRGhqck1QODVoY3BCODlDUFBaRy9Zbkl6Uk1wMXpudGto?=
- =?utf-8?B?b2Fqek02Q1lEZWpEeVZwNXhmM3h2T25BZWt0QzZUTGRFTk51bjVMTEl6VlZm?=
- =?utf-8?B?Q3RFdnQ3b3IxNXlIRXBYWk1CeXdycHhyNTJmM3FyNy9PU0F4Y3ZUU3pXbTY4?=
- =?utf-8?B?VDA3eFV1eDRaSTlKSG41Zm9PeVVOOVFCWVVkOExYRUl2T0JpQ1owNUJxbXpJ?=
- =?utf-8?B?SnUzNWZjalBLZk0zK3VSL2FVY25QUWtCMUFaeFlpZllvTnV5Nm9KdkFzR0F5?=
- =?utf-8?B?emphVDZLSjZVbjNnWjU4NU1KbGhIUEt0N1BSSDJIYmpwU2h4UTZUSVZ3dXhk?=
- =?utf-8?B?ZVZ1dnovblIvbU1uWlI0aUZlejI5TkovQ1N1RmV4RFpoY2RmZ1B4WjF5MlAz?=
- =?utf-8?B?bjcxWlB6WFFHWmQzajdpMVRSeHZxeHVNeHJuZ0FtSTVOMmJDdGgvVkhSN3cw?=
- =?utf-8?B?bjY1ZmEvZEU5RGFvTldKVjRJU0FBbTVBeDdERmRzYjNUNnlhOGk0emxFVUs4?=
- =?utf-8?B?aElObFNSK24vOFlYUXNOQ20vU2szRDJ6Qm9KZkRYRWsvTFRpRXowS3RCemlB?=
- =?utf-8?B?N24rU1ZYVHRCSjErSjZ1MndtZ3Yya3g1WUhSL25kcVRDOGllQy9WTTdEaGEy?=
- =?utf-8?B?N1FpcUw4VEViWlAwdGUwd1lmNjl2dUlJYzJHWndMWEVON3AxQWdUUmNhRTJl?=
- =?utf-8?B?ZENDQjU3QnRQdjJtL3o4QzlMV3hmSkxkRFRUczhJWWVJbWVIMXZQQU9kejJp?=
- =?utf-8?Q?BAiW4w4heXO4aoay4E9ej+fXbjOC0zsowilGY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9251.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VFZtb25LcHg1NktFajhxYklFbFVQWjZYT0VBZjdHT0NWQTluMXNGL3ZvRXFH?=
- =?utf-8?B?RlN2Q2NUMlY4UUdSZ0hRMkVwVmdvcmU1TTM1TlprT1ZPZDRiWlpURiswd3hT?=
- =?utf-8?B?RXEwSGViOWZuZXJPL1FEMEFUYlhwc0FyYWNTazVqMS9SRzRJTjZiUUV6VXo1?=
- =?utf-8?B?RmJwb0lJdDRtbGdKcnNad1RpUTFORjlUZ045SVNNK2pLblpicUpBSDRoOTRP?=
- =?utf-8?B?a1RQRlZwRm1CaUZOVVJ5QmNUYXRjZXIyelREMUVzOFNhRmNYQitqd3dmWDFk?=
- =?utf-8?B?NFZ4ZXdlS25kamdqaVFpbTAyd1Z5dUtMSVBWK1ljVmljRFR1WUtUOTNDMUwy?=
- =?utf-8?B?dDdSbXRTQzUrZ1hoQUtzdmU5NXFnV1JUM1RjSWVmMEw2enFPK1FjQ3VCcncz?=
- =?utf-8?B?dGRRVUpGWXhjd1FieERTVGVXZ1lKejNNRHhMZHpNajFaaGFBWnI0KzhQWDRp?=
- =?utf-8?B?dURFOG8vN1B6QXNxaDVORzNRVGtFTVhoMTJqc3ROM0tSSDFPT2c3Z2ZnWFhi?=
- =?utf-8?B?bEZhWFlYS1JaWXlrcGVJUnVXalpGM25VKzliZmp2aXVWL2dQKzNlRnpYU0dm?=
- =?utf-8?B?V0RlZTlpR0NhOE1OdHJla0JLRHBOVzJwNHNEb2prRXR6K3NIencyTk5GcUUy?=
- =?utf-8?B?VStxRDB6bmRTclFuL05rWGFwUlJtSjVVY3ZFRW5XSWVESTNYZlVyRzArUGU1?=
- =?utf-8?B?UmtBSmlGb0JGdUZ3RHBIcFc2MHRoVEFCWGduVXEySTA3cUQ0Q1ozcWRVYzF2?=
- =?utf-8?B?dFp6b0dhbXphaWNNVHp4Y1BXNW1lTVlCai81QnNYd1A5K2dHUFJ0UmNFb3dU?=
- =?utf-8?B?OXRNVDJ4eHNyRGF4Sk9UYUhMYks0NWdDVnNwZTZFc2s0WmhEZ1dFZm4rbFVY?=
- =?utf-8?B?aWhWUXNwRTBZcDc2VEw2VUQxTmdQSlRrdEpaTjNsTkhSa3FZR1pEanQzWCt3?=
- =?utf-8?B?VlNsM0tpYlYyTlhHazZUbjBjNzZYV1U5TGRYbXdjZmFudmpsV0NCSnFwSE9h?=
- =?utf-8?B?SzFwZ1pNTjBrbDlHMjNBdk1ucjd4QkhvRWgxYlhSa2M3MHlNQ2xVRUYyOGx5?=
- =?utf-8?B?akVncVBwME10UDlFU205b3Z0NFB6WC9JVDYzVHB3clgyV3BueDdpSEYxMTJv?=
- =?utf-8?B?SURjTFY1cU5ZNlNTdjFxMm5CSDFvVlc0TmlERVJrWTJiRkJZamlmeHN5SjVu?=
- =?utf-8?B?VGY5TXM0bWZiYXQrYzk5d1VaUkd0MUtsdEdmS3NyOUdzZnhBZVdjRkVpSU4w?=
- =?utf-8?B?Wms4eHpNV2hVNk1mWXU3NitiV2pFMEFKOWxSWko4WDJJcFhCVzNJRjdtMGU3?=
- =?utf-8?B?ZHh3S2tiQzZzT0NYSnNlSTdsSXg0OWVQaURzYTNEd200VGNVT0VJc1czOUZr?=
- =?utf-8?B?cWpHc0FOMExJQitDaGtUTFFPaHltc0VaMGpIcnM3UkJ6cnVCUzlZMkZZOVhS?=
- =?utf-8?B?NE5nc1VhVWpmV2lvNi92MEZCbmxvb3Q0Z3hJK0JOMDF5UlpCNHRFRFhBQkJJ?=
- =?utf-8?B?ZVVOMTByZi9td3VkWjQzODZoTGpKczBTTWFFMi9hVDdVQWFZOXA3bmhYY0NS?=
- =?utf-8?B?UmxkV29vb1MrM2s4WUd1V0xJczVHRThkRURzRkU4cFduRmxSNmJmcGtXUExW?=
- =?utf-8?B?SjNLSnh0dXNucXA3SWtUWnZSV0lCQUdVLzhZa21yZUVGVnRka05vdW1oUXUr?=
- =?utf-8?B?MURqeWJROWxMaFB2RjduNEtBNGVod3gzY1JZMmJON01uMUJoeEk1RjI3Q1JB?=
- =?utf-8?B?cnpDQmdVNmlZdVl0N2wvTkx2WWJBNnRjcnFCSzJCcndNazAxdWFLVjg4QWdt?=
- =?utf-8?B?VFRxbFV4RmhzcUh6TlhhSWlvajA2QVlLTXRtdWNmRldyaEttdWlKM2grTkh1?=
- =?utf-8?B?ZjFCczd0WUo2NzUvcUFicy84QThOOC8zV1VhUlRsa2dyaU5BSmpQanZOOHgz?=
- =?utf-8?B?Mm5tbWs4ZTJEeldFR290ZDJoaTVtbVBOYll2VGlSMHRvUUV2U25EYkFSNXNR?=
- =?utf-8?B?UmtvVFpwTGRvY1ByZVRBakN4N0NQWGxjMk1aOXJxRXBiVTVhb0k5aE85b2Nk?=
- =?utf-8?B?OG1jcFozQlZHU1UxcmNqOXE1eGU3Qks5R291WHZCVjZuUlMzLysyaGNnSGpy?=
- =?utf-8?B?TzdTNGV2Y0JMenFNUjVnRDNHSFRpU2tUS1VZZTUxMWc2bU4yRE9nWjRNVGx0?=
- =?utf-8?Q?RG7Rmq7b2BaerQKJPdqpjA8=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 59fe2fdb-8269-41f4-4a0f-08dd187239eb
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9251.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Dec 2024 16:55:03.6309
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MCjtI0Tl6l61TyMkrbVcqcxccEHgpyXBTdsC/jwI7pp5UBWgnOO/MBjHk3RxodD0uhTfAAt1MrdTD7960MoHNdfuAniuyrXfPeTel31/G/Y=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10660
+References: <20241208150711.297624-1-apatel@ventanamicro.com>
+ <20241208150711.297624-2-apatel@ventanamicro.com> <875xnuq6dc.ffs@tglx>
+ <CAK9=C2VqU2mdLL-R20bdgvDHi0WcuNyUSqRo7Pztsu-8X1wVvw@mail.gmail.com> <87r06gq2di.ffs@tglx>
+In-Reply-To: <87r06gq2di.ffs@tglx>
+From: Anup Patel <apatel@ventanamicro.com>
+Date: Mon, 9 Dec 2024 22:39:16 +0530
+Message-ID: <CAK9=C2UZKgkA_xZPs2=RBo7bUDKpeY2gBA2j3+S4i4xSLqC5BQ@mail.gmail.com>
+Subject: Re: [PATCH 1/4] irqchip/riscv-imsic: Handle non-atomic MSI updates
+ for device
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>, 
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Atish Patra <atishp@atishpatra.org>, 
+	Andrew Jones <ajones@ventanamicro.com>, Sunil V L <sunilvl@ventanamicro.com>, 
+	Anup Patel <anup@brainfault.org>, linux-riscv@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 12/6/2024 7:12 PM, Frank Li wrote:
-> On Fri, Dec 06, 2024 at 02:31:19PM +0200, Ciprian Costea wrote:
->> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
->>
->> Add the I2C Devicetree nodes and pinmux for S32G2 and S32G3 SoCs.
->>
->> With respect to S32G2/S32G3 SoC based boards, there are multiple RDB
->> (rdb2 vs rdb3) and EVB (for G2 vs for G3) board revisions. These versions
->> are quite similar. The common part for the EVB revisions will be
->> centralized in 's32gxxa-evb.dtsi' file, while the RDB commonalities will
->> be placed in 's32gxxa-rdb.dtsi' file.
->>
->> This refactor will also serve for other modules in the future, such as
->> FlexCAN, DSPI.
->>
->> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
->> ---
->>   arch/arm64/boot/dts/freescale/s32g2.dtsi      |  45 ++++++
->>   .../arm64/boot/dts/freescale/s32g274a-evb.dts |   1 +
->>   .../boot/dts/freescale/s32g274a-rdb2.dts      |   1 +
->>   arch/arm64/boot/dts/freescale/s32g3.dtsi      |  50 ++++++
->>   .../boot/dts/freescale/s32g399a-rdb3.dts      |  12 ++
->>   .../boot/dts/freescale/s32gxxxa-evb.dtsi      | 150 ++++++++++++++++++
->>   .../boot/dts/freescale/s32gxxxa-rdb.dtsi      | 124 +++++++++++++++
->>   7 files changed, 383 insertions(+)
->>   create mode 100644 arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
->>   create mode 100644 arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
->>
->> diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
->> index 7be430b78c83..0e6c847ab0c3 100644
->> --- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
->> +++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
->> @@ -333,6 +333,33 @@ uart1: serial@401cc000 {
->>   			status = "disabled";
->>   		};
->>
->> +		i2c0: i2c@401e4000 {
->> +			compatible = "nxp,s32g2-i2c";
->> +			reg = <0x401e4000 0x1000>;
->> +			interrupts = <GIC_SPI 92 IRQ_TYPE_LEVEL_HIGH>;
->> +			clocks = <&clks 40>;
-> 
-> hardcode 40? can you use macro for clock index? Many place use it.
-> 
-> Frank
-> 
+On Mon, Dec 9, 2024 at 9:23=E2=80=AFPM Thomas Gleixner <tglx@linutronix.de>=
+ wrote:
+>
+> Anup!
+>
+> On Mon, Dec 09 2024 at 17:38, Anup Patel wrote:
+> > On Mon, Dec 9, 2024 at 1:44=E2=80=AFAM Thomas Gleixner <tglx@linutronix=
+.de> wrote:
+> >> There is no guarantee that set_affinity() runs on the original target
+> >> CPU (CPU 1). Your scheme only works, when CPU1 vector 0x20 is not used
+> >> by some other device. If it's used, you lost as CPU1 will consume the
+> >> vector and your pending check is not seeing anything.
+> >>
+> >> x86 ensures CPU locality by deferring the affinity move to the next
+> >> device interrupt on the original target CPU (CPU1 in the above
+> >> example). See CONFIG_GENERIC_IRQ_PENDING.
+> >
+> > I agree with you.
+> >
+> > The IMSIC driver must do the affinity move upon the next device
+> > interrupt on the old CPU. I will update this patch in the next revision=
+.
+> >
+> > BTW, I did not find CONFIG_GENERIC_IRQ_PENDING. Is the
+> > name correct ?
+>
+> CONFIG_GENERIC_PENDING_IRQ is close enough :)
+>
+> >> The interrupt domains which are not affected (remap) set the
+> >> IRQ_MOVE_PCNTXT flag to avoid that dance and don't use that affinity
+> >> setter code path at all.
+> >
+> > Yes, setting the IRQ_MOVE_PCNTXT flag in the remap domain
+> > makes perfect sense.
+> >
+> > I suggest adding IRQ_MOVE_PCNTXT usage as part of Drew's
+> > irqbypass series which adds a remap domain in the IOMMU
+> > driver. Unless you insist on having it as part of this series ?
+>
+> You need to look at the other RISC-V controllers. Those which do not
+> need this should set it. That's historically backwards.
 
-Hello Frank,
+I will update the RISC-V APLIC MSI-mode driver in the next revision.
+This driver is a good candidate to use IRQ_MOVE_PCNTXT and
+IRQCHIP_MOVE_DEFERRED.
 
-Thank you for your review on this patch.
+>
+> I think we can reverse the logic here. As this needs backporting, I
+> can't make a full cleanup of this, but for your problem the patch below
+> should just work.
+>
+> Select GENERIC_PENDING_IRQ and GENERIC_PENDING_IRQ_CHIPFLAGS and set the
+> IRQCHIP_MOVE_DEFERRED flag on your interrrupt chip and the core logic
+> takes care of the PCNTXT bits.
 
-A discussion regarding clock indexes for S32G SoC Modules has already 
-taken place on the mailing list [1]. The conclusion was to directly use 
-the clock index numbers.
+Sure, I will update.
 
-[1] 
-https://lore.kernel.org/all/f54d947c-58dc-498f-8871-b472f97be4a8@oss.nxp.com/
+Thanks,
+Anup
 
->> +			clock-names = "ipg";
->> +			status = "disabled";
->> +		};
->> +
->> +		i2c1: i2c@401e8000 {
->> +			compatible = "nxp,s32g2-i2c";
->> +			reg = <0x401e8000 0x1000>;
->> +			interrupts = <GIC_SPI 93 IRQ_TYPE_LEVEL_HIGH>;
->> +			clocks = <&clks 40>;
->> +			clock-names = "ipg";
->> +			status = "disabled";
->> +		};
->> +
->> +		i2c2: i2c@401ec000 {
->> +			compatible = "nxp,s32g2-i2c";
->> +			reg = <0x401ec000 0x1000>;
->> +			interrupts = <GIC_SPI 94 IRQ_TYPE_LEVEL_HIGH>;
->> +			clocks = <&clks 40>;
->> +			clock-names = "ipg";
->> +			status = "disabled";
->> +		};
->> +
->>   		uart2: serial@402bc000 {
->>   			compatible = "nxp,s32g2-linflexuart",
->>   				     "fsl,s32v234-linflexuart";
->> @@ -341,6 +368,24 @@ uart2: serial@402bc000 {
->>   			status = "disabled";
->>   		};
->>
->> +		i2c3: i2c@402d8000 {
->> +			compatible = "nxp,s32g2-i2c";
->> +			reg = <0x402d8000 0x1000>;
->> +			interrupts = <GIC_SPI 95 IRQ_TYPE_LEVEL_HIGH>;
->> +			clocks = <&clks 40>;
->> +			clock-names = "ipg";
->> +			status = "disabled";
->> +		};
->> +
->> +		i2c4: i2c@402dc000 {
->> +			compatible = "nxp,s32g2-i2c";
->> +			reg = <0x402dc000 0x1000>;
->> +			interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_HIGH>;
->> +			clocks = <&clks 40>;
->> +			clock-names = "ipg";
->> +			status = "disabled";
->> +		};
->> +
->>   		usdhc0: mmc@402f0000 {
->>   			compatible = "nxp,s32g2-usdhc";
->>   			reg = <0x402f0000 0x1000>;
->> diff --git a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
->> index b9a119eea2b7..c4a195dd67bf 100644
->> --- a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
->> +++ b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
->> @@ -7,6 +7,7 @@
->>   /dts-v1/;
->>
->>   #include "s32g2.dtsi"
->> +#include "s32gxxxa-evb.dtsi"
->>
->>   / {
->>   	model = "NXP S32G2 Evaluation Board (S32G-VNP-EVB)";
->> diff --git a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
->> index aaa61a8ad0da..b5ba51696f43 100644
->> --- a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
->> +++ b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
->> @@ -7,6 +7,7 @@
->>   /dts-v1/;
->>
->>   #include "s32g2.dtsi"
->> +#include "s32gxxxa-rdb.dtsi"
->>
->>   / {
->>   	model = "NXP S32G2 Reference Design Board 2 (S32G-VNP-RDB2)";
->> diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
->> index 6c572ffe37ca..666e4029e588 100644
->> --- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
->> +++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
->> @@ -390,6 +390,36 @@ uart1: serial@401cc000 {
->>   			status = "disabled";
->>   		};
->>
->> +		i2c0: i2c@401e4000 {
->> +			compatible = "nxp,s32g3-i2c",
->> +				     "nxp,s32g2-i2c";
->> +			reg = <0x401e4000 0x1000>;
->> +			interrupts = <GIC_SPI 92 IRQ_TYPE_LEVEL_HIGH>;
->> +			clocks = <&clks 40>;
->> +			clock-names = "ipg";
->> +			status = "disabled";
->> +		};
->> +
->> +		i2c1: i2c@401e8000 {
->> +			compatible = "nxp,s32g3-i2c",
->> +				     "nxp,s32g2-i2c";
->> +			reg = <0x401e8000 0x1000>;
->> +			interrupts = <GIC_SPI 93 IRQ_TYPE_LEVEL_HIGH>;
->> +			clocks = <&clks 40>;
->> +			clock-names = "ipg";
->> +			status = "disabled";
->> +		};
->> +
->> +		i2c2: i2c@401ec000 {
->> +			compatible = "nxp,s32g3-i2c",
->> +				     "nxp,s32g2-i2c";
->> +			reg = <0x401ec000 0x1000>;
->> +			interrupts = <GIC_SPI 94 IRQ_TYPE_LEVEL_HIGH>;
->> +			clocks = <&clks 40>;
->> +			clock-names = "ipg";
->> +			status = "disabled";
->> +		};
->> +
->>   		uart2: serial@402bc000 {
->>   			compatible = "nxp,s32g3-linflexuart",
->>   				     "fsl,s32v234-linflexuart";
->> @@ -398,6 +428,26 @@ uart2: serial@402bc000 {
->>   			status = "disabled";
->>   		};
->>
->> +		i2c3: i2c@402d8000 {
->> +			compatible = "nxp,s32g3-i2c",
->> +				     "nxp,s32g2-i2c";
->> +			reg = <0x402d8000 0x1000>;
->> +			interrupts = <GIC_SPI 95 IRQ_TYPE_LEVEL_HIGH>;
->> +			clocks = <&clks 40>;
->> +			clock-names = "ipg";
->> +			status = "disabled";
->> +		};
->> +
->> +		i2c4: i2c@402dc000 {
->> +			compatible = "nxp,s32g3-i2c",
->> +				     "nxp,s32g2-i2c";
->> +			reg = <0x402dc000 0x1000>;
->> +			interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_HIGH>;
->> +			clocks = <&clks 40>;
->> +			clock-names = "ipg";
->> +			status = "disabled";
->> +		};
->> +
->>   		usdhc0: mmc@402f0000 {
->>   			compatible = "nxp,s32g3-usdhc",
->>   				     "nxp,s32g2-usdhc";
->> diff --git a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
->> index 828e353455b5..eb73a5dcebe7 100644
->> --- a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
->> +++ b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
->> @@ -8,6 +8,7 @@
->>   /dts-v1/;
->>
->>   #include "s32g3.dtsi"
->> +#include "s32gxxxa-rdb.dtsi"
->>
->>   / {
->>   	model = "NXP S32G3 Reference Design Board 3 (S32G-VNP-RDB3)";
->> @@ -39,6 +40,17 @@ &uart1 {
->>   	status = "okay";
->>   };
->>
->> +&i2c4 {
->> +	#address-cells = <1>;
->> +	#size-cells = <0>;
->> +
->> +	ina231@40 {
->> +		compatible = "ti,ina231";
->> +		reg = <0x40>;
->> +		shunt-resistor = <1000>;
->> +	};
->> +};
->> +
->>   &usdhc0 {
->>   	pinctrl-names = "default", "state_100mhz", "state_200mhz";
->>   	pinctrl-0 = <&pinctrl_usdhc0>;
->> diff --git a/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi b/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
->> new file mode 100644
->> index 000000000000..a44eff28073a
->> --- /dev/null
->> +++ b/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
->> @@ -0,0 +1,150 @@
->> +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
->> +/*
->> + * Copyright 2024 NXP
->> + *
->> + * Authors: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
->> + *          Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>
->> + *          Larisa Grigore <larisa.grigore@nxp.com>
->> + */
->> +
->> +&pinctrl {
->> +	i2c0_pins: i2c0-pins {
->> +		i2c0-grp0 {
->> +			pinmux = <0x101>, <0x111>;
->> +			drive-open-drain;
->> +			output-enable;
->> +			input-enable;
->> +			slew-rate = <133>;
->> +		};
->> +
->> +		i2c0-grp1 {
->> +			pinmux = <0x2352>, <0x2362>;
->> +		};
->> +	};
->> +
->> +	i2c0_gpio_pins: i2c0-gpio-pins {
->> +		i2c0-gpio-grp0 {
->> +			pinmux = <0x100>, <0x110>;
->> +			drive-open-drain;
->> +			output-enable;
->> +			input-enable;
->> +			slew-rate = <133>;
->> +		};
->> +
->> +		i2c0-gpio-grp1 {
->> +			pinmux = <0x2350>, <0x2360>;
->> +		};
->> +	};
->> +
->> +	i2c1_pins: i2c1-pins {
->> +		i2c1-grp0 {
->> +			pinmux = <0x131>, <0x141>;
->> +			drive-open-drain;
->> +			output-enable;
->> +			input-enable;
->> +			slew-rate = <133>;
->> +		};
->> +
->> +		i2c1-grp1 {
->> +			pinmux = <0x2cd2>, <0x2ce2>;
->> +		};
->> +	};
->> +
->> +	i2c1_gpio_pins: i2c1-gpio-pins {
->> +		i2c1-gpio-grp0 {
->> +			pinmux = <0x130>, <0x140>;
->> +			drive-open-drain;
->> +			output-enable;
->> +			input-enable;
->> +			slew-rate = <133>;
->> +		};
->> +
->> +		i2c1-gpio-grp1 {
->> +			pinmux = <0x2cd0>, <0x2ce0>;
->> +		};
->> +	};
->> +
->> +	i2c2_pins: i2c2-pins {
->> +		i2c2-grp0 {
->> +			pinmux = <0x151>, <0x161>;
->> +			drive-open-drain;
->> +			output-enable;
->> +			input-enable;
->> +			slew-rate = <133>;
->> +		};
->> +
->> +		i2c2-grp1 {
->> +			pinmux = <0x2cf2>, <0x2d02>;
->> +		};
->> +	};
->> +
->> +	i2c2_gpio_pins: i2c2-gpio-pins {
->> +		i2c2-gpio-grp0 {
->> +			pinmux = <0x150>, <0x160>;
->> +			drive-open-drain;
->> +			output-enable;
->> +			input-enable;
->> +			slew-rate = <133>;
->> +		};
->> +
->> +		i2c2-gpio-grp1 {
->> +			pinmux = <0x2cf0>, <0x2d00>;
->> +		};
->> +	};
->> +
->> +	i2c4_pins: i2c4-pins {
->> +		i2c4-grp0 {
->> +			pinmux = <0x211>, <0x222>;
->> +			drive-open-drain;
->> +			output-enable;
->> +			input-enable;
->> +			slew-rate = <133>;
->> +		};
->> +
->> +		i2c4-grp1 {
->> +			pinmux = <0x2d43>, <0x2d33>;
->> +		};
->> +	};
->> +
->> +	i2c4_gpio_pins: i2c4-gpio-pins {
->> +		i2c4-gpio-grp0 {
->> +			pinmux = <0x210>, <0x220>;
->> +			drive-open-drain;
->> +			output-enable;
->> +			input-enable;
->> +			slew-rate = <133>;
->> +		};
->> +
->> +		i2c4-gpio-grp1 {
->> +			pinmux = <0x2d40>, <0x2d30>;
->> +		};
->> +	};
->> +};
->> +
->> +&i2c0 {
->> +	pinctrl-names = "default", "gpio";
->> +	pinctrl-0 = <&i2c0_pins>;
->> +	pinctrl-1 = <&i2c0_gpio_pins>;
->> +	status = "okay";
->> +};
->> +
->> +&i2c1 {
->> +	pinctrl-names = "default", "gpio";
->> +	pinctrl-0 = <&i2c1_pins>;
->> +	pinctrl-1 = <&i2c1_gpio_pins>;
->> +	status = "okay";
->> +};
->> +
->> +&i2c2 {
->> +	pinctrl-names = "default", "gpio";
->> +	pinctrl-0 = <&i2c2_pins>;
->> +	pinctrl-1 = <&i2c2_gpio_pins>;
->> +	status = "okay";
->> +};
->> +
->> +&i2c4 {
->> +	pinctrl-names = "default", "gpio";
->> +	pinctrl-0 = <&i2c4_pins>;
->> +	pinctrl-1 = <&i2c4_gpio_pins>;
->> +	status = "okay";
->> +};
->> diff --git a/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi b/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
->> new file mode 100644
->> index 000000000000..d992c0c9e695
->> --- /dev/null
->> +++ b/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
->> @@ -0,0 +1,124 @@
->> +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
->> +/*
->> + * Copyright 2024 NXP
->> + *
->> + * Authors: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
->> + *          Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>
->> + *          Larisa Grigore <larisa.grigore@nxp.com>
->> + */
->> +
->> +&pinctrl {
->> +	i2c0_pins: i2c0-pins {
->> +		i2c0-grp0 {
->> +			pinmux = <0x1f2>, <0x201>;
->> +			drive-open-drain;
->> +			output-enable;
->> +			input-enable;
->> +			slew-rate = <133>;
->> +		};
->> +
->> +		i2c0-grp1 {
->> +			pinmux = <0x2353>, <0x2363>;
->> +		};
->> +	};
->> +
->> +	i2c0_gpio_pins: i2c0-gpio-pins {
->> +		i2c0-gpio-grp0 {
->> +			pinmux = <0x1f0>, <0x200>;
->> +			drive-open-drain;
->> +			output-enable;
->> +			input-enable;
->> +			slew-rate = <133>;
->> +		};
->> +
->> +		i2c0-gpio-grp1 {
->> +			pinmux = <0x2350>, <0x2360>;
->> +		};
->> +	};
->> +
->> +	i2c2_pins: i2c2-pins {
->> +		i2c2-grp0 {
->> +			pinmux = <0x151>, <0x161>;
->> +			drive-open-drain;
->> +			output-enable;
->> +			input-enable;
->> +			slew-rate = <133>;
->> +		};
->> +
->> +		i2c2-grp1 {
->> +			pinmux = <0x2cf2>, <0x2d02>;
->> +		};
->> +	};
->> +
->> +	i2c2_gpio_pins: i2c2-gpio-pins {
->> +		i2c2-gpio-grp0 {
->> +			pinmux = <0x2cf0>, <0x2d00>;
->> +		};
->> +
->> +		i2c2-gpio-grp1 {
->> +			pinmux = <0x150>, <0x160>;
->> +			drive-open-drain;
->> +			output-enable;
->> +			input-enable;
->> +			slew-rate = <133>;
->> +		};
->> +	};
->> +
->> +	i2c4_pins: i2c4-pins {
->> +		i2c4-grp0 {
->> +			pinmux = <0x211>, <0x222>;
->> +			drive-open-drain;
->> +			output-enable;
->> +			input-enable;
->> +			slew-rate = <133>;
->> +		};
->> +
->> +		i2c4-grp1 {
->> +			pinmux = <0x2d43>, <0x2d33>;
->> +		};
->> +	};
->> +
->> +	i2c4_gpio_pins: i2c4-gpio-pins {
->> +		i2c4-gpio-grp0 {
->> +			pinmux = <0x210>, <0x220>;
->> +			drive-open-drain;
->> +			output-enable;
->> +			input-enable;
->> +			slew-rate = <133>;
->> +		};
->> +
->> +		i2c4-gpio-grp1 {
->> +			pinmux = <0x2d40>, <0x2d30>;
->> +		};
->> +	};
->> +};
->> +
->> +&i2c0 {
->> +	#address-cells = <1>;
->> +	#size-cells = <0>;
-> 
-> #address-cells and size-cells should be common dts to avoid set it in
-> board file.
-> 
-> Other i2c2\i2c4 have not it. I suppose you can remove it here.
-> 
-> Frank
-> 
 
-Correct. I will move those in the associated 's32gxxxa-rdb.dtsi' file.
-
-Best Regards,
-Ciprian
-
->> +	pinctrl-names = "default", "gpio";
->> +	pinctrl-0 = <&i2c0_pins>;
->> +	pinctrl-1 = <&i2c0_gpio_pins>;
->> +	status = "okay";
->> +
->> +	pcal6524: gpio-expander@22 {
->> +		compatible = "nxp,pcal6524";
->> +		reg = <0x22>;
->> +		gpio-controller;
->> +		#gpio-cells = <2>;
->> +	};
->> +};
->> +
->> +&i2c2 {
->> +	pinctrl-names = "default", "gpio";
->> +	pinctrl-0 = <&i2c2_pins>;
->> +	pinctrl-1 = <&i2c2_gpio_pins>;
->> +	status = "okay";
->> +};
->> +
->> +&i2c4 {
->> +	pinctrl-names = "default", "gpio";
->> +	pinctrl-0 = <&i2c4_pins>;
->> +	pinctrl-1 = <&i2c4_gpio_pins>;
->> +	status = "okay";
->> +};
->> --
->> 2.45.2
->>
-
+>
+> I'll convert x86 in a seperate step and remove the PCNTXT leftovers and
+> the new config knob once the dust has settled.
+>
+> Thanks,
+>
+>         tglx
+> ---
+> --- a/include/linux/irq.h
+> +++ b/include/linux/irq.h
+> @@ -567,6 +567,7 @@ struct irq_chip {
+>   *                                    in the suspend path if they are in=
+ disabled state
+>   * IRQCHIP_AFFINITY_PRE_STARTUP:      Default affinity update before sta=
+rtup
+>   * IRQCHIP_IMMUTABLE:                Don't ever change anything in this =
+chip
+> + * IRQCHIP_MOVE_DEFERRED:            Move the interrupt in actual interr=
+upt context
+>   */
+>  enum {
+>         IRQCHIP_SET_TYPE_MASKED                 =3D (1 <<  0),
+> @@ -581,6 +582,7 @@ enum {
+>         IRQCHIP_ENABLE_WAKEUP_ON_SUSPEND        =3D (1 <<  9),
+>         IRQCHIP_AFFINITY_PRE_STARTUP            =3D (1 << 10),
+>         IRQCHIP_IMMUTABLE                       =3D (1 << 11),
+> +       IRQCHIP_MOVE_DEFERRED                   =3D (1 << 12),
+>  };
+>
+>  #include <linux/irqdesc.h>
+> --- a/kernel/irq/Kconfig
+> +++ b/kernel/irq/Kconfig
+> @@ -31,6 +31,10 @@ config GENERIC_IRQ_EFFECTIVE_AFF_MASK
+>  config GENERIC_PENDING_IRQ
+>         bool
+>
+> +# Deduce delayed migration from top-level interrupt chip flags
+> +config GENERIC_PENDING_IRQ_CHIPFLAGS
+> +       bool
+> +
+>  # Support for generic irq migrating off cpu before the cpu is offline.
+>  config GENERIC_IRQ_MIGRATION
+>         bool
+> --- a/kernel/irq/chip.c
+> +++ b/kernel/irq/chip.c
+> @@ -47,6 +47,13 @@ int irq_set_chip(unsigned int irq, const
+>                 return -EINVAL;
+>
+>         desc->irq_data.chip =3D (struct irq_chip *)(chip ?: &no_irq_chip)=
+;
+> +
+> +       if (IS_ENABLED(CONFIG_GENERIC_PENDING_IRQ_CHIPFLAGS) && chip) {
+> +               if (chip->flags & IRQCHIP_MOVE_DEFERRED)
+> +                       irqd_clear(&desc->irq_data, IRQD_MOVE_PCNTXT);
+> +               else
+> +                       irqd_set(&desc->irq_data, IRQD_MOVE_PCNTXT);
+> +       }
+>         irq_put_desc_unlock(desc, flags);
+>         /*
+>          * For !CONFIG_SPARSE_IRQ make the irq show up in
+> @@ -1114,16 +1121,21 @@ void irq_modify_status(unsigned int irq,
+>         trigger =3D irqd_get_trigger_type(&desc->irq_data);
+>
+>         irqd_clear(&desc->irq_data, IRQD_NO_BALANCING | IRQD_PER_CPU |
+> -                  IRQD_TRIGGER_MASK | IRQD_LEVEL | IRQD_MOVE_PCNTXT);
+> +                  IRQD_TRIGGER_MASK | IRQD_LEVEL);
+>         if (irq_settings_has_no_balance_set(desc))
+>                 irqd_set(&desc->irq_data, IRQD_NO_BALANCING);
+>         if (irq_settings_is_per_cpu(desc))
+>                 irqd_set(&desc->irq_data, IRQD_PER_CPU);
+> -       if (irq_settings_can_move_pcntxt(desc))
+> -               irqd_set(&desc->irq_data, IRQD_MOVE_PCNTXT);
+>         if (irq_settings_is_level(desc))
+>                 irqd_set(&desc->irq_data, IRQD_LEVEL);
+>
+> +       /* Keep this around until x86 is converted over */
+> +       if (!IS_ENABLED(CONFIG_GENERIC_PENDING_IRQ_CHIPFLAGS)) {
+> +               irqd_clear(&desc->irq_data, IRQD_MOVE_PCNTXT);
+> +               if (irq_settings_can_move_pcntxt(desc))
+> +                       irqd_set(&desc->irq_data, IRQD_MOVE_PCNTXT);
+> +       }
+> +
+>         tmp =3D irq_settings_get_trigger_mask(desc);
+>         if (tmp !=3D IRQ_TYPE_NONE)
+>                 trigger =3D tmp;
+>
+>
+>
