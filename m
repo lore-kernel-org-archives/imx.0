@@ -1,40 +1,49 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2BD3BA4B
-	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 09:34:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B74216380
+	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 09:50:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733736866; cv=none; b=pluTVXULvXo1RX5zN83Oae6Ulef8y52BmIY44Yg/YzFOsr4LITwNB/p6BA6E5eKHcRDT/Vm0UaIz86yYY+e39Y3z+xMyUrPAjNnetJFvlXFrFwoIPHDKBr/qFCJ/zafPYgiXpstTHlSoOD5Ci655G5uzP8hkP5GuD5YLewsEU8w=
+	t=1733737840; cv=none; b=FEyXIlSkf3otRExygRCxd3N/PEiaPkLoma+G/jB6YvPdc4nojBK/4iimKx8fWc1Cdbk7I9KxwU7qLO1lzHDq0MaZyF2DpK9S7ZQLCMu5NW4YNQT17GZrAYXz4irvgxx4JxwicSuuNWePdfvtA12M1+0gwkE8ioNGC4IVs3Z4t9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733736866; c=relaxed/simple;
-	bh=fZudXsA6TDgjSpAHmX4TDRaEd1/rte2MAt9Tki0tGHg=;
+	s=arc-20240116; t=1733737840; c=relaxed/simple;
+	bh=3NPSA3+8fscJ2FyuYaclk2rGZQ3JVTTNETwfOklgM3M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SoxJ2LNWGwKjbnL6or7XUf07rdRFaeFeth8sPtOtVMfCze1TgooX8tiw6kDaaxasPwnxioQIYMz4Re6J/TDL/xf4+mmwwJ9pt/urwt7eOkhUemuxMAuDy0O+vGDsGYI+gg9gsOTDT1QVjoTBGzDpTCRIus0vvZJIVKAMfLzC76k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=TW88fyEW; arc=none smtp.client-ip=220.197.32.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=DS5Gn3xApmiB4GneM168x+VckhMGVhU6Oi5udVMasXYJJbvYjRbfnaK6d5jTNXGhRds+HYS7eusx2X8jWw/5Gl3UFewrtPCroVKduUHEtghJIoRpkGDafA6KqM1nTeuz68hd1SS+riAmZUaijrMvjsu022pwUseW0BqoWyTDXxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=kXQPbSzn; arc=none smtp.client-ip=1.95.21.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="TW88fyEW"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="kXQPbSzn"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=J7f3mLAKs5aTYmrqkxyLkc8lw0Zm19/PnV18nFW9dUY=;
-	b=TW88fyEWWHpX4hPCESuPi0c1Ax5rCJkDSnFRDbMiTbK+UldlzYLHydGvoeDXsx
-	usfdP5EulXo+sM5+frUA/6P5xRUP+D2wPok8UGyBzH5QVyqZcTFHQyf5lIdW30b/
-	HgXezipCCOUPAKNeXzDnaZTcOXRnQ9hOiUoIdo8U7l7To=
+	Content-Type; bh=ChAIwGV7ZFkveVH5BCfEgrQPKa+agmYwut0/xNKhFek=;
+	b=kXQPbSzn+GbtajNR9BYQgkCkT46oSgqEAk3vHk2xh08y8sMDwLyTPHvGVH86JT
+	90W2P/YNcISXT49tA0P8H+N7ydzUSjU1PgY33KB8wfr8u29gSsqSif+/UCaq5IZs
+	88dVcX/NQ014JwgTSZPM5oBizvpZiAg4d06b2H8j84V0s=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD3f3KAuVZnxPyNBA--.47131S3;
-	Mon, 09 Dec 2024 17:33:54 +0800 (CST)
-Date: Mon, 9 Dec 2024 17:33:52 +0800
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgB3NtRBvVZnJDOOBA--.47668S3;
+	Mon, 09 Dec 2024 17:49:55 +0800 (CST)
+Date: Mon, 9 Dec 2024 17:49:52 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Stefan Eichenberger <eichest@gmail.com>
-Cc: linux@armlinux.org.uk, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, wahrenst@gmx.net,
-	elinor.montmasson@savoirfairelinux.com,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: Re: [PATCH v2] ARM: imx_v6_v7_defconfig: enable SND_SOC_SPDIF
-Message-ID: <Z1a5gBgVIl0BAJ4y@dragon>
-References: <20241108153546.268695-1-eichest@gmail.com>
+To: Marek Vasut <marex@denx.de>
+Cc: linux-arm-kernel@lists.infradead.org,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>, Peng Fan <peng.fan@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, kernel@dh-electronics.com,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH] MAINTAINERS: Update entry for DH electronics DHSOM SoMs
+ and boards
+Message-ID: <Z1a9QGfVsSzc81ZL@dragon>
+References: <20241111113524.10727-1-marex@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -43,33 +52,20 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241108153546.268695-1-eichest@gmail.com>
-X-CM-TRANSID:Ms8vCgD3f3KAuVZnxPyNBA--.47131S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZryrGw47JrW3XrWxWrWDXFb_yoWDKrX_Cr
-	n7Ww4kGwsYgrZruw18uwsa9Fs8uay8ursxWrnIqFyag3s0vrs8Z3Zxta4rZrn7Xa9aqayU
-	JrykuwsIy343KjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU08Oz7UUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBBOwZWdWr8gxLAAAsJ
+In-Reply-To: <20241111113524.10727-1-marex@denx.de>
+X-CM-TRANSID:Ms8vCgB3NtRBvVZnJDOOBA--.47668S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUaznQUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCRWwZWdWsiw1LwAAs8
 
-On Fri, Nov 08, 2024 at 04:34:34PM +0100, Stefan Eichenberger wrote:
-> From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+On Mon, Nov 11, 2024 at 12:34:21PM +0100, Marek Vasut wrote:
+> Update the MAINTAINERS entry to cover all DH electronics DHSOM
+> SoMs and boards. The DHSOM is the name which covers all modules,
+> DHCOM is the SODIMM seated SoM, DHCOR is the solder on module.
+> Use glob pattern to match on every DT file which contains either
+> of those three module substrings in lowercase.
 > 
-> Enable SND_SOC_SPDIF in imx_v6_v7_defconfig to support SPDIF audio.
-> 
-> With commit d469b771afe1 ("ARM: dts: imx6: update spdif sound card node
-> properties"), the more generic audio-codec property is used instead of
-> the old spdif-controller property. Since most i.MX6 boards now use the
-> audio-codec property together with the linux,spdif-dit and
-> linux,spdif-dir compatible driver, it makes sense to enable
-> SND_SOC_SPDIF in the imx_v6_v7_defconfig. This will ensure compatibility
-> with the updated device tree.
-> 
-> Without this change, boards that use the audio-codec property will show
-> the following error message during boot when using the
-> imx_v6_v7_defconfig and spdif audio is not working:
-> [   24.165534] platform sound-spdif: deferred probe pending: fsl-asoc-card: snd_soc_register_card failed
-> 
-> Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> Signed-off-by: Marek Vasut <marex@denx.de>
 
 Applied, thanks!
 
