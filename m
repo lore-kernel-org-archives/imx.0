@@ -1,82 +1,69 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D4921504E
-	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 07:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E037A215060;
+	Mon,  9 Dec 2024 07:42:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733730060; cv=none; b=l2r306hRm4rP/lFJLjaWZok7oYQGa48WaC4o6gQzpsrXSfA9Lv0ZDT8aF5hgSBxtBU08hgJGmCmmFiOris+MJ/ITBzPtPC1i/lDVzNmLdN9IZgtWjf2nUgfKaowoJ8g5Lmbzz9A+K46Gkul9tyCSNztWw1sL0m4ksC/W/fEelTg=
+	t=1733730126; cv=none; b=jrwh4aTDNmYJSkYLGvz5foqsemeQRfzR3GRk1yjLZctbRerkBmcgy91HTCopwo42TBDtI/SMG9dtzx0lCn0/TUaYoe2t0tXhenzdXrk63fdMV/QiKJh01Lgy09UybhYUTx/qXhDdW6JJfypXs0QJqGyLcteE2X0A1fx9n7FDHbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733730060; c=relaxed/simple;
-	bh=uC1pem2t1qTf2SJaJq5zueNwLm5ploeyLdhhQKMf7KE=;
+	s=arc-20240116; t=1733730126; c=relaxed/simple;
+	bh=iXDqLuzxLZKBI8aoHt6mcXjhjBAUdKfhlnHvvviHoMo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t7v0mhdbtta7bJyisxByIEW3l5hedrTeeMpWhZWqC+23GoKiCpYslwcmjlTocxzrv2f0km4ojXvxjHY844lBCc+zkkZZLLaPvnB62gruW0O/7inuhKGbsHnYg26lTMMj6BzpuX532JjxcSBoJLS8UQsVb/ju8vtLas5uJ683Abo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=m0B7CQyj; arc=none smtp.client-ip=1.95.21.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=sxG6B/BMCBbhINqqc5gyCxOb5emVShnam+Ub2i38wuWWYQMgyIGKS6TVofWQN8N9Jpwv4yu1i5LrmlYSgFQrA17QcvMgT9fnH0NbpbT+fgKJo1rrF8ZC+HEClWxZxgsBFzfKpfIfjTwyhB8cdvdVtoNPZ64OAiI8o6ZyyHx6FWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GsBCo1Vu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="m0B7CQyj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=F+/1F5usZGU4xwFJCSgL70wM6kK3SGbjvRaZHVo0Zx0=;
-	b=m0B7CQyjdSflcO4FEyoQ1bz1xXtz2aaBneveM0wWc38aRp5vbeDz7ctDwIsbGo
-	UpqW1iwusxzg7XkDGBClLBth7ICBRKhCwevETCuxrhblIgjkao37+jwTiBu7SfBf
-	aC9mJ7KN6axnCTQ6cuhvoNhlZUkd9iCPaxh/9g5n3Ctew=
-Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgA3fxoBnFZnkeV5BA--.46779S3;
-	Mon, 09 Dec 2024 15:28:03 +0800 (CST)
-Date: Mon, 9 Dec 2024 15:28:00 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Lubomir Rintel <lkundrak@v3.sk>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>,
-	Nicolin Chen <nicoleotsuka@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Adrien Grassein <adrien.grassein@gmail.com>,
-	Adam Ford <aford173@gmail.com>, linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, linux-mips@vger.kernel.org,
-	alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH treewide 10/11] ARM: dts: nxp: imx: Switch to
- {hp,mic}-det-gpios
-Message-ID: <Z1acAA7gbxH7QfhT@dragon>
-References: <cover.1727438777.git.geert+renesas@glider.be>
- <7ff1bfb73a6d6fc71f3d751dbb7133b045853f64.1727438777.git.geert+renesas@glider.be>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GsBCo1Vu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E40FFC4CED1;
+	Mon,  9 Dec 2024 07:42:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733730125;
+	bh=iXDqLuzxLZKBI8aoHt6mcXjhjBAUdKfhlnHvvviHoMo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GsBCo1VuY3xVO6bn2VZVSkTjt9jLXpByR4Y6LEzN/Tpb3RJnl5Hu+64YUYFlnx4LH
+	 xapVtQWJGQE1cf5d5jIQKHE5/4MZ4IhM7AdyByGk5A0TP8BAejBaXgTMPxq17lkTyx
+	 qq0K7Tse3yot1UbEsfP6mb8QmDmBVV4t2SxCTOHHxaZAkD3MBgwHU+QyLsdpV62jEK
+	 ZwpkbeBEgS9DnFDwa5yfImwROByK/zE30UDxD1doaYey0CDJoedwRH57HxtOcVPvHe
+	 lv/X1rhrmznuTy2yB6JJRju3Jktp1AqS5jopYUyWrydCLrvHDTCodnujDRt/CUcJSh
+	 XmmSCL0H4K5BQ==
+Date: Mon, 9 Dec 2024 08:42:02 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Andrej Picej <andrej.picej@norik.com>
+Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org, 
+	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com, airlied@gmail.com, 
+	simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
+	tzimmermann@suse.de, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, marex@denx.de, dri-devel@lists.freedesktop.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, upstream@lists.phytec.de
+Subject: Re: [PATCH v4 1/3] dt-bindings: drm/bridge: ti-sn65dsi83: Add
+ properties for ti,lvds-vod-swing
+Message-ID: <lbbayope3b6nkzfflgb2fbgakxpx7uewcslw7mynn5gki6vlxp@4amjbijjcrnt>
+References: <20241205134021.2592013-1-andrej.picej@norik.com>
+ <20241205134021.2592013-2-andrej.picej@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <7ff1bfb73a6d6fc71f3d751dbb7133b045853f64.1727438777.git.geert+renesas@glider.be>
-X-CM-TRANSID:Mc8vCgA3fxoBnFZnkeV5BA--.46779S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUoGQ6UUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCQ6wZWdWeNqUcwAAsm
+In-Reply-To: <20241205134021.2592013-2-andrej.picej@norik.com>
 
-On Fri, Sep 27, 2024 at 02:42:25PM +0200, Geert Uytterhoeven wrote:
-> Replace the deprecated "hp-det-gpio" and "mic-det-gpio" properties by
-> "hp-det-gpios" resp. "mic-det-gpios" in Freescale Generic ASoC Sound
-> Card device nodes.
+On Thu, Dec 05, 2024 at 02:40:19PM +0100, Andrej Picej wrote:
+> Add properties which can be used to specify LVDS differential output
+> voltage. Since this also depends on near-end signal termination also
+> include property which sets this. LVDS differential output voltage is
+> specified with an array (min, max), which should match the one from
+> connected device.
 > 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+> ---
 
-Applied, thanks!
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
 
