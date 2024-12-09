@@ -1,121 +1,411 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5616D2147EE
-	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 11:16:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113F521B1B4
+	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 11:34:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733742983; cv=none; b=W038mxq6BMT6EjcFZUSc+lToMk59GOjYAZzNkZCcvx4PPf1PppeUXLlkC5owv37Lg9NiVvOSSs5ixxYQ7nJnHAZUZDPNeyhOSejexIFmrmAohevQb/JfOHk4c/pHExijlvznpUkb1ilqbL/FLCAzzRmwNl4pzwpAPqyg9ccZz30=
+	t=1733744054; cv=none; b=EPWAcUIi1RujBYZfIwQDPqOw8yRUBjT9EaeYZyfeVzXq21E2R4n4d9DpopvT+PV7DzxpjE71x1d0v6W2Cw3/7KVzX69ggwwrexxeXF+T6WOquYp/GBoqPoepDWv0F5BGIxwaoxs0yfdID3buuR1JID7RRcs4zUnSLo3ZeCTbJX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733742983; c=relaxed/simple;
-	bh=VXDgpV43oBqhloYTfWbndUbcKl+eiskjcLfIgvtPKVI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DiCO1pOadM5jNnf37ELILw3sxhamnot8jo6FbR8qQ2qgDAoutcFi3A7QRgrP14XtLrJTFihGMuWDwVfEhePlFvtJKTRl2y8xmxF6kXcYFdOUQEAd9mp0AHonjxSpX1xPJ+NN3ikrvGJZ83lRop251k9pGvSn1BdE/9+zmvXSXNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=gkNTOy1i; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1733744054; c=relaxed/simple;
+	bh=LOIAnWwmFuWbefHt/yb5amtmi2kf/iUi+mT7cG4vT6A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dYmPfZTsqC1yLqKx8XiK9vYJlGJt7dvnGKddLYS1Zrt2xz48YcX8Kn7VDfp1iaOdtXWU2Z5mnhRGkSK33jzcVUrojJ6Ixepe7AYbfwt/MEZ7FgTWFtM3LwnPgbMnP4GNCK4vRD6gSt/O0QhsUeSQ8Um5y3gwIhCdhpW4fh81cAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zB+qS2oV; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="gkNTOy1i"
-Received: from wsk (095160158109.dynamic-2-waw-k-4-2-0.vectranet.pl [95.160.158.109])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	(Authenticated sender: lukma@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 7BDE6888D5;
-	Mon,  9 Dec 2024 12:16:20 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1733742980;
-	bh=BuMhiC0OhEfpPn44QIc8qMlaFvp2wk3+ZDJWj+PnNQI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gkNTOy1idlOOFdrQ8uawL2OO6XsQ3+vYNDYjvlh5yAxwGmyL3ojcnrV880kfujf1o
-	 Oa6EjJ1p9HieoK3rQhHyB0hzjIkitFlBRJzm2CAaMIicc0ioQIrL9iRJTYq2RVktDm
-	 sSC7aCb4crgGekjuQbs9yhMI1rA+HuvyehXvi/oTJjgNM6EEARaAeSMwBQ9Lh/kcVh
-	 D+Lx6PdOWcGpX/ikTclmufyxRJYo47yAI0D0g6Uqi6jRa2/O5BA2LuimbuTqjn0zNT
-	 FvZTJU0YGZI76OJfALGsITRdJxH//e2mbjp8wqwEfu8TYztbI/fDxfQu7saINd2hco
-	 QmVZ+lobvzuoQ==
-Date: Mon, 9 Dec 2024 12:16:19 +0100
-From: Lukasz Majewski <lukma@denx.de>
-To: Stefan Wahren <wahrenst@gmx.net>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v11 3/3] ARM: dts: mxs: Add descriptions for imx287
- based btt3-[012] devices
-Message-ID: <20241209121619.623886a4@wsk>
-In-Reply-To: <c8fd371f-fd36-48c4-ad49-1e8f8db01383@gmx.net>
-References: <20241107085705.490940-1-lukma@denx.de>
-	<20241107085705.490940-3-lukma@denx.de>
-	<20241119165236.69438f75@wsk>
-	<c8fd371f-fd36-48c4-ad49-1e8f8db01383@gmx.net>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zB+qS2oV"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-aa67bc91f88so27751666b.0
+        for <imx@lists.linux.dev>; Mon, 09 Dec 2024 03:34:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1733744050; x=1734348850; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RqH0dlrlbRQJY6hV8nIShWo9I2kKBRUgR2UyDp6lXjU=;
+        b=zB+qS2oVhAAs61on8iB9eCtXEsJACcrO3zvTi1g5WthN24DDMj/Q3RYN5N2cN/OTa9
+         RkpAHrMMOr15dpr0oT7GFd0D18/iJ2q54q4izsvhp8L3iFgkWDUP+XgCgeMRJmDnX+oJ
+         AQJuKxuAwl1xIzLmAFu/3mlZebiP8RX8JEhEQVyQuoHYLDXVlY/v99/pSbwF3KIT123k
+         V+jg+4AB80nV10pR0YFt6fDYtwNth3NOQ6/GEyK8DtCKB9pyvNS0T52s5LLU3n9tOEVw
+         wzO8FJ5alWVgqnGcQS6DE+9r7iQWoJNRcZOYcaRtR0+i9HJflNU0vVR11CzAz18orCrT
+         OWMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733744050; x=1734348850;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RqH0dlrlbRQJY6hV8nIShWo9I2kKBRUgR2UyDp6lXjU=;
+        b=EvEdePhq0e5FYKuceWR75PMjUkETCHWY2p0MH6dYASe9OoxL/L9jQg6AWYy5J+FtYN
+         TtgdXV8ZaEImLYiqOvGff40v/86R+3MmP7wQRDDoYFKfLmOLeChH+eB1tHbnVCYTC6WE
+         vZf+3Tg17ZG32y4J4pcDSvgIGIKHKE4jsn3D9lrSAif9F/ZW2D+3cCG7cNycVrMM3kTw
+         d5M3FZ7sHsEqSPUzxcW7U7YhojVN7NR2r/44kirhO5gwR2ZWO0zq1eMYa7QxwBkBJK6l
+         WjqZg1bUMJilePe0LJmMJpTJzKZlNS3zFjGtwZ2YufX2WMvedXfF45S/U85vR/yUUxwz
+         0XCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWB4A93mKsoMMeDTG4bOv0XXL54ajgVuG+dBrNqzfTUOsFTHMhk7lf3kQ161E7I8dS3VFQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxOe+cv3TB6Ve3xZhVd8Kc5CU/Dw0+UxiLJgP3y46J4JkufhNaX
+	Ub/UKXxdJ3wwDIMSjmCEEsxJCVI4ny/huWTfY8Wr4z0ALQzk4yB6zGkfXiLRUU8=
+X-Gm-Gg: ASbGnctRGRQ9XoOEkchd9rPNJ1G53QihBifzhNztc+P5RqLPXxLzi4ErHAlNSbx2c/S
+	nARsnIu7rhRy7Egb4QH8VqJNt1Pfolj//w10th3v2TjtOF3lVt6FhlNXSim4QKTamaFmsD0sAXj
+	XtRrz5MO0EDg8pnrb/m52FEH6psiOA0qBI9G9TsQOqOSlyffdvpTR1dS2egNqsw27vKQ2hKIfX5
+	KLSUocF+YJFmRz/86CnVD3tYxPYXMbz/mZAPVD+D8iZGK0zgmF/ZR2V1egPxg2D
+X-Google-Smtp-Source: AGHT+IEUwOZ9YFvIosvQUmmKdASOWnMUlhYJRR8cEOp3nz5ctbynKBiSrS7H9SVLSEx6wlTFIk5CRQ==
+X-Received: by 2002:a17:907:3dab:b0:aa6:6e2e:b8b with SMTP id a640c23a62f3a-aa66e2e15a6mr265628966b.1.1733744050339;
+        Mon, 09 Dec 2024 03:34:10 -0800 (PST)
+Received: from krzk-bin.. ([178.197.223.165])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa695c3ac07sm61789166b.66.2024.12.09.03.34.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Dec 2024 03:34:09 -0800 (PST)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Ming Qian <ming.qian@nxp.com>,
+	Zhou Peng <eagle.zhou@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Tiffany Lin <tiffany.lin@mediatek.com>,
+	Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+	Yunfei Dong <yunfei.dong@mediatek.com>,
+	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Robert Foss <rfoss@kernel.org>,
+	Todor Tomov <todor.too@gmail.com>,
+	"Bryan O'Donoghue" <bryan.odonoghue@linaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Viktor Prutyanov <viktor.prutyanov@phystech.edu>,
+	Shijie Qin <shijie.qin@nxp.com>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Emil Velikov <emil.velikov@collabora.com>,
+	Del Regno <angelogioacchino.delregno@somainline.org>,
+	Nicolas Frattaroli <frattaroli.nicolas@gmail.com>,
+	linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-sunxi@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-amlogic@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-rockchip@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-mediatek@lists.infradead.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [RESEND PATCH] media: dt-bindings: trivial white-space and example cleanup
+Date: Mon,  9 Dec 2024 12:34:05 +0100
+Message-ID: <20241209113405.74226-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/jBN468d=YevV1Tnfk/xCbGe";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Transfer-Encoding: 8bit
 
---Sig_/jBN468d=YevV1Tnfk/xCbGe
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Minor cleanups without funcitonal impact:
+ - There should not be an empty blank line after SPDX tag,
+ - Convention is to indent DTS examples in coding style with 2- or
+   4-space indentation (4 is preferred),
+ - Drop unused labels in DTS examples.
 
-Hi Stefan,
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-> Am 19.11.24 um 16:52 schrieb Lukasz Majewski:
-> > Dear Community,
-> > =20
-> >> The btt3 device' HW revisions from 0 to 2 use imx287 SoC and are to
-> >> some extend similar to already upstreamed XEA devices, hence are
-> >> using common imx28-lwe.dtsi file.
-> >>
-> >> New, imx28-btt3.dtsi has been added to embrace common DTS
-> >> properties for different HW revisions for this device.
-> >>
-> >> As a result - changes introduced in imx28-btt3-[012].dts are
-> >> minimal.
-> >> =20
-> > Are there any more comments / suggestions for this patch set? =20
-> I've send my RB for this patch on October 31th for V10, but it didn't
-> made it into V11.
+---
 
-Sorry, I've just noticed it.
+No comments since August... Can it be applied?
 
-When the yaml patches are applied/accepted, I will either resend the
-dts patches with your Reviewed-by or maybe this tag can be added when
-applying the code by the maintainer (Shawn).
+---
 
 
-Best regards,
+ .../media/allwinner,sun50i-h6-vpu-g2.yaml     |  1 -
+ .../bindings/media/amlogic,meson-ir-tx.yaml   |  1 -
+ .../bindings/media/amphion,vpu.yaml           |  1 -
+ .../bindings/media/fsl,imx6ull-pxp.yaml       |  1 -
+ .../media/mediatek,vcodec-decoder.yaml        |  1 -
+ .../media/mediatek,vcodec-encoder.yaml        |  1 -
+ .../media/mediatek,vcodec-subdev-decoder.yaml |  1 -
+ .../media/microchip,sama5d4-vdec.yaml         | 17 ++++----
+ .../bindings/media/nxp,imx8mq-vpu.yaml        | 41 +++++++++----------
+ .../bindings/media/qcom,msm8916-camss.yaml    |  1 -
+ .../bindings/media/qcom,msm8996-camss.yaml    |  1 -
+ .../bindings/media/qcom,sdm660-camss.yaml     |  1 -
+ .../bindings/media/qcom,sdm845-camss.yaml     |  1 -
+ .../bindings/media/qcom,sm8250-camss.yaml     |  1 -
+ .../bindings/media/rockchip,rk3568-vepu.yaml  |  1 -
+ .../bindings/media/rockchip-vpu.yaml          | 29 +++++++------
+ 16 files changed, 42 insertions(+), 58 deletions(-)
 
-Lukasz Majewski
+diff --git a/Documentation/devicetree/bindings/media/allwinner,sun50i-h6-vpu-g2.yaml b/Documentation/devicetree/bindings/media/allwinner,sun50i-h6-vpu-g2.yaml
+index a4f06bbdfe49..8ba5177ac631 100644
+--- a/Documentation/devicetree/bindings/media/allwinner,sun50i-h6-vpu-g2.yaml
++++ b/Documentation/devicetree/bindings/media/allwinner,sun50i-h6-vpu-g2.yaml
+@@ -1,5 +1,4 @@
+ # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+-
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/media/allwinner,sun50i-h6-vpu-g2.yaml#
+diff --git a/Documentation/devicetree/bindings/media/amlogic,meson-ir-tx.yaml b/Documentation/devicetree/bindings/media/amlogic,meson-ir-tx.yaml
+index 377acce93423..6da8a6aded23 100644
+--- a/Documentation/devicetree/bindings/media/amlogic,meson-ir-tx.yaml
++++ b/Documentation/devicetree/bindings/media/amlogic,meson-ir-tx.yaml
+@@ -1,5 +1,4 @@
+ # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+-
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/media/amlogic,meson-ir-tx.yaml#
+diff --git a/Documentation/devicetree/bindings/media/amphion,vpu.yaml b/Documentation/devicetree/bindings/media/amphion,vpu.yaml
+index 9801de3ed84e..5a920d9e78c7 100644
+--- a/Documentation/devicetree/bindings/media/amphion,vpu.yaml
++++ b/Documentation/devicetree/bindings/media/amphion,vpu.yaml
+@@ -1,5 +1,4 @@
+ # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+-
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/media/amphion,vpu.yaml#
+diff --git a/Documentation/devicetree/bindings/media/fsl,imx6ull-pxp.yaml b/Documentation/devicetree/bindings/media/fsl,imx6ull-pxp.yaml
+index 84a5e894ace4..3f47744459aa 100644
+--- a/Documentation/devicetree/bindings/media/fsl,imx6ull-pxp.yaml
++++ b/Documentation/devicetree/bindings/media/fsl,imx6ull-pxp.yaml
+@@ -1,5 +1,4 @@
+ # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+-
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/media/fsl,imx6ull-pxp.yaml#
+diff --git a/Documentation/devicetree/bindings/media/mediatek,vcodec-decoder.yaml b/Documentation/devicetree/bindings/media/mediatek,vcodec-decoder.yaml
+index b401c67e3ba0..d726d141a434 100644
+--- a/Documentation/devicetree/bindings/media/mediatek,vcodec-decoder.yaml
++++ b/Documentation/devicetree/bindings/media/mediatek,vcodec-decoder.yaml
+@@ -1,5 +1,4 @@
+ # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+-
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/media/mediatek,vcodec-decoder.yaml#
+diff --git a/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml b/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml
+index b45743d0a9ec..110e8f5f1f9e 100644
+--- a/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml
++++ b/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml
+@@ -1,5 +1,4 @@
+ # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+-
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/media/mediatek,vcodec-encoder.yaml#
+diff --git a/Documentation/devicetree/bindings/media/mediatek,vcodec-subdev-decoder.yaml b/Documentation/devicetree/bindings/media/mediatek,vcodec-subdev-decoder.yaml
+index a500a585c692..5865e6f0be89 100644
+--- a/Documentation/devicetree/bindings/media/mediatek,vcodec-subdev-decoder.yaml
++++ b/Documentation/devicetree/bindings/media/mediatek,vcodec-subdev-decoder.yaml
+@@ -1,5 +1,4 @@
+ # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+-
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/media/mediatek,vcodec-subdev-decoder.yaml#
+diff --git a/Documentation/devicetree/bindings/media/microchip,sama5d4-vdec.yaml b/Documentation/devicetree/bindings/media/microchip,sama5d4-vdec.yaml
+index 59b805ca47c5..ede086d55add 100644
+--- a/Documentation/devicetree/bindings/media/microchip,sama5d4-vdec.yaml
++++ b/Documentation/devicetree/bindings/media/microchip,sama5d4-vdec.yaml
+@@ -1,5 +1,4 @@
+ # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+-
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/media/microchip,sama5d4-vdec.yaml#
+@@ -36,12 +35,12 @@ additionalProperties: false
+ 
+ examples:
+   - |
+-        #include <dt-bindings/clock/at91.h>
+-        #include <dt-bindings/interrupt-controller/irq.h>
++    #include <dt-bindings/clock/at91.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
+ 
+-        vdec0: vdec@300000 {
+-                compatible = "microchip,sama5d4-vdec";
+-                reg = <0x00300000 0x100000>;
+-                interrupts = <19 IRQ_TYPE_LEVEL_HIGH 4>;
+-                clocks = <&pmc PMC_TYPE_PERIPHERAL 19>;
+-        };
++    vdec@300000 {
++        compatible = "microchip,sama5d4-vdec";
++        reg = <0x00300000 0x100000>;
++        interrupts = <19 IRQ_TYPE_LEVEL_HIGH 4>;
++        clocks = <&pmc PMC_TYPE_PERIPHERAL 19>;
++    };
+diff --git a/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml b/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
+index 3d58f02b0c5d..19528262810a 100644
+--- a/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
++++ b/Documentation/devicetree/bindings/media/nxp,imx8mq-vpu.yaml
+@@ -1,5 +1,4 @@
+ # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+-
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/media/nxp,imx8mq-vpu.yaml#
+@@ -44,26 +43,26 @@ additionalProperties: false
+ 
+ examples:
+   - |
+-        #include <dt-bindings/clock/imx8mq-clock.h>
+-        #include <dt-bindings/power/imx8mq-power.h>
+-        #include <dt-bindings/interrupt-controller/arm-gic.h>
++    #include <dt-bindings/clock/imx8mq-clock.h>
++    #include <dt-bindings/power/imx8mq-power.h>
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
+ 
+-        vpu_g1: video-codec@38300000 {
+-                compatible = "nxp,imx8mq-vpu-g1";
+-                reg = <0x38300000 0x10000>;
+-                interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
+-                clocks = <&clk IMX8MQ_CLK_VPU_G1_ROOT>;
+-                power-domains = <&vpu_blk_ctrl IMX8MQ_VPUBLK_PD_G1>;
+-        };
++    video-codec@38300000 {
++        compatible = "nxp,imx8mq-vpu-g1";
++        reg = <0x38300000 0x10000>;
++        interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
++        clocks = <&clk IMX8MQ_CLK_VPU_G1_ROOT>;
++        power-domains = <&vpu_blk_ctrl IMX8MQ_VPUBLK_PD_G1>;
++    };
+   - |
+-        #include <dt-bindings/clock/imx8mq-clock.h>
+-        #include <dt-bindings/power/imx8mq-power.h>
+-        #include <dt-bindings/interrupt-controller/arm-gic.h>
++    #include <dt-bindings/clock/imx8mq-clock.h>
++    #include <dt-bindings/power/imx8mq-power.h>
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
+ 
+-        vpu_g2: video-codec@38300000 {
+-                compatible = "nxp,imx8mq-vpu-g2";
+-                reg = <0x38310000 0x10000>;
+-                interrupts = <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>;
+-                clocks = <&clk IMX8MQ_CLK_VPU_G2_ROOT>;
+-                power-domains = <&vpu_blk_ctrl IMX8MQ_VPUBLK_PD_G2>;
+-        };
++    video-codec@38300000 {
++        compatible = "nxp,imx8mq-vpu-g2";
++        reg = <0x38310000 0x10000>;
++        interrupts = <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>;
++        clocks = <&clk IMX8MQ_CLK_VPU_G2_ROOT>;
++        power-domains = <&vpu_blk_ctrl IMX8MQ_VPUBLK_PD_G2>;
++    };
+diff --git a/Documentation/devicetree/bindings/media/qcom,msm8916-camss.yaml b/Documentation/devicetree/bindings/media/qcom,msm8916-camss.yaml
+index 9cc0a968a401..3469a43f00d4 100644
+--- a/Documentation/devicetree/bindings/media/qcom,msm8916-camss.yaml
++++ b/Documentation/devicetree/bindings/media/qcom,msm8916-camss.yaml
+@@ -1,5 +1,4 @@
+ # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+-
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/media/qcom,msm8916-camss.yaml#
+diff --git a/Documentation/devicetree/bindings/media/qcom,msm8996-camss.yaml b/Documentation/devicetree/bindings/media/qcom,msm8996-camss.yaml
+index 5cb0e337ea6e..644646de338a 100644
+--- a/Documentation/devicetree/bindings/media/qcom,msm8996-camss.yaml
++++ b/Documentation/devicetree/bindings/media/qcom,msm8996-camss.yaml
+@@ -1,5 +1,4 @@
+ # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+-
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/media/qcom,msm8996-camss.yaml#
+diff --git a/Documentation/devicetree/bindings/media/qcom,sdm660-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sdm660-camss.yaml
+index 584106e275f6..68d8670557f5 100644
+--- a/Documentation/devicetree/bindings/media/qcom,sdm660-camss.yaml
++++ b/Documentation/devicetree/bindings/media/qcom,sdm660-camss.yaml
+@@ -1,5 +1,4 @@
+ # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+-
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/media/qcom,sdm660-camss.yaml#
+diff --git a/Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml
+index d32daaef1b50..289494f561e5 100644
+--- a/Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml
++++ b/Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml
+@@ -1,5 +1,4 @@
+ # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+-
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/media/qcom,sdm845-camss.yaml#
+diff --git a/Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml
+index 06db2c1e6079..a372d991e652 100644
+--- a/Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml
++++ b/Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml
+@@ -1,5 +1,4 @@
+ # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+-
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/media/qcom,sm8250-camss.yaml#
+diff --git a/Documentation/devicetree/bindings/media/rockchip,rk3568-vepu.yaml b/Documentation/devicetree/bindings/media/rockchip,rk3568-vepu.yaml
+index 947ad699cc5e..d246f5d38427 100644
+--- a/Documentation/devicetree/bindings/media/rockchip,rk3568-vepu.yaml
++++ b/Documentation/devicetree/bindings/media/rockchip,rk3568-vepu.yaml
+@@ -1,5 +1,4 @@
+ # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+-
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/media/rockchip,rk3568-vepu.yaml#
+diff --git a/Documentation/devicetree/bindings/media/rockchip-vpu.yaml b/Documentation/devicetree/bindings/media/rockchip-vpu.yaml
+index 719aeb2dc593..8c2501634080 100644
+--- a/Documentation/devicetree/bindings/media/rockchip-vpu.yaml
++++ b/Documentation/devicetree/bindings/media/rockchip-vpu.yaml
+@@ -1,5 +1,4 @@
+ # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+-
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/media/rockchip-vpu.yaml#
+@@ -92,18 +91,18 @@ additionalProperties: false
+ 
+ examples:
+   - |
+-        #include <dt-bindings/clock/rk3288-cru.h>
+-        #include <dt-bindings/interrupt-controller/arm-gic.h>
+-        #include <dt-bindings/power/rk3288-power.h>
++    #include <dt-bindings/clock/rk3288-cru.h>
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++    #include <dt-bindings/power/rk3288-power.h>
+ 
+-        vpu: video-codec@ff9a0000 {
+-                compatible = "rockchip,rk3288-vpu";
+-                reg = <0xff9a0000 0x800>;
+-                interrupts = <GIC_SPI 9 IRQ_TYPE_LEVEL_HIGH>,
+-                             <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>;
+-                interrupt-names = "vepu", "vdpu";
+-                clocks = <&cru ACLK_VCODEC>, <&cru HCLK_VCODEC>;
+-                clock-names = "aclk", "hclk";
+-                power-domains = <&power RK3288_PD_VIDEO>;
+-                iommus = <&vpu_mmu>;
+-        };
++    video-codec@ff9a0000 {
++        compatible = "rockchip,rk3288-vpu";
++        reg = <0xff9a0000 0x800>;
++        interrupts = <GIC_SPI 9 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>;
++        interrupt-names = "vepu", "vdpu";
++        clocks = <&cru ACLK_VCODEC>, <&cru HCLK_VCODEC>;
++        clock-names = "aclk", "hclk";
++        power-domains = <&power RK3288_PD_VIDEO>;
++        iommus = <&vpu_mmu>;
++    };
+-- 
+2.43.0
 
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/jBN468d=YevV1Tnfk/xCbGe
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmdW0YMACgkQAR8vZIA0
-zr2THAf+JgmJiwwSis3XQnIdKHJG+zMF3IYWmEQqljal+UWYz6CmPygErJFdSZI9
-p7Nj+OtF4Vnv4gCGw2WSRHiQD4tA1gjFXmLByhkaTke1vKEa6kSbQTb9kvFAT6Ss
-O95SBMZoePdu4c1uEYpSvuYNUVPkImpw+Is20TjrLHm/Jepxbpjh445DaKhNYQQR
-kC9Hb1i1uum13rH0gRwT0HRCXqlBwAYZTMXdqR4gwc3ogJVLsvuY0ujC+1JNNmmp
-BkYM22XM7CY5qeIa0PUEBwS9C2UQwsPWw1KQ4NgZ/1uEN+4iFkNNFGBgWzqeL+wn
-pmTLrePIuUqCthhv5c83HpXCfamRVQ==
-=8U55
------END PGP SIGNATURE-----
-
---Sig_/jBN468d=YevV1Tnfk/xCbGe--
