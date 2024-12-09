@@ -1,96 +1,97 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13AB42236EF
-	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 12:38:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B482221D88;
+	Mon,  9 Dec 2024 12:48:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733747906; cv=none; b=g0RDhIZ+7LDFgAljyEd262kqFp5m8bXUt6EC+x79k5rkfXCKyP2uWVL6cvcqrvq+QhE1fnVvhd/y1n1RhrQh71/0AenC1aKb719rFfc6NpoVojun6tXHunMdiU0SQLQXVUUOaEUHPV8R/iDuXcudSPfzg/lXv5GOpyzz7AnTbS0=
+	t=1733748512; cv=none; b=ak/wZC8MNkCVyCLLEf4zOdTc+Osm9Vrb0e4tf1pVF9tJxpoeZz1KkzTdHlo5NwoqrdlVUgXwyQw5EHCxuYy1aVcSp1kw53OKIfNONyfjPNhbSu4HMbQTsFqi7wCh4/Yy4ssUT9cAjXmtp8wAz9awdUBsLVoFJO5PHK/sccRb/18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733747906; c=relaxed/simple;
-	bh=Uasg6/SNEB69YisucaqWqZZ4VUkZJjS9utpq28O7SvE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=abDn5Nc46OoLY0DVCa2YWl/+xuW98sKe+bXWYlA+vWVniXV2s1+u4V45svnrB9iaRch3XggoUJv6exMkgJi/OgFTms4uqKFvUPyB7IlSr8xjN2DyTizl7RjnUmqXAhLpeBSoE+r2IrgDwQy2P4xGCkFxLld0FIEd3hDW25muDzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=PkXEga3K; arc=none smtp.client-ip=220.197.32.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1733748512; c=relaxed/simple;
+	bh=doGwGYhbXQvljz7pEyV8cg3NcfTkJse5GZPQ0eBEQ4w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=coshXOhlHz4uF+/pjJ9ZAzE0uGezVrTFdmmSzhYn7LsOAtMoT72DvRbiSXJcs55QSnxlO6XAoe9wMLCm1wQPaVlAC6p/sQ2utTKs+TmeXmbOa/I4Qdut0how6nyZQnyHNlrjmo0rDojnYZBz2rWC/aGJ405HVCo+bV6/Y6Su5ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=B2ScI27/; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="PkXEga3K"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=HSQa61tbPwqUeRkPuD+XeddE/YYm1t+0527lCAZDVbQ=;
-	b=PkXEga3Kr1UJDtXcvvImu3rh8lbk6jQ3qSI+Nv8pWYbSjyWijbWI1zNS2b6FXw
-	SaUc/oBI2Yd9+GHRQBr0E3brsRRZLTwlc0DCgx74rVHm+MruRW7Gdgy1jnCnZ7lL
-	zFdaDfhnDnmaTxVUspnF27OpyAyHJyk9z3Tfef3zewdno=
-Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgDXEPCL5FZnDnZzBA--.46129S3;
-	Mon, 09 Dec 2024 20:37:33 +0800 (CST)
-Date: Mon, 9 Dec 2024 20:37:31 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: abelvesa@kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: peng.fan@nxp.com, mturquette@baylibre.com, sboyd@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, imx@lists.linux.dev, shengjiu.wang@gmail.com,
-	linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] arm64: dts: imx93: Use IMX93_CLK_SPDIF_IPG as
- SPDIF IPG clock
-Message-ID: <Z1bkixjbyFhH3ZgL@dragon>
-References: <20241119015805.3840606-1-shengjiu.wang@nxp.com>
- <20241119015805.3840606-4-shengjiu.wang@nxp.com>
+	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="B2ScI27/"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=YALQ/5d5xwJu+LceFpjWJMU1LIe6WE2pCNsHkacRTcI=; b=B2ScI27/o23d0xltBjPie1Ue+t
+	5XtAHemGGtwCU4r6Kw0aUPIQD/3gXCT7f1etTJxip3qhzWcqwfw4JXmXyLata74X+iJwHGqLwKa35
+	Nsd1CRZa4iw5OSl1D/JJ2ykK/4Lhc6MWwuc3LANeJWXxROWIri8EAGM0W5W6wQBQ3EvnsHzYSD1mt
+	0joyVgYhvrm/vdVBRbOVXBRMMOhfFEqjbGpFySbSEGgtfYppDM1xZwd4TSHOu8y61wQNkR15i7U5m
+	H7+bIm3oEyj2kB3K5ikDYec5gCiDvo1hNBIHz4HbHxHJ2D2OX0emZVllTYnSxCB05IAnB9+Rf6M4W
+	k43Bx9+g==;
+Received: from i53875bc4.versanet.de ([83.135.91.196] helo=diego.localnet)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1tKdBK-00088z-7p; Mon, 09 Dec 2024 13:48:10 +0100
+From: Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Ming Qian <ming.qian@nxp.com>, Zhou Peng <eagle.zhou@nxp.com>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Tiffany Lin <tiffany.lin@mediatek.com>,
+ Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+ Yunfei Dong <yunfei.dong@mediatek.com>,
+ Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
+ Philipp Zabel <p.zabel@pengutronix.de>, Robert Foss <rfoss@kernel.org>,
+ Todor Tomov <todor.too@gmail.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Viktor Prutyanov <viktor.prutyanov@phystech.edu>,
+ Shijie Qin <shijie.qin@nxp.com>, Michael Tretter <m.tretter@pengutronix.de>,
+ Emil Velikov <emil.velikov@collabora.com>,
+ Del Regno <angelogioacchino.delregno@somainline.org>,
+ Nicolas Frattaroli <frattaroli.nicolas@gmail.com>,
+ linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
+ imx@lists.linux.dev, linux-rockchip@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject:
+ Re: [RESEND PATCH] media: dt-bindings: trivial white-space and example
+ cleanup
+Date: Mon, 09 Dec 2024 13:48:08 +0100
+Message-ID: <9635159.2WqB4rESCP@diego>
+In-Reply-To: <20241209113405.74226-1-krzysztof.kozlowski@linaro.org>
+References: <20241209113405.74226-1-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241119015805.3840606-4-shengjiu.wang@nxp.com>
-X-CM-TRANSID:M88vCgDXEPCL5FZnDnZzBA--.46129S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7KFW5XF15XFy5Ar4ruw4DArb_yoW8JFWfpF
-	yfCr43Jw1vgF1rC3sIqr1Sq3s5Gw43GFs3uF45XryUt3y3uryIqF4Sgrsagw1xXr4fuw43
-	tF12qr1UJ3WrZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jz7KsUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEROwZWdW4JcK1gABsM
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Nov 19, 2024 at 09:58:05AM +0800, Shengjiu Wang wrote:
-> IMX93_CLK_BUS_WAKEUP is not accurate IPG clock, which
-> missed the clock gate part.
+Am Montag, 9. Dezember 2024, 12:34:05 CET schrieb Krzysztof Kozlowski:
+> Minor cleanups without funcitonal impact:
+>  - There should not be an empty blank line after SPDX tag,
+>  - Convention is to indent DTS examples in coding style with 2- or
+>    4-space indentation (4 is preferred),
+>  - Drop unused labels in DTS examples.
 > 
-> IMX93_CLK_SPDIF_IPG is the correct clock.
-> 
-> Fixes: 1c4a4f7362fd ("arm64: dts: imx93: Add audio device nodes")
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Hi Abel,
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
 
-I guess it would be the best for you to apply the whole series through
-clock tree?  In that case:
+(even looked at the whole patch and not only the Rockchip parts :-) )
 
-Acked-by: Shawn Guo <shawnguo@kernel.org>
-
-Thanks,
-Shawn
-
-> ---
->  arch/arm64/boot/dts/freescale/imx93.dtsi | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/imx93.dtsi b/arch/arm64/boot/dts/freescale/imx93.dtsi
-> index 688488de8cd2..56766fdb0b1e 100644
-> --- a/arch/arm64/boot/dts/freescale/imx93.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx93.dtsi
-> @@ -925,7 +925,7 @@ xcvr: xcvr@42680000 {
->  				reg-names = "ram", "regs", "rxfifo", "txfifo";
->  				interrupts = <GIC_SPI 203 IRQ_TYPE_LEVEL_HIGH>,
->  					     <GIC_SPI 204 IRQ_TYPE_LEVEL_HIGH>;
-> -				clocks = <&clk IMX93_CLK_BUS_WAKEUP>,
-> +				clocks = <&clk IMX93_CLK_SPDIF_IPG>,
->  					 <&clk IMX93_CLK_SPDIF_GATE>,
->  					 <&clk IMX93_CLK_DUMMY>,
->  					 <&clk IMX93_CLK_AUD_XCVR_GATE>;
-> -- 
-> 2.34.1
-> 
 
