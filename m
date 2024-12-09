@@ -1,69 +1,66 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E037A215060;
-	Mon,  9 Dec 2024 07:42:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B0485588B
+	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 07:54:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733730126; cv=none; b=jrwh4aTDNmYJSkYLGvz5foqsemeQRfzR3GRk1yjLZctbRerkBmcgy91HTCopwo42TBDtI/SMG9dtzx0lCn0/TUaYoe2t0tXhenzdXrk63fdMV/QiKJh01Lgy09UybhYUTx/qXhDdW6JJfypXs0QJqGyLcteE2X0A1fx9n7FDHbI=
+	t=1733730844; cv=none; b=ibOXAgPhjcmEMdAwZSowXw9ZlGZoneB8vL4j00azIJU0o8bBd4jg1AgX3iKq7HkJaxxKxYmbpYo4dhzIMu0opKLO0q9X79wAEH5lpbmXwCXchTtf10HM1G98kpUGDP8UZXF8cb1J+o9QzGmWU+vAm699iYKOKr4TKcUxN8eZCj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733730126; c=relaxed/simple;
-	bh=iXDqLuzxLZKBI8aoHt6mcXjhjBAUdKfhlnHvvviHoMo=;
+	s=arc-20240116; t=1733730844; c=relaxed/simple;
+	bh=IetJKfhC1Wng649lB28KvwBLb5pogvRQt/kSK5Cf0D0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sxG6B/BMCBbhINqqc5gyCxOb5emVShnam+Ub2i38wuWWYQMgyIGKS6TVofWQN8N9Jpwv4yu1i5LrmlYSgFQrA17QcvMgT9fnH0NbpbT+fgKJo1rrF8ZC+HEClWxZxgsBFzfKpfIfjTwyhB8cdvdVtoNPZ64OAiI8o6ZyyHx6FWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GsBCo1Vu; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qa0Fsh2BRj2V4czZxBfd9KBYjN1rYMRKeXAGela9lIrZFwrHOcRalBs91xCv3lOnwD3hckLWuppL8A62+5JPHzRtv6IlgeIJ6I8YQFkM7fN9GceXUoDiEs5uMAYseU0ZLEO2e00dLMfGeYrtaErjUCLzYOqWSnuIjZvv2dovnz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=jdt+PlMB; arc=none smtp.client-ip=220.197.32.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GsBCo1Vu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E40FFC4CED1;
-	Mon,  9 Dec 2024 07:42:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733730125;
-	bh=iXDqLuzxLZKBI8aoHt6mcXjhjBAUdKfhlnHvvviHoMo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GsBCo1VuY3xVO6bn2VZVSkTjt9jLXpByR4Y6LEzN/Tpb3RJnl5Hu+64YUYFlnx4LH
-	 xapVtQWJGQE1cf5d5jIQKHE5/4MZ4IhM7AdyByGk5A0TP8BAejBaXgTMPxq17lkTyx
-	 qq0K7Tse3yot1UbEsfP6mb8QmDmBVV4t2SxCTOHHxaZAkD3MBgwHU+QyLsdpV62jEK
-	 ZwpkbeBEgS9DnFDwa5yfImwROByK/zE30UDxD1doaYey0CDJoedwRH57HxtOcVPvHe
-	 lv/X1rhrmznuTy2yB6JJRju3Jktp1AqS5jopYUyWrydCLrvHDTCodnujDRt/CUcJSh
-	 XmmSCL0H4K5BQ==
-Date: Mon, 9 Dec 2024 08:42:02 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Andrej Picej <andrej.picej@norik.com>
-Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org, 
-	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com, airlied@gmail.com, 
-	simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
-	tzimmermann@suse.de, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, marex@denx.de, dri-devel@lists.freedesktop.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, upstream@lists.phytec.de
-Subject: Re: [PATCH v4 1/3] dt-bindings: drm/bridge: ti-sn65dsi83: Add
- properties for ti,lvds-vod-swing
-Message-ID: <lbbayope3b6nkzfflgb2fbgakxpx7uewcslw7mynn5gki6vlxp@4amjbijjcrnt>
-References: <20241205134021.2592013-1-andrej.picej@norik.com>
- <20241205134021.2592013-2-andrej.picej@norik.com>
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="jdt+PlMB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=wDcyAUm7weadxplw3iWC3WRLmtSv74le9OVm0hGb1gc=;
+	b=jdt+PlMB9IkuE4x45jZUUVpzKIJ3Pu3iuarObGCypbL86BoY6PG7ysV7rWsNkQ
+	ghvmrclznVS1oWeqINSA6aCKfaR1o5e3fFgST/KHSUgOSj4EshUORS7x5PINitX/
+	qD8wqG2wNw5ipwMvq8DAlhuXoQYMesXNUAUq2u9d3uRy0=
+Received: from dragon (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDHiNsGolZnqoeMBA--.47519S3;
+	Mon, 09 Dec 2024 15:53:44 +0800 (CST)
+Date: Mon, 9 Dec 2024 15:53:42 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 2/2] arm64: dts: imx8-ss-audio: add fallback compatible
+ string fsl,imx6ull-esai for esai
+Message-ID: <Z1aiBrlz5qjw7LVY@dragon>
+References: <20241028-esai_fix-v1-0-3c1432a5613c@nxp.com>
+ <20241028-esai_fix-v1-2-3c1432a5613c@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241205134021.2592013-2-andrej.picej@norik.com>
+In-Reply-To: <20241028-esai_fix-v1-2-3c1432a5613c@nxp.com>
+X-CM-TRANSID:Ms8vCgDHiNsGolZnqoeMBA--.47519S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVdWrDUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCxqwZWdWeOyxRQAAsV
 
-On Thu, Dec 05, 2024 at 02:40:19PM +0100, Andrej Picej wrote:
-> Add properties which can be used to specify LVDS differential output
-> voltage. Since this also depends on near-end signal termination also
-> include property which sets this. LVDS differential output voltage is
-> specified with an array (min, max), which should match the one from
-> connected device.
+On Mon, Oct 28, 2024 at 03:49:32PM -0400, Frank Li wrote:
+> The ESAI of i.MX8QM is the same as i.MX6ULL. So add fsl,imx6ull-esai for
+> esai.
 > 
-> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
-> ---
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
+Applied for 6.13, thanks!
 
