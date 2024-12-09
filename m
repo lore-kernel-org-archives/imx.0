@@ -1,59 +1,61 @@
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512441990AE
-	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 20:40:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F621990AE
+	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 20:40:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733776853; cv=none; b=h47h3jwX0fzsnTpPbS64PauFiWf84OuHfQ4o/cEjzmXHTb74ljmdymIeZiwDq9u+KGcSXKfVeZo9V9hS5gNCYKn6MACWkVtgEx7MhHStDpKZxXNHo0HnK67KGC1vm74jJ6Xkv5veXjgtn3+d7PjrxL1yWauD71Lhr54RfPgKmlc=
+	t=1733776856; cv=none; b=oTlpJ2pdcheVy9tcIevzgeijg+p5YK+ws0TOcm5+8j0/CrIOvNyB1rYCke7mL+Zo8cdGWfhSINtB2cHCVC+X/21b0OfX/IoioVOgsdsyloqK/rSyFz2pGjlQRYr4yE+Vl0GINVb2Hxq07ygw2fiIPu2gIjA6+EjlzhMYMoIvgfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733776853; c=relaxed/simple;
-	bh=z+rwLsBU8NtdupPaTVRW/Vrsq6bafaM9niLnhsxb0lo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LEZPGe1zzE2Iwq21kEJOAC/bdDc4g9KOQRhY+X7fEEyZ+QhH1PaquefDIHVSnF2Wu2uE0sojZ+W/Enh3BkSXLXKBECMmPKUKioLIQPfm2vju0b1o9xKVIgYIJmstLJJw4eJBx9xs5/1v7QypBoqbdxf/aqt88+fDyZibnC0APrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kq5sBRwE; arc=none smtp.client-ip=209.85.215.172
+	s=arc-20240116; t=1733776856; c=relaxed/simple;
+	bh=4X0/FJeZRsS29fIel6f0Xm9+siRALH2A7R3wSkvdgQs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=QRaC5qNnRXvfAPjZgPELVCiP64IcEBUlSVg8p2GCRckuSCA4Pna6YOZgSiVxoToI0b7VQnUecHPvSLqO/NT/omdmGHYhC9SXRz2VJMfYibB1Q03By7TIaIKX735XOkLdAe3cywK/WlfmFWKMORSzW5bAK5xoBHGYDeaKJzEVU/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R6UaR/7o; arc=none smtp.client-ip=209.85.215.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kq5sBRwE"
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-7fc93152edcso3825631a12.0
-        for <imx@lists.linux.dev>; Mon, 09 Dec 2024 12:40:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R6UaR/7o"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-7fbbe0fb0b8so3366255a12.0
+        for <imx@lists.linux.dev>; Mon, 09 Dec 2024 12:40:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733776851; x=1734381651; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PXvsuXMERf6df08VQWVzjea3IcYfHYsxE45+1XCwwhA=;
-        b=kq5sBRwE+a+VSlKUHsxdJYc30BgkY02VhteOidDxYBr4wUE52dQdbYsnqqdQ7VG87u
-         IEELaCtFw7QLOqgaAMqHXMcKCqagP2Ursq1nLuENH8HofEmeu+RWoQKPPYhVH1RHvVL6
-         3NArEvn+3hY6SphwI3YDnc97mD6oQ+N8g73ZrhDTOxDrnQdrwRm014oRap9n5Hwc4x0R
-         0KLZqjuKvcjM1+AOGoxJWIP+LToAt7BOlJfJ09K/U1mibUaFvfhtpdOl0eanIaFuA3SN
-         kteOIVBz41PY/tRRVZbNwgLTGH+GFmviGQrU6cxsZTDdU9e5rUbQvb6JnvwxeG8XbpPC
-         YlzQ==
+        d=gmail.com; s=20230601; t=1733776855; x=1734381655; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UFk/8lTOXAJBBD0iMswUxwnGCPazYsTsiH7Y9OBU+PA=;
+        b=R6UaR/7oPd6RE+QWJhaO+6AnoP6BpXtIAr5xzciZgOibJjkKc/eqTbhiQweHQ3lSWI
+         6ZuwNskKsCuCSMCOB1L2aExIpB3uruyBat4+/HVRXDsppVEx3ZcYMs1G4t09H2WPwltz
+         icp0F4DcsC+bwJycUnl26VuTTFPqg8d8BZ57rrFLk2F2ucVcFPP/gOP29+G6o3Ex04MR
+         o6cRJQMbtrBjWZ7bTbsq2sN6lrLyhahZhDE+PfNi5kxAnuHmCdDTGNJbD7MPHQCaqva1
+         7lzkvzG9afpLGz0MlwQsmTqsTXvRRm4s0TJLjPNlDq9xZSioBKEn++J69SrBYfgYMIdN
+         CoYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733776851; x=1734381651;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PXvsuXMERf6df08VQWVzjea3IcYfHYsxE45+1XCwwhA=;
-        b=o9L0BoABvA1riVc7+X3uqV6SJ2B4FEA8PAwo9PwanyAQOAMvum5aCEjCHnKlr3LHqF
-         msCN9Hf8JHTi3qN3/v2Pn/i40w7w65IaPpxZHPF/jhuH0Kk9Qz+9ZFAKPog1i13FpLRx
-         SdoVMcr1/q1spNLRo9clQfTY7qpeRkRbIkziAK5SPN+AiWC6ET2og6BTgi/6MM6KLkVD
-         nBO6Lys7lqnyp6yz5DfHneboOjHeMw7wh9zkMnhl95+nlxH/Dqe54U3Yss+NIcXq2Igh
-         jICqy4obVFvIRgDIweW0JzpzoVaOzxD6h7+NE4Q0pqG/1TtoVcQCTS1aW4/s0my6+Gcp
-         HumQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX1N24un3LhmQpqldIQ+rK7SHGzK74hFgc4AcoaC+LYG+tQ6rpFTf2PTxOi4NLqcSgz55A=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy5OUt+BOIintjREIbfusb5mIopvoF/jf0X5XphvPQlDtzWqk/l
-	jJlsVKTWLud3lELPGFTHVbASXw0liu7HifV6JoCh3wKMwMkixE7t
-X-Gm-Gg: ASbGncs39GE6K0CWzPZU+Qq1LS7ebMoHadd8mTdEi7M3DvqWzoVRsUHNzkW7i4FTNXx
-	u1E0wfj4j6rCqAuXHOtM41AZZ4EqN6XOVlTxpwjHSXc44UDPoW9eJv2gx54ko/z275uQMxjw1DA
-	Cu6FnT+nGYW1s0mp91sdomyAgd6/eQaALAMD8o3Qes0RSHzVmszDmEzoFAy5bu3Dn/mq2e5qqOk
-	JxTTd5weV0rIX/rtiVAC/ozHuXGp2b0PTY9sB6/SeU1/ZBNbTIwh5jrNIHgPP3j4i4=
-X-Google-Smtp-Source: AGHT+IFc2Lceg6DjJ7cqQKBERaygfwtBeBltRK5cwNCLJrhI05ONbYSi9ksuO0DeTsh5Sp/KeBQ1Aw==
-X-Received: by 2002:a05:6a20:729c:b0:1db:e327:dd82 with SMTP id adf61e73a8af0-1e1b43c4e93mr1397192637.5.1733776851595;
-        Mon, 09 Dec 2024 12:40:51 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733776855; x=1734381655;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UFk/8lTOXAJBBD0iMswUxwnGCPazYsTsiH7Y9OBU+PA=;
+        b=rgqOKceuIiZ18lzNDQO8eo1dX1vSS3DkaPrriAfJb7EXLOLBGta0wxqx6Q9jXJjk35
+         t0AY0BQvq7mP9MxsXqjT/i4amDVtY1G/XsA5QO/dnVV5zFsEy00Ck/KKHBxBE8/KSUp0
+         65vvlv9iQ8fND7uF7ODrNe7LQ06zrq9EPJXRVkOODMBiNLKqjp4zYE3orVySPOg8U75s
+         153PLfJ5lu626jPB5f72p7VTm1gqwx9AeSulGs2Q80X4O/CK+UdUY1a/1w3RnInbUKsZ
+         nDguAXn1PVnLuQMLA9KGCGp774QrtoLjViAPwZg0cJn0C6TBaC5xi65PhHCF0f7IpKrX
+         xoJg==
+X-Forwarded-Encrypted: i=1; AJvYcCVgiNMvClU1C7CSlvUX7/QR8ikzGjpSJILr2swnuSfV6vLqjT55CygUa3lVGKH3Ow61moM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzkQVCaSEECA28L7uvadQFgBCVc9T752hGVPzF8OUnD/gNw+TVE
+	Ylen15Xyjt3WoxLpkyFm6ZTc32IQCHdLk+5UXTogETCKiDUx4EAG
+X-Gm-Gg: ASbGnctEhBxYceB4s7JpLtjiHZhDLYWSdSfYVkzWeZ3JP9XHhBxDEtnOTj0OWj2xvIE
+	6bXYuOqHwIxBB3vml6Hm7DXA8Umyi4hO4yhelkiY2iPPekIgJMs5hgWOYTP71NgSATJ9rtrwK/C
+	Lvjm13+ztfLuotiUhN6dlYuQgTDNz70/MBHvHcxpejKInKDZbxk6jKp8OcgbsR2WnTzIKIkKPXD
+	HLC/iM/4UkEtn7fDuZUataRXCiJSCNexdKGgCGBOfMP6M5aH9txWkqtMOCUGf4=
+X-Google-Smtp-Source: AGHT+IGkseJIUwCnXZApvQxM0FacDoY5qnz7kx/Zk4ZEw+I0M4KgH3VzNxAAY/RYu9/pFD3vDsUdGg==
+X-Received: by 2002:a17:90b:1f85:b0:2ee:b6c5:1def with SMTP id 98e67ed59e1d1-2efcf10d3fdmr2974170a91.8.1733776854833;
+        Mon, 09 Dec 2024 12:40:54 -0800 (PST)
 Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:d7c4:c4a9:e35:ccbf])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fd5207528csm1707219a12.36.2024.12.09.12.40.48
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fd5207528csm1707219a12.36.2024.12.09.12.40.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Dec 2024 12:40:51 -0800 (PST)
+        Mon, 09 Dec 2024 12:40:54 -0800 (PST)
 From: Fabio Estevam <festevam@gmail.com>
 To: neil.armstrong@linaro.org
 Cc: robh@kernel.org,
@@ -64,10 +66,12 @@ Cc: robh@kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	dri-devel@lists.freedesktop.org,
 	Fabio Estevam <festevam@denx.de>
-Subject: [PATCH] dt-bindings: display: panel-lvds: Add compatible for AUO G084SN05 V9
-Date: Mon,  9 Dec 2024 17:40:02 -0300
-Message-Id: <20241209204003.1295503-1-festevam@gmail.com>
+Subject: [PATCH 2/2] arm64: dts: imx8mm-phg: Add LVDS compatible string
+Date: Mon,  9 Dec 2024 17:40:03 -0300
+Message-Id: <20241209204003.1295503-2-festevam@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241209204003.1295503-1-festevam@gmail.com>
+References: <20241209204003.1295503-1-festevam@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -78,28 +82,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Fabio Estevam <festevam@denx.de>
 
-The AUO G084SN05 V9 is a 8.4" 800x600 LVDS display.
+The imx8mm-phg board has an AUO G084SN05 V9 8.4" 800x600 LVDS panel.
 
-Add a compatible entry for this LVDS display model.
+Improve the devicetree description by passing the LVDS compatible
+string to fix the following dt-schema warning:
+
+imx8mm-phg.dtb: panel: compatible:0: 'panel-lvds' is not one of
+['admatec,9904379', 'auo,b101ew05', 'auo,g084sn05',
+'chunghwa,claa070wp03xg','edt,etml0700z9ndha', 'hannstar,hsd101pww2',
+'hydis,hv070wx2-1e0', 'jenson,bl-jt60050-01a', 'tbs,a711-panel']
+...
 
 Signed-off-by: Fabio Estevam <festevam@denx.de>
 ---
- Documentation/devicetree/bindings/display/panel/panel-lvds.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8mm-phg.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/display/panel/panel-lvds.yaml b/Documentation/devicetree/bindings/display/panel/panel-lvds.yaml
-index 5af2d6930075..fcb5834f799a 100644
---- a/Documentation/devicetree/bindings/display/panel/panel-lvds.yaml
-+++ b/Documentation/devicetree/bindings/display/panel/panel-lvds.yaml
-@@ -42,6 +42,8 @@ properties:
-           # Admatec 9904379 10.1" 1024x600 LVDS panel
-           - admatec,9904379
-           - auo,b101ew05
-+          # AUO G084SN05 V9 8.4" 800x600 LVDS panel
-+          - auo,g084sn05
-           # Chunghwa Picture Tubes Ltd. 7" WXGA (800x1280) TFT LCD LVDS panel
-           - chunghwa,claa070wp03xg
-           # EDT ETML0700Z9NDHA 7.0" WSVGA (1024x600) color TFT LCD LVDS panel
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phg.dts b/arch/arm64/boot/dts/freescale/imx8mm-phg.dts
+index 75bbedc6164c..a134b1833649 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-phg.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-phg.dts
+@@ -82,7 +82,7 @@ reg_usdhc2_vmmc: regulator-vmmc {
+ 	};
+ 
+ 	panel {
+-		compatible = "panel-lvds";
++		compatible = "auo,g084sn05", "panel-lvds";
+ 		width-mm = <170>;
+ 		height-mm = <28>;
+ 		data-mapping = "jeida-18";
 -- 
 2.34.1
 
