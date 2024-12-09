@@ -1,67 +1,146 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ADBB12CDAE
-	for <imx@lists.linux.dev>; Mon,  9 Dec 2024 08:37:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A341EB3D;
+	Mon,  9 Dec 2024 08:47:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733733440; cv=none; b=Abcxeif2C+WawAW5XlBJ7Um+lCsKIU22+0DEtoeRkN5zhOfeUB2yplh4V3SwuZFu8s9rLaXarvpJIJH9LMI4BRi20DAQAU+UrknpIDeMEGoJqbHOwSUtk+95bsy+pc2g0c8YLHiBAxnkR2cZcyusRWbXmQpfJL5RczhB2FLWQuY=
+	t=1733734075; cv=none; b=cc2CUm34k/P55NbQBxWjGwyuu+KcKoRB2R6cr6L26dpmzLhHYoXyC2vNsVjeqZP0faOWZALTIphyFyWgDWWYC6jvI6+iXwnjX2nNZnP/MWgs6xtBT1+n+n11P6xXDWEHBWiIoLjjnt2QZtoCaYx+j6SQ7DB9xo0cxlps+TnrLos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733733440; c=relaxed/simple;
-	bh=/+n6QG8R6D9zIR2ROqIAJS9brJs7afCml+rj4Z7FRfI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ur03C0Md9oXPFj9N8629m4fDsPmwleICL+dcQFM1ldipZg2+ieKq66y/zWXUhkmRTGCSzsOSdjkAmD3uBYzVW+q0qcYVmmfqllr18ERWYBjzoP2nnQ259XRb1bMuYm0VNlfevkcdc5nyN5ZfDbRMQvI3tE9xvXmfKD97AYtQiHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=OlebIETz; arc=none smtp.client-ip=220.197.32.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1733734075; c=relaxed/simple;
+	bh=MgUCcyHZmhoyWplc1YUsmOsXZYib9lqKSt3lEQKaSYE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dIuwA4JsSrDq7kKvF+ANJJvUwbjMWh9ceMSJaTvQ6DkSbKvG7AT7vaok5y01cSlmCYx2BdRauCSlbBfMfG62Qvsar5gZloV8emRLzZmUJ4GbepF95t06XcPo7vN3ry9ZH+QSqBbeEKQ6vQXs8WmX9F6EOpnBa82wiZlXTFh31RA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UWgfa3uO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="OlebIETz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=YnPHthB8LMV885tm2rzcxoiQ16KBEntsl0UFvMdQ5Uc=;
-	b=OlebIETzWJZPMwMwiY14oww5JJuepQGVeAXTeZimR0bjfe/+F1B8hp9/9/rTyx
-	bz5boksMDTAqM7oVRfo6Q73ckNGHckIUSxiDXeuatyOUBgrhQJCUBq7irb3tvgPd
-	xbHl/ZrVlRlW97C+ZSz541pTExVPaTvo2BYTQDeGTh5f4=
-Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD3boEqrFZnOi+NBA--.47304S3;
-	Mon, 09 Dec 2024 16:36:59 +0800 (CST)
-Date: Mon, 9 Dec 2024 16:36:57 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Heiko Schocher <hs@denx.de>
-Cc: linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 3/3] arm64: dts: imx8mp: add aristainetos3 board
- support
-Message-ID: <Z1asKaRAJKTBv8ui@dragon>
-References: <20241105064206.43626-1-hs@denx.de>
- <20241105064206.43626-4-hs@denx.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UWgfa3uO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85A37C4CED1;
+	Mon,  9 Dec 2024 08:47:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733734074;
+	bh=MgUCcyHZmhoyWplc1YUsmOsXZYib9lqKSt3lEQKaSYE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=UWgfa3uOhyHie63mC/kMEM4hrtMmch7j1xGAeIAAqj9diWni7FbORuiA+wCISS1C6
+	 D6Y0nQ7cgF86bK1YGRKKSSVxlCfxnDc+d/r9wPChj1QSQxeXhj/kwJtQxh3rwUdtaU
+	 5LRFAx7SFjjLPjvdmgBWRdjkvdapWFk2gpI9EMu5Bl5BC2JaXsjLdPm1XWfeH8lVaI
+	 GPxpn77tOdi497BRTHrHVSrHWVMYSZ1qbG01ZOkeT9DtQBSD383LRAjp1NMmm+SlGV
+	 KbWE+a3/9mWQ9dE8W+3OxtHYvKvKXaFmYBvq8ORlW+52PfjjIUHxLFfqH7rsOhGTrb
+	 Kz2mKPeGefDBw==
+Message-ID: <48988ec4-06a9-447b-bdd5-be35f31a5488@kernel.org>
+Date: Mon, 9 Dec 2024 17:47:51 +0900
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241105064206.43626-4-hs@denx.de>
-X-CM-TRANSID:Ms8vCgD3boEqrFZnOi+NBA--.47304S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUsmFCUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCRywZWdWeNriYAAAsR
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/3] PCI: dwc: Clean up some unnecessary codes in
+ dw_pcie_suspend_noirq()
+To: Richard Zhu <hongxing.zhu@nxp.com>, jingoohan1@gmail.com,
+ bhelgaas@google.com, lpieralisi@kernel.org, kw@linux.com,
+ manivannan.sadhasivam@linaro.org, robh@kernel.org, frank.li@nxp.com,
+ quic_krichai@quicinc.com
+Cc: imx@lists.linux.dev, kernel@pengutronix.de, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20241209073924.2155933-1-hongxing.zhu@nxp.com>
+ <20241209073924.2155933-4-hongxing.zhu@nxp.com>
+From: Damien Le Moal <dlemoal@kernel.org>
+Content-Language: en-US
+Organization: Western Digital Research
+In-Reply-To: <20241209073924.2155933-4-hongxing.zhu@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 05, 2024 at 07:42:06AM +0100, Heiko Schocher wrote:
-> Add support for the i.MX8MP based aristainetos3 boards from ABB.
+On 12/9/24 16:39, Richard Zhu wrote:
+> Before sending PME_TURN_OFF, don't test the LTSSM state. Since it's safe
+> to send PME_TURN_OFF message regardless of whether the link is up or
+> down. So, there would be no need to test the LTSSM state before sending
+> PME_TURN_OFF message.
 > 
-> The board uses a ABB specific SoM from ADLink, based on NXP
-> i.MX8MP SoC. The SoM is used on 3 different carrier boards,
-> with small differences.
+> Only print the message when ltssm_stat is not in DETECT and POLL.
+> In the other words, there isn't an error message when no endpoint is
+> connected at all.
 > 
-> Signed-off-by: Heiko Schocher <hs@denx.de>
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> ---
+>  .../pci/controller/dwc/pcie-designware-host.c | 38 +++++++++++--------
+>  drivers/pci/controller/dwc/pcie-designware.h  |  1 +
+>  2 files changed, 23 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+> index 14e95c2952bbe..02e0e8c255c70 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> @@ -982,25 +982,31 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+>  	if (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) & PCI_EXP_LNKCTL_ASPM_L1)
+>  		return 0;
+>  
+> -	/* Only send out PME_TURN_OFF when PCIE link is up */
+> -	if (dw_pcie_get_ltssm(pci) > DW_PCIE_LTSSM_DETECT_ACT) {
+> -		if (pci->pp.ops->pme_turn_off)
+> -			pci->pp.ops->pme_turn_off(&pci->pp);
+> -		else
+> -			ret = dw_pcie_pme_turn_off(pci);
+> -
+> -		if (ret)
+> -			return ret;
+> +	if (pci->pp.ops->pme_turn_off)
+> +		pci->pp.ops->pme_turn_off(&pci->pp);
+> +	else
+> +		ret = dw_pcie_pme_turn_off(pci);
+> +	if (ret)
+> +		return ret;
 
-Applied, thanks!
+ret is always 0 for the "if (pci->pp.ops->pme_turn_off)" case. So this test of
+"if (ret) return ret" should really go inside the "else", and the initialization
+of ret to 0 on declaration can be removed too.
 
+>  
+> -		ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
+> -					PCIE_PME_TO_L2_TIMEOUT_US/10,
+> -					PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
+> -		if (ret) {
+> -			dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n", val);
+> -			return ret;
+> -		}
+> +	ret = read_poll_timeout(dw_pcie_get_ltssm, val,
+> +				val == DW_PCIE_LTSSM_L2_IDLE ||
+> +				val <= DW_PCIE_LTSSM_DETECT_WAIT,
+> +				PCIE_PME_TO_L2_TIMEOUT_US/10,
+> +				PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
+> +	if (ret) {
+> +		/* Only dump message when ltssm_stat isn't in DETECT and POLL */
+> +		dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n", val);
+> +		return ret;
+>  	}
+>  
+> +	/*
+> +	 * Refer to r6.0, sec 5.3.3.2.1, software should wait at least
+> +	 * 100ns after L2/L3 Ready before turning off refclock and
+> +	 * main power. It's harmless too when no endpoint connected.
+> +	 */
+> +	udelay(1);
+> +
+>  	dw_pcie_stop_link(pci);
+>  	if (pci->pp.ops->deinit)
+>  		pci->pp.ops->deinit(&pci->pp);
+> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+> index 5c14ed2cb91ed..7efcb4af66da3 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware.h
+> +++ b/drivers/pci/controller/dwc/pcie-designware.h
+> @@ -330,6 +330,7 @@ enum dw_pcie_ltssm {
+>  	/* Need to align with PCIE_PORT_DEBUG0 bits 0:5 */
+>  	DW_PCIE_LTSSM_DETECT_QUIET = 0x0,
+>  	DW_PCIE_LTSSM_DETECT_ACT = 0x1,
+> +	DW_PCIE_LTSSM_DETECT_WAIT = 0x6,
+>  	DW_PCIE_LTSSM_L0 = 0x11,
+>  	DW_PCIE_LTSSM_L2_IDLE = 0x15,
+>  
+
+
+-- 
+Damien Le Moal
+Western Digital Research
