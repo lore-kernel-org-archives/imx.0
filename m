@@ -1,258 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D882F12DD88;
-	Tue, 10 Dec 2024 08:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8B222F396
+	for <imx@lists.linux.dev>; Tue, 10 Dec 2024 09:01:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733820771; cv=none; b=VWmycLt50XO9RcLQN7ZrmlGPnfOL8xcJR7qUr4+szXZl8bWsFrrQBxYP9qubvdFCN27jf6YqDBbInLq41d2qqxqgvzLd+ZHc7OButvQzFg0QpvcTwfHrnQwzZEDxxh9BJq8BS3nfsXDTY7lnNQec4PjPRrq1VCGqv2Br3XR4Cuo=
+	t=1733821299; cv=none; b=PenE1XqNc9Ls+RqTEVEKPUW1CwJ1Ds9KhQrAyUVYOan+1y4Lba1iA6wLrNgWSAqaM9YiA+Op05xhcZGqRKUVe46rTJcDpZ2CHEp897nHbLwnvTZZi93g2A2kfN0AcY0Gtt004L1hnqB7PcysEymHnBe8rj2ZC/vKNO3fZKqfpJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733820771; c=relaxed/simple;
-	bh=KP7mBNP2pd/DwOBjVN/npe0wHUj0p6vln405+1vkD6E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fOmTDuwHyU7sTTl/ekIxOWfxTHgI6YczXjIxScKSdT9eTNi62n2w4QJxeS/2dclHJwputDGeXCDCsrvi09VypEnkGjhx1heqT7ueS/KKiKyo4xlIiPZrqD5bywNjgLMPKcnTKg+DNOlFpkJLlt+9e/k3dC4RMFDI7uMcDf6bVoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f6NiurQQ; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f6NiurQQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C6BCC4CED6;
-	Tue, 10 Dec 2024 08:52:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733820770;
-	bh=KP7mBNP2pd/DwOBjVN/npe0wHUj0p6vln405+1vkD6E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f6NiurQQ4XDxs1gH4XW/dww86rdwL0dyRBY+6cVYQy0dFPRAglysBqyDso5C3KC3R
-	 IpdFgRWwWUxxTvvsTOKRlr7kyICGceIqQCtfH+qojPFNpN5S1iWR2Bt6MFP7GuIaYO
-	 MwmLF+jKgTihBsI8QxB/WHBsU2Xca8fxgafYjp0pVEPo8WEycukLJ8cd+5T4qh/kMY
-	 cfC1j6+8/DATplAI0a8wUogZDvpBBE0cHnSY98sqoSqXnhA8Uxp4zIdf77rqV3kNyF
-	 JBGwDKJrC/izfdjhXh1krX1D9xhtdrPJif2nOQWpJbx4Nt9w/PJYWEJ+U4xtN+fuW5
-	 mUTCeKhY6fXLQ==
-Date: Tue, 10 Dec 2024 09:52:47 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Karthikeyan Mitran <m.karthikeyan@mobiveil.co.in>, Hou Zhiqiang <Zhiqiang.Hou@nxp.com>, Frank <Li@nxp.com>, 
-	"open list:PCI NATIVE HOST BRIDGE AND ENDPOINT DRIVERS" <linux-pci@vger.kernel.org>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v2 1/1] dt-bindings: PCI: mobiveil: convert
- mobiveil-pcie.txt to yaml format
-Message-ID: <t3mrs7bap5fbiyxpth5r364al4ca2s72ddsoqgutbrlhrgwqae@qmcjeis2akwp>
-References: <20241206222529.3706373-1-Frank.Li@nxp.com>
+	s=arc-20240116; t=1733821299; c=relaxed/simple;
+	bh=gBFwtX62HZzRaai0K+v2rk3fcFBb5+CMCQxsV9IEtl8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Gz4/7PwXs+LVkl2eVhAZu80J//yfAI8w5V0Pst2UvFnjxtoK2fRlvPheQpdpjrZ+r6XfkFekO5+X0pMOtLCvZeAlK+pcmsi2l8gnOP2QDjSthvujBtnKNo7imGEU7sj/izNlYlIEwaeM25sLQI1NUeWJk39p8AZPy44jW6TLTPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <l.stach@pengutronix.de>)
+	id 1tKw73-00051L-G9; Tue, 10 Dec 2024 10:01:01 +0100
+Message-ID: <b092fdec6fda26c56b4f2cc5927bbaa4a6d786f9.camel@pengutronix.de>
+Subject: Re: [PATCH v2] serial: imx: Use uart_port_lock_irq() instead of
+ uart_port_lock()
+From: Lucas Stach <l.stach@pengutronix.de>
+To: Xiaolei Wang <xiaolei.wang@windriver.com>, gregkh@linuxfoundation.org, 
+ jirislaby@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+ kernel@pengutronix.de, festevam@gmail.com, esben@geanix.com, marex@denx.de,
+  ilpo.jarvinen@linux.intel.com, linux@rasmusvillemoes.dk, 
+ stefan.eichenberger@toradex.com, l.sanfilippo@kunbus.com, 
+ cniedermaier@dh-electronics.com, rickaran@axis.com
+Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Date: Tue, 10 Dec 2024 10:00:57 +0100
+In-Reply-To: <20241210034223.1493522-1-xiaolei.wang@windriver.com>
+References: <20241210034223.1493522-1-xiaolei.wang@windriver.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241206222529.3706373-1-Frank.Li@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: l.stach@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Fri, Dec 06, 2024 at 05:25:27PM -0500, Frank Li wrote:
-> Convert device tree binding doc mobiveil-pcie.txt to yaml format. Merge
-> layerscape-pcie-gen4.txt into this file.
-> 
-> Additional change:
-> - interrupt-names: "aer", "pme", "intr", which align order in examples.
-> - reg-names: csr_axi_slave, config_axi_slave, which align existed dts file.
+Am Dienstag, dem 10.12.2024 um 11:42 +0800 schrieb Xiaolei Wang:
+> When executing 'ehco mem > /sys/power/state', the following
+> deadlock occurs. Since there is output during the serial
+> port entering the suspend process, the suspend will be
+> interrupted, resulting in the nesting of locks. Therefore,
+> use uart_port_lock_irq() instead of uart_port_unlock().
+>=20
+> WARNING: inconsistent lock state
+> 6.12.0-rc2-00002-g3c199ed5bd64-dirty #23 Not tainted
+> --------------------------------
+> inconsistent {IN-HARDIRQ-W} -> {HARDIRQ-ON-W} usage.
+> sh/494 [HC0[0]:SC0[0]:HE1:SE1] takes:
+> c4db5850 (&port_lock_key){?.-.}-{3:3}, at: imx_uart_enable_wakeup+0x14/0x=
+254
+> {IN-HARDIRQ-W} state was registered at:
+>   lock_acquire+0x104/0x348
+>   _raw_spin_lock+0x48/0x84
+>   imx_uart_int+0x14/0x4dc
+>   __handle_irq_event_percpu+0xac/0x2fc
+>   handle_irq_event_percpu+0xc/0x40
+>   handle_irq_event+0x38/0x8c
+>   handle_fasteoi_irq+0xb4/0x1b8
+>   handle_irq_desc+0x1c/0x2c
+>   gic_handle_irq+0x6c/0xa0
+>   generic_handle_arch_irq+0x2c/0x64
+>   call_with_stack+0x18/0x20
+>   __irq_svc+0x9c/0xbc
+>   _raw_spin_unlock_irqrestore+0x2c/0x48
+>   uart_write+0xd8/0x3a0
+>   do_output_char+0x1a8/0x1e4
+>   n_tty_write+0x224/0x440
+>   file_tty_write.constprop.0+0x124/0x250
+>   do_iter_readv_writev+0x100/0x1e0
+>   vfs_writev+0xc4/0x448
+>   do_writev+0x68/0xf8
+>   ret_fast_syscall+0x0/0x1c
+> irq event stamp: 31593
+> hardirqs last  enabled at (31593): [<c1150e48>] _raw_spin_unlock_irqresto=
+re+0x44/0x48
+> hardirqs last disabled at (31592): [<c07f32f0>] clk_enable_lock+0x60/0x12=
+0
+> softirqs last  enabled at (30334): [<c012d1d4>] handle_softirqs+0x2cc/0x4=
+78
+> softirqs last disabled at (30325): [<c012d510>] __irq_exit_rcu+0x120/0x15=
+c
+>=20
+> other info that might help us debug this:
+>  Possible unsafe locking scenario:
+>=20
+>        CPU0
+>        ----
+>   lock(&port_lock_key);
+>   <Interrupt>
+>     lock(&port_lock_key);
+>=20
+> Fixes: 3c199ed5bd64 ("serial: imx: Grab port lock in imx_uart_enable_wake=
+up()")
+> Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-mobiveil-pcie.txt binding suggested reversed orders of above, so please
-mention that you unify the order to match layerscape-pcie-gen4 and
-existing Layerscape DTS users.
+Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
 
-
-...
-
-
-> +++ b/Documentation/devicetree/bindings/pci/mbvl,gpex40-pcie.yaml
-> @@ -0,0 +1,167 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/pci/mbvl,gpex40-pcie.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Mobiveil AXI PCIe Root Port Bridge
-> +
-> +maintainers:
-> +  - Frank Li <Frank Li@nxp.com>
-> +
-> +description:
-> +  Mobiveil's GPEX 4.0 is a PCIe Gen4 root port bridge IP. This configurable IP
-> +  has up to 8 outbound and inbound windows for the address translation.
-> +
-> +  NXP Layerscape PCIe Gen4 controller (Deprecated) base on Mobiveil's GPEX 4.0.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - mbvl,gpex40-pcie
-> +      - fsl,lx2160a-pcie
-
-Please reverse them to keep alphabetical order.
-
-> +
-> +  reg:
-> +    items:
-> +      - description: PCIe controller registers
-> +      - description: Bridge config registers
-> +      - description: GPIO registers to control slot power
-> +      - description: MSI registers
-> +    minItems: 2
-> +
-> +  reg-names:
-> +    items:
-> +      - const: csr_axi_slave
-> +      - const: config_axi_slave
-> +      - const: gpio_slave
-> +      - const: apb_csr
-> +    minItems: 2
-> +
-> +  apio-wins:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      numbers of requested apio outbound windows
-> +        1. Config window
-> +        2. Memory window
-> +    default: 2
-> +    maximum: 256
-> +
-> +  ppio-wins:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: number of requested ppio inbound windows
-> +    default: 1
-> +    maximum: 256
-> +
-> +  interrupt-controller: true
-> +
-> +  "#interrupt-cells":
-> +    const: 1
-> +
-> +  interrupts:
-> +    minItems: 1
-> +    maxItems: 3
-> +
-> +  interrupt-names:
-> +    minItems: 1
-> +    maxItems: 3
-> +
-> +  dma-coherent: true
-> +
-> +  msi-parent: true
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - reg-names
-> +
-> +allOf:
-> +  - $ref: /schemas/pci/pci-host-bridge.yaml#
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          enum:
-> +            - fsl,lx2160a-pcie
-> +    then:
-> +      properties:
-> +        reg:
-> +          maxItems: 2
-> +
-> +        reg-names:
-> +          maxItems: 2
-> +
-
-interrupts:
-  minItems: 3
-
-> +        interrupt-names:
-> +          items:
-> +            - const: aer
-> +            - const: pme
-> +            - const: intr
-> +    else:
-> +      properties:
-> +        dma-coherent: false
-> +        msi-parent: false
-
-reg? interrupts? interrupt-names?
-
-
-
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +
-> +    pcie@b0000000 {
-> +        compatible = "mbvl,gpex40-pcie";
-> +        reg = <0xb0000000 0x00010000>,
-> +              <0xa0000000 0x00001000>,
-> +              <0xff000000 0x00200000>,
-> +              <0xb0010000 0x00001000>;
-> +        reg-names = "csr_axi_slave",
-> +                    "config_axi_slave",
-> +                    "gpio_slave",
-> +                    "apb_csr";
-> +        #address-cells = <3>;
-> +        #size-cells = <2>;
-> +        device_type = "pci";
-> +        apio-wins = <2>;
-> +        ppio-wins = <1>;
-> +        bus-range = <0x00000000 0x000000ff>;
-> +        interrupt-controller;
-> +        #interrupt-cells = <1>;
-> +        interrupt-parent = <&gic>;
-> +        interrupts = <GIC_SPI 89 IRQ_TYPE_LEVEL_HIGH>;
-> +        interrupt-map-mask = <0 0 0 7>;
-> +        interrupt-map = <0 0 0 0 &pci_express 0>,
-> +                        <0 0 0 1 &pci_express 1>,
-> +                        <0 0 0 2 &pci_express 2>,
-> +                        <0 0 0 3 &pci_express 3>;
-> +        ranges = <0x83000000 0 0x00000000 0xa8000000 0 0x8000000>;
-
-Please keep ranges after reg-names
-
-> +    };
-> +
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +
-> +    soc {
-> +        #address-cells = <2>;
-> +        #size-cells = <2>;
-> +        pcie@3400000 {
-> +            compatible = "fsl,lx2160a-pcie";
-> +            reg = <0x00 0x03400000 0x0 0x00100000   /* controller registers */
-> +                   0x80 0x00000000 0x0 0x00001000>; /* configuration space */
-> +            reg-names = "csr_axi_slave", "config_axi_slave";
-> +            interrupts = <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>, /* AER interrupt */
-> +                         <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>, /* PME interrupt */
-> +                        <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>; /* controller interrupt */
-> +            interrupt-names = "aer", "pme", "intr";
-> +            #address-cells = <3>;
-> +            #size-cells = <2>;
-> +            device_type = "pci";
-> +            apio-wins = <8>;
-> +            ppio-wins = <8>;
-> +            dma-coherent;
-> +            bus-range = <0x0 0xff>;
-> +            msi-parent = <&its>;
-> +            ranges = <0x82000000 0x0 0x40000000 0x80 0x40000000 0x0 0x40000000>;
-
-Ditto here
-
-> +            #interrupt-cells = <1>;
-> +            interrupt-map-mask = <0 0 0 7>;
-> +            interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>,
-> +                            <0000 0 0 2 &gic 0 0 GIC_SPI 110 IRQ_TYPE_LEVEL_HIGH>,
-> +                            <0000 0 0 3 &gic 0 0 GIC_SPI 111 IRQ_TYPE_LEVEL_HIGH>,
-> +                            <0000 0 0 4 &gic 0 0 GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>;
-> +        };
-
-Best regards,
-Krzysztof
+> ---
+>=20
+> v1:
+>   https://patchwork.kernel.org/project/linux-arm-kernel/patch/20241209124=
+732.693834-1-xiaolei.wang@windriver.com/
+> v2:
+>   use uart_port_lock_irq() instead of uart_port_lock_irqsave()
+>=20
+>  drivers/tty/serial/imx.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+> index 17f70e4bee43..9c59ec128bb4 100644
+> --- a/drivers/tty/serial/imx.c
+> +++ b/drivers/tty/serial/imx.c
+> @@ -2692,7 +2692,7 @@ static void imx_uart_enable_wakeup(struct imx_port =
+*sport, bool on)
+>  {
+>  	u32 ucr3;
+> =20
+> -	uart_port_lock(&sport->port);
+> +	uart_port_lock_irq(&sport->port);
+> =20
+>  	ucr3 =3D imx_uart_readl(sport, UCR3);
+>  	if (on) {
+> @@ -2714,7 +2714,7 @@ static void imx_uart_enable_wakeup(struct imx_port =
+*sport, bool on)
+>  		imx_uart_writel(sport, ucr1, UCR1);
+>  	}
+> =20
+> -	uart_port_unlock(&sport->port);
+> +	uart_port_unlock_irq(&sport->port);
+>  }
+> =20
+>  static int imx_uart_suspend_noirq(struct device *dev)
 
