@@ -1,39 +1,39 @@
 Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8032E2309A2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14C9231C8F
 	for <imx@lists.linux.dev>; Tue, 10 Dec 2024 09:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733822474; cv=none; b=JPgjJcUIjV+5V5cmOETFg5bF7JuAownIhzvSCNEX94t4ZhDOmwcN1niBc4geUL+lrj5Lru7faYg2H3GWQqjmAlXthTq6j57Y8PAMMvzQnLv2UcntTIwCXhLZ9s9Mz4CLrmB53wQoD2kHeVvUgUJV44eUDfnvzv87xIaJM4WKaSw=
+	t=1733822474; cv=none; b=l3pP10BuvieztXv53+arLmr/R7ilJI9jlix62Nu1YO/CHJdauAKbNlzW2MXUX7ABW6cz+/7SZihVutlY4ccb6EjkkrjcTBu37Wl/i4viFcDJvc/W1kWNnK/uQvG0gBthOftT7iB2VwHuWJjkASeqc69JsMDnO9ihX5ZhubEwoho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733822474; c=relaxed/simple;
-	bh=fOev1Y8BKB0FulfbIogwUx6WfrGatBVUBVtvVDp+04s=;
+	bh=LAsNn7Nx8ist8QPjVQjeHAkHug2v5S6N7m7OAlkjahg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=e5/SZKO5G8cTHmSUf9P5KoAayHG9rzmg78EptQ3a/xOKoMzbOiAhOS2G4Chusw8JVJR4kBtKRa35lnn6TPqvt3zU9I2a5y9k1t0cKEXxkviyWp6deQxwqIm1BC14rLtzEjxXceheqccfKfuJ+2vptyKV/lHQY3655a9UlL/xWQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=pba+gmG0; arc=none smtp.client-ip=46.19.9.99
+	 MIME-Version; b=eMHznpHIg9+A94smtR/FfW/WGKQ/ruXQD3IjpqUlLmGXCn/LVu0uaIePzZWCo1VM7YIj0o1VjTiahJ44uODJZGhNgRBdNjAdtHP3MGRQElmWD2u0Q2t3srL6af7xp1PNdxEbuHzTRQJf+rzrVF6Behs5ohGEMx3KjvZo9xRnkyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=M4tPxCH8; arc=none smtp.client-ip=46.19.9.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="pba+gmG0"
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="M4tPxCH8"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
 	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=Lj/s8jikWSL6aISEsHq6B0p2FlUzsQ0RtdLirGZ/Elo=; b=pba+gmG0oSVE71SGtAPQVYGW+U
-	tEtJfiI4ohYZuiPQLohtM+YwE+5m4msuBKYuJynxGMh0Z+CYe8eBT5+0RmEMbVxsjPMKGVvdc4tTt
-	CGLxBpCww9qwjNEppj10LZzLVBQrI10asnCmtgBGaodPmRCVWbIZiP9u1O9iM4doebC75fVp/ato3
-	Jt38YXpUCx4QaMiP1nuvYexgb6tAQGMNWat1aCUJCAai5/UpB59sbSM10++aF92nGewJjM3/biqyV
-	b7FrKXsmtmkyjsNjW8aRgctbrn/pFTiRDCopgyj/vvO5X2fPj/q340pUzwj0Imvc0kBP4Iq/HYI56
-	AtngMHnw==;
+	bh=P0pfvqLWYJo81wiydC4h9petXJVrnjiHjNHuHLyT144=; b=M4tPxCH8u5cj+29W9XsEhgZNZl
+	67YUe4R6OB+e7ooQGA2PftBeO7uKHma/v8ljy5SKZ0mh5iJlE7Vd3tWqySF3LyCy4YNE4P0vCsOcK
+	UjJpCKrQTNCLYG8Z2ex1OQrj6jGIjPn5u6HBOHFLsT20EyIPzkUmGXVc3k8gfGqlVdZJ977La3euk
+	2j3+/A4eFWa+31RiuZINdxwiH6rKHaQgqOHmL0JCgELrEjeSDoZWWAgx4dTtOIG8JuCzvlQ0AzvjR
+	HoLBHf4OQkhtV7o1awVC9yaZGTwHFsZSWaombrGre7iktK7R1wJOhNeAA/hN//G6viRA8HhLj6uz0
+	EvKnr4AQ==;
 Received: from [89.212.21.243] (port=59230 helo=and-HP-Z4..)
 	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <andrej.picej@norik.com>)
-	id 1tKwQT-001jvW-29;
-	Tue, 10 Dec 2024 10:21:05 +0100
+	id 1tKwQZ-001jvW-0d;
+	Tue, 10 Dec 2024 10:21:11 +0100
 From: Andrej Picej <andrej.picej@norik.com>
 To: andrzej.hajda@intel.com,
 	neil.armstrong@linaro.org,
@@ -60,9 +60,9 @@ Cc: dri-devel@lists.freedesktop.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	upstream@lists.phytec.de
-Subject: [PATCH v5 1/3] dt-bindings: drm/bridge: ti-sn65dsi83: Add properties for ti,lvds-vod-swing
-Date: Tue, 10 Dec 2024 10:18:59 +0100
-Message-Id: <20241210091901.83028-2-andrej.picej@norik.com>
+Subject: [PATCH v5 3/3] arm64: dts: imx8mm-phyboard-polis-peb-av-10: Set lvds-vod-swing
+Date: Tue, 10 Dec 2024 10:19:01 +0100
+Message-Id: <20241210091901.83028-4-andrej.picej@norik.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241210091901.83028-1-andrej.picej@norik.com>
 References: <20241210091901.83028-1-andrej.picej@norik.com>
@@ -84,87 +84,38 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-Add properties which can be used to specify LVDS differential output
-voltage. Since this also depends on near-end signal termination also
-include property which sets this. LVDS differential output voltage is
-specified with an array (min, max), which should match the one from
-connected device.
+Set custom differential output voltage for LVDS, to fulfill requirements
+of the connected display. LVDS differential voltage for data-lanes and
+clock output has to be between 200 mV and 600 mV.
+Driver sets 200 Ohm near-end termination by default.
 
 Signed-off-by: Andrej Picej <andrej.picej@norik.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
 Changes in v5:
-- added Krzysztof's reviewed-by tag
+- no change
 Changes in v4:
-- removed "additionalProperties: true" from the patch as it is not needed
+- no change
 Changes in v3:
 - no change
 Changes in v2:
-- move LVDS port schema to a $defs and reference it from there
-- properties are now defined in microvolts/ohms
-- use 1 property for data-lane and 1 for clock-lane LVDS voltage swing
-- add 1 property which sets LVDS near-end termination
-- since major change was done change the authorship to myself
+- use new properties from previous patches
 ---
- .../bindings/display/bridge/ti,sn65dsi83.yaml | 34 +++++++++++++++++--
- 1 file changed, 32 insertions(+), 2 deletions(-)
+ .../boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso     | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml b/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml
-index 48a97bb3e2e0..bad6f5c81b06 100644
---- a/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml
-+++ b/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml
-@@ -80,12 +80,12 @@ properties:
-                   - const: 4
- 
-       port@2:
--        $ref: /schemas/graph.yaml#/properties/port
-         description: Video port for LVDS Channel-A output (panel or bridge).
-+        $ref: '#/$defs/lvds-port'
- 
-       port@3:
--        $ref: /schemas/graph.yaml#/properties/port
-         description: Video port for LVDS Channel-B output (panel or bridge).
-+        $ref: '#/$defs/lvds-port'
- 
-     required:
-       - port@0
-@@ -96,6 +96,36 @@ required:
-   - reg
-   - ports
- 
-+$defs:
-+  lvds-port:
-+    $ref: /schemas/graph.yaml#/$defs/port-base
-+    unevaluatedProperties: false
-+
-+    properties:
-+      endpoint:
-+        $ref: /schemas/media/video-interfaces.yaml#
-+        unevaluatedProperties: false
-+
-+        properties:
-+          ti,lvds-termination-ohms:
-+            description: The value of near end differential termination in ohms.
-+            enum: [100, 200]
-+            default: 200
-+
-+          ti,lvds-vod-swing-clock-microvolt:
-+            description: LVDS diferential output voltage <min max> for clock
-+              lanes in microvolts.
-+            $ref: /schemas/types.yaml#/definitions/uint32-array
-+            minItems: 2
-+            maxItems: 2
-+
-+          ti,lvds-vod-swing-data-microvolt:
-+            description: LVDS diferential output voltage <min max> for data
-+              lanes in microvolts.
-+            $ref: /schemas/types.yaml#/definitions/uint32-array
-+            minItems: 2
-+            maxItems: 2
-+
- allOf:
-   - if:
-       properties:
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso
+index a9de42cf14be..8bf9cc553bea 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso
++++ b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso
+@@ -186,6 +186,8 @@ port@2 {
+ 			reg = <2>;
+ 			bridge_out: endpoint {
+ 				remote-endpoint = <&panel_in>;
++				ti,lvds-vod-swing-clock-microvolt = <200000 600000>;
++				ti,lvds-vod-swing-data-microvolt = <200000 600000>;
+ 			};
+ 		};
+ 	};
 -- 
 2.34.1
 
