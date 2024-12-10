@@ -1,313 +1,401 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2076.outbound.protection.outlook.com [40.107.21.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A587F231CBB
-	for <imx@lists.linux.dev>; Tue, 10 Dec 2024 09:21:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733822474; cv=none; b=OienaSxPeLPTdVqtzmAJVTXdDyow1D+qPxc3BMDYy71JGT53bWqs8JesCTFb29tMPNWmb7afGQ0xR8IdKyNIsnkALrNtmN/qNUvSvvsVudaBiV3dVQj6wXabBMpyBwr8PmANA+LY+apf7CKUgW1VL1alZWqKR+p2nP4BrqbG39M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733822474; c=relaxed/simple;
-	bh=zBx08gZ8kmhCwV8zpeCYsrTUVyEwVUJGUTO6dKDfw8I=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=aFf2ats8mQ3ElzzaHdohHm5+s49+zy0aW2NiaDlfuPewAT3EqeivaiSmjKr6hWXMvk6tVZumWZZfubzgcJPXXWQaBoG9iDYjbtIU5gpERq42byiHf6qRZlDGxBBMMiNbX7a2DkJjtuZ6Fb7S1a2SbccLoHif0yxWd0XONK1cCkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=pMgwA/+x; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C882080FA
+	for <imx@lists.linux.dev>; Tue, 10 Dec 2024 09:34:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733823253; cv=fail; b=fhQgz+2nNObOvauaCKV1NPRlFc0k+yhY2G1Ik/sQv+2C8BJ9dJRorHhbfpGq6HAPMs72HhBXDX+UxW/s2Y/cD9YVYqSlmRUltCDgflH7sU6F9AV9l+p1ovlEEgmBPDltkSechOAtq84DB99pBNN9LH4vSFqlRVbRecYl8w8P/ew=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733823253; c=relaxed/simple;
+	bh=fXqNW0mn4JAV/NGGulGUGHg63ZzNDFHs9C1oJ4ohAwg=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=B0burP/BVSO0px9hBLhGZUcFMIDtGCFRCYG+hK+DU2dzyg5vPg1eue+7voGCuCulmIN54+WMA4kpVZDYXKcwPFg+85aLNhWA261/3vqkbsrGfWWXLkKxa+Q/LIDHhnnVa50VswrsFpyYOrm7YEJkd538KvTO2vfAf9IA6l7zjTM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=tvIsBlIj; arc=fail smtp.client-ip=40.107.21.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="pMgwA/+x"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=mKNM3pp9IUHYH7M2emlK5V5jHr0x3xInkYl50IZN52A=; b=pMgwA/+x9Kcey3BIMOJ+eFLwuK
-	GTP66TPED3UNSmu8+7i9OzJ7F0J/7UQ6TvuJzexLzexQU4Lv3u/XxHUGdknpJ1OTDtHhtY5ZNRHEq
-	r54HhTJsLjXmMdtNWuRQ+bCIbAXecYLZ/Slh/ZygxHI5AUmr08e3OYoz6TLwhwYxSFJdfZRBBueBY
-	j5hajvECC2IRprXi1gc6cuSIVb8LAUlfsffIrubWmBKo0OqvNGp/roILxJgMv+FyviraUWrWDrZw0
-	5GRLhZZmHo+YxIcGx57vU/i8gi6PZysTESg1bVxQvGc/lzcJq0N6jWUCy54Mi5HBhTb/w0rmfqfbU
-	5yzub/+Q==;
-Received: from [89.212.21.243] (port=59230 helo=and-HP-Z4..)
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <andrej.picej@norik.com>)
-	id 1tKwQZ-001jvW-03;
-	Tue, 10 Dec 2024 10:21:11 +0100
-From: Andrej Picej <andrej.picej@norik.com>
-To: andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org,
-	rfoss@kernel.org,
-	Laurent.pinchart@ideasonboard.com,
-	jonas@kwiboo.se,
-	jernej.skrabec@gmail.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="tvIsBlIj"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JUGzfUhSJIFRwa8GYfoi/mgUgv+M1mhvM5ZZ1BbGzvf4fSNINuoYU5fDLYjTKWImUjQBVkXbiOIQMmyx4PF8p9XGQAumSa7Qbbtx8kuR0XJbbt2NCmQTi0H2p/DVJFrDw8mS76muf/cFaWinORqK80tr/EbqW3IB7MsdgkqVTUBFRhpRpjGikqPYgTW6FyBwyFuKVPeTjQboIPOVMqPedp+IwwrICduUdfks3ITKawugsok2qtu5/EVf5CgbArWm7GALkeoKys0djm5g9NSvT6CpmlT7WAN7KXCZtzVLQ4T3iBlzFb8Wrl3JDgJKuNb6uDJKh8cOE3pg40TX/8CUZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=M2eesSLVrGqvwAXCsGKjIszKMAd3pbGkwZgkFT5kWY0=;
+ b=ML23WQ9/i3FiTEJC0xegNW346LMAopNFzMpvcy746zACASSLH+0hvP12taoG+6NXUP1ZENJSNkNMmrPv3dn5sQXqDZVtaL/GGFB6z29Xg8R2ZaSne19/OckcLx1b64fQUVWn3663WFXpRzb1PeXcHxjTqRuQVijnMm+yO8mQ+1hvk2gO7oAlNndpO7juwBUb5Uxf/UDrREj4GG1pgFLJemCBuhQ8vRQILFTmjDqk8ECx1aD+5GY9Ha8BzPLzlArfAhrewVy5HW6xnPOp2iHdA17ni0mQ5BjFUPpDMfzF3goLpd7gfjls+F21aKTmB0u3HD1v+NXL++Cyhnf7qt9MiQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=M2eesSLVrGqvwAXCsGKjIszKMAd3pbGkwZgkFT5kWY0=;
+ b=tvIsBlIjtWLIrQ8MGOUZDTzUggBa0nXN2KBVb1oukfPY8ntFDXsbUkx4bwcmSatYP642+DKTZ/Lo4bB8tziVlKhJPJKB2Ifm4eN+cmcque/CwblBmnPkpdrKmZvpaFD3RdmB51LQOfgHRDwoP0BXYxsaO7MIV0fLUeYkEk4/lsIkBBCSxeXgbpS2qOqYaLtNMDUSlasHqZKnnKpP68tHLRKumWtNtt1T9KHK2ExYBjckB3/3A6HGbJ3miu+2NqjYxZ5YncKrnP/wEk2uZ+9Tv/nW/mYc8mDxhW1z+NkEHJiBd/RHUC0z6/pAezTJkiTHsvUy4NAGXJOHCIP6AyFbOA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
+ by PA2PR04MB10513.eurprd04.prod.outlook.com (2603:10a6:102:416::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.19; Tue, 10 Dec
+ 2024 09:34:07 +0000
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::2755:55ac:5d6f:4f87]) by PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::2755:55ac:5d6f:4f87%6]) with mapi id 15.20.8230.016; Tue, 10 Dec 2024
+ 09:34:07 +0000
+From: Ming Qian <ming.qian@oss.nxp.com>
+To: mchehab@kernel.org,
+	hverkuil-cisco@xs4all.nl
+Cc: nicolas@ndufresne.ca,
 	shawnguo@kernel.org,
+	robh+dt@kernel.org,
 	s.hauer@pengutronix.de,
 	kernel@pengutronix.de,
 	festevam@gmail.com,
-	marex@denx.de
-Cc: dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	linux-imx@nxp.com,
+	xiahong.bao@nxp.com,
+	eagle.zhou@nxp.com,
+	tao.jiang_2@nxp.com,
+	ming.qian@oss.nxp.com,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	upstream@lists.phytec.de
-Subject: [PATCH v5 2/3] drm/bridge: ti-sn65dsi83: Add ti,lvds-vod-swing optional properties
-Date: Tue, 10 Dec 2024 10:19:00 +0100
-Message-Id: <20241210091901.83028-3-andrej.picej@norik.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241210091901.83028-1-andrej.picej@norik.com>
-References: <20241210091901.83028-1-andrej.picej@norik.com>
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v2] media: amphion: Add H264 and HEVC profile and level control
+Date: Tue, 10 Dec 2024 18:33:37 +0900
+Message-ID: <20241210093337.3779686-1-ming.qian@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0-rc1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR03CA0089.apcprd03.prod.outlook.com
+ (2603:1096:4:7c::17) To PAXPR04MB8254.eurprd04.prod.outlook.com
+ (2603:10a6:102:1cd::24)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
-X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|PA2PR04MB10513:EE_
+X-MS-Office365-Filtering-Correlation-Id: befa00e1-d83f-444c-d9a1-08dd18fdcb0c
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|52116014|376014|7416014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?QiBJTBDuv80Qt5XH1azb1vATTr5KnsD9gmptLN+n2TwWdT7RhacL8nNNspkQ?=
+ =?us-ascii?Q?9OXeIcVhivebveFiJ9BD/g2qdF9wsovRVuv34i8rIb55mfqFBD7dwI84oDrn?=
+ =?us-ascii?Q?QgOPzkpksaNGTpzHvHATPcxVTzHJ65uujr8qvTwj7GxquKyfFt46gO8n7sGN?=
+ =?us-ascii?Q?B34DJxFa/IeBIV9R3BWRnXXvJs3oqnblX6jpCch5AiWQ8WS2svsVnN+zoXqD?=
+ =?us-ascii?Q?BdimqvEp1OVtJbIylxmqKgtbFo++FPN6nvMXamwGl9Xu5xgLQtrS8IMgdmA2?=
+ =?us-ascii?Q?hJ3dArF5V2q9pCjI/iHHN4+7c1FzlstZ66GTx57JIEWiXzpL3KrBs3vp+scG?=
+ =?us-ascii?Q?JZDZhPLI2xdbmVGFHkFkPT41nivC2ebt8EW4baXcA1qA1I1GD4K+oi7MXlge?=
+ =?us-ascii?Q?YfDTM3koriEH1OTq+72tnpoEUsLrwvWVcsIRjveqdkI/HKx9llOY8/O0MrP/?=
+ =?us-ascii?Q?6DHv2HLPB0CSiMDU4JzjnT1uMc/7Ke2HCEHe9wridkp0jp6MUz5ZI6tK6c9f?=
+ =?us-ascii?Q?c4+UgSWBhkD14vmeh4qrMlZ+67iTs/0MFuekLf/BfNqZZoywmIJvitJ9zxd+?=
+ =?us-ascii?Q?3WBVZ3f/Nbfv7Y7LQzKYVzaK0Jmk7Nx7DgP3kw6+NTVQPX2xp/aE+/cSQ9S2?=
+ =?us-ascii?Q?ABKwF1O0vWPFmSYOegMCDkzUn5Oabe7lKtnElnXofBy4cOxtc7TK3sAlQ9Dw?=
+ =?us-ascii?Q?AUneMAacHVkp/hqm4EDmrW31q339efCbwrfU18qa41n1C4XWFH8nzcRANlJ7?=
+ =?us-ascii?Q?cT0nJ25kSAgdQhPzjQrXFmQeP923UhDaeI6A/5G3XqXOZaqY/YUeJu9fK1Z9?=
+ =?us-ascii?Q?2kgbxC49ndYVUFNU5+fAF+fX+4P4EIqj4B8S7mq95JSddK3cfu2eb9W9TSNG?=
+ =?us-ascii?Q?4pAZJ2+7Fe4+jc+arNu8NaX71FMYim0ZToTVf9znGo30tzw3RkYrJTEXBCB2?=
+ =?us-ascii?Q?wwUUl1HoM8WvRSOqpDSyfFMwNn+SC5MUtVsHcyrSq4juZPUkIoqbVV8eItNs?=
+ =?us-ascii?Q?RMj+Odz9Gvc0QiKqxFcioyPB0bSg/MpXkJ9TqEaSqnOSgd0u6b9AS/zSZRdI?=
+ =?us-ascii?Q?M4x8y3VX+X4TRQOqmS38ynRGhrd4wisk+9+TzE6WT1ETyJYV6vGVPM/9D9ZB?=
+ =?us-ascii?Q?KD6+RSpkeItrontqOci+oRjzuxi2GZBZML24I0MW23Cj2WYS3QSPFtcfjXBC?=
+ =?us-ascii?Q?GyVFyPYU+NB1j/pk1n6XSyYGoepZ1Hy/DyAseA8g1/NCvnFgj7seaTfIH2UK?=
+ =?us-ascii?Q?s6xqv5yEWA+nG3y23uSRQT3Hpm6hx2ITUqIyscTU0SOFxid4pOR7TOXi8yqo?=
+ =?us-ascii?Q?ephGlui/riMzFV+7cvzKWaj0YasypSNhQyiXOpYksqfo5aa+iZ1f4yw+UN6g?=
+ =?us-ascii?Q?lk+byg3qhbj5Tkso+RDztuV+rLyEN8oKxHH1zm1H/XkJ+u6sWw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(376014)(7416014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?6CtcJ3+CxGepPPp36j88PGzUWdJCeikYefbEBWb9oag7SekpGYr2UrlOK7zL?=
+ =?us-ascii?Q?+6nagNFKoaCSaLdtjHsWPfCxfGgZZo5BZyL1VjmT6/SGxULX+SprqXs8lK6A?=
+ =?us-ascii?Q?lljy4QLKnxalr76MZdfIbcSx0o25bJcUxg6vXxcfXSYsY1fXSo9zWda6KkMF?=
+ =?us-ascii?Q?K4au0ufaLPUTRQwHIhUbtv3Dz18vOqGgQ0/fazrzfwDY+wJ7V0dBaRFGHJXr?=
+ =?us-ascii?Q?e127hKi/4mm0Ubhp8/T57iQyN++wADGzeg2TcUir/O8R6b0qXXMYnggcDyNV?=
+ =?us-ascii?Q?zLD1yW2Hvvx8DYb2ivrVUIMgruqI3BV863NlvXaLXV7lIrT4kFMUhdMGEiCg?=
+ =?us-ascii?Q?uWGA9m/wI071hPySGZBdtUisJUQG6WjGnDxlUeqHo4lSXq4Ldl+GBanDj+tj?=
+ =?us-ascii?Q?GMTamQJvn3erxwbQZCAeELf3QCTuZudCPcA+fa+RRgeonoCPIxWUmtVRskHc?=
+ =?us-ascii?Q?deESufV9iRV+1FtgA0JYESo3NeJDkkyGv64TFwjIJ83/HUfrmv0S+xTGldih?=
+ =?us-ascii?Q?RjLWfPZ4OVul3gMwpbAKTFqhH/pG/uLpQ335TumAQNkzelLHz1emDSXm2tfA?=
+ =?us-ascii?Q?dV5PdJ5jSmqud901icuUtfIvQcE5VQmwqGquXLHY9ctGf4UIa8h3QnZwSV9z?=
+ =?us-ascii?Q?zEHQty2LZ9KsZwfkvo5+/LPNOcZ3N5N6axnabVjBCVFkx8qJcBrxZuRoLRGd?=
+ =?us-ascii?Q?lvgNyCcVDtlAvpewSatTd3sMzccZ5sjHWqR1FPF3i1pliXx1XVdbePw0Ed+r?=
+ =?us-ascii?Q?irPCtL66Pw6ITDPeSR+9xZybUOYa8yh2juH9rDb/1gy/F9x1eLN5Y1txFINI?=
+ =?us-ascii?Q?poe/ehN/iecmWtlVJV9zeZOV0IW4Tar0XcudvKdocg7KlmzDMKKXX5i/uAf1?=
+ =?us-ascii?Q?q3Fdv0WzaAcqSlXtobk8vY+sNwynPw9QlcX0yxZwTQ0NUK4g4hxPZ+2+WWTj?=
+ =?us-ascii?Q?dIRFcmy+LpT67nffuuyL+NurwZFfNCkSWv4Ksox0sUGy0gGtPHPB0vbFDdp2?=
+ =?us-ascii?Q?DcYYwp30Mv7gdn+xuDtKVU6rmXYtCoZlSR+1k68HdD7tg2CJaub+gEXxZuee?=
+ =?us-ascii?Q?AY8hyhhwzSWtIE8iKT6YnpVmtjNSQGtxKWpO4pFJAGhuXBInmqloUB+2vfgM?=
+ =?us-ascii?Q?0NDrNkEWQP7mFjN3d7xg63/hvpEwHRTC9V8cJSaufTdE+S67iLcOhpcLgzxx?=
+ =?us-ascii?Q?UPaSaL+TcfvHNbPinCR5mmBaWD6H6x9LPZ8jiaN/jFeQFoqUTod8LO4K3VxJ?=
+ =?us-ascii?Q?wR/3pfx4/2tcbgSjVyxS/cDIpkJ7WKqUSQPnkGZXXjWuXfIqltk9ve74tIZU?=
+ =?us-ascii?Q?zvVNlotB3Kh+STvCZOa9L0ELTo5Vwv95prOcEmRuS96lPQQfqq7gcBirNBPA?=
+ =?us-ascii?Q?VPXGZf/hvKq/++kOT35v5LEnqM9PilES3RjhwEsmetRvs8He7yxPsdZr2k9S?=
+ =?us-ascii?Q?pRKrwbSqiqf/fN9NmbX/TOtGR6Ywf2FLuPgjmZRWbgaPnoiqq+W5Z0U/o5ry?=
+ =?us-ascii?Q?RBR2Em2wqSfzhHU7T7I95ZL4m0Se1KL2pmmPdMJgGJMUwCyPERJR/gb+o+Aw?=
+ =?us-ascii?Q?o9+BOJOb968ZTR/i7Oj/EIoLzxLhJ92kvIxhx0+x?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: befa00e1-d83f-444c-d9a1-08dd18fdcb0c
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2024 09:34:07.1089
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LNW/CpAVbrYIeoyPpFxqnm6wRX6VZiZ+u0dfeN0BCTYpfgoguYmeWvkdRDG25+onHnlZRMLgkUVclub6yyyIJg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10513
 
-Add a optional properties to change LVDS output voltage. This should not
-be static as this depends mainly on the connected display voltage
-requirement. We have three properties:
-- "ti,lvds-termination-ohms", which sets near end termination,
-- "ti,lvds-vod-swing-data-microvolt" and
-- "ti,lvds-vod-swing-clock-microvolt" which both set LVDS differential
-output voltage for data and clock lanes. They are defined as an array
-with min and max values. The appropriate bitfield will be set if
-selected constraints can be met.
+From: Ming Qian <ming.qian@nxp.com>
 
-If "ti,lvds-termination-ohms" is not defined the default of 200 Ohm near
-end termination will be used. Selecting only one:
-"ti,lvds-vod-swing-data-microvolt" or
-"ti,lvds-vod-swing-clock-microvolt" can be done, but the output voltage
-constraint for only data/clock lanes will be met. Setting both is
-recommended.
+For format H264 and HEVC, the firmware can report the parsed profile idc
+and level idc to driver, the information may be useful.
+Implement the H264 and HEVC profile and level control to report them.
 
-Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+Signed-off-by: Ming Qian <ming.qian@nxp.com>
 ---
-Changes in v5:
-- specify default values in sn65dsi83_parse_lvds_endpoint,
-- move sn65dsi83_parse_lvds_endpoint for channel B up, outside if,
-Changes in v4:
-- fix typo in commit message bitfiled -> bitfield
-- use arrays (lvds_vod_swing_conf and lvds_term_conf) in private data, instead
-of separate variables for channel A/B
-- add more checks on return value of "of_property_read_u32_array"
-Changes in v3:
-- use microvolts for default array values 1000 mV -> 1000000 uV.
-Changes in v2:
-- use datasheet tables to get the proper configuration
-- since major change was done change the authorship to myself
----
- drivers/gpu/drm/bridge/ti-sn65dsi83.c | 142 +++++++++++++++++++++++++-
- 1 file changed, 139 insertions(+), 3 deletions(-)
+v2
+-- add support for V4L2_MPEG_VIDEO_H264_PROFILE_CONSTRAINED_BASELINE
 
-diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-index 57a7ed13f996..f9578b38da28 100644
---- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-@@ -132,6 +132,16 @@
- #define  REG_IRQ_STAT_CHA_SOT_BIT_ERR		BIT(2)
- #define  REG_IRQ_STAT_CHA_PLL_UNLOCK		BIT(0)
+ drivers/media/platform/amphion/vdec.c        | 61 +++++++++++++
+ drivers/media/platform/amphion/vpu_defs.h    |  1 +
+ drivers/media/platform/amphion/vpu_helpers.c | 93 ++++++++++++++++++++
+ drivers/media/platform/amphion/vpu_helpers.h |  5 ++
+ drivers/media/platform/amphion/vpu_malone.c  |  3 +-
+ 5 files changed, 162 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platform/amphion/vdec.c
+index ca8f7319503a..61d5598ee6a1 100644
+--- a/drivers/media/platform/amphion/vdec.c
++++ b/drivers/media/platform/amphion/vdec.c
+@@ -232,6 +232,37 @@ static int vdec_ctrl_init(struct vpu_inst *inst)
+ 			  V4L2_CID_MPEG_VIDEO_DEC_DISPLAY_DELAY_ENABLE,
+ 			  0, 1, 1, 0);
  
-+enum sn65dsi83_channel {
-+	CHANNEL_A,
-+	CHANNEL_B
-+};
++	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
++			       V4L2_CID_MPEG_VIDEO_H264_PROFILE,
++			       V4L2_MPEG_VIDEO_H264_PROFILE_MULTIVIEW_HIGH,
++			       ~((1 << V4L2_MPEG_VIDEO_H264_PROFILE_BASELINE) |
++				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_CONSTRAINED_BASELINE) |
++				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_MAIN) |
++				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_EXTENDED) |
++				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_HIGH) |
++				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_MULTIVIEW_HIGH) |
++				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_STEREO_HIGH)),
++			       V4L2_MPEG_VIDEO_H264_PROFILE_BASELINE);
 +
-+enum sn65dsi83_lvds_term {
-+	OHM_100,
-+	OHM_200
-+};
++	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
++			       V4L2_CID_MPEG_VIDEO_H264_LEVEL,
++			       V4L2_MPEG_VIDEO_H264_LEVEL_6_2,
++			       0,
++			       V4L2_MPEG_VIDEO_H264_LEVEL_4_0);
 +
- enum sn65dsi83_model {
- 	MODEL_SN65DSI83,
- 	MODEL_SN65DSI84,
-@@ -147,6 +157,8 @@ struct sn65dsi83 {
- 	struct regulator		*vcc;
- 	bool				lvds_dual_link;
- 	bool				lvds_dual_link_even_odd_swap;
-+	int				lvds_vod_swing_conf[2];
-+	int				lvds_term_conf[2];
- };
- 
- static const struct regmap_range sn65dsi83_readable_ranges[] = {
-@@ -237,6 +249,36 @@ static const struct regmap_config sn65dsi83_regmap_config = {
- 	.max_register = REG_IRQ_STAT,
- };
- 
-+static const int lvds_vod_swing_data_table[2][4][2] = {
-+	{	/* 100 Ohm */
-+		{ 180000, 313000 },
-+		{ 215000, 372000 },
-+		{ 250000, 430000 },
-+		{ 290000, 488000 },
-+	},
-+	{	/* 200 Ohm */
-+		{ 150000, 261000 },
-+		{ 200000, 346000 },
-+		{ 250000, 428000 },
-+		{ 300000, 511000 },
-+	},
-+};
++	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
++			       V4L2_CID_MPEG_VIDEO_HEVC_PROFILE,
++			       V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN_10,
++			       ~((1 << V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN) |
++				 (1 << V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN_10)),
++			       V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN);
 +
-+static const int lvds_vod_swing_clock_table[2][4][2] = {
-+	{	/* 100 Ohm */
-+		{ 140000, 244000 },
-+		{ 168000, 290000 },
-+		{ 195000, 335000 },
-+		{ 226000, 381000 },
-+	},
-+	{	/* 200 Ohm */
-+		{ 117000, 204000 },
-+		{ 156000, 270000 },
-+		{ 195000, 334000 },
-+		{ 234000, 399000 },
-+	},
-+};
++	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
++			       V4L2_CID_MPEG_VIDEO_HEVC_LEVEL,
++			       V4L2_MPEG_VIDEO_HEVC_LEVEL_6_2,
++			       0,
++			       V4L2_MPEG_VIDEO_HEVC_LEVEL_4);
 +
- static struct sn65dsi83 *bridge_to_sn65dsi83(struct drm_bridge *bridge)
- {
- 	return container_of(bridge, struct sn65dsi83, bridge);
-@@ -435,12 +477,16 @@ static void sn65dsi83_atomic_pre_enable(struct drm_bridge *bridge,
- 		val |= REG_LVDS_FMT_LVDS_LINK_CFG;
+ 	ctrl = v4l2_ctrl_new_std(&inst->ctrl_handler, &vdec_ctrl_ops,
+ 				 V4L2_CID_MIN_BUFFERS_FOR_CAPTURE, 1, 32, 1, 2);
+ 	if (ctrl)
+@@ -1166,6 +1197,35 @@ static void vdec_clear_slots(struct vpu_inst *inst)
+ 	}
+ }
  
- 	regmap_write(ctx->regmap, REG_LVDS_FMT, val);
--	regmap_write(ctx->regmap, REG_LVDS_VCOM, 0x05);
-+	regmap_write(ctx->regmap, REG_LVDS_VCOM,
-+			REG_LVDS_VCOM_CHA_LVDS_VOD_SWING(ctx->lvds_vod_swing_conf[CHANNEL_A]) |
-+			REG_LVDS_VCOM_CHB_LVDS_VOD_SWING(ctx->lvds_vod_swing_conf[CHANNEL_B]));
- 	regmap_write(ctx->regmap, REG_LVDS_LANE,
- 		     (ctx->lvds_dual_link_even_odd_swap ?
- 		      REG_LVDS_LANE_EVEN_ODD_SWAP : 0) |
--		     REG_LVDS_LANE_CHA_LVDS_TERM |
--		     REG_LVDS_LANE_CHB_LVDS_TERM);
-+		     (ctx->lvds_term_conf[CHANNEL_A] ?
-+			  REG_LVDS_LANE_CHA_LVDS_TERM : 0) |
-+		     (ctx->lvds_term_conf[CHANNEL_B] ?
-+			  REG_LVDS_LANE_CHB_LVDS_TERM : 0));
- 	regmap_write(ctx->regmap, REG_LVDS_CM, 0x00);
- 
- 	le16val = cpu_to_le16(mode->hdisplay);
-@@ -576,10 +622,100 @@ static const struct drm_bridge_funcs sn65dsi83_funcs = {
- 	.atomic_get_input_bus_fmts = sn65dsi83_atomic_get_input_bus_fmts,
- };
- 
-+static int sn65dsi83_select_lvds_vod_swing(struct device *dev,
-+	u32 lvds_vod_swing_data[2], u32 lvds_vod_swing_clk[2], u8 lvds_term)
++static void vdec_update_v4l2_ctrl(struct vpu_inst *inst, u32 id, u32 val)
 +{
-+	int i;
++	struct v4l2_ctrl *ctrl = v4l2_ctrl_find(&inst->ctrl_handler, id);
 +
-+	for (i = 0; i <= 3; i++) {
-+		if (lvds_vod_swing_data_table[lvds_term][i][0] >= lvds_vod_swing_data[0] &&
-+		lvds_vod_swing_data_table[lvds_term][i][1] <= lvds_vod_swing_data[1] &&
-+		lvds_vod_swing_clock_table[lvds_term][i][0] >= lvds_vod_swing_clk[0] &&
-+		lvds_vod_swing_clock_table[lvds_term][i][1] <= lvds_vod_swing_clk[1])
-+			return i;
-+	}
-+
-+	dev_err(dev, "failed to find appropriate LVDS_VOD_SWING configuration\n");
-+	return -EINVAL;
++	if (ctrl)
++		v4l2_ctrl_s_ctrl(ctrl, val);
 +}
 +
-+static int sn65dsi83_parse_lvds_endpoint(struct sn65dsi83 *ctx, int channel)
++static void vdec_update_v4l2_profile_level(struct vpu_inst *inst, struct vpu_dec_codec_info *hdr)
 +{
-+	struct device *dev = ctx->dev;
-+	struct device_node *endpoint;
-+	int endpoint_reg;
-+	/* Set so the property can be freely selected if not defined */
-+	u32 lvds_vod_swing_data[2] = { 0, 1000000 };
-+	u32 lvds_vod_swing_clk[2] = { 0, 1000000 };
-+	u32 lvds_term;
-+	u8 lvds_term_conf = 0x1;
-+	int lvds_vod_swing_conf = 0x1;
-+	int ret = 0;
-+	int ret_data;
-+	int ret_clock;
-+
-+	if (channel == CHANNEL_A)
-+		endpoint_reg = 2;
-+	else
-+		endpoint_reg = 3;
-+
-+	endpoint = of_graph_get_endpoint_by_regs(dev->of_node, endpoint_reg, -1);
-+	if (!of_property_read_u32(endpoint, "ti,lvds-termination-ohms", &lvds_term)) {
-+		if (lvds_term == 100)
-+			lvds_term_conf = OHM_100;
-+		else
-+			lvds_term_conf = OHM_200;
++	switch (inst->out_format.pixfmt) {
++	case V4L2_PIX_FMT_H264:
++	case V4L2_PIX_FMT_H264_MVC:
++		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_H264_PROFILE,
++				      vpu_get_h264_v4l2_profile(hdr->profile_idc));
++		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_H264_LEVEL,
++				      vpu_get_h264_v4l2_level(hdr->level_idc));
++		break;
++	case V4L2_PIX_FMT_HEVC:
++		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_HEVC_PROFILE,
++				      vpu_get_hevc_v4l2_profile(hdr->profile_idc));
++		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_HEVC_LEVEL,
++				      vpu_get_hevc_v4l2_level(hdr->level_idc));
++		break;
++	default:
++		return;
 +	}
-+
-+	ctx->lvds_term_conf[channel] = lvds_term_conf;
-+
-+	ret_data = of_property_read_u32_array(endpoint,
-+			"ti,lvds-vod-swing-data-microvolt", lvds_vod_swing_data,
-+			ARRAY_SIZE(lvds_vod_swing_data));
-+	if (ret_data != 0 && ret_data != -EINVAL) {
-+		ret = ret_data;
-+		goto exit;
-+	}
-+
-+	ret_clock = of_property_read_u32_array(endpoint,
-+			"ti,lvds-vod-swing-clock-microvolt", lvds_vod_swing_clk,
-+			ARRAY_SIZE(lvds_vod_swing_clk));
-+	if (ret_clock != 0 && ret_clock != -EINVAL) {
-+		ret = ret_clock;
-+		goto exit;
-+	}
-+
-+	/* If any of the two properties is defined. */
-+	if (!ret_data || !ret_clock) {
-+		lvds_vod_swing_conf = sn65dsi83_select_lvds_vod_swing(dev,
-+			lvds_vod_swing_data, lvds_vod_swing_clk,
-+			lvds_term_conf);
-+		if (lvds_vod_swing_conf < 0) {
-+			ret = lvds_vod_swing_conf;
-+			goto exit;
-+		}
-+	}
-+
-+	ctx->lvds_vod_swing_conf[channel] = lvds_vod_swing_conf;
-+	ret = 0;
-+exit:
-+	of_node_put(endpoint);
-+	return ret;
 +}
 +
- static int sn65dsi83_parse_dt(struct sn65dsi83 *ctx, enum sn65dsi83_model model)
+ static void vdec_event_seq_hdr(struct vpu_inst *inst, struct vpu_dec_codec_info *hdr)
  {
- 	struct drm_bridge *panel_bridge;
- 	struct device *dev = ctx->dev;
-+	int ret;
+ 	struct vdec_t *vdec = inst->priv;
+@@ -1189,6 +1249,7 @@ static void vdec_event_seq_hdr(struct vpu_inst *inst, struct vpu_dec_codec_info
+ 	vdec_init_crop(inst);
+ 	vdec_init_mbi(inst);
+ 	vdec_init_dcp(inst);
++	vdec_update_v4l2_profile_level(inst, hdr);
+ 	if (!vdec->seq_hdr_found) {
+ 		vdec->seq_tag = vdec->codec_info.tag;
+ 		if (vdec->is_source_changed) {
+diff --git a/drivers/media/platform/amphion/vpu_defs.h b/drivers/media/platform/amphion/vpu_defs.h
+index 428d988cf2f7..606f9d61a265 100644
+--- a/drivers/media/platform/amphion/vpu_defs.h
++++ b/drivers/media/platform/amphion/vpu_defs.h
+@@ -134,6 +134,7 @@ struct vpu_dec_codec_info {
+ 	u32 decoded_height;
+ 	struct v4l2_fract frame_rate;
+ 	u32 dsp_asp_ratio;
++	u32 profile_idc;
+ 	u32 level_idc;
+ 	u32 bit_depth_luma;
+ 	u32 bit_depth_chroma;
+diff --git a/drivers/media/platform/amphion/vpu_helpers.c b/drivers/media/platform/amphion/vpu_helpers.c
+index d12310af9ebc..108b75ceb4ae 100644
+--- a/drivers/media/platform/amphion/vpu_helpers.c
++++ b/drivers/media/platform/amphion/vpu_helpers.c
+@@ -509,3 +509,96 @@ const char *vpu_codec_state_name(enum vpu_codec_state state)
+ 	}
+ 	return "<unknown>";
+ }
 +
-+	ret = sn65dsi83_parse_lvds_endpoint(ctx, CHANNEL_A);
-+	if (ret < 0)
-+		return ret;
++struct codec_id_mapping {
++	u32 id;
++	u32 v4l2_id;
++};
 +
-+	ret = sn65dsi83_parse_lvds_endpoint(ctx, CHANNEL_B);
-+	if (ret < 0)
-+		return ret;
++static struct codec_id_mapping h264_profiles[] = {
++	{66,  V4L2_MPEG_VIDEO_H264_PROFILE_BASELINE},
++	{77,  V4L2_MPEG_VIDEO_H264_PROFILE_MAIN},
++	{88,  V4L2_MPEG_VIDEO_H264_PROFILE_EXTENDED},
++	{100, V4L2_MPEG_VIDEO_H264_PROFILE_HIGH},
++	{118, V4L2_MPEG_VIDEO_H264_PROFILE_MULTIVIEW_HIGH},
++	{128, V4L2_MPEG_VIDEO_H264_PROFILE_STEREO_HIGH}
++};
++
++static struct codec_id_mapping h264_levels[] = {
++	{10,  V4L2_MPEG_VIDEO_H264_LEVEL_1_0},
++	{9,   V4L2_MPEG_VIDEO_H264_LEVEL_1B},
++	{11,  V4L2_MPEG_VIDEO_H264_LEVEL_1_1},
++	{12,  V4L2_MPEG_VIDEO_H264_LEVEL_1_2},
++	{13,  V4L2_MPEG_VIDEO_H264_LEVEL_1_3},
++	{20,  V4L2_MPEG_VIDEO_H264_LEVEL_2_0},
++	{21,  V4L2_MPEG_VIDEO_H264_LEVEL_2_1},
++	{22,  V4L2_MPEG_VIDEO_H264_LEVEL_2_2},
++	{30,  V4L2_MPEG_VIDEO_H264_LEVEL_3_0},
++	{31,  V4L2_MPEG_VIDEO_H264_LEVEL_3_1},
++	{32,  V4L2_MPEG_VIDEO_H264_LEVEL_3_2},
++	{40,  V4L2_MPEG_VIDEO_H264_LEVEL_4_0},
++	{41,  V4L2_MPEG_VIDEO_H264_LEVEL_4_1},
++	{42,  V4L2_MPEG_VIDEO_H264_LEVEL_4_2},
++	{50,  V4L2_MPEG_VIDEO_H264_LEVEL_5_0},
++	{51,  V4L2_MPEG_VIDEO_H264_LEVEL_5_1},
++	{52,  V4L2_MPEG_VIDEO_H264_LEVEL_5_2},
++	{60,  V4L2_MPEG_VIDEO_H264_LEVEL_6_0},
++	{61,  V4L2_MPEG_VIDEO_H264_LEVEL_6_1},
++	{62,  V4L2_MPEG_VIDEO_H264_LEVEL_6_2}
++};
++
++static struct codec_id_mapping hevc_profiles[] = {
++	{1,   V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN},
++	{2,   V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN_10}
++};
++
++static struct codec_id_mapping hevc_levels[] = {
++	{30,  V4L2_MPEG_VIDEO_HEVC_LEVEL_1},
++	{60,  V4L2_MPEG_VIDEO_HEVC_LEVEL_2},
++	{63,  V4L2_MPEG_VIDEO_HEVC_LEVEL_2_1},
++	{90,  V4L2_MPEG_VIDEO_HEVC_LEVEL_3},
++	{93,  V4L2_MPEG_VIDEO_HEVC_LEVEL_3_1},
++	{120, V4L2_MPEG_VIDEO_HEVC_LEVEL_4},
++	{123, V4L2_MPEG_VIDEO_HEVC_LEVEL_4_1},
++	{150, V4L2_MPEG_VIDEO_HEVC_LEVEL_5},
++	{153, V4L2_MPEG_VIDEO_HEVC_LEVEL_5_1},
++	{156, V4L2_MPEG_VIDEO_HEVC_LEVEL_5_2},
++	{180, V4L2_MPEG_VIDEO_HEVC_LEVEL_6},
++	{183, V4L2_MPEG_VIDEO_HEVC_LEVEL_6_1},
++	{186, V4L2_MPEG_VIDEO_HEVC_LEVEL_6_2}
++};
++
++static u32 vpu_find_v4l2_id(u32 id, struct codec_id_mapping *array, u32 array_sz)
++{
++	u32 i;
++
++	if (!array || !array_sz)
++		return 0;
++
++	for (i = 0; i < array_sz; i++) {
++		if (id == array[i].id)
++			return array[i].v4l2_id;
++	}
++
++	return 0;
++}
++
++u32 vpu_get_h264_v4l2_profile(u32 idc)
++{
++	return vpu_find_v4l2_id(idc, h264_profiles, ARRAY_SIZE(h264_profiles));
++}
++
++u32 vpu_get_h264_v4l2_level(u32 idc)
++{
++	return vpu_find_v4l2_id(idc, h264_levels, ARRAY_SIZE(h264_levels));
++}
++
++u32 vpu_get_hevc_v4l2_profile(u32 idc)
++{
++	return vpu_find_v4l2_id(idc, hevc_profiles, ARRAY_SIZE(hevc_profiles));
++}
++
++u32 vpu_get_hevc_v4l2_level(u32 idc)
++{
++	return vpu_find_v4l2_id(idc, hevc_levels, ARRAY_SIZE(hevc_levels));
++}
+diff --git a/drivers/media/platform/amphion/vpu_helpers.h b/drivers/media/platform/amphion/vpu_helpers.h
+index 0eaddb07190d..dc5fb1ca2d33 100644
+--- a/drivers/media/platform/amphion/vpu_helpers.h
++++ b/drivers/media/platform/amphion/vpu_helpers.h
+@@ -70,4 +70,9 @@ int vpu_color_get_default(u32 primaries, u32 *ptransfers, u32 *pmatrix, u32 *pfu
  
- 	ctx->lvds_dual_link = false;
- 	ctx->lvds_dual_link_even_odd_swap = false;
+ int vpu_find_dst_by_src(struct vpu_pair *pairs, u32 cnt, u32 src);
+ int vpu_find_src_by_dst(struct vpu_pair *pairs, u32 cnt, u32 dst);
++
++u32 vpu_get_h264_v4l2_profile(u32 idc);
++u32 vpu_get_h264_v4l2_level(u32 idc);
++u32 vpu_get_hevc_v4l2_profile(u32 idc);
++u32 vpu_get_hevc_v4l2_level(u32 idc);
+ #endif
+diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/platform/amphion/vpu_malone.c
+index 4769c053c6c2..5c6b2a841b6f 100644
+--- a/drivers/media/platform/amphion/vpu_malone.c
++++ b/drivers/media/platform/amphion/vpu_malone.c
+@@ -889,7 +889,8 @@ static void vpu_malone_unpack_seq_hdr(struct vpu_rpc_event *pkt,
+ 	info->frame_rate.numerator = 1000;
+ 	info->frame_rate.denominator = pkt->data[8];
+ 	info->dsp_asp_ratio = pkt->data[9];
+-	info->level_idc = pkt->data[10];
++	info->profile_idc = (pkt->data[10] >> 8) & 0xff;
++	info->level_idc = pkt->data[10] & 0xff;
+ 	info->bit_depth_luma = pkt->data[13];
+ 	info->bit_depth_chroma = pkt->data[14];
+ 	info->chroma_fmt = pkt->data[15];
 -- 
-2.34.1
+2.43.0-rc1
 
