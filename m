@@ -1,147 +1,125 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8B222F396
-	for <imx@lists.linux.dev>; Tue, 10 Dec 2024 09:01:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBE22309A2
+	for <imx@lists.linux.dev>; Tue, 10 Dec 2024 09:21:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733821299; cv=none; b=PenE1XqNc9Ls+RqTEVEKPUW1CwJ1Ds9KhQrAyUVYOan+1y4Lba1iA6wLrNgWSAqaM9YiA+Op05xhcZGqRKUVe46rTJcDpZ2CHEp897nHbLwnvTZZi93g2A2kfN0AcY0Gtt004L1hnqB7PcysEymHnBe8rj2ZC/vKNO3fZKqfpJA=
+	t=1733822469; cv=none; b=XzcY4jejmAD7F+rmib7aGmRdJNKSJOeF+a5Dz8jXJMZrIixnVUQyVtOL6yP2NlmNUtLLn7Oxhawoq9J365PlMT5vVkkEvCtkjN1oMiIF+0DZTIVrXtlHK8FyIcGoKOZBe2qsGjP4rr1uOnTpWw0Mt7sLK7TcbS+JuvqbDcIH7Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733821299; c=relaxed/simple;
-	bh=gBFwtX62HZzRaai0K+v2rk3fcFBb5+CMCQxsV9IEtl8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Gz4/7PwXs+LVkl2eVhAZu80J//yfAI8w5V0Pst2UvFnjxtoK2fRlvPheQpdpjrZ+r6XfkFekO5+X0pMOtLCvZeAlK+pcmsi2l8gnOP2QDjSthvujBtnKNo7imGEU7sj/izNlYlIEwaeM25sLQI1NUeWJk39p8AZPy44jW6TLTPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <l.stach@pengutronix.de>)
-	id 1tKw73-00051L-G9; Tue, 10 Dec 2024 10:01:01 +0100
-Message-ID: <b092fdec6fda26c56b4f2cc5927bbaa4a6d786f9.camel@pengutronix.de>
-Subject: Re: [PATCH v2] serial: imx: Use uart_port_lock_irq() instead of
- uart_port_lock()
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Xiaolei Wang <xiaolei.wang@windriver.com>, gregkh@linuxfoundation.org, 
- jirislaby@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
- kernel@pengutronix.de, festevam@gmail.com, esben@geanix.com, marex@denx.de,
-  ilpo.jarvinen@linux.intel.com, linux@rasmusvillemoes.dk, 
- stefan.eichenberger@toradex.com, l.sanfilippo@kunbus.com, 
- cniedermaier@dh-electronics.com, rickaran@axis.com
-Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Date: Tue, 10 Dec 2024 10:00:57 +0100
-In-Reply-To: <20241210034223.1493522-1-xiaolei.wang@windriver.com>
-References: <20241210034223.1493522-1-xiaolei.wang@windriver.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1733822469; c=relaxed/simple;
+	bh=8iFcC4uDiAigjKD1wNYAq1L3sOiSAeEvDTHO0Y+2lgs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sdNo+gcDZG7JsK875OPCb96yuBLJZyF2csj9yN8zxS1sXqceBG4XxYaEsa8Z98K4I5agpAQDdXhIi+5eNuWIEw8VmntGIY1Csa2a17kTsVnh8QseVv2yuJoWTT5hy+lgfkx8VgM68BWjVqEYF01T2dgY+xhtY8uQADFXMVIjjC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=XtQMU9MV; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="XtQMU9MV"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=APM+1yhaJCH113HhvAVKgYmvJyXakNLD1enONsFKaVE=; b=XtQMU9MVlqL5uT8Cv5KUl1wp+1
+	k2Gyagp080pG7UY6rcUpFWYBZMfOvVApx8XVBbBNMnqyxOcUgMeDeoDqK1sxzgueFm95igY6MJoHp
+	xFEhF12S1qGrFmq4QgAsLn80arpFDsomBzweZ7KOr+aIoXtOpejLhe7HtuBYQUAWBTNZRUU4vNPWN
+	yQNddM/5EKnuCMgNdP1/MfePzTSlV/BCB5CQPatrIzz4uAqNEpxIjp699+GDiCkgANv8TL965X7wB
+	LfLzHbTQDk+JdQp9/HtgpT9s/JEqUO4aMvhu8VCgBJHQE99rtLYWNr/Dy+NVL+LYCbh8Zrm1n4CVj
+	+7QAG2KQ==;
+Received: from [89.212.21.243] (port=59230 helo=and-HP-Z4..)
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <andrej.picej@norik.com>)
+	id 1tKwQT-001jvW-1b;
+	Tue, 10 Dec 2024 10:21:05 +0100
+From: Andrej Picej <andrej.picej@norik.com>
+To: andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org,
+	rfoss@kernel.org,
+	Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se,
+	jernej.skrabec@gmail.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	marex@denx.de
+Cc: dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	upstream@lists.phytec.de
+Subject: [PATCH v5 0/3] SN65DSI83/4 lvds_vod_swing properties
+Date: Tue, 10 Dec 2024 10:18:58 +0100
+Message-Id: <20241210091901.83028-1-andrej.picej@norik.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: l.stach@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
+X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Am Dienstag, dem 10.12.2024 um 11:42 +0800 schrieb Xiaolei Wang:
-> When executing 'ehco mem > /sys/power/state', the following
-> deadlock occurs. Since there is output during the serial
-> port entering the suspend process, the suspend will be
-> interrupted, resulting in the nesting of locks. Therefore,
-> use uart_port_lock_irq() instead of uart_port_unlock().
->=20
-> WARNING: inconsistent lock state
-> 6.12.0-rc2-00002-g3c199ed5bd64-dirty #23 Not tainted
-> --------------------------------
-> inconsistent {IN-HARDIRQ-W} -> {HARDIRQ-ON-W} usage.
-> sh/494 [HC0[0]:SC0[0]:HE1:SE1] takes:
-> c4db5850 (&port_lock_key){?.-.}-{3:3}, at: imx_uart_enable_wakeup+0x14/0x=
-254
-> {IN-HARDIRQ-W} state was registered at:
->   lock_acquire+0x104/0x348
->   _raw_spin_lock+0x48/0x84
->   imx_uart_int+0x14/0x4dc
->   __handle_irq_event_percpu+0xac/0x2fc
->   handle_irq_event_percpu+0xc/0x40
->   handle_irq_event+0x38/0x8c
->   handle_fasteoi_irq+0xb4/0x1b8
->   handle_irq_desc+0x1c/0x2c
->   gic_handle_irq+0x6c/0xa0
->   generic_handle_arch_irq+0x2c/0x64
->   call_with_stack+0x18/0x20
->   __irq_svc+0x9c/0xbc
->   _raw_spin_unlock_irqrestore+0x2c/0x48
->   uart_write+0xd8/0x3a0
->   do_output_char+0x1a8/0x1e4
->   n_tty_write+0x224/0x440
->   file_tty_write.constprop.0+0x124/0x250
->   do_iter_readv_writev+0x100/0x1e0
->   vfs_writev+0xc4/0x448
->   do_writev+0x68/0xf8
->   ret_fast_syscall+0x0/0x1c
-> irq event stamp: 31593
-> hardirqs last  enabled at (31593): [<c1150e48>] _raw_spin_unlock_irqresto=
-re+0x44/0x48
-> hardirqs last disabled at (31592): [<c07f32f0>] clk_enable_lock+0x60/0x12=
-0
-> softirqs last  enabled at (30334): [<c012d1d4>] handle_softirqs+0x2cc/0x4=
-78
-> softirqs last disabled at (30325): [<c012d510>] __irq_exit_rcu+0x120/0x15=
-c
->=20
-> other info that might help us debug this:
->  Possible unsafe locking scenario:
->=20
->        CPU0
->        ----
->   lock(&port_lock_key);
->   <Interrupt>
->     lock(&port_lock_key);
->=20
-> Fixes: 3c199ed5bd64 ("serial: imx: Grab port lock in imx_uart_enable_wake=
-up()")
-> Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Hi all,
 
-Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
+The LVDS differential voltage swing can be specified as arrays of min, max
+in microvolts. Two arrays, one for data-lanes and one for clock-lane can
+be specified. Additionally, because LVDS voltage swing depends on near-end
+termination this can now also be specified with separate property.
 
-> ---
->=20
-> v1:
->   https://patchwork.kernel.org/project/linux-arm-kernel/patch/20241209124=
-732.693834-1-xiaolei.wang@windriver.com/
-> v2:
->   use uart_port_lock_irq() instead of uart_port_lock_irqsave()
->=20
->  drivers/tty/serial/imx.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-> index 17f70e4bee43..9c59ec128bb4 100644
-> --- a/drivers/tty/serial/imx.c
-> +++ b/drivers/tty/serial/imx.c
-> @@ -2692,7 +2692,7 @@ static void imx_uart_enable_wakeup(struct imx_port =
-*sport, bool on)
->  {
->  	u32 ucr3;
-> =20
-> -	uart_port_lock(&sport->port);
-> +	uart_port_lock_irq(&sport->port);
-> =20
->  	ucr3 =3D imx_uart_readl(sport, UCR3);
->  	if (on) {
-> @@ -2714,7 +2714,7 @@ static void imx_uart_enable_wakeup(struct imx_port =
-*sport, bool on)
->  		imx_uart_writel(sport, ucr1, UCR1);
->  	}
-> =20
-> -	uart_port_unlock(&sport->port);
-> +	uart_port_unlock_irq(&sport->port);
->  }
-> =20
->  static int imx_uart_suspend_noirq(struct device *dev)
+Driver goes through the tables, taken from datasheet [1] and selects the
+appropriate configuration. If appropriate configuration can not be found
+the probe fails. If these properties are not defined default values are
+used as before.
+
+This patch series depends on the patch
+"[PATCH v2 11/15] arm64: dts: imx8mm-phyboard-polis: Add support for PEB-AV-10"
+(https://lore.kernel.org/all/20241202072052.2195283-12-andrej.picej@norik.com/)
+which is currently under review. Please apply the dependent series first before
+applying this one.
+
+v1 is at: https://lore.kernel.org/all/20241127103031.1007893-1-andrej.picej@norik.com/
+v2 is at: https://lore.kernel.org/all/20241203085822.2475138-1-andrej.picej@norik.com/
+v3 is at: https://lore.kernel.org/all/20241203110054.2506123-1-andrej.picej@norik.com/
+v4 is at: https://lore.kernel.org/all/20241205134021.2592013-1-andrej.picej@norik.com/
+
+[1] https://www.ti.com/lit/ds/symlink/sn65dsi83.pdf?ts=1732738773429&ref_url=https%253A%252F%252Fwww.mouser.co.uk%252F
+
+Best regards,
+Andrej
+
+Andrej Picej (3):
+  dt-bindings: drm/bridge: ti-sn65dsi83: Add properties for
+    ti,lvds-vod-swing
+  drm/bridge: ti-sn65dsi83: Add ti,lvds-vod-swing optional properties
+  arm64: dts: imx8mm-phyboard-polis-peb-av-10: Set lvds-vod-swing
+
+ .../bindings/display/bridge/ti,sn65dsi83.yaml |  34 ++++-
+ .../imx8mm-phyboard-polis-peb-av-10.dtso      |   2 +
+ drivers/gpu/drm/bridge/ti-sn65dsi83.c         | 142 +++++++++++++++++-
+ 3 files changed, 173 insertions(+), 5 deletions(-)
+
+-- 
+2.34.1
 
