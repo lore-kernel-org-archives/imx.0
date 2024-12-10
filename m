@@ -1,345 +1,238 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2050.outbound.protection.outlook.com [40.107.22.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21ED8C1E
-	for <imx@lists.linux.dev>; Tue, 10 Dec 2024 01:19:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733793544; cv=none; b=nXBnjlmMw39XEImfQq6gXKte2yVDOxXL83Ecgd/HS+X+9nGJErUZo3jk36ayp0MKKZgXshfZGVfUH8x4/xE5aJs5GM/bqOCEwTt4TCuhKkFiC/wr0teS6To3pwJS0EewA1V+UE89hNLzsyOR+bUOv65DVAQEjVrqyQiO9WSf1HQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733793544; c=relaxed/simple;
-	bh=IzMXc2AVzOGsxr6J8kkC7iCMjEPHrRHY5k9mCfFjBMk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VNhPyDF3mAhb4QwO+rJ9HqZw4dno51KFvX7ORfRAWwRzFXiGgjyc4UElW/yN+l04MNGQXheIg4J6XG4nbeZabt1AUkHjyFxAY/vi7RyDIGj9CgRm6qByIPhWBe1T7W8rgVmhKeyzIu/ro6m/7AYFPuGvs1NCPhboT/nK+w04Z7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Jx+KhrBe; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF7D12DD8A
+	for <imx@lists.linux.dev>; Tue, 10 Dec 2024 02:05:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733796303; cv=fail; b=FzQ/KEPPZpBNIKEcg2fSJClTn2W6xjae//YUJkPyANd9P4ax5IcT82guBzqHewl2mKOhwB4UU1BVIrQhabyLSbbPT2irN4jq/++sWEALC9DKxqOlOugdb7H5ImwnAGBGBukTp9XtSd90BKOAX7MGevz4FBLsmnb43e/6lST7+1w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733796303; c=relaxed/simple;
+	bh=d/Gu20saPU2uMVg7mb9S2GE6CWtc8lgOafeDivJ2+Pw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=GZdJTOdVZ8EQyo9HfZ0lfV6imd+E5R5RCFNDs7J09D0a3tjDyBNdxs1x++rWLle4HqFXg7E8hVXkmjxQeG2CpM3P3u4He/MV/+d4HN5P+ARykEZ/KPvbLOvCv1L6YeBiaT8CmDo0PMkHunLGV9StF2/ZuDkr3THDDm39Fq8moDI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=EylTy+wS; arc=fail smtp.client-ip=40.107.22.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Jx+KhrBe"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-53df6322ea7so5811736e87.0
-        for <imx@lists.linux.dev>; Mon, 09 Dec 2024 17:19:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733793540; x=1734398340; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hwOz/3s+5rB6IRZt+uNZZmxy+vjj4hk+TORJT/mIsZw=;
-        b=Jx+KhrBe51rOCPU2/H7uYQEOz77HApGtcUbyqmu+zUau02QhsQfBJHSHH87u8uobuB
-         AVSRmK/FpDaVUxDIeiHpB47nNZn/tT5ATAt+EhSoaw1xHYslPiEHACgdMn6L3H2bXLAq
-         hswDJbxN50yqZz2K4j5UYhuFx4fUP7nSQydoN7J22ZPMNxU2i8gk03sC/uITQGhLIf0R
-         WRiYjXsc+VmEAAzuNAWvNTcTDkz0dd8PC7xG4roJpa8XL6tGLibOWbNfYtK7gwmsPgnU
-         kcdFXXmmd5MVLu5qlWI1FZeJB0rJ4Jm8PwdRlODATygUtzxyOifxjoR08OPs/aYEHqPD
-         8O5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733793540; x=1734398340;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hwOz/3s+5rB6IRZt+uNZZmxy+vjj4hk+TORJT/mIsZw=;
-        b=u74e6C9FV6aeA8/MYu889ZhY+RANDWrTK9RCWtX9eyDnKqeadXf/zreR0v+2kJliPx
-         MvYl6qPtTqDs5ghfESpls3/Z8izyEIqVn19v//fhqXp0xAXAPpV0w2NveVB7O4xG3ddz
-         QNCvSkgI4mDuTb1rT8dkDnOKigh5GgA8UKnuktO4FAScGmBm3TvHCN1jKPdUpodlPb5r
-         AhQvwLaaOENHxE+WA9mUV9DlixoCVBMMjlzAPcvihnd47yxdIoswxHPxhkgcSBj/kSQ/
-         6hZibjh7Kt24qa3nuSEivakj6ILVBHL+bSRrSXkNJ5q13duPAyOULigOvfbo5taNRkZg
-         bMRw==
-X-Forwarded-Encrypted: i=1; AJvYcCXKVJufsNpkbk5noLVzguXCbydpeM9NSBT3dWAFZNW8+2Ge5c7Dq7SGaIQI6YnnXM6DAuM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz9nOm6D7Duamvb01sifvfUEw9cGlJDKdvNi3r98t1/rUsyR+rP
-	j8Ng5IIdiD3VtSwabe2c9anDXcmaGvCZB78Tsk6Oe0u6uD97+v+6e2Nb+7xU0Mo=
-X-Gm-Gg: ASbGncumqpkIrYDsqJ4NptzB8sk0RZ8uqT/pHWaFp+1vq3ibSj2Y+jX39kiIILDXHYD
-	1apPtwcN4QOILhPYakMgAE242aG1WzEclbfgAGgs8bNTh8kRe4T9R0XYro4KB2gGTGbJ0dvXxCF
-	HysLc6z83qIWASExBox4NxBZIToZMRzCmmqFwqm9DYZEmEck6Zcp1nKyngP/6CTn4ix6zSEwZAn
-	Fs45gXey7yz4lHCCZyRwcIjD1J/DPf/RjlwgKJlNXdupfNe8SjXJEKFWb856qWx/Qy0nf4knUJV
-	B9kaB2JWl0anteMjeeFwkLG4+nqlV5OQ4w==
-X-Google-Smtp-Source: AGHT+IFhrbfBVLvwS8JtxYQvsf4ft/BOKHf1cBzqWj4YWhQkk8IVityumdfo4WZxOv1As/yfkbavcA==
-X-Received: by 2002:a05:6512:b96:b0:53f:8c46:42b6 with SMTP id 2adb3069b0e04-5402402ea2dmr922627e87.0.1733793540153;
-        Mon, 09 Dec 2024 17:19:00 -0800 (PST)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53e3847565csm1090292e87.190.2024.12.09.17.18.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Dec 2024 17:18:58 -0800 (PST)
-Date: Tue, 10 Dec 2024 03:18:56 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Andrej Picej <andrej.picej@norik.com>
-Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org, 
-	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com, airlied@gmail.com, 
-	simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
-	tzimmermann@suse.de, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, marex@denx.de, dri-devel@lists.freedesktop.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, upstream@lists.phytec.de
-Subject: Re: [PATCH v4 2/3] drm/bridge: ti-sn65dsi83: Add ti,lvds-vod-swing
- optional properties
-Message-ID: <xkrk3vdw7yhj22ornqog7wovqctgrolfcxbl43u7ddgstjqsbl@h22hxlld6zqg>
-References: <20241205134021.2592013-1-andrej.picej@norik.com>
- <20241205134021.2592013-3-andrej.picej@norik.com>
- <nbumcptoi5hwehjbrynf6dh2wrz7a4ugqblrjxyswvj7udkf3u@6qikclizqfjr>
- <e420579f-25b2-41ca-9627-130d67c51541@norik.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="EylTy+wS"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GrKS8PIihMVjEPVnwWSYNjM2gKZBme6U/fLaMWmS5heYScCuAyGQp+qrx3+/2tdwy7wIkHmJzOXzsK+mHXf+uxV8viR+onXQyl3PYx4o7riaFNMHV6yZwsMtBSRLanACEhNKN/r5Nb2xy5Hvg9/rMghS/I1Z4c8C+IROYiNGjD4QydvBAGHZK0fGQKoc5ODoWVMqVM+nOtjTtUldKFv2uqrPnkpDGwcnqkJ91FDYYwcJ2RDZVkPI6ASeHIg0W65nJeOh5oFfwplQOeU3xZfF8Pz38OcCZdaUyB/dWtqEoDd24gt87Rwo7zJEFKGmz/Cm+J5/xrSC2fyrZM1CJrdlpw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PV1Vr5bBM/n/71SCjq2IUuw8ZCOKkRzDHLGuERsdAuI=;
+ b=mRtfLK1QQlO8HCCJIZntYn2DBo+muGPJGu/uqmWsMjR74/uiTeiO2vg1n2Db73Lx6UetZtxPJwTkGDkB9dy8HN4ScdpI3gGKNsIC8OcfG78N/2fzT6GMjJxKkZOTTuJSISfy1JQzFSBckJsHg0v00S3x8prEtD/CYW1oMjvX7slKC3K4A0VvkAgrdvHTyVTq93xtshBeK3fiscNMxoVIhvfztQ/votw0Ohz4dD8LCVFzJFAGTDyJiKmvj3gDlSBkddIprQnpcNf4Llrd+A5/zxZ3r1NYCjw9dlwl3fiT/Grqi359LBQC7PQVZnQDJEklxPbG25Vny9WGkTLWF9xqgQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PV1Vr5bBM/n/71SCjq2IUuw8ZCOKkRzDHLGuERsdAuI=;
+ b=EylTy+wSx3FuwRrjW3vTJKu+r7WCclaQGgOtKu3UX2DFsDE4AqkRKyCs88arhuT2wZs/q/eRLgpQ+/wLbkfeeVPbt6zBMi3a6Hqxd0G2OxFd8zq1Fj/7Fk22/Fq8kSHaxgMTfQj2YR9ZgCno2MdSQxbo1zWUdYTGtVHvT6P0eLjGEkTFF0IsGCwrVTVKYRLS6bmVqymLuq3DTZQYpAyl5TaP+cy8CxXxR+T8kG4cgQENAxAR/7T+qDXXwJDHQFOAg3F0IdhY63pyP3k/IBenW7iiFHaq/3LYpmGENlK5M2vlPe6PHlUc/kSqjkylFW3l6XbJFcr7Ywy7H+QhOT7c3A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by AM9PR04MB8211.eurprd04.prod.outlook.com (2603:10a6:20b:3ea::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.18; Tue, 10 Dec
+ 2024 02:04:57 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7%6]) with mapi id 15.20.8230.016; Tue, 10 Dec 2024
+ 02:04:56 +0000
+Date: Tue, 10 Dec 2024 10:02:12 +0800
+From: Xu Yang <xu.yang_2@nxp.com>
+To: Will Deacon <will@kernel.org>
+Cc: Frank.li@nxp.com, mark.rutland@arm.com, shawnguo@kernel.org,
+	kernel@pengutronix.de, festevam@gmail.com,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2] perf: imx9_perf: Introduce AXI filter version to
+ refactor the driver and better extension
+Message-ID: <20241210020212.yz3xowvdk27zmgsl@hippo>
+References: <20241125104338.2433339-1-xu.yang_2@nxp.com>
+ <20241209154419.GB12428@willie-the-truck>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241209154419.GB12428@willie-the-truck>
+X-ClientProxiedBy: AM0PR02CA0118.eurprd02.prod.outlook.com
+ (2603:10a6:20b:28c::15) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e420579f-25b2-41ca-9627-130d67c51541@norik.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|AM9PR04MB8211:EE_
+X-MS-Office365-Filtering-Correlation-Id: 18b06db5-5baf-4e2a-a383-08dd18bf0b2d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|1800799024|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?2LBxXCrL6qAjGuJ3f9cNuf+vOsXmrYC+Ov3qySF9DEe8YGaMLyxvsKmOP87E?=
+ =?us-ascii?Q?6QIUHEbvm/EpevAurK8lQ4OcGVMfzV9nqfBg8gjnAAlEtj9oLLf9Wl0yMd/1?=
+ =?us-ascii?Q?T8i/PZnCXMxJ0JbHfiulO+FQaX/HOwwM6X03fCNvHuPPK0U55JprIYe1jHcP?=
+ =?us-ascii?Q?PU1nx0mIJJLJQ6YIEaUOLNCHawcPXsh4oPaWdbAoG+zLlAAd5IUgPfmzlmn3?=
+ =?us-ascii?Q?VAbW4fFVfkIXYgzKVPbT0TCZypGD57a95qMVq0NRGZIkBbIfwg2eDdxwTE+/?=
+ =?us-ascii?Q?RZ0KssKzGiy39wlv7kDtrPiWScdS+i6vEYNx8eUEYvXqXjpUKjmyMbCD+p9D?=
+ =?us-ascii?Q?DpprjrH3kr2jor6iXspnUdYbxDr2uECntPI3U/0Np9+qNjtVu4lqyxpxWKhA?=
+ =?us-ascii?Q?UOPk2eDZGOVLLRptaT78130OTs7NhaFo981zyICMabmDeIEIzsEFluP5WxOC?=
+ =?us-ascii?Q?y7JR8tTnqNzxZhOy4dzEo6BWnnTaBhN2LSg5ocWS9mthJUop4HXtGBmmw3I4?=
+ =?us-ascii?Q?dRR83NibULDMEQRAaU4gaSr7MbFh/6Z5COFoRypg6UUQ2qs/JHENnVMAqog5?=
+ =?us-ascii?Q?n5SUPRcrwn3K/I3ho+FfRUq0YlxRilErfMetJOYngQbcftAGxA+Nxa0b3sSH?=
+ =?us-ascii?Q?ut/HgAjjAdBDj+lJv+UQsGUJPQTmSIzVLj9iuZDl3NOZ7QuExyms9oHscnkZ?=
+ =?us-ascii?Q?L1qCaOiD7FfXOg1XR3CtIkBDSbfRH5C3VknRPTxt/5k6xLMgrc/Kaowv8Eau?=
+ =?us-ascii?Q?2ms/dT2Dny7qJGPl5DH7BNBuM5W3rhTjiB0Gf+dpNRntD+FilGB1d6KNQppR?=
+ =?us-ascii?Q?SzSzoyR+POrOZ2Val69tMiBcmUt2vzK0XA2Ij3vyPeqfKgBB8kHJTgODlcfy?=
+ =?us-ascii?Q?cU9VjM4M/f5P29zxNyndr9Kn6lW+Dq4ty7AlfhhyW3PefBa9Nvd3esMg7k3A?=
+ =?us-ascii?Q?mxeJTp6QXu5eXSiu0zq91kNCjpI0fly14RhVTZXGLSLHfxZyD8z6bq0MXU0x?=
+ =?us-ascii?Q?txjPWiTHuGQXYDclJvEL9kbJeTSVkjGkM5lI2W+w/xZFA4WZbF8XDRihsYw9?=
+ =?us-ascii?Q?kn+oQfZnObE3Uz+vnxB0dvZCXa3bPgjNd2TYdrHxZu6sRcQdnJo0Qu8yOrDo?=
+ =?us-ascii?Q?Opbtl7XMPCdYbKsVgSXSgyvCCU/Djzg33c1DvWRAD6orOU+WZ4EqoVyqokBV?=
+ =?us-ascii?Q?wBkk5CT7Ib6b2uTnUcSWfzGVW6ebTTk6xjhqzBGh/X3sNZhpO2qK/5dy1YH/?=
+ =?us-ascii?Q?pgyxkccEaZ4Kqaezl09GKvU7M1wr6OYMwpfReIHznII8M68A030sSUpPHxQb?=
+ =?us-ascii?Q?slueUdgadfwBBspuQbfgoFsOXPQDDDBX0h1gQ6bSJDluY3rBdxlfysWJQYg3?=
+ =?us-ascii?Q?Y0ddAb2WCMYFUE+pLTFRwsNQu6kY0MLI5yJEy6GvcbCoR9fpVw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?zQktA6ORLSIRGS/hLF1hezFWC1WQf+39wbR0VwVNFC+08oOIFe/ONfek8MP6?=
+ =?us-ascii?Q?C1ruFWio0fUvRCOZ/dv5mf7jWDbtHs/YVGgK/AhR2B+mgKN445P85x54r1qw?=
+ =?us-ascii?Q?0oaPe/ba2Q/7gptwwwe7TDoxwYuermzgOgOQfiTAXjUgoUBUXBJB79uHnIz5?=
+ =?us-ascii?Q?4Vs7l/EgixbCY7WYjcmWd7u57egoxZSXv9tLmjbP2oFQMcWdBPSsEqsV+viD?=
+ =?us-ascii?Q?u8mJw9PklzioPP0wnwI/bD/kiLQOxeBj3webnRqnNEqikaZILyL101lLQKqR?=
+ =?us-ascii?Q?A3WcG/iVBhvPOGp4BNHIm32LTTZNtJ6xpe1RYBmdnGc5DxKOWdxhrB1pGxua?=
+ =?us-ascii?Q?arnKZ5L6RAssp+P8JHZfnkuicu0SdrgJ7UJe+Luur5MwjDcvWF8DRG73Q1K/?=
+ =?us-ascii?Q?C37Pz+Mw9TvbqOLibqQCmdYslTyaYi5L+WCky4LobL/f1B9rPvEJVGx5aRap?=
+ =?us-ascii?Q?XD6n0BO/5DSSWZjrU3LouODWYCkts9o+o2F0BtNM4WsJjcCJ4YR7VLSmeutD?=
+ =?us-ascii?Q?E3la2zu9Nj1bicob8neQ/QVScNPZry1DbHf4IIvR+T5nfco/Kye6I20HaaTP?=
+ =?us-ascii?Q?hJcANN+PBnqYqCgnEf0HYA7szsJBBqVndbZ1Bbavcgn5rjPGsV2GACwQetb5?=
+ =?us-ascii?Q?srvvlZzCwFBFe4MB4c74/w9dlwrz7vv1jd9bI6Jzq810z8qKVkxHRuqozdzY?=
+ =?us-ascii?Q?Ux8nJF7AoJgFm9/DTYlADpESD0FeoHCMV8PbL2uihpiqtqtUxF3aDAtl9Ou+?=
+ =?us-ascii?Q?lTvZAkgiUlQonEqkposYJ2OZKdyeVUxJJuZsMl5ZeK/cDFdPGz//tXmAyYWz?=
+ =?us-ascii?Q?NB2UnXoD+DltHOEI7fiJVV5hbB4JD1LqdWB5QtZwMwFwtlLF4KamHpTBftzi?=
+ =?us-ascii?Q?XkE02n2dkr38F6KuKCRvbmdMrWQyG8BG9DPCaoZ36xwHoWrI7MUZviry0B6G?=
+ =?us-ascii?Q?ijBEFnypwFasqtwZ7oFP6PRgM66F1GNfJ19TWdfQCpXSDcVwpcGvi8hTMpvL?=
+ =?us-ascii?Q?jzUehHYa8kendnkhZ2spRKuUA+Te0T1xdhVeYLcZJ/vmFS1E1y/Pc3O0mb/z?=
+ =?us-ascii?Q?exk8toosNRjHldHPAAzsiplpizpQpN5pvCxclB8CDoYGDQ5u2pYjvi0BvLDG?=
+ =?us-ascii?Q?xteJpeczbMQvYIQpJ7ew3iVsE5XGT1/8jzaEmCgs0U3HOv++Fk/nyc7RxK2p?=
+ =?us-ascii?Q?TDOsl7K+HEN+lqTtQPc6MHef9z+Rq39n1PI8bEzh1Yr9BT45y1j+BSNZopS/?=
+ =?us-ascii?Q?iMnyXi8QjQn/U1Y1Amoy+Ns4dXBasf9yJDiQxp5FyjMyqcLzZjgCxJsYqqWE?=
+ =?us-ascii?Q?qHL7SZPGi9CoMbfyPGKLJoB+DbSMyNNtmjifELc9593aPepKQGPegRD6HM6q?=
+ =?us-ascii?Q?y8A8b0qSwH5kkRzYWlDQcePCZNwu/2ursrybIGhZV9AufgOatXttsFH2T4Vd?=
+ =?us-ascii?Q?H8Kr9rvawwE6dkNgGOvG7mftXgVc0t1n6dz5D6z1EO72m0pZxH3MOGE3qT8v?=
+ =?us-ascii?Q?47SECHXGcclbtpg5yR8hH823MlNDbPg55t7CYXyRvUJUmzhYUE03VzAHYopx?=
+ =?us-ascii?Q?BbM+Lr8pLAK+4fX1w6fLBAtA5RFiMyDWCYU2329M?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 18b06db5-5baf-4e2a-a383-08dd18bf0b2d
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2024 02:04:56.3835
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RSeiNcvJvPm8RAj308g6fM6dMxqCjE4O369kfxrg13WUylff2zWBjc/J7cvs1Lf671iv2gLaPGDu9/2tpCvt+g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8211
 
-On Mon, Dec 09, 2024 at 08:56:29AM +0100, Andrej Picej wrote:
-> Hi Dmitry,
-> 
-> On 5. 12. 24 23:48, Dmitry Baryshkov wrote:
-> > On Thu, Dec 05, 2024 at 02:40:20PM +0100, Andrej Picej wrote:
-> > > Add a optional properties to change LVDS output voltage. This should not
-> > > be static as this depends mainly on the connected display voltage
-> > > requirement. We have three properties:
-> > > - "ti,lvds-termination-ohms", which sets near end termination,
-> > > - "ti,lvds-vod-swing-data-microvolt" and
-> > > - "ti,lvds-vod-swing-clock-microvolt" which both set LVDS differential
-> > > output voltage for data and clock lanes. They are defined as an array
-> > > with min and max values. The appropriate bitfield will be set if
-> > > selected constraints can be met.
-> > > 
-> > > If "ti,lvds-termination-ohms" is not defined the default of 200 Ohm near
-> > > end termination will be used. Selecting only one:
-> > > "ti,lvds-vod-swing-data-microvolt" or
-> > > "ti,lvds-vod-swing-clock-microvolt" can be done, but the output voltage
-> > > constraint for only data/clock lanes will be met. Setting both is
-> > > recommended.
-> > > 
-> > > Signed-off-by: Andrej Picej <andrej.picej@norik.com>
-> > > ---
-> > > Changes in v4:
-> > > - fix typo in commit message bitfiled -> bitfield
-> > > - use arrays (lvds_vod_swing_conf and lvds_term_conf) in private data, instead
-> > > of separate variables for channel A/B
-> > > - add more checks on return value of "of_property_read_u32_array"
-> > > Changes in v3:
-> > > - use microvolts for default array values 1000 mV -> 1000000 uV.
-> > > Changes in v2:
-> > > - use datasheet tables to get the proper configuration
-> > > - since major change was done change the authorship to myself
-> > > ---
-> > >   drivers/gpu/drm/bridge/ti-sn65dsi83.c | 147 +++++++++++++++++++++++++-
-> > >   1 file changed, 144 insertions(+), 3 deletions(-)
-> > > 
-> > > diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-> > > index 57a7ed13f996..f724d2a6777b 100644
-> > > --- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-> > > +++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-> > > @@ -132,6 +132,16 @@
-> > >   #define  REG_IRQ_STAT_CHA_SOT_BIT_ERR		BIT(2)
-> > >   #define  REG_IRQ_STAT_CHA_PLL_UNLOCK		BIT(0)
-> > > +enum sn65dsi83_channel {
-> > > +	CHANNEL_A,
-> > > +	CHANNEL_B
-> > > +};
-> > > +
-> > > +enum sn65dsi83_lvds_term {
-> > > +	OHM_100,
-> > > +	OHM_200
-> > > +};
-> > > +
-> > >   enum sn65dsi83_model {
-> > >   	MODEL_SN65DSI83,
-> > >   	MODEL_SN65DSI84,
-> > > @@ -147,6 +157,8 @@ struct sn65dsi83 {
-> > >   	struct regulator		*vcc;
-> > >   	bool				lvds_dual_link;
-> > >   	bool				lvds_dual_link_even_odd_swap;
-> > > +	int				lvds_vod_swing_conf[2];
-> > > +	int				lvds_term_conf[2];
-> > >   };
-> > >   static const struct regmap_range sn65dsi83_readable_ranges[] = {
-> > > @@ -237,6 +249,36 @@ static const struct regmap_config sn65dsi83_regmap_config = {
-> > >   	.max_register = REG_IRQ_STAT,
-> > >   };
-> > > +static const int lvds_vod_swing_data_table[2][4][2] = {
-> > > +	{	/* 100 Ohm */
-> > > +		{ 180000, 313000 },
-> > > +		{ 215000, 372000 },
-> > > +		{ 250000, 430000 },
-> > > +		{ 290000, 488000 },
-> > > +	},
-> > > +	{	/* 200 Ohm */
-> > > +		{ 150000, 261000 },
-> > > +		{ 200000, 346000 },
-> > > +		{ 250000, 428000 },
-> > > +		{ 300000, 511000 },
-> > > +	},
-> > > +};
-> > > +
-> > > +static const int lvds_vod_swing_clock_table[2][4][2] = {
-> > > +	{	/* 100 Ohm */
-> > > +		{ 140000, 244000 },
-> > > +		{ 168000, 290000 },
-> > > +		{ 195000, 335000 },
-> > > +		{ 226000, 381000 },
-> > > +	},
-> > > +	{	/* 200 Ohm */
-> > > +		{ 117000, 204000 },
-> > > +		{ 156000, 270000 },
-> > > +		{ 195000, 334000 },
-> > > +		{ 234000, 399000 },
-> > > +	},
-> > > +};
-> > > +
-> > >   static struct sn65dsi83 *bridge_to_sn65dsi83(struct drm_bridge *bridge)
-> > >   {
-> > >   	return container_of(bridge, struct sn65dsi83, bridge);
-> > > @@ -435,12 +477,16 @@ static void sn65dsi83_atomic_pre_enable(struct drm_bridge *bridge,
-> > >   		val |= REG_LVDS_FMT_LVDS_LINK_CFG;
-> > >   	regmap_write(ctx->regmap, REG_LVDS_FMT, val);
-> > > -	regmap_write(ctx->regmap, REG_LVDS_VCOM, 0x05);
-> > > +	regmap_write(ctx->regmap, REG_LVDS_VCOM,
-> > > +			REG_LVDS_VCOM_CHA_LVDS_VOD_SWING(ctx->lvds_vod_swing_conf[CHANNEL_A]) |
-> > > +			REG_LVDS_VCOM_CHB_LVDS_VOD_SWING(ctx->lvds_vod_swing_conf[CHANNEL_B]));
-> > >   	regmap_write(ctx->regmap, REG_LVDS_LANE,
-> > >   		     (ctx->lvds_dual_link_even_odd_swap ?
-> > >   		      REG_LVDS_LANE_EVEN_ODD_SWAP : 0) |
-> > > -		     REG_LVDS_LANE_CHA_LVDS_TERM |
-> > > -		     REG_LVDS_LANE_CHB_LVDS_TERM);
-> > > +		     (ctx->lvds_term_conf[CHANNEL_A] ?
-> > > +			  REG_LVDS_LANE_CHA_LVDS_TERM : 0) |
-> > > +		     (ctx->lvds_term_conf[CHANNEL_B] ?
-> > > +			  REG_LVDS_LANE_CHB_LVDS_TERM : 0));
-> > >   	regmap_write(ctx->regmap, REG_LVDS_CM, 0x00);
-> > >   	le16val = cpu_to_le16(mode->hdisplay);
-> > > @@ -576,10 +622,101 @@ static const struct drm_bridge_funcs sn65dsi83_funcs = {
-> > >   	.atomic_get_input_bus_fmts = sn65dsi83_atomic_get_input_bus_fmts,
-> > >   };
-> > > +static int sn65dsi83_select_lvds_vod_swing(struct device *dev,
-> > > +	u32 lvds_vod_swing_data[2], u32 lvds_vod_swing_clk[2], u8 lvds_term)
-> > > +{
-> > > +	int i;
-> > > +
-> > > +	for (i = 0; i <= 3; i++) {
-> > > +		if (lvds_vod_swing_data_table[lvds_term][i][0] >= lvds_vod_swing_data[0] &&
-> > > +		lvds_vod_swing_data_table[lvds_term][i][1] <= lvds_vod_swing_data[1] &&
-> > > +		lvds_vod_swing_clock_table[lvds_term][i][0] >= lvds_vod_swing_clk[0] &&
-> > > +		lvds_vod_swing_clock_table[lvds_term][i][1] <= lvds_vod_swing_clk[1])
-> > > +			return i;
-> > > +	}
-> > > +
-> > > +	dev_err(dev, "failed to find appropriate LVDS_VOD_SWING configuration\n");
-> > > +	return -EINVAL;
-> > > +}
-> > > +
-> > > +static int sn65dsi83_parse_lvds_endpoint(struct sn65dsi83 *ctx, int channel)
-> > > +{
-> > > +	struct device *dev = ctx->dev;
-> > > +	struct device_node *endpoint;
-> > > +	/* Set so the property can be freely selected if not defined */
-> > > +	u32 lvds_vod_swing_data[2] = { 0, 1000000 };
-> > > +	u32 lvds_vod_swing_clk[2] = { 0, 1000000 };
-> > > +	u32 lvds_term = 200;
-> > > +	u8 lvds_term_conf;
-> > > +	int endpoint_reg;
-> > > +	int lvds_vod_swing_conf;
-> > > +	int ret = 0;
-> > > +	int ret_data;
-> > > +	int ret_clock;
-> > > +
-> > > +	if (channel == CHANNEL_A)
-> > > +		endpoint_reg = 2;
-> > > +	else
-> > > +		endpoint_reg = 3;
-> > > +
-> > > +	endpoint = of_graph_get_endpoint_by_regs(dev->of_node, endpoint_reg, -1);
-> > > +	of_property_read_u32(endpoint, "ti,lvds-termination-ohms", &lvds_term);
-> > > +
-> > > +	if (lvds_term == 200)
-> > > +		lvds_term_conf = OHM_200;
-> > > +	else
-> > > +		lvds_term_conf = OHM_100;
-> > > +
-> > > +	ctx->lvds_term_conf[channel] = lvds_term_conf;
-> > > +
-> > > +	ret_data = of_property_read_u32_array(endpoint,
-> > > +			"ti,lvds-vod-swing-data-microvolt", lvds_vod_swing_data,
-> > > +			ARRAY_SIZE(lvds_vod_swing_data));
-> > > +	if (ret_data != 0 && ret_data != -EINVAL) {
-> > > +		ret = ret_data;
-> > > +		goto exit;
-> > > +	}
-> > > +
-> > > +	ret_clock = of_property_read_u32_array(endpoint,
-> > > +			"ti,lvds-vod-swing-clock-microvolt", lvds_vod_swing_clk,
-> > > +			ARRAY_SIZE(lvds_vod_swing_clk));
-> > > +	if (ret_clock != 0 && ret_clock != -EINVAL) {
-> > > +		ret = ret_clock;
-> > > +		goto exit;
-> > > +	}
-> > > +
-> > > +	/* If any of the two properties is defined. */
-> > > +	if (!ret_data || !ret_clock) {
-> > > +		lvds_vod_swing_conf = sn65dsi83_select_lvds_vod_swing(dev,
-> > > +			lvds_vod_swing_data, lvds_vod_swing_clk,
-> > > +			lvds_term_conf);
-> > > +		if (lvds_vod_swing_conf < 0) {
-> > > +			ret = lvds_vod_swing_conf;
-> > > +			goto exit;
-> > > +		}
-> > > +
-> > > +		ctx->lvds_vod_swing_conf[channel] = lvds_vod_swing_conf;
-> > > +	}
-> > > +	ret = 0;
-> > > +exit:
-> > > +	of_node_put(endpoint);
-> > > +	return ret;
-> > > +}
-> > > +
-> > >   static int sn65dsi83_parse_dt(struct sn65dsi83 *ctx, enum sn65dsi83_model model)
-> > >   {
-> > >   	struct drm_bridge *panel_bridge;
-> > >   	struct device *dev = ctx->dev;
-> > > +	int ret;
-> > > +
-> > > +	ctx->lvds_vod_swing_conf[CHANNEL_A] = 0x1;
-> > > +	ctx->lvds_vod_swing_conf[CHANNEL_B] = 0x1;
-> > > +	ctx->lvds_term_conf[CHANNEL_A] = 0x1;
-> > > +	ctx->lvds_term_conf[CHANNEL_B] = 0x1;
+Hi Will,
+
+On Mon, Dec 09, 2024 at 03:44:20PM +0000, Will Deacon wrote:
+> On Mon, Nov 25, 2024 at 06:43:38PM +0800, Xu Yang wrote:
+> > The imx93 is the first supported DDR PMU that supports read transaction,
+> > write transaction and read beats events which corresponding respecitively
+> > to counter 2, 3 and 4.
 > > 
-> > These match the defaults in sn65dsi83_parse_lvds_endpoint(). Do we
-> > really need those?
-> 
-> Yes, I think we do. This ensures that defaults are used even when property
-> is not defined/LVDS channel is not used. So also LVDS channel B defaults are
-> set even for sn65dsi83 (single LVDS output). Keeping the same reg values as
-> before these changes.
-
-You can move sn65dsi83_parse_lvds_endpoint() out of the if() and get the
-same result. Duplicating data (or code) is a bad idea, because it's easy
-to update one point and miss another point. And then usually one has a
-nice debugging session, trying to understand why their changes didn't
-work out.
-
-> 
-> Best regards,
-> Andrej
-> 
-> 
+> > However, transaction-based AXI match has low accuracy when get total bits
+> > compared to beats-based. And imx93 doesn't assign AXI_ID to each master.
+> > So axi filter is not used widely on imx93. This could be regards as AXI
+> > filter version 1.
 > > 
-> > > +
-> > > +	ret = sn65dsi83_parse_lvds_endpoint(ctx, CHANNEL_A);
-> > > +	if (ret < 0)
-> > > +		return ret;
-> > >   	ctx->lvds_dual_link = false;
-> > >   	ctx->lvds_dual_link_even_odd_swap = false;
-> > > @@ -587,6 +724,10 @@ static int sn65dsi83_parse_dt(struct sn65dsi83 *ctx, enum sn65dsi83_model model)
-> > >   		struct device_node *port2, *port3;
-> > >   		int dual_link;
-> > > +		ret = sn65dsi83_parse_lvds_endpoint(ctx, CHANNEL_B);
-> > > +		if (ret < 0)
-> > > +			return ret;
-> > > +
-> > >   		port2 = of_graph_get_port_by_id(dev->of_node, 2);
-> > >   		port3 = of_graph_get_port_by_id(dev->of_node, 3);
-> > >   		dual_link = drm_of_lvds_get_dual_link_pixel_order(port2, port3);
-> > > -- 
-> > > 2.34.1
-> > > 
+> > To improve the AXI filter capability, imx95 supports 1 read beats and 3
+> > write beats event which corresponding respecitively to counter 2-5. imx95
+> > also detailed AXI_ID allocation so that most of the master could be count
+> > individually. This could be regards as AXI filter version 2.
 > > 
+> > This will introduce AXI filter version to refactor the driver and support
+> > better extension, such as coming imx943.
+> > 
+> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > 
+> > ---
+> > Changes in v2:
+> >  - modify subject
+> >  - add comments for AXI_FILTER version
+> >  - type -> filter_ver
+> > ---
+> >  drivers/perf/fsl_imx9_ddr_perf.c | 33 ++++++++++++++++++++++++--------
+> >  1 file changed, 25 insertions(+), 8 deletions(-)
+> > 
+> > diff --git a/drivers/perf/fsl_imx9_ddr_perf.c b/drivers/perf/fsl_imx9_ddr_perf.c
+> > index 3c856d9a4e97..e2c2c674b6d2 100644
+> > --- a/drivers/perf/fsl_imx9_ddr_perf.c
+> > +++ b/drivers/perf/fsl_imx9_ddr_perf.c
+> > @@ -63,8 +63,21 @@
+> >  
+> >  static DEFINE_IDA(ddr_ida);
+> >  
+> > +/*
+> > + * V1 support 1 read transaction, 1 write transaction and 1 read beats
+> > + * event which corresponding respecitively to counter 2, 3 and 4.
+> > + */
+> > +#define DDR_PERF_AXI_FILTER_V1		0x1
+> > +
+> > +/*
+> > + * V2 support 1 read beats and 3 write beats events which corresponding
+> > + * respecitively to counter 2-5.
+> > + */
+> > +#define DDR_PERF_AXI_FILTER_V2		0x2
+> > +
+> >  struct imx_ddr_devtype_data {
+> >  	const char *identifier;		/* system PMU identifier for userspace */
+> > +	unsigned int filter_ver;	/* AXI filter version */
+> >  };
+> >  
+> >  struct ddr_pmu {
+> > @@ -83,24 +96,27 @@ struct ddr_pmu {
+> >  
+> >  static const struct imx_ddr_devtype_data imx91_devtype_data = {
+> >  	.identifier = "imx91",
+> > +	.filter_ver = DDR_PERF_AXI_FILTER_V1
+> >  };
+> 
+> [...]
+> 
+> > -static inline bool is_imx93(struct ddr_pmu *pmu)
+> > +static inline bool axi_filter_v1(struct ddr_pmu *pmu)
+> >  {
+> > -	return pmu->devtype_data == &imx93_devtype_data;
+> > +	return pmu->devtype_data->filter_ver == DDR_PERF_AXI_FILTER_V1;
+> >  }
+> 
+> [...]
+> 
+> > @@ -624,11 +641,11 @@ static int ddr_perf_event_add(struct perf_event *event, int flags)
+> >  	hwc->idx = counter;
+> >  	hwc->state |= PERF_HES_STOPPED;
+> >  
+> > -	if (is_imx93(pmu))
+> > +	if (axi_filter_v1(pmu))
+> >  		/* read trans, write trans, read beat */
+> >  		imx93_ddr_perf_monitor_config(pmu, event_id, counter, cfg1, cfg2);
+> 
+> Hmm, doesn't this change mean we now enable this for imx91 as well? My
+> reading of the commit message is that imx93 was the first chip which
+> supports this.
 
--- 
-With best wishes
-Dmitry
+Yes, it's enabled for imx91 too. In fact, imx91 is compatible with imx93.
+They use same configuration for axi filter.
+
+Thanks,
+Xu Yang
+
+> 
+> Will
