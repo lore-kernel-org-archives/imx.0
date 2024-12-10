@@ -1,42 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7741B85D4;
-	Tue, 10 Dec 2024 13:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F181A9B47;
+	Tue, 10 Dec 2024 13:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733835655; cv=none; b=cdhxrhIwAWvCSRwPk+H06qGLu+WTOKOqxT10nVcz8XsHpoN97JpRuZYi0YB8ae5TKuWzkoSQjrwhEcGFPP/Kjbw8yJlyF/K0IsgxfKXLiy7AkF5uyDG02qfW6Rf/N1Gesl8M6SLNTvOEDDs23+w2KQGwkQFIku8Geo4NKlFju3w=
+	t=1733835754; cv=none; b=OOjKeQ6r1PKHJ6V6xb+KZPXepMX4CtlLWjiLZBuC+Tw9Kj2wOk28Mgkfttex3XXsnGo5J3GbVHvysGc6xsBf7AcisrCVk22I1QrqFGQS+cLPX/A5MuxrpVg03O025+6gs61f7NKm5IWle7GwH8aEs9HXwzgGNrfAzYOhStUTEZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733835655; c=relaxed/simple;
-	bh=w/ontMIclNaG+gytLgn0uR87w5kq+wV6ujyQIHeHOXk=;
+	s=arc-20240116; t=1733835754; c=relaxed/simple;
+	bh=F2vH4626vYgw40Ceayp20jPvVMqJsIKsnESbzuZjRQM=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=lkE5UcAh8boeiM2pA2grbslxZvF7z48InwVfIq+kYfQSnlYHrPtQg7bS7xDF/wLz+nBBv6/c1TK4zltXH0pKl43nTkubIzHAH0fnDuyC02DD9QJEHVXBOSF+noVLDFGOFmuLuXL9RG7E43GsUTILnwVcx4mc6sA3EgabhetfVMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GdS6iRor; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=PXZSbQJ9t0bQUtZDayvqw7zgZzcPMj1/jPfjj2n6GtTrXnYH7hbrgqVqVWCZ1jvb8TGFhlgAVhIbYyC5Q04BZ9DPG9TYLYDrC7Ps+PW8LrvHTMdlkSRxBvzuFlXeNUbrAoRq5Ujt40lXjuOwhAQDt7F/VfpNj8n8omcin0q5jY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bG07bQA1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GdS6iRor"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E07C4CEDF;
-	Tue, 10 Dec 2024 13:00:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bG07bQA1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7782CC4CED6;
+	Tue, 10 Dec 2024 13:02:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733835655;
-	bh=w/ontMIclNaG+gytLgn0uR87w5kq+wV6ujyQIHeHOXk=;
+	s=k20201202; t=1733835754;
+	bh=F2vH4626vYgw40Ceayp20jPvVMqJsIKsnESbzuZjRQM=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=GdS6iRorN0uTR2iyLNz7xg2WFhwhII4g+dxImwCBRgvXdcsk3ReyjvmpppPyi1D0y
-	 k1HZ4yBNDHg/0Xc4OqQQvcrpDlJUkAVcJQcC+xC+vCyVC0AG6Fz7jZTkB5/p2OW5GL
-	 IrF278DKexZrhvd5JzE7JZCyL01vBXim90xhq8lYXG61HmwMWe8f6eikshb8LouQwB
-	 g+1XVFRGgdOv/YW9EuJIw6yX4bg4UeWFbvBLwFBHhZf7guU4I7IFNxYPhfVOpx6V/Z
-	 wdZ8QN4JxCpVwuG8aIra/kdR2fKiPejHO5ZQ7LOPrVNOH8bjPY8g955t/f9/F0VA4y
-	 Rw6FRaStz7YxQ==
+	b=bG07bQA1J51c70OfLhPReyDwunegtHW/31Ge1MGXfkrhXFeiZouEHzoajnjpA45op
+	 L0pvcFrMEFbTfUVvIRRu4pKJMDrWyiX8cixq9P0G2OdjqnYRSiOn+hEbLR7t5NA9zn
+	 ZAjalYrSV1voRnFKk8RGun1IBGcbm87Pmbvwljs2UVnLAsadTkmS1MVFT37C28czh9
+	 0rrijlF/dBc9Txj/kfqyRv1DOhB60HnkLn+jrtJC3z/VG8MzheVG7qgfu5ll4iR3No
+	 mOWxDcEgim0nimzOnM6dPHVeocIY1dzXDPCLzBMBXqiGZbWru6Xq3CSGDeERdonP3w
+	 D7qgzYDzMvxsg==
 From: Mark Brown <broonie@kernel.org>
-To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+To: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Robin Gong <yibin.gong@nxp.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
  Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Stefan Wahren <wahrenst@gmx.net>
-Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org
-In-Reply-To: <20241209111316.4767-1-wahrenst@gmx.net>
-References: <20241209111316.4767-1-wahrenst@gmx.net>
-Subject: Re: [PATCH] spi: mxs: support effective_speed_hz
-Message-Id: <173383565340.34030.7139873956151908430.b4-ty@kernel.org>
-Date: Tue, 10 Dec 2024 13:00:53 +0000
+ Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>
+Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, joy.zou@nxp.com, linux-arm-kernel@lists.infradead.org
+In-Reply-To: <20241205-pca9450-v1-0-aab448b74e78@nxp.com>
+References: <20241205-pca9450-v1-0-aab448b74e78@nxp.com>
+Subject: Re: (subset) [PATCH 0/5] regulator: pca9450: collect some
+ improvement patches
+Message-Id: <173383575122.36957.4079934608520923537.b4-ty@kernel.org>
+Date: Tue, 10 Dec 2024 13:02:31 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,20 +51,27 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-9b746
 
-On Mon, 09 Dec 2024 12:13:16 +0100, Stefan Wahren wrote:
-> Setting spi_transfer->effective_speed_hz in transfer_one_message so that
-> SPI client driver can use it.
+On Thu, 05 Dec 2024 11:51:08 -0500, Frank Li wrote:
+> Add pca9452 support
+> Use dev_err_probe() to simple code
+> add pca9452 support in imx93-14x14 dts
 > 
 > 
 
 Applied to
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
 
 Thanks!
 
-[1/1] spi: mxs: support effective_speed_hz
-      commit: a17162f0b2dc97aa2dedfde8a7226fb9b5210534
+[1/5] regulator: pca9450: add enable_value for all bucks
+      commit: 229773f90b1f886e8fd542f98b495c66e43be5ba
+[2/5] regulator: pca9450: Use dev_err_probe() to simplify code
+      commit: 0f5c601098bd3c9cdfea3e01aacdd9d0c4010ea7
+[3/5] regulator: dt-bindings: pca9450: Add pca9452 support
+      commit: 17b531c162e5dbdce9a184ccd1c730ae3f31576b
+[4/5] regulator: pca9450: Add PMIC pca9452 support
+      commit: 017b76fb8e5b6066f6791e7ad2387deb2c9c9a14
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
