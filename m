@@ -1,129 +1,355 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC301A9B47
-	for <imx@lists.linux.dev>; Tue, 10 Dec 2024 13:52:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13ABD1AAA1D
+	for <imx@lists.linux.dev>; Tue, 10 Dec 2024 13:59:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733838739; cv=none; b=Gsy62vYIGC1MkgUK/Gp84eV+zdKYRkhS9hjsXyOVW83U5GPI/6R41TvgGAPgjSyo7um2im+963UTgT21I4wU5St8qI7TIIXGU5bGtzwMXKKySWfRzuSBvaIW6Bh8IajypmvLVCKxLn9/LjAgK2Bh52v7kqEUvyyQi0hrfmnHoN8=
+	t=1733839172; cv=none; b=GP84WuUn5/+jdbimoLKBf9SUIJkdfPMcL6F1sgWAdsZkBd2swNQAQoXygpsv0/VtUPrY8VpAOF8jtwIZhcQjrxcbgzjYYl+vncJvuAcbe3r1VxpfYdtvmjAyD3zhU+q2etH8z/0ni4xdV4tdkQDNEj3C+nkxZsh5u3p7RgVy8Mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733838739; c=relaxed/simple;
-	bh=x0YzXghQ+gAKuEwKFhdi6SRVXz39dHzpMAssWYnJg+Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=njSjeOKr2xC2ZoW6aVn+cHAiR9w16DAvAdste8GlWQerlsEmngVokgvDzvvQJB6ovUXOturCYbKMKkv0ZUbPOJdJ6olRxtlw0XoLrS6wpPhvbA3417WejuMySjRo1l8t/IALeew/0ELLerOnw/xaTmSUxWBKQA0uMZWbnwUqPjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sZvsgl2A; arc=none smtp.client-ip=209.85.221.46
+	s=arc-20240116; t=1733839172; c=relaxed/simple;
+	bh=YFHaCumLgVztfNtujqj8vfapc7ypLWnAYDrIDmo+bdo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ICzWAWIQDY+r4lcqWJ1VesuuIYCALEVEISOXeQq5GGLSGnnw1Q4oOfJHTEEjOP5ICf7Z3jvbiAgVOpffiVOsBjfVHxYPg8GBRRwvq3g4tSIs+1GP9t7rJeONHhrgWbqV4mDW+3dNunP28jkjrKsnLJNMhcnww/JiHPrU2lJ+0UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=acoHLWbE; arc=none smtp.client-ip=209.85.167.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sZvsgl2A"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3862f32a33eso1769632f8f.3
-        for <imx@lists.linux.dev>; Tue, 10 Dec 2024 05:52:17 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="acoHLWbE"
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5401c52000fso2213482e87.2
+        for <imx@lists.linux.dev>; Tue, 10 Dec 2024 05:59:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733838736; x=1734443536; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gvsJcHnWFJkaRdXIOYYPtjthmV89MakBwrZsJYDK4Qk=;
-        b=sZvsgl2Ap6WYgdHvQ5ObggCx5Pac9ereSc15ph1Xbw1uq7pnDYfPACF9ROylUjkTnB
-         8POPetQYlB8GVCGdLr9tWxyzFDGxKADE+4F18LKYxyMKIBN0v8Vek2qR2RLsoup8GDHa
-         WzI5gibLc5vb6aJdIrrU7EbyQhssz323EeiN83NOHM/g3w/BsC1TP1I4K+vmkdXfVruT
-         ahoHwKRdhCE3yDflAd7PKhFO4I7RMeuNu40PlW3SG6CtLFMQ0PsVvi9qUSMyqMnfa3MJ
-         wn1iVqV8jBiZO74lhgYv/bMcZ7ILr0P/oLTSu4CqVabDi7sRbNRCYhd3qzC0SNd3Y1EA
-         atuA==
+        d=linaro.org; s=google; t=1733839168; x=1734443968; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1b2CN5KijSQW1PyEx+uqHMLZ82Jfnx81Mjxlq0yFxLw=;
+        b=acoHLWbEweEmUmHSzmcCZO1fUEXjq1Z1zqUnEimEji12k93Cp/MWNNdy4+btmhycN1
+         epCodLn35HhFPTDjz6X2rya9wyp/ikCxYWM8IlTOWc1dfIIR93lBsVj3Pa6dUUnod5Ql
+         ULJpcOynCZAmDPAdkWEOqC4rakQG8yfoBTYBf1kJj/E63mz/zfgvPdhUFkIt6t1Zbn2n
+         O1LJ8I9uklOfAfkGV8U/BSXjvBwvN/2gKz1XanVo9sa98pXBPxR3pudxHSezW4VqKBAA
+         Y6G/lAqGISxpH7JrUKHUIdKsiBFvVjt/LvdpRLqkqIM7Mds7URB0pq4KmbpIhMiefQQL
+         aUaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733838736; x=1734443536;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gvsJcHnWFJkaRdXIOYYPtjthmV89MakBwrZsJYDK4Qk=;
-        b=I2nTEO/wN1lziPzT8BaVteSRlGbr9b0lN7C/ACd45ZTt51oTw/RKqbF8smKFiUWXH9
-         bRuDOAJXKswZd0TzKXeioUByI4vdLYCbcFwn4qHkw6RoJzq2vfAw1LVXmB12kuaeVqjh
-         h0GZdtJopCOwE45HWLEON+zv4KyYS+c+6tI3WZUKfLgb5MVmI4uFBzBJGmCU1KuBAkvj
-         6pgSfUrL/bDbEdAu3A2pABZao0BGXPsuEtX1G6D6OzWsYSBn5TBB5+npsD7TRKuef+iK
-         cNtQsRANFYjf78BqJhMWi6RIqFVfbMKt0Dbg33wH6NGyC0vYjfqBcCe7ToUwS+yMIWdi
-         DUjw==
-X-Gm-Message-State: AOJu0Yxl7Y+uTQQnfJ/oUV7gkYwetNojeukmw3R0TQSmZAglsT4Wa2OT
-	LNEbzsRClyiiVHVUxQ+B0YKYyWka3gDLg67JPLGDaZ7K2ik7vM+Rdo694JbYAXE=
-X-Gm-Gg: ASbGncuFVsdi5mNaE+Za6fNpPlptT0MrNPTSpvx+lfj6JDwW1BeyEaYYR3UsEjf1tKR
-	YiKqM4FjpI37/DWSR2K/WODDPy9GEPicc4pMp6hOQALahPT6Wg9jvnNoHBV0xV8RSlNrlLIL2eD
-	NxcvFSH51kKG0G2D/16ExpSO0Qxd6fiXOjph88j+ASk9AQ1peBWUWTfChTcz3mzY+D3NrDVFT+I
-	rv45KThWsT9Z8aRRAjo/mF4St34yyTYLOl7jUTH1GJN/RDvRzEPynBKDEO31PNaZWwCV8FH
-X-Google-Smtp-Source: AGHT+IFQ6nYMzgv6s9MPm0QEXnXj8O3sBLDqM8CxTrOU96IG8xBvdz2PcHy2jFxRyvN3ca+1FwMClg==
-X-Received: by 2002:a05:6000:42c3:b0:385:f1f2:13f1 with SMTP id ffacd0b85a97d-386453e2a8cmr1917700f8f.22.1733838735834;
-        Tue, 10 Dec 2024 05:52:15 -0800 (PST)
-Received: from [192.168.68.114] ([5.133.47.210])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3861ecf4119sm15806378f8f.14.2024.12.10.05.52.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Dec 2024 05:52:15 -0800 (PST)
-Message-ID: <3e16b2f5-5aeb-4988-bf6f-63c7309f53a4@linaro.org>
-Date: Tue, 10 Dec 2024 13:52:14 +0000
+        d=1e100.net; s=20230601; t=1733839168; x=1734443968;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1b2CN5KijSQW1PyEx+uqHMLZ82Jfnx81Mjxlq0yFxLw=;
+        b=FmXESvvJYny+XNMAdhSOh0f/crnPlCgHymqv7bwOcupYXnPvI1PzYwJ+C1Gp+fN6FL
+         jTLldW9raESt7xA+i+M+mMaJ/afqRoeaoHvSGcWdCRxDdUDoOXC5+AqwjsTSeuW80NPC
+         dDMirIdc53JCx/kyp/GavmL5VwO36/kGBDsGmAeD9YSQ/Xtm3LmM5xlFte/uiKR1eZSo
+         3oROtV3aTslgvSjXd54jzhUqBb0b85/4reetBPttAbJGxrWwwsqeyJR2PtTWbHHJioUK
+         iih0216GnyTZbDnhWPS8agSpC2rwEqDRK/YHDBb/WCB0UFHsNtrUXRrQuy2Z9+BwFmEY
+         uPwA==
+X-Forwarded-Encrypted: i=1; AJvYcCW5mSqfcRw7YK6JeKdVAG5jBxO/q87cHGXS/hcq5mrf4Tk2vpu1O2l1y2VatXCLBy572Mc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyQfJJw4R8It7lwGzGG3SUrrTlzOGGTQvwYoR+i12hATc4cW6nS
+	wtAb6z+plE7y658vBxpokn7Xdl2m2SRLQqZIYI4O5E4q+vhaPRw+8vZ+6LLQB64=
+X-Gm-Gg: ASbGncsovIx/jqp5tos23RxzYUhU2hEUUHcNnXhdW5VY3MxLos+61yVmyXhmyNnHv5X
+	Iey50gTn3FdVCBjSSu0RPfSWf+2Vuk4jGDtEvy4bVcs5l6yrf6eFpuPdNyvSiQGvvJD+f7AWf1v
+	X2AMxkhNYV+KhTs9u7LIJf1ysDopFQJoSIZ8T+AdRSVbxEZWYecRbUmADd+6nPsrXeG7oFEgYOQ
+	RcxfZakyNl2Bk1hPO1HhnTtUs7gGtJlxcqUwMZdDNlItVGNawSheTu5aOPiy41roGdCA+Rkogar
+	pikPqswDed7MrIM+/WrTeg396klicafuKg==
+X-Google-Smtp-Source: AGHT+IGdkjQtYlZTfLzIp6AvgDXHgPosZz1omSRVn2htXRtkRgglyTI/N9ZYTrDiJZmOIRaiPOr3Yg==
+X-Received: by 2002:a05:6512:3da3:b0:53f:f074:801c with SMTP id 2adb3069b0e04-54024104977mr1653910e87.41.1733839168101;
+        Tue, 10 Dec 2024 05:59:28 -0800 (PST)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53e301cffd8sm1342870e87.204.2024.12.10.05.59.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Dec 2024 05:59:26 -0800 (PST)
+Date: Tue, 10 Dec 2024 15:59:24 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Andrej Picej <andrej.picej@norik.com>
+Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org, 
+	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com, airlied@gmail.com, 
+	simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
+	tzimmermann@suse.de, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, marex@denx.de, dri-devel@lists.freedesktop.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, upstream@lists.phytec.de
+Subject: Re: [PATCH v5 2/3] drm/bridge: ti-sn65dsi83: Add ti,lvds-vod-swing
+ optional properties
+Message-ID: <qhmsobin3fsmoc7ic2jtancowfscoauyroruxdpwhmqwlogtkz@6by3s2ruwzwp>
+References: <20241210091901.83028-1-andrej.picej@norik.com>
+ <20241210091901.83028-3-andrej.picej@norik.com>
+ <irpmhq7vxjra6vhmdh7p63ajj57n3h2c4br3ija2jmwtoewist@zyxfmx6k5m4e>
+ <aa2de99d-21f4-4843-83b7-5d2db78be86f@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/4] nvmem: imx-ocotp-ele: fix reading from ELE OCOTP
-To: Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Peng Fan <peng.fan@nxp.com>
-Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable <stable@kernel.org>
-References: <20241202-imx-ele-ocotp-fixes-v2-0-3c021a97eb5d@pengutronix.de>
-Content-Language: en-US
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-In-Reply-To: <20241202-imx-ele-ocotp-fixes-v2-0-3c021a97eb5d@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aa2de99d-21f4-4843-83b7-5d2db78be86f@norik.com>
 
+On Tue, Dec 10, 2024 at 02:41:01PM +0100, Andrej Picej wrote:
+> 
+> 
+> On 10. 12. 24 12:43, Dmitry Baryshkov wrote:
+> > On Tue, Dec 10, 2024 at 10:19:00AM +0100, Andrej Picej wrote:
+> > > Add a optional properties to change LVDS output voltage. This should not
+> > > be static as this depends mainly on the connected display voltage
+> > > requirement. We have three properties:
+> > > - "ti,lvds-termination-ohms", which sets near end termination,
+> > > - "ti,lvds-vod-swing-data-microvolt" and
+> > > - "ti,lvds-vod-swing-clock-microvolt" which both set LVDS differential
+> > > output voltage for data and clock lanes. They are defined as an array
+> > > with min and max values. The appropriate bitfield will be set if
+> > > selected constraints can be met.
+> > > 
+> > > If "ti,lvds-termination-ohms" is not defined the default of 200 Ohm near
+> > > end termination will be used. Selecting only one:
+> > > "ti,lvds-vod-swing-data-microvolt" or
+> > > "ti,lvds-vod-swing-clock-microvolt" can be done, but the output voltage
+> > > constraint for only data/clock lanes will be met. Setting both is
+> > > recommended.
+> > > 
+> > > Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+> > > ---
+> > > Changes in v5:
+> > > - specify default values in sn65dsi83_parse_lvds_endpoint,
+> > > - move sn65dsi83_parse_lvds_endpoint for channel B up, outside if,
+> > > Changes in v4:
+> > > - fix typo in commit message bitfiled -> bitfield
+> > > - use arrays (lvds_vod_swing_conf and lvds_term_conf) in private data, instead
+> > > of separate variables for channel A/B
+> > > - add more checks on return value of "of_property_read_u32_array"
+> > > Changes in v3:
+> > > - use microvolts for default array values 1000 mV -> 1000000 uV.
+> > > Changes in v2:
+> > > - use datasheet tables to get the proper configuration
+> > > - since major change was done change the authorship to myself
+> > > ---
+> > >   drivers/gpu/drm/bridge/ti-sn65dsi83.c | 142 +++++++++++++++++++++++++-
+> > >   1 file changed, 139 insertions(+), 3 deletions(-)
+> > > 
+> > > diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
+> > > index 57a7ed13f996..f9578b38da28 100644
+> > > --- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
+> > > +++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
+> > > @@ -132,6 +132,16 @@
+> > >   #define  REG_IRQ_STAT_CHA_SOT_BIT_ERR		BIT(2)
+> > >   #define  REG_IRQ_STAT_CHA_PLL_UNLOCK		BIT(0)
+> > > +enum sn65dsi83_channel {
+> > > +	CHANNEL_A,
+> > > +	CHANNEL_B
+> > > +};
+> > > +
+> > > +enum sn65dsi83_lvds_term {
+> > > +	OHM_100,
+> > > +	OHM_200
+> > > +};
+> > > +
+> > >   enum sn65dsi83_model {
+> > >   	MODEL_SN65DSI83,
+> > >   	MODEL_SN65DSI84,
+> > > @@ -147,6 +157,8 @@ struct sn65dsi83 {
+> > >   	struct regulator		*vcc;
+> > >   	bool				lvds_dual_link;
+> > >   	bool				lvds_dual_link_even_odd_swap;
+> > > +	int				lvds_vod_swing_conf[2];
+> > > +	int				lvds_term_conf[2];
+> > >   };
+> > >   static const struct regmap_range sn65dsi83_readable_ranges[] = {
+> > > @@ -237,6 +249,36 @@ static const struct regmap_config sn65dsi83_regmap_config = {
+> > >   	.max_register = REG_IRQ_STAT,
+> > >   };
+> > > +static const int lvds_vod_swing_data_table[2][4][2] = {
+> > > +	{	/* 100 Ohm */
+> > > +		{ 180000, 313000 },
+> > > +		{ 215000, 372000 },
+> > > +		{ 250000, 430000 },
+> > > +		{ 290000, 488000 },
+> > > +	},
+> > > +	{	/* 200 Ohm */
+> > > +		{ 150000, 261000 },
+> > > +		{ 200000, 346000 },
+> > > +		{ 250000, 428000 },
+> > > +		{ 300000, 511000 },
+> > > +	},
+> > > +};
+> > > +
+> > > +static const int lvds_vod_swing_clock_table[2][4][2] = {
+> > > +	{	/* 100 Ohm */
+> > > +		{ 140000, 244000 },
+> > > +		{ 168000, 290000 },
+> > > +		{ 195000, 335000 },
+> > > +		{ 226000, 381000 },
+> > > +	},
+> > > +	{	/* 200 Ohm */
+> > > +		{ 117000, 204000 },
+> > > +		{ 156000, 270000 },
+> > > +		{ 195000, 334000 },
+> > > +		{ 234000, 399000 },
+> > > +	},
+> > > +};
+> > > +
+> > >   static struct sn65dsi83 *bridge_to_sn65dsi83(struct drm_bridge *bridge)
+> > >   {
+> > >   	return container_of(bridge, struct sn65dsi83, bridge);
+> > > @@ -435,12 +477,16 @@ static void sn65dsi83_atomic_pre_enable(struct drm_bridge *bridge,
+> > >   		val |= REG_LVDS_FMT_LVDS_LINK_CFG;
+> > >   	regmap_write(ctx->regmap, REG_LVDS_FMT, val);
+> > > -	regmap_write(ctx->regmap, REG_LVDS_VCOM, 0x05);
+> > > +	regmap_write(ctx->regmap, REG_LVDS_VCOM,
+> > > +			REG_LVDS_VCOM_CHA_LVDS_VOD_SWING(ctx->lvds_vod_swing_conf[CHANNEL_A]) |
+> > > +			REG_LVDS_VCOM_CHB_LVDS_VOD_SWING(ctx->lvds_vod_swing_conf[CHANNEL_B]));
+> > >   	regmap_write(ctx->regmap, REG_LVDS_LANE,
+> > >   		     (ctx->lvds_dual_link_even_odd_swap ?
+> > >   		      REG_LVDS_LANE_EVEN_ODD_SWAP : 0) |
+> > > -		     REG_LVDS_LANE_CHA_LVDS_TERM |
+> > > -		     REG_LVDS_LANE_CHB_LVDS_TERM);
+> > > +		     (ctx->lvds_term_conf[CHANNEL_A] ?
+> > > +			  REG_LVDS_LANE_CHA_LVDS_TERM : 0) |
+> > > +		     (ctx->lvds_term_conf[CHANNEL_B] ?
+> > > +			  REG_LVDS_LANE_CHB_LVDS_TERM : 0));
+> > >   	regmap_write(ctx->regmap, REG_LVDS_CM, 0x00);
+> > >   	le16val = cpu_to_le16(mode->hdisplay);
+> > > @@ -576,10 +622,100 @@ static const struct drm_bridge_funcs sn65dsi83_funcs = {
+> > >   	.atomic_get_input_bus_fmts = sn65dsi83_atomic_get_input_bus_fmts,
+> > >   };
+> > > +static int sn65dsi83_select_lvds_vod_swing(struct device *dev,
+> > > +	u32 lvds_vod_swing_data[2], u32 lvds_vod_swing_clk[2], u8 lvds_term)
+> > > +{
+> > > +	int i;
+> > > +
+> > > +	for (i = 0; i <= 3; i++) {
+> > > +		if (lvds_vod_swing_data_table[lvds_term][i][0] >= lvds_vod_swing_data[0] &&
+> > > +		lvds_vod_swing_data_table[lvds_term][i][1] <= lvds_vod_swing_data[1] &&
+> > > +		lvds_vod_swing_clock_table[lvds_term][i][0] >= lvds_vod_swing_clk[0] &&
+> > > +		lvds_vod_swing_clock_table[lvds_term][i][1] <= lvds_vod_swing_clk[1])
+> > > +			return i;
+> > > +	}
+> > > +
+> > > +	dev_err(dev, "failed to find appropriate LVDS_VOD_SWING configuration\n");
+> > > +	return -EINVAL;
+> > > +}
+> > > +
+> > > +static int sn65dsi83_parse_lvds_endpoint(struct sn65dsi83 *ctx, int channel)
+> > > +{
+> > > +	struct device *dev = ctx->dev;
+> > > +	struct device_node *endpoint;
+> > > +	int endpoint_reg;
+> > > +	/* Set so the property can be freely selected if not defined */
+> > > +	u32 lvds_vod_swing_data[2] = { 0, 1000000 };
+> > > +	u32 lvds_vod_swing_clk[2] = { 0, 1000000 };
+> > > +	u32 lvds_term;
+> > > +	u8 lvds_term_conf = 0x1;
+> > > +	int lvds_vod_swing_conf = 0x1;
+> > 
+> > Magic values
+> 
+> Can you please elaborate.
+> 
+> I can use:
+> u8 lvds_term_conf = OHM_200;
+> 
+> What about lvds_vod_swing_conf? Should I create additional define for it?
+> But this doesn't solve a hidden meaning? Maybe additional comment above?
+> Would like to avoid using voltages for it, since then we are reverse
+> engineering the table in datasheet to match the default reg value.
 
+I think the following example solves both problems:
 
-On 02/12/2024 11:22, Sascha Hauer wrote:
-> Commits b2ab0edaf484 ("arm64: dts: imx93: add nvmem property for fec1")
-> and 0d4fbaffbdca ("arm64: dts: imx93: add nvmem property for eqos")
-> introduced NVMEM cell bindings for reading MAC addresses from the ELE
-> OCOTP. This doesn't work as expected due to bugs in the driver:
-> 
-> - imx_ocotp_reg_read() interprets the incoming offset as 32bit word
->    offset, but it really is in bytes which means the driver reads bogus
->    values whenever the offset is non zero
-> - imx_ocotp_reg_read() reads wrong results when the offset is not 32bit
->    word aligned
-> - MAC addresses are stored in reverse byte order in the ELE OCOTP, we
->    have to swap the order before passing them to the upper layer
-> 
-> This likely went through unnoticed because the bootloader normally adds
-> the MAC addresses to the ethernet nodes and in this case they are
-> preferred over the NVMEM addresses.
-> 
-> This series fixes these issues.
-> 
-> Sascha
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
-> Changes in v2:
-> - Add Fixes: and Cc: stable tag as requested by Fabio
-> - Link to v1: https://lore.kernel.org/r/20241023-imx-ele-ocotp-fixes-v1-0-4adc00ce288f@pengutronix.de
-> 
-> ---
-> Sascha Hauer (4):
->        nvmem: imx-ocotp-ele: simplify read beyond device check
->        nvmem: imx-ocotp-ele: fix reading from non zero offset
->        nvmem: imx-ocotp-ele: fix MAC address byte order
->        nvmem: imx-ocotp-ele: set word length to 1
+lvds_term = 200;
+of_property_read_u32(..., &lvds_term);
 
+if (lvds_term == 100)
+	ctx->lvds_term_conf[channel] = OHM_100;
+else if (lvds_term == 200)
+	ctx->lvds_term_conf[channel] = OHM_200;
+else
+	return -EINVAL;
 
-Applied thanks,
+The same approach can be applied to lvds_vod_swing_conf, resulting in
+removal of magic values.
 
---srini
 > 
->   drivers/nvmem/imx-ocotp-ele.c | 38 +++++++++++++++++++++++++++++++-------
->   1 file changed, 31 insertions(+), 7 deletions(-)
-> ---
-> base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
-> change-id: 20241023-imx-ele-ocotp-fixes-f7b216171e1e
+> > 
+> > > +	int ret = 0;
+> > > +	int ret_data;
+> > > +	int ret_clock;
+> > > +
+> > > +	if (channel == CHANNEL_A)
+> > > +		endpoint_reg = 2;
+> > > +	else
+> > > +		endpoint_reg = 3;
+> > > +
+> > > +	endpoint = of_graph_get_endpoint_by_regs(dev->of_node, endpoint_reg, -1);
+> > > +	if (!of_property_read_u32(endpoint, "ti,lvds-termination-ohms", &lvds_term)) {
+> > 
+> > The code has been better before:
+> > provide default for lvds_term, read the property (keeping the default in
+> > case of an error), then use the lvds_term to set up lvds_term_conf, as
+> > expected.
 > 
-> Best regards,
+> Ok, will revert back.
+> 
+> > 
+> > > +		if (lvds_term == 100)
+> > > +			lvds_term_conf = OHM_100;
+> > > +		else
+> > > +			lvds_term_conf = OHM_200;
+> > > +	}
+> > > +
+> > > +	ctx->lvds_term_conf[channel] = lvds_term_conf;
+> > > +
+> > > +	ret_data = of_property_read_u32_array(endpoint,
+> > > +			"ti,lvds-vod-swing-data-microvolt", lvds_vod_swing_data,
+> > > +			ARRAY_SIZE(lvds_vod_swing_data));
+> > > +	if (ret_data != 0 && ret_data != -EINVAL) {
+> > > +		ret = ret_data;
+> > > +		goto exit;
+> > > +	}
+> > > +
+> > > +	ret_clock = of_property_read_u32_array(endpoint,
+> > > +			"ti,lvds-vod-swing-clock-microvolt", lvds_vod_swing_clk,
+> > > +			ARRAY_SIZE(lvds_vod_swing_clk));
+> > > +	if (ret_clock != 0 && ret_clock != -EINVAL) {
+> > > +		ret = ret_clock;
+> > > +		goto exit;
+> > > +	}
+> > > +
+> > > +	/* If any of the two properties is defined. */
+> > > +	if (!ret_data || !ret_clock) {
+> > > +		lvds_vod_swing_conf = sn65dsi83_select_lvds_vod_swing(dev,
+> > > +			lvds_vod_swing_data, lvds_vod_swing_clk,
+> > > +			lvds_term_conf);
+> > > +		if (lvds_vod_swing_conf < 0) {
+> > > +			ret = lvds_vod_swing_conf;
+> > > +			goto exit;
+> > > +		}
+> > > +	}
+> > > +
+> > > +	ctx->lvds_vod_swing_conf[channel] = lvds_vod_swing_conf;
+> > > +	ret = 0;
+> > > +exit:
+> > > +	of_node_put(endpoint);
+> > > +	return ret;
+> > > +}
+> > > +
+> > >   static int sn65dsi83_parse_dt(struct sn65dsi83 *ctx, enum sn65dsi83_model model)
+> > >   {
+> > >   	struct drm_bridge *panel_bridge;
+> > >   	struct device *dev = ctx->dev;
+> > > +	int ret;
+> > > +
+> > > +	ret = sn65dsi83_parse_lvds_endpoint(ctx, CHANNEL_A);
+> > > +	if (ret < 0)
+> > > +		return ret;
+> > > +
+> > > +	ret = sn65dsi83_parse_lvds_endpoint(ctx, CHANNEL_B);
+> > > +	if (ret < 0)
+> > > +		return ret;
+> > >   	ctx->lvds_dual_link = false;
+> > >   	ctx->lvds_dual_link_even_odd_swap = false;
+> > > -- 
+> > > 2.34.1
+> > > 
+> > 
+
+-- 
+With best wishes
+Dmitry
