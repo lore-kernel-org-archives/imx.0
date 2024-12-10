@@ -1,68 +1,68 @@
-Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4B41B4147
-	for <imx@lists.linux.dev>; Tue, 10 Dec 2024 14:02:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB711AAE08
+	for <imx@lists.linux.dev>; Tue, 10 Dec 2024 14:02:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733839358; cv=none; b=YXZkP0dOLDbLngtl/99JiURWNGlhUFJE8Z3PzXnHJJQ4zxgyWeGlObSg+6+mhMN/zwAc+d4OgwymEDPOXKVnqBL+RjMcr3GOwagEZdI9diepYb1o22WAmOCgjdwi+vO5H7CiDZ4SW9SMSw61pDDqE5wY/brhOwEC3AR9LLpPKgk=
+	t=1733839361; cv=none; b=Zb2RlQUIHP5qDE75Hr0jhkne39k6ikeeepHkzvFRjj1axJAg1So4mpBDmc6XyglEjXHv9Y7dcxwDsgRLR1nyhk2zJmLxLvsXexOPVG+GXTMmxA4hiLd7yz/JE6SeZAJi2DR2NtfAaDE76c49oX2vPXVuSTcBx6z15cROxkQxqEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733839358; c=relaxed/simple;
-	bh=TRfjmBKfiMFehXKfcPR5PjcSzxFgFyiC03eittaPsog=;
+	s=arc-20240116; t=1733839361; c=relaxed/simple;
+	bh=+VAbStbA6Dtk2xH4PoQloVbS2Ysd+xnTztR7r3KJspw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RRN8Iov9nnMAEN9thff51SFBnU+xE4KdQlqKpHmt2sAmaBUkyE6wvEFwE34ZTBY+UAlSalMHSYGZLQwmY6FOv5kh61r2/9yfFmSwngg45ACcs0B2ehM9fuuNXP+IoMWN9jpFbAi2+7/bhFmQe9mZDJ4jHqEGCfPaUqVFB0GYal0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=t0L2P7Bi; arc=none smtp.client-ip=209.85.219.174
+	 To:Cc:Content-Type; b=Qrn1afsfuRi1MMav+8uSwyEa4BRccU1y6gboaqR+8WB5gJZ83PFtFf0oRgd2AOwb2QNUDO7EOPxYV5GaOU+eYW3+BmxNkoinw6qJzuVVOf/HVVtrwNvf0+O4u7XrF1LoCW8tGKs6d6AY9nBkn/1pucSYK7qphMeIaprie+arNEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Vo46Gdld; arc=none smtp.client-ip=209.85.219.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="t0L2P7Bi"
-Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-e399936829eso4335602276.0
-        for <imx@lists.linux.dev>; Tue, 10 Dec 2024 06:02:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Vo46Gdld"
+Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e39779a268bso4861923276.1
+        for <imx@lists.linux.dev>; Tue, 10 Dec 2024 06:02:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733839355; x=1734444155; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1733839357; x=1734444157; darn=lists.linux.dev;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=besKoqTUl8UspqMzSV4i/1U3YcYukO65Us63dIVJlmo=;
-        b=t0L2P7BiMTPHE4vYW9pHqnIqAYVM1BfTQaJaf9e9B04t206p95pX3gpA15MUodS3rL
-         ZPD5v2K71cJAiQx8ejilYDqQ+pCEU1VwICCXygskEwoGiV9MeTCuyR7nMiQyxfEaREr4
-         8gtwCPVS/VWQtYzOYG1epANXy/1ypXSuaJaCsasjoaNNkzI2ILjfVHQ7Fjx1qWW3K1PH
-         CeaRi8igZhI97ymPvFarQFiuBbqtFZ/pNQBFRpMFJaHyt8VcB1Do8ZfC8bQfB8BPzGq3
-         542tDrI5eSDbj94QjxGfGSAfcemNv5UMUT2BU8bRF1p+kkFE+GhcVKbS0gs8WGeHYvfL
-         H9sw==
+        bh=svYQuLfhEmqpsKGv5zmj/4CoEXZ8crstXQtR8B+VCUI=;
+        b=Vo46Gdldhh1IpC7XRcCdX5RtM36FmPgVOGdob/aDqxC2G1TcvV88h9ZOR8wzP/K5pE
+         dJX0Jr8vnjLuEOW0G7YnZzHw0MGJwcD7FUBYHVgfv44KYMwNunaCTDc9aR+2xwDtPG+G
+         5pPTTxSzgJdLLQfLl94324Bf782acYhU8gbqYyuzhgj4ea992hOaYN3P2Lh9o+bgaBj9
+         ctQhtZhwFc6yJ5wNEzpbReVpVKVCC1FT5+uDULW7iEuwK0N3kUoPIOVtPx7L2xWxlRIy
+         hemBR/A/pYZXwWFu5O8OtemXlWxU1waxKR4R5UvJvqzh09CQ7RGWjcg29I4yWCKyJTrA
+         th6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733839355; x=1734444155;
+        d=1e100.net; s=20230601; t=1733839357; x=1734444157;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=besKoqTUl8UspqMzSV4i/1U3YcYukO65Us63dIVJlmo=;
-        b=M6H2I45eNrKVjjSed3tB6zIr37LW9fiqjsvGkiTSP2t+Fq+J58Yv+/tuaJePo46Rfv
-         TF+pm3ImmOw4M3XT5t7iZnPqkqiKG+9EnWau1m14XvooJ+rLorDv6tHoney7qAemaoKW
-         dsggO8KZ6ywPcMFvv6Db79rdN+/YPYYvgWFNofy27G6UIBtzQsx0mRJGRmBaMCvgSH2z
-         Od4ex+VjhKWYOSF1lQrH3x1yQDKE1DIs4HiUhejc61hQgixo69ThupGauGj/yELFqCVd
-         qAeHlulvs49kxsgv8KuBDOkpFXFKSYCwHnkseXiZIktRvS9RV24iVdSj/51OVA8c48c0
-         byHA==
-X-Forwarded-Encrypted: i=1; AJvYcCW1qq6Ipo9gpjPomNt8GPDY6ZW7U8SAt/x+ra0ECLbrOggacDIH1UCRyutvursJB4V7XcU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxSUxzvKZCxsbz9ZMhxr0TrVe/lWYoaqa7YD1gEAb5X4hIiE4rj
-	w5DkLe48Zgb8CGY/gCw+6fBK0+XUw/P23s4NrHWrRdvVE0o0O/NmTfmKx+7pPV//4OQkYDMifMt
-	YrxAJsE8+ctgCWzesrbV48H6JTf0RBVUZ/34ELQ==
-X-Gm-Gg: ASbGncssKE8x12LjduS13VaprU8ZJ59yDJwbm10N0547b2gCdAXxBUSVnt31NjoLXlo
-	afbiaAo9E9qvn2VjmDzBEyFVmqJTXWSaIdLmU
-X-Google-Smtp-Source: AGHT+IFN1yCbB7HlDLaJwtDy5HM3+UgGOrK5CihsW5CiH9M8fU1rwshFqKnyFZ0DMkKGTqWE5e1F/csj0lrK/77hhbM=
-X-Received: by 2002:a05:6902:2b86:b0:e30:d4df:4974 with SMTP id
- 3f1490d57ef6-e3a59bdca97mr3979566276.40.1733839355475; Tue, 10 Dec 2024
- 06:02:35 -0800 (PST)
+        bh=svYQuLfhEmqpsKGv5zmj/4CoEXZ8crstXQtR8B+VCUI=;
+        b=A2NSegF/NlUPP0qqHXPv0b6+FuhLLG0q08ahDe41R5zr11Gsg/wT67oWN2lOOlyjS+
+         agsfPpWc3n9NEbdVfvEOv5lIYdj9y6fJMQlTOeJbjIy6Ef5F+9ZPLuZp92lZ8hJjhrEb
+         +RYmo4jcwa363fC8RSsakuB1Xtd5Cs8j04KUqaRWCxQDo+iy83TLtwnuX1wxHnMpBHmO
+         aWuPt6l9I5UhEvnnH7h/Uikzb6f0Q7QMdzpNRsn3RBO+gGl4ATgDrUtxBFwUtkvqAZDR
+         RhUaGEdyJoVV6M0VytXEQas8/ieJfqsNWAgjQrSBnFQn5cO0vwFEdamb+mWQqJ9Eht3h
+         MjGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXoM3dYct7LB8ltbhpY2db8AKxHqmvl3cSSdy2myQC72QQgMp3rGgsh4Wl/DL1vY4FFHGc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxGMwzJRyPf6vwQxKIAwJrMBTCe+dEiM8VHZ3FeaK4Ze/1mg61X
+	QnZt4amNhhN3HbpXtwdBfjSc5t5U+fenUg4/gIddzdAUCIDi234q0Rwe2XVgHwzvT2W0WlOw+RV
+	gc6/8SOKfHHEzazZM4O5IX56a4dldBGJFtYVuLw==
+X-Gm-Gg: ASbGnctCzk2Z52GWL2XKaHN/sGmyZFkYflYhD3nwod7b0vFghIuzhkUJk9yjVxebv89
+	TlIPljvbCDiqTAv/3kR8uDOtZdR0sXcLUkyET
+X-Google-Smtp-Source: AGHT+IEzJ57H7PCrVou6RI7FrtDurF9EfDkpfB6eGI/q6LZuE371TG4kiUTgbNmxJFhn26kfli9GuUqdDrNxsUfzIjY=
+X-Received: by 2002:a05:6902:1501:b0:e38:b399:590b with SMTP id
+ 3f1490d57ef6-e3a5da3808amr3395172276.2.1733839357084; Tue, 10 Dec 2024
+ 06:02:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241206112731.98244-1-peng.fan@oss.nxp.com>
-In-Reply-To: <20241206112731.98244-1-peng.fan@oss.nxp.com>
+References: <20241206112731.98244-1-peng.fan@oss.nxp.com> <20241206112731.98244-2-peng.fan@oss.nxp.com>
+In-Reply-To: <20241206112731.98244-2-peng.fan@oss.nxp.com>
 From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 10 Dec 2024 15:01:58 +0100
-Message-ID: <CAPDyKFrM6wX5uWY8g0pgZNEZn8uG5hbD4JsAijBenOMWkEgD4w@mail.gmail.com>
-Subject: Re: [PATCH 1/2] pmdomain: imx8m[p]-blk-ctrl: Suppress bind attrs
+Date: Tue, 10 Dec 2024 15:02:01 +0100
+Message-ID: <CAPDyKFpWfqpgmMpuq+69ee2FU7wOSgHUmfEcLpS1Dy2vx8c-MA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] pmdomain: gpcv2: Suppress bind attrs
 To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
 Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
 	festevam@gmail.com, linux-pm@vger.kernel.org, aford173@gmail.com, 
@@ -74,7 +74,7 @@ On Fri, 6 Dec 2024 at 12:28, Peng Fan (OSS) <peng.fan@oss.nxp.com> wrote:
 >
 > From: Peng Fan <peng.fan@nxp.com>
 >
-> The blk ctrl drivers on imx8m series are registered as platform
+> The gpcv2 drivers on imx8m series are registered as platform
 > devices and this opens the possibility of reloading the driver
 > at runtime.
 >
@@ -92,34 +92,29 @@ Uffe
 
 
 > ---
->  drivers/pmdomain/imx/imx8m-blk-ctrl.c  | 1 +
->  drivers/pmdomain/imx/imx8mp-blk-ctrl.c | 1 +
->  2 files changed, 2 insertions(+)
+>  drivers/pmdomain/imx/gpcv2.c | 2 ++
+>  1 file changed, 2 insertions(+)
 >
-> diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-> index 23db85b7aa9e..912802b5215b 100644
-> --- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-> +++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-> @@ -894,6 +894,7 @@ static struct platform_driver imx8m_blk_ctrl_driver = {
->                 .name = "imx8m-blk-ctrl",
->                 .pm = &imx8m_blk_ctrl_pm_ops,
->                 .of_match_table = imx8m_blk_ctrl_of_match,
+> diff --git a/drivers/pmdomain/imx/gpcv2.c b/drivers/pmdomain/imx/gpcv2.c
+> index e67ecf99ef84..4db4d666f5bf 100644
+> --- a/drivers/pmdomain/imx/gpcv2.c
+> +++ b/drivers/pmdomain/imx/gpcv2.c
+> @@ -1437,6 +1437,7 @@ static struct platform_driver imx_pgc_domain_driver = {
+>         .driver = {
+>                 .name = "imx-pgc",
+>                 .pm = &imx_pgc_domain_pm_ops,
 > +               .suppress_bind_attrs = true,
 >         },
->  };
->  module_platform_driver(imx8m_blk_ctrl_driver);
-> diff --git a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-> index e3a0f64c144c..411dd548c67c 100644
-> --- a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-> +++ b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-> @@ -862,6 +862,7 @@ static struct platform_driver imx8mp_blk_ctrl_driver = {
->                 .name = "imx8mp-blk-ctrl",
->                 .pm = &imx8mp_blk_ctrl_pm_ops,
->                 .of_match_table = imx8mp_blk_ctrl_of_match,
+>         .probe    = imx_pgc_domain_probe,
+>         .remove = imx_pgc_domain_remove,
+> @@ -1549,6 +1550,7 @@ static struct platform_driver imx_gpc_driver = {
+>         .driver = {
+>                 .name = "imx-gpcv2",
+>                 .of_match_table = imx_gpcv2_dt_ids,
 > +               .suppress_bind_attrs = true,
 >         },
+>         .probe = imx_gpcv2_probe,
 >  };
->  module_platform_driver(imx8mp_blk_ctrl_driver);
 > --
 > 2.37.1
 >
