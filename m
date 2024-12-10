@@ -1,182 +1,325 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2049.outbound.protection.outlook.com [40.107.105.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F292080DE
-	for <imx@lists.linux.dev>; Tue, 10 Dec 2024 11:28:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733830109; cv=fail; b=T5z0x/jc3cAA3sEIvwujZJEhkJFzXViZf6jqqgCoC2qC4BYTJJdOK3Y/+GUHQ+lPqADGz8q851F0m73DBB9VhU3Fxazxnpszu5bHTDd4fjon7qgdp2LpmE/+v24rYN8mCAC4xGf094+4ac+woDMh49QE+huAG7t946Zk7qvzoGY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733830109; c=relaxed/simple;
-	bh=oEflPgDNFo6QWeqYEMMyOfF8TftqRAp/58UIe9VrR+I=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=ckvQmacSykRilXtVfi6vQuaD+wnbB72qkUE+C7pSLA738QzmCqqPe1mkP8Nn88Z84jqgWRJo3HLOyYWn8cy9JzX4Qdei4jc6FxBwaHuPHvDaJltQmuu9bt2G2lp5o9bRQRdXxA1dDMwHMKl3iwjCBdDTmiF82PZxKYzZxa/JTEA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=R3YiOxzu; arc=fail smtp.client-ip=40.107.105.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53644210F45
+	for <imx@lists.linux.dev>; Tue, 10 Dec 2024 11:43:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733831006; cv=none; b=TA0YSd0aTbRIj7rEgzhx2pmWW3v1AX1V7ISb4fZoXWe2zdo8CcK9rRXdeZIeOPZjavavJeyqiYxSFjwcB2daUIRQXtsXKSUKScDkLgfLHov5oT8eca0gmCYoK/GNIZZZFm1pqR2WanCCE2DN2sgOgxmbNlsWsPnb7vG09V+S6tI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733831006; c=relaxed/simple;
+	bh=e8vDgDOcO5RIqHjRBTI9VvF3Ghj3iqWpCsSjLOYAe1w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CZ+3n9hvc4uBz44TfW38F7OGcN7Efb+HVEukJYOjyeU8MKSnVlzPvc+OJ+OxneH/Kgfh7pTbv/6zPTNr6+4s2ConP7jGpm2qPTGDHpTqOxTXMseL9l81QtGlkVv/ZmevTA8aEx/JQh55GtIPzwnxQ9Pe/qNLW73mQe4UWeIWcyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SidWWzSJ; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="R3YiOxzu"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z/wnqVgcxatHyEYl3wn+e2Z0FYyqmZ3e8ehW7BxXxqxuQlcfsQGd3/E7nQ/jbNhpTWq8RRNpmyezRnTfL0ejdKsNwc6XOMzfdQzAZV9Xmcm0MP++B8CLSVUS8zhCfCpPbcoj4tJkeTsOhdS4nKtWASfHTUQm7Hi2uczxitt1cP4yMEhnG3ZLWg2e2wk5gXuCfCPDEuR/yX11M+OCB4dMK2lONBYnKuXhFZJpN1wjJR5K7IhBt2TQaT0ftp0DZVodYgP/iI6cSk8HFSybbuDY1OzSK1FnmbfYpbH/nWR+16gL1LKsHjNKLEV32p0+Bp4diqVAmp+i2kcqKUhnEjS8+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RPG8a5D19tiOViJ6A4p259Hlf2GhDvtSUoJzOLyTPn0=;
- b=prF4/+Pn5BBbxVB+Xw4pVgAky4A0fAU/5uJHJszrf5L2wuf9BwrnXkmK95S3+7GzFqggCkSKr4pSfeZ2vSyPVFPf+jW8ttgv24e0f/+LHgbEmld+0728zdfpTfqHkT9mjsengAmPU8OzSsymwKYgIyr14lLFLX2P67e6a1BYr88XaMZnrSfeS0oP0X3FPsjW+y+FQ4PILr6+AinQS5ELAd7AD+7fNrO4eklq4HyX4zVnlcEuizD/l6tbvymWPwPI0ig3MToN8rEQLmDGtAMEAvCeddkZmLOSWD+02gzkjkXF4on/GM+Fh1vWVbJfKOAvQfTfDJNDpKn9rbg1x0gvZw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RPG8a5D19tiOViJ6A4p259Hlf2GhDvtSUoJzOLyTPn0=;
- b=R3YiOxzuBVcE/zZXumbXJZkw8JPtorezzUiMtqZH3Cm26Mdcj6JhvZ70qQ2GVtBlxiUOuSDgnl69w9+Et62HY8YEF70P0KGeku4rwySLaX7tiMVyYyvseW6xccO8dlUmMtuYpzHoErPicjkIpIlNql8NjqLBNeE/gBi9Cc8n/RkSsRjDAMLNLWmxaNsmuebdpgSaGd/O46darE30swm5Q5Cm3xQqH7unokVaXU5H0tPqdBhvBjTZUlVjACyccJFu/bJLjmj6rJHY4nrCHQJotvQAyHocV/EbkJHaNGmdttDw4urZVwFfXa8ETMMhPw1tROplOJKTjD26luwffF8OUw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU0PR04MB9496.eurprd04.prod.outlook.com (2603:10a6:10:32d::19)
- by PA4PR04MB7935.eurprd04.prod.outlook.com (2603:10a6:102:b8::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.20; Tue, 10 Dec
- 2024 11:28:24 +0000
-Received: from DU0PR04MB9496.eurprd04.prod.outlook.com
- ([fe80::4fa3:7420:14ed:5334]) by DU0PR04MB9496.eurprd04.prod.outlook.com
- ([fe80::4fa3:7420:14ed:5334%6]) with mapi id 15.20.8230.010; Tue, 10 Dec 2024
- 11:28:24 +0000
-From: haibo.chen@nxp.com
-To: broonie@kernel.org,
-	bbrezillon@kernel.org,
-	frieder.schrempf@exceet.de
-Cc: linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	han.xu@nxp.com,
-	chengminglin@mxic.com.tw,
-	stable@vger.kernel.org,
-	haibo.chen@nxp.com,
-	jason.hui.liu@nxp.com
-Subject: [PATCH] spi: spi-mem: check the dummy buswidth only for rx mode
-Date: Tue, 10 Dec 2024 19:27:12 +0800
-Message-Id: <20241210112712.483893-1-haibo.chen@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR01CA0032.apcprd01.prod.exchangelabs.com
- (2603:1096:4:192::18) To DU0PR04MB9496.eurprd04.prod.outlook.com
- (2603:10a6:10:32d::19)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SidWWzSJ"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5401fb9fa03so1738522e87.1
+        for <imx@lists.linux.dev>; Tue, 10 Dec 2024 03:43:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1733831002; x=1734435802; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bDuD4vOJTu/+TNrDw776dXillG1+SO1nfewpcnHal5U=;
+        b=SidWWzSJ5KXEOjuKi6JRaw69ZUBCVEfgqdXgxWKGhvSWqvbVZ6ozEYD5CqlDXW+Kaj
+         loI52jqDDNOMwKbNGaXvFvOD3rd70FvHl623rcv14qWYfBKliFbuPxDYoOPPQ9H+uOHQ
+         aqus8Ov3ulk2xzXq1G+ihYXsnLydygILbqYVwwLTDgqygUNtkzuz1jzWDXLek2jv1cb8
+         MblXpJtOMgN4bDGF3LH04wW8pCPVQWEhotN4T9lUJeUra547Sn1k72O4G25XYA0u19YO
+         hRKwWO4q5dFU734dUehJfhpREj3n+vPRI1Aj+aymKq+J8PwztZipCduXdvTFtJJP1fwF
+         qmGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733831002; x=1734435802;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bDuD4vOJTu/+TNrDw776dXillG1+SO1nfewpcnHal5U=;
+        b=IunLg5lTrNo/gJBppwSySs8Cxxan7jLsRFG/KkemcCZBn1trMmQA2NXYOPU2UpguKJ
+         WKrUh8YzNCFTCpk3H9mbsQmgaBNwlqXa+DWJbuadRQA+x9pk0tbncC0XbpV4pJ8PGd+U
+         Z903pyveTNosudXgWkvg/zm7FsbufQPFvVt15R9c3p8pSyu7OY5z36ERM3crzeeSqvFk
+         xXV0zRtvn+r0hT2Hk8UrAayFj/XKrYCNWPqDBZBGu37xD3iVY/C76mRVE4j/Vko77MBz
+         3lxM49AANO37IG7bt4KHahUPoRDSojLd9hCnyr9Sf4KE3eW4HI1xzk4vgFdtr+zouUk8
+         w29g==
+X-Forwarded-Encrypted: i=1; AJvYcCU9odYq56XltHOO1+Wx9R7TVCG8Dxa5aHiEOFfhtEJfOqsYhUC/7vTUAkRnxkEkSrClbDk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzXStSDf25x9lhz7vOV1q5jHDXiKftZjXtz2EbGIabqEM6mu0BT
+	O+W+I1dez7O8PcDUVHUI9jHTr6z1ud3tCYgiwZfFP8p/MXD+ZZUQ6JyayW7DxRc=
+X-Gm-Gg: ASbGncsVs9D4OzEWBVLQhtivRHeV/TVhN8KTc4GmxFCu+JVR2Akcmpmd1O557PgIDKC
+	Bvas/dsuCmYDFs42K5Yxg5BIu3x3DYQeVRaeBcL4/J1ho588716cySz5pANtMH/Xix1q8BOWFg6
+	UQrCtAm3fFfcGAdluYvjkcgLQJfSc7kPPCnuP30JXCJ4En6i24dQDVDSQFAYUSAmQipLYaGiLSd
+	iXcxFjRZab9FiS8TqRCLaKL20Rw7n09uDVhKnUgBR+13IFR7f8WPPr6BgYNs51FxYVFdA7ajxws
+	uNZx96MQQY1jYIZohD/vBb0NT1vKFAPSwQ==
+X-Google-Smtp-Source: AGHT+IHlLpHoQkMoGAXULRnbsa1CNz7DxSd8e5Kk0AkHyX98cxKn2C9E6+kb+xX37fsZPZiAJHZ8UA==
+X-Received: by 2002:a05:6512:3a8e:b0:53e:2246:c262 with SMTP id 2adb3069b0e04-54024f87ef1mr883959e87.0.1733831002365;
+        Tue, 10 Dec 2024 03:43:22 -0800 (PST)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53e3a36ee3fsm1127765e87.107.2024.12.10.03.43.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Dec 2024 03:43:21 -0800 (PST)
+Date: Tue, 10 Dec 2024 13:43:19 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Andrej Picej <andrej.picej@norik.com>
+Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org, 
+	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com, airlied@gmail.com, 
+	simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
+	tzimmermann@suse.de, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, marex@denx.de, dri-devel@lists.freedesktop.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, upstream@lists.phytec.de
+Subject: Re: [PATCH v5 2/3] drm/bridge: ti-sn65dsi83: Add ti,lvds-vod-swing
+ optional properties
+Message-ID: <irpmhq7vxjra6vhmdh7p63ajj57n3h2c4br3ija2jmwtoewist@zyxfmx6k5m4e>
+References: <20241210091901.83028-1-andrej.picej@norik.com>
+ <20241210091901.83028-3-andrej.picej@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9496:EE_|PA4PR04MB7935:EE_
-X-MS-Office365-Filtering-Correlation-Id: 916ef4b5-1810-4e6b-e43b-08dd190dc205
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|52116014|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?FMizqfeZSLof4j4PHMIHTAnHWye/CdpnLSj1vlFItEGUrVxDU2+OfX4lD2Xx?=
- =?us-ascii?Q?j4Oslvvq1CvtXh+tEKT44KEyymojv7FVz2IYwWkRY4T3Qhpy3KBbetwvdG9U?=
- =?us-ascii?Q?rzp41kE4JXT0qGNuw1R4Za2EIW1oOofp82Cuvm9S89zqteatMx2xMkgf0spA?=
- =?us-ascii?Q?vqwsQeBcLyeWx1RFjiSmLpUIuXw1bLtuWbkGIGsem/UYk+ZIfDKcjiFVb7op?=
- =?us-ascii?Q?1Z4N43jNbz8aOy79IPk+H8DtH0IjC9MtMm355rj9pWyP9IXSpj2h3dHU6TKJ?=
- =?us-ascii?Q?7QnJTVwpD/xBxjf8W68myfbDIbhOuVzrJqYzgmfV3q6Dr0stwwaf3Hh/LiRy?=
- =?us-ascii?Q?K/vOBfFiYOeWvMnXDj1BwtFumAVD52kjsuofDW8Iqc89wsjHNiGcuwBUB4n3?=
- =?us-ascii?Q?/k71aOHkh4G0mi2aCypZSlPj8VP2vX9JoHtkkighCW+1PnYn/3nUQ6jgnAjN?=
- =?us-ascii?Q?hRRqqaJMRCjHTsRmi10lLcHyJCfxh2n77RV7/BcmnP7OBwYoKnZ0oUSPe0Hc?=
- =?us-ascii?Q?5d/daEYyLdsRpabdVAcsCLCRgbVEdXoOs6ErhtrhpLUUph4qbrujiG/52iIT?=
- =?us-ascii?Q?PC6RpyS1FnTN16xJD9MP/mOGwKy9vIXt/SSQMflja1+V04G1rSaUVQ4PlmK7?=
- =?us-ascii?Q?1KnDiu9fKLsbz32Zo4ZHvEuMgGlSQdFQ+rcWSNWBmW/dV5LhF/BsdkR8FTI5?=
- =?us-ascii?Q?TubBwqgjQCZAA/E3mMx4PnC7eOnOQySH8I8zMKBf2U+uL5/PBztqEk70Zs3x?=
- =?us-ascii?Q?Ck59rWHKZmKS3hGi2Awt6ngWP91nQ4cGb1yK7VDIZfrko1XM+ouDMadawxm7?=
- =?us-ascii?Q?8W0e1tfVxLI9uuuTH5un9Hv4VCXMdEd+ZTqeXLOreMIZPOoFr9FEStOgyOqw?=
- =?us-ascii?Q?kXfdcuw/iKHsZ0KSZfnnR95An7j+q8hIw5Rod1S+iwv2DvmnLt7CAkDsDDoa?=
- =?us-ascii?Q?6a9mj220mkTupX9UCpATOAESQ8DADxW09UE0MKEhusap7BwkZlv5LImXDmMO?=
- =?us-ascii?Q?h7X6ZUiCr++xw6kazh43cTYFkDvOjGI4SyWzEZ2otEyDw3JcmJhkLYDazFAL?=
- =?us-ascii?Q?a11efe8KuqieGAY5N+Pul4aBNROZUIUYlMgSkRTflaEkIwHOuzkphteYlkmx?=
- =?us-ascii?Q?ribpw0LEwvF59NkZec5X/td2tBb5nNyXxt8VALeAitHSBxtF8VzXZFsmc3H+?=
- =?us-ascii?Q?gx3BG/q4AigzrvJaORP9SZqDRxyAPjZ28fYppbclq1hieoevDzTvcIiaJDqC?=
- =?us-ascii?Q?Bje2gIW38S65MEPmqacJcF6fWI5qXsA81SWF9Q4ZkJaXtYn8npwPWI11Txdl?=
- =?us-ascii?Q?8j+f0Hl4qe/xK9azE54OpnKaMSni/fe0u7ldBI2ZFC183ESkXRHqTqA5Bs8K?=
- =?us-ascii?Q?LVI3v/lZt3c90IiKbwGXWGeeh44BuLZynFFi0mbaYz3aDs9TqQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9496.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?tClDLe8V9I8EQJtg1gQKaC46G5nogxMwsHvLocQqurQxJU3AAzT1kQ5vlu6F?=
- =?us-ascii?Q?Ger+rPS+7y3uD1dImfPdRvW/YV+P+uXHMiEP7b8AAJ8rLvPluQQxOQb4fhjq?=
- =?us-ascii?Q?05ce08k+yQfh7rH48e23BfA3Xur88LPsZQK+rLKP1I8kLINgtksh88L+kJ82?=
- =?us-ascii?Q?3zTxCGWKjXGBrPWPIwwCL8YGGKKgYwpCB4xNudnJ7tTPzBIg07hk/QLJ0EMX?=
- =?us-ascii?Q?QSVn6XmOmW8sculccY7V0LT1hPBSXg0U8PNHczY2+ADNpAhj0VxzN9mBJjGx?=
- =?us-ascii?Q?9unfBk4ptD9hjzqM9RXlWHuG4n1HQ0XcdgSFf6gjdJjxCGTffxXEBsQVPZ4l?=
- =?us-ascii?Q?DNP1MIlwO4NDRpDGn33dfMRBeLfM3Ppjx6DVSps2/SENfS7K3fB9Rx5d9u7D?=
- =?us-ascii?Q?w2uJAp17SPGXZP6Z7JY/addNBXd0MJvigSmeyhohVjR2jJalW9lsRNFRQm9m?=
- =?us-ascii?Q?mM5QwhcC+g/2hvf2TavL+WYL9dTuvgIRIXK4JjBV8Ci+DETgenGGGCesz/Kt?=
- =?us-ascii?Q?nvik9ed5c955/VG6Wyeg5USVkB722SVAP7JmRDFz6Co/wb3KaZEoRIeaDvjl?=
- =?us-ascii?Q?51ZcnCKvqsfOEhXyRBCyOQ2XGtljBQDJY6sdbpgIDQO2Latqoq74QGLFbZzt?=
- =?us-ascii?Q?04SoazieX67l7snbSTT5tWFoZ1lZPpOGfryQ6WOZFXiUug+VYir2hSwiscdj?=
- =?us-ascii?Q?SjhNFBlwLoALVuCx0KGSocFFueNloTfqMaLxeE9P1s4dR1k3LpbDbm1aHinR?=
- =?us-ascii?Q?40EzaiREttu6OpdC7UgesuhYtaPf1y82JybIdoJLKRV7ezaPrMGcFWIYsiFe?=
- =?us-ascii?Q?ciobb3WlgbBIBzkWmO0KAIlk7s6vj9YNqH+zHWgfW3/7GsNtxo0Kz7rQvznj?=
- =?us-ascii?Q?YB0nm4pczSm4iKBzysq7h+HM74IB3ZuhO16m+TaOKWSr8mXdwORZ8b91AZMQ?=
- =?us-ascii?Q?Y2OcaUQVfGAJwcAvTRmWj9cUE9qoGS31pdylAbxN8FW3ycRIqVD4+mQhYKwi?=
- =?us-ascii?Q?SICc6vTLyH1dD9e5jwCPQ9tChsdQAzzlKK78OPb8EJh9JOidD23ArmKYbAOK?=
- =?us-ascii?Q?G/nn4ngRC/WmXmLuRY1Rwc40IFtpdsOvB5pP+vhyFlIqZzsB7gItVTOlUX6a?=
- =?us-ascii?Q?mGt41T0P5ePCPmoIzsWnE8N6y8+luY1dyzjdQ/L0fBWwMoBp6CsIAmhL1rGL?=
- =?us-ascii?Q?rl2a3TNE2pH3CfhzbS+40Bwm2eBz1kTy+aEB+W41cLFP2z6tg9EdvIrzAitv?=
- =?us-ascii?Q?BmF/vPl9FKI8yN9mj+vpyhvwN3YY1FCx1XYfXxzaHngcC2z2Zmzp2mqjP0lX?=
- =?us-ascii?Q?BPbyMd+xLOYPAOEtySPu8UUrNfYAnUn8EJbZdZoZrFvF+1AufT3LQErPc+Xe?=
- =?us-ascii?Q?eImjBf13fTpPXAIvoRAI/ckTghMCJ5XnJBny9gjmzCFywTSiSp2WP0sMtY4L?=
- =?us-ascii?Q?Qz3Ga5WA9rbD7+jDtdKYIsAD7vLM7elq/uMtckl0mlLLSlmRoeIblnPLiQ1l?=
- =?us-ascii?Q?fqpVz1A0dN5VNzuQyY9ASb9kaGHlY3aCy3oaWM4j3Tpwht+rNk75sRYxvEGM?=
- =?us-ascii?Q?qoqulUh+/rKMLV3xIhiaYhbd/oEkQ0swL5mM46cX?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 916ef4b5-1810-4e6b-e43b-08dd190dc205
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9496.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2024 11:28:23.9377
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wQmHEjaf9JOj6nXO6EgUVuVwe5O7hOjlDM5dQnnibyLT37lkNU/cAYdwzWVHeLcPXOD0HjKSpDRyrvAAcFoKBg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7935
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241210091901.83028-3-andrej.picej@norik.com>
 
-From: Haibo Chen <haibo.chen@nxp.com>
+On Tue, Dec 10, 2024 at 10:19:00AM +0100, Andrej Picej wrote:
+> Add a optional properties to change LVDS output voltage. This should not
+> be static as this depends mainly on the connected display voltage
+> requirement. We have three properties:
+> - "ti,lvds-termination-ohms", which sets near end termination,
+> - "ti,lvds-vod-swing-data-microvolt" and
+> - "ti,lvds-vod-swing-clock-microvolt" which both set LVDS differential
+> output voltage for data and clock lanes. They are defined as an array
+> with min and max values. The appropriate bitfield will be set if
+> selected constraints can be met.
+> 
+> If "ti,lvds-termination-ohms" is not defined the default of 200 Ohm near
+> end termination will be used. Selecting only one:
+> "ti,lvds-vod-swing-data-microvolt" or
+> "ti,lvds-vod-swing-clock-microvolt" can be done, but the output voltage
+> constraint for only data/clock lanes will be met. Setting both is
+> recommended.
+> 
+> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+> ---
+> Changes in v5:
+> - specify default values in sn65dsi83_parse_lvds_endpoint,
+> - move sn65dsi83_parse_lvds_endpoint for channel B up, outside if,
+> Changes in v4:
+> - fix typo in commit message bitfiled -> bitfield
+> - use arrays (lvds_vod_swing_conf and lvds_term_conf) in private data, instead
+> of separate variables for channel A/B
+> - add more checks on return value of "of_property_read_u32_array"
+> Changes in v3:
+> - use microvolts for default array values 1000 mV -> 1000000 uV.
+> Changes in v2:
+> - use datasheet tables to get the proper configuration
+> - since major change was done change the authorship to myself
+> ---
+>  drivers/gpu/drm/bridge/ti-sn65dsi83.c | 142 +++++++++++++++++++++++++-
+>  1 file changed, 139 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
+> index 57a7ed13f996..f9578b38da28 100644
+> --- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
+> +++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
+> @@ -132,6 +132,16 @@
+>  #define  REG_IRQ_STAT_CHA_SOT_BIT_ERR		BIT(2)
+>  #define  REG_IRQ_STAT_CHA_PLL_UNLOCK		BIT(0)
+>  
+> +enum sn65dsi83_channel {
+> +	CHANNEL_A,
+> +	CHANNEL_B
+> +};
+> +
+> +enum sn65dsi83_lvds_term {
+> +	OHM_100,
+> +	OHM_200
+> +};
+> +
+>  enum sn65dsi83_model {
+>  	MODEL_SN65DSI83,
+>  	MODEL_SN65DSI84,
+> @@ -147,6 +157,8 @@ struct sn65dsi83 {
+>  	struct regulator		*vcc;
+>  	bool				lvds_dual_link;
+>  	bool				lvds_dual_link_even_odd_swap;
+> +	int				lvds_vod_swing_conf[2];
+> +	int				lvds_term_conf[2];
+>  };
+>  
+>  static const struct regmap_range sn65dsi83_readable_ranges[] = {
+> @@ -237,6 +249,36 @@ static const struct regmap_config sn65dsi83_regmap_config = {
+>  	.max_register = REG_IRQ_STAT,
+>  };
+>  
+> +static const int lvds_vod_swing_data_table[2][4][2] = {
+> +	{	/* 100 Ohm */
+> +		{ 180000, 313000 },
+> +		{ 215000, 372000 },
+> +		{ 250000, 430000 },
+> +		{ 290000, 488000 },
+> +	},
+> +	{	/* 200 Ohm */
+> +		{ 150000, 261000 },
+> +		{ 200000, 346000 },
+> +		{ 250000, 428000 },
+> +		{ 300000, 511000 },
+> +	},
+> +};
+> +
+> +static const int lvds_vod_swing_clock_table[2][4][2] = {
+> +	{	/* 100 Ohm */
+> +		{ 140000, 244000 },
+> +		{ 168000, 290000 },
+> +		{ 195000, 335000 },
+> +		{ 226000, 381000 },
+> +	},
+> +	{	/* 200 Ohm */
+> +		{ 117000, 204000 },
+> +		{ 156000, 270000 },
+> +		{ 195000, 334000 },
+> +		{ 234000, 399000 },
+> +	},
+> +};
+> +
+>  static struct sn65dsi83 *bridge_to_sn65dsi83(struct drm_bridge *bridge)
+>  {
+>  	return container_of(bridge, struct sn65dsi83, bridge);
+> @@ -435,12 +477,16 @@ static void sn65dsi83_atomic_pre_enable(struct drm_bridge *bridge,
+>  		val |= REG_LVDS_FMT_LVDS_LINK_CFG;
+>  
+>  	regmap_write(ctx->regmap, REG_LVDS_FMT, val);
+> -	regmap_write(ctx->regmap, REG_LVDS_VCOM, 0x05);
+> +	regmap_write(ctx->regmap, REG_LVDS_VCOM,
+> +			REG_LVDS_VCOM_CHA_LVDS_VOD_SWING(ctx->lvds_vod_swing_conf[CHANNEL_A]) |
+> +			REG_LVDS_VCOM_CHB_LVDS_VOD_SWING(ctx->lvds_vod_swing_conf[CHANNEL_B]));
+>  	regmap_write(ctx->regmap, REG_LVDS_LANE,
+>  		     (ctx->lvds_dual_link_even_odd_swap ?
+>  		      REG_LVDS_LANE_EVEN_ODD_SWAP : 0) |
+> -		     REG_LVDS_LANE_CHA_LVDS_TERM |
+> -		     REG_LVDS_LANE_CHB_LVDS_TERM);
+> +		     (ctx->lvds_term_conf[CHANNEL_A] ?
+> +			  REG_LVDS_LANE_CHA_LVDS_TERM : 0) |
+> +		     (ctx->lvds_term_conf[CHANNEL_B] ?
+> +			  REG_LVDS_LANE_CHB_LVDS_TERM : 0));
+>  	regmap_write(ctx->regmap, REG_LVDS_CM, 0x00);
+>  
+>  	le16val = cpu_to_le16(mode->hdisplay);
+> @@ -576,10 +622,100 @@ static const struct drm_bridge_funcs sn65dsi83_funcs = {
+>  	.atomic_get_input_bus_fmts = sn65dsi83_atomic_get_input_bus_fmts,
+>  };
+>  
+> +static int sn65dsi83_select_lvds_vod_swing(struct device *dev,
+> +	u32 lvds_vod_swing_data[2], u32 lvds_vod_swing_clk[2], u8 lvds_term)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i <= 3; i++) {
+> +		if (lvds_vod_swing_data_table[lvds_term][i][0] >= lvds_vod_swing_data[0] &&
+> +		lvds_vod_swing_data_table[lvds_term][i][1] <= lvds_vod_swing_data[1] &&
+> +		lvds_vod_swing_clock_table[lvds_term][i][0] >= lvds_vod_swing_clk[0] &&
+> +		lvds_vod_swing_clock_table[lvds_term][i][1] <= lvds_vod_swing_clk[1])
+> +			return i;
+> +	}
+> +
+> +	dev_err(dev, "failed to find appropriate LVDS_VOD_SWING configuration\n");
+> +	return -EINVAL;
+> +}
+> +
+> +static int sn65dsi83_parse_lvds_endpoint(struct sn65dsi83 *ctx, int channel)
+> +{
+> +	struct device *dev = ctx->dev;
+> +	struct device_node *endpoint;
+> +	int endpoint_reg;
+> +	/* Set so the property can be freely selected if not defined */
+> +	u32 lvds_vod_swing_data[2] = { 0, 1000000 };
+> +	u32 lvds_vod_swing_clk[2] = { 0, 1000000 };
+> +	u32 lvds_term;
+> +	u8 lvds_term_conf = 0x1;
+> +	int lvds_vod_swing_conf = 0x1;
 
-Dummy usually used for rx, so combine the dummy buswidth check only
-for rx mode.
+Magic values
 
-Find issue after commit 98d1fb94ce75 ("mtd: spi-nor: core: replace
-dummy buswidth from addr to data") on imx8mn-ddr4-evk board. On this
-board, rx=4, tx=1, without the upper commit, chose SNOR_CMD_READ_1_1_4,
-after this commit, chose SNOR_CMD_READ(1_1_1). This is because when
-dummy buswidth = 4, spi_check_buswidth_req(mem, op->dummy.buswidth, true)
-do not return the expected result.
+> +	int ret = 0;
+> +	int ret_data;
+> +	int ret_clock;
+> +
+> +	if (channel == CHANNEL_A)
+> +		endpoint_reg = 2;
+> +	else
+> +		endpoint_reg = 3;
+> +
+> +	endpoint = of_graph_get_endpoint_by_regs(dev->of_node, endpoint_reg, -1);
+> +	if (!of_property_read_u32(endpoint, "ti,lvds-termination-ohms", &lvds_term)) {
 
-Combine the cmd.buswidth and addr.buswidth check to tx is reasonable,
-but for dummy buswidth, need to check the rx mode.
+The code has been better before:
+provide default for lvds_term, read the property (keeping the default in
+case of an error), then use the lvds_term to set up lvds_term_conf, as
+expected.
 
-Fixes: c36ff266dc82 ("spi: Extend the core to ease integration of SPI memory controllers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
----
- drivers/spi/spi-mem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> +		if (lvds_term == 100)
+> +			lvds_term_conf = OHM_100;
+> +		else
+> +			lvds_term_conf = OHM_200;
+> +	}
+> +
+> +	ctx->lvds_term_conf[channel] = lvds_term_conf;
+> +
+> +	ret_data = of_property_read_u32_array(endpoint,
+> +			"ti,lvds-vod-swing-data-microvolt", lvds_vod_swing_data,
+> +			ARRAY_SIZE(lvds_vod_swing_data));
+> +	if (ret_data != 0 && ret_data != -EINVAL) {
+> +		ret = ret_data;
+> +		goto exit;
+> +	}
+> +
+> +	ret_clock = of_property_read_u32_array(endpoint,
+> +			"ti,lvds-vod-swing-clock-microvolt", lvds_vod_swing_clk,
+> +			ARRAY_SIZE(lvds_vod_swing_clk));
+> +	if (ret_clock != 0 && ret_clock != -EINVAL) {
+> +		ret = ret_clock;
+> +		goto exit;
+> +	}
+> +
+> +	/* If any of the two properties is defined. */
+> +	if (!ret_data || !ret_clock) {
+> +		lvds_vod_swing_conf = sn65dsi83_select_lvds_vod_swing(dev,
+> +			lvds_vod_swing_data, lvds_vod_swing_clk,
+> +			lvds_term_conf);
+> +		if (lvds_vod_swing_conf < 0) {
+> +			ret = lvds_vod_swing_conf;
+> +			goto exit;
+> +		}
+> +	}
+> +
+> +	ctx->lvds_vod_swing_conf[channel] = lvds_vod_swing_conf;
+> +	ret = 0;
+> +exit:
+> +	of_node_put(endpoint);
+> +	return ret;
+> +}
+> +
+>  static int sn65dsi83_parse_dt(struct sn65dsi83 *ctx, enum sn65dsi83_model model)
+>  {
+>  	struct drm_bridge *panel_bridge;
+>  	struct device *dev = ctx->dev;
+> +	int ret;
+> +
+> +	ret = sn65dsi83_parse_lvds_endpoint(ctx, CHANNEL_A);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = sn65dsi83_parse_lvds_endpoint(ctx, CHANNEL_B);
+> +	if (ret < 0)
+> +		return ret;
+>  
+>  	ctx->lvds_dual_link = false;
+>  	ctx->lvds_dual_link_even_odd_swap = false;
+> -- 
+> 2.34.1
+> 
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index abc6792e738c..bc9f09a9e5a0 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -150,7 +150,7 @@ static bool spi_mem_check_buswidth(struct spi_mem *mem,
- 		return false;
- 
- 	if (op->dummy.nbytes &&
--	    spi_check_buswidth_req(mem, op->dummy.buswidth, true))
-+	    spi_check_buswidth_req(mem, op->dummy.buswidth, false))
- 		return false;
- 
- 	if (op->data.dir != SPI_MEM_NO_DATA &&
 -- 
-2.34.1
-
+With best wishes
+Dmitry
