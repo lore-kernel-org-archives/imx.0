@@ -1,379 +1,185 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2057.outbound.protection.outlook.com [40.107.22.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6EA2194C6A
-	for <imx@lists.linux.dev>; Tue, 10 Dec 2024 08:06:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733817982; cv=none; b=KpvjRvtGxmaxx2IIdkpN8mvrfpRJ635kzPAl2CoVvEFUAUcSmsWxB4D6eRpoMXrgcm+xQk5/vX9HjGGLG/cUW7Qbi47NBPuCpAQvFusMJYtHd8dZinNq+yGFXuCVLCJTKBuYr24AXujn5EGQe6LE30M00Lzsl0UVHn2+nLw92TI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733817982; c=relaxed/simple;
-	bh=Lrfbo6zQCTm9mTPXAsUwyIU60JKYWnaZ6IMpyGdbQds=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sdqF9wzGNeiozXwdtQa3VqXgea2XWBOSY66se6VmwGvaxEV0lRo0/TY9qZbF2/YTX/Azobm5rU8yArG5/SpFCXsel2OPJMtik6h0+X8HKJUD1JAxd0sEedZs/DjIBzRVN3CFV5rtHyBpkY3z1bEa73xuHCOzmr8Isy8YJQ29ZHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=Jflf3ByV; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585E3221DB9
+	for <imx@lists.linux.dev>; Tue, 10 Dec 2024 08:16:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733818606; cv=fail; b=XCqyrkCtyCdwf3fjS4IlmvF+cLkkT+LkcPxjjoKFotN5ss2WK+zUIS9Y6ByQEsKmasQDqakdhZ9AxvOgkUExNmIqGpchKBp2y7BXT33l2NvNod2lW8BDTd8MzIuKibfyVTCcWQ7BR515rHGVUwh4FucnL/B5DeLuCV0rYeM3P6o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733818606; c=relaxed/simple;
+	bh=xoXZQJm0a7qKjTtRLH0EID2PEooSQegcBY3y6RF7P5E=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=i7WIxcWv8vI0tHU/RUInsUx/wF6yxihOytPphmKG6jHNrJPScFjgiUw5PNxUWeocGQnwwXuw/bedSzJqQj4SNYzps5V+KtWcXL9Yct48t3LfG96QFCIknmEOH3pYoucr3Ns4lCkyqBSh+0eqiWa3FhOkpu/thTpi2V/OymKAeXk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=bTbRmg04; arc=fail smtp.client-ip=40.107.22.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="Jflf3ByV"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=jRzPBeNoDd8fIjJqfXOLjPmwwP4iWssBb0kRWNEAzWs=; b=Jflf3ByVJ/f8HNj9bef+gwyLLc
-	1fWSPaU7ptt5mKJz3e2Uz1bQ5KZDT9/jXnl4L1mp0QaCFL9LDtdpESRckf0OjBQKdVq2hEXJkMCLw
-	CIwfizz0+izYAQZ3R/igKxG3aEqR1f2pKBpGRwBSvPd1tHxOh6+0TyNO4O9Cwm30RizOnvRWuRJPL
-	Sgq5dsIY57EsYhUE+xbSJNmk6Rzzf1XpyHtJB2hSHlMnB6t2oKdqA8vwOrqZR6eeUvFZ25qlM+aV2
-	ieuRwRGt8LH8jbMO+VJeTwHiR2Z8eujHgQl6q7PC2NZwgGopBzuX4oiFQ+wcKW9580Ig1pqyo6UhF
-	7zSrEfOw==;
-Received: from [89.212.21.243] (port=38704 helo=[192.168.69.52])
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <andrej.picej@norik.com>)
-	id 1tKvFy-001XcI-25;
-	Tue, 10 Dec 2024 09:06:10 +0100
-Message-ID: <4a0b3e4e-c791-43cd-8f82-8d25fae71d64@norik.com>
-Date: Tue, 10 Dec 2024 09:06:07 +0100
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="bTbRmg04"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vrOKnoD6VlXNhi+DnEpA7PBoA2ZaCtRLdjh6tZVujP7hE5aRfq43WYIx9tzRqdIxEdif4l7wjRdPlUlrDIsQQaxmM7OQg14BTVG5eGg65HHYUFbTQku8tbxl+VQB3gqtlOj2TVLPl2z33FeQELDlThSBuRB0ID5r5tcZRfE5pQBw+43AhQutpvvLsM+Ls0dondVc8zvYHIYw/GaA8K930l31w6pKog98DeOdS8rXmtbQw9qmdjQJb7WlHsorf6oKkLzPi6LcvWbu0W3uEkgBz9izhMUc8B9VFGA5B573ZhTjZM6OozaFtV/T1Wk33P1WmRBdMd+/7kmuU2O93iZ97A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gBn+fsQBsW1chsXVuNjtxRRJdFBCrFeqhs1wikOpzR0=;
+ b=F8AYY4TzulrUGo+TSUKckWgkQ+9lREDTOoXY2IoeJAhjp/T4z8k+TWkOAtsncIU+SzmO4RbY4SrC2JeINct7bgvEtrtvskkZaNfXokofdoHyP/9+I/mIZ8z+B77CO57PkcryharpmmtNnk+PXflKpYLyUnyNNdq6nloKoxidbdqfKJzIqmrqYNft05yJHFauhTDyJkISAafWhHWxbqGWH0LIKcbMtr8zlGtaztN5ei1zIN31nryOZMrUou3n9cXrwbbsCcuOGKArJ6tTh903bmpMiaEfxtJqBlxTlA3fW1zvqTRN5WIhyCmEOaWIGmh2aO3gw+OyYrIYxVflfQvMvw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gBn+fsQBsW1chsXVuNjtxRRJdFBCrFeqhs1wikOpzR0=;
+ b=bTbRmg04ZhGEjLq8Gsdep1zRD1O+3EGAHJcih25Uha5TOykTDCfb95G3na4tXKN4HcTaHxYNaeSmrU4yK+xhbycPANPcUZJu5db/7wwBLHPqFafUcakFA+VABku1KuZ0atmrYvvu1oSYq0h3FSrWPM6W3q/J7Jz8pTY1FbA28jI2wGBl3HKI3ExS7m5hlY7kOG/jB7hj/t68wg4FbOONRhHG0tQMeAlDPP/52G5Qycsa7dXTl5ZhXWXpybx2Svv7OszHiR91o0Sn5e+TAoTpzxrIXjhE7UEWONLtZpi/mVwZkwyyiqS6nWNRMhyZyaytjpAq+Hw81MCfWpjzfaIBrw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS8PR04MB8676.eurprd04.prod.outlook.com (2603:10a6:20b:42b::10)
+ by GV1PR04MB10156.eurprd04.prod.outlook.com (2603:10a6:150:1ad::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.19; Tue, 10 Dec
+ 2024 08:16:40 +0000
+Received: from AS8PR04MB8676.eurprd04.prod.outlook.com
+ ([fe80::28b2:de72:ad25:5d93]) by AS8PR04MB8676.eurprd04.prod.outlook.com
+ ([fe80::28b2:de72:ad25:5d93%5]) with mapi id 15.20.8230.016; Tue, 10 Dec 2024
+ 08:16:40 +0000
+From: Richard Zhu <hongxing.zhu@nxp.com>
+To: dlemoal@kernel.org,
+	jingoohan1@gmail.com,
+	bhelgaas@google.com,
+	lpieralisi@kernel.org,
+	kw@linux.com,
+	manivannan.sadhasivam@linaro.org,
+	robh@kernel.org,
+	frank.li@nxp.com,
+	quic_krichai@quicinc.com
+Cc: imx@lists.linux.dev,
+	kernel@pengutronix.de,
+	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/2] Bug fixes when dwc generic suspend/resume callbacks are used
+Date: Tue, 10 Dec 2024 16:15:55 +0800
+Message-Id: <20241210081557.163555-1-hongxing.zhu@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR02CA0050.apcprd02.prod.outlook.com
+ (2603:1096:4:196::11) To AS8PR04MB8676.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42b::10)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/3] drm/bridge: ti-sn65dsi83: Add ti,lvds-vod-swing
- optional properties
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
- Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, airlied@gmail.com, simona@ffwll.ch,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, marex@denx.de, dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- upstream@lists.phytec.de
-References: <20241205134021.2592013-1-andrej.picej@norik.com>
- <20241205134021.2592013-3-andrej.picej@norik.com>
- <nbumcptoi5hwehjbrynf6dh2wrz7a4ugqblrjxyswvj7udkf3u@6qikclizqfjr>
- <e420579f-25b2-41ca-9627-130d67c51541@norik.com>
- <xkrk3vdw7yhj22ornqog7wovqctgrolfcxbl43u7ddgstjqsbl@h22hxlld6zqg>
-Content-Language: en-US
-From: Andrej Picej <andrej.picej@norik.com>
-Autocrypt: addr=andrej.picej@norik.com; keydata=
- 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
- xtT/8OxBOVSHvA==
-In-Reply-To: <xkrk3vdw7yhj22ornqog7wovqctgrolfcxbl43u7ddgstjqsbl@h22hxlld6zqg>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
-X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8676:EE_|GV1PR04MB10156:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0e04b933-b44a-4ee8-51e0-08dd18f2f913
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|7416014|376014|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?/Ih9+/Wk9oYdaK01anTNmPeiG1LW5JPm1msHYdTACpKUrr9NAlNaItY2eavL?=
+ =?us-ascii?Q?JacuzIeGZGuM9M/CtZkES2rJlAKSmzSBDFPbnQdKOahA88F+MIzntclE9Zhn?=
+ =?us-ascii?Q?2QS86BMrhb+6qpLAsH/xaKlk5xrPt1VaUSLDVR6t0C/QiWpMRz2WCbvRRGUu?=
+ =?us-ascii?Q?4WkcIvVXLJGZGKKxFG7g9O0HuoC7dqAoZTsZksChJRvHQcvcvNcDryc3O9AI?=
+ =?us-ascii?Q?XLvKmpM1E9j1SiUqHMsur2KpW6PTQvTyz0CC9dZTbmnUi72uaOpaM8nIRkpf?=
+ =?us-ascii?Q?he8aSBAx0atZ6glHTh5HfMolC2pDQQ4V+w5NmTMAOyxs8zQFGxRTlcPZFmb9?=
+ =?us-ascii?Q?rBFIZqdUAUpSn2JoTrOYNhceLr8dfMpQOaYo3veLuLoJj1r6/slLIaKLg61a?=
+ =?us-ascii?Q?2s7WMw9q8Ry69v46t4Ow4nwjFDJww64tuJjlayySb28bI5EVfIF9X3qsoJoD?=
+ =?us-ascii?Q?5fjgu7h4AzlmwdoaXGYJI/S3zdOpo9CXMDM2JFNDluphFr+xk6yZ3dKfF3mz?=
+ =?us-ascii?Q?BwbUsoiWGwK72ZMYb8qIXvXKLl4LmeojGZD1izZWUhAIf3RL08xo88NmkARg?=
+ =?us-ascii?Q?jXx9UBp2LlbhqU2zQ76zZlfBOLrmc8yA0vStWIagamozmNqhNnZZODbPiYSI?=
+ =?us-ascii?Q?NhQnq4YL+XxI5j8RejY1k7Qjwhx7k084N/qRB9FZEfTYxP0p3nh3/cunW+7I?=
+ =?us-ascii?Q?i4JnthSOLRIKH141fORkvLvyjxS/mUvL9Iwx6SZjO8EN7PvrltCsNVhWKrKn?=
+ =?us-ascii?Q?em4LbwYg4aG0vkpUPiJj2ViYmfvoJBhcboYDer89Xspc7vqfo2gPxJOpHsTo?=
+ =?us-ascii?Q?+dqwrPm5DjF6pB+ZT4kX6aS/lDSa8qy+bHGqjO2WkEOI4MbREyY6MFUFz9pF?=
+ =?us-ascii?Q?6dRUXcqJB2jSfgBy992/xM/cSlSfMwKAemM3mlPej7ROXUjvLQAH00q2EZqf?=
+ =?us-ascii?Q?Mx2qgyyGQ82ahEPv1FpaZuNKcQdIHevGenhVdFVKEl5CoRRL5CNoHiWrtp+v?=
+ =?us-ascii?Q?BdDaW22rx2J9JZVL+rklvr6bQXdca5RckcaQwtUN5Giqal5hA0OtySQbieNq?=
+ =?us-ascii?Q?pZOwYaWAL7Z+MeKreRDlHvYy7sB3Dxwoo6cw3O8/m5KJyuKBbz/jOKqsFY3P?=
+ =?us-ascii?Q?Lu3mF5dDtCb395gy+CrqG7g1LfajO5UDzc8EFNO3Ny/Y5xjaWzL8O2XAUHcp?=
+ =?us-ascii?Q?cTE0DPhL8KEUQDfq2YU49VQJHX04iQ7xVtGVpkICmpJ4GIRr1pXUHrTJN0uB?=
+ =?us-ascii?Q?woKOJm0oBLHsU87tBtQSDE9q3D16IE/134HkmhGc0i3avXX2I7M1Od1NSwFN?=
+ =?us-ascii?Q?oRNP78xpzlGh5oV1vmK/fhu+EJhWDm+yIiyXjoUpWQGCl3FsbPq0qi9bIG6M?=
+ =?us-ascii?Q?LqA2SLCi4R1HQpUVVoXy15qtK5izUGESXkJWpHHR4OgsxYtRIA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8676.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?NAIuVjkO47S9A/5tC6fN8uXabzAV9F/Rzp9p2hOwAH1t8AudJWBoR3ObItP8?=
+ =?us-ascii?Q?hEYLl3bfEDJ8uX7oBfjIdebdr/PgS+IhIA6BoMVCe5v78zuEhkAvqYmpzVEE?=
+ =?us-ascii?Q?M+ao091tnhNd15ao+JB1DznNHazAR5ycQTr32ASVynqhLe7ptHkHD2TkVvxr?=
+ =?us-ascii?Q?n7ee+F73IWlN2GyBB5YQ0YHS+EVOo7B3hySp9+Gyh4KA9hPMs5hOJmshCMf+?=
+ =?us-ascii?Q?VIBN6lc0AP5ysKNiH59S+qDt2xWboj5Dya0uNa3U6bde4rFXAK+fdeOXacNT?=
+ =?us-ascii?Q?Jj9gvsGoInaVrpRwigD6ToRDLvrZJee3d1YbkzzkEEMsJUb3T2WW1MwpVNfE?=
+ =?us-ascii?Q?5qxS2zEHqOqLv807Lttnt1mxfwHul4VsI0GIaplJo7X8J8qf3yi08HH/TXDn?=
+ =?us-ascii?Q?rZd56yfo7Q4EF5Mj6Qfx2EDYv3l59P8uh5oTXnfXgXwQ7nfsffsp2xR2u/cF?=
+ =?us-ascii?Q?GMpbzwkS4UW0zyQd+/Dnxci2q+G9yw877riuwlJv+/AKfsnaT5Vf4yxHYPhC?=
+ =?us-ascii?Q?z5TKt6CpOqyaRk7TouaeCmAISBrBUGpcSbXHeZJhUZ1pt8T/Or9by2azNPMV?=
+ =?us-ascii?Q?D7Wdo3ahT21cqy1CupUBwHAEr6qo1L8tf2Per9p5le1kdbcwQIz5gCQToOq7?=
+ =?us-ascii?Q?3jOGk79uK+F8WhfVuWZiGpdoIlxTaWb50g1ybV7Y+z0ADlgvuRmgtDNCLGoE?=
+ =?us-ascii?Q?i1NY08uIylFGC12MG3CZONRtEx6Pn9FNyIMmd6alXJcXyobv0xFyzsaKy9sr?=
+ =?us-ascii?Q?mmvHoR0zJr3uzvIdLSRzoRFbh83q+6LBfrFPexBcH/BM7eyeSHzpJuxlT9G5?=
+ =?us-ascii?Q?mhysGIJSM4f4a2aA1QFmX+NKBAeK2txtsWwzgfFCkU/ORPR7MBl3bZDTpxV+?=
+ =?us-ascii?Q?CqpPTeyely3UVjmSO42MVqUuXJYBFqWRCWeoEvOyxQQXuJ9kvJVL7tBPo8BY?=
+ =?us-ascii?Q?S5qz8jqyX1GwxYUybbVno9hZj1M04jUK0F6t0v/bDMI8eu7m7eW5Z+RtiJet?=
+ =?us-ascii?Q?LBQSIFb0vxwYBkc74+oSNxctlUNz5zSnoMhkZ5zbcr11yEt/k4Uah/H6CKdT?=
+ =?us-ascii?Q?VfAvZ+sOoTfpSR8iSmKNiekjF6c+QxuLOdGwfrvFFMdGDdq2nudM6KC/3jsh?=
+ =?us-ascii?Q?zMDwvYAQY7JMHtWcfSpta3XvVfF48ld4LBcYys5PNmc6kMw+4RHO0Tg7bICF?=
+ =?us-ascii?Q?7Pmr/2P5DodN5DAm1BnNKW2GueyuOnb+PkUkCwiRZ8Z+tmDhrqLo9V/IpLWX?=
+ =?us-ascii?Q?QXRuCkZZxh/dQxWUChezMfmTVDg5ru5pdeBymqRPMKrI47zy9Cc1MAva+PLa?=
+ =?us-ascii?Q?29tiKMz+mb7axfdTU5gDQHJZYoR6R2jHMvFLsZdwXSQp4TvIF13OMJl5FIVl?=
+ =?us-ascii?Q?+vGHXDHjB9OfLTeITYJqLQC9pRv5EoGWAd3F58lkf4d8myrBG/VqlebYh4ol?=
+ =?us-ascii?Q?UVD83aI2O5z21aY3z9TSgnLJ+1M9PZe9pXSzfePSBgR88Tr2FsTXs8jsM+i9?=
+ =?us-ascii?Q?sSqGLkdAo2gcW7cki0AUpbP52vdsbfw9tRXhk9o3t/oInfsT4Qj6w5UA+pvE?=
+ =?us-ascii?Q?ifEXL/Gj/IzOf5ukdq8o5uiPT6WinfRQrzj/pajY?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0e04b933-b44a-4ee8-51e0-08dd18f2f913
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8676.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2024 08:16:40.1302
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rcEAUFrr5aoU6DSBjRAoREgV+t87dji+TDLlX8xzhwdvDuzGjOevZF6JfQVQGzh/6jr3Mwd3Kn9knVMOV1820g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10156
 
+Some bug fixes when DWC generic suspend/resume callbacks are used.
+Drop the first patch of v3 patch-set, since the use case of this patch had been
+covered by #3 commit "PCI: dwc: Clean up some unnecessary codes in dw_pcie_suspend_noirq()".
+To be simple, re-format the codes, drop the first patch of v3 patch-set, and
+only keep last two patches of v3 in v4 or later
 
+Here is the discussion [1] and final solution [2] of the codes clean up commit.
+[1] https://patchwork.kernel.org/project/linux-pci/patch/1721628913-1449-1-git-send-email-hongxing.zhu@nxp.com/
+[2] https://patchwork.kernel.org/project/linux-pci/patch/20241126073909.4058733-1-hongxing.zhu@nxp.com/
 
-On 10. 12. 24 02:18, Dmitry Baryshkov wrote:
-> On Mon, Dec 09, 2024 at 08:56:29AM +0100, Andrej Picej wrote:
->> Hi Dmitry,
->>
->> On 5. 12. 24 23:48, Dmitry Baryshkov wrote:
->>> On Thu, Dec 05, 2024 at 02:40:20PM +0100, Andrej Picej wrote:
->>>> Add a optional properties to change LVDS output voltage. This should not
->>>> be static as this depends mainly on the connected display voltage
->>>> requirement. We have three properties:
->>>> - "ti,lvds-termination-ohms", which sets near end termination,
->>>> - "ti,lvds-vod-swing-data-microvolt" and
->>>> - "ti,lvds-vod-swing-clock-microvolt" which both set LVDS differential
->>>> output voltage for data and clock lanes. They are defined as an array
->>>> with min and max values. The appropriate bitfield will be set if
->>>> selected constraints can be met.
->>>>
->>>> If "ti,lvds-termination-ohms" is not defined the default of 200 Ohm near
->>>> end termination will be used. Selecting only one:
->>>> "ti,lvds-vod-swing-data-microvolt" or
->>>> "ti,lvds-vod-swing-clock-microvolt" can be done, but the output voltage
->>>> constraint for only data/clock lanes will be met. Setting both is
->>>> recommended.
->>>>
->>>> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
->>>> ---
->>>> Changes in v4:
->>>> - fix typo in commit message bitfiled -> bitfield
->>>> - use arrays (lvds_vod_swing_conf and lvds_term_conf) in private data, instead
->>>> of separate variables for channel A/B
->>>> - add more checks on return value of "of_property_read_u32_array"
->>>> Changes in v3:
->>>> - use microvolts for default array values 1000 mV -> 1000000 uV.
->>>> Changes in v2:
->>>> - use datasheet tables to get the proper configuration
->>>> - since major change was done change the authorship to myself
->>>> ---
->>>>    drivers/gpu/drm/bridge/ti-sn65dsi83.c | 147 +++++++++++++++++++++++++-
->>>>    1 file changed, 144 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
->>>> index 57a7ed13f996..f724d2a6777b 100644
->>>> --- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
->>>> +++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
->>>> @@ -132,6 +132,16 @@
->>>>    #define  REG_IRQ_STAT_CHA_SOT_BIT_ERR		BIT(2)
->>>>    #define  REG_IRQ_STAT_CHA_PLL_UNLOCK		BIT(0)
->>>> +enum sn65dsi83_channel {
->>>> +	CHANNEL_A,
->>>> +	CHANNEL_B
->>>> +};
->>>> +
->>>> +enum sn65dsi83_lvds_term {
->>>> +	OHM_100,
->>>> +	OHM_200
->>>> +};
->>>> +
->>>>    enum sn65dsi83_model {
->>>>    	MODEL_SN65DSI83,
->>>>    	MODEL_SN65DSI84,
->>>> @@ -147,6 +157,8 @@ struct sn65dsi83 {
->>>>    	struct regulator		*vcc;
->>>>    	bool				lvds_dual_link;
->>>>    	bool				lvds_dual_link_even_odd_swap;
->>>> +	int				lvds_vod_swing_conf[2];
->>>> +	int				lvds_term_conf[2];
->>>>    };
->>>>    static const struct regmap_range sn65dsi83_readable_ranges[] = {
->>>> @@ -237,6 +249,36 @@ static const struct regmap_config sn65dsi83_regmap_config = {
->>>>    	.max_register = REG_IRQ_STAT,
->>>>    };
->>>> +static const int lvds_vod_swing_data_table[2][4][2] = {
->>>> +	{	/* 100 Ohm */
->>>> +		{ 180000, 313000 },
->>>> +		{ 215000, 372000 },
->>>> +		{ 250000, 430000 },
->>>> +		{ 290000, 488000 },
->>>> +	},
->>>> +	{	/* 200 Ohm */
->>>> +		{ 150000, 261000 },
->>>> +		{ 200000, 346000 },
->>>> +		{ 250000, 428000 },
->>>> +		{ 300000, 511000 },
->>>> +	},
->>>> +};
->>>> +
->>>> +static const int lvds_vod_swing_clock_table[2][4][2] = {
->>>> +	{	/* 100 Ohm */
->>>> +		{ 140000, 244000 },
->>>> +		{ 168000, 290000 },
->>>> +		{ 195000, 335000 },
->>>> +		{ 226000, 381000 },
->>>> +	},
->>>> +	{	/* 200 Ohm */
->>>> +		{ 117000, 204000 },
->>>> +		{ 156000, 270000 },
->>>> +		{ 195000, 334000 },
->>>> +		{ 234000, 399000 },
->>>> +	},
->>>> +};
->>>> +
->>>>    static struct sn65dsi83 *bridge_to_sn65dsi83(struct drm_bridge *bridge)
->>>>    {
->>>>    	return container_of(bridge, struct sn65dsi83, bridge);
->>>> @@ -435,12 +477,16 @@ static void sn65dsi83_atomic_pre_enable(struct drm_bridge *bridge,
->>>>    		val |= REG_LVDS_FMT_LVDS_LINK_CFG;
->>>>    	regmap_write(ctx->regmap, REG_LVDS_FMT, val);
->>>> -	regmap_write(ctx->regmap, REG_LVDS_VCOM, 0x05);
->>>> +	regmap_write(ctx->regmap, REG_LVDS_VCOM,
->>>> +			REG_LVDS_VCOM_CHA_LVDS_VOD_SWING(ctx->lvds_vod_swing_conf[CHANNEL_A]) |
->>>> +			REG_LVDS_VCOM_CHB_LVDS_VOD_SWING(ctx->lvds_vod_swing_conf[CHANNEL_B]));
->>>>    	regmap_write(ctx->regmap, REG_LVDS_LANE,
->>>>    		     (ctx->lvds_dual_link_even_odd_swap ?
->>>>    		      REG_LVDS_LANE_EVEN_ODD_SWAP : 0) |
->>>> -		     REG_LVDS_LANE_CHA_LVDS_TERM |
->>>> -		     REG_LVDS_LANE_CHB_LVDS_TERM);
->>>> +		     (ctx->lvds_term_conf[CHANNEL_A] ?
->>>> +			  REG_LVDS_LANE_CHA_LVDS_TERM : 0) |
->>>> +		     (ctx->lvds_term_conf[CHANNEL_B] ?
->>>> +			  REG_LVDS_LANE_CHB_LVDS_TERM : 0));
->>>>    	regmap_write(ctx->regmap, REG_LVDS_CM, 0x00);
->>>>    	le16val = cpu_to_le16(mode->hdisplay);
->>>> @@ -576,10 +622,101 @@ static const struct drm_bridge_funcs sn65dsi83_funcs = {
->>>>    	.atomic_get_input_bus_fmts = sn65dsi83_atomic_get_input_bus_fmts,
->>>>    };
->>>> +static int sn65dsi83_select_lvds_vod_swing(struct device *dev,
->>>> +	u32 lvds_vod_swing_data[2], u32 lvds_vod_swing_clk[2], u8 lvds_term)
->>>> +{
->>>> +	int i;
->>>> +
->>>> +	for (i = 0; i <= 3; i++) {
->>>> +		if (lvds_vod_swing_data_table[lvds_term][i][0] >= lvds_vod_swing_data[0] &&
->>>> +		lvds_vod_swing_data_table[lvds_term][i][1] <= lvds_vod_swing_data[1] &&
->>>> +		lvds_vod_swing_clock_table[lvds_term][i][0] >= lvds_vod_swing_clk[0] &&
->>>> +		lvds_vod_swing_clock_table[lvds_term][i][1] <= lvds_vod_swing_clk[1])
->>>> +			return i;
->>>> +	}
->>>> +
->>>> +	dev_err(dev, "failed to find appropriate LVDS_VOD_SWING configuration\n");
->>>> +	return -EINVAL;
->>>> +}
->>>> +
->>>> +static int sn65dsi83_parse_lvds_endpoint(struct sn65dsi83 *ctx, int channel)
->>>> +{
->>>> +	struct device *dev = ctx->dev;
->>>> +	struct device_node *endpoint;
->>>> +	/* Set so the property can be freely selected if not defined */
->>>> +	u32 lvds_vod_swing_data[2] = { 0, 1000000 };
->>>> +	u32 lvds_vod_swing_clk[2] = { 0, 1000000 };
->>>> +	u32 lvds_term = 200;
->>>> +	u8 lvds_term_conf;
->>>> +	int endpoint_reg;
->>>> +	int lvds_vod_swing_conf;
->>>> +	int ret = 0;
->>>> +	int ret_data;
->>>> +	int ret_clock;
->>>> +
->>>> +	if (channel == CHANNEL_A)
->>>> +		endpoint_reg = 2;
->>>> +	else
->>>> +		endpoint_reg = 3;
->>>> +
->>>> +	endpoint = of_graph_get_endpoint_by_regs(dev->of_node, endpoint_reg, -1);
->>>> +	of_property_read_u32(endpoint, "ti,lvds-termination-ohms", &lvds_term);
->>>> +
->>>> +	if (lvds_term == 200)
->>>> +		lvds_term_conf = OHM_200;
->>>> +	else
->>>> +		lvds_term_conf = OHM_100;
->>>> +
->>>> +	ctx->lvds_term_conf[channel] = lvds_term_conf;
->>>> +
->>>> +	ret_data = of_property_read_u32_array(endpoint,
->>>> +			"ti,lvds-vod-swing-data-microvolt", lvds_vod_swing_data,
->>>> +			ARRAY_SIZE(lvds_vod_swing_data));
->>>> +	if (ret_data != 0 && ret_data != -EINVAL) {
->>>> +		ret = ret_data;
->>>> +		goto exit;
->>>> +	}
->>>> +
->>>> +	ret_clock = of_property_read_u32_array(endpoint,
->>>> +			"ti,lvds-vod-swing-clock-microvolt", lvds_vod_swing_clk,
->>>> +			ARRAY_SIZE(lvds_vod_swing_clk));
->>>> +	if (ret_clock != 0 && ret_clock != -EINVAL) {
->>>> +		ret = ret_clock;
->>>> +		goto exit;
->>>> +	}
->>>> +
->>>> +	/* If any of the two properties is defined. */
->>>> +	if (!ret_data || !ret_clock) {
->>>> +		lvds_vod_swing_conf = sn65dsi83_select_lvds_vod_swing(dev,
->>>> +			lvds_vod_swing_data, lvds_vod_swing_clk,
->>>> +			lvds_term_conf);
->>>> +		if (lvds_vod_swing_conf < 0) {
->>>> +			ret = lvds_vod_swing_conf;
->>>> +			goto exit;
->>>> +		}
->>>> +
->>>> +		ctx->lvds_vod_swing_conf[channel] = lvds_vod_swing_conf;
->>>> +	}
->>>> +	ret = 0;
->>>> +exit:
->>>> +	of_node_put(endpoint);
->>>> +	return ret;
->>>> +}
->>>> +
->>>>    static int sn65dsi83_parse_dt(struct sn65dsi83 *ctx, enum sn65dsi83_model model)
->>>>    {
->>>>    	struct drm_bridge *panel_bridge;
->>>>    	struct device *dev = ctx->dev;
->>>> +	int ret;
->>>> +
->>>> +	ctx->lvds_vod_swing_conf[CHANNEL_A] = 0x1;
->>>> +	ctx->lvds_vod_swing_conf[CHANNEL_B] = 0x1;
->>>> +	ctx->lvds_term_conf[CHANNEL_A] = 0x1;
->>>> +	ctx->lvds_term_conf[CHANNEL_B] = 0x1;
->>>
->>> These match the defaults in sn65dsi83_parse_lvds_endpoint(). Do we
->>> really need those?
->>
->> Yes, I think we do. This ensures that defaults are used even when property
->> is not defined/LVDS channel is not used. So also LVDS channel B defaults are
->> set even for sn65dsi83 (single LVDS output). Keeping the same reg values as
->> before these changes.
-> 
-> You can move sn65dsi83_parse_lvds_endpoint() out of the if() and get the
-> same result. Duplicating data (or code) is a bad idea, because it's easy
-> to update one point and miss another point. And then usually one has a
-> nice debugging session, trying to understand why their changes didn't
-> work out.
+v4 changes:
+Drop the first patch("PCI: dwc: Fix resume failure if no EP is connected on some platforms")
+in v3, since it's use-case had been covered by #3 patch of v3.
+Add one Fixes tag into "PCI: dwc: Clean up some unnecessary codes in dw_pcie_suspend_noirq()".
+Refer to Damien's comments, let ret test go inside the "else" and remove the
+initialization of ret to 0 declaration. Thanks.
 
-Ok I see what you are trying to accomplish. I'll set default values in 
-sn65dsi83_parse_lvds_endpoint() in v5 like you suggested. Thanks.
+v3 changes:
+Regarding the discussion listed above[2].
+Resend the patch-set after adding one more codes clean up patch together.
 
-Best regards,
-Andrej
+v2 changes:
+Thanks for Manivannan's review.
+- Refine the subject of second patch and add
+  "Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>"
+- In first patch, update the commit message and move one comment into
+  proper place.
+  BTW, Manivannan found another potential issue that suspend is entry but
+  the link is in L1SS stat in v1 review. This is a new story. And it's better
+  to be verified and fixed by another commit later.
+v2: https://patchwork.kernel.org/project/linux-pci/cover/1728539269-1861-1-git-send-email-hongxing.zhu@nxp.com/
 
-> 
->>
->> Best regards,
->> Andrej
->>
->>
->>>
->>>> +
->>>> +	ret = sn65dsi83_parse_lvds_endpoint(ctx, CHANNEL_A);
->>>> +	if (ret < 0)
->>>> +		return ret;
->>>>    	ctx->lvds_dual_link = false;
->>>>    	ctx->lvds_dual_link_even_odd_swap = false;
->>>> @@ -587,6 +724,10 @@ static int sn65dsi83_parse_dt(struct sn65dsi83 *ctx, enum sn65dsi83_model model)
->>>>    		struct device_node *port2, *port3;
->>>>    		int dual_link;
->>>> +		ret = sn65dsi83_parse_lvds_endpoint(ctx, CHANNEL_B);
->>>> +		if (ret < 0)
->>>> +			return ret;
->>>> +
->>>>    		port2 = of_graph_get_port_by_id(dev->of_node, 2);
->>>>    		port3 = of_graph_get_port_by_id(dev->of_node, 3);
->>>>    		dual_link = drm_of_lvds_get_dual_link_pixel_order(port2, port3);
->>>> -- 
->>>> 2.34.1
->>>>
->>>
-> 
+[PATCH v4 1/2] PCI: dwc: Always stop link in the
+[PATCH v4 2/2] PCI: dwc: Clean up some unnecessary codes in
+
+drivers/pci/controller/dwc/pcie-designware-host.c | 28 ++++++++++++++++++----------
+drivers/pci/controller/dwc/pcie-designware.h      |  1 +
+2 files changed, 19 insertions(+), 10 deletions(-)
+
