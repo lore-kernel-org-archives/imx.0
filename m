@@ -1,401 +1,477 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2076.outbound.protection.outlook.com [40.107.21.76])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C882080FA
-	for <imx@lists.linux.dev>; Tue, 10 Dec 2024 09:34:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.76
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733823253; cv=fail; b=fhQgz+2nNObOvauaCKV1NPRlFc0k+yhY2G1Ik/sQv+2C8BJ9dJRorHhbfpGq6HAPMs72HhBXDX+UxW/s2Y/cD9YVYqSlmRUltCDgflH7sU6F9AV9l+p1ovlEEgmBPDltkSechOAtq84DB99pBNN9LH4vSFqlRVbRecYl8w8P/ew=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733823253; c=relaxed/simple;
-	bh=fXqNW0mn4JAV/NGGulGUGHg63ZzNDFHs9C1oJ4ohAwg=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=B0burP/BVSO0px9hBLhGZUcFMIDtGCFRCYG+hK+DU2dzyg5vPg1eue+7voGCuCulmIN54+WMA4kpVZDYXKcwPFg+85aLNhWA261/3vqkbsrGfWWXLkKxa+Q/LIDHhnnVa50VswrsFpyYOrm7YEJkd538KvTO2vfAf9IA6l7zjTM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=tvIsBlIj; arc=fail smtp.client-ip=40.107.21.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="tvIsBlIj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JUGzfUhSJIFRwa8GYfoi/mgUgv+M1mhvM5ZZ1BbGzvf4fSNINuoYU5fDLYjTKWImUjQBVkXbiOIQMmyx4PF8p9XGQAumSa7Qbbtx8kuR0XJbbt2NCmQTi0H2p/DVJFrDw8mS76muf/cFaWinORqK80tr/EbqW3IB7MsdgkqVTUBFRhpRpjGikqPYgTW6FyBwyFuKVPeTjQboIPOVMqPedp+IwwrICduUdfks3ITKawugsok2qtu5/EVf5CgbArWm7GALkeoKys0djm5g9NSvT6CpmlT7WAN7KXCZtzVLQ4T3iBlzFb8Wrl3JDgJKuNb6uDJKh8cOE3pg40TX/8CUZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=M2eesSLVrGqvwAXCsGKjIszKMAd3pbGkwZgkFT5kWY0=;
- b=ML23WQ9/i3FiTEJC0xegNW346LMAopNFzMpvcy746zACASSLH+0hvP12taoG+6NXUP1ZENJSNkNMmrPv3dn5sQXqDZVtaL/GGFB6z29Xg8R2ZaSne19/OckcLx1b64fQUVWn3663WFXpRzb1PeXcHxjTqRuQVijnMm+yO8mQ+1hvk2gO7oAlNndpO7juwBUb5Uxf/UDrREj4GG1pgFLJemCBuhQ8vRQILFTmjDqk8ECx1aD+5GY9Ha8BzPLzlArfAhrewVy5HW6xnPOp2iHdA17ni0mQ5BjFUPpDMfzF3goLpd7gfjls+F21aKTmB0u3HD1v+NXL++Cyhnf7qt9MiQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=M2eesSLVrGqvwAXCsGKjIszKMAd3pbGkwZgkFT5kWY0=;
- b=tvIsBlIjtWLIrQ8MGOUZDTzUggBa0nXN2KBVb1oukfPY8ntFDXsbUkx4bwcmSatYP642+DKTZ/Lo4bB8tziVlKhJPJKB2Ifm4eN+cmcque/CwblBmnPkpdrKmZvpaFD3RdmB51LQOfgHRDwoP0BXYxsaO7MIV0fLUeYkEk4/lsIkBBCSxeXgbpS2qOqYaLtNMDUSlasHqZKnnKpP68tHLRKumWtNtt1T9KHK2ExYBjckB3/3A6HGbJ3miu+2NqjYxZ5YncKrnP/wEk2uZ+9Tv/nW/mYc8mDxhW1z+NkEHJiBd/RHUC0z6/pAezTJkiTHsvUy4NAGXJOHCIP6AyFbOA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
- by PA2PR04MB10513.eurprd04.prod.outlook.com (2603:10a6:102:416::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.19; Tue, 10 Dec
- 2024 09:34:07 +0000
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::2755:55ac:5d6f:4f87]) by PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::2755:55ac:5d6f:4f87%6]) with mapi id 15.20.8230.016; Tue, 10 Dec 2024
- 09:34:07 +0000
-From: Ming Qian <ming.qian@oss.nxp.com>
-To: mchehab@kernel.org,
-	hverkuil-cisco@xs4all.nl
-Cc: nicolas@ndufresne.ca,
-	shawnguo@kernel.org,
-	robh+dt@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	linux-imx@nxp.com,
-	xiahong.bao@nxp.com,
-	eagle.zhou@nxp.com,
-	tao.jiang_2@nxp.com,
-	ming.qian@oss.nxp.com,
-	imx@lists.linux.dev,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2FF23DE8D
+	for <imx@lists.linux.dev>; Tue, 10 Dec 2024 10:37:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733827032; cv=none; b=rTk1dBDJYML87z84OFOwezLedt1vVrHHVbhtzkv5rnUrwx2Mh6PZDeb4uuvkkZ1wecBSkGW7smSAyAC4R+I8xm3qKVmgLxxJGJapaGplCZ4FzcqKqPI7Irf+X6A+etVFprzSKvDUaUzRc8UW2cdlznICDihW6TP7JVyuZFcxw+Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733827032; c=relaxed/simple;
+	bh=suPiFHdwUXxu5Dm1/7yFbyIMoADlOtHrkoTWTSmgaiw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q0BkEFHLozyUKZl39WDjaWxx6zGq+MqLOYu56w2fILuR2lZr4JeDE+4e5Y0hdI7ULHatXcdpBo7nHJGlU6jGHL/6wWzkOe6CazG9alx8le9VajfTlRF0Lk5Va+QNrYdYyTDIKf1MtVfp3Icq7G74wmZkp11Zfgm4COIeZQUUuio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tKxbk-0000PX-Hu; Tue, 10 Dec 2024 11:36:48 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tKxbi-002frZ-0N;
+	Tue, 10 Dec 2024 11:36:46 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tKxbi-008Te3-2U;
+	Tue, 10 Dec 2024 11:36:46 +0100
+Date: Tue, 10 Dec 2024 11:36:46 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengfei Li <pengfei.li_1@nxp.com>, devicetree@vger.kernel.org,
+	Peng Fan <peng.fan@nxp.com>, imx@lists.linux.dev,
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2] media: amphion: Add H264 and HEVC profile and level control
-Date: Tue, 10 Dec 2024 18:33:37 +0900
-Message-ID: <20241210093337.3779686-1-ming.qian@oss.nxp.com>
-X-Mailer: git-send-email 2.43.0-rc1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR03CA0089.apcprd03.prod.outlook.com
- (2603:1096:4:7c::17) To PAXPR04MB8254.eurprd04.prod.outlook.com
- (2603:10a6:102:1cd::24)
+Subject: Re: [PATCH 2/2] thermal: imx91: Add support for i.MX91 thermal
+ monitoring unit
+Message-ID: <20241210103646.7gblp7mzxbna5gas@pengutronix.de>
+References: <20241209-imx91tmu-v1-0-7859c5387f31@nxp.com>
+ <20241209-imx91tmu-v1-2-7859c5387f31@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|PA2PR04MB10513:EE_
-X-MS-Office365-Filtering-Correlation-Id: befa00e1-d83f-444c-d9a1-08dd18fdcb0c
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|52116014|376014|7416014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?QiBJTBDuv80Qt5XH1azb1vATTr5KnsD9gmptLN+n2TwWdT7RhacL8nNNspkQ?=
- =?us-ascii?Q?9OXeIcVhivebveFiJ9BD/g2qdF9wsovRVuv34i8rIb55mfqFBD7dwI84oDrn?=
- =?us-ascii?Q?QgOPzkpksaNGTpzHvHATPcxVTzHJ65uujr8qvTwj7GxquKyfFt46gO8n7sGN?=
- =?us-ascii?Q?B34DJxFa/IeBIV9R3BWRnXXvJs3oqnblX6jpCch5AiWQ8WS2svsVnN+zoXqD?=
- =?us-ascii?Q?BdimqvEp1OVtJbIylxmqKgtbFo++FPN6nvMXamwGl9Xu5xgLQtrS8IMgdmA2?=
- =?us-ascii?Q?hJ3dArF5V2q9pCjI/iHHN4+7c1FzlstZ66GTx57JIEWiXzpL3KrBs3vp+scG?=
- =?us-ascii?Q?JZDZhPLI2xdbmVGFHkFkPT41nivC2ebt8EW4baXcA1qA1I1GD4K+oi7MXlge?=
- =?us-ascii?Q?YfDTM3koriEH1OTq+72tnpoEUsLrwvWVcsIRjveqdkI/HKx9llOY8/O0MrP/?=
- =?us-ascii?Q?6DHv2HLPB0CSiMDU4JzjnT1uMc/7Ke2HCEHe9wridkp0jp6MUz5ZI6tK6c9f?=
- =?us-ascii?Q?c4+UgSWBhkD14vmeh4qrMlZ+67iTs/0MFuekLf/BfNqZZoywmIJvitJ9zxd+?=
- =?us-ascii?Q?3WBVZ3f/Nbfv7Y7LQzKYVzaK0Jmk7Nx7DgP3kw6+NTVQPX2xp/aE+/cSQ9S2?=
- =?us-ascii?Q?ABKwF1O0vWPFmSYOegMCDkzUn5Oabe7lKtnElnXofBy4cOxtc7TK3sAlQ9Dw?=
- =?us-ascii?Q?AUneMAacHVkp/hqm4EDmrW31q339efCbwrfU18qa41n1C4XWFH8nzcRANlJ7?=
- =?us-ascii?Q?cT0nJ25kSAgdQhPzjQrXFmQeP923UhDaeI6A/5G3XqXOZaqY/YUeJu9fK1Z9?=
- =?us-ascii?Q?2kgbxC49ndYVUFNU5+fAF+fX+4P4EIqj4B8S7mq95JSddK3cfu2eb9W9TSNG?=
- =?us-ascii?Q?4pAZJ2+7Fe4+jc+arNu8NaX71FMYim0ZToTVf9znGo30tzw3RkYrJTEXBCB2?=
- =?us-ascii?Q?wwUUl1HoM8WvRSOqpDSyfFMwNn+SC5MUtVsHcyrSq4juZPUkIoqbVV8eItNs?=
- =?us-ascii?Q?RMj+Odz9Gvc0QiKqxFcioyPB0bSg/MpXkJ9TqEaSqnOSgd0u6b9AS/zSZRdI?=
- =?us-ascii?Q?M4x8y3VX+X4TRQOqmS38ynRGhrd4wisk+9+TzE6WT1ETyJYV6vGVPM/9D9ZB?=
- =?us-ascii?Q?KD6+RSpkeItrontqOci+oRjzuxi2GZBZML24I0MW23Cj2WYS3QSPFtcfjXBC?=
- =?us-ascii?Q?GyVFyPYU+NB1j/pk1n6XSyYGoepZ1Hy/DyAseA8g1/NCvnFgj7seaTfIH2UK?=
- =?us-ascii?Q?s6xqv5yEWA+nG3y23uSRQT3Hpm6hx2ITUqIyscTU0SOFxid4pOR7TOXi8yqo?=
- =?us-ascii?Q?ephGlui/riMzFV+7cvzKWaj0YasypSNhQyiXOpYksqfo5aa+iZ1f4yw+UN6g?=
- =?us-ascii?Q?lk+byg3qhbj5Tkso+RDztuV+rLyEN8oKxHH1zm1H/XkJ+u6sWw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(376014)(7416014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6CtcJ3+CxGepPPp36j88PGzUWdJCeikYefbEBWb9oag7SekpGYr2UrlOK7zL?=
- =?us-ascii?Q?+6nagNFKoaCSaLdtjHsWPfCxfGgZZo5BZyL1VjmT6/SGxULX+SprqXs8lK6A?=
- =?us-ascii?Q?lljy4QLKnxalr76MZdfIbcSx0o25bJcUxg6vXxcfXSYsY1fXSo9zWda6KkMF?=
- =?us-ascii?Q?K4au0ufaLPUTRQwHIhUbtv3Dz18vOqGgQ0/fazrzfwDY+wJ7V0dBaRFGHJXr?=
- =?us-ascii?Q?e127hKi/4mm0Ubhp8/T57iQyN++wADGzeg2TcUir/O8R6b0qXXMYnggcDyNV?=
- =?us-ascii?Q?zLD1yW2Hvvx8DYb2ivrVUIMgruqI3BV863NlvXaLXV7lIrT4kFMUhdMGEiCg?=
- =?us-ascii?Q?uWGA9m/wI071hPySGZBdtUisJUQG6WjGnDxlUeqHo4lSXq4Ldl+GBanDj+tj?=
- =?us-ascii?Q?GMTamQJvn3erxwbQZCAeELf3QCTuZudCPcA+fa+RRgeonoCPIxWUmtVRskHc?=
- =?us-ascii?Q?deESufV9iRV+1FtgA0JYESo3NeJDkkyGv64TFwjIJ83/HUfrmv0S+xTGldih?=
- =?us-ascii?Q?RjLWfPZ4OVul3gMwpbAKTFqhH/pG/uLpQ335TumAQNkzelLHz1emDSXm2tfA?=
- =?us-ascii?Q?dV5PdJ5jSmqud901icuUtfIvQcE5VQmwqGquXLHY9ctGf4UIa8h3QnZwSV9z?=
- =?us-ascii?Q?zEHQty2LZ9KsZwfkvo5+/LPNOcZ3N5N6axnabVjBCVFkx8qJcBrxZuRoLRGd?=
- =?us-ascii?Q?lvgNyCcVDtlAvpewSatTd3sMzccZ5sjHWqR1FPF3i1pliXx1XVdbePw0Ed+r?=
- =?us-ascii?Q?irPCtL66Pw6ITDPeSR+9xZybUOYa8yh2juH9rDb/1gy/F9x1eLN5Y1txFINI?=
- =?us-ascii?Q?poe/ehN/iecmWtlVJV9zeZOV0IW4Tar0XcudvKdocg7KlmzDMKKXX5i/uAf1?=
- =?us-ascii?Q?q3Fdv0WzaAcqSlXtobk8vY+sNwynPw9QlcX0yxZwTQ0NUK4g4hxPZ+2+WWTj?=
- =?us-ascii?Q?dIRFcmy+LpT67nffuuyL+NurwZFfNCkSWv4Ksox0sUGy0gGtPHPB0vbFDdp2?=
- =?us-ascii?Q?DcYYwp30Mv7gdn+xuDtKVU6rmXYtCoZlSR+1k68HdD7tg2CJaub+gEXxZuee?=
- =?us-ascii?Q?AY8hyhhwzSWtIE8iKT6YnpVmtjNSQGtxKWpO4pFJAGhuXBInmqloUB+2vfgM?=
- =?us-ascii?Q?0NDrNkEWQP7mFjN3d7xg63/hvpEwHRTC9V8cJSaufTdE+S67iLcOhpcLgzxx?=
- =?us-ascii?Q?UPaSaL+TcfvHNbPinCR5mmBaWD6H6x9LPZ8jiaN/jFeQFoqUTod8LO4K3VxJ?=
- =?us-ascii?Q?wR/3pfx4/2tcbgSjVyxS/cDIpkJ7WKqUSQPnkGZXXjWuXfIqltk9ve74tIZU?=
- =?us-ascii?Q?zvVNlotB3Kh+STvCZOa9L0ELTo5Vwv95prOcEmRuS96lPQQfqq7gcBirNBPA?=
- =?us-ascii?Q?VPXGZf/hvKq/++kOT35v5LEnqM9PilES3RjhwEsmetRvs8He7yxPsdZr2k9S?=
- =?us-ascii?Q?pRKrwbSqiqf/fN9NmbX/TOtGR6Ywf2FLuPgjmZRWbgaPnoiqq+W5Z0U/o5ry?=
- =?us-ascii?Q?RBR2Em2wqSfzhHU7T7I95ZL4m0Se1KL2pmmPdMJgGJMUwCyPERJR/gb+o+Aw?=
- =?us-ascii?Q?o9+BOJOb968ZTR/i7Oj/EIoLzxLhJ92kvIxhx0+x?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: befa00e1-d83f-444c-d9a1-08dd18fdcb0c
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2024 09:34:07.1089
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LNW/CpAVbrYIeoyPpFxqnm6wRX6VZiZ+u0dfeN0BCTYpfgoguYmeWvkdRDG25+onHnlZRMLgkUVclub6yyyIJg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10513
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241209-imx91tmu-v1-2-7859c5387f31@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-From: Ming Qian <ming.qian@nxp.com>
+Hi,
 
-For format H264 and HEVC, the firmware can report the parsed profile idc
-and level idc to driver, the information may be useful.
-Implement the H264 and HEVC profile and level control to report them.
+On 24-12-09, Frank Li wrote:
+> From: Pengfei Li <pengfei.li_1@nxp.com>
+> 
+> Introduce support for the i.MX91 thermal monitoring unit, which features a
+> single sensor for the CPU. The register layout differs from other chips,
+> necessitating the creation of a dedicated file for this.
+> 
+> Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/thermal/Kconfig         |  10 ++
+>  drivers/thermal/Makefile        |   1 +
+>  drivers/thermal/imx91_thermal.c | 281 ++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 292 insertions(+)
+> 
+> diff --git a/drivers/thermal/Kconfig b/drivers/thermal/Kconfig
+> index d3f9686e26e71..da403ed86aeb1 100644
+> --- a/drivers/thermal/Kconfig
+> +++ b/drivers/thermal/Kconfig
+> @@ -296,6 +296,16 @@ config IMX8MM_THERMAL
+>  	  cpufreq is used as the cooling device to throttle CPUs when the passive
+>  	  trip is crossed.
+>  
+> +config IMX91_THERMAL
+> +	tristate "Temperature sensor driver for NXP i.MX91 SoC"
+> +	depends on ARCH_MXC || COMPILE_TEST
+> +	depends on OF
+> +	help
+> +	  Support for Temperature sensor found on NXP i.MX91 SoC.
+> +	  It supports one critical trip point and one passive trip point. The
+> +	  cpufreq is used as the cooling device to throttle CPUs when the passive
+> +	  trip is crossed.
+> +
+>  config K3_THERMAL
+>  	tristate "Texas Instruments K3 thermal support"
+>  	depends on ARCH_K3 || COMPILE_TEST
+> diff --git a/drivers/thermal/Makefile b/drivers/thermal/Makefile
+> index 9abf43a74f2bb..08da241e6a598 100644
+> --- a/drivers/thermal/Makefile
+> +++ b/drivers/thermal/Makefile
+> @@ -50,6 +50,7 @@ obj-$(CONFIG_ARMADA_THERMAL)	+= armada_thermal.o
+>  obj-$(CONFIG_IMX_THERMAL)	+= imx_thermal.o
+>  obj-$(CONFIG_IMX_SC_THERMAL)	+= imx_sc_thermal.o
+>  obj-$(CONFIG_IMX8MM_THERMAL)	+= imx8mm_thermal.o
+> +obj-$(CONFIG_IMX91_THERMAL)	+= imx91_thermal.o
+>  obj-$(CONFIG_MAX77620_THERMAL)	+= max77620_thermal.o
+>  obj-$(CONFIG_QORIQ_THERMAL)	+= qoriq_thermal.o
+>  obj-$(CONFIG_DA9062_THERMAL)	+= da9062-thermal.o
+> diff --git a/drivers/thermal/imx91_thermal.c b/drivers/thermal/imx91_thermal.c
+> new file mode 100644
+> index 0000000000000..19c4dafe9c7a9
+> --- /dev/null
+> +++ b/drivers/thermal/imx91_thermal.c
+> @@ -0,0 +1,281 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright 2024 NXP.
+> + */
+> +
+> +#include <linux/bitfield.h>
+> +#include <linux/clk.h>
+> +#include <linux/err.h>
+> +#include <linux/iopoll.h>
+> +#include <linux/nvmem-consumer.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/of_device.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/thermal.h>
+> +
+> +#define CTRL0			0x0
+> +
+> +#define STAT0			0x10
+> +#define STAT0_DRDY0_IF_MASK	BIT(16)
+> +
+> +#define DATA0			0x20
+> +#define DATA_INT_MASK		GENMASK(14, 7)
+> +#define DATA_FRAC_MASK		GENMASK(6, 0)
+> +
+> +#define THR_CTRL01		0x30
+> +#define THR_CTRL23		0x40
+> +
+> +#define CTRL1			0x200
+> +#define CTRL1_SET		0x204
+> +#define CTRL1_CLR		0x208
+> +#define CTRL1_EN		BIT(31)
+> +#define CTRL1_START		BIT(30)
+> +#define CTRL1_STOP		BIT(29)
+> +#define CTRL1_RES_MASK		GENMASK(19, 18)
+> +#define CTRL1_MEAS_MODE_MASK	GENMASK(25, 24)
+> +
+> +#define PERIOD_CTRL		0x270
+> +#define MEAS_FREQ_MASK		GENMASK(23, 0)
+> +
+> +#define REF_DIV			0x280
+> +#define DIV_EN			BIT(31)
+> +#define DIV_MASK		GENMASK(23, 16)
+> +
+> +#define PUD_ST_CTRL		0x2B0
+> +#define PUDL_MASK		GENMASK(23, 16)
+> +
+> +#define TRIM1			0x2E0
+> +#define TRIM2			0x2F0
+> +
+> +#define TMU_TEMP_LOW_LIMIT	-40000
+> +#define TMU_TEMP_HIGH_LIMIT	125000
+> +
+> +#define DEFAULT_TRIM1_CONFIG 0xB561BC2DU
+> +#define DEFAULT_TRIM2_CONFIG 0x65D4U
 
-Signed-off-by: Ming Qian <ming.qian@nxp.com>
----
-v2
--- add support for V4L2_MPEG_VIDEO_H264_PROFILE_CONSTRAINED_BASELINE
+please align the defines and use lower-case for the hex values.
 
- drivers/media/platform/amphion/vdec.c        | 61 +++++++++++++
- drivers/media/platform/amphion/vpu_defs.h    |  1 +
- drivers/media/platform/amphion/vpu_helpers.c | 93 ++++++++++++++++++++
- drivers/media/platform/amphion/vpu_helpers.h |  5 ++
- drivers/media/platform/amphion/vpu_malone.c  |  3 +-
- 5 files changed, 162 insertions(+), 1 deletion(-)
+> +struct tmu_sensor {
+> +	struct imx91_tmu *priv;
+> +	struct thermal_zone_device *tzd;
+> +};
 
-diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platform/amphion/vdec.c
-index ca8f7319503a..61d5598ee6a1 100644
---- a/drivers/media/platform/amphion/vdec.c
-+++ b/drivers/media/platform/amphion/vdec.c
-@@ -232,6 +232,37 @@ static int vdec_ctrl_init(struct vpu_inst *inst)
- 			  V4L2_CID_MPEG_VIDEO_DEC_DISPLAY_DELAY_ENABLE,
- 			  0, 1, 1, 0);
- 
-+	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
-+			       V4L2_CID_MPEG_VIDEO_H264_PROFILE,
-+			       V4L2_MPEG_VIDEO_H264_PROFILE_MULTIVIEW_HIGH,
-+			       ~((1 << V4L2_MPEG_VIDEO_H264_PROFILE_BASELINE) |
-+				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_CONSTRAINED_BASELINE) |
-+				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_MAIN) |
-+				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_EXTENDED) |
-+				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_HIGH) |
-+				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_MULTIVIEW_HIGH) |
-+				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_STEREO_HIGH)),
-+			       V4L2_MPEG_VIDEO_H264_PROFILE_BASELINE);
-+
-+	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
-+			       V4L2_CID_MPEG_VIDEO_H264_LEVEL,
-+			       V4L2_MPEG_VIDEO_H264_LEVEL_6_2,
-+			       0,
-+			       V4L2_MPEG_VIDEO_H264_LEVEL_4_0);
-+
-+	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
-+			       V4L2_CID_MPEG_VIDEO_HEVC_PROFILE,
-+			       V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN_10,
-+			       ~((1 << V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN) |
-+				 (1 << V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN_10)),
-+			       V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN);
-+
-+	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
-+			       V4L2_CID_MPEG_VIDEO_HEVC_LEVEL,
-+			       V4L2_MPEG_VIDEO_HEVC_LEVEL_6_2,
-+			       0,
-+			       V4L2_MPEG_VIDEO_HEVC_LEVEL_4);
-+
- 	ctrl = v4l2_ctrl_new_std(&inst->ctrl_handler, &vdec_ctrl_ops,
- 				 V4L2_CID_MIN_BUFFERS_FOR_CAPTURE, 1, 32, 1, 2);
- 	if (ctrl)
-@@ -1166,6 +1197,35 @@ static void vdec_clear_slots(struct vpu_inst *inst)
- 	}
- }
- 
-+static void vdec_update_v4l2_ctrl(struct vpu_inst *inst, u32 id, u32 val)
-+{
-+	struct v4l2_ctrl *ctrl = v4l2_ctrl_find(&inst->ctrl_handler, id);
-+
-+	if (ctrl)
-+		v4l2_ctrl_s_ctrl(ctrl, val);
-+}
-+
-+static void vdec_update_v4l2_profile_level(struct vpu_inst *inst, struct vpu_dec_codec_info *hdr)
-+{
-+	switch (inst->out_format.pixfmt) {
-+	case V4L2_PIX_FMT_H264:
-+	case V4L2_PIX_FMT_H264_MVC:
-+		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_H264_PROFILE,
-+				      vpu_get_h264_v4l2_profile(hdr->profile_idc));
-+		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_H264_LEVEL,
-+				      vpu_get_h264_v4l2_level(hdr->level_idc));
-+		break;
-+	case V4L2_PIX_FMT_HEVC:
-+		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_HEVC_PROFILE,
-+				      vpu_get_hevc_v4l2_profile(hdr->profile_idc));
-+		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_HEVC_LEVEL,
-+				      vpu_get_hevc_v4l2_level(hdr->level_idc));
-+		break;
-+	default:
-+		return;
-+	}
-+}
-+
- static void vdec_event_seq_hdr(struct vpu_inst *inst, struct vpu_dec_codec_info *hdr)
- {
- 	struct vdec_t *vdec = inst->priv;
-@@ -1189,6 +1249,7 @@ static void vdec_event_seq_hdr(struct vpu_inst *inst, struct vpu_dec_codec_info
- 	vdec_init_crop(inst);
- 	vdec_init_mbi(inst);
- 	vdec_init_dcp(inst);
-+	vdec_update_v4l2_profile_level(inst, hdr);
- 	if (!vdec->seq_hdr_found) {
- 		vdec->seq_tag = vdec->codec_info.tag;
- 		if (vdec->is_source_changed) {
-diff --git a/drivers/media/platform/amphion/vpu_defs.h b/drivers/media/platform/amphion/vpu_defs.h
-index 428d988cf2f7..606f9d61a265 100644
---- a/drivers/media/platform/amphion/vpu_defs.h
-+++ b/drivers/media/platform/amphion/vpu_defs.h
-@@ -134,6 +134,7 @@ struct vpu_dec_codec_info {
- 	u32 decoded_height;
- 	struct v4l2_fract frame_rate;
- 	u32 dsp_asp_ratio;
-+	u32 profile_idc;
- 	u32 level_idc;
- 	u32 bit_depth_luma;
- 	u32 bit_depth_chroma;
-diff --git a/drivers/media/platform/amphion/vpu_helpers.c b/drivers/media/platform/amphion/vpu_helpers.c
-index d12310af9ebc..108b75ceb4ae 100644
---- a/drivers/media/platform/amphion/vpu_helpers.c
-+++ b/drivers/media/platform/amphion/vpu_helpers.c
-@@ -509,3 +509,96 @@ const char *vpu_codec_state_name(enum vpu_codec_state state)
- 	}
- 	return "<unknown>";
- }
-+
-+struct codec_id_mapping {
-+	u32 id;
-+	u32 v4l2_id;
-+};
-+
-+static struct codec_id_mapping h264_profiles[] = {
-+	{66,  V4L2_MPEG_VIDEO_H264_PROFILE_BASELINE},
-+	{77,  V4L2_MPEG_VIDEO_H264_PROFILE_MAIN},
-+	{88,  V4L2_MPEG_VIDEO_H264_PROFILE_EXTENDED},
-+	{100, V4L2_MPEG_VIDEO_H264_PROFILE_HIGH},
-+	{118, V4L2_MPEG_VIDEO_H264_PROFILE_MULTIVIEW_HIGH},
-+	{128, V4L2_MPEG_VIDEO_H264_PROFILE_STEREO_HIGH}
-+};
-+
-+static struct codec_id_mapping h264_levels[] = {
-+	{10,  V4L2_MPEG_VIDEO_H264_LEVEL_1_0},
-+	{9,   V4L2_MPEG_VIDEO_H264_LEVEL_1B},
-+	{11,  V4L2_MPEG_VIDEO_H264_LEVEL_1_1},
-+	{12,  V4L2_MPEG_VIDEO_H264_LEVEL_1_2},
-+	{13,  V4L2_MPEG_VIDEO_H264_LEVEL_1_3},
-+	{20,  V4L2_MPEG_VIDEO_H264_LEVEL_2_0},
-+	{21,  V4L2_MPEG_VIDEO_H264_LEVEL_2_1},
-+	{22,  V4L2_MPEG_VIDEO_H264_LEVEL_2_2},
-+	{30,  V4L2_MPEG_VIDEO_H264_LEVEL_3_0},
-+	{31,  V4L2_MPEG_VIDEO_H264_LEVEL_3_1},
-+	{32,  V4L2_MPEG_VIDEO_H264_LEVEL_3_2},
-+	{40,  V4L2_MPEG_VIDEO_H264_LEVEL_4_0},
-+	{41,  V4L2_MPEG_VIDEO_H264_LEVEL_4_1},
-+	{42,  V4L2_MPEG_VIDEO_H264_LEVEL_4_2},
-+	{50,  V4L2_MPEG_VIDEO_H264_LEVEL_5_0},
-+	{51,  V4L2_MPEG_VIDEO_H264_LEVEL_5_1},
-+	{52,  V4L2_MPEG_VIDEO_H264_LEVEL_5_2},
-+	{60,  V4L2_MPEG_VIDEO_H264_LEVEL_6_0},
-+	{61,  V4L2_MPEG_VIDEO_H264_LEVEL_6_1},
-+	{62,  V4L2_MPEG_VIDEO_H264_LEVEL_6_2}
-+};
-+
-+static struct codec_id_mapping hevc_profiles[] = {
-+	{1,   V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN},
-+	{2,   V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN_10}
-+};
-+
-+static struct codec_id_mapping hevc_levels[] = {
-+	{30,  V4L2_MPEG_VIDEO_HEVC_LEVEL_1},
-+	{60,  V4L2_MPEG_VIDEO_HEVC_LEVEL_2},
-+	{63,  V4L2_MPEG_VIDEO_HEVC_LEVEL_2_1},
-+	{90,  V4L2_MPEG_VIDEO_HEVC_LEVEL_3},
-+	{93,  V4L2_MPEG_VIDEO_HEVC_LEVEL_3_1},
-+	{120, V4L2_MPEG_VIDEO_HEVC_LEVEL_4},
-+	{123, V4L2_MPEG_VIDEO_HEVC_LEVEL_4_1},
-+	{150, V4L2_MPEG_VIDEO_HEVC_LEVEL_5},
-+	{153, V4L2_MPEG_VIDEO_HEVC_LEVEL_5_1},
-+	{156, V4L2_MPEG_VIDEO_HEVC_LEVEL_5_2},
-+	{180, V4L2_MPEG_VIDEO_HEVC_LEVEL_6},
-+	{183, V4L2_MPEG_VIDEO_HEVC_LEVEL_6_1},
-+	{186, V4L2_MPEG_VIDEO_HEVC_LEVEL_6_2}
-+};
-+
-+static u32 vpu_find_v4l2_id(u32 id, struct codec_id_mapping *array, u32 array_sz)
-+{
-+	u32 i;
-+
-+	if (!array || !array_sz)
-+		return 0;
-+
-+	for (i = 0; i < array_sz; i++) {
-+		if (id == array[i].id)
-+			return array[i].v4l2_id;
-+	}
-+
-+	return 0;
-+}
-+
-+u32 vpu_get_h264_v4l2_profile(u32 idc)
-+{
-+	return vpu_find_v4l2_id(idc, h264_profiles, ARRAY_SIZE(h264_profiles));
-+}
-+
-+u32 vpu_get_h264_v4l2_level(u32 idc)
-+{
-+	return vpu_find_v4l2_id(idc, h264_levels, ARRAY_SIZE(h264_levels));
-+}
-+
-+u32 vpu_get_hevc_v4l2_profile(u32 idc)
-+{
-+	return vpu_find_v4l2_id(idc, hevc_profiles, ARRAY_SIZE(hevc_profiles));
-+}
-+
-+u32 vpu_get_hevc_v4l2_level(u32 idc)
-+{
-+	return vpu_find_v4l2_id(idc, hevc_levels, ARRAY_SIZE(hevc_levels));
-+}
-diff --git a/drivers/media/platform/amphion/vpu_helpers.h b/drivers/media/platform/amphion/vpu_helpers.h
-index 0eaddb07190d..dc5fb1ca2d33 100644
---- a/drivers/media/platform/amphion/vpu_helpers.h
-+++ b/drivers/media/platform/amphion/vpu_helpers.h
-@@ -70,4 +70,9 @@ int vpu_color_get_default(u32 primaries, u32 *ptransfers, u32 *pmatrix, u32 *pfu
- 
- int vpu_find_dst_by_src(struct vpu_pair *pairs, u32 cnt, u32 src);
- int vpu_find_src_by_dst(struct vpu_pair *pairs, u32 cnt, u32 dst);
-+
-+u32 vpu_get_h264_v4l2_profile(u32 idc);
-+u32 vpu_get_h264_v4l2_level(u32 idc);
-+u32 vpu_get_hevc_v4l2_profile(u32 idc);
-+u32 vpu_get_hevc_v4l2_level(u32 idc);
- #endif
-diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/platform/amphion/vpu_malone.c
-index 4769c053c6c2..5c6b2a841b6f 100644
---- a/drivers/media/platform/amphion/vpu_malone.c
-+++ b/drivers/media/platform/amphion/vpu_malone.c
-@@ -889,7 +889,8 @@ static void vpu_malone_unpack_seq_hdr(struct vpu_rpc_event *pkt,
- 	info->frame_rate.numerator = 1000;
- 	info->frame_rate.denominator = pkt->data[8];
- 	info->dsp_asp_ratio = pkt->data[9];
--	info->level_idc = pkt->data[10];
-+	info->profile_idc = (pkt->data[10] >> 8) & 0xff;
-+	info->level_idc = pkt->data[10] & 0xff;
- 	info->bit_depth_luma = pkt->data[13];
- 	info->bit_depth_chroma = pkt->data[14];
- 	info->chroma_fmt = pkt->data[15];
--- 
-2.43.0-rc1
+This can be part of imx91_tmu right?
 
+> +struct imx91_tmu {
+> +	void __iomem *base;
+> +	struct clk *clk;
+> +	struct device *dev;
+> +	struct tmu_sensor sensors;
+> +};
+> +
+> +static void imx91_tmu_start(struct imx91_tmu *tmu, bool start)
+> +{
+> +	if (start)
+> +		writel_relaxed(CTRL1_START, tmu->base + CTRL1_SET);
+> +	else
+> +		writel_relaxed(CTRL1_STOP, tmu->base + CTRL1_SET);
+
+Nit:
+	unsigned int val = start ? CTRL1_START : CTRL1_STOP;
+
+	writel_relaxed(val, tmu->base + CTRL1_SET);
+
+Aside the nit, why do you use *_relaxed() accessors in you whole code?
+Is the order not strictly required?
+
+> +}
+> +
+> +static void imx91_tmu_enable(struct imx91_tmu *tmu, bool enable)
+> +{
+> +	if (enable)
+> +		writel_relaxed(CTRL1_EN, tmu->base + CTRL1_SET);
+> +	else
+> +		writel_relaxed(CTRL1_EN, tmu->base + CTRL1_CLR);
+
+Same here:
+
+	unsigned int reg = enable ? CTRL1_SET : CTRL1_CLR;
+
+	writel_relaxed(CTRL1_EN, tmu->base + reg);
+> +}
+> +
+> +static int imx91_tmu_get_temp(struct thermal_zone_device *tz, int *temp)
+> +{
+> +	struct tmu_sensor *sensor = thermal_zone_device_priv(tz);
+> +	struct imx91_tmu *tmu = sensor->priv;
+
+With tmu_sensor merged into imx91_tmu you don't need this reverse
+pointer logic.
+
+> +	int val;
+> +	int ret;
+> +
+> +	ret = readl_relaxed_poll_timeout(tmu->base + STAT0, val,
+> +					 val & STAT0_DRDY0_IF_MASK, 1000,
+> +					 40000);
+> +	if (ret)
+> +		return -EAGAIN;
+> +
+> +	val = readl_relaxed(tmu->base + DATA0) & 0xffffU;
+						   ^
+				Please use a MASK define for it, also no
+				need to use the U suffix.
+
+Also according the TRM 58.3.4 this doesn't seem right. According the TRM
+this is a s16 (two's-complement) value. You won't get negative values if
+store it within a int.
+
+> +	*temp = val * 1000L / 64L;
+			  ^     ^
+You don't need to specify the type here explicit since all params would
+be converted to int and no overflow happens.
+
+> +	if (*temp < TMU_TEMP_LOW_LIMIT || *temp > TMU_TEMP_HIGH_LIMIT)
+> +		return -EAGAIN;
+> +
+> +	return 0;
+> +}
+> +
+> +static struct thermal_zone_device_ops tmu_tz_ops = {
+> +	.get_temp = imx91_tmu_get_temp,
+> +};
+> +
+> +static int imx91_init_from_nvmem_cells(struct imx91_tmu *tmu)
+> +{
+> +	struct device *dev = tmu->dev;
+> +	int ret;
+> +	u32 trim1, trim2;
+
+Please use the reverse christmas tree style.
+
+> +	ret = nvmem_cell_read_u32(dev, "trim1", &trim1);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = nvmem_cell_read_u32(dev, "trim2", &trim2);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (trim1 == 0 || trim2 == 0)
+> +		return -EINVAL;
+> +
+> +	writel_relaxed(trim1, tmu->base + TRIM1);
+> +	writel_relaxed(trim2, tmu->base + TRIM2);
+> +
+> +	return 0;
+> +}
+> +
+> +static int imx91_tmu_probe(struct platform_device *pdev)
+> +{
+> +	struct imx91_tmu *tmu;
+> +	unsigned long rate;
+> +	u32 div;
+> +	int ret;
+> +	int i = 0;
+
+Same here.
+
+> +	tmu = devm_kzalloc(&pdev->dev, sizeof(struct imx91_tmu), GFP_KERNEL);
+> +	if (!tmu)
+> +		return -ENOMEM;
+> +
+> +	tmu->dev = &pdev->dev;
+> +
+> +	tmu->base = devm_platform_ioremap_resource(pdev, 0);
+> +	if (IS_ERR(tmu->base))
+> +		return PTR_ERR(tmu->base);
+> +
+> +	tmu->clk = devm_clk_get_prepared(&pdev->dev, NULL);
+> +	if (IS_ERR(tmu->clk))
+> +		return dev_err_probe(&pdev->dev, PTR_ERR(tmu->clk), "failed to get tmu clock\n");
+> +
+> +	tmu->sensors.priv = tmu;
+
+As said, no need for the sensors container.
+
+> +	tmu->sensors.tzd = devm_thermal_of_zone_register(&pdev->dev, i, &tmu->sensors, &tmu_tz_ops);
+> +	if (IS_ERR(tmu->sensors.tzd))
+> +		return dev_err_probe(&pdev->dev, PTR_ERR(tmu->sensors.tzd),
+> +				     "failed to register thermal zone sensor\n");
+> +
+> +	platform_set_drvdata(pdev, tmu);
+> +
+> +	/* disable the monitor during initialization */
+> +	imx91_tmu_enable(tmu, false);
+> +	imx91_tmu_start(tmu, false);
+
+Make use of pm_runtime?
+
+> +	ret = imx91_init_from_nvmem_cells(tmu);
+> +	if (ret) {
+> +		writel_relaxed(DEFAULT_TRIM1_CONFIG, tmu->base + TRIM1);
+> +		writel_relaxed(DEFAULT_TRIM2_CONFIG, tmu->base + TRIM2);
+> +	}
+> +
+> +	/* The typical conv clk is 4MHz, the output freq is 'rate / (div + 1)' */
+> +	rate = clk_get_rate(tmu->clk);
+> +	div = (rate / 4000000) - 1;
+
+Would be nice to validate the div value before passing to the HW and if
+the target rate of 4MHz can't be reached by the div you you should
+return -EINVAL.
+
+> +
+> +	/* Set divider value and enable divider */
+> +	writel_relaxed(DIV_EN | FIELD_PREP(DIV_MASK, div), tmu->base + REF_DIV);
+> +
+> +	/* Set max power up delay: 'Tpud(ms) = 0xFF * 1000 / 4000000' */
+> +	writel_relaxed(FIELD_PREP(PUDL_MASK, 100U), tmu->base + PUD_ST_CTRL);
+> +
+> +	/*
+> +	 * Set resolution mode
+> +	 * 00b - Conversion time = 0.59325 ms
+> +	 * 01b - Conversion time = 1.10525 ms
+> +	 * 10b - Conversion time = 2.12925 ms
+> +	 * 11b - Conversion time = 4.17725 ms
+> +	 */
+> +	writel_relaxed(FIELD_PREP(CTRL1_RES_MASK, 0x3), tmu->base + CTRL1_CLR);
+> +	writel_relaxed(FIELD_PREP(CTRL1_RES_MASK, 0x1), tmu->base + CTRL1_SET);
+> +
+> +	/*
+> +	 * Set measure mode
+> +	 * 00b - Single oneshot measurement
+> +	 * 01b - Continuous measurement
+> +	 * 10b - Periodic oneshot measurement
+> +	 */
+
+For the resolution it's fine to have the values directly coded without a
+define, but here we can definitly use a define and drop the comment.
+
+> +	writel_relaxed(FIELD_PREP(CTRL1_MEAS_MODE_MASK, 0x3), tmu->base + CTRL1_CLR);
+> +	writel_relaxed(FIELD_PREP(CTRL1_MEAS_MODE_MASK, 0x1), tmu->base + CTRL1_SET);
+
+Why do we set it to periodic mode instead of the single-shot? At the
+moment the device doesn't have IRQ support, and so there is no need to
+run the measurements in background.
+
+> +
+> +	/*
+> +	 * Set Periodic Measurement Frequency to 25Hz:
+> +	 * tMEAS_FREQ = tCONV_CLK * PERIOD_CTRL[MEAS_FREQ]. ->
+> +	 * PERIOD_CTRL(MEAS_FREQ) = (1000 / 25) / (1000 / 4000000);
+> +	 * Where tMEAS_FREQ = Measurement period and tCONV_CLK = 1/fCONV_CLK.
+> +	 * This field should have value greater than count corresponds
+> +	 * to time greater than summation of conversion time, power up
+> +	 * delay, and six times of conversion clock time.
+> +	 * tMEAS_FREQ > (tCONV + tPUD + 6 * tCONV_CLK).
+> +	 * tCONV is conversion time determined by CTRL1[RESOLUTION].
+> +	 */
+> +	writel_relaxed(FIELD_PREP(MEAS_FREQ_MASK, 0x27100), tmu->base + PERIOD_CTRL);
+
+With the single-shot measurements we could remove this part and..
+
+> +
+> +	/* enable the monitor */
+> +	imx91_tmu_enable(tmu, true);
+> +	imx91_tmu_start(tmu, true);
+
+this part as well.
+
+Regards,
+  Marco
+
+> +
+> +	return 0;
+> +}
+> +
+> +static void imx91_tmu_remove(struct platform_device *pdev)
+> +{
+> +	struct imx91_tmu *tmu = platform_get_drvdata(pdev);
+> +
+> +	/* disable tmu */
+> +	imx91_tmu_start(tmu, false);
+> +	imx91_tmu_enable(tmu, false);
+> +}
+> +
+> +static int __maybe_unused imx91_tmu_suspend(struct device *dev)
+> +{
+> +	struct imx91_tmu *tmu = dev_get_drvdata(dev);
+> +
+> +	/* disable tmu */
+> +	imx91_tmu_start(tmu, false);
+> +	imx91_tmu_enable(tmu, false);
+> +
+> +	clk_disable_unprepare(tmu->clk);
+> +
+> +	return 0;
+> +}
+> +
+> +static int __maybe_unused imx91_tmu_resume(struct device *dev)
+> +{
+> +	struct imx91_tmu *tmu = dev_get_drvdata(dev);
+> +	int ret;
+> +
+> +	ret = clk_prepare_enable(tmu->clk);
+> +	if (ret)
+> +		return ret;
+> +
+> +	imx91_tmu_enable(tmu, true);
+> +	imx91_tmu_start(tmu, true);
+> +
+> +	return 0;
+> +}
+> +
+> +static SIMPLE_DEV_PM_OPS(imx91_tmu_pm_ops,
+> +			 imx91_tmu_suspend, imx91_tmu_resume);
+> +
+> +static const struct of_device_id imx91_tmu_table[] = {
+> +	{ .compatible = "fsl,imx91-tmu", },
+> +	{ },
+> +};
+> +MODULE_DEVICE_TABLE(of, imx91_tmu_table);
+> +
+> +static struct platform_driver imx91_tmu = {
+> +	.driver = {
+> +		.name	= "i.MX91_thermal",
+> +		.pm	= pm_ptr(&imx91_tmu_pm_ops),
+> +		.of_match_table = imx91_tmu_table,
+> +	},
+> +	.probe = imx91_tmu_probe,
+> +	.remove = imx91_tmu_remove,
+> +};
+> +module_platform_driver(imx91_tmu);
+> +
+> +MODULE_AUTHOR("Peng Fan <peng.fan@nxp.com>");
+> +MODULE_DESCRIPTION("i.MX91 Thermal Monitor Unit driver");
+> +MODULE_LICENSE("GPL");
+> 
+> -- 
+> 2.34.1
+> 
+> 
+> 
