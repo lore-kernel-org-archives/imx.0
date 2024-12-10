@@ -1,610 +1,245 @@
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED212451E4
-	for <imx@lists.linux.dev>; Tue, 10 Dec 2024 23:32:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.240
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733873551; cv=none; b=Wan9pd2M2c1jlSJTxQ4jirxtU4eJhPRz6RIh9fmTWcfRUXP4OprVPPmOp/D6ztzgb72U8FpKuYJNlsdTR3ngYDGC2c1dQIVLoDAig6mlZzMudQt8pNtKBuaQ/UNiPdNxttnWDwsGa9xHXtaCua+UpOOzSnhqptxHjUHRCR0YBVA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733873551; c=relaxed/simple;
-	bh=QqG+eYP5M/mlGjy7EW5cIzCMD/NDmz5jY8szILBLguU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=esca8NoN+WxSXc8cb4W22Jp5y3G0fX4dKCuCOJestyS8Y59mTgZr9Jr0BYjfRvH4BcKwbgvE/DCTadkIr0w2r6cir8fQXRpwDbhHEvBTg37ZcUs4nn4ukNjdEl3enSdOI7TDxHGcQTI1h5YnScmYs+2wFq6UOBoS+B9l4HdPMEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=AfPZ3MJR; arc=none smtp.client-ip=217.70.178.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="AfPZ3MJR"
-Received: from relay7-d.mail.gandi.net (unknown [217.70.183.200])
-	by mslow1.mail.gandi.net (Postfix) with ESMTP id C1468C185B
-	for <imx@lists.linux.dev>; Tue, 10 Dec 2024 23:26:00 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3472220002;
-	Tue, 10 Dec 2024 23:25:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1733873159;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BMFDiKWBBmzfUuznGsIJQDvWBPwugkqEOCMWYBCM6eM=;
-	b=AfPZ3MJRLmK/kgEbtU05woapUy+6szaFK4g2LdUGGG1WLRbY6w854a0m0hfmAEx+429MxB
-	9DArENev9YbnZcx12ngigCb7jzKMSwh6IgLq3uo7gxLiL4p9M3YKsHUsbDQNbcCK/R1wCZ
-	SQQvDrtEQraQG+0G+bVKX5gsVgeS1TvXdvsJSRtyDN/j7CAMGR8/WCQh6N08UooTWCqHSV
-	DrYEDx/EONBRB1pIdXtAO5B7R3ZqHWt2YOc4DQ4aBzyNpHeiftXMCFj+nVNAvsaKVrG08u
-	uXyTOeoVKH4aHzQYLXRhYTL5gYKiPQwT4O9km7AxqLMfD/eR8u+MVJIkHWEM2A==
-Date: Wed, 11 Dec 2024 00:25:57 +0100
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, linux-rtc@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, NXP S32 Linux <s32@nxp.com>,
-	imx@lists.linux.dev, Christophe Lizzi <clizzi@redhat.com>,
-	Alberto Ruiz <aruizrui@redhat.com>,
-	Enric Balletbo <eballetb@redhat.com>,
-	Bogdan Hamciuc <bogdan.hamciuc@nxp.com>,
-	Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
-Subject: Re: [PATCH v6 2/4] rtc: s32g: add NXP S32G2/S32G3 SoC support
-Message-ID: <20241210232557fee4e108@mail.local>
-References: <20241206070955.1503412-1-ciprianmarian.costea@oss.nxp.com>
- <20241206070955.1503412-3-ciprianmarian.costea@oss.nxp.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EE51DC9B9
+	for <imx@lists.linux.dev>; Tue, 10 Dec 2024 23:37:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733873843; cv=fail; b=Mu7zQOA7/16Ii+Zibgt8QukJAiYZD0jYGZ2EtgkbjkrDhssejsFB8xrJdONrAkg2G1QY5J2NM8RtrEwZEPckFdT5T9jKtrmzZa0UJITvAy/QZqYC3790PcOag/4MXKFM08MPBBVGll+dwcXDg3ofY1muAI+aPbjVo/CPUG4xrKs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733873843; c=relaxed/simple;
+	bh=4b2FYWcZH/9j2f/0CF1IvDGO5jhHfaDTDgraPYfKRFM=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Q8a6W7rpKmHvRxYWi6IB8fEyRtQnO5Jm4Xftqxxc6jWp1/CxQfrRkJcE8iNc7TRxhsB84/y1xBWJD4Z9XPkCXc+Mm3B1ab7sIGkRQQrUrKPXdCn4wMfph+VTNlzNU34o8SY8YZss4YmTVwPP1R90PcwSIhFLL6ekAOIJEO99AHM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BAHhb3u005554;
+	Tue, 10 Dec 2024 23:36:39 GMT
+Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2045.outbound.protection.outlook.com [104.47.70.45])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 43cwy3kgnf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Dec 2024 23:36:38 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WqdbMJnHco1rGsOw65WrKWo+llH84eCX7GEgUDNbgqrR4A+rDP/KmpstwxBoTfPNXlO0PI5HTdyDA1jszrqdCzCPtFQ0OuXsMRC+7+VeeHfViRGXlz8TeS+KH+qGXX9vbNRCdY842MbvyviBrhCXLMroDPs8M3QMqdbfoiuSRuQC8TyLtZHJCjdqsn4jOyX4vKGRLXtQeezZtH25jgaCtAR5TI2FSPtvts7D4ZqwkjGE4yHf2dDPUKMg7EeCiRp5+kbTTwIj+miObTfsty64rt8fr7sA8k9y858iR/WcOnBLmM563DfKyrrDOHOGfoGn9Iu7WU/DRxWMY7yVWnSn1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Y1E0+uIMwr90c6wyu3dMpH/74kw0d7Pg4ChP3iwymAI=;
+ b=c5wMwtGfd6uom7Uujhm/6DqfHR2gSJhkY7A573Mp7Z7e08qnSkn4aIebSaTTYIHuZfHHWyFEKHkFpScvcQuqAxTmHdq4EXH/pE5hBCNWWZypKC4YSHEj0zQ/IH5QohGfafzI8ANa685JOCa8uumxGPH+vRXw3BQY/ueDlzbeAc49O11gQnymbmbzP5CIzbqACrNjwebymqvC/sf0RcdWvcrYst12PzcENcj5oj+lAb8DTIBilvSlxPzn6SfbEZl7oRvQYI2zejVka9UNtxHExxQOwP7GL7jEs4l2BhWhn20kL3bzVpIS/I+vqZiA2QnB5bQBoHAvIq0gnYi3YViphQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+Received: from MW5PR11MB5764.namprd11.prod.outlook.com (2603:10b6:303:197::8)
+ by CH0PR11MB5284.namprd11.prod.outlook.com (2603:10b6:610:bf::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.18; Tue, 10 Dec
+ 2024 23:36:35 +0000
+Received: from MW5PR11MB5764.namprd11.prod.outlook.com
+ ([fe80::3c2c:a17f:2516:4dc8]) by MW5PR11MB5764.namprd11.prod.outlook.com
+ ([fe80::3c2c:a17f:2516:4dc8%7]) with mapi id 15.20.8230.010; Tue, 10 Dec 2024
+ 23:36:35 +0000
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
+To: l.stach@pengutronix.de, gregkh@linuxfoundation.org, jirislaby@kernel.org,
+        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+        festevam@gmail.com, esben@geanix.com, marex@denx.de,
+        ilpo.jarvinen@linux.intel.com, linux@rasmusvillemoes.dk,
+        stefan.eichenberger@toradex.com, l.sanfilippo@kunbus.com,
+        cniedermaier@dh-electronics.com, rickaran@axis.com,
+        xiaolei.wang@windriver.com
+Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+        imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v3] serial: imx: Use uart_port_lock_irq() instead of uart_port_lock()
+Date: Wed, 11 Dec 2024 07:36:13 +0800
+Message-Id: <20241210233613.2881264-1-xiaolei.wang@windriver.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR02CA0064.apcprd02.prod.outlook.com
+ (2603:1096:4:54::28) To MW5PR11MB5764.namprd11.prod.outlook.com
+ (2603:10b6:303:197::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241206070955.1503412-3-ciprianmarian.costea@oss.nxp.com>
-X-GND-Sasl: alexandre.belloni@bootlin.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW5PR11MB5764:EE_|CH0PR11MB5284:EE_
+X-MS-Office365-Filtering-Correlation-Id: e55a7377-2e87-4ca7-ea99-08dd19737c3e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|52116014|1800799024|38350700014|7053199007|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?BDQg1l12bBJs9E0F+0hAS6E/toJwFFAOAGPOCW6z3bB+8SFHe+Vb1wsCFs8A?=
+ =?us-ascii?Q?FcFXn9Ue1IzZ1U+RaDce6tSopa5V3XJX0/ftf+/hOdivrIbvZZD5zDOQ70eV?=
+ =?us-ascii?Q?C232xn1/ieu0ZDeUaPp4j5DGvXAWVEKWulKW4rYaE68GqIoI0+qoOLvigDvL?=
+ =?us-ascii?Q?IwIbXhWCeN7IkcqxHBv9rJA0DNNcv2NYo4IXuuUfUNPjpPJvoAdG7/f10BBr?=
+ =?us-ascii?Q?O94en288D+Xld1IdgEJds+G4O0OxC7iUflgYCva//z9pLKDPNiJixq7JPwZV?=
+ =?us-ascii?Q?F+pAHoo954WuhlmEtAIsBJbryiNJY1d9avYNNwa3RIUDOm5T4vRAk5+ppbj7?=
+ =?us-ascii?Q?8Df76bgoQ5wAQs9KSPQuuIzilvgB+IYWisbllgResOBDli/FsOi9z60btW6m?=
+ =?us-ascii?Q?UVTVJF5nQHYFiIfSNuk++AQK3omoH3qwJ6T5ISD02xpj1/S7g+SzdERHTb1p?=
+ =?us-ascii?Q?zCP+auCRbvuKg2bhNTot0DtGbMEgy8igjKxOXMerEvci5yOnZhWyfw/h6bHV?=
+ =?us-ascii?Q?lRZsvK3Dy1DwsTxPwomqRutv7sQEBwteXGJlIhmLxjZmg8NF2w6I4TGh93X/?=
+ =?us-ascii?Q?BvDYwnaS0clsOqvOtelPccGYz23x38o2MNJhPy9zyAtEx0eQ8ekofPG4PxLT?=
+ =?us-ascii?Q?q/3nlYRIg3g/PovcT5+7AA2QbVwSj45Hrsk5Zyd+YRs+ib7xTtHdTUk7fub3?=
+ =?us-ascii?Q?pbmB1sih1vAIk9MuvQabnr4kiTOgjiEvIi0IypKDQhSPYGe2qQNIfZ+hy4ue?=
+ =?us-ascii?Q?HcMyALzF3AJeTLcMlcG1gFRuZ9bH9/SIjemMWpJrPbLt5DrrdU7VUevMGDWm?=
+ =?us-ascii?Q?btU26gp4Y6/c09aVeNWgtUph60WwasAAWx49uhESYZbplsOgdok6fM7sfZTY?=
+ =?us-ascii?Q?x+5s9Q+ZkKcrwAd/o78D3aVshUHySpCiyLxPLXDneFZlWGLOiXRIuKYY+Nv0?=
+ =?us-ascii?Q?9IPqqK35IvX9wjrpBa+HT5WMlN19j2KORPmsSqpagg3GufjdhunPST2YMvOp?=
+ =?us-ascii?Q?N7UE5xSS1glGKG/EoA9zaJan9mx0hwFfgNANA1YfZJeBryncfVn6UdiI0MZt?=
+ =?us-ascii?Q?dow1utEc+obmjm0hyuN2PyHLc8Y2uQd7DBhCjxW8SfsV0v+BwH6Z+mjtgNY6?=
+ =?us-ascii?Q?8rDrNcLwJkRUBaRLAKsKZFqT870UPRmYgJ8NVDlxfthD+Yfb0g6xv5dx8taX?=
+ =?us-ascii?Q?fEx5+PmzSs4oYHoeKPe/CdZOn2V17oukt9NOxac3QwIFkyp3CYJj/CEoqqxz?=
+ =?us-ascii?Q?P2Zd6oD7pHNv7cxbzlx+Cz5chCn8wnpINTmBC/sl/HS8Fqi8LD4IByriFiC4?=
+ =?us-ascii?Q?2lu/Tjg1dutfpRjrl/9rpnXp2ENkjduPswK4Ffq3Wz/v80R6oXeQx9LBIySl?=
+ =?us-ascii?Q?A7gaLPyQEetpFuNU6y4tWUgH8d6IWYw2PICN7xIM1SmWzB0DvV9LnebES1WZ?=
+ =?us-ascii?Q?FL/kCGX2CAM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW5PR11MB5764.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(52116014)(1800799024)(38350700014)(7053199007)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?gcXFon8SUKe31bHxMW9hp9JradQWd/KQQ9bUGfpjczVqq/jFLGBrWT3dMqvZ?=
+ =?us-ascii?Q?vFOsqMgw9b5iSiazoFb6IMCU6E/11e8WUjLbln953Skqyc8Ap6KxhpYDjqJl?=
+ =?us-ascii?Q?7i6PQZln1NBTfCjQZ0K3ziGCA3fU5FzMmY8wQO3r/8RTQHYIuLzEIevb53Y5?=
+ =?us-ascii?Q?LPZBtjNIc4l08pv0tHUgj7doxeC7owU6rR/XbYv6uePMWvTFLCXLeW6aPx5U?=
+ =?us-ascii?Q?qVRhiXXeyzsp/eDtnOD4396c96Kv1lrrQDZWq22oMWMhmTFDIZacaO09QUrv?=
+ =?us-ascii?Q?MkQSjN5mkpVU42iawibfv9fEHev2x2YOcmm6rELpwmCxTsQ5Pl75mBB6Y5Wv?=
+ =?us-ascii?Q?5zh9euIHVsUbCDHNcJDi+vLL+nWBRVqj/maMHZH9qQ0d6V0ZBILyuCG7mG/B?=
+ =?us-ascii?Q?MvYYyfNpi8lhDdRK2RZxaelP1/b2dSzthuAsGoC/YLdCiokA4z5/W2Hk6Nyf?=
+ =?us-ascii?Q?9K/8WmxHXxjDQ9k/lpanrHMljlOhje62kx0RfAvp4F2lRKZ42HL2AeyZ6CZr?=
+ =?us-ascii?Q?Vsncs1YXZ6KS8Jsnf+tmZKMjHntIweIpOLgYcq0zoou/yNfiJcS4VLKi91x3?=
+ =?us-ascii?Q?as5fcp/KV6IThzAAv3mgy9EZPtLXdWSpKZNBzXN+SJoFzd1blfD5hwxVJta2?=
+ =?us-ascii?Q?IAiqh4QH/f701qwN8FVjwQj3FEDoA/oWf2kW7tIcWfxSbc9cd97pOtRK5FHg?=
+ =?us-ascii?Q?IOkvYcB/RgKvKwHrvHOCo6kZpb1s9jR//soTjNnAWGJC0bUOhksyhgMLos1K?=
+ =?us-ascii?Q?omuZKZNoYujjhlWxuZW3P03cqdd3CDmSJGCaOIOsrAcSUxE45N7XFnAe4Nxw?=
+ =?us-ascii?Q?kjtCusXHe1qBD8f6Xz66vHQRa5DVpgt1MvbB4V4hke0IxoIWSQ2Emrmzp5qV?=
+ =?us-ascii?Q?W5tCaQf869p4zs46Y2GlXUfk0kIQgpgUk52Cnj/VXg6NrHekiQ2Ad6sHOX9v?=
+ =?us-ascii?Q?uD9OQ3+WSf+jjti/egPm38tQR61nxeKCnZ3h9Pp4I7BVoZg6rj9Zsf/sj53d?=
+ =?us-ascii?Q?KWj1R4uHmCzbPgOFuxwkEm6tF+jUIJ/GNturZQATbYUvP9TUlH3hc9RblZRS?=
+ =?us-ascii?Q?omwO0VVIFbOXlWwxyOkkTEWoX2owh4SAm4VRAPUkE0SYOJuC3lQE6y7/N31G?=
+ =?us-ascii?Q?PlNDwv31CTj5Y8pAdOkspB2mjXO4DyoOg+4rDMDSWNFA80wwP2P4Qob7BrcT?=
+ =?us-ascii?Q?q81rymxOsomr+O1I1yX9l0DYpEjHoXKJ7XtxWYVgS2/BQEo4P3lTN3+UN0Xi?=
+ =?us-ascii?Q?DW6U8A4xNgoo1rkyJFnvG+WU6p1QN9Ps6Tp0mcKSHtDDsGtJqkxRp/gg564L?=
+ =?us-ascii?Q?wB2YhGQKvLBQ88S5KAhRl32VR5a67jDGjSEuFcV8wi9aFaIrZg4q8JvMTaS6?=
+ =?us-ascii?Q?AqT0RXCsbzKSX/rQB3yIfDCYaCyqGeY6gt8sBFG0TD9O8EJDcjW9vBEddrm+?=
+ =?us-ascii?Q?WafzHqbhNuQ4KdAiN9+yCCOqc1DG5snaS9EkyYWMENCRihEX/FG77dy4iAJP?=
+ =?us-ascii?Q?zABmqOv1fFake6a0IOWeelSCoGD4Mw4hjms4APySwKF58FtcnQgqkQlSvJlE?=
+ =?us-ascii?Q?XKXnvZYTAMwbhP73GZLFGgw1bdBacQ5mR8QRHOyXDDWb3qlCcZ6b55KOzeG2?=
+ =?us-ascii?Q?LA=3D=3D?=
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e55a7377-2e87-4ca7-ea99-08dd19737c3e
+X-MS-Exchange-CrossTenant-AuthSource: MW5PR11MB5764.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2024 23:36:35.4604
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Hg3P1WYVLuuoe/1mOhiQsVc1hrubDeVeW5ODXNDfT+pmpQprsk0yof8OeHT/ng05BNyuB89y8MoyNyjP+DJXA03I7yHrJrXOPD32EWAb/I8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR11MB5284
+X-Proofpoint-GUID: Gv-fkUBtERz3WJyB__ZYQekhBN1LyqMY
+X-Proofpoint-ORIG-GUID: Gv-fkUBtERz3WJyB__ZYQekhBN1LyqMY
+X-Authority-Analysis: v=2.4 cv=D7O9KuRj c=1 sm=1 tr=0 ts=6758d086 cx=c_pps a=WCFCujto17ieNoiWBJjljg==:117 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=RZcAm9yDv7YA:10 a=bRTqI5nwn0kA:10 a=VwQbUJbxAAAA:8
+ a=t7CeM3EgAAAA:8 a=pGLkceISAAAA:8 a=A__u6bYh_LbSektZ6DAA:9 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2024-12-10_13,2024-12-10_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ lowpriorityscore=0 bulkscore=0 mlxlogscore=999 spamscore=0 malwarescore=0
+ adultscore=0 priorityscore=1501 mlxscore=0 impostorscore=0 phishscore=0
+ clxscore=1015 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
+ engine=8.21.0-2411120000 definitions=main-2412100169
 
-On 06/12/2024 09:09:53+0200, Ciprian Costea wrote:
-> +/*
-> + * S32G2 and S32G3 SoCs have RTC clock source1 reserved and
-> + * should not be used.
-> + */
-> +#define RTC_CLK_SRC1_RESERVED		BIT(1)
-> +
-> +enum {
-> +	DIV1 = 1,
-> +	DIV32 = 32,
-> +	DIV512 = 512,
-> +	DIV512_32 = 16384
-> +};
-> +
-> +static const char *rtc_clk_src[RTC_CLK_MUX_SIZE] = {
-> +	"source0",
-> +	"source1",
-> +	"source2",
-> +	"source3"
-> +};
-> +
-> +struct rtc_time_base {
-> +	s64 sec;
-> +	u64 cycles;
-> +	struct rtc_time tm;
+When executing 'echo mem > /sys/power/state', the following
+deadlock occurs. Since there is output during the serial
+port entering the suspend process, the suspend will be
+interrupted, resulting in the nesting of locks. Therefore,
+use uart_port_lock_irq() instead of uart_port_unlock().
 
-I don't think storing an rtc_time is necessary. I don't even think
-cycles is necessary.
+WARNING: inconsistent lock state
+6.12.0-rc2-00002-g3c199ed5bd64-dirty #23 Not tainted
+--------------------------------
+inconsistent {IN-HARDIRQ-W} -> {HARDIRQ-ON-W} usage.
+sh/494 [HC0[0]:SC0[0]:HE1:SE1] takes:
+c4db5850 (&port_lock_key){?.-.}-{3:3}, at: imx_uart_enable_wakeup+0x14/0x254
+{IN-HARDIRQ-W} state was registered at:
+  lock_acquire+0x104/0x348
+  _raw_spin_lock+0x48/0x84
+  imx_uart_int+0x14/0x4dc
+  __handle_irq_event_percpu+0xac/0x2fc
+  handle_irq_event_percpu+0xc/0x40
+  handle_irq_event+0x38/0x8c
+  handle_fasteoi_irq+0xb4/0x1b8
+  handle_irq_desc+0x1c/0x2c
+  gic_handle_irq+0x6c/0xa0
+  generic_handle_arch_irq+0x2c/0x64
+  call_with_stack+0x18/0x20
+  __irq_svc+0x9c/0xbc
+  _raw_spin_unlock_irqrestore+0x2c/0x48
+  uart_write+0xd8/0x3a0
+  do_output_char+0x1a8/0x1e4
+  n_tty_write+0x224/0x440
+  file_tty_write.constprop.0+0x124/0x250
+  do_iter_readv_writev+0x100/0x1e0
+  vfs_writev+0xc4/0x448
+  do_writev+0x68/0xf8
+  ret_fast_syscall+0x0/0x1c
+irq event stamp: 31593
+hardirqs last  enabled at (31593): [<c1150e48>] _raw_spin_unlock_irqrestore+0x44/0x48
+hardirqs last disabled at (31592): [<c07f32f0>] clk_enable_lock+0x60/0x120
+softirqs last  enabled at (30334): [<c012d1d4>] handle_softirqs+0x2cc/0x478
+softirqs last disabled at (30325): [<c012d510>] __irq_exit_rcu+0x120/0x15c
 
-> +};
-> +
-> +struct rtc_priv {
-> +	struct rtc_device *rdev;
-> +	void __iomem *rtc_base;
-> +	struct clk *ipg;
-> +	struct clk *clk_src;
-> +	const struct rtc_soc_data *rtc_data;
-> +	struct rtc_time_base base;
-> +	u64 rtc_hz;
-> +	int irq;
-> +	int clk_src_idx;
-> +};
-> +
-> +struct rtc_soc_data {
-> +	u32 clk_div;
-> +	u32 reserved_clk_mask;
-> +};
-> +
-> +static const struct rtc_soc_data rtc_s32g2_data = {
-> +	.clk_div = DIV512,
+other info that might help us debug this:
+ Possible unsafe locking scenario:
 
-If you input clock rate is higher that 16kHz, why don't you divide by
-16384?
+       CPU0
+       ----
+  lock(&port_lock_key);
+  <Interrupt>
+    lock(&port_lock_key);
 
-> +	.reserved_clk_mask = RTC_CLK_SRC1_RESERVED,
-> +};
-> +
-> +static u64 cycles_to_sec(u64 hz, u64 cycles)
-> +{
-> +	return div_u64(cycles, hz);
-> +}
-> +
-> +/**
-> + * sec_to_rtcval - Convert a number of seconds to a value suitable for
-> + * RTCVAL in our clock's
-> + * current configuration.
-> + * @priv: Pointer to the 'rtc_priv' structure
-> + * @seconds: Number of seconds to convert
-> + * @rtcval: The value to go into RTCVAL[RTCVAL]
-> + *
-> + * Return: 0 for success, -EINVAL if @seconds push the counter past the
-> + *          32bit register range
-> + */
-> +static int sec_to_rtcval(const struct rtc_priv *priv,
-> +			 unsigned long seconds, u32 *rtcval)
-> +{
-> +	u32 delta_cnt;
-> +
-> +	if (!seconds || seconds > cycles_to_sec(priv->rtc_hz, RTCCNT_MAX_VAL))
-> +		return -EINVAL;
-> +
-> +	/*
-> +	 * RTCCNT is read-only; we must return a value relative to the
-> +	 * current value of the counter (and hope we don't linger around
-> +	 * too much before we get to enable the interrupt)
-> +	 */
-> +	delta_cnt = seconds * priv->rtc_hz;
-> +	*rtcval = delta_cnt + ioread32(priv->rtc_base + RTCCNT_OFFSET);
-> +
-> +	return 0;
-> +}
-> +
-> +static irqreturn_t s32g_rtc_handler(int irq, void *dev)
-> +{
-> +	struct rtc_priv *priv = platform_get_drvdata(dev);
-> +	u32 status;
-> +
-> +	status = ioread32(priv->rtc_base + RTCS_OFFSET);
-> +
-> +	if (status & RTCS_RTCF) {
-> +		iowrite32(0x0, priv->rtc_base + RTCVAL_OFFSET);
-> +		iowrite32(status | RTCS_RTCF, priv->rtc_base + RTCS_OFFSET);
-> +		rtc_update_irq(priv->rdev, 1, RTC_AF);
-> +	}
-> +
-> +	if (status & RTCS_APIF) {
-> +		iowrite32(status | RTCS_APIF, priv->rtc_base + RTCS_OFFSET);
-> +		rtc_update_irq(priv->rdev, 1, RTC_PF);
+Fixes: 3c199ed5bd64 ("serial: imx: Grab port lock in imx_uart_enable_wakeup()")
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+---
 
-I don't think you use APIF as a periodic interrupt so it doesn't really
-make sense to use RTC_PF instead of RTC_AF.
+v1:
+  https://patchwork.kernel.org/project/linux-arm-kernel/patch/20241209124732.693834-1-xiaolei.wang@windriver.com/
+v2:
+  use uart_port_lock_irq() instead of uart_port_lock_irqsave()
+v3:
+  update commit log 'ehco --> echo'
 
-> +	}
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static s64 s32g_rtc_get_time_or_alrm(struct rtc_priv *priv,
-> +				     u32 offset)
-> +{
-> +	u32 counter;
-> +
-> +	counter = ioread32(priv->rtc_base + offset);
-> +
-> +	if (counter < priv->base.cycles)
-> +		return -EINVAL;
-> +
-> +	counter -= priv->base.cycles;
-> +
-> +	return priv->base.sec + cycles_to_sec(priv->rtc_hz, counter);
-> +}
-> +
-> +static int s32g_rtc_read_time(struct device *dev,
-> +			      struct rtc_time *tm)
-> +{
-> +	struct rtc_priv *priv = dev_get_drvdata(dev);
-> +	s64 sec;
-> +
-> +	sec = s32g_rtc_get_time_or_alrm(priv, RTCCNT_OFFSET);
-> +	if (sec < 0)
-> +		return -EINVAL;
-> +
-> +	rtc_time64_to_tm(sec, tm);
-> +
-> +	return 0;
-> +}
-> +
-> +static int s32g_rtc_read_alarm(struct device *dev, struct rtc_wkalrm *alrm)
-> +{
-> +	struct rtc_priv *priv = dev_get_drvdata(dev);
-> +	u32 rtcc, rtccnt, rtcval;
-> +	s64 sec;
-> +
-> +	sec = s32g_rtc_get_time_or_alrm(priv, RTCVAL_OFFSET);
-> +	if (sec < 0)
-> +		return -EINVAL;
-> +
-> +	rtc_time64_to_tm(sec, &alrm->time);
-> +
-> +	rtcc = ioread32(priv->rtc_base + RTCC_OFFSET);
-> +	alrm->enabled = sec && (rtcc & RTCC_RTCIE);
-> +
-> +	alrm->pending = 0;
-> +	if (alrm->enabled) {
-> +		rtccnt = ioread32(priv->rtc_base + RTCCNT_OFFSET);
-> +		rtcval = ioread32(priv->rtc_base + RTCVAL_OFFSET);
-> +
-> +		if (rtccnt < rtcval)
-> +			alrm->pending = 1;
+ drivers/tty/serial/imx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-This limits the range of your alarm, why don't you simply check whether
-RTCF is set?
-
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int s32g_rtc_alarm_irq_enable(struct device *dev, unsigned int enabled)
-> +{
-> +	struct rtc_priv *priv = dev_get_drvdata(dev);
-> +	u32 rtcc;
-> +
-> +	if (!priv->irq)
-> +		return -EIO;
-
-
-This will never happen as you are not letting probe finish when you
-can't request the irq.
-
-
-> +
-> +	rtcc = ioread32(priv->rtc_base + RTCC_OFFSET);
-> +	if (enabled)
-> +		rtcc |= RTCC_RTCIE;
-> +
-> +	iowrite32(rtcc, priv->rtc_base + RTCC_OFFSET);
-> +
-> +	return 0;
-> +}
-> +
-> +static int s32g_rtc_set_alarm(struct device *dev, struct rtc_wkalrm *alrm)
-> +{
-> +	struct rtc_priv *priv = dev_get_drvdata(dev);
-> +	struct rtc_time time_crt;
-> +	long long t_crt, t_alrm;
-> +	u32 rtcval, rtcs;
-> +	int ret = 0;
-> +
-> +	iowrite32(0x0, priv->rtc_base + RTCVAL_OFFSET);
-> +
-> +	t_alrm = rtc_tm_to_time64(&alrm->time);
-> +
-> +	/*
-> +	 * Assuming the alarm is being set relative to the same time
-> +	 * returned by our s32g_rtc_read_time callback
-> +	 */
-> +	ret = s32g_rtc_read_time(dev, &time_crt);
-> +	if (ret)
-> +		return ret;
-> +
-> +	t_crt = rtc_tm_to_time64(&time_crt);
-> +	ret = sec_to_rtcval(priv, t_alrm - t_crt, &rtcval);
-> +	if (ret) {
-> +		dev_warn(dev, "Alarm is set too far in the future\n");
-> +		return -ERANGE;
-> +	}
-> +
-> +	ret = read_poll_timeout(ioread32, rtcs, !(rtcs & RTCS_INV_RTC),
-> +				0, RTC_SYNCH_TIMEOUT, false, priv->rtc_base + RTCS_OFFSET);
-> +	if (ret)
-> +		return ret;
-> +
-> +	iowrite32(rtcval, priv->rtc_base + RTCVAL_OFFSET);
-> +
-> +	return 0;
-> +}
-> +
-> +static int s32g_rtc_set_time(struct device *dev,
-> +			     struct rtc_time *time)
-> +{
-> +	struct rtc_priv *priv = dev_get_drvdata(dev);
-> +
-> +	priv->base.cycles = ioread32(priv->rtc_base + RTCCNT_OFFSET);
-> +	priv->base.sec = rtc_tm_to_time64(time);
-> +
-
-To simplify all the calculations you are doing, I suggest you reset
-RTCCNT here and store the epoch of the rtc as a number of seconds.
-
-This wll allow you to avoid having to read the counter in set_alarm
-also, you then get a direct conversion for RTCVAL as this will simply be
-rtc_tm_to_time64(&alrm->time) - epoch that you have to convert in cycles
-
-You will also then know right away whether this is too large to fit in a
-32bit register.
-
-
-> +	return 0;
-> +}
-> +
-> +/*
-> + * Disable the 32-bit free running counter.
-> + * This allows Clock Source and Divisors selection
-> + * to be performed without causing synchronization issues.
-> + */
-> +static void s32g_rtc_disable(struct rtc_priv *priv)
-> +{
-> +	u32 rtcc = ioread32(priv->rtc_base + RTCC_OFFSET);
-> +
-> +	rtcc &= ~RTCC_CNTEN;
-> +	iowrite32(rtcc, priv->rtc_base + RTCC_OFFSET);
-> +}
-> +
-> +static void s32g_rtc_enable(struct rtc_priv *priv)
-> +{
-> +	u32 rtcc = ioread32(priv->rtc_base + RTCC_OFFSET);
-> +
-> +	rtcc |= RTCC_CNTEN;
-> +	iowrite32(rtcc, priv->rtc_base + RTCC_OFFSET);
-> +}
-> +
-> +static int rtc_clk_src_setup(struct rtc_priv *priv)
-> +{
-> +	u32 rtcc = 0;
-> +
-> +	if (priv->rtc_data->reserved_clk_mask & (1 << priv->clk_src_idx))
-> +		return -EOPNOTSUPP;
-> +
-> +	rtcc = FIELD_PREP(RTCC_CLKSEL_MASK, priv->clk_src_idx);
-> +
-> +	switch (priv->rtc_data->clk_div) {
-> +	case DIV512_32:
-> +		rtcc |= RTCC_DIV512EN;
-> +		rtcc |= RTCC_DIV32EN;
-> +		break;
-> +	case DIV512:
-> +		rtcc |= RTCC_DIV512EN;
-> +		break;
-> +	case DIV32:
-> +		rtcc |= RTCC_DIV32EN;
-> +		break;
-> +	case DIV1:
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	rtcc |= RTCC_RTCIE;
-> +	/*
-> +	 * Make sure the CNTEN is 0 before we configure
-> +	 * the clock source and dividers.
-> +	 */
-> +	s32g_rtc_disable(priv);
-> +	iowrite32(rtcc, priv->rtc_base + RTCC_OFFSET);
-> +	s32g_rtc_enable(priv);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct rtc_class_ops rtc_ops = {
-> +	.read_time = s32g_rtc_read_time,
-> +	.set_time = s32g_rtc_set_time,
-> +	.read_alarm = s32g_rtc_read_alarm,
-> +	.set_alarm = s32g_rtc_set_alarm,
-> +	.alarm_irq_enable = s32g_rtc_alarm_irq_enable,
-> +};
-> +
-> +static int rtc_clk_dts_setup(struct rtc_priv *priv,
-> +			     struct device *dev)
-> +{
-> +	int i;
-> +
-> +	priv->ipg = devm_clk_get_enabled(dev, "ipg");
-> +	if (IS_ERR(priv->ipg))
-> +		return dev_err_probe(dev, PTR_ERR(priv->ipg),
-> +				"Failed to get 'ipg' clock\n");
-> +
-> +	for (i = 0; i < RTC_CLK_MUX_SIZE; i++) {
-> +		priv->clk_src = devm_clk_get_enabled(dev, rtc_clk_src[i]);
-> +		if (!IS_ERR(priv->clk_src)) {
-> +			priv->clk_src_idx = i;
-> +			break;
-> +		}
-> +	}
-> +
-> +	if (IS_ERR(priv->clk_src))
-> +		return dev_err_probe(dev, PTR_ERR(priv->clk_src),
-> +				"Failed to get rtc module clock source\n");
-> +
-> +	return 0;
-> +}
-> +
-> +static int s32g_rtc_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct rtc_priv *priv;
-> +	int ret = 0;
-> +
-> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-> +	if (!priv)
-> +		return -ENOMEM;
-> +
-> +	priv->rtc_data = of_device_get_match_data(dev);
-> +	if (!priv->rtc_data)
-> +		return -ENODEV;
-> +
-> +	priv->rtc_base = devm_platform_ioremap_resource(pdev, 0);
-> +	if (IS_ERR(priv->rtc_base))
-> +		return PTR_ERR(priv->rtc_base);
-> +
-> +	device_init_wakeup(dev, true);
-> +
-> +	ret = rtc_clk_dts_setup(priv, dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	priv->rdev = devm_rtc_allocate_device(dev);
-> +	if (IS_ERR(priv->rdev))
-> +		return PTR_ERR(priv->rdev);
-> +
-> +	ret = rtc_clk_src_setup(priv);
-> +	if (ret)
-> +		return ret;
-> +
-> +	priv->rtc_hz = clk_get_rate(priv->clk_src);
-> +	if (!priv->rtc_hz) {
-> +		dev_err(dev, "Failed to get RTC frequency\n");
-> +		ret = -EINVAL;
-> +		goto disable_rtc;
-> +	}
-> +
-> +	priv->rtc_hz /= priv->rtc_data->clk_div;
-> +
-> +	platform_set_drvdata(pdev, priv);
-> +	priv->rdev->ops = &rtc_ops;
-> +
-> +	priv->irq = platform_get_irq(pdev, 0);
-> +	if (priv->irq < 0) {
-> +		ret = priv->irq;
-> +		goto disable_rtc;
-> +	}
-> +
-> +	ret = devm_request_irq(dev, priv->irq,
-> +			       s32g_rtc_handler, 0, dev_name(dev), pdev);
-> +	if (ret) {
-> +		dev_err(dev, "Request interrupt %d failed, error: %d\n",
-> +			priv->irq, ret);
-> +		goto disable_rtc;
-> +	}
-> +
-> +	ret = devm_rtc_register_device(priv->rdev);
-> +	if (ret)
-> +		goto disable_rtc;
-> +
-> +	return 0;
-> +
-> +disable_rtc:
-> +	s32g_rtc_disable(priv);
-> +	return ret;
-> +}
-> +
-> +static void s32g_enable_api_irq(struct device *dev, unsigned int enabled)
-> +{
-> +	struct rtc_priv *priv = dev_get_drvdata(dev);
-> +	u32 api_irq = RTCC_APIEN | RTCC_APIIE;
-> +	u32 rtcc;
-> +
-> +	rtcc = ioread32(priv->rtc_base + RTCC_OFFSET);
-> +	if (enabled)
-> +		rtcc |= api_irq;
-> +	else
-> +		rtcc &= ~api_irq;
-> +	iowrite32(rtcc, priv->rtc_base + RTCC_OFFSET);
-> +}
-> +
-> +static int s32g_rtc_suspend(struct device *dev)
-> +{
-> +	struct rtc_priv *init_priv = dev_get_drvdata(dev);
-> +	struct rtc_priv priv;
-> +	long long base_sec;
-> +	u32 rtcval, rtccnt, offset;
-> +	int ret = 0;
-> +	u32 sec;
-> +
-> +	if (!device_may_wakeup(dev))
-> +		return 0;
-> +
-> +	/* Save last known timestamp */
-> +	ret = s32g_rtc_read_time(dev, &init_priv->base.tm);
-> +	if (ret)
-> +		return ret;
-
-I don't think that whole calculation is necessary as you are never
-actually resetting RTCCNT in suspend
-
-> +
-> +	/*
-> +	 * Use a local copy of the RTC control block to
-> +	 * avoid restoring it on resume path.
-> +	 */
-> +	memcpy(&priv, init_priv, sizeof(priv));
-> +
-> +	rtccnt = ioread32(init_priv->rtc_base + RTCCNT_OFFSET);
-> +	rtcval = ioread32(init_priv->rtc_base + RTCVAL_OFFSET);
-> +	offset = rtcval - rtccnt;
-> +	sec = cycles_to_sec(init_priv->rtc_hz, offset);
-> +
-> +	/* Adjust for the number of seconds we'll be asleep */
-> +	base_sec = rtc_tm_to_time64(&init_priv->base.tm);
-> +	base_sec += sec;
-> +	rtc_time64_to_tm(base_sec, &init_priv->base.tm);
-> +
-> +	ret = sec_to_rtcval(&priv, sec, &rtcval);
-> +	if (ret) {
-> +		dev_warn(dev, "Alarm is too far in the future\n");
-> +		return -ERANGE;
-> +	}
-> +
-> +	s32g_enable_api_irq(dev, 1);
-> +	iowrite32(offset, priv.rtc_base + APIVAL_OFFSET);
-
-What about always using APIVAL instead of RTCVAL so you don't have
-anything to do in s32g_rtc_suspend.
-
-
-> +
-> +	return ret;
-> +}
-> +
-> +static int s32g_rtc_resume(struct device *dev)
-> +{
-> +	struct rtc_priv *priv = dev_get_drvdata(dev);
-> +	int ret;
-> +
-> +	if (!device_may_wakeup(dev))
-> +		return 0;
-> +
-> +	/* Disable wake-up interrupts */
-> +	s32g_enable_api_irq(dev, 0);
-> +
-> +	ret = rtc_clk_src_setup(priv);
-> +	if (ret)
-> +		return ret;
-
-I don't think this is necessary.
-> +
-> +	/*
-> +	 * Now RTCCNT has just been reset, and is out of sync with priv->base;
-> +	 * reapply the saved time settings.
-> +	 */
-> +	return s32g_rtc_set_time(dev, &priv->base.tm);
-
-And so this is useless too so yo udon't actually have anything to do in
-s32g_rtc_resume.
-
-> +}
-> +
-> +static const struct of_device_id rtc_dt_ids[] = {
-> +	{ .compatible = "nxp,s32g2-rtc", .data = &rtc_s32g2_data},
-> +	{ /* sentinel */ },
-> +};
-> +
-> +static DEFINE_SIMPLE_DEV_PM_OPS(s32g_rtc_pm_ops,
-> +			 s32g_rtc_suspend, s32g_rtc_resume);
-> +
-> +static struct platform_driver s32g_rtc_driver = {
-> +	.driver		= {
-> +		.name			= "s32g-rtc",
-> +		.pm				= pm_sleep_ptr(&s32g_rtc_pm_ops),
-> +		.of_match_table = rtc_dt_ids,
-> +	},
-> +	.probe		= s32g_rtc_probe,
-> +};
-> +module_platform_driver(s32g_rtc_driver);
-> +
-> +MODULE_AUTHOR("NXP");
-> +MODULE_DESCRIPTION("NXP RTC driver for S32G2/S32G3");
-> +MODULE_LICENSE("GPL");
-> -- 
-> 2.45.2
-> 
-
+diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+index 17f70e4bee43..9c59ec128bb4 100644
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -2692,7 +2692,7 @@ static void imx_uart_enable_wakeup(struct imx_port *sport, bool on)
+ {
+ 	u32 ucr3;
+ 
+-	uart_port_lock(&sport->port);
++	uart_port_lock_irq(&sport->port);
+ 
+ 	ucr3 = imx_uart_readl(sport, UCR3);
+ 	if (on) {
+@@ -2714,7 +2714,7 @@ static void imx_uart_enable_wakeup(struct imx_port *sport, bool on)
+ 		imx_uart_writel(sport, ucr1, UCR1);
+ 	}
+ 
+-	uart_port_unlock(&sport->port);
++	uart_port_unlock_irq(&sport->port);
+ }
+ 
+ static int imx_uart_suspend_noirq(struct device *dev)
 -- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.25.1
+
