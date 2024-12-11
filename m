@@ -1,206 +1,404 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2085.outbound.protection.outlook.com [40.107.21.85])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2079.outbound.protection.outlook.com [40.107.21.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3112A1C2457
-	for <imx@lists.linux.dev>; Wed, 11 Dec 2024 07:16:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB7C1C1F2C
+	for <imx@lists.linux.dev>; Wed, 11 Dec 2024 07:37:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.79
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733901394; cv=fail; b=HObMGS73kkrWKAg0ohRDXQDBnOv2JOcytNPlhEx4FEjGgphX/gDldjl1OxrqAqG7IAsDM4uF66fmIodc4/LU1CciskDfdO0APmkJyA3w4a40EXNmkgemMvFFdc9WScglNvf2xjKL4a22ZNq0NjpIrHq4JBFCmj4acQedAIuHi8A=
+	t=1733902656; cv=fail; b=TF3CSrit1HUdwVYUoXpwWnbPue27J7D19khjMt0Rhq9MpVaCqL7AKsqhVupZY397ogIvYDY4aHQtYkpZAVwTQJ+4QkC6qkq1HaogG2Woga2PysFoQLzYob2Y/ZX2a3zao6RN1obDVg77eNzyMJ5c0hfYO5P4mv52iqmIpvbzZlA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733901394; c=relaxed/simple;
-	bh=KaY12B/bIOA8HPg8EbQdQEdQ3aTWPBzNDp4nAWH+jT8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=tib2DVvtvpxdiOCl+2EW4PUC+y5UJOG22L8ygT2HrCAJC+yYyCKeirNpGMGOb2LgkxeAdJGTadLgWGO4rD5sq3AGIHnC2kv2Dyu+fKVeqRE1rshUHvXqP0RQY9KdGps1UjJw425c+0aEPKOgwTgSq7/QdTMdEtKFEemtelZ0Kk8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ml6ImSJ2; arc=fail smtp.client-ip=40.107.21.85
+	s=arc-20240116; t=1733902656; c=relaxed/simple;
+	bh=jyyCTKq4aGZ0aVR4oVdXeDT6EhcZ2jLCmo83wwRiFaI=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=PAOkFXsGSZVcUJr7ogGQ7deoHwqEzMK1lb4tcMG0XkEwkBHnb+mKn/myMJcQo2dDxT9za4RWItbV0uRk/VvXcHTyrBtOPe5YUKiT3qQqMWkjD7oqNbQpZq2PuvWoEdtwfuM82CiiujD3FWKIdsqqa2N/rlpb24B3JuvZu5IJlCA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=eMiU/Z8C; arc=fail smtp.client-ip=40.107.21.79
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ml6ImSJ2"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="eMiU/Z8C"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=W16Y3mcQYmwvshyq6t+A+p5DFMyqTRSQyOKu22EXRp9qpGzZxKkJWG6JcTfoSWWdw71PelKbaC+QGQxlZIhRsbwKUjjRy9Hp0JLdm+EmUdsqwS9dwPOLi0Od2GrnDFoLqxikCbjgJniZokWP5f0Z3gb2zAJhA0AfrALCDCTkrEhcyniUnjvihOhsFrBPaA8iLSRWBjVEWm0IWBn+1rL6fchEHF6qiEWTzQlFfs4Ua7dYnZ1tdBytVpJlqujZB7QcuMY7kyOrXFlVUD8ZjcJpGFsNxo1LKbOJfBGbXBlLkQOnj4NEs0XBFoHIm1cCRo/ZT/S1HlrGtwaqvr9ImTjoNQ==
+ b=MGLbOQMtWg2Z28iYDEtr2WNfTdwnz0jXFjSqEOg0QP1vgXDxVuY1X0ov/+6EG0gxDH2HgiEzaoxI8vEKLmZVXRH9s5HGYkiC2C0RK/T92DnyxbjCr/oPeq+TLrsa9QwLCalQdhc+EHUdYu9VqjMxx/wSzUI90j8vVHtjP6gHTRGAwE+2aV3KZ0kYTxbXdrCNNnuPh6TlrfMJYpMJV2W1CJzT3BexsHi3LwhG+VQFILfZJAwhJgFmpH4zDYWWqHsWB8NnNjsrBGR3coF70s3KoMpMjLZf3LNHeU8l/4qLcjcm1NbhOQ2+tCmdnEE9hVIG3P5PYW8Lzv2QR2KdULdGLg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QygHbGGjkkAJg+0oV1DbE0Zr6oWYw3PY8BvFLqPE1RA=;
- b=XJ80JjMy6xTvxR3mvX7z/8bKhryCYYBhr/49EL5x7wx0NfEeghoFLDOQ7izPnEfSyFOV8g5iG8VtfnYn55US90yQ04QEMJ5f7giRtfb6g4pJMJR8V1tNb6nN3KbFkn9R5xjGyX0om/b/qmavWv0642CWLV28/Vm+WytA1t/cxryHd+EuUE28H6QWsqr4oxrovvtERQmmiLex3ganD69Jh5eLBgygYhn47ezGqTDbxl2/+Kb6Dcpoh7nWGJnURdd5lUie8dkY5D8PMD+Akzuwm0xy3GXgTPAKvgy9YmDe3GcTqtrW67hUialez28UnMHc1gGJ94V7R4fPvGbovfkrEw==
+ bh=3hQnq0AwNbgrJ5UYvpAvDnWZ2nh3LhJYq+A63POWdW8=;
+ b=JNGvA/NqfzYfpERPwMf2ZOmawCv3FEiONB2TPNyEkOy9Gan00TZ2mQLxAEHiKmxIIxfSPTiU2HS8UANGBRyurLPdY/ICidIi1VyRGYsNV5a7iq8OC/gHJU4/YOHcFcPne6iMRznRHVP88ktbKyT3dy01NIAzS/7g3eq8hcmOQ6nS63scwxBVnuM+2U5vV0hibGGgERHJhWEcoqB44Mmm8D4zroU6/GBaAzdl3ln5+h6ElMDy4ycHvDLx6aCEGir0IPuurfL+KlNb1rHSlouoEE08ELunHrqeTDjPYm52HSVpNBag4hpQusxEKE4VGCnFnwMlgi2DKWiPFZaabugcyA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QygHbGGjkkAJg+0oV1DbE0Zr6oWYw3PY8BvFLqPE1RA=;
- b=ml6ImSJ2+dENzp4+ZWI6vcV6Ut7enTuknvhyWOSD9CfbhnBD5mXJjNiXF9dObja1xXjKJXQDnCyMbpCsnOYp4LZASni4X84LqqhMDhKUKC5/H3xV8rrYMgPEk82qK3uSRij2NuWZsoM/+H7PSCykOf0mvUS0pxOicUPXRZFAWgWFC279dWmCLXfLGfTGihRBs8vC9tr4haf7tla/XCEMdiKQxIDe1CSnE/SM7fIqDuKRFF+IFA4fv9SQn/hGLGcadINtfjxbU4/3qmyzy/zbFGAgoRYo7rMELGjabUDRIPvGBrW3XZBeEpKy6PWRp3a3G1cp033XGok3LVrDs2N95A==
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by AS8PR04MB7944.eurprd04.prod.outlook.com (2603:10a6:20b:28a::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.18; Wed, 11 Dec
- 2024 07:16:28 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%5]) with mapi id 15.20.8251.008; Wed, 11 Dec 2024
- 07:16:28 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: Daniel Baluta <daniel.baluta@nxp.com>, "shawnguo@kernel.org"
-	<shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "robh@kernel.org"
-	<robh@kernel.org>
-CC: "krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org"
-	<conor+dt@kernel.org>, "festevam@gmail.com" <festevam@gmail.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Frank Li <frank.li@nxp.com>, Aisheng Dong
-	<aisheng.dong@nxp.com>, "daniel.baluta@gmail.com" <daniel.baluta@gmail.com>,
-	Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>, "S.J. Wang"
-	<shengjiu.wang@nxp.com>, Iuliana Prodan <iuliana.prodan@nxp.com>,
-	"a.fatoum@pengutronix.de" <a.fatoum@pengutronix.de>, Daniel Baluta
-	<daniel.baluta@nxp.com>
-Subject: RE: [PATCH v3 0/6] Configure imx8mp dsp node for rproc usage
-Thread-Topic: [PATCH v3 0/6] Configure imx8mp dsp node for rproc usage
-Thread-Index: AQHbSwKjgzf9fNnyq0+KlAzVFTP+krLgov6g
-Date: Wed, 11 Dec 2024 07:16:28 +0000
-Message-ID:
- <PAXPR04MB8459FE7FA7114C0F272E3FD1883E2@PAXPR04MB8459.eurprd04.prod.outlook.com>
-References: <20241210125338.104959-1-daniel.baluta@nxp.com>
-In-Reply-To: <20241210125338.104959-1-daniel.baluta@nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
+ bh=3hQnq0AwNbgrJ5UYvpAvDnWZ2nh3LhJYq+A63POWdW8=;
+ b=eMiU/Z8C/yQvDObF3xHdoGOW6/L9hPfboGZP69orQi1VPFTGRJ0WxMM8KSZHciax3tUBucGYwk2Y8pRvviKkZNgG0h9CRFYBr8nEGC0F6oYxsVexRXG2MOD7yNpYgjEDOTAGhRN5cRfNJh77EzwmKuFay0WAfi6HkRcfVck6MD0NILor7naB48itnHQAmxbAkt+2y+HNu+4JRcrdAY+PgPpaievcKDaGTpSD/plDRo6Z+hG50v2345Q7TEit3O5AgTzRRdCXfakXFThAtYg7X7Lo+JmLeq9UCCBVjAd1lGfqxf2vXriyagnxgp5pum9hbN745Zr2KJ9flA4s6+bm9Q==
+Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8459:EE_|AS8PR04MB7944:EE_
-x-ms-office365-filtering-correlation-id: c80fe1ff-78ce-42eb-0734-08dd19b3bb1f
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?lGF41hixcZ2qA2xjrPVyett+j312MCxiu7Y6ya43+Po0GSNcH3sOja7HWHA9?=
- =?us-ascii?Q?xqRAouu+w8+4441xjV+Y0m+YOROcPKJ+BVSFwlaBNIJaL1a9LUc9xRTn50B7?=
- =?us-ascii?Q?DStuhAs+ZPd3hLJhpck+KAAZOrmYYxQWVmiU7L4otPmU/nxAWfbXFqd7w00N?=
- =?us-ascii?Q?4Lydi+ewxGap1ZJ/jeWkSpFOTp7+t3P7qOwZoQ98Jyqc0rQdoP1iah+skvky?=
- =?us-ascii?Q?Brb5n+esrob8/GFchxB9RVSw80Lq0s36EqTVCGo+Mepkiq7IcfjHncW5v/h5?=
- =?us-ascii?Q?BVlZEFC+iQere9TYoAfOYp5yZNr57bSZg9YXzopJQU3fBKmc3EgE5xG3kut9?=
- =?us-ascii?Q?8ayP9ZcscIEndXK5Jhg7WQ5l3yHWXAJZLtQV51e90vP8OErHvdTWoWlV+sj3?=
- =?us-ascii?Q?v/rkqIJ7rj06OIWu1t5mAgIm37pzFZg7n9UVrWOHX7REPpgEcCBrBkPMiqCC?=
- =?us-ascii?Q?TdPncp8J5sfxF7DnLny6lHZ+W/f9cntEb6ha/FR7p2EwF3NjJB3bthA3YkSI?=
- =?us-ascii?Q?olXhmE1nPgCMdSoJNc8vDuch6NGSofCPwQzm0xzpuawFD+xXSGu4S2udYZRW?=
- =?us-ascii?Q?EAYKyp2T1RMdUH0amzb9kFjsvl9Vfsa37MWDZpIckBZsAXuoW6XtC1IInQRX?=
- =?us-ascii?Q?olAMtxOKhtsW8cdVLCuv3I+LGRWc7V/eBDWKmD9IZ4Z/pEjiCs53odTHc2zX?=
- =?us-ascii?Q?DWUsETnYWDiLDV0NJChOTuovJOLq8DVnoK9uS7MyGOBKZQRZUekd1ya7SV/W?=
- =?us-ascii?Q?AxH77F+6Nn6qAzCzl9uxmqMHBg/fqlab1AL+e59BQsVWN4VQC0lUoYhsm34N?=
- =?us-ascii?Q?avDNWJcLNqCFKxKeKxb09LWEdCwu+47dIWt1qk9l5TXf7ndakxQVMsd4Hh7l?=
- =?us-ascii?Q?Q86tf4094qQq93JNPuKpL2rqjDnVJKndc7OQ1T4qHNa5Ao46RK5etRLSRiNZ?=
- =?us-ascii?Q?atKcAw21Q6znJyA333KcNEl0CYarlaJ8Z+n5cRVg1F1sWQYRbRORl+rGrQOE?=
- =?us-ascii?Q?MuH2/Yhi2Z+250By16zC62bzba32JiJuGfaaRJzl+wwT6oxUBEHgig/hGbKi?=
- =?us-ascii?Q?w+1jMquVl+Z3QE+iJCHsTD8yFXPnLXCL50YU1CGsGnJdbA6HgxL4ezoflDu2?=
- =?us-ascii?Q?g4hV/X5eFhLa7QJh7x8CjxKEohRksDBqquRaiVp0WPLKTMNv0iD/qeASZ0bd?=
- =?us-ascii?Q?iHFJhGag69VltX/sbEOgJlqyUrBbjjhizU4K0e7wRIbtieMQ+EIQ1SrJwFnO?=
- =?us-ascii?Q?/16sJ9Bc2L432F22LVaGQHlGNiaIgw5hm+gyJPVmBSbynrK5g/PLNmBS0+nJ?=
- =?us-ascii?Q?RqhtPFE7R54+G3pwjUzL5EpIE6rD0eV6a+R7YTX0LPJOwhKDBK3PWQEPwKK5?=
- =?us-ascii?Q?cfwbT6qt/8IlRiCB5nFaK9s9GOw/cGxF2KPU0I5E+NU0FW1MHg=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?WqtVSTKBJhrJp7TcSqrGt4Gu0YRKb5aPQjBWgZpRhDd2dr4CpWMbhg3aji07?=
- =?us-ascii?Q?Mjn7NRQqs9mXK/IY4Lth5A4XYvN9Jl3ukB4dQm+eMW5YBJyC2zA5IHxOz0oy?=
- =?us-ascii?Q?5tHg/Ha2OGOMwKnNxyOvcNXfIK97A10n+VUlWttKt4qLv4Ramwq1DZnwd0a6?=
- =?us-ascii?Q?D6QLuPgbdvc5Kx2GkphhIF8IORiccXzHkJrO0SH+zkiiGXNVopP7xp4DWcr3?=
- =?us-ascii?Q?kLw3xZJ10Q5dc7y+fFl1m4vIIX6YfQ8IljUXGJdgSSOPw/QUeiubdywemWl/?=
- =?us-ascii?Q?nvL6o0lRrd5jCrPrwZVDr46AXqQ2Y56V0tOvyemuGkxRhHjWqYBMST7+D4Ck?=
- =?us-ascii?Q?kCvVdWtzIbJABeAo3ysKCCdNomgkM27c5VzU0ksSjYNF14t/Fppaup+ok7TK?=
- =?us-ascii?Q?nTWJ6T6s18Bjjypq4wJmY1sj6Atf+NjjtFW8ciQ4tUIuKzi0oV6nQE0A0kkF?=
- =?us-ascii?Q?pUA13HVyBdLUnNAA6GkqsWJrKUHFpfzjtMMhn4NID+afM/cCO6lrTk1ng6ZP?=
- =?us-ascii?Q?wOD+gx+nkWCzMiie8bkioc90Xpfm8SoSVhdMwlJROeenSGaxxzpwuxDLPZ1S?=
- =?us-ascii?Q?8S45x2ZLPfpv89eFQIu/vH/gqpCVa0B6Zhhr4GLUs1SYB6lGq/yBKL15uyIy?=
- =?us-ascii?Q?dBAyESKNmJ4Mus9I/RqWlXApPrsJl9JTZ8PL3ZiHxLuagmq1kc/d3fyd9BxE?=
- =?us-ascii?Q?f/seB2CIj2IWpnrI6QabyZps6eJIkNMkcC6oQvfkMJvivZ69TVYnhoDnd6ka?=
- =?us-ascii?Q?GfntMbtIklIgOWhfDkMbX417XtDeXj4o46O6A7Rgrc3q1KK2CWppjXrKdWwq?=
- =?us-ascii?Q?X6LfQ7h7yaaz9AKsACFjqK+7wnQNy0V1IzwI+SreEeqH3Nm70bKhd3OL8SPJ?=
- =?us-ascii?Q?rXLnSn4S7VAsPEYumKATAawnnzvpVj+EmCtb4KYAhGmRoKvzuqgUaQmzVh0/?=
- =?us-ascii?Q?vQc8MYdHeYrSA+8SvjFbIx2pdBXmCyI6rzhMpJ7H6hM4KhMdUvloovg7EGCL?=
- =?us-ascii?Q?JPJwthjCjbrLXenLpo/Ot4J3+AiFmR52vgkuhMW4FbVXaTsdWnGBdUHEDRQv?=
- =?us-ascii?Q?kcK9b4zJLgKYZKvs0tgNok3MRUx3S7OmeWAdfLahEJPe8i4W/sTkkp9s/U55?=
- =?us-ascii?Q?PhxHdkNMxhoeCwE+iAjPA+OwI8lGtVLYgUrDf+9MfgaX2k555ePhjHAidHCp?=
- =?us-ascii?Q?+2PYH9/Kv6jeebA5dSSYaBl1NBYtW3punTQWMtJauC2FxhQtUraXSfVEd03W?=
- =?us-ascii?Q?KC001JmikoRGoG0xZyV59ubs+qDgBbMyEKLXmjZUn0Ib09jFa5LtObrpSLH2?=
- =?us-ascii?Q?cKGMFu+8FmUuobSu++tLkeH4Jc6s1ysDDLA/1HpimRuKE8jgQFF3SWVReobp?=
- =?us-ascii?Q?yYkOV1NQzZYlglIhJkhHQ1vjokDRJrDlD+F9/v77Dp3W/6sqMM5+0lunGPuy?=
- =?us-ascii?Q?Bg8fs+Wg6tvaLOi7DoeSeaeCR2xnEqheMPk8QvPTDAMAUtcN8U6/wqrQ1w5/?=
- =?us-ascii?Q?43OmrdAPcvlRYV0qMU4yleXk8pEiOAkjw3t1nUnjvHAHuevjtJaD/MtGJcfm?=
- =?us-ascii?Q?2U40fIy9L+Ehqg39rsQ=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by PA2PR04MB10187.eurprd04.prod.outlook.com (2603:10a6:102:409::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.15; Wed, 11 Dec
+ 2024 07:37:30 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%6]) with mapi id 15.20.8251.008; Wed, 11 Dec 2024
+ 07:37:30 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	florian.fainelli@broadcom.com,
+	heiko.stuebner@cherry.de,
+	frank.li@nxp.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH v4 net] net: phy: micrel: Dynamically control external clock of KSZ PHY
+Date: Wed, 11 Dec 2024 15:21:36 +0800
+Message-Id: <20241211072136.745553-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: JH0PR04CA0030.apcprd04.prod.outlook.com
+ (2603:1096:990:78::6) To PAXPR04MB8510.eurprd04.prod.outlook.com
+ (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|PA2PR04MB10187:EE_
+X-MS-Office365-Filtering-Correlation-Id: bac103da-885b-49a3-f9b8-08dd19b6ab04
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|7416014|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?PM1H7voAnzPBnDDLNx3tkP7pLBrT/fFZivgAPpj2RjdK/4lMolgmnnQ4a6t8?=
+ =?us-ascii?Q?9xpJuk8m5L8KCduUivJx0D+CMqCJSN150aYRrKmeVpHQHJYiMv3KBTBydc9D?=
+ =?us-ascii?Q?+NjxIEQ7uG8B3R4V+Pp08wCY9vs38gwNidAA6XdSFYNneTuYuwopYxieF05a?=
+ =?us-ascii?Q?/1XD0kzQWLGr6az1QmtXV/2bzV2E3l4Wc4v3UbC9by4kWG4vYxNhaEZ3/LiN?=
+ =?us-ascii?Q?jU2U2+Ole6cnerC4u9zEE3k5EaZU8lENDKBecyE28+mOiWVcAaLLJPFGBIrA?=
+ =?us-ascii?Q?IDyW9d4ZExnW4LQAPHgPyO+5BI2nRP1rPYMIVEUUij8elpPajrDnicq5LYwt?=
+ =?us-ascii?Q?AtUj31Rsc95Yq0rQ9YR3jJ7REt3WZiYrHklgodNCZGnG/yOwTglbL1Zft8eG?=
+ =?us-ascii?Q?RlFTiR0gWJ/qBQS0U9yBbAt3MZ6yAb8+FxFn+nlkc/V1YpaIgYB9W1v0x8H0?=
+ =?us-ascii?Q?PfsQLQYfcTwnMp3IzpzCMio3o2KSqCpngvlxdLCKdIOTSMdB8dqQO7WNnA/i?=
+ =?us-ascii?Q?XFuwvloqxYsmKzaW0EyuASk3jxAM1brjR6+x179DvLaObQVNoPs3GbDQMSup?=
+ =?us-ascii?Q?ZlqMQe9gC6Rx0Nxg/0u+UjLsw0mA9VsYTHUzyzCzE76qgxkP++KQI/qfWDuD?=
+ =?us-ascii?Q?nTWB1SdnQ+stCcdAQT/yBaXOQXSI4jI9B9T6o4wuPXXAqUELI0gdT9fH51KE?=
+ =?us-ascii?Q?O7/K0sBqg74ksQfcEh95mr7LhbUqix/Y6AbvjQRJHqwxMpEp3sgKQ2FnBciG?=
+ =?us-ascii?Q?egHSSupL3ROn+Daq6jGlctgEIpU8agwVwYG8PqieWkUanjY9xnfgNr8SOjOq?=
+ =?us-ascii?Q?JWqNro2Bod2il1n1FB8X6vAidcqE8Rn2mYDCdypOxrOhx9C7VYd2XXpkpic6?=
+ =?us-ascii?Q?QpPzlQ/IWMcx0ioI9MYTXunfaKw7NVG0YOas7bj/P1L6KZjMGHoXha3+uhlR?=
+ =?us-ascii?Q?/dTb1efS6sgpTipMyH6BLgZTLwhzyiCeMdOstnVez7yoahyglGTGOveRF7I/?=
+ =?us-ascii?Q?kVu4dmGRTwJFiNFHLig7Y0dfBk7ehPlnXU75KLAHse3ryG5SSYd9a7dZxzxF?=
+ =?us-ascii?Q?YkX2BpC4Sl0kMgnQucGxkGhbJYCoO8eSdI9Slv1P+XWayKHHtDCFyVX2agKP?=
+ =?us-ascii?Q?4RYigoFh/HI4uVMxQE5KVixxyWsel3rHzNTIMrGf+I7Nthumy1qPyLYbNT4L?=
+ =?us-ascii?Q?R1YvWTrVqjm7tzq+OR9h+LxfY/kZvQ+9OxpwH6f0jHWjo9nZsN8bbb4RAoeK?=
+ =?us-ascii?Q?7KFCQVUkboqgFNJpYa63T3M+ywsOMoqh9v8E7iJm4LH130h3UcpcpmR+YvzE?=
+ =?us-ascii?Q?752RsyG0MRvIlkyVSXcoVcoiPwrF9fx77HbpfrmWZvQEray+SU7iTi/PjI49?=
+ =?us-ascii?Q?jIyjBcoHILDyUflmiOhihxACvH6UUHbOcpHHRNOYjiuzoZqjUYbQX1T/7Zzo?=
+ =?us-ascii?Q?r4QkCy5OpKc=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(7416014)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?q2jj5qnKr1aI9874LBBM6PIrtPIi5dWX7KT8n8fdRrOsrJhoqRuO7UfmFaMy?=
+ =?us-ascii?Q?ukR3LYeFeGETYNlOWhOQ7gZrYTvwRUQ7Evea0GV8qTRE/z3ofZKUS1DNDcHD?=
+ =?us-ascii?Q?OSLJ8ibNJHVwpAgW2rskkv77YoXNOKIfpBXzGBnsgS15VFQAd+Nz0pRmSplr?=
+ =?us-ascii?Q?rdXF8NLeNouzhStk+VyY5CHYIs+Dw3FyW40YYLW6vPdT+6mV5WHkFvxDFYtc?=
+ =?us-ascii?Q?+vet9EziZlqH4MLY2xjQH52xhC83NipWXP9CZYmfVs+kIHFY1gEffldKsxZT?=
+ =?us-ascii?Q?vXYdKVYnRfcvKzTZhhHuCfAB6ZGgiDEybsORiswHjbYS85Vtp60MrafKG1TP?=
+ =?us-ascii?Q?popc0Y00mLq6pYH5fvWCTo2lQldnAxjcQlj2dsBaT8AOH11ASUd8+VcRwSEM?=
+ =?us-ascii?Q?NJgsZcCi5+ZhHHxouvhl7emhV+p+7QXmUegvdOP2rXE0moO8Yc0185+PpfXC?=
+ =?us-ascii?Q?37lgiC3ZYGcUIvB2L/9fBhcGn6UZpquTPg9YPggWD1PI41w+7CTpfEL6Zl4g?=
+ =?us-ascii?Q?Vn9VurBQamdPZfOxdcwNKGxXInJpXuqPOVadpgLpGDDYt1sZvaeu2Mz73Ow/?=
+ =?us-ascii?Q?fS/9ipQwhzJ/VwFUGICXCQWhOIu/FQCbMOrrwQpKq41RK30XIiKDKWJltgNX?=
+ =?us-ascii?Q?x9e4ZDqYlI3z2hFNUV36CUQ28wZhGfPHEtci9fB7jPus3s3bBifK8ad+AYUO?=
+ =?us-ascii?Q?VKWFN4RP9DD90kk4nzQnK0LRFWYjO4dvDuFZp/fU3K7zTd+XB0b14wu+rZ/c?=
+ =?us-ascii?Q?kfR4IKO6uk74dY8qnG98NKwyMbEb3R6OlFj/7RpO9P23bz7GLOk8cGCAwrMH?=
+ =?us-ascii?Q?DBp9XNjCa67SwJKF2nmosU7wWV2UZxls8VfzJkAV4CviPpGIxDb1yszcA+DQ?=
+ =?us-ascii?Q?+FfZPYVZsnC0KwzIV7f6vdgSjdFoDykiKbR/HDzlMNTeNIo9I2umpDrZZZ6Y?=
+ =?us-ascii?Q?aV2WcuUDyaeE9pA7mquF4cHVcoXaHVBBcU0iyb902o/YxZ2G9gdZq0CmCuTf?=
+ =?us-ascii?Q?iqqzsQ2g589LsKlxO64IjgAEtdPoHAdmzT84GeGbCfDZpNx6u8Bl/6m/1zE5?=
+ =?us-ascii?Q?pFaQIIVdvDe/Ll/h+ebk1ZrpzSZsRy3SKxW+Y5qdbD05xCTGNb2wSUtnhmS/?=
+ =?us-ascii?Q?6KWKX7yDCS396GpFJJWlrN8bhQNnBk9CqvpMKO1TR/7v4yUwWji/usWAHAdY?=
+ =?us-ascii?Q?4CQpaj+lX93wR7guBdSHGxJu1S6aCklmcdrE2M26br+2rbyw4/oGPe6uQAgv?=
+ =?us-ascii?Q?F2UxcYwgCQRPMGT7xVc4seKUwhvpuaEkeH41oKNn/gAjsmipwVxDqX5IYL/o?=
+ =?us-ascii?Q?OQzlVWcN/DUFhZp7Y3HEbJwaoJgkRZWOVel8OgxAUNKuZcWithHJf59WYaJT?=
+ =?us-ascii?Q?//cjyRWLySJHnTpzCGhb4REfeW8VSjWITWJ9WXkmJb/q2dfld3ts/icjPORY?=
+ =?us-ascii?Q?A/fiLRsrf7QVh+OZinJ6PuNZVaf+Fv27YW3aZ26ixb8/XIS+ytGuqJoXzFB6?=
+ =?us-ascii?Q?dZAl/KZrDetvmmNz76eOsk93wqqw0+1PaFaSzBj9wC89qP8P8cdS7/MsCj2x?=
+ =?us-ascii?Q?Mb8fB/6/YkagPoOjb0+przxnWZYHGAK7w5M8TC4H?=
 X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bac103da-885b-49a3-f9b8-08dd19b6ab04
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c80fe1ff-78ce-42eb-0734-08dd19b3bb1f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Dec 2024 07:16:28.5464
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2024 07:37:30.2834
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: fA5eefgauMiXmkAGFFkgEpCEGHzoeuhZ1Mq10p3jpSfrXC0bt89zGW18FMyJqxLXWSZrfJTnRcpItcCxN9s8+g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7944
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kF0QmEyjd95J6IsWCWPwcTVWNLHBBaw1Ohym3lQ9XBB/GDmLGfbZd8n/QKZYCVcBui1Ke1TIra7Dgrv4vvIZ8w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10187
 
-> Subject: [PATCH v3 0/6] Configure imx8mp dsp node for rproc usage
->=20
-> DSP found in i.MX8MP SOC can be used by multiple frameworks in
-> order to enable various applications:
->         - rproc/rpmsg framework, used to load for example Zephyr
-> samples
->         - Sound Open Firmware, used to enable various audio processing
->           pipelines.
->=20
-> Current dsp node was configured with SOF in mind but it doesn't work
-> well with imx8mp-evk dts. SOF controls audio IPs from firmware side
-> while imx8mp-evk preffers to control audio IPs from Linux side.
->=20
-> So, configure 'dsp' node to be used with rproc scenario and later will
-> add a separate dts or an overlay to configure the node for SOF.
->=20
-> This patch series configures and enables dsp node to be used with
-> rproc.
->=20
-> Changes since v1:
->         - document syscon compatible as pointed by Peng Fan
->         - do not disable dsp_reserved node in the dtsi file as pointed
->           by Ahmad Fatoum.
-> Changes since v2:
->         - Fix dts example in patch 4/6
->         - Frank Li commented that we should handle the reset using the
-> reset
->         interface. I have two objections on this: we are using some bits
-> from audiomix
->         for reset together some other bits from DAP region. Also, the
-> implementation is already upstream!
->         Frank Li agreed that it's up to Rob opinion on this.
->=20
-> Daniel Baluta (6):
->   arm64: dts: imx8mp: Add mu2 root clock
->   arm64: dts: imx8mp: Configure dsp node for rproc usage
->   arm64: dts: imx8mp: Add DSP clocks
->   dt-bindings: clock: imx8mp: Add syscon compatible
->   arm64: dts: imx8mp: Add fsl,dsp-ctrl property for dsp
->   arm64: dts: Add dsp rproc related mem regions
->=20
->  .../bindings/clock/imx8mp-audiomix.yaml       |  6 +++--
->  arch/arm64/boot/dts/freescale/imx8mp-evk.dts  | 10 +++++++++
->  arch/arm64/boot/dts/freescale/imx8mp.dtsi     | 22 ++++++++++++------
-> -
->  3 files changed, 28 insertions(+), 10 deletions(-)
->=20
+On the i.MX6ULL-14x14-EVK board, enet1_ref and enet2_ref are used as the
+clock sources for two external KSZ PHYs. However, after closing the two
+FEC ports, the clk_enable_count of the enet1_ref and enet2_ref clocks is
+not 0. The root cause is that since the commit 985329462723 ("net: phy:
+micrel: use devm_clk_get_optional_enabled for the rmii-ref clock"), the
+external clock of KSZ PHY has been enabled when the PHY driver probes,
+and it can only be disabled when the PHY driver is removed. This causes
+the clock to continue working when the system is suspended or the network
+port is down.
 
-Patchset looks good to me:
+Although Heiko explained in the commit message that the patch was because
+some clock suppliers need to enable the clock to get the valid clock rate
+, it seems that the simple fix is to disable the clock after getting the
+clock rate to solve the current problem. This is indeed true, but we need
+to admit that Heiko's patch has been applied for more than a year, and we
+cannot guarantee whether there are platforms that only enable rmii-ref in
+the KSZ PHY driver during this period. If this is the case, disabling
+rmii-ref will cause RMII on these platforms to not work.
 
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Secondly, commit 99ac4cbcc2a5 ("net: phy: micrel: allow usage of generic
+ethernet-phy clock") just simply enables the generic clock permanently,
+which seems like the generic clock may only be enabled in the PHY driver.
+If we simply disable the generic clock, RMII may not work. If we keep it
+as it is, the platform using the generic clock will have the same problem
+as the i.MX6ULL platform.
+
+To solve this problem, the clock is enabled when phy_driver::resume() is
+called, and the clock is disabled when phy_driver::suspend() is called.
+Since phy_driver::resume() and phy_driver::suspend() are not called in
+pairs, an additional clk_enable flag is added. When phy_driver::suspend()
+is called, the clock is disabled only if clk_enable is true. Conversely,
+when phy_driver::resume() is called, the clock is enabled if clk_enable
+is false.
+
+The changes that introduced the problem were only a few lines, while the
+current fix is about a hundred lines, which seems out of proportion, but
+it is necessary because kszphy_probe() is used by multiple KSZ PHYs and
+we need to fix all of them.
+
+Fixes: 985329462723 ("net: phy: micrel: use devm_clk_get_optional_enabled for the rmii-ref clock")
+Fixes: 99ac4cbcc2a5 ("net: phy: micrel: allow usage of generic ethernet-phy clock")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+---
+v1 link: https://lore.kernel.org/imx/20241125022906.2140428-1-wei.fang@nxp.com/
+v2 changes: only refine the commit message.
+v2 link: https://lore.kernel.org/imx/20241202084535.2520151-1-wei.fang@nxp.com/
+v3 changes: disable clock after getting the clock rate in kszphy_probe()
+v3 link: https://lore.kernel.org/imx/20241206012113.437029-1-wei.fang@nxp.com/
+v4 changes: add more detailed explanation to the commit message.
+---
+ drivers/net/phy/micrel.c | 101 ++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 95 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 3ef508840674..ffc2ac39fa48 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -432,10 +432,12 @@ struct kszphy_ptp_priv {
+ struct kszphy_priv {
+ 	struct kszphy_ptp_priv ptp_priv;
+ 	const struct kszphy_type *type;
++	struct clk *clk;
+ 	int led_mode;
+ 	u16 vct_ctrl1000;
+ 	bool rmii_ref_clk_sel;
+ 	bool rmii_ref_clk_sel_val;
++	bool clk_enable;
+ 	u64 stats[ARRAY_SIZE(kszphy_hw_stats)];
+ };
+ 
+@@ -2050,8 +2052,27 @@ static void kszphy_get_stats(struct phy_device *phydev,
+ 		data[i] = kszphy_get_stat(phydev, i);
+ }
+ 
++static void kszphy_enable_clk(struct kszphy_priv *priv)
++{
++	if (!priv->clk_enable && priv->clk) {
++		clk_prepare_enable(priv->clk);
++		priv->clk_enable = true;
++	}
++}
++
++static void kszphy_disable_clk(struct kszphy_priv *priv)
++{
++	if (priv->clk_enable && priv->clk) {
++		clk_disable_unprepare(priv->clk);
++		priv->clk_enable = false;
++	}
++}
++
+ static int kszphy_suspend(struct phy_device *phydev)
+ {
++	struct kszphy_priv *priv = phydev->priv;
++	int ret;
++
+ 	/* Disable PHY Interrupts */
+ 	if (phy_interrupt_is_valid(phydev)) {
+ 		phydev->interrupts = PHY_INTERRUPT_DISABLED;
+@@ -2059,7 +2080,13 @@ static int kszphy_suspend(struct phy_device *phydev)
+ 			phydev->drv->config_intr(phydev);
+ 	}
+ 
+-	return genphy_suspend(phydev);
++	ret = genphy_suspend(phydev);
++	if (ret)
++		return ret;
++
++	kszphy_disable_clk(priv);
++
++	return 0;
+ }
+ 
+ static void kszphy_parse_led_mode(struct phy_device *phydev)
+@@ -2088,8 +2115,11 @@ static void kszphy_parse_led_mode(struct phy_device *phydev)
+ 
+ static int kszphy_resume(struct phy_device *phydev)
+ {
++	struct kszphy_priv *priv = phydev->priv;
+ 	int ret;
+ 
++	kszphy_enable_clk(priv);
++
+ 	genphy_resume(phydev);
+ 
+ 	/* After switching from power-down to normal mode, an internal global
+@@ -2112,6 +2142,24 @@ static int kszphy_resume(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
++static int ksz8041_resume(struct phy_device *phydev)
++{
++	struct kszphy_priv *priv = phydev->priv;
++
++	kszphy_enable_clk(priv);
++
++	return 0;
++}
++
++static int ksz8041_suspend(struct phy_device *phydev)
++{
++	struct kszphy_priv *priv = phydev->priv;
++
++	kszphy_disable_clk(priv);
++
++	return 0;
++}
++
+ static int ksz9477_resume(struct phy_device *phydev)
+ {
+ 	int ret;
+@@ -2150,8 +2198,11 @@ static int ksz9477_resume(struct phy_device *phydev)
+ 
+ static int ksz8061_resume(struct phy_device *phydev)
+ {
++	struct kszphy_priv *priv = phydev->priv;
+ 	int ret;
+ 
++	kszphy_enable_clk(priv);
++
+ 	/* This function can be called twice when the Ethernet device is on. */
+ 	ret = phy_read(phydev, MII_BMCR);
+ 	if (ret < 0)
+@@ -2221,6 +2272,11 @@ static int kszphy_probe(struct phy_device *phydev)
+ 			return PTR_ERR(clk);
+ 	}
+ 
++	if (!IS_ERR_OR_NULL(clk)) {
++		clk_disable_unprepare(clk);
++		priv->clk = clk;
++	}
++
+ 	if (ksz8041_fiber_mode(phydev))
+ 		phydev->port = PORT_FIBRE;
+ 
+@@ -5290,15 +5346,45 @@ static int lan8841_probe(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
++static int lan8804_suspend(struct phy_device *phydev)
++{
++	struct kszphy_priv *priv = phydev->priv;
++	int ret;
++
++	ret = genphy_suspend(phydev);
++	if (ret)
++		return ret;
++
++	kszphy_disable_clk(priv);
++
++	return 0;
++}
++
++static int lan8841_resume(struct phy_device *phydev)
++{
++	struct kszphy_priv *priv = phydev->priv;
++
++	kszphy_enable_clk(priv);
++
++	return genphy_resume(phydev);
++}
++
+ static int lan8841_suspend(struct phy_device *phydev)
+ {
+ 	struct kszphy_priv *priv = phydev->priv;
+ 	struct kszphy_ptp_priv *ptp_priv = &priv->ptp_priv;
++	int ret;
+ 
+ 	if (ptp_priv->ptp_clock)
+ 		ptp_cancel_worker_sync(ptp_priv->ptp_clock);
+ 
+-	return genphy_suspend(phydev);
++	ret = genphy_suspend(phydev);
++	if (ret)
++		return ret;
++
++	kszphy_disable_clk(priv);
++
++	return 0;
+ }
+ 
+ static struct phy_driver ksphy_driver[] = {
+@@ -5358,9 +5444,12 @@ static struct phy_driver ksphy_driver[] = {
+ 	.get_sset_count = kszphy_get_sset_count,
+ 	.get_strings	= kszphy_get_strings,
+ 	.get_stats	= kszphy_get_stats,
+-	/* No suspend/resume callbacks because of errata DS80000700A,
+-	 * receiver error following software power down.
++	/* Because of errata DS80000700A, receiver error following software
++	 * power down. Suspend and resume callbacks only disable and enable
++	 * external rmii reference clock.
+ 	 */
++	.suspend	= ksz8041_suspend,
++	.resume		= ksz8041_resume,
+ }, {
+ 	.phy_id		= PHY_ID_KSZ8041RNLI,
+ 	.phy_id_mask	= MICREL_PHY_ID_MASK,
+@@ -5507,7 +5596,7 @@ static struct phy_driver ksphy_driver[] = {
+ 	.get_sset_count	= kszphy_get_sset_count,
+ 	.get_strings	= kszphy_get_strings,
+ 	.get_stats	= kszphy_get_stats,
+-	.suspend	= genphy_suspend,
++	.suspend	= lan8804_suspend,
+ 	.resume		= kszphy_resume,
+ 	.config_intr	= lan8804_config_intr,
+ 	.handle_interrupt = lan8804_handle_interrupt,
+@@ -5526,7 +5615,7 @@ static struct phy_driver ksphy_driver[] = {
+ 	.get_strings	= kszphy_get_strings,
+ 	.get_stats	= kszphy_get_stats,
+ 	.suspend	= lan8841_suspend,
+-	.resume		= genphy_resume,
++	.resume		= lan8841_resume,
+ 	.cable_test_start	= lan8814_cable_test_start,
+ 	.cable_test_get_status	= ksz886x_cable_test_get_status,
+ }, {
+-- 
+2.34.1
+
