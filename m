@@ -1,97 +1,98 @@
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12C71D63C2
-	for <imx@lists.linux.dev>; Wed, 11 Dec 2024 15:59:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14E71DE3A4
+	for <imx@lists.linux.dev>; Wed, 11 Dec 2024 16:29:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733932755; cv=none; b=Wd2YdVVzvSD9ByUqnNT6XpVubLdmGeILpOfFQPRmRRAa6MALkKUEcPBxFpYyVKe+5d2RrOFeqB52um/15sojY0+pdZsF2BUGMoAcQOI9JW6wRE47oWHHn54KO/4SBjVwRQnDfJlFDtXcqVNb+A3o+qTxcMzrcKyh0weeduIkkdw=
+	t=1733934594; cv=none; b=pBti7ESxhqt3vAZyqNxdM9cpQx2sqsL/oM2ndsvCkhlh5cjalUZ5/6XscqCc2hM1DPcGHWsk+Eiqk5gpJdRKV4ffX6fb4/cxKVuyzgZmknaJkOUG1oKdCSJgQgnVNNEGq3Bpn4xCTBwppK3zLugdpAn2Pd5xs3RAnxtO+xAjdaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733932755; c=relaxed/simple;
-	bh=PStEIKVCBoB+LDS+e+Ey3xMizBgpYogWYnRK02FOek8=;
+	s=arc-20240116; t=1733934594; c=relaxed/simple;
+	bh=XTd+qBJkcHHitLmewhPLFKmUwIQw9mojqeAum8hGMNU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DavYW6oMWhFhgSqruil6m5HyGgWTE4vvGTV2WTfAw9lLkoFgDZ6rsrjldtFdO3BJlw9M/ZhRWi7QlL+hUlVxOLL9yL/mbXFVoZ/5DLKeIPn7bkfPF8I3u67NKTxo3W+RA6M8QAxvYnPuDyJTH/1hX6jM9+3EtF1ccfZWnFCaEMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DFEYbeiH; arc=none smtp.client-ip=209.85.208.171
+	 To:Cc:Content-Type; b=Ewhepo+tHSS2OLY1udknkg/LQf8XOX3C56shMYKFXJYEtnegKb9i/xSoh/z5+Inns2VtFLyoSx78vdlvlHgmpnGYMN0Td24x7EOnrdNTjVnuho65ojXIcJ+ddm5jc5XsJ2ayjN3dUtUyamS/HXHpcmYWXwQrnc7ESX9jX/CGeUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RArLOvRf; arc=none smtp.client-ip=209.85.208.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DFEYbeiH"
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-3001e7d41c5so60386191fa.2
-        for <imx@lists.linux.dev>; Wed, 11 Dec 2024 07:59:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RArLOvRf"
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3003d7ca01cso45069011fa.0
+        for <imx@lists.linux.dev>; Wed, 11 Dec 2024 08:29:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733932752; x=1734537552; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1733934591; x=1734539391; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZChbzObT8yiyu3oc7dwGuAXjmHiQ0fUscqfsIIfuVr0=;
-        b=DFEYbeiHSQtpo0KgGDUXf1H34TSv7z5S6BfnQaSUuvITpndvIuKyBMe7nej5NSG7G7
-         Pt359vADTqGxDhXCCIA7uIHGGqrsYCe+tppd6yhI9c8fymsxH1EYldoHsOB3A2ssSC2C
-         lWfDx5h3DiWnKRpuh1Y1yTvZVpi9/6wz3PfCsSa11dwNC6P/nuaUZlWZWgDUWIuye9UI
-         JN84Y5YjXkeH8rsljdWDlbwbsk9FwrB8Z810hEtPxTbeetuhRqKxU/53EF9yRBsdwPs+
-         dPN+s/rWE86NN3HBJyfI3Fhjf6tY1WBFS88Dr2fHW7SnNzhIpkZkpCHu8kah30OPCDzo
-         56VA==
+        bh=osyXKRqUv4PvfNbOFslNjYYNVIaS0mD+W2/0VCKnb7I=;
+        b=RArLOvRfSNEj43oq/Cd3jS0UcFoD1US6KrDVNs98OS7UttuyAwwR6vb2zShRif32pM
+         b/V6eHd+mykvXLoCshDFtLYdIeUFpvenCmkb/Po71LRKo9XP3GduyezkDDJkCzCWasq+
+         Sl/QRx3i8yJcZaV7q8q6HMQSx8EMsuImpj6UdABrjgOa/MsZ89LIYIL+c8b1ywh39iV5
+         58UJ3943SIYQsVSCU37mp1fxFrkTVX7+GE2UJy2LOb+1yiPFbVMZjHp9KZzwyJ1PDGG0
+         Xcdw0VJZFcalQj30iSBixhUMRmNYFAk++yjjDkc0J2dbIHI2yS9HiXWlXvOxsx7TZ8Jd
+         PpKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733932752; x=1734537552;
+        d=1e100.net; s=20230601; t=1733934591; x=1734539391;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ZChbzObT8yiyu3oc7dwGuAXjmHiQ0fUscqfsIIfuVr0=;
-        b=kmaC9WCTodnh3Jn/3XHswUYW9lgqQflj9KN3PNqf0FdmMee5SyWhR8c7re26vSucTp
-         yK3onV5jm9o3bBZp/nrZbfkWyhQ2dvDkPMpfvCviqSYk2EOU+ObSoxdIZlzNBS4qjBBZ
-         7frFD+occ0/msw3fkx74tPtFtJhtmqilfDloiatfU/QjnGr8D7I/lbDjMa4vh9ON/RZN
-         8DL60fdIF7mVyReyqNSvLB6B6DmPQoMNGkevmLdGAzdV9ExsA9ztuo54WfKzJM2Pn6Pn
-         0rmHxbI8f4EZ79U6z2tkflY3HdsOSLPJ5Tx++wWVeWfS+FTijAj1TiYz8xHlKMITeOst
-         M1Aw==
-X-Forwarded-Encrypted: i=1; AJvYcCWULunZxAsDqGV3tUFaD0GghAmjZ82YVFUiEzeWDqJ0lQ9cNssefgJfL6TD+60Hn1IGUNI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyS8ICIYUms70Fw/x6NJemC4wTcfZ9ee8T9yXQCyv/yQVBO3Roi
-	b06MpORMXS0cEXiE65nUwFSNPIJbN8a3bG4+MYGeeoBelFjkbHfE9DpzdQs90mpqzOoeNCdXVoU
-	RIK2fv+SY3lGEouQrM4NV9qvJJi0=
-X-Gm-Gg: ASbGncv2pxm7EqKVUVzIKW/GteRWUEqjbA2i/pGVM6JEk5s1i1Rs7QmvD7NOgIkglY9
-	ztP8T02VE0cMtXevfMRGR0I7+35vKKg1eMUCK+6OBNK/Jf++bmi2vejlRT61NhUwLRXE=
-X-Google-Smtp-Source: AGHT+IGjjd845gZqD6VbvGu8xD0QWI1LY7dIDKnnhm4caENDAWdY8siyqutCix247rdvw0pP+hHXXkECcEPStZBxUKE=
-X-Received: by 2002:a2e:be89:0:b0:2fa:d2c3:a7e8 with SMTP id
- 38308e7fff4ca-30240d4a03emr12884291fa.13.1733932751765; Wed, 11 Dec 2024
- 07:59:11 -0800 (PST)
+        bh=osyXKRqUv4PvfNbOFslNjYYNVIaS0mD+W2/0VCKnb7I=;
+        b=qZWWMvjnE5kUE2v7TqDuYIxRUZpiAm25KcWEFBmWBL+ETSoUd0lGAjn56uY6geMJuF
+         PJMcNEWVAsi5b/3bUtTJQgboVEh65doSwhao/2CtbmN6WaejAy19kgrrsMrIGPGls3k+
+         Oix5t4O4VaUK+3Q69EZiVTrTCMHX7Qj+fw+hSYznWdJX+QviUvcIgGGJuJa3FNsQ7Qdn
+         +tU7NxJ4MHj7vh55gyzK7+ADmXnRREzWoGm1/wjJ0q5djJYY0Yid1Wfq8eGirKZCr/XA
+         m85aygewS0hcRZgMVRmPR/G93UiplHkMRrCmSckskWNiqwdgwE46not3zD40qt9ntynw
+         oNsg==
+X-Forwarded-Encrypted: i=1; AJvYcCUSGcOWfF3szThUS5BthFfgiUeiSWlnpeIF/FPsNI8vGFp0VJu5mWBYPSXMRh9d83Qsnnw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzdoSENRHSAtMXMAqXPLr7VVGvqrAb8XlvfU5usnVuMn4tBKiQP
+	BtklcuA/jbyQBPkGFq5TjgvzQDH45b+znlmPxbMdyrEvaV01lGTEQ3uwUXWQceTmZukqbKokbAQ
+	baagLzYgm3oAKeqoVlSjrRt/C3xw=
+X-Gm-Gg: ASbGncus+xnjgIXkKhvdgN7TLahnAakjbhQF4brqGDB3YaGhZZKHek42QRttIt3VNCk
+	LIKqTjq+Ey8Q+3N+kBhx7dCGGkhkTbMK3XayAuPmGSvsb4aQqDFM/6QcKD6SWIoSKM30=
+X-Google-Smtp-Source: AGHT+IGYVMJ6W3ctYMQ7NC8ivi8cFDMpjmorS0+eO9pMHQYMNw+7Ad3Tj/sNuMyEstWHwoEfJ1/yML70vfdfCV99C5I=
+X-Received: by 2002:a05:651c:221a:b0:300:2c9f:ac51 with SMTP id
+ 38308e7fff4ca-30249e0465cmr677441fa.2.1733934590663; Wed, 11 Dec 2024
+ 08:29:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241210-imx91tmu-v2-0-5032aad4d88e@nxp.com> <20241210-imx91tmu-v2-2-5032aad4d88e@nxp.com>
-In-Reply-To: <20241210-imx91tmu-v2-2-5032aad4d88e@nxp.com>
+References: <20241210105705.116116-1-festevam@gmail.com> <yujvdu3s6v7z7th2lrdscqfxocx2zy2u4owakisvnjppz2udqv@5ok2rcf4exd4>
+In-Reply-To: <yujvdu3s6v7z7th2lrdscqfxocx2zy2u4owakisvnjppz2udqv@5ok2rcf4exd4>
 From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 11 Dec 2024 12:59:00 -0300
-Message-ID: <CAOMZO5DC=Y=BU-MX0B_ecOBnkhbiUXXKDDYgn4-uhDNyihOXoA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] thermal: imx91: Add support for i.MX91 thermal
- monitoring unit
-To: Frank Li <Frank.Li@nxp.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Pengfei Li <pengfei.li_1@nxp.com>, 
-	Marco Felsch <m.felsch@pengutronix.de>, linux-pm@vger.kernel.org, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Peng Fan <peng.fan@nxp.com>
+Date: Wed, 11 Dec 2024 13:29:39 -0300
+Message-ID: <CAOMZO5B3810+4RJsPUtL3ASxqpDd+UmC=GcY6t8-ad7NZXZLjQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: display: panel-lvds: Add compatible
+ for AUO G084SN05 V9
+To: neil.armstrong@linaro.org, shawnguo@kernel.org
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, dri-devel@lists.freedesktop.org, 
+	devicetree@vger.kernel.org, Fabio Estevam <festevam@denx.de>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 10, 2024 at 6:27=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
+Hi Neil,
 
-> +#define CTRL0                  0x0
-> +
-> +#define STAT0                  0x10
-...
-> +#define DATA0                  0x20
+On Wed, Dec 11, 2024 at 6:31=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.or=
+g> wrote:
+>
+> On Tue, Dec 10, 2024 at 07:57:04AM -0300, Fabio Estevam wrote:
+> > From: Fabio Estevam <festevam@denx.de>
+> >
+> > The AUO G084SN05 V9 is an 8.4" 800x600 LVDS display.
+> >
+> > Add a compatible entry for this LVDS display model.
+> >
+> > Signed-off-by: Fabio Estevam <festevam@denx.de>
+> > ---
+> > Changes since v1:
+> > - Added devicetree@vger.kernel.org on Cc.
+> >
+> >  Documentation/devicetree/bindings/display/panel/panel-lvds.yaml | 2 ++
+> >  1 file changed, 2 insertions(+)
+>
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-These generic short macro names can easily clash in the future.
-
-It would be better to add a better namespace definition.
-
-For example:
-
-IMX91_THERMAL_CTRL0
-IMX91_THERMAL_STAT0
-IMX91_THERMAL_DATA0
+Would it be OK for you if Shawn applies both patches via his i.MX ARM tree?
