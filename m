@@ -1,242 +1,130 @@
-Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2075.outbound.protection.outlook.com [40.107.103.75])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAE523A180
-	for <imx@lists.linux.dev>; Wed, 11 Dec 2024 20:58:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.75
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733950711; cv=fail; b=jNg2soHZAhV40UkB6lsAfPuNfHnnx+BVO5KON09ZWpe6kudgfcGmlXV/9DxfpyeiZt2a9pR6kNBfFRLLf/UjGJ4VCI4MEn5geKdViR8/QLl+Uux0I5T5FxB2QquiN8Bx7lXgxPYPuCST4VUD2GcV9bhxYX6TDci5Nt0AIHSPc/M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733950711; c=relaxed/simple;
-	bh=mJBGb3x/IT3kU6QxbS0pDIxty8JwWoRws5fh7D2yIVI=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=NRQOm27M/qJgal4YaLNEJO+sXS8z00QYV7rRiG6DnAh887/ZCtumcrpOjMCtZLUr9HtOnZt2yJvq5K7Xdsu8NhQSixcRPP+MoFsoGrSIchnAcfSqRmtEo+XVFWLWIzScetvACOgixjB+pZKcnNva9CMVm6ZvxgDdU2nYukCo4Sk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=mL1ASNKs; arc=fail smtp.client-ip=40.107.103.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890221DBB13
+	for <imx@lists.linux.dev>; Wed, 11 Dec 2024 21:56:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733954203; cv=none; b=SUZwdHR7xSji7oHgfEmWK5UeceeUt5G9fErOkyZksKwU1I1wfs/Gv6gUQTa9EEeRGvLzIxuCB8lMQnwo/yLRag65M1EZCFo40fn/tsR3MVK0Q5dAhCHS5HAFHdd6bkrLUklrb7s6wSQHYM3N4YJscZK5F4bbuqWm99e7BcRA8NY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733954203; c=relaxed/simple;
+	bh=Lwqg+ADrB6ItLkQKdR+JgXfWXKYnf/XKcjMI3AS8BFU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rIMOr/CUQJJ+bLXrsBQo77H+Gnt2OskRxyoknvJH4UvLxTwZ7PoITWi2/jy50nn17EUmqpmzhVKqpjWyfUx3StslALjsl8dgD6wExo966LhxTuXVWLHxnmtwnseVs3g9CXOLCuJAf5us4wSd1N6vxYuRNLKmx3ss+QmoaHE4kek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NJq9im5M; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="mL1ASNKs"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ogpN0wttNWCz5UQFWsjrq73gWObgToDadaTKTQfrS2mYPAFkXY15I1LLrdHhllhOVWtNyi6GhRaPZd5RS/eDwxXSgKUGI9jsi9GMKUUb7M+UMVNg+RS/B7X1AYijs1gmrTrWM1VrHpD8Kpj6xw6S4XONH0w806AS2DO+IzCcV++ULB95jk8Ipla7ERaLEVi+8HmDcURLRx/2IsWcbh/C8O+K9XdSUAUbbOKyX7CoVNbN2pnWNxS8VdoaR3xZPTWyKGz48l58PGeSmt3WH6pcz1RmKmTp6cPk4e/13QIC9VtIiVIer3R4+w6e5uuJ77iq/i/RGPuq4p64Q5hdp7Hktg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MQ34FODL+rWvjEXX2BjWCcNtXyZaoeDOc5977Me123c=;
- b=sMnXMwAvjNR+QWA1x0aDUGzcj+cYparvKTQENJ0ACnv9muExQHt9tlVPsh50j/68n4Dmjes6IsE2W9gOmH6O7pKYJnlPco9To6U8XeXNKmo+ARxp8+HTcmARM7MqnOdzY8a2RR6Wyonu9FjpmKjfBMSRDymXdhEQFai7GOtjHFmWdcoxVc+PHksSuC8Y0k72wfO7loKI+A5PLPHXd1DJF4T7nNisZZuhRrOnla+FESwNnZ6lFsqEAYJvdxm/3aGUO18oZFW1W6/sTwakYjLfeQHEAsFbD/FdZm/6iQKmxwlg9vjk/EQrux96BVXvu7PvSEHtp+sxLn+dYcYnoyBuiw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MQ34FODL+rWvjEXX2BjWCcNtXyZaoeDOc5977Me123c=;
- b=mL1ASNKso2qgrThMujzMRmg+cHSGlTax23hthvA3EiC9T2qwR7H6c3hl6t4/RBdkQ5ZYo4kbndtP4Jm+coknIwOV6F8gGuCcrDwawGg3VGXLYXl6dPAtN11gNdo4m7Aa3GTECQI4QS9KSjDOYPFRt9nRLo7oiyQekGmZ58ALZt4MFKDH3IB0BGLgqtsQitmAPLOJWmc8YogLN6YMdYLQrSoToAnsTplcobE5A7KYn09H7Q1JICHpRaCV3ifyRKONYBzOwrTVGFN7J/B50OYh8DiK2PN/PsvwXYwIO4NW4tjCkU+HtV6V/6Qth+QCtxhmMEhKJyZllOXuObXcmw3NNg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM0PR04MB7139.eurprd04.prod.outlook.com (2603:10a6:208:19d::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.16; Wed, 11 Dec
- 2024 20:58:26 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8230.010; Wed, 11 Dec 2024
- 20:58:26 +0000
-From: Frank Li <Frank.Li@nxp.com>
-Date: Wed, 11 Dec 2024 15:57:37 -0500
-Subject: [PATCH v12 9/9] tools: PCI: Add 'B' option for test doorbell
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241211-ep-msi-v12-9-33d4532fa520@nxp.com>
-References: <20241211-ep-msi-v12-0-33d4532fa520@nxp.com>
-In-Reply-To: <20241211-ep-msi-v12-0-33d4532fa520@nxp.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, 
- Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Thomas Gleixner <tglx@linutronix.de>, Anup Patel <apatel@ventanamicro.com>, 
- Marc Zyngier <maz@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
- imx@lists.linux.dev, Niklas Cassel <cassel@kernel.org>, dlemoal@kernel.org, 
- jdmason@kudzu.us, linux-arm-kernel@lists.infradead.org, 
- Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.13-dev-e586c
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1733950663; l=1851;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=mJBGb3x/IT3kU6QxbS0pDIxty8JwWoRws5fh7D2yIVI=;
- b=QFLvfupamU6j1m6GC7+ti6gAF9Lji2I/ymk1eSE3p5fzudCDf3+vupHDN3ZmLnRNTbtBXTsSI
- 3K+V2/zfZ5zBNOmUiQmemeCheOGXGKqBO+y2GZeNxfCCsQtQZgB5XU9
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: BYAPR01CA0037.prod.exchangelabs.com (2603:10b6:a03:94::14)
- To PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NJq9im5M"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B33C4CED2;
+	Wed, 11 Dec 2024 21:56:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733954203;
+	bh=Lwqg+ADrB6ItLkQKdR+JgXfWXKYnf/XKcjMI3AS8BFU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NJq9im5MPQBMqanlONUmrBV/FxkCDcsFQN8GMNVgPSqxAKUDwN4C8YBiQhyV09qGq
+	 GKlk53gHao79q6y8c9DGmswlgUvyNHzeG4F2fzOAih76Z7CHKhOsOj5EcBykUnaQl2
+	 7dMS1UbuGGYs2rVKnI2CbmCzehNdmIifn5E0MpK4M254AVcvp1LGX/cTBKgeqRrLPu
+	 yDlgITovbyw1Taj+fdlJnZTS6XdhR5YJoylFXEbgXzhGx4ZC0PDjvC6reIt2eml73V
+	 MxwcGILhO3Xheya/GL86JY9TmhZeU8llnruyRaSOCB/AUcWHKb3DHkvBoUOiqq/gH+
+	 tygsFq8PD+ztA==
+Date: Wed, 11 Dec 2024 21:56:38 +0000
+From: Will Deacon <will@kernel.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: Frank.li@nxp.com, mark.rutland@arm.com, shawnguo@kernel.org,
+	kernel@pengutronix.de, festevam@gmail.com,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2] perf: imx9_perf: Introduce AXI filter version to
+ refactor the driver and better extension
+Message-ID: <20241211215637.GF17486@willie-the-truck>
+References: <20241125104338.2433339-1-xu.yang_2@nxp.com>
+ <20241209154419.GB12428@willie-the-truck>
+ <20241210020212.yz3xowvdk27zmgsl@hippo>
+ <20241210133732.GA15607@willie-the-truck>
+ <20241211053455.z5zzawfacpyv2dlt@hippo>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM0PR04MB7139:EE_
-X-MS-Office365-Filtering-Correlation-Id: 83310109-7cd7-4036-3e4d-08dd1a268edb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|1800799024|7416014|366016|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dkZWVjBvOUhxMWRMTU9yUXdMTEhSZnJITVVvdTd2TmJBWllKamp5VlVwcjVZ?=
- =?utf-8?B?UStJMVQ4UFlHdytUK1pvZlEzYnBiL3BEY0hlOTZnY21pTHdoUFB1OURFSW9a?=
- =?utf-8?B?WEg0YjRsa3F0MTZGNldyWmlibTc2V1V3K0ZxMGpRT1BkZzBvcmRlNk9zbTJ6?=
- =?utf-8?B?WlNkSDZBQ3JpYUI5YUkxcjNTNDlJL3BoV3JhVnpQYUl3b3lxcjJyek5pandF?=
- =?utf-8?B?b3hHYVhiL3pXNW94bTV0aUF6eUV3VmxQQkRWRWRQS0RwcXpTN2VYa2V4aGdG?=
- =?utf-8?B?ZE1YYXFBTmE1OU00VUFodHE3NVVLUmJqY01hdGkyTWVyMlFvSHFsZ0dkUjhk?=
- =?utf-8?B?YTZaU25PNTZTamJINjhXeWFlRWRFM3JLOEwzdzBJdExmTWtYUE5EUDN1bTNM?=
- =?utf-8?B?enp6NGlsU0VXazlCcUdrcnNNZ0ZXWHhtV2k3cFFuVlZIWWdCN094M01VY1Bx?=
- =?utf-8?B?ZHBhU0dENTFUNmRDVTRJeXRqR3V6dnpHRU9XRnVjd0JrVEhML0d6aGZKOWp2?=
- =?utf-8?B?TEJONGhjUGw0bU9Mc250aGVOTGlwMUJrVWpqR2dNVjdYSjM4cmhObHp1bUYv?=
- =?utf-8?B?SVdOaHN5ajRVY25mOExUbFFNZXcvWUR1cUszaVhMTExPSXdUckdtWFFrNENC?=
- =?utf-8?B?Q1g0a2ZvdEM4K1hkczBLQkYxMkVtVTI2OGVvZHM1Qi9IYmlHYXQySk9RWTFo?=
- =?utf-8?B?TktTOHdCZy9TY2xYaVQ3YUh1elAzVGsxc1o4WGRSbDFXQ0FwZ1ZvczM1dDFz?=
- =?utf-8?B?NVBsZFBXZzlTN0tQME5ZTEVRWDR1dTEybGMwMCtoaVpiTXVEZDBkR2NUdHRj?=
- =?utf-8?B?czF0WDdqV2xGWTF6YXc4ellKVENBdS9oVDJzbEdjTFdQeW9yZlpMNUxuTXZ5?=
- =?utf-8?B?K3Fjc3pucEdxWTdwcjJvbHJwdndhOHQyYzJQSVRjYWhsdnJVK0xHaDV5NDMr?=
- =?utf-8?B?OUYrY1VLbGRZb2laZFdVMExQNzdzYk1QblFzL2xkdjVjL2kxU0FoVW9FaW9p?=
- =?utf-8?B?WEpYc0NkejdjM0k3a21JTGIwTTBzY0JlaVVrNkhCUVk3b3lDbEkrc3VnMDdn?=
- =?utf-8?B?aWF0Yjkycy9aY3JwMHAwWkowcVJTbDliWVBXcXFBd0xMa1BNTGlSQkl5bzUr?=
- =?utf-8?B?TWVDR3hZcXZwZm41dG4zTnVyQ2o3UUdRUStDaTltWXVibDNYSWN0MmN0Y28y?=
- =?utf-8?B?SndLcXNGcjg0V291anAveVpaNXN0L2tjaURPQ2lkc1JObURGVGlzaG5Qdyt2?=
- =?utf-8?B?NzVPbC81aWNkS1dyWWJhNnlYL1ptWjVBZHdmaWVGWFRHWUFaYWllQ2tRNGJX?=
- =?utf-8?B?dGdkYUNGRFhnMXlMY1hlZzJqc0RUaU1rdlgxMTFTeGlUYzY5cThsdmEyK1Q4?=
- =?utf-8?B?VkdKNERsUjlpQldGbUNLbEZYa2R3L084b1NjMExCb1NWL1FwMjVJd3RuaWlj?=
- =?utf-8?B?OWVGcUx3ODBXR1REMldveXQrMzJPMUw0TWdzS0VrTlUrQVIrb1NPNXA2cXg5?=
- =?utf-8?B?Y0o4Smd5dzFjVjEwdFFyVnhiNTR5UmVzcTh0dkpGR2E3N3ZJNlEvSVUvNUZh?=
- =?utf-8?B?ZDNTdzVuWjIzL1JPK1Y1NHBkUktxQVRIQlZIbHJ2RjJCNWNzSTE4Q2lWVitN?=
- =?utf-8?B?ajA5K1RMWVorY0ljcDh3Z1p4M1hIQUYyc1h0RjBaV01DTms1Z2VhemFodlFT?=
- =?utf-8?B?MVpuRVZmVDNKYjY1dHhZSC96SHBObWNyc0llU05DRGhqTStXU2ZLaDBDSkdu?=
- =?utf-8?B?Rk1TeHJUYTF4aHpRQ0hqc2Y4amh6QThScldSQUNSaTUzc044NVlEc0xzQUZL?=
- =?utf-8?B?eUVTMTBVR25wbXRjZUVIVm1XSzVtNUQvRGxiUHp1b3ZHNFdZYW5CcTBsalZS?=
- =?utf-8?B?YlFqbzNSbkhwS3ZSemFHbFFsSlVCaGc2aWovU1RnejZJV2h4aysyZHNtbDB4?=
- =?utf-8?Q?kfmKhjRFLT4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(1800799024)(7416014)(366016)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eFFiamFzRnYxNFZOWmhNOXF1eFBRUjJxQXd4c1pCY1JZeDQySTdxTHdqbnUr?=
- =?utf-8?B?cll4Tnh6VmpSWU9nN0U3dysrU0JKNVNONHZpaXR1NmZTVEFOOTVYUkJJbTVV?=
- =?utf-8?B?Y2hhUnJkeXEwc0lQbnpGdnN0dGNxdEo4RGx1UjZpR25BVkVNSTBSVzNYMFZD?=
- =?utf-8?B?T2doS1ZrdnpCY1ZWSWJtWVJxajBjeGVrU0poVU5mTlFnakdZTnViOW1OVnVy?=
- =?utf-8?B?V1ZhTlF2ckcwN3JvVEs2eG9obFVFeHhQcDF1RnU5T1JlZFYxbG5uYmp3ZGxu?=
- =?utf-8?B?MVFucTJMOEk5Z1hCb1NOeXlVNGlrN2Fzd1A3ZnovTlRJZnVRRllGamxsK3VF?=
- =?utf-8?B?aU40Mks5TWlnVEUzbjl5VWFFY2lBM1JWUFdHTXU4WWE2ZCtQUTNQdkNlWVp3?=
- =?utf-8?B?THVEOC9XM210eUc0bEgvdVJxR0hvR1ZyK2tQa2g0VzlNU0NuT1BETFJ6cTNq?=
- =?utf-8?B?SEhvZnJwODl1WkRGM3hIQ3ZuN2t5cjIwVDMwdy8yaXI3YXdBRWt6YTFSZjRG?=
- =?utf-8?B?WWRmbWk5R1ptWGhaR1N3NGt6NzJSY2kycHJ5U1B4SWZJb2RiSktTVkFhUGlj?=
- =?utf-8?B?SjRjSVk5TkFsalZrdjFvWStNUEtrb2lzb2NwOUlJQkY1N21xV2MrZ3RzckFY?=
- =?utf-8?B?T0h4ZVFuUFhmQlU4aU5JMjI1U2syaUFyUm9YSkVyTXJsS2crL05IWnZhaVJM?=
- =?utf-8?B?NzU1WFdBTHVreFNGVm00QVRnMWUwRHRRRE40NThIZE9BRlQ4MENNRUJZVDYr?=
- =?utf-8?B?bmFFbHUvaERKTCtBc3NtcXNZQ1ZjUUFPYUlIK2trYzRiNjJrclVaYmRQWGRT?=
- =?utf-8?B?Z0pId0xqeCthaWRsREtFeVQ5TDlheFlFZGorRy9mWGtyNnFvZWg2eVJxTXor?=
- =?utf-8?B?L3lwZ3BVRFNDMHhoSW0wUGx5anpxa05IN0IxdUlRMFFYUldPcXVtUEdsRzR2?=
- =?utf-8?B?OW5NMWJPU2NwQVJyYVpsZm16aDltbk9wT01LNDQ5eEt1a1pFdGRhVlNTbWRp?=
- =?utf-8?B?WFJaeDJ5RnNEMW1KZmcveXBuQkFIMHk4QlJoTXF6czIrVE9JSGwyZDQ5UGNF?=
- =?utf-8?B?RnJ1d2k3ZzVkU2QwZUwwZzNwaW1nZlAwSktjRXg0VklLREk1dmxlVkI0blEr?=
- =?utf-8?B?eDA3eDF4NEtoTEg2SGhyckFnR2phUGdsWEExKytvUEthSm5ta2pqMlFmMHFt?=
- =?utf-8?B?eHJqNXI5QkpIWmtJV2FGV2RMN2tFdGVFZjdnQ1BrR1lVOGJBbk5tQmlBTmE0?=
- =?utf-8?B?d3JEYTc3OTZjNTROam84SHpqWnZMU1g1czhPQ2pYb3BKYzBydzZXUGtRQnUx?=
- =?utf-8?B?ODM5MjRQaVR6VWRNWlBUbHB1dHI4WVdHTnRiRnpUWlZFektuQk5vK3RYUTFE?=
- =?utf-8?B?Z3d5TUlWelVBTTBhMHdmdGdUUENkOTdmSWx0K0V0WExWeDArU0dNQ0U4ZjRr?=
- =?utf-8?B?SkFmTmpEYjRPZHR4K2pyck1IdURQcGVBeDhlcGpNL2hOQnh0QjMwNUgxRGhr?=
- =?utf-8?B?Z1JJLzc2T3k0TjFoY25qQ2oxOWJaUWQwaERnM3F0NEI1Ty9qQU9Vbjl2ZDFv?=
- =?utf-8?B?aW9FMHZvWHZRSzB5elRBNGpjVlV2bEZPTWhwUGtwUi9ZUm9uK3pnK0FMeEp5?=
- =?utf-8?B?U1JIa1pqU0dTK3VOV0dONWJOR1MrbnZpbjhPZG1wVnE3ZnRZaVg5bCtVclRV?=
- =?utf-8?B?RGtJRHlRUGdQcUMxbitFQ1o0a0YxUUpZUlE4M3hJUnA0cGVsL3ZMVHdGeGZY?=
- =?utf-8?B?cXRuUndCM0NjbmEvdk1ITVo2QkpMQnNzc2lsZFduYlNwUnJVVEYyby93bmVl?=
- =?utf-8?B?V2t3MUd6eUhmVXNFVWlrY3dUTXJubkNVNzBjRkswaDNJZ3VFT2NGTWlYOS96?=
- =?utf-8?B?Yno4RGJWNWhLM3dpQ2V2dUxTbTBkRE5sYVFVUEluUTFSeFMvaFFrejFvUyts?=
- =?utf-8?B?Qm53eStiMCs2NEI0bFRQanIxMVJ3c1MwVXRzSVIwaWpwc2JzVTM1TmUvUXpk?=
- =?utf-8?B?bGV0bHluK3lnOWtwc1ZpYmdNMnZGK1B2bElSOExoS2pGeVF4K1g5b3dpRy9t?=
- =?utf-8?B?K1hubUhoNWpUNDVrQTBoY2g3U0U5T01ZaHgvN0lHeHhyZ0wzUVloaC9mM2xV?=
- =?utf-8?Q?WvVraTNsV7uA5o19gN/9cL2gz?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 83310109-7cd7-4036-3e4d-08dd1a268edb
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2024 20:58:26.6438
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1mlrP60UE2o5Qo0UxGw6QTaE2cUh1weyHkujOFprdYB/Gh5oHGN2aI1ypgSurTzsokoymrsBfiUUQwmBvana6g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7139
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241211053455.z5zzawfacpyv2dlt@hippo>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-Add doorbell test support.
+On Wed, Dec 11, 2024 at 01:35:16PM +0800, Xu Yang wrote:
+> On Tue, Dec 10, 2024 at 01:37:32PM +0000, Will Deacon wrote:
+> > On Tue, Dec 10, 2024 at 10:02:12AM +0800, Xu Yang wrote:
+> > > On Mon, Dec 09, 2024 at 03:44:20PM +0000, Will Deacon wrote:
+> > > > On Mon, Nov 25, 2024 at 06:43:38PM +0800, Xu Yang wrote:
+> > > > > The imx93 is the first supported DDR PMU that supports read transaction,
+> > > > > write transaction and read beats events which corresponding respecitively
+> > > > > to counter 2, 3 and 4.
+> > > > > 
+> > > > > However, transaction-based AXI match has low accuracy when get total bits
+> > > > > compared to beats-based. And imx93 doesn't assign AXI_ID to each master.
+> > > > > So axi filter is not used widely on imx93. This could be regards as AXI
+> > > > > filter version 1.
+> > > > > 
+> > > > > To improve the AXI filter capability, imx95 supports 1 read beats and 3
+> > > > > write beats event which corresponding respecitively to counter 2-5. imx95
+> > > > > also detailed AXI_ID allocation so that most of the master could be count
+> > > > > individually. This could be regards as AXI filter version 2.
+> > > > > 
+> > > > > This will introduce AXI filter version to refactor the driver and support
+> > > > > better extension, such as coming imx943.
+> > > > > 
+> > > > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > > > > 
+> > > > > ---
+> > > > > Changes in v2:
+> > > > >  - modify subject
+> > > > >  - add comments for AXI_FILTER version
+> > > > >  - type -> filter_ver
+> > > > > ---
+> > > > >  drivers/perf/fsl_imx9_ddr_perf.c | 33 ++++++++++++++++++++++++--------
+> > > > >  1 file changed, 25 insertions(+), 8 deletions(-)
+> > 
+> > [...]
+> > 
+> > > > > @@ -624,11 +641,11 @@ static int ddr_perf_event_add(struct perf_event *event, int flags)
+> > > > >  	hwc->idx = counter;
+> > > > >  	hwc->state |= PERF_HES_STOPPED;
+> > > > >  
+> > > > > -	if (is_imx93(pmu))
+> > > > > +	if (axi_filter_v1(pmu))
+> > > > >  		/* read trans, write trans, read beat */
+> > > > >  		imx93_ddr_perf_monitor_config(pmu, event_id, counter, cfg1, cfg2);
+> > > > 
+> > > > Hmm, doesn't this change mean we now enable this for imx91 as well? My
+> > > > reading of the commit message is that imx93 was the first chip which
+> > > > supports this.
+> > > 
+> > > Yes, it's enabled for imx91 too. In fact, imx91 is compatible with imx93.
+> > > They use same configuration for axi filter.
+> > 
+> > Ok, but my worry is that the above code looks like userspace now _must_
+> > provide valid values for the config1 (axi_id) and config2 (axi_mask)
+> > fields on imx91, whereas before I think they were ignored by the driver.
+> > 
+> > In fact, without this change, how were the PMCFGn registers configured
+> > on imx91? It looks to me like they were left uninitialised...
+> 
+> Before this change, PMCFGn registers are indeed not configured on imx91.
+> However, they should be configured as imx93. I notice this thing when
+> make this patch. First thing I tried is to add is_imx91(), then check it
+> and is_imx93() by "||" operator. However, this way seems not scalable as
+> more imx9x Soc comes out. Basically, AXI filter version will keep at V2
+> unless big changes due to new features. However, perf tool need export
+> correct MetricName via identifier in sysfs. So I made this patch, then
+> PMCFGn will be configured based on axi filter version rather than pmu
+> name.
 
-Tested-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-Change from v3 to v12
-- none
----
- tools/pci/pcitest.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+Gotcha. But that means this is a fix, right? The commit message doesn't
+really indicate that and we probably want a Fixes: tag to indicate how
+far it should be backported.
 
-diff --git a/tools/pci/pcitest.c b/tools/pci/pcitest.c
-index 7b530d838d408..fcff0224a3381 100644
---- a/tools/pci/pcitest.c
-+++ b/tools/pci/pcitest.c
-@@ -34,6 +34,7 @@ struct pci_test {
- 	bool		copy;
- 	unsigned long	size;
- 	bool		use_dma;
-+	bool		doorbell;
- };
- 
- static int run_test(struct pci_test *test)
-@@ -147,6 +148,15 @@ static int run_test(struct pci_test *test)
- 			fprintf(stdout, "%s\n", result[ret]);
- 	}
- 
-+	if (test->doorbell) {
-+		ret = ioctl(fd, PCITEST_DOORBELL, 0);
-+		fprintf(stdout, "Ringing doorbell on the EP\t\t");
-+		if (ret < 0)
-+			fprintf(stdout, "TEST FAILED\n");
-+		else
-+			fprintf(stdout, "%s\n", result[ret]);
-+	}
-+
- 	fflush(stdout);
- 	close(fd);
- 	return (ret < 0) ? ret : 1 - ret; /* return 0 if test succeeded */
-@@ -172,7 +182,7 @@ int main(int argc, char **argv)
- 	/* set default endpoint device */
- 	test->device = "/dev/pci-endpoint-test.0";
- 
--	while ((c = getopt(argc, argv, "D:b:m:x:i:deIlhrwcs:")) != EOF)
-+	while ((c = getopt(argc, argv, "D:b:m:x:i:BdeIlhrwcs:")) != EOF)
- 	switch (c) {
- 	case 'D':
- 		test->device = optarg;
-@@ -222,6 +232,9 @@ int main(int argc, char **argv)
- 	case 'd':
- 		test->use_dma = true;
- 		continue;
-+	case 'B':
-+		test->doorbell = true;
-+		continue;
- 	case 'h':
- 	default:
- usage:
-@@ -241,6 +254,7 @@ int main(int argc, char **argv)
- 			"\t-w			Write buffer test\n"
- 			"\t-c			Copy buffer test\n"
- 			"\t-s <size>		Size of buffer {default: 100KB}\n"
-+			"\t-B			Doorbell test\n"
- 			"\t-h			Print this help message\n",
- 			argv[0]);
- 		return -EINVAL;
+Please can you send a v3 with that so I can apply it?
 
--- 
-2.34.1
+Thanks,
 
+Will
