@@ -1,188 +1,168 @@
-Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2054.outbound.protection.outlook.com [40.107.103.54])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E513246354
-	for <imx@lists.linux.dev>; Wed, 11 Dec 2024 14:10:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733926247; cv=fail; b=ji5P1jb4Dzt7yJR+MTrpXS0vP52NyyIaXSZbJLFSwSkXOSIcDnyWJ4tnUxC5wavmfuEKwdp2JBdezaFb//n6q/UnQJDropwzc9ju1/8lHXxghn4jiXvPxh0YSB1WWUmQ8fHiIjeLhw7NXQ4Woh/OSIjmf+iZRxNSgJ0z6dDjF0Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733926247; c=relaxed/simple;
-	bh=mjsLYzigF+F9qm/d3Wgo+yb/xcaXuixjflclLpGDPQM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=F8OFUFONw8ZLR/emJjXq/mn4ZID0LyPRcR0Gvc8NQiR/pD5YCk3q6CsXAuOhQtO4uARyO3AiKh1dLsga7cHqxS5I1CoevDXIrV6F/iSFMN0kP5KjgTCBvuO3lQFDtfqiv9cpbdy6d8VhPQ0ZXuitW5rHvLFxSsEcLU0p/LRp2DI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=MzMMQRbx; arc=fail smtp.client-ip=40.107.103.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFEC1494CC;
+	Wed, 11 Dec 2024 14:55:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733928944; cv=none; b=jGLKiCz2r6+f4Ck71fWFpISnKi9+s0LX7odHZT6mseNfOzO6wwgVBYojz3P0Ke5IUbKzDtcq+j1nIf9ntqBxe7JNRPIKIVPDOZEZ1ZkbUDqNIHksaJnpRw70Wm+9YpXnAauPHDTbebDLF8+z1GtOWXZVjbGxbSCMyOaVlgsdL7U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733928944; c=relaxed/simple;
+	bh=xbrvzOnKmd+0otzRNpHPJb3BuEKlAKM+LRet5dI/QFQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TRE6PMu7YRXmggosVmOYa5wU6xSBHGW7ZZA8dd/smoSV/6fLogNN4pWA85l4TUAP0ALo1KGaaCSnVZ9X+VU0dQ+27rc2cYdpG5ger2TSF2M54Kr3yqC7wWQd0jMf184WGFzTbIbyX6pXMhIRnAjBBRLpy0d/YEFSOK0/M2vTCLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=peUBRvN0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="MzMMQRbx"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QnUMppqt+7O+x3bQYQHT6KFeYiIwCsX9rokUAlwyda80tAfQRmMxlM4yLG2aiPWu/+jtsUWRQUVsXVeFqFGXipFrr9PGEeLJGRHOsgOc4PWPBUqJ4yzPiKbyFFIBSYyAzaoD0tuf4AhTJFmu7PbszPkZ7edN1FndLCgWGGCSh83f7VNrDe1WcP/ltsOHLi9N8MLWBr/AKrYzhoQ4iXsVd+xnEG1XVAHquRqN2wpUaApjezXvMH8kq2psJN8CJW2DJ+4DrkBNuDQQEv48ZIbooWI14q4SDOxPPUzldikv0tRjO/hyZYYlYiGiKBKLYSoAnCsDZozoQLidAdbS1aRMTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xwHVjNPpflm8ofrI4DNh53l/cjCvWVl7fQ5cXPzx0ps=;
- b=Umhi9ZOXrDu+GSAgKMdRoyUiI3EllDpjECcPTp4+u0GMtPPBhJ0ovEXCSomgj4cPg37URphpIPLrNjxvAZpHOTQQZ3m3BJWdaUy1T65a2ieNh5Gd4YgN+qfrb18gHn1a+OTdHinI+yps6XwQQ95mQxDDFXdYT7w8GNMuMhMi3jeo3MsCmTWGD5v+/TNDOtZuD8mqUx8ArwdHCIIlJRP160sgavSz5YSMBx8GRpJ8230nSjDNYauiqg677kNvetc7Pu7zek4rls1zLM6XNTKDJ3tVVzJPacp09WXy3fMfnn7srSaVCJKF4nVJEyOpUR2detbjm08XsrAkzzTZdCM1Cw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xwHVjNPpflm8ofrI4DNh53l/cjCvWVl7fQ5cXPzx0ps=;
- b=MzMMQRbxZyFDe5m+ggwlqCgUMWahMCMKLSFJX2siWPOrlsxIrP+5GHeuRwOrIxGT2k+r2Is/6GCT/lXGguLEPYPYwzaTBqCBaVuwtNO0B1RMXLIX2WNnyzVgKvJqNEl4WXlReK+MH60KUEzWTBm+dRvANqpZECW7WYu/KQRh60IDwQcPrI+iMd6Lqv7IZ/d9OtETQq6I4qMqMNMzig5QGz++un4fgPFZIC2PTSRgMcJJvdKGkJGm+JPwZR/jD90f8GD46Zf8HyHTXfqa3wOA5MLPYL1TrRM0qKU+ErzSPTdrPQ4loH4kjHDGUlbSNMUpOYxwFDg0RnlWLFa4+DgX7w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by PAWPR04MB9861.eurprd04.prod.outlook.com (2603:10a6:102:381::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.18; Wed, 11 Dec
- 2024 14:10:38 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7%6]) with mapi id 15.20.8230.016; Wed, 11 Dec 2024
- 14:10:38 +0000
-Date: Wed, 11 Dec 2024 22:07:55 +0800
-From: Xu Yang <xu.yang_2@nxp.com>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
-	andre.draszik@linaro.org, rdbabiera@google.com,
-	m.felsch@pengutronix.de, dan.carpenter@linaro.org,
-	emanuele.ghidoli@toradex.com, parth.pancholi@toradex.com,
-	francesco.dolcini@toradex.com, linux-usb@vger.kernel.org,
-	imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH] usb: typec: tcpci: fix NULL pointer issue on shared irq
- case
-Message-ID: <20241211140550.ce3htcg6mhak2zvy@hippo>
-References: <20241211105953.1205343-1-xu.yang_2@nxp.com>
- <20241211110928.GA25492@francesco-nb>
- <20241211114006.ebrut7rvmixznc22@hippo>
- <Z1l8qiIu-169Gyxj@gaggiata.pivistrello.it>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z1l8qiIu-169Gyxj@gaggiata.pivistrello.it>
-X-ClientProxiedBy: AM0PR10CA0001.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:208:17c::11) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="peUBRvN0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D48C4CED2;
+	Wed, 11 Dec 2024 14:55:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733928943;
+	bh=xbrvzOnKmd+0otzRNpHPJb3BuEKlAKM+LRet5dI/QFQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=peUBRvN0IEISX29AB3ZNPIQivo4QMCveLHjUqU1w5qLySytfCtKgrGM87dp28gCp9
+	 tJCkZDyJWE4g13yXcR0GATm0SsAqbV4dzTL7k4pOcMitPgoPzdfnRsvHa/CeJ931g+
+	 qU5eTJ0wJXWNPZINRFip93r99B1fMjz3iYOf4MNXd9ajRtlzkVOP7n/koJblirgz3V
+	 tZkvQl2jkwYAJ1MWUKqafamJSZFc8QecZEFjN2kYVaI5ppQL9S9cpHoAqg6SW2XcnD
+	 TOpsszRq3AjAbFmhujMfhqjwGHtuiDIwzdlLxATMWOTsFZ+hBgeYaFmN97HE6INXDF
+	 zCBUgK+TCJf/g==
+Date: Wed, 11 Dec 2024 08:55:41 -0600
+From: Rob Herring <robh@kernel.org>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+	p.zabel@pengutronix.de, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
+	simona@ffwll.ch, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, tglx@linutronix.de, vkoul@kernel.org,
+	kishon@kernel.org, aisheng.dong@nxp.com, agx@sigxcpu.org,
+	francesco@dolcini.it, frank.li@nxp.com, dmitry.baryshkov@linaro.org,
+	u.kleine-koenig@baylibre.com
+Subject: Re: [PATCH v6 01/19] dt-bindings: display: imx: Add i.MX8qxp Display
+ Controller processing units
+Message-ID: <20241211145541.GA2837320-robh@kernel.org>
+References: <20241209033923.3009629-1-victor.liu@nxp.com>
+ <20241209033923.3009629-2-victor.liu@nxp.com>
+ <20241210221508.GA550635-robh@kernel.org>
+ <30924a9e-7d01-46f6-9e47-405c08acdde3@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|PAWPR04MB9861:EE_
-X-MS-Office365-Filtering-Correlation-Id: cae0fb49-8c67-4564-b198-08dd19ed9670
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|52116014|7416014|1800799024|376014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
- =?us-ascii?Q?ijrEaEk8JA7Wi9+zcPNERnu8Gegrt67mTfuUW5T5BbzP3dJZoIlKqgheKst9?=
- =?us-ascii?Q?Yn10Qa2NQJTfRbskcjtATQuuu+6Ik5IZSbz9cm8AT8RfWC8JAvw+DlHyzeKi?=
- =?us-ascii?Q?+qf/2QC9sYXDA9m4LnZJzI/jw7QWlOYDSLmLcdux+oOth50AKg+/XZJyMw5j?=
- =?us-ascii?Q?QZwm9LZMvEeEtJnDQM4zgY9qoXjT8G5Ipnm0uhOBLjlPGaBEkwASilqADAP8?=
- =?us-ascii?Q?BxT0L4nH1m2dKLwlQuPLzOZqIAeTF2tSFixk9FirwdHEUk+jRo2HBG37w6eh?=
- =?us-ascii?Q?B8Qs+XYnH+JZM3xrnVfzMtHFbvtvcBXUUciujfvB3s0llo7kNSx1flyOD0nL?=
- =?us-ascii?Q?u9MM8VoPR7l/Jn1XKwsFMocxT0o7WvUjxOivWAk9GSzcNLymxRBhBkWX4/yJ?=
- =?us-ascii?Q?krVjNhywdXsvHL6Fkpc+Sge1dQ1A0tNPtGHIUDTAyOTWbFHGdLqXKMa8I7KJ?=
- =?us-ascii?Q?x4m/draYU5eWBaWxaepI5hrCV7Eo36IC7jyWHpAtM3yWmlPZWBX+CYH8xZS6?=
- =?us-ascii?Q?XXbp3sgdGlYL+idvzYGzTBxi2TwyCLabeBxeaRtRj1NPPRDNLUba9nw/GBgX?=
- =?us-ascii?Q?aLET1nB4fjGBXpGpdx7CGdgK966sI5gCwqjLEkQiH1MIAT9VZjWwXhDNsCdD?=
- =?us-ascii?Q?euXMjb0nt9B9xQqYczaRGK5C4+61Xmrgo19r2R89XwGqXFuHZpEd53LJw7FY?=
- =?us-ascii?Q?qFbW9TkPTu33CaYY2WPTJ2xbtOcut/Cf9XUcjbDLNB6x+5f5J/f2rRLbz8W9?=
- =?us-ascii?Q?ps60gYo5ydi2wICxrdMgAZAZY/YH40bwWkRa8QVfWcLbjwlEQeqPzPx/CrTb?=
- =?us-ascii?Q?hnMJn1B7tcoBqUa2xPvHCxq29KSgok+PmSYM68SpdaMdolOBVmubW6S8XyOP?=
- =?us-ascii?Q?2v4PahlrpgO6zDHRqm1FtE8nuoUKUO1MEBQMLsaYvmZiXNKeWEUi5Ergq7ta?=
- =?us-ascii?Q?6O1dY3fYyOFbrCj5+/MtMrW/t8M4/FGVQdo0Jl2v/sr/J3nG+Z3AGdy0Tur1?=
- =?us-ascii?Q?U0vjySeMC5hYRqawb2JzKpCEroJGlr4c3s60AjPX2xrmrPQlnNlALf/wl7lX?=
- =?us-ascii?Q?2cGzK3fpPGRmrsmmC4R73oawJk5Q3S/dwgpY6Q24lmQwPpKp2/TYRASzk45y?=
- =?us-ascii?Q?DycwEy7GepmjV9yxs6oTg3HfkPtAz8JYaBO3yV5ELi3NRtLucsqcbzqQjBwg?=
- =?us-ascii?Q?PqxvE6wZU0eW3HO1ZXxrTWHmFw+qIU8GY8bQRpqWM75B5BmIwSxCHxh3UKvh?=
- =?us-ascii?Q?Tr3hxL8Waosd0sDPomfhamnVXcGnCl4m5meI91qAxkxIEizt2hMq3JzC+8qy?=
- =?us-ascii?Q?Q8LpmdJF5gnsHS/EqnqzGkv3ui3TtrYp/o58ywgQvhnInbZ1FaSYk7471zRJ?=
- =?us-ascii?Q?QuOqdke1SzBQgXnWv/Nuvei8xMxb3wRHAP5oxm/OheTcZ9IMAQ=3D=3D?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(1800799024)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?xtaIKgWWo7HBRa7bMbwXAVBxopJldrP76WhlqiwgoB5kodnz+Qg2c6JTHR52?=
- =?us-ascii?Q?WbA8IOHMbZBqBQ7qcgDYJApq9XHbyzn/6Djr2/Foi8G+9Pyd/VVHEo8c+e9O?=
- =?us-ascii?Q?HQQaJWtyrsrjxyMhgJ8qQQnEuRYkXsKS0fGX4gLv7+jyX0mrQJc+MhVIvh2L?=
- =?us-ascii?Q?a3y5SpwR+LDxdUCiPbrSH+sTKHciKOp2sSN04EWGQ0oq5KDpURZQFtV/4ZmG?=
- =?us-ascii?Q?FU8OeN0zyrw8/gPK3tHMc5z/0dgK3BSTq+ROo5vc+2h72A7acGo/VhFhBqSX?=
- =?us-ascii?Q?Owu9hcinTgdquVRRTzA4M/DJHoPWmy7xGmbKTNO38Qc/E+qUPd/Vd3HjJTXt?=
- =?us-ascii?Q?NHB7II/0YiE9xFRTLLu9pFq7IjS41Gow1zwcAvp/5BpSh2uG3NkujNEz1vmc?=
- =?us-ascii?Q?D4TP5/iJbxXGl1K6xf72B9K5TJ2zDYbFRgiZv/IvzXYG/d8z6XKCZ/jF2fuh?=
- =?us-ascii?Q?EXb0SZYDhm8B3U833ZGw4wVicDdmquE7ngi44DDgVFjWzW4yUvcowX5/+GBk?=
- =?us-ascii?Q?ibOWcQ6DqbpJePx1U2iWwCGHyGnqjjUu12O7s4oza1xWtim+bU0GoPphm9ye?=
- =?us-ascii?Q?CHakTdjwufFH3bB19/6hvdUetHX/ibwEhwa01oSSikVx5SU4CYL7w2ANtDdl?=
- =?us-ascii?Q?Kf1BBLGaWPQ+96QGuW+ht4d6kRCvsgXUt6ykWKN2EwvZrTtvv/Hg4Qe215eJ?=
- =?us-ascii?Q?DJisUmd+Mw9SgiWirCSPP3OOJRLJP2AIrV7A22mMkk0q71/CY7qlgjfR/BjB?=
- =?us-ascii?Q?gKc0YqXSavNBCL/hWOYhw+m0gzgoHpRiJqtzY5o1ETj3iPEJTGfNeFunuyYx?=
- =?us-ascii?Q?DyXqC0EEUqvsARcPueIwYngHAl9oXt9K/qubOmz1KO+nY7pNWqtA+BAH6/1b?=
- =?us-ascii?Q?lL1xvM6RtgzflFXuOrWWItx6k1oGgfKWjFCO5WeTe3H30G3EL0T5ormCDNrh?=
- =?us-ascii?Q?XOPaF4Qc5Sib80wmdsvMsnE8yQZ+E+cAJwGJbfdYv//gMahWTQxL62qtuVn1?=
- =?us-ascii?Q?Fbat92vxTYWx6EqweIHeOY0HAH+Bd5RBuoCs9FAlifWE8beIE7FhHc1eF/+t?=
- =?us-ascii?Q?7gu98hkUQMF0wMs+SZjcsj8uIETgVA3EdDMN3nwnvYN81W0XuXgjAEAwYqCL?=
- =?us-ascii?Q?MF6vQevGMu0IIg4maguu0eingSFDRVY6tEiYe2jS86CllsP41UlEXdx5zhho?=
- =?us-ascii?Q?iNgLil5/x0tL34qAZAIFnsJRylO7c4bEfMJQlzLp4Ef++bBx3OLQfOXuy5+j?=
- =?us-ascii?Q?m7sJypPrMPqgrgjGkJBj2FVdugrxAqH36TWvPOgBUq6LuTh1mlp9uHDC46Lt?=
- =?us-ascii?Q?OC+OgtPlg0pu46VsbN+PO5tTyRzTZAR5O3Z9UJksWOUqCQ38QQkLSwtREJJh?=
- =?us-ascii?Q?7bSmEvAnrNB3/mf0MvXoVucgp5S/Xr5bWMRZxPenyE7W41FSeZHXyzLGvr+J?=
- =?us-ascii?Q?vVBshiOWMjSdO7XeqyJ5Jhi73V5g+nYFnWnsMIwCN7I72uis+i9yzB2++psM?=
- =?us-ascii?Q?trdd2rfesVY+KWFLm+TP6xYYqiRT+3TD9QLtg6S0jHFXRtrSK/XM7LSjAYNo?=
- =?us-ascii?Q?RKewrFn5LsBhubvNx/0TebvEio2IolPD2ZJF/7r1?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cae0fb49-8c67-4564-b198-08dd19ed9670
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2024 14:10:38.2538
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DXcFNmRot3yonaSWINlj4glis4RoU4tAykn5yE4o2LC6fi0yZfMNy3GfkDK7TT6MTSiDbC9dVJAkJt2y1Mi3BA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB9861
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <30924a9e-7d01-46f6-9e47-405c08acdde3@nxp.com>
 
-On Wed, Dec 11, 2024 at 12:51:06PM +0100, Francesco Dolcini wrote:
-> On Wed, Dec 11, 2024 at 07:40:51PM +0800, Xu Yang wrote:
-> > On Wed, Dec 11, 2024 at 12:09:28PM +0100, Francesco Dolcini wrote:
-> > > Hello,
-> > > 
-> > > On Wed, Dec 11, 2024 at 06:59:53PM +0800, Xu Yang wrote:
-> > > > The tcpci_irq() may meet below NULL pointer dereference issue:
-> > > > 
-> > > > [    2.641851] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000010
-> > > > [    2.641951] status 0x1, 0x37f
-> > > > [    2.650659] Mem abort info:
-> > > > [    2.656490]   ESR = 0x0000000096000004
-> > > > [    2.660230]   EC = 0x25: DABT (current EL), IL = 32 bits
-
-[...]
-
-> > > 
-> > > I do not think this is the correct fix, what about using
-> > > IRQF_NO_AUTOEN ? Would it solve the issue? You need to adjust also the
-> > > disable/enable irq accordingly.
+On Wed, Dec 11, 2024 at 11:05:52AM +0800, Liu Ying wrote:
+> On 12/11/2024, Rob Herring wrote:
+> > On Mon, Dec 09, 2024 at 11:39:05AM +0800, Liu Ying wrote:
+> >> Freescale i.MX8qxp Display Controller is implemented as construction set of
+> >> building blocks with unified concept and standardized interfaces.  Document
+> >> all existing processing units.
+> >>
+> >> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> >> ---
+> >> v6:
+> >> * No change.
+> >>
+> >> v5:
+> >> * Document aliases for processing units which have multiple instances in
+> >>   the Display Controller.  Drop Rob's previous R-b tag. (Maxime)
+> >>
+> >> v4:
+> >> * Collect Rob's R-b tag.
+> >>
+> >> v3:
+> >> * Combine fsl,imx8qxp-dc-fetchunit-common.yaml,
+> >>   fsl,imx8qxp-dc-fetchlayer.yaml and fsl,imx8qxp-dc-fetchwarp.yaml
+> >>   into 1 schema doc fsl,imx8qxp-dc-fetchunit.yaml. (Rob)
+> >> * Document all processing units. (Rob)
+> >>
+> >> v2:
+> >> * Drop fsl,dc-*-id DT properties. (Krzysztof)
+> >> * Add port property to fsl,imx8qxp-dc-tcon.yaml. (Krzysztof)
+> >> * Fix register range sizes in examples.
+> >>
+> >>  .../display/imx/fsl,imx8qxp-dc-blitblend.yaml |  46 ++++++
+> >>  .../display/imx/fsl,imx8qxp-dc-clut.yaml      |  49 ++++++
+> >>  .../imx/fsl,imx8qxp-dc-constframe.yaml        |  49 ++++++
+> >>  .../display/imx/fsl,imx8qxp-dc-dither.yaml    |  49 ++++++
+> >>  .../display/imx/fsl,imx8qxp-dc-extdst.yaml    |  77 +++++++++
+> >>  .../display/imx/fsl,imx8qxp-dc-fetchunit.yaml | 147 ++++++++++++++++++
+> >>  .../display/imx/fsl,imx8qxp-dc-filter.yaml    |  47 ++++++
+> >>  .../display/imx/fsl,imx8qxp-dc-framegen.yaml  |  68 ++++++++
+> >>  .../display/imx/fsl,imx8qxp-dc-gammacor.yaml  |  38 +++++
+> >>  .../imx/fsl,imx8qxp-dc-layerblend.yaml        |  45 ++++++
+> >>  .../display/imx/fsl,imx8qxp-dc-matrix.yaml    |  48 ++++++
+> >>  .../display/imx/fsl,imx8qxp-dc-rop.yaml       |  48 ++++++
+> >>  .../display/imx/fsl,imx8qxp-dc-safety.yaml    |  34 ++++
+> >>  .../imx/fsl,imx8qxp-dc-scaling-engine.yaml    |  89 +++++++++++
+> >>  .../display/imx/fsl,imx8qxp-dc-signature.yaml |  58 +++++++
+> >>  .../display/imx/fsl,imx8qxp-dc-store.yaml     | 100 ++++++++++++
+> >>  .../display/imx/fsl,imx8qxp-dc-tcon.yaml      |  50 ++++++
+> >>  17 files changed, 1042 insertions(+)
+> >>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-blitblend.yaml
+> >>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-clut.yaml
+> >>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-constframe.yaml
+> >>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-dither.yaml
+> >>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-extdst.yaml
+> >>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-fetchunit.yaml
+> >>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-filter.yaml
+> >>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-framegen.yaml
+> >>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-gammacor.yaml
+> >>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-layerblend.yaml
+> >>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-matrix.yaml
+> >>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-rop.yaml
+> >>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-safety.yaml
+> >>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-scaling-engine.yaml
+> >>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-signature.yaml
+> >>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-store.yaml
+> >>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-tcon.yaml
+> >>
+> >> diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-blitblend.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-blitblend.yaml
+> >> new file mode 100644
+> >> index 000000000000..7f800e72c3f3
+> >> --- /dev/null
+> >> +++ b/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-blitblend.yaml
+> >> @@ -0,0 +1,46 @@
+> >> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> >> +%YAML 1.2
+> >> +---
+> >> +$id: http://devicetree.org/schemas/display/imx/fsl,imx8qxp-dc-blitblend.yaml#
+> >> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> >> +
+> >> +title: Freescale i.MX8qxp Display Controller Blit Blend Unit
+> >> +
+> >> +description: |
+> >> +  Combines two input frames to a single output frame, all frames having the
+> >> +  same dimension.
+> >> +
+> >> +  Each Blit Blend Unit device should have an alias in the aliases node, in the
+> >> +  form of dc<x>-blitblend<y>, where <x> is an integer specifying the Display
+> >> +  Controller instance and <y> is an integer specifying the Blit Blend Unit
+> >> +  device instance.
 > > 
-> > Not work. Probe failed directly.
-> > 
-> > [    2.646391] tcpci 2-0050: probe with driver tcpci failed with error -22
-> > [    2.680086] tcpci 2-0051: probe with driver tcpci failed with error -22
+> > That's really an abuse of aliases. If you need to describe connections 
+> > between components, use the graph binding like everyone else does for 
+> > display path components.
 > 
-> Ok, clear. The reason is the shared IRQ.
-> 
-> I think your change will break the support for edge IRQ, because we have
-> interrupt generated calling tcpci_register_port and they will just be lost if
-> the interrupt is not already requested.
+> I need to describe components' instance numbers which imply the connections
+> between components but not vice versa. If I use the graph binding, I cannot
+> get the instance numbers(0 or 1) of the two display engines(documented by
+> fsl,imx8qxp-dc-display-engine.yaml). If you have no objections, I may add the
+> instance numbers to compatible strings, like brcm,bcm2835-pixelvalve0.yaml.
+> What do you think?
 
-Do you really meet issue where interrupts got lost?
+You could have dc<x> and blitblend<y> aliases and use the graph to 
+define the connections. But I'm not really a fan of adding custom 
+aliases either. Why are the instance numbers important?
 
-I can't find the case because ALERT_MASK is set to 0 firstly, and
-ALERT_MASK is assigned some value in tcpci_init() which should be
-the last step of tcpm_register_port(). So the interrupts are masked
-before tcpci_register_port() completed. That's say, typec chip can't
-pull down ALERT line during this stage even though you don't call
-disable_irq(). This behavior is suit for both level and edge type
-interrupt.
+Are the programming models or features of the instances different? If 
+so, then a different compatible or property describing the feature may 
+be appropriate.
+
+Rob
