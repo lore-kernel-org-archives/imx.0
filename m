@@ -1,41 +1,64 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A45A211291
-	for <imx@lists.linux.dev>; Thu, 12 Dec 2024 10:38:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902A1211471
+	for <imx@lists.linux.dev>; Thu, 12 Dec 2024 11:11:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733999912; cv=none; b=mYgbG6agmlywGhGI8MHpgiAIxsnxFg3Teykb7mQuiRRsCkDyZWHXccBxoZslyW5oEGHmKnlXMnsGsRbhvPJpna3dwQaLpGi0Ac7KlYNW/PF1QyViWpXuE1c3RhkxmyvsvcfQxQaq8Q6RiP/VOSXpeYSWvm+nrRSpyTwKuNGrX24=
+	t=1734001897; cv=none; b=Tbg3kU7myxDN+GlJVjTZETxTwQyoLQ3kRW2UdqfeglSAJieW4tqB5hNp1p1HQUSWnS0IFfBUNrKJ3d3tEbvrfJqRCk+99ICJvaNdR7dqYTKZiLK1yYfbYJzyJPypcXXel3bIz893IzfYQy+fyk2eL8bEdl3uUn6o5iIWMEZPJqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733999912; c=relaxed/simple;
-	bh=bhQoY+wdDsLhC6WhXMZM/E2zhtXM8HX81yB/AV+GSi8=;
+	s=arc-20240116; t=1734001897; c=relaxed/simple;
+	bh=zVwfCEeR8BYVTwY4aKq4w64kbqTLzQ4gAGabJ5lBAMs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DJGtX8eTGByiAmazglY/Tyr3GePxq+s31KtO8hKfO5Sn/IcsNheDUyhAfGw9MbqCpFIqkgy5SZtxZScW0sGMIZXUQFeciS3wNuzuskg5sU2nxfGPWAt9y3+CU/A6o9shm0jdFrpQ4CoOOZMM3a3bVc+I5Y0h0iArmlDALTJJWsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=n0m5xV6Q; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	 In-Reply-To:Content-Type; b=MpIGxhWNJsw4rKu/VoeeHJaGlAx2/FHYdXpURb3uXFZX90MJXyHmORjJrMFplsKuZQo7sLTpYz893K6zUzBt6N24D+oYV32RGWtb/rjgGKaPTs1vj3mD6yMzeLUVaGcgSMYMXYWVpT3PfTliGKLElAuaEihHUkuUZfsMlwxs8HI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VOLlwp8i; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="n0m5xV6Q"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=hQLoLzcTEiVKXGdksCB0pOe0DR8Djegij8YVXq8UMuI=; b=n0m5xV6QHlhDRSeobaRvpyBkEj
-	090N328aH2ogv2dm13I6Wxlr55PtDcxENQ2tvb5nXDhbTkuXnekfZ8pXw6yAdSTbZfc/Lpy1JPFmN
-	RXso0qunumYQhNLEQcvp+wvowvIcP45U0uzBdV4AXxQiw1NqMS8Qi6vDN5Ya6rt/6loNh8FYH/XBH
-	jYDi8JwDz9uM6Mof1rIWft4k9tOfDhwkcXpGo4qHoqMld3t/lhcQaqKsgULRTuiL2rdDPP2tMhMpo
-	X7viYDAy3IsZX6XfnzIh1/TMZuNlQ481Brat1Zvkwq0tsyWjzo+333Xs+EfFaON8QcwN7QZ1RGv8P
-	k6mvQVyQ==;
-Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:39836 helo=[192.168.69.52])
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <andrej.picej@norik.com>)
-	id 1tLgaS-009mt6-2X;
-	Thu, 12 Dec 2024 11:38:28 +0100
-Message-ID: <08a10b77-011d-4003-ac33-4bef45d801bd@norik.com>
-Date: Thu, 12 Dec 2024 11:38:22 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VOLlwp8i"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5d3e9a88793so699091a12.1
+        for <imx@lists.linux.dev>; Thu, 12 Dec 2024 03:11:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734001893; x=1734606693; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IaN0kKcSk37U6rmBe26lnuj1wEmPvM80JRtxgz+AmiY=;
+        b=VOLlwp8iFYQw9+oBM9Mm+jCdYwpLyKFRo6Q6tXqhx3AXw7iq6xX6l/6y84mNoy8O6X
+         J2OehgJYeELmPTW+3i6bnMLNJIHbI0aCF2kR18f2NtHJNVjvFDtcc8XCR7X5c1QSELKu
+         W69tcjulnmsn93Fy4QzjcQCSggFgl9zaX/sa58YDOAi1TitWVsqgvST/lYEJwGCoAaan
+         m4TF8AQIGiWSzy11tf2j6o45wvswjIfJKOAmfA/mjVmkaCmxL5sCASlKfE7arNvsbqS7
+         qh6d4mzihPSVByPzpEk5w48OAaVUV6nKIGSfgxeRljW9v5VUY+z4Kw9phzEDVIN2KcoE
+         n+PA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734001893; x=1734606693;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IaN0kKcSk37U6rmBe26lnuj1wEmPvM80JRtxgz+AmiY=;
+        b=XYf9PknWV80hR0a1lKSpGb5HAzD8Z8Hm4fZJo65+nkmCYhxS4RHbEQTeFZdXZBt8B5
+         ZTobmykYpUEicNS/3cKmXToirUcAyPT3eeWzOPlSJYk6qKzubBvm1GgVH9Oj4hSLv28q
+         e9iruBVFuxjL6QxiXIaFp/vgxjJxYOVfjCGkr/OXU4527Js3jHcaDXQU6HHvxKUR2stc
+         Y2UDumj45VY1Z94mHJVgL8acJvbiydu4D50We8G70CaZHs2/zPpHHDWbt1jEqjqKtH/3
+         LmljxkH+OHY7fOwKo6nUHbiADGfWJflBUOUDA1vj+pl+WCxc187OoICEC8diEDsYaF6a
+         kUuw==
+X-Forwarded-Encrypted: i=1; AJvYcCXe4eQTRTJ3H6HJlPacc6kNK1dhvrPqHzDIDeolBV3zOj4iTOMLCKfuhc4KO6JrCfhYjVU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YznbSBL3GJNw/Jl8ZRVL7h2y+bThTR1zdGOMb8F/qfHHK+gZtB+
+	oK3xRwUzkXHDZWZrVGpUdy+G9mfzWdGnvBT020MlwWrL0Srx1ndL
+X-Gm-Gg: ASbGncvhJ5LskxIi6PM/gOnusJYgg7l8ysUw4N18RRXeG1zRSJqcvcpcpI6EHXtNj5n
+	iR7iY6qe3DhXhcJHRZKB/KPJ/OOarghpuKv6KULqEqZED/ZDw8Gb/cJAc+kARdrLXcx6FturMMo
+	Rm8TOyN27YaQLhCJXop7bXJUMGKUi3geleEso+36oSFpGvx8RFQ8XSEOJHW0jEwSB8qwR1QjTcu
+	PB/BVcnum+hZwW2mt/D4LzNyVq1U7gXVPiLvG/BIsJbU0WMVn+D/A3v3AK+jhV/B3RfsQFR3J1H
+	FM996Q==
+X-Google-Smtp-Source: AGHT+IHIpwOjVa7ssUoWSqoTOzLvWRVfCq9dW++SsNASJJapQEQs92vXNORpWuFsu3Hjg5UVc5CeZA==
+X-Received: by 2002:a05:6402:3508:b0:5ce:d028:e11 with SMTP id 4fb4d7f45d1cf-5d4edcdeb88mr659138a12.17.1734001892507;
+        Thu, 12 Dec 2024 03:11:32 -0800 (PST)
+Received: from [192.168.7.105] ([92.120.5.4])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d14b60789asm10116126a12.37.2024.12.12.03.11.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Dec 2024 03:11:31 -0800 (PST)
+Message-ID: <c47710a5-7e53-48b1-bd6b-c0123865aee5@gmail.com>
+Date: Thu, 12 Dec 2024 13:11:29 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -43,368 +66,489 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/3] drm/bridge: ti-sn65dsi83: Add ti,lvds-vod-swing
- optional properties
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
- Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, airlied@gmail.com, simona@ffwll.ch,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, marex@denx.de, dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- upstream@lists.phytec.de
-References: <20241210091901.83028-1-andrej.picej@norik.com>
- <20241210091901.83028-3-andrej.picej@norik.com>
- <irpmhq7vxjra6vhmdh7p63ajj57n3h2c4br3ija2jmwtoewist@zyxfmx6k5m4e>
- <aa2de99d-21f4-4843-83b7-5d2db78be86f@norik.com>
- <qhmsobin3fsmoc7ic2jtancowfscoauyroruxdpwhmqwlogtkz@6by3s2ruwzwp>
- <519cc025-0782-4f96-a169-1fe87b280173@norik.com>
- <rputm4gnjj6nb66ix7dqbxr2janltia6rlb6zunhf7x3mgooxw@o3lblnyp5cci>
- <ad8843d6-e5a3-437a-af4d-f2248b247a65@norik.com>
- <roxosjotsh65dkecrwhhtlhkhqseezkj7ydk532shc27irzmd3@xry3ggjdq4uo>
+Subject: Re: [PATCH v2 4/5] ASoC: SOF: imx: add driver for imx95
 Content-Language: en-US
-From: Andrej Picej <andrej.picej@norik.com>
-Autocrypt: addr=andrej.picej@norik.com; keydata=
- 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
- xtT/8OxBOVSHvA==
-In-Reply-To: <roxosjotsh65dkecrwhhtlhkhqseezkj7ydk532shc27irzmd3@xry3ggjdq4uo>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Daniel Baluta <daniel.baluta@nxp.com>,
+ Mark Brown <broonie@kernel.org>,
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+ Takashi Iwai <tiwai@suse.com>, Bard Liao <yung-chuan.liao@linux.intel.com>,
+ Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+ Jaroslav Kysela <perex@perex.cz>, linux-arm-kernel@lists.infradead.org,
+ devicetree@vger.kernel.org, linux-sound@vger.kernel.org,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20241113195240.3699-1-laurentiumihalcea111@gmail.com>
+ <20241113195240.3699-5-laurentiumihalcea111@gmail.com>
+ <ZzUJQCeWclsrr/lr@lizhi-Precision-Tower-5810>
+From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+In-Reply-To: <ZzUJQCeWclsrr/lr@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
-X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 
 
 
-On 12. 12. 24 10:28, Dmitry Baryshkov wrote:
-> On Thu, Dec 12, 2024 at 09:08:03AM +0100, Andrej Picej wrote:
+On 11/13/2024 10:17 PM, Frank Li wrote:
+> On Wed, Nov 13, 2024 at 02:52:39PM -0500, Laurentiu Mihalcea wrote:
+>> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 >>
+>> Add SOF driver for imx95.
 >>
->> On 12. 12. 24 00:04, Dmitry Baryshkov wrote:
->>> On Wed, Dec 11, 2024 at 08:57:17AM +0100, Andrej Picej wrote:
->>>>
->>>>
->>>> On 10. 12. 24 14:59, Dmitry Baryshkov wrote:
->>>>> On Tue, Dec 10, 2024 at 02:41:01PM +0100, Andrej Picej wrote:
->>>>>>
->>>>>>
->>>>>> On 10. 12. 24 12:43, Dmitry Baryshkov wrote:
->>>>>>> On Tue, Dec 10, 2024 at 10:19:00AM +0100, Andrej Picej wrote:
->>>>>>>> Add a optional properties to change LVDS output voltage. This should not
->>>>>>>> be static as this depends mainly on the connected display voltage
->>>>>>>> requirement. We have three properties:
->>>>>>>> - "ti,lvds-termination-ohms", which sets near end termination,
->>>>>>>> - "ti,lvds-vod-swing-data-microvolt" and
->>>>>>>> - "ti,lvds-vod-swing-clock-microvolt" which both set LVDS differential
->>>>>>>> output voltage for data and clock lanes. They are defined as an array
->>>>>>>> with min and max values. The appropriate bitfield will be set if
->>>>>>>> selected constraints can be met.
->>>>>>>>
->>>>>>>> If "ti,lvds-termination-ohms" is not defined the default of 200 Ohm near
->>>>>>>> end termination will be used. Selecting only one:
->>>>>>>> "ti,lvds-vod-swing-data-microvolt" or
->>>>>>>> "ti,lvds-vod-swing-clock-microvolt" can be done, but the output voltage
->>>>>>>> constraint for only data/clock lanes will be met. Setting both is
->>>>>>>> recommended.
->>>>>>>>
->>>>>>>> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
->>>>>>>> ---
->>>>>>>> Changes in v5:
->>>>>>>> - specify default values in sn65dsi83_parse_lvds_endpoint,
->>>>>>>> - move sn65dsi83_parse_lvds_endpoint for channel B up, outside if,
->>>>>>>> Changes in v4:
->>>>>>>> - fix typo in commit message bitfiled -> bitfield
->>>>>>>> - use arrays (lvds_vod_swing_conf and lvds_term_conf) in private data, instead
->>>>>>>> of separate variables for channel A/B
->>>>>>>> - add more checks on return value of "of_property_read_u32_array"
->>>>>>>> Changes in v3:
->>>>>>>> - use microvolts for default array values 1000 mV -> 1000000 uV.
->>>>>>>> Changes in v2:
->>>>>>>> - use datasheet tables to get the proper configuration
->>>>>>>> - since major change was done change the authorship to myself
->>>>>>>> ---
->>>>>>>>      drivers/gpu/drm/bridge/ti-sn65dsi83.c | 142 +++++++++++++++++++++++++-
->>>>>>>>      1 file changed, 139 insertions(+), 3 deletions(-)
->>>>>>>>
->>>>>>>> diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
->>>>>>>> index 57a7ed13f996..f9578b38da28 100644
->>>>>>>> --- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
->>>>>>>> +++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
->>>>>>>> @@ -132,6 +132,16 @@
->>>>>>>>      #define  REG_IRQ_STAT_CHA_SOT_BIT_ERR		BIT(2)
->>>>>>>>      #define  REG_IRQ_STAT_CHA_PLL_UNLOCK		BIT(0)
->>>>>>>> +enum sn65dsi83_channel {
->>>>>>>> +	CHANNEL_A,
->>>>>>>> +	CHANNEL_B
->>>>>>>> +};
->>>>>>>> +
->>>>>>>> +enum sn65dsi83_lvds_term {
->>>>>>>> +	OHM_100,
->>>>>>>> +	OHM_200
->>>>>>>> +};
->>>>>>>> +
->>>>>>>>      enum sn65dsi83_model {
->>>>>>>>      	MODEL_SN65DSI83,
->>>>>>>>      	MODEL_SN65DSI84,
->>>>>>>> @@ -147,6 +157,8 @@ struct sn65dsi83 {
->>>>>>>>      	struct regulator		*vcc;
->>>>>>>>      	bool				lvds_dual_link;
->>>>>>>>      	bool				lvds_dual_link_even_odd_swap;
->>>>>>>> +	int				lvds_vod_swing_conf[2];
->>>>>>>> +	int				lvds_term_conf[2];
->>>>>>>>      };
->>>>>>>>      static const struct regmap_range sn65dsi83_readable_ranges[] = {
->>>>>>>> @@ -237,6 +249,36 @@ static const struct regmap_config sn65dsi83_regmap_config = {
->>>>>>>>      	.max_register = REG_IRQ_STAT,
->>>>>>>>      };
->>>>>>>> +static const int lvds_vod_swing_data_table[2][4][2] = {
->>>>>>>> +	{	/* 100 Ohm */
->>>>>>>> +		{ 180000, 313000 },
->>>>>>>> +		{ 215000, 372000 },
->>>>>>>> +		{ 250000, 430000 },
->>>>>>>> +		{ 290000, 488000 },
->>>>>>>> +	},
->>>>>>>> +	{	/* 200 Ohm */
->>>>>>>> +		{ 150000, 261000 },
->>>>>>>> +		{ 200000, 346000 },
->>>>>>>> +		{ 250000, 428000 },
->>>>>>>> +		{ 300000, 511000 },
->>>>>>>> +	},
->>>>>>>> +};
->>>>>>>> +
->>>>>>>> +static const int lvds_vod_swing_clock_table[2][4][2] = {
->>>>>>>> +	{	/* 100 Ohm */
->>>>>>>> +		{ 140000, 244000 },
->>>>>>>> +		{ 168000, 290000 },
->>>>>>>> +		{ 195000, 335000 },
->>>>>>>> +		{ 226000, 381000 },
->>>>>>>> +	},
->>>>>>>> +	{	/* 200 Ohm */
->>>>>>>> +		{ 117000, 204000 },
->>>>>>>> +		{ 156000, 270000 },
->>>>>>>> +		{ 195000, 334000 },
->>>>>>>> +		{ 234000, 399000 },
->>>>>>>> +	},
->>>>>>>> +};
->>>>>>>> +
->>>>>>>>      static struct sn65dsi83 *bridge_to_sn65dsi83(struct drm_bridge *bridge)
->>>>>>>>      {
->>>>>>>>      	return container_of(bridge, struct sn65dsi83, bridge);
->>>>>>>> @@ -435,12 +477,16 @@ static void sn65dsi83_atomic_pre_enable(struct drm_bridge *bridge,
->>>>>>>>      		val |= REG_LVDS_FMT_LVDS_LINK_CFG;
->>>>>>>>      	regmap_write(ctx->regmap, REG_LVDS_FMT, val);
->>>>>>>> -	regmap_write(ctx->regmap, REG_LVDS_VCOM, 0x05);
->>>>>>>> +	regmap_write(ctx->regmap, REG_LVDS_VCOM,
->>>>>>>> +			REG_LVDS_VCOM_CHA_LVDS_VOD_SWING(ctx->lvds_vod_swing_conf[CHANNEL_A]) |
->>>>>>>> +			REG_LVDS_VCOM_CHB_LVDS_VOD_SWING(ctx->lvds_vod_swing_conf[CHANNEL_B]));
->>>>>>>>      	regmap_write(ctx->regmap, REG_LVDS_LANE,
->>>>>>>>      		     (ctx->lvds_dual_link_even_odd_swap ?
->>>>>>>>      		      REG_LVDS_LANE_EVEN_ODD_SWAP : 0) |
->>>>>>>> -		     REG_LVDS_LANE_CHA_LVDS_TERM |
->>>>>>>> -		     REG_LVDS_LANE_CHB_LVDS_TERM);
->>>>>>>> +		     (ctx->lvds_term_conf[CHANNEL_A] ?
->>>>>>>> +			  REG_LVDS_LANE_CHA_LVDS_TERM : 0) |
->>>>>>>> +		     (ctx->lvds_term_conf[CHANNEL_B] ?
->>>>>>>> +			  REG_LVDS_LANE_CHB_LVDS_TERM : 0));
->>>>>>>>      	regmap_write(ctx->regmap, REG_LVDS_CM, 0x00);
->>>>>>>>      	le16val = cpu_to_le16(mode->hdisplay);
->>>>>>>> @@ -576,10 +622,100 @@ static const struct drm_bridge_funcs sn65dsi83_funcs = {
->>>>>>>>      	.atomic_get_input_bus_fmts = sn65dsi83_atomic_get_input_bus_fmts,
->>>>>>>>      };
->>>>>>>> +static int sn65dsi83_select_lvds_vod_swing(struct device *dev,
->>>>>>>> +	u32 lvds_vod_swing_data[2], u32 lvds_vod_swing_clk[2], u8 lvds_term)
->>>>>>>> +{
->>>>>>>> +	int i;
->>>>>>>> +
->>>>>>>> +	for (i = 0; i <= 3; i++) {
->>>>>>>> +		if (lvds_vod_swing_data_table[lvds_term][i][0] >= lvds_vod_swing_data[0] &&
->>>>>>>> +		lvds_vod_swing_data_table[lvds_term][i][1] <= lvds_vod_swing_data[1] &&
->>>>>>>> +		lvds_vod_swing_clock_table[lvds_term][i][0] >= lvds_vod_swing_clk[0] &&
->>>>>>>> +		lvds_vod_swing_clock_table[lvds_term][i][1] <= lvds_vod_swing_clk[1])
->>>>>>>> +			return i;
->>>>>>>> +	}
->>>>>>>> +
->>>>>>>> +	dev_err(dev, "failed to find appropriate LVDS_VOD_SWING configuration\n");
->>>>>>>> +	return -EINVAL;
->>>>>>>> +}
->>>>>>>> +
->>>>>>>> +static int sn65dsi83_parse_lvds_endpoint(struct sn65dsi83 *ctx, int channel)
->>>>>>>> +{
->>>>>>>> +	struct device *dev = ctx->dev;
->>>>>>>> +	struct device_node *endpoint;
->>>>>>>> +	int endpoint_reg;
->>>>>>>> +	/* Set so the property can be freely selected if not defined */
->>>>>>>> +	u32 lvds_vod_swing_data[2] = { 0, 1000000 };
->>>>>>>> +	u32 lvds_vod_swing_clk[2] = { 0, 1000000 };
->>>>>>>> +	u32 lvds_term;
->>>>>>>> +	u8 lvds_term_conf = 0x1;
->>>>>>>> +	int lvds_vod_swing_conf = 0x1;
->>>>>>>
->>>>>>> Magic values
->>>>>>
->>>>>> Can you please elaborate.
->>>>>>
->>>>>> I can use:
->>>>>> u8 lvds_term_conf = OHM_200;
->>>>>>
->>>>>> What about lvds_vod_swing_conf? Should I create additional define for it?
->>>>>> But this doesn't solve a hidden meaning? Maybe additional comment above?
->>>>>> Would like to avoid using voltages for it, since then we are reverse
->>>>>> engineering the table in datasheet to match the default reg value.
->>>>>
->>>>> I think the following example solves both problems:
->>>>>
->>>>> lvds_term = 200;
->>>>> of_property_read_u32(..., &lvds_term);
->>>>>
->>>>> if (lvds_term == 100)
->>>>> 	ctx->lvds_term_conf[channel] = OHM_100;
->>>>> else if (lvds_term == 200)
->>>>> 	ctx->lvds_term_conf[channel] = OHM_200;
->>>>> else
->>>>> 	return -EINVAL;
->>>>>
->>>>> The same approach can be applied to lvds_vod_swing_conf, resulting in
->>>>> removal of magic values.
->>>>
->>>> Sorry, but I think it is not that easy when it comes to the
->>>> lvds_vod_swing_conf. We should assign default value if
->>>> "ti,lvds-vod-swing-data-microvolt" and "ti,lvds-vod-swing-clock-microvolt"
->>>> are not defined. Default value of the lvds_vod_swing_conf is 0x1, but this
->>>> doesn't have any straight forward meaning like OHM_200 for example.
->>>>
->>>> What we can do in that case is that we copy the values from defined
->>>> datasheet tables to the "lvds_vod_swing_data[2]" and "lvds_vod_swing_clk[2]"
->>>> arrays and then run the
->>>> sn65dsi83_select_lvds_vod_swing with it, which will return the default value
->>>> (0x1).
->>>>
->>>> /* If both properties are not defined assign default limits */
->>>> if (ret_data && ret_clock) {
->>>> 	memcpy(lvds_vod_swing_data,
->>>> 	     lvds_vod_swing_data_table[ctx->lvds_term_conf[channel]][1],
->>>> 	     sizeof(lvds_vod_swing_data));
->>>> 	memcpy(lvds_vod_swing_clk,
->>>> 	    lvds_vod_swing_clock_table[ctx->lvds_term_conf[channel]][1],
->>>> 	    sizeof(lvds_vod_swing_clk));
->>>> }
->>>> lvds_vod_swing_conf = sn65dsi83_select_lvds_vod_swing(dev,
->>>> 	lvds_vod_swing_data, lvds_vod_swing_clk,
->>>> 	ctx->lvds_term_conf[channel]);
->>>> if (lvds_vod_swing_conf < 0) {
->>>> 	ret = lvds_vod_swing_conf;
->>>> 	goto exit;
->>>> }
->>>>
->>>> ctx->lvds_vod_swing_conf[channel] = lvds_vod_swing_conf;
->>>>
->>>> I'm not sure if using this approach gets rid of the problem with magic
->>>> values.
->>>> Or maybe I'm not seeing the obvious solution so please bear with me.
->>>
->>> Yes, the defaults (0..1000000) should be fixed to result in the same
->>> value (0x01) as if the property wasn't specified at all
+>> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>> ---
+>>  sound/soc/sof/imx/Kconfig  |   8 +
+>>  sound/soc/sof/imx/Makefile |   2 +
+>>  sound/soc/sof/imx/imx95.c  | 401 +++++++++++++++++++++++++++++++++++++
+> why not reused exist one? look likes simular.
+>
+> Frank
+the SOF drivers do indeed have some similarities, but each of them has their own quirks which IMO makes it a bit harder to add the 95 support. We need to figure out the common parts and then move them to imx-common, but I believe this can be solved incrementally.
+>
+>>  3 files changed, 411 insertions(+)
+>>  create mode 100644 sound/soc/sof/imx/imx95.c
 >>
->> The defaults (0..1000000) is selected because in case if only one property
->> is defined in dts (ti,lvds-vod-swing-data-microvolt or
->> ti,lvds-vod-swing-clock-microvolt) the other array values don't effect the
->> decision which "lvds_vod_swing_conf" is selected. That's why we initialized
->> the array to be out off bounds of the datasheet tables, all values in the
->> table match the not defined property, so lvds_vod_swing_conf is selected
->> purely on the basis of the defined property.
-> 
-> I see, thanks for the explanation.
-> 
+>> diff --git a/sound/soc/sof/imx/Kconfig b/sound/soc/sof/imx/Kconfig
+>> index 4751b04d5e6f..51a70a193533 100644
+>> --- a/sound/soc/sof/imx/Kconfig
+>> +++ b/sound/soc/sof/imx/Kconfig
+>> @@ -50,4 +50,12 @@ config SND_SOC_SOF_IMX8ULP
+>>  	  Say Y if you have such a device.
+>>  	  If unsure select "N".
 >>
->> Example:
->> DTS
->> ti,lvds-vod-swing-data-microvolt = <250000 428000>;
->> //ti,lvds-vod-swing-clock-microvolt NOT DEFINED;
+>> +config SND_SOC_SOF_IMX95
+>> +	tristate "SOF support for i.MX95"
+>> +	depends on IMX_DSP
+>> +	help
+>> +	  This adds support for Sound Open Firmware for NXP i.MX95 platforms.
+>> +	  Say Y if you have such a device.
+>> +	  If unsure select "N".
+>> +
+>>  endif ## SND_SOC_SOF_IMX_TOPLEVEL
+>> diff --git a/sound/soc/sof/imx/Makefile b/sound/soc/sof/imx/Makefile
+>> index be0bf0736dfa..715ac3798668 100644
+>> --- a/sound/soc/sof/imx/Makefile
+>> +++ b/sound/soc/sof/imx/Makefile
+>> @@ -2,10 +2,12 @@
+>>  snd-sof-imx8-y := imx8.o
+>>  snd-sof-imx8m-y := imx8m.o
+>>  snd-sof-imx8ulp-y := imx8ulp.o
+>> +snd-sof-imx95-y := imx95.o
 >>
->> After parsing the devicetree we will get:
->> lvds_vod_swing_data = [ 250000, 428000 ]
->> lvds_vod_swing_clk = [ 0, 1000000 ]
+>>  snd-sof-imx-common-y := imx-common.o
 >>
->> In sn65dsi83_select_lvds_vod_swing lvds_vod_swing_clk[] values don't effect
->> the decision making since
+>>  obj-$(CONFIG_SND_SOC_SOF_IMX8) += snd-sof-imx8.o
+>>  obj-$(CONFIG_SND_SOC_SOF_IMX8M) += snd-sof-imx8m.o
+>>  obj-$(CONFIG_SND_SOC_SOF_IMX8ULP) += snd-sof-imx8ulp.o
+>> +obj-$(CONFIG_SND_SOC_SOF_IMX95) += snd-sof-imx95.o
+>>  obj-$(CONFIG_SND_SOC_SOF_IMX_COMMON) += imx-common.o
+>> diff --git a/sound/soc/sof/imx/imx95.c b/sound/soc/sof/imx/imx95.c
+>> new file mode 100644
+>> index 000000000000..5a0e44f5bd48
+>> --- /dev/null
+>> +++ b/sound/soc/sof/imx/imx95.c
+>> @@ -0,0 +1,401 @@
+>> +// SPDX-License-Identifier: (GPL-2.0-only OR BSD-3-Clause)
+>> +/*
+>> + * Copyright 2024 NXP
+>> + */
+>> +
+>> +#include <linux/arm-smccc.h>
+>> +#include <linux/clk.h>
+>> +#include <linux/firmware/imx/dsp.h>
+>> +#include <linux/module.h>
+>> +#include <linux/of_platform.h>
+>> +#include <linux/of_reserved_mem.h>
+>> +#include <sound/sof.h>
+>> +
+>> +#include "../sof-of-dev.h"
+>> +#include "../ops.h"
+>> +
+>> +#define IMX_SIP_SRC 0xC2000005
+>> +#define IMX_SIP_SRC_M_RESET_ADDR_SET 0x03
+>> +
+>> +#define IMX95_CPU_VEC_FLAGS_BOOT BIT(29)
+>> +
+>> +#define IMX_SIP_LMM 0xC200000F
+>> +#define IMX_SIP_LMM_BOOT 0x0
+>> +#define IMX_SIP_LMM_SHUTDOWN 0x1
+>> +
+>> +#define IMX95_M7_LM_ID 0x1
+>> +
+>> +#define MBOX_DSPBOX_OFFSET 0x1000
+>> +#define MBOX_WINDOW_OFFSET 0x6000000
+>> +
+>> +struct imx95_priv {
+>> +	struct platform_device *ipc_dev;
+>> +	struct imx_dsp_ipc *ipc_handle;
+>> +	resource_size_t bootaddr;
+>> +};
+>> +
+>> +static void imx95_ipc_handle_reply(struct imx_dsp_ipc *ipc)
+>> +{
+>> +	unsigned long flags;
+>> +	struct snd_sof_dev *sdev = imx_dsp_get_data(ipc);
+>> +
+>> +	spin_lock_irqsave(&sdev->ipc_lock, flags);
+>> +	snd_sof_ipc_process_reply(sdev, 0);
+>> +	spin_unlock_irqrestore(&sdev->ipc_lock, flags);
+>> +}
+>> +
+>> +static void imx95_ipc_handle_request(struct imx_dsp_ipc *ipc)
+>> +{
+>> +	snd_sof_ipc_msgs_rx(imx_dsp_get_data(ipc));
+>> +}
+>> +
+>> +static struct imx_dsp_ops ipc_ops = {
+>> +	.handle_reply = imx95_ipc_handle_reply,
+>> +	.handle_request = imx95_ipc_handle_request,
+>> +};
+>> +
+>> +static int imx95_disable_enable_core(bool enable)
+>> +{
+>> +	struct arm_smccc_res res;
+>> +
+>> +	if (enable)
+>> +		arm_smccc_smc(IMX_SIP_LMM, IMX_SIP_LMM_BOOT, IMX95_M7_LM_ID,
+>> +			      0, 0, 0, 0, 0, &res);
+>> +	else
+>> +		arm_smccc_smc(IMX_SIP_LMM, IMX_SIP_LMM_SHUTDOWN, IMX95_M7_LM_ID,
+>> +			      0, 0, 0, 0, 0, &res);
+>> +
+>> +	return res.a0;
+>> +}
+>> +
+>> +static int imx95_run(struct snd_sof_dev *sdev)
+>> +{
+>> +	return imx95_disable_enable_core(true);
+>> +}
+>> +
+>> +static int imx95_send_msg(struct snd_sof_dev *sdev, struct snd_sof_ipc_msg *msg)
+>> +{
+>> +	struct imx95_priv *priv = sdev->pdata->hw_pdata;
+>> +
+>> +	sof_mailbox_write(sdev, sdev->host_box.offset,
+>> +			  msg->msg_data, msg->msg_size);
+>> +
+>> +	imx_dsp_ring_doorbell(priv->ipc_handle, 0);
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int imx95_get_mailbox_offset(struct snd_sof_dev *sdev)
+>> +{
+>> +	return MBOX_DSPBOX_OFFSET + MBOX_WINDOW_OFFSET;
+>> +}
+>> +
+>> +static int imx95_get_bar_index(struct snd_sof_dev *sdev, u32 type)
+>> +{
+>> +	switch (type) {
+>> +	case SOF_FW_BLK_TYPE_SRAM:
+>> +		return type;
+>> +	default:
+>> +		return -EINVAL;
+>> +	}
+>> +}
+>> +
+>> +static int imx95_get_window_offset(struct snd_sof_dev *sdev, u32 id)
+>> +{
+>> +	return MBOX_WINDOW_OFFSET;
+>> +}
+>> +
+>> +static int imx95_set_power_state(struct snd_sof_dev *sdev,
+>> +				 const struct sof_dsp_power_state *target_state)
+>> +{
+>> +	sdev->dsp_power_state = *target_state;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int imx95_suspend_resume(struct snd_sof_dev *sdev, bool suspend)
+>> +{
+>> +	struct imx95_priv *priv;
+>> +	int ret, i;
+>> +
+>> +	priv = sdev->pdata->hw_pdata;
+>> +
+>> +	if (suspend) {
+>> +		ret = imx95_disable_enable_core(false);
+>> +		if (ret) {
+>> +			dev_err(sdev->dev, "failed to stop core\n");
+>> +			return ret;
+>> +		}
+>> +	}
+>> +
+>> +	for (i = 0; i < DSP_MU_CHAN_NUM; i++) {
+>> +		if (suspend)
+>> +			imx_dsp_free_channel(priv->ipc_handle, i);
+>> +		else
+>> +			imx_dsp_request_channel(priv->ipc_handle, i);
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int imx95_runtime_resume(struct snd_sof_dev *sdev)
+>> +{
+>> +	int ret;
+>> +	const struct sof_dsp_power_state target_state = {
+>> +		.state = SOF_DSP_PM_D0,
+>> +	};
+>> +
+>> +	ret = imx95_suspend_resume(sdev, false);
+>> +	if (ret < 0) {
+>> +		dev_err(sdev->dev, "failed to runtime resume: %d\n", ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	return snd_sof_dsp_set_power_state(sdev, &target_state);
+>> +}
+>> +
+>> +static int imx95_resume(struct snd_sof_dev *sdev)
+>> +{
+>> +	int ret;
+>> +	const struct sof_dsp_power_state target_state = {
+>> +		.state = SOF_DSP_PM_D0,
+>> +	};
+>> +
+>> +	ret = imx95_suspend_resume(sdev, false);
+>> +	if (ret < 0) {
+>> +		dev_err(sdev->dev, "failed to resume: %d\n", ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	if (pm_runtime_suspended(sdev->dev)) {
+>> +		pm_runtime_disable(sdev->dev);
+>> +		pm_runtime_set_active(sdev->dev);
+>> +		pm_runtime_mark_last_busy(sdev->dev);
+>> +		pm_runtime_enable(sdev->dev);
+>> +		pm_runtime_idle(sdev->dev);
+>> +	}
+>> +
+>> +	return snd_sof_dsp_set_power_state(sdev, &target_state);
+>> +}
+>> +
+>> +static int imx95_runtime_suspend(struct snd_sof_dev *sdev)
+>> +{
+>> +	int ret;
+>> +	const struct sof_dsp_power_state target_state = {
+>> +		.state = SOF_DSP_PM_D3,
+>> +	};
+>> +
+>> +	ret = imx95_suspend_resume(sdev, true);
+>> +	if (ret < 0) {
+>> +		dev_err(sdev->dev, "failed to runtime suspend: %d\n", ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	return snd_sof_dsp_set_power_state(sdev, &target_state);
+>> +}
+>> +
+>> +static int imx95_suspend(struct snd_sof_dev *sdev, unsigned int target_state)
+>> +{
+>> +	int ret;
+>> +	const struct sof_dsp_power_state target_power_state = {
+>> +		.state = target_state,
+>> +	};
+>> +
+>> +	if (!pm_runtime_suspended(sdev->dev)) {
+>> +		ret = imx95_suspend_resume(sdev, true);
+>> +		if (ret < 0) {
+>> +			dev_err(sdev->dev, "failed to suspend: %d\n", ret);
+>> +			return ret;
+>> +		}
+>> +	}
+>> +
+>> +	return snd_sof_dsp_set_power_state(sdev, &target_power_state);
+>> +}
+>> +
+>> +static struct snd_soc_dai_driver imx95_dai[] = {
+>> +	{
+>> +		.name = "sai3",
+>> +		.playback = {
+>> +			.channels_min = 1,
+>> +			.channels_max = 32,
+>> +		},
+>> +		.capture = {
+>> +			.channels_min = 1,
+>> +			.channels_max = 32,
+>> +		},
+>> +	},
+>> +};
+>> +
+>> +static int imx95_probe(struct snd_sof_dev *sdev)
+>> +{
+>> +	struct platform_device *pdev;
+>> +	struct imx95_priv *priv;
+>> +	struct resource *res;
+>> +	struct arm_smccc_res smc_ret;
+>> +	int ret;
+>> +
+>> +	pdev = container_of(sdev->dev, struct platform_device, dev);
+>> +
+>> +	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+>> +	if (!priv)
+>> +		return dev_err_probe(&pdev->dev, -ENOMEM, "failed to alloc priv\n");
+>> +
+>> +	sdev->pdata->hw_pdata = priv;
+>> +
+>> +	/* map SRAM */
+>> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>> +	if (!res)
+>> +		return dev_err_probe(&pdev->dev, -ENODEV,
+>> +				     "failed to fetch SRAM region\n");
+>> +
+>> +	sdev->bar[SOF_FW_BLK_TYPE_SRAM] = devm_ioremap(&pdev->dev, res->start,
+>> +						       resource_size(res));
+>> +	if (IS_ERR(sdev->bar[SOF_FW_BLK_TYPE_SRAM]))
+>> +		return dev_err_probe(&pdev->dev,
+>> +				     PTR_ERR(sdev->bar[SOF_FW_BLK_TYPE_SRAM]),
+>> +				     "failed to map SRAM region\n");
+>> +
+>> +	sdev->mmio_bar = SOF_FW_BLK_TYPE_SRAM;
+>> +	sdev->mailbox_bar = SOF_FW_BLK_TYPE_SRAM;
+>> +	sdev->dsp_box.offset = MBOX_DSPBOX_OFFSET + MBOX_WINDOW_OFFSET;
+>> +	priv->bootaddr = res->start;
+>> +
+>> +	ret = of_reserved_mem_device_init(sdev->dev);
+>> +	if (ret)
+>> +		return dev_err_probe(&pdev->dev, ret,
+>> +				     "failed to bind DMA region\n");
+>> +
+>> +	priv->ipc_dev = platform_device_register_data(&pdev->dev, "imx-dsp",
+>> +						      PLATFORM_DEVID_NONE,
+>> +						      pdev, sizeof(*pdev));
+>> +	if (IS_ERR(priv->ipc_dev))
+>> +		return dev_err_probe(&pdev->dev, PTR_ERR(priv->ipc_dev),
+>> +				     "failed to create IPC device\n");
+>> +
+>> +	priv->ipc_handle = dev_get_drvdata(&priv->ipc_dev->dev);
+>> +	if (!priv->ipc_handle) {
+>> +		ret = -EPROBE_DEFER;
+>> +		dev_err(&pdev->dev, "failed to fetch ipc handle\n");
+>> +		goto err_unregister_ipc_dev;
+>> +	}
+>> +
+>> +	priv->ipc_handle->ops = &ipc_ops;
+>> +	imx_dsp_set_data(priv->ipc_handle, sdev);
+>> +
+>> +	/* set core boot reset address */
+>> +	arm_smccc_smc(IMX_SIP_SRC, IMX_SIP_SRC_M_RESET_ADDR_SET, priv->bootaddr,
+>> +		      IMX95_CPU_VEC_FLAGS_BOOT, 0, 0, 0, 0, &smc_ret);
+>> +	if ((int)smc_ret.a0 < 0) {
+>> +		ret = smc_ret.a0;
+>> +		dev_err(&pdev->dev, "failed to set boot address: %d", ret);
+>> +		goto err_unregister_ipc_dev;
+>> +	}
+>> +
+>> +	return 0;
+>> +
+>> +err_unregister_ipc_dev:
+>> +	platform_device_unregister(priv->ipc_dev);
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static void imx95_remove(struct snd_sof_dev *sdev)
+>> +{
+>> +	struct imx95_priv *priv;
+>> +
+>> +	priv = sdev->pdata->hw_pdata;
+>> +
+>> +	if (imx95_disable_enable_core(false))
+>> +		dev_err(sdev->dev, "failed to stop core\n");
+>> +
+>> +	platform_device_unregister(priv->ipc_dev);
+>> +}
+>> +
+>> +static const struct snd_sof_dsp_ops sof_imx95_ops = {
+>> +	.probe = imx95_probe,
+>> +	.remove = imx95_remove,
+>> +
+>> +	/* mandatory "DSP" ops */
+>> +	.run = imx95_run,
+>> +	.block_read = sof_block_read,
+>> +	.block_write = sof_block_write,
+>> +	.send_msg = imx95_send_msg,
+>> +	.load_firmware = snd_sof_load_firmware_memcpy,
+>> +	.ipc_msg_data = sof_ipc_msg_data,
+>> +
+>> +	.mailbox_read = sof_mailbox_read,
+>> +	.mailbox_write = sof_mailbox_write,
+>> +
+>> +	.get_mailbox_offset = imx95_get_mailbox_offset,
+>> +	.get_bar_index = imx95_get_bar_index,
+>> +	.get_window_offset = imx95_get_window_offset,
+>> +
+>> +	.pcm_open = sof_stream_pcm_open,
+>> +	.pcm_close = sof_stream_pcm_close,
+>> +	.set_stream_data_offset = sof_set_stream_data_offset,
+>> +
+>> +	.runtime_suspend = imx95_runtime_suspend,
+>> +	.runtime_resume = imx95_runtime_resume,
+>> +
+>> +	.resume = imx95_resume,
+>> +	.suspend = imx95_suspend,
+>> +
+>> +	.set_power_state = imx95_set_power_state,
+>> +
+>> +	.drv = imx95_dai,
+>> +	.num_drv = ARRAY_SIZE(imx95_dai),
+>> +
+>> +	.hw_info = SNDRV_PCM_INFO_MMAP |
+>> +		   SNDRV_PCM_INFO_MMAP_VALID |
+>> +		   SNDRV_PCM_INFO_INTERLEAVED |
+>> +		   SNDRV_PCM_INFO_PAUSE |
+>> +		   SNDRV_PCM_INFO_BATCH |
+>> +		   SNDRV_PCM_INFO_NO_PERIOD_WAKEUP,
+>> +};
+>> +
+>> +static struct snd_sof_of_mach sof_imx95_machs[] = {
+>> +	{
+>> +		.compatible = "fsl,imx95-19x19-evk",
+>> +		.sof_tplg_filename = "sof-imx95-wm8962.tplg",
+>> +		.drv_name = "asoc-audio-graph-card2",
+>> +	},
+>> +	{
+>> +	},
+>> +};
+>> +
+>> +static struct sof_dev_desc sof_of_imx95_desc = {
+>> +	.of_machines = sof_imx95_machs,
+>> +	.ipc_supported_mask = BIT(SOF_IPC_TYPE_3),
+>> +	.ipc_default = SOF_IPC_TYPE_3,
+>> +	.default_fw_path = {
+>> +		[SOF_IPC_TYPE_3] = "imx/sof",
+>> +	},
+>> +	.default_tplg_path = {
+>> +		[SOF_IPC_TYPE_3] = "imx/sof-tplg",
+>> +	},
+>> +	.default_fw_filename = {
+>> +		[SOF_IPC_TYPE_3] = "sof-imx95.ri",
+>> +	},
+>> +	.ops = &sof_imx95_ops,
+>> +};
+>> +
+>> +static const struct of_device_id sof_of_imx95_ids[] = {
+>> +	{ .compatible = "fsl,imx95-cm7-sof", .data = &sof_of_imx95_desc },
+>> +	{ },
+>> +};
+>> +MODULE_DEVICE_TABLE(of, sof_of_imx95_ids);
+>> +
+>> +static struct platform_driver snd_sof_of_imx95_driver = {
+>> +	.probe = sof_of_probe,
+>> +	.remove = sof_of_remove,
+>> +	.driver = {
+>> +		.name = "sof-audio-of-imx95",
+>> +		.pm = &sof_of_pm,
+>> +		.of_match_table = sof_of_imx95_ids,
+>> +	},
+>> +};
+>> +module_platform_driver(snd_sof_of_imx95_driver);
+>> +
+>> +MODULE_LICENSE("Dual BSD/GPL");
+>> +MODULE_DESCRIPTION("SOF support for i.MX95 platforms");
+>> +MODULE_AUTHOR("Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>");
+>> --
+>> 2.34.1
 >>
->> lvds_vod_swing_clock_table[lvds_term][i][0] >= lvds_vod_swing_clk[0] &&
->> lvds_vod_swing_clock_table[lvds_term][i][1] <= lvds_vod_swing_clk[1]
->>
->> is always true.
->>
->>>
->>> I think the following should work:
->>>
->>> 	/* artifical values to select the defaults in both cases */
->>> 	u32 lvds_vod_swing_data[2] = { 190000, 330000 };
->>> 	u32 lvds_vod_swing_clk[2] = { 150000, 250000 };
->>
->> This sets the default to 0x0. It should be:
->> u32 lvds_vod_swing_data[2] = { 200000, 372000 };
->> u32 lvds_vod_swing_clk[2] = { 156000, 290000 };
->> This selects the default 0x1 in both cases, if termination is 100 or 200
->> Ohms.
->>
->> Nevertheless I think I got your point. But I would still like to give the
->> user the freedom to only specify one property if maybe connected panel only
->> has limits on data lanes/clock lane.
->> So maybe set the arrays lvds_vod_swing_data/clk to [0, 1000000] if
->> of_property_read_u32_array returns -EINVAL (property does not exist).
->> What do you say?
-> 
-> After your explanation, I think it might be better to explicitly set the
-> value to 0x1, but not at the top of the function, but next to a check
-> that both properties are (not) set.
 
-Ok. Will apply this in the next version.
-Thanks.
-
-> 
->>
->>>
->>> Yes, they are artificial, as stated in the comment. Yes, I think it's
->>> better than special-casing in the property handling.
->>>
-> 
