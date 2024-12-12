@@ -1,64 +1,74 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2086.outbound.protection.outlook.com [40.107.20.86])
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2061.outbound.protection.outlook.com [40.107.241.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39BE8215764
-	for <imx@lists.linux.dev>; Thu, 12 Dec 2024 16:49:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A43176AA1
+	for <imx@lists.linux.dev>; Thu, 12 Dec 2024 17:29:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.61
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022153; cv=fail; b=o0LyejDlEz1keuphM9uhWOINiGUrue4z0iV6yOt5Nk3G6jb5305ozaJsmYtCvlewy4aTlqSF+gVwa8fwUgCTYBtiVnO14AR+IxGLy5/5LAi6y+mXdyVx2dCJ6NrfEqOE5mtittbXfmlIo+xNScrWvQgKziWreRZSrYOR6xyxojY=
+	t=1734024575; cv=fail; b=XDb769ypeYtdMDpZ5jqumV0ObYL3gJoOQ1Jpu8ohEv/Kn1OkAuR65xPva9cR6jMjt3VXvKazeQMByZAe3y6IaMiRlbE2EMBTpdDsPGc+e8lZyxDSspaIXaw9qtgBrhs8NwsERfUqQvXYy+H4s+V7lYqOCIHQ/K/MF+gJKRolKCI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022153; c=relaxed/simple;
-	bh=Fq+RkIze/DwebQBN9U2OVrKBTEcAvVZolkei/HmPhp8=;
+	s=arc-20240116; t=1734024575; c=relaxed/simple;
+	bh=DtsqEdmIr4jhGvXxVWmCPKddieI3zy4ItlJNjg/wZtI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=uUYXLr/QzdjpuRLF+X7FrCXDiwNkYeZN6yy0QivcVfcL5fAsyjvnPcaIBgwL+UXPLccRwjwhKVQOykvDVZf7TeuTvqGRi8E77LlzdVeroXP/PVkJsLgTVmj+ytNGFr2Ws66DsqqKQF48mQ+alrwbxjS+x0w0XcGmA4G76UOloOM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=lot/srpg; arc=fail smtp.client-ip=40.107.20.86
+	 Content-Disposition:In-Reply-To:MIME-Version; b=dzWTrMW8/eultHr0slgpz5LS7r6pZPH6WuB9ceRri5R6nKIxJjF2VV+xrgXPOxYJflESQK98L2MqY0b0J9l/mGKda/BcUGQ6EQSp7zGupgWbaviQvOTAcq7kAbu8wlVpPhJrJC6mCax88GZsitaguSnvSOocpbCo9JJW/tLU8F8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=N59CW8kO; arc=fail smtp.client-ip=40.107.241.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="lot/srpg"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="N59CW8kO"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jXZJl4qxn2EBamoZEjJM/StTKANjlUgSR/zLLIFOWOrtY54lJrbuNz5i3GXN66gyHqAGSi31krUZvf4c4bKHv/bocDeKr2gmoEvcO6TDj6cjEi9IqXgjPoQ1g9M8AIwaOyEp1D+v4jtElMWbHQF5wmgxAGkQIsLHBTwr4+ZSG17aSboXtMuglZpehI16ZzoV5A4IJDRFxAkW627+Zj9tieKN9y9XCpKeSHiD8S42GrfJYCb5FxsgjeUuilzeV33v1O0j5nBiVbu0fF4FJnWM2hcQw3Ka5EKgowICaq5jVChsCjOtKTqaiQMsxyo1koB9hDNEoD0CUoZCPB1BWd8gYg==
+ b=mVCKigI0NPBjxvS3YJaDHL5iMq6cQy5zAdrfiCeSrqvYksX+tA/ip9KHazEUrG4R8DtQccj9lUkvDppuN5ZlOl11afE8tIfiMnUwebr+5bczDObqA1MsXbgvLDf+ExBXHlo11c2jHnK1GMC4hjkT/zhEa1BJD1PM9v65glS3I2GCc5dfSbt+/IHOrH8Q0tN5JR+2gGaZEYnxaAud/AbPJPC2yJCI9zNm/PeMWxJlEAFFbZbSYISa638IVjc0v9PYYotjsOmaqGdxfvTTfL4QTpbC3zFG2x3Mb0FA5N1K4ACn9L3afqNrSdbQH61kZnteeE6H5AWZjIBFp/iLIEcQ5Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AW8MYbtWSWmkmLBtDWeW8X2PMVt3SPWAIFgoGGHlx3w=;
- b=cIfroTqc8bP+cCcf25sTQrCC+KDyqIHbQAuvi2jXVpn4cNFj9qQrFjbKCGROlCmr6sU6bXPvBpgFJ7fEMT+3XOAHja1JSej/9WWSfVB/6/PqGdmD6bEwV9+k6mqV43XNcLIg4ybf8WgvlA7G0obGaKapQgKpI2EVXXnHTQ5B/Q/qPcquUhGRAUpOKEuSFrtI9/KzR5vgpleqnQin5ajP6Nkb+zBCnm/O0bg40Ne3Mmcb3fJl1JE8EcLwT/Lpcu6IvpdSkNludC6/QW5fnveJfsIHTHKdYTql7cw41pYeH04UKflPIH6np7t1LzOe+oq27J3ip3CN9DCf4R1XytnaaQ==
+ bh=HdnwnRgncroPhBXROVl1H4zREjKx5YnNuBJ5F+I4D80=;
+ b=VTkojfxW+b+r/zRInVMwovDGY14z4U0apf91McDhTH2eUGIs3HLTyFrT0cn7ExdZr4l50hq8/tSMka7W/BbaW2SefJ5JCVtDGgi/zZZUsl6lnamQXn0r0J2sXVXJMPzLQ5MgADTF7PIS5zZsFJhBnDz8CLwuOyQOS8ktPMABYFOfEkOO7gKIN6quFSaggchyaqIoP1aqesxPkl5mJlksRBoTy0lR10mzfxM8EOR7RfR7xPE3gzHK74+yi9u/4Q+9Vx35y+1qB7wl50SwREgKX4QQAWurVvzCdowncMXW6lulqS1jGsCOex1GW8XHBDRQ5iP+5fmtwMTrcFIxhAszXQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AW8MYbtWSWmkmLBtDWeW8X2PMVt3SPWAIFgoGGHlx3w=;
- b=lot/srpgQWMGlH9AkrC1aa5OsExQqwRBZvY+8CszaZPW7zuzCmPVTDf0ku+YylHXYK0A0hl0O0eg9FyDqAE3I1xW8lzSNiqyXACDmnbTkCOiqazmb34gCR5vjwNL7+hNYtk/Q+q79pbzXNhJMdZm4hJzVbLhouthMZvgyjmG7iOWlNJqF6Ub7Llftua2ig7a7nDWBDY157FqNy0nw8UqR0z7btO6DvRiU9bmA/g5lnNwJtVG7QR/WzcNiaikg6l4NnNknlpkrBM9adSCzgWkFiFxHaVCjEfw+io+tVOceTznWJy9/uMJ1N05oNKH6kx6wfH0LRt7/Hp9rg7ZyBsgjA==
+ bh=HdnwnRgncroPhBXROVl1H4zREjKx5YnNuBJ5F+I4D80=;
+ b=N59CW8kO4BIqlRflwAc5qTgV5DteleA5h0Qf/PqPgCgowkH5/KCk8Qoptdp0xcszzPInOXFDdnaD24wmZDo4pG8/Z7jBuOtYzmY22/pRdg+mxMidp2blER63+HuKyxkztozRs/Bq1SADzP1j7HJH7cvGQmg2k6ak97xVazR4BnCCFGgPQKa17vAmlStE900pWZkekzuE+SKv9atZXLkOhpYfi3d1u6AuB2dazIlhhu9k5R2kq3UE1Ae4UoeQK52gmBKKZFF55/4Sdtj9xxZwoPV1xNgnM+5R9apjhbJtPE54paqRm9hLrVROIcvvxqTNMjlm3MePqTaf4lIphDxcWw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS8PR04MB8626.eurprd04.prod.outlook.com (2603:10a6:20b:429::5) with
+ by AS8PR04MB8386.eurprd04.prod.outlook.com (2603:10a6:20b:3f6::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.15; Thu, 12 Dec
- 2024 16:48:59 +0000
+ 2024 17:29:26 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8230.010; Thu, 12 Dec 2024
- 16:48:59 +0000
-Date: Thu, 12 Dec 2024 11:48:48 -0500
+ 17:29:26 +0000
+Date: Thu, 12 Dec 2024 12:29:16 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: Jacky Bai <ping.bai@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, aisheng.dong@nxp.com,
-	peng.fan@nxp.com
-Subject: Re: [PATCH] arm64: dts: freescale: Add basic dtsi for imx943
-Message-ID: <Z1sT8FQXnxyZUeo3@lizhi-Precision-Tower-5810>
-References: <20241212093555.1376568-1-ping.bai@nxp.com>
- <20241212093555.1376568-2-ping.bai@nxp.com>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, alyssa@rosenzweig.io, bpf@vger.kernel.org,
+	broonie@kernel.org, jgg@ziepe.ca, joro@8bytes.org,
+	lgirdwood@gmail.com, maz@kernel.org, p.zabel@pengutronix.de,
+	robin.murphy@arm.com, will@kernel.org
+Subject: Re: [PATCH v8 2/2] PCI: imx6: Add IOMMU and ITS MSI support for
+ i.MX95
+Message-ID: <Z1sdbH7N1Ly9eXc0@lizhi-Precision-Tower-5810>
+References: <20241210-imx95_lut-v8-0-2e730b2e5fde@nxp.com>
+ <20241210-imx95_lut-v8-2-2e730b2e5fde@nxp.com>
+ <Z1sTUaoA5yk9RcIc@lpieralisi>
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241212093555.1376568-2-ping.bai@nxp.com>
-X-ClientProxiedBy: BYAPR21CA0015.namprd21.prod.outlook.com
- (2603:10b6:a03:114::25) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <Z1sTUaoA5yk9RcIc@lpieralisi>
+X-ClientProxiedBy: SJ0PR03CA0150.namprd03.prod.outlook.com
+ (2603:10b6:a03:33c::35) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -67,3242 +77,310 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8626:EE_
-X-MS-Office365-Filtering-Correlation-Id: c0c937c0-2cd3-42c9-a7b7-08dd1accdfdf
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8386:EE_
+X-MS-Office365-Filtering-Correlation-Id: 167f9839-f8b2-486b-47f2-08dd1ad286be
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|52116014|38350700014;
+	BCL:0;ARA:13230040|7416014|52116014|1800799024|376014|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MHkzNlpSSTVBMW1vMDVGRDh1SGIvSnl1ZDhUcjRydkZRb3pyZzZ6dm15MjZF?=
- =?utf-8?B?bG53ZzRzamZ0TEtCNmdielkxY2t6bHV4dHZMZ2c3SS95WjNKaTlKbDhpWXNE?=
- =?utf-8?B?THVraTA5YXAxNVlhWUxmbDV1WGhLeHJ4VmV4SXNaSXJSOTk5WlJKNE1aSDlh?=
- =?utf-8?B?czBWOWlaSThtT1BaZ2taczNXTkVTZjMyZ1hram5MeUFiTjFLb2xieWt5Nmpq?=
- =?utf-8?B?aWlITEpOaEl1Q1JRN3RYODRxdG5nWW1WTEpTbk9oWGtRMk02QU9na0ZTVEJk?=
- =?utf-8?B?YTFUR00vRUhpSWc1SjZIclV5RHRraXY0NmkzdGY5dEJIYWNvOW95azY1NjAx?=
- =?utf-8?B?YWZRSTk0T0lTeFZVZDB6YUltM0kxQ0JEd3VUbll2RVJjdmZpZGhIOXg3K1k1?=
- =?utf-8?B?T3dyeWF0REJEMUk5UGRPY09OZEwwelM3OGlJY2dZOCtnUklhN3BudDJibTNF?=
- =?utf-8?B?SmFSYlJFcSttZFJ1eGZrYWVXY1Y4QUIwaU96WndFK2REeU96bnNFOFJEaTIr?=
- =?utf-8?B?Y0h2SVRUNHNjWHdIWElWUjhOaHVpTzdTQUFkazZ0K3AvZVNkUHhKK3pFeGpK?=
- =?utf-8?B?SGQxUTFWWHlqblJteUFZb0ZMVmI3QTJhYXU1bWpGTDRpVmVVWUtBYzVYWGhH?=
- =?utf-8?B?Q2pFVmM5UDdZQlZsUG5zRUN1ekorUDMxMzFPMjloY3p3UHRseUh0RktJaFVR?=
- =?utf-8?B?RTZBNWV4VHJpTDdzNGg1bUZSZUJTWVBVQXNzQjc5MmE5eldkandCeDU3THk5?=
- =?utf-8?B?bXVNdWxRd0Z6ajc3ZzlIMnFoMmNiK2ZqRUMxQ01DaHNRZFlxOXBlbmdUdE9q?=
- =?utf-8?B?eG90OVBqS1c5ZnRIbitKR1RRN0k2QmlXWmNwcDlyNVVESzZHaFJLTDg3Q1dN?=
- =?utf-8?B?ZFloNi9ZNU1XVWJ1WCtpdlRUSUtGMWF6eC9VM1BWUjRNRWZTUzZzL1cyaG4v?=
- =?utf-8?B?ZTdHYi91aFNPV0dtZ0Z0MzEyWEs4SVZ1dVFibTlYaFVwbC9xaFhYM2p6cjF1?=
- =?utf-8?B?NVFQSENXRlJ5ZnJNMjFxMkNWbnhyd0ZhbVdPT09jTmFXZFdqM3U3OWhrcGYz?=
- =?utf-8?B?bm80SUVDT0xPWmlRLzlOWExqYnc4VjQ1MHJSZ3dXSHVrMW80VGV5NUllcnpM?=
- =?utf-8?B?b1pLejIwRE5PcmhYakNMSXNqS1pYYjZEZ1pRdTFqMGpKb0ZZM3J2R1pEWkZw?=
- =?utf-8?B?WlRYL2JqWklZNi9XbThKazZKMExsLzlkTFpiaFdkYjIyMFdQVE1sZkxWa09V?=
- =?utf-8?B?VDJVbVNMaU1Kb3l5WVZvT3ZZdDdJam9TYngxdjlSdFlORG1UbEdkWEFMcSsw?=
- =?utf-8?B?NUtqL1VtVlVFS2VTbTYzWjNpNEhZcWdCQWVwbkdBKzlnUUQyT3hJSGR0S3M3?=
- =?utf-8?B?ZzZsTW9Kdm9OSDdscE8vN2NOUEVwSlNPR2FEcVdNVjh1ajZsc2d6QzFVZDhZ?=
- =?utf-8?B?M3NweWZONklNMmZHb0UrdmV2MnhveGVCckI4UVQ5b0JsYndWUGdlZlMwMXRl?=
- =?utf-8?B?ZjZzTWh3ZmpzMmJQSUVYVTRzZ3JSRURoNXJvTUtjTUZUODArQlA2clVTZS9l?=
- =?utf-8?B?RGNzN01YakJ6TUs4RDN5ckVUbTZwY2xBR1E5SE9kK0pvVWd5aisrTEgvRWJz?=
- =?utf-8?B?NkM1ZmhldnFDTzNMNk91Tjhwb24xQVJkOXBCUWwrSG9iWTNiaFNlR1dxVlMx?=
- =?utf-8?B?QlVqQ2FrWDhPaVNodmg4TWpzOEIwUnVoVWxGSEUzNC9rVE5BNXhkeGZDZzdM?=
- =?utf-8?B?VENNWEJiRGZ2ZWlIcEFnU2MxYjgyTnNZaFN2NGtGWkM1aEhGMlJlU21lRTIz?=
- =?utf-8?B?WjNWRlNMMG81OWVkNVVwYWJnbTRQelYyZmE4OWpQQXFmNU9wNjRPNVo2UUdy?=
- =?utf-8?B?aVJDU2VlRjM3L05zNXMxT3pOWTBJOE5mRWkvc3hHelFuY0E9PQ==?=
+	=?utf-8?B?K1AxOW94alNNNGIxcXk5TEh0YlNsQUtmRTV5OUt6V0VneEliUUswZjFGV04v?=
+ =?utf-8?B?SlNkMUxEV0w3RVFON0JaQlRpcFUzNklxWFRhc2dmSTJwelp4ZW43b1NQeUZX?=
+ =?utf-8?B?RHJrTHdIc1NHY2VzVHhVYnlhZGlCbDlzSjVsS2N3MjhFcmpid2RJWVQ0bnFS?=
+ =?utf-8?B?SE5lL3pqakJBYVFKRDBvemQ3N29kYVRMWU5aS2ZHMktnR0ZNZHBTRVQ5SFll?=
+ =?utf-8?B?SFBGR09OdzFGTGlLajFsMVJyeU8ybHkyQ1A2L0hGRDB0MHltdVNpQVljSjZS?=
+ =?utf-8?B?MUlmcGFLUkFqbVZkSTA1NklnN3VWTkVDdUVvYmNqNk9hUWcrZEZMT09Qalcz?=
+ =?utf-8?B?RTBaeUhtS3JXd1RiY0RKR1JRd2FjNGxMb05aTyswdHBMMXpmQXlUT3NySU0x?=
+ =?utf-8?B?bHhRaEZHVVRyajVNQjdqbUpFUVN5OFhsZ3E5M1RHbmZhV0lPRXpmQU5GYVRT?=
+ =?utf-8?B?cTZweDYxMkVrSFFMems4QjBnV0I4clNHTWxXOW1KRnVPTkU0cnYzU09QT3ZJ?=
+ =?utf-8?B?Z05sSXdGSXhQeW5HaFlmc1lTUGNpaTYzVXNMNE5rZVFhWHdsdE1mOGpSRE1z?=
+ =?utf-8?B?NERudjRVcy9rSDVlTW5SMG1oVlVKTUZQVG5zdWY5TXo5dGd4bi9NMmtSQkxV?=
+ =?utf-8?B?bEpKbmRxK0pXVjYwWGhLWkZyR0NESmVFV1VFM0RqbEN5b09oTkxWdDY5TzRB?=
+ =?utf-8?B?c1I1dFNSS2RzdFBVMyt5TVVjeWJEeE5UMURtUlVMcmhQRHdIdDB6ODFtOUNI?=
+ =?utf-8?B?Q1duZnFESmlkWmszL21mekRVa2llOXI4NXFZUTRmTlVjOXFEMUE5TmNITkJU?=
+ =?utf-8?B?M1FtSURHeWlFYnd2TjhsNWNhcjhtaGRJNXl3a3JOYml5Wi9kQjNiRkFidDNH?=
+ =?utf-8?B?SUZVNE5mT0M4SXJKL204Z3dVOXhiYmZvc3FjU0RmenV4Q2k4bWRBTjFBdFIz?=
+ =?utf-8?B?djVDWDZwRGI3eEFManlLb3FZSndRMWx3bVVXM00zTGZTVzF1TWVGcGNUTVN6?=
+ =?utf-8?B?MXZzY3k3ZEhuUVl1QS80WENYS3R6bzBqQWwrWkh2V2pWcEF6dEIyMGcrZml3?=
+ =?utf-8?B?bHhqbEI4Nm5KY1MzNG9RME52elJzcHVNMm9BUW1oRGtWaHR3eWJpbkxvbjlR?=
+ =?utf-8?B?MGpUSmY4YjRLRXIzSlNPajlySkFWb1FjTXNrMTdtZTJpUU9weTlScnluWHNz?=
+ =?utf-8?B?NlRHTEN5UHpEWW9SY1l0N2RjUUlqZlQrcDNYaTVrSmxpclk0aXlJYUMwQ0ZI?=
+ =?utf-8?B?dituaEVkUHBrK3Fnbk5aTHZUbkdIOE5EWUd4K0tDM3NMeGR0RUZQUktDTkpk?=
+ =?utf-8?B?MHF3R2ZmR1JvS3c3OU92NVVZWEJ1MXljZjBkZ2kvUkp1T21lL2p5ZHJBSmpE?=
+ =?utf-8?B?S043bHVUaDVvRlFhMURoWFU5Mmx1Z0x0ZU0zUVJBSEllR0hBc3JacllQRnB1?=
+ =?utf-8?B?SUZNMVRrRVdxUFdPTG5QU2xLZG1YODhxWXpuazFJSzdNTUVrSWF4NVlYZW9W?=
+ =?utf-8?B?eTFERElOVGNQcFZGQ0FGaGFWZThvSXk4c0E1cjJxVXJwQTRSK2FyR1ZTU3FF?=
+ =?utf-8?B?aWVBSjRiYU5zMStEaHhqNGNQUnJhOHI2bVpMVEpWQ1ZuRk94Wm0vaGdMRGpJ?=
+ =?utf-8?B?RTl0bW1wbWVHMjJZTWQzamxZSlNEeW44cVc3a2taS2w0QzBMQjFPbktSbWs5?=
+ =?utf-8?B?Vjg2ZnBuYS91eUtUeW1GbzhRLzA5MGw0REhROTl0VlBsZmhSTnRJSlBZV3R0?=
+ =?utf-8?B?N3ZQalc1dWdPM2dJbkRQUWdhT25haUgyRXBGNUppdTZsUDBhY2IxNXhBZFps?=
+ =?utf-8?B?QUtEZnMrOEF1RlZoNm1BeHBSTTI1VFhUaldZWTlMKytJZWVmY0M1Z0gzSC9z?=
+ =?utf-8?B?M0VKbFFTYU0xVWI5VS9lcHVBWWQrbVNnaU00TWx3T2pCUFE9PQ==?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(1800799024)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NWlIS0l0Zk5nbElVd2FscDFmdkZ2dFYrWTkzRHcrMUNIZCt5L2RhcHc0RlF3?=
- =?utf-8?B?Nk1aekNVa1BHQmRYYkZYTWhsK0hJMmhNd2hVSW9ESGNPd250Nm54Ly9wdFZ5?=
- =?utf-8?B?RHN6Q0NySmY1NlhObHJGN09xalB3OENONGZNbE1nUHh5R2Y4R2x1VWE4bXg0?=
- =?utf-8?B?N2JHSlJIUGlwcW80NkpPYk16K09kbmhXQnRDYUNvUHFtaTJvcmZNdkRhYTFQ?=
- =?utf-8?B?RXoxbTM5dGZPdERaZWxVQ1dBSzFZL3JvUjVoV3E4QUpmdTUwUS9mYWhMbHRM?=
- =?utf-8?B?NDB4R3FsODVONXEyRXhUcStJQVNOcmRhYTZ5Y093RUVJTk9nQ0xUa0toRTNS?=
- =?utf-8?B?TUprOGx2RXB6eUwreDFLVUF2SmZ0Z1NEN0dLUTNqOEVGMlRKRERLTUhTd3p1?=
- =?utf-8?B?K3JMN1A0QWhnNDlFdkhFU1ZQVE1leWJvbEJoc0FpaElaM2xpVUtWd2MwVmNC?=
- =?utf-8?B?VEcyR1pTVkp6QVpRUW9YZC94RFlzTDJZMk95MnBKV2Z5UXhTREtCc2l6aXl4?=
- =?utf-8?B?WWtGVlVYa0J5U255Qk9VSzJnL01tR21UT05MbkhseGQvS2E5eld2MkUwSnpm?=
- =?utf-8?B?ZWRFdXpxVGxsRmEvZ1lJaEZyZHpsdlZ5UGZvVktBVUxlcGMzWTFyNG9oWGQ0?=
- =?utf-8?B?OEJOL2wxU3N2UGJWZWl4ME1qclpldGlKbWJRd3U0MzBlZ0V1MUpMbk1vREpk?=
- =?utf-8?B?cHBVQm0yOUJxS1phRi8xRVl3WndBOUlkcXpZSmUza21NejN2ZzRvVll3SDky?=
- =?utf-8?B?eTBjdTl3NWFVSUpqMmIyZllVTVpoVGlLckxPRVp0a0h6UFNyTkpQcTYxZ0lY?=
- =?utf-8?B?bVVlbnZXR3paTnRnS3RSa2JFVnlGZ0o4VnhhbXBHVGI2c1g0Y0R0VTRtR2cy?=
- =?utf-8?B?Mk5jc3RObmZhbTdZcjZkZmZaTlIyS3R5d3dsZlBGbm9WdExPbkhCMEpGaDNO?=
- =?utf-8?B?UVFUMTNnWVlLZXRweWI5MXF3RmdKUEpEWEpVemFsdnA4SFl5aXZURitveHhG?=
- =?utf-8?B?SVIrS3BrNnI3Si9JZjdNU2ZFU3B4RVhubGpYcCtwTTV2ekRFT29UU004clBa?=
- =?utf-8?B?aHNTeGs5NkNQOHV0LzZEeEVLd3E2YmpLby9oUk0wVklUNGpqOUpBSkpFVUlU?=
- =?utf-8?B?RXZvUDVaNVdvYXlYbitoN0RjbVdxRDhDWUFDdHJrYmZUVDhadW1XMmpCOUZJ?=
- =?utf-8?B?VlBpSWgvdEVBanFwTStzckNtaHhuVDU2SGZlR1hZOExTMVRLSmIvd09PanR6?=
- =?utf-8?B?S1dyUUhNQ0FHdUpzSHU5WGZSSm1JeEdTQnY3VmVTUkhCMllRZVdrdHNHaEFU?=
- =?utf-8?B?SUFubzF4OThuOGZlSWFHa1JGWnF0OWpvVS95UWgvYTZlb3hHVjZpMjhkUlBx?=
- =?utf-8?B?Mis0TmQ1TXB6Q2NPZEZlNG0za0hpMmV1dHBkT2N0Y0twN2tOSExvczhXQ3Fm?=
- =?utf-8?B?Mi9CR2QyRXZLVGNQSktFb1czcjAvQXRIdWZ1V01oUWdWSzZjTHo3dnF1bTNw?=
- =?utf-8?B?KzhYN1BDYnQzM0V4OEV1cm9kYmZqaWs0WFBNcEYyQ0xmM2dETzhmcVpoMW9P?=
- =?utf-8?B?M2NaanZacHhiK2QxWDdla1UxcTE5YWl3b3p6ZU1qS0NnYUFjMXRYaTUvMjdy?=
- =?utf-8?B?dW55Y2VFOWRCelhpOGIzdVZWb1F5emExY0RzelY1Kzh3cVg3WUd5Ti8rOXVP?=
- =?utf-8?B?NU1FOWdXNm5sK21tWU80WXZKRVRCbVFBR2dtQmtmK1JoSlNJY2tXSDRRR01D?=
- =?utf-8?B?cUxWdUVtVnNKYzA3Snd6bm1weFRnWS9pNXpOaEQvU3VuaFdyK2pNTHUxZkht?=
- =?utf-8?B?OXNOUzFGMGJlQllWaTFOUmNPQlhyd1huazVhbnBXWmtJSzJudlZndXpuemVz?=
- =?utf-8?B?YkljTk5HT01mS3BrazR1dTRVYkRkOWo1cVkyS0FRQ1IzRG5DQ25lNXdTVHIz?=
- =?utf-8?B?enlNc2VnYTREbjhIdnI5TlNqMUVmUitxY0J1cmlvR284WlZJODlWbEVlM2ZF?=
- =?utf-8?B?ZDFBTTNPYXJ4NWpMdzRsTy80aytrM1haWm1pUmFWYzRhei9SWjdGT0x2eXlB?=
- =?utf-8?B?YzRKcHBxQnBXMTFDTks4YXdkdkZ4UTFlay9tTXc2YzlOWGxLWHdiRHVJVlJo?=
- =?utf-8?Q?c4ijYQxot/pLRyygt8PGSM9/I?=
+	=?utf-8?B?NGk1OEdGcFhQWk5YVU5VU2M4ZFBxZ2RSaUtocjRUMmVNZ2plVk5JQ1pIL0hL?=
+ =?utf-8?B?ZmorcW9KcjNENFAyTmFYOUpDaVlLSDRXQzF2cnVMbUc5Sk9CQmc5VW0veEZz?=
+ =?utf-8?B?djAxUUZ1aitMcGRkRFBUd0w2dGNWSXljVFBzU3VlMjk3TmtzSytWZStINnhR?=
+ =?utf-8?B?dHFTb0RKaThyV1pOcEJoaTU2ZW1FUnZ2VlhjYWZSWXdIWFh0WVZCSkdTdXlm?=
+ =?utf-8?B?cm5vS2JNdmYwWlRuTm9OTGVmMmRpQjM5TmdnTTRvZHpVQXFvb2Uzdll6aDdT?=
+ =?utf-8?B?ZDFvNm1jVWlXeTU4ZUk0T25XQXdOSVZ1dlZvZm5QWGJrNHYvdlNudzE5VzBo?=
+ =?utf-8?B?UFE2MEwzWmI4ckRGYmNHUEpGVkNNd3BzR1JQdG0yT3MwU1NxdXhOa3QxbVRX?=
+ =?utf-8?B?N1k0V2NDQ2xVdk5pOS9aYUphZUFHR29haFlQRnNRTUlGWDN3SzFDNm1HZXJV?=
+ =?utf-8?B?UnBQUElMWW83MHBKSzZmekV0Wmw3cndkR3ZmbVJDekgwNUNOUEZRVVJBekR2?=
+ =?utf-8?B?KzVoU2h4Skx3WndEd2FPekhncHhmMXpvd0h2QjlrZ1pyOE9wK09BVlpkRzFl?=
+ =?utf-8?B?UkJnOUNzOW44RFNud2dtdFNoekh4Zm5haTYxWmdGa29WRFBHaVA5OHdNQWpz?=
+ =?utf-8?B?M2l0Uk0xa20wWnlnZ3VXaEpwdEdldEhqUG9yc2RKeHI2V1FsTHI3clVRVjNQ?=
+ =?utf-8?B?MkVaWnNzZU1teStlcmFmcDVMV0tXbUUvTWRYTTdXM0hpVTI5MWZsRGJKcURO?=
+ =?utf-8?B?UFV2d25jaFR2THlMNVN5WUViN1B5cWdRdFBFaUtlc3QzQUJlWG9iYlAvY0Fj?=
+ =?utf-8?B?elVlRVY1ZnpGMjU4eG9rMkdCQ2xHK0U3bXRTdVdycTFjZDZzSVZ5VkhGY0JM?=
+ =?utf-8?B?dS95VGZROEx6c0RVcXJwMDV4NmdJbHg0YThxYytVMXNTR01ad0hSSTI1L3FC?=
+ =?utf-8?B?RDV4ZVA2eFpPOHlkZEdhYjdpMFhXcFpLZjZhYkh4M3pvWFl6WlAvQW4zRzds?=
+ =?utf-8?B?M2lyMWorN1JZeHVMWFhmYWh0QzZXQ2xaeWZ2anBEeStiOVJGT1dPdXNKQm1Z?=
+ =?utf-8?B?QlZmdjI0eWRTTXd2NjNZU0ExbW13UDRLc2hmSmF5QzFmY3VKWFl6S3Y2TTFh?=
+ =?utf-8?B?NnBLVUw3cU53d2pycEFPcXBXaE1scHhxejU0Nnlhcm5MM01XOEgydjZ5SjZE?=
+ =?utf-8?B?RWc1dXJnUHB1ZXFEOGVGaHd0Snd0SmxrU01kd1p0alpJc1RkblVxUnF6K3gr?=
+ =?utf-8?B?cVM5Z28yQmZSTzFzMG9wMllwZXZWRVhLUVh1UUpTdkQ2enlieXl4aWVDWDkx?=
+ =?utf-8?B?RXF0UXUrU3BJZnZJdFJJSWlqMkJGZGFOMU5LeDBtRjBpK1ZabUN1ejJ3UmE1?=
+ =?utf-8?B?aHZkbVhCSU9lc3NVbDZUbG5DME54N1FEMGlENEJSc0JHbXBEc1J1R0lSWC9D?=
+ =?utf-8?B?MlRkTW9pdHRKQlNBU2VvMmtGekEzUStGMHp4d1Z5VHh6NGltOC9aMDBIMDUv?=
+ =?utf-8?B?amh3YUZGNHVQdWFpTC9GcUJOa21Wa3RKdVF0cExDU1lKNW9zRnBTdTBCNG0v?=
+ =?utf-8?B?V2xoMThjWE5GMTdqYXhtY1M0NmFpbDNWN2dZNjRkR04rRlYzU1FsNktpRUEw?=
+ =?utf-8?B?ajV1dVpHbGJNY2hpVFA1MW4xZ1gybS94Qm9LRHczZk5aT1p1QkVsUlJqUW5J?=
+ =?utf-8?B?b3lLZUlWQ1RoZWwyczNmL1p4OVZlSkJMdWxnbXordVlxSEJHZm13dDhsVE9p?=
+ =?utf-8?B?UjJJVUdtWENOZTF1M2FEY09mUEJwSC92V3F0MnB4QVdPa1pUT3dqdDdzMTBT?=
+ =?utf-8?B?NWVnOEpZV0NmdXd3TUE4aEg0NXBQbm95WjBsYVN5bGFsMjRiUEora3NLMmdS?=
+ =?utf-8?B?dFg2WGNsWm9CVTEvQVoyTStEaWc4ZkR2UnV5YVZZc0llUGV5VE9MSUhNMHVq?=
+ =?utf-8?B?RmcxVElXYkMra2d5NTRHYSt0VVRVOXZPY2JUVGJDU0dCWC9xRGtrTEROZGI2?=
+ =?utf-8?B?d2duL2t3SWlxVlQ4TXlUQ3g2T3luQTdDNG4zVjk3bkRITlJMZm4zR0cxUEJp?=
+ =?utf-8?B?dXFHL29MZ1RTVDJPVW9EMVBnZy9rVjNQcDQ5Rktac0JwTXhQeE1STGhpRC80?=
+ =?utf-8?Q?mI9nnfSDmDX1mEe8WwnvO7Ldm?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c0c937c0-2cd3-42c9-a7b7-08dd1accdfdf
+X-MS-Exchange-CrossTenant-Network-Message-Id: 167f9839-f8b2-486b-47f2-08dd1ad286be
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Dec 2024 16:48:59.4355
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Dec 2024 17:29:26.4141
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KedSPozTKf5Dn0Abxi1xepVRPJvJUx9U2Fz5KnIFNnvNq1c9+OlPWpqb/V5E6HVCYaWVzMjVm5cj+ws0M+xDug==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8626
+X-MS-Exchange-CrossTenant-UserPrincipalName: tvlPdjEJeTgyWGmdfWHmN7dm1jd0CeK4exOo3sCUdfjH9Dbotn36CY+AMGgZtr0QngBprwMR90H52Bt9G4U+9A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8386
 
-On Thu, Dec 12, 2024 at 05:35:55PM +0800, Jacky Bai wrote:
-> The i.MX 943 applications processors integrate up to four
-> Arm Cortex A55 cores and supports functional safety with
-> built-in 2x Arm Cortex M33 and M7 cores which can be
-> configured asa safety island. Optimizing performance and
-> power efficiency for Industrial, IoT and automotive devices,
-> i.MX 943 processors are built with NXP’s innovative Energy
-> Flex architecture.
+On Thu, Dec 12, 2024 at 05:46:09PM +0100, Lorenzo Pieralisi wrote:
+> On Tue, Dec 10, 2024 at 05:48:59PM -0500, Frank Li wrote:
+> > For the i.MX95, configuration of a LUT is necessary to convert Bus Device
+> > Function (BDF) to stream IDs, which are utilized by both IOMMU and ITS.
+> > This involves checking msi-map and iommu-map device tree properties to
+> > ensure consistent mapping of PCI BDF to the same stream IDs. Subsequently,
+> > LUT-related registers are configured. In the absence of an msi-map, the
+> > built-in MSI controller is utilized as a fallback.
+>
+> This is wrong information. What you want to say is that if an msi-map
+> isn't detected this means that the platform relies on DWC built-in
+> controller for MSIs (that does not need streamIDs handling).
+>
+> That's quite different from what you are writing here.
 
-wrap at 75 chars
+How about ?
+
+"If an msi-map isn't detected, platform relies on DWC built-in controller
+for MSIs that does not need streamdIDs"
 
 >
-> This patch adds the minimal dtsi support for i.MX943 with
-> peripherals like uart, edma, i2c, spi, mu, sai etc.
+> >
+> > Register a PCI bus callback function to handle enable_device() and
+> > disable_device() operations, setting up the LUT whenever a new PCI device
+> > is enabled.
+> >
+> > Acked-by: Richard Zhu <hongxing.zhu@nxp.com>
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Add the the minimal dtsi suppor ...
+[...]
+
+> > +	int err_i, err_m;
+> > +	u32 sid;
+> > +
+> > +	dev = imx_pcie->pci->dev;
+> > +
+> > +	target = NULL;
+> > +	err_i = of_map_id(dev->of_node, rid, "iommu-map", "iommu-map-mask", &target, &sid_i);
+> > +	if (target) {
+> > +		of_node_put(target);
+> > +	} else {
+> > +		/*
+> > +		 * "target == NULL && err_i == 0" means use 1:1 map RID to
+>
+> Is it what it means ? Or does it mean that the iommu-map property was found
+> and RID is out of range ?
+
+yes, if this happen, sid_i will be equal to RID.
 
 >
-> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx943-clock.h  |  196 +++
->  .../arm64/boot/dts/freescale/imx943-pinfunc.h | 1542 +++++++++++++++++
->  arch/arm64/boot/dts/freescale/imx943-power.h  |   41 +
->  arch/arm64/boot/dts/freescale/imx943.dtsi     | 1284 ++++++++++++++
->  4 files changed, 3063 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/freescale/imx943-clock.h
->  create mode 100644 arch/arm64/boot/dts/freescale/imx943-pinfunc.h
->  create mode 100644 arch/arm64/boot/dts/freescale/imx943-power.h
->  create mode 100644 arch/arm64/boot/dts/freescale/imx943.dtsi
+> Could you point me at a sample dts for this host bridge please ?
+
+https://github.com/nxp-imx/linux-imx/blob/lf-6.6.y/arch/arm64/boot/dts/freescale/imx95.dtsi
+
+/* 0x10~0x17 stream id for pci0 */
+   iommu-map = <0x000 &smmu 0x10 0x1>,
+               <0x100 &smmu 0x11 0x7>;
+
+/* msi part */
+   msi-map = <0x000 &its 0x10 0x1>,
+             <0x100 &its 0x11 0x7>;
+
 >
-> diff --git a/arch/arm64/boot/dts/freescale/imx943-clock.h b/arch/arm64/boot/dts/freescale/imx943-clock.h
-> new file mode 100644
-> index 000000000000..64b9d5d4051e
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx943-clock.h
-> @@ -0,0 +1,196 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only OR MIT */
-> +/*
-> + * Copyright 2024 NXP
-> + */
-> +
-> +#ifndef __CLOCK_IMX943_H
-> +#define __CLOCK_IMX943_H
-> +
-> +#define IMX943_CLK_EXT				0
-> +#define IMX943_CLK_OSC32K			1
-> +#define IMX943_CLK_OSC24M			2
-> +#define IMX943_CLK_FRO				3
-> +#define IMX943_CLK_SYSPLL1_VCO			4
-> +#define IMX943_CLK_SYSPLL1_PFD0_UNGATED		5
-> +#define IMX943_CLK_SYSPLL1_PFD0			6
-> +#define IMX943_CLK_SYSPLL1_PFD0_DIV2		7
-> +#define IMX943_CLK_SYSPLL1_PFD1_UNGATED		8
-> +#define IMX943_CLK_SYSPLL1_PFD1			9
-> +#define IMX943_CLK_SYSPLL1_PFD1_DIV2		10
-> +#define IMX943_CLK_SYSPLL1_PFD2_UNGATED		11
-> +#define IMX943_CLK_SYSPLL1_PFD2			12
-> +#define IMX943_CLK_SYSPLL1_PFD2_DIV2		13
-> +#define IMX943_CLK_AUDIOPLL1_VCO		14
-> +#define IMX943_CLK_AUDIOPLL1			15
-> +#define IMX943_CLK_AUDIOPLL2_VCO		16
-> +#define IMX943_CLK_AUDIOPLL2			17
-> +#define IMX943_CLK_RESERVED18			18
-> +#define IMX943_CLK_RESERVED19			19
-> +#define IMX943_CLK_RESERVED20			20
-> +#define IMX943_CLK_RESERVED21			21
-> +#define IMX943_CLK_RESERVED22			22
-> +#define IMX943_CLK_RESERVED23			23
-> +#define IMX943_CLK_ENCPLL_VCO			24
-> +#define IMX943_CLK_ENCPLL_PFD0_UGATED		25
-> +#define IMX943_CLK_ENCPLL_PFD0			26
-> +#define IMX943_CLK_ENCPLL_PFD1_UGATED		27
-> +#define IMX943_CLK_ENCPLL_PFD1			28
-> +#define IMX943_CLK_ARMPLL_VCO			29
-> +#define IMX943_CLK_ARMPLL_PFD0_UNGATED		30
-> +#define IMX943_CLK_ARMPLL_PFD0			31
-> +#define IMX943_CLK_ARMPLL_PFD1_UNGATED		32
-> +#define IMX943_CLK_ARMPLL_PFD1			33
-> +#define IMX943_CLK_ARMPLL_PFD2_UNGATED		34
-> +#define IMX943_CLK_ARMPLL_PFD2			35
-> +#define IMX943_CLK_ARMPLL_PFD3_UNGATED		36
-> +#define IMX943_CLK_ARMPLL_PFD3			37
-> +#define IMX943_CLK_DRAMPLL_VCO			38
-> +#define IMX943_CLK_DRAMPLL			39
-> +#define IMX943_CLK_HSIOPLL_VCO			40
-> +#define IMX943_CLK_HSIOPLL			41
-> +#define IMX943_CLK_LDBPLL_VCO			42
-> +#define IMX943_CLK_LDBPLL			43
-> +#define IMX943_CLK_EXT1				44
-> +#define IMX943_CLK_EXT2				45
-> +
-> +#define IMX943_CLK_NUM_SRC			46
-> +
-> +#define IMX943_CLK_ADC				(IMX943_CLK_NUM_SRC + 0)
-> +#define IMX943_CLK_BUS_AON			(IMX943_CLK_NUM_SRC + 1)
-> +#define IMX943_CLK_CAN1				(IMX943_CLK_NUM_SRC + 2)
-> +#define IMX943_CLK_GLITCHFILTER			(IMX943_CLK_NUM_SRC + 3)
-> +#define IMX943_CLK_GPT1				(IMX943_CLK_NUM_SRC + 4)
-> +#define IMX943_CLK_I3C1_SLOW			(IMX943_CLK_NUM_SRC + 5)
-> +#define IMX943_CLK_LPI2C1			(IMX943_CLK_NUM_SRC + 6)
-> +#define IMX943_CLK_LPI2C2			(IMX943_CLK_NUM_SRC + 7)
-> +#define IMX943_CLK_LPSPI1			(IMX943_CLK_NUM_SRC + 8)
-> +#define IMX943_CLK_LPSPI2			(IMX943_CLK_NUM_SRC + 9)
-> +#define IMX943_CLK_LPTMR1			(IMX943_CLK_NUM_SRC + 10)
-> +#define IMX943_CLK_LPUART1			(IMX943_CLK_NUM_SRC + 11)
-> +#define IMX943_CLK_LPUART2			(IMX943_CLK_NUM_SRC + 12)
-> +#define IMX943_CLK_M33				(IMX943_CLK_NUM_SRC + 13)
-> +#define IMX943_CLK_M33_SYSTICK			(IMX943_CLK_NUM_SRC + 14)
-> +#define IMX943_CLK_PDM				(IMX943_CLK_NUM_SRC + 15)
-> +#define IMX943_CLK_SAI1				(IMX943_CLK_NUM_SRC + 16)
-> +#define IMX943_CLK_TPM2				(IMX943_CLK_NUM_SRC + 17)
-> +#define IMX943_CLK_A55				(IMX943_CLK_NUM_SRC + 18)
-> +#define IMX943_CLK_A55_MTR_BUS			(IMX943_CLK_NUM_SRC + 19)
-> +#define IMX943_CLK_A55_PERIPH			(IMX943_CLK_NUM_SRC + 20)
-> +#define IMX943_CLK_DRAM_ALT			(IMX943_CLK_NUM_SRC + 21)
-> +#define IMX943_CLK_DRAM_APB			(IMX943_CLK_NUM_SRC + 22)
-> +#define IMX943_CLK_DISP_APB			(IMX943_CLK_NUM_SRC + 23)
-> +#define IMX943_CLK_DISP_AXI			(IMX943_CLK_NUM_SRC + 24)
-> +#define IMX943_CLK_DISP_PIX			(IMX943_CLK_NUM_SRC + 25)
-> +#define IMX943_CLK_HSIO_ACSCAN_480M		(IMX943_CLK_NUM_SRC + 26)
-> +#define IMX943_CLK_HSIO_ACSCAN_80M		(IMX943_CLK_NUM_SRC + 27)
-> +#define IMX943_CLK_HSIO				(IMX943_CLK_NUM_SRC + 28)
-> +#define IMX943_CLK_HSIO_PCIE_AUX		(IMX943_CLK_NUM_SRC + 29)
-> +#define IMX943_CLK_HSIO_PCIE_TEST_160M		(IMX943_CLK_NUM_SRC + 30)
-> +#define IMX943_CLK_HSIO_PCIE_TEST_400M		(IMX943_CLK_NUM_SRC + 31)
-> +#define IMX943_CLK_HSIO_PCIE_TEST_500M		(IMX943_CLK_NUM_SRC + 32)
-> +#define IMX943_CLK_HSIO_PCIE_TEST_50M		(IMX943_CLK_NUM_SRC + 33)
-> +#define IMX943_CLK_HSIO_USB_TEST_60M		(IMX943_CLK_NUM_SRC + 34)
-> +#define IMX943_CLK_BUS_M70			(IMX943_CLK_NUM_SRC + 35)
-> +#define IMX943_CLK_M70				(IMX943_CLK_NUM_SRC + 36)
-> +#define IMX943_CLK_M70_SYSTICK			(IMX943_CLK_NUM_SRC + 37)
-> +#define IMX943_CLK_BUS_M71			(IMX943_CLK_NUM_SRC + 38)
-> +#define IMX943_CLK_M71				(IMX943_CLK_NUM_SRC + 39)
-> +#define IMX943_CLK_M71_SYSTICK			(IMX943_CLK_NUM_SRC + 40)
-> +#define IMX943_CLK_NETCMIX_BUS_NETCMIX		(IMX943_CLK_NUM_SRC + 41)
-> +#define IMX943_CLK_ECAT				(IMX943_CLK_NUM_SRC + 42)
-> +#define IMX943_CLK_ENET				(IMX943_CLK_NUM_SRC + 43)
-> +#define IMX943_CLK_ENET_PHY_TEST_200M		(IMX943_CLK_NUM_SRC + 44)
-> +#define IMX943_CLK_ENET_PHY_TEST_500M		(IMX943_CLK_NUM_SRC + 45)
-> +#define IMX943_CLK_ENET_PHY_TEST_667M		(IMX943_CLK_NUM_SRC + 46)
-> +#define IMX943_CLK_ENET_REF			(IMX943_CLK_NUM_SRC + 47)
-> +#define IMX943_CLK_ENET_TIMER1			(IMX943_CLK_NUM_SRC + 48)
-> +#define IMX943_CLK_ENET_TIMER2			(IMX943_CLK_NUM_SRC + 49)
-> +#define IMX943_CLK_ENET_TIMER3			(IMX943_CLK_NUM_SRC + 50)
-> +#define IMX943_CLK_FLEXIO3			(IMX943_CLK_NUM_SRC + 51)
-> +#define IMX943_CLK_FLEXIO4			(IMX943_CLK_NUM_SRC + 52)
-> +#define IMX943_CLK_M33_SYNC			(IMX943_CLK_NUM_SRC + 53)
-> +#define IMX943_CLK_M33_SYNC_SYSTICK		(IMX943_CLK_NUM_SRC + 54)
-> +#define IMX943_CLK_MAC0				(IMX943_CLK_NUM_SRC + 55)
-> +#define IMX943_CLK_MAC1				(IMX943_CLK_NUM_SRC + 56)
-> +#define IMX943_CLK_MAC2				(IMX943_CLK_NUM_SRC + 57)
-> +#define IMX943_CLK_MAC3				(IMX943_CLK_NUM_SRC + 58)
-> +#define IMX943_CLK_MAC4				(IMX943_CLK_NUM_SRC + 59)
-> +#define IMX943_CLK_MAC5				(IMX943_CLK_NUM_SRC + 60)
-> +#define IMX943_CLK_NOC_APB			(IMX943_CLK_NUM_SRC + 61)
-> +#define IMX943_CLK_NOC				(IMX943_CLK_NUM_SRC + 62)
-> +#define IMX943_CLK_NPU_APB			(IMX943_CLK_NUM_SRC + 63)
-> +#define IMX943_CLK_NPU				(IMX943_CLK_NUM_SRC + 64)
-> +#define IMX943_CLK_CCM_CKO1			(IMX943_CLK_NUM_SRC + 65)
-> +#define IMX943_CLK_CCM_CKO2			(IMX943_CLK_NUM_SRC + 66)
-> +#define IMX943_CLK_CCM_CKO3			(IMX943_CLK_NUM_SRC + 67)
-> +#define IMX943_CLK_CCM_CKO4			(IMX943_CLK_NUM_SRC + 68)
-> +#define IMX943_CLK_BISS				(IMX943_CLK_NUM_SRC + 69)
-> +#define IMX943_CLK_BUS_WAKEUP			(IMX943_CLK_NUM_SRC + 70)
-> +#define IMX943_CLK_CAN2				(IMX943_CLK_NUM_SRC + 71)
-> +#define IMX943_CLK_CAN3				(IMX943_CLK_NUM_SRC + 72)
-> +#define IMX943_CLK_CAN4				(IMX943_CLK_NUM_SRC + 73)
-> +#define IMX943_CLK_CAN5				(IMX943_CLK_NUM_SRC + 74)
-> +#define IMX943_CLK_ENDAT2_1			(IMX943_CLK_NUM_SRC + 75)
-> +#define IMX943_CLK_ENDAT2_2			(IMX943_CLK_NUM_SRC + 76)
-> +#define IMX943_CLK_ENDAT3_1_FAST		(IMX943_CLK_NUM_SRC + 77)
-> +#define IMX943_CLK_ENDAT3_1_SLOW		(IMX943_CLK_NUM_SRC + 78)
-> +#define IMX943_CLK_FLEXIO1			(IMX943_CLK_NUM_SRC + 79)
-> +#define IMX943_CLK_FLEXIO2			(IMX943_CLK_NUM_SRC + 80)
-> +#define IMX943_CLK_GPT2				(IMX943_CLK_NUM_SRC + 81)
-> +#define IMX943_CLK_GPT3				(IMX943_CLK_NUM_SRC + 82)
-> +#define IMX943_CLK_GPT4				(IMX943_CLK_NUM_SRC + 83)
-> +#define IMX943_CLK_HIPERFACE1			(IMX943_CLK_NUM_SRC + 84)
-> +#define IMX943_CLK_HIPERFACE1_SYNC		(IMX943_CLK_NUM_SRC + 85)
-> +#define IMX943_CLK_HIPERFACE2			(IMX943_CLK_NUM_SRC + 86)
-> +#define IMX943_CLK_HIPERFACE2_SYNC		(IMX943_CLK_NUM_SRC + 87)
-> +#define IMX943_CLK_I3C2_SLOW			(IMX943_CLK_NUM_SRC + 88)
-> +#define IMX943_CLK_LPI2C3			(IMX943_CLK_NUM_SRC + 89)
-> +#define IMX943_CLK_LPI2C4			(IMX943_CLK_NUM_SRC + 90)
-> +#define IMX943_CLK_LPI2C5			(IMX943_CLK_NUM_SRC + 91)
-> +#define IMX943_CLK_LPI2C6			(IMX943_CLK_NUM_SRC + 92)
-> +#define IMX943_CLK_LPI2C7			(IMX943_CLK_NUM_SRC + 93)
-> +#define IMX943_CLK_LPI2C8			(IMX943_CLK_NUM_SRC + 94)
-> +#define IMX943_CLK_LPSPI3			(IMX943_CLK_NUM_SRC + 95)
-> +#define IMX943_CLK_LPSPI4			(IMX943_CLK_NUM_SRC + 96)
-> +#define IMX943_CLK_LPSPI5			(IMX943_CLK_NUM_SRC + 97)
-> +#define IMX943_CLK_LPSPI6			(IMX943_CLK_NUM_SRC + 98)
-> +#define IMX943_CLK_LPSPI7			(IMX943_CLK_NUM_SRC + 99)
-> +#define IMX943_CLK_LPSPI8			(IMX943_CLK_NUM_SRC + 100)
-> +#define IMX943_CLK_LPTMR2			(IMX943_CLK_NUM_SRC + 101)
-> +#define IMX943_CLK_LPUART10			(IMX943_CLK_NUM_SRC + 102)
-> +#define IMX943_CLK_LPUART11			(IMX943_CLK_NUM_SRC + 103)
-> +#define IMX943_CLK_LPUART12			(IMX943_CLK_NUM_SRC + 104)
-> +#define IMX943_CLK_LPUART3			(IMX943_CLK_NUM_SRC + 105)
-> +#define IMX943_CLK_LPUART4			(IMX943_CLK_NUM_SRC + 106)
-> +#define IMX943_CLK_LPUART5			(IMX943_CLK_NUM_SRC + 107)
-> +#define IMX943_CLK_LPUART6			(IMX943_CLK_NUM_SRC + 108)
-> +#define IMX943_CLK_LPUART7			(IMX943_CLK_NUM_SRC + 109)
-> +#define IMX943_CLK_LPUART8			(IMX943_CLK_NUM_SRC + 110)
-> +#define IMX943_CLK_LPUART9			(IMX943_CLK_NUM_SRC + 111)
-> +#define IMX943_CLK_SAI2				(IMX943_CLK_NUM_SRC + 112)
-> +#define IMX943_CLK_SAI3				(IMX943_CLK_NUM_SRC + 113)
-> +#define IMX943_CLK_SAI4				(IMX943_CLK_NUM_SRC + 114)
-> +#define IMX943_CLK_SWO_TRACE			(IMX943_CLK_NUM_SRC + 115)
-> +#define IMX943_CLK_TPM4				(IMX943_CLK_NUM_SRC + 116)
-> +#define IMX943_CLK_TPM5				(IMX943_CLK_NUM_SRC + 117)
-> +#define IMX943_CLK_TPM6				(IMX943_CLK_NUM_SRC + 118)
-> +#define IMX943_CLK_RESERVED119			(IMX943_CLK_NUM_SRC + 119)
-> +#define IMX943_CLK_USDHC1			(IMX943_CLK_NUM_SRC + 120)
-> +#define IMX943_CLK_USDHC2			(IMX943_CLK_NUM_SRC + 121)
-> +#define IMX943_CLK_USDHC3			(IMX943_CLK_NUM_SRC + 122)
-> +#define IMX943_CLK_V2X_PK			(IMX943_CLK_NUM_SRC + 123)
-> +#define IMX943_CLK_WAKEUP_AXI			(IMX943_CLK_NUM_SRC + 124)
-> +#define IMX943_CLK_XSPI_SLV_ROOT		(IMX943_CLK_NUM_SRC + 125)
-> +#define IMX943_CLK_XSPI1			(IMX943_CLK_NUM_SRC + 126)
-> +#define IMX943_CLK_XSPI2			(IMX943_CLK_NUM_SRC + 127)
-> +
-> +#define IMX943_CLK_EXT_GPR_SEL			(IMX943_CLK_NUM_SRC + 128)
-> +#define IMX943_CLK_A55C0_GPR_SEL		(IMX943_CLK_NUM_SRC + 129)
-> +#define IMX943_CLK_A55C1_GPR_SEL		(IMX943_CLK_NUM_SRC + 130)
-> +#define IMX943_CLK_A55C2_GPR_SEL		(IMX943_CLK_NUM_SRC + 131)
-> +#define IMX943_CLK_A55C3_GPR_SEL		(IMX943_CLK_NUM_SRC + 132)
-> +#define IMX943_CLK_A55P_GPR_SEL			(IMX943_CLK_NUM_SRC + 133)
-> +#define IMX943_CLK_DRAM_GPR_SEL			(IMX943_CLK_NUM_SRC + 134)
-> +#define IMX943_CLK_TEMPSENSE_GPR_SEL		(IMX943_CLK_NUM_SRC + 135)
-> +
-> +#endif /* __CLOCK_IMX943_H */
-> diff --git a/arch/arm64/boot/dts/freescale/imx943-pinfunc.h b/arch/arm64/boot/dts/freescale/imx943-pinfunc.h
-> new file mode 100644
-> index 000000000000..f042ddf81a1b
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx943-pinfunc.h
-> @@ -0,0 +1,1542 @@
-> +/* SPDX-License-Identifier: (GPL-2.0+ OR MIT) */
-> +/*
-> + * Copyright 2024 NXP
-> + */
-> +
-> +#ifndef __DTS_IMX943_PINFUNC_H
-> +#define __DTS_IMX943_PINFUNC_H
-> +
-> +/*
-> + * The pin function ID is a tuple of <mux_reg conf_reg input_reg mux_mode input_val>
-> + */
-> +#define IMX943_PAD_DAP_TDI__JTAG_MUX_TDI                     0x0000 0x0304 0x092C 0x00 0x00
-> +#define IMX943_PAD_DAP_TDI__MQS2_LEFT                        0x0000 0x0304 0x0000 0x01 0x00
-> +#define IMX943_PAD_DAP_TDI__ECAT_LED_ERR                     0x0000 0x0304 0x0000 0x02 0x00
-> +#define IMX943_PAD_DAP_TDI__CAN2_TX                          0x0000 0x0304 0x0000 0x03 0x00
-> +#define IMX943_PAD_DAP_TDI__SINC_FILTER_GLUE3_BREAK          0x0000 0x0304 0x0000 0x04 0x00
-> +#define IMX943_PAD_DAP_TDI__GPIO4_IO4                        0x0000 0x0304 0x0000 0x05 0x00
-> +#define IMX943_PAD_DAP_TDI__LPUART5_RX                       0x0000 0x0304 0x07BC 0x06 0x00
-> +#define IMX943_PAD_DAP_TDI__XBAR1_XBAR_INOUT26               0x0000 0x0304 0x0000 0x07 0x00
-
-low case for hex value. generate script should be fixed. imx91 have fix it.
-
-> +
-> +#define IMX943_PAD_DAP_TMS_SWDIO__JTAG_MUX_TMS               0x0004 0x0308 0x0930 0x00 0x00
-> +#define IMX943_PAD_DAP_TMS_SWDIO__CAN5_TX                    0x0004 0x0308 0x0000 0x01 0x00
-> +#define IMX943_PAD_DAP_TMS_SWDIO__GPT_MUX_INOUT10            0x0004 0x0308 0x0000 0x02 0x00
-> +#define IMX943_PAD_DAP_TMS_SWDIO__LPUART8_TX                 0x0004 0x0308 0x07DC 0x03 0x00
-> +#define IMX943_PAD_DAP_TMS_SWDIO__SINC3_MOD_CLK1             0x0004 0x0308 0x0000 0x04 0x00
-> +#define IMX943_PAD_DAP_TMS_SWDIO__GPIO4_IO5                  0x0004 0x0308 0x0000 0x05 0x00
-> +#define IMX943_PAD_DAP_TMS_SWDIO__LPUART5_RTS_B              0x0004 0x0308 0x0000 0x06 0x00
-> +#define IMX943_PAD_DAP_TMS_SWDIO__XBAR1_XBAR_INOUT27         0x0004 0x0308 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_DAP_TCLK_SWCLK__JTAG_MUX_TCK              0x0008 0x030C 0x0928 0x00 0x00
-> +#define IMX943_PAD_DAP_TCLK_SWCLK__CAN5_RX                   0x0008 0x030C 0x0688 0x01 0x00
-> +#define IMX943_PAD_DAP_TCLK_SWCLK__GPT_MUX_INOUT11           0x0008 0x030C 0x0000 0x02 0x00
-> +#define IMX943_PAD_DAP_TCLK_SWCLK__LPUART8_RX                0x0008 0x030C 0x07D8 0x03 0x00
-> +#define IMX943_PAD_DAP_TCLK_SWCLK__SINC3_MOD_CLK0            0x0008 0x030C 0x0000 0x04 0x00
-> +#define IMX943_PAD_DAP_TCLK_SWCLK__GPIO4_IO6                 0x0008 0x030C 0x0000 0x05 0x00
-> +#define IMX943_PAD_DAP_TCLK_SWCLK__LPUART5_CTS_B             0x0008 0x030C 0x07B8 0x06 0x00
-> +#define IMX943_PAD_DAP_TCLK_SWCLK__XBAR1_XBAR_INOUT28        0x0008 0x030C 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_DAP_TDO_TRACESWO__JTAG_MUX_TDO            0x000C 0x0310 0x0000 0x00 0x00
-> +#define IMX943_PAD_DAP_TDO_TRACESWO__MQS2_RIGHT              0x000C 0x0310 0x0000 0x01 0x00
-> +#define IMX943_PAD_DAP_TDO_TRACESWO__ECAT_RESET_OUT          0x000C 0x0310 0x0000 0x02 0x00
-> +#define IMX943_PAD_DAP_TDO_TRACESWO__CAN2_RX                 0x000C 0x0310 0x067C 0x03 0x00
-> +#define IMX943_PAD_DAP_TDO_TRACESWO__SINC3_MOD_CLK2          0x000C 0x0310 0x0000 0x04 0x00
-> +#define IMX943_PAD_DAP_TDO_TRACESWO__GPIO4_IO7               0x000C 0x0310 0x0000 0x05 0x00
-> +#define IMX943_PAD_DAP_TDO_TRACESWO__LPUART5_TX              0x000C 0x0310 0x07C0 0x06 0x00
-> +#define IMX943_PAD_DAP_TDO_TRACESWO__XBAR1_XBAR_INOUT29      0x000C 0x0310 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO00__GPIO2_IO0                      0x0010 0x0314 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO00__I3C2_PUR                       0x0010 0x0314 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO00__XBAR1_XBAR_INOUT39             0x0010 0x0314 0x08D4 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO00__I3C2_PUR_B                     0x0010 0x0314 0x0000 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO00__LPSPI6_PCS0                    0x0010 0x0314 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO00__LPUART5_TX                     0x0010 0x0314 0x07C0 0x05 0x01
-> +#define IMX943_PAD_GPIO_IO00__LPI2C5_SDA                     0x0010 0x0314 0x0740 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO00__FLEXIO1_FLEXIO0                0x0010 0x0314 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO01__GPIO2_IO1                      0x0014 0x0318 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO01__I3C2_SCL                       0x0014 0x0318 0x0720 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO01__XBAR1_XBAR_INOUT40             0x0014 0x0318 0x08D8 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO01__EWM_OUT_B                      0x0014 0x0318 0x0000 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO01__LPSPI6_SIN                     0x0014 0x0318 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO01__LPUART5_RX                     0x0014 0x0318 0x07BC 0x05 0x01
-> +#define IMX943_PAD_GPIO_IO01__LPI2C5_SCL                     0x0014 0x0318 0x073C 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO01__FLEXIO1_FLEXIO1                0x0014 0x0318 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO02__GPIO2_IO2                      0x0018 0x031C 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO02__I3C2_SDA                       0x0018 0x031C 0x0724 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO02__XBAR1_XBAR_INOUT41             0x0018 0x031C 0x08DC 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO02__GPT_MUX_INOUT1                 0x0018 0x031C 0x0700 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO02__LPSPI6_SOUT                    0x0018 0x031C 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO02__LPUART5_CTS_B                  0x0018 0x031C 0x07B8 0x05 0x01
-> +#define IMX943_PAD_GPIO_IO02__LPI2C6_SDA                     0x0018 0x031C 0x074C 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO02__FLEXIO1_FLEXIO2                0x0018 0x031C 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO03__GPIO2_IO3                      0x001C 0x0320 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO03__EWM_OUT_B                      0x001C 0x0320 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO03__XBAR1_XBAR_INOUT42             0x001C 0x0320 0x08E0 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO03__GPT_MUX_INOUT4                 0x001C 0x0320 0x0708 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO03__LPSPI6_SCK                     0x001C 0x0320 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO03__LPUART5_RTS_B                  0x001C 0x0320 0x0000 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO03__LPI2C6_SCL                     0x001C 0x0320 0x0748 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO03__FLEXIO1_FLEXIO3                0x001C 0x0320 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO04__GPIO2_IO4                      0x0020 0x0324 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO04__TPM3_CH0                       0x0020 0x0324 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO04__PDM_CLK                        0x0020 0x0324 0x0000 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO04__GPT_MUX_INOUT5                 0x0020 0x0324 0x070C 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO04__LPSPI7_PCS0                    0x0020 0x0324 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO04__LPUART6_TX                     0x0020 0x0324 0x07CC 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO04__LPI2C6_SDA                     0x0020 0x0324 0x074C 0x06 0x01
-> +#define IMX943_PAD_GPIO_IO04__FLEXIO1_FLEXIO4                0x0020 0x0324 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO05__GPIO2_IO5                      0x0024 0x0328 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO05__TPM4_CH0                       0x0024 0x0328 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO05__PDM_BIT_STREAM0                0x0024 0x0328 0x0610 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO05__GPT_MUX_INOUT7                 0x0024 0x0328 0x0714 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO05__LPSPI7_SIN                     0x0024 0x0328 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO05__LPUART6_RX                     0x0024 0x0328 0x07C8 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO05__LPI2C6_SCL                     0x0024 0x0328 0x0748 0x06 0x01
-> +#define IMX943_PAD_GPIO_IO05__FLEXIO1_FLEXIO5                0x0024 0x0328 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO06__GPIO2_IO6                      0x0028 0x032C 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO06__TPM5_CH0                       0x0028 0x032C 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO06__PDM_BIT_STREAM1                0x0028 0x032C 0x0614 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO06__GPT_MUX_INOUT8                 0x0028 0x032C 0x0718 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO06__LPSPI7_SOUT                    0x0028 0x032C 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO06__LPUART6_CTS_B                  0x0028 0x032C 0x07C4 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO06__LPI2C7_SDA                     0x0028 0x032C 0x0754 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO06__FLEXIO1_FLEXIO6                0x0028 0x032C 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO07__GPIO2_IO7                      0x002C 0x0330 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO07__LPSPI3_PCS1                    0x002C 0x0330 0x0768 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO07__XBAR1_XBAR_INOUT43             0x002C 0x0330 0x08E4 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO07__GPT_MUX_INOUT3                 0x002C 0x0330 0x0704 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO07__LPSPI7_SCK                     0x002C 0x0330 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO07__LPUART6_RTS_B                  0x002C 0x0330 0x0000 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO07__LPI2C7_SCL                     0x002C 0x0330 0x0750 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO07__FLEXIO1_FLEXIO7                0x002C 0x0330 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO08__GPIO2_IO8                      0x0030 0x0334 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO08__LPSPI3_PCS0                    0x0030 0x0334 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO08__USDHC2_WP                      0x0030 0x0334 0x0854 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO08__GPT_MUX_INOUT2                 0x0030 0x0334 0x0000 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO08__TPM6_CH0                       0x0030 0x0334 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO08__LPUART7_TX                     0x0030 0x0334 0x07D4 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO08__LPI2C7_SDA                     0x0030 0x0334 0x0754 0x06 0x01
-> +#define IMX943_PAD_GPIO_IO08__FLEXIO1_FLEXIO8                0x0030 0x0334 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO09__GPIO2_IO9                      0x0034 0x0338 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO09__LPSPI3_SIN                     0x0034 0x0338 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO09__XBAR1_XBAR_INOUT44             0x0034 0x0338 0x08E8 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO09__GPT_MUX_INOUT0                 0x0034 0x0338 0x06FC 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO09__TPM3_EXTCLK                    0x0034 0x0338 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO09__LPUART7_RX                     0x0034 0x0338 0x07D0 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO09__LPI2C7_SCL                     0x0034 0x0338 0x0750 0x06 0x01
-> +#define IMX943_PAD_GPIO_IO09__FLEXIO1_FLEXIO9                0x0034 0x0338 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO10__GPIO2_IO10                     0x0038 0x033C 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO10__LPSPI3_SOUT                    0x0038 0x033C 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO10__XBAR1_XBAR_INOUT45             0x0038 0x033C 0x08EC 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO10__GPT_MUX_INOUT6                 0x0038 0x033C 0x0710 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO10__TPM4_EXTCLK                    0x0038 0x033C 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO10__LPUART7_CTS_B                  0x0038 0x033C 0x0000 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO10__LPI2C8_SDA                     0x0038 0x033C 0x075C 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO10__FLEXIO1_FLEXIO10               0x0038 0x033C 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO11__GPIO2_IO11                     0x003C 0x0340 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO11__LPSPI3_SCK                     0x003C 0x0340 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO11__XBAR1_XBAR_INOUT46             0x003C 0x0340 0x08F0 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO11__GPT_MUX_INOUT9                 0x003C 0x0340 0x071C 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO11__TPM5_EXTCLK                    0x003C 0x0340 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO11__LPUART7_RTS_B                  0x003C 0x0340 0x0000 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO11__LPI2C8_SCL                     0x003C 0x0340 0x0758 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO11__FLEXIO1_FLEXIO11               0x003C 0x0340 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO12__GPIO2_IO12                     0x0040 0x0344 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO12__TPM3_CH2                       0x0040 0x0344 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO12__PDM_BIT_STREAM2                0x0040 0x0344 0x0618 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO12__FLEXIO1_FLEXIO12               0x0040 0x0344 0x0000 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO12__LPSPI8_PCS0                    0x0040 0x0344 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO12__LPUART8_TX                     0x0040 0x0344 0x07DC 0x05 0x01
-> +#define IMX943_PAD_GPIO_IO12__LPI2C8_SDA                     0x0040 0x0344 0x075C 0x06 0x01
-> +
-> +#define IMX943_PAD_GPIO_IO13__GPIO2_IO13                     0x0044 0x0348 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO13__TPM4_CH2                       0x0044 0x0348 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO13__PDM_BIT_STREAM3                0x0044 0x0348 0x061C 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO13__XBAR1_XBAR_INOUT47             0x0044 0x0348 0x08F4 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO13__LPSPI8_SIN                     0x0044 0x0348 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO13__LPUART8_RX                     0x0044 0x0348 0x07D8 0x05 0x01
-> +#define IMX943_PAD_GPIO_IO13__LPI2C8_SCL                     0x0044 0x0348 0x0758 0x06 0x01
-> +#define IMX943_PAD_GPIO_IO13__FLEXIO1_FLEXIO13               0x0044 0x0348 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO14__GPIO2_IO14                     0x0048 0x034C 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO14__LPUART10_CTS_B                 0x0048 0x034C 0x078C 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO14__ECAT_SDA                       0x0048 0x034C 0x062C 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO14__XBAR1_XBAR_INOUT48             0x0048 0x034C 0x08F8 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO14__LPSPI8_SOUT                    0x0048 0x034C 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO14__LPUART8_CTS_B                  0x0048 0x034C 0x0000 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO14__LPUART4_TX                     0x0048 0x034C 0x07B4 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO14__FLEXIO1_FLEXIO14               0x0048 0x034C 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO15__GPIO2_IO15                     0x004C 0x0350 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO15__LPUART10_RTS_B                 0x004C 0x0350 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO15__ECAT_SCL                       0x004C 0x0350 0x0000 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO15__XBAR1_XBAR_INOUT8              0x004C 0x0350 0x087C 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO15__LPSPI8_SCK                     0x004C 0x0350 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO15__LPUART8_RTS_B                  0x004C 0x0350 0x0000 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO15__LPUART4_RX                     0x004C 0x0350 0x07B0 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO15__FLEXIO1_FLEXIO15               0x004C 0x0350 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO16__GPIO2_IO16                     0x0050 0x0354 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO16__LPI2C3_SDA                     0x0050 0x0354 0x0730 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO16__CAN3_TX                        0x0050 0x0354 0x0000 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO16__EWM_OUT_B                      0x0050 0x0354 0x0000 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO16__LPUART11_TX                    0x0050 0x0354 0x079C 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO16__GPT_MUX_INOUT0                 0x0050 0x0354 0x06FC 0x05 0x01
-> +#define IMX943_PAD_GPIO_IO16__FLEXPWM4_PWMA0                 0x0050 0x0354 0x06D4 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO16__XBAR1_XBAR_INOUT30             0x0050 0x0354 0x08B0 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO17__GPIO2_IO17                     0x0054 0x0358 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO17__LPI2C3_SCL                     0x0054 0x0358 0x072C 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO17__CAN3_RX                        0x0054 0x0358 0x0680 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO17__LPI2C6_HREQ                    0x0054 0x0358 0x0744 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO17__LPUART11_RX                    0x0054 0x0358 0x0798 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO17__GPT_MUX_INOUT3                 0x0054 0x0358 0x0704 0x05 0x01
-> +#define IMX943_PAD_GPIO_IO17__FLEXPWM4_PWMB0                 0x0054 0x0358 0x06E4 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO17__XBAR1_XBAR_INOUT31             0x0054 0x0358 0x08B4 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO18__GPIO2_IO18                     0x0058 0x035C 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO18__LPI2C4_SDA                     0x0058 0x035C 0x0738 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO18__LPUART10_TX                    0x0058 0x035C 0x0794 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO18__LPI2C7_HREQ                    0x0058 0x035C 0x0000 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO18__LPUART11_CTS_B                 0x0058 0x035C 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO18__GPT_MUX_INOUT6                 0x0058 0x035C 0x0710 0x05 0x01
-> +#define IMX943_PAD_GPIO_IO18__FLEXPWM4_PWMA1                 0x0058 0x035C 0x06D8 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO18__XBAR1_XBAR_INOUT32             0x0058 0x035C 0x08B8 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO19__GPIO2_IO19                     0x005C 0x0360 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO19__LPI2C4_SCL                     0x005C 0x0360 0x0734 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO19__LPUART10_RX                    0x005C 0x0360 0x0790 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO19__LPI2C8_HREQ                    0x005C 0x0360 0x0000 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO19__LPUART11_RTS_B                 0x005C 0x0360 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO19__GPT_MUX_INOUT9                 0x005C 0x0360 0x071C 0x05 0x01
-> +#define IMX943_PAD_GPIO_IO19__FLEXPWM4_PWMB1                 0x005C 0x0360 0x06E8 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO19__XBAR1_XBAR_INOUT33             0x005C 0x0360 0x08BC 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO20__GPIO2_IO20                     0x0060 0x0364 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO20__PCIE1_CLKREQ_B                 0x0060 0x0364 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO20__LPUART6_TX                     0x0060 0x0364 0x07CC 0x02 0x01
-> +#define IMX943_PAD_GPIO_IO20__LPI2C8_SDA                     0x0060 0x0364 0x075C 0x03 0x02
-> +#define IMX943_PAD_GPIO_IO20__LPSPI4_PCS2                    0x0060 0x0364 0x076C 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO20__LPSPI3_PCS1                    0x0060 0x0364 0x0768 0x05 0x01
-> +#define IMX943_PAD_GPIO_IO20__FLEXPWM4_PWMA2                 0x0060 0x0364 0x06DC 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO20__XBAR1_XBAR_INOUT34             0x0060 0x0364 0x08C0 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO21__GPIO2_IO21                     0x0064 0x0368 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO21__SAI2_TX_BCLK                   0x0064 0x0368 0x07F8 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO21__LPUART6_RX                     0x0064 0x0368 0x07C8 0x02 0x01
-> +#define IMX943_PAD_GPIO_IO21__LPI2C8_SCL                     0x0064 0x0368 0x0758 0x03 0x02
-> +#define IMX943_PAD_GPIO_IO21__LPSPI4_PCS1                    0x0064 0x0368 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO21__LPI2C3_HREQ                    0x0064 0x0368 0x0728 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO21__FLEXPWM4_PWMB2                 0x0064 0x0368 0x06EC 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO21__XBAR1_XBAR_INOUT35             0x0064 0x0368 0x08C4 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO22__GPIO2_IO22                     0x0068 0x036C 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO22__SAI2_MCLK                      0x0068 0x036C 0x07E8 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO22__LPUART6_CTS_B                  0x0068 0x036C 0x07C4 0x02 0x01
-> +#define IMX943_PAD_GPIO_IO22__XBAR1_XBAR_INOUT9              0x0068 0x036C 0x0880 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO22__LPSPI4_PCS0                    0x0068 0x036C 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO22__FLEXPWM3_PWMA3                 0x0068 0x036C 0x06B4 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO22__FLEXPWM4_PWMA3                 0x0068 0x036C 0x06E0 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO22__SINC4_EMCLK0                   0x0068 0x036C 0x082C 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO23__GPIO2_IO23                     0x006C 0x0370 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO23__PCIE2_CLKREQ_B                 0x006C 0x0370 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO23__LPUART6_RTS_B                  0x006C 0x0370 0x0000 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO23__XBAR1_XBAR_INOUT10             0x006C 0x0370 0x0884 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO23__LPSPI4_SIN                     0x006C 0x0370 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO23__FLEXPWM3_PWMB3                 0x006C 0x0370 0x06C4 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO23__FLEXPWM4_PWMB3                 0x006C 0x0370 0x06F0 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO23__SINC4_EMBIT0                   0x006C 0x0370 0x0820 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO24__GPIO2_IO24                     0x0070 0x0374 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO24__SAI2_RX_BCLK                   0x0070 0x0374 0x07EC 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO24__LPUART11_TX                    0x0070 0x0374 0x079C 0x02 0x01
-> +#define IMX943_PAD_GPIO_IO24__LPI2C3_HREQ                    0x0070 0x0374 0x0728 0x03 0x01
-> +#define IMX943_PAD_GPIO_IO24__LPSPI4_SOUT                    0x0070 0x0374 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO24__SINC_FILTER_GLUE2_BREAK        0x0070 0x0374 0x0000 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO24__FLEXPWM4_PWMX0                 0x0070 0x0374 0x06F4 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO24__XBAR1_XBAR_INOUT36             0x0070 0x0374 0x08C8 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO25__GPIO2_IO25                     0x0074 0x0378 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO25__SAI2_RX_SYNC                   0x0074 0x0378 0x07F4 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO25__LPUART11_RX                    0x0074 0x0378 0x0798 0x02 0x01
-> +#define IMX943_PAD_GPIO_IO25__LPI2C4_HREQ                    0x0074 0x0378 0x0000 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO25__LPSPI4_SCK                     0x0074 0x0378 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO25__SINC_FILTER_GLUE1_BREAK        0x0074 0x0378 0x0000 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO25__FLEXPWM4_PWMX1                 0x0074 0x0378 0x06F8 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO25__XBAR1_XBAR_INOUT37             0x0074 0x0378 0x08CC 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO26__GPIO2_IO26                     0x0078 0x037C 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO26__LPI2C5_SCL                     0x0078 0x037C 0x073C 0x01 0x01
-> +#define IMX943_PAD_GPIO_IO26__LPUART12_TX                    0x0078 0x037C 0x0000 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO26__GPT_MUX_INOUT4                 0x0078 0x037C 0x0708 0x03 0x01
-> +#define IMX943_PAD_GPIO_IO26__FLEXIO1_3_1_FLEXIO0            0x0078 0x037C 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO26__SAI2_RX_DATA0                  0x0078 0x037C 0x07F0 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO26__FLEXPWM4_PWMX2                 0x0078 0x037C 0x0000 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO26__XBAR1_XBAR_INOUT38             0x0078 0x037C 0x08D0 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO27__GPIO2_IO27                     0x007C 0x0380 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO27__LPI2C5_SDA                     0x007C 0x0380 0x0740 0x01 0x01
-> +#define IMX943_PAD_GPIO_IO27__LPUART12_RX                    0x007C 0x0380 0x0000 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO27__GPT_MUX_INOUT5                 0x007C 0x0380 0x070C 0x03 0x01
-> +#define IMX943_PAD_GPIO_IO27__FLEXIO1_3_1_FLEXIO1            0x007C 0x0380 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO27__SAI2_TX_DATA0                  0x007C 0x0380 0x0000 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO27__FLEXPWM4_PWMX3                 0x007C 0x0380 0x0000 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO27__SINC4_MOD_CLK0                 0x007C 0x0380 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO28__GPIO2_IO28                     0x0080 0x0384 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO28__LPI2C6_SCL                     0x0080 0x0384 0x0748 0x01 0x02
-> +#define IMX943_PAD_GPIO_IO28__LPUART12_CTS_B                 0x0080 0x0384 0x0000 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO28__GPT_MUX_INOUT7                 0x0080 0x0384 0x0714 0x03 0x01
-> +#define IMX943_PAD_GPIO_IO28__FLEXIO1_3_1_FLEXIO2            0x0080 0x0384 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO28__SAI2_TX_SYNC                   0x0080 0x0384 0x07FC 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO28__FLEXPWM1_PWMX2                 0x0080 0x0384 0x0000 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO28__XBAR1_XBAR_INOUT4              0x0080 0x0384 0x086C 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO29__GPIO2_IO29                     0x0084 0x0388 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO29__LPI2C6_SDA                     0x0084 0x0388 0x074C 0x01 0x02
-> +#define IMX943_PAD_GPIO_IO29__LPUART12_RTS_B                 0x0084 0x0388 0x0000 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO29__I3C2_SDA                       0x0084 0x0388 0x0724 0x03 0x01
-> +#define IMX943_PAD_GPIO_IO29__FLEXIO1_3_1_FLEXIO3            0x0084 0x0388 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO29__FLEXPWM3_PWMX0                 0x0084 0x0388 0x06C8 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO29__FLEXPWM1_PWMX3                 0x0084 0x0388 0x0000 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO29__XBAR1_XBAR_INOUT5              0x0084 0x0388 0x0870 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO30__GPIO2_IO30                     0x0088 0x038C 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO30__LPIT2_TRIGGER0                 0x0088 0x038C 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO30__LPUART3_TX                     0x0088 0x038C 0x07A8 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO30__I3C2_PUR                       0x0088 0x038C 0x0000 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO30__FLEXIO1_3_1_FLEXIO4            0x0088 0x038C 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO30__I3C2_PUR_B                     0x0088 0x038C 0x0000 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO30__FLEXPWM2_PWMX2                 0x0088 0x038C 0x0000 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO30__XBAR1_XBAR_INOUT6              0x0088 0x038C 0x0874 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO31__GPIO2_IO31                     0x008C 0x0390 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO31__LPIT2_TRIGGER1                 0x008C 0x0390 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO31__LPUART3_RX                     0x008C 0x0390 0x07A4 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO31__I3C2_SCL                       0x008C 0x0390 0x0720 0x03 0x01
-> +#define IMX943_PAD_GPIO_IO31__FLEXIO1_3_1_FLEXIO5            0x008C 0x0390 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO31__FLEXPWM3_PWMX1                 0x008C 0x0390 0x06CC 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO31__FLEXPWM2_PWMX3                 0x008C 0x0390 0x0000 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO31__XBAR1_XBAR_INOUT7              0x008C 0x0390 0x0878 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO32__GPIO3_IO0                      0x0090 0x0394 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO32__LPIT3_TRIGGER0                 0x0090 0x0394 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO32__LPUART7_TX                     0x0090 0x0394 0x07D4 0x02 0x01
-> +#define IMX943_PAD_GPIO_IO32__GPT_MUX_INOUT8                 0x0090 0x0394 0x0718 0x03 0x01
-> +#define IMX943_PAD_GPIO_IO32__FLEXIO1_3_1_FLEXIO6            0x0090 0x0394 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO32__FLEXPWM3_PWMA0                 0x0090 0x0394 0x06A8 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO32__SINC_FILTER_GLUE2_BREAK        0x0090 0x0394 0x0000 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO32__XBAR1_XBAR_INOUT8              0x0090 0x0394 0x087C 0x07 0x01
-> +
-> +#define IMX943_PAD_GPIO_IO33__GPIO3_IO1                      0x0094 0x0398 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO33__LPIT3_TRIGGER1                 0x0094 0x0398 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO33__LPUART7_RX                     0x0094 0x0398 0x07D0 0x02 0x01
-> +#define IMX943_PAD_GPIO_IO33__GPT_MUX_INOUT1                 0x0094 0x0398 0x0700 0x03 0x01
-> +#define IMX943_PAD_GPIO_IO33__FLEXIO1_3_1_FLEXIO7            0x0094 0x0398 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO33__FLEXPWM3_PWMB0                 0x0094 0x0398 0x06B8 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO33__SINC_FILTER_GLUE1_BREAK        0x0094 0x0398 0x0000 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO33__XBAR1_XBAR_INOUT9              0x0094 0x0398 0x0880 0x07 0x01
-> +
-> +#define IMX943_PAD_GPIO_IO34__GPIO3_IO2                      0x0098 0x039C 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO34__LPI2C7_SDA                     0x0098 0x039C 0x0754 0x01 0x02
-> +#define IMX943_PAD_GPIO_IO34__CAN2_TX                        0x0098 0x039C 0x0000 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO34__ECAT_SDA                       0x0098 0x039C 0x062C 0x03 0x01
-> +#define IMX943_PAD_GPIO_IO34__FLEXIO1_3_1_FLEXIO8            0x0098 0x039C 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO34__FLEXPWM3_PWMA1                 0x0098 0x039C 0x06AC 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO34__FLEXPWM1_PWMX0                 0x0098 0x039C 0x0698 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO34__XBAR1_XBAR_INOUT10             0x0098 0x039C 0x0884 0x07 0x01
-> +
-> +#define IMX943_PAD_GPIO_IO35__GPIO3_IO3                      0x009C 0x03A0 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO35__LPI2C7_SCL                     0x009C 0x03A0 0x0750 0x01 0x02
-> +#define IMX943_PAD_GPIO_IO35__CAN2_RX                        0x009C 0x03A0 0x067C 0x02 0x01
-> +#define IMX943_PAD_GPIO_IO35__ECAT_SCL                       0x009C 0x03A0 0x0000 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO35__FLEXIO1_3_1_FLEXIO9            0x009C 0x03A0 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO35__FLEXPWM3_PWMB1                 0x009C 0x03A0 0x06BC 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO35__FLEXPWM1_PWMX1                 0x009C 0x03A0 0x069C 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO35__XBAR1_XBAR_INOUT11             0x009C 0x03A0 0x0888 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO36__USDHC2_WP                      0x00A0 0x03A4 0x0854 0x03 0x01
-> +#define IMX943_PAD_GPIO_IO36__FLEXIO1_3_1_FLEXIO10           0x00A0 0x03A4 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO36__FLEXPWM3_PWMA2                 0x00A0 0x03A4 0x06B0 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO36__FLEXPWM2_PWMX0                 0x00A0 0x03A4 0x06A0 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO36__XBAR1_XBAR_INOUT12             0x00A0 0x03A4 0x088C 0x07 0x00
-> +#define IMX943_PAD_GPIO_IO36__GPIO3_IO4                      0x00A0 0x03A4 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO36__LPI2C8_SDA                     0x00A0 0x03A4 0x075C 0x01 0x03
-> +#define IMX943_PAD_GPIO_IO36__CAN4_TX                        0x00A0 0x03A4 0x0000 0x02 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO37__GPIO3_IO5                      0x00A4 0x03A8 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO37__LPI2C8_SCL                     0x00A4 0x03A8 0x0758 0x01 0x03
-> +#define IMX943_PAD_GPIO_IO37__CAN4_RX                        0x00A4 0x03A8 0x0684 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO37__LPI2C5_HREQ                    0x00A4 0x03A8 0x0000 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO37__FLEXIO1_3_1_FLEXIO11           0x00A4 0x03A8 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO37__FLEXPWM3_PWMB2                 0x00A4 0x03A8 0x06C0 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO37__FLEXPWM2_PWMX1                 0x00A4 0x03A8 0x06A4 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO37__XBAR1_XBAR_INOUT13             0x00A4 0x03A8 0x0890 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO38__GPIO3_IO6                      0x00A8 0x03AC 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO38__NETC_1588MUX_INOUT0            0x00A8 0x03AC 0x064C 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO38__LPI2C3_SDA                     0x00A8 0x03AC 0x0730 0x02 0x01
-> +#define IMX943_PAD_GPIO_IO38__LPIT3_TRIGGER2                 0x00A8 0x03AC 0x0764 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO38__FLEXIO1_3_1_FLEXIO12           0x00A8 0x03AC 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO38__LPUART3_CTS_B                  0x00A8 0x03AC 0x07A0 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO38__FLEXPWM3_PWMX0                 0x00A8 0x03AC 0x06C8 0x06 0x01
-> +#define IMX943_PAD_GPIO_IO38__XBAR1_XBAR_INOUT14             0x00A8 0x03AC 0x0894 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO39__GPIO3_IO7                      0x00AC 0x03B0 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO39__NETC_1588MUX_INOUT1            0x00AC 0x03B0 0x0650 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO39__LPI2C3_SCL                     0x00AC 0x03B0 0x072C 0x02 0x01
-> +#define IMX943_PAD_GPIO_IO39__LPIT2_TRIGGER2                 0x00AC 0x03B0 0x0760 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO39__FLEXIO1_3_1_FLEXIO13           0x00AC 0x03B0 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO39__LPUART3_RTS_B                  0x00AC 0x03B0 0x0000 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO39__FLEXPWM3_PWMX1                 0x00AC 0x03B0 0x06CC 0x06 0x01
-> +#define IMX943_PAD_GPIO_IO39__XBAR1_XBAR_INOUT15             0x00AC 0x03B0 0x0898 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO40__GPIO3_IO8                      0x00B0 0x03B4 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO40__NETC_1588MUX_INOUT2            0x00B0 0x03B4 0x0654 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO40__LPI2C7_SDA                     0x00B0 0x03B4 0x0754 0x02 0x03
-> +#define IMX943_PAD_GPIO_IO40__LPUART4_TX                     0x00B0 0x03B4 0x07B4 0x03 0x01
-> +#define IMX943_PAD_GPIO_IO40__FLEXIO1_3_1_FLEXIO14           0x00B0 0x03B4 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO40__FLEXPWM3_PWMX2                 0x00B0 0x03B4 0x06D0 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO40__FLEXPWM4_PWMX0                 0x00B0 0x03B4 0x06F4 0x06 0x01
-> +#define IMX943_PAD_GPIO_IO40__XBAR1_XBAR_INOUT16             0x00B0 0x03B4 0x089C 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO41__GPIO3_IO9                      0x00B4 0x03B8 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO41__NETC_1588MUX_INOUT3            0x00B4 0x03B8 0x0658 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO41__LPI2C7_SCL                     0x00B4 0x03B8 0x0750 0x02 0x03
-> +#define IMX943_PAD_GPIO_IO41__LPUART4_RX                     0x00B4 0x03B8 0x07B0 0x03 0x01
-> +#define IMX943_PAD_GPIO_IO41__FLEXIO1_3_1_FLEXIO15           0x00B4 0x03B8 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO41__LPI2C6_HREQ                    0x00B4 0x03B8 0x0744 0x05 0x01
-> +#define IMX943_PAD_GPIO_IO41__FLEXPWM4_PWMX1                 0x00B4 0x03B8 0x06F8 0x06 0x01
-> +#define IMX943_PAD_GPIO_IO41__XBAR1_XBAR_INOUT17             0x00B4 0x03B8 0x08A0 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO42__GPIO3_IO10                     0x00B8 0x03BC 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO42__SAI3_TX_BCLK                   0x00B8 0x03BC 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO42__PDM_BIT_STREAM2                0x00B8 0x03BC 0x0618 0x02 0x01
-> +#define IMX943_PAD_GPIO_IO42__XBAR1_XBAR_INOUT11             0x00B8 0x03BC 0x0888 0x03 0x01
-> +#define IMX943_PAD_GPIO_IO42__LPUART3_TX                     0x00B8 0x03BC 0x07A8 0x04 0x01
-> +#define IMX943_PAD_GPIO_IO42__LPSPI4_PCS2                    0x00B8 0x03BC 0x076C 0x05 0x01
-> +#define IMX943_PAD_GPIO_IO42__LPUART4_CTS_B                  0x00B8 0x03BC 0x07AC 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO42__SINC4_EMCLK1                   0x00B8 0x03BC 0x0830 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO43__GPIO3_IO11                     0x00BC 0x03C0 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO43__SAI3_MCLK                      0x00BC 0x03C0 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO43__XBAR1_XBAR_INOUT12             0x00BC 0x03C0 0x088C 0x03 0x01
-> +#define IMX943_PAD_GPIO_IO43__LPUART3_RX                     0x00BC 0x03C0 0x07A4 0x04 0x01
-> +#define IMX943_PAD_GPIO_IO43__LPSPI3_PCS1                    0x00BC 0x03C0 0x0768 0x05 0x02
-> +#define IMX943_PAD_GPIO_IO43__LPUART4_RTS_B                  0x00BC 0x03C0 0x0000 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO43__SINC4_EMBIT1                   0x00BC 0x03C0 0x0824 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO44__GPIO3_IO12                     0x00C0 0x03C4 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO44__SAI3_RX_BCLK                   0x00C0 0x03C4 0x0800 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO44__PDM_BIT_STREAM1                0x00C0 0x03C4 0x0614 0x02 0x01
-> +#define IMX943_PAD_GPIO_IO44__LPUART9_TX                     0x00C0 0x03C4 0x07E4 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO44__LPSPI5_PCS0                    0x00C0 0x03C4 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO44__LPI2C3_SDA                     0x00C0 0x03C4 0x0730 0x05 0x02
-> +#define IMX943_PAD_GPIO_IO44__TPM5_CH2                       0x00C0 0x03C4 0x0000 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO44__SINC_FILTER_GLUE4_BREAK        0x00C0 0x03C4 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO45__GPIO3_IO13                     0x00C4 0x03C8 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO45__SAI3_RX_SYNC                   0x00C4 0x03C8 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO45__PDM_BIT_STREAM3                0x00C4 0x03C8 0x061C 0x02 0x01
-> +#define IMX943_PAD_GPIO_IO45__LPUART9_RX                     0x00C4 0x03C8 0x07E0 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO45__LPSPI5_SIN                     0x00C4 0x03C8 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO45__LPI2C3_SCL                     0x00C4 0x03C8 0x072C 0x05 0x02
-> +#define IMX943_PAD_GPIO_IO45__TPM6_CH2                       0x00C4 0x03C8 0x0000 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO45__SAI3_TX_DATA0                  0x00C4 0x03C8 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO46__GPIO3_IO14                     0x00C8 0x03CC 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO46__SAI3_RX_DATA0                  0x00C8 0x03CC 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO46__PDM_BIT_STREAM0                0x00C8 0x03CC 0x0610 0x02 0x01
-> +#define IMX943_PAD_GPIO_IO46__LPUART9_CTS_B                  0x00C8 0x03CC 0x0000 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO46__LPSPI5_SOUT                    0x00C8 0x03CC 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO46__LPI2C4_SDA                     0x00C8 0x03CC 0x0738 0x05 0x01
-> +#define IMX943_PAD_GPIO_IO46__TPM3_CH1                       0x00C8 0x03CC 0x0000 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO46__EWM_OUT_B                      0x00C8 0x03CC 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO47__GPIO3_IO15                     0x00CC 0x03D0 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO47__SAI3_TX_DATA0                  0x00CC 0x03D0 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO47__PDM_CLK                        0x00CC 0x03D0 0x0000 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO47__LPUART9_RTS_B                  0x00CC 0x03D0 0x0000 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO47__LPSPI5_SCK                     0x00CC 0x03D0 0x0000 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO47__LPI2C4_SCL                     0x00CC 0x03D0 0x0734 0x05 0x01
-> +#define IMX943_PAD_GPIO_IO47__TPM4_CH1                       0x00CC 0x03D0 0x0000 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO47__SAI3_RX_BCLK                   0x00CC 0x03D0 0x0800 0x07 0x01
-> +
-> +#define IMX943_PAD_GPIO_IO48__GPIO3_IO16                     0x00D0 0x03D4 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO48__USDHC3_CLK                     0x00D0 0x03D4 0x0000 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO48__CAN5_TX                        0x00D0 0x03D4 0x0000 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO48__LPUART10_TX                    0x00D0 0x03D4 0x0794 0x03 0x01
-> +#define IMX943_PAD_GPIO_IO48__TPM5_CH1                       0x00D0 0x03D4 0x0840 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO48__TPM6_EXTCLK                    0x00D0 0x03D4 0x0850 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO48__LPI2C5_SDA                     0x00D0 0x03D4 0x0740 0x06 0x02
-> +#define IMX943_PAD_GPIO_IO48__SINC4_EMCLK2                   0x00D0 0x03D4 0x0834 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO49__GPIO3_IO17                     0x00D4 0x03D8 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO49__USDHC3_CMD                     0x00D4 0x03D8 0x0858 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO49__CAN5_RX                        0x00D4 0x03D8 0x0688 0x02 0x01
-> +#define IMX943_PAD_GPIO_IO49__LPUART10_RX                    0x00D4 0x03D8 0x0790 0x03 0x01
-> +#define IMX943_PAD_GPIO_IO49__TPM6_CH1                       0x00D4 0x03D8 0x0848 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO49__XBAR1_XBAR_INOUT13             0x00D4 0x03D8 0x0890 0x05 0x01
-> +#define IMX943_PAD_GPIO_IO49__LPI2C5_SCL                     0x00D4 0x03D8 0x073C 0x06 0x02
-> +#define IMX943_PAD_GPIO_IO49__SINC4_EMBIT2                   0x00D4 0x03D8 0x0828 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO50__GPIO3_IO18                     0x00D8 0x03DC 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO50__USDHC3_DATA0                   0x00D8 0x03DC 0x085C 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO50__XBAR1_XBAR_INOUT14             0x00D8 0x03DC 0x0894 0x02 0x01
-> +#define IMX943_PAD_GPIO_IO50__LPUART10_CTS_B                 0x00D8 0x03DC 0x078C 0x03 0x01
-> +#define IMX943_PAD_GPIO_IO50__TPM3_CH3                       0x00D8 0x03DC 0x0838 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO50__JTAG_MUX_TDO                   0x00D8 0x03DC 0x0000 0x05 0x00
-> +#define IMX943_PAD_GPIO_IO50__LPSPI6_PCS1                    0x00D8 0x03DC 0x0774 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO50__SINC4_EMCLK3                   0x00D8 0x03DC 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO51__GPIO3_IO19                     0x00DC 0x03E0 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO51__USDHC3_DATA1                   0x00DC 0x03E0 0x0860 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO51__CAN2_TX                        0x00DC 0x03E0 0x0000 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO51__LPUART10_RTS_B                 0x00DC 0x03E0 0x0000 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO51__TPM4_CH3                       0x00DC 0x03E0 0x083C 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO51__JTAG_MUX_TCK                   0x00DC 0x03E0 0x0928 0x05 0x01
-> +#define IMX943_PAD_GPIO_IO51__LPSPI7_PCS1                    0x00DC 0x03E0 0x0778 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO51__SINC4_EMBIT3                   0x00DC 0x03E0 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO52__GPIO3_IO20                     0x00E0 0x03E4 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO52__USDHC3_DATA2                   0x00E0 0x03E4 0x0864 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO52__PDM_BIT_STREAM1                0x00E0 0x03E4 0x0614 0x02 0x02
-> +#define IMX943_PAD_GPIO_IO52__LPSPI4_PCS2                    0x00E0 0x03E4 0x076C 0x03 0x02
-> +#define IMX943_PAD_GPIO_IO52__TPM5_CH3                       0x00E0 0x03E4 0x0844 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO52__JTAG_MUX_TDI                   0x00E0 0x03E4 0x092C 0x05 0x01
-> +#define IMX943_PAD_GPIO_IO52__LPSPI8_PCS1                    0x00E0 0x03E4 0x077C 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO52__SAI3_TX_SYNC                   0x00E0 0x03E4 0x0804 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO53__GPIO3_IO21                     0x00E4 0x03E8 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO53__USDHC3_DATA3                   0x00E4 0x03E8 0x0868 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO53__CAN2_RX                        0x00E4 0x03E8 0x067C 0x02 0x02
-> +#define IMX943_PAD_GPIO_IO53__LPSPI3_PCS1                    0x00E4 0x03E8 0x0768 0x03 0x03
-> +#define IMX943_PAD_GPIO_IO53__TPM6_CH3                       0x00E4 0x03E8 0x084C 0x04 0x00
-> +#define IMX943_PAD_GPIO_IO53__JTAG_MUX_TMS                   0x00E4 0x03E8 0x0930 0x05 0x01
-> +#define IMX943_PAD_GPIO_IO53__LPSPI5_PCS1                    0x00E4 0x03E8 0x0770 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO53__SINC4_MOD_CLK1                 0x00E4 0x03E8 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO54__GPIO3_IO22                     0x00E8 0x03EC 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO54__NETC_1588MUX_INOUT4            0x00E8 0x03EC 0x065C 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO54__CAN4_TX                        0x00E8 0x03EC 0x0000 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO54__LPIT3_TRIGGER2                 0x00E8 0x03EC 0x0764 0x03 0x01
-> +#define IMX943_PAD_GPIO_IO54__LPSPI6_PCS1                    0x00E8 0x03EC 0x0774 0x04 0x01
-> +#define IMX943_PAD_GPIO_IO54__TPM3_CH3                       0x00E8 0x03EC 0x0838 0x05 0x01
-> +#define IMX943_PAD_GPIO_IO54__SINC3_EMCLK0                   0x00E8 0x03EC 0x0000 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO54__XBAR1_XBAR_INOUT18             0x00E8 0x03EC 0x08A4 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO55__GPIO3_IO23                     0x00EC 0x03F0 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO55__NETC_1588MUX_INOUT5            0x00EC 0x03F0 0x0660 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO55__CAN4_RX                        0x00EC 0x03F0 0x0684 0x02 0x01
-> +#define IMX943_PAD_GPIO_IO55__LPIT2_TRIGGER2                 0x00EC 0x03F0 0x0760 0x03 0x01
-> +#define IMX943_PAD_GPIO_IO55__LPSPI7_PCS1                    0x00EC 0x03F0 0x0778 0x04 0x01
-> +#define IMX943_PAD_GPIO_IO55__TPM4_CH3                       0x00EC 0x03F0 0x083C 0x05 0x01
-> +#define IMX943_PAD_GPIO_IO55__SINC3_EMBIT0                   0x00EC 0x03F0 0x0000 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO55__XBAR1_XBAR_INOUT19             0x00EC 0x03F0 0x08A8 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO56__GPIO3_IO24                     0x00F0 0x03F4 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO56__NETC_1588MUX_INOUT6            0x00F0 0x03F4 0x0664 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO56__CAN5_TX                        0x00F0 0x03F4 0x0000 0x02 0x00
-> +#define IMX943_PAD_GPIO_IO56__LPIT3_TRIGGER3                 0x00F0 0x03F4 0x0000 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO56__LPSPI8_PCS1                    0x00F0 0x03F4 0x077C 0x04 0x01
-> +#define IMX943_PAD_GPIO_IO56__SAI3_TX_SYNC                   0x00F0 0x03F4 0x0804 0x05 0x01
-> +#define IMX943_PAD_GPIO_IO56__SINC3_EMCLK1                   0x00F0 0x03F4 0x0000 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO56__XBAR1_XBAR_INOUT20             0x00F0 0x03F4 0x08AC 0x07 0x00
-> +
-> +#define IMX943_PAD_GPIO_IO57__GPIO3_IO25                     0x00F4 0x03F8 0x0000 0x00 0x00
-> +#define IMX943_PAD_GPIO_IO57__NETC_1588MUX_INOUT7            0x00F4 0x03F8 0x0668 0x01 0x00
-> +#define IMX943_PAD_GPIO_IO57__CAN5_RX                        0x00F4 0x03F8 0x0688 0x02 0x02
-> +#define IMX943_PAD_GPIO_IO57__LPIT2_TRIGGER3                 0x00F4 0x03F8 0x0000 0x03 0x00
-> +#define IMX943_PAD_GPIO_IO57__LPSPI5_PCS1                    0x00F4 0x03F8 0x0770 0x04 0x01
-> +#define IMX943_PAD_GPIO_IO57__TPM6_CH3                       0x00F4 0x03F8 0x084C 0x05 0x01
-> +#define IMX943_PAD_GPIO_IO57__SINC3_EMBIT1                   0x00F4 0x03F8 0x0000 0x06 0x00
-> +#define IMX943_PAD_GPIO_IO57__ENET_REF_CLK_ROOT              0x00F4 0x03F8 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_CCM_CLKO1__CLKO_1                         0x00F8 0x03FC 0x0000 0x00 0x00
-> +#define IMX943_PAD_CCM_CLKO1__NETC_1588MUX_INOUT8            0x00F8 0x03FC 0x066C 0x01 0x00
-> +#define IMX943_PAD_CCM_CLKO1__LPUART9_TX                     0x00F8 0x03FC 0x07E4 0x02 0x01
-> +#define IMX943_PAD_CCM_CLKO1__ECAT_LED_RUN                   0x00F8 0x03FC 0x0000 0x03 0x00
-> +#define IMX943_PAD_CCM_CLKO1__TPM6_EXTCLK                    0x00F8 0x03FC 0x0850 0x04 0x01
-> +#define IMX943_PAD_CCM_CLKO1__GPIO4_IO0                      0x00F8 0x03FC 0x0000 0x05 0x00
-> +#define IMX943_PAD_CCM_CLKO1__SINC3_EMCLK2                   0x00F8 0x03FC 0x0000 0x06 0x00
-> +#define IMX943_PAD_CCM_CLKO1__XBAR1_XBAR_INOUT22             0x00F8 0x03FC 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_CCM_CLKO2__CLKO_2                         0x00FC 0x0400 0x0000 0x00 0x00
-> +#define IMX943_PAD_CCM_CLKO2__NETC_1588MUX_INOUT9            0x00FC 0x0400 0x0670 0x01 0x00
-> +#define IMX943_PAD_CCM_CLKO2__LPUART9_RX                     0x00FC 0x0400 0x07E0 0x02 0x01
-> +#define IMX943_PAD_CCM_CLKO2__ECAT_LED_ERR                   0x00FC 0x0400 0x0000 0x03 0x00
-> +#define IMX943_PAD_CCM_CLKO2__TPM5_CH1                       0x00FC 0x0400 0x0840 0x04 0x01
-> +#define IMX943_PAD_CCM_CLKO2__GPIO4_IO1                      0x00FC 0x0400 0x0000 0x05 0x00
-> +#define IMX943_PAD_CCM_CLKO2__SINC3_EMBIT2                   0x00FC 0x0400 0x0000 0x06 0x00
-> +#define IMX943_PAD_CCM_CLKO2__XBAR1_XBAR_INOUT23             0x00FC 0x0400 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_CCM_CLKO3__CLKO_3                         0x0100 0x0404 0x0000 0x00 0x00
-> +#define IMX943_PAD_CCM_CLKO3__NETC_1588MUX_INOUT10           0x0100 0x0404 0x0674 0x01 0x00
-> +#define IMX943_PAD_CCM_CLKO3__CAN3_TX                        0x0100 0x0404 0x0000 0x02 0x00
-> +#define IMX943_PAD_CCM_CLKO3__ECAT_LED_STATE_RUN             0x0100 0x0404 0x0000 0x03 0x00
-> +#define IMX943_PAD_CCM_CLKO3__TPM6_CH1                       0x0100 0x0404 0x0848 0x04 0x01
-> +#define IMX943_PAD_CCM_CLKO3__GPIO4_IO2                      0x0100 0x0404 0x0000 0x05 0x00
-> +#define IMX943_PAD_CCM_CLKO3__SINC3_EMCLK3                   0x0100 0x0404 0x0000 0x06 0x00
-> +#define IMX943_PAD_CCM_CLKO3__ENET_REF_CLK_ROOT              0x0100 0x0404 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_CCM_CLKO4__CLKO_4                         0x0104 0x0408 0x0000 0x00 0x00
-> +#define IMX943_PAD_CCM_CLKO4__NETC_1588MUX_INOUT11           0x0104 0x0408 0x0000 0x01 0x00
-> +#define IMX943_PAD_CCM_CLKO4__CAN3_RX                        0x0104 0x0408 0x0680 0x02 0x01
-> +#define IMX943_PAD_CCM_CLKO4__ECAT_RESET_OUT                 0x0104 0x0408 0x0000 0x03 0x00
-> +#define IMX943_PAD_CCM_CLKO4__TPM5_CH3                       0x0104 0x0408 0x0844 0x04 0x01
-> +#define IMX943_PAD_CCM_CLKO4__GPIO4_IO3                      0x0104 0x0408 0x0000 0x05 0x00
-> +#define IMX943_PAD_CCM_CLKO4__SINC3_EMBIT3                   0x0104 0x0408 0x0000 0x06 0x00
-> +#define IMX943_PAD_CCM_CLKO4__XBAR1_XBAR_INOUT25             0x0104 0x0408 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_ETH2_MDC_GPIO1__NETC_EMDC                 0x0108 0x040C 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH2_MDC_GPIO1__NETC_ETH2_SLV_MDC         0x0108 0x040C 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH2_MDC_GPIO1__I3C2_SCL                  0x0108 0x040C 0x0720 0x02 0x02
-> +#define IMX943_PAD_ETH2_MDC_GPIO1__USB1_OTG_ID               0x0108 0x040C 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH2_MDC_GPIO1__FLEXIO2_FLEXIO0           0x0108 0x040C 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH2_MDC_GPIO1__GPIO6_IO0                 0x0108 0x040C 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH2_MDC_GPIO1__FLEXPWM2_PWMX0            0x0108 0x040C 0x06A0 0x06 0x01
-> +#define IMX943_PAD_ETH2_MDC_GPIO1__XBAR1_XBAR_INOUT30        0x0108 0x040C 0x08B0 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH2_MDIO_GPIO2__NETC_EMDIO               0x010C 0x0410 0x0678 0x00 0x00
-> +#define IMX943_PAD_ETH2_MDIO_GPIO2__NETC_ETH2_SLV_MDIO       0x010C 0x0410 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH2_MDIO_GPIO2__I3C2_SDA                 0x010C 0x0410 0x0724 0x02 0x02
-> +#define IMX943_PAD_ETH2_MDIO_GPIO2__USB1_OTG_PWR             0x010C 0x0410 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH2_MDIO_GPIO2__FLEXIO2_FLEXIO1          0x010C 0x0410 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH2_MDIO_GPIO2__GPIO6_IO1                0x010C 0x0410 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH2_MDIO_GPIO2__FLEXPWM2_PWMX1           0x010C 0x0410 0x06A4 0x06 0x01
-> +#define IMX943_PAD_ETH2_MDIO_GPIO2__XBAR1_XBAR_INOUT31       0x010C 0x0410 0x08B4 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH2_TXD3__NETC_PINMUX_ETH2_TXD3          0x0110 0x0414 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH2_TXD3__LPUART3_DCD_B                  0x0110 0x0414 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH2_TXD3__CAN2_TX                        0x0110 0x0414 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH2_TXD3__USB2_OTG_ID                    0x0110 0x0414 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH2_TXD3__FLEXIO2_FLEXIO2                0x0110 0x0414 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH2_TXD3__GPIO6_IO2                      0x0110 0x0414 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH2_TXD3__FLEXPWM2_PWMA0                 0x0110 0x0414 0x0000 0x06 0x00
-> +#define IMX943_PAD_ETH2_TXD3__XBAR1_XBAR_INOUT32             0x0110 0x0414 0x08B8 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH2_TXD2__NETC_PINMUX_ETH2_TXD2          0x0114 0x0418 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH2_TXD2__ETH2_RMII_REF50_CLK            0x0114 0x0418 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH2_TXD2__CAN2_RX                        0x0114 0x0418 0x067C 0x02 0x03
-> +#define IMX943_PAD_ETH2_TXD2__USB2_OTG_OC                    0x0114 0x0418 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH2_TXD2__FLEXIO2_FLEXIO3                0x0114 0x0418 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH2_TXD2__GPIO6_IO3                      0x0114 0x0418 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH2_TXD2__FLEXPWM2_PWMB0                 0x0114 0x0418 0x0000 0x06 0x00
-> +#define IMX943_PAD_ETH2_TXD2__XBAR1_XBAR_INOUT33             0x0114 0x0418 0x08BC 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH2_TXD1__NETC_PINMUX_ETH2_TXD1          0x0118 0x041C 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH2_TXD1__LPUART3_RTS_B                  0x0118 0x041C 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH2_TXD1__ECAT_CLK25                     0x0118 0x041C 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH2_TXD1__USB1_OTG_OC                    0x0118 0x041C 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH2_TXD1__FLEXIO2_FLEXIO4                0x0118 0x041C 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH2_TXD1__GPIO6_IO4                      0x0118 0x041C 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH2_TXD1__FLEXPWM2_PWMA1                 0x0118 0x041C 0x0000 0x06 0x00
-> +#define IMX943_PAD_ETH2_TXD1__XBAR1_XBAR_INOUT34             0x0118 0x041C 0x08C0 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH2_TXD0__NETC_PINMUX_ETH2_TXD0          0x011C 0x0420 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH2_TXD0__LPUART3_TX                     0x011C 0x0420 0x07A8 0x01 0x02
-> +#define IMX943_PAD_ETH2_TXD0__I3C2_PUR                       0x011C 0x0420 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH2_TXD0__I3C2_PUR_B                     0x011C 0x0420 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH2_TXD0__FLEXIO2_FLEXIO5                0x011C 0x0420 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH2_TXD0__GPIO6_IO5                      0x011C 0x0420 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH2_TXD0__FLEXPWM2_PWMB1                 0x011C 0x0420 0x0000 0x06 0x00
-> +#define IMX943_PAD_ETH2_TXD0__XBAR1_XBAR_INOUT35             0x011C 0x0420 0x08C4 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH2_TX_CTL__NETC_PINMUX_ETH2_TX_CTL      0x0120 0x0424 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH2_TX_CTL__LPUART3_DTR_B                0x0120 0x0424 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH2_TX_CTL__ECAT_LED_RUN                 0x0120 0x0424 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH2_TX_CTL__FLEXIO2_FLEXIO6              0x0120 0x0424 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH2_TX_CTL__GPIO6_IO6                    0x0120 0x0424 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH2_TX_CTL__FLEXPWM2_PWMA2               0x0120 0x0424 0x0000 0x06 0x00
-> +#define IMX943_PAD_ETH2_TX_CTL__XBAR1_XBAR_INOUT36           0x0120 0x0424 0x08C8 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH2_TX_CLK__NETC_PINMUX_ETH2_TX_CLK      0x0124 0x0428 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH2_TX_CLK__ECAT_LED_ERR                 0x0124 0x0428 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH2_TX_CLK__FLEXIO2_FLEXIO7              0x0124 0x0428 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH2_TX_CLK__GPIO6_IO7                    0x0124 0x0428 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH2_TX_CLK__FLEXPWM2_PWMB2               0x0124 0x0428 0x0000 0x06 0x00
-> +#define IMX943_PAD_ETH2_TX_CLK__XBAR1_XBAR_INOUT37           0x0124 0x0428 0x08CC 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH2_RX_CTL__NETC_PINMUX_ETH2_RX_CTL      0x0128 0x042C 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH2_RX_CTL__LPUART3_DSR_B                0x0128 0x042C 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH2_RX_CTL__ECAT_LED_STATE_RUN           0x0128 0x042C 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH2_RX_CTL__USB2_OTG_PWR                 0x0128 0x042C 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH2_RX_CTL__FLEXIO2_FLEXIO8              0x0128 0x042C 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH2_RX_CTL__GPIO6_IO8                    0x0128 0x042C 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH2_RX_CTL__FLEXPWM2_PWMA3               0x0128 0x042C 0x0000 0x06 0x00
-> +#define IMX943_PAD_ETH2_RX_CTL__SINC4_EMCLK0                 0x0128 0x042C 0x082C 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH2_RX_CLK__NETC_PINMUX_ETH2_RX_CLK      0x012C 0x0430 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH2_RX_CLK__LPUART3_RIN_B                0x012C 0x0430 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH2_RX_CLK__ECAT_RESET_OUT               0x012C 0x0430 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH2_RX_CLK__XBAR1_XBAR_INOUT38           0x012C 0x0430 0x08D0 0x03 0x01
-> +#define IMX943_PAD_ETH2_RX_CLK__FLEXIO2_FLEXIO9              0x012C 0x0430 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH2_RX_CLK__GPIO6_IO9                    0x012C 0x0430 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH2_RX_CLK__FLEXPWM2_PWMB3               0x012C 0x0430 0x0000 0x06 0x00
-> +#define IMX943_PAD_ETH2_RX_CLK__SINC4_EMBIT0                 0x012C 0x0430 0x0820 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH2_RXD0__NETC_PINMUX_ETH2_RXD0          0x0130 0x0434 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH2_RXD0__LPUART3_RX                     0x0130 0x0434 0x07A4 0x01 0x02
-> +#define IMX943_PAD_ETH2_RXD0__FLEXIO2_FLEXIO10               0x0130 0x0434 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH2_RXD0__GPIO6_IO10                     0x0130 0x0434 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH2_RXD0__DIG_ENCODER2_DATA_EN           0x0130 0x0434 0x0000 0x06 0x00
-> +#define IMX943_PAD_ETH2_RXD0__XBAR1_XBAR_INOUT39             0x0130 0x0434 0x08D4 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH2_RXD1__NETC_PINMUX_ETH2_RXD1          0x0134 0x0438 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH2_RXD1__LPUART3_CTS_B                  0x0134 0x0438 0x07A0 0x01 0x01
-> +#define IMX943_PAD_ETH2_RXD1__LPTMR2_ALT0                    0x0134 0x0438 0x0780 0x03 0x00
-> +#define IMX943_PAD_ETH2_RXD1__FLEXIO2_FLEXIO11               0x0134 0x0438 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH2_RXD1__GPIO6_IO11                     0x0134 0x0438 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH2_RXD1__DIG_ENCODER2_DATA_CLK          0x0134 0x0438 0x068C 0x06 0x00
-> +#define IMX943_PAD_ETH2_RXD1__XBAR1_XBAR_INOUT40             0x0134 0x0438 0x08D8 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH2_RXD2__NETC_PINMUX_ETH2_RXD2          0x0138 0x043C 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH2_RXD2__LPTMR2_ALT1                    0x0138 0x043C 0x0784 0x03 0x00
-> +#define IMX943_PAD_ETH2_RXD2__FLEXIO2_FLEXIO12               0x0138 0x043C 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH2_RXD2__GPIO6_IO12                     0x0138 0x043C 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH2_RXD2__DIG_ENCODER2_DATA_OUT          0x0138 0x043C 0x0000 0x06 0x00
-> +#define IMX943_PAD_ETH2_RXD2__XBAR1_XBAR_INOUT41             0x0138 0x043C 0x08DC 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH2_RXD3__NETC_PINMUX_ETH2_RXD3          0x013C 0x0440 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH2_RXD3__LPTMR2_ALT2                    0x013C 0x0440 0x0788 0x03 0x00
-> +#define IMX943_PAD_ETH2_RXD3__FLEXIO2_FLEXIO13               0x013C 0x0440 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH2_RXD3__GPIO6_IO13                     0x013C 0x0440 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH2_RXD3__DIG_ENCODER2_DATA_IN           0x013C 0x0440 0x0690 0x06 0x00
-> +#define IMX943_PAD_ETH2_RXD3__XBAR1_XBAR_INOUT42             0x013C 0x0440 0x08E0 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH3_MDC_GPIO1__NETC_EMDC                 0x0140 0x0444 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH3_MDC_GPIO1__LPUART4_DCD_B             0x0140 0x0444 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH3_MDC_GPIO1__NETC_ETH3_SLV_MDC         0x0140 0x0444 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH3_MDC_GPIO1__SAI4_TX_SYNC              0x0140 0x0444 0x081C 0x03 0x00
-> +#define IMX943_PAD_ETH3_MDC_GPIO1__FLEXIO2_FLEXIO14          0x0140 0x0444 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH3_MDC_GPIO1__GPIO6_IO14                0x0140 0x0444 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH3_MDC_GPIO1__FLEXPWM1_PWMX0            0x0140 0x0444 0x0698 0x06 0x01
-> +#define IMX943_PAD_ETH3_MDC_GPIO1__SINC4_MOD_CLK0            0x0140 0x0444 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_ETH3_MDIO_GPIO2__NETC_EMDIO               0x0144 0x0448 0x0678 0x00 0x01
-> +#define IMX943_PAD_ETH3_MDIO_GPIO2__LPUART4_RIN_B            0x0144 0x0448 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH3_MDIO_GPIO2__NETC_ETH3_SLV_MDIO       0x0144 0x0448 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH3_MDIO_GPIO2__SAI4_TX_BCLK             0x0144 0x0448 0x0818 0x03 0x00
-> +#define IMX943_PAD_ETH3_MDIO_GPIO2__FLEXIO2_FLEXIO15         0x0144 0x0448 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH3_MDIO_GPIO2__GPIO6_IO15               0x0144 0x0448 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH3_MDIO_GPIO2__FLEXPWM1_PWMX1           0x0144 0x0448 0x069C 0x06 0x01
-> +#define IMX943_PAD_ETH3_MDIO_GPIO2__SINC4_MOD_CLK1           0x0144 0x0448 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_ETH3_TXD3__NETC_PINMUX_ETH3_TXD3          0x0148 0x044C 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH3_TXD3__XSPI_SLV_DATA7                 0x0148 0x044C 0x0924 0x02 0x00
-> +#define IMX943_PAD_ETH3_TXD3__SAI4_TX_DATA0                  0x0148 0x044C 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH3_TXD3__LPUART3_TX                     0x0148 0x044C 0x07A8 0x04 0x03
-> +#define IMX943_PAD_ETH3_TXD3__GPIO6_IO16                     0x0148 0x044C 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH3_TXD3__FLEXPWM1_PWMA0                 0x0148 0x044C 0x0000 0x06 0x00
-> +
-> +#define IMX943_PAD_ETH3_TXD2__NETC_PINMUX_ETH3_TXD2          0x014C 0x0450 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH3_TXD2__ETH3_RMII_REF50_CLK            0x014C 0x0450 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH3_TXD2__XSPI_SLV_DATA6                 0x014C 0x0450 0x0920 0x02 0x00
-> +#define IMX943_PAD_ETH3_TXD2__SAI4_RX_SYNC                   0x014C 0x0450 0x0814 0x03 0x00
-> +#define IMX943_PAD_ETH3_TXD2__GPIO6_IO17                     0x014C 0x0450 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH3_TXD2__FLEXPWM1_PWMB0                 0x014C 0x0450 0x0000 0x06 0x00
-> +
-> +#define IMX943_PAD_ETH3_TXD1__NETC_PINMUX_ETH3_TXD1          0x0150 0x0454 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH3_TXD1__LPUART4_RTS_B                  0x0150 0x0454 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH3_TXD1__XSPI_SLV_DATA5                 0x0150 0x0454 0x091C 0x02 0x00
-> +#define IMX943_PAD_ETH3_TXD1__SAI4_RX_BCLK                   0x0150 0x0454 0x080C 0x03 0x00
-> +#define IMX943_PAD_ETH3_TXD1__GPIO6_IO18                     0x0150 0x0454 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH3_TXD1__FLEXPWM1_PWMA1                 0x0150 0x0454 0x0000 0x06 0x00
-> +
-> +#define IMX943_PAD_ETH3_TXD0__NETC_PINMUX_ETH3_TXD0          0x0154 0x0458 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH3_TXD0__LPUART4_TX                     0x0154 0x0458 0x07B4 0x01 0x02
-> +#define IMX943_PAD_ETH3_TXD0__XSPI_SLV_DATA4                 0x0154 0x0458 0x0918 0x02 0x00
-> +#define IMX943_PAD_ETH3_TXD0__SAI4_RX_DATA0                  0x0154 0x0458 0x0810 0x03 0x00
-> +#define IMX943_PAD_ETH3_TXD0__GPIO6_IO19                     0x0154 0x0458 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH3_TXD0__FLEXPWM1_PWMB1                 0x0154 0x0458 0x0000 0x06 0x00
-> +
-> +#define IMX943_PAD_ETH3_TX_CTL__NETC_PINMUX_ETH3_TX_CTL      0x0158 0x045C 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH3_TX_CTL__LPUART4_DTR_B                0x0158 0x045C 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH3_TX_CTL__XSPI_SLV_DQS                 0x0158 0x045C 0x0900 0x02 0x00
-> +#define IMX943_PAD_ETH3_TX_CTL__SAI4_MCLK                    0x0158 0x045C 0x0808 0x03 0x00
-> +#define IMX943_PAD_ETH3_TX_CTL__LPUART3_RX                   0x0158 0x045C 0x07A4 0x04 0x03
-> +#define IMX943_PAD_ETH3_TX_CTL__GPIO6_IO20                   0x0158 0x045C 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH3_TX_CTL__FLEXPWM1_PWMA2               0x0158 0x045C 0x0000 0x06 0x00
-> +
-> +#define IMX943_PAD_ETH3_TX_CLK__NETC_PINMUX_ETH3_TX_CLK      0x015C 0x0460 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH3_TX_CLK__XSPI_SLV_CLK                 0x015C 0x0460 0x0904 0x02 0x00
-> +#define IMX943_PAD_ETH3_TX_CLK__SAI2_TX_SYNC                 0x015C 0x0460 0x07FC 0x03 0x01
-> +#define IMX943_PAD_ETH3_TX_CLK__LPUART3_CTS_B                0x015C 0x0460 0x07A0 0x04 0x02
-> +#define IMX943_PAD_ETH3_TX_CLK__GPIO6_IO21                   0x015C 0x0460 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH3_TX_CLK__FLEXPWM1_PWMB2               0x015C 0x0460 0x0000 0x06 0x00
-> +
-> +#define IMX943_PAD_ETH3_RX_CTL__NETC_PINMUX_ETH3_RX_CTL      0x0160 0x0464 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH3_RX_CTL__LPUART4_DSR_B                0x0160 0x0464 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH3_RX_CTL__XSPI_SLV_CS                  0x0160 0x0464 0x08FC 0x02 0x00
-> +#define IMX943_PAD_ETH3_RX_CTL__SAI2_TX_BCLK                 0x0160 0x0464 0x07F8 0x03 0x01
-> +#define IMX943_PAD_ETH3_RX_CTL__XBAR1_XBAR_INOUT43           0x0160 0x0464 0x08E4 0x04 0x01
-> +#define IMX943_PAD_ETH3_RX_CTL__GPIO6_IO22                   0x0160 0x0464 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH3_RX_CTL__FLEXPWM1_PWMA3               0x0160 0x0464 0x0000 0x06 0x00
-> +#define IMX943_PAD_ETH3_RX_CTL__SINC4_EMCLK1                 0x0160 0x0464 0x0830 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH3_RX_CLK__NETC_PINMUX_ETH3_RX_CLK      0x0164 0x0468 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH3_RX_CLK__LPUART4_CTS_B                0x0164 0x0468 0x07AC 0x01 0x01
-> +#define IMX943_PAD_ETH3_RX_CLK__XSPI_SLV_DATA3               0x0164 0x0468 0x0914 0x02 0x00
-> +#define IMX943_PAD_ETH3_RX_CLK__SAI2_TX_DATA0                0x0164 0x0468 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH3_RX_CLK__XBAR1_XBAR_INOUT44           0x0164 0x0468 0x08E8 0x04 0x01
-> +#define IMX943_PAD_ETH3_RX_CLK__GPIO6_IO23                   0x0164 0x0468 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH3_RX_CLK__FLEXPWM1_PWMB3               0x0164 0x0468 0x0000 0x06 0x00
-> +#define IMX943_PAD_ETH3_RX_CLK__SINC4_EMBIT1                 0x0164 0x0468 0x0824 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH3_RXD0__NETC_PINMUX_ETH3_RXD0          0x0168 0x046C 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH3_RXD0__LPUART4_RX                     0x0168 0x046C 0x07B0 0x01 0x02
-> +#define IMX943_PAD_ETH3_RXD0__XSPI_SLV_DATA2                 0x0168 0x046C 0x0910 0x02 0x00
-> +#define IMX943_PAD_ETH3_RXD0__SAI2_RX_SYNC                   0x0168 0x046C 0x07F4 0x03 0x01
-> +#define IMX943_PAD_ETH3_RXD0__GPIO6_IO24                     0x0168 0x046C 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH3_RXD0__DIG_ENCODER1_DATA_EN           0x0168 0x046C 0x0000 0x06 0x00
-> +#define IMX943_PAD_ETH3_RXD0__XBAR1_XBAR_INOUT45             0x0168 0x046C 0x08EC 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH3_RXD1__NETC_PINMUX_ETH3_RXD1          0x016C 0x0470 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH3_RXD1__XSPI_SLV_DATA1                 0x016C 0x0470 0x090C 0x02 0x00
-> +#define IMX943_PAD_ETH3_RXD1__SAI2_RX_BCLK                   0x016C 0x0470 0x07EC 0x03 0x01
-> +#define IMX943_PAD_ETH3_RXD1__LPUART3_RTS_B                  0x016C 0x0470 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH3_RXD1__GPIO6_IO25                     0x016C 0x0470 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH3_RXD1__DIG_ENCODER1_DATA_CLK          0x016C 0x0470 0x0000 0x06 0x00
-> +#define IMX943_PAD_ETH3_RXD1__XBAR1_XBAR_INOUT46             0x016C 0x0470 0x08F0 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH3_RXD2__NETC_PINMUX_ETH3_RXD2          0x0170 0x0474 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH3_RXD2__MQS2_RIGHT                     0x0170 0x0474 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH3_RXD2__XSPI_SLV_DATA0                 0x0170 0x0474 0x0908 0x02 0x00
-> +#define IMX943_PAD_ETH3_RXD2__SAI2_RX_DATA0                  0x0170 0x0474 0x07F0 0x03 0x01
-> +#define IMX943_PAD_ETH3_RXD2__GPIO6_IO26                     0x0170 0x0474 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH3_RXD2__DIG_ENCODER1_DATA_OUT          0x0170 0x0474 0x0000 0x06 0x00
-> +#define IMX943_PAD_ETH3_RXD2__XBAR1_XBAR_INOUT47             0x0170 0x0474 0x08F4 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH3_RXD3__NETC_PINMUX_ETH3_RXD3          0x0174 0x0478 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH3_RXD3__MQS2_LEFT                      0x0174 0x0478 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH3_RXD3__SAI2_MCLK                      0x0174 0x0478 0x07E8 0x03 0x01
-> +#define IMX943_PAD_ETH3_RXD3__GPIO6_IO27                     0x0174 0x0478 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH3_RXD3__DIG_ENCODER1_DATA_IN           0x0174 0x0478 0x0000 0x06 0x00
-> +#define IMX943_PAD_ETH3_RXD3__XBAR1_XBAR_INOUT48             0x0174 0x0478 0x08F8 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH4_MDC_GPIO1__NETC_EMDC                 0x0178 0x047C 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH4_MDC_GPIO1__ECAT_MDC                  0x0178 0x047C 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH4_MDC_GPIO1__ECAT_CLK25                0x0178 0x047C 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH4_MDC_GPIO1__NETC_ETH4_SLV_MDC         0x0178 0x047C 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH4_MDC_GPIO1__FLEXIO1_3_2_FLEXIO12      0x0178 0x047C 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH4_MDC_GPIO1__GPIO6_IO28                0x0178 0x047C 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH4_MDC_GPIO1__FLEXPWM4_PWMX0            0x0178 0x047C 0x06F4 0x06 0x02
-> +#define IMX943_PAD_ETH4_MDC_GPIO1__SINC4_MOD_CLK2            0x0178 0x047C 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_ETH4_MDIO_GPIO2__NETC_EMDIO               0x017C 0x0480 0x0678 0x00 0x02
-> +#define IMX943_PAD_ETH4_MDIO_GPIO2__ECAT_MDIO                0x017C 0x0480 0x0628 0x01 0x00
-> +#define IMX943_PAD_ETH4_MDIO_GPIO2__ENET_REF_CLK_ROOT        0x017C 0x0480 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH4_MDIO_GPIO2__NETC_ETH4_SLV_MDIO       0x017C 0x0480 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH4_MDIO_GPIO2__FLEXIO1_3_2_FLEXIO13     0x017C 0x0480 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH4_MDIO_GPIO2__GPIO6_IO29               0x017C 0x0480 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH4_MDIO_GPIO2__FLEXPWM4_PWMX1           0x017C 0x0480 0x06F8 0x06 0x02
-> +#define IMX943_PAD_ETH4_MDIO_GPIO2__SINC_FILTER_GLUE4_BREAK  0x017C 0x0480 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_ETH4_TX_CLK__NETC_PINMUX_ETH4_TX_CLK      0x0180 0x0484 0x0648 0x00 0x00
-> +#define IMX943_PAD_ETH4_TX_CLK__USDHC3_CLK                   0x0180 0x0484 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH4_TX_CLK__XSPI2_A_SCLK                 0x0180 0x0484 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH4_TX_CLK__ECAT_LED_ERR                 0x0180 0x0484 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH4_TX_CLK__FLEXIO1_3_2_FLEXIO0          0x0180 0x0484 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH4_TX_CLK__GPIO6_IO30                   0x0180 0x0484 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH4_TX_CLK__FLEXPWM4_PWMA0               0x0180 0x0484 0x06D4 0x06 0x01
-> +#define IMX943_PAD_ETH4_TX_CLK__XBAR1_XBAR_INOUT30           0x0180 0x0484 0x08B0 0x07 0x02
-> +
-> +#define IMX943_PAD_ETH4_TX_CTL__NETC_PINMUX_ETH4_TX_CTL      0x0184 0x0488 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH4_TX_CTL__USDHC3_CMD                   0x0184 0x0488 0x0858 0x01 0x01
-> +#define IMX943_PAD_ETH4_TX_CTL__XSPI2_A_SS0_B                0x0184 0x0488 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH4_TX_CTL__ECAT_RESET_OUT               0x0184 0x0488 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH4_TX_CTL__FLEXIO1_3_2_FLEXIO1          0x0184 0x0488 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH4_TX_CTL__GPIO6_IO31                   0x0184 0x0488 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH4_TX_CTL__FLEXPWM4_PWMB0               0x0184 0x0488 0x06E4 0x06 0x01
-> +#define IMX943_PAD_ETH4_TX_CTL__XBAR1_XBAR_INOUT31           0x0184 0x0488 0x08B4 0x07 0x02
-> +
-> +#define IMX943_PAD_ETH4_TXD0__NETC_PINMUX_ETH4_TXD0          0x0188 0x048C 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH4_TXD0__USDHC3_DATA0                   0x0188 0x048C 0x085C 0x01 0x01
-> +#define IMX943_PAD_ETH4_TXD0__XSPI2_A_DATA0                  0x0188 0x048C 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH4_TXD0__ECAT_LED_RUN                   0x0188 0x048C 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH4_TXD0__FLEXIO1_3_2_FLEXIO2            0x0188 0x048C 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH4_TXD0__GPIO7_IO0                      0x0188 0x048C 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH4_TXD0__FLEXPWM4_PWMA1                 0x0188 0x048C 0x06D8 0x06 0x01
-> +#define IMX943_PAD_ETH4_TXD0__XBAR1_XBAR_INOUT32             0x0188 0x048C 0x08B8 0x07 0x02
-> +
-> +#define IMX943_PAD_ETH4_TXD1__NETC_PINMUX_ETH4_TXD1          0x018C 0x0490 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH4_TXD1__USDHC3_DATA1                   0x018C 0x0490 0x0860 0x01 0x01
-> +#define IMX943_PAD_ETH4_TXD1__XSPI2_A_DATA1                  0x018C 0x0490 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH4_TXD1__ECAT_LED_STATE_RUN             0x018C 0x0490 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH4_TXD1__FLEXIO1_3_2_FLEXIO3            0x018C 0x0490 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH4_TXD1__GPIO7_IO1                      0x018C 0x0490 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH4_TXD1__FLEXPWM4_PWMB1                 0x018C 0x0490 0x06E8 0x06 0x01
-> +#define IMX943_PAD_ETH4_TXD1__XBAR1_XBAR_INOUT33             0x018C 0x0490 0x08BC 0x07 0x02
-> +
-> +#define IMX943_PAD_ETH4_TXD2__NETC_PINMUX_ETH4_TXD2          0x0190 0x0494 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH4_TXD2__USDHC3_DATA2                   0x0190 0x0494 0x0864 0x01 0x01
-> +#define IMX943_PAD_ETH4_TXD2__XSPI2_A_DATA2                  0x0190 0x0494 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH4_TXD2__ECAT_CLK25                     0x0190 0x0494 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH4_TXD2__FLEXIO1_3_2_FLEXIO4            0x0190 0x0494 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH4_TXD2__GPIO7_IO2                      0x0190 0x0494 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH4_TXD2__FLEXPWM4_PWMA2                 0x0190 0x0494 0x06DC 0x06 0x01
-> +#define IMX943_PAD_ETH4_TXD2__ETH4_RMII_REF50_CLK            0x0190 0x0494 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_ETH4_TXD3__NETC_PINMUX_ETH4_TXD3          0x0194 0x0498 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH4_TXD3__USDHC3_DATA3                   0x0194 0x0498 0x0868 0x01 0x01
-> +#define IMX943_PAD_ETH4_TXD3__XSPI2_A_DATA3                  0x0194 0x0498 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH4_TXD3__FLEXIO1_3_2_FLEXIO5            0x0194 0x0498 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH4_TXD3__GPIO7_IO3                      0x0194 0x0498 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH4_TXD3__FLEXPWM4_PWMB2                 0x0194 0x0498 0x06EC 0x06 0x01
-> +#define IMX943_PAD_ETH4_TXD3__XBAR1_XBAR_INOUT35             0x0194 0x0498 0x08C4 0x07 0x02
-> +
-> +#define IMX943_PAD_ETH4_RXD0__NETC_PINMUX_ETH4_RXD0          0x0198 0x049C 0x0638 0x00 0x00
-> +#define IMX943_PAD_ETH4_RXD0__XSPI2_A_DATA4                  0x0198 0x049C 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH4_RXD0__FLEXIO1_3_2_FLEXIO6            0x0198 0x049C 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH4_RXD0__GPIO7_IO4                      0x0198 0x049C 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH4_RXD0__FLEXPWM4_PWMA3                 0x0198 0x049C 0x06E0 0x06 0x01
-> +#define IMX943_PAD_ETH4_RXD0__SINC4_EMCLK2                   0x0198 0x049C 0x0834 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH4_RXD1__NETC_PINMUX_ETH4_RXD1          0x019C 0x04A0 0x063C 0x00 0x00
-> +#define IMX943_PAD_ETH4_RXD1__XSPI2_A_DATA5                  0x019C 0x04A0 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH4_RXD1__FLEXIO2_4_1_FLEXIO11           0x019C 0x04A0 0x0694 0x03 0x00
-> +#define IMX943_PAD_ETH4_RXD1__FLEXIO1_3_2_FLEXIO7            0x019C 0x04A0 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH4_RXD1__GPIO7_IO5                      0x019C 0x04A0 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH4_RXD1__FLEXPWM4_PWMB3                 0x019C 0x04A0 0x06F0 0x06 0x01
-> +#define IMX943_PAD_ETH4_RXD1__SINC4_EMBIT2                   0x019C 0x04A0 0x0828 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH4_RXD2__NETC_PINMUX_ETH4_RXD2          0x01A0 0x04A4 0x0640 0x00 0x00
-> +#define IMX943_PAD_ETH4_RXD2__XSPI2_A_DATA6                  0x01A0 0x04A4 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH4_RXD2__FLEXIO2_4_1_FLEXIO12           0x01A0 0x04A4 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH4_RXD2__FLEXIO1_3_2_FLEXIO8            0x01A0 0x04A4 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH4_RXD2__GPIO7_IO6                      0x01A0 0x04A4 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH4_RXD2__DIG_ENCODER2_DATA_EN           0x01A0 0x04A4 0x0000 0x06 0x00
-> +#define IMX943_PAD_ETH4_RXD2__XBAR1_XBAR_INOUT4              0x01A0 0x04A4 0x086C 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH4_RXD3__NETC_PINMUX_ETH4_RXD3          0x01A4 0x04A8 0x0644 0x00 0x00
-> +#define IMX943_PAD_ETH4_RXD3__ENET_REF_CLK_ROOT              0x01A4 0x04A8 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH4_RXD3__XSPI2_A_DATA7                  0x01A4 0x04A8 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH4_RXD3__FLEXIO2_4_1_FLEXIO13           0x01A4 0x04A8 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH4_RXD3__FLEXIO1_3_2_FLEXIO9            0x01A4 0x04A8 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH4_RXD3__GPIO7_IO7                      0x01A4 0x04A8 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH4_RXD3__DIG_ENCODER2_DATA_CLK          0x01A4 0x04A8 0x068C 0x06 0x01
-> +#define IMX943_PAD_ETH4_RXD3__XBAR1_XBAR_INOUT5              0x01A4 0x04A8 0x0870 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH4_RX_CTL__NETC_PINMUX_ETH4_RX_CTL      0x01A8 0x04AC 0x0634 0x00 0x00
-> +#define IMX943_PAD_ETH4_RX_CTL__XSPI2_A_SS1_B                0x01A8 0x04AC 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH4_RX_CTL__FLEXIO2_4_1_FLEXIO14         0x01A8 0x04AC 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH4_RX_CTL__FLEXIO1_3_2_FLEXIO10         0x01A8 0x04AC 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH4_RX_CTL__GPIO7_IO8                    0x01A8 0x04AC 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH4_RX_CTL__DIG_ENCODER2_DATA_OUT        0x01A8 0x04AC 0x0000 0x06 0x00
-> +#define IMX943_PAD_ETH4_RX_CTL__XBAR1_XBAR_INOUT6            0x01A8 0x04AC 0x0874 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH4_RX_CLK__NETC_PINMUX_ETH4_RX_CLK      0x01AC 0x04B0 0x0630 0x00 0x00
-> +#define IMX943_PAD_ETH4_RX_CLK__XSPI2_A_DQS                  0x01AC 0x04B0 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH4_RX_CLK__FLEXIO2_4_1_FLEXIO15         0x01AC 0x04B0 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH4_RX_CLK__FLEXIO1_3_2_FLEXIO11         0x01AC 0x04B0 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH4_RX_CLK__GPIO7_IO9                    0x01AC 0x04B0 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH4_RX_CLK__DIG_ENCODER2_DATA_IN         0x01AC 0x04B0 0x0690 0x06 0x01
-> +#define IMX943_PAD_ETH4_RX_CLK__XBAR1_XBAR_INOUT7            0x01AC 0x04B0 0x0878 0x07 0x01
-> +
-> +#define IMX943_PAD_ETH0_TXD0__NETC_PINMUX_ETH0_TXD0          0x01B0 0x04B4 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH0_TXD0__ECAT_PT0_TXD0                  0x01B0 0x04B4 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH0_TXD0__FLEXIO4_FLEXIO0                0x01B0 0x04B4 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH0_TXD0__GPIO5_IO0                      0x01B0 0x04B4 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH0_TXD1__NETC_PINMUX_ETH0_TXD1          0x01B4 0x04B8 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH0_TXD1__ECAT_PT0_TXD1                  0x01B4 0x04B8 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH0_TXD1__FLEXIO4_FLEXIO1                0x01B4 0x04B8 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH0_TXD1__GPIO5_IO1                      0x01B4 0x04B8 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH0_TX_EN__NETC_PINMUX_ETH0_TX_EN        0x01B8 0x04BC 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH0_TX_EN__ECAT_PT0_TX_EN                0x01B8 0x04BC 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH0_TX_EN__FLEXIO4_FLEXIO2               0x01B8 0x04BC 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH0_TX_EN__GPIO5_IO2                     0x01B8 0x04BC 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH0_TX_CLK__NETC_PINMUX_ETH0_TX_CLK      0x01BC 0x04C0 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH0_TX_CLK__ECAT_PT0_TX_CLK              0x01BC 0x04C0 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH0_TX_CLK__FLEXIO4_FLEXIO3              0x01BC 0x04C0 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH0_TX_CLK__GPIO5_IO3                    0x01BC 0x04C0 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH0_RXD0__NETC_PINMUX_ETH0_RXD0          0x01C0 0x04C4 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH0_RXD0__ECAT_PT0_RXD0                  0x01C0 0x04C4 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH0_RXD0__FLEXIO4_FLEXIO4                0x01C0 0x04C4 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH0_RXD0__GPIO5_IO4                      0x01C0 0x04C4 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH0_RXD1__NETC_PINMUX_ETH0_RXD1          0x01C4 0x04C8 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH0_RXD1__ECAT_PT0_RXD1                  0x01C4 0x04C8 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH0_RXD1__FLEXIO4_FLEXIO5                0x01C4 0x04C8 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH0_RXD1__GPIO5_IO5                      0x01C4 0x04C8 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH0_RX_DV__NETC_PINMUX_ETH0_RX_DV        0x01C8 0x04CC 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH0_RX_DV__ECAT_PT0_RX_DV                0x01C8 0x04CC 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH0_RX_DV__FLEXIO4_FLEXIO6               0x01C8 0x04CC 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH0_RX_DV__GPIO5_IO6                     0x01C8 0x04CC 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH0_TXD2__NETC_PINMUX_ETH0_TXD2          0x01CC 0x04D0 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH0_TXD2__ECAT_PT0_TXD2                  0x01CC 0x04D0 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH0_TXD2__ETH0_RMII_REF50_CLK            0x01CC 0x04D0 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH0_TXD2__FLEXIO4_FLEXIO7                0x01CC 0x04D0 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH0_TXD2__GPIO5_IO7                      0x01CC 0x04D0 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH0_TXD3__NETC_PINMUX_ETH0_TXD3          0x01D0 0x04D4 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH0_TXD3__ECAT_PT0_TXD3                  0x01D0 0x04D4 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH0_TXD3__FLEXIO4_FLEXIO8                0x01D0 0x04D4 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH0_TXD3__GPIO5_IO8                      0x01D0 0x04D4 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH0_RXD2__NETC_PINMUX_ETH0_RXD2          0x01D4 0x04D8 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH0_RXD2__ECAT_PT0_RXD2                  0x01D4 0x04D8 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH0_RXD2__FLEXIO4_FLEXIO9                0x01D4 0x04D8 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH0_RXD2__GPIO5_IO9                      0x01D4 0x04D8 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH0_RXD3__NETC_PINMUX_ETH0_RXD3          0x01D8 0x04DC 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH0_RXD3__ECAT_PT0_RXD3                  0x01D8 0x04DC 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH0_RXD3__FLEXIO4_FLEXIO10               0x01D8 0x04DC 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH0_RXD3__GPIO5_IO10                     0x01D8 0x04DC 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH0_RX_CLK__NETC_PINMUX_ETH0_RX_CLK      0x01DC 0x04E0 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH0_RX_CLK__ECAT_PT0_RX_CLK              0x01DC 0x04E0 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH0_RX_CLK__FLEXIO4_FLEXIO11             0x01DC 0x04E0 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH0_RX_CLK__GPIO5_IO11                   0x01DC 0x04E0 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH0_RX_ER__NETC_PINMUX_ETH0_RX_ER        0x01E0 0x04E4 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH0_RX_ER__ECAT_PT0_RX_ER                0x01E0 0x04E4 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH0_RX_ER__FLEXIO4_FLEXIO12              0x01E0 0x04E4 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH0_RX_ER__GPIO5_IO12                    0x01E0 0x04E4 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH0_TX_ER__NETC_PINMUX_ETH0_TX_ER        0x01E4 0x04E8 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH0_TX_ER__ECAT_LINK_ACT0                0x01E4 0x04E8 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH0_TX_ER__FLEXIO4_FLEXIO13              0x01E4 0x04E8 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH0_TX_ER__GPIO5_IO13                    0x01E4 0x04E8 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH0_CRS__NETC_PINMUX_ETH0_CRS            0x01E8 0x04EC 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH0_CRS__ECAT_LINK0                      0x01E8 0x04EC 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH0_CRS__NETC_EMDC                       0x01E8 0x04EC 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH0_CRS__FLEXIO4_FLEXIO14                0x01E8 0x04EC 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH0_CRS__GPIO5_IO14                      0x01E8 0x04EC 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH0_CRS__XBAR1_XBAR_INOUT8               0x01E8 0x04EC 0x087C 0x06 0x02
-> +#define IMX943_PAD_ETH0_CRS__SINC_FILTER_GLUE2_BREAK         0x01E8 0x04EC 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_ETH0_COL__NETC_PINMUX_ETH0_COL            0x01EC 0x04F0 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH0_COL__ECAT_LINK1                      0x01EC 0x04F0 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH0_COL__NETC_EMDIO                      0x01EC 0x04F0 0x0678 0x02 0x03
-> +#define IMX943_PAD_ETH0_COL__FLEXIO4_FLEXIO15                0x01EC 0x04F0 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH0_COL__GPIO5_IO15                      0x01EC 0x04F0 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH0_COL__XBAR1_XBAR_INOUT9               0x01EC 0x04F0 0x0880 0x06 0x02
-> +#define IMX943_PAD_ETH0_COL__SINC_FILTER_GLUE1_BREAK         0x01EC 0x04F0 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_ETH1_TXD0__NETC_PINMUX_ETH1_TXD0          0x01F0 0x04F4 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH1_TXD0__ECAT_PT1_TXD0                  0x01F0 0x04F4 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH1_TXD0__ENCODER_DIAG0                  0x01F0 0x04F4 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH1_TXD0__FLEXIO3_FLEXIO0                0x01F0 0x04F4 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH1_TXD0__GPIO5_IO16                     0x01F0 0x04F4 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH1_TXD1__NETC_PINMUX_ETH1_TXD1          0x01F4 0x04F8 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH1_TXD1__ECAT_PT1_TXD1                  0x01F4 0x04F8 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH1_TXD1__ENCODER_DIAG1                  0x01F4 0x04F8 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH1_TXD1__FLEXIO3_FLEXIO1                0x01F4 0x04F8 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH1_TXD1__GPIO5_IO17                     0x01F4 0x04F8 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH1_TX_EN__NETC_PINMUX_ETH1_TX_EN        0x01F8 0x04FC 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH1_TX_EN__ECAT_PT1_TX_EN                0x01F8 0x04FC 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH1_TX_EN__ENCODER_DIAG2                 0x01F8 0x04FC 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH1_TX_EN__FLEXIO3_FLEXIO2               0x01F8 0x04FC 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH1_TX_EN__GPIO5_IO18                    0x01F8 0x04FC 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH1_TX_CLK__NETC_PINMUX_ETH1_TX_CLK      0x01FC 0x0500 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH1_TX_CLK__ECAT_PT1_TX_CLK              0x01FC 0x0500 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH1_TX_CLK__ENCODER_DIAG3                0x01FC 0x0500 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH1_TX_CLK__FLEXIO3_FLEXIO3              0x01FC 0x0500 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH1_TX_CLK__GPIO5_IO19                   0x01FC 0x0500 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH1_RXD0__NETC_PINMUX_ETH1_RXD0          0x0200 0x0504 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH1_RXD0__ECAT_PT1_RXD0                  0x0200 0x0504 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH1_RXD0__ENCODER_DIAG4                  0x0200 0x0504 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH1_RXD0__FLEXIO3_FLEXIO4                0x0200 0x0504 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH1_RXD0__GPIO5_IO20                     0x0200 0x0504 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH1_RXD1__NETC_PINMUX_ETH1_RXD1          0x0204 0x0508 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH1_RXD1__ECAT_PT1_RXD1                  0x0204 0x0508 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH1_RXD1__ENCODER_DIAG5                  0x0204 0x0508 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH1_RXD1__FLEXIO3_FLEXIO5                0x0204 0x0508 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH1_RXD1__GPIO5_IO21                     0x0204 0x0508 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH1_RX_DV__NETC_PINMUX_ETH1_RX_DV        0x0208 0x050C 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH1_RX_DV__ECAT_PT1_RX_DV                0x0208 0x050C 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH1_RX_DV__ENCODER_DIAG6                 0x0208 0x050C 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH1_RX_DV__FLEXIO3_FLEXIO6               0x0208 0x050C 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH1_RX_DV__GPIO5_IO22                    0x0208 0x050C 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH1_TXD2__NETC_PINMUX_ETH1_TXD2          0x020C 0x0510 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH1_TXD2__ECAT_PT1_TXD2                  0x020C 0x0510 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH1_TXD2__ETH1_RMII_REF50_CLK            0x020C 0x0510 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH1_TXD2__ENCODER_DIAG7                  0x020C 0x0510 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH1_TXD2__FLEXIO3_FLEXIO7                0x020C 0x0510 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH1_TXD2__GPIO5_IO23                     0x020C 0x0510 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH1_TXD3__NETC_PINMUX_ETH1_TXD3          0x0210 0x0514 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH1_TXD3__ECAT_PT1_TXD3                  0x0210 0x0514 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH1_TXD3__ENCODER_DIAG8                  0x0210 0x0514 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH1_TXD3__FLEXIO3_FLEXIO8                0x0210 0x0514 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH1_TXD3__GPIO5_IO24                     0x0210 0x0514 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH1_RXD2__NETC_PINMUX_ETH1_RXD2          0x0214 0x0518 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH1_RXD2__ECAT_PT1_RXD2                  0x0214 0x0518 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH1_RXD2__ENCODER_DIAG9                  0x0214 0x0518 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH1_RXD2__FLEXIO3_FLEXIO9                0x0214 0x0518 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH1_RXD2__GPIO5_IO25                     0x0214 0x0518 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH1_RXD3__NETC_PINMUX_ETH1_RXD3          0x0218 0x051C 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH1_RXD3__ECAT_PT1_RXD3                  0x0218 0x051C 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH1_RXD3__ENCODER_DIAG10                 0x0218 0x051C 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH1_RXD3__FLEXIO3_FLEXIO10               0x0218 0x051C 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH1_RXD3__GPIO5_IO26                     0x0218 0x051C 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH1_RX_CLK__NETC_PINMUX_ETH1_RX_CLK      0x021C 0x0520 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH1_RX_CLK__ECAT_PT1_RX_CLK              0x021C 0x0520 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH1_RX_CLK__ENCODER_DIAG11               0x021C 0x0520 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH1_RX_CLK__FLEXIO3_FLEXIO11             0x021C 0x0520 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH1_RX_CLK__GPIO5_IO27                   0x021C 0x0520 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH1_RX_ER__NETC_PINMUX_ETH1_RX_ER        0x0220 0x0524 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH1_RX_ER__ECAT_PT1_RX_ER                0x0220 0x0524 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH1_RX_ER__ENCODER_DIAG12                0x0220 0x0524 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH1_RX_ER__FLEXIO3_FLEXIO12              0x0220 0x0524 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH1_RX_ER__GPIO5_IO28                    0x0220 0x0524 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH1_TX_ER__NETC_PINMUX_ETH1_TX_ER        0x0224 0x0528 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH1_TX_ER__ECAT_LINK_ACT1                0x0224 0x0528 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH1_TX_ER__ENCODER_DIAG13                0x0224 0x0528 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH1_TX_ER__FLEXIO3_FLEXIO13              0x0224 0x0528 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH1_TX_ER__GPIO5_IO29                    0x0224 0x0528 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_ETH1_CRS__NETC_PINMUX_ETH1_CRS            0x0228 0x052C 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH1_CRS__ECAT_MDC                        0x0228 0x052C 0x0000 0x01 0x00
-> +#define IMX943_PAD_ETH1_CRS__NETC_EMDC                       0x0228 0x052C 0x0000 0x02 0x00
-> +#define IMX943_PAD_ETH1_CRS__ENCODER_DIAG14                  0x0228 0x052C 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH1_CRS__FLEXIO3_FLEXIO14                0x0228 0x052C 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH1_CRS__GPIO5_IO30                      0x0228 0x052C 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH1_CRS__XBAR1_XBAR_INOUT10              0x0228 0x052C 0x0884 0x06 0x02
-> +#define IMX943_PAD_ETH1_CRS__SINC_FILTER_GLUE1_BREAK         0x0228 0x052C 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_ETH1_COL__NETC_PINMUX_ETH1_COL            0x022C 0x0530 0x0000 0x00 0x00
-> +#define IMX943_PAD_ETH1_COL__ECAT_MDIO                       0x022C 0x0530 0x0628 0x01 0x01
-> +#define IMX943_PAD_ETH1_COL__NETC_EMDIO                      0x022C 0x0530 0x0678 0x02 0x04
-> +#define IMX943_PAD_ETH1_COL__ENCODER_DIAG15                  0x022C 0x0530 0x0000 0x03 0x00
-> +#define IMX943_PAD_ETH1_COL__FLEXIO3_FLEXIO15                0x022C 0x0530 0x0000 0x04 0x00
-> +#define IMX943_PAD_ETH1_COL__GPIO5_IO31                      0x022C 0x0530 0x0000 0x05 0x00
-> +#define IMX943_PAD_ETH1_COL__XBAR1_XBAR_INOUT11              0x022C 0x0530 0x0888 0x06 0x02
-> +#define IMX943_PAD_ETH1_COL__SINC_FILTER_GLUE2_BREAK         0x022C 0x0530 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD1_CLK__USDHC1_CLK                       0x0230 0x0534 0x0000 0x00 0x00
-> +#define IMX943_PAD_SD1_CLK__SAI4_TX_BCLK                     0x0230 0x0534 0x0818 0x01 0x01
-> +#define IMX943_PAD_SD1_CLK__CAN4_TX                          0x0230 0x0534 0x0000 0x02 0x00
-> +#define IMX943_PAD_SD1_CLK__NETC_1588MUX_INOUT0              0x0230 0x0534 0x064C 0x03 0x01
-> +#define IMX943_PAD_SD1_CLK__FLEXIO2_4_1_FLEXIO0              0x0230 0x0534 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD1_CLK__GPIO4_IO8                        0x0230 0x0534 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD1_CLK__FLEXPWM3_PWMX0                   0x0230 0x0534 0x06C8 0x06 0x02
-> +#define IMX943_PAD_SD1_CLK__SINC1_EMCLK0                     0x0230 0x0534 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD1_CMD__USDHC1_CMD                       0x0234 0x0538 0x0000 0x00 0x00
-> +#define IMX943_PAD_SD1_CMD__SAI4_RX_BCLK                     0x0234 0x0538 0x080C 0x01 0x01
-> +#define IMX943_PAD_SD1_CMD__CAN4_RX                          0x0234 0x0538 0x0684 0x02 0x02
-> +#define IMX943_PAD_SD1_CMD__NETC_1588MUX_INOUT1              0x0234 0x0538 0x0650 0x03 0x01
-> +#define IMX943_PAD_SD1_CMD__FLEXIO2_4_1_FLEXIO1              0x0234 0x0538 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD1_CMD__GPIO4_IO9                        0x0234 0x0538 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD1_CMD__FLEXPWM3_PWMX1                   0x0234 0x0538 0x06CC 0x06 0x02
-> +#define IMX943_PAD_SD1_CMD__SINC1_EMBIT0                     0x0234 0x0538 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD1_DATA0__USDHC1_DATA0                   0x0238 0x053C 0x0000 0x00 0x00
-> +#define IMX943_PAD_SD1_DATA0__SAI4_RX_SYNC                   0x0238 0x053C 0x0814 0x01 0x01
-> +#define IMX943_PAD_SD1_DATA0__CAN5_TX                        0x0238 0x053C 0x0000 0x02 0x00
-> +#define IMX943_PAD_SD1_DATA0__NETC_1588MUX_INOUT2            0x0238 0x053C 0x0654 0x03 0x01
-> +#define IMX943_PAD_SD1_DATA0__FLEXIO2_4_1_FLEXIO2            0x0238 0x053C 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD1_DATA0__GPIO4_IO10                     0x0238 0x053C 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD1_DATA0__FLEXPWM3_PWMX2                 0x0238 0x053C 0x06D0 0x06 0x01
-> +#define IMX943_PAD_SD1_DATA0__SINC1_EMCLK1                   0x0238 0x053C 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD1_DATA1__USDHC1_DATA1                   0x023C 0x0540 0x0000 0x00 0x00
-> +#define IMX943_PAD_SD1_DATA1__SAI4_TX_SYNC                   0x023C 0x0540 0x081C 0x01 0x01
-> +#define IMX943_PAD_SD1_DATA1__CAN5_RX                        0x023C 0x0540 0x0688 0x02 0x03
-> +#define IMX943_PAD_SD1_DATA1__NETC_1588MUX_INOUT3            0x023C 0x0540 0x0658 0x03 0x01
-> +#define IMX943_PAD_SD1_DATA1__FLEXIO2_4_1_FLEXIO3            0x023C 0x0540 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD1_DATA1__GPIO4_IO11                     0x023C 0x0540 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD1_DATA1__FLEXPWM3_PWMA3                 0x023C 0x0540 0x06B4 0x06 0x01
-> +#define IMX943_PAD_SD1_DATA1__SINC1_EMBIT1                   0x023C 0x0540 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD1_DATA2__USDHC1_DATA2                   0x0240 0x0544 0x0000 0x00 0x00
-> +#define IMX943_PAD_SD1_DATA2__SAI4_TX_DATA0                  0x0240 0x0544 0x0000 0x01 0x00
-> +#define IMX943_PAD_SD1_DATA2__PMIC_READY                     0x0240 0x0544 0x0000 0x02 0x00
-> +#define IMX943_PAD_SD1_DATA2__NETC_1588MUX_INOUT4            0x0240 0x0544 0x065C 0x03 0x01
-> +#define IMX943_PAD_SD1_DATA2__FLEXIO2_4_1_FLEXIO4            0x0240 0x0544 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD1_DATA2__GPIO4_IO12                     0x0240 0x0544 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD1_DATA2__FLEXPWM3_PWMB3                 0x0240 0x0544 0x06C4 0x06 0x01
-> +#define IMX943_PAD_SD1_DATA2__SINC1_EMCLK2                   0x0240 0x0544 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD1_DATA3__USDHC1_DATA3                   0x0244 0x0548 0x0000 0x00 0x00
-> +#define IMX943_PAD_SD1_DATA3__SAI4_RX_DATA0                  0x0244 0x0548 0x0810 0x01 0x01
-> +#define IMX943_PAD_SD1_DATA3__NETC_1588MUX_INOUT5            0x0244 0x0548 0x0660 0x03 0x01
-> +#define IMX943_PAD_SD1_DATA3__FLEXIO2_4_1_FLEXIO5            0x0244 0x0548 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD1_DATA3__GPIO4_IO13                     0x0244 0x0548 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD1_DATA3__FLEXPWM3_PWMA2                 0x0244 0x0548 0x06B0 0x06 0x01
-> +#define IMX943_PAD_SD1_DATA3__SINC1_EMBIT2                   0x0244 0x0548 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD1_DATA4__USDHC1_DATA4                   0x0248 0x054C 0x0000 0x00 0x00
-> +#define IMX943_PAD_SD1_DATA4__SAI2_RX_DATA0                  0x0248 0x054C 0x07F0 0x01 0x02
-> +#define IMX943_PAD_SD1_DATA4__NETC_1588MUX_INOUT6            0x0248 0x054C 0x0664 0x03 0x01
-> +#define IMX943_PAD_SD1_DATA4__FLEXIO2_4_1_FLEXIO6            0x0248 0x054C 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD1_DATA4__GPIO4_IO14                     0x0248 0x054C 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD1_DATA4__FLEXPWM3_PWMB2                 0x0248 0x054C 0x06C0 0x06 0x01
-> +#define IMX943_PAD_SD1_DATA4__SINC1_EMCLK3                   0x0248 0x054C 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD1_DATA5__USDHC1_DATA5                   0x024C 0x0550 0x0000 0x00 0x00
-> +#define IMX943_PAD_SD1_DATA5__SAI2_TX_DATA0                  0x024C 0x0550 0x0000 0x01 0x00
-> +#define IMX943_PAD_SD1_DATA5__USDHC1_RESET_B                 0x024C 0x0550 0x0000 0x02 0x00
-> +#define IMX943_PAD_SD1_DATA5__NETC_1588MUX_INOUT7            0x024C 0x0550 0x0668 0x03 0x01
-> +#define IMX943_PAD_SD1_DATA5__FLEXIO2_4_1_FLEXIO7            0x024C 0x0550 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD1_DATA5__GPIO4_IO15                     0x024C 0x0550 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD1_DATA5__FLEXPWM3_PWMA1                 0x024C 0x0550 0x06AC 0x06 0x01
-> +#define IMX943_PAD_SD1_DATA5__SINC1_EMBIT3                   0x024C 0x0550 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD1_DATA6__USDHC1_DATA6                   0x0250 0x0554 0x0000 0x00 0x00
-> +#define IMX943_PAD_SD1_DATA6__SAI2_TX_BCLK                   0x0250 0x0554 0x07F8 0x01 0x02
-> +#define IMX943_PAD_SD1_DATA6__USDHC1_CD_B                    0x0250 0x0554 0x0000 0x02 0x00
-> +#define IMX943_PAD_SD1_DATA6__NETC_1588MUX_INOUT8            0x0250 0x0554 0x066C 0x03 0x01
-> +#define IMX943_PAD_SD1_DATA6__FLEXIO2_4_1_FLEXIO8            0x0250 0x0554 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD1_DATA6__GPIO4_IO16                     0x0250 0x0554 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD1_DATA6__FLEXPWM3_PWMB1                 0x0250 0x0554 0x06BC 0x06 0x01
-> +#define IMX943_PAD_SD1_DATA6__SINC1_MOD_CLK0                 0x0250 0x0554 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD1_DATA7__USDHC1_DATA7                   0x0254 0x0558 0x0000 0x00 0x00
-> +#define IMX943_PAD_SD1_DATA7__SAI2_RX_SYNC                   0x0254 0x0558 0x07F4 0x01 0x02
-> +#define IMX943_PAD_SD1_DATA7__USDHC1_WP                      0x0254 0x0558 0x0000 0x02 0x00
-> +#define IMX943_PAD_SD1_DATA7__NETC_1588MUX_INOUT9            0x0254 0x0558 0x0670 0x03 0x01
-> +#define IMX943_PAD_SD1_DATA7__FLEXIO2_4_1_FLEXIO9            0x0254 0x0558 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD1_DATA7__GPIO4_IO17                     0x0254 0x0558 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD1_DATA7__FLEXPWM3_PWMA0                 0x0254 0x0558 0x06A8 0x06 0x01
-> +#define IMX943_PAD_SD1_DATA7__SINC1_MOD_CLK1                 0x0254 0x0558 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD1_STROBE__USDHC1_STROBE                 0x0258 0x055C 0x0000 0x00 0x00
-> +#define IMX943_PAD_SD1_STROBE__SAI2_TX_SYNC                  0x0258 0x055C 0x07FC 0x01 0x02
-> +#define IMX943_PAD_SD1_STROBE__NETC_1588MUX_INOUT10          0x0258 0x055C 0x0674 0x03 0x01
-> +#define IMX943_PAD_SD1_STROBE__FLEXIO2_4_1_FLEXIO10          0x0258 0x055C 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD1_STROBE__GPIO4_IO18                    0x0258 0x055C 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD1_STROBE__FLEXPWM3_PWMB0                0x0258 0x055C 0x06B8 0x06 0x01
-> +#define IMX943_PAD_SD1_STROBE__SINC1_MOD_CLK2                0x0258 0x055C 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD2_VSELECT__USDHC2_VSELECT               0x025C 0x0560 0x0000 0x00 0x00
-> +#define IMX943_PAD_SD2_VSELECT__SAI4_MCLK                    0x025C 0x0560 0x0808 0x01 0x01
-> +#define IMX943_PAD_SD2_VSELECT__USDHC2_WP                    0x025C 0x0560 0x0854 0x02 0x02
-> +#define IMX943_PAD_SD2_VSELECT__NETC_1588MUX_INOUT10         0x025C 0x0560 0x0674 0x03 0x02
-> +#define IMX943_PAD_SD2_VSELECT__FLEXIO2_4_1_FLEXIO11         0x025C 0x0560 0x0694 0x04 0x01
-> +#define IMX943_PAD_SD2_VSELECT__GPIO4_IO19                   0x025C 0x0560 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD2_VSELECT__EXT_CLK1                     0x025C 0x0560 0x0624 0x06 0x01
-> +#define IMX943_PAD_SD2_VSELECT__XBAR1_XBAR_INOUT12           0x025C 0x0560 0x088C 0x07 0x02
-> +
-> +#define IMX943_PAD_XSPI1_DATA0__XSPI1_A_DATA0                0x0260 0x0564 0x0000 0x00 0x00
-> +#define IMX943_PAD_XSPI1_DATA0__SAI2_RX_SYNC                 0x0260 0x0564 0x07F4 0x01 0x03
-> +#define IMX943_PAD_XSPI1_DATA0__XSPI_SLV_DATA0               0x0260 0x0564 0x0908 0x03 0x01
-> +#define IMX943_PAD_XSPI1_DATA0__FLEXIO1_3_3_FLEXIO0          0x0260 0x0564 0x0000 0x04 0x00
-> +#define IMX943_PAD_XSPI1_DATA0__GPIO7_IO16                   0x0260 0x0564 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_XSPI1_DATA1__XSPI1_A_DATA1                0x0264 0x0568 0x0000 0x00 0x00
-> +#define IMX943_PAD_XSPI1_DATA1__SAI2_TX_SYNC                 0x0264 0x0568 0x07FC 0x01 0x03
-> +#define IMX943_PAD_XSPI1_DATA1__XSPI_SLV_DATA1               0x0264 0x0568 0x090C 0x03 0x01
-> +#define IMX943_PAD_XSPI1_DATA1__FLEXIO1_3_3_FLEXIO1          0x0264 0x0568 0x0000 0x04 0x00
-> +#define IMX943_PAD_XSPI1_DATA1__GPIO7_IO17                   0x0264 0x0568 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_XSPI1_DATA2__XSPI1_A_DATA2                0x0268 0x056C 0x0000 0x00 0x00
-> +#define IMX943_PAD_XSPI1_DATA2__SAI2_TX_DATA0                0x0268 0x056C 0x0000 0x01 0x00
-> +#define IMX943_PAD_XSPI1_DATA2__XSPI_SLV_DATA2               0x0268 0x056C 0x0910 0x03 0x01
-> +#define IMX943_PAD_XSPI1_DATA2__FLEXIO1_3_3_FLEXIO2          0x0268 0x056C 0x0000 0x04 0x00
-> +#define IMX943_PAD_XSPI1_DATA2__GPIO7_IO18                   0x0268 0x056C 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_XSPI1_DATA3__XSPI1_A_DATA3                0x026C 0x0570 0x0000 0x00 0x00
-> +#define IMX943_PAD_XSPI1_DATA3__SAI2_RX_DATA0                0x026C 0x0570 0x07F0 0x01 0x03
-> +#define IMX943_PAD_XSPI1_DATA3__SAI2_MCLK                    0x026C 0x0570 0x07E8 0x02 0x02
-> +#define IMX943_PAD_XSPI1_DATA3__XSPI_SLV_DATA3               0x026C 0x0570 0x0914 0x03 0x01
-> +#define IMX943_PAD_XSPI1_DATA3__FLEXIO1_3_3_FLEXIO3          0x026C 0x0570 0x0000 0x04 0x00
-> +#define IMX943_PAD_XSPI1_DATA3__GPIO7_IO19                   0x026C 0x0570 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_XSPI1_DATA4__XSPI1_A_DATA4                0x0270 0x0574 0x0000 0x00 0x00
-> +#define IMX943_PAD_XSPI1_DATA4__SAI4_RX_SYNC                 0x0270 0x0574 0x0814 0x01 0x02
-> +#define IMX943_PAD_XSPI1_DATA4__XSPI_SLV_DATA4               0x0270 0x0574 0x0918 0x03 0x01
-> +#define IMX943_PAD_XSPI1_DATA4__FLEXIO1_3_3_FLEXIO4          0x0270 0x0574 0x0000 0x04 0x00
-> +#define IMX943_PAD_XSPI1_DATA4__GPIO7_IO20                   0x0270 0x0574 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_XSPI1_DATA5__XSPI1_A_DATA5                0x0274 0x0578 0x0000 0x00 0x00
-> +#define IMX943_PAD_XSPI1_DATA5__SAI4_TX_SYNC                 0x0274 0x0578 0x081C 0x01 0x02
-> +#define IMX943_PAD_XSPI1_DATA5__XSPI_SLV_DATA5               0x0274 0x0578 0x091C 0x03 0x01
-> +#define IMX943_PAD_XSPI1_DATA5__FLEXIO1_3_3_FLEXIO5          0x0274 0x0578 0x0000 0x04 0x00
-> +#define IMX943_PAD_XSPI1_DATA5__GPIO7_IO21                   0x0274 0x0578 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_XSPI1_DATA6__XSPI1_A_DATA6                0x0278 0x057C 0x0000 0x00 0x00
-> +#define IMX943_PAD_XSPI1_DATA6__SAI4_TX_DATA0                0x0278 0x057C 0x0000 0x01 0x00
-> +#define IMX943_PAD_XSPI1_DATA6__XSPI_SLV_DATA6               0x0278 0x057C 0x0920 0x03 0x01
-> +#define IMX943_PAD_XSPI1_DATA6__FLEXIO1_3_3_FLEXIO6          0x0278 0x057C 0x0000 0x04 0x00
-> +#define IMX943_PAD_XSPI1_DATA6__GPIO7_IO22                   0x0278 0x057C 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_XSPI1_DATA7__XSPI1_A_DATA7                0x027C 0x0580 0x0000 0x00 0x00
-> +#define IMX943_PAD_XSPI1_DATA7__SAI4_RX_DATA0                0x027C 0x0580 0x0810 0x01 0x02
-> +#define IMX943_PAD_XSPI1_DATA7__SAI4_MCLK                    0x027C 0x0580 0x0808 0x02 0x02
-> +#define IMX943_PAD_XSPI1_DATA7__XSPI_SLV_DATA7               0x027C 0x0580 0x0924 0x03 0x01
-> +#define IMX943_PAD_XSPI1_DATA7__FLEXIO1_3_3_FLEXIO7          0x027C 0x0580 0x0000 0x04 0x00
-> +#define IMX943_PAD_XSPI1_DATA7__GPIO7_IO23                   0x027C 0x0580 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_XSPI1_DQS__XSPI1_A_DQS                    0x0280 0x0584 0x0000 0x00 0x00
-> +#define IMX943_PAD_XSPI1_DQS__SAI2_TX_BCLK                   0x0280 0x0584 0x07F8 0x01 0x03
-> +#define IMX943_PAD_XSPI1_DQS__XSPI_SLV_DQS                   0x0280 0x0584 0x0900 0x03 0x01
-> +#define IMX943_PAD_XSPI1_DQS__FLEXIO1_3_3_FLEXIO8            0x0280 0x0584 0x0000 0x04 0x00
-> +#define IMX943_PAD_XSPI1_DQS__GPIO7_IO24                     0x0280 0x0584 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_XSPI1_SCLK__XSPI1_A_SCLK                  0x0284 0x0588 0x0000 0x00 0x00
-> +#define IMX943_PAD_XSPI1_SCLK__SAI4_TX_BCLK                  0x0284 0x0588 0x0818 0x01 0x02
-> +#define IMX943_PAD_XSPI1_SCLK__XSPI_SLV_CLK                  0x0284 0x0588 0x0904 0x03 0x01
-> +#define IMX943_PAD_XSPI1_SCLK__FLEXIO1_3_3_FLEXIO9           0x0284 0x0588 0x0000 0x04 0x00
-> +#define IMX943_PAD_XSPI1_SCLK__GPIO7_IO25                    0x0284 0x0588 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_XSPI1_SS0_B__XSPI1_A_SS0_B                0x0288 0x058C 0x0000 0x00 0x00
-> +#define IMX943_PAD_XSPI1_SS0_B__SAI4_RX_BCLK                 0x0288 0x058C 0x080C 0x01 0x02
-> +#define IMX943_PAD_XSPI1_SS0_B__XSPI_SLV_CS                  0x0288 0x058C 0x08FC 0x03 0x01
-> +#define IMX943_PAD_XSPI1_SS0_B__FLEXIO1_3_3_FLEXIO10         0x0288 0x058C 0x0000 0x04 0x00
-> +#define IMX943_PAD_XSPI1_SS0_B__GPIO7_IO26                   0x0288 0x058C 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_XSPI1_SS1_B__XSPI1_A_SS1_B                0x028C 0x0590 0x0000 0x00 0x00
-> +#define IMX943_PAD_XSPI1_SS1_B__SAI2_RX_BCLK                 0x028C 0x0590 0x07EC 0x01 0x02
-> +#define IMX943_PAD_XSPI1_SS1_B__FLEXPWM3_PWMX3               0x028C 0x0590 0x0000 0x03 0x00
-> +#define IMX943_PAD_XSPI1_SS1_B__FLEXIO1_3_3_FLEXIO11         0x028C 0x0590 0x0000 0x04 0x00
-> +#define IMX943_PAD_XSPI1_SS1_B__GPIO7_IO27                   0x028C 0x0590 0x0000 0x05 0x00
-> +#define IMX943_PAD_XSPI1_SS1_B__SINC1_MOD_CLK0               0x028C 0x0590 0x0000 0x06 0x00
-> +#define IMX943_PAD_XSPI1_SS1_B__SINC_FILTER_GLUE1_BREAK      0x028C 0x0590 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD2_CD_B__USDHC2_CD_B                     0x0290 0x0594 0x0000 0x00 0x00
-> +#define IMX943_PAD_SD2_CD_B__NETC_PINMUX_ETH4_RX_CTL         0x0290 0x0594 0x0634 0x01 0x01
-> +#define IMX943_PAD_SD2_CD_B__I3C2_SCL                        0x0290 0x0594 0x0720 0x02 0x03
-> +#define IMX943_PAD_SD2_CD_B__NETC_1588MUX_INOUT9             0x0290 0x0594 0x0670 0x03 0x02
-> +#define IMX943_PAD_SD2_CD_B__FLEXIO2_4_2_FLEXIO0             0x0290 0x0594 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD2_CD_B__GPIO4_IO20                      0x0290 0x0594 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD2_CD_B__XBAR1_XBAR_INOUT13              0x0290 0x0594 0x0890 0x06 0x02
-> +#define IMX943_PAD_SD2_CD_B__SINC2_EMCLK0                    0x0290 0x0594 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD2_CLK__USDHC2_CLK                       0x0294 0x0598 0x0000 0x00 0x00
-> +#define IMX943_PAD_SD2_CLK__NETC_PINMUX_ETH4_TX_CLK          0x0294 0x0598 0x0648 0x01 0x01
-> +#define IMX943_PAD_SD2_CLK__I3C2_SDA                         0x0294 0x0598 0x0724 0x02 0x03
-> +#define IMX943_PAD_SD2_CLK__NETC_1588MUX_INOUT8              0x0294 0x0598 0x066C 0x03 0x02
-> +#define IMX943_PAD_SD2_CLK__FLEXIO2_4_2_FLEXIO1              0x0294 0x0598 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD2_CLK__GPIO4_IO21                       0x0294 0x0598 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD2_CLK__OBSERVE0                         0x0294 0x0598 0x0000 0x06 0x00
-> +#define IMX943_PAD_SD2_CLK__SINC2_EMBIT0                     0x0294 0x0598 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD2_CMD__USDHC2_CMD                       0x0298 0x059C 0x0000 0x00 0x00
-> +#define IMX943_PAD_SD2_CMD__NETC_PINMUX_ETH4_TX_CTL          0x0298 0x059C 0x0000 0x01 0x00
-> +#define IMX943_PAD_SD2_CMD__I3C2_PUR                         0x0298 0x059C 0x0000 0x02 0x00
-> +#define IMX943_PAD_SD2_CMD__I3C2_PUR_B                       0x0298 0x059C 0x0000 0x03 0x00
-> +#define IMX943_PAD_SD2_CMD__FLEXIO2_4_2_FLEXIO2              0x0298 0x059C 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD2_CMD__GPIO4_IO22                       0x0298 0x059C 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD2_CMD__OBSERVE1                         0x0298 0x059C 0x0000 0x06 0x00
-> +#define IMX943_PAD_SD2_CMD__SINC2_EMCLK1                     0x0298 0x059C 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD2_DATA0__USDHC2_DATA0                   0x029C 0x05A0 0x0000 0x00 0x00
-> +#define IMX943_PAD_SD2_DATA0__NETC_PINMUX_ETH4_TXD0          0x029C 0x05A0 0x0000 0x01 0x00
-> +#define IMX943_PAD_SD2_DATA0__CAN2_TX                        0x029C 0x05A0 0x0000 0x02 0x00
-> +#define IMX943_PAD_SD2_DATA0__NETC_1588MUX_INOUT7            0x029C 0x05A0 0x0668 0x03 0x02
-> +#define IMX943_PAD_SD2_DATA0__FLEXIO2_4_2_FLEXIO3            0x029C 0x05A0 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD2_DATA0__GPIO4_IO23                     0x029C 0x05A0 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD2_DATA0__OBSERVE2                       0x029C 0x05A0 0x0000 0x06 0x00
-> +#define IMX943_PAD_SD2_DATA0__SINC2_EMBIT1                   0x029C 0x05A0 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD2_DATA1__USDHC2_DATA1                   0x02A0 0x05A4 0x0000 0x00 0x00
-> +#define IMX943_PAD_SD2_DATA1__NETC_PINMUX_ETH4_TXD1          0x02A0 0x05A4 0x0000 0x01 0x00
-> +#define IMX943_PAD_SD2_DATA1__CAN2_RX                        0x02A0 0x05A4 0x067C 0x02 0x04
-> +#define IMX943_PAD_SD2_DATA1__NETC_1588MUX_INOUT6            0x02A0 0x05A4 0x0664 0x03 0x02
-> +#define IMX943_PAD_SD2_DATA1__FLEXIO2_4_2_FLEXIO4            0x02A0 0x05A4 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD2_DATA1__GPIO4_IO24                     0x02A0 0x05A4 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD2_DATA1__XBAR1_XBAR_INOUT14             0x02A0 0x05A4 0x0894 0x06 0x02
-> +#define IMX943_PAD_SD2_DATA1__SINC2_EMCLK2                   0x02A0 0x05A4 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD2_DATA2__USDHC2_DATA2                   0x02A4 0x05A8 0x0000 0x00 0x00
-> +#define IMX943_PAD_SD2_DATA2__NETC_PINMUX_ETH4_TXD2          0x02A4 0x05A8 0x0000 0x01 0x00
-> +#define IMX943_PAD_SD2_DATA2__MQS2_RIGHT                     0x02A4 0x05A8 0x0000 0x02 0x00
-> +#define IMX943_PAD_SD2_DATA2__NETC_1588MUX_INOUT5            0x02A4 0x05A8 0x0660 0x03 0x02
-> +#define IMX943_PAD_SD2_DATA2__FLEXIO2_4_2_FLEXIO5            0x02A4 0x05A8 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD2_DATA2__GPIO4_IO25                     0x02A4 0x05A8 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD2_DATA2__XBAR1_XBAR_INOUT15             0x02A4 0x05A8 0x0898 0x06 0x01
-> +#define IMX943_PAD_SD2_DATA2__SINC2_EMBIT2                   0x02A4 0x05A8 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD2_DATA3__USDHC2_DATA3                   0x02A8 0x05AC 0x0000 0x00 0x00
-> +#define IMX943_PAD_SD2_DATA3__NETC_PINMUX_ETH4_TXD3          0x02A8 0x05AC 0x0000 0x01 0x00
-> +#define IMX943_PAD_SD2_DATA3__MQS2_LEFT                      0x02A8 0x05AC 0x0000 0x02 0x00
-> +#define IMX943_PAD_SD2_DATA3__LPTMR2_ALT0                    0x02A8 0x05AC 0x0780 0x03 0x01
-> +#define IMX943_PAD_SD2_DATA3__FLEXIO2_4_2_FLEXIO6            0x02A8 0x05AC 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD2_DATA3__GPIO4_IO26                     0x02A8 0x05AC 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD2_DATA3__XBAR1_XBAR_INOUT16             0x02A8 0x05AC 0x089C 0x06 0x01
-> +#define IMX943_PAD_SD2_DATA3__SINC2_EMCLK3                   0x02A8 0x05AC 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD2_RESET_B__USDHC2_RESET_B               0x02AC 0x05B0 0x0000 0x00 0x00
-> +#define IMX943_PAD_SD2_RESET_B__NETC_PINMUX_ETH4_RXD0        0x02AC 0x05B0 0x0638 0x01 0x01
-> +#define IMX943_PAD_SD2_RESET_B__NETC_1588MUX_INOUT4          0x02AC 0x05B0 0x065C 0x02 0x02
-> +#define IMX943_PAD_SD2_RESET_B__LPTMR2_ALT1                  0x02AC 0x05B0 0x0784 0x03 0x01
-> +#define IMX943_PAD_SD2_RESET_B__FLEXIO2_4_2_FLEXIO7          0x02AC 0x05B0 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD2_RESET_B__GPIO4_IO27                   0x02AC 0x05B0 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD2_RESET_B__XBAR1_XBAR_INOUT17           0x02AC 0x05B0 0x08A0 0x06 0x01
-> +#define IMX943_PAD_SD2_RESET_B__SINC2_EMBIT3                 0x02AC 0x05B0 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD2_GPIO0__USDHC2_WP                      0x02B0 0x05B4 0x0854 0x00 0x03
-> +#define IMX943_PAD_SD2_GPIO0__NETC_PINMUX_ETH4_RXD1          0x02B0 0x05B4 0x063C 0x01 0x01
-> +#define IMX943_PAD_SD2_GPIO0__NETC_1588MUX_INOUT3            0x02B0 0x05B4 0x0658 0x03 0x02
-> +#define IMX943_PAD_SD2_GPIO0__FLEXIO2_4_2_FLEXIO8            0x02B0 0x05B4 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD2_GPIO0__GPIO4_IO28                     0x02B0 0x05B4 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD2_GPIO0__XBAR1_XBAR_INOUT18             0x02B0 0x05B4 0x08A4 0x06 0x01
-> +#define IMX943_PAD_SD2_GPIO0__SINC2_MOD_CLK1                 0x02B0 0x05B4 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD2_GPIO1__LPTMR2_ALT2                    0x02B4 0x05B8 0x0788 0x00 0x01
-> +#define IMX943_PAD_SD2_GPIO1__NETC_PINMUX_ETH4_RXD2          0x02B4 0x05B8 0x0640 0x01 0x01
-> +#define IMX943_PAD_SD2_GPIO1__ECAT_CLK25                     0x02B4 0x05B8 0x0000 0x02 0x00
-> +#define IMX943_PAD_SD2_GPIO1__NETC_1588MUX_INOUT2            0x02B4 0x05B8 0x0654 0x03 0x02
-> +#define IMX943_PAD_SD2_GPIO1__FLEXIO2_4_2_FLEXIO9            0x02B4 0x05B8 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD2_GPIO1__GPIO4_IO29                     0x02B4 0x05B8 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD2_GPIO1__XBAR1_XBAR_INOUT19             0x02B4 0x05B8 0x08A8 0x06 0x01
-> +#define IMX943_PAD_SD2_GPIO1__SINC2_MOD_CLK0                 0x02B4 0x05B8 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD2_GPIO2__NETC_PINMUX_ETH4_RXD3          0x02B8 0x05BC 0x0644 0x01 0x01
-> +#define IMX943_PAD_SD2_GPIO2__CAN5_TX                        0x02B8 0x05BC 0x0000 0x02 0x00
-> +#define IMX943_PAD_SD2_GPIO2__NETC_1588MUX_INOUT1            0x02B8 0x05BC 0x0650 0x03 0x02
-> +#define IMX943_PAD_SD2_GPIO2__FLEXIO2_4_2_FLEXIO10           0x02B8 0x05BC 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD2_GPIO2__GPIO4_IO30                     0x02B8 0x05BC 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD2_GPIO2__XBAR1_XBAR_INOUT20             0x02B8 0x05BC 0x08AC 0x06 0x01
-> +#define IMX943_PAD_SD2_GPIO2__SINC2_MOD_CLK2                 0x02B8 0x05BC 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_SD2_GPIO3__NETC_PINMUX_ETH4_RX_CLK        0x02BC 0x05C0 0x0630 0x01 0x01
-> +#define IMX943_PAD_SD2_GPIO3__CAN5_RX                        0x02BC 0x05C0 0x0688 0x02 0x04
-> +#define IMX943_PAD_SD2_GPIO3__NETC_1588MUX_INOUT0            0x02BC 0x05C0 0x064C 0x03 0x02
-> +#define IMX943_PAD_SD2_GPIO3__FLEXIO2_4_2_FLEXIO11           0x02BC 0x05C0 0x0000 0x04 0x00
-> +#define IMX943_PAD_SD2_GPIO3__GPIO4_IO31                     0x02BC 0x05C0 0x0000 0x05 0x00
-> +#define IMX943_PAD_SD2_GPIO3__XBAR1_XBAR_INOUT21             0x02BC 0x05C0 0x0000 0x06 0x00
-> +#define IMX943_PAD_SD2_GPIO3__SINC_FILTER_GLUE2_BREAK        0x02BC 0x05C0 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_I2C1_SCL__LPI2C1_SCL                      0x02C0 0x05C4 0x0000 0x00 0x00
-> +#define IMX943_PAD_I2C1_SCL__I3C1_SCL                        0x02C0 0x05C4 0x0000 0x01 0x00
-> +#define IMX943_PAD_I2C1_SCL__LPUART1_DCD_B                   0x02C0 0x05C4 0x0000 0x02 0x00
-> +#define IMX943_PAD_I2C1_SCL__TPM2_CH0                        0x02C0 0x05C4 0x0000 0x03 0x00
-> +#define IMX943_PAD_I2C1_SCL__SAI1_RX_SYNC                    0x02C0 0x05C4 0x0000 0x04 0x00
-> +#define IMX943_PAD_I2C1_SCL__GPIO1_IO0                       0x02C0 0x05C4 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_I2C1_SDA__LPI2C1_SDA                      0x02C4 0x05C8 0x0000 0x00 0x00
-> +#define IMX943_PAD_I2C1_SDA__I3C1_SDA                        0x02C4 0x05C8 0x0000 0x01 0x00
-> +#define IMX943_PAD_I2C1_SDA__LPUART1_RIN_B                   0x02C4 0x05C8 0x0000 0x02 0x00
-> +#define IMX943_PAD_I2C1_SDA__TPM2_CH1                        0x02C4 0x05C8 0x0000 0x03 0x00
-> +#define IMX943_PAD_I2C1_SDA__SAI1_RX_BCLK                    0x02C4 0x05C8 0x0000 0x04 0x00
-> +#define IMX943_PAD_I2C1_SDA__GPIO1_IO1                       0x02C4 0x05C8 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_I2C2_SCL__LPI2C2_SCL                      0x02C8 0x05CC 0x0000 0x00 0x00
-> +#define IMX943_PAD_I2C2_SCL__I3C1_PUR                        0x02C8 0x05CC 0x0000 0x01 0x00
-> +#define IMX943_PAD_I2C2_SCL__LPUART2_DCD_B                   0x02C8 0x05CC 0x0000 0x02 0x00
-> +#define IMX943_PAD_I2C2_SCL__TPM2_CH2                        0x02C8 0x05CC 0x0000 0x03 0x00
-> +#define IMX943_PAD_I2C2_SCL__GPT1_CLK                        0x02C8 0x05CC 0x060C 0x04 0x00
-> +#define IMX943_PAD_I2C2_SCL__GPIO1_IO2                       0x02C8 0x05CC 0x0000 0x05 0x00
-> +#define IMX943_PAD_I2C2_SCL__I3C1_PUR_B                      0x02C8 0x05CC 0x0000 0x06 0x00
-> +#define IMX943_PAD_I2C2_SCL__LPIT1_TRIGGER0                  0x02C8 0x05CC 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_I2C2_SDA__LPI2C2_SDA                      0x02CC 0x05D0 0x0000 0x00 0x00
-> +#define IMX943_PAD_I2C2_SDA__LPI2C1_HREQ                     0x02CC 0x05D0 0x0000 0x01 0x00
-> +#define IMX943_PAD_I2C2_SDA__LPUART2_RIN_B                   0x02CC 0x05D0 0x0000 0x02 0x00
-> +#define IMX943_PAD_I2C2_SDA__TPM2_CH3                        0x02CC 0x05D0 0x0000 0x03 0x00
-> +#define IMX943_PAD_I2C2_SDA__SAI1_MCLK                       0x02CC 0x05D0 0x0620 0x04 0x00
-> +#define IMX943_PAD_I2C2_SDA__GPIO1_IO3                       0x02CC 0x05D0 0x0000 0x05 0x00
-> +#define IMX943_PAD_I2C2_SDA__EWM_OUT_B                       0x02CC 0x05D0 0x0000 0x06 0x00
-> +#define IMX943_PAD_I2C2_SDA__LPIT1_TRIGGER1                  0x02CC 0x05D0 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_UART1_RXD__LPUART1_RX                     0x02D0 0x05D4 0x0000 0x00 0x00
-> +#define IMX943_PAD_UART1_RXD__S400_UART_RX                   0x02D0 0x05D4 0x0000 0x01 0x00
-> +#define IMX943_PAD_UART1_RXD__LPSPI2_SIN                     0x02D0 0x05D4 0x0000 0x02 0x00
-> +#define IMX943_PAD_UART1_RXD__TPM1_CH0                       0x02D0 0x05D4 0x0000 0x03 0x00
-> +#define IMX943_PAD_UART1_RXD__GPT1_CAPTURE1                  0x02D0 0x05D4 0x0000 0x04 0x00
-> +#define IMX943_PAD_UART1_RXD__GPIO1_IO4                      0x02D0 0x05D4 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_UART1_TXD__LPUART1_TX                     0x02D4 0x05D8 0x0000 0x00 0x00
-> +#define IMX943_PAD_UART1_TXD__S400_UART_TX                   0x02D4 0x05D8 0x0000 0x01 0x00
-> +#define IMX943_PAD_UART1_TXD__LPSPI2_PCS0                    0x02D4 0x05D8 0x0000 0x02 0x00
-> +#define IMX943_PAD_UART1_TXD__TPM1_CH1                       0x02D4 0x05D8 0x0000 0x03 0x00
-> +#define IMX943_PAD_UART1_TXD__GPT1_COMPARE1                  0x02D4 0x05D8 0x0000 0x04 0x00
-> +#define IMX943_PAD_UART1_TXD__GPIO1_IO5                      0x02D4 0x05D8 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_UART2_RXD__LPUART2_RX                     0x02D8 0x05DC 0x0000 0x00 0x00
-> +#define IMX943_PAD_UART2_RXD__LPUART1_CTS_B                  0x02D8 0x05DC 0x0000 0x01 0x00
-> +#define IMX943_PAD_UART2_RXD__LPSPI2_SOUT                    0x02D8 0x05DC 0x0000 0x02 0x00
-> +#define IMX943_PAD_UART2_RXD__TPM1_CH2                       0x02D8 0x05DC 0x0000 0x03 0x00
-> +#define IMX943_PAD_UART2_RXD__SAI1_MCLK                      0x02D8 0x05DC 0x0620 0x04 0x01
-> +#define IMX943_PAD_UART2_RXD__GPIO1_IO6                      0x02D8 0x05DC 0x0000 0x05 0x00
-> +#define IMX943_PAD_UART2_RXD__GPT1_CLK                       0x02D8 0x05DC 0x060C 0x06 0x01
-> +#define IMX943_PAD_UART2_RXD__LPIT1_TRIGGER2                 0x02D8 0x05DC 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_UART2_TXD__LPUART2_TX                     0x02DC 0x05E0 0x0000 0x00 0x00
-> +#define IMX943_PAD_UART2_TXD__LPUART1_RTS_B                  0x02DC 0x05E0 0x0000 0x01 0x00
-> +#define IMX943_PAD_UART2_TXD__LPSPI2_SCK                     0x02DC 0x05E0 0x0000 0x02 0x00
-> +#define IMX943_PAD_UART2_TXD__TPM1_CH3                       0x02DC 0x05E0 0x0000 0x03 0x00
-> +#define IMX943_PAD_UART2_TXD__GPIO1_IO7                      0x02DC 0x05E0 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_PDM_CLK__PDM_CLK                          0x02E0 0x05E4 0x0000 0x00 0x00
-> +#define IMX943_PAD_PDM_CLK__MQS1_LEFT                        0x02E0 0x05E4 0x0000 0x01 0x00
-> +#define IMX943_PAD_PDM_CLK__LPTMR1_ALT0                      0x02E0 0x05E4 0x0000 0x04 0x00
-> +#define IMX943_PAD_PDM_CLK__GPIO1_IO8                        0x02E0 0x05E4 0x0000 0x05 0x00
-> +#define IMX943_PAD_PDM_CLK__CAN1_TX                          0x02E0 0x05E4 0x0000 0x06 0x00
-> +#define IMX943_PAD_PDM_CLK__EWM_OUT_B                        0x02E0 0x05E4 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM0          0x02E4 0x05E8 0x0610 0x00 0x02
-> +#define IMX943_PAD_PDM_BIT_STREAM0__MQS1_RIGHT               0x02E4 0x05E8 0x0000 0x01 0x00
-> +#define IMX943_PAD_PDM_BIT_STREAM0__LPSPI1_PCS1              0x02E4 0x05E8 0x0000 0x02 0x00
-> +#define IMX943_PAD_PDM_BIT_STREAM0__TPM1_EXTCLK              0x02E4 0x05E8 0x0000 0x03 0x00
-> +#define IMX943_PAD_PDM_BIT_STREAM0__LPTMR1_ALT1              0x02E4 0x05E8 0x0000 0x04 0x00
-> +#define IMX943_PAD_PDM_BIT_STREAM0__GPIO1_IO9                0x02E4 0x05E8 0x0000 0x05 0x00
-> +#define IMX943_PAD_PDM_BIT_STREAM0__CAN1_RX                  0x02E4 0x05E8 0x0608 0x06 0x00
-> +
-> +#define IMX943_PAD_PDM_BIT_STREAM1__PDM_BIT_STREAM1          0x02E8 0x05EC 0x0614 0x00 0x03
-> +#define IMX943_PAD_PDM_BIT_STREAM1__NMI_GLUE_NMI             0x02E8 0x05EC 0x0000 0x01 0x00
-> +#define IMX943_PAD_PDM_BIT_STREAM1__LPSPI2_PCS1              0x02E8 0x05EC 0x0000 0x02 0x00
-> +#define IMX943_PAD_PDM_BIT_STREAM1__TPM2_EXTCLK              0x02E8 0x05EC 0x0000 0x03 0x00
-> +#define IMX943_PAD_PDM_BIT_STREAM1__LPTMR1_ALT2              0x02E8 0x05EC 0x0000 0x04 0x00
-> +#define IMX943_PAD_PDM_BIT_STREAM1__GPIO1_IO10               0x02E8 0x05EC 0x0000 0x05 0x00
-> +#define IMX943_PAD_PDM_BIT_STREAM1__EXT_CLK1                 0x02E8 0x05EC 0x0624 0x06 0x00
-> +
-> +#define IMX943_PAD_SAI1_TXFS__SAI1_TX_SYNC                   0x02EC 0x05F0 0x0000 0x00 0x00
-> +#define IMX943_PAD_SAI1_TXFS__SAI1_TX_DATA1                  0x02EC 0x05F0 0x0000 0x01 0x00
-> +#define IMX943_PAD_SAI1_TXFS__LPSPI1_PCS0                    0x02EC 0x05F0 0x0000 0x02 0x00
-> +#define IMX943_PAD_SAI1_TXFS__LPUART2_DTR_B                  0x02EC 0x05F0 0x0000 0x03 0x00
-> +#define IMX943_PAD_SAI1_TXFS__MQS1_LEFT                      0x02EC 0x05F0 0x0000 0x04 0x00
-> +#define IMX943_PAD_SAI1_TXFS__GPIO1_IO11                     0x02EC 0x05F0 0x0000 0x05 0x00
-> +#define IMX943_PAD_SAI1_TXFS__EWM_OUT_B                      0x02EC 0x05F0 0x0000 0x06 0x00
-> +
-> +#define IMX943_PAD_SAI1_TXC__SAI1_TX_BCLK                    0x02F0 0x05F4 0x0000 0x00 0x00
-> +#define IMX943_PAD_SAI1_TXC__LPUART2_CTS_B                   0x02F0 0x05F4 0x0000 0x01 0x00
-> +#define IMX943_PAD_SAI1_TXC__LPSPI1_SIN                      0x02F0 0x05F4 0x0000 0x02 0x00
-> +#define IMX943_PAD_SAI1_TXC__LPUART1_DSR_B                   0x02F0 0x05F4 0x0000 0x03 0x00
-> +#define IMX943_PAD_SAI1_TXC__CAN1_RX                         0x02F0 0x05F4 0x0608 0x04 0x01
-> +#define IMX943_PAD_SAI1_TXC__GPIO1_IO12                      0x02F0 0x05F4 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_SAI1_TXD0__SAI1_TX_DATA0                  0x02F4 0x05F8 0x0000 0x00 0x00
-> +#define IMX943_PAD_SAI1_TXD0__LPUART2_RTS_B                  0x02F4 0x05F8 0x0000 0x01 0x00
-> +#define IMX943_PAD_SAI1_TXD0__LPSPI1_SCK                     0x02F4 0x05F8 0x0000 0x02 0x00
-> +#define IMX943_PAD_SAI1_TXD0__LPUART1_DTR_B                  0x02F4 0x05F8 0x0000 0x03 0x00
-> +#define IMX943_PAD_SAI1_TXD0__CAN1_TX                        0x02F4 0x05F8 0x0000 0x04 0x00
-> +#define IMX943_PAD_SAI1_TXD0__GPIO1_IO13                     0x02F4 0x05F8 0x0000 0x05 0x00
-> +
-> +#define IMX943_PAD_SAI1_RXD0__SAI1_RX_DATA0                  0x02F8 0x05FC 0x0000 0x00 0x00
-> +#define IMX943_PAD_SAI1_RXD0__SAI1_MCLK                      0x02F8 0x05FC 0x0620 0x01 0x02
-> +#define IMX943_PAD_SAI1_RXD0__LPSPI1_SOUT                    0x02F8 0x05FC 0x0000 0x02 0x00
-> +#define IMX943_PAD_SAI1_RXD0__LPUART2_DSR_B                  0x02F8 0x05FC 0x0000 0x03 0x00
-> +#define IMX943_PAD_SAI1_RXD0__MQS1_RIGHT                     0x02F8 0x05FC 0x0000 0x04 0x00
-> +#define IMX943_PAD_SAI1_RXD0__GPIO1_IO14                     0x02F8 0x05FC 0x0000 0x05 0x00
-> +#define IMX943_PAD_SAI1_RXD0__LPIT1_TRIGGER3                 0x02F8 0x05FC 0x0000 0x07 0x00
-> +
-> +#define IMX943_PAD_WDOG_ANY__WDOG_ANY                        0x02FC 0x0600 0x0000 0x00 0x00
-> +#define IMX943_PAD_WDOG_ANY__FCCU_EOUT1                      0x02FC 0x0600 0x0000 0x01 0x00
-> +#define IMX943_PAD_WDOG_ANY__GPIO1_IO15                      0x02FC 0x0600 0x0000 0x05 0x00
-> +#endif /* __DTS_IMX943_PINFUNC_H */
-> diff --git a/arch/arm64/boot/dts/freescale/imx943-power.h b/arch/arm64/boot/dts/freescale/imx943-power.h
-> new file mode 100644
-> index 000000000000..2d31aee0d91a
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx943-power.h
-> @@ -0,0 +1,41 @@
-> +/* SPDX-License-Identifier: (GPL-2.0 OR MIT) */
-> +/*
-> + *  Copyright 2024 NXP
-> + */
-> +
-> +#ifndef __IMX943_POWER_H__
-> +#define __IMX943_POWER_H__
-> +
-> +#define IMX943_PD_ANA		0
-> +#define IMX943_PD_AON		1
-> +#define IMX943_PD_BBSM		2
-> +#define IMX943_PD_M71		3
-> +#define IMX943_PD_CCMSRCGPC	4
-> +#define IMX943_PD_A55C0		5
-> +#define IMX943_PD_A55C1		6
-> +#define IMX943_PD_A55C2		7
-> +#define IMX943_PD_A55C3		8
-> +#define IMX943_PD_A55P		9
-> +#define IMX943_PD_DDR		10
-> +#define IMX943_PD_DISPLAY	11
-> +#define IMX943_PD_M70		12
-> +#define IMX943_PD_HSIO_TOP	13
-> +#define IMX943_PD_HSIO_WAON	14
-> +#define IMX943_PD_NETC		15
-> +#define IMX943_PD_NOC		16
-> +#define IMX943_PD_NPU		17
-> +#define IMX943_PD_WAKEUP	18
-> +
-> +#define IMX943_PERF_M33		0
-> +#define IMX943_PERF_M33S	1
-> +#define IMX943_PERF_WAKEUP	2
-> +#define IMX943_PERF_M70		3
-> +#define IMX943_PERF_M71		4
-> +#define IMX943_PERF_DRAM	5
-> +#define IMX943_PERF_HSIO	6
-> +#define IMX943_PERF_NPU		7
-> +#define IMX943_PERF_NOC		8
-> +#define IMX943_PERF_A55		9
-> +#define IMX943_PERF_DISP	10
-> +
-> +#endif
-> diff --git a/arch/arm64/boot/dts/freescale/imx943.dtsi b/arch/arm64/boot/dts/freescale/imx943.dtsi
-> new file mode 100644
-> index 000000000000..5dcb2e98eb2a
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx943.dtsi
-
-run https://github.com/lznuaa/dt-format for new dts file to order nodes, if
-any issue, let me know
-
-> @@ -0,0 +1,1284 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +/*
-> + * Copyright 2024 NXP
-> + */
-> +
-> +#include <dt-bindings/dma/fsl-edma.h>
-> +#include <dt-bindings/gpio/gpio.h>
-> +#include <dt-bindings/input/input.h>
-> +#include <dt-bindings/interrupt-controller/arm-gic.h>
-> +
-> +#include "imx943-clock.h"
-> +#include "imx943-pinfunc.h"
-> +#include "imx943-power.h"
-> +
-> +/ {
-> +	interrupt-parent = <&gic>;
-> +	#address-cells = <2>;
-> +	#size-cells = <2>;
-> +
-> +	cpus {
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		idle-states {
-> +			entry-method = "psci";
-> +
-> +			cpu_pd_wait: cpu-pd-wait {
-> +				compatible = "arm,idle-state";
-> +				arm,psci-suspend-param = <0x0010033>;
-> +				local-timer-stop;
-> +				entry-latency-us = <10000>;
-> +				exit-latency-us = <7000>;
-> +				min-residency-us = <27000>;
-> +				wakeup-latency-us = <15000>;
-> +			};
-> +		};
-> +
-> +		A55_0: cpu@0 {
-> +			device_type = "cpu";
-> +			compatible = "arm,cortex-a55";
-> +			reg = <0x0>;
-> +			enable-method = "psci";
-> +			#cooling-cells = <2>;
-> +			cpu-idle-states = <&cpu_pd_wait>;
-> +			power-domains = <&scmi_perf IMX943_PERF_A55>;
-> +			power-domain-names = "perf";
-> +			i-cache-size = <32768>;
-> +			i-cache-line-size = <64>;
-> +			i-cache-sets = <128>;
-> +			d-cache-size = <32768>;
-> +			d-cache-line-size = <64>;
-> +			d-cache-sets = <128>;
-> +			next-level-cache = <&l2_cache_l0>;
-> +		};
-> +
-> +		A55_1: cpu@100 {
-> +			device_type = "cpu";
-> +			compatible = "arm,cortex-a55";
-> +			reg = <0x100>;
-> +			enable-method = "psci";
-> +			#cooling-cells = <2>;
-> +			cpu-idle-states = <&cpu_pd_wait>;
-> +			power-domains = <&scmi_perf IMX943_PERF_A55>;
-> +			power-domain-names = "perf";
-> +			i-cache-size = <32768>;
-> +			i-cache-line-size = <64>;
-> +			i-cache-sets = <128>;
-> +			d-cache-size = <32768>;
-> +			d-cache-line-size = <64>;
-> +			d-cache-sets = <128>;
-> +			next-level-cache = <&l2_cache_l1>;
-> +		};
-> +
-> +		A55_2: cpu@200 {
-> +			device_type = "cpu";
-> +			compatible = "arm,cortex-a55";
-> +			reg = <0x200>;
-> +			enable-method = "psci";
-> +			#cooling-cells = <2>;
-> +			cpu-idle-states = <&cpu_pd_wait>;
-> +			power-domains = <&scmi_perf IMX943_PERF_A55>;
-> +			power-domain-names = "perf";
-> +			i-cache-size = <32768>;
-> +			i-cache-line-size = <64>;
-> +			i-cache-sets = <128>;
-> +			d-cache-size = <32768>;
-> +			d-cache-line-size = <64>;
-> +			d-cache-sets = <128>;
-> +			next-level-cache = <&l2_cache_l2>;
-> +		};
-> +
-> +		A55_3: cpu@300 {
-> +			device_type = "cpu";
-> +			compatible = "arm,cortex-a55";
-> +			reg = <0x300>;
-> +			enable-method = "psci";
-> +			#cooling-cells = <2>;
-> +			cpu-idle-states = <&cpu_pd_wait>;
-> +			power-domains = <&scmi_perf IMX943_PERF_A55>;
-> +			power-domain-names = "perf";
-> +			i-cache-size = <32768>;
-> +			i-cache-line-size = <64>;
-> +			i-cache-sets = <128>;
-> +			d-cache-size = <32768>;
-> +			d-cache-line-size = <64>;
-> +			d-cache-sets = <128>;
-> +			next-level-cache = <&l2_cache_l3>;
-> +		};
-> +
-> +		l2_cache_l0: l2-cache-l0 {
-> +			compatible = "cache";
-> +			cache-size = <65536>;
-> +			cache-line-size = <64>;
-> +			cache-sets = <256>;
-> +			cache-level = <2>;
-> +			cache-unified;
-> +			next-level-cache = <&l3_cache>;
-> +		};
-> +
-> +		l2_cache_l1: l2-cache-l1 {
-> +			compatible = "cache";
-> +			cache-size = <65536>;
-> +			cache-line-size = <64>;
-> +			cache-sets = <256>;
-> +			cache-level = <2>;
-> +			cache-unified;
-> +			next-level-cache = <&l3_cache>;
-> +		};
-> +
-> +		l2_cache_l2: l2-cache-l2 {
-> +			compatible = "cache";
-> +			cache-size = <65536>;
-> +			cache-line-size = <64>;
-> +			cache-sets = <256>;
-> +			cache-level = <2>;
-> +			cache-unified;
-> +			next-level-cache = <&l3_cache>;
-> +		};
-> +
-> +		l2_cache_l3: l2-cache-l3 {
-> +			compatible = "cache";
-> +			cache-size = <65536>;
-> +			cache-line-size = <64>;
-> +			cache-sets = <256>;
-> +			cache-level = <2>;
-> +			cache-unified;
-> +			next-level-cache = <&l3_cache>;
-> +		};
-> +
-> +		l3_cache: l3-cache {
-> +			compatible = "cache";
-> +			cache-size = <1048576>;
-> +			cache-line-size = <64>;
-> +			cache-sets = <1024>;
-> +			cache-level = <3>;
-> +			cache-unified;
-> +		};
-> +	};
-> +
-> +	clk_ext1: clock-ext1 {
-> +		compatible = "fixed-clock";
-> +		#clock-cells = <0>;
-> +		clock-frequency = <133000000>;
-> +		clock-output-names = "clk_ext1";
-> +	};
-> +
-> +	dummy: clk-dummy {
-
-clock-dummy?
-
-> +		compatible = "fixed-clock";
-> +		#clock-cells = <0>;
-> +		clock-frequency = <0>;
-> +		clock-output-names = "dummy";
-> +	};
-> +
-> +	osc_24m: clock-24m {
-> +		compatible = "fixed-clock";
-> +		#clock-cells = <0>;
-> +		clock-frequency = <24000000>;
-> +		clock-output-names = "osc_24m";
-> +	};
-> +
-> +	sai1_mclk: clock-sai1-mclk1 {
-> +		compatible = "fixed-clock";
-> +		#clock-cells = <0>;
-> +		clock-frequency = <0>;
-> +		clock-output-names = "sai1_mclk";
-> +	};
-> +
-> +	sai2_mclk: clock-sai2-mclk1 {
-> +		compatible = "fixed-clock";
-> +		#clock-cells = <0>;
-> +		clock-frequency = <0>;
-> +		clock-output-names = "sai2_mclk";
-> +	};
-> +
-> +	sai3_mclk: clock-sai3-mclk1 {
-> +		compatible = "fixed-clock";
-> +		#clock-cells = <0>;
-> +		clock-frequency = <0>;
-> +		clock-output-names = "sai3_mclk";
-> +	};
-> +
-> +	sai4_mclk: clock-sai4-mclk1 {
-> +		compatible = "fixed-clock";
-> +		#clock-cells = <0>;
-> +		clock-frequency = <0>;
-> +		clock-output-names = "sai4_mclk";
-> +	};
-> +
-> +	firmware {
-> +		scmi {
-> +			compatible = "arm,scmi";
-> +			mboxes = <&mu2 5 0>, <&mu2 3 0>, <&mu2 3 1>, <&mu2 5 1>;
-> +			shmem = <&scmi_buf0>, <&scmi_buf1>;
-> +			#address-cells = <1>;
-> +			#size-cells = <0>;
-> +			arm,max-rx-timeout-ms = <5000>;
-> +
-> +			scmi_devpd: protocol@11 {
-> +				reg = <0x11>;
-> +				#power-domain-cells = <1>;
-> +			};
-> +
-> +			scmi_sys_power: protocol@12 {
-> +				reg = <0x12>;
-> +			};
-> +
-> +			scmi_perf: protocol@13 {
-> +				reg = <0x13>;
-> +				#power-domain-cells = <1>;
-> +			};
-> +
-> +			scmi_clk: protocol@14 {
-> +				reg = <0x14>;
-> +				#clock-cells = <1>;
-> +			};
-> +
-> +			scmi_iomuxc: protocol@19 {
-> +				reg = <0x19>;
-> +			};
-> +
-> +			scmi_bbm: protocol@81 {
-> +				reg = <0x81>;
-> +			};
-> +		};
-> +	};
-> +
-> +	pmu {
-> +		compatible = "arm,cortex-a55-pmu";
-> +		interrupts = <GIC_PPI 7 (GIC_CPU_MASK_SIMPLE(6) | IRQ_TYPE_LEVEL_HIGH)>;
-> +	};
-> +
-> +	psci {
-> +		compatible = "arm,psci-1.0";
-> +		method = "smc";
-> +	};
-> +
-> +	timer {
-> +		compatible = "arm,armv8-timer";
-> +		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(6) | IRQ_TYPE_LEVEL_LOW)>,
-> +			     <GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(6) | IRQ_TYPE_LEVEL_LOW)>,
-> +			     <GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(6) | IRQ_TYPE_LEVEL_LOW)>,
-> +			     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(6) | IRQ_TYPE_LEVEL_LOW)>;
-> +		clock-frequency = <24000000>;
-> +		arm,no-tick-in-suspend;
-
-vendor property should be last one.
-
-> +		interrupt-parent = <&gic>;
-> +	};
-> +
-> +	gic: interrupt-controller@48000000 {
-> +		compatible = "arm,gic-v3";
-> +		#address-cells = <2>;
-> +		#size-cells = <2>;
-> +		reg = <0 0x48000000 0 0x10000>,
-> +		      <0 0x48060000 0 0xc0000>;
-> +		#interrupt-cells = <3>;
-> +		interrupt-controller;
-> +		interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_HIGH>;
-> +		interrupt-parent = <&gic>;
-> +		dma-noncoherent;
-> +		ranges;
-> +
-> +		its: msi-controller@48040000 {
-> +			compatible = "arm,gic-v3-its";
-> +			reg = <0 0x48040000 0 0x20000>;
-> +			msi-controller;
-> +			#msi-cells = <1>;
-> +			dma-noncoherent;
-> +		};
-> +	};
-> +
-> +	soc {
-> +		compatible = "simple-bus";
-> +		#address-cells = <2>;
-> +		#size-cells = <2>;
-> +		ranges;
-> +
-> +		aips2: bus@42000000 {
-> +			compatible = "fsl,aips-bus", "simple-bus";
-> +			reg = <0x0 0x42000000 0x0 0x800000>;
-> +			#address-cells = <1>;
-> +			#size-cells = <1>;
-> +			ranges = <0x42000000 0x0 0x42000000 0x8000000>;
-> +
-> +			edma2: dma-controller@42000000 {
-> +				compatible = "fsl,imx95-edma5";
-> +				reg = <0x42000000 0x210000>;
-> +				#dma-cells = <3>;
-> +				dma-channels = <64>;
-> +				interrupts-extended =
-
-Does "interrupts-extended" documented?
-
-> +					<&a55_irqsteer 0>, <&a55_irqsteer 1>, <&a55_irqsteer 2>,
-> +					<&a55_irqsteer 3>, <&a55_irqsteer 4>, <&a55_irqsteer 5>,
-> +					<&a55_irqsteer 6>, <&a55_irqsteer 7>, <&a55_irqsteer 8>,
-> +					<&a55_irqsteer 9>, <&a55_irqsteer 10>, <&a55_irqsteer 11>,
-> +					<&a55_irqsteer 12>, <&a55_irqsteer 13>, <&a55_irqsteer 14>,
-> +					<&a55_irqsteer 15>, <&a55_irqsteer 16>, <&a55_irqsteer 17>,
-> +					<&a55_irqsteer 18>, <&a55_irqsteer 19>, <&a55_irqsteer 20>,
-> +					<&a55_irqsteer 21>, <&a55_irqsteer 22>, <&a55_irqsteer 23>,
-> +					<&a55_irqsteer 24>, <&a55_irqsteer 25>, <&a55_irqsteer 26>,
-> +					<&a55_irqsteer 27>, <&a55_irqsteer 28>, <&a55_irqsteer 29>,
-> +					<&a55_irqsteer 30>, <&a55_irqsteer 31>, <&a55_irqsteer 64>,
-> +					<&a55_irqsteer 65>, <&a55_irqsteer 66>, <&a55_irqsteer 67>,
-> +					<&a55_irqsteer 68>, <&a55_irqsteer 69>, <&a55_irqsteer 70>,
-> +					<&a55_irqsteer 71>, <&a55_irqsteer 72>, <&a55_irqsteer 73>,
-> +					<&a55_irqsteer 74>, <&a55_irqsteer 75>, <&a55_irqsteer 76>,
-> +					<&a55_irqsteer 77>, <&a55_irqsteer 78>, <&a55_irqsteer 79>,
-> +					<&a55_irqsteer 80>, <&a55_irqsteer 81>, <&a55_irqsteer 82>,
-> +					<&a55_irqsteer 83>, <&a55_irqsteer 84>, <&a55_irqsteer 85>,
-> +					<&a55_irqsteer 86>, <&a55_irqsteer 87>, <&a55_irqsteer 88>,
-> +					<&a55_irqsteer 89>, <&a55_irqsteer 90>, <&a55_irqsteer 91>,
-> +					<&a55_irqsteer 92>, <&a55_irqsteer 93>, <&a55_irqsteer 94>,
-> +					<&a55_irqsteer 95>, <&gic GIC_SPI 98 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				clock-names = "dma";
-> +			};
-> +
-> +			edma3: dma-controller@42210000 {
-> +				compatible = "fsl,imx95-edma5";
-> +				reg = <0x42210000 0x210000>;
-> +				#dma-cells = <3>;
-> +				dma-channels = <64>;
-> +				interrupts-extended =
-> +					<&a55_irqsteer 256>, <&a55_irqsteer 257>,
-> +					<&a55_irqsteer 258>, <&a55_irqsteer 259>,
-> +					<&a55_irqsteer 260>, <&a55_irqsteer 261>,
-> +					<&a55_irqsteer 262>, <&a55_irqsteer 263>,
-> +					<&a55_irqsteer 264>, <&a55_irqsteer 265>,
-> +					<&a55_irqsteer 266>, <&a55_irqsteer 267>,
-> +					<&a55_irqsteer 268>, <&a55_irqsteer 269>,
-> +					<&a55_irqsteer 270>, <&a55_irqsteer 271>,
-> +					<&a55_irqsteer 272>, <&a55_irqsteer 273>,
-> +					<&a55_irqsteer 274>, <&a55_irqsteer 275>,
-> +					<&a55_irqsteer 276>, <&a55_irqsteer 277>,
-> +					<&a55_irqsteer 278>, <&a55_irqsteer 279>,
-> +					<&a55_irqsteer 280>, <&a55_irqsteer 281>,
-> +					<&a55_irqsteer 282>, <&a55_irqsteer 283>,
-> +					<&a55_irqsteer 284>, <&a55_irqsteer 285>,
-> +					<&a55_irqsteer 286>, <&a55_irqsteer 287>,
-> +					<&a55_irqsteer 320>, <&a55_irqsteer 321>,
-> +					<&a55_irqsteer 322>, <&a55_irqsteer 323>,
-> +					<&a55_irqsteer 324>, <&a55_irqsteer 325>,
-> +					<&a55_irqsteer 326>, <&a55_irqsteer 327>,
-> +					<&a55_irqsteer 328>, <&a55_irqsteer 329>,
-> +					<&a55_irqsteer 330>, <&a55_irqsteer 331>,
-> +					<&a55_irqsteer 332>, <&a55_irqsteer 333>,
-> +					<&a55_irqsteer 334>, <&a55_irqsteer 335>,
-> +					<&a55_irqsteer 336>, <&a55_irqsteer 337>,
-> +					<&a55_irqsteer 338>, <&a55_irqsteer 339>,
-> +					<&a55_irqsteer 340>, <&a55_irqsteer 341>,
-> +					<&a55_irqsteer 342>, <&a55_irqsteer 343>,
-> +					<&a55_irqsteer 344>, <&a55_irqsteer 345>,
-> +					<&a55_irqsteer 346>, <&a55_irqsteer 347>,
-> +					<&a55_irqsteer 348>, <&a55_irqsteer 349>,
-> +					<&a55_irqsteer 350>, <&a55_irqsteer 351>,
-> +					<&gic GIC_SPI 326 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				clock-names = "dma";
-> +				status = "disabled";
-
-DMA should be default enabled.
-
-> +			};
-> +
-> +			edma4: dma-controller@42df0000 {
-> +				compatible = "fsl,imx95-edma5";
-> +				reg = <0x42df0000 0x210000>;
-> +				#dma-cells = <3>;
-> +				dma-channels = <64>;
-> +				interrupts-extended =
-> +					<&a55_irqsteer 128>, <&a55_irqsteer 129>,
-> +					<&a55_irqsteer 130>, <&a55_irqsteer 131>,
-> +					<&a55_irqsteer 132>, <&a55_irqsteer 133>,
-> +					<&a55_irqsteer 134>, <&a55_irqsteer 135>,
-> +					<&a55_irqsteer 136>, <&a55_irqsteer 137>,
-> +					<&a55_irqsteer 138>, <&a55_irqsteer 139>,
-> +					<&a55_irqsteer 140>, <&a55_irqsteer 141>,
-> +					<&a55_irqsteer 142>, <&a55_irqsteer 143>,
-> +					<&a55_irqsteer 144>, <&a55_irqsteer 145>,
-> +					<&a55_irqsteer 146>, <&a55_irqsteer 147>,
-> +					<&a55_irqsteer 148>, <&a55_irqsteer 149>,
-> +					<&a55_irqsteer 150>, <&a55_irqsteer 151>,
-> +					<&a55_irqsteer 152>, <&a55_irqsteer 153>,
-> +					<&a55_irqsteer 154>, <&a55_irqsteer 155>,
-> +					<&a55_irqsteer 156>, <&a55_irqsteer 157>,
-> +					<&a55_irqsteer 158>, <&a55_irqsteer 159>,
-> +					<&a55_irqsteer 192>, <&a55_irqsteer 193>,
-> +					<&a55_irqsteer 194>, <&a55_irqsteer 195>,
-> +					<&a55_irqsteer 196>, <&a55_irqsteer 197>,
-> +					<&a55_irqsteer 198>, <&a55_irqsteer 199>,
-> +					<&a55_irqsteer 200>, <&a55_irqsteer 201>,
-> +					<&a55_irqsteer 202>, <&a55_irqsteer 203>,
-> +					<&a55_irqsteer 204>, <&a55_irqsteer 205>,
-> +					<&a55_irqsteer 206>, <&a55_irqsteer 207>,
-> +					<&a55_irqsteer 208>, <&a55_irqsteer 209>,
-> +					<&a55_irqsteer 210>, <&a55_irqsteer 211>,
-> +					<&a55_irqsteer 212>, <&a55_irqsteer 213>,
-> +					<&a55_irqsteer 214>, <&a55_irqsteer 215>,
-> +					<&a55_irqsteer 216>, <&a55_irqsteer 217>,
-> +					<&a55_irqsteer 218>, <&a55_irqsteer 219>,
-> +					<&a55_irqsteer 220>, <&a55_irqsteer 221>,
-> +					<&a55_irqsteer 222>, <&a55_irqsteer 223>,
-> +					<&gic GIC_SPI 206 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				clock-names = "dma";
-> +			};
-> +
-> +			mu10: mailbox@42430000 {
-> +				compatible = "fsl,imx95-mu";
-> +				reg = <0x42430000 0x10000>;
-> +				interrupts = <GIC_SPI 277 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				#mbox-cells = <2>;
-> +				status = "disabled";
-> +			};
-> +
-> +			i3c2: i3c-master@42520000 {
-> +				#address-cells = <3>;
-> +				#size-cells = <0>;
-> +				compatible = "silvaco,i3c-master-v1";
-> +				reg = <0x42520000 0x10000>;
-
-compatible should be first one. Please run
-https://github.com/lznuaa/dt-format
-
-I will skip all wrong order comments from here.
-
-> +				interrupts = <GIC_SPI 66 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_I3C2_SLOW>,
-> +					 <&scmi_clk IMX943_CLK_BUS_WAKEUP>,
-> +					 <&dummy>;
-> +				clock-names = "pclk", "fast_clk", "slow_clk";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpi2c3: i2c@42530000 {
-> +				compatible = "fsl,imx95-lpi2c", "fsl,imx7ulp-lpi2c";
-> +				reg = <0x42530000 0x10000>;
-> +				interrupts = <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPI2C3>,
-> +					 <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				clock-names = "per", "ipg";
-> +				dmas = <&edma2 5 0 0>, <&edma2 6 0 1>;
-
-Please predefine macro, "1" should FSL_EDMA_RX
-
-> +				dma-names = "tx", "rx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpi2c4: i2c@42540000 {
-> +				compatible = "fsl,imx95-lpi2c", "fsl,imx7ulp-lpi2c";
-> +				reg = <0x42540000 0x10000>;
-> +				interrupts = <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPI2C4>,
-> +					 <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				clock-names = "per", "ipg";
-> +				dmas = <&edma4 4 0 0>, <&edma4 5 0 1>;
-> +				dma-names = "tx", "rx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpspi3: spi@42550000 {
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				compatible = "fsl,imx95-spi", "fsl,imx7ulp-spi";
-> +				reg = <0x42550000 0x10000>;
-> +				interrupts = <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPSPI3>,
-> +					 <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				clock-names = "per", "ipg";
-> +				dmas = <&edma2 7 0 0>, <&edma2 8 0 1>;
-> +				dma-names = "tx", "rx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpspi4: spi@42560000 {
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				compatible = "fsl,imx95-spi", "fsl,imx7ulp-spi";
-> +				reg = <0x42560000 0x10000>;
-> +				interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPSPI4>,
-> +					 <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				clock-names = "per", "ipg";
-> +				dmas = <&edma4 6 0 0>, <&edma4 7 0 1>;
-> +				dma-names = "tx", "rx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpuart3: serial@42570000 {
-> +				compatible = "fsl,imx95-lpuart", "fsl,imx8ulp-lpuart",
-> +					     "fsl,imx7ulp-lpuart";
-> +				reg = <0x42570000 0x1000>;
-> +				interrupts = <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPUART3>;
-> +				clock-names = "ipg";
-> +				dmas = <&edma2 10 0 FSL_EDMA_RX>, <&edma2 9 0 0>;
-> +				dma-names = "rx", "tx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpuart4: serial@42580000 {
-> +				compatible = "fsl,imx95-lpuart", "fsl,imx8ulp-lpuart",
-> +					     "fsl,imx7ulp-lpuart";
-> +				reg = <0x42580000 0x1000>;
-> +				interrupts = <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPUART4>;
-> +				clock-names = "ipg";
-> +				dmas = <&edma4 10 0 FSL_EDMA_RX>, <&edma4 9 0 0>;
-> +				dma-names = "rx", "tx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpuart5: serial@42590000 {
-> +				compatible = "fsl,imx95-lpuart", "fsl,imx8ulp-lpuart",
-> +					     "fsl,imx7ulp-lpuart";
-> +				reg = <0x42590000 0x1000>;
-> +				interrupts = <GIC_SPI 76 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPUART5>;
-> +				clock-names = "ipg";
-> +				dmas = <&edma2 12 0 FSL_EDMA_RX>, <&edma2 11 0 0>;
-> +				dma-names = "rx", "tx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpuart6: serial@425a0000 {
-> +				compatible = "fsl,imx95-lpuart", "fsl,imx8ulp-lpuart",
-> +					     "fsl,imx7ulp-lpuart";
-> +				reg = <0x425a0000 0x1000>;
-> +				interrupts = <GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPUART6>;
-> +				clock-names = "ipg";
-> +				dmas = <&edma4 12 0 FSL_EDMA_RX>, <&edma4 11 0 0>;
-> +				dma-names = "rx", "tx";
-> +				status = "disabled";
-> +			};
-> +
-> +			flexcan2: can@425b0000 {
-> +				compatible = "fsl,imx95-flexcan";
-> +				reg = <0x425b0000 0x10000>;
-> +				interrupts = <GIC_SPI 40 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_WAKEUP>,
-> +					 <&scmi_clk IMX943_CLK_CAN2>;
-> +				clock-names = "ipg", "per";
-> +				fsl,clk-source = /bits/ 8 <0>;
-> +				status = "disabled";
-> +			};
-> +
-> +			flexcan3: can@425e0000 {
-> +				compatible = "fsl,imx95-flexcan";
-> +				reg = <0x425e0000 0x10000>;
-> +				interrupts = <GIC_SPI 42 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_WAKEUP>,
-> +					 <&scmi_clk IMX943_CLK_CAN3>;
-> +				clock-names = "ipg", "per";
-> +				fsl,clk-source = /bits/ 8 <0>;
-> +				status = "disabled";
-> +			};
-> +
-> +			flexcan4: can@425f0000 {
-> +				compatible = "fsl,imx95-flexcan";
-> +				reg = <0x425f0000 0x10000>;
-> +				interrupts = <GIC_SPI 44 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_WAKEUP>,
-> +					 <&scmi_clk IMX943_CLK_CAN4>;
-> +				clock-names = "ipg", "per";
-> +				fsl,clk-source = /bits/ 8 <0>;
-> +				status = "disabled";
-> +			};
-> +
-> +			flexcan5: can@42600000 {
-> +				compatible = "fsl,imx95-flexcan";
-> +				reg = <0x42600000 0x10000>;
-> +				interrupts = <GIC_SPI 46 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_WAKEUP>,
-> +					 <&scmi_clk IMX943_CLK_CAN5>;
-> +				clock-names = "ipg", "per";
-> +				fsl,clk-source = /bits/ 8 <0>;
-> +				status = "disabled";
-> +			};
-> +
-> +			sai2: sai@42650000 {
-> +				compatible = "fsl,imx95-sai";
-> +				reg = <0x42650000 0x10000>;
-> +				interrupts = <GIC_SPI 101 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_WAKEUP>, <&dummy>,
-> +					<&scmi_clk IMX943_CLK_SAI2>, <&dummy>, <&dummy>;
-> +				clock-names = "bus", "mclk0", "mclk1", "mclk2", "mclk3";
-> +				dmas = <&edma2 30 0 1>, <&edma2 29 0 0>;
-> +				dma-names = "rx", "tx";
-> +				status = "disabled";
-> +			};
-> +
-> +			sai3: sai@42660000 {
-> +				compatible = "fsl,imx95-sai";
-> +				reg = <0x42660000 0x10000>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_WAKEUP>, <&dummy>,
-> +					<&scmi_clk IMX943_CLK_SAI3>, <&dummy>, <&dummy>;
-> +				clock-names = "bus", "mclk0", "mclk1", "mclk2", "mclk3";
-> +				interrupts = <GIC_SPI 102 IRQ_TYPE_LEVEL_HIGH>;
-> +				dmas = <&edma2 32 0 1>, <&edma2 31 0 0>;
-> +				dma-names = "rx", "tx";
-> +				status = "disabled";
-> +			};
-> +
-> +			sai4: sai@42670000 {
-> +				compatible = "fsl,imx95-sai";
-> +				reg = <0x42670000 0x10000>;
-> +				clock-names = "bus", "mclk0", "mclk1", "mclk2", "mclk3";
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_WAKEUP>, <&dummy>,
-> +					<&scmi_clk IMX943_CLK_SAI4>, <&dummy>, <&dummy>;
-> +				interrupts = <GIC_SPI 103 IRQ_TYPE_LEVEL_HIGH>;
-> +				dmas = <&edma2 36 0 1>, <&edma2 35 0 0>;
-> +				dma-names = "rx", "tx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpuart7: serial@42690000 {
-> +				compatible = "fsl,imx95-lpuart", "fsl,imx8ulp-lpuart",
-> +					     "fsl,imx7ulp-lpuart";
-> +				reg = <0x42690000 0x1000>;
-> +				interrupts = <GIC_SPI 78 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPUART7>;
-> +				clock-names = "ipg";
-> +				dmas = <&edma2 46 0 FSL_EDMA_RX>, <&edma2 45 0 0>;
-> +				dma-names = "rx", "tx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpuart8: serial@426a0000 {
-> +				compatible = "fsl,imx95-lpuart", "fsl,imx8ulp-lpuart",
-> +					     "fsl,imx7ulp-lpuart";
-> +				reg = <0x426a0000 0x1000>;
-> +				interrupts = <GIC_SPI 79 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPUART8>;
-> +				clock-names = "ipg";
-> +				dmas = <&edma4 39 0 FSL_EDMA_RX>, <&edma4 38 0 0>;
-> +				dma-names = "rx", "tx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpi2c5: i2c@426b0000 {
-> +				compatible = "fsl,imx95-lpi2c", "fsl,imx7ulp-lpi2c";
-> +				reg = <0x426b0000 0x10000>;
-> +				interrupts = <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPI2C5>,
-> +					 <&scmi_clk IMX943_CLK_BUS_AON>;
-> +				clock-names = "per", "ipg";
-> +				dmas = <&edma2 37 0 0>, <&edma2 38 0 1>;
-> +				dma-names = "tx", "rx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpi2c6: i2c@426c0000 {
-> +				compatible = "fsl,imx95-lpi2c", "fsl,imx7ulp-lpi2c";
-> +				reg = <0x426c0000 0x10000>;
-> +				interrupts = <GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPI2C6>,
-> +					 <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				clock-names = "per", "ipg";
-> +				dmas =<&edma4 30 0 0>, <&edma4 31 0 1>;
-> +				dma-names = "tx", "rx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpi2c7: i2c@426d0000 {
-> +				compatible = "fsl,imx95-lpi2c", "fsl,imx7ulp-lpi2c";
-> +				reg = <0x426d0000 0x10000>;
-> +				interrupts = <GIC_SPI 110 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPI2C7>,
-> +					 <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				clock-names = "per", "ipg";
-> +				dmas =<&edma2 39 0 0>, <&edma2 40 0 1>;
-> +				dma-names = "tx", "rx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpi2c8: i2c@426e0000 {
-> +				compatible = "fsl,imx95-lpi2c", "fsl,imx7ulp-lpi2c";
-> +				reg = <0x426e0000 0x10000>;
-> +				interrupts = <GIC_SPI 111 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPI2C8>,
-> +					 <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				clock-names = "per", "ipg";
-> +				dmas =<&edma4 32 0 0>, <&edma4 33 0 1>;
-> +				dma-names = "tx", "rx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpspi5: spi@426f0000 {
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				compatible = "fsl,imx95-spi", "fsl,imx7ulp-spi";
-> +				reg = <0x426f0000 0x10000>;
-> +				interrupts = <GIC_SPI 104 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPSPI5>,
-> +					 <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				clock-names = "per", "ipg";
-> +				dmas = <&edma2 41 0 0>, <&edma2 42 0 1>;
-> +				dma-names = "tx", "rx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpspi6: spi@42700000 {
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				compatible = "fsl,imx95-spi", "fsl,imx7ulp-spi";
-> +				reg = <0x42700000 0x10000>;
-> +				interrupts = <GIC_SPI 105 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPSPI6>,
-> +					 <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				clock-names = "per", "ipg";
-> +				dmas = <&edma4 34 0 0>, <&edma4 35 0 1>;
-> +				dma-names = "tx", "rx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpspi7: spi@42710000 {
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				compatible = "fsl,imx95-spi", "fsl,imx7ulp-spi";
-> +				reg = <0x42710000 0x10000>;
-> +				interrupts = <GIC_SPI 106 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPSPI7>,
-> +					 <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				clock-names = "per", "ipg";
-> +				dmas = <&edma2 43 0 0>, <&edma2 44 0 1>;
-> +				dma-names = "tx", "rx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpspi8: spi@42720000 {
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				compatible = "fsl,imx95-spi", "fsl,imx7ulp-spi";
-> +				reg = <0x42720000 0x10000>;
-> +				interrupts = <GIC_SPI 107 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPSPI8>,
-> +					 <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				clock-names = "per", "ipg";
-> +				dmas = <&edma4 36 0 0>, <&edma4 37 0 1>;
-> +				dma-names = "tx", "rx";
-> +				status = "disabled";
-> +			};
-> +
-> +			mu11: mailbox@42730000 {
-> +				compatible = "fsl,imx95-mu";
-> +				reg = <0x42730000 0x10000>;
-> +				interrupts = <GIC_SPI 278 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				#mbox-cells = <2>;
-> +				status = "disabled";
-> +			};
-> +		};
-> +
-> +		aips3: bus@42800000 {
-> +			compatible = "fsl,aips-bus", "simple-bus";
-> +			reg = <0 0x42800000 0 0x800000>;
-> +			#address-cells = <1>;
-> +			#size-cells = <1>;
-> +			ranges = <0x42800000 0x0 0x42800000 0x800000>,
-> +				 <0x28000000 0x0 0x28000000 0x1000000>;
-> +
-> +			usdhc1: mmc@42850000 {
-> +				compatible = "fsl,imx95-usdhc", "fsl,imx8mm-usdhc";
-> +				reg = <0x42850000 0x10000>;
-> +				interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_WAKEUP>,
-> +					 <&scmi_clk IMX943_CLK_WAKEUP_AXI>,
-> +					 <&scmi_clk IMX943_CLK_USDHC1>;
-> +				clock-names = "ipg", "ahb", "per";
-> +				assigned-clocks = <&scmi_clk IMX943_CLK_USDHC1>;
-> +				assigned-clock-parents = <&scmi_clk IMX943_CLK_SYSPLL1_PFD1>;
-> +				assigned-clock-rates = <400000000>;
-> +				bus-width = <8>;
-> +				fsl,tuning-start-tap = <1>;
-> +				fsl,tuning-step= <2>;
-> +				status = "disabled";
-> +			};
-> +
-> +			usdhc2: mmc@42860000 {
-> +				compatible = "fsl,imx95-usdhc", "fsl,imx8mm-usdhc";
-> +				reg = <0x42860000 0x10000>;
-> +				interrupts = <GIC_SPI 97 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_WAKEUP>,
-> +					 <&scmi_clk IMX943_CLK_WAKEUP_AXI>,
-> +					 <&scmi_clk IMX943_CLK_USDHC2>;
-> +				clock-names = "ipg", "ahb", "per";
-> +				assigned-clocks = <&scmi_clk IMX943_CLK_USDHC2>;
-> +				assigned-clock-parents = <&scmi_clk IMX943_CLK_SYSPLL1_PFD1>;
-> +				assigned-clock-rates = <200000000>;
-> +				bus-width = <4>;
-> +				fsl,tuning-start-tap = <1>;
-> +				fsl,tuning-step= <2>;
-> +				status = "disabled";
-> +			};
-> +
-> +			usdhc3: mmc@42880000 {
-> +				compatible = "fsl,imx95-usdhc", "fsl,imx8mm-usdhc";
-> +				reg = <0x428b0000 0x10000>;
-> +				interrupts = <GIC_SPI 116 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_WAKEUP>,
-> +					 <&scmi_clk IMX943_CLK_WAKEUP_AXI>,
-> +					 <&scmi_clk IMX943_CLK_USDHC3>;
-> +				clock-names = "ipg", "ahb", "per";
-> +				bus-width = <4>;
-> +				fsl,tuning-start-tap = <1>;
-> +				fsl,tuning-step= <2>;
-> +				status = "disabled";
-> +			};
-> +
-> +			lpuart9: serial@42a50000 {
-> +				compatible = "fsl,imx95-lpuart", "fsl,imx8ulp-lpuart",
-> +					     "fsl,imx7ulp-lpuart";
-> +				reg = <0x42a50000 0x1000>;
-> +				interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPUART10>;
-> +				clock-names = "ipg";
-> +				dmas = <&edma2 51 0 FSL_EDMA_RX>, <&edma2 50 0 0>;
-> +				dma-names = "rx", "tx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpuart10: serial@42a60000 {
-> +				compatible = "fsl,imx95-lpuart", "fsl,imx8ulp-lpuart",
-> +					     "fsl,imx7ulp-lpuart";
-> +				reg = <0x42a60000 0x1000>;
-> +				interrupts = <GIC_SPI 81 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPUART10>;
-> +				clock-names = "ipg";
-> +				dmas = <&edma4 47 0 FSL_EDMA_RX>, <&edma4 46 0 0>;
-> +				dma-names = "rx", "tx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpuart11: serial@42a70000 {
-> +				compatible = "fsl,imx95-lpuart", "fsl,imx8ulp-lpuart",
-> +					     "fsl,imx7ulp-lpuart";
-> +				reg = <0x42a70000 0x1000>;
-> +				interrupts = <GIC_SPI 82 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPUART11>;
-> +				clock-names = "ipg";
-> +				dmas = <&edma2 53 0 FSL_EDMA_RX>, <&edma2 52 0 0>;
-> +				dma-names = "rx", "tx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpuart12: serial@42a80000 {
-> +				compatible = "fsl,imx95-lpuart", "fsl,imx8ulp-lpuart",
-> +					     "fsl,imx7ulp-lpuart";
-> +				reg = <0x42a80000 0x1000>;
-> +				interrupts = <GIC_SPI 83 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPUART12>;
-> +				clock-names = "ipg";
-> +				dmas = <&edma4 49 0 FSL_EDMA_RX>, <&edma4 48 0 0>;
-> +				dma-names = "rx", "tx";
-> +				status = "disabled";
-> +			};
-> +
-> +			mu12: mailbox@42ac0000 {
-> +				compatible = "fsl,imx95-mu";
-> +				reg = <0x42ac0000 0x10000>;
-> +				interrupts = <GIC_SPI 279 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				#mbox-cells = <2>;
-> +				status = "disabled";
-> +			};
-> +
-> +			mu13: mailbox@42ae0000 {
-> +				compatible = "fsl,imx95-mu";
-> +				reg = <0x42ae0000 0x10000>;
-> +				interrupts = <GIC_SPI 280 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				#mbox-cells = <2>;
-> +				status = "disabled";
-> +			};
-> +
-> +			mu14: mailbox@42b00000 {
-> +				compatible = "fsl,imx95-mu";
-> +				reg = <0x42b00000 0x10000>;
-> +				interrupts = <GIC_SPI 282 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				#mbox-cells = <2>;
-> +				status = "disabled";
-> +			};
-> +
-> +			mu15: mailbox@42b20000 {
-> +				compatible = "fsl,imx95-mu";
-> +				reg = <0x42b20000 0x10000>;
-> +				interrupts = <GIC_SPI 284 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				#mbox-cells = <2>;
-> +				status = "disabled";
-> +			};
-> +
-> +			mu16: mailbox@42b40000 {
-> +				compatible = "fsl,imx95-mu";
-> +				reg = <0x42b40000 0x10000>;
-> +				interrupts = <GIC_SPI 286 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				#mbox-cells = <2>;
-> +				status = "disabled";
-> +			};
-> +
-> +			mu17: mailbox@42b60000 {
-> +				compatible = "fsl,imx95-mu";
-> +				reg = <0x42b60000 0x10000>;
-> +				interrupts = <GIC_SPI 288 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				#mbox-cells = <2>;
-> +				status = "disabled";
-> +			};
-> +		};
-> +
-> +		gpio2: gpio@43810000 {
-> +			compatible = "fsl,imx95-gpio", "fsl,imx8ulp-gpio";
-> +			reg = <0x0 0x43810000 0x0 0x1000>;
-> +			gpio-controller;
-> +			#gpio-cells = <2>;
-> +			interrupts = <GIC_SPI 54 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 55 IRQ_TYPE_LEVEL_HIGH>;
-> +			interrupt-controller;
-> +			#interrupt-cells = <2>;
-> +			gpio-ranges = <&scmi_iomuxc 0 4 32>;
-> +		};
-> +
-> +		gpio3: gpio@43820000 {
-> +			compatible = "fsl,imx95-gpio", "fsl,imx8ulp-gpio";
-> +			reg = <0x0 0x43820000 0x0 0x1000>;
-> +			gpio-controller;
-> +			#gpio-cells = <2>;
-> +			interrupts = <GIC_SPI 56 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
-> +			interrupt-controller;
-> +			#interrupt-cells = <2>;
-> +			gpio-ranges = <&scmi_iomuxc 0 36 26>;
-> +		};
-> +
-> +		gpio4: gpio@43840000 {
-> +			compatible = "fsl,imx95-gpio", "fsl,imx8ulp-gpio";
-> +			reg = <0x0 0x43840000 0x0 0x1000>;
-> +			gpio-controller;
-> +			#gpio-cells = <2>;
-> +			interrupts = <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>;
-> +			interrupt-controller;
-> +			#interrupt-cells = <2>;
-> +			gpio-ranges = <&scmi_iomuxc 0 62 4>, <&scmi_iomuxc 4 0 4>,
-> +				      <&scmi_iomuxc 8 140 12>, <&scmi_iomuxc 20 164 12>;
-> +		};
-> +
-> +		gpio5: gpio@43850000 {
-> +			compatible = "fsl,imx95-gpio", "fsl,imx8ulp-gpio";
-> +			reg = <0x0 0x43850000 0x0 0x1000>;
-> +			gpio-controller;
-> +			#gpio-cells = <2>;
-> +			interrupts = <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 61 IRQ_TYPE_LEVEL_HIGH>;
-> +			interrupt-controller;
-> +			#interrupt-cells = <2>;
-> +			gpio-ranges = <&scmi_iomuxc 0 108 32>;
-> +		};
-> +
-> +		gpio6: gpio@43860000 {
-> +			compatible = "fsl,imx95-gpio", "fsl,imx8ulp-gpio";
-> +			reg = <0x0 0x43860000 0x0 0x1000>;
-> +			gpio-controller;
-> +			#gpio-cells = <2>;
-> +			interrupts = <GIC_SPI 62 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 63 IRQ_TYPE_LEVEL_HIGH>;
-> +			interrupt-controller;
-> +			#interrupt-cells = <2>;
-> +			gpio-ranges = <&scmi_iomuxc 0 66 32>;
-> +		};
-> +
-> +		gpio7: gpio@43870000 {
-> +			compatible = "fsl,imx95-gpio", "fsl,imx8ulp-gpio";
-> +			reg = <0x0 0x43870000 0x0 0x1000>;
-> +			gpio-controller;
-> +			#gpio-cells = <2>;
-> +			interrupts = <GIC_SPI 64 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>;
-> +			interrupt-controller;
-> +			#interrupt-cells = <2>;
-> +			gpio-ranges = <&scmi_iomuxc 0 98 10>, <&scmi_iomuxc 16 152 12>;
-> +		};
-> +
-> +		aips1: bus@44000000 {
-> +			compatible = "fsl,aips-bus", "simple-bus";
-> +			reg = <0x0 0x44000000 0x0 0x800000>;
-> +			#address-cells = <1>;
-> +			#size-cells = <1>;
-> +			ranges = <0x44000000 0x0 0x44000000 0x800000>;
-> +
-> +			edma1: dma-controller@44000000 {
-> +				compatible = "fsl,imx93-edma3";
-> +				reg = <0x44000000 0x210000>;
-> +				#dma-cells = <3>;
-> +				dma-channels = <32>;
-> +				interrupts = <GIC_SPI 230 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 231 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 232 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 233 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 234 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 235 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 236 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 237 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 238 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 239 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 240 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 241 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 242 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 243 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 244 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 245 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 246 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 247 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 248 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 249 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 250 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 251 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 252 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 253 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 254 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 255 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 256 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 257 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 258 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 259 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 260 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 261 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 309 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_AON>;
-> +				clock-names = "dma";
-> +				status = "okay";
-> +			};
-> +
-> +			mu1: mailbox@44220000 {
-> +				compatible = "fsl,imx95-mu";
-> +				reg = <0x44220000 0x10000>;
-> +				interrupts = <GIC_SPI 262 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_AON>;
-> +				#mbox-cells = <2>;
-> +				status = "disabled";
-> +			};
-> +
-> +			tpm1: pwm@44310000 {
-> +				compatible = "fsl,imx7ulp-pwm";
-> +				reg = <0x44310000 0x1000>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_AON>;
-> +				#pwm-cells = <3>;
-> +				status = "disabled";
-> +			};
-> +
-> +			tpm2: pwm@44320000 {
-> +				compatible = "fsl,imx7ulp-pwm";
-> +				reg = <0x44320000 0x1000>;
-> +				clocks = <&scmi_clk IMX943_CLK_TPM2>;
-> +				#pwm-cells = <3>;
-> +				status = "disabled";
-> +			};
-> +
-> +			i3c1: i3c-master@44330000 {
-> +				#address-cells = <3>;
-> +				#size-cells = <0>;
-> +				compatible = "silvaco,i3c-master-v1";
-> +				reg = <0x44330000 0x10000>;
-> +				interrupts = <GIC_SPI 14 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_I3C1_SLOW>,
-> +					 <&scmi_clk IMX943_CLK_BUS_AON>,
-> +					 <&dummy>;
-> +				clock-names = "pclk", "fast_clk", "slow_clk";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpi2c1: i2c@44340000 {
-> +				compatible = "fsl,imx95-lpi2c", "fsl,imx7ulp-lpi2c";
-> +				reg = <0x44340000 0x10000>;
-> +				interrupts = <GIC_SPI 15 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPI2C1>,
-> +					 <&scmi_clk IMX943_CLK_BUS_AON>;
-> +				clock-names = "per", "ipg";
-> +				dmas = <&edma1 12 0 0>, <&edma1 13 0 1>;
-> +				dma-names = "tx", "rx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpi2c2: i2c@44350000 {
-> +				compatible = "fsl,imx95-lpi2c", "fsl,imx7ulp-lpi2c";
-> +				reg = <0x44350000 0x10000>;
-> +				interrupts = <GIC_SPI 16 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPI2C2>,
-> +					 <&scmi_clk IMX943_CLK_BUS_AON>;
-> +				clock-names = "per", "ipg";
-> +				dmas = <&edma1 14 0 0>, <&edma1 15 0 1>;
-> +				dma-names = "tx", "rx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpspi1: spi@44360000 {
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				compatible = "fsl,imx95-spi", "fsl,imx7ulp-spi";
-> +				reg = <0x44360000 0x10000>;
-> +				interrupts = <GIC_SPI 18 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPSPI2>,
-> +					 <&scmi_clk IMX943_CLK_BUS_AON>;
-> +				clock-names = "per", "ipg";
-> +				dmas =<&edma1 16 0 0>, <&edma1 17 0 1>;
-> +				dma-names = "tx", "rx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpspi2: spi@44370000 {
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				compatible = "fsl,imx95-spi", "fsl,imx7ulp-spi";
-> +				reg = <0x44370000 0x10000>;
-> +				interrupts = <GIC_SPI 19 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPSPI2>,
-> +					 <&scmi_clk IMX943_CLK_BUS_AON>;
-> +				clock-names = "per", "ipg";
-> +				dmas = <&edma1 18 0 0>, <&edma1 19 0 1>;
-> +				dma-names = "tx", "rx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpuart1: serial@44380000 {
-> +				compatible = "fsl,imx95-lpuart", "fsl,imx8ulp-lpuart",
-> +					     "fsl,imx7ulp-lpuart";
-> +				reg = <0x44380000 0x1000>;
-> +				interrupts = <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPUART1>;
-> +				clock-names = "ipg";
-> +				dmas = <&edma1 21 0 FSL_EDMA_RX>, <&edma1 20 0 0>;
-> +				dma-names = "rx", "tx";
-> +				status = "disabled";
-> +			};
-> +
-> +			lpuart2: serial@44390000 {
-> +				compatible = "fsl,imx95-lpuart", "fsl,imx8ulp-lpuart",
-> +					     "fsl,imx7ulp-lpuart";
-> +				reg = <0x44390000 0x1000>;
-> +				interrupts = <GIC_SPI 22 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_LPUART2>;
-> +				clock-names = "ipg";
-> +				dmas = <&edma1 23 0 FSL_EDMA_RX>, <&edma1 22 0 0>;
-> +				dma-names = "rx", "tx";
-> +				status = "disabled";
-> +			};
-> +
-> +			flexcan1: can@443a0000 {
-> +				compatible = "fsl,imx95-flexcan";
-> +				reg = <0x443a0000 0x10000>;
-> +				interrupts = <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>;
-> +				status = "disabled";
-> +			};
-> +
-> +			sai1: sai@443b0000 {
-> +				compatible = "fsl,imx95-sai";
-> +				reg = <0x443b0000 0x10000>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_AON>, <&dummy>,
-> +					<&scmi_clk IMX943_CLK_SAI1>, <&dummy>,
-> +					<&dummy>, <&dummy>;
-> +				clock-names = "bus", "mclk0", "mclk1", "mclk2", "mclk3";
-> +				interrupts = <GIC_SPI 38 IRQ_TYPE_LEVEL_HIGH>;
-> +				dmas = <&edma1 25 0 1>, <&edma1 24 0 0>;
-> +				dma-names = "rx", "tx";
-> +				status = "disabled";
-> +			};
-> +
-> +			adc1: adc@44530000 {
-> +				compatible = "nxp,imx93-adc";
-> +				reg = <0x44530000 0x10000>;
-> +				interrupts = <GIC_SPI 117 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_ADC>;
-> +				clock-names = "ipg";
-> +				status = "disabled";
-> +			};
-> +
-> +			mu2: mailbox@445b0000 {
-> +				compatible = "fsl,imx95-mu";
-> +				reg = <0x445b0000 0x1000>;
-> +				ranges;
-> +				interrupts = <GIC_SPI 264 IRQ_TYPE_LEVEL_HIGH>;
-> +				#address-cells = <1>;
-> +				#size-cells = <1>;
-> +				#mbox-cells = <2>;
-> +
-> +				sram0: sram@445b1000 {
-> +					compatible = "mmio-sram";
-> +					reg = <0x445b1000 0x400>;
-> +					ranges = <0x0 0x445b1000 0x400>;
-> +					#address-cells = <1>;
-> +					#size-cells = <1>;
-> +
-> +					scmi_buf0: scmi-sram-section@0 {
-> +						compatible = "arm,scmi-shmem";
-> +						reg = <0x0 0x80>;
-> +					};
-> +
-> +					scmi_buf1: scmi-sram-section@80 {
-> +						compatible = "arm,scmi-shmem";
-> +						reg = <0x80 0x80>;
-> +					};
-> +				};
-> +			};
-> +
-> +			mu3: mailbox@445d0000 {
-> +				compatible = "fsl,imx95-mu";
-> +				reg = <0x445d0000 0x10000>;
-> +				interrupts = <GIC_SPI 266 IRQ_TYPE_LEVEL_HIGH>;
-> +				#mbox-cells = <2>;
-> +				status = "disabled";
-> +			};
-> +
-> +
-> +			mu4: mailbox@445f0000 {
-> +				compatible = "fsl,imx95-mu";
-> +				reg = <0x445f0000 0x10000>;
-> +				interrupts = <GIC_SPI 268 IRQ_TYPE_LEVEL_HIGH>;
-> +				#mbox-cells = <2>;
-> +				status = "disabled";
-> +			};
-> +
-> +			mu6: mailbox@44630000 {
-> +				compatible = "fsl,imx95-mu";
-> +				reg = <0x44630000 0x10000>;
-> +				interrupts = <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>;
-> +				#mbox-cells = <2>;
-> +				status = "disabled";
-> +			};
-> +
-> +			a55_irqsteer: interrupt-controller@446a0000 {
-> +				compatible = "fsl,imx-irqsteer";
-> +				reg = <0x446a0000 0x1000>;
-> +				interrupts = <GIC_SPI 224 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 225 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 226 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 227 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 228 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 229 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_AON>;
-> +				clock-names = "ipg";
-> +				fsl,channel = <0>;
-> +				fsl,num-irqs = <960>;
-> +				interrupt-controller;
-> +				#interrupt-cells = <1>;
-> +			};
-> +		};
-> +
-> +		aips4: bus@49000000 {
-> +			compatible = "fsl,aips-bus", "simple-bus";
-> +			reg = <0x0 0x49000000 0x0 0x800000>;
-> +			#address-cells = <1>;
-> +			#size-cells = <1>;
-> +			ranges = <0x49000000 0x0 0x49000000 0x800000>;
-> +
-> +			wdog3: wdog@49220000 {
-> +				compatible = "fsl,imx93-wdt";
-> +				reg = <0x49220000 0x10000>;
-> +				interrupts = <GIC_SPI 90 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX943_CLK_BUS_WAKEUP>;
-> +				timeout-sec = <40>;
-> +				fsl,ext-reset-output;
-> +				status = "disabled";
-> +			};
-> +		};
-> +
-> +		ddr-pmu@4e090dc0 {
-> +			compatible = "fsl,imx95-ddr-pmu", "fsl,imx93-ddr-pmu";
-> +			reg = <0x0 0x4e090dc0 0x0 0x200>;
-> +			interrupts = <GIC_SPI 91 IRQ_TYPE_LEVEL_HIGH>;
-> +		};
-> +	};
-> +};
-> --
-> 2.34.1
+> > +		 * stream ID. Hardware can't support this because stream ID
+> > +		 * only 5bits
 >
+> It is 5 or 6 bits ? From GENMASK(5, 0) above it should be 6.
+
+Sorry for typo. it is 6bits.
+
+>
+> > +		 */
+> > +		err_i = -EINVAL;
+> > +	}
+> > +
+> > +	target = NULL;
+> > +	err_m = of_map_id(dev->of_node, rid, "msi-map", "msi-map-mask", &target, &sid_m);
+> > +
+> > +	/*
+> > +	 *   err_m      target
+> > +	 *	0	NULL		Use 1:1 map RID to stream ID,
+>
+> Again, is that what it really means ?
+>
+> > +	 *				Current hardware can't support it,
+> > +	 *				So return -EINVAL.
+> > +	 *      != 0    NULL		msi-map not exist, use built-in MSI.
+>
+> does not exist.
+>
+> > +	 *	0	!= NULL		Get correct streamID from RID.
+> > +	 *	!= 0	!= NULL		Unexisted case, never happen.
+>
+> "Invalid combination"
+>
+> > +	 */
+> > +	if (!err_m && !target)
+> > +		return -EINVAL;
+> > +	else if (target)
+> > +		of_node_put(target); /* Find stream ID map entry for RID in msi-map */
+> > +
+> > +	/*
+> > +	 * msi-map        iommu-map
+> > +	 *   N                N            DWC MSI Ctrl
+> > +	 *   Y                Y            ITS + SMMU, require the same sid
+> > +	 *   Y                N            ITS
+> > +	 *   N                Y            DWC MSI Ctrl + SMMU
+> > +	 */
+> > +	if (err_i && err_m)
+> > +		return 0;
+> > +
+> > +	if (!err_i && !err_m) {
+> > +		/*
+> > +		 * MSI glue layer auto add 2 bits controller ID ahead of stream
+>
+> What's "MSI glue layer" ?
+
+It is common term for IC desgin, which connect IP's signal to platform with
+some simple logic. Inside chip, when connect LUT output 6bit streamIDs
+to MSI controller, there are 2bits hardcode controller ID information
+append to 6 bits streamID.
+
+           Glue Layer
+          <==========>
+┌─────┐                  ┌──────────┐
+│ LUT │ 6bit stream ID   │          │
+│     ┼─────────────────►│  MSI     │
+└─────┘    2bit ctrl ID  │          │
+            ┌───────────►│          │
+            │            │          │
+ 00 PCIe0   │            │          │
+ 01 ENETC   │            │          │
+ 10 PCIe1   │            │          │
+            │            └──────────┘
+
+>
+> > +		 * ID, so mask this 2bits to get stream ID.
+> > +		 * But IOMMU glue layer doesn't do that.
+>
+> and "IOMMU glue layer" ?
+
+See above.
+
+Frank
+
+>
+> > +		 */
+> > +		if (sid_i != (sid_m & IMX95_SID_MASK)) {
+> > +			dev_err(dev, "iommu-map and msi-map entries mismatch!\n");
+> > +			return -EINVAL;
+> > +		}
+> > +	}
+> > +
+> > +	sid = sid_i;
+>
+> err_i could be != 0 here, I understand that the end result is
+> fine given how the code is written but it is misleading.
+>
+> 	if (!err_i)
+> 	else if (!err_m)
+
+Okay
+
+>
+> > +	if (!err_m)
+> > +		sid = sid_m & IMX95_SID_MASK;
+> > +
+> > +	return imx_pcie_add_lut(imx_pcie, rid, sid);
+> > +}
+> > +
+> > +static void imx_pcie_disable_device(struct pci_host_bridge *bridge, struct pci_dev *pdev)
+> > +{
+> > +	struct imx_pcie *imx_pcie;
+> > +
+> > +	imx_pcie = to_imx_pcie(to_dw_pcie_from_pp(bridge->sysdata));
+> > +	imx_pcie_remove_lut(imx_pcie, pci_dev_id(pdev));
+> > +}
+> > +
+> >  static int imx_pcie_host_init(struct dw_pcie_rp *pp)
+> >  {
+> >  	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> > @@ -946,6 +1122,11 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
+> >  		}
+> >  	}
+> >
+> > +	if (pp->bridge && imx_check_flag(imx_pcie, IMX_PCIE_FLAG_HAS_LUT)) {
+> > +		pp->bridge->enable_device = imx_pcie_enable_device;
+> > +		pp->bridge->disable_device = imx_pcie_disable_device;
+> > +	}
+> > +
+> >  	imx_pcie_assert_core_reset(imx_pcie);
+> >
+> >  	if (imx_pcie->drvdata->init_phy)
+> > @@ -1330,6 +1511,8 @@ static int imx_pcie_probe(struct platform_device *pdev)
+> >  	imx_pcie->pci = pci;
+> >  	imx_pcie->drvdata = of_device_get_match_data(dev);
+> >
+> > +	mutex_init(&imx_pcie->lock);
+> > +
+> >  	/* Find the PHY if one is defined, only imx7d uses it */
+> >  	np = of_parse_phandle(node, "fsl,imx7d-pcie-phy", 0);
+> >  	if (np) {
+> > @@ -1627,7 +1810,8 @@ static const struct imx_pcie_drvdata drvdata[] = {
+> >  	},
+> >  	[IMX95] = {
+> >  		.variant = IMX95,
+> > -		.flags = IMX_PCIE_FLAG_HAS_SERDES,
+> > +		.flags = IMX_PCIE_FLAG_HAS_SERDES |
+> > +			 IMX_PCIE_FLAG_HAS_LUT,
+> >  		.clk_names = imx8mq_clks,
+> >  		.clks_cnt = ARRAY_SIZE(imx8mq_clks),
+> >  		.ltssm_off = IMX95_PE0_GEN_CTRL_3,
+> >
+> > --
+> > 2.34.1
+> >
