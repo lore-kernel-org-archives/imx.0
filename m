@@ -1,181 +1,105 @@
-Received: from smtp.smtpout.orange.fr (smtp-22.smtpout.orange.fr [80.12.242.22])
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0F81F0E55
-	for <imx@lists.linux.dev>; Thu, 12 Dec 2024 12:33:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BF244C76
+	for <imx@lists.linux.dev>; Thu, 12 Dec 2024 14:16:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734006823; cv=none; b=A/iem+twv3NuNOsq+Vajjo+HB5U75uLBnZk/5qHixW53tp2Br0+a+/+iWApk//tENQh2bswF+VNF4PVqqa5EnjQ24rlr99fDHkzt2c3mJH8tkGvgXL8jAyxVEkp5XWXwieBTfXQsmKNL2J6ShXj5V/sfi9Fi0ThinOsLr8g+PnY=
+	t=1734012965; cv=none; b=ZSNk36quWTE0UyuOJaRyqVag96djhuPHHRVQuQ0YfF+2ZckZEg5d7yqQkeYnJCMebrbQD48mBnyCpFZxP4IFREt0/5NFNCLIVjC1ChhaFeKqKsc5WH0I3agtPAG+QG8LxAS6/I2LlOD7TvBRm/FAuFYRvb1wshDUX9um96HCbb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734006823; c=relaxed/simple;
-	bh=bn2ky9pyJErxzLjZ9doIiWcwO49NUUAjN5n9fqmyhNI=;
-	h=Message-ID:Date:MIME-Version:Subject:References:From:Cc:To:
-	 In-Reply-To:Content-Type; b=Db6O1Sez6DHPXAp1G40sYd3cxqCvroP15p+wVb/Wjbffxj4g1BqbzU7MzbdV1oZmoFjI3waRjxtzZLLyvQbWQFoLy4PblU7ttGuwlbciSI9YFb7AE1V6P328vDJS/aSHpBYowCpKEOscVi1m3S47nLRJQifKVco2UC7wKvZPdAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=DwS46AdY; arc=none smtp.client-ip=80.12.242.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+	s=arc-20240116; t=1734012965; c=relaxed/simple;
+	bh=088IuPWRDgUJCH0ISxjtKh5CPwEuOvZyXEosCcA4Rag=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=sAVR6ZxQm5tFcUIoC3hu+uYe4B+AxegTI4YlfFxiPTT5Icn2GlBhcv+iwEaZaZkRCmHQLUoIsA4/s7gfshJp4MLy5r6pMtpEWaneUxhz0ORimX0d6B8ZTyDoDziG+wJJy+zuH1FOzNcE7sE37UNmjst+36GzQUkmfFgicbtsSb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=SsxpPxyj; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="DwS46AdY"
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id LiNptubjiI1FGLiNptgWq8; Thu, 12 Dec 2024 13:33:39 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1734006819;
-	bh=UoVTbaL4YNuWYLH975v+DNNPn9DDGWZVxGYR9Qdxa6s=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To;
-	b=DwS46AdYDXC+9ZAsRLRjPUp1SCcuBxmFNKhonH5F5UWdvmPdW7vVhza+qcdT3QN4s
-	 Cs+Z5Al/+1IMjvmnJc+gr4Mb5fbRWLE7QLeYlZTsJDZxy5IQoIYnowlN0BgYhvEG1T
-	 3MO2M8I2/YbJAnnfN2J1udFQ/FTpo1z1iETzWtSyCOjnUp9RcQAoNO3UIgGdv6UsSz
-	 UetoPuHOaS9OWFM05EPhZuzdie0Rkj8GsK3d3qHr8IILz4UHsiZXYlW1z9Fu/CsogA
-	 BPlNhaljpKHp/QxwseVtkuFpdRUeUWFmaADh8ubMr9u62LkDeZrBwajpEmlxvoG0Tp
-	 9tml5snDXE3Xg==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Thu, 12 Dec 2024 13:33:39 +0100
-X-ME-IP: 90.11.132.44
-Message-ID: <45f90007-3136-4b59-a3fc-6fc0147b8ad8@wanadoo.fr>
-Date: Thu, 12 Dec 2024 13:33:32 +0100
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="SsxpPxyj"
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id BF82B1F93C;
+	Thu, 12 Dec 2024 15:10:07 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1734012608;
+	bh=i4gRg92u7heNhpg6vOJodZ+D+uvY+K7mBytkbzc1ihE=; h=From:To:Subject;
+	b=SsxpPxyjcrFcPL6GJbAWr7SkbjA2mgIgBDNV7DIZflXRkx+I7LMuOxUnUZalkOSB3
+	 XZmQls6x+Wih8xfI0T+xNWN13TqjZ82S72idyiFNajWeU0R5YI74RVL5HSufnBz9Zl
+	 jrz0iA26EcpACwydg1+T/okRaMJ45ETJq74ZsU3gjAKTo2+QnJsbB0BJUvqMpTrt2j
+	 5/YwGAt1h+qlt2mCL/vRGs2H3fjZ/sHiQXb4wmhgj3KOgxB0ULyADVqFbO9/yW8Iuz
+	 Jf4jmOcMJoRjtpvdYV1sSh6sam+Ub+SU+4te43N+Q6ko5IJYYfa0bl60+4fscPB9Sw
+	 u/a5cVflb2osw==
+Date: Thu, 12 Dec 2024 15:10:03 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: linux-pm@vger.kernel.org, imx@lists.linux.dev
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	Marek Vasut <marex@denx.de>, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Lucas Stach <l.stach@pengutronix.de>
+Subject: imx8m-blk-ctrl: WARNING, no release() function
+Message-ID: <20241212141003.GA44219@francesco-nb>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/3] drm/bridge: ti-sn65dsi83: Add ti,lvds-vod-swing
- optional properties
-References: <20241212121712.214639-1-andrej.picej@norik.com>
- <20241212121712.214639-3-andrej.picej@norik.com>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, upstream@lists.phytec.de,
- andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
- Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, airlied@gmail.com, simona@ffwll.ch,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, marex@denx.de
-To: Andrej Picej <andrej.picej@norik.com>
-In-Reply-To: <20241212121712.214639-3-andrej.picej@norik.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Le 12/12/2024 à 13:17, Andrej Picej a écrit :
-> Add a optional properties to change LVDS output voltage. This should not
-> be static as this depends mainly on the connected display voltage
-> requirement. We have three properties:
-> - "ti,lvds-termination-ohms", which sets near end termination,
-> - "ti,lvds-vod-swing-data-microvolt" and
-> - "ti,lvds-vod-swing-clock-microvolt" which both set LVDS differential
-> output voltage for data and clock lanes. They are defined as an array
-> with min and max values. The appropriate bitfield will be set if
-> selected constraints can be met.
-> 
-> If "ti,lvds-termination-ohms" is not defined the default of 200 Ohm near
-> end termination will be used. Selecting only one:
-> "ti,lvds-vod-swing-data-microvolt" or
-> "ti,lvds-vod-swing-clock-microvolt" can be done, but the output voltage
-> constraint for only data/clock lanes will be met. Setting both is
-> recommended.
+Hello,
+on v6.13-rc2 (PREEMPT_RT, if it matters), I have the following warning
 
-...
+[    4.615793] ------------[ cut here ]------------
+[    4.615814] Device 'mediablk-mipi-csi2-1' does not have a release() function, it is broken and must be fixed. See Documentation/core-api/kobject.rst.
+[    4.618977] WARNING: CPU: 1 PID: 11 at /drivers/base/core.c:2569 device_release+0x80/0x94
+[    4.638974] Modules linked in: ecdh_generic ecc etnaviv(+) rfkill libaes samsung_dsim gpu_sched imx_sdma(+) governor_userspace imx_bus dwc3_imx8mp spi_nxp_fspi lontium_lt8912b ina2xx snd_soc_wm8904 ti_ads1015 industrialio_triggered_buffer kfifo_buf lm75 snvs_pwrkey pwm_imx27 nvmem_snvs_lpgpr imx8mm_thermal caam flexcan error can_dev spi_imx usb_conn_gpio display_connector roles gpio_keys fuse ipv6 autofs4
+[    4.639073] CPU: 1 UID: 0 PID: 11 Comm: kworker/u16:0 Not tainted 6.13.0-rc2-0.0.0-devel-00040-ga1625b19385c #1
+[    4.639082] Hardware name: Toradex Verdin iMX8M Plus WB on Dahlia Board (DT)
+[    4.639087] Workqueue: events_unbound deferred_probe_work_func
+[    4.639099] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[    4.639107] pc : device_release+0x80/0x94
+[    4.639116] lr : device_release+0x80/0x94
+[    4.639122] sp : ffff80008142b910
+[    4.639125] x29: ffff80008142b910 x28: 00000000fffffdfb x27: ffff000005c92180
+[    4.639137] x26: ffff000000018028 x25: ffff000000046dc0 x24: ffff800080c43710
+[    4.639147] x23: 0000000100000001 x22: 0000000000000000 x21: ffff800080e43750
+[    4.639158] x20: 0000000000000000 x19: ffff000007cb06d8 x18: 0000000000000006
+[    4.639168] x17: 0000000000000001 x16: 0000000000000000 x15: 0000000000000002
+[    4.639179] x14: 0000000000001400 x13: ffff0000000a9110 x12: 0000000000225510
+[    4.639190] x11: 0000000000000000 x10: 00000000000009c0 x9 : ffff80008142b790
+[    4.639200] x8 : ffff00000013bba0 x7 : 000000000000002d x6 : 000000000113158e
+[    4.639210] x5 : 00000001134e0800 x4 : 0000000000000002 x3 : ffff000003b04c50
+[    4.639221] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff00000013b180
+[    4.639231] Call trace:
+[    4.639235]  device_release+0x80/0x94 (P)
+[    4.639245]  device_release+0x80/0x94 (L)
+[    4.639253]  kobject_put+0xb0/0x214
+[    4.639264]  put_device+0x14/0x24
+[    4.639272]  genpd_remove+0x114/0x248
+[    4.639281]  pm_genpd_remove+0x30/0x58
+[    4.639288]  imx8m_blk_ctrl_probe+0x36c/0x540
+[    4.639299]  platform_probe+0x68/0xdc
+[    4.639308]  really_probe+0xc0/0x39c
+[    4.639315]  __driver_probe_device+0x7c/0x14c
+[    4.639322]  driver_probe_device+0x3c/0x120
+[    4.639329]  __device_attach_driver+0xbc/0x160
+[    4.639336]  bus_for_each_drv+0x88/0xe8
+[    4.639346]  __device_attach+0xa0/0x1b4
+[    4.639353]  device_initial_probe+0x14/0x20
+[    4.639360]  bus_probe_device+0xb0/0xbc
+[    4.639366]  deferred_probe_work_func+0xa0/0xf0
+[    4.639373]  process_one_work+0x148/0x284
+[    4.639383]  worker_thread+0x2d0/0x3e4
+[    4.639391]  kthread+0x110/0x114
+[    4.639399]  ret_from_fork+0x10/0x20
+[    4.639409] ---[ end trace 0000000000000000 ]---
 
-> +static int sn65dsi83_select_lvds_vod_swing(struct device *dev,
-> +	u32 lvds_vod_swing_data[2], u32 lvds_vod_swing_clk[2], u8 lvds_term)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i <= 3; i++) {
-> +		if (lvds_vod_swing_data_table[lvds_term][i][0] >= lvds_vod_swing_data[0] &&
-> +		lvds_vod_swing_data_table[lvds_term][i][1] <= lvds_vod_swing_data[1] &&
-> +		lvds_vod_swing_clock_table[lvds_term][i][0] >= lvds_vod_swing_clk[0] &&
-> +		lvds_vod_swing_clock_table[lvds_term][i][1] <= lvds_vod_swing_clk[1])
+and more for other devices, from the same driver.
 
-Adding a few spaces to align things would help reading.
+Just reporting for the moment, in case someone has some ideas or wants to
+have a look.
 
-> +			return i;
-> +	}
-> +
-> +	dev_err(dev, "failed to find appropriate LVDS_VOD_SWING configuration\n");
-> +	return -EINVAL;
-> +}
-> +
-> +static int sn65dsi83_parse_lvds_endpoint(struct sn65dsi83 *ctx, int channel)
-> +{
-> +	struct device *dev = ctx->dev;
-> +	struct device_node *endpoint;
-> +	int endpoint_reg;
-> +	/* Set so the property can be freely selected if not defined */
-> +	u32 lvds_vod_swing_data[2] = { 0, 1000000 };
-> +	u32 lvds_vod_swing_clk[2] = { 0, 1000000 };
-> +	/* Set default near end terminataion to 200 Ohm */
-> +	u32 lvds_term = 200;
-> +	int lvds_vod_swing_conf;
-> +	int ret = 0;
-> +	int ret_data;
-> +	int ret_clock;
-> +
-> +	if (channel == CHANNEL_A)
-> +		endpoint_reg = 2;
-> +	else
-> +		endpoint_reg = 3;
-> +
-> +	endpoint = of_graph_get_endpoint_by_regs(dev->of_node, endpoint_reg, -1);
-> +
-> +	of_property_read_u32(endpoint, "ti,lvds-termination-ohms", &lvds_term);
-> +	if (lvds_term == 100)
-> +		ctx->lvds_term_conf[channel] = OHM_100;
-> +	else if (lvds_term == 200)
-> +		ctx->lvds_term_conf[channel] = OHM_200;
-> +	else
-> +		return -EINVAL;
+Francesco
 
-Should it be:
-	else {
-		ret = -EINVAL;
-		goto exit;
-	}
-?
-
-> +
-> +	ret_data = of_property_read_u32_array(endpoint, "ti,lvds-vod-swing-data-microvolt",
-> +					lvds_vod_swing_data, ARRAY_SIZE(lvds_vod_swing_data));
-> +	if (ret_data != 0 && ret_data != -EINVAL) {
-> +		ret = ret_data;
-> +		goto exit;
-> +	}
-> +
-> +	ret_clock = of_property_read_u32_array(endpoint, "ti,lvds-vod-swing-clock-microvolt",
-> +					lvds_vod_swing_clk, ARRAY_SIZE(lvds_vod_swing_clk));
-> +	if (ret_clock != 0 && ret_clock != -EINVAL) {
-> +		ret = ret_clock;
-> +		goto exit;
-> +	}
-> +
-> +	/* Use default value if both properties are NOT defined. */
-> +	if (ret_data == -EINVAL && ret_clock == -EINVAL)
-> +		lvds_vod_swing_conf = 0x1;
-> +
-> +	/* Use lookup table if any of the two properties is defined. */
-> +	if (!ret_data || !ret_clock) {
-> +		lvds_vod_swing_conf = sn65dsi83_select_lvds_vod_swing(dev, lvds_vod_swing_data,
-> +						lvds_vod_swing_clk, ctx->lvds_term_conf[channel]);
-> +		if (lvds_vod_swing_conf < 0) {
-> +			ret = lvds_vod_swing_conf;
-> +			goto exit;
-> +		}
-> +	}
-> +
-> +	ctx->lvds_vod_swing_conf[channel] = lvds_vod_swing_conf;
-> +	ret = 0;
-> +exit:
-> +	of_node_put(endpoint);
-> +	return ret;
-> +}
-
-...
-
-CJ
