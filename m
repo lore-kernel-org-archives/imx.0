@@ -1,116 +1,99 @@
-Received: from a7-49.smtp-out.eu-west-1.amazonses.com (a7-49.smtp-out.eu-west-1.amazonses.com [54.240.7.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B55223325
-	for <imx@lists.linux.dev>; Thu, 12 Dec 2024 15:43:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.7.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82EEC225412
+	for <imx@lists.linux.dev>; Thu, 12 Dec 2024 16:10:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018218; cv=none; b=ANak3+dIfVJYI6rDiwiNX2QNxNNhI+6+w/Bb263Qgfo11kjHNShj/w4Z2u8dQ5xgqLUlTKFq0FA7h5Z1RSsIX8zDIcJ/5AwsIofTBX5QDyAfVYvKmTOm5FNn71hMj/nGDqdAU3Y9wXaCs/KMXuTz+CooAi9rfAPjPBOCypvuAV4=
+	t=1734019853; cv=none; b=GwTbPXYmLsK9HZIZEX8uMsydXC+T9XdC+x9NLuoTKVsR28iMQaOnXFCidCaSpvqt86uBG73MqaJNO1sYn5w4qVmeyHE1YTqD/V2fQIp63OQvt27vitH0bzin/+YRGVn2G17FldBl1pB/g1AjmL6er08qxYIe9lS6tx8Tlzg+xbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018218; c=relaxed/simple;
-	bh=8Fq/subTP6OO1nFEyLaHcjH8Zxi3BDFslEuxKeQeGq0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fYovOTp6SQigkKUX4hWUBj+3CUB+VEQUJlhIzvLq+wou3XCfHqEfY8UvA8HwzJzy/kqVI40MtukxD6wHLh/hev/iqADjcdfolWf9JzkjWO9Lj+p40UepBXJ2t0Ws7LbO4QtHVCxObOx7PiH6Me0PRdBZlIyNqh1LIUgtGtonxdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=amazonses.collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=B/+IYlGn; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=Eq3LaYzv; arc=none smtp.client-ip=54.240.7.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazonses.collabora.com
+	s=arc-20240116; t=1734019853; c=relaxed/simple;
+	bh=E8TTZbAWIR0jzsOWYV1xtJIvxfZDCTwBmvcEuKREfKQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IevxCDKHBrDOToyek4tzfamk1sSSyaEj7lfohP2x5Sa9AujSJykS9xHLbdjehVaHFSV7fUZ1CznJOEeC8ajCKY5Cwq5HtnMhvq6htzYWQGDSnhEu/XiaTLiaQ845AKMLW4DCyFJUgYnz4lmnMNCmPsE5cmcHPeDOPWzReOqN9tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jcBDpVMP; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="B/+IYlGn";
-	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="Eq3LaYzv"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=bc7lryepznv65m6r2ewkpoafjt4fiq42; d=collabora.com; t=1734018214;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=8Fq/subTP6OO1nFEyLaHcjH8Zxi3BDFslEuxKeQeGq0=;
-	b=B/+IYlGnJhURtz3JPDeBTka7Cxs3rRki0gGIaIzudp2gjGEM9QWMJsxHb02Ry4SA
-	7LfLRq/T+JQQxuIFE0ezp7dpcua0cZd8ub7LZDHP7uCmoNBvbfmS03Sh6B3D7hh5/DB
-	6tjh2c/ggnePRZgzstTrZOmoPowUaRe0XDFWbr07Pwy2w5vtEQC7cIV5ZFm6ZuAYOJB
-	vf/kzZ5MYJpha7BJKgjT+CcZABoqQieXrm3uZdYMkxT7Mf8wDv+hcV2IY7Q0iVU9nwP
-	dy79eJ/QrbawymfuLNkFlA6obl3ADM1WdWmh89UhIZj/9mG6RMDhplmnIQve/VQQFcs
-	cPFlA3LBjg==
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=uku4taia5b5tsbglxyj6zym32efj7xqv; d=amazonses.com; t=1734018214;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Feedback-ID;
-	bh=8Fq/subTP6OO1nFEyLaHcjH8Zxi3BDFslEuxKeQeGq0=;
-	b=Eq3LaYzvFoIM64DX1TWSZJ0EOfs7ITOhb8i6u1H1FTCrK0MniEqjNuaXXRCUXvck
-	U1bvve0DQ29Tjwdz+WOX/UMxMrwdOFsSIx60sGGxocqmpeDIR9JfvKqYQd3vwqoxohp
-	ny2LCm1PF/FTo48xUgevyLBq5VRc/vf4X3LQewEk=
-From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-To: p.zabel@pengutronix.de, mchehab@kernel.org, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com
-Cc: linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, kernel@collabora.com, 
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Subject: [PATCH v2 2/2] media: verisilicon: Fix IMX8 native pixels format steps values
-Date: Thu, 12 Dec 2024 15:43:34 +0000
-Message-ID: <01020193bb8a2955-5c7c8665-b689-44bb-9119-b0e636e20840-000000@eu-west-1.amazonses.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241212154328.84904-1-benjamin.gaignard@collabora.com>
-References: <20241212154328.84904-1-benjamin.gaignard@collabora.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jcBDpVMP"
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-3022c61557cso6943701fa.0
+        for <imx@lists.linux.dev>; Thu, 12 Dec 2024 08:10:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734019849; x=1734624649; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cYUSJr9oHr+FftcJrfxtweePljXVaDj/rdTt+vSgojY=;
+        b=jcBDpVMPUffnmhANFYnYSOUqZyatdBrkzgaZR69c1uTEvpyT8KTa4lJYU792yFS2Mx
+         IdnREQCZLRJl3uznj5W+gmr7Cy/w416sp2gaDeeQyf/IZOPgLq++3uV86X/nBudG218T
+         HKqd89GI+nJKM0S13pV/+/kZDcMLk0RcyA5LwYUBvxa9JgSSvvT0vmaXxKAJd5+B+6g5
+         1q7umPactuOUGu7szIHBYZGYwQhNSO5yyc4Y7dhsP0p1pK0uW3jSCPhNf00k52MnAbp2
+         9ySIjz/tGWa6a7jE8K/adj9ytLP+InIoj36TIb5fahx2jaY/2D0to9ByXFb4NJVhT0Uj
+         tt1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734019850; x=1734624650;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cYUSJr9oHr+FftcJrfxtweePljXVaDj/rdTt+vSgojY=;
+        b=v2qc7sCqLy9gxaNeEDExGUz9CaFE1CZOGNZC8j5BYLBd9kx8siz6cDB7yood+4E4tp
+         c5hVU2M5yZGilytpQfAiim4dtoGQRwqRNXthtetq3ovduKiW3rVrzWeac937Sr1JUz5H
+         4uxZcUMGkTeLia+zEGIUDyidGZn0ujnw97qcDOAWMM5JwqHw7Z2wggj1JR8YHceXRdsD
+         0Ph8ASpELsRiORF5Qairqx4ozviY6UUo/ZFF9Q69oeu8DdOIMSfXYTyo1pjlpowowTnz
+         IinXEg1Us9gBv/yWPO1e3YC/P/OnRqbGZuNgmv6Y5GknIfeRz51dNYZBpWH+TcGC5W5t
+         bNKg==
+X-Forwarded-Encrypted: i=1; AJvYcCXwYYqo7TCZx1useUr0E724udt/qxHlyxx+I+9QttZwfXzgL9ddzsc46eOSJMYUPQbHu7o=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwmIiE1Sy9wuT32xQtKQsvDxRRLz6OWSgSZRrX7hYTrGvXl9jih
+	G+Z5W+rRXlv/Hz+gkvytBsYskEk8h1NFCDzaB+DrtbVeDhwNW1cL5vGgJvBaiQA79Ss9OyNO0ei
+	dLLTCwrZYc1xqWzUKBkFtWEuoJco=
+X-Gm-Gg: ASbGncuOevrTVagcJGmyT5sQR8vLaNC1rwmJUJ8gLV3MFJlIKLdq2Xhj1F2I+Mc/sKR
+	b7ew06qOr/iF2pMgFbrCUd/0SMPoqThCdmgeYZ/kXrtRagLY6WNTBRYsE7E6HlGKLujU3dw==
+X-Google-Smtp-Source: AGHT+IEfxOaxJF02cqCb3o+35QthKCmm4+8U0/gTtwd0T+FvVSHeVgyOje6efKWJI1tAN9KX489WrZ5iZFjUW8eIxGo=
+X-Received: by 2002:a05:651c:2226:b0:300:39eb:1aae with SMTP id
+ 38308e7fff4ca-30251e30b03mr3100551fa.24.1734019849270; Thu, 12 Dec 2024
+ 08:10:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Feedback-ID: ::1.eu-west-1.YpP9ZbxnARFfy3Cb5pfsLd/pdsXBCNK0KEM7HforL4k=:AmazonSES
-X-SES-Outgoing: 2024.12.12-54.240.7.49
+References: <01020193bb8a24ad-99eafebb-3b0b-40c0-9b28-3a0dbc84327a-000000@eu-west-1.amazonses.com>
+In-Reply-To: <01020193bb8a24ad-99eafebb-3b0b-40c0-9b28-3a0dbc84327a-000000@eu-west-1.amazonses.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Thu, 12 Dec 2024 13:10:38 -0300
+Message-ID: <CAOMZO5DgW3YrpMJPCTzQ-LZCopB4tNPoJhyFQrr6RBvbnBu4VA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] media: verisilicon: fix reference padding issue
+To: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Cc: p.zabel@pengutronix.de, mchehab@kernel.org, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, linux-media@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	kernel@collabora.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hantro decoder non post-processed pixels formats steps are different
-from post-processed ones.
-Fix the steps according to hardware limitation.
-Since reference frame pixels format issue has been fix, it is possible
-to use V4L2_PIX_FMT_NV15_4L4 rather V4L2_PIX_FMT_P010_4L4 for 10bits
-streams.
+On Thu, Dec 12, 2024 at 12:43=E2=80=AFPM Benjamin Gaignard
+<benjamin.gaignard@collabora.com> wrote:
+>
+> Hantro hardware is splited into two parts: the decoder which produce
+> tiled pixels formats and the post-processor which produce raster pixels
+> formats.
+> When post-processor is used the selected pixels format may not have the
+> some padding/stride than the decoder output pixels format. This led to
+> miscomputing chroma and motion vectors offsets so data are overlapping.
+> This series introduce a reference pixels format that decoder use to
+> compute the various needed offsets and size.
+>
+> With this series Fluster for VP9 tests is now 207/305 vs 145/305.
+> HEVC test score isn't impacted by these patches (still 141/147).
+>
+> Version 2:
+> - rebased on top of media-commiter/next
+> - Add reviewed-by tags
+>
+> Benjamin Gaignard (2):
+>   media: verisilicon: Store reference frames pixels format
+>   media: verisilicon: Fix IMX8 native pixels format steps values
 
-Fluster VP9 score goes up to 207/305.
-HEVC score is still 141/147.
-
-Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
----
-Version 2:
-- rebased on top of media-commiter/next
-- Add reviewed-by tags
-
- drivers/media/platform/verisilicon/imx8m_vpu_hw.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-index f850d8bddef6..35799da534ed 100644
---- a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-+++ b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-@@ -187,23 +187,23 @@ static const struct hantro_fmt imx8m_vpu_g2_dec_fmts[] = {
- 		.frmsize = {
- 			.min_width = FMT_MIN_WIDTH,
- 			.max_width = FMT_UHD_WIDTH,
--			.step_width = TILE_MB_DIM,
-+			.step_width = 8,
- 			.min_height = FMT_MIN_HEIGHT,
- 			.max_height = FMT_UHD_HEIGHT,
--			.step_height = TILE_MB_DIM,
-+			.step_height = 32,
- 		},
- 	},
- 	{
--		.fourcc = V4L2_PIX_FMT_P010_4L4,
-+		.fourcc = V4L2_PIX_FMT_NV15_4L4,
- 		.codec_mode = HANTRO_MODE_NONE,
- 		.match_depth = true,
- 		.frmsize = {
- 			.min_width = FMT_MIN_WIDTH,
- 			.max_width = FMT_UHD_WIDTH,
--			.step_width = TILE_MB_DIM,
-+			.step_width = 8,
- 			.min_height = FMT_MIN_HEIGHT,
- 			.max_height = FMT_UHD_HEIGHT,
--			.step_height = TILE_MB_DIM,
-+			.step_height = 32,
- 		},
- 	},
- 	{
--- 
-2.43.0
-
+Do both patches deserve a Fixes tag?
