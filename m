@@ -1,59 +1,42 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E2A259495
-	for <imx@lists.linux.dev>; Thu, 12 Dec 2024 11:32:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F2A1E9B27;
+	Thu, 12 Dec 2024 12:12:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734003143; cv=none; b=hRv50fIPhPEeCf6c2368Lep9mUM/6Qf8yh+54aadsM0MfHmXWrVarEbm358UciCwmNM1vquI9tGVm+wXflx1hLTI7M89a+wzH2buF9/NGfEyvivJ/u2ZvZXk9cXxF6VDYLp8lGvS9YlhjS1RrcZfwbnTXJ00EF9c6NxBSqVkkk8=
+	t=1734005563; cv=none; b=bYJILeRvQr44/q/G6SalqNu0Md1MLS49bB0+BY3kS1jMqIBjihzhHqgnqUN6TC0fIqCOythYXXY2EBsLY7yrtX77B3tVQ8KUa7kox5zbcj8BOQJ7QKFLBP0+wUM2vOZqKGMvU0zYtzOya3L8lIdT/prEcqg7sXMbYg07Cf2C3gU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734003143; c=relaxed/simple;
-	bh=ZVAihSvgfQuty8ITI57swW//l7DPkKP5Slf6S0lJ0pA=;
+	s=arc-20240116; t=1734005563; c=relaxed/simple;
+	bh=+XrIez4xocMGbkR6OBBEEUJb2yDAgLlSckB/4e+OAsw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iSaiwx0Yny0w63zGb7BkWlqZD2iwoM68WpmTI32hG5tktf+/5Irp5SvAO+7G+h9hKR3hA1FnYHhdjLU3SU9wUI9BZkAcjapVivcDhr0+SaHEKNtXidZme2MFLcjfkTU9kh3uQVPh538dx+zckrMRtvklaKpTDheZ3QXQUuHJ7cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1tLhQC-0005QD-1I; Thu, 12 Dec 2024 12:31:56 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1tLhQA-0031XP-1e;
-	Thu, 12 Dec 2024 12:31:55 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1tLhQB-00COyC-0X;
-	Thu, 12 Dec 2024 12:31:55 +0100
-Date: Thu, 12 Dec 2024 12:31:55 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Frank Li <Frank.li@nxp.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Pengfei Li <pengfei.li_1@nxp.com>, linux-pm@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v2 2/2] thermal: imx91: Add support for i.MX91 thermal
- monitoring unit
-Message-ID: <20241212113155.wfbbmxcrtcefzuha@pengutronix.de>
-References: <20241210-imx91tmu-v2-0-5032aad4d88e@nxp.com>
- <20241210-imx91tmu-v2-2-5032aad4d88e@nxp.com>
- <20241211154622.f2jwwrqansk6il3o@pengutronix.de>
- <Z1m+O1UV4HD+7Rr2@lizhi-Precision-Tower-5810>
- <20241211185705.7b5uw26loobibzln@pengutronix.de>
- <Z1n4h/AxzthB0V9l@lizhi-Precision-Tower-5810>
+	 Content-Type:Content-Disposition:In-Reply-To; b=YQbepneCSlM1fprLZbRRrd2FTcdO827WSJt5tEPM+Ge/qf+yCNbjf90vp/r+4z+YlMeStFOhfpGLzzvvzlYowuae3pBZdCEx1sDRr9lwR6H9ITS5kmO3Ix85jEFs4LO8vS1ecOQPjwMAzoNcms8aiO6H8Em6TdffqoCtkIe49QA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tZRDZ6IX; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tZRDZ6IX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E268C4CECE;
+	Thu, 12 Dec 2024 12:12:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734005562;
+	bh=+XrIez4xocMGbkR6OBBEEUJb2yDAgLlSckB/4e+OAsw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tZRDZ6IX+vjLI18v2MB96dEha09ed9JEGGrjLB+JQwNQa16MI3woIcLG9jW5ssmWq
+	 HrdSxmo5pR57A6yq8KYBKA2MHGjJe6m6XfiqxvtUYUiUWEf3KGQl+6BdaOXJMCe9ac
+	 N0uMU7Mb61frJCgjr7Gd5mweVWTETA6/9e11E5KhWi90UDpPV3cM5ZX/hKkinvuOke
+	 CJEjjvg81KK5+i5ymmNxYTIPMIw7nxqZx4cfX498VSjczbU/GMbY4zr+BpGVbxW57d
+	 IV4GvvYp36RpSQKbAw1HF2U315GQI86YFcUzPEfKyBirKo6hfd9ZLCngPEd0FYkU/J
+	 UPuG4Qn7qP8Ig==
+Date: Thu, 12 Dec 2024 13:12:37 +0100
+From: Andi Shyti <andi.shyti@kernel.org>
+To: carlos.song@nxp.com
+Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, festevam@gmail.com, frank.li@nxp.com, linux-i2c@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] i2c: imx: make controller available until system
+ suspend_noirq() and from resume_noirq()
+Message-ID: <awvsvzf5ucgcvl6v7giuxeb6dvt3sw5e6kxo7t56n4rk6u3527@2hid4a7acavv>
+References: <20241125142108.1613016-1-carlos.song@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,228 +45,47 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z1n4h/AxzthB0V9l@lizhi-Precision-Tower-5810>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+In-Reply-To: <20241125142108.1613016-1-carlos.song@nxp.com>
 
-On 24-12-11, Frank Li wrote:
-> On Wed, Dec 11, 2024 at 07:57:05PM +0100, Marco Felsch wrote:
-> > On 24-12-11, Frank Li wrote:
-> > > On Wed, Dec 11, 2024 at 04:46:22PM +0100, Marco Felsch wrote:
-> > > > On 24-12-10, Frank Li wrote:
-> > > > > From: Pengfei Li <pengfei.li_1@nxp.com>
-> > > > >
-> > > > > Introduce support for the i.MX91 thermal monitoring unit, which features a
-> > > > > single sensor for the CPU. The register layout differs from other chips,
-> > > > > necessitating the creation of a dedicated file for this.
-> > > > >
-> > > > > Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
-> > > > > Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > > ---
-> > > > > change from v1 to v2
-> > > > > - use low case for hexvalue
-> > > > > - combine struct imx91_tmu and tmu_sensor
-> > > > > - simplify imx91_tmu_start() and imx91_tmu_enable()
-> > > > > - use s16 for imx91_tmu_get_temp(), which may negative value
-> > > > > - use reverse christmas tree style
-> > > > > - use run time pm
-> > > > > - use oneshot to sample temp
-> > > > > - register thermal zone after hardware init
-> > > > > ---
-> > > > >  drivers/thermal/Kconfig         |  10 ++
-> > > > >  drivers/thermal/Makefile        |   1 +
-> > > > >  drivers/thermal/imx91_thermal.c | 265 ++++++++++++++++++++++++++++++++++++++++
-> > > > >  3 files changed, 276 insertions(+)
-> > > > >
-> 
-> [...]
-> 
-> > > > > +	platform_set_drvdata(pdev, tmu);
-> > > > > +
-> > > > > +	/* disable the monitor during initialization */
-> > > > > +	imx91_tmu_enable(tmu, false);
-> > > > > +	imx91_tmu_start(tmu, false);
-> > > >
-> > > > No need to disable it here since both bits (ENABLE and START) are 0
-> > > > after a reset.
-> > >
-> > > Maybe uboot enable it. We can't depend on reset value without really set
-> > > hardware reset bit.
-> >
-> > So the module can't be rested e.g. by disabling module power? Having a
-> > dedicated reset mechanism would be much simpler instead of writing each
-> > reg-field to the default value.
-> 
-> Not all module can be power off individual. Normally, it should have sw
-> reset bit in controller. but I have not find it in this module.
-> 
-> >
-> > > > > +	ret = imx91_init_from_nvmem_cells(tmu);
-> > > > > +	if (ret) {
-> > > > > +		writel_relaxed(DEFAULT_TRIM1_CONFIG, tmu->base + TRIM1);
-> > > > > +		writel_relaxed(DEFAULT_TRIM2_CONFIG, tmu->base + TRIM2);
-> > > > 			^
-> > > > Can you please anwer if _relaxed API is sufficient? I don't know why you
-> > > > making use of the _relaxed API here anyway. We have only a few MMIO
-> > > > accesses here, so why can't we use the writel() instead? This applies to
-> > > > the whole driver.
-> > >
-> > > There are not big difference writel_relaxed() or writel() for this driver.
-> > > Just original owner pick one.
-> >
-> > NACK, the difference is that _relaxed() APIs don't guarantee the order
-> > the register access is done.
-> 
-> It is totally wrong. *_relexed() API can guarantee the register access
-> order. Only can't guarantee order with other memory. such as
-> 
-> 1 writel_related(A, 0)
-> 2. x = 3
-> 3 writel_related(B, 1)
-> 
-> Hardware/memory model, require B=1 must be after A=0, but not necessary
-> after x=3, that's means (2) x=3 may happen after 3.
-> 
-> if use writel(), guarantee 1, 2, 3 as order.  Here have not DMA involved.
-> So not any impact if (2) after (3).
-> 
-> Typically, only below case have to use writel().
-> 2 (update DMA descritpor), 3 start DMA,
-> 
-> Additional, writel() also can't guarantee register access is done!!!!
-> 
-> writel() just means you send a write command to bus. Not guarantee to reach
-> target module. typical case is
-> 
-> writel(A, 0);
-> udelay(1);
-> writel(A, 1);
-> 
-> The interval between A=1 and A=0 may less than 1us if timer have not use
-> MMIO register. (arm system counter).
-> 
-> In this driver, the only valuable benefit by using writel() instead of
-> writel_relexed() is "short function name".
+Hi Carlos,
 
-You're right, I had to check the documentation once again. The _relaxed
-API is fine by me, thank you also for the clarification.
-
-> > > > > +	}
-> > > > > +
-> > > > > +	/* The typical conv clk is 4MHz, the output freq is 'rate / (div + 1)' */
-> > > > > +	rate = clk_get_rate(tmu->clk);
-> > > > > +	div = (rate / 4000000) - 1;
-> > > > > +	if (div > FIELD_GET(DIV_MASK, DIV_MASK))
-> > > > 			^
-> > > > This misuse the FIELD_GET() API. Instead please add a define e.g. DIV_MAX.
-> > >
-> > > I don't think so, It avoid define another macro DIV_MAX, which may miss
-> > > defined, the related marco should come from one source.
-> > >
-> > > For example:
-> > >
-> > > DIV_MASK is GENMASK(23, 16),  DIV_MAX is 256. But if hardware upgrade,
-> > > DIV_MASK to GENMASK(24, 16), DIV_MAX is quite easy to forget update it and
-> > > hard to find such mis-match when div value < 256.
-> >
-> > We not talking about "possible" other HW. For now it's just this one and
-> > using FIELD_GET() this way is seems odd, at least to me.
+On Mon, Nov 25, 2024 at 10:21:08PM +0800, carlos.song@nxp.com wrote:
+> From: Carlos Song <carlos.song@nxp.com>
 > 
-> If you look implement of FIELD_GET()
-> (typeof(_mask))(((_reg) & (_mask)) >> __bf_shf(_mask));, it will be
-> reasonable.
-
-I know the implementation and still IMHO it's not the correct usage at
-least to me. What's wrong is that a mask doesn't define the possible
-values for a reg-field, e.g. GENMASK(1, 0) could allow all values from 0
-to 3 but the HW may allow only 0 and 1.
-
-> Hardware IP may update in future, bitwidth of field may expand.
-
-Please see above.
-
-> > > > > +		return -EINVAL;
-> > > > 			^
-> > > > 		dev_err_probe()
-> > > > > +
-> > > > > +	/* Set divider value and enable divider */
-> > > > > +	writel_relaxed(DIV_EN | FIELD_PREP(DIV_MASK, div), tmu->base + REF_DIV);
-> > > > > +
-> > > > > +	/* Set max power up delay: 'Tpud(ms) = 0xFF * 1000 / 4000000' */
-> > > > > +	writel_relaxed(FIELD_PREP(PUDL_MASK, 100U), tmu->base + PUD_ST_CTRL);
-> > > > 		^
-> > > > You dont need to repeat the default value, so this line can be dropped.
-> > > >
-> > > > > +
-> > > > > +	/*
-> > > > > +	 * Set resolution mode
-> > > > > +	 * 00b - Conversion time = 0.59325 ms
-> > > > > +	 * 01b - Conversion time = 1.10525 ms
-> > > > > +	 * 10b - Conversion time = 2.12925 ms
-> > > > > +	 * 11b - Conversion time = 4.17725 ms
-> > > > > +	 */
-> > > > > +	writel_relaxed(FIELD_PREP(CTRL1_RES_MASK, 0x3), tmu->base + CTRL1_CLR);
-> > > > > +	writel_relaxed(FIELD_PREP(CTRL1_RES_MASK, 0x1), tmu->base + CTRL1_SET);
-> > > >
-> > > > Same here, you repeat the module default after reset, so please drop it.
-> > > >
-> > > > > +	writel_relaxed(CTRL1_MEAS_MODE_MASK, tmu->base + CTRL1_CLR);
-> > > > > +	writel_relaxed(FIELD_PREP(CTRL1_MEAS_MODE_MASK, CTRL1_MEAS_MODE_SINGLE),
-> > > > > +		       tmu->base + CTRL1_SET);
-> > > > > +
-> > > > > +	clk_disable_unprepare(tmu->clk);
-> > > >
-> > > > Drop this, and
-> > > >
-> > > > > +	pm_runtime_set_suspended(dev);
-> > > >
-> > > > replace this with: pm_runtime_set_active();
-> > >
-> > > No big difference, if set_active, we need add Enable TMU here. I can
-> > > change to set_active.
-> >
-> > You don't need to manually disable the clock, it would be done by the
-> > runtime-pm.
+> Put runtime pm to resume state between suspend() and suspend_noirq(),
+> resume_noirq() and resume(), because some I2C devices need controller
+> on to do communication during this period.
 > 
-> Yes, runtime-pm can disable clock, but it need align harware and run time
-> state before enable runtime pm.
+> The controller can't be wakeup once runtime pm is disabled and in
+> runtime autosuspended state.
 > 
-> There are two options
-> 1 disable all hardware resources and pm_runtime_set_suspended()
-> 2. enable all hardware resources and set_active()
-
-I know.
-
-> After algned, use runtime pm API to controller it.
+> The problem can be easily reproduced on the I.MX8MQ platform:
+> PMIC needs to be used to enable regular when the system resumes.
+> When PMIC uses I2C controller, I2C runtime pm has not been enabled,
+> so in i2c xfer(), pm_runtime_resume_and_get() will return error,
+> which causes data transfer failed. Therefore, regulars can not
+> be enabled and hang system resumes.
+> Here is resume error log:
+> [   53.888902] galcore 38000000.gpu3d: PM: calling genpd_resume_noirq @ 529, parent: platform
+> [   53.897203] i2c_imx_xfer, pm_runtime_resume_and_get is -13
+> [   53.902713] imx-pgc imx-pgc-domain.5: failed to enable regulator: -EACCES
+> [   53.909518] galcore 38000000.gpu3d: PM: genpd_resume_noirq returned 0 after 12331 usecs
+> [   53.917545] mxc_hantro 38300000.vpu: PM: calling genpd_resume_noirq @ 529, parent: soc@0
+> [   53.925659] i2c_imx_xfer, pm_runtime_resume_and_get is -13
+> [   53.931157] imx-pgc imx-pgc-domain.6: failed to enable regulator: -EACCES
 > 
-> I choose option1, you prefer option 2.
-
-I know this too and I'm fine with it albeit I would like option 2 more
-because:
- - based on pm-runtime API only
- - easier to enable autosuspend feature
-
-Regards,
-  Marco
-
-> Frank
-> >
-> > Regards,
-> >   Marco
-> >
-> >
-> [...]
-> > > > > +
-> > > > > +MODULE_AUTHOR("Peng Fan <peng.fan@nxp.com>");
-> > > > > +MODULE_DESCRIPTION("i.MX91 Thermal Monitor Unit driver");
-> > > > > +MODULE_LICENSE("GPL");
-> > > > >
-> > > > > --
-> > > > > 2.34.1
-> > > > >
-> > > > >
-> > >
+> I.MX8MQ system resume normally after applying the fix. Here is resume log:
+> [   71.068807] galcore 38000000.gpu3d: PM: calling genpd_resume_noirq @ 530, parent: platform
+> [   71.077103] i2c_imx_xfer, pm_runtime_resume_and_get is 0
+> [   71.083578] galcore 38000000.gpu3d: PM: genpd_resume_noirq returned 0 after 6490 usecs
+> [   71.091526] mxc_hantro 38300000.vpu: PM: calling genpd_resume_noirq @ 530, parent: soc@0
+> [   71.099638] i2c_imx_xfer, pm_runtime_resume_and_get is 0
+> [   71.106091] mxc_hantro 38300000.vpu: PM: genpd_resume_noirq returned 0 after 6458 usecs
 > 
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+
+merged to i2c/i2c-host.
+
+Thanks,
+Andi
