@@ -1,91 +1,172 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F2A1E9B27;
-	Thu, 12 Dec 2024 12:12:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB37212B1F
+	for <imx@lists.linux.dev>; Thu, 12 Dec 2024 12:17:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734005563; cv=none; b=bYJILeRvQr44/q/G6SalqNu0Md1MLS49bB0+BY3kS1jMqIBjihzhHqgnqUN6TC0fIqCOythYXXY2EBsLY7yrtX77B3tVQ8KUa7kox5zbcj8BOQJ7QKFLBP0+wUM2vOZqKGMvU0zYtzOya3L8lIdT/prEcqg7sXMbYg07Cf2C3gU=
+	t=1734005868; cv=none; b=uIeQz9r6Yo1I9ik+ShUnBSIboFF2HpUlm8Q1AolnWnj8Ts44vRBB2u1PUTaErjgAEv92bySFX/AW07atXXXe+DRmQI4pbKsgkTwcnH5+9vi5vrfJEeRT6/MWegzM3Gvre3FSOLZwTRC285EhZBEopfEU+Zqcy6I953TatOL6fVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734005563; c=relaxed/simple;
-	bh=+XrIez4xocMGbkR6OBBEEUJb2yDAgLlSckB/4e+OAsw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YQbepneCSlM1fprLZbRRrd2FTcdO827WSJt5tEPM+Ge/qf+yCNbjf90vp/r+4z+YlMeStFOhfpGLzzvvzlYowuae3pBZdCEx1sDRr9lwR6H9ITS5kmO3Ix85jEFs4LO8vS1ecOQPjwMAzoNcms8aiO6H8Em6TdffqoCtkIe49QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tZRDZ6IX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734005868; c=relaxed/simple;
+	bh=q1uYpjjjhyJVLhzuTEiuBRCs/69UQpehbdj5XBi1XsE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=LSvi7hYobwEz4AGoHeMenncON/zCxkRM+YcM7VPNSjGJU7QigwaMay0GzKVBh/Y0ctZWC4l4I5VN0ObFYgqBH1kcqpC3TGfhlzFvQ5i8d2Zy2bhkgiCAoD1sOo2/OptzYfBLTQB5i8OGKle3LHXr5s7FrgvNXrAjulYDGUpu/mM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=lwCUMK04; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tZRDZ6IX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E268C4CECE;
-	Thu, 12 Dec 2024 12:12:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734005562;
-	bh=+XrIez4xocMGbkR6OBBEEUJb2yDAgLlSckB/4e+OAsw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tZRDZ6IX+vjLI18v2MB96dEha09ed9JEGGrjLB+JQwNQa16MI3woIcLG9jW5ssmWq
-	 HrdSxmo5pR57A6yq8KYBKA2MHGjJe6m6XfiqxvtUYUiUWEf3KGQl+6BdaOXJMCe9ac
-	 N0uMU7Mb61frJCgjr7Gd5mweVWTETA6/9e11E5KhWi90UDpPV3cM5ZX/hKkinvuOke
-	 CJEjjvg81KK5+i5ymmNxYTIPMIw7nxqZx4cfX498VSjczbU/GMbY4zr+BpGVbxW57d
-	 IV4GvvYp36RpSQKbAw1HF2U315GQI86YFcUzPEfKyBirKo6hfd9ZLCngPEd0FYkU/J
-	 UPuG4Qn7qP8Ig==
-Date: Thu, 12 Dec 2024 13:12:37 +0100
-From: Andi Shyti <andi.shyti@kernel.org>
-To: carlos.song@nxp.com
-Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, festevam@gmail.com, frank.li@nxp.com, linux-i2c@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] i2c: imx: make controller available until system
- suspend_noirq() and from resume_noirq()
-Message-ID: <awvsvzf5ucgcvl6v7giuxeb6dvt3sw5e6kxo7t56n4rk6u3527@2hid4a7acavv>
-References: <20241125142108.1613016-1-carlos.song@nxp.com>
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="lwCUMK04"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=paT95758DuarnLt3uBrtdu0R1Vdl4/oHUgOFQlWqE94=; b=lwCUMK04j4oN4A0J1fWB00P+DB
+	bOnk5RLF/cYZA/b8ag0tyumm5Nx6uSt4QsyNNAaVdyNzRjpYrDm0NdUGAp5Hy9VHebzTePoxW/JeS
+	ktFxA4bD4iZ37MAekELzOyMeRUrqdywrxOEiPmrM5quSRHrrQnycVoksWeF81wrVXiSGm55rjtR/F
+	Ea6pVBnRuW/WdDwXTt2oZgtEn+NjDlnbDa/ZYNZcTXg0yDe2RDx0s+Z2Iert9sBOW1eGGyRZlWJ03
+	gNTGtanAYBFLOCeNKBj7WTBJOiIX8PXbWfB50KK3vf1Epmp9FMSUuRsaWZ9Zu2widP1IHakKcTuMS
+	BATVWgfg==;
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:38802 helo=and-HP-Z4..)
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <andrej.picej@norik.com>)
+	id 1tLi8W-00A8t4-1e;
+	Thu, 12 Dec 2024 13:17:44 +0100
+From: Andrej Picej <andrej.picej@norik.com>
+To: andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org,
+	rfoss@kernel.org,
+	Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se,
+	jernej.skrabec@gmail.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	marex@denx.de
+Cc: dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	upstream@lists.phytec.de
+Subject: [PATCH v6 1/3] dt-bindings: drm/bridge: ti-sn65dsi83: Add properties for ti,lvds-vod-swing
+Date: Thu, 12 Dec 2024 13:17:10 +0100
+Message-Id: <20241212121712.214639-2-andrej.picej@norik.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241212121712.214639-1-andrej.picej@norik.com>
+References: <20241212121712.214639-1-andrej.picej@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241125142108.1613016-1-carlos.song@nxp.com>
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
+X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Hi Carlos,
+Add properties which can be used to specify LVDS differential output
+voltage. Since this also depends on near-end signal termination also
+include property which sets this. LVDS differential output voltage is
+specified with an array (min, max), which should match the one from
+connected device.
 
-On Mon, Nov 25, 2024 at 10:21:08PM +0800, carlos.song@nxp.com wrote:
-> From: Carlos Song <carlos.song@nxp.com>
-> 
-> Put runtime pm to resume state between suspend() and suspend_noirq(),
-> resume_noirq() and resume(), because some I2C devices need controller
-> on to do communication during this period.
-> 
-> The controller can't be wakeup once runtime pm is disabled and in
-> runtime autosuspended state.
-> 
-> The problem can be easily reproduced on the I.MX8MQ platform:
-> PMIC needs to be used to enable regular when the system resumes.
-> When PMIC uses I2C controller, I2C runtime pm has not been enabled,
-> so in i2c xfer(), pm_runtime_resume_and_get() will return error,
-> which causes data transfer failed. Therefore, regulars can not
-> be enabled and hang system resumes.
-> Here is resume error log:
-> [   53.888902] galcore 38000000.gpu3d: PM: calling genpd_resume_noirq @ 529, parent: platform
-> [   53.897203] i2c_imx_xfer, pm_runtime_resume_and_get is -13
-> [   53.902713] imx-pgc imx-pgc-domain.5: failed to enable regulator: -EACCES
-> [   53.909518] galcore 38000000.gpu3d: PM: genpd_resume_noirq returned 0 after 12331 usecs
-> [   53.917545] mxc_hantro 38300000.vpu: PM: calling genpd_resume_noirq @ 529, parent: soc@0
-> [   53.925659] i2c_imx_xfer, pm_runtime_resume_and_get is -13
-> [   53.931157] imx-pgc imx-pgc-domain.6: failed to enable regulator: -EACCES
-> 
-> I.MX8MQ system resume normally after applying the fix. Here is resume log:
-> [   71.068807] galcore 38000000.gpu3d: PM: calling genpd_resume_noirq @ 530, parent: platform
-> [   71.077103] i2c_imx_xfer, pm_runtime_resume_and_get is 0
-> [   71.083578] galcore 38000000.gpu3d: PM: genpd_resume_noirq returned 0 after 6490 usecs
-> [   71.091526] mxc_hantro 38300000.vpu: PM: calling genpd_resume_noirq @ 530, parent: soc@0
-> [   71.099638] i2c_imx_xfer, pm_runtime_resume_and_get is 0
-> [   71.106091] mxc_hantro 38300000.vpu: PM: genpd_resume_noirq returned 0 after 6458 usecs
-> 
-> Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+Changes in v6:
+- no change
+Changes in v5:
+- added Krzysztof's reviewed-by tag
+Changes in v4:
+- removed "additionalProperties: true" from the patch as it is not needed
+Changes in v3:
+- no change
+Changes in v2:
+- move LVDS port schema to a $defs and reference it from there
+- properties are now defined in microvolts/ohms
+- use 1 property for data-lane and 1 for clock-lane LVDS voltage swing
+- add 1 property which sets LVDS near-end termination
+- since major change was done change the authorship to myself
+---
+ .../bindings/display/bridge/ti,sn65dsi83.yaml | 34 +++++++++++++++++--
+ 1 file changed, 32 insertions(+), 2 deletions(-)
 
-merged to i2c/i2c-host.
+diff --git a/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml b/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml
+index 48a97bb3e2e0..bad6f5c81b06 100644
+--- a/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml
++++ b/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml
+@@ -80,12 +80,12 @@ properties:
+                   - const: 4
+ 
+       port@2:
+-        $ref: /schemas/graph.yaml#/properties/port
+         description: Video port for LVDS Channel-A output (panel or bridge).
++        $ref: '#/$defs/lvds-port'
+ 
+       port@3:
+-        $ref: /schemas/graph.yaml#/properties/port
+         description: Video port for LVDS Channel-B output (panel or bridge).
++        $ref: '#/$defs/lvds-port'
+ 
+     required:
+       - port@0
+@@ -96,6 +96,36 @@ required:
+   - reg
+   - ports
+ 
++$defs:
++  lvds-port:
++    $ref: /schemas/graph.yaml#/$defs/port-base
++    unevaluatedProperties: false
++
++    properties:
++      endpoint:
++        $ref: /schemas/media/video-interfaces.yaml#
++        unevaluatedProperties: false
++
++        properties:
++          ti,lvds-termination-ohms:
++            description: The value of near end differential termination in ohms.
++            enum: [100, 200]
++            default: 200
++
++          ti,lvds-vod-swing-clock-microvolt:
++            description: LVDS diferential output voltage <min max> for clock
++              lanes in microvolts.
++            $ref: /schemas/types.yaml#/definitions/uint32-array
++            minItems: 2
++            maxItems: 2
++
++          ti,lvds-vod-swing-data-microvolt:
++            description: LVDS diferential output voltage <min max> for data
++              lanes in microvolts.
++            $ref: /schemas/types.yaml#/definitions/uint32-array
++            minItems: 2
++            maxItems: 2
++
+ allOf:
+   - if:
+       properties:
+-- 
+2.34.1
 
-Thanks,
-Andi
