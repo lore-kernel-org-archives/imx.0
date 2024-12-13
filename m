@@ -1,286 +1,183 @@
-Received: from smtp.smtpout.orange.fr (smtp-26.smtpout.orange.fr [80.12.242.26])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2042.outbound.protection.outlook.com [40.107.20.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662781E3787
-	for <imx@lists.linux.dev>; Fri, 13 Dec 2024 17:28:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.26
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734110897; cv=none; b=dspMW2FrZFSsCDbRHxW+gFnvcXtIBL/Pula3S2AU/xM8eU7TNgBEPfSf1KarIbOETI8efqVyRF2t9c+jacDZPSynKwmkJLW80mUaI19pTE5QD7RZ0OIvkRwbrPiPObcqPctvUzTADDaJTqGOEP2Ivn+pgkJtiLWYdVhPNV0y3PU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734110897; c=relaxed/simple;
-	bh=haH3Rn5PYN3U2wPwvi1COnmwL40Uvl3whX0M0/7EE+c=;
-	h=Message-ID:Date:MIME-Version:Subject:References:From:Cc:To:
-	 In-Reply-To:Content-Type; b=HbkSd7jyw0BAZ0GR1sfJsvQ1jUlEMEF6n7AoRZGeHLPkp1BXuENbRNEyDhIcvV67t3Sh9n+iD1xQFeHzmF8F+8iI5yc1/mwg78qRb9GCfG5HGJZzr2VwqD2QAf+YQagR9ye0eQG9mXY/cv4aY8+C557JcGEPBtg0comOcWdIcKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=e2TJocpo; arc=none smtp.client-ip=80.12.242.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE6618E054
+	for <imx@lists.linux.dev>; Fri, 13 Dec 2024 19:11:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734117079; cv=fail; b=k0DwKuJenYuoQIqfC+AcDnO06zhz6K/fFFgAdNSuGP0LSOYgejm/h1klZk73fgxu/Ye2z3BfNS/3YTG0sbjxhBuHbtaIjBfGufuFclOG1vGF9/wsMMxahFUwdbnRyBEK10EOiQpCiIEYIIbhGH772xuPcpHyV7bspus14lDw/W8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734117079; c=relaxed/simple;
+	bh=ygD5bgr10keKjODKpZUvBSzlK8nLy+veS/gS46654vo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=jJxo2owSN2TZG3iVeCYOTDXsGLebsl/KAvJPksgk0BR8597dH2arkBtiwoxrXToIAJAVi1R4JZ6g2VVbipwmytApb2PxjjWw5hncABYHpnso5Y7z4Y0YvEKGtmxt4ixZXdBGTS2zqnE0DU8NcZkUjpbtqUb4hnHqbbOgUOIF4v4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=oPRtz2Uf; arc=fail smtp.client-ip=40.107.20.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="e2TJocpo"
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id M9SQtfQ8j16pxM9SQtU7u4; Fri, 13 Dec 2024 18:28:07 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1734110887;
-	bh=s4uiRQCfXe+FdF52hvdqt171dAmo/jnoIJf3tzdSEcc=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To;
-	b=e2TJocpoiVNnyK3QX7uoulgNaqGjw567eVLSNvbbeIKHZMz2Kz/zSEnP1kMKoQP0J
-	 xJQCt2p8WxKECeZZixAbbMysmBQablAYOew0huzvDqMpFKizZyYOzyzh23ZRuqg61U
-	 wkT8IUSdKpRMjXjqEbcW468HzLPtWfJ+xAKRH4Rlrt2skVSqiYSUQ0c64kQZ+m5Ka3
-	 Iao5X+giwmgXSBIRwtq6uwVqZD3J13oc4JIdEW0Ao3Q6YiJqSBBrNx5E+M5rN7YN2C
-	 aBsWpYBc0ZtGPOwyKmPldd4uKUyHr78oGZ+ComU3KB4hHNgDBD8saYpS+gzIeUt/ee
-	 oGQ7npBIzFsJg==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Fri, 13 Dec 2024 18:28:07 +0100
-X-ME-IP: 90.11.132.44
-Message-ID: <e0bba4d8-8015-482a-b08d-c30aafcae924@wanadoo.fr>
-Date: Fri, 13 Dec 2024 18:28:05 +0100
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="oPRtz2Uf"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vGmS2eEpjnb6ntFWOmz5WKV5vHbc9SiAMxgzwy9c5Pn5ju0nnhC/V3mjph++4wW/4t2qHMiKQclVIclPCTt7qQHB84s5gnIrsZcLTMQi85y2kKl2s4dlWjGgYKRMmAX2mFjU5One4Rxu2WlnUBhrnKyo1QArMQ9bJdzFwTvzsAyXwdkWfc0QA0xpMfw2vFufwrDYjud2HtjO7UXrPqTWxxcWfwY11Xq1IUgJ7fXj8maeI5kMxfXHK2n4ncvBk+74TL2iPeS9wp/sXFNgu+3wFbY6+mAU2bIBbRnbrAx0UQ8E2fslQj0qLr2EzpHLudNDICMQs5yKHQka4AcQclqcRg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=U7YbUHjF27f+tHf+5lgTZ3cEDxJ7iJK6A6QYBtrl6QU=;
+ b=UcLYefDebCRWtGEcz4RUcn2atfIJrZNufJKI7bkWmfbjMXE+my8+kRn7PDLj6gR9pbc/baXeXZmx1Uynts3cn4cT1pW9IywbtQ0vHOAMkA7QFHGLsdgyl84DT6lSMtHegbHayAwlJfD4dPpvGWvgkUlY59UuSq9gHmE/B1ZLO8wqPVtpeIwynMhrId15p1wE8H4lZM3ONdllSy+qRJ1XzbcdwP2U8km2aR3g3wUqtFSJXAGmRp3HtvCde0FR0OHcH6rW8Bfdhpya4qmZlR/N7y6/wJ9MtEaWMO9+Kdl0kgqtNC7isOb2xHjmydbbKhXq2UwWfofMpHkBlQNss/Z+WA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=U7YbUHjF27f+tHf+5lgTZ3cEDxJ7iJK6A6QYBtrl6QU=;
+ b=oPRtz2UfnnY+CAvr40vhpojqnB+AdELot5fBNxSU+7LwYbo0IX6sKzimIc1d3R0Uq/uVgSUF4dj2GgxCjA2NLPma5fscLJ1kb6i7CWvym/QGL27krNObyZ5Awk/b8R6v2iuFFX8bMUXrmG3U9YLCkk87d/ix3khlnl7E09gTYVpqzT7ME+5Qw3rcvmZpFcepNg6z9d9xbAwhvL0PM3fTgoKRrZklHq3rpU2Y4w+Zwrmv9+VzcRnPyheAMq38qc+UXzhkNpR4kC+Q4eziPPp8sVpNuN3D2y7t65+UL7xx5xBCz2Tf1Lekwlg2kDtB17XK5R4JfKieeH/G1ytt/e8Z0g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AS8PR04MB8881.eurprd04.prod.outlook.com (2603:10a6:20b:42c::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.18; Fri, 13 Dec
+ 2024 19:11:14 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8251.008; Fri, 13 Dec 2024
+ 19:11:14 +0000
+Date: Fri, 13 Dec 2024 14:11:05 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH 2/2] nvmem: imx-ocotp-ele: Support accessing controller
+ for i.MX9
+Message-ID: <Z1yGycDxf329m3bC@lizhi-Precision-Tower-5810>
+References: <20241212-imx-ocotp-v1-0-198bb0af86a0@nxp.com>
+ <20241212-imx-ocotp-v1-2-198bb0af86a0@nxp.com>
+ <cf153dd6-f82c-47d9-9ab4-f247437d607e@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cf153dd6-f82c-47d9-9ab4-f247437d607e@kernel.org>
+X-ClientProxiedBy: SJ0PR03CA0143.namprd03.prod.outlook.com
+ (2603:10b6:a03:33c::28) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] regulator: pf9453: add PMIC PF9453 support
-References: <20241212-pf9453-v2-0-f59d2c096356@nxp.com>
- <20241212-pf9453-v2-2-f59d2c096356@nxp.com>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Joy Zou <joy.zou@nxp.com>
-To: Frank Li <Frank.Li@nxp.com>
-In-Reply-To: <20241212-pf9453-v2-2-f59d2c096356@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8881:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3f25f7fb-332f-459a-6a7c-08dd1ba9ea03
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|52116014|376014|366016|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?EsEI9Uh/KIwehbgMPaC1TM8MWKqQ8/ueh2qDqsor0uPo8RGyyxgdiBpXxhce?=
+ =?us-ascii?Q?6LGyZwIcp02nHYERlTgRJiltsHI2WmpNi1zBfnk96Pi365m+3rV9eZfduN1o?=
+ =?us-ascii?Q?FpSIcjtbUCsnQjKAezXl7VFsIxE46oeO9/ckPoQ8FpnjmdYO3KDrDHdpTyiH?=
+ =?us-ascii?Q?P1ndYxDxAdsNwN4fW3gO5RBX5BFgCLD9ZO9SmPktlDvU15saQ/AfvzpzPyFh?=
+ =?us-ascii?Q?da7CUYnRhz+p+jDut81GqGYD+8jnsGex+REjYxbKk7AS/ZluRTVq7os9CHcM?=
+ =?us-ascii?Q?ZCkqteCTRbBwUPZdtZ3oe4s1K/MilrVnbqwYVI2YjtM8vw+vXVtcVQIg/kEs?=
+ =?us-ascii?Q?nvc5iJUHrZCxzX1KOPVokDGQEpBiFsKcgcH2DE9zWtlUTFotzPo511879eMQ?=
+ =?us-ascii?Q?VyQThO9cMBQPKOuFso2L7JhqRr1lury7A+xIA39IN+tFnKEwDPGNPvRLKqyX?=
+ =?us-ascii?Q?XzQ8NLJu3EpsOg9taErSpsTiWPgD81S6bGDOeQgyIlhTlEnzXbdp5N90APSl?=
+ =?us-ascii?Q?17rlnz8uxzY6XAz/UkdPjOjNdwNPJ5hkAM8x4yOaoYdEGeOaDScdSxQZ0hRP?=
+ =?us-ascii?Q?RQ07ikRpkAFHew2377Ylv4w+gFIANwjUnpZeDFzWrfYE83GOEHLKl6GF60lU?=
+ =?us-ascii?Q?3Mkn76Dn5GPPerEPndUc5VmtE+5oN9p28tHQrPYc64Luu1Pvj/GyjPVf40cq?=
+ =?us-ascii?Q?DyRntL9qd2t1R2KtKgk9iWmv5UH3ITJJOg1v8WJC0KsVceMqw9nPbprVWU98?=
+ =?us-ascii?Q?7kiZpx3B6aFsvheT/+IY6DDfyzSrr/bjs2G11P0ensrLdQDAlGeKsUoumN8M?=
+ =?us-ascii?Q?S5i0qvXftlOmw7JPaUymbn1nlq1RdqNcwLslsxaWMqhLV8AbudrMUOUk1HYo?=
+ =?us-ascii?Q?dtm8EJqhky8ANlHBg/t1Px4im1YqJ4P3omP4gslffr4k1YlVCm+RLVT4skbS?=
+ =?us-ascii?Q?IBwoyJaKY6gtIKbm6qprosM8D09qhJ0rMjlA9X2bKC67Z8OZSwpF0D7X25Q8?=
+ =?us-ascii?Q?LNptxg8cbrA9QoHo8AQFSP2OllwoS/V1kaR1R6mJrj4A/e0UQo0c5zTZ/gwC?=
+ =?us-ascii?Q?J8t+FMEjPqxmmNcb3UhAGA053teq/hxM6wnm2Bj7oZOvXZDp7cT+cNeHL+eb?=
+ =?us-ascii?Q?9X287IkO3SQbJ0TuChCSX/dFpDZrIeGL/A00bDdzUO3LTcXkj09DWs40/Rdx?=
+ =?us-ascii?Q?sf/YjpBTG8CJlBwZOAGleqRif3pYiJDgE/mQClz0uD9sTqMeLaLT4pIVB/2x?=
+ =?us-ascii?Q?f01Gj2ItgFX0BBlTfFUUacmYhW2hPLdmBAfgppSFmmfQ6Z4Z53kEEfJxJidM?=
+ =?us-ascii?Q?Cf5FCXvB1Xx36YbnJwx6HydHUcijCgdVSNLdckpFSf+BYiZNFnkKsTQecXNc?=
+ =?us-ascii?Q?vz0442F52aB13VW1Ffuq88Upeai+S445NEuUjTRqNYqBYLTOLdgaMlTYmvQB?=
+ =?us-ascii?Q?ifJ3tHg5YHefhj0Tk3y4acDMnVWRZ9pm?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?QLOnmd0WvVkEKA6ST51lQBEmAyY/t3aqAwdHW0c1XSYfUB9CSQ3gVdqe/6tq?=
+ =?us-ascii?Q?GFkn/PckZsIRa75utq0Jrg7WKldskqcmSYh6rza3Sumt77S9WxEps1GHadrS?=
+ =?us-ascii?Q?23jsibSDC+3iFgLEUrkwmpYztJMv8oNvPrC4gyaAN494SPdN/0gdmz9EqCpg?=
+ =?us-ascii?Q?IRo/LCKEqgiWfRaoM0fsVuy8/aHepnQKiQs6eqa4NJKh+rSo8B3y8XxZOQnH?=
+ =?us-ascii?Q?4guc/mHTWOb6eYzay+p5ZNAmSZ16twuL/qmg80rYD76t6LxqKmW00Hvkg9T4?=
+ =?us-ascii?Q?0iJWkXLKjgljVy9gOBy87G8vGKIi2Uq/EC9kndI4tsvNcGyxrVgEZeOqkMjb?=
+ =?us-ascii?Q?FMj0zkxv2piZukRFXM7EFiAZNzGdKJs+M6N27xSIskqpgde3NrqwFEjAx80/?=
+ =?us-ascii?Q?86a13Lke4G/NSN6bsJqkjpMTjjhwSOOOHN09gYf7ko5+6A8m8IPpPuKoapRM?=
+ =?us-ascii?Q?wl/Yyi5XPlVwY5gq2sVYTtRXi8/aFKFWYy6M88aQcidzpWyYXURtBRjvEz1I?=
+ =?us-ascii?Q?taRaZyYCjfUDTWQHi04ZIE4dF0ZVg2zWqPYx81fEi8QzzytZ+qNNu2a52EDH?=
+ =?us-ascii?Q?sytljHF+R8mvcPDBseiFwwZ2FvInwg0ueJN+eEIQb3R+njuYWBa1vmkSIRHJ?=
+ =?us-ascii?Q?ScUyYe9vDfOummKNZOwi/moXk620P/30j8lXY6i/nyMiIYxTxw9geHx/BlBM?=
+ =?us-ascii?Q?mrmPjKpu6Z3ZIK61aJ6GV9nRSALP0k63mY+Ol5c9W+T9k0rPK/nADg+6j8Vu?=
+ =?us-ascii?Q?tGeF9VK07vrPZ56N0WGw3wNt0O1MF8cQAFpM+gJvQsYExU+qD+n1OlPVA8US?=
+ =?us-ascii?Q?WnsbM+smDc0n41875/eUU0GKzStUxRS5dy2u9XVrjxX7oErnBgoC1xUy+YFO?=
+ =?us-ascii?Q?aJ4vG/0xFYuNA/zTz1yINGEvASTuZ885wuFhKok+ASd/s9VbYH1TbErikZBO?=
+ =?us-ascii?Q?n+U6LoNLCJesMSXR9pG8cnNtCVkIho+UOG9na1HQId37/slKN9LyW9KuR40m?=
+ =?us-ascii?Q?ZymCoGSn9fGrZR3Es22dJdflWpJs4Q14JktOijtEESxp5YGEwHEk5FTYmotI?=
+ =?us-ascii?Q?1L9RRxyw9VNqnVX7ttq9FCxlJ5pzV5L7pqEdnGgfSeA+8nV8LMbjqUahpfZL?=
+ =?us-ascii?Q?c6uBKodRCQlWyW7LWeevgdiw8KHhX7gR3ZTz4tj2v4v3YYFh38ykS6LTLyS2?=
+ =?us-ascii?Q?whxmXidBdyz+OQ8jP8FCrd6aKbE6znyUcnBCoSNEH2Dgd6krZ6ZDJTA6c2Sv?=
+ =?us-ascii?Q?5uOTyZNBSubYgGjHFmkspBHHznWAxMOy9+hi+NPONeHu9QdY4wR6KEiOgLfx?=
+ =?us-ascii?Q?6oSI8SL6xLto5fWtCSg0R/mlgWk0O6XXciE/raeQxEkhSii9Q+BeviC18ygf?=
+ =?us-ascii?Q?PUyVBEnw2YrxDFH9aewsKvjIA9TNitgdMZlSSSqaHINW/5TMV3b8bhrhszZd?=
+ =?us-ascii?Q?eEgz4DVoZkc642Qf8z8pFX0SjJOUZzRCKmyJ9DS65+EX/vSpQMSD2X7Jw3YD?=
+ =?us-ascii?Q?vX2G/umB7ClavE7ptTZR/Dw0lZ9HYmkkSwArhlLX8LLHoXEeveTA1m7ZIXq+?=
+ =?us-ascii?Q?i1WtBIAJ5nDebTMpkKq8/oY6byUx4Oin+2wufKpC?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3f25f7fb-332f-459a-6a7c-08dd1ba9ea03
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2024 19:11:14.7329
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ga/dHTKpkn9rs32eQW7BzeocQNWOLuu3bZh99te6sL3Emy2gj+yLzS2qqETKW0NRxnuKrakMah2ttYc0Dt8Zhw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8881
 
-Le 12/12/2024 à 23:26, Frank Li a écrit :
-> From: Joy Zou <joy.zou-3arQi8VN3Tc@public.gmane.org>
-> 
-> Support new PMIC PF9453, which is totally difference with PCA9450. So
-> create new file for it.
-> 
-> The PF9453 is a single chip Power Management IC (PMIC) specifically
-> designed for i.MX 91 processor. It provides power supply solutions for IoT
-> (Internet of Things), smart appliance, and portable applications where size
-> and efficiency are critical. The device provides four high efficiency
-> step-down regulators, three LDOs, one 400 mA load switch and 32.768 kHz
-> crystal oscillator driver.
+On Fri, Dec 13, 2024 at 08:52:49AM +0100, Krzysztof Kozlowski wrote:
+> On 12/12/2024 09:24, Peng Fan (OSS) wrote:
+> > +
+> > +			if (imx_ele_ocotp_check_access(pdev, id)) {
+> > +				of_detach_node(child);
+> > +				dev_err(dev, "%s: Not granted, device driver will not be probed\n",
+> > +					child->full_name);
+> > +			}
+> > +		}
+> > +
+> > +		imx_ele_ocotp_grant_access(pdev, child);
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int imx_ele_ocotp_access_control(struct platform_device *pdev)
+> > +{
+> > +	struct imx_ocotp_priv *priv = platform_get_drvdata(pdev);
+> > +	struct device_node *soc __free(device_node) = of_find_node_by_path("/soc");
+>
+> No, you just created undocumented ABI on the name.
+>
+> Drop/replace or express the ABI (which is impossible, so basically: drop).
 
-Hi, a few nitpicks, should a v3 be needed.
+How about iterate whole tree by use bfs method? So no undocumented ABI.
 
-...
+Frank
 
-> +static int pf9453_i2c_probe(struct i2c_client *i2c)
-> +{
-> +	const struct pf9453_regulator_desc *regulator_desc = of_device_get_match_data(&i2c->dev);
-> +	struct regulator_config config = { };
-> +	unsigned int reset_ctrl;
-> +	unsigned int device_id;
-> +	struct pf9453 *pf9453;
-> +	int ret;
-> +
-> +	if (!i2c->irq)
-> +		return dev_err_probe(&i2c->dev, -EINVAL, "No IRQ configured?\n");
-> +
-> +	pf9453 = devm_kzalloc(&i2c->dev, sizeof(struct pf9453), GFP_KERNEL);
-> +	if (!pf9453)
-> +		return -ENOMEM;
-> +
-> +	pf9453->regmap = devm_regmap_init_i2c(i2c, &pf9453_regmap_config);
-> +	if (IS_ERR(pf9453->regmap))
-> +		return dev_err_probe(&i2c->dev, PTR_ERR(pf9453->regmap),
-> +				     "regmap initialization failed\n");
-> +
-> +	pf9453->irq = i2c->irq;
-> +	pf9453->dev = &i2c->dev;
-> +
-> +	dev_set_drvdata(&i2c->dev, pf9453);
-> +
-> +	ret = regmap_read(pf9453->regmap, PF9453_REG_DEV_ID, &device_id);
-> +	if (ret)
-> +		return dev_err_probe(&i2c->dev, ret,  "Read device id error\n");
-
-Nitpick: 2 spaces
-
-> +
-> +	/* Check your board and dts for match the right pmic */
-> +	if ((device_id >> 4) != 0xB)
-> +		return dev_err_probe(&i2c->dev, -EINVAL, "Device id(%x) mismatched\n",
-> +				     device_id >> 4);
-> +
-> +	while (regulator_desc->desc.name) {
-> +		const struct regulator_desc *desc;
-> +		struct regulator_dev *rdev;
-> +
-> +		desc = &regulator_desc->desc;
-> +
-> +		config.regmap = pf9453->regmap;
-> +		config.dev = pf9453->dev;
-> +
-> +		rdev = devm_regulator_register(pf9453->dev, desc, &config);
-> +		if (IS_ERR(rdev))
-> +			return dev_err_probe(pf9453->dev, PTR_ERR(rdev),
-> +					     "Failed to register regulator(%s)\n", desc->name);
-> +
-> +		regulator_desc++;
-> +	}
-> +
-> +	ret = devm_request_threaded_irq(pf9453->dev, pf9453->irq, NULL,
-> +					pf9453_irq_handler,
-> +					(IRQF_TRIGGER_FALLING | IRQF_ONESHOT),
-> +					"pf9453-irq", pf9453);
-> +	if (ret)
-> +		return dev_err_probe(pf9453->dev, ret, "Failed to request IRQ: %d\n", pf9453->irq);
-> +
-> +	/* Unmask all interrupt except PWRON/WDOG/RSVD */
-> +	ret = pf9453_pmic_write(pf9453, PF9453_REG_INT1_MSK,
-> +				IRQ_ONKEY | IRQ_RESETKEY | IRQ_RSTB | IRQ_VR_FLT1
-> +				| IRQ_LOWVSYS | IRQ_THERM_100 | IRQ_THERM_80,
-> +				IRQ_RSVD);
-> +	if (ret)
-> +		return dev_err_probe(&i2c->dev, ret,  "Unmask irq error\n");
-
-Nitpick: 2 spaces
-
-> +
-> +	if (of_property_read_bool(i2c->dev.of_node, "nxp,wdog_b-warm-reset"))
-> +		reset_ctrl = WDOG_B_CFG_WARM;
-> +	else
-> +		reset_ctrl = WDOG_B_CFG_COLD;
-
-...
-
-> diff --git a/drivers/regulator/pf9453.h b/drivers/regulator/pf9453.h
-> new file mode 100644
-> index 0000000000000..14d6343d42658
-> --- /dev/null
-> +++ b/drivers/regulator/pf9453.h
-> @@ -0,0 +1,171 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +/* Copyright 2024 NXP. */
-> +
-> +#ifndef __LINUX_REG_PF9453_H__
-> +#define __LINUX_REG_PF9453_H__
-> +
-> +#include <linux/regmap.h>
-
-This .h file does not need it.
-Should it be placed in the .c file?
-
-> +
-> +enum {
-> +	PF9453_BUCK1 = 0,
-> +	PF9453_BUCK2,
-> +	PF9453_BUCK3,
-> +	PF9453_BUCK4,
-> +	PF9453_LDO1,
-> +	PF9453_LDO2,
-> +	PF9453_LDOSNVS,
-> +	PF9453_REGULATOR_CNT,
-
-Nitpick: such terminator don't need an ending comma
-
-> +};
-> +
-> +enum {
-> +	PF9453_DVS_LEVEL_RUN = 0,
-> +	PF9453_DVS_LEVEL_STANDBY,
-> +	PF9453_DVS_LEVEL_DPSTANDBY,
-> +	PF9453_DVS_LEVEL_MAX,
-
-Nitpick: such terminator don't need an ending comma
-
-> +};
-
-...
-
-> +enum {
-> +	PF9453_REG_DEV_ID              = 0x00,
-> +	PF9453_REG_OTP_VER             = 0x01,
-> +	PF9453_REG_INT1                = 0x02,
-> +	PF9453_REG_INT1_MSK            = 0x03,
-> +	PF9453_REG_INT1_STATUS         = 0x04,
-> +	PF9453_REG_VRFLT1_INT          = 0x05,
-> +	PF9453_REG_VRFLT1_MASK         = 0x06,
-> +	PF9453_REG_PWRON_STAT          = 0x07,
-> +	PF9453_REG_RESET_CTRL          = 0x08,
-> +	PF9453_REG_SW_RST              = 0x09,
-> +	PF9453_REG_PWR_CTRL            = 0x0a,
-> +	PF9453_REG_CONFIG1             = 0x0b,
-> +	PF9453_REG_CONFIG2             = 0x0c,
-> +	PF9453_REG_32K_CONFIG          = 0x0d,
-> +	PF9453_REG_BUCK1CTRL           = 0x10,
-> +	PF9453_REG_BUCK1OUT            = 0x11,
-> +	PF9453_REG_BUCK2CTRL           = 0x14,
-> +	PF9453_REG_BUCK2OUT            = 0x15,
-> +	PF9453_REG_BUCK2OUT_STBY       = 0x1D,
-> +	PF9453_REG_BUCK2OUT_MAX_LIMIT  = 0x1F,
-> +	PF9453_REG_BUCK2OUT_MIN_LIMIT  = 0x20,
-> +	PF9453_REG_BUCK3CTRL           = 0x21,
-> +	PF9453_REG_BUCK3OUT            = 0x22,
-> +	PF9453_REG_BUCK4CTRL           = 0x2e,
-> +	PF9453_REG_BUCK4OUT            = 0x2f,
-> +	PF9453_REG_LDO1OUT_L           = 0x36,
-> +	PF9453_REG_LDO1CFG             = 0x37,
-> +	PF9453_REG_LDO1OUT_H           = 0x38,
-> +	PF9453_REG_LDOSNVS_CFG1        = 0x39,
-> +	PF9453_REG_LDOSNVS_CFG2        = 0x3a,
-> +	PF9453_REG_LDO2CFG             = 0x3b,
-> +	PF9453_REG_LDO2OUT             = 0x3c,
-> +	PF9453_REG_BUCK_POK            = 0x3d,
-> +	PF9453_REG_LSW_CTRL1           = 0x40,
-> +	PF9453_REG_LSW_CTRL2           = 0x41,
-> +	PF9453_REG_LOCK                = 0x4e,
-> +	PF9453_MAX_REG,
-
-Nitpick: such terminator don't need an ending comma
-
-> +};
-> +
-> +#define PF9453_UNLOCK_KEY               0x5c
-> +#define PF9453_LOCK_KEY			0x0
-> +
-> +/* PF9453 BUCK ENMODE bits */
-> +#define BUCK_ENMODE_OFF			0x00
-> +#define BUCK_ENMODE_ONREQ		0x01
-> +#define BUCK_ENMODE_ONREQ_STBY		0x02
-> +#define BUCK_ENMODE_ONREQ_STBY_DPSTBY	0x03
-> +
-> +/* PF9453 BUCK ENMODE bits */
-> +#define LDO_ENMODE_OFF			0x00
-> +#define LDO_ENMODE_ONREQ		0x01
-> +#define LDO_ENMODE_ONREQ_STBY		0x02
-> +#define LDO_ENMODE_ONREQ_STBY_DPSTBY	0x03
-> +
-> +/* PF9453_REG_BUCK1_CTRL bits */
-> +#define BUCK1_LPMODE			0x30
-> +#define BUCK1_AD			0x08
-> +#define BUCK1_FPWM			0x04
-> +#define BUCK1_ENMODE_MASK		0x03
-> +
-> +/* PF9453_REG_BUCK2_CTRL bits */
-> +#define BUCK2_RAMP_MASK			0xC0
-
-Here and below some uppercase alpha are used, while above only lowercase 
-are used. Below is apparently for masks.
-
-Maybe masks could be written with GENMASK()?
-(no strong opinion if this would help readability)
-
-> +#define BUCK2_RAMP_25MV			0x0
-> +#define BUCK2_RAMP_12P5MV		0x1
-> +#define BUCK2_RAMP_6P25MV		0x2
-> +#define BUCK2_RAMP_3P125MV		0x3
-> +#define BUCK2_LPMODE			0x30
-> +#define BUCK2_AD			0x08
-> +#define BUCK2_FPWM			0x04
-> +#define BUCK2_ENMODE_MASK		0x03
-
-...
-
-CJ
-
+>
+>
+> Best regards,
+> Krzysztof
