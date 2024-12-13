@@ -1,165 +1,104 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B381BBBFD;
-	Fri, 13 Dec 2024 10:44:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506281DE3C2
+	for <imx@lists.linux.dev>; Fri, 13 Dec 2024 11:25:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.121
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734086688; cv=none; b=cVj/YcaktdCLS2SBNA7hg3imQQ7xB5bODbXsMQVbeudMN9kCWtacM01S8M1EWA/Pl5yTfAgSYJoix++4Fzz3qqGyCnBMmYiKiBBHtMJEjbIIc6LiOxG6BHI/t9zHvHklzApMaZudxD4aRq/wUrvDwFUfpd9D5CSGiuKCrAFupAM=
+	t=1734089149; cv=none; b=cQTvSEiaEdlCPPE8ITM8cKJpEoDWRiJdYGuT3G2IBW52LGrovw6Hh/Fud5+rGbsX28NBlmufrmIJxJo2P3dbpQUhmFFyEgeqNRgdJMZnHTwDHMVhBDPSVWL35OPVaip2CEjtpY62rb8PnKHDn1daxTJpXPz3T4SEupVUodbEJjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734086688; c=relaxed/simple;
-	bh=cKQ9CRH6dhWh1DGQhPJM8Wa9R/Dom8EjmUYEyVFCwC8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fl31BP51bNLBjVW8rkKZuewEaKqYwnvsxevGtafhP6x/7RxsQ97uaxxnt4p9IgHCTFlkEzPmh8pJyVlIyDnKRl2YVOzePFJoDGW2IMvPYKhTSWuCz4QWHiG57+lTXSCT9vmWHW+gTqI5mcJRCp6sM0mOY00hMMLHAZXM/Pi610U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=f34AyD0I; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1734089149; c=relaxed/simple;
+	bh=My7QKmOFrjXmczkd8D12duhW9HKsMEngKlYaNJTostE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OqmRcWQH05beQmHyU46hr+lKl7UdE+Bx6DtASQNi6tW3epBGZOa6IpKJb4qrkfD4y/1jg5XN8AM22FwXhXRGm3z0W3mGkzTSfKfIO0FM14bMzU/uSlt9CF6zUVyZXrdS7NkKQhlfLOgZ7kR0EVvwsdAetGeWlROrbkamWbIXuWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=LtK8AXJc; arc=none smtp.client-ip=185.125.188.121
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="f34AyD0I"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=xUoER4DkD2CcSPjQ5e3J45jqO0v7bwlSP+WgOoY90mM=; b=f34AyD0InKDn7FJClV2XJo7RmH
-	lfVQqv4q/hLECOdqss3bS3/icHbS0USfsno37+PqeX7nWOAdhO5TvK9iuPPtM4z+NRdGOQEXCXMj5
-	AyE6J3XeXjQ5UbdZqRYHU9MdDqI+16YEf5BIrbhOTYD8PpoUkRZ6lUz5c1kOO3OGq9r4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tM39u-000KEw-4u; Fri, 13 Dec 2024 11:44:34 +0100
-Date: Fri, 13 Dec 2024 11:44:34 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	florian.fainelli@broadcom.com, heiko.stuebner@cherry.de,
-	frank.li@nxp.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v4 net] net: phy: micrel: Dynamically control external
- clock of KSZ PHY
-Message-ID: <73d5ea2b-8cec-46e9-80a9-a7a96657c2d4@lunn.ch>
-References: <20241211072136.745553-1-wei.fang@nxp.com>
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="LtK8AXJc"
+Received: from [192.168.5.25] (unknown [120.85.107.173])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id D700F40277;
+	Fri, 13 Dec 2024 11:25:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1734089140;
+	bh=1uPtqPumo6KwvxbkLBKcwxn97AompsYgpYkahNyogJ4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type;
+	b=LtK8AXJcccUMfBI+gK/4BHLMv6/0/0hGDwldzQtw0t53/pHL3IP1T6Nv7N3W+fgz7
+	 /VqN4el8Q+YhMNzK2sGy9UudEKvGdZWUJES8Xoxo562zzX36zWqSqMNcLQpzjTdZp8
+	 p/+pfgWNrXEzGe+RYvr7j+edtc1BtqsfWTpDcTRYd6Z8/Ryg7tAVLCO7J1SmJ9Vnwc
+	 Z/djQK1RQGNzWbknJgdE1b3YztEktIchT04uYvWECtqOm7bwvlCRcDzCwf5P2rhn4X
+	 mM4vVkF0SPpu3bbkuLL5RY/ozlW7U8n8eTjycwW5txCIRc00fSVhPTSkuz4fG1RzB9
+	 BsnHDDDj0KySg==
+Message-ID: <cb6c7f8d-6244-4370-944f-a1a2beac3a79@canonical.com>
+Date: Fri, 13 Dec 2024 19:25:32 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241211072136.745553-1-wei.fang@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ARM: dts: nxp: imx6qdl: add dr_mode to usbotg
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ devicetree@vger.kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+ festevam@gmail.com
+References: <20241212043126.73045-1-hui.wang@canonical.com>
+ <20241213081729.ohgs7tyyzywd4uyc@hippo>
+Content-Language: en-US
+From: Hui Wang <hui.wang@canonical.com>
+In-Reply-To: <20241213081729.ohgs7tyyzywd4uyc@hippo>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> To solve this problem, the clock is enabled when phy_driver::resume() is
-> called, and the clock is disabled when phy_driver::suspend() is called.
-> Since phy_driver::resume() and phy_driver::suspend() are not called in
-> pairs, an additional clk_enable flag is added. When phy_driver::suspend()
-> is called, the clock is disabled only if clk_enable is true. Conversely,
-> when phy_driver::resume() is called, the clock is enabled if clk_enable
-> is false.
 
-This is what i don't like too much, the fact suspend/resume is not
-called in pairs. That was probably a bad decision on my part, and
-maybe it should be revised. But that is out of scope for this patch,
-unless you want the challenge.
+On 12/13/24 16:17, Xu Yang wrote:
+> Hi,
+>
+> On Thu, Dec 12, 2024 at 12:31:26PM +0800, Hui Wang wrote:
+>> For the chipidea usb driver, if the dr_mode is not set, it will set
+>> the device to otg mode by default, so here the dr_mode has not been
+>> set for a long time. But some testcases need to parse the dr_mode from
+>> DT and decide the follow-up test strategy, here set the dr_mode to otg
+>> explicitly for QA's testcases.
+> The dr_mode is board specific property, so we normally don't put it in
+> dtsi file. Also, imx6qdl.dtsi is a common dtsi, therefore it's not a
+> correct place. I wonder you don't set dr_mode in other dts file which
+> include will imx6qdl.dtsi?
 
-> +static int ksz8041_resume(struct phy_device *phydev)
-> +{
-> +	struct kszphy_priv *priv = phydev->priv;
-> +
-> +	kszphy_enable_clk(priv);
-> +
-> +	return 0;
-> +}
-> +
-> +static int ksz8041_suspend(struct phy_device *phydev)
-> +{
-> +	struct kszphy_priv *priv = phydev->priv;
-> +
-> +	kszphy_disable_clk(priv);
-> +
-> +	return 0;
-> +}
+Yes, our QA reported this issue against the imx6q-sabresd board, I 
+thought dr_mode could be overwritten if board dts set the dr_mode, so 
+this change will not impact existing boards. But as you said "we 
+normally don't put it in dtsi file", I will move it to imx6q-sabresd.dts.
 
-These two look odd. Why is there no call to
-genphy_suspend/genphy_resume? Probably a comment should be added here.
+Thanks,
 
-> @@ -2150,8 +2198,11 @@ static int ksz9477_resume(struct phy_device *phydev)
->  
->  static int ksz8061_resume(struct phy_device *phydev)
->  {
-> +	struct kszphy_priv *priv = phydev->priv;
->  	int ret;
->  
-> +	kszphy_enable_clk(priv);
-> +
->  	/* This function can be called twice when the Ethernet device is on. */
->  	ret = phy_read(phydev, MII_BMCR);
->  	if (ret < 0)
+Hui.
 
-What about 8061_suspend()? They normally are used in pairs.
-
-> @@ -2221,6 +2272,11 @@ static int kszphy_probe(struct phy_device *phydev)
->  			return PTR_ERR(clk);
->  	}
->  
-> +	if (!IS_ERR_OR_NULL(clk)) {
-> +		clk_disable_unprepare(clk);
-> +		priv->clk = clk;
-> +	}
-
-I think you should improve the error handling. If
-devm_clk_get_optional_enabled() returns an error, you should fail the
-probe. If the clock does not exist, devm_clk_get_optional_enabled()
-will return a NULL pointer, which is a valid clock. You can
-enable/disable it etc. So you then do not need this check.
-
-> +static int lan8804_suspend(struct phy_device *phydev)
-> +{
-> +	struct kszphy_priv *priv = phydev->priv;
-> +	int ret;
-> +
-> +	ret = genphy_suspend(phydev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	kszphy_disable_clk(priv);
-> +
-> +	return 0;
-> +}
-> +
-> +static int lan8841_resume(struct phy_device *phydev)
-> +{
-> +	struct kszphy_priv *priv = phydev->priv;
-> +
-> +	kszphy_enable_clk(priv);
-> +
-> +	return genphy_resume(phydev);
-> +}
-> +
->  static int lan8841_suspend(struct phy_device *phydev)
->  {
->  	struct kszphy_priv *priv = phydev->priv;
->  	struct kszphy_ptp_priv *ptp_priv = &priv->ptp_priv;
-> +	int ret;
->  
->  	if (ptp_priv->ptp_clock)
->  		ptp_cancel_worker_sync(ptp_priv->ptp_clock);
->  
-> -	return genphy_suspend(phydev);
-> +	ret = genphy_suspend(phydev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	kszphy_disable_clk(priv);
-> +
-> +	return 0;
-
-This can be simplified to
-
-        return lan8804_suspend(phydev);
-
-In general, you should define a common low level function which does
-what all PHYs need, in this case, genphy_suspend() and disable the
-clock. Then add wrappers which do additional things.
-
-	Andrew
+> Thanks,
+> Xu Yang
+>
+>> Signed-off-by: Hui Wang <hui.wang@canonical.com>
+>> ---
+>>   arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
+>> index d2200c9db25a..285fb7314a88 100644
+>> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
+>> +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
+>> @@ -982,6 +982,7 @@ usbotg: usb@2184000 {
+>>   				clocks = <&clks IMX6QDL_CLK_USBOH3>;
+>>   				fsl,usbphy = <&usbphy1>;
+>>   				fsl,usbmisc = <&usbmisc 0>;
+>> +				dr_mode = "otg";
+>>   				ahb-burst-config = <0x0>;
+>>   				tx-burst-size-dword = <0x10>;
+>>   				rx-burst-size-dword = <0x10>;
+>> -- 
+>> 2.34.1
+>>
