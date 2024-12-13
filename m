@@ -1,294 +1,384 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2087.outbound.protection.outlook.com [40.107.20.87])
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2089.outbound.protection.outlook.com [40.107.247.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416CA13B5B6
-	for <imx@lists.linux.dev>; Fri, 13 Dec 2024 03:05:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA38613C918
+	for <imx@lists.linux.dev>; Fri, 13 Dec 2024 03:39:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.89
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734059155; cv=fail; b=g8OpCNqJYyTGs7kUDBEwR1aM80VX27K8bhIql7Nsv9vPjBYN91/eQP3G4iHSdj8mJDdtUaSb8yFu9KbVBpUS7M/80FfK4oEqTYR32fXAq3D5vg8XkT63AVT7n0mpYNpDUpUq3AL9e/XDuorsbE3/8GxWbx/rOPpXOTW0mgKGDV8=
+	t=1734061195; cv=fail; b=N3BsBk+Xdz/SSuCadO39g6VFFSwShIdwfG5t74bXAhiSUy1DYYqE4ZX3QIP3i5p/nYwb2vS3UOflSabd1U8OOf3sDa+BGjNecMKgyjHkZ2eXI1mYpHa97ivOTNd/iHCsRBqILvGXXJ0JArMYhoVBDc7b964gKXomabXdiDcfELw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734059155; c=relaxed/simple;
-	bh=OcDdcfFL3jIyL1vLbGFYOFHa/FOgXqzVU9JKOOrcPAw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=mcmQS0VHb2KU/QoWKlGWXbezdhYDPzbac2c8Etj7ztCgAmC+VQjav/GM5JfadnyIezoSlR3NR4Rt2zDyFRRWu2AFB8/y5VPuOgxtiYjzknufV65ZUPKbSQgaRfk++OisLni4l14YCXMI0epdX6yA0DMFvYmAp1KuSu1HFSeoBpQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=yBMwHp6x; arc=fail smtp.client-ip=40.107.20.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1734061195; c=relaxed/simple;
+	bh=UZxze7Hbe8tjITWpbNA2FgHKdDtb/gJjDU4H3af54Yw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=A4XRKbcFlNFeIHtZn2Y8m9yTFULPkTVIXwhK9umag0ZpWQlc5VJzMoQa1XDHUPOnnn+QTv8546XpRPYHy/rloonQEH8p5PLI/4ovjo8cadYveWlV2S1ZBYhvZxUD/mMJSO6J1SJQKsPp0Qxn/KdADUGLVxOq9Y/joxC80JC1tH8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=kp5uKNA/; arc=fail smtp.client-ip=40.107.247.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="yBMwHp6x"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="kp5uKNA/"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=F10jWmyMz+n8F1meatuf5uGMQlfENJkyXbuhUN3KbEsTZw7SeGlfbJgU2f0tIwFS46KTbOYhdyfnqvMNdmF6RyCNDoX1b7M+6efzFYtYcTt8Tkxvx5xoTWcUzg/2ygl7qEGXSh6M+grPP2GV2g++tRBvslqz3Hk2ZQs4+FWrfDF/plwbt4NX9Mwq4MwV/x525/4AhFusybHEkCFjBaY8uSPW8zK+PC8+3qa7ihiyoFeL1gLBjo9PIhAqZwerj6T3qJZCyPIn1JakjJp+2vLvz8XYffUe06g8FXuLHZ+2dRw33M5hXH/XCvSMyd9kqtObycf3tT6g1EhtCaD+iZ3daA==
+ b=I4WUpK+qaG3gM/Ye9A1tNnR3yHf1hLpdqpwMQPSVF7Yr0DlcA8VpVxMVrE2Fktbe+2KPlZwbOPkvC+SUKeZ6maC8bcUypWtYpaM9WHD0jsiodBs03n4l72hh2sovRMxy/9eQXGnHEnSnRhzxhL7Le6UJEVT0nt87Mf6RKnyPtDIsnlpdacmPLWUT2+UnDmzpM8zG6l+b32S7pKbAdQZCa1Wy5WfuftJASTUY8o6CmaCOVN35kv1CYQsmCcB0BE0Jr7DtiIBhA58s1a+oK18hKJN4wQjeI6cEEJOAzZJLK6t6wWqm6ZpOceLa9ceNJTch7wVgNoDmAbNcs8gEkl4abA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=F4+IHymAFG3fzlRz2VYk5n5TawhB5HXg0iTaFK1jZDQ=;
- b=VPihQve6Rg4jPPGiA1u45K8MxiZnmqdv8uM3s5Rg3QS9bOVAXyU3JizEmhmp2q4mS1syHAdAEP8Ki08qaGmYxDpxmBImW3MRLtuR3icp3yHTsKmov+MfROmbTxEGA6iw9ltxV5nWUubI6dq9Hp6KGrIDQ1uzCdH8xW133y6H7N/AKjdRaUxf5WT6CmGGb4Vk7CINQmJ+YdR4sq/dbm2FzkqhZC+7CjJfiaUX0isgds6bgMkjV36p8jtf3QwKtnk5gbylkwevtESx1GaEgarDjiXjDqrYrs5joRJ6pLIwKxB9XfDV7LRu87txIHPccKbFxnWfWGuXiaeLVwJsPpBkhA==
+ bh=dMgI7Ygv7WX2fIbaFvJjNX8t1YP5IRezLCsDcs5QWxY=;
+ b=mgK9g0teRO653gmhPxfxMBX4k1rTOaYSQGO5J7wQiHFNna2V1qNeo7hmF2UythPu8n2AnHZ6ozDESyJ+URr7xdehNAACZPtwiYA0MfKamaOjRJjVsQ+/cBSpJUTikMbxKPvcw5F5w65cwRI+rRzrpLCzAQg8XeqS0OQwXTOwYuOv4rodmNX8UtCkyT/ODhCSe2M8/B5rfP7FENeebuC1doIse5hZ9CSvhX5mWFOQFH408C9NejUR5kcEbRNxPpbyr/I4W6Hsft6QWgSPnsvaz09nlnLYklHfBj5rc5/liqGjxKC1cO31lPqs5ZU5L226KFS+xpl87+Kco3Hn8zNISg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=F4+IHymAFG3fzlRz2VYk5n5TawhB5HXg0iTaFK1jZDQ=;
- b=yBMwHp6xMosrGx9kfV3ajC9whNo0sumikJRIGNIYfEJ+c52IUqo3XnJEQEDTFyRRkyoohQd9By677uGlI/QRQ+0lNPLOGF4is2UfjvSvVfeACJwPxmUGK4B1zO2/Dgz2jfb7WyBJ5Cl0VKIOa9QEqqpIYdu36cccLtOSe+4HmIK9a/s2msZ+mksI/Gf1fHu53GXP/N1rec/4bDzlPu3/GdPsSYPOo8Uus+plPTZ8q3TyFQIYBfzG+KRX1Pr7p4DDlBXcqu2Xubrw7W27tS9Hz2DTZ6ey1OlEA5G1eqXb/3ITAh2P30bGgHNfwsJfJGkT/mG2PO82iV3rFdeZbmd6BQ==
+ bh=dMgI7Ygv7WX2fIbaFvJjNX8t1YP5IRezLCsDcs5QWxY=;
+ b=kp5uKNA/zRohSjsDwAOgZAsJkdo7BjpbthlA2JLcoGGRTHbBxARCvWU2bkkKN/6Q5CxAh7D5Uuhy25bQpxTPwEMT5V3HE+0fjS3lXK/b711iW++kw2s60zEUJ5krR//qFwXQyfSKv86IPslg3XjKu5T3DidOPm+aYbbrZwrxFPwu3YGDAiQ8Rqar8IOX7J+0l0I1/8PZR8ap2uNymQzPRwfzSTtreTiEuX3XM4Kov5q8v2BGFXDidbeZUgZLLwpX3Qb6KMVIAjqUiF2aX9srckEbve6uDjpfXwVOrBMsdbhq2c58b0IlqJXPu3P8/eYY3NjO6ZNqYZxal8DvUhWk1w==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by PA4PR04MB7775.eurprd04.prod.outlook.com (2603:10a6:102:c3::15) with
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by VI2PR04MB10809.eurprd04.prod.outlook.com (2603:10a6:800:27b::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.15; Fri, 13 Dec
- 2024 03:05:49 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%5]) with mapi id 15.20.8251.015; Fri, 13 Dec 2024
- 03:05:49 +0000
-Date: Fri, 13 Dec 2024 12:11:00 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 2/2] nvmem: imx-ocotp-ele: Support accessing controller
- for i.MX9
-Message-ID: <20241213041100.GA6948@localhost.localdomain>
-References: <20241212-imx-ocotp-v1-0-198bb0af86a0@nxp.com>
- <20241212-imx-ocotp-v1-2-198bb0af86a0@nxp.com>
- <Z1shTD5QLRXB1wAk@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z1shTD5QLRXB1wAk@lizhi-Precision-Tower-5810>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: SI2PR01CA0051.apcprd01.prod.exchangelabs.com
- (2603:1096:4:193::6) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.18; Fri, 13 Dec
+ 2024 03:39:47 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90%6]) with mapi id 15.20.8251.015; Fri, 13 Dec 2024
+ 03:39:47 +0000
+Message-ID: <6548eb6e-d4c3-495b-b59e-5fdbcb6ca398@nxp.com>
+Date: Fri, 13 Dec 2024 11:40:22 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 01/19] dt-bindings: display: imx: Add i.MX8qxp Display
+ Controller processing units
+To: Rob Herring <robh@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+ p.zabel@pengutronix.de, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+ krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ tglx@linutronix.de, vkoul@kernel.org, kishon@kernel.org,
+ aisheng.dong@nxp.com, agx@sigxcpu.org, francesco@dolcini.it,
+ frank.li@nxp.com, dmitry.baryshkov@linaro.org, u.kleine-koenig@baylibre.com
+References: <20241209033923.3009629-1-victor.liu@nxp.com>
+ <20241209033923.3009629-2-victor.liu@nxp.com>
+ <20241210221508.GA550635-robh@kernel.org>
+ <30924a9e-7d01-46f6-9e47-405c08acdde3@nxp.com>
+ <20241211145541.GA2837320-robh@kernel.org>
+From: Liu Ying <victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <20241211145541.GA2837320-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+X-ClientProxiedBy: SG3P274CA0003.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::15)
+ To AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|PA4PR04MB7775:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9ebf3232-7db4-4eb0-f696-08dd1b230b88
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|VI2PR04MB10809:EE_
+X-MS-Office365-Filtering-Correlation-Id: b021a603-0d57-4760-2a5a-08dd1b27ca36
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|52116014|1800799024|38350700014;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?KnjAtnaxZeW4tJZbKPxQn0rU49O8IPegiTc6OaZNWHJo6x1Adt7qOySMavK1?=
- =?us-ascii?Q?7ahkFnwNejGDXm6x54tu0dxm8onf81j5nhQDLGvNeqYd5gUrqgZ91Cs4wfrY?=
- =?us-ascii?Q?teLydiXaA893pHmYyDzIBl0U1Tfn/ODO9h+kg4Jq42x+1JrOJr3n3AOHy1d4?=
- =?us-ascii?Q?1tzW4DyZpOmt6bpk8apBOAdekOrrUPg+nSzVse/ll8w1lLggv2fkZkA1go+C?=
- =?us-ascii?Q?PgLzMeSR2d2Tbg3MT/9eK+WDv2IHJjOZqdLV6uC5nHY1jdokp7wHrTFainyV?=
- =?us-ascii?Q?j6ij/zWhXF7s/ON+lNp0xh/QMDT/DFk4gIjoROYapVHRcp+qL8WwMUbKuGHp?=
- =?us-ascii?Q?uD2N6Xd9E2Iys+GIwGSo5IIBh77aUn3R9Cn4jx0yfGp+xqTOrI+kT7NrmLvu?=
- =?us-ascii?Q?O6drKufJp2n5+K39/B7qpydUI95v2aJTa9D1VIhV44HFwoQYbWOiod6VHVe+?=
- =?us-ascii?Q?KIUn/ovWOJF6dcfHL1PNIPgElYodGbvirYb65aBvfCBBguQaWJW+q728cDN4?=
- =?us-ascii?Q?/FMKbn0rkbUWyDMbmHI/1nkQuHU3Ix009XFE+vFSIyeN3j1ppHqKEYTOjFI9?=
- =?us-ascii?Q?fx5FjGgA1GiCb0BIjMUNALdnrpy0X9SdX4rl24rLcgWiwkm17O8J01dqBe0t?=
- =?us-ascii?Q?nCAeIXj5mAAHWquOl6saNNtBjW4XSWgKbfwxpHiZ8Cyn366HsToGo7GtRRbL?=
- =?us-ascii?Q?YWJvNPicU/WVf54OcKba5YTkCNLohlqIxZw4X2Z9CHElsxQb6ZVjUBUX5oJ+?=
- =?us-ascii?Q?teLDKEnpTHb70C+WcyaO26agdegkQFDCp1DT6Vufahb/9MsEO/ksHXIkyFFH?=
- =?us-ascii?Q?6GDGw6VE0puRMTykzad3/auTtahcF3Ia3KBvSkhcLwy2fLMVNjHCEBg8aAcF?=
- =?us-ascii?Q?VKK0SrciJZZ0xf9WLYEpWlTfDRz3Glyz76NKLXJk34p0HwfBcgxxDjcXf5am?=
- =?us-ascii?Q?D2y6pZ/ifGyFHFVGv1pzQ9TbhPuNnxo3LPtrb9EPhTMsA59CjGT1XXm1cWgK?=
- =?us-ascii?Q?fS0HgGfAjrBaugukXWwva7zOWAZXyatQdkQ4zMUD8RQWUdPGbbBWT7BS1bEu?=
- =?us-ascii?Q?BtVQ5XbWrTv64UfWNYVzdoHRWCFLU/ZGnnIO7JAoMkJYxK638WK+YW8bz+3B?=
- =?us-ascii?Q?kHWf4LEw5YJf5hOJJfcvj0aasHhMoa18LRWlcA6/USLrMlH3P00XhR8mjKf0?=
- =?us-ascii?Q?+FQP5joA7XnK14LDt0HsITRKVUVzD0rqvIjo+3+zcK6TWdk/vMHS94TsVFGe?=
- =?us-ascii?Q?EjfHoGktKWW3BlrdTMmC+ae7LAWVWJpYDKzJd3M2i5I0JcvhVPhUYIKPaw8V?=
- =?us-ascii?Q?ndukOFgR/A78qdIQFd3/wsrYWhdbyuJhPIqgyIgQnT6aDd7MHBLO5rYBFYT5?=
- =?us-ascii?Q?uh4CtoewQIHI72U6PRLxdz2MUKzlCF18cEtVaxK+90yH6Nfeuw=3D=3D?=
+	=?utf-8?B?R2tEUWpvVnoxQnU5bDI1K1p3YS9vYkZLUVBscnF2UmFGeGZYUDJtUEdkMzB3?=
+ =?utf-8?B?cGROY0xNUHJra0hhdEkweFc4VVdxUkFMb0VZT2RHR2hBNGd2VXlsNlYxdWM4?=
+ =?utf-8?B?VTVsakc2cUsvYTVVU1VCait3UVREOXk1dTRKdmtpSlhFU0psTk9RRFY4MWp5?=
+ =?utf-8?B?N3Zkc1NDa1R2RWp4NnBlTTNqZzBjczk2Q09Uc1I0d0xlcXQ2eSt0b3JtZm5U?=
+ =?utf-8?B?Q1J4cWxTem5hMzFRenpyQkFXcWNDbldqVGtseUtreWF5TkdxQ1RkeG8xRlFz?=
+ =?utf-8?B?TzFnRVgvK2NySFh5aXEzTzJtV1lSUm5jTVJPM09oNW1sZ25PSU8xelA0d0Rq?=
+ =?utf-8?B?NDR0aDRyVFMwRXpjNHNHbGZNQkhiOXVuNnYxdTVwRHUxTGUrb05LSFl0L2dn?=
+ =?utf-8?B?Mjd2Wk96THVyenp3ckFvT1laS1M3M0xBNEVXVnlPaHgxbFRVaU9tSlAzMVhs?=
+ =?utf-8?B?cnMwRXBzNG1qNmJiWHUxYU1SUFBMRzNsM2FyV3B0Rm12aGVaQmNMdXMrN2JU?=
+ =?utf-8?B?OVErYnlST0Y3em1SM0sxMkxJdTR6TEV0L2VhUWlvTlhIS2dzYldBS3RHOFo0?=
+ =?utf-8?B?dFVEN1BhNEdqbUZVOEpDY2l2Qk16bXBDRE5YVlJiczYyejRUKzJjdS9VTnFJ?=
+ =?utf-8?B?cklqNDZBZmJadkhBaGpLcGVoTkJEaTZ6M2MrMmxsNnd3RWRlLzIvRlQ0Yitp?=
+ =?utf-8?B?dUMwbXdPSjFnNnBVQXBHMHB3eXB6S1MvMWgvaTFrZHROZjlQU1pqV3hGNHZG?=
+ =?utf-8?B?bWlPZzRqbFA1S0ZXS1paL01kN1BCdTZvR3ZpMHdzakJkZ3hXMnp0UWZSSEpP?=
+ =?utf-8?B?UFp0VmtxSHB4cHdQUTlldFFRZ0VLaGFvaElFMXpBMXlQVkRjWXY1RUxzbmhC?=
+ =?utf-8?B?NkFJNC9DQ2F4RGtvMlI4SHpyVytNdm5pQTQxRlBEcWlaaEtMRTJkL0MrQklk?=
+ =?utf-8?B?RlpDU1dyQ2F4cWg4aVlRZWZhQnF0OHpNME5saEpISlp5MmNsZzFxWEgyc0xZ?=
+ =?utf-8?B?WUNLMk9RejFMbFRQRHE5Y1laOUxVdWlUL1dEeW1rS1ltYitFZFh2RjlqQXFT?=
+ =?utf-8?B?R3dZa21aTXVDdjArcUFUZlROTDJhRVBGUnd2bDBzdEx3VC9oNURQcEM5emZC?=
+ =?utf-8?B?WUU2ZWd5OVBtbk1VZUUzWDczT0Jzam40ekhqeW9DTDRlTEp3L0J2Q2JjcklX?=
+ =?utf-8?B?bGQzbmQrb2xVZFYyNzhNWnhnb1lPVmRSSmVyeG5IajB1UU5mcnNTMk93MGJV?=
+ =?utf-8?B?WDVnbm9peDFrc0VjWGEvM0RWakhIb0xzRTQ4QVlFZ3JVZGd2WEprTVpoa2c5?=
+ =?utf-8?B?VUtiM3JFNUVBRzRHcVhoVE1icitXV2pNLy9vZm8xMG84YVJzNzVDSEI5Z2po?=
+ =?utf-8?B?UXdSUkpBNjBJSDBTN1hNdEVPRlZycElvL1hvM0p5ckI1bHQ2dEo4bzREM2Uv?=
+ =?utf-8?B?UnFqeTlJRGNXcUhDSEFsRnR3eTNJWHZ4aTk0T1hBSlI3V1RMVEUzY0xLU2ds?=
+ =?utf-8?B?K2VaL2NQR1MrNG5nb2RxM2pWM0ViR2haL2dPcmEzSTEvcDZJZi9yb052Mnhw?=
+ =?utf-8?B?ckxscXdBTzhTSE1URXFWOVlyOVJ1UkF5b05ReW1ZbFlvalZLUEx5dWNBbmZ5?=
+ =?utf-8?B?VXRULzR0bXp3bWlramE5NEp4bmxGTHMxOTAwajJ1ZUpOSjMzdWxsZzZBbFIz?=
+ =?utf-8?B?MFJVTXhWZEIwNUVjNVdtS3ByVmVUUGtVYlFGRklaTXNWY1J5WElnZWdQb0h6?=
+ =?utf-8?Q?nBce57KjN4Aez2ulLs=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?grjXuLoVvuYGLe7pzjzxnQUcc4Df6/g7kZg0RBINNT7K7ZDUJoF7EQhqSvnG?=
- =?us-ascii?Q?vwl7swRk+/tbzJSIuL/MuGjgyxawlMZyLZQ8xj8d1ZuggYd+vHZTuULpEjs1?=
- =?us-ascii?Q?+MT/TLrCbt/V1nOTDR9qY0HMjrTMcAm5U6KD2ZSdHSmxeKLqbzAG6ItChduk?=
- =?us-ascii?Q?IUvDLMIFuXNHy+9Xr/DxBD0gn6UyusHaGDyso19J1JeXZSugUh8BfgOSIH/R?=
- =?us-ascii?Q?Z9myweA1qO3MjeNEbKrczxESEJ1uLq1OHHVeF6P7dxFTkMtQT3GijjPq+JNr?=
- =?us-ascii?Q?70jcS0L8p7osCEJbV4cn9tSPz/Qo8MGIcM5KeOFf+YM5ji3t9Jt5Zs2b4i5J?=
- =?us-ascii?Q?w3DBQfsdtXEewmsdexJBF8ze/FEZPkxj2B/s9v7P9lD2NAr9v/uv3dkHf1Wp?=
- =?us-ascii?Q?1BLWZe81t1LcEJ0YjI8nW0MvaeiyC4TsLNSn6oRSuv/6Vqy+IDXPp4R8+Hqr?=
- =?us-ascii?Q?/fMEHQfF3smUJACRFvsXaSmE1PGQKRpG0FXS/mbF6H5sH+K5ebSAsDD/7Qth?=
- =?us-ascii?Q?aD4kgJZJ9Mgr+jbOa5f6/mLh85yUeKF6Sf6TZPVC03Zk7yaSUina49A8lZcw?=
- =?us-ascii?Q?E7DDQamC4pSB3v3xz1PZqXw6saZT2KpNC/pMLHXS2ZM7jOew5KvXeBvJBMGp?=
- =?us-ascii?Q?DzY1zLUnk9QDaiNtUMu+cShuTPMVR5QXEMS/yOEAd8KNz/L8+xVAYsqrKeLl?=
- =?us-ascii?Q?QX9OcKlRKRiuLyylemC25BhxJnKWVZDOIJrtMKWrhrZ/FAtxIDNZo7CgNFz4?=
- =?us-ascii?Q?aOyKULBRpZe6+2Qo8JhsL9flwlu6iLxYMeE83cc1GPiIrACNh3fO24qXH3CX?=
- =?us-ascii?Q?0J5zf7C4CC6+Drd9s5cBICVpM6SfypTExAhyZsXmC51KIPLl9G8HwLOtjvEZ?=
- =?us-ascii?Q?cgdSjA2byaJM2AR8++7yuDE8tJnuGoZLmY7ByRJ45rspdLyzTTw2oGprRbhF?=
- =?us-ascii?Q?4uHJ4aMoRleDgw/4uE9stW3tfmMIi+Wd8Nro/LG7/WbUmSkSvUMXPO8alAT/?=
- =?us-ascii?Q?U2of32IeQ5aojRsYyRPY2TEiu3OSsFZiFRqTV9m89uaCDpPqIGh66CGz59E7?=
- =?us-ascii?Q?V1d16B5JhauWC3oeAiFudZWQe8PI363bOqSr9an1is5QgGW0R7TP4mPadxGE?=
- =?us-ascii?Q?awhYyFod2T3e9fgS1rYhtegYT+UMyGDtTRM7qpa5Y17YMb+KVcM7cgaSER+N?=
- =?us-ascii?Q?2IBq4nT+vOl7344QIQmW2Bicjix1kM9uue0FHQE2Kb1hYg85cjfN3MAjbUML?=
- =?us-ascii?Q?tbiIcJKycbWu5fwxcx8IrUcazEKlRk0UYY+7bk5pIT2vG8QcCOObQb/Gbmv0?=
- =?us-ascii?Q?jGD4MdZa0jGaMyjxxqzVYSleXiCMhx4tHEbF6gl6Pi6JIZGg5AoDxgZkAH/j?=
- =?us-ascii?Q?Y2TOPJzC2HA0XlzwZ3Hq07WJsabfUVecVtB531XuYe7UDTeIRTcWA6p0k7th?=
- =?us-ascii?Q?PXsGv7q98kYDLMHkBUnXl2oZRe7dy+S6AGesjKzVm/lsCW6b1q1nFtLxOHAW?=
- =?us-ascii?Q?H5EoagH4JaSVxbTBbY4xek4HGpSe1R8DY/uZ+SOLeU/Dv0ry2iY6BM72PJFR?=
- =?us-ascii?Q?UZ1lekGXBlmZQhHSpfibk5Hact+fS7RVHtcSJqSY?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9ebf3232-7db4-4eb0-f696-08dd1b230b88
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+	=?utf-8?B?ck9uT01jUWlXWGVVeUkwZHBEdUhUTFpPL3lHOG5vRWQ4WGdvSExIeFdzamc4?=
+ =?utf-8?B?eHBQZ0k0WDlFcWN3MHFlNWE4QkJVNy8yTGpPK3NVcEYydzhmSGIxdHJEVE1s?=
+ =?utf-8?B?NXRzTTRNQ2Q1WXFrQitRQUdERHdkNkx4U1JkRndjamZBT1RJMWZNZ2plM3VP?=
+ =?utf-8?B?bE5vSjRBaGszZUc5SE9nU0MwYnBWQW1jZjNNWTdKdnBjZW14WCtKVGlkZzhO?=
+ =?utf-8?B?bGdJZ0xDaXR5M2NkOVk3b3RmQisyYmZ0U1NRVnVobi94MHRuQXZ0RTh6THdh?=
+ =?utf-8?B?STl2THY5bmRwYmMwTU0zdWVOZUd4cGx2ZUE2dUtIZHhOeUtSWGVZUE5RbG45?=
+ =?utf-8?B?N21kbEh5ZzZXMW1RVGFmb0w1M1ZOcmRNRkthd0tuZmpJdWtQUTA1QzVWNjA4?=
+ =?utf-8?B?c1pjd2plaUlaZWRoM0V6OTlSbXdTSUxyYjg4R1NrWWwzN05yNW9kTXg4eDhj?=
+ =?utf-8?B?TWJ4bE5zTUZIWmFRVG9LWU9hMVNjTlNrWVQ2aGVGdWtGS2JHTGJSS3hDcTl1?=
+ =?utf-8?B?aVlqUVdQQVVKYWFRdzFKeDdBMHp6RWxWemlQdTVyaVdIeHlmdllhMDMxR2c1?=
+ =?utf-8?B?SkJna0x5Z1ViZjByN2dRSFdjQUJHaTU3anpXOFBmN2swb21TK29NVEhHRVR1?=
+ =?utf-8?B?ck8ySE52ZFkyUnJXOTdqbGtVZW1XNW5meC8wVEczbkNTb2Z1STdaQUo5L25h?=
+ =?utf-8?B?a3k4d29ObGNRSjRvSXN6eVYzK1VzNnA3U1NDcXdwRCtHeTRGaUlHdWFEdHF5?=
+ =?utf-8?B?RUtWN0ZnYzF6d2RQaUhSbmkwdzRFcmNGRFkxRGxxYjVRcDBtRml4dlVkdzd3?=
+ =?utf-8?B?cHRaMkZBU1VJeHg3YmcvR0JMczhNck9wZjgyYnpHSU9ZT0lDT3Z2Qy9TTnNZ?=
+ =?utf-8?B?WHhuWXZQbkYyR2lMWDV3Snh3dWV4ZWFiYXdtUXErYWw3YThlWkNqMGxOWE9L?=
+ =?utf-8?B?UldJNjVTQndKd1Z5QjhqM1pWcGtid3RISnZuRmJVdTlKRlpOUkNYMDBmVVk5?=
+ =?utf-8?B?VzQ2YnkvY3dZbDl2cWVnVlYrSGRVczR3bFhnZVdwVWdRdVJ6U2YyQ2hKMStU?=
+ =?utf-8?B?d2FZY0FaZ2dFUlZVM1U2bHlZZ3h2UnRSVkdrNUVaQTEzSEdlaFptVVNNS1M2?=
+ =?utf-8?B?cW83QTExeG05TkpkbE5ZdEpCT1I0d1VtcGd6WXdPVTl1eEdoZnhjMDFmK3VC?=
+ =?utf-8?B?T2VmMk00aFNlSi9GUW1FaW1IUUpvQU9UZ1kvUTJVNDArR2UyNXJhWmJxc2xY?=
+ =?utf-8?B?cjBzNllXQ1VOZXhQQ2lTZzV0MURjUEJDdURRVWhUMW1Wd21aMmlVVHZsQjlz?=
+ =?utf-8?B?NERXQkozSVhLUkc4M2FYUm0xU2tQcGlhSnZuVmxhUzRLSDIzYU9selM2OEZ6?=
+ =?utf-8?B?UjE5Z0NQYVRHb3h5ZTVaSTRXVGR1c2hERk5HVUJzN1VaWlNwbmo3Y2dvY3Bp?=
+ =?utf-8?B?YVZFdzVWSTltS1FEbWRXOHdibXk5VjJnYlhGYUVFK3FrUHRCTXFsVksybDRF?=
+ =?utf-8?B?a0VnNndYS1k0QytYL3pVeHo2cmlIUVVkZGxkblBFSm1pc1dIamxvUFB4clJj?=
+ =?utf-8?B?TFQ4aC9uL1lpM3FGRXZvR3FZUkxNME82Vy9BU0pjVmJ4UXF0M3lJUCtNNTdH?=
+ =?utf-8?B?Ym1OZkxwVEFpQktMWXQyekdEa1FUeWg2MUxLOGdMWklTWkRhSitmWGVPSUZB?=
+ =?utf-8?B?UjZQZUthNWE1ZkRCRFRPeVpOd1hSSllPQTJ5YkpQcHZjeVAxUzY3OE5PdmxW?=
+ =?utf-8?B?T2RobHdEbjNvZytVMHAwcVdVTUhOM1U5cmtMT1IzRXM4V0MvWm16bnBTb2pv?=
+ =?utf-8?B?Vk5hKzNkSmU0QVZJT1BvWjRGUG1ZVDloTWVlZmd5U3YraDFIbWFrMHB1U0xu?=
+ =?utf-8?B?ZDJrVkRHRkJUbW5tM1ZKQk1zSFlZYmQ4UENQNDFKalczNG1RWXN5ci9OdFdL?=
+ =?utf-8?B?MEpFb2kvcXVtV2h4VEdEQ0JiT2IwbTYrUGFNNy9aRldSTkFFbmpDMk9uZ3pY?=
+ =?utf-8?B?REV4c1dpYVZ2SEFVQ3VKRUxMckx5dzdZY3I2SExGU21Uamxmc1B5bnN6OC9j?=
+ =?utf-8?B?MlpoK0pwbk1jUE5EcUZOdE92Snh3WjVwbTJaQ2FzdjNxVHBXaUNkNS84WUNl?=
+ =?utf-8?Q?2NgOT9rDRfw+iavWJZR3hE2KX?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b021a603-0d57-4760-2a5a-08dd1b27ca36
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2024 03:05:49.0171
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2024 03:39:47.4502
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EhLnwOmFNIFSQreMJnToQA8fQLd0lwGS65CKEnUWIeWwPXLpGdIWSd5oi5N/2i4F5lmY/rOEF9pBGTmx148EDA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7775
+X-MS-Exchange-CrossTenant-UserPrincipalName: o91SD0IpF8FkqKuE4SMOapkpe2eyyxPLczQEPSyxbLZNMKy1DK6yOMJWECFKYbnWlQqKw6knvu6RVXCQPX436A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10809
 
-On Thu, Dec 12, 2024 at 12:45:48PM -0500, Frank Li wrote:
->On Thu, Dec 12, 2024 at 04:24:42PM +0800, Peng Fan (OSS) wrote:
->> From: Peng Fan <peng.fan@nxp.com>
+On 12/11/2024, Rob Herring wrote:
+> On Wed, Dec 11, 2024 at 11:05:52AM +0800, Liu Ying wrote:
+>> On 12/11/2024, Rob Herring wrote:
+>>> On Mon, Dec 09, 2024 at 11:39:05AM +0800, Liu Ying wrote:
+>>>> Freescale i.MX8qxp Display Controller is implemented as construction set of
+>>>> building blocks with unified concept and standardized interfaces.  Document
+>>>> all existing processing units.
+>>>>
+>>>> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+>>>> ---
+>>>> v6:
+>>>> * No change.
+>>>>
+>>>> v5:
+>>>> * Document aliases for processing units which have multiple instances in
+>>>>   the Display Controller.  Drop Rob's previous R-b tag. (Maxime)
+>>>>
+>>>> v4:
+>>>> * Collect Rob's R-b tag.
+>>>>
+>>>> v3:
+>>>> * Combine fsl,imx8qxp-dc-fetchunit-common.yaml,
+>>>>   fsl,imx8qxp-dc-fetchlayer.yaml and fsl,imx8qxp-dc-fetchwarp.yaml
+>>>>   into 1 schema doc fsl,imx8qxp-dc-fetchunit.yaml. (Rob)
+>>>> * Document all processing units. (Rob)
+>>>>
+>>>> v2:
+>>>> * Drop fsl,dc-*-id DT properties. (Krzysztof)
+>>>> * Add port property to fsl,imx8qxp-dc-tcon.yaml. (Krzysztof)
+>>>> * Fix register range sizes in examples.
+>>>>
+>>>>  .../display/imx/fsl,imx8qxp-dc-blitblend.yaml |  46 ++++++
+>>>>  .../display/imx/fsl,imx8qxp-dc-clut.yaml      |  49 ++++++
+>>>>  .../imx/fsl,imx8qxp-dc-constframe.yaml        |  49 ++++++
+>>>>  .../display/imx/fsl,imx8qxp-dc-dither.yaml    |  49 ++++++
+>>>>  .../display/imx/fsl,imx8qxp-dc-extdst.yaml    |  77 +++++++++
+>>>>  .../display/imx/fsl,imx8qxp-dc-fetchunit.yaml | 147 ++++++++++++++++++
+>>>>  .../display/imx/fsl,imx8qxp-dc-filter.yaml    |  47 ++++++
+>>>>  .../display/imx/fsl,imx8qxp-dc-framegen.yaml  |  68 ++++++++
+>>>>  .../display/imx/fsl,imx8qxp-dc-gammacor.yaml  |  38 +++++
+>>>>  .../imx/fsl,imx8qxp-dc-layerblend.yaml        |  45 ++++++
+>>>>  .../display/imx/fsl,imx8qxp-dc-matrix.yaml    |  48 ++++++
+>>>>  .../display/imx/fsl,imx8qxp-dc-rop.yaml       |  48 ++++++
+>>>>  .../display/imx/fsl,imx8qxp-dc-safety.yaml    |  34 ++++
+>>>>  .../imx/fsl,imx8qxp-dc-scaling-engine.yaml    |  89 +++++++++++
+>>>>  .../display/imx/fsl,imx8qxp-dc-signature.yaml |  58 +++++++
+>>>>  .../display/imx/fsl,imx8qxp-dc-store.yaml     | 100 ++++++++++++
+>>>>  .../display/imx/fsl,imx8qxp-dc-tcon.yaml      |  50 ++++++
+>>>>  17 files changed, 1042 insertions(+)
+>>>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-blitblend.yaml
+>>>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-clut.yaml
+>>>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-constframe.yaml
+>>>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-dither.yaml
+>>>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-extdst.yaml
+>>>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-fetchunit.yaml
+>>>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-filter.yaml
+>>>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-framegen.yaml
+>>>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-gammacor.yaml
+>>>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-layerblend.yaml
+>>>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-matrix.yaml
+>>>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-rop.yaml
+>>>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-safety.yaml
+>>>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-scaling-engine.yaml
+>>>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-signature.yaml
+>>>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-store.yaml
+>>>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-tcon.yaml
+>>>>
+>>>> diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-blitblend.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-blitblend.yaml
+>>>> new file mode 100644
+>>>> index 000000000000..7f800e72c3f3
+>>>> --- /dev/null
+>>>> +++ b/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-blitblend.yaml
+>>>> @@ -0,0 +1,46 @@
+>>>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>>>> +%YAML 1.2
+>>>> +---
+>>>> +$id: http://devicetree.org/schemas/display/imx/fsl,imx8qxp-dc-blitblend.yaml#
+>>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>>> +
+>>>> +title: Freescale i.MX8qxp Display Controller Blit Blend Unit
+>>>> +
+>>>> +description: |
+>>>> +  Combines two input frames to a single output frame, all frames having the
+>>>> +  same dimension.
+>>>> +
+>>>> +  Each Blit Blend Unit device should have an alias in the aliases node, in the
+>>>> +  form of dc<x>-blitblend<y>, where <x> is an integer specifying the Display
+>>>> +  Controller instance and <y> is an integer specifying the Blit Blend Unit
+>>>> +  device instance.
+>>>
+>>> That's really an abuse of aliases. If you need to describe connections 
+>>> between components, use the graph binding like everyone else does for 
+>>> display path components.
 >>
->> i.MX9 OCOTP supports a specific peripheral or function being fused
->> which means disabled, so
->>  - Introduce ocotp_access_gates to be container of efuse gate info
->>  - Iterate each node under '/soc' to check accessing permission. If not
->>    allowed to be accessed, detach the node
->>
->> Signed-off-by: Peng Fan <peng.fan@nxp.com>
->> ---
->>  drivers/nvmem/imx-ocotp-ele.c | 187 +++++++++++++++++++++++++++++++++++++++++-
->>  1 file changed, 186 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
->> index ca6dd71d8a2e29888c6e556aaea116c1a967cb5f..542539b86efd2d38be2903c1d0ea72f918ff5b75 100644
->> --- a/drivers/nvmem/imx-ocotp-ele.c
->> +++ b/drivers/nvmem/imx-ocotp-ele.c
->> @@ -5,6 +5,8 @@
->>   * Copyright 2023 NXP
->>   */
->>
->> +#include <dt-bindings/nvmem/fsl,imx93-ocotp.h>
->> +#include <dt-bindings/nvmem/fsl,imx95-ocotp.h>
->>  #include <linux/device.h>
->>  #include <linux/io.h>
->>  #include <linux/module.h>
->> @@ -27,6 +29,7 @@ struct ocotp_map_entry {
->>  };
->>
->>  struct ocotp_devtype_data {
->> +	const struct ocotp_access_gates *access_gates;
->>  	u32 reg_off;
->>  	char *name;
->>  	u32 size;
->> @@ -36,11 +39,26 @@ struct ocotp_devtype_data {
->>  	struct ocotp_map_entry entry[];
->>  };
->>
->> +#define OCOTP_MAX_NUM_GATE_WORDS 4
->> +#define IMX93_OCOTP_NUM_GATES 17
->> +#define IMX95_OCOTP_NUM_GATES 36
->> +
->> +struct ocotp_access_gates {
->> +	u32 num_words;
->> +	u32 words[OCOTP_MAX_NUM_GATE_WORDS];
->> +	u32 num_gates;
->> +	struct access_gate {
->> +		u32 word;
->> +		u32 mask;
->> +	} gates[];
->> +};
->> +
->>  struct imx_ocotp_priv {
->>  	struct device *dev;
->>  	void __iomem *base;
->>  	struct nvmem_config config;
->>  	struct mutex lock;
->> +	u32 value[OCOTP_MAX_NUM_GATE_WORDS];
->>  	const struct ocotp_devtype_data *data;
->>  };
->>
->> @@ -131,6 +149,100 @@ static void imx_ocotp_fixup_dt_cell_info(struct nvmem_device *nvmem,
->>  	cell->read_post_process = imx_ocotp_cell_pp;
->>  }
->>
->> +static int imx_ele_ocotp_check_access(struct platform_device *pdev, u32 id)
->> +{
->> +	struct imx_ocotp_priv *priv = platform_get_drvdata(pdev);
->> +	const struct ocotp_access_gates *access_gates = priv->data->access_gates;
->> +	u32 word, mask;
->> +
->> +	if (id >= access_gates->num_gates) {
->> +		dev_err(&pdev->dev, "Index %d too large\n", id);
->> +		return -EACCES;
->> +	}
->> +
->> +	word = access_gates->gates[id].word;
->> +	mask = access_gates->gates[id].mask;
->> +
->> +	dev_dbg(&pdev->dev, "id:%d word:%d mask:0x%08x\n", id, word, mask);
->> +	/* true means not allow access */
->> +	if (priv->value[word] & mask)
->> +		return -EACCES;
->> +
->> +	return 0;
->> +}
->> +
->> +static int imx_ele_ocotp_grant_access(struct platform_device *pdev, struct device_node *parent)
->> +{
->> +	struct device_node *child;
->> +	struct device *dev = &pdev->dev;
->> +
->> +	for_each_available_child_of_node(parent, child) {
->> +		struct of_phandle_iterator it;
->> +		int err;
->> +		u32 id;
->> +
->> +		of_for_each_phandle(&it, err, child, "access-controllers",
->> +				    "#access-controller-cells", 0) {
->> +			struct of_phandle_args provider_args;
->> +			struct device_node *provider = it.node;
->> +
->> +			if (err) {
->> +				dev_err(dev, "Unable to get access-controllers property for node %s\n, err: %d",
->> +					child->full_name, err);
->> +				of_node_put(provider);
->> +				return err;
->> +			}
->> +
->> +			/* Only support one cell */
->> +			if (of_phandle_iterator_args(&it, provider_args.args, 1) != 1) {
->> +				dev_err(dev, "wrong args count\n");
->> +				return -EINVAL;
->> +			}
->> +
->> +			id = provider_args.args[0];
->> +
->> +			dev_dbg(dev, "Checking node: %s gate: %d\n", child->full_name, id);
->> +
->> +			if (imx_ele_ocotp_check_access(pdev, id)) {
->> +				of_detach_node(child);
->> +				dev_err(dev, "%s: Not granted, device driver will not be probed\n",
->> +					child->full_name);
->> +			}
->> +		}
->> +
->> +		imx_ele_ocotp_grant_access(pdev, child);
->> +	}
->
->Does it mean ocopt driver have to probe before other driver probe?
+>> I need to describe components' instance numbers which imply the connections
+>> between components but not vice versa. If I use the graph binding, I cannot
+>> get the instance numbers(0 or 1) of the two display engines(documented by
+>> fsl,imx8qxp-dc-display-engine.yaml). If you have no objections, I may add the
+>> instance numbers to compatible strings, like brcm,bcm2835-pixelvalve0.yaml.
+>> What do you think?
+> 
+> You could have dc<x> and blitblend<y> aliases and use the graph to 
+> define the connections. But I'm not really a fan of adding custom 
+> aliases either. Why are the instance numbers important?
+> 
+> Are the programming models or features of the instances different? If 
+> so, then a different compatible or property describing the feature may 
+> be appropriate.
 
-Yes. devlink could make sure ocotp being probed before other drivers which
-needs access control check.
+The instances numbers are important mainly because the four ExtDsts(0/1/4/5)
+belong to content or safety streams of the two Display Engines, plus the four
+LayerBlends(0/1/2/3) in Pixel Engine have different numbers of input ports to
+connect with the outputs of other LayerBlends, though the reason for LBs is
+weak since the input ports can be expressed by the graph binding.
 
+                                           CF0/1/4/5
+                           PE               | | | |
+                                            V V V V  primary layer cross bar
+                          +------------------------------------------+
+                          |                                          |
+4 FUs + (VS4/5 + HS4/5) =>|               LB0/1/2/3                  |
+   secondary layer        |                                          |
+   cross bar              +------------------------------------------+
+                             |          |              |          |
+                             V          V              V          V
+                          +-----+    +-----+        +-----+    +-----+
+                          | ED0 |    | ED4 |        | ED5 |    | ED1 |
+                          +-----+    +-----+        +-----+    +-----+
+-----------------------------|----------|--------------|----------|-------------
+                          content     safety        content     safety
+                          stream0    stream0        stream1    stream1
+                             |          |              |          |
+                             |  DE0     V              V    DE1   |
+                             |       +-----+        +-----+       |
+                              ------>| FG0 |        | FG1 |<------
+                                     +-----+        +-----+
+                                        |              |
+                                        V              V
+                                       ...            ...
+
+(Safety stream still is supposed to still function when content stream fails
+over.)
+
+LayerBlend primary layer selections:
+static const enum dc_link_id prim_sels[] = {                                     
+        /* common options */                                                     
+        LINK_ID_NONE,                                                            
+        LINK_ID_CONSTFRAME0,                                                     
+        LINK_ID_CONSTFRAME1,                                                     
+        LINK_ID_CONSTFRAME4,                                                     
+        LINK_ID_CONSTFRAME5,                                                     
+        /*                                                                       
+         * special options:                                                      
+         * layerblend(n) has n special options,                                  
+         * from layerblend0 to layerblend(n - 1), e.g.,                          
+         * layerblend3 has 3 special options -                                   
+         * layerblend0/1/2.                                                      
+         */                                                                      
+        LINK_ID_LAYERBLEND0,                                                     
+        LINK_ID_LAYERBLEND1,                                                     
+        LINK_ID_LAYERBLEND2,                                                     
+        LINK_ID_LAYERBLEND3,                                                     
+};
+
+People may argue that ED instance number is also not that important, because
+content/safety stream can be inferred from FG input port numbers.  That's
+true, but the connections between the internal devices are too complex and
+I'm afraid it's an over-kill to use the graph binding. I list LB2 primary
+layer selections and ED0 input selections here as examples:
+
+--8<--
+Selection of the source for the prim input of the layerblend2 module
+0: disable      
+10: blitblend9  
+12: constframe0 
+16: constframe1 
+14: constframe4 
+18: constframe5 
+27: matrix4     
+28: hscaler4    
+29: vscaler4    
+30: matrix5     
+31: hscaler5    
+32: vscaler5    
+34: layerblend1 
+33: layerblend0 
+--8<--
+
+--8<--
+Selection of the source for the src input of the extdst0 module
+0: disable      
+10: blitblend9  
+12: constframe0 
+16: constframe1 
+14: constframe4 
+18: constframe5 
+27: matrix4     
+28: hscaler4    
+29: vscaler4    
+30: matrix5     
+31: hscaler5    
+32: vscaler5    
+36: layerblend3 
+35: layerblend2 
+34: layerblend1 
+33: layerblend0 
+--8<--
+
+TL;DR: I'd like to get instance numbers because of an appropriate programming
+model _and_ different features of EDs and LBs(content/safety steam for EDs +
+different input selections for LBs).  If no objections, I'll add instance
+numbers to compatible strings in next version.
+
+> 
+> Rob
+
+-- 
 Regards,
-Peng.
-
->
->Frank
->
+Liu Ying
