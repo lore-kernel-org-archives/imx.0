@@ -1,73 +1,98 @@
-Received: from arara2.ipen.br (arara2.ipen.br [200.136.52.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEAE31B0F27
-	for <imx@lists.linux.dev>; Fri, 13 Dec 2024 09:25:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=200.136.52.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA12364D6;
+	Fri, 13 Dec 2024 09:30:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734081938; cv=none; b=g3BHJLMrXYOLlL06AHIVIP8v9P+2VI9clBDiNVkC6WIahZnJVgCauPKBRr5YFQ0vjIAjhD8aYPIFwJm2H+qvKyWkbd0htL/sR2NKGcF7u3beqkWSTqEHoDAumqkpkY2RXdT66qJ4WTSa+hWhzumc6g9k/XSrrl387sdxOUOyvvE=
+	t=1734082228; cv=none; b=XhSebxaKfTYoipDxH0Ly+DFuKYbW4hmFStnm0syQedwWb0ZdeogO3b/Khx2K14xofFKgu8vfy/YBko36YL9Bmjqw7qBuEaewb85QRl9QV/SmupH2QuQbJgKdJziLdmP9Lkj14I81P5ksBS2SkvY1M/PkaVjGQKz4g2hihQ5nz7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734081938; c=relaxed/simple;
-	bh=Cgr97JBiSX1QIcd2ZZZsKVChGTY1ZlWJ/4AhaVFA7Wc=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=o7ag7vsocXCVGX42z8awLoBx4qX8lFINyG0VdzUKCmW3XsahZTxXgqPHFWVeIPrX+eyvNoJbR35VPLOBEOu1Rne0XjuuiTK69NAohC7lEcc8b4lLQ6F4orUQvzLi9k+guMpm/5CaW6JO16wttyj7xl08L5gBhzWQesdnhvnwzmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ipen.br; spf=pass smtp.mailfrom=ipen.br; arc=none smtp.client-ip=200.136.52.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ipen.br
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ipen.br
-X-ASG-Debug-ID: 1734081883-055fc729eb14a1db000e-wW8Zpf
-Received: from arara.ipen.br (webmail.ip.ipen.br [10.0.10.11]) by arara2.ipen.br with ESMTP id Gr8GMqIWzseGlPJy for <imx@lists.linux.dev>; Fri, 13 Dec 2024 06:25:29 -0300 (BRT)
-X-Barracuda-Envelope-From: TCWM178735@ipen.br
-X-Barracuda-RBL-Trusted-Forwarder: 10.0.10.11
-Received: from ipen.br (unknown [102.129.145.191])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by arara.ipen.br (Postfix) with ESMTPSA id DC970FAC791
-	for <imx@lists.linux.dev>; Fri, 13 Dec 2024 01:24:43 -0300 (-03)
-Reply-To: t.mazowieckie@mazowieckie.org
-X-Barracuda-Effective-Source-IP: UNKNOWN[102.129.145.191]
-X-Barracuda-Apparent-Source-IP: 102.129.145.191
-X-Barracuda-RBL-IP: 102.129.145.191
-From: <TCWM178735@ipen.br>
-To: imx@lists.linux.dev
-Subject:  I urge you to understand my viewpoint accurately.
-Date: 13 Dec 2024 12:24:43 +0800
-X-ASG-Orig-Subj: I urge you to understand my viewpoint accurately.
-Message-ID: <20241213122443.7D351CD9A7E2F587@ipen.br>
+	s=arc-20240116; t=1734082228; c=relaxed/simple;
+	bh=bRbDDk89fSWfSJCWbZmKGfqHdsGWHT5C127PpH93rSs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lKrQk3pI9lOJC0+K18qCSYX8JvD0myFmPbT7HK9BqBVp/fTVjci6trSKyU/L8SGtbDR7yXuHNBmLSH2hl3PxitjQW67fzYwIv6h7YYy7UZ+jGh0UqpDtoSGVJjc4k3S2RAecn0CldIinOmJoMShKXdxUMzliGyipMvCqfJiUwCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=myNtbP8W; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="myNtbP8W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82388C4CED0;
+	Fri, 13 Dec 2024 09:30:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734082226;
+	bh=bRbDDk89fSWfSJCWbZmKGfqHdsGWHT5C127PpH93rSs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=myNtbP8WTKdgILbcr+mKbJty/Y7tbuUIzbmbYuCy/lHX3d5jp33hUnXqrquPapMab
+	 Y2kFTSa/SC/HWLYfaN/H2iNmMoALXym0pcjfHJ2tNCBKko9MMSqEdxy5pE8lSiJhwu
+	 P8W8FY+S/NqRJO9kLUv0ADeQZz8bJ5kr0cXPT4cQAZrr/NOyaga0uISoi/f3pyQG1U
+	 LNH4QYBhmILydjJ25LKs+XoxHeFNrn3bk9AQ6XqD9YM2OsEu66lRvCK3gm7LlZbUT8
+	 Rek0qkzDBJXkHR+xdqHOKyfcBZeY0uoAzqGDneOySuY0HeEnPDqp2VdpgM+cxY7JH+
+	 6XVwdCEWB2qsg==
+Date: Fri, 13 Dec 2024 10:30:22 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Joy Zou <joy.zou@nxp.com>, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/2] regulator: dt-bindings: pca9450: Add nxp,pf9453
+ compatible string
+Message-ID: <lelajzxonciani7lqpssscnjh7y7wbooch47era54rd6ywjmyu@w6w7aa5u7hjg>
+References: <20241212-pf9453-v2-0-f59d2c096356@nxp.com>
+ <20241212-pf9453-v2-1-f59d2c096356@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Barracuda-Connect: webmail.ip.ipen.br[10.0.10.11]
-X-Barracuda-Start-Time: 1734081929
-X-Barracuda-URL: https://10.40.40.18:443/cgi-mod/mark.cgi
-X-Barracuda-Scan-Msg-Size: 512
-X-Virus-Scanned: by bsmtpd at ipen.br
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-BRTS-Evidence: 34fbb5788938ad5710ad28835fd12206-499-txt
-X-Barracuda-Spam-Score: 1.09
-X-Barracuda-Spam-Status: No, SCORE=1.09 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=1000.0 tests=DATE_IN_PAST_03_06, DATE_IN_PAST_03_06_2, NO_REAL_NAME
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.45577
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------------------------
-	0.00 NO_REAL_NAME           From: does not include a real name
-	0.01 DATE_IN_PAST_03_06     Date: is 3 to 6 hours before Received: date
-	1.08 DATE_IN_PAST_03_06_2   DATE_IN_PAST_03_06_2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241212-pf9453-v2-1-f59d2c096356@nxp.com>
 
-I am Tomasz Chmielewski, a Portfolio Manager and Chartered=20
-Financial Analyst affiliated with Iwoca Poland Sp. Z OO in=20
-Poland. I have the privilege of working with distinguished=20
-investors who are eager to support your company's current=20
-initiatives, thereby broadening their investment portfolios. If=20
-this proposal aligns with your interests, I invite you to=20
-respond, and I will gladly share more information to assist you.
+On Thu, Dec 12, 2024 at 05:26:24PM -0500, Frank Li wrote:
+> Add the compatible string "nxp,pf9453" for the PF9453 regulator. The PF9453
+> is similar to the PCA9460 but supports only LDO1, LDO2, LDO_SVNS, and
+> BUCK[1-4].
+> 
+> Restrict LDO and BUCK numbers for nxp,pf9453 and keep the same restriction
+> for other compatible strings.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../bindings/regulator/nxp,pca9450-regulator.yaml  | 24 +++++++++++++++++++++-
+>  1 file changed, 23 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/regulator/nxp,pca9450-regulator.yaml b/Documentation/devicetree/bindings/regulator/nxp,pca9450-regulator.yaml
+> index f8057bba747a5..3589817858c5a 100644
+> --- a/Documentation/devicetree/bindings/regulator/nxp,pca9450-regulator.yaml
+> +++ b/Documentation/devicetree/bindings/regulator/nxp,pca9450-regulator.yaml
+> @@ -17,6 +17,9 @@ description: |
+>    Datasheet is available at
+>    https://www.nxp.com/docs/en/data-sheet/PCA9450DS.pdf
+>  
+> +  Support PF9453, Datasheet is available at
+> +  https://www.nxp.com/docs/en/data-sheet/PF9453_SDS.pdf
+> +
+>  # The valid names for PCA9450 regulator nodes are:
+>  # BUCK1, BUCK2, BUCK3, BUCK4, BUCK5, BUCK6,
+>  # LDO1, LDO2, LDO3, LDO4, LDO5
+> @@ -29,6 +32,7 @@ properties:
+>        - nxp,pca9450b
+>        - nxp,pca9450c
+>        - nxp,pca9451a
+> +      - nxp,pf9453
+>  
+>    reg:
+>      maxItems: 1
+> @@ -42,7 +46,7 @@ properties:
+>        list of regulators provided by this controller
+>  
+>      patternProperties:
+> -      "^LDO[1-5]$":
+> +      "^LDO([1-5]|_SNVS)$":
 
-=20
-Yours sincerely,=20
-Tomasz Chmielewski Warsaw, Mazowieckie,
-=20
-Poland.
+LDO-SNVS
+Underscores are discouraged in node names,
+
+Best regards,
+Krzysztof
+
