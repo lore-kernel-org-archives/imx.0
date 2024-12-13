@@ -1,68 +1,73 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from arara2.ipen.br (arara2.ipen.br [200.136.52.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB531AB6DD;
-	Fri, 13 Dec 2024 09:22:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEAE31B0F27
+	for <imx@lists.linux.dev>; Fri, 13 Dec 2024 09:25:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=200.136.52.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734081741; cv=none; b=dgiM0HAdSiV/+lhieHq1CrccG3HbD1Y6e7DQ14oOJGPOGClJSOLXJKAkzpzIzA0vebH2AcyIqFWSz8cl78WseZ+KRlIhZqAYLmtScZcH18q9YZKoUkmMj4tQCNuVUqPcKmYIXfEPCYy8PM4tVHkp9Cs9cFkF+FUpsBcOSnpRmB0=
+	t=1734081938; cv=none; b=g3BHJLMrXYOLlL06AHIVIP8v9P+2VI9clBDiNVkC6WIahZnJVgCauPKBRr5YFQ0vjIAjhD8aYPIFwJm2H+qvKyWkbd0htL/sR2NKGcF7u3beqkWSTqEHoDAumqkpkY2RXdT66qJ4WTSa+hWhzumc6g9k/XSrrl387sdxOUOyvvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734081741; c=relaxed/simple;
-	bh=b52vfwJl4uqGickd+6KGXREsb2dmjrVhmMOCLp8FrCU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=llCEnkQH61PcHS7o02bVVY+gT7t22KMZlbTWOnmBR7kGF8RwigFnQo5tiNoPGtJnFDpMPIVEggmcsKGYNBpSDJWwEH3nB/tsRJJCDAKzqxGEnwD1RQ2VqYUcfiK2GI11RiF7ijGKzPH6w2T4EwLx4wuMWh+85Fm/c4u1pjvgE8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E7L2e/2m; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E7L2e/2m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C933BC4CED0;
-	Fri, 13 Dec 2024 09:22:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734081738;
-	bh=b52vfwJl4uqGickd+6KGXREsb2dmjrVhmMOCLp8FrCU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E7L2e/2mavqt654a1ofIbOwMfZcqfVlNka9m4KCBbzEZmt4MS2+HikUz5jnpv+n86
-	 j6kkmMv9ACjoLdiwezM5VqwhizhGptVmsEV7bTJuxczO/I1xqSi210FkfYxQnmQrCF
-	 +YDqbnwOQjExnC5wSDvIO3zc/5xOjpj/RyngbiLjB68zKIE4sUZ78aH4DpG9vavkAm
-	 ritUX5VulVKYIUeBsWUCG+9zA+Vsdu/+M3+RvSS+HWoV6X4tlxqjT6SzbRKqmNangi
-	 V2+j7oQ5YP/BpdwWh4HmFU0f4qSxnlyZt+aaRW7Zrg1lBFRTclSuH8Y7ERXBmlfFCF
-	 BaeZ9JcpYdL6w==
-Date: Fri, 13 Dec 2024 10:22:15 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
-	Lukasz Luba <lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Pengfei Li <pengfei.li_1@nxp.com>, Marco Felsch <m.felsch@pengutronix.de>, linux-pm@vger.kernel.org, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] dt-bindings: thermal: fsl,imx91-tmu: add bindings
- for NXP i.MX91 thermal module
-Message-ID: <kb2mekvslpkj23a3ymdfwcpugvlscn736kjfwst24xqdgyqrfn@jozxo7o7enbi>
-References: <20241212-imx91tmu-v3-0-85e756b29437@nxp.com>
- <20241212-imx91tmu-v3-1-85e756b29437@nxp.com>
+	s=arc-20240116; t=1734081938; c=relaxed/simple;
+	bh=Cgr97JBiSX1QIcd2ZZZsKVChGTY1ZlWJ/4AhaVFA7Wc=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=o7ag7vsocXCVGX42z8awLoBx4qX8lFINyG0VdzUKCmW3XsahZTxXgqPHFWVeIPrX+eyvNoJbR35VPLOBEOu1Rne0XjuuiTK69NAohC7lEcc8b4lLQ6F4orUQvzLi9k+guMpm/5CaW6JO16wttyj7xl08L5gBhzWQesdnhvnwzmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ipen.br; spf=pass smtp.mailfrom=ipen.br; arc=none smtp.client-ip=200.136.52.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ipen.br
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ipen.br
+X-ASG-Debug-ID: 1734081883-055fc729eb14a1db000e-wW8Zpf
+Received: from arara.ipen.br (webmail.ip.ipen.br [10.0.10.11]) by arara2.ipen.br with ESMTP id Gr8GMqIWzseGlPJy for <imx@lists.linux.dev>; Fri, 13 Dec 2024 06:25:29 -0300 (BRT)
+X-Barracuda-Envelope-From: TCWM178735@ipen.br
+X-Barracuda-RBL-Trusted-Forwarder: 10.0.10.11
+Received: from ipen.br (unknown [102.129.145.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by arara.ipen.br (Postfix) with ESMTPSA id DC970FAC791
+	for <imx@lists.linux.dev>; Fri, 13 Dec 2024 01:24:43 -0300 (-03)
+Reply-To: t.mazowieckie@mazowieckie.org
+X-Barracuda-Effective-Source-IP: UNKNOWN[102.129.145.191]
+X-Barracuda-Apparent-Source-IP: 102.129.145.191
+X-Barracuda-RBL-IP: 102.129.145.191
+From: <TCWM178735@ipen.br>
+To: imx@lists.linux.dev
+Subject:  I urge you to understand my viewpoint accurately.
+Date: 13 Dec 2024 12:24:43 +0800
+X-ASG-Orig-Subj: I urge you to understand my viewpoint accurately.
+Message-ID: <20241213122443.7D351CD9A7E2F587@ipen.br>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241212-imx91tmu-v3-1-85e756b29437@nxp.com>
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Barracuda-Connect: webmail.ip.ipen.br[10.0.10.11]
+X-Barracuda-Start-Time: 1734081929
+X-Barracuda-URL: https://10.40.40.18:443/cgi-mod/mark.cgi
+X-Barracuda-Scan-Msg-Size: 512
+X-Virus-Scanned: by bsmtpd at ipen.br
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-BRTS-Evidence: 34fbb5788938ad5710ad28835fd12206-499-txt
+X-Barracuda-Spam-Score: 1.09
+X-Barracuda-Spam-Status: No, SCORE=1.09 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=1000.0 tests=DATE_IN_PAST_03_06, DATE_IN_PAST_03_06_2, NO_REAL_NAME
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.45577
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
+	0.00 NO_REAL_NAME           From: does not include a real name
+	0.01 DATE_IN_PAST_03_06     Date: is 3 to 6 hours before Received: date
+	1.08 DATE_IN_PAST_03_06_2   DATE_IN_PAST_03_06_2
 
-On Thu, Dec 12, 2024 at 03:59:59PM -0500, Frank Li wrote:
-> From: Pengfei Li <pengfei.li_1@nxp.com>
-> 
-> Add bindings documentation for i.MX91 thermal modules.
-> 
-> Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+I am Tomasz Chmielewski, a Portfolio Manager and Chartered=20
+Financial Analyst affiliated with Iwoca Poland Sp. Z OO in=20
+Poland. I have the privilege of working with distinguished=20
+investors who are eager to support your company's current=20
+initiatives, thereby broadening their investment portfolios. If=20
+this proposal aligns with your interests, I invite you to=20
+respond, and I will gladly share more information to assist you.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
-
+=20
+Yours sincerely,=20
+Tomasz Chmielewski Warsaw, Mazowieckie,
+=20
+Poland.
