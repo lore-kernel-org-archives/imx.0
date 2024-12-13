@@ -1,71 +1,70 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2070.outbound.protection.outlook.com [40.107.20.70])
+Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2057.outbound.protection.outlook.com [40.107.103.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E08D143759
-	for <imx@lists.linux.dev>; Fri, 13 Dec 2024 19:16:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D95718B492
+	for <imx@lists.linux.dev>; Fri, 13 Dec 2024 20:46:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.57
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734117371; cv=fail; b=ACy66t1oXTI4Fm72PAj5g/SiAwkS8OhsZLMTuj9HMvavXn859NkTVkxx+DA3JxFV6HnNORoKDFApvDewy/3Z5ptQx06jaI1rYUsDGLY+BKyv398I1lbOGhshdbrczs50tAFq1hGME5DO5o8ne5S5hfWLi0eEfuorfNAARmyhRRk=
+	t=1734122787; cv=fail; b=G8QLXC69ENWf6xGJFAs1Qbi8x/71+QwvpPmxPgWUGOUXNJg5/sNL1huD3LqFbiIYQwtvGizQvJaD0yPBjYtq4eEKyjmQmg7CMuKxGQXVvygunNn6DgfQapqzko8G0uIJ8Qj0Ybouh9KqNlbcc1YYbNUSEbZ8OdWYgGR2kB2P7y4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734117371; c=relaxed/simple;
-	bh=XXBzy/KPwBi8Pf5aTBaUuG6pXxhRWYMlzCa/VOmFKAw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=KRLGvS835adYhWsXT32wqY5x/g9XB1zdUwb1A7lhVKa35yfISe9lX81pPxt+qmf2tsvs+O6JphEdTi29wQsB4JDA269gAqfnzwGUUg8bFTOZnQ7Vc1txAzkYOpyHLtn5fQMdxyyoSlk/wj/sBNOz6YOOBoWK9m0CdYm2kCKbuIA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=eLnfceOY; arc=fail smtp.client-ip=40.107.20.70
+	s=arc-20240116; t=1734122787; c=relaxed/simple;
+	bh=MZKJo8FjS2t3VfdKde5Rv/sprxb/2ZIrZrzzARfp1xQ=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=oVQjvScO6wahwUw+qWeNGycV3c5e50hYnb/8pg2q7jZAebf+G80ewvIyMm7nOkO4TmEQK0H+X1f8QD446L32mupL4ZTERU7L5rVpeH+saHNBtLJbdj0WZnt0MP+YOWjhIIO8BfBigQ8o5gTX/ws3D2dL7dkDUok8LfxsO7NbZnE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=KmIEsdeo; arc=fail smtp.client-ip=40.107.103.57
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="eLnfceOY"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="KmIEsdeo"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IzHxFpn7tS81ksUC+QrSyUJIX5NyYOuwmcS0FqNbYqLRCJoqutzMbwBsXkU1yPvep2ZcWa+cjDmWT+C76CoJGSgSQf5+9AggYYrW8HK8GZGh5Yft5fyudAa97fGJ/trsG5mEZEibtveWBNaqxVO413TTst+BJB8sIaSdtUDSeoDF14myy4EYm+RbeVOS20/gTBFVyvsDB48z0HuBtCnUSokIjPgehYuvuLZL49TnGYQm9OMtrUW5VHiUQD6Sy5UvgLrqKkb/kPxL0PqaEmKy0acRcNhGJESXNYjHqHDcqAPapGrmQVBUEVkCA6u0b+Wheabituu2E7AsGh1qzyoHpg==
+ b=IMttqP8Gae8kwgvwwib7HeFKQI+YFAa9FCd7NynzOc1v6aQjWM4UTdiJ4icYP9xWDyi59FQU23PLGM93isurBuSpNjpywv0VVa4ZJ1JhVnDKLT6tjhKbX5dMPbyUKUciv8uJo9s+D3tJ24xwfo5x3NeOIH6jWPP/6z8XrATKktuAfrL5vG4ZGK5EPpNrP5WytpJ4vYLNrPiBITRBLGtgBWvT8XXnikeAJJX5ssDKc56+l670tU8HLn/9yWqrIRuNN7k9g6ZVwRpmIEmA5ZSIqPzOxCrQKnbT+mzQW/6Q0iBrfPVfhj4dK4kqNjDoj8vIVbiOwZxA8SBp4+/O1Vcu+A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GIMA+2ro8VUVz8RMhsf3vzFftYnVWB2Ok7agit3Hqu8=;
- b=IVQ38j4aNvVXflguHe8IOsDNC9uSiek/dYAuPm82u38R84m68DH0miDTvkQfuhBJkv3rS1usOZTIZUsuv7PR1Fm3OgCu5Z277qRUOWQ6buXn56zard52SFwmS2XyWcR8LIN+N5Xa7mUPPOJmkvvIsHtboun/FuRIck54eB002mC8EzVKCfX8bOBdBlb5FCnvh4pUC7tAlI+XrSp2BmKdcYba2L2C/UUHcZS13vKsTUNMQV9p4El7X1ic3PYCg0ugsE0d+c/ZkgeG892m6vJCVTIDf6XgsPn5dbVHgHXMIJU+wCPTwb0MX4uv4nv5hz7zx631Y79xziQArrz8/OkqWw==
+ bh=Elql48jI3pUJdQn7+6qk1eAEu240zHA1NWivOSiBHDU=;
+ b=CPbF6os1Su54ZpRmu/5xGXINYNZyG0UlGhpzk8W5GEiJavrFUjfzJpwygkUZFfx+QxKQxp2d1JFQjeGJx/0FS2cXcmRmZmfE0iEJAJou3dyRQ0Y2BABhKg9VllSSuwAAL3iicRR0AYd1bFaY3+R+YTqZ0Yz0mLIX6hJtDhCv1Jgd/OITUpuKuOfwBbFD66bG9M56aFdchTYqEzErqcsZjjFxa6tbzIfAZxK1+a0ldVDGTBW9oeujf1y1AdsoTk6OSXszvlvWvWExhgx5JS9xVfw9fQ+iDAMyWzydDL8RU3aKr3vuH7ZKFzPCZGtg8ocs7J6IWnnNh/dYhSaNM+0KHg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GIMA+2ro8VUVz8RMhsf3vzFftYnVWB2Ok7agit3Hqu8=;
- b=eLnfceOYZBZGQHG7QIbb1QCLxDqbxUNPwdUldbseoIaTADhOwaTA8CwOYeWI2e6JBoPdgCEbj6EySVn3bLIFIpNGTBnZbwjNrxTPC12UWLz9RB9lVahw/MgMyxlbWfCFt/gFNVgWycImzhUs0t+VkAkkqnfsataBhRt28NvkNagwoTQtWz9ksH+hZy4ngS7x1ZV/T6gnEzUvPOWo3e5wdMN1vRvSeB2RW+1bcK/nNytRfJNvdLedWAfDQrUYlLdNj4cI/Dc9po/qe0XGQVVDekPsyYe1V8tGHgQm8Y/FoAIcrNIWpxZYqGout/uYdKg6cAzVySb62KyI5SWl3Hw+kg==
+ bh=Elql48jI3pUJdQn7+6qk1eAEu240zHA1NWivOSiBHDU=;
+ b=KmIEsdeoZY9NsGMFRi7RY8EVtl2Ur1B/OnyMPiNbTqlCNx1pLI5iFG1MTAM+vBJWILWQNl6rS9Z2LqlzD5S9IS0PfA9RwJE1v8PGSvGdGbky3C7rHrjiokWMkQJ2jAlt3qRqAzBNodA+BFGrs5QG4vbMM/oydYyiwtI9tG1AjRpnjNGvsTw1w503MVzum2iPbU1drggjeM329UW5PH0elQCt5kcRfwpbQ6s8jDfbjORMi3lm3g2dYYWE3KT5Qg/lIg8mvw03z661TT6+jgUD2qlYgZov0Bbq8hn3iFyAs67r0JXj/qNSDElksWmK5Vy+2NTCktNNNvzw2UMr8N4jOA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS8PR04MB8881.eurprd04.prod.outlook.com (2603:10a6:20b:42c::16) with
+ by PA2PR04MB10215.eurprd04.prod.outlook.com (2603:10a6:102:409::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.18; Fri, 13 Dec
- 2024 19:16:06 +0000
+ 2024 20:46:21 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8251.008; Fri, 13 Dec 2024
- 19:16:06 +0000
-Date: Fri, 13 Dec 2024 14:15:56 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
-Cc: Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	NXP S32 Linux <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>,
-	Alberto Ruiz <aruizrui@redhat.com>,
-	Enric Balletbo <eballetb@redhat.com>
-Subject: Re: [PATCH v2] arm64: dts: s32g: add I2C support
-Message-ID: <Z1yH7BFbYuJ++Vd1@lizhi-Precision-Tower-5810>
-References: <20241213142250.2532559-1-ciprianmarian.costea@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241213142250.2532559-1-ciprianmarian.costea@oss.nxp.com>
-X-ClientProxiedBy: SJ0PR03CA0070.namprd03.prod.outlook.com
- (2603:10b6:a03:331::15) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ 20:46:21 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v3 0/2] regulator: add new PMIC PF9453 support
+Date: Fri, 13 Dec 2024 15:46:07 -0500
+Message-Id: <20241213-pf9453-v3-0-5587c1693155@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAA+dXGcC/02MQQ6CMBBFr0JmbU1naCt15T2MC6SDdCGQ1jQYw
+ t0tJKjL9/PfmyFy8BzhXMwQOPnohz5DeSig6er+wcK7zECSFJLUYmyt0qWwkit3d7U2VEM+j4F
+ bP22h6y1z5+NrCO+tm3Bd94TZEwmFFMjKVBpR0Qkv/TQem+EJayDRn4T0lShLrbaOGmlNqc1PW
+ pblAy5EOB/PAAAA
+To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Joy Zou <joy.zou@nxp.com>
+Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+X-Mailer: b4 0.13-dev-e586c
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1734122778; l=1316;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=MZKJo8FjS2t3VfdKde5Rv/sprxb/2ZIrZrzzARfp1xQ=;
+ b=SgcvV+ZKXsN1MvgVphKH01gFhoAoUi+mawNDFsYMR0k0XeqXypz1P0IpM4Lpo5MkquQBeRPOF
+ OnHov5CuEEKDMoxqDcIIQmqrkHag9IXKgRI1nBId6PtxQnXaDqGYccJ
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: SJ0PR03CA0097.namprd03.prod.outlook.com
+ (2603:10b6:a03:333::12) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -74,590 +73,141 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8881:EE_
-X-MS-Office365-Filtering-Correlation-Id: 19b70b3e-d618-40d3-5bd7-08dd1baa9786
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA2PR04MB10215:EE_
+X-MS-Office365-Filtering-Correlation-Id: fe208e75-f8e3-401a-842d-08dd1bb73389
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|52116014|376014|366016|1800799024|38350700014;
+	BCL:0;ARA:13230040|52116014|376014|366016|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?aM7S2HaDcDUkHA32wwBw/0ihO73c5STOxtG3bi1dIQg8Lokw16dwA7rAreVU?=
- =?us-ascii?Q?4b9cf2shbxtS+1R4xEbC7yk0/lY8eDYvkf6j4gJcgBhgKxQ7ofx8t8T/Tw7V?=
- =?us-ascii?Q?qhqMyr9Zsdrb7/D90oXyhYYjHgt6s4oPV5kxpZ1fYnW6WHh5Y+f1sUSD/gWC?=
- =?us-ascii?Q?J+h9Ohc70maqeSUiwe+KbxiH1lEEsNBJ5QKZUNezYUhfN33ouJK28ZO2gdVA?=
- =?us-ascii?Q?gwa6pPvwn8PTRP7uM4dvXDKP24NH1YKMbqdCetJ/3o2FvEgwjPa9cyvIag1m?=
- =?us-ascii?Q?EAgxLB46r/COrGOd5zh5epCVXxwseMjq+jIyQtNv3hMGDXioJe/hrty+HB0x?=
- =?us-ascii?Q?3EMgpnoDXSXmKOEJHy5sDlk+v27pIuP6zD/DMi+40kAO7sV6/x0WX/JNO7WR?=
- =?us-ascii?Q?10xCs4FWgkn0z52EUF3qFZiRYKD3MqB3lRMcyWd5NhV4ZZx9fIi0m1MGoJx/?=
- =?us-ascii?Q?RKre08+KZK6YYA+PAupMxpKnkjp4K3tvAH7WZ1SIg2rHWiORPpDYlDZ895pG?=
- =?us-ascii?Q?vXeSOHgNTKEQU+n9FipqLKYCP6Gwmwks0HwlDjJUczPFZAWwLwlrsGX3IYXu?=
- =?us-ascii?Q?XhJ99te8helF2Mddd0Eg2QPyfaQmsuoTELuoIPli9UpjipqvO19SDKSpCYnU?=
- =?us-ascii?Q?1QhF0z5XyMQw2BezW1F7+aGbb5gGuTH9U1BJ6whkafIPGkKEcz3VzjbfpX1b?=
- =?us-ascii?Q?PCDyuk9Mt7JwG+/tgKIhqVA9f++YLXn8rH81vU5hMxFZe1Igm8v3DE7PtJr5?=
- =?us-ascii?Q?JWZN7wWocfXl8PIpANNXEg5K8wj6GQTejEqGYJUcxRaRJnKcasHgIIvrd8eu?=
- =?us-ascii?Q?21KucvE3G1+JyXvPrrkEKxwAyWXILDqFaPbbMP9iVbtwQTxLGFgKXdydjrcH?=
- =?us-ascii?Q?upytrq8Sco3ksom3/4FANOj8/5RDpbIIVii+CpAzXjdSZAT3Gjrixr+HEouH?=
- =?us-ascii?Q?92LkSTxTZZoJouy8QnoqigJDhtI1XTYcSxPNt8bDEeJLLiyOXtb24gtZ2nFh?=
- =?us-ascii?Q?jCyr3jf5GfwDaAPRxHFptmz+PyNTK55k7JZWDoorIgZSll0k8ayuzalTmMy4?=
- =?us-ascii?Q?5+C+O5ecXQgryaFVjZWzb52ylt8aaP6WoDkFyVFXCdhmwekdPYbZ7CF1sc7o?=
- =?us-ascii?Q?n6mOWt3ZuMZmRiMjfY14tYUgzYZI5HYUHJDxD5pGq1H6SvXO5wHpDjQ3hP+Q?=
- =?us-ascii?Q?lv6WHgNuRKFdEheAa6CWTYpgQ3qiuxgG7U1M6UXnIQUjs5oPkMCUwQhD0QHV?=
- =?us-ascii?Q?ZqBVpDl5D7kGQ4mc5ZGRvLE/kF5Mgu01s0vOemxGqbqGrxfw1yt4BQN6xbJN?=
- =?us-ascii?Q?B7VbUggOm9pBVVAwcUUgRsrtIqPj1H0cZymKx0uYiktm1XCe/DROFTvFZqX/?=
- =?us-ascii?Q?5YyeT6y4uJnOvU2CPbv9tAd8t0BGM/ym2wY7SLo8SmjfVAaW3uj6htk72C0J?=
- =?us-ascii?Q?VNY9XiDy/313qyqupcU0Nw/dM/bk003p?=
+	=?utf-8?B?aEQwN0pJbkJvVUFzdnhkYy9tOGpjdzIxMXpwVTJEbWc1eVpFeW5meElFTGxU?=
+ =?utf-8?B?dUs1M0VxOTJRNHNmak9CMktyUEZwOHY3WEhGaHBMeVVTUE5pSTZqeUtKWHFF?=
+ =?utf-8?B?OVE1dlEyVFdNMWtoYkhOSUg5UVVJSWh0UFVBQWdmQm9rclpiOENEK0s4aGJw?=
+ =?utf-8?B?cHJqcFVQSE1PbW02eTI0d2l3c2tjQmllUU9Na0hxYUw3R084TGhKOCtEelpI?=
+ =?utf-8?B?ejNpaVJhWG51ajJwNjViWko1eVRORmFXaUtsSTRrUktMU2ZLVm5pMjVObitP?=
+ =?utf-8?B?bVFmUEsxNEgwY2RBb3VJeGlyTGtzQjF5THVKODNIM2Q1ZEtTWHo1dWU0dzc1?=
+ =?utf-8?B?SDBJNExQdzFrbFVpMExpSytGUENuMEM4OFVjcFd1OVdsU045WjdyamQyS3gx?=
+ =?utf-8?B?amd2T0J5dHFLcHIrSmtuRytQUnlseG5VRzZsQWMzT0dMZWN6UjNibjNNZzdG?=
+ =?utf-8?B?MTVhOGdXU0JOaDdIT1ZPVUtjYjg3MFZZT01kbVB5Y3crbXZ0L2drSXR5NmpT?=
+ =?utf-8?B?bm8yeDFzNTVhZXBiaXQrS3ZLRm5FNmJPT1kwYjBQNW1MRm1VeGh0dFBkQ0tH?=
+ =?utf-8?B?N2N2T3FzVlhRTVdhNjhZTEFCOUJ2eWJiYnRObGExNk9mYmxDVjVPdFJiRVo2?=
+ =?utf-8?B?TG5zbmVxUjNNQWdEMmR1RFkxeVMxakN4U1dMZ0d2Zjc0MmY5dkMrSUN5MWt1?=
+ =?utf-8?B?Qkx6Q25Jc1k0RGxhU29vZURhVFI1OUI5WFhzWTUxKzA1L2szalJHRzkxQmgy?=
+ =?utf-8?B?d0svUU9SSFVkUytIR0J4S3ZiZ0loKzhxNk5TMzdmenNwL2xIV1hyWXVmUDBI?=
+ =?utf-8?B?Z1puRSt0bGU3cE9OWXZPUmZuNFJWWjFZQiswRXVLaGFUUjFoN1h6UTdjR1dz?=
+ =?utf-8?B?RTdUcEtKVFFDd29EY1piZDV0MCt6VmhiLzAyRkUyMkRsbjZvSzJRbzMvZUNl?=
+ =?utf-8?B?TU93cTRTbW5mUzcrVWhzOFdGaGxWd2EvN1ZKVlIzd2NQQWs0UStqNGhFLys5?=
+ =?utf-8?B?a1FpT1pRZ1RVK3pDeTdtcXNNZjR4V081T3hiTWsrbytJUXh2SFhKdVBpSzZl?=
+ =?utf-8?B?TU9POWczeE44c0xraFhjenR6SlpobGF6eDRUNUgvSGpxM0w2eXNPb2lWdTVO?=
+ =?utf-8?B?RnhGU1dpWU82WTFER1BsWVNXMlo1eHBzN0l3NmhrNlU1WE96cTZnRG1xZWVy?=
+ =?utf-8?B?UkN2WFh4SGdlaFBtQ24vSkZlOUltdlBiOXB4dE5qOXo1Vi9IOExhM0lmRG44?=
+ =?utf-8?B?djFxWG9BRVFIRUhMNXdSN3Ntc1p5WjZoWFZJanVSRzlQQUV4RE1COEM4cG1h?=
+ =?utf-8?B?bkZEYWxibC9meS9EWE4rdFlJZnhzLytCV1ZuNEg0RXBFME5zY2hPTUVHQ1lt?=
+ =?utf-8?B?b0ZuZ1RCWjhxZmdoRnEvZVlMR2hTUjh0THFHMkkwank0U29hbFBiVzJNbTZT?=
+ =?utf-8?B?bnJPd09FRWRHQ25YYy8wMGs1UVRBMkFjbmtqS3JyMXkzR3pRclVQYXJJWEtl?=
+ =?utf-8?B?T1ZoeUowdnJxRThvNU80dk91WVY4RDlpUzFZRTBtMlB1dU15Q2ErUUFoRDRo?=
+ =?utf-8?B?aTJXTkQ1d0w0Uk0vbmZ1bG9xakFvTHpLUzU5SzNHMTAvdjlhVURuS2pkVXgy?=
+ =?utf-8?B?ZWtiQlF5d2VnRXA0NHE1UFViNGQ3ZW82a255VUZEeVFEUVNVTE1xV2tsVjND?=
+ =?utf-8?B?NkVNYWl5MFM5ZTdmcFQ2bjhIL2w0R21LWjZkK2llVWhOUksyWEJvNW9ERllB?=
+ =?utf-8?B?WnJVT2xsdzZWL240a0RTVnV3QTc3R1lkZFVEOXZHcHJJampHbGJGSFFBZ01R?=
+ =?utf-8?B?Tk51QStrNENDamlyS2ZWOVFBSURqZDV4SzJaRXBVNm1NSnA5cFUydFFIZjAw?=
+ =?utf-8?B?RSsxSWIvb2NsWjEwWFA4ejRoUUUwSVI5TXRYeDduMVZLK0Q2VTNObjlmRlVl?=
+ =?utf-8?Q?axIw8g6c7O4=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?P1FpT5wjo5eVdtQjZqi8c4bokHKVh0avBnFx2Ced+5rFHI5CSbX0OfK+Tw4J?=
- =?us-ascii?Q?xE8rAVfMy9jxSFsv8YpnTXJzcxpRvkieloB0NKpX31XGzGvPTTtnXuD2eYGs?=
- =?us-ascii?Q?TW2CFWHTBRLw4xYHQmws/fCfgbGRk6/vnIRRuCjFyupWDKv7zpjfpR3HijT+?=
- =?us-ascii?Q?+awnwHb4URvL0YOI0cOtzNE6F7mW/RGus3jsyHYbKuzQOpbGUmnNYkdXR+iL?=
- =?us-ascii?Q?vs/lW9GC17T9CuX4IR/TDTGCHLC6xWYiDzy0xBStivs76DQxf8yDvxNw3t4l?=
- =?us-ascii?Q?HKllFTVgAsO/7BzVv4/UI9okOHAXRTsQIsTIp8pryJF90pFGRp2+c94IK6xB?=
- =?us-ascii?Q?Ius4ynth4OVEynIhXVbbAdP3epvv1PlOTzDaq2wJtyDceX3RyOjoGfndU7ys?=
- =?us-ascii?Q?7mz7+OpNrrE82GK9UBhXRvbNx0WkR422uwMi6O2k8jZtkOIE1VdPwd/tVKgM?=
- =?us-ascii?Q?OMkkPEQD0FFVwVCb4iEKotZAsUtjAlR7enzfTckOMkXL9Uqx7aKzDeGQxwqD?=
- =?us-ascii?Q?IPtxemRSiW4IOCaLyio5DfO7YrjnezDs1e3cK9+DVOKagbTT4Nm3mRisqzNe?=
- =?us-ascii?Q?1VDIHMrOCe/BmIHemyMXC039ySlGZu7H7X/fRK0LiV5cgZueDAoDR/vL0x7t?=
- =?us-ascii?Q?DTZ0YZWhLkW9kUGQ016Q5booJxNKNMIu69QXtf6GNtFUKk6m7QMeR6MZxkd/?=
- =?us-ascii?Q?AauZloEEoc6VeokLU343iIjFoC4py+8fgjyXkzFrUZFGLurdAb1VFDLKOF3W?=
- =?us-ascii?Q?F5RPaQIlB9EcwGBAtwkJba/8fN9Edh0oyb8fbpgIXo0AxyQRDxP9gk4XAJDV?=
- =?us-ascii?Q?iWb/sFOvS5QXbuC16K/OWHLGmVBnznl6GRVYy8QM+R7uvPGWXUCrMNmPQE1B?=
- =?us-ascii?Q?CmrSkTMOKwypCHml0TFepnfzT9cVkgXAuI3J3XHMd4Zkpe4uzQm5816syRie?=
- =?us-ascii?Q?vu4nE8bMTeaHoqUBA6DjYU0uEcyhVsXnnJw/vSjW7VgSJBpBW/MzbTdktJAp?=
- =?us-ascii?Q?M5EphssoN2rmrJ5mW2qcxSmFJMJ1o7mRPwhvn69Ej5ehGnEux2SOppp2WuAH?=
- =?us-ascii?Q?kfaFrxuJXnRUzJyMYpLcYqkhY48HH2bmznObuKKT5E8oR47h2ZlKeEp2Juqf?=
- =?us-ascii?Q?YhIvvY5YRH67xdVcDG7FHTBUOO47SvbLvqTSO/KfmaDk3lO+s4ZgGDus+DAb?=
- =?us-ascii?Q?EGG5LoGZwLTWzTy1ByqS3YlKfiyS+yNaHuLAqN0CuZhJ39zWaiqWURXlptGd?=
- =?us-ascii?Q?whgzZwjD+GVE+yH37lUehfXkcuC0QuHAxJokp8cOtORl+erJtJfheI3qfIuN?=
- =?us-ascii?Q?iaC1Ul31/Yd7bS5DSggEfVf9spA1fy8cIuD0UHPkbsgr0ltXAJzqNO5oJITI?=
- =?us-ascii?Q?nuXhPVOmsD18wRsnB2Ome71zyl944CO7/YGXsTLDmRV5g36PY2G/3bdIdJ4M?=
- =?us-ascii?Q?w8T17M5PzFIQ7zIIE5ffST3z5a57rX8vUwYUPJghevpptmqE+F7YOD9SCIyz?=
- =?us-ascii?Q?QrhNouTBiswoFaJ4WGp61PSbLyjDAwn2N5gSRN8PNDc7CKQNt3siqjILqsCk?=
- =?us-ascii?Q?1EvoUrMYNsCWoRc/wwWfMT5+zR1BQiRo7h+nEkfu?=
+	=?utf-8?B?SS9oYmF4MjFhREdlcTFZWlgrakVWb0VLMG5UeWUvd3lvN2hHUjVkR3o0TGx2?=
+ =?utf-8?B?MFBuZHlVakFRYkZHUXM0K0ltcWNxZ3BaR2pwRE94L2NXbG9zYjBrZGlMQVJG?=
+ =?utf-8?B?T21yaTI1YVNsQmZ3d0ZuZVd3WUtWa2RaL3NyN2VhMG5NSGM4VWFpL0d2SXBx?=
+ =?utf-8?B?ZVFBOUpaRUgzZVMzZG9FUGdTZlMva1k4UzNuVUZQRWNUQUgwWmZNdXdRWjRC?=
+ =?utf-8?B?MlE5RzJEUUg0MEVBZ0JYbFR6anRKREdEVVNCbDhLNTVGZWFRV3pSb013WXJI?=
+ =?utf-8?B?K0JUT0xpZXhUaXd5UVJCK3Y5TCtGa2JKK1hENlVta3V5SFNZakxsczRGd3o3?=
+ =?utf-8?B?MWZTVi9zWFVNQXVOMjNIN1ExcmVCcHZmaVlSakU3M1AwYyt3bXpIdE9Scm1s?=
+ =?utf-8?B?akZjeEtDNzc5c05LSEMyWG5oK3NIZHByYXhja2lIdVVYRXBFWXZaWVJCemNK?=
+ =?utf-8?B?L212Y3RpR3g0VVZoMDdFQTJ5bFlncDFobCtzV3hzUUYxVG41Y1h4Y2VPWnVU?=
+ =?utf-8?B?LysrYXdmV1Z0TnBsWjYxUm13blRNNFkwWWl3RWpQWXcyWTIxVmpzVmVlL3VG?=
+ =?utf-8?B?QmhTeHNsU2pLSVRZeWJQK2ZBTnRRaHo2eDk5MkdEZjdMNGZ3ZDZwckhnOC9y?=
+ =?utf-8?B?dlVPMmlxVkJkeklrZjVrNHpsc21GNnNPK040UHJmVFBLTUVPRXpKSERoTWVF?=
+ =?utf-8?B?MzRqQXVhOUphMVFHSHN2SndmbGtwamJ0c1RjNmswT1JCa0M0UHJZOGxxTWhj?=
+ =?utf-8?B?YzNtNGZNVXJwQW5Dc2hUMTROSG5hRVVxR2RQUmRHMnpYajl2eklXTU1QL3Br?=
+ =?utf-8?B?UC9UcjJOdWNacGc1QjBJSWhYQWNsTWlEdEdNTmxrQ1plTjJ2VThnU1ZQN2Mv?=
+ =?utf-8?B?ZzF3djc4MDR0VVlscHYrVmUyUG5vdW1BY0x0b1dGVEUvNHZWWFh1aER4Q2JM?=
+ =?utf-8?B?UTE3RktnYjVEbFZ0M1ZoN1VmOEd3cDQ5azh2Mllpb3J3YjBQSDUxQnNnYmVJ?=
+ =?utf-8?B?ayt3eU9uaWFOQzVHUnRRc3o5aHM1Q3crVEJCQkJDeUtQWFVvbVNWU1U3Mmdk?=
+ =?utf-8?B?VG51VWtleVNuM25uQXIzSnBQbS9pN3A1RkR4YlJwcXQyd2ZRK1preDk2U0or?=
+ =?utf-8?B?cDdMQ3kzeGFPVDlYKzBuZHJtc2YvRlJMdkdWS0FOS1RwK3cybnA1VlF2NG9L?=
+ =?utf-8?B?Y0J5ak0yQjk5OXYvMDVvSTBidHBueVVuNThPZ0pWY0h1NWNKUGR4eFE0L1Fp?=
+ =?utf-8?B?eVJQeWROL0pld2NIWW8xL092b1YwMXRKaVF2N2kyV0d1UXpYWHg0TDZuSm5F?=
+ =?utf-8?B?ZGxVNU0xeWRLV015ME1GYVhac3AwcFkrQjBPcTlocG94cU94dElQaWVZdk1D?=
+ =?utf-8?B?R1VaZHRtVUdNdW5MbUxSVUtmRm4yMWtUWVk4MVB5N21abGZWTS93WlZMR1hF?=
+ =?utf-8?B?NnU1b0hEL3lONEQ2NlVGUE8vSzAyS3RscTZPbEVvVGFCNFRaMlRrT2JvbkZ1?=
+ =?utf-8?B?b2lEL0cwWnNBUnlRK1BjdVkwV2hyUTNydDlaUTVUeFBxakJ2dk9XUVM2OE9F?=
+ =?utf-8?B?bUhXMWYyR2RzZ0pEcC9hcUw1enRpUlUzTnFISW9yVmVZeE1CRWlHb2lOdWFM?=
+ =?utf-8?B?NDRLRW1BTmZxLzAzcExSOHB4YUFBdGRhWWlGS2tkbFM0VXV2M0x1YnpZdkN2?=
+ =?utf-8?B?VU1LdUMxY05FQ1FWbTVDenpySUV5NWlQdGJ4SUxLOU1sWGU4MTVTLzErZzRq?=
+ =?utf-8?B?eHZkMlMrdG94S1lSV2lkSkpWS0tDbkVoYzhnTnorVmJLUHFMbEs0ODlQSlFx?=
+ =?utf-8?B?ODZMcmkwb3RwMS8vd1Y4QlNKOGxoVTVzNFdtemp3dFUzSUVSbm5HazA1bGxj?=
+ =?utf-8?B?Q1ZnTHNmS2llWEVzKzV5cTdiMiswNlZDZ01CM3lwTTJBZTdRWGk2SDZMTE5G?=
+ =?utf-8?B?eWpBdHBPRUVCdmwrZ2t1OHB2MlRMNGk1eFdUR2QvaEs3NllERy96Y3J6VVZv?=
+ =?utf-8?B?cnFPRWthWEVITVJkZldsZVdleUJVMmhNdjlFU3pXQ1MxeHVwVzIzS2F0SGhR?=
+ =?utf-8?B?VGJCbDN0c2c0SVE4YTFycEVtSmp6MFFGWFZndVU0U1V4SVBvcFdmODN1V0R4?=
+ =?utf-8?Q?cjRkL7VqQeFEClZ65FmxTQWym?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 19b70b3e-d618-40d3-5bd7-08dd1baa9786
+X-MS-Exchange-CrossTenant-Network-Message-Id: fe208e75-f8e3-401a-842d-08dd1bb73389
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2024 19:16:06.3117
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2024 20:46:21.5316
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: H/TcJLwiFTvR5/g5zPiKWseu+ZMG2VmDACU1Lg/u8O8hoMUaNZiJjIzHCivcW9rbyFASAyjHgZhkWWXIhs9AHg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8881
+X-MS-Exchange-CrossTenant-UserPrincipalName: XyTYqtChpbVhs9HS3p8Q+wDJKjzwvnRkN1h76hrZzG50r0A0bWa71FzeUTomp5VKSh9gbwwWqrJeTYCC657ZSQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10215
 
-On Fri, Dec 13, 2024 at 04:22:50PM +0200, Ciprian Costea wrote:
-> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
->
-> Add the I2C Devicetree nodes and pinmux for S32G2 and S32G3 SoCs.
->
-> With respect to S32G2/S32G3 SoC based boards, there are multiple RDB
-> (rdb2 vs rdb3) and EVB (for G2 vs for G3) board revisions. These versions
-> are quite similar. The common part for the EVB revisions will be
-> centralized in 's32gxxa-evb.dtsi' file, while the RDB commonalities will
-> be placed in 's32gxxa-rdb.dtsi' file.
->
-> This refactor will also serve for other modules in the future, such as
-> FlexCAN, DSPI.
->
-> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-> ---
+Add binding doc and driver.
 
-Change log here!
+DTS part wait for
+https://lore.kernel.org/imx/Z04W5chGq5TitB9f@lizhi-Precision-Tower-5810/
 
->  arch/arm64/boot/dts/freescale/s32g2.dtsi      |  45 ++++++
->  .../arm64/boot/dts/freescale/s32g274a-evb.dts |   1 +
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Changes in v3:
 
-Shawn require board dts should be seperate patch
+binding part
+- Change to LDO-SNVS from LDO_SNVS
 
->  .../boot/dts/freescale/s32g274a-rdb2.dts      |   1 +
->  arch/arm64/boot/dts/freescale/s32g3.dtsi      |  50 ++++++
->  .../boot/dts/freescale/s32g399a-rdb3.dts      |   9 ++
->  .../boot/dts/freescale/s32gxxxa-evb.dtsi      | 150 ++++++++++++++++++
->  .../boot/dts/freescale/s32gxxxa-rdb.dtsi      | 126 +++++++++++++++
->  7 files changed, 382 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
->  create mode 100644 arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
->
-> diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> index 7be430b78c83..0e6c847ab0c3 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> @@ -333,6 +333,33 @@ uart1: serial@401cc000 {
->  			status = "disabled";
->  		};
->
-> +		i2c0: i2c@401e4000 {
-> +			compatible = "nxp,s32g2-i2c";
-> +			reg = <0x401e4000 0x1000>;
-> +			interrupts = <GIC_SPI 92 IRQ_TYPE_LEVEL_HIGH>;
-> +			clocks = <&clks 40>;
-> +			clock-names = "ipg";
-> +			status = "disabled";
-> +		};
-> +
-> +		i2c1: i2c@401e8000 {
-> +			compatible = "nxp,s32g2-i2c";
-> +			reg = <0x401e8000 0x1000>;
-> +			interrupts = <GIC_SPI 93 IRQ_TYPE_LEVEL_HIGH>;
-> +			clocks = <&clks 40>;
-> +			clock-names = "ipg";
-> +			status = "disabled";
-> +		};
-> +
-> +		i2c2: i2c@401ec000 {
-> +			compatible = "nxp,s32g2-i2c";
-> +			reg = <0x401ec000 0x1000>;
-> +			interrupts = <GIC_SPI 94 IRQ_TYPE_LEVEL_HIGH>;
-> +			clocks = <&clks 40>;
-> +			clock-names = "ipg";
-> +			status = "disabled";
-> +		};
-> +
->  		uart2: serial@402bc000 {
->  			compatible = "nxp,s32g2-linflexuart",
->  				     "fsl,s32v234-linflexuart";
-> @@ -341,6 +368,24 @@ uart2: serial@402bc000 {
->  			status = "disabled";
->  		};
->
-> +		i2c3: i2c@402d8000 {
-> +			compatible = "nxp,s32g2-i2c";
-> +			reg = <0x402d8000 0x1000>;
-> +			interrupts = <GIC_SPI 95 IRQ_TYPE_LEVEL_HIGH>;
-> +			clocks = <&clks 40>;
-> +			clock-names = "ipg";
-> +			status = "disabled";
-> +		};
-> +
-> +		i2c4: i2c@402dc000 {
-> +			compatible = "nxp,s32g2-i2c";
-> +			reg = <0x402dc000 0x1000>;
-> +			interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_HIGH>;
-> +			clocks = <&clks 40>;
-> +			clock-names = "ipg";
-> +			status = "disabled";
-> +		};
-> +
->  		usdhc0: mmc@402f0000 {
->  			compatible = "nxp,s32g2-usdhc";
->  			reg = <0x402f0000 0x1000>;
-> diff --git a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
-> index b9a119eea2b7..c4a195dd67bf 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
-> +++ b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
-> @@ -7,6 +7,7 @@
->  /dts-v1/;
->
->  #include "s32g2.dtsi"
-> +#include "s32gxxxa-evb.dtsi"
->
->  / {
->  	model = "NXP S32G2 Evaluation Board (S32G-VNP-EVB)";
-> diff --git a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
-> index aaa61a8ad0da..b5ba51696f43 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
-> +++ b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
-> @@ -7,6 +7,7 @@
->  /dts-v1/;
->
->  #include "s32g2.dtsi"
-> +#include "s32gxxxa-rdb.dtsi"
->
->  / {
->  	model = "NXP S32G2 Reference Design Board 2 (S32G-VNP-RDB2)";
-> diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> index 6c572ffe37ca..666e4029e588 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> @@ -390,6 +390,36 @@ uart1: serial@401cc000 {
->  			status = "disabled";
->  		};
->
-> +		i2c0: i2c@401e4000 {
-> +			compatible = "nxp,s32g3-i2c",
-> +				     "nxp,s32g2-i2c";
-> +			reg = <0x401e4000 0x1000>;
-> +			interrupts = <GIC_SPI 92 IRQ_TYPE_LEVEL_HIGH>;
-> +			clocks = <&clks 40>;
-> +			clock-names = "ipg";
-> +			status = "disabled";
-> +		};
-> +
-> +		i2c1: i2c@401e8000 {
-> +			compatible = "nxp,s32g3-i2c",
-> +				     "nxp,s32g2-i2c";
-> +			reg = <0x401e8000 0x1000>;
-> +			interrupts = <GIC_SPI 93 IRQ_TYPE_LEVEL_HIGH>;
-> +			clocks = <&clks 40>;
-> +			clock-names = "ipg";
-> +			status = "disabled";
-> +		};
-> +
-> +		i2c2: i2c@401ec000 {
-> +			compatible = "nxp,s32g3-i2c",
-> +				     "nxp,s32g2-i2c";
-> +			reg = <0x401ec000 0x1000>;
-> +			interrupts = <GIC_SPI 94 IRQ_TYPE_LEVEL_HIGH>;
-> +			clocks = <&clks 40>;
-> +			clock-names = "ipg";
-> +			status = "disabled";
-> +		};
-> +
->  		uart2: serial@402bc000 {
->  			compatible = "nxp,s32g3-linflexuart",
->  				     "fsl,s32v234-linflexuart";
-> @@ -398,6 +428,26 @@ uart2: serial@402bc000 {
->  			status = "disabled";
->  		};
->
-> +		i2c3: i2c@402d8000 {
-> +			compatible = "nxp,s32g3-i2c",
-> +				     "nxp,s32g2-i2c";
-> +			reg = <0x402d8000 0x1000>;
-> +			interrupts = <GIC_SPI 95 IRQ_TYPE_LEVEL_HIGH>;
-> +			clocks = <&clks 40>;
-> +			clock-names = "ipg";
-> +			status = "disabled";
-> +		};
-> +
-> +		i2c4: i2c@402dc000 {
-> +			compatible = "nxp,s32g3-i2c",
-> +				     "nxp,s32g2-i2c";
-> +			reg = <0x402dc000 0x1000>;
-> +			interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_HIGH>;
-> +			clocks = <&clks 40>;
-> +			clock-names = "ipg";
-> +			status = "disabled";
-> +		};
-> +
->  		usdhc0: mmc@402f0000 {
->  			compatible = "nxp,s32g3-usdhc",
->  				     "nxp,s32g2-usdhc";
-> diff --git a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
-> index 828e353455b5..5f8739c068c6 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
-> +++ b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
-> @@ -8,6 +8,7 @@
->  /dts-v1/;
->
->  #include "s32g3.dtsi"
-> +#include "s32gxxxa-rdb.dtsi"
->
->  / {
->  	model = "NXP S32G3 Reference Design Board 3 (S32G-VNP-RDB3)";
-> @@ -39,6 +40,14 @@ &uart1 {
->  	status = "okay";
->  };
->
-> +&i2c4 {
-> +	ina231@40 {
-> +		compatible = "ti,ina231";
-> +		reg = <0x40>;
-> +		shunt-resistor = <1000>;
-> +	};
-> +};
-> +
->  &usdhc0 {
->  	pinctrl-names = "default", "state_100mhz", "state_200mhz";
->  	pinctrl-0 = <&pinctrl_usdhc0>;
-> diff --git a/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi b/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
-> new file mode 100644
-> index 000000000000..a44eff28073a
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
-> @@ -0,0 +1,150 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-> +/*
-> + * Copyright 2024 NXP
-> + *
-> + * Authors: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-> + *          Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>
-> + *          Larisa Grigore <larisa.grigore@nxp.com>
-> + */
-> +
-> +&pinctrl {
-> +	i2c0_pins: i2c0-pins {
-> +		i2c0-grp0 {
-> +			pinmux = <0x101>, <0x111>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c0-grp1 {
-> +			pinmux = <0x2352>, <0x2362>;
-> +		};
-> +	};
-> +
-> +	i2c0_gpio_pins: i2c0-gpio-pins {
-> +		i2c0-gpio-grp0 {
-> +			pinmux = <0x100>, <0x110>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c0-gpio-grp1 {
-> +			pinmux = <0x2350>, <0x2360>;
-> +		};
-> +	};
-> +
-> +	i2c1_pins: i2c1-pins {
-> +		i2c1-grp0 {
-> +			pinmux = <0x131>, <0x141>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c1-grp1 {
-> +			pinmux = <0x2cd2>, <0x2ce2>;
-> +		};
-> +	};
-> +
-> +	i2c1_gpio_pins: i2c1-gpio-pins {
-> +		i2c1-gpio-grp0 {
-> +			pinmux = <0x130>, <0x140>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c1-gpio-grp1 {
-> +			pinmux = <0x2cd0>, <0x2ce0>;
-> +		};
-> +	};
-> +
-> +	i2c2_pins: i2c2-pins {
-> +		i2c2-grp0 {
-> +			pinmux = <0x151>, <0x161>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c2-grp1 {
-> +			pinmux = <0x2cf2>, <0x2d02>;
-> +		};
-> +	};
-> +
-> +	i2c2_gpio_pins: i2c2-gpio-pins {
-> +		i2c2-gpio-grp0 {
-> +			pinmux = <0x150>, <0x160>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c2-gpio-grp1 {
-> +			pinmux = <0x2cf0>, <0x2d00>;
-> +		};
-> +	};
-> +
-> +	i2c4_pins: i2c4-pins {
-> +		i2c4-grp0 {
-> +			pinmux = <0x211>, <0x222>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c4-grp1 {
-> +			pinmux = <0x2d43>, <0x2d33>;
-> +		};
-> +	};
-> +
-> +	i2c4_gpio_pins: i2c4-gpio-pins {
-> +		i2c4-gpio-grp0 {
-> +			pinmux = <0x210>, <0x220>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c4-gpio-grp1 {
-> +			pinmux = <0x2d40>, <0x2d30>;
-> +		};
-> +	};
-> +};
-> +
-> +&i2c0 {
-> +	pinctrl-names = "default", "gpio";
-> +	pinctrl-0 = <&i2c0_pins>;
-> +	pinctrl-1 = <&i2c0_gpio_pins>;
-> +	status = "okay";
-> +};
-> +
-> +&i2c1 {
-> +	pinctrl-names = "default", "gpio";
-> +	pinctrl-0 = <&i2c1_pins>;
-> +	pinctrl-1 = <&i2c1_gpio_pins>;
-> +	status = "okay";
-> +};
-> +
-> +&i2c2 {
-> +	pinctrl-names = "default", "gpio";
-> +	pinctrl-0 = <&i2c2_pins>;
-> +	pinctrl-1 = <&i2c2_gpio_pins>;
-> +	status = "okay";
-> +};
-> +
-> +&i2c4 {
-> +	pinctrl-names = "default", "gpio";
-> +	pinctrl-0 = <&i2c4_pins>;
-> +	pinctrl-1 = <&i2c4_gpio_pins>;
-> +	status = "okay";
-> +};
-> diff --git a/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi b/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
-> new file mode 100644
-> index 000000000000..50fe6aaa1605
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
-> @@ -0,0 +1,126 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-> +/*
-> + * Copyright 2024 NXP
-> + *
-> + * Authors: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-> + *          Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>
-> + *          Larisa Grigore <larisa.grigore@nxp.com>
-> + */
-> +
-> +&pinctrl {
-> +	i2c0_pins: i2c0-pins {
-> +		i2c0-grp0 {
-> +			pinmux = <0x1f2>, <0x201>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c0-grp1 {
-> +			pinmux = <0x2353>, <0x2363>;
-> +		};
-> +	};
-> +
-> +	i2c0_gpio_pins: i2c0-gpio-pins {
-> +		i2c0-gpio-grp0 {
-> +			pinmux = <0x1f0>, <0x200>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c0-gpio-grp1 {
-> +			pinmux = <0x2350>, <0x2360>;
-> +		};
-> +	};
-> +
-> +	i2c2_pins: i2c2-pins {
-> +		i2c2-grp0 {
-> +			pinmux = <0x151>, <0x161>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c2-grp1 {
-> +			pinmux = <0x2cf2>, <0x2d02>;
-> +		};
-> +	};
-> +
-> +	i2c2_gpio_pins: i2c2-gpio-pins {
-> +		i2c2-gpio-grp0 {
-> +			pinmux = <0x2cf0>, <0x2d00>;
-> +		};
-> +
-> +		i2c2-gpio-grp1 {
-> +			pinmux = <0x150>, <0x160>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +	};
-> +
-> +	i2c4_pins: i2c4-pins {
-> +		i2c4-grp0 {
-> +			pinmux = <0x211>, <0x222>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c4-grp1 {
-> +			pinmux = <0x2d43>, <0x2d33>;
-> +		};
-> +	};
-> +
-> +	i2c4_gpio_pins: i2c4-gpio-pins {
-> +		i2c4-gpio-grp0 {
-> +			pinmux = <0x210>, <0x220>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c4-gpio-grp1 {
-> +			pinmux = <0x2d40>, <0x2d30>;
-> +		};
-> +	};
-> +};
-> +
-> +&i2c0 {
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
+driver part
+- remove pf9453.h
+- remove double space
+- use low case hex value
+- remove , after terminate
+- use GEMASK
+- change to LDO-SNVS
+- Link to v2: https://lore.kernel.org/r/20241212-pf9453-v2-0-f59d2c096356@nxp.com
 
-I remember I have said "#address-cells" and "#size-cells" should be in
-dtsi to avoid copy it at each board dts file.
+Changes in v2:
+- Reuse nxp,pca9450-regulator.yaml. Add nxp,pf9453 in nxp,pca9450-regulator.yaml
+instead of create new one.
+- Link to v1: https://lore.kernel.org/r/20241206-pf9453-v1-0-1e4685114271@nxp.com
 
-Frank
+---
+Frank Li (1):
+      regulator: dt-bindings: pca9450: Add nxp,pf9453 compatible string
 
-> +	pinctrl-names = "default", "gpio";
-> +	pinctrl-0 = <&i2c0_pins>;
-> +	pinctrl-1 = <&i2c0_gpio_pins>;
-> +	status = "okay";
-> +
-> +	pcal6524: gpio-expander@22 {
-> +		compatible = "nxp,pcal6524";
-> +		reg = <0x22>;
-> +		gpio-controller;
-> +		#gpio-cells = <2>;
-> +	};
-> +};
-> +
-> +&i2c2 {
-> +	pinctrl-names = "default", "gpio";
-> +	pinctrl-0 = <&i2c2_pins>;
-> +	pinctrl-1 = <&i2c2_gpio_pins>;
-> +	status = "okay";
-> +};
-> +
-> +&i2c4 {
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-> +	pinctrl-names = "default", "gpio";
-> +	pinctrl-0 = <&i2c4_pins>;
-> +	pinctrl-1 = <&i2c4_gpio_pins>;
-> +	status = "okay";
-> +};
-> --
-> 2.45.2
->
+Joy Zou (1):
+      regulator: pf9453: add PMIC PF9453 support
+
+ .../bindings/regulator/nxp,pca9450-regulator.yaml  |  24 +-
+ drivers/regulator/Kconfig                          |   7 +
+ drivers/regulator/Makefile                         |   1 +
+ drivers/regulator/pf9453-regulator.c               | 879 +++++++++++++++++++++
+ 4 files changed, 910 insertions(+), 1 deletion(-)
+---
+base-commit: 0768222687cbdbe7c300c4428f0c0c6b153386e3
+change-id: 20241205-pf9453-90e8dbda562a
+
+Best regards,
+---
+Frank Li <Frank.Li@nxp.com>
+
