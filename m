@@ -1,328 +1,196 @@
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011009.outbound.protection.outlook.com [52.101.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70CE61A0AF7
-	for <imx@lists.linux.dev>; Fri, 13 Dec 2024 12:34:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734093275; cv=none; b=lYozNCamW1e9leRK1NOQGcb9qALcagBf8oy2cERSNCz6v/703KVxxJhmG0oQpxT4u4U3Z6ZxVUhil9aMjwjr7qmaqKS4yGbwT45VVeda9fR0ejnPRIDe0MGvoqRmALmQXTuSdsd7tikuBK4C8QU9Ocm+b8jk7CA3Xq4q/EZVaGk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734093275; c=relaxed/simple;
-	bh=TvJU08hFdOE2ZEtmXsyNzjuehz2M5G7lPkNFHFYSb3I=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Evw/s6m7tWYKK7Isufiqj0IshMKzHq7lmKegYhlsOPW3rX2YzXEL3aSI9Ze2Hbfz6YQEJcrVVn45mgNBkfE3XsvlWibSnr/jXboozbZ2bV1uEkTccclz9kz5fdPi4pW0lDB9uImVgZC3JYhX3pSUUrljK799+jm3Rju8XslqwHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Y8pg81S0Sz1JFFR;
-	Fri, 13 Dec 2024 20:34:12 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 90437180042;
-	Fri, 13 Dec 2024 20:34:29 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 13 Dec 2024 20:34:29 +0800
-From: Yunsheng Lin <linyunsheng@huawei.com>
-To: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
-CC: <somnath.kotur@broadcom.com>, <liuyonglong@huawei.com>,
-	<fanghaiqing@huawei.com>, <zhangkun09@huawei.com>, Yunsheng Lin
-	<linyunsheng@huawei.com>, Wei Fang <wei.fang@nxp.com>, Shenwei Wang
-	<shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>, Jeroen de Borst
-	<jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>,
-	Shailend Chand <shailend@google.com>, Tony Nguyen
-	<anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov
-	<ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard
- Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Saeed
- Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan
-	<tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi
-	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen
-	<shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, Kalle Valo
-	<kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Simon
- Horman <horms@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	<imx@lists.linux.dev>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <intel-wired-lan@lists.osuosl.org>,
-	<bpf@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<linux-wireless@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mediatek@lists.infradead.org>
-Subject: [PATCH RFCv5 1/8] page_pool: introduce page_pool_to_pp() API
-Date: Fri, 13 Dec 2024 20:27:32 +0800
-Message-ID: <20241213122739.4050137-2-linyunsheng@huawei.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20241213122739.4050137-1-linyunsheng@huawei.com>
-References: <20241213122739.4050137-1-linyunsheng@huawei.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A6B1DF736
+	for <imx@lists.linux.dev>; Fri, 13 Dec 2024 12:58:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734094705; cv=fail; b=XjohEGyGuwxVpplADIiXqWglq07XAFJ57wAXVqeWxCbK4axUrPDcv1p2Lco40Sle1KterWtLJlJBLZwOIEkL9foeZ69bo+xV+mCfJmI8zuAlrYkzvFx762un7dqrhIm/aCv1ryATKY8pGZSf0Xg2dnBznntLT+rp8mYCsAQABqI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734094705; c=relaxed/simple;
+	bh=ep28K75PFWM8rYTFqlbZoFjzyzoUpHEGCd7WIca/x0U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=QsjU7tQudtFyINPXdj5vMaqGYwrBJCDUd+ih5l8UgPgXciEbxqkqRATP0D6z1FkJOBspqWURKkbi7QnHQu+2sSz6m+5gG1DJpfUMRp/kZ/ATNPDXv3Qduh5B4Q+BYyMrfO8gtju2fNBV1N0PYOWtr0vFe/+6UHllAiPzepCQrXU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ARFNtjX4; arc=fail smtp.client-ip=52.101.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ARFNtjX4"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aMY0dEcqP33s7JrToAR3lpHxALWg3SVnt24f5Sr/wX1ZyU/n/phnjracFDj5jHasdPQZ8EvVe9WF+VoF92Mo7lt0E7CSqQg9zWL50UPHvil7bpfrjQgTK60/n5gO/1kUDwl8+1kBmPwfy7dIg3zveiVA1hXCUXLYwicWJXcO4NaiZZ9XQC4OJMyGWoTmwyk9+jvToAIYPU2oyTsXE5sZ6vn5HVFO6y3e+YTkH/OwZ8M3uhVc4PBXC7R0bsv71LANq5UNXq5yO8EpFA5ixX29hFTQPisJ0UPPMeqkDDAUCTL6k/Fl/OLHVnosADdPbMgMqs7dTXxZMmc5t6UuQmnMbA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=f2Ml8YCww2EvKBJNuxFnCfpjdNS5hzD4ZPCVYd4WGnk=;
+ b=CVoIUzAE9mcDe5OmiJAebB6AdEktrdFgLHJfsM4qEChs4HKwL7nqYTkhaET4ZX5aeVPhlYMWHWi8MiFaynui1Vj8H0DB51ladYN0uDWYEqOIQMXRnzn+ls6670BI1fCvvlP9+aZfkDeQj4TvYoDshEEEf82f4bdWQ9a0aCV0uO91imG5MCPjvFoX2YufNwrHrx5CGgr4ScpZvm5u1PfHhdngcM93nqsyyPZa9F2Wpu48+s/0sTUFCHLXu5iSkwVGPWekVroTekUpAGyHumcr/YviUP+/MvBe6hrLBlVPcGAQ7s+0vI5CwvwxkMBjxk3zyjYTr2GRVKxvaFrwMvhj4w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=f2Ml8YCww2EvKBJNuxFnCfpjdNS5hzD4ZPCVYd4WGnk=;
+ b=ARFNtjX4spaktir5tjX3GmMxDmPU5bE93nEuMaE8VUaTkjGvFHEe0baK+oeh1pqh7KYtlqnTgZtLqhkNzxc0cNSOeeMWujmkgo1vsujgyrludwa2FM8qKSuRibDh3eOcS0kRvAHdkNY3lQBXUuZcqSjq3zXwCnbWsZmODhqRP7muk6Tz+ZFN28peGLX3WtQ43QjySsBebXRx/toUt2Qy/ONgl4PCSn3qTO8ZZsKJ3BWbZ3bI4JAEy1wf5YZGUoCjCmvgeswUNAg1RBmvZjWuoSN/RUzTBecSgl1rw74CYRjvGu9yJV7lCpuM9OsEj8BWSu/ChxdggRlsakZB5zwAWw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by AS4PR04MB9505.eurprd04.prod.outlook.com (2603:10a6:20b:4e4::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.15; Fri, 13 Dec
+ 2024 12:58:19 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7%6]) with mapi id 15.20.8251.008; Fri, 13 Dec 2024
+ 12:58:12 +0000
+Date: Fri, 13 Dec 2024 20:55:28 +0800
+From: Xu Yang <xu.yang_2@nxp.com>
+To: Hui Wang <hui.wang@canonical.com>
+Cc: linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, festevam@gmail.com
+Subject: Re: [PATCH] ARM: dts: nxp: imx6qdl: add dr_mode to usbotg
+Message-ID: <20241213125528.m2skucuhqtrc5f4s@hippo>
+References: <20241212043126.73045-1-hui.wang@canonical.com>
+ <20241213081729.ohgs7tyyzywd4uyc@hippo>
+ <cb6c7f8d-6244-4370-944f-a1a2beac3a79@canonical.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cb6c7f8d-6244-4370-944f-a1a2beac3a79@canonical.com>
+X-ClientProxiedBy: AM4PR07CA0010.eurprd07.prod.outlook.com
+ (2603:10a6:205:1::23) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemf200006.china.huawei.com (7.185.36.61)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|AS4PR04MB9505:EE_
+X-MS-Office365-Filtering-Correlation-Id: 512e0b13-55b1-4558-dffa-08dd1b75cd43
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|52116014|1800799024|7053199007|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?h6qBUjrV1Xb5IjPL/6HfpvjOMC3HueuCke/nvO9hZdCwWSiVIFUxR/3vs1eI?=
+ =?us-ascii?Q?h4Andnki/ZgMrw0NUzR1v3BW0DA8epMFsl4Z0e5CI8oGYi7oaT9X8WZZem0f?=
+ =?us-ascii?Q?0zJCCbkwfjpWSGpaKQGXepSrsohIjqQBKJSubLICmaAp0UOEGxJLtHADLRnl?=
+ =?us-ascii?Q?X75cNWTXxhIK5+XQl+qhKMLoYu94NflkRQ6ObOW+BhVXdq7qr/vG1D5YmxCC?=
+ =?us-ascii?Q?lK/EiB/j7gbQry5s0axObTB02roK6EbCTyRvqqDKUEXK2HcGA2VKW+iB3IJw?=
+ =?us-ascii?Q?0ChIeemeNLaaS4QQq3FPdenLZSRIsC4Y7CObKCKjJ3ej6UaZn6Fgm4rKZEvt?=
+ =?us-ascii?Q?hBw5QUvNue2uEh9ZdfAw71yeuIv7fwueEwdlH8WOQq5EmiTZgFkpWqrPmWBE?=
+ =?us-ascii?Q?NXoFZlogwqAvBwWTm30sAFN05HSMc2a5y673eMoPbeoBS33l91ob6VlQsb6s?=
+ =?us-ascii?Q?BTJqN6GEVgw1ctuDpEE0/FWY77lHIsNdcTrV5W2EVgUlYoY42LedvxC4KZOW?=
+ =?us-ascii?Q?RIDwQ/tJz36OjZjwdc7LFpeHptJ+KyOc3UCcHmxIGfoOvRN4/GMZma0i+86h?=
+ =?us-ascii?Q?sj217Tp+yGQC+2XR7+EljuQG4BICl0qhf7NKAz5j6kuPYG/6YTbmJ3Gz7rBh?=
+ =?us-ascii?Q?DtB8izdgTlyKxqsm2JMyAbKpBiyMKbK4EghQrejPb7JEdhw5rEUsGtUPAbDf?=
+ =?us-ascii?Q?Up8FjpVh39zBDMLrCqIK1+9X32G2iU5emUMX9/QaMqvEJ7uIHifReBMKSTZU?=
+ =?us-ascii?Q?HklSRruH2LIvw3nykGPwqhL9AJjBcW5DcenLPWmj5cMYe3iJ/PXutYlkhSof?=
+ =?us-ascii?Q?MFgIss/fBYJ4nTfyOfu1iPhPqLg8QrpFR5RxyAfNKk2LaD5FCMv3X82IokO8?=
+ =?us-ascii?Q?qoYaVh+V3wuyeCec8CaivS87F9gJky6/r98BfhxnBb3W9Ds0FDfDcVMyhFxK?=
+ =?us-ascii?Q?yKirXESDNifvylO9FIOQm2xcdJX9mygoMZWbCtv1cokne3KaF6jwRH4AmtSZ?=
+ =?us-ascii?Q?AQZyp4V05IIB1PBKrICyiPvalzklCA1qV+05UFaAGr8QFRc5LG2STV2cwxZ5?=
+ =?us-ascii?Q?ovuy4BcixQqS/uYTJggSi0eeYUtd/ShCZD/fI/qRm2Gs7cFw2Gk2+1jkRc1s?=
+ =?us-ascii?Q?1c6JfUk8LWTnc7My4yL2j9O/2/TtNEUty97oLLtVxtGaOvMFjJVfcVY9SqSF?=
+ =?us-ascii?Q?jS9P80RZWzULNPKDGBu+mL3XO+nnxR7t31Ls8IRvDUD1D67ZMlAl2td8oQw0?=
+ =?us-ascii?Q?3eoto7m9+bS62GCa8/fLJKyKgyH/QPA8E9XOmw3Kgx1a4YIUfRpBgasLC1WH?=
+ =?us-ascii?Q?aI+NWQUM4MeLwwwVwTWB8HQnj6AGw6KY3fMT9RyzKtCDpQ4O6f1bZGJSnhhN?=
+ =?us-ascii?Q?1yFFq7KqPZGjZth+ZKTHi2+NhL0XyPCTLDDPj7qG6aDvce2y1A=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(52116014)(1800799024)(7053199007)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?EP6z3v20W8a+2GxSxC4JL5VwSL4Yo0jJYQzBsQebBhnCwrXj3852mgpLkdUf?=
+ =?us-ascii?Q?vYpvks0YgtObyB6ve/nFkgLYlEkkVhYuby9GGevJuKC6c1eagKXh8gk4LQ0Q?=
+ =?us-ascii?Q?uV25bNWZap3loKI69eaHOHggHNZh+2P1Yos3QmZMNVHGRoH5ysdAs8CUvseP?=
+ =?us-ascii?Q?4PZ53oT0veKWeQRuBC+9QTxp/KtwYLa6Rtc9meUfwjVVhqB1kAjKVOxhRZac?=
+ =?us-ascii?Q?I4vJUuE+VYG6rYwBYFuKldX4DBwb0l0YeoZjLOhGztezJyaeVqIAQ8cD4joy?=
+ =?us-ascii?Q?TC3dHu3ZBJTSv0zmzKQROjublq4eHu0xvE8ry8iAtkNccP9tYcaPFkLe8JN7?=
+ =?us-ascii?Q?GryZDruV+LMZsiL++otY4zx6vh+msajScoOXS8RKYfbRKghcZgkZUbYK1wGX?=
+ =?us-ascii?Q?faquEMngOYl/GllHctwmKZXV46TQ3KYzy2s8PvMg4Za/xvM0PDQzXrQWgdhx?=
+ =?us-ascii?Q?vv8vmuUoMVRJPzRDf/ng7SS1vBOiyVoEvh0ynx8eBm1b8R3lhexzsXtWWNY3?=
+ =?us-ascii?Q?qk8CA+cT9NdFn0u6NIyXhF+UEYjKdK47tmHdOQRip7iebseTfgtXlHSfDAT1?=
+ =?us-ascii?Q?6jfagIWRxIa50iArrpCwbBGSZJp+53rvxWvcZl+ps/7C7d+D3DD4uyW7aN1b?=
+ =?us-ascii?Q?uM+EmrG190UZRNVV2NUxzFF5ToowuUN0ppvqflg78y49vf5w1BeM3rYy4gk3?=
+ =?us-ascii?Q?zVu9fMPgGgNsIno73JRFR24c4L73vEorZdKaa/OiNE2BDZL0Rfn8/bZTkGjW?=
+ =?us-ascii?Q?yPm0bky4qpMkvNyktsIB+nvSNP/TcKJdPQ9FwSeKnwHHBozTLfOg0QpIvXiW?=
+ =?us-ascii?Q?qbN7BP+XHp+XOYbDuPmdSXg04OSrU05gdLsT0AaYIC1+5AAjV9m70IHQ+Yen?=
+ =?us-ascii?Q?MBEIenY4qo398bnDteP+YR2REjxOebScAOkOm1vgrt4Nn8qcw7BVG3xm2Qf5?=
+ =?us-ascii?Q?f7wWT6wtRfqaWprL3jbePr1QNcsWygK0hV/ZCnigsGXsKZV/XfHOpNIZsPUt?=
+ =?us-ascii?Q?9u2ewPGPbYCYmYKFqEPF2O5AMYusCXkbxZ0+p9XoIFKLm9pXMCA6dAn9JAYh?=
+ =?us-ascii?Q?4TiLdRK0qOqRfqYH2SN8KlEPZ48Pu1WZBQpVogtValhS+jfQbza3BT3MUA7P?=
+ =?us-ascii?Q?HLkvoxdIkobqaghcvrJcZNCbas1k8Kid0a93/8sKhBCbNiF6VPLdgvJ740L6?=
+ =?us-ascii?Q?5M1yfe3oXVAwhsCygVtE3NItSvSu/DpWpLloPYWBhwbRR6R+Fzgip0nVlrBs?=
+ =?us-ascii?Q?XscET1rvPO853i9tGuv28YQ56LPoNGY33ZR4GrqtbSYlLo7wPZWkYwgvpz1e?=
+ =?us-ascii?Q?MvkuKIBx/WIOThpFuzLG8KVwwQkaRnEBE23KfpGiR8jROSMyRXY+L+CmHESk?=
+ =?us-ascii?Q?rXFmkp8gTVwFNVRNMeRcAe445Vn90F8aJqLRrt/CkWiaqgWZN+2t5rvYORJB?=
+ =?us-ascii?Q?fv9Ik3NHzeXXrbqHXsANWk7/VWXlimzDh7/435mOke2Aq8vjtmmo8aAE74oY?=
+ =?us-ascii?Q?Wj076y6CVayxfunnAxQWDiJD6G4mt5/7KOWvoxmQ662FlkWBzWy/2bpRosiD?=
+ =?us-ascii?Q?K6wHvaJdKl2kJekju094PN0FL6qKUlbBZp6k0ahR?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 512e0b13-55b1-4558-dffa-08dd1b75cd43
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2024 12:58:12.9262
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 73BiOBmJOF4wVoGxiO6TtrqmkaQD2wwGqr/b0tsmkeMuuytNga0KOC51cWMntEp5upd0SWYIINXxQoLMuhfSjg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9505
 
-introduce page_pool_to_pp() API to avoid caller accessing
-page->pp directly.
+On Fri, Dec 13, 2024 at 07:25:32PM +0800, Hui Wang wrote:
+> 
+> On 12/13/24 16:17, Xu Yang wrote:
+> > Hi,
+> > 
+> > On Thu, Dec 12, 2024 at 12:31:26PM +0800, Hui Wang wrote:
+> > > For the chipidea usb driver, if the dr_mode is not set, it will set
+> > > the device to otg mode by default, so here the dr_mode has not been
+> > > set for a long time. But some testcases need to parse the dr_mode from
+> > > DT and decide the follow-up test strategy, here set the dr_mode to otg
+> > > explicitly for QA's testcases.
+> > The dr_mode is board specific property, so we normally don't put it in
+> > dtsi file. Also, imx6qdl.dtsi is a common dtsi, therefore it's not a
+> > correct place. I wonder you don't set dr_mode in other dts file which
+> > include will imx6qdl.dtsi?
+> 
+> Yes, our QA reported this issue against the imx6q-sabresd board, I thought
+> dr_mode could be overwritten if board dts set the dr_mode, so this change
+> will not impact existing boards. But as you said "we normally don't put it
+> in dtsi file", I will move it to imx6q-sabresd.dts.
 
-Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
----
- drivers/net/ethernet/freescale/fec_main.c          |  8 +++++---
- .../net/ethernet/google/gve/gve_buffer_mgmt_dqo.c  |  2 +-
- drivers/net/ethernet/intel/iavf/iavf_txrx.c        |  6 ++++--
- drivers/net/ethernet/intel/idpf/idpf_txrx.c        | 14 +++++++++-----
- drivers/net/ethernet/intel/libeth/rx.c             |  2 +-
- drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c   |  3 ++-
- drivers/net/netdevsim/netdev.c                     |  6 ++++--
- drivers/net/wireless/mediatek/mt76/mt76.h          |  2 +-
- include/net/libeth/rx.h                            |  3 ++-
- include/net/page_pool/helpers.h                    |  5 +++++
- net/core/skbuff.c                                  |  3 ++-
- net/core/xdp.c                                     |  3 ++-
- 12 files changed, 38 insertions(+), 19 deletions(-)
+Okay. You can move it to imx6qdl-sabresd.dtsi too. Then you can reuse
+&usbotg {}.
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 1b55047c0237..98fce41d088c 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1009,7 +1009,8 @@ static void fec_enet_bd_init(struct net_device *dev)
- 				struct page *page = txq->tx_buf[i].buf_p;
- 
- 				if (page)
--					page_pool_put_page(page->pp, page, 0, false);
-+					page_pool_put_page(page_pool_to_pp(page),
-+							   page, 0, false);
- 			}
- 
- 			txq->tx_buf[i].buf_p = NULL;
-@@ -1549,7 +1550,7 @@ fec_enet_tx_queue(struct net_device *ndev, u16 queue_id, int budget)
- 			xdp_return_frame_rx_napi(xdpf);
- 		} else { /* recycle pages of XDP_TX frames */
- 			/* The dma_sync_size = 0 as XDP_TX has already synced DMA for_device */
--			page_pool_put_page(page->pp, page, 0, true);
-+			page_pool_put_page(page_pool_to_pp(page), page, 0, true);
- 		}
- 
- 		txq->tx_buf[index].buf_p = NULL;
-@@ -3311,7 +3312,8 @@ static void fec_enet_free_buffers(struct net_device *ndev)
- 			} else {
- 				struct page *page = txq->tx_buf[i].buf_p;
- 
--				page_pool_put_page(page->pp, page, 0, false);
-+				page_pool_put_page(page_pool_to_pp(page),
-+						   page, 0, false);
- 			}
- 
- 			txq->tx_buf[i].buf_p = NULL;
-diff --git a/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c b/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
-index 403f0f335ba6..db5926152c72 100644
---- a/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
-@@ -210,7 +210,7 @@ void gve_free_to_page_pool(struct gve_rx_ring *rx,
- 	if (!page)
- 		return;
- 
--	page_pool_put_full_page(page->pp, page, allow_direct);
-+	page_pool_put_full_page(page_pool_to_pp(page), page, allow_direct);
- 	buf_state->page_info.page = NULL;
- }
- 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_txrx.c b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
-index 26b424fd6718..658d8f9a6abb 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_txrx.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
-@@ -1050,7 +1050,8 @@ static void iavf_add_rx_frag(struct sk_buff *skb,
- 			     const struct libeth_fqe *rx_buffer,
- 			     unsigned int size)
- {
--	u32 hr = rx_buffer->page->pp->p.offset;
-+	struct page_pool *pool = page_pool_to_pp(rx_buffer->page);
-+	u32 hr = pool->p.offset;
- 
- 	skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, rx_buffer->page,
- 			rx_buffer->offset + hr, size, rx_buffer->truesize);
-@@ -1067,7 +1068,8 @@ static void iavf_add_rx_frag(struct sk_buff *skb,
- static struct sk_buff *iavf_build_skb(const struct libeth_fqe *rx_buffer,
- 				      unsigned int size)
- {
--	u32 hr = rx_buffer->page->pp->p.offset;
-+	struct page_pool *pool = page_pool_to_pp(rx_buffer->page);
-+	u32 hr = pool->p.offset;
- 	struct sk_buff *skb;
- 	void *va;
- 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index da2a5becf62f..38ad32678bcc 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -385,7 +385,8 @@ static void idpf_rx_page_rel(struct libeth_fqe *rx_buf)
- 	if (unlikely(!rx_buf->page))
- 		return;
- 
--	page_pool_put_full_page(rx_buf->page->pp, rx_buf->page, false);
-+	page_pool_put_full_page(page_pool_to_pp(rx_buf->page), rx_buf->page,
-+				false);
- 
- 	rx_buf->page = NULL;
- 	rx_buf->offset = 0;
-@@ -3097,7 +3098,8 @@ idpf_rx_process_skb_fields(struct idpf_rx_queue *rxq, struct sk_buff *skb,
- void idpf_rx_add_frag(struct idpf_rx_buf *rx_buf, struct sk_buff *skb,
- 		      unsigned int size)
- {
--	u32 hr = rx_buf->page->pp->p.offset;
-+	struct page_pool *pool = page_pool_to_pp(rx_buf->page);
-+	u32 hr = pool->p.offset;
- 
- 	skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, rx_buf->page,
- 			rx_buf->offset + hr, size, rx_buf->truesize);
-@@ -3129,8 +3131,10 @@ static u32 idpf_rx_hsplit_wa(const struct libeth_fqe *hdr,
- 	if (!libeth_rx_sync_for_cpu(buf, copy))
- 		return 0;
- 
--	dst = page_address(hdr->page) + hdr->offset + hdr->page->pp->p.offset;
--	src = page_address(buf->page) + buf->offset + buf->page->pp->p.offset;
-+	dst = page_address(hdr->page) + hdr->offset +
-+		page_pool_to_pp(hdr->page)->p.offset;
-+	src = page_address(buf->page) + buf->offset +
-+		page_pool_to_pp(buf->page)->p.offset;
- 	memcpy(dst, src, LARGEST_ALIGN(copy));
- 
- 	buf->offset += copy;
-@@ -3148,7 +3152,7 @@ static u32 idpf_rx_hsplit_wa(const struct libeth_fqe *hdr,
-  */
- struct sk_buff *idpf_rx_build_skb(const struct libeth_fqe *buf, u32 size)
- {
--	u32 hr = buf->page->pp->p.offset;
-+	u32 hr = page_pool_to_pp(buf->page)->p.offset;
- 	struct sk_buff *skb;
- 	void *va;
- 
-diff --git a/drivers/net/ethernet/intel/libeth/rx.c b/drivers/net/ethernet/intel/libeth/rx.c
-index f20926669318..385afca0e61d 100644
---- a/drivers/net/ethernet/intel/libeth/rx.c
-+++ b/drivers/net/ethernet/intel/libeth/rx.c
-@@ -207,7 +207,7 @@ EXPORT_SYMBOL_NS_GPL(libeth_rx_fq_destroy, LIBETH);
-  */
- void libeth_rx_recycle_slow(struct page *page)
- {
--	page_pool_recycle_direct(page->pp, page);
-+	page_pool_recycle_direct(page_pool_to_pp(page), page);
- }
- EXPORT_SYMBOL_NS_GPL(libeth_rx_recycle_slow, LIBETH);
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-index 94b291662087..78866b5473da 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-@@ -716,7 +716,8 @@ static void mlx5e_free_xdpsq_desc(struct mlx5e_xdpsq *sq,
- 				/* No need to check ((page->pp_magic & ~0x3UL) == PP_SIGNATURE)
- 				 * as we know this is a page_pool page.
- 				 */
--				page_pool_recycle_direct(page->pp, page);
-+				page_pool_recycle_direct(page_pool_to_pp(page),
-+							 page);
- 			} while (++n < num);
- 
- 			break;
-diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
-index 0be47fed4efc..088f4836a0e2 100644
---- a/drivers/net/netdevsim/netdev.c
-+++ b/drivers/net/netdevsim/netdev.c
-@@ -632,7 +632,8 @@ nsim_pp_hold_write(struct file *file, const char __user *data,
- 		if (!ns->page)
- 			ret = -ENOMEM;
- 	} else {
--		page_pool_put_full_page(ns->page->pp, ns->page, false);
-+		page_pool_put_full_page(page_pool_to_pp(ns->page), ns->page,
-+					false);
- 		ns->page = NULL;
- 	}
- 	rtnl_unlock();
-@@ -831,7 +832,8 @@ void nsim_destroy(struct netdevsim *ns)
- 
- 	/* Put this intentionally late to exercise the orphaning path */
- 	if (ns->page) {
--		page_pool_put_full_page(ns->page->pp, ns->page, false);
-+		page_pool_put_full_page(page_pool_to_pp(ns->page), ns->page,
-+					false);
- 		ns->page = NULL;
- 	}
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 0b75a45ad2e8..94a277290909 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -1688,7 +1688,7 @@ static inline void mt76_put_page_pool_buf(void *buf, bool allow_direct)
- {
- 	struct page *page = virt_to_head_page(buf);
- 
--	page_pool_put_full_page(page->pp, page, allow_direct);
-+	page_pool_put_full_page(page_pool_to_pp(page), page, allow_direct);
- }
- 
- static inline void *
-diff --git a/include/net/libeth/rx.h b/include/net/libeth/rx.h
-index 43574bd6612f..beee7ddd77a5 100644
---- a/include/net/libeth/rx.h
-+++ b/include/net/libeth/rx.h
-@@ -137,7 +137,8 @@ static inline bool libeth_rx_sync_for_cpu(const struct libeth_fqe *fqe,
- 		return false;
- 	}
- 
--	page_pool_dma_sync_for_cpu(page->pp, page, fqe->offset, len);
-+	page_pool_dma_sync_for_cpu(page_pool_to_pp(page), page, fqe->offset,
-+				   len);
- 
- 	return true;
- }
-diff --git a/include/net/page_pool/helpers.h b/include/net/page_pool/helpers.h
-index 793e6fd78bc5..1659f1995985 100644
---- a/include/net/page_pool/helpers.h
-+++ b/include/net/page_pool/helpers.h
-@@ -83,6 +83,11 @@ static inline u64 *page_pool_ethtool_stats_get(u64 *data, const void *stats)
- }
- #endif
- 
-+static inline struct page_pool *page_pool_to_pp(struct page *page)
-+{
-+	return page->pp;
-+}
-+
- /**
-  * page_pool_dev_alloc_pages() - allocate a page.
-  * @pool:	pool from which to allocate
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 6841e61a6bd0..54e8e7cf2bc9 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -1033,7 +1033,8 @@ bool napi_pp_put_page(netmem_ref netmem)
- 	if (unlikely(!is_pp_netmem(netmem)))
- 		return false;
- 
--	page_pool_put_full_netmem(netmem_get_pp(netmem), netmem, false);
-+	page_pool_put_full_netmem(page_pool_to_pp(netmem_to_page(netmem)),
-+				  netmem, false);
- 
- 	return true;
- }
-diff --git a/net/core/xdp.c b/net/core/xdp.c
-index bcc5551c6424..e8582036b411 100644
---- a/net/core/xdp.c
-+++ b/net/core/xdp.c
-@@ -384,7 +384,8 @@ void __xdp_return(void *data, struct xdp_mem_info *mem, bool napi_direct,
- 		/* No need to check ((page->pp_magic & ~0x3UL) == PP_SIGNATURE)
- 		 * as mem->type knows this a page_pool page
- 		 */
--		page_pool_put_full_page(page->pp, page, napi_direct);
-+		page_pool_put_full_page(page_pool_to_pp(page), page,
-+					napi_direct);
- 		break;
- 	case MEM_TYPE_PAGE_SHARED:
- 		page_frag_free(data);
--- 
-2.33.0
+Thanks,
+Xu Yang
 
+> 
+> Thanks,
+> 
+> Hui.
+> 
+> > Thanks,
+> > Xu Yang
+> > 
+> > > Signed-off-by: Hui Wang <hui.wang@canonical.com>
+> > > ---
+> > >   arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi | 1 +
+> > >   1 file changed, 1 insertion(+)
+> > > 
+> > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
+> > > index d2200c9db25a..285fb7314a88 100644
+> > > --- a/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
+> > > +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
+> > > @@ -982,6 +982,7 @@ usbotg: usb@2184000 {
+> > >   				clocks = <&clks IMX6QDL_CLK_USBOH3>;
+> > >   				fsl,usbphy = <&usbphy1>;
+> > >   				fsl,usbmisc = <&usbmisc 0>;
+> > > +				dr_mode = "otg";
+> > >   				ahb-burst-config = <0x0>;
+> > >   				tx-burst-size-dword = <0x10>;
+> > >   				rx-burst-size-dword = <0x10>;
+> > > -- 
+> > > 2.34.1
+> > > 
