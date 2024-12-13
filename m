@@ -1,70 +1,71 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2042.outbound.protection.outlook.com [40.107.20.42])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2070.outbound.protection.outlook.com [40.107.20.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE6618E054
-	for <imx@lists.linux.dev>; Fri, 13 Dec 2024 19:11:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E08D143759
+	for <imx@lists.linux.dev>; Fri, 13 Dec 2024 19:16:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.70
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734117079; cv=fail; b=k0DwKuJenYuoQIqfC+AcDnO06zhz6K/fFFgAdNSuGP0LSOYgejm/h1klZk73fgxu/Ye2z3BfNS/3YTG0sbjxhBuHbtaIjBfGufuFclOG1vGF9/wsMMxahFUwdbnRyBEK10EOiQpCiIEYIIbhGH772xuPcpHyV7bspus14lDw/W8=
+	t=1734117371; cv=fail; b=ACy66t1oXTI4Fm72PAj5g/SiAwkS8OhsZLMTuj9HMvavXn859NkTVkxx+DA3JxFV6HnNORoKDFApvDewy/3Z5ptQx06jaI1rYUsDGLY+BKyv398I1lbOGhshdbrczs50tAFq1hGME5DO5o8ne5S5hfWLi0eEfuorfNAARmyhRRk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734117079; c=relaxed/simple;
-	bh=ygD5bgr10keKjODKpZUvBSzlK8nLy+veS/gS46654vo=;
+	s=arc-20240116; t=1734117371; c=relaxed/simple;
+	bh=XXBzy/KPwBi8Pf5aTBaUuG6pXxhRWYMlzCa/VOmFKAw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=jJxo2owSN2TZG3iVeCYOTDXsGLebsl/KAvJPksgk0BR8597dH2arkBtiwoxrXToIAJAVi1R4JZ6g2VVbipwmytApb2PxjjWw5hncABYHpnso5Y7z4Y0YvEKGtmxt4ixZXdBGTS2zqnE0DU8NcZkUjpbtqUb4hnHqbbOgUOIF4v4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=oPRtz2Uf; arc=fail smtp.client-ip=40.107.20.42
+	 Content-Disposition:In-Reply-To:MIME-Version; b=KRLGvS835adYhWsXT32wqY5x/g9XB1zdUwb1A7lhVKa35yfISe9lX81pPxt+qmf2tsvs+O6JphEdTi29wQsB4JDA269gAqfnzwGUUg8bFTOZnQ7Vc1txAzkYOpyHLtn5fQMdxyyoSlk/wj/sBNOz6YOOBoWK9m0CdYm2kCKbuIA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=eLnfceOY; arc=fail smtp.client-ip=40.107.20.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="oPRtz2Uf"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="eLnfceOY"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vGmS2eEpjnb6ntFWOmz5WKV5vHbc9SiAMxgzwy9c5Pn5ju0nnhC/V3mjph++4wW/4t2qHMiKQclVIclPCTt7qQHB84s5gnIrsZcLTMQi85y2kKl2s4dlWjGgYKRMmAX2mFjU5One4Rxu2WlnUBhrnKyo1QArMQ9bJdzFwTvzsAyXwdkWfc0QA0xpMfw2vFufwrDYjud2HtjO7UXrPqTWxxcWfwY11Xq1IUgJ7fXj8maeI5kMxfXHK2n4ncvBk+74TL2iPeS9wp/sXFNgu+3wFbY6+mAU2bIBbRnbrAx0UQ8E2fslQj0qLr2EzpHLudNDICMQs5yKHQka4AcQclqcRg==
+ b=IzHxFpn7tS81ksUC+QrSyUJIX5NyYOuwmcS0FqNbYqLRCJoqutzMbwBsXkU1yPvep2ZcWa+cjDmWT+C76CoJGSgSQf5+9AggYYrW8HK8GZGh5Yft5fyudAa97fGJ/trsG5mEZEibtveWBNaqxVO413TTst+BJB8sIaSdtUDSeoDF14myy4EYm+RbeVOS20/gTBFVyvsDB48z0HuBtCnUSokIjPgehYuvuLZL49TnGYQm9OMtrUW5VHiUQD6Sy5UvgLrqKkb/kPxL0PqaEmKy0acRcNhGJESXNYjHqHDcqAPapGrmQVBUEVkCA6u0b+Wheabituu2E7AsGh1qzyoHpg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=U7YbUHjF27f+tHf+5lgTZ3cEDxJ7iJK6A6QYBtrl6QU=;
- b=UcLYefDebCRWtGEcz4RUcn2atfIJrZNufJKI7bkWmfbjMXE+my8+kRn7PDLj6gR9pbc/baXeXZmx1Uynts3cn4cT1pW9IywbtQ0vHOAMkA7QFHGLsdgyl84DT6lSMtHegbHayAwlJfD4dPpvGWvgkUlY59UuSq9gHmE/B1ZLO8wqPVtpeIwynMhrId15p1wE8H4lZM3ONdllSy+qRJ1XzbcdwP2U8km2aR3g3wUqtFSJXAGmRp3HtvCde0FR0OHcH6rW8Bfdhpya4qmZlR/N7y6/wJ9MtEaWMO9+Kdl0kgqtNC7isOb2xHjmydbbKhXq2UwWfofMpHkBlQNss/Z+WA==
+ bh=GIMA+2ro8VUVz8RMhsf3vzFftYnVWB2Ok7agit3Hqu8=;
+ b=IVQ38j4aNvVXflguHe8IOsDNC9uSiek/dYAuPm82u38R84m68DH0miDTvkQfuhBJkv3rS1usOZTIZUsuv7PR1Fm3OgCu5Z277qRUOWQ6buXn56zard52SFwmS2XyWcR8LIN+N5Xa7mUPPOJmkvvIsHtboun/FuRIck54eB002mC8EzVKCfX8bOBdBlb5FCnvh4pUC7tAlI+XrSp2BmKdcYba2L2C/UUHcZS13vKsTUNMQV9p4El7X1ic3PYCg0ugsE0d+c/ZkgeG892m6vJCVTIDf6XgsPn5dbVHgHXMIJU+wCPTwb0MX4uv4nv5hz7zx631Y79xziQArrz8/OkqWw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=U7YbUHjF27f+tHf+5lgTZ3cEDxJ7iJK6A6QYBtrl6QU=;
- b=oPRtz2UfnnY+CAvr40vhpojqnB+AdELot5fBNxSU+7LwYbo0IX6sKzimIc1d3R0Uq/uVgSUF4dj2GgxCjA2NLPma5fscLJ1kb6i7CWvym/QGL27krNObyZ5Awk/b8R6v2iuFFX8bMUXrmG3U9YLCkk87d/ix3khlnl7E09gTYVpqzT7ME+5Qw3rcvmZpFcepNg6z9d9xbAwhvL0PM3fTgoKRrZklHq3rpU2Y4w+Zwrmv9+VzcRnPyheAMq38qc+UXzhkNpR4kC+Q4eziPPp8sVpNuN3D2y7t65+UL7xx5xBCz2Tf1Lekwlg2kDtB17XK5R4JfKieeH/G1ytt/e8Z0g==
+ bh=GIMA+2ro8VUVz8RMhsf3vzFftYnVWB2Ok7agit3Hqu8=;
+ b=eLnfceOYZBZGQHG7QIbb1QCLxDqbxUNPwdUldbseoIaTADhOwaTA8CwOYeWI2e6JBoPdgCEbj6EySVn3bLIFIpNGTBnZbwjNrxTPC12UWLz9RB9lVahw/MgMyxlbWfCFt/gFNVgWycImzhUs0t+VkAkkqnfsataBhRt28NvkNagwoTQtWz9ksH+hZy4ngS7x1ZV/T6gnEzUvPOWo3e5wdMN1vRvSeB2RW+1bcK/nNytRfJNvdLedWAfDQrUYlLdNj4cI/Dc9po/qe0XGQVVDekPsyYe1V8tGHgQm8Y/FoAIcrNIWpxZYqGout/uYdKg6cAzVySb62KyI5SWl3Hw+kg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
  by AS8PR04MB8881.eurprd04.prod.outlook.com (2603:10a6:20b:42c::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.18; Fri, 13 Dec
- 2024 19:11:14 +0000
+ 2024 19:16:06 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8251.008; Fri, 13 Dec 2024
- 19:11:14 +0000
-Date: Fri, 13 Dec 2024 14:11:05 -0500
+ 19:16:06 +0000
+Date: Fri, 13 Dec 2024 14:15:56 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
+Cc: Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 2/2] nvmem: imx-ocotp-ele: Support accessing controller
- for i.MX9
-Message-ID: <Z1yGycDxf329m3bC@lizhi-Precision-Tower-5810>
-References: <20241212-imx-ocotp-v1-0-198bb0af86a0@nxp.com>
- <20241212-imx-ocotp-v1-2-198bb0af86a0@nxp.com>
- <cf153dd6-f82c-47d9-9ab4-f247437d607e@kernel.org>
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	NXP S32 Linux <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Enric Balletbo <eballetb@redhat.com>
+Subject: Re: [PATCH v2] arm64: dts: s32g: add I2C support
+Message-ID: <Z1yH7BFbYuJ++Vd1@lizhi-Precision-Tower-5810>
+References: <20241213142250.2532559-1-ciprianmarian.costea@oss.nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cf153dd6-f82c-47d9-9ab4-f247437d607e@kernel.org>
-X-ClientProxiedBy: SJ0PR03CA0143.namprd03.prod.outlook.com
- (2603:10b6:a03:33c::28) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <20241213142250.2532559-1-ciprianmarian.costea@oss.nxp.com>
+X-ClientProxiedBy: SJ0PR03CA0070.namprd03.prod.outlook.com
+ (2603:10b6:a03:331::15) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -74,110 +75,589 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8881:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3f25f7fb-332f-459a-6a7c-08dd1ba9ea03
+X-MS-Office365-Filtering-Correlation-Id: 19b70b3e-d618-40d3-5bd7-08dd1baa9786
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|7416014|52116014|376014|366016|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?EsEI9Uh/KIwehbgMPaC1TM8MWKqQ8/ueh2qDqsor0uPo8RGyyxgdiBpXxhce?=
- =?us-ascii?Q?6LGyZwIcp02nHYERlTgRJiltsHI2WmpNi1zBfnk96Pi365m+3rV9eZfduN1o?=
- =?us-ascii?Q?FpSIcjtbUCsnQjKAezXl7VFsIxE46oeO9/ckPoQ8FpnjmdYO3KDrDHdpTyiH?=
- =?us-ascii?Q?P1ndYxDxAdsNwN4fW3gO5RBX5BFgCLD9ZO9SmPktlDvU15saQ/AfvzpzPyFh?=
- =?us-ascii?Q?da7CUYnRhz+p+jDut81GqGYD+8jnsGex+REjYxbKk7AS/ZluRTVq7os9CHcM?=
- =?us-ascii?Q?ZCkqteCTRbBwUPZdtZ3oe4s1K/MilrVnbqwYVI2YjtM8vw+vXVtcVQIg/kEs?=
- =?us-ascii?Q?nvc5iJUHrZCxzX1KOPVokDGQEpBiFsKcgcH2DE9zWtlUTFotzPo511879eMQ?=
- =?us-ascii?Q?VyQThO9cMBQPKOuFso2L7JhqRr1lury7A+xIA39IN+tFnKEwDPGNPvRLKqyX?=
- =?us-ascii?Q?XzQ8NLJu3EpsOg9taErSpsTiWPgD81S6bGDOeQgyIlhTlEnzXbdp5N90APSl?=
- =?us-ascii?Q?17rlnz8uxzY6XAz/UkdPjOjNdwNPJ5hkAM8x4yOaoYdEGeOaDScdSxQZ0hRP?=
- =?us-ascii?Q?RQ07ikRpkAFHew2377Ylv4w+gFIANwjUnpZeDFzWrfYE83GOEHLKl6GF60lU?=
- =?us-ascii?Q?3Mkn76Dn5GPPerEPndUc5VmtE+5oN9p28tHQrPYc64Luu1Pvj/GyjPVf40cq?=
- =?us-ascii?Q?DyRntL9qd2t1R2KtKgk9iWmv5UH3ITJJOg1v8WJC0KsVceMqw9nPbprVWU98?=
- =?us-ascii?Q?7kiZpx3B6aFsvheT/+IY6DDfyzSrr/bjs2G11P0ensrLdQDAlGeKsUoumN8M?=
- =?us-ascii?Q?S5i0qvXftlOmw7JPaUymbn1nlq1RdqNcwLslsxaWMqhLV8AbudrMUOUk1HYo?=
- =?us-ascii?Q?dtm8EJqhky8ANlHBg/t1Px4im1YqJ4P3omP4gslffr4k1YlVCm+RLVT4skbS?=
- =?us-ascii?Q?IBwoyJaKY6gtIKbm6qprosM8D09qhJ0rMjlA9X2bKC67Z8OZSwpF0D7X25Q8?=
- =?us-ascii?Q?LNptxg8cbrA9QoHo8AQFSP2OllwoS/V1kaR1R6mJrj4A/e0UQo0c5zTZ/gwC?=
- =?us-ascii?Q?J8t+FMEjPqxmmNcb3UhAGA053teq/hxM6wnm2Bj7oZOvXZDp7cT+cNeHL+eb?=
- =?us-ascii?Q?9X287IkO3SQbJ0TuChCSX/dFpDZrIeGL/A00bDdzUO3LTcXkj09DWs40/Rdx?=
- =?us-ascii?Q?sf/YjpBTG8CJlBwZOAGleqRif3pYiJDgE/mQClz0uD9sTqMeLaLT4pIVB/2x?=
- =?us-ascii?Q?f01Gj2ItgFX0BBlTfFUUacmYhW2hPLdmBAfgppSFmmfQ6Z4Z53kEEfJxJidM?=
- =?us-ascii?Q?Cf5FCXvB1Xx36YbnJwx6HydHUcijCgdVSNLdckpFSf+BYiZNFnkKsTQecXNc?=
- =?us-ascii?Q?vz0442F52aB13VW1Ffuq88Upeai+S445NEuUjTRqNYqBYLTOLdgaMlTYmvQB?=
- =?us-ascii?Q?ifJ3tHg5YHefhj0Tk3y4acDMnVWRZ9pm?=
+	=?us-ascii?Q?aM7S2HaDcDUkHA32wwBw/0ihO73c5STOxtG3bi1dIQg8Lokw16dwA7rAreVU?=
+ =?us-ascii?Q?4b9cf2shbxtS+1R4xEbC7yk0/lY8eDYvkf6j4gJcgBhgKxQ7ofx8t8T/Tw7V?=
+ =?us-ascii?Q?qhqMyr9Zsdrb7/D90oXyhYYjHgt6s4oPV5kxpZ1fYnW6WHh5Y+f1sUSD/gWC?=
+ =?us-ascii?Q?J+h9Ohc70maqeSUiwe+KbxiH1lEEsNBJ5QKZUNezYUhfN33ouJK28ZO2gdVA?=
+ =?us-ascii?Q?gwa6pPvwn8PTRP7uM4dvXDKP24NH1YKMbqdCetJ/3o2FvEgwjPa9cyvIag1m?=
+ =?us-ascii?Q?EAgxLB46r/COrGOd5zh5epCVXxwseMjq+jIyQtNv3hMGDXioJe/hrty+HB0x?=
+ =?us-ascii?Q?3EMgpnoDXSXmKOEJHy5sDlk+v27pIuP6zD/DMi+40kAO7sV6/x0WX/JNO7WR?=
+ =?us-ascii?Q?10xCs4FWgkn0z52EUF3qFZiRYKD3MqB3lRMcyWd5NhV4ZZx9fIi0m1MGoJx/?=
+ =?us-ascii?Q?RKre08+KZK6YYA+PAupMxpKnkjp4K3tvAH7WZ1SIg2rHWiORPpDYlDZ895pG?=
+ =?us-ascii?Q?vXeSOHgNTKEQU+n9FipqLKYCP6Gwmwks0HwlDjJUczPFZAWwLwlrsGX3IYXu?=
+ =?us-ascii?Q?XhJ99te8helF2Mddd0Eg2QPyfaQmsuoTELuoIPli9UpjipqvO19SDKSpCYnU?=
+ =?us-ascii?Q?1QhF0z5XyMQw2BezW1F7+aGbb5gGuTH9U1BJ6whkafIPGkKEcz3VzjbfpX1b?=
+ =?us-ascii?Q?PCDyuk9Mt7JwG+/tgKIhqVA9f++YLXn8rH81vU5hMxFZe1Igm8v3DE7PtJr5?=
+ =?us-ascii?Q?JWZN7wWocfXl8PIpANNXEg5K8wj6GQTejEqGYJUcxRaRJnKcasHgIIvrd8eu?=
+ =?us-ascii?Q?21KucvE3G1+JyXvPrrkEKxwAyWXILDqFaPbbMP9iVbtwQTxLGFgKXdydjrcH?=
+ =?us-ascii?Q?upytrq8Sco3ksom3/4FANOj8/5RDpbIIVii+CpAzXjdSZAT3Gjrixr+HEouH?=
+ =?us-ascii?Q?92LkSTxTZZoJouy8QnoqigJDhtI1XTYcSxPNt8bDEeJLLiyOXtb24gtZ2nFh?=
+ =?us-ascii?Q?jCyr3jf5GfwDaAPRxHFptmz+PyNTK55k7JZWDoorIgZSll0k8ayuzalTmMy4?=
+ =?us-ascii?Q?5+C+O5ecXQgryaFVjZWzb52ylt8aaP6WoDkFyVFXCdhmwekdPYbZ7CF1sc7o?=
+ =?us-ascii?Q?n6mOWt3ZuMZmRiMjfY14tYUgzYZI5HYUHJDxD5pGq1H6SvXO5wHpDjQ3hP+Q?=
+ =?us-ascii?Q?lv6WHgNuRKFdEheAa6CWTYpgQ3qiuxgG7U1M6UXnIQUjs5oPkMCUwQhD0QHV?=
+ =?us-ascii?Q?ZqBVpDl5D7kGQ4mc5ZGRvLE/kF5Mgu01s0vOemxGqbqGrxfw1yt4BQN6xbJN?=
+ =?us-ascii?Q?B7VbUggOm9pBVVAwcUUgRsrtIqPj1H0cZymKx0uYiktm1XCe/DROFTvFZqX/?=
+ =?us-ascii?Q?5YyeT6y4uJnOvU2CPbv9tAd8t0BGM/ym2wY7SLo8SmjfVAaW3uj6htk72C0J?=
+ =?us-ascii?Q?VNY9XiDy/313qyqupcU0Nw/dM/bk003p?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?QLOnmd0WvVkEKA6ST51lQBEmAyY/t3aqAwdHW0c1XSYfUB9CSQ3gVdqe/6tq?=
- =?us-ascii?Q?GFkn/PckZsIRa75utq0Jrg7WKldskqcmSYh6rza3Sumt77S9WxEps1GHadrS?=
- =?us-ascii?Q?23jsibSDC+3iFgLEUrkwmpYztJMv8oNvPrC4gyaAN494SPdN/0gdmz9EqCpg?=
- =?us-ascii?Q?IRo/LCKEqgiWfRaoM0fsVuy8/aHepnQKiQs6eqa4NJKh+rSo8B3y8XxZOQnH?=
- =?us-ascii?Q?4guc/mHTWOb6eYzay+p5ZNAmSZ16twuL/qmg80rYD76t6LxqKmW00Hvkg9T4?=
- =?us-ascii?Q?0iJWkXLKjgljVy9gOBy87G8vGKIi2Uq/EC9kndI4tsvNcGyxrVgEZeOqkMjb?=
- =?us-ascii?Q?FMj0zkxv2piZukRFXM7EFiAZNzGdKJs+M6N27xSIskqpgde3NrqwFEjAx80/?=
- =?us-ascii?Q?86a13Lke4G/NSN6bsJqkjpMTjjhwSOOOHN09gYf7ko5+6A8m8IPpPuKoapRM?=
- =?us-ascii?Q?wl/Yyi5XPlVwY5gq2sVYTtRXi8/aFKFWYy6M88aQcidzpWyYXURtBRjvEz1I?=
- =?us-ascii?Q?taRaZyYCjfUDTWQHi04ZIE4dF0ZVg2zWqPYx81fEi8QzzytZ+qNNu2a52EDH?=
- =?us-ascii?Q?sytljHF+R8mvcPDBseiFwwZ2FvInwg0ueJN+eEIQb3R+njuYWBa1vmkSIRHJ?=
- =?us-ascii?Q?ScUyYe9vDfOummKNZOwi/moXk620P/30j8lXY6i/nyMiIYxTxw9geHx/BlBM?=
- =?us-ascii?Q?mrmPjKpu6Z3ZIK61aJ6GV9nRSALP0k63mY+Ol5c9W+T9k0rPK/nADg+6j8Vu?=
- =?us-ascii?Q?tGeF9VK07vrPZ56N0WGw3wNt0O1MF8cQAFpM+gJvQsYExU+qD+n1OlPVA8US?=
- =?us-ascii?Q?WnsbM+smDc0n41875/eUU0GKzStUxRS5dy2u9XVrjxX7oErnBgoC1xUy+YFO?=
- =?us-ascii?Q?aJ4vG/0xFYuNA/zTz1yINGEvASTuZ885wuFhKok+ASd/s9VbYH1TbErikZBO?=
- =?us-ascii?Q?n+U6LoNLCJesMSXR9pG8cnNtCVkIho+UOG9na1HQId37/slKN9LyW9KuR40m?=
- =?us-ascii?Q?ZymCoGSn9fGrZR3Es22dJdflWpJs4Q14JktOijtEESxp5YGEwHEk5FTYmotI?=
- =?us-ascii?Q?1L9RRxyw9VNqnVX7ttq9FCxlJ5pzV5L7pqEdnGgfSeA+8nV8LMbjqUahpfZL?=
- =?us-ascii?Q?c6uBKodRCQlWyW7LWeevgdiw8KHhX7gR3ZTz4tj2v4v3YYFh38ykS6LTLyS2?=
- =?us-ascii?Q?whxmXidBdyz+OQ8jP8FCrd6aKbE6znyUcnBCoSNEH2Dgd6krZ6ZDJTA6c2Sv?=
- =?us-ascii?Q?5uOTyZNBSubYgGjHFmkspBHHznWAxMOy9+hi+NPONeHu9QdY4wR6KEiOgLfx?=
- =?us-ascii?Q?6oSI8SL6xLto5fWtCSg0R/mlgWk0O6XXciE/raeQxEkhSii9Q+BeviC18ygf?=
- =?us-ascii?Q?PUyVBEnw2YrxDFH9aewsKvjIA9TNitgdMZlSSSqaHINW/5TMV3b8bhrhszZd?=
- =?us-ascii?Q?eEgz4DVoZkc642Qf8z8pFX0SjJOUZzRCKmyJ9DS65+EX/vSpQMSD2X7Jw3YD?=
- =?us-ascii?Q?vX2G/umB7ClavE7ptTZR/Dw0lZ9HYmkkSwArhlLX8LLHoXEeveTA1m7ZIXq+?=
- =?us-ascii?Q?i1WtBIAJ5nDebTMpkKq8/oY6byUx4Oin+2wufKpC?=
+	=?us-ascii?Q?P1FpT5wjo5eVdtQjZqi8c4bokHKVh0avBnFx2Ced+5rFHI5CSbX0OfK+Tw4J?=
+ =?us-ascii?Q?xE8rAVfMy9jxSFsv8YpnTXJzcxpRvkieloB0NKpX31XGzGvPTTtnXuD2eYGs?=
+ =?us-ascii?Q?TW2CFWHTBRLw4xYHQmws/fCfgbGRk6/vnIRRuCjFyupWDKv7zpjfpR3HijT+?=
+ =?us-ascii?Q?+awnwHb4URvL0YOI0cOtzNE6F7mW/RGus3jsyHYbKuzQOpbGUmnNYkdXR+iL?=
+ =?us-ascii?Q?vs/lW9GC17T9CuX4IR/TDTGCHLC6xWYiDzy0xBStivs76DQxf8yDvxNw3t4l?=
+ =?us-ascii?Q?HKllFTVgAsO/7BzVv4/UI9okOHAXRTsQIsTIp8pryJF90pFGRp2+c94IK6xB?=
+ =?us-ascii?Q?Ius4ynth4OVEynIhXVbbAdP3epvv1PlOTzDaq2wJtyDceX3RyOjoGfndU7ys?=
+ =?us-ascii?Q?7mz7+OpNrrE82GK9UBhXRvbNx0WkR422uwMi6O2k8jZtkOIE1VdPwd/tVKgM?=
+ =?us-ascii?Q?OMkkPEQD0FFVwVCb4iEKotZAsUtjAlR7enzfTckOMkXL9Uqx7aKzDeGQxwqD?=
+ =?us-ascii?Q?IPtxemRSiW4IOCaLyio5DfO7YrjnezDs1e3cK9+DVOKagbTT4Nm3mRisqzNe?=
+ =?us-ascii?Q?1VDIHMrOCe/BmIHemyMXC039ySlGZu7H7X/fRK0LiV5cgZueDAoDR/vL0x7t?=
+ =?us-ascii?Q?DTZ0YZWhLkW9kUGQ016Q5booJxNKNMIu69QXtf6GNtFUKk6m7QMeR6MZxkd/?=
+ =?us-ascii?Q?AauZloEEoc6VeokLU343iIjFoC4py+8fgjyXkzFrUZFGLurdAb1VFDLKOF3W?=
+ =?us-ascii?Q?F5RPaQIlB9EcwGBAtwkJba/8fN9Edh0oyb8fbpgIXo0AxyQRDxP9gk4XAJDV?=
+ =?us-ascii?Q?iWb/sFOvS5QXbuC16K/OWHLGmVBnznl6GRVYy8QM+R7uvPGWXUCrMNmPQE1B?=
+ =?us-ascii?Q?CmrSkTMOKwypCHml0TFepnfzT9cVkgXAuI3J3XHMd4Zkpe4uzQm5816syRie?=
+ =?us-ascii?Q?vu4nE8bMTeaHoqUBA6DjYU0uEcyhVsXnnJw/vSjW7VgSJBpBW/MzbTdktJAp?=
+ =?us-ascii?Q?M5EphssoN2rmrJ5mW2qcxSmFJMJ1o7mRPwhvn69Ej5ehGnEux2SOppp2WuAH?=
+ =?us-ascii?Q?kfaFrxuJXnRUzJyMYpLcYqkhY48HH2bmznObuKKT5E8oR47h2ZlKeEp2Juqf?=
+ =?us-ascii?Q?YhIvvY5YRH67xdVcDG7FHTBUOO47SvbLvqTSO/KfmaDk3lO+s4ZgGDus+DAb?=
+ =?us-ascii?Q?EGG5LoGZwLTWzTy1ByqS3YlKfiyS+yNaHuLAqN0CuZhJ39zWaiqWURXlptGd?=
+ =?us-ascii?Q?whgzZwjD+GVE+yH37lUehfXkcuC0QuHAxJokp8cOtORl+erJtJfheI3qfIuN?=
+ =?us-ascii?Q?iaC1Ul31/Yd7bS5DSggEfVf9spA1fy8cIuD0UHPkbsgr0ltXAJzqNO5oJITI?=
+ =?us-ascii?Q?nuXhPVOmsD18wRsnB2Ome71zyl944CO7/YGXsTLDmRV5g36PY2G/3bdIdJ4M?=
+ =?us-ascii?Q?w8T17M5PzFIQ7zIIE5ffST3z5a57rX8vUwYUPJghevpptmqE+F7YOD9SCIyz?=
+ =?us-ascii?Q?QrhNouTBiswoFaJ4WGp61PSbLyjDAwn2N5gSRN8PNDc7CKQNt3siqjILqsCk?=
+ =?us-ascii?Q?1EvoUrMYNsCWoRc/wwWfMT5+zR1BQiRo7h+nEkfu?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3f25f7fb-332f-459a-6a7c-08dd1ba9ea03
+X-MS-Exchange-CrossTenant-Network-Message-Id: 19b70b3e-d618-40d3-5bd7-08dd1baa9786
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2024 19:11:14.7329
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2024 19:16:06.3117
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ga/dHTKpkn9rs32eQW7BzeocQNWOLuu3bZh99te6sL3Emy2gj+yLzS2qqETKW0NRxnuKrakMah2ttYc0Dt8Zhw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: H/TcJLwiFTvR5/g5zPiKWseu+ZMG2VmDACU1Lg/u8O8hoMUaNZiJjIzHCivcW9rbyFASAyjHgZhkWWXIhs9AHg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8881
 
-On Fri, Dec 13, 2024 at 08:52:49AM +0100, Krzysztof Kozlowski wrote:
-> On 12/12/2024 09:24, Peng Fan (OSS) wrote:
-> > +
-> > +			if (imx_ele_ocotp_check_access(pdev, id)) {
-> > +				of_detach_node(child);
-> > +				dev_err(dev, "%s: Not granted, device driver will not be probed\n",
-> > +					child->full_name);
-> > +			}
-> > +		}
-> > +
-> > +		imx_ele_ocotp_grant_access(pdev, child);
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int imx_ele_ocotp_access_control(struct platform_device *pdev)
-> > +{
-> > +	struct imx_ocotp_priv *priv = platform_get_drvdata(pdev);
-> > +	struct device_node *soc __free(device_node) = of_find_node_by_path("/soc");
+On Fri, Dec 13, 2024 at 04:22:50PM +0200, Ciprian Costea wrote:
+> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 >
-> No, you just created undocumented ABI on the name.
+> Add the I2C Devicetree nodes and pinmux for S32G2 and S32G3 SoCs.
 >
-> Drop/replace or express the ABI (which is impossible, so basically: drop).
+> With respect to S32G2/S32G3 SoC based boards, there are multiple RDB
+> (rdb2 vs rdb3) and EVB (for G2 vs for G3) board revisions. These versions
+> are quite similar. The common part for the EVB revisions will be
+> centralized in 's32gxxa-evb.dtsi' file, while the RDB commonalities will
+> be placed in 's32gxxa-rdb.dtsi' file.
+>
+> This refactor will also serve for other modules in the future, such as
+> FlexCAN, DSPI.
+>
+> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+> ---
 
-How about iterate whole tree by use bfs method? So no undocumented ABI.
+Change log here!
+
+>  arch/arm64/boot/dts/freescale/s32g2.dtsi      |  45 ++++++
+>  .../arm64/boot/dts/freescale/s32g274a-evb.dts |   1 +
+
+Shawn require board dts should be seperate patch
+
+>  .../boot/dts/freescale/s32g274a-rdb2.dts      |   1 +
+>  arch/arm64/boot/dts/freescale/s32g3.dtsi      |  50 ++++++
+>  .../boot/dts/freescale/s32g399a-rdb3.dts      |   9 ++
+>  .../boot/dts/freescale/s32gxxxa-evb.dtsi      | 150 ++++++++++++++++++
+>  .../boot/dts/freescale/s32gxxxa-rdb.dtsi      | 126 +++++++++++++++
+>  7 files changed, 382 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
+>  create mode 100644 arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
+>
+> diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+> index 7be430b78c83..0e6c847ab0c3 100644
+> --- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+> @@ -333,6 +333,33 @@ uart1: serial@401cc000 {
+>  			status = "disabled";
+>  		};
+>
+> +		i2c0: i2c@401e4000 {
+> +			compatible = "nxp,s32g2-i2c";
+> +			reg = <0x401e4000 0x1000>;
+> +			interrupts = <GIC_SPI 92 IRQ_TYPE_LEVEL_HIGH>;
+> +			clocks = <&clks 40>;
+> +			clock-names = "ipg";
+> +			status = "disabled";
+> +		};
+> +
+> +		i2c1: i2c@401e8000 {
+> +			compatible = "nxp,s32g2-i2c";
+> +			reg = <0x401e8000 0x1000>;
+> +			interrupts = <GIC_SPI 93 IRQ_TYPE_LEVEL_HIGH>;
+> +			clocks = <&clks 40>;
+> +			clock-names = "ipg";
+> +			status = "disabled";
+> +		};
+> +
+> +		i2c2: i2c@401ec000 {
+> +			compatible = "nxp,s32g2-i2c";
+> +			reg = <0x401ec000 0x1000>;
+> +			interrupts = <GIC_SPI 94 IRQ_TYPE_LEVEL_HIGH>;
+> +			clocks = <&clks 40>;
+> +			clock-names = "ipg";
+> +			status = "disabled";
+> +		};
+> +
+>  		uart2: serial@402bc000 {
+>  			compatible = "nxp,s32g2-linflexuart",
+>  				     "fsl,s32v234-linflexuart";
+> @@ -341,6 +368,24 @@ uart2: serial@402bc000 {
+>  			status = "disabled";
+>  		};
+>
+> +		i2c3: i2c@402d8000 {
+> +			compatible = "nxp,s32g2-i2c";
+> +			reg = <0x402d8000 0x1000>;
+> +			interrupts = <GIC_SPI 95 IRQ_TYPE_LEVEL_HIGH>;
+> +			clocks = <&clks 40>;
+> +			clock-names = "ipg";
+> +			status = "disabled";
+> +		};
+> +
+> +		i2c4: i2c@402dc000 {
+> +			compatible = "nxp,s32g2-i2c";
+> +			reg = <0x402dc000 0x1000>;
+> +			interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_HIGH>;
+> +			clocks = <&clks 40>;
+> +			clock-names = "ipg";
+> +			status = "disabled";
+> +		};
+> +
+>  		usdhc0: mmc@402f0000 {
+>  			compatible = "nxp,s32g2-usdhc";
+>  			reg = <0x402f0000 0x1000>;
+> diff --git a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
+> index b9a119eea2b7..c4a195dd67bf 100644
+> --- a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
+> +++ b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
+> @@ -7,6 +7,7 @@
+>  /dts-v1/;
+>
+>  #include "s32g2.dtsi"
+> +#include "s32gxxxa-evb.dtsi"
+>
+>  / {
+>  	model = "NXP S32G2 Evaluation Board (S32G-VNP-EVB)";
+> diff --git a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
+> index aaa61a8ad0da..b5ba51696f43 100644
+> --- a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
+> +++ b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
+> @@ -7,6 +7,7 @@
+>  /dts-v1/;
+>
+>  #include "s32g2.dtsi"
+> +#include "s32gxxxa-rdb.dtsi"
+>
+>  / {
+>  	model = "NXP S32G2 Reference Design Board 2 (S32G-VNP-RDB2)";
+> diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+> index 6c572ffe37ca..666e4029e588 100644
+> --- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+> @@ -390,6 +390,36 @@ uart1: serial@401cc000 {
+>  			status = "disabled";
+>  		};
+>
+> +		i2c0: i2c@401e4000 {
+> +			compatible = "nxp,s32g3-i2c",
+> +				     "nxp,s32g2-i2c";
+> +			reg = <0x401e4000 0x1000>;
+> +			interrupts = <GIC_SPI 92 IRQ_TYPE_LEVEL_HIGH>;
+> +			clocks = <&clks 40>;
+> +			clock-names = "ipg";
+> +			status = "disabled";
+> +		};
+> +
+> +		i2c1: i2c@401e8000 {
+> +			compatible = "nxp,s32g3-i2c",
+> +				     "nxp,s32g2-i2c";
+> +			reg = <0x401e8000 0x1000>;
+> +			interrupts = <GIC_SPI 93 IRQ_TYPE_LEVEL_HIGH>;
+> +			clocks = <&clks 40>;
+> +			clock-names = "ipg";
+> +			status = "disabled";
+> +		};
+> +
+> +		i2c2: i2c@401ec000 {
+> +			compatible = "nxp,s32g3-i2c",
+> +				     "nxp,s32g2-i2c";
+> +			reg = <0x401ec000 0x1000>;
+> +			interrupts = <GIC_SPI 94 IRQ_TYPE_LEVEL_HIGH>;
+> +			clocks = <&clks 40>;
+> +			clock-names = "ipg";
+> +			status = "disabled";
+> +		};
+> +
+>  		uart2: serial@402bc000 {
+>  			compatible = "nxp,s32g3-linflexuart",
+>  				     "fsl,s32v234-linflexuart";
+> @@ -398,6 +428,26 @@ uart2: serial@402bc000 {
+>  			status = "disabled";
+>  		};
+>
+> +		i2c3: i2c@402d8000 {
+> +			compatible = "nxp,s32g3-i2c",
+> +				     "nxp,s32g2-i2c";
+> +			reg = <0x402d8000 0x1000>;
+> +			interrupts = <GIC_SPI 95 IRQ_TYPE_LEVEL_HIGH>;
+> +			clocks = <&clks 40>;
+> +			clock-names = "ipg";
+> +			status = "disabled";
+> +		};
+> +
+> +		i2c4: i2c@402dc000 {
+> +			compatible = "nxp,s32g3-i2c",
+> +				     "nxp,s32g2-i2c";
+> +			reg = <0x402dc000 0x1000>;
+> +			interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_HIGH>;
+> +			clocks = <&clks 40>;
+> +			clock-names = "ipg";
+> +			status = "disabled";
+> +		};
+> +
+>  		usdhc0: mmc@402f0000 {
+>  			compatible = "nxp,s32g3-usdhc",
+>  				     "nxp,s32g2-usdhc";
+> diff --git a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
+> index 828e353455b5..5f8739c068c6 100644
+> --- a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
+> +++ b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
+> @@ -8,6 +8,7 @@
+>  /dts-v1/;
+>
+>  #include "s32g3.dtsi"
+> +#include "s32gxxxa-rdb.dtsi"
+>
+>  / {
+>  	model = "NXP S32G3 Reference Design Board 3 (S32G-VNP-RDB3)";
+> @@ -39,6 +40,14 @@ &uart1 {
+>  	status = "okay";
+>  };
+>
+> +&i2c4 {
+> +	ina231@40 {
+> +		compatible = "ti,ina231";
+> +		reg = <0x40>;
+> +		shunt-resistor = <1000>;
+> +	};
+> +};
+> +
+>  &usdhc0 {
+>  	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+>  	pinctrl-0 = <&pinctrl_usdhc0>;
+> diff --git a/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi b/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
+> new file mode 100644
+> index 000000000000..a44eff28073a
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
+> @@ -0,0 +1,150 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+> +/*
+> + * Copyright 2024 NXP
+> + *
+> + * Authors: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+> + *          Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>
+> + *          Larisa Grigore <larisa.grigore@nxp.com>
+> + */
+> +
+> +&pinctrl {
+> +	i2c0_pins: i2c0-pins {
+> +		i2c0-grp0 {
+> +			pinmux = <0x101>, <0x111>;
+> +			drive-open-drain;
+> +			output-enable;
+> +			input-enable;
+> +			slew-rate = <133>;
+> +		};
+> +
+> +		i2c0-grp1 {
+> +			pinmux = <0x2352>, <0x2362>;
+> +		};
+> +	};
+> +
+> +	i2c0_gpio_pins: i2c0-gpio-pins {
+> +		i2c0-gpio-grp0 {
+> +			pinmux = <0x100>, <0x110>;
+> +			drive-open-drain;
+> +			output-enable;
+> +			input-enable;
+> +			slew-rate = <133>;
+> +		};
+> +
+> +		i2c0-gpio-grp1 {
+> +			pinmux = <0x2350>, <0x2360>;
+> +		};
+> +	};
+> +
+> +	i2c1_pins: i2c1-pins {
+> +		i2c1-grp0 {
+> +			pinmux = <0x131>, <0x141>;
+> +			drive-open-drain;
+> +			output-enable;
+> +			input-enable;
+> +			slew-rate = <133>;
+> +		};
+> +
+> +		i2c1-grp1 {
+> +			pinmux = <0x2cd2>, <0x2ce2>;
+> +		};
+> +	};
+> +
+> +	i2c1_gpio_pins: i2c1-gpio-pins {
+> +		i2c1-gpio-grp0 {
+> +			pinmux = <0x130>, <0x140>;
+> +			drive-open-drain;
+> +			output-enable;
+> +			input-enable;
+> +			slew-rate = <133>;
+> +		};
+> +
+> +		i2c1-gpio-grp1 {
+> +			pinmux = <0x2cd0>, <0x2ce0>;
+> +		};
+> +	};
+> +
+> +	i2c2_pins: i2c2-pins {
+> +		i2c2-grp0 {
+> +			pinmux = <0x151>, <0x161>;
+> +			drive-open-drain;
+> +			output-enable;
+> +			input-enable;
+> +			slew-rate = <133>;
+> +		};
+> +
+> +		i2c2-grp1 {
+> +			pinmux = <0x2cf2>, <0x2d02>;
+> +		};
+> +	};
+> +
+> +	i2c2_gpio_pins: i2c2-gpio-pins {
+> +		i2c2-gpio-grp0 {
+> +			pinmux = <0x150>, <0x160>;
+> +			drive-open-drain;
+> +			output-enable;
+> +			input-enable;
+> +			slew-rate = <133>;
+> +		};
+> +
+> +		i2c2-gpio-grp1 {
+> +			pinmux = <0x2cf0>, <0x2d00>;
+> +		};
+> +	};
+> +
+> +	i2c4_pins: i2c4-pins {
+> +		i2c4-grp0 {
+> +			pinmux = <0x211>, <0x222>;
+> +			drive-open-drain;
+> +			output-enable;
+> +			input-enable;
+> +			slew-rate = <133>;
+> +		};
+> +
+> +		i2c4-grp1 {
+> +			pinmux = <0x2d43>, <0x2d33>;
+> +		};
+> +	};
+> +
+> +	i2c4_gpio_pins: i2c4-gpio-pins {
+> +		i2c4-gpio-grp0 {
+> +			pinmux = <0x210>, <0x220>;
+> +			drive-open-drain;
+> +			output-enable;
+> +			input-enable;
+> +			slew-rate = <133>;
+> +		};
+> +
+> +		i2c4-gpio-grp1 {
+> +			pinmux = <0x2d40>, <0x2d30>;
+> +		};
+> +	};
+> +};
+> +
+> +&i2c0 {
+> +	pinctrl-names = "default", "gpio";
+> +	pinctrl-0 = <&i2c0_pins>;
+> +	pinctrl-1 = <&i2c0_gpio_pins>;
+> +	status = "okay";
+> +};
+> +
+> +&i2c1 {
+> +	pinctrl-names = "default", "gpio";
+> +	pinctrl-0 = <&i2c1_pins>;
+> +	pinctrl-1 = <&i2c1_gpio_pins>;
+> +	status = "okay";
+> +};
+> +
+> +&i2c2 {
+> +	pinctrl-names = "default", "gpio";
+> +	pinctrl-0 = <&i2c2_pins>;
+> +	pinctrl-1 = <&i2c2_gpio_pins>;
+> +	status = "okay";
+> +};
+> +
+> +&i2c4 {
+> +	pinctrl-names = "default", "gpio";
+> +	pinctrl-0 = <&i2c4_pins>;
+> +	pinctrl-1 = <&i2c4_gpio_pins>;
+> +	status = "okay";
+> +};
+> diff --git a/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi b/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
+> new file mode 100644
+> index 000000000000..50fe6aaa1605
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
+> @@ -0,0 +1,126 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+> +/*
+> + * Copyright 2024 NXP
+> + *
+> + * Authors: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+> + *          Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>
+> + *          Larisa Grigore <larisa.grigore@nxp.com>
+> + */
+> +
+> +&pinctrl {
+> +	i2c0_pins: i2c0-pins {
+> +		i2c0-grp0 {
+> +			pinmux = <0x1f2>, <0x201>;
+> +			drive-open-drain;
+> +			output-enable;
+> +			input-enable;
+> +			slew-rate = <133>;
+> +		};
+> +
+> +		i2c0-grp1 {
+> +			pinmux = <0x2353>, <0x2363>;
+> +		};
+> +	};
+> +
+> +	i2c0_gpio_pins: i2c0-gpio-pins {
+> +		i2c0-gpio-grp0 {
+> +			pinmux = <0x1f0>, <0x200>;
+> +			drive-open-drain;
+> +			output-enable;
+> +			input-enable;
+> +			slew-rate = <133>;
+> +		};
+> +
+> +		i2c0-gpio-grp1 {
+> +			pinmux = <0x2350>, <0x2360>;
+> +		};
+> +	};
+> +
+> +	i2c2_pins: i2c2-pins {
+> +		i2c2-grp0 {
+> +			pinmux = <0x151>, <0x161>;
+> +			drive-open-drain;
+> +			output-enable;
+> +			input-enable;
+> +			slew-rate = <133>;
+> +		};
+> +
+> +		i2c2-grp1 {
+> +			pinmux = <0x2cf2>, <0x2d02>;
+> +		};
+> +	};
+> +
+> +	i2c2_gpio_pins: i2c2-gpio-pins {
+> +		i2c2-gpio-grp0 {
+> +			pinmux = <0x2cf0>, <0x2d00>;
+> +		};
+> +
+> +		i2c2-gpio-grp1 {
+> +			pinmux = <0x150>, <0x160>;
+> +			drive-open-drain;
+> +			output-enable;
+> +			input-enable;
+> +			slew-rate = <133>;
+> +		};
+> +	};
+> +
+> +	i2c4_pins: i2c4-pins {
+> +		i2c4-grp0 {
+> +			pinmux = <0x211>, <0x222>;
+> +			drive-open-drain;
+> +			output-enable;
+> +			input-enable;
+> +			slew-rate = <133>;
+> +		};
+> +
+> +		i2c4-grp1 {
+> +			pinmux = <0x2d43>, <0x2d33>;
+> +		};
+> +	};
+> +
+> +	i2c4_gpio_pins: i2c4-gpio-pins {
+> +		i2c4-gpio-grp0 {
+> +			pinmux = <0x210>, <0x220>;
+> +			drive-open-drain;
+> +			output-enable;
+> +			input-enable;
+> +			slew-rate = <133>;
+> +		};
+> +
+> +		i2c4-gpio-grp1 {
+> +			pinmux = <0x2d40>, <0x2d30>;
+> +		};
+> +	};
+> +};
+> +
+> +&i2c0 {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+
+I remember I have said "#address-cells" and "#size-cells" should be in
+dtsi to avoid copy it at each board dts file.
 
 Frank
 
+> +	pinctrl-names = "default", "gpio";
+> +	pinctrl-0 = <&i2c0_pins>;
+> +	pinctrl-1 = <&i2c0_gpio_pins>;
+> +	status = "okay";
+> +
+> +	pcal6524: gpio-expander@22 {
+> +		compatible = "nxp,pcal6524";
+> +		reg = <0x22>;
+> +		gpio-controller;
+> +		#gpio-cells = <2>;
+> +	};
+> +};
+> +
+> +&i2c2 {
+> +	pinctrl-names = "default", "gpio";
+> +	pinctrl-0 = <&i2c2_pins>;
+> +	pinctrl-1 = <&i2c2_gpio_pins>;
+> +	status = "okay";
+> +};
+> +
+> +&i2c4 {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	pinctrl-names = "default", "gpio";
+> +	pinctrl-0 = <&i2c4_pins>;
+> +	pinctrl-1 = <&i2c4_gpio_pins>;
+> +	status = "okay";
+> +};
+> --
+> 2.45.2
 >
->
-> Best regards,
-> Krzysztof
