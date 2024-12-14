@@ -1,62 +1,62 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1561199223
-	for <imx@lists.linux.dev>; Sat, 14 Dec 2024 17:27:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095E61B3954
+	for <imx@lists.linux.dev>; Sat, 14 Dec 2024 17:27:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734197222; cv=none; b=AjG5ZeIEzYV9kg/dgGCyykmK2YfimqFR1ZeJ3vKih5oAmfiKdWKnOxaOUAXGI9P2lhxepjiyaaV1u5Ir7uNAjJwg13RA1GIATYSjJ5hoWpwSjYu7yHfN4MaUSAU0n8ypF3xPDf2SX1Vh29OYhLQeC019+iXKvK89kgrsGEi+Xcs=
+	t=1734197229; cv=none; b=TLSOzXgeia4fyoh7ycFgFTfH22xcCuBo/pW7HYPjstuD9fI7naBzOTk7Uu2DDOROUhBRVJsF828VjXmQWtJPzYbXPJHFdY2uABQ6btiUXXdJJwXo5a4QSf/ah6MtIK1LY8bcmC4ZRKAfN5W0NOiFgVeeo1CVaVZXuwLDKzh4BJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734197222; c=relaxed/simple;
-	bh=0ljoGbT/LRu6wccIGReKAg8EOuGxkwBf9UmQIRwMDWw=;
+	s=arc-20240116; t=1734197229; c=relaxed/simple;
+	bh=ZmZx+N5nuIhjnt8Ku3H4Aa5bBD/jkRAUPw+E2i+2ziU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tokye7S/5rmNJsyY0fgpMNdFdEBSBxh5D+bCXwvlYY1YbZ3DmemOPbMYhOOmi6QPusufE1dVUuWjpEUzrdt3ZrGESCtUEuGMSexmbW0pkna9qg9GobkVouVb5UA3vgVIpLfLjItb9Qdd3ntDzI40GqqMGsbw3WC+vW5JavQ1Adw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=irwGfZQN; arc=none smtp.client-ip=209.85.215.174
+	 MIME-Version; b=BvnUn2ZnKn5zFdDWt1o/MowwKvTLN07sxNSqsoq9TzFzUYu/RbhFlO8CnRCgRNfUUnsynSnrLLJM1r4S5wvwTom882aIgg0tz7Fp4Ghun7AYkeyUtZULZEeOTvZZnWwThRIEJ4op8W4oj/bUkOqO1KkmBo0z+u/smtzA51FzEHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=abRh1YnL; arc=none smtp.client-ip=209.85.215.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="irwGfZQN"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-7fd17f2312bso2036652a12.0
-        for <imx@lists.linux.dev>; Sat, 14 Dec 2024 09:27:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="abRh1YnL"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-7e9e38dd5f1so2113828a12.0
+        for <imx@lists.linux.dev>; Sat, 14 Dec 2024 09:27:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1734197220; x=1734802020; darn=lists.linux.dev;
+        d=ventanamicro.com; s=google; t=1734197227; x=1734802027; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qKWIt7ITp/X88ndEH7it4rZ1geXjjPOabq3XOqds9DM=;
-        b=irwGfZQNqx1bl9iD3JJEes0PcHI6UWKyIMq5WIwzOY9iMUNOOkx8ULq87ceEkT+seq
-         JAkQY7CCsauQH+OPQhQ8fsQNJEiJeu1pbclyz7205PvNLEFqZiktow468EClnf//0y7G
-         Efxe3UkcWg++16hEKFrjl96fXzd1oFPTUHVR9g9ArfwgXPmEOS/UdB6/h7ivTI7cPSod
-         oRhBithkbY3aDb0+beVkU5L2rrC0yp8o9i4gYDGbgf7BXSxauM7kKScObHgyYH4j7kEw
-         8EC27ohQF2fTmVNoZlUt0e+QIPVD3/Furr/xRkJcAGfTnn+s5CHpcgmU21D5KY4PKxe2
-         r/tA==
+        bh=K8c4bSx6OeCafE/EjjWkj4NBjcuAlryx7NpTdvjZLKQ=;
+        b=abRh1YnLT2lnnkcHXJxjy3Pk/qrNVrfnrjKN9D4Y6TGB+c/IncvH8+tgDkGxNPPdla
+         cOEIwYXMINmULlT4xBX8wz8IfZLVIVpIYGqzTDN8bWrnGoE8iLGBrJRru9vGg8+tH3/m
+         SubuYCCwXKQUtuIx+I3bBqGOkcKskANVPed72ekzq092GV3lTGUGBaxkYrar4PlHw3hy
+         vuRBY2Lqf/aDZGxSoW4QgDbDYCKIKNz/UTpi8CkkzAc9rAgy5flT6LqWFesgPAHIl1nu
+         /C/4QHXBZhNLpEoYT1vcjDjAsS7QvPwoRyx8pPoatZprWlbm+xBb8vZseIaoVgTbLrBX
+         GHtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734197220; x=1734802020;
+        d=1e100.net; s=20230601; t=1734197227; x=1734802027;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qKWIt7ITp/X88ndEH7it4rZ1geXjjPOabq3XOqds9DM=;
-        b=nXnQrhepz9Cw9YB6Q1FLbH6M4kHr/QYr9890TkPqqDy41CGm4lsUHSRROtVEDkdF64
-         GtPxcvbdfEHo09JtPKAu3wSlgqYkPP/1BnRR2XqpAc51KZ/mBu0VolLMCJFz0dTvkkzl
-         +d8uKhibtvl89VEBxDoABsjxaD8T1nUsYeChjMzEfXryayRsX1+KOl410thGICbUVldP
-         ugZcJ6BWQbbjACDjny5tTQYts7/KdND3LXbBFl2RF1M4UL8SEwMEsA/DRpXOg8GT3TEZ
-         ZN82423GZdGZmIgY+uhZ8oWm9U7kfHRrlK2tE5xLjh50GmH8SnhsSg+9PjR2/+ENR7VV
-         Xflw==
-X-Forwarded-Encrypted: i=1; AJvYcCXzi9iwviW0A5aGW6AlIRKuisuC6wxCHujZvf3dEMZpEwxYR7jDLAQUxYamD2UBuC9OBGE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwmFrOtMow6Z8jgMu6edOevbgmyx4VR3q5kHm1LK+0f0Bea2GS/
-	IwJSx5kG5V/33vxuhFKFjlT0JfQCB42OVTuPcME7YMnpWdLLuGqvfh2lQJ3m58E=
-X-Gm-Gg: ASbGncuxftp62NB3S86FdAFoFw6OMabja/rRyUYsJH05c08BpE7y7LjehcEdNJ9YvdT
-	fKxRPjQLAdSsHvFqEBf93WsLcaphk+O0nFsei+2fS4TZqk3G3lVuDElMFjJdLYh/XwJpd7oCG49
-	iG2Zmb2DRj6zrCMx62zFQ2x60T3zlYoNNROHXr/rquRQF0BOLPEkkagbhs5FBqCq6wuLthsdiIe
-	O4rcw2dQs0cLZgzFaV7fO5qo1yvQidSxdR+u7tEh7EP5qysHUtGQ1LD4rOAvwmFqgkuk8DMhfmh
-	QIbLdFGeiCeLezc=
-X-Google-Smtp-Source: AGHT+IGQwf+KWHUKDSuNXTV8W8BsAm/unz0Vds64eL7itxYSGgZbtZcUWjgcYwS8LtLhLbggFNNyJA==
-X-Received: by 2002:a17:90b:5112:b0:2ea:4c4f:bd20 with SMTP id 98e67ed59e1d1-2f2904a724dmr9248924a91.32.1734197220158;
-        Sat, 14 Dec 2024 09:27:00 -0800 (PST)
+        bh=K8c4bSx6OeCafE/EjjWkj4NBjcuAlryx7NpTdvjZLKQ=;
+        b=QkN7obcHIcM2PLgBmnEmXmRot1mOpUcjVNoewIkzkgD0Sko023ZCmrQNoDVWLFVwhB
+         gQnh0WNtjAq6wtRKdq0M+VYfFIh8GMrTxGR8ZT0cijEggiY/PY1lQ2mZ/D7QQUlBO5if
+         6OTzAnM0ICAd0bz2otuWYQEnaW8LMfNlG+PANPPVF0rqEipsNjMf/U90cSTIc7Sm+hWZ
+         0tZyzVLVVAofh4cWGg1/iOjDD8PNzFC0X0EAmkThISdAO2QiKyaqwxLQdIF6rRrWGE39
+         dCPIJFkBHmp4MrXZTAElE479mhyiwbCe9DI2ZIA3dqfIZf5ZoNuhl3cn1I9shGE7u20W
+         NiEw==
+X-Forwarded-Encrypted: i=1; AJvYcCXCZiEYbIgE5GDnjlbDz+GPwk+vGLppJ1hcqNopRQ1XiNSLAqaze7/PIzGqeM+9d8msefc=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz0vN9aGklNYbjmdVPw5LdW1JEu37XHXCbJQBiPLIlfE1X19eiv
+	PcNTXRpD+51pu0ghQgTvk7IOJCyjgCX+TqB8UlIixo8p5Xd99gkhsNjKubXX9qA=
+X-Gm-Gg: ASbGncv9PHNkY+6ZJMbrZbqFNxKKkQ1OUrBOEKHGTQeC1rq0e/3zjJZfqx/7Erpqr8B
+	4Eqf6BjLr6AKxsPo+PRNgdGwDhCKuWxQITff5Dpv8uBqIGXNdhNjmRUSjas5k/XplPgYIu47Hxg
+	Am02MP41PKmNDUUqRgJ19pEmrK1mYKIKdqIBRb8PmxNzLdR/BNf2X/uLuBPlPfWDJUpzxZksDFM
+	iWiLwsehvDjoyMyDNKOa6bP8DNbyh5QkfKqglJb1mRw7q5W+/VddYCVAd1bxkTHZw1Jbcr7V4V/
+	Q5QtpHRa3ppkTCM=
+X-Google-Smtp-Source: AGHT+IHUcfTVYGQvMkfUU7jHBszvrCcnJgKMrSzxBafo9cGQC89Lrd4GQaGCXdK1f1d1ktL3gp5V1w==
+X-Received: by 2002:a17:90b:4a4f:b0:2ee:9902:18b4 with SMTP id 98e67ed59e1d1-2f2900a9878mr10311790a91.27.1734197227250;
+        Sat, 14 Dec 2024 09:27:07 -0800 (PST)
 Received: from localhost.localdomain ([223.185.132.246])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f142f9e186sm5049811a91.41.2024.12.14.09.26.53
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f142f9e186sm5049811a91.41.2024.12.14.09.27.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Dec 2024 09:26:59 -0800 (PST)
+        Sat, 14 Dec 2024 09:27:06 -0800 (PST)
 From: Anup Patel <apatel@ventanamicro.com>
 To: Thomas Gleixner <tglx@linutronix.de>
 Cc: Marc Zyngier <maz@kernel.org>,
@@ -77,9 +77,9 @@ Cc: Marc Zyngier <maz@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
 	Anup Patel <apatel@ventanamicro.com>
-Subject: [PATCH v2 08/11] irqchip/riscv-imsic: Separate next and previous pointers in IMSIC vector
-Date: Sat, 14 Dec 2024 22:55:46 +0530
-Message-ID: <20241214172549.8842-9-apatel@ventanamicro.com>
+Subject: [PATCH v2 09/11] irqchip/riscv-imsic: Implement irq_force_complete_move() for IMSIC
+Date: Sat, 14 Dec 2024 22:55:47 +0530
+Message-ID: <20241214172549.8842-10-apatel@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241214172549.8842-1-apatel@ventanamicro.com>
 References: <20241214172549.8842-1-apatel@ventanamicro.com>
@@ -91,189 +91,106 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Currently, there is only one "move" pointer in the struct imsic_vector
-so during vector movement the old vector points to the new vector and
-new vector points to itself.
-
-To support force cleanup of old vector, add separate "move_next" and
-"move_prev" pointers in the struct imsic_vector where during vector
-movement the "move_next" pointer of the old vector points to the
-new vector and the "move_prev" pointer of the new vector points to
-the old vector. Both "move_next" pointers are cleared separately
-by __imsic_local_sync() on the old and new CPUs respectively.
+Implement irq_force_complete_move() for IMSIC driver so that in-flight
+vector movements on a CPU can be cleaned-up when the CPU goes down.
 
 Signed-off-by: Anup Patel <apatel@ventanamicro.com>
 ---
- drivers/irqchip/irq-riscv-imsic-state.c | 60 +++++++++++++++++++------
- drivers/irqchip/irq-riscv-imsic-state.h |  5 ++-
- 2 files changed, 50 insertions(+), 15 deletions(-)
+ drivers/irqchip/irq-riscv-imsic-platform.c | 32 ++++++++++++++++++++++
+ drivers/irqchip/irq-riscv-imsic-state.c    | 17 ++++++++++++
+ drivers/irqchip/irq-riscv-imsic-state.h    |  1 +
+ 3 files changed, 50 insertions(+)
 
+diff --git a/drivers/irqchip/irq-riscv-imsic-platform.c b/drivers/irqchip/irq-riscv-imsic-platform.c
+index 2fab20d2ce3e..fae47b8ccf73 100644
+--- a/drivers/irqchip/irq-riscv-imsic-platform.c
++++ b/drivers/irqchip/irq-riscv-imsic-platform.c
+@@ -156,6 +156,37 @@ static int imsic_irq_set_affinity(struct irq_data *d, const struct cpumask *mask
+ 
+ 	return IRQ_SET_MASK_OK_DONE;
+ }
++
++static void imsic_irq_force_complete_move(struct irq_data *d)
++{
++	struct imsic_vector *mvec, *vec = irq_data_get_irq_chip_data(d);
++	unsigned int cpu = smp_processor_id();
++
++	if (WARN_ON(!vec))
++		return;
++
++	/* Do nothing if there is no in-flight move */
++	mvec = imsic_vector_get_move(vec);
++	if (!mvec)
++		return;
++
++	/* Do nothing if the old IMSIC vector does not belong to current CPU */
++	if (mvec->cpu != cpu)
++		return;
++
++	/*
++	 * The best we can do is force cleanup the old IMSIC vector.
++	 *
++	 * The challenges over here are same as x86 vector domain so
++	 * refer to the comments in irq_force_complete_move() function
++	 * implemented at arch/x86/kernel/apic/vector.c.
++	 */
++
++	/* Force cleanup in-flight move */
++	pr_info("IRQ fixup: irq %d move in progress, old vector cpu %d local_id %d\n",
++		d->irq, mvec->cpu, mvec->local_id);
++	imsic_vector_force_move_cleanup(vec);
++}
+ #endif
+ 
+ static struct irq_chip imsic_irq_base_chip = {
+@@ -164,6 +195,7 @@ static struct irq_chip imsic_irq_base_chip = {
+ 	.irq_unmask		= imsic_irq_unmask,
+ #ifdef CONFIG_SMP
+ 	.irq_set_affinity	= imsic_irq_set_affinity,
++	.irq_force_complete_move = imsic_irq_force_complete_move,
+ #endif
+ 	.irq_retrigger		= imsic_irq_retrigger,
+ 	.irq_compose_msi_msg	= imsic_irq_compose_msg,
 diff --git a/drivers/irqchip/irq-riscv-imsic-state.c b/drivers/irqchip/irq-riscv-imsic-state.c
-index a8645084bd8f..da49a160ea09 100644
+index da49a160ea09..c915a5cf4187 100644
 --- a/drivers/irqchip/irq-riscv-imsic-state.c
 +++ b/drivers/irqchip/irq-riscv-imsic-state.c
-@@ -124,10 +124,11 @@ void __imsic_eix_update(unsigned long base_id, unsigned long num_id, bool pend,
- 	}
- }
- 
--static void __imsic_local_sync(struct imsic_local_priv *lpriv)
-+static bool __imsic_local_sync(struct imsic_local_priv *lpriv)
- {
- 	struct imsic_local_config *tlocal, *mlocal;
- 	struct imsic_vector *vec, *tvec, *mvec;
-+	bool ret = true;
- 	int i;
- 
- 	lockdep_assert_held(&lpriv->lock);
-@@ -142,15 +143,33 @@ static void __imsic_local_sync(struct imsic_local_priv *lpriv)
- 		else
- 			__imsic_id_clear_enable(vec->local_id);
- 
-+		/*
-+		 * If the ID was being moved from an existing ID on some
-+		 * other CPU then we clear the pervious vector pointer
-+		 * only after the movement is complete.
-+		 */
-+		mvec = READ_ONCE(vec->move_prev);
-+		if (mvec) {
-+			/*
-+			 * If the old IMSIC vector has not been updated then
-+			 * try again in the next sync-up call.
-+			 */
-+			if (READ_ONCE(mvec->move_next)) {
-+				ret = false;
-+				continue;
-+			}
-+
-+			WRITE_ONCE(vec->move_prev, NULL);
-+		}
-+
- 		/*
- 		 * If the ID was being moved to a new ID on some other CPU
- 		 * then we can get a MSI during the movement so check the
- 		 * ID pending bit and re-trigger the new ID on other CPU
- 		 * using MMIO write.
- 		 */
--		mvec = READ_ONCE(vec->move);
--		WRITE_ONCE(vec->move, NULL);
--		if (mvec && mvec != vec) {
-+		mvec = READ_ONCE(vec->move_next);
-+		if (mvec) {
- 			/*
- 			 * Device having non-atomic MSI update might see an
- 			 * intermediate state so check both old ID and new ID
-@@ -177,11 +196,14 @@ static void __imsic_local_sync(struct imsic_local_priv *lpriv)
- 				writel_relaxed(mvec->local_id, mlocal->msi_va);
- 			}
- 
-+			WRITE_ONCE(vec->move_next, NULL);
- 			imsic_vector_free(vec);
- 		}
- 
- 		bitmap_clear(lpriv->dirty_bitmap, vec->local_id, 1);
- 	}
-+
-+	return ret;
- }
- 
- void imsic_local_sync_all(bool force_all)
-@@ -190,9 +212,16 @@ void imsic_local_sync_all(bool force_all)
- 	unsigned long flags;
- 
- 	raw_spin_lock_irqsave(&lpriv->lock, flags);
-+
- 	if (force_all)
- 		bitmap_fill(lpriv->dirty_bitmap, imsic->global.nr_ids + 1);
--	__imsic_local_sync(lpriv);
-+	if (!__imsic_local_sync(lpriv)) {
-+		if (!timer_pending(&lpriv->timer)) {
-+			lpriv->timer.expires = jiffies + 1;
-+			add_timer_on(&lpriv->timer, smp_processor_id());
-+		}
-+	}
-+
- 	raw_spin_unlock_irqrestore(&lpriv->lock, flags);
- }
- 
-@@ -232,8 +261,8 @@ static void __imsic_remote_sync(struct imsic_local_priv *lpriv, unsigned int cpu
- 	 */
- 	if (cpu_online(cpu)) {
- 		if (cpu == smp_processor_id()) {
--			__imsic_local_sync(lpriv);
--			return;
-+			if (__imsic_local_sync(lpriv))
-+				return;
- 		}
- 
- 		if (!timer_pending(&lpriv->timer)) {
-@@ -294,8 +323,9 @@ void imsic_vector_unmask(struct imsic_vector *vec)
+@@ -323,6 +323,23 @@ void imsic_vector_unmask(struct imsic_vector *vec)
  	raw_spin_unlock(&lpriv->lock);
  }
  
--static bool imsic_vector_move_update(struct imsic_local_priv *lpriv, struct imsic_vector *vec,
--				     bool new_enable, struct imsic_vector *new_move)
-+static bool imsic_vector_move_update(struct imsic_local_priv *lpriv,
-+				     struct imsic_vector *vec, bool is_old_vec,
-+				     bool new_enable, struct imsic_vector *move_vec)
- {
- 	unsigned long flags;
- 	bool enabled;
-@@ -305,7 +335,10 @@ static bool imsic_vector_move_update(struct imsic_local_priv *lpriv, struct imsi
- 	/* Update enable and move details */
- 	enabled = READ_ONCE(vec->enable);
- 	WRITE_ONCE(vec->enable, new_enable);
--	WRITE_ONCE(vec->move, new_move);
-+	if (is_old_vec)
-+		WRITE_ONCE(vec->move_next, move_vec);
-+	else
-+		WRITE_ONCE(vec->move_prev, move_vec);
- 
- 	/* Mark the vector as dirty and synchronize */
- 	bitmap_set(lpriv->dirty_bitmap, vec->local_id, 1);
-@@ -338,8 +371,8 @@ void imsic_vector_move(struct imsic_vector *old_vec, struct imsic_vector *new_ve
- 	 * interrupt on the old vector while device was being moved
- 	 * to the new vector.
- 	 */
--	enabled = imsic_vector_move_update(old_lpriv, old_vec, false, new_vec);
--	imsic_vector_move_update(new_lpriv, new_vec, enabled, new_vec);
-+	enabled = imsic_vector_move_update(old_lpriv, old_vec, true, false, new_vec);
-+	imsic_vector_move_update(new_lpriv, new_vec, false, enabled, old_vec);
- }
- 
- #ifdef CONFIG_GENERIC_IRQ_DEBUGFS
-@@ -402,7 +435,8 @@ struct imsic_vector *imsic_vector_alloc(unsigned int hwirq, const struct cpumask
- 	vec = &lpriv->vectors[local_id];
- 	vec->hwirq = hwirq;
- 	vec->enable = false;
--	vec->move = NULL;
-+	vec->move_next = NULL;
-+	vec->move_prev = NULL;
- 
- 	return vec;
- }
++void imsic_vector_force_move_cleanup(struct imsic_vector *vec)
++{
++	struct imsic_local_priv *lpriv;
++	struct imsic_vector *mvec;
++	unsigned long flags;
++
++	lpriv = per_cpu_ptr(imsic->lpriv, vec->cpu);
++	raw_spin_lock_irqsave(&lpriv->lock, flags);
++
++	mvec = READ_ONCE(vec->move_prev);
++	WRITE_ONCE(vec->move_prev, NULL);
++	if (mvec)
++		imsic_vector_free(mvec);
++
++	raw_spin_unlock_irqrestore(&lpriv->lock, flags);
++}
++
+ static bool imsic_vector_move_update(struct imsic_local_priv *lpriv,
+ 				     struct imsic_vector *vec, bool is_old_vec,
+ 				     bool new_enable, struct imsic_vector *move_vec)
 diff --git a/drivers/irqchip/irq-riscv-imsic-state.h b/drivers/irqchip/irq-riscv-imsic-state.h
-index 8fae6c99b019..f02842b84ed5 100644
+index f02842b84ed5..19dea0c77738 100644
 --- a/drivers/irqchip/irq-riscv-imsic-state.h
 +++ b/drivers/irqchip/irq-riscv-imsic-state.h
-@@ -23,7 +23,8 @@ struct imsic_vector {
- 	unsigned int				hwirq;
- 	/* Details accessed using local lock held */
- 	bool					enable;
--	struct imsic_vector			*move;
-+	struct imsic_vector			*move_next;
-+	struct imsic_vector			*move_prev;
- };
- 
- struct imsic_local_priv {
-@@ -87,7 +88,7 @@ static inline bool imsic_vector_isenabled(struct imsic_vector *vec)
- 
- static inline struct imsic_vector *imsic_vector_get_move(struct imsic_vector *vec)
- {
--	return READ_ONCE(vec->move);
-+	return READ_ONCE(vec->move_prev);
+@@ -91,6 +91,7 @@ static inline struct imsic_vector *imsic_vector_get_move(struct imsic_vector *ve
+ 	return READ_ONCE(vec->move_prev);
  }
  
++void imsic_vector_force_move_cleanup(struct imsic_vector *vec);
  void imsic_vector_move(struct imsic_vector *old_vec, struct imsic_vector *new_vec);
+ 
+ struct imsic_vector *imsic_vector_from_local_id(unsigned int cpu, unsigned int local_id);
 -- 
 2.43.0
 
