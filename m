@@ -1,128 +1,223 @@
-Received: from algol.kleine-koenig.org (algol.kleine-koenig.org [162.55.41.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985961A8F6F
-	for <imx@lists.linux.dev>; Fri, 13 Dec 2024 23:03:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.55.41.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C84621
+	for <imx@lists.linux.dev>; Sat, 14 Dec 2024 04:01:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734130992; cv=none; b=X+Zx2FN1bDLo1iBWi4OzGcZZX79fLk/zUBPuD/bZTZA3q/LFeTdzWbmfrdrjUYLvbsYfYHfYKvPFqjGrw7rLeON9pa+xkZn8G05055qquxXeQKhHEJtczkBVadqiASi8ursTzQDTRu1uUADZfs89Nt98LEVF7NHgJEcT5VzBWB8=
+	t=1734148883; cv=none; b=gUlfXrnA9ILuIUD9P9zHrbhQcNLX/Yyg+YG0oS5HpWAPRqv4UwtpyrzQRlIisfsgC/Z2vSHhqF7GX8dIxqzV5X2kuYNtcajimgGULFM9NjZCz4jUxHN/g/AkzyzgsRfsqH5vT+E2rBpQfEysB0NnCcWVyMJuDMxX6BuU5wVtWzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734130992; c=relaxed/simple;
-	bh=lk5mvp92/iXRKUxEWi9l+yTi81VmxX/RH0JhJ1goZ4A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bUC3PMjSFvehnUZ3ZT40VChVX6LpeA0MNJaUsTxtwZzLa0QQHnOucwsMbuxlbmK+Kzgh6VPCNw1lZwkdzZS/2xNTtweF9EXEYi2ygVC5KqvYs75+8PeYnuTVxQ1ORz3XdK3USKlSNE0syLa4wMqT1DPptJIHxaoh3bMK7MGE048=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=kleine-koenig.org; arc=none smtp.client-ip=162.55.41.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kleine-koenig.org
-Received: by algol.kleine-koenig.org (Postfix, from userid 1000)
-	id 88C0BF5334F; Sat, 14 Dec 2024 00:03:01 +0100 (CET)
-Date: Sat, 14 Dec 2024 00:02:56 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	Luwei Zhou <b45643@freescale.com>, Vipul Kumar <vipul_kumar@mentor.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, 
-	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] input: mma8450: Add chip ID check in probe
-Message-ID: <bzzzezoon5u5pufpbkn3fnm2dtbrzatx4w4tbdstcdmowvfzzn@cplbmxtgmu6z>
-References: <20241213222310.189443-1-Frank.Li@nxp.com>
+	s=arc-20240116; t=1734148883; c=relaxed/simple;
+	bh=VyQcI8SjHJjXGJ+5uU80L4eDlT2m+54Nk4TAd7cE/34=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mod1/H7uTI+CulX0AsBYM7AR7c0tpLwfUk31QLkYzsAXDfFSDVY2OCo2SKNVpoAmxAP4Hrjy7coqNomqqo/J2pYfUjogk3NTISGi8q2RQY58oxFeYj4FH8SGtHquRs7UF8kZs8Mwnr8iK3MF0b38WjwnrkfajW40fmZ4l46/OIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b=a00+oxhW; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b="a00+oxhW"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2164b1f05caso23394485ad.3
+        for <imx@lists.linux.dev>; Fri, 13 Dec 2024 20:01:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com; s=20230601; t=1734148880; x=1734753680; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MALQw/XluvoUYF/KYNnLdKzPrsS2oJCZFTD81sjOr7A=;
+        b=a00+oxhWw3Dhz2L3SrYRwlIDS6WhUhzLIfxxKiurkmQRbtbqBaRkfpF3AccdZqs73u
+         AW+UL5YmxfSGUcDwraRT7fyJ9RrgqNHxtLFPMCMCkf0ieINJ/SzAPsL7fICcyeQtrdVM
+         B9mOJFSykJ/XZIQM+N/VOghKvCc1HYROXTblaLprEm+RWQoUjEpHAYiIR+IoVrIZcTsu
+         lgGwDk4XsdOspQ3nAk4GmnDeTVOtTWH+5u3XWWvnXzTwnDatEY+hMufcL5NPBRnNcTyy
+         4R9dCVryX82YM5dSlf1OfLEvx13VTcNSbA7BkI3k3xo2+t0Hq93r2Gd5W40ClRnlKsrp
+         1+sQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734148880; x=1734753680;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MALQw/XluvoUYF/KYNnLdKzPrsS2oJCZFTD81sjOr7A=;
+        b=qSm3CiuhiwAXhKQ3oTtv1WypBw1V9k38xpYYCx6kmso+ogMxZRbFKwL5eBi5gJzCyT
+         3zf2I1p/L+bl1cq3jp/wJR2B2JjW43h2NzMdqlQ8ZV5NEEGKNIdDbf3ZTRi46Q1mad3J
+         j6dZp1xWXCkbiwFirSjs5Eg1u2y5IIa2/QlDOBRR1SeNb57KuV1WmWG9vz3z7KzG/k07
+         7bmlpj2iwsTBilKI3LPAS+cATnprD9a/wUOhQTVg+6621ImxbBi1yV1DVeHNmmzIdrPv
+         PNxCWyEd9p2UNYZWW9l/TfBL3/Re7Qjav+07srb6wqLHNxOZr2Vuw82vbAc+QP/LZ0aT
+         uPcw==
+X-Gm-Message-State: AOJu0YyD87X5nU29C1WfUVdQOt3X7jpTdqfgXyAegU374A63MKsrgJv0
+	wxnoIa6Y3zDruZORyembmCqu4XfMVgai2RUSKfi7qGM852erd2CeU1UsZwLNvS0=
+X-Gm-Gg: ASbGncuUhJ3MkaVEsxjLj4Ps3BgZAVYR7wlRg5mrgjfXDlEsFLH1Copv2aBQEqCai/k
+	sJFzmn2Q5xebTINjAcnOCHTnDepOK5HEa+F4ZAE/WpPWHShblWaz24eHrmIdbAJiiiqk86aK7aP
+	pNNKgIYDEEKqr42XzPv2WX+XIDe5Kwu2uU6uk/GyJLQNbxDYHg2j1CDqBpJiC/edLUY/po8i2Fl
+	BW9wNtofho9yCWnZr/9gnQAewTwmL1FW+yUGFHCz3KqhSewixbfEgg3hnxN0prMdjtBu9xeFKiw
+	t51ym+QPlW6K4gn8oFsDtK+lX1gbsH1bnBeiTATQqQA=
+X-Google-Smtp-Source: AGHT+IFR248qbkBa6qxvZ558eqDEoKls0QRdzzDgk9o8Joatd6cQom4m874VGnv0rWI2qShfZjUsxw==
+X-Received: by 2002:a17:903:22c1:b0:215:6cb2:7877 with SMTP id d9443c01a7336-218929814dcmr75137715ad.4.1734148879035;
+        Fri, 13 Dec 2024 20:01:19 -0800 (PST)
+Received: from localhost.localdomain (133-32-227-190.east.xps.vectant.ne.jp. [133.32.227.190])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-218a1e50333sm4865825ad.147.2024.12.13.20.01.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Dec 2024 20:01:18 -0800 (PST)
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+To: Frank.Li@nxp.com,
+	vkoul@kernel.org
+Cc: imx@lists.linux.dev,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Subject: [PATCH] dmaengine: fsl-edma: implement the cleanup path of fsl_edma3_attach_pd()
+Date: Sat, 14 Dec 2024 13:01:13 +0900
+Message-Id: <20241214040113.626275-1-joe@pf.is.s.u-tokyo.ac.jp>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="va2ulxp2mo3losn2"
-Content-Disposition: inline
-In-Reply-To: <20241213222310.189443-1-Frank.Li@nxp.com>
+Content-Transfer-Encoding: 8bit
 
+Current implementation of fsl_edma3_attach_pd() does not provide a
+cleanup path, resulting in memory leak. Thus, implement an error path of
+fsl_edma3_attach_pd(), which detaches PM domains, removes device links,
+and unwind the runtime PM settings. Also add fsl_edma3_detach_pd() and
+call it on the error path of the .probe().
 
---va2ulxp2mo3losn2
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 1/1] input: mma8450: Add chip ID check in probe
-MIME-Version: 1.0
+This bug was found by an experimental static analysis tool that I am
+developing.
 
-Hello Frank,
+Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+---
+ drivers/dma/fsl-edma-common.h |  1 +
+ drivers/dma/fsl-edma-main.c   | 54 ++++++++++++++++++++++++++++-------
+ 2 files changed, 45 insertions(+), 10 deletions(-)
 
-On Fri, Dec 13, 2024 at 05:23:09PM -0500, Frank Li wrote:
-> From: Luwei Zhou <b45643@freescale.com>
->=20
-> Prevent continuous polling error logs by adding a chip ID check in the
-> probe  function. This ensures the driver only proceeds when the mma8450 is
-> present, avoiding issues in scenarios like missing add-on cards.
->=20
-> Signed-off-by: Luwei Zhou <b45643@freescale.com>
-> Signed-off-by: Fugang Duan <B38611@freescale.com>
-> Signed-off-by: Vipul Kumar <vipul_kumar@mentor.com>
-> Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/input/misc/mma8450.c | 16 +++++++++++++++-
->  1 file changed, 15 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/input/misc/mma8450.c b/drivers/input/misc/mma8450.c
-> index 08412239b8e69..da941748ed29b 100644
-> --- a/drivers/input/misc/mma8450.c
-> +++ b/drivers/input/misc/mma8450.c
-> @@ -38,6 +38,8 @@
-> =20
->  #define MMA8450_CTRL_REG1	0x38
->  #define MMA8450_CTRL_REG2	0x39
-> +#define MMA8450_ID		0xc6
-> +#define MMA8450_WHO_AM_I	0x0f
-> =20
->  static int mma8450_read(struct i2c_client *c, unsigned int off)
->  {
-> @@ -148,8 +150,20 @@ static void mma8450_close(struct input_dev *input)
->   */
->  static int mma8450_probe(struct i2c_client *c)
->  {
-> +	struct i2c_adapter *adapter =3D to_i2c_adapter(c->dev.parent);
+diff --git a/drivers/dma/fsl-edma-common.h b/drivers/dma/fsl-edma-common.h
+index ce37e1ee9c46..fe8f103d4a63 100644
+--- a/drivers/dma/fsl-edma-common.h
++++ b/drivers/dma/fsl-edma-common.h
+@@ -166,6 +166,7 @@ struct fsl_edma_chan {
+ 	struct work_struct		issue_worker;
+ 	struct platform_device		*pdev;
+ 	struct device			*pd_dev;
++	struct device_link		*pd_dev_link;
+ 	u32				srcid;
+ 	struct clk			*clk;
+ 	int                             priority;
+diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+index 60de1003193a..5204c06589ea 100644
+--- a/drivers/dma/fsl-edma-main.c
++++ b/drivers/dma/fsl-edma-main.c
+@@ -420,7 +420,6 @@ MODULE_DEVICE_TABLE(of, fsl_edma_dt_ids);
+ static int fsl_edma3_attach_pd(struct platform_device *pdev, struct fsl_edma_engine *fsl_edma)
+ {
+ 	struct fsl_edma_chan *fsl_chan;
+-	struct device_link *link;
+ 	struct device *pd_chan;
+ 	struct device *dev;
+ 	int i;
+@@ -436,15 +435,16 @@ static int fsl_edma3_attach_pd(struct platform_device *pdev, struct fsl_edma_eng
+ 		pd_chan = dev_pm_domain_attach_by_id(dev, i);
+ 		if (IS_ERR_OR_NULL(pd_chan)) {
+ 			dev_err(dev, "Failed attach pd %d\n", i);
+-			return -EINVAL;
++			goto err;
+ 		}
+ 
+-		link = device_link_add(dev, pd_chan, DL_FLAG_STATELESS |
++		fsl_chan->pd_dev_link = device_link_add(dev, pd_chan, DL_FLAG_STATELESS |
+ 					     DL_FLAG_PM_RUNTIME |
+ 					     DL_FLAG_RPM_ACTIVE);
+-		if (!link) {
++		if (!fsl_chan->pd_dev_link) {
+ 			dev_err(dev, "Failed to add device_link to %d\n", i);
+-			return -EINVAL;
++			dev_pm_domain_detach(pd_chan, false);
++			goto err;
+ 		}
+ 
+ 		fsl_chan->pd_dev = pd_chan;
+@@ -455,6 +455,33 @@ static int fsl_edma3_attach_pd(struct platform_device *pdev, struct fsl_edma_eng
+ 	}
+ 
+ 	return 0;
++err:
++	while (--i >= 0) {
++		if (fsl_edma->chan_masked & BIT(i))
++			continue;
++		fsl_chan = &fsl_edma->chans[i];
++		dev_pm_domain_detach(fsl_chan->pd_dev, false);
++		device_link_del(fsl_chan->pd_dev_link);
++		pm_runtime_dont_use_autosuspend(fsl_chan->pd_dev);
++		pm_runtime_set_suspended(fsl_chan->pd_dev);
++	}
++	return -EINVAL;
++}
++
++static void fsl_edma3_detach_pd(struct fsl_edma_engine *fsl_edma)
++{
++	struct fsl_edma_chan *fsl_chan;
++	int i;
++
++	for (i = 0; i < fsl_edma->n_chans; i++) {
++		if (fsl_edma->chan_masked & BIT(i))
++			continue;
++		fsl_chan = &fsl_edma->chans[i];
++		dev_pm_domain_detach(fsl_chan->pd_dev, false);
++		device_link_del(fsl_chan->pd_dev_link);
++		pm_runtime_dont_use_autosuspend(fsl_chan->pd_dev);
++		pm_runtime_set_suspended(fsl_chan->pd_dev);
++	}
+ }
+ 
+ static int fsl_edma_probe(struct platform_device *pdev)
+@@ -577,8 +604,10 @@ static int fsl_edma_probe(struct platform_device *pdev)
+ 			fsl_chan->clk = devm_clk_get_enabled(&pdev->dev,
+ 							     (const char *)clk_name);
+ 
+-			if (IS_ERR(fsl_chan->clk))
+-				return PTR_ERR(fsl_chan->clk);
++			if (IS_ERR(fsl_chan->clk)) {
++				ret = PTR_ERR(fsl_chan->clk);
++				goto err;
++			}
+ 		}
+ 		fsl_chan->pdev = pdev;
+ 		vchan_init(&fsl_chan->vchan, &fsl_edma->dma_dev);
+@@ -591,7 +620,7 @@ static int fsl_edma_probe(struct platform_device *pdev)
+ 
+ 	ret = fsl_edma->drvdata->setup_irq(pdev, fsl_edma);
+ 	if (ret)
+-		return ret;
++		goto err;
+ 
+ 	dma_cap_set(DMA_PRIVATE, fsl_edma->dma_dev.cap_mask);
+ 	dma_cap_set(DMA_SLAVE, fsl_edma->dma_dev.cap_mask);
+@@ -642,7 +671,7 @@ static int fsl_edma_probe(struct platform_device *pdev)
+ 	if (ret) {
+ 		dev_err(&pdev->dev,
+ 			"Can't register Freescale eDMA engine. (%d)\n", ret);
+-		return ret;
++		goto err;
+ 	}
+ 
+ 	ret = of_dma_controller_register(np,
+@@ -652,7 +681,7 @@ static int fsl_edma_probe(struct platform_device *pdev)
+ 		dev_err(&pdev->dev,
+ 			"Can't register Freescale eDMA of_dma. (%d)\n", ret);
+ 		dma_async_device_unregister(&fsl_edma->dma_dev);
+-		return ret;
++		goto err;
+ 	}
+ 
+ 	/* enable round robin arbitration */
+@@ -660,6 +689,11 @@ static int fsl_edma_probe(struct platform_device *pdev)
+ 		edma_writel(fsl_edma, EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
+ 
+ 	return 0;
++
++err:
++	if (drvdata->flags & FSL_EDMA_DRV_HAS_PD)
++		fsl_edma3_detach_pd(fsl_edma);
++	return ret;
+ }
+ 
+ static void fsl_edma_remove(struct platform_device *pdev)
+-- 
+2.34.1
 
-+	struct i2c_adapter *adapter =3D c->adapter;
-
->  	struct input_dev *input;
-> -	int err;
-> +	int err, client_id;
-> +
-> +	err =3D i2c_check_functionality(adapter,
-> +				      I2C_FUNC_SMBUS_BYTE | I2C_FUNC_SMBUS_BYTE_DATA);
-> +	if (!err)
-> +		return err;
-
-How unusual. I would have expected no ! here.
-
-> +	client_id =3D i2c_smbus_read_byte_data(c, MMA8450_WHO_AM_I);
-> +	if (client_id !=3D MMA8450_ID)
-> +		return dev_err_probe(&c->dev, -EINVAL,
-> +				     "read chip ID 0x%x is not equal to 0x%x!\n",
-> +				     client_id, MMA8450_ID);
-
-Given that here you emit an error message, maybe add an error message
-above, too?
-
->  	input =3D devm_input_allocate_device(&c->dev);
->  	if (!input)
-
-Best regards
-Uwe
-
---va2ulxp2mo3losn2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmdcvR4ACgkQj4D7WH0S
-/k6cUgf/aQBHQhC9Xx3XVkFm/ev+d9abFz4SzCLCfVluKVBBBQhon/7Y4CeXhHid
-Swy3CWr6QSk85MTCxkrWrijEXZRiJVqS7x8knSKqzO3eB6Wo6MlhUnfJbx9u5I+I
-5mNT6og+PuvPi5UId9KxxOUIWH8AZ8IvBJ/CL52QZ11KR0/kIPL+eDLv187y+b6h
-cNnpptaYBvLXpbdDVjZ42P+l9+2LO/uo2LpAkeFcApKJ6dCphcG+lUf6pV4wPOyD
-Mn8v8OYc4Kecn9HJ5KhBPdAQUsjYqvABoGyIZLPPHbujVc9XcbevU2/QInnwG3bS
-TYXWhGxt3bvh4EMu/ucG2jSTQ3xDWA==
-=gL+O
------END PGP SIGNATURE-----
-
---va2ulxp2mo3losn2--
