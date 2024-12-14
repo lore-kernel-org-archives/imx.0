@@ -1,62 +1,62 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3F319CC32
-	for <imx@lists.linux.dev>; Sat, 14 Dec 2024 17:26:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE172033A
+	for <imx@lists.linux.dev>; Sat, 14 Dec 2024 17:26:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734197188; cv=none; b=BIZK9tB+NAB2SPSigRTGPfPyHi3sIu6BVI8XAnRrlYYVPFT/H+7yT70ulvjzgpdTDcZB1o8ocbHYuEAJaNS9aHokFY9niFJ/8PPdvcv73rAkfLr7+iHU3INWtE/CJk5JMFaJmTSxs0zPv0ptQoqttyCDKuwqdVJebcJ6dFcDmcw=
+	t=1734197194; cv=none; b=aKwk1qcggKHmJFLvDZUTrxtKO3fH6Lmm9VrziECCEEEgWooVxgARVn375y8IyXimiHoASBtvOxiGbWc0K97skmeK1L2+6ItVOP3uBvBZH8S13POjrtTXu1wAHqEZfzPJF/+fQZect7rLy6ZfVrihLkOWwrrTIBMDE19cYz7+EW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734197188; c=relaxed/simple;
-	bh=PcKCiIKJzPJB4OrlTg224bcO8uJZAUgM9GlGe6uz0Po=;
+	s=arc-20240116; t=1734197194; c=relaxed/simple;
+	bh=Mfh/oKVyV/v62tUmOG9j432HyhjKXncy+MsddMkaJpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C6SarhlipQpWrQ4ABigaL81cLUZ6s0M+Tacsbt4AhKkyd9zKq4texTN9bcwm7qKh8eDKdshtSxsqevCn9PCB4SOYZ35O24KYCfpHwxyGP1ZFCQq8TaXqCbUq5IkJepRvmlwNIj5IxjtjkQg6Xjy6DhAEmCaFTp/aUXu5zlAIfXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=bOZO+0dh; arc=none smtp.client-ip=209.85.216.43
+	 MIME-Version; b=o6CCjfJy/0QSL0aNsXUayh4pCWtEH2T52bQY4sCs+NELmZqRoAhjw3BL14aZneVVS4CxHX6VUyB24H9uLV3t3xblOQQVvbPuBC8dtHpwdYtSykDvWXhrpl9gpdQBqWjaXFyshJmZKQ78h/LFpM1eAsUMllwv4myLF8nPwW0D04k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=HclOy8ID; arc=none smtp.client-ip=209.85.216.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="bOZO+0dh"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2f1459b6f84so1809151a91.0
-        for <imx@lists.linux.dev>; Sat, 14 Dec 2024 09:26:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="HclOy8ID"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2ee50ffcf14so3084855a91.0
+        for <imx@lists.linux.dev>; Sat, 14 Dec 2024 09:26:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1734197185; x=1734801985; darn=lists.linux.dev;
+        d=ventanamicro.com; s=google; t=1734197193; x=1734801993; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+XpbAvyCPU7XjesnTrNMuPwq8s0Ofi62LAN8USKi2As=;
-        b=bOZO+0dhA9I2a5vpG6pZP4wsSVixfxq7xhVqp8TKQyV9z1R4nL/gEGZP98aV5GRo3a
-         e07apWV0boiXmyDTDJ1ftbJnA9rBUkKiYU5eLxBGdiMbio9EpaROC14r8k+0ekd5sJWU
-         owxxLKEq5dll3B7XUaH/e40rathBeSZEQJugDskLyy3VOs1t5OC6P63PeKXKyIgJAYTa
-         OnKlo6vm5gwnR1jkT2RvsQZknQyBnqNOs3AWhwCOy8FhHBsHSYW/q55ORGor+UTUls7k
-         EthLlovdDVpYPW9ohhv3mmWStAhnRaMc499AXNEFqrgesYnFqDcogpwf1F52vVyNoUQz
-         5gZg==
+        bh=WTMHZPsDjixID3LZgZypNI5zerTGwhJ3oNH3JU/CG6w=;
+        b=HclOy8IDPJKAVwZ+uRL8icI4CcbJM+4gSELoBJdRQJnjFR6HcduQbwJeuyiLyIuvHx
+         OxBFEMCBJPg/xrGq467290rtmqsEpOWz5HzmkhdZTDjfqvQOOT7SImKG073SQ75yNRU9
+         jHo/kDqNfiZqZFcEiLxF60YeT3hxr/6udJZgmJdQJ/LLs+I6J2O7nMJkO3lJIDpS00MN
+         qgW556UsEusFvuurSxQGRQGdU2+JDBjHv+c9plY/z63Fr773Sb7iACw66vE0/Jpqwuue
+         eXR4jy3FPCbqILB5S3X/3agkuxvB/miCniiErp8Tj98T+0SurDSqLbWvcusakMp3SY69
+         3WZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734197185; x=1734801985;
+        d=1e100.net; s=20230601; t=1734197193; x=1734801993;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+XpbAvyCPU7XjesnTrNMuPwq8s0Ofi62LAN8USKi2As=;
-        b=t/MOiUthN2XJAUx/CXqLQ71FEi39S7vBXNlRYAwAP4gt3AbfBI792nQ+Bzt42ojO2E
-         szohfSnZvpBC84hiYkWo2RgFkIR8XeK4/hv62qI67szvIxKceMhHytomT6r7vLJHWbWv
-         EK59t4z/ERQ0I170cqzoxORgJmrRlIU0acfFeJx9C1DNriwLzbBfGQQQLW554dGqcTrQ
-         EZIisFuNKa3Ue0ZoRpP8XxojREDsOkRaDq6GC0XfWhvHGbOMk2IVbs7TwYRf5e0Fh1W7
-         ProxWlv0XAz63iFjtIeIROijNjRzwXl87iMvCmkVhFGmGOexFyx5ikSpNDTl0e3gnztE
-         BkYg==
-X-Forwarded-Encrypted: i=1; AJvYcCXpMA01WQEqfukETFpw37HR/0bnAxnM8kOkfkVebt/uezPBaPDgukRCcRHbRk4ZsprSZLU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzUmp/VsuFi9XxJTMkvJcmb25DBdcsKydLL+DrT6Tc3UPAGjUbt
-	W9K4IKvmYKx8P76RCN+79fM1V5yci+SUAbUgQkEppPiP4PzLNkXYeShimKy4wE0=
-X-Gm-Gg: ASbGnctA5E9eWGm2QIws9K6/kBhMkWlwaQyzrFAugl5ZyncSPEi9G8VUyHNkjSE2Uly
-	k4ZwNc8Qx5ka+3FAP3sOjgA5mcqqYxwn56Qz6VhFm/m+nvvs79C3i4QdQRQQuBk3oPdDGDmf3zh
-	DVaqcBdJKQfnDLGQ0i6+XwbTgIMgbc907jtc6HVpgSDAwHPEQeWRzXMjGLzlH4DvX1o6Ghh7hmu
-	FFyivFIOEm2RiNVmma/dbRKEV1X6gW9hIjqKiS6TAKRmvSiCLeFuro0kwGqFBGzP/W1wPx6iHeq
-	0mkaESRwPpSDi9E=
-X-Google-Smtp-Source: AGHT+IE1SPKm+gzJ6VGXDJy+q7RKdAC9iquVy8ivXNUGMyZxEqe5AtUA6j7vJ+xaqDvjxeC/PzggwA==
-X-Received: by 2002:a17:90b:3c02:b0:2ee:5958:86d with SMTP id 98e67ed59e1d1-2f28fb6764amr10436246a91.9.1734197185565;
-        Sat, 14 Dec 2024 09:26:25 -0800 (PST)
+        bh=WTMHZPsDjixID3LZgZypNI5zerTGwhJ3oNH3JU/CG6w=;
+        b=ptSN8rMMy9yTS/s2Db0UFcQG6UIw/w9jBdywdqpQ4wn7aN3BXih88Pv11iz5wt9jr2
+         kHS3al4Raua2NNAZDkW29qDUNKUTXR6bz5S1f/g4jWerTCl7HPaqDQRCPqrsF+bb1Pet
+         JWOFRhjkBEYeIkYLk6YWbQTXpxAAA5Hi/lSjxE4I3XEd0xUYfhHu6grGOImqFZm3Jl4n
+         RaE0EuxvVm4mYt4ZHUuhN8xHsVDfn4bZJG6jaIzB0Nkgp4EUGGtPxsVMyBRLop2O2d4W
+         n/kjTCpsVooNn51QCo0YnaG+UfziN8Ir2tFEPIvX2h77P7Bky2VrI5F4OuhWHnw3+tgB
+         Ey1w==
+X-Forwarded-Encrypted: i=1; AJvYcCUQa/IFmyHQOnme9zk0ubefpsY+x9gGvjQNxYVkSF9GsIt8Ud7uOBqLvUbyKDv6YdZX7F8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxoM2gvbcYTRiE5I6/cvAuRh1ylmyAPA+/pyotXdsRuMQVKkZwb
+	dnQJVZ+wVkEFnvyFdfWMhlAYrqXW4mTYTGURE26+5OoRR9oa9S87TrGjIljlBUE=
+X-Gm-Gg: ASbGnctJgXz74hzpEYlBINTwnMwIt6S9HvA3Ham/3tS32Es7uxLw3KOrKxA03eu0hfm
+	UocUDdQPLIHiClePxnbs2nNsze74wsppsUAOmDOhM1eBGswp1SKh1Qsk61bOFFOWW9s+AFC/PO+
+	aE4SqMhovILh2gJsroKaRpbqiiiPj+8dbjaLjbD5A3T6cX5m0+S16toewG0OU2qwrFN0cKZiESw
+	s4mOFWq/zz8CW2a7zt0tqHk2T6+MbzDdKgEzD8h1S4UTFviSqxvgBDlLt2BwzfRPb7wjnMaqvJ1
+	24iDe7OXa1Xbnbo=
+X-Google-Smtp-Source: AGHT+IH7cEjTQcM+udD/U5XRPprvWKA6NBoe1GlzDD6yjgsEVTNKRYALRcnCyPJucGTbfWHoFFxtSg==
+X-Received: by 2002:a17:90b:4d05:b0:2ef:ad27:7c1a with SMTP id 98e67ed59e1d1-2f13ab74905mr16256697a91.2.1734197192577;
+        Sat, 14 Dec 2024 09:26:32 -0800 (PST)
 Received: from localhost.localdomain ([223.185.132.246])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f142f9e186sm5049811a91.41.2024.12.14.09.26.19
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f142f9e186sm5049811a91.41.2024.12.14.09.26.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Dec 2024 09:26:25 -0800 (PST)
+        Sat, 14 Dec 2024 09:26:32 -0800 (PST)
 From: Anup Patel <apatel@ventanamicro.com>
 To: Thomas Gleixner <tglx@linutronix.de>
 Cc: Marc Zyngier <maz@kernel.org>,
@@ -77,9 +77,9 @@ Cc: Marc Zyngier <maz@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
 	Anup Patel <apatel@ventanamicro.com>
-Subject: [PATCH v2 03/11] irqchip/riscv-imsic: Set irq_set_affinity for IMSIC base
-Date: Sat, 14 Dec 2024 22:55:41 +0530
-Message-ID: <20241214172549.8842-4-apatel@ventanamicro.com>
+Subject: [PATCH v2 04/11] irqchip/riscv-imsic: Move to common MSI lib
+Date: Sat, 14 Dec 2024 22:55:42 +0530
+Message-ID: <20241214172549.8842-5-apatel@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241214172549.8842-1-apatel@ventanamicro.com>
 References: <20241214172549.8842-1-apatel@ventanamicro.com>
@@ -91,76 +91,189 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Andrew Jones <ajones@ventanamicro.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-Instead of using imsic_irq_set_affinity() for leaf MSI domains,
-use imsic_irq_set_affinity() for the non-leaf IMSIC base domain
-and use irq_chip_set_affinity_parent() for leaf MSI domains.
+Simplify the leaf MSI domain handling in the RISC-V IMSIC driver by
+using msi_lib_init_dev_msi_info() and msi_lib_irq_domain_select()
+provided by common MSI lib.
 
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
 Signed-off-by: Anup Patel <apatel@ventanamicro.com>
 ---
- drivers/irqchip/irq-riscv-imsic-platform.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ drivers/irqchip/Kconfig                    |   8 +-
+ drivers/irqchip/irq-riscv-imsic-platform.c | 114 +--------------------
+ 2 files changed, 6 insertions(+), 116 deletions(-)
 
+diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+index 55d7122121e2..6b767b8c974f 100644
+--- a/drivers/irqchip/Kconfig
++++ b/drivers/irqchip/Kconfig
+@@ -587,13 +587,7 @@ config RISCV_IMSIC
+ 	select IRQ_DOMAIN_HIERARCHY
+ 	select GENERIC_IRQ_MATRIX_ALLOCATOR
+ 	select GENERIC_MSI_IRQ
+-
+-config RISCV_IMSIC_PCI
+-	bool
+-	depends on RISCV_IMSIC
+-	depends on PCI
+-	depends on PCI_MSI
+-	default RISCV_IMSIC
++	select IRQ_MSI_LIB
+ 
+ config SIFIVE_PLIC
+ 	bool
 diff --git a/drivers/irqchip/irq-riscv-imsic-platform.c b/drivers/irqchip/irq-riscv-imsic-platform.c
-index b44eb0b3990b..dc6f63f657e4 100644
+index dc6f63f657e4..2fab20d2ce3e 100644
 --- a/drivers/irqchip/irq-riscv-imsic-platform.c
 +++ b/drivers/irqchip/irq-riscv-imsic-platform.c
-@@ -96,10 +96,9 @@ static int imsic_irq_set_affinity(struct irq_data *d, const struct cpumask *mask
- 				  bool force)
- {
- 	struct imsic_vector *old_vec, *new_vec;
--	struct irq_data *pd = d->parent_data;
- 	struct imsic_vector tmp_vec;
+@@ -20,6 +20,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/smp.h>
  
--	old_vec = irq_data_get_irq_chip_data(pd);
-+	old_vec = irq_data_get_irq_chip_data(d);
- 	if (WARN_ON(!old_vec))
- 		return -ENOENT;
++#include "irq-msi-lib.h"
+ #include "irq-riscv-imsic-state.h"
  
-@@ -139,17 +138,17 @@ static int imsic_irq_set_affinity(struct irq_data *d, const struct cpumask *mask
- 		tmp_vec.local_id = new_vec->local_id;
+ static bool imsic_cpu_page_phys(unsigned int cpu, unsigned int guest_index,
+@@ -201,22 +202,6 @@ static void imsic_irq_domain_free(struct irq_domain *domain, unsigned int virq,
+ 	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
+ }
  
- 		/* Point device to the temporary vector */
--		imsic_msi_update_msg(d, &tmp_vec);
-+		imsic_msi_update_msg(irq_get_irq_data(d->irq), &tmp_vec);
- 	}
- 
- 	/* Point device to the new vector */
--	imsic_msi_update_msg(d, new_vec);
-+	imsic_msi_update_msg(irq_get_irq_data(d->irq), new_vec);
- 
- 	/* Update irq descriptors with the new vector */
--	pd->chip_data = new_vec;
-+	d->chip_data = new_vec;
- 
--	/* Update effective affinity of parent irq data */
--	irq_data_update_effective_affinity(pd, cpumask_of(new_vec->cpu));
-+	/* Update effective affinity */
-+	irq_data_update_effective_affinity(d, cpumask_of(new_vec->cpu));
- 
- 	/* Move state of the old vector to the new vector */
- 	imsic_vector_move(old_vec, new_vec);
-@@ -162,6 +161,9 @@ static struct irq_chip imsic_irq_base_chip = {
- 	.name			= "IMSIC",
- 	.irq_mask		= imsic_irq_mask,
- 	.irq_unmask		= imsic_irq_unmask,
-+#ifdef CONFIG_SMP
-+	.irq_set_affinity	= imsic_irq_set_affinity,
-+#endif
- 	.irq_retrigger		= imsic_irq_retrigger,
- 	.irq_compose_msi_msg	= imsic_irq_compose_msg,
- 	.flags			= IRQCHIP_SKIP_SET_WAKE |
-@@ -272,7 +274,7 @@ static bool imsic_init_dev_msi_info(struct device *dev,
- 		if (WARN_ON_ONCE(domain != real_parent))
- 			return false;
- #ifdef CONFIG_SMP
--		info->chip->irq_set_affinity = imsic_irq_set_affinity;
-+		info->chip->irq_set_affinity = irq_chip_set_affinity_parent;
+-static int imsic_irq_domain_select(struct irq_domain *domain, struct irq_fwspec *fwspec,
+-				   enum irq_domain_bus_token bus_token)
+-{
+-	const struct msi_parent_ops *ops = domain->msi_parent_ops;
+-	u32 busmask = BIT(bus_token);
+-
+-	if (fwspec->fwnode != domain->fwnode || fwspec->param_count != 0)
+-		return 0;
+-
+-	/* Handle pure domain searches */
+-	if (bus_token == ops->bus_select_token)
+-		return 1;
+-
+-	return !!(ops->bus_select_mask & busmask);
+-}
+-
+ #ifdef CONFIG_GENERIC_IRQ_DEBUGFS
+ static void imsic_irq_debug_show(struct seq_file *m, struct irq_domain *d,
+ 				 struct irq_data *irqd, int ind)
+@@ -233,110 +218,21 @@ static void imsic_irq_debug_show(struct seq_file *m, struct irq_domain *d,
+ static const struct irq_domain_ops imsic_base_domain_ops = {
+ 	.alloc		= imsic_irq_domain_alloc,
+ 	.free		= imsic_irq_domain_free,
+-	.select		= imsic_irq_domain_select,
++	.select		= msi_lib_irq_domain_select,
+ #ifdef CONFIG_GENERIC_IRQ_DEBUGFS
+ 	.debug_show	= imsic_irq_debug_show,
  #endif
- 		break;
- 	default:
+ };
+ 
+-#ifdef CONFIG_RISCV_IMSIC_PCI
+-
+-static void imsic_pci_mask_irq(struct irq_data *d)
+-{
+-	pci_msi_mask_irq(d);
+-	irq_chip_mask_parent(d);
+-}
+-
+-static void imsic_pci_unmask_irq(struct irq_data *d)
+-{
+-	irq_chip_unmask_parent(d);
+-	pci_msi_unmask_irq(d);
+-}
+-
+-#define MATCH_PCI_MSI		BIT(DOMAIN_BUS_PCI_MSI)
+-
+-#else
+-
+-#define MATCH_PCI_MSI		0
+-
+-#endif
+-
+-static bool imsic_init_dev_msi_info(struct device *dev,
+-				    struct irq_domain *domain,
+-				    struct irq_domain *real_parent,
+-				    struct msi_domain_info *info)
+-{
+-	const struct msi_parent_ops *pops = real_parent->msi_parent_ops;
+-
+-	/* MSI parent domain specific settings */
+-	switch (real_parent->bus_token) {
+-	case DOMAIN_BUS_NEXUS:
+-		if (WARN_ON_ONCE(domain != real_parent))
+-			return false;
+-#ifdef CONFIG_SMP
+-		info->chip->irq_set_affinity = irq_chip_set_affinity_parent;
+-#endif
+-		break;
+-	default:
+-		WARN_ON_ONCE(1);
+-		return false;
+-	}
+-
+-	/* Is the target supported? */
+-	switch (info->bus_token) {
+-#ifdef CONFIG_RISCV_IMSIC_PCI
+-	case DOMAIN_BUS_PCI_DEVICE_MSI:
+-	case DOMAIN_BUS_PCI_DEVICE_MSIX:
+-		info->chip->irq_mask = imsic_pci_mask_irq;
+-		info->chip->irq_unmask = imsic_pci_unmask_irq;
+-		break;
+-#endif
+-	case DOMAIN_BUS_DEVICE_MSI:
+-		/*
+-		 * Per-device MSI should never have any MSI feature bits
+-		 * set. It's sole purpose is to create a dumb interrupt
+-		 * chip which has a device specific irq_write_msi_msg()
+-		 * callback.
+-		 */
+-		if (WARN_ON_ONCE(info->flags))
+-			return false;
+-
+-		/* Core managed MSI descriptors */
+-		info->flags |= MSI_FLAG_ALLOC_SIMPLE_MSI_DESCS |
+-			       MSI_FLAG_FREE_MSI_DESCS;
+-		break;
+-	case DOMAIN_BUS_WIRED_TO_MSI:
+-		break;
+-	default:
+-		WARN_ON_ONCE(1);
+-		return false;
+-	}
+-
+-	/* Use hierarchial chip operations re-trigger */
+-	info->chip->irq_retrigger = irq_chip_retrigger_hierarchy;
+-
+-	/*
+-	 * Mask out the domain specific MSI feature flags which are not
+-	 * supported by the real parent.
+-	 */
+-	info->flags &= pops->supported_flags;
+-
+-	/* Enforce the required flags */
+-	info->flags |= pops->required_flags;
+-
+-	return true;
+-}
+-
+-#define MATCH_PLATFORM_MSI		BIT(DOMAIN_BUS_PLATFORM_MSI)
+-
+ static const struct msi_parent_ops imsic_msi_parent_ops = {
+ 	.supported_flags	= MSI_GENERIC_FLAGS_MASK |
+ 				  MSI_FLAG_PCI_MSIX,
+ 	.required_flags		= MSI_FLAG_USE_DEF_DOM_OPS |
+-				  MSI_FLAG_USE_DEF_CHIP_OPS,
++				  MSI_FLAG_USE_DEF_CHIP_OPS |
++				  MSI_FLAG_PCI_MSI_MASK_PARENT,
+ 	.bus_select_token	= DOMAIN_BUS_NEXUS,
+ 	.bus_select_mask	= MATCH_PCI_MSI | MATCH_PLATFORM_MSI,
+-	.init_dev_msi_info	= imsic_init_dev_msi_info,
++	.init_dev_msi_info	= msi_lib_init_dev_msi_info,
+ };
+ 
+ int imsic_irqdomain_init(void)
 -- 
 2.43.0
 
