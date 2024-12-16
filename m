@@ -1,46 +1,47 @@
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6D743AA9
-	for <imx@lists.linux.dev>; Mon, 16 Dec 2024 18:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9A4161302
+	for <imx@lists.linux.dev>; Mon, 16 Dec 2024 18:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734374568; cv=none; b=eYDVNBjpK33shHsSFR+r7R19vs0aRgD6ZasriV93yhROr3wf1mD+AUCM7HQ2/jbm0bY+vlKwHut9Okb5d09tcvDjVMl0HqcIQvVbiTqO9mrHEB+dL6oRyc6Clrl6vMgAOzpji0jlOqSHDIqBLgfZVvVRc1EbFRrBpJ86rQ4jyB0=
+	t=1734375349; cv=none; b=f319b4BkCiefXup1BmBgpmlZAapm0PvN1Dbf/cpjpwg6bXiGEuoW+6UTjsWZXQUbxDcKpUkr+AlgZ3Q/TQQZaWiU2QbFrY2ztuDLJyy+XXSCVkHD66jq5S9wzZCJ3W8o9C/W/5jklf8ldXpxHpzraqrP+gnywq44QToeVf6l1Bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734374568; c=relaxed/simple;
-	bh=8xEFehqY8KF1JLBkAftl92s5MPpKDZCAebxKHHnsyZE=;
+	s=arc-20240116; t=1734375349; c=relaxed/simple;
+	bh=ERIAC8idtjIYcLgUAsu/wcyfxe/kfDQ5Zs7429lX/lU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=foy8dJfnwjs9CtTIIhBy0Phm8PIUVZVMeuoDNdFomIxydoKYrjHd9b9AxTmpAO3o6u/BkzlBWBde3oe3Ee+T+hxlcnHsCylufgISucLXe5Gve4jtgWmx3Nxmn08wr3umSl2C9fGVoJGOcpPHEuu8xhTGz3cXCzX42pNqEwA5IjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=Kk/txJJH; arc=none smtp.client-ip=217.194.8.81
+	 Content-Type:Content-Disposition:In-Reply-To; b=lcwXrzWjKWh982VfkW5jpaOpBnq/T1nflOXkAANr4yNVs5AABHyXkDLz1XgBcVvz5vJWZOPh6wFDYBSk91T5GGQWJsaBnufKQyynpcHr9MAPC9UkBpAyPoTdUGsyA7Zq2A+4MQ9sseCvRNejx/pbKsZATFr27PNhOcgaIV7kT+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=zJ5koQAh; arc=none smtp.client-ip=217.194.8.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="Kk/txJJH"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="zJ5koQAh"
 Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 86207224F5;
-	Mon, 16 Dec 2024 19:42:35 +0100 (CET)
+	by mail11.truemail.it (Postfix) with ESMTPA id 3680B224F5;
+	Mon, 16 Dec 2024 19:55:44 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1734374556;
-	bh=6lPU+k2B+n0yE3XNn+Y9y0r9UdQY6i1mb29ATV0ddzA=; h=From:To:Subject;
-	b=Kk/txJJHpqKFWtgQxPHwZ68QWOZBG8zWo27NH27u9bIECjOxoUsvctOCHshndB+YG
-	 BYzF3EO/K1t9hVXBCStk0l446rgAaGOFFHdAGsWI2dO5e/vqnwWsWjm/ZtNqVoHGzj
-	 o7U6G9cLI9/1wLlsFGnzHTkaOuCJa/syRHTORLDyFMHqdd7Lx/AKMYnOFZdEgtcO12
-	 AWPweOhXo99/a5S8R1lwOuKrkDilX8EY17YnDJjO+5DM+o1D5NPm41BDJahrFRGFOr
-	 xoQLtlnIyDOyoIjyMA96Kqmd4zn7QE7Pc3sinLGdJ4nFTnMZh/uwqBv4JQUOzLMCOR
-	 WD8FbWPVYpSxQ==
-Date: Mon, 16 Dec 2024 19:42:31 +0100
+	s=default; t=1734375344;
+	bh=4ESmruV4i0A6zi2wUf0QJ3jRzh4EKC20/EhLK+rR84Q=; h=From:To:Subject;
+	b=zJ5koQAhEazjWZg2fxzNIVEsz2WgSXx838aLGogD8am4pc1UDu+M2xKDmoCtMk/JI
+	 QMOBjF6ONCLM3qDpEnB3aLO+a9yrlyduixtFboJMr2v7asSkjuqNY6opoPWk7Vt0nI
+	 AW8LN5hyzqUHv6eixSja0baudF9EvtNP+V7pTQbE3BLI30KvVoSwzqAzRh8OGAT185
+	 1P9oagfNXYOjTYt4JospoK85fsvNwiLfwTHR/uBSTRLrNGEAsQRdhRrcpJpUQXS+mF
+	 wn0wp2b4N6zeQQdF3tPObw3XO8R1Hu01i5y46t7um72GuYNhSGxcuzNwpATkXOaYOP
+	 j7ALJnbhLR2CA==
+Date: Mon, 16 Dec 2024 19:55:40 +0100
 From: Francesco Dolcini <francesco@dolcini.it>
-To: Stefan Eichenberger <eichest@gmail.com>
-Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, andi.shyti@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
-	Frank.Li@nxp.com, stefan.eichenberger@toradex.com,
-	francesco.dolcini@toradex.com, linux-i2c@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] i2c: imx: fix missing stop condition in single-master
- mode
-Message-ID: <20241216184231.GA53492@francesco-nb>
-References: <20241216151829.74056-1-eichest@gmail.com>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
+	andre.draszik@linaro.org, rdbabiera@google.com,
+	m.felsch@pengutronix.de, dan.carpenter@linaro.org,
+	emanuele.ghidoli@toradex.com, parth.pancholi@toradex.com,
+	francesco.dolcini@toradex.com, u.kleine-koenig@baylibre.com,
+	linux-usb@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH v2 2/2] usb: typec: tcpci: write ALERT_MASK after
+ devm_request_threaded_irq()
+Message-ID: <20241216185540.GA53932@francesco-nb>
+References: <20241212122409.1420962-1-xu.yang_2@nxp.com>
+ <20241212122409.1420962-2-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,31 +50,80 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241216151829.74056-1-eichest@gmail.com>
+In-Reply-To: <20241212122409.1420962-2-xu.yang_2@nxp.com>
 
-On Mon, Dec 16, 2024 at 04:16:40PM +0100, Stefan Eichenberger wrote:
-> From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+On Thu, Dec 12, 2024 at 08:24:09PM +0800, Xu Yang wrote:
+> With edge irq support, the ALERT event may be missed currently. The reason
+> is that ALERT_MASK register is written before devm_request_threaded_irq().
+> If ALERT event happens in this time gap, it will be missed and ALERT line
+> will not recover to high level. However, we can't meet this issue with
+> level irq. To avoid the issue, this will add a flag set_alert_mask. So
+> ALERT_MASK can be written after devm_request_threaded_irq() is called. The
+> behavior of tcpm_init() keeps unchanged.
 > 
-> A regression was introduced with the implementation of single-master
-> mode, preventing proper stop conditions from being generated. Devices
-> that require a valid stop condition, such as EEPROMs, fail to function
-> correctly as a result.
-> 
-> The issue only affects devices with the single-master property enabled.
-> 
-> This commit resolves the issue by re-enabling I2C bus busy bit (IBB)
-> polling for single-master mode when generating a stop condition. The fix
-> further ensures that the i2c_imx->stopped flag is cleared at the start
-> of each transfer, allowing the stop condition to be correctly generated
-> in i2c_imx_stop().
-> 
-> According to the reference manual (IMX8MMRM, Rev. 2, 09/2019, page
-> 5270), polling the IBB bit to determine if the bus is free is only
-> necessary in multi-master mode. Consequently, the IBB bit is not polled
-> for the start condition in single-master mode.
-> 
-> Fixes: 6692694aca86 ("i2c: imx: do not poll for bus busy in single master mode")
-> Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> Fixes: 77e85107a771 ("usb: typec: tcpci: support edge irq")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+I wonder if this should be squashed together with the first commit,
+given you re-introduce an issue with the previous commit.
+
+ 
+> 
+> ---
+> Changes in v2:
+>  - new patch
+> ---
+>  drivers/usb/typec/tcpm/tcpci.c | 22 +++++++++++++++++-----
+>  1 file changed, 17 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
+> index db42f4bf3632..836f6d54d267 100644
+> --- a/drivers/usb/typec/tcpm/tcpci.c
+> +++ b/drivers/usb/typec/tcpm/tcpci.c
+> @@ -37,6 +37,7 @@ struct tcpci {
+>  	unsigned int alert_mask;
+>  
+>  	bool controls_vbus;
+> +	bool set_alert_mask;
+>  
+>  	struct tcpc_dev tcpc;
+>  	struct tcpci_data *data;
+> @@ -700,7 +701,10 @@ static int tcpci_init(struct tcpc_dev *tcpc)
+>  
+>  	tcpci->alert_mask = reg;
+>  
+> -	return tcpci_write16(tcpci, TCPC_ALERT_MASK, reg);
+> +	if (tcpci->set_alert_mask)
+> +		ret = tcpci_write16(tcpci, TCPC_ALERT_MASK, reg);
+> +
+> +	return ret;
+>  }
+>  
+>  irqreturn_t tcpci_irq(struct tcpci *tcpci)
+> @@ -931,12 +935,20 @@ static int tcpci_probe(struct i2c_client *client)
+>  					_tcpci_irq,
+>  					IRQF_SHARED | IRQF_ONESHOT,
+>  					dev_name(&client->dev), chip);
+> -	if (err < 0) {
+> -		tcpci_unregister_port(chip->tcpci);
+> -		return err;
+> -	}
+> +	if (err < 0)
+> +		goto unregister_port;
+>  
+> +	/* Enable the interrupt on chip at last */
+> +	err = tcpci_write16(chip->tcpci, TCPC_ALERT_MASK, chip->tcpci->alert_mask);
+what's the content of alert_mask here? 
+
+I am not fully understanding why this flag is needed, can't we just ensure
+that within probe the alert mask is set to 0, after probe return with
+success we have the interrupt handler enabled and we can just write the
+alert mask unconditionally.
+
+Or I am just misunderstanding all of it?
+
+If you disable the interrupt in the porbe
+
+Francesco
 
