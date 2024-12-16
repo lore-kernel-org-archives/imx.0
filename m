@@ -1,62 +1,62 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354F02066E2
-	for <imx@lists.linux.dev>; Mon, 16 Dec 2024 14:51:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B044206F12
+	for <imx@lists.linux.dev>; Mon, 16 Dec 2024 14:51:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734360680; cv=none; b=L6NLcuessUHfqfz0GQhinCLPESSpHQ5DNpoeU+AqVOIn6inDnMpkye+sOzuTIZ6BSvOkxlChVb2rde4cuoTzvBRIwJVFd7z//BbE9P5NSYbg7zmGHzom/mkZAFOUIB5HvBsmCWh0yKLMg5uVxIYkNeWxCgk259d4FwWpIwtslJE=
+	t=1734360683; cv=none; b=OopsMjPtFLRfiR/Tn6VuYs7A15og+ElQUGI5FVgZrcwaF+NfHWswv7tJEzI98Lmf8Or9i7z6kzdORmuM70niJ4esVQSK/Zs0CkGVoq0hOIe0ZJAYV6v89i3qXxdHuJLrhkiMqi7uV99A+zChp1hdZ68UFAsSw0V7VzcGTWGZi2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734360680; c=relaxed/simple;
-	bh=C7U+gX2HAtTNvw4HTYyQ8sKcsL6nRwW9xlRDEvE3Fus=;
+	s=arc-20240116; t=1734360683; c=relaxed/simple;
+	bh=cWi8DmSi7C7RoYGebBs9V11KbEf0JwdrdWWSFkvT2/A=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SJIvGZcktqYCRa6ZBUr+lk5ZO9ChiUu7WPV5XyxdUilrBomQM95ZuOQlWmbj3eoaCfQEWolazqtZGbrfyciwMUPys0UPuBn7DV+/b6/RwNKeYHvFmkZ9BQ19NeJooYDuaw81Xb/g/7wnaLUmpA3Ms0ytOArxNLigQA6Q99sEDDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Im9riAHe; arc=none smtp.client-ip=209.85.128.41
+	 MIME-Version; b=WVMwBkIraI+/55B2SGFHam3XTzFp2G7nlLiYpLDbgA27QCL29Hl6heoSTJIGWUtUbN4Oq/rhlZ70lcQOoHNxe8LGtPa7ApoNEDXMH4+K8A6q2XDOUrc9h8mLrgYIhQT0AnRuK61IIhqt7IUwAQWdgaNafMlxiATqdXBfzV7CpjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Su1xQCFG; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Im9riAHe"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-432d86a3085so27449595e9.2
-        for <imx@lists.linux.dev>; Mon, 16 Dec 2024 06:51:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Su1xQCFG"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4361b6f9faeso25872005e9.1
+        for <imx@lists.linux.dev>; Mon, 16 Dec 2024 06:51:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734360677; x=1734965477; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1734360679; x=1734965479; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NhaNNKCxtrPXfELgw/KHgSRSl1aX9JDfH4/Rbi26Vsk=;
-        b=Im9riAHef2PxAAu0ckz7PqzWCaPKusY8737Tz/SBqiGv7pvlIz884fRQ+1qaEmQqSp
-         Osfk9aaVxmblHdSDL2gVR/XB0VE9BlVPKK72Fk8PDeJpWn5Ay9AhxXy6T2xj5JT0ZOqj
-         gkexYTxtJTwylA2eJ38f21tgbrP/g/9gZgDnoCSmTlv4o8PnktlSEn+9w7YOFrq+ecuH
-         tJPpCS8160dqp5tqMu1ut3oQatgPezM6r2YW6/ftjTuU5aBWGkbVqqudN2cLTy6NBf9y
-         7TzHy5lrMObGt3WryUwXvw1TtcSKtCDgW6L1e0bht0/3Jvwe4sfIFiDQ6D+2MFBk/0nS
-         R2TQ==
+        bh=3O9xjwYbMuKJBMh8JPk0dRAP4OjyngOz+BP2VQZxpdg=;
+        b=Su1xQCFG15Nccft1MsUkmwReCyXwLVsPJuOGwdLShtabOBtoI0XslGF4Ymls53qma+
+         YBNUMGSYXtopFQsgp5uFi3dDkNeIFeweJHo9cB4ZipcCaBuJsMtxLkbVP3E8iWzqsMR0
+         mswbx5vATeNM6CyPg7Ze4+FyMcVtNDx2IdCcUK36VpWYYtea7kid8d9cLY3bIJUlcNQO
+         av17Txo/dWSuNytW9ndqQAXLwvJjVl4cRTJkZcdUrFQw5dsXzJDmx637mrYGbC0UlYII
+         7GPMVQ7X+o3SR7QVsLUrD9MffRr9wE81RJ2jFTnDJNEKDN+9Sr/cxvKLgSTGQg3E4Ebi
+         e25A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734360677; x=1734965477;
+        d=1e100.net; s=20230601; t=1734360679; x=1734965479;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NhaNNKCxtrPXfELgw/KHgSRSl1aX9JDfH4/Rbi26Vsk=;
-        b=ml9WdXWH4sCX7uVprY/GkFYtAR+hS28OVSne1skdKzXNsN2erlPtYCIQL+ys9utrSE
-         dhC/3VDQW8NoHxmVp7D9dJ3myEGC/25HGeR7oHg+wAz2Z/uOBxwTGpBruBWyi2byUehy
-         oaUv6ayp4cX+eSoId33pT4EL2ql7uvvbF0ve6tdKNylYUfgomHAytulQ/evOeMmTfM07
-         OjjWhUnRAaxL6CXUcBZiXE8SBebSuLclJDRDUkNnf0zvZG5Mp61J6ZnJujz2dzj3+ipz
-         uDVG+Kw9mB09gO8SlPklonQlEQoH/z3pEsYP0ViilKPQG7WwYc4Q9hdEkX6frcxjl9In
-         VrfA==
-X-Forwarded-Encrypted: i=1; AJvYcCWcHqHMur9dqFd0MZKlHe3WMYX8kmryimfODGyKNSF1Fab2A6Rni71A+WKDWwvNQA/pR+o=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzA9k1mgI3xUI4NacLOioqRAyIwI1Y2+BPShXiDoNQPSZW51X0b
-	f5l6uLje0QBupsfQQp94BR+v8inf9MMrGvNEpOg2CAfGIxEkv2wu
-X-Gm-Gg: ASbGncvd3Uba3980KsJbylKOJslESUzHdqiCFss5poICJAqICU5Z6DzyOA+uCfNR0ou
-	uCYYSzVHPV+YQwrle01JyhnpNqz9r1yg3dUn7XJNypCeRojFkrkBCUDzTjbGipw90LiBLCRSPnh
-	bb2agk3NIwYCL4/y4WFZBcHQ8mk+mZw27E0Y73P+XdIDo0MYYcbtccrGByYQyVI+obV++BcNxZQ
-	AxdX/817Fn+yeDbHJMlnDuwcXcst3I0OV4u3YjZE0oj35ADJwFW2JNkCwuRQuSDeSjR6BeunVOQ
-	wnGr+/8EjWeZOMEc
-X-Google-Smtp-Source: AGHT+IHp+aRH9ApI2wBs86oXmAT5Zyw16hcSyU7ofzYQJ6VdNQwOe2b+SoQNW7hpWBoCfEejVt7Ieg==
-X-Received: by 2002:a05:600c:1da7:b0:42a:a6d2:3270 with SMTP id 5b1f17b1804b1-4362aa9dd6dmr112072165e9.21.1734360677203;
-        Mon, 16 Dec 2024 06:51:17 -0800 (PST)
+        bh=3O9xjwYbMuKJBMh8JPk0dRAP4OjyngOz+BP2VQZxpdg=;
+        b=Z4y+RiKexBhEwRQHgQ12m+hGnV6RYwbCdQ+EUutmqjWgqy6WtWTA6GjWNh9+Cszq/o
+         6Yrf37cPiHEhykbcARlCrKtQ3M+DKM7sXeN+9CJNoh6iCTRUieMxTg3cQvLPjv+tasG7
+         ABweDSalMzlKF4kux1FKmIAojmeQVur9Uz8yP8diB+G/W375y2va1l5vqQbawSqzMZ4o
+         7vvq1je85Z7/28pncjtXfCA42xHTddSrtZTI5RyoKETrY9uE68fb8sqSmjNJqfwnvkx0
+         cGpXZ69n3+3b5Bhw+uafjYIqTCAArSkGngf1P+wig8ZD2UcciB3e77M57ivygayyDDiB
+         waaA==
+X-Forwarded-Encrypted: i=1; AJvYcCUXXwDXi+whpBak7kT+/a8k6s54jg56sEQNpfZLzrPPdAFZlUOn+pC1HgaGE2BSbgbPm/Y=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy5imbZR5/NO5KB46XCgkSH0Ag0fCrt0xuY4Mbr2SfRX92P82z0
+	SGsWgUbVk0yQtpCES0KOq+UfsrC6WE4nOMWrLixFEY4SJX3+SvR0
+X-Gm-Gg: ASbGnctVJOp4T+KEuXBtSCsizCRVtG+D6G6tzrf4UgrlwmLTVSPS4PcN1+vOlp4rSN7
+	OVYpJdOO+VNQSw9MCQCb3aXIyS9+BuhCeC5VFAZ0LuECqiaVRfIRdBOv62hiAY8uZpS5NrKANVM
+	bzWgaKCUfi8GCx7HY2SOMg06rsMykhI0K4OMVnMO0fQTyxEEthoB4Uk3zUnN2XbArfzJDkKwkLe
+	WQ1Dyk2Mgtc73Yf/FVHbNiNht7aI8WMOOfMppaMhzHisXsKopxETQ8FTpvVGEI9t1dW98dMKRuF
+	GFyWR2Ljw18iKLSo
+X-Google-Smtp-Source: AGHT+IFA3RNClGg885yiYlISYsYOJeTw1Fd1eRv96uL8DaVCl3QiM+cW2wRgxshrWVj5DiQhXeuZ5w==
+X-Received: by 2002:a05:600c:1c09:b0:435:edb0:5d27 with SMTP id 5b1f17b1804b1-436230bfd93mr136287915e9.9.1734360679587;
+        Mon, 16 Dec 2024 06:51:19 -0800 (PST)
 Received: from playground.localdomain ([92.120.5.10])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4362559ed6csm141616455e9.24.2024.12.16.06.51.15
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4362559ed6csm141616455e9.24.2024.12.16.06.51.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Dec 2024 06:51:16 -0800 (PST)
+        Mon, 16 Dec 2024 06:51:19 -0800 (PST)
 From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -74,9 +74,9 @@ Cc: linux-arm-kernel@lists.infradead.org,
 	linux-sound@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 2/5] ASoC: dt-bindings: support imx95's CM7 core
-Date: Mon, 16 Dec 2024 09:50:36 -0500
-Message-Id: <20241216145039.3074-3-laurentiumihalcea111@gmail.com>
+Subject: [PATCH v3 3/5] ASoC: dt-bindings: audio-graph-card2: add widgets and hp-det-gpios support
+Date: Mon, 16 Dec 2024 09:50:37 -0500
+Message-Id: <20241216145039.3074-4-laurentiumihalcea111@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241216145039.3074-1-laurentiumihalcea111@gmail.com>
 References: <20241216145039.3074-1-laurentiumihalcea111@gmail.com>
@@ -90,64 +90,31 @@ Content-Transfer-Encoding: 8bit
 
 From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-Add binding for imx95's CM7 core, used for audio processing.
+Introduce the 'widgets' property, allowing the creation of widgets from
+4 template widgets: Microphone, Line, Headphone, and Speaker. Also
+introduce the 'hp-det-gpios' property, which allows using headphone
+detection using the specified GPIO.
 
 Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 ---
- .../bindings/sound/fsl,imx95-cm7-sof.yaml     | 44 +++++++++++++++++++
- 1 file changed, 44 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/sound/fsl,imx95-cm7-sof.yaml
+ .../devicetree/bindings/sound/audio-graph-card2.yaml          | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/sound/fsl,imx95-cm7-sof.yaml b/Documentation/devicetree/bindings/sound/fsl,imx95-cm7-sof.yaml
-new file mode 100644
-index 000000000000..cc1eb358f288
---- /dev/null
-+++ b/Documentation/devicetree/bindings/sound/fsl,imx95-cm7-sof.yaml
-@@ -0,0 +1,44 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/sound/fsl,imx95-cm7-sof.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: NXP imx95 CM7 core
-+
-+maintainers:
-+  - Daniel Baluta <daniel.baluta@nxp.com>
-+
-+description: NXP imx95 CM7 core used for audio processing
-+
-+allOf:
-+  - $ref: fsl,sof-cpu.yaml#
-+
-+properties:
-+  compatible:
-+    const: fsl,imx95-cm7-sof
-+
-+  port:
-+    description: SAI3 port
-+    $ref: audio-graph-port.yaml#
-+    unevaluatedProperties: false
-+
-+required:
-+  - compatible
-+  - port
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    cm7-cpu@80000000 {
-+        compatible = "fsl,imx95-cm7-sof";
-+        reg = <0x80000000 0x6100000>;
-+        mboxes = <&mu7 2 0>, <&mu7 2 1>, <&mu7 3 0>, <&mu7 3 1>;
-+        mbox-names = "txdb0", "txdb1", "rxdb0", "rxdb1";
-+        memory-region = <&adma_res>;
-+        port {
-+          /* SAI3-WM8962 link */
-+          endpoint { remote-endpoint = <&wm8962_ep>; };
-+        };
-+    };
+diff --git a/Documentation/devicetree/bindings/sound/audio-graph-card2.yaml b/Documentation/devicetree/bindings/sound/audio-graph-card2.yaml
+index f943f90d8b15..94588353f852 100644
+--- a/Documentation/devicetree/bindings/sound/audio-graph-card2.yaml
++++ b/Documentation/devicetree/bindings/sound/audio-graph-card2.yaml
+@@ -37,6 +37,10 @@ properties:
+   codec2codec:
+     type: object
+     description: Codec to Codec node
++  hp-det-gpios:
++    $ref: audio-graph.yaml#/properties/hp-det-gpios
++  widgets:
++    $ref: audio-graph.yaml#/properties/widgets
+ 
+ required:
+   - compatible
 -- 
 2.34.1
 
