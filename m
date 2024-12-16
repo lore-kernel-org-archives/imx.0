@@ -1,248 +1,174 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2041.outbound.protection.outlook.com [40.107.20.41])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6A6201028
-	for <imx@lists.linux.dev>; Mon, 16 Dec 2024 07:58:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734335928; cv=fail; b=SXH58ybVH951tmlLrOU2WEqmBMPA98lCrBI2y8dNih62GwDQAPsY+5Fmk2+SwcJjvnRE269uca70feanb2bKV59YmbhoaI5ogQNBi3YOHlWGmwaFMCQueOG+2ZKKyRrbXqWGiKNJPyNQSQE2RIbz2ESA+7aoFsX3AipU8AfcR9Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734335928; c=relaxed/simple;
-	bh=3u1I9mecfrM1ZthBTezjocM9AwW1fNpwLEyC92SYc6M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=u93UJWmsxfOIv/gy+AOPWajdBjmoddJEw8fi30vle+1LdZ7BliKdQA4f9zs6UZr0EzrLRtxsBvNfAIctQmAsAXGtSWJsNxptmkvr2suTB/FWu0W+xkJRYPQc73UhwQmO4HDqeda+qlnSzR35qrTk5ZV222qN5FKJJ2yVk6ut+9Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Cl91czg+; arc=fail smtp.client-ip=40.107.20.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6962420011B
+	for <imx@lists.linux.dev>; Mon, 16 Dec 2024 08:55:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734339309; cv=none; b=hiMfGmMMv5vsdjcE2Jj4Vf9oHZjJVWQ9tP8VbllsRmPaKQ3O5FTNqtT1v46Jmz1T4SjoQju/chpYl7llHgafehWUFoQ9RqtwyFE7EQvMM5KyLwRRx6l9qMAU0N1z1N9H/RUYPSYH/EkdtoA9/alKaYGodOMpQSeKme+7Ii+/YSU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734339309; c=relaxed/simple;
+	bh=4a8MkuuzFqe4CkJN9juZtZYdKB0O/wCdTnySCZCuRpU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=qaTKP93jA16GAZvqEtOkp+B3i/pt2KfVZXa/+vkaKLPKvQXQarp04jO5omGCZ6kAEffKOwadyc+CqoaPgWE4lnrd02odv5bhXXE1LVW3W68QpD/dWGuVgGG9QtbakiUFln2/FsfHKQyQYmVJlmGWkLyAJbTOgi/9aQ19BmXAzKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=BTHBSYND; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Cl91czg+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=soqoVDl/pqO7o8uJR/cgaieGJ99gg3bL5o3St9mqunB6pi4TCSwdVcE5gNVafE3OgKFIRJPE38L/afjheLZuS30H/hB+1uUqvbp+i7HeN+jf/TIgAA5V+I7Zcv2/MqcgzQyC4+yqRG8Rxc1Sd9PBqENrWVOpgcFrZhB+baCQDzt3/JrKXzXDpbNncLS2OV3PieSXb4hgdK94+S08SaxYqPhS+JFUFYphxBNdyL6wbIvTiUJf5w4YkepNIYgm6yT7uOhwdtzLBUPqKJD/FfAOACEaNstNuvRUSUt36PKu/dbaYsfitdW/wJ4MVU8q2tNDFmrsuxuc6WJfG4y7JYAggg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CG4S+uU44FO8P3eYVZXQjKfoUG/2vfbNF4ZdtMEfnok=;
- b=WP51Cy84GV+I7EPCPTGT6F0VrExebk4qd7M0mlWM3Z4Y6HkRJqqr7vlxawCrWMLBBkQeN9abOwPdsiAGX7V8s+NQNjkm+jpuUVPciK/TgCOHvKFL4MjFa+8qohI5t2d+D9n2VsDwvgI8sfQ91tDXsA6Bw71dtxGm9ZvON367ln0IIVd94a7wWw3TvZs3H3PZn0s/FAJ1va83pV72/3SOJfv1G8W27yghoTdLQIjsa/pMUT+ZYIo8HvnES01CSAQOtn69Qh0PZMzgLqYonyXmuzg2gHylU9XB3dPyvQ7Jrfnk0PonV8bBJimGYAmc45eJYY+7JWK6JcuAxduz+F8gzQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CG4S+uU44FO8P3eYVZXQjKfoUG/2vfbNF4ZdtMEfnok=;
- b=Cl91czg+0ok2boNLYpcuwM6gCJXJBPw1HM2WTrKqXRCEFeD5ZvD/ihy3QYH8602Lv6oEpVxqQnlvapuviJ1mvwBKPfu+vrmbjgeByV1mBYoLfB1uLxnzSpsDsmzWSWdWK7LI2EtVcyF4syo0LdDmnd+5SH9BYFghpw2S0NMG/7uH66fzK/c1rZfzmpzYzs0QLkQnxOUpJa5vmll1Zgv3oicus325X3DzRb+M1NjuHSF8xhLK3QvAtcbyUIMvNZiqaHqEJ7poARR/u4yRsMyaR+0Jolv9RVCN0eekU8OlCwGWEQ6mYAOTRyESX7MvA1+roqhOXlzCRZ0t9jKiHUO3Kw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AS4PR04MB9550.eurprd04.prod.outlook.com (2603:10a6:20b:4f9::17)
- by DU4PR04MB10361.eurprd04.prod.outlook.com (2603:10a6:10:55d::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.21; Mon, 16 Dec
- 2024 07:58:39 +0000
-Received: from AS4PR04MB9550.eurprd04.prod.outlook.com
- ([fe80::e28d:10f8:289:baf7]) by AS4PR04MB9550.eurprd04.prod.outlook.com
- ([fe80::e28d:10f8:289:baf7%6]) with mapi id 15.20.8251.015; Mon, 16 Dec 2024
- 07:58:39 +0000
-From: Larisa Grigore <larisa.grigore@oss.nxp.com>
-To: Frank.Li@nxp.com
-Cc: dmaengine@vger.kernel.org,
-	imx@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="BTHBSYND"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=MRmx29SpH4yTebbmPp9gaVddVo95LnV/JiV0UCi5T88=; b=BTHBSYNDcowRc363fYOxC2rt4J
+	2GkPCvjLwsh9Q4OInGTu3hhGjbtVyNzkWEuIWVl04kzX+ZhcYJD0AVffYYHl9nOSvcfF8slZRCM4E
+	gN1TSrHM5YMH9Jc0IxnK/doGCD0p0Zov6+TB9iMtaUdL/qA4wlUsGu0HI6rt8hP/0dZrmce03MRV0
+	FrSXROe4+DiS8G9pLiaJegFVjZplZlAMJDReEVX9bP6U0nIOxMnP02Tj/n/Hj5qQ40xYPoELsFbnJ
+	WiPanu7qlKA/0g60IrjTxUasbZJuXGHcKrVTFU+JlgJyvZuidGMLMA0pPtEjLI3neCbuZFzQC7qDQ
+	91qgmqXg==;
+Received: from [89.212.21.243] (port=57844 helo=and-HP-Z4..)
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <andrej.picej@norik.com>)
+	id 1tN6sX-0053uC-0G;
+	Mon, 16 Dec 2024 09:55:00 +0100
+From: Andrej Picej <andrej.picej@norik.com>
+To: andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org,
+	rfoss@kernel.org,
+	Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se,
+	jernej.skrabec@gmail.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	marex@denx.de
+Cc: dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	s32@nxp.com,
-	Christophe Lizzi <clizzi@redhat.com>,
-	Alberto Ruiz <aruizrui@redhat.com>,
-	Enric Balletbo <eballetb@redhat.com>,
-	Larisa Grigore <larisa.grigore@oss.nxp.com>,
-	Alexandru-Catalin Ionita <alexandru-catalin.ionita@nxp.com>
-Subject: [PATCH 8/8] dmaengine: fsl-edma: read/write multiple registers in cyclic transactions
-Date: Mon, 16 Dec 2024 09:58:18 +0200
-Message-ID: <20241216075819.2066772-9-larisa.grigore@oss.nxp.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241216075819.2066772-1-larisa.grigore@oss.nxp.com>
-References: <20241216075819.2066772-1-larisa.grigore@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AM0PR02CA0160.eurprd02.prod.outlook.com
- (2603:10a6:20b:28d::27) To AS4PR04MB9550.eurprd04.prod.outlook.com
- (2603:10a6:20b:4f9::17)
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	upstream@lists.phytec.de
+Subject: [PATCH v7 1/3] dt-bindings: drm/bridge: ti-sn65dsi83: Add properties for ti,lvds-vod-swing
+Date: Mon, 16 Dec 2024 09:54:08 +0100
+Message-Id: <20241216085410.1968634-2-andrej.picej@norik.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241216085410.1968634-1-andrej.picej@norik.com>
+References: <20241216085410.1968634-1-andrej.picej@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9550:EE_|DU4PR04MB10361:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8416422e-ce29-47cc-8396-08dd1da773ab
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MllnNmxmZGFKQXE4WklPTXVGYkVieUJBMmFKNXdpZWZHYW1DTDVuVnMrYzJE?=
- =?utf-8?B?NnBIR081SHR6R2dGLzlvd0ttQzJIM3NYVytkeElYbDhvaFBEbkh3TFg2TFJo?=
- =?utf-8?B?U3VyN1hzYldITFJkNm56T1lvOUM0dHNDaUtvTnhwQ0U5UjF6aVJGRkdlSlRE?=
- =?utf-8?B?MGVuNzB6VHZWb1lWMGdhOXFFWWoyY3dYd0ZSMzBQbTZjVFZtTEZ6ZW9leXp0?=
- =?utf-8?B?VVRvNmdWZDN3Ylk5UzlCVi9jdi9QYUhraVJmelZablI2NXY4aDF3dGVXaXpw?=
- =?utf-8?B?Z3plQmN1aGVOREIrQWw1TENVcWlCenlsSUVUYjFXWTFGay84dERJZkhTT1JO?=
- =?utf-8?B?T3pqSXJwNEsxZkg4cWZWWWR2akNCNDdRRktnaXBNNy9ya1FkRE9UTEFscEpl?=
- =?utf-8?B?YkxVTGxpWGNiaFBVUzJaeG8rMkxnUDJxMitNQWl2RFhoOEM4Y0NSUjhaZGtN?=
- =?utf-8?B?b2p6RTMwYlQ1MlA3K21hRGFZdWFRUmhPVG8wSTZpZStCL2l3R1RiSE5RdE93?=
- =?utf-8?B?Z1kyNHRLVjBVcXhJQ2ZCajJpNjd6cEQzdFZPbDBBMGlQZ1k2Y1lESXJBWjlK?=
- =?utf-8?B?dWgrTnE0b3ZhYit6MWN3UC9oRHIzMVJjUHJ3K1RTdEhnY3J5N2plcmNWdXZm?=
- =?utf-8?B?R0lzV3lvTFltSXBTbjdoTHVIMXh0cHU0UjRwakRETm1iQ1dlZFFSaFlSOU12?=
- =?utf-8?B?Vm90MEdwOTJ2NXR6Y3k0Qy9JZUNpTG8wODV4c2lKMnAvMWJRdG9HVTdyNEl5?=
- =?utf-8?B?dm1jV2ZaUEJBMXBhU3h5M3o2eHhTc2w5Q20vbUlMYnBpeTRaeS9tSzhITjJR?=
- =?utf-8?B?RzUvTGlNOFkrZmpDaU4zYjhXc01tWFcvTGJvNVJybGZhWHRJVGtVc3prZnlx?=
- =?utf-8?B?QlY0TzdwaHJidkkrekIvaW9kVlJrd05ERUJaNVdjNys0RW5TTU1EMVhTYUp5?=
- =?utf-8?B?NEt6a3h2OTNrdG5HTkJLUVdKQ0VzeEZ2a2JTVENIeVBUUE92aFN6d2NoZmg0?=
- =?utf-8?B?RG9UdG9heGxYOFU3S1dMYmdZK05xbHJjdFdXMUMzMmUzUmRxMXkvZDgrbk0z?=
- =?utf-8?B?QTg2NGtyd0kyb1I2ci9IclJVdzQ4OEJuN1E1K3N0YktpdG4yUFc0S3lEREdk?=
- =?utf-8?B?djRKTHYwVmdPZGkvTk96WVR4S1VLQ0pWNWZxUmhuRTVSUnJrWCtmNmdYdXdC?=
- =?utf-8?B?S3hRakpXdUNITEFzb2xvWDd5eDMzYWZlWUw3em42bkE3ZGVPeWRXR1dBdXNO?=
- =?utf-8?B?dGlieEtTdUdLS0pnUTViS05Hd2FKVmhuSEwvZ0FwSXNPZlB3clV1dm4wK3pG?=
- =?utf-8?B?S1Q1ZVgydlcxNUh4cVc1bHdZcjUvUGMxWUR0S1RqMXlPRU9uVUpoRHIxZmd2?=
- =?utf-8?B?dVFmNmFZMUVxZldob0E0bXNMZ0paUktoald4MlpGRiswMlBOcmFRVmJyclV3?=
- =?utf-8?B?VmVZSlpabCtXaGFOaGt6aWkrd1BlRU1ZMXRqRkJjV1g5cG1sVmY0TUpDSnJv?=
- =?utf-8?B?VlZWdFg4TGxJZjRTdDhlQzFOQmtsalh6b1hDd3hWUTJBQWp6WjRmUEdUNDkx?=
- =?utf-8?B?dmV5NEtnK3dYcDJXVFdLZVpCYS9zdGUwOTREVmZrUFk3UmhVa3hVNTNveXNm?=
- =?utf-8?B?N2FwUGZPK0VRQ1NtWmZrRjlGRG1kaU5qSE5OVUZ3UXRBMWtVQ1RvbVNrcEhO?=
- =?utf-8?B?cHZBWHFDZFFlY1NkQ0lkczlaR2w1emFOVkFaSUZtWklETjBpaDNOVmNxaDVT?=
- =?utf-8?B?ZVRSd0hmd3dScUczYXVIYXFNLzZnTE1EdDFMY1NYb3dMNFhjbnNoQUw4RlZz?=
- =?utf-8?B?Rit1SWtXYTlyL1NhWm5qZC9XbUZkc2RtUURpVWhHQnZCSlUzSXMzWEc4cm93?=
- =?utf-8?Q?ILeZku4BT8s8L?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9550.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WE05aWhTSXV2TnBna0k2NG94SkVZQWJQbGkzUjBocENQQ0xad2xxb1piUE1q?=
- =?utf-8?B?aHdpc04vSjJkMTd6OGh3MGtsUkNBR0l2OXplNzNsaFEyNWZqVVJ5eVNhbm5J?=
- =?utf-8?B?eUFJV1ljS1pVT1dmalFoZUE0bHFQN2l4MHNnNmdBUHFtd01Rb0UweXJjZjNh?=
- =?utf-8?B?akdCUk0rREJKNG94OWJwNUEwUndtQUFlT3RYbUsveWRuTEJ5VGtPbFNhREx6?=
- =?utf-8?B?czcrNkRJT0F4ZjZ6TVFHdWQvTXllMk9RNlVxNWlmT2hzRUUxZUJjZXFSdXoz?=
- =?utf-8?B?VGxiL0xEOXVBZUV5dnNwY043VXlmUnFqRWx1S3lJRGRWMnZSUzZHVUxhamlo?=
- =?utf-8?B?dU5hMTl3MWRyVXUvcFpYWE5XZU5BRmZVMm9HMVBuK1BKenIzYTZGTkhScGYz?=
- =?utf-8?B?WW1hTjQrdHhjSiswZnhoTSt3OE9YZlowWHJQaE9mT2d0Nm96aFR6L24wRzRC?=
- =?utf-8?B?eXRVa1pwN1JvdktiZFV2SjZlM1kwc1BVRHgyVk52bkk5Skl6VUJtanVtNm9W?=
- =?utf-8?B?Um1Xd1B3SVFSYlNxNFpDWjlzVHdnSnZXajVpRXhXc2FkTjVvaFRrcnNJdWR4?=
- =?utf-8?B?MWFVY1RlZFlPRHNCSWlYTW9LYVl3dmFUa3c1RGplVUxDSXVFZmhXTVNSbkRw?=
- =?utf-8?B?aG43dXNGNVhCMEpXTmNUVitPSGhIZlRGR2hNQUh4QkI1dUk3ODFyTkMwTWdk?=
- =?utf-8?B?T3BNcXI3aXBkQTI2ODBMamVwZ2RublpmS2J2Vks4aFRMTTVYVWNGeVFwUDM1?=
- =?utf-8?B?SUVQR2NDU09CblNMZVZsZkNJNnowTHZpdFQ2aUtrdkI1aUxBVWg5QzdmSHZk?=
- =?utf-8?B?dWo0L2NOWGNYNktGNkNaTHRZdTNXdzFkd3VBT2tDQmhGL0tDbG1QNjQ4UHNN?=
- =?utf-8?B?d214dEhHbjVFTVd5RjJRS0JLa0dwRXpibloxemdqS2FwWUdGRm5vMTNGV092?=
- =?utf-8?B?dkRad3ZIQjFNQ0NoYnM3OGRsZWpWNEtRWGRVRmhWcmRMV2tWc3RqbWpYRUdE?=
- =?utf-8?B?WGxjcU1TaFl2R0JaOFZObmM1MmZ2eTJLcm0vY1lxVXdHMXhTZXRMVFQ4Y0pt?=
- =?utf-8?B?WExyRXlRcUFRbmFSV0R5Z2lIN3R4b3luSVd3cHJBMXlvSklFaExHYnJnTzN5?=
- =?utf-8?B?L3pyZlJPeUhYdjY4RllockpEOEM0eFI3aU9TOUJIM2FiWjBIbEc4RU83ZTNS?=
- =?utf-8?B?dDdHNm9ZdmZoOGtUay85blZZZGhWSnBUSzllZzk0Z2Z3Q2pGek5RdFRyejJB?=
- =?utf-8?B?clJCdU1CNjNxVDNmTURobEtLVjRiWnpmMjltVjZrWnNhRzNxM2czUkt4Ui9U?=
- =?utf-8?B?MDhiZ0daOWJsUzAwMEpMaS8yM3FpOXRxNEpqaVZjZmtmd1FDaDlnSWt6cmlq?=
- =?utf-8?B?ejIrS1lHZzByTUhKbVRVZ2x1VTFIaWFhdlFmSm1yOXRoZnJqODJZazZ4dWxW?=
- =?utf-8?B?M0NpSWlvOEZTMnQyemxpcUowRElWbElLekdvcVZKZDRjdkM5ZVhxZlpQTFZQ?=
- =?utf-8?B?cTFiZVNFNWI1Uyt1MEhmN20rWFAwMmtiYUtQd0QzcVdBOXpPSnVYZ3A1TzZE?=
- =?utf-8?B?eXozMmVEaUR2dVQ3NGxFdlNMN2NrYlpMclRhWmpvQ0RYQk01YnV5YkJ0UTBC?=
- =?utf-8?B?UDdoRUFYVzZvTUt6UUFKUkpraWQ5c2hXbjh2ZmRhTlJTRUFNbTVMRlpUMG9z?=
- =?utf-8?B?VmM1UEZwWDBUTmgzaHhwV09lcXZKNlNYTUNIOUp5SFJvbjg1TTNNTElyTXVV?=
- =?utf-8?B?TnQvT3RSYjRKQ2RrbzltdkJ2ejMzdkF3YmQ1Z1gxdURNY1JNeTVGQmdRTzdT?=
- =?utf-8?B?TmsxSDVhVkp5eHYzZHJPK01EQi9aNFRhUjBBc2JHdmY1cVMzMk9YYTc4clAx?=
- =?utf-8?B?ZkhIVCtnV0lnZ0NBa1oyeEFmVE5YaDFCbEFnM0gzbzhTWXFKTDQzQmNyeWpN?=
- =?utf-8?B?a0x4YndRTDRPQy9tOXBYWDdRU3VVYXRPWFV5Q28vNW9mcWFib1FBeTBhSm0w?=
- =?utf-8?B?SFNNN2J0QlBWL1k4MjlnbDNCVUlwcXFrZC9RMmZwZGVibnVscEdjRXdwWUNu?=
- =?utf-8?B?UzFUQjV0OGFTQ2VYdlNMbTUxb3lUK09kekd6RERIYmdFZTU2NVpubnRBTG8y?=
- =?utf-8?Q?YDEdHvU723PZpK9sCjA+GqA17?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8416422e-ce29-47cc-8396-08dd1da773ab
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9550.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2024 07:58:39.5223
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oiQLQA3HRIbLPUomOSE9cz2+PBtzqUJ10Y0dgjgYb+gqxe9K0kNbi7akpZLAxJfnYjS5aPgLgnve/OLgv3mMOw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10361
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
+X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Add support for reading multiple registers in DEV_TO_MEM transactions and
-for writing multiple registers in MEM_TO_DEV transactions.
+Add properties which can be used to specify LVDS differential output
+voltage. Since this also depends on near-end signal termination also
+include property which sets this. LVDS differential output voltage is
+specified with an array (min, max), which should match the one from
+connected device.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Co-developed-by: Alexandru-Catalin Ionita <alexandru-catalin.ionita@nxp.com>
-Signed-off-by: Alexandru-Catalin Ionita <alexandru-catalin.ionita@nxp.com>
-Signed-off-by: Larisa Grigore <larisa.grigore@oss.nxp.com>
+Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/dma/fsl-edma-common.c | 36 ++++++++++++++++++++++++++---------
- 1 file changed, 27 insertions(+), 9 deletions(-)
+Changes in v7:
+- no change
+Changes in v6:
+- no change
+Changes in v5:
+- added Krzysztof's reviewed-by tag
+Changes in v4:
+- removed "additionalProperties: true" from the patch as it is not needed
+Changes in v3:
+- no change
+Changes in v2:
+- move LVDS port schema to a $defs and reference it from there
+- properties are now defined in microvolts/ohms
+- use 1 property for data-lane and 1 for clock-lane LVDS voltage swing
+- add 1 property which sets LVDS near-end termination
+- since major change was done change the authorship to myself
+---
+ .../bindings/display/bridge/ti,sn65dsi83.yaml | 34 +++++++++++++++++--
+ 1 file changed, 32 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
-index d364514f21be..e70f7aa9bc68 100644
---- a/drivers/dma/fsl-edma-common.c
-+++ b/drivers/dma/fsl-edma-common.c
-@@ -496,8 +496,8 @@ void fsl_edma_fill_tcd(struct fsl_edma_chan *fsl_chan,
- 		       bool disable_req, bool enable_sg)
- {
- 	struct dma_slave_config *cfg = &fsl_chan->cfg;
-+	u32 burst = 0;
- 	u16 csr = 0;
--	u32 burst;
+diff --git a/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml b/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml
+index 48a97bb3e2e0..bad6f5c81b06 100644
+--- a/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml
++++ b/Documentation/devicetree/bindings/display/bridge/ti,sn65dsi83.yaml
+@@ -80,12 +80,12 @@ properties:
+                   - const: 4
  
- 	/*
- 	 * eDMA hardware SGs require the TCDs to be stored in little
-@@ -512,16 +512,30 @@ void fsl_edma_fill_tcd(struct fsl_edma_chan *fsl_chan,
+       port@2:
+-        $ref: /schemas/graph.yaml#/properties/port
+         description: Video port for LVDS Channel-A output (panel or bridge).
++        $ref: '#/$defs/lvds-port'
  
- 	fsl_edma_set_tcd_to_le(fsl_chan, tcd, soff, soff);
+       port@3:
+-        $ref: /schemas/graph.yaml#/properties/port
+         description: Video port for LVDS Channel-B output (panel or bridge).
++        $ref: '#/$defs/lvds-port'
  
--	if (fsl_chan->is_multi_fifo) {
--		/* set mloff to support multiple fifo */
--		burst = cfg->direction == DMA_DEV_TO_MEM ?
--				cfg->src_maxburst : cfg->dst_maxburst;
--		nbytes |= EDMA_V3_TCD_NBYTES_MLOFF(-(burst * 4));
--		/* enable DMLOE/SMLOE */
--		if (cfg->direction == DMA_MEM_TO_DEV) {
-+	/* If we expect to have either multi_fifo or a port window size,
-+	 * we will use minor loop offset, meaning bits 29-10 will be used for
-+	 * address offset, while bits 9-0 will be used to tell DMA how much
-+	 * data to read from addr.
-+	 * If we don't have either of those, will use a major loop reading from addr
-+	 * nbytes (29bits).
-+	 */
-+	if (cfg->direction == DMA_MEM_TO_DEV) {
-+		if (fsl_chan->is_multi_fifo)
-+			burst = cfg->dst_maxburst * 4;
-+		if (cfg->dst_port_window_size)
-+			burst = cfg->dst_port_window_size * cfg->dst_addr_width;
-+		if (burst) {
-+			nbytes |= EDMA_V3_TCD_NBYTES_MLOFF(-burst);
- 			nbytes |= EDMA_V3_TCD_NBYTES_DMLOE;
- 			nbytes &= ~EDMA_V3_TCD_NBYTES_SMLOE;
--		} else {
-+		}
-+	} else {
-+		if (fsl_chan->is_multi_fifo)
-+			burst = cfg->src_maxburst * 4;
-+		if (cfg->src_port_window_size)
-+			burst = cfg->src_port_window_size * cfg->src_addr_width;
-+		if (burst) {
-+			nbytes |= EDMA_V3_TCD_NBYTES_MLOFF(-burst);
- 			nbytes |= EDMA_V3_TCD_NBYTES_SMLOE;
- 			nbytes &= ~EDMA_V3_TCD_NBYTES_DMLOE;
- 		}
-@@ -639,11 +653,15 @@ struct dma_async_tx_descriptor *fsl_edma_prep_dma_cyclic(
- 			dst_addr = fsl_chan->dma_dev_addr;
- 			soff = fsl_chan->cfg.dst_addr_width;
- 			doff = fsl_chan->is_multi_fifo ? 4 : 0;
-+			if (fsl_chan->cfg.dst_port_window_size)
-+				doff = fsl_chan->cfg.dst_addr_width;
- 		} else if (direction == DMA_DEV_TO_MEM) {
- 			src_addr = fsl_chan->dma_dev_addr;
- 			dst_addr = dma_buf_next;
- 			soff = fsl_chan->is_multi_fifo ? 4 : 0;
- 			doff = fsl_chan->cfg.src_addr_width;
-+			if (fsl_chan->cfg.src_port_window_size)
-+				soff = fsl_chan->cfg.src_addr_width;
- 		} else {
- 			/* DMA_DEV_TO_DEV */
- 			src_addr = fsl_chan->cfg.src_addr;
+     required:
+       - port@0
+@@ -96,6 +96,36 @@ required:
+   - reg
+   - ports
+ 
++$defs:
++  lvds-port:
++    $ref: /schemas/graph.yaml#/$defs/port-base
++    unevaluatedProperties: false
++
++    properties:
++      endpoint:
++        $ref: /schemas/media/video-interfaces.yaml#
++        unevaluatedProperties: false
++
++        properties:
++          ti,lvds-termination-ohms:
++            description: The value of near end differential termination in ohms.
++            enum: [100, 200]
++            default: 200
++
++          ti,lvds-vod-swing-clock-microvolt:
++            description: LVDS diferential output voltage <min max> for clock
++              lanes in microvolts.
++            $ref: /schemas/types.yaml#/definitions/uint32-array
++            minItems: 2
++            maxItems: 2
++
++          ti,lvds-vod-swing-data-microvolt:
++            description: LVDS diferential output voltage <min max> for data
++              lanes in microvolts.
++            $ref: /schemas/types.yaml#/definitions/uint32-array
++            minItems: 2
++            maxItems: 2
++
+ allOf:
+   - if:
+       properties:
 -- 
-2.47.0
+2.34.1
 
